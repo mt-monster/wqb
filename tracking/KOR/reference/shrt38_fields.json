@@ -1,0 +1,2378 @@
+[
+ {
+  "id": "shrt38_accum_buy_amt",
+  "description": "Accumulated purchase value in KRW over the aggregation window (scaled per atlas_unit_name)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 92,
+  "alphaCount": 187,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_accum_buy_amt_rt",
+  "description": "Accum. Purchase Value",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 54,
+  "alphaCount": 101,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_accum_buy_qty",
+  "description": "Accumulated buy quantity (shares) over the aggregation window",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 37,
+  "alphaCount": 47,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_accum_buy_qty_rt",
+  "description": "Accum. Purchase Volume",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 49,
+  "alphaCount": 70,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_accum_net_buy_amt",
+  "description": "Accumulated net purchase value (buy minus sell) in KRW over the aggregation window",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 118,
+  "alphaCount": 227,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_accum_net_buy_qty",
+  "description": "Accumulated net purchase quantity (shares) over the aggregation window (buy minus sell)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 140,
+  "alphaCount": 239,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_accum_sell_amt",
+  "description": "Accumulated sell value in KRW over the aggregation window (scaled per atlas_unit_name)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 41,
+  "alphaCount": 56,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_accum_sell_amt_rt",
+  "description": "Accum. Sell Value",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 176,
+  "alphaCount": 333,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_accum_sell_qty",
+  "description": "Accumulated sell quantity (shares) over the aggregation window",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 29,
+  "alphaCount": 41,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_accum_sell_qty_rt",
+  "description": "Accum. Sell Volume",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 145,
+  "alphaCount": 257,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_addr_5",
+  "description": "Address",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 12,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_agg_invactdc_vni",
+  "description": "Investor Code(0100:Institutions(Total), 0101:Securities, 0102:Insurance, 0103:Invest Trusts, 0104:Bank, 0105:Merchant & SavingBanks, 0106:Pension Funds, 0107:Private Equity Fund, 0200:Foreigners(Total),0201:Foreigners, 0202:Foreigners(ETC), 0300:Individual, 0400:Other, 0900:Total)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 9,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_amt",
+  "description": "Total short-selling amount aggregated over the window; unit defined by atlas_unit_name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 13,
+  "alphaCount": 25,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_amt_wgt",
+  "description": "Short Selling Turnover Weight",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 10,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_auditor_2",
+  "description": "Auditor",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 9,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_biz_reg_no_24",
+  "description": "Business No.",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_c_companyatlas_unit_name",
+  "description": "nan",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_c_companydc_pmc",
+  "description": "Company Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_c_companylist_dt",
+  "description": "Listing date on the exchange (YYYYMMDD)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_c_companypyt_tkm",
+  "description": "Market type code indicating listing market (e.g., 1=KRX, 2=KOSDAQ, 8=KONEX)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_cmp_ful_nm_kor_13",
+  "description": "Korean Full Name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 11,
+  "alphaCount": 18,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_cmp_nm_kor_19",
+  "description": "Korean Name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_corp_reg_no_20",
+  "description": "Corporation Number",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_dc_csk_7",
+  "description": "Market Index Code (Reference: TC_SECTOR > SEC_TYP = I)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_dc_prg_11",
+  "description": "Large Enterprises (Reference: TC_SECTOR > SEC_TYP = L)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 8,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_dc_scig_17",
+  "description": "WICS Code (WISEfn Industry Classification Standard) (Reference: TC_SECTOR > SEC_TYP = G)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_dc_scik_14",
+  "description": "KICS Code (Korea Industry Classification Standard) (Reference: TC_SECTOR > SEC_TYP = N)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_finacc_typ_22",
+  "description": "F/S Sector(0:Entire, 1:Manufacturing, 2:Banking, 3:Insurance, 4:Securities, 6:Mutual Savings, 7:Merchant Banking, 8:Credit Finance, 9:Other Financing)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_gne_mn_kts",
+  "description": "English Name(Short)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_gne_mn_luf_pmc_10",
+  "description": "English Full Name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 10,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_gne_mn_pmc_1",
+  "description": "English Name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 7,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_industry",
+  "description": "Industry",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 47,
+  "alphaCount": 112,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_invactdc_vni",
+  "description": "Investor Code(0100:Institutions(Total), 0101:Securities, 0102:Insurance, 0103:Invest Trusts, 0104:Bank, 0105:Merchant & SavingBanks, 0106:Pension Funds, 0107:Private Equity Fund, 0200:Foreigners(Total),0201:Foreigners, 0202:Foreigners(ETC), 0300:Individual, 0400:Other, 0900:Total)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 5,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_issue_typ",
+  "description": "Issue type code of the security (e.g., common, preferred, fund/ETF, DR)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 9,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_k_agg_invactdc_kts",
+  "description": "Stock Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 9,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_k_agg_short_selldc_kts",
+  "description": "Stock Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 4,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_k_invactdc_kts",
+  "description": "Stock Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 8,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_k_short_selldc_kts",
+  "description": "Stock Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 9,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_let_16",
+  "description": "Telephone No.",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_list_yn",
+  "description": "Listing status flag (Y=Listed, N=Not listed)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 4,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_lru_3",
+  "description": "URL",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 7,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_master_chk_12",
+  "description": "Main F/S (P: Parents, C: Consolidated)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 14,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_mmyy_srfi_8",
+  "description": "Month and year of IFRS adoption (YYYYMM)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_nm_eyf_21",
+  "description": "Fiscal year-end month (1–12)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_ny_srfi_15",
+  "description": "IFRS reporting status indicator for the company (Y=IFRS compliant, N=not IFRS)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 7,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_ockdc_kts",
+  "description": "Stock Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 6,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_oec_18",
+  "description": "CEO",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_pyt_gva",
+  "description": "Aggregation type code (e.g., 1=average, 2=sum)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_pyt_kts",
+  "description": "Stock type code classifying the security (e.g., common, preferred, ETF, DR)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 7,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_pyt_pmc_4",
+  "description": "Company Type(1:Company limited by shares, 2:Securities investment corporation, 3:Special purpose company, 4:Real estate investment trusts, 5:ETF, 6:Ship investment company, 7:SPAC, 9:Etc., 11:Equity, 12:Debt Issue, 13:Preferred Issue, 14:Pre-IPO, 15:Limited Partnership, 16:Index, 17:Private, 20:KNX to KSQ, 25:ETN)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 6,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_pyt_qrf",
+  "description": "Frequency type code of aggregation (e.g., 1=daily, 2=weekly, 3=monthly)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_qtr_master_6",
+  "description": "Quarter Main F/S (P: Parents, C: Consolidated)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 19,
+  "alphaCount": 26,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_s_stk_agg_invactatlas_unit_name",
+  "description": "Atlas unit name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_s_stk_agg_short_sellatlas_unit_name",
+  "description": "Atlas unit name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 10,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_s_stk_invactatlas_unit_name",
+  "description": "Atlas unit name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 9,
+  "alphaCount": 18,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_s_stk_short_sellatlas_unit_name",
+  "description": "Atlas unit name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 16,
+  "alphaCount": 20,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_s_stockatlas_unit_name",
+  "description": "Atlas unit name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 11,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_s_stockdc_pmc",
+  "description": "Company Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 3,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_s_stocklist_dt",
+  "description": "Listing date of the security in YYYYMMDD format",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_s_stockpyt_tkm",
+  "description": "Market type code indicating the exchange/board (e.g., KRX, KOSDAQ, KONEX)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_sector",
+  "description": "Sector",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 30,
+  "alphaCount": 61,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_agg_invactcalc_prd_typ",
+  "description": "Calculation period type code indicating the aggregation window (e.g., 5-day, 20-day, weekly, monthly, yearly)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_agg_invacttd_drt",
+  "description": "Trading date in YYYYMMDD format (date associated with the aggregated window)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_agg_short_sellcalc_prd_typ",
+  "description": "Calculation period type code specifying the aggregation window (e.g., 5-day, 20-day, weekly, monthly)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 5,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_agg_short_selltd_drt",
+  "description": "Trading date in YYYYMMDD representing the anchor date for the aggregated record",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 6,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_invactbuy_amt",
+  "description": "Purchase value in KRW, scaled per atlas_unit_name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 42,
+  "alphaCount": 81,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_invactbuy_qty",
+  "description": "Number of shares bought",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 40,
+  "alphaCount": 69,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_invactnet_buy_amt",
+  "description": "Net purchase value (buy minus sell) in KRW, scaled per atlas_unit_name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 74,
+  "alphaCount": 139,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_invactnet_buy_qty",
+  "description": "Net purchase volume in shares (buy minus sell)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 86,
+  "alphaCount": 164,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_invactsell_amt",
+  "description": "Sell value in KRW, scaled per atlas_unit_name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 46,
+  "alphaCount": 90,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_invactsell_qty",
+  "description": "Number of shares sold",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 44,
+  "alphaCount": 77,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_invacttd_drt",
+  "description": "Trading date in YYYYMMDD format",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9997,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_nm_kor",
+  "description": "Korean Name(Short)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_short_sellshort_sell_amt",
+  "description": "Value of shares sold short on the date in KRW, scaled per atlas_unit_name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9644,
+  "userCount": 6,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_short_sellshort_sell_amt_wgt",
+  "description": "Short Selling Turnover Weight",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9644,
+  "userCount": 9,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_stk_short_sellshort_sell_qty",
+  "description": "Number of shares sold short on the date",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9644,
+  "userCount": 9,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_stk_short_sellshort_sell_qty_wgt",
+  "description": "Short Selling Volume Weight",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9644,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_stk_short_selltd_drt",
+  "description": "Trading date in YYYYMMDD format",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9644,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_subindustry",
+  "description": "Subindustry",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 15,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_td_tse_9",
+  "description": "Company establishment/incorporation date (YYYYMMDD)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 0.9991,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_tgw_ytq",
+  "description": "Short Selling Volume Weight",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_tot_amt_wgt",
+  "description": "Short Selling Turnover Weight(All)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 12,
+  "alphaCount": 24,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_tot_qty_wgt",
+  "description": "Short Selling Volume Weight(All)",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 10,
+  "alphaCount": 26,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ },
+ {
+  "id": "shrt38_ytq",
+  "description": "Total shorted shares aggregated over the specified window",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9786,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_z_sec_relatlas_unit_name",
+  "description": "Atlas unit name",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 30,
+  "alphaCount": 44,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_z_sec_reldc_pmc",
+  "description": "Company Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 18,
+  "alphaCount": 30,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_z_sec_relsec_cd",
+  "description": "Sector Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 29,
+  "alphaCount": 46,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-07-01"
+ },
+ {
+  "id": "shrt38_zip_cd_23",
+  "description": "Zip Code",
+  "dataset": {
+   "id": "shortinterest38",
+   "name": "Investor Activity and Short Selling Data"
+  },
+  "category": {
+   "id": "shortinterest",
+   "name": "Short Interest"
+  },
+  "subcategory": {
+   "id": "shortinterest-short-sale-models",
+   "name": "Short Sale Models"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.247,
+  "coverage": 1.0,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2024-06-01"
+ }
+]

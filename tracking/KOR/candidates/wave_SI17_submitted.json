@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 11:26:05",
+ "batches": [
+  {
+   "group": "H1_sub_win",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "4k5T6a7eS4A9cxI8V3QNkex",
+   "ids": [
+    "h1_a",
+    "h1_b"
+   ]
+  },
+  {
+   "group": "H2_avg_sub",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "4lWiDi6Yz4WMbvSPnCx292h",
+   "ids": [
+    "h2_a",
+    "h2_b"
+   ]
+  },
+  {
+   "group": "H3_net_sub",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "3gDMz78iO4gV9g2eUd9zs4t",
+   "ids": [
+    "h3_a",
+    "h3_b"
+   ]
+  },
+  {
+   "group": "H4_preproc",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "1U9lhbg74pf9Zh18No5AjAO",
+   "ids": [
+    "h4_a",
+    "h4_b"
+   ]
+  }
+ ]
+}

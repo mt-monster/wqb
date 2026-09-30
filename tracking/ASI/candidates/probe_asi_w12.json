@@ -1,0 +1,415 @@
+{
+ "results": [
+  {
+   "label": "W12_raw_prelimcomp",
+   "alpha": "ZYAYd081",
+   "S": -0.22,
+   "F": -0.07,
+   "T": 0.012,
+   "sub": [
+    "FAIL",
+    -0.47
+   ],
+   "y2": [
+    "FAIL",
+    0.05
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.22
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.07
+   ]
+  },
+  {
+   "label": "W12_raw_ohlsono",
+   "alpha": "WjejoPRG",
+   "S": 0.1,
+   "F": 0.02,
+   "T": 0.0109,
+   "sub": [
+    "PASS",
+    0.35
+   ],
+   "y2": [
+    "FAIL",
+    -0.79
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.1
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.02
+   ]
+  },
+  {
+   "label": "W12_raw_merton",
+   "alpha": "N1V1J32q",
+   "S": -0.25,
+   "F": -0.08,
+   "T": 0.0126,
+   "sub": [
+    "FAIL",
+    -0.52
+   ],
+   "y2": [
+    "FAIL",
+    0.35
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.25
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.08
+   ]
+  },
+  {
+   "label": "W12_raw_implalpha",
+   "alpha": "mL6L0E9x",
+   "S": -0.13,
+   "F": -0.03,
+   "T": 0.0122,
+   "sub": [
+    "FAIL",
+    -0.43
+   ],
+   "y2": [
+    "FAIL",
+    0.67
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.13
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.03
+   ]
+  },
+  {
+   "label": "W12_raw_cassiescore",
+   "alpha": "RR6RzR3o",
+   "S": -0.23,
+   "F": -0.07,
+   "T": 0.0126,
+   "sub": [
+    "FAIL",
+    -0.54
+   ],
+   "y2": [
+    "FAIL",
+    -0.19
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.23
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.07
+   ]
+  },
+  {
+   "label": "W12_raw_altmanz",
+   "alpha": "MP3PzML6",
+   "S": -0.34,
+   "F": -0.14,
+   "T": 0.0111,
+   "sub": [
+    "FAIL",
+    -0.53
+   ],
+   "y2": [
+    "FAIL",
+    -0.39
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.34
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.14
+   ]
+  },
+  {
+   "label": "W12_raw_currratio",
+   "alpha": "blOlzk1q",
+   "S": -0.28,
+   "F": -0.1,
+   "T": 0.0111,
+   "sub": [
+    "FAIL",
+    -0.51
+   ],
+   "y2": [
+    "FAIL",
+    -0.24
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.28
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.1
+   ]
+  },
+  {
+   "label": "W12_raw_insolv1y",
+   "alpha": "YPMPzXJW",
+   "S": 0.1,
+   "F": 0.02,
+   "T": 0.0107,
+   "sub": [
+    "PASS",
+    0.38
+   ],
+   "y2": [
+    "FAIL",
+    -0.49
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.1
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.02
+   ]
+  },
+  {
+   "label": "W12_raw_ocfcurrliab",
+   "alpha": "blOlzLgr",
+   "S": -0.14,
+   "F": -0.03,
+   "T": 0.0113,
+   "sub": [
+    "FAIL",
+    -0.35
+   ],
+   "y2": [
+    "FAIL",
+    0.47
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.14
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.03
+   ]
+  },
+  {
+   "label": "W12_raw_extinsolv1y",
+   "alpha": "XgJgzn2l",
+   "S": 0.12,
+   "F": 0.03,
+   "T": 0.0108,
+   "sub": [
+    "PASS",
+    0.43
+   ],
+   "y2": [
+    "FAIL",
+    -0.31
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.12
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.03
+   ]
+  },
+  {
+   "label": "W12_raw_ltdteq",
+   "alpha": "vR2RGWzr",
+   "S": 0.26,
+   "F": 0.09,
+   "T": 0.0109,
+   "sub": [
+    "PASS",
+    0.49
+   ],
+   "y2": [
+    "FAIL",
+    -0.07
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.26
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.09
+   ]
+  },
+  {
+   "label": "W12_raw_debteq",
+   "alpha": "JjQj10vO",
+   "S": 0.16,
+   "F": 0.04,
+   "T": 0.0105,
+   "sub": [
+    "PASS",
+    0.41
+   ],
+   "y2": [
+    "FAIL",
+    -0.68
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.16
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.04
+   ]
+  },
+  {
+   "label": "W12_gate_cassiescore",
+   "alpha": "58g8e6KM",
+   "S": -0.15,
+   "F": -0.06,
+   "T": 0.1993,
+   "sub": [
+    "PASS",
+    0.11
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.15
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.06
+   ]
+  },
+  {
+   "label": "W12_raw_chsdefault",
+   "alpha": "npPpQvWz",
+   "S": 0.01,
+   "F": 0.0,
+   "T": 0.013,
+   "sub": [
+    "PASS",
+    0.31
+   ],
+   "y2": [
+    "FAIL",
+    -0.78
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.01
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.0
+   ]
+  },
+  {
+   "label": "W12_gate_prelimcomp",
+   "alpha": "9qWqmG2K",
+   "S": -0.17,
+   "F": -0.07,
+   "T": 0.1988,
+   "sub": [
+    "PASS",
+    0.11
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.17
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.07
+   ]
+  },
+  {
+   "label": "W12_gate_altmanz",
+   "alpha": "E5R5LzY0",
+   "S": -0.24,
+   "F": -0.11,
+   "T": 0.2048,
+   "sub": [
+    "PASS",
+    0.05
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.24
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.11
+   ]
+  },
+  {
+   "label": "W12_raw_quickratio",
+   "alpha": "N1V13ld7",
+   "S": -0.28,
+   "F": -0.1,
+   "T": 0.0111,
+   "sub": [
+    "FAIL",
+    -0.53
+   ],
+   "y2": [
+    "FAIL",
+    -0.31
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.28
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.1
+   ]
+  },
+  {
+   "label": "W12_gate_implalpha",
+   "alpha": "P0g0KQeM",
+   "S": -0.19,
+   "F": -0.08,
+   "T": 0.2025,
+   "sub": [
+    "PASS",
+    0.07
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.19
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.08
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "results": {
+  "pwRVlg3j": {
+   "prod_max": 0.8308,
+   "min": -0.4046,
+   "n_records": 20,
+   "el": 21
+  },
+  "vRrelx1w": {
+   "prod_max": 0.8014,
+   "min": -0.4073,
+   "n_records": 20,
+   "el": 22
+  },
+  "9qja7w3e": {
+   "prod_max": 0.9995,
+   "min": -0.3692,
+   "n_records": 20,
+   "el": 21
+  },
+  "6XjaQrkO": {
+   "prod_max": 0.9583,
+   "min": -0.4358,
+   "n_records": 20,
+   "el": 21
+  },
+  "npdZlKLq": {
+   "prod_max": 0.9842,
+   "min": -0.389,
+   "n_records": 20,
+   "el": 21
+  },
+  "mLmY1KYK": {
+   "prod_max": 0.7284,
+   "min": -0.4414,
+   "n_records": 20,
+   "el": 21
+  }
+ }
+}

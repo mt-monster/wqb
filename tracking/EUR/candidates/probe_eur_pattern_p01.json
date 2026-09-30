@@ -1,0 +1,108 @@
+{
+ "results": [
+  {
+   "label": "p01_net_bull_gap",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "p02_net_bull_tri",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "p03_vb_strength",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "p04_up_gap_strength",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "p05_reversal_vs_cont",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "p06_support_tilt",
+   "sim": "ERROR",
+   "msg": "Attempted to use unknown variable \"avg_similarity_rising_support_flat_resistance_120\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessage"
+  },
+  {
+   "label": "p07_up_gap_delta",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "p08_vb_delta",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "p09_vb_tsrank",
+   "alpha": "9qjnkamq",
+   "S": -0.25,
+   "F": -0.04,
+   "T": 0.0415
+  },
+  {
+   "label": "p10_up_gap_tsrank",
+   "alpha": "Wjb5JaxP",
+   "S": 0.4,
+   "F": 0.09,
+   "T": 0.0431
+  },
+  {
+   "label": "p11_wedge_tilt",
+   "alpha": "wpZrWnvv",
+   "S": 0.27,
+   "F": 0.05,
+   "T": 0.0406
+  },
+  {
+   "label": "p12_short_dn_gap",
+   "alpha": "d5bGvE6w",
+   "S": 0.24,
+   "F": 0.04,
+   "T": 0.0427
+  },
+  {
+   "label": "p13_net_bull_gap_ind",
+   "alpha": "O0N3gbj7",
+   "S": 0.36,
+   "F": 0.07,
+   "T": 0.0413
+  },
+  {
+   "label": "p14_vb_strength_mkt",
+   "alpha": "e7bjEdPM",
+   "S": 0.05,
+   "F": 0.0,
+   "T": 0.0418
+  },
+  {
+   "label": "p15_pattern_activity",
+   "alpha": "xA3Z5PpN",
+   "S": -0.02,
+   "F": -0.0,
+   "T": 0.0408
+  },
+  {
+   "label": "p16_up_minus_dn_raw",
+   "alpha": "kqoA91pd",
+   "S": 0.19,
+   "F": 0.03,
+   "T": 0.0427
+  }
+ ],
+ "cfg": {
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "decay": 60,
+  "neutralization": "SLOW_AND_FAST",
+  "truncation": 0.02
+ }
+}

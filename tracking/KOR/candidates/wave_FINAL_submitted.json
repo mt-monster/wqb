@@ -1,0 +1,38 @@
+{
+ "submitted_at": "2026-09-29 02:05:48",
+ "batches": [
+  {
+   "group": "Z1_field_axis",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "2YQkAwfaK4KOaMFSFeFxbcu",
+   "ids": [
+    "z1_shrt38_subind",
+    "z2_shrt38_sector"
+   ]
+  },
+  {
+   "group": "Z2_outer_rank",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "30uJj8cTz58UaLZLQmbmnVZ",
+   "ids": [
+    "z3_rank_group",
+    "z4_tsmean3"
+   ]
+  },
+  {
+   "group": "Z3_combo",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.05,
+   "progress_id": "ETDl16Of5iP9b5XpHKdBES",
+   "ids": [
+    "z5_tsmean2_t05",
+    "z6_pow05"
+   ]
+  }
+ ]
+}

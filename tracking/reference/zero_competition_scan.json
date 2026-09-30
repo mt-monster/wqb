@@ -1,0 +1,637 @@
+{
+ "KOR": [
+  {
+   "id": "model307",
+   "name": "Global Sales Allocation Model Data",
+   "cat": "model",
+   "fields": 15,
+   "alphas": 1,
+   "cov": 0.671
+  },
+  {
+   "id": "model37",
+   "name": "Text Mining Data",
+   "cat": "model",
+   "fields": 79,
+   "alphas": 13,
+   "cov": 0.618
+  },
+  {
+   "id": "model50",
+   "name": "International Scorings Data",
+   "cat": "model",
+   "fields": 54,
+   "alphas": 18,
+   "cov": 0.602
+  },
+  {
+   "id": "model170",
+   "name": "Asia Technical and Fundamental ranking model",
+   "cat": "model",
+   "fields": 11,
+   "alphas": 27,
+   "cov": 0.954
+  },
+  {
+   "id": "quant_factor_lib",
+   "name": "Multi-Domain Quantitative Factor Library",
+   "cat": "model",
+   "fields": 32,
+   "alphas": 28,
+   "cov": 0.77
+  },
+  {
+   "id": "news54",
+   "name": "Key Developments Data",
+   "cat": "news",
+   "fields": 40,
+   "alphas": 32,
+   "cov": 0.691
+  },
+  {
+   "id": "model313",
+   "name": "Intangible Asset Factors",
+   "cat": "model",
+   "fields": 9,
+   "alphas": 34,
+   "cov": 0.826
+  },
+  {
+   "id": "news85",
+   "name": "News Sentiment Analysis using DNN",
+   "cat": "news",
+   "fields": 23,
+   "alphas": 39,
+   "cov": 0.632
+  },
+  {
+   "id": "price_signal_dl",
+   "name": "Deep Learning Price Signal Dataset",
+   "cat": "model",
+   "fields": 28,
+   "alphas": 51,
+   "cov": 0.974
+  },
+  {
+   "id": "fundamental93",
+   "name": "Earnings Tax Data",
+   "cat": "fundamental",
+   "fields": 46,
+   "alphas": 55,
+   "cov": 0.755
+  },
+  {
+   "id": "mmp_nlp_sentiment",
+   "name": "Multilingual NLP News Sentiment Signals",
+   "cat": "other",
+   "fields": 521,
+   "alphas": 55,
+   "cov": 0.619
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "cat": "analyst",
+   "fields": 14,
+   "alphas": 59,
+   "cov": 0.732
+  },
+  {
+   "id": "other78",
+   "name": "Earnings and conference call data",
+   "cat": "other",
+   "fields": 11,
+   "alphas": 67,
+   "cov": 0.792
+  },
+  {
+   "id": "model135",
+   "name": "Alternative technical factor models",
+   "cat": "model",
+   "fields": 137,
+   "alphas": 72,
+   "cov": 0.846
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "cat": "model",
+   "fields": 28,
+   "alphas": 79,
+   "cov": 1.0
+  }
+ ],
+ "DEU": [
+  {
+   "id": "other250",
+   "name": "details data",
+   "cat": "other",
+   "fields": 12,
+   "alphas": 2,
+   "cov": 0.613
+  },
+  {
+   "id": "model53",
+   "name": "Creditworthiness Risk Measure Model",
+   "cat": "model",
+   "fields": 22,
+   "alphas": 5,
+   "cov": 0.905
+  },
+  {
+   "id": "model106",
+   "name": "Analysts rating model",
+   "cat": "model",
+   "fields": 14,
+   "alphas": 18,
+   "cov": 0.788
+  },
+  {
+   "id": "news20",
+   "name": "Web Sources News Sentiment Data",
+   "cat": "news",
+   "fields": 46,
+   "alphas": 20,
+   "cov": 0.773
+  },
+  {
+   "id": "news50",
+   "name": "Web News Analytics Data",
+   "cat": "news",
+   "fields": 37,
+   "alphas": 20,
+   "cov": 0.764
+  },
+  {
+   "id": "model28",
+   "name": "Structural Credit Risk Model",
+   "cat": "model",
+   "fields": 25,
+   "alphas": 22,
+   "cov": 0.81
+  },
+  {
+   "id": "pv29",
+   "name": "Derived Industry Classification",
+   "cat": "pv",
+   "fields": 50,
+   "alphas": 24,
+   "cov": 1.0
+  },
+  {
+   "id": "other532",
+   "name": "Specific Returns",
+   "cat": "other",
+   "fields": 8,
+   "alphas": 33,
+   "cov": 0.856
+  },
+  {
+   "id": "model36",
+   "name": "SmartRatios Model",
+   "cat": "model",
+   "fields": 20,
+   "alphas": 36,
+   "cov": 0.849
+  },
+  {
+   "id": "news104",
+   "name": "Archive News Data",
+   "cat": "news",
+   "fields": 11,
+   "alphas": 53,
+   "cov": 0.963
+  },
+  {
+   "id": "news17",
+   "name": "PR Edition Data",
+   "cat": "news",
+   "fields": 48,
+   "alphas": 58,
+   "cov": 0.791
+  },
+  {
+   "id": "model250",
+   "name": "Nonlinear adaptive model",
+   "cat": "model",
+   "fields": 20,
+   "alphas": 61,
+   "cov": 0.641
+  },
+  {
+   "id": "fund_holdings_panel",
+   "name": "Global Institutional Fund Holdings",
+   "cat": "institutions",
+   "fields": 18,
+   "alphas": 68,
+   "cov": 0.902
+  },
+  {
+   "id": "model238",
+   "name": "SmartHoldings Model",
+   "cat": "model",
+   "fields": 22,
+   "alphas": 78,
+   "cov": 0.855
+  }
+ ],
+ "EUR": [
+  {
+   "id": "news_sentiment_dl",
+   "name": "Deep Learning News Sentiment Signals",
+   "cat": "other",
+   "fields": 66,
+   "alphas": 0,
+   "cov": 0.756
+  },
+  {
+   "id": "news_sentiment_nlp",
+   "name": "News Sentiment Signal Features",
+   "cat": "other",
+   "fields": 23,
+   "alphas": 1,
+   "cov": 0.913
+  },
+  {
+   "id": "news54",
+   "name": "Key Developments Data",
+   "cat": "news",
+   "fields": 40,
+   "alphas": 2,
+   "cov": 0.9
+  },
+  {
+   "id": "model307",
+   "name": "Global Sales Allocation Model Data",
+   "cat": "model",
+   "fields": 15,
+   "alphas": 3,
+   "cov": 0.625
+  },
+  {
+   "id": "price_signal_dl",
+   "name": "Deep Learning Price Signal Dataset",
+   "cat": "model",
+   "fields": 28,
+   "alphas": 3,
+   "cov": 0.973
+  },
+  {
+   "id": "model313",
+   "name": "Intangible Asset Factors",
+   "cat": "model",
+   "fields": 8,
+   "alphas": 6,
+   "cov": 0.662
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "cat": "other",
+   "fields": 105,
+   "alphas": 10,
+   "cov": 0.792
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "cat": "other",
+   "fields": 15,
+   "alphas": 13,
+   "cov": 0.748
+  },
+  {
+   "id": "pattern_scores",
+   "name": "Chart Pattern Similarity Scores",
+   "cat": "pv",
+   "fields": 504,
+   "alphas": 14,
+   "cov": 0.992
+  },
+  {
+   "id": "chart_cnn_alpha",
+   "name": "Deep Learning Chart-Based Alpha",
+   "cat": "model",
+   "fields": 122,
+   "alphas": 15,
+   "cov": 0.692
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "cat": "model",
+   "fields": 42,
+   "alphas": 16,
+   "cov": 0.998
+  },
+  {
+   "id": "news36",
+   "name": "News Analytics Data",
+   "cat": "news",
+   "fields": 15,
+   "alphas": 18,
+   "cov": 0.771
+  },
+  {
+   "id": "continuation_score",
+   "name": "Price Chart Continuation Pattern Similarity",
+   "cat": "pv",
+   "fields": 560,
+   "alphas": 20,
+   "cov": 0.992
+  },
+  {
+   "id": "model27",
+   "name": "Credit Risk Model",
+   "cat": "model",
+   "fields": 14,
+   "alphas": 20,
+   "cov": 0.893
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "cat": "model",
+   "fields": 20,
+   "alphas": 22,
+   "cov": 1.0
+  },
+  {
+   "id": "model238",
+   "name": "SmartHoldings Model",
+   "cat": "model",
+   "fields": 44,
+   "alphas": 26,
+   "cov": 0.87
+  },
+  {
+   "id": "shortinterest6",
+   "name": "SmartHoldings Model",
+   "cat": "model",
+   "fields": 11,
+   "alphas": 26,
+   "cov": 1.0
+  },
+  {
+   "id": "news48",
+   "name": "Global Media News Data",
+   "cat": "news",
+   "fields": 22,
+   "alphas": 28,
+   "cov": 0.633
+  },
+  {
+   "id": "global_seasonal_model",
+   "name": "Global Seasonal Regime Return Signals",
+   "cat": "model",
+   "fields": 449,
+   "alphas": 30,
+   "cov": 0.989
+  },
+  {
+   "id": "insider_trx_matrix",
+   "name": "Global Insider Transaction Aggregates",
+   "cat": "other",
+   "fields": 33,
+   "alphas": 32,
+   "cov": 0.611
+  },
+  {
+   "id": "news73",
+   "name": "Story by Story Sentiment",
+   "cat": "news",
+   "fields": 22,
+   "alphas": 32,
+   "cov": 0.813
+  },
+  {
+   "id": "fund_holdings_panel",
+   "name": "Global Institutional Fund Holdings",
+   "cat": "institutions",
+   "fields": 30,
+   "alphas": 33,
+   "cov": 0.88
+  },
+  {
+   "id": "model16",
+   "name": "Fundamental Scores",
+   "cat": "model",
+   "fields": 24,
+   "alphas": 36,
+   "cov": 0.635
+  },
+  {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features",
+   "cat": "pv",
+   "fields": 585,
+   "alphas": 37,
+   "cov": 0.955
+  },
+  {
+   "id": "risk72",
+   "name": "Specific return of extended factors",
+   "cat": "risk",
+   "fields": 40,
+   "alphas": 38,
+   "cov": 0.602
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "cat": "model",
+   "fields": 582,
+   "alphas": 43,
+   "cov": 0.86
+  },
+  {
+   "id": "news85",
+   "name": "News Sentiment Analysis using DNN",
+   "cat": "news",
+   "fields": 23,
+   "alphas": 50,
+   "cov": 0.823
+  },
+  {
+   "id": "analyst_revision_horizons",
+   "name": "Multi Horizon Analyst Revision Signals",
+   "cat": "model",
+   "fields": 1089,
+   "alphas": 55,
+   "cov": 0.689
+  },
+  {
+   "id": "news20",
+   "name": "Web Sources News Sentiment Data",
+   "cat": "news",
+   "fields": 68,
+   "alphas": 55,
+   "cov": 0.808
+  },
+  {
+   "id": "insider_matrix",
+   "name": "Aggregated Insider Transaction Matrix",
+   "cat": "other",
+   "fields": 33,
+   "alphas": 60,
+   "cov": 0.611
+  },
+  {
+   "id": "other571",
+   "name": "Wikipedia Viewing Data",
+   "cat": "other",
+   "fields": 30,
+   "alphas": 61,
+   "cov": 0.758
+  },
+  {
+   "id": "pv103",
+   "name": "Interval and MOO&MOC statistics",
+   "cat": "pv",
+   "fields": 9,
+   "alphas": 61,
+   "cov": 0.983
+  },
+  {
+   "id": "news84",
+   "name": "Headline Sentiment Analysis using DNN",
+   "cat": "news",
+   "fields": 23,
+   "alphas": 63,
+   "cov": 0.781
+  },
+  {
+   "id": "predictive_starmine",
+   "name": "Predictive Analyst-Company Signal Set",
+   "cat": "model",
+   "fields": 638,
+   "alphas": 64,
+   "cov": 0.798
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "cat": "analyst",
+   "fields": 1929,
+   "alphas": 65,
+   "cov": 0.703
+  },
+  {
+   "id": "model264",
+   "name": "Predictive data using Deep Learning models",
+   "cat": "model",
+   "fields": 1393,
+   "alphas": 66,
+   "cov": 1.0
+  },
+  {
+   "id": "news29",
+   "name": "Significant Developments Data",
+   "cat": "news",
+   "fields": 12,
+   "alphas": 66,
+   "cov": 0.689
+  },
+  {
+   "id": "pv106",
+   "name": "Microstructure Spread Data",
+   "cat": "pv",
+   "fields": 15,
+   "alphas": 71,
+   "cov": 1.0
+  },
+  {
+   "id": "model354",
+   "name": "Comprehensive Factor Analytics Data",
+   "cat": "model",
+   "fields": 236,
+   "alphas": 74,
+   "cov": 1.0
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "cat": "analyst",
+   "fields": 111,
+   "alphas": 76,
+   "cov": 0.617
+  },
+  {
+   "id": "news38",
+   "name": "News Analytic Model Data",
+   "cat": "news",
+   "fields": 30,
+   "alphas": 76,
+   "cov": 0.682
+  },
+  {
+   "id": "institutions6",
+   "name": "Institutions and Beneficial Stake Ownership",
+   "cat": "institutions",
+   "fields": 11,
+   "alphas": 79,
+   "cov": 0.992
+  }
+ ],
+ "IND": [
+  {
+   "id": "pv70",
+   "name": "Relation Dataset",
+   "cat": "pv",
+   "fields": 33,
+   "alphas": 10,
+   "cov": 1.0
+  },
+  {
+   "id": "model77",
+   "name": "Analysts' Factor Model",
+   "cat": "model",
+   "fields": 23,
+   "alphas": 79,
+   "cov": 0.85
+  }
+ ],
+ "ASI": [
+  {
+   "id": "news_sentiment_dl",
+   "name": "Deep Learning News Sentiment Signals",
+   "cat": "other",
+   "fields": 22,
+   "alphas": 9,
+   "cov": 0.694
+  },
+  {
+   "id": "news_sentiment_nlp",
+   "name": "News Sentiment Signal Features",
+   "cat": "other",
+   "fields": 23,
+   "alphas": 22,
+   "cov": 0.675
+  },
+  {
+   "id": "news73",
+   "name": "Story by Story Sentiment",
+   "cat": "news",
+   "fields": 22,
+   "alphas": 43,
+   "cov": 0.645
+  },
+  {
+   "id": "model307",
+   "name": "Global Sales Allocation Model Data",
+   "cat": "model",
+   "fields": 15,
+   "alphas": 45,
+   "cov": 0.782
+  },
+  {
+   "id": "multi_source_model",
+   "name": "Multi-Source Market Return Prediction",
+   "cat": "model",
+   "fields": 60,
+   "alphas": 67,
+   "cov": 0.951
+  }
+ ],
+ "GBR": []
+}

@@ -1,0 +1,340 @@
+{
+ "cfg": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 30,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "S2_stddev_norm63",
+   "alpha": "YPbR35ml",
+   "S": 0.56,
+   "F": 0.23,
+   "T": 0.1691,
+   "sub": [
+    "PASS",
+    0.6
+   ],
+   "y2": [
+    "PASS",
+    1.7
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.56
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.23
+   ]
+  },
+  {
+   "label": "S5_quantile_tsrank63",
+   "alpha": "78NePZqv",
+   "S": 0.44,
+   "F": 0.16,
+   "T": 0.1799,
+   "sub": [
+    "PASS",
+    0.53
+   ],
+   "y2": [
+    "FAIL",
+    1.36
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.44
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.16
+   ]
+  },
+  {
+   "label": "S7_sp05_trunc",
+   "alpha": "xA3J725w",
+   "S": 0.62,
+   "F": 0.26,
+   "T": 0.1752,
+   "sub": [
+    "PASS",
+    0.63
+   ],
+   "y2": [
+    "PASS",
+    2.33
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.62
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.26
+   ]
+  },
+  {
+   "label": "S1_stddev_norm22",
+   "alpha": "rKOZq1r1",
+   "S": 0.37,
+   "F": 0.13,
+   "T": 0.1623,
+   "sub": [
+    "PASS",
+    0.49
+   ],
+   "y2": [
+    "FAIL",
+    1.53
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.37
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.13
+   ]
+  },
+  {
+   "label": "S6_quantile_tsrank252",
+   "alpha": "omLxb1nm",
+   "S": 0.41,
+   "F": 0.14,
+   "T": 0.1783,
+   "sub": [
+    "PASS",
+    0.6
+   ],
+   "y2": [
+    "FAIL",
+    1.46
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.41
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.14
+   ]
+  },
+  {
+   "label": "S3_stddev_norm252",
+   "alpha": "9qjNezJo",
+   "S": 0.66,
+   "F": 0.29,
+   "T": 0.1751,
+   "sub": [
+    "PASS",
+    0.67
+   ],
+   "y2": [
+    "PASS",
+    1.87
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.66
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.29
+   ]
+  },
+  {
+   "label": "S4_tszscore252",
+   "alpha": "A1NopRaw",
+   "S": 0.51,
+   "F": 0.2,
+   "T": 0.1772,
+   "sub": [
+    "PASS",
+    0.5
+   ],
+   "y2": [
+    "FAIL",
+    0.8
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.51
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.2
+   ]
+  },
+  {
+   "label": "T1_tsmax_minus_norm",
+   "sim": "ERROR",
+   "msg": "Attempted to use inaccessible or unknown operator \"ts_max\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "S9_tsbackfill_rank63",
+   "alpha": "GrbZ2Pxx",
+   "S": -0.15,
+   "F": -0.03,
+   "T": 0.0932,
+   "sub": [
+    "PASS",
+    0.0
+   ],
+   "y2": [
+    "FAIL",
+    -0.42
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.15
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.03
+   ]
+  },
+  {
+   "label": "S8_stddev_then_delta22",
+   "alpha": "VkaAr9q5",
+   "S": 0.19,
+   "F": 0.06,
+   "T": 0.1707,
+   "sub": [
+    "PASS",
+    0.33
+   ],
+   "y2": [
+    "FAIL",
+    1.42
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.19
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.06
+   ]
+  },
+  {
+   "label": "T3_tsrank63",
+   "alpha": "1YXrAdbR",
+   "S": 0.44,
+   "F": 0.16,
+   "T": 0.18,
+   "sub": [
+    "PASS",
+    0.53
+   ],
+   "y2": [
+    "FAIL",
+    1.35
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.44
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.16
+   ]
+  },
+  {
+   "label": "U1_stddev_af_bf",
+   "alpha": "GrbZ23R5",
+   "S": 0.4,
+   "F": 0.14,
+   "T": 0.1698,
+   "sub": [
+    "PASS",
+    0.32
+   ],
+   "y2": [
+    "FAIL",
+    0.71
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.4
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.14
+   ]
+  },
+  {
+   "label": "T2_tsrank22",
+   "alpha": "GrbZ2kNJ",
+   "S": 0.37,
+   "F": 0.12,
+   "T": 0.1848,
+   "sub": [
+    "PASS",
+    0.37
+   ],
+   "y2": [
+    "FAIL",
+    1.22
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.37
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.12
+   ]
+  },
+  {
+   "label": "T4_tsrank252",
+   "alpha": "6Xj5Weq7",
+   "S": 0.4,
+   "F": 0.14,
+   "T": 0.1784,
+   "sub": [
+    "PASS",
+    0.59
+   ],
+   "y2": [
+    "FAIL",
+    1.45
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.4
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.14
+   ]
+  },
+  {
+   "label": "U2_delta_af_bf_norm",
+   "alpha": "YPbRVvVR",
+   "S": -0.09,
+   "F": -0.02,
+   "T": 0.1776,
+   "sub": [
+    "FAIL",
+    -0.09
+   ],
+   "y2": [
+    "FAIL",
+    0.32
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.09
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.02
+   ]
+  }
+ ]
+}

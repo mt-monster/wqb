@@ -1,0 +1,158 @@
+[
+ [
+  "W4_gz10_clpvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_vwapvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_vwap_with_volume, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_bidvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_bid_price_with_volume, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_askvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_ask_price_with_volume, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_highvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_high_price_with_volume, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_lowvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_low_price_with_volume, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_lvwapvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_last_vwap_with_volume, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_askbidsz",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_ask_price_with_bid_size, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_bidasksz",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_bid_price_with_ask_size, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_askslip",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_ask_price_with_slippage, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_bidslip",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_bid_price_with_slippage, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_clpslip",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_last_trade_price_with_slippage, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_highbidsz",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_high_price_with_bid_size, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10_vwapbidsz",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_vwap_with_bid_size, 10), country), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_sp10_clpvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(corr_last_trade_price_with_volume, 10), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_sp10_vwapvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(corr_vwap_with_volume, 10), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_sp10_bidvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(corr_bid_price_with_volume, 10), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_sp10_askvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(corr_ask_price_with_volume, 10), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_sp10_highvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(corr_high_price_with_volume, 10), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_sp10_lowvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(corr_low_price_with_volume, 10), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_sp10_lvwapvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(corr_last_vwap_with_volume, 10), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10sec_clpvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 10), sector), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10ind_vwapvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_vwap_with_volume, 10), industry), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10mar_bidvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_bid_price_with_volume, 10), market), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10sec_askvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_ask_price_with_volume, 10), sector), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10ind_highvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_high_price_with_volume, 10), industry), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_gz10mar_lowvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -group_zscore(ts_decay_linear(corr_low_price_with_volume, 10), market), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsr252_clpvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(corr_last_trade_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsr252_vwapvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(corr_vwap_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsr252_bidvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(corr_bid_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsr252_askvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(corr_ask_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsr252_highvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(corr_high_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsr252_lowvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(corr_low_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsz252_clpvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsz252_vwapvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_zscore(ts_decay_linear(corr_vwap_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsz252_bidvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_zscore(ts_decay_linear(corr_bid_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsz252_askvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_zscore(ts_decay_linear(corr_ask_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsz252_highvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_zscore(ts_decay_linear(corr_high_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W4_tsz252_lowvw",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_zscore(ts_decay_linear(corr_low_price_with_volume, 10), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ]
+]

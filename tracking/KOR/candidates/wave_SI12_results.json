@@ -1,0 +1,79 @@
+[
+ {
+  "group": "N1_decaylin",
+  "id": "RRbOoMNg",
+  "sharpe": 2.47,
+  "fitness": 1.94,
+  "turnover": 0.1946,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 250), sector), hump=0.0025)"
+ },
+ {
+  "group": "N1_decaylin",
+  "id": "JjNAkqbn",
+  "sharpe": 2.31,
+  "fitness": 1.75,
+  "turnover": 0.1888,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), industry), hump=0.0025)"
+ },
+ {
+  "group": "N2_tsrank",
+  "id": "VkarLnO5",
+  "sharpe": 2.0,
+  "fitness": 1.41,
+  "turnover": 0.2124,
+  "fails": [],
+  "expr": "hump(group_rank(ts_rank(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 250), sector), hump=0.003)"
+ },
+ {
+  "group": "N2_tsrank",
+  "id": "58zm1RMX",
+  "sharpe": 2.03,
+  "fitness": 1.44,
+  "turnover": 0.2043,
+  "fails": [],
+  "expr": "hump(group_rank(ts_rank(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), industry), hump=0.003)"
+ },
+ {
+  "group": "N3_netsub",
+  "id": "E5pjMalL",
+  "sharpe": 2.76,
+  "fitness": 2.3,
+  "turnover": 0.2106,
+  "fails": [],
+  "expr": "hump(group_rank(divide(subtract(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), add(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), sector), hump=0.0025)"
+ },
+ {
+  "group": "N3_netsub",
+  "id": "e7bYP29g",
+  "sharpe": 2.37,
+  "fitness": 1.84,
+  "turnover": 0.2016,
+  "fails": [],
+  "expr": "hump(group_rank(divide(subtract(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), add(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), industry), hump=0.003)"
+ },
+ {
+  "group": "N4_delta",
+  "id": "MPaEn5jL",
+  "sharpe": 1.25,
+  "fitness": 0.72,
+  "turnover": 0.2075,
+  "fails": [],
+  "expr": "hump(group_rank(ts_delta(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 60), sector), hump=0.003)"
+ },
+ {
+  "group": "N4_delta",
+  "id": "kqowMLxg",
+  "sharpe": 1.31,
+  "fitness": 0.78,
+  "turnover": 0.1953,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_delta(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 120), industry), hump=0.003)"
+ }
+]

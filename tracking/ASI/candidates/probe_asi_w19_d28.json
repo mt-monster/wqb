@@ -1,0 +1,93 @@
+{
+ "results": [
+  {
+   "label": "W19_ask30_d5",
+   "alpha": "2rm8PMRN",
+   "S": 2.24,
+   "F": 0.88,
+   "T": 0.4572,
+   "sub": [
+    "PASS",
+    1.77
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.24
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.88
+   ]
+  },
+  {
+   "label": "W19_ask30_d4",
+   "alpha": "xAbOXQlb",
+   "S": 2.26,
+   "F": 0.88,
+   "T": 0.4795,
+   "sub": [
+    "PASS",
+    1.73
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.26
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.88
+   ]
+  },
+  {
+   "label": "W19_bid30_d5",
+   "alpha": "JjQMR5WA",
+   "S": 2.28,
+   "F": 0.91,
+   "T": 0.4576,
+   "sub": [
+    "PASS",
+    1.72
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.28
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.91
+   ]
+  },
+  {
+   "label": "W19_bid30_d4",
+   "alpha": "pw5YQGVo",
+   "S": 2.32,
+   "F": 0.92,
+   "T": 0.4798,
+   "sub": [
+    "PASS",
+    1.71
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.32
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.92
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 28,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

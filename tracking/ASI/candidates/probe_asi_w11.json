@@ -1,0 +1,213 @@
+{
+ "results": [
+  {
+   "label": "W11_A_ask30po",
+   "alpha": "npPpmwbq",
+   "S": 0.06,
+   "F": 0.0,
+   "T": 0.4932,
+   "sub": [
+    "PASS",
+    0.12
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.06
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.0
+   ]
+  },
+  {
+   "label": "W11_A_ask60po",
+   "alpha": "LLZLEObn",
+   "S": 0.27,
+   "F": 0.05,
+   "T": 0.4955,
+   "sub": [
+    "PASS",
+    0.46
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.27
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.05
+   ]
+  },
+  {
+   "label": "W11_A_bid30po",
+   "alpha": "omWmRQ9k",
+   "S": 0.34,
+   "F": 0.06,
+   "T": 0.497,
+   "sub": [
+    "PASS",
+    0.1
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.34
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.06
+   ]
+  },
+  {
+   "label": "W11_A_high30po",
+   "alpha": "1YZYOL0m",
+   "S": 0.21,
+   "F": 0.03,
+   "T": 0.4668,
+   "sub": [
+    "PASS",
+    0.15
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.21
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.03
+   ]
+  },
+  {
+   "label": "W11_B_ask60po",
+   "alpha": "88P8VLqX",
+   "S": 0.36,
+   "F": 0.06,
+   "T": 0.6501,
+   "sub": [
+    "PASS",
+    0.37
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.36
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.06
+   ]
+  },
+  {
+   "label": "W11_A_mom_ask30po",
+   "alpha": "omWmRYAm",
+   "S": -0.06,
+   "F": -0.0,
+   "T": 0.4932,
+   "sub": [
+    "FAIL",
+    -0.12
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.06
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.0
+   ]
+  },
+  {
+   "label": "W11_A_high60po",
+   "alpha": "zqbqg3MG",
+   "S": 0.4,
+   "F": 0.09,
+   "T": 0.4602,
+   "sub": [
+    "PASS",
+    0.32
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.4
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.09
+   ]
+  },
+  {
+   "label": "W11_B_ask30po",
+   "alpha": "rKeK9ddd",
+   "S": 0.04,
+   "F": 0.0,
+   "T": 0.6507,
+   "sub": [
+    "PASS",
+    0.01
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.04
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.0
+   ]
+  },
+  {
+   "label": "W11_A_bid60po",
+   "alpha": "YPMP81ql",
+   "S": 0.48,
+   "F": 0.11,
+   "T": 0.4998,
+   "sub": [
+    "PASS",
+    0.4
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.48
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.11
+   ]
+  },
+  {
+   "label": "W11_A_mom_ask60po",
+   "alpha": "e7Q7VolE",
+   "S": -0.27,
+   "F": -0.05,
+   "T": 0.4955,
+   "sub": [
+    "FAIL",
+    -0.46
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.27
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.05
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

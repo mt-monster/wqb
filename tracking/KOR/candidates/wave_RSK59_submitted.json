@@ -1,0 +1,82 @@
+{
+ "submitted_at": "2026-09-29 00:19:14",
+ "settings": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nan_handling": "ON"
+ },
+ "probes": [
+  {
+   "id": "rk_p1_lastrate",
+   "mechanism": "增量借券费率 last_rate（9u 极冷门）",
+   "expr": "group_rank(vec_avg(rsk59_last_rate), market)"
+  },
+  {
+   "id": "rk_p2_offerrrate",
+   "mechanism": "存量融资费率 offer_rate（13u）",
+   "expr": "group_rank(vec_avg(rsk59_offer_rate), market)"
+  },
+  {
+   "id": "rk_p3_ratespread",
+   "mechanism": "借券/融资费率价差（offer-last）",
+   "expr": "group_rank(subtract(vec_avg(rsk59_offer_rate), vec_avg(rsk59_last_rate)), market)"
+  },
+  {
+   "id": "rk_p4_shortmom",
+   "mechanism": "卖空动量 short_momentum（9u 极冷门）",
+   "expr": "group_rank(vec_avg(rsk59_short_momentum), market)"
+  },
+  {
+   "id": "rk_p5_shortpct",
+   "mechanism": "卖空占流通股比 shortinterestpct（13u）",
+   "expr": "group_rank(vec_avg(rsk59_shortinterestpct), market)"
+  },
+  {
+   "id": "rk_p6_crowded",
+   "mechanism": "空头拥挤度 crowded_score（16u）",
+   "expr": "group_rank(vec_avg(rsk59_crowded_score), market)"
+  },
+  {
+   "id": "rk_p7_squeeze",
+   "mechanism": "挤压风险 squeeze_risk（30u）",
+   "expr": "group_rank(vec_avg(rsk59_squeeze_risk), market)"
+  },
+  {
+   "id": "rk_p8_dtc10",
+   "mechanism": "10日回补天数 daystocover10day",
+   "expr": "group_rank(vec_avg(rsk59_daystocover10day), market)"
+  },
+  {
+   "id": "rk_p9_dtc90",
+   "mechanism": "90日回补天数 daystocover90day",
+   "expr": "group_rank(vec_avg(rsk59_daystocover90day), market)"
+  },
+  {
+   "id": "rk_p10_avail",
+   "mechanism": "可借数量 indicativeavailability",
+   "expr": "group_rank(vec_avg(rsk59_indicativeavailability), market)"
+  }
+ ],
+ "batches": [
+  {
+   "n": 10,
+   "progress_id": "1iouTT4fs4LfcKUccrKoxHc",
+   "ids": [
+    "rk_p1_lastrate",
+    "rk_p2_offerrrate",
+    "rk_p3_ratespread",
+    "rk_p4_shortmom",
+    "rk_p5_shortpct",
+    "rk_p6_crowded",
+    "rk_p7_squeeze",
+    "rk_p8_dtc10",
+    "rk_p9_dtc90",
+    "rk_p10_avail"
+   ]
+  }
+ ]
+}

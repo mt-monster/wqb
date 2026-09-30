@@ -1,0 +1,473 @@
+{
+ "results": [
+  {
+   "label": "W3_hump_default_bid30",
+   "alpha": "akxrxgkw",
+   "S": 0.3,
+   "F": 0.06,
+   "T": 0.2486,
+   "sub": [
+    "PASS",
+    0.2
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.3
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.06
+   ]
+  },
+  {
+   "label": "W3_hump003_last30",
+   "alpha": "88PmP0do",
+   "S": 0.48,
+   "F": 0.11,
+   "T": 0.2457,
+   "sub": [
+    "PASS",
+    0.41
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.48
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.11
+   ]
+  },
+  {
+   "label": "W3_hump_default_last30",
+   "alpha": "RR6JAj10",
+   "S": 0.48,
+   "F": 0.11,
+   "T": 0.2457,
+   "sub": [
+    "PASS",
+    0.41
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.48
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.11
+   ]
+  },
+  {
+   "label": "W3_hump_dec9_last30",
+   "alpha": "blOY8Xrq",
+   "S": 0.41,
+   "F": 0.09,
+   "T": 0.2471,
+   "sub": [
+    "PASS",
+    0.42
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.41
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.09
+   ]
+  },
+  {
+   "label": "W3_hump003_bid30",
+   "alpha": "LLZP5jJv",
+   "S": 0.3,
+   "F": 0.06,
+   "T": 0.2486,
+   "sub": [
+    "PASS",
+    0.2
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.3
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.06
+   ]
+  },
+  {
+   "label": "W3_hump003_ask30",
+   "alpha": "e7Ql6xrM",
+   "S": 0.25,
+   "F": 0.04,
+   "T": 0.2487,
+   "sub": [
+    "PASS",
+    0.18
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.25
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.04
+   ]
+  },
+  {
+   "label": "W3_hump_default_ask30",
+   "alpha": "RR6JA9ob",
+   "S": 0.25,
+   "F": 0.04,
+   "T": 0.2487,
+   "sub": [
+    "PASS",
+    0.18
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.25
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.04
+   ]
+  },
+  {
+   "label": "W3_dec10_last30",
+   "alpha": "wpb89PO2",
+   "S": 2.7,
+   "F": 1.21,
+   "T": 0.3951,
+   "sub": [
+    "PASS",
+    1.97
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.7
+   ],
+   "fit_ok": [
+    "PASS",
+    1.21
+   ]
+  },
+  {
+   "label": "W3_hump_dec9_ask30",
+   "alpha": "npP1AGqE",
+   "S": 0.2,
+   "F": 0.03,
+   "T": 0.25,
+   "sub": [
+    "PASS",
+    0.14
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.2
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.03
+   ]
+  },
+  {
+   "label": "W3_dec11_last30",
+   "alpha": "0mrbYmp6",
+   "S": 2.71,
+   "F": 1.23,
+   "T": 0.3866,
+   "sub": [
+    "PASS",
+    2.0
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.71
+   ],
+   "fit_ok": [
+    "PASS",
+    1.23
+   ]
+  },
+  {
+   "label": "W3_outer5_last30",
+   "alpha": "RR6JEQqj",
+   "S": 2.64,
+   "F": 1.17,
+   "T": 0.4111,
+   "sub": [
+    "PASS",
+    1.86
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.64
+   ],
+   "fit_ok": [
+    "PASS",
+    1.17
+   ]
+  },
+  {
+   "label": "W3_hump_dec9_bid30",
+   "sim": "POLL_TIMEOUT",
+   "msg": "None"
+  },
+  {
+   "label": "W3_outer6_last30",
+   "alpha": "1YZqNE2K",
+   "S": 2.54,
+   "F": 1.13,
+   "T": 0.3995,
+   "sub": [
+    "PASS",
+    1.79
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.54
+   ],
+   "fit_ok": [
+    "PASS",
+    1.13
+   ]
+  },
+  {
+   "label": "W3_dec9_last30",
+   "alpha": "O081Ak6g",
+   "S": 2.74,
+   "F": 1.22,
+   "T": 0.4048,
+   "sub": [
+    "PASS",
+    2.01
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.74
+   ],
+   "fit_ok": [
+    "PASS",
+    1.22
+   ]
+  },
+  {
+   "label": "W3_outer4_last30",
+   "alpha": "Vk0vx3lw",
+   "S": 2.73,
+   "F": 1.2,
+   "T": 0.424,
+   "sub": [
+    "PASS",
+    1.92
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.73
+   ],
+   "fit_ok": [
+    "PASS",
+    1.2
+   ]
+  },
+  {
+   "label": "W3_dec10_ask30",
+   "alpha": "MP3jY1zz",
+   "S": 2.21,
+   "F": 0.9,
+   "T": 0.4087,
+   "sub": [
+    "PASS",
+    1.74
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.21
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.9
+   ]
+  },
+  {
+   "label": "W3_dec13_last30",
+   "alpha": "1YZqNxM6",
+   "S": 2.56,
+   "F": 1.16,
+   "T": 0.3724,
+   "sub": [
+    "PASS",
+    1.85
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.56
+   ],
+   "fit_ok": [
+    "PASS",
+    1.16
+   ]
+  },
+  {
+   "label": "W3_outer4_ask30",
+   "alpha": "akxrKQOO",
+   "S": 2.11,
+   "F": 0.86,
+   "T": 0.4286,
+   "sub": [
+    "PASS",
+    1.6
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.11
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.86
+   ]
+  },
+  {
+   "label": "W3_ttth0.35_last30",
+   "sim": "ERROR",
+   "msg": "Required attribute \"target_tvr\" must have a value. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W3_ttth0.4_last30",
+   "sim": "ERROR",
+   "msg": "Required attribute \"target_tvr\" must have a value. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W3_ttth0.45_last30",
+   "sim": "ERROR",
+   "msg": "Required attribute \"target_tvr\" must have a value. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W3_dec9_ask30",
+   "alpha": "ZYARaYQn",
+   "S": 2.22,
+   "F": 0.9,
+   "T": 0.417,
+   "sub": [
+    "PASS",
+    1.77
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.22
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.9
+   ]
+  },
+  {
+   "label": "W3_ttth0.4_ask30",
+   "sim": "ERROR",
+   "msg": "Required attribute \"target_tvr\" must have a value. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W3_dec11_ask30",
+   "alpha": "omW1apxE",
+   "S": 2.22,
+   "F": 0.92,
+   "T": 0.4016,
+   "sub": [
+    "PASS",
+    1.74
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.22
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.92
+   ]
+  },
+  {
+   "label": "W3_ttth0.35_ask30",
+   "sim": "ERROR",
+   "msg": "Required attribute \"target_tvr\" must have a value. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W3_ttth0.45_ask30",
+   "sim": "ERROR",
+   "msg": "Required attribute \"target_tvr\" must have a value. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W3_outer5_ask30",
+   "alpha": "vR2KAdPG",
+   "S": 2.01,
+   "F": 0.82,
+   "T": 0.4157,
+   "sub": [
+    "PASS",
+    1.52
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.01
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.82
+   ]
+  },
+  {
+   "label": "W3_dec13_ask30",
+   "sim": "POLL_TIMEOUT",
+   "msg": "None"
+  },
+  {
+   "label": "W3_outer6_ask30",
+   "alpha": "d512aJVw",
+   "S": 1.91,
+   "F": 0.78,
+   "T": 0.404,
+   "sub": [
+    "PASS",
+    1.45
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.91
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.78
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

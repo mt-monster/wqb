@@ -1,0 +1,667 @@
+{
+ "dataset": "analyst48",
+ "region": "AMR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 72
+ },
+ "field_count": 72,
+ "estimated_stock_count": 384,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.6402,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-09-28T20:44:40",
+ "fields": [
+  {
+   "id": "anl48_bbpdiip",
+   "type": "VECTOR",
+   "coverage": 0.9609,
+   "userCount": 1,
+   "alphaCount": 4,
+   "longCount": 576,
+   "description": "Amount of projected dividends expressed in index points, indicating the expected dividend impact within a specific index"
+  },
+  {
+   "id": "anl48_bbpsa",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 346,
+   "description": "The amount of dividend projected or paid per share"
+  },
+  {
+   "id": "anl48_bbt",
+   "type": "VECTOR",
+   "coverage": 0.5754,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 345,
+   "description": "Indicator or metric showing the trend or direction of dividend projections, potentially up/down or growth/decline signal"
+  },
+  {
+   "id": "anl48_bc_bdvd_opt_implied_range_high",
+   "type": "VECTOR",
+   "coverage": 0.2834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 170,
+   "description": "Highest value in the options-implied range for projected dividend per share, representing the upper bound of forecast un"
+  },
+  {
+   "id": "anl48_bc_bdvd_opt_implied_range_low",
+   "type": "VECTOR",
+   "coverage": 0.2834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 170,
+   "description": "Lowest value in the options-implied range for projected dividend per share, representing the lower bound of forecast unc"
+  },
+  {
+   "id": "anl48_bc_dvd_declared_dt",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 346,
+   "description": "The date on which the dividend was formally declared by the company"
+  },
+  {
+   "id": "anl48_bdha",
+   "type": "VECTOR",
+   "coverage": 0.5606,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 336,
+   "description": "Amount of dividend historically announced for the security"
+  },
+  {
+   "id": "anl48_bdhad",
+   "type": "VECTOR",
+   "coverage": 0.5637,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Date when the dividend was announced for the security in question"
+  },
+  {
+   "id": "anl48_bdhed",
+   "type": "VECTOR",
+   "coverage": 0.5636,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 338,
+   "description": "Ex-dividend date, historically, when entitlement to dividend ceases"
+  },
+  {
+   "id": "anl48_bdhpd",
+   "type": "VECTOR",
+   "coverage": 0.5588,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 335,
+   "description": "Date when the dividend was historically paid for the security"
+  },
+  {
+   "id": "anl48_bdhrd",
+   "type": "VECTOR",
+   "coverage": 0.5608,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Date when ownership is recorded for dividend entitlement (record date), historically"
+  },
+  {
+   "id": "anl48_bdvd_curr_dir_therm",
+   "type": "VECTOR",
+   "coverage": 0.4184,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 251,
+   "description": "Type of security (equity, ADR, ETF, etc.), likely using numeric or floating-point codes"
+  },
+  {
+   "id": "anl48_bdvd_curr_dvd_health",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 346,
+   "description": "Current metric indicating the strength or sustainability of the dividend"
+  },
+  {
+   "id": "anl48_bdvd_next_est_ex_dt",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 346,
+   "description": "Estimated date when shares will go ex-dividend for the next dividend event"
+  },
+  {
+   "id": "anl48_bedhga",
+   "type": "VECTOR",
+   "coverage": 0.461,
+   "userCount": 2,
+   "alphaCount": 4,
+   "longCount": 276,
+   "description": "Historical gross dividend amount per share"
+  },
+  {
+   "id": "anl48_bedhgad",
+   "type": "VECTOR",
+   "coverage": 0.4641,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 278,
+   "description": "Date when dividend was historically announced"
+  },
+  {
+   "id": "anl48_bedhged",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 3,
+   "alphaCount": 5,
+   "longCount": 278,
+   "description": "Historical ex-dividend date for dividend event"
+  },
+  {
+   "id": "anl48_bedhgpd",
+   "type": "VECTOR",
+   "coverage": 0.458,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 274,
+   "description": "Historical dividend payment date"
+  },
+  {
+   "id": "anl48_bedhgrd",
+   "type": "VECTOR",
+   "coverage": 0.461,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 276,
+   "description": "Date recording ownership entitlement for the dividend payout (record date)"
+  },
+  {
+   "id": "anl48_bnedd",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 3,
+   "alphaCount": 6,
+   "longCount": 346,
+   "description": "Next estimated date when the dividend will be officially declared"
+  },
+  {
+   "id": "anl48_bnepd",
+   "type": "VECTOR",
+   "coverage": 0.5841,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 350,
+   "description": "Next estimated dividend payment date (expected when the dividend will be paid)"
+  },
+  {
+   "id": "anl48_bp12m_dip",
+   "type": "VECTOR",
+   "coverage": 0.9275,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 556,
+   "description": "Projected total dividend for the next 12 months, expressed in index points for the index"
+  },
+  {
+   "id": "anl48_bp12m_yld",
+   "type": "VECTOR",
+   "coverage": 0.5717,
+   "userCount": 6,
+   "alphaCount": 7,
+   "longCount": 343,
+   "description": "Projected dividend yield over the next 12 months"
+  },
+  {
+   "id": "anl48_bp3y_dg",
+   "type": "VECTOR",
+   "coverage": 0.5574,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 334,
+   "description": "Projected growth rate of dividends over the next 3 years"
+  },
+  {
+   "id": "anl48_bpda",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "The next projected dividend per share amount according to Bloomberg's forecasts"
+  },
+  {
+   "id": "anl48_bulk_bdvd_all_projections_ibs",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Bloomberg security identifier; unique code for the specific security as listed in Bloomberg"
+  },
+  {
+   "id": "anl48_bulk_bdvd_all_projections_par_amt",
+   "type": "VECTOR",
+   "coverage": 0.4886,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 293,
+   "description": "Par amount, i.e., the face value of the security issued"
+  },
+  {
+   "id": "anl48_bulk_count_index_members",
+   "type": "VECTOR",
+   "coverage": 0.9609,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 576,
+   "description": "The number of constituent stocks in the index"
+  },
+  {
+   "id": "anl48_bulk_dvd_hist_ibs",
+   "type": "VECTOR",
+   "coverage": 0.5637,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Bloomberg security identifier, uniquely identifies individual security"
+  },
+  {
+   "id": "anl48_bulk_dvd_hist_par_amt",
+   "type": "VECTOR",
+   "coverage": 0.4761,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 285,
+   "description": "Par amount or face value of the security issued"
+  },
+  {
+   "id": "anl48_bulk_eqy_dvd_hist_gross_ibs",
+   "type": "VECTOR",
+   "coverage": 0.5651,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 339,
+   "description": "Bloomberg unique identifier for the security (e.g., specific share class or instrument)"
+  },
+  {
+   "id": "anl48_bulk_eqy_dvd_hist_gross_par_amt",
+   "type": "VECTOR",
+   "coverage": 0.4774,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 286,
+   "description": "Face value or principal amount of the security issued"
+  },
+  {
+   "id": "anl48_bulk_idivisor",
+   "type": "VECTOR",
+   "coverage": 0.6272,
+   "userCount": 3,
+   "alphaCount": 7,
+   "longCount": 376,
+   "description": "The divisor used in index calculations to maintain continuity following changes such as corporate actions"
+  },
+  {
+   "id": "anl48_bulk_indx_typ",
+   "type": "VECTOR",
+   "coverage": 0.9074,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 544,
+   "description": "Numeric code representing the type of index (e.g., price, total return, sector-based, etc.)"
+  },
+  {
+   "id": "anl48_count_index_members",
+   "type": "VECTOR",
+   "coverage": 0.9947,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 596,
+   "description": "The total number of stocks that are members of the index"
+  },
+  {
+   "id": "anl48_dvd_declared_dt",
+   "type": "VECTOR",
+   "coverage": 0.5775,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 346,
+   "description": "The official date when the dividend was formally declared by the company"
+  },
+  {
+   "id": "anl48_dvd_pay_dt",
+   "type": "VECTOR",
+   "coverage": 0.5522,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 331,
+   "description": "Date on which the dividend payment is made to eligible shareholders"
+  },
+  {
+   "id": "anl48_dvd_record_dt",
+   "type": "VECTOR",
+   "coverage": 0.5584,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 335,
+   "description": "Date when shareholders are recorded for dividend entitlement"
+  },
+  {
+   "id": "anl48_dvd_xe",
+   "type": "VECTOR",
+   "coverage": 0.9068,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 544,
+   "description": "Ex-dividend amount or relevant value indicating the period when securities are traded without dividend entitlement"
+  },
+  {
+   "id": "anl48_edg3yr_g",
+   "type": "VECTOR",
+   "coverage": 0.5176,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 310,
+   "description": "Growth rate of gross dividends per share over the past 3 years"
+  },
+  {
+   "id": "anl48_equity_bulk_bdvd_all_projections_ibc",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Bloomberg company identifier; unique code for the issuing company of the security"
+  },
+  {
+   "id": "anl48_equity_bulk_bdvd_all_projections_nfields",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "The number of fields present in the record or data row"
+  },
+  {
+   "id": "anl48_equity_bulk_bdvd_all_projections_return_code",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Code indicating the status or result of a data retrieval, update, or event in the dataset"
+  },
+  {
+   "id": "anl48_equity_bulk_dvd_hist_ibc",
+   "type": "VECTOR",
+   "coverage": 0.5637,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Bloomberg Company Identifier, a unique code used by Bloomberg to identify the company"
+  },
+  {
+   "id": "anl48_equity_bulk_dvd_hist_nfields",
+   "type": "VECTOR",
+   "coverage": 0.5637,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Number of fields present in the data record or dataset"
+  },
+  {
+   "id": "anl48_equity_bulk_dvd_hist_return_code",
+   "type": "VECTOR",
+   "coverage": 0.5637,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Code indicating the status or result of the data retrieval or processing for the record"
+  },
+  {
+   "id": "anl48_equity_bulk_eqy_dvd_hist_gross_ibc",
+   "type": "VECTOR",
+   "coverage": 0.5651,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 339,
+   "description": "Bloomberg unique identifier for the company"
+  },
+  {
+   "id": "anl48_equity_bulk_eqy_dvd_hist_gross_nfields",
+   "type": "VECTOR",
+   "coverage": 0.5651,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 339,
+   "description": "Number of fields included in the record or dataset"
+  },
+  {
+   "id": "anl48_equity_bulk_eqy_dvd_hist_gross_return_code",
+   "type": "VECTOR",
+   "coverage": 0.5651,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 339,
+   "description": "Status code indicating success, error, or other result of data fetch or record; may also signal record revision or notif"
+  },
+  {
+   "id": "anl48_equity_dvd_sh_last",
+   "type": "VECTOR",
+   "coverage": 0.5591,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 335,
+   "description": "The most recent net dividend amount paid per share"
+  },
+  {
+   "id": "anl48_equity_ibc",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 2,
+   "alphaCount": 5,
+   "longCount": 346,
+   "description": "Bloomberg unique identifier for the company associated with the security"
+  },
+  {
+   "id": "anl48_equity_ldg",
+   "type": "VECTOR",
+   "coverage": 0.5591,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 335,
+   "description": "Most recently reported dividend per share (gross, before taxes/withholding) for the given equity"
+  },
+  {
+   "id": "anl48_equity_m21_dly_dvd_yqe",
+   "type": "VECTOR",
+   "coverage": 0.5604,
+   "userCount": 4,
+   "alphaCount": 7,
+   "longCount": 336,
+   "description": "Gross dividend yield for the past 12 months, often calculated as dividends paid over current stock price"
+  },
+  {
+   "id": "anl48_equity_nfields",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Number of fields in the record or dataset returned for the query"
+  },
+  {
+   "id": "anl48_equity_return_code",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Code indicating the status or result of the data retrieval, such as normal, error, or special notification status"
+  },
+  {
+   "id": "anl48_equity_td_xe_dvd",
+   "type": "VECTOR",
+   "coverage": 0.5764,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 345,
+   "description": "Date on which the equity goes ex-dividend, i.e., after which buyers are not entitled to the declared dividend"
+  },
+  {
+   "id": "anl48_ibs",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 346,
+   "description": "Bloomberg Security Identifier (BBGID) – unique global security ID"
+  },
+  {
+   "id": "anl48_idivisor",
+   "type": "VECTOR",
+   "coverage": 0.687,
+   "userCount": 9,
+   "alphaCount": 14,
+   "longCount": 412,
+   "description": "The divisor value used in the index calculation (essential for price or market cap aggregation)"
+  },
+  {
+   "id": "anl48_index_bulk_ibc",
+   "type": "VECTOR",
+   "coverage": 0.9609,
+   "userCount": 2,
+   "alphaCount": 4,
+   "longCount": 576,
+   "description": "Unique Bloomberg identifier for the company associated with the index or security"
+  },
+  {
+   "id": "anl48_index_bulk_nfields",
+   "type": "VECTOR",
+   "coverage": 0.9609,
+   "userCount": 3,
+   "alphaCount": 19,
+   "longCount": 576,
+   "description": "Number of fields present within this dataset record"
+  },
+  {
+   "id": "anl48_index_bulk_return_code",
+   "type": "VECTOR",
+   "coverage": 0.9609,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 576,
+   "description": "Code indicating the result or status of a data retrieval or event, such as success or error"
+  },
+  {
+   "id": "anl48_index_dvd_sh_last",
+   "type": "VECTOR",
+   "coverage": 0.9068,
+   "userCount": 1,
+   "alphaCount": 3,
+   "longCount": 544,
+   "description": "The most recent net dividend amount paid per share for the index"
+  },
+  {
+   "id": "anl48_index_ibc",
+   "type": "VECTOR",
+   "coverage": 0.9947,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 596,
+   "description": "Unique Bloomberg identifier assigned to the company used in this index"
+  },
+  {
+   "id": "anl48_index_ldg",
+   "type": "VECTOR",
+   "coverage": 0.9068,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 544,
+   "description": "The most recent gross dividend amount paid per share for the index, before taxes or deductions"
+  },
+  {
+   "id": "anl48_index_m21_dly_dvd_yqe",
+   "type": "VECTOR",
+   "coverage": 0.7709,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Gross dividend yield over the previous 12 months (annualized)"
+  },
+  {
+   "id": "anl48_index_nfields",
+   "type": "VECTOR",
+   "coverage": 0.9947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 596,
+   "description": "Number of fields recorded in the data row or dataset"
+  },
+  {
+   "id": "anl48_index_return_code",
+   "type": "VECTOR",
+   "coverage": 0.9947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 596,
+   "description": "Code indicating status or result of data retrieval, e.g., success, warning, error"
+  },
+  {
+   "id": "anl48_index_td_xe_dvd",
+   "type": "VECTOR",
+   "coverage": 0.9068,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 544,
+   "description": "The last or most recent ex-dividend date, i.e., the date when new buyers of the index constituents are not entitled to t"
+  },
+  {
+   "id": "anl48_indx_typ",
+   "type": "VECTOR",
+   "coverage": 0.9358,
+   "userCount": 5,
+   "alphaCount": 6,
+   "longCount": 561,
+   "description": "Numeric code representing the type or classification of the index"
+  },
+  {
+   "id": "anl48_m21_hs_dvd",
+   "type": "VECTOR",
+   "coverage": 0.8667,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 520,
+   "description": "Total gross dividend per share distributed over the last 12 months"
+  },
+  {
+   "id": "anl48_par_amt",
+   "type": "VECTOR",
+   "coverage": 0.4886,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 293,
+   "description": "The face value or nominal amount of the security issued"
+  },
+  {
+   "id": "anl48_td_xe_dvd_cb",
+   "type": "VECTOR",
+   "coverage": 0.5778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "The ex-dividend date for the dividend event, i.e., the date after which buyers of the security are no longer entitled to"
+  }
+ ]
+}

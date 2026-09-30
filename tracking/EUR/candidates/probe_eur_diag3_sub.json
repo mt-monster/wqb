@@ -1,0 +1,97 @@
+{
+ "results": [
+  {
+   "label": "w1_rs_pos",
+   "alpha": "0mXJ1Rgq",
+   "S": 1.07,
+   "F": 0.53,
+   "T": 0.1322
+  },
+  {
+   "label": "w2_fs_pos",
+   "alpha": "1YXMMO1K",
+   "S": -1.05,
+   "F": -0.51,
+   "T": 0.1339
+  },
+  {
+   "label": "w3_rs0_pos",
+   "alpha": "vRrWKJNQ",
+   "S": 0.88,
+   "F": 0.45,
+   "T": 0.1118
+  },
+  {
+   "label": "w4_fs0_pos",
+   "alpha": "xA3JA8zn",
+   "S": -0.86,
+   "F": -0.44,
+   "T": 0.1134
+  },
+  {
+   "label": "w5_rs_m_fs",
+   "alpha": "xA3JAlob",
+   "S": 1.06,
+   "F": 0.52,
+   "T": 0.1331
+  },
+  {
+   "label": "w6_rs_p_fs",
+   "alpha": "N1aYx91X",
+   "S": 0.55,
+   "F": 0.2,
+   "T": 0.1114
+  },
+  {
+   "label": "w7_vb_pos",
+   "alpha": "YPbe9nzv",
+   "S": -0.9,
+   "F": -0.47,
+   "T": 0.1053
+  },
+  {
+   "label": "w8_vb120_pos",
+   "alpha": "pwR9YbOg",
+   "S": -0.22,
+   "F": -0.05,
+   "T": 0.0798
+  },
+  {
+   "label": "w9_contf_pos",
+   "alpha": "VkaAVjlV",
+   "S": 0.34,
+   "F": 0.1,
+   "T": 0.1197
+  },
+  {
+   "label": "w10_contr_pos",
+   "alpha": "rKOZYJaJ",
+   "S": 0.48,
+   "F": 0.18,
+   "T": 0.1229
+  },
+  {
+   "label": "w11_all4",
+   "alpha": "0mX1q5Vv",
+   "S": -0.61,
+   "F": -0.26,
+   "T": 0.1242
+  },
+  {
+   "label": "w12_rs_tsrank",
+   "alpha": "78NeAAV8",
+   "S": 1.06,
+   "F": 0.45,
+   "T": 0.1453
+  }
+ ],
+ "cfg": {
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.02,
+  "nanHandling": "ON"
+ }
+}

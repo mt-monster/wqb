@@ -1,0 +1,4024 @@
+{
+ "dataset": "analyst11",
+ "region": "AMR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 445
+ },
+ "field_count": 445,
+ "estimated_stock_count": 413,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.6895,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-09-28T20:45:11",
+ "fields": [
+  {
+   "id": "anl11_1e",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 14,
+   "alphaCount": 19,
+   "longCount": 459,
+   "description": "Aggregate score for Pollution Prevention & Environmental Remediation for the company"
+  },
+  {
+   "id": "anl11_1g",
+   "type": "MATRIX",
+   "coverage": 0.7643,
+   "userCount": 13,
+   "alphaCount": 14,
+   "longCount": 458,
+   "description": "Aggregate key performance indicator for board independence, diversity, and effectiveness"
+  },
+  {
+   "id": "anl11_1pme",
+   "type": "MATRIX",
+   "coverage": 0.7612,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 456,
+   "description": "Aggregate key performance indicator measuring company’s Compensation and Employee Satisfaction"
+  },
+  {
+   "id": "anl11_1tic",
+   "type": "MATRIX",
+   "coverage": 0.767,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 460,
+   "description": "Aggregate key performance indicator for Community Engagement and Charitable Activities"
+  },
+  {
+   "id": "anl11_2_1e",
+   "type": "MATRIX",
+   "coverage": 0.5813,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 348,
+   "description": "Aggregate KPI for pollution prevention & environmental remediation"
+  },
+  {
+   "id": "anl11_2_1g",
+   "type": "MATRIX",
+   "coverage": 0.5822,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 349,
+   "description": "Aggregate KPI for Board Independence, Diversity, & Effectiveness"
+  },
+  {
+   "id": "anl11_2_1pme",
+   "type": "MATRIX",
+   "coverage": 0.5822,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 349,
+   "description": "Aggregate KPI for Compensation & Employee Satisfaction"
+  },
+  {
+   "id": "anl11_2_1tic",
+   "type": "MATRIX",
+   "coverage": 0.5885,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 353,
+   "description": "Aggregate KPI for Community Engagement & Charitable Activities"
+  },
+  {
+   "id": "anl11_2_2e",
+   "type": "MATRIX",
+   "coverage": 0.582,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 349,
+   "description": "Aggregate KPI for Anti-Pollution Policies & Environmental Transparency"
+  },
+  {
+   "id": "anl11_2_2g",
+   "type": "MATRIX",
+   "coverage": 0.593,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 355,
+   "description": "Aggregate KPI for Management Standards & Ethics"
+  },
+  {
+   "id": "anl11_2_2pme",
+   "type": "MATRIX",
+   "coverage": 0.5842,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 350,
+   "description": "Aggregate KPI for employee diversity treatment & labor rights"
+  },
+  {
+   "id": "anl11_2_2tic",
+   "type": "MATRIX",
+   "coverage": 0.586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 351,
+   "description": "Aggregate KPI for Human Rights Activism, Supply Chain, Labor & Human Rights Policies"
+  },
+  {
+   "id": "anl11_2_3e",
+   "type": "MATRIX",
+   "coverage": 0.5911,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 354,
+   "description": "Aggregate KPI for Energy & Resource Efficiency"
+  },
+  {
+   "id": "anl11_2_3g",
+   "type": "MATRIX",
+   "coverage": 0.5936,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 356,
+   "description": "Aggregate KPI for Disclosure, Transparency, & Stakeholder Accountability"
+  },
+  {
+   "id": "anl11_2_3pme",
+   "type": "MATRIX",
+   "coverage": 0.5787,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 347,
+   "description": "Aggregate KPI for Employee Continuing Education, Training, Work Conditions, Safety & Health"
+  },
+  {
+   "id": "anl11_2_3tic",
+   "type": "MATRIX",
+   "coverage": 0.5676,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 340,
+   "description": "Aggregate KPI for Business Model & Products"
+  },
+  {
+   "id": "anl11_2_e",
+   "type": "MATRIX",
+   "coverage": 0.5952,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 357,
+   "description": "The E Score averages the E1, E2, and E3 scores."
+  },
+  {
+   "id": "anl11_2_g",
+   "type": "MATRIX",
+   "coverage": 0.5964,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 357,
+   "description": "The G Score averages the G1, G2, and G3 scores."
+  },
+  {
+   "id": "anl11_2_gse",
+   "type": "MATRIX",
+   "coverage": 0.5993,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 359,
+   "description": "The ESG Score averages the E, S, and G scores."
+  },
+  {
+   "id": "anl11_2_pme",
+   "type": "MATRIX",
+   "coverage": 0.5916,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 354,
+   "description": "The EMP score averages the three EMP scores."
+  },
+  {
+   "id": "anl11_2_region",
+   "type": "MATRIX",
+   "coverage": 0.5993,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 359,
+   "description": "Region of the world in which the company is headquartered"
+  },
+  {
+   "id": "anl11_2_tic",
+   "type": "MATRIX",
+   "coverage": 0.5944,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 356,
+   "description": "The CIT Score averages the CIT1, CIT2, and CIT3 scores."
+  },
+  {
+   "id": "anl11_2e",
+   "type": "MATRIX",
+   "coverage": 0.7681,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 460,
+   "description": "Aggregate score for Anti-Pollution Policies & Environmental Transparency for the company"
+  },
+  {
+   "id": "anl11_2g",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 461,
+   "description": "Aggregate key performance indicator for management standards and ethics"
+  },
+  {
+   "id": "anl11_2pme",
+   "type": "MATRIX",
+   "coverage": 0.7635,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 458,
+   "description": "Aggregate key performance indicator for Employee Diversity Treatment and Labor Rights"
+  },
+  {
+   "id": "anl11_2tic",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 461,
+   "description": "Aggregate KPI for Human Rights Activism, Supply Chain, Labor & Human Rights Policies"
+  },
+  {
+   "id": "anl11_3e",
+   "type": "MATRIX",
+   "coverage": 0.7674,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 460,
+   "description": "Aggregate score for Energy & Resource Efficiency for the company"
+  },
+  {
+   "id": "anl11_3g",
+   "type": "MATRIX",
+   "coverage": 0.7687,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Aggregate key performance indicator for disclosure, transparency, and stakeholder accountability"
+  },
+  {
+   "id": "anl11_3pme",
+   "type": "MATRIX",
+   "coverage": 0.7606,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Aggregate key performance indicator for Employee Continuing Education, Training, Work Conditions, Safety & Health"
+  },
+  {
+   "id": "anl11_3tic",
+   "type": "MATRIX",
+   "coverage": 0.761,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 456,
+   "description": "Aggregate key performance indicator measuring Business Model & Products under the Citizenship pillar"
+  },
+  {
+   "id": "anl11_cit1reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7507,
+   "userCount": 5,
+   "alphaCount": 6,
+   "longCount": 450,
+   "description": "Percentile within industry for CIT1 (Community Engagement & Charitable Activities), 100% as best"
+  },
+  {
+   "id": "anl11_cit1reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.767,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 460,
+   "description": "Rank within industry for CIT1 (Community Engagement & Charitable Activities), 1 being highest"
+  },
+  {
+   "id": "anl11_cit1regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7507,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 450,
+   "description": "Percentile within subsector for CIT1 (Community Engagement & Charitable Activities), 100% as best"
+  },
+  {
+   "id": "anl11_cit1regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.767,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 460,
+   "description": "Rank within subsector for CIT1 (Community Engagement & Charitable Activities), 1 being highest"
+  },
+  {
+   "id": "anl11_cit2reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 451,
+   "description": "Percentile position of a company within its industry peer group for the CIT2 KPI, with 100% being the best"
+  },
+  {
+   "id": "anl11_cit2reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Rank of a company within its industry peer group for the CIT2 KPI, with 1 being the highest rank"
+  },
+  {
+   "id": "anl11_cit2regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 451,
+   "description": "Percentile of CIT2 KPI within the region-subsector peer group, with 100% being the highest (best)"
+  },
+  {
+   "id": "anl11_cit2regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Rank of CIT2 KPI within the region-subsector peer group, with 1 being the highest (best)"
+  },
+  {
+   "id": "anl11_cit3reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.745,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 447,
+   "description": "Percentile of a company's CIT3 score within its region-industry peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_cit3reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.761,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Rank of a company's CIT3 score within its region-industry peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_cit3regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.745,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 447,
+   "description": "Percentile of CIT3 KPI within the region-subsector peer group, with 100% being the highest (best)"
+  },
+  {
+   "id": "anl11_cit3regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.761,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Rank of a company's CIT3 score within its region-subsector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_cit_totalcor",
+   "type": "MATRIX",
+   "coverage": 0.6348,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 380,
+   "description": "Hybrid score for Capital Investment pillar, weighting CIT1, CIT2, and CIT3 based on strong positive rank correlations to"
+  },
+  {
+   "id": "anl11_cit_totalcorregsectperc",
+   "type": "MATRIX",
+   "coverage": 0.6316,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 378,
+   "description": "The percentile of the company within its sector on the Citizenship (CIT) Hybrid Score, with 100% being best among sector"
+  },
+  {
+   "id": "anl11_cit_totalcorregsectrnk",
+   "type": "MATRIX",
+   "coverage": 0.6348,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 380,
+   "description": "The rank of the company within its sector based on the Citizenship (CIT) Hybrid Score, where 1 is the highest rank among"
+  },
+  {
+   "id": "anl11_cit_totalcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6316,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 378,
+   "description": "The percentile of the company within its subsector on the Citizenship (CIT) Hybrid Score, with 100% being best among sub"
+  },
+  {
+   "id": "anl11_cit_totalcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6348,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 380,
+   "description": "The rank of the company within its subsector based on the Citizenship (CIT) Hybrid Score, where 1 is the highest rank am"
+  },
+  {
+   "id": "anl11_cit_ttcrg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6316,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 378,
+   "description": "The percentile of the company within its industry on the Citizenship (CIT) Hybrid Score, with 100% indicating top perfor"
+  },
+  {
+   "id": "anl11_cit_ttcrg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6348,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 380,
+   "description": "The rank of the company within its industry on the Citizenship (CIT) Hybrid Score, where 1 is the highest rank among ind"
+  },
+  {
+   "id": "anl11_citposcorreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6115,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 366,
+   "description": "The percentile of the company within its industry on the Citizenship (CIT) Max Correlation Score, with 100% being best a"
+  },
+  {
+   "id": "anl11_citposcorreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6132,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 367,
+   "description": "The rank of the company within its industry on the Citizenship (CIT) Max Correlation Score, where 1 is the highest score"
+  },
+  {
+   "id": "anl11_citposcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6132,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 367,
+   "description": "Subsector Rank of CIT Max Correlation Score, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_citreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7535,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 452,
+   "description": "Percentile of company's CIT Score within its industry peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_citreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7699,
+   "userCount": 3,
+   "alphaCount": 15,
+   "longCount": 461,
+   "description": "Rank of company's CIT Score within its industry peer group, where 1 means highest rank"
+  },
+  {
+   "id": "anl11_citregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7535,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 452,
+   "description": "Percentile of company's CIT Score within its subsector peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_citregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7699,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 461,
+   "description": "Rank of company's CIT Score within its subsector peer group, where 1 means highest rank"
+  },
+  {
+   "id": "anl11_company_name",
+   "type": "MATRIX",
+   "coverage": 0.5993,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 359,
+   "description": "Company name"
+  },
+  {
+   "id": "anl11_creptcesger1e",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 450,
+   "description": "Percentile ranking of the company on E1 KPI within its region-sector group (100% = best)"
+  },
+  {
+   "id": "anl11_creptcesger1g",
+   "type": "MATRIX",
+   "coverage": 0.748,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 448,
+   "description": "Percentile of a company's G1 score within its region-sector peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_creptcesger1pme",
+   "type": "MATRIX",
+   "coverage": 0.7452,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 447,
+   "description": "Percentile within sector for EMP1 (Compensation & Employee Satisfaction), with 100% as the best"
+  },
+  {
+   "id": "anl11_creptcesger1tic",
+   "type": "MATRIX",
+   "coverage": 0.7507,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 450,
+   "description": "Percentile within sector for CIT1 (Community Engagement & Charitable Activities), 100% as best"
+  },
+  {
+   "id": "anl11_creptcesger2e",
+   "type": "MATRIX",
+   "coverage": 0.7517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Percentile ranking of the company on E2 KPI within its region-sector group (100% = best)"
+  },
+  {
+   "id": "anl11_creptcesger2g",
+   "type": "MATRIX",
+   "coverage": 0.752,
+   "userCount": 2,
+   "alphaCount": 4,
+   "longCount": 451,
+   "description": "Percentile of a company's G2 score within its region-sector peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_creptcesger2pme",
+   "type": "MATRIX",
+   "coverage": 0.7475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile within sector for EMP2 (Employee Diversity Treatment & Labor Rights), with 100% as the best"
+  },
+  {
+   "id": "anl11_creptcesger2tic",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 451,
+   "description": "Percentile of CIT2 KPI within the region-sector peer group, with 100% being the highest (best)"
+  },
+  {
+   "id": "anl11_creptcesger3e",
+   "type": "MATRIX",
+   "coverage": 0.751,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 450,
+   "description": "Percentile ranking of the company on E3 KPI within its region-sector group (100% = best)"
+  },
+  {
+   "id": "anl11_creptcesger3g",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Percentile of company within its sector peer group based on the G3 governance KPI, with 100% being the best"
+  },
+  {
+   "id": "anl11_creptcesger3pme",
+   "type": "MATRIX",
+   "coverage": 0.7445,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Percentile within sector for EMP3 (Continuing Education, Training, Work Conditions, Safety & Health), 100% as best"
+  },
+  {
+   "id": "anl11_creptcesger3tic",
+   "type": "MATRIX",
+   "coverage": 0.745,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 447,
+   "description": "Percentile of CIT3 KPI within the region-sector peer group, with 100% being the highest (best)"
+  },
+  {
+   "id": "anl11_creptcesgere",
+   "type": "MATRIX",
+   "coverage": 0.7536,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 452,
+   "description": "Percentile ranking of the Environmental (E) score for a company within its sector, with 100% being the best"
+  },
+  {
+   "id": "anl11_creptcesgerg",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Percentile within the sector peer group for the Governance (G) score, with 100% being the best"
+  },
+  {
+   "id": "anl11_creptcesgergse",
+   "type": "MATRIX",
+   "coverage": 0.755,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 453,
+   "description": "Percentile ranking of the company within its sector peer group based on ESG score, with 100% being the best"
+  },
+  {
+   "id": "anl11_creptcesgerpme",
+   "type": "MATRIX",
+   "coverage": 0.7505,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 450,
+   "description": "Percentile of a company's EMP Score within its sector group, where 100% is the best score"
+  },
+  {
+   "id": "anl11_creptcesgerrocsope",
+   "type": "MATRIX",
+   "coverage": 0.6024,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 361,
+   "description": "Percentile of the company’s Environmental max correlation score within its sector peer group; 100% is best"
+  },
+  {
+   "id": "anl11_creptcesgerrocsopg",
+   "type": "MATRIX",
+   "coverage": 0.6226,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 373,
+   "description": "Percentile within the sector peer group for the governance max correlation score (both positive and negative), 100% bein"
+  },
+  {
+   "id": "anl11_creptcesgerrocsopgse",
+   "type": "MATRIX",
+   "coverage": 0.6334,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 380,
+   "description": "Company's percentile in its sector on the ESG Max Correlation Score, with 100% being the best"
+  },
+  {
+   "id": "anl11_creptcesgerrocsoppme",
+   "type": "MATRIX",
+   "coverage": 0.6236,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 374,
+   "description": "Percentile of a company's EMP Max Correlation Score within its sector peer group, where 100% is the best value"
+  },
+  {
+   "id": "anl11_creptcesgertic",
+   "type": "MATRIX",
+   "coverage": 0.7535,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 452,
+   "description": "Percentile of company's CIT Score within its sector peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_crptcsknrtcsgrscptc",
+   "type": "MATRIX",
+   "coverage": 0.6115,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 366,
+   "description": "The rank and percentile of the company within its sector on the Citizenship (CIT) Max Correlation Score, with rank 1 bei"
+  },
+  {
+   "id": "anl11_ctpscrgsbscrnksbscprc",
+   "type": "MATRIX",
+   "coverage": 0.6115,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 366,
+   "description": "The rank and percentile of the company within its subsector on the Citizenship (CIT) Max Correlation Score, with rank 1 "
+  },
+  {
+   "id": "anl11_e",
+   "type": "MATRIX",
+   "coverage": 0.7701,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 462,
+   "description": "Overall environmental (E) score, calculated as the average of E1, E2, and E3 scores"
+  },
+  {
+   "id": "anl11_e1reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 450,
+   "description": "Percentile ranking of the company on E1 KPI within its region-industry group (100% = best)"
+  },
+  {
+   "id": "anl11_e1reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 459,
+   "description": "Rank of the company on E1 KPI within its region-industry group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_e1regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 450,
+   "description": "Percentile ranking of the company on E1 KPI within its region-subsector group (100% = best)"
+  },
+  {
+   "id": "anl11_e1regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 459,
+   "description": "Rank of the company on E1 KPI within its region-subsector group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_e2reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7517,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Percentile ranking of the company on E2 KPI within its region-industry group (100% = best)"
+  },
+  {
+   "id": "anl11_e2reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7681,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 460,
+   "description": "Rank of the company on E2 KPI within its region-industry group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_e2regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7517,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Percentile ranking of the company on E2 KPI within its region-subsector group (100% = best)"
+  },
+  {
+   "id": "anl11_e2regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7681,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 460,
+   "description": "Rank of the company on E2 KPI within its region-subsector group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_e3reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.751,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 450,
+   "description": "Percentile ranking (within industry) for the third Environmental KPI (E3), with higher percentiles indicating better per"
+  },
+  {
+   "id": "anl11_e3reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7674,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 460,
+   "description": "Rank of the company on E3 KPI within its region-industry group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_e3regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.751,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 450,
+   "description": "Percentile ranking of the company on E3 KPI within its region-subsector group (100% = best)"
+  },
+  {
+   "id": "anl11_e3regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7674,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 460,
+   "description": "Rank of the company on E3 KPI within its region-subsector group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_e_totalcor",
+   "type": "MATRIX",
+   "coverage": 0.6288,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 377,
+   "description": "Hybrid E score, with the three E KPIs weighted by their strength of positive correlation to financial metrics related to"
+  },
+  {
+   "id": "anl11_e_totalcorregsectperc",
+   "type": "MATRIX",
+   "coverage": 0.6256,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 375,
+   "description": "Percentile of the company’s Environmental Hybrid score within its sector (100% is best)"
+  },
+  {
+   "id": "anl11_e_totalcorregsectrnk",
+   "type": "MATRIX",
+   "coverage": 0.6288,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 377,
+   "description": "Rank position of the company’s E Hybrid Score (composite E metric weighted by correlation) within sector peer group, 1 i"
+  },
+  {
+   "id": "anl11_e_totalcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6256,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 375,
+   "description": "Percentile of the company’s Environmental Hybrid score within its subsector (100% is best)"
+  },
+  {
+   "id": "anl11_e_totalcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6288,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 377,
+   "description": "Rank position of the company’s E Hybrid Score within subsector peer group, 1 is highest"
+  },
+  {
+   "id": "anl11_e_ttcrg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6256,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 375,
+   "description": "Percentile of the company’s Environmental Hybrid score within its industry (100% is best)"
+  },
+  {
+   "id": "anl11_e_ttcrg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6288,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 377,
+   "description": "Rank position of the company’s E Hybrid Score within industry peer group, 1 is highest"
+  },
+  {
+   "id": "anl11_emp1reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7452,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 447,
+   "description": "Percentile within industry for EMP1 (Compensation & Employee Satisfaction), with 100% as the best"
+  },
+  {
+   "id": "anl11_emp1reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7612,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 456,
+   "description": "Rank within the industry for EMP1 (Compensation & Employee Satisfaction), 1 being the highest in industry"
+  },
+  {
+   "id": "anl11_emp1regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7452,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 447,
+   "description": "Percentile within subsector for EMP1 (Compensation & Employee Satisfaction), with 100% as the best"
+  },
+  {
+   "id": "anl11_emp1regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7612,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Rank within the subsector for EMP1 (Compensation & Employee Satisfaction), 1 being the best in subsector"
+  },
+  {
+   "id": "anl11_emp2reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7475,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 448,
+   "description": "Percentile within industry for EMP2 (Employee Diversity Treatment & Labor Rights), with 100% as the best"
+  },
+  {
+   "id": "anl11_emp2reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7635,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 458,
+   "description": "Rank within the industry for EMP2 (Employee Diversity Treatment & Labor Rights), 1 being the highest in industry"
+  },
+  {
+   "id": "anl11_emp2regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7475,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 448,
+   "description": "Percentile within subsector for EMP2 (Employee Diversity Treatment & Labor Rights), with 100% as the best"
+  },
+  {
+   "id": "anl11_emp2regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7635,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 458,
+   "description": "Rank within the subsector for EMP2 (Employee Diversity Treatment & Labor Rights), 1 being the best in subsector"
+  },
+  {
+   "id": "anl11_emp3reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7445,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 446,
+   "description": "Percentile within industry for EMP3 (Continuing Education, Training, Work Conditions, Safety & Health), 100% as best"
+  },
+  {
+   "id": "anl11_emp3reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7606,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Rank within the industry for EMP3 (Continuing Education, Training, Work Conditions, Safety & Health), 1 as highest"
+  },
+  {
+   "id": "anl11_emp3regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7445,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 446,
+   "description": "Percentile within subsector for EMP3 (Continuing Education, Training, Work Conditions, Safety & Health), 100% as best"
+  },
+  {
+   "id": "anl11_emp3regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7606,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Rank within the subsector for EMP3 (Continuing Education, Training, Work Conditions, Safety & Health), 1 as highest"
+  },
+  {
+   "id": "anl11_emp_totalcor",
+   "type": "MATRIX",
+   "coverage": 0.6364,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 381,
+   "description": "EMP Hybrid Score representing a weighted combination of three EMP scores, weighted based on their positive correlation t"
+  },
+  {
+   "id": "anl11_emp_totalcorregsectperc",
+   "type": "MATRIX",
+   "coverage": 0.6333,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 379,
+   "description": "Percentile of a company's EMP Hybrid Score within its sector peer group, where 100% is the best value"
+  },
+  {
+   "id": "anl11_emp_totalcorregsectrnk",
+   "type": "MATRIX",
+   "coverage": 0.6364,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 381,
+   "description": "Rank of a company's EMP Hybrid Score within its sector peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_emp_totalcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6333,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 379,
+   "description": "Percentile of a company's EMP Hybrid Score within its subsector peer group, where 100% is the best value"
+  },
+  {
+   "id": "anl11_emp_totalcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6364,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 381,
+   "description": "Rank of a company's EMP Hybrid Score within its subsector peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_emp_ttcrg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6333,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 379,
+   "description": "Percentile of a company's EMP Hybrid Score within its industry peer group, where 100% is the best value"
+  },
+  {
+   "id": "anl11_emp_ttcrg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6364,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 381,
+   "description": "Rank of a company's EMP Hybrid Score within its industry peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_empposcorreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6236,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 374,
+   "description": "Percentile of a company's EMP Max Correlation Score within its industry peer group, where 100% is the best value"
+  },
+  {
+   "id": "anl11_empposcorreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6252,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 375,
+   "description": "Rank of a company's EMP Max Correlation Score within its industry peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_empposcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6236,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 374,
+   "description": "Percentile of a company's EMP Max Correlation Score within its subsector peer group, where 100% is the best value"
+  },
+  {
+   "id": "anl11_empposcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6252,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 375,
+   "description": "Rank of a company's EMP Max Correlation Score within its subsector peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_empreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7505,
+   "userCount": 3,
+   "alphaCount": 6,
+   "longCount": 450,
+   "description": "Percentile of a company's EMP Score within its industry group, where 100% is the best score"
+  },
+  {
+   "id": "anl11_empreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7668,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 460,
+   "description": "Rank of a company's EMP Score within its industry group, where 1 is the best/highest score"
+  },
+  {
+   "id": "anl11_empregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7505,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 450,
+   "description": "Percentile of a company's EMP Score within its subsector group, where 100% is the best score"
+  },
+  {
+   "id": "anl11_empregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7668,
+   "userCount": 4,
+   "alphaCount": 7,
+   "longCount": 460,
+   "description": "Rank of a company's EMP Score within its subsector group, where 1 is the best/highest score"
+  },
+  {
+   "id": "anl11_eposcorreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6024,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 361,
+   "description": "Percentile of the company’s Environmental max correlation score within its industry peer group; 100% is best"
+  },
+  {
+   "id": "anl11_eposcorreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.604,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 362,
+   "description": "Rank of the company’s Environmental max correlation score within its industry peer group; 1 is highest"
+  },
+  {
+   "id": "anl11_eposcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6024,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 361,
+   "description": "Percentile of the company’s Environmental max correlation score within its subsector peer group; 100% is best"
+  },
+  {
+   "id": "anl11_eposcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.604,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 362,
+   "description": "Rank of the company’s Environmental max correlation score within its subsector peer group; 1 is highest"
+  },
+  {
+   "id": "anl11_ereg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7536,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 452,
+   "description": "Percentile of the company’s Environmental (E) score within its industry peer group (100% is best)"
+  },
+  {
+   "id": "anl11_ereg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7701,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 462,
+   "description": "Rank of the Environmental (E) score for a company within its industry peer group, with 1 being the highest rank"
+  },
+  {
+   "id": "anl11_eregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7536,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 452,
+   "description": "Percentile of the company’s Environmental (E) score within its subsector peer group; 100% is best"
+  },
+  {
+   "id": "anl11_eregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7701,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 462,
+   "description": "Rank of the company within its subsector peer group based on Environmental Score, with 1 being the highest rank"
+  },
+  {
+   "id": "anl11_esg_totalcor",
+   "type": "MATRIX",
+   "coverage": 0.6429,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 385,
+   "description": "Hybrid ESG score, combining E, EMP, CIT, and G KPIs weighted by strongest positive rank correlation to 1-year/3-year tot"
+  },
+  {
+   "id": "anl11_esg_totalcorregsectperc",
+   "type": "MATRIX",
+   "coverage": 0.6397,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 383,
+   "description": "Company's percentile in its sector on the ESG Hybrid Score (weighted positive correlation), with 100% being the best"
+  },
+  {
+   "id": "anl11_esg_totalcorregsectrnk",
+   "type": "MATRIX",
+   "coverage": 0.6429,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 385,
+   "description": "Company's rank in its sector on the ESG Hybrid Score (weighted positive correlation), with 1 being the highest"
+  },
+  {
+   "id": "anl11_esg_totalcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6397,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 383,
+   "description": "Company's percentile in its subsector on the ESG Hybrid Score (weighted positive correlation), with 100% being the best"
+  },
+  {
+   "id": "anl11_esg_totalcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6429,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 385,
+   "description": "Company's rank in its subsector on the ESG Hybrid Score (weighted positive correlation), with 1 being the highest"
+  },
+  {
+   "id": "anl11_esg_ttcrg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6397,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 383,
+   "description": "Company's percentile in its industry on the ESG Hybrid Score (weighted positive correlation), with 100% being the best"
+  },
+  {
+   "id": "anl11_esg_ttcrg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6429,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 385,
+   "description": "Company's rank in its industry on the ESG Hybrid Score (weighted positive correlation), with 1 being the highest"
+  },
+  {
+   "id": "anl11_esgposcorreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6334,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 380,
+   "description": "Company's percentile in its industry on the ESG Max Correlation Score, with 100% being the best"
+  },
+  {
+   "id": "anl11_esgposcorreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6366,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 381,
+   "description": "Company's rank in its industry on the ESG Max Correlation Score, with 1 being the highest"
+  },
+  {
+   "id": "anl11_esgposcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6334,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 380,
+   "description": "Company's percentile in its subsector on the ESG Max Correlation Score, with 100% being the best"
+  },
+  {
+   "id": "anl11_esgposcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6366,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 381,
+   "description": "Company's rank in its subsector on the ESG Max Correlation Score, with 1 being the highest"
+  },
+  {
+   "id": "anl11_esgreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.755,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 453,
+   "description": "Percentile ranking of the company within its industry peer group based on ESG score, with 100% being the best"
+  },
+  {
+   "id": "anl11_esgreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7715,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 462,
+   "description": "Rank of the company within its industry peer group based on ESG score, with 1 being the highest rank"
+  },
+  {
+   "id": "anl11_esgregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.755,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 453,
+   "description": "Percentile ranking of the company within its subsector peer group based on ESG score, with 100% being the best"
+  },
+  {
+   "id": "anl11_esgregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7715,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 462,
+   "description": "Rank of the company within its subsector peer group based on ESG score, with 1 being the highest rank"
+  },
+  {
+   "id": "anl11_g",
+   "type": "MATRIX",
+   "coverage": 0.7692,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Overall Governance (G) Score, calculated as the average of G1, G2, and G3 governance metrics for the company"
+  },
+  {
+   "id": "anl11_g1reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.748,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 448,
+   "description": "Percentile of a company's G1 score within its region-industry peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_g1reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7643,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 458,
+   "description": "Rank of a company's G1 score within its region-industry peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_g1regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.748,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 448,
+   "description": "Percentile of a company's G1 score within its region-subsector peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_g1regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7643,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 458,
+   "description": "Rank of a company's G1 score within its region-subsector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_g2reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.752,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Percentile of a company's G2 score within its region-industry peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_g2reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Rank of a company's G2 score within its region-industry peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_g2regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.752,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Percentile of a company's G2 score within its region-subsector peer group, with 100% being the best"
+  },
+  {
+   "id": "anl11_g2regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Rank of a company's G2 score within its region-subsector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_g3reg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Percentile of company within its industry peer group based on the G3 governance KPI, with 100% being the best"
+  },
+  {
+   "id": "anl11_g3reg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7687,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Rank of company within its industry peer group based on the G3 governance KPI, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_g3regsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 451,
+   "description": "Percentile of company within its subsector peer group based on the G3 governance KPI, with 100% being the best"
+  },
+  {
+   "id": "anl11_g3regsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7687,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 461,
+   "description": "Rank of a company's G3 score within its region-subsector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_g_totalcor",
+   "type": "MATRIX",
+   "coverage": 0.636,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 381,
+   "description": "Governance hybrid score, weighting G1, G2, G3 by their positive correlation to financial performance, particularly 1-yea"
+  },
+  {
+   "id": "anl11_g_totalcorregsectperc",
+   "type": "MATRIX",
+   "coverage": 0.6328,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 379,
+   "description": "Percentile within the sector peer group for the governance hybrid score (positively correlated only), 100% being the bes"
+  },
+  {
+   "id": "anl11_g_totalcorregsectrnk",
+   "type": "MATRIX",
+   "coverage": 0.636,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 381,
+   "description": "Rank within the sector peer group for the governance hybrid score (positively correlated only), with 1 being the highest"
+  },
+  {
+   "id": "anl11_g_totalcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6328,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 379,
+   "description": "Percentile within the subsector peer group for the governance hybrid score (positively correlated only), 100% being the "
+  },
+  {
+   "id": "anl11_g_totalcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.636,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 381,
+   "description": "Rank within the subsector peer group for the governance hybrid score (positively correlated only), with 1 being the high"
+  },
+  {
+   "id": "anl11_g_ttcrg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6328,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 379,
+   "description": "Percentile within the industry peer group for the governance hybrid score (positively correlated only), 100% being the b"
+  },
+  {
+   "id": "anl11_g_ttcrg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.636,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 381,
+   "description": "Rank within the industry peer group for the governance hybrid score (positively correlated only), with 1 being the highe"
+  },
+  {
+   "id": "anl11_global_industrycount",
+   "type": "MATRIX",
+   "coverage": 0.7395,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 443,
+   "description": "Total number of industries globally in the dataset"
+  },
+  {
+   "id": "anl11_globalsectcount",
+   "type": "MATRIX",
+   "coverage": 0.7395,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 443,
+   "description": "Total number of sectors globally in the dataset"
+  },
+  {
+   "id": "anl11_globalsubseccount",
+   "type": "MATRIX",
+   "coverage": 0.7395,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 443,
+   "description": "Total number of subsectors globally in the dataset"
+  },
+  {
+   "id": "anl11_gposcorreg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.6226,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 373,
+   "description": "Percentile within the industry peer group for the governance max correlation score (both positive and negative), 100% be"
+  },
+  {
+   "id": "anl11_gposcorreg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.6244,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 374,
+   "description": "Rank within the industry peer group for the governance max correlation score (both positive and negative) with 1 being t"
+  },
+  {
+   "id": "anl11_gposcorregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.6226,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 373,
+   "description": "Percentile within the subsector peer group for the governance max correlation score (both positive and negative), 100% b"
+  },
+  {
+   "id": "anl11_gposcorregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.6244,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 374,
+   "description": "Rank within the subsector peer group for the governance max correlation score (both positive and negative) with 1 being "
+  },
+  {
+   "id": "anl11_greg_industryperc",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 451,
+   "description": "Percentile within the industry peer group for the Governance (G) score, with 100% being the best"
+  },
+  {
+   "id": "anl11_greg_industryrnk",
+   "type": "MATRIX",
+   "coverage": 0.7692,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 461,
+   "description": "Rank within the industry peer group for the Governance (G) score, with 1 being the highest"
+  },
+  {
+   "id": "anl11_gregsubsecperc",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Percentile within the subsector peer group for the Governance (G) score, with 100% being the best"
+  },
+  {
+   "id": "anl11_gregsubsecrnk",
+   "type": "MATRIX",
+   "coverage": 0.7692,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 461,
+   "description": "Rank within the subsector peer group for the Governance (G) score, with 1 being the highest"
+  },
+  {
+   "id": "anl11_gse",
+   "type": "MATRIX",
+   "coverage": 0.7715,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Overall ESG (Environmental, Social, Governance) score, calculated as the average of the E, S, and G scores"
+  },
+  {
+   "id": "anl11_knrtcesger1e",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 459,
+   "description": "Rank of the company on E1 KPI within its region-sector group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_knrtcesger1g",
+   "type": "MATRIX",
+   "coverage": 0.7643,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 458,
+   "description": "Rank of a company's G1 score within its region-sector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_knrtcesger1pme",
+   "type": "MATRIX",
+   "coverage": 0.7612,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 456,
+   "description": "Rank within the sector for EMP1 (Compensation & Employee Satisfaction), 1 being the highest among sector peers"
+  },
+  {
+   "id": "anl11_knrtcesger1tic",
+   "type": "MATRIX",
+   "coverage": 0.767,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 460,
+   "description": "Rank within sector for CIT1 (Community Engagement & Charitable Activities), 1 being highest"
+  },
+  {
+   "id": "anl11_knrtcesger2e",
+   "type": "MATRIX",
+   "coverage": 0.7681,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 460,
+   "description": "Rank of the company on E2 KPI within its region-sector group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_knrtcesger2g",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 461,
+   "description": "Rank of a company's G2 score within its region-sector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_knrtcesger2pme",
+   "type": "MATRIX",
+   "coverage": 0.7635,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 458,
+   "description": "Rank within the sector for EMP2 (Employee Diversity Treatment & Labor Rights), 1 being the highest among sector peers"
+  },
+  {
+   "id": "anl11_knrtcesger2tic",
+   "type": "MATRIX",
+   "coverage": 0.7684,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Rank of CIT2 KPI within the region-sector peer group, with 1 being the highest (best)"
+  },
+  {
+   "id": "anl11_knrtcesger3e",
+   "type": "MATRIX",
+   "coverage": 0.7674,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 460,
+   "description": "Rank of the company on E3 KPI within its region-sector group (1 = highest rank)"
+  },
+  {
+   "id": "anl11_knrtcesger3g",
+   "type": "MATRIX",
+   "coverage": 0.7687,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 461,
+   "description": "Rank of a company's G3 score within its region-sector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_knrtcesger3pme",
+   "type": "MATRIX",
+   "coverage": 0.7606,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 456,
+   "description": "Rank within the sector for EMP3 (Continuing Education, Training, Work Conditions, Safety & Health), 1 as highest"
+  },
+  {
+   "id": "anl11_knrtcesger3tic",
+   "type": "MATRIX",
+   "coverage": 0.761,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Rank of a company's CIT3 score within its region-sector peer group, with 1 being the highest"
+  },
+  {
+   "id": "anl11_knrtcesgere",
+   "type": "MATRIX",
+   "coverage": 0.7701,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Rank of the company within its sector peer group based on Environmental Score, with 1 being the highest rank"
+  },
+  {
+   "id": "anl11_knrtcesgerg",
+   "type": "MATRIX",
+   "coverage": 0.7692,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 461,
+   "description": "Rank within the sector peer group for the Governance (G) score, with 1 being the highest"
+  },
+  {
+   "id": "anl11_knrtcesgergse",
+   "type": "MATRIX",
+   "coverage": 0.7715,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Rank of the company within its sector peer group based on ESG score, with 1 being the highest rank"
+  },
+  {
+   "id": "anl11_knrtcesgerpme",
+   "type": "MATRIX",
+   "coverage": 0.7668,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 460,
+   "description": "Rank of a company's EMP Score within its sector group, where 1 is the best/highest score"
+  },
+  {
+   "id": "anl11_knrtcesgerrocsope",
+   "type": "MATRIX",
+   "coverage": 0.604,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 362,
+   "description": "Rank of the company’s Environmental max correlation score within its sector peer group; 1 is highest"
+  },
+  {
+   "id": "anl11_knrtcesgerrocsopg",
+   "type": "MATRIX",
+   "coverage": 0.6244,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 374,
+   "description": "Rank within the sector peer group for the governance max correlation score (both positive and negative) with 1 being the"
+  },
+  {
+   "id": "anl11_knrtcesgerrocsopgse",
+   "type": "MATRIX",
+   "coverage": 0.6366,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 381,
+   "description": "Company's rank in its sector on the ESG Max Correlation Score, with 1 being the highest"
+  },
+  {
+   "id": "anl11_knrtcesgerrocsoppme",
+   "type": "MATRIX",
+   "coverage": 0.6252,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 375,
+   "description": "Rank of a company's EMP Max Correlation Score within its sector peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_knrtcesgerrocsoptic",
+   "type": "MATRIX",
+   "coverage": 0.6132,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 367,
+   "description": "Sector Rank of CIT Max Correlation Score, where 1 is the highest rank"
+  },
+  {
+   "id": "anl11_knrtcesgertic",
+   "type": "MATRIX",
+   "coverage": 0.7699,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Rank of company's CIT Score within its sector peer group, where 1 means highest rank"
+  },
+  {
+   "id": "anl11_pme",
+   "type": "MATRIX",
+   "coverage": 0.7668,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 460,
+   "description": "Overall Employment (EMP) Score, calculated as the average of the three EMP KPIs for the company"
+  },
+  {
+   "id": "anl11_region_industrycount",
+   "type": "MATRIX",
+   "coverage": 0.7696,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Total number of industries within the specified region"
+  },
+  {
+   "id": "anl11_regionsectcount",
+   "type": "MATRIX",
+   "coverage": 0.7696,
+   "userCount": 2,
+   "alphaCount": 4,
+   "longCount": 461,
+   "description": "Total number of sectors within the specified region"
+  },
+  {
+   "id": "anl11_regionsubseccount",
+   "type": "MATRIX",
+   "coverage": 0.7696,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 461,
+   "description": "Total number of subsectors within the specified region"
+  },
+  {
+   "id": "anl11_rocsope",
+   "type": "MATRIX",
+   "coverage": 0.604,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 362,
+   "description": "Environment Max Correlation Score, weighting E1, E2, and E3 metrics according to positive and negative correlations to f"
+  },
+  {
+   "id": "anl11_rocsopg",
+   "type": "MATRIX",
+   "coverage": 0.6244,
+   "userCount": 1,
+   "alphaCount": 6,
+   "longCount": 374,
+   "description": "Governance max correlation score, weighting G1, G2, G3 by their correlation (both positive and negative) to financial pe"
+  },
+  {
+   "id": "anl11_rocsopgse",
+   "type": "MATRIX",
+   "coverage": 0.6366,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 381,
+   "description": "Composite score for ESG that weights E, EMP, CIT, and G scores based on their positive and negative correlations to key "
+  },
+  {
+   "id": "anl11_rocsoppme",
+   "type": "MATRIX",
+   "coverage": 0.6252,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 375,
+   "description": "EMP Max Correlation Score, weighting the three EMP KPIs by their strong positive and negative correlations with financia"
+  },
+  {
+   "id": "anl11_rocsoptic",
+   "type": "MATRIX",
+   "coverage": 0.6132,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 367,
+   "description": "Max Correlation score for Capital Investment pillar, weighting CIT1, CIT2, and CIT3 based on both positive and negative "
+  },
+  {
+   "id": "anl11_tic",
+   "type": "MATRIX",
+   "coverage": 0.7699,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 461,
+   "description": "Average of the CIT1, CIT2, and CIT3 scores for the company"
+  },
+  {
+   "id": "anti_pollution_policy_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7482,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of the company within its industry peer group on the OWL E2 KPI, with 100% being the best"
+  },
+  {
+   "id": "anti_pollution_policy_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company within its industry peer group based on the OWL E2 KPI, with 1 being the highest"
+  },
+  {
+   "id": "anti_pollution_policy_score",
+   "type": "MATRIX",
+   "coverage": 0.772,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 463,
+   "description": "Aggregated environmental transparency KPI reflecting company policies, reporting, and dedication to environmental transp"
+  },
+  {
+   "id": "anti_pollution_policy_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7482,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of the company within its sector peer group on the OWL E2 KPI, with 100% being the best"
+  },
+  {
+   "id": "anti_pollution_policy_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company within its sector peer group based on the OWL E2 KPI, with 1 being the highest"
+  },
+  {
+   "id": "anti_pollution_policy_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7482,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of the company within its subsector peer group on the OWL E2 KPI, with 100% being the best"
+  },
+  {
+   "id": "anti_pollution_policy_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company within its subsector peer group based on the OWL E2 KPI, with 1 being the highest"
+  },
+  {
+   "id": "board_independence_diversity_score",
+   "type": "MATRIX",
+   "coverage": 0.7682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 460,
+   "description": "KPI for Board Effectiveness, aggregating data on Board independence, diversity, and effectiveness in meeting financial a"
+  },
+  {
+   "id": "board_independence_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7444,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Percentile ranking of a company's Board Effectiveness KPI (G1) within its industry peer group, where 100% is best"
+  },
+  {
+   "id": "board_independence_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.748,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Rank of the company's Board Effectiveness KPI (G1) within its industry peer group, with 1 being best"
+  },
+  {
+   "id": "board_independence_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7444,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Percentile ranking of a company's Board Effectiveness KPI (G1) within its sector peer group, where 100% is best"
+  },
+  {
+   "id": "board_independence_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.748,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Rank of the company's Board Effectiveness KPI (G1) within its sector peer group, with 1 being best"
+  },
+  {
+   "id": "board_independence_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7444,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Percentile ranking of a company's Board Effectiveness KPI (G1) within its subsector peer group, where 100% is best"
+  },
+  {
+   "id": "board_independence_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.748,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Rank of the company's Board Effectiveness KPI (G1) within its subsector peer group, with 1 being best"
+  },
+  {
+   "id": "community_corr_weighted_score",
+   "type": "MATRIX",
+   "coverage": 0.573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 343,
+   "description": "Score for Capital Investment KPIs (CIT1, CIT2, CIT3) weighted by strongest (positive and negative) correlations with fin"
+  },
+  {
+   "id": "community_engagement_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7471,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of a company's performance on the OWL CIT1 KPI within its industry peer group, with 100% being the hi"
+  },
+  {
+   "id": "community_engagement_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7507,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of company within its industry peer group on the CIT1 KPI (community & charity), with 1 being the highest rank"
+  },
+  {
+   "id": "community_engagement_score",
+   "type": "MATRIX",
+   "coverage": 0.7709,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "KPI measuring company performance in community and charitable activities, public health, and local social/environmental "
+  },
+  {
+   "id": "community_engagement_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7471,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of a company's performance on the OWL CIT1 KPI within its sector peer group, with 100% being the high"
+  },
+  {
+   "id": "community_engagement_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7507,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of company within its sector peer group on the CIT1 KPI (community & charity), with 1 being the highest rank"
+  },
+  {
+   "id": "community_engagement_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7471,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile of a company within its industry subsector peer group for the CIT1 citizenship KPI, with 100% being the best"
+  },
+  {
+   "id": "community_engagement_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7507,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of company within its subsector peer group on the CIT1 KPI (community & charity), with 1 being the highest rank"
+  },
+  {
+   "id": "community_hybrid_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5649,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Percentile ranking of a company's CIT Hybrid score within its industry peer group, with 100% being the best"
+  },
+  {
+   "id": "community_hybrid_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5688,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 341,
+   "description": "Rank of a company's CIT Hybrid score within its industry peer group, with 1 representing the highest rank"
+  },
+  {
+   "id": "community_hybrid_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5649,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Percentile ranking of the Citizenship hybrid score for the company within its sector peer group, with 100% being the bes"
+  },
+  {
+   "id": "community_hybrid_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5688,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 341,
+   "description": "Rank of a company's CIT Hybrid score within its sector peer group, with 1 representing the highest rank"
+  },
+  {
+   "id": "community_hybrid_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5649,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Percentile ranking of a company's CIT Hybrid score within its subsector peer group, with 100% being the best"
+  },
+  {
+   "id": "community_hybrid_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5688,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 341,
+   "description": "Rank of a company's CIT Hybrid score within its subsector peer group, with 1 representing the highest rank"
+  },
+  {
+   "id": "community_maxcorr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5708,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Percentile ranking of a company's CIT Max Correlation score within its industry peer group, with 100% being the best"
+  },
+  {
+   "id": "community_maxcorr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 343,
+   "description": "Rank of a company's CIT Max Correlation score within its industry peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "community_maxcorr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5708,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Percentile ranking of a company's CIT Max Correlation score within its sector peer group, with 100% being the best"
+  },
+  {
+   "id": "community_maxcorr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 343,
+   "description": "Rank of a company's CIT Max Correlation score within its sector peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "community_maxcorr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5708,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Percentile ranking of a company's CIT Max Correlation score within its subsector peer group, with 100% being the best"
+  },
+  {
+   "id": "community_maxcorr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 343,
+   "description": "Rank of a company's CIT Max Correlation score within its subsector peer group, where 1 is the highest rank"
+  },
+  {
+   "id": "community_pillar_composite_score",
+   "type": "MATRIX",
+   "coverage": 0.7739,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 464,
+   "description": "Capital Investment Score; average of CIT1, CIT2, and CIT3, representing overall capital investment-related ESG performan"
+  },
+  {
+   "id": "community_positive_corr_score",
+   "type": "MATRIX",
+   "coverage": 0.5688,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 341,
+   "description": "Score for Capital Investment KPIs (CIT1, CIT2, CIT3) weighted by positive correlations with financial metrics linked to "
+  },
+  {
+   "id": "community_score_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7501,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile ranking of the company within its industry peer group based on the Citizenship (CIT) score, where 100% repres"
+  },
+  {
+   "id": "community_score_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.7537,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of the company within its industry peer group based on the overall CIT Score, with 1 as the best performance"
+  },
+  {
+   "id": "community_score_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7501,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile ranking of a company's Capital Investment Score within its sector peer group (100% is best)"
+  },
+  {
+   "id": "community_score_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7501,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile ranking of the company within its subsector peer group based on the Citizenship (CIT) score, where 100% repre"
+  },
+  {
+   "id": "community_score_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.7537,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of the company within its subsector peer group based on the overall CIT Score, with 1 as the best performance"
+  },
+  {
+   "id": "community_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.7537,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of the company within its sector peer group based on the overall CIT Score, with 1 as the best performance"
+  },
+  {
+   "id": "disclosure_transparency_accountability_score",
+   "type": "MATRIX",
+   "coverage": 0.7725,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 463,
+   "description": "A composite KPI measuring Disclosure & Accountability: assesses the quality of financial and sustainability reporting, e"
+  },
+  {
+   "id": "disclosure_transparency_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7488,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile of company within its industry for the OWL G3 Disclosure & Accountability KPI, with 100% best"
+  },
+  {
+   "id": "disclosure_transparency_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7523,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of a company within its industry peer group on the G3 governance KPI, with 1 being the highest"
+  },
+  {
+   "id": "disclosure_transparency_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7488,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile of company within its sector for the OWL G3 Disclosure & Accountability KPI, with 100% best"
+  },
+  {
+   "id": "disclosure_transparency_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7523,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of company within its sector based on the OWL G3 Disclosure & Accountability KPI, with 1 being the top rank"
+  },
+  {
+   "id": "disclosure_transparency_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7488,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile of company within its subsector for the OWL G3 Disclosure & Accountability KPI, with 100% best"
+  },
+  {
+   "id": "disclosure_transparency_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7523,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of company within its subsector based on the OWL G3 Disclosure & Accountability KPI, with 1 being the top rank"
+  },
+  {
+   "id": "employee_compensation_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7414,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile of a company within its industry peer group on the EMP1 KPI (Compensation & Satisfaction), with 100% as the b"
+  },
+  {
+   "id": "employee_compensation_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.745,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 447,
+   "description": "Rank of Employment KPI 1 for the company within its industry peer group, with 1 being the highest"
+  },
+  {
+   "id": "employee_compensation_satisfaction_score",
+   "type": "MATRIX",
+   "coverage": 0.7651,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 459,
+   "description": "Employment KPI 1 measures how well the company fosters employee satisfaction through fair pay, benefits, and practices p"
+  },
+  {
+   "id": "employee_compensation_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7414,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile of a company within its sector peer group on the EMP1 KPI (Compensation & Satisfaction), with 100% as the bes"
+  },
+  {
+   "id": "employee_compensation_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.745,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 447,
+   "description": "Rank of company within its sector peer group on the EMP1 KPI (compensation & satisfaction), with 1 being the highest ran"
+  },
+  {
+   "id": "employee_compensation_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7414,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile ranking of Employment KPI 1 for the company within its subsector peer group, with 100% being the best"
+  },
+  {
+   "id": "employee_compensation_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.745,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 447,
+   "description": "Rank of company within its subsector peer group on the EMP1 KPI (compensation & satisfaction), with 1 being the highest "
+  },
+  {
+   "id": "employee_training_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7407,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile of a company within its industry peer group on the EMP3 KPI (Education & Work Conditions), with 100% as the b"
+  },
+  {
+   "id": "employee_training_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Rank of company within its industry peer group on the EMP3 KPI (education & work conditions), with 1 being the highest r"
+  },
+  {
+   "id": "employee_training_safety_score",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 458,
+   "description": "KPI measuring company performance on education, work conditions, workplace safety, training, and health"
+  },
+  {
+   "id": "employee_training_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7407,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile of a company within its sector peer group on the EMP3 KPI (Education & Work Conditions), with 100% as the bes"
+  },
+  {
+   "id": "employee_training_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Rank of company within its sector peer group on the EMP3 KPI (education & work conditions), with 1 being the highest ran"
+  },
+  {
+   "id": "employee_training_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7407,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile of a company within its subsector peer group on the EMP3 KPI (Education & Work Conditions), with 100% as the "
+  },
+  {
+   "id": "employee_training_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Rank of company within its subsector peer group on the EMP3 KPI (education & work conditions), with 1 being the highest "
+  },
+  {
+   "id": "environmental_corr_weighted_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5605,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Percentile of company’s E Max Correlation score within industry peer group (100% is best)"
+  },
+  {
+   "id": "environmental_corr_weighted_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5627,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 337,
+   "description": "Rank of company’s E Max Correlation score within industry peer group, with 1 being highest"
+  },
+  {
+   "id": "environmental_corr_weighted_score",
+   "type": "MATRIX",
+   "coverage": 0.5627,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 337,
+   "description": "A composite Environmental (E) score built by weighting E1, E2, and E3 KPIs according to the strength of both positive an"
+  },
+  {
+   "id": "environmental_corr_weighted_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5605,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 336,
+   "description": "Percentile of company’s E Max Correlation score within sector peer group (100% is best)"
+  },
+  {
+   "id": "environmental_corr_weighted_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5627,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 337,
+   "description": "Rank of company’s E Max Correlation score within sector peer group, with 1 being highest"
+  },
+  {
+   "id": "environmental_corr_weighted_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5605,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 336,
+   "description": "Percentile of company’s E Max Correlation score within subsector peer group (100% is best)"
+  },
+  {
+   "id": "environmental_corr_weighted_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5627,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 337,
+   "description": "Rank of company’s E Max Correlation score within subsector peer group, with 1 being highest"
+  },
+  {
+   "id": "environmental_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7503,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile of company’s E score within industry peer group (100% is best)"
+  },
+  {
+   "id": "environmental_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.7539,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of company’s E score within its industry peer group, with 1 being highest"
+  },
+  {
+   "id": "environmental_pillar_composite_score",
+   "type": "MATRIX",
+   "coverage": 0.7741,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 464,
+   "description": "The average Environmental Score (E), calculated as the unweighted mean of E1, E2, and E3 KPIs; this field shows a compan"
+  },
+  {
+   "id": "environmental_positive_corr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5561,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 333,
+   "description": "Percentile of company’s E Hybrid score within industry peer group (100% is best)"
+  },
+  {
+   "id": "environmental_positive_corr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5601,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Rank of company’s E Hybrid score within industry peer group, 1 is highest"
+  },
+  {
+   "id": "environmental_positive_corr_score",
+   "type": "MATRIX",
+   "coverage": 0.5601,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "A composite Environmental (E) score built by weighting E1, E2, and E3 KPIs according to their positive correlations with"
+  },
+  {
+   "id": "environmental_positive_corr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5561,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 333,
+   "description": "Percentile of company’s E Hybrid score within sector peer group (100% is best)"
+  },
+  {
+   "id": "environmental_positive_corr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5601,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Rank of company’s E Hybrid score within sector peer group, 1 is highest"
+  },
+  {
+   "id": "environmental_positive_corr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5561,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 333,
+   "description": "Percentile of company’s E Hybrid score within subsector peer group (100% is best)"
+  },
+  {
+   "id": "environmental_positive_corr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5601,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Rank of company’s E Hybrid score within subsector peer group, 1 is highest"
+  },
+  {
+   "id": "environmental_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7503,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile of company’s E score within sector peer group (100% is best)"
+  },
+  {
+   "id": "environmental_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.7539,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of company’s E score within its sector peer group, with 1 being highest"
+  },
+  {
+   "id": "environmental_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7503,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile of company’s E score within subsector peer group (100% is best)"
+  },
+  {
+   "id": "environmental_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.7539,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of company’s E score within its subsector peer group, with 1 being highest"
+  },
+  {
+   "id": "governance_corr_weighted_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 345,
+   "description": "Percentile of a company within its industry peer group based on the Governance Max Correlation Score; 100% is best"
+  },
+  {
+   "id": "governance_corr_weighted_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 347,
+   "description": "Rank of a company within its industry peer group based on the Governance Max Correlation Score; 1 is highest"
+  },
+  {
+   "id": "governance_corr_weighted_score",
+   "type": "MATRIX",
+   "coverage": 0.5786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 347,
+   "description": "Governance Max Correlation Score, calculated by weighting G1, G2, and G3 based on their rank correlation (positive and n"
+  },
+  {
+   "id": "governance_corr_weighted_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 345,
+   "description": "Percentile of a company within its sector peer group based on the Governance Max Correlation Score; 100% is best"
+  },
+  {
+   "id": "governance_corr_weighted_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 347,
+   "description": "Rank of a company within its sector peer group based on the Governance Max Correlation Score; 1 is highest"
+  },
+  {
+   "id": "governance_corr_weighted_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 345,
+   "description": "Percentile of a company within its subsector peer group based on the Governance Max Correlation Score; 100% is best"
+  },
+  {
+   "id": "governance_corr_weighted_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 347,
+   "description": "Rank of a company within its subsector peer group based on the Governance Max Correlation Score; 1 is highest"
+  },
+  {
+   "id": "governance_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7494,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile of a company within its industry peer group based on the Governance (G) Score; 100% is best"
+  },
+  {
+   "id": "governance_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.7529,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of a company within its industry peer group based on the Governance (G) Score; 1 is highest"
+  },
+  {
+   "id": "governance_pillar_composite_score",
+   "type": "MATRIX",
+   "coverage": 0.7731,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 463,
+   "description": "Governance score, which is the average of the subcomponent scores G1, G2, and G3, representing broad governance performa"
+  },
+  {
+   "id": "governance_positive_corr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 333,
+   "description": "Percentile ranking of the Governance (G) Hybrid Score within the company's industry peer group, with higher percentiles "
+  },
+  {
+   "id": "governance_positive_corr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5604,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Rank of a company within its industry peer group based on the Governance Hybrid Score; 1 is highest"
+  },
+  {
+   "id": "governance_positive_corr_score",
+   "type": "MATRIX",
+   "coverage": 0.5604,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Governance Hybrid Score, calculated by weighting G1, G2, and G3 based on positive rank correlation with financial metric"
+  },
+  {
+   "id": "governance_positive_corr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 333,
+   "description": "Percentile of a company within its sector peer group based on the Governance Hybrid Score; 100% is best"
+  },
+  {
+   "id": "governance_positive_corr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5604,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Rank of a company within its sector peer group based on the Governance Hybrid Score; 1 is highest"
+  },
+  {
+   "id": "governance_positive_corr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 333,
+   "description": "Percentile ranking of the Governance (G) Hybrid Score within the company's subsector peer group, with higher percentiles"
+  },
+  {
+   "id": "governance_positive_corr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5604,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Rank of a company within its subsector peer group based on the Governance Hybrid Score; 1 is highest"
+  },
+  {
+   "id": "governance_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7494,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile of a company within its sector peer group based on the Governance (G) Score; 100% is best"
+  },
+  {
+   "id": "governance_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.7529,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of a company within its sector peer group based on the Governance (G) Score; 1 is highest"
+  },
+  {
+   "id": "governance_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7494,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile of a company within its subsector peer group based on the Governance (G) Score; 100% is best"
+  },
+  {
+   "id": "governance_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.7529,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of a company within its subsector peer group based on the Governance (G) Score; 1 is highest"
+  },
+  {
+   "id": "human_rights_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7486,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile ranking of a company's Human Rights KPI (CIT2) within its industry peer group, where 100% is best"
+  },
+  {
+   "id": "human_rights_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company's Human Rights KPI (CIT2) within its industry peer group, with 1 being best"
+  },
+  {
+   "id": "human_rights_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7486,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile ranking of a company's Human Rights KPI (CIT2) within its sector peer group, where 100% is best"
+  },
+  {
+   "id": "human_rights_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company's Human Rights KPI (CIT2) within its sector peer group, with 1 being best"
+  },
+  {
+   "id": "human_rights_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7486,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile ranking of a company's Human Rights KPI (CIT2) within its subsector peer group, where 100% is best"
+  },
+  {
+   "id": "human_rights_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 451,
+   "description": "Rank of the company's Human Rights KPI (CIT2) within its subsector peer group, with 1 being best"
+  },
+  {
+   "id": "human_rights_supply_chain_score",
+   "type": "MATRIX",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 463,
+   "description": "KPI for Human Rights, aggregating data on a company's policies and performance regarding human rights issues such as chi"
+  },
+  {
+   "id": "management_ethics_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7486,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile score of a company's G2 KPI standing within its industry peer group, with 100% being the highest/best"
+  },
+  {
+   "id": "management_ethics_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company's Management Ethics KPI (G2) within its industry peer group, with 1 being best"
+  },
+  {
+   "id": "management_ethics_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7486,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile ranking of a company's Management Ethics KPI (G2) within its sector peer group, where 100% is best"
+  },
+  {
+   "id": "management_ethics_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company's Management Ethics KPI (G2) within its sector peer group, with 1 being best"
+  },
+  {
+   "id": "management_ethics_standards_score",
+   "type": "MATRIX",
+   "coverage": 0.7723,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 463,
+   "description": "KPI for Management Ethics, measuring management's stakeholder relations, ethical decision-making, equitable shareholder "
+  },
+  {
+   "id": "management_ethics_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7486,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 449,
+   "description": "Percentile ranking of a company's Management Ethics KPI (G2) within its subsector peer group, where 100% is best"
+  },
+  {
+   "id": "management_ethics_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7521,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Rank of the company's Management Ethics KPI (G2) within its subsector peer group, with 1 being best"
+  },
+  {
+   "id": "overall_sustainability_score",
+   "type": "MATRIX",
+   "coverage": 0.7755,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 465,
+   "description": "The ESG Score for a company, calculated as a simple average of its Environmental (E), Social (S), and Governance (G) sco"
+  },
+  {
+   "id": "pollution_prevention_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7468,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of the company within its industry peer group on the OWL E1 KPI, with 100% being the best"
+  },
+  {
+   "id": "pollution_prevention_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of the company within its industry peer group based on the OWL E1 KPI, with 1 being the highest"
+  },
+  {
+   "id": "pollution_prevention_score",
+   "type": "MATRIX",
+   "coverage": 0.7706,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Aggregated pollution prevention KPI reflecting how well a company is reducing pollution and transitioning to less harmfu"
+  },
+  {
+   "id": "pollution_prevention_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7468,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of the company within its sector peer group on the OWL E1 KPI, with 100% being the best"
+  },
+  {
+   "id": "pollution_prevention_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of the company within its sector peer group based on the OWL E1 KPI, with 1 being the highest"
+  },
+  {
+   "id": "pollution_prevention_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7468,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of the company within its subsector peer group on the OWL E1 KPI, with 100% being the best"
+  },
+  {
+   "id": "pollution_prevention_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 450,
+   "description": "Rank of the company within its subsector peer group based on the OWL E1 KPI, with 1 being the highest"
+  },
+  {
+   "id": "resource_efficiency_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7476,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "The percentile position of a company within its industry peer group based on the OWL E3 KPI; higher percentiles indicate"
+  },
+  {
+   "id": "resource_efficiency_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7512,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of company within its industry peer group on the OWL E3 KPI, with 1 being the highest rank"
+  },
+  {
+   "id": "resource_efficiency_score",
+   "type": "MATRIX",
+   "coverage": 0.7714,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Aggregated resource efficiency KPI reflecting how well a company reduces resource use and implements recycling"
+  },
+  {
+   "id": "resource_efficiency_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7476,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "The percentile position of a company within its sector peer group based on the OWL E3 KPI; higher percentiles indicate b"
+  },
+  {
+   "id": "resource_efficiency_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7512,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of the company within its sector peer group based on the OWL E3 KPI, with 1 being the highest"
+  },
+  {
+   "id": "resource_efficiency_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7476,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "The percentile position of a company within its subsector peer group based on the OWL E3 KPI; higher percentiles indicat"
+  },
+  {
+   "id": "resource_efficiency_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7512,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank of company within its subsector peer group on the OWL E3 KPI, with 1 being the highest rank"
+  },
+  {
+   "id": "social_corr_weighted_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 347,
+   "description": "Percentile within the Industry peer group based on the maximum correlation score for the Social (S) pillar, with 100% be"
+  },
+  {
+   "id": "social_corr_weighted_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5807,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "Rank within the Industry peer group based on the maximum correlation score for the Social (S) pillar, with 1 being the h"
+  },
+  {
+   "id": "social_corr_weighted_score",
+   "type": "MATRIX",
+   "coverage": 0.5807,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "Composite score for social KPIs (EMP1, EMP2, EMP3, CIT1, CIT2, CIT3) weighted by their absolute correlation (positive an"
+  },
+  {
+   "id": "social_corr_weighted_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 347,
+   "description": "Percentile within the Sector peer group based on the maximum correlation score for the Social (S) pillar, with 100% bein"
+  },
+  {
+   "id": "social_corr_weighted_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5807,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "Rank of company’s S Max Correlation score within sector peer group, 1 is highest"
+  },
+  {
+   "id": "social_corr_weighted_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 347,
+   "description": "Percentile within the SubSector peer group based on the maximum correlation score for the Social (S) pillar, with 100% b"
+  },
+  {
+   "id": "social_corr_weighted_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5807,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "Rank within the SubSector peer group based on the maximum correlation score for the Social (S) pillar, with 1 representi"
+  },
+  {
+   "id": "social_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.751,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile of company’s S score within industry peer group (100% is best)"
+  },
+  {
+   "id": "social_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.7546,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of company’s S score within industry peer group, 1 is highest"
+  },
+  {
+   "id": "social_pillar_composite_score",
+   "type": "MATRIX",
+   "coverage": 0.7748,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 464,
+   "description": "Composite Social (S) Score calculated as the average of the CIT (Citizenship) and EMP (Employment) scores, with no subje"
+  },
+  {
+   "id": "social_pillar_score",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 462,
+   "description": "Social (S) score for the company; calculated by simple average of CIT (Citizenship) and EMP (Employment) metrics, with n"
+  },
+  {
+   "id": "social_poscorr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.626,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 375,
+   "description": "Region of the world in which company is headquartered"
+  },
+  {
+   "id": "social_poscorr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.6277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 376,
+   "description": "Rank of the company’s Social max correlation score within its industry peer group; 1 is highest"
+  },
+  {
+   "id": "social_poscorr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.626,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 375,
+   "description": "Percentile of the company’s Social max correlation score within its sector peer group; 100% is best"
+  },
+  {
+   "id": "social_poscorr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.6277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 376,
+   "description": "Rank of the company’s Social max correlation score within its sector peer group; 1 is highest"
+  },
+  {
+   "id": "social_poscorr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.626,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 375,
+   "description": "Percentile of the company’s Social max correlation score within its subsector peer group; 100% is best"
+  },
+  {
+   "id": "social_poscorr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.6277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 376,
+   "description": "Rank of the company’s Social max correlation score within its subsector peer group; 1 is highest"
+  },
+  {
+   "id": "social_positive_corr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5732,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 343,
+   "description": "Percentile of a company within its industry peer group based on the Social (S) Hybrid score; 100% is best"
+  },
+  {
+   "id": "social_positive_corr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Rank of a company within its industry peer group based on the Social (S) Hybrid score; 1 is the highest rank"
+  },
+  {
+   "id": "social_positive_corr_score",
+   "type": "MATRIX",
+   "coverage": 0.5771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "A composite Social (S) score created by weighting EMP1, EMP2, EMP3, CIT1, CIT2, and CIT3 according to their positive cor"
+  },
+  {
+   "id": "social_positive_corr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5732,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 343,
+   "description": "Percentile ranking of the Social hybrid score for the company within its sector peer group, with 100% being the best"
+  },
+  {
+   "id": "social_positive_corr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Rank of a company within its sector peer group based on the Social (S) Hybrid score; 1 is the highest rank"
+  },
+  {
+   "id": "social_positive_corr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5732,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 343,
+   "description": "Percentile of a company within its subsector peer group based on the Social (S) Hybrid score; 100% is best"
+  },
+  {
+   "id": "social_positive_corr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Rank of a company within its subsector peer group on the S Hybrid score, with 1 being the highest"
+  },
+  {
+   "id": "social_score_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7544,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Percentile of the company’s Social (S) score within its industry peer group; 100% is best"
+  },
+  {
+   "id": "social_score_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Rank of the company’s Social (S) score within its industry peer group; 1 is highest"
+  },
+  {
+   "id": "social_score_positive_correlation",
+   "type": "MATRIX",
+   "coverage": 0.6277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 376,
+   "description": "Social (S) score for the company; calculated by simple average of CIT (Citizenship) and EMP (Employment) metrics, with n"
+  },
+  {
+   "id": "social_score_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7544,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Percentile of the company’s Social (S) score within its sector peer group; 100% is best"
+  },
+  {
+   "id": "social_score_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Rank of the company’s Social (S) score within its sector peer group; 1 is highest"
+  },
+  {
+   "id": "social_score_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7544,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Percentile of the company’s Social (S) score within its subsector peer group; 100% is best"
+  },
+  {
+   "id": "social_score_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Rank of the company’s Social (S) score within its subsector peer group; 1 is highest"
+  },
+  {
+   "id": "social_score_total_correlation",
+   "type": "MATRIX",
+   "coverage": 0.6413,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 384,
+   "description": "Total correlation value for the S (Social) score with financial metrics"
+  },
+  {
+   "id": "social_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.751,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile of company’s S score within sector peer group (100% is best)"
+  },
+  {
+   "id": "social_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.7546,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of company’s S score within sector peer group, 1 is highest"
+  },
+  {
+   "id": "social_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.751,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Percentile of company’s S score within subsector peer group (100% is best)"
+  },
+  {
+   "id": "social_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.7546,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 452,
+   "description": "Rank of company’s S score within subsector peer group, 1 is highest"
+  },
+  {
+   "id": "social_totalcorr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.6381,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 382,
+   "description": "Region of the world in which company is headquartered"
+  },
+  {
+   "id": "social_totalcorr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.6413,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 384,
+   "description": "Region of the world in which company is headquartered"
+  },
+  {
+   "id": "social_totalcorr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.6381,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 382,
+   "description": "Percentile ranking within sector peer group for social score weighted by total correlation to financial returns."
+  },
+  {
+   "id": "social_totalcorr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.6413,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 384,
+   "description": "Company’s position within sector peer group for social score weighted by total correlation to financial returns."
+  },
+  {
+   "id": "social_totalcorr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.6381,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 382,
+   "description": "Percentile ranking within subsector peer group for social score weighted by total correlation to financial returns."
+  },
+  {
+   "id": "social_totalcorr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.6413,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 384,
+   "description": "Company’s position within subsector peer group for social score weighted by total correlation to financial returns."
+  },
+  {
+   "id": "sustainability_corr_weighted_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5906,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 354,
+   "description": "Percentile score of a company's ESG Max Correlation score within its industry peer group, with 100% being the highest/be"
+  },
+  {
+   "id": "sustainability_corr_weighted_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5927,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 355,
+   "description": "Rank of a company's ESG Max Correlation score within its industry peer group, with 1 being the highest"
+  },
+  {
+   "id": "sustainability_corr_weighted_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5906,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 354,
+   "description": "Percentile score of a company's ESG Max Correlation score within its sector peer group, with 100% being the highest/best"
+  },
+  {
+   "id": "sustainability_corr_weighted_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5927,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 355,
+   "description": "Rank of company within its sector based on its ESG Max Correlation score, with 1 being highest"
+  },
+  {
+   "id": "sustainability_corr_weighted_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5906,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 354,
+   "description": "Percentile score of a company's ESG Max Correlation score within its subsector peer group, with 100% being the highest/b"
+  },
+  {
+   "id": "sustainability_corr_weighted_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5927,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 355,
+   "description": "Rank of a company's ESG Max Correlation score within its subsector peer group, with 1 being the highest"
+  },
+  {
+   "id": "sustainability_hybrid_score",
+   "type": "MATRIX",
+   "coverage": 0.5806,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "A composite ESG score where underlying KPIs are weighted by positive correlations with financial metrics strongly tied t"
+  },
+  {
+   "id": "sustainability_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Percentile ranking of a company’s ESG score within its industry peer group, with 100% being the best"
+  },
+  {
+   "id": "sustainability_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7553,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Rank of company within its industry based on its overall ESG score, with 1 being the highest"
+  },
+  {
+   "id": "sustainability_max_correlation_score",
+   "type": "MATRIX",
+   "coverage": 0.5927,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 355,
+   "description": "A composite ESG score where each underlying KPI is weighted according to its strongest (positive or negative) correlatio"
+  },
+  {
+   "id": "sustainability_positive_corr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5767,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Percentile score of a company's ESG Hybrid score within its industry peer group, with 100% being the highest/best"
+  },
+  {
+   "id": "sustainability_positive_corr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5806,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "Rank of a company's ESG Hybrid score within its industry peer group, with 1 being the highest"
+  },
+  {
+   "id": "sustainability_positive_corr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5767,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Percentile score of a company's ESG Hybrid score within its sector peer group, with 100% being the highest/best"
+  },
+  {
+   "id": "sustainability_positive_corr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5806,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "Rank of company within its sector for ESG Hybrid score, with 1 being the highest"
+  },
+  {
+   "id": "sustainability_positive_corr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5767,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 346,
+   "description": "Percentile score of a company's ESG Hybrid score within its subsector peer group, with 100% being the highest/best"
+  },
+  {
+   "id": "sustainability_positive_corr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5806,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 348,
+   "description": "Rank of a company's ESG Hybrid score within its subsector peer group, with 1 being the highest"
+  },
+  {
+   "id": "sustainability_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Percentile of company within its sector for its overall ESG score, with 100% being best"
+  },
+  {
+   "id": "sustainability_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7553,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Rank of company within its sector based on its overall ESG score, with 1 being the highest"
+  },
+  {
+   "id": "sustainability_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 451,
+   "description": "Percentile ranking of the company's ESG score within its subsector peer group, with 100% being the best"
+  },
+  {
+   "id": "sustainability_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7553,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Rank of company within its subsector based on its overall ESG score, with 1 being the highest"
+  },
+  {
+   "id": "sustainable_product_business_model_score",
+   "type": "MATRIX",
+   "coverage": 0.7649,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 458,
+   "description": "KPI for Sustainability Integration, measuring how well a company transitions its products and operations toward sustaina"
+  },
+  {
+   "id": "sustainable_product_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7412,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile ranking of a company's Sustainability Integration KPI (CIT3) within its industry peer group, where 100% is be"
+  },
+  {
+   "id": "sustainable_product_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7447,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Rank of the company's Sustainability Integration KPI (CIT3) within its industry peer group, with 1 being best"
+  },
+  {
+   "id": "sustainable_product_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7412,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile ranking of a company's Sustainability Integration KPI (CIT3) within its sector peer group, where 100% is best"
+  },
+  {
+   "id": "sustainable_product_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7447,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Rank of the company's Sustainability Integration KPI (CIT3) within its sector peer group, with 1 being best"
+  },
+  {
+   "id": "sustainable_product_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7412,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 444,
+   "description": "Percentile ranking of a company's Sustainability Integration KPI (CIT3) within its subsector peer group, where 100% is b"
+  },
+  {
+   "id": "sustainable_product_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7447,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Rank of the company's Sustainability Integration KPI (CIT3) within its subsector peer group, with 1 being best"
+  },
+  {
+   "id": "workforce_corr_weighted_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5695,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 341,
+   "description": "Percentile ranking of a company's Employment Max Correlation Score within its industry (100% is best/highest correlation"
+  },
+  {
+   "id": "workforce_corr_weighted_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.5716,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Rank of the company within its industry peer group based on the EMP Max Correlation Score, with 1 as the top performer"
+  },
+  {
+   "id": "workforce_corr_weighted_score",
+   "type": "MATRIX",
+   "coverage": 0.5716,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Score for Employment KPIs (EMP1, EMP2, EMP3) weighted by their strongest correlations (positive and negative) with finan"
+  },
+  {
+   "id": "workforce_corr_weighted_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5695,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 341,
+   "description": "Percentile ranking of a company's Employment Max Correlation Score within its sector (100% is best/highest correlation t"
+  },
+  {
+   "id": "workforce_corr_weighted_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.5716,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Rank of the company within its sector peer group based on the EMP Max Correlation Score, with 1 as the top performer"
+  },
+  {
+   "id": "workforce_corr_weighted_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.5695,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 341,
+   "description": "Percentile ranking of a company's Employment Max Correlation Score within its subsector (100% is best/highest correlatio"
+  },
+  {
+   "id": "workforce_corr_weighted_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.5716,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Rank of the company within its subsector peer group based on the EMP Max Correlation Score, with 1 as the top performer"
+  },
+  {
+   "id": "workforce_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7469,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of a company's Employment Score within its industry peer group (100% is best)"
+  },
+  {
+   "id": "workforce_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.7505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank position of the company within its Industry peer group for the EMP Score, with 1 being the highest"
+  },
+  {
+   "id": "workforce_pillar_composite_score",
+   "type": "MATRIX",
+   "coverage": 0.7707,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 462,
+   "description": "Average score of EMP1, EMP2, and EMP3, measuring employment-related performance without subjective weighting among these"
+  },
+  {
+   "id": "workforce_positive_corr_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.539,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 323,
+   "description": "Percentile ranking of a company's Employment Hybrid Score within its industry peer group (100% is best)"
+  },
+  {
+   "id": "workforce_positive_corr_industry_position",
+   "type": "MATRIX",
+   "coverage": 0.543,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 325,
+   "description": "Rank of the company within industry peer group based on EMP Hybrid Score, with 1 as the best performance"
+  },
+  {
+   "id": "workforce_positive_corr_score",
+   "type": "MATRIX",
+   "coverage": 0.543,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 325,
+   "description": "Score for Employment KPIs (EMP1, EMP2, EMP3) weighted by their positive correlations with financial metrics linked to co"
+  },
+  {
+   "id": "workforce_positive_corr_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.539,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 323,
+   "description": "Percentile ranking of a company's Employment Hybrid Score within its sector peer group (100% is best)"
+  },
+  {
+   "id": "workforce_positive_corr_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.543,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 325,
+   "description": "Rank of the company within sector peer group based on EMP Hybrid Score, with 1 as the best performance"
+  },
+  {
+   "id": "workforce_positive_corr_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.539,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 323,
+   "description": "Percentile ranking of a company's Employment Hybrid Score within its subsector peer group (100% is best)"
+  },
+  {
+   "id": "workforce_positive_corr_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.543,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 325,
+   "description": "Rank of the company within subsector peer group based on EMP Hybrid Score, with 1 as the best performance"
+  },
+  {
+   "id": "workforce_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7469,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of a company's Employment Score within its sector peer group (100% is best)"
+  },
+  {
+   "id": "workforce_sector_position",
+   "type": "MATRIX",
+   "coverage": 0.7505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank position of the company within its Sector peer group for the EMP Score, with 1 being the highest"
+  },
+  {
+   "id": "workforce_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7469,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Percentile ranking of a company's Employment Score within its subsector peer group (100% is best)"
+  },
+  {
+   "id": "workforce_subsector_position",
+   "type": "MATRIX",
+   "coverage": 0.7505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 450,
+   "description": "Rank position of the company within its SubSector peer group for the EMP Score, with 1 being the highest"
+  },
+  {
+   "id": "workplace_diversity_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7438,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Percentile of a company within its industry peer group on the EMP2 KPI (Diversity & Rights), with 100% as the best perfo"
+  },
+  {
+   "id": "workplace_diversity_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7473,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Rank of a company within its industry peer group on the EMP2 employment KPI, with 1 being the highest (best) rank"
+  },
+  {
+   "id": "workplace_diversity_labor_rights_score",
+   "type": "MATRIX",
+   "coverage": 0.7674,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 460,
+   "description": "KPI measuring company performance on workplace diversity, labor-management relations, and workforce rights"
+  },
+  {
+   "id": "workplace_diversity_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7438,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 446,
+   "description": "Percentile of a company within its sector peer group on the EMP2 KPI (Diversity & Rights), with 100% as the best perform"
+  },
+  {
+   "id": "workplace_diversity_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7473,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Rank of company within its sector peer group on the EMP2 KPI (diversity & rights), with 1 being the highest rank"
+  },
+  {
+   "id": "workplace_diversity_subsector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7438,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Percentile of a company within its subsector peer group on the EMP2 KPI (Diversity & Rights), with 100% as the best perf"
+  },
+  {
+   "id": "workplace_diversity_subsector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7473,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 448,
+   "description": "Rank of company within its subsector peer group on the EMP2 KPI (diversity & rights), with 1 being the highest rank"
+  }
+ ]
+}

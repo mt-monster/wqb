@@ -1,0 +1,84 @@
+[
+ {
+  "group": "P1_dl_hump",
+  "id": "E5pjMdnG",
+  "sharpe": 2.37,
+  "fitness": 1.84,
+  "turnover": 0.1961,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 250), sector), hump=0.003)"
+ },
+ {
+  "group": "P1_dl_hump",
+  "id": "rKOqwxa9",
+  "sharpe": 1.99,
+  "fitness": 1.44,
+  "turnover": 0.2011,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 250), sector), hump=0.004)"
+ },
+ {
+  "group": "P2_dl_long",
+  "id": "A1Np5AXd",
+  "sharpe": 2.17,
+  "fitness": 1.6,
+  "turnover": 0.189,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 750), industry), hump=0.003)"
+ },
+ {
+  "group": "P2_dl_long",
+  "id": "xA3LoZ7m",
+  "sharpe": 2.36,
+  "fitness": 1.82,
+  "turnover": 0.1961,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 1000), sector), hump=0.003)"
+ },
+ {
+  "group": "P3_dl_axes",
+  "id": "QPbxpJ8K",
+  "sharpe": 1.73,
+  "fitness": 1.15,
+  "turnover": 0.1746,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "P3_dl_axes",
+  "id": "Vkarb9WM",
+  "sharpe": 2.46,
+  "fitness": 1.94,
+  "turnover": 0.1946,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 630), sector), hump=0.0025)"
+ },
+ {
+  "group": "P4_tsmean",
+  "id": "vRrEb71v",
+  "sharpe": 0.91,
+  "fitness": 0.55,
+  "turnover": 0.1407,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_mean(ts_zscore(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 1000), 5), industry), hump=0.003)"
+ },
+ {
+  "group": "P4_tsmean",
+  "id": "QPbxARvW",
+  "sharpe": 0.38,
+  "fitness": 0.15,
+  "turnover": 0.1582,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_mean(ts_rank(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 1000), 5), sector), hump=0.003)"
+ }
+]

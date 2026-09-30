@@ -1,0 +1,82 @@
+{
+ "submitted_at": "2026-09-29 00:19:50",
+ "settings": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nan_handling": "ON"
+ },
+ "probes": [
+  {
+   "id": "a1_sum_netbuy",
+   "mechanism": "净买入额 vec_sum 聚合",
+   "expr": "group_rank(vec_sum(shrt38_accum_net_buy_amt), market)"
+  },
+  {
+   "id": "a2_max_netbuy",
+   "mechanism": "净买入额 vec_max 聚合",
+   "expr": "group_rank(vec_max(shrt38_accum_net_buy_amt), market)"
+  },
+  {
+   "id": "a3_std_netbuy",
+   "mechanism": "净买入额 vec_stddev（离散度）",
+   "expr": "group_rank(vec_stddev(shrt38_accum_net_buy_amt), market)"
+  },
+  {
+   "id": "a4_range_netbuy",
+   "mechanism": "净买入额 vec_range（极差）",
+   "expr": "group_rank(vec_range(shrt38_accum_net_buy_amt), market)"
+  },
+  {
+   "id": "a5_qty_netbuy",
+   "mechanism": "净买入量（qty 版，未试）",
+   "expr": "group_rank(vec_avg(shrt38_stk_invactnet_buy_qty), market)"
+  },
+  {
+   "id": "a6_sellbuy_ratio",
+   "mechanism": "卖出/买入额比（帖3 比值）",
+   "expr": "group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), market)"
+  },
+  {
+   "id": "a7_short_qtywgt",
+   "mechanism": "卖空量权重（未试字段）",
+   "expr": "group_rank(vec_avg(shrt38_stk_short_sellshort_sell_qty_wgt), market)"
+  },
+  {
+   "id": "a8_amt_level",
+   "mechanism": "总卖空额水平（未试）",
+   "expr": "group_rank(vec_avg(shrt38_amt), market)"
+  },
+  {
+   "id": "a9_sum_netqty",
+   "mechanism": "净买入量 vec_sum",
+   "expr": "group_rank(vec_sum(shrt38_accum_net_buy_qty), market)"
+  },
+  {
+   "id": "a10_max_netqty",
+   "mechanism": "净买入量 vec_max",
+   "expr": "group_rank(vec_max(shrt38_accum_net_buy_qty), market)"
+  }
+ ],
+ "batches": [
+  {
+   "n": 10,
+   "progress_id": "3CL18C5K25hcc0v9P9wJ5ct",
+   "ids": [
+    "a1_sum_netbuy",
+    "a2_max_netbuy",
+    "a3_std_netbuy",
+    "a4_range_netbuy",
+    "a5_qty_netbuy",
+    "a6_sellbuy_ratio",
+    "a7_short_qtywgt",
+    "a8_amt_level",
+    "a9_sum_netqty",
+    "a10_max_netqty"
+   ]
+  }
+ ]
+}

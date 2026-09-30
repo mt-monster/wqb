@@ -1,0 +1,92 @@
+[
+ {
+  "tag": "d0_w22_mkt",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), market)",
+  "decay": 0,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d10_w22_mkt",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), market)",
+  "decay": 10,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d30_w22_mkt",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), market)",
+  "decay": 30,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d60_w22_mkt",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), market)",
+  "decay": 60,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d10_w66_mkt",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 66), market)",
+  "decay": 10,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d10_w252_mkt",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 252), market)",
+  "decay": 10,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d10_w22_IND",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), industry)",
+  "decay": 10,
+  "neutralization": "INDUSTRY"
+ },
+ {
+  "tag": "d10_w22_SUBIND",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), subindustry)",
+  "decay": 10,
+  "neutralization": "SUBINDUSTRY"
+ },
+ {
+  "tag": "d10_w22_SECT",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), sector)",
+  "decay": 10,
+  "neutralization": "SECTOR"
+ },
+ {
+  "tag": "d10_w22_sm5",
+  "expression": "group_rank(ts_mean(ts_backfill(analyst_quantile1_60d_pred, 22), 5), market)",
+  "decay": 10,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d30_w66_sm5",
+  "expression": "group_rank(ts_mean(ts_backfill(analyst_quantile1_60d_pred, 66), 5), market)",
+  "decay": 30,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "d10_w22_sp05",
+  "expression": "group_rank(signed_power(ts_backfill(analyst_quantile1_60d_pred, 22), 0.5), market)",
+  "decay": 10,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "q120_d10_w22",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_120d_pred, 22), market)",
+  "decay": 10,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "q120_d30_w22",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_120d_pred, 22), market)",
+  "decay": 30,
+  "neutralization": "STATISTICAL"
+ },
+ {
+  "tag": "q120_d10_w66",
+  "expression": "group_rank(ts_backfill(analyst_quantile1_120d_pred, 66), market)",
+  "decay": 10,
+  "neutralization": "STATISTICAL"
+ }
+]

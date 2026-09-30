@@ -1,0 +1,66 @@
+[
+ [
+  "p01_net_bull_gap",
+  "hump(group_rank(ts_decay_linear(divide(subtract(avg_similarity_upward_breakaway_gap_120, avg_similarity_downward_breakaway_gap_120), add(add(avg_similarity_upward_breakaway_gap_120, avg_similarity_downward_breakaway_gap_120), 0.0001)), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p02_net_bull_tri",
+  "hump(group_rank(ts_decay_linear(divide(subtract(avg_similarity_upward_symmetrical_triangle, avg_similarity_downward_symmetrical_triangle), add(add(avg_similarity_upward_symmetrical_triangle, avg_similarity_downward_symmetrical_triangle), 0.0001)), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p03_vb_strength",
+  "hump(group_rank(ts_decay_linear(avg_similarity_v_reversal_bottom_120, 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p04_up_gap_strength",
+  "hump(group_rank(ts_decay_linear(avg_similarity_upward_breakaway_gap_120, 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p05_reversal_vs_cont",
+  "hump(group_rank(ts_decay_linear(divide(subtract(add(avg_similarity_v_reversal_bottom_120, avg_similarity_rising_wedge_pattern_120), add(avg_similarity_falling_wedge_pattern_120, avg_similarity_continuation_rising_wedge_120)), add(add(avg_similarity_v_reversal_bottom_120, avg_similarity_rising_wedge_pattern_120), add(avg_similarity_falling_wedge_pattern_120, avg_similarity_continuation_rising_wedge_120))), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p06_support_tilt",
+  "hump(group_rank(ts_decay_linear(divide(subtract(avg_similarity_rising_support_flat_resistance_120, avg_similarity_falling_support_flat_resistance_120), add(add(avg_similarity_rising_support_flat_resistance_120, avg_similarity_falling_support_flat_resistance_120), 0.0001)), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p07_up_gap_delta",
+  "hump(group_rank(ts_decay_linear(ts_delta(avg_similarity_upward_breakaway_gap_120, 20), 60), subindustry), hump=0.0025)"
+ ],
+ [
+  "p08_vb_delta",
+  "hump(group_rank(ts_decay_linear(ts_delta(avg_similarity_v_reversal_bottom_120, 20), 60), subindustry), hump=0.0025)"
+ ],
+ [
+  "p09_vb_tsrank",
+  "hump(group_rank(ts_decay_linear(ts_rank(avg_similarity_v_reversal_bottom_120, 500), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p10_up_gap_tsrank",
+  "hump(group_rank(ts_decay_linear(ts_rank(avg_similarity_upward_breakaway_gap_120, 500), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p11_wedge_tilt",
+  "hump(group_rank(ts_decay_linear(divide(subtract(avg_similarity_rising_wedge_pattern_120, avg_similarity_falling_wedge_pattern_120), add(add(avg_similarity_rising_wedge_pattern_120, avg_similarity_falling_wedge_pattern_120), 0.0001)), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p12_short_dn_gap",
+  "hump(group_rank(ts_decay_linear(multiply(-1, avg_similarity_downward_breakaway_gap_120), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p13_net_bull_gap_ind",
+  "hump(group_rank(ts_decay_linear(divide(subtract(avg_similarity_upward_breakaway_gap_120, avg_similarity_downward_breakaway_gap_120), add(add(avg_similarity_upward_breakaway_gap_120, avg_similarity_downward_breakaway_gap_120), 0.0001)), 250), industry), hump=0.0025)"
+ ],
+ [
+  "p14_vb_strength_mkt",
+  "hump(group_rank(ts_decay_linear(avg_similarity_v_reversal_bottom_120, 250), market), hump=0.0025)"
+ ],
+ [
+  "p15_pattern_activity",
+  "hump(group_rank(ts_decay_linear(add(add(avg_similarity_upward_breakaway_gap_120, avg_similarity_downward_breakaway_gap_120), add(avg_similarity_v_reversal_bottom_120, avg_similarity_rising_wedge_pattern_120)), 250), subindustry), hump=0.0025)"
+ ],
+ [
+  "p16_up_minus_dn_raw",
+  "hump(group_rank(ts_decay_linear(subtract(avg_similarity_upward_breakaway_gap_120, avg_similarity_downward_breakaway_gap_120), 250), subindustry), hump=0.0025)"
+ ]
+]

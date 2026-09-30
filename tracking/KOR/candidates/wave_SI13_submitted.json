@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 04:34:13",
+ "batches": [
+  {
+   "group": "P1_dl_hump",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "4tQkpJc7I4MNa1RYS9vfzr",
+   "ids": [
+    "p1_a",
+    "p1_b"
+   ]
+  },
+  {
+   "group": "P2_dl_long",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "3HGyTm7Uo4Lvcc6BcQsWJ3E",
+   "ids": [
+    "p2_a",
+    "p2_b"
+   ]
+  },
+  {
+   "group": "P3_dl_axes",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "1myW0IlE4uJ9Kn1hhig8lAu",
+   "ids": [
+    "p3_a",
+    "p3_b"
+   ]
+  },
+  {
+   "group": "P4_tsmean",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "2hc4zvfcD4yTcGQB6iTSHrB",
+   "ids": [
+    "p4_a",
+    "p4_b"
+   ]
+  }
+ ]
+}

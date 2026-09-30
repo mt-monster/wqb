@@ -1,0 +1,66 @@
+[
+ [
+  "K1_buy_over_sell_count",
+  "group_rank(divide(count_institutional_buyers_security, add(1, count_institutional_sellers_security)), sector)"
+ ],
+ [
+  "K2_sell_over_buy_count",
+  "group_rank(divide(count_institutional_sellers_security, add(1, count_institutional_buyers_security)), sector)"
+ ],
+ [
+  "K3_qty_buy_over_sell",
+  "group_rank(divide(quantity_institutional_shares_acquired, add(1, quantity_institutional_shares_disposed)), sector)"
+ ],
+ [
+  "K4_mv_buy_over_sell",
+  "group_rank(divide(market_value_institutional_shares_acquired, add(1, market_value_institutional_shares_disposed)), sector)"
+ ],
+ [
+  "K5_net_qty_over_gross",
+  "group_rank(divide(subtract(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed), add(1, add(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed))), sector)"
+ ],
+ [
+  "K6_inst_over_all",
+  "group_rank(divide(aggregate_share_count_institutions, add(1, aggregate_share_count_all_owners)), sector)"
+ ],
+ [
+  "K7_eq_over_share",
+  "group_rank(divide(aggregate_equity_value_institutions, add(1, aggregate_share_count_institutions)), sector)"
+ ],
+ [
+  "K8_net_mv_over_gross",
+  "group_rank(divide(subtract(market_value_institutional_shares_acquired, market_value_institutional_shares_disposed), add(1, add(market_value_institutional_shares_acquired, market_value_institutional_shares_disposed))), sector)"
+ ],
+ [
+  "K9_buy_sell_spread",
+  "group_rank(ts_decay_linear(divide(subtract(count_institutional_buyers_security, count_institutional_sellers_security), add(1, add(count_institutional_buyers_security, count_institutional_sellers_security))), 10), sector)"
+ ],
+ [
+  "K10_qty_ratio_decay",
+  "group_rank(ts_decay_linear(divide(quantity_institutional_shares_acquired, add(1, quantity_institutional_shares_disposed)), 20), sector)"
+ ],
+ [
+  "K11_holder_over_all",
+  "group_rank(divide(count_institutional_holders_security, add(1, aggregate_share_count_all_owners)), sector)"
+ ],
+ [
+  "K12_net_qty_over_hold",
+  "group_rank(divide(subtract(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed), add(1, aggregate_share_count_institutions)), sector)"
+ ],
+ [
+  "K13_mv_ratio_decay",
+  "group_rank(ts_decay_linear(divide(market_value_institutional_shares_acquired, add(1, market_value_institutional_shares_disposed)), 20), sector)"
+ ],
+ [
+  "K14_rc_buy_count",
+  "group_rank(divide(count_institutional_buyers_security, add(1, count_institutional_holders_security)), sector)"
+ ],
+ [
+  "K15_rc_buy_qty_norm",
+  "group_rank(divide(quantity_institutional_shares_acquired, add(1, aggregate_share_count_institutions)), sector)"
+ ],
+ [
+  "K16_buy_sell_qty_spread",
+  "group_rank(divide(subtract(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed), add(1, aggregate_share_count_all_owners)), sector)"
+ ]
+]

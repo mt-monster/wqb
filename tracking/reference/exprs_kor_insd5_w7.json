@@ -1,0 +1,74 @@
+[
+ [
+  "A1_tsdelta22",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector))"
+ ],
+ [
+  "A2_tsdelta63",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 63), sector))"
+ ],
+ [
+  "A3_tsdelta5",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 5), sector))"
+ ],
+ [
+  "A4_tsdelta252",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 252), sector))"
+ ],
+ [
+  "B1_delta_on_decay",
+  "subtract(0.5, group_rank(ts_delta(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), 22), sector))"
+ ],
+ [
+  "B2_delta5_on_decay",
+  "subtract(0.5, group_rank(ts_delta(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), 5), sector))"
+ ],
+ [
+  "C1_ratio_norm_delta",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector))"
+ ],
+ [
+  "C2_ts_rank63_delta",
+  "subtract(0.5, group_rank(ts_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 63), sector))"
+ ],
+ [
+  "D1_ts_delta_val_ratio",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), subindustry))"
+ ],
+ [
+  "D2_ts_delta_ind",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), industry))"
+ ],
+ [
+  "E1_delta22_winsor",
+  "subtract(0.5, winsorize(group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector), std=4))"
+ ],
+ [
+  "E2_delta22_sp",
+  "signed_power(subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector)), 0.5)"
+ ],
+ [
+  "F1_volaf_ratio_delta22",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_vol_af), add(1, vec_sum(insd5_vol_bf))), 22), sector))"
+ ],
+ [
+  "F2_data_ratio_delta22",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_data), add(1, vec_sum(insd5_source_data))), 22), sector))"
+ ],
+ [
+  "G1_delta22_rank_first",
+  "subtract(0.5, group_rank(ts_delta(group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector), 22), sector))"
+ ],
+ [
+  "G2_zscore_delta22",
+  "subtract(0.5, group_rank(ts_delta(ts_zscore(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 252), 22), sector))"
+ ],
+ [
+  "H1_delta_scale",
+  "subtract(0.5, group_rank(ts_scale(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), 252), sector))"
+ ],
+ [
+  "H2_delta_hump",
+  "subtract(0.5, hump(group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector), hump=0.003))"
+ ]
+]

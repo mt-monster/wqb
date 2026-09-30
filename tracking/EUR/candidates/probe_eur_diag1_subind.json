@@ -1,0 +1,52 @@
+{
+ "results": [
+  {
+   "label": "h1a_naked_rank",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "h1b_rank_rev",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "h1c_raw_sub",
+   "sim": "ERROR",
+   "msg": "Attempted to use unknown variable \"avg_similarity_downward_breakaway_gap\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "h1d_light_decay",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "h1e_ts_mean5",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "h1f_zscore",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "h1g_neg_zscore",
+   "sim": "CANCELLED",
+   "msg": "None"
+  },
+  {
+   "label": "h1h_rank_mkt",
+   "sim": "CANCELLED",
+   "msg": "None"
+  }
+ ],
+ "cfg": {
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.02
+ }
+}

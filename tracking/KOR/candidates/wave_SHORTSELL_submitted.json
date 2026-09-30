@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 01:54:06",
+ "batches": [
+  {
+   "group": "S1_shortlevel",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "UUsxWd2s54Q9fH7ykNtU1S",
+   "ids": [
+    "sv1_ytq",
+    "sv2_amt"
+   ]
+  },
+  {
+   "group": "S2_shortwgt",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "ZXwfa65m4xlaMM13ogCWzA8",
+   "ids": [
+    "sv3_amt_wgt",
+    "sv4_tot_amt_wgt"
+   ]
+  },
+  {
+   "group": "S3_ratio_mix",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "3fyjyLc7f4Bl9vTO3vudD6E",
+   "ids": [
+    "sv5_ytq_per_amt",
+    "sv6_tgw_ytq"
+   ]
+  },
+  {
+   "group": "S4_invact_vs_ss",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "3AE8A92DI54z8Bv18VkaqkWF",
+   "ids": [
+    "sv7_sell_ss",
+    "sv8_buy_ss"
+   ]
+  }
+ ]
+}

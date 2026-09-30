@@ -1,0 +1,73 @@
+{
+ "results": [
+  {
+   "label": "W21_last60_d4",
+   "alpha": "d51k8NOj",
+   "S": 1.67,
+   "F": 0.64,
+   "T": 0.5122,
+   "sub": [
+    "PASS",
+    1.2
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.67
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.64
+   ]
+  },
+  {
+   "label": "W21_bid30_d4",
+   "alpha": "RR6jqjqj",
+   "S": 1.55,
+   "F": 0.57,
+   "T": 0.5131,
+   "sub": [
+    "PASS",
+    0.99
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    1.55
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.57
+   ]
+  },
+  {
+   "label": "W21_ask30_d4",
+   "alpha": "1YZk1mGR",
+   "S": 1.47,
+   "F": 0.52,
+   "T": 0.5128,
+   "sub": [
+    "PASS",
+    1.02
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    1.47
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.52
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL10M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

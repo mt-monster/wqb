@@ -1,0 +1,74 @@
+[
+ {
+  "group": "G1_dl400",
+  "id": "rKOxJLd1",
+  "sharpe": 2.3,
+  "fitness": 1.74,
+  "turnover": 0.1888,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 400), industry), hump=0.0025)"
+ },
+ {
+  "group": "G1_dl400",
+  "id": "wpZrn19l",
+  "sharpe": 1.73,
+  "fitness": 1.15,
+  "turnover": 0.1746,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 400), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "G2_dl600",
+  "id": "2rwYaR5x",
+  "sharpe": 2.28,
+  "fitness": 1.71,
+  "turnover": 0.1888,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 600), industry), hump=0.0025)"
+ },
+ {
+  "group": "G2_dl600",
+  "id": "omLd3vPm",
+  "sharpe": 1.73,
+  "fitness": 1.15,
+  "turnover": 0.1747,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 600), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "G3_dl900",
+  "id": "akbpAj99",
+  "sharpe": 2.27,
+  "fitness": 1.7,
+  "turnover": 0.1888,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 900), industry), hump=0.0025)"
+ },
+ {
+  "group": "G3_dl900",
+  "id": "E5pdgOn1",
+  "sharpe": 1.74,
+  "fitness": 1.16,
+  "turnover": 0.1745,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 900), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "G4_humpvar",
+  "id": "gJb2oWeO",
+  "sharpe": 1.6,
+  "fitness": 1.04,
+  "turnover": 0.1702,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), subindustry), hump=0.003)"
+ },
+ {
+  "group": "G4_humpvar",
+  "id": "omLd9oEJ",
+  "sharpe": 1.86,
+  "fitness": 1.27,
+  "turnover": 0.1789,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), subindustry), hump=0.002)"
+ }
+]

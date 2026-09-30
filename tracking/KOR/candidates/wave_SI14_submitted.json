@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 10:57:28",
+ "batches": [
+  {
+   "group": "S1_realshort",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "tSCai87W4gsaR1xcYSQ0TW",
+   "ids": [
+    "s1_a",
+    "s1_b"
+   ]
+  },
+  {
+   "group": "S2_netbuy",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "1U0NUm9WF4sE8KV18rMFh597",
+   "ids": [
+    "s2_a",
+    "s2_b"
+   ]
+  },
+  {
+   "group": "S3_qtyamt",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "2Kz8Jp4lU4H58Xod20QWg4w",
+   "ids": [
+    "s3_a",
+    "s3_b"
+   ]
+  },
+  {
+   "group": "S4_amt_wgt",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "x2XpAcPM4W59Xm108tea0Ac",
+   "ids": [
+    "s4_a",
+    "s4_b"
+   ]
+  }
+ ]
+}

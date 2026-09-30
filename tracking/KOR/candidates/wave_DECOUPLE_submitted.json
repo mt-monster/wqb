@@ -1,0 +1,45 @@
+{
+ "submitted_at": "2026-09-29 01:07:16",
+ "batches": [
+  {
+   "group": "D1_base_ind_d4",
+   "nu": "INDUSTRY",
+   "decay": 4,
+   "progress_id": "1A7bGAeJY5iybgvjbe6R8qP",
+   "ids": [
+    "d1_base_ind_d4",
+    "d2_base_ind_d10"
+   ]
+  },
+  {
+   "group": "D2_base_sub_d4",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "progress_id": "H4mYO2nq5a1cpSzECzFM52",
+   "ids": [
+    "d3_base_sub_d4",
+    "d4_base_sub_d10"
+   ]
+  },
+  {
+   "group": "D3_base_sub_d0",
+   "nu": "SUBINDUSTRY",
+   "decay": 0,
+   "progress_id": "1Pe9z28Mb5iq8QF1cfG1Ip10",
+   "ids": [
+    "d5_base_sub_d0",
+    "d6_base_ind_d0"
+   ]
+  },
+  {
+   "group": "D4_sm5_sub_d0",
+   "nu": "SUBINDUSTRY",
+   "decay": 0,
+   "progress_id": "3Ey469cFS4SMbcbM3wyie5s",
+   "ids": [
+    "d7_sm5_sub_d0",
+    "d8_sm5_ind_d0"
+   ]
+  }
+ ]
+}

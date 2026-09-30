@@ -1,0 +1,25 @@
+{
+ "submitted_at": "2026-09-29 01:07:40",
+ "batches": [
+  {
+   "group": "R4_ind",
+   "nu": "INDUSTRY",
+   "decay": 4,
+   "progress_id": "jV45ObFX4Kt9gs1ejjGVa2C",
+   "ids": [
+    "s4_lastrate_ind",
+    "s4b_avg_ind"
+   ]
+  },
+  {
+   "group": "R5_sub",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "progress_id": "vlPMV64C4I09Qb52MKX4uA",
+   "ids": [
+    "s5_lastrate_sub",
+    "s5b_avg_sub"
+   ]
+  }
+ ]
+}

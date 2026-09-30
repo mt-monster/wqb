@@ -1,0 +1,70 @@
+[
+ [
+  "K1_neg_base",
+  "group_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), sector)"
+ ],
+ [
+  "K2_neg_base_hump",
+  "hump(group_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), sector), hump=0.003)"
+ ],
+ [
+  "K3_neg_tsmean22",
+  "group_rank(multiply(-1, ts_mean(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22)), sector)"
+ ],
+ [
+  "K4_neg_tsmean66",
+  "group_rank(multiply(-1, ts_mean(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 66)), sector)"
+ ],
+ [
+  "K5_neg_decay_linear10",
+  "hump(group_rank(multiply(-1, ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10)), sector), hump=0.003)"
+ ],
+ [
+  "K6_neg_decay_linear20",
+  "hump(group_rank(multiply(-1, ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 20)), sector), hump=0.003)"
+ ],
+ [
+  "L1_neg_subind",
+  "group_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), subindustry)"
+ ],
+ [
+  "L2_neg_ind",
+  "group_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), industry)"
+ ],
+ [
+  "L3_neg_market",
+  "group_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), market)"
+ ],
+ [
+  "L4_neg_plain_rank",
+  "rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))))"
+ ],
+ [
+  "L5_neg_zscore",
+  "zscore(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))))"
+ ],
+ [
+  "M1_neg_sp05",
+  "signed_power(group_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), sector), 0.5)"
+ ],
+ [
+  "M2_neg_tsrank252",
+  "group_rank(ts_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), 252), sector)"
+ ],
+ [
+  "M3_neg_tszscore252",
+  "group_rank(ts_zscore(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), 252), sector)"
+ ],
+ [
+  "M4_neg_tsdelta22",
+  "group_rank(ts_delta(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), 22), sector)"
+ ],
+ [
+  "N1_pos_base",
+  "group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector)"
+ ],
+ [
+  "N2_neg_ratio_inverse",
+  "group_rank(divide(vec_sum(insd5_source_data), add(1, vec_sum(insd5_trd_amt))), sector)"
+ ]
+]

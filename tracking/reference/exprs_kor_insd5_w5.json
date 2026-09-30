@@ -1,0 +1,70 @@
+[
+ [
+  "U1_reverse_out",
+  "reverse(group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector))"
+ ],
+ [
+  "U2_reverse_out2",
+  "reverse(group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), sector))"
+ ],
+ [
+  "U3_reverse_in",
+  "group_rank(reverse(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), sector)"
+ ],
+ [
+  "U4_reverse_raw",
+  "reverse(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))))"
+ ],
+ [
+  "U5_reverse_sub",
+  "reverse(subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector)))"
+ ],
+ [
+  "V_decay5",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 5), sector))"
+ ],
+ [
+  "V_decay20",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 20), sector))"
+ ],
+ [
+  "V_decay40",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 40), sector))"
+ ],
+ [
+  "V_decay66",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 66), sector))"
+ ],
+ [
+  "V_tsmean22",
+  "subtract(0.5, group_rank(ts_mean(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector))"
+ ],
+ [
+  "V_tsmean5",
+  "subtract(0.5, group_rank(ts_mean(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 5), sector))"
+ ],
+ [
+  "W_subind",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), subindustry))"
+ ],
+ [
+  "W_industry",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), industry))"
+ ],
+ [
+  "W_market",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), market))"
+ ],
+ [
+  "W_zscore_grp",
+  "group_zscore(reverse(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10)), sector)"
+ ],
+ [
+  "X_sp05",
+  "signed_power(subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), sector)), 0.5)"
+ ],
+ [
+  "X_winsor",
+  "winsorize(subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), sector)), std=4)"
+ ]
+]

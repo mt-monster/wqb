@@ -1,0 +1,134 @@
+[
+ {
+  "label": "T2b_sl_gd",
+  "dataset": "other532",
+  "alpha_id": "kqoAVrjg",
+  "sharpe": -0.24,
+  "fitness": -0.05,
+  "turnover": 0.1733,
+  "margin": -0.000101,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_global_daily_specificreturn, 60), ts_rank(oth532_global_daily_specificreturn, 250)), 20), subindustry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_ml_gd",
+  "dataset": "other532",
+  "alpha_id": "qMxRWrjV",
+  "sharpe": -0.12,
+  "fitness": -0.02,
+  "turnover": 0.1874,
+  "margin": -4.9e-05,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_global_daily_specificreturn, 250), ts_rank(oth532_global_daily_specificreturn, 60)), 20), industry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_sl_idm",
+  "dataset": "other532",
+  "alpha_id": "d5bGOVO2",
+  "sharpe": 0.18,
+  "fitness": 0.04,
+  "turnover": 0.1699,
+  "margin": 8.1e-05,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(subtract(ts_rank(idiosyncratic_return_eue_monthly, 60), ts_rank(idiosyncratic_return_eue_monthly, 250)), 20), subindustry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_ml_idm",
+  "dataset": "other532",
+  "alpha_id": "vRrQkMka",
+  "sharpe": -0.23,
+  "fitness": -0.05,
+  "turnover": 0.1748,
+  "margin": -0.000106,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(subtract(ts_rank(idiosyncratic_return_eue_monthly, 250), ts_rank(idiosyncratic_return_eue_monthly, 60)), 20), industry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_sl_ed",
+  "dataset": "other532",
+  "alpha_id": "ZYbJ030n",
+  "sharpe": -0.23,
+  "fitness": -0.05,
+  "turnover": 0.1736,
+  "margin": -0.000103,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_emerging_daily_specificreturn, 60), ts_rank(oth532_emerging_daily_specificreturn, 250)), 20), subindustry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_ml_ed",
+  "dataset": "other532",
+  "alpha_id": "e7bj9w9N",
+  "sharpe": 0.07,
+  "fitness": 0.01,
+  "turnover": 0.1879,
+  "margin": 3e-05,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_emerging_daily_specificreturn, 250), ts_rank(oth532_emerging_daily_specificreturn, 60)), 20), industry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_sec",
+  "dataset": "other532",
+  "alpha_id": "wpZrYxYd",
+  "sharpe": 0.73,
+  "fitness": 0.25,
+  "turnover": 0.2816,
+  "margin": 0.000231,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 20), sector), hump=0.0025)"
+ },
+ {
+  "label": "T2b_mkt",
+  "dataset": "other532",
+  "alpha_id": "E5pdvWp0",
+  "sharpe": 0.74,
+  "fitness": 0.25,
+  "turnover": 0.2892,
+  "margin": 0.000237,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 20), market), hump=0.0025)"
+ },
+ {
+  "label": "T2b_d120",
+  "dataset": "other532",
+  "alpha_id": "blbwRpQr",
+  "sharpe": 1.07,
+  "fitness": 0.48,
+  "turnover": 0.2092,
+  "margin": 0.000404,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 120), subindustry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_d250",
+  "dataset": "other532",
+  "alpha_id": "58zXQRlJ",
+  "sharpe": 1.07,
+  "fitness": 0.48,
+  "turnover": 0.2092,
+  "margin": 0.000404,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 250), subindustry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_vol",
+  "dataset": "other532",
+  "alpha_id": "6XjkrxrK",
+  "sharpe": 0.1,
+  "fitness": 0.02,
+  "turnover": 0.1134,
+  "margin": 6.4e-05,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(multiply(-1, ts_std_dev(oth532_global_daily_specificreturn, 60)), 20), subindustry), hump=0.0025)"
+ },
+ {
+  "label": "T2b_zgap",
+  "dataset": "other532",
+  "alpha_id": "omLd62L2",
+  "sharpe": 0.39,
+  "fitness": 0.1,
+  "turnover": 0.2059,
+  "margin": 0.000141,
+  "pyramids": null,
+  "expr": "hump(group_rank(ts_decay_linear(subtract(ts_zscore(oth532_global_daily_specificreturn, 60), ts_zscore(oth532_global_monthly_specificreturn, 250)), 20), subindustry), hump=0.0025)"
+ }
+]

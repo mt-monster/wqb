@@ -1,0 +1,151 @@
+{
+ "cfg": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 30,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "A1_ghc_rank",
+   "alpha": "A1Noeo1Y",
+   "S": -0.31,
+   "F": -0.1,
+   "T": 0.0907,
+   "sub": [
+    "FAIL",
+    -0.42
+   ],
+   "y2": [
+    "FAIL",
+    -0.34
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.31
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.1
+   ]
+  },
+  {
+   "label": "A2_ghc_hump",
+   "alpha": "pwR9M7Jv",
+   "S": -0.3,
+   "F": -0.1,
+   "T": 0.0877,
+   "sub": [
+    "FAIL",
+    -0.38
+   ],
+   "y2": [
+    "FAIL",
+    -0.46
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.3
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.1
+   ]
+  },
+  {
+   "label": "A3_ghc_decay",
+   "alpha": "3qX8k8mX",
+   "S": -0.28,
+   "F": -0.09,
+   "T": 0.0873,
+   "sub": [
+    "FAIL",
+    -0.34
+   ],
+   "y2": [
+    "FAIL",
+    -0.56
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.28
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.09
+   ]
+  },
+  {
+   "label": "A4_ghc_zscore1260",
+   "alpha": "78NemKav",
+   "S": -0.46,
+   "F": -0.18,
+   "T": 0.0835,
+   "sub": [
+    "FAIL",
+    -0.52
+   ],
+   "y2": [
+    "FAIL",
+    0.38
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.46
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.18
+   ]
+  },
+  {
+   "label": "A5_ghc_meandiff",
+   "alpha": "78NemM2v",
+   "S": -0.42,
+   "F": -0.16,
+   "T": 0.09,
+   "sub": [
+    "FAIL",
+    -0.59
+   ],
+   "y2": [
+    "FAIL",
+    -0.44
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.42
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.16
+   ]
+  },
+  {
+   "label": "A6_ghc_neg",
+   "alpha": "6Xj5JVQE",
+   "S": -0.23,
+   "F": -0.07,
+   "T": 0.0907,
+   "sub": [
+    "FAIL",
+    -0.37
+   ],
+   "y2": [
+    "FAIL",
+    -0.26
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.23
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.07
+   ]
+  }
+ ]
+}

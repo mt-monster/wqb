@@ -1,0 +1,148 @@
+{
+ "results": {
+  "zqY0OLEX": {
+   "prod_max": 0.7334,
+   "min": -0.2086,
+   "n_records": 20,
+   "el": 21
+  },
+  "883Y3bqW": {
+   "prod_max": 0.9593,
+   "min": -0.2055,
+   "n_records": 20,
+   "el": 22
+  },
+  "P0Z8g18q": {
+   "prod_max": 0.8092,
+   "min": -0.1982,
+   "n_records": 20,
+   "el": 21
+  },
+  "zqY0bW0G": {
+   "prod_max": 0.8953,
+   "min": -0.2004,
+   "n_records": 20,
+   "el": 21
+  },
+  "1YxPZN5J": {
+   "prod_max": 0.8043,
+   "min": -0.1996,
+   "n_records": 20,
+   "el": 21
+  },
+  "RRVK6ELb": {
+   "prod_max": 0.8895,
+   "min": -0.199,
+   "n_records": 20,
+   "el": 21
+  },
+  "Jjx1Qelj": {
+   "prod_max": 0.8253,
+   "min": -0.1961,
+   "n_records": 20,
+   "el": 21
+  },
+  "j23x8YLW": {
+   "prod_max": 0.8043,
+   "min": -0.1996,
+   "n_records": 20,
+   "el": 21
+  },
+  "akLwV67v": {
+   "prod_max": 0.9593,
+   "min": -0.2055,
+   "n_records": 20,
+   "el": 21
+  },
+  "qMW35xnV": {
+   "prod_max": 0.7772,
+   "min": -0.2597,
+   "n_records": 20,
+   "el": 21
+  },
+  "2rOW9xA6": {
+   "prod_max": 0.975,
+   "min": -0.2779,
+   "n_records": 20,
+   "el": 21
+  },
+  "qMW3GgVV": {
+   "prod_max": 0.9634,
+   "min": -0.2553,
+   "n_records": 20,
+   "el": 21
+  },
+  "mLg11W6W": {
+   "prod_max": 0.79,
+   "min": -0.2141,
+   "n_records": 20,
+   "el": 21
+  },
+  "E5vLLPV0": {
+   "prod_max": 0.7883,
+   "min": -0.2007,
+   "n_records": 20,
+   "el": 21
+  },
+  "rK5VnXY3": {
+   "prod_max": 0.8859,
+   "min": -0.2332,
+   "n_records": 20,
+   "el": 21
+  },
+  "WjP0x8Md": {
+   "prod_max": 0.8605,
+   "min": -0.2184,
+   "n_records": 20,
+   "el": 21
+  },
+  "E5vLjbM1": {
+   "prod_max": 0.8971,
+   "min": -0.2205,
+   "n_records": 20,
+   "el": 21
+  },
+  "blRneE5K": {
+   "prod_max": 0.9916,
+   "min": -0.3075,
+   "n_records": 20,
+   "el": 21
+  },
+  "om6rxOOm": {
+   "prod_max": 0.9948,
+   "min": -0.3078,
+   "n_records": 20,
+   "el": 21
+  },
+  "58QePWW5": {
+   "prod_max": 0.9845,
+   "min": -0.3023,
+   "n_records": 20,
+   "el": 265
+  },
+  "rK5VZdGj": {
+   "prod_max": 0.7814,
+   "min": -0.2146,
+   "n_records": 20,
+   "el": 407
+  },
+  "2rOW3j6b": {
+   "prod_max": null,
+   "err": "TIMEOUT"
+  },
+  "xAYWJ1Wn": {
+   "prod_max": 0.7847,
+   "min": -0.3288,
+   "n_records": 20,
+   "el": 367
+  },
+  "e79vX6GE": {
+   "prod_max": null,
+   "err": "TIMEOUT"
+  },
+  "RRVKGAKe": {
+   "prod_max": null,
+   "err": "TIMEOUT"
+  }
+ }
+}

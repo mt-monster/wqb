@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 03:11:00",
+ "batches": [
+  {
+   "group": "G1_omlj_hump",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "3pagGOa5t4um9zUAgO8k98m",
+   "ids": [
+    "g1_a",
+    "g1_b"
+   ]
+  },
+  {
+   "group": "G2_omlj_base",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "BoQGb2up4S48GhvMfnMfiU",
+   "ids": [
+    "g2_a",
+    "g2_b"
+   ]
+  },
+  {
+   "group": "G3_smooth",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "1FhxoO3SR5kaaKiqUwz0BFN",
+   "ids": [
+    "g3_a",
+    "g3_b"
+   ]
+  },
+  {
+   "group": "G4_sector",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "2IkNpEgJj4X18D6J1BQYckp",
+   "ids": [
+    "g4_a",
+    "g4_b"
+   ]
+  }
+ ]
+}

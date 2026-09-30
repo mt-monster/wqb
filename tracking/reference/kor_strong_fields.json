@@ -1,0 +1,1653 @@
+{
+ "KOR_insiders5": [
+  {
+   "id": "insd5_source_data",
+   "description": "Deduplicated share count held by the source holder for the issuer",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9995,
+   "userCount": 261,
+   "alphaCount": 721,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_source_real_data",
+   "description": "Raw share count including overlaps before vendor deduplication",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9995,
+   "userCount": 226,
+   "alphaCount": 619,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_rpst_grp_typ",
+   "description": "Holder group type code for the source (e.g., representative, related party, co-holder)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9995,
+   "userCount": 213,
+   "alphaCount": 565,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_tnc",
+   "description": "Number of special parties",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9996,
+   "userCount": 195,
+   "alphaCount": 441,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_source_ratio",
+   "description": "Deduplicated ownership percentage corresponding to DATA",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9995,
+   "userCount": 174,
+   "alphaCount": 398,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_source_real_ratio",
+   "description": "Raw ownership percentage corresponding to REAL_DATA before deduplication",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9995,
+   "userCount": 126,
+   "alphaCount": 302,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_data",
+   "description": "Deduplicated number of shares held by the group",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9996,
+   "userCount": 121,
+   "alphaCount": 293,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_ghc_tr",
+   "description": "Change in ownership percentage resulting from the transaction",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 107,
+   "alphaCount": 209,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_source_recent_dt",
+   "description": "Date of the latest change or update to this source holding record",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9995,
+   "userCount": 79,
+   "alphaCount": 272,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_grp_source_td_drt",
+   "description": "Trading date",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9995,
+   "userCount": 78,
+   "alphaCount": 234,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_real_data",
+   "description": "Undeduplicated share count including overlaps",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9996,
+   "userCount": 68,
+   "alphaCount": 160,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_real_ratio",
+   "description": "Undeduplicated ownership percentage including overlaps",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9996,
+   "userCount": 63,
+   "alphaCount": 205,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_grp_trsy_td_drt",
+   "description": "Trading date",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.8728,
+   "userCount": 57,
+   "alphaCount": 105,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_ratio",
+   "description": "Deduplicated ownership percentage of the group",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9996,
+   "userCount": 56,
+   "alphaCount": 121,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trsy_ratio",
+   "description": "Deduplicated ownership percentage of treasury shares",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.8728,
+   "userCount": 54,
+   "alphaCount": 151,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_fa_tr",
+   "description": "Ownership percentage (ratio) after the transaction/change",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 49,
+   "alphaCount": 127,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_nm_kor",
+   "description": "Insider’s Korean name",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 46,
+   "alphaCount": 98,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trsy_real_ratio",
+   "description": "Raw (non-deduplicated) ownership percentage of treasury shares",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.8728,
+   "userCount": 44,
+   "alphaCount": 128,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trsy_recent_dt",
+   "description": "Most recent reporting/update date for this holding (YYYY-MM-DD)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.8728,
+   "userCount": 44,
+   "alphaCount": 96,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_recent_dt",
+   "description": "Date of the most recent change within the holdings record",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9996,
+   "userCount": 39,
+   "alphaCount": 127,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trsy_real_data",
+   "description": "Raw (non-deduplicated) treasury share count including overlaps",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.8728,
+   "userCount": 37,
+   "alphaCount": 95,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_c_company_list_dt",
+   "description": "Listing date in YYYY-MM-DD",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 35,
+   "alphaCount": 64,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trd_amt",
+   "description": "Monetary amount of the transaction (KRW)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 33,
+   "alphaCount": 82,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_vol_af",
+   "description": "Number of shares held after the transaction/change",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 33,
+   "alphaCount": 71,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_vol_bf",
+   "description": "Number of shares held before the transaction/change",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 33,
+   "alphaCount": 94,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_fb_tr",
+   "description": "Ownership percentage (ratio) before the transaction/change",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 30,
+   "alphaCount": 75,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_corp_reg_no",
+   "description": "Corporation registration number",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 28,
+   "alphaCount": 46,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_pyt_pmc",
+   "description": "Company type code",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 28,
+   "alphaCount": 52,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_grp_td_drt",
+   "description": "Trading date",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9996,
+   "userCount": 27,
+   "alphaCount": 72,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trd_reason_b",
+   "description": "Insider transaction reason classification code (coded value; decode via TRD_REASON_BIx)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 27,
+   "alphaCount": 98,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trsy_data",
+   "description": "Deduplicated number of treasury shares held (treasury stock share count)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.8728,
+   "userCount": 27,
+   "alphaCount": 69,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_c_company_pyt_tkm",
+   "description": "Market type classification of the listed company (e.g., KOSPI, KOSDAQ, KONEX, OTHER)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 25,
+   "alphaCount": 41,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_group_s",
+   "description": "Group 2",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 23,
+   "alphaCount": 76,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_td_ctn",
+   "description": "Disclosure/notice date when the transaction was made public (YYYY-MM-DD)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 23,
+   "alphaCount": 70,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_isd_history_issue_typ",
+   "description": "Code indicating the security/issue type (e.g., equity, bond, warrant)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 22,
+   "alphaCount": 57,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_ny_srfi",
+   "description": "IFRS adoption flag (Yes/No)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 22,
+   "alphaCount": 34,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_qes",
+   "description": "Classification number",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 22,
+   "alphaCount": 74,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_finacc_typ",
+   "description": "Financial sector type code",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 20,
+   "alphaCount": 37,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_officer",
+   "description": "Indicator whether the insider is a corporate officer (1=yes, 0=no)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 20,
+   "alphaCount": 47,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_td_tse",
+   "description": "Established date in YYYYMMDD",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 18,
+   "alphaCount": 21,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trd_reason_a",
+   "description": "Transaction reason code A",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 18,
+   "alphaCount": 61,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_trsy_tnc",
+   "description": "Number of sepcial parties",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.8728,
+   "userCount": 18,
+   "alphaCount": 66,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_history_td_drt",
+   "description": "Trade date when the transaction occurred (YYYY-MM-DD)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 17,
+   "alphaCount": 55,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_list_yn",
+   "description": "Listing status flag (Y = listed, N = not listed)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 17,
+   "alphaCount": 27,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_unt_val",
+   "description": "Unit price per share for the transaction",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 17,
+   "alphaCount": 44,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_nm_eyf",
+   "description": "Fiscal year-end month (1–12)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 16,
+   "alphaCount": 33,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_s_stock_pyt_tkm",
+   "description": "Market/board type code (e.g., KOSPI, KOSDAQ, KONEX)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 16,
+   "alphaCount": 26,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_serial",
+   "description": "Division number 2",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 16,
+   "alphaCount": 59,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_mmyy_srfi",
+   "description": "IFRS reporting year and month (YYYY-MM)",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.247,
+   "coverage": 0.9991,
+   "userCount": 15,
+   "alphaCount": 24,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  },
+  {
+   "id": "insd5_td_ghc",
+   "description": "Changing date",
+   "dataset": {
+    "id": "insiders5",
+    "name": "Corporate Insider Trading Activities Dataset"
+   },
+   "category": {
+    "id": "insiders",
+    "name": "Insiders"
+   },
+   "subcategory": {
+    "id": "insiders-insider-data",
+    "name": "Insider Data"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "VECTOR",
+   "dateCoverage": 0.9507,
+   "coverage": 0.7318,
+   "userCount": 11,
+   "alphaCount": 37,
+   "pyramidMultiplier": 1.2,
+   "themes": [],
+   "dateCreated": "2023-11-01"
+  }
+ ],
+ "KOR_institutions6": [
+  {
+   "id": "aggregate_share_count_institutions",
+   "description": "Total number of shares of the security currently held by all institutional investors at the reporting date",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9976,
+   "userCount": 138,
+   "alphaCount": 239,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "aggregate_share_count_all_owners",
+   "description": "Aggregate number of shares of the security held by all owners, with duplication between child and parent owners removed",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 115,
+   "alphaCount": 196,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "aggregate_equity_value_institutions",
+   "description": "Aggregate dollar value of shares of the security currently held by all institutional investors at the reporting date",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 0.9976,
+   "userCount": 80,
+   "alphaCount": 110,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "quantity_institutional_shares_acquired",
+   "description": "Total number of shares of the security purchased by institutional investors during the reporting period",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 64,
+   "alphaCount": 107,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "aggregate_equity_value_all_owners",
+   "description": "Aggregate dollar value of shares of the security held by all owners, with duplication between child and parent owners removed",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 61,
+   "alphaCount": 87,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "count_institutional_sellers_security",
+   "description": "Number of institutional investors who sold shares of the security during the reporting period",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 61,
+   "alphaCount": 89,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "market_value_institutional_shares_acquired",
+   "description": "Aggregate dollar value of shares of the security purchased by institutional investors during the reporting period",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 58,
+   "alphaCount": 108,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "count_institutional_buyers_security",
+   "description": "Number of institutional investors who purchased shares of the security during the reporting period",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 57,
+   "alphaCount": 79,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "quantity_institutional_shares_disposed",
+   "description": "Total number of shares of the security sold by institutional investors during the reporting period",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 55,
+   "alphaCount": 102,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "market_value_institutional_shares_disposed",
+   "description": "Aggregate dollar value of shares of the security sold by institutional investors during the reporting period",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 43,
+   "alphaCount": 58,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  },
+  {
+   "id": "count_institutional_holders_security",
+   "description": "Number of institutional investors currently holding shares (with holdings greater than zero) for the security at the reporting date",
+   "dataset": {
+    "id": "institutions6",
+    "name": "Institutions and Beneficial Stake Ownership"
+   },
+   "category": {
+    "id": "institutions",
+    "name": "Institutions"
+   },
+   "subcategory": {
+    "id": "institutions-ownership-models",
+    "name": "Ownership Models"
+   },
+   "region": "KOR",
+   "delay": 1,
+   "universe": "TOP600",
+   "type": "MATRIX",
+   "dateCoverage": 0.9507,
+   "coverage": 1.0,
+   "userCount": 37,
+   "alphaCount": 57,
+   "pyramidMultiplier": 1.4,
+   "themes": [],
+   "dateCreated": "2025-10-01"
+  }
+ ]
+}

@@ -1,0 +1,150 @@
+[
+ [
+  "A1_corr_PA_r66",
+  "rank(multiply(-1, ts_corr(primary_sentiment_average, returns, 66)))"
+ ],
+ [
+  "A2_corr_SA_r66",
+  "rank(multiply(-1, ts_corr(secondary_sentiment_average, returns, 66)))"
+ ],
+ [
+  "A1_corr_PA_r126",
+  "rank(multiply(-1, ts_corr(primary_sentiment_average, returns, 126)))"
+ ],
+ [
+  "A2_corr_SA_r126",
+  "rank(multiply(-1, ts_corr(secondary_sentiment_average, returns, 126)))"
+ ],
+ [
+  "A1_corr_PA_r252",
+  "rank(multiply(-1, ts_corr(primary_sentiment_average, returns, 252)))"
+ ],
+ [
+  "A2_corr_SA_r252",
+  "rank(multiply(-1, ts_corr(secondary_sentiment_average, returns, 252)))"
+ ],
+ [
+  "A1_corr_PA_r504",
+  "rank(multiply(-1, ts_corr(primary_sentiment_average, returns, 504)))"
+ ],
+ [
+  "A2_corr_SA_r504",
+  "rank(multiply(-1, ts_corr(secondary_sentiment_average, returns, 504)))"
+ ],
+ [
+  "A3_corr_SM_r252",
+  "rank(multiply(-1, ts_corr(sentiment_score_average, returns, 252)))"
+ ],
+ [
+  "A4_corr_SMED_r252",
+  "rank(multiply(-1, ts_corr(sentiment_score_median, returns, 252)))"
+ ],
+ [
+  "A5_cov_PA_r126",
+  "rank(multiply(-1, ts_covariance(primary_sentiment_average, returns, 126)))"
+ ],
+ [
+  "A5_cov_PA_r252",
+  "rank(multiply(-1, ts_covariance(primary_sentiment_average, returns, 252)))"
+ ],
+ [
+  "A5_cov_PA_r504",
+  "rank(multiply(-1, ts_covariance(primary_sentiment_average, returns, 504)))"
+ ],
+ [
+  "A6_cov_SA_r252",
+  "rank(multiply(-1, ts_covariance(secondary_sentiment_average, returns, 252)))"
+ ],
+ [
+  "A7_reg_PA_r126",
+  "rank(multiply(-1, ts_regression(returns, primary_sentiment_average, 126, lag=0, rettype=2)))"
+ ],
+ [
+  "A7_reg_PA_r252",
+  "rank(multiply(-1, ts_regression(returns, primary_sentiment_average, 252, lag=0, rettype=2)))"
+ ],
+ [
+  "A8_reg_SA_r252",
+  "rank(multiply(-1, ts_regression(returns, secondary_sentiment_average, 252, lag=0, rettype=2)))"
+ ],
+ [
+  "B1_delta_PA_SA_5",
+  "group_rank(ts_delta(primary_sentiment_average - secondary_sentiment_average, 5), subindustry)"
+ ],
+ [
+  "B2_delta_avg_med_5",
+  "group_rank(ts_delta(sentiment_score_average - sentiment_score_median, 5), subindustry)"
+ ],
+ [
+  "B1_delta_PA_SA_22",
+  "group_rank(ts_delta(primary_sentiment_average - secondary_sentiment_average, 22), subindustry)"
+ ],
+ [
+  "B2_delta_avg_med_22",
+  "group_rank(ts_delta(sentiment_score_average - sentiment_score_median, 22), subindustry)"
+ ],
+ [
+  "B1_delta_PA_SA_66",
+  "group_rank(ts_delta(primary_sentiment_average - secondary_sentiment_average, 66), subindustry)"
+ ],
+ [
+  "B2_delta_avg_med_66",
+  "group_rank(ts_delta(sentiment_score_average - sentiment_score_median, 66), subindustry)"
+ ],
+ [
+  "B3_cov_PA_SA_66",
+  "group_neutralize(quantile(ts_covariance(primary_sentiment_average, secondary_sentiment_average, 66)), subindustry)"
+ ],
+ [
+  "B3_cov_PA_SA_252",
+  "group_neutralize(quantile(ts_covariance(primary_sentiment_average, secondary_sentiment_average, 252)), subindustry)"
+ ],
+ [
+  "B4_std_PA_SA_22_66",
+  "multiply(-1, ts_zscore(ts_std_dev(primary_sentiment_average - secondary_sentiment_average, 22), 66))"
+ ],
+ [
+  "B4_std_PA_SA_66_252",
+  "multiply(-1, ts_zscore(ts_std_dev(primary_sentiment_average - secondary_sentiment_average, 66), 252))"
+ ],
+ [
+  "B5_argmax_PA_SA_126",
+  "group_scale(ts_arg_max(multiply(-1, add(primary_sentiment_average, secondary_sentiment_average)), 126), subindustry)"
+ ],
+ [
+  "C1_PA_neg",
+  "rank(multiply(-1, primary_sentiment_average))"
+ ],
+ [
+  "C2_SA_neg",
+  "rank(multiply(-1, secondary_sentiment_average))"
+ ],
+ [
+  "C3_PA_z252",
+  "rank(multiply(-1, ts_zscore(primary_sentiment_average, 252)))"
+ ],
+ [
+  "C4_PA_mean5",
+  "rank(ts_mean(primary_sentiment_average, 5))"
+ ],
+ [
+  "D1_nac_neg",
+  "rank(multiply(-1, news_article_count))"
+ ],
+ [
+  "D2_nac_z252",
+  "rank(multiply(-1, ts_zscore(news_article_count, 252)))"
+ ],
+ [
+  "D3_corr_nac_r252",
+  "rank(multiply(-1, ts_corr(news_article_count, returns, 252)))"
+ ],
+ [
+  "D4_nac_delta22",
+  "rank(multiply(-1, ts_delta(news_article_count, 22)))"
+ ],
+ [
+  "D5_nac_grpsubind",
+  "group_rank(news_article_count, subindustry)"
+ ]
+]

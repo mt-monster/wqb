@@ -1,0 +1,67 @@
+{
+ "results": [
+  {
+   "label": "h1a_naked_rank",
+   "alpha": "levmNb5n",
+   "S": -0.93,
+   "F": -0.45,
+   "T": 0.1111
+  },
+  {
+   "label": "h1b_rank_rev",
+   "alpha": "Wjb5x6PO",
+   "S": 0.83,
+   "F": 0.39,
+   "T": 0.1111
+  },
+  {
+   "label": "h1c_raw_sub",
+   "sim": "ERROR",
+   "msg": "Attempted to use unknown variable \"avg_similarity_downward_breakaway_gap\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "h1d_light_decay",
+   "alpha": "O0N32e61",
+   "S": -0.7,
+   "F": -0.29,
+   "T": 0.0472
+  },
+  {
+   "label": "h1e_ts_mean5",
+   "alpha": "MPar2wz6",
+   "S": -0.81,
+   "F": -0.36,
+   "T": 0.0538
+  },
+  {
+   "label": "h1f_zscore",
+   "alpha": "YPbe9nzv",
+   "S": -0.9,
+   "F": -0.47,
+   "T": 0.1053
+  },
+  {
+   "label": "h1g_neg_zscore",
+   "alpha": "pwRLpQb3",
+   "S": 0.9,
+   "F": 0.47,
+   "T": 0.1053
+  },
+  {
+   "label": "h1h_rank_mkt",
+   "alpha": "P02VAlwK",
+   "S": -0.89,
+   "F": -0.44,
+   "T": 0.0947
+  }
+ ],
+ "cfg": {
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.02,
+  "nanHandling": "ON"
+ }
+}

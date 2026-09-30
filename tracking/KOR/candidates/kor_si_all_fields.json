@@ -1,0 +1,800 @@
+{
+ "shortinterest38": [
+  [
+   "shrt38_accum_buy_amt",
+   "VECTOR",
+   "Accumulated purchase value in KRW over the aggregation window (scaled per atlas_"
+  ],
+  [
+   "shrt38_accum_buy_amt_rt",
+   "VECTOR",
+   "Accum. Purchase Value"
+  ],
+  [
+   "shrt38_accum_buy_qty",
+   "VECTOR",
+   "Accumulated buy quantity (shares) over the aggregation window"
+  ],
+  [
+   "shrt38_accum_buy_qty_rt",
+   "VECTOR",
+   "Accum. Purchase Volume"
+  ],
+  [
+   "shrt38_accum_net_buy_amt",
+   "VECTOR",
+   "Accumulated net purchase value (buy minus sell) in KRW over the aggregation wind"
+  ],
+  [
+   "shrt38_accum_net_buy_qty",
+   "VECTOR",
+   "Accumulated net purchase quantity (shares) over the aggregation window (buy minu"
+  ],
+  [
+   "shrt38_accum_sell_amt",
+   "VECTOR",
+   "Accumulated sell value in KRW over the aggregation window (scaled per atlas_unit"
+  ],
+  [
+   "shrt38_accum_sell_amt_rt",
+   "VECTOR",
+   "Accum. Sell Value"
+  ],
+  [
+   "shrt38_accum_sell_qty",
+   "VECTOR",
+   "Accumulated sell quantity (shares) over the aggregation window"
+  ],
+  [
+   "shrt38_accum_sell_qty_rt",
+   "VECTOR",
+   "Accum. Sell Volume"
+  ],
+  [
+   "shrt38_addr_5",
+   "VECTOR",
+   "Address"
+  ],
+  [
+   "shrt38_agg_invactdc_vni",
+   "VECTOR",
+   "Investor Code(0100:Institutions(Total), 0101:Securities, 0102:Insurance, 0103:In"
+  ],
+  [
+   "shrt38_amt",
+   "VECTOR",
+   "Total short-selling amount aggregated over the window; unit defined by atlas_uni"
+  ],
+  [
+   "shrt38_amt_wgt",
+   "VECTOR",
+   "Short Selling Turnover Weight"
+  ],
+  [
+   "shrt38_auditor_2",
+   "VECTOR",
+   "Auditor"
+  ],
+  [
+   "shrt38_biz_reg_no_24",
+   "VECTOR",
+   "Business No."
+  ],
+  [
+   "shrt38_c_companyatlas_unit_name",
+   "VECTOR",
+   "nan"
+  ],
+  [
+   "shrt38_c_companydc_pmc",
+   "VECTOR",
+   "Company Code"
+  ],
+  [
+   "shrt38_c_companylist_dt",
+   "VECTOR",
+   "Listing date on the exchange (YYYYMMDD)"
+  ],
+  [
+   "shrt38_c_companypyt_tkm",
+   "VECTOR",
+   "Market type code indicating listing market (e.g., 1=KRX, 2=KOSDAQ, 8=KONEX)"
+  ],
+  [
+   "shrt38_cmp_ful_nm_kor_13",
+   "VECTOR",
+   "Korean Full Name"
+  ],
+  [
+   "shrt38_cmp_nm_kor_19",
+   "VECTOR",
+   "Korean Name"
+  ],
+  [
+   "shrt38_corp_reg_no_20",
+   "VECTOR",
+   "Corporation Number"
+  ],
+  [
+   "shrt38_dc_csk_7",
+   "VECTOR",
+   "Market Index Code (Reference: TC_SECTOR > SEC_TYP = I)"
+  ],
+  [
+   "shrt38_dc_prg_11",
+   "VECTOR",
+   "Large Enterprises (Reference: TC_SECTOR > SEC_TYP = L)"
+  ],
+  [
+   "shrt38_dc_scig_17",
+   "VECTOR",
+   "WICS Code (WISEfn Industry Classification Standard) (Reference: TC_SECTOR > SEC_"
+  ],
+  [
+   "shrt38_dc_scik_14",
+   "VECTOR",
+   "KICS Code (Korea Industry Classification Standard) (Reference: TC_SECTOR > SEC_T"
+  ],
+  [
+   "shrt38_finacc_typ_22",
+   "VECTOR",
+   "F/S Sector(0:Entire, 1:Manufacturing, 2:Banking, 3:Insurance, 4:Securities, 6:Mu"
+  ],
+  [
+   "shrt38_gne_mn_kts",
+   "VECTOR",
+   "English Name(Short)"
+  ],
+  [
+   "shrt38_gne_mn_luf_pmc_10",
+   "VECTOR",
+   "English Full Name"
+  ],
+  [
+   "shrt38_gne_mn_pmc_1",
+   "VECTOR",
+   "English Name"
+  ],
+  [
+   "shrt38_industry",
+   "MATRIX",
+   "Industry"
+  ],
+  [
+   "shrt38_invactdc_vni",
+   "VECTOR",
+   "Investor Code(0100:Institutions(Total), 0101:Securities, 0102:Insurance, 0103:In"
+  ],
+  [
+   "shrt38_issue_typ",
+   "VECTOR",
+   "Issue type code of the security (e.g., common, preferred, fund/ETF, DR)"
+  ],
+  [
+   "shrt38_k_agg_invactdc_kts",
+   "VECTOR",
+   "Stock Code"
+  ],
+  [
+   "shrt38_k_agg_short_selldc_kts",
+   "VECTOR",
+   "Stock Code"
+  ],
+  [
+   "shrt38_k_invactdc_kts",
+   "VECTOR",
+   "Stock Code"
+  ],
+  [
+   "shrt38_k_short_selldc_kts",
+   "VECTOR",
+   "Stock Code"
+  ],
+  [
+   "shrt38_let_16",
+   "VECTOR",
+   "Telephone No."
+  ],
+  [
+   "shrt38_list_yn",
+   "VECTOR",
+   "Listing status flag (Y=Listed, N=Not listed)"
+  ],
+  [
+   "shrt38_lru_3",
+   "VECTOR",
+   "URL"
+  ],
+  [
+   "shrt38_master_chk_12",
+   "VECTOR",
+   "Main F/S (P: Parents, C: Consolidated)"
+  ],
+  [
+   "shrt38_mmyy_srfi_8",
+   "VECTOR",
+   "Month and year of IFRS adoption (YYYYMM)"
+  ],
+  [
+   "shrt38_nm_eyf_21",
+   "VECTOR",
+   "Fiscal year-end month (1–12)"
+  ],
+  [
+   "shrt38_ny_srfi_15",
+   "VECTOR",
+   "IFRS reporting status indicator for the company (Y=IFRS compliant, N=not IFRS)"
+  ],
+  [
+   "shrt38_ockdc_kts",
+   "VECTOR",
+   "Stock Code"
+  ],
+  [
+   "shrt38_oec_18",
+   "VECTOR",
+   "CEO"
+  ],
+  [
+   "shrt38_pyt_gva",
+   "VECTOR",
+   "Aggregation type code (e.g., 1=average, 2=sum)"
+  ],
+  [
+   "shrt38_pyt_kts",
+   "VECTOR",
+   "Stock type code classifying the security (e.g., common, preferred, ETF, DR)"
+  ],
+  [
+   "shrt38_pyt_pmc_4",
+   "VECTOR",
+   "Company Type(1:Company limited by shares, 2:Securities investment corporation, 3"
+  ],
+  [
+   "shrt38_pyt_qrf",
+   "VECTOR",
+   "Frequency type code of aggregation (e.g., 1=daily, 2=weekly, 3=monthly)"
+  ],
+  [
+   "shrt38_qtr_master_6",
+   "VECTOR",
+   "Quarter Main F/S (P: Parents, C: Consolidated)"
+  ],
+  [
+   "shrt38_s_stk_agg_invactatlas_unit_name",
+   "VECTOR",
+   "Atlas unit name"
+  ],
+  [
+   "shrt38_s_stk_agg_short_sellatlas_unit_name",
+   "VECTOR",
+   "Atlas unit name"
+  ],
+  [
+   "shrt38_s_stk_invactatlas_unit_name",
+   "VECTOR",
+   "Atlas unit name"
+  ],
+  [
+   "shrt38_s_stk_short_sellatlas_unit_name",
+   "VECTOR",
+   "Atlas unit name"
+  ],
+  [
+   "shrt38_s_stockatlas_unit_name",
+   "VECTOR",
+   "Atlas unit name"
+  ],
+  [
+   "shrt38_s_stockdc_pmc",
+   "VECTOR",
+   "Company Code"
+  ],
+  [
+   "shrt38_s_stocklist_dt",
+   "VECTOR",
+   "Listing date of the security in YYYYMMDD format"
+  ],
+  [
+   "shrt38_s_stockpyt_tkm",
+   "VECTOR",
+   "Market type code indicating the exchange/board (e.g., KRX, KOSDAQ, KONEX)"
+  ],
+  [
+   "shrt38_sector",
+   "MATRIX",
+   "Sector"
+  ],
+  [
+   "shrt38_stk_agg_invactcalc_prd_typ",
+   "VECTOR",
+   "Calculation period type code indicating the aggregation window (e.g., 5-day, 20-"
+  ],
+  [
+   "shrt38_stk_agg_invacttd_drt",
+   "VECTOR",
+   "Trading date in YYYYMMDD format (date associated with the aggregated window)"
+  ],
+  [
+   "shrt38_stk_agg_short_sellcalc_prd_typ",
+   "VECTOR",
+   "Calculation period type code specifying the aggregation window (e.g., 5-day, 20-"
+  ],
+  [
+   "shrt38_stk_agg_short_selltd_drt",
+   "VECTOR",
+   "Trading date in YYYYMMDD representing the anchor date for the aggregated record"
+  ],
+  [
+   "shrt38_stk_invactbuy_amt",
+   "VECTOR",
+   "Purchase value in KRW, scaled per atlas_unit_name"
+  ],
+  [
+   "shrt38_stk_invactbuy_qty",
+   "VECTOR",
+   "Number of shares bought"
+  ],
+  [
+   "shrt38_stk_invactnet_buy_amt",
+   "VECTOR",
+   "Net purchase value (buy minus sell) in KRW, scaled per atlas_unit_name"
+  ],
+  [
+   "shrt38_stk_invactnet_buy_qty",
+   "VECTOR",
+   "Net purchase volume in shares (buy minus sell)"
+  ],
+  [
+   "shrt38_stk_invactsell_amt",
+   "VECTOR",
+   "Sell value in KRW, scaled per atlas_unit_name"
+  ],
+  [
+   "shrt38_stk_invactsell_qty",
+   "VECTOR",
+   "Number of shares sold"
+  ],
+  [
+   "shrt38_stk_invacttd_drt",
+   "VECTOR",
+   "Trading date in YYYYMMDD format"
+  ],
+  [
+   "shrt38_stk_nm_kor",
+   "VECTOR",
+   "Korean Name(Short)"
+  ],
+  [
+   "shrt38_stk_short_sellshort_sell_amt",
+   "VECTOR",
+   "Value of shares sold short on the date in KRW, scaled per atlas_unit_name"
+  ],
+  [
+   "shrt38_stk_short_sellshort_sell_amt_wgt",
+   "VECTOR",
+   "Short Selling Turnover Weight"
+  ],
+  [
+   "shrt38_stk_short_sellshort_sell_qty",
+   "VECTOR",
+   "Number of shares sold short on the date"
+  ],
+  [
+   "shrt38_stk_short_sellshort_sell_qty_wgt",
+   "VECTOR",
+   "Short Selling Volume Weight"
+  ],
+  [
+   "shrt38_stk_short_selltd_drt",
+   "VECTOR",
+   "Trading date in YYYYMMDD format"
+  ],
+  [
+   "shrt38_subindustry",
+   "MATRIX",
+   "Subindustry"
+  ],
+  [
+   "shrt38_td_tse_9",
+   "VECTOR",
+   "Company establishment/incorporation date (YYYYMMDD)"
+  ],
+  [
+   "shrt38_tgw_ytq",
+   "VECTOR",
+   "Short Selling Volume Weight"
+  ],
+  [
+   "shrt38_tot_amt_wgt",
+   "VECTOR",
+   "Short Selling Turnover Weight(All)"
+  ],
+  [
+   "shrt38_tot_qty_wgt",
+   "VECTOR",
+   "Short Selling Volume Weight(All)"
+  ],
+  [
+   "shrt38_ytq",
+   "VECTOR",
+   "Total shorted shares aggregated over the specified window"
+  ],
+  [
+   "shrt38_z_sec_relatlas_unit_name",
+   "MATRIX",
+   "Atlas unit name"
+  ],
+  [
+   "shrt38_z_sec_reldc_pmc",
+   "MATRIX",
+   "Company Code"
+  ],
+  [
+   "shrt38_z_sec_relsec_cd",
+   "MATRIX",
+   "Sector Code"
+  ],
+  [
+   "shrt38_zip_cd_23",
+   "VECTOR",
+   "Zip Code"
+  ]
+ ],
+ "shortinterest5": [
+  [
+   "max_price_decrease_ratio",
+   "MATRIX",
+   "The daily proportionate lower price limit ratio (as a decimal or percentage), re"
+  ],
+  [
+   "max_price_increase_ratio",
+   "MATRIX",
+   "The daily proportionate upper price limit ratio (as a decimal or percentage), re"
+  ],
+  [
+   "price_limit_condition",
+   "MATRIX",
+   "Numeric code indicating the current tradability regime for the security, such as"
+  ]
+ ],
+ "shortinterest3": [
+  [
+   "available_market_value_usd",
+   "VECTOR",
+   "USD market value of the units reported as available to lend for this group"
+  ],
+  [
+   "available_market_value_usd_twn",
+   "VECTOR",
+   "USD market value of the units reported as available to lend for the security on "
+  ],
+  [
+   "available_share_count",
+   "VECTOR",
+   "Number of units (shares or par value) reported as available to lend for this gro"
+  ],
+  [
+   "available_share_count_twn",
+   "VECTOR",
+   "Number of units (shares or par value) reported as available to lend for the secu"
+  ],
+  [
+   "average_loan_duration_days",
+   "VECTOR",
+   "Weighted average age of loans in this group, measured in days"
+  ],
+  [
+   "average_loan_duration_days_main",
+   "VECTOR",
+   "The weighted average age of loans in this primary key group, measured in days"
+  ],
+  [
+   "average_loan_duration_days_p5_d1",
+   "VECTOR",
+   "Weighted average age of loans in this group, in days"
+  ],
+  [
+   "average_loan_duration_days_p5_twn",
+   "VECTOR",
+   "Weighted average age of the loans in days for this primary key group"
+  ],
+  [
+   "borrow_activity_score",
+   "VECTOR",
+   "Demand score from 1 to 10 indicating how high the borrow demand is for the stock"
+  ],
+  [
+   "borrow_activity_score_twn",
+   "VECTOR",
+   "Borrow demand rating for the stock on a 1–10 scale (1 = lowest demand, 10 = high"
+  ],
+  [
+   "loan_rate_volatility",
+   "VECTOR",
+   "The standard deviation of loan rates for all transactions in this primary key gr"
+  ],
+  [
+   "loan_rate_volatility_main",
+   "VECTOR",
+   "Standard deviation of loan rates across transactions in this primary key group"
+  ],
+  [
+   "loan_rate_volatility_p5_d1",
+   "VECTOR",
+   "Standard deviation of loan rates for transactions in this group"
+  ],
+  [
+   "loan_rate_volatility_p5_twn",
+   "VECTOR",
+   "Standard deviation of loan rates across the transactions in this primary key gro"
+  ],
+  [
+   "loan_utilization_ratio",
+   "VECTOR",
+   "Ratio of shares on loan to shares available from lending programs for the securi"
+  ],
+  [
+   "loan_utilization_ratio_d1",
+   "VECTOR",
+   "Share utilization ratio: aggregate shares on loan divided by shares available fo"
+  ],
+  [
+   "loan_utilization_ratio_twn",
+   "VECTOR",
+   "Percentage of lendable units currently utilized for the security (expressed as a"
+  ],
+  [
+   "loan_utilization_ratio_u2_twn",
+   "VECTOR",
+   "Percentage of lendable units utilized (expressed as a fraction between 0 and 1)"
+  ],
+  [
+   "loaned_market_value_usd",
+   "VECTOR",
+   "US dollar market value of the units lent in the transactions in this group"
+  ],
+  [
+   "loaned_market_value_usd_main",
+   "VECTOR",
+   "USD market value of the units lent in transactions in this primary key group"
+  ],
+  [
+   "loaned_market_value_usd_p5_d1",
+   "VECTOR",
+   "Market value in US dollars of units lent in transactions in this group"
+  ],
+  [
+   "loaned_market_value_usd_p5_twn",
+   "VECTOR",
+   "Market value in US dollars of the units lent in the transactions that fit this g"
+  ],
+  [
+   "loaned_share_count",
+   "VECTOR",
+   "Number of units (shares or par value) lent in the transactions in this group"
+  ],
+  [
+   "loaned_share_count_main",
+   "VECTOR",
+   "Number of units (shares or par value) lent in transactions in this primary key g"
+  ],
+  [
+   "loaned_share_count_p5_d1",
+   "VECTOR",
+   "Number of units (shares or par value) lent in transactions in this group"
+  ],
+  [
+   "loaned_share_count_p5_twn",
+   "VECTOR",
+   "Number of units (shares or par value) lent across transactions in this group"
+  ],
+  [
+   "loaned_share_count_r2",
+   "VECTOR",
+   "Number of units (shares or par value) lent in transactions that fall into this p"
+  ],
+  [
+   "loaned_share_count_r2_d1",
+   "VECTOR",
+   "Number of units (shares or par value) lent in transactions that fall into this b"
+  ],
+  [
+   "loaned_share_count_r2_twn",
+   "VECTOR",
+   "Total number of units (shares or par) lent in all loans that fall into this rate"
+  ],
+  [
+   "max_loan_rate",
+   "VECTOR",
+   "The maximum loan rate among all transactions in this primary key group"
+  ],
+  [
+   "max_loan_rate_main",
+   "VECTOR",
+   "Maximum loan rate among transactions in this group"
+  ],
+  [
+   "max_loan_rate_p5_d1",
+   "VECTOR",
+   "Maximum loan rate among transactions in this group"
+  ],
+  [
+   "max_loan_rate_p5_twn",
+   "VECTOR",
+   "Maximum loan rate observed among the transactions in this primary key group"
+  ],
+  [
+   "mean_loan_rate",
+   "VECTOR",
+   "The weighted average loan rate for all transactions in this primary key group"
+  ],
+  [
+   "mean_loan_rate_main",
+   "VECTOR",
+   "Weighted average loan rate for transactions in this group"
+  ],
+  [
+   "mean_loan_rate_p5_d1",
+   "VECTOR",
+   "Weighted average loan rate for all transactions in this group"
+  ],
+  [
+   "mean_loan_rate_p5_twn",
+   "VECTOR",
+   "Weighted average loan rate for the transactions in this primary key group"
+  ],
+  [
+   "min_loan_rate",
+   "VECTOR",
+   "The minimum loan rate among all transactions in this primary key group"
+  ],
+  [
+   "min_loan_rate_main",
+   "VECTOR",
+   "Minimum loan rate among transactions in this group"
+  ],
+  [
+   "min_loan_rate_p5_d1",
+   "VECTOR",
+   "Minimum loan rate among transactions in this group"
+  ],
+  [
+   "min_loan_rate_p5_twn",
+   "VECTOR",
+   "Minimum loan rate observed among the transactions in this primary key group"
+  ],
+  [
+   "new_loaned_share_count",
+   "VECTOR",
+   "Number of units (shares or par value) lent in new loans within this bin; a subse"
+  ],
+  [
+   "new_loaned_share_count_d1",
+   "VECTOR",
+   "Number of units (shares or par value) lent in new loans within this bin; subset "
+  ],
+  [
+   "new_loaned_share_count_twn",
+   "VECTOR",
+   "Number of units lent in new loans only within this rate bin (subset of Units; R2"
+  ],
+  [
+   "rate_bin_lower_limit",
+   "VECTOR",
+   "Lower bound of the loan rate bin (in percent), defining the minimum rate include"
+  ],
+  [
+   "rate_bin_lower_limit_d1",
+   "VECTOR",
+   "Inclusive lower bound of the loan rate bin, expressed in percent (e.g., 1.23 = 1"
+  ],
+  [
+   "rate_bin_lower_limit_twn",
+   "VECTOR",
+   "Lower bound of the loan-rate bin (in percent; inclusive)"
+  ],
+  [
+   "rate_bin_upper_limit",
+   "VECTOR",
+   "Upper bound of the loan rate bin (in percent), paired with LowerBound to define "
+  ],
+  [
+   "rate_bin_upper_limit_d1",
+   "VECTOR",
+   "Upper bound of loan rate bin, in percent; pairs with LowerBound to define the bi"
+  ],
+  [
+   "rate_bin_upper_limit_twn",
+   "VECTOR",
+   "Upper bound of the loan-rate bin (in percent, e.g., 1.23 = 1.23%); typically exc"
+  ],
+  [
+   "shrt3_bar",
+   "VECTOR",
+   "Borrow demand rating on a 1–10 scale for a stock (1 = relatively low demand, 10 "
+  ],
+  [
+   "shrt3_utilizationpercent_units",
+   "VECTOR",
+   "Ratio of shares on loan to shares available for lending, i.e., the utilization r"
+  ],
+  [
+   "transaction_count",
+   "VECTOR",
+   "Number of transactions included in this primary key group"
+  ],
+  [
+   "transaction_count_main",
+   "VECTOR",
+   "Number of transactions in this primary key group"
+  ],
+  [
+   "transaction_count_p5_d1",
+   "VECTOR",
+   "Number of transactions that fit this primary key group"
+  ],
+  [
+   "transaction_count_p5_twn",
+   "VECTOR",
+   "Number of transactions included in this primary key group"
+  ]
+ ],
+ "shortinterest6": [
+  [
+   "star_hold_country_rank",
+   "MATRIX",
+   "The country 1-100 rank of the smart holdings model"
+  ],
+  [
+   "star_hold_global_change_rank",
+   "MATRIX",
+   "The change component 1-100 global rank"
+  ],
+  [
+   "star_hold_global_owner_rank",
+   "MATRIX",
+   "The peers adjustment factor 1-100 global rank. This factor is reversed - 100 ind"
+  ],
+  [
+   "star_hold_global_rank",
+   "MATRIX",
+   "The global 1-100 rank of the Smart Holdings model"
+  ],
+  [
+   "star_hold_global_screening_rank",
+   "MATRIX",
+   "The peers-adjusted screening component 1-100 global rank"
+  ],
+  [
+   "star_hold_industry_rank",
+   "MATRIX",
+   "The industry 1-100 rank of the Smart Holdings model"
+  ],
+  [
+   "star_hold_region_change_rank",
+   "MATRIX",
+   "The change component 1-100 regional rank"
+  ],
+  [
+   "star_hold_region_owner_rank",
+   "MATRIX",
+   "The peers adjustment factor 1-100 regional rank. This factor is reversed - 100 i"
+  ],
+  [
+   "star_hold_region_rank",
+   "MATRIX",
+   "The regional 1-100 rank of the Smart Holdings model"
+  ],
+  [
+   "star_hold_region_screening_rank",
+   "MATRIX",
+   "The peers-adjusted screening component 1-100 regional rank"
+  ],
+  [
+   "star_hold_sector_rank",
+   "MATRIX",
+   "The sector 1-100 rank of the smart holdings model"
+  ]
+ ]
+}

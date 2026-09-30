@@ -1,0 +1,78 @@
+[
+ {
+  "group": "H1_sub_win",
+  "id": "JjN9nG0n",
+  "sharpe": 1.72,
+  "fitness": 1.14,
+  "turnover": 0.1744,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 300), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "H1_sub_win",
+  "id": "qMxRnNkO",
+  "sharpe": 1.74,
+  "fitness": 1.16,
+  "turnover": 0.1745,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 1260), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "H2_avg_sub",
+  "id": "e7bjnPk6",
+  "sharpe": 1.8,
+  "fitness": 1.22,
+  "turnover": 0.1748,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), 500), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "H2_avg_sub",
+  "id": "qMxRnp8K",
+  "sharpe": 2.31,
+  "fitness": 1.75,
+  "turnover": 0.1887,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), 500), industry), hump=0.0025)"
+ },
+ {
+  "group": "H3_net_sub",
+  "id": "vRrQ5Npr",
+  "sharpe": 1.76,
+  "fitness": 1.18,
+  "turnover": 0.1746,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(subtract(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), add(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), 500), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "H3_net_sub",
+  "id": "VkaWXGmb",
+  "sharpe": 2.35,
+  "fitness": 1.79,
+  "turnover": 0.189,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(subtract(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), add(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), 500), industry), hump=0.0025)"
+ },
+ {
+  "group": "H4_preproc",
+  "id": "xA3ZR6Gl",
+  "sharpe": 1.47,
+  "fitness": 1.03,
+  "turnover": 0.1515,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(winsorize(ts_backfill(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), 20), std=4), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "H4_preproc",
+  "id": "omLd9oEJ",
+  "sharpe": 1.86,
+  "fitness": 1.27,
+  "turnover": 0.1789,
+  "fails": [],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), subindustry), hump=0.002)"
+ }
+]

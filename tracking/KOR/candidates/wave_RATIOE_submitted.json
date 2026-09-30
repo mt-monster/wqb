@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 00:59:17",
+ "batches": [
+  {
+   "group": "E_d30",
+   "nu": "STATISTICAL",
+   "decay": 30,
+   "trunc": 0.08,
+   "progress_id": "40BWuIchC4CWbLszXhDeQ4M",
+   "ids": [
+    "e1_d30",
+    "e1b_d30b"
+   ]
+  },
+  {
+   "group": "E_d40",
+   "nu": "STATISTICAL",
+   "decay": 40,
+   "trunc": 0.08,
+   "progress_id": "1MiiDqe5L4KIaDuYOdsfOvY",
+   "ids": [
+    "e2_d40",
+    "e2b_d40b"
+   ]
+  },
+  {
+   "group": "E_d60",
+   "nu": "STATISTICAL",
+   "decay": 60,
+   "trunc": 0.08,
+   "progress_id": "4fBqOM34V4uc9zC166Ptueqa",
+   "ids": [
+    "e3_d60",
+    "e3b_d60b"
+   ]
+  },
+  {
+   "group": "E_d20t02",
+   "nu": "STATISTICAL",
+   "decay": 20,
+   "trunc": 0.02,
+   "progress_id": "4EINdUdq65e59IbyIR1GOkK",
+   "ids": [
+    "e4_d20t02",
+    "e4b"
+   ]
+  }
+ ]
+}

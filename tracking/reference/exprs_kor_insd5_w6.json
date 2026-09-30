@@ -1,0 +1,58 @@
+[
+ [
+  "Y1_buy_over_sell",
+  "reverse(group_rank(divide(vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)), add(1, vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0)))), sector))"
+ ],
+ [
+  "Y2_sell_over_buy",
+  "reverse(group_rank(divide(vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0)), add(1, vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)))), sector))"
+ ],
+ [
+  "Y3_net_over_gross",
+  "reverse(group_rank(divide(subtract(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), add(1, add(vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)), vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0))))), sector))"
+ ],
+ [
+  "Y4_net_over_sell",
+  "reverse(group_rank(divide(subtract(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), add(1, vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0)))), sector))"
+ ],
+ [
+  "Y5_buy_minus_sell_rank",
+  "reverse(group_rank(subtract(vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)), vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0))), sector))"
+ ],
+ [
+  "Z1_amt_net",
+  "reverse(group_rank(divide(vec_sum(multiply(insd5_trd_amt, sign(subtract(insd5_vol_af, insd5_vol_bf)))), add(1, vec_sum(insd5_trd_amt))), sector))"
+ ],
+ [
+  "Z2_amt_abs",
+  "reverse(group_rank(divide(vec_sum(if_else(greater(insd5_trd_amt, 0), insd5_trd_amt, 0)), add(1, vec_sum(insd5_trd_amt))), sector))"
+ ],
+ [
+  "AA1_buy_ratio_bf",
+  "reverse(group_rank(divide(vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)), add(1, vec_sum(insd5_vol_bf))), sector))"
+ ],
+ [
+  "AA2_net_ratio_bf",
+  "reverse(group_rank(divide(subtract(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), add(1, vec_sum(insd5_vol_bf))), sector))"
+ ],
+ [
+  "AA3_buy_sell_ratio_tsmean",
+  "reverse(group_rank(ts_mean(divide(vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)), add(1, vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0)))), 22), sector))"
+ ],
+ [
+  "AB1_raw_buy_over_sell",
+  "reverse(divide(vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)), add(1, vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0)))))"
+ ],
+ [
+  "AB2_raw_net_over_gross",
+  "reverse(divide(subtract(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), add(1, add(vec_sum(if_else(greater(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_af, insd5_vol_bf), 0)), vec_sum(if_else(less(insd5_vol_af, insd5_vol_bf), subtract(insd5_vol_bf, insd5_vol_af), 0))))))"
+ ],
+ [
+  "AC1_fa_fb_split",
+  "reverse(group_rank(divide(vec_sum(if_else(greater(insd5_fa_tr, insd5_fb_tr), subtract(insd5_fa_tr, insd5_fb_tr), 0)), add(0.001, vec_sum(if_else(less(insd5_fa_tr, insd5_fb_tr), subtract(insd5_fb_tr, insd5_fa_tr), 0)))), sector))"
+ ],
+ [
+  "AC2_ghc_split",
+  "reverse(group_rank(divide(vec_sum(if_else(greater(insd5_ghc_tr, 0), insd5_ghc_tr, 0)), add(0.001, vec_sum(if_else(less(insd5_ghc_tr, 0), multiply(-1, insd5_ghc_tr), 0)))), sector))"
+ ]
+]

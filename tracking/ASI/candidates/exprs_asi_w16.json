@@ -1,0 +1,38 @@
+[
+ [
+  "W16_bid30_d3",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 3), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_bid30_d4",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 4), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_bid30_d5",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 5), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_ask30_d3",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 3), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_ask30_d4",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 4), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_ask30_d5",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 5), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_high30_d3",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_high_price_return_30m_pre_close_2, 3), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_high30_d4",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_high_price_return_30m_pre_close_2, 4), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ],
+ [
+  "W16_high30_d5",
+  "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_high_price_return_30m_pre_close_2, 5), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+ ]
+]

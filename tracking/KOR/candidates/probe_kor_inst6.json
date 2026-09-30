@@ -1,0 +1,92 @@
+{
+ "cfg": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 30,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "K3_qty_buy_over_sell",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K4_mv_buy_over_sell",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K5_net_qty_over_gross",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K6_inst_over_all",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K7_eq_over_share",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K8_net_mv_over_gross",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K9_buy_sell_spread",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K10_qty_ratio_decay",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K11_holder_over_all",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K12_net_qty_over_hold",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K13_mv_ratio_decay",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K14_rc_buy_count",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K15_rc_buy_qty_norm",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K16_buy_sell_qty_spread",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K2_sell_over_buy_count",
+   "alpha": "wpZ0d9P2",
+   "S": 0.1,
+   "F": 0.02,
+   "T": 0.0715,
+   "sub": [
+    "FAIL",
+    -0.1
+   ],
+   "y2": [
+    "FAIL",
+    -1.87
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.1
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.02
+   ]
+  }
+ ]
+}

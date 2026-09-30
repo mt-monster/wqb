@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 02:21:25",
+ "batches": [
+  {
+   "group": "H1_hump",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "",
+   "ids": [
+    "h1_hump001",
+    "h2_hump005"
+   ]
+  },
+  {
+   "group": "H2_hump2",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "",
+   "ids": [
+    "h3_hump01",
+    "h4_hump002"
+   ]
+  },
+  {
+   "group": "M1_mm",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "43J7uK2s357QaOavbb9Dk1C",
+   "ids": [
+    "m1_mm110",
+    "m2_mm250"
+   ]
+  },
+  {
+   "group": "T1_tw",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "pWPJYdjr4S8aA6WiZ0sqs4",
+   "ids": [
+    "t1_tw_vol",
+    "t2_tw_abs"
+   ]
+  }
+ ]
+}

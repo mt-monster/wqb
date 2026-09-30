@@ -1,0 +1,27 @@
+{
+ "submitted_at": "2026-09-29 02:32:39",
+ "batches": [
+  {
+   "group": "H1_hump",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "37MBk59Jp4rxa2hDyywC49",
+   "ids": [
+    "h1_hump001",
+    "h2_hump005"
+   ]
+  },
+  {
+   "group": "H2_hump2",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "a1uyM3nT4sw9pnN8O4nxFl",
+   "ids": [
+    "h3_hump01",
+    "h4_hump002"
+   ]
+  }
+ ]
+}

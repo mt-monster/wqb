@@ -1,0 +1,38 @@
+{
+ "submitted_at": "2026-09-29 01:42:04",
+ "batches": [
+  {
+   "group": "P1_short_sell_ratio",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "1o9NWh7xg4Go9IK1885HZhhH",
+   "ids": [
+    "p1_ssell_amt",
+    "p2_ssell_qty"
+   ]
+  },
+  {
+   "group": "P2_accum_ratio",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "QLvn8NO4JfbZHtHA5qMkz",
+   "ids": [
+    "p3_accum_sb",
+    "p4_accum_sbq"
+   ]
+  },
+  {
+   "group": "P3_netqty_ratio",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "2q06lE3Rn4xca74dVbJp8x5",
+   "ids": [
+    "p5_net_qty",
+    "p6_ssell_wgt"
+   ]
+  }
+ ]
+}

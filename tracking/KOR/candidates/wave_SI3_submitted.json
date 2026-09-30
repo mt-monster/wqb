@@ -1,0 +1,102 @@
+{
+ "submitted_at": "2026-09-29 00:02:18",
+ "settings": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nan_handling": "ON"
+ },
+ "probes": [
+  {
+   "id": "si3_p1_util",
+   "mechanism": "借券利用率水平（借出/可借，高=拥挤）",
+   "expr": "group_rank(vec_avg(loan_utilization_ratio_twn), market)"
+  },
+  {
+   "id": "si3_p2_util_units",
+   "mechanism": "借券利用率（units 版）",
+   "expr": "group_rank(vec_avg(shrt3_utilizationpercent_units), market)"
+  },
+  {
+   "id": "si3_p3_util_delta",
+   "mechanism": "利用率 5 日变化（拥挤度加速）",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), market)"
+  },
+  {
+   "id": "si3_p4_util_rank",
+   "mechanism": "利用率长窗强度 ts_rank252",
+   "expr": "group_rank(ts_rank(vec_avg(loan_utilization_ratio_twn), 252), market)"
+  },
+  {
+   "id": "si3_p5_rate",
+   "mechanism": "加权平均借券费率水平",
+   "expr": "group_rank(vec_avg(mean_loan_rate), market)"
+  },
+  {
+   "id": "si3_p6_rate_vol",
+   "mechanism": "借券费率波动率（不稳定性）",
+   "expr": "group_rank(vec_avg(loan_rate_volatility), market)"
+  },
+  {
+   "id": "si3_p7_rate_spread",
+   "mechanism": "费率极差（max-min，借券难度分化）",
+   "expr": "group_rank(subtract(vec_avg(max_loan_rate), vec_avg(min_loan_rate)), market)"
+  },
+  {
+   "id": "si3_p8_rate_mom",
+   "mechanism": "费率 22 日动量",
+   "expr": "group_rank(ts_delta(vec_avg(mean_loan_rate), 22), market)"
+  },
+  {
+   "id": "si3_p9_borrow",
+   "mechanism": "借券需求评分（1-10）",
+   "expr": "group_rank(vec_avg(borrow_activity_score), market)"
+  },
+  {
+   "id": "si3_p10_bar",
+   "mechanism": "借券需求 bar（1-10）",
+   "expr": "group_rank(vec_avg(shrt3_bar), market)"
+  },
+  {
+   "id": "si3_p11_duration",
+   "mechanism": "平均借券期限（天）",
+   "expr": "group_rank(vec_avg(average_loan_duration_days), market)"
+  },
+  {
+   "id": "si3_p12_newloan",
+   "mechanism": "新增借出股数（新借券活动）",
+   "expr": "group_rank(vec_avg(new_loaned_share_count), market)"
+  }
+ ],
+ "batches": [
+  {
+   "n": 10,
+   "progress_url": "https://api.worldquantbrain.com/simulations/3ba5em6Ej4sTb2UGAn7PlDw",
+   "progress_id": "3ba5em6Ej4sTb2UGAn7PlDw",
+   "ids": [
+    "si3_p1_util",
+    "si3_p2_util_units",
+    "si3_p3_util_delta",
+    "si3_p4_util_rank",
+    "si3_p5_rate",
+    "si3_p6_rate_vol",
+    "si3_p7_rate_spread",
+    "si3_p8_rate_mom",
+    "si3_p9_borrow",
+    "si3_p10_bar"
+   ]
+  },
+  {
+   "n": 2,
+   "progress_url": "https://api.worldquantbrain.com/simulations/2Pbb1HdxR594bLSkwsBnxqw",
+   "progress_id": "2Pbb1HdxR594bLSkwsBnxqw",
+   "ids": [
+    "si3_p11_duration",
+    "si3_p12_newloan"
+   ]
+  }
+ ]
+}

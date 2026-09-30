@@ -1,0 +1,414 @@
+{
+ "cfg": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "S1_bar_avg_neg",
+   "alpha": "MP3jq8Q6",
+   "S": 1.04,
+   "F": 0.49,
+   "T": 0.2021,
+   "sub": [
+    "PASS",
+    0.78
+   ],
+   "y2": [
+    "WARNING",
+    1.45
+   ],
+   "sh_ok": [
+    "WARNING",
+    1.04
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.49
+   ]
+  },
+  {
+   "label": "S2_bar_avg_z252",
+   "alpha": "d512g7Zx",
+   "S": 0.62,
+   "F": 0.17,
+   "T": 0.3479,
+   "sub": [
+    "PASS",
+    0.45
+   ],
+   "y2": [
+    "FAIL",
+    0.94
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.62
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.17
+   ]
+  },
+  {
+   "label": "S3_bar_avg_z66",
+   "alpha": "E5RZYe7G",
+   "S": 0.08,
+   "F": 0.01,
+   "T": 0.4246,
+   "sub": [
+    "FAIL",
+    0.03
+   ],
+   "y2": [
+    "FAIL",
+    0.26
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.08
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.01
+   ]
+  },
+  {
+   "label": "S5_bar_avg_mean5_neg",
+   "alpha": "RR6JqePe",
+   "S": 1.08,
+   "F": 0.64,
+   "T": 0.1317,
+   "sub": [
+    "PASS",
+    0.8
+   ],
+   "y2": [
+    "WARNING",
+    1.54
+   ],
+   "sh_ok": [
+    "WARNING",
+    1.08
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.64
+   ]
+  },
+  {
+   "label": "S4_bar_avg_rank252",
+   "alpha": "88Pm7VQv",
+   "S": 0.59,
+   "F": 0.16,
+   "T": 0.3516,
+   "sub": [
+    "PASS",
+    0.47
+   ],
+   "y2": [
+    "FAIL",
+    0.87
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.59
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.16
+   ]
+  },
+  {
+   "label": "S6_bar_avg_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "S8_bar_avg_grp_subind",
+   "alpha": "omW1AbwE",
+   "S": -0.01,
+   "F": -0.0,
+   "T": 0.139,
+   "sub": [
+    "FAIL",
+    -0.19
+   ],
+   "y2": [
+    "FAIL",
+    -1.31
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.01
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.0
+   ]
+  },
+  {
+   "label": "S7_bar_max_neg",
+   "alpha": "9qWzbegV",
+   "S": 1.04,
+   "F": 0.49,
+   "T": 0.2021,
+   "sub": [
+    "PASS",
+    0.77
+   ],
+   "y2": [
+    "WARNING",
+    1.45
+   ],
+   "sh_ok": [
+    "WARNING",
+    1.04
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.49
+   ]
+  },
+  {
+   "label": "S9_bar_avg_grp_market",
+   "alpha": "gJZYKA5O",
+   "S": 0.43,
+   "F": 0.14,
+   "T": 0.115,
+   "sub": [
+    "FAIL",
+    0.1
+   ],
+   "y2": [
+    "FAIL",
+    -0.32
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.43
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.14
+   ]
+  },
+  {
+   "label": "L1_rate_neg",
+   "alpha": "O081kaVv",
+   "S": 0.3,
+   "F": 0.07,
+   "T": 0.231,
+   "sub": [
+    "PASS",
+    0.43
+   ],
+   "y2": [
+    "FAIL",
+    1.25
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.3
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.07
+   ]
+  },
+  {
+   "label": "L2_rate_z252",
+   "alpha": "rKe1LE9o",
+   "S": 0.31,
+   "F": 0.07,
+   "T": 0.2957,
+   "sub": [
+    "PASS",
+    0.6
+   ],
+   "y2": [
+    "FAIL",
+    0.07
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.31
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.07
+   ]
+  },
+  {
+   "label": "L3_rate_rank252",
+   "alpha": "pw5qE1xx",
+   "S": 0.14,
+   "F": 0.02,
+   "T": 0.3253,
+   "sub": [
+    "PASS",
+    0.45
+   ],
+   "y2": [
+    "FAIL",
+    0.1
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.14
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.02
+   ]
+  },
+  {
+   "label": "L5_rate_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "L4_rate_mean5_neg",
+   "alpha": "xAbKQxrm",
+   "S": 0.43,
+   "F": 0.15,
+   "T": 0.145,
+   "sub": [
+    "PASS",
+    0.59
+   ],
+   "y2": [
+    "FAIL",
+    1.19
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.43
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.15
+   ]
+  },
+  {
+   "label": "L6_rate_grp_subind",
+   "alpha": "d512mbxv",
+   "S": 0.12,
+   "F": 0.02,
+   "T": 0.1696,
+   "sub": [
+    "PASS",
+    0.11
+   ],
+   "y2": [
+    "FAIL",
+    -0.25
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.12
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.02
+   ]
+  },
+  {
+   "label": "V1_vol_neg",
+   "alpha": "d512mKMJ",
+   "S": 0.54,
+   "F": 0.18,
+   "T": 0.2085,
+   "sub": [
+    "PASS",
+    0.34
+   ],
+   "y2": [
+    "FAIL",
+    0.95
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.54
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.18
+   ]
+  },
+  {
+   "label": "V2_vol_z252",
+   "alpha": "QPK1j6KW",
+   "S": 0.0,
+   "F": 0.0,
+   "T": 0.2797,
+   "sub": [
+    "FAIL",
+    -0.14
+   ],
+   "y2": [
+    "FAIL",
+    -0.52
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.0
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.0
+   ]
+  },
+  {
+   "label": "V3_vol_rank252",
+   "alpha": "leKL2mel",
+   "S": 0.07,
+   "F": 0.01,
+   "T": 0.2988,
+   "sub": [
+    "FAIL",
+    0.01
+   ],
+   "y2": [
+    "FAIL",
+    -0.46
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.07
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.01
+   ]
+  },
+  {
+   "label": "V4_vol_grp_subind",
+   "alpha": "e7Ql2kLz",
+   "S": -0.06,
+   "F": -0.01,
+   "T": 0.1928,
+   "sub": [
+    "FAIL",
+    -0.2
+   ],
+   "y2": [
+    "FAIL",
+    -0.26
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.06
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.01
+   ]
+  }
+ ]
+}

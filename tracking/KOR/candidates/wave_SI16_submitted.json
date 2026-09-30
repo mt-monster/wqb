@@ -1,0 +1,38 @@
+{
+ "submitted_at": "2026-09-29 11:12:44",
+ "batches": [
+  {
+   "group": "R1_negrank",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "7pLYX6u14hVbcibZDFIEtH",
+   "ids": [
+    "r1_a",
+    "r1_b"
+   ]
+  },
+  {
+   "group": "R2_negrank750",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "21bbtZQJ53Ka5QSvRJVCQK",
+   "ids": [
+    "r2_a",
+    "r2_b"
+   ]
+  },
+  {
+   "group": "R3_oneMinus",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "35UtY2brS5alcAW13HNdth5X",
+   "ids": [
+    "r3_a",
+    "r3_b"
+   ]
+  }
+ ]
+}

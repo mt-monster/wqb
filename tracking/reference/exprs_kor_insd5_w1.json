@@ -1,0 +1,66 @@
+[
+ [
+  "A1_ghc_rank",
+  "group_rank(ts_backfill(vec_sum(insd5_ghc_tr), 22), sector)"
+ ],
+ [
+  "A2_ghc_hump",
+  "hump(group_rank(ts_backfill(vec_sum(insd5_ghc_tr), 22), sector), hump=0.003)"
+ ],
+ [
+  "A3_ghc_decay",
+  "hump(group_rank(ts_decay_linear(ts_backfill(vec_sum(insd5_ghc_tr), 22), 10), sector), hump=0.003)"
+ ],
+ [
+  "A4_ghc_zscore1260",
+  "group_rank(ts_mean(ts_zscore(ts_backfill(vec_sum(insd5_ghc_tr), 22), 1260), 5), sector)"
+ ],
+ [
+  "A5_ghc_meandiff",
+  "group_rank(ts_mean(vec_sum(insd5_ghc_tr), 22), sector)"
+ ],
+ [
+  "A6_ghc_neg",
+  "group_rank(ts_backfill(vec_avg(insd5_ghc_tr), 22), sector)"
+ ],
+ [
+  "B1_af_over_bf",
+  "group_rank(divide(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), sector)"
+ ],
+ [
+  "B2_af_over_bf_hump",
+  "hump(group_rank(divide(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), sector), hump=0.003)"
+ ],
+ [
+  "B3_bf_over_af",
+  "group_rank(divide(vec_sum(insd5_vol_bf), vec_sum(insd5_vol_af)), sector)"
+ ],
+ [
+  "B4_afbf_ratio_decay",
+  "hump(group_rank(ts_decay_linear(divide(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), 10), sector), hump=0.003)"
+ ],
+ [
+  "C1_fa_over_fb",
+  "group_rank(divide(vec_sum(insd5_fa_tr), vec_sum(insd5_fb_tr)), sector)"
+ ],
+ [
+  "C2_fa_bf_diff",
+  "group_rank(subtract(vec_sum(insd5_fa_tr), vec_sum(insd5_fb_tr)), sector)"
+ ],
+ [
+  "D1_amt_ratio",
+  "group_rank(divide(vec_sum(insd5_trd_amt), vec_sum(insd5_source_data)), sector)"
+ ],
+ [
+  "D2_amt_avg",
+  "group_rank(ts_backfill(vec_avg(insd5_trd_amt), 22), sector)"
+ ],
+ [
+  "E1_trsy_ratio",
+  "group_rank(ts_backfill(vec_avg(insd5_trsy_ratio), 22), sector)"
+ ],
+ [
+  "E2_tnc",
+  "group_rank(ts_backfill(vec_avg(insd5_tnc), 22), sector)"
+ ]
+]

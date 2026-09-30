@@ -1,0 +1,101 @@
+{
+ "submitted_at": "2026-09-29 00:12:13",
+ "variants": [
+  {
+   "id": "u1_delta5_stat",
+   "mechanism": "利用率5日变化 基线 STATISTICAL",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), market)",
+   "nu": "STATISTICAL"
+  },
+  {
+   "id": "u2_delta5_ind",
+   "mechanism": "利用率5日变化 INDUSTRY（nu 提 2Y）",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "u3_delta5_subind",
+   "mechanism": "利用率5日变化 SUBINDUSTRY",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), market)",
+   "nu": "SUBINDUSTRY"
+  },
+  {
+   "id": "u4_delta10",
+   "mechanism": "利用率10日变化",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 10), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "u5_delta22",
+   "mechanism": "利用率22日变化",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 22), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "u6_delta3",
+   "mechanism": "利用率3日变化",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 3), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "u7_relchg22",
+   "mechanism": "利用率相对22日均值的变化率",
+   "expr": "group_rank(divide(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), add(ts_mean(vec_avg(loan_utilization_ratio_twn), 22), 0.0001)), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "u8_delta5_sector",
+   "mechanism": "利用率5日变化 sector 轴",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), sector)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "u9_delta5_subind_axis",
+   "mechanism": "利用率5日变化 subindustry 轴",
+   "expr": "group_rank(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), subindustry)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "u10_units_delta5",
+   "mechanism": "units版利用率5日变化",
+   "expr": "group_rank(ts_delta(vec_avg(shrt3_utilizationpercent_units), 5), market)",
+   "nu": "INDUSTRY"
+  }
+ ],
+ "batches": [
+  {
+   "nu": "STATISTICAL",
+   "progress_id": "",
+   "ids": [
+    "u1_delta5_stat"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "u2_delta5_ind"
+   ]
+  },
+  {
+   "nu": "SUBINDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "u3_delta5_subind"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "2pMINdbKM4U19hnojBKl0Lp",
+   "ids": [
+    "u4_delta10",
+    "u5_delta22",
+    "u6_delta3",
+    "u7_relchg22",
+    "u8_delta5_sector",
+    "u9_delta5_subind_axis",
+    "u10_units_delta5"
+   ]
+  }
+ ]
+}

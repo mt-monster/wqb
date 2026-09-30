@@ -1,0 +1,749 @@
+{
+ "cfg": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 30,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "K4_mv_buy_over_sell",
+   "alpha": "levomj0N",
+   "S": 0.39,
+   "F": 0.15,
+   "T": 0.0712,
+   "sub": [
+    "PASS",
+    0.43
+   ],
+   "y2": [
+    "FAIL",
+    -0.95
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.39
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.15
+   ]
+  },
+  {
+   "label": "K1_buy_over_sell_count",
+   "alpha": "9qjNnPQV",
+   "S": 0.01,
+   "F": 0.0,
+   "T": 0.0752,
+   "sub": [
+    "PASS",
+    0.19
+   ],
+   "y2": [
+    "PASS",
+    1.8
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.01
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.0
+   ]
+  },
+  {
+   "label": "K3_qty_buy_over_sell",
+   "alpha": "xA3JZ2eN",
+   "S": 0.42,
+   "F": 0.16,
+   "T": 0.071,
+   "sub": [
+    "PASS",
+    0.46
+   ],
+   "y2": [
+    "FAIL",
+    -0.83
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.42
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.16
+   ]
+  },
+  {
+   "label": "K5_net_qty_over_gross",
+   "alpha": "2rw3YeGY",
+   "S": -0.6,
+   "F": -0.25,
+   "T": 0.0669,
+   "sub": [
+    "FAIL",
+    -0.41
+   ],
+   "y2": [
+    "FAIL",
+    0.46
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.6
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.25
+   ]
+  },
+  {
+   "label": "K2_sell_over_buy_count",
+   "alpha": "wpZ0d9P2",
+   "S": 0.1,
+   "F": 0.02,
+   "T": 0.0715,
+   "sub": [
+    "FAIL",
+    -0.1
+   ],
+   "y2": [
+    "FAIL",
+    -1.87
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.1
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.02
+   ]
+  },
+  {
+   "label": "K7_eq_over_share",
+   "alpha": "O0Nl33Nb",
+   "S": -0.29,
+   "F": -0.1,
+   "T": 0.0769,
+   "sub": [
+    "PASS",
+    0.13
+   ],
+   "y2": [
+    "FAIL",
+    0.27
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.29
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.1
+   ]
+  },
+  {
+   "label": "K6_inst_over_all",
+   "alpha": "omLxx82v",
+   "S": 0.05,
+   "F": 0.01,
+   "T": 0.0692,
+   "sub": [
+    "PASS",
+    0.16
+   ],
+   "y2": [
+    "FAIL",
+    1.13
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.05
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.01
+   ]
+  },
+  {
+   "label": "K8_net_mv_over_gross",
+   "alpha": "N1aYYM6q",
+   "S": -0.67,
+   "F": -0.3,
+   "T": 0.0671,
+   "sub": [
+    "FAIL",
+    -0.45
+   ],
+   "y2": [
+    "FAIL",
+    0.02
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.67
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.3
+   ]
+  },
+  {
+   "label": "K12_net_qty_over_hold",
+   "alpha": "O0NlleXg",
+   "S": -0.15,
+   "F": -0.04,
+   "T": 0.0693,
+   "sub": [
+    "FAIL",
+    -0.26
+   ],
+   "y2": [
+    "FAIL",
+    -1.12
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.15
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.04
+   ]
+  },
+  {
+   "label": "K13_mv_ratio_decay",
+   "alpha": "d5bNN072",
+   "S": 0.25,
+   "F": 0.07,
+   "T": 0.0632,
+   "sub": [
+    "PASS",
+    0.18
+   ],
+   "y2": [
+    "FAIL",
+    -0.67
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.25
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.07
+   ]
+  },
+  {
+   "label": "K9_buy_sell_spread",
+   "alpha": "P02kk3a7",
+   "S": -0.2,
+   "F": -0.05,
+   "T": 0.0717,
+   "sub": [
+    "PASS",
+    0.03
+   ],
+   "y2": [
+    "PASS",
+    2.12
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.2
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.05
+   ]
+  },
+  {
+   "label": "K10_qty_ratio_decay",
+   "alpha": "78Nee1Pb",
+   "S": 0.39,
+   "F": 0.14,
+   "T": 0.0654,
+   "sub": [
+    "PASS",
+    0.41
+   ],
+   "y2": [
+    "FAIL",
+    -0.35
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.39
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.14
+   ]
+  },
+  {
+   "label": "K15_rc_buy_qty_norm",
+   "alpha": "blbeedNq",
+   "S": -0.69,
+   "F": -0.35,
+   "T": 0.0722,
+   "sub": [
+    "FAIL",
+    -0.74
+   ],
+   "y2": [
+    "FAIL",
+    -0.16
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.69
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.35
+   ]
+  },
+  {
+   "label": "K11_holder_over_all",
+   "alpha": "MPaJJ1Mk",
+   "S": -0.28,
+   "F": -0.09,
+   "T": 0.0705,
+   "sub": [
+    "PASS",
+    0.11
+   ],
+   "y2": [
+    "FAIL",
+    0.51
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.28
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.09
+   ]
+  },
+  {
+   "label": "M3_zscore252_mean5",
+   "alpha": "xA3JJvRm",
+   "S": 0.6,
+   "F": 0.27,
+   "T": 0.0651,
+   "sub": [
+    "PASS",
+    0.52
+   ],
+   "y2": [
+    "FAIL",
+    0.64
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.6
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.27
+   ]
+  },
+  {
+   "label": "K16_buy_sell_qty_spread",
+   "alpha": "9qjNN3po",
+   "S": 0.04,
+   "F": 0.01,
+   "T": 0.0674,
+   "sub": [
+    "PASS",
+    0.13
+   ],
+   "y2": [
+    "FAIL",
+    0.58
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.04
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.01
+   ]
+  },
+  {
+   "label": "M5_zscore504_mv",
+   "alpha": "WjeEEjYN",
+   "S": 0.37,
+   "F": 0.13,
+   "T": 0.0604,
+   "sub": [
+    "PASS",
+    0.43
+   ],
+   "y2": [
+    "FAIL",
+    -0.32
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.37
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.13
+   ]
+  },
+  {
+   "label": "M4_zscore504_buycount",
+   "alpha": "YPMjjGgo",
+   "S": 0.33,
+   "F": 0.11,
+   "T": 0.0676,
+   "sub": [
+    "PASS",
+    0.38
+   ],
+   "y2": [
+    "FAIL",
+    1.3
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.33
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.11
+   ]
+  },
+  {
+   "label": "K14_rc_buy_count",
+   "alpha": "QPK11daK",
+   "S": -0.05,
+   "F": -0.01,
+   "T": 0.0781,
+   "sub": [
+    "PASS",
+    -0.02
+   ],
+   "y2": [
+    "FAIL",
+    1.25
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.05
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.01
+   ]
+  },
+  {
+   "label": "M2_zscore504_mean22",
+   "alpha": "mL6PPez9",
+   "S": 0.55,
+   "F": 0.23,
+   "T": 0.0599,
+   "sub": [
+    "PASS",
+    0.5
+   ],
+   "y2": [
+    "FAIL",
+    0.12
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.55
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.23
+   ]
+  },
+  {
+   "label": "M1_zscore504_mean5",
+   "alpha": "e7Qll87z",
+   "S": 0.62,
+   "F": 0.28,
+   "T": 0.0618,
+   "sub": [
+    "PASS",
+    0.6
+   ],
+   "y2": [
+    "FAIL",
+    0.09
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.62
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.28
+   ]
+  },
+  {
+   "label": "M8_zscore1008_mean5",
+   "alpha": "QPK11EjW",
+   "S": 0.93,
+   "F": 0.51,
+   "T": 0.0598,
+   "sub": [
+    "PASS",
+    0.83
+   ],
+   "y2": [
+    "FAIL",
+    0.33
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.93
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.51
+   ]
+  },
+  {
+   "label": "M10_netovergross_z504",
+   "alpha": "XgJjjnz1",
+   "S": -0.35,
+   "F": -0.12,
+   "T": 0.0687,
+   "sub": [
+    "PASS",
+    -0.2
+   ],
+   "y2": [
+    "FAIL",
+    0.73
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.35
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.12
+   ]
+  },
+  {
+   "label": "M6_zscore504_instoverall",
+   "alpha": "gJZYY8zg",
+   "S": -0.87,
+   "F": -0.46,
+   "T": 0.0576,
+   "sub": [
+    "FAIL",
+    -0.8
+   ],
+   "y2": [
+    "FAIL",
+    0.55
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.87
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.46
+   ]
+  },
+  {
+   "label": "M11_z504_mean5_market",
+   "alpha": "xAbKKj9w",
+   "S": 0.62,
+   "F": 0.28,
+   "T": 0.0616,
+   "sub": [
+    "PASS",
+    0.59
+   ],
+   "y2": [
+    "FAIL",
+    0.11
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.62
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.28
+   ]
+  },
+  {
+   "label": "M7_zscore504_qty_decay",
+   "alpha": "KPrKKr0x",
+   "S": 0.6,
+   "F": 0.27,
+   "T": 0.0607,
+   "sub": [
+    "PASS",
+    0.58
+   ],
+   "y2": [
+    "FAIL",
+    0.1
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.6
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.27
+   ]
+  },
+  {
+   "label": "M9_ratio_buyoverall_z504",
+   "alpha": "WjeEEldk",
+   "S": -0.4,
+   "F": -0.14,
+   "T": 0.0615,
+   "sub": [
+    "FAIL",
+    -0.34
+   ],
+   "y2": [
+    "FAIL",
+    0.61
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.4
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.14
+   ]
+  },
+  {
+   "label": "M13_z504_buycount_decay",
+   "alpha": "pw5qqx0j",
+   "S": 0.33,
+   "F": 0.11,
+   "T": 0.0678,
+   "sub": [
+    "PASS",
+    0.37
+   ],
+   "y2": [
+    "FAIL",
+    1.27
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.33
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.11
+   ]
+  },
+  {
+   "label": "M16_qty_raw_ratio_decay",
+   "alpha": "LLZPPzXa",
+   "S": 0.46,
+   "F": 0.18,
+   "T": 0.0656,
+   "sub": [
+    "PASS",
+    0.46
+   ],
+   "y2": [
+    "FAIL",
+    -0.22
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.46
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.18
+   ]
+  },
+  {
+   "label": "M12_z504_mean5_ind",
+   "alpha": "58gZZY8k",
+   "S": 0.26,
+   "F": 0.08,
+   "T": 0.0637,
+   "sub": [
+    "PASS",
+    0.52
+   ],
+   "y2": [
+    "FAIL",
+    0.15
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.26
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.08
+   ]
+  },
+  {
+   "label": "M15_z504_mv_decay",
+   "alpha": "vR2KR8Ew",
+   "S": 0.41,
+   "F": 0.15,
+   "T": 0.0607,
+   "sub": [
+    "PASS",
+    0.46
+   ],
+   "y2": [
+    "FAIL",
+    -0.44
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.41
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.15
+   ]
+  },
+  {
+   "label": "M14_holder_z504",
+   "alpha": "6XKnXV2p",
+   "S": 0.14,
+   "F": 0.03,
+   "T": 0.0616,
+   "sub": [
+    "PASS",
+    0.25
+   ],
+   "y2": [
+    "FAIL",
+    0.67
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.14
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.03
+   ]
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "ts": "2026-09-29 13:42:34",
+ "goal": "KOR 起步，产出 20 颗可提交 REGULAR alpha；优先点亮未亮塔，一塔点亮即切换",
+ "progress": {
+  "quota_used_today": "1/4 (REGULAR)",
+  "pyramid_lit": [
+   "KOR/D1/SHORTINTEREST (3 ACTIVE, 本次点亮)"
+  ],
+  "submitted": [
+   {
+    "id": "vRrQ5Npr",
+    "status": "ACTIVE",
+    "pyramid": "KOR/D1/SHORTINTEREST",
+    "S": 1.76,
+    "F": 1.18
+   }
+  ]
+ },
+ "dataset_exploration_today": [
+  {
+   "region": "KOR",
+   "ds": "shortinterest38",
+   "structures": 21,
+   "best_sharpe": 2.76,
+   "result": "提1颗后池内prod全爆0.96+；已榨干",
+   "verdict": "EXHAUSTED"
+  },
+  {
+   "region": "DEU",
+   "ds": "other532",
+   "structures": 27,
+   "best_sharpe": 1.07,
+   "result": "弱",
+   "verdict": "DEAD"
+  },
+  {
+   "region": "DEU",
+   "ds": "shortinterest3",
+   "structures": 25,
+   "best_sharpe": 0.06,
+   "result": "正反两向全负",
+   "verdict": "DEAD"
+  },
+  {
+   "region": "EUR",
+   "ds": "news_sentiment_nlp",
+   "structures": 16,
+   "best_sharpe": 0.35,
+   "result": "弱(turnover已提至0.25)",
+   "verdict": "DEAD"
+  },
+  {
+   "region": "KOR",
+   "ds": "price_signal_dl",
+   "structures": 12,
+   "best_sharpe": 0.78,
+   "result": "弱",
+   "verdict": "DEAD"
+  },
+  {
+   "region": "EUR",
+   "ds": "price_signal_dl",
+   "structures": 3,
+   "best_sharpe": 0.28,
+   "result": "弱",
+   "verdict": "DEAD"
+  }
+ ],
+ "key_lessons": [
+  "★★★★★ 一个数据集在给定区域基本只能贡献 1 颗可提交 alpha（首颗ACTIVE后同数据集其余候选prod集体飙至0.96+）→ 必须持续开新数据集",
+  "multi-sim 批 FAIL 常是并发冲突伪装（非语法错误）；批处理期间禁一切并行平台请求",
+  "event/VECTOR 字段不能直接进 ts_rank/ts_delta/ts_zscore"
+ ]
+}

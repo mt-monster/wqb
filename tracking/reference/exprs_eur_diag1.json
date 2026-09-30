@@ -1,0 +1,34 @@
+[
+ [
+  "h1a_naked_rank",
+  "group_rank(avg_similarity_v_reversal_bottom, subindustry)"
+ ],
+ [
+  "h1b_rank_rev",
+  "group_rank(multiply(-1, avg_similarity_v_reversal_bottom), subindustry)"
+ ],
+ [
+  "h1c_raw_sub",
+  "group_rank(subtract(avg_similarity_upward_breakaway_gap, avg_similarity_downward_breakaway_gap), subindustry)"
+ ],
+ [
+  "h1d_light_decay",
+  "group_rank(ts_decay_linear(avg_similarity_v_reversal_bottom, 20), subindustry)"
+ ],
+ [
+  "h1e_ts_mean5",
+  "group_rank(ts_mean(avg_similarity_v_reversal_bottom, 5), subindustry)"
+ ],
+ [
+  "h1f_zscore",
+  "group_zscore(avg_similarity_v_reversal_bottom, subindustry)"
+ ],
+ [
+  "h1g_neg_zscore",
+  "group_zscore(multiply(-1, avg_similarity_v_reversal_bottom), subindustry)"
+ ],
+ [
+  "h1h_rank_mkt",
+  "group_rank(avg_similarity_v_reversal_bottom, market)"
+ ]
+]

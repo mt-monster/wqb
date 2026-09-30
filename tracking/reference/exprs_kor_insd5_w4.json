@@ -1,0 +1,70 @@
+[
+ [
+  "P1_sub05_rank",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector))"
+ ],
+ [
+  "P2_neg_rank_out",
+  "multiply(-1, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector))"
+ ],
+ [
+  "P3_sub05_rank_hump",
+  "subtract(0.5, hump(group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector), hump=0.003))"
+ ],
+ [
+  "P4_sub05_rank2",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), sector))"
+ ],
+ [
+  "P5_neg_rank2_out",
+  "multiply(-1, group_rank(ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10), sector))"
+ ],
+ [
+  "Q1_rank_neg_in",
+  "hump(subtract(1, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector)), hump=0.003)"
+ ],
+ [
+  "Q2_group_rank_neg_in",
+  "group_rank(ts_rank(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), 252), sector)"
+ ],
+ [
+  "R1_neg_raw",
+  "multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))))"
+ ],
+ [
+  "R2_neg_raw_hump",
+  "hump(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))), hump=0.003)"
+ ],
+ [
+  "R3_neg_raw_decay",
+  "hump(multiply(-1, ts_decay_linear(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 10)), hump=0.003)"
+ ],
+ [
+  "R4_neg_raw_zscore",
+  "zscore(multiply(-1, divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data)))))"
+ ],
+ [
+  "S1_neg_I2",
+  "subtract(0.5, hump(group_rank(ts_decay_linear(divide(vec_sum(insd5_vol_af), add(1, vec_sum(insd5_vol_bf))), 20), sector), hump=0.003))"
+ ],
+ [
+  "S2_neg_J1",
+  "subtract(0.5, hump(group_rank(divide(vec_sum(insd5_fa_tr), add(0.001, vec_sum(insd5_fb_tr))), sector), hump=0.003))"
+ ],
+ [
+  "S3_neg_G1",
+  "subtract(0.5, group_rank(divide(subtract(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), add(1, vec_sum(insd5_vol_bf))), sector))"
+ ],
+ [
+  "T1_amt_over_vol",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_vol_bf))), sector))"
+ ],
+ [
+  "T2_amt_over_data",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_data))), sector))"
+ ],
+ [
+  "T3_amt_log",
+  "subtract(0.5, group_rank(log(add(1, vec_sum(insd5_trd_amt))), sector))"
+ ]
+]

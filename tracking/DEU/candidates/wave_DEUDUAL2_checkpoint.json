@@ -1,0 +1,67 @@
+{
+ "done_batches": [
+  {
+   "label": "T1b_SI3_00",
+   "progress_id": "289ard7qW4DybL75olUaxPm",
+   "dataset": "shortinterest3",
+   "ids": [
+    "T1b_bar_delta",
+    "T1b_bar_z",
+    "T1b_px_sub",
+    "T1b_px_ind",
+    "T1b_volrate",
+    "T1b_cnt_delta"
+   ],
+   "exprs": [
+    "hump(group_rank(ts_decay_linear(vec_avg(ts_delta(shrt3_bar, 20)), 30), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(vec_avg(ts_zscore(shrt3_bar, 250)), 30), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loaned_market_value_usd), add(vec_sum(loaned_share_count), 0.0001)), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loaned_market_value_usd), add(vec_sum(loaned_share_count), 0.0001)), 500), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(vec_avg(loan_rate_volatility), 250), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(vec_sum(ts_delta(loaned_share_count, 20)), 30), industry), hump=0.0025)"
+   ]
+  },
+  {
+   "label": "T2b_O532_00",
+   "progress_id": "Y85uebdn52r9ax1a6kuL7bg",
+   "dataset": "other532",
+   "ids": [
+    "T2b_sl_gd",
+    "T2b_ml_gd",
+    "T2b_sl_idm",
+    "T2b_ml_idm",
+    "T2b_sl_ed",
+    "T2b_ml_ed",
+    "T2b_sec",
+    "T2b_mkt"
+   ],
+   "exprs": [
+    "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_global_daily_specificreturn, 60), ts_rank(oth532_global_daily_specificreturn, 250)), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_global_daily_specificreturn, 250), ts_rank(oth532_global_daily_specificreturn, 60)), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(ts_rank(idiosyncratic_return_eue_monthly, 60), ts_rank(idiosyncratic_return_eue_monthly, 250)), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(ts_rank(idiosyncratic_return_eue_monthly, 250), ts_rank(idiosyncratic_return_eue_monthly, 60)), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_emerging_daily_specificreturn, 60), ts_rank(oth532_emerging_daily_specificreturn, 250)), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(ts_rank(oth532_emerging_daily_specificreturn, 250), ts_rank(oth532_emerging_daily_specificreturn, 60)), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 20), sector), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 20), market), hump=0.0025)"
+   ]
+  },
+  {
+   "label": "T2b_O532_08",
+   "progress_id": "3fZM0R3XS4AwbawlYs71D8s",
+   "dataset": "other532",
+   "ids": [
+    "T2b_d120",
+    "T2b_d250",
+    "T2b_vol",
+    "T2b_zgap"
+   ],
+   "exprs": [
+    "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 120), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 250), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, ts_std_dev(oth532_global_daily_specificreturn, 60)), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(ts_zscore(oth532_global_daily_specificreturn, 60), ts_zscore(oth532_global_monthly_specificreturn, 250)), 20), subindustry), hump=0.0025)"
+   ]
+  }
+ ]
+}

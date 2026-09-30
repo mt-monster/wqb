@@ -1,0 +1,101 @@
+{
+ "submitted_at": "2026-09-29 00:26:21",
+ "variants": [
+  {
+   "id": "s1_lastrate_inv",
+   "mechanism": "增量借券费率取反",
+   "expr": "group_rank(multiply(-1, vec_avg(rsk59_last_rate)), market)",
+   "nu": "STATISTICAL"
+  },
+  {
+   "id": "s2_offerrrate_inv",
+   "mechanism": "存量融资费率取反",
+   "expr": "group_rank(multiply(-1, vec_avg(rsk59_offer_rate)), market)",
+   "nu": "STATISTICAL"
+  },
+  {
+   "id": "s3_rateavg_inv",
+   "mechanism": "两费率均值取反",
+   "expr": "group_rank(multiply(-1, divide(add(vec_avg(rsk59_offer_rate), vec_avg(rsk59_last_rate)), 2)), market)",
+   "nu": "STATISTICAL"
+  },
+  {
+   "id": "s4_lastrate_ind",
+   "mechanism": "增量借券费率取反 INDUSTRY",
+   "expr": "group_rank(multiply(-1, vec_avg(rsk59_last_rate)), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "s5_lastrate_sub",
+   "mechanism": "增量借券费率取反 SUBINDUSTRY",
+   "expr": "group_rank(multiply(-1, vec_avg(rsk59_last_rate)), market)",
+   "nu": "SUBINDUSTRY"
+  },
+  {
+   "id": "s6_lastrate_ma22",
+   "mechanism": "费率取反 22 日平滑",
+   "expr": "group_rank(multiply(-1, ts_mean(vec_avg(rsk59_last_rate), 22)), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "s7_lastrate_rk252",
+   "mechanism": "费率取反 ts_rank252",
+   "expr": "group_rank(multiply(-1, ts_rank(vec_avg(rsk59_last_rate), 252)), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "s8_avail_ind",
+   "mechanism": "可借供给量 INDUSTRY",
+   "expr": "group_rank(vec_avg(rsk59_indicativeavailability), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "s9_avail_rk252",
+   "mechanism": "可借供给量 ts_rank252",
+   "expr": "group_rank(ts_rank(vec_avg(rsk59_indicativeavailability), 252), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "s10_dtc10_ind",
+   "mechanism": "10日回补天数 INDUSTRY",
+   "expr": "group_rank(vec_avg(rsk59_daystocover10day), market)",
+   "nu": "INDUSTRY"
+  }
+ ],
+ "batches": [
+  {
+   "nu": "STATISTICAL",
+   "progress_id": "3Ag2ARcy54TG9q917P1fV9Qb",
+   "ids": [
+    "s1_lastrate_inv",
+    "s2_offerrrate_inv",
+    "s3_rateavg_inv"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "s4_lastrate_ind"
+   ]
+  },
+  {
+   "nu": "SUBINDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "s5_lastrate_sub"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "15D7pP7Sq4yabRQbTFrlmXf",
+   "ids": [
+    "s6_lastrate_ma22",
+    "s7_lastrate_rk252",
+    "s8_avail_ind",
+    "s9_avail_rk252",
+    "s10_dtc10_ind"
+   ]
+  }
+ ]
+}

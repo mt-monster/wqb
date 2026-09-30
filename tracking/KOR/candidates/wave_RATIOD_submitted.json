@@ -1,0 +1,37 @@
+{
+ "submitted_at": "2026-09-29 00:53:52",
+ "batches": [
+  {
+   "group": "D1_stat_d4",
+   "nu": "STATISTICAL",
+   "decay": 4,
+   "progress_id": "3BCVNI9n54zncC610Zxhkkje",
+   "ids": [
+    "d1_sp_power",
+    "d2_zscore252",
+    "d3_rank_only"
+   ]
+  },
+  {
+   "group": "D2_stat_d4b",
+   "nu": "STATISTICAL",
+   "decay": 4,
+   "progress_id": "",
+   "ids": [
+    "d4_median5",
+    "d5_mean3",
+    "d6_decaylin10"
+   ]
+  },
+  {
+   "group": "D3_ind_d4",
+   "nu": "INDUSTRY",
+   "decay": 4,
+   "progress_id": "3qozbQeKv4iWaZsBiwHUaAQ",
+   "ids": [
+    "d7_exch_rk126",
+    "d8_rk378"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+[
+ [
+  "W11_A_ask30po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_post_open, 4), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_A_ask60po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_60m_post_open, 4), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_A_bid30po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_post_open, 4), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_A_bid60po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_60m_post_open, 4), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_A_high30po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_high_price_return_30m_post_open, 4), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_A_high60po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_high_price_return_60m_post_open, 4), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_B_ask30po",
+  "trade_when(and(rank(divide(volume, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_post_open, 4), country)), 0.5), or(rank(divide(volume, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_B_ask60po",
+  "trade_when(and(rank(divide(volume, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_60m_post_open, 4), country)), 0.5), or(rank(divide(volume, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_A_mom_ask30po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(group_rank(ts_decay_linear(mean_ask_price_return_30m_post_open, 4), country), 0.5), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W11_A_mom_ask60po",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(group_rank(ts_decay_linear(mean_ask_price_return_60m_post_open, 4), country), 0.5), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ]
+]

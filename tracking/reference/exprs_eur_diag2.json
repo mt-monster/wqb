@@ -1,0 +1,50 @@
+[
+ [
+  "a1_raw_neg_z_sub",
+  "group_zscore(multiply(-1, avg_similarity_v_reversal_bottom), subindustry)"
+ ],
+ [
+  "a2_neg_z_ind",
+  "group_zscore(multiply(-1, avg_similarity_v_reversal_bottom), industry)"
+ ],
+ [
+  "a3_neg_z_mkt",
+  "group_zscore(multiply(-1, avg_similarity_v_reversal_bottom), market)"
+ ],
+ [
+  "a4_neg_rank_smooth5",
+  "group_rank(ts_decay_linear(multiply(-1, avg_similarity_v_reversal_bottom), 5), subindustry)"
+ ],
+ [
+  "a5_neg_rank_smooth20",
+  "group_rank(ts_decay_linear(multiply(-1, avg_similarity_v_reversal_bottom), 20), subindustry)"
+ ],
+ [
+  "a6_neg_rank_smooth60",
+  "group_rank(ts_decay_linear(multiply(-1, avg_similarity_v_reversal_bottom), 60), subindustry)"
+ ],
+ [
+  "b1_neg_vt",
+  "group_zscore(avg_similarity_v_reversal_top, subindustry)"
+ ],
+ [
+  "b2_neg_upgap",
+  "group_zscore(multiply(-1, avg_similarity_upward_breakaway_gap_120), subindustry)"
+ ],
+ [
+  "b3_neg_risingwedge",
+  "group_zscore(multiply(-1, avg_similarity_rising_wedge_pattern_120), subindustry)"
+ ],
+ [
+  "b4_neg_fallingwedge",
+  "group_zscore(avg_similarity_falling_wedge_pattern_120, subindustry)"
+ ],
+ [
+  "c1_top_m_bottom",
+  "group_zscore(subtract(avg_similarity_v_reversal_top, avg_similarity_v_reversal_bottom), subindustry)"
+ ],
+ [
+  "c2_bottom_m_top",
+  "group_zscore(subtract(avg_similarity_v_reversal_bottom, avg_similarity_v_reversal_top), subindustry)"
+ ]
+]
