@@ -113,6 +113,16 @@ def check(strict=False):
             errs.append(f"{i} needs-platform 缺 verify / note")
         elif st == "open" and strict:
             errs.append(f"{i} 仍 open")
+        # 关闭证据必须仍指向真实存在的测试 / 文件（needs-platform 的 verify 是给人读的复核配方，不是路径）
+        v = str(e.get("verify") or "").strip()
+        if v and st != "needs-platform":
+            for tok in re.split(r"\s+\|\s+|\s+", v):
+                path, _, name = tok.partition("::")
+                f = REPO / path
+                if not f.is_file():
+                    errs.append(f"{i} verify 指向不存在的文件：{path}")
+                elif name and name not in f.read_text(encoding="utf-8", errors="replace"):
+                    errs.append(f"{i} verify 在 {path} 里找不到 {name}（测试改名后证据失效？）")
     return errs
 
 

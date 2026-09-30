@@ -6,6 +6,14 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**伞形条目收口 / 区域 profile 对齐 / 全库扫描守护（S-F-2）**
+- 伞形条目 P0-1…9 / T0-1…20 / X-1…19（共 48 条）逐项核验并收口：闭环台账 758 条 → 751 fixed / 3 declined / 4 needs-platform / 0 open，每条落到已有测试或本轮新增测试；台账新增「`verify` 指针必须仍指向存在的测试」检查（PW-09 的指针就是一个已改名的测试）→ DEC-61…66
+- 区域 profile：EUR / DEU 的 `static.universe` 与默认档对齐 `config.REGIONS`（此前 EUR 仍列已被平台移除的 `ILLIQUID_MINVOL1M` 且默认 TOP1600、DEU 多列一个 config 没有的 TOP300）；EUR / KOR 的 `win_recipes` 种子不再记混合比例——该种子在 DB KB 为空时经 assemble-priors 进入 GEM 的 priors；新增三条 profile ↔ config 机检（universe ⊆ config 且默认相等 / delay ⊆ config / 已移除档位不得出现）→ T0-8 / DEC-61
+- 全库扫描守护 `test_sf_sweeps`（11 条）：幽灵 / 未知算子（`ts_median` / `scale_down` / `vec_mean` / `is_placeholder`）与 `ts_event_*` 只许以警示口吻出现；加权 / 等权拼腿只许以反例出现或在文件头「现行政策提示」横幅之下（4 份 `docs/reference` 历史资料已加横幅，两份 SOP 的 `ts_event_*` 更正）；`confirm_submit=True` 只许与用户确认同行；`POST /submit` 不得当零成本探针教；一个文件只用一种 shell 方言 → T0-2 / T0-3 / T0-10 / T0-12 / X-3 / X-9 / X-14
+- `skill_lint` 新增 `path-token` 检查（反引号里的仓库内路径必须存在，说明「不存在 / 已归档」的行豁免）；`last_verified` 两条测试（格式合法且不在未来；不早于最近一次改动该 skill 文档的提交，浅克隆下 skip）→ T0-20 / X-17
+- 文档更正：RA `step5-gates.md`（`--export-expr` 的理由）、GBR / KOR / DEU / EUR profile、field-quality 参考（导出块改 PowerShell，注明日常生成器是 `gen_field_inspect_packs.py`）；`last_verified` 只对本次改过文档且已重新核对的 2 个 skill（`wq-brain-ra-pipeline`、`brain-alpha-research-field-quality`）更新为 2026-09-30，其余 31 个没有改动就不动
+- **需要人看的**：GBR `stop_rules_override` 于 2026-09-30 到期（含当天）；`scale_down` 是否存在待平台复核（DEC-62，复核前文档按不可用处理）；其余待办与遗留见 DEC-66
+
 **INDEX 拆分 / 契约 / 生成表 / 凭据登记（S-F-1）**
 - INDEX 只做路由与分层（460 → 约 275 行）：新增首节「任务 → skill 场景路由表」；契约拆到新增的 `CONTRACT.md`（frontmatter 逐字段定义、`description` ≤ 300 字全库机检、硬裁定、共享产物归属、质量门禁）；全部日期条目 / 迁入记录 / 改名表 / 演进注记移入本文件末「更早的历史」→ IX-01…24 / DEC-58
 - 可由代码导出的表改为**生成 + 逐字比对**：区域清单（config.REGIONS × profile × 目录，修掉 DEU / AMR 两处事实错误）、闸门阶梯（按检查名给平台线 / 内部线 / 来源常量，「平台 Sharpe 硬线」不再是一个数）、环境变量目录（新增 `docs/env_and_switches.md` + `docs/env_registry.json`，102 个变量，代码读了未登记 / 登记了不读都红）；生成器 `tools/index_tables.py`

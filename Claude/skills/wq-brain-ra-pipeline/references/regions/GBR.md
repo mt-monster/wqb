@@ -22,7 +22,7 @@ priors:
     - "starmine 四向价值结构（PROD 饱和，机制换腿复用）"
     - "delta66 双时序差分家族（PROD 饱和，机制换腿复用）"
     - "other455×model264 跨数据集混合（PROD 饱和，机制换腿复用）"
-    - "（机制）EUR 0.4 慢 MODEL 残差 + 0.6 快 PV（T-KB-01 验证中）"
+    - "（机制）慢 MODEL 残差 × 快 PV 的跨周期 / 跨数据源结构（T-KB-01；只许以条件 / 分组 / 残差入场，**禁**加权 / 等权相加——2026-09-13 起闸 5 拦）"
 gate_overrides:
   cw_gate: WARN
 loop_policy:
@@ -38,7 +38,7 @@ empirical_anchor:
 
 ## 定位与实证依据
 
-GBR 已从"半空白探针态"升级为**达成区**：region_kb 4 ACTIVE（GrlqxwKx/vRNk56mz 全闸过，A1G7o1EE/WjAV89jG rn 偏弱但仍 OS ACTIVE）+ 3 条 win_recipes（全部 PROD 饱和，仅机制换腿复用）+ registry dead_end 10 条（8-26 回写）+ s0_whitelist 10 数据集（8-26 建）。市场结构与 EUR 相近，EUR 机制（0.4 慢 MODEL × 0.6 快 PV）可作换腿先验，但**借用≠验证**：本地回测确认后才能回写 win 层。
+GBR 已从"半空白探针态"升级为**达成区**：region_kb 4 ACTIVE（GrlqxwKx/vRNk56mz 全闸过，A1G7o1EE/WjAV89jG rn 偏弱但仍 OS ACTIVE）+ 3 条 win_recipes（全部 PROD 饱和，仅机制换腿复用）+ registry dead_end 10 条（8-26 回写）+ s0_whitelist 10 数据集（8-26 建）。市场结构与 EUR 相近，EUR 的「慢 MODEL × 快 PV」跨周期结构可作换腿先验（其原配方是 0.4 / 0.6 加权相加，**已被 2026-09-13 起的路线 A 与闸 5 禁止**，只能改写成条件 / 分组 / 残差形态，见 optimization-v1 `structural-interaction-forms.md`），但**借用≠验证**：本地回测确认后才能回写 win 层。
 
 ## 流程变体（相对九步骨架）
 
@@ -52,7 +52,7 @@ registry dead_end 10 条 + s0_whitelist_2026-08-26 10 数据集 + wave29/30 FAIL
 
 ### 步 4 注入：win 机制换腿优先
 
-本波至少 2 槽按 win 机制（T-KB-01 慢×快跨周期混合 / T-KB-05 长窗强 2Y / T-KB-07 四向价值）换白名单字段腿；禁用 PROD 饱和族字段。priors 走 `campaign.py assemble-priors`（DB KB 组装）。
+本波至少 2 槽按 win 机制（T-KB-01 慢×快跨周期结构（不加权） / T-KB-05 长窗强 2Y / T-KB-07 四向价值）换白名单字段腿；禁用 PROD 饱和族字段。priors 走 `campaign.py assemble-priors`（DB KB 组装）。
 
 ### 步 9 注入：判死回写闭环
 
@@ -61,7 +61,7 @@ registry dead_end 10 条 + s0_whitelist_2026-08-26 10 数据集 + wave29/30 FAIL
 ## priors
 
 wins:
-- T-KB-01 慢×快跨周期混合：rank(add(multiply(w_s, rank(SLOW_FIELD)), multiply(w_f, rank(FAST_FIELD))))，权重 0.4/0.6 起步，必须跨周期/跨数据源（EUR Wj71Q12o ACTIVE 先例）
+- T-KB-01 慢×快跨周期结构：**旧配方**是 `rank(add(multiply(w_s, rank(慢)), multiply(w_f, rank(快))))` 权重 0.4 / 0.6 起步（EUR Wj71Q12o ACTIVE 先例）——**该加权相加写法已被闸 5 禁止（路线 A，2026-09-13 起）**，不得照抄；可迁移的只有「必须跨周期 / 跨数据源」这条铁律，落地形态限条件 / 分组 / 残差三式（`structural-interaction-forms.md`）
 - T-KB-05 长窗结构强 2Y：rank(ts_rank(ts_backfill(F, 66), 250)) + decay 6-8（IND 三颗 ACTIVE 先例）
 - T-KB-07 四向价值结构：ep_yield fy2 av_diff + fwdPE 反转 + fy1 水平 + delta66/22 双差分（GBR 4 ACTIVE，PROD 饱和仅换腿）
 - T-KB-02 镜像反转翻案：探针批 |sh|≥1.0 强负 → 下一批必做镜像反转，不是判死
@@ -74,7 +74,7 @@ dead_ends:
 - GBR-TIER1-EXHAUSTED：tier1 挖穿（8-18），聚焦白名单 tier2/3
 
 settings:
-- SUBINDUSTRY + decay4 跟 win（EUR 实证）；可另探 ILLIQUID_MINVOL1M / TOPCS1600 / delay0
+- SUBINDUSTRY + decay4 跟 win（EUR 实证）；可另探本区合法档（以 `config.REGIONS['GBR']` 为准，当前仅 TOP700）/ delay0。ILLIQUID_MINVOL1M 已从平台档位表移除，不得再探
 - TOP700 / delay1 为主（region_kb settings_proven）
 
 ## 避坑清单

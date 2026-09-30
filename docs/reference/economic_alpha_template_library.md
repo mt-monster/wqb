@@ -1,5 +1,7 @@
 # 经济含义 Alpha 模板库（Economic Alpha Template Library）
 
+> ⚠ **现行政策提示（2026-09-29）**：把两条及以上独立信号腿按任意（等 / 非等）权重线性组合——无论 `add(multiply(…), multiply(…))`、中缀 `+`、`subtract` 还是 `0.5*a + 0.5*b`——自 2026-09-13 起被 RA「路线 A」与 gate.py 闸 5 禁止；本文里的此类配方**只作历史 / 论文对照，勿照抄**。现行允许的组合形态见 [`structural-interaction-forms.md`](../../Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md)（条件 / 分组 / 残差三式）。
+
 > 用途：为 BRAIN alpha 挖掘提供**经济学含义驱动**的表达式骨架，替代"薄模板"（单字段 rank/动量堆砌）。
 > 来源：
 > - Kakushadze《101 Formulaic Alphas》原文（KB: `reference/101_formulaic_alphas_kb.md`）——101 个 WorldQuant 生产级 alpha 的算子规律与 7 类模板

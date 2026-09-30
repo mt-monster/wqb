@@ -200,6 +200,17 @@ def test_const_literal_patterns_follow_the_config_values():
     assert pats["margin"].search(f"Margin > {C.GATES_INTERNAL['margin_bp_min']:g} bp")
 
 
+def test_path_token_flags_dead_pointers_but_not_statements_that_a_file_does_not_exist(tmp_path, monkeypatch):
+    md = textwrap.dedent("""
+        体检脚本见 `tools/wave_gate.py` 与 `tools/definitely_not_a_real_tool.py`。
+        旧文提到的 `docs/experience/prod_wall_breakthrough_sop.md` 并不存在。
+        <!-- lint:counterexample -->`tools/another_missing.py`
+        占位符 `tools/<name>.py` 与通配 `tests/unit/test_*.py` 不检。
+    """)
+    vs = _lint_doc(tmp_path, monkeypatch, md, L.check_path_tokens)
+    assert [v["check"] for v in vs] == ["path-token"] and "definitely_not_a_real_tool.py" in vs[0]["msg"]
+
+
 # ── 棘轮 ──────────────────────────────────────────────────────────────────────
 def test_no_new_skill_lint_violations_and_baseline_never_goes_stale():
     vs = L.run()

@@ -296,13 +296,11 @@ KOR_1 实测 Top15 头部：`close(21744) / returns(17091) / volume(14150) / cap
 | `field_inspect_to_expr(field, fdata, neut)` | 单字段体检数据 | `{field, advices, expressions[], metadata{}}` | 生成候选表达式 + 结构化元数据 |
 | `check_expr_against_inspect(expr, result)` | 表达式字符串 + 体检结果 | `{ok: bool, violations: []}` | 校验表达式是否满足体检硬性要求 |
 
-导出命令：
+**日常生成体检包用 `tools/gen_field_inspect_packs.py`**（按数据集瘦身拆分，见 RA 步 5 / 步 2 细则 §2.5）；下面的 `--export-expr` 是它的底层步骤——一次导出整个 region × delay 的全量（约 29 MB 单文件），2026-09-07 修复 `rsplit` 越界之前恒产出 0 字段。仅调试用：
 
-```bash
-& $WQ_PY tools/webdata_quality.py --zip WebData_*.zip --region USA --delay 1 \
-    --fields fundamental6,insiders3 \
-    --export-expr tracking/field_inspect_usa.json \
-    --neut subindustry
+```powershell
+& $WQ_PY tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 `
+    --fields fundamental6,insiders3 --export-expr tracking/field_inspect_usa.json --neut subindustry
 ```
 
 生成的 JSON 每字段含：

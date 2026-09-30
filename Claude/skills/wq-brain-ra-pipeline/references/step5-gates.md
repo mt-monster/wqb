@@ -70,7 +70,7 @@ python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $
 | 单边恒正 / 恒负 | 不能直接用原始水平值 |
 | 稀疏事件（zero_inflated / point_mass） | `trade_when` |
 
-- 体检包路径 `tracking/mining/field_inspect_<region 小写>_<dataset>.json`，**生成器 = `tools/gen_field_inspect_packs.py`**（细则见步 2 细则 §2.5）。**不要用 `webdata_quality.py --export-expr`**：其源码注释自承「自诞生起就没产出过有效数据」。
+- 体检包路径 `tracking/mining/field_inspect_<region 小写>_<dataset>.json`，**生成器 = `tools/gen_field_inspect_packs.py`**（细则见步 2 细则 §2.5）。**不要直接用 `webdata_quality.py --export-expr`**：它一次把整个 region × delay 的全部数据集导成**一个**约 29 MB 的文件（闸每次只查一个数据集），且 2026-09-07 修复 `rsplit` 越界之前恒产出 0 字段；生成器 = 在它之上做瘦身与按数据集拆分。
 - 缺包时本闸**不生效**，`wave_gate` 会打印 `[inspect] 体检硬门未生效` 并给生成命令——看到这行就说明这一波的预处理约束没人把关。
 - 单独自查：`python tools/field_inspect_gate.py --region USA --dataset model267 --exprs-file <txt>`。
 

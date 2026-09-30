@@ -18,6 +18,10 @@
         文档指示读取 `.env`、命令行传口令（AGENTS：凭据只在 .env，禁止读取、打印、提交）。
   bare-python
         fenced 命令用裸 `python`（跨平台不可解析）。目标脚本已接 tools/_pyenv（自动切 venv）者豁免。
+  path-token
+        文档里反引号包裹的仓库内路径（tools/ · src/wqb/ · docs/ · Claude/skills/ · world-quant-brain-mcp/ · tests/ 下的
+        .py / .md / .json / .yaml）必须真实存在（相对仓库根 / 本文件目录 / skill 根解析）；行内说明「不存在 / 已归档 / 已删」的豁免。
+        （skills 审查 T0-20 / X-17 #3：死指针 `prod_wall_breakthrough_sop.md` 等）
   const-literal
         门槛数字的第 N 份抄写（skills 审查 X-11 / X-17 #4 / IX-19）：文档里出现 `src/wqb/config.py` 里
         GATES_INTERNAL / GATES_PLATFORM / PLATFORM_CHECK_LINES 的当前数值（Sharpe / Fitness / 相关性 / Margin / 换手线）而
@@ -648,6 +652,34 @@ def _const_patterns() -> Dict[str, "re.Pattern[str]"]:
     }
 
 
+_PATH_TOKEN = re.compile(
+    r"`((?:tools|src/wqb|docs|Claude/skills|world-quant-brain-mcp|tests)/[A-Za-z0-9_./\-<>*{}]+\.(?:py|md|json|yaml|yml))(?:::[A-Za-z_]+)?`")
+_NONEXIST = re.compile(r"不存在|从未存在|never existed|已归档|已删除|已删|旧文|not exist|已移除|已迁", re.I)
+
+
+def check_path_tokens() -> List[dict]:
+    out = []
+    for doc in iter_docs():
+        if doc.name == "CHANGELOG.md":
+            continue
+        lines = doc.read_text(encoding="utf-8", errors="replace").split("\n")
+        for i, ln in enumerate(lines, 1):
+            if _NONEXIST.search(ln) or EXEMPT_MARK in ln:
+                continue
+            for m in _PATH_TOKEN.finditer(ln):
+                tok = m.group(1)
+                if any(c in tok for c in "<>*{}"):
+                    continue                                     # 占位符 / 通配
+                try:
+                    skill_root = SK / doc.relative_to(SK).parts[0]
+                except ValueError:                               # 不在 skills 树内（测试用的临时文档）
+                    skill_root = doc.parent
+                if any(c.exists() for c in (REPO / tok, doc.parent / tok, SK / tok, skill_root / tok)):
+                    continue
+                out.append(_v("path-token", doc, i, f"路径 {tok} 不存在（死指针；不存在就删，已归档就写明）", ln.strip()[:110]))
+    return out
+
+
 def check_const_literals() -> List[dict]:
     out = []
     pats = _const_patterns()
@@ -697,6 +729,7 @@ CHECKS = {
     "secret": check_secrets,
     "bare-python": check_bare_python,
     "const-literal": check_const_literals,
+    "path-token": check_path_tokens,
 }
 
 
@@ -731,7 +764,7 @@ def diff_against_baseline(vs: List[dict]) -> Tuple[List[str], List[str]]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="skill 文档内容为真机检（命令 / MCP 调用 / 表达式 / 凭据 / 裸 python）")
-    ap.add_argument("--check", action="append", help="只跑某类（前缀匹配，可重复）：cmd/mcp/expr/secret/bare-python/const-literal")
+    ap.add_argument("--check", action="append", help="只跑某类（前缀匹配，可重复）：cmd/mcp/expr/secret/bare-python/const-literal/path-token")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--update-baseline", action="store_true", help="把当前违规写入基线（需人审 diff）")
     a = ap.parse_args()

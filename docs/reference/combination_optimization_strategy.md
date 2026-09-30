@@ -1,5 +1,7 @@
 # 组合优化策略（Combination Optimization Strategy）
 
+> ⚠ **现行政策提示（2026-09-29）**：把两条及以上独立信号腿按任意（等 / 非等）权重线性组合——无论 `add(multiply(…), multiply(…))`、中缀 `+`、`subtract` 还是 `0.5*a + 0.5*b`——自 2026-09-13 起被 RA「路线 A」与 gate.py 闸 5 禁止；本文里的此类配方**只作历史 / 论文对照，勿照抄**。现行允许的组合形态见 [`structural-interaction-forms.md`](../../Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md)（条件 / 分组 / 残差三式）。
+
 **版本**: 1.0  
 **日期**: 2026-08-31  
 **适用**: IND 区域 REGULAR alpha 挖掘战役 Wave 7+  

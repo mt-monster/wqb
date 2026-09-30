@@ -80,7 +80,7 @@
 | 通过标准 | 硬性规则检查清单全过（见模板 §3）+ **写入 ledger** |
 
 **硬性规则**（违反即表达式层失败）：
-- EVENT 字段禁 winsorize（`ts_event_*` 或裸 rank）
+- EVENT 字段：**平台没有 `ts_event_*`**（闸 8 引用 `type==EVENT` 字段即 FAIL）；先单条探针，确认能进标准算子后再用，且禁 winsorize
 - VECTOR 字段必须 `vec_*` 聚合（`tools/lib/vector_wrap.py` 幂等包裹）
 - 稀疏字段先 `ts_backfill`；非平稳字段 `rank`/`ts_zscore`
 - 需要截面标准化时优先 `group_zscore`/`group_rank`（同时满足多样性闸门要求）

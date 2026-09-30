@@ -19,7 +19,7 @@ priors:
   signal_families_exclude: [chart_pattern, news_emotion, ai_ml, credit_risk, glb_emotion]
   syntax_patterns: []
   win_recipes:
-    - "分析师评级修正 × SH（shortinterest/holders）混合（2 颗 ACTIVE 实证）"
+    - "分析师评级修正 × SH（shortinterest/holders）混合（2 颗 ACTIVE 实证；新波次只复用两类信号的组合机制，落地限条件 / 分组 / 残差，不做加权 / 等权相加——闸 5）"
 gate_overrides:
   cw_gate: FAIL
   longcount_verdict: FAIL
@@ -66,5 +66,5 @@ CW 为动态指标不进静态闸，在步 7 review 时检查：CW>0.5 的 alpha
 ## 避坑清单
 
 - 四大红灯族 + GLB emotion：生成阶段直接排除，不抱"换参数复活"幻想。
-- 事件类数据集（earnings 等）：优先生成 `ts_event_*` 裸 rank 表达式，且预设 CW 必查。
+- 事件类数据集（earnings 等）：**平台没有 `ts_event_*` 系列**（KOR wave16 实测 8/8 ERROR；闸 8 引用 `type==EVENT` 字段即 FAIL）。先单条探针确认该字段能否直接进标准算子，再生成；预设 CW 必查。旧文「优先生成 `ts_event_*` 裸 rank」已更正。
 - 禁止 delay0 外推（KOR 实证仅 delay1）。

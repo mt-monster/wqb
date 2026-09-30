@@ -217,3 +217,40 @@ def test_every_script_that_starts_an_ace_lib_session_overrides_get_credentials()
         assert re.search(r"ace_lib\.get_credentials\s*=", _read(f)), (
             f"{f.relative_to(ROOT)} 调用 ace_lib.start_session() 却没覆盖 ace_lib.get_credentials——"
             "口令会被明文写进 ~/secrets/platform-brain.json（skills 审查 T0-15）")
+
+
+# ----------------------------------------------------------------------------- last_verified 必须随内容变化（X-17 #10 / X-19）
+
+def _git(*args):
+    import subprocess
+    r = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
+    return r.returncode, r.stdout.strip()
+
+
+def test_last_verified_is_not_older_than_the_last_commit_that_changed_the_skills_docs():
+    """此前 33 / 33 个 skill 是同一天的批量戳，掩盖了内容过期。规则：skill 目录下的 *.md（不含 scripts / data）最近一次提交的日期，
+    不得晚于该 SKILL.md 的 `last_verified`——改了文档就得重新核对并更新这个日期。浅克隆里 git 把边界提交当作全量新增，日期不可信，跳过。"""
+    code, out = _git("rev-parse", "--is-shallow-repository")
+    if code != 0:
+        pytest.skip("不在 git 仓库里")
+    if out == "true":
+        pytest.skip("浅克隆：边界提交会让所有文件的「最近提交日期」失真")
+    stale = []
+    for d in _skill_dirs():
+        m = re.search(r"^last_verified:\s*(\d{4}-\d{2}-\d{2})", _read(d / "SKILL.md"), re.M)
+        assert m, f"{d.name} 缺 last_verified"
+        docs = [str(p.relative_to(ROOT)) for p in d.rglob("*.md")
+                if not any(x in p.parts for x in ("scripts", "data", "outputs", "output_report", "skills"))]
+        code, last = _git("log", "-1", "--format=%cs", "--", *docs)
+        if code == 0 and last and m.group(1) < last:
+            stale.append(f"{d.name}: last_verified={m.group(1)} < 文档最近提交 {last}")
+    assert not stale, "文档改了但 last_verified 没更新（重新核对后改成当天日期）：\n  " + "\n  ".join(stale)
+
+
+def test_last_verified_dates_are_well_formed_and_not_in_the_future():
+    import datetime as dt
+    today = dt.date.today()
+    for d in _skill_dirs():
+        m = re.search(r"^last_verified:\s*(\S+)", _read(d / "SKILL.md"), re.M)
+        assert m and re.fullmatch(r"\d{4}-\d{2}-\d{2}", m.group(1)), f"{d.name}: last_verified 格式不对"
+        assert dt.date.fromisoformat(m.group(1)) <= today, f"{d.name}: last_verified 在未来"

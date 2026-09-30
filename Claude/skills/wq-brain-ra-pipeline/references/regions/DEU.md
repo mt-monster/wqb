@@ -3,12 +3,12 @@ region: DEU
 entry_verdict: probe-only
 one_liner: "全域 16 类 0 alpha 的处女地（统一 1.9× 倍率、PPA 点塔无竞争），但存在 sub_universe 结构性墙（limit≈0.47×sharpe，DEU 需 0.8，实测仅 0.30）——先探针定墙，再决定是否升 active"
 static:
-  universe: [TOP500, TOP300]
+  universe: [TOP500]
   universe_default: TOP500
   delay: [1, 0]
   delay_default: 1
   neutralization_default: SUBINDUSTRY
-  notes: "档位取自 src/wqb/config.py::REGIONS（DEU 合法档 TOP500/TOP300）；SUBINDUSTRY/decay4 来自 tracking/DEU/config/settings.json"
+  notes: "档位取自 src/wqb/config.py::REGIONS（当前只登记 TOP500；TOP300 未在档位表，需 get_platform_setting_options 实测后由 config 补入，profile 随之更新）；SUBINDUSTRY/decay4 来自 tracking/DEU/config/settings.json"
 datasets:
   red: []
   red_reason: ""
@@ -79,7 +79,7 @@ model264 / model238 / model53 / pattern_scores / news104 / analyst_earnings_ibes
 - `cw_gate: WARN`（与全局一致；DEU 尚无 CW 实测数据，不预先加严）。
 - 全区仅 1 个体检包（`field_coverage_DEU_d1_TOP500.json`），**`field_inspect_deu_*` 为 0** →
   步 5 的体检硬门对本区**不生效**（wave_gate 会打印 `[inspect] 体检硬门未生效`）。
-  首次批次前需 `python tools/webdata_quality.py --zip <WebDataScope包> --export-expr tracking/mining/field_inspect_deu_<ds>.json` 现生成。
+  首次批次前需用生成器现生成：`$WQ_PY tools/gen_field_inspect_packs.py --region DEU --delay 1`（按数据集瘦身拆分成 `tracking/mining/field_inspect_deu_<ds>.json`；细则见步 2 细则 §2.5）。
 
 ## 升档条件（probe-only → active）
 

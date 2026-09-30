@@ -2255,49 +2255,76 @@
    "verify": "tests/unit/test_mode_b_qualify_cli.py"
   },
   "P0-1": {
-   "status": "open",
+   "status": "fixed",
    "title": "SKILL.md L56（`ts_median`，幽灵算子）、L60–61（`scale_down`）、L73–75（`ts_event_sum/count/mean`）仍在；`k",
-   "cat": "❌ **未关闭**"
+   "cat": "❌ **未关闭**",
+   "note": "DF-08 / EX-08 / HP-19 已改：ts_median（幽灵，会 CANCEL 整批）、scale_down（不在 103 算子目录）、ts_event_*（平台没有，KOR wave16 实测 8/8 ERROR；闸 8 已改为直接 FAIL）在全库文档里只以警示 / 反例口吻出现——test_sf_sweeps 扫全部 skills + docs/reference + AGENTS + README（另含 vec_mean、is_placeholder）。scale_down 是否真不存在待平台 get_operators 复核（X-16 needs-platform，DEC-62）；复核前文档一律按不可用处理，是安全侧",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | tests/unit/test_sf_sweeps.py | tests/unit/test_ghost_operator_lists.py",
+   "verify": "tests/unit/test_sf_sweeps.py::test_ghost_and_unknown_operators_only_appear_as_warnings"
   },
   "P0-2": {
-   "status": "open",
+   "status": "fixed",
    "title": "SKILL.md L166–172、L220 仍在，无“历史范式”标注；**补充**：实测 gate.py 对该形态**放行**（权重在右），上一轮“被闸 5 block”对该形态",
-   "cat": "❌ **未关闭**"
+   "cat": "❌ **未关闭**",
+   "note": "V9「scale(A)+scale(B)*0.35」已删作配方（PP-13：SKILL 只留历史说明 + 合规改写——把 returns 反转当条件 / 分组，而不是加法项）；报告补充的缺口（gate.py 对权重在右的形态放行）由闸 5 覆盖矩阵关闭：形态（函数式 / 中缀）× 权重位置（左 / 右 / 无）× 运算，V9 顶层形态本身就是矩阵里的一行且期望被拦；test_sf_sweeps 另扫全库，不得再以正面口吻教加权 / 等权拼腿",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md | tests/unit/test_gate5_coverage_matrix.py | tests/unit/test_sf_sweeps.py",
+   "verify": "tests/unit/test_gate5_coverage_matrix.py | tests/unit/test_sf_sweeps.py::test_weighted_leg_mixes_only_appear_as_counterexamples_or_under_the_policy_banner"
   },
   "P0-3": {
-   "status": "open",
+   "status": "fixed",
    "title": "INDEX L417–420 与 `tools/quota_status.py` 已改正；但 submit-alpha 同文 L191（不可用）与 **L264（仍叫人用）** 矛",
-   "cat": "🟡 **部分**"
+   "cat": "🟡 **部分**",
+   "note": "配额只留一处（worldquant-submit-alpha/references/quota-and-tower.md，INDEX 只留指针）；activities/submissions 全库统一「不可用」（缺 today 字段），当日已提交数以 tools/quota_status.py 数 stage=OS 的 dateSubmitted 为准；pipeline.py 不再读 activities（注释与提示已更正，旧 48h 滚动口径废止）；日界按 America/New_York 计算（含夏令时）",
+   "where": "Claude/skills/worldquant-submit-alpha/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py | tools/quota_status.py | Claude/skills/INDEX.md",
+   "verify": "tests/unit/test_quota_et_day.py"
   },
   "P0-4": {
-   "status": "open",
+   "status": "fixed",
    "title": "`submit_alpha` 节点已补 re-POST/`ASYNC_STUCK`（`nodes/submit_alpha.py` L263–288）；submit-alpha 四",
-   "cat": "🟡 **部分**"
+   "cat": "🟡 **部分**",
+   "note": "submit_alpha 节点的 re-POST / ASYNC_STUCK 早已落地；本轮补齐其余几处：MCP _poll_submit_until_resolved 与节点共用同一份等待窗口（WAIT_THRESHOLDS，测试钉死两处一致）、super_build.py 的不可达 sleep 分支已删（测试钉死）、superalpha 写明「201 ≠ SA 合法，错误异步出现在模拟结果」并给失败分支；「补发」只指 REGULAR 的 re-POST（确认 dateSubmitted 为空后补一次，见 submit-chain 步 7），SUPER 没有补发语义——CLI 只发一次 POST，只走 super_build.py submit",
+   "where": "src/wqb/workflow/nodes/submit_alpha.py | Claude/skills/worldquant-submit-alpha/references/submit-chain.md | Claude/skills/wq-brain-superalpha/SKILL.md | tests/unit/test_wait_thresholds.py",
+   "verify": "tests/unit/test_wait_thresholds.py::test_submit_flip_window_is_240s_and_shared_by_node_and_mcp_tool | tests/unit/test_wait_thresholds.py::test_super_build_has_no_unreachable_sleep_branch"
   },
   "P0-5": {
-   "status": "open",
+   "status": "fixed",
    "title": "brain-make-some-gem SKILL.md 全文无 “402”；失败表仍缺该项（RA 步 4 引言有）",
-   "cat": "❌ **未关闭**"
+   "cat": "❌ **未关闭**",
+   "note": "GEM SKILL 失败表补 402（LLM 余额不足，不可重试）与「no meta.json within 90s 先查 LLM 通道、402 会被这句误导性报错吞掉、干跑也验证不了」，绕行 = 手写 manual ideas 走 ideas_file（完全跳过 LLM）；runner 对 401 / 402 / 403 不重试并带绕行指引抛出",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md | Claude/skills/brain-make-some-gem/examples.md | tests/unit/test_se_docs.py",
+   "verify": "tests/unit/test_se_docs.py"
   },
   "P0-6": {
-   "status": "open",
+   "status": "fixed",
    "title": "“5 轴/6 武器/分布形态/体检硬门复验/幽灵算子清单”在 optimization-v1 均零命中；INDEX L113 仍以此为卖点",
-   "cat": "❌ **未关闭**"
+   "cat": "❌ **未关闭**",
+   "note": "配方逐项核销（DEC-27）：4 项在别处有（字段体检文档 / 代码闸 / RA step5 / news_sentiment_playbook）并登记去向；「5 轴旋转」「降相关 6 武器」git 内 optimization-v1 从未有过、原文遗失不可恢复——**撤回声明**，不假装恢复；INDEX 卖点更正；测试：声明已上移的术语必须能在承接侧 grep 到，AGENTS.md 里「repair 配方已上移」的说法同步更正",
+   "where": "Claude/skills/brain-alpha-repair/SKILL.md | Claude/skills/brain-alpha-repair/references/repair-recipes.md | tests/unit/test_brain_alpha_repair_docs.py | AGENTS.md",
+   "verify": "tests/unit/test_brain_alpha_repair_docs.py::test_skill_no_longer_claims_recipes_live_in_optimization_v1 | tests/unit/test_sf_docs.py::test_agents_md_points_at_the_contract_and_no_longer_says_repair_recipes_moved"
   },
   "P0-7": {
-   "status": "open",
+   "status": "fixed",
    "title": "brain-alpha-research L60–61（`wqb research`、`wqb settings`）、news-sentiment L70（`wqb news-re",
-   "cat": "❌ **未关闭**"
+   "cat": "❌ **未关闭**",
+   "note": "不存在的 CLI（wqb research / wqb settings / wqb news-refresh-portfolio）已从可执行说明里删除，只以「不存在」的口吻出现；skill_lint 的 cmd-* 检查逐条核对 fenced 命令的脚本 / 子命令 / flag，path-token 检查核对反引号路径",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md | Claude/skills/brain-alpha-research-news-sentiment/SKILL.md | tools/skill_lint.py | tests/unit/test_skill_lint.py",
+   "verify": "tests/unit/test_skill_lint.py::test_no_new_skill_lint_violations_and_baseline_never_goes_stale"
   },
   "P0-8": {
-   "status": "open",
+   "status": "fixed",
    "title": "`data/hypothesis_catalog`、`data/field_semantics` 仍不存在；RA 步 2 #6 仍强制切换；未标 dormant",
-   "cat": "❌ **未关闭**"
+   "cat": "❌ **未关闭**",
+   "note": "hypothesis-first 标「条件激活（dormant）」：仓库不带假设目录、目录缺失由 agent 按 §3 起草（干跑校验，闸即批准人），起草不出回步 2 换集；RA 步 2 #6 的「强制切换」改为「切到 hypothesis-first（先看其状态说明）」，「等假设生成器」与 RA「强制切换」的互锁取消；取消无人读的 field_semantics YAML；类别词表单一来源 = HYPOTHESIS_CLASSES（DEC-50）",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md",
+   "verify": "tests/unit/test_se_docs.py"
   },
   "P0-9": {
-   "status": "open",
+   "status": "fixed",
    "title": "sim-alphas L61–62 已把 `alpha_list.json` 标为“已废弃的文件模式，仅排障/兼容”、`simulation_status.csv` 标为“进度缓存",
-   "cat": "🟡 **部分**"
+   "cat": "🟡 **部分**",
+   "note": "sim-alphas 把 alpha_list.json 标「已废弃的文件模式，仅跨区临时批 / 排障」、status CSV 标「运行态缓存」（不是真相源）；INDEX S3 行改为「backtest_results（DB）；alpha_list.json / status CSV 只是兼容 CLI 的运行态缓存」；INDEX「允许写的文件只有五类」把它们归 B 类",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/INDEX.md",
+   "verify": "tests/unit/test_index_tables.py::test_index_lists_the_five_allowed_file_classes"
   },
   "PB-01": {
    "status": "fixed",
@@ -2616,7 +2643,7 @@
    "cat": "边界·P3",
    "where": "Claude/skills/planning-with-files/SKILL.md | Claude/skills/INDEX.md",
    "note": "边界加来源注记（外部开源 Manus 风格 skill 的中文化改编，version 为上游版本号）并如实标「上游地址与许可未在仓库内登记——待人补充」（仓库内无法查证）；INDEX 契约补 version / hooks 语义（user-invocable 已定义）。残留：需用户补充上游 URL 与许可",
-   "verify": "tests/unit/test_planning_with_files_docs.py::test_version_and_hooks_semantics_are_defined_in_index"
+   "verify": "tests/unit/test_planning_with_files_docs.py::test_version_and_hooks_semantics_are_defined_in_contract"
   },
   "PW-10": {
    "status": "fixed",
@@ -4691,104 +4718,164 @@
    "note": "情景卡 SA-01 KOR/IND 从 0 到 SA、SA-02 组件恰好 10 颗（self_gate 0.65→0.70→0.85 与代价）、SA-03 近克隆被拒（同构淘汰法）、SA-04 PROD 饱和止损线"
   },
   "T0-1": {
-   "status": "open",
+   "status": "fixed",
    "title": "上游条件写“SUBMITTABLE”永远不满足；以 `$?==0` 放行的脚本会放行 UNVERIFIABLE",
-   "cat": "SB-03、RA-95/96/102、IX-08"
+   "cat": "SB-03、RA-95/96/102、IX-08",
+   "note": "状态机改写为可达（submit-chain.md §2 七步：资格门 → submit_verdict → prod 实测 → 用户确认 → POST → 轮询补发 → 回写），只依赖 UNVERIFIABLE / BLOCKED / ALREADY_SUBMITTED 三态（模块文档串明写「不得写『等 SUBMITTABLE』」）；退出码分开：0 = SUBMITTABLE / 1 = BLOCKED / 10 = UNVERIFIABLE / 11 = ALREADY_SUBMITTED（DEC-04），CLI / MCP / batch 三份判定收成 wqb.submit_verdict_core 一份，GLOSSARY 与 submit-chain 的退出码由测试对照代码。SUBMITTABLE 保留为防御分支——GET /submit 是否真恒 404 无法向平台复核（平台不可达）",
+   "where": "src/wqb/submit_verdict_core.py | tools/submit_verdict.py | Claude/skills/worldquant-submit-alpha/references/submit-chain.md | Claude/skills/GLOSSARY.md",
+   "verify": "tests/unit/test_submit_verdict_core.py | tests/unit/test_glossary_docs.py::test_submit_chain_states_the_same_exit_codes_as_code"
   },
   "T0-2": {
-   "status": "open",
+   "status": "fixed",
    "title": "“同族连测”“先 5 个探针”会把最先通过的那颗真提交",
-   "cat": "RC-01、SC-04、HP-03、RB-15、RE-08、RA-97、SB-13/19、SP-13"
+   "cat": "RC-01、SC-04、HP-03、RB-15、RE-08、RA-97、SB-13/19、SP-13",
+   "note": "全库一个警告块（submit-chain.md §0「不可逆动作块」），各 skill 只引用；「POST /submit = 零成本探针」在 12+ 处（RC-01 / SC-04 / HP-03 / RB-15 / RE-08 / RA-97 / SB-13 / SB-19 / SP-13 …）已改成「没有零成本 POST 探测；探测一律 confirm_submit=False 预检 / check_correlation 只读」；test_sf_sweeps 全库扫「POST … submit … 探针 / 零成本」句式，没有否定 / 警示口吻即红",
+   "where": "Claude/skills/worldquant-submit-alpha/references/submit-chain.md | tests/unit/test_sf_sweeps.py | Claude/skills/worldquant-submit-alpha/SKILL.md",
+   "verify": "tests/unit/test_sf_sweeps.py::test_post_submit_is_never_taught_as_a_zero_cost_probe"
   },
   "T0-3": {
-   "status": "open",
+   "status": "fixed",
    "title": "参数错误或未经确认的真实提交",
-   "cat": "SB-06、SB-09"
+   "cat": "SB-06、SB-09",
+   "note": "示例拆两步：先 confirm_submit=False 预检，再「仅在用户确认后」的 True 版；不存在的形参（dataset / wave / expr_family）删；workflow_submit_alpha 缺省 confirm_submit=False、color 缺省不再是 GREEN（DEC-09）；test_sf_sweeps 扫全库：confirm_submit=True 只许与「用户确认 / 不可逆」同行出现",
+   "where": "Claude/skills/worldquant-submit-alpha/SKILL.md | tests/unit/test_sf_sweeps.py | tests/unit/test_submit_chain_defaults.py",
+   "verify": "tests/unit/test_sf_sweeps.py::test_confirm_submit_true_is_only_ever_written_next_to_the_user_confirmation_gate | tests/unit/test_submit_chain_defaults.py::test_workflow_submit_alpha_defaults_are_safe"
   },
   "T0-4": {
-   "status": "open",
+   "status": "fixed",
    "title": "违反“prod≥0.7 不提交”的用户铁律；agent 无从创建 SA",
-   "cat": "SP-13、SP-14"
+   "cat": "SP-13、SP-14",
+   "note": "SUPER 唯一入口 super_build.py {select|status|probe|submit}（= workflow_superalpha(confirm_submit=True) 的最后一步，prod 闸在 CLI 内置：max ≥ 0.7 或探针超时一律拒，--allow-prod-above-07 是显式豁免）；submit_alpha 节点在任何副作用之前拒绝 type==SUPER 的 confirm_submit=True（reason=super_requires_super_build，force 无效）——MCP 路径 force=True 绕 prod 闸不再可能（DEC-18）；superalpha 补「如何创建 SA」的调用序列与不可逆动作块，「预检 = 真提交」的说法删。GET /submit 对 SUPER 与 REGULAR 是否一致未复核（SP-11 needs-platform），文档一律「不得用它放行」",
+   "where": "src/wqb/workflow/nodes/submit_alpha.py | tools/super_build.py | Claude/skills/wq-brain-superalpha/SKILL.md | tests/unit/test_submit_alpha_super_guard.py | tests/unit/test_super_build_prod_gate.py",
+   "verify": "tests/unit/test_submit_alpha_super_guard.py::test_super_confirm_submit_is_refused_before_any_side_effect | tests/unit/test_super_build_prod_gate.py::test_block_at_exact_threshold"
   },
   "T0-5": {
-   "status": "open",
+   "status": "fixed",
    "title": "“不执行提交”只靠散文；合法 PPA 被误杀",
-   "cat": "JD-14、JD-09"
+   "cat": "JD-14、JD-09",
+   "note": "judge 脚本删掉全部提交路径：--confirm-submit 在任何网络调用前就大声失败、client 的 submit_alpha 已删且不发请求、全部 judge 脚本不得含 POST /submit（参数化测试逐个文件守）；PPA 口径取 config（Sharpe 线 1.0 = 平台 LOW_SHARPE，颜色 PURPLE 脚本不校验并明写；Regular 用内部线，不再把合法 PPA 按 Regular 1.58 误杀）；CW 配方推荐改指 how-to-pass §4（时间平滑），删被禁的加权相加",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/brain-alpha-judge/scripts | tests/unit/test_judge_never_submits.py",
+   "verify": "tests/unit/test_judge_never_submits.py::test_no_script_posts_to_submit | tests/unit/test_judge_never_submits.py::test_ppa_is_not_judged_by_the_regular_line"
   },
   "T0-6": {
-   "status": "open",
+   "status": "fixed",
    "title": "误杀 5 类旁路候选",
-   "cat": "HP-15、OP-18、RA L793"
+   "cat": "HP-15、OP-18、RA L793",
+   "note": "判定表单一真相源 optimization-v1/references/mode-b-qualification.md（主闸 + 旁路 A–E + 判死线，数值与动作文案由测试对照 mode_b_config 的 _DEFAULT_GLOBAL，另钉覆盖优先级 区域 ledger > 区域 thresholds > GLOBAL > 内置）；HP-15 / OP-18 / RA 步 7 改引它；新增只读 CLI tools/mode_b_qualify.py 补上 judge 节点喂不到的旁路 A / B / D；no_qualify ≠ 判死，旧措辞「未达资格线一律判死」由测试扫全部 skill 文档禁止（DEC-24）",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md | src/wqb/workflow/mode_b_config.py | tools/mode_b_qualify.py | tests/unit/test_mode_b_qualification_doc.py | tests/unit/test_mode_b_qualify_cli.py",
+   "verify": "tests/unit/test_mode_b_qualification_doc.py"
   },
   "T0-7": {
-   "status": "open",
+   "status": "fixed",
    "title": "S6 回写失败或写入废止键，下一轮读不到结论",
-   "cat": "BM-14、RA-108、RD-21、RP-08、TR-15、ME-02"
+   "cat": "BM-14、RA-108、RD-21、RP-08、TR-15、ME-02",
+   "note": "回写 SOP 只在 RA 步 9，monitor 只触发 + 核验；命令模板按真实 argparse 重写，并由 skill_lint 的 cmd-flag / cmd-required 检查 + test_wq_backtest_monitor_docs 对照真实 CLI（此前 4/4 与 CLI 不符，且旧检查只核 flag 名是否出现在同目录脚本里，一条没抓到）；旧键 wave<N>_verdict / s6_verdict_<wave> 只以「已废止，不要写」出现（ledger set-verdict 仍会写它，但每次打印废止提示，DEC-30 / DEC-36），结论唯一来源 wave_results.verdict",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | tests/unit/test_wq_backtest_monitor_docs.py",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_every_flag_in_the_documented_commands_exists_in_the_real_cli | tests/unit/test_wq_backtest_monitor_docs.py::test_no_deprecated_verdict_key_writer_is_taught"
   },
   "T0-8": {
-   "status": "open",
+   "status": "fixed",
    "title": "拒绝合法 universe / 用已下线档位",
-   "cat": "BM-08、PP-24、RD-17"
+   "cat": "BM-08、PP-24、RD-17",
+   "note": "monitor 的「TOP2500 / TOP800 非法」说法已删，一律取 config.REGIONS[region].universes；ILLIQUID_MINVOL1M 已从档位表移除（2026-09-22 实测）且对 USA / ASI / EUR 永久停提（2026-09-14 公告），文档只以「已移除 / 不得」口吻出现。本轮补完 profile 层残留：EUR profile 的 static.universe / default 改为与 config 一致（此前列 TOP1600 / ILLIQUID_MINVOL1M、默认 TOP1600，而平台档位表是 TOP2500 / TOPCS1600 / TOP1200 / TOP800 / TOP400、默认 TOP2500），step-6 探索队列去掉 ILLIQUID_MINVOL1M，DEU 多列的 TOP300 去掉（config 只有 TOP500；待平台实测后由 config 补入），并新增机检：profile 的 static.universe ⊆ config.REGIONS[r].universes、default 相等、delay ⊆ config（DEC-61）",
+   "where": "Claude/skills/wq-brain-ra-pipeline/references/regions/EUR.md | Claude/skills/wq-brain-ra-pipeline/references/regions/DEU.md | Claude/skills/wq-brain-ra-pipeline/references/regions/GBR.md | src/wqb/config.py | tests/unit/test_region_alignment.py | tests/unit/test_config.py",
+   "verify": "tests/unit/test_region_alignment.py::test_profile_static_universe_is_a_subset_of_config_and_defaults_agree | tests/unit/test_region_alignment.py::test_the_removed_illiquid_universe_is_not_in_any_profile_front_matter_or_step6_list"
   },
   "T0-9": {
-   "status": "open",
+   "status": "fixed",
    "title": "非 Windows 环境全部 Python 命令指向不存在的可执行文件",
-   "cat": "IX-03、TK-16、SC-07、JD-13、PB-06、PW-01"
+   "cat": "IX-03、TK-16、SC-07、JD-13、PB-06、PW-01",
+   "note": "$WQ_PY 在 INDEX 按平台给三行（Windows Scripts/python.exe、POSIX bin/python、跨平台自动探测 tools/_pyenv.py，顺序由测试对照源码）；skill_lint 的 bare-python 棘轮把全库裸 python 数成 0（目标脚本已接 _pyenv 自动切 venv 者豁免）；<SKILL_ROOT> 只在 CONTRACT 里定义为文档记号，钩子命令不得含未解析占位符（测试守）；运行时代码里的作者盘符兜底约 14 处清掉（DEC-37，test_sd_portability 守）；PowerShell / bash 混用见 X-14（一个文件只用一种方言由测试守）",
+   "where": "Claude/skills/INDEX.md | tools/_pyenv.py | tools/skill_lint.py | tests/unit/test_pyenv.py | tests/unit/test_sd_portability.py",
+   "verify": "tests/unit/test_pyenv.py::test_cli_prints_the_interpreter_for_dollar_wq_py | tests/unit/test_sd_portability.py::test_no_author_drive_paths_in_runtime_string_constants"
   },
   "T0-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "照抄挂闸或绕过闸门；政策与机检口径分叉",
-   "cat": "RA-46/89、RD-03/11/19/28、TK-28、TR-27、PP-13/20、GM-06、JD-09、HP-05"
+   "cat": "RA-46/89、RD-03/11/19/28、TK-28、TR-27、PP-13/20、GM-06、JD-09、HP-05",
+   "note": "一条规则：禁止把两条及以上独立信号腿按任意（等 / 非等）权重线性相加，无论函数式 / 中缀 / 减号；允许的只有 structural-interaction-forms.md 的形态与单信号结构；同源价差 subtract(A,B) 是唯一豁免（platform_constraints.spread_signal_ruling，用户 2026-09-28 裁定）。闸 5 覆盖矩阵（形态 × 权重位置 × 运算）期望值写在测试里：报告实测放行的 rank(A)*0.6+rank(B)*0.4、V9 的 X+Y*0.35 现被 infix_leg_sum 拦，subtract 同源价差放行、跨数据集价差被 spread_cross_dataset 拦、带系数价差只告警。文档侧：各 SOP 的加权示例改写或标 counterexample，纯历史资料（4 份 docs/reference）加「现行政策提示」头部横幅，EUR / GBR / KOR profile 的 win 配方去掉混合比例；test_sf_sweeps 全库扫描防回潮",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md | Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py | tests/unit/test_gate5_coverage_matrix.py | tests/unit/test_sf_sweeps.py | docs/reference/combination_optimization_strategy.md",
+   "verify": "tests/unit/test_gate5_coverage_matrix.py | tests/unit/test_sf_sweeps.py::test_the_historical_reference_docs_that_contain_weighted_mixes_carry_the_policy_banner"
   },
   "T0-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "同一情景 agent 可合规地做出相反动作",
-   "cat": "RA-69/74/85/93、RD-04/28、OP-01、RC-01/03、RP-07、RR-02、RE-08、SP-09"
+   "cat": "RA-69/74/85/93、RD-04/28、OP-01、RC-01/03、RP-07、RR-02、RE-08、SP-09",
+   "note": "一张表（decision-table D0-P，「唯一决策表」，DEC-07）：< 0.60 扩变体；0.60–0.70 不扩变体当天进步 8；0.70–0.75 踩线带只许 1 次结构性尝试，仍 ≥ 0.70 → dead_end；≥ 0.75 直接 dead_end；镜像稀释撤回（它是腿相加）；区域 profile 不得另设预警线；RA 步 5b / 7、OP、RC、RP、RR、RE、SP 逐处改引 D0-P；事故记入 incidents.md I-15。**注意**：表中的实证（MEA 9qXoJge2 0.716→0.6525、KOR wave113 0.7003→0.6993 等）来自历史记录，未能向平台复核",
+   "where": "Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | Claude/skills/wq-brain-ra-pipeline/references/incidents.md | tests/unit/test_se_docs.py | tests/unit/test_optimization_v1_docs.py | docs/skills_review_decisions.md",
+   "verify": "tests/unit/test_se_docs.py | tests/unit/test_optimization_v1_docs.py"
   },
   "T0-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "整批 ERROR/CANCELLED",
-   "cat": "DF-08、EX-08、PP-12、HP-19"
+   "cat": "DF-08、EX-08、PP-12、HP-19",
+   "note": "幽灵 / 未知算子：ts_median 判幽灵（MCP operator_audit 实测，DEC-02）、scale_down 不在 103 算子目录、ts_event_* 平台没有（闸 8 已直接 FAIL）、vec_mean 应为 vec_avg、is_placeholder 不存在——SOP / reference / docs/reference 一律移除或只以警示口吻出现（test_sf_sweeps 全库扫）；幽灵单源 = config.GHOST_OPERATORS ∪ platform_constraints.ghost_ops 再减去账号不可用者（DEC-03，test_ghost_operator_lists 守）；「SOP 算子 ∈ known_ops」机检 = skill_lint 的 expr-gate（fenced / 行内表达式过 gate.check_one 的 GHOST / INACCESSIBLE / SYNTAX / ARITY，反例语境豁免）。scale_down 的平台实测复核见 X-16（needs-platform）",
+   "where": "tools/skill_lint.py | tests/unit/test_sf_sweeps.py | tests/unit/test_ghost_operator_lists.py | src/wqb/config.py",
+   "verify": "tests/unit/test_sf_sweeps.py::test_ghost_and_unknown_operators_only_appear_as_warnings | tests/unit/test_skill_lint.py::test_expression_check_reports_policy_violations_only"
   },
   "T0-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "知识既不在原处也不在新处",
-   "cat": "RE-01、IX-07"
+   "cat": "RE-01、IX-07",
+   "note": "同 P0-6：repair 的「5 轴旋转」「降相关 6 武器」原文遗失不可恢复，声明撤回（不假装恢复）；其余 4 项在别处有并登记去向；INDEX 卖点更正；「声明已上移的术语必须 grep 到承接侧」由 test_brain_alpha_repair_docs 逐行校验，AGENTS.md 同步更正（DEC-27）",
+   "where": "Claude/skills/brain-alpha-repair/references/repair-recipes.md | Claude/skills/INDEX.md | AGENTS.md | tests/unit/test_brain_alpha_repair_docs.py",
+   "verify": "tests/unit/test_brain_alpha_repair_docs.py::test_skill_no_longer_claims_recipes_live_in_optimization_v1"
   },
   "T0-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "误判余量撞 4/4 墙；一小时日界漂移",
-   "cat": "SB-15、SB-21、IX-22"
+   "cat": "SB-15、SB-21、IX-22",
+   "note": "配额只留一处（submit-alpha references/quota-and-tower.md，INDEX 只留指针）；activities/submissions 全库统一「不可用」，当日数以 quota_status.py 为准；日界用 America/New_York（wqb.timeutil，缺 tz 数据库时回退到规则实现，逐小时等价性有测试），quota_status.py 与 pipeline.py 不再写死 UTC-4；文档不再写死「12:00 GMT+8」（夏令时 12:00 / 冬令时 13:00，以 quota_status 输出为准）；2026-11-01 DST 结束登记为 TB-03（kind=code，无需人工）；SubmissionsMixin.get_quota_status（48h 滚动口径，无调用方）已删（DEC-11）",
+   "where": "src/wqb/timeutil.py | tools/quota_status.py | Claude/skills/worldquant-submit-alpha/references/quota-and-tower.md | docs/time_bombs.json",
+   "verify": "tests/unit/test_quota_et_day.py | tests/unit/test_timeutil.py"
   },
   "T0-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "凭据泄露面 + 核心资产外发",
-   "cat": "JD-07/10、SB-04/09、SC-07、IR-05、FB-10、NM-14、OP-04"
+   "cat": "JD-07/10、SB-04/09、SC-07、IR-05、FB-10、NM-14、OP-04",
+   "note": "标准名 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD（旧别名保留）；docs/env_and_switches.md §1 登记 9 个消费者的来源顺序与是否落盘；judge 只读进程环境变量（明文 config.json / ~/secrets 不再读，发现时 stderr 提示迁移、不打印值）；batch_simulator 改「环境变量 > config.json > .env」并覆盖 ace_lib.get_credentials，不再向 ~/secrets/platform-brain.json 明文写盘；GEM runner 环境变量 > config.json（DEC-56）；skill_lint 的 env-read / cli-password 守「文档不得指示读 .env / 命令行传口令」；sync_skills 忽略 config.json 与 *.log，不把密钥文件复制到安装位；外发 4 条通道登记（GEM → Moonshot 缺省开、judge → LLM 缺省关且表达式原文默认不发、arXiv 摘要、论坛检索），论坛 / 付款 MCP 工具删 email / password 参数（DEC-44）。本轮没有读取任何真实 .env / config.json",
+   "where": "docs/env_and_switches.md | docs/env_registry.json | tools/skill_lint.py | tests/unit/test_sf_docs.py | tests/unit/test_judge_never_submits.py | tests/unit/test_sync_skills_ignores_secret_files.py",
+   "verify": "tests/unit/test_sf_docs.py::test_credential_register_lists_every_consumer_and_each_one_reads_the_standard_names | tests/unit/test_sf_docs.py::test_every_script_that_starts_an_ace_lib_session_overrides_get_credentials | tests/unit/test_judge_never_submits.py::test_credentials_come_from_process_env_only"
   },
   "T0-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "外部指令/钩子静默进入运行时；覆盖核心 skill",
-   "cat": "PB-01/02/03、PW-01、IX-18"
+   "cat": "PB-01/02/03、PW-01、IX-18",
+   "note": "pull-brain-skills：默认目的地 = 隔离暂存区 attic/import_staging 且文档默认值 = 代码默认值（测试对拍）；静态审查报告（hooks / allowed-tools / scripts / 符号链接 / 风险模式 / 同名碰撞）；--overwrite 不再 rmtree——旧目录移开备份、示例不带；ZIP 路径穿越拒绝、下载大小 / 超时有界、空导入退出码 4（DEC-32）。planning-with-files：Stop 钩子改内联、永不阻塞、不含未解析占位符；hooks 受限白名单 + 逐条写明成本（CONTRACT §1），test_skill_hooks_and_tools_guard 守「只有审过的 skill 可声明 hooks」「钩子命令可解析且无害」「allowed-tools 不得超过基线」",
+   "where": "Claude/skills/pull-brain-skills/SKILL.md | Claude/skills/pull-brain-skills/scripts/pull_skills.py | Claude/skills/planning-with-files/SKILL.md | Claude/skills/CONTRACT.md | tests/unit/test_pull_skills_safety.py | tests/unit/test_skill_hooks_and_tools_guard.py",
+   "verify": "tests/unit/test_pull_skills_safety.py::test_overwrite_moves_the_old_folder_aside_instead_of_deleting_it | tests/unit/test_skill_hooks_and_tools_guard.py::test_only_reviewed_skills_declare_hooks"
   },
   "T0-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "真相源分裂",
-   "cat": "OP-06、IR-02、SA-03、RD-21、FI-05、BM-15、IX-08"
+   "cat": "OP-06、IR-02、SA-03、RD-21、FI-05、BM-15、IX-08",
+   "note": "INDEX「允许写的文件只有五类」表：A 真相源 DB / B 运行态缓存 / C 静态配置与凭证 / D CLI 临时 @file / E 人读产物；各 skill 按类改写（OP-06 回测结果走 harvest 入库、IR-02 / SA-03 的 alpha_list.json 与 status CSV 标运行态缓存、FI-05 final_expressions.json 标中间产物非真相源、RD-21 WAVE_LEDGER 归 E、BM-15 手工回写删）。**未做**：「文档里每个文件路径都须归入其中一类」的通用归类器——只做到路径必须存在（skill_lint path-token）+ 关键产物位置由各 skill 的 doc→code 测试钉住（DEC-65）",
+   "where": "Claude/skills/INDEX.md | Claude/skills/CONTRACT.md | tests/unit/test_index_tables.py",
+   "verify": "tests/unit/test_index_tables.py::test_index_lists_the_five_allowed_file_classes"
   },
   "T0-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "声明存在而实现缺位，闭环断裂",
-   "cat": "BM-01、TK-07、RA-113、TK-18、RB-03"
+   "cat": "BM-01、TK-07、RA-113、TK-18、RB-03",
+   "note": "逐行对照（X-18 表）：S6「OS 表现监控 / 重着色」明确声明无承接者（BM-01，RA 步 9 §9.8 登记，不再假装有）；robustness「必经闸」补代码落点——判定写台账 robustness_<alpha_id>，submit_verdict 三入口读取，REJECT → BLOCKED，CONDITIONAL / 无记录只提示（DEC-23）；S6→S0 反馈环接通——新增 campaign_intel.py mark-saturated 写 saturated_datasets，submit_ready_blocked 降 deprecated（DEC-13）；其余有主无人读的键登记为 orphan 且测试守「登记必须仍为真」（DEC-12，seat_model / template_kb / operator_principle_kb）；X-18 表 15 行涉及的 18 个逐条 ID 均已在各 skill 收口（EX-01 补概念重叠程序、RE-10 删无写入方的要求、SB-22 补交接单、FQ-07 写明未接线……）",
+   "where": "src/wqb/robustness_record.py | tools/campaign_intel.py | docs/ledger_keys.json | tests/unit/test_campaign_intel_mark_saturated.py | tests/unit/test_ledger_key_catalog.py | Claude/skills/wq-backtest-monitor/SKILL.md",
+   "verify": "tests/unit/test_campaign_intel_mark_saturated.py::test_written_shape_is_consumed_by_s0_saturation_demotion | tests/unit/test_ledger_key_catalog.py | tests/unit/test_submit_verdict_core.py"
   },
   "T0-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "覆盖率 100% 的错觉",
-   "cat": "IX-19、SB-02、JD-02、BM-03、SP-02、HP-01、RE-02"
+   "cat": "IX-19、SB-02、JD-02、BM-03、SP-02、HP-01、RE-02",
+   "note": "边界声明与正文 / 代码的矛盾逐个改正（IX-19、SB-02、JD-02、BM-03、SP-02、HP-01、RE-02 均已收口，各自带 doc→code 测试：submit-alpha 不再自称「唯一提交判定」、judge 不再自称评审入口、monitor 不做 OS 监控、superalpha 入口表列全……）；CONTRACT §2 写明「边界『不做』的动作出现在正文须带『仅引用』标记」；实质一致性靠各 skill 的 doc→code 测试 + skill_lint（命令 / MCP / 表达式 / 路径 / 常量）。**未做**：报告提议的通用「边界动作词 ↔ 正文」语义检查——误报率高、需要人写词表，收益不抵成本（DEC-64）",
+   "where": "Claude/skills/CONTRACT.md | tools/skill_lint.py | tests/unit/test_skill_boundaries.py | tests/unit/test_sf_docs.py",
+   "verify": "tests/unit/test_sf_docs.py::test_contract_carries_frontmatter_boundary_naming_shared_artifacts_and_gates"
   },
   "T0-20": {
-   "status": "open",
+   "status": "fixed",
    "title": "`command not found` / 找不到文件",
-   "cat": "AR-12、NS-04、RA-31、NM-12、BM-06、SP-06、RD-28、CM-16"
+   "cat": "AR-12、NS-04、RA-31、NM-12、BM-06、SP-06、RD-28、CM-16",
+   "note": "死指针 / 死命令清零：不存在的 CLI（wqb research / settings / news-refresh-portfolio）、脚本（backfill_backtest_dataset.py、get_ny_time.py、collect_verified_pids、logs/_fix_desc_sa4.py）、文档（prod_wall_breakthrough_sop.md、fresh_datasets_7region.json）现在要么已删、要么只以「不存在」的口吻出现；机检接入测试：skill_lint 的 cmd-* / mcp-* 与新增的 path-token（反引号里的仓库内 .py / .md / .json / .yaml 路径必须真实存在，行内说明「不存在 / 已归档」的豁免），并与基线棘轮配合——新增死指针必红",
+   "where": "tools/skill_lint.py | tests/unit/test_skill_lint.py | Claude/skills/brain-next-move-analysis/SKILL.md",
+   "verify": "tests/unit/test_skill_lint.py::test_path_token_flags_dead_pointers_but_not_statements_that_a_file_does_not_exist | tests/unit/test_skill_lint.py::test_no_new_skill_lint_violations_and_baseline_never_goes_stale"
   },
   "TK-01": {
    "status": "fixed",
@@ -5391,99 +5478,156 @@
    "note": "范本（🟢）「测 C 的 4 步 + 易踩坑 + 反面知识」原样保留在 §1；并补两张情景卡（全 429 / 我该开几个线程）"
   },
   "X-1": {
-   "status": "open",
+   "status": "fixed",
    "title": "prod 墙：同一情景 ≥6 套互相矛盾的处置学说",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "同 T0-11：唯一决策表 D0-P；其余文档（RA 步 5b / 7、D14、OP、RC、RP、RR、RE、SP、区域 profile）一律引用，不得另立学说；镜像稀释撤回；prod 一律用 check_correlation 只读取数，禁止 POST /submit 探测。表内实证来自历史记录，未能向平台复核（DEC-07）",
+   "where": "Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | Claude/skills/wq-brain-ra-pipeline/references/incidents.md | tests/unit/test_se_docs.py",
+   "verify": "tests/unit/test_optimization_v1_docs.py"
   },
   "X-2": {
-   "status": "open",
+   "status": "fixed",
    "title": "提交判定链与“唯一权威”",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "「权威」拆成两个词并全库统一：否决权威（资格门 / submit_verdict / prod 实测 / 稳健性闸，只能拦不能放）与放行权威（用户明确确认 + workflow_submit_alpha(confirm_submit=True)）；提交链写成可达状态机（submit-chain.md §1–2）；「唯一权威」类宣称登记（tools/authority_claims.py + 基线，只许减少，INDEX 现存 4 处）；GLOSSARY 收词",
+   "where": "Claude/skills/worldquant-submit-alpha/references/submit-chain.md | tools/authority_claims.py | Claude/skills/GLOSSARY.md | tests/unit/test_glossary_docs.py",
+   "verify": "tests/unit/test_glossary_docs.py::test_authority_claims_only_decrease"
   },
   "X-3": {
-   "status": "open",
+   "status": "fixed",
    "title": "加权混合 / 腿相加：政策已禁、闸门有缺口、文档仍在教",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "同 T0-10：一条规则 + 形态白名单（structural-interaction-forms.md）+ 闸 5 覆盖矩阵测试 + 文档扫描防回潮；同源价差 subtract 的地位按用户 2026-09-28 裁定写入 platform_constraints.spread_signal_ruling，闸 5 报错文案指向合规替代",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md | Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py | tests/unit/test_gate5_coverage_matrix.py | tests/unit/test_weighted_mix_structural_gate5.py | tests/unit/test_sf_sweeps.py",
+   "verify": "tests/unit/test_gate5_coverage_matrix.py"
   },
   "X-4": {
-   "status": "open",
+   "status": "fixed",
    "title": "术语表：同一个词 2–4 种含义",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "术语表 Claude/skills/GLOSSARY.md（一词一义：信号族 = 代码里 _pf_family 的字段集合粒度〔DEC-14〕、提交 / dispatch、否决 / 放行权威、FAIL / PENDING / WARNING 等），各 skill 只引用；test_glossary_docs 校验：登记行指向的文件 / 符号 / 测试真实存在、文档里写的限定符号存在、GLOSSARY 从 INDEX 可达",
+   "where": "Claude/skills/GLOSSARY.md | tests/unit/test_glossary_docs.py",
+   "verify": "tests/unit/test_glossary_docs.py::test_registry_rows_point_at_real_files_symbols_and_tests | tests/unit/test_glossary_docs.py::test_every_qualified_symbol_in_glossary_exists"
   },
   "X-5": {
-   "status": "open",
+   "status": "fixed",
    "title": "verdict / 状态词表：≥12 套",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "verdict / 状态词表收敛到 GLOSSARY 的词表节，并由测试钉「代码枚举必须出现在词表」（提交判定四态、wave_results.verdict 枚举、稳健性三态……）；wave verdict 归一化只有一处实现（N30c）；**未做**：「文档里出现的每个状态词都必须在登记表」的反向检查（DEC-64）",
+   "where": "Claude/skills/GLOSSARY.md | tests/unit/test_glossary_docs.py | tests/unit/test_wave_verdict_enum.py",
+   "verify": "tests/unit/test_glossary_docs.py::test_code_enums_appear_in_the_glossary_vocabulary"
   },
   "X-6": {
-   "status": "open",
+   "status": "fixed",
    "title": "闸门模式开关：形态不一、默认不一、含日期翻转",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "闸门模式开关统一为 waiver 协议 + 生成表：wqb.waiver.GATE_POLICIES 是单源，INDEX 的「闸与逃生口总表」与 docs/env_and_switches.md 的开关表由 tools/waiver.py gates --markdown 生成并逐字比对（形态 / 默认 / 有效期 / 批准人一栏看全）；含日期翻转的开关（--gate-mode warn → enforce，2026-10-12）登记为 TB-02，翻转后措辞由 time_bombs 测试提醒",
+   "where": "src/wqb/waiver.py | tools/waiver.py | Claude/skills/INDEX.md | docs/env_and_switches.md | tests/unit/test_waiver.py",
+   "verify": "tests/unit/test_waiver.py::test_index_switch_table_is_generated_from_gate_policies | tests/unit/test_waiver.py::test_every_flag_maps_to_a_registered_gate_and_policy_is_sane"
   },
   "X-7": {
-   "status": "open",
+   "status": "fixed",
    "title": "多副本真相源与“唯一”宣称的实际状态",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "通则落地：凡可由代码导出的表都由代码生成并嵌入文档、测试比对——闸表（gate.py GATE_REGISTRY）、开关表（waiver）、区域表 / 闸门阶梯（tools/index_tables.py）、环境变量目录（docs/env_registry.json 与代码扫描双向核对）、ledger 键目录（docs/ledger_keys.json）、MCP 工具 / 节点计数（test_docs_consistency::test_mcp_tool_counts_match_index）；validator 有 1 份权威 + 3 份逐字节相同的镜像，并有测试守（DEC-41）；人写的「唯一」宣称登记进 authority_claims 基线（X-2）",
+   "where": "tools/index_tables.py | tools/ledger_keys.py | docs/ledger_keys.json | docs/env_registry.json | tests/unit/test_index_tables.py | tests/unit/test_gate_registry_docs.py",
+   "verify": "tests/unit/test_index_tables.py | tests/unit/test_gate_registry_docs.py"
   },
   "X-8": {
-   "status": "open",
+   "status": "fixed",
    "title": "“台账记因 / 豁免”：至少 17 处，没有一个键名",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "统一 waiver 协议（DEC-06）：ledger 键 waiver_<gate>_<region>_<wave|all>，值 {gate, reason_code, evidence, approved_by, created_at, expires_at}；wqb.waiver 是唯一实现，expires_at 必填、按闸限批准人与最长有效期、红线不可豁免；旧键继续识别（缺 until 仍放行但告警 NO_EXPIRY）；gate 报告首行打印被豁免的闸；逃生口缺省 warn（无 waiver 只在首屏告警），--waiver-mode enforce 才拒绝",
+   "where": "src/wqb/waiver.py | tools/waiver.py | tests/unit/test_waiver.py | tests/unit/test_wave_gate_waiver_phase.py",
+   "verify": "tests/unit/test_waiver.py::test_valid_new_form_is_active | tests/unit/test_wave_gate_waiver_phase.py"
   },
   "X-9": {
-   "status": "open",
+   "status": "fixed",
    "title": "不可逆 / 有外部副作用的动作：防护靠散文",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "「不可逆动作块」模板落地并各处引用：POST /submit（submit-chain.md §0、superalpha、RA）、force=True（submit_alpha 节点拒 SUPER）、judge 提交路径（删）、super_build.py submit、pull_skills --overwrite（移开备份）、hooks（CONTRACT 白名单）、LLM 外发与凭据来源（docs/env_and_switches.md §1）、PPA web UI 提交（交接单 + 回写命令）；「探测」一律改只读手段（check_correlation / confirm_submit=False 预检），并有全库扫描测试与「提交类节点不入链」的代码强制（DEC-15）",
+   "where": "Claude/skills/worldquant-submit-alpha/references/submit-chain.md | Claude/skills/wq-brain-superalpha/SKILL.md | docs/env_and_switches.md | tests/unit/test_sf_sweeps.py | tests/unit/test_workflow_chain_irreversible_guard.py",
+   "verify": "tests/unit/test_sf_sweeps.py::test_confirm_submit_true_is_only_ever_written_next_to_the_user_confirmation_gate | tests/unit/test_workflow_chain_irreversible_guard.py::test_execute_chain_refuses_whole_chain_without_running_anything"
   },
   "X-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "SOP 的结构与写法：规则、叙事、快照、日志分离",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "结构：核心 SKILL.md ≤ 251 行（RA 由 950 降到 220，最长的 toolkit 251，略超 250 的目标）+ references/ 按需加载 + 仓库级 CHANGELOG.md；RA 九步固定模板（目的 → 前置 → 调用 → 产物 → 完成定义 → 失败分支 → 不做什么，test_ra_sop_template 守）；7 个 skill 有情景卡（judge / repair / how-to-pass / submit-alpha / monitor / RA / superalpha）；description ≤ 300 字触发语句（全库机检）；带日期的快照移 CHANGELOG / profile 或登记 time_bombs",
+   "where": "Claude/skills/CONTRACT.md | Claude/skills/CHANGELOG.md | tests/unit/test_ra_sop_template.py | tests/unit/test_sf_docs.py",
+   "verify": "tests/unit/test_ra_sop_template.py::test_every_step_follows_the_fixed_template | tests/unit/test_sf_docs.py::test_every_skill_description_is_a_trigger_statement_under_300_chars"
   },
   "X-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "数字漂移总表（应只引用 `config`）",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "config 内把「平台线」与「内部线」按检查名分开登记（GATES_INTERNAL / GATES_PLATFORM / PLATFORM_CHECK_LINES，IX-10）；并发 C = 7、等待阈值取 WAIT_THRESHOLDS；文档阈值字面量由 skill_lint 的 const-literal 检查守——数值与 config 当前值相同而没有引用常量名 / config.X / from config.X 标记即违规，**现存 29 处登记进基线（新检查类别的初始基线，不是掩盖新违规）**，新增必红、修复必须从基线移除（DEC-60）。config 改值后旧抄写不再命中——交 last_verified 与 time_bombs 兜底",
+   "where": "src/wqb/config.py | tools/skill_lint.py | tests/fixtures/skill_lint_baseline.json | tests/unit/test_threshold_relations.py | tests/unit/test_judge_gates_match_config.py",
+   "verify": "tests/unit/test_skill_lint.py::test_const_literal_flags_copies_of_config_thresholds_but_not_sourced_or_history_lines | tests/unit/test_skill_lint.py::test_const_literal_patterns_follow_the_config_values"
   },
   "X-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "日期快照与硬编码清单",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "日期快照（stop_rules_override 至 09-30、区域数据集计数、monitor 舰队、INDEX 09-19 区域硬事实、区域名单 13/14 / AMR·JPN 未启用）：区域名单改由代码生成；区域平台事实进各区 profile 与 region-profile-contract §4 且带日期；monitor 的具体 alpha / 数据集舰队删；带日期的状态一律进 CHANGELOG 或 docs/time_bombs.json；文档里出现未登记的未来日期即红（test_time_bombs）。**遗留**：tracking/GBR|KOR/priors/*.json 仍是含 T-KB-01 加权配方的历史快照（数据文件，待 DB template_kb 清理后由 assemble-priors 重新生成），本轮不手改数据（DEC-66）",
+   "where": "Claude/skills/INDEX.md | Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md | docs/time_bombs.json | tests/unit/test_time_bombs.py",
+   "verify": "tests/unit/test_time_bombs.py::test_future_dated_doc_text_is_registered"
   },
   "X-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "DB 单轨 vs 文件产物",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "同 T0-17：五类允许写的文件表进 INDEX（A 真相源 DB / B 运行态缓存 / C 静态配置与凭证 / D CLI 临时 @file / E 人读产物）并有测试；仍要求写文件的文档（OP-06 / IR-02 / SA-03 / RD-21 / FI-05 / TR-06 / BM-15 / HF-04·09 / IX-08）逐条按类改写。通用「路径 → 五类」归类器未做（DEC-65）",
+   "where": "Claude/skills/INDEX.md | tests/unit/test_index_tables.py",
+   "verify": "tests/unit/test_index_tables.py::test_index_lists_the_five_allowed_file_classes"
   },
   "X-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "可移植性：Windows / PowerShell / 固定偏移",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "$WQ_PY 三平台定义 + tools/_pyenv.py 自动探测；bare-python 棘轮 = 0；<SKILL_ROOT> 只在 CONTRACT 定义、钩子不得含占位符；作者盘符兜底清掉；ET 用 America/New_York；Get-CimInstance 无 Linux 等价命令的段落（BM-04）补 POSIX 写法；一个文件只用一种 shell 方言（本轮把最后一处混用改齐并加全库测试）。**否决**：全库整体统一 shell（推荐 PowerShell 主）——现有 31 个 PowerShell 块 / 32 个 bash 块是各 skill 的既有取向，命令都经 $WQ_PY，强行统一收益低、改动面大（DEC-63）；.mcp.json 保留作者的 Windows 默认（非 Windows 环境须设 WQB_HOME / WQB_MCP_PY / WQB_DB_MCP_PY，见 INDEX 与 env_and_switches）",
+   "where": "Claude/skills/INDEX.md | tools/_pyenv.py | tools/skill_lint.py | tests/unit/test_sf_sweeps.py | tests/unit/test_pyenv.py | tests/unit/test_mcp_config_portable.py",
+   "verify": "tests/unit/test_sf_sweeps.py::test_no_skill_document_mixes_powershell_and_bash_fenced_blocks | tests/unit/test_pyenv.py::test_resolution_order"
   },
   "X-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "等待 / 退避 / 卡住阈值",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "poll-and-quota.md 建了唯一的「等待 / 退避 / 卡住阈值表」，其余文档按键名引用；代码字面量取自 config.WAIT_THRESHOLDS（提交翻转窗口 240 s 由节点与 MCP 工具共用、prod 相关性轮询、模拟卡住 / 超时与 toolkit poller 一致、super_build 无不可达 sleep），test_wait_thresholds 钉死；文档里复述窗口数字而不引用键名会红（test_glossary_docs）",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md | src/wqb/config.py | tests/unit/test_wait_thresholds.py | tests/unit/test_glossary_docs.py",
+   "verify": "tests/unit/test_wait_thresholds.py::test_submit_flip_window_is_240s_and_shared_by_node_and_mcp_tool | tests/unit/test_glossary_docs.py::test_wait_windows_in_docs_reference_config_keys_not_copies"
   },
   "X-16": {
-   "status": "open",
+   "status": "needs-platform",
    "title": "算子与表达式知识：SOP 里的例子要过自家闸",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "已做：SOP fenced / 行内表达式过 gate.check_one（skill_lint expr-gate：GHOST / INACCESSIBLE / SYNTAX / ARITY / POISON，反例语境豁免）；ts_median / vec_mean / is_placeholder / ts_event_* 只以警示口吻出现（test_sf_sweeps）；VECTOR 规则（先 vec_* 聚合、MATRIX 禁 vec_*）口径对齐闸 3；非标窗口走白名单 + 证据脚注（window_whitelist）。**待平台**：scale_down 是否真不在平台——现有依据只有 docs/reference/operators_catalog.json（103 个算子，2026-09-07 抓取，无 scale_down）与「幽灵单源」里没有它；平台不可达，无法用当前 get_operators 复核；复核前文档一律按不可用处理（安全侧）。DEC-62",
+   "verify": "平台可达且有凭据的会话里：① 调 MCP get_operators（或 operator_audit）看返回里有没有 scale_down；② 若没有：把 scale_down 加进 KNOWN_GHOST_SEED，从 4 份 validator 镜像和 score_datasets.py:669 移除，并调整 tests/unit/test_grammar.py:268 与 tests/unit/test_skills.py:210；③ 若有：从 test_sf_sweeps 的 ghost 参数表与 datafield-exploration / 相关文档的「不可用」说法里撤掉。改后跑 tools/sync_gem_embedded_skill.py --apply 与 tools/sync_skills.py",
+   "ref": "DEC-62"
   },
   "X-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "守护体系：形式有测试，内容无检查",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "报告 14 项检查逐项状态：#1 命令→argparse 子命令级（skill_lint cmd-*）、#2 MCP 名与参数（mcp-*）、#3 链接与路径 token（test_docs_consistency 链接 + skill_lint path-token）、#4 阈值字面量（const-literal，初始基线 29）、#5 fenced 表达式过闸（expr-gate）、#6 ledger 键目录（docs/ledger_keys.json + test_ledger_key_catalog）、#7 闸 / 区域 / 开关 / 环境变量 / 计数由代码生成并比对、#9 「唯一 / 权威」登记（authority_claims 基线只减不增）、#10 last_verified 不得早于最近一次改动该 skill 文档的提交（git 判定，浅克隆下 skip）且格式合法不在未来、#11 未来日期条件登记（time_bombs）、#13 守护输入可指定（WQ_SKILLS_DIR）、#14 裸 python / .env 读取 / 命令行口令 / hooks / allowed-tools 白名单；另加：闭环台账的 verify 指针必须仍指向存在的测试（本轮新增）。**未做**：#8 完整的 verdict 词表（只做到代码枚举必须出现在 GLOSSARY）、#10 的「> 30 天告警」、#12 通用边界动作词语义检查（DEC-64）",
+   "where": "tools/skill_lint.py | tools/authority_claims.py | tools/closure_ledger.py | docs/time_bombs.json | tests/unit/test_skill_lint.py | tests/unit/test_closure_ledger.py | tests/unit/test_sf_docs.py",
+   "verify": "tests/unit/test_skill_lint.py::test_no_new_skill_lint_violations_and_baseline_never_goes_stale | tests/unit/test_closure_ledger.py::test_a_fixed_item_whose_verify_pointer_went_stale_is_reported | tests/unit/test_sf_docs.py::test_last_verified_dates_are_well_formed_and_not_in_the_future"
   },
   "X-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "“声明存在、实现缺位”清单",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "同 T0-18：15 行「声明存在、实现缺位」逐行处置——补实现 4 项（robustness 读取、mark-saturated 写入口、EX-01 概念重叠程序、PPA 交接单 + 回写命令）；撤声明 / 明写「没有实现」5 项（S6 OS 监控与重着色、judge 的 WAIT_THEME_ROTATION、judge 引用 robustness、repair 配方、repair 的 trajectory_steps）；改口径 / 补流程 6 项（SA 创建入口列全、FQ-07 写明工具级未接线、hypothesis-first 条件激活、methodology_rules 计数由代码自动完成、配额复检不再 POST、check_correlation 的环境事实更正）；仍缺写入方的键登记为 orphan 且测试守「登记必须仍为真」",
+   "where": "docs/ledger_keys.json | tools/campaign_intel.py | src/wqb/robustness_record.py | tests/unit/test_ledger_key_catalog.py | tests/unit/test_campaign_intel_mark_saturated.py",
+   "verify": "tests/unit/test_ledger_key_catalog.py | tests/unit/test_campaign_intel_mark_saturated.py"
   },
   "X-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "时间炸弹",
-   "cat": "跨 skill"
+   "cat": "跨 skill",
+   "note": "docs/time_bombs.json 登记 3 项并分「auto / code / manual」：TB-01 GBR stop_rules_override（**到期日 2026-09-30，含当天有效**，次日起区域停止规则恢复约束——需用户决定是否续期，续期须新写 waiver_stop_rules_GBR_all，approved_by=user、≤ 30 天）、TB-02 CLI 开波区域闸 warn → enforce（2026-10-12）、TB-03 美国夏令时结束（2026-11-01，代码按 America/New_York 计算，无需操作）；test_time_bombs 守：人工项过期未办完即红、文档里出现未登记的未来日期即红、代码里的时间相关常量必须登记。「last_verified 批量戳」由 X-17 #10 的 git 判定兜底；区域平台状态快照见 X-12",
+   "where": "docs/time_bombs.json | src/wqb/timeutil.py | src/wqb/waiver.py | tests/unit/test_time_bombs.py",
+   "verify": "tests/unit/test_time_bombs.py::test_manual_entries_are_not_overdue | tests/unit/test_time_bombs.py::test_every_time_dependent_constant_in_code_is_registered"
   }
  }
 }
