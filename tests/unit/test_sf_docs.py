@@ -239,8 +239,11 @@ def test_last_verified_is_not_older_than_the_last_commit_that_changed_the_skills
     for d in _skill_dirs():
         m = re.search(r"^last_verified:\s*(\d{4}-\d{2}-\d{2})", _read(d / "SKILL.md"), re.M)
         assert m, f"{d.name} 缺 last_verified"
+        # 排除项按「相对 skill 目录」的路径段判断——绝对路径里一定有 `skills`（Claude/skills/…），按绝对路径判会把全部文档排除、
+        # 让 `git log` 退化成「整个仓库最近一次提交」（浅克隆里跳过所以一直没暴露）
         docs = [str(p.relative_to(ROOT)) for p in d.rglob("*.md")
-                if not any(x in p.parts for x in ("scripts", "data", "outputs", "output_report", "skills"))]
+                if not any(x in p.relative_to(d).parts for x in ("scripts", "data", "outputs", "output_report", "skills"))]
+        assert docs, f"{d.name} 没有可核对的文档（排除规则把它们全排掉了？）"
         code, last = _git("log", "-1", "--format=%cs", "--", *docs)
         if code == 0 and last and m.group(1) < last:
             stale.append(f"{d.name}: last_verified={m.group(1)} < 文档最近提交 {last}")
