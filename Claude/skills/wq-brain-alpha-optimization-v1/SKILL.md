@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-01
+last_verified: 2026-10-03
 name: wq-brain-alpha-optimization-v1
 description: "现有 WorldQuant BRAIN alpha 的两模式改进器：Mode B（想法层——换信号概念/字段组合，含卡闸后的组合腿救援）→ Mode A（参数层——冻结核心想法，8 候选严格批调 decay/窗口/中性化/truncation）。用户要求改进/优化某个 alpha ID、修复失败的提交测试项（含 IS_LADDER_SHARPE），或候选已按资格判定表（references/mode-b-qualification.md）值得继续改时使用。prod 相关性墙按 RA 决策表 D0-P 处置，本 skill 不承诺把 PROD 压到某个数。"
 layer: L4
@@ -41,12 +41,28 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
 ## 模式调度与止损（一条规则）
 
 - **先想法后参数**：Mode B 决定「改什么信号」，Mode A 只在核心想法已验证后做参数收敛。进 Mode A 的线（Stage B）：最优候选 Sharpe > 1.40 且 Fitness > 0.90（[`reference.md`](reference.md) §6.5）。
+- **★ 判「无解 / 天花板 / 已到顶」之前，必须先扫等价算子替换（2026-10-03 补）**：
+  等价算子数学含义相同但**数值路径不同**，能**同时改动多个闸门**；几何调整往往一次只动一个。
+  跳过这一步会把**「实现路径的约束」误判成「结构性的约束」**，从而错杀可救的族。
+  KOR 实证：判「不可能三角」后，仅把 `signed_power(x,0.5)` 换成 `quantile(x)`（骨架其余全冻结）
+  即 2Y 1.51→1.56、prod 0.6544→0.6397；再把外层轴 sector→market ⇒ 2Y 1.62 全闸过。
+  **那个"三角"是 `signed_power` 造成的假性约束。**
+  候选表与三条纪律（逐区实测不可外推 / 最优轴依赖包装算子 / `quantile` 只接受 1 参）见
+  [`02_signal_patterns.md` §12](docs/experience/02_signal_patterns.md)；
+  最常用的两条是 `signed_power(x,0.5)` → `quantile(x)`（最强破闸）与外层轴 sector → market
+  （**依赖包装算子，不可外推**）。
+  ⚠ 机械等价类：闸1b-2（算子调用点数 <10）拦下的表达式，**先考虑能否用等价算子缩短**再判死。
 - **止损阶梯**（同一 alpha 累计，先到先停）：
 
   | 累计想法周期（B1–B5 走一遍 = 1 个） | 仍卡在结构性闸门 → |
   |---|---|
   | 第 3 个 | 候选 `eligible` → 组合腿救援（下文）；不 `eligible` → 结束该候选 |
   | 第 5 个 | 判死回写（先 `forum_recon`、再 `seal_dead_end`），换字段回 S1 |
+
+  **⚠ 判死前的前置闸（2026-10-03）**：累计 ≥3 个周期仍卡在**结构性**闸门时，
+  **必须先完成上面的等价算子扫描**，把结果写进 `key_findings`，才允许走到第 5 个周期的判死回写。
+  未扫即判死 = 把实现路径约束当成结构性约束（KOR 实证已发生过一次）。
+
   | 累计试过的结构 > 10 种仍无果 | 换数据集回 S0（阶段定义见 [`INDEX.md`](../INDEX.md) 流水线表；数据集探索见 `brain-dataset-exploration-general`） |
 
   没有「精力占比」——只按周期数与结构数计；每个周期的调用预算见下（不按分钟计）。

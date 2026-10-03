@@ -53,7 +53,7 @@
     "description": "Prefer simple implementations without unnecessary moving parts, especially when unusual windows or controls are piled onto the signal.",
     "required_fields": [],
     "expression_heuristics": {
-      "max_operator_count": 20,
+      "max_operator_count": 10,
       "max_conditional_count": 2,
       "max_distinct_windows": 5,
       "canonical_windows": [1, 2, 3, 5, 10, 20, 21, 40, 60, 63, 120, 126, 160, 252, 500]

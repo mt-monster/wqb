@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.2"
-last_verified: 2026-10-01
+last_verified: 2026-10-03
 ---
 
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
@@ -157,6 +157,12 @@ last_verified: 2026-10-01
 - **完成定义**：本波全部 multisim 到**终态**，且 `backtest_results` 行数 = 波内表达式数（含 ERROR / CANCELLED 的标记行）；整批 CANCELLED → 回步 5。
 - **失败分支**：故障表（全 ERROR / 连坐 CANCEL / 429 / 超时）见 [`step6-backtest.md`](references/step6-backtest.md) §6.4：**先归因再决定重发 / 跳过 / 拆批**；确定性 ERROR 重发只会烧配额。
 - **不做**：**QUICK 模式产物不可提交**（无 visualization / correlation / theme 检查）——仅作探针，必须 FULL 复测并在 `key_findings` 记 `simulationMode`；不往 pipeline 传非 7 的并发（只收 warning）；`pipeline.py --submit` 是派发仿真，**不是**提交 alpha。
+- **⚠ 设置档不可比（2026-10-03）**：`nanHandling` / `maxTrade` / `decay` / `neutralization` / `truncation` **不是风格开关，是强度闸**——实测 IND behavioral_signals 同表达式 decay8 下，`nanHandling=OFF` 或 `maxTrade=ON` ⇒ `sharpe 2.19 → 0.46`。**换档位 = 换信号**，跨档位结果不可比。而回测入口有多套且缺省互不相同（`batch_track` / `tools/submit_batch.py` / MCP `create_simulation` / MCP `create_multi_simulation` / `brain-sim-alphas-in-batch-and-track`），「用哪套跑」会**静默改变结论**。因此：
+  - 档位以 `tracking/<R>/config/settings.json` 为权威（toolkit 铁律：region 只从它派生）；
+  - 工具缺省与 settings.json 不一致时**显式传参覆盖**，不要依赖工具缺省；
+  - 本波结论用于**选族 / 判死**前，先确认用的是权威档位——否则等于用不同实验否定同一个族；
+  - 需要 settings 全显式可控时用 `tools/ind_sim_submit.py`（该工具会自动回显实际档位并在命中弱档时告警）。
+
 - **细则**：[`step6-backtest.md`](references/step6-backtest.md)。适用决策表：D5 / D8 / D11。
 
 ### 步 7（S4）诊断改进

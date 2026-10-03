@@ -717,7 +717,7 @@ def evaluate_extra_standards(
 
         if rule["id"] == "implementation_simplicity":
             expr_cfg = rule.get("expression_heuristics", {})
-            max_ops = int(expr_cfg.get("max_operator_count", 25))
+            max_ops = int(expr_cfg.get("max_operator_count", 10))
             max_cond = int(expr_cfg.get("max_conditional_count", 3))
             max_windows = int(expr_cfg.get("max_distinct_windows", 6))
 

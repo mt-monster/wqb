@@ -124,6 +124,41 @@ def _load_arity_check(campaign_dir=None):
 _arity_check = _load_arity_check()
 
 
+def _load_call_counter(campaign_dir=None):
+    """闸1b-2 的调用点计数器（表达式内 ``name(...)`` 次数）；不可达返回 None。
+
+    与 1b 共用同一个 op_arity 模块，但取的是**另一个函数**：
+    1b 用 ``check_expression``（逐调用点验元数/命名参数），
+    1c 用 ``iter_call_sites``（数调用点总数）。两者口径不同、不可互相替代。
+    """
+    for src in _workspace_src_dirs(campaign_dir):
+        if os.path.isfile(os.path.join(src, "wqb", "expression", "op_arity.py")):
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            try:
+                from wqb.expression.op_arity import iter_call_sites
+                return iter_call_sites
+            except Exception:
+                return None
+    return None
+
+
+_call_counter = _load_call_counter()
+
+#: 闸1b-2 阈值：表达式内函数调用点数必须 **< 10**（铁律口径=函数调用计数，2026-10-03）。
+#:
+#: 为什么是「调用点数」而不是平台返回的 distinct operator_count：
+#: 两者语义不同——`ts_rank(ts_delta(group_rank(x)))` 只有 3 个不同算子、
+#: 但有 3 个调用点；而同一算子嵌套两次（如 `ts_zscore(ts_zscore(x))`）
+#: distinct=1 而调用点=2。铁律要拦的是**结构复杂度**，故按调用点计。
+#:
+#: 阈值取 10（非 15/20）的实证依据（2026-10-03 实测真实 DB）：
+#: 全库 expressions 73,182 条中 ≥10 调用点占 **8.2%**；
+#: 但 **sharpe ≥ 1.58 的达标行中 ≥10 调用点的占 0%（0/32）**
+#: ⇒ 卡 10 不会拦掉任何已达标候选，与平台实际产出无冲突。
+MAX_OP_CALLS = 10
+
+
 def _find_tools_lib(campaign_dir=None):
     """工作区 tools/lib（vector_wrap 单一权威源）：WQB_TOOLS_LIB > 与 src/ 同一套工作区候选。"""
     env = os.environ.get("WQB_TOOLS_LIB")
@@ -162,9 +197,11 @@ def env_unknown(issues):
 
 def _resolve_workspace_deps(campaign_dir):
     """模块加载时还不知道战役目录；那时没解析到的工作区依赖，按战役目录上溯再解析一次。"""
-    global _arity_check, _check_family_ceiling, wrap_naked_vectors
+    global _arity_check, _call_counter, _check_family_ceiling, wrap_naked_vectors
     if _arity_check is None:
         _arity_check = _load_arity_check(campaign_dir)
+    if _call_counter is None:
+        _call_counter = _load_call_counter(campaign_dir)
     if _check_family_ceiling is None:
         _check_family_ceiling = _load_family_ceiling(campaign_dir)
     if wrap_naked_vectors is None:
@@ -380,6 +417,21 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
             issues.extend(_arity_check(expr))
         except Exception as e:
             issues.append(f"[ARITY] op_arity error: {e}")
+    # 闸1b-2 算子复杂度（2026-10-03）：表达式内函数调用点数必须 < 10。
+    # 记忆铁律（.workbuddy/memory/MEMORY.md §0 组合形态纪律）此前只有条文、
+    # 无任何机器执行点——是「唯一宣称只登记不执行」的典型漏网。本闸补上执行点。
+    # op_arity 不可达时不在此重复报（1b 已报 ARITY_UNKNOWN，说明"没校验"）。
+    if _call_counter is not None:
+        try:
+            n_calls = len(_call_counter(expr))
+            if n_calls >= MAX_OP_CALLS:
+                issues.append(
+                    f"[OPS] 算子调用点数 {n_calls} ≥ {MAX_OP_CALLS}"
+                    f"（铁律：表达式内函数调用计数须 <10；复杂表达式在 2Y/SUB/"
+                    f"INVESTABILITY 上更难破，且往往是把实现路径约束误当结构性约束"
+                    f"的产物——判无解前先扫等价算子替换）")
+        except Exception as e:
+            issues.append(f"[OPS] 调用点计数 error: {e}")
     idents = set(re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr))
     # 命名参数名（std=4 / cat= 等）不是字段也不是算子——排除避免误报（winsorize std 实证）
     kw_args = set(re.findall(r"([a-zA-Z_][a-zA-Z0-9_]*)\s*=", expr))
@@ -464,7 +516,7 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     infix_sum, infix_spreads = _detect_infix_leg_sum(expr, _non_field)
     spread_weighted, spread_cross = _spread_findings(
         infix_spreads + _collect_func_spreads(expr, _non_field), _non_field, price_vol,
-        pc.get("_field_dataset"))
+        pc.get("_field_dataset"), pc.get("_declared_spread_pairs"))
     structural_only = False
     for pp in poison_patterns:
         if pp.get("severity", "block") != "block":
@@ -506,8 +558,9 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
                 break
         else:
             issues.append(
-                "[POISON:spread_cross_dataset] subtract 的两腿来自不同数据集 = 拼腿（用户 2026-09-28 裁定："
-                "价差须同源 + 有单一经济含义）。")
+                "[POISON:spread_cross_dataset] subtract 的两腿来自不同数据集，"
+                "且该集对未声明经济含义 = 拼腿（用户 2026-10-01 修正：跨集价差合规，"
+                "但须以 declared_cross_spreads 声明方向性经济解释：背离/对冲/预期-约束缺口）。")
     if spread_weighted:
         warnings.append(
             "[SPREAD_WEIGHTED] 价差腿带数值系数（靠调权重凑指标属违规族，见 spread_signal_ruling）；"
@@ -800,22 +853,55 @@ def _leg_fields(leg, non_field, price_vol):
             and not t.startswith(("ts_", "group_", "vec_", "reduce_", "bucket_", "quantile_"))}
 
 
-def _spread_findings(spreads, non_field, price_vol, field_dataset=None):
-    """价差规则（用户 2026-09-28 裁定 spread_signal_ruling）：
+def _leg_dataset(leg, non_field, price_vol, field_dataset):
+    """腿涉及的**数据集集合**（不含算子名/常量）。空集 = 无法归属（不参与跨集判定）。"""
+    if not field_dataset:
+        return set()
+    return {field_dataset[f] for f in _leg_fields(leg, non_field, price_vol)
+            if field_dataset.get(f)}
 
-    * 跨数据集价差（两腿字段分属不同数据集）= 拼腿 → ``cross``（阻断；仅当调用方给了 field→dataset 映射，
-      即多数据集 mix 批；单数据集批里所有字段同源，无须判）；
-    * 腿带数值系数（``0.6*rank(A) - 0.4*rank(B)``）= 靠调权重凑指标 → ``weighted``（仅告警，不阻断：
-      避免在裁定未点名的形态上误伤，且信息不丢）。
+
+def _spread_findings(spreads, non_field, price_vol, field_dataset=None,
+                     declared_spread_pairs=None):
+    """价差规则（用户 2026-09-28 裁定 + 2026-10-01 修正 spread_signal_ruling）。
+
+    * 腿带数值系数（``0.6*rank(A) - 0.4*rank(B)``）= 靠调权重凑指标 → ``weighted``（仅告警，不阻断）。
+
+    **跨数据集价差判定（2026-10-01 用户修正）**：判据从「字段分属不同数据集」改为
+    「**跨集 且 未声明经济含义**」。
+
+    用户 2026-10-01 澄清：``rank(预期A) − rank(约束B)``（A/B 来自**不同数据集、最好不同更新节奏**）
+    是**合规且鼓励**的独立信号（属 §7.7.2 ⑤ 换信号概念，两腿独立 → self-corr 低）。
+    旧版把「跨集」本身当违规是对用户口径的误读——跨集价差与同源价差是**两类**合规形态：
+      ① **同源价差**（``spread_signal_ruling``）：同一经济量对偶两侧 + 同数据集，差值可一句话说清；
+      ② **跨集价差**（本条）：不同数据集/不同经济概念两条腿，差值须有一个**方向性经济解释**
+         （背离 / 对冲 / 预期-约束缺口），而非无脑平均。
+    两类的共同违规内核 = **无经济含义的机械拼腿**（``add`` 一律违规，含等权）。
+    因机器无法自动判「有无经济含义」，改用**显式声明**机制：
+
+    * 调用方通过 ``declared_spread_pairs``（或平台级 ``declared_cross_spreads``）声明
+      **本波认定的经济含义价差族**（``(A集, B集)`` 或 ``(A集, B集, note)``）；
+    * 命中已声明的 (A集,B集) 组合 → **放行**（不阻断，也不告警）；
+    * 跨集但**未声明** → 仍阻断（``cross``），提示「如为有意设计，请声明经济含义」。
+
+    ``declared_spread_pairs`` 为 ``None``/空 → 保持旧行为吗？不：**空声明 = 全部跨集阻断**，
+    与旧版一致（向后兼容），但错误消息会指引声明路径。
     """
     weighted, cross = [], []
+    declared = set()
+    for item in (declared_spread_pairs or []):
+        if isinstance(item, (list, tuple)) and len(item) >= 2:
+            declared.add(frozenset((str(item[0]), str(item[1]))))
     for a, b in spreads:
         if _leg_has_coef(a) or _leg_has_coef(b):
             weighted.append((a, b))
         if field_dataset:
-            da = {field_dataset[f] for f in _leg_fields(a, non_field, price_vol) if field_dataset.get(f)}
-            db = {field_dataset[f] for f in _leg_fields(b, non_field, price_vol) if field_dataset.get(f)}
+            da = _leg_dataset(a, non_field, price_vol, field_dataset)
+            db = _leg_dataset(b, non_field, price_vol, field_dataset)
             if da and db and da.isdisjoint(db):
+                # 跨集：检查是否存在「已声明」的集对组合（任一双向匹配即视为已声明含义）
+                if any(frozenset((x, y)) in declared for x in da for y in db):
+                    continue  # 已声明经济含义 → 放行
                 cross.append((a, b))
     return weighted, cross
 
@@ -851,6 +937,8 @@ GATE_REGISTRY = (
     ("0", "语义反模式", "block", "--gate0（默认关闭）", "恒等式 / 裸字段 / 元数据字段作信号腿（穿透闸 1–8 的废品）"),
     ("1", "语法", "block", "常开", "alpha-expression-verifier 直调；缺失标 SYNTAX_UNKNOWN"),
     ("1b", "算子元数 + 命名参数", "block", "常开", "op_arity（catalog 驱动）；缺失标 ARITY_UNKNOWN"),
+    ("1b-2", "算子复杂度（调用点数 <10）", "block", "常开（MAX_OP_CALLS 可调）",
+     "铁律：表达式内函数调用计数须 <10；与 distinct operator_count 口径不同。实测 sharpe≥1.58 达标行 0 条触线"),
     ("2", "字段白名单", "block", "常开（--dataset）", "typed catalog 优先 → legacy 兜底"),
     ("2b", "区域非法 group 字段", "block", "常开（platform_constraints.region_invalid_group_fields）",
      "如 JPN 的 sector/industry/subindustry 是 Invalid data field，整批连坐"),
@@ -878,7 +966,7 @@ def render_gate_table():
 
 
 #: 判定器代码版本：闸 1-5 的判定代码（非配置）变更时递增，让逐条缓存失效（配置变更已由 poison/pc 入签名）。
-GATE_CODE_VERSION = "2026-09-29.1"   # 中缀 + 结构判定 / 价差规则
+GATE_CODE_VERSION = "2026-10-03.1"   # 中缀 + 结构判定 / 价差规则 / 闸1b-2 算子调用点数<10
 
 
 def gate_signature(ds_all, wl, poison, pc):
@@ -1239,9 +1327,8 @@ def check_sanity_longcount(ctx, dataset, exprs, field_types):
     for fid in all_fields:
         ftype = field_types.get(fid)
         if ftype == "VECTOR":
-            cat_path = ctx.catalog_path(dataset)
-            if os.path.exists(cat_path):
-                cat = load_json(cat_path)
+            cat = _sanity_catalog(ctx, dataset)
+            if isinstance(cat, dict):
                 for f in cat.get("fields", []):
                     if f["id"] == fid:
                         lc = f.get("longCount", f.get("long_count", -1))
@@ -1252,6 +1339,24 @@ def check_sanity_longcount(ctx, dataset, exprs, field_types):
                             )
                         break
     return issues
+
+
+def _sanity_catalog(ctx, dataset):
+    """取 typed catalog 供 longCount sanity 用（DB 优先，文件兜底；都没有返回 None）。"""
+    try:
+        from _lib.wqb_store import load_catalog
+        d = load_catalog(ctx, dataset)
+        if d and d.get("fields"):
+            return d
+    except Exception:
+        pass
+    cat_path = ctx.catalog_path(dataset)
+    if os.path.exists(cat_path):
+        try:
+            return load_json(cat_path)
+        except Exception:
+            return None
+    return None
 
 
 def check_sanity_event_type(ctx, dataset, exprs, field_types):
@@ -1430,6 +1535,8 @@ def main():
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--datasets", default="",
                     help="逗号分隔额外数据集，与 --dataset 合并白名单（跨金字塔 mix）")
+    ap.add_argument("--declared-cross-spreads", default="",
+                    help="跨集价差经济含义声明，格式 '集A,集B;集C,集D'（2026-10-01 用户修正）")
     ap.add_argument("--no-cache", action="store_true")
     ap.add_argument("--cache-file", default=None,
                     help="缓存文件重定向（默认 <campaign>/cache/gate_cache.json；干跑验证用临时路径）")
@@ -1495,6 +1602,17 @@ def main():
             except Exception:
                 pass
         pc["_field_dataset"] = {f: d for f, d in _fd.items() if d}
+        # 2026-10-01：跨集价差经济含义声明（平台级 pairs + 区域 reference 覆盖 + CLI 追加）
+        _declared = []
+        _declared += (pc.get("declared_cross_spreads") or {}).get("pairs") or []
+        if os.path.exists(ctx.constraints_path()):
+            _declared += (load_json(ctx.constraints_path()).get("declared_cross_spreads") or {}).get("pairs") or []
+        if a.declared_cross_spreads:
+            for _p in a.declared_cross_spreads.split(";"):
+                _ab = [x.strip() for x in _p.split(",") if x.strip()]
+                if len(_ab) >= 2:
+                    _declared.append(_ab)
+        pc["_declared_spread_pairs"] = _declared
     poison = list(pc.get("poison_patterns", []))
     cons_path = ctx.constraints_path()
     if os.path.exists(cons_path):  # 区域特有 poison 追加（平台级勿复制进区域文件）
