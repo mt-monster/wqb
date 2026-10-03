@@ -76,10 +76,16 @@ def _candidate_roots() -> List[Path]:
         from wqb.workflow._common import _skill_roots
         raw = _skill_roots()
     except Exception:
+        # 兜底顺序必须与 wqb.workflow._common._skill_roots() 同序（见该文件注释）：
+        # .cline / .agents 是 Cline Desktop/CLI 的两个全局安装位（2026-10-03 补，
+        # 取自 Cline dist/lib.mjs 的 yYt() 搜索链，不是猜的）。
         raw = (
             os.environ.get("WQ_SKILLS_DIR") or "",
             os.path.expanduser("~/.claude/skills"),
             os.path.expanduser("~/.codex/skills"),
+            os.path.expanduser("~/.cline/skills"),
+            os.path.expanduser("~/.agents/skills"),
+            os.path.expanduser("~/.trae-cn/skills"),
             os.path.expanduser("~/.qoder-cn/skills"),
             os.path.expanduser("~/.cursor/skills"),
             os.path.expanduser("~/.workbuddy/skills"),

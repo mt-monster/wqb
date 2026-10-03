@@ -12,7 +12,12 @@ from __future__ import annotations
 import os
 
 #: 安装位宿主目录名（相对 $HOME），顺序即优先级
-HOST_DIRS = (".claude", ".codex", ".trae-cn", ".qoder-cn", ".cursor", ".workbuddy")
+#: `.cline` / `.agents` = Cline Desktop/CLI 两个全局位（2026-10-03 补），必须与
+#: toolkit 侧 `HOST_DIRS` 逐项同序（守护：test_docs_consistency.py）。
+HOST_DIRS = (
+    ".claude", ".codex", ".cline", ".agents",
+    ".trae-cn", ".qoder-cn", ".cursor", ".workbuddy",
+)
 
 #: 本文件位于 <skills_root>/brain-make-some-gem/scripts/trailSomeAlphas/ → 上溯 3 层即 <skills_root>
 REPO_SKILLS_ROOT = os.path.normpath(

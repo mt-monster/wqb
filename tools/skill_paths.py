@@ -29,8 +29,11 @@ def skill_roots() -> List[str]:
         return list(_skill_roots())
     except Exception:
         home = os.path.expanduser("~")
+        # 同序兜底（须与 _common._skill_roots() 一致）：.cline / .agents = Cline
+        # Desktop/CLI 两个全局位（2026-10-03 补，取自 Cline dist/lib.mjs 的 yYt()）。
         roots = [os.path.join(home, h, "skills")
-                 for h in (".claude", ".codex", ".qoder-cn", ".cursor", ".workbuddy")]
+                 for h in (".claude", ".codex", ".cline", ".agents",
+                           ".qoder-cn", ".cursor", ".workbuddy")]
         roots.append(os.path.join(_REPO_ROOT, "Claude", "skills"))
         return roots
 

@@ -55,6 +55,18 @@ def _skill_roots() -> tuple:
     # 导致 `tools/sync_skills.py` 永远不会把仓库推到 ~/.codex/skills，长期分叉）
     roots.append(os.path.expanduser("~/.codex/skills"))
 
+    # Cline Desktop / Cline CLI 安装位（2026-10-03 审计补）。
+    # Cline 的 skill 搜索链是从其 dist/lib.mjs 的 `oo` 常量表读出来的（不要靠猜）：
+    #   yYt() 返回 6 个候选，source 标注 project/global：
+    #     project: .clinerules/skills → .cline/skills → .claude/skills → .agents/skills
+    #     global : ~/.cline/skills  (Qdp() = itu()/"skills" = homedir()/.cline/skills)
+    #              ~/.agents/skills (otu())
+    # 本工作区的 wqb 侧只消费**全局两位** + `.agents`；项目级那几位是 Cline 自己的
+    # 仓库内布局（这里已有 `.claude/skills`，Cline 会自行扫描，无需 wqb 复制一份）。
+    # 实测 2026-10-03：`~/.agents/skills` 已存在（空），`~/.cline/skills` 不存在。
+    roots.append(os.path.expanduser("~/.cline/skills"))
+    roots.append(os.path.expanduser("~/.agents/skills"))
+
     # 历史 Agent 安装位
     roots.append(os.path.expanduser("~/.qoder-cn/skills"))
     roots.append(os.path.expanduser("~/.cursor/skills"))
@@ -96,7 +108,7 @@ _PREFIX_CATEGORY = [
     ("insider", "insiders"),
 ]
 
-#: data/wqb.db（datasets 表为平台 get_datasets 快照，见 tools/ingest_dataset_assets.py）
+#: data/wqb.db（datasets 表为平台 get_datasets 快照，见 tools/fetch_dataset_assets.py）
 _DB_PATH = REPO_ROOT / "data" / "wqb.db"
 
 
@@ -256,6 +268,39 @@ def resolve_toolkit_dir() -> Optional[str]:
         if os.path.isdir(candidate):
             _warn_if_legacy(root, "campaign toolkit")
             return candidate
+    return None
+
+
+def resolve_toolkit_file(relpath: str) -> Optional[str]:
+    """定位 toolkit 内的某文件，**仓库副本优先**（relpath 用 "/" 分隔）。
+
+    2026-10-02 P1：`resolve_toolkit_dir()` 按 `_skill_roots()` 顺序返回，安装位
+    （~/.claude/skills 等）排在仓库自带副本**之前**——安装位可能滞后于本仓
+    （本次实测它没有 `_lib/prescreen.py`），于是 src 侧代码 import 到旧副本、
+    新口径被静默 fallback。凡 src 代码要 import toolkit 的**新增模块**，一律用本函数：
+    先查 `REPO_ROOT/Claude/skills/wq-brain-campaign-toolkit/scripts`，命中即返回；
+    否则再退 `resolve_toolkit_dir()` 等安装位。
+    """
+    rel_parts = [p for p in relpath.split("/") if p]
+    # 1) 仓库自带副本（唯一权威，与 src 同工作区）
+    repo_cand = REPO_ROOT / "Claude" / "skills" / "wq-brain-campaign-toolkit" / "scripts"
+    cand = repo_cand.joinpath(*rel_parts)
+    if cand.is_file():
+        return str(cand)
+    # 2) 环境变量显式覆盖
+    env = os.environ.get("WQ_TOOLKIT_DIR")
+    if env:
+        cand = Path(env).joinpath(*rel_parts)
+        if cand.is_file():
+            return str(cand)
+    # 3) 其余安装位（历史兜底）
+    for root in _skill_roots():
+        cand = Path(root) / "wq-brain-campaign-toolkit" / "scripts"
+        if cand == repo_cand:
+            continue  # 已在第 1) 步查过
+        f = cand.joinpath(*rel_parts)
+        if f.is_file():
+            return str(f)
     return None
 
 

@@ -9,11 +9,13 @@
     1. $WQ_SKILLS_DIR（冒号/os.pathsep 分隔，可多值）
     2. ~/.claude/skills          （主安装位 = Claude Code / 本工作区 Agent 实际加载位）
     3. ~/.codex/skills           （Codex 安装位）
-    4. ~/.trae-cn/skills         ┐
-    5. ~/.qoder-cn/skills        │ 历史 Agent 安装位（独立物理拷贝，可能已落后）
-    6. ~/.cursor/skills          │
-    7. ~/.workbuddy/skills       ┘
-    8. <repo>/Claude/skills      （仓库自带，最后兜底 → clone 即可用）
+    4. ~/.cline/skills           ┐ Cline Desktop/CLI 全局位（2026-10-03 补，
+    5. ~/.agents/skills          ┘ 从 Cline dist/lib.mjs 的 `oo` 表读出的 global 两位）
+    6. ~/.trae-cn/skills         ┐
+    7. ~/.qoder-cn/skills        │ 历史 Agent 安装位（独立物理拷贝，可能已落后）
+    8. ~/.cursor/skills          │
+    9. ~/.workbuddy/skills       ┘
+    10. <repo>/Claude/skills     （仓库自带，最后兜底 → clone 即可用）
 
 `tests/unit/07_docs_skills/test_docs_consistency.py` 守护：本模块与
 `brain-make-some-gem/scripts/trailSomeAlphas/skill_roots.py` 的宿主顺序必须与
@@ -24,7 +26,13 @@ from __future__ import annotations
 import os
 
 #: 安装位宿主目录名（相对 $HOME），顺序即优先级
-HOST_DIRS = (".claude", ".codex", ".trae-cn", ".qoder-cn", ".cursor", ".workbuddy")
+#: `.cline` / `.agents` 是 Cline Desktop/CLI 的两个全局位（2026-10-03 补）——
+#: 顺序取自 Cline dist/lib.mjs 的 `yYt()`，不是猜的；项目级 `.claude/skills`
+#: 等入口由 Cline 自行扫描，wqb 侧不复制副本。
+HOST_DIRS = (
+    ".claude", ".codex", ".cline", ".agents",
+    ".trae-cn", ".qoder-cn", ".cursor", ".workbuddy",
+)
 
 #: 本文件位于 <skills_root>/wq-brain-campaign-toolkit/scripts/_lib/ → 上溯 3 层即 <skills_root>
 REPO_SKILLS_ROOT = os.path.normpath(
