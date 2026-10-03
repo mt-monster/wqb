@@ -1,0 +1,10 @@
+{
+  "_comment": "audit_structure 的存量基线（棘轮模式，同 skill_lint 的 baseline 思路）。键 = 文件名@内容哈希前12位；不在基线内的违规一律 FAIL 阻断提交。修掉一项后请从对应列表移出（audit_structure 会提示哪些已消失）。",
+  "_policy": "只登记**存量**问题，绝不用于豁免新增。空/缺失文件 = 无豁免（最保守）。",
+  "s6_skill_drift": [
+    "validator.py@0d734458f411",
+    "helpful_functions.py@d1dc77336551",
+    "ace_lib.py@6f0b70a9eb8d",
+    "diversity_enhancer.py@4988be9cd599"
+  ]
+}

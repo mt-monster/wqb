@@ -350,20 +350,99 @@ def check_s6_skill_drift(rep: Report) -> None:
     2026-09-30 审计修正：本检查原用裸 md5 分组，把 GEM 内嵌快照（A 类，设计内
     保留）与真跨 skill 复制（B 类，待治理）混在一起报 7 组噪声。分类逻辑已挪到
     `tools/audit_skill_drift.py`，此处只转调，避免两个工具对同一件事各说一套。
+
+    2026-10-03 升级为 **FAIL + 基线棘轮**：B 类（跨 skill 复制）此前是 WARN，
+    而 pre-commit 只拦 FAIL → 存量 3 组永远不红，"改一处漏三处"可无声复发
+    （历史上 `validator.py` 三份各自演化、缺 hump/bucket/densify 修复就是这么
+    发生的）。实测现状：4 份 `validator.py` 哈希全同（**尚未分叉**），
+    正是升 FAIL 的最佳时机——此刻登记基线不产生任何存量债。
+
+    棘轮语义（与 `skill_lint.py` 的 baseline 模式一致）：
+      - 基线内的已知存量组 → WARN（可见但不阻塞）
+      - **基线外的新增组 → FAIL**（阻断提交）
+      - 同名但哈希变了 = 有人改过其中一份且未同步其余 → 按新增处理（最危险）
+      - 修掉一组后应收窄基线，否则它将来重新出现会被误判为"新增"
     """
+    import json
     import subprocess
 
     script = REPO_ROOT / "tools" / "audit_skill_drift.py"
     if not script.exists():
         rep.warn("S6 skills 漂移", "audit_skill_drift.py 缺失，跳过")
         return
-    r = subprocess.run([sys.executable, str(script), "--check"],
+
+    r = subprocess.run([sys.executable, str(script), "--json"],
                        capture_output=True, text=True, cwd=str(REPO_ROOT))
-    # 退出码 0=无 B 类，1=有 B 类待治理
-    rep.warn("S6 skills 漂移",
-             "有跨 skill 复制待治理（详见 `python tools/audit_skill_drift.py`；"
-             "A 类内嵌快照不算）" if r.returncode == 1
-             else "无跨 skill 复制")
+    if r.returncode not in (0, 1):
+        rep.warn("S6 skills 漂移",
+                 f"audit_skill_drift.py 异常退出（rc={r.returncode}），跳过")
+        return
+    try:
+        payload = json.loads(r.stdout)
+        cross = payload.get("cross_skill") or []
+        diverged = payload.get("diverged") or []
+    except (json.JSONDecodeError, KeyError, TypeError):
+        rep.warn("S6 skills 漂移", "audit_skill_drift.py 输出不可解析，跳过")
+        return
+
+    # ★ 分叉副本 = 同名脚本在不同 skill 下内容已不同 = "改一处漏三处"已经发生。
+    #   这正是本检查存在的意义，故**无条件 FAIL、不进基线**（基线只豁免"仍然
+    #   相同"的存量副本；分叉不存在"合法存量"形态）。
+    for e in diverged:
+        rep.fail("S6 skills 漂移",
+                 f"★ {e['name']} 已分叉：{e['copies']} 份 / {e['variants']} 种内容"
+                 f"（{', '.join(e['skills'])}）——改一处漏三处已发生，"
+                 f"必须四处一致；分叉明细 {e.get('per_skill_hash')}")
+
+    baseline = _s6_baseline()
+    baseline_names = {b.split("@")[0] for b in baseline}
+    seen, new_groups = set(), []
+    for e in cross:
+        key = f"{e['name']}@{e['hash']}"
+        seen.add(key)
+        if key in baseline:
+            continue
+        why = ("同名脚本哈希已变（改动未同步到全部副本）"
+               if e["name"] in baseline_names else "新增跨 skill 复制")
+        new_groups.append((e, why))
+
+    for e, why in new_groups:
+        rep.fail("S6 skills 漂移",
+                 f"{e['name']} ({len(e['paths'])} 份: {', '.join(e['skills'])}) — {why}；"
+                 f"多处副本需一起覆盖，详见 `python tools/audit_skill_drift.py`")
+
+    fixed = [b for b in baseline if b not in seen]
+    if fixed:
+        rep.warn("S6 skills 漂移",
+                 f"基线中的 {len(fixed)} 组已消失，可从 "
+                 f"tools/audit_structure_baseline.json 移出：{fixed}")
+
+    known = [e for e in cross if f"{e['name']}@{e['hash']}" in baseline]
+    if new_groups:
+        pass  # 已由 FAIL 行呈现，不再刷 WARN 噪声
+    elif known:
+        rep.warn("S6 skills 漂移",
+                 f"{len(known)} 组已知跨 skill 复制（已登记基线，待治理）："
+                 + ", ".join(sorted(e["name"] for e in known)))
+    elif not cross:
+        rep.ok("S6 skills 漂移", "无跨 skill 复制")
+
+
+def _s6_baseline() -> set:
+    """读取 S6 基线（已登记的存量 B 类组，键 = `文件名@哈希前12位`）。
+
+    文件缺失 → 空基线（此时任何 B 类都算新增 → FAIL），这是保守方向。
+    """
+    import json
+
+    p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+    if not p.is_file():
+        return set()
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return set(data.get("s6_skill_drift") or [])
+    except (json.JSONDecodeError, OSError):
+        return set()
 
 
 CHECKS = {

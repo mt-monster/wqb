@@ -3,21 +3,54 @@
 
 在 batch_simulator.py 提交前自动分析并增强表达式多样性。
 """
+import os
 import sys
 from pathlib import Path
 from typing import List, Dict, Any, Tuple
 
-# 添加项目根目录到路径
-SCRIPT_DIR = Path(__file__).resolve().parent
-SKILL_ROOT = SCRIPT_DIR.parent
-PROJECT_ROOT = SKILL_ROOT.parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
+def _resolve_workspace_src():
+    """解析工作区 src/ 目录（wqb 规范核心包所在）。
+
+    2026-09-09 修复：原实现只从 __file__ 向上找 8 层，但 skill 安装在
+    ``%USERPROFILE%\\.claude\\skills\\`` 时与工作区（如 ``D:\\coding\\...\\wqb``）
+    根本不在同一棵目录树，向上永远找不到 src/wqb，导致 ImportError 并静默降级
+    （build_wave 每波 diversity_enhanced=false，多样性增强维度完全未生效）。
+    现改为与 gate.py 的 _workspace_src_dirs() 同源策略：
+    环境变量 > 向上推导 > 仓库自带 Claude/skills 兄弟位置。
+
+    2026-10-03：本函数此前只有 toolkit 一份是修复后的版本，sim skill 那份仍是
+    旧的 3 层上溯写法——被 `tools/audit_skill_drift.py` 新增的**分叉副本**检查
+    抓到（同名脚本内容不同 = 「改一处漏三处」已经发生）。已同步，两份逐字节一致。
+    """
+    cands = []
+    for env in ("WQB_WORKSPACE_ROOT", "WQB_ROOT", "WQ_PROJECT_ROOT"):
+        root = os.environ.get(env)
+        if root:
+            cands.append(Path(root) / "src")
+    here = Path(__file__).resolve().parent
+    p = here
+    for _ in range(8):
+        cands.append(p / "src")
+        p = p.parent
+    for c in cands:
+        if (c / "wqb").is_dir():
+            return str(c)
+    return None
+
+
+_SRC = _resolve_workspace_src()
+if _SRC and _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
 
 try:
     from wqb.expression.diversity_enhancer import analyze_diversity, enhance_expressions
     DIVERSITY_AVAILABLE = True
 except ImportError as e:
     print(f"[WARN] 多样性增强系统不可用: {e}")
+    if not _SRC:
+        print("[WARN]   原因：未能解析工作区 src/（wqb 包）。skill 安装位与工作区"
+              "不同树时需设 WQB_WORKSPACE_ROOT 指向工作区根。")
     DIVERSITY_AVAILABLE = False
 
 

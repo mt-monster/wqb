@@ -18,6 +18,10 @@ def _resolve_workspace_src():
     （build_wave 每波 diversity_enhanced=false，多样性增强维度完全未生效）。
     现改为与 gate.py 的 _workspace_src_dirs() 同源策略：
     环境变量 > 向上推导 > 仓库自带 Claude/skills 兄弟位置。
+
+    2026-10-03：本函数此前只有 toolkit 一份是修复后的版本，sim skill 那份仍是
+    旧的 3 层上溯写法——被 `tools/audit_skill_drift.py` 新增的**分叉副本**检查
+    抓到（同名脚本内容不同 = 「改一处漏三处」已经发生）。已同步，两份逐字节一致。
     """
     cands = []
     for env in ("WQB_WORKSPACE_ROOT", "WQB_ROOT", "WQ_PROJECT_ROOT"):
