@@ -311,6 +311,130 @@ def test_rank_sorted_desc():
     assert scores == sorted(scores, reverse=True)
 
 
+# ---------------- fail-safe：campaign 状态采集失败不可被当成"未饱和"（2026-10-03） ----------------
+#
+# 缺陷背景：`_campaign_status` 原先 `except Exception: pass` 后返回全零。返回值进
+# `detect_saturation.exhausted_pct` 与 `rotation_score.f_headroom/f_untried`，
+# 于是「DB 读不到战役状态」被当成「该区战役很少、空间最大」→ f_headroom=1.0 满分，
+# 给出**方向相反**的转区建议。而 region_rotation 的卖点正是"零平台请求、零配额"，
+# 最该确定的地方反而最不可靠。历史前科见 .workbuddy/memory/2026-10-01.md
+# （310 行无 status 的脏 campaign 记录被长期静默忽略，无任何告警）。
+#
+# 这些用例**不 mock**：用缺 `registry_empirical` 表的真实 sqlite 连接触发
+# sqlite3.OperationalError，验证真实失败路径。
+
+
+def _broken_campaign_conn():
+    """只缺 registry_empirical 表的内存 DB → campaign 查询必然抛 OperationalError。
+
+    其余表保留，使 gather_region_metrics 的其他指标仍能采集（模拟"DB 部分可用"
+    而非整体不可用——最容易被静默吞掉的情形）。
+    """
+    c = sqlite3.connect(":memory:")
+    c.executescript(
+        """
+        CREATE TABLE regions (id INTEGER PRIMARY KEY, name TEXT);
+        CREATE TABLE alphas (alpha_id TEXT, region_id INTEGER, sharpe REAL,
+            prod_correlation REAL, self_correlation REAL, platform_status TEXT);
+        CREATE TABLE backtest_results (region TEXT, sharpe REAL);
+        CREATE TABLE waves (region_id INTEGER, wave_number TEXT);
+        """
+    )
+    c.execute("INSERT INTO regions VALUES (1,'TST')")
+    for s in [2.0, 1.7, -1.6, 1.9, 0.5, 1.0, 0.2, 1.2, 0.9, 1.55]:
+        c.execute("INSERT INTO backtest_results VALUES ('TST',?)", (s,))
+    c.execute("INSERT INTO waves VALUES (1,'1')")
+    c.commit()
+    return c
+
+
+def test_campaign_query_failure_is_distinguishable_from_zero_campaigns():
+    """采集失败必须给 campaigns_available=False + exhausted_pct=None，而非全零。"""
+    m = gather_region_metrics(_broken_campaign_conn(), "TST")
+    assert m["campaigns_available"] is False
+    assert m["exhausted_pct"] is None, "未知 ≠ 0.0（0.0 会被读成『确认未穷尽』）"
+    # 其他指标仍应采集成功（部分可用 ≠ 全部不可用）
+    assert m["backtested"] == 10
+
+
+def test_available_flag_true_on_healthy_db():
+    """回归守护：正常 DB 下 campaigns_available 必须为 True（别把 fail-safe 写成常态）。"""
+    conn = _mem_conn()
+    _seed(conn)
+    m = gather_region_metrics(conn, "TST")
+    assert m["campaigns_available"] is True
+    assert m["exhausted_pct"] == pytest.approx(0.5)
+
+
+def test_saturation_disables_campaign_signals_when_unavailable():
+    """campaign 不可采信 → 禁用 campaigns_exhausted / mined_out 强信号。"""
+    metrics = _metrics(region="EUR", exhausted_pct=1.0, campaigns_total=6,
+                       campaigns={"untried": 0, "in_progress": 0, "exhausted": 6},
+                       waves=200, dead_ends=120)
+    healthy = detect_saturation(dict(metrics, campaigns_available=True))
+    broken = detect_saturation(dict(metrics, campaigns_available=False,
+                                    exhausted_pct=None))
+
+    # 健康时这两个 campaign 依赖的信号确实会触发
+    assert "campaigns_exhausted" in healthy["strong"]
+    assert "mined_out" in healthy["strong"]
+
+    # 采集失败时：不得据此断言饱和
+    assert "campaigns_exhausted" not in broken["strong"]
+    assert "mined_out" not in broken["strong"]
+    # 且必须显式声明证据不足，而不是静默
+    assert broken["data_caveat"] and "campaign" in broken["data_caveat"]
+
+
+def test_rotation_score_headroom_is_neutral_not_max_when_unknown():
+    """★ 核心回归：exhausted_pct 未知时 f_headroom 不得取满分 1.0。
+
+    旧实现 `1.0 - _clamp01(m.get("exhausted_pct") or 0.0)` 在 None 时得 1.0（满分），
+    等于把「读不到战役状态」宣传成「该区空间最大」。这里锁定中性 0.5。
+    """
+    known_empty = {"region": "AAA", "exhausted_pct": 0.0, "campaigns_available": True,
+                   "campaigns": {"untried": 0, "in_progress": 0, "exhausted": 0},
+                   "entry_verdict": "active"}
+    known_full = dict(known_empty, exhausted_pct=1.0,
+                      campaigns={"untried": 0, "in_progress": 0, "exhausted": 5})
+    unknown = dict(known_empty, exhausted_pct=None, campaigns_available=False)
+
+    s_empty = rotation_score(dict(known_empty))
+    s_full = rotation_score(dict(known_full))
+    s_unknown = rotation_score(dict(unknown))
+
+    assert s_empty > s_full, "确认未穷尽应优于已穷尽（校准前提）"
+    assert s_unknown < s_empty, (
+        "★ campaign 状态未知时不得优于『确认未穷尽』——旧实现会得满分从而虚高")
+    # 中性 0.5：应落在两者之间
+    assert s_full < s_unknown < s_empty
+
+
+def test_rotation_score_untried_neutral_when_campaigns_unavailable():
+    """campaign 不可采信时 f_untried 取中性，不得因查不到 untried 而把该区排末。"""
+    base = {"region": "BBB", "exhausted_pct": 0.0, "entry_verdict": "active",
+            "yield_rate": 0.2, "backtested": 50, "prod_measured": 20,
+            "prod_wall_ratio": 0.3, "feasible_unsubmitted": 2}
+    with_untried = dict(base, campaigns_available=True,
+                        campaigns={"untried": 8, "in_progress": 0, "exhausted": 0})
+    unknown = dict(base, campaigns_available=False,
+                   campaigns={"untried": 0, "in_progress": 0, "exhausted": 0})
+    # 未知时既不应得满分（像有大量 untried）也不应得 0 分（像完全没有）
+    assert rotation_score(unknown) > rotation_score(dict(unknown, campaigns_available=True,
+                                                        campaigns={"untried": 0, "in_progress": 0, "exhausted": 0}))
+    assert rotation_score(unknown) < rotation_score(with_untried)
+
+
+def test_recommend_rotation_does_not_rotate_on_unavailable_campaign_data():
+    """端到端：唯一区 campaign 状态不可采信时，不得给出"该区未饱和、继续挖"的误导结论。"""
+    metrics = {"EUR": _metrics(region="EUR", exhausted_pct=None, campaigns_total=0,
+                               campaigns_available=False, waves=200, dead_ends=120)}
+    rec = recommend_rotation("EUR", metrics, target=20)
+    assert rec["should_rotate"] is False
+    assert "campaigns_exhausted" not in rec["current_saturation"]["strong"]
+
+
+
 def test_rank_ind_beats_zeroyield():
     """IND（真实产出+库存）排在 GBR（0 产出）之前。"""
     ranked = rank_next_regions(_all_metrics(), exclude=("EUR",))

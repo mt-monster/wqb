@@ -163,11 +163,20 @@ def gather_region_metrics(conn: Any, region: str,
     m["wins"] = _q1(
         conn, "SELECT COUNT(*) FROM registry_empirical WHERE region=? AND layer='win'",
         (region,))
-    m["campaigns"] = _campaign_status(conn, region)
-    total_camp = sum(m["campaigns"].values())
-    m["campaigns_total"] = total_camp
-    m["exhausted_pct"] = (round(m["campaigns"]["exhausted"] / total_camp, 4)
-                          if total_camp else 0.0)
+    # ④ campaign 状态：查询失败（None）与「查到 0 条」必须可区分（fail-safe，
+    #    2026-10-03）。失败时 campaigns_available=False → 决策层禁用依赖它的信号。
+    camp = _campaign_status(conn, region)
+    m["campaigns_available"] = camp is not None
+    if camp is None:
+        m["campaigns"] = {"untried": 0, "in_progress": 0, "exhausted": 0}
+        m["campaigns_total"] = 0
+        m["exhausted_pct"] = None  # None = 未知（不是 0.0 = 确认未穷尽）
+    else:
+        m["campaigns"] = camp
+        total_camp = sum(camp.values())
+        m["campaigns_total"] = total_camp
+        m["exhausted_pct"] = (round(camp["exhausted"] / total_camp, 4)
+                              if total_camp else 0.0)
 
     # ④ waves：波次投入（深挖判据）
     m["waves"] = _q1(
@@ -236,7 +245,12 @@ def detect_saturation(metrics: Dict[str, Any],
     reasons: List[str] = []
 
     verdict_profile = str(m.get("entry_verdict") or "unknown").lower()
-    exhausted_pct = float(m.get("exhausted_pct") or 0.0)
+    # campaign 状态是否可采信（DB 查询失败 → False）。None/缺失视为"旧调用方未提供"，
+    # 按可采信处理以保持向后兼容（只有显式 False 才抑制）。
+    campaigns_available = m.get("campaigns_available", True) is not False
+    exhausted_raw = m.get("exhausted_pct")
+    # None = 未知（campaign 状态采集失败）→ 证据不足，不参与判定
+    exhausted_pct = float(exhausted_raw) if exhausted_raw is not None else 0.0
     campaigns_total = int(m.get("campaigns_total") or sum((m.get("campaigns") or {}).values()))
     waves = int(m.get("waves") or 0)
     dead_ends = int(m.get("dead_ends") or 0)
@@ -251,16 +265,20 @@ def detect_saturation(metrics: Dict[str, Any],
         strong.append("frozen_profile")
         reasons.append("区域 profile entry_verdict=frozen（平台/季度限制，不可挖）")
 
-    # 战役穷尽（不依赖 prod 测量）
-    if exhausted_pct >= t["exhausted_pct_min"] and campaigns_total >= t["min_campaigns"]:
-        strong.append("campaigns_exhausted")
-        reasons.append(f"战役穷尽 {exhausted_pct:.0%}（{campaigns_total} 个战役，"
-                       f"{(m.get('campaigns') or {}).get('exhausted', '?')} exhausted）")
+    # 战役穷尽（不依赖 prod 测量）：campaign 状态不可采信时**禁用**，避免
+    # 「DB 读不到战役状态」被当成「没穷尽」而误判可挖（fail-safe，2026-10-03）。
+    if not campaigns_available:
+        reasons.append("campaign 状态不可采信（DB 查询失败），已禁用战役穷尽/深挖判据")
+    else:
+        if exhausted_pct >= t["exhausted_pct_min"] and campaigns_total >= t["min_campaigns"]:
+            strong.append("campaigns_exhausted")
+            reasons.append(f"战役穷尽 {exhausted_pct:.0%}（{campaigns_total} 个战役，"
+                           f"{(m.get('campaigns') or {}).get('exhausted', '?')} exhausted）")
 
-    # 深挖 + 穷尽（波次投入巨大且战役已穷尽）
-    if waves >= t["mined_waves_min"] and exhausted_pct >= t["exhausted_pct_min"]:
-        strong.append("mined_out")
-        reasons.append(f"已深挖 {waves} 波且战役穷尽 {exhausted_pct:.0%}（开采充分）")
+        # 深挖 + 穷尽（波次投入巨大且战役已穷尽）
+        if waves >= t["mined_waves_min"] and exhausted_pct >= t["exhausted_pct_min"]:
+            strong.append("mined_out")
+            reasons.append(f"已深挖 {waves} 波且战役穷尽 {exhausted_pct:.0%}（开采充分）")
 
     # 判死清单厚度（不依赖 prod 测量）
     if dead_ends >= t["dead_ends_strong"]:
@@ -278,11 +296,17 @@ def detect_saturation(metrics: Dict[str, Any],
                        f"<{t['yield_floor']:.0%}）")
 
     # prod 墙 / 无可行存量：仅在 measured 充足时触发（否则证据不足）
-    data_caveat: Optional[str] = None
+    data_caveats: List[str] = []
+    if not campaigns_available:
+        data_caveats.append(
+            "campaign 状态不可采信（DB 查询失败）：战役穷尽/深挖判据已禁用，"
+            "饱和判定仅依据其余信号——请核查 DB 后重跑，不要据此断言该区未饱和")
     if prod_measured < t["min_measured"]:
-        data_caveat = (f"prod 仅 {prod_measured} 条有效测量（<{t['min_measured']:.0f}），"
-                       f"prod 墙/可行集证据不足；NULL prod ≠ 可行，需 live 重测方能定论")
-    else:
+        data_caveats.append(
+            f"prod 仅 {prod_measured} 条有效测量（<{t['min_measured']:.0f}），"
+            f"prod 墙/可行集证据不足；NULL prod ≠ 可行，需 live 重测方能定论")
+    data_caveat = "；".join(data_caveats) if data_caveats else None
+    if prod_measured >= t["min_measured"]:
         if prod_wall_ratio is not None and prod_wall_ratio >= t["prod_wall_ratio_max"]:
             strong.append("prod_wall")
             reasons.append(f"生产池同质：measured 中 {prod_wall_ratio:.0%} 撞 prod 墙"
@@ -351,14 +375,23 @@ def rotation_score(metrics: Dict[str, Any],
     m = metrics or {}
 
     f_yield = _clamp01(m.get("yield_rate") or 0.0) / 0.40  # 40% 产出率封顶为满分
-    f_headroom = 1.0 - _clamp01(m.get("exhausted_pct") or 0.0)
+    # exhausted_pct=None = 未知（campaign 状态采集失败，fail-safe 2026-10-03）。
+    # 旧写法 `or 0.0` 会把 None 变成 0.0 → f_headroom=1.0 **满分**，即"DB 读不到
+    # 战役状态"被当成"该区空间最大"，给出方向相反的转区建议。未知 → 中性 0.5，
+    # 与 f_prod / f_untried 的"薄样本取中性"纪律一致。
+    _exh = m.get("exhausted_pct")
+    _exh_known = _exh is not None
+    f_headroom = (1.0 - _clamp01(_exh)) if _exh_known else 0.5
     prod_measured = int(m.get("prod_measured") or 0)
     pwr = m.get("prod_wall_ratio")
     # prod_ok 仅在 measured 充足时可信；样本不足→中性 0.5（薄样本 ≠ 低 prod 风险）
     f_prod = ((1.0 - _clamp01(pwr))
               if (pwr is not None and prod_measured >= t["min_measured"]) else 0.5)
     f_feasible = _feat_log(m.get("feasible_unsubmitted") or 0, cap=20)
-    f_untried = _feat_log((m.get("campaigns") or {}).get("untried", 0) or 0, cap=10)
+    # untried 同样依赖 campaign 状态：不可采信时中性 0.5（既不当 0 也不当满分）
+    _untried_known = m.get("campaigns_available", True) is not False
+    f_untried = (_feat_log((m.get("campaigns") or {}).get("untried", 0) or 0, cap=10)
+                 if _untried_known else 0.5)
     f_priority = _clamp01((REGION_PRIORITY.get(str(m.get("region")), 1) - 1) / 2.0)
 
     raw = (w["yield"] * _clamp01(f_yield) + w["headroom"] * f_headroom
@@ -554,19 +587,35 @@ def _row(conn: Any, sql: str, params: Sequence = ()) -> Dict[str, int]:
 
 
 def _campaign_status(conn: Any, region: str) -> Dict[str, int]:
-    """从 registry_empirical layer=campaign 统计 untried/in_progress/exhausted。"""
-    camp = {"untried": 0, "in_progress": 0, "exhausted": 0}
+    """从 registry_empirical layer=campaign 统计 untried/in_progress/exhausted。
+
+    ⚠ **fail-safe 纪律（2026-10-03 修）**：本函数的返回值直接进 ``detect_saturation``
+    的 ``exhausted_pct`` 与 ``rotation_score`` 的 ``f_headroom`` /
+    ``rotation_score`` 的 ``f_untried``。查询失败若静默返回全零，会让
+    ``exhausted_pct=0`` → ``f_headroom=1.0``（**满分**）、``f_untried=_feat_log(0)=0``，
+    即"DB 读不到战役状态"被当成"该区战役很少、空间最大"，给出**方向相反**的转区建议
+    ——而本模块的卖点正是"零平台请求、零配额"，最该确定的地方反而最不可靠。
+    历史前科：``.workbuddy/memory/2026-10-01.md`` 记载 310 行无 ``status`` 的脏
+    campaign 记录被长期静默忽略，无任何告警。
+
+    故：查询失败 → 返回 ``None``（区别于"查到 0 条"），由调用方
+    ``gather_region_metrics`` 置 ``campaigns_available=False``，决策层据此
+    **禁用依赖 campaign 状态的饱和信号**并回 ``data_caveat``，绝不用假数据冒充。
+    """
+    camp: Dict[str, int] = {"untried": 0, "in_progress": 0, "exhausted": 0}
     try:
         import json as _json
-        for (payload,) in conn.execute(
-                "SELECT payload FROM registry_empirical WHERE region=? AND layer='campaign'",
-                (region,)):
-            try:
-                st = (_json.loads(payload) or {}).get("status") if payload else None
-            except Exception:
-                continue
-            if st in camp:
-                camp[st] += 1
+        rows = conn.execute(
+            "SELECT payload FROM registry_empirical WHERE region=? AND layer='campaign'",
+            (region,)).fetchall()
     except Exception:
-        pass
+        return None  # 采集失败（缺表/DB 锁/损坏）——不可与"0 个战役"混淆
+    for (payload,) in rows:
+        try:
+            st = (_json.loads(payload) or {}).get("status") if payload else None
+        except Exception:
+            # 单条 payload 解析失败只跳过该条，不影响整体（与采集失败区别对待）
+            continue
+        if st in camp:
+            camp[st] += 1
     return camp
