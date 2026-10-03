@@ -36,7 +36,7 @@ allowed-tools:
 | `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | 近两年 Sharpe（同一事实的两个读数位，`RA_2Y_NAMES`） | `PLATFORM_CHECK_LINES['low_2y_sharpe_min']` | 同左（`submit_queue.LIM['two_year']`） | [playbook](references/two-year-sharpe-playbook.md) |
 | `LOW_RETURNS` | Returns 不够 | 平台线（读响应里的 value / limit） | `GATES_INTERNAL['returns_min']` | 暂无专项经验：先看 §1（Returns 是 Fitness 的分子） |
 | `LOW_ROBUST_UNIVERSE_SHARPE` / `LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO` / `LOW_ROBUST_UNIVERSE_RETURNS` | 稳健宇宙下 Sharpe / Returns 相对不足 | 平台相对线（读响应） | — | 暂无专项经验：见 `brain-alpha-robustness`（子宇宙 / 稳健性）与 §5 的思路 |
-| `LOW_INVESTABILITY_CONSTRAINED_SHARPE` | 可投资性约束下的 Sharpe 不足 | 平台线（读响应） | — | 暂无专项经验：先抬整体 Sharpe，降低对非流动股的依赖（§5） |
+| `LOW_INVESTABILITY_CONSTRAINED_SHARPE` | 可投资性约束下的 Sharpe 不足 | 平台线（读响应） | — | **压尾前查持仓对称性**（LC/SC）：`signed_power` 压尾会造成多空不对称而触发本墙；实测 `quantile` 替 `signed_power` 后多空持仓完全对称（LC319/SC319）⇒ **优先换等价的非压尾包装算子**（见 §5b），不是抬 Sharpe |
 | `LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE` | 计入成本后非流动宇宙的 Sharpe 不足 | 平台线（读响应） | — | 暂无专项经验：成本敏感 → 先降换手（§3） |
 | `LOW_GLB_EMEA_SHARPE` / `LOW_GLB_AMER_SHARPE` / `LOW_GLB_APAC_SHARPE` | GLB 各大区分区 Sharpe（仅 GLB） | 平台线（读响应） | — | 暂无专项经验（GLB 区域 profile 见 RA `regions/GLB.md`） |
 | `LOW_ASI_JPN_SHARPE` | ASI 内日本子集 Sharpe（仅 ASI） | 平台线（读响应） | — | 暂无专项经验 |
@@ -55,7 +55,7 @@ allowed-tools:
 | `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | 先看逐年形态，再按 设置轴 → 表达式轴 → 机制轴 | playbook |
 | `LOW_TURNOVER` / `HIGH_TURNOVER` | 平滑与窗口（`ts_decay_linear` / `ts_mean` / `decay`） | §3 |
 | `CONCENTRATED_WEIGHT` | 时间平滑；低频字段先 `ts_backfill`；**中性化与参数层无效** | §4 |
-| `LOW_SUB_UNIVERSE_SHARPE` | 先抬整体 Sharpe；再去掉与市值相关的乘数、分档 decay | §5 |
+| `LOW_SUB_UNIVERSE_SHARPE` | **比值闸，抬 S 无效**（门槛随 S 同比例抬高）→ 动结构：去市值乘数 / 分档 decay / 换分组轴（逐区实测）/ 长窗 | §5 |
 | `SELF_CORRELATION` | 换概念 / 换数据源，不是换窗口 | §6a |
 | `PROD_CORRELATION` | 只按 RA 决策表 **D0-P** 一张表处置，**不磨参数** | §6b |
 
@@ -104,11 +104,50 @@ allowed-tools:
 
 **要求**：`Sub-universe Sharpe ≥ 0.75 × sqrt(subuniverse_size / alpha_universe_size) × alpha_sharpe`。
 
-**数值例**：TOP3000 → 子集 TOP1000：门槛 = `0.75 × sqrt(1000 / 3000)` = 0.433 倍 alpha Sharpe；alpha Sharpe = 1.6 时子集 Sharpe 需 ≥ **0.69**。
+**数值例**：TOP3000 → 子集 TOP1000：门槛 = `0.75 × sqrt(1000 / 3000)` = 0.433 倍 alpha Sharpe；alpha Sharpe = 1.6 时子集 Sharpe 需 ≥ **0.69**。按同式，TOP500/TOP3000 类档位系数约 **0.571**；**系数随 universe 档位变，务必按本区实算，别套用别区数值**（SA 的系数另见 `wq-brain-superalpha`，与 REGULAR 不同）。
 
-**改进**：先抬整体 Sharpe（子集门槛按整体的比例走）；避免与市值相关的乘数；再考虑对流动性 / 非流动性部分分档 decay——分档用 `bucket` / `group_*` 表达（optimization-v1 形态库 F4），**不要**把两份不同 decay 的信号按权重相加（闸 5 block）。
+**⚠ 这是比值闸，「抬整体 Sharpe」破不了（2026-10-03 实证更正）**：
+门槛 = `系数 × alpha_sharpe`，**alpha_sharpe 抬高的同时门槛按同比例抬高** ⇒
+原地跑步，净效果为零。实测 D0-P：抬 S 后 SUB 仍未过。
+所以**不要把"先抬 Sharpe"当修法**，那是本条曾经的方向性错误指引（已删）。
+
+**改进方向（动结构，不是抬 S）**：
+1. **去掉与市值相关的乘数**（市值/规模加权会把子集表现绑到大盘股）；
+2. 分档 decay：用 `bucket` / `group_*` 表达流动性分层（optimization-v1 形态库 F4），
+   **不要**把两份不同 decay 的信号按权重相加（闸 5 block）；
+3. 换分组轴（`market` / `exchange`）——但 ⚠ **轴不是通用旋钮**：EUR 有效、
+   KOR other466 六种轴向全灭 ⇒ **族相关，逐区实测**，别当万能钥匙；
+4. 长窗平滑（`ts_rank` / `ts_decay_linear`）——⚠ 低频季度财报**不该**套日频事件型平滑
+   （实测 S 1.80→1.37、F 1.38→0.93，方向为负）。
 
 **常见报错**：`Sub-universe Sharpe NaN is not above cutoff` = 子集覆盖不足（子集里字段大面积缺失）→ 对字段 `ts_backfill` 或 `pasteurize` 后重测。
+
+## 5b. 等价算子替换（判「无解/天花板」之前**必须**先扫）
+
+**为什么单列一节**：`LOW_SUB_UNIVERSE_SHARPE`（§5）与 `LOW_INVESTABILITY_CONSTRAINED_SHARPE`
+（§0 表）的常见"修法"都是**改结构**，而**改结构不等于换信号族**——有一类改法只换
+包装算子、信号骨架全冻结，却能同时改动多个闸门。跳过这一步会把**「实现路径的约束」
+误判成「结构性的约束」**，从而错杀可救的族。
+
+**规则（2026-10-03 补入本 skill）**：**在下结论说「不可能 / 天花板 / 已到顶 / 无解」之前，
+必须先扫一遍等价算子替换**。KOR 实证：判「不可能三角」后，仅把 `signed_power(x,0.5)`
+换成 `quantile(x)`（骨架其余全冻结）即 2Y 1.51→1.56、prod 0.6544→0.6397；再把外层轴
+sector→market ⇒ 2Y 1.62 全闸过。**那个"三角"是 `signed_power` 造成的假性约束。**
+
+**本库最常用的两条**（完整 7 条替换表与三条纪律见
+[`02_signal_patterns.md` §12](docs/experience/02_signal_patterns.md)）：
+
+| 替换 | 效果 | 判定 |
+|---|---|---|
+| `signed_power(x,0.5)` → **`quantile(x)`** | 2Y +0.05~0.11、prod −0.015、持仓变对称 | ★★ 最强破闸；**同时解 §5b 的 INVESTABILITY 墙** |
+| 外层轴 sector → **market**（quantile 包装下） | 2Y +0.06 | ★★ **依赖包装算子，不可外推** |
+
+**三条纪律**（照抄会出事）：
+1. 记忆里的语法级效应**必须本区实测不可外推**（`SCALE-NEG-RANK` IND 成立 / KOR 反向）；
+2. 外层分组轴最优值**依赖内层包装算子**，不能把轴的选择单独外推；
+3. **`quantile` 只接受 1 参**（`ts_quantile` 才两参）。
+
+⚠ 本节只给方向，**不生成表达式**；动手改走 `wq-brain-alpha-optimization-v1`。
 
 ## 6a. Self-Correlation（`SELF_CORRELATION`）
 
