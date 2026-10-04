@@ -20,7 +20,7 @@ allowed-tools:
 - **上游 / 下游**：上游 = 本地 WebData 快照（`research-data/WebData_20260219_V0.10.9.zip` 与 `tools/gen_field_inspect_packs.py` 产出的体检包）；下游 = S0 选集参考、RA 步 5 的体检硬门。
 
 
-<!-- 2026-10-05 核实范围：仅核实 references/webdatascope-data-quality.md 的 **工具调用链路**（webdata_quality.py 已重构，替代见该档文首对照表，本地 git 可查证）。 规则 1–8 的平台侧口径未重新对照平台，下次用到规则前需重新核对。 allowed-tools: - Read - Bash - mcp__wq-brain-http__* -->
+<!-- last_verified 核实范围（2026-10-05）：核实 references/webdatascope-data-quality.md 的**工具调用链路**——tools/webdata_quality.py 存在且 --help 实测通过，正文 14 处命令示例的 flag与其 argparse 定义逐条吻合，全部有效（读包底层走 tools/lib/pack_reader.py::open_pack，是调用关系而非替代关系）。规则 1–8 的平台侧口径未重新对照平台，下次用到规则前需重新核对。 -->
 ## 1. 字段质量先验：先验用于「选方向」，进入造批要服从 RA 步 3
 
 > **受 ra-pipeline 步 3（§3.3 字段分级风险筛查）约束。** 2026-06-19 的用户指令「按 alphaCount 降序、从分布头部播种」是当时的口径，之后被 2026-08 的 GLB 实验实测限定：高使用量字段 prod_corr 必超。两段话不矛盾的读法是**分阶段**：

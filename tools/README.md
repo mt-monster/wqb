@@ -5,11 +5,52 @@
 - **网络工具运行环境**：MCP venv（`$WQ_PY` 或 `world-quant-brain-mcp/.venv`），自动 `os.execv` 重启，勿用系统 python
 - **skill 依赖路径**：自动解析 `WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR` → `~/.qoder-cn/skills` → `~/.workbuddy/skills`，**禁止硬编码**
 
+## 目录结构与迁移状态（P2-1，2026-10-04）
+
+顶层现在平铺 **171 个脚本**，主题分类已由本索引的 `## <主题>` 节定义但磁盘未落目录。
+目标结构与逐文件归属已固化到 **[`tools/THEMES.json`](THEMES.json)**（19 个主题目录，kebab-case，
+171/171 已归属，`status=frozen-pending`），另有 4 个区域专属脚本标记为应迁出 `tools/`
+（`relocate_out_of_tools` → `tracking/KOR/scripts/`）。
+
+**新脚本一律落主题子目录**，不得再往顶层堆 —— 由 `python tools/audit_structure.py --only s11`
+强制（顶层只减不增，新增即 FAIL 阻断提交）。
+
+### 为什么不当场把 171 个全下沉（实测数据）
+
+下沉一层会**同时**改变两件事，且两者都是运行期才爆：
+
+| 耦合点 | 实测数量 | 后果 |
+|---|---|---|
+| 全仓 `sys.path.insert(... 'tools')` | **80 处** | 目标模块不在该目录 → ImportError |
+| tools 脚本被当**模块 import** | `index_tables`、`migrate_wave_verdict_enum`（含 `run_realenv.py`、3 个测试文件） | 测试与被调脚本同时断 |
+| 仓库根推导写法 | 同一主题内 **5 种**：`dirname(dirname(abspath))` / `parents[1]` / `parent.parent` / `os.path.join(f,'..','src')` / `parents[2]` | 层数硬编码 → 根指错，DB/报告/归档全错 |
+| CLI 字符串引用 | `tools/<x>.py` 散在 AGENTS.md、docs、`Claude/skills/**`、tests、workflow registry 节点 | 技能运行期找不到脚本 |
+
+一次性批量改在这三条上都无安全网，所以采取：**止血（S11）+ 计划表（THEMES.json）+ 逐主题迁移**。
+
+### 单文件迁移配方（每个主题一批，做完就跑验证）
+
+1. `python tools/refs_scan.py --names <stem> --show-hits` → 人工判别命中形态（import / CLI 串 / ledger key）。
+2. 先把该文件的仓库根推导改成**层数无关**写法（新代码直接用 `from wqb.paths import repo_root`；
+   不愿依赖安装的脚本写向上探测：逐个 `parent` 找 `pyproject.toml` + `src/wqb`）。
+3. `git mv tools/<x>.py tools/<theme>/<x>.py`（保历史，归档而非删除）。
+4. 全仓改写字符串引用：`tools/<x>.py` → `tools/<theme>/<x>.py`（AGENTS.md、docs、reports、
+   `Claude/skills/**`、`src/wqb/workflow/registry.py` 与节点体里的子进程命令）。
+5. 若有 `sys.path.insert(... 'tools')` 的导入方：改成指向新目录，或改走 `wqb` 包导入。
+6. `python tools/sync_skills.py`（把 skills 内的路径改动推到 6 个安装位）+ 更新本索引行与
+   `THEMES.json` 的 `status`，并把该文件从 `audit_structure_baseline.json` 的
+   `s11_tools_top_level` 移出（S11 会点名提醒）。
+7. 验证：`python tools/audit_node_registration.py`（若涉节点 argv）→ `python -m pytest tests/ -x`
+   → `python tools/audit_structure.py` → 对被移脚本跑一次 `--help`（证 import 与路径自举没断）。
+
+> 参照先例：`tools/wave_gate.py` + `tools/wave_gate_pkg/`（§8.12）是「入口 shim 留原位、
+> 实现进包」的已完成样本；改 argparse 时仍须动 shim，`validate_argv` 才解析得到。
+
 ## 提交前闸门（构建候选池后、回测前）
 
 | 工具 | 用途 | 取代 |
 |---|---|---|
-| `wave_gate.py` | 每波门禁编排：语法校验 + 5 闸 + 六维多样性 + 质量预估（EXPECTED_BLOCK 默认标注，`--quality-block` 硬拦截），一键落盘 `cache/gate_wave<N>_<ds>.{json,txt}` | `tracking/<R>/scripts/_gate_waveNN.py` 族 |
+| `wave_gate.py` | 每波门禁编排：语法校验 + 5 闸 + 六维多样性 + 质量预估（EXPECTED_BLOCK 默认标注，`--quality-block` 硬拦截），一键落盘 `cache/gate_wave<N>_<ds>.{json,txt}`。**2026-09-30 包化**：入口为 shim（argparse 契约字面保留，供 `validate_argv` 静态解析），实现 12 个模块在 `tools/wave_gate_pkg/` | `tracking/<R>/scripts/_gate_waveNN.py` 族 |
 | `pool_diversity.py` | 候选池表达式结构多样性评估（算子熵/骨架配额/字段集中度/预处理/成对相似度/主导族风险，六维），`--file/--exprs/DB`，`--json` 落盘；已被 `wave_gate.py` 集成调用 | 手写多样性统计脚本 |
 | `quality_predict.py` | 候选池质量预估（回测前）：三层先验预估 Sharpe/Fitness + 本地结构代理预估 SELF_CORR 风险，输出 EXPECTED_PASS/REVIEW/EXPECTED_BLOCK；`--status UNSUBMITTED` 直筛存量池，已被 `wave_gate.py` 集成调用 | 手写相关性/质量预判脚本 |
 | `legacy/gate.py` | **遗留归档**：通用提交前闸门（5 闸 + 批级多样性）。**权威实现是 skill toolkit 的 `gate.py`**；本文件代码零引用（`wave_gate.py` 走 `_TOOLKIT_CANDIDATES` 加载 toolkit 版），2026-09-20 归档至 `tools/legacy/` | — |
@@ -67,6 +108,8 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `persist_prod_corr.py` | 把上面的 checkpoint 回填 `alphas` 的 prod/self 相关性（只填 NULL、幂等、默认 dry-run 加 `--apply`；支持 `--source` 溯源与 `--overwrite`）。**运行手册：每轮 S3 批次后跑 triage → 再跑本工具落库**，0.6 预警线才有过程数据 | 手工 UPDATE |
 | `query_alpha_metrics.py` | 本地库直查 alpha 全指标（`--coverage` 看填充率；`--region/--max-prod/--max-self/--min-sharpe/--source` 筛候选；`--csv` 导出）。**候选筛选零配额，免打平台 `check_correlation`** | 逐条打平台 correlations API |
 | `submit_queue.py` | **待提交候选队列**：把回测过闸的 alpha 持久化到独立表 `submit_ready`，解决"找到可提交项但不当天提交就遗忘"。子命令 `init` / `add`（平台拉指标+相关性）/ `add-many`（离线从 `alphas` 批量导入）/ **`dedup`**（按骨架去重，同区域同骨架只留最优 N 条，其余标 `SUPERSEDED`）/ **`retag`**（按当前规范**重算全队列** `suggested_tags`，规范/解析器升级后回填；`--dry-run`）/ `verify`（相关性时效复检 + **RA 硬闸 + add 混腿**，过期变坏标 EXPIRED/DEAD，开跑前自动退役已 ACTIVE）/ **`sync`**（退役平台已 ACTIVE/已提交的 READY 行，`--offline` 零配额）/ **`regrade`**（离线复判 READY 行：RA 硬闸 / 加权混腿 / prod 兄弟）/ `list`（按优先级排）/ `pick`（取最优先 1 条）/ `retire`（退役）。★ 未过硬闸者自动标 `DEAD` 并从默认视图剔除；★ 2026-09-20 补三坑：RA FAIL（robust/sub-universe/CW/ladder…）不进 READY；加权混腿口径 = gate.py 闸5；同骨架兄弟 prod≥0.7 且本条未测 → `PROD_SIBLING` 判死；SUBMITTED/DEAD 终态粘性（harvest 再入队不复活）+ 排除平台 ACTIVE；`IS_ONLY` 表示 IS 达标但相关性待测，提交前必跑 `verify`。★ 骨架去重复用权威实现 `wqb.expression.skeleton::structural_signature`，`add-many` 默认开启（`--no-dedup` 关，`--max-per-skeleton N` 调） | 手写备忘 / `ledger_kv('submit_ready')` 旧临时队列（**2026-09-20 已归档并删除**，见 `logs/archive_ledger_submit_ready_*.json`） |
+| `prod_blocked_recheck.py` | **PROD_BLOCKED 候选的**平台实时**复核器**（`submit_ready` 队列专用）：差分两路径——**A 自家撞墙**（重测自己 prod，跌破 0.7 即复活 READY）与 **B 兄弟带累**（`FAIL:PROD_SIBLING(<id>=<v>)`，本条 prod 从未测过；查**兄弟的实时 prod**，松动才解锁）。★ 动机：`store._prod_wall_sibling` 判定兄弟时读的是**库内存量 prod**，而项目铁律是「库内 prod 会过期→提交前必实测」，故本工具在它之上补实时口径。**同兄弟进程内缓存**（实测 `9qjPxmre` 被 3 行点名，不缓存等于同笔相关性连测三遍，PC 还占平台单并发队列）。`--dry-run` / `--region` / `--limit` / `--fresh`（忽略断点）/ `--sleep`；断点 `results/prod_blocked_recheck_ckpt.json`，**dry-run 不写断点**（否则正式跑会跳过未落库的行）。**需 MCP venv 的 Python 跑** | 手工逐条打平台 correlations 再人工判恢复 |
+| `archive_submit_ready.py` | **`submit_ready` 终态残留归档**（移动非删除、可回滚）：把 DEAD/EXPIRED/SUPERSEDED/SUBMITTED 行移入 `submit_ready_archive`（含 `orig_id`/`batch`/`archive_reason`），主表只留活水。三重安全：同一事务 INSERT→DELETE、导出 JSON 快照到 `output_report/archive_submit_ready_<batch>.json`、`--restore <batch>` 完整迁回。**拒不带 `--region` 的整表操作**（须显式 `--all-regions`）。默认 dry-run 友好 | 手写 DELETE / 让终态行无限堆积成坟场 |
 | `alpha_properties.py` | **Alpha 属性（name/color/tags）审计与规范化**。规范单一事实源 = `src/wqb/alpha_properties.py`（含平台**实测**的 color 硬枚举 5 值 `GREEN/BLUE/RED/YELLOW/PURPLE`，其余 400），文档 `docs/alpha_properties_spec.md`，审计证据 `reports/alpha_properties_audit_20260920.md`。子命令 `audit`（只读：name 形态/color 分布/tag 合规统计 + 告警清单）· `normalize`（**默认 dry-run**，`--apply` 才写：按 type/`PowerPoolSelected` 判定 `CH_*`、按表达式字段反查补 `SRC_<dataset>`、`--fix-color` 空色→`BLUE`；**不改 name**、**无条件保留 `RETIRE_*` 等已有标签**）。★ 全部 10 区域 ACTIVE(115) 已 `--apply` 规范化 | 手工逐颗改属性 |
 | `restore_alpha_props.py` | **事故恢复**：1966 `set_alpha_properties` 全量覆盖曾清空 name / 覆写 description。从 `logs/_os_alphas_raw.json`（事故前转储，221 条）复原 name+regular/selection/combo description。**最小字段 PATCH**（只发要恢复的键，不碰 tags/color）。默认 dry-run，`--apply` 写 | 手工重写描述 |
 | `name_missing.py` | 给仍缺 name 的 ACTIVE 补**唯一规范名**（`{REGION}_{R\|S}_{family}_{id尾6位}`；family 由表达式字段反查 SRC 推断）。**必须用 id 短码做后缀**（同族同源会撞名）。默认 dry-run，`--apply` 写 | 手工命名 |
@@ -117,7 +160,12 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 
 | 工具 | 用途 | 取代 |
 |---|---|---|
+| `scan_test_groups.py` | 测试用例扫描与分组：AST 静态分析 + `pytest --collect-only` 取真实 nodeid，按 `tests/unit/NN_xxx` 十个编号域 + `tests` 根级 + MCP 包共 12 组，产物 `cache/test_groups.json`（供 `run_grouped_tests.py` 消费）；`--refresh` 强制重扫 | 仓库根 `wq_test_scan.py`（工作台 UI 已下架） |
+| `run_grouped_tests.py` | **全量测试并行跑批器**：按上表 12 组各跑各的 nodeid（`ThreadPoolExecutor`，默认 `--workers 4`），解析 passed/failed/skipped/errors/duration 与失败清单，出 markdown 报告到 `output_report/fulltest_report_<YYYYMMDD_HHMM>.md`。参数与 `pytest tests/ -x` 同口径（`-q --no-header -p no:cacheprovider -ra`）；全量并发跑受 `logs/_slots`/`_dblock` 共享态影响（P8），先看单组绿再信全量 | 仓库根 `wq_fulltest_run.py` |
 | `scan_deadcode.py` | 死代码只读扫描：未用 import + 死定义（排除注册式装饰器 @mcp.tool()/@fixture 等反射调用）；支持 `--path` 单文件/子目录、`--out` JSON 报告 | `tracking/_scratch/_scan_deadcode*.py` |
+| `code-audit/db_mcp_split.py` | **根入口 `wqb_db_mcp.py` 的拆分生成器**（一次性工具，非通用）：分组表 + 顶层常量按使用点自动归位 + 函数体逐字节搬运（只把 `str(DB_PATH)` 等价换成 `get_db_path()`）+ **写盘前组间 DAG 环硬门**（实测 `mutations ↔ harvest`、`rotation ↔ mutations` 互引成环，拆开就是包内循环 import → 服务启动即挂）。`--plan` 只出报告 / `--apply` 写盘。执行顺位与 26 条待改断言见 `reports/db_mcp_split_20261004.md` | 下次拆分时重新发明分组表与环检测 |
+| `code-audit/mcp_surface_diff.py` | **MCP 工具面快照与比对**（拆分/重构的回归凭据）：比对 tool 名集合 / docstring / inputSchema 三项全等，“逐字节搬运不改行为”只能这样机器证明；`--tag before` 建基线 → 改动 → `--tag after` 自动比对（快照落 `cache/mcp_surface_<tag>.json`）；退出码 0=一致 / 1=有回归 / **2=工具故障（与回归区分，导入失败不算回归）** | 靠人眼看 diff 相信“重构没改行为” |
+| `refs_scan.py` | **文件级引用核验**（归档前必跑，只读）：token 级匹配且额外按 `.`/`/`/反斜杠切分索引（防 dotted import 漏判），默认排除全仓路径快照件（`py_complexity_scan.json`/`MANIFEST.json` 等，否则任何文件都「被引用」），并标 `__main__` 区分库模块与未登记 CLI；`--dir <目录>` / `--names a,b` / `--show-hits` / `--only-zero` / `--out`。**refs=0 只是必要条件**，仍需人工看命中形态（AGENTS.md §8.5） | 每次归档前重写的 `_tmp_ref_check*.py` 一次性脚本 |
 | `fix_bom.py` | BOM(U+FEFF) 剥离修复：默认 `--dry-run` 列出含 BOM 的 .py；`--apply` 才修（备份 + CJK 数量校验 + ast.parse 校验） | `tracking/_scratch/_fix_bom.py` |
 | `clean_unused_imports.py` | 清理未用 import：默认 `--dry-run` 列出；`--apply` 才删（**跨文件 re-export 校验**防 SHAPE_CLASSES 误删 + `.bak_imp` 备份 + ast.parse 校验）；可 `--report` 接 scan_deadcode 的 JSON | `tracking/_scratch/_clean_unused_imports.py` |
 | `audit_node_registration.py` | **新增/修改 workflow 节点必跑**：审计「四处同步」——① registry.py 注册与 NodeMeta 签名 ② `test_registry_lists_all_core_nodes` 期望集合 ③ `_DRY_RUN_CASES` 用例表 ④ INDEX.md 节点计数。`--node X` 单节点自检；退出码 1 = 有漂移并列出全部缺口 | 改一处跑一次测试的往返 |
@@ -155,3 +203,76 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 
 - 战例权威实现：`~/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts/`（`WQ_TOOLKIT_DIR`）
 - 平台 API 封装：`world-quant-brain-mcp/brain_api.py`（`BrainApiClient`，自带 429 退避/Redis 缓存）
+
+## 全量 CLI 索引（机器生成，2026-10-05）
+
+本节由 `tools/` 顶层**有 `__main__`（真命令行入口）但正文各节未提及**的脚本汇总而成，
+按「谁在用它」标注首个引用点。生成口径与工具链治理见 `tools/THEMES.json`。
+
+| 工具 | 一句话用途 | 首个引用点 |
+|---|---|---|
+| `_pyenv.py` | tools/_pyenv.py — 工具脚本共用的解释器 / MCP 目录解析（跨平台）。 | `Claude/skills/CHANGELOG.md` |
+| `ab_test_framework.py` | ab_test_framework.py — 多维骨架标签对比实验框架 | `docs/reference/multidim_ab_test_report_template.md` |
+| `authority_claims.py` | authority_claims.py — SKILL.md / INDEX.md 里「唯一权威 / 唯一事实源 / 唯一入口…」宣称的计数（棘轮基线维护） | `Claude/skills/CONTRACT.md` |
+| `backfill_longcount.py` | backfill_longcount.py — 从平台补回 is 段持仓广度指标（longCount/shortCount/pnl/bookSize）。 | `docs/env_and_switches.md` |
+| `backfill_prod_corr.py` | backfill_prod_corr.py — 补测 pc_null alpha 的平台 prod_correlation（2026-09-02）。 | `docs/env_and_switches.md` |
+| `batch_submit_verdict.py` | batch_submit_verdict.py - 对 submit_ready 表中 IS_ONLY 的候选批量跑提交层相关性校验。 | `docs/plans/2026-09-23-dryrun-audit-optimization-plan.md` |
+| `build_field_index.py` | build_field_index.py — 构建/补齐「平台级字段→数据集索引」（降低 atom 判定的 unknown）。 | `tests/unit/01_store_db/test_build_field_index.py` |
+| `build_gate_prior_from_inventory.py` | build_gate_prior_from_inventory.py — 用账户历史 alpha 库存反哺 GEM 先验。 | `Claude/skills/CHANGELOG.md` |
+| `category_field_triage.py` | category_field_triage.py — 一个 region×category 下所有数据集的「字段分诊」总表。 | `Claude/skills/wq-brain-campaign-toolkit/scripts/scan_fields.py` |
+| `cleanup_async_tasks.py` | logs/_async_tasks TTL 归档清理工具（2026-09-25 结构优化目标 D）。 | `src/wqb/workflow/_common.py` |
+| `closure_ledger.py` | closure_ledger.py — skills 审查（reports/skills_review_20260929.md）条目的「处置登记」（评审 → | `docs/skills_review_closure.json` |
+| `concept_overlap.py` | concept_overlap.py — 概念重叠检查（skills 审查 EX-01 / EX-10）。 | `Claude/skills/CHANGELOG.md` |
+| `db_lock_audit.py` | db_lock_audit.py - wqb.db 写锁探针（2026-09-20 L2）。 | `tests/unit/01_store_db/test_db_write_guards.py` |
+| `diag_forum_read.py` | forum_recon 读帖链路最小诊断（只读、零回测配额）。 | `Claude/skills/brain-alpha-research/SKILL.md` |
+| `discover_datasets.py` | discover_datasets.py - 数据集发现（灌 datasets 表）。 | `Claude/skills/INDEX.md` |
+| `dryrun_multidim.py` | dryrun_multidim.py — 多维骨架标签 dry-run 验证脚本 | `docs/reference/multidim_production_deployment.md` |
+| `dynamic_recipe_weighter.py` | dynamic_recipe_weighter.py - 成功配方动态权重. | `docs/design/skills_review_decisions.md` |
+| `economic_mechanism_kb.py` | economic_mechanism_kb.py - 经济机制知识库. | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py` |
+| `economic_mechanism_templates.py` | economic_mechanism_templates.py - 经济学机制模板库. | `Claude/skills/brain-forum-browse/SKILL.md` |
+| `export_wave_ledger_md.py` | export_wave_ledger_md.py - 从数据库生成 WAVE_LEDGER.md 快照（单轨 DB 模式）。 | `Claude/skills/wq-brain-campaign-toolkit/SKILL.md` |
+| `fetch_dataset_assets.py` | fetch_dataset_assets.py - 全 Region 数据集资产拉取（**直连入库**，不落 JSON）。 | `Claude/skills/INDEX.md` |
+| `field_catalog_cache_manager.py` | field_catalog_cache_manager.py - S1 字段扫描缓存管理工具。 | `docs/S1_FIELD_CATALOG_CACHE_GUIDE.md` |
+| `field_inspect_gate.py` | 体检→表达式硬门（S2→S3 第二道硬门）的可执行接线。 | `Claude/skills/INDEX.md` |
+| `field_pool_ab.py` | field_pool_ab.py — 字段分类→GEM 机制 A/B 评估器（2026-09-26 落地）。 | `docs/ledger_keys.json` |
+| `field_profile_backfill.py` | field_profile_backfill.py - 从 WebDataScope zip 解析字段画像并回填 data/wqb.db。 | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` |
+| `field_profile_from_labs.py` | field_profile_from_labs.py - 把 BRAIN Labs 批量画像 JSON 入库 field_profile 表。 | `docs/ledger_keys.json` |
+| `field_quality_scorer.py` | field_quality_scorer.py - 字段质量预筛器. | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py` |
+| `field_semantic_classify.py` | field_semantic_classify.py — 数据集字段的经济含义归类（S1 补做环节）。 | `Claude/skills/CHANGELOG.md` |
+| `forum_cache_builder.py` | Forum post cache builder for brain-alpha-robustness Phase A. | `Claude/skills/CHANGELOG.md` |
+| `gen_field_inspect_packs.py` | 从 WebDataScope 数据包生成体检硬门用的按数据集分文件体检包。 | `Claude/skills/CHANGELOG.md` |
+| `gen_inspect_from_db.py` | 从 wqb.db fields 表生成降级版体检包（P1-4 HKG 解锁，2026-09-07）。 | `tests/unit/10_toolkit_scripts/test_inspect_degraded_pack_marking.py` |
+| `ind_sim_submit.py` | IND 战役专用：按精确 settings 直连 POST /simulations（multi-sim），绕开 CLI 固定档。 | `Claude/skills/CHANGELOG.md` |
+| `ingest_dataset_assets.py` | ingest_dataset_assets.py - 把 fetch_dataset_assets.py 拉取的 JSON 批量写入 wqb.db。 | `docs/skills_review_closure.json` |
+| `kb_templates.py` | KB 社区模板库读取/过滤/导出工具（P1-5：让 59KB 社区模板回流生成端）。 | `Claude/skills/brain-alpha-research/SKILL.md` |
+| `kor_opportunity_scan.py` | kor_opportunity_scan.py — KOR 机会空间穷举扫描（S-PRE 用，2026-09-28）。 | `docs/experience/03_region_dataset.md` |
+| `ledger_keys.py` | ledger_keys.py — 台账（ledger_kv）键目录：扫描器 + 目录读取 + 文档表生成（库 + CLI）。 | `Claude/skills/CHANGELOG.md` |
+| `market_regime_adapter.py` | market_regime_adapter.py - 市场状态适配器. | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py` |
+| `migrate_phase2.py` | migrate_phase2.py - Phase 2 迁移：registry 实证层 + wave 结果台账 + 跨区教训入 SQLite。 | `docs/skills_review_closure.json` |
+| `migrate_priors_cache_key.py` | migrate_priors_cache_key.py — 消除 priors 快照的大小写撞键（2026-09-17 P2-12）。 | `docs/ledger_keys.json` |
+| `migrate_profile_datasets.py` | 一次性迁移：14 个 region profile 的 datasets 块 → 精确化结构形态（2026-10-01）。 | `Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md` |
+| `mode_b_qualify.py` | mode_b_qualify.py — Mode B 资格判定的 CLI 入口（skills 审查 OP-18 / HP-15 / X-16）。 | `Claude/skills/CHANGELOG.md` |
+| `modeb_improvement_pipeline.py` | Mode B Idea Layer Improvement Pipeline - Integrated Workflow. | `docs/design/submit_queue_design.md` |
+| `neut_cache.py` | neut_cache.py - 中性化×数据集缓存表（P1-1，2026-08-31）。 | `Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py` |
+| `normalize_ledger_whitelist.py` | normalize_ledger_whitelist.py — 把 `s0_whitelist` 归一为统一契约（2026-09-17 P0-4）。 | `docs/experience/04_engineering.md` |
+| `normalize_wave_ids.py` | normalize_wave_ids.py — 回填裸时间戳波号（2026-09-17 P2-6）。 | `src/wqb/wave_id.py` |
+| `ppa_handoff.py` | ppa_handoff.py — PPA（Power Pool）人工提交通道的交接单与回写（skills 审查 SB-22）。 | `Claude/skills/worldquant-submit-alpha/SKILL.md` |
+| `preflight_wave.py` | preflight_wave.py - 波次前置条件预检与自动修复（区域无关，通用）。 | `Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md` |
+| `prescreen_gate.py` | 区域切换预筛门禁（P1-7：把 field-quality 的强制纪律机器化）。 | `Claude/skills/brain-alpha-research-field-quality/SKILL.md` |
+| `prod_saturation_gate.py` | PROD 饱和闸（S2 生成层前移，2026-09-07 P1-1）。 | `Claude/skills/wq-brain-campaign-toolkit/SKILL.md` |
+| `profile_drift_check.py` | 区域 profile 漂移体检（profile green/red 精确层 ↔ DB 实证）。 | `Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md` |
+| `quality_control_engine.py` | （无模块docstring） | `docs/reference/quality_control_landing_summary.md` |
+| `refresh_operator_catalog.py` | 把 ``get_operators`` 的实时输出刷进 docs/reference/operators_catalog.json。 | `docs/reference/operators_catalog.json` |
+| `retention.py` | retention.py — data/ cache/ logs/ 运行期保留策略（2026-10-03 立项） | `tests/unit/01_store_db/test_retention.py` |
+| `s2_field_validator.py` | s2_field_validator.py - S2 表达式字段强制校验器 | `Claude/skills/brain-data-feature-engineering/SKILL.md` |
+| `select_ra_basket.py` | select_ra_basket.py — 从过闸候选池选出 N 条互不相关、可提交的 RA 篮子。 | `Claude/skills/CHANGELOG.md` |
+| `skeleton_tags.py` | skeleton_tags.py — 多维骨架标签提取器（经济学构造链感知） | `docs/reference/multidim_ab_test_report_template.md` |
+| `skill_lint.py` | skill_lint.py — skill 文档「内容为真」的机械检查（库 + CLI）。 | `Claude/skills/CHANGELOG.md` |
+| `step9_audit.py` | step9_audit.py — 步 9（S6）完成定义只读校验器（2026-10-02 新增）。 | `Claude/skills/wq-brain-ra-pipeline/SKILL.md` |
+| `step_funnel.py` | step_funnel.py — 步级漏斗（S2→S6）只读推导，单一事实源（2026-09-17 新增）。 | `Claude/skills/CHANGELOG.md` |
+| `structural_reconstruct_cli.py` | structural_reconstruct_cli.py - 结构重构命令行工具. | `docs/design/structural_reconstruction.md` |
+| `test_field_catalog_cache.py` | test_field_catalog_cache.py - S1 字段扫描缓存功能**手动校验脚本**。 | `docs/S1_FIELD_CATALOG_CACHE_GUIDE.md` |
+| `update_operator_stats.py` | 工具：统计区域算子使用频率并写入 region_kb（供 assemble_priors 注入 GEM）。 | `docs/experience/field_operator_pattern.md` |
+| `waiver.py` | waiver.py — 闸「放行 / 豁免」台账协议的命令行（实现见 src/wqb/waiver.py）。 | `Claude/skills/GLOSSARY.md` |
+| `wave_results_writer.py` | wave_results_writer.py - wave 结果台账入库工具（单轨 DB 模式，DirectDBWriter 优化版）。 | `Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/wave_results.py` |
+| `webdata_quality.py` | WebDataScope 数据包 → 数据集/字段/中性化/预处理全景分析。 | `Claude/skills/alpha-template-labs-data-analysis/SKILL.md` |

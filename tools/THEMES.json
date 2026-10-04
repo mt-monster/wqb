@@ -254,7 +254,9 @@
         "field_quality_scorer_v2.py",
         "field_semantic_classify.py",
         "field_signal_mine.py",
+        "ingest_dataset_assets.py",
         "s2_field_validator.py",
+        "scan_fields.py",
         "validate_fields_batch.py"
       ],
       "status": "moved-partial"
@@ -319,7 +321,7 @@
     "data-repair": 20,
     "datasets": 5,
     "db": 3,
-    "fields": 15,
+    "fields": 16,
     "forum": 3,
     "gates": 15,
     "ledger": 6,

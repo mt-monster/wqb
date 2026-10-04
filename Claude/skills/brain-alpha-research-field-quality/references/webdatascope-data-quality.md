@@ -1,22 +1,19 @@
 # WebDataScope 数据包驱动的数据集/字段质量预筛与中性化选择
 
-> ## ⚠ 工具调用方式已于 2026-10-04 变更（读规则前先看这）
+> ## 工具现状（2026-10-05 核实）
 >
-> 本文**规则部分（规则 1–8、质量分档、覆盖矩阵）仍然有效**，但**文中 14 处
-> `tools/webdata_quality.py ...` 命令示例全部失效**——该脚本在 commit `00193bb`
-> 被重构掉，当前仓库**不存在** `tools/webdata_quality.py`（全盘与 git 全历史均查无此文件）。
+> **`tools/webdata_quality.py` 存在且可用**（`--help` 实测通过），本文 14 处命令示例
+> **全部有效**，正文 flag 用法与实际 argparse 定义逐条吻合：
+> `--zip / --region / --delay / --top / --fields / --json-out / --cross-region /
+> --recommend / --field-top / --export-expr / --neut`。
 >
-> **现行替代**：
-> | 旧命令（`webdata_quality.py`） | 现行工具 |
-> |---|---|
-> | `--zip <f>.zip` 读包 | `tools/lib/pack_reader.py::open_pack()`（目录→伪 ZipFile 工厂；仓库只有解压目录、无同名 zip） |
-> | 生成体检包 / 字段清单 | `tools/gen_field_inspect_packs.py`（`--region/--delay/--fields/--json-out` 等） |
-> | 体检硬门（`check_expr_against_inspect`） | `tools/field_inspect_gate.py`（区域体检包 gate） |
+> ⚠ 本档曾被误标为「已重构删除」——起因是当时工作树有 287 个受控文件意外缺失
+> （含本脚本），被误判为「脚本不存在」，随后据此写下失效告示与替代工具表。
+> 该脚本实际从未被删除（git 全历史可查），告示已撤销。
 >
-> ⚠ 逐条命令的 flag 映射**尚未逐项核实**（`gen_field_inspect_packs.py` 支持其中大部分，
-> 但 `--cross-region` / `--recommend` / `--field-top` / `--export-expr` 是否等价待确认）。
-> **动手前先跑 `--help` 核对**，不要照抄下文示例——文中示例一律按「说明意图」阅读，
-> 不按「可直接执行」阅读。
+> **唯一需要注意的**：数据 zip 需自带（仓库只有解压目录，无同名 zip），读包统一走
+> `tools/lib/pack_reader.py::open_pack()`（该工具由 commit `00193bb` 引入，是底层读包入口，
+> **不是** `webdata_quality.py` 的替代品——两者是调用关系，不是替代关系）。
 
 来源：WebDataScope-1.3.1 插件（幻华，2026-08-02 发布；2026-08-05 更新，zip 曾在旧检出目录 `wqb-share-03/`（现仓库的 `research-data/` 与外部下载位置为准））+ 离线数据包 `WebData_20260219_V0.10.9.zip`（数据包与插件版本解耦，格式不变）。
 数据包为 zlib + msgpack 编码，导入后存入插件 IndexedDB（`WQP_Extension_Data_Files`）。以下规则在挖矿 research 阶段作为**零成本预筛**使用（不消耗模拟额度）。注：本档规则转写自 1.0.6，2026-08-05 已核对 1.3.1 源码（`src/background/background.js:270` 的 `getAlphaCheckStates` failed-count 门禁逻辑保留，规则一致；插件 1.3.1 新增 alpha 描述助手/社区帖标记/prod memo/会话保活等扩展功能，不影响离线预筛规则）。
@@ -353,7 +350,7 @@ KOR_1 实测 Top15 头部：`close(21744) / returns(17091) / volume(14150) / cap
 
 ## 重新生成排名数据
 
-解包与排名脚本见 [`../../../../tools/lib/pack_reader.py`](../../../../tools/lib/pack_reader.py)（`open_pack()` 工厂，依赖 `msgpack`；原 `tools/webdata_quality.py` 已于 commit `00193bb` 重构删除，替代见文首对照表）：
+解包与排名脚本见 [`../../../../tools/webdata_quality.py`](../../../../tools/webdata_quality.py)（底层读包统一走 [`../../../../tools/lib/pack_reader.py`](../../../../tools/lib/pack_reader.py) 的 `open_pack()`，依赖 `msgpack`）：
 
 ```powershell
 # 数据集排名 + 甜点区 + OS 退化 + 类别统计 + Universe 覆盖
