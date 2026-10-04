@@ -142,6 +142,55 @@ class CampaignContext:
     def thresh(self, section, default=None):
         return self.thresholds.get(section, default if default is not None else {})
 
+    # -- 区域 × 类别组合（2026-10-04）--
+    def bind_cell(self, dataset, pinned=(), log=print):
+        """绑定数据集所属的「区域 × 类别」组合（config/cells.json），把组合覆盖并进本轮配置。
+
+        - backtest.overrides → self.settings（`pinned` 里的维度不动：CLI 显式 --set 优先于组合）；
+        - thresholds.overrides → self.thresholds（点分键；mode_b.* 交给 mode_b_config，不在这里并）；
+        - 被组合覆盖的设置记进 self.cell_pinned，设置先验（region_kb.apply_settings_prior）不再改它们。
+        组合文件不存在 / 没有该类别 / wqb 包不可用时什么都不做。返回实际生效的设置覆盖 dict。
+        """
+        self.cell = None
+        self.cell_pinned = set()
+        if not dataset:
+            return {}
+        try:
+            from wqb.profiles.taxonomy import dataset_category
+            from wqb.profiles.cells import cell_for
+            from wqb.profiles.locked import check_threshold_override
+        except Exception as e:  # noqa: BLE001 — 组合层是增强层，缺包按区域配置跑
+            log(f"[cell] wqb.profiles 不可用，按区域配置跑：{e}")
+            return {}
+        category = dataset_category(self.region, dataset)
+        cell = cell_for(self.region, category, config_dir=self.path("config"))
+        self.cell = {"category": category, "body": cell}
+        applied = {}
+        for k, v in (((cell.get("backtest") or {}).get("overrides")) or {}).items():
+            if k in set(pinned):
+                log(f"[cell] {self.region}×{category}：{k} 已被显式钉住，不用组合值 {v!r}")
+                continue
+            if self.settings.get(k) != v:
+                log(f"[cell] {self.region}×{category}：settings.{k} {self.settings.get(k)!r} → {v!r}（cells.json）")
+            self.settings[k] = v
+            self.cell_pinned.add(k)
+            applied[k] = v
+        for k, v in (((cell.get("thresholds") or {}).get("overrides")) or {}).items():
+            if k.startswith("mode_b.") or "." not in k:
+                continue
+            why = check_threshold_override(k, v)
+            if why:
+                log(f"[cell] {self.region}×{category}：阈值覆盖未生效（{why}）")
+                continue
+            sec, _, rest = k.partition(".")
+            node = self.thresholds.setdefault(sec, {})
+            parts = rest.split(".")
+            for p in parts[:-1]:
+                node = node.setdefault(p, {})
+            node[parts[-1]] = v
+            log(f"[cell] {self.region}×{category}：thresholds.{k} → {v!r}（cells.json）")
+        return applied
+
 
 def add_campaign_arg(ap):
     """给 argparse 统一挂 --campaign-dir。"""

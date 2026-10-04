@@ -30,6 +30,17 @@ from .campaign import run_open_wave_gates
 logger = logging.getLogger(__name__)
 
 
+def _cell_backtest_pins(region: str, dataset: str, campaign_dir: str):
+    """本组合（区域 × 数据集所属平台类别）的回测设置覆盖 → `KEY=VALUE` 列表；读失败不阻断，回告警。"""
+    try:
+        from wqb.profiles.resolver import backtest_pins
+        return backtest_pins(region, dataset=dataset,
+                             config_dir=os.path.join(campaign_dir, "config")), None
+    except Exception as e:  # noqa: BLE001 — 组合覆盖是增强层，读不到时按区域 settings.json 跑
+        logger.warning(f"cells.json backtest overrides unavailable for {region}/{dataset}: {e}")
+        return [], f"组合回测覆盖读取失败，按区域 settings.json 跑（不阻断）：{e}"
+
+
 @require_mcp_tools("batch_track")
 def run(
     region: str,
@@ -200,6 +211,13 @@ def run(
     # 逗号分隔，与 pipeline.py --datasets 契约一致。
     if datasets_extra:
         cmd += ["--datasets", datasets_extra]
+    # 2026-10-04：区域 × 类别组合的回测覆盖（tracking/<R>/config/cells.json 的 backtest.overrides）
+    # 以 --set 显式钉住——pipeline 的设置先验不改 --set 钉住的维度。组合没写覆盖时命令与以前完全相同。
+    cell_pins, cell_warn = _cell_backtest_pins(region, dataset, campaign_dir)
+    for kv in cell_pins:
+        cmd += ["--set", kv]
+    if cell_warn:
+        warnings.append(cell_warn)
 
     # argv 契约校验：构建出来的命令必须能被 pipeline.py 的 argparse 接受。
     # 干跑与实跑都走，干跑时它就是本节点最有价值的那次检查。
@@ -260,6 +278,7 @@ def run(
                 "toolkit_dir": toolkit_dir,
                 "detached": detached,
                 "submit": submit,
+                "cell_pins": cell_pins,
             },
             "warnings": warnings,
             # 表达式为 0 时把结论写进 message 而不是只塞进 warnings：

@@ -210,6 +210,9 @@ def apply_settings_prior(ctx, pinned=(), cfg=None, log=print):
     if cfg.get("enabled") is False:
         log("[settings-prior] 已关闭（thresholds.settings_prior.enabled=false）")
         return []
+    # 2026-10-04：区域 × 类别组合（cells.json）覆盖过的设置同样视为钉住——组合覆盖带实证，
+    # 全区汇总的过闸率被类别构成混淆，不能反过来改掉它（CampaignContext.bind_cell 写 cell_pinned）
+    pinned = set(pinned) | set(getattr(ctx, "cell_pinned", None) or ())
     recs = settings_prior_recommendations(ctx, cfg)
     if not recs:
         log("[settings-prior] region_kb 无 gate_priors/gate_priors_local，跳过")

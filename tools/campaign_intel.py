@@ -90,11 +90,12 @@ def _xr_region_settings(region, overrides=None):
     base["region"] = region
     if overrides:
         base.update({k: v for k, v in overrides.items() if k in _XR_SIM_KEYS})
-    if not base.get("universe"):  # 无战役目录的区域：平台档位实测缺省（2026-09-19 get_platform_setting_options）
-        base["universe"] = {"USA": "TOP3000", "GLB": "TOP3000", "EUR": "TOPCS1600", "ASI": "MINVOL1M",
-                            "CHN": "TOP2000U", "KOR": "TOP600", "HKG": "TOP800", "JPN": "TOP1600",
-                            "IND": "TOP500", "DEU": "TOP500", "GBR": "TOP700", "TWN": "TOP500",
-                            "MEA": "TOP400", "AMR": "TOP600"}.get(region, "TOP3000")
+    if not base.get("universe"):  # 无战役目录的区域：缺省宇宙取 config.REGIONS（区域事实唯一来源，2026-10-04 收口）
+        try:
+            from wqb.config import default_universe
+            base["universe"] = default_universe(region)
+        except KeyError:
+            base["universe"] = "TOP3000"
     return base
 
 

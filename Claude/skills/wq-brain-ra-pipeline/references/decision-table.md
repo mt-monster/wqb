@@ -1,7 +1,7 @@
 # wq-brain-ra-pipeline 挖掘决策表（执行查表）
 
 > 拿到阶段结果后**直接查表执行**；表中没有的分支才允许停下问用户。
-> **优先级**：用户显式指令 > 代码 fail-closed 闸（唯一放行 = waiver）> 区域 profile > 本决策表 > skill 正文；**D0-P 不接受区域改写**。
+> **优先级**：用户显式指令 > 锁定表（`src/wqb/profiles/locked.py`）> 代码 fail-closed 闸（唯一放行 = waiver）> 区域 × 类别组合（`cells.json`）> 区域 profile > 类别卡 > 本决策表 > skill 正文；**D0-P 在锁定表里，不接受区域 / 类别 / 组合改写**（全链与说明见 SKILL.md「怎么读这份 SOP」）。
 > 用户指令与表中**硬约束**冲突时：能执行的直接执行并写 waiver 留痕（键 `waiver_<gate>_<region>_<wave|all>`，协议见 `AGENTS.md` §8.1.2；旧键 `stop_rules_override` / `backlog_gate_override` 仍被识别），**不请示**。
 > **红线不可覆盖**（任何人批准都无效，`wqb.waiver.RED_LINES`）：提交前的用户明确确认、凭据（`world-quant-brain-mcp/.env`：禁止读取 / 打印 / 提交）、平台条款与限额。另：用户没要求时**不创建自动化任务**。
 > **被 SKILL 哪一步引用**：D0 / D0-P / D1 / D2 / D3 / D12 / D14 → 步 7；D1 / D9 → 步 8、9；D4 / D6 / D13 → 步 2、3；D5 / D8 / D11 → 步 6；D7 可选（默认关闭）；D15（判死判据表）→ 步 9。

@@ -379,7 +379,7 @@ class StructuralVariantGenerator:
 
         推荐逻辑：
         1. P0 优先（几何重构-价差）
-        2. EUR/DEU 区域优先考虑 country 中性化
+        2. 跨国宇宙（config.REGION_COUNTRY_SCOPE == "multi"）优先考虑 country 中性化
         3. VECTOR 数据集避免复杂时序算子
         """
         if not variants:
@@ -394,8 +394,10 @@ class StructuralVariantGenerator:
                     return v
             return p0_variants[0]
 
-        # 区域特定推荐
-        if region in ("EUR", "DEU", "GBR"):
+        # 区域特定推荐（2026-10-04：由「EUR/DEU/GBR 写死」改为读区域事实 config.REGION_COUNTRY_SCOPE——
+        # country 轴只在跨国宇宙里有意义；DEU / GBR 是单一国家，按 country 中性化等于按全市场中性化）
+        from wqb.config import is_multi_country
+        if is_multi_country(region):
             country_neut = [v for v in variants
                           if v.strategy == ReconstructionStrategy.NEUTRALIZATION
                           and v.metadata.get("axis") == "country"]

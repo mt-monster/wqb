@@ -850,10 +850,17 @@ def test_judge_load_mode_b_qualification_region_routing(tmp_path, monkeypatch):
     from wqb.workflow.nodes import judge as jd
     import json
 
-    # 构造 EUR thresholds.json
+    # 构造 EUR thresholds.json（收紧：高于 GLOBAL 主闸）
     eur_dir = tmp_path / "tracking" / "EUR" / "config"
     eur_dir.mkdir(parents=True)
     (eur_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {"sharpe_min": 1.4, "fitness_min": 0.9}
+    }), encoding="utf-8")
+
+    # 构造 GLB thresholds.json（放宽：低于 GLOBAL 主闸 → 2026-10-04 起读时钳回下限）
+    glb_dir = tmp_path / "tracking" / "GLB" / "config"
+    glb_dir.mkdir(parents=True)
+    (glb_dir / "thresholds.json").write_text(json.dumps({
         "mode_b_qualification": {"sharpe_min": 1.0, "fitness_min": 0.6}
     }), encoding="utf-8")
 
@@ -876,8 +883,13 @@ def test_judge_load_mode_b_qualification_region_routing(tmp_path, monkeypatch):
 
     # EUR 读 EUR 的值
     mbq_eur = jd._load_mode_b_qualification(None, region="EUR")
-    assert mbq_eur["sharpe_min"] == 1.0
-    assert mbq_eur["fitness_min"] == 0.6
+    assert mbq_eur["sharpe_min"] == 1.4
+    assert mbq_eur["fitness_min"] == 0.9
+
+    # GLB 写得比下限低：钳回 1.25 / 0.8
+    mbq_glb = jd._load_mode_b_qualification(None, region="GLB")
+    assert mbq_glb["sharpe_min"] == 1.25
+    assert mbq_glb["fitness_min"] == 0.8
 
     # KOR 读 KOR 的值
     mbq_kor = jd._load_mode_b_qualification(None, region="KOR")
@@ -900,31 +912,30 @@ def test_probe_batch_mode_b_distribution_mode(tmp_path, monkeypatch):
     (config_dir / "thresholds.json").write_text(json.dumps({
         "mode_b_qualification": {
             "mode": "distribution",
-            "sharpe_min": 1.0,
-            "fitness_min": 0.6,
-            "sharpe_p75_min": 0.9,
-            "fitness_p75_min": 0.5,
+            "sharpe_p75_min": 1.3,
+            "fitness_p75_min": 0.85,
             "count_above_min": 2,
         }
     }), encoding="utf-8")
 
     executor = ProbeBatchExecutor(str(campaign_dir), "test_ds", 1, dry_run=True)
 
-    # 场景 1：p75 达标（4 条候选，前 25% = 第 1 条，sharpe 1.2 >= 0.9）
+    # 场景 1：p75 达标（4 条候选，前 25% = 第 1 条，sharpe 1.6 >= 1.3）
     results = [
-        {"sharpe": 1.2, "fitness": 0.7},
+        {"sharpe": 1.6, "fitness": 0.9},
         {"sharpe": 0.8, "fitness": 0.5},
         {"sharpe": 0.6, "fitness": 0.4},
         {"sharpe": 0.4, "fitness": 0.3},
     ]
     eligible, best = executor.check_mode_b_eligible(results)
     assert eligible is True
-    assert best["sharpe"] == 1.2
+    assert best["sharpe"] == 1.6
 
-    # 场景 2：count 达标（2 条过线）
+    # 场景 2：count 达标（2 条过主闸）
     results = [
-        {"sharpe": 1.1, "fitness": 0.7},
-        {"sharpe": 1.05, "fitness": 0.65},
+        {"sharpe": 1.28, "fitness": 0.82},
+        {"sharpe": 1.27, "fitness": 0.81},
+        {"sharpe": 1.26, "fitness": 0.81},
         {"sharpe": 0.5, "fitness": 0.3},
     ]
     eligible, best = executor.check_mode_b_eligible(results)
@@ -938,6 +949,31 @@ def test_probe_batch_mode_b_distribution_mode(tmp_path, monkeypatch):
     eligible, best = executor.check_mode_b_eligible(results)
     assert eligible is False
     assert best is None
+
+
+def test_probe_batch_distribution_p75_cannot_go_below_mode_b_floor(tmp_path, monkeypatch):
+    """2026-10-04 下限锁：分布模式的 p75 线写得再低，也被抬到主闸（1.25 / 0.8）——
+    否则「前 25% 有 1.2」就能把一颗没过资格线的候选送进 Mode B。"""
+    from tools.probe_batch_mode import ProbeBatchExecutor
+    import json
+
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "wqb.db"))
+    config_dir = tmp_path / "campaign" / "config"
+    config_dir.mkdir(parents=True)
+    (config_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {"mode": "distribution", "sharpe_p75_min": 0.9,
+                                 "fitness_p75_min": 0.5, "count_above_min": 2}
+    }), encoding="utf-8")
+    executor = ProbeBatchExecutor(str(tmp_path / "campaign"), "test_ds", 1, dry_run=True)
+    cfg = executor._mode_b_cfg
+    # 反向前提：文件里的 p75 线确实低于主闸，下面的断言才是在测钳制
+    assert 0.9 < cfg["sharpe_min"] and 0.5 < cfg["fitness_min"]
+    assert cfg["sharpe_p75_min"] == cfg["sharpe_min"]
+    assert cfg["fitness_p75_min"] == cfg["fitness_min"]
+    batch = [{"sharpe": 1.2, "fitness": 0.7}, {"sharpe": 0.8, "fitness": 0.5},
+             {"sharpe": 0.6, "fitness": 0.4}, {"sharpe": 0.4, "fitness": 0.3}]
+    eligible, best = executor.check_mode_b_eligible(batch)
+    assert eligible is False and best is None
 
 
 def test_mode_b_adaptive_learn_threshold():

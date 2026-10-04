@@ -1,0 +1,74 @@
+{
+ "schema_version": 1,
+ "region": "AMR",
+ "cells": {
+  "analyst": {
+   "status": "auto",
+   "datasets": [
+    "analyst11",
+    "analyst48"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 80,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "analyst11",
+      "backtests": 64
+     },
+     {
+      "dataset": "analyst48",
+      "backtests": 16
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "AMR-ANALYST48-DIVYIELD-GEOM-CEILING-WALL",
+      "family": "analyst48_dividend_yield_geometry",
+      "text": "分红/股息率机制族（bp12m_yld/dvd_xe/bdvd_*/bedhgpd/equity_dvd_sh_last/edg3yr_g 7 字段）两轮 16 条结构验证（p8v2 8 机制探针 + fix1 8 几何/窗口/分歧度修复）：S 天花板压死 0.50-0.51（subtract 252 价差 0.51 ",
+      "dataset": "analyst48",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "pv": {
+   "status": "auto",
+   "datasets": [
+    "pv37"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 24,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "pv37",
+      "backtests": 24
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "AMR-PV37-TICKSTAT-SIGNAL-CROWDING-DEAD",
+      "family": "pv37_tick_price_volume_path_stats",
+      "text": "8 探针+2 修复轮共 24 条回测证据链：tick 级统计机制（downtick/kink 计数、累计量比、上下行量收益）在 AMR TOP600 信号真实但与高换手同源（SIGNAL-STRENGTH-AND-CROWDING-ARE-ONE-COIN）：C2 量比动量反转后 S=1.14 但 TO=0.977（d",
+      "dataset": "pv37",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 0,
+ "unattributed_backtests": 0
+}

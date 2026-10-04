@@ -164,8 +164,12 @@ class ProbeBatchExecutor:
             cfg = default.copy()
             cfg["mode"] = mbq.get("mode", "point")
             if cfg["mode"] == "distribution":
-                cfg["sharpe_p75_min"] = float(mbq.get("sharpe_p75_min", cfg["sharpe_min"]))
-                cfg["fitness_p75_min"] = float(mbq.get("fitness_p75_min", cfg["fitness_min"]))
+                # 2026-10-04 下限锁：p75 分位线也不得低于主闸（主闸已由 mode_b_config 钳在
+                # GLOBAL 下限之上）；否则「前 25% 有 0.9」就能把一颗 S<1.25 的候选送进 Mode B。
+                cfg["sharpe_p75_min"] = max(float(mbq.get("sharpe_p75_min", cfg["sharpe_min"])),
+                                            cfg["sharpe_min"])
+                cfg["fitness_p75_min"] = max(float(mbq.get("fitness_p75_min", cfg["fitness_min"])),
+                                             cfg["fitness_min"])
                 cfg["count_above_min"] = int(mbq.get("count_above_min", 2))
             return cfg
         except Exception:

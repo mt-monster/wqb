@@ -1,0 +1,585 @@
+{
+ "schema_version": 1,
+ "region": "USA",
+ "cells": {
+  "analyst": {
+   "status": "auto",
+   "datasets": [
+    "analyst44",
+    "analyst7",
+    "analyst_consensus"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 19,
+    "ra_clean": 0,
+    "prod_measured": 1,
+    "prod_clean": 0,
+    "prod_blocked": 1,
+    "top_datasets": [
+     {
+      "dataset": "analyst44",
+      "backtests": 8
+     },
+     {
+      "dataset": "analyst7",
+      "backtests": 8
+     },
+     {
+      "dataset": "analyst_consensus",
+      "backtests": 3
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "USA-ANALYST-CONSENSUS-FXSPREAD-PROD-SAT",
+      "family": "analyst_consensus_estimate",
+      "text": "",
+      "dataset": "analyst_consensus",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-ANALYST44-BREADTH-DEAD-EP-PRODWALL",
+      "family": "analyst44 BEst revision breadth / dispersion / forward E-P z-score",
+      "text": "USA analyst tower: neither revision breadth nor estimate-yield momentum is viable; only a mechanism orthogonal to value/momentum (e.g. estimate dispersion regim",
+      "dataset": "analyst44",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "insiders": {
+   "status": "auto",
+   "datasets": [
+    "insiders1",
+    "insiders3"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 8,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "insiders3",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "USA-INSIDERS1-DEU-CONVICTION-WEAK",
+      "family": "insider_conviction",
+      "text": "USA 内部人数据更拥挤（userCount 124-282）或 USA 定价效率高，DEU 机制没复现",
+      "dataset": "insiders1",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "institutions": {
+   "status": "auto",
+   "datasets": [
+    "institutions18"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 56,
+    "ra_clean": 6,
+    "prod_measured": 1,
+    "prod_clean": 0,
+    "prod_blocked": 1,
+    "top_datasets": [
+     {
+      "dataset": "institutions18",
+      "backtests": 56
+     }
+    ],
+    "dead_ends": [],
+    "wins": []
+   }
+  },
+  "model": {
+   "status": "auto",
+   "datasets": [
+    "analyst_earnings_ibes",
+    "analyst_revision_horizons",
+    "model354",
+    "multi_horizon_alpha",
+    "multifactor_return_pred",
+    "option_chart_model",
+    "option_horizon_decomp",
+    "predictive_starmine",
+    "pv_tech_indicators",
+    "shortinterest7",
+    "tech_chart_model"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 557,
+    "ra_clean": 1,
+    "prod_measured": 4,
+    "prod_clean": 4,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "option_horizon_decomp",
+      "backtests": 159
+     },
+     {
+      "dataset": "multi_horizon_alpha",
+      "backtests": 119
+     },
+     {
+      "dataset": "multifactor_return_pred",
+      "backtests": 84
+     },
+     {
+      "dataset": "option_chart_model",
+      "backtests": 48
+     },
+     {
+      "dataset": "analyst_revision_horizons",
+      "backtests": 46
+     },
+     {
+      "dataset": "pv_tech_indicators",
+      "backtests": 41
+     },
+     {
+      "dataset": "tech_chart_model",
+      "backtests": 26
+     },
+     {
+      "dataset": "predictive_starmine",
+      "backtests": 26
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "USA-MFP-FITNESS-SUB-CEILING",
+      "family": "model",
+      "text": "同数据集兄弟 alpha 只提交 Sharpe 最高的一个；option 字段 sub 特性差，避免使用",
+      "dataset": "multifactor_return_pred",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-MFP-REGRESSION-DIFF-DEAD",
+      "family": "multifactor_return_pred regression difference",
+      "text": "avoid regression difference family in multifactor_return_pred",
+      "dataset": "multifactor_return_pred",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-MFP-SIBLING-CONFLICT",
+      "family": "multifactor_return_pred sibling",
+      "text": "同数据集同腿兄弟 alpha 只提交 Sharpe 最高的一个；如需提交多个，确保表达式差异足够大（字段组合不同或权重差异 > 20%）",
+      "dataset": "multifactor_return_pred",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-MFRP-LEVEL-BLEND-PROD-STRUCTURAL-DEAD",
+      "family": "multifactor_return_pred multi-horizon level blend",
+      "text": "拥挤不在市场层（group_neutralize(market) 无效），不在持仓路径层（decay 无效），而在横截面排序本身。后续不再尝试该三腿水平叠加的任何设置或分组变体。",
+      "dataset": "multifactor_return_pred",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-MFRP-W34-PV-LH2-SPREAD-NO-SIGNAL",
+      "family": "multifactor_return_pred quantile spread",
+      "text": "q5-q1 镜像价差结构在 price_volume_r60 与 long_hedge2_r120 两个来源对上无信号",
+      "dataset": "multifactor_return_pred",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-MFRP-W34-R60-HORIZON-DEAD",
+      "family": "multifactor_return_pred r60 quantile spread",
+      "text": "本数据集后续波次不再单独投 r60 分位价差。r120 完整配对仅 4 个来源：analyst / long_hedge / long_hedge2 / long_term。",
+      "dataset": "multifactor_return_pred",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-OHD-IVSKEW30D-CEILING",
+      "family": "option_horizon_decomp IV skew 30d call-put",
+      "text": "OHD IV skew 30d sharpe ceiling ~1.45, fitness ceiling ~0.84. Below platform gates. delay=0 not available. Not viable as standalone signal for USA REGULAR.",
+      "dataset": "option_horizon_decomp",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-OPTION-CHART-MODEL-PROD-SATURATED",
+      "family": "option_chart_model core signals",
+      "text": "Skip option_chart_model pcg and predicted_stock_return families in USA. These signals are already well-mined in PROD. Remaining option_chart_model fields (proba",
+      "dataset": "option_chart_model",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-PV-TECH-INDICATORS-DEAD",
+      "family": "pv_tech_indicators",
+      "text": "避免使用 pv_tech_indicators 数据集，该数据集的技术指标字段在 USA 区域 TOP3000 宇宙中没有预测能力",
+      "dataset": "pv_tech_indicators",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-SHORTINTEREST7-SHORTLASSO-WEAK",
+      "family": "shortinterest_pred",
+      "text": "做空预测在 USA/D1 有信号但不够强（1.16 接近但不到资格线）",
+      "dataset": "shortinterest7",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-VALUE-PRODCORR",
+      "family": "mdl177_* 价值/盈利因子族新增提交",
+      "text": "USA 新提交必须来自正交信号族",
+      "dataset": null,
+      "bound": "keyword"
+     },
+     {
+      "id": "USA-W13-LOW-SUBUNIVERSE-SHARPE",
+      "family": "analyst_earnings_ibes 2腿组合",
+      "text": "避免使用 2 腿组合且权重过度集中在单一字段（如 0.5 权重在 long_term），应使用 3 腿组合并平衡权重",
+      "dataset": "analyst_earnings_ibes",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "news": {
+   "status": "auto",
+   "datasets": [
+    "news81"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 0,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [],
+    "dead_ends": [
+     {
+      "id": "USA-NEWS81-SENTIMENT-WEAK",
+      "family": "news_sentiment",
+      "text": "新闻情绪在 USA/D1 信号弱（0.48），情绪多空区分度不足且衰减快",
+      "dataset": "news81",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "option": {
+   "status": "auto",
+   "datasets": [
+    "option40",
+    "option9",
+    "order_flow_imb"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 25,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "order_flow_imb",
+      "backtests": 17
+     },
+     {
+      "dataset": "option40",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "USA-OPTION40-IV-CONCEPTS-WEAK",
+      "family": "option40 IV spread / IV change / term slope / VRP / implied forward",
+      "text": "USA option tower: OptionMetrics standard-surface concepts cap ~1.1 in TOP3000 (consistent with option_horizon_decomp ceiling 1.45); do not re-probe without a ne",
+      "dataset": "option40",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-OPTION40-IV-SURFACE-WEAK",
+      "family": "option40 OptionMetrics surface (IV spread call-put, IV change, term slope, VRP, implied forward)",
+      "text": "USA option tower: surface-level IV signals closed; only volume/OI-based option datasets remain",
+      "dataset": "option40",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-OPTION9-PCR-WEAK",
+      "family": "option_pcr",
+      "text": "PCR 的多空情绪在 TOP3000 横截面区分度不足（Sharpe 普遍 < 0.7），且日频变化快信号衰减快（高换手）——主题级弱，非构造问题",
+      "dataset": "option9",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-ORDER-FLOW-IMB-RANK-WEAK",
+      "family": "option_order_flow_imbalance",
+      "text": "",
+      "dataset": "order_flow_imb",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "other": {
+   "status": "auto",
+   "datasets": [
+    "acquisition_model",
+    "ai_news_scores",
+    "earningscall_embed",
+    "event_sentiment_signals",
+    "insider_feats",
+    "insider_matrix",
+    "ml_factor_proj",
+    "mmp_nlp_sentiment",
+    "news_sentiment_dl",
+    "order_book_imbalance",
+    "other580",
+    "other596",
+    "other699"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 211,
+    "ra_clean": 2,
+    "prod_measured": 15,
+    "prod_clean": 4,
+    "prod_blocked": 11,
+    "top_datasets": [
+     {
+      "dataset": "order_book_imbalance",
+      "backtests": 69
+     },
+     {
+      "dataset": "other699",
+      "backtests": 42
+     },
+     {
+      "dataset": "ml_factor_proj",
+      "backtests": 25
+     },
+     {
+      "dataset": "mmp_nlp_sentiment",
+      "backtests": 24
+     },
+     {
+      "dataset": "insider_matrix",
+      "backtests": 21
+     },
+     {
+      "dataset": "earningscall_embed",
+      "backtests": 16
+     },
+     {
+      "dataset": "other580",
+      "backtests": 8
+     },
+     {
+      "dataset": "other596",
+      "backtests": 6
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "USA-ACQUISITION-MODEL-DEAD",
+      "family": "acquisition_model percentile",
+      "text": "避免使用 acquisition_model 数据集的百分位排名字段，该数据集在 USA 区域无 alpha",
+      "dataset": "acquisition_model",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-AI-NEWS-SCORES-DEAD",
+      "family": "ai_news_scores sentiment",
+      "text": "ai_news_scores pos/neg/neu avg/max/min/std/ci fields in USA/TOP3000/D1 - do not probe further",
+      "dataset": "ai_news_scores",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-EARNINGSCALL-EMBED-DEAD",
+      "family": "earningscall_embed embedding components",
+      "text": "Skip earningscall_embed in USA. Embedding vector components lack sufficient cross-sectional dispersion for viable alphas.",
+      "dataset": "earningscall_embed",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-EVENT-SENTIMENT-SIGNALS-DEAD",
+      "family": "event_sentiment_signals section_sentiment",
+      "text": "Skip event_sentiment_signals in USA. VECTOR fields with vec_avg produce too few holdings for viable alphas.",
+      "dataset": "event_sentiment_signals",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-INSIDER-FEATS-DEAD",
+      "family": "insider_feats buy_sell_ratio",
+      "text": "Skip insider_feats in USA. Buy/sell ratio family has no standalone signal.",
+      "dataset": "insider_feats",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-INSIDER-MATRIX-SPARSE-EVENT-WALL",
+      "family": "insider_matrix director/executive buy-sell value 稀疏事件",
+      "text": "insider_matrix 在 USA/TOP3000/D1 不可产生可提交 RA；稀疏事件价值字段需 trade_when+长窗平滑但会稀释信号至 <1.58",
+      "dataset": "insider_matrix",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-ML-FACTOR-PROJ-PROD-SATURATED",
+      "family": "ml_factor_proj all signal families",
+      "text": "Do not probe ml_factor_proj for USA REGULAR; all major signal families PROD correlated >0.9",
+      "dataset": "ml_factor_proj",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-NEWS-SENTIMENT-DL-DEAD",
+      "family": "news_sentiment_dl word sentiment",
+      "text": "news_sentiment_dl vec_avg wrapped word sentiment/count/entropy/complexity fields in USA/TOP3000/D1 - do not probe further",
+      "dataset": "news_sentiment_dl",
+      "bound": "payload"
+     },
+     {
+      "id": "USA-OBI-LEVEL-FAMILIES-PROD-WALL",
+      "family": "order_book_imbalance",
+      "text": "order_book_imbalance 水平/慢窗族（fill_prob/dark/auction/patience/price-pair）prod_corr>=0.7 同质，禁再投同族变体",
+      "dataset": "order_book_imbalance",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "pv": {
+   "status": "auto",
+   "datasets": [
+    "chart_return_model",
+    "continuation_score",
+    "intraday_pv_feats",
+    "pattern_scores"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 154,
+    "ra_clean": 1,
+    "prod_measured": 2,
+    "prod_clean": 1,
+    "prod_blocked": 1,
+    "top_datasets": [
+     {
+      "dataset": "continuation_score",
+      "backtests": 91
+     },
+     {
+      "dataset": "intraday_pv_feats",
+      "backtests": 35
+     },
+     {
+      "dataset": "chart_return_model",
+      "backtests": 28
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "USA-CS-ASC-CHANNEL-DELTA-DEAD",
+      "family": "continuation_score ascending_channel similarity delta",
+      "text": "CS ascending_channel delta signal fitness ceiling ~0.42, below platform gate 1.0. Not viable for USA REGULAR submission.",
+      "dataset": "continuation_score",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-IPV-CORR-PRECLOSE-FITNESS-WALL-20260921",
+      "family": "intraday_pv_feats 价量相关反转 / 尾盘 30m 反转（含关注/量占比门控与慢化变体）",
+      "text": "USA 不再投 ipv 反转族（fitness 墙 <1.0 结构性）。",
+      "dataset": "intraday_pv_feats",
+      "bound": "inferred"
+     },
+     {
+      "id": "USA-PATTERN-SCORES-DEAD",
+      "family": "pattern_scores",
+      "text": "避免使用 pattern_scores 数据集，该数据集的图表模式相似度分数字段在 USA 区域 TOP3000 宇宙中没有预测能力",
+      "dataset": "pattern_scores",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "sentiment": {
+   "status": "auto",
+   "datasets": [
+    "sentiment21"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 0,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [],
+    "dead_ends": [
+     {
+      "id": "sentiment21",
+      "family": "sentiment_dispersion_skew",
+      "text": "sentiment21 dispersion/skew family in USA/TOP3000/D1 - do not probe further",
+      "dataset": "sentiment21",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "shortinterest": {
+   "status": "auto",
+   "datasets": [
+    "shortinterest29",
+    "shortinterest3"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 78,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "shortinterest29",
+      "backtests": 68
+     },
+     {
+      "dataset": "shortinterest3",
+      "backtests": 10
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "USA-SHORTINTEREST29-RANK-WEAK",
+      "family": "short_sale_volume",
+      "text": "",
+      "dataset": "shortinterest29",
+      "bound": "payload"
+     }
+    ],
+    "wins": [
+     {
+      "id": "USA-W14-SUCCESS-FORMULA",
+      "family": "Wave 14 成功配方：3腿组合（long_term + short_term + event_5d），平衡权重（0.4/0.3/0.3），所有平台硬闸通过",
+      "text": "rank(add(multiply(0.4, rank(ts_backfill(long_term_quantile5_r120_pred, 66))), multiply(0.3, rank(ts_backfill(short_term_price_volume_based_return_5d, 66))), mul",
+      "dataset": null,
+      "bound": "keyword"
+     }
+    ]
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 8,
+ "unattributed_backtests": 99
+}

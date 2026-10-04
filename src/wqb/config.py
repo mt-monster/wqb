@@ -134,6 +134,8 @@ REGIONS: Dict[str, dict] = {
         "delays": [1],
         "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP600",
+        # 只给「新建战役目录」兜底（nodes/campaign._ensure_campaign_config）；建好后以 settings.json 为准。
+        "default_neutralization": "STATISTICAL",
     },
     "AMR": {
         # 2026-09-22 get_platform_setting_options：AMR EQUITY D0/D1 均仅 TOP600。
@@ -174,6 +176,7 @@ REGIONS: Dict[str, dict] = {
         "delays": [1],
         "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP500",
+        "default_neutralization": "STATISTICAL",   # 同 KOR：只给新建战役目录兜底
     },
     "MEA": {
         "universes": ["TOP400", "TOP200"],
@@ -192,12 +195,24 @@ REGIONS: Dict[str, dict] = {
     },
 }
 
-# Campaign conclusions: best measured neutralization per region (None = no data).
-_NEUTRALIZATION_BEST: Dict[str, Optional[str]] = {
-    "EUR": "REVERSION_AND_MOMENTUM",
-    "GBR": "INDUSTRY",
-    "IND": "STATISTICAL",
+# 2026-10-04：删除 `_NEUTRALIZATION_BEST` / `neutralization_best()`。它零调用方，取值（EUR
+# REVERSION_AND_MOMENTUM、GBR INDUSTRY）又与各区 settings.json 的实测档（都是 SUBINDUSTRY）相反，
+# 是中性化「7 处来源」之一。区域缺省中性化以 tracking/<R>/config/settings.json 为准，组合级覆盖见
+# tracking/<R>/config/cells.json（wqb.profiles 解析）。
+
+#: 区域宇宙是否跨多个国家（平台区域定义的物理事实，不是实证结论）。
+#: 用途：country 轴中性化 / 分组只在跨国宇宙里有意义——单一国家宇宙按 country 中性化等于按全市场中性化。
+#: 此前 `structural_variants` 把 DEU / GBR（单一国家）和 EUR 一起写死成「优先 country 中性化」。
+REGION_COUNTRY_SCOPE: Dict[str, str] = {
+    "USA": "single", "EUR": "multi", "CHN": "single", "ASI": "multi", "GLB": "multi",
+    "JPN": "single", "KOR": "single", "AMR": "multi", "TWN": "single", "GBR": "single",
+    "DEU": "single", "IND": "single", "MEA": "multi", "HKG": "single",
 }
+
+
+def is_multi_country(region: Optional[str]) -> bool:
+    """区域宇宙是否跨多个国家（未知区域按 False 处理）。"""
+    return REGION_COUNTRY_SCOPE.get(str(region or "").upper()) == "multi"
 
 
 def neutralization_search_order(region: str) -> List[str]:
@@ -207,11 +222,6 @@ def neutralization_search_order(region: str) -> List[str]:
     regions.
     """
     return list(REGIONS[region.upper()]["neutralizations"])
-
-
-def neutralization_best(region: str) -> Optional[str]:
-    """Return the best measured neutralization for a region, or None."""
-    return _NEUTRALIZATION_BEST.get(region.upper())
 
 
 def default_universe(region: str) -> str:

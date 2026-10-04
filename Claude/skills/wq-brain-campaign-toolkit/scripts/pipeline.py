@@ -19,7 +19,7 @@
   恢复：重跑同一 --wave 自动从 checkpoint 续跑；--fresh 强制全新。
   --dry-run：不提交、checkpoint 写到 --checkpoint-dir（默认战役 results/；测试可指临时目录）。
   设置层先验（2026-09-15）：装载 settings 后按 region_kb.gate_priors 实测过闸率改写 decay/neutralization
-  （--set / --neutralization 钉住的维度不动；--no-settings-prior 关闭）；--review 收批后自动刷新 region_kb。
+  （--set / --neutralization / 组合 cells.json 钉住的维度不动；--no-settings-prior 关闭）；--review 收批后自动刷新 region_kb。
   退出码：0 正常；2 中止/前置不满足（此前恒 0，detached 启动器把中止当成功）。
 """
 import argparse
@@ -1099,15 +1099,23 @@ def _cmd_main(a, ctx):
                     ctx.settings[k] = v
         print(f"[set] 覆盖 settings.{k}={ctx.settings[k]!r}（本轮 wave={a.wave}）")
 
+    # ---- 区域 × 类别组合（2026-10-04）：config/cells.json 的回测 / 阈值覆盖 ----
+    # 直跑 CLI 也吃组合覆盖（workflow_batch_track 已把它们以 --set 传进来，这里看到的是已钉住的维度，不会重复改）。
+    # 显式 --set / --neutralization 优先于组合；被组合改写的维度记进 ctx.cell_pinned，下面的设置先验不再动它。
+    _cli_pinned = {kv.partition("=")[0] for kv in a.set if kv.partition("=")[0]}
+    if a.neutralization:
+        _cli_pinned.add("neutralization")
+    try:
+        ctx.bind_cell(getattr(a, "dataset", None), pinned=_cli_pinned)
+    except Exception as _e:
+        print(f"[cell] 组合绑定异常（不阻断，按区域配置跑）: {_e}")
+
     # ---- 设置层先验（2026-09-15 ①）：region_kb.gate_priors 的 decay/neutralization 实测过闸率 ----
     # 此前这两个维度只被渲染成文本进 GEM prompt（LLM 改不了仿真设置），S3 永远用 settings.json
     # 固定值。现按证据改写本轮设置；显式 --set / --neutralization 钉住的维度不动。
     if not a.no_settings_prior:
-        _pinned = {kv.partition("=")[0] for kv in a.set if kv.partition("=")[0]}
-        if a.neutralization:
-            _pinned.add("neutralization")
         try:
-            region_kb_mod.apply_settings_prior(ctx, pinned=_pinned, cfg=ctx.thresh("settings_prior"))
+            region_kb_mod.apply_settings_prior(ctx, pinned=_cli_pinned, cfg=ctx.thresh("settings_prior"))
         except Exception as _e:
             print(f"[settings-prior] 异常（不阻断）: {_e}")
 

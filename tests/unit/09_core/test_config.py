@@ -18,8 +18,8 @@ from wqb.config import (
     CONCURRENCY,
     GHOST_OPERATORS,
     MINING,
-    neutralization_best,
     OP_FAMILIES,
+    REGION_COUNTRY_SCOPE,
     PARADIGMS,
     PRODCORR_CEILING,
     RA_CHECK_NAMES,
@@ -330,11 +330,13 @@ def test_glb_universes_aligned_with_platform():
     assert "TOPDIV3000" in REGIONS["GLB"]["universes"]
 
 
-def test_neutralization_best_returns_campaign_conclusions():
-    assert neutralization_best("EUR") == "REVERSION_AND_MOMENTUM"
-    assert neutralization_best("GBR") == "INDUSTRY"
-    assert neutralization_best("IND") == "STATISTICAL"
-    assert neutralization_best("USA") is None  # 无实测结论
+def test_country_scope_covers_every_region_and_neutralization_best_is_gone():
+    """2026-10-04：`neutralization_best` 已删（零调用方、取值与 settings.json 相反）；country 范围覆盖全部区域。"""
+    import wqb.config as C
+    assert not hasattr(C, "neutralization_best") and not hasattr(C, "_NEUTRALIZATION_BEST")
+    assert set(REGION_COUNTRY_SCOPE) == set(REGIONS)
+    assert set(REGION_COUNTRY_SCOPE.values()) <= {"single", "multi"}
+    assert C.is_multi_country("eur") and not C.is_multi_country("DEU") and not C.is_multi_country("GBR")
 
 
 def test_ghost_operators_contains_neutralize():

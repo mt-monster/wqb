@@ -29,12 +29,6 @@ ECONOMIC_MECHANISM_KB: Dict[str, Dict[str, Any]] = {
             "拥挤交易导致信号衰减",
             "分析师羊群效应"
         ],
-        "region_adaptation": {
-            "USA": {"coverage_threshold": 0.6, "note": "覆盖充分，标准条件"},
-            "IND": {"coverage_threshold": 0.4, "note": "覆盖不足，需放宽阈值"},
-            "KOR": {"coverage_threshold": 0.5, "note": "中等覆盖，关注大盘股"},
-            "EUR": {"coverage_threshold": 0.55, "note": "覆盖良好，标准条件"}
-        },
         "expected_sharpe_range": (1.2, 2.5),
         "expected_turnover": "medium",
         "correlation_with_common_factors": {"value": 0.3, "momentum": 0.5, "quality": 0.4},
@@ -58,10 +52,6 @@ ECONOMIC_MECHANISM_KB: Dict[str, Dict[str, Any]] = {
             "小样本离散度噪声大",
             "行业特性导致离散度系统性差异"
         ],
-        "region_adaptation": {
-            "USA": {"note": "效果稳定，覆盖充分"},
-            "IND": {"note": "覆盖不足，谨慎使用"}
-        },
         "expected_sharpe_range": (0.8, 1.8),
         "expected_turnover": "low",
         "correlation_with_common_factors": {"value": -0.2, "volatility": 0.6}
@@ -83,10 +73,6 @@ ECONOMIC_MECHANISM_KB: Dict[str, Dict[str, Any]] = {
             "价值陷阱",
             "会计操纵"
         ],
-        "region_adaptation": {
-            "USA": {"note": "效果稳定"},
-            "IND": {"note": "财报质量参差，需筛选"}
-        },
         "expected_sharpe_range": (1.0, 2.0),
         "expected_turnover": "low",
         "correlation_with_common_factors": {"value": 0.4, "quality": 0.7, "momentum": 0.3}
@@ -125,10 +111,6 @@ ECONOMIC_MECHANISM_KB: Dict[str, Dict[str, Any]] = {
             "情绪指标滞后",
             "噪声交易主导"
         ],
-        "region_adaptation": {
-            "USA": {"note": "覆盖充分，效果稳定"},
-            "IND": {"note": "新闻覆盖不足，信号弱", "caution": True}
-        },
         "expected_sharpe_range": (0.7, 1.5),
         "expected_turnover": "high",
         "correlation_with_common_factors": {"momentum": 0.4, "volatility": 0.5}
@@ -161,10 +143,6 @@ ECONOMIC_MECHANISM_KB: Dict[str, Dict[str, Any]] = {
             "动量崩溃（momentum crash）",
             "高波动时期反转"
         ],
-        "region_adaptation": {
-            "USA": {"note": "效果稳定"},
-            "IND": {"note": "波动大，需缩短周期"}
-        },
         "expected_sharpe_range": (1.0, 2.0),
         "expected_turnover": "medium",
         "correlation_with_common_factors": {"momentum": 0.9}
@@ -255,8 +233,10 @@ def validate_mechanism_fit(
     warnings = []
     
     # 覆盖度校验
-    region_adapt = mech.get("region_adaptation", {}).get(region, {})
-    cov_threshold = region_adapt.get("coverage_threshold") or mech["optimal_conditions"].get("coverage_min", 0.5)
+    # 2026-10-04：删除各机制的 region_adaptation（USA/IND/KOR/EUR 的覆盖阈值与「谨慎」备注）——
+    # 无实证来源，且与 tracking/<R>/config/thresholds.json 的 dataset_health 区域地板重复、口径相反。
+    # 区域 × 类别的差异现在只在 tracking/<R>/config/cells.json（wqb.profiles 解析）。
+    cov_threshold = mech["optimal_conditions"].get("coverage_min", 0.5)
     
     if coverage < cov_threshold:
         score *= 0.5
@@ -270,11 +250,6 @@ def validate_mechanism_fit(
         if dispersion < disp_min:
             score *= 0.7
             warnings.append(f"dispersion {dispersion:.2f} < min {disp_min}")
-    
-    # 区域警告
-    if region_adapt.get("caution"):
-        score *= 0.6
-        warnings.append(f"region {region} caution: {region_adapt.get('note', '')}")
     
     return {
         "fit": score >= 0.5,
@@ -298,10 +273,6 @@ def format_mechanism_for_prompt(mechanism_id: str, region: str) -> str:
         f"- Expected Sharpe: {mech['expected_sharpe_range'][0]:.1f}-{mech['expected_sharpe_range'][1]:.1f}",
         f"- Optimal: {', '.join(f'{k}={v}' for k, v in mech['optimal_conditions'].items())}",
     ]
-    
-    region_adapt = mech.get("region_adaptation", {}).get(region)
-    if region_adapt:
-        lines.append(f"- Region {region}: {region_adapt.get('note', '')}")
     
     if mech.get("failure_modes"):
         lines.append(f"- Failure modes: {', '.join(mech['failure_modes'][:3])}")

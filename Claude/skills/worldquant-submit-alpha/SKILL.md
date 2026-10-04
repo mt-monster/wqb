@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-04
+last_verified: 2026-10-05
 name: worldquant-submit-alpha
 description: "把用户已确认的 REGULAR alpha 真实提交到 WorldQuant Brain 平台（POST /alphas/{id}/submit，不可逆）：workflow_submit_alpha 预检 → 用户确认后提交 → 四态响应处置（补发 / ASYNC_STUCK）。用户说“提交 alpha / submit / 上平台 / 落地”时用。不作提交判定（→ submit_verdict）、不处理 SUPER（→ wq-brain-superalpha）；PPA 人工通道与配额、点塔优选见 references/。"
 layer: L5

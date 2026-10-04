@@ -17,6 +17,14 @@
   4. 内置默认 _DEFAULT_GLOBAL（主闸 1.25/0.8）
   （2026-09-29 更正：此前 2/3 的先后与 load_mode_b_config 的实际覆盖顺序相反；由
   tests/unit/07_docs_skills/test_mode_b_qualification_doc.py 钉住。）
+  0. 区域 × 类别组合（tracking/<R>/config/cells.json 的 thresholds.overrides 里
+     `mode_b.sharpe_min` / `mode_b.fitness_min`，仅在调用方传 category 时生效）
+
+下限锁（2026-10-04，用户把「资格线 sharpe≥1.25 且 fitness≥0.8」列为不可违反的纪律）：
+  第 3/4 层（GLOBAL 台账 / 内置默认）的主闸就是下限。第 0/1/2 层只能把主闸往上收，
+  写得更低的值在读取时被钳回下限，原值留在 `_clamped_from`（不写库、不改文件）。
+  此前 7 个区的生效值低于下限（ASI/CHN/GBR/HKG/MEA 1.2/0.8、GLB/USA 1.0/0.6、EUR 区域台账
+  自适应学到的 1.15/0.68），见 docs/plans/2026-10-04-ra-region-category-split.md §2.3。
 
 判定模型：
   - 主闸：sharpe≥sharpe_min AND fitness≥fitness_min → 直接放行
@@ -103,13 +111,44 @@ def _read_thresholds_file(region: str) -> Optional[Dict[str, Any]]:
         return None
 
 
-def load_mode_b_config(store, region: str = "KOR") -> Dict[str, Any]:
-    """加载本区域生效的 Mode B 完整配置（主闸 + 旁路 + 判死线）.
+def _gate_value(gate: Dict[str, Any], key: str) -> float:
+    try:
+        return float(gate.get(key, _DEFAULT_MAIN[key]))
+    except (TypeError, ValueError):
+        return float(_DEFAULT_MAIN[key])
+
+
+def _read_cell_override(region: str, category: Optional[str]) -> Dict[str, float]:
+    """区域 × 类别组合对主闸的覆盖（cells.json；缺文件 / 缺组合 / 解析失败一律返回空）。"""
+    if not category:
+        return {}
+    try:
+        from wqb.profiles.cells import cell_threshold_overrides
+        ov = cell_threshold_overrides(region, category,
+                                      config_dir=os.path.dirname(_thresholds_path(region)))
+    except Exception as e:  # noqa: BLE001 — 组合覆盖是增强层，读不到不影响区域口径
+        logger.warning(f"read cells.json mode_b overrides for {region}/{category} failed: {e}")
+        return {}
+    out = {}
+    for k in ("sharpe_min", "fitness_min"):
+        v = ov.get(f"mode_b.{k}")
+        if v is not None:
+            try:
+                out[k] = float(v)
+            except (TypeError, ValueError):
+                pass
+    return out
+
+
+def load_mode_b_config(store, region: str = "KOR", category: Optional[str] = None) -> Dict[str, Any]:
+    """加载本区域（可选：区域 × 类别组合）生效的 Mode B 完整配置（主闸 + 旁路 + 判死线）.
 
     解析顺序：
-      1. 全局权威（GLOBAL ledger，缺省用 _DEFAULT_GLOBAL）
+      1. 全局权威（GLOBAL ledger，缺省用 _DEFAULT_GLOBAL）——其主闸同时是**下限**
       2. 区域 thresholds.json 的 _overrides 单字段覆盖（主闸/旁路阈值）
       3. 区域 ledger 的主闸 sharpe_min/fitness_min 覆盖（自适应学习写入）
+      4. 组合覆盖（category 非空时，读 cells.json）
+      5. 下限钳制：低于第 1 步主闸的值钳回下限，原值记 `_clamped_from`
 
     返回结构：
       {
@@ -117,6 +156,8 @@ def load_mode_b_config(store, region: str = "KOR") -> Dict[str, Any]:
         "bypass_rules": {...},   # 5 条旁路（含数值阈值字段）
         "hard_kill": {"two_year_sharpe_max": float},
         "_source": str,          # 主闸值来源（调试用）
+        "_floor": {...},         # 主闸下限（= 第 1 步的主闸）
+        "_clamped_from": {...},  # 仅当有覆盖值低于下限时出现
       }
     """
     # 1. 全局权威基底
@@ -127,6 +168,7 @@ def load_mode_b_config(store, region: str = "KOR") -> Dict[str, Any]:
         "hard_kill": dict(base.get("hard_kill") or _DEFAULT_GLOBAL["hard_kill"]),
         "_source": "GLOBAL_ledger" if _read_ledger(store, "GLOBAL") else "default",
     }
+    floor = {k: _gate_value(cfg["main_gate"], k) for k in ("sharpe_min", "fitness_min")}
 
     # 2. 区域 thresholds.json 的 _overrides（单字段覆盖主闸）
     mbq_file = _read_thresholds_file(region)
@@ -155,6 +197,27 @@ def load_mode_b_config(store, region: str = "KOR") -> Dict[str, Any]:
                     cfg["_source"] = f"region_ledger:{region}"
                 except (TypeError, ValueError):
                     pass
+
+    # 4. 区域 × 类别组合覆盖（cells.json，只在调用方给了 category 时读）
+    cell = _read_cell_override(region, category)
+    for k, v in cell.items():
+        cfg["main_gate"][k] = v
+        cfg["_source"] = f"cell:{region}/{category}"
+
+    # 5. 下限钳制：任何覆盖层都只能把主闸往上收
+    clamped = {}
+    for k in ("sharpe_min", "fitness_min"):
+        v = _gate_value(cfg["main_gate"], k)
+        if v < floor[k]:
+            clamped[k] = v
+            cfg["main_gate"][k] = floor[k]
+        else:
+            cfg["main_gate"][k] = v
+    cfg["_floor"] = floor
+    if clamped:
+        cfg["_clamped_from"] = clamped
+        logger.info(f"mode_b main gate for {region}{'/' + category if category else ''} "
+                    f"clamped to floor {floor} (overrides {clamped} from {cfg['_source']})")
 
     return cfg
 

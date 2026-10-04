@@ -1,0 +1,108 @@
+{
+ "schema_version": 1,
+ "region": "CHN",
+ "cells": {
+  "news": {
+   "status": "auto",
+   "datasets": [
+    "market_news_sent",
+    "news29",
+    "news_sentiment_enriched"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 45,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "news_sentiment_enriched",
+      "backtests": 31
+     },
+     {
+      "dataset": "market_news_sent",
+      "backtests": 8
+     },
+     {
+      "dataset": "news29",
+      "backtests": 6
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "CHN-MARKET-NEWS-SENT-COST-DEAD",
+      "family": "market_news_sent 新闻情绪/关注度族",
+      "text": "CHN market_news_sent 三个字段（company_news_sentiment_metric / company_news_popularity_score / deduplicated_news_item_count）不再投变体。除非找到能把 sentiment 主腿换手压到 <20% 同时保留 >",
+      "dataset": "market_news_sent",
+      "bound": "payload"
+     },
+     {
+      "id": "CHN-NEWS-SENTIMENT-COST-ARTIFACT-DEAD",
+      "family": "news_sentiment_enriched 语调族",
+      "text": "CHN news_sentiment_enriched 的 news_emotional_tone 语调族（含语调惊奇/主题分组/发布时点分组/有效性加权/报道条数加速度）不再投变体。除非能找到把换手压到 <10% 同时保留毛信号的构造（实测表明 ts_backfill 会破坏事件条件性、把信号换掉而非平滑）。",
+      "dataset": "news_sentiment_enriched",
+      "bound": "payload"
+     },
+     {
+      "id": "CHN-W4-NEGRANK-NOT-MIRROR-LESSON",
+      "family": "market_news_sent 关注度/情绪 -rank 反转结构",
+      "text": "禁止用「rank(x) 负 Sharpe 则 -rank(x) 得正 Sharpe」的镜像假设设计表达式。负 Sharpe 的反转信号需重做结构(换窗/换预处理/换信号)，不是取负。CHN market_news_sent 情绪-关注度价差(akLwM18W S1.01/2Y1.43)是唯一正向信号但强度不足过 CHN",
+      "dataset": "market_news_sent",
+      "bound": "inferred"
+     },
+     {
+      "id": "CHN-W5-SENTPOP-SPREAD-ROBUST-WALL-DEAD",
+      "family": "market_news_sent 情绪-关注度价差(ts_mean 22/44/66 + group/decay 变体)",
+      "text": "CHN market_news_sent 情绪-关注度价差判死：信号真实(S1.45/2Y1.65 最强)但 robust 子宇宙墙结构性(宽宇宙崩)，Mode B 结构/窗口/中性化改不了。CHN 严闸(LOW_SHARPE 2.07)+robust 墙双重卡死。该族在 CHN 过不了 robust 闸，放弃。",
+      "dataset": "market_news_sent",
+      "bound": "inferred"
+     }
+    ],
+    "wins": [
+     {
+      "id": "CHN-NEWS-SENTIMENT-REVERSAL-STRONG",
+      "family": "news_sentiment_reversal",
+      "text": "",
+      "dataset": null,
+      "bound": "keyword"
+     }
+    ]
+   }
+  },
+  "pv": {
+   "status": "auto",
+   "datasets": [
+    "pv27"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 16,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "pv27",
+      "backtests": 16
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "CHN-PV27-MONEYFLOW-COST-ARTIFACT-DEAD",
+      "family": "pv27 A-share money flow / holder structure",
+      "text": "CHN: any |S|>2 with tvr>0.3 must be mirror-tested before excitement; both-negative = cost artifact.",
+      "dataset": "pv27",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 0,
+ "unattributed_backtests": 0
+}

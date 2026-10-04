@@ -160,6 +160,7 @@
 | layer | 含义 | 例 |
 |---|---|---|
 | `L-RA` | 唯一编排入口 | `wq-brain-ra-pipeline` |
+| `L-RA-R` | RA 的区域分支（区域控制面板 + 区域 × 类别组合文件；**生成物**，改 `tracking/<R>/config/cells.json` 后 `$WQ_PY -m wqb.profiles render --apply`，不手改生成块） | `wq-brain-ra-kor` 等 14 个 `wq-brain-ra-<区域小写>` |
 | `L-PRE` | 开战役前的查表选集 | `wq-brain-campaign-matrix` |
 | `L-TOOL` | 战役执行引擎（被编排调用） | `wq-brain-campaign-toolkit` |
 | `L0` | 战役外的态势/情报 | `brain-next-move-analysis`、`brain-forum-browse`、`wq-brain-ppa-mining` |
@@ -663,3 +664,22 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 - **测试的两个环境前提**（Windows）：符号链接需开发者模式/管理员，否则 `test_pull_skills_safety`
   的链接识别用例 skip；`test_sync_skills_reports_no_drift` 会因「仓库已改 / 安装位未同步」的时序差失败，
   跑一次 `python tools/sync_skills.py` 即自愈——**判断回归归属前先看 `git status` 有没有你改过该文件**。
+
+### 8.14 区域 × 类别控制层（2026-10-04 落地；方案与落地记录 `docs/plans/2026-10-04-ra-region-category-split.md`）
+
+- **区域差异写数据，不写代码分支**：回测设置在 `tracking/<R>/config/settings.json`，阈值在 `thresholds.json`，
+  「区域 × 类别」组合的覆盖在 `cells.json`（只存覆盖，每条带 `_evidence`），跨区类别知识在
+  `src/wqb/profiles/category_cards.json`（只收 ≥ 2 区复现的结论），单国 / 多国口径在 `config.REGION_COUNTRY_SCOPE`。
+  棘轮 `tests/unit/07_docs_skills/test_region_control_ratchets.py`：代码里新增按区域代码字面量的分支 / 查表即红，
+  `thresholds.json` 新增没人读取的键即红；两份基线（`tests/fixtures/region_literal_baseline.json`、
+  `threshold_unread_keys_baseline.json`）只许减，修掉一条就删一条。
+- **解析单入口**：`wqb.profiles.resolve()`，人读用 `$WQ_PY -m wqb.profiles explain --region <R> --dataset <ds>`（每个生效值带来源层）。
+  消费方：`workflow_batch_track` 把组合回测覆盖以 `--set` 钉住；toolkit `CampaignContext.bind_cell` 让直跑 `pipeline.py` 同样生效
+  （设置先验不改被钉住的维度）；`mode_b_config.load_mode_b_config(store, region, category)` 读组合的 `mode_b.*`。
+- **锁定表**（`src/wqb/profiles/locked.py`）任何层都不能覆盖：禁混信号、Mode B 主闸下限（GLOBAL `mode_b_qualification`，只许收紧——
+  `mode_b_config` 加载时钳制并在 `_clamped_from` 留档，`mode_b_adaptive` 写库前钳制）、D0-P、平台线、窗口白名单、
+  已点亮塔不作主数据集、truncation 不作扫描维度、提交前用户确认。
+- **区域 skill 是生成物**：`Claude/skills/wq-brain-ra-<区域小写>/`（layer `L-RA-R`）的生成块只由
+  `$WQ_PY -m wqb.profiles render --apply` 写，手写内容只放 `profiles:manual` 块（重渲原样保留）。改了 `cells.json` /
+  profile / 类别卡之后：`render --apply` → `tools/sync_skills.py --apply` → `$WQ_PY -m wqb.profiles check`（测试守面板与 settings.json 一致、无孤儿文件）。
+  判死 / 胜绩刷新用 `sync-cells --region <R> --apply`（只写文件、不写库，保留人写字段）。

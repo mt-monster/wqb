@@ -4,6 +4,15 @@
 > 约定：新条目加在最上面；一条一行：`日期 · skill · 改了什么（为什么） → 证据 / 落点`。事故与起因写进对应 skill 的 `references/incidents.md`，这里只留指针。
 > 决策与证据登记：[`docs/design/skills_review_decisions.md`](../../docs/design/skills_review_decisions.md)；逐条处置：`reports/skills_review_20260929_closure.md`。
 
+## 2026-10-05 · RA 按「区域 × 信号类别」拆分（DEC-79…84）
+
+用户 2026-10-04：「还是给区域 / 组合拆分实现，我希望后面能更细粒度的对每个 region 下的回测把控」。方案与落地记录：`docs/plans/2026-10-04-ra-region-category-split.md`。
+- **区域 skill**（DEC-79）：新增 14 个 `wq-brain-ra-<区域小写>`（layer `L-RA-R`）与 103 个组合分支文件；生成物，控制值在 `tracking/<R>/config/cells.json` → `$WQ_PY -m wqb.profiles render --apply`
+- **Mode B 主闸下限**（DEC-80）：1.25 / 0.8 只许收紧，加载与自学习都钳制；7 区 thresholds 改 `$ref` 全局
+- **组合接线**（DEC-81）：`batch_track` 以 `--set` 钉住组合覆盖，`pipeline.py` 直跑经 `bind_cell`；本轮没写任何覆盖值
+- **证据归属**（DEC-82）、**区域字面量收口**（DEC-83，棘轮基线 5 → 3）、**冲突裁决新链 + JPN 加权文案更正**（DEC-84）
+- `wq-brain-ra-pipeline` 步 1 路由到区域 skill、步 3 / 4 / 7 / 8 先读组合文件；`wq-brain-alpha-optimization-v1` B3 先取组合杠杆
+
 ## 2026-10-04 · 对照 WorkBuddy 记忆的 RA 流程审查整改（DEC-72…78）
 
 用户 2026-10-04：「按最佳方案和性价比决策并推进落地」。依据 = WorkBuddy 记忆 2026-10-01 ~ 10-03（`.workbuddy/memory/`，只读）；与同时在改同一工作树的 WorkBuddy 会话错开（它改 `rules.py` 的 `inject_rules` 与规则 JSON 的 `when` / `emit`，本轮只动稀释相关片段）。本批按显式路径 + 块级切分提交，并行会话的未提交改动一块没带；没带的几处见下面的 ⚠ 与 DEC-78 ⑥ ⑦。

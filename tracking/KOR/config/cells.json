@@ -1,0 +1,1134 @@
+{
+ "schema_version": 1,
+ "region": "KOR",
+ "cells": {
+  "analyst": {
+   "status": "auto",
+   "datasets": [
+    "analyst10",
+    "analyst14",
+    "analyst16",
+    "analyst44",
+    "analyst_consensus",
+    "analyst_factor_signals"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 175,
+    "ra_clean": 13,
+    "prod_measured": 2,
+    "prod_clean": 2,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "analyst10",
+      "backtests": 105
+     },
+     {
+      "dataset": "analyst44",
+      "backtests": 42
+     },
+     {
+      "dataset": "analyst16",
+      "backtests": 15
+     },
+     {
+      "dataset": "analyst14",
+      "backtests": 8
+     },
+     {
+      "dataset": "analyst_consensus",
+      "backtests": 3
+     },
+     {
+      "dataset": "analyst_factor_signals",
+      "backtests": 2
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-ANALYST-FACTOR-SIGNALS-EPS-GROWTH-NOSIGNAL-20261004",
+      "family": "analyst_eps_growth_factors",
+      "text": "冷门数据集先 1-2 条裸探针验 IS 强度再投入完整波次；|S|<0.5 即判死，勿直接发 8 条完整波（d27 教训：8 条全灭 best S=0.56）",
+      "dataset": "analyst_factor_signals",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANALYST14-DISAGREEMENT-NOSIGNAL-20261003",
+      "family": "analyst_estimate_dispersion",
+      "text": "★ 冷门 ≠ 有信号。白名单里 medAlphaCnt≈1 的数据集仍可能完全无预测力。『社区未占』只保证 prod 空间，不保证 IS 强度。选集应先做 1-2 条裸探针验 IS 强度，再投入完整波次。",
+      "dataset": "analyst14",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANALYST16-EST-PCT-DEAD",
+      "family": "analyst16",
+      "text": "analyst16不再投任何变体",
+      "dataset": "analyst16",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANL10-INNOVATION-DEAD",
+      "family": "innovation_score",
+      "text": "analyst10 innovation_score 族（pre/sal/dps innovation_score + innovate_increase/decrease）判死，不再投任何变体",
+      "dataset": "analyst10",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANL16-EVENTSPARSE-WEAK",
+      "family": "analyst",
+      "text": "Do not reinvest in analyst16 raw event fields in KOR; only revisit if combined with ts_backfill+trade_when AND a fundamentally stronger underlying (e.g. cross-d",
+      "dataset": "analyst16",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANL16-MODEA-CEILING",
+      "family": "analyst_estimate_modea",
+      "text": "anl16_afterest_percentage 不再投 ModeA 变体",
+      "dataset": "analyst16",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANL44-ANALYST-DEAD",
+      "family": "analyst_estimate",
+      "text": "anl44_* 系列字段不再投任何变体",
+      "dataset": "analyst44",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANL44-EPSREVISION-PRODWALL",
+      "family": "analyst-eps-revision",
+      "text": "Do not submit any KOR eps_estimate revision momentum variant (prod>=0.7 invariant). Recipe kept for leg-swap research: industry grouping +0.10S vs sector, ts_de",
+      "dataset": "analyst44",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANLCONS-EPSRATIO-DEAD",
+      "family": "analyst_consensus.eps_revision",
+      "text": "禁止再用 4w_prior/当期 比率作为主信号；若再用一致预期需走意外值/分散度压缩等事件型结构",
+      "dataset": "analyst_consensus",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-ANLCONS-GROSSMARGIN-DEAD",
+      "family": "analyst_consensus.grossmargin",
+      "text": "禁止再用 analyst_consensus 的 grossmargin 族字段构造信号；dividend 修正族仅微弱正向（≤0.39）不足以成线，低优先",
+      "dataset": "analyst_consensus",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "use": [
+     "只作辅助腿 / 条件（KOR profile 绿榜改写，2026-10-04）"
+    ],
+    "avoid": [
+     "analyst10 / 16 / 44 / consensus 作主信号撞 prod 墙（RULES §G）；不再上提 analyst 族作主数据集（KOR profile 步 2）"
+    ]
+   }
+  },
+  "fundamental": {
+   "status": "auto",
+   "datasets": [
+    "fundamental21",
+    "fundamental86",
+    "fundamental93",
+    "fundamental94",
+    "other466"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 171,
+    "ra_clean": 20,
+    "prod_measured": 8,
+    "prod_clean": 2,
+    "prod_blocked": 6,
+    "top_datasets": [
+     {
+      "dataset": "other466",
+      "backtests": 110
+     },
+     {
+      "dataset": "fundamental94",
+      "backtests": 25
+     },
+     {
+      "dataset": "fundamental93",
+      "backtests": 14
+     },
+     {
+      "dataset": "fundamental21",
+      "backtests": 12
+     },
+     {
+      "dataset": "fundamental86",
+      "backtests": 10
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-FND21-ESG-DEAD",
+      "family": "esg_sentiment",
+      "text": "fnd27_allcategories_* 系列字段不再投任何变体",
+      "dataset": "fundamental21",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-FND21-ESG-WEAK",
+      "family": "esg-news-derived",
+      "text": "Do not probe ESG/news-derived fundamental score datasets in KOR (fundamental21 fnd21/fnd27 families); governance quality, ESG momentum, pulse reversal and scand",
+      "dataset": "fundamental21",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-FND86-SCORE-WEAK",
+      "family": "slow_fundamental_score",
+      "text": "KOR 慢变评分类基本面单独使用强度上限约 0.85，不要再投入打磨；仅作组合辅助腿参考",
+      "dataset": "fundamental86",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-FND86-WEAK-SIGNAL",
+      "family": "",
+      "text": "评分类数据集（CapitalCube风格decile评分）在KOR信号强度不足，优先级降低，仅在组合腿慢腿候选池保留average_score",
+      "dataset": "fundamental86",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-FND93-TAXACCRUAL-WEAK",
+      "family": "fundamental",
+      "text": "Do not reinvest in fundamental93 in KOR unless combined with a confirmed stronger cross-dataset leg; US accrual anomaly direction does not transfer.",
+      "dataset": "fundamental93",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTH466-QUANTILE-NETINC-FAMILY-DEAD-20261004",
+      "family": "other466 quantile 骨架 × 净利族分子（prod 墙）",
+      "text": "同骨架已有 2 颗 ACTIVE（0mrnWojG/gJZ7AvZO）；净利族分子（consol_net_inc/net_inc_basic_beft_xord/net_inc_dil/net_inc_basic）互相同义 ⇒ prod 必撞 >0.7",
+      "dataset": "other466",
+      "bound": "payload"
+     }
+    ],
+    "wins": [
+     {
+      "id": "KOR-OTHER466-CORE-EARN-YIELD-MKT-WIN",
+      "family": "other466 核心盈利资产收益率价差 × market 轴",
+      "text": "",
+      "dataset": "other466",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTHER466-WIN-A1NXddRw",
+      "family": "other466 利润÷总资产 族",
+      "text": "",
+      "dataset": "other466",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTHER466-WIN-wpZkk1Mp",
+      "family": "other466 利润÷总资产 族",
+      "text": "",
+      "dataset": "other466",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-WIN-OTH466-QUANTILE-NETINC-CURRASSET-20261003",
+      "family": "KOR other466 净利/流动资产比率的 quantile 包装形态——全闸通过并提交 ACTIVE，fundamental 塔第 2/3 颗",
+      "text": "★★ 分母是破 SELF 墙的真变量：同分子换分母使 self 0.7422→0.6244、prod 0.8061→0.6843。该族最优基准是『资产类』口径（bs_assets_curr_q 2Y2.22 / bs_eq_tot_q 2.12），三种『权益/股本』口径（q_qe_moc_sb 1.12 / q_qe_",
+      "dataset": "other466",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-WIN-OTH466-QUANTILE-PTXINC-EQUITY-20261003",
+      "family": "KOR other466 财务比率族用 quantile 包装（非 signed_power）后全闸通过并提交 ACTIVE",
+      "text": "OTHER466 利润/权益比率的 quantile 包装形态：内层 industry 去行业盈利水平 + 1008 日历史分位 + 外层 market 取秩 + 高斯分位变换。IS 四闸全清 + prod 0.6413 / self 0.4880 双过，2026-10-03 提交 ACTIVE 点亮 KOR/D1/F",
+      "dataset": "other466",
+      "bound": "payload"
+     }
+    ]
+   },
+   "note": "KOR 当前唯一活路（other466 财务比率族，平台类别 FUNDAMENTAL，fundamental 塔 1.6×）",
+   "generation": {
+    "use": [
+     "other466 财务比率：经营利润类分子 / 资产或市值类分母，group_rank 到 market 轴，再 ts_rank 504（RULES §G）",
+     "分母是最大未测空间：已测 28 组合里分母 18 次集中在 bs_assets_tot_q（RULES §G）"
+    ],
+    "avoid": [
+     "prod 饱和字段组合：oth466_bs_assets_tot_q 与 oth466_is_oper_inc_q 同时命中即拦，须换分子分母（RULES §G）",
+     "慢变基本面族 fnd86 / 89 / 93 / f21 四连死；fundamental17 202 条天花板 1.30（RULES §G）"
+    ],
+    "skeletons": [
+     {
+      "text": "quantile(ts_rank(group_rank(divide(分子, 分母), market), 504))",
+      "evidence": "外层包装用 quantile：在 signed_power 版基础上 2Y 1.51→1.56、prod 0.6544→0.6397，外层轴取 market 后 2Y 1.62 全闸过（KOR profile / WorkBuddy MEMORY §1.1）"
+     },
+     {
+      "text": "signed_power(ts_rank(group_rank(divide(分子, 分母), market), 504), 0.5)",
+      "evidence": "A1NXddRw S 2.11 / prod 0.6547 已 ACTIVE（历史版本，signed_power 制造了「假性不可能三角」）"
+     }
+    ],
+    "notes": [
+     "SUB / 2Y 二分：is_ptx_inc_norm_q 过 SUB 不过 2Y；is_consol_net_inc_q 过 2Y 不过 SUB（RULES §G）",
+     "分母口径决定 SELF / prod 与 2Y：资产侧 2Y 2.22，权益侧 1.12–1.18（KOR profile）"
+    ]
+   },
+   "s4": {
+    "levers": [
+     {
+      "id": "kor-fund-quantile",
+      "what": "外层 signed_power(·, 0.5) 换成 quantile(·)，骨架其余冻结",
+      "evidence": "2Y 1.51→1.56、prod 0.6544→0.6397（WorkBuddy MEMORY §1.1）",
+      "no_extrapolate": true
+     },
+     {
+      "id": "kor-fund-axis",
+      "what": "外层分组轴 sector → market（效果依赖包装算子，换了包装要重测）",
+      "evidence": "quantile 版换轴后 2Y 1.62 全闸过（WorkBuddy MEMORY §1.1）",
+      "no_extrapolate": true
+     },
+     {
+      "id": "kor-fund-denominator",
+      "what": "self / prod 墙先换分母、不换分子",
+      "evidence": "同分子只换分母：self 0.7422→0.6244、prod 0.8061→0.6843；同分母扫 8 个分子无一过（WorkBuddy MEMORY §1.2）",
+      "no_extrapolate": true
+     }
+    ],
+    "avoid": [
+     {
+      "what": "同族兄弟连提：后来者的 prod 会被顶高（0.67→0.98），同族一次只提 1 颗",
+      "evidence": "KOR profile 避坑"
+     },
+     {
+      "what": "add(卖, 买) 这类经济聚合当分母：闸 5 判 equal_weight_leg_add，改单字段分母或同源 subtract 价差",
+      "evidence": "KOR 七约束 #3"
+     }
+    ]
+   }
+  },
+  "insiders": {
+   "status": "auto",
+   "datasets": [
+    "insiders5"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 27,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "insiders5",
+      "backtests": 27
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-INSIDERS5-CEILING-20260909",
+      "family": "insider_x_pv_x_analyst",
+      "text": "",
+      "dataset": "insiders5",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "use": [
+     "方向写法：取负放在 rank 之后、保持零均值，例如 subtract(0.5, group_rank(X, g))：S +0.71、2Y +2.42（决策表 D6，KOR insd5）"
+    ],
+    "avoid": [
+     "insiders5 天花板 1.05、insider_feats prod 0.7185（RULES §G）"
+    ]
+   }
+  },
+  "institutions": {
+   "status": "auto",
+   "datasets": [
+    "fund_holdings_panel"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 0,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [],
+    "dead_ends": [
+     {
+      "id": "KOR-FUND-HOLDINGS-PANEL-DEAD",
+      "family": "fund_holdings_panel account flow/concentration",
+      "text": "do not probe fund_holdings_panel again; event-aggregate flow fields here are noise",
+      "dataset": "fund_holdings_panel",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "model": {
+   "status": "auto",
+   "datasets": [
+    "ai_equity_alpha",
+    "ai_factor_transfer",
+    "behavioral_signals",
+    "model37",
+    "multi_source_model",
+    "predictive_starmine",
+    "price_signal_dl",
+    "quant_factor_lib"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 2,
+    "ra_clean": 0,
+    "prod_measured": 4,
+    "prod_clean": 4,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "model37",
+      "backtests": 2
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-AI-FACTOR-TRANSFER-DEAD",
+      "family": "ai_factor_transfer technical clones",
+      "text": "do not probe ai_factor_transfer again; momentum-source aliases already covered by pv family dead-end",
+      "dataset": "ai_factor_transfer",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-AIEQUITY-PROBE-DEAD",
+      "family": "ai_equity_alpha probe",
+      "text": "VECTOR AI因子库 zscore/差分探针方向不再挖; CW 1.0 事件日集中为 KOR 事件类数据通病",
+      "dataset": "ai_equity_alpha",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-AI_FACTOR_TRANSFER-DEAD",
+      "family": "ai_factor_transfer",
+      "text": "ai_factor_transfer 不再投入; 避免同类 AI 转移技术指标数据集",
+      "dataset": "ai_factor_transfer",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-BEHAVIORAL-DEAD",
+      "family": "behavioral_signals 行为金融",
+      "text": "勿再挖 behavioral_signals 全族; wave71 未闭环记录已由 wave86 补全判死",
+      "dataset": "behavioral_signals",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-MDL37-TEXTCREDIT-NOSIGNAL-20261004",
+      "family": "model37 text-mined credit risk / document attention",
+      "text": "",
+      "dataset": "model37",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-MSM-5D-COMBO-DEAD",
+      "family": "multi_source_model 5d 组合族",
+      "text": "multi_source_model 5d 短周期组合族不再挖 (fitness 天花板 0.99 < 1.0 且 2y 天花板 1.24 < 1.58, 提交硬闸结构性无解)",
+      "dataset": "multi_source_model",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PREDSTARMINE-REVCNT-DEAD",
+      "family": "predictive_starmine 修正计数",
+      "text": "predictive_starmine 修正计数类 (upward/downward_revision_count) 与 score_21 慢变量不再设计",
+      "dataset": "predictive_starmine",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PREDSTARMINE-REVSCORE-DEAD",
+      "family": "predictive_starmine 修正评分族",
+      "text": "predictive_starmine 修正评分/修正计数类字段不再设计任何表达式; 差分激活对该族反向",
+      "dataset": "predictive_starmine",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PREDSTARMINE-VALUE-DEAD",
+      "family": "predictive_starmine value 配方",
+      "text": "predictive_starmine 不再设计 value 风格 (EP yield/PE 水平) 表达式",
+      "dataset": "predictive_starmine",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PRICE-SIGNAL-DL-DEAD",
+      "family": "price_signal_dl normalized technicals",
+      "text": "do not probe normalized technical indicator datasets in KOR",
+      "dataset": "price_signal_dl",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PRICE_SIGNAL_DL-DEAD",
+      "family": "price_signal_dl",
+      "text": "price_signal_dl 不再投入; 若未来平台数据更新可重探, 仅用 normalized_* 系列",
+      "dataset": "price_signal_dl",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-QUANT-FACTOR-LIB-DEAD",
+      "family": "quant_factor_lib credit risk",
+      "text": "do not probe credit risk datasets in KOR again",
+      "dataset": "quant_factor_lib",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "news": {
+   "status": "auto",
+   "datasets": [
+    "news38",
+    "news50",
+    "news54"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 27,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "news38",
+      "backtests": 15
+     },
+     {
+      "dataset": "news50",
+      "backtests": 12
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-NEWS38-HEADLINETONE-DEAD",
+      "family": "news_headline_sentiment",
+      "text": "KOR 新闻标题情绪族（news38/mmp_nlp/news_sentiment_transfer）已三波判死，不再投入；新闻类在 KOR 仅保留事件计数/时间模式类尝试",
+      "dataset": "news38",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-NEWS38-SENTIMENT-DEAD",
+      "family": "",
+      "text": "新闻情绪类数据集（news38/news_sentiment族）在KOR判死，不再投任何变体",
+      "dataset": "news38",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-NEWS50-EVENTSCORE-WEAK",
+      "family": "news-event-scores",
+      "text": "Do not probe KOR RavenPack event-score datasets (news50/news87/news96/news141) with tone or event-score fields; analyst revision momentum only works via IBES es",
+      "dataset": "news50",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-NEWS54-NO-SIGNAL",
+      "family": "",
+      "text": "事件日历类数据集（news54/other78）无数值信号字段，不投探针，直接判死",
+      "dataset": "news54",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "avoid": [
+     "新闻情绪族 news38 / 50 / 54 / 79 四连死（RULES §G）"
+    ]
+   }
+  },
+  "other": {
+   "status": "auto",
+   "datasets": [
+    "acquisition_model",
+    "equity_forum_data",
+    "insider_feats",
+    "kor",
+    "ml_factor_proj",
+    "other455",
+    "other496",
+    "other532"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 10,
+    "ra_clean": 0,
+    "prod_measured": 4,
+    "prod_clean": 2,
+    "prod_blocked": 2,
+    "top_datasets": [
+     {
+      "dataset": "other455",
+      "backtests": 8
+     },
+     {
+      "dataset": "other532",
+      "backtests": 2
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-ACQ-MODEL-DEAD",
+      "family": "acquisition_model 收购概率",
+      "text": "勿再挖 acquisition_model 收购概率/文本因子类信号；model170 隐含估值单独保留",
+      "dataset": "acquisition_model",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-ANALYST44-WEAK-SIGNAL",
+      "family": "",
+      "text": "analyst44一致预期类字段在KOR信号强度不足，不再投任何变体",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-ANL10-MODEA-AGGRESSIVE-OVERFIT",
+      "family": "mode_a_parameter_tuning",
+      "text": "",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-ANL10-NUMS-NEGLECTED-PREMIUM",
+      "family": "neglected_firm_premium",
+      "text": "",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-ANL10-REVISE-VALUE-CEILING",
+      "family": "analyst10 revise_value 修正幅度族",
+      "text": "KOR/SECTOR/TOP600 下 analyst10 revise_value 族禁止再挖（裸信号/组合/参数均判死）；如需 analyst 系信号，转向 innovation_score 净方向族（wave97 1号 sharpe 0.26 也弱）或 sal_revise_ratio 族",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-ANL10-TSRANK252-PRODWALL",
+      "family": "prod_correlation_wall",
+      "text": "",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-E10-CLUSTER-SH-DEAD",
+      "family": "E10 评级2+簇内SH 混合 (wave95)",
+      "text": "评级修正×SH 族已饱和(2 ACTIVE + 缓冲), 新候选必须先本地互相关矩阵确认 <0.7 再投入仿真",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-EPS-REVISION-SPREAD-PROD-FLOOR-0723",
+      "family": "eps_estimate_4wk_change x pv106 spread",
+      "text": "该族 prod 地板 0.7231（两腿 E5vql38G），四种解拥挤手段全部失败，无法降到 0.70 以下。",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-FND93-ACCRUALS-DEAD",
+      "family": "signal_family",
+      "text": "fnd93 全部字段判死，不再投任何变体",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-FND94-FORWARD-PROFITABILITY",
+      "family": "signal_direction",
+      "text": "fnd94 rt_capex_sales_q/rt_psales_q/rt_net_mgn_q 等profitability族表达式必须reverse或subtract取反",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-FORUM-DEAD",
+      "family": "equity_forum_data 论坛情绪/注意力",
+      "text": "勿再挖 equity_forum_data 及同类论坛评论量/注意力信号; 事件流字段(CW 结构性集中)均需先验证 CW",
+      "dataset": "equity_forum_data",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-FUNDAMENTAL89-ACCRUALS-DEAD",
+      "family": "fundamental89 应计异象(Sloan accruals anomaly)",
+      "text": "KOR TOP600下fundamental89应计异象族禁止再挖(裸信号/组合均判死); 慢变基本面质量因子在KOR无截面预测力, 转向分析师预期变化类或价格/量衍生信号",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-HEDGE3-Q4Q5-WHITESPACE-DEAD",
+      "family": "short_horizon_hedge3 quantile4/5/confidence legs",
+      "text": "only hedge3 quantile1_5d_pred usable (88lr21xo); do not reuse q2-q5/confidence legs",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-INSIDER-PROD-SATURATED",
+      "family": "insider_feats 内部人交易信号族",
+      "text": "KOR insider_feats 信号族禁止再挖 (裸信号/字段组合/中性化/辅助信号均无法突破 PROD 0.7 硬闸); 如需内部人交易信号, 必须跨数据集混合且 PROD <0.7",
+      "dataset": "insider_feats",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-ML-FACTOR-PROJ-DEAD",
+      "family": "ml_factor_proj change- fundamentals",
+      "text": "do not probe fundamental change-family datasets in KOR",
+      "dataset": "ml_factor_proj",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-MLPROJ-RATING-SH-SATURATED",
+      "family": "ml_factor_proj 评级修正×短周期混合族",
+      "text": "评级修正×短周期混合族变体空间已挖尽: 新变体与已提交 88lr21xo/A1lb2KpR 及 production book 相关>0.7 提交必 FAIL PROD_CORRELATION; 不再扫该组合变体",
+      "dataset": "ml_factor_proj",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-MODEL219-QUALITY-DEAD",
+      "family": "model219 盈余质量/前瞻估值族",
+      "text": "下次 model219 不投入慢变基本面族; 可留作评级修正类的分组器候选",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-MODEL313-DEAD",
+      "family": "model313 knowledge capital",
+      "text": "do not probe knowledge capital datasets in KOR again",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-NEWS79-SENTIMENT-DEAD",
+      "family": "news79 event-stream sentiment",
+      "text": "news sentiment event fields unusable with decay4 daily aggregation on KOR; would need event-anchored persistence design before retry",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-OTH496-AFTERCONS-MODEA-CEILING",
+      "family": "aftercons_percentage",
+      "text": "other496 aftercons_percentage 族参数层天花板确认（decay=2/窗口5/22/66/组合腿/双信号全灭），不再投任何变体",
+      "dataset": "other496",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTH496-RETURN-WEAK",
+      "family": "pure_return_signals",
+      "text": "oth496 纯收益字段（returns2/4/10/20/60/250/252）在 KOR/D1 仅有微弱短期反转，与平台动量/反转族高度同质，不再投入新变体。",
+      "dataset": "other496",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTH496-TIMESTAMP-TRAP",
+      "family": "field-semantics",
+      "text": "oth496_returns*_t 字段是时间戳（Timestamp，cov=1.0）不是收益变换；凡 description 含 'Timestamp for' 的 _t 字段一律不得作为信号输入；信号只能用 returns2/3/4/10/20/60/100/150/250/252/500/750 原值字段（cov",
+      "dataset": "other496",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTHER455-GROUP-CLUSTER-DEAD",
+      "family": "other455 GROUP cluster 分组器",
+      "text": "GROUP cluster 作分组器包裹评级修正削信号: 簇内同质化后 alpha 被平均, 簇内排名相对全网 rank 无增量; 不再投入",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-OTHER455-NETWORK-EMBEDDING-DEAD",
+      "family": "other455 network embedding PCA MATRIX",
+      "text": "KOR OTHER 不再重复 other455 n2v/roam MATRIX pca_fact*_value 探针; 若再攻仅剩 GROUP cluster 字段(vec_*包裹) 或与已验证金矿(评级修正/model170)跨数据集混合",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-OTHER455-RELATION-EMBED-DRIFT-NOSIGNAL-20261004",
+      "family": "supply_chain_graph_embedding_drift",
+      "text": "图嵌入 PCA 分量（*_pca_fact*_value）不可作 alpha 输入：符号随 PCA 对齐随机翻转，绝对水平无经济含义，时序漂移亦无横截面预测力。KOR 已验证。若日后重试需换非 PCA 的连续 latent score 且先裸探针。",
+      "dataset": "other455",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTHER455-REVISION-CLUSTER-DEAD",
+      "family": "other455 prediction x rating revision",
+      "text": "评级修正(change_6m_rating_revision)为腿的任何 other455 混合族禁止再挖, 与 ACTIVE 88lr21xo/A1lb2KpR 同族",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-OTHER553-ABSOLUTE-DEAD",
+      "family": "",
+      "text": "other553绝对值类分析师预期字段在KOR判死，不再投任何变体",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PV106-COST-DISPERSION-COVERAGE-DEAD",
+      "family": "pv106 transaction_cost_maximum/median dispersion",
+      "text": "KOR 不再尝试 transaction_cost_maximum/median 作为主信号。配非稀疏腿后 longCount 恢复到 283-322，但 sharpe 也只有 0.52-0.72——稀疏信号被稀释后无贡献。",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PV30-NO-SIGNAL",
+      "family": "",
+      "text": "pv30行业聚类标签数据集在KOR判死，无数值信号字段",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PVDOM-SECTOR-VARIANTS-SATURATED",
+      "family": "gvm+pv20 sector-wrapped recipe variants",
+      "text": "Do not mine variants of the wpjJK60l recipe; sector skeleton remains reusable only with non-gvm/pv signal sources",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-RISK88-SEMI-ANALYST-CEILING",
+      "family": "",
+      "text": "risk88慢腿+analyst16快腿组合在KOR SECTOR中性化下S≤1.42，不再投参数变体",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-SHORTINTEREST3-DEAD",
+      "family": "shortinterest3 borrow/lending data",
+      "text": "KOR securities-lending data at rate-bin granularity is unusable for cross-sectional factors; do not re-mine shortinterest3",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-SUBINDUSTRY-PROD-SATURATED",
+      "family": "neutralization",
+      "text": "KOR区域REV1类信号禁用SUBINDUSTRY中性化；prod安全设置是STATISTICAL或SECTOR",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-VALUE-QUALITY-SEEDS",
+      "family": "price_volume_quantile1_* / short_term_regime* 变体族（value/quality 风格，含 analyst25 旧快照族）",
+      "text": "KOR 85 个 value/quality 草稿全部勿再提交；区域隔离不解码风格因子",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-W182-FND93-ACCRUALS-NOSIGNAL-DEAD",
+      "family": "fundamental93 应计/递延税/费用/负债比率 单信号(取负)",
+      "text": "KOR fundamental93 判死(fast_kill 8探针无|S|>=0.5)。应计/递延税质量族在 KOR 无信号，与 GLB fundamental23 判死(慢信号 turnover 墙+无信号)跨区一致。fundamental 族(fundamental93/86 同属)在 KOR 受限，同族其他数据",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-WAVE104-FAMILY-CORR-DEAD",
+      "family": "wave91c 配方家族快腿变体",
+      "text": "wave91c 配方家族 (评级修正 x SH 快腿) 已达扩展天花板, 不再做同族快腿变体; 需结构性差异化 (换慢腿族/换区域/换信号源)",
+      "dataset": "kor",
+      "bound": "inferred"
+     }
+    ],
+    "wins": [
+     {
+      "id": "KOR-ANL10-SMARTEST-SP-TSRANK-INDGROUP",
+      "family": "analyst_pred_surps",
+      "text": "",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-COMBO-LEG-CONSTRAINT",
+      "family": "methodology",
+      "text": "",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-INSIDERS5-CLEAN-FAMILY-OPENED",
+      "family": "insiders5 ownership level x pv106 spread",
+      "text": "",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-RATING-REV-SH-MIX-WIN",
+      "family": "wave91c 跨数据集混合: 评级修正(ml_factor_proj) × short_horizon_hedge3_quantile1_5d_pred(model170) 组合, 2 RA 提交 ACTIVE",
+      "text": "慢变量 2y 金矿(评级修正 2.14) × 短周期低相关信号(SH) 混合三闸全过: 评级2+SH1 → 1.77/1.40/2y 2.52; 评级1+SH3 → 1.83/1.14/2y 2.34。与同周期慢信号(LT)混合全灭",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-REV1-COMBO-WIN",
+      "family": "combo_leg",
+      "text": "",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-SHRT38-VALLEY-BREAKTHROUGH-20261004",
+      "family": "shortinterest38 净买入占比 × 窗口谷破 prod 墙",
+      "text": "窗口微调 = 唯一只动 prod 不动 2Y 的旋钮。prod 直方图 [0.7,0.8) 桶 n=0 ⇔ 过线（12/12 精确）。amt net_buy/(buy+sell) 谷 W∈[408,480]；oth466 净利/资产谷也在 [420,480]。但非通用：qty 谷底 0.703、大窗区无效。",
+      "dataset": "kor",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-W113-PVDOM-SECTOR-WIN",
+      "family": "wave113 grp_sec wpjJK60l: gvm(1x)+pv20(2x) blend wrapped group_neutralize(sector) -> PROD 0.6993 PASS, submitted ACTIVE ",
+      "text": "value_mom slow axis + price_volume_quantile1_20d_pred fast leg + expression-level group_neutralize(sector); sector strip is the only proven PROD-wall exit for t",
+      "dataset": "kor",
+      "bound": "inferred"
+     }
+    ]
+   },
+   "generation": {
+    "avoid": [
+     "other455 n2v 网络嵌入全灭；other496 _t 时间戳陷阱；other553 分析师绝对值全灭（RULES §G）"
+    ]
+   }
+  },
+  "pv": {
+   "status": "auto",
+   "datasets": [
+    "continuation_score",
+    "intraday_pv_feats",
+    "pattern_scores",
+    "pv106",
+    "pv30"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 40,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "pv106",
+      "backtests": 32
+     },
+     {
+      "dataset": "intraday_pv_feats",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-CONTINUATION-SCORE-DEAD",
+      "family": "continuation_score chart-pattern similarity",
+      "text": "white space does not imply signal; do not re-mine continuation_score on KOR",
+      "dataset": "continuation_score",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-CONTINUATION-SCORE-PROBE-DEAD",
+      "family": "continuation_score chart pattern",
+      "text": "KOR 图表形态延续族 (chart_cnn_alpha/continuation_score) 均判死; 形态相似度信号 KOR 天花板~0.34, 不再优先挖",
+      "dataset": "continuation_score",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PATTERN-SCORES-PROBE-DEAD",
+      "family": "pattern_scores 图表形态",
+      "text": "KOR 图表形态延续族 (chart_cnn/continuation/pattern_scores) 全部判死, 不再挖形态类数据集",
+      "dataset": "pattern_scores",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-PV106-LIQUIDITY-BELOW-LINE",
+      "family": "pv_liquidity_spread",
+      "text": "pv106 spread/liquidity premium signal caps at ~S1.1 in KOR; do NOT re-mine plain rank(multiply(cost_gap, spread)) variants; REUSABLE: buy-sell cost gap x spread",
+      "dataset": "pv106",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-PV106-LIQUIDITY-WEAK",
+      "family": "pv106",
+      "text": "pv106不再投任何变体",
+      "dataset": "pv106",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-PV30-LABEL-TRAP",
+      "family": "group_label_as_signal",
+      "text": "GROUP 型数据集（字段大多为聚类整数标签）禁止把标签字段包裹 rank/ts_*/days_from_last_change 当信号用；标签只能作 group_* 算子的分组维，且分组维字段必须是平台 GROUP 类型（MATRIX 数值型聚类标签也不能直接作 group 参数）。此类集若无连续信号字段（如 pri",
+      "dataset": "pv30",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-WAVE96-UNLIT-BARE-SIGNAL-DEAD",
+      "family": "intraday_pv_feats/risk59/shortinterest38/mmp_nlp_sentiment bare cross-sectional signals",
+      "text": "do not re-probe these 4 datasets with bare rank/vec_avg skeletons; need multi-field combos or event-persistence designs if revisited",
+      "dataset": "intraday_pv_feats",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "avoid": [
+     "pv106 流动性天花板 1.1；pv30 聚类标签无信号；图表形态族三连死（RULES §G）"
+    ]
+   }
+  },
+  "risk": {
+   "status": "auto",
+   "datasets": [
+    "risk60",
+    "risk71",
+    "risk88"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 24,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "risk71",
+      "backtests": 16
+     },
+     {
+      "dataset": "risk60",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-RISK60-CROWDDING-NOSIGNAL-20261002",
+      "family": "risk60 securities-lending (crowding activity + fee level)",
+      "text": "KOR risk60 判死：借券域在 KOR 无截面预测力，不投任何变体。后续 KOR 若碰 shortinterest/risk 域，注意 GLOBAL 跨区铁律 shortinterest3↔risk60 费率域互锁 0.64-0.80，且 shortinterest3 在 KOR 已判死 ⇒ 该域在 KOR 整体",
+      "dataset": "risk60",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD",
+      "family": "risk71 MFM2 residual return reversal (asia/exjapan minvol1m)",
+      "text": "",
+      "dataset": "risk71",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-RSK88-STYLOAD-WEAK",
+      "family": "risk-factor-loadings",
+      "text": "Barra 风格载荷 ri_* 直接横截面信号（含双载荷复合、dsrt 方向）在 KOR/TOP600/SECTOR 全期不达 1.25 资格线，不再投入同族变体",
+      "dataset": "risk88",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "avoid": [
+     "risk59 / 60 / 68 / 70 / 71 / 88 全部判死；risk71 MFM2 残差反转 2Y 翻号（RULES §G）"
+    ]
+   }
+  },
+  "sentiment": {
+   "status": "auto",
+   "datasets": [
+    "news_sentiment_transfer",
+    "other553"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 18,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "other553",
+      "backtests": 18
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "KOR-NEWS-SENTIMENT-TRANSFER-DEAD",
+      "family": "news_sentiment_transfer sentiment",
+      "text": "do not probe news/sentiment aggregate datasets in KOR again",
+      "dataset": "news_sentiment_transfer",
+      "bound": "inferred"
+     },
+     {
+      "id": "KOR-OTH553-ANALYST-VALUE-DEAD",
+      "family": "analyst_estimate_value",
+      "text": "oth553_* 系列字段不再投任何变体",
+      "dataset": "other553",
+      "bound": "payload"
+     },
+     {
+      "id": "KOR-OTH553-REV-SPARSE",
+      "family": "analyst-revision",
+      "text": "oth553 分析师预期修正族（est/ptg/rec/sal）在 KOR/TOP600 覆盖稀疏（有效标的 22-110 只），8/11 触发 CONCENTRATED_WEIGHT，数据集级判死；跨族相关性复合反向显著（S=-0.79）",
+      "dataset": "other553",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "shortinterest": {
+   "status": "auto",
+   "datasets": [
+    "shortinterest38"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 81,
+    "ra_clean": 5,
+    "prod_measured": 25,
+    "prod_clean": 20,
+    "prod_blocked": 5,
+    "top_datasets": [
+     {
+      "dataset": "shortinterest38",
+      "backtests": 81
+     }
+    ],
+    "dead_ends": [],
+    "wins": []
+   },
+   "note": "shortinterest38 卖空活动族在写；累积口径与当日口径二选一",
+   "generation": {
+    "use": [
+     "shortinterest38（全 VECTOR，coverage 0.9997）：卖出 / 买入金额比的长窗 z 与共动反转（RULES §G）"
+    ],
+    "avoid": [
+     "shrt38_stk_invacttd_drt 是 YYYYMMDD 交易日字段，不是信号"
+    ],
+    "skeletons": [
+     {
+      "text": "group_rank(ts_mean(ts_zscore(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 504), 5), sector)",
+      "evidence": "骨架 A（RULES §G）"
+     },
+     {
+      "text": "group_rank(reverse(ts_corr(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt), 42)), sector)",
+      "evidence": "骨架 B：rKOadrRj S 2.02（RULES §G）",
+      "window_note": "42 不在白名单：该骨架以 42 日窗实测 S 2.02（rKOadrRj）；复用时先与 22 / 66 对照"
+     }
+    ],
+    "notes": [
+     "低频（累积 accum_*）出 2Y 1.72–1.93 但 S 0.80–0.98；高频（当日 stk_*）S 2.00–2.01 但 2Y 1.12–1.20（KOR 七约束 #7，只有本族证据）",
+     "ts_decay_linear 不修 CONCENTRATED_WEIGHT：换手 0.298→0.14、S 2.00→2.15，CW 仍 FAIL"
+    ]
+   },
+   "s4": {
+    "levers": [
+     {
+      "id": "kor-si-cw",
+      "what": "CW 不过：改持仓构造（trade_when 门控或加分组轴），不要只加平滑",
+      "evidence": "KOR 七约束 / RULES §E（CW 由组内分布集中度决定，不由换手决定）"
+     }
+    ],
+    "avoid": []
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 0,
+ "unattributed_backtests": 101
+}

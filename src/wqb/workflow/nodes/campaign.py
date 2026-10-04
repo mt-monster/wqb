@@ -1889,14 +1889,10 @@ def _ensure_campaign_config(campaign_dir: str, region: str, result: Dict[str, An
 
         conn.close()
 
-        # 区域默认中性化（从 profile 或实证推导）
-        neut_map = {
-            "KOR": "STATISTICAL", "IND": "STATISTICAL", "MEA": "SUBINDUSTRY",
-            "USA": "SUBINDUSTRY", "EUR": "SUBINDUSTRY", "GBR": "SUBINDUSTRY",
-            "ASI": "SUBINDUSTRY", "HKG": "SUBINDUSTRY", "GLB": "SUBINDUSTRY",
-            "CHN": "SUBINDUSTRY", "TWN": "SUBINDUSTRY",
-        }
-        neutralization = neut_map.get(region, "SUBINDUSTRY")
+        # 区域默认中性化：只在新建战役目录时兜底，取 config.REGIONS 的 default_neutralization（缺省 SUBINDUSTRY）。
+        # 建好之后以 settings.json 为准；组合级覆盖在 cells.json（2026-10-04 收口：此前是本函数里的区域字面量表）。
+        from wqb.config import REGIONS as _REGIONS
+        neutralization = (_REGIONS.get(region) or {}).get("default_neutralization", "SUBINDUSTRY")
 
         settings = {
             "_doc": f"{region} 战役仿真设置（自动创建，从 DB ledger 推导）。",

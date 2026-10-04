@@ -32,16 +32,19 @@
 
 ## 3. 配置优先级（按代码，高 → 低）
 
-只有主闸两值 `sharpe_min` / `fitness_min` 能被区域层改；**旁路阈值与判死线只来自第 3、4 层**。
+只有主闸两值 `sharpe_min` / `fitness_min` 能被区域层改，**而且只能往上收**；**旁路阈值与判死线只来自第 3、4 层**。
+
+**下限锁（2026-10-04）**：第 3 层（读不到时第 4 层）的主闸就是下限。第 0–2 层写得更低的值在读取时被钳回下限，原值记在返回结构的 `_clamped_from`（不改文件、不写库）；自适应学习写库前同样钳制；`tools/probe_batch_mode.py` 分布模式的 p75 线也不得低于主闸。起因：此前 7 个区的生效主闸低于下限（ASI / CHN / GBR / HKG / MEA 为 1.2 / 0.8，GLB / USA 为 1.0 / 0.6，EUR 区域台账被学习器学成 1.15 / 0.68），这 7 个区的 thresholds.json 已改为 `$ref` 全局，原值留在各自 `_doc`。要放宽资格线只能改第 3 层（用户在 GLOBAL 台账定）。
 
 | 序 | 来源 | 内容 |
 |---|---|---|
+| 0 | 区域 × 类别组合 `tracking/<REGION>/config/cells.json` 的 `thresholds.overrides` | `mode_b.sharpe_min` / `mode_b.fitness_min`；只在调用方传了类别时读（`load_mode_b_config(store, region, category)`），同样受下限锁 |
 | 1 | 区域 ledger `<REGION>/mode_b_qualification` | 自适应学习写入的主闸两值（`workflow/mode_b_adaptive.py` 在 S6 回写后更新） |
 | 2 | `tracking/<REGION>/config/thresholds.json` 的 `mode_b_qualification` | `_overrides.{sharpe_min,fitness_min}` 单字段覆盖；无 `$ref` 的旧结构直接读顶层 `sharpe_min` / `fitness_min` |
 | 3 | 全局 ledger `GLOBAL/mode_b_qualification` | 权威的主闸 + 旁路 + 判死线 |
 | 4 | 代码内置 `_DEFAULT_GLOBAL` | 第 3 层读不到时的兜底（即上表默认值） |
 
-**看本区实际生效值**（含主闸来源 `_source`）：`$WQ_PY tools/mode_b_qualify.py show --region <REGION>`。不要凭记忆或凭旧文档里的「1.25/0.8」判断——区域可能把主闸调过（饱和区降门、robust 墙区提门等）。
+**看本区实际生效值**（含主闸来源 `_source`、下限 `_floor`、被钳掉的原值 `_clamped_from`）：`$WQ_PY tools/mode_b_qualify.py show --region <REGION>`。不要凭记忆或凭旧文档里的「1.25/0.8」判断——区域可能把主闸往上调过（robust 墙区提门等，例如 IND）；往下调的写法已被下限锁作废。
 
 ## 4. 代码入口覆盖了什么（以及没覆盖什么）
 

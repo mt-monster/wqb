@@ -1,0 +1,84 @@
+{
+ "schema_version": 1,
+ "region": "JPN",
+ "cells": {
+  "model": {
+   "status": "auto",
+   "datasets": [
+    "analyst_revision_horizons",
+    "global_seasonal_model",
+    "multi_source_model"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 120,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "analyst_revision_horizons",
+      "backtests": 61
+     },
+     {
+      "dataset": "global_seasonal_model",
+      "backtests": 43
+     },
+     {
+      "dataset": "multi_source_model",
+      "backtests": 16
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "JPN-MULTI-SOURCE-MODEL-QUANTILE-DEAD",
+      "family": "multi_source_model quantile/confidence predictions",
+      "text": "JPN/TOP1600/D1 不再用 multi_source_model 单集做主信号；剩余 1211 条 GEM 池不再消化",
+      "dataset": "multi_source_model",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "notes": [
+     "JPN/TOP1600 没有 pv1；VECTOR 字段外面不能再套 ts_*（只能 rank(vec_avg(f)) 级）；SUBINDUSTRY / SECTOR 中性化不可用（用 MARKET / STATISTICAL / NONE）——区域硬事实，见 JPN profile"
+    ]
+   }
+  },
+  "pv": {
+   "status": "auto",
+   "datasets": [
+    "intraday_pv_feats"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 16,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "intraday_pv_feats",
+      "backtests": 16
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "JPN-IPV-PRECLOSE2-FIELDS-PLATFORM-INVALID-20260921",
+      "family": "intraday_pv_feats *_pre_close_2 尾盘收益族（平台层不可用）",
+      "text": "JPN 不投任何 *_pre_close_2 / 需要 close、volume 基础字段的表达式；ASI 尾盘反转配方不可跨区复制到 JPN。JPN 需要基础 pv 字段的门控（量占比）也不可用。",
+      "dataset": "intraday_pv_feats",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 0,
+ "unattributed_backtests": 92
+}

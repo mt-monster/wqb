@@ -14,6 +14,7 @@
 | 用户说 | 首选 | 不选谁（为什么） |
 |---|---|---|
 | 「在 KOR 开战役 / 一键战役 / 持续挖掘 / 挖 regular 一路跑到可提交」 | `wq-brain-ra-pipeline` | `wq-brain-campaign-toolkit` 只是引擎（何时用、怎么判由 RA 定）；`wq-brain-campaign-matrix` 只查表 |
+| 「调 KOR 的回测设置 / 阈值、看 KOR 某类数据集的配方与禁区」 | 区域 skill `wq-brain-ra-<区域小写>`（如 `wq-brain-ra-kor`） | 九步通用正文仍在 `wq-brain-ra-pipeline`；控制值改 `tracking/<R>/config/cells.json` 后重渲（`$WQ_PY -m wqb.profiles render --apply`），不手改生成块 |
 | 「日报 / 早报 / 哪个区更值得挖 / 该不该转区」 | `brain-next-move-analysis` | 它只报告不决策：选区决策归 `wqb.region_rotation`，开战役走 RA |
 | 「这个区有哪些数据集 / 哪些族已判死 / 挖到哪一步了」 | `wq-brain-campaign-matrix` | 整链挖掘走 RA；选区走 next-move |
 | 「审计 / 探索某个数据集」 | `brain-dataset-exploration-general` | 选集是 RA 步 2（S0）；单字段评测走 `brain-datafield-exploration-general` |
@@ -90,6 +91,7 @@
 - 缺口清单的机检登记在 `tests/unit/06_wave_pipeline/test_region_alignment.py`（补上一个缺口就必须从登记里删掉）；每个缺口区域在步 1 的行为写在 ra-pipeline 的 [`region-profile-contract.md` §4](wq-brain-ra-pipeline/references/region-profile-contract.md)。
 - 有 profile 的区按其 profile 注入静态配置 / 先验 / 闸门覆盖 / 循环策略；`frozen` 区步 1 直接拒绝；`probe-only` 区只许探针批。**新增 / 删除区域**须同步四处：`src/wqb/config.py::REGIONS`、profile 文件、战役目录、（本表随代码重新生成）——逐项做法见下。
 - 三者冲突时：`tracking/<R>/config/` json > profile > 本表（本表是导出物，不是来源）。
+- **区域 skill**：每区一个 `wq-brain-ra-<区域小写>`（layer `L-RA-R`，14 个），装区域控制面板（回测设置 / 阈值 / Mode B 主闸，每个值带来源）、本区流程差异与「区域 × 类别」组合分支文件。面板和组合文件由 `tracking/<R>/config/cells.json` + profile 生成，`$WQ_PY -m wqb.profiles check` 守一致；组合覆盖只许带证据、数值类锁定项只许收紧（锁定表 `src/wqb/profiles/locked.py`）。
 
 ### 开新区检查表（单一来源；matrix / ra-pipeline 只引用本节）
 
@@ -100,15 +102,17 @@
 | 3 | `wq-brain-ra-pipeline/references/regions/<R>.md` | 写 profile（front-matter 契约见 [`region-profile-contract.md`](wq-brain-ra-pipeline/references/region-profile-contract.md)），含 `entry_verdict` | `$WQ_PY -m pytest tests/unit/06_wave_pipeline/test_region_alignment.py` |
 | 4 | 本文「区域清单」表 | `$WQ_PY tools/index_tables.py --apply` 重新生成（不手写） | `$WQ_PY -m pytest tests/unit/09_core/test_index_tables.py` |
 | 5 | 首次入库 | `regions` 行在该区首次写入时由 `CampaignStore` 自动建；数据集资产用 `tools/discover_datasets.py` / `tools/ingest_dataset_assets.py`，字段级用 toolkit `scan_fields.py` | `mcp__wqb-db__get_region_config(<R>)` 不再报 `region not found` |
+| 6 | 区域 skill 与组合文件 | `$WQ_PY -m wqb.profiles sync-cells --region <R> --apply` → `$WQ_PY -m wqb.profiles render --region <R> --apply` → `$WQ_PY tools/sync_skills.py --apply` | `$WQ_PY -m wqb.profiles check --region <R>`；`$WQ_PY -m pytest tests/unit/09_core/test_profiles_layer.py` |
 
 `tracking/region_config.json` 目前**没有代码读取**（只有 JPN profile 提到过它），不在检查表内。区域相关的**带日期事实**（选项、无 pv1、robust 闸定义、破墙配方）一律写在各区 profile，带 `last_verified`，不写在本文。
 
 ## 分层架构（L0–L7）
 
-**编号约定：`Ln ≡ Sn`**（L0 = S0 … L6 = S6，同一阶段的「层」与「阶段」是同一个东西）；`L-RA` / `L-PRE` / `L-TOOL` 是编排层，不属于某一阶段。frontmatter 的 `layer` 用 `Ln`；RA 的「步 N」、gate.py 的「闸 N」、monitor 的「关」是各自的序号，不与 Ln / Sn 混用。
+**编号约定：`Ln ≡ Sn`**（L0 = S0 … L6 = S6，同一阶段的「层」与「阶段」是同一个东西）；`L-RA` / `L-RA-R` / `L-PRE` / `L-TOOL` 是编排层，不属于某一阶段。frontmatter 的 `layer` 用 `Ln`；RA 的「步 N」、gate.py 的「闸 N」、monitor 的「关」是各自的序号，不与 Ln / Sn 混用。
 
 ```
 L-RA 编排        wq-brain-ra-pipeline（唯一挖掘编排：region→RA 九步 + 日循环/一键战役/PPA 分支）
+L-RA-R 区域分支  wq-brain-ra-<区域小写> × 14（区域控制面板 + 区域 × 类别组合分支文件；由 wqb.profiles render 从 cells.json 生成）
 L-PRE 战役查表   wq-brain-campaign-matrix（区域×数据集矩阵：输入 region → 预解析配置包；registry=data/wqb.db 单轨 SQLite，registry_empirical 表；战役后强制回写台账）
 L-TOOL 战役引擎 wq-brain-campaign-toolkit（region 无关执行引擎：gate/pipeline/wave/probe/ledger/scan/review/diversity，输入=战役目录+子命令；服务 S1–S6 多阶段，为战役脚本唯一权威实现）
 L0  情报选题     brain-next-move-analysis · brain-forum-browse · wq-brain-ppa-mining

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-04
+last_verified: 2026-10-05
 name: wq-brain-alpha-optimization-v1
 description: "现有 WorldQuant BRAIN alpha 的两模式改进器：Mode B（想法层——换信号概念/字段组合，含卡闸后的组合腿救援）→ Mode A（参数层——冻结核心想法，8 候选严格批调 decay/窗口/中性化/nanHandling·maxTrade）。用户要求改进/优化某个 alpha ID、修复失败的提交测试项（含 IS_LADDER_SHARPE），或候选已按资格判定表（references/mode-b-qualification.md）值得继续改时使用。prod 相关性墙按 RA 决策表 D0-P 处置，本 skill 不承诺把 PROD 压到某个数。"
 layer: L4
@@ -75,7 +75,7 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
 |---|---|---|
 | **B1 收集** | `get_alpha_details`（表达式 / 设置 / 指标 / `is.checks`）；相关性读 `alphas.prod_correlation`，缺才 `check_correlation`（阻塞轮询 ≤ 60 min、账号级单并发，见 [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md) §1）。记录失败项与对应 `mode_b_action` | ≤ 2 次平台调用 |
 | **B2 评估核心字段** | 字段 `type`（VECTOR / EVENT）与 coverage；用 `brain-datafield-exploration-general` 的评测在中性设置下摸清数据性质（如「季度稀疏 → 优先 persistence 类想法」）。**EVENT 字段会让整个 multi-sim 批次失败**（如 `winsorize` 报 `does not support event inputs`），闸 8 会拦：移除 EVENT 字段或先单条探针 | 每字段 1 次评测 |
-| **B3 提想法级改进** | 查平台文档 / 社区技巧；arXiv 概念检索（**外发边界见下**）；头脑风暴 4–6 个变体，**每个只动 1–2 个概念**；变体所用算子对照 `known_ops`（[`reference.md`](reference.md) §8 标注了哪些未核验） | 4–6 条变体 |
+| **B3 提想法级改进** | **先取本组合的杠杆**：区域 skill `wq-brain-ra-<区域小写>` 的组合分支文件 S4 段（或 `$WQ_PY -m wqb.profiles explain --region <R> --dataset <ds>`；「不要用」的杠杆直接排除），再查平台文档 / 社区技巧；arXiv 概念检索（**外发边界见下**）；头脑风暴 4–6 个变体，**每个只动 1–2 个概念**；变体所用算子对照 `known_ops`（[`reference.md`](reference.md) §8 标注了哪些未核验） | 4–6 条变体 |
 | **B4 仿真对比** | 变体**先过 `ghost-audit` 与 `wave_gate --batch-type repair`**（命令见 Mode A 校验层），再 `create_multi_simulation`（2–8 条；multi 失败退并行单仿）；收割入库（`harvest_multisim_alphas` → `wqb-db harvest_multisim_results`）；按 Fitness / Sharpe 排名，查 sub-universe 与逐年一致性，负信号可翻转 | 1 个 multi 批 |
 | **B5 验证迭代** | Top 变体做相关性检查。失败 → 回 B3（受上面的止损阶梯约束）；通过 → 交 Mode A 收敛，然后走下游链，**不直接提交** | — |
 

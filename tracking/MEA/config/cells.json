@@ -1,0 +1,311 @@
+{
+ "schema_version": 1,
+ "region": "MEA",
+ "cells": {
+  "analyst": {
+   "status": "auto",
+   "datasets": [
+    "analyst",
+    "analyst7",
+    "fundamental72+analyst7"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 76,
+    "ra_clean": 13,
+    "prod_measured": 49,
+    "prod_clean": 16,
+    "prod_blocked": 33,
+    "top_datasets": [
+     {
+      "dataset": "analyst7",
+      "backtests": 68
+     },
+     {
+      "dataset": "fundamental72+analyst7",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "MEA-ANALYST-FND-FLAT-COMBO-DEAD",
+      "family": "analyst7×fundamental72 平铺 .5/.5 两腿组合（修订广度/股息广度/EBI广度/eps_mean动量 × EBITDA动量/EPS水平/OCF水平/利润率）",
+      "text": "不再做 analyst×fnd 简单两腿平铺；动量×动量组合禁入（CW 结构性触发）；下一步必须引入事件时序代理腿（announcement_dt 新鲜度）或权重再平衡/平滑增强",
+      "dataset": "analyst",
+      "bound": "inferred"
+     }
+    ],
+    "wins": [
+     {
+      "id": "MEA-ANALYST-3BREADTH-FUSION-WIN",
+      "family": "analyst breadth fusion",
+      "text": "三广度腿融合: rank(subtract(vec_avg(eps_up_4w),vec_avg(eps_down_4w)))*0.3 + rank(subtract(vec_avg(ni_raised_1w),vec_avg(ni_down_4w)))*0.4 + rank(subtract(vec_avg(dps_",
+      "dataset": "analyst",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-ANALYST-PT4W-LEG-WIN",
+      "family": "analyst breadth fusion",
+      "text": "pt4w腿=rank(subtract(analyst_price_target_raised_count_four_weeks,analyst_price_target_lowered_count_4_weeks))(MATRIX无需vec包裹); 替换rev腿后三广度组合 1.92→2.08/2y2.44; sal",
+      "dataset": "analyst",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-ANL7-PT-NET-BREADTH-DECORR",
+      "family": "analyst7 PT raised-breadth + Net est breadth 双轴（零 revision 腿）",
+      "text": "analyst_price_target_raised_count_four_weeks/analyst_price_target_count (MATRIX 裸用) + vec_avg(est_q_net_raisednum_4wks)/vec_avg(est_q_net_num) (VECTOR)；去掉 est_q",
+      "dataset": "analyst7",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-ESTQ-MOMENTUM-OTHERLIAB-LEG",
+      "family": "analyst7 est_q_*动量×fundamental6 other_liab去杠杆",
+      "text": "骨架: add(multiply(rank(ts_delta(vec_avg(est_q_<X>_mean),W)),0.6), multiply(rank(multiply(ts_zscore(vec_avg(fundamental_other_liabilities_total),252),-1)),0.4)); ",
+      "dataset": "analyst7",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-ESTQ-SAL-MOMENTUM-DCL",
+      "family": "analyst7 est_q_sal动量×fundamental6 dcl去杠杆",
+      "text": "add(multiply(rank(ts_delta(vec_avg(est_q_sal_mean),63)),0.6), multiply(rank(multiply(ts_zscore(vec_avg(debt_current_liabilities_total),252),-1)),0.4)) — analyst",
+      "dataset": "analyst7",
+      "bound": "inferred"
+     }
+    ]
+   }
+  },
+  "earnings": {
+   "status": "auto",
+   "datasets": [
+    "earnings3"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 10,
+    "ra_clean": 1,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "earnings3",
+      "backtests": 10
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "MEA-EARNINGS3-CALENDAR-DEAD",
+      "family": "earnings calendar",
+      "text": "MEA不要再挖earnings3日历计时族; 该数据集只作事件计时参考, 不作信号源",
+      "dataset": "earnings3",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "fundamental": {
+   "status": "auto",
+   "datasets": [
+    "fundamental",
+    "fundamental6",
+    "fundamental72"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 25,
+    "ra_clean": 1,
+    "prod_measured": 6,
+    "prod_clean": 1,
+    "prod_blocked": 5,
+    "top_datasets": [
+     {
+      "dataset": "fundamental72",
+      "backtests": 20
+     },
+     {
+      "dataset": "fundamental6",
+      "backtests": 5
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "MEA-2DS-CURRENT-SKELETON-DEAD",
+      "family": "fnd72+ern3 现有骨架（M+e3 及掺 cf）",
+      "text": "两数据集路线不可沿用 M+e3 骨架；analyst7 rev 腿是 2y 引擎唯一承载——若要两数据集必须换主腿经济逻辑",
+      "dataset": "fundamental72",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-FND-EARN-2DS-DEAD",
+      "family": "fundamental72×earnings3 两数据集组合（M+e3 骨架变体与应计/盈余质量/SUE 新逻辑）",
+      "text": "MEA 不再挖 fundamental72×earnings3 两数据集组合任何形态；e3 腿单独无法承载 2y 引擎，必须与 rev 腿共存",
+      "dataset": "fundamental72",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-FND6-EVENT-FIELDS-DEAD",
+      "family": "fundamental6 全字段（VECTOR 元数据标错，实际 EVENT 类型）",
+      "text": "MEA 不再挖 fundamental6 任何形态；fundamental 族（fundamental6 + fundamental72）全图关闭；EVENT 字段陷阱与 fundamental72 同款（元数据标 VECTOR 实际 EVENT）",
+      "dataset": "fundamental6",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-FND6-QLEVEL-ZSCORE-DEAD",
+      "family": "fundamental6 质量流水平zscore骨架",
+      "text": "fundamental水平流单腿zscore在MEA无信号; 质量价差需比率化(分子/分母同除)而非双腿zscore相加; est_q_pre预告动量短窗无信号, 长窗(63d+)且限sal/eps族",
+      "dataset": "fundamental6",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-FND72-CF-SPARSE-DEAD",
+      "family": "fundamental72 CF 家族 (CFO/asset、retain_earn/asset、income_unconsolidated_equity_interest)",
+      "text": "MEA TOP400 任何 VECTOR 字段挖前必须 longCount>=80 sanity check；f72 仅剩 is_q 已判死，f72 整集收官",
+      "dataset": "fundamental72",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-FND72-EPS-SURPRISE-DEAD",
+      "family": "analyst×fundamental eps surprise/estimate momentum",
+      "text": "下次不要再用fnd72实际EPS与analyst7预估EPS做差/做比或预估水平动量; EPS方向改用修订计数广度腿(已验证有效)",
+      "dataset": "fundamental72",
+      "bound": "payload"
+     },
+     {
+      "id": "MEA-FND72-ISQ-LEVEL-PROD-SATURATED",
+      "family": "fundamental72 is_q 水平场 zscore252 (oper_inc/EBITDA 族)",
+      "text": "MEA 不再挖 fundamental 盈利水平场 (earnings LEVEL factor)；is_q 整族判死（wave50 per-share/tax/non-oper 无独立信号）；下一族 fundamental6 差异化信号或 analyst7 正交方向",
+      "dataset": "fundamental72",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-RATIO-ADDITIVE-SKELETON-DEAD",
+      "family": "fundamental ratio additive",
+      "text": "比率族(rank(divide))不要用add加权加和; 改用multiply乘积结构(见MEA-FND6-RATIO-MULTIPLY-SKELETON win)",
+      "dataset": "fundamental",
+      "bound": "inferred"
+     }
+    ],
+    "wins": [
+     {
+      "id": "MEA-DELEVERAGE-LEG-FIELD-PRIORITY",
+      "family": "fundamental deleverage leg",
+      "text": "multiply(ts_zscore(vec_avg(<liab_field>),252),-1) 作为0.4权重负腿; 窗口锁252(504塔崩); liab_field优先级: fundamental_other_liabilities_total > fundamental_total_liabilities >",
+      "dataset": "fundamental",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-FND6-RATIO-MULTIPLY-SKELETON",
+      "family": "fundamental ratio multiply",
+      "text": "multiply(rank(divide(vec_avg(<quality_ratio>),vec_avg(<equity_base>))), rank(multiply(ts_zscore(vec_avg(<liab>),252),-1))) —— 两腿各自rank后乘积, 不加权重加和; quality_ratio",
+      "dataset": "fundamental6",
+      "bound": "inferred"
+     }
+    ]
+   }
+  },
+  "model": {
+   "status": "auto",
+   "datasets": [
+    "model25",
+    "model31"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 0,
+    "ra_clean": 0,
+    "prod_measured": 4,
+    "prod_clean": 4,
+    "prod_blocked": 0,
+    "top_datasets": [],
+    "dead_ends": [
+     {
+      "id": "MEA-MDL25-EQ-COMPONENT-DEAD",
+      "family": "model25 StarMine EQ 组件字段 (mdl25_eq_is/rd/cfs/cb/pc/v 全系列)",
+      "text": "MEA 不再挖 model25 EQ 组件任何形态；字段级 alphaCount 低在小宇宙不是白空间信号（可能是没人能用或没人想要）；model25 earnings-quality 风格与 f72 is_q 同判死",
+      "dataset": "model25",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-MDL25-MDL31-MIX-DEAD",
+      "family": "model25+model31 混合信号（ROA/ROE/杠杆/周转率 / acc/cf/oe chg）",
+      "text": "MEA 不再挖 model25+model31 混合任何形态；StarMine EQ 家族（model25 LEVEL + model31 CHANGE + 混合）全图关闭；MEA 区域所有数据集已判死（pv1/pv96/pv106/analyst7/earnings3/fundamental6/fundamental",
+      "dataset": "model25",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-MDL31-CHG-WEAK",
+      "family": "model31 chg_* 变化类字段 (acc/cf/oe/erq_re_rk 的 qtr/fy/day 变化 + auditor_switch 事件)",
+      "text": "MEA model31 变化类单腿信号封顶 0.87，组合增强概率低；二元/年度事件字段（auditor_switch 类）在 MEA TOP400 结构性不可用；StarMine EQ 家族全图关闭（model25 LEVEL + model31 CHANGE 均判弱/死）",
+      "dataset": "model31",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "pv": {
+   "status": "auto",
+   "datasets": [
+    "pv1",
+    "pv106",
+    "pv96"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 8,
+    "ra_clean": 0,
+    "prod_measured": 2,
+    "prod_clean": 0,
+    "prod_blocked": 2,
+    "top_datasets": [
+     {
+      "dataset": "pv96",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "MEA-PV1-G2-PROD-SATURATED",
+      "family": "pv1 vol/adv/cap G2 (zqkazgld 族)",
+      "text": "MEA pv1 不再挖 vol/adv/cap 组合；本地互相关只是下限，新候选需信号族差异化降 PROD 风险",
+      "dataset": "pv1",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-PV1-NONG2-DEAD",
+      "family": "pv1 非G2白空间 (sharesout/dividend/split/adjfactor)",
+      "text": "MEA pv1 整集判死(G2 PROD饱和 + 非G2 全灭)；adjfactor 信号族 CW 结构性无解(公司行动集中少数股，MEA TOP400 小宇宙放大集中度)；dividend 信号族 MEA 结构性反向",
+      "dataset": "pv1",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-PV106-SPREAD-DEAD",
+      "family": "pv106 spread 白空间 (bid_ask_price_gap / price_difference_bid_ask 的 level/zscore/delta 变体)",
+      "text": "MEA pv106 不再挖 spread 水平/反转/动量任何形态；2 字段集信号空间已耗尽",
+      "dataset": "pv106",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-PV96-EQUITY-PV-DEAD",
+      "family": "pv96 纯 equity PV",
+      "text": "pv96 纯 equity PV 字段(shares_outstanding/dividend_per_share/forward_adjfactor/forward_split_ratio/stock_split_ratio)与 pv1 非G2 信号概念重叠，MEA TOP400 小宇宙下股本变动/分红/拆分/调整因",
+      "dataset": "pv96",
+      "bound": "inferred"
+     },
+     {
+      "id": "MEA-PV96-OCI-ANNUAL-DEAD",
+      "family": "pv96 OCI/年报分歧族（ts_av_diff(OCI族,252)/ts_std_dev(净利润,252)、capex负担、再融资压力、异常项占比）",
+      "text": "禁止在 MEA 再用 OCI/综合收益分歧、capex/折旧比、长期借款/现金流或EPS 骨架",
+      "dataset": "pv96",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 7,
+ "unattributed_backtests": 379
+}

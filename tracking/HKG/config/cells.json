@@ -1,0 +1,273 @@
+{
+ "schema_version": 1,
+ "region": "HKG",
+ "cells": {
+  "analyst": {
+   "status": "auto",
+   "datasets": [
+    "analyst39",
+    "analyst94",
+    "analyst_consensus"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 122,
+    "ra_clean": 18,
+    "prod_measured": 1,
+    "prod_clean": 0,
+    "prod_blocked": 1,
+    "top_datasets": [
+     {
+      "dataset": "analyst39",
+      "backtests": 91
+     },
+     {
+      "dataset": "analyst94",
+      "backtests": 25
+     },
+     {
+      "dataset": "analyst_consensus",
+      "backtests": 6
+     }
+    ],
+    "dead_ends": [],
+    "wins": []
+   }
+  },
+  "institutions": {
+   "status": "auto",
+   "datasets": [
+    "fund_holdings_panel"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 0,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [],
+    "dead_ends": [
+     {
+      "id": "HKG-FUND-HOLDINGS-PANEL-WEAK-SIGNAL",
+      "family": "fund_holdings_panel institutional holdings and flows",
+      "text": "两波 14 探针覆盖数据集两个层（MATRIX 持仓结构层 + VECTOR 交易流量层），最高 sharpe 0.56，w2 全线低于 0.5。按 HKG fast_kill（8 探针无 |S|>=0.5 即死）判死。",
+      "dataset": "fund_holdings_panel",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "model": {
+   "status": "auto",
+   "datasets": [
+    "model238"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 14,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "model238",
+      "backtests": 14
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "HKG-MDL238-SCREEN-OWNER-CEILING-139",
+      "family": "model238 筛选-持股背离（vector_neut(screening_rank, owner_rank)）",
+      "text": "model238 该机制不再投变体；若回探需全新机制轴（其余 40+ mdl238 字段对未试）；HKG/D1/MODEL 塔位仍点亮机会（effective=1/1.7x）",
+      "dataset": "model238",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "other": {
+   "status": "auto",
+   "datasets": [
+    "dl_riskfree_returns",
+    "mmp_nlp_sentiment"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 14,
+    "ra_clean": 0,
+    "prod_measured": 1,
+    "prod_clean": 0,
+    "prod_blocked": 1,
+    "top_datasets": [
+     {
+      "dataset": "mmp_nlp_sentiment",
+      "backtests": 8
+     },
+     {
+      "dataset": "dl_riskfree_returns",
+      "backtests": 6
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "HKG-MMP-NLP-SENTIMENT-NO-SIGNAL",
+      "family": "mmp_nlp_sentiment 多字段比率组合",
+      "text": "HKG mmp_nlp_sentiment 不再投任何变体（裸信号与多字段比率组合均已测）。同族的 news_sentiment_nlp / news_sentiment_dl（字段数少一个数量级）优先级同步降低。",
+      "dataset": "mmp_nlp_sentiment",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "shortinterest": {
+   "status": "auto",
+   "datasets": [
+    "shortinterest55"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 8,
+    "ra_clean": 0,
+    "prod_measured": 1,
+    "prod_clean": 0,
+    "prod_blocked": 1,
+    "top_datasets": [
+     {
+      "dataset": "shortinterest55",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [],
+    "wins": [
+     {
+      "id": "HKG-DUALGATE-EXP-20260909",
+      "family": "shortinterest55 · 双门实验",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-G7-REGIME-GATED-PREMIUM",
+      "family": "shortinterest55 · 最佳结构",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QMWLONOE-BEST-OVERALL",
+      "family": "shortinterest55 · 全天最佳",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QMWLONOE-MODEB-CEILING-20260909",
+      "family": "shortinterest55 · Mode B 参数化到顶",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QMWLONOE-MODEC-ROUND1-20260909",
+      "family": "shortinterest55 · 结构级变体",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QMWLONOE-MODEC2-ZFIX-20260909",
+      "family": "shortinterest55 · zfix 方向修正",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QMWLONOE-STATISTICAL-MODEA-20260909",
+      "family": "shortinterest55 · Mode A 突破",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QMWLONOE-TRADEWHEN-BREAKTHROUGH-20260909",
+      "family": "shortinterest55 · trade_when 突破",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QMWLONOE-TRUNC-EXHAUSTED-20260909",
+      "family": "shortinterest55 · Mode A 到顶",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-QP3VJJO5-BEST-RA-CANDIDATE",
+      "family": "shortinterest55 · 最佳 RA 候选",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-REGIME-SWITCH-IS-THE-ALPHA",
+      "family": "shortinterest55 空头执行价溢价 · 归因修正",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-REGIME-SWITCH-SURVIVES-PPA-BUDGET",
+      "family": "shortinterest55 · 制度切换",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-SHORT-EXECUTION-PRICE-PREMIUM",
+      "family": "short-selling execution price premium (shortinterest55)",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-SHORTINT-LIT-20260910",
+      "family": "shortinterest55 · 点塔达成",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-SHORTINTEREST55-PROD-CLEAN-VIA-COLD-FIELDS",
+      "family": "shortinterest55 · prod 规避",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-SHORTPREM-LIQUIDITY-BAND",
+      "family": "shortinterest55 · 流动性band",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     },
+     {
+      "id": "HKG-W15-TOP500-RESULTS",
+      "family": "shortinterest55 · w15",
+      "text": "",
+      "dataset": "shortinterest55",
+      "bound": "inferred"
+     }
+    ]
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 3,
+ "unattributed_backtests": 7
+}

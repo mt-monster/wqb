@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.3"
-last_verified: 2026-10-04
+last_verified: 2026-10-05
 ---
 
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
@@ -24,7 +24,7 @@ last_verified: 2026-10-04
 
 ## 怎么读这份 SOP
 
-**冲突裁决**（高 → 低）：用户显式指令（须留痕，即 waiver）> 代码 fail-closed 闸（唯一放行 = waiver）> 区域 profile > 决策表（[`references/decision-table.md`](references/decision-table.md)）> 本正文。**唯一例外**：prod 墙处置表 D0-P 不接受区域改写。
+**冲突裁决**（高 → 低）：用户显式指令（须留痕，即 waiver；红线除外）> **锁定表**（`src/wqb/profiles/locked.py`：禁混信号、Mode B 主闸下限、D0-P、平台线、窗口白名单、已点亮塔不作主数据集、truncation 不作扫描维度、提交前用户确认）> 代码 fail-closed 闸（唯一放行 = waiver）> **区域 × 类别组合**（`tracking/<R>/config/cells.json`）> 区域 profile（含区域 skill 与 `tracking/<R>/config/`）> **类别卡**（`src/wqb/profiles/category_cards.json`，只收 ≥ 2 区复现的结论）> 决策表（[`references/decision-table.md`](references/decision-table.md)）> 本正文。D0-P 在锁定表里：不接受区域 / 类别 / 组合改写。数值类锁定项只许收紧，组合与区域写得更松的值在解析时被钳回（`explain` 会标出）。
 **红线不可覆盖**（`wqb.waiver.RED_LINES`）：提交前的用户确认、凭据（`world-quant-brain-mcp/.env`：禁止读取、打印、提交）、平台限额。例：用户说「继续挖 MEA」（frozen 区）→ 只能走 MEA profile 写明的 probe-only 后门。
 
 **每步固定模板**：目的 / 前置 / 调用 / 产物 / 完成定义 / 失败分支（现象 → 动作 → 回哪步）/ 不做 / 细则。**「FAIL」有三种含义**——闸结果 FAIL、工具报错（`success=false` / 退出码 ≠ 0）、波结论 `FAIL`，各处会点名是哪种。任一步失败按该步失败分支回退，**不许跳过继续**。
@@ -80,6 +80,9 @@ last_verified: 2026-10-04
 | 生成先验 | `priors` | 步 4 | **代码**（`assemble-priors` 在 DB KB 空时兜底；GEM 读 priors 段） | 无先验 |
 | 闸门特化 | `gate_overrides` | 步 5 / 7 / 8 | **文档**（agent 读了照办；代码不消费） | 全局默认 |
 | 循环策略 | `loop_policy` | 步 2 / 6 / 循环 | **文档** | 全局默认 |
+| 组合覆盖 | `tracking/<R>/config/cells.json` 的 `backtest.overrides` / `thresholds.overrides`（每条带 `_evidence`） | 步 6 / 7 / 8 | **代码**（`workflow_batch_track` 以 `--set` 钉住；toolkit `pipeline.py` 经 `CampaignContext.bind_cell`；`mode_b_config` 读 `mode_b.*`） | 区域值 |
+
+**区域 skill（2026-10-04 起）**：每区一个 `wq-brain-ra-<区域小写>`（layer `L-RA-R`，清单见 [INDEX](../INDEX.md)），装三样东西：区域控制面板（回测设置 / 阈值 / Mode B 主闸，每个值带来源）、本区的流程差异、「区域 × 类别」组合分支文件 `references/<类别>.md`。面板与组合文件由 `tracking/<R>/config/cells.json` + profile **生成**（`$WQ_PY -m wqb.profiles render --apply`）——改控制值改 cells.json，不手改生成块。**步 1 定区后进入该区域 skill；步 3 / 4 / 7 / 8 先读本波数据集所在组合的分支文件**，或直接取生效画像：`$WQ_PY -m wqb.profiles explain --region $REGION --dataset $DS`。
 
 规则：profile 与正文冲突时 profile 优先（区域实证结晶）；profile 缺字段回落骨架默认；`entry_verdict` 三态的默认含义见 [`step1-inventory.md`](references/step1-inventory.md) §1.1，profile 只写与默认不同的部分。键的「谁读」、正文固定模板、`last_verified` 的含义、区域缺口见 [`region-profile-contract.md`](references/region-profile-contract.md)。
 
@@ -88,7 +91,7 @@ last_verified: 2026-10-04
 ### 步 1（S-PRE）查表与库存分流
 
 - **目的**：region 先验，避免重复已判死路径；判「先清库存」还是「开新挖」。
-- **前置**：已读区域 profile（`frozen` → 步 1 即拒，只留 profile 写明的后门）。
+- **前置**：已读区域 profile，并进入区域 skill `wq-brain-ra-<区域小写>`（`frozen` → 步 1 即拒，只留 profile 写明的后门）。
 - **调用**（顺序）：① 库存盘点 `tools/build_gate_prior_from_inventory.py` → `tools/select_ra_basket.py` ② 查表 `get_campaign_summary` / `get_dead_ends` / `get_dead_datasets` / `get_mining_yield` ③ **跨区死路**（`get_dead_ends` 不传 region、`get_cross_region_lessons`）④ PPA 主题（仅含 PPA 分支时）。
 - **产物**：universe / delay / 中性化 / 排除集 / 排除信号族 / 当前波号 → 落 `settings.json`，步 2 再写 ledger `s0_ranking` / `s0_whitelist`。
 - **完成定义**：给出分流结论——篮子条数（只数 prod 已核的 `fresh_ok`：近 2 天内测过且 < 上限；陈旧的 prod 值作废，见细则 §1.2）≥ target **且**覆盖 ≥ 3 座未点亮塔 → **跳步 7 / 8**；否则进步 2，只补缺口塔。
@@ -168,7 +171,7 @@ last_verified: 2026-10-04
 ### 步 7（S4）诊断改进
 
 - **目的**：这一波的候选下一步去哪——提交链 / 改进 / 判死。
-- **前置**：步 6 完成定义满足；prod-first（步 5b）已跑。
+- **前置**：步 6 完成定义满足；prod-first（步 5b）已跑；已读本组合分支文件的 S4 段（组合杠杆、不要用的杠杆——Mode B 的 B3 先取它们）。
 - **调用**：`s4-prescreen`（全灭直接判死）→ `workflow_campaign(stage="S4", dataset=$DS, wave=$W)`（评审；解析不到 alpha_id 即 FAIL，用其列出的字符串波号重试）→ 逐候选链（selfcorr-quick → `check_self_correlation` → `compute_mutual_correlation` → `check_correlation` → `brain-alpha-robustness` → judge）。
 - **产物**：ledger `s4_walls_<region>_<wave>`、`salvage_pool`；每条候选有去向。
 - **完成定义**：本波每条候选都有去向——进步 8 / 留 near / salvage（带墙名）/ 判死（进步 9）。
@@ -181,7 +184,7 @@ last_verified: 2026-10-04
 - **目的**：决定哪些候选值得请用户确认提交。**本步不执行提交。**
 - **前置**：步 7 的候选已过稳健性（[`brain-alpha-robustness`](../brain-alpha-robustness/SKILL.md)，S4→S5 必经；结论写台账 `robustness_<alpha_id>`，`submit_verdict` 读取——`REJECT` → `BLOCKED`，无记录只提示）。
 - **调用**（有序检查清单，任一步说「不」就停）：① **资格门** `Failed RA == 0`（`compute_webdata_failed_counts`；名单内仍有 `PENDING` 时 `Failed=0` 只表示「暂无失败」，待其算完再判）② `submit_verdict`（**否决权威**，退出码 `1` BLOCKED / `10` UNVERIFIABLE / `11` ALREADY_SUBMITTED）③ prod 实测 `check_correlation(alpha_id, refresh=True)` < 0.7 ④ **用户明确确认** ⑤ 才可 `workflow_submit_alpha(confirm_submit=True)`（**不可逆**，单独调用；台账无 `robustness_<alpha_id>` 记录时须同时传 `robustness_audited=True`，缺省 False 即 fail-closed；执行与四态响应处置见 [`worldquant-submit-alpha`](../worldquant-submit-alpha/SKILL.md)，SUPER 走 `wq-brain-superalpha`，PPA 走 web UI 交接）。
-- **产物**：候选清单 + 每条的证据（资格门 / verdict 退出码 / prod 值）交用户。
+- **产物**：候选清单 + 每条的证据（资格门 / verdict 退出码 / prod 值）交用户；阈值与 Mode B 主闸以 `explain` 的生效值为准（已按下限钳制）。
 - **完成定义**：清单已交用户；**用户确认后**提交，`get_alpha_details` → `status == ACTIVE` 且 `dateSubmitted` 非空。
 - **失败分支**：PROD / SELF 不过 → 回步 7；配额耗尽（按 **ET 日历日**）→ 挂起提交，继续步 2 → 9。
 - **不做**：`UNVERIFIABLE`（现实中最好的结果）**不是放行**；确认前禁止一切**真提交**入口——`workflow_submit_alpha` / `submit_alpha` 节点（`confirm_submit=True`）、`workflow_superalpha`（`confirm_submit=True`）、`super_build.py submit`（`submit_batch` 与 `pipeline.py --submit` 是**派发仿真**，不是提交，别混）；**没有零成本的 POST 探测**；`PASS_CHEAP` 只代表过了 IS 廉价闸，**绝不等于可提交**。

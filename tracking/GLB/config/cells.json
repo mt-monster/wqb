@@ -1,0 +1,746 @@
+{
+ "schema_version": 1,
+ "region": "GLB",
+ "cells": {
+  "analyst": {
+   "status": "auto",
+   "datasets": [
+    "analyst10",
+    "analyst_consensus"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 54,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "analyst_consensus",
+      "backtests": 47
+     },
+     {
+      "dataset": "analyst10",
+      "backtests": 7
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-ANALYST-CONSENSUS-TARGETPRICE-FASTKILL",
+      "family": "analyst_consensus targetprice 族（水平/变化率/分歧）+ estimate_count",
+      "text": "",
+      "dataset": "analyst_consensus",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-ANL10-PREDSURPS-NOSIGNAL",
+      "family": "analyst10 预测惊喜 pred_surps（smart_ests vs consensus 偏离）",
+      "text": "",
+      "dataset": "analyst10",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "earnings": {
+   "status": "auto",
+   "datasets": [
+    "earnings3"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 8,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "earnings3",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-ERN3-CALENDAR-CW-NOSIGNAL",
+      "family": "earnings3 财报日历（pre/next_interval 财报临近效应）",
+      "text": "",
+      "dataset": "earnings3",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "fundamental": {
+   "status": "auto",
+   "datasets": [
+    "fundamental17",
+    "fundamental23",
+    "fundamental28",
+    "fundamental44"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 70,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "fundamental17",
+      "backtests": 40
+     },
+     {
+      "dataset": "fundamental23",
+      "backtests": 14
+     },
+     {
+      "dataset": "fundamental44",
+      "backtests": 8
+     },
+     {
+      "dataset": "fundamental28",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-F17-DELTA-RATIO-CEILING-082",
+      "family": "fundamental17 事件型变化率/ratio 骨架族（GLB/TOPDIV3000/D1）",
+      "text": "GLB fundamental17 已测机制（Accrual gap/杠杆变化-水平/流量-存量强度/ratio_pair/event_freshness）不再投变体；若回探需全新机制轴（非变化率/ratio）",
+      "dataset": "fundamental17",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-F28-GLOBALFUND-DEAD",
+      "family": "fundamental28 全球基本面（929 MATRIX 字段，ratio/group 骨架）",
+      "text": "GLB fundamental 塔判死（f17 天花板 0.82 + f28 全灭 0.26）；不再投 GLB 基本面类数据集",
+      "dataset": "fundamental28",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-FND44-ACCOUNTING-QUALITY-MINVOL1M-FASTKILL",
+      "family": "fundamental44 会计质量模型（Sloan/百分比/营运资本/修正 Jones 应计、M-score、F-score、重述概率、综合质量分）",
+      "text": "",
+      "dataset": "fundamental44",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-FUND23-QUARTERLY-SLOW-DELTA-NOSIGNAL",
+      "family": "fundamental23 季度基本面科目（水平/均值/变化率）",
+      "text": "",
+      "dataset": "fundamental23",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "insiders": {
+   "status": "auto",
+   "datasets": [
+    "insider_agg_matrix"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 7,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "insider_agg_matrix",
+      "backtests": 7
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-INSIDER-NETBUY-SPARSE-WEAK",
+      "family": "insider_agg_matrix 内部人交易（净买入/方向指标）",
+      "text": "",
+      "dataset": "insider_agg_matrix",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "institutions": {
+   "status": "auto",
+   "datasets": [
+    "institutions6"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 8,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "institutions6",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-INST6-SMARTMONEY-TURNOVER-WALL",
+      "family": "institutions6 机构持仓（净买入/持股变化）",
+      "text": "",
+      "dataset": "institutions6",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "model": {
+   "status": "auto",
+   "datasets": [
+    "analyst_revision_horizons",
+    "chart_cnn_alpha",
+    "macro_equity_signals",
+    "model135",
+    "model238",
+    "model239",
+    "model264",
+    "model32",
+    "model38",
+    "other432",
+    "predictive_starmine",
+    "quant_factor_lib",
+    "tech_chart_model"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 857,
+    "ra_clean": 1,
+    "prod_measured": 1,
+    "prod_clean": 0,
+    "prod_blocked": 1,
+    "top_datasets": [
+     {
+      "dataset": "model38",
+      "backtests": 729
+     },
+     {
+      "dataset": "analyst_revision_horizons",
+      "backtests": 24
+     },
+     {
+      "dataset": "model135",
+      "backtests": 16
+     },
+     {
+      "dataset": "chart_cnn_alpha",
+      "backtests": 16
+     },
+     {
+      "dataset": "model264",
+      "backtests": 16
+     },
+     {
+      "dataset": "model32",
+      "backtests": 8
+     },
+     {
+      "dataset": "macro_equity_signals",
+      "backtests": 8
+     },
+     {
+      "dataset": "model238",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-ARH-STARMINE-REVISION-FASTKILL",
+      "family": "analyst_revision_horizons（评级上下调计数/ARM 百分位/修正广度/SmartEstimate bold/F12M 估值修正）",
+      "text": "",
+      "dataset": "analyst_revision_horizons",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-MACROEQ-REGRESSION-SIGNALS-WEAK",
+      "family": "macro_equity_signals（bond/cpi/fx/irp/unemployment 回归预测收益与残差、CAPM beta、地区销售 FX 收益）",
+      "text": "",
+      "dataset": "macro_equity_signals",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-MDL264-TRENDPROB-CEILING-14-20260927",
+      "family": "model264 会计科目趋势下行概率（毛利率/净利率/税前利润率/EBITDA/税后净利/营业利润/总债务 的 1l 概率）+ model138 质量调整业绩偏离指数 PDI",
+      "text": "",
+      "dataset": "model264",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-MODEL-TOWER-TOPDIV3000-PROBES-FASTKILL",
+      "family": "MODEL 塔四集探针 @TOPDIV3000（model135 技术指标 / model238 Smart Holdings / quant_factor_lib 链接企业 lead-lag / model32 动量分解）",
+      "text": "",
+      "dataset": "model135",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-MODEL32-STARMINE-MOMENTUM-FASTKILL",
+      "family": "model32 StarMine 价格动量分解（global/industry/regional/short/mid/long 百分位及其价差、加速）",
+      "text": "",
+      "dataset": "model32",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-SLOW-FACTOR-PROD-WALL-AND-WEAK-SENTIMENT-20260921",
+      "family": "慢变量因子类（model239 卖空/risk60 借贷费/model243 综合排名/model36 信用/model28 违约/sentiment26 网站流行度）+ 快情绪类（socialmedia12/news73）作主腿",
+      "text": "GLB 慢变量因子类不作 RA 主腿（prod 墙结构性）；GLB 可用主腿 = 快预测/反转信号 + 量占比×cap 门控；情绪/社交类与 ASI 一样全灭。",
+      "dataset": "model239",
+      "bound": "inferred"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "notes": [
+     "模型预测的「基本面恶化概率」是反向正：model264 S 1.40 封顶、换手 3%、2Y 2.35——适合当 SuperAlpha 的慢腿（GLB-MDL264-TRENDPROB-CEILING-14-20260927）"
+    ]
+   }
+  },
+  "news": {
+   "status": "auto",
+   "datasets": [
+    "news17",
+    "news23",
+    "news31",
+    "news52",
+    "news73"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 44,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "news52",
+      "backtests": 13
+     },
+     {
+      "dataset": "news73",
+      "backtests": 10
+     },
+     {
+      "dataset": "news31",
+      "backtests": 8
+     },
+     {
+      "dataset": "news23",
+      "backtests": 8
+     },
+     {
+      "dataset": "news17",
+      "backtests": 5
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-NEWS17-PR-EVENT-TURNOVER-WALL",
+      "family": "news17 PR 事件信号（nip×event_relevance / count−index 价差，24 VECTOR 字段）",
+      "text": "GLB news 塔判死（news23/17/31/52/73/ai_news 六集全灭或封顶）；不再投 news 类数据集；稀疏事件高换手族（tvr>1.0 且 2Y 过线）判为同型风险族，新集先看 tvr 分布",
+      "dataset": "news17",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-NEWS23-MNA-EVENT-DEAD",
+      "family": "news23 M&A 事件信号（deal_value/investment_round/premium/conversion 等 129 VECTOR 字段）",
+      "text": "GLB news 塔判死（news23/31/52/73/ai_news 五集全灭）：事件计数/注意力/语调/交易事件均无信号，不再投 news 类数据集",
+      "dataset": "news23",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-NEWS31-ATTENTION-NOVELTY-WEAK",
+      "family": "news31 Refinitiv 新闻非方向维度（注意力计数/新奇度/分歧/显著性/篇幅/多公司）+ 负面情绪探针",
+      "text": "",
+      "dataset": "news31",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-NEWS52-CONF-CALL-STRUCT-FASTKILL-20260925",
+      "family": "news52 电话会结构/注意力计数（chars/words/questions/participants + keyword occurrence）",
+      "text": "GLB 不再投 news52 电话会结构计数；注意力/非方向类与 news31/news73 同型全灭",
+      "dataset": "news52",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  },
+  "other": {
+   "status": "auto",
+   "datasets": [
+    "ai_news_scores",
+    "dl_riskfree_returns",
+    "other296",
+    "other315",
+    "other455",
+    "other699",
+    "techindi_model"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 440,
+    "ra_clean": 79,
+    "prod_measured": 48,
+    "prod_clean": 9,
+    "prod_blocked": 39,
+    "top_datasets": [
+     {
+      "dataset": "dl_riskfree_returns",
+      "backtests": 375
+     },
+     {
+      "dataset": "ai_news_scores",
+      "backtests": 34
+     },
+     {
+      "dataset": "other296",
+      "backtests": 8
+     },
+     {
+      "dataset": "techindi_model",
+      "backtests": 8
+     },
+     {
+      "dataset": "other315",
+      "backtests": 8
+     },
+     {
+      "dataset": "other699",
+      "backtests": 7
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-AINEWS-TS-DELTA-STRENGTH-WALL",
+      "family": "ai_news_scores 情绪变化率族（ts_delta 净情绪）",
+      "text": "",
+      "dataset": "ai_news_scores",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-DLRF-CNN-ESTIMATE-PROD-WALL",
+      "family": "dl_riskfree_returns OHLCV 图像 CNN 市场中性收益预测（single_bucket_{5,20,60}day 回归估计 + 分位概率）",
+      "text": "",
+      "dataset": "dl_riskfree_returns",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-DLRF-NEWGEM-139-PROD-WALL-20260925",
+      "family": "dl_riskfree_returns 全族新 GEM 139 条回测（single_bucket/probability_label/60day × 门控/未门控）",
+      "text": "GLB dl_riskfree 新 GEM 路线封死；不再投任何同族变体",
+      "dataset": "dl_riskfree_returns",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-MODELTOWER-DLCHART-COLDVARIANTS-FASTKILL",
+      "family": "DL 图像预测族冷门变体（techindi_model 分位概率/预测、tech_chart_model 连续预测、chart_cnn_alpha 概率与 raw 预测）",
+      "text": "",
+      "dataset": "techindi_model",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-OTH315-EQUITY-SWAP-NOISE-20260927",
+      "family": "other315 OTC 权益互换报备（互换成交价 vs 现价基差、名义额存量与增速、成交笔数、合成杠杆强度、名义额/流动性、价格离散度、名义额集中度）",
+      "text": "",
+      "dataset": "other315",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-OTH699-RETAIL-FLOW-FASTKILL",
+      "family": "",
+      "text": "",
+      "dataset": "other699",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-W03-OTHER455-NO-SIGNAL",
+      "family": "other455 competitor_n2v_pca 族",
+      "text": "",
+      "dataset": "other455",
+      "bound": "payload"
+     }
+    ],
+    "wins": [
+     {
+      "id": "GLB-AINEWS-TS-DELTA-DECORRELATION-WIN",
+      "family": "情绪水平信号 prod 饱和 → 变化率正交化方法论",
+      "text": "",
+      "dataset": "ai_news_scores",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-DL20D-SUBSET-GATE-FAMILY-20260921",
+      "family": "dl_riskfree_returns 20d 回归预测 × 经济子域门控（可复制的 prod 破墙模板）",
+      "text": "",
+      "dataset": "dl_riskfree_returns",
+      "bound": "inferred"
+     }
+    ]
+   },
+   "note": "GLB 两条出货机制之一（dl_riskfree_returns 平台类别 OTHER）",
+   "generation": {
+    "use": [
+     "dl_riskfree_returns 20 日 CNN（single_bucket_20day_return_estimate_ohlcv_img_2）× 一个经济子集门控：未门控 prod 0.77–0.84（38 个变体），门控后 0.60–0.67"
+    ],
+    "avoid": [
+     "techindi_model predicted_first_quantile 系：热门字段 prod 必超上限（qMNZX1o1 0.7686），已判穷尽",
+     "single_bucket_20day_return_estimate_ohlcv_img_2 / single_bucket_60day 已被 prod 饱和闸拦"
+    ],
+    "notes": [
+     "门控模板只修 prod / robust、不造强度：未门控基础信号 IS sharpe 不低于 2.5、fitness 不低于 1.5 才值得花槽位（GLB 2026-09-27 铁律）"
+    ]
+   }
+  },
+  "pv": {
+   "status": "auto",
+   "datasets": [
+    "intraday_pv_feats",
+    "pv1",
+    "pv106",
+    "pv37",
+    "pv98"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 753,
+    "ra_clean": 68,
+    "prod_measured": 43,
+    "prod_clean": 11,
+    "prod_blocked": 32,
+    "top_datasets": [
+     {
+      "dataset": "intraday_pv_feats",
+      "backtests": 710
+     },
+     {
+      "dataset": "pv37",
+      "backtests": 16
+     },
+     {
+      "dataset": "pv98",
+      "backtests": 12
+     },
+     {
+      "dataset": "pv1",
+      "backtests": 8
+     },
+     {
+      "dataset": "pv106",
+      "backtests": 7
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-IPV-CLOSEINT-MICRO-FASTKILL",
+      "family": "intraday_pv_feats 收盘区间微观结构（末区间 last/vwap、末区间 close-location、末区间量突增、后半场量钟动量/加速度、全日 vwap/last 比）",
+      "text": "",
+      "dataset": "intraday_pv_feats",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-IPV-NONPRECLOSE-SUBFAMILIES-WEAK",
+      "family": "",
+      "text": "",
+      "dataset": "intraday_pv_feats",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-IPV-PRECLOSE-60M-2Y-WALL",
+      "family": "",
+      "text": "",
+      "dataset": "intraday_pv_feats",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-IPV-PRECLOSE-LASTTRADE-FAST-EMEA-WALL",
+      "family": "intraday_pv_feats pre_close 30m last_trade/vwap/bid/ask 快骨架（country 轴）— EMEA 墙",
+      "text": "",
+      "dataset": "intraday_pv_feats",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-IPV-THIRDMECH-BACKLOG-RETEST-DEAD-20260925",
+      "family": "intraday_pv_feats 第三机制全量积压复测（post_open/first_half/skew/vwap/momentum 非 pre_close 族）",
+      "text": "GLB IPV 第三机制新挖路线到此穷尽；剩余 453 积压已消化，不再重投",
+      "dataset": "intraday_pv_feats",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-NEWSETS-MINVOL1M-SECONDLOOK-FASTKILL",
+      "family": "MINVOL1M 快骨架二次探针：pv37 盘口深度/量分布、model135 技术指标、other296 财报电话语调、other699 零售流、news31/news73、macro_equity_signals、analyst_rev",
+      "text": "",
+      "dataset": "pv37",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-PV106-LIQ-PREMIUM-TURNOVER-WALL",
+      "family": "pv106 交易成本/滑点（流动性溢价）",
+      "text": "",
+      "dataset": "pv106",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-PV98-INTRADAY-REVERSAL-TURNOVER-WALL",
+      "family": "pv98 日内反转/量价微观结构族",
+      "text": "",
+      "dataset": "pv98",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-W02-INTRADAY-PV-TURNOVER-WALL",
+      "family": "intraday_pv_feats corr_*_with_slippage 族",
+      "text": "",
+      "dataset": "intraday_pv_feats",
+      "bound": "payload"
+     }
+    ],
+    "wins": [
+     {
+      "id": "GLB-IPV-PRECLOSE-HIGH-FAST-COUNTRY-WIN",
+      "family": "intraday_pv_feats 收盘前 30m 高价路径反转（快骨架 country 轴）",
+      "text": "",
+      "dataset": "intraday_pv_feats",
+      "bound": "inferred"
+     },
+     {
+      "id": "GLB-IPV-PVCORR-REVERSAL-WIN",
+      "family": "intraday_pv_feats 价量相关反转（corr_last_trade_price_with_volume 快骨架）",
+      "text": "",
+      "dataset": "intraday_pv_feats",
+      "bound": "inferred"
+     }
+    ]
+   },
+   "note": "GLB 两条出货机制之一；GLB 已挖穿（41 族判死），获胜字段本身已被 prod 饱和闸拦——不要再开 atom 主信号",
+   "generation": {
+    "use": [
+     "intraday_pv_feats 尾盘 30 分钟反转：只在 MINVOL1M、只用 ts_decay_linear(x, 5)；high-price 路径能过 EMEA 子宇宙，last-trade 路径在 9 种中性化下都不行（0.58–0.93）"
+    ],
+    "avoid": [
+     "已被 prod 饱和闸拦的获胜字段：mean_high_price_return_30m_pre_close_2、corr_last_trade_price_with_volume"
+    ]
+   }
+  },
+  "risk": {
+   "status": "auto",
+   "datasets": [
+    "risk60",
+    "risk68",
+    "risk70"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 41,
+    "ra_clean": 13,
+    "prod_measured": 10,
+    "prod_clean": 0,
+    "prod_blocked": 10,
+    "top_datasets": [
+     {
+      "dataset": "risk60",
+      "backtests": 23
+     },
+     {
+      "dataset": "risk68",
+      "backtests": 10
+     },
+     {
+      "dataset": "risk70",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-RISK60-BORROWFEE-PROD-WALL",
+      "family": "risk60 借券费率（rsk60_offer / lending_fee_bid_rate / rsk60_last / crowding）",
+      "text": "",
+      "dataset": "risk60",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-RISK68-RESIDUAL-REVERSAL-WEAK-20260927",
+      "family": "risk68 特定收益反转族（rsk68_residual_return 原始/波动缩放/流动性缩放/22d 窗 + 5 种子域门控）",
+      "text": "",
+      "dataset": "risk68",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-RISK70-STYLE-HF-MINVOL1M-FASTKILL",
+      "family": "risk70 多因子模型（对冲基金持仓/持有者数变化、特定风险、特定收益反转、盈利波动/投资质量/中盘风格暴露）",
+      "text": "",
+      "dataset": "risk70",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   },
+   "generation": {
+    "use": [
+     "借券费率 rsk60_offer 作门控腿有效（子集门控模板），但它本身已被 prod 饱和闸拦作主信号"
+    ]
+   }
+  },
+  "sentiment": {
+   "status": "auto",
+   "datasets": [
+    "sentiment21",
+    "sentiment22",
+    "sentiment26"
+   ],
+   "evidence": {
+    "synced_at": "2026-10-04",
+    "backtests": 16,
+    "ra_clean": 0,
+    "prod_measured": 0,
+    "prod_clean": 0,
+    "prod_blocked": 0,
+    "top_datasets": [
+     {
+      "dataset": "sentiment26",
+      "backtests": 8
+     },
+     {
+      "dataset": "sentiment21",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [
+     {
+      "id": "GLB-SENT22-DTS-RESOURCE-WALL",
+      "family": "sentiment22 dts 多日时序族（snt22_Ndts_gen/sop/tuen）",
+      "text": "",
+      "dataset": "sentiment22",
+      "bound": "payload"
+     },
+     {
+      "id": "GLB-SNT26-WEBTRAFFIC-FASTKILL",
+      "family": "sentiment26 网站流量排名（DNS 被动流量：平均排名/相对流行度/顶级域数/国家域数/排名偏度）",
+      "text": "",
+      "dataset": "sentiment26",
+      "bound": "payload"
+     }
+    ],
+    "wins": []
+   }
+  }
+ },
+ "evidence_synced_at": "2026-10-04",
+ "unbound_registry_entries": 1,
+ "unattributed_backtests": 74
+}

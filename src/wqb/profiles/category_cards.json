@@ -1,0 +1,683 @@
+{
+ "schema_version": 1,
+ "_doc": "类别卡（跨区的类别级知识，2026-10-04 建）。primitives / forbidden 迁自 GEM economic_priors 的 CATEGORY_PRIMITIVES / CATEGORY_FORBIDDEN（测试守内容不丢）；cross_region 只收 ≥2 个区复现的结论，单区证据写进 tracking/<R>/config/cells.json。生成侧全局禁止项在 wqb.profiles.locked.GLOBAL_FORBIDDEN。查看合成后的生效画像：$WQ_PY -m wqb.profiles explain --region <R> --category <c>",
+ "global": {
+  "s4_levers": [
+   {
+    "id": "equivalent_operator_swap",
+    "type": "lever",
+    "what": "判「无解 / 天花板」前先扫等价算子替换：signed_power → quantile、ts_scale → quantile / normalize。数值路径不同，一次动多个闸（含 prod，要读全部闸）",
+    "regions": [
+     "KOR",
+     "GLB"
+    ],
+    "evidence": "KOR other466 signed_power→quantile：2Y 1.51→1.56、prod 0.6544→0.6397；GLB quantile 替 ts_scale：S +0.20、F +0.06、prod 0.475→0.565（DEC-72）",
+    "note": "效应量逐区实测，禁外推；quantile 只收 1 个参数"
+   },
+   {
+    "id": "subset_gate",
+    "type": "lever",
+    "what": "强但撞 prod 墙的快信号：用一个经济子集门控（trade_when 进 >0.5 出 <0.4 的慢变量，或 rank(cap)>0.2 ∩ 子集）只在子集里持仓",
+    "regions": [
+     "GLB",
+     "ASI",
+     "IND"
+    ],
+    "evidence": "GLB-DL20D-SUBSET-GATE-FAMILY-20260921（prod 0.82→0.60–0.67）；ASI LLNgdpw2 / 88jaV5lv；IND ZYbqREW1 / levk5JYN（prod 0.54–0.55）",
+    "precondition": "未门控的基础信号 IS sharpe 不低于 2.5、fitness 不低于 1.5（GLB 2026-09-27 铁律：门控只修 prod / robust，不造强度）；慢信号门控后换手会升，只用于快信号"
+   }
+  ],
+  "notes": [
+   "prod 与 self 两个端点都取 max、都过线才可提；不改持仓的降 prod 杠杆（hump、加大 decay）会把 self 推爆（EUR wave274）",
+   "设置是强度闸：nanHandling / maxTrade / decay / 中性化换档等于换信号，跨档结果不可比（IND 行为族 S 2.19→0.46）",
+   "decay 匹配信号速度：快信号上 decay 越大越差；decay 0 与 1 逐位相同，只留一个",
+   "prod 墙先看直方图分单颗钉子 / 密墙 / 可破三型，再决定换分母、换设置档或分组轴（决策表 D0-P 诊断前置）"
+  ]
+ },
+ "cards": {
+  "model": {
+   "title": "模型 / 打分类（预训练因子、ML 预测、评级分数）",
+   "group": "MODEL",
+   "families": [
+    "pattern"
+   ],
+   "field_profile": "分数水平、分位标签（*_quantile / probability_label）、预测收益；多为日频或周频更新，常见 VECTOR；生命周期衰减快",
+   "windows": {
+    "level": [
+     22,
+     66,
+     252
+    ],
+    "change": [
+     5,
+     22
+    ]
+   },
+   "s1_hints": [
+    "分清分数水平与分位 / 概率标签：标签类在 GBR 2Y 崩（GBR-DLRISKFREE-LABEL-DEAD）",
+    "看字段 description 判断是不是别人做好的成品因子；成品因子的热门字段 prod 墙最硬"
+   ],
+   "cross_region": [
+    {
+     "id": "model-crowded-scores-prod-wall",
+     "type": "negative",
+     "what": "成品模型分数的热门字段在多区撞 prod 墙（users 高的字段 prod 必超上限）",
+     "regions": [
+      "GLB",
+      "USA",
+      "EUR"
+     ],
+     "evidence": "GLB techindi_model predicted_first_quantile 系 qMNZX1o1 prod 0.7686（GLB profile）；USA mdl177 / book-value 145 颗同族 ACTIVE；EUR×model 62 条判死"
+    }
+   ],
+   "primitives": [
+    "industry residual: group_zscore so the factor is not the sector bet",
+    "quality minus yield: a slow fundamental residual, not the raw score",
+    "invert only when the economic story is crowding or mean-reversion",
+    "never ship a lone rank(model_score) as a concept",
+    "model disagreement: ensemble variance across model outputs",
+    "regime conditional: model signal only in specific market regimes"
+   ],
+   "forbidden": [
+    "禁止使用裸 rank(model_score)（必须 group_neutralize 或 industry residual）"
+   ]
+  },
+  "pv": {
+   "title": "量价 / 微观结构",
+   "group": "PV",
+   "aliases": [
+    "imbalance"
+   ],
+   "families": [
+    "pattern",
+    "intraday_reversal",
+    "liquidity",
+    "residual_return"
+   ],
+   "field_profile": "日频量价（pv1）+ 分钟级派生（intraday_pv_feats：pre_close 30m、last trade、twap/vwap）+ 残差收益（pv47 UBER 残差）",
+   "windows": {
+    "daily": [
+     1,
+     5,
+     22
+    ],
+    "monthly": [
+     66
+    ]
+   },
+   "s1_hints": [
+    "各区可用性差异大：先查本区有没有 pv1（JPN TOP1600 没有，close / adv20 / returns 不可用）",
+    "intraday_pv_feats 目录字段 ≠ 平台可用字段：先单字段探针再成批"
+   ],
+   "cross_region": [
+    {
+     "id": "intraday-reversal-crowded",
+     "type": "negative",
+     "what": "日内价量相关反转 / 尾盘反转 IS 很强，但裸用 prod 0.79–0.99；只有加门控才可能破墙（见全局杠杆 subset_gate）",
+     "regions": [
+      "IND",
+      "GLB",
+      "ASI"
+     ],
+     "evidence": "IND intraday_pv_feats prod 0.79–0.92、pv103 外部孪生 1.0（IND profile）；GLB / ASI 门控模板（2026-09-21 实证）"
+    },
+    {
+     "id": "intraday-microstructure-weak",
+     "type": "negative",
+     "what": "日内微观结构的非反转机制普遍弱（max |S| 约 1.0，或撞 fitness 墙）",
+     "regions": [
+      "JPN",
+      "IND",
+      "GBR",
+      "USA"
+     ],
+     "evidence": "JPN w8 16 条 max|S| 1.02；USA-IPV-CORR-PRECLOSE-FITNESS-WALL-20260921；GBR-INTRADAY-MICRO-WEAK；IND 未点亮塔实证"
+    },
+    {
+     "id": "pattern-family-dead",
+     "type": "negative",
+     "what": "图表形态族（pattern_scores / continuation_score / chart_cnn）",
+     "regions": [
+      "KOR",
+      "GBR",
+      "DEU",
+      "AMR"
+     ],
+     "evidence": "KOR 三连死（chart_cnn 1.51 → continuation 0.34 → pattern_scores 0.49）；GBR-SIMPLE-STRUCTURE-DEAD；DEU-PATTERN_SCORES-PROBE-DEAD-20261002；AMR 红榜"
+    }
+   ],
+   "primitives": [
+    "continuation vs reversal: short-horizon pattern vs longer mean",
+    "intraday vs overnight: session-specific pressure",
+    "volume-conditioned return: price move that happened on unusual volume",
+    "fast+slow interaction must be ONE coherent signal (ratio / ts_corr / conditional), never a weighted sum of two legs",
+    "volatility regime: high-vol vs low-vol period signal divergence",
+    "liquidity shock: volume spike vs historical average (ts_zscore of volume)",
+    "price efficiency: bid-ask spread or price impact proxy"
+   ],
+   "forbidden": [
+    "禁止使用加权混合（0.4*rank(A) + 0.6*rank(B) / add(multiply(0.4,A),multiply(0.6,B))）",
+    "禁止使用 ts_entropy / ts_skewness（幽灵算子）"
+   ]
+  },
+  "analyst": {
+   "title": "分析师预期 / 评级",
+   "group": "Analyst",
+   "field_profile": "一致预期（mean_estimate / flash）、修正、离散度、评级；VECTOR 为主；更新频率月 / 季",
+   "windows": {
+    "monthly": [
+     22,
+     66
+    ],
+    "quarterly": [
+     66,
+     252
+    ]
+   },
+   "s1_hints": [
+    "分清 actual_*（已实现、事后）与 mean_estimate_* / flash（预测、前瞻）：IND analyst_consensus 前 16 条全灭的真因是用了 actual（DEC-77）",
+    "VECTOR 先 vec_avg / vec_count 聚合；JPN 下 vec_* 外再套 ts_* 会报错"
+   ],
+   "cross_region": [
+    {
+     "id": "estimate-momentum-ind-only",
+     "type": "negative",
+     "what": "flash / pretax 一致预期动量族只在 IND 有效，别的区 |S| 都在 1.07 以下",
+     "regions": [
+      "USA",
+      "GLB",
+      "HKG",
+      "KOR",
+      "EUR",
+      "DEU",
+      "GBR"
+     ],
+     "evidence": "waves probe_flash_eps_20260919 / probe_pretax_20260919：USA ≤0.09、GLB ≤0.08、HKG 0.64、KOR ≤1.07、EUR ≤0.96、DEU ≤0.72、GBR ≤0.54"
+    },
+    {
+     "id": "analyst-primary-prod-wall",
+     "type": "negative",
+     "what": "分析师主信号族普遍撞 prod 墙",
+     "regions": [
+      "KOR",
+      "USA",
+      "DEU"
+     ],
+     "evidence": "KOR analyst10/16/44/consensus（RULES §G）；USA-ANALYST44-BREADTH-DEAD-EP-PRODWALL（E/P z prod 0.93）；DEU analyst93 prod 饱和"
+    }
+   ],
+   "primitives": [
+    "revision surprise: change in FY1/FY2 vs the stale level",
+    "dispersion: disagreement across estimates, not the consensus mean",
+    "breadth vs magnitude: how many estimates moved, not how far the mean moved",
+    "horizon gap: FY2 minus FY1 as a growth-expectation residual",
+    "rating momentum: upgrade/downgrade frequency vs historical baseline",
+    "target price gap: current price vs consensus target (upside/downside)",
+    "estimate acceleration: second derivative of estimate revisions"
+   ],
+   "forbidden": [
+    "禁止使用裸 rank(estimate)（必须 ts_delta 或 group_zscore）"
+   ]
+  },
+  "earnings": {
+   "title": "财报事件 / 盈余意外",
+   "group": "Earnings",
+   "field_profile": "事件 / 日历型（距财报天数、意外值、电话会），稀疏",
+   "windows": {
+    "event": [
+     5,
+     22
+    ],
+    "quarterly": [
+     66
+    ]
+   },
+   "s1_hints": [
+    "ern3_pre_interval 是负天数编码：less(x, -5) 表示财报后超过 5 天（IND 实测）",
+    "稀疏事件直接作主信号易 CONCENTRATED_WEIGHT / 高换手"
+   ],
+   "cross_region": [
+    {
+     "id": "earnings3-timing-leg-only",
+     "type": "negative",
+     "what": "earnings3 的日历 / 计时字段作主信号判死，只能作条件（计时）腿",
+     "regions": [
+      "IND",
+      "MEA"
+     ],
+     "evidence": "IND-EARNINGS3-TIMING-DEAD；MEA-EARNINGS3-CALENDAR-DEAD"
+    }
+   ],
+   "primitives": [
+    "earnings surprise: actual vs consensus (standardized unexpected earnings)",
+    "earnings revision: post-earnings estimate changes",
+    "earnings quality: accruals vs cash flow divergence",
+    "guidance vs consensus: management guidance vs analyst estimates",
+    "earnings momentum: year-over-year growth acceleration",
+    "earnings call sentiment: tone analysis of earnings call transcripts"
+   ],
+   "forbidden": []
+  },
+  "fundamental": {
+   "title": "财报基本面",
+   "group": "Fundamental",
+   "field_profile": "季频 / 年频财报科目与比率；覆盖要 ts_backfill 补",
+   "windows": {
+    "quarterly": [
+     66,
+     252
+    ],
+    "annual": [
+     252,
+     504
+    ]
+   },
+   "s1_hints": [
+    "低频字段窗口取 66 / 252，补覆盖用 ts_backfill(·, 66)（季频）或 252（年频）（决策表 D5 / D6）",
+    "比率型信号的分母口径往往决定 self / prod 与 2Y——先看分母"
+   ],
+   "cross_region": [
+    {
+     "id": "denominator-opposite",
+     "type": "conflict",
+     "what": "换分母在 KOR 是破 self / prod 墙的主杠杆，在 EUR 是毒药——不作类别级规则，按组合取用",
+     "regions": [
+      "KOR",
+      "EUR"
+     ],
+     "evidence": "KOR other466 只换分母 self 0.7422→0.6244、prod 0.8061→0.6843；EUR value_investment 换分母 S 0.10 全灭（WorkBuddy MEMORY §1.2 / §1.7）"
+    },
+    {
+     "id": "slow-classic-fundamental-dead",
+     "type": "negative",
+     "what": "慢变的经典基本面单因子（value / quality / book 及其线性变体）判死或 prod 饱和",
+     "regions": [
+      "USA",
+      "KOR"
+     ],
+     "evidence": "USA seed basics 全族死、book/value 145 颗同族 ACTIVE；KOR 慢变基本面族 fnd86/89/93/f21 四连死"
+    }
+   ],
+   "primitives": [
+    "accrual / cash gap: earnings quality, not the earnings level",
+    "leverage change: delta of debt or interest burden",
+    "efficiency: turnover or incremental margin, not the stock of assets",
+    "invert value only as a residual after industry neutralization",
+    "asset growth: delta of total assets vs revenue growth (efficiency)",
+    "margin trajectory: gross margin change vs operating margin change",
+    "capital allocation: capex vs depreciation (growth vs maintenance)"
+   ],
+   "forbidden": [
+    "禁止使用裸 rank(fundamental_score)（必须 group_neutralize 或 group_zscore）",
+    "禁止使用加权混合（0.4*rank(A) + 0.6*rank(B)）"
+   ]
+  },
+  "news": {
+   "title": "新闻",
+   "group": "News-Sentiment",
+   "field_profile": "VECTOR、稀疏、事件驱动（计数 / 语气 / 新颖度）",
+   "windows": {
+    "event": [
+     1,
+     5,
+     22
+    ]
+   },
+   "s1_hints": [
+    "VECTOR 稀疏：vec_count / vec_avg 后再进常规算子；直接用易 CONCENTRATED_WEIGHT",
+    "深挖（5 家族 × 6 桶）走 brain-alpha-research-news-sentiment"
+   ],
+   "cross_region": [
+    {
+     "id": "news-sentiment-primary-dead",
+     "type": "negative",
+     "what": "新闻 / 情绪作主信号在多区同型全灭（robust 墙、CW 或换手墙）",
+     "regions": [
+      "USA",
+      "EUR",
+      "IND",
+      "KOR",
+      "AMR",
+      "GLB"
+     ],
+     "evidence": "AMR profile 跨区负先验；KOR 新闻情绪四连死（news38/50/54/79）；IND sentiment21 robust 0.24；GLB-NEWS23-MNA-EVENT-DEAD、GLB news73 sentiment 判死"
+    },
+    {
+     "id": "news-count-as-gate",
+     "type": "lever",
+     "what": "新闻计数作子集门控腿有效（主信号仍来自别的类别）",
+     "regions": [
+      "ASI",
+      "GLB"
+     ],
+     "evidence": "ASI normalized_news_article_count、GLB vec_count(nws73_headlines)（2026-09-21 门控模板）"
+    },
+    {
+     "id": "emotion-family-dead",
+     "type": "negative",
+     "what": "emotion 系（含 sentiment / mood 命名的变体）跨区死路",
+     "regions": [
+      "GLB",
+      "KOR",
+      "HKG",
+      "AMR"
+     ],
+     "evidence": "GLB 铁律（registry cross_region 层）；KOR / HKG / AMR profile 排除"
+    }
+   ],
+   "primitives": [
+    "disagreement: primary vs secondary / source A vs source B sentiment",
+    "intensity-weighted tone: sentiment scaled by item count or novelty",
+    "revision of tone: ts_delta of backfilled sentiment, not the level",
+    "skew / polarization: fat-tail of sentiment vs the mean",
+    "event clustering: news count spikes vs baseline (ts_zscore of count)",
+    "source credibility: tier-1 vs tier-2 source sentiment divergence"
+   ],
+   "forbidden": [
+    "禁止使用 ts_entropy / ts_skewness / ts_percentage / ts_decay_exp_window（幽灵算子，整批 CANCELLED 连坐）",
+    "禁止使用裸 rank(sentiment_score)（必须 group_neutralize 或 ts_delta）"
+   ]
+  },
+  "sentiment": {
+   "title": "情绪 / 社媒",
+   "group": "News-Sentiment",
+   "aliases": [
+    "socialmedia"
+   ],
+   "field_profile": "情绪分、关注度、社媒热度；多为 VECTOR 或稀疏 MATRIX",
+   "windows": {
+    "event": [
+     1,
+     5,
+     22
+    ]
+   },
+   "s1_hints": [
+    "关注度冲击常是反向信号（IND news_sentiment_transfer 1.64 反号）"
+   ],
+   "cross_region": [
+    {
+     "id": "news-sentiment-primary-dead",
+     "type": "negative",
+     "what": "新闻 / 情绪作主信号在多区同型全灭（robust 墙、CW 或换手墙）",
+     "regions": [
+      "USA",
+      "EUR",
+      "IND",
+      "KOR",
+      "AMR",
+      "GLB"
+     ],
+     "evidence": "AMR profile 跨区负先验；KOR 新闻情绪四连死（news38/50/54/79）；IND sentiment21 robust 0.24；GLB-NEWS23-MNA-EVENT-DEAD、GLB news73 sentiment 判死"
+    },
+    {
+     "id": "emotion-family-dead",
+     "type": "negative",
+     "what": "emotion 系（含 sentiment / mood 命名的变体）跨区死路",
+     "regions": [
+      "GLB",
+      "KOR",
+      "HKG",
+      "AMR"
+     ],
+     "evidence": "GLB 铁律（registry cross_region 层）；KOR / HKG / AMR profile 排除"
+    }
+   ],
+   "primitives": [
+    "disagreement and intensity, not the raw score",
+    "change in sentiment after backfill, not the snapshot",
+    "sentiment divergence: retail vs institutional sentiment gap",
+    "sentiment persistence: autocorrelation of sentiment changes"
+   ],
+   "forbidden": []
+  },
+  "insiders": {
+   "title": "内部人交易",
+   "group": "Insider",
+   "field_profile": "稀疏事件矩阵（交易笔数 / 方向 / 金额）",
+   "windows": {
+    "event": [
+     5,
+     22
+    ],
+    "monthly": [
+     66
+    ]
+   },
+   "primitives": [
+    "交易方向与规模：净买入 / 净卖出，取负放在 rank 之后并保持零均值（决策表 D6）",
+    "持续性：内部人连续同向交易的次数，而不是单次交易",
+    "相对：按行业 / 市值分组比较，避免把行业交易季节性当信号"
+   ],
+   "s1_hints": [
+    "稀疏事件矩阵作主信号常撞 CW / 稀疏墙"
+   ],
+   "cross_region": [
+    {
+     "id": "insiders-low-ceiling",
+     "type": "negative",
+     "what": "insiders 数据集作主信号天花板低",
+     "regions": [
+      "KOR",
+      "DEU",
+      "USA",
+      "EUR"
+     ],
+     "evidence": "KOR insiders5 1.05、insider_feats prod 0.7185；DEU insider_trx_matrix 0.33；USA-INSIDER-MATRIX-SPARSE-EVENT-WALL；EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD"
+    }
+   ],
+   "forbidden": []
+  },
+  "institutions": {
+   "title": "机构持仓",
+   "group": "Institutions",
+   "field_profile": "季频持仓快照（持股比例、持有人数）",
+   "windows": {
+    "quarterly": [
+     66,
+     252
+    ]
+   },
+   "s1_hints": [
+    "季频慢变量：适合当 trade_when 慢开关（进 >0.5 出 <0.4 的滞回带），不适合当快信号"
+   ],
+   "cross_region": [
+    {
+     "id": "institutions6-gate-not-primary",
+     "type": "negative",
+     "what": "institutions6 作主信号判死；作慢门控腿可用（IND levk5JYN：机构持股比例 rank>0.5，prod 0.55）",
+     "regions": [
+      "IND",
+      "ASI",
+      "KOR",
+      "EUR"
+     ],
+     "evidence": "IND institutions6 best 0.32；ASI 死名单；KOR 红榜；EUR-INSTITUTIONS6-COLD-ZERO-YIELD"
+    }
+   ],
+   "primitives": [
+    "owner change vs owner level: flow, not the stale holding",
+    "concentration vs breadth of holders",
+    "country/industry relative ownership, not a screening flag",
+    "institutional momentum: new positions vs closed positions",
+    "ownership stability: long-term holders vs short-term traders"
+   ],
+   "forbidden": []
+  },
+  "shortinterest": {
+   "title": "卖空 / 借券",
+   "group": "ShortInterest",
+   "field_profile": "卖空量 / 金额、借券费率、利用率；常有累积口径与当日口径两套",
+   "windows": {
+    "daily": [
+     5,
+     22
+    ],
+    "long": [
+     252,
+     504
+    ]
+   },
+   "s1_hints": [
+    "YYYYMMDD 交易日字段（如 KOR shrt38_stk_invacttd_drt）不是信号",
+    "累积口径偏 2Y、当日口径偏 IS（KOR shortinterest38 实证，作选区先验，不作类别结论）"
+   ],
+   "cross_region": [
+    {
+     "id": "shortinterest5-priceband-dead",
+     "type": "negative",
+     "what": "shortinterest5 价带宽度在 TOP500 级宇宙没有横截面离散度",
+     "regions": [
+      "IND",
+      "ASI"
+     ],
+     "evidence": "IND-SHORTINTEREST5-PRICEBAND-DEAD；ASI-SI5-MCR63-RSK70-CORRGATE-WEAK-20260921"
+    }
+   ],
+   "primitives": [
+    "short interest change: delta of short interest vs float",
+    "short squeeze potential: high short interest + positive catalyst",
+    "short covering: rapid decline in short interest",
+    "days to cover: short interest vs average daily volume",
+    "short interest momentum: acceleration of short interest changes"
+   ],
+   "forbidden": []
+  },
+  "risk": {
+   "title": "风险模型 / 因子载荷",
+   "group": "Risk",
+   "field_profile": "因子载荷、残差收益、借券 / 拥挤度指标",
+   "windows": {
+    "daily": [
+     5,
+     22
+    ],
+    "long": [
+     252
+    ]
+   },
+   "cross_region": [
+    {
+     "id": "risk70-dead",
+     "type": "negative",
+     "what": "risk70 族判死（族连坐 risk88）",
+     "regions": [
+      "KOR",
+      "ASI"
+     ],
+     "evidence": "KOR RULES §G；ASI 死名单（2026-09-21）"
+    },
+    {
+     "id": "residual-reversal-mixed",
+     "type": "conflict",
+     "what": "风险模型残差反转：KOR / GBR / GLB 上 2Y 翻号、因子暴露或偏弱，IND other532 特质收益反转却是 S 3.66——只作提醒，按组合取用",
+     "regions": [
+      "KOR",
+      "GBR",
+      "GLB",
+      "IND"
+     ],
+     "evidence": "KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD；GBR-PV47-RESIDUAL-REVERSAL-PRODSAT（rn 0.20）；GLB-RISK68-RESIDUAL-REVERSAL-WEAK-20260927；IND gJZwVXVm（WorkBuddy MEMORY §1.6）"
+    },
+    {
+     "id": "borrow-fee-gate-not-primary",
+     "type": "lever",
+     "what": "借券费率 / 做空利用率作门控腿有效；作主信号 prod 高",
+     "regions": [
+      "GLB",
+      "EUR"
+     ],
+     "evidence": "GLB 门控 rsk60_offer、mdl239_combo_utilisation（2026-09-21）；EUR risk60 借券费主信号 prod 0.905（2026-09-19）"
+    }
+   ],
+   "primitives": [
+    "tail risk: skewness or kurtosis of return distribution",
+    "drawdown risk: maximum drawdown vs historical average",
+    "correlation breakdown: pairwise correlation vs historical average",
+    "volatility clustering: GARCH effects or volatility persistence",
+    "liquidity risk: bid-ask spread or Amihud illiquidity measure"
+   ],
+   "forbidden": []
+  },
+  "option": {
+   "title": "期权",
+   "group": "Option",
+   "field_profile": "隐含波动率曲面、成交 / 持仓量、Greeks",
+   "windows": {
+    "daily": [
+     5,
+     22
+    ],
+    "monthly": [
+     66
+    ]
+   },
+   "cross_region": [
+    {
+     "id": "option-iv-weak",
+     "type": "negative",
+     "what": "期权 IV 概念族弱或撞 fitness 天花板",
+     "regions": [
+      "USA",
+      "IND",
+      "DEU",
+      "GBR"
+     ],
+     "evidence": "USA-OPTION40-IV-SURFACE-WEAK（≤1.12）；IND option30 fitness ≤0.85、option1 判死；DEU / GBR option1 红榜"
+    }
+   ],
+   "primitives": [
+    "implied volatility skew: put-call IV difference (tail risk pricing)",
+    "volatility term structure: short-dated vs long-dated IV",
+    "option flow: unusual volume or open interest changes",
+    "put-call ratio: sentiment indicator from option positioning",
+    "gamma exposure: dealer hedging pressure from option Greeks"
+   ],
+   "forbidden": []
+  },
+  "other": {
+   "title": "其它（杂项桶：先按字段含义归到具体思路）",
+   "group": "Other",
+   "aliases": [
+    "macro",
+    "equity",
+    "event",
+    "broker",
+    "unknown"
+   ],
+   "field_profile": "杂项：财务比率、残差收益、网络嵌入、注意力、宏观等混在一起",
+   "windows": {
+    "daily": [
+     5,
+     22
+    ],
+    "quarterly": [
+     66,
+     252
+    ]
+   },
+   "primitives": [
+    "name the priced risk first; the operator is secondary",
+    "先按字段 description 判断经济含义，再套对应类别卡的思路（例：KOR other466 是财务比率 → fundamental；IND other532 是 Barra 特质收益 → 残差反转）"
+   ],
+   "s1_hints": [
+    "数据集名会骗人：必读字段 description；稀疏高 valueScore 是陷阱"
+   ],
+   "cross_region": [
+    {
+     "id": "other455-n2v-dead",
+     "type": "negative",
+     "what": "other455 网络嵌入（n2v）族",
+     "regions": [
+      "KOR",
+      "EUR",
+      "DEU",
+      "GBR"
+     ],
+     "evidence": "KOR RULES §G；EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS；DEU-OTH455-PURECOMP-SUBUNIVERSE-WALL-20260923；GBR 红榜"
+    }
+   ],
+   "forbidden": []
+  }
+ }
+}

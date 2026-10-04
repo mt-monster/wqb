@@ -93,8 +93,8 @@
   "_calibrated_from": "alpha_store 44 alphas/3 ds + results/ 扫描 → 共 3 datasets 实测"
  },
  "mode_b_qualification": {
-  "sharpe_min": 1.2,
-  "fitness_min": 0.8,
-  "_doc": "处女地区，维持默认"
+  "$ref": "GLOBAL/mode_b_qualification",
+  "_doc": "2026-10-04 改为引用全局（主闸下限锁：区域只能收紧，不能低于 GLOBAL 主闸）。原写 1.2 / 0.8 且注「维持默认」——默认其实是 1.25 / 0.8，属抄旧默认值。原值留档：sharpe_min=1.2 / fitness_min=0.8；原注：处女地区，维持默认",
+  "_overrides": {}
  }
 }

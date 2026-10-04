@@ -83,20 +83,47 @@ def _cfg(monkeypatch, *, glob=None, region_file=None, region_ledger=None):
 
 def test_precedence_matches_doc_section_3(monkeypatch):
     glob = {"main_gate": {"sharpe_min": 1.3, "fitness_min": 0.9}}
-    file_ = {"$ref": "GLOBAL/mode_b_qualification", "_overrides": {"sharpe_min": 1.1}}
-    reg = {"sharpe_min": 1.0}
+    file_ = {"$ref": "GLOBAL/mode_b_qualification", "_overrides": {"sharpe_min": 1.4}}
+    reg = {"sharpe_min": 1.5}
 
     assert _cfg(monkeypatch)["main_gate"] == {"sharpe_min": 1.25, "fitness_min": 0.8}                      # 4 内置
     assert _cfg(monkeypatch, glob=glob)["main_gate"] == {"sharpe_min": 1.3, "fitness_min": 0.9}            # 3 GLOBAL
     got = _cfg(monkeypatch, glob=glob, region_file=file_)["main_gate"]
-    assert got == {"sharpe_min": 1.1, "fitness_min": 0.9}                                                  # 2 区域文件 > GLOBAL（单字段）
+    assert got == {"sharpe_min": 1.4, "fitness_min": 0.9}                                                  # 2 区域文件 > GLOBAL（单字段）
     got = _cfg(monkeypatch, glob=glob, region_file=file_, region_ledger=reg)
-    assert got["main_gate"] == {"sharpe_min": 1.0, "fitness_min": 0.9} and got["_source"] == "region_ledger:ZZZ"   # 1 区域 ledger
+    assert got["main_gate"] == {"sharpe_min": 1.5, "fitness_min": 0.9} and got["_source"] == "region_ledger:ZZZ"   # 1 区域 ledger
 
 
 def test_legacy_thresholds_without_ref_are_read_as_main_gate_overrides(monkeypatch):
-    got = _cfg(monkeypatch, region_file={"sharpe_min": 1.0, "fitness_min": 0.6})["main_gate"]
-    assert got == {"sharpe_min": 1.0, "fitness_min": 0.6}
+    got = _cfg(monkeypatch, region_file={"sharpe_min": 1.5, "fitness_min": 1.0})["main_gate"]
+    assert got == {"sharpe_min": 1.5, "fitness_min": 1.0}
+
+
+def test_overrides_below_the_global_floor_are_clamped_not_applied(monkeypatch):
+    """2026-10-04 下限锁：区域文件、区域台账（自适应学习）写得比 GLOBAL 主闸低，读时钳回下限，原值留在 `_clamped_from`。"""
+    cfg = _cfg(monkeypatch, region_file={"sharpe_min": 1.0, "fitness_min": 0.6})
+    assert cfg["main_gate"] == {"sharpe_min": 1.25, "fitness_min": 0.8}
+    assert cfg["_clamped_from"] == {"sharpe_min": 1.0, "fitness_min": 0.6}
+    glob = {"main_gate": {"sharpe_min": 1.3, "fitness_min": 0.9}}
+    cfg = _cfg(monkeypatch, glob=glob, region_ledger={"sharpe_min": 1.15, "fitness_min": 0.68})
+    assert cfg["main_gate"] == {"sharpe_min": 1.3, "fitness_min": 0.9} and cfg["_floor"] == glob["main_gate"]
+    assert cfg["_clamped_from"] == {"sharpe_min": 1.15, "fitness_min": 0.68}
+
+
+def test_no_real_region_thresholds_file_sets_the_main_gate_below_the_floor():
+    """仓库里 13 个战役目录的 thresholds.json 都不得把主闸写到内置下限以下（新写放宽值即红）。"""
+    import json
+    floor = M._DEFAULT_GLOBAL["main_gate"]
+    bad = []
+    for p in sorted((ROOT / "tracking").glob("*/config/thresholds.json")):
+        mbq = json.loads(p.read_text(encoding="utf-8-sig")).get("mode_b_qualification") or {}
+        vals = dict(mbq.get("_overrides") or {})
+        if "$ref" not in mbq:
+            vals.update({k: mbq[k] for k in ("sharpe_min", "fitness_min") if mbq.get(k) is not None})
+        for k in ("sharpe_min", "fitness_min"):
+            if vals.get(k) is not None and float(vals[k]) < float(floor[k]):
+                bad.append(f"{p.parent.parent.name}: {k}={vals[k]} < {floor[k]}")
+    assert not bad, "区域只能收紧 Mode B 主闸：\n" + "\n".join(bad)
 
 
 def test_regions_can_only_override_the_main_gate_not_bypass_or_kill_line(monkeypatch):

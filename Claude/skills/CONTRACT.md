@@ -10,7 +10,7 @@
 ```yaml
 ---
 name: <dir-name>                 # 必须与所在目录名一致（tests/unit/07_docs_skills/test_skill_integrity.py 校验）
-layer: <L-RA|L-PRE|L-TOOL|L0|L1|L2|L3|L4|L5|L6|L7>   # 挖掘链条位置，不是优先级、也不是版本号
+layer: <L-RA|L-RA-R|L-PRE|L-TOOL|L0|L1|L2|L3|L4|L5|L6|L7>   # 挖掘链条位置，不是优先级、也不是版本号
 description: "..."               # 单行双引号字符串；≤ 300 字；只写「何时触发 + 范围 + 不做」，不写实现细节
 last_verified: YYYY-MM-DD        # 最近一次对照代码 / 平台核实内容正确的日期
 allowed-tools:                   # 可选；写了就必须是 YAML 列表，禁止块标量

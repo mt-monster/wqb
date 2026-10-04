@@ -181,6 +181,12 @@ def update_mode_b_qualification(
     # 3. 指数平滑（避免单次波动剧烈调整）
     new_sharpe = old["sharpe_min"] * (1 - LEARNING_RATE) + learned["sharpe_min"] * LEARNING_RATE
     new_fitness = old["fitness_min"] * (1 - LEARNING_RATE) + learned["fitness_min"] * LEARNING_RATE
+
+    # 3b. 下限钳制（2026-10-04）：学习只能把主闸往上收，不能学到 GLOBAL 主闸以下。
+    #     此前 EUR 由本函数从 5 个样本学成 1.15 / 0.68，等于机器自己放宽了用户定的资格线。
+    floor = _load_floor(store, region)
+    new_sharpe = max(new_sharpe, floor["sharpe_min"])
+    new_fitness = max(new_fitness, floor["fitness_min"])
     new = {
         "sharpe_min": round(new_sharpe, 2),
         "fitness_min": round(new_fitness, 2),
@@ -217,6 +223,19 @@ def _load_current_threshold(store, region: str) -> Dict[str, float]:
         return {
             "sharpe_min": float(main.get("sharpe_min", 1.25)),
             "fitness_min": float(main.get("fitness_min", 0.8)),
+        }
+    except Exception:
+        return {"sharpe_min": 1.25, "fitness_min": 0.8}
+
+
+def _load_floor(store, region: str) -> Dict[str, float]:
+    """主闸下限（= GLOBAL 台账主闸，读不到用内置默认），与 mode_b_config 同一口径。"""
+    try:
+        from .mode_b_config import load_mode_b_config
+        floor = load_mode_b_config(store, region=region).get("_floor") or {}
+        return {
+            "sharpe_min": float(floor.get("sharpe_min", 1.25)),
+            "fitness_min": float(floor.get("fitness_min", 0.8)),
         }
     except Exception:
         return {"sharpe_min": 1.25, "fitness_min": 0.8}

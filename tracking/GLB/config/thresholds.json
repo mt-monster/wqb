@@ -114,8 +114,8 @@
   "_calibrated_from": "alpha_store 117 alphas/11 ds + results/ 扫描 → 共 11 datasets 实测"
  },
  "mode_b_qualification": {
-  "sharpe_min": 1.0,
-  "fitness_min": 0.6,
-  "_doc": "PROD 墙极厚区（tech_chart_model first_quantile 系被占用），降门槛避免整波误判死"
+  "$ref": "GLOBAL/mode_b_qualification",
+  "_doc": "2026-10-04 改为引用全局（主闸下限锁：区域只能收紧，不能低于 GLOBAL 主闸）。原写 1.0 / 0.6（PROD 墙极厚区降门）；单项短板候选现由全局旁路 A–E 承接，与 EUR 2026-09-09 的处理一致。原值留档：sharpe_min=1.0 / fitness_min=0.6；原注：PROD 墙极厚区（tech_chart_model first_quantile 系被占用），降门槛避免整波误判死",
+  "_overrides": {}
  }
 }
