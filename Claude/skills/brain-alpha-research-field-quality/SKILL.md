@@ -2,7 +2,10 @@
 name: brain-alpha-research-field-quality
 layer: L1
 description: "字段质量先验与 WebDataScope 数据包预筛：要用 alphaCount / userCount 判断字段或数据集质量、跑数据包零成本预筛、切换区域回测前做预筛时使用。只作 S0 的前置参考，不替代 S0 体检。触发词：字段质量 / 质量先验 / WebDataScope / 数据包预筛。"
-last_verified: 2026-09-30
+last_verified: 2026-10-05
+# 2026-10-05 核实范围：仅核实 references/webdatascope-data-quality.md 的
+# **工具调用链路**（webdata_quality.py 已重构，替代见该档文首对照表，本地 git 可查证）。
+# 规则 1–8 的平台侧口径未重新对照平台，下次用到规则前需重新核对。
 allowed-tools:
   - Read
   - Bash

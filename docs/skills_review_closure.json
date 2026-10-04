@@ -4802,7 +4802,7 @@
    "title": "同一情景 agent 可合规地做出相反动作",
    "cat": "RA-69/74/85/93、RD-04/28、OP-01、RC-01/03、RP-07、RR-02、RE-08、SP-09",
    "note": "一张表（decision-table D0-P，「唯一决策表」，DEC-07）：< 0.60 扩变体；0.60–0.70 不扩变体当天进步 8；0.70–0.75 踩线带只许 1 次结构性尝试，仍 ≥ 0.70 → dead_end；≥ 0.75 直接 dead_end；镜像稀释撤回（它是腿相加）；区域 profile 不得另设预警线；RA 步 5b / 7、OP、RC、RP、RR、RE、SP 逐处改引 D0-P；事故记入 incidents.md I-15。**注意**：表中的实证（MEA 9qXoJge2 0.716→0.6525、KOR wave113 0.7003→0.6993 等）来自历史记录，未能向平台复核",
-   "where": "Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | Claude/skills/wq-brain-ra-pipeline/references/incidents.md | tests/unit/07_docs_skills/test_se_docs.py | tests/unit/07_docs_skills/test_optimization_v1_docs.py | docs/skills_review_decisions.md",
+   "where": "Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | Claude/skills/wq-brain-ra-pipeline/references/incidents.md | tests/unit/07_docs_skills/test_se_docs.py | tests/unit/07_docs_skills/test_optimization_v1_docs.py | docs/design/skills_review_decisions.md",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py | tests/unit/07_docs_skills/test_optimization_v1_docs.py"
   },
   "T0-12": {
