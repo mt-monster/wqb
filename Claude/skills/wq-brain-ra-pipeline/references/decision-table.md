@@ -19,7 +19,7 @@
 ## D0-P. prod 墙首探决策（**唯一决策表**——其余文档一律引用本表，不得另立学说）
 
 > 同一情景（某家族首探 prod 相关性偏高，下一步怎么办）此前有 ≥6 套互相矛盾的处置（首探即判 / prod-first 串行 / 镜像稀释 / 反馈循环与组合腿救援 / 先 5 探针 / 区域预警线）。
-> 现统一为下表（skills 审查 X-1；2026-09-29 定案，理由与证据见 `reports/skills_review_20260929_closure.md` 与 `docs/skills_review_decisions.md` DEC-07）。
+> 现统一为下表（skills 审查 X-1；2026-09-29 定案，理由与证据见 `reports/skills_review_20260929_closure.md` 与 `docs/design/skills_review_decisions.md` DEC-07）。
 > **首探口径**：族内最强 1 条、平台实测（`check_correlation` 读 `GET correlations/prod`）、串行；实现 `tools/campaign_intel.py prod-first`（`--top-k` 缺省 3 个族、每族最强 1 条，以 argparse 缺省为准）。
 
 | 首探 prod | 动作 | 说明 / 例外 |

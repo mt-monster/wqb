@@ -293,7 +293,7 @@ class SchemaMixin:
         # ---- 2026-09-18：回测指标全量落库（prod/self 相关性等）----
         # 背景：实测 alphas 4211 行中 prod_correlation 仅 270 有值（6.4%）、
         #   self_correlation 仅 103（2.4%），根因是三条平行写入路径未接上
-        #   （详见 docs/prod_corr_persistence_design_20260918.md §1.3）。
+        #   （详见 docs/design/prod_corr_persistence_design_20260918.md §1.3）。
         #   此处补齐「查询/复盘需要但 alphas 缺失」的维度，使回测完成即可本地查全，
         #   避免每次复盘都打平台 API（相关性检查占平台单并发队列）。
         #   全部可空，不破坏既有数据。

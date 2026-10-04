@@ -2,7 +2,7 @@
 
 > 从各 SKILL.md 正文里迁出的「日期 / 新增 / 修正 / 事故」叙述。**规则在 SKILL.md 与 `references/`；日期与变更在这里。**
 > 约定：新条目加在最上面；一条一行：`日期 · skill · 改了什么（为什么） → 证据 / 落点`。事故与起因写进对应 skill 的 `references/incidents.md`，这里只留指针。
-> 决策与证据登记：[`docs/skills_review_decisions.md`](../../docs/skills_review_decisions.md)；逐条处置：`reports/skills_review_20260929_closure.md`。
+> 决策与证据登记：[`docs/skills_review_decisions.md`](../../docs/design/skills_review_decisions.md)；逐条处置：`reports/skills_review_20260929_closure.md`。
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
