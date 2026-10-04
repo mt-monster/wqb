@@ -189,13 +189,17 @@ def check_wave(
                 saturated_dataset_ids.add(did)
 
     # dataset_id → dataset 名映射（当前 wave 比对用）
+    # 必须按 region 过滤：datasets 表有 region_id，同名数据集可能跨区登记，
+    # 裸 WHERE name=? 会拿到别区的行，导致「本区数据集被判饱和」的假阳性。
     cur_ds_saturated = False
     if dataset:
         import sqlite3
         try:
             con = db_connect(db_path or os.path.join(REPO_ROOT, "data", "wqb.db"))
             did = con.execute(
-                "SELECT id FROM datasets WHERE name=? LIMIT 1", (dataset,)
+                "SELECT d.id FROM datasets d JOIN regions r ON r.id = d.region_id"
+                " WHERE d.name=? AND r.name=? LIMIT 1",
+                (dataset, region),
             ).fetchone()
             con.close()
             if did and did[0] in saturated_dataset_ids:

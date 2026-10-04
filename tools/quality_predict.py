@@ -94,11 +94,24 @@ TURNOVER_HARD_REJECT = 0.6
 
 # ---------------- 先验学习 ----------------
 
-def _dataset_id_to_name(conn):
-    """alphas.dataset_id (INTEGER) -> datasets.name (TEXT) 映射。"""
+def _dataset_id_to_name(conn, region=None):
+    """alphas.dataset_id (INTEGER) -> datasets.name (TEXT) 映射。
+
+    必须按 region 过滤：datasets 表有 region_id，同名数据集可跨区登记，
+    裸 "FROM datasets" 会把别区的行并进映射，造成跨区污染
+    （见 test_region_query_guard::test_no_regionless_datasets_or_fields_query）。
+    """
     cur = conn.cursor()
     try:
-        cur.execute("SELECT id, name FROM datasets")
+        if region:
+            cur.execute(
+                "SELECT d.id, d.name FROM datasets d "
+                "JOIN regions r ON r.id = d.region_id WHERE r.name=?",
+                (region,))
+        else:
+            cur.execute(
+                "SELECT d.id, d.name FROM datasets d "
+                "JOIN regions r ON r.id = d.region_id")
         return {row[0]: row[1] for row in cur.fetchall()}
     except sqlite3.OperationalError:
         return {}
@@ -112,7 +125,7 @@ def load_history(conn, region=None):
     现改用 backtest_results（全量回测，含成功和失败），消除幸存者偏差。
     """
     cur = conn.cursor()
-    id2name = _dataset_id_to_name(conn)
+    id2name = _dataset_id_to_name(conn, region)
     # backtest_results.code 存表达式文本；dataset 存数据集名
     cur.execute(
         "SELECT b.code, b.dataset, b.sharpe, b.fitness, NULL as self_corr "
@@ -281,7 +294,7 @@ def load_from_db(region, wave, dataset=None):
 def load_candidates_by_status(conn, region, status):
     """从 alphas 表按状态拉候选（如 UNSUBMITTED 存量池），dataset_id 映射为名称。"""
     cur = conn.cursor()
-    id2name = _dataset_id_to_name(conn)
+    id2name = _dataset_id_to_name(conn, region)
     cur.execute(
         "SELECT a.expression, a.dataset_id FROM alphas a "
         "JOIN regions r ON a.region_id = r.id WHERE r.name=? AND a.status=?",
