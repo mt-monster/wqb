@@ -12,6 +12,7 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S1"  dataset=$DS
 - **完成定义**：`catalog_<ds>` 里 coverage > 0 的字段数 ≥ 10（见失败分支）。
 - **铁律 ①（字段级覆盖审计）**：白名单数据集过 S1 后，`catalog_<ds>` 覆盖为空 → 写 `<ds>_dead` 防复用。`recommend_datasets` **不校验区域覆盖率**，只信它会选到空集。
 - **铁律 ②（验活幽灵字段）**：新字段先 `create_multi_simulation(validate_fields=true)`——DB 里有记录、平台却报 `Attempted to use unknown variable` 的字段，提交层直接 COMPILE_ERROR。
+- **铁律 ③（混合集的 `data_type` 与字段类型；2026-10-02 GLB analyst69 事故）**：`catalog_<ds>.data_type` 是数据集级汇总（多数票折叠），**对混合集是错的**——analyst69 在 GLB 是 VECTOR 515 + MATRIX 264（`type_distribution`），汇总成 `VECTOR`，GEM 照 VECTOR 语义生成、候选直接用裸 VECTOR 字段，闸 `[EVENT]` 24/24 全灭（同一数据集在 JPN 汇总成 MATRIX，同波号跨区两态）。规则：① 开波前看 `catalog_<ds>.type_distribution`，同时含 VECTOR 与 MATRIX 的混合集，传给 GEM 的 `data_type` 必须人工裁决为「本波要挖的字段池主类型」（挖分析师基本面估计 → MATRIX；挖评级 / 事件列表 → VECTOR 并强制 `vec_*` 包裹），不得直接吃汇总值；② 字段类型的**权威源 = typed catalog**（toolkit `_lib/wqb_store.load_catalog`，与闸 3 同源），不是 MCP `fix_vector_fields` 的回包（清单只有 300 个，缺整族）、不是本地 `fields` 表（可能没有该集记录）；③ 裸 VECTOR 的统一包裹用 `tools/lib/vector_wrap.py::wrap_naked_vectors`（幂等）；④ 波级修复的成员口径要与 gate 一致——`status IN ('gem','selected')`，只修本轮新生成的那批会漏掉旧入选的。
 - 深查 / 字段质量存疑时**按需**加载 S1 三件套：[`brain-dataset-exploration-general`](../../brain-dataset-exploration-general/SKILL.md)（数据集级）→ [`brain-datafield-exploration-general`](../../brain-datafield-exploration-general/SKILL.md)（单字段 6 法）→ [`brain-data-feature-engineering`](../../brain-data-feature-engineering/SKILL.md)（字段→特征工程决策）。三件套只作深查参考；**上面两条铁律是本步必做检查项，不是参考**。
 
 ## 3.2 S1 结构性前置体检（决策表 D13；MEA / KOR 多区实证）
@@ -49,6 +50,8 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S1"  dataset=$DS
 python tools/field_semantic_classify.py --region $REGION --dataset $DS --write-ledger
 #   产出 ledger `s1_semantic_<ds>`：signal_fields / blocked_fields / by_category
 ```
+
+**时间朝向提示（2026-10-04 新增；只提示、不拦截）**：输出里有 `-- 时间朝向提示 --` 一段与台账的 `orientation_stats`：把信号字段标成 `realized`（`actual_*` / `reported_*`，已实现、事后）/ `forecast`（`mean_estimate_*` / `forecast_*` / `consensus_*`，预测、前瞻）/ `mixed`（surprise 之类，两类都命中）。**字段族名要逐词读**：同一数据集里已实现与预测是两个完全不同的信号源——GLB analyst_consensus 前 16 条全灭，真因是选了 `actual_*`（已实现、无预测力），换成 `mean_estimate_*` 后同结构大幅提升；当时被误诊成「窗口不匹配」，多烧了一轮。两类并存时先各出 1 批探针比较，别默认从 `actual_*` 起手。口径是名字词元锚定 + 描述开头，不会拦任何字段（`actual − estimate` 的 surprise 是合法构造）。
 
 **归类口径**（`tools/field_semantic_classify.py` 内可改）：非信号黑名单 = 货币 / 报表币种代码、汇率换算（叉乘多为恒等式）、标识符（country / iso / ticker / cusip / isin / gvkey）、分类码与标志位、日期期间口径、股份类别标签；信号字段按经济大类分桶（valuation / profitability / growth / cash_quality / leverage_solvency / efficiency / liquidity_risk / size_level / per_share / dividend）。
 

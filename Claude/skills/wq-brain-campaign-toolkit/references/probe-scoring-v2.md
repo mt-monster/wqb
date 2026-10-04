@@ -22,7 +22,7 @@ valueScore 缺失按中性 0.5；empirical_prior 缺省 0（经验强度先验�
 - `usableFields`：已建 typed catalog 的数据集按目录内 `cov ≥ 0.85` 的字段数计，否则回退原始 `fieldCount`；台账 `*_dead` 数据集自动排除出排名。
 - **金字塔配额**（缺省开）：`apply_pyramid_quota` 保证 tier1 至少 `pyramid_quota_non_model_min`（2）个非 MODEL。`category_weight` 夹在 0.9–1.15（`src/wqb/config.py::MINING`），禁止 1.3 vs 0.7 抹掉 PV / NEWS。
 
-补充规则（KOR record_gate_v2 实证）：backfill_band / tier2 信号弱时强制 `ts_backfill(66/120)` 补偿覆盖；数据集级 cov 低但字段级 cov 高时走字段级救援；`mcp__wq-brain-http__get_datafields filter_sharpe=true` 已滤负 sharpe 字段；`alphaCount` 是平台级统计不分 region，局部竞争看 `userCount`。
+补充规则（KOR record_gate_v2 实证）：backfill_band / tier2 信号弱时强制 `ts_backfill(66)` 补偿覆盖（季频 / 年频字段用 252；窗口只取白名单值，120 不在其中，见决策表 D6）；数据集级 cov 低但字段级 cov 高时走字段级救援；`mcp__wq-brain-http__get_datafields filter_sharpe=true` 已滤负 sharpe 字段；`alphaCount` 是平台级统计不分 region，局部竞争看 `userCount`。
 
 ## 二、评分前校准：`--calibrate`（先 dry-run 审，再写）
 

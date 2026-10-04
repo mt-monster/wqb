@@ -96,3 +96,48 @@ def test_two_cues_required_for_flag_description():
     assert cat is not None, "裸 indicator 名词不应触发标志位判定"
     cat2, _ = fsc.classify("Trading flag recorded when a corporate action happens", "x_trade_flag")
     assert cat2 is not None, "裸 flag 名词不应触发标志位判定"
+
+
+# ---- ③ 时间朝向提示：已实现（事后）vs 预测（前瞻）——只提示，不改 signal / blocked 判定（2026-10-04）----
+
+def test_time_orientation_name_tokens():
+    """GLB/analyst_consensus 前 16 条全灭：用了 actual_*（已实现）而不是 mean_estimate_*（预测）。"""
+    fsc = _load()
+    assert fsc.time_orientation("actual_eps_q1", "") == "realized"
+    assert fsc.time_orientation("reported_revenue", "") == "realized"
+    assert fsc.time_orientation("mean_estimate_dividend_annual12_2", "") == "forecast"
+    assert fsc.time_orientation("median_forecast_ebitda", "") == "forecast"
+    assert fsc.time_orientation("eps_est_fy1", "") == "forecast"
+
+
+def test_time_orientation_is_token_anchored_not_substring():
+    """`best_*` 含 est、`forecasting_*` 含 forecast、`reportedly` 含 reported——都不是词元，不得命中。"""
+    fsc = _load()
+    for name in ("anl69_roe_best_roe_stddev", "forecasting_accuracy_score",
+                 "reportedly_x", "estimated_x_noise", "accrual_ratio", "close"):
+        assert fsc.time_orientation(name, "") is None, name
+
+
+def test_time_orientation_mixed_for_surprise_constructions():
+    """surprise = actual − estimate 是合法构造，两类都命中记 mixed，不归任何一边。"""
+    fsc = _load()
+    assert fsc.time_orientation("actual_vs_estimate_surprise", "") == "mixed"
+
+
+def test_time_orientation_description_only_looks_at_the_start():
+    fsc = _load()
+    assert fsc.time_orientation("anl9_x", "Actual earnings per share for the quarter") == "realized"
+    assert fsc.time_orientation("anl9_y", "Mean estimate of earnings per share") == "forecast"
+    # 对比句不得误判：描述里中途出现 actual / estimate 不算
+    assert fsc.time_orientation("anl9_z", "Difference between the actual and the estimate") is None
+    # 名字已判定时不再看描述
+    assert fsc.time_orientation("actual_eps", "Mean estimate of eps") == "realized"
+
+
+def test_time_orientation_does_not_change_signal_or_blocked_decision():
+    """提示不拦截：classify() 对带 actual / estimate 的字段照常放行（surprise 之类是合法信号）。"""
+    fsc = _load()
+    cat, _ = fsc.classify("Actual earnings per share", "anl9_actual_eps")
+    assert cat is not None
+    cat, _ = fsc.classify("Mean estimate of earnings per share", "anl9_mean_estimate_eps")
+    assert cat is not None

@@ -279,6 +279,18 @@ async def _cmd_xr_probe(a):
 # ---------------------------------------------------------------------------
 
 
+def _expr_counts_by_dataset(cur, region):
+    """本区每个数据集已落库的表达式条数 {dataset: n}（只读 `expressions` 表，region 作用域）。
+
+    s0-select 的「处女地」判据曾只看 `backtest_results`：GEM 生成 / 选波已落库、但还没关联回测的集会被当成
+    「未测」。「未测」口径 = backtest_results ∪ expressions 并集（WorkBuddy 记忆 MEMORY §0.3）。
+    """
+    cur.execute(
+        "SELECT dataset, COUNT(*) FROM expressions "
+        "WHERE region=? AND dataset IS NOT NULL AND dataset<>'' GROUP BY dataset", (region,))
+    return {ds: n for ds, n in cur.fetchall()}
+
+
 def _s0_rank_key(x, xr_penalize=False):
     """s0-select 排序键（P1，2026-09-30）：(判死沉底, 次沉, -total_score)。
 
@@ -312,6 +324,7 @@ async def _cmd_s0_select(a):
     # ② 本地台账：历史产出率（mining_yield）+ 判死清单（dead_datasets）
     #    + 白名单/自动排名/座位模型（P1 可达性 & P4 覆盖审计）—— 走本地 sqlite
     yield_map = {}
+    expr_map = {}        # 2026-10-04：本区每集已落库表达式数（「未测」= 回测 ∪ 表达式，不能只看 backtest_results）
     dead_set = set()
     xr_map = {}          # 2026-09-19：跨区先验 dataset -> {weak:[REG:maxS@bt], strong:[REG:n_ra_clean]}
     field_counts = {}    # 2026-09-19：dataset -> field_count（<min_fields 不进主攻）
@@ -358,6 +371,12 @@ async def _cmd_s0_select(a):
             "WHERE region=? AND dataset IS NOT NULL GROUP BY dataset", (a.region,))
         for ds, mx in cur.fetchall():
             yield_map.setdefault(ds, {})["max_sharpe"] = round(mx or 0, 3)
+        # 2026-10-04：有表达式（GEM 生成 / 选波落库）但没关联回测的集不是「处女地」——
+        # 「未测」口径 = backtest_results ∪ expressions 并集（单用前者会把它误判成未测，白名单交集漏判）。
+        try:
+            expr_map = _expr_counts_by_dataset(cur, a.region)
+        except Exception as _e:  # 缺表 / 缺列：降级为只看回测，不阻断选集
+            print(f"[s0-select] expressions 计数降级（{_e}）", file=sys.stderr)
         # 2026-09-19 跨区负先验：同一数据集在其它区域已测且弱（max|S| < xr_weak_sharpe，样本 ≥ xr_min_bt）
         # → 本区大概率同弱（news/sentiment 在 USA/EUR/IND 三区同型全灭实证）；反之其它区有 RA-clean
         # 则是"信号存在"的正证据。只做先验标注与排序降权，不判死。
@@ -476,6 +495,7 @@ async def _cmd_s0_select(a):
             "dataset_user_count": r.get("dataset_user_count"),
             # 本地先验
             "hist_backtested": bt,
+            "hist_expressions": expr_map.get(ds_id, 0),
             "hist_yield_rate": yr,
             "hist_max_sharpe": y.get("max_sharpe"),
             "ledger_dead": is_dead,
@@ -527,6 +547,8 @@ async def _cmd_s0_select(a):
                 tags.append(f"拥挤:ac={ac}(prod墙风险)")
         if x["conditioning_only"]:
             tags.append(f"fields<{a.min_fields}:仅条件腿")
+        if not x["hist_backtested"] and x.get("hist_expressions"):
+            tags.append(f"已有表达式{x['hist_expressions']}条未回测:非处女地")
         if x["xr_weak"]:
             tags.append("跨区弱:" + ",".join(x["xr_weak"][:3]))
         if x["xr_strong"]:

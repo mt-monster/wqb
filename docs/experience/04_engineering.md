@@ -210,3 +210,14 @@
 - **权威计数必须用前缀 glob**（`^field_inspect_deu_`），否则 `grep -ci "_deu_"` 会匹配旧产物（把 DEU 体检包误报成 29/30，实际 inspect=0 / coverage=1）。
 - **文档与代码谁先动，另一侧必须同批跟改**（09-11 教训：给 ra-pipeline 补了"步 5 不在 MCP"，半天后新增节点又改成"有节点" → 自己制造漂移）。
 - **S6→S2 闭环必须手动闭合**：回写后**必须**重跑 `workflow_campaign(stage=S2, subcommand=assemble-priors)` 刷 `priors_snapshot_<region>`，否则 GEM 读 8 天前先验（GBR 实测快照 09-19 vs KB 源 09-25）。
+
+## 13. 2026-10-04 增补：来自 WorkBuddy 记忆（2026-10-01 ~ 10-03）的工程坑
+
+> 来源：`.workbuddy/memory/`（只读）。已进 RA 细则的（MCP 数组参数损坏、进程被宿主回收、`workflow_task_status` 误判、checkpoint 串轮覆盖、混合集 `data_type`）不在这里重复，见 `wq-brain-ra-pipeline/references/step6-backtest.md` §6.4 与 `step3-s1-semantic.md` §3.1。
+
+- **ledger 脏行拖垮全库读**：`ledger_kv.value` 里存过裸字符串（非 JSON）→ `json.loads` 抛 `Extra data`，`score_datasets.py` / 任何 `make_ledger_store` 全挂。诊断：`SELECT rowid, region, key, value, typeof(value) FROM ledger_kv` 后**全表逐行 `json.loads`**（别只筛 `LIKE '{%'`）；修法 `json.dumps(v)` 写回，改前备份 `data/wqb.db`。写台账走 `upsert_ledger_key`，别手写 SQL。
+- **直连 `brain_client._request` 是协程**：须 `await`，且须先 `await brain.ensure_authenticated()`（否则 401）；返回的是 `Response`，要 `.json()`。平台限流敏感——连发 9 次 `GET /alphas/{id}` 就触发 rate limit，批量取数走 MCP 或加 sleep（`select_ra_basket` 用 0.3 s 间隔）。
+- **`get_operators` 的 schema 是空对象**：用 `{}` 调用，不接受任何参数。
+- **取字段的端点**：`GET /data-fields?...&dataset.id=<id>&limit=50`；`/data-sets/{name}/data-fields` 是 404。本地 `datasets.name` 存的是数据集 **id**（`analyst14`），平台 `/data-sets` 返回的 `name` 是长描述名——按 id 匹配，别按 name。
+- **FASTEXPR 参数写法**：`rank` 只收 1 参，`rank(x, -1)` 非法；`trade_when(c, x, -1)` 的第 3 参是 exit 条件、不是符号，取负要写 `subtract(0.5, rank(x))` / `multiply(-1, rank(x))`（取负位置见决策表 D6）；`bucket` / `hump` 必须命名参数，`quantile(x)` 只接受 1 参。
+- **跨区回测不能当本区回测用**：`backtest_results` 的 `dataset` 列跨区共享，任何「该数据集已测过」的结论必须带 `AND region = ?`（2026-10-02 曾把 DEU 的 S=2.17 当成 GLB 本区战绩，矩阵推翻重做）。

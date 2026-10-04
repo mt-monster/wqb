@@ -19,7 +19,7 @@
 
 | 标记 / 列 | 含义 | 动作 |
 |---|---|---|
-| `hist_yield_rate` / `hist_backtested` | 历史产出率（严格口径）/ 样本量；`None` = 处女地 | `yield = 0` 且 `bt ≥ 8`（样本量下限 8：低于它产出率噪声过大）的集已被实证判死，不投槽位 |
+| `hist_yield_rate` / `hist_backtested` | 历史产出率（严格口径）/ 样本量；`None` 且没有已落库表达式才是处女地——「未测」口径 = `backtest_results` ∪ `expressions`，有表达式但没关联回测的集会被打上 `已有表达式 N 条未回测:非处女地`（2026-10-04；`hist_expressions` 列同源） | `yield = 0` 且 `bt ≥ 8`（样本量下限 8：低于它产出率噪声过大）的集已被实证判死，不投槽位 |
 | `maxS` / `fld` | 本区该集历史 max\|sharpe\| / 字段数 | 参考 |
 | `[跨区弱:REG:maxS@bt]` | 同集在其它区 ≥16 条回测且 max\|S\|<1.0 | 降权（排在健康集之后、判死之前）；细则 `step1-inventory.md` §1.4 |
 | `[跨区RA-clean:REG:n]` | 其它区的正证据 | 加分参考 |

@@ -1,6 +1,6 @@
 # 03 · 区域与数据集特性
 
-> 来源：2026-09-05 ~ 09-29 工作日志实证提炼 ｜ 更新：2026-09-29
+> 来源：2026-09-05 ~ 09-29 工作日志实证提炼 ｜ 更新：2026-09-29（§2 的区域口径有 2026-10-04 增补，以各区 `regions/<R>.md` 的 `entry_verdict` 为准）
 > 所有结论限定实测时的设置与时间范围，跨区迁移前须重新验证。
 
 ---
@@ -25,7 +25,13 @@
 
 ## 2. ★ 停投结论（两口径一致，唯一稳健）
 
-**MEA / IND / DEU 停投。**
+**MEA / IND / DEU 停投。**（09-29 口径；各区之后的变化见下方增补，**以区域 profile 的 `entry_verdict` 为准**）
+
+> **2026-10-04 增补**（来源：WorkBuddy 记忆 2026-10-02 / 10-03；`entry_verdict` 是代码读取的字段，区域轮转与步 1 都用它）
+> - **IND**：10-02/03 的 20 批 / ~170 表达式 / 14+ 族系统扫描后，可提交空间判定穷尽，`entry_verdict` = `probe-only`（`regions/IND.md`）；上表「中性化最优 = STATISTICAL」与 profile 的 `neutralization_default` 已对齐。
+> - **EUR**：10-02 调查（库存 47/47 族 prod ≥ 0.70、7 个战役全 exhausted、可提交新增 = 0）后 `entry_verdict` = `probe-only`（`regions/EUR.md`）。
+> - **DEU**：**10-02 起不再是停投**——用户裁决「先修 profile + 降目标到 1–2 颗」，`regions/DEU.md` 升 `active`（升档三条件实测满足；原「sub_universe 结构性墙」是伪墙）。真墙是「合规形态天花板 0.69 vs ladder 1.58」，`active` 不等于能开波，复产前置见 DEU.md。
+> - **MEA**：仍 `frozen`。
 
 | 区域 | 样本 | 过闸率 | 95% CI |
 |---|---|---|---|

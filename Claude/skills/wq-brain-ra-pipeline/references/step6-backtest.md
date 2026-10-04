@@ -58,6 +58,11 @@ mcp__wqb-db__workflow_auto_harvest           region=$REGION  wave=$W  multisim_i
 | **429 THROTTLED** | 账户级限速 | ① 等待退避（MCP 内建 `Retry-After` + 指数）；② `WQB_GLOBAL_SLOTS=<n>` 降账户级并发（缺省 7；0 关闭；由 `_lib/slots.py` 仲裁）；③ 批大小 ≤ 5。**注意**：外部往 pipeline 传非 7 的并发只会收到 warning，不会降并发 |
 | MCP 超时无 result | 服务进程假死 | 在 WQ BRAIN 控制台查看该批（进程排障命令依 OS 而异，见 wqb-concurrency） |
 | "took too much resource" | **真问题**：model26 364 字段实证 | 去 backfill 或缩短窗口 |
+| `create_multi_simulation` / `preflight_expressions` / `batch_get_alpha_metrics` 报 `must be array` | MCP 数组参数在 WorkBuddy 宿主的 DeferExecuteTool 通道上**间歇性**被损坏，**与表达式内容无关**；`upsert_expressions` 还会把 `[[...]]` 压成字面量 `"item"` 的脏行（WorkBuddy 记忆 2026-10-02 / 10-03） | 不要重试、不要改表达式。绕行：`tools/submit_batch.py`（settings 固定，与 MCP 批不可比）/ `tools/ind_sim_submit.py`（settings 全显式）直连 `POST /simulations`；写库走 `CampaignStore.upsert_expressions(region=, wave=, items=[...])`（形参是 `items`），**写后必复核**行内容 |
+| **进程被宿主回收**（停在提交中途、stderr 全空、无 traceback；2026-10-02 GLB 12:25 / 12:29 两次） | 外部 SIGKILL 特征，不是代码异常；`workflow_task_status` 此时给不出可信终态 | **重启前先用 `batch_status` 核实每批终态**，COMPLETE 的批写进 checkpoint 的 terminal 集再续跑：平台对「同一 (表达式, 设置)」幂等去重，重提 RUNNING / COMPLETE 的批只会白烧槽位、拿回同一批 alpha（实测两个不同 multisim 返回逐位相同的 alpha 集合）。长任务跨 turn 存活不可靠：同 turn 内前台盯到关键节点，或分批续跑；`batch_track` detached 被判启动失败时前台直跑 `pipeline.py` |
+| **`workflow_task_status` 的 failed 判据偏粗** | 无显式终态（`status` / `returncode`）的旧布局任务：进程已死 + stderr 非空即判 `failed`（`src/wqb/workflow/tasks.py` 推断分支）；而 `[gate] …` / `[slots] …` 的正常日志也写 stderr | 以 `batch_status` + stdout 为准；有显式终态的任务不受影响 |
+| **checkpoint 不能判进度** | `ckpt_w<wave>` 存 ledger、**每轮覆盖**，只留最后一轮的 batches（实测波 1 只剩 2 批且已 HTTP 404 失效，`gate.total` 是更早一次小波的残留）；还会缓存失败态（`batch_gates ok=False`） | 进度以平台 `batch_status` 为准；重跑前先删 checkpoint 里的失败段 |
+| multisim 创建阶段卡死 | 父任务 progress 停在 0.1 且 child_count=0 超过 10 分钟（经验值；children 列表滞后于 progress，0.35 在跑时 harvest 仍可能报 no children）。其余阶段仍按 `WAIT_THRESHOLDS.sim_stall_min` 判 `STALLED` | 直接重发（旧任务无害、不占配额）；部分子任务 ERROR 时同批其余可能被标 CANCELLED（≠ 表达式错，重发即跑）；单次上限 10 条 |
 
 `create_multi_simulation` 要求 ≥ 2 条表达式；**先归因再决定重发 / 跳过 / 拆批**。
 

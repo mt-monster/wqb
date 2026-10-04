@@ -938,7 +938,7 @@ GATE_REGISTRY = (
     ("1", "语法", "block", "常开", "alpha-expression-verifier 直调；缺失标 SYNTAX_UNKNOWN"),
     ("1b", "算子元数 + 命名参数", "block", "常开", "op_arity（catalog 驱动）；缺失标 ARITY_UNKNOWN"),
     ("1b-2", "算子复杂度（调用点数 <10）", "block", "常开（MAX_OP_CALLS 可调）",
-     "铁律：表达式内函数调用计数须 <10；与 distinct operator_count 口径不同。实测 sharpe≥1.58 达标行 0 条触线"),
+     "铁律：表达式内函数调用计数须 <10；与 distinct operator_count 口径不同。实测过平台 Sharpe 线（`config.PLATFORM_CHECK_LINES`）的达标行 0 条触线"),
     ("2", "字段白名单", "block", "常开（--dataset）", "typed catalog 优先 → legacy 兜底"),
     ("2b", "区域非法 group 字段", "block", "常开（platform_constraints.region_invalid_group_fields）",
      "如 JPN 的 sector/industry/subindustry 是 Invalid data field，整批连坐"),

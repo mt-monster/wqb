@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-04
 name: worldquant-submit-alpha
 description: "把用户已确认的 REGULAR alpha 真实提交到 WorldQuant Brain 平台（POST /alphas/{id}/submit，不可逆）：workflow_submit_alpha 预检 → 用户确认后提交 → 四态响应处置（补发 / ASYNC_STUCK）。用户说“提交 alpha / submit / 上平台 / 落地”时用。不作提交判定（→ submit_verdict）、不处理 SUPER（→ wq-brain-superalpha）；PPA 人工通道与配额、点塔优选见 references/。"
 layer: L5
@@ -42,6 +42,7 @@ mcp__wq-brain-http__workflow_submit_alpha(
 ```
 
 **步骤 2 · 提交（仅在用户明确确认后；不可逆）**：同参数把 `confirm_submit` 置 `True`，再按下面的「响应处置」分支。`verify_timeout` 缺省 = `WAIT_THRESHOLDS.submit_flip_wait_s`（240 s），不要自己改小。
+**稳健性声明（2026-10-04 起 MCP 入口可直接传）**：`confirm_submit=True` 时，台账 `robustness_<alpha_id>` 无记录就**必须**显式 `robustness_audited=True`（缺省 False，fail-closed）才放行；台账已有记录则该声明降为辅助（`REJECT` 由节点直接拦下）。顺序：先跑 `brain-alpha-robustness` 并把结论落台账，再提交——不要只靠声明过关。`allow_prod_above_07` **不**在快捷入口里：prod 红线豁免须用户明确指令，显式走 `workflow_execute(node="submit_alpha", params={…, "allow_prod_above_07": True})` 留痕。
 `force=True` 只跳过**本地预检**（内容与允许场景见 `references/ppa-handoff.md` §1），**不放行任何平台检查**；REGULAR 一般不用。
 
 **步骤 3 · 核验**：`mcp__wq-brain-http__get_alpha_details(alpha_id=…)` → `status == ACTIVE`（或 `SUBMITTED` 后转 `ACTIVE`）且 `dateSubmitted` 非空。

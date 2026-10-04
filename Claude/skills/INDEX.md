@@ -5,7 +5,7 @@
 > **术语、状态词表、「谁说了算」登记表** → [`GLOSSARY.md`](GLOSSARY.md)；**变更历史与迁移记录** → [`CHANGELOG.md`](CHANGELOG.md)；
 > **环境变量、开关、凭据来源** → [`docs/env_and_switches.md`](../../docs/env_and_switches.md)；
 > **提交链**（否决权威 / 放行权威、可达状态机、不可逆动作块）→ [`worldquant-submit-alpha/references/submit-chain.md`](worldquant-submit-alpha/references/submit-chain.md)。
-> **last_verified: 2026-09-29**（索引整体有效性锚点；平台 operator / 阈值 / 区域状态变更后须同步刷新）。修改任何 skill 前先读 CONTRACT；新增 skill 必须归入下述某层并更新本索引。
+> **last_verified: 2026-10-04**（索引整体有效性锚点；平台 operator / 阈值 / 区域状态变更后须同步刷新）。修改任何 skill 前先读 CONTRACT；新增 skill 必须归入下述某层并更新本索引。
 
 ## 任务 → skill 场景路由表
 
@@ -74,11 +74,11 @@
 | ASI | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | CHN | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | DEU | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
-| EUR | ✓ | ✓ | `active` | — |
+| EUR | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | GBR | ✓ | ✓ | `active` | — |
 | GLB | ✓ | ✓ | `active` | — |
 | HKG | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
-| IND | ✓ | ✓ | `active` | — |
+| IND | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | JPN | ✓ | ✓ | `active` | — |
 | KOR | ✓ | ✓ | `active` | — |
 | MEA | ✓ | ✓ | `frozen` | 步 1 即拒，不进步 2（后门见 RA `scenarios.md` 情景 RA-08） |
@@ -193,7 +193,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | 闸0 | 语义反模式 | block | --gate0（默认关闭） | 恒等式 / 裸字段 / 元数据字段作信号腿（穿透闸 1–8 的废品） |
 | 闸1 | 语法 | block | 常开 | alpha-expression-verifier 直调；缺失标 SYNTAX_UNKNOWN |
 | 闸1b | 算子元数 + 命名参数 | block | 常开 | op_arity（catalog 驱动）；缺失标 ARITY_UNKNOWN |
-| 闸1b-2 | 算子复杂度（调用点数 <10） | block | 常开（MAX_OP_CALLS 可调） | 铁律：表达式内函数调用计数须 <10；与 distinct operator_count 口径不同。实测 sharpe≥1.58 达标行 0 条触线 |
+| 闸1b-2 | 算子复杂度（调用点数 <10） | block | 常开（MAX_OP_CALLS 可调） | 铁律：表达式内函数调用计数须 <10；与 distinct operator_count 口径不同。实测过平台 Sharpe 线（`config.PLATFORM_CHECK_LINES`）的达标行 0 条触线 |
 | 闸2 | 字段白名单 | block | 常开（--dataset） | typed catalog 优先 → legacy 兜底 |
 | 闸2b | 区域非法 group 字段 | block | 常开（platform_constraints.region_invalid_group_fields） | 如 JPN 的 sector/industry/subindustry 是 Invalid data field，整批连坐 |
 | 闸2b-2 | 区域不可用字段 + VECTOR 上套 ts_* | block | 常开（region_invalid_fields / region_vector_ts_forbidden） | 如 JPN 无 pv1 字段 |

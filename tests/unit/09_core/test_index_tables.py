@@ -39,10 +39,13 @@ def test_region_table_reflects_profile_and_directory_facts():
     assert set(rows) == set(REGIONS)                                    # 每个 config.REGIONS 都有一行
     assert rows["AMR"]["profile"] is True and rows["AMR"]["tracking"] is True     # AMR profile 已于 2026-09-28 补建，tracking 目录一直在
     assert rows["TWN"]["profile"] is True and rows["TWN"]["tracking"] is False
-    assert rows["DEU"]["entry_verdict"] == "probe-only"                          # 旧表写 active，profile 是 probe-only
-    assert rows["MEA"]["entry_verdict"] == "frozen"
+    # 不再把 DEU / IND / EUR 的 verdict 字面量写死：profile 会随实证升降档（DEU 2026-10-02 升 active，
+    # IND / EUR 2026-10-04 降 probe-only），写死就会在每次升降档时把本测试变红——这正是 2026-10-04 修掉的失败。
+    # 守的是「表 == profile」（下面的逐区循环），不是某一区当前取什么值。
+    assert rows["MEA"]["entry_verdict"] == "frozen"                              # MEA 冻结是稳定事实
     table = T.render_regions()
-    assert "| DEU | ✓ | ✓ | `probe-only` |" in table and "| AMR | ✓ | ✓ | `active` | — |" in table
+    assert "| AMR | ✓ | ✓ | `active` | — |" in table
+    assert "| MEA | ✓ | ✓ | `frozen` |" in table
     for r, row in rows.items():                                         # 表里的 entry_verdict 逐个等于 profile front-matter
         prof = T.PROFILES / f"{r}.md"
         if prof.is_file():

@@ -29,8 +29,19 @@ python tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/b
 
 | 篮子状态 | 动作 |
 |---|---|
-| 篮子条数 ≥ target **且**覆盖 ≥ 3 座**未点亮**塔 | 直接跳步 7 / 8（对篮子做稳健与提交判定），不开新挖 |
+| 篮子条数（只数 `prod_status=fresh_ok` 的已核条目，见下「prod 新鲜度」）≥ target **且**覆盖 ≥ 3 座**未点亮**塔 | 直接跳步 7 / 8（对篮子做稳健与提交判定），不开新挖 |
 | 条数不足，或覆盖的未点亮塔 < 3 | 进步 2，**只补缺口塔** |
+
+- **prod 新鲜度（2026-10-03 落地，代码默认开启）**：`select_ra_basket` 只读 `alphas.prod_correlation` /
+  `corr_checked_at`，给每条打 `prod_status`：`fresh_ok`（近 `--prod-max-age-days`（缺省 2）天内测过且 < 上限）/
+  `fresh_blocked` / `stale_ok` / `stale_blocked` / `unmeasured`，并写进 `basket.json`（`prod_correlation` /
+  `prod_checked_at` / `prod_age_days`）。库内记录 prod ≥ 上限的（`*_blocked`，不论新旧）直接剔除、不再送进限流的
+  相关性队列（`--keep-prod-blocked` 仅调试）。**「库存足够 → 跳步 7 / 8」的条数只数 `fresh_ok`**；`stale_ok` /
+  `unmeasured` 的值作废——实证 IND 旧候选 09-19~23 实测 prod 0.51–0.67，10-02 复测**全部** 0.83–0.99（社区同族
+  alpha 持续进 book，只升不降），按旧值数篮子会把「库存足够」判错。要把 stale 的算进来，先对它们
+  `check_correlation(refresh=True)` 重测（平台单并发、45 s ~ 12 min / 条，别一次排几十条），用
+  `mcp__wqb-db__persist_correlation` 落库后再跑一遍本工具。`workflow_inventory_scan` 节点的返回里有
+  `prod_checked_count`（= `fresh_ok` 条数）。
 
 - 篮子敲定的口径 = **资格门 `Failed RA == 0`**（`wqb.config.compute_webdata_failed_counts`；比「无 FAIL」严格，WARNING / ERROR 也计），细节取自 `get_alpha_details(alpha_id).is.checks`。
   `submit_verdict` 对处女提交只会给 `UNVERIFIABLE`（`GET /submit` 恒 404），**不构成可提交依据**——见提交链 [`submit-chain.md`](../../worldquant-submit-alpha/references/submit-chain.md)。

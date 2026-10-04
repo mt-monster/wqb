@@ -73,6 +73,7 @@ mcp__wqb-db__upsert_wave_result  region=$REGION  wave_number=$W  verdict=<PASS|P
    - ⚠ **为什么必须 fail-closed**：判死是永久封存一条路。2026-09-29 实证 5 条 recon 记录里 **2 条是工具故障**（`load_creds` TypeError、`No module named 'requests'`），被记成 `found=false` 落 `forum_recon_negative_*`，等于「工具坏了 ≡ 论坛无解」→ 误把活路判死。故障现在落 `forum_recon_error_<qkey>`、不入缓存、退出码 1，闸也不认。
    - **闸认的是证据可靠，不核对相关性、不给证据龄设上限**：问的问题是否对得上要判死的族，看留痕里的 `question` / `searched_at` 由人复核（[`forum-recon-triggers.md`](forum-recon-triggers.md) 末节「已知缺口」）。
    - prod 墙的判死分支同样先过这一步（D0-P：≥ 0.75 或踩线带尝试失败 → 取证 → 封存）。
+1b. **等价算子扫描**（2026-10-03 增补，决策表 D15 的前置）：判「不可能 / 天花板 / 已到顶 / 无解」之前，IS 强但被某闸卡住的族必须先扫一遍等价算子替换——等价算子数学含义相同、数值路径不同，能同时动多个闸，而几何调整（分子 / 分母 / 窗口 / 轴）一次只动一个。常用替换与已知效应：`signed_power(x,0.5)` → `quantile(x)`（KOR 2Y +0.05~0.11、prod −0.015、持仓变对称）；`ts_scale` → `quantile` / `normalize`（GLB S +0.20、F +0.06，但同族 prod 可能上升 0.475→0.565）；`group_rank` → `group_zscore` 与 `ts_rank` → `ts_quantile` 在对应族上是反向（2Y −0.5 / −0.05）。纪律：① 记忆里的语法级效应**必须本区实测，不可外推**；② 外层分组轴的最优值依赖内层包装算子；③ `quantile` 只接受 1 参（`ts_quantile` 才两参）；④ 要读替换后的**全部**闸，不只是目标闸。封存时在 `reason` 里以「equiv_op_scan：…」写明已试的替换与结果；`seal_dead_end` 目前不校验这一项，靠本步骤与 D15 约束。机器规则 `equivalent_operator_substitution_v1`，方法论全文见 `docs/experience/02_signal_patterns.md` 与 `brain-how-to-pass-alpha-test` §5b。
 2. **封存**：
 
 ```

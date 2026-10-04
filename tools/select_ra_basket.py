@@ -128,6 +128,65 @@ async def platform_recheck(brain, alpha_id: str):
             for x in checks if isinstance(x, dict) and x.get("result") == "FAIL"]
 
 
+#: prod 值的新鲜度缺省（天）。2026-10-03：IND 旧候选 09-19~23 实测 prod 0.51–0.67，10-02 复测**全部** 0.83–0.99
+#: （社区同族 alpha 持续进 book，WorkBuddy 记忆 MEMORY §1.3「陈旧 prod 值一律作废」）。
+PROD_FRESH_DAYS = 2
+
+
+def classify_prod(prod, checked_at, max_age_days=PROD_FRESH_DAYS, now=None, ceiling=None):
+    """把一条候选在 `alphas` 表里记录的 prod 值分类。返回 (status, age_days)。
+
+    status：
+      - ``unmeasured``   prod 为空，从未测过
+      - ``fresh_ok``     ≤ max_age_days 天内测的，且 < ceiling —— **只有它算「prod 已核」**
+      - ``fresh_blocked``≤ max_age_days 天内测的，且 ≥ ceiling —— 已知必撞铁律线
+      - ``stale_ok``     更早测的（或没有测量时间）且 < ceiling —— 值作废，须重测
+      - ``stale_blocked``更早测的且 ≥ ceiling —— prod 漂移方向是社区同族持续进 book（只升不降），
+                         旧高值不会自己变低，按已知必撞处理
+    ``age_days`` 为 None 表示没有可解析的测量时间（一律按陈旧算）。
+    """
+    import datetime as _dt
+
+    if ceiling is None:
+        try:
+            from wqb.config import PRODCORR_CEILING as ceiling
+        except Exception:  # noqa: BLE001  config 不可导入时用与 config 相同的缺省
+            ceiling = 0.70
+    if prod is None:
+        return "unmeasured", None
+    age = None
+    if checked_at:
+        try:
+            ts = _dt.datetime.fromisoformat(str(checked_at).strip().replace("Z", "+00:00"))
+            if ts.tzinfo is not None:
+                ts = ts.astimezone().replace(tzinfo=None)
+            ref = now or _dt.datetime.now()
+            age = max((ref - ts).total_seconds() / 86400.0, 0.0)
+        except (ValueError, TypeError):
+            age = None
+    fresh = age is not None and age <= max_age_days
+    blocked = float(prod) >= float(ceiling)
+    return (("fresh_" if fresh else "stale_") + ("blocked" if blocked else "ok")), age
+
+
+def prod_freshness_index(conn, ids, max_age_days=PROD_FRESH_DAYS, now=None):
+    """只读 `alphas` 表，返回 {alpha_id: {prod, checked_at, age_days, status}}（查不到的 id 不在结果里）。"""
+    ids = [i for i in dict.fromkeys(ids) if i]
+    out = {}
+    for start in range(0, len(ids), 500):  # 分块：避开 SQLite 变量个数上限
+        chunk = ids[start:start + 500]
+        marks = ",".join("?" for _ in chunk)
+        rows = conn.execute(
+            "SELECT alpha_id, prod_correlation, corr_checked_at FROM alphas "
+            f"WHERE alpha_id IN ({marks})", chunk,
+        ).fetchall()
+        for aid, prod, checked in rows:
+            status, age = classify_prod(prod, checked, max_age_days, now)
+            out[aid] = {"prod": prod, "checked_at": checked,
+                        "age_days": None if age is None else round(age, 2), "status": status}
+    return out
+
+
 async def main_async(a):
     from brain_api import BrainApiClient
 
@@ -136,6 +195,25 @@ async def main_async(a):
     print(f"[去重] 候选 {len(raw)} -> 独立信号 {len(ranked)} "
           f"（压缩 {len(raw) / max(len(ranked), 1):.1f}x）")
     print(f"[分布] {dict(Counter(c['region'] for c in ranked).most_common())}")
+
+    # prod 新鲜度（2026-10-03）：只读库里已记录的 prod 值——已知 ≥ 上限的不再送进限流的相关性队列，
+    # 篮子里只有「近 N 天内测过且 < 上限」的才算 prod 已核（步 1 的「库存足够」判据只数这类）。
+    prod_info = {}
+    try:
+        from wqb.db_conn import connect as db_connect, default_db_path
+        conn = db_connect(a.db or default_db_path(), readonly=True)
+        try:
+            prod_info = prod_freshness_index(conn, [c.get("id") for c in ranked], a.prod_max_age_days)
+        finally:
+            conn.close()
+    except Exception as e:  # fail-open：DB 不可用不阻断选篮（全部按 unmeasured 处理，不剔除）
+        print(f"[prod 新鲜度] 跳过（{type(e).__name__}: {e}）")
+    if prod_info and not a.keep_prod_blocked:
+        bad_ids = {i for i, v in prod_info.items() if v["status"] in ("fresh_blocked", "stale_blocked")}
+        if bad_ids:
+            ranked = [c for c in ranked if c.get("id") not in bad_ids]
+            print(f"[prod 已知撞墙] 剔除 {len(bad_ids)} 条（库内记录的 prod ≥ 上限；"
+                  f"prod 只会被社区同族挤高，旧高值不会自己变低；--keep-prod-blocked 可保留）")
 
     pool = ranked[:a.pool]
     meta = {c["id"]: c for c in pool}
@@ -199,19 +277,27 @@ async def main_async(a):
 
     print(f"\n[篮子] {len(chosen)}/{a.target} 条，两两 < {a.threshold}\n")
     hdr = (f"{'#':>3} {'alpha':10s} {'reg':4s} {'universe':18s} {'neut':14s} "
-           f"{'sh':>5} {'fit':>5} {'2y':>5} {'maxCorr':>7}  pyramid")
+           f"{'sh':>5} {'fit':>5} {'2y':>5} {'maxCorr':>7} {'prod':>14s}  pyramid")
     print(hdr)
     out = []
     for n, cid in enumerate(chosen, 1):
         c = meta[cid]
         mc = max([corr(cid, k) for k in chosen if k != cid]
                  + [corr(cid, o) for o in osset] + [0.0])
+        pi = prod_info.get(cid) or {}
+        pst = pi.get("status", "unmeasured")
         print(f"{n:>3} {cid:10s} {c['region']:4s} {str(c['universe']):18s} "
               f"{str(c['neut'])[:14]:14s} {(c.get('sharpe') or 0):5.2f} "
               f"{(c.get('fitness') or 0):5.2f} {(c.get('two_year_sharpe') or 0):5.2f} "
-              f"{mc:7.4f}  {pyr_key(c)}")
-        out.append({**c, "max_corr": round(mc, 4)})
+              f"{mc:7.4f} {pst:>14s}  {pyr_key(c)}")
+        out.append({**c, "max_corr": round(mc, 4), "prod_status": pst,
+                    "prod_correlation": pi.get("prod"), "prod_checked_at": pi.get("checked_at"),
+                    "prod_age_days": pi.get("age_days")})
     print(f"\n[点塔] {len(set(pyr_key(meta[c]) for c in chosen))} 个互不相同的金字塔")
+    n_ok = sum(1 for r in out if r["prod_status"] == "fresh_ok")
+    print(f"[prod 新鲜度] 篮内 {len(out)} 条：已核（近 {a.prod_max_age_days} 天内测过且 < 上限）{n_ok} 条 / "
+          f"需重测 {len(out) - n_ok} 条（stale / 未测）")
+    print("      步 1 的「库存足够」只数已核条数；其余须在步 8 前 check_correlation(refresh=True) 重测。")
     if a.out:
         Path(a.out).write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"[写出] {a.out}")
@@ -227,6 +313,11 @@ def main():
     ap.add_argument("--threshold", type=float, default=0.7, help="相关性阈值（默认 0.7）")
     ap.add_argument("--years", type=int, default=4, help="相关性计算的回看年数（默认 4）")
     ap.add_argument("--out", default=None, help="篮子 JSON 输出路径")
+    ap.add_argument("--db", default=None, help="wqb.db 路径（缺省自动探测仓库根）")
+    ap.add_argument("--prod-max-age-days", dest="prod_max_age_days", type=float, default=PROD_FRESH_DAYS,
+                    help=f"库内 prod 值算「新鲜」的天数（缺省 {PROD_FRESH_DAYS}）；更早测的值作废、须重测")
+    ap.add_argument("--keep-prod-blocked", dest="keep_prod_blocked", action="store_true", default=False,
+                    help="保留库内记录 prod ≥ 上限的候选（缺省剔除；仅调试）")
     a = ap.parse_args()
     asyncio.run(main_async(a))
 

@@ -24,14 +24,14 @@
 ### 关键判据
 
 - **提交层严格不等式**：`value == limit` 判 **FAIL**。`VkaZYdbG` 的 `IS_LADDER_SHARPE value=1.58 == limit 1.58` → 403。
-- **提交层严于 IS 层**：IS 层的 WARNING 在提交层是 FAIL（09-16 三颗 IS 全 WARNING、POST 全 403）。IS 层 limit 更宽（GBR `IS_LADDER` IS 层 1.88 / 提交层 1.58）。→ **"IS 层 PASS" ≠ 能过提交层**。
+- **提交层严于 IS 层**：IS 层的 WARNING 在提交层是 FAIL（09-16 三颗 IS 全 WARNING、POST 全 403）。**更正（2026-09-30）**：旧版写的「IS 层 limit 更宽」不成立——`Vk0kLMqG` 真 POST 被 403，且提交层各 check 的 limit 与 IS 层**完全一致**（`LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO`、`LOW_ROBUST_UNIVERSE_RETURNS` 逐项相同；`1YZqNxM6` 是特例，不可作通用依据；GBR `IS_LADDER` 曾记 IS 层 1.88 / 提交层 1.58，属单点观察，待复核）。→ **必须在 IS 层就把所有 check（含 WARNING）压过，否则 POST 必 403；"IS 层 PASS" ≠ 能过提交层**。
 - **`CONCENTRATED_WEIGHT` 是结构性拒绝，非权重分布问题**：GBR starmine 族里 `ts_decay_linear` 平滑、连外层全市场 `rank()` 均匀化都 403；唯一过提交层的同族结构是 `trade_when` 门控。
 
 ---
 
 ## 2. ★ SUB 是比值闸，不是绝对闸
 
-`LOW_SUB_UNIVERSE_SHARPE` 的 limit ≈ **0.571 × 本 alpha sharpe**。三处独立一致：
+`LOW_SUB_UNIVERSE_SHARPE` 的 limit = **0.75 × sqrt(子宇宙规模 / 本 alpha 宇宙规模) × 本 alpha sharpe**（公式见 `brain-how-to-pass-alpha-test` §5）。**系数随宇宙变化，不是常数**：KOR（TOP600）实测 ≈ **0.571**（下表三处独立一致）；USA（TOP3000 → 子集 TOP1000）= 0.75×sqrt(1000/3000) = **0.433**（2026-10-01 USA 两处直查：limit/S = 0.4335 / 0.4333）；SuperAlpha ≈ 0.431；DEU profile 记 ≈ 0.47。**系数一律用 `get_alpha_details` 里本 alpha 的 `LOW_SUB_UNIVERSE_SHARPE` 的 limit / sharpe 当场算**，不要套用别区的数。下表是 KOR 的实测：
 
 | sharpe | SUB limit | 比值 |
 |---|---|---|
@@ -40,12 +40,14 @@
 | 1.55 | 0.89 | 0.574 |
 
 **⇒ 把 S 压到刚过 1.58 会同步抬高 SUB 的绝对要求，「S 越高越好」是错的。**
-正确目标：`SUB/S ≥ 0.571 ∧ 2Y ≥ 1.58 ∧ S ≥ 1.58 ∧ F ≥ 1.0` **同时**成立。
+正确目标：`SUB/S ≥ 本区系数（KOR ≈ 0.571、USA ≈ 0.433）∧ 2Y ≥ 1.58 ∧ S ≥ 1.58 ∧ F ≥ 1.0` **同时**成立。
+**低分区实测值不可外推为「墙」**：limit 随 S 线性增长，S≈0.6 时 SUB 实测 0.30 只是 `S×0.47`，S≳1.7 时该闸自动过（DEU 6 颗 ACTIVE 全部 PASS 该闸，原「DEU sub_universe 结构性墙」是伪墙，见 `regions/DEU.md`）。
 
 **破比值闸的合规旋钮（实测有效）**：
 - 分组轴换到 **`market`**（决定性，给比值）或 **`exchange`**（给 2Y）
-- `signed_power` 压尾
+- `signed_power` 压尾（⚠ 压尾前先看持仓对称性：会造成多空不对称而触发 `LOW_INVESTABILITY_CONSTRAINED_SHARPE`；优先试等价的 `quantile`，见 `brain-how-to-pass-alpha-test` §5b）
 - 长窗 `ts_rank` / `ts_decay_linear` 平滑
+- ⚠ **分组轴不是 SUB 闸的通用旋钮**：EUR 有效，KOR other466 六种轴向全灭——逐区实测
 
 ---
 
@@ -145,7 +147,7 @@ combo:     线性 1-maxCorr
 
 ## 7. 点塔（Pyramid）
 
-- **点亮定义 = 该塔下提交 ≥ 3**（用户口径，90 天窗口 ACTIVE ≥ 3）。
+- **点亮定义 = 该塔下当前自然季度提交 ≥ 3**。每个自然季度首日计数清零（2026-10-01 实证：GLB 的 10 颗 ACTIVE 全是 Q3 提交，Q4 一颗不算）；`get_pyramid_alphas` 缺省返回当前季度，查上一季须显式传 `start_date` / `end_date`。旧版写的「90 天滚动窗口」没有代码实现，已更正。
 - **唯一权威数据源 = 平台 `get_pyramid_alphas`**（按季度返回 region/delay/category 计数）。
 - ⚠ **本地 `alphas` 表不能做塔级统计**（两次踩坑）：
   - 不可用 `datasets.category` 推塔归属——本地 KOR 47% ACTIVE 的 `category=None`，且塔归属来自平台 pyramid 匹配，与数据集 category **不等价**。

@@ -177,7 +177,7 @@ def backfill_band(r, h):
     """O2 中覆盖回填带：0.65<=cov<0.85 & ac<=50 & vs>=6 → 保底 tier2。
     KOR/USA 双战役两次踩中的盲区（中覆盖带藏低竞争高价值集）；分位制仍会漏
     （USA 实测 event_sentiment_signals cov0.719/ac39/vs6 被分位线挤出）。
-    生成侧必须 ts_backfill(66/120) 包裹字段补偿覆盖缺口。"""
+    生成侧必须 ts_backfill(66) 包裹字段补偿覆盖缺口（季频 / 年频字段用 252；窗口只取白名单值，120 不在其中）。"""
     return (h.get("backfill_band_enable", True)
             and h.get("backfill_band_cov_min", 0.65) <= (r["coverage"] or 0) < h.get("backfill_band_cov_max", 0.85)
             and (r["alphaCount"] or 0) <= h.get("backfill_band_alpha_count_max", 50)
@@ -204,7 +204,7 @@ def crowd_veto(ac, h):
 def crowd_band(r, h):
     """O6 强信号拥挤带（opt-in）：alphaCount 超原 100 硬闸但 <=alpha_count_max 的强信号集保底 tier2。
     GBR 2026-08-17 放宽门闩引入：predictive_starmine(ac=686)/shortinterest3(ac=294) 等被分位线挤出。
-    生成侧义务：cov<crowd_band_cov_max(0.85) 时字段必须 ts_backfill(66/120) 包裹（tier_note=crowd_band）。"""
+    生成侧义务：cov<crowd_band_cov_max(0.85) 时字段必须 ts_backfill(66) 包裹（季频 / 年频字段用 252；tier_note=crowd_band）。"""
     return (h.get("crowd_band_enable", False)
             and h.get("crowd_band_alpha_count_min", 100) < (r["alphaCount"] or 0) <= h.get("alpha_count_max", 1000)
             and (r["coverage"] or 0) >= h.get("crowd_band_cov_min", 0.7)
@@ -498,7 +498,7 @@ def cmd_score(ctx):
                           + ") × category_weight[0.9~1.15]"
                           + ("（P5 饱和区 model 拍平<=1.0）" if bool(saturated) else "")),
         "tier_rule": tier_rule + ("；保底带（O2/O4/O6，tier_note 溯源）：backfill_band(0.65<=cov<0.85 "
-                                   "& alphaCount<=50 & valueScore>=6)→tier2[生成须 ts_backfill(66/120)]；"
+                                   "& alphaCount<=50 & valueScore>=6)→tier2[生成须 ts_backfill(66)，季频/年频用 252]；"
                                    "probe_exception(cov>=0.9 & alphaCount==0 & valueScore>=6 & 字段<硬地板)→"
                                    "tier2[仅限 Stage A 探针早停]"
                                    + ("; crowd_band(alphaCount>100 & <=alpha_count_max & cov>=0.7 "

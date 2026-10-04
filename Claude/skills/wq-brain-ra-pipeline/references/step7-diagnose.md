@@ -80,9 +80,9 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 
 ### 7.6.1 卡在提交层四闸时：SUB 比值律 · 零成本定位卡点（2026-09-28 实证，跨区通用）
 
-- **提交层实际四闸** = `LOW_SHARPE` / `LOW_FITNESS` / `LOW_2Y_SHARPE` / `LOW_SUB_UNIVERSE_SHARPE`，**均为严格不等式**；前三闸的线取 `config.PLATFORM_CHECK_LINES`，SUB **没有固定线**——它的 limit ≈ 0.571 × 本 alpha 的 sharpe。实测：`wpZkk1Mp` SUB limit = 1.03 / sharpe = 1.80 → 0.572；`2rwoAp8b` 1.12 / 1.96 → 0.571；`6XjLAaWO` 0.89 / 1.55 → 0.574（三处独立一致）。**DEU profile 记的是 ≈ 0.47（另一批实测），比例以本区 `get_alpha_details` 里 `LOW_SUB_UNIVERSE_SHARPE` 的 limit / sharpe 为准，不要把 0.571 当常数。**
-- **推论**：SUB 是**比值闸**——把 sharpe 压到刚过 `LOW_SHARPE` 线会**同步降低** SUB 要求（sharpe = 1.62 时只需 SUB ≥ 0.93）。所以「sharpe 越高越好」在提交层是错的，目标是 `SUB / sharpe ≥ 该比例` 且 `LOW_2Y_SHARPE`、`LOW_SHARPE`、`LOW_FITNESS` **同时成立**。
-- **破比值闸的合规旋钮**（实测有效）：换分组轴到 `market` / `exchange`（效果不同：`market` 给比值、`exchange` 给 2Y）、`signed_power` 压尾、`ts_decay_linear` / 长窗 `ts_rank` 平滑。KOR / other466 实证：`group_rank(R, market)` 把比值从 0.55 抬到 0.59，是过闸的决定性一步。
+- **提交层实际四闸** = `LOW_SHARPE` / `LOW_FITNESS` / `LOW_2Y_SHARPE` / `LOW_SUB_UNIVERSE_SHARPE`，**均为严格不等式**；前三闸的线取 `config.PLATFORM_CHECK_LINES`，SUB **没有固定线**——它的 limit = 0.75 × sqrt(子宇宙规模 / 宇宙规模) × 本 alpha 的 sharpe（公式见 `brain-how-to-pass-alpha-test` §5），**系数随宇宙变化**：KOR（TOP600）实测 ≈ 0.571，USA（TOP3000 → TOP1000）≈ 0.433（2026-10-01 两处直查 0.4335 / 0.4333）。KOR 实测：`wpZkk1Mp` SUB limit = 1.03 / sharpe = 1.80 → 0.572；`2rwoAp8b` 1.12 / 1.96 → 0.571；`6XjLAaWO` 0.89 / 1.55 → 0.574（三处独立一致）。**DEU profile 记的是 ≈ 0.47（另一批实测），比例以本区 `get_alpha_details` 里 `LOW_SUB_UNIVERSE_SHARPE` 的 limit / sharpe 为准，不要把 0.571 当常数。**
+- **推论**：SUB 是**比值闸**——把 sharpe 压到刚过 `LOW_SHARPE` 线会**同步降低** SUB 要求（按 KOR 系数 0.571，sharpe = 1.62 时只需 SUB ≥ 0.93；USA 系数 0.433 时只需 ≥ 0.70）。所以「sharpe 越高越好」在提交层是错的，目标是 `SUB / sharpe ≥ 该比例` 且 `LOW_2Y_SHARPE`、`LOW_SHARPE`、`LOW_FITNESS` **同时成立**。
+- **破比值闸的合规旋钮**（实测有效）：换分组轴到 `market` / `exchange`（效果不同：`market` 给比值、`exchange` 给 2Y）、`signed_power` 压尾（⚠ 须先查持仓对称性：压尾造成多空不对称会触发 `LOW_INVESTABILITY_CONSTRAINED_SHARPE`，实测 `quantile` 替 `signed_power` 后多空完全对称（LC319 / SC319），所以优先换等价的非压尾包装算子，见 `brain-how-to-pass-alpha-test` §5b）、`ts_decay_linear` / 长窗 `ts_rank` 平滑。KOR / other466 实证：`group_rank(R, market)` 把比值从 0.55 抬到 0.59，是过闸的决定性一步。
 - **零成本定位卡点**：`submit_verdict` 在处女提交（`GET /submit` 404）时仍返回**模拟层完整 checks**（`模拟层 checks: N 条 (FAIL x / WARNING y)` + `Failed RA / PPA` 计数），足以定位唯一卡点——**不要等真 POST 才知道卡在哪一闸**。
 - 该实证的软层全文与佐证见 [`docs/experience/01_platform_gates.md`](docs/experience/01_platform_gates.md)。
 

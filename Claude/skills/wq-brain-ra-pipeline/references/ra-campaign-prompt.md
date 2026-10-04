@@ -66,7 +66,7 @@
 单条 alpha <ALPHA_ID> 不过闸：先按闸位定位死因（读 `is.checks` + `submit_verdict`），再走 `wq-brain-alpha-optimization-v1`
 （先想法后参数）；失败点 → 修法族的速查表在 `brain-how-to-pass-alpha-test`「失败点 → 修法族」
 （Sharpe / Fitness → 信号强度；Turnover → 平滑 / 窗口；PROD → 决策表 D0-P；SELF → 换概念 / 数据源；CW / SubUniverse → 分散化骨架）。
-常见卡点：prod 偏高 → 只按 D0-P 那一张表，不磨参数。
+常见卡点：prod 偏高 → 只按 D0-P 那一张表（先做「诊断前置」：看直方图分单颗钉子 / 密墙 / 可破，同族同分母先换分母），不盲扫参数。
 ```
 
 ### 2.4 持续日循环

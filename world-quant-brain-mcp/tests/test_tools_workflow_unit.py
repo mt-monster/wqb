@@ -185,9 +185,31 @@ def test_submit_alpha_all_fields_passthrough(monkeypatch):
         "descriptions": "desc",
         "force": True,
         "confirm_submit": False,
+        "robustness_audited": False,
         "verify_timeout": 60,
     }
     assert kwargs == {"dry_run": True}
+
+
+def test_submit_alpha_robustness_audited_defaults_false_and_passes_through(monkeypatch):
+    """`robustness_audited`（2026-10-04 暴露）：缺省必须 False（fail-closed），显式 True 原样透传到节点。
+
+    此前 MCP 快捷入口没有这个参数，confirm_submit=True 时台账无 robustness 记录只能绕道 workflow_execute。
+    反向负例：`allow_prod_above_07` 不得出现在快捷入口里——prod 红线豁免要用户明确指令、走 workflow_execute 留痕。
+    """
+    import inspect
+
+    rec = _install_recorder(monkeypatch)
+    tools_workflow.workflow_submit_alpha(alpha_id="a1")
+    _, params, _ = rec.calls[0]
+    assert params["robustness_audited"] is False
+
+    tools_workflow.workflow_submit_alpha(alpha_id="a1", confirm_submit=False, robustness_audited=True)
+    _, params, _ = rec.calls[1]
+    assert params["robustness_audited"] is True
+
+    fn = getattr(tools_workflow.workflow_submit_alpha, "fn", tools_workflow.workflow_submit_alpha)
+    assert "allow_prod_above_07" not in inspect.signature(fn).parameters
 
 
 def test_submit_alpha_none_tags_stay_none(monkeypatch):

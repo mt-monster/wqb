@@ -1,7 +1,7 @@
 ---
-last_verified: 2026-10-03
+last_verified: 2026-10-04
 name: wq-brain-alpha-optimization-v1
-description: "现有 WorldQuant BRAIN alpha 的两模式改进器：Mode B（想法层——换信号概念/字段组合，含卡闸后的组合腿救援）→ Mode A（参数层——冻结核心想法，8 候选严格批调 decay/窗口/中性化/truncation）。用户要求改进/优化某个 alpha ID、修复失败的提交测试项（含 IS_LADDER_SHARPE），或候选已按资格判定表（references/mode-b-qualification.md）值得继续改时使用。prod 相关性墙按 RA 决策表 D0-P 处置，本 skill 不承诺把 PROD 压到某个数。"
+description: "现有 WorldQuant BRAIN alpha 的两模式改进器：Mode B（想法层——换信号概念/字段组合，含卡闸后的组合腿救援）→ Mode A（参数层——冻结核心想法，8 候选严格批调 decay/窗口/中性化/nanHandling·maxTrade）。用户要求改进/优化某个 alpha ID、修复失败的提交测试项（含 IS_LADDER_SHARPE），或候选已按资格判定表（references/mode-b-qualification.md）值得继续改时使用。prod 相关性墙按 RA 决策表 D0-P 处置，本 skill 不承诺把 PROD 压到某个数。"
 layer: L4
 allowed-tools:
   - Read
@@ -16,7 +16,7 @@ user-invocable: true
 
 ## 职责边界
 
-- **本 skill 负责**：**动手改**现有 alpha——Mode B 想法层（换信号概念 / 字段组合 / 组合腿救援）→ Mode A 参数层（decay / 窗口 / 中性化 / truncation）；**会产生新变体并回测**。
+- **本 skill 负责**：**动手改**现有 alpha——Mode B 想法层（换信号概念 / 字段组合 / 组合腿救援）→ Mode A 参数层（decay / 窗口 / 中性化 / nanHandling·maxTrade 强度闸；**不扫 truncation**，见 Mode A 的扫描维度纪律）；**会产生新变体并回测**。
 - **本 skill 不做**：不做提交判定（`tools/submit_verdict.py`）；不做只读的阈值 / 失败原因查询（→ `brain-how-to-pass-alpha-test`）；不做稳健性审计（→ `brain-alpha-robustness`）；**不承诺把 PROD 相关性压到某个数**——prod 墙的处置只有 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md) 一张表，本 skill 只承接其中「已 eligible 且有 salvage 辅助腿」的组合腿救援与「踩线带 1 次结构性尝试」。
 - **上游 / 下游**：上游 = S4 判「可改」的候选（`brain-how-to-pass-alpha-test` 定位失败项，下节判资格）；下游 = `brain-calculate-alpha-selfcorr-quick` →（可选）`brain-explain-alphas` → `brain-alpha-robustness` → `tools/submit_verdict.py`（提交前否决闸；放行须用户确认，见 `worldquant-submit-alpha`），**不直接提交**。
 
@@ -99,6 +99,7 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
 6. 全部检查零 FAIL 的候选立即做 PROD 相关性检查，读数按 D0-P 处置。
 7. **结果入库、不写自建文本文件**：批回测结束后确认 `backtest_results` 已入库（`harvest_multisim_alphas` → `wqb-db harvest_multisim_results`）；迭代日志（8 槽角色 / 失败项 / next_actions）写在本轮回复里，S6 回写时进 `wave_result.key_findings`（RA [step9](../wq-brain-ra-pipeline/references/step9-writeback.md)）。
 8. 校验或仿真失败时只修精确的报错点；不得为过校验而删核心逻辑。
+9. **扫描维度纪律（2026-10-04，决策表 D5；每个名额都很贵，别扫零杠杆维度）**：① **不扫 `truncation`**——实测零杠杆（IND 行为族 0.02 与 0.08 指标逐位相同；GLB 0.08→0.15 零影响，换手低时截断触及不到）；② `decay=0` 与 `decay=1` 指标逐位相同，扫描只留一个；**decay 必须匹配信号速度**（水平形均值 decay=1 最优、decay=20 全灭；raw 窗口 1 需 decay=8），「decay 越高越好」在快信号上是反的；③ `nanHandling` / `maxTrade` 是**强度闸**（IND 同表达式 decay8 下 `nanHandling=OFF` 或 `maxTrade=ON` 使 S 2.19→0.46）：先确认与本区 win 的设置一致，再拿 1–2 个候选槽做对照，**换档 = 换信号、跨档不可比**；④ 归一化算子 / 中性化常是单点开关或零杠杆（`group_neutralize` / `group_zscore` 保幅度使行为族 S 2.19→0.39–1.33；SUBINDUSTRY 使 S 腰斩）——先判它是不是该信号的「成立条件」再动。
 
 **校验层**（3 段，顺序执行，全过才可仿真）：
 
@@ -117,7 +118,7 @@ $WQ_PY tools/wave_gate.py --campaign-dir tracking/<REGION> --dataset <主信号�
 
 ## prod 相关性墙 → D0-P；组合腿救援是它的「唯一例外」
 
-prod 读数怎么处置只看 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md)（< 0.60 扩；0.60–0.70 不扩、当天进步 8；0.70–0.75 只 1 次结构性尝试；≥ 0.75 或尝试失败 → `dead_end`）。本 skill 不另立反馈循环。
+prod 读数怎么处置只看 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md)（< 0.60 扩；0.60–0.70 不扩、当天进步 8；0.70–0.75 只 1 次结构性尝试；≥ 0.75 或尝试失败 → `dead_end`；判 `dead_end` 前先做表里的「诊断前置」：单颗钉子 / 密墙 / 可破三型，同族同分母先换分母）。本 skill 不另立反馈循环。
 
 **唯一例外**（D0-P 明写）：候选已 `eligible`（[资格判定表](references/mode-b-qualification.md)：主闸或旁路），且 Mode B 常规改进 3 个周期仍被结构性闸门卡住，才进入组合腿救援。**救援不是重写主信号**：保留强主腿 + 从 salvage_pool 取补强辅助腿做合规改造。
 

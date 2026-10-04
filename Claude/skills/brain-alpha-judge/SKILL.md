@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-01
+last_verified: 2026-10-04
 name: brain-alpha-judge
 description: "提交前的参考评审（非提交判定、不提交）：PPA 主题 / 相关性人工核对清单、value-factor trend score、多候选点塔排序。当用户想在提交前做额外质量审查、核对 PPA 主题匹配，或需要给多个过闸候选排提交顺序时使用。judge 只作参考：不判可提交性、不提交。"
 layer: L5
@@ -78,12 +78,12 @@ $WQ_PY scripts/judge_alpha.py --alpha-id <ID> --trend-window-days 365
 同时给出「若该候选提交进同一窗口」的假设投影（前后 diversity score、delta、方向）。
 
 - **ATOM 在这里 = 单一数据集纯度（`SINGLE_DATA_SET` 分类，含 atom 回退）**；`brain-how-to-pass-alpha-test` 里的「ATOM」指提交标准的放宽档（近 2 年 Sharpe），**不是同一个定义**，词表见 GLOSSARY。
-- **`S_P`（类别覆盖率，宏观多样性）与「点亮数（近 90 天 ≥ 3 颗 ACTIVE）」是两个不同的金字塔指标**：前者衡量已提交组合的分散度，后者决定**先提哪颗**（职能 3）。两者互不替代。
+- **`S_P`（类别覆盖率，宏观多样性）与「点亮数（当前自然季度 ≥ 3 颗 ACTIVE）」是两个不同的金字塔指标**：前者衡量已提交组合的分散度，后者决定**先提哪颗**（职能 3）。两者互不替代。
 - **没有决策用途**：delta 为负时不自动拦截也不改判定，只作为「先提别的」的提示；要阻止请走职能 3 的排序或用户判断。
 
 ## 职能 3：多候选点塔排序
 
-配额不足、多个候选都过闸时，**口径与排序只在 [`worldquant-submit-alpha/references/quota-and-tower.md` §2](../worldquant-submit-alpha/references/quota-and-tower.md)**（点亮 = 近 90 天 ≥ 3 颗 ACTIVE；跨 ≥ 3 个 catalog 不计；分档「差 1 颗 / 差 2 颗 / 0/3 需凑 3 颗」；同档内轮转再按 fitness）。本 skill 不再自带一份——旧文是 submit-alpha 的逐句拷贝，并共享了两处逻辑错误（A 档「差 ≤ 2 颗」与 B 档「差 2 颗」重叠；「差 2 颗一次提交即点亮」不成立），现已随 submit-alpha 一并更正。
+配额不足、多个候选都过闸时，**口径与排序只在 [`worldquant-submit-alpha/references/quota-and-tower.md` §2](../worldquant-submit-alpha/references/quota-and-tower.md)**（点亮 = 当前自然季度 ≥ 3 颗 ACTIVE，季度首日清零；跨 ≥ 3 个 catalog 不计；分档「差 1 颗 / 差 2 颗 / 0/3 需凑 3 颗」；同档内轮转再按 fitness）。本 skill 不再自带一份——旧文是 submit-alpha 的逐句拷贝，并共享了两处逻辑错误（A 档「差 ≤ 2 颗」与 B 档「差 2 颗」重叠；「差 2 颗一次提交即点亮」不成立），现已随 submit-alpha 一并更正。
 
 ## 证据字段（`--input-json` 候选与 rubric）
 

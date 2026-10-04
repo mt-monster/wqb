@@ -31,11 +31,11 @@
 ### 2.1 塔与点亮口径（三层，均经平台 / UI 实证）
 
 1. **塔 = 平台 alpha 的 `pyramids[].name`**，形如 `IND/D1/RISK`（区域 / 延迟 / 数据集类别，带 multiplier）。
-2. **点亮 = 该 catalog 下「近 90 天内提交」的 ACTIVE ≥ 3 颗**。窗口外的老 alpha 不计（实证：USA/FUNDAMENTAL 平台计 5 颗，其中 4 颗是 2025-09 ~ 2026-01 的老 alpha → UI 未亮）。
+2. **点亮 = 该 catalog 下「当前自然季度内提交」的 ACTIVE ≥ 3 颗**（权威 = 平台 `get_pyramid_alphas`：默认返回当前季度，每个自然季度首日计数清零；查上一季须显式传 `start_date` / `end_date`）。上一季及更早的老 alpha 不计（实证：USA/FUNDAMENTAL 平台计 5 颗，其中 4 颗是 2025-09 ~ 2026-01 的老 alpha → UI 未亮；2026-10-01 清零：GLB 的 10 颗 ACTIVE 全是 Q3 提交，Q4 一颗不算）。**旧版写的「近 90 天滚动」没有代码实现（全仓不存在 `WINDOW_DAYS`），已更正**；不要再按滚动窗口自己数。
 3. **跨 ≥ 3 个 catalog 的 alpha 不计点塔**（`pyramidThemes.effective`：1 塔→1、2 塔→2、**3 塔→0**）。挂 1–2 塔的每塔都算（含「搭车」副塔）。
 4. **0 亮区域的单颗提交 ≠ 点亮**：GLB / HKG / DEU / ASI / GBR 全域 0 亮时，提 1 颗只是「打地基」（该塔 0→1），要凑满 3 颗同类才亮。「0 亮区域 = 点塔主战场」指挖矿主战场，不是「提 1 颗就点亮」。
 
-权威入口：`python tools/campaign_intel.py pyramid --region <R> --delay <D>`（口径 `WINDOW_DAYS=90` / `EXCLUDE_MULTI=3` / `MIN_LIT=3`；平台 `status=ACTIVE` 全量 → 按 `pyramids` 逐个计数 → 剔跨 ≥ 3 catalog → 剔 90 天窗口外）。
+权威入口：`python tools/campaign_intel.py pyramid --region <R> --delay <D>`（读平台 `get_pyramid_alphas` 的当前季度计数，`n ≥ 3` 判亮并输出「差 N」；本地 `alphas` 表**不能**做塔级统计——`date_submitted` 仅约 2.7% 非空且滞后，塔归属 ≠ `datasets.category`）。上面第 3 条「跨 ≥ 3 个 catalog 不计」是平台侧的计数规则，工具不另行剔除，以平台返回值为准。
 
 ### 2.2 排序（多候选时）
 

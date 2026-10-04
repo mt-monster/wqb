@@ -1,14 +1,14 @@
 ---
 region: IND
-entry_verdict: active
-one_liner: "TOP500 长窗结构区：2Y Sharpe 强，scale(-rank(x)) 破墙语法实证，评审加 2Y 权重"
+entry_verdict: probe-only
+one_liner: "TOP500：可提交空间已于 2026-10-03 系统扫描穷尽（20 批 / ~170 表达式 / 14+ 族；8 颗 IS 全闸候选 prod 全部 0.7161–0.8261，被 1–3 颗钉子钉在 0.70 之上）——只许探针；历史有效面是长窗结构（2Y 强，评审加 2Y 权重）"
 static:
   universe: [TOP500]
   universe_default: TOP500
   delay: [1]
   delay_default: 1
-  neutralization_default: SUBINDUSTRY
-  notes: "长窗结构有效面，单看 IS Sharpe 会误杀"
+  neutralization_default: STATISTICAL
+  notes: "长窗结构有效面，单看 IS Sharpe 会误杀；中性化最优 STATISTICAL（TOP500+STATISTICAL 16 颗 avg prod 0.588 vs SUBINDUSTRY 0.679；行为族 SUBINDUSTRY 使 S 腰斩 2.36→1.28，WorkBuddy 记忆 2026-10-01 / 10-03；DEC-19 同向）"
 datasets:
   red: [anl39, qfl, pv106, option1, earnings3, earnings11, shortinterest5]
   red_reason: "均已判死并回写 dead_end（详见正文「证据附录」与 get_dead_ends(IND)）"
@@ -16,12 +16,12 @@ datasets:
   green: []
   green_note: "已点亮塔（analyst / model / risk / other / fundamental）不作主数据集，只作组腿辅助——2026-09-19 用户定案；旧版把 mdl177 / 慢变量基本面集列为 green，与该定案相反"
 priors:
-  signal_families_include: [long_window_structure, slow_fundamental, mdl177_family]
-  signal_families_exclude: [anl39_family, qfl_family]
+  signal_families_include: [long_window_structure]
+  signal_families_exclude: [anl39_family, qfl_family, model77_quality_valuation, mdl68_family, mdl313_family, wikipedia_attention, global_seasonal_event_flag, crowded_reversal_pv47]
   syntax_patterns:
     - "scale(-rank(x))  # 破墙语法实证：反向缩放排名结构"
   win_recipes:
-    - "intraday_pv_feats 日内价量相关反转 × trade_when 慢开关（税前利润预期修正 rank<0.5 / 机构持股比例 rank>0.5）：ZYbqREW1 / levk5JYN ACTIVE，prod 0.54–0.55"
+    - "intraday_pv_feats 日内价量相关反转 × trade_when 慢开关（税前利润预期修正 rank<0.5 / 机构持股比例 rank>0.5）：ZYbqREW1 / levk5JYN ACTIVE，prod 0.54–0.55（⚠ 这是 2026-09-19~23 的读数；同期旧候选 10-02 复测 prod 全部升到 0.83–0.99——陈旧 prod 一律作废，复用前先重测）"
     - "mdl177 长窗结构族（3 颗 ACTIVE，2Y Sharpe 强；model 塔已点亮——只作概念参考 / 辅助腿，不再作主数据集）"
 gate_overrides:
   cw_gate: WARN
@@ -29,20 +29,30 @@ gate_overrides:
 loop_policy:
   max_probes_per_wave: 1
   fast_kill: "缺省（决策表 D15：新数据集 8 探针无 |S|≥0.5 即判死）；本区无额外规则"
-  stop_conditions: ["白名单被 dead_end 全覆盖"]
+  stop_conditions: ["白名单被 dead_end 全覆盖", "已知 14+ 族全部 IS 死或撞 prod 钉子（2026-10-03 扫描穷尽）——升 active 须出现新的信息维度（不在 prod book 里）"]
 empirical_anchor:
   dead_ends_ref: "get_dead_ends(IND)"
-  last_verified: 2026-09-29
+  last_verified: 2026-10-03
 ---
 
 # IND — 长窗结构区
 
-## 定位与实证依据
+## ★ 2026-10-03 收官结论：可提交空间已系统扫描穷尽 → `probe-only`
+
+来源：WorkBuddy 记忆 2026-10-02 / 10-03（20 批 / ~170 表达式 / 14+ 族），报告 `output_report/ind_campaign_report_20261003.md`；机器层已写进 `tracking/IND/reference/region_kb.json`（`dead_end_rule` / `prod_saturation_risk` / `settings_sensitivity`），**勿再扩该族**。
+
+- **瓶颈不是 IS 强度而是 prod**：8 颗 `checks.fail=[]` 的候选（塔 IND/D1/MODEL 1.2×）prod 全部 0.7161–0.8261，最优也只差 0.016。这是**单颗钉子型**（prod 直方图 0.7+ 仅 1–3 颗、0.6–0.7 仅 6–16 颗，体量约 47 万）——改窗口 / 分轴 / decay / 门控 9 种构造全被钉住；分组轴完全免疫（exchange / country / currency prod 全 0.7501–0.7503，7 个轴 0.74–0.83）。
+- **唯一能过 IS 闸的族** = `behavioral_signals` streak / recency **秩化**形（方向 = 动量 / 外推，反向全负 S）：`group_rank(ts_mean(vec_avg(recency),5),industry)` decay1（prod 0.7161）/ `group_rank(vec_avg(streak),industry)` decay8（2Y 1.71）；事件门控可把 2Y 提到 2.44，但 prod 不降（0.7544）。
+- **IS 层就死的族**见 front-matter red（S 0.07–1.22）。**IS 强度与 prod 新颖度负相关**：拥挤族 S 2.2–4.5 / prod 0.78–0.99，未拥挤族 S 0.07–1.22——选集阶段就按「信息维度是否已在 prod book 里」排序，别等回测后才发现。
+- **设置是强度闸**（决策表 D5）：同表达式 decay8 下 `nanHandling=OFF` 或 `maxTrade=ON` 使 S 2.19→0.46；`group_rank` 是行为族成立的条件（换 `group_neutralize` / `group_zscore` 保幅度使 S 掉到 0.39–1.33）；`ts_corr` 共动构念与 `subtract(rank,rank)` 分歧在 IND 无信号；`truncation` 0.02 与 0.08、`decay=0` 与 `1` 指标逐位相同，别扫。跑批用 `tools/ind_sim_submit.py`（settings 全显式）；`tools/submit_batch.py` 固定 nanHandling / maxTrade，与 MCP 批不可比。
+- **升 active 的条件**：出现新的信息维度（不在 prod book 里的数据集 / 机制），且单仿真探针 IS 层 |S| ≥ 0.5；升档前先按决策表 D0-P「诊断前置」判 prod 直方图形态。
+
+## 定位与实证依据（2026-10-03 之前的历史画像）
 
 IND TOP500 的有效面在**长窗结构**：mdl177 族已产 3 颗 ACTIVE，共同特征是 IS Sharpe 中等但 **2Y Sharpe 显著强**——长窗信号衰减慢，样本外稳健。anl39 / qfl 判死。另有语法级实证：`scale(-rank(x))` 反向缩放结构在 IND 破墙成功（绕过自检相关性/方向约束），已入 priors。当前 1 颗 submit_ready。
 
 ## 硬规则：战役选集（2026-09-19 用户定案）
-**已点亮塔不开战役**：IND 当季已点亮 = analyst(5, 含 pwRJmvP3) / model / risk / other / fundamental → 这些类别的数据集不再作主数据集选波，只能作组腿辅助。
+**已点亮塔不开战役**：当季已点亮的类别不再作主数据集选波，只能作组腿辅助。**塔计数按自然季度清零**，哪些塔已亮一律现查 `python tools/campaign_intel.py pyramid --region IND`（2026-09-19 的快照是 analyst(5, 含 pwRJmvP3) / model / risk / other / fundamental；2026-10-01 起已清零重算，不要再按这份旧名单剔数据集）。
 可挖面 = pv（2/3，pv103 尾盘反转族被外部孪生堵死、pv106 判死）、option（option30 fitness 天花板、option1 判死）、earnings（earnings3/earnings11 判死）、news/sentiment（news79/nst/sentiment21/earnings11 判死，news85/84/54 未探）、insiders/institutions/shortinterest/macro/imbalance（判死或字段<5）。
 
 ## 流程变体（相对九步骨架）
@@ -58,7 +68,7 @@ GEM 的 priors 须携带 `syntax_patterns`（DB 快照 `priors_snapshot_<region>
 
 ### 步 6 注入：长窗设置优先
 
-窗口/decay 探索顺序：长窗（≥250d）优先于短窗；decay 大值（≥10）优先。短窗量价族在 IND 无实证支持，探针额度让给长窗。
+窗口/decay 探索顺序：长窗（≥250d）优先于短窗；短窗量价族在 IND 无实证支持，探针额度让给长窗。**「decay 大值（≥10）优先」只对长窗结构族成立**——行为族（behavioral_signals）是反例：decay 必须匹配信号速度（mean-5 水平形 decay=1 最优、decay=20 全灭；raw 窗口 1 必须 decay=8），见决策表 D5「decay 与信号速度」。
 
 ## 组腿配方（2026-09-19 实证 3 颗 ACTIVE：pwRJmvP3 / ZYbqREW1 / levk5JYN）
 

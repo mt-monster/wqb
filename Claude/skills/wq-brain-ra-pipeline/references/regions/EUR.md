@@ -1,7 +1,7 @@
 ---
 region: EUR
-entry_verdict: active
-one_liner: "win 机制已验证区：慢 MODEL 残差 × 快 PV 的跨周期结构（历史 0.4/0.6 加权写法已被闸 5 禁止，只许条件 / 分组 / 残差三式），SUBINDUSTRY + decay4，策略=换腿扩配"
+entry_verdict: probe-only
+one_liner: "2026-10-02 起 probe-only：EUR/D1 被项目自身实证判为结构性穷尽（库存 47/47 族 prod ≥ 0.70、7 个战役全 exhausted、23 条高 Sharpe 未测簇核实后可提交新增 = 0）；历史 win 机制 = 慢 MODEL 残差 × 快 PV（0.4/0.6 加权写法已被闸 5 禁止，只许条件 / 分组 / 残差三式），SUBINDUSTRY + decay4"
 static:
   universe: [TOP2500, TOPCS1600, TOP1200, TOP800, TOP400]
   universe_default: TOP2500
@@ -25,15 +25,26 @@ gate_overrides:
 loop_policy:
   max_probes_per_wave: 1
   fast_kill: "缺省（决策表 D15：新数据集 8 探针无 |S|≥0.5 即判死）；本区无额外规则"
-  stop_conditions: ["白名单被 dead_end 全覆盖"]
+  stop_conditions: ["白名单被 dead_end 全覆盖", "EUR/D1 结构性穷尽（2026-10-02）——升 active 须出现 returns ≥ 0.05 且 prod 直方图不是密墙的新信号源"]
 empirical_anchor:
   dead_ends_ref: "get_dead_ends(EUR)"
-  last_verified: 2026-08-25
+  last_verified: 2026-10-02
 ---
 
-# EUR — win 机制复用区
+# EUR — win 机制复用区（2026-10-02 起 probe-only）
 
-## 定位与实证依据
+## ★ 2026-10-02 现状：结构性穷尽 → `probe-only`
+
+来源：WorkBuddy 记忆 2026-10-02（用户要求转 EUR 后的调查；全部是项目内既有证据，不是新猜测）。
+
+- **未点亮塔路径数学上封闭**（09-09）：`Fitness_upper = Sharpe_max × sqrt(returns_max / 0.125)`，要同时过平台的 Fitness 线与 Sharpe 线（`config.PLATFORM_CHECK_LINES`）需 returns ≥ 0.05，而 EUR 数据集 returns 天花板普遍 < 0.03；唯一 returns 达标的 ohlcv 族（0.061）撞字段级 prod 墙 0.80–0.82（四种算子几何全撞）。
+- **库存 47/47 族 prod ≥ 0.70**（最低 0.7068），零竞争新轴三塔全灭，universe 换档否证（TOP2500 2.19 → TOP1200 0.33 → TOP400 0.50）；当前未提交候选 prod 全部 ≥ 0.7411，已 ACTIVE 的最低 0.5463。
+- 过闸率 4.9%（259 波 / 594 回测，29 条 ≥ 1.58，137 条 dead_end，7 个 campaign 全 exhausted）；185 个数据集只测过 47 个，但大量「未测」是被 S0 硬地板排除的假机会（cov < 0.6 / usableFields < 10 / alphaCount > 1500）。
+- 处女地 4 波新挖 max sharpe 0.22–0.93；10-02 仍有探针 `other460` best S 1.22 / 2Y 0.91，远低于 EUR 的 2Y 硬闸 1.6。
+- ⚠ 设置口径三处不一致，动手前先定：`tracking/EUR/config/settings.json` = TOPCS1600 / SUBINDUSTRY / decay4 / trunc0.08 / maxTrade ON / nanHandling ON；WAVE_LEDGER 记 TOP2500 / COUNTRY / decay6；wave261 的 settings_json 是 TOP2500 / SUBINDUSTRY / decay4。
+- **升 active 的条件**：出现 returns ≥ 0.05 且 prod 直方图不是密墙的新信号源（决策表 D0-P「诊断前置」）；否则只许探针。下面的「win 换腿」章节是历史画像，仅在升档后适用。
+
+## 定位与实证依据（2026-10-02 之前的历史画像）
 
 EUR 已有平台级验证的**机制**：慢 MODEL 残差（低相关底座）× 快 PV（弹性），中性化 SUBINDUSTRY，decay 4（registry win 层）。历史落地写法是 `0.40 × 慢 + 0.60 × 快` 的加权相加——**该写法自 2026-09-13 起被路线 A 与闸 5 禁止，不得照抄**；现只许改写成条件 / 分组 / 残差三式（见 optimization-v1 `structural-interaction-forms.md`）。价值在机制，不在具体字段，也不在比例。策略不是找新配方，而是**按该机制换腿扩配**：换慢腿字段、换快腿字段、换数据集组合。
 

@@ -8,8 +8,8 @@ allowed-tools:
   - Bash
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
-version: "3.2"
-last_verified: 2026-10-03
+version: "3.3"
+last_verified: 2026-10-04
 ---
 
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
@@ -45,7 +45,7 @@ last_verified: 2026-10-03
 | `$DELAY` / `$UNIVERSE` | `tracking/$REGION/config/settings.json` | 开新区先补 |
 | `$DS` | 步 2 白名单（ledger `s0_whitelist`） | 数据集 id |
 | `$W` | 步 4 选波产出的波号 | **字符串**（`97` 与 `s2_<ds>_d1` 都可） |
-| `$DTYPE` | catalog 的 `data_type` | VECTOR 比例先用 `get_datafields` 确认 |
+| `$DTYPE` | catalog 的 `data_type` | VECTOR 比例先用 `get_datafields` 确认；**混合集（`type_distribution` 同时含 VECTOR 与 MATRIX）不得直接吃汇总值**，须人工裁决为本波字段池主类型，字段类型以 typed catalog 为准（步 3 细则铁律 ③） |
 | `$TARGET_SEATS` | 用户 / 战役目标 | 独立座位数，缺省建议 ≈ 3 × 目标塔数 |
 
 **分工**：本 skill = when / what；[`wq-brain-campaign-matrix`](../wq-brain-campaign-matrix/SKILL.md) = where（用户没给 REGION / 数据集时先调，多区并列 → 回问用户）；[`wq-brain-campaign-toolkit`](../wq-brain-campaign-toolkit/SKILL.md) = how（战役目录内执行引擎）；单条表达式修复 → `wq-brain-alpha-optimization-v1`；SUPER 组套 → `wq-brain-superalpha`；提交 → `worldquant-submit-alpha`；PPA 主题核查 → `wq-brain-ppa-mining`（不作编排器）。
@@ -64,7 +64,7 @@ last_verified: 2026-10-03
 |---|---|---|
 | 步 1 选区选集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md) | 12 区过闸率排序 + MEA / IND / DEU 停投结论：profile 管「这个区怎么配」，03 管「这个区值不值得挖」 |
 | 步 3–4 设计信号 | [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md) | 组合形态铁律（含等权 `add(rank(A),rank(B))` 同属违规）、破闸合规旋钮 |
-| 步 7 诊断改进 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) | 已证伪路径清单，避免在死路上继续烧模拟次数 |
+| 步 7 诊断改进 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md)；卡闸 / 准备判「无解」前再读 [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md) §12（等价算子替换）、§13（同族 prod 墙先查分母）、§14（CW 破局） | 已证伪路径清单，避免在死路上继续烧模拟次数；判「天花板」前必须先扫等价算子替换（决策表 D15 前置） |
 | 步 8 提交判定 | [`01_platform_gates.md`](docs/experience/01_platform_gates.md) | 提交层四闸 + SUB 比值律 + 配额 / 相关性取数口径 |
 | 改链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) | skill 单点写入、DB 写锁、节点五处同步 |
 
@@ -91,7 +91,7 @@ last_verified: 2026-10-03
 - **前置**：已读区域 profile（`frozen` → 步 1 即拒，只留 profile 写明的后门）。
 - **调用**（顺序）：① 库存盘点 `tools/build_gate_prior_from_inventory.py` → `tools/select_ra_basket.py` ② 查表 `get_campaign_summary` / `get_dead_ends` / `get_dead_datasets` / `get_mining_yield` ③ **跨区死路**（`get_dead_ends` 不传 region、`get_cross_region_lessons`）④ PPA 主题（仅含 PPA 分支时）。
 - **产物**：universe / delay / 中性化 / 排除集 / 排除信号族 / 当前波号 → 落 `settings.json`，步 2 再写 ledger `s0_ranking` / `s0_whitelist`。
-- **完成定义**：给出分流结论——篮子条数 ≥ target **且**覆盖 ≥ 3 座未点亮塔 → **跳步 7 / 8**；否则进步 2，只补缺口塔。
+- **完成定义**：给出分流结论——篮子条数（只数 prod 已核的 `fresh_ok`：近 2 天内测过且 < 上限；陈旧的 prod 值作废，见细则 §1.2）≥ target **且**覆盖 ≥ 3 座未点亮塔 → **跳步 7 / 8**；否则进步 2，只补缺口塔。
 - **失败分支**：registry 全空 = 新区域 → 步 2，并在步 9 写 campaign；`get_dead_datasets` 已覆盖全部候选 → 停，转 matrix 选区；库存足够 → 跳步 7 / 8。
 - **不做**：不用 `LIKE` 直扫 sqlite 找跨区死路（`model1` 会误命中 `model109`）；region 作用域查询**不能**代替跨区检查；论坛**默认不查**（只在 [`forum-recon-triggers.md`](references/forum-recon-triggers.md) 列出的场合查）。
 - **细则**：[`step1-inventory.md`](references/step1-inventory.md)；情景卡 RA-01（库存够不够）；跨区横比另读 [`03_region_dataset.md`](docs/experience/03_region_dataset.md)。适用决策表：D4。
@@ -104,7 +104,7 @@ last_verified: 2026-10-03
 - **产物**：ledger `s0_ranking` / `s0_whitelist` / `s0_calibrate_<region>`。
 - **完成定义**：`s0_whitelist` 已写，且每个白名单数据集有 `field_inspect` 体检包（缺包 → 缺省 `warn` 告警放行；`--inspect-mode off` 才要 `inspect` waiver）。
 - **失败分支**：配额筛后仍无非 MODEL → 写 findings，**不要退回纯 MODEL**；全部被硬排除 → 回步 1 换区。
-- **不做**：**已点亮塔（当季 ACTIVE ≥ 3 的 category）不进白名单**（用户 2026-09-19 定案，`s0-select` 默认剔）；不用 `recommend_datasets` 代替体检；不整值覆盖 `s0_whitelist`。
+- **不做**：**已点亮塔（当前自然季度 ACTIVE ≥ 3 的 category；塔计数每季度首日清零，查上季须显式传 `start_date` / `end_date`）不进白名单**（用户 2026-09-19 定案，`s0-select` 默认剔）；不用 `recommend_datasets` 代替体检；不整值覆盖 `s0_whitelist`。
 - **细则**：[`step2-s0.md`](references/step2-s0.md)（含白名单硬约束 0–7 的「硬 / 准则」分栏与执行点）。适用决策表：D4 / D6 / D13。
 
 ### 步 3（S1）字段扫描 · 结构体检 · 字段语义归类
@@ -145,14 +145,14 @@ last_verified: 2026-10-03
 - **目的**：在同一信号族投入第二波之前，先知道它撞不撞 prod 墙（IND intraday_pv_feats 连投 3 波 24 条后才查 prod = 0.79–0.92，整族报废）。
 - **调用**：`python tools/campaign_intel.py prod-first --region $REGION --wave $W --write-ledger`（族内最强 1 条，平台实测，**串行**；`--top-k` 缺省 3）。闸 PF 是它的代码级固化（骨架级：已知死骨架 → 拦整波，新骨架 → WARN）。
 - **产物**：族级 `EXPAND` / `STOP`；`alphas.prod_correlation`；ledger `prod_first_<wave>`。
-- **处置**：**只有一张表——决策表 [D0-P](references/decision-table.md)**（< 0.60 扩变体；0.60–0.70 不扩变体、当天进步 8；0.70–0.75 只许 1 次结构性尝试；≥ 0.75 或尝试失败 → dead_end）；数值例见情景卡 RA-04。
+- **处置**：**只有一张表——决策表 [D0-P](references/decision-table.md)**（< 0.60 扩变体；0.60–0.70 不扩变体、当天进步 8；0.70–0.75 只许 1 次结构性尝试；≥ 0.75 或尝试失败 → dead_end；**判 dead_end / 做那 1 次尝试之前先做表里的「诊断前置」**：看直方图分单颗钉子 / 密墙 / 可破三型，同族同分母先换分母，再比设置档与分组轴）；数值例见情景卡 RA-04。
 - **不做**：**禁止用 `POST /submit` 探测 prod**（通过即提交，无撤回）；prod 一律 `check_correlation`（只读）。总纲见 [`prod-corr-avoidance.md`](references/prod-corr-avoidance.md)。
 
 ### 步 6（S3）并发回测
 
 - **目的**：把本波表达式跑成回测行。
 - **前置**：步 5 `all_pass=1`；并发参数以 `wqb.config.CONCURRENCY` 与 [`wqb-concurrency`](../wqb-concurrency/SKILL.md) §8 为准（不在本文复写数字）。
-- **调用**：`workflow_batch_track region=$REGION wave=$W dataset=$DS`（先过三道开波闸；异步返回 `task_id`，用 `workflow_task_status` 跟踪，**不要 shell 翻日志**）；手写 alpha_list 走 `brain-sim-alphas-in-batch-and-track`；调试用 toolkit `pipeline.py`。
+- **调用**：`workflow_batch_track region=$REGION wave=$W dataset=$DS`（先过三道开波闸；异步返回 `task_id`，用 `workflow_task_status` 跟踪，**不要 shell 翻日志**；但无显式终态的旧布局任务会把 stderr 里的正常日志误判 `failed`、进程被宿主回收时也给不出终态，此时以 `batch_status` + stdout 为准，见细则 §6.4）；手写 alpha_list 走 `brain-sim-alphas-in-batch-and-track`；调试用 toolkit `pipeline.py`。
 - **产物**：`backtest_results` / `wave_results` 暂定结论 / `salvage_pool`（收批入库即级联；`multisim_id` 写进每条回测行）。
 - **完成定义**：本波全部 multisim 到**终态**，且 `backtest_results` 行数 = 波内表达式数（含 ERROR / CANCELLED 的标记行）；整批 CANCELLED → 回步 5。
 - **失败分支**：故障表（全 ERROR / 连坐 CANCEL / 429 / 超时）见 [`step6-backtest.md`](references/step6-backtest.md) §6.4：**先归因再决定重发 / 跳过 / 拆批**；确定性 ERROR 重发只会烧配额。
@@ -172,7 +172,7 @@ last_verified: 2026-10-03
 - **调用**：`s4-prescreen`（全灭直接判死）→ `workflow_campaign(stage="S4", dataset=$DS, wave=$W)`（评审；解析不到 alpha_id 即 FAIL，用其列出的字符串波号重试）→ 逐候选链（selfcorr-quick → `check_self_correlation` → `compute_mutual_correlation` → `check_correlation` → `brain-alpha-robustness` → judge）。
 - **产物**：ledger `s4_walls_<region>_<wave>`、`salvage_pool`；每条候选有去向。
 - **完成定义**：本波每条候选都有去向——进步 8 / 留 near / salvage（带墙名）/ 判死（进步 9）。
-- **失败分支**：卡闸 → `get_salvage_pool(boost_dim=…)` 找辅助腿；Mode B 2–3 轮仍卡墙 → 找武器（`forum_recon` 触发表 #4，每波 ≤ 1 次）；同一想法 > 10 种结构仍不过 → 步 9 记 `dead_end`。
+- **失败分支**：卡闸 → `get_salvage_pool(boost_dim=…)` 找辅助腿；Mode B 2–3 轮仍卡墙 → 找武器（`forum_recon` 触发表 #4，每波 ≤ 1 次）；同一想法 > 10 种结构仍不过 → 步 9 记 `dead_end`；**判「无解 / 天花板」或记 `dead_end` 之前，IS 强但被某闸卡住的族必须先扫等价算子替换**（`signed_power`→`quantile`、`ts_scale`→`quantile` / `normalize` 等：换数值路径、一次动多个闸，几何调整一次只动一个；决策表 D15 前置、步 9 细则 §9.5 1b），prod 墙先做 D0-P 的诊断前置。
 - **不做**：**任何两条独立信号腿相加（加权 / 等权 / `add` / 中缀 `+`）一律违规**；辅助腿只能以**条件 / 分组 / 残差**三式入场；`risk_neutralized_sharpe ≤ 0` 且 raw ≥ 1.58 → 停止调参；**门禁通过 ≠ 合规**。IS→OS 衰减折算**不抬高 IS 阈值**。
 - **细则**：[`step7-diagnose.md`](references/step7-diagnose.md)（墙与池的判据、组合形态**唯一一份**允许清单、辅助腿入场三式、§7.6.1 提交层四闸与 SUB 比值律）；事故 [`incidents.md`](references/incidents.md) I-1。适用决策表：D0 / D0-P / D1 / D2 / D3 / D12 / D14。
 
@@ -180,7 +180,7 @@ last_verified: 2026-10-03
 
 - **目的**：决定哪些候选值得请用户确认提交。**本步不执行提交。**
 - **前置**：步 7 的候选已过稳健性（[`brain-alpha-robustness`](../brain-alpha-robustness/SKILL.md)，S4→S5 必经；结论写台账 `robustness_<alpha_id>`，`submit_verdict` 读取——`REJECT` → `BLOCKED`，无记录只提示）。
-- **调用**（有序检查清单，任一步说「不」就停）：① **资格门** `Failed RA == 0`（`compute_webdata_failed_counts`；名单内仍有 `PENDING` 时 `Failed=0` 只表示「暂无失败」，待其算完再判）② `submit_verdict`（**否决权威**，退出码 `1` BLOCKED / `10` UNVERIFIABLE / `11` ALREADY_SUBMITTED）③ prod 实测 `check_correlation(alpha_id, refresh=True)` < 0.7 ④ **用户明确确认** ⑤ 才可 `workflow_submit_alpha(confirm_submit=True)`（**不可逆**，单独调用；执行与四态响应处置见 [`worldquant-submit-alpha`](../worldquant-submit-alpha/SKILL.md)，SUPER 走 `wq-brain-superalpha`，PPA 走 web UI 交接）。
+- **调用**（有序检查清单，任一步说「不」就停）：① **资格门** `Failed RA == 0`（`compute_webdata_failed_counts`；名单内仍有 `PENDING` 时 `Failed=0` 只表示「暂无失败」，待其算完再判）② `submit_verdict`（**否决权威**，退出码 `1` BLOCKED / `10` UNVERIFIABLE / `11` ALREADY_SUBMITTED）③ prod 实测 `check_correlation(alpha_id, refresh=True)` < 0.7 ④ **用户明确确认** ⑤ 才可 `workflow_submit_alpha(confirm_submit=True)`（**不可逆**，单独调用；台账无 `robustness_<alpha_id>` 记录时须同时传 `robustness_audited=True`，缺省 False 即 fail-closed；执行与四态响应处置见 [`worldquant-submit-alpha`](../worldquant-submit-alpha/SKILL.md)，SUPER 走 `wq-brain-superalpha`，PPA 走 web UI 交接）。
 - **产物**：候选清单 + 每条的证据（资格门 / verdict 退出码 / prod 值）交用户。
 - **完成定义**：清单已交用户；**用户确认后**提交，`get_alpha_details` → `status == ACTIVE` 且 `dateSubmitted` 非空。
 - **失败分支**：PROD / SELF 不过 → 回步 7；配额耗尽（按 **ET 日历日**）→ 挂起提交，继续步 2 → 9。

@@ -50,6 +50,7 @@ mcp__wq-brain-http__workflow_chain  dry_run=true  chain=[
 | 库存盘点 / 合并选波 / 合并门禁 | `mcp__wqb-db__workflow_inventory_scan` / `workflow_gem_wave` / `workflow_unified_gate` | `wqb_db_mcp.py` |
 | 收批核对 / 自动评审 / 点塔回写 | `mcp__wqb-db__workflow_auto_harvest` / `workflow_auto_review` / `workflow_auto_pyramid` | `wqb_db_mcp.py` |
 | 提交判定 / 批量派发 / SA 探针 / 算子审计 / 批状态 | `mcp__wq-brain-http__submit_verdict` / `submit_batch` / `sa_probe` / `operator_audit` / `batch_status`（`submit_batch` 是**派发仿真**，不是提交 alpha） | `world-quant-brain-mcp/tools_ops.py` |
+| 精确设置直连派发（MCP 数组参数间歇损坏时的绕行；无对应 MCP，CLI） | `python tools/ind_sim_submit.py --path <exprs.txt> --decay N --neutralization X`——settings 全显式（含 `nanHandling` / `maxTrade` 强度闸），`--preflight-catalog` 可先预检字段名；对照 `tools/submit_batch.py` 固定 nanHandling=OFF / maxTrade=OFF，两者与 MCP 批**不可比**（见决策表 D5） | `tools/ind_sim_submit.py` / `tools/submit_batch.py` |
 | 表达式预检 | `mcp__wq-brain-http__preflight_expressions` | `tools_data.py` |
 | 回测收割 → 入库 | `mcp__wq-brain-http__harvest_multisim_alphas` → `mcp__wqb-db__harvest_multisim_results` | `tools_sim.py` / `wqb_db_mcp.py` |
 | 直写库 | `mcp__wqb-db__upsert_expressions` / `upsert_gate_result` / `upsert_backtest_rows` / `upsert_field_catalog` / `upsert_ledger_key` / `upsert_wave_result` / `upsert_registry_empirical`；批量改状态 `set_expression_status`（只传 id / 状态过滤，不回传正文） | `wqb_db_mcp.py` |

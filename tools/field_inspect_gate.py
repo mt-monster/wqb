@@ -24,7 +24,7 @@
 
 用法（CLI 自查）：
     python tools/field_inspect_gate.py --region USA --dataset model267 \
-        --expr "rank(ts_backfill(fnd6_x, 120))"
+        --expr "rank(ts_backfill(fnd6_x, 66))"
 """
 from __future__ import annotations
 

@@ -141,8 +141,16 @@ def run(
         if os.path.exists(basket_path):
             with open(basket_path, "r", encoding="utf-8") as f:
                 basket = json.load(f)
+            # select_ra_basket 写出的是**候选列表**；此前这里按 {"candidates": [...]} 取值，
+            # 对 list 抛 AttributeError → 整个节点在盘点跑完后报 "Inventory scan failed"（2026-10-03 修）。
+            # 仍兼容旧口径的 dict 形态。
+            candidates = (basket.get("candidates", []) if isinstance(basket, dict)
+                          else list(basket or []))
             result["basket"] = basket
-            result["candidate_count"] = len(basket.get("candidates", []))
+            result["candidate_count"] = len(candidates)
+            # 篮内「prod 已核」条数（近 N 天内测过且 < 上限）——步 1 的「库存足够」只数这类
+            result["prod_checked_count"] = sum(
+                1 for c in candidates if isinstance(c, dict) and c.get("prod_status") == "fresh_ok")
 
         result["success"] = True
         result["message"] = f"Inventory scan completed: {result.get('candidate_count', 0)} candidates found"

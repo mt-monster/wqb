@@ -633,11 +633,24 @@ def _load_json(path: Path):
     return json.loads(_read(path))
 
 
-@pytest.mark.needs_operators_verified
+def _verified_operators():
+    """算子真值。优先本机实测产物 `data/operators_verified.json`（被 .gitignore 排除，作者本机与干净克隆多半都没有）；
+    缺失时回落到**已跟踪**的 `docs/reference/operators_catalog.json`（`get_operators` 实测的 103 个，2026-09-07 抓取）。
+
+    此前这两条守卫打 `needs_operators_verified` 标记，文件缺失就整条 skip——作者本机也 skip，等于守卫不存在，
+    只能靠人手工比对（2026-10-04 改：回落到已跟踪的目录，让它在任何克隆上都真跑）。
+    """
+    f = REPO_ROOT / "data" / "operators_verified.json"
+    if f.exists():
+        return set(_load_json(f)["verified"])
+    cat = _load_json(REPO_ROOT / "docs" / "reference" / "operators_catalog.json")
+    return {o["name"] for o in cat["results"]}
+
+
 def test_operator_configs_consistent():
-    """known_ops 唯一真值 = operators_verified.verified；semantics 未验证项必须显式标注。"""
-    ov = _load_json(REPO_ROOT / "data" / "operators_verified.json")
-    verified = set(ov["verified"])
+    """known_ops 唯一真值 = 平台实测的算子清单（verified）；semantics 未验证项必须显式标注。"""
+    verified = _verified_operators()
+    assert len(verified) >= 100, f"算子真值异常偏少（{len(verified)}），不是 get_operators 的全量"
     pc = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "platform_constraints.json")
     sem = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "operator_semantics.json")
     assert set(pc["known_ops"]) == verified, (
@@ -678,15 +691,13 @@ def test_feature_impl_vendored_matches_canonical():
 _OP_CALL = re.compile(r"([a-z_][a-z_0-9]*)\s*\(")
 
 
-@pytest.mark.needs_operators_verified
 def test_template_families_only_use_verified_operators():
     """每个族的 skeleton / skeleton_variants 只能用 verified 算子。
 
     动机：论坛高赞模板帖常引用幽灵算子（ts_entropy / ts_decay_exp_window 等），
     直接抄进族里会让整批回测静默失败。本测试把「算子真值」焊死在族的定义上。
     """
-    ov = _load_json(REPO_ROOT / "data" / "operators_verified.json")
-    verified = set(ov["verified"])
+    verified = _verified_operators()
     pc = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "platform_constraints.json")
     banned = set(pc.get("ghost_ops") or []) | set(pc.get("inaccessible_ops") or [])
 
@@ -704,7 +715,7 @@ def test_template_families_only_use_verified_operators():
             offenders[fam.get("family_id")] = sorted(bad)
     assert not offenders, (
         f"模板族使用了非 verified 算子（幽灵/不可访问或未登记）：{offenders}——"
-        f"算子真值 = data/operators_verified.json 的 verified")
+        f"算子真值 = data/operators_verified.json 的 verified（该文件缺失时用 docs/reference/operators_catalog.json）")
 
 
 def test_first_order_transform_family_landed():

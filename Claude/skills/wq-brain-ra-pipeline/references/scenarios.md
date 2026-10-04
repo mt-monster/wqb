@@ -68,7 +68,7 @@
 
 - **产物与落点**：`alphas.prod_correlation`、ledger `prod_first_<wave>`、`prod_family_<region>_<骨架>`（闸 PF 下次读到）。
 - **完成定义**：本波每个信号族有 `EXPAND` / `STOP` 结论。
-- **反例**：**禁止用 `POST /submit` 探测 prod**——通过即提交，无撤回；prod 一律用 `check_correlation`（只读 `GET correlations/prod`）。踩线带里**不许**磨参数（decay / 中性化设置 / 窗口）、bucket / 门控 / 平滑（option8 IV 族 0.83–0.91 全参数空间实证无效）、镜像稀释或任何腿相加。区域 profile 不得另设「预警线」改写这张表。
+- **反例**：**禁止用 `POST /submit` 探测 prod**——通过即提交，无撤回；prod 一律用 `check_correlation`（只读 `GET correlations/prod`）。踩线带里**不许**无诊断的盲扫（decay / 中性化设置 / 窗口逐档扫）、bucket / 门控 / 平滑（option8 IV 族 0.83–0.91 全参数空间实证无效）、镜像稀释或任何腿相加；有诊断指向分母 / 设置档 / 分组轴时按 D0-P「诊断前置」做那 1 次尝试。区域 profile 不得另设「预警线」改写这张表。
 
 ---
 

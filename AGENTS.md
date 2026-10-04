@@ -12,8 +12,8 @@
 | `tools/` | 工具链（字段解析、质量检查、同步等） | 被多区域脚本引用，改动前先查调用点 |
 | `reports/` | 报告产物 | — |
 | `data/` `data_ref/` | 事件数据与参考字段 | 只读数据 |
-| `src/wqb/` | **规范核心包（single source of truth）**：config/expression/research/search/memory；区域/算子/中性化域常量唯一来源（见 `config.py`） | 行为变更须保持根 `tests/` 313 个单测全绿 |
-| `tests/` | pytest 单元测试（根 313 + MCP 包 79；根 `tests/` 递归包含 `tests/unit/`，见 §4） | 见 §4 |
+| `src/wqb/` | **规范核心包（single source of truth）**：config/expression/research/search/memory；区域/算子/中性化域常量唯一来源（见 `config.py`） | 行为变更须保持根 `tests/` 全绿（数量以 `pytest --collect-only -q \| tail -1` 为准，不在此硬编码） |
+| `tests/` | pytest 单元测试（根 `tests/` + MCP 包 `world-quant-brain-mcp/tests/`；数量以 collect-only 为准；根 `tests/` 递归包含 `tests/unit/`，见 §4） | 见 §4 |
 | `docs/` | 计划、参考、经验文档 | 行为变更需同步相关文档 |
 | `attic/` | 隔离归档（`tools_archive`/`mining_archive`/`root_scripts`/`experience_scripts`）+ `brain_api_backup/`（原码与拆解态备份） | 只读归档，勿回迁进活跃代码 |
 
@@ -42,7 +42,7 @@
   | 选区 / 选数据集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md)（含停投结论） |
   | 改工程链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) |
   | 复盘 / 准备放弃某方向 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) |
-  ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局，被 `gate.py`/`build_wave.py`/`pipeline.py`/`review_wave.py` 的 `RuleStore.query()` 强制注入）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/test_experience_kb_refs.py`。
+  ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局。**实际消费点**：`build_wave.py` 的 `apply_rules("dead_end")` 拦截 + 打印 strategy 提示；`pipeline.py` 的 L1 采集 / L4 证伪 + strategy 提示；`review_wave.py` → `recommend_next_wave` → 通用 `inject_rules`（声明了 `when` / `emit` 的规则条件化命中，其余 active 规则作常驻提示兜底）；`gate.py` **只**消费 `explore_contract` 契约规则，不消费 strategy / diagnosis 规则。旧文写「四处 `RuleStore.query()` 强制注入」不符合实际，2026-10-04 更正）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/test_experience_kb_refs.py`。
 - 凭据位于 `world-quant-brain-mcp/.env`：禁止读取、打印或提交到 git。
 
 ## 3.5 Skills 回测标准路径（2026-09-05 单源化）
@@ -100,7 +100,7 @@
   **一次跑完全部检查**：`python tools/audit_node_registration.py`（`--node X` 单节点自检；
   退出码 1 = 有漂移并列出全部缺口）。战例：`alpha_booster` 只做了 ①，②③ 漏同步 +
   NodeMeta 漏 `forum_refresh` → 3 个测试红；`gem` 的 meta 漏 `batch_size` 同被逮到。
-- **dry-run 契约**：全部 7 个节点统一「走完零成本前置 → 构建出命令/请求计划 → 到此为止」，
+- **dry-run 契约**：全部 workflow 节点（含后加的；清单以 `workflow_list_nodes` 与 INDEX 计数基准为准）统一「走完零成本前置 → 构建出命令/请求计划 → 到此为止」，
   不 subprocess、不写库、不建目录。干跑失败必须带得出 `error`（禁止 success=False + error=None）。
 - **argv 契约校验（2026-09-06）**：凡是拼子进程命令的节点，构建完必须过
   `_common.validate_argv(cmd)` —— 它静态解析目标脚本（含其本地 import 的辅助模块）的
@@ -240,7 +240,7 @@ python -m pytest tests/ -x
 7. **沉淀固化**：同一类漂移出现第二次，就写工具或写测试把它机械拦住，不要靠人记。
 
 - 结果自动写入 `logs/test-results.xml`（JUnit XML，可追溯）。
-- 当前根 `tests/` **1201 个测试全部通过**（2026-09-18 实测；`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建；仓库根**没有** `conftest.py`，由 `tests/conftest.py` 同时把 `src/` 与 `world-quant-brain-mcp/` 注入 `sys.path`，`tests/unit/` 继承之）。MCP 包 `world-quant-brain-mcp/tests/` 另含 **79 个测试**（需 `.venv`；其 `conftest.py` 只注入 MCP 目录，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `.venv` 跑。
+- 根 `tests/` 全量应全绿（历史数字：2026-09-18 实测 1201 个，2026-09-30 为 2709 个；**今天的数量一律以 `pytest --collect-only -q | tail -1` 为准，此处不再维护**；`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建；仓库根 `conftest.py` **只负责环境耦合测试的 skip 标记**（`needs_operators_verified` 等：依赖被 gitignore 的本机产物，缺失时跳过并写明原因，不是失败）；`sys.path` 由 `tests/conftest.py` 同时把 `src/` 与 `world-quant-brain-mcp/` 注入，`tests/unit/` 继承之）。MCP 包 `world-quant-brain-mcp/tests/` 另有一批测试（需 `.venv`；其 `conftest.py` 只注入 MCP 目录，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `.venv` 跑。
 - **计数口径：根 `tests/` 递归包含 `tests/unit/`，勿把两者相加。** `tests/` 直接子层只有 `test_toolified_cli.py` + `conftest.py`，其余在 `tests/unit/`。故 `pytest tests/` 与 `pytest tests/unit tests` 收集数相同。**新增用例时以 `pytest --collect-only -q | tail -1` 为准，不在此处硬编码逐文件明细**（此处的总数随用例增删会漂，只作量级参考）。
 - 依赖声明于根 `requirements.txt` 与 `world-quant-brain-mcp/requirements.txt`，新增依赖需同步相应文件。
 

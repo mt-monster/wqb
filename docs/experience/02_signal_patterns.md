@@ -51,7 +51,7 @@
 
 ### 破 `CONCENTRATED_WEIGHT`
 
-**唯一有效解法 = 降 truncation**（0.08 → 0.04/0.02）+ 平滑（`ts_mean` / `ts_decay_linear`）。
+**更正（2026-10-04）**：旧版写「唯一有效解法 = 降 truncation（0.08 → 0.04/0.02）+ 平滑」，与本文 §14 相反——CW 是数据品质问题，truncation / decay / 中性化修不了；降换手 53% 对 CW 零效果，补时间维覆盖率才过闸；且 truncation 在 IND / GLB 实测零杠杆（0.02 与 0.08 指标逐位相同、0.08→0.15 零影响）。排查顺序见 §14：覆盖率 → 数据类型 → 窗口 → `ts_backfill` 最小窗口 → 换思路；平滑要作用在**补过覆盖的原始字段**上，只对最终信号套 `ts_decay_linear` 不修 CW。
 ⚠ 但 GBR starmine 族实测连外层全市场 `rank()` 均匀化都 403 → **结构性拒绝时只有 `trade_when` 门控能过**。
 
 ### 破 turnover 墙

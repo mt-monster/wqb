@@ -107,6 +107,34 @@ def classify(desc: str, name: str):
     return "other", "未归类"
 
 
+#: ★ 时间朝向提示（2026-10-04 新增；**仅提示，不拦截、不改 signal / blocked 判定**）。
+#: 同一数据集里「已实现（事后）」与「预测（前瞻）」是两个完全不同的信号源：GLB/analyst_consensus 前 16 条
+#: 全灭，真因是选了 `actual_*`（已实现，事后、无预测力），换成 `mean_estimate_*`（预测）后同结构大幅提升
+#: （WorkBuddy 记忆 2026-10-03）。此前被误诊成「窗口不匹配」，白白多烧了一轮。
+#: 口径：名字**词元锚定**（`(?:^|_)tok(?:$|_)`，禁裸子串——`best_*` 含 est、`forecasting_*` 含 forecast 都不算）；
+#: 名字没命中才看描述**开头**（以 Actual / Reported 起头 = 已实现；以 Mean / Median / Consensus / Forecast /
+#: Estimated … 起头 = 预测），不扫整段描述，避免「actual vs estimate」之类的对比句误判。
+#: 两类都命中（如 surprise = actual − estimate）记 mixed：那是合法构造，不归任何一边。
+_REALIZED_NAME_RE = re.compile(r"(?:^|_)(?:actual|actuals|reported|realized|realised)(?:$|_)")
+_FORECAST_NAME_RE = re.compile(
+    r"(?:^|_)(?:estimate|estimates|est|forecast|forecasts|consensus|guidance|predicted|projected)(?:$|_)")
+_REALIZED_DESC_RE = re.compile(r"^\s*(?:the\s+)?(?:actual|reported|realized|realised)\b")
+_FORECAST_DESC_RE = re.compile(
+    r"^\s*(?:the\s+)?(?:mean|median|consensus|forecasts?|estimated?|predicted|projected|expected)\b")
+
+
+def time_orientation(name: str, desc: str = ""):
+    """字段 → 'realized'（已实现/事后）/ 'forecast'（预测/前瞻）/ 'mixed' / None（无法判断）。"""
+    n = (name or "").lower()
+    r, f = bool(_REALIZED_NAME_RE.search(n)), bool(_FORECAST_NAME_RE.search(n))
+    if not (r or f):
+        d = (desc or "").lower()
+        r, f = bool(_REALIZED_DESC_RE.search(d)), bool(_FORECAST_DESC_RE.search(d))
+    if r and f:
+        return "mixed"
+    return "realized" if r else ("forecast" if f else None)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--region", required=True)
@@ -140,6 +168,7 @@ def main():
         if cat is None:
             blocked.append(item)
         else:
+            item["orientation"] = time_orientation(name, desc)
             signal.append(item)
             by_cat[cat].append(item)
 
@@ -155,6 +184,18 @@ def main():
         sub = [i for i in blocked if i["label"] == why]
         print(f"  {why:<28} {len(sub):>3}  例: {', '.join(i['field'] for i in sub[:3])}")
 
+    # ---- 时间朝向提示（仅提示，不拦截；见 time_orientation 注释）----
+    ori = {"realized": [], "forecast": [], "mixed": [], "unlabeled": []}
+    for i in signal:
+        ori[i.get("orientation") or "unlabeled"].append(i["field"])
+    print(f"\n-- 时间朝向提示（仅提示，不拦截）--")
+    print(f"  realized(已实现/事后) {len(ori['realized'])} | forecast(预测/前瞻) {len(ori['forecast'])} | "
+          f"mixed {len(ori['mixed'])} | 未标注 {len(ori['unlabeled'])}")
+    if ori["realized"] and ori["forecast"]:
+        print("  ⚠ 同一数据集同时有已实现与预测两类字段：它们是两个完全不同的信号源，别默认从 actual_* 起手——")
+        print("    GLB analyst_consensus 前 16 条全灭的真因就是选了 actual_*（事后、无预测力），"
+              "改 mean_estimate_* 后同结构大幅提升。先各出 1 批探针比较。")
+
     out = {
         "region": args.region, "dataset": args.dataset, "total_fields": n,
         "signal_field_count": len(signal),
@@ -164,6 +205,9 @@ def main():
         "by_category": {k: [i["field"] for i in v] for k, v in by_cat.items()},
         "category_stats": {k: {"n": len(v), "cold_users_le_9": sum(1 for i in v if i["users"] <= 9)}
                            for k, v in by_cat.items()},
+        # 时间朝向提示（仅计数 + 各 15 个样例；不改 signal / blocked 判定）
+        "orientation_stats": {k: len(v) for k, v in ori.items()},
+        "orientation_samples": {k: v[:15] for k, v in ori.items() if k != "unlabeled" and v},
         "note": "产出是字段池（field pool），不是 ideas —— 禁止当 ideas.md 注入 GEM（SOP 2026-09-17 P3-11）",
     }
     p = args.out or f"cache/{args.region.lower()}_{args.dataset}_semantic.json"

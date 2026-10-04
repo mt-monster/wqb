@@ -72,7 +72,7 @@
   "_note": "平台提交期硬闸。EUR OS 池当前为空（0 已提交），self-corr 无约束；prod_corr 是主要风险（反转族 0.95 墙）。"
  },
  "dataset_health": {
-  "_doc": "S0 数据集预筛（从 GBR 复制）。mode=general：alphaCount 仅 score 软罚 + crowd_veto/crowd_band 可选硬规则。硬地板：coverage_hard_min/field_count_hard_min。alpha_count_max=1000：>1000 才一票否决。",
+  "_doc": "S0 数据集预筛（框架从 GBR 复制，数值已按 EUR 改：coverage_hard_min=0.6 / field_count_hard_min=10 / alpha_count_max=1500，以本节实际取值为准）。mode=general：alphaCount 仅 score 软罚 + crowd_veto/crowd_band 可选硬规则。硬地板：coverage_hard_min/field_count_hard_min。alpha_count_max=1500：>1500 才一票否决（旧文写 1000 与取值不符，2026-10-04 更正）。",
   "mode": "general",
   "tier_method": "quantile",
   "tier1_score_pct": 0.6,

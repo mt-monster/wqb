@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-03
+last_verified: 2026-10-04
 name: brain-how-to-pass-alpha-test
 description: "只读地回答 WorldQuant BRAIN alpha 提交测试的问题：每个检查（18 个 RA 检查 + SELF / PROD 相关性）的线、为什么没过、往哪个方向改，并给出失败后的建议路径（不执行）。当用户询问 alpha 提交失败原因、如何提升 alpha 指标或测试要求时使用（submission tests / thresholds / improvement tips / 提交测试 / 通过测试）。"
 layer: L4
@@ -57,7 +57,7 @@ allowed-tools:
 | `CONCENTRATED_WEIGHT` | 时间平滑；低频字段先 `ts_backfill`；**中性化与参数层无效** | §4 |
 | `LOW_SUB_UNIVERSE_SHARPE` | **比值闸，抬 S 无效**（门槛随 S 同比例抬高）→ 动结构：去市值乘数 / 分档 decay / 换分组轴（逐区实测）/ 长窗 | §5 |
 | `SELF_CORRELATION` | 换概念 / 换数据源，不是换窗口 | §6a |
-| `PROD_CORRELATION` | 只按 RA 决策表 **D0-P** 一张表处置，**不磨参数** | §6b |
+| `PROD_CORRELATION` | 只按 RA 决策表 **D0-P** 一张表处置（先做表里的「诊断前置」：单颗钉子 / 密墙 / 可破三型；同族同分母先换分母），**不盲扫参数** | §6b |
 
 ## 1. Fitness（`LOW_FITNESS`）
 
@@ -93,7 +93,7 @@ allowed-tools:
 
 **要求**：任一股票权重上限 < 10%。
 
-**要点（一行读完）**：**中性化对本闸无效**；**有效手段是时间平滑**（`ts_mean` / `ts_decay_linear`，窗口取 5 或 22；原实验用 10，需复验）；低频字段先 `ts_backfill`；事件 / 计数类信号构造时默认加时间平滑，不要直接 rank 瞬时值。
+**要点（一行读完）**：**中性化对本闸无效**；**有效手段是时间平滑**（`ts_mean` / `ts_decay_linear`，窗口取 5 或 22；原实验用 10，需复验）；低频字段先 `ts_backfill`；事件 / 计数类信号构造时默认加时间平滑，不要直接 rank 瞬时值。⚠ **平滑要作用在补过覆盖的原始字段上**（`ts_backfill` → 平滑 → 再构造信号）：只对**最终信号**套 `ts_decay_linear` 不修 CW——KOR shortinterest38 换手 0.298→0.14（−53%）、S 2.00→2.15，CW 仍 FAIL（CW 由组内分布集中度决定，不由换手决定；GBR starmine 族连外层 `rank()` 均匀化都 403，唯一过的同族结构是 `trade_when` 门控；方法论全文见 `docs/experience/02_signal_patterns.md` §14）。
 
 - **本闸无法预检**：无 value / limit，IS 阶段只显示 `WARNING` / `PASS`。`WARNING` 计入 Failed RA（口径见 §0 的链接）→ Failed RA ≠ 0 就不该提交。实测 4 例里 2 例（IS 阶段 `WARNING` 者）提交后 FAIL；2 例（`PASS` 者）成功。
 - **根因在表达式结构，不在参数**：瞬时离散计数 / 事件类信号 → 权重集中；同一信号加时间平滑 → PASS。合规式样：`rank(ts_mean(subtract(U30, D30), 10))`（单信号平滑，已 ACTIVE）。

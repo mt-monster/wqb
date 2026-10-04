@@ -150,6 +150,7 @@ def workflow_submit_alpha(
     descriptions: Optional[str] = None,
     force: bool = False,
     confirm_submit: bool = False,
+    robustness_audited: bool = False,
     verify_timeout: int = 240,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
@@ -167,6 +168,11 @@ def workflow_submit_alpha(
         descriptions: 描述文本（三段式）
         force: 是否跳过本地预检
         confirm_submit: 是否真正 POST submit（默认 False，仅预检+查状态，不提交）
+        robustness_audited: 声明本候选已过 brain-alpha-robustness 审计（默认 False，fail-closed）。
+            `confirm_submit=True` 时台账 `robustness_<alpha_id>` 无记录就**必须**显式声明才放行；台账已有记录则
+            此声明降为辅助（REJECT 由节点直接拦下）。2026-10-04 起本签名暴露它——此前只能绕道
+            `workflow_execute(node="submit_alpha", params=...)`。**不暴露 `allow_prod_above_07`**：
+            prod 红线豁免须用户明确指令、显式走 `workflow_execute` 留痕，不放进快捷入口
         verify_timeout: 状态确认超时（秒）
         dry_run: 是否干跑
 
@@ -182,6 +188,7 @@ def workflow_submit_alpha(
         "descriptions": descriptions,
         "force": force,
         "confirm_submit": confirm_submit,
+        "robustness_audited": robustness_audited,
         "verify_timeout": verify_timeout,
     }, dry_run=dry_run)
     return result.to_dict()
