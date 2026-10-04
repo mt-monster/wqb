@@ -15,7 +15,12 @@ import argparse
 import shutil
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+# 2026-10-04 下沉到 tools/data-repair/ 后层数 +1：
+#   原 Path(__file__).resolve().parent.parent（tools/xxx.py -> 仓库根）
+#   改为 Path(__file__).resolve().parents[2]：
+#     [0]=data-repair  [1]=tools  [2]=仓库根
+# 已用 --dry-run 实跑验证（输出目标须为 <repo>/attic/... 而非 <repo>/tools/attic/...）。
+ROOT = Path(__file__).resolve().parents[2]
 ATTIC = ROOT / "attic" / "json_archive"
 
 
