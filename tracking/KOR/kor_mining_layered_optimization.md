@@ -1,6 +1,6 @@
 # KOR 因子挖掘流水线：逐层深度分析与优化点（tracking/KOR 实录）
 
-> 本文在 `KOR因子挖掘完整流程与经验总结.md` 基础上，**对每一层（Stage ①–⑨）做代码级展开**，定位瓶颈、脆弱点与重复劳动，并给出可落地的优化方案。
+> 本文在 `kor_mining_full_workflow_and_lessons.md` 基础上，**对每一层（Stage ①–⑨）做代码级展开**，定位瓶颈、脆弱点与重复劳动，并给出可落地的优化方案。
 > 依据：通读 `tracking/KOR/scripts/` 全部 23 个脚本 + `kor_d1_campaign_state.json`（168 键）+ `reference/*_whitelist.json`（21 个）+ `reviews/*` + `candidates/*`（120+ wave 文件）。
 > 方法：先复刻每层的真实实现（含文件路径与行级机制），再诊断，最后给方案。结论区分「事实」与「建议」。
 
