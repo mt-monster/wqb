@@ -112,6 +112,32 @@
 > 实际是审查结论的可重跑依据。`tools/audit_structure.py` 的 S5 检查已把这 9 个
 > 目录前缀登记为豁免，避免每天误报。
 
+## 2026-10-05 孤儿 CLI 盘点追加归档（2 个）
+
+盘点口径与判据 P 一致，但**先用 `git grep -w` + `git log --diff-filter=A` 双向核实**——
+上轮曾因工作树异常（287 个受控文件意外缺失）把「文件不在磁盘」误当成「脚本已下线」，
+写出一份错误的失效告示。教训：文件是否存在于磁盘，不能推出能力是否下线。
+
+| 文件 | 类型 | 归档理由 |
+|---|---|---|
+| `backfill_expression_status_once.py` | D9 存量回写 | refs=0；docstring 自述「一次性动作，2026-09-28 用户批准」，动作已完成 |
+| `sync_reference.py` | reference 目录同步 | refs=0；其权威源 `2_reference/` **git 全历史从未入库**，目标 `docs/reference/` 已存在 26 文件、`.workbuddy/reference/` 根本不存在——脚本无源可同步，功能完全落空 |
+
+另2 个**未受版本控制**的一次性脚本（`_backfill_reference_once.py`、
+`_reference_json_audit.py`）不进本目录（本目录要求 refs=0 且在版本库内），
+移入 `attic/orphan_tools_20261005/`，磁盘留存、不入库。
+
+### 本轮**未**归档的 27 个（同批盘点发现，refs=0 但**不得**归档）
+
+它们 `git grep` 引用为零，但**全部有 `__main__` 入口**——按上文「关键教训」，
+refs=0 对 CLI 不构成死代码判据。已全部补登记进 `tools/README.md`
+「存量 CLI 补登记」节（含用途与调用形态）。其中 legacy README 早就点名的
+`field_axis.py` / `combo_precheck.py` / `pipeline_integration.py` 正是这一类。
+
+盘点中还修了 `five_slot_executor.py` 的真bug：候选池路径写成 `../tracking/...`，
+只在 `CWD=tools/` 时成立，从仓库根跑（本项目标准调用方式）必然 not found；
+已改为锚定 `Path(__file__).resolve().parent.parent`。
+
 ## 恢复方式
 
 ```bash

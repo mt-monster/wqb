@@ -141,7 +141,6 @@
         "backfill_alphas_from_ckpt.py",
         "backfill_check_columns.py",
         "backfill_expression_dataset.py",
-        "backfill_expression_status_once.py",
         "backfill_longcount.py",
         "backfill_prod_corr.py",
         "fix_db_residuals.py",
@@ -152,8 +151,7 @@
         "migrate_wave_verdict_enum.py",
         "normalize_wave_ids.py",
         "populate_external_fields.py",
-        "seed_region_priors.py",
-        "sync_reference.py"
+        "seed_region_priors.py"
       ],
       "status": "moved-partial"
     },
@@ -308,34 +306,36 @@
     }
   },
   "relocate_out_of_tools": {
-    "_kor_s6_writeback.py": "tracking/KOR/scripts",
-    "kor_ledger_write.py": "tracking/KOR/scripts",
-    "kor_opportunity_scan.py": "tracking/KOR/scripts",
-    "kor_spre_read.py": "tracking/KOR/scripts"
+    "kor_ledger_write.py": "tracking/KOR/scripts (DONE 2026-10-05)",
+    "kor_opportunity_scan.py": "tracking/KOR/scripts (HELD 2026-10-05: 测试 test_opportunity_scan_xregion.py 硬编码 tools/ 路径，迁移需同步改测试；refs=2 非零)",
+    "kor_spre_read.py": "tracking/KOR/scripts (DONE 2026-10-05)",
+    "_kor_s6_writeback.py": "tracking/KOR/scripts (DONE 2026-10-05)"
   },
-  "_unassigned": [],
+  "_unassigned": [
+    "kor_opportunity_scan.py"
+  ],
   "counts": {
-    "backtest": 11,
+    "backtest": 10,
     "catalog": 5,
     "code-audit": 17,
-    "data-repair": 20,
+    "data-repair": 17,
     "datasets": 5,
     "db": 3,
     "fields": 16,
     "forum": 3,
     "gates": 15,
-    "ledger": 6,
+    "ledger": 5,
     "pool-hygiene": 4,
-    "probe": 6,
+    "probe": 9,
     "reporting": 4,
-    "research": 16,
-    "rotation": 6,
+    "research": 17,
+    "rotation": 7,
     "skills": 3,
     "super": 2,
     "verdict": 20,
     "wave": 6
   },
-  "unassigned_n": 0,
+  "unassigned_n": 1,
   "top_n": 171,
   "_moved_20261004": {
     "note": "首轮下沉（2026-10-04）：仅迁移「零 import 依赖 + 零文档按路径引用 + 内部无 sys.path.insert/parents[N]/dirname(dirname())」的脚本。其余顶层脚本的阻塞点见 _blocked_by_import。",

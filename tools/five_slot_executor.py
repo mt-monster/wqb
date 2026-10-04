@@ -122,7 +122,10 @@ async def main():
     executor = FiveSlotExecutor(max_slots=5, batch_size=8)
     
     # 加载候选池
-    candidates_file = Path('../tracking/KOR/candidates/wave108_exprs.json')
+    # 路径必须锚定仓库根，不能写 '../tracking/...'：那样只在 CWD=tools/ 时成立，
+    # 从仓库根跑（本项目所有 tools 的标准调用方式）必然 not found。
+    # 违反 AGENTS.md §8.13「仓库根推导一律层数无关」。
+    candidates_file = Path(__file__).resolve().parent.parent / "tracking" / "KOR" / "candidates" / "wave108_exprs.json"
     if not candidates_file.exists():
         print(f"Candidates file not found: {candidates_file}")
         return

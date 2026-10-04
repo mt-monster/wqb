@@ -204,6 +204,44 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 - 战例权威实现：`~/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts/`（`WQ_TOOLKIT_DIR`）
 - 平台 API 封装：`world-quant-brain-mcp/brain_api.py`（`BrainApiClient`，自带 429 退避/Redis 缓存）
 
+
+## 存量CLI 补登记（2026-10-05）
+
+本节收录**顶层有 `__main__`（真命令行入口）但既不在上文各功能节、也无其他文档提及**的脚本。
+它们不是死代码：`git grep` 显示零引用只说明「没人从代码里 import 它」，
+命令行工具本就靠人敲。按 AGENTS.md §8.5 判据（有 CLI 入口 → 未登记的 CLI → 文档缺口，不能删），
+此处补登记。**引用为零不代表该删**——要判断是否还有用，看模块 docstring 与 `--help`。
+
+| 工具 | 用途（模块 docstring 首句） | 调用形态 |
+|---|---|---|
+| `atom_labeler.py` | WorldQuant BRAIN "atom / combined" 信号分类器（CLI + 批量回写）。 | 需参数 |
+| `audit_dead_code.py` | 高置信度死代码侦察（只读，不删任何东西）。 | 无参直跑 |
+| `audit_file_sizes.py` | 全量扫描项目内 Python 文件：行数 / 函数类规模 / 圈复杂度 / 职责数量。 | 无参直跑 |
+| `combo_precheck.py` | 组合预检串联工作流（P1-C + P1-D，2026-08-31）。 | 需参数 |
+| `db_maintenance.py` | wqb.db 维护工具（2026-09-20 L4）。 | 需参数 |
+| `demo_layered_mining.py` | 层层推进挖掘策略演示 | 无参直跑 |
+| `field_axis.py` | 字段信息轴自动识别（P0-B，2026-08-31）。 | 需参数 |
+| `field_quality_scorer_v2.py` | 8 维字段质量评分器. | 需参数 |
+| `field_signal_mine.py` | L0 零回测选基：从 backtest_results 的表达式文本挖【字段级】与【字段对】历史信号先验。 | 需参数 |
+| `five_slot_executor.py` | 五槽并发执行器 (Five-Slot Executor) | 无参直跑 |
+| `fix_db_residuals.py` | 数据修复脚本：同步 expressions 指标 + 清理残留 + 删旧表 + 补 campaign_state。 | 需参数 |
+| `fix_wave_backfill.py` | 波级低覆盖字段 ts_backfill 修复器（幂等）。 | 需参数 |
+| `fix_wave_vectors.py` | 波级 VECTOR 字段 vec_* 包裹修复器（幂等）。 | 需参数 |
+| `gem_validator.py` | GEM 候选池强制校验。 | 需参数 |
+| `kor_ledger_write.py` | KOR 台账写入（wqb-db MCP 未连接时的降级写库）。 | 无参直跑 |
+| `operator_diversity_analyzer.py` | 算子多样性分析器. | 需参数 |
+| `pipeline_integration.py` | （无模块 docstring） | 需参数 |
+| `populate_external_fields.py` | 灌 external_fields 表。 | 需参数 |
+| `pre_backtest_filter.py` | 回测前快筛闭环（self/PPAC + 关键闸）。 | 需参数 |
+| `role_cluster.py` | 职责聚类 + 跨文件重复逻辑检测（只读）。 | 无参直跑 |
+| `s0_enhanced_screening.py` | S0 数据集体检增强预筛（WebDataScope 零成本预筛）。 | 需参数 |
+| `seed_region_priors.py` | 区域 priors 自动装配器（evidence-driven，不手写、不编造）。 | 需参数 |
+| `skeleton_origin_report.py` | 骨架来源过闸率报告：forum（论坛来源） vs native（原生）对比。 | 需参数 |
+| `step_event_log.py` | 步级评估 T2 事件台账 CLI（2026-09-30 方案 B）。 | 需参数 |
+| `success_formula_engine.py` | 成功配方推广引擎。 | 需参数 |
+| `three_dataset_probe.py` | 3 数据集组合边界探索计划生成（P2-3，2026-08-31）。 | 需参数 |
+| `validate_fields_batch.py` | 批量字段可用性验证器（区域无关）。 | 需参数 |
+
 ## 全量 CLI 索引（机器生成，2026-10-05）
 
 本节由 `tools/` 顶层**有 `__main__`（真命令行入口）但正文各节未提及**的脚本汇总而成，
