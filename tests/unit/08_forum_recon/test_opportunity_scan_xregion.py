@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""`tools/kor_opportunity_scan.py` 跨区/大小写死路检查回归测试（2026-09-28）。
+"""`tracking/KOR/scripts/kor_opportunity_scan.py` 跨区/大小写死路检查回归测试（2026-09-28）。
 
 背景（两个真实误判，各白烧一轮回测）：
   1. **region-scoped 死路检查**：S-PRE 只查 `region='KOR'` 的 dead_end，漏掉
@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
-TOOL = REPO / "tools" / "kor_opportunity_scan.py"
+TOOL = REPO / "tracking" / "KOR" / "scripts" / "kor_opportunity_scan.py"
 DB = REPO / "data" / "wqb.db"
 PY = sys.executable
 
@@ -37,7 +37,7 @@ def _run_scan(tmp_path):
     return json.loads(out.read_text(encoding="utf-8"))
 
 
-# 构造级死路标记（与 tools/kor_opportunity_scan.py 同步）
+# 构造级死路标记（与 tracking/KOR/scripts/kor_opportunity_scan.py 同步）
 CONSTRUCTION_SCOPED_MARKERS = ("skeleton", "bare", "骨架", "构造",
                                "multi-field combos", "with multi-field",
                                "event-gating", "event-")

@@ -12,7 +12,7 @@
   ③ **跨区**死路检查（不限 region，大小写不敏感，同时查 entry_id 与 payload）
   ④ 字段数 ≥5（dataset_health.field_count_hard_min）
 
-用法: python tools/kor_opportunity_scan.py [--region KOR] [--min-fields 5] [--json out.json]
+用法: python tracking/KOR/scripts/kor_opportunity_scan.py [--region KOR] [--min-fields 5] [--json out.json]
 """
 from __future__ import annotations
 
@@ -29,7 +29,14 @@ import re
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[1]
+# 仓库根向上探测（pyproject.toml + src/wqb 双标记），**不用 parents[N] 硬编码层数**——
+# 本脚本会随战役产物迁到 tracking/KOR/scripts/，层数一变 parents[1] 就静默指错目录
+# （AGENTS.md §8.13「仓库根推导一律层数无关」）。与自身深度解耦。
+REPO = Path(__file__).resolve()
+while not ((REPO / "pyproject.toml").exists() and (REPO / "src" / "wqb").is_dir()):
+    if REPO.parent == REPO:
+        raise RuntimeError(f"未找到仓库根（自 {__file__} 向上探测 pyproject.toml + src/wqb 均失败）")
+    REPO = REPO.parent
 sys.path.insert(0, str(REPO / "src"))
 from wqb.db_conn import connect as db_connect  # noqa: E402
 
@@ -139,8 +146,10 @@ def main():
     print("--- ★ 真实可打集合（未点亮 ∧ 非红榜 ∧ 无跨区死路 ∧ 字段足）---")
     print(f"{'dataset':<30} {'category':<13} {'fields':>6} {'cov':>7} {'platAlphas':>10}")
     for r in sorted(keep, key=lambda x: (-(x["platform_alphas"] or 0))):
-        print(f"{r['dataset']:<30} {r['category']:<13} {r['fields']:>6} "
-              f"{str(r['coverage']):>7} {str(r['platform_alphas']):>10}")
+        cat = r.get("category") or "-"
+        n = r.get("fields") or 0
+        print(f"{r['dataset']:<30} {cat:<13} {n:>6} "
+              f"{str(r.get('coverage')):>7} {str(r.get('platform_alphas')):>10}")
     if not keep:
         print("  （空 —— 该区在现有规则下已无可打数据集）")
 

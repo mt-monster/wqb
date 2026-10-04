@@ -283,7 +283,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `ind_sim_submit.py` | IND 战役专用：按精确 settings 直连 POST /simulations（multi-sim），绕开 CLI 固定档。 | `Claude/skills/CHANGELOG.md` |
 | `ingest_dataset_assets.py` | ingest_dataset_assets.py - 把 fetch_dataset_assets.py 拉取的 JSON 批量写入 wqb.db。 | `docs/skills_review_closure.json` |
 | `kb_templates.py` | KB 社区模板库读取/过滤/导出工具（P1-5：让 59KB 社区模板回流生成端）。 | `Claude/skills/brain-alpha-research/SKILL.md` |
-| `kor_opportunity_scan.py` | kor_opportunity_scan.py — KOR 机会空间穷举扫描（S-PRE 用，2026-09-28）。 | `docs/experience/03_region_dataset.md` |
+| `tracking/KOR/scripts/kor_opportunity_scan.py` | KOR 机会空间穷举扫描（S-PRE 用，2026-09-28；2026-10-05 由 tools/ 迁出，区域专属）。 | `docs/experience/03_region_dataset.md` |
 | `ledger_keys.py` | ledger_keys.py — 台账（ledger_kv）键目录：扫描器 + 目录读取 + 文档表生成（库 + CLI）。 | `Claude/skills/CHANGELOG.md` |
 | `market_regime_adapter.py` | market_regime_adapter.py - 市场状态适配器. | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py` |
 | `migrate_phase2.py` | migrate_phase2.py - Phase 2 迁移：registry 实证层 + wave 结果台账 + 跨区教训入 SQLite。 | `docs/skills_review_closure.json` |

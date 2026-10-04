@@ -160,7 +160,7 @@ KOR 10.5% / GBR 7.1% / HKG 6.7% / USA 5.2% / EUR 2.0% / JPN 1.6%
 > **教训**：跨区台账显示 `IND-RISK70-NO-SIGNAL` + `GLB-RISK70-STYLE-HF-MINVOL1M-FASTKILL`，
 > risk70 是**跨三区独立复现的死族**，而 S-PRE 的死路检查只按 `region='KOR'` 查 → **漏掉跨区负先验，白烧 114 次回测**。
 > 检索必须**统一 `.lower()` 归一**（旧临场检查大小写敏感，`shortinterest3` 命不中 `KOR-SHORTINTEREST3-DEAD` → 假阴性）。
-> 工具：`tools/kor_opportunity_scan.py`（四道过滤：未点亮类别 ∧ 非红榜族 ∧ 跨区死路 ∧ 字段≥5）。
+> 工具：`tracking/KOR/scripts/kor_opportunity_scan.py`（四道过滤：未点亮类别 ∧ 非红榜族 ∧ 跨区死路 ∧ 字段≥5）。
 
 ---
 

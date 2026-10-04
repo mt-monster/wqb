@@ -101,7 +101,6 @@
     "index_tables.py",
     "ingest_dataset_assets.py",
     "kb_templates.py",
-    "kor_opportunity_scan.py",
     "ledger_keys.py",
     "market_regime_adapter.py",
     "mcp_7slot_batch.py",

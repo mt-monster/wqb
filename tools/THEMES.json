@@ -307,13 +307,11 @@
   },
   "relocate_out_of_tools": {
     "kor_ledger_write.py": "tracking/KOR/scripts (DONE 2026-10-05)",
-    "kor_opportunity_scan.py": "tracking/KOR/scripts (HELD 2026-10-05: 测试 test_opportunity_scan_xregion.py 硬编码 tools/ 路径，迁移需同步改测试；refs=2 非零)",
+    "kor_opportunity_scan.py": "tracking/KOR/scripts (DONE 2026-10-05)",
     "kor_spre_read.py": "tracking/KOR/scripts (DONE 2026-10-05)",
     "_kor_s6_writeback.py": "tracking/KOR/scripts (DONE 2026-10-05)"
   },
-  "_unassigned": [
-    "kor_opportunity_scan.py"
-  ],
+  "_unassigned": [],
   "counts": {
     "backtest": 10,
     "catalog": 5,
@@ -335,7 +333,7 @@
     "verdict": 20,
     "wave": 6
   },
-  "unassigned_n": 1,
+  "unassigned_n": 0,
   "top_n": 171,
   "_moved_20261004": {
     "note": "首轮下沉（2026-10-04）：仅迁移「零 import 依赖 + 零文档按路径引用 + 内部无 sys.path.insert/parents[N]/dirname(dirname())」的脚本。其余顶层脚本的阻塞点见 _blocked_by_import。",
