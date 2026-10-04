@@ -24,7 +24,10 @@ src/wqb.egg-info/
 .reasonix/
 .workbuddy/
 .trae-html-share-packages/
-.claude/
+.claude/          # Agent 项目级加载位（skills 副本），**非源** —— 源是 Claude/skills/
+                 # 实测 2026-10-04 与源逐文件一致（441/441），由 Cursor 等宿主读取。
+                 # tools/sync_skills.py 只管用户级 ~\.claude/skills，不覆盖此处；
+                 # 故本目录**不受版本控制也不自动同步**，改动源后需手动同步或重建。
 .cursor/
 .trae/
 .zcode/
