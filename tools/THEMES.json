@@ -50,6 +50,9 @@
         "hkg_d1_model_probe.py",
         "hkg_d1_model_probe2.py",
         "probe_batch_mode.py",
+        "prod4_quick.py",
+        "prod_bucket_scan.py",
+        "prod_scan.py",
         "three_dataset_probe.py",
         "tiered_probe.py"
       ],
@@ -122,6 +125,7 @@
         "modeb_improvement_pipeline.py",
         "profile_drift_check.py",
         "region_status.py",
+        "region_whitelist.py",
         "select_ra_basket.py",
         "structural_reconstruct_cli.py"
       ],
@@ -132,7 +136,9 @@
       "title": "data_repair",
       "files": [
         "_backfill_reference_once.py",
+        "_kor_d33_writeback.py",
         "backfill_2y_from_platform.py",
+        "backfill_alphas_from_ckpt.py",
         "backfill_check_columns.py",
         "backfill_expression_dataset.py",
         "backfill_expression_status_once.py",
@@ -165,6 +171,7 @@
         "economic_mechanism_kb.py",
         "economic_mechanism_templates.py",
         "kb_templates.py",
+        "neutralization_scan.py",
         "operator_diversity_analyzer.py",
         "quality_control_engine.py",
         "role_cluster.py",
@@ -342,5 +349,8 @@
     },
     "batch2_note": "2026-10-04 第二批：这 2 个有仓库根定位（parent.parent），下沉时同步改为 parents[2]，并用 --dry-run 实跑验证归档目标为 <repo>/attic/... 而非 <repo>/tools/attic/...（--help 通过是假绿，它只走 argparse 分支）。其余 risky 候选仍受阻：多数含 __file__ 层数推导需逐个改，或为未受控新文件。"
   },
-  "_blocked_by_import": "2026-10-04 实测：tools/ 189 个顶层模块中 54 个被全库 import（AST 扫描），其中被生产代码/技能代码反向依赖的**必须留顶层**，下沉会直接断链，例如：\n  wave_gate            <- src/wqb/workflow/registry.py、tests/test_toolified_cli.py\n  submit_queue         <- src/wqb/workflow/nodes/submit_alpha.py\n  alpha_properties     <- src/wqb/store/submit_queue.py\n  forum_recon          <- src/wqb/workflow/registry.py\n  dataset_experience / economic_mechanism_kb / field_quality_scorer\n                      <- Claude/skills/brain-make-some-gem/.../skeletons.py\n另有 39 处 sys.path.insert(..., 'tools') 与 3 种仓库根推导写法（parents[N] 167 处 / '..','src' 拼接 43 处 / parent.parent 39 处）。\n结论：**tools/ 不是纯脚本堆，而是被 src/ 与 Claude/skills/ 反向依赖的共享层**。整体下沉必须先把这些依赖改成包内相对 import，属独立重构，不在机械搬迁范围。"
+  "_blocked_by_import": "2026-10-04 实测：tools/ 189 个顶层模块中 54 个被全库 import（AST 扫描），其中被生产代码/技能代码反向依赖的**必须留顶层**，下沉会直接断链，例如：\n  wave_gate            <- src/wqb/workflow/registry.py、tests/test_toolified_cli.py\n  submit_queue         <- src/wqb/workflow/nodes/submit_alpha.py\n  alpha_properties     <- src/wqb/store/submit_queue.py\n  forum_recon          <- src/wqb/workflow/registry.py\n  dataset_experience / economic_mechanism_kb / field_quality_scorer\n                      <- Claude/skills/brain-make-some-gem/.../skeletons.py\n另有 39 处 sys.path.insert(..., 'tools') 与 3 种仓库根推导写法（parents[N] 167 处 / '..','src' 拼接 43 处 / parent.parent 39 处）。\n结论：**tools/ 不是纯脚本堆，而是被 src/ 与 Claude/skills/ 反向依赖的共享层**。整体下沉必须先把这些依赖改成包内相对 import，属独立重构，不在机械搬迁范围。",
+  "_adopted_20261004": {
+    "note": "2026-10-04：用户确认不再有并行会话后，把此前会话遗留的 7 个未受控功能脚本纳入主题目录（S11 顶层冻结要求新 CLI 落子目录，**不许塞基线**——基线只豁免存量）。归属按脚本功能人工裁定：_kor_d33_writeback/backfill_alphas_from_ckpt -> data-repair；neutralization_scan -> research；prod4_quick/prod_bucket_scan/prod_scan -> probe；region_whitelist -> rotation。"
+  }
 }

@@ -65,7 +65,7 @@ USA_1 参考值：`isos.mean` sharpe 0.358 / fitness 0.353；甜点区示例（2
 
 ## 规则 7 — 快照新鲜度与覆盖矩阵
 
-- 每条 region_delay 记录都有 `sub_beg_time`/`sub_end_time`：引用任何数值时附带窗口（如 "USA_1 2022-02-05→2026-02-17, 901,969 α"），让下游判断先验是否过时。网盘发布新版数据包后重跑 `tools/webdata_quality.py` 刷新。
+- 每条 region_delay 记录都有 `sub_beg_time`/`sub_end_time`：引用任何数值时附带窗口（如 "USA_1 2022-02-05→2026-02-17, 901,969 α"），让下游判断先验是否过时。网盘发布新版数据包后需重新体检刷新快照（WebDataScope 插件侧操作；本仓无 `tools/webdata_quality.py`——该脚本从未落地，勿再引用）。
 - 用 `dataSetList.json` 在挖矿前确认目标 `<dataset>_<region>_<universe>_Delay<N>` 是否有逐字段体检数据（共 160 个组合，USA_TOP3000 覆盖 112 个）。**缺失时**：插件 `dataFlag.js` 会按 `<ds>_<region>_*_Delay<N>` 前缀回退到同 region 其他 universe 的体检数据（UI 标 ☆☆☆）。挖矿中可作粗略代理，但 universe 特定覆盖差异需在实际 `get_datafields` 的 `coverage` 上复核。
 
 ## 规则 8 — OS 选择性偏差与退化识别（OS-only 快照的正确解读, 2026-08-01 新增）

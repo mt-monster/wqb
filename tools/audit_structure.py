@@ -187,6 +187,14 @@ def check_s1_syspath(rep: Report) -> None:
     src_root = SRC.resolve()
 
     def _is_self_bootstrap(path_str: str) -> bool:
+        # 2026-10-04 修 Bug B：空串不得参与判定。
+        # `Path("").resolve()` 返回 **CWD**，而测试/审计通常在仓库根运行
+        # ⇒ 空串会被解析成仓库根，恰好等于 `src_root.parent`，从而被误判为
+        # 「自举注入」。实测 `L.append("")`（纯文本拼接的常见写法）正是这样
+        # 在 src/wqb/profiles/render.py 造成 14 处误报，长期阻塞 pre-commit。
+        # 空串的语义不是路径，直接排除。
+        if not path_str or not path_str.strip():
+            return False
         try:
             p = Path(path_str).resolve()
         except (OSError, ValueError):
@@ -204,25 +212,51 @@ def check_s1_syspath(rep: Report) -> None:
             if not isinstance(node, ast.Call):
                 continue
             f = node.func
-            is_insert = (
+            # 2026-10-04 修 Bug A：接收者必须是 `sys.path`（或其别名）。
+            # 原实现对 insert 只验 `f.value.attr == "path"`、对 append **完全不验接收者**
+            # ⇒ 任何 `X.append(...)`（如 Markdown 文本拼装常见的 `L.append("")`）
+            # 都会进入自举判定。实测 render.py 有 89 处 `L.append(...)` 命中。
+            #
+            # 接收者判据用「名字像 sys」而非硬编码 `id == "sys"`：本仓真实代码存在
+            # `import sys as _sys` 后写 `_sys.path.insert(...)` 的写法
+            # （见 workflow/nodes/{auto_review,campaign}.py），硬判 sys 会漏掉它们。
+            if not (
                 isinstance(f, ast.Attribute)
-                and f.attr == "insert"
+                and f.attr in ("insert", "append")
                 and isinstance(f.value, ast.Attribute)
                 and f.value.attr == "path"
-            )
-            if not (is_insert or (isinstance(f, ast.Attribute) and f.attr == "append")):
+                and isinstance(f.value.value, ast.Name)
+                and f.value.value.id.lstrip("_") == "sys"
+            ):
                 continue
             if not node.args:
                 continue
-            arg = node.args[0]
+            # ★ 2026-10-04 修 Bug C：按方法语义取「被插入的值」。
+            # `sys.path.insert(0, PATH)` 的路径在 **args[1]**（第一个参数是插入
+            # 索引），`sys.path.append(PATH)` 才在 args[0]。原实现一律取 args[0]，
+            # 于是 insert 形态永远拿到常量 0 —— 路径字面量自举**从未被检出过**
+            # （此前没有真实自举样本，故该 bug 一直潜伏）。
+            value_idx = 0 if f.attr == "append" else 1
+            if len(node.args) <= value_idx:
+                continue
+            arg = node.args[value_idx]
+            # 参数常被包在 str()/Path() 里（str(REPO_ROOT)），剥掉这层壳再判，
+            # 否则真实自举（如 sys.path.insert(0, str(REPO_ROOT))）会漏检。
+            probe = arg
+            for _ in range(2):
+                if (isinstance(probe, ast.Call)
+                        and isinstance(probe.func, ast.Name)
+                        and probe.func.id in ("str", "Path", "PurePath")
+                        and probe.args):
+                    probe = probe.args[0]
             txt = None
-            if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
-                txt = arg.value
-            elif isinstance(arg, ast.Name):
-                txt = arg.id
+            if isinstance(probe, ast.Constant) and isinstance(probe.value, str):
+                txt = probe.value
+            elif isinstance(probe, ast.Name):
+                txt = probe.id
             if txt is None:
                 continue
-            if isinstance(arg, ast.Name):
+            if isinstance(probe, ast.Name):
                 # 变量名启发式：含 src / wqb 根的视作自举
                 if re.search(r"\b(src|repo_root|wqb_root|project_root)\b", txt, re.I):
                     self_bootstrap.append(
