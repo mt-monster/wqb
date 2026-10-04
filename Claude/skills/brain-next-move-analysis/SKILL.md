@@ -49,7 +49,7 @@ allowed-tools:
 | 池 | 范围 | 取法 |
 |---|---|---|
 | OS（已提交） | 全量（通常 < 数百条）；分析对象 = 自上次日报以来新提交的 + 掉出 ACTIVE 的 | `get_user_alphas(stage="OS", order="-dateSubmitted", limit=30)`，按 `offset` 翻到用尽 |
-| IS（未提交库存） | **不枚举**。只看两类：① 自上次日报以来新增；② 可提交队列 | ① `get_user_alphas(stage="IS", start_date=<上次日报日期>, order="-dateCreated", limit=30)`；② `mcp__wqb-db__get_submit_ready(region)`（读 `submit_ready` 表；存储口径见 `docs/skills_review_decisions.md` DEC-33） |
+| IS（未提交库存） | **不枚举**。只看两类：① 自上次日报以来新增；② 可提交队列 | ① `get_user_alphas(stage="IS", start_date=<上次日报日期>, order="-dateCreated", limit=30)`；② `mcp__wqb-db__get_submit_ready(region)`（读 `submit_ready` 表；存储口径见 `docs/design/skills_review_decisions.md` DEC-33） |
 | 单颗深挖 | 只对 ①②里被点名的 alpha | `get_alpha_details` / `get_alpha_yearly_stats` / `get_alpha_pnl`；相关性 `check_correlation(alpha_id, correlation_type="production", threshold=0.7)` |
 
 **IS / OS 的词义**（`get_user_alphas` 文档）：IS = 尚未提交的 alpha；OS = 已提交的 alpha。**不是**「正在回测」和「最近成功提交」——正在回测的仿真在 `wq-backtest-monitor` 的范围。

@@ -1028,7 +1028,7 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
 | auto_harvest 节点 | 改为只读：只读方式打开库；按真实列取数；关联诊断用 LEFT JOIN expressions；按 multisim_id 过滤走 payload；`auto_upsert` 步骤写明本节点不写库；步骤按名字取；指标为空的行（ERROR）不再让报告崩溃。registry 说明同步 | `src/wqb/workflow/nodes/auto_harvest.py`、`registry.py` |
 | 守护 | 删掉白名单里的 `mcp__wqb-db__harvest_multisim_results`，SOP 引用重新受存在性校验；新增 `test_no_private_function_is_an_mcp_tool`：下划线开头的函数不得是工具，726a350 当时就会被它拦下 | `tests/unit/test_skill_integrity.py` |
 | 测试 | `tests/unit/test_n31_harvest_entry.py` 5 条，全部经 FastMCP `list_tools` / `call_tool`：注册表与 SOP 引用对得上、平台返回形态原样入库（整个返回值与列表两种写法、幂等）、无效输入给 warning、`workflow_auto_harvest` 入库 + 报告、只读报告在真实表结构上可用且一个字节不改（含 `auto_upsert=False` 与 multisim_id 过滤） | |
-| 文档 | ra-pipeline SKILL.md 步 6（可传整个返回值；附只读核对调用）、toolkit SKILL.md、INDEX.md（数量不变，记这次复位）、`docs/skills_pipeline_optimization.md` 示例、AGENTS.md §8.2（工具注册三条规矩） | |
+| 文档 | ra-pipeline SKILL.md 步 6（可传整个返回值；附只读核对调用）、toolkit SKILL.md、INDEX.md（数量不变，记这次复位）、`docs/design/skills_pipeline_optimization.md` 示例、AGENTS.md §8.2（工具注册三条规矩） | |
 | 演练脚本 | `realenv/run_realenv_n31.py` + `reproduce_realenv_n31.sh` | |
 
 #### 14.11.2 真实环境：修复前 vs 修复后

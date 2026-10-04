@@ -170,6 +170,6 @@ CREATE TABLE structural_variant_results (
 
 ## 相关文档
 
-- [结构重构详细文档](docs/structural_reconstruction.md)
+- [结构重构详细文档](../docs/design/structural_reconstruction.md)
 - [用户挖掘纪律](memory/7c2651ad) - 禁止 add(A,B) 混信号
 - [Mode B 资格线](memory/ff6c911a) - sharpe≥1.25 且 fitness≥0.8

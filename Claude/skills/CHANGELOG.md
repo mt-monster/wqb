@@ -2,7 +2,19 @@
 
 > 从各 SKILL.md 正文里迁出的「日期 / 新增 / 修正 / 事故」叙述。**规则在 SKILL.md 与 `references/`；日期与变更在这里。**
 > 约定：新条目加在最上面；一条一行：`日期 · skill · 改了什么（为什么） → 证据 / 落点`。事故与起因写进对应 skill 的 `references/incidents.md`，这里只留指针。
-> 决策与证据登记：[`docs/skills_review_decisions.md`](../../docs/design/skills_review_decisions.md)；逐条处置：`reports/skills_review_20260929_closure.md`。
+> 决策与证据登记：[`docs/design/skills_review_decisions.md`](../../docs/design/skills_review_decisions.md)；逐条处置：`reports/skills_review_20260929_closure.md`。
+
+## 2026-10-04 · 对照 WorkBuddy 记忆的 RA 流程审查整改（DEC-72…78）
+
+用户 2026-10-04：「按最佳方案和性价比决策并推进落地」。依据 = WorkBuddy 记忆 2026-10-01 ~ 10-03（`.workbuddy/memory/`，只读）；与同时在改同一工作树的 WorkBuddy 会话错开（它改 `rules.py` 的 `inject_rules` 与规则 JSON 的 `when` / `emit`，本轮只动稀释相关片段）。本批按显式路径 + 块级切分提交，并行会话的未提交改动一块没带；没带的几处见下面的 ⚠ 与 DEC-78 ⑥ ⑦。
+- **决策表**（DEC-72）：D0-P / D14 加「诊断前置」（单颗钉子 / 密墙 / 可破三型；同族同分母先换分母，再比设置档与分组轴），禁令改为禁「无诊断的盲扫网格」；D15 家族判死加「先扫等价算子替换」前置；D4 / D5 / D6 的 `ts_backfill(66/120)` 改 66（季频 / 年频用 252）、新增窗口匹配输入频率、取负放在 rank 之后、`nanHandling` / `maxTrade` 强度闸、decay 匹配信号速度、truncation 零杠杆；D5「禁用 SECTOR / MARKET」改为逐区判断（USA 的 OS 池 75/86 是 MARKET）
+- **口径更正**（DEC-73 / 74）：点亮 = 自然季度（旧「近 90 天滚动」无实现）；SUB 比值系数随宇宙变化（公式 `0.75 × sqrt(子集 / 宇宙)`），`01_platform_gates.md` 的「提交层 limit 更宽」更正，`02_signal_patterns.md` §2 的「降 truncation 修 CW」更正（与 §14 相反）
+- **机器规则层**（DEC-75）：稀释类规则 deprecated / 改写，`recommend_next_wave` 删稀释分支、`extract_signals` 不再学稀释规则；TVR / CW 行动提示与实测对齐 → `test_no_dilution_rules.py`
+- **区域 profile**（DEC-76）：IND / EUR → `probe-only`；KOR 刷新（other466、七个结构性约束）；DEU 保持 `active`（用户 10-02 已裁决）；`03_region_dataset.md` 加增补；EUR 阈值 `_doc` 对齐
+- **工具 / 流程**（DEC-77）：`select_ra_basket` prod 新鲜度；`inventory_scan` 篮子形态 bug；`s0-select` 未测并集；字段时间朝向提示；算子校验回落到已跟踪的目录；MCP `workflow_submit_alpha` 暴露 `robustness_audited`；Mode A 不扫 truncation；步 3 铁律 ③（混合集 `data_type`）、步 6 故障表补 5 行、`ind_sim_submit.py` 进工具索引
+- RA 核心 SKILL `version` 3.2 → 3.3（变量表 / 路由表 / 步 1 / 步 5b / 步 6 / 步 7 / 步 8 同步）；`AGENTS.md` 去掉硬编码的测试数、更正「仓库根没有 conftest.py」与规则注入点描述
+- 没做的事见 DEC-78（不动 `.workbuddy/`、不升闸 9 enforce、不改 `workflow_task_status` 推断分支、`seal_dead_end` 不加校验）
+- ⚠ **引擎层未随本批提交**（DEC-78 ⑥）：规则 JSON / `rules.py` 稀释退役与 `slots.py` / `pipeline.py` 的「满 / 不仲裁」修复依赖并行会话未提交的 `inject_rules` 与槽位非阻塞修复，留在工作区、随那一批提交；上面对应条目以工作区为准
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
