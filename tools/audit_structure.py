@@ -18,6 +18,31 @@
 - **S5 一次性脚本纪律**：脚本应落在 `tools/`，不应出现在 `reports/`。
 - **S6 skills 脚本漂移**：`Claude/skills/` 下按内容去重，报告被 vendoring
   复制多份的脚本。
+- **S7 根目录白名单**：仓库根只允许入口 / 配置 / 三份文档 / 会话草稿。
+  新增顶层 `.py`/`.log`/无扩展名件一律 FAIL（根目录污染在本仓已复发 5 次，
+  靠 `.gitignore` 逐条追赶不能治本）。
+- **S8 根↔子目录同名分叉**：仓库根的 `.py` 与子目录同名 `.py` 内容不一致 → FAIL。
+  2026-10-04 实事故：论坛工作台脚本在根与 `tools/forum_workbench/` 各存一份且
+  **互为超集**（根版有测试中心内嵌、tools 版有 `prune_old_files` 与仓库根上溯修正），
+  两侧各自演化无人发现，每晚自动化连日失败。**分叉没有「合法存量」形态，不进基线**。
+- **S9 声明目录存在性**：AGENTS.md §1 职责表与 `docs/README.md` 目录树里声明的目录
+  必须磁盘存在。FAIL —— 「文档写了但目录不存在」会直接误导下一个动手的 Agent。
+- **S10 区域子目录完整性**：`tracking/<REGION>/` 缺五个核心子目录 → FAIL（2026-10-04 P2-3
+  已把 13 区补齐，不再容忍差异）；存在非占位空子目录 → WARN。
+- **S11 tools/ 顶层冻结**：`tools/*.py` 与基线比对，**只减不增**。新增顶层脚本 = FAIL，
+  必须落 `tools/THEMES.json` 里的主题子目录。背景：顶层平铺 171 个，一次性下沉不安全
+  （全仓 80 处 `sys.path.insert(...'tools')`、多处把 tools 脚本当模块 import、仓库根推导
+  层数硬编码共 5 种写法），故先止血、再按主题逐批迁移。
+- **S12 已下架路径不得复活**：基线 `retired_paths` 里的路径若重新出现在工作区 → FAIL。
+  2026-10-04 实测：论坛工作台（缺 UI 模板、每晚自动化因它连日失败）整端归档后，
+  **同一会话内又被恢复**——靠搬文件完不成下架，必须机械记账。
+- **S13 tracking/ 非区域目录登记**：13 个区域码之外的目录（`reference/`、`mining/`、
+  `FORUM`、`PPA_USA`、`prod_probe`、`hypotheses`、`_scratch`）必须显式登记在
+  `NON_REGION_DIRS`，未登记 → FAIL；登记了但磁盘已无 → WARN（可清理，不阻塞）。
+  背景：S10 靠 `^[A-Z]{3}$` 识别区域，`FORUM`（5 字母）**恰好不匹配**才没被当成
+  区域——隐式约定无法自动执行；AGENTS.md §8.13 已把「新 Agent 极易当成区域读」
+  列为风险，但约定不会自动执行。**本检查只登记不搬**：`reference/` 有 88 处引用、
+  `mining/` 有 46 处引用且 AGENTS.md §1 明令勿动，物理搬迁风险远大于收益。
 
 退出码
 ------
@@ -445,6 +470,354 @@ def _s6_baseline() -> set:
         return set()
 
 
+def _sha12(p: Path) -> str:
+    return hashlib.sha256(p.read_bytes()).hexdigest()[:12]
+
+
+#: S7：仓库根允许的文件名（入口 / 配置 / 三份文档 / 会话草稿）。
+#: 要新增请先回到 AGENTS.md §8.13 确认归属目录，再决定要不要往这里加一行。
+ROOT_ALLOWLIST = {
+    # 入口与工具链配置（约定必须住根：MCP 客户端直接指到这里）
+    ".mcp.json", "mcp_config.json", "pyproject.toml", "pytest.ini",
+    "requirements.txt", "conftest.py", "wqb_db_mcp.py",
+    # VCS
+    ".gitignore", ".gitattributes",
+    # 文档三件套（定位分工见 AGENTS.md §8.4 第 3 条）
+    "AGENTS.md", "CLAUDE.md", "README.md",
+    # 会话草稿（planning-with-files 三件套，已 gitignore，不入仓库）
+    "findings.md", "progress.md", "task_plan.md",
+}
+
+#: S7 里当目录跳过的顶层目录名（目录归属由 S9/S10 管）
+ROOT_SKIP_DIRS = {".git", ".venv", "__pycache__", ".pytest_cache"}
+
+
+def check_s7_root_allowlist(rep: Report) -> None:
+    """S7：仓库根不允许未知散件。
+
+    只扫顶层文件：目录交给 S9（声明存在性）与 S10（区域子目录）。
+    """
+    offenders = []
+    for p in sorted(REPO_ROOT.iterdir()):
+        if p.is_dir() or p.name in ROOT_SKIP_DIRS:
+            continue
+        if p.name in ROOT_ALLOWLIST:
+            continue
+        offenders.append(p.name)
+    if offenders:
+        rep.fail(
+            "S7 根目录白名单",
+            f"{len(offenders)} 个根级散件不在白名单：{offenders}；"
+            "归属判据：脚本→`tools/`，报告→`output_report/`，运行产物→`logs/` 或 `cache/`，"
+            "外部数据→`research-data/`，归档→`attic/<主题>_<YYYYMMDD>/`",
+        )
+    else:
+        rep.ok("S7 根目录白名单", "仓库根无额外散件")
+
+
+#: S8 只拿这些子树比对（全仓 rglob 会顺扫 tracking 上万个数据文件，没信号且慢）
+S8_SCOPE = (TOOLS, SRC, REPO_ROOT / "world-quant-brain-mcp", SKILLS,
+            REPO_ROOT / "tests", REPO_ROOT / "tracking")
+
+
+def check_s8_root_subdir_divergence(rep: Report) -> None:
+    """S8：仓库根 `.py` 与子目录同名 `.py` 分叉。
+
+    只管「根 ↔ 子目录」这一形态（论坛工作台事故的形状：根上又多出一份同名脚本）。
+    子目录之间的同名问题已由 S3（tools vs src）与 S6（skills 副本）覆盖，不在此重报。
+    内容一致→WARN（重复文件）；内容不一致→FAIL（分叉）。FAIL 不进基线豁免。
+    """
+    root_pys = [p for p in sorted(REPO_ROOT.glob("*.py")) if p.name != "conftest.py"]
+    if not root_pys:
+        rep.ok("S8 根↔子目录分叉", "仓库根无 .py")
+        return
+    index: dict[str, list[Path]] = defaultdict(list)
+    for scope in S8_SCOPE:
+        for p in py_files(scope):
+            if p.parent != REPO_ROOT:
+                index[p.name].append(p)
+    diverged: list[str] = []
+    identical: list[str] = []
+    for rp in root_pys:
+        for sub in index.get(rp.name, []):
+            rel = sub.relative_to(REPO_ROOT).as_posix()
+            try:
+                if _sha12(sub) == _sha12(rp):
+                    identical.append(f"{rp.name} == {rel}")
+                else:
+                    diverged.append(f"{rp.name} ≠ {rel}")
+            except OSError as e:  # 读不了不等于分叉，诚实报出
+                rep.warn("S8 根↔子目录分叉", f"{rp.name} vs {rel} 读取失败：{e}")
+    if diverged:
+        rep.fail("S8 根↔子目录分叉",
+                 f"同名且内容不一致（互为超集，放着不管就继续漂）：{'；'.join(diverged)}")
+    if identical:
+        rep.warn("S8 根↔子目录分叉",
+                 f"同名逐字节副本（建议只留一份）：{'；'.join(identical)}")
+    if not diverged and not identical:
+        rep.ok("S8 根↔子目录分叉", "根 .py 与子目录无同名冲突")
+
+
+#: S9：从文档里抽出的目录形状（带通配/占位的一律跳过，不硬判）
+_BACKTICK_DIR_RE = re.compile(r"`([A-Za-z0-9_.\-/]+/)`")
+_DOCS_TREE_DIR_RE = re.compile(r"^[\u2502\u251c\u2514\u2500\s]*[\u251c\u2514]\u2500+\s+([A-Za-z0-9_.\-/]+)/")
+
+
+def _looks_like_glob(tok: str) -> bool:
+    return any(c in tok for c in ("*", "<", "\u2026", " "))
+
+
+def check_s9_declared_dirs_exist(rep: Report) -> None:
+    """S9：文档声明的目录必须真实存在。
+
+    两个声明源：
+    1. AGENTS.md §1「项目概述与模块职责」表的反引号目录 token；
+    2. docs/README.md 的目录树（相对 docs/ 的子节点）。
+    带 `*` / `<REGION>` / `…` 的占位写法跳过（不是可解引用的具体路径）。
+    """
+    missing: list[str] = []
+
+    agents = REPO_ROOT / "AGENTS.md"
+    if agents.is_file():
+        text = agents.read_text(encoding="utf-8", errors="replace")
+        sec = re.search(r"^## 1\..*?(?=^## 2\.)", text, re.S | re.M)
+        body = sec.group(0) if sec else ""
+        for tok in set(_BACKTICK_DIR_RE.findall(body)):
+            if _looks_like_glob(tok):
+                continue
+            if not (REPO_ROOT / tok).is_dir():
+                missing.append(f"AGENTS.md \u00a71: {tok}")
+    else:
+        rep.warn("S9 声明目录存在", "AGENTS.md 不存在，本轮未校 §1")
+
+    docs_idx = REPO_ROOT / "docs" / "README.md"
+    if docs_idx.is_file():
+        for line in docs_idx.read_text(encoding="utf-8", errors="replace").splitlines():
+            m = _DOCS_TREE_DIR_RE.match(line)
+            if not m:
+                continue
+            tok = m.group(1)
+            if _looks_like_glob(tok) or tok == "docs":
+                continue
+            if not (REPO_ROOT / "docs" / tok).is_dir():
+                missing.append(f"docs/README.md 目录树: docs/{tok}/")
+
+    if missing:
+        rep.fail("S9 声明目录存在",
+                 f"文档声明但磁盘不存在：{'；'.join(sorted(missing))}"
+                 "（要么把目录建出来，要么删掉这一行——留着就是误导）")
+    else:
+        rep.ok("S9 声明目录存在", "AGENTS.md \u00a71 与 docs/README.md 声明的目录均存在")
+
+
+#: S10：每个区域应有的核心子目录（2026-10-04 按 14 区实测最大公约数定）
+REGION_CORE_DIRS = {"config", "candidates", "results", "priors", "reference"}
+#: 区域目录统一结构（五个核心子目录）——2026-10-04 P2-3 已把 13 区补齐到这一套。
+#: 差异已消除，故缺目录从 WARN 升级为 FAIL；仅含 .gitkeep 的空目录不算空壳。
+REGION_NAME_RE = re.compile(r"^[A-Z]{3}$")   # 只认三字母区域码；FORUM/PPA_USA/mining 等不当区域算
+
+
+def _dir_is_skeleton_placeholder(d: Path) -> bool:
+    """只含 .gitkeep 的目录 = 有意保留的区域结构占位，不算空壳。
+
+    `tracking/.gitignore` 把 `results/`、`**/candidates/` 整体排除，所以这些占位
+    只存在于本机磁盘（不可入库）——S10 本身就是磁盘级检查，因此认它。
+    """
+    try:
+        names = {p.name for p in d.iterdir()}
+    except OSError:
+        return False
+    return names and names <= {".gitkeep"}
+
+
+def check_s10_region_skeleton(rep: Report) -> None:
+    """S10：`tracking/<REGION>/` 五个核心子目录齐全（缺 = FAIL），空壳目录 = WARN。
+
+    2026-10-04 P2-3 已把 13 个区域补齐到同一套结构，因此不再容忍差异：
+    缺核心子目录直接 FAIL（新区域建齐五个目录即可，占位用 `.gitkeep`）。
+    区域名靠 `^[A-Z]{3}$` 识别，因此 `FORUM`/`PPA_USA`/`prod_probe`/`_scratch`
+    这类非区域目录不会被当成区域报（它们的归位约定见 AGENTS.md §8.13）。
+    """
+    tracking = REPO_ROOT / "tracking"
+    if not tracking.is_dir():
+        rep.ok("S10 区域子目录", "无 tracking/，跳过")
+        return
+    regions = [d for d in sorted(tracking.iterdir())
+               if d.is_dir() and REGION_NAME_RE.match(d.name)]
+    incomplete: list[str] = []
+    empties: list[str] = []
+    for r in regions:
+        subs = [d for d in r.iterdir() if d.is_dir()]
+        names = {d.name for d in subs}
+        miss = REGION_CORE_DIRS - names
+        if miss:
+            incomplete.append(f"{r.name}:\u7f3a{sorted(miss)}")
+        for d in subs:
+            if not any(d.iterdir()):
+                empties.append(f"{r.name}/{d.name}/")
+            elif _dir_is_skeleton_placeholder(d):
+                continue          # 有意占位，不报
+    if incomplete:
+        rep.fail("S10 区域子目录",
+                 f"{len(incomplete)}/{len(regions)} 个区域缺核心子目录：{'；'.join(incomplete)}"
+                 "（P2-3 已将 13 区统一为 config/candidates/results/priors/reference；"
+                 "新建区域按这套补全即可）")
+    if empties:
+        rep.warn("S10 区域子目录",
+                 f"空子目录（非 .gitkeep 占位）：{'；'.join(sorted(empties))}")
+    if not incomplete and not empties:
+        rep.ok("S10 区域子目录", f"{len(regions)} 个区域五个核心子目录齐整")
+
+
+def _s11_baseline() -> set:
+    """S11 存量基线：tools/ 顶层允许存在的 .py 文件名集合。
+
+    文件缺失 = 基线过时（提示移出）；新增 = FAIL。基线文件缺失 = 空集→顶层任何脚本都算新增。
+    """
+    import json
+
+    p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+    if not p.is_file():
+        return set()
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return set(data.get("s11_tools_top_level") or [])
+    except (json.JSONDecodeError, OSError):
+        return set()
+
+
+def check_s11_tools_top_frozen(rep: Report) -> None:
+    """S11：tools/ 顶层只减不增（2026-10-04 P2-1）。
+
+    背景：tools/ 顶层平铺 171 个脚本，而 tools/README.md 早已写好 14 个主题分类（磁盘上
+    却没分）。一次性下沉并不安全：实测全仓 80 处 `sys.path.insert(... 'tools')`，
+    `index_tables` / `migrate_wave_verdict_enum` 等还被当模块 import，且仓库根推导写法
+    同主题内就有 5 种（层数硬编码）。目标结构与逐文件归属已写进 `tools/THEMES.json`，
+    迁移按主题分批走；在那之前先把顶层**冻住**，避免上帝目录继续长。
+    """
+    now = {p.name for p in TOOLS.glob("*.py")}
+    baseline = _s11_baseline()
+    if not baseline:
+        rep.warn("S11 tools 顶层冻结",
+                 "基线为空或未登记 s11_tools_top_level —— 未生效，先跑 "
+                 "`python tools/audit_structure.py --freeze-tools-top` 写入存量清单")
+        return
+    added = sorted(now - baseline)
+    gone = sorted(baseline - now)
+    if added:
+        rep.fail("S11 tools 顶层冻结",
+                 f"tools/ 顶层新增 {len(added)} 个脚本：{added}；新 CLI 必须落在主题子目录"
+                 "（归属查 tools/THEMES.json 的 themes，目录名 kebab-case），并在 "
+                 "tools/README.md 登记；不得继续往顶层堆")
+    if gone:
+        rep.warn("S11 tools 顶层冻结",
+                 f"{len(gone)} 个已不在顶层（迁移成功或已删），请同步从 "
+                 f"tools/audit_structure_baseline.json 移出：{gone}")
+    if not added and not gone:
+        rep.ok("S11 tools 顶层冻结", f"顶层 {len(now)} 个与基线一致（只减不增）")
+
+
+#: S12：已下架路径清单（读基线 retired_paths；出现即 FAIL）。
+#
+# 为什么需要这一条：2026-10-04 把论坛工作台（缺 UI 模板、每晚自动化因此连日 exit≠0）
+# 整端归档后，**同一会话内它又被恢复了一次**（3 个 .py 回来了、模板依旧不在），
+# 并把已下架的 4 个环境变量重新带入代码扫描 → `test_index_tables` 双向覆盖闸变红。
+# 教训：靠“搬走文件”完成的下架扳不住另一个会话的还原，必须机械记账。
+def _s12_retired() -> list:
+    import json
+
+    p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+    if not p.is_file():
+        return []
+    try:
+        return list(json.loads(p.read_text(encoding="utf-8")).get("retired_paths") or [])
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def check_s12_no_resurrection(rep: Report) -> None:
+    """S12：已归档/已下架的路径不得回到活跃目录树。"""
+    hits = []
+    for rel in _s12_retired():
+        p = REPO_ROOT / rel
+        if p.exists():
+            hits.append(rel)
+    if hits:
+        rep.fail("S12 已下架路径复活",
+                 f"这些路径已归档却又出现在工作区：{hits}；"
+                 "若确需恢复，请先到 attic/ 取回完整内容（含模板与数据）并在 "
+                 "tools/audit_structure_baseline.json 的 retired_paths 里移除，"
+                 "否则就是拿着坏副本复活一条已证实不可运行的链路")
+    else:
+        rep.ok("S12 已下架路径复活", "无复活")
+
+
+#: `tracking/` 下**非区域**目录的显式登记表（2026-10-04 结构审计新增）。
+#:
+#: 为什么需要它：S10 靠 `^[A-Z]{3}$` 识别区域，于是 `FORUM`（5 字母）恰好不匹配
+#: 才没被当成区域——**这是隐式约定**，任何人新增一个 `FORUM2` / `TASK` 之类的目录，
+#: 只要字母数不对就永远不会被 S10 提示。AGENTS.md §8.13 已把"再增非区域目录一律加
+#: `_` 前缀"写成约定，但约定无法自动执行。
+#:
+#: 代价：登记了 88 处引用的 `reference/`、46 处的 `mining/` 物理搬迁风险远大于收益，
+#: 故**只登记不搬**——本检查的职责是「让这些目录的存在被显式承认，且新增的必须
+#: 显式登记」，而不是强推目录改名。
+NON_REGION_DIRS = {
+    "reference": "跨区参考文档（88 处引用；受控 17 文件；物理搬迁需同步 88 处，故保留）",
+    "mining": "共享数据湖（46 处引用、受控 1052 文件；AGENTS.md §1 明令勿动/勿改）",
+    "FORUM": "论坛语料与取证产物（受控 8 文件；活跃写入中）",
+    "PPA_USA": "PPA 专项产物（运行期，未受控）",
+    "prod_probe": "prod 探针 dump（运行期，tracking/.gitignore 已排除）",
+    "hypotheses": "hypothesis_round 账本（运行期追加写，.gitignore 已排除）",
+    "_scratch": "临时区（§6 第 3 条：用完清空）",
+}
+
+
+def check_s13_tracking_nonregion_registry(rep: Report) -> None:
+    """S13：`tracking/` 下的非区域目录必须**显式登记**在 NON_REGION_DIRS。
+
+    棘轮语义：
+      - 存在但未登记 → **FAIL**（新增目录必须显式承认，防止继续积累"像区域的目录"）
+      - 已登记但磁盘上不存在 → WARN（可从登记表清理，不阻塞）
+      - 已登记且形如区域码（^[A-Z]{3}$）→ FAIL（登记了却用区域码命名，自相矛盾）
+    """
+    import re as _re
+
+    tracking = REPO_ROOT / "tracking"
+    if not tracking.is_dir():
+        rep.ok("S13 tracking 非区域目录", "无 tracking/，跳过")
+        return
+
+    on_disk = {d.name for d in tracking.iterdir() if d.is_dir()}
+    regions = {n for n in on_disk if _re.match(r"^[A-Z]{3}$", n)}
+    actual_nonregion = on_disk - regions
+
+    undeclared = sorted(actual_nonregion - set(NON_REGION_DIRS))
+    for name in undeclared:
+        rep.fail("S13 tracking 非区域目录",
+                 f"tracking/{name} 既不是三字母区域码，也未登记在 "
+                 f"audit_structure.NON_REGION_DIRS——新增非区域目录必须显式登记"
+                 f"（AGENTS.md §8.13：再增非区域目录一律加 `_` 前缀），"
+                 f"否则 S10 永远识别不到它，新 Agent 极易当成区域读")
+
+    stale = sorted(set(NON_REGION_DIRS) - on_disk)
+    if stale:
+        rep.warn("S13 tracking 非区域目录",
+                 f"登记表里有 {len(stale)} 项磁盘上已不存在，可从 "
+                 f"NON_REGION_DIRS 清理：{stale}")
+
+    misnamed = sorted(n for n in (regions & set(NON_REGION_DIRS))
+                      if _re.match(r"^[A-Z]{3}$", n))
+    for name in misnamed:
+        rep.fail("S13 tracking 非区域目录",
+                 f"tracking/{name} 用三字母区域码命名却登记为非区域目录，自相矛盾")
+
+    if not undeclared and not misnamed:
+        rep.ok("S13 tracking 非区域目录",
+               f"{len(actual_nonregion)} 个非区域目录全部已登记"
+               + (f"（另有 {len(stale)} 项登记项磁盘已不存在，仅 WARN）" if stale else ""))
+
+
 CHECKS = {
     "s1": ("S1 sys.path 注入", check_s1_syspath),
     "s2": ("S2 依赖方向", check_s2_dep_direction),
@@ -452,6 +825,13 @@ CHECKS = {
     "s4": ("S4 硬编码路径", check_s4_abs_path),
     "s5": ("S5 reports/脚本", check_s5_report_scripts),
     "s6": ("S6 skills 漂移", check_s6_skill_drift),
+    "s7": ("S7 根目录白名单", check_s7_root_allowlist),
+    "s8": ("S8 根↔子目录分叉", check_s8_root_subdir_divergence),
+    "s9": ("S9 声明目录存在", check_s9_declared_dirs_exist),
+    "s10": ("S10 区域子目录", check_s10_region_skeleton),
+    "s11": ("S11 tools 顶层冻结", check_s11_tools_top_frozen),
+    "s12": ("S12 已下架路径复活", check_s12_no_resurrection),
+    "s13": ("S13 tracking 非区域目录登记", check_s13_tracking_nonregion_registry),
 }
 
 
@@ -459,7 +839,21 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="仓库结构守护（只读）")
     ap.add_argument("--only", choices=sorted(CHECKS), action="append",
                     help="只跑指定检查（可重复）")
+    ap.add_argument("--freeze-tools-top", action="store_true",
+                    help="把当前 tools/ 顶层 .py 清单写进 S11 基线（建立/重置存量用）")
     args = ap.parse_args(argv)
+
+    if args.freeze_tools_top:
+        import json
+
+        p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+        data = json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+        names = sorted(x.name for x in TOOLS.glob("*.py"))
+        data["s11_tools_top_level"] = names
+        p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                     encoding="utf-8")
+        print(f"[audit_structure] S11 基线已写入 {len(names)} 个 tools/ 顶层脚本 → {p.name}")
+        return 0
 
     selected = args.only or sorted(CHECKS)
     rep = Report()
