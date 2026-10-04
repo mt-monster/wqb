@@ -176,3 +176,59 @@ ALTER TABLE alphas ADD COLUMN corr_checked_at TIMESTAMP;
 **存量填充率说明**：改动只作用于**今后**的写入路径；4211 行历史数据的口径不会自动变化
 （仍为 prod 6.4% / self 2.4%）。需要历史回填须跑
 `persist_prod_corr.py --apply`（依赖 triage checkpoint）或 `sync_platform_alphas.py --apply`（平台对齐）。
+
+---
+
+## 6. 2026-10-04 追加：查询路径的第二级缓存（wqb 库）
+
+### 6.1 新暴露的问题（与 §1 「落库」不同，这是「查询缓存」）
+
+`check_correlation`（MCP）的 prod 结果缓存**唯一后端是 Redis**
+（`brain_mixin_transport.py::_get_cached_data/_set_cached_data`）。本机 Redis 常未启动
+（`redis_client=None` → 读写全 no-op），于是：
+
+- prod 结果**每次查询都重新打平台**（该接口**单账号单并发**，每颗 1-5 分钟）；
+- 多会话并存时互相排队，表现为「多会话查 prod 一直等」；
+- 对比：**self 相关性有文件缓存**（`downloads/os_pnl_pool_*.pkl`）所以秒回 —— 差距就在这里。
+
+§4 写过的目标（「查询走本地库 → 零平台配额消耗」）此前只覆盖了**已提交 alpha 的
+`alphas.prod_correlation`**，而**仿真 alpha 根本不在 `alphas` 表**（实测 `E5RaV7Rr` /
+`O08kz5Mv` 均 NOT IN alphas），所以查询路径实际仍绕过本地库。
+
+### 6.2 实现（2026-10-04）
+
+| # | 位置 | 改动 |
+|---|---|---|
+| 1 | `src/wqb/store/_schema.py` | 新表 `alpha_corr_cache`（+ `checked_at` 索引），幂等建表 |
+| 2 | `src/wqb/store/_corr_cache.py`（新） | `CorrCacheMixin`：`get_corr_cache` / `set_corr_cache` / `list_corr_cache` |
+| 3 | `src/wqb/store/campaign.py` | 挂载 `CorrCacheMixin` |
+| 4 | `world-quant-brain-mcp/brain_mixin_correlation.py` | `check_correlation` 的 prod 缓存改 **两级：Redis → wqb 库**；平台算成功后同时写库 |
+
+**设计要点**：
+
+- **与 `alphas` 解耦**：仿真 alpha 也进缓存（用独立表，不依赖是否已进 `alphas`）；
+- **跨进程共享**：SQLite + WAL + `busy_timeout=60s`（`wqb.db_conn` 规范连接），
+  多个 MCP 进程读同一份；单行 upsert 足够轻，无需 `db_write_lock`；
+- **懒加载 + 失败降级**：`wqb.store` 导入失败只告警一次并置哨兵，**绝不阻断查询主流程**
+  （与 `db_write_lock` 的降级哲学一致）；
+- **口径一致**：复用 `_backtest._corr_value`，值须落在 `[0,1]`，越界按「没有」处理；
+- **部分写保旧**：只补 prod 时 `COALESCE` 保留已存的 self（反之亦然）。
+
+### 6.3 验证
+
+- 新增单测：`tests/unit/01_store_db/test_store.py`（5 个：往返/跨实例可见/部分写保旧/
+  越界拒绝+幂等/建表）+ `world-quant-brain-mcp/tests/test_corr_db_cache_unit.py`（5 个）。
+- 根 `tests/`：**3180 passed / 4 failed**；4 个失败经 **路径限定 stash 对照**确认为
+  **改动前既存失败**（DB 历史 verdict `MIXED_NO_SUBMIT`、skills 安装位漂移、
+  `tools/tmp_*.py` 硬编码盘符、skill 文档含加权拼腿示例）。
+- MCP 包 `tests/`：92 passed / 4 skipped。
+
+### 6.4 生效前提
+
+MCP 服务须重启（或起新会话）才会加载新代码；已运行中的会话仍走旧路径。
+
+### 6.5 缓存管理
+
+- 读缓存：`CampaignStore.get_corr_cache(alpha_id)`；批量 `list_corr_cache([...])`。
+- 失效重建：调用 `check_correlation(alpha_id, refresh=True)`（强制作废并回源平台）。
+- 直接查询：`sqlite3 data/wqb.db "SELECT * FROM alpha_corr_cache WHERE prod_correlation >= 0.7"`

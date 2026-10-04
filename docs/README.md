@@ -14,6 +14,13 @@ docs/
 │   ├── project_experience_master.md         项目经验总纲（10章，325行）
 │   ├── wq_alpha_mining_knowledge_base.md    挖掘方法知识库（10章，374行）
 │   └── region_template_kb.md                区域/模板知识库使用协议（内容在 DB ledger_kv）
+├── design/                             ← 设计稿与方案（12 篇，2026-10-04 由根目录归类）
+│  ├── submit_queue_design.md             提交队列设计与闸口口径
+│  ├── prod_corr_persistence_design_*.md  prod 相关性落库设计
+│  ├── structural_reconstruction*.md     结构重构方案与集成
+│  ├── skills_pipeline_*.md              skill 流水线分析与优化
+│  ├── modeb_* / operator_modeb_*        Mode B 算子覆盖研究
+│  └── skills_review_decisions.md        skills 审查决策与证据登记
 ├── reference/                             ← 参考速查类
 │   ├── operators_notes.md                   WQ BRAIN 全算子速查表（87条）
 │   ├── community_tpl_library_sequel.md      社区模板库续集手册（141 TPL + 幽灵算子映射表）
