@@ -51,8 +51,8 @@
 | `BRAIN_JUDGE_LLM_API_KEY` | — | judge `llm_judge.py` 的 LLM 通道密钥（缺省不启用；启用即外发候选字段——见 judge SKILL 的外发边界） | `brain-alpha-judge/scripts/vendor/llm_judge.py` | — |
 | `BRAIN_PASSWORD` | — | 旧别名（BRAIN 口令）；同时是 GEM runner / sim-alphas 传给下游子进程的内部变量。新代码用 `CREDENTIALS_PASSWORD` | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +6 | — |
 | `BRAIN_USERNAME` | — | 旧别名（BRAIN 邮箱）：judge 的 `load_credentials`、feature-implementation、GEM runner 兜底。新代码用 `CREDENTIALS_EMAIL` | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +5 | — |
-| `CREDENTIALS_EMAIL` | — | BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名 | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +11 | — |
-| `CREDENTIALS_PASSWORD` | — | BRAIN 账号口令——标准名（同上） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +11 | — |
+| `CREDENTIALS_EMAIL` | — | BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名 | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +10 | — |
+| `CREDENTIALS_PASSWORD` | — | BRAIN 账号口令——标准名（同上） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +10 | — |
 | `MCP_CONFIG_FILE` | — | toolkit / `tools/lib/api_client.py`：`~/.brain_mcp_config.json` 路径覆盖（凭据来源之一） | `wq-brain-campaign-toolkit/scripts/_lib/common.py` · `tools/lib/api_client.py` · +1 | — |
 | `MOONSHOT_API_KEY` | — | GEM 的 LLM 通道密钥（优先于 `config.json` 的 `moonshot_api_key`；给了 `ideas_file` 就不需要） | `brain-make-some-gem/scripts/headless_runner/run.py` · `brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py` | — |
 | `MOONSHOT_BASE_URL` | `https://api.moonshot.cn/v1` | GEM 的 LLM 端点（runner 从 `config.json` 的 `moonshot_base_url` 写入） | `brain-make-some-gem/scripts/headless_runner/run.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_llm.py` | — |
@@ -74,9 +74,9 @@
 | `WQB_ALLOW_REAL_DB` | — | `=1` 允许测试运行中 wqb-db 连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**，见 `wqb_db_mcp._reject_production_db_under_tests`）。只给确实要读真库的存量体检测试用，必须在测试里写明理由 | `wqb_db_mcp.py` | — |
 | `WQB_CAMPAIGN_DIR` | — | workflow 节点使用的战役目录覆盖 | `src/wqb/workflow/_common.py` | — |
 | `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` | — |
-| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +20 | — |
+| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +14 | — |
 | `WQB_GEM_DATA_ROOT` | — | GEM 产物根（缺省 `data/gem_runs`；`final_expressions.json` 与 `output_report/` 都在其下） | `brain-feature-implementation/scripts/fetch_dataset.py` · `brain-feature-implementation/scripts/implement_idea.py` · +8 | — |
-| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +20 | — |
+| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +17 | — |
 | `WQB_SLOTS_DIR` | — | 账户级槽位 token 目录（缺省 `logs/_slots`） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` | — |
 | `WQB_TASK_ROOT` | — | 后台任务目录（缺省 `logs/_async_tasks`；`workflow_task_status` 读它） | `src/wqb/workflow/_common.py` | — |
 | `WQB_WORKSPACE` | — | 工作区根覆盖（同 `WQB_ROOT`，wave_gate / GEM 等按各自的解析顺序取用） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/headless_runner/run.py` · +6 | — |
@@ -91,8 +91,8 @@
 | `BRAIN_VALID_OP_PATH` | — | validator 读的算子清单 JSON 路径覆盖 | `alpha-expression-verifier/scripts/validator.py` · `brain-feature-implementation/scripts/validator.py` · +2 | — |
 | `WQB_OPERATORS_CATALOG` | — | `op_arity` 读的算子目录路径覆盖（缺省按 `docs/reference` → `data/` → `research-data/` 顺序找） | `src/wqb/expression/op_arity.py` | — |
 | `WQB_TOOLS_LIB` | — | GEM 引擎找 `tools/lib`（`vector_wrap.py` 所在）的覆盖 | `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_paths.py` · `wq-brain-campaign-toolkit/scripts/build_wave.py` · +1 | — |
-| `WQ_MCP_DIR` | — | MCP 目录覆盖（缺省 `<仓库根>/world-quant-brain-mcp`） | `tools/_pyenv.py` · `tools/alpha_properties.py` · +5 | — |
-| `WQ_PY` | — | MCP venv 解释器覆盖（`tools/_pyenv.py`、workflow 节点子进程）；文档里的 `$WQ_PY` 就是它 | `src/wqb/workflow/_common.py` · `tools/_pyenv.py` · +3 | — |
+| `WQ_MCP_DIR` | — | MCP 目录覆盖（缺省 `<仓库根>/world-quant-brain-mcp`） | `tools/_pyenv.py` · `tools/alpha_properties.py` · +4 | — |
+| `WQ_PY` | — | MCP venv 解释器覆盖（`tools/_pyenv.py`、workflow 节点子进程）；文档里的 `$WQ_PY` 就是它 | `src/wqb/workflow/_common.py` · `tools/_pyenv.py` · +2 | — |
 | `WQ_RA_PIPELINE_DIR` | — | GEM `skeletons.py` 找 RA skill 目录的覆盖 | `brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py` · `wq-brain-campaign-toolkit/scripts/assemble_priors.py` | — |
 | `WQ_ROBUSTNESS_SKILL_DIR` | — | `tools/forum_cache_builder.py` 找 robustness skill 目录的覆盖 | `tools/forum_cache_builder.py` | — |
 | `WQ_SKILLS_DIR` | — | skill 根覆盖（解析顺序首位；测试也用它指定被守护的 skills 目录） | `brain-make-some-gem/scripts/trailSomeAlphas/skill_roots.py` · `wq-brain-campaign-toolkit/scripts/_lib/skill_roots.py` · +2 | — |
@@ -107,10 +107,8 @@
 | `CAMPAIGN_NO_CACHE` | — | `=1` 关闭 toolkit 的 metrics_cache | `wq-brain-campaign-toolkit/scripts/metrics_cache.py` | — |
 | `CAMPAIGN_SKIP_DIR_CHECK` | — | `=1` 跳过战役目录合法性检查（仅测试） | `wq-brain-campaign-toolkit/scripts/_lib/common.py` | — |
 | `LC_FRESH` | — | `tools/backfill_longcount.py`：`=1` 忽略 checkpoint 强制全量重跑（同 --fresh） | `tools/backfill_longcount.py` | — |
-| `WQB_DISABLE_BACKLOG_GATE` | — | `=1` 关闭积压闸——仅测试隔离（同上） | `src/wqb/workflow/nodes/_campaign_open_gates.py` | — |
+| `WQB_ALLOW_ALPHA_SUBMIT` | — | `=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入） | `src/wqb/config.py` · `mcp/main.py` | — |
 | `WQB_DISABLE_REGION_GATES` | — | `=1` 关闭 toolkit 开波区域闸整体——仅测试隔离（同上） | `wq-brain-campaign-toolkit/scripts/_lib/region_gates.py` | — |
-| `WQB_DISABLE_SIGNAL_FLOOR_GATE` | — | `=1` 关闭信号下限闸——仅测试隔离（同上） | `src/wqb/workflow/nodes/_campaign_open_gates.py` | — |
-| `WQB_DISABLE_STOP_RULES_GATE` | — | `=1` 关闭停止规则闸——**仅测试隔离**；生产上跳过闸须走 waiver（AGENTS.md §8.1.2） | `src/wqb/workflow/nodes/_campaign_open_gates.py` | — |
 | `WQB_FAMILY_CAP_UNKNOWN` | `0` | build_wave：`=1` 时对「未知」族也套同族封顶（缺省 0） | `wq-brain-campaign-toolkit/scripts/build_wave.py` | — |
 | `WQB_GATE_MODE` | — | wave_gate / build_wave 的开波区域闸模式 `off|warn|enforce`（缺省 warn；日期翻转见 INDEX 闸与逃生口总表） | `wq-brain-campaign-toolkit/scripts/_lib/region_gates.py` · `tools/wave_gate_pkg/cli.py` | — |
 | `WQB_GEM_MAX_PER_SKELETON` | `12` | GEM 预闸：同骨架变体封顶（缺省 12，0 关闭） | `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_pregate.py` | 2026-09-19 |
@@ -120,10 +118,8 @@
 | `WQB_LEDGER_BACKEND` | `sqlite` | toolkit ledger 后端（缺省 `sqlite`） | `wq-brain-campaign-toolkit/scripts/_lib/ledger.py` | — |
 | `WQB_MAX_FIELD_REPEAT` | `3` | gate.py：同批内同一字段允许出现的次数上限 | `wq-brain-campaign-toolkit/scripts/gate.py` | — |
 | `WQB_PF_UNKNOWN_MODE` | — | 闸 PF 对「未探明骨架（新骨架/低置信度/证据混合）」的处置 `warn|enforce`（缺省 warn=只告警；enforce=未探明骨架也拦截整波）。已确认死路骨架恒拦截，不受本档影响。 | `tools/wave_gate_pkg/cli.py` | 2026-10-01 |
-| `WQB_PROBE_CAP` | `1` | build_wave：探针先于扩批时，尚无已回测行的族在本波的 cap（缺省 1） | `wq-brain-campaign-toolkit/scripts/build_wave.py` | — |
-| `WQB_PROBE_GATE` | `on` | build_wave：`=off` 关闭「探针先于扩批」机检（缺省 on） | `wq-brain-campaign-toolkit/scripts/build_wave.py` | — |
 | `WQB_RULES_FILE_ONLY` | — | `=1` 时 toolkit 规则只读文件、不读 DB（隔离 / 排障用） | `wq-brain-campaign-toolkit/scripts/_lib/rules.py` | — |
-| `WQB_SEM_MODE` | — | 闸 SEM（字段语义归类）模式 `off|warn|enforce`（缺省 enforce） | `tools/wave_gate_pkg/cli.py` · `tools/wave_gate_pkg/gates_waiver.py` | — |
+| `WQB_SEM_MODE` | — | 闸 SEM（字段语义归类）模式 `off|warn|enforce`（缺省 enforce） | `tools/wave_gate_pkg/cli.py` | — |
 | `WQB_STARTUP_CHECKS` | `always` | DB `ensure_schema` 启动自检：`always`（缺省）/ `once`（每进程一次）/ `0`（关） | `src/wqb/store/_schema.py` | — |
 | `WQB_TRI_MODE` | — | S1 分诊闸逃生口：`=off` 关闭 fail-closed 分诊（同 --triage-gate off），醒目告警 | `wq-brain-campaign-toolkit/scripts/scan_fields.py` | — |
 | `WQB_VECTOR_TS_FORBIDDEN_REGIONS` | — | GEM 预闸：禁止 `ts_*(vec_*)` 的区域清单覆盖（缺省读 `region_vector_ts_forbidden`） | `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_pregate.py` | — |
@@ -148,7 +144,7 @@
 | `WQB_CAMPAIGN_TIMEOUT` | — | campaign 节点子进程超时（秒） | `src/wqb/workflow/nodes/campaign.py` | — |
 | `WQB_DETACHED_FIRST_OUTPUT_SEC` | `20` | detached 后台任务的首次输出心跳窗口（秒；超时判启动即死） | `src/wqb/workflow/nodes/batch_track.py` | — |
 | `WQB_FORUM_RECON_TIMEOUT_SEC` | — | forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900） | `wq-brain-campaign-toolkit/scripts/pipeline.py` · `src/wqb/workflow/nodes/forum_recon.py` · +1 | — |
-| `WQB_GLOBAL_SLOTS` | `2` | 账户级模拟并发令牌数（缺省 7，= `config.CONCURRENCY`；多流水线同跑共享） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` | 2026-09-19 |
+| `WQB_GLOBAL_SLOTS` | `7` | 账户级模拟并发令牌数（缺省 7，= `config.CONCURRENCY`；多流水线同跑共享） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` | 2026-09-19 |
 | `WQB_WAVE_GATE_TIMEOUT_SEC` | — | wave_gate 节点子进程超时（秒） | `src/wqb/workflow/nodes/wave_gate.py` | — |
 
 #### MCP 服务与平台传输
@@ -156,10 +152,10 @@
 | 变量 | 缺省 | 作用 | 读取方（代码扫描） | 起效 |
 |---|---|---|---|---|
 | `FORUM_RATE_LIMIT_SECONDS` | `0` | MCP 传输层对论坛请求的最小间隔（秒，缺省 0） | `mcp/brain_mixin_transport.py` | — |
-| `MCP_HOST` | `0.0.0.0` | streamable-http 监听地址 | `mcp/mcp_core.py` | — |
-| `MCP_PORT` | `8000` | streamable-http 监听端口 | `mcp/mcp_core.py` | — |
+| `MCP_HOST` | `127.0.0.1` | streamable-http 监听地址 | `mcp/main.py` · `mcp/mcp_core.py` · +1 | — |
+| `MCP_PORT` | `8000` | streamable-http 监听端口 | `mcp/main.py` · `mcp/mcp_core.py` · +1 | — |
 | `MCP_STREAMABLE_HTTP_PATH` | `/mcp` | streamable-http 路径 | `mcp/mcp_core.py` | — |
-| `MCP_TRANSPORT` | `streamable-http` | MCP 服务传输方式（缺省 `streamable-http`；本仓库 `.mcp.json` 走 stdio） | `mcp/main.py` | — |
+| `MCP_TRANSPORT` | `streamable-http` | MCP 服务传输方式（缺省 `streamable-http`；2026-10-05 起两个 server 常驻 HTTP，客户端只连 URL 不再起进程） | `mcp/main.py` · `wqb_db_mcp.py` | — |
 | `REDIS_HOST` | `localhost` | 可选缓存主机（不可用时降级，不阻断） | `mcp/brain_mixin_transport.py` | — |
 | `REDIS_PORT` | — | 可选缓存端口（缺省 6379；不可用时降级，不阻断） | `mcp/brain_mixin_transport.py` | — |
 | `REDIS_CONNECT_TIMEOUT` | `0.3` | 可选缓存 TCP 连接超时秒（缺省 0.3；调大则 Redis 不可达时 MCP stdio 启动变慢，曾致客户端挂载超时） | `mcp/brain_mixin_transport.py` | — |
@@ -186,7 +182,6 @@
 | `GEM_LOG_FILE` | — | GEM runner `--detached` 子进程的日志文件路径（runner 自己设，勿手设） | `brain-make-some-gem/scripts/headless_runner/run.py` | — |
 | `GEM_META_FILE` | — | GEM runner 子进程的 `meta.json` 握手文件路径（runner 自己设，勿手设） | `brain-make-some-gem/scripts/headless_runner/run.py` | — |
 | `WQB_DBLOCK_DISABLE` | — | `=1` 关闭 DB 写锁——仅测试隔离，生产禁用 | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` | — |
-| `WQB_PBR_BOOTSTRAPPED` | — | `tools/prod_blocked_recheck.py`：`=1` 标记子进程已自举（防递归重入）；勿手设 | `tools/prod_blocked_recheck.py` | — |
 | `WQB_PYENV_REEXEC` | — | `tools/_pyenv.py` 的防递归重入标记（勿手设） | `tools/_pyenv.py` | — |
 | `WQB_SQ_BOOTSTRAPPED` | — | `tools/submit_queue.py` 的防递归重入标记（勿手设） | `tools/submit_queue.py` | — |
 <!-- env-table:end -->
