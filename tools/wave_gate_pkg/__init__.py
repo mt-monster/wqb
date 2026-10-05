@@ -10,7 +10,7 @@
 
 | 模块 | 职责 |
 |---|---|
-| `cli.py` | **argparse 契约**（全部 --flag）+ `main()` 编排 |
+| `cli.py` | **编排**：按序调用各闸位（argparse 契约在入口 shim `tools/wave_gate.py`） |
 | `_paths.py` | 工作区根 / 战役库路径 / skill 目录解析（包内唯一路径事实源） |
 | `payload.py` | gate.py 子进程输出解析 + 三分终态（PASS/FAIL/ERROR）+ verifier 装载 |
 | `candidates.py` | 候选解析（DB/JSON/txt/单条）+ 逐条状态回写 |
@@ -20,6 +20,7 @@
 | `gates_inspect.py` | 体检硬门 + PROD 饱和闸 |
 | `gates_familyshape.py` | 机制-形状一致性软闸 |
 | `gates_quality.py` | 六维多样性 + 算子类别覆盖 + 质量预估 + 变体聚类 |
+| `gates_waiver.py` | 逃生口 → waiver 检查（09-29 X-8；缺省 warn，enforce 下无 waiver 即 exit 2） |
 
 ## 兼容契约（勿破坏）
 
@@ -59,6 +60,8 @@ from .gates_quality import (OP_CATEGORIES, _extract_all_operators,
 from .gates_semantic import _semantic_gate
 # ---- 语法闸 ----
 from .gates_syntax import run_syntax_gate
+# ---- 逃生口 waiver 检查（09-29 X-8；抽取自原 main() 内联函数）----
+from .gates_waiver import _waiver_phase
 # ---- gate.py 输出解析 / 终态 ----
 from .payload import (env_error_exit, gate_error_exit, gate_fail_reasons,
                       load_arity_checker, load_validator, parse_gate_payload)
@@ -85,5 +88,6 @@ __all__ = [
     "_field_profile_map_for_gate",
     "run_quality_stage", "run_variant_clustering", "OP_CATEGORIES",
     "_extract_all_operators",
+    "_waiver_phase",
     "_main_impl",
 ]

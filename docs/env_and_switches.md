@@ -108,10 +108,10 @@
 | `CAMPAIGN_SKIP_DIR_CHECK` | — | `=1` 跳过战役目录合法性检查（仅测试） | `wq-brain-campaign-toolkit/scripts/_lib/common.py` | — |
 | `LC_FRESH` | — | `tools/backfill_longcount.py`：`=1` 忽略 checkpoint 强制全量重跑（同 --fresh） | `tools/backfill_longcount.py` | — |
 | `WQB_ALLOW_ALPHA_SUBMIT` | — | `=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入） | `src/wqb/config.py` · `mcp/main.py` | — |
-| `WQB_DISABLE_BACKLOG_GATE` | — | ⚠ **幽灵开关：生产代码从未读取它**（全库仅 `tests/` 里 `monkeypatch.setenv`，`src/` 与 toolkit 侧都没有 `os.environ.get`）。设了它并不会关掉积压闸——真实开关是 `WQB_DISABLE_REGION_GATES`（整组三闸）或 AGENTS.md §8.1.2 的 waiver。仅测试隔离 | `tests/unit/02_workflow/test_workflow_nodes.py` | — |
+| `WQB_DISABLE_BACKLOG_GATE` | — | =1 跳过积压闸（开波闸簇 _campaign_open_gates._run_backlog_gate 确实读取，2026-10-05 翻案旧「幽灵开关」说法）——仅测试/沙箱隔离；生产放行走 waiver | `src/wqb/workflow/nodes/_campaign_open_gates.py` · `tests/unit/02_workflow/test_workflow_nodes.py` | — |
 | `WQB_DISABLE_REGION_GATES` | — | `=1` 关闭 toolkit 开波区域闸整体（catalog / signal_floor / stop_rules / backlog）——仅测试隔离；生产上跳过闸须走 waiver（AGENTS.md §8.1.2） | `wq-brain-campaign-toolkit/scripts/_lib/region_gates.py` · `tests/unit/01_store_db/test_region_gates_p0p1.py` | — |
-| `WQB_DISABLE_SIGNAL_FLOOR_GATE` | — | ⚠ **幽灵开关：生产代码从未读取它**（仅 `tests/` 里 setenv）。设了它并不会关掉信号下限闸——真实开关是 `WQB_DISABLE_REGION_GATES`。仅测试隔离 | `tests/unit/02_workflow/test_workflow_nodes.py` · `tests/unit/06_wave_pipeline/test_stop_rules_verdict_p0p3.py` | — |
-| `WQB_DISABLE_STOP_RULES_GATE` | — | ⚠ **幽灵开关：生产代码从未读取它**（`wqb/waiver.py` 只在 `GatePolicy.escape_hatches` 的说明字符串里提到，未读取）。设了它并不会关掉停止规则闸——真实开关是 `WQB_DISABLE_REGION_GATES`，生产放行走 waiver（AGENTS.md §8.1.2）。仅测试隔离 | `tests/unit/02_workflow/test_workflow_nodes.py` · `tests/unit/06_wave_pipeline/test_stop_rules_verdict_p0p3.py` | — |
+| `WQB_DISABLE_SIGNAL_FLOOR_GATE` | — | =1 跳过信号下限闸（_campaign_open_gates._run_signal_floor_gate 确实读取）——仅测试/沙箱隔离；生产放行走 waiver | `src/wqb/workflow/nodes/_campaign_open_gates.py` · `tests/unit/02_workflow/test_workflow_nodes.py` · +1 | — |
+| `WQB_DISABLE_STOP_RULES_GATE` | — | =1 跳过停止规则闸（_campaign_open_gates._run_stop_rules_gate 确实读取）——仅测试/沙箱隔离；生产放行走 waiver | `src/wqb/workflow/nodes/_campaign_open_gates.py` · `tests/unit/02_workflow/test_workflow_nodes.py` · +1 | — |
 | `WQB_FAMILY_CAP_UNKNOWN` | `0` | build_wave：`=1` 时对「未知」族也套同族封顶（缺省 0） | `wq-brain-campaign-toolkit/scripts/build_wave.py` | — |
 | `WQB_GATE_MODE` | — | wave_gate / build_wave 的开波区域闸模式 `off|warn|enforce`（缺省 warn；日期翻转见 INDEX 闸与逃生口总表） | `wq-brain-campaign-toolkit/scripts/_lib/region_gates.py` · `tests/conftest.py` · +2 | — |
 | `WQB_GEM_MAX_PER_SKELETON` | `12` | GEM 预闸：同骨架变体封顶（缺省 12，0 关闭） | `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_pregate.py` · `tests/unit/03_gem/test_gem_pregate_platform_constraints.py` | 2026-09-19 |
@@ -149,6 +149,7 @@
 | `WQB_FORUM_RECON_TIMEOUT_SEC` | — | forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900） | `wq-brain-campaign-toolkit/scripts/pipeline.py` · `src/wqb/workflow/nodes/forum_recon.py` · +1 | — |
 | `WQB_GLOBAL_SLOTS` | `7` | 账户级模拟并发令牌数（缺省 7，= `config.CONCURRENCY`；多流水线同跑共享） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` · `tests/unit/02_workflow/test_pipeline_error_isolation.py` · +2 | 2026-09-19 |
 | `WQB_WAVE_GATE_TIMEOUT_SEC` | — | wave_gate 节点子进程超时（秒） | `src/wqb/workflow/nodes/wave_gate.py` · `tests/unit/02_workflow/test_run_logged_subprocess.py` | — |
+| `SA_PROBE_CACHE_TTL_HOURS` | `6` | SA 盘点缓存新鲜度窗口（小时，默认 6）——	ools/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先 | `tools/probe_sa_candidates.py` | — |
 
 #### MCP 服务与平台传输
 

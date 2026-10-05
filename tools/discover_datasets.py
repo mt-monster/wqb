@@ -11,22 +11,17 @@
 import sys as _sys, os as _os
 _sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
 from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
+from wqb.store import CampaignStore  # 数据集行写入走库层单一 API（2026-10-01）
 import argparse
 import json
 import os
-import sqlite3
 import sys
-from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
 from api_client import Api, load_creds
 
 DB = "data/wqb.db"
 PAGE = 50
-
-
-def _now():
-    return datetime.now().isoformat(timespec="seconds")
 
 
 def fetch_all_datasets(api, region, universe, delay):
@@ -56,9 +51,11 @@ def main():
     conn = db_connect(args.db)
     conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
+    store = CampaignStore(args.db)
     rid = cur.execute("SELECT id FROM regions WHERE name=?", (args.region,)).fetchone()
     if not rid:
         print(f"区域 {args.region} 不在 regions 表")
+        store.close()
         return
     rid = rid[0]
 
@@ -80,26 +77,19 @@ def main():
         if exists:
             n_skip += 1
             continue
-        # category 是嵌套 dict {id,name}, 取 id
-        cat_raw = d.get("category")
-        cat = cat_raw.get("id") if isinstance(cat_raw, dict) else (cat_raw or d.get("type"))
+        # 2026-10-01：改为走库层单一写入 API（原为手写 INSERT，字段清单与
+        # upsert_dataset_meta 重复且缺 delay/tier）。仍保持「只插不更」语义：
+        # 已存在的行在上面已 continue，不会覆盖。
         if not args.dry_run:
-            cur.execute(
-                """INSERT INTO datasets
-                   (name, region_id, category, field_count, coverage, alpha_count,
-                    value_score, pyramid_multiplier, created_at, updated_at)
-                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
-                (name, rid, cat,
-                 d.get("fieldCount"), d.get("coverage"), d.get("alphaCount"),
-                 d.get("valueScore"), d.get("pyramidMultiplier"),
-                 _now(), _now()))
+            store.upsert_dataset_meta(args.region, dict(d, delay=args.delay))
         n_ins += 1
         fc = d.get("fieldCount") or 0
+        cat_raw = d.get("category")
+        cat = cat_raw.get("id") if isinstance(cat_raw, dict) else (cat_raw or d.get("type"))
         print(f"  {'DRY' if args.dry_run else 'INS'} {name:30s} fields={fc:>5} cat={cat}")
 
-    if not args.dry_run:
-        conn.commit()
     print(f"\n插入={n_ins}  跳过(已存在)={n_skip}")
+    store.close()
     conn.close()
 
 

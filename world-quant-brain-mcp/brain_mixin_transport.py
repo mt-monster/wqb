@@ -113,6 +113,12 @@ class TransportMixin:
             self.log(f"Failed to load OS/IS Sharpe data: {str(e)}, sharpe filtering disabled", "WARNING")
 
         # Initialize Redis connection
+        # 2026-10-03 启动性能修复：Redis 是可选缓存（无它功能不受影响，只是无缓存）。
+        # 原 socket_connect_timeout=5 在本机无 Redis 时会白等满 5 秒（TCP 探测超时），
+        # 使 MCP stdio 启动耗时 ~5.8s，客户端连接超时后直接放弃挂载 → 整server 工具
+        # 不可用。改为 0.3s：仍然能连上本地/容器里正常响应的 Redis，但不可达时几乎
+        # 无感失败。经实测 import 耗时 5.75s → 1.47s。
+        # 仅影响"连不上时要等多久"，不影响连得上时的行为。
         try:
             redis_host = os.environ.get('REDIS_HOST', 'localhost')
             try:
@@ -125,7 +131,7 @@ class TransportMixin:
                 port=redis_port,
                 db=0,
                 decode_responses=True,
-                socket_connect_timeout=5
+                socket_connect_timeout=float(os.environ.get('REDIS_CONNECT_TIMEOUT', '0.3'))
             )
             # Test connection
             self.redis_client.ping()
@@ -230,7 +236,19 @@ class TransportMixin:
         return "lock:brain_correlation"
 
     async def _try_acquire_brain_correlation_lock(self, op_name: str) -> Dict[str, Any]:
-        """Try once to acquire the per-account platform correlation slot."""
+        """Try once to acquire the per-account platform correlation slot.
+
+        三级降级（2026-10-02 补第三级）：
+          1) Redis          —— 真跨进程（多 MCP 进程并存时唯一有效的一级）
+          2) 跨进程文件锁    —— Redis 不可达时的跨进程兜底（复用 wqb.db_write_lock 的
+                               O_CREAT|O_EXCL + TTL 自愈 + 死持有者回收）
+          3) 进程内 asyncio  —— 最后兜底，仅本进程内互斥
+
+        背景：平台相关性接口**单账号单并发**。2026-10-02 实测本机 Redis 未启动
+        （localhost:6379 超时 → redis_client=None），而同时有 8 个 MCP 进程在跑，
+        旧实现直接落到第 3 级 asyncio.Lock ⇒ **跨进程零互斥** ⇒ 并发打平台单并发
+        接口 ⇒ 429/空体/查不到结果。补第 2 级后，无 Redis 也能跨进程互斥。
+        """
         lock_key = self._brain_correlation_lock_key()
         try:
             lock_ttl = int(os.environ.get("BRAIN_CORRELATION_LOCK_TTL_SECONDS", "3700"))
@@ -265,10 +283,16 @@ class TransportMixin:
             except Exception as e:
                 self.log(
                     f"[corr-lock] Redis error acquiring lock for {op_name}: {e}. "
-                    "Falling back to local fail-fast lock.",
+                    "Falling back to cross-process file lock.",
                     "WARNING",
                 )
 
+        # 2) 跨进程文件锁兜底（无 Redis 时恢复真正的全局互斥）
+        file_lock = self._try_acquire_cross_process_corr_lock(op_name, lock_ttl)
+        if file_lock is not None:
+            return file_lock
+
+        # 3) 最后兜底：进程内 asyncio.Lock（仅本进程互斥，跨进程无保证）
         if self._brain_correlation_local_lock.locked():
             self.log(f"[corr-lock] Busy local correlation lock for {op_name}", "INFO")
             return {
@@ -279,12 +303,75 @@ class TransportMixin:
             }
 
         await self._brain_correlation_local_lock.acquire()
-        self.log(f"[corr-lock] Acquired local correlation lock for {op_name}", "INFO")
+        self.log(
+            f"[corr-lock] Acquired local correlation lock for {op_name} "
+            "(仅进程内互斥，跨进程无保证)",
+            "WARNING",
+        )
         return {
             'acquired': True,
             'backend': 'local',
             'lock_key': lock_key,
             'lock_token': lock_token,
+        }
+
+    def _try_acquire_cross_process_corr_lock(self, op_name: str,
+                                             lock_ttl: int) -> Optional[Dict[str, Any]]:
+        """第 2 级：跨进程文件锁。返回 None 表示本模块不可用 → 交给第 3 级。
+
+        复用 ``wqb.db_write_lock``（O_CREAT|O_EXCL 单文件锁 + TTL 自愈 +
+        死持有者按 pid 回收 + ``os.replace(.stale)`` 退役，避开沙箱 safe-delete 守卫），
+        以 ``fail_fast=True`` 保持"立即返回忙、不排队"的原语义。
+        """
+        try:
+            from wqb.db_write_lock import acquire as _flock_acquire
+            from wqb.db_write_lock import release as _flock_release
+        except Exception as e:  # pragma: no cover - 依赖缺失时才走
+            self.log(
+                f"[corr-lock] 跨进程文件锁不可用（{type(e).__name__}），"
+                "降级为进程内锁——多进程并存时可能并发打平台相关性接口。",
+                "WARNING",
+            )
+            return None
+
+        info = _flock_acquire(
+            tag=f"corr:{op_name}",
+            ttl_sec=float(lock_ttl),
+            wait_timeout=0.0,
+            name="correlation.lock.json",
+            fail_fast=True,
+        )
+        if info.get("busy"):
+            self.log(
+                f"[corr-lock] Busy cross-process file lock for {op_name} "
+                "(另一进程正在查平台相关性)",
+                "INFO",
+            )
+            return {
+                'acquired': False,
+                'backend': 'file',
+                'lock_key': info.get("token") or "correlation.lock.json",
+                'retry_after': None,
+            }
+        if not info.get("token"):
+            # 写锁目录不可建/写入失败 → degraded，无法承担跨进程互斥，交给第 3 级
+            self.log(
+                f"[corr-lock] 跨进程文件锁 degraded（{op_name}），降级为进程内锁",
+                "WARNING",
+            )
+            return None
+
+        self.log(
+            f"[corr-lock] Acquired cross-process file lock for {op_name} "
+            f"(ttl={lock_ttl}s)",
+            "INFO",
+        )
+        return {
+            'acquired': True,
+            'backend': 'file',
+            'lock_key': info["token"],
+            'lock_token': info["token"],
+            '_flock_release': _flock_release,
         }
 
     async def _release_brain_correlation_lock(self, lock_info: Dict[str, Any], op_name: str):
@@ -303,6 +390,21 @@ class TransportMixin:
                 self.log(f"[corr-lock] Released {lock_info['lock_key']} for {op_name}", "INFO")
             except Exception as e:
                 self.log(f"[corr-lock] Lock release failed for {op_name}: {e}", "WARNING")
+            return
+
+        if backend == 'file':
+            try:
+                release_fn = lock_info.get('_flock_release')
+                if release_fn is None:  # 兜底：重新导入
+                    from wqb.db_write_lock import release as release_fn  # noqa: WPS440
+                release_fn(lock_info['lock_key'])
+                self.log(
+                    f"[corr-lock] Released cross-process file lock for {op_name}", "INFO"
+                )
+            except Exception as e:
+                self.log(
+                    f"[corr-lock] File lock release failed for {op_name}: {e}", "WARNING"
+                )
             return
 
         if backend == 'local' and self._brain_correlation_local_lock.locked():

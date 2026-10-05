@@ -18,6 +18,13 @@ from unittest.mock import MagicMock
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def _allow_submit(monkeypatch):
+    """本文件验证『提交被允许时』的下游闸行为；全局禁提交闸由 test_global_submit_lock.py 单独守护。"""
+    from wqb.workflow.nodes import submit_alpha as _sa
+    monkeypatch.setattr(_sa, "ALLOW_ALPHA_SUBMIT", True, raising=True)
+
+
 # ---------------------------------------------------------------- _submit_gate 纯函数
 @pytest.fixture
 def gate():
@@ -95,6 +102,11 @@ def _patch_client(monkeypatch, sa, details):
     monkeypatch.setattr(sa, "_poll_status", lambda *a, **k: "ACTIVE")
     monkeypatch.setattr(sa, "_current_status", lambda *a, **k: "ACTIVE")
     monkeypatch.setattr(sa, "_classify_submit_response", lambda *a, **k: "confirmed")
+    # 2026-10-02：prod 闸 / 配额闸默认放行（各闸有独立专测），只聚焦落库与本闸语义。
+    monkeypatch.setattr(sa, "_prod_gate", lambda *a, **k: {
+        "allowed": True, "prod_max": 0.5, "threshold": 0.7, "status": "ok", "reason": "test-stub"})
+    monkeypatch.setattr(sa, "_quota_gate", lambda *a, **k: {
+        "allowed": True, "used": 0, "limit": 4, "remaining": 4, "reason": "test-stub"})
 
 
 def test_run_gate_blocked_returns_without_submit(monkeypatch, sa):

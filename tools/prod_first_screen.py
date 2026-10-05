@@ -7,11 +7,21 @@
 变成一次性可跑的筛选。
 
 行为：
-  - 枚举区域内 IS 合格 & 未提交的 alpha（口径：sharpe≥1.58 & fitness≥1.0 & 2Y≥1.58 & margin 非空 & 未 ACTIVE）
-  - 逐条测 **prod（原始 GET 轮询：空体=平台仍在算，非空取 `max`；见 2026-09-22 修正）** 与 **self（本地计算）**
-  - **断点续跑**：state 文件记录已测 alpha；网络失败不入 state（下次重试）
-  - 测得的值**回写 alphas.prod_correlation / self_correlation / corr_checked_at**（测量落库，幂等）
+  - 枚举区域内 IS 合格& 未提交的 alpha（口径：sharpe≥1.58 & fitness≥1.0 & 2Y≥1.58 & margin 非空 & 未 ACTIVE）
+  - 逐条测 **prod**（走客户端 `check_correlation(production, refresh=True)`——**2026-10-05 改回统一入口**，
+    轮询/缓存/三级互斥锁全由客户端负责；此前裸 GET 绕过 correlation 锁，见下方备注）与
+    **self（本地计算）**
+  - **断点续跑**：state 文件记录已测 alpha；取不到 prod 不入 state（下次重试）
+  - 测得的值**经单源写入口 `set_corr_cache` 落库**（权威表 `alpha_corr_cache` + 联动镜像
+    `alphas.prod_correlation/self_correlation`），幂等
   - 输出 CSV + JSON；打印「<0.7 可提交清单」
+
+★ 2026-10-05 两处口径变更（均为消除「同库多套 prod 存储无同步」的隐患）：
+  ① prod 取值改走 `check_correlation`，不再裸 GET。原裸 GET 的理由（客户端阻塞轮询 + 缓存
+     依赖 Redis）已失效：缓存已落 SQLite 权威表、客户端已有三级跨进程锁。裸 GET 绕过锁，
+     并发时只能靠平台 429。
+  ② 落库改走 `set_corr_cache`（此前只写 `alphas`，`check_correlation` 的 db 缓存读不到，
+     每次重复回源平台单并发队列）。
 
 用法（需 MCP venv 的 Python）：
   world-quant-brain-mcp/.venv/Scripts/python.exe tools/prod_first_screen.py --region ASI
@@ -96,13 +106,35 @@ def ra_failed_ids(region="", db=None):
 
 
 def targets(region, limit=0, skip_measured=True, allow_ra_failed=False):
-    """本地 alphas 表窗口的待测行（默认只给平台 RA 全过的行测 prod）。"""
-    conn = db_connect(DB)
-    conn.row_factory = sqlite3.Row
-    extra = "AND a.prod_correlation IS NULL" if skip_measured else ""
-    if not allow_ra_failed:
-        # 相关子查询而非 NOT IN(?,?..)：坏行可达上千，参数个数会顶到 SQLite 变量上限
-        extra += (
+    """本地 alphas 表窗口的待测行（默认只给平台 RA 全过的行测 prod）。
+
+    2026-10-05：**改为委托** ``submit_queue.unmeasured_supply``（单一事实源）。
+    此前本函数自带一份 SQL 副本，且「已测」只看 ``alphas.prod_correlation IS NULL``，
+    与权威表 ``alpha_corr_cache`` 不同口径 → 「已测但只写在权威表」的行被重复计成
+    待测，白占平台单并发队列。两份口径必须合一，故此处不再保留 SQL。
+    """
+    sys.path.insert(0, os.path.join(REPO, "src"))
+    from wqb.store import submit_queue as sq
+    if not skip_measured:
+        # --all-measured：不限「未测」，全部 IS 合格行都纳入（含已测的，用于强制重测）
+        return _all_qualified(region, limit)
+    return sq.unmeasured_supply(
+        region=region, ra_clean_only=not allow_ra_failed,
+        limit=limit or 200, db_path=DB)
+
+
+def _all_qualified(region, limit=0):
+    """``--all-measured`` 路径：全部 IS 合格行（含已测），供强制重测。
+
+    与 :func:`targets` 同口径（权威表 IS_QUALIFIED + RA 过滤），
+    只是**不要求 prod 未测**。2026-10-05 随 targets 委托 store 单源而拆出。
+    """
+    sys.path.insert(0, os.path.join(REPO, "src"))
+    from wqb.store import submit_queue as sq
+    conn = sq.connect(DB)
+    try:
+        conn.row_factory = sqlite3.Row
+        extra = (
             " AND NOT EXISTS (SELECT 1 FROM backtest_results b"
             "  WHERE b.alpha_id = a.alpha_id"
             "    AND b.id = (SELECT MAX(b2.id) FROM backtest_results b2"
@@ -110,23 +142,26 @@ def targets(region, limit=0, skip_measured=True, allow_ra_failed=False):
             "    AND b.ra_failed_checks IS NOT NULL"
             "    AND LOWER(TRIM(b.ra_failed_checks)) NOT IN ('null','none','[]',''))"
         )
-    sql = (f"SELECT a.alpha_id, a.sharpe, a.fitness, a.two_year_sharpe, r.name AS region "
-           f"FROM alphas a JOIN regions r ON r.id=a.region_id "
-           f"WHERE r.name=? AND {IS_QUALIFIED} {extra} "
-           f"ORDER BY a.sharpe DESC")
-    if limit:
-        sql += f" LIMIT {int(limit)}"
-    rows = [dict(r) for r in conn.execute(sql, (region.upper(),))]
-    conn.close()
-    return rows
+        sql = (f"SELECT a.alpha_id, a.sharpe, a.fitness, a.two_year_sharpe, r.name AS region "
+               f"FROM alphas a JOIN regions r ON r.id=a.region_id "
+               f"WHERE r.name=? AND {IS_QUALIFIED}{extra} ORDER BY a.sharpe DESC")
+        if limit:
+            sql += f" LIMIT {int(limit)}"
+        return [dict(r) for r in conn.execute(sql, (region.upper(),))]
+    finally:
+        conn.close()
 
 
 def persist(alpha_id, prod, self_v=None, source="prod_first_screen"):
-    """测量落库（走 CampaignStore、不裸 SQL）；行不存在则先登记再写。
+    """测量落库 → 走**单源写入口** ``set_corr_cache``（2026-10-05）。
+
+    单源化前本函数直接调 ``persist_correlation``（只写 ``alphas``），于是本工具测到的
+    prod **不进权威表** ``alpha_corr_cache`` → ``check_correlation`` 的 db 缓存读不到
+    → 每次都重新回源平台单并发队列。现改为写权威表并由其联动镜像 ``alphas``。
 
     2026-09-30：平台侧候选（--from-file）常常根本不在本地 alphas 表，旧版裸 UPDATE
-    影响 0 行且不报错 → 测了等于没测（EUR 前四轮“49 条已测”只存在于丢失的 state JSON、
-    库里只余 18 条）。现在先 upsert_alpha_from_platform 登记再 persist_correlation。
+    影响 0 行且不报错 → 测了等于没测。现在 set_corr_cache 对 alphas 镜像失败只记
+    mirror 不阻断，权威表照样落值（权威表与 alphas 解耦正是为此）。
     """
     if not isinstance(prod, (int, float)) and not isinstance(self_v, (int, float)):
         return "no_valid_value"
@@ -137,9 +172,10 @@ def persist(alpha_id, prod, self_v=None, source="prod_first_screen"):
     with write_lock(tag="dbwrite_prod_screen", ttl_sec=180, wait_timeout=90):
         if not store.connection.execute(
                 "SELECT 1 FROM alphas WHERE alpha_id=?", (alpha_id,)).fetchone():
-            return "not_found"            # 登记在 enumerate_from_file 阶段已做完
-        r = store.persist_correlation(alpha_id, prod=prod, self_=self_v,
-                                      source=source, overwrite=False)
+            # 行不在 alphas：权威表照样写（不阻断），只是没有 alphas 镜像
+            r = store.set_corr_cache(alpha_id, prod=prod, self_=self_v, source=source)
+            return "ok(no_alphas_mirror)" if "skipped" not in r else r["skipped"]
+        r = store.set_corr_cache(alpha_id, prod=prod, self_=self_v, source=source)
     return "ok" if "skipped" not in r else r["skipped"]
 
 
@@ -271,8 +307,10 @@ def prod_by_family(region):
     ops = known_ops()
     got = {}
     for r in conn.execute(
-            "SELECT a.expression e, a.prod_correlation p FROM alphas a "
-            "JOIN regions r ON r.id=a.region_id WHERE r.name=? AND a.prod_correlation IS NOT NULL",
+            "SELECT a.expression e, COALESCE(c.prod_correlation, a.prod_correlation) p "
+            "FROM alphas a JOIN regions r ON r.id=a.region_id "
+            "LEFT JOIN alpha_corr_cache c ON c.alpha_id=a.alpha_id "
+            "WHERE r.name=? AND COALESCE(c.prod_correlation, a.prod_correlation) IS NOT NULL",
             (region.upper(),)):
         f = field_family(r["e"], ops)
         got[f] = max(got.get(f, 0.0), float(r["p"]))
@@ -395,7 +433,7 @@ async def main():
     ap.add_argument("--poll-gap", type=int, default=15, help="轮询间隔（秒）")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--all-measured", action="store_true",
-                    help="连已测过 prod 的也重测（默认只测 prod 为 NULL 的）")
+                    help="连已测过 prod 的也重测（默认只测权威表 alpha_corr_cache 里没有的）")
     ap.add_argument("--from-file", default=None,
                     help="平台侧存量候选 JSON（build_gate_prior_from_inventory --emit-candidates 产物）；"
                          "用它枚举而非本地 alphas 表（本地镜像 2Y/margin 缺同步时会漏掉整片供给）")
@@ -477,25 +515,38 @@ async def main():
     measured, failed = 0, 0
     for i, row in enumerate(todo, 1):
         aid = row["alpha_id"]
-        # 2026-09-22 修正：改用**原始端点轮询**取 prod——
-        # 客户端 check_correlation 是同一 GET 的阻塞式轮询，且结果缓存依赖 Redis（本环境不可用）
-        # → 每次回源、易「等死」。原始 GET 始终秒回（空体=平台仍在算），自己控节奏更稳。
-        # 非空返回体形如 {schema, records(直方图), max, min}，**max 即 0.7 判定值**。
+        # 2026-10-05：**改回走 check_correlation**。
+        # 2026-09-22 曾刻意绕过客户端、直接裸 GET 轮询，理由是「客户端是阻塞式轮询 +
+        # 缓存依赖 Redis（本环境不可用）→ 每次回源、易等死」。该前提**已失效**：
+        #   ① 缓存落到 wqb 库 alpha_corr_cache（SQLite 跨进程共享，Redis 不再是单点）；
+        #   ② 客户端已有三级 correlation 锁（Redis→跨进程文件锁→进程内 asyncio）。
+        # 而裸 GET 的代价是**绕过 correlation lock**：本工具全文件无 lock/busy 处理，
+        # 与其它进程并发打平台单并发接口时只能靠平台自己 429 —— 正是
+        # .workbuddy/memory/2026-10-02.md 记录的事故模式（空体/查不到结果）。
+        # 现在统一入口：轮询/等待/缓存/互斥都由 check_correlation 负责。
+        # 客户端对 busy 返回 correlation_busy（本轮跳过、下轮重试），不丢结果。
         prod = self_v = None
-        for _ in range(int(a.window_s / a.poll_gap) or 1):
-            try:
-                resp = await asyncio.wait_for(
-                    bc._request("GET", f"{bc.base_url}/alphas/{aid}/correlations/prod"),
-                    timeout=25)
-                txt = (resp.text or "").strip()
-                if txt:
-                    j = json.loads(txt)
-                    if j.get("max") is not None:
-                        prod = j["max"]
-                        break
-            except Exception:
-                pass
-            await asyncio.sleep(a.poll_gap)
+        note = ""
+        try:
+            res = await asyncio.wait_for(
+                bc.check_correlation(aid, "production", PROD_PASS, refresh=True),
+                timeout=a.window_s + 60,
+            )
+        except asyncio.TimeoutError:
+            res, note = {}, "客户端轮询超时"
+        except Exception as e:  # noqa: BLE001 - 单条失败不终止整批
+            res, note = {}, f"{type(e).__name__}: {str(e)[:80]}"
+
+        pchk = (res.get("checks") or {}).get("production") or {}
+        st = str(res.get("status") or pchk.get("status") or "ok")
+        if pchk.get("max_correlation") is not None:
+            prod = pchk["max_correlation"]
+        elif st in ("correlation_busy", "pending", "data_unavailable", "stale_cache"):
+            note = note or st
+        elif note:
+            pass
+        else:
+            note = st
         for _ in range(2):
             try:
                 sc = await bc.check_self_correlation(aid, threshold=0.7)
@@ -508,7 +559,7 @@ async def main():
 
         if prod is None:                      # prod 取不到 → 不入 state，下次重试
             failed += 1
-            print(f"  [{i}/{len(todo)}] {aid} prod=取不到（下次重试）")
+            print(f"  [{i}/{len(todo)}] {aid} prod=取不到（{note}；下次重试）")
         else:
             measured += 1
             state[aid] = {"prod": prod, "self": self_v, "family": row.get("family"),
@@ -516,7 +567,7 @@ async def main():
                           "at": datetime.now().isoformat(timespec="seconds")}
             with open(state_path, "w", encoding="utf-8") as f:
                 json.dump(state, f, ensure_ascii=False, indent=1)
-            # 测量落库（只填 NULL，保留平台权威值；走 CampaignStore）
+            # 测量落库：走**单源写入口** set_corr_cache（联动 alphas 镜像）
             wrote = persist(aid, prod, self_v)
             if wrote == "not_found":
                 print(f"  [warn] {aid} 不在 alphas 表，prod 值仅存 state（请查登记步骤是否失败）")

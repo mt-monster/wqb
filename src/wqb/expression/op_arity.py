@@ -58,12 +58,15 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 __all__ = [
     "OpSignature",
     "ArityError",
+    "UnknownOperatorError",
     "parse_definition",
     "load_signatures",
     "iter_call_sites",
     "check_expression",
     "check_expressions",
+    "check_unknown_operators",
     "ensure_safe_for_dispatch",
+    "ensure_safe_for_dispatch_strict",
     "format_report",
 ]
 
@@ -102,6 +105,10 @@ _INFIX_BINARY_OPS = {
 
 class ArityError(ValueError):
     """算子元数 / 命名参数违规。"""
+
+
+class UnknownOperatorError(ValueError):
+    """表达式里的调用点名不在 catalog 中（平台会回 "unknown operator"）。"""
 
 
 @dataclass(frozen=True)
@@ -469,6 +476,94 @@ def check_expression(expr: str,
                 errors.append(f"[KWARG] {site.name} 的命名参数 '{key}' 重复")
             seen.add(key)
     return errors
+
+
+def check_unknown_operators(expr: str,
+                            signatures: Optional[Dict[str, OpSignature]] = None,
+                            ) -> List[str]:
+    """报告表达式里 catalog 不认得的调用点名（平台回"unknown operator"）。
+
+    事故背景（2026-10-04 wave285）：``ts_std`` 是**平台不存在的算子名**（正确是
+    ``ts_std_dev``），而 :func:`check_expression` 按设计对未知算子放行（避免与
+    :mod:`wqb.expression.operator_audit` 双重误报），于是 3 条表达式离线报 PASS、
+    发到平台全部 ERROR，白扔 3 个槽位。
+
+    本函数**单独**提供这一维，不改变 ``check_expression`` 的默认放行行为；
+    发批前用 :func:`ensure_safe_for_dispatch_strict` 一并硬闸。
+
+    排除项：catalog 快照缺失的算子会误报，故保留 :data:`_KNOWN_CATALOG_GAPS`
+    白名单（实测存在但离线 catalog 未收录的算子）。
+    """
+    sigs = signatures if signatures is not None else load_signatures()
+    errors: List[str] = []
+    seen: set = set()
+    for site in iter_call_sites(expr):
+        if site.name in sigs or site.name in _KNOWN_CATALOG_GAPS:
+            continue
+        if site.name in seen:
+            continue
+        seen.add(site.name)
+        hint = _closest_operators(site.name, sigs)
+        msg = (f"[UNKNOWN-OP] {site.name} 不在算子 catalog 中，平台会回 "
+               f"\"Attempted to use inaccessible or unknown operator \\\"{site.name}\\\"\"")
+        if hint:
+            msg += f"；是否想写 {hint[0]}"
+        errors.append(msg)
+    return errors
+
+
+def _closest_operators(name: str, sigs: Dict[str, OpSignature], limit: int = 3) -> List[str]:
+    """给候选算子：前缀/子串匹配优先（``ts_std`` -> ``ts_std_dev``），再退回编辑距离。
+
+    difflib 单独用会把 ``ts_std`` 排到 ``ts_step`` 前面（编辑距离更近但语义无关），
+    而平台的正确修法通常是同前缀扩展名，故先做前缀匹配。
+    """
+    pref = sorted(s for s in sigs if s.startswith(name))
+    if pref:
+        return pref[:limit]
+    import difflib
+    return difflib.get_close_matches(name, list(sigs.keys()), n=limit, cutoff=0.7)
+
+
+#: 实测存在于平台、但离线 catalog 快照未收录的算子（避免误报）。
+#: 追加条件：``get_operators`` 实测在册 + 仓库内已有成功回测实证。
+_KNOWN_CATALOG_GAPS = frozenset({
+    # 2026-10-04 wave274：get_operators 实测 level=ALL 在册，平台实跑通过
+    "hump",
+})
+
+
+def check_expressions_strict(expressions: Sequence,
+                             signatures: Optional[Dict[str, OpSignature]] = None
+                             ) -> Dict:
+    """批量校验元数 **+ 未知算子**；返回同 :func:`check_expressions` 的结构。"""
+    sigs = signatures if signatures is not None else load_signatures()
+    items: List[Dict] = []
+    for i, item in enumerate(expressions, 1):
+        if isinstance(item, (tuple, list)) and len(item) == 2:
+            cid, expr = item
+        else:
+            cid, expr = i, item
+        errs = list(check_expression(str(expr), sigs)) + \
+            list(check_unknown_operators(str(expr), sigs))
+        items.append({"id": cid, "expression": expr,
+                      "valid": not errs, "errors": errs})
+    passed = sum(1 for it in items if it["valid"])
+    return {"ok": passed == len(items), "total": len(items),
+            "passed": passed, "items": items,
+            "signatures_loaded": len(sigs)}
+
+
+def ensure_safe_for_dispatch_strict(expressions: Sequence[str]) -> None:
+    """发批前硬闸（推荐入口）：元数违规 **或** 未知算子即抛异常。"""
+    report = check_expressions_strict(expressions)
+    if not report["ok"]:
+        bad = [it for it in report["items"] if not it["valid"]]
+        detail = "; ".join(f"{it['expression']} -> {it['errors']}" for it in bad)
+        raise (UnknownOperatorError if any("[UNKNOWN-OP]" in e
+                                          for it in bad for e in it["errors"])
+               else ArityError)(
+            f"{len(bad)} 条表达式不可提交（未知算子 / 元数违规）: {detail}")
 
 
 def check_expressions(expressions: Sequence,

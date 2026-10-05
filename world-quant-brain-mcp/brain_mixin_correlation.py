@@ -41,6 +41,25 @@ def build_alpha_properties_payload(*, name: Optional[str] = None, color: Optiona
     return payload
 
 
+def _corr_age(iso: Optional[str]) -> Optional[float]:
+    """ISO 时间戳距今小时数；无法解析返回 ``None``（**不是 0**）。
+
+    ``None`` 会被 ``check_correlation`` 的缓存分支判为 stale——「时间戳不可解析」
+    属于「不知道新鲜度」，不能当成「刚测过」。
+    """
+    if not iso:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    now = datetime.now(dt.tzinfo) if dt.tzinfo else datetime.now()
+    try:
+        return round((now - dt).total_seconds() / 3600.0, 2)
+    except TypeError:
+        return None
+
+
 class CorrelationMixin:
     def _pnl_response_to_series(self, aid: str, pnl_data: dict) -> Optional[pd.Series]:
         """Convert a raw PnL API response dict to a pandas Series indexed by date."""
@@ -705,9 +724,80 @@ class CorrelationMixin:
         }
 
     def _prod_corr_cache_key(self, alpha_id: str) -> str:
-        """prod 结果缓存 key。同一 alpha 仿真后生产池相关性不再变化（重仿真产生新 id），
-        故可按 alpha_id 缓存 7 天，避免重复占用平台单并发相关性队列。"""
+        """prod 结果缓存 key。
+
+        ⚠ TTL 与**漂移事实**矛盾（2026-10-05 审计）：本注释原写「同一 alpha 仿真后生产池
+        相关性不再变化」，但 ``submit_queue`` 记有实证反例——EUR ``le8Y68K2``
+        0.6929 → 0.9932、``E5pbM7Nm`` 静态 0.6678 → 刷新 0.981 FAIL。故 TTL 收敛到
+        ``_PROD_CORR_TTL_SECONDS``（48h，与 ``wqb.store._corr_cache.CORR_FRESH_HOURS``
+        单一事实源同口径），并让缓存命中**显式透出新鲜度**（``stale``/``age_hours``），
+        调用方据此决定是否 refresh——不再靠猜。
+        """
         return f"prod_corr:{alpha_id}"
+
+    #: prod 缓存 TTL（秒）。= 48h，与 CORR_FRESH_HOURS 同值；
+    #: wqb 库权威层的保鲜期判据以此为准（``get_corr_cache`` 返回 stale 字段）。
+    _PROD_CORR_TTL_SECONDS = 172800
+
+    # --- wqb.db 相关性缓存（2026-10-04，Redis 之外的第二级持久缓存） --------
+    #
+    # 背景：prod 结果的缓存后端此前只有 Redis，而本机 Redis 常未启动
+    # （``redis_client=None`` → 读写全 no-op），导致多会话各自重复打平台
+    # 单并发队列，每颗 alpha 等 1-5 分钟。本机 self 相关性有文件缓存
+    # （downloads/os_pnl_pool_*.pkl）所以秒回，prod 没有对应兜底。
+    #
+    # 本层把结果落到 data/wqb.db 的 alpha_corr_cache 表：
+    #   - 与 alphas 表解耦（仿真 alpha 不在 alphas 里，也能缓存）
+    #   - SQLite 天生跨进程共享，多 MCP 进程读同一份
+    #   - 写是单行 upsert（busy_timeout=60s），无需 db_write_lock
+    # 懒加载 + 失败降级：库不可用时只是没有缓存，绝不阻断查询主流程。
+
+    def _corr_cache_store(self):
+        """懒加载 CampaignStore（wqb 库）；不可用返回 None 并只告警一次。"""
+        cached = getattr(self, "_corr_cache_store_singleton", None)
+        if cached is not None:
+            return cached or None
+        try:
+            from wqb.store import CampaignStore
+            store = CampaignStore.from_workspace()
+            self._corr_cache_store_singleton = store
+            self.log("[corr-cache] wqb 库相关性缓存已启用（alpha_corr_cache）", "INFO")
+            return store
+        except Exception as e:
+            self.log(
+                f"[corr-cache] wqb 库缓存不可用（{type(e).__name__}: {e}），"
+                "降级为仅 Redis + 平台查询",
+                "WARNING",
+            )
+            self._corr_cache_store_singleton = False  # 标记失败，避免反复重试
+            return None
+
+    def _db_corr_cache_get(self, alpha_id: str) -> Optional[Dict[str, Any]]:
+        """从 wqb 库读 prod 缓存；无记录/不可用返回 ``None``。
+
+        走**单源读** ``get_corr_authoritative``：权威表缺条目时回落 ``alphas`` 表。
+        单源化前本函数只查 ``alpha_corr_cache``，于是「实测值只写在 alphas 里」的行
+        （实测 6 颗 GBR）会被判「无缓存」→ 重复打平台单并发队列 → ``correlation_busy``。
+        """
+        store = self._corr_cache_store()
+        if not store:
+            return None
+        try:
+            return store.get_corr_authoritative(alpha_id)
+        except Exception as e:
+            self.log(f"[corr-cache] 读库失败 {alpha_id}: {e}", "WARNING")
+            return None
+
+    def _db_corr_cache_set(self, alpha_id: str, prod: Optional[float] = None,
+                           records: Any = None, source: str = "platform") -> None:
+        """把平台算出的 prod 结果写回 wqb 库（失败仅告警，不阻断）。"""
+        store = self._corr_cache_store()
+        if not store:
+            return
+        try:
+            store.set_corr_cache(alpha_id, prod=prod, records=records, source=source)
+        except Exception as e:
+            self.log(f"[corr-cache] 写库失败 {alpha_id}: {e}", "WARNING")
 
     async def check_correlation(self, alpha_id: str, correlation_type: str = "production", threshold: float = 0.7, refresh: bool = False) -> Dict[str, Any]:
         """ Only where all IS metrics PASS to Check alpha correlation, Check alpha correlation against production alphas, self alphas, or both.
@@ -742,20 +832,61 @@ class CorrelationMixin:
             
             for check_type in check_types:
                 if check_type == "production":
-                    # 结果缓存：同 alpha 的已决结果 7 天内直接命中，不占平台单并发队列；
-                    # refresh=True 或缓存缺失/未决时回源平台。
+                    # 结果缓存：同 alpha 的已决结果直接命中，不占平台单并发队列。
+                    # 两级：Redis（若可用）→ wqb 库 alpha_corr_cache（无 Redis 时的持久层）。
+                    # refresh=True 强制回源平台（用于怀疑缓存陈旧/串号时）。
                     cache_key = self._prod_corr_cache_key(alpha_id)
                     cached = None if refresh else self._get_cached_data(cache_key)
+                    cache_backend = 'redis'
+                    db_age_h = None      # 权威层自带 age/stale，透传避免二次推导
+                    db_stale = None
+                    if not (cached and cached.get('max') is not None) and not refresh:
+                        db_cached = self._db_corr_cache_get(alpha_id)
+                        if db_cached and db_cached.get('max') is not None:
+                            cached = {
+                                'max': db_cached['max'],
+                                'records': db_cached.get('records') or [],
+                                'cached_at': db_cached.get('checked_at'),
+                            }
+                            cache_backend = 'wqb_db'
+                            db_age_h = db_cached.get('age_hours')
+                            db_stale = bool(db_cached.get('stale'))
                     if cached and cached.get('max') is not None:
                         max_correlation = cached['max']
                         passes_check = max_correlation < threshold
+                        # 新鲜度显式透出（2026-10-05）：此前缓存命中只给 cached_at，
+                        # 调用方无法判断该不该 refresh——而 prod 会随生产池漂移
+                        # （实证 le8Y68K2 0.6929→0.9932）。命中 stale 缓存时
+                        # max_correlation 仍照常返回（可作排序参考），但 passes_check
+                        # 降级为 None 并标 stale，避免「拿 48h 前的值当终验」——
+                        # 终验只认 refresh=True 的当轮实测。
+                        age_h = db_age_h if cache_backend == 'wqb_db' else _corr_age(cached.get('cached_at'))
+                        stale = db_stale if cache_backend == 'wqb_db' else (
+                            (age_h is None) or (age_h * 3600.0 > self._PROD_CORR_TTL_SECONDS))
+                        self.log(
+                            f"[PC缓存] Alpha {alpha_id} 命中 {cache_backend} "
+                            f"prod={max_correlation} age={age_h}h stale={stale}",
+                            "INFO",
+                        )
                         results['checks'][check_type] = {
                             'max_correlation': max_correlation,
-                            'passes_check': passes_check,
+                            # stale 时不给 True/False：「未知」不能冒充「通过」。
+                            'passes_check': None if stale else passes_check,
                             'from_cache': True,
+                            'cache_backend': cache_backend,
                             'cached_at': cached.get('cached_at'),
+                            'corr_age_hours': age_h,
+                            'corr_stale': stale,
                             'correlation_data': cached,
                         }
+                        if stale:
+                            results["status"] = 'stale_cache'
+                            results["all_passed"] = None
+                            results["message"] = (
+                                f"prod 缓存已 {age_h}h（阈值 {self._PROD_CORR_TTL_SECONDS // 3600}h），"
+                                "生产池会漂移，只能作排序参考；终验须 check_correlation(refresh=True)。"
+                            )
+                            return results
                         if not passes_check:
                             all_passed = False
                             results["all_passed"] = all_passed
@@ -807,9 +938,16 @@ class CorrelationMixin:
                                 'max': correlation_data['max'],
                                 'records': correlation_data.get('records', []),
                                 'cached_at': datetime.utcnow().isoformat() + 'Z',
-                            }, ttl=604800)
+                            }, ttl=self._PROD_CORR_TTL_SECONDS)
                         except Exception as cache_err:
                             self.log(f"prod corr cache write failed for {alpha_id}: {cache_err}", "WARNING")
+                        # 第二级：同时落 wqb 库（Redis 缺失/重启后仍能命中，多进程共享）
+                        self._db_corr_cache_set(
+                            alpha_id,
+                            prod=correlation_data['max'],
+                            records=correlation_data.get('records', []),
+                            source='platform',
+                        )
                         results['checks'][check_type] = {
                             'max_correlation': max_correlation,
                             'passes_check': passes_check,

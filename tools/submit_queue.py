@@ -23,6 +23,7 @@
   pick                输出最优先 1 条（供提交）
   regrade             离线复判 READY 行（RA 硬闸 / add 混腿 / prod 兄弟），零配额
   retire              退役（SUBMITTED / DEAD / EXPIRED）
+  refresh-family      回填 family 列（骨架→短族名；该列长期 100% 为空，见 store.refresh_family）
 
 退出码: 0=成功, 1=失败
 运行环境: 网络子命令（add / verify）走 MCP venv
@@ -122,6 +123,22 @@ def cmd_dedup(a):
     return 0
 
 
+def cmd_refresh_family(a):
+    """回填 family 列（骨架→短族名）。
+
+    该列长期 100% 为空：_upsert 一直写它、但没有回填路径。ISSERT 语句显式引用它，
+    故**不可 DROP 该列**（会写崩入队），只能补数据。见 store.refresh_family。
+    """
+    sq = _sq()
+    if a.dry_run:
+        n = sq.refresh_family(region=a.region, dry_run=True)
+        print(f"[refresh-family] dry-run：{n} 行将回填（未写入）")
+        return 0
+    n = sq.refresh_family(region=a.region)
+    print(f"[refresh-family] 已回填 {n} 行的 family")
+    return 0
+
+
 def cmd_list(a):
     sq = _sq()
     rows = sq.list_ready(region=a.region, all_status=a.all_status)
@@ -153,6 +170,23 @@ def cmd_pick(a):
         print("队列为空，无可提交候选")
         return 1
     print(json.dumps(rows[0], ensure_ascii=False, default=str, indent=1))
+    return 0
+
+
+def cmd_prod_blocked(a):
+    """列出「模拟层全过、仅 prod/self 撞墙」的候选（可随生产池变化恢复）。"""
+    sq = _sq()
+    rows = sq.list_prod_blocked(region=a.region)
+    if a.top:
+        rows = rows[:a.top]
+    print(f"=== 生产池阻塞候选（PROD_BLOCKED）：{len(rows)} 条 ===")
+    print("  （模拟层全过，仅 prod/self ≥0.7；不直接提交，等池子有空间再复核）")
+    if not rows:
+        print("  （空）")
+    for i, r in enumerate(rows, 1):
+        print(f"  {i:2d}. {str(r.get('alpha_id')):12s} {str(r.get('region')):5s} "
+              f"sh={r.get('sharpe')} fit={r.get('fitness')} turn={r.get('turnover')} "
+              f"| prod={r.get('prod')} self={r.get('self')} | {r.get('gate')}")
     return 0
 
 
@@ -367,6 +401,160 @@ async def _cmd_verify(a):
     return 0
 
 
+def cmd_backfill_towers(a):
+    """回填 towers 列：表达式 → 数据字段 → datasets.category → 塔名（规范 JSON 形态）。
+
+    背景（2026-10-05）：该列历史上三种格式并存——JSON list of str、**裸字符串**
+    （`USA/D1/MODEL`，json.loads 抛错）、`[]`/NULL（harvest 时 UNSUBMITTED alpha 无
+    pyramids）。旧 priority() 只认「list of dict with multiplier」，三态全部静默退化为
+    倍率 1.0 ⇒ 塔倍率丢失、优先级排序失真。本命令统一为 ``[{"name":..,"multiplier":..}]``。
+
+    只补**塔名为空**的行，不覆盖已有台账信息（幂等，可反复跑）。
+    """
+    sq = _sq()
+    from wqb.towers import field_index, infer_tower
+
+    con = sq.connect()
+    try:
+        sq.ensure_table(con)
+        q = "SELECT id, alpha_id, region, expr, towers FROM submit_ready"
+        ps = []
+        if a.region:
+            q += " WHERE region=?"
+            ps.append(a.region)
+        rows = [dict(r) for r in con.execute(q, ps).fetchall()]
+        # 只处理表达式有效的行（配方标签形态无 '(' 无法反推）
+        rows = [r for r in rows if r.get("expr") and "(" in r["expr"]]
+
+        fidx, kept, filled, skipped = {}, 0, 0, 0
+        for r in rows:
+            reg = r["region"]
+            names = [n for n, _m in sq.normalize_towers(r["towers"]) if n]
+            if names:
+                kept += 1
+                continue
+            if reg not in fidx:
+                fidx[reg] = field_index(reg) or {}
+            inf = infer_tower(r["expr"], reg, field_idx=fidx[reg]) if fidx[reg] else None
+            if not inf:
+                skipped += 1
+                continue
+            rec = [{"name": inf["tower"], "multiplier": inf["dataset_multiplier"]}]
+            if a.dry_run:
+                print(f"  [dry-run] {r['alpha_id']} {reg} → {inf['tower']}"
+                      f" ×{inf['dataset_multiplier']:g}（{inf['dataset']}）")
+            else:
+                con.execute("UPDATE submit_ready SET towers=? WHERE id=?",
+                            (json.dumps(rec, ensure_ascii=False), r["id"]))
+            filled += 1
+        if not a.dry_run:
+            con.commit()
+        print(f"[backfill-towers] 扫描 {len(rows)} 条（表达式有效）：已有塔名 {kept} 条保留，"
+              f"{'将' if a.dry_run else '已'}回填 {filled} 条"
+              f"{'（dry-run 未写入）' if a.dry_run else '（已写入）'}，"
+              f"{skipped} 条无法反推（字段不在该区域目录）")
+        # 全列规范化：凡能解析出塔名的行统一写成 [{"name":..,"multiplier":..}]，
+        # 倍率优先取平台塔表（覆盖历史的裸字符串形态与数据集级值）
+        norm_n = _normalize_towers(con, a.region, dry_run=a.dry_run)
+        print(f"[backfill-towers] 全列规范化 {norm_n} 条"
+              f"{'（dry-run 未写入）' if a.dry_run else '（已写入）'}")
+        return 0
+    finally:
+        con.close()
+
+
+def _platform_pyramid_table() -> dict:
+    """平台塔倍率表 → ``{"USA/D1/model": 1.3}``。失败返回 {}。"""
+    from wqb.towers import category_key
+    try:
+        from brain_api import BrainApiClient  # noqa: F401 - 仅 MCP venv 可用
+        import asyncio
+        brain = BrainApiClient()
+        asyncio.run(brain.ensure_authenticated())
+        payload = asyncio.run(brain.get_pyramid_multipliers())
+    except Exception:  # noqa: BLE001
+        return {}
+    table = {}
+    for p in (payload.get("pyramids") if isinstance(payload, dict) else None) or []:
+        if not isinstance(p, dict):
+            continue
+        rg = str(p.get("region") or "").strip().upper()
+        try:
+            dl = int(p.get("delay"))
+        except (TypeError, ValueError):
+            continue
+        cat = p.get("category")
+        cid = cat.get("id") if isinstance(cat, dict) else cat
+        m = p.get("multiplier")
+        if not rg or not cid or not isinstance(m, (int, float)):
+            continue
+        table[f"{rg}/D{dl}/{category_key(str(cid))}"] = float(m)
+    return table
+
+
+def _dataset_tower_table() -> dict:
+    """本地数据集级塔倍率兜底 → ``{"USA/D1/model": 1.3}``。"""
+    from wqb.towers import category_key
+    from wqb.db_conn import connect as db_connect
+    con = db_connect()
+    try:
+        out = {}
+        for reg, delay, cat, m in con.execute(
+                "SELECT r.name, d.delay, d.category, MAX(d.pyramid_multiplier) "
+                "FROM datasets d JOIN regions r ON r.id = d.region_id "
+                "WHERE d.category IS NOT NULL AND d.category <> '' "
+                "  AND d.pyramid_multiplier IS NOT NULL "
+                "GROUP BY r.name, d.delay, d.category").fetchall():
+            if reg and delay is not None and cat and m:
+                out[f"{str(reg).upper()}/D{int(delay)}/{category_key(str(cat))}"] = float(m)
+        return out
+    finally:
+        con.close()
+
+
+def _normalize_towers(con, region=None, dry_run=False) -> int:
+    """全列规范化：凡能解析出塔名的行统一写成 ``[{"name":..,"multiplier":..}]``。
+
+    幂等（已是规范形态且倍率一致则跳过）。倍率优先平台塔表，取不到回落数据集级值，
+    再取不到保留原值。返回实际改写的行数。
+    """
+    from wqb.towers import lookup_multiplier, parse_tower
+    pt = _platform_pyramid_table()
+    dt = _dataset_tower_table()
+    if not pt:
+        print("  （未取到平台塔表，倍率回落数据集级值）")
+    sq = _sq()
+    q = "SELECT id, towers FROM submit_ready"
+    ps = []
+    if region:
+        q += " WHERE region=?"
+        ps.append(region)
+    n = 0
+    for r in con.execute(q, ps).fetchall():
+        tw = [(nm, m) for nm, m in sq.normalize_towers(r["towers"]) if nm]
+        if not tw:
+            continue
+        nm = tw[0][0]
+        p = parse_tower(nm)
+        if not p:
+            continue
+        mult = lookup_multiplier(pt, p[0], p[1], p[2])
+        if mult is None:
+            mult = lookup_multiplier(dt, p[0], p[1], p[2])
+        rec = [{"name": nm}]
+        if mult is not None:
+            rec[0]["multiplier"] = mult
+        new = json.dumps(rec, ensure_ascii=False)
+        if new == r["towers"]:
+            continue
+        if not dry_run:
+            con.execute("UPDATE submit_ready SET towers=? WHERE id=?", (new, r["id"]))
+        n += 1
+    if not dry_run:
+        con.commit()
+    return n
+
+
 def main():
     ap = argparse.ArgumentParser(description="待提交候选队列（回测过闸 → 持久化 → 取用）")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -402,6 +590,16 @@ def main():
     p.add_argument("--dry-run", action="store_true")
     p.set_defaults(fn=cmd_retag)
 
+    p = sub.add_parser("backfill-towers", help="回填 towers 列（表达式反推塔名 + 平台塔表倍率，全列规范化）")
+    p.add_argument("--region", help="只处理该区域")
+    p.add_argument("--dry-run", action="store_true", help="只打印将回填的内容，不写入")
+    p.set_defaults(fn=cmd_backfill_towers)
+
+    p = sub.add_parser("refresh-family", help="回填 family 列（骨架→短族名；该列长期全空）")
+    p.add_argument("--region")
+    p.add_argument("--dry-run", action="store_true")
+    p.set_defaults(fn=cmd_refresh_family)
+
     p = sub.add_parser("verify", help="复检相关性 + RA 硬闸（过期/变差则标记；先自动退役已 ACTIVE）")
     p.add_argument("--region")
     p.add_argument("--max-age-days", type=int, default=7)
@@ -419,6 +617,11 @@ def main():
     p.add_argument("--top", type=int)
     p.add_argument("--all-status", action="store_true", help="含 DEAD/EXPIRED/SUBMITTED")
     p.set_defaults(fn=cmd_list)
+
+    p = sub.add_parser("prod-blocked", help="列出生产池阻塞候选（模拟层全过、仅 prod/self≥0.7）")
+    p.add_argument("--region")
+    p.add_argument("--top", type=int)
+    p.set_defaults(fn=cmd_prod_blocked)
 
     p = sub.add_parser("pick", help="输出最优先 1 条")
     p.add_argument("--region")

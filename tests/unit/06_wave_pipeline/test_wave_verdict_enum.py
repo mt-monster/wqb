@@ -102,7 +102,11 @@ def test_db_write_path_classifier_matches_campaign():
     assert "过硬闸" in src, "contract 丢失了过硬闸归一规则"
     assert 'return ("PASS" if int(m.group(1)) > 0 else "FAIL")' not in src, (
         "contract 仍把 N>0 过硬闸判成 PASS —— 与 campaign 读取方（PARTIAL）分歧")
-    # 委托不脱落：wqb_db_mcp 必须引用 contract（防改回内联第二权威）
+    # 委托不脱落：wqb_db_mcp 必须引用 contract（防改回内联第二权威）。
+    # ⚠ 本断言直接读根 `wqb_db_mcp.py` 的**源码文本**：若将来把这个 2723 行入口拆成包，
+    # 这里会连带失效（改成扫 src/wqb/db_mcp/*.py）。同类源码文本耦合在 tests/ 里还有约 10 处
+    # （test_se_docs / test_skill_lint / test_ledger_key_catalog / test_index_tables 等），
+    # 它们构成拆分的真实爆炸半径 —— 见 AGENTS.md §8.4 第 5 项。
     mcp_src = (REPO_ROOT / "wqb_db_mcp.py").read_text(encoding="utf-8")
     assert "_wave_contract.normalize_verdict" in mcp_src, (
         "wqb_db_mcp 不再委托 wave_results_contract —— 归一实现出现第二权威")

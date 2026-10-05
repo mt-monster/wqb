@@ -39,7 +39,7 @@ def db_path(tmp_path):
 def mcp(db_path, monkeypatch):
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", db_path)
+    mod.set_db_path(db_path)        # 读写同源；隔离失效由 get_db_path() 的结果闸兜住
     return mod
 
 

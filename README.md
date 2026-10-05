@@ -123,28 +123,40 @@ git config core.hooksPath tools/git-hooks
 
 ### 启动 MCP 服务
 
-已在 `.mcp.json` 注册两个 stdio 服务，由客户端按需拉起，无需手动启动：
+两个 MCP 服务器是 **HTTP 常驻服务**（2026-10-05 由 stdio 切换）：`.mcp.json` 只写 `type` + `url`，
+客户端只连 URL、**不再由客户端拉起进程** ⇒ 服务得自己起：
 
-| 服务 | 入口 | 用途 |
-|---|---|---|
-| `wq-brain-http` | `world-quant-brain-mcp/main.py` | BRAIN 平台交互（回测、提交、相关性、论坛） |
-| `wqb-db` | `wqb_db_mcp.py` | 战役数据库读写 |
-
-> 修改 `world-quant-brain-mcp/` 后**需重启 MCP 服务**才生效。
-
-**跨平台写法（2026-09-29）**：`.mcp.json` 用 Claude Code 支持的 `${VAR:-default}`（command / args / env 均可展开）。
-**没设任何环境变量时，展开结果与旧版逐字相同**（作者 Windows 本机行为不变）；其他环境覆盖下面三个变量即可：
-
-| 变量 | 含义 | Windows 缺省 | Linux / 云端示例 |
+| 服务 | 入口 | 监听 | 用途 |
 |---|---|---|---|
-| `WQB_HOME` | 仓库根 | `D:/coding/traeCN_project/wqb` | `/home/user/wqb` |
-| `WQB_MCP_PY` | `wq-brain-http` 用的解释器 | `<根>/world-quant-brain-mcp/.venv/Scripts/python.exe` | `/home/user/wqb/world-quant-brain-mcp/.venv/bin/python` |
-| `WQB_DB_MCP_PY` | `wqb-db` 用的解释器 | `<根>/.venv/Scripts/python.exe` | 同上（云端一个 venv 即可） |
+| `wq-brain-http` | `world-quant-brain-mcp/main.py` | `127.0.0.1:8000/mcp` | BRAIN 平台交互（回测、提交、相关性、论坛） |
+| `wqb-db` | `wqb_db_mcp.py` | `127.0.0.1:8001/mcp` | 战役数据库读写 |
 
-`mcp_config.json`（供 Claude Desktop，不展开变量）保持字面路径，与 `.mcp.json` 缺省展开值的一致性由
-`tests/unit/06_wave_pipeline/test_mcp_config_portable.py` 守护。体检：`python tools/mcp_ping.py`（同样按上表展开）。
+```bash
+python tools/start_wq_mcp.py --all     # 确保两个都在跑（端口读 .mcp.json；已在监听则跳过）
+python tools/start_wq_mcp.py --check   # 只报状态：exit 0=在跑 / 1=未跑
+python tools/mcp_ping.py               # 端到端体检：握手 + tools/list + 只读探针（不起进程）
+```
+
+> 修改 `world-quant-brain-mcp/` 后**需重启服务**才生效（先停旧进程再 `--all`）；客户端侧另需重载窗口 / 重启 MCP 连接。
+> ⚠ 服务是普通后台进程：**机器重启或被 kill 就没了**，届时全部 HTTP 客户端（Claude / Cline / Qoder / WorkBuddy）
+> 一起掉线，而症状是「连不上」不是「报错」。排查顺序：`--check` → 看端口有无监听 → `logs/<服务名>.log`
+> （**只有经 `start_wq_mcp.py` 启动的才写这份日志**，手工前台起的会丢掉排障证据）。
+> ⚠ 只绑回环：`MCP_HOST` 缺省 `127.0.0.1`，**不要改成 `0.0.0.0`**（HTTP 模式无认证，而 `wq-brain-http` 持平台凭据）。
+
+**各客户端的 `type` 取值不通用，且配置文件不止一份**（照抄即静默失败，详见 AGENTS.md §3.5）：
+Claude 系与 **Qoder** 认 `http`，**Cline** 认 `streamableHttp`（驼峰）；Cline 完全不读 `.mcp.json`，
+只读自己的 settings；Qoder 读项目 `.mcp.json`，但**同名 server 会被用户级 `~/.qoder-cn/mcp.json` 覆盖**
+（该文件残留 stdio 写法时，Qoder 会另拉一份 `main.py` 子进程，与常驻服务并存两个实例）。
+
+`mcp_config.json`（供 Claude Desktop）是 `.mcp.json` 的镜像；两份的 URL 一致性与「不得回潮成
+`command`/`args` 形态、不含盘符、只绑回环、端口互异」由
+`tests/unit/06_wave_pipeline/test_mcp_config_portable.py` 守护。
 
 #### 云端会话（Claude Code on the web）连接 MCP
+
+> ⚠ **本节是 stdio 时代写的（2026-09-29），2026-10-05 切 HTTP 后未重新核实**：`.mcp.json` 里已
+> 没有 `command`/`args`/`env`，`WQB_*_PY` 三个变量已无处展开；云端容器改成「在容器内起 HTTP 服务 +
+> 客户端连容器内 `127.0.0.1:8000`」是新课题。以下为历史记录，照做前请先验证。
 
 云端容器里 `.mcp.json` 的 Windows 缺省值不存在（ENOENT，两个服务都起不来）。在**环境设置**
 （会话标题栏的云环境菜单 → Edit）里：

@@ -322,7 +322,7 @@ def test_mining_policy_caps_category_weight_and_requires_quota():
     # 闸5 毒模式 weighted_signal_mix / weighted_leg_mix_func_* 全量拦截，禁止用于生成。
     assert MINING["_slow_fast_mix_status"].startswith("deprecated")
     assert MINING["follow_win_settings"] is True
-    assert CONCURRENCY["slots"] == 7
+    assert CONCURRENCY["slots"] == 2
 
 
 def test_glb_universes_aligned_with_platform():

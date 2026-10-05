@@ -847,7 +847,13 @@ def test_fq_prescreen_gate_cli_and_ledger_key_are_what_the_skill_says():
     assert "exempt" in t and "webdata_quality" in t
     assert "0=PASS" in pg and "exit 0 = PASS / 1 = BLOCK" in t
     assert "没有接入 workflow 节点" in t or "未接入 workflow 节点" in t
-    assert not re.search(r"prescreen_gate|prescreen_", _read(REPO / "src" / "wqb" / "workflow" / "nodes" / "campaign.py"))
+    # 该断言的主题是**字段质量闸 prescreen_gate**（SKILL.md 声明"未接入 workflow 节点"）。
+    # 2026-10-02：原正则 `prescreen_gate|prescreen_` 过宽，会误伤 S4 候选预筛
+    # （campaign.py 的 `_s4_prescreen_local`，与字段质量闸无关，是另一回事）。
+    # 收紧为主体的确切 token + 它独有的 ledger key 字面量。
+    _camp = _read(REPO / "src" / "wqb" / "workflow" / "nodes" / "campaign.py")
+    assert "prescreen_gate" not in _camp
+    assert not re.search(r"""["']prescreen_[<{]""", _camp)  # 字段质量闸独有的 ledger key 字面量
     cat = {e["key"]: e for e in json.loads(_read(REPO / "docs" / "ledger_keys.json"))["entries"]}
     assert any(w["ref"] == "tools/prescreen_gate.py" for w in cat["prescreen_<region>"]["writers"])
 
@@ -1102,7 +1108,8 @@ def test_de_classification_landing_point_and_taxonomies_match_the_tool():
     for flag in ("--region", "--dataset", "--write-ledger"):
         assert f'"{flag}"' in src and flag in t, flag
     import field_semantic_classify as fsc
-    assert len(fsc.ECON_CATEGORIES) == 10 and "共 10 类" in t
+    # 2026-10-03：`dividend`（分红/回购）加入后为 11 类，doc 与测试同步
+    assert len(fsc.ECON_CATEGORIES) == 11 and "共 11 类" in t
     assert "s1_semantic_<ds>" in t and "wave_gate" in t
     ra = _read(SKILLS / "wq-brain-ra-pipeline" / "SKILL.md")
     assert "s1_semantic_<ds>" in ra and "field_semantic_classify.py" in ra
@@ -1387,7 +1394,7 @@ def test_gm_mcp_and_node_parameters_match_the_reference_table():
     only_node = {"batch_size", "require_operators", "require_count", "prod_first", "prod_first_top_k"}
     assert only_node <= set(node_names) and not (only_node & set(mcp_names))
     assert set(mcp_names) - {"dry_run"} <= set(node_names)
-    assert node_def["pipeline_mode"] == "phased" and mcp_def["pipeline_mode"] is None
+    assert node_def["pipeline_mode"] is None and mcp_def["pipeline_mode"] is None
     assert node_def["priors_from_db"] is True and mcp_def["priors_from_db"] is True
     assert node_def["detached"] is True and node_def["batch_size"] == 100 and node_def["require_count"] == 2
     assert node_def["prod_first"] is False and node_def["prod_first_top_k"] == 2
@@ -1512,11 +1519,27 @@ def test_gm_ra_pregate_table_covers_the_module_rules_and_iron_rules_are_reconcil
     assert "判死粒度 = 概念，不是数据集" in t and "想法级 `dead_end`" in _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "step7-diagnose.md")   # GM-08
 
 
+def _wave_gate_src() -> str:
+    """读 wave_gate 源码（shim + pkg 合并）。
+
+    包化后实现搬进 tools/wave_gate_pkg/，shim 只留入口；测试必须同时读两处，
+    否则安全契约写在 pkg 里时会被静默漏守（GM-03 同款收尾）。
+    """
+    parts = []
+    for p in (REPO / "tools" / "wave_gate.py", REPO / "tools" / "wave_gate_pkg"):
+        if p.is_file():
+            parts.append(_read(p))
+        elif p.is_dir():
+            for f in sorted(p.rglob("*.py")):
+                parts.append(_read(f))
+    return "\n".join(parts)
+
+
 def test_gm_mode_b_and_quality_estimation_and_emit_ideas_claims_hold():
     node = _read(_GEM_NODE)
     assert 'result["mode_b_required"] = True' in node and 'quality_result.get("expected_block_count", 0) > 0' in node
     assert 'prod_first_result.get("blocked_families", 0) > 0' in node
-    wg = _read(REPO / "tools" / "wave_gate.py")
+    wg = _wave_gate_src()
     assert "ADVISORY_HARD" in wg and "qp_mod.predict_all" in wg and '"--batch-type"' in wg
     reg = _read(REPO / "src" / "wqb" / "workflow" / "registry.py")
     assert "modeb_improve" in reg

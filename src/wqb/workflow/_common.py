@@ -148,8 +148,8 @@ def resolve_gem_data_dir(dataset_id: str, region: str, delay: int) -> Path:
     return Path(root) / folder
 
 
-def _platform_category(dataset_id: str) -> Optional[str]:
-    """以平台 category 为准：优先查 datasets 快照（category 非空的最新一条）。
+def _platform_category(dataset_id: str, region: str) -> Optional[str]:
+    """以平台 category 为准：查 ``region`` 区内 ``datasets`` 快照的 category。
 
     快照缺记录（如 model50 在 IND 仅存 category=NULL 行）时返回 None，
     由调用方回退前缀推断。
@@ -157,6 +157,12 @@ def _platform_category(dataset_id: str) -> Optional[str]:
     2026-09-27 R19：走 resolve_db_path()（此前用模块常量、不认 WQB_DB_PATH），并以只读
     URI 打开——`sqlite3.connect` 遇到不存在的文件会建空库，任一 GEM 干跑 / 单测都会在
     默认路径留下 0 字节 data/wqb.db。
+
+    2026-10-05 修（区域查询事故）：**``region`` 由可选改为必填，且删掉了原来的无区分支**。
+    原因——``datasets`` 表同名 dataset 跨区多行（实测 risk70 7 行 / pv1 11 行），
+    旧写法 ``WHERE name=? ORDER BY id DESC LIMIT 1`` 取到的是 **id 最大的那个区**，
+    category 可能来自别区（本函数旧 docstring 举的 model50/IND 例子正是这种跨区混淆）。
+    保留"不传区"的兼容分支等于把这个坑留着 ⇒ 直接删掉，逼调用方交代区域。
     """
     db = resolve_db_path()
     if not os.path.isfile(db):
@@ -165,10 +171,11 @@ def _platform_category(dataset_id: str) -> Optional[str]:
         conn = db_connect(db, readonly=True, timeout=5.0)
         try:
             row = conn.execute(
-                "SELECT category FROM datasets WHERE name=? "
-                "AND category IS NOT NULL AND category != '' "
-                "ORDER BY id DESC LIMIT 1",
-                (dataset_id,),
+                "SELECT d.category FROM datasets d JOIN regions g ON g.id = d.region_id "
+                "WHERE d.name=? AND g.name=? "
+                "AND d.category IS NOT NULL AND d.category != '' "
+                "ORDER BY d.id DESC LIMIT 1",
+                (dataset_id, str(region).strip().upper()),
             ).fetchone()
             return str(row[0]) if row else None
         finally:
@@ -177,14 +184,19 @@ def _platform_category(dataset_id: str) -> Optional[str]:
         return None
 
 
-def infer_data_category(dataset_id: str) -> str:
-    """推断数据集类别：平台 category 优先（data/wqb.db 快照），无记录时前缀兜底。
+def infer_data_category(dataset_id: str, region: str) -> str:
+    """推断数据集类别：``region`` 区内的平台 category 优先，无记录时前缀兜底。
 
     分类口径一律以平台 category 为准（2026-09-01 统一）——如 model50 内容为
     下行风险评估打分（International Scorings Data），但平台分类为 model，
     不按内容语义归入 risk。
+
+    Args:
+        dataset_id: 数据集名。
+        region: **必填**。同名 dataset 跨区多行，不给区就无法确定该查哪一行的
+            category（2026-10-05 起取消默认值，见 :func:`_platform_category`）。
     """
-    platform = _platform_category(dataset_id)
+    platform = _platform_category(dataset_id, region)
     if platform:
         return platform
     lower = dataset_id.lower()

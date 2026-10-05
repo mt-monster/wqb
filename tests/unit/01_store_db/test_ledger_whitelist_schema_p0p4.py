@@ -194,7 +194,7 @@ def _mcp_mod(tmp_path, monkeypatch):
         _sys.path.insert(0, str(repo))
     import wqb_db_mcp
     mod = importlib.reload(wqb_db_mcp)
-    mod.DB_PATH = db
+    mod.set_db_path(db)
     return mod, db
 
 
@@ -294,7 +294,7 @@ def _mcp_mod(tmp_path, monkeypatch):
         _sys.path.insert(0, str(repo))
     import wqb_db_mcp
     mod = importlib.reload(wqb_db_mcp)
-    mod.DB_PATH = db
+    mod.set_db_path(db)
     return mod, db
 
 

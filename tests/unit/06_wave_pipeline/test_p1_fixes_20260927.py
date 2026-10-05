@@ -194,7 +194,7 @@ def test_platform_category_is_read_only(tmp_path, clean_env):
 
     missing = tmp_path / "missing.db"
     clean_env.setenv("WQB_DB_PATH", str(missing))
-    assert _common._platform_category("analyst44") is None
+    assert _common._platform_category("analyst44", "USA") is None
     assert not missing.exists()                                          # 此前 sqlite3.connect 会建空库
 
 
@@ -306,10 +306,17 @@ def test_gate_installed_copy_uses_workspace_env_and_never_caches_env_unknown(tmp
     (camp / "config").mkdir(parents=True)
     (camp / "config" / "settings.json").write_text(json.dumps({"region": "KOR"}), encoding="utf-8")
     (camp / "config" / "thresholds.json").write_text("{}", encoding="utf-8")
-    (camp / "reference").mkdir()
-    shutil.copy(KOR_CAMPAIGN / "reference" / "kor_ml_factor_proj_fields.json", camp / "reference")
     db = tmp_path / "wqb.db"
-    CampaignStore(str(db)).close()
+    # 2026-10-01：reference/*_fields.json 已下线，catalog 只走 DB —— 向临时库写入 ml_factor_proj 字段
+    store = CampaignStore(str(db))
+    try:
+        store.upsert_field_catalog("KOR", {
+            "dataset": "ml_factor_proj", "region": "KOR", "universe": "TOP600", "delay": 1,
+            "data_type": "MATRIX",
+            "fields": [{"id": "change_6m_rating_revision", "type": "MATRIX", "coverage": 1.0}],
+        })
+    finally:
+        store.close()
     cache = tmp_path / "gate_cache.json"
     env = {k: v for k, v in os.environ.items()
            if k not in ("WQB_ROOT", "WQ_PROJECT_ROOT", "WQB_WORKSPACE", "WQB_WORKSPACE_ROOT")}
@@ -372,12 +379,52 @@ def test_verdict_from_counts_is_the_table():
     assert verdict_from_counts(0, 0) == "FAIL"
 
 
+def test_suggest_verdict_prefers_counts_evidence_over_text():
+    """2026-10-02：给了 n_pass/n_near 时按**计数事实**判（evidence=counts、置信 high），
+    不再从自由文本猜；没给计数才退回文本启发式（evidence=text）。"""
+    from wqb.wave_results_contract import suggest_verdict
+
+    # 同一段自由文本（文本启发式会推 FAIL/low），给计数后应改按计数判 → PASS/high
+    text = "无提交(…)"
+    txt = suggest_verdict(text)
+    assert txt["verdict"] == "FAIL" and txt["confidence"] == "low" and txt["evidence"] == "text"
+
+    ev = suggest_verdict(text, n_pass=2, n_near=0)
+    assert ev["verdict"] == "PASS" and ev["confidence"] == "high" and ev["evidence"] == "counts"
+
+    assert suggest_verdict(text, n_pass=0, n_near=3)["verdict"] == "PARTIAL"
+    assert suggest_verdict(text, n_pass=0, n_near=0)["verdict"] == "FAIL"
+
+    # 计数路径下，连文本都认不出的原文也能给出建议（计数是事实）
+    assert suggest_verdict("完全无法辨认的乱码", n_pass=0, n_near=1)["evidence"] == "counts"
+
+
+def test_upsert_passes_counts_to_suggestion(tmp_path):
+    """upsert_wave_result 透传 n_pass/n_near：verdict 无法辨认时建议带 evidence=counts。"""
+    import sqlite3
+    from wqb.wave_results_contract import upsert_wave_result
+
+    conn = sqlite3.connect(":memory:")
+    conn.execute("""CREATE TABLE wave_results(
+        id INTEGER PRIMARY KEY, region TEXT, wave_number TEXT, focus TEXT, context TEXT,
+        key_findings TEXT, candidates TEXT, batches TEXT, verdict TEXT, status TEXT,
+        source_file TEXT, archived INTEGER, created_at TEXT, updated_at TEXT,
+        full_payload TEXT, region_id INTEGER)""")
+    out = upsert_wave_result(conn, "TEST", "w1", "2026-10-02T00:00:00",
+                             verdict="无提交(…)", n_pass=0, n_near=2)
+    assert "error" in out
+    assert out["suggestion"]["verdict"] == "PARTIAL"
+    assert out["suggestion"]["evidence"] == "counts"
+    # 未写库
+    assert conn.execute("SELECT COUNT(*) FROM wave_results").fetchone()[0] == 0
+
+
 def test_rejection_carries_suggestion_and_never_writes(db_path, monkeypatch):
     import importlib
 
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", db_path)
+    mod.set_db_path(db_path)        # 读写同源；隔离失效由 get_db_path() 的结果闸兜住
     out = mod.upsert_wave_result("KOR", "91c", verdict="✅ 2 RA 提交成功 (88lr21xo + A1lb2KpR 均 ACTIVE)")
     assert "error" in out and out["suggestion"]["verdict"] == "PASS"
     assert "未自动采用" in out["error"] and "判定表" in out["error"]

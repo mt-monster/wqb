@@ -45,6 +45,84 @@ def is_template_ideas_source(source: Optional[str]) -> bool:
                for t in TEMPLATE_IDEAS_SOURCES)
 
 
+# ---------------------------------------------------------------------------
+# pipeline_mode 自动识别（2026-09-30 新增）
+# ---------------------------------------------------------------------------
+
+def _auto_detect_pipeline_mode(
+    dataset_id: str,
+    data_category: str,
+    field_count: int,
+    fields_df: Any,
+) -> str:
+    """根据数据集特征自动识别 pipeline_mode（2026-09-30 新增）。
+
+    决策树（按优先级）：
+    1. 字段数 < 50 → single（一次性 LLM 调用，简单快速）
+    2. 字段可分层（signal/metadata/scale 清晰）→ skeleton（LLM 填槽 + 代码组装，语法保证）
+    3. 字段数 > 100 或需要族级机制叙事 → phased（三阶段分批，避免超时）
+    4. 默认 → phased
+
+    Args:
+        dataset_id: 数据集 ID
+        data_category: 数据类别（如 analyst）
+        field_count: 字段数
+        fields_df: 字段 DataFrame（含 id/description/type 列）
+
+    Returns:
+        "single" | "phased" | "skeleton"
+    """
+    # 规则 1：小字段集 → single
+    if field_count < 50:
+        return "single"
+
+    # 规则 2：字段可分层 → skeleton
+    # 判断依据：classify_fields() 能分出 signal/scale/metadata，且 signal 字段数 ≥ 10
+    # （足够生成多样化表达式）。字段分层不清晰的数据集不适合 skeleton。
+    try:
+        # 延迟导入，避免模块级依赖
+        from trailSomeAlphas import skeletons
+        id_col = None
+        desc_col = None
+        type_col = None
+        for col in fields_df.columns:
+            col_lower = str(col).lower()
+            if col_lower in ("id", "field_id", "fieldid"):
+                id_col = col
+            elif col_lower in ("description", "desc"):
+                desc_col = col
+            elif col_lower in ("type", "datatype", "data_type", "field_type"):
+                type_col = col
+        if id_col:
+            field_ids = fields_df[id_col].dropna().astype(str).tolist()
+            descriptions = {}
+            if desc_col:
+                for fid, dsc in zip(fields_df[id_col], fields_df[desc_col]):
+                    descriptions[str(fid)] = "" if dsc is None else str(dsc)
+            field_types = {}
+            if type_col:
+                for fid, typ in zip(fields_df[id_col], fields_df[type_col]):
+                    field_types[str(fid)] = "" if typ is None else str(typ)
+            layers = skeletons.classify_fields(field_ids, descriptions, types=field_types or None)
+            # 字段可分层：signal ≥ 10 且 metadata > 0（有明确的元数据字段）
+            if len(layers["signal"]) >= 10 and len(layers["metadata"]) > 0:
+                return "skeleton"
+    except Exception:
+        # 字段分层失败（如 skeletons 模块不可用），继续判断
+        pass
+
+    # 规则 3：大字段集或需要族级机制叙事 → phased
+    if field_count > 100:
+        return "phased"
+
+    # 规则 4：特定数据类别需要族级机制叙事 → phased
+    if data_category in ("news", "analyst", "fundamental"):
+        return "phased"
+
+    # 默认 → phased
+    return "phased"
+
+
 #: priors 快照的 ledger 源（assemble_priors.py 读这三个键；另读 registry_empirical 的
 #: win / dead_end 层，见下）。任一比快照新 = 快照已过期。
 _PRIORS_SOURCES = (("{region}", "region_kb"), ("KB", "template_kb"), ("KB", "operator_principle_kb"))
@@ -232,10 +310,15 @@ def _load_field_context(
     s1_ledger: Any,
     dry_run: bool,
     result: Dict[str, Any],
+    data_type: Optional[str] = None,
 ) -> Any:
     """Step 1B/1C：字段前缀摘要 + 候选字段池（经济学归类优先，cross_cluster 回退）。
 
     返回 (field_prefix_summary, candidate_field_pool)。
+
+    `data_type`（2026-10-02 v6）：透传给池构建器做**类型一致性过滤**。混合集
+    （如 GLB/analyst69: 515 VECTOR + 264 MATRIX）上若不传，池会混类型，GEM 按
+    单一 data_type 过滤后白名单可能只剩 metadata 字段 → 整波模板绑定失败。
     """
     field_prefix_summary = None
     candidate_field_pool: List[str] = []
@@ -266,7 +349,7 @@ def _load_field_context(
             # 尝试经济学归类池（v3）
             try:
                 econ_payload = store.build_economic_field_pool(
-                    region, dataset_id, persist=not dry_run
+                    region, dataset_id, persist=not dry_run, data_type=data_type
                 )
                 if econ_payload and not econ_payload.get("error") and econ_payload.get("candidate_field_pool"):
                     pool_payload = econ_payload
@@ -318,12 +401,13 @@ def run(
     detached: bool = True,
     launch_only: bool = False,
     console: bool = False,
-    pipeline_mode: Optional[str] = "phased",
+    pipeline_mode: Optional[str] = None,
     batch_size: int = 100,
     require_operators: Optional[str] = None,
     require_count: int = 2,
     prod_first: bool = False,
     prod_first_top_k: int = 2,
+    dataset_ids: Optional[str] = None,  # 2026-10-01 P0：多数据集 ID（逗号分隔，如 "analyst4,fundamental6"）
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行 GEM 表达式生成.
@@ -376,7 +460,7 @@ def run(
 
     # 自动推断 data_category（如未提供）
     if not data_category:
-        data_category = infer_data_category(dataset_id)
+        data_category = infer_data_category(dataset_id, region=region)
 
     result = {
         "region": region,
@@ -402,7 +486,7 @@ def run(
         store, region, dataset_id, delay, ideas_file, result,
     )
     field_prefix_summary, candidate_field_pool = _load_field_context(
-        store, region, dataset_id, s1_ledger, dry_run, result,
+        store, region, dataset_id, s1_ledger, dry_run, result, data_type=data_type,
     )
 
     # Step 1.5：priors 快照新鲜度（零成本只读，干跑也走；只告警不阻断）
@@ -485,6 +569,31 @@ def run(
 
     if effective_ideas_file:
         cmd.extend(["--ideas-file", effective_ideas_file])
+
+    # 2026-10-01 P0：多数据集 ID 透传（支持跨数据集组合）
+    if dataset_ids:
+        cmd.extend(["--dataset-ids", dataset_ids])
+
+    # 2026-09-30 新增：pipeline_mode 自动识别（显式传 None 时触发）
+    # 决策树：字段数 < 50 → single；字段可分层 → skeleton；字段数 > 100 或需要族级机制叙事 → phased
+    if pipeline_mode is None:
+        # 需要从 fields_df 获取字段数和字段分层信息
+        # 注意：fields_df 在 run() 中尚未获取，需要从 S1 ledger 或 candidate_field_pool 推断
+        # 简化实现：用 candidate_field_pool 的长度作为字段数代理
+        field_count = len(candidate_field_pool) if candidate_field_pool else 0
+        # 从 S1 ledger 获取 fields_df（如果有）
+        fields_df_for_detect = None
+        if s1_ledger and s1_ledger.get("fields_df"):
+            fields_df_for_detect = s1_ledger["fields_df"]
+        pipeline_mode = _auto_detect_pipeline_mode(
+            dataset_id, data_category, field_count, fields_df_for_detect,
+        )
+        result["steps"].append({
+            "step": "auto_detect_pipeline_mode",
+            "success": True,
+            "detected_mode": pipeline_mode,
+            "reason": f"field_count={field_count}, data_category={data_category}",
+        })
 
     # 2026-09-18 ③：pipeline_mode 默认 phased（三阶段分批），解决全量大字段集
     # single-shot 模式 LLM 生成超时问题。显式传 None 才走 headless_runner 的
@@ -970,6 +1079,51 @@ def _collect_results(
                 })
             except Exception as e:
                 logger.warning(f"Failed to save GEM record: {e}")
+
+        # 2026-09-30 P0：记录提示词性能到 prompt_performance 表（提示词知识库集成）
+        # 从 quality_estimation 获取性能指标（过闸率、平均 sharpe、最佳 sharpe）
+        try:
+            from prompt_kb import record_prompt_performance, get_prompt_template
+            # 获取当前使用的模板 ID（从 data_category 推断）
+            data_category = result.get("data_category") or "other"
+            template = get_prompt_template(data_category, active_only=True)
+            if template:
+                # 从 quality_estimation 获取性能指标
+                pass_count = quality_result.get("pass_count", 0)
+                avg_sharpe = quality_result.get("avg_sharpe", 0.0)
+                best_sharpe = quality_result.get("best_sharpe", 0.0)
+                record_prompt_performance(
+                    template_id=template["id"],
+                    region=region,
+                    dataset_id=dataset_id,
+                    wave=result.get("wave", "unknown"),
+                    backtest_count=len(expressions),
+                    pass_count=pass_count,
+                    avg_sharpe=avg_sharpe,
+                    best_sharpe=best_sharpe,
+                    metrics={
+                        "fitness": quality_result.get("fitness", 0.0),
+                        "turnover": quality_result.get("turnover", 0.0),
+                        "coverage": quality_result.get("coverage", 0.0),
+                    },
+                )
+                result["steps"].append({
+                    "step": "record_prompt_performance",
+                    "success": True,
+                    "template_id": template["id"],
+                    "template_version": template["version"],
+                    "pass_count": pass_count,
+                    "avg_sharpe": avg_sharpe,
+                    "best_sharpe": best_sharpe,
+                })
+        except Exception as _pk_err:
+            # 提示词知识库记录失败不阻断主流程
+            logger.warning(f"prompt_kb record failed: {_pk_err}")
+            result["steps"].append({
+                "step": "record_prompt_performance",
+                "success": False,
+                "error": str(_pk_err),
+            })
     else:
         result["steps"].append({
             "step": "check_output",
@@ -1241,9 +1395,12 @@ def _check_ideas_file(file_path: str) -> Dict[str, Any]:
     return result
 
 
-def _infer_category(dataset_id: str) -> str:
-    """从 dataset_id 推断数据类别（向后兼容别名，实际逻辑在 _common）。"""
-    return infer_data_category(dataset_id)
+def _infer_category(dataset_id: str, region: str) -> str:
+    """从 dataset_id 推断数据类别（向后兼容别名，实际逻辑在 _common）。
+
+    ``region`` 必填（2026-10-05 区域查询事故后取消默认值）。
+    """
+    return infer_data_category(dataset_id, region)
 
 
 def _find_gem_root() -> Optional[str]:

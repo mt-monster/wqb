@@ -275,7 +275,7 @@ mcp__wq-brain-http__get_platform_setting_options
 
 【填槽】`mcp__wq-brain-http__workflow_batch_track region=$REGION wave=<W> dataset=<DS>`
   ★ 禁止拼 `--concurrency 7`（pipeline.py 无此参数；曾致 S3 "启动成功"却从未真跑 13 天）。
-  `concurrency` 形参仅作计划元数据。n_slots 内部 = min(7, 批数)。空槽补组合批，不用裸探针凑数。
+  `concurrency` 形参仅作计划元数据。n_slots 内部 = min(2, 批数)。空槽补组合批，不用裸探针凑数。
 
 【跟踪】`mcp__wq-brain-http__workflow_task_status task_id=<上一步返回的 task_id>`
   收批压缩：`mcp__wq-brain-http__harvest_multisim_alphas multisimulation_location="/simulations/<id>"`

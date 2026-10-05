@@ -846,105 +846,12 @@ class SimulationMixin:
             self.log(f"Failed to get user alphas: {str(e)}", "ERROR")
             raise
 
-    def pre_submit_check(self, alpha_details: Dict[str, Any]) -> Dict[str, Any]:
-        """Check IS metrics against a **relaxed local** pre-submission screen (NOT the platform lines).
-
-        2026-09-29 (skills review X-11): these numbers are a deliberately loose *local* screen whose only
-        job is to avoid POSTing an obviously failing alpha; they are neither the platform's official lines
-        (Sharpe 1.25 D1 / Fitness 1.0 D1 / Turnover 1%-70%, see wqb.config.PLATFORM_CHECK_LINES) nor the
-        project's internal lines (1.58 / 1.0 / 5%-20%, wqb.config.GATES_INTERNAL). The platform re-evaluates
-        everything at submit time; passing this screen never means submittable. Relations are pinned by
-        tests/unit/01_store_db/test_threshold_relations.py.
-
-        Criteria:
-        - Sharpe > 1.3 and Fitness > 0.75 (relaxed thresholds for pre-submission check)
-        - Margin > 0.05% for USA, otherwise > 0.15% (hard floor 0.08%) -- warnings only
-        - Turnover between 4% and 40%
-        - Returns > 4%
-        - All other IS checks must PASS (no FAIL)
-        """
-        is_data = alpha_details.get('is')
-        if not is_data:
-            return {'passed': False, 'reason': 'No IS data available for this alpha. Simulation may not be complete.', 'details': []}
-
-        failures = []
-        warnings = []
-
-        sharpe = is_data.get('sharpe', 0)
-        fitness = is_data.get('fitness', 0)
-        margin = is_data.get('margin', 0)
-        turnover = is_data.get('turnover', 0)
-        returns = is_data.get('returns', 0)
-        drawdown = is_data.get('drawdown', 0)
-        settings = alpha_details.get('settings') or {}
-        region = (settings.get('region') or alpha_details.get('region') or '').upper()
-
-        # Sharpe > 1.3
-        if sharpe <= 1.3:
-            failures.append(f'Sharpe {sharpe} <= 1.3 (required > 1.3)')
-
-        # Fitness > 0.75
-        if fitness <= 0.75:
-            failures.append(f'Fitness {fitness} <= 0.75 (required > 0.75)')
-
-        # USA margin rule is relaxed to >5bp. Other regions keep the >15bp target with a 8bp hard floor.
-        # 2026-08-13 fix: margin is a LOCAL heuristic, NOT a platform check.
-        # EUR qMNEG2Z2 (6.12bp) was blocked here but the platform's real verdict
-        # was PROD_CORRELATION 0.839 FAIL — margin never appears in platform checks.
-        # Downgrade to WARNING so the platform decides.
-        if region == 'USA':
-            if margin <= 0.0005:
-                warnings.append(f'Margin {margin*100:.4f}% <= 5bp (recommended > 5bp for USA; platform does not check margin)')
-        else:
-            if margin <= 0.0008:
-                warnings.append(f'Margin {margin*100:.4f}% <= 8bp (recommended > 15bp; platform does not check margin — real verdict is PROD_CORRELATION etc.)')
-            elif margin <= 0.0015:
-                warnings.append(f'Margin {margin*100:.4f}% <= 15bp (recommended > 15bp)')
-
-        # Turnover between 4% and 40%
-        if turnover < 0.04:
-            failures.append(f'Turnover {turnover*100:.2f}% < 4% (required 4%-40%)')
-        elif turnover > 0.40:
-            failures.append(f'Turnover {turnover*100:.2f}% > 40% (required 4%-40%)')
-
-        # Returns > 4%
-        if returns <= 0.04:
-            failures.append(f'Returns {returns*100:.2f}% <= 4% (required > 4%)')
-
-        # # Returns > drawdown
-        # if returns <= drawdown:
-        #     failures.append(f'Returns {returns*100:.2f}% <= Drawdown {drawdown*100:.2f}% (required Returns > Drawdown)')
-
-        # All other IS checks must not be FAIL
-        checks = is_data.get('checks', [])
-        for chk in checks:
-            result = chk.get('result', '')
-            name = chk.get('name', 'UNKNOWN')
-            if result == 'FAIL':
-                value = chk.get('value', 'N/A')
-                limit = chk.get('limit', 'N/A')
-                failures.append(f'IS check {name} FAILED (value={value}, limit={limit})')
-
-        passed = len(failures) == 0
-        return {
-            'passed': passed,
-            'failures': failures,
-            'warnings': warnings,
-            'metrics': {
-                'region': region or None,
-                'sharpe': sharpe,
-                'fitness': fitness,
-                'margin': margin,
-                'margin_bp': round(margin * 10000, 2),
-                'turnover': turnover,
-                'returns': returns,
-                'drawdown': drawdown,
-            },
-            'is_checks_summary': [
-                {'name': c.get('name'), 'result': c.get('result'), 'value': c.get('value'), 'limit': c.get('limit')}
-                for c in checks
-            ],
-        }
+    # 2026-10-02 删除：pre_submit_check() 已移除（skills 审查 SP-13 / T0-4 / 步 8 评估 F10）。
+    # 它是一套宽松的本地启发式（Sharpe > 1.3 / Fitness > 0.75 / Turnover 4%–40% / Returns > 4%，
+    # 预检异常即放行 = fail-open），2026-09-29 起提交路由已改用 fail-closed 的
+    # `src/wqb/workflow/nodes/submit_alpha.py::_submit_gate`（模拟层 FAIL / 硬闸类 WARNING /
+    # Failed RA·PPA / robustness 台账 REJECT）。生产调用方为 0，故连同其单测一并删除，
+    # 避免「守护活机制」的误读与静默绕过平台口径。
 
     async def submit_alpha(self, alpha_id: str) -> Dict[str, Any]:
         """Submit an alpha for production and return a detailed verdict dict.

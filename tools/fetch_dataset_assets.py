@@ -1,18 +1,34 @@
 # -*- coding: utf-8 -*-
-"""fetch_dataset_assets.py - 全 Region 数据集资产批量拉取与入库。
+"""fetch_dataset_assets.py - 全 Region 数据集资产拉取（**直连入库**，不落 JSON）。
 
-事件驱动基线建设：首次全量拉取，后续增量刷新。
-输出: data/dataset_assets/<region>_datasets.json + <region>_<dataset>_fields.json
-入库: wqb-db upsert_field_catalog + upsert_registry_empirical (PPA 预筛)
+2026-10-01 改造：原实现为「拉取 → data/dataset_assets/*.json → 另一个脚本再入库」的两步式中转
+（历史原因：当时库层 upsert_field_catalog 未稳定）。现库层 API 已完备，改为一次到位：
+平台 API → 内存 catalog → CampaignStore 直写 `datasets` / `fields` 表。
+- 字段明细：`store.upsert_field_catalog(region, catalog)`
+- 数据集级（含尚未拉字段的数据集）：`store.upsert_dataset_meta(region, meta)`
+
+用法：
+  python tools/fetch_dataset_assets.py --regions USA --apply
+  python tools/fetch_dataset_assets.py --regions ALL --apply --max-datasets 40
+  python tools/fetch_dataset_assets.py --regions USA            # dry-run（默认）
+
+REGIONS 常量保留 2026-08-26/27 的初始范围（USA + MEA）；扩区用 `--regions` 覆盖，或直接用
+`tools/build_field_index.py`（按 config.REGIONS 取 universe，带断点续跑 + 429 退避）。
 """
+import argparse
 import json
 import os
 import sys
 import time
 from datetime import datetime
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
-from api_client import Api, load_creds
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(REPO_ROOT, "tools", "lib"))
+sys.path.insert(0, os.path.join(REPO_ROOT, "src"))
+
+from api_client import Api, load_creds  # noqa: E402
+
+DEFAULT_DB = os.path.join(REPO_ROOT, "data", "wqb.db")
 
 # 全 Region 配置（来自 get_platform_setting_options）
 # 2026-08-26 用户调整：先仅拉 USA，其他 Region 暂缓
@@ -31,23 +47,25 @@ REGIONS = {
     # "GBR": {"universe": "TOP700", "delay": 1},
 }
 
-OUT_DIR = "data/dataset_assets"
 PAGE = 50
 
 
-def ensure_dir():
-    os.makedirs(OUT_DIR, exist_ok=True)
-
-
 def fetch_datasets(api, region, universe, delay):
-    """拉取指定 Region 的数据集列表。"""
-    path = f"/data-sets?instrumentType=EQUITY&region={region}&delay={delay}&universe={universe}"
-    j = json.load(api.get(path))
-    return j.get("results", [])
+    """分页拉取指定 Region 的数据集列表。"""
+    base = (f"/data-sets?instrumentType=EQUITY&region={region}"
+            f"&delay={delay}&universe={universe}&limit={PAGE}")
+    out, offset = [], 0
+    while True:
+        j = json.load(api.get(f"{base}&offset={offset}"))
+        results = j.get("results", [])
+        out.extend(results)
+        offset += len(results)
+        if not results or offset >= j.get("count", 0):
+            return out
 
 
 def fetch_fields(api, region, universe, delay, dataset_id, limit=None):
-    """分页拉取指定 dataset 的全部字段。"""
+    """分页拉取指定 dataset 的全部字段（必须 dataset.id=，裸 dataset= 会被静默忽略）。"""
     base = (f"/data-fields?instrumentType=EQUITY&region={region}"
             f"&delay={delay}&universe={universe}&dataset.id={dataset_id}&limit={PAGE}")
     out, offset = [], 0
@@ -77,72 +95,125 @@ def ppa_prefilter(ds):
     }
 
 
-def save_json(data, path):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+def build_catalog(region, universe, delay, ds, raw_fields):
+    """平台字段原始返回 → typed catalog（与 toolkit scan_fields.build_catalog 同构）。"""
+    types = {}
+    for f in raw_fields:
+        t = f.get("type") or "UNKNOWN"
+        types[t] = types.get(t, 0) + 1
+    data_type = max(types, key=types.get) if types else "UNKNOWN"
+    fields = [{
+        "id": f.get("id"),
+        "type": f.get("type"),
+        "coverage": f.get("coverage"),
+        "userCount": f.get("userCount"),
+        "alphaCount": f.get("alphaCount"),
+        "description": (f.get("description") or "")[:500],
+    } for f in raw_fields]
+    return {
+        "dataset": ds["id"],
+        "region": region,
+        "universe": universe,
+        "delay": delay,
+        "data_type": data_type,
+        "type_distribution": types,
+        "field_count": len(fields),
+        "ppa_prefilter": ppa_prefilter(ds),
+        "fetched_at": datetime.now().isoformat(timespec="seconds"),
+        "fields": fields,
+    }
 
 
-def main():
-    ensure_dir()
+def main() -> int:
+    ap = argparse.ArgumentParser(description="数据集资产拉取（直连入库）")
+    ap.add_argument("--regions", default=",".join(REGIONS),
+                    help="逗号分隔区域；默认 " + ",".join(REGIONS))
+    ap.add_argument("--apply", action="store_true", help="真正写库（默认 dry-run）")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--max-datasets", type=int, help="每区最多拉取字段的数据集数（调试）")
+    ap.add_argument("--min-value-score", type=float, default=4.0,
+                    help="拉字段的价值分阈值；PPA 预筛通过的数据集始终拉取")
+    ap.add_argument("--db", default=DEFAULT_DB)
+    ap.add_argument("--sleep", type=float, default=0.5, help="字段请求间隔秒（防 429）")
+    a = ap.parse_args()
+    apply = a.apply and not a.dry_run
+
+    from wqb.store import CampaignStore
+
+    regions = [r.strip().upper() for r in a.regions.split(",") if r.strip()]
+    store = CampaignStore(a.db)
+    print(f"数据库: {a.db}  region={'/'.join(regions)}  mode={'APPLY' if apply else 'dry-run'}")
+
     email, password = load_creds()
     api = Api()
     api.login(email, password)
-    print(f"[{datetime.now()}] 登录成功，开始拉取 {len(REGIONS)} 个 Region")
 
-    all_stats = {}
-    for region, cfg in REGIONS.items():
-        print(f"\n=== {region} (universe={cfg['universe']}) ===")
+    stats_all = {}
+    for region in regions:
+        cfg = REGIONS.get(region) or {"universe": "TOP3000", "delay": 1}
+        universe, delay = cfg["universe"], cfg["delay"]
+        print(f"\n=== {region} (universe={universe}, delay={delay}) ===")
         try:
-            datasets = fetch_datasets(api, region, cfg["universe"], cfg["delay"])
-            print(f"  数据集: {len(datasets)} 个")
-            
-            # 保存数据集列表
-            ds_path = os.path.join(OUT_DIR, f"{region}_datasets.json")
-            save_json({"region": region, "config": cfg, "datasets": datasets, "fetched_at": datetime.now().isoformat()}, ds_path)
-            
-            # PPA 预筛统计
-            ppa_pass = [d for d in datasets if ppa_prefilter(d)["pass"]]
-            all_stats[region] = {
-                "total_datasets": len(datasets),
-                "ppa_pass": len(ppa_pass),
-                "ppa_pass_ids": [d["id"] for d in ppa_pass],
-            }
-            print(f"  PPA 预筛通过: {len(ppa_pass)} 个")
-            
-            # 拉取字段明细（仅对 PPA 通过或高价值数据集）
-            high_value = [d for d in datasets if d.get("valueScore", 0) >= 4 or ppa_prefilter(d)["pass"]]
-            print(f"  高价值/PPA通过数据集: {len(high_value)} 个，开始拉取字段...")
-            
-            for i, ds in enumerate(high_value, 1):
-                ds_id = ds["id"]
-                try:
-                    fields = fetch_fields(api, region, cfg["universe"], cfg["delay"], ds_id)
-                    field_path = os.path.join(OUT_DIR, f"{region}_{ds_id}_fields.json")
-                    save_json({
-                        "region": region,
-                        "dataset": ds_id,
-                        "dataset_meta": ds,
-                        "ppa_prefilter": ppa_prefilter(ds),
-                        "fields": fields,
-                        "field_count": len(fields),
-                        "fetched_at": datetime.now().isoformat(),
-                    }, field_path)
-                    print(f"    [{i}/{len(high_value)}] {ds_id}: {len(fields)} 字段")
-                    time.sleep(0.5)  # 控制速率，避免 429
-                except Exception as e:
-                    print(f"    [{i}/{len(high_value)}] {ds_id}: ERROR - {e}")
-                    
+            datasets = fetch_datasets(api, region, universe, delay)
         except Exception as e:
-            print(f"  Region {region} 失败: {e}")
-            all_stats[region] = {"error": str(e)}
-        
-        time.sleep(1)  # Region 间间隔
+            print(f"  拉取失败: {e}")
+            stats_all[region] = {"error": str(e)}
+            continue
+        ppa_pass = [d for d in datasets if ppa_prefilter(d)["pass"]]
+        high_value = [d for d in datasets
+                      if d.get("valueScore", 0) >= a.min_value_score or ppa_prefilter(d)["pass"]]
+        if a.max_datasets:
+            high_value = high_value[:a.max_datasets]
+        print(f"  数据集={len(datasets)}  PPA 预筛通过={len(ppa_pass)}  拉字段={len(high_value)}")
 
-    # 保存汇总
-    summary_path = os.path.join(OUT_DIR, "_summary.json")
-    save_json({"stats": all_stats, "fetched_at": datetime.now().isoformat()}, summary_path)
-    print(f"\n[{datetime.now()}] 完成。汇总: {summary_path}")
+        if not apply:
+            for d in datasets[:8]:
+                pf = ppa_prefilter(d)
+                print(f"    [DRY] {str(d.get('id')):28s} fields={d.get('fieldCount')} "
+                      f"cov={pf['coverage']} alphaCount={pf['alphaCount']} "
+                      f"ppa={'PASS' if pf['pass'] else '-'}")
+            stats_all[region] = {"total_datasets": len(datasets),
+                                 "ppa_pass": len(ppa_pass),
+                                 "to_fetch": len(high_value)}
+            continue
+
+        # 1) 数据集级快照：全部数据集建行/刷新（不拉字段）
+        n_ds = 0
+        for d in datasets:
+            try:
+                pf = ppa_prefilter(d)
+                # tier 沿用原 ingest 口径：PPA 预筛通过 → PPA_PASS，否则 STANDARD
+                store.upsert_dataset_meta(
+                    region, dict(d, delay=delay,
+                                 tier="PPA_PASS" if pf["pass"] else "STANDARD"))
+                n_ds += 1
+            except Exception as e:
+                print(f"    {d.get('id')}: 元数据入库失败 {e}")
+        # 2) 字段明细：高价值 / PPA 通过的数据集
+        n_fields = 0
+        for i, d in enumerate(high_value, 1):
+            ds_id = d["id"]
+            try:
+                raw = fetch_fields(api, region, universe, delay, ds_id)
+                cat = build_catalog(region, universe, delay, d, raw)
+                store.upsert_field_catalog(region, cat)
+                n_fields += len(cat["fields"])
+                print(f"    [{i}/{len(high_value)}] {ds_id}: {len(cat['fields'])} 字段"
+                      f" ({cat['data_type']})")
+            except Exception as e:
+                print(f"    [{i}/{len(high_value)}] {ds_id}: ERROR - {e}")
+            time.sleep(a.sleep)
+        stats_all[region] = {"total_datasets": len(datasets),
+                             "ppa_pass": len(ppa_pass),
+                             "meta_rows_written": n_ds,
+                             "fields_written": n_fields}
+        print(f"  入库: 数据集行={n_ds} 字段={n_fields}")
+
+    print(f"\n[{datetime.now()}] {'完成' if apply else 'dry-run 完成'}")
+    print(json.dumps(stats_all, ensure_ascii=False, indent=1))
+    store.close()
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

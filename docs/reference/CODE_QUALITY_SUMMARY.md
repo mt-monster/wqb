@@ -40,7 +40,8 @@
 
 **brain_api.py:**
 - `__init__` (111 行) - L63
-- `pre_submit_check` (91 行) - L1572
+
+> 注：`pre_submit_check`（91 行）已于 2026-10-02 物理删除（生产调用方为 0，提交路由改用 fail-closed 的 `_submit_gate`），不再计入。
 
 **browser_setup.py:**
 - `download_chrome_package` (57 行) - L70
@@ -130,7 +131,6 @@ def save(self, path: str) -> None:
 
 2. **拆分超长函数**
    - `BrainApiClient.__init__` (111 行) → 拆分为多个初始化方法
-   - `pre_submit_check` (91 行) → 拆分为多个检查步骤
 
 #### 优先级：中
 

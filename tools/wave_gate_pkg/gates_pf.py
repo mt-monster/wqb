@@ -119,13 +119,21 @@ def _load_prod_wall_families(region, n_ops=2):
     return fams
 
 
-def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
+def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3,
+                           unknown_mode="warn"):
     """闸 PF：骨架级死路预检（prod-first 前置）。
 
     判据（基于 mdl135_d01_icc 实证：骨架比字段更准）：
       同骨架前缀（前 2 个算子）= 已确认 prod>=0.7 死路  → 拦截（fail-closed）
       同骨架前缀 = 已探明 prod<0.7 干净                    → 通过（该骨架已探明）
       新骨架前缀（无任何 prod 记录）                        → WARN（建议先 prod-first 探针）
+
+    unknown_mode（2026-10-01 P1，默认 warn 保持历史行为）：
+      - "warn"（默认）：新骨架只 WARN，status=warn，不拦波——与历史逐字一致。
+      - "enforce"：新骨架 / 低置信度 / 证据混合族**一并视作未探明风险**，计入 violations
+        并令 status=enforced。用途：饱和区「任何未探明骨架投入前必须先 prod-first 探针」从
+        建议升级为可强制的门；实测正波 6/6 全部 status=warn、历史 enforced 仅 2 次
+        → 该闸名义最硬、实际几乎只在"看"，故给出可选强档。
 
     2026-09-25 P5 增强（粒度自适应 + 置信度）：
       - 区隔离：骨架指纹按 region 分库存储（ledger_kv `prod_family_<region>_*`），
@@ -135,7 +143,7 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
       - 粒度自适应：若某骨架前缀在本区有混合记录（干净 + 死路），自动加深到前 3 算子。
 
     Returns report dict（供落 gate_results 与打印）：
-      status   = pass / warn / enforced(有家族死路)
+      status   = pass / warn / enforced(有家族死路 或 unknown_mode=enforce 且存在未探明族)
       violations = 命中已死路家族的表达式明细
       unknown_families = 未探明的骨架指纹列表（建议 prod-first）
       passed = not violations
@@ -213,7 +221,22 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
             expr_status.append({"index": i, "verdict": "UNKNOWN", "family": fam})
 
     status = "enforced" if violations else ("warn" if unknown_fams else "pass")
+    # 2026-10-01 P1：unknown_mode=enforce 时把「未探明族」升级为拦截。
+    # 只在**没有**死路 violations 时才需要升级（有死路已是 enforced）；把未知族逐条写入
+    # violations 并附说明，令 status 收敛为 enforced、passed=False（下游据此计入 all_pass）。
+    unknown_violations = []
+    if unknown_mode == "enforce" and not violations and unknown_fams:
+        for st_ in expr_status:
+            if st_.get("verdict") in ("UNKNOWN", "WARN_LOW_CONF", "WARN_MIXED"):
+                unknown_violations.append({
+                    "index": st_["index"], "family": st_.get("family"),
+                    "reason": f"骨架指纹 '{st_.get('family')}' 未探明（无 prod 记录 / 低置信度 / 证据混合），"
+                              f"unknown_mode=enforce：投入前须先 prod-first 探针",
+                })
+        if unknown_violations:
+            status = "enforced"
     report = {"status": status, "n_checked": len(exprs),
+              "unknown_mode": unknown_mode,
               "n_history_families": len(fams),
               "n_dead_families": len(dead_fams), "n_ok_families": len(ok_fams),
               "n_mixed_families": len(mixed_fams),
@@ -223,11 +246,14 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
               "mixed_families_sample": sorted(mixed_fams)[:15],
               "ok_families_sample": sorted(ok_fams)[:15],
               "unknown_families_sample": sorted(unknown_fams)[:15],
-              "violations": violations, "expr_status": expr_status,
-              "passed": not violations}
+              "violations": violations + unknown_violations, "expr_status": expr_status,
+              "passed": not (violations or unknown_violations)}
     if violations:
         report["message"] = (f"{len(violations)}/{len(exprs)} 条表达式命中已死路骨架指纹"
                              f"（{len(dead_fams)} 个骨架已确认死路，n≥{min_confidence_n}）—— 闸 PF 拦截")
+    elif unknown_violations:
+        report["message"] = (f"{len(unknown_violations)}/{len(exprs)} 条表达式骨架指纹未探明"
+                             f"—— unknown_mode=enforce，闸 PF 拦截（先 prod-first 探针）")
     elif unknown_fams:
         report["message"] = (f"PASS；{len(unknown_fams)}/{len(exprs)}"
                              f" 条表达式骨架指纹未探明或低置信度或证据混合，建议先 prod-first 探针"

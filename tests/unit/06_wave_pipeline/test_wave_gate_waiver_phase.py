@@ -153,6 +153,13 @@ def test_unreadable_db_is_reported_and_enforce_fails_closed(tmp_path, monkeypatc
 
 
 def test_cli_declares_waiver_mode_flag():
-    src = open(os.path.join(REPO, "tools", "wave_gate.py"), encoding="utf-8").read()
-    assert '"--waiver-mode"' in src and "_waiver_phase(a, campaign" in src
-    assert 'report["waivers"]' in src
+    """包化后实现可能在 shim 或 wave_gate_pkg/cli.py，同时读两处。"""
+    parts = []
+    for name in ("wave_gate.py", "wave_gate_pkg/cli.py"):
+        p = os.path.join(REPO, "tools", name)
+        if os.path.exists(p):
+            parts.append(open(p, encoding="utf-8").read())
+    src = "\n".join(parts)
+    assert '"--waiver-mode"' in src, '"--waiver-mode" CLI flag missing'
+    assert "_waiver_phase" in src, "_waiver_phase import/call missing"
+    assert 'report["waivers"]' in src, 'report["waivers"] missing'

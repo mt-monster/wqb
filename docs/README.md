@@ -1,7 +1,8 @@
 # WQB 知识库索引
 
 > 本目录是 WorldQuant BRAIN Alpha 挖掘项目的结构化知识库。
-> 最后整理：2026-08-31。维护规则：新增文档归入对应子目录，并更新本索引。
+> 最后整理：2026-10-04。维护规则：新增文档归入对应子目录，并更新本索引；
+> **本索引列出的每个目录都必须真实存在**（由 `python tools/audit_structure.py --only s9` 守护）。
 
 ---
 
@@ -27,13 +28,21 @@ docs/
 │   ├── feature_engineering_sop.md           标准化特征工程流程 SOP（六阶段）
 │   ├── feature_engineering_template.md      特征工程文档模板（波级六节式）
 │   └── campaign_kickoff_prompt.md           RA 战役启动提示词模板（区域无关，九步流水线+硬纪律+形状分流）
-├── architecture/                          ← 架构与结构类
-│   └── project_structure_analysis.md        项目目录结构分析（含迁移状态）
 ├── tutorials/                             ← 教程课件类
-│   └── 课件.md                              5个 Skill 实操课件（含实验全过程）
-└── plans/                                 ← 历史计划类
+│   └── skill_course.md                              5个 Skill 实操课件（含实验全过程）
+└── plans/                                 ← 历史计划类（日期前缀命名 YYYY-MM-DD-<主题>.md）
     └── 2026-08-02-wqb-src-reconstruction.md src/wqb/ 包重建实施计划
 ```
+
+> **目录结构类文档在哪**（2026-10-04 校正）：本索引曾列 `architecture/` 子目录及其
+> `project_structure_analysis.md`，**两者磁盘上均不存在**（全盘
+> `Get-ChildItem -Recurse -Filter project_structure_analysis*` = 0 命中），已从上方目录树摘除。
+> 目录结构分析的权威已分散到三处，不再回到 `docs/`：
+> - `reports/code_structure_survey_20260925.md` —— 结构债台账（P1–P11），AGENTS.md §8.4 第 5 项指派的独立报告
+> - `output_report/org_audit_20261001.md` —— 2026-10-01 组织审计与落地结果（含「报告唯一出口 = `output_report/`」定案）
+> - `AGENTS.md` §8 —— 结构维护约定 / 问题台账 / 审计纠错 / 命名与归属判据（§8.13）
+>
+> 机器守护：`python tools/audit_structure.py`（S1–S10，含「声明的目录必须存在」的 S9）。
 
 ---
 
@@ -105,18 +114,20 @@ docs/
 **内容**：一句话启动指令、7 条硬纪律（禁 PV×model 混/禁同信号加权调参/skill 链/Mode B 资格线/产物入 wqb.db 等）、九步流水线（S-PRE→S6 每步 MCP 调用+产物+失败分支）、循环与停止条件、区域 Profile 路由、反模式、Artifact 契约、字段画像与模板族（形状分流）集成点。
 **适用场景**：开新区域/新数据集战役时，把 `$REGION`/`$DATASET` 填入复用；与 `wq-brain-ra-pipeline` 九步 SOP 对齐。
 
-### 三、架构与结构（architecture/）
+### 三、架构与结构（~~architecture/~~ 已不存此目录）
 
-#### 4. 项目目录结构分析 `architecture/project_structure_analysis.md`
+#### 4. 项目目录结构分析（**已迁出 `docs/`**）
 **定位**：项目目录组织分析、问题诊断、目标结构树、迁移执行状态。
-**内容**（9章）：当前目录清点→功能分类→职责边界→问题风险→目标结构树→迁移指引→执行状态。
-**当前状态**：2026-08-09 已完成目录清理（见 §9 更新），原 2_reference/ 已删除归档，wqb-share-03/ 已归档，__pycache__ 已清理。
+**当前所在**：`reports/code_structure_survey_20260925.md` + `output_report/org_audit_20261001.md` +
+`AGENTS.md` §8（三处分职，本索引不再复制正文，只作路由）。
+**当前状态**：2026-10-04 结构治理已把根目录从 26 个散件收到 15 个；`mining/` 与论坛工作台
+分叉副本均已归档 `attic/`；归位判据与命名规范已写进 AGENTS.md §8.13。
 
 **适用场景**：理解项目结构、规划目录调整、排查文件归属。
 
 ### 四、教程课件（tutorials/）
 
-#### 5. Skill 实操课件 `tutorials/课件.md`
+#### 5. Skill 实操课件 `tutorials/skill_course.md`
 **定位**：5 个 BRAIN 挖矿 Agent Skill 的完整实操教程。
 **内容**（5章+附录）：
 1. 准备工作（目录结构/数据包三层结构/MCP配置）

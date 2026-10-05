@@ -289,6 +289,18 @@ async def cmd_probe(a):
 
 
 async def cmd_submit(a):
+    # ★★★★★ 全局禁提交闸（2026-10-05，用户指令）：本工作区「只挖不提交」，产出的 alpha 一律积攒，
+    # 是否提交由用户决定。置于任何网络副作用之前；`--allow-prod-above-07` 亦不豁免。
+    try:
+        from wqb.config import ALLOW_ALPHA_SUBMIT  # noqa: WPS433
+    except Exception:  # pragma: no cover - 路径兜底
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+        from wqb.config import ALLOW_ALPHA_SUBMIT  # type: ignore
+    if not ALLOW_ALPHA_SUBMIT:
+        print("[global-lock] ALLOW_ALPHA_SUBMIT=False：本工作区只挖不提交，已拒绝（--allow-prod-above-07 亦不豁免）。")
+        print("              放行需用户改 wqb.config.ALLOW_ALPHA_SUBMIT=True 或设 WQB_ALLOW_ALPHA_SUBMIT=1。")
+        return 1
+
     from brain_api import BrainApiClient  # noqa: F402
     brain = BrainApiClient()
     await brain.ensure_authenticated()

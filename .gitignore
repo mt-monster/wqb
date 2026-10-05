@@ -205,3 +205,18 @@ Claude/skills/**/config.json
 **/skills/**/config.json
 **/skills/**/credentials.json
 
+# ===== 本次整理补充：运行时残留（2026-10-02）=====
+# tracking 运行时账本 SQLite（会持续增长，非源码，且不应入库）
+tracking/tracking.db
+# 根目录抓取/测试 dump（运行期产物）
+/wq_forum_data.json
+/wq_test_data.json
+# 一次性 dryrun 脚本与结果（2026-09-27，归档性质，非项目源码）
+tools/legacy/
+# WorkBuddy「资料库」skill 生成的工作台页面（非源码，可重新生成）
+/wq_workbench.html
+/wq_workbench_deploy.html
+# forum_workbench 运行时 dump 与生成页面（仅保留其中 .py 脚本源码）
+tools/forum_workbench/wq_forum_data.json
+tools/forum_workbench/*.html
+

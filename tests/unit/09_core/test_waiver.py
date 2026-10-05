@@ -283,6 +283,12 @@ def test_policy_defaults_agree_with_code_where_derivable():
     sys.path.insert(0, str(root / "tools"))
     import wave_gate
     assert wave_gate.DEFAULT_INSPECT_MODE in W.GATE_POLICIES["inspect"].default
-    src = (root / "tools" / "wave_gate.py").read_text(encoding="utf-8")
+    # 包化后 SEM 模式解析在 wave_gate_pkg/cli.py，同时读 shim + pkg
+    parts = []
+    for rel in ("tools/wave_gate.py", "tools/wave_gate_pkg/cli.py"):
+        p = root / rel
+        if p.exists():
+            parts.append(p.read_text(encoding="utf-8"))
+    src = "\n".join(parts)
     assert 'or "enforce"' in src and "enforce" in W.GATE_POLICIES["semantic"].default   # 闸 SEM 缺省 enforce
     assert W.DEFAULT_MODE == "warn"

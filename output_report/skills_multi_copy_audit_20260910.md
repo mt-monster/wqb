@@ -183,7 +183,7 @@ wq-brain-superalpha(1)                wqb-concurrency(1)
 | `brain-simAlphasinBatch-and-track` | 2 | 1 | 22 | `AGENTS.md`、`docs/reference/skill_call_chain.md` |
 | `worldquant-submit-alpha` | 2 | 2 | 11 | `AGENTS.md`、`INSTALLATION_GUIDE.md` |
 
-**○ 仅文档提及（4 个）**：`alpha-template-labs-data-analysis`、`brain-alpha-repair`、`brain-datafield-exploration-general`、`brain-explain-alphas`。均属正常——它们是**按需调用的知识型 skill**（数据探索/解释/修复），不进入自动化 call chain，被 `docs/reference/`、`docs/tutorials/课件.md` 收录。
+**○ 仅文档提及（4 个）**：`alpha-template-labs-data-analysis`、`brain-alpha-repair`、`brain-datafield-exploration-general`、`brain-explain-alphas`。均属正常——它们是**按需调用的知识型 skill**（数据探索/解释/修复），不进入自动化 call chain，被 `docs/reference/`、`docs/tutorials/skill_course.md` 收录。
 
 **✗ 未见引用：无**。首轮扫描标出的 3 个 `brain-alpha-research-*` 经交叉引用复核后确认**不是孤儿**——它们被 `Claude/skills/brain-alpha-research/SKILL.md` 显式引用为子技能（`brain-alpha-research-field-quality` 另被 `brain-data-feature-engineering/scripts/feature_engineering.py` 调用）。
 

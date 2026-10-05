@@ -269,7 +269,7 @@
     },
     "WQB_DISABLE_BACKLOG_GATE": {
       "cat": "gate",
-      "what": "⚠ **幽灵开关：生产代码从未读取它**（全库仅 `tests/` 里 `monkeypatch.setenv`，`src/` 与 toolkit 侧都没有 `os.environ.get`）。设了它并不会关掉积压闸——真实开关是 `WQB_DISABLE_REGION_GATES`（整组三闸）或 AGENTS.md §8.1.2 的 waiver。仅测试隔离"
+      "what": "=1 跳过积压闸（开波闸簇 _campaign_open_gates._run_backlog_gate 确实读取，2026-10-05 翻案旧「幽灵开关」说法）——仅测试/沙箱隔离；生产放行走 waiver"
     },
     "WQB_DISABLE_REGION_GATES": {
       "cat": "gate",
@@ -277,11 +277,11 @@
     },
     "WQB_DISABLE_SIGNAL_FLOOR_GATE": {
       "cat": "gate",
-      "what": "⚠ **幽灵开关：生产代码从未读取它**（仅 `tests/` 里 setenv）。设了它并不会关掉信号下限闸——真实开关是 `WQB_DISABLE_REGION_GATES`。仅测试隔离"
+      "what": "=1 跳过信号下限闸（_campaign_open_gates._run_signal_floor_gate 确实读取）——仅测试/沙箱隔离；生产放行走 waiver"
     },
     "WQB_DISABLE_STOP_RULES_GATE": {
       "cat": "gate",
-      "what": "⚠ **幽灵开关：生产代码从未读取它**（`wqb/waiver.py` 只在 `GatePolicy.escape_hatches` 的说明字符串里提到，未读取）。设了它并不会关掉停止规则闸——真实开关是 `WQB_DISABLE_REGION_GATES`，生产放行走 waiver（AGENTS.md §8.1.2）。仅测试隔离"
+      "what": "=1 跳过停止规则闸（_campaign_open_gates._run_stop_rules_gate 确实读取）——仅测试/沙箱隔离；生产放行走 waiver"
     },
     "WQB_FAMILY_CAP_UNKNOWN": {
       "cat": "gate",
@@ -445,6 +445,10 @@
     "WQ_VALIDATOR_DIR": {
       "cat": "tooldir",
       "what": "alpha-expression-verifier `scripts/` 目录覆盖"
+    },
+    "SA_PROBE_CACHE_TTL_HOURS": {
+      "cat": "wait",
+      "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——\tools/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
     }
   }
 }

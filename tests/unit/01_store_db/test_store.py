@@ -428,3 +428,105 @@ def test_history_expressions_across_waves(store):
     store.upsert_expressions("EUR", "2", ["rank(b)"])
     hist = set(store.history_expressions("EUR"))
     assert hist == {"rank(a)", "rank(b)"}
+
+
+# --- alpha_corr_cache（2026-10-04 相关性查询缓存） ---------------------------
+
+
+def test_corr_cache_roundtrip_and_records(store):
+    """仿真 alpha（不在 alphas 表）也能缓存 prod/self 与直方图。
+
+    2026-10-05 单源化：``source="platform"`` 会被 ``normalize_corr_source`` 收敛成
+    登记词表的 ``platform_sync``（原值保留在返回的 ``source_detail``）。
+    """
+    assert store.get_corr_cache("sim1") is None
+
+    r = store.set_corr_cache("sim1", prod=0.8474, records=[[0.7, 0.8, 9]], source="platform")
+    assert r["prod_correlation"] == 0.8474
+    assert r["source"] == "platform_sync"      # 已收敛
+    assert r["source_detail"] == "platform"    # 原值不丢
+
+    got = store.get_corr_cache("sim1")
+    assert abs(got["max"] - 0.8474) < 1e-9
+    assert abs(got["prod_correlation"] - 0.8474) < 1e-9
+    assert got["records"] == [[0.7, 0.8, 9]]
+    assert got["source"] == "platform_sync"
+    assert got["checked_at"]
+    # 新鲜度字段（保鲜期 48h 单一事实源 CORR_FRESH_HOURS）
+    assert got["fresh"] is True and got["stale"] is False
+    assert got["age_hours"] is not None and got["age_hours"] < 1
+
+
+def test_corr_cache_mirrors_into_alphas(store):
+    """单源写入口联动 alphas（2026-10-05 补的同步契约）。
+
+    单源化前 set_corr_cache 只写权威表、persist_correlation 只写 alphas，两者无同步
+    ⇒ check_correlation 的 db 缓存读不到首筛/盘点写入的值（实测 6 颗 GBR 被重复测量）。
+    """
+    st = store  # fixture 里的 store
+    try:
+        st.upsert_alpha_from_platform({
+            "alpha_id": "mir1", "region": "KOR", "expression": "rank(close)",
+            "sharpe": 1.8, "fitness": 1.1, "platform_status": "UNSUBMITTED",
+            "alpha_type": "REGULAR", "stage": "IS",
+        })
+    except Exception:  # noqa: BLE001 - 该 fixture 库可能无 regions 行
+        pytest.skip("fixture 无 region 定义，跳过镜像测试")
+
+    out = st.set_corr_cache("mir1", prod=0.31, source="platform")
+    mirror = out.get("mirror") or {}
+    assert mirror.get("skipped") != "not_found", f"联动未生效: {out}"
+    row = st.connection.execute(
+        "SELECT prod_correlation, prod_corr_source FROM alphas WHERE alpha_id='mir1'"
+    ).fetchone()
+    assert row is not None
+    assert abs(float(row[0]) - 0.31) < 1e-9
+    assert row[1] == "platform_sync"
+
+
+def test_corr_cache_partial_write_preserves_existing(store):
+    """只补 self 时不得抹掉已存的 prod（COALESCE 保旧值）。"""
+    store.set_corr_cache("sim2", prod=0.69)
+    store.set_corr_cache("sim2", self_=0.31)
+    got = store.get_corr_cache("sim2")
+    assert abs(got["prod_correlation"] - 0.69) < 1e-9
+    assert abs(got["self_correlation"] - 0.31) < 1e-9
+
+
+def test_corr_cache_rejects_out_of_range_and_is_idempotent(store):
+    r = store.set_corr_cache("sim3", prod=1.5)
+    assert r.get("skipped") == "no_valid_value"
+    assert store.get_corr_cache("sim3") is None
+
+    r_neg = store.set_corr_cache("sim3", prod=-0.1)
+    assert r_neg.get("skipped") == "no_valid_value"
+
+    assert store.set_corr_cache("", prod=0.5).get("skipped") == "no_alpha_id"
+
+    # 幂等：同值重写仍是单行
+    store.set_corr_cache("sim4", prod=0.4)
+    store.set_corr_cache("sim4", prod=0.4)
+    n = store.connection.execute(
+        "SELECT COUNT(*) FROM alpha_corr_cache WHERE alpha_id='sim4'"
+    ).fetchone()[0]
+    assert n == 1
+
+
+def test_corr_cache_batch_read_skips_missing(store):
+    store.set_corr_cache("a1", prod=0.1)
+    store.set_corr_cache("a2", prod=0.2)
+    out = store.list_corr_cache(["a1", "a2", "missing"])
+    assert set(out) == {"a1", "a2"}
+    assert abs(out["a2"]["prod_correlation"] - 0.2) < 1e-9
+    assert store.list_corr_cache([]) == {}
+
+
+def test_corr_cache_table_created_by_schema(store):
+    """ensure_schema 必须幂等建出 alpha_corr_cache（含 checked_at 索引）。"""
+    names = {
+        r[0] for r in store.connection.execute(
+            "SELECT name FROM sqlite_master WHERE type IN ('table', 'index')"
+        ).fetchall()
+    }
+    assert "alpha_corr_cache" in names
+    assert "idx_alpha_corr_cache_checked" in names

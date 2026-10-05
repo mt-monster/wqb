@@ -170,7 +170,7 @@ def run(
     # 2026-09-06 修复：删除 `--concurrency` —— pipeline.py run 从未声明该参数，
     # argparse 直接 exit=2（"unrecognized arguments: --concurrency 7"），而
     # detached 分支不看退出码，于是 S3 每次都"启动成功"却从未真正跑过。
-    # 槽位数由 pipeline.py 内部锁定为 n_slots=min(7, n_total)，与 wqb-concurrency
+    # 槽位数由 pipeline.py 内部锁定为 n_slots=min(2, n_total)，与 wqb-concurrency
     # §8 七槽填槽一致，无需也无法从外部传入；concurrency 形参保留为计划元数据。
     #
     # 2026-09-08 修复（本节点第二次"启动成功但什么都没干"）：
@@ -235,7 +235,7 @@ def run(
     if concurrency != 7:
         warnings.append(
             f"concurrency={concurrency} 仅记录于计划；pipeline.py 内部锁定 "
-            "n_slots=min(7, 批数)，不接受外部覆盖（wqb-concurrency §8）"
+            "n_slots=min(2, 批数)，不接受外部覆盖（wqb-concurrency §8）"
         )
 
     # 三道开波闸（2026-09-27 R5，审计 N5）：SOP 步 6 指定的 S3 入口此前一道都不跑——KOR 真实

@@ -166,7 +166,7 @@ def test_toolkit_quota_semantics_are_stated_as_the_code_behaves():
     assert "缺省**不**因提交额度中止回测发起" in t
     assert "dispatch" in t and "submit" in t
     src = (TK_SCRIPTS / "pipeline.py").read_text(encoding="utf-8")
-    assert "n_slots = min(7, n_total)" in src
+    assert "n_slots = min(2, n_total)" in src
     assert "pipeline.py` 没有任何提交 alpha 的动作" in t
 
 
@@ -252,7 +252,7 @@ def test_poll_and_quota_tables_equal_the_code_constants():
     assert f"| `backoff_factor` | {poller.DEFAULT_POLL['backoff_factor']} |" in t
     assert poller.DEFAULT_POLL["stall_minutes"] == WAIT_THRESHOLDS["sim_stall_min"]
     assert "sim_stall_min" in t and "sim_timeout_min" in t
-    assert CONCURRENCY["slots"] == 7 and "min(7" in t and "min(5" not in t
+    assert CONCURRENCY["slots"] == 2 and "min(2" in t and "min(5" not in t
     assert "单批在飞" in t and "已废止" in t
     assert "不区分通道" in t and "POST /submit" in t
 
@@ -307,7 +307,7 @@ def test_concurrency_numbers_are_pinned_to_one_source():
     from wqb.config import CONCURRENCY
     import slots
     t = _skill("wqb-concurrency")
-    assert CONCURRENCY["slots"] == 7 and CONCURRENCY["burst_capacity"] == 7
+    assert CONCURRENCY["slots"] == 2 and CONCURRENCY["burst_capacity"] == 2
     monkey_env = __import__("os").environ.pop("WQB_GLOBAL_SLOTS", None)
     try:
         assert slots.global_cap() == CONCURRENCY["slots"]
@@ -315,8 +315,8 @@ def test_concurrency_numbers_are_pinned_to_one_source():
         if monkey_env is not None:
             __import__("os").environ["WQB_GLOBAL_SLOTS"] = monkey_env
     src = (TK_SCRIPTS / "pipeline.py").read_text(encoding="utf-8")
-    assert _re.search(r"n_slots = min\(7, n_total\)", src)
-    assert "`slots=7`" in t and "`WQB_GLOBAL_SLOTS`" in t
+    assert _re.search(r"n_slots = min\(2, n_total\)", src)
+    assert "`slots=2`" in t and "`WQB_GLOBAL_SLOTS`" in t
     assert "C=5" not in t.replace("旧的固定槽位 C=5", "").replace("「C=5、", "")
 
 

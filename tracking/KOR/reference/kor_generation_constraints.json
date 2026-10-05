@@ -96,5 +96,110 @@
  },
  "vec_rules": "VECTOR/event 字段必须先 vec_avg/vec_max 等聚合再套 rank/ts_*；VECTOR 禁直接 ts_backfill；MATRIX 数据集禁 vec_*（kor_preflight 3a/3e 已实证）",
  "settings_hint": "KOR 默认 SECTOR；论坛证据 STATISTICAL+rank-diff 上限更高 -> 双轨对照",
+ "declared_cross_spreads": {
+  "_doc": "用户 2026-10-01 修正：跨数据集价差合规且鼓励（§7.7.2 ⑤ 换信号概念），但须声明方向性经济解释。未声明集对 → 闸5 spread_cross_dataset 阻断。",
+  "pairs": [
+   [
+    "ai_equity_alpha",
+    "other466",
+    "模型综合分(前瞻/透明度/商业波动) vs 会计盈利资产收益率(ROA)：预期 vs 实现缺口——模型看多但基本面未兑现=高估背离"
+   ],
+   [
+    "ai_equity_alpha",
+    "shortinterest38",
+    "模型综合分 vs 融券净卖出比：看多预期 vs 实盘空头压力——预期-约束背离"
+   ],
+   [
+    "ai_equity_alpha",
+    "quant_factor_lib",
+    "模型综合分 vs Cassie 信用/破产分：盈利能力预期 vs 违约风险——质量对冲"
+   ],
+   [
+    "insiders5",
+    "other466",
+    "内部人持股变动率 vs ROA：内部人用脚投票 vs 基本面——信息不对称背离"
+   ],
+   [
+    "insiders5",
+    "shortinterest38",
+    "内部人增持 vs 融券比：内部人看多 vs 外部人做空——对手盘背离"
+   ],
+   [
+    "insiders5",
+    "quant_factor_lib",
+    "内部人持股变动 vs 信用分：知情交易 vs 违约风险"
+   ],
+   [
+    "fund_holdings_panel",
+    "other466",
+    "机构持仓规模/集中度 vs ROA：机构认同 vs 基本面——资金面 vs 基本面背离"
+   ],
+   [
+    "fund_holdings_panel",
+    "shortinterest38",
+    "机构持仓 vs 融券比：机构多 vs 空头——持仓-约束缺口"
+   ],
+   [
+    "fund_holdings_panel",
+    "quant_factor_lib",
+    "机构持仓集中度 vs 信用分：机构拥挤度 vs 信用风险"
+   ],
+   [
+    "insiders1",
+    "other466",
+    "内部人(报表口径) vs ROA：知情交易 vs 基本面"
+   ],
+   [
+    "news38",
+    "other466",
+    "新闻情绪向量 vs ROA：舆论预期 vs 实现——预期-实现缺口"
+   ],
+   [
+    "risk88",
+    "other466",
+    "风险因子(协动风险) vs ROA：风险暴露 vs 盈利质量对冲"
+   ],
+   [
+    "mmp_nlp_sentiment",
+    "other466",
+    "新闻情绪(看多/看空总量) vs 会计 ROA：舆论预期 vs 基本面实现——预期-实现缺口"
+   ],
+   [
+    "mmp_nlp_sentiment",
+    "shortinterest38",
+    "新闻情绪 vs 融券净卖出比：舆论多空 vs 实盘空头压力——预期-约束背离"
+   ],
+   [
+    "mmp_nlp_sentiment",
+    "quant_factor_lib",
+    "新闻情绪 vs Cassie 信用分：情绪面 vs 违约风险——情绪-质量对冲"
+   ],
+   [
+    "news38",
+    "shortinterest38",
+    "新闻情绪向量 vs 融券比：舆论 vs 空头"
+   ],
+   [
+    "news38",
+    "quant_factor_lib",
+    "新闻情绪向量 vs 信用分"
+   ],
+   [
+    "risk88",
+    "shortinterest38",
+    "风险因子 vs 融券比：风险暴露 vs 空头压力"
+   ],
+   [
+    "risk88",
+    "quant_factor_lib",
+    "风险因子 vs 信用分：风险 vs 违约双重校验"
+   ],
+   [
+    "insiders5",
+    "ai_equity_alpha",
+    "内部人交易 vs 模型综合分：知情交易 vs 模型预期"
+   ]
+  ]
+ },
  "_poison_patterns_note": "poison_patterns 已于 2026-08-15 移交 toolkit config/platform_constraints.json（平台级单一事实源），本区域文件不再持有；gate 会自动合并平台级+区域级（区域级此处为空）。"
 }
