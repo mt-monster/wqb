@@ -1,12 +1,12 @@
 {
   "mcpServers": {
-  "wq-brain-http": {
-      "type": "http",
-      "url": "http://127.0.0.1:8000/mcp"
+    "wq-brain-http": {
+      "url": "http://127.0.0.1:8000/mcp",
+      "type": "http"
     },
     "wqb-db": {
-      "type": "http",
-      "url": "http://127.0.0.1:8001/mcp"
+      "url": "http://127.0.0.1:8001/mcp",
+      "type": "http"
     }
   }
 }

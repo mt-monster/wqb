@@ -227,10 +227,6 @@
       "cat": "mcp",
       "what": "可选缓存端口（缺省 6379；不可用时降级，不阻断）"
     },
-    "REDIS_CONNECT_TIMEOUT": {
-      "cat": "mcp",
-      "what": "可选缓存 TCP 连接超时秒（缺省 0.3；调大则 Redis 不可达时 MCP stdio 启动变慢，曾致客户端挂载超时）"
-    },
     "WQB_ALLOW_ALPHA_SUBMIT": {
       "cat": "gate",
       "what": "`=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入）"
@@ -269,7 +265,7 @@
     },
     "WQB_DISABLE_BACKLOG_GATE": {
       "cat": "gate",
-      "what": "⚠ **幽灵开关：生产代码从未读取它**（全库仅 `tests/` 里 `monkeypatch.setenv`，`src/` 与 toolkit 侧都没有 `os.environ.get`）。设了它并不会关掉积压闸——真实开关是 `WQB_DISABLE_REGION_GATES`（整组三闸）或 AGENTS.md §8.1.2 的 waiver。仅测试隔离"
+      "what": "=1 跳过积压闸——开波闸簇 _run_backlog_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法：那是拆分文件未落盘导致读取点暂时消失的误判）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
     },
     "WQB_DISABLE_REGION_GATES": {
       "cat": "gate",
@@ -277,11 +273,11 @@
     },
     "WQB_DISABLE_SIGNAL_FLOOR_GATE": {
       "cat": "gate",
-      "what": "⚠ **幽灵开关：生产代码从未读取它**（仅 `tests/` 里 setenv）。设了它并不会关掉信号下限闸——真实开关是 `WQB_DISABLE_REGION_GATES`。仅测试隔离"
+      "what": "=1 跳过信号天花板闸——开波闸簇 _run_signal_floor_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
     },
     "WQB_DISABLE_STOP_RULES_GATE": {
       "cat": "gate",
-      "what": "⚠ **幽灵开关：生产代码从未读取它**（`wqb/waiver.py` 只在 `GatePolicy.escape_hatches` 的说明字符串里提到，未读取）。设了它并不会关掉停止规则闸——真实开关是 `WQB_DISABLE_REGION_GATES`，生产放行走 waiver（AGENTS.md §8.1.2）。仅测试隔离"
+      "what": "=1 跳过停止规则闸——开波闸簇 _run_stop_rules_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
     },
     "WQB_FAMILY_CAP_UNKNOWN": {
       "cat": "gate",
@@ -332,11 +328,6 @@
     "WQB_OPERATORS_CATALOG": {
       "cat": "tooldir",
       "what": "`op_arity` 读的算子目录路径覆盖（缺省按 `docs/reference` → `data/` → `research-data/` 顺序找）"
-    },
-    "WQB_PF_UNKNOWN_MODE": {
-      "cat": "gate",
-      "what": "闸 PF 对「未探明骨架（新骨架/低置信度/证据混合）」的处置 `warn|enforce`（缺省 warn=只告警；enforce=未探明骨架也拦截整波）。已确认死路骨架恒拦截，不受本档影响。",
-      "since": "2026-10-01"
     },
     "WQB_PYENV_REEXEC": {
       "cat": "internal",
@@ -445,6 +436,10 @@
     "WQ_VALIDATOR_DIR": {
       "cat": "tooldir",
       "what": "alpha-expression-verifier `scripts/` 目录覆盖"
+    },
+    "SA_PROBE_CACHE_TTL_HOURS": {
+      "cat": "wait",
+      "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
     }
   }
 }

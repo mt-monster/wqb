@@ -21,7 +21,7 @@
 
 ## 2. 核心入口文件
 
-- `world-quant-brain-mcp/main.py` — MCP 服务入口（`.mcp.json` 注册为 `wq-brain-http`，stdio 启动）
+- `world-quant-brain-mcp/main.py` — MCP 服务入口（`.mcp.json` 注册为 `wq-brain-http`；**HTTP 常驻**——缺省 `MCP_TRANSPORT=streamable-http` 监听 `127.0.0.1:8000/mcp`，需先用 `tools/start_wq_mcp.py --all` 把服务起起来；`MCP_TRANSPORT=stdio` 为遗留路径）
 - `world-quant-brain-mcp/brain_api.py` — BRAIN API 客户端**门面**（36 行）；方法体 verbatim 拆至 `brain_mixin_transport/auth/simulation/spcread/correlation.py`，保持 `BrainApiClient` 类名与 `brain_client` 单例 + 旧导入路径（`from brain_api import brain_client/BrainApiClient/load_config/SimulationSettings/...`）不变
 - `world-quant-brain-mcp/brain_api_models.py` — 纯数据模型（Pydantic）：`AuthCredentials`/`SimulationSettings`/`SimulationData`
 - `world-quant-brain-mcp/brain_config.py` — 配置函数：`_resolve_config_path`/`_load_dotenv_into_environ`/`load_config`
@@ -138,13 +138,22 @@
   （`cline_mcp_settings.json`），Cline 会自动扫前述 6 个目录，无需在 settings 里登记 skill。
   本工作区 `Claude/skills/` 是源、`~/.cline/skills` 与 `~/.agents/skills` 是派生物；
   **项目级 `.claude/skills` 由 Cline 自行扫描，wqb 侧不为其复制副本**（避免三处重复进 skill 列表）。
-- **⚠ 三种客户端的 HTTP `type` 取值不通用，照抄会静默失败（2026-10-05 实测）**：
-  `.mcp.json` 用 `"type": "http"`，但**这个值只对 Claude 系客户端有效**。各客户端要各写各的：
+- **⚠ 各客户端的 HTTP `type` 取值不通用，照抄会静默失败（2026-10-05 实测）**：
+  `.mcp.json` 用 `"type": "http"`，Claude 系与 Qoder 认这个值，Cline 不认。各客户端要各写各的：
   | 客户端 | 配置文件 | HTTP 形态的 `type` |
   |---|---|---|
   | Claude Code / Desktop | `.mcp.json`（权威源）/ `mcp_config.json`（镜像） | `http` |
+  | **Qoder CN** | 项目 `.mcp.json` + 用户级 `~/.qoder-cn/mcp.json` | `http`（实测：`wqb-db` 只写在项目 `.mcp.json`，Qoder 按 `type:http` 连上了 8001） |
   | **Cline Desktop/CLI** | `~/.cline/data/settings/cline_mcp_settings.json` | **`streamableHttp`**（驼峰） |
+  | **WorkBuddy** | `~/.workbuddy/mcp.json` | `http`（实测：两个 server 已指 8000 / 8001 并连通） |
   | 其他 MCP 客户端 | 按各自 schema | 先查 schema 再写 |
+  ⚠ **Qoder：同名 server 以用户级 `~/.qoder-cn/mcp.json` 覆盖项目 `.mcp.json`**。2026-10-05 实测该文件里
+  `wq-brain-http` 仍写 stdio（`command` + `env.MCP_TRANSPORT=stdio`），于是 Qoder 自己另拉一份 `main.py`
+  子进程 —— 跟 8000 上的常驻 HTTP 服务**并存两个实例、各持一份平台会话**，项目 `.mcp.json` 的 http
+  配置对它完全不生效（`wqb-db` 没写进用户级文件，所以那一路是走的 HTTP）。
+  判据：`Get-CimInstance Win32_Process -Filter "Name='python.exe'"` 看 `main.py` 的父进程是不是
+  `QoderCN.exe`，再看 8000 端口有没有来自 Qoder 的连接。用户级文件已改 `type:http` + `url`
+  （原 stdio 版备份 `~/.qoder-cn/mcp.json.bak_stdio_20261005`）；**改完要重载窗口 / 重启 MCP 连接才生效**。
   ⚠ **Cline 核心代码里完全没有 `.mcp.json` 字样**（实测 `index.js` 搜 `.mcp.json` 无命中），
   它只读自己的 settings 文件 ⇒ **改 `.mcp.json` 不会影响 Cline，必须单独改**。
   合法值只有 `stdio` / `sse` / `streamableHttp`（来源：`@cline/core/dist/extensions/mcp/types.d.ts`
