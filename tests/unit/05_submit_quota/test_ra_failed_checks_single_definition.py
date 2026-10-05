@@ -82,7 +82,9 @@ def db_mcp(tmp_path, monkeypatch):
     monkeypatch.setenv("WQB_CAMPAIGN_DIR", str(cdir))
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", path)
+    # 隔离临时库走 set_db_path（唯一正用）：`mod.DB_PATH = …` 已被 _GuardedModule 拦下
+    # ——属性式 patch 在 DB 访问被拆到别的模块后静默失效，测试会写生产库（2026-10-04 事故）。
+    mod.set_db_path(path)
     return mod, path
 
 

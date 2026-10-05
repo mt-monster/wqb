@@ -41,10 +41,12 @@ def db_path(tmp_path):
 
 @pytest.fixture
 def db_mcp(db_path, monkeypatch):
-    """加载 wqb_db_mcp 并把模块级 DB_PATH 指到临时库（它不读 WQB_DB_PATH，必须改属性）。"""
+    """加载 wqb_db_mcp 并把它的库指到临时库（走 set_db_path —— DB_PATH 属性式 patch
+    已被 `wqb_db_mcp._GuardedModule` 拦下：那种写法在 DB 访问被拆到别的模块后静默失效，
+    测试会写生产 data/wqb.db。2026-10-04 事故，AGENTS.md §8.4 第 9 项）。"""
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", db_path)
+    mod.set_db_path(db_path)
     return mod
 
 

@@ -377,7 +377,7 @@ def test_rejection_carries_suggestion_and_never_writes(db_path, monkeypatch):
 
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", db_path)
+    mod.set_db_path(db_path)
     out = mod.upsert_wave_result("KOR", "91c", verdict="✅ 2 RA 提交成功 (88lr21xo + A1lb2KpR 均 ACTIVE)")
     assert "error" in out and out["suggestion"]["verdict"] == "PASS"
     assert "未自动采用" in out["error"] and "判定表" in out["error"]

@@ -8,6 +8,7 @@ blacklist and WebDataScope gate accounting.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Set
 
@@ -508,6 +509,18 @@ GATES: Dict[str, Dict[str, object]] = {
     "internal": GATES_INTERNAL,
     "platform": GATES_PLATFORM,
 }
+
+#: 全局提交闸（**fail-closed**）：`=1` 才允许 workflow 提交 alpha——它只解除闸门，
+#: **不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。
+#: ⚠ 本模块唯一的 `os.environ` 读取点，且是文档已承诺的口径：`docs/env_registry.json` 把
+#:    `WQB_ALLOW_ALPHA_SUBMIT` 的读取方登记为 `src/wqb/config.py` + `mcp/main.py`；
+#:    `world-quant-brain-mcp/main.py` 按仓库根 `setdefault("WQB_ALLOW_ALPHA_SUBMIT", "1")`
+#:    （HTTP 常驻模式下客户端不起进程、无人注入 env，服务端自带兜底）。
+#:    读取时机 = 导入时，所以只对当次进程生效（与 submit_alpha 节点的说明一致）。
+#:    ⚠ 消费点：`wqb.workflow.nodes.submit_alpha` 在文件头导入它——名字缺失时 registry
+#:    只打 WARNING 就跳过注册 ⇒ `submit_alpha` 节点**静默消失**（2026-10-06 实测：
+#:    HEAD 自带这个断链，`workflow_list_nodes` 返 19 个而非 20，提交链不可用）。
+ALLOW_ALPHA_SUBMIT: bool = os.environ.get("WQB_ALLOW_ALPHA_SUBMIT", "") == "1"
 
 #: 等待 / 退避 / 卡住阈值（**唯一来源**，skills 审查 X-15，2026-09-29）。
 #: 文档（poll-and-quota.md 的阈值表、submit-alpha、super-alpha、monitor）只按键名引用，不再抄数字；

@@ -38,12 +38,25 @@ class _FakeClient:
         self.calls.append("set_alpha_properties")
         return {}
 
+    async def check_correlation(self, alpha_id, **kw):
+        """prod 闸（F8，2026-10-02）要实测值：未出数 = fail-closed 会先把提交路径拦死。
+
+        本文件测的是「SUPER 必须走 super_build」这道守卫，不是 prod 闸的判定本身
+        （submit_alpha 侧目前没有 prod 闸专属用例，只有 super_build 侧的
+        `test_super_build_prod_gate.py`），所以给一个低于 0.7 的值，让 REGULAR
+        路径能继续走到 submit。不计入 calls（它不是被守卫约束的副作用）。
+        """
+        return {"checks": {"production": {"max_correlation": 0.55, "status": "ok"}}}
+
     async def submit_alpha(self, alpha_id):
         self.calls.append("submit_alpha")
         return {"success": True, "reason": "IS checks passed", "status_code": 200, "checks": []}
 
 
 def _run(monkeypatch, client, **kw):
+    # 全局提交闸默认 fail-closed（缺 WQB_ALLOW_ALPHA_SUBMIT 即拦下）；要测到 SUPER 守卫
+    # / 提交路径本身，必须先显式开闸，否则测的是闸门而不是守卫（见 gate 单测同口径）。
+    monkeypatch.setattr(SA, "ALLOW_ALPHA_SUBMIT", True)
     monkeypatch.setattr(SA, "_get_brain_client", lambda: client)
     monkeypatch.setattr(SA, "_run_async", lambda coro: asyncio.new_event_loop().run_until_complete(coro))
     monkeypatch.setattr(SA, "_poll_status", lambda c, aid, t: "ACTIVE")

@@ -188,7 +188,9 @@ def _load_db_mcp(tmp_path):
     spec = importlib.util.spec_from_file_location("_wqb_db_mcp_status", str(REPO_ROOT / "wqb_db_mcp.py"))
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    mod.DB_PATH = tmp_path / "mcp.db"  # _store() 每次读模块级 DB_PATH，绝不碰真库
+    mod.set_db_path(tmp_path / "mcp.db")   # _store() 每次读模块级 DB_PATH，临时库隔离，不碰真库
+    # （统一走 set_db_path：属性式赋值在 `wqb_db_mcp._GuardedModule` 下会当场报错，
+    #  而会不会被装上硬闸取决于 reload / sys.modules 载入方式，不该依赖这个差异）
     return mod
 
 

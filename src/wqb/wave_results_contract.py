@@ -142,7 +142,16 @@ def upsert_wave_result(conn, region: str, wave_number: Any, now: str,
 
     返回 ``{"action": "inserted"|"updated"|"noop", "region", "wave_number",
     "verdict", "status", "updated_fields"}``；违反契约时返回 ``{"error": ...}`` 且不写库。
+
+    ⚠ `n_pass` / `n_near` 是**证据关键字，不是列**，口径来自写入方
+    `wqb_db_mcp.upsert_wave_result` 的签名文档（2026-10-02：「不作为列写入，仅在
+    verdict 无法辨认时交给判定表做证据判定」）。实测 `wave_results` 表 16 列里没这两列，
+    直接当列转发会被下面的未知列校验拒接——此前就是拒接本身（MCP 工具每次调用都
+    `TypeError`，因为包装层无条件把两个计数传进来）。计数**不自动决定** verdict：
+    写入路径保持保守，只在拒绝时以计数证据给建议。
     """
+    n_pass = fields.pop("n_pass", None)
+    n_near = fields.pop("n_near", None)
     unknown = sorted(set(fields) - set(FIELDS))
     if unknown:
         raise TypeError(f"wave_results 不认识的列: {unknown}")
@@ -163,7 +172,13 @@ def upsert_wave_result(conn, region: str, wave_number: Any, now: str,
         if norm is None:
             msg = (f"verdict 必须是 PASS/FAIL/PARTIAL（或带该前缀），收到 {provided['verdict']!r}；"
                    f"描述性结论请放 key_findings。判定表：{VERDICT_TABLE}")
-            suggestion = suggest_verdict(provided["verdict"])
+            if n_pass is not None:
+                # 拿得到逐条事实就以计数为准，不再从自由文本猜（文本启发式仅作兜底）。
+                suggestion = {"verdict": verdict_from_counts(n_pass, n_near or 0),
+                              "confidence": "high",
+                              "rule": f"计数证据 n_pass={n_pass} / n_near={n_near}"}
+            else:
+                suggestion = suggest_verdict(provided["verdict"])
             if suggestion is None:
                 return {"error": msg, **base}
             return {"error": msg + (f"。按判定表建议 verdict='{suggestion['verdict']}'"
