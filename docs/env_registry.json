@@ -269,19 +269,19 @@
     },
     "WQB_DISABLE_BACKLOG_GATE": {
       "cat": "gate",
-      "what": "`=1` 关闭积压闸——仅测试隔离（同上）"
+      "what": "⚠ **幽灵开关：生产代码从未读取它**（全库仅 `tests/` 里 `monkeypatch.setenv`，`src/` 与 toolkit 侧都没有 `os.environ.get`）。设了它并不会关掉积压闸——真实开关是 `WQB_DISABLE_REGION_GATES`（整组三闸）或 AGENTS.md §8.1.2 的 waiver。仅测试隔离"
     },
     "WQB_DISABLE_REGION_GATES": {
       "cat": "gate",
-      "what": "`=1` 关闭 toolkit 开波区域闸整体——仅测试隔离（同上）"
+      "what": "`=1` 关闭 toolkit 开波区域闸整体（catalog / signal_floor / stop_rules / backlog）——仅测试隔离；生产上跳过闸须走 waiver（AGENTS.md §8.1.2）"
     },
     "WQB_DISABLE_SIGNAL_FLOOR_GATE": {
       "cat": "gate",
-      "what": "`=1` 关闭信号下限闸——仅测试隔离（同上）"
+      "what": "⚠ **幽灵开关：生产代码从未读取它**（仅 `tests/` 里 setenv）。设了它并不会关掉信号下限闸——真实开关是 `WQB_DISABLE_REGION_GATES`。仅测试隔离"
     },
     "WQB_DISABLE_STOP_RULES_GATE": {
       "cat": "gate",
-      "what": "`=1` 关闭停止规则闸——**仅测试隔离**；生产上跳过闸须走 waiver（AGENTS.md §8.1.2）"
+      "what": "⚠ **幽灵开关：生产代码从未读取它**（`wqb/waiver.py` 只在 `GatePolicy.escape_hatches` 的说明字符串里提到，未读取）。设了它并不会关掉停止规则闸——真实开关是 `WQB_DISABLE_REGION_GATES`，生产放行走 waiver（AGENTS.md §8.1.2）。仅测试隔离"
     },
     "WQB_FAMILY_CAP_UNKNOWN": {
       "cat": "gate",
@@ -333,22 +333,10 @@
       "cat": "tooldir",
       "what": "`op_arity` 读的算子目录路径覆盖（缺省按 `docs/reference` → `data/` → `research-data/` 顺序找）"
     },
-    "WQB_PBR_BOOTSTRAPPED": {
-      "cat": "internal",
-      "what": "`tools/prod_blocked_recheck.py`：`=1` 标记子进程已自举（防递归重入）；勿手设"
-    },
     "WQB_PF_UNKNOWN_MODE": {
       "cat": "gate",
       "what": "闸 PF 对「未探明骨架（新骨架/低置信度/证据混合）」的处置 `warn|enforce`（缺省 warn=只告警；enforce=未探明骨架也拦截整波）。已确认死路骨架恒拦截，不受本档影响。",
       "since": "2026-10-01"
-    },
-    "WQB_PROBE_CAP": {
-      "cat": "gate",
-      "what": "build_wave：探针先于扩批时，尚无已回测行的族在本波的 cap（缺省 1）"
-    },
-    "WQB_PROBE_GATE": {
-      "cat": "gate",
-      "what": "build_wave：`=off` 关闭「探针先于扩批」机检（缺省 on）"
     },
     "WQB_PYENV_REEXEC": {
       "cat": "internal",

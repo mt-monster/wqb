@@ -127,13 +127,26 @@ def render_ladder() -> str:
 
 # ----------------------------------------------------------------------------- 环境变量
 
-#: 不扫描的目录 / 文件（归档、测试、第三方）
-_SKIP_PARTS = {".venv", "attic", "__pycache__", "tests", "legacy", "node_modules", ".git"}
+#: 不扫描的目录 / 文件（归档、第三方）。注意``tests`` 不在此列：
+#: 测试会用``monkeypatch.setenv`` 消费「仅测试隔离开关」，而那些开关在生产代码里
+#: **刻意没有读取点**（真实开关是 `WQB_DISABLE_REGION_GATES` 等）。若不扫 tests，
+#: 这些变量会被判成「登记了但代码已不再读取」而被迫删登记 —— 删掉后文档就不再说明
+#: 「这三个是幽灵开关」，下一个人又会照着测试去 setenv。故单独走``_TEST_ONLY`` 通道。
+_SKIP_PARTS = {".venv", "attic", "__pycache__", "legacy", "node_modules", ".git"}
 _SCAN_ROOTS = ("src", "tools", "world-quant-brain-mcp", "Claude/skills", "wqb_db_mcp.py")
-_ENV_CALL = re.compile(
-    r"""(?:os\.environ\.get|os\.environ\.setdefault|os\.getenv|environ\.get|getenv)\(\s*['"]([A-Z][A-Z0-9_]{3,})['"]\s*(?:,\s*([^)\n]+?))?\s*\)""")
+_TEST_SCAN_ROOTS = ("tests",)
 #: 传进函数的 `env` 字典（`env.get("WQB_WAIVER_MODE")`）——只认本项目前缀，避免把任意字典键当环境变量
 _PREFIXES = "WQB|WQ|BRAIN|CREDENTIALS|MOONSHOT|GEM|FORUM|LABS|MCP|REDIS|CAMPAIGN|OPENAI|FE|API|BACKFILL"
+#: 测试里「设置」一个变量才算消费（``delenv`` / ``pop`` 是清理，不算）。
+#: 两条约束缺一不可：
+#: ① 刻意不收 ``dict(os.environ, X=...)`` 这类子进程 env 字面量 —— 那不是设置本进程的环境变量；
+#: ② 只认本项目前缀（复用 ``_PREFIXES``），否则会捞进 ``HOME`` / ``USERPROFILE`` /
+#:    ``WAVE_GATE_STUB_MODE`` 这类操作系统变量与测试内部 stub 机制 —— 它们不是项目环境开关。
+_TEST_SETENV = re.compile(
+    rf"""(?:monkeypatch\.setenv|os\.environ\.setdefault|os\.getenv\(|environ\.setdefault|"""
+    rf"""os\.environ\[|environ\[)\s*\(?\s*['"]((?:{_PREFIXES})_[A-Z0-9_]+)['"]""")
+_ENV_CALL = re.compile(
+    r"""(?:os\.environ\.get|os\.environ\.setdefault|os\.getenv|environ\.get|getenv)\(\s*['"]([A-Z][A-Z0-9_]{3,})['"]\s*(?:,\s*([^)\n]+?))?\s*\)""")
 _ENV_DICT = re.compile(
     rf"""\b(?:env|environ|_env|environment)\.get\(\s*['"]((?:{_PREFIXES})_[A-Z0-9_]+)['"]\s*(?:,\s*([^)\n]+?))?\s*\)""")
 _ENV_SUB = re.compile(r"""os\.environ\[\s*['"]([A-Z][A-Z0-9_]{3,})['"]\s*\]""")
@@ -153,8 +166,28 @@ def _iter_py() -> List[Path]:
     return out
 
 
+def _iter_test_py() -> List[Path]:
+    """只返回``tests/`` 下的测试文件（用于识别「仅测试消费」的环境变量）。"""
+    out = []
+    for root in _TEST_SCAN_ROOTS:
+        p = REPO / root
+        if not p.is_dir():
+            continue
+        for f in sorted(p.rglob("*.py")):
+            rel = f.relative_to(REPO)
+            if any(part in _SKIP_PARTS for part in rel.parts):
+                continue
+            out.append(f)
+    return out
+
+
 def scan_env() -> Dict[str, dict]:
-    """代码里读取 / 设置的环境变量：名 → {readers: [相对路径…], default: 字面量默认值或 None}。"""
+    """代码里读取 / 设置的环境变量：名 → {readers: [相对路径…], default: 字面量默认值或 None}。
+
+    含**仅测试消费**的隔离开关：它们只在 ``tests/`` 里被 ``monkeypatch.setenv``，
+    生产代码刻意没有读取点（真实开关另有其名）。不把它们算进来会让登记表把它们
+    判成过期而删除，删掉后就不再有人知道「这三个是幽灵开关」。
+    """
     found: Dict[str, dict] = {}
     for f in _iter_py():
         try:
@@ -170,6 +203,14 @@ def scan_env() -> Dict[str, dict]:
                 if lit:
                     e["default"] = lit.group(1) if lit.group(1) is not None else lit.group(2)
         for m in _ENV_SUB.finditer(text):
+            found.setdefault(m.group(1), {"readers": set(), "default": None})["readers"].add(rel)
+    for f in _iter_test_py():
+        try:
+            text = f.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        rel = f.relative_to(REPO).as_posix()
+        for m in _TEST_SETENV.finditer(text):
             found.setdefault(m.group(1), {"readers": set(), "default": None})["readers"].add(rel)
     for e in found.values():
         e["readers"] = sorted(e["readers"])
