@@ -40,9 +40,12 @@ __all__ = [
     "CHANNEL_PPA",
     "CHANNEL_SUPER",
     "CORR_LOW",
+    "CORR_MID",
     "CORR_NEAR",
     "CORR_RED_LINE",
     "MAX_TAGS",
+    "PPA_TAG",
+    "has_ppa_tag",
     "validate_color",
     "build_name",
     "build_tags",
@@ -74,10 +77,11 @@ _CHANNEL_BY_TYPE = {
 # ---------------------------------------------------------------- 相关性档
 
 CORR_LOW = "CORR_LOW"        # 双闸余量充裕（SA 组池优先）
+CORR_MID = "CORR_MID"        # 两闸均已测、中间地带（既非LOW 也非 NEAR）
 CORR_NEAR = "CORR_NEAR"      # 贴近红线，提交前需复检
 
 CORR_RED_LINE = 0.70         # 平台硬闸
-CORR_LOW_MAX = 0.55          # PROD/SELF 均低于此 → CORR_LOW
+CORR_LOW_MAX = 0.55# PROD/SELF 均低于此 → CORR_LOW
 CORR_NEAR_MIN = 0.65         # 任一达到此 → CORR_NEAR
 
 #: 单颗 alpha 的 tag 数量上限（防膨胀：控制台按 tag 筛，越多越难筛）
@@ -122,7 +126,27 @@ def build_name(region: str, alpha_type: str, family: str, seq: int = 1) -> str:
 
 # ---------------------------------------------------------------- tags
 
+#: PPA 通道专有标签。**精确成员判定**，不做子串匹配——
+#: 子串匹配会让 `PowerPoolSelected_old`、`my_PowerPoolSelected` 之类误命中
+#: （2026-10-05 统一口径：`judge_alpha._is_ppa` 曾用 `"..." in str(t)` 子串判定，
+#: 与本模块 `check_tags` 的精确成员判定不一致，同一颗 alpha 两处结论可能相反）。
+PPA_TAG = "PowerPoolSelected"
+
+
+def has_ppa_tag(tags: Optional[List[str]]) -> bool:
+    """是否带 PPA 通道标签（精确成员判定）。`judge_alpha._is_ppa` 应改用本函数。"""
+    return PPA_TAG in [str(t) for t in (tags or [])]
+
+
 def _corr_tag(prod: Optional[float], self_: Optional[float]) -> Optional[str]:
+    """相关性档位标签。
+
+    ⚠ 2026-10-05 补 `CORR_MID`：原先 0.55~0.65 的中间地带**返回 None 不打 tag**，
+    于是控制台上出现一批既无 `CORR_LOW` 也无 `CORR_NEAR` 的 alpha，无法区分
+    「没测相关性」与「测了但中等」—— 而这两种都需要复检，语义上不该沉默。
+
+    ⚠ 超红线（>=0.70）仍返回 None：那不是「可提交」态，不该出现在提交标签里。
+    """
     vals = [v for v in (prod, self_) if v is not None]
     if not vals:
         return None
@@ -132,6 +156,9 @@ def _corr_tag(prod: Optional[float], self_: Optional[float]) -> Optional[str]:
         return CORR_NEAR
     if prod is not None and self_ is not None and prod < CORR_LOW_MAX and self_ < CORR_LOW_MAX:
         return CORR_LOW
+    # 已测且落在 LOW_MAX..NEAR_MIN 之间 → 中间档（有数据但不宽裕）
+    if min(vals) >= CORR_LOW_MAX:
+        return CORR_MID
     return None
 
 
@@ -218,7 +245,7 @@ def check_tags(tags: List[str]) -> List[str]:
     for t in tags:
         if re.fullmatch(r"[0-9]+(\.[0-9]+)?", t):
             warn.append(f"疑似把 PROD 数值当 tag：{t}（数值会过期，应放 description）")
-    if "PowerPoolSelected" in tags and CHANNEL_PPA not in tags:
+    if has_ppa_tag(tags) and CHANNEL_PPA not in tags:
         warn.append("PowerPoolSelected 应仅用于真实 PPA 通道；普通提交请用 CH_REG；"
                     "若确为 PPA，请同时补 CH_PPA 以保持通道口径一致")
     return warn

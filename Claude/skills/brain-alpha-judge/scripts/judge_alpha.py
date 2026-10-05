@@ -544,7 +544,12 @@ def _is_ppa(alpha_details: Dict[str, Any]) -> bool:
     d = alpha_details or {}
     if str(d.get("type") or "").upper() == "PPA":
         return True
-    return any("PowerPoolSelected" in str(t) for t in (d.get("tags") or []))
+    # 2026-10-05：原先用 `"PowerPoolSelected" in str(t)` **子串**判定，会让
+    # `PowerPoolSelected_old` / `my_PowerPoolSelected` 之类误命中；而
+    # `wqb.alpha_properties.check_tags` 用的是精确成员判定 —— 同一颗 alpha
+    # 两处结论可能相反。改为精确成员（与 check_tags 统一口径）。
+    tags = [str(t) for t in (d.get("tags") or [])]
+    return "PowerPoolSelected" in tags
 
 
 def internal_hard_gate_failures(alpha_details: Dict[str, Any]) -> List[Dict[str, Any]]:

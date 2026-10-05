@@ -254,10 +254,18 @@ async def set_alpha_properties(alpha_id: str, name: Optional[str] = None,
       `descriptions` at its default): a `descriptions` value adds a `regular` field to the PATCH
       body, which the platform rejects with 400 for type=SUPER.
       Args:
-        color: may be one of `RED` `GREEN` `YELLOW` `BLUE` `PURPLE`；
-        name: 使用生产相关性命名，不能带空格；建议基于 production correlation
-        的最大值命名，例如 `0.6534` 表示 prod correlation = 0.6534；
-        tags 至少包含 `PowerPoolSelected`；
+        color: may be one of `RED` `GREEN` `YELLOW` `BLUE` `PURPLE`；缺省（None）
+          时由 `workflow_submit_alpha` 取 `BLUE`（已提交·待观察）。`GREEN` 须由 OS
+          结果挣得，**不得作默认值**；`PURPLE` 是 PPA 通道专用色。枚举单一事实源
+          `wqb.alpha_properties.COLORS`（其余值平台返 400）。
+        name: 建议 `<REGION>_<R|S>_<family>_<NN>`（`wqb.alpha_properties.build_name`），
+          不能带空格。⚠ **不要用 production correlation 数值命名**（如 `0.6534`）——
+          那是提交时的快照，写进 name 会过期骗人；PROD 值应体现在 `CORR_*` 标签。
+        tags: 规范由 `wqb.alpha_properties.build_tags` 自动生成：`CH_<通道>` +
+          `SRC_<数据集>` 必打，可选 `W<波次>` / `EXPRFAM_<族>` / `CORR_<档>`，
+          **上限 5 个**（`MAX_TAGS`）。⚠ `PowerPoolSelected` 是 **PPA 通道专有**标识，
+          普通提交**不要打**（普通通道用 `CH_REG`）；历史实现曾无条件把它打进每个
+          alpha，已修正。平台已自带的（塔/类型/区域/作者/`stage`）不要重复打。
         descriptions: Write in English, <=100 words. The three sections MUST be separated by
         actual newline characters (i.e. use the JSON escape sequence \\n\\n between sections,
         NOT the literal text "\\n\\n"). Example value:
