@@ -1,4 +1,4 @@
-"""brain_api 单元测试 (MCP venv) — 提交前体检 / 配额估算 / 模型默认值 (无网络)。
+"""brain_api 单元测试 (MCP venv) — 模型默认值 / datafields 检索 (无网络)。
 
 导入 brain_api 即实例化 brain_client 单例 (不联网); 被测方法通过
 `BrainApiClient.__new__` 构造空壳实例 + monkeypatch 平台方法, 避免真实请求。
@@ -30,66 +30,17 @@ def test_singleton_exists():
 
 
 # ---------------------------------------------------------------------------
-# pre_submit_check (提交前体检 — 本地启发式)
+# pre_submit_check tests removed (2026-10-02) — 方法已删除
 # ---------------------------------------------------------------------------
-
-def _details(sharpe=2.0, fitness=1.2, turnover=0.15, returns=0.08, margin=0.0010,
-             region="EUR", checks=None):
-    return {
-        "settings": {"region": region, "delay": 1},
-        "is": {
-            "sharpe": sharpe, "fitness": fitness, "turnover": turnover,
-            "returns": returns, "margin": margin,
-            "checks": checks or [],
-        },
-    }
+# 旧 pre_submit_check 是宽松的本地启发式（Sharpe>1.3 / Fitness>0.75 / Turnover 4%-40% /
+# Returns>4%，预检异常即放行 = fail-open），2026-09-29 起提交路由改用 fail-closed 的
+# src/wqb/workflow/nodes/submit_alpha.py::_submit_gate，生产调用方为 0，方法与其单测已于
+# 2026-10-02 一并删除（skills 审查 SP-13 / T0-4 / 步 8 评估 F10）。
+# 新的口径守护在 tests/unit/01_store_db/test_threshold_relations.py::test_submit_gate_thresholds_are_pinned。
 
 
 def make_shell():
     return BrainApiClient.__new__(BrainApiClient)
-
-
-def test_pre_submit_pass():
-    c = make_shell()
-    r = c.pre_submit_check(_details())
-    assert r["passed"] is True and r["failures"] == []
-
-
-def test_pre_submit_sharpe_fail():
-    c = make_shell()
-    r = c.pre_submit_check(_details(sharpe=1.2))
-    assert r["passed"] is False
-    assert any("Sharpe" in f for f in r["failures"])
-
-
-def test_pre_submit_turnover_local_window():
-    c = make_shell()
-    assert c.pre_submit_check(_details(turnover=0.02))["passed"] is False    # < 4%
-    assert c.pre_submit_check(_details(turnover=0.45))["passed"] is False    # > 40%
-    assert c.pre_submit_check(_details(turnover=0.15))["passed"] is True
-
-
-def test_pre_submit_margin_is_warning_not_failure():
-    """2026-08-13 修复回归: margin 是本地启发式, 平台不检查 — 只能 warning。
-    EUR qMNEG2Z2 (6.12bp) 曾在此被误拦, 真实拒因是 PROD_CORRELATION。"""
-    c = make_shell()
-    r = c.pre_submit_check(_details(margin=0.000612, region="EUR"))
-    assert r["passed"] is True                 # 不再拦截
-    assert any("margin" in w.lower() for w in r["warnings"])
-
-
-def test_pre_submit_captures_is_check_fail():
-    c = make_shell()
-    r = c.pre_submit_check(_details(checks=[{"name": "LOW_2Y_SHARPE", "result": "FAIL",
-                                             "value": 1.2, "limit": 1.58}]))
-    assert r["passed"] is False
-    assert any("LOW_2Y_SHARPE" in f for f in r["failures"])
-
-
-def test_pre_submit_no_is_data():
-    c = make_shell()
-    r = c.pre_submit_check({"settings": {"region": "EUR"}})
-    assert r["passed"] is False and "No IS data" in r["reason"]
 
 
 # ---------------------------------------------------------------------------

@@ -166,7 +166,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
   【唯一并发来源】`wqb-concurrency` §8（Token-Bucket C≈7，`WQB_GLOBAL_SLOTS` 缺省 7）。
   【填槽】`mcp__wq-brain-http__workflow_batch_track region="USA" wave=<W> dataset=<DS>`
     ★ 禁止拼 `--concurrency`（pipeline.py 无此参数；曾致 S3 "启动成功"却从未真跑 13 天）。
-    n_slots 内部 = min(7, 批数)。空槽补组合批，不用裸探针凑数。
+    n_slots 内部 = min(2, 批数)。空槽补组合批，不用裸探针凑数。
   【跟踪】`mcp__wq-brain-http__workflow_task_status task_id=<上一步返回的 task_id>`
     收批压缩：`mcp__wq-brain-http__harvest_multisim_alphas multisimulation_location="/simulations/<id>"` →
       `mcp__wqb-db__harvest_multisim_results region="USA" wave=<W> alphas=<上一步返回>`

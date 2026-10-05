@@ -1,6 +1,6 @@
 # KOR 战役新工具链（2026-08-15 落地）
 
-> 来源：`KOR挖掘优化全面方案_复核版.md` §四 路线图（M1–M19）的工程落地。
+> 来源：`kor_mining_optimization_plan_reviewed.md` §四 路线图（M1–M19）的工程落地。
 > 原则：本地缓存驱动、可断点续跑、配额感知、原子写、无外部 IDE 会话依赖。
 
 > **迁移预告（2026-08-15）**：本目录脚本已抽象为通用引擎 skill **`wq-brain-campaign-toolkit`**

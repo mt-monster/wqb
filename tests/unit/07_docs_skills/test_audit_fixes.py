@@ -361,7 +361,7 @@ def test_history_expressions_still_honours_exclude_waves(tmp_path):
 # 10. 实测产出率工具（选区最硬先验，此前库里躺着没人查）
 # ---------------------------------------------------------------------------
 
-def test_get_mining_yield_separates_conversion_from_yield():
+def test_get_mining_yield_separates_conversion_from_yield(monkeypatch):
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(
@@ -369,6 +369,9 @@ def test_get_mining_yield_separates_conversion_from_yield():
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
+    # 本测试故意跑真库：它校的是存量数据上的**不变量**（ra_clean ≤ passed 等），
+    # 只读不写。否则会被 `wqb_db_mcp` 的结果层硬闸拦下（闸的缘由见 AGENTS.md §8.4 第 9 项）。
+    monkeypatch.setenv("WQB_ALLOW_REAL_DB", "1")
 
     out = mod.get_mining_yield()
     assert "rows" in out and "totals" in out

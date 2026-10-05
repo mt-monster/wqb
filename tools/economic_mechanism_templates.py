@@ -31,12 +31,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "economic_logic": "分歧越大，信息不确定性越高，未来收益越低",
             },
             {
-                "name": "分歧 × 修正方向（复杂经济学模板）",
-                "expression": "add(multiply(0.6, rank(vec_avg(analyst_revision))), multiply(0.4, rank(vec_stddev(analyst_estimates))))",
-                "description": "修正方向（慢变量）× 分歧度（快变量）",
-                "economic_logic": "修正方向明确但分歧大的股票，未来收益更高",
-            },
-            {
                 "name": "分歧 × 覆盖度（门控机制）",
                 "expression": "trade_when(greater(vec_count(analyst_estimates), 5), rank(vec_stddev(analyst_estimates)), 0)",
                 "description": "覆盖度 > 5 时才交易分歧信号",
@@ -60,12 +54,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "expression": "rank(days_from_last_change(analyst_revision))",
                 "description": "距上次修正天数越短，信号越强",
                 "economic_logic": "新鲜修正比陈旧修正更有预测力",
-            },
-            {
-                "name": "新鲜度 × 修正幅度（复杂经济学模板）",
-                "expression": "add(multiply(0.7, rank(ts_delta(analyst_revision, 5))), multiply(0.3, rank(days_from_last_change(analyst_revision))))",
-                "description": "修正幅度（70%）× 新鲜度（30%）",
-                "economic_logic": "新鲜且幅度大的修正，预测力最强",
             },
             {
                 "name": "新鲜度门控（复杂经济学模板）",
@@ -93,12 +81,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "economic_logic": "高峰度股票未来收益低",
             },
             {
-                "name": "尾部风险 × 修正方向（复杂经济学模板）",
-                "expression": "add(multiply(0.6, rank(ts_delta(analyst_revision, 5))), multiply(-0.4, rank(ts_kurtosis(analyst_revision, 20))))",
-                "description": "修正方向（正权重）× 尾部风险（负权重）",
-                "economic_logic": "修正方向明确但峰度低的股票，未来收益更高",
-            },
-            {
                 "name": "尾部风险门控（复杂经济学模板）",
                 "expression": "trade_when(less(ts_kurtosis(analyst_revision, 20), 3), rank(ts_delta(analyst_revision, 5)), 0)",
                 "description": "峰度 < 3 时才交易",
@@ -122,12 +104,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "expression": "rank(group_std_dev(returns, industry))",
                 "description": "行业离散度越高，轮动机会越大",
                 "economic_logic": "高离散度行业未来收益高",
-            },
-            {
-                "name": "行业离散度 × 个股相对强度（复杂经济学模板）",
-                "expression": "add(multiply(0.5, rank(subtract(returns, group_mean(returns, industry)))), multiply(0.5, rank(group_std_dev(returns, industry))))",
-                "description": "个股相对强度（50%）× 行业离散度（50%）",
-                "economic_logic": "行业离散度高且个股相对强度大的股票，未来收益更高",
             },
             {
                 "name": "行业离散度门控（复杂经济学模板）",
@@ -155,12 +131,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "economic_logic": "价涨量增的股票未来收益高",
             },
             {
-                "name": "量价协同 × 价格动量（复杂经济学模板）",
-                "expression": "add(multiply(0.6, rank(ts_delta(close, 20))), multiply(0.4, rank(ts_covariance(volume, returns, 20))))",
-                "description": "价格动量（60%）× 量价协同（40%）",
-                "economic_logic": "价格上涨且量价协同的股票，趋势更可持续",
-            },
-            {
                 "name": "量价协同门控（复杂经济学模板）",
                 "expression": "trade_when(greater(ts_covariance(volume, returns, 20), 0), rank(ts_delta(close, 20)), 0)",
                 "description": "正协同时才交易",
@@ -184,12 +154,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "expression": "multiply(-1, rank(ts_returns(close, 10)))",
                 "description": "10 日收益取负，做多输家做空赢家",
                 "economic_logic": "短期涨幅过大的股票未来反转，收益低",
-            },
-            {
-                "name": "反转 × 成交量确认（复杂经济学模板）",
-                "expression": "add(multiply(-0.7, rank(ts_returns(close, 10))), multiply(0.3, rank(ts_delta(volume, 10))))",
-                "description": "反转信号（70%）× 成交量放大（30%）",
-                "economic_logic": "放量上涨后的反转更强烈",
             },
             {
                 "name": "反转门控（复杂经济学模板）",
@@ -217,12 +181,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "economic_logic": "低波动股票风险调整后收益更高",
             },
             {
-                "name": "低波动 × 质量（复杂经济学模板）",
-                "expression": "add(multiply(-0.6, rank(ts_std_dev(returns, 20))), multiply(0.4, rank(fundamental_field)))",
-                "description": "低波动（60%）× 基本面质量（40%）",
-                "economic_logic": "低波动且质量高的股票，收益更稳定",
-            },
-            {
                 "name": "波动率门控（复杂经济学模板）",
                 "expression": "trade_when(less(ts_std_dev(returns, 20), 0.02), rank(ts_returns(close, 60)), 0)",
                 "description": "波动率 < 2% 才做中期动量",
@@ -248,12 +206,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "economic_logic": "高盈利股票未来收益高",
             },
             {
-                "name": "质量 × 价值（复杂经济学模板，QMJ）",
-                "expression": "add(multiply(0.5, rank(fundamental_field)), multiply(0.5, rank(value_field)))",
-                "description": "质量（50%）× 价值（50%），Quality Minus Junk",
-                "economic_logic": "高质量且低估值的股票，收益最高",
-            },
-            {
                 "name": "质量行业内中性化（复杂经济学模板）",
                 "expression": "rank(group_zscore(fundamental_field, industry))",
                 "description": "行业内质量 z-score，剔除行业效应",
@@ -277,12 +229,6 @@ ECONOMIC_MECHANISM_TEMPLATES: Dict[str, Dict[str, Any]] = {
                 "expression": "rank(ts_mean(divide(abs(returns), volume), 20))",
                 "description": "Amihud 非流动性指标：|收益|/成交量 的 20 日均值",
                 "economic_logic": "非流动性高的股票，未来收益高（流动性溢价）",
-            },
-            {
-                "name": "流动性 × 反转（复杂经济学模板）",
-                "expression": "add(multiply(0.5, rank(ts_mean(divide(abs(returns), volume), 20))), multiply(-0.5, rank(ts_returns(close, 10))))",
-                "description": "非流动性（50%）× 短期反转（50%）",
-                "economic_logic": "低流动性股票的反转效应更强",
             },
             {
                 "name": "流动性门控（复杂经济学模板）",

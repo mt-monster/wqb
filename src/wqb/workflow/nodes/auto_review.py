@@ -23,11 +23,12 @@ SOP 的 S4 完整评审仍走 toolkit review_wave.py，本节点是只读的二�
 
 import json
 import logging
+import os
 import sqlite3
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .._common import connect_db_readonly
+from .._common import connect_db_readonly, resolve_toolkit_file
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +135,37 @@ def _step(result: Dict[str, Any], name: str) -> Dict[str, Any]:
 
 
 def _prescreen(rows: List[Dict[str, Any]]) -> Dict[str, List[Optional[str]]]:
-    """本地 S4 分层：READY / REVIEW / REJECT（指标 NULL 按 0 计，ERROR 行直接判死）."""
+    """本地 S4 分层：READY / REVIEW / REJECT（2026-10-02 P1：口径收敛到 _lib/prescreen）。
+
+    此前本函数自带一套硬闸常量（_SHARPE_MIN 等），与 `tools/campaign_intel.py s4-prescreen`
+    及 `review_wave.walls()` **三处口径互不一致**（实测 GBR s2_institutions6_d1 77 条在本口径
+    下全判 REJECT、在 review_wave 口径下会产候选）。现统一调 `_lib/prescreen.prescreen_row`：
+      - NULL 指标走 `*_UNKNOWN`（**不判败**），修掉旧 `bt.get(x) or 0` 把缺失当 0 的静默判死；
+      - prod/self 在本表无列 → 传 None，不参与判定（不再因"离线没这两列"而口径分裂）；
+      - 阈值缺省 = 平台线 1.58/1.0/1.58（本函数无 region 上下文，用 DEFAULT）。
+    """
+    try:
+        import sys as _sys
+        # 仓库副本优先（安装位 ~/.claude/skills 可能滞后于本仓：本次实测它没有
+        # prescreen.py，导致新口径被静默 fallback 回旧常量，正是要消除的口径分裂）。
+        _ps_file = resolve_toolkit_file("_lib/prescreen.py")
+        if not _ps_file:
+            raise ImportError("未找到含 _lib/prescreen.py 的 toolkit 副本")
+        _scripts_dir = os.path.dirname(os.path.dirname(_ps_file))  # .../scripts
+        if _scripts_dir not in _sys.path:
+            _sys.path.insert(0, _scripts_dir)
+        from _lib.prescreen import prescreen as _ps  # type: ignore
+    except Exception:  # noqa: BLE001 — 包不可达则退回旧常量口径（fail-open，不阻断评审）
+        return _prescreen_legacy(rows)
+    out: Dict[str, List[Optional[str]]] = {"READY": [], "REVIEW": [], "REJECT": []}
+    res = _ps(rows)
+    for tier in ("READY", "REVIEW", "REJECT"):
+        out[tier] = list(res.get(tier) or [])
+    return out
+
+
+def _prescreen_legacy(rows: List[Dict[str, Any]]) -> Dict[str, List[Optional[str]]]:
+    """旧口径（保留作 fail-open 兜底）：`_lib/prescreen` 不可导入时使用。"""
     tiers: Dict[str, List[Optional[str]]] = {"READY": [], "REVIEW": [], "REJECT": []}
     for bt in rows:
         aid = bt.get("alpha_id")

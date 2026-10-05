@@ -7,6 +7,7 @@
 4. brain_mixin_transport.TransportMixin._response_payload：JSON/text 提取
 5. brain_mixin_transport.TransportMixin._simulation_error_message：错误信息提取
 """
+import asyncio
 import json
 from unittest.mock import MagicMock, patch
 
@@ -221,3 +222,79 @@ def test_simulation_error_message_empty_dict():
     c = make_shell()
     msg = c._simulation_error_message({})
     assert "Unknown error" in msg or msg == ""
+
+
+# ---------------------------------------------------------------------------
+# 相关性锁三级降级（2026-10-02：Redis 不可达时的跨进程文件锁兜底）
+#
+# 背景：平台相关性接口单账号单并发；本机 Redis 未启动时 redis_client=None，
+# 旧实现直接落到进程内 asyncio.Lock ⇒ 多 MCP 进程并存时跨进程零互斥。
+# ---------------------------------------------------------------------------
+
+def _make_corr_shell(monkeypatch=None, dblock_dir=None):
+    """构造带相关性锁所需属性的空壳（不走 __init__，不连 Redis）。"""
+    c = make_shell()
+    c.redis_client = None  # 模拟本机 Redis 不可达
+    c.auth_credentials = {"email": "unit@test.local"}
+    c._brain_correlation_local_lock = asyncio.Lock()
+    c._brain_correlation_busy_retry_after_seconds = 180
+    if dblock_dir is not None and monkeypatch is not None:
+        monkeypatch.setenv("WQB_DBLOCK_DIR", str(dblock_dir))
+    return c
+
+
+def test_corr_lock_uses_cross_process_file_when_no_redis(tmp_path, monkeypatch):
+    """Redis 不可达时，第 2 级跨进程文件锁生效（backend='file'）。"""
+    c = _make_corr_shell(monkeypatch, tmp_path)
+    info = asyncio.run(c._try_acquire_brain_correlation_lock("op1"))
+    assert info["acquired"] is True
+    assert info["backend"] == "file"
+    # token 落在 WQB_DBLOCK_DIR 下，且文件名专用（不占用写库锁位）
+    assert (tmp_path / "correlation.lock.json").is_file()
+    asyncio.run(c._release_brain_correlation_lock(info, "op1"))
+
+
+def test_corr_lock_file_busy_for_other_process(tmp_path, monkeypatch):
+    """token 被「另一个进程」持有时 → 立即返回忙（fail-fast，不排队、不放行）。"""
+    import json as _json
+    import os as _os
+    import time as _time
+
+    c = _make_corr_shell(monkeypatch, tmp_path)
+    tok = tmp_path / "correlation.lock.json"
+    # 用父进程 pid 冒充"另一个仍存活的持有者"（!= 本进程 pid，故不算重入）
+    tok.write_text(_json.dumps({"owner": "foreign", "pid": _os.getppid(),
+                                "tag": "foreign", "at": _time.time()}), encoding="utf-8")
+    info = asyncio.run(c._try_acquire_brain_correlation_lock("op2"))
+    assert info["acquired"] is False
+    assert info["backend"] == "file"
+
+
+def test_corr_lock_release_retires_token(tmp_path, monkeypatch):
+    """释放后 token 退役（改名 .stale，不删除——避开沙箱 safe-delete 守卫）。"""
+    c = _make_corr_shell(monkeypatch, tmp_path)
+    info = asyncio.run(c._try_acquire_brain_correlation_lock("op3"))
+    assert info["acquired"] is True
+    tok = tmp_path / "correlation.lock.json"
+    assert tok.is_file()
+    asyncio.run(c._release_brain_correlation_lock(info, "op3"))
+    assert not tok.exists()
+
+
+def test_corr_lock_falls_back_to_local_when_module_unavailable(tmp_path, monkeypatch):
+    """wqb.db_write_lock 不可用时降级到第 3 级进程内锁（不阻断主流程）。"""
+    import builtins
+
+    real_import = builtins.__import__
+
+    def _blocked(name, *a, **kw):
+        if name.startswith("wqb.db_write_lock"):
+            raise ImportError("simulated missing module")
+        return real_import(name, *a, **kw)
+
+    c = _make_corr_shell(monkeypatch, tmp_path)
+    monkeypatch.setattr(builtins, "__import__", _blocked)
+    info = asyncio.run(c._try_acquire_brain_correlation_lock("op4"))
+    assert info["acquired"] is True
+    assert info["backend"] == "local"
+    asyncio.run(c._release_brain_correlation_lock(info, "op4"))

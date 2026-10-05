@@ -14,7 +14,18 @@ from wqb.config import is_pseudo_alpha  # 伪 alpha 黑名单（生成侧剔除�
 #: 30 条全是 ask_price 族）永不失效，GEM 一直吃旧池。
 #: 2026-09-25 v3：经济学归类池（campaign.py build_economic_field_pool）成为首选，
 #: 旧 cross_cluster 池回退——两个 builder 必须写同一常量，否则缓存永不命中。
-POOL_BUILDER_VERSION = 3
+#: 2026-10-01 v4（步3 断流修复 · 止血 A）：建池前按 `s1_semantic_<ds>.blocked_fields`
+#: 剔除非信号字段。这是**内容**变化（不是算法变化），旧池也含这些垃圾字段
+#: （实测 IND/insiders1 池含 transaction_currency_code / insd1_gvkey），
+#: 不升版本 → 已落库的旧池继续被 GEM 消费，过滤形同虚设。
+#: 2026-10-01 v5（步4 断流修复 P2）：池 payload 增 `families`/`family_stats`
+#: （L3.5 族结构注入 GEM 概念优先）。同属**内容**变化 → 旧池无族段，必须重建。
+#: 2026-10-02 v6（GLB/analyst69 混合集首波归因）：`build_economic_field_pool` 增
+#: `data_type` 一致性过滤 + `field_type=signal` 偏好。旧池对混合集**完全无类型感知**
+#: （analyst69 GLB 池 30 = 16 VECTOR + 14 MATRIX，且 MATRIX 侧恰是 metadata 字段）
+#: → GEM 传 MATRIX 后白名单只剩垃圾字段，整波 155/155 模板被丢弃。同属**内容**变化
+#: → 旧池必须重建（不升版本 → 已落库的坏池继续被 GEM 消费）。
+POOL_BUILDER_VERSION = 6
 
 #: 常见统计/时窗前缀（intraday_pv_feats 这类"统计量_主体_时窗"命名的数据集，首 token 是
 #: mean/max/corr… 这种统计量而非主体；主体 token 才是经济含义所在）。
@@ -191,6 +202,17 @@ class FieldCatalogMixin:
             for f in fields
         )
 
+    def _families_payload(self, region: str, dataset: str, pool: List[str]) -> Dict[str, Any]:
+        """L3.5 族结构（P2），委托 campaign 的 `_extract_families` 保持单源。
+
+        fail-open：任何异常都返回空 families（不阻断建池）。
+        """
+        try:
+            res = self._extract_families(region, dataset, pool)
+            return {"families": res.get("families", {}), "family_stats": res.get("stats", {})}
+        except Exception:
+            return {"families": {}, "family_stats": {"available": False}}
+
     @staticmethod
     def _derive_candidate_field_pool(summary: Optional[Dict[str, Any]], max_fields: int = 30) -> List[str]:
         if not summary:
@@ -239,10 +261,14 @@ class FieldCatalogMixin:
         pool: List[str] = []
         source = "s1_prefix_summary"
         clusters_covered = 0
+        sem_meta = {"ledger": False, "blocked_n": 0, "dropped_n": 0, "dropped": []}
         catalog = self.get_field_catalog(region, dataset)
         if catalog and catalog.get("fields"):
             fields = [f for f in catalog["fields"] if self._field_name(f)
                               and not is_pseudo_alpha(self._field_name(f))]  # 剔除 riskfree/beta/基准伪 alpha
+            # 2026-10-01（步3 断流修复 · 止血 A）：与 build_economic_field_pool 同口径，
+            # 回退路径也必须剔除非信号字段——否则经济学池不可用时，语义过滤被静默绕过。
+            fields, sem_meta = self._drop_semantic_blocked(region, dataset, fields)
             use_quality = (
                 rank_by_quality if rank_by_quality is not None
                 else self._has_quality_signals(fields)
@@ -268,6 +294,10 @@ class FieldCatalogMixin:
             "pool_size": len(pool),
             "clusters_covered": clusters_covered,
             "source": source,
+            "semantic_filter": sem_meta,
+            # 2026-10-01 P2：回退路径同样带 L3.5 族结构（与经济池口径一致），
+            #   避免「走了回退就把族结构丢了」。fail-open：无台账即空 families。
+            **self._families_payload(region, dataset, pool),
             "builder_version": POOL_BUILDER_VERSION,
             "updated_at": _now(),
         }
@@ -408,6 +438,38 @@ class FieldCatalogMixin:
         self.upsert_ledger(region, f"catalog_{dataset}", catalog)
         return {"n": n, "region": region, "dataset": dataset}
 
+    def upsert_dataset_meta(self, region: str, meta: Dict[str, Any]) -> Dict[str, Any]:
+        """写入**数据集级**元数据到 `datasets` 表（平台 /data-sets 快照）。
+
+        与 `upsert_field_catalog` 的分工：本方法只写数据集行（用于「尚未拉字段」的数据集
+        建行 / 刷新覆盖与拥挤度 / PPA 分档），后者写数据集行 + 字段明细。
+        两者共用 `_ensure_dataset`（幂等：先查后插/更，不产生重复行）。
+
+        meta 接受平台原始键（id/category/fieldCount/coverage/alphaCount/valueScore/
+        pyramidMultiplier）或本地蛇形键（dataset/field_count/…）。
+        **不写 `catalog_json`**——那是字段目录的存放位（`get_field_catalog` 会据此短路返回），
+        数据集级元数据只落结构化列，避免写出「无 fields 的伪 catalog」。
+        2026-10-01：为 `tools/fetch_dataset_assets.py` 直连入库（取代「先落 JSON 再 ingest」）而加。
+        """
+        name = meta.get("id") or meta.get("dataset") or meta.get("name")
+        if not name:
+            raise ValueError("dataset meta missing id")
+        cat = meta.get("category")
+        cat_id = cat.get("id") if isinstance(cat, dict) else (cat or meta.get("type"))
+        extra: Dict[str, Any] = {
+            "category": cat_id,
+            "field_count": meta.get("fieldCount", meta.get("field_count")),
+            "coverage": meta.get("coverage"),
+            "alpha_count": meta.get("alphaCount", meta.get("alpha_count")),
+            "value_score": meta.get("valueScore", meta.get("value_score")),
+            "pyramid_multiplier": meta.get("pyramidMultiplier",
+                                           meta.get("pyramid_multiplier")),
+            "delay": meta.get("delay"),
+            "tier": meta.get("tier"),
+        }
+        ds_id = self._ensure_dataset(region, str(name), extra)
+        return {"id": ds_id, "region": region, "dataset": str(name)}
+
     def get_field_catalog(self, region: str, dataset: str) -> Optional[Dict[str, Any]]:
         cached = self.get_ledger(region, f"catalog_{dataset}")
         if isinstance(cached, dict) and cached.get("fields"):
@@ -424,7 +486,9 @@ class FieldCatalogMixin:
             return None
         if ds["catalog_json"]:
             blob = _loads(ds["catalog_json"])
-            if isinstance(blob, dict):
+            # 必须含 fields 才算字段目录：catalog_json 也可能被写入数据集级元数据快照，
+            # 直接返回会让调用方拿到「无 fields 的伪 catalog」（gate 字段白名单会误判为空）。
+            if isinstance(blob, dict) and blob.get("fields"):
                 return blob
         cur.execute(
             "SELECT field_name, field_type, coverage, user_count, alpha_count, "
@@ -449,3 +513,23 @@ class FieldCatalogMixin:
             "field_count": len(fields),
             "fields": fields,
         }
+
+    def list_catalog_datasets(self, region: str) -> List[str]:
+        """该区所有「DB 里已有字段目录」的数据集名（有 ≥1 字段行即视为有 catalog）。
+
+        2026-10-01：把 toolkit 侧 `glob reference/*_fields.json` 的文件面枚举改为
+        DB 单一事实源（文件仅作兜底合并）。region 不存在时返回 []（不像
+        `_ensure_region` 那样建行——这是只读方法，不产生副作用）。
+        """
+        cur = self.connection.cursor()
+        cur.execute("SELECT id FROM regions WHERE name=?", (region,))
+        row = cur.fetchone()
+        if not row:
+            return []
+        rid = int(row[0] if not hasattr(row, "keys") else row["id"])
+        cur.execute(
+            "SELECT d.name FROM datasets d WHERE d.region_id=? AND EXISTS ("
+            "  SELECT 1 FROM fields f WHERE f.dataset_id=d.id) ORDER BY d.name",
+            (rid,),
+        )
+        return [r[0] if not hasattr(r, "keys") else r["name"] for r in cur.fetchall()]

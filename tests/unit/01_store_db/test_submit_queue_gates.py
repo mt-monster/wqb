@@ -137,12 +137,15 @@ def test_gate_of_add_mix_is_dead():
 
 def test_prod_sibling_marks_untested_twin_dead(db):
     # 同骨架（仅窗口数字不同）兄弟已实测 prod 0.82 → 本条 prod 未测者不得进 READY
+    # 注：2026-09-30 起模拟层全过、仅 prod 撞墙的条目标 STATUS_PROD_BLOCKED（可抢救），
+    #     不再直接标 DEAD。核心契约是「不得进 READY」，故接受两种终态。
     _ins_alpha(db, "W1", "multiply(-1, ts_mean(f1, 5))", prod_correlation=0.82)
     _ins_alpha(db, "W2", "multiply(-1, ts_mean(f1, 22))")
     sq.enqueue_from_alphas(region="IND", dedup=False)
-    assert _status(db, "W1")[:2] == (sq.STATUS_DEAD, "FAIL:PROD")
+    st1, gate1, _ = _status(db, "W1")
+    assert st1 in (sq.STATUS_DEAD, sq.STATUS_PROD_BLOCKED) and gate1 == "FAIL:PROD"
     st, gate, _ = _status(db, "W2")
-    assert st == sq.STATUS_DEAD and gate.startswith("FAIL:PROD_SIBLING(W1=0.82")
+    assert st in (sq.STATUS_DEAD, sq.STATUS_PROD_BLOCKED) and gate.startswith("FAIL:PROD_SIBLING(W1=0.82")
 
 
 def test_prod_sibling_not_applied_when_own_prod_measured(db):
@@ -229,7 +232,8 @@ def test_regrade_ready_applies_new_gates_to_legacy_rows(db):
     assert d["checked"] == 4 and d["dead"] == 3
     assert _status(db, "L1")[:2] == (sq.STATUS_DEAD, "FAIL:ADD_MIX")
     assert _status(db, "L2")[:2] == (sq.STATUS_DEAD, "FAIL:RA:LOW_ROBUST_UNIVERSE_SHARPE")
-    assert _status(db, "L3")[0] == sq.STATUS_DEAD and _status(db, "L3")[1].startswith("FAIL:PROD_SIBLING(L3s=0.90")
+    st3, gate3, _ = _status(db, "L3")
+    assert st3 in (sq.STATUS_DEAD, sq.STATUS_PROD_BLOCKED) and gate3.startswith("FAIL:PROD_SIBLING(L3s=0.90")
     assert _status(db, "L4")[0] == sq.STATUS_READY
     assert sq.regrade_ready(region="IND")["changes"] == []   # 幂等
 

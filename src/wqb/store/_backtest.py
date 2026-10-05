@@ -441,9 +441,18 @@ class BacktestMixin:
 
         source 取值：platform_sync（平台权威）> manual > triage_local（本地抽测）。
         注意 triage_local **高可信、低不可信**：对近期提交的孪生体失明会低估。
+
+        2026-10-05：``source`` 经 ``_corr_cache.normalize_corr_source`` 收敛到登记词表
+        （单源化前本表出现过来源自由文本 ``p0_1_verify_20260923`` 等，无法判可信度）。
+        写入本表是**镜像**动作——权威表是 ``alpha_corr_cache``，见
+        :meth:`CorrCacheMixin.set_corr_cache`；**新代码不要直接调本方法**。
         """
         if not alpha_id:
             return {"skipped": "no_alpha_id"}
+
+        from ._corr_cache import normalize_corr_source as _norm_src
+        norm = _norm_src(source)
+        source = norm["source"]
 
         p = _corr_value(prod)
         s = _corr_value(self_)

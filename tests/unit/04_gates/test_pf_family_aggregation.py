@@ -116,3 +116,54 @@ def test_mixed_deepens_to_three_ops(fake_store):
     assert by_idx[0]["verdict"] == "DEAD"        # 加深后全墙 → 拦截
     assert by_idx[1]["verdict"] == "OK_DEEP"     # 加深后干净 → 放行
     assert rep["passed"] is False
+
+
+# ---- 2026-10-01 P1：unknown_mode（新骨架 enforce 档）----
+
+def test_unknown_mode_default_warn_keeps_history(fake_store):
+    """缺省 unknown_mode=warn：新骨架只 WARN、不拦波（与历史逐字一致）。"""
+    fake_store.rows = [_FakeRow(expression="rank(ts_mean(x, 5))", prod_correlation=0.3)]
+    rep = wave_gate.check_prod_family_gate(
+        ["ts_delta(divide(a, b), 22)"], "TESTREG", "ds")   # ts_delta→divide 新骨架
+    assert rep["unknown_mode"] == "warn"
+    assert rep["status"] == "warn"
+    assert rep["passed"] is True
+    assert rep["violations"] == []
+
+
+def test_unknown_mode_enforce_blocks_new_family(fake_store):
+    """unknown_mode=enforce：新骨架（无 prod 记录）→ 计入 violations、status=enforced、passed=False。"""
+    fake_store.rows = [_FakeRow(expression="rank(ts_mean(x, 5))", prod_correlation=0.3)]
+    rep = wave_gate.check_prod_family_gate(
+        ["ts_delta(divide(a, b), 22)"], "TESTREG", "ds", unknown_mode="enforce")
+    assert rep["unknown_mode"] == "enforce"
+    assert rep["status"] == "enforced"
+    assert rep["passed"] is False
+    assert rep["violations"] and rep["violations"][0]["family"] == "ts_delta→divide"
+    assert "未探明" in rep["violations"][0]["reason"]
+
+
+def test_unknown_mode_enforce_does_not_touch_clean_family(fake_store):
+    """unknown_mode=enforce 不误伤已探明干净族（有 prod<0.7 记录）→ 仍 pass。"""
+    fake_store.rows = [
+        _FakeRow(expression="rank(ts_mean(x, 5))", prod_correlation=0.4),
+        _FakeRow(expression="rank(ts_mean(y, 5))", prod_correlation=0.5),
+        _FakeRow(expression="rank(ts_mean(z, 5))", prod_correlation=0.3),
+    ]
+    rep = wave_gate.check_prod_family_gate(
+        ["rank(ts_mean(new_field, 10))"], "TESTREG", "ds", unknown_mode="enforce")
+    assert rep["status"] == "pass"
+    assert rep["passed"] is True
+    assert rep["violations"] == []
+
+
+def test_unknown_mode_enforce_dead_family_message_stays_dead(fake_store):
+    """unknown_mode=enforce 下若同时有死路族，violations 仍以死路为准（reason 含 prod_corr 死路）。"""
+    fake_store.rows = [
+        _FakeRow(expression=f"signed_power(subtract(a{i}, b{i}), 2)", prod_correlation=0.8 + i * 0.01)
+        for i in range(3)
+    ]
+    rep = wave_gate.check_prod_family_gate(
+        ["signed_power(subtract(new_a, new_b), 2)"], "TESTREG", "ds", unknown_mode="enforce")
+    assert rep["status"] == "enforced"
+    assert any("死路" in v["reason"] for v in rep["violations"])

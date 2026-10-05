@@ -188,7 +188,7 @@
 |-----------|-------------------------------|
 | `brain_mixin_transport.py` | `__init__` / 日志 / URL 解析 / 响应解析 / 缓存键 / Redis 锁 / 限速 / `_request` / 重试 |
 | `brain_mixin_auth.py` | `authenticate` / 生物识别 / `is_authenticated` / `ensure_authenticated` / 状态 |
-| `brain_mixin_simulation.py` | 仿真创建 / alpha 详情 / 数据集 / datafields / PNL / 用户 alphas / `pre_submit_check` / `submit_alpha` / 配额 / 事件 / 榜单 |
+| `brain_mixin_simulation.py` | 仿真创建 / alpha 详情 / 数据集 / datafields / PNL / 用户 alphas / `submit_alpha` / 配额 / 事件 / 榜单（`pre_submit_check` 已于 2026-10-02 删除） |
 | `brain_mixin_spcread.py` | SPC 校验 / SPC 提交 / SPC 榜单 / `value_factor_trendScore` / 算子 / `recommend_datasets` / `run_selection` / 用户档案 / 文档 / 论坛 / `get_production_correlation` |
 | `brain_mixin_correlation.py` | PNL 序列 / OS pnl / self/mutual 相关 / `check_self_correlation` / `check_correlation` / `set_alpha_properties` / 记录集 / 活动 / 金字塔 / 比赛 / 平台设置 / 性能对比 |
 

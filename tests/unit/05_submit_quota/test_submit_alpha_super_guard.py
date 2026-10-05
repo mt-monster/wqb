@@ -17,6 +17,12 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 from wqb.workflow.nodes import submit_alpha as SA  # noqa: E402
 
 
+@pytest.fixture(autouse=True)
+def _allow_submit(monkeypatch):
+    """本文件验证『提交被允许时』的 SUPER/REGULAR 路由；全局禁提交闸由 test_global_submit_lock.py 单独守护。"""
+    monkeypatch.setattr(SA, "ALLOW_ALPHA_SUBMIT", True, raising=True)
+
+
 class _FakeClient:
     """只记录被调用的方法；submit_alpha / set_alpha_properties 一旦被调用测试就该红。"""
 
@@ -31,9 +37,6 @@ class _FakeClient:
                 "is": {"sharpe": 3.0, "fitness": 3.0, "margin": 0.01, "turnover": 0.1,
                        "returns": 0.2, "checks": [{"name": "SHARPE", "result": "PASS", "value": 3.0}]}}
 
-    def pre_submit_check(self, details):
-        return {"passed": True, "failures": [], "warnings": []}
-
     async def set_alpha_properties(self, *a, **k):
         self.calls.append("set_alpha_properties")
         return {}
@@ -41,6 +44,18 @@ class _FakeClient:
     async def submit_alpha(self, alpha_id):
         self.calls.append("submit_alpha")
         return {"success": True, "reason": "IS checks passed", "status_code": 200, "checks": []}
+
+    # 2026-10-02：REGULAR 路径新增 prod 闸 / 配额闸前置；本测试只关心 SUPER 的拒绝语义，
+    # 故给 REGULAR 路径提供"过闸"桩（prod 0.5 < 0.7、OS 池为空 → 配额 0/4）。
+    async def check_correlation(self, alpha_id, correlation_type="production",
+                                threshold=0.7, refresh=False):
+        self.calls.append("check_correlation")
+        return {"all_passed": True, "checks": {"production": {
+            "max_correlation": 0.5, "passes_check": True}}}
+
+    async def get_user_alphas(self, **kw):
+        self.calls.append("get_user_alphas")
+        return {"results": []}
 
 
 def _run(monkeypatch, client, **kw):

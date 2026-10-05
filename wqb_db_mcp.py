@@ -1710,6 +1710,49 @@ def harvest_multisim_results(
 
 
 @mcp.tool()
+def get_unmeasured_prod_supply(
+    region: Optional[str] = None,
+    ra_clean_only: bool = True,
+    limit: int = 50,
+) -> Dict[str, Any]:
+    """查询「IS 硬闸全过但 prod 从未测量」的存量（prod 瓶颈的机械入口，2026-10-05）。
+
+    为什么需要它：项目长期结论是「瓶颈是 prod 不是 IS」，但该口径此前只散落在
+    `tools/prod_first_screen.py` 与各处临时 SQL 里，且「已测」判定看的是
+    `alphas.prod_correlation IS NULL`——与权威表 `alpha_corr_cache` 不同口径，
+    于是「已测但只写在权威表」的行会被重复计成待测。本工具统一到单一事实源
+    `wqb.store.submit_queue.unmeasured_supply`。
+
+    ⚠ `ra_clean_only=True`（默认）剔掉平台 RA 硬闸已失败的行：它们本不可提交，
+    测 prod 是白占平台单并发队列。**实测全库 330 条未测里 206 条属此类**，
+    真正可作「待测供给」的只有约 124 条（DEU 47 / IND 37 / GLB 为重灾区；
+    ASI 145 条里仅 3 条 RA-clean——不剔 RA 会把该区供给高估近 50 倍）。
+    默认剔 RA 失败行才不会高估可用供给。
+
+    已测 = 权威表 `alpha_corr_cache` 有值（回落 `alphas` 存量值）。
+
+    补测走 `tools/prod_first_screen.py --region <R>`；注意该工具会**占平台单并发
+    相关性队列**（每颗 1-5 分钟），批量补测前先看本工具的条数与区域分布。
+
+    Returns:
+        {"total": n, "region": ..., "ra_clean_only": ..., "rows": [{alpha_id, region,
+         sharpe, fitness, two_year_sharpe, turnover, dataset_id}, ...]}
+    """
+    from wqb.store import submit_queue as sq
+    rows = sq.unmeasured_supply(
+        region=region, ra_clean_only=ra_clean_only, limit=limit)
+    return {
+        "total": len(rows),
+        "region": region,
+        "ra_clean_only": ra_clean_only,
+        "note": ("已测判定用权威表 alpha_corr_cache；补测走 tools/prod_first_screen.py"
+                     if ra_clean_only else
+                     "含 RA 硬闸已失败行（本不可提交），仅供审计核对，不建议据此排产"),
+        "rows": rows,
+    }
+
+
+@mcp.tool()
 def get_salvage_pool(
     region: str,
     boost_dim: Optional[str] = None,

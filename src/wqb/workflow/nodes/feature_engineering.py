@@ -58,7 +58,7 @@ def run(
     store = ctx.get("store")
 
     if not data_category:
-        data_category = infer_data_category(dataset_id)
+        data_category = infer_data_category(dataset_id, region=region)
 
     s1_key = f"s1_{dataset_id}_d{delay}"
 
@@ -197,9 +197,13 @@ def run(
     return result
 
 
-def _infer_category(dataset_id: str) -> str:
-    """从 dataset_id 推断数据类别（向后兼容别名）。"""
-    return infer_data_category(dataset_id)
+def _infer_category(dataset_id: str, region: str) -> str:
+    """从 dataset_id 推断数据类别（向后兼容别名）。
+
+    ``region`` 必填：同名 dataset 跨区多行，不给区无法确定 category 取哪一行
+    （2026-10-05 区域查询事故后取消默认值）。
+    """
+    return infer_data_category(dataset_id, region)
 
 
 def _find_feature_engineering_skill() -> Optional[str]:

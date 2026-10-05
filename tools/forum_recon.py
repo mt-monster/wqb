@@ -272,6 +272,37 @@ def _live_session():
     return s, fr
 
 
+def _resolve_post_id(session, fr, click_href: str) -> Optional[str]:
+    """把搜索命中的 click_href 解析成**标量** post_id；拿不到返回 None。
+
+    ★ 为什么要这层适配（2026-10-01 实测根因）：
+    `forum_research.resolve_id` 返回的是 **三元组** `(post_id, is_community_post, url)`，
+    不是标量。此前这里直接 `pid = fr.resolve_id(...)` 把整个元组当 id 拼进
+    `/community/posts/{pid}.json`，URL 变成 `.../posts/('33036460396567', True, 'https://...').json`
+    → 平台恒定 404 `InvalidEndpoint` → **读帖 100% 失败**（30 hits / 17 read_errors）。
+    而 `get_with_retry` 对 404 不重试、直接返回响应，`read_post` 见非 200 返回 None，
+    于是整条链路静默退化成 `read_failed`，看起来和「论坛无解」一模一样。
+
+    第二个元素 `is_community_post` 同样必须校验：非社区帖（帮助中心文章）没有
+    `/community/posts/{id}.json` 端点，硬读必然 404，应当直接跳过而不是计入 read_errors。
+
+    兼容标量返回（契约若再变回标量也不会炸）。
+    """
+    try:
+        got = fr.resolve_id(session, click_href)
+    except Exception as e:
+        print(f"[forum_recon] resolve_id 异常（{str(click_href)[:60]}）：{e}", file=sys.stderr)
+        return None
+    if isinstance(got, (tuple, list)):
+        if len(got) < 2:
+            return None
+        pid, is_community = got[0], got[1]
+        if not pid or not is_community:
+            return None
+        return str(pid)
+    return str(got) if got else None
+
+
 def live_search_round(session, fr, query: str, max_pages: int, read_top: int,
                       seen: set, stats: Optional[Dict[str, int]] = None) -> List[Dict[str, Any]]:
     """一轮：搜 → 解析候选 → 读帖 → 返回新读到的结构化文章（跳过已读）。
@@ -295,10 +326,7 @@ def live_search_round(session, fr, query: str, max_pages: int, read_top: int,
     for hit in candidates:
         pid = hit.get("post_id") or hit.get("id")
         if not pid and hit.get("click_href"):
-            try:
-                pid = fr.resolve_id(session, hit["click_href"])
-            except Exception:
-                pid = None
+            pid = _resolve_post_id(session, fr, hit["click_href"])
         if not pid or pid in seen:
             continue
         seen.add(pid)

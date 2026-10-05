@@ -16,9 +16,9 @@
 
 用法::
 
-    python tools/prod_scan.py A1 B2 C3
-    python tools/prod_scan.py --file ids.txt --max-wait 480
-    python tools/prod_scan.py --file ids.txt --refresh --no-persist
+    python tools/probe/prod_scan.py A1 B2 C3
+    python tools/probe/prod_scan.py --file ids.txt --max-wait 480
+    python tools/probe/prod_scan.py --file ids.txt --refresh --no-persist
 """
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "world-quant-brain-mcp"))
 sys.path.insert(0, str(ROOT / "src"))
 

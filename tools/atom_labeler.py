@@ -39,9 +39,15 @@ from wqb.expression.atom import (  # noqa: E402
     GROUPING_KEYS,
     RESERVED,
     classify_atom,
+    classify_stale,
     extract_fields,
     strip_comments,
 )
+
+# 字段索引已完整扫描（prior Task B 结论：dry-run 待补=0）的区域；这些区里
+# unknown 字段不在 fields 表即判定为平台已下架（stale_field）。其余区域
+# （ASI/CHN/GBR/JPN）索引未完整，同名 unknown 可能是"本地未缓存"，标 unverified。
+COMPLETE_REGIONS = {"USA", "GLB", "EUR", "DEU", "IND", "MEA", "KOR", "HKG"}
 
 
 class AtomResolver:
@@ -97,29 +103,40 @@ classify_atom_db = classify
 
 
 def annotate_expressions_table(db_path: str = DEFAULT_DB, dry_run: bool = True,
-                               limit: int | None = None) -> dict:
-    """批量回写 expressions.atom_flag / atom_n_datasets（幂等建列、分批提交）。"""
+                               limit: int | None = None,
+                               stale_only: bool = False) -> dict:
+    """批量回写 expressions 的 atom_flag / atom_n_datasets / stale_flag。
+
+    stale_only=True 时只处理 atom_flag='unknown' 的行（数据清洗场景，避免重算全库）；
+    否则全量重算。幂等建列、分批提交。
+    """
     conn = db_conn.connect(db_path, row_factory=sqlite3.Row)
     try:
         cols = {r["name"] for r in conn.execute("PRAGMA table_info(expressions)")}
         added = []
-        if "atom_flag" not in cols:
-            conn.execute("ALTER TABLE expressions ADD COLUMN atom_flag VARCHAR(16)")
-            added.append("atom_flag")
-        if "atom_n_datasets" not in cols:
-            conn.execute("ALTER TABLE expressions ADD COLUMN atom_n_datasets INTEGER")
-            added.append("atom_n_datasets")
+        for c, ddl in (("atom_flag", "VARCHAR(16)"),
+                       ("atom_n_datasets", "INTEGER"),
+                       ("stale_flag", "VARCHAR(16)")):
+            if c not in cols:
+                conn.execute(f"ALTER TABLE expressions ADD COLUMN {c} {ddl}")
+                added.append(c)
         if added:
             conn.commit()
 
         resolver = AtomResolver(db_path)
-        rows = conn.execute(
-            "SELECT id, expression FROM expressions WHERE expression IS NOT NULL"
-        ).fetchall()
+        if stale_only:
+            rows = conn.execute(
+                "SELECT id, region, expression FROM expressions WHERE atom_flag='unknown'"
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT id, region, expression FROM expressions WHERE expression IS NOT NULL"
+            ).fetchall()
         if limit:
             rows = rows[:limit]
         stats = {"total": len(rows), "atom": 0, "combined": 0, "unknown": 0,
-                 "empty": 0, "errors": 0}
+                 "empty": 0, "errors": 0,
+                 "stale_field": 0, "dirty": 0, "stale_field_unverified": 0}
         combined_examples: list[dict] = []
         unknown_fields: dict[str, int] = {}
         BATCH = 2000
@@ -132,6 +149,7 @@ def annotate_expressions_table(db_path: str = DEFAULT_DB, dry_run: bool = True,
                 print(f"[warn] id={r['id']} 解析异常: {e}", file=sys.stderr)
                 continue
             v = res["verdict"]
+            stale = None
             if v == "atom":
                 stats["atom"] += 1
             elif v == "combined":
@@ -144,12 +162,18 @@ def annotate_expressions_table(db_path: str = DEFAULT_DB, dry_run: bool = True,
                 stats["unknown"] += 1
                 for f in res["unknown_fields"]:
                     unknown_fields[f] = unknown_fields.get(f, 0) + 1
+                stale = classify_stale(r["expression"], res["unknown_fields"])
+                if stale == "stale_field":
+                    reg = r["region"]
+                    if reg is not None and reg not in COMPLETE_REGIONS:
+                        stale = "stale_field_unverified"
+                stats[stale] += 1
             else:
                 stats["empty"] += 1
             if not dry_run:
                 conn.execute(
-                    "UPDATE expressions SET atom_flag=?, atom_n_datasets=? WHERE id=?",
-                    (v, res["n_datasets"], r["id"]))
+                    "UPDATE expressions SET atom_flag=?, atom_n_datasets=?, stale_flag=? WHERE id=?",
+                    (v, res["n_datasets"], stale, r["id"]))
                 pending += 1
                 if pending >= BATCH:
                     conn.commit()
@@ -220,6 +244,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="WorldQuant atom/combined 信号分类器")
     ap.add_argument("--expr", help="判定单条表达式")
     ap.add_argument("--backfill", action="store_true", help="批量回写 expressions 表")
+    ap.add_argument("--stale-only", action="store_true",
+                    help="只处理 atom_flag='unknown' 的行（数据清洗，避免重算全库）")
     ap.add_argument("--dry-run", action="store_true", help="只统计不写库（backfill 默认）")
     ap.add_argument("--apply", action="store_true", help="真正写库（backfill 时）")
     ap.add_argument("--limit", type=int, help="backfill 限制行数（调试用）")
@@ -236,16 +262,23 @@ def main() -> int:
 
     if a.backfill:
         dry = not a.apply
+        mode = "stale-only" if a.stale_only else "full"
         if not dry:
             stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             backup = f"{a.db}.bak_atom_{stamp}"
             shutil.copy2(a.db, backup)
             print(f"[backup] {backup}")
-        stats = annotate_expressions_table(a.db, dry_run=dry, limit=a.limit)
-        print(f"[backfill] total={stats['total']} atom={stats['atom']} "
+        stats = annotate_expressions_table(a.db, dry_run=dry, limit=a.limit,
+                                           stale_only=a.stale_only)
+        print(f"[backfill:{mode}] total={stats['total']} atom={stats['atom']} "
               f"combined={stats['combined']} unknown={stats['unknown']} "
               f"empty={stats['empty']} errors={stats['errors']}")
-        print(f"[backfill] added_columns={stats.get('added_columns')} "
+        if stats["unknown"]:
+            print(f"[backfill:{mode}] stale 细分: "
+                  f"stale_field={stats['stale_field']} "
+                  f"dirty={stats['dirty']} "
+                  f"stale_field_unverified={stats['stale_field_unverified']}")
+        print(f"[backfill:{mode}] added_columns={stats.get('added_columns')} "
               f"{'(dry-run)' if dry else '(applied)'}")
         if stats.get("top_unknown_fields"):
             print("--- unknown 高频字段（若为 kwarg/变量则是抽取遗漏，否则是缓存缺口）---")

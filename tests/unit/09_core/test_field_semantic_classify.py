@@ -98,6 +98,46 @@ def test_two_cues_required_for_flag_description():
     assert cat2 is not None, "裸 flag 名词不应触发标志位判定"
 
 
+# ---- ③ 标识符必须词元锚定，禁裸子串（2026-10-01）----
+
+def test_identifier_rules_are_token_anchored_not_substring():
+    """★ 裸 `isin` 子串会命中 "r|isin|g"（rising），整族误杀。
+
+    实证：JPN/DEU/GBR/EUR/ASI/USA 的 `pattern_scores` 52 字段/区、
+    `analyst_revision_horizons` 76 字段/区的 `*_rising_*` 家族共 733 个字段被误杀。
+    与 09-28 的 `is_` / `indicator` 属同一族错误：**靠名字子串判语义**。
+    """
+    fsc = _load()
+    signal_cases = [
+        ("avg_similarity_rising_wedge_pattern",
+         "Average similarity score for the rising wedge chart pattern."),
+        ("max_similarity_continuation_rising_wedge",
+         "Maximum similarity score for the continuation rising wedge chart pattern."),
+        ("cont_rising_wedge_dynamic_simscore_lookback60",
+         "Dynamic similarity score for continuation rising wedge, lookback 60."),
+    ]
+    for name, desc in signal_cases:
+        cat, label = fsc.classify(desc, name)
+        assert cat is not None, f"{name} 被裸子串误杀（label={label}）"
+
+
+def test_true_identifiers_still_blocked_after_anchoring():
+    """收紧为词元锚定后，真正的标识符词元必须仍被拦（不能矫枉过正）。"""
+    fsc = _load()
+    blocked = [
+        ("insd1_gvkey", "Global company identifier"),
+        ("anl10_isin", "ISIN code"),
+        ("_isin_code", "ISIN"),
+        ("x_ticker", "ticker symbol"),
+        ("cusip_x", "CUSIP"),
+        ("sedol_val", "SEDOL identifier"),
+        ("iso_country_code", "ISO country code"),
+    ]
+    for name, desc in blocked:
+        cat, label = fsc.classify(desc, name)
+        assert cat is None, f"{name} 是标识符，必须被拦（实际判为信号 {cat}）"
+
+
 # ---- ③ 时间朝向提示：已实现（事后）vs 预测（前瞻）——只提示，不改 signal / blocked 判定（2026-10-04）----
 
 def test_time_orientation_name_tokens():

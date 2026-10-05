@@ -133,7 +133,7 @@
 步6 S3 七槽回测（并发纪律唯一来源 = wqb-concurrency §8；S3 入口可选
     brain-sim-alphas-in-batch-and-track；设置展开按需 brain-inspect-raw-template-create-setting --from-db）
   mcp__wq-brain-http__workflow_batch_track  region=$REGION  wave=<W>  dataset=<DS>
-    （★ 禁止拼 --concurrency；n_slots 内部 min(7,批数)；WQB_GLOBAL_SLOTS=7 账户级仲裁）
+    （★ 禁止拼 --concurrency；n_slots 内部 min(2,批数)；WQB_GLOBAL_SLOTS=2 账户级仲裁）
   mcp__wq-brain-http__workflow_task_status  task_id=<返回的 task_id>
   收批：mcp__wq-brain-http__harvest_multisim_alphas → mcp__wqb-db__harvest_multisim_results
   连坐隔离默认开（ERROR 批自动定位坏式、无辜式重发一次）；故障协议见 SKILL.md 步 6 表。

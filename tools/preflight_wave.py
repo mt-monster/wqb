@@ -8,17 +8,12 @@
 
 检查项（每项输出 {check, status(PASS/WARN/FAIL), detail, remediation}）：
   settings      config/settings.json 可读且含 region
-  catalog_file  reference/<region>_<dataset>_fields.json（或 legacy 白名单）存在（gate.py 消费）
-  catalog_db    wqb.db 字段 catalog 存在（DB 为单一事实源）
-  sync          文件与 DB 字段集一致（分叉即需修复）
+  catalog_db    wqb.db 字段 catalog 存在（DB 为单一事实源，2026-10-01 起取消 reference 文件面）
   freshness     fetched_at 在 --ttl-days 内（过期仅 WARN，建议重扫）
   dead_end      数据集在 registry_empirical 判死清单中（续战需翻案证据，仅 WARN）
 
 修复模式（--repair，幂等）：
-  文件缺 + DB 有 → 从 DB 导出文件（合并文件中遗留的 banned_patterns 等）
-  DB 缺 + 文件有 → 文件 upsert 入 DB
-  双缺 / 过期    → 子进程跑 scan_fields.py 重扫后再入 DB
-  分叉           → 以较新者（fetched_at）覆盖较旧者
+  DB 缺 / 过期   → 直连平台 fetch + upsert_field_catalog 入库（不再经 reference JSON 中转）
 
 用法:
   python tools/preflight_wave.py --campaign-dir tracking/IND --dataset behavioral_signals
@@ -31,13 +26,16 @@ import argparse
 import datetime
 import json
 import os
-import subprocess
 import sys
 
 import sys as _sys, os as _os
 _sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
 from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 DEFAULT_TTL_DAYS = 14
+
+# toolkit 脚本目录（复用其标准 scan_fields 直连 DB 实现，避免本文件重复 fetch 逻辑）
+_TOOLKIT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                        "Claude", "skills", "wq-brain-campaign-toolkit", "scripts")
 
 
 def _wqb_root():
@@ -53,28 +51,6 @@ def _load_settings(campaign_dir):
         return json.load(open(p, encoding="utf-8"))
     except Exception:
         return None
-
-
-def _catalog_file_path(campaign_dir, region, dataset):
-    ref = os.path.join(campaign_dir, "reference")
-    cat = os.path.join(ref, f"{region.lower()}_{dataset}_fields.json")
-    legacy = os.path.join(ref, f"{region.lower()}_{dataset}_field_whitelist.json")
-    return cat if os.path.exists(cat) else (legacy if os.path.exists(legacy) else None)
-
-
-def _read_catalog_file(path):
-    try:
-        return json.load(open(path, encoding="utf-8"))
-    except Exception:
-        return None
-
-
-def _file_field_set(catalog):
-    if not isinstance(catalog, dict):
-        return set()
-    if "verified_fields" in catalog:  # legacy 白名单格式
-        return set(catalog["verified_fields"])
-    return {f.get("id") for f in catalog.get("fields", []) if f.get("id")}
 
 
 def _open_store():
@@ -118,37 +94,31 @@ def check_dead_end(dataset, region):
         return None
 
 
-def repair_file_from_db(campaign_dir, region, dataset, db_cat):
-    """DB → 文件：导出 catalog JSON（gate.py 消费面）。"""
-    path = os.path.join(campaign_dir, "reference", f"{region.lower()}_{dataset}_fields.json")
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    out = dict(db_cat)
-    out.setdefault("fetched_at", datetime.datetime.now().isoformat(timespec="seconds"))
-    out["exported_from_db_at"] = datetime.datetime.now().isoformat(timespec="seconds")
-    tmp = path + ".tmp"
-    json.dump(out, open(tmp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    os.replace(tmp, path)
-    return path
+def repair_db_rescan(campaign_dir, dataset):
+    """DB 缺 / 过期：直连平台 fetch 字段后直接 upsert_field_catalog（不经 JSON 中转）。
 
+    复用 toolkit 标准 scan_fields 的 fetch_fields / build_catalog（platform API），
+    再走 store.upsert_field_catalog 落库 —— 单进程、无 subprocess、无 reference 文件。
+    """
+    if _TOOLKIT not in sys.path:
+        sys.path.insert(0, _TOOLKIT)
+    import scan_fields  # toolkit 版（直连 GET /data-fields）
+    from _lib.common import CampaignContext, load_credentials
+    from _lib.api import Api
 
-def repair_db_from_file(region, file_cat):
-    """文件 → DB：upsert_field_catalog（DB 为单一事实源）。"""
-    st = _open_store()
+    ctx = CampaignContext(campaign_dir)
+    email, pw = load_credentials()
+    api = Api()
+    api.login(email, pw)
+    raw = scan_fields.fetch_fields(api, ctx.settings, dataset)
+    cat = scan_fields.build_catalog(ctx.settings, dataset, raw)
+    if not cat.get("fields"):
+        raise RuntimeError(f"平台返回 0 字段：{ctx.region}/{dataset}")
+    store = _open_store()
     try:
-        return st.upsert_field_catalog(region, file_cat)
+        return store.upsert_field_catalog(ctx.region, cat)
     finally:
-        st.close()
-
-
-def repair_rescan(campaign_dir, dataset):
-    """双缺/过期：重跑 scan_fields.py（需平台凭据），失败抛异常。"""
-    scan = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scan_fields.py")
-    r = subprocess.run([sys.executable, scan, "--campaign-dir", campaign_dir,
-                        "--dataset", dataset],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace")
-    if r.returncode != 0:
-        raise RuntimeError(f"scan_fields 失败 rc={r.returncode}: {(r.stderr or r.stdout)[-400:]}")
-    return r.stdout.strip()
+        store.close()
 
 
 def run_preflight(campaign_dir, dataset, repair=False, ttl_days=DEFAULT_TTL_DAYS):
@@ -168,15 +138,12 @@ def run_preflight(campaign_dir, dataset, repair=False, ttl_days=DEFAULT_TTL_DAYS
     add("settings", "PASS", f"region={region} universe={settings.get('universe')} "
                             f"delay={settings.get('delay')}")
 
-    scan_cmd = (f"python tools/scan_fields.py --campaign-dir {campaign_dir} "
-                f"--dataset {dataset}")
     preflight_repair = (f"python tools/preflight_wave.py --campaign-dir {campaign_dir} "
                         f"--dataset {dataset} --repair")
 
-    # ---- 2/3) catalog 文件 + DB ----
-    fpath = _catalog_file_path(campaign_dir, region, dataset)
-    file_cat = _read_catalog_file(fpath) if fpath else None
+    # ---- 2) catalog（DB 为单一事实源；2026-10-01 起取消 reference 文件面）----
     db_cat = None
+    db_err = None
     try:
         st = _open_store()
         try:
@@ -184,105 +151,53 @@ def run_preflight(campaign_dir, dataset, repair=False, ttl_days=DEFAULT_TTL_DAYS
         finally:
             st.close()
     except Exception as e:
-        add("catalog_db", "WARN", f"DB 查询失败（不阻断）: {e}")
+        db_err = e
 
-    if fpath and file_cat is not None:
-        add("catalog_file", "PASS", f"{os.path.basename(fpath)} "
-                                    f"({len(_file_field_set(file_cat))} 字段)")
-    else:
-        add("catalog_file", "FAIL", "reference 白名单/catalog 缺失（gate.py 5 闸将无法执行）",
-            scan_cmd + f" 或 {preflight_repair}")
-    if isinstance(db_cat, dict) and db_cat.get("fields"):
+    # ---- 3) 修复：DB 缺失即直连重扫（在判定 catalog_db 之前，判定反映修复后状态）----
+    if repair and not (isinstance(db_cat, dict) and db_cat.get("fields")):
+        try:
+            r = repair_db_rescan(campaign_dir, dataset)
+            add("repair_rescan", "PASS", f"直连重扫 + 入 DB 完成: n={r.get('n')}")
+            st = _open_store()
+            try:
+                db_cat = st.get_field_catalog(region, dataset)
+            finally:
+                st.close()
+        except Exception as e:
+            add("repair_rescan", "FAIL", str(e), preflight_repair)
+
+    # ---- 4) catalog_db 判定（修复后状态）----
+    if db_err is not None:
+        add("catalog_db", "WARN", f"DB 查询失败（不阻断）: {db_err}")
+    elif isinstance(db_cat, dict) and db_cat.get("fields"):
         add("catalog_db", "PASS", f"DB catalog {len(db_cat['fields'])} 字段")
     elif db_cat is None:
         add("catalog_db", "FAIL", "DB 字段 catalog 缺失（续战/历史数据集需补录）",
             preflight_repair)
+    else:
+        add("catalog_db", "FAIL", "DB 字段 catalog 为空（0 字段）", preflight_repair)
 
-    # ---- 4) 修复：缺失侧回灌 ----
-    if repair:
-        if (not fpath or file_cat is None) and isinstance(db_cat, dict) and db_cat.get("fields"):
-            out = repair_file_from_db(campaign_dir, region, dataset, db_cat)
-            fpath = out
-            file_cat = _read_catalog_file(out)
-            add("repair_file_from_db", "PASS", f"DB → 文件导出: {os.path.basename(out)}")
-        elif fpath and file_cat is not None and not (isinstance(db_cat, dict) and db_cat.get("fields")):
-            try:
-                r = repair_db_from_file(region, file_cat)
-                add("repair_db_from_file", "PASS", f"文件 → DB 入库: n={r.get('n')}")
-                st = _open_store()
-                try:
-                    db_cat = st.get_field_catalog(region, dataset)
-                finally:
-                    st.close()
-            except Exception as e:
-                add("repair_db_from_file", "FAIL", f"入库失败: {e}")
-        elif (not fpath or file_cat is None) and not (isinstance(db_cat, dict) and db_cat.get("fields")):
-            try:
-                repair_rescan(campaign_dir, dataset)
-                fpath = _catalog_file_path(campaign_dir, region, dataset)
-                file_cat = _read_catalog_file(fpath) if fpath else None
-                if file_cat is not None:
-                    repair_db_from_file(region, file_cat)
-                    add("repair_rescan", "PASS", "重扫 + 入 DB 完成")
-                else:
-                    add("repair_rescan", "FAIL", "重扫后仍未产出 catalog 文件")
-            except Exception as e:
-                add("repair_rescan", "FAIL", str(e), scan_cmd)
-
-    # ---- 5) sync：文件与 DB 字段集分叉 ----
-    if fpath and file_cat is not None and isinstance(db_cat, dict) and db_cat.get("fields"):
-        fs, ds = _file_field_set(file_cat), {f.get("id") for f in db_cat["fields"]}
-        if fs == ds:
-            add("sync", "PASS", f"文件与 DB 字段集一致（{len(fs)}）")
-        else:
-            add("sync", "WARN",
-                f"文件与 DB 分叉：文件多 {len(fs - ds)} / DB 多 {len(ds - fs)}",
-                preflight_repair + "（以较新 fetched_at 覆盖）")
-            if repair:
-                ft = _parse_ts(file_cat.get("fetched_at"))
-                dt = _parse_ts(db_cat.get("fetched_at"))
-                try:
-                    if ft and dt and ft >= dt:
-                        repair_db_from_file(region, file_cat)
-                        add("repair_sync", "PASS", "文件较新 → 覆盖 DB")
-                    else:
-                        # 保留文件中独有的字段与附加键（banned_patterns 等）
-                        merged = dict(db_cat)
-                        for k in ("banned_patterns", "low_stock_coverage",
-                                  "estimated_stock_count", "avg_coverage"):
-                            if k in file_cat:
-                                merged[k] = file_cat[k]
-                        repair_file_from_db(campaign_dir, region, dataset, merged)
-                        add("repair_sync", "PASS", "DB 较新（或无时间戳）→ 覆盖文件，保留文件附加键")
-                except Exception as e:
-                    add("repair_sync", "FAIL", str(e))
-
-    # ---- 6) freshness ----
+    # ---- 4) freshness ----
     ts = None
-    for src in (file_cat, db_cat):
-        if isinstance(src, dict) and src.get("fetched_at"):
-            ts = ts or _parse_ts(src.get("fetched_at"))
+    if isinstance(db_cat, dict) and db_cat.get("fetched_at"):
+        ts = _parse_ts(db_cat.get("fetched_at"))
     if ts is None:
         add("freshness", "WARN", "无 fetched_at 时间戳，无法判断新鲜度")
     else:
         age = (datetime.datetime.now() - ts).days
         if age > ttl_days:
             add("freshness", "WARN", f"catalog 已 {age} 天（TTL={ttl_days}），平台字段/竞争可能漂移",
-                scan_cmd + f" 或 {preflight_repair}")
+                preflight_repair)
             if repair:
                 try:
-                    repair_rescan(campaign_dir, dataset)
-                    f2 = _catalog_file_path(campaign_dir, region, dataset)
-                    fc2 = _read_catalog_file(f2) if f2 else None
-                    if fc2 is not None:
-                        repair_db_from_file(region, fc2)
-                        add("repair_refresh", "PASS", "过期重扫 + 入 DB 完成")
+                    r = repair_db_rescan(campaign_dir, dataset)
+                    add("repair_refresh", "PASS", f"过期重扫 + 入 DB 完成: n={r.get('n')}")
                 except Exception as e:
-                    add("repair_refresh", "FAIL", str(e), scan_cmd)
+                    add("repair_refresh", "FAIL", str(e), preflight_repair)
         else:
             add("freshness", "PASS", f"catalog 新近（{age} 天 ≤ TTL {ttl_days}）")
 
-    # ---- 7) dead_end（续战翻案提示，仅 WARN）----
+    # ---- 5) dead_end（续战翻案提示，仅 WARN）----
     hits = check_dead_end(dataset, region)
     if hits:
         ids = ", ".join(h.get("entry_id") or str(h.get("family")) for h in hits[:3])
@@ -300,7 +215,7 @@ def main():
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--wave", help="波号（仅记录用）")
     ap.add_argument("--repair", action="store_true",
-                    help="自动修复：文件↔DB 互灌 / 双缺重扫 / 过期刷新（幂等）")
+                    help="自动修复：DB 缺/过期则直连重扫入库（幂等）")
     ap.add_argument("--ttl-days", type=int, default=DEFAULT_TTL_DAYS,
                     help=f"catalog 新鲜度 TTL（默认 {DEFAULT_TTL_DAYS} 天）")
     ap.add_argument("--quiet", action="store_true", help="只输出 JSON")
