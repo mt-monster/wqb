@@ -31,10 +31,6 @@
       "cat": "wait",
       "what": "相关性槽位忙时返回的建议重试秒数（缺省 180）"
     },
-    "BRAIN_CORRELATION_LOCK_TTL_SECONDS": {
-      "cat": "wait",
-      "what": "相关性检查的账号级锁 TTL（缺省 3700，略大于 3600 s 轮询上限）"
-    },
     "BRAIN_CREATE_SIMULATION_MAX_CONCURRENCY": {
       "cat": "wait",
       "what": "MCP `create_simulation` 的并发上限（缺省 6）"
@@ -218,14 +214,6 @@
     "OPENAI_MODEL": {
       "cat": "cred",
       "what": "同上：LLM 模型名"
-    },
-    "REDIS_HOST": {
-      "cat": "mcp",
-      "what": "可选缓存主机（不可用时降级，不阻断）"
-    },
-    "REDIS_PORT": {
-      "cat": "mcp",
-      "what": "可选缓存端口（缺省 6379；不可用时降级，不阻断）"
     },
     "WQB_ALLOW_ALPHA_SUBMIT": {
       "cat": "gate",

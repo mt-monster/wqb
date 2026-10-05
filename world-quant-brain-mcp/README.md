@@ -179,7 +179,9 @@ python main.py
 | `FORUM_SETTINGS_TIMEOUT` | | 论坛超时，默认 `15` |
 | `FORUM_MAX_CONCURRENCY` | | 论坛并发，默认 `1` |
 | `FORUM_RATE_LIMIT_SECONDS` | | 论坛调用间隔，默认 `0` |
-| `REDIS_HOST` / `REDIS_PORT` | | Redis 地址，Docker 模式自动为 `redis:6379` |
+
+> 2026-10-06：`REDIS_HOST` / `REDIS_PORT` 已随 Redis 移除作废（缓存统一走 SQLite，
+> 见仓库 `docs/design/prod_corr_persistence_design_20260918.md` §6.6），不再列入环境变量表。
 
 完整字段参考 `.env.example`。
 
