@@ -1,0 +1,420 @@
+{
+ "_doc": "平台级约束单一事实源（跨 region 共享，2026-08-15 自 tracking/KOR 抽象）。区域级实测数据（operator_stats/skeleton_quota/dataset_ranking/typed catalog）放战役目录 reference/，不进本文件。",
+ "version": "1.6",
+ "updated_at": "2026-09-29T10:00:00",
+ "inaccessible_ops": [
+  "ts_min",
+  "ts_max"
+ ],
+ "_inaccessible_note": "语法合法但回测 ERROR 并级联整批 CANCELLED（KOR 批X实证）。判定必须对表达式全部 idents 做（而非 ops_used——KOR 历史死代码教训：ts_min/ts_max 不在 KNOWN_OPS 里，对 ops_used 判定永远漏检）。",
+ "quantile_arity": 1,
+ "_quantile_note": "alpha-expression-verifier 签名表允许 quantile 1-3 参（语法事实，不要改 validator）；战役纪律仅 1 参，由 gate 闸4 在本层加严（括号深度数逗号）。",
+ "window_whitelist": [
+  1,
+  5,
+  22,
+  66,
+  252,
+  504,
+  1008,
+  1260
+ ],
+ "window_whitelist_enforce": false,
+ "_window_whitelist_note": "标准时间窗口白名单（2026-09-17 新增，此前只写在 SOP 散文里、零机械守护）。gate 闸9 对非白名单窗口记 [WINDOW] **warning（不阻断）** —— 因为 SOP 允许'给出解释或实测证据'后用。实测加规则前全库 23% 用非白名单窗口，Top 恰为 20/10/120/60，与 _lib/operator_coverage.py::_DEFAULT_WINDOWS 的旧默认值完全吻合（该默认值已同轮对齐白名单）。同源常量在 src/wqb/config.py::STANDARD_WINDOWS，由 tests/unit/06_wave_pipeline/test_window_whitelist_p4.py 守护两边一致。2026-09-17 追补：当日新语料违规率 **26.5%**（散文约束无效）→ 新增 `window_whitelist_enforce` 开关（true 时闸9 升为 block）；同时对齐了两处模板根因（run_pipeline.py 的 20→22、skeletons.py 的 250→252 / 63→66）。",
+ "known_ops": [
+  "abs",
+  "add",
+  "and",
+  "bucket",
+  "combo_a",
+  "days_from_last_change",
+  "densify",
+  "divide",
+  "equal",
+  "generate_stats",
+  "greater",
+  "greater_equal",
+  "group_backfill",
+  "group_cartesian_product",
+  "group_count",
+  "group_mean",
+  "group_neutralize",
+  "group_rank",
+  "group_scale",
+  "group_std_dev",
+  "group_sum",
+  "group_zscore",
+  "hump",
+  "if_else",
+  "in",
+  "inverse",
+  "is_nan",
+  "kth_element",
+  "last_diff_value",
+  "less",
+  "less_equal",
+  "log",
+  "max",
+  "min",
+  "multiply",
+  "normalize",
+  "not",
+  "not_equal",
+  "or",
+  "pasteurize",
+  "power",
+  "quantile",
+  "rank",
+  "reduce_avg",
+  "reduce_choose",
+  "reduce_count",
+  "reduce_ir",
+  "reduce_kurtosis",
+  "reduce_max",
+  "reduce_min",
+  "reduce_norm",
+  "reduce_percentage",
+  "reduce_powersum",
+  "reduce_range",
+  "reduce_skewness",
+  "reduce_stddev",
+  "reduce_sum",
+  "reverse",
+  "scale",
+  "self_corr",
+  "sign",
+  "signed_power",
+  "sqrt",
+  "subtract",
+  "tail",
+  "trade_when",
+  "ts_arg_max",
+  "ts_arg_min",
+  "ts_av_diff",
+  "ts_backfill",
+  "ts_corr",
+  "ts_count_nans",
+  "ts_covariance",
+  "ts_decay_linear",
+  "ts_delay",
+  "ts_delta",
+  "ts_ir",
+  "ts_kurtosis",
+  "ts_max_diff",
+  "ts_mean",
+  "ts_product",
+  "ts_quantile",
+  "ts_rank",
+  "ts_regression",
+  "ts_returns",
+  "ts_scale",
+  "ts_std_dev",
+  "ts_step",
+  "ts_sum",
+  "ts_target_tvr_decay",
+  "ts_target_tvr_hump",
+  "ts_zscore",
+  "universe_size",
+  "vec_avg",
+  "vec_count",
+  "vec_max",
+  "vec_min",
+  "vec_range",
+  "vec_stddev",
+  "vec_sum",
+  "vector_neut",
+  "winsorize",
+  "zscore"
+ ],
+ "_known_ops_note": "探索率分母；唯一真值 = data/operators_verified.json 的 verified（平台 get_operators 实测）。2026-09-12 对账：移除旧快照残留 delay,delta,exp,range,vec_norm（verify 于 09-08 平台刷新不含之，用时先 get_operators 复核）。",
+ "vector_only_ops": [
+  "vec_avg",
+  "vec_max",
+  "vec_min",
+  "vec_sum",
+  "vec_count",
+  "vec_norm",
+  "vec_range",
+  "vec_stddev"
+ ],
+ "group_identifiers": [
+  "sector",
+  "subindustry",
+  "industry",
+  "market",
+  "country",
+  "exchange"
+ ],
+ "region_invalid_group_fields": {
+  "JPN": [
+   "sector",
+   "subindustry",
+   "industry"
+  ]
+ },
+ "_region_invalid_group_note": "2026-09-19：区域不可用的 group 字段（profile 硬事实）。JPN 2026-09-15 实测 sector/subindustry/industry 报 'Invalid data field'（POST 可接受、执行必 ERROR 并连坐整批 CANCELLED）。闸2 按 region 判 FAIL；GEM 侧 pipeline_pregate 同源丢弃。新增区域在此登记，不要写死在代码里。",
+ "price_volume_fields": [
+  "open",
+  "high",
+  "low",
+  "close",
+  "volume",
+  "returns",
+  "vwap",
+  "cap",
+  "sharesout",
+  "adv20"
+ ],
+ "driver_args": [
+  "gaussian",
+  "uniform",
+  "cauchy",
+  "nan",
+  "true",
+  "false"
+ ],
+ "vec_rules": "VECTOR/event 字段必须先经 vec_avg/vec_max 等聚合再套 rank/ts_*；VECTOR 禁直接 ts_backfill；MATRIX 数据集禁 vec_*（KOR wave2 acquisition_model 24/24 ERROR 实证，浪费 48 配额）。",
+ "poison_patterns": [
+  {
+   "name": "nested_three_leg_add",
+   "regex": "add\\s*\\(\\s*multiply\\s*\\(\\s*rank\\s*\\(.*add\\s*\\(\\s*multiply\\s*\\(\\s*rank",
+   "rule": "add(multiply(rank(x),a),add(multiply(rank(y),b),multiply(rank(z),c))) 嵌套三腿 add 高度疑似整批 CANCELLED（KOR record_poison bisect 实证）；三腿混合改写 add(add(a,b),c) 左结合",
+   "severity": "block"
+  },
+  {
+   "name": "weighted_signal_mix",
+   "regex": "\\d*\\.?\\d+\\s*\\*\\s*(?:rank|zscore|ts_rank|group_rank|normalize|scale)\\s*\\([^)]*\\).{0,200}?\\d*\\.?\\d+\\s*\\*\\s*(?:rank|zscore|ts_rank|group_rank|normalize|scale)\\s*\\(",
+   "rule": "≥2 个「系数*rank(...)」加权腿 = 混信号调参，CLAUDE.md 明令禁止（防过拟合，尤其警惕 add(A,B) 模式）。实测 ASI 243 条表达式里 91 条（37.4%）是这个形状，且多为同骨架的权重微调三连（0.4/0.3 → 0.5/0.25 → 0.34/0.33），典型参数过拟合。改法：拆成单腿 atom alpha 分别验证，或改用非线性组合（trade_when 事件门控 / group 分组 / bucket 分桶），不要靠调权重凑指标。",
+   "severity": "block"
+  },
+  {
+   "name": "weighted_signal_mix_structural",
+   "_structural": true,
+   "regex": "(?!)",
+   "rule": "【结构判定，非正则】任一 add( 的顶层实参 ≥2 个以「系数*」开头 = 加权混合（含嵌套与镜像腿）。2026-09-17 实测：既有 weighted_signal_mix 正则要求两条腿都紧跟 (rank|zscore|ts_rank|group_rank|normalize|scale)，而真实语料主流镜像腿 subtract(0, rank(x)) 使 81% 漏网（抽 220 条真闸只 block 19%）。本条由 gate.check_one 的括号平衡扫描实施，regex 占位永假。等权 add(rank(a),rank(b)) 与单腿缩放 0.5*rank(a) 不拦。",
+   "severity": "block"
+  },
+  {
+   "name": "weighted_leg_mix_func_prefix",
+   "regex": "add\\s*\\(\\s*multiply\\s*\\(\\s*\\d*\\.\\d+\\s*,",
+   "rule": "add(multiply(<权重>, <腿A>), multiply(<权重>, <腿B>)) 函数式加权混两条独立信号腿 = 混信号调参，用户 2026-09-09 定案全局禁止（防过拟合，尤其警惕 add(A,B) 模式）。既有 weighted_signal_mix 只认 `0.4 * rank(x)` 星号中缀写法，而 GEM 与实际表达式一律用 multiply() 函数式，导致该纪律长期漏网（EUR wave132/143/144 实测 4 例违规式全数通过闸5）。合规替代：①单信号结构 ts_scale/subtract(rank(A), rank(B)) ②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B 想法层）。不得靠调混合权重或增删腿数修不达标的信号。 本条匹配【权重在前】：add(multiply(0.4, ...), multiply(0.6, ...))。",
+   "severity": "block"
+  },
+  {
+   "name": "weighted_leg_mix_func_suffix",
+   "regex": "add\\s*\\(\\s*multiply\\s*\\([^;]*?\\d*\\.\\d+\\s*\\)\\s*,\\s*multiply\\s*\\(",
+   "rule": "add(multiply(<权重>, <腿A>), multiply(<权重>, <腿B>)) 函数式加权混两条独立信号腿 = 混信号调参，用户 2026-09-09 定案全局禁止（防过拟合，尤其警惕 add(A,B) 模式）。既有 weighted_signal_mix 只认 `0.4 * rank(x)` 星号中缀写法，而 GEM 与实际表达式一律用 multiply() 函数式，导致该纪律长期漏网（EUR wave132/143/144 实测 4 例违规式全数通过闸5）。合规替代：①单信号结构 ts_scale/subtract(rank(A), rank(B)) ②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B 想法层）。不得靠调混合权重或增删腿数修不达标的信号。 本条匹配【权重在后】：add(multiply(rank(a), 0.4), multiply(rank(b), 0.6))。",
+   "severity": "block"
+  },
+  {
+   "name": "equal_weight_leg_add",
+   "_structural": true,
+   "regex": "(?!)",
+   "rule": "【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是**信号腿**（各自引用数据字段、非纯常数），且这些腿形态不同（归一化窗口后仍不相等）= 等权混合两条独立信号腿。用户 2026-09-28 定案：**不得把两条独立信号腿加权相加，无论写成 add(multiply(0.4,...)) 还是 0.4A+0.6B**；等权即 0.5A+0.5B，属同一违规族，任何含混表述不构成本例外的例外。本条由 gate.check_one 的括号平衡扫描实施，regex 占位永假。放行形态：①add(abs(x),0.01)（1 腿+epsilon 标量）②add(ts_mean(x,22),ts_mean(x,66))（同形态仅窗口差异=单信号多窗平滑）。实证代价：KOR wave189/190 共 7 条 add(group_rank(腿A),group_rank(腿B))（含 S=2.11/F=1.80/2Y=1.89）全部漏过闸5 → 已作废。合规替代：①单信号结构 ts_scale / subtract(rank(A),rank(B))（价差：两腿同源——同一组字段/同一数据集——且有单一经济含义，见 spread_signal_ruling；跨数据集 subtract 属拼腿，由 spread_cross_dataset 拦截）②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B 想法层）。",
+   "severity": "block"
+  },
+  {
+   "name": "infix_leg_sum",
+   "_structural": true,
+   "regex": "(?!)",
+   "severity": "block",
+   "rule": "【结构判定，非正则】中缀 `+`（含 `A*0.6 + B*0.4`、`A + B*0.35`、链式 `A + B + C`）相加 ≥2 条形态不同的独立信号腿 = 与 add(A,B) 同罪的混信号调参，全局禁止（用户 2026-09-13 路线 A / 2026-09-28 定案：无论写成 add(...)、multiply 函数式还是中缀，无论权重在左/右/无）。判定见 gate._detect_infix_leg_sum：任一片段按顶层 + - 切项后信号腿 ≥2、不是「一正一负价差」、且腿形态（归一化数字后）不全相同。放行：①abs(x)+0.01（1 腿+标量）②ts_mean(x,22)+ts_mean(x,66)（同形态仅窗口差）③一正一负价差（走 spread 规则）。实证（2026-09-29）：对仓库 4047 条真实表达式重判，新增拦下 217 条（权重在右 / 无 add( 的写法），含 V9 顶层形态 `… + scale(-rank(returns,42))*0.35`。合规替代同 equal_weight_leg_add：单信号结构 / 同源价差 / 换信号概念（Mode B）。"
+  },
+  {
+   "name": "spread_cross_dataset",
+   "_structural": true,
+   "regex": "(?!)",
+   "severity": "block",
+   "rule": "【结构判定，非正则】**跨集且未声明经济含义**的价差 = 拼腿（用户 2026-10-01 修正）。判据从「两腿字段分属不同数据集」改为「跨集 且 该集对未在 declared_cross_spreads 声明」。用户 2026-10-01 澄清：`rank(预期A) − rank(约束B)`（A/B 不同数据集、最好不同更新节奏）**合规且鼓励**——属 §7.7.2 ⑤ 换信号概念（两腿独立 → self-corr 低），与 §7.7.2 ② 同源价差是**并列的两类合规形态**。合规内核 = 价差有**方向性经济解释**（背离 / 对冲 / 预期-约束缺口），违规内核 = 无经济含义的机械拼腿（`add` 一律违规，含等权）。因机器无法自动判「有无经济含义」，改用**显式声明**：调用方（或战役级 `declared_cross_spreads`）声明本波认定的 (A集,B集) 经济含义集对 → 放行；跨集但未声明 → 仍阻断（错误消息指引声明路径）。空声明 = 全部跨集阻断（向后兼容旧版）。仅在多数据集 mix 批（--datasets）里判定。带数值系数的价差腿只告警（[SPREAD_WEIGHTED]）。"
+  }
+ ],
+ "_weighted_mix_note": "2026-09-16 回滚记录：v1.1 曾将两条 func 式加权混腿毒模式窄化为仅拦非 {0.4,0.6} 权重（Agent 误读任务书硬约束#5 字面）。用户当日重申『警惕 add(A,B) 模式』全局禁令后，v1.2 恢复 v1.0 全量拦截语义。结论：任何对用户定案纪律的放宽必须先经用户明确确认；任务书含混表述不构成例外。2026-09-17 v1.3 加固：新增 weighted_signal_mix_structural（gate.check_one 括号平衡结构判定，见 _structural 标记）堵住正则版 81% 的镜像腿漏网；四条正则保留为辅助层。",
+ "_poison_note": "severity=block 时 gate 闸5 拦截。区域特有的新增毒模式放战役 reference/<region>_generation_constraints.json 的 poison_patterns，勿写进本文件。",
+ "skeleton_classes": [
+  "event_gated",
+  "group",
+  "ratio",
+  "linear_mix",
+  "single"
+ ],
+ "_skeleton_note": "骨架五分类优先级：trade_when(/if_else( → event_gated；group_ → group；divide( → ratio；add(/multiply( → linear_mix；其余 → single。build_wave 的 skeleton_quota 键与 diversity_audit 的分类共用本顺序。",
+ "probe_battery": [
+  {
+   "probe": "P1_水平正",
+   "expr": "rank(F)",
+   "tests": "字段水平方向信号上限"
+  },
+  {
+   "probe": "P2_水平镜像",
+   "expr": "multiply(rank(F),-1)",
+   "tests": "负sharpe镜像机会（KOR wave17实证：强负=镜像腿金矿）"
+  },
+  {
+   "probe": "P3_差分",
+   "expr": "rank(ts_delta(F,5))",
+   "tests": "变化型信号"
+  },
+  {
+   "probe": "P4_均值差分",
+   "expr": "rank(ts_av_diff(F,10))",
+   "tests": "慢变量激活（KOR model219实证：numrevy1靠此从0.3到1.08）"
+  },
+  {
+   "probe": "P5_衰减水平",
+   "expr": "ts_decay_linear(rank(F),5)",
+   "tests": "事件型字段持久性"
+  },
+  {
+   "probe": "P6_时序自归一",
+   "expr": "rank(ts_zscore(F,66))",
+   "tests": "相对自身历史的稀缺性（窗口 66 = 一个季度；旧值 60 无实测依据，2026-09-29 改）"
+  },
+  {
+   "probe": "P7_动量",
+   "expr": "rank(ts_delta(F,22))",
+   "tests": "中期动量结构"
+  },
+  {
+   "probe": "P8_稀疏修复",
+   "expr": "rank(ts_backfill(F,66))",
+   "tests": "低覆盖字段可用性"
+  }
+ ],
+ "stage_a_probes": [
+  "P1_水平正",
+  "P2_水平镜像",
+  "P4_均值差分",
+  "P5_衰减水平"
+ ],
+ "_stage_a_note": "信息量/成本比最高的子集先跑；Stage A 评完 EARLY_RED 即不跑 Stage B（省批）。expr 模板中的 F 由 score_datasets 替换（VECTOR 数据集自动包 vec_avg）。",
+ "field_family_keywords": {
+  "change": [
+   "change",
+   "delta",
+   "revision",
+   "chg",
+   "momentum",
+   "diff",
+   "surprise",
+   "trend",
+   "growth",
+   "acceleration"
+  ],
+  "level": [
+   "level",
+   "value",
+   "score",
+   "rank",
+   "pct",
+   "ratio",
+   "yield",
+   "price",
+   "sentiment",
+   "polarity",
+   "vader",
+   "afinn",
+   "positive",
+   "negative",
+   "neutral",
+   "average",
+   "mention",
+   "count",
+   "embedding",
+   "intensity"
+  ],
+  "quality": [
+   "quality",
+   "confidence",
+   "std",
+   "vol",
+   "sigma",
+   "skew",
+   "variance",
+   "mad",
+   "dispersion",
+   "entropy",
+   "kurtosis",
+   "readability",
+   "flesch",
+   "gunning",
+   "uncertainty"
+  ]
+ },
+ "_field_family_note": "三族关键词（pick_fields 采样用）。2026-08-27 补 NLP/情绪词根：sentiment/polarity/vader/afinn→level，variance/mad/dispersion/readability→quality，trend/growth→change。此前 NLP 数据集（finnews_nlp/news_sentiment_nlp/mmp_nlp_sentiment）字段几乎全落默认 level 桶，三族均衡失效。",
+ "ghost_ops": [
+  "group_normalize",
+  "sigmoid",
+  "ts_decay_exp_window",
+  "ts_entropy",
+  "ts_max",
+  "ts_median",
+  "ts_min",
+  "ts_min_max_cps",
+  "ts_percentage",
+  "ts_skewness"
+ ],
+ "_ghost_source": "权威 = data/wqb.db ledger KB/community_tpl_kb.ghost_operator_advisory（updated_at=2026-08-31）；另有 unverified_community_ops=14 个、forbidden_regular=2 个，全文见 KB。docs/reference/operators_notes.md 是算子使用统计转储，不是清单。",
+ "region_invalid_fields": {
+  "JPN": [
+   "close",
+   "open",
+   "high",
+   "low",
+   "volume",
+   "returns",
+   "vwap",
+   "cap",
+   "sharesout",
+   "adv20",
+   "adv60",
+   "adv120"
+  ]
+ },
+ "_region_invalid_fields_note": "2026-09-19 实证：JPN/TOP1600/D1 无 pv1 数据集，基础量价字段全部 'Invalid data field close'（2Jja8EaWz59v8IfKuZfRmZ2）。闸2b 按 region 判 FAIL；GEM pipeline_pregate.region_invalid_fields 同源丢弃。",
+ "region_vector_ts_forbidden": [
+  "JPN"
+ ],
+ "_region_vector_ts_note": "2026-09-19 实证：JPN 下 ts_*(…vec_*(…)) 必 ERROR 'Invalid data field close'（VECTOR 日频对齐依赖 pv1；rank(vec_avg(f)) 可 COMPLETE=O0NKlYVb）。闸2b 判 FAIL；GEM pregate has_ts_over_vec 同源丢弃。",
+ "declared_cross_spreads": {
+  "_doc": "用户 2026-10-01 修正：跨数据集价差合规，但须显式声明「方向性经济解释」。未声明集对 → 闸5 spread_cross_dataset 阻断。每项 [集A, 集B]（顺序无关），或 [集A, 集B, 说明]。",
+  "_howto": "在战役目录 reference/<region>_generation_constraints.json 里加同名键做区域级声明，或由生成脚本经 --declared-cross-spreads 传入；平台级默认集对放这里。",
+  "pairs": []
+ },
+ "spread_signal_ruling": {
+  "_doc": "用户 2026-09-28 裁定：subtract(rank(A),rank(B)) 何时算「单一价差信号」（合规）而非「拼腿」（违规）。",
+  "compliant_when": [
+   "两腿派生自**同一组字段**（同源），即 A 与 B 是同一经济量的不同构造/口径，而非两个独立概念",
+   "差值有**自洽的经济含义**（可一句话说清它衡量什么），例如『核心盈利 vs 终止经营贡献』『估值趋势 vs 盈利趋势』",
+   "适用：subtract(rank(A),rank(B)) / subtract(ts_rank(A,n),ts_rank(B,n)) / 其外层再包 group_rank/group_zscore/ts_rank/ts_decay_linear 等**单信号几何**"
+  ],
+  "violation_when": [
+   "两腿来自**不同数据集或不同经济概念**，且**未声明**方向性经济解释（背离/对冲/预期-约束缺口）= 拼腿；声明路径见 declared_cross_spreads。⚠ 2026-10-01 修正：跨集本身**不是**违规判据——`rank(预期A) − rank(约束B)`（A/B 不同数据集、不同更新节奏）属 §7.7.2 ⑤ 换信号概念，**合规且鼓励**。",
+   "把 subtract 换成 **add**（求和无价差语义）—— add 一律违规，含等权",
+   "靠增删腿数或调权重凑指标"
+  ],
+  "confirmed_cases": [
+   {
+    "alpha": "3qXvopQO",
+    "expr": "group_rank(subtract(ts_rank((合并净利-终止经营)/总资产,252), ts_rank(终止经营/总资产,252)), industry)",
+    "ruling": "合规（核心盈利 vs 终止经营 价差）"
+   },
+   {
+    "alpha": "npd5AZj8",
+    "expr": "trade_when(greater(总资产,0), subtract(ts_rank(...), ts_rank(...)), -1)",
+    "ruling": "合规（同价差 + 事件门控）"
+   },
+   {
+    "alpha": "kqo6J1pK",
+    "expr": "ts_decay_linear(subtract(ts_rank(...), ts_rank(...)), 22)",
+    "ruling": "合规（同价差 + 单信号平滑）"
+   },
+   {
+    "alpha": "3qXvopQO/d5brWxLE 一族",
+    "expr": "ts_rank(group_rank(subtract(divide(a,b),divide(c,b)), industry), 252)",
+    "ruling": "合规（单信号几何叠加）"
+   }
+  ],
+  "ruled_at": "2026-09-28",
+  "ruled_by": "user"
+ }
+}

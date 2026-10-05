@@ -1,8 +1,0 @@
-{
- "_doc": "区域代码字面量分支 / 查表的棘轮基线（2026-10-04 建）。区域差异应在数据层（tracking/<R>/config、config.py、platform_constraints.json、cells.json）。新增即红；修掉的必须从这里删。生成：$WQ_PY -m wqb.profiles audit literals --json",
- "entries": [
-  "tools/data-repair/archive_json_to_attic.py:compare:ASI,DEU,EUR,GBR,GLB,HKG,IND,KOR,MEA,USA",
-  "tools/dynamic_recipe_weighter.py:dict:ASI,CHN,DEU,EUR,GBR,GLB,IND,JPN,KOR,USA",
-  "tools/super_build.py:dict:DEU,EUR,GBR,GLB,IND,KOR,MEA,USA"
- ]
-}

@@ -1,0 +1,83 @@
+---
+region: MEA
+entry_verdict: frozen
+one_liner: "TOP400 全区判死：9 数据集全 exhausted，入口即拒，仅留用户强制的 probe-only 后门"
+static:
+  universe: [TOP400]
+  universe_default: TOP400
+  delay: [1]
+  delay_default: 1
+  neutralization_default: STATISTICAL
+  notes: "小宇宙，CW/longCount 问题放大，已无白名单内候选"
+datasets:
+  red:
+    - datasets: [fundamental6, model25, pv106]
+      reason: "9 数据集 campaign 状态全部 exhausted（含 pv106 spread 族判死）（键 = ledger *_dead ∪ 旧 red 文本 id；明细查 get_dead_datasets）"
+    - scope: family
+      families: [news 系, analyst 系, risk 系, insiders 系, shortinterest 系, option 系]
+      reason: "9 数据集 campaign 状态全部 exhausted（含 pv106 spread 族判死）"
+  green: []
+  yellow: []
+priors:
+  signal_families_include: []
+  signal_families_exclude: [pv106_spread]
+  syntax_patterns: []
+  win_recipes:
+    - "早期 3 颗 ACTIVE（fundamental6/model25 时代），配方已被后续死路覆盖，不可复用"
+gate_overrides:
+  cw_gate: FAIL
+loop_policy:
+  max_probes_per_wave: 1
+  fast_kill: "frozen 态不适用；probe-only 后门单波 8 探针上限"
+  stop_conditions: ["默认停止：全区 exhausted"]
+empirical_anchor:
+  dead_ends_ref: "get_dead_ends(MEA)"
+  last_verified: 2026-08-25
+---
+
+# MEA — 冻结区
+
+## 定位与实证依据
+
+MEA TOP400 小宇宙，9 个数据集 campaign 状态**全部 exhausted**——不是没挖，是每一个都挖到判死并回写（pv106 spread 族死路为代表）。虽有 3 颗早期 ACTIVE（fundamental6/model25 时代），但对应配方已被后续死路覆盖，不可复用。小宇宙还放大 CW/longCount 数据质量问题。继续投入的期望收益 < 配额机会成本（同配额投 ASI 处女地或 IND 长窗期望更高）。
+
+## 流程变体（相对九步骨架）
+
+### 步 1 注入：入口即拒绝（frozen 核心变体）
+
+执行到步 1 查表时：
+
+1. `get_campaigns(MEA)` 全部 exhausted 且 `get_dead_datasets(MEA)` 覆盖全部候选 → **不进步 2**；
+2. 直接向用户报告："MEA 已全区判死冻结（9/9 exhausted），建议转区"；
+3. 调 `brain-next-move-analysis` 产出选区建议（ASI/GBR/HKG 等 probe-only 区优先）。
+
+### 唯一后门：用户显式强制 → 降级 probe-only
+
+用户明确说"继续挖 MEA"时：
+
+- 只探**白名单外新上线数据集**（status=untried 且不在红榜）；
+- 单波 8 探针上限，一波结束无论成败都回到 frozen；
+- 事先向用户声明配额成本，确认后执行。
+
+### 解冻触发器（自动）
+
+S-PRE 查表发现以下任一条件，`entry_verdict` 自动回升 probe-only 并提示用户：
+
+- 平台新上线 MEA 数据集（campaign 表出现 untried 项）；
+- Power Pool 主题匹配 MEA（PPA 分支，走骨架 PPA 流程）。
+
+## SuperAlpha 状态（平台状态，不属于 SA 方法论；原写在 `wq-brain-superalpha` 里）
+
+- **MEA 通道对 SUPER 已关闭**（2026-09-11 复测）：`POST /simulations` 带 `region=MEA` → 400 `{"settings":{"region":["Region MEA is not available."]}}`。既有 2 颗 MEA SA（78jYpn0Z / 3qlYKAaO）是关闭前的**存量，不能再新增**——别在 MEA 上浪费探测；`wq-brain-superalpha` 的案例 2 因此标为「不可复制」。
+- 状态会变：以 `python tools/sa_probe.py --region MEA` 与当期 `get_platform_setting_options(MEA)` 为准，不要凭本节复核。
+
+## 避坑清单
+
+- 禁止"再试一次已 exhausted 数据集换参数"——死路 rule 优先于直觉（matrix 硬规则 2）。
+- 早期 3 颗 ACTIVE 不构成复挖理由：其配方族已判死。
+- frozen 不是删除历史：registry 中 MEA 死路记录是跨区铁律的语料（如 CW 通病），保留供其他小宇宙区（HKG/TWN）引用。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：pv1(alphaCount=23637, cov=0); analyst7(alphaCount=9322, cov=0.48); model25(alphaCount=8577, cov=0.9)
+- 已判死（勿重试）：MEA-2DS-CURRENT-SKELETON-DEAD, MEA-ANALYST-FND-FLAT-COMBO-DEAD, MEA-EARNINGS3-CALENDAR-DEAD, MEA-FND-EARN-2DS-DEAD, MEA-FND6-QLEVEL-ZSCORE-DEAD, MEA-FND72-EPS-SURPRISE-DEAD, MEA-NEUTRALIZATION-SWAP-DEAD, MEA-RATIO-ADDITIVE-SKELETON-DEAD
+- 实证笔记：MEA-CAMPAIGN-S6-20260830: MEA REGULAR战役w70-w105收官: 停止闸10达成, 18个硬闸达标(去重), 3个OS ACTIVE, 严格互相关<0.7干净组合9条

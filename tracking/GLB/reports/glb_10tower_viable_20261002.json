@@ -1,0 +1,225 @@
+{
+ "region": "GLB",
+ "generated_at": "2026-10-02",
+ "towers": {
+  "analyst": [
+   {
+    "dataset": "analyst11",
+    "kind": "clean",
+    "score": 0.6969,
+    "verdict": "★可开波",
+    "tags": "跨区弱(参考):AMR:0.83@64"
+   },
+   {
+    "dataset": "analyst69",
+    "kind": "clean",
+    "score": 0.5055,
+    "verdict": "★可开波",
+    "tags": "荒地77%"
+   }
+  ],
+  "earnings": [
+   {
+    "dataset": "earnings7",
+    "kind": "clean",
+    "score": 0.4764,
+    "verdict": "★可开波",
+    "tags": ""
+   }
+  ],
+  "fundamental": [],
+  "insiders": [],
+  "institutions": [],
+  "macro": [
+   {
+    "dataset": "macro27",
+    "kind": "clean",
+    "score": 0.3345,
+    "verdict": "★可开波",
+    "tags": ""
+   },
+   {
+    "dataset": "other551",
+    "kind": "clean",
+    "score": 0.1421,
+    "verdict": "★可开波",
+    "tags": ""
+   }
+  ],
+  "model": [
+   {
+    "dataset": "chart_cnn_alpha",
+    "kind": "dead",
+    "score": 0.9044,
+    "verdict": "判死",
+    "tags": "判死×1; bt=16,maxS=2.18,ra=1; 实证产出(ra=1)"
+   },
+   {
+    "dataset": "analyst_earnings_ibes",
+    "kind": "clean",
+    "score": 0.8164,
+    "verdict": "★可开波",
+    "tags": "跨区强(参考):DEU:3,GBR:3"
+   },
+   {
+    "dataset": "ai_factor_transfer",
+    "kind": "clean",
+    "score": 0.8081,
+    "verdict": "★可开波",
+    "tags": ""
+   },
+   {
+    "dataset": "other432",
+    "kind": "clean",
+    "score": 0.8072,
+    "verdict": "★可开波",
+    "tags": ""
+   },
+   {
+    "dataset": "model31",
+    "kind": "clean",
+    "score": 0.7642,
+    "verdict": "★可开波",
+    "tags": ""
+   },
+   {
+    "dataset": "model243",
+    "kind": "clean",
+    "score": 0.747,
+    "verdict": "★可开波",
+    "tags": ""
+   },
+   {
+    "dataset": "model239",
+    "kind": "clean",
+    "score": 0.647,
+    "verdict": "★可开波",
+    "tags": ""
+   },
+   {
+    "dataset": "global_seasonal_model",
+    "kind": "clean",
+    "score": 0.6345,
+    "verdict": "★可开波",
+    "tags": "跨区弱(参考):EUR:0.78@21; 荒地88%"
+   },
+   {
+    "dataset": "model38",
+    "kind": "clean",
+    "score": 0.5118,
+    "verdict": "★可开波",
+    "tags": "bt=729,maxS=2.08,ra=0"
+   },
+   {
+    "dataset": "model110",
+    "kind": "clean",
+    "score": 0.4348,
+    "verdict": "★可开波",
+    "tags": ""
+   }
+  ],
+  "news": [
+   {
+    "dataset": "news31",
+    "kind": "dead",
+    "score": 0.7605,
+    "verdict": "判死",
+    "tags": "判死×4; bt=8,maxS=0.70,ra=0; 实证产出(ra=0,win)"
+   },
+   {
+    "dataset": "news48",
+    "kind": "clean",
+    "score": 0.6025,
+    "verdict": "无甜点字段",
+    "tags": "实证产出(ra=0,win)"
+   }
+  ],
+  "other": [
+   {
+    "dataset": "ai_news_scores",
+    "kind": "dead",
+    "score": 0.8697,
+    "verdict": "判死",
+    "tags": "判死×3; bt=34,maxS=1.39,ra=0; 荒地95%; 实证产出(ra=0,win)"
+   },
+   {
+    "dataset": "dl_riskfree_returns",
+    "kind": "dead",
+    "score": 0.6279,
+    "verdict": "判死",
+    "tags": "判死×3; bt=221,maxS=4.65,ra=62; 跨区强(参考):ASI:4,DEU:7; 实证产出(ra=6"
+   },
+   {
+    "dataset": "other335",
+    "kind": "clean",
+    "score": 0.429,
+    "verdict": "★可开波",
+    "tags": ""
+   }
+  ],
+  "pv": [
+   {
+    "dataset": "intraday_pv_feats",
+    "kind": "dead",
+    "score": 0.955,
+    "verdict": "判死",
+    "tags": "判死×9; bt=702,maxS=3.13,ra=68; 跨区弱(参考):GBR:0.85@22; 跨区强(参考):A"
+   },
+   {
+    "dataset": "pv30",
+    "kind": "dead",
+    "score": 0.93,
+    "verdict": "判死",
+    "tags": "判死×1; 荒地76%; 实证产出(ra=0,win)"
+   },
+   {
+    "dataset": "pv53",
+    "kind": "clean",
+    "score": 0.6632,
+    "verdict": "★可开波",
+    "tags": ""
+   },
+   {
+    "dataset": "pv13",
+    "kind": "clean",
+    "score": 0.5295,
+    "verdict": "★可开波",
+    "tags": ""
+   }
+  ],
+  "risk": [
+   {
+    "dataset": "risk60",
+    "kind": "dead",
+    "score": 0.7431,
+    "verdict": "判死",
+    "tags": "判死×2; bt=23,maxS=2.79,ra=12; 跨区强(参考):DEU:11; 实证产出(ra=12)"
+   },
+   {
+    "dataset": "risk70",
+    "kind": "dead",
+    "score": 0.5723,
+    "verdict": "判死",
+    "tags": "判死×2; bt=8,maxS=2.16,ra=1; 荒地68%; 实证产出(ra=1)"
+   }
+  ],
+  "sentiment": [
+   {
+    "dataset": "sentiment22",
+    "kind": "dead",
+    "score": 0.762,
+    "verdict": "判死",
+    "tags": "判死×1; 荒地93%; 实证产出(ra=0,win)"
+   }
+  ],
+  "socialmedia": [
+   {
+    "dataset": "socialmedia12",
+    "kind": "clean",
+    "score": 0.6022,
+    "verdict": "仅条件腿",
+    "tags": "fields<5; 实证产出(ra=0,win)"
+   }
+  ]
+ }
+}

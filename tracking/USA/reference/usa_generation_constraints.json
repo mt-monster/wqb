@@ -1,0 +1,132 @@
+{
+  "_doc": "USA D1 战役生成约束（2026-10-01 建立）。跨集价差经济含义声明 + 已判死族清单 + 设置提示。闸5 spread_cross_dataset 读本文件 declared_cross_spreads.pairs 放行已声明集对。",
+  "generated_at": "2026-10-01",
+  "settings_hint": {
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 5,
+    "truncation": 0.08,
+    "maxTrade": "OFF",
+    "_note": "USA 合法 universe: TOP500/TOP1000/TOP2000/TOP3000/TOP200/TOPSP500。默认 TOP3000。"
+  },
+  "declared_cross_spreads": {
+    "_doc": "用户 2026-10-01 修正：跨数据集价差合规且鼓励（§7.7.2 ⑤b 换信号概念），但须声明方向性经济解释。未声明集对 → 闸5 spread_cross_dataset 阻断。",
+    "pairs": [
+      [
+        "earnings_chart_dl",
+        "fund_holdings_panel",
+        "盈利日历预测模型(前瞻收益分位概率) vs 基金持仓拥挤度/变动：预期收益 vs 机构资金确认——预期未被机构持有=错杀，预期已被拥挤持有=透支"
+      ],
+      [
+        "earnings_chart_dl",
+        "fundamental110",
+        "盈利日历预测模型 vs 会计基本面(盈利/资产质量)：前瞻预期 vs 已实现基本面——预期与基本面缺口"
+      ],
+      [
+        "earnings_chart_dl",
+        "quant_factor_lib",
+        "盈利日历预测模型 vs Cassie 信用/破产因子库：盈利前瞻 vs 违约风险——质量对冲"
+      ],
+      [
+        "earnings_chart_dl",
+        "pv_tech_indicators",
+        "盈利日历预测模型 vs 技术指标：基本面前瞻 vs 价格动能——预期vs实现的时序错位"
+      ],
+      [
+        "earnings6",
+        "fund_holdings_panel",
+        "盈利意外/指引 vs 基金持仓变动：基本面惊喜 vs 机构资金流——资金确认缺口"
+      ],
+      [
+        "earnings6",
+        "fundamental110",
+        "盈利意外 vs 会计盈利质量：已实现惊喜 vs 结构性盈利——质量校验"
+      ],
+      [
+        "earnings_sent_matrix",
+        "fund_holdings_panel",
+        "财报情绪矩阵 vs 基金持仓：管理层语气 vs 机构仓位——情绪-资金背离"
+      ],
+      [
+        "earnings_sent_matrix",
+        "institutions6",
+        "财报情绪矩阵 vs 机构持股结构：语气信号 vs 机构结构——信息与持仓背离"
+      ],
+      [
+        "fund_holdings_panel",
+        "fundamental110",
+        "基金持仓拥挤度 vs 会计基本面：资金拥挤 vs 基本面支撑——拥挤度透支检验"
+      ],
+      [
+        "fund_holdings_panel",
+        "quant_factor_lib",
+        "基金持仓变动 vs 信用/质量因子：机构行为 vs 质量评分——聪明钱vs风险"
+      ],
+      [
+        "fund_holdings_panel",
+        "pv_tech_indicators",
+        "基金持仓边界交易 vs 技术动能：机构建仓/清仓 vs 价格动量——资金领先性"
+      ],
+      [
+        "institutions6",
+        "fundamental110",
+        "机构持股集中度 vs 会计基本面：机构认同 vs 基本面——资金面vs基本面"
+      ],
+      [
+        "quant_factor_lib",
+        "earnings6",
+        "Cassie 信用/破产因子 vs 已实现盈利意外：违约风险 vs 盈利兑现——风险与基本面对冲校验"
+      ],
+      [
+        "fund_holdings_panel",
+        "quant_factor_lib",
+        "基金持仓边界交易 vs Cassie 破产概率：机构建仓/清仓 vs 信用风险——聪明钱识别风险"
+      ]
+    ]
+  },
+  "dead_datasets_must_avoid": {
+    "_doc": "USA 已判死数据集（registry_empirical dead_end 实测，禁止再生成）。",
+    "datasets": [
+      "news_sentiment_dl",
+      "ai_news_scores",
+      "option_chart_model",
+      "event_sentiment_signals",
+      "insider_feats",
+      "earningscall_embed",
+      "ml_factor_proj",
+      "multifactor_return_pred",
+      "pv_tech_indicators",
+      "pattern_scores",
+      "acquisition_model",
+      "option9",
+      "news81",
+      "shortinterest7",
+      "insiders1"
+    ],
+    "families": [
+      "mdl177 价值/盈利因子族",
+      "analyst_earnings_ibes 2腿组合",
+      "multifactor_return_pred r60 quantile spread",
+      "multifactor_return_pred quantile spread",
+      "cross-sectional weighting transforms on rank-spread signals"
+    ]
+  },
+  "win_skeletons": {
+    "_doc": "USA 存量 ACTIVE 实证有效骨架（可复用）。",
+    "slow_convex_subindustry_rank": {
+      "skeleton": "ts_decay_linear(signed_power(subtract(group_rank(X, subindustry), 0.5), 5), 90)",
+      "evidence": "USA 存量 ACTIVE alpha 实测（xAdL5vmN 等）"
+    },
+    "market_group_rank_ts_rank": {
+      "skeleton": "signed_power(ts_rank(group_rank(<核心比率>, market), 504), 0.5)",
+      "evidence": "KOR 迁移成功（zq87zzqO/wpZkk1Mp/A1NXddRw）"
+    },
+    "slow_zscore_group_rank": {
+      "skeleton": "group_rank(ts_zscore(ts_backfill(<慢变量>, 252), 252), industry)",
+      "evidence": "883WZJ1W / vRvg7NzA（USA EARNINGS 塔 ACTIVE）"
+    }
+  },
+  "_poison_patterns_note": "闸3/闸5 的通用毒化模式见 Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json"
+}
