@@ -22,9 +22,11 @@
 """
 import json
 import logging
+import os
 import re
 import sqlite3
 import sys
+import types
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -44,12 +46,87 @@ from wqb import recon_evidence as _recon_evidence  # noqa: E402  论坛取证证
 from wqb.config import compute_webdata_failed_counts  # noqa: E402  RA 资格门唯一口径（R3）
 
 
+def set_db_path(path) -> None:
+    """把本模块的库指向改到 ``path``（测试隔离临时库的唯一正用口径）。
+
+    为什么要有它（2026-10-04 事故沉淀，AGENTS.md §8.4 第 9 项）：以前测试写
+    ``mod.DB_PATH = tmp`` 来隔离，那是**静默失效型耦合** —— 一旦 DB 访问被抽到
+    别的模块（拆包/改名/重定位），该赋值变成一个无人读取的悬空属性，不报错，
+    测试直接写生产 ``data/wqb.db``。本仓实际踩过并污染了 14 行。
+    走本函数则任何结构变动下都会要么生效、要么直接报错。
+    """
+    global DB_PATH
+    DB_PATH = Path(path)
+
+
+def get_db_path() -> str:
+    """当前生效的库路径。读库位置请走本函数而不是 ``str(DB_PATH)``。"""
+    _reject_production_db_under_tests()
+    return str(DB_PATH)
+
+
+def _reject_production_db_under_tests() -> None:
+    """pytest 运行期间禁止本模块连生产 ``data/wqb.db``。
+
+    缘由（2026-10-04 事故，AGENTS.md §8.4 第 9 项）：拆包使 `mod.DB_PATH = tmp`
+    这类隔离 patch 静默失效，测试直接往生产库写了 14 行。
+
+    为什么不只靠 `__setattr__` 硬闸：那种闸只拦“写属性”这一种形式，而隔离失效的原因
+    有很多（改读点位置、缓存了路径、新增子模块各自拿库……）。本闸拦的是**结果**：
+    不管隔离因何失效，只要运行在 pytest 下且指向生产库，就地报错而不是静默写进去。
+
+    确需读真库的测试（如 `test_real_db_*` 这类存量体检）请显式设
+    ``WQB_ALLOW_REAL_DB=1`` —— 要绕过它就必须在测试里写明理由，不会静默通过。
+    """
+    if "PYTEST_CURRENT_TEST" not in os.environ:
+        return
+    if os.environ.get("WQB_ALLOW_REAL_DB") == "1":
+        return
+    p = str(DB_PATH).replace("\\", "/").lower()
+    if p.endswith("/data/wqb.db"):
+        raise RuntimeError(
+            f"测试运行中 wqb-db 指向生产库 {DB_PATH} —— 隔离未生效。"
+            "本文件请用 set_db_path(tmp)（读写同源），其他入口走 WQB_DB_PATH 环境变量；"
+            "确需读真库请显式 monkeypatch.setenv('WQB_ALLOW_REAL_DB', '1') 并写明理由。")
+
+
+class _GuardedModule(types.ModuleType):
+    """禁止 ``wqb_db_mcp.DB_PATH = …`` 直接赋值，把它从“静默写生产库”变成“当场报错”。
+
+    模块顶层与函数内 `global DB_PATH` 赋值都走 globals，不经本入口；只拦外部对模块属性的写入。
+    """
+
+    def __setattr__(self, name, value):
+        if name == "DB_PATH":
+            raise AttributeError(
+                "DB_PATH 不可直接赋值：请用 set_db_path(...)。属性式 patch 在 DB 访问被"
+                "抽到别的模块后会静默失效，测试会把数据写进生产 data/wqb.db。")
+        super().__setattr__(name, value)
+
+
+#: 条件安装：本模块可能被多种途径载入（`import` / `importlib.reload` / 测试用
+#: `spec_from_file_location` 且不注册进 sys.modules）。后者下 `sys.modules[__name__]`
+#: 会 KeyError（实测踩过），所以取不到就跳过——`import`/`reload` 这两条最危险的路径
+#: （测试把真库当测试库写）已被覆盖；spec 载入的用例已迁到 set_db_path/get_db_path。
+_self = sys.modules.get(__name__)
+if _self is not None:
+    _self.__class__ = _GuardedModule
+
+
 def _store() -> CampaignStore:
-    return CampaignStore(str(DB_PATH))
+    return CampaignStore(get_db_path())
+
+#: HTTP 模式监听参数（2026-10-05）。**端口必须与 wq-brain-http 错开**——
+#: 两个 server 都会读`MCP_TRANSPORT`，同机常驻时若都落默认 8000 会端口冲突。
+#: wq-brain-http 用 8000（保持其既有默认），本 server 用 8001。
+MCP_HOST = os.environ.get("MCP_HOST", "127.0.0.1")
+MCP_PORT = int(os.environ.get("MCP_PORT", "8001"))
 
 mcp = FastMCP(
     "wqb-db-mcp",
     "Local wqb.db query service (single-track DB mode)",
+    host=MCP_HOST,
+    port=MCP_PORT,
 )
 
 
@@ -61,7 +138,7 @@ def _conn():
     一致：WAL + ``busy_timeout=60000``（2026-09-20 补）+ foreign_keys=ON
     + synchronous=NORMAL。timeout 同为 60s。
     """
-    conn = sqlite3.connect(str(DB_PATH), timeout=60.0)
+    conn = sqlite3.connect(get_db_path(), timeout=60.0)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys=ON")
     conn.execute("PRAGMA journal_mode=WAL")
@@ -366,7 +443,7 @@ def get_submit_ready(region: str, status: str = "READY", limit: int = 50) -> Lis
     if st not in ("READY", "SUBMITTED", "DEAD", "EXPIRED", "SUPERSEDED", "ALL"):
         return [{"error": f"invalid status: {status!r} "
                           "(expected READY|SUBMITTED|DEAD|EXPIRED|SUPERSEDED|ALL)"}]
-    rows = _sq.list_ready(region, db_path=str(DB_PATH), all_status=(st != "READY"))
+    rows = _sq.list_ready(region, db_path=get_db_path(), all_status=(st != "READY"))
     if st not in ("READY", "ALL"):
         rows = [r for r in rows if r.get("status") == st]
     return rows[: max(1, min(int(limit or 50), 500))]
@@ -902,7 +979,12 @@ def upsert_ledger_key(region: str, key: str, value: Any, mode: str = "replace") 
         action = "inserted"
     conn.commit()
     conn.close()
-    return {"action": action, "region": region, "key": key, **extra}
+    out = {"action": action, "region": region, "key": key, **extra}
+    if key == "s0_whitelist":
+        guard = _whitelist_dead_guard(region, payload)
+        if guard:
+            out["dead_intersection"] = guard   # 非阻断告警（本区/跨区判死命中，见 profile_drift）
+    return out
 
 
 # verdict 枚举与归一规则的唯一实现在 src/wqb/wave_results_contract.py（2026-09-27 起），
@@ -924,6 +1006,8 @@ def upsert_wave_result(
     status: Optional[str] = None,
     source_file: Optional[str] = None,
     full_payload: Optional[Any] = None,
+    n_pass: Optional[int] = None,
+    n_near: Optional[int] = None,
 ) -> Dict[str, Any]:
     """同步 wave 结果到 wave_results 表（按 region+wave_number 合并式 upsert）。
 
@@ -943,12 +1027,15 @@ def upsert_wave_result(
         status: open/closed。缺省：新行 closed；已有行写了 verdict 则 closed，否则保持原状态
         source_file: 源文件路径
         full_payload: 完整 payload dict
+        n_pass / n_near: 本波「达标 / near」逐条计数（2026-10-02，可选）。**不作为列写入**，
+            仅在 verdict 无法辨认时交给判定表做**证据判定**（而非从自由文本猜）。拿得到计数就应透传。
 
     Returns:
         {"action": "inserted"|"updated"|"noop", "region", "wave_number", "verdict", "status",
          "updated_fields"}；status=closed 却没有 verdict、或 verdict 无法辨认时返回 {"error": ...} 且不写库。
         verdict 无法辨认时另附 "suggestion"（按判定表 PASS=≥1 达标 / PARTIAL=0 达标有 near /
-        FAIL=0 达标 0 near 给出的建议值与依据）——不会自动采用，确认后显式传入
+        FAIL=0 达标 0 near 给出的建议值与依据；带 n_pass/n_near 时为计数证据，否则为文本启发式）
+        ——不会自动采用，确认后显式传入
     """
     conn = _conn()
     try:
@@ -957,6 +1044,7 @@ def upsert_wave_result(
             focus=focus, context=context, key_findings=key_findings,
             candidates=candidates, batches=batches, verdict=verdict, status=status,
             source_file=source_file, full_payload=full_payload,
+            n_pass=n_pass, n_near=n_near,
         )
         if "error" not in result:
             conn.commit()
@@ -1035,7 +1123,11 @@ def upsert_registry_empirical(
         action = "inserted"
     conn.commit()
     conn.close()
-    return {"action": action, "region": region, "layer": layer, "entry_id": entry_id}
+    result = {"action": action, "region": region, "layer": layer, "entry_id": entry_id}
+    if layer in _PROFILE_DRIFT_LAYERS:
+        # 步 9 回写钩子（2026-10-01）：判死/记胜绩后自动核对 profile green/red 与 DB 实证
+        result["profile_drift"] = _profile_drift_hook(region, layer, entry_id)
+    return result
 
 
 @mcp.tool()
@@ -1948,6 +2040,57 @@ def _upsert_ledger_raw(region: str, key: str, value: dict) -> None:
     conn.close()
 
 
+#: 触发 profile 漂移检查的 registry 层（win / dead_end 会改变 profile green/red 的正确性）
+_PROFILE_DRIFT_LAYERS = ("win", "dead_end")
+
+
+def _whitelist_dead_guard(region: str, payload_json: str) -> Optional[Dict[str, Any]]:
+    """`s0_whitelist` 写入守卫（2026-10-01）：写完后把 datasets 与判死证据求交。
+
+    挂在 upsert_ledger_key 写成功之后、返回之前——非阻断告警（fail-open）：
+    命中 → 返回值多一个 `dead_intersection`；异常 → None，不影响写入本体。
+    KOR risk70 事故修法：白名单写入方只查本区台账，跨区死族得以进名单。
+    """
+    try:
+        from wqb.ledger_whitelist import normalize
+        from wqb.profile_drift import whitelist_dead_intersection
+        rec = normalize(json.loads(payload_json))
+        datasets = rec.get("datasets") or []
+        if not datasets:
+            return None
+        conn = _conn()
+        try:
+            report = whitelist_dead_intersection(conn, region, datasets)
+        finally:
+            conn.close()
+        return report if report.get("hits") else None
+    except Exception:
+        return None
+
+
+def _profile_drift_hook(region: str, layer: str, entry_id: str) -> Dict[str, Any]:
+    """win/dead_end 回写后的 profile 漂移检查（fail-open，**提示性、绝不阻断回写**）。
+
+    机制（2026-10-01，region-profile-contract.md §5）：profile 从静态文档接回流水线——
+    每次判死 / 记胜绩后自动核对 profile 的 datasets.green/red 精确层与 DB 实证是否一致，
+    完整报告幂等落 ledger `profile_drift`，摘要随回写返回值带出（`needs_refresh` /
+    `summary` / `hint`）。profile 本身的修改永远是人工复核后的事，本钩子只报告。
+    """
+    try:
+        from wqb.profile_drift import check_profile_drift
+        conn = _conn()
+        try:
+            report = check_profile_drift(conn, region)
+        finally:
+            conn.close()
+        report["trigger"] = {"layer": layer, "entry_id": entry_id}
+        report["checked_at"] = _now()
+        _upsert_ledger_raw(region, "profile_drift", report)
+        return {k: report.get(k) for k in ("needs_refresh", "summary", "hint")}
+    except Exception as e:  # 漂移检查失败不得影响回写主流程
+        return {"error": f"profile_drift 检查失败（未阻断回写）: {e}"}
+
+
 @mcp.tool()
 def backfill_salvage_pool(
     region: str,
@@ -2283,6 +2426,18 @@ def seal_dead_end(
     )
     if "error" in res:
         return {"entry_id": entry_id, "status": "error", "error": res["error"]}
+    # T2 事件（2026-09-30 方案 B）：判死沉降是客观事实（真正入池的残值计数），
+    # 旁路记账供 step_eval 的 salvage 消费；safe 包装不阻塞判死主流程。
+    # dedupe_key 带 entry_id：同一 dead_end 重跑（幂等 upsert）不重复计数。
+    if salvage_ids:
+        from wqb.step_events import safe_record_event
+        safe_record_event(
+            region, "S6", "salvage_collected", value=float(len(salvage_ids)),
+            source="wqb_db_mcp.py::seal_dead_end",
+            dedupe_key=f"seal_dead_end:{entry_id}",
+            metadata={"entry_id": entry_id, "waves_scanned": waves_scanned,
+                      "candidates_scanned": candidates_scanned},
+        )
     return {
         "entry_id": entry_id,
         "status": "success",
@@ -2641,5 +2796,13 @@ def workflow_auto_pyramid(
 
 if __name__ == "__main__":
     import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
-    # stdio 模式启动（.mcp.json 注册）
-    mcp.run()
+    # 传输模式（2026-10-05）：与 `world-quant-brain-mcp/main.py` 同构。
+    #   MCP_TRANSPORT=streamable-http -> HTTP 常驻服务（默认，0.0.0.0:MCP_PORT）
+    #   MCP_TRANSPORT=stdio           -> stdio 子进程（.mcp.json 注册的经典形态）
+    # 原先只有 `mcp.run()`（FastMCP 默认 stdio），无法起 HTTP 服务。
+    _transport = _os_sc.environ.get("MCP_TRANSPORT", "streamable-http")
+    try:
+        mcp.run(transport=_transport)
+    except TypeError:
+        # 旧签名兜底：run(transport) 位置参数
+        mcp.run(_transport)

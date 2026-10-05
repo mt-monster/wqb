@@ -134,21 +134,31 @@ class McpStdioClient:
         return r.get("result", {}).get("tools", [])
 
     def call_tool(self, name, args):
-        t0 = time.perf_counter()
-        r = self._send("tools/call", {"name": name, "arguments": args})
-        ms = (time.perf_counter() - t0) * 1000
-        if "error" in r:
-            return False, ms, str(r["error"].get("message", r["error"]))[:120]
-        result = r.get("result", {})
-        # MCP tool 错误约定：result.isError = true
-        if result.get("isError"):
-            text = ""
-            for c in result.get("content", []):
-                if isinstance(c, dict) and c.get("type") == "text":
-                    text = c.get("text", "")[:120]
-                    break
-            return False, ms, text or "tool returned isError"
-        return True, ms, None
+        """调用工具并计时。返回 `(ok, 毫秒, 错误信息或None)`。
+
+        实现抽成模块级 `_call_tool_timed(client, name, args)`：stdio 与 HTTP 两个
+        客户端只负责传输，`tools/call` 的结果判定（MCP 用 `result.isError` 而非
+        顶层 `error`）完全一致，重复写两份必然漂移。
+        """
+        return _call_tool_timed(self, name, args)
+
+
+def _call_tool_timed(client, name, args):
+    t0 = time.perf_counter()
+    r = client._send("tools/call", {"name": name, "arguments": args})
+    ms = (time.perf_counter() - t0) * 1000
+    if "error" in r:
+        return False, ms, str(r["error"].get("message", r["error"]))[:120]
+    result = r.get("result", {})
+    # MCP tool 错误约定：result.isError = true
+    if result.get("isError"):
+        text = ""
+        for c in result.get("content", []):
+            if isinstance(c, dict) and c.get("type") == "text":
+                text = c.get("text", "")[:120]
+                break
+        return False, ms, text or "tool returned isError"
+    return True, ms, None
 
     def close(self):
         try:
@@ -172,9 +182,97 @@ def load_services():
     return _pyenv.expand_env(cfg.get("mcpServers", {}))
 
 
+class McpHttpClient:
+    """HTTP（streamable-http）客户端 —— 2026-10-05 随 .mcp.json 切HTTP 模式新增。
+
+    与 `McpStdioClient` 接口一致（initialize / list_tools / _send），故
+    `run_calls` / 体检流程无需分支。协议细节：
+      - POST JSON-RPC 到 `<url>`，`Accept` 必须同时含 json 与 text/event-stream；
+      - 服务端回 `Mcp-Session-Id` 头，后续请求带上；
+      - 响应体是 SSE 格式（`data: {...}`），需剥壳后 json 解析。
+    ⚠ HTTP 模式**不负责起进程**—— 服务需先由 `tools/start_wq_mcp.py` 之类启动。
+    """
+
+    def __init__(self, url, timeout=30):
+        import urllib.request  # 局部导入：stdio 模式不需要
+
+        self.url = url.rstrip("/")
+        self.timeout = timeout
+        self._req = urllib.request
+        self.session_id = None
+        self.proc = None  # 接口兼容
+
+    def _post(self, payload):
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json, text/event-stream",
+        }
+        if self.session_id:
+            headers["Mcp-Session-Id"] = self.session_id
+        req = self._req.Request(
+            self.url, data=json.dumps(payload).encode("utf-8"),
+            headers=headers, method="POST",
+        )
+        with self._req.urlopen(req, timeout=self.timeout) as resp:
+            sid = resp.headers.get("mcp-session-id") or resp.headers.get("Mcp-Session-Id")
+            if sid:
+                self.session_id = sid
+            body = resp.read().decode("utf-8", errors="replace")
+        # SSE:逐行取最后一条 data:
+        chunks = [ln[len("data: "):] for ln in body.splitlines()
+                  if ln.startswith("data: ")]
+        if not chunks:
+            return {}
+        try:
+            return json.loads(chunks[-1])
+        except json.JSONDecodeError:
+            return {}
+
+    def initialize(self):
+        resp = self._post({
+            "jsonrpc": "2.0", "id": 1, "method": "initialize",
+            "params": {"protocolVersion": "2024-11-05", "capabilities": {},
+                       "clientInfo": {"name": "mcp_ping", "version": "1"}},
+        })
+        # 通知（无 id，服务端回 202）
+        try:
+            self._post({"jsonrpc": "2.0", "method": "notifications/initialized"})
+        except Exception:  # noqa: BLE001 — 通知失败不影响后续
+            pass
+        return resp
+
+    def list_tools(self):
+        return (self._post({"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
+                .get("result", {}).get("tools", []))
+
+    def _send(self, method, params):
+        return self._post({"jsonrpc": "2.0", "id": 3, "method": method,
+                           "params": params})
+
+    def call_tool(self, name, args):
+        """与 `McpStdioClient.call_tool` 同签名（复用共享实现，见其 docstring）。"""
+        return _call_tool_timed(self, name, args)
+
+    def close(self):
+        """HTTP 无需关闭子进程（服务由外部常驻），仅丢弃会话。
+
+        保留该方法是为了让调用方（`main` 的 `finally: client.close()`）无需分支——
+        接口一致性比「少一个方法」重要。
+        """
+        self.session_id = None
+
+
+def _client_for(spec, timeout=30):
+    """按 spec 自动选客户端：`type=http` / 有 `url` → HTTP，否则 stdio。"""
+    url = spec.get("url")
+    if url or spec.get("type") == "http":
+        return McpHttpClient(url, timeout)
+    return McpStdioClient(spec["command"], spec.get("args", []), spec.get("env"), timeout)
+
+
 def run_calls(spec, calls, timeout=30):
     """Execute explicit MCP calls over one connection; return full results."""
-    client = McpStdioClient(spec["command"], spec.get("args", []), spec.get("env"), timeout)
+    client = _client_for(spec, timeout)
     try:
         client.initialize()
         registered = {item["name"] for item in client.list_tools()}
@@ -251,16 +349,22 @@ def main():
     summary = []
     for name, spec in services.items():
         print(f"\n══ {name} ══")
-        cmd = spec.get("command")
-        if not cmd or not Path(cmd).is_file():
-            print(f"  [SKIP] 命令不存在: {cmd}")
+        url = spec.get("url")
+        if not url and not spec.get("command"):
+            print(f"  [SKIP] spec 既无 url 也无 command: {name}")
+            all_ok = False
+            summary.append((name, "SKIP", "no url/command"))
+            continue
+        # HTTP 模式不需本地 command 存在（服务由外部常驻进程提供）
+        if not url and not Path(spec.get("command") or "").is_file():
+            print(f"  [SKIP] 命令不存在: {spec.get('command')}")
             all_ok = False
             summary.append((name, "SKIP", "command not found"))
             continue
         client = None
         try:
             t0 = time.perf_counter()
-            client = McpStdioClient(cmd, spec.get("args", []), spec.get("env"), a.timeout)
+            client = _client_for(spec, a.timeout)
             info = client.initialize()
             init_ms = (time.perf_counter() - t0) * 1000
             server = info.get("serverInfo", {})

@@ -1,17 +1,9 @@
 {
-  "_comment": "服务器名必须是 wq-brain-http / wqb-db —— 所有 skill 调用的工具前缀是 mcp__wq-brain-http__* / mcp__wqb-db__*，改名即全线失配。本文件是根 .mcp.json 的镜像（供 Claude Desktop 等客户端读取）；.mcp.json 为权威源，env 必须同步。2026-09-29：.mcp.json 改为 ${VAR:-default} 跨平台写法（Claude Code 展开；缺省值 = 本镜像的字面路径），Claude Desktop 不展开变量，故本镜像保持字面路径；两者一致性由 tests/unit/06_wave_pipeline/test_mcp_config_portable.py 守护。test_mcp_server_names_are_consistent 校验两边 server 名集合一致。2026-09-20 同步：补齐 WQB_ASI_UNIVERSE_FIX / WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR。",
+  "_comment": "服务器名必须是 wq-brain-http / wqb-db —— 所有 skill 调用的工具前缀是 mcp__wq-brain-http__* / mcp__wqb-db__*，改名即全线失配。本文件是根 .mcp.json 的镜像（供 Claude Desktop 等客户端读取）；.mcp.json 为权威源。2026-10-05 同步：两个 server 均切到 **HTTP 常驻服务**（type=http + url），客户端只连 URL、不再负责起进程 —— 故原 command/args/env 三块整体删除。端口：wq-brain-http=8000、wqb-db=8001（不可相同，否则第二个起不来）。原由 env 注入的 WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR / WQB_ALLOW_ALPHA_SUBMIT / WQ_ASI_UNIVERSE_FIX 已改为**服务端代码内 setdefault 兜底**（main.py），显式设置仍优先。启动服务见 README §MCP 启动。",
   "mcpServers": {
     "wq-brain-http": {
-      "command": "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe",
-      "args": [
-        "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/main.py"
-      ],
-      "env": {
-        "MCP_TRANSPORT": "stdio",
-        "WQB_ASI_UNIVERSE_FIX": "20260916",
-        "WQ_TOOLKIT_DIR": "D:/coding/traeCN_project/wqb/Claude/skills/wq-brain-campaign-toolkit/scripts",
-        "WQ_VALIDATOR_DIR": "D:/coding/traeCN_project/wqb/Claude/skills/alpha-expression-verifier/scripts"
-      },
+      "type": "http",
+      "url": "http://127.0.0.1:8000/mcp",
       "description": "WorldQuant BRAIN MCP Server - Alpha Mining & Simulation Tools",
       "alwaysAllow": [
         "authenticate",
@@ -23,13 +15,8 @@
       ]
     },
     "wqb-db": {
-      "command": "D:/coding/traeCN_project/wqb/.venv/Scripts/python.exe",
-      "args": [
-        "D:/coding/traeCN_project/wqb/wqb_db_mcp.py"
-      ],
-      "env": {
-        "MCP_TRANSPORT": "stdio"
-      },
+      "type": "http",
+      "url": "http://127.0.0.1:8001/mcp",
       "description": "wqb.db 台账/战役结构化读写（ledger / expressions / wave_results / registry）"
     }
   }

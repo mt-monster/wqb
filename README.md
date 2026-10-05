@@ -39,9 +39,11 @@
 │     L-RA 唯一编排 SOP（wq-brain-ra-pipeline 九步流水线）           │
 │     L-PRE 选区查表 · L-TOOL 战役引擎 · L0–L7 各环节专用技能        │
 ├─────────────────────────────────────────────────────────────────┤
-│  ③ 服务层      两个 MCP 服务器（stdio，.mcp.json 注册）            │
+│  ③ 服务层      两个 MCP 服务器（HTTP 常驻，.mcp.json 指向 url）      │
 │     wq-brain-http：69 个平台交互工具（回测/提交/相关性/论坛）      │
 │     wqb-db：战役数据库读写工具（计数见 INDEX）                     │
+│     启动：python tools/start_wq_mcp.py --all                      │
+│     体检：python tools/mcp_ping.py                                │
 │     workflow 引擎：19 个注册节点（src/wqb/workflow/registry.py）   │
 ├─────────────────────────────────────────────────────────────────┤
 │  ② 客户端层    world-quant-brain-mcp/                             │
@@ -55,8 +57,8 @@
 │     submit_queue 提交队列）· workflow（节点注册与执行）·            │
 │     research（OS 衰减/假设挖掘）· modeb（Mode B 自适应改进）        │
 └─────────────────────────────────────────────────────────────────┘
-        ▲ 数据层：data/wqb.db（SQLite，~223 MB，幂等迁移）
-        ▲ 工具层：tools/（139 个 CLI，索引见 tools/README.md）
+        ▲ 数据层：data/wqb.db（SQLite，幂等迁移；体量随战役增长，不在本文硬编码）
+        ▲ 工具层：tools/（CLI 工具集，数量与分类索引见 tools/README.md，不在本文硬编码）
 ```
 
 ### 关键设计决策

@@ -1,25 +1,12 @@
 {
   "mcpServers": {
-    "wq-brain-http": {
-      "command": "${WQB_MCP_PY:-D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe}",
-      "args": [
-        "${WQB_HOME:-D:/coding/traeCN_project/wqb}/world-quant-brain-mcp/main.py"
-      ],
-      "env": {
-        "MCP_TRANSPORT": "stdio",
-        "WQB_ASI_UNIVERSE_FIX": "20260916",
-        "WQ_TOOLKIT_DIR": "${WQB_HOME:-D:/coding/traeCN_project/wqb}/Claude/skills/wq-brain-campaign-toolkit/scripts",
-        "WQ_VALIDATOR_DIR": "${WQB_HOME:-D:/coding/traeCN_project/wqb}/Claude/skills/alpha-expression-verifier/scripts"
-      }
+  "wq-brain-http": {
+      "type": "http",
+      "url": "http://127.0.0.1:8000/mcp"
     },
     "wqb-db": {
-      "command": "${WQB_DB_MCP_PY:-D:/coding/traeCN_project/wqb/.venv/Scripts/python.exe}",
-      "args": [
-        "${WQB_HOME:-D:/coding/traeCN_project/wqb}/wqb_db_mcp.py"
-      ],
-      "env": {
-        "MCP_TRANSPORT": "stdio"
-      }
+      "type": "http",
+      "url": "http://127.0.0.1:8001/mcp"
     }
   }
 }

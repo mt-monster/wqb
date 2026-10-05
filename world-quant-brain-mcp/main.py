@@ -6,6 +6,23 @@
 """
 import os, sys
 
+# ---运行环境兜底（2026-10-05，HTTP 模式必备）---------------------------
+# stdio 模式下这些 env 由客户端在 `.mcp.json` 里注入；**HTTP 模式下客户端只连
+# URL、不再负责起进程**，那些 env 就没人提供了 —— 工具层读不到会静默走默认值
+# （例：`WQ_TOOLKIT_DIR` 缺失 → `campaign_intel` 找不到 toolkit 脚本）。
+# 故在此按「仓库根上溯 + setdefault」兜底：显式设置仍优先，不覆盖调用方口径。
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.environ.setdefault("WQ_TOOLKIT_DIR", os.path.join(_REPO_ROOT, "Claude", "skills",
+                                                  "wq-brain-campaign-toolkit", "scripts"))
+os.environ.setdefault("WQ_VALIDATOR_DIR", os.path.join(_REPO_ROOT, "Claude", "skills",
+                                                    "alpha-expression-verifier", "scripts"))
+# 提交闸：stdio 模式此前由 .mcp.json 给 "1"。HTTP 模式同样需要，
+# 否则 `workflow_submit_alpha` 的 `ALLOW_ALPHA_SUBMIT` 闸会 fail-closed 拦下提交。
+# ⚠ 这是「允许提交」的开关，不是「自动提交」—— 真正提交仍需
+# confirm_submit=True + 用户明确确认（AGENTS.md §7 提交纪律）。
+os.environ.setdefault("WQB_ALLOW_ALPHA_SUBMIT", "1")
+# -----------------------------------------------------------------------
+
 import redis
 
 from brain_api import brain_client, load_config
@@ -51,6 +68,16 @@ if __name__ == "__main__":
     # and a module-level mcp.run() re-enters anyio.run → "Already running
     # asyncio in this thread" (forum search/read were completely broken).
     transport = os.environ.get("MCP_TRANSPORT", "streamable-http")
+    if transport == "streamable-http":
+        # 显式传 host/port：FastMCP(settings) 在构造时定下，改 env 已太晚。
+        # wq-brain-http 用 8000；wqb-db 用 8001（见 wqb_db_mcp.py 的 MCP_PORT）。
+        _host = os.environ.get("MCP_HOST", "127.0.0.1")
+        _port = int(os.environ.get("MCP_PORT", "8000"))
+        try:
+            mcp.settings.host = _host
+            mcp.settings.port = _port
+        except Exception as e:  # noqa: BLE001 — 不因改端口起不来
+            print(f"[WARN] 设置 host/port 失败，用默认监听：{e}", file=sys.stderr)
     try:
         mcp.run(transport=transport)
     except TypeError:
