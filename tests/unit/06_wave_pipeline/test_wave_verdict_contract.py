@@ -30,7 +30,10 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 TOOLKIT_REL = Path("wq-brain-campaign-toolkit") / "scripts"
 CALLERS = ("pipeline.py", "review_wave.py")
 #: 本次契约涉及的文件；两份副本必须逐字一致（行尾除外）
-SYNCED_FILES = ("_lib/wave_results.py",) + CALLERS
+#: 2026-10-04：补 `_lib/dblock.py` / `_lib/slots.py` —— 二者曾长期漂移于
+#:   `src/wqb/db_write_lock.py` 的 `.stale` 改名修复之外（仍用 os.unlink/os.remove），
+#:   导致 KOR d34 pipeline 被沙箱 safe-delete 守卫秒退。基础设施文件同属同步范围。
+SYNCED_FILES = ("_lib/wave_results.py", "_lib/dblock.py", "_lib/slots.py") + CALLERS
 
 
 def _toolkit_scripts_dirs():

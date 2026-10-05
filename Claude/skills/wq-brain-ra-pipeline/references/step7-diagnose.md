@@ -13,8 +13,8 @@ S3 收批 → ① prod-first 探针 → ② s4-prescreen 预筛 → ③ review_w
 | 段 | 输入 | 输出 | 去向 |
 |---|---|---|---|
 | ① **prod-first**（定义见主文步 5b） | 本波 `backtest_results` | 族级 `EXPAND` / `STOP`；写 `alphas.prod_correlation` 与 ledger `prod_first_<wave>` | `STOP` 的族按 D0-P，**不扩变体** |
-| ② **s4-prescreen** | 本波 alpha_id 清单 | 每条 `READY` / `REVIEW` / `REJECT` | `REJECT`（全灭）判死，**不进 ③④**；只有 READY / REVIEW 往下走（8 条从 8 次逐条评审压成 1 次预筛 + 仅存活者进链，约 8 倍效率） |
-| ③ **review_wave** | 本波 alpha_id（节点自动从 `backtest_results` 解析） | 墙 / near / salvage 池、`expOS` 列、ledger `s4_walls_<region>_<wave>` | 评审通过者进 ④；未通过者按 §7.3 的墙决定去向 |
+| ② **s4-prescreen** | 本波 alpha_id 清单 | 每条 `READY` / `REVIEW` / `REJECT` | `REJECT`（全灭）判死，**不进 ③④**；只有 READY / REVIEW 往下走（8 条从 8 次逐条评审压成 1 次预筛 + 仅存活者进链，约 8 倍效率）。**2026-10-02 起已进 S4 编排**：`campaign.py` run 的 S4 分支在 `resolve_s4_alphas` 后调 `_s4_prescreen_local`（离线口径，读已落库指标，零平台 API）；全灭即早退判死、**不跑 ③ 的 review_wave**。口径与 `_lib/prescreen.py` 唯一源一致（NULL 记 `*_UNKNOWN` 不判败）。 |
+| ③ **review_wave** | 本波 alpha_id（节点自动从 `backtest_results` 解析） | 墙 / near / salvage 池、`expOS` 列、ledger `s4_walls_<region>_<wave>` | 评审通过者进 ④；未通过者按 §7.3 的墙决定去向。**写 `s4_walls_` 的是 `pipeline.stage_review`（SOP 主路径），结构化 payload（`build_s4_walls_payload`：`{walls: {墙名: 计数}, per_alpha, n_rows, ...}`），normal 与「全灭快速通道」两条路都写**；`workflow_campaign(stage="S4")` 走的是 `campaign.py` + 读结构化键（`_extract_walls_summary` 主路径 `_source=ledger`，仅在键缺失时 fallback 扫 stdout 并标 `_source=stdout_scan`）。 |
 | ④ **逐候选链** | 评审通过的候选 | 逐条稳健 / 相关性 / 评审结论 | `brain-calculate-alpha-selfcorr-quick`（本地快筛）→ `check_self_correlation` → `compute_mutual_correlation`（候选集内两两）→ `check_correlation`（平台 prod）→ [`brain-alpha-robustness`](../../brain-alpha-robustness/SKILL.md) → [`brain-alpha-judge`](../../brain-alpha-judge/SKILL.md)（参考评审）；按需 `brain-explain-alphas`（Mode B 换概念前查概念重叠，非每候选必经） |
 
 ## 7.2 调用
@@ -39,6 +39,19 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S4"  dataset=$DS  
 | `ROBUST_STRUCTURAL`（墙） | sharpe 过 near 线，但 `robust_universe_sharpe / limit < near.robust_min_ratio`（缺省 0.5，`thresholds.json` 可调） | 不入 near。IND w172 四条 raw 1.76 / robust 0.24 曾按 sharpe 入 near → 全灭波记 PARTIAL → 停止规则 B 永不触发；metrics 行现带 `robust_sharpe / robust_limit / sub_universe_sharpe` |
 | **near 池** | 没达标，但接近闸门（YELLOW），且不带上面两种墙 | 可沿 Mode A / B 继续；波结论 `PARTIAL` |
 | **salvage 池** | 失败候选中达「辅料线」者（`seal_dead_end` / 收批级联沉降，收集宽） | 只作 Mode B 组合腿辅助来源（§7.6）；动用仍守各区 `mode_b_qualification`（动用严） |
+
+**near.sharpe_min 分区两档（2026-10-02 实测，此前文档未记）**：`tracking/<REGION>/config/thresholds.json`
+的 `near.sharpe_min` 并非全区统一，而是两档：
+
+| 档 | 值 | 区域（实测 13 区） |
+|---|---|---|
+| 低档 | **1.0** | AMR、DEU、IND、JPN、KOR、USA |
+| 高档 | **1.2** | ASI、CHN、EUR、GBR、GLB、HKG、MEA |
+
+含义：低档区（含 USA/KOR/IND）sharpe≥1.0 即入 near（`r["sharpe"] >= near.sharpe_min` 才算"有潜力"，
+见 `pipeline.stage_review` 的 `_has_potential` 快速通道）；高档区需 ≥1.2。**跨区比较 / 写死 1.0 或 1.2
+都会误判**——一律读 `ctx.thresh("near")["sharpe_min"]`。（`rn_sharpe_min` 反而只有 EUR/GLB 显式给 1.0，
+其余区缺省 0 = 不设该墙。）
 
 ## 7.4 RN_EXPOSURE 的处置表（条件 → 对单条 → 对想法 → 记录）
 
@@ -98,7 +111,8 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 | # | 形态 | 边界 / 判据 |
 |---|---|---|
 | ① | 单信号结构 | 如 `ts_scale`；同一形态仅窗口不同的多窗平滑（`ts_mean(x,22)+ts_mean(x,66)`）＝单信号 |
-| ② | **同源价差** `subtract(A, B)` | A、B 必须是**同一经济量的对偶两侧**（买 / 卖、已实现 / 隐含、实际 / 预期）且**同数据集**（闸 5 `spread_cross_dataset` 拦跨集；带数值系数触发 `SPREAD_WEIGHTED` 警告）；须在 idea 里声明 Expected Exposure（准则，无代码检查）。`subtract(a,b)` 与 `add(a,-b)` 数学等价——所以「有经济含义」是硬前提，不是措辞 |
+| ② | **同源价差** `subtract(A, B)` | A、B 必须是**同一经济量的对偶两侧**（买 / 卖、已实现 / 隐含、实际 / 预期）且**同数据集**；带数值系数触发 `SPREAD_WEIGHTED` 警告。须在 idea 里声明 Expected Exposure（准则，无代码检查）。`subtract(a,b)` 与 `add(a,-b)` 数学等价——所以「有经济含义」是硬前提，不是措辞 |
+| ②b | **跨集价差** `subtract(A, B)`（A、B **不同数据集**） | **2026-10-01 用户定案：合规且鼓励**，属 ⑤ 换信号概念（两腿独立 → self-corr 低）。A/B 最好**更新节奏不同**（如日频新闻情绪 vs 季频财报；模型输出 vs 双周融券）。例：`rank(anl4_capex_flag) - rank(assets/liabilities_curr)`。**判据 = 差值有方向性经济解释**（背离 / 对冲 / 预期-约束缺口），不是"两腿分属不同数据集"本身。**闸 5 `spread_cross_dataset` 要求显式声明**：在该集对上登记经济含义后放行，未声明则阻断（fail-closed）。声明位置：`reference/<region>_generation_constraints.json` 的 `declared_cross_spreads.pairs`，或 CLI `--declared-cross-spreads "集A,集B;…"` |
 | ③ | 换算子几何 | `group_rank` / `group_zscore` / `ts_quantile` / `bucket` |
 | ④ | 事件门控 | `trade_when` / `if_else` |
 | ⑤ | 换字段组合或换信号概念 | Mode B 想法层 |
@@ -143,3 +157,10 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 ## 7.10 完成定义
 
 本波每条候选都有去向：进步 8（过 ④）/ 留在 near / salvage（带墙名）/ 判死（进步 9 的封存）；`s4_walls_<region>_<wave>` 已写。
+
+> **`s4_walls_` 归零的旧缺陷（2026-10-02 修）**：此前只有 `workflow_campaign(stage="S4")` 路径经
+> `campaign.py:715` 写该键，而 SOP 主路径 `pipeline.py --review` 算了 `r["walls"]` 却没写 →
+> 近 25 个波次 0 个有键、`step_eval` 的 `walls_coverage` 恒为 0。现 `pipeline.stage_review`
+> 在 normal 与全灭快速通道**都调 `_write_s4_walls`** 写结构化 payload。核对键是否存在：
+> `python Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py ledger get s4_walls_<REGION>_<wave>`
+> （按区域跑，或用 `wqb_db_mcp.get_ledger_key`）。

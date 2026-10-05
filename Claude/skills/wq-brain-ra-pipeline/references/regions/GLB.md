@@ -10,10 +10,17 @@ static:
   neutralization_default: SUBINDUSTRY
   notes: "大宇宙，跨区组合 delay 受跨区影响需实测"
 datasets:
-  red: [emotion 系, anl15]
-  red_reason: "emotion 跨区死路铁律；anl15 精确表达式平台封禁"
+  red:
+    - scope: family
+      families: [emotion 系, anl15]
+      reason: "emotion 跨区死路铁律；anl15 精确表达式平台封禁"
+  green:
+    - datasets: [ai_news_scores]
+      note: "旧 green 文本 id ∪ registry win 层实证绑定"
+    - scope: family
+      families: [pv 系, fundamental 系, analyst 系]
+      note: "族级方向（2026-10-01 迁移自旧文本形态；逐数据集绑定待实证补齐）"
   yellow: []
-  green: [pv 系, fundamental 系, analyst 系]
 priors:
   signal_families_include: [pv, fundamental, analyst]
   signal_families_exclude: [glb_emotion, anl15_exact]
@@ -73,3 +80,8 @@ anl15 封禁的**精确表达式文本**进生成黑名单：GEM 产出若含封
 - **结论**：GLB pred 系信号族在 prod_corr<0.7 约束下**无候选来源**（信号强度/可打磨性/prod_corr 三者不可兼得，平台结构性 trade-off，同 USA other566/risk65）。
 - **算力分配**：该族标记"已穷尽-规避"，不再投入任何 decay/窗口/分组变体；转向新 PPA 主题窗口、新灌入冷门数据集、或其他区域 PPA 主题匹配。
 - 完整画像见 [../prod-corr-avoidance.md](../prod-corr-avoidance.md)。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：pv1(alphaCount=38269, cov=1); model110(alphaCount=9677, cov=0.85); model38(alphaCount=8514, cov=0.82)
+- 白空间候选（未测 + 覆盖≥60% + 低 alphaCount）：model140(cov=0.95, alphaCount=0); pv149(cov=1, alphaCount=1); other635(cov=0.79, alphaCount=1); model170(cov=0.74, alphaCount=2); stock_cluster_dl(cov=0.61, alphaCount=2)
+- 已判死（勿重试）：GLB-F17-DELTA-RATIO-CEILING-082, GLB-F28-GLOBALFUND-DEAD, GLB-MDL264-TRENDPROB-CEILING-14-20260927, GLB-NEWS17-PR-EVENT-TURNOVER-WALL, GLB-NEWS23-MNA-EVENT-DEAD, GLB-OTH315-EQUITY-SWAP-NOISE-20260927, GLB-RISK68-RESIDUAL-REVERSAL-WEAK-20260927, O0NoPARJ

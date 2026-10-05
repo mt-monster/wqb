@@ -9,8 +9,8 @@ two_year_sharpe / sub_universe_sharpe / platform_status / stage / alpha_type）�
 
 用法::
 
-    python tools/backfill_alphas_from_ckpt.py --tag wave287_neut2
-    python tools/backfill_alphas_from_ckpt.py --tag wave287_neut2 --dry-run
+    python tools/data-repair/backfill_alphas_from_ckpt.py --tag wave287_neut2
+    python tools/data-repair/backfill_alphas_from_ckpt.py --tag wave287_neut2 --dry-run
 
 幂等：以 ``alpha_id`` 为键，已存在则只补 NULL 字段，不覆盖已有非空值。
 """
@@ -22,7 +22,7 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from wqb.db_conn import connect  # noqa: E402

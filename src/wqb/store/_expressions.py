@@ -103,20 +103,29 @@ class ExpressionsMixin:
 
     @staticmethod
     def _atom_flags(exprs: Sequence[str], field_map) -> Dict[str, tuple]:
-        """返回 {expr: (atom_flag, n_datasets)}；field_map=None 时返回 {}（不打标）。"""
+        """返回 {expr: (atom_flag, n_datasets, stale_flag)}；field_map=None 时返回 {}。
+
+        stale_flag 仅当 verdict=='unknown' 时有值（'dirty' / 'stale_field'），
+        其余为 None。详见 wqb.expression.atom.classify_stale。
+        """
         if field_map is None:
             return {}
         try:
-            from ..expression.atom import classify_atom
+            from ..expression.atom import classify_atom, classify_stale
         except Exception:
             return {}
         out: Dict[str, tuple] = {}
         for e in exprs:
             try:
                 res = classify_atom(e, field_map)
-                out[e] = (res["verdict"], res["n_datasets"])
+                verdict = res["verdict"]
+                if verdict == "unknown":
+                    stale = classify_stale(e, res["unknown_fields"])
+                else:
+                    stale = None
+                out[e] = (verdict, res["n_datasets"], stale)
             except Exception:
-                out[e] = (None, None)
+                out[e] = (None, None, None)
         return out
 
     def upsert_expressions(
@@ -156,9 +165,23 @@ class ExpressionsMixin:
         try:
             self._add_column("expressions", "atom_flag", "VARCHAR(16)")
             self._add_column("expressions", "atom_n_datasets", "INTEGER")
-            _atom_ready = {"atom_flag", "atom_n_datasets"} <= self._columns("expressions")
+            self._add_column("expressions", "stale_flag", "VARCHAR(16)")
+            _atom_ready = {"atom_flag", "atom_n_datasets", "stale_flag"} <= self._columns("expressions")
         except Exception:
             _atom_ready = False
+
+        # ---- 2026-10-01 P0：family（机制族）落库 ----
+        # 背景：步 4 选波（build_wave）的「每族 cap」纪律依赖 family 标签，但 family 只在
+        #   GEM skeleton 模式的 final_expressions_meta.json 里产出，且落库时**从未传给
+        #   upsert_expressions** → build_wave --from-db 主路径 family_map 恒为空 → 族配额
+        #   静默失效（全库 15650 条 gem 行无 family）。这里加列承接 GEM 落库时传入的 family。
+        #   fail-open：add_column 失败只退化为「本次不打标」，绝不阻断写入。
+        _family_ready = False
+        try:
+            self._add_column("expressions", "family", "VARCHAR(48)")
+            _family_ready = "family" in self._columns("expressions")
+        except Exception:
+            _family_ready = False
         _exprs = []
         for _raw in items:
             _e = (_as_expr(_raw).get("expression") or "").strip()
@@ -166,33 +189,32 @@ class ExpressionsMixin:
                 _exprs.append(_e)
         atom_map = self._atom_flags(_exprs, self._resolve_field_dataset_map(_exprs)) if _atom_ready else {}
 
-        if _atom_ready:
-            _sql_update = (
-                "UPDATE expressions SET fingerprint=?, status=?, alpha_id=?, sharpe=?, "
-                "fitness=?, margin=?, turnover=?, region=?, wave=?, dataset=?, "
-                "settings_json=?, source=?, bucket=?, skeleton=?, selected=?, "
-                "expected_exposure=?, atom_flag=?, atom_n_datasets=?, updated_at=? WHERE id=?"
-            )
-            _sql_insert = (
-                "INSERT INTO expressions (wave_id, expression, fingerprint, status, alpha_id, "
-                "sharpe, fitness, margin, turnover, region, wave, dataset, settings_json, "
-                "source, bucket, skeleton, selected, expected_exposure, atom_flag, "
-                "atom_n_datasets, created_at, updated_at) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-            )
-        else:
-            _sql_update = (
-                "UPDATE expressions SET fingerprint=?, status=?, alpha_id=?, sharpe=?, "
-                "fitness=?, margin=?, turnover=?, region=?, wave=?, dataset=?, "
-                "settings_json=?, source=?, bucket=?, skeleton=?, selected=?, "
-                "expected_exposure=?, updated_at=? WHERE id=?"
-            )
-            _sql_insert = (
-                "INSERT INTO expressions (wave_id, expression, fingerprint, status, alpha_id, "
-                "sharpe, fitness, margin, turnover, region, wave, dataset, settings_json, "
-                "source, bucket, skeleton, selected, expected_exposure, created_at, updated_at) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-            )
+        # family 列的存在性决定是否写它（两条独立可选列：atom_* 与 family）。
+        # 为免 4 分支组合爆炸，SQL 按「atom_ready × family_ready」拼装。
+        # 注意 UPDATE 的 SET 段是「列=?, ...」形式，与 INSERT 的纯列名段不同，
+        # 故 family/atom 两处各备「列名段」（INSERT 用）与「赋值段」（UPDATE 用）。
+        _family_col = ", family" if _family_ready else ""
+        _family_ph = ", ?" if _family_ready else ""
+        # family 在 UPDATE 时用 COALESCE 保底：调用方没给（NULL）→ 保留库内原值，
+        # 不被覆盖成 NULL。2026-10-01 P0：upsert_expressions 有 10+ 调用点（回测回写、
+        # gate 回写、选波回写…），逐个要求带 family 不现实且易漏——保底放在写入口更稳。
+        _family_set = ", family=COALESCE(?, family)" if _family_ready else ""
+        _atom_col = (", atom_flag, atom_n_datasets, stale_flag") if _atom_ready else ""
+        _atom_ph = ", ?, ?, ?" if _atom_ready else ""
+        _atom_set = (", atom_flag=?, atom_n_datasets=?, stale_flag=?") if _atom_ready else ""
+        _sql_update = (
+            "UPDATE expressions SET fingerprint=?, status=?, alpha_id=?, sharpe=?, "
+            "fitness=?, margin=?, turnover=?, region=?, wave=?, dataset=?, "
+            "settings_json=?, source=?, bucket=?, skeleton=?, selected=?, "
+            f"expected_exposure=?{_family_set}{_atom_set}, updated_at=? WHERE id=?"
+        )
+        _sql_insert = (
+            "INSERT INTO expressions (wave_id, expression, fingerprint, status, alpha_id, "
+            "sharpe, fitness, margin, turnover, region, wave, dataset, settings_json, "
+            "source, bucket, skeleton, selected, expected_exposure"
+            f"{_family_col}{_atom_col}, created_at, updated_at) "
+            f"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?{_family_ph}{_atom_ph},?,?)"
+        )
 
         for raw in items:
             item = _as_expr(raw)
@@ -233,7 +255,9 @@ class ExpressionsMixin:
                 item.get("skeleton") or _expr_skeleton(expr),
                 1 if item.get("selected") else 0,
                 item.get("expected_exposure") or item.get("exposure"),
-                *((atom_map.get(expr) or (None, None)) if _atom_ready else ()),
+                # family：条目优先（GEM 落库时从 meta 带入）；无则 None（不阻断）。
+                *((item.get("family"),) if _family_ready else ()),
+                *((atom_map.get(expr) or (None, None, None)) if _atom_ready else ()),
                 now,
             )
             if row:

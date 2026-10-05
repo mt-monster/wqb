@@ -32,6 +32,16 @@ python tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/b
 | 篮子条数（只数 `prod_status=fresh_ok` 的已核条目，见下「prod 新鲜度」）≥ target **且**覆盖 ≥ 3 座**未点亮**塔 | 直接跳步 7 / 8（对篮子做稳健与提交判定），不开新挖 |
 | 条数不足，或覆盖的未点亮塔 < 3 | 进步 2，**只补缺口塔** |
 
+- **「篮子条数」的口径钉死（2026-10-01 事故教训）**：= `select_ra_basket` 四道处理**之后**的产物条数。
+  **严禁用 `submit_ready` 队列行数代替**——该表是全生命周期台账（READY/DEAD/EXPIRED/SUBMITTED/SUPERSEDED），
+  终态墓碑都留在里面；且 READY 行 ≠ 可提交（还要过本节约资格门复算与平台复核）。
+  实证：KOR 队列 40 行里 READY=0、IND 132 行里 READY=0，按总数判断会得出「积压 40 应清库存」的反向错误结论。
+- **分叉判定前先剔死（2026-10-01 落地，代码默认开启）**：`select_ra_basket` 内置
+  `--exclude-dead`（**默认开启**，workflow `inventory_scan` 节点不传标志也会走到；调试才用
+  `--no-exclude-dead`）：候选字段经 `fields` 表回填数据集，命中 `*_dead` ∪ `saturated_datasets`
+  整集判死即剔除；族级死（dead_end 绑定）保留但计数告警；字段查不到归属 fail-open 保留。
+  判据与 `wqb.profile_drift.dead_dataset_index` 同源。动机：「IS 过闸但所属集已撞 prod 墙判死」
+  的候选若带进篮子，会烧完步 7 诊断链到步 8 才被挡。
 - **prod 新鲜度（2026-10-03 落地，代码默认开启）**：`select_ra_basket` 只读 `alphas.prod_correlation` /
   `corr_checked_at`，给每条打 `prod_status`：`fresh_ok`（近 `--prod-max-age-days`（缺省 2）天内测过且 < 上限）/
   `fresh_blocked` / `stale_ok` / `stale_blocked` / `unmeasured`，并写进 `basket.json`（`prod_correlation` /

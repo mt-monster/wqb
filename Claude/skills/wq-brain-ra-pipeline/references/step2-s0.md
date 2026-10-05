@@ -10,7 +10,7 @@
 | ② | 校准（写盘） | `mcp__wq-brain-http__workflow_campaign(region, stage="S0", calibrate=true)` | 反学 category 权重 + 拥挤甜区，写回 `thresholds.json`；**不产出排名** |
 | ③ | 打分 | `mcp__wq-brain-http__workflow_campaign(region, stage="S0")` | 按新阈值产出 `s0_ranking`；②③ 都要，③ 不是冗余重跑 |
 | ④ | 按硬约束筛（2.3） | — | 已点亮塔不进白名单、至少 2 个非 MODEL … |
-| ⑤ | 锁白名单 | `mcp__wqb-db__upsert_ledger_key(region, "s0_whitelist", {…}, mode="merge")` | 见 2.4；**用 merge，禁整值覆盖共享键**（2026-09-25 事故） |
+| ⑤ | 锁白名单 | `mcp__wqb-db__upsert_ledger_key(region, "s0_whitelist", {…}, mode="merge")` | 见 2.4；**用 merge，禁整值覆盖共享键**（2026-09-25 事故）。**写入守卫（2026-10-01 起默认生效）**：写完自动把 datasets 与判死证据求交，返回值带 `dead_intersection` 告警（本区整集死/饱和/跨区 ≥2 区 = high，1 区 = medium，族级死 = low；fail-open 不阻断）——**看到 high 就停下来核实，别带着死集开波**（KOR risk70 事故：写入方只查本区台账「零命中」，跨三区死族进名单） |
 | ⑥ | 体检包核对 | 见 2.5 | 白名单数据集须有 `field_inspect` 包 |
 
 可选 ②′：`calibrate=true dry_run=true` 只预览不写盘，仅**新区 / 校准结果可疑**时才审。审两处异常：甜区 `ac`（alphaCount）异常巨大（如 MEA 8560–21508，反向奖励超拥挤）/ `strong_acs` 空（无强信号）→ **不要 apply**，先查 `ac` 来源（口径错会把区域全部 alpha 算成数据集拥挤，甜区反转后反向奖励超拥挤）；`strong_acs` 空则确认该区确实要甜区逻辑再 apply；再**回步 1 复核 `thresholds.json` 或手改**。处置表见 toolkit `references/probe-scoring-v2.md` §二。`recommend_datasets` 不能替代体检。
@@ -76,6 +76,46 @@ python tools/gen_field_inspect_packs.py --region <REGION> --delay <D>
 | **universe 一致性守卫** | 默认随 score 生效：台账 universe ≠ `settings.universe` 即 `[WARN]`（跨 universe 的 coverage / alphaCount 不可比），白名单须据新 universe 复核重建 |
 | **饱和拍平 model** | 区域进入饱和态时 model 类 `category_weight` 封顶 1.0；`score` = 信号强度榜，`pyramid_view` = 点塔战略榜，勿混排 |
 | **calibrate token 去重** | 已内置（根治甜区污染），无需操作 |
+| **P7 字段语义可做性**（`viability_filter_enable: true`） | **当区/集出现「广度看着高但建波后发现有效持仓不足」时必开**。见下方 P7 详解 |
+
+### P7 详解：字段语义可做性（2026-10-02 新增）
+
+**要解决的问题**：S0 原来只数「`coverage>=0.85` 的字段数」当作广度，
+**不区分字段语义类型** ⇒ 「字段多但全是事件/计数型」的集会被当作富矿选进白名单，
+建波后才发现平台侧有效持仓（`longCount`）根本不够，配额白烧。
+
+**实测证据**（DEU/TOP500/D1，5 次独立验证，2026-10-02）：
+
+| 字段语义类型 | 实测 longCount | 结果 |
+|---|---|---|
+| 连续/比率/概率/预测型 | 高（全市场覆盖） | `dl_riskfree_returns` prob 字段 **150** ⇒ **S 1.45**；`pattern_scores` simscore **143~147** |
+| 事件/计数/稀疏型 | 低（仅事件股有值） | `predictive_starmine` count **8~54**；`order_book_imbalance` **27~37**；`fundamental6` **8~18** |
+
+⇒ **规律：字段语义类型决定 `longCount`，`longCount` 决定该集能否做信号。**
+   `longCount` 只能跑 sim 才知道，但**语义类型可由名字/描述预判** —— 这正是 S0 该补的一层。
+
+**开启后行为**：
+- `breadth` 的字段数来源从 `usableFieldCount`（cov≥0.85）改为
+  `viableFieldCount`（`cov≥0.85` **且非事件/计数型**）；
+- 新增产物字段 `viableFieldCount`，与 `usableFieldCount` 之差即「**语义损耗**」；
+- stdout 打印 `[P7 viability=on affected=N]` 与 `语义损耗 top10`，可直接看哪些集被降权；
+- **不影响 `hard_excluded`**（硬地板仍只看 coverage 与 P3 字段数）。
+
+**判定规则**（保守优先，顺序即优先级）：
+1. **计数描述优先** → 不可做（`number of estimates` / `count of revisions`）；
+2. 高可做性描述 → 可做（probability / ratio / percentage / forecast / predicted / score / quantile / return / volatility / beta）；
+3. 事件/计数**名字**（**词元锚定**，防 `_count` 咬到 `accounts`）→ 不可做；
+4. 缺省 → 可做（**不认识的不降权**）。
+
+> ⚠ **反误杀纪律**（沿用 semantic_classify 09-28 / 10-01 两次教训）：
+> ① 标识符/计数词必须**词元锚定**（`(?:^|_)tok(?:$|_)`），禁裸子串；
+> ② **事件主题词不足以判死** —— `revision` / `upgrade` / `downgrade` 只说明「关于什么事件」，
+> 不说明「是计数还是幅度」，故 `revision_magnitude`（幅度）、`upgrade_ratio`（比例）**必须放行**；
+> ③ **宁可漏判，不可误杀**（缺省 True）。
+> 回归测试：`tests/unit/04_gates/test_s0_viability_p7.py`（21 条，含 7 条防误杀用例）。
+
+**实测影响面**（DEU 2026-10-02）：`predictive_starmine` 318 个 `cov≥0.7 且 uC≤2` 的未测字段
+绝大多数是 `analyst_*_count_*` 型 ⇒ 开启 P7 后该集广度大幅下降、不再被当作富矿优先挖。
 
 ## 2.7 产物与失败分支
 

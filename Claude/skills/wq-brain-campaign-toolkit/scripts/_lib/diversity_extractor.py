@@ -145,23 +145,45 @@ class EnhancedFieldClassifier:
         self.field_stats = self._load_field_stats()
         
     def _load_field_descriptions(self) -> Dict[str, str]:
-        """加载字段描述"""
-        # 从 typed catalog 加载字段描述
+        """加载字段描述：**DB catalog 优先**，战役目录 reference 文件兜底。
+
+        2026-10-01：DB（`field_catalog`）为单一事实源，文件面仅兜底（部分战役目录
+        的 catalog 早于 DB 收录期，只有文件副本，不能丢弃）。
+        """
         descriptions = {}
-        catalog_files = [f for f in os.listdir(self.ctx.ref_path("")) if f.endswith("_fields.json")]
-        
-        for catalog_file in catalog_files:
-            catalog_path = self.ctx.ref_path(catalog_file)
-            try:
-                catalog = load_json(catalog_path)
-                for field in catalog.get("fields", []):
-                    field_id = field.get("id", "")
-                    description = field.get("description", "")
-                    if field_id and description:
-                        descriptions[field_id] = description
-            except Exception:
+        # 本战役 catalog 覆盖的数据集：以 reference 目录文件名枚举（范围不变）
+        ref_dir = self.ctx.ref_path("")
+        files = []
+        if os.path.isdir(ref_dir):
+            files = [fn for fn in os.listdir(ref_dir) if fn.endswith("_fields.json")]
+        try:
+            from _lib.wqb_store import load_catalog
+        except Exception:
+            load_catalog = None
+        for fn in files:
+            stem = fn[: -len("_fields.json")]
+            # 文件名形如 <prefix>_<dataset>，prefix 为区域短名（不固定，如 kor_/k_/无前缀）
+            ds = stem.split("_", 1)[-1] if "_" in stem else stem
+            cat = None
+            if load_catalog is not None:
+                try:
+                    cat = load_catalog(self.ctx, ds)
+                except Exception:
+                    cat = None
+            if not cat or not cat.get("fields"):
+                try:
+                    cat = load_json(self.ctx.ref_path(fn))
+                except Exception:
+                    cat = None
+            if not isinstance(cat, dict):
                 continue
-        
+            for field in cat.get("fields") or []:
+                if not isinstance(field, dict):
+                    continue
+                field_id = field.get("id", "")
+                description = field.get("description", "")
+                if field_id and description:
+                    descriptions.setdefault(field_id, description)
         return descriptions
     
     def _load_field_stats(self) -> Dict[str, Dict]:

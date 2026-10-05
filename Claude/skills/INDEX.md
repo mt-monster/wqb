@@ -74,7 +74,7 @@
 | AMR | ✓ | ✓ | `active` | — |
 | ASI | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | CHN | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
-| DEU | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
+| DEU | ✓ | ✓ | `active` | — |
 | EUR | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | GBR | ✓ | ✓ | `active` | — |
 | GLB | ✓ | ✓ | `active` | — |
@@ -101,7 +101,7 @@
 | 2 | `tracking/<R>/config/` | 建 `settings.json`（仿真设置）+ `thresholds.json`（阈值），契约见 toolkit [`campaign-dir-contract.md`](wq-brain-campaign-toolkit/references/campaign-dir-contract.md)；`region` 必须与目录名一致 | `$WQ_PY Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/<R> ledger keys` 不报错 |
 | 3 | `wq-brain-ra-pipeline/references/regions/<R>.md` | 写 profile（front-matter 契约见 [`region-profile-contract.md`](wq-brain-ra-pipeline/references/region-profile-contract.md)），含 `entry_verdict` | `$WQ_PY -m pytest tests/unit/06_wave_pipeline/test_region_alignment.py` |
 | 4 | 本文「区域清单」表 | `$WQ_PY tools/index_tables.py --apply` 重新生成（不手写） | `$WQ_PY -m pytest tests/unit/09_core/test_index_tables.py` |
-| 5 | 首次入库 | `regions` 行在该区首次写入时由 `CampaignStore` 自动建；数据集资产用 `tools/discover_datasets.py` / `tools/ingest_dataset_assets.py`，字段级用 toolkit `scan_fields.py` | `mcp__wqb-db__get_region_config(<R>)` 不再报 `region not found` |
+| 5 | 首次入库 | `regions` 行在该区首次写入时由 `CampaignStore` 自动建；数据集资产用 `tools/discover_datasets.py` / `tools/fetch_dataset_assets.py`（均直连入库，不落 JSON），字段级用 toolkit `scan_fields.py` | `mcp__wqb-db__get_region_config(<R>)` 不再报 `region not found` |
 | 6 | 区域 skill 与组合文件 | `$WQ_PY -m wqb.profiles sync-cells --region <R> --apply` → `$WQ_PY -m wqb.profiles render --region <R> --apply` → `$WQ_PY tools/sync_skills.py --apply` | `$WQ_PY -m wqb.profiles check --region <R>`；`$WQ_PY -m pytest tests/unit/09_core/test_profiles_layer.py` |
 
 `tracking/region_config.json` 目前**没有代码读取**（只有 JPN profile 提到过它），不在检查表内。区域相关的**带日期事实**（选项、无 pv1、robust 闸定义、破墙配方）一律写在各区 profile，带 `last_verified`，不写在本文。

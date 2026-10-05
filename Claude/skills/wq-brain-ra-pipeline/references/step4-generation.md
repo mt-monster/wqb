@@ -3,9 +3,12 @@
 > 主 SOP 见 [`../SKILL.md`](../SKILL.md) 步 4。生成器 = **`workflow_gem`（强制）**；`build-wave` 只去重 / 分桶 / 骨架配给，**不产表达式**。增强 = 对已有 idea 的变体扩展，经 priors / ideas 注入实现。
 > 引擎实现与 CLI 参数见 [`brain-make-some-gem`](../../brain-make-some-gem/SKILL.md)。可选：`workflow_campaign(subcommand="diversity-extract")` 做方向参考，**不替代** GEM，不强制先行。
 
+> **★ 生成之前先做 L4 形态构建**（2026-10-01 新增）：本步的输入**不是** 380 个字段，而是步 3 的 L3.5 `families` 聚出的**族**。从族出发，走「经济量命名 → 形态枚举 → 避判死 → 三源验证 → 探针配给」五步法，产出**可证伪假设 + 表达式骨架**后再进 GEM。**完整方法见** [`signal-hypothesis-construction.md`](signal-hypothesis-construction.md) §2。
+> 三条最容易犯的错：① 跳过 L3.5 直接从单字段拍骨架；② 把 L3 归类当终点（它只划边界、不产信号）；③ 形态枚举时不查已判死结构（`02_signal_patterns.md` §5/§6 + `get_dead_ends`——判死是**族级/结构级**，不等于整集废）。
+
 ## 4.1 生成前的硬约束与准则
 
-术语：**波内配额**（一波里表达式的配比，如「跨金字塔 ≥ 2」；旧称「七槽」）≠ **并发令牌**（Token-Bucket，`slots=7`）≠ **批**（一次 `create_multi_simulation`，8 条子模拟）——见 [`GLOSSARY.md`](../../GLOSSARY.md)。
+术语：**波内配额**（一波里表达式的配比，如「跨金字塔 ≥ 2」；旧称「七槽」）≠ **并发令牌**（Token-Bucket，平台容量 C≈7，本工作区操作档 `slots=2`）≠ **批**（一次 `create_multi_simulation`，8 条子模拟）——见 [`GLOSSARY.md`](../../GLOSSARY.md)。
 
 | # | 约束 | 类型 | 说明 |
 |---|---|---|---|

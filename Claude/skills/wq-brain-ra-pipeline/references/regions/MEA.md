@@ -10,10 +10,14 @@ static:
   neutralization_default: STATISTICAL
   notes: "小宇宙，CW/longCount 问题放大，已无白名单内候选"
 datasets:
-  red: [pv106, fundamental6, model25, news 系, analyst 系, risk 系, insiders 系, shortinterest 系, option 系]
-  red_reason: "9 数据集 campaign 状态全部 exhausted（含 pv106 spread 族判死）"
-  yellow: []
+  red:
+    - datasets: [fundamental6, model25, pv106]
+      reason: "9 数据集 campaign 状态全部 exhausted（含 pv106 spread 族判死）（键 = ledger *_dead ∪ 旧 red 文本 id；明细查 get_dead_datasets）"
+    - scope: family
+      families: [news 系, analyst 系, risk 系, insiders 系, shortinterest 系, option 系]
+      reason: "9 数据集 campaign 状态全部 exhausted（含 pv106 spread 族判死）"
   green: []
+  yellow: []
 priors:
   signal_families_include: []
   signal_families_exclude: [pv106_spread]
@@ -72,3 +76,8 @@ S-PRE 查表发现以下任一条件，`entry_verdict` 自动回升 probe-only �
 - 禁止"再试一次已 exhausted 数据集换参数"——死路 rule 优先于直觉（matrix 硬规则 2）。
 - 早期 3 颗 ACTIVE 不构成复挖理由：其配方族已判死。
 - frozen 不是删除历史：registry 中 MEA 死路记录是跨区铁律的语料（如 CW 通病），保留供其他小宇宙区（HKG/TWN）引用。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：pv1(alphaCount=23637, cov=0); analyst7(alphaCount=9322, cov=0.48); model25(alphaCount=8577, cov=0.9)
+- 已判死（勿重试）：MEA-2DS-CURRENT-SKELETON-DEAD, MEA-ANALYST-FND-FLAT-COMBO-DEAD, MEA-EARNINGS3-CALENDAR-DEAD, MEA-FND-EARN-2DS-DEAD, MEA-FND6-QLEVEL-ZSCORE-DEAD, MEA-FND72-EPS-SURPRISE-DEAD, MEA-NEUTRALIZATION-SWAP-DEAD, MEA-RATIO-ADDITIVE-SKELETON-DEAD
+- 实证笔记：MEA-CAMPAIGN-S6-20260830: MEA REGULAR战役w70-w105收官: 停止闸10达成, 18个硬闸达标(去重), 3个OS ACTIVE, 严格互相关<0.7干净组合9条

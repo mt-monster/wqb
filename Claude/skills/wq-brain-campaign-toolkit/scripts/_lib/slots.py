@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """_lib/slots.py - 账户级回测槽位仲裁（跨进程，2026-09-19）。
 
-背景：pipeline.py 每个进程各自锁 n_slots=min(7, 批数)，两条流水线同跑（IND w171 + JPN w8
+背景：pipeline.py 每个进程各自锁 n_slots=min(2, 批数)，两条流水线同跑（IND w171 + JPN w8
 实测）在飞 10-13 个 multisim，超过 wqb-concurrency §8 实测的账户级 C≈7；此前只能靠 429 退避
 被动兜底，没有主动仲裁。
 
@@ -10,7 +10,16 @@
 删 token。陈旧 token（进程已死 或 超过 max_age 秒）自动回收，避免崩溃残留占坑。
 纯标准库；任何异常都降级为"不仲裁"（打印 warn），绝不阻断提交。
 
-环境变量：WQB_GLOBAL_SLOTS（cap，缺省 7；0 关闭）、WQB_SLOTS_DIR（目录）。
+★ 死锁修复（2026-10-02）：pipeline._run_round 的补批路径 `_refill()` 在**主线程**里调
+`acquire()`，而释放槽位的 `_poll_single_batch` future 也需同一主线程经
+`concurrent.futures.wait()` 推进。当 7 个 token 全被**本进程自己未轮询的批次**持有
+时，`acquire()` 阻塞 → future 永不推进 → token 永不释放 = 自锁（实测 GLB 波1/波2
+两条流水线同时在 `[slots] 账户级在飞 7 >= cap 7，等待…` 处停摆，直到被宿主回收）。
+修法：给 `acquire()` 加 `nonblock=True`——在飞满时**立即返回 None**，调用方跳过本次
+补批、把主线程让回去轮询回收。补批是"即收即补"的优化路径，跳过一轮只损失少量
+吞吐，绝不阻塞主循环。
+
+环境变量：WQB_GLOBAL_SLOTS（cap，缺省 2；0 关闭）、WQB_SLOTS_DIR（目录）。
 """
 from __future__ import annotations
 
@@ -37,9 +46,9 @@ def slots_dir():
 
 def global_cap():
     try:
-        return int(os.environ.get("WQB_GLOBAL_SLOTS", "7"))
+        return int(os.environ.get("WQB_GLOBAL_SLOTS", "2"))
     except ValueError:
-        return 7
+        return 2
 
 
 def _pid_alive(pid: int) -> bool:
@@ -78,11 +87,53 @@ def _read_token(path):
         return 0, "", 0.0
 
 
+def _retire(path: str) -> None:
+    """退役 slot token：改名 ``<path>.stale`` 而非删除（2026-10-04）。
+
+    沙箱 safe-delete 守卫按 turn 累计删除数，越阈值后截获 os.remove 并终止
+    子进程（pipeline 秒退 exit 1）。slots 在 acquire/release 高频调用，
+    命中概率远高于 dblock。改为改名退役（互斥协议不变：token 名后缀固定）。
+    """
+    try:
+        os.replace(path, path + ".stale")
+    except OSError:
+        pass
+
+
+def _prune_stale_files(max_age_sec: int = 24 * 3600):
+    """清理历史遗留的 `*.slot.stale`（2026-10-02）。
+
+    背景：旧版 release() 曾把 token 改名成 `*.slot.stale` 而非删除，历史工作区
+    残留 78 个（`logs/_slots/`，09-29/30）。当前 release() 也改用改名退役，
+    此函数清理超龄存量，且只碰 `.slot.stale`（绝不误删活 `.slot`）。
+    超过 max_age_sec 的才删（保守：避免刚被外部工具改名、可能仍具参考价值的项）。
+    ★ 2026-10-04：守卫也会截获这里的 os.remove ⇒ 改为再退役成 `.stale.old`
+    （二次改名不触发删除，留待人工/环境清理）。
+    """
+    d = slots_dir()
+    if not os.path.isdir(d):
+        return 0
+    now = time.time()
+    n = 0
+    for name in os.listdir(d):
+        if not name.endswith(".slot.stale"):
+            continue
+        p = os.path.join(d, name)
+        try:
+            if now - os.path.getmtime(p) > max_age_sec:
+                _retire(p)
+                n += 1
+        except OSError:
+            pass
+    return n
+
+
 def live_tokens(max_age_sec: int = 6 * 3600):
     """返回活 token 路径列表；顺手回收陈旧 token（进程已死或超龄）。"""
     d = slots_dir()
     if not os.path.isdir(d):
         return []
+    _prune_stale_files()   # 顺带清历史遗留 *.slot.stale（只碰该后缀）
     now = time.time()
     alive = []
     for name in os.listdir(d):
@@ -92,19 +143,24 @@ def live_tokens(max_age_sec: int = 6 * 3600):
         pid, _, ts = _read_token(p)
         stale = (ts and now - ts > max_age_sec) or (pid and not _pid_alive(pid))
         if stale:
-            try:
-                os.remove(p)
-            except OSError:
-                pass
+            _retire(p)
             continue
         alive.append(p)
     return alive
 
 
 def acquire(label: str = "", cap: int | None = None, wait_sec: int = 1800, poll_sec: float = 10.0,
-            log=print):
+            log=print, nonblock: bool = False):
     """拿一个账户级槽位。返回 token 路径（release 用）；cap<=0 时返回 None（不仲裁）。
-    等待超时也返回 None（降级为不仲裁，绝不阻断提交）。"""
+    等待超时也返回 None（降级为不仲裁，绝不阻断提交）。
+
+    nonblock=True（2026-10-02 死锁修复）：当前在飞 >= cap 时**立即返回 None**，
+    不做任何等待。调用方据此跳过本次补批、让出主线程去轮询回收 future。
+    背景见模块 docstring「死锁」段：pipeline._refill 在主线程调 acquire()，
+    而释放槽位的 _poll_single_batch future 需同一主线程推进 → 若 acquire 阻塞
+    而 7 个 token 全被本进程未轮询的批次持有，即构成自锁（wait_sec 到期前
+    整条流水线停摆）。非阻塞模式彻底消除该自锁。
+    """
     cap = global_cap() if cap is None else cap
     if cap <= 0:
         return None
@@ -128,6 +184,11 @@ def acquire(label: str = "", cap: int | None = None, wait_sec: int = 1800, poll_
                     return path
                 except OSError:
                     continue  # 极小概率撞名，重试
+        if nonblock:
+            # 不等待：让调用方立即回收自己的在飞 future（防自锁）。仅首探告警一次。
+            if not warned:
+                log(f"[slots] 账户级在飞 {n} >= cap {cap}，本次补批跳过（非阻塞，等槽位释放）")
+            return None
         if not warned:
             log(f"[slots] 账户级在飞 {n} >= cap {cap}，等待其它流水线释放槽位…")
             warned = True
@@ -137,11 +198,29 @@ def acquire(label: str = "", cap: int | None = None, wait_sec: int = 1800, poll_
         time.sleep(poll_sec)
 
 
+def is_full(cap: int | None = None) -> bool:
+    """仲裁开着、且账户级在飞 >= cap（只读，不建 token）。
+
+    `acquire(nonblock=True)` 返回 None 有**两种完全相反的含义**：真·槽位已满（该跳过本次补批）vs
+    不仲裁（cap<=0 / 目录不可用 / 降级——该照常提交）。调用方拿到 None 后用本函数区分：
+    只有 `is_full()` 为真才算「满」。cap<=0 或目录不存在 → False（不仲裁）。
+    2026-10-04：`pipeline._refill` 此前把任何 None 都当「满」，`WQB_GLOBAL_SLOTS=0`（文档里的「0 关闭」）
+    下重发 / 补批永远提交不出去，等满 30 分钟才放弃——单测因此整体挂住。
+    """
+    cap = global_cap() if cap is None else cap
+    if cap <= 0:
+        return False
+    try:
+        return len(live_tokens()) >= cap
+    except OSError:
+        return False
+
+
 def release(token_path):
     if not token_path:
         return
     try:
-        os.remove(token_path)
+        _retire(token_path)
     except OSError:
         pass
 

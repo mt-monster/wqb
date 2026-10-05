@@ -5,16 +5,19 @@
 
 ## 1. 路由：MCP 还是 web UI
 
-MCP 的 `workflow_submit_alpha` / `submit_alpha` **不是 PPA 感知的**：它内置本地预检（`pre_submit_check`）——Sharpe > 1.3、Fitness > 0.75、
-Turnover 4%–40%、Returns > 4%、其余 IS checks 无 FAIL；**Margin 只是 warning**（平台不检 margin）。该预检不看 `PowerPoolSelected` 标签，
-所以合法但指标较低的 PPA 会被它拦下。这些是刻意放宽的**本地**筛（不是平台线，数字见 `wqb.config.PLATFORM_CHECK_LINES` 与 `pre_submit_check` 文档串）。
+> **2026-10-02 口径更新**：旧的 `pre_submit_check`（Sharpe > 1.3、Fitness > 0.75、Turnover 4%–40%、Returns > 4%、Margin 仅 warning 的**弱启发式**）
+> **已于 2026-09-29 退役、2026-10-02 物理删除**（含 client mixin 里的定义、其单测与 GBR 配套检查脚本簇），
+> 现在提交路由的本地闸是节点里的 `_submit_gate`（fail-closed，纯平台口径）：
+> 模拟层任一 `FAIL` / 硬闸类 `WARNING`（`LOW_FITNESS`/`LOW_SHARPE`/`LOW_2Y_SHARPE`）/ `Failed RA·PPA ≠ 0`（Phase B.0 硬门）/ robustness 台账 `REJECT`
+> → blocked；外加步 1.4 配额闸（ET 今日满 4 → blocked）与步 1.6 prod 闸（`check_correlation(production)`，max ≥ 0.7 或未出数 → blocked）。MCP 路径**已 PPA 感知**
+> （`_is_ppa_alpha`：`type==PPA` **或** 带 `PowerPoolSelected` 标签，与 `submit_verdict_core` 统一口径），故不会再因标签缺失把合法 PPA 当 REGULAR 判错计数组。
 
 | 候选 | 走哪条 |
 |---|---|
-| 满足上面的本地预检 | 可走 MCP：`workflow_submit_alpha(color="PURPLE", tags=["CH_PPA", "SRC_<数据集>", "PowerPoolSelected"], confirm_submit=…)`，其余规则同 REGULAR（提交链 `submit-chain.md`） |
-| 不满足（如合法 PPA 的 Sharpe ∈ [1.0, 1.3)） | **web UI 人工通道**（仅当期活跃 Power Pool 主题窗口内；`MATCHES_THEMES` = PASS 才受理；非活跃区域报 "does not match any Power Pool Theme"）→ **agent 停下并交接**，见 §2 |
+| 过 `_submit_gate`（模拟层无 FAIL / 无硬闸 WARNING / Failed PPA = 0 / 无 REJECT）+ prod 低于 `config.GATES_PLATFORM.prod_corr_max` + 配额未满 | 可走 MCP：`workflow_submit_alpha(color="PURPLE", tags=["CH_PPA", "SRC_<数据集>", "PowerPoolSelected"], confirm_submit=…)`，其余规则同 REGULAR（提交链 `submit-chain.md`） |
+| 不满足（如合法 PPA 的 IS 指标偏低但平台接受、或主题窗口需人工核对） | **web UI 人工通道**（仅当期活跃 Power Pool 主题窗口内；`MATCHES_THEMES` = PASS 才受理；非活跃区域报 "does not match any Power Pool Theme"）→ **agent 停下并交接**，见 §2 |
 
-> `force=True` 只跳过本地预检，**不放行任何平台检查**。允许场景仅两类：合法 PPA（Sharpe 低于预检线）、SUPER；其余一律不用。
+> `force=True` 只跳过 `_submit_gate` 本地预检，**不放行 prod 闸与配额闸**（prod 须 `allow_prod_above_07=True` 显式留痕）。允许场景极窄：确需人工覆盖本地预检时；其余一律不用。
 
 ## 2. 交接（agent 在这里停下）
 

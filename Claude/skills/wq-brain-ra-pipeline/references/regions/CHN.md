@@ -11,9 +11,8 @@ static:
   notes: "A 股市场结构特殊（涨跌停/T+1），信号语义需重新审视"
 datasets:
   red: []
-  red_reason: ""
-  yellow: []
   green: []
+  yellow: []
 priors:
   signal_families_include: []
   signal_families_exclude: [glb_emotion]
@@ -61,3 +60,8 @@ GEM 生成时 priors 必须声明 A 股特殊性：
 - 档位未实测前，任何生成/回测请求一律拒绝（返空事故防线）。
 - 量价信号先过"涨跌停截断"常识审查再进本波。
 - GLB emotion 铁律照 exclusion。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：analyst14(alphaCount=0, cov=None); fundamental6(alphaCount=0, cov=None); model135(alphaCount=0, cov=None)
+- 已判死（勿重试）：CHN-MARKET-NEWS-SENT-COST-DEAD, CHN-NEWS-SENTIMENT-COST-ARTIFACT-DEAD, CHN-PV27-MONEYFLOW-COST-ARTIFACT-DEAD
+- 实证笔记：CHN-COST-CALIBRATION-AND-PROFIT-THRESHOLD: CHN 的 Sharpe 线 2.07 显著高于常见的 1.58（KOR/USA 等），LOW_RETURNS 还要求 8% 净收益。两项叠加使 CHN 成为高门槛区。

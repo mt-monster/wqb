@@ -11,9 +11,11 @@ static:
   notes: "static 层未建立，步 1 强制实测合法档位"
 datasets:
   red: []
-  red_reason: ""
+  green:
+    - scope: family
+      families: [analyst94, analyst81]
+      note: "族级方向（2026-10-01 迁移自旧文本形态；逐数据集绑定待实证补齐）"
   yellow: []
-  green: [analyst94, analyst81]
 priors:
   signal_families_include: [analyst]
   signal_families_exclude: []
@@ -61,3 +63,9 @@ ASI 基本未开垦：无 win 层、无死路记录，registry 接近空白。�
 - 禁止照抄他区 universe 档（CHN 默认档返空类事故的前科）。
 - analyst94 近闸不等于可提交：OS 0.666 离闸还有距离，按 Mode A 微调路径走，不提前庆祝。
 - 首波探针豁免仅一次：第二波仍全槽探针 = 违反填槽纪律。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：pv1(alphaCount=1419, cov=1); dl_riskfree_returns(alphaCount=350, cov=1); fundamental23(alphaCount=303, cov=0.75)
+- 白空间候选（未测 + 覆盖≥60% + 低 alphaCount）：pv103(cov=1, alphaCount=0); pv149(cov=1, alphaCount=0); univ1(cov=1, alphaCount=0); socialmedia39(cov=0.94, alphaCount=0); other100(cov=0.88, alphaCount=0)
+- 已判死（勿重试）：ASI-ANALYST11-ESG-DEAD, ASI-DL-ALT-GATES-ROBUST-WALL-20260921, ASI-EVNTWRK-MULTIDS-DEAD, ASI-IPV-INTRADAY-MOMENTUM-WEAK-20260924, ASI-PSM-VALUE-PSD-CNN-WEAK-20260921, ASI-S2IPV-NOCORESIG-SECTOR-DEAD, ASI-S2IPV-ROBUSTASIJPN-DEAD, ASI-SI5-MCR63-RSK70-CORRGATE-WEAK-20260921
+- 实证笔记：analyst94: sharpe0.666最高Analyst数据集 | analyst81: score0.692推荐榜,OS sharpe0.653

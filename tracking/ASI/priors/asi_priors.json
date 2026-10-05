@@ -61,6 +61,58 @@
    "source": "region_kb_dead_pattern"
   },
   {
+   "family": "esg_analyst",
+   "reason": "OWL ESG(analyst11) 在 ASI 三 universe 全封：MINVOL1M 主档 cov0.709→longCount 56(<80 触闸)、低档 cov0.525→40、变化族 ts_delta252→3(ESG 年度慢变量无日频变化)；TOP500 实测 longCount=9(universe 实际成分~40 只远小于名义)；MINVOL10M 更严不烧探针。cov→longCount 插值律固化：longCount≈77×cov，过 80 闸需 cov≥~0.85。附带零成本判死：other315(32 字段全 VECTOR OTC 衍生品交易级)、other455(300 字段=240 GROUP+60 MATRIX 全 cov 0.5875 数据集级上限)。ASI 候选池枯竭确认：33 候选 8 判死，剩余为红榜排除类别或 cov<0.85 结构性触闸",
+   "salvage": {
+    "alpha_ids": [],
+    "count": 0,
+    "source_waves": [],
+    "sealed_at": "2026-09-28T23:09:38",
+    "note": "seal_dead_end 沉降：供 Mode B 组合腿救援消费（get_salvage_pool）；动用仍守 mode_b_qualification 资格线"
+   },
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-ANALYST11-ESG-DEAD"
+  },
+  {
+   "family": "event_network",
+   "reason": "事件驱动×网络动量主题全灭（wave s1_event_network_v1，42 回测 0 过硬闸）：acquisition_model S 天花板 0.86（水平值市场已 price-in，估值成分变化 d44 甜点，RN-vs-IS gap 不可合规闭合）；other545 NEMO 网络动量无效；other436 disc 反转上限 0.62；analyst_base_ref 事件快照持仓坍缩 0-18 只；fundamental89 稀疏比率字段 longCount 25-31 触 ASI 特化闸。durable 教训：VECTOR 字段须 vec_avg 先聚合；get_datafields type 列前置检查；ASI 另有 LOW_ASI_JPN_SHARPE≥1 提交闸",
+   "salvage": {
+    "alpha_ids": [],
+    "count": 0,
+    "source_waves": [],
+    "sealed_at": "2026-09-28T22:41:25",
+    "note": "seal_dead_end 沉降：供 Mode B 组合腿救援消费（get_salvage_pool）；动用仍守 mode_b_qualification 资格线"
+   },
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-EVNTWRK-MULTIDS-DEAD"
+  },
+  {
+   "family": "intraday_pv_tail_reversal_corr",
+   "reason": "95 条回测穷尽验证：trade_when 骨架 ROBUST 双闸 8 维度无杠杆判死；corr 族 ASI_JPN 0.55-0.74 字段级缺陷（换轴无效）；market 轴 ROBUST 友好但信号强度不足。数据集字段族（intraday price-volume）在 ASI 全闸不可行，残值 36 条过硬闸过候选已入 salvage_pool。",
+   "salvage": {
+    "alpha_ids": [],
+    "count": 0,
+    "source_waves": [],
+    "sealed_at": "2026-09-28T21:32:11",
+    "note": "seal_dead_end 沉降：供 Mode B 组合腿救援消费（get_salvage_pool）；动用仍守 mode_b_qualification 资格线"
+   },
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-S2IPV-ROBUSTASIJPN-DEAD"
+  },
+  {
+   "family": "intraday_pv_simple_ratio",
+   "reason": "56/56 全 FAIL（best Sharpe 0.70 vs 闸 1.58，0 过 near 线 1.2）。判死范围仅限本组合结构：①表达式缺失历史成功共同核心信号 corr_last_trade_price_with_volume（价量相关性），均为简单价格/成交量 divide 比值；②中性化误用 SECTOR（历史成功全部 SUBINDUSTRY）。intraday_pv_feats 数据集本身不判死（历史 277 回测 47.7% 过 Sharpe 闸）；重启路径=s2_ipv_corr_volume_v1（39 条 SUBINDUSTRY+核心信号，已提交）",
+   "salvage": {
+    "alpha_ids": [],
+    "count": 0,
+    "source_waves": [],
+    "sealed_at": "2026-09-28T20:43:02",
+    "note": "seal_dead_end 沉降：供 Mode B 组合腿救援消费（get_salvage_pool）；动用仍守 mode_b_qualification 资格线"
+   },
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-S2IPV-NOCORESIG-SECTOR-DEAD"
+  },
+  {
    "family": "intraday_pv_feats 日内动量/反转/滑点/量比机制",
    "reason": "ASI 日内动量机制不作主腿；与既有 ACTIVE 的尾盘反转机制（preclose30m × 关注门控）不同，本机制全灭",
    "salvage": null,
@@ -80,34 +132,6 @@
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "ASI-SI5-MCR63-RSK70-CORRGATE-WEAK-20260921"
-  },
-  {
-   "family": "predictive_starmine SmartEstimate 收益率(value) / price_signal_dl 趋势指标 / chart_cnn_alpha 概率 作主腿",
-   "reason": "ASI 三集不再作主腿；StarMine 仅 value 字段可作慢变量门控/分组腿。另记：双门控 trade_when(…, or(V<0.3,N<0.2)) 对 msm/gsm/mfr/cnn 类概率字段会塔缩到 2 只股票（if_else / 单关注门控不塔缩），机制未明，遇到 CW 0.5 先换 if_else 对照。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "ASI-PSM-VALUE-PSD-CNN-WEAK-20260921"
-  },
-  {
-   "family": "multi_source_model / global_seasonal_model / multifactor_return_pred / ai_equity_alpha 预测分位/回归输出 作主腿（门控模板下塌缩）",
-   "reason": "ASI 这四集不再作主腿；dl_riskfree_returns 是唯一在 ASI 有效的预测型模型集（单座位：5d/20d/60d/概率字段互相关 0.88-0.99）。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "ASI-MODEL-PRED-DATASETS-GATED-COLLAPSE-20260921"
-  },
-  {
-   "family": "acquisition_model 并购目标概率 + sentiment23 Inferess 情绪 作主腿",
-   "reason": "ASI 两集不作主腿；与「news/sentiment 类 ASI 6 集全灭」先验一致（现 8 集）。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "ASI-ACQM-SNT23-PRIMARY-WEAK-20260921"
-  },
-  {
-   "family": "institutions6 机构持仓流/广度 + news_sentiment_transfer 情绪水平 作主腿",
-   "reason": "ASI 两集均不作主腿；news_sentiment_transfer 的 normalized_news_article_count 仅作关注度门控腿（已实证有效），institutions6 机构占比仅作慢变量门控腿。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "ASI-INST6-NST-PRIMARY-WEAK-20260921"
   }
  ],
  "region_context": {
@@ -142,6 +166,10 @@
   ],
   "truncated": {
    "dead_ends": [
+    "ASI-PSM-VALUE-PSD-CNN-WEAK-20260921",
+    "ASI-MODEL-PRED-DATASETS-GATED-COLLAPSE-20260921",
+    "ASI-ACQM-SNT23-PRIMARY-WEAK-20260921",
+    "ASI-INST6-NST-PRIMARY-WEAK-20260921",
     "ASI-IPV-OTHER-INTRADAY-WINDOWS-WEAK-20260921",
     "ASI-IPV-PRECLOSE-COMPLEMENT-SUBSETS-WEAK-20260921",
     "ASI-IPV-NONREVERSAL-MECHANISMS-WEAK-20260921",
@@ -348,15 +376,15 @@
    },
    {
     "dim": "neutralization",
-    "current": "SECTOR",
-    "current_rate": 0.027,
-    "current_n": 370,
+    "current": "SUBINDUSTRY",
+    "current_rate": 0.0,
+    "current_n": 119,
     "recommended": "SLOW",
     "rate": 0.0484,
     "n": 62,
-    "lift": 1.79,
+    "lift": 2.42,
     "source": "gate_priors",
-    "apply": false
+    "apply": true
    }
   ]
  },

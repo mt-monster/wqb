@@ -10,10 +10,15 @@ static:
   neutralization_default: SUBINDUSTRY
   notes: "平台 get_platform_setting_options 实测（2026-09-16 / 2026-09-22）：AMR EQUITY 仅 TOP600（D0/D1 同）；中性化 7 选（NONE/STATISTICAL/MARKET/SECTOR/INDUSTRY/SUBINDUSTRY/COUNTRY），无 CROWDING/FAST/SLOW。AMR 实证仅 delay1，禁止 delay0 外推。"
 datasets:
-  red: [chart_patterns, news_sentiment, ai_ml, credit_risk, glb_emotion]
-  red_reason: "AMR 红榜（用户 2026-09-28 定案）：chart_patterns / news_sentiment / ai_ml / credit_risk / glb_emotion 一律排除；且 news/sentiment 在 USA/EUR/IND 跨区同型全灭（跨区负先验）。"
+  red:
+    - scope: family
+      families: [chart_patterns, news_sentiment, ai_ml, credit_risk, glb_emotion]
+      reason: "AMR 红榜（用户 2026-09-28 定案）：chart_patterns / news_sentiment / ai_ml / credit_risk / glb_emotion 一律排除；且 news/sentiment 在 USA/EUR/IND 跨区同型全灭（跨区负先验）。"
+  green:
+    - scope: family
+      families: ["动态：绿榜 = analyst 系（评级/预期）/ insiders / pv 家族；S0 体检后落具体 dataset id"]
+      note: "迁移自旧 green 行尾注释"
   yellow: []
-  green: []   # 动态：绿榜 = analyst 系（评级/预期）/ insiders / pv 家族；S0 体检后落具体 dataset id
 priors:
   signal_families_include: [analyst, insiders, pv]
   signal_families_exclude: [chart_patterns, news_sentiment, ai_ml, credit_risk, glb_emotion]
@@ -92,3 +97,7 @@ CW>0.5 的 alpha 直接判死（AMR 加严）；prod_corr ≥0.7 则 Mode B 换�
 - CW>0.5 不回炉、longCount<80 不放行——两条加严闸不是 WARN。
 - 新数据集 8 探针快判死不许"再换组设置试试"。
 - 白名单外禁止 generate / simulate。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：analyst48(alphaCount=0, cov=None); pv17(alphaCount=0, cov=None); mfm_model_output(alphaCount=0, cov=None)
+- 已判死（勿重试）：AMR-ANALYST48-DIVYIELD-GEOM-CEILING-WALL, AMR-PV37-TICKSTAT-SIGNAL-CROWDING-DEAD

@@ -10,11 +10,29 @@ static:
   neutralization_default: STATISTICAL
   notes: "长窗结构有效面，单看 IS Sharpe 会误杀；中性化最优 STATISTICAL（TOP500+STATISTICAL 16 颗 avg prod 0.588 vs SUBINDUSTRY 0.679；行为族 SUBINDUSTRY 使 S 腰斩 2.36→1.28，WorkBuddy 记忆 2026-10-01 / 10-03；DEC-19 同向）"
 datasets:
-  red: [anl39, qfl, pv106, option1, earnings3, earnings11, shortinterest5]
-  red_reason: "均已判死并回写 dead_end（详见正文「证据附录」与 get_dead_ends(IND)）"
+  red:
+    - datasets: [earnings11, earnings3, option1, shortinterest5]
+      reason: "均已判死并回写 dead_end（详见正文「证据附录」与 get_dead_ends(IND)）（键 = ledger *_dead ∪ 旧 red 文本 id；明细查 get_dead_datasets）"
+    - scope: family
+      families: [anl39, qfl]
+      reason: "均已判死并回写 dead_end（详见正文「证据附录」与 get_dead_ends(IND)）"
+    - scope: family
+      families: ["pv106 spread/slippage/liquidity-shock 族"]
+      reason: "族级判死：IND-PV106-LIQUIDITY-SHOCK-DEAD（w188 八探针 max |S| 1.01 + CW）+ slippage_transaction_cost（2026-09-17 标记 do not probe）；整集未死（成本分布形状族有胜绩，见 green）"
+    - scope: family
+      families: ["model77 / model170 质量分与估值缺口", "mdl68", "mdl313", "other571 Wikipedia 注意力", "global_seasonal 事件旗标"]
+      reason: "IS 层就死（S 0.07–1.22，2026-10-02/03 的 20 批扫描；WorkBuddy 记忆 RULES §H）"
+    - scope: family
+      families: ["pv47 特质反转（ac593）", "尾盘反转", "anl9"]
+      reason: "拥挤族：IS 强（S 2.2–4.5）但 prod 全部 0.78–0.99（族墙型，见决策表 D0-P 诊断前置）；IS 强度与 prod 新颖度负相关"
+  green:
+    - scope: family
+      families: ["pv106 成本分布形状族（transaction_cost max/median 尾部脆弱度）"]
+      note: "win Wj7YP5JN S=1.85/F=1.51/prod 0.3051（IND-PV106-COST-FRAGILITY-WIN）；⚠ 该 win 的 add(主腿, -0.15×反腿) 加权架构属 2026-09-13 起禁止形态，新候选须换合规结构（ts_corr/if_else/事件门控）复现同一机制"
+    - scope: family
+      families: ["已点亮塔不作主数据集，只作组腿辅助——2026-09-19 用户定案（当时的快照：analyst / model / risk / other / fundamental；塔计数按自然季度清零，现状一律查 `campaign_intel.py pyramid --region IND`）；旧版把 mdl177 / 慢变量基本面集列为 green，与该定案相反"]
+      note: "迁移自旧 green_note"
   yellow: [pv103（尾盘反转族被外部孪生堵死：仅作 trade_when 组腿的主信号原料）, option30（fitness 天花板）, news85, news84, news54（未探）]
-  green: []
-  green_note: "已点亮塔（analyst / model / risk / other / fundamental）不作主数据集，只作组腿辅助——2026-09-19 用户定案；旧版把 mdl177 / 慢变量基本面集列为 green，与该定案相反"
 priors:
   signal_families_include: [long_window_structure]
   signal_families_exclude: [anl39_family, qfl_family, model77_quality_valuation, mdl68_family, mdl313_family, wikipedia_attention, global_seasonal_event_flag, crowded_reversal_pv47]
@@ -53,7 +71,7 @@ IND TOP500 的有效面在**长窗结构**：mdl177 族已产 3 颗 ACTIVE，共
 
 ## 硬规则：战役选集（2026-09-19 用户定案）
 **已点亮塔不开战役**：当季已点亮的类别不再作主数据集选波，只能作组腿辅助。**塔计数按自然季度清零**，哪些塔已亮一律现查 `python tools/campaign_intel.py pyramid --region IND`（2026-09-19 的快照是 analyst(5, 含 pwRJmvP3) / model / risk / other / fundamental；2026-10-01 起已清零重算，不要再按这份旧名单剔数据集）。
-可挖面 = pv（2/3，pv103 尾盘反转族被外部孪生堵死、pv106 判死）、option（option30 fitness 天花板、option1 判死）、earnings（earnings3/earnings11 判死）、news/sentiment（news79/nst/sentiment21/earnings11 判死，news85/84/54 未探）、insiders/institutions/shortinterest/macro/imbalance（判死或字段<5）。
+可挖面 = pv（2/3，pv103 尾盘反转族被外部孪生堵死；pv106 族级分化——spread/slippage/liquidity-shock 族判死，成本分布形状族有胜绩 Wj7YP5JN，见 front-matter green）、option（option30 fitness 天花板、option1 判死）、earnings（earnings3/earnings11 判死）、news/sentiment（news79/nst/sentiment21/earnings11 判死，news85/84/54 未探）、insiders/institutions/shortinterest/macro/imbalance（判死或字段<5）。
 
 ## 流程变体（相对九步骨架）
 
@@ -133,3 +151,9 @@ GEM 的 priors 须携带 `syntax_patterns`（DB 快照 `priors_snapshot_<region>
 ④ prod 只由**函数形态**决定：z-score / ts_rank 形态恒 0.73-0.75（2 条外部 prod alpha），**"偏离 1 年均值 / abs(均值)" 形态降到 0.65-0.67**，分桶/中性化/decay 都不改 prod；
 ⑤ SECTOR 中性化 S +0.1~0.3 但 robust −0.05~0.1，不用于 robust 卡线者；⑥ ts_mean 504/66 基线、ts_decay_linear 基线、/cap、/close 都更差。
 跨区：同信号 USA |S|≤0.09、GLB ≤0.08、HKG 0.64、JPN 不可用（无 pv1 且 VECTOR+ts_* 报错）——**IND 独有**。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：pv1(alphaCount=276278, cov=1); model39(alphaCount=114991, cov=0.97); model110(alphaCount=64943, cov=0.79)
+- 白空间候选（未测 + 覆盖≥60% + 低 alphaCount）：pv70(cov=1, alphaCount=8); news_sentiment_nlp(cov=0.67, alphaCount=103); model170(cov=0.74, alphaCount=143); model68(cov=0.78, alphaCount=153); other635(cov=0.63, alphaCount=164)
+- 已判死（勿重试）：IND-EARNINGS3-TIMING-DEAD, IND-INTRADAYPV-PRICEVOLUME-CORR-REVERSAL-PRODWALL, IND-NEWS85-DNN-SENTIMENT-DEAD, IND-OPTION30-OS-SURPRISE-FITNESS-CEILING, IND-PV103-LASTHOUR-REVERSAL-PROD-TWIN, IND-PV106-LIQUIDITY-SHOCK-DEAD, IND-SHORTINTEREST5-PRICEBAND-DEAD, pv106
+- 实证笔记：model135: prod墙0.83攻坚失败：族内互相关0.65+自相食，15颗队列全判死，仅d5jJebLv已ACTIVE | analyst45: wave131-135 判死：信号真实但robust结构性墙0.36-0.60 | other315: wave129/130 判死：稀疏事件空持仓+新鲜度死墙 S天花板1.41 | behavioral_signals: Mode B 优化：ts_mean(20) 通过 Turnover 硬闸（17.53%），Fitness 1.09，但 robust 0.36；需继续优化或换方向

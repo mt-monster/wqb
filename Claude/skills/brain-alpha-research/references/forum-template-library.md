@@ -39,6 +39,37 @@
 `1/ts_ir(x, d)` — 变异系数（std/mean）的无量纲离散度，用 ts_ir 间接实现。
 适用：低频更新数据（analyst/fundamental）的波动稳定性信号。注意低频数据 CV 不稳定。
 
+### C+. `group_neutralize(ts_ir(vec_avg(<growth_field>), W), group)` — 增长一致性模板（forum 43798292615703, 2026-09-27）
+
+**原文**：`fnd42_mom_percent_monthly_sale`（VECTOR，**月度环比增长**）/ TWN / **TOP500** / D1 / sector / W=252。
+原文结果 S=2.22 / F=2.23 / T=12.59% / 2Y=2.81 / SUB=1.58 / prod=0.5852。
+机制：`ts_ir`（均值/波动）衡量**长期增长的一致性**，不是单月爆发。
+
+**★ 本项目三区实测（2026-10-01，GLB + USA 共 30 条探针）——机制方向成立，但绝对增益强依赖字段更新频率：**
+
+| 区/数据集 | 字段类型 | 最优 S | 数据 |
+|---|---|---|---|
+| 原文 TWN fnd42 | **月度环比**（高频） | **2.22** | author-posted |
+| GLB fundamental28 | 年度/季度增长率 | **0.73**（v6 opinc_growth） | 12 条全灭，全部 2Y FAIL |
+| USA ai_equity_alpha | VECTOR 财报增长率（季度/年度） | **1.07**（v2o，W=66）/ 1.15（v2q，2Y FAIL） | 18 条全灭 |
+
+**排序方向三区一致复现**：`ts_rank < ts_zscore < ts_ir`（GLB：−0.68 < −0.36 < −0.08；USA：对照 v2r zscore 0.40 vs v2p ir 0.93）⇒ **改进方向对，幅度不对。**
+
+**★ 窗口证据**：W=66（v2o）S=1.07 是本项目唯一 S>1.0 且 2Y PASS 的；W=252（v2a）S=0.78；W=504（v2n）S=0.89 ⇒ **短窗更接近原文的高频特性**，支持"高频字段才养得出 ts_ir"的诊断。
+
+**★ 结论（重要）**：
+- **该模板只适用于"月度/高频 delta 型"增长字段**（原文的 `mom_percent_monthly_sale`）。搬到**季度/年度财报表征类**字段（fundamental28 / ai_equity_alpha 的 growth 族）后，观测序列太稀疏，`ts_ir` 退化成噪声 ⇒ **不要用报表类增长率字段套此模板**。
+- 同一数据集（ai_equity_alpha 的 growth 族）内，**`ts_ir` 单字段形态 S≈0.8~1.1，而双口径价差形态（`subtract(vec_avg(A),vec_avg(B))`+`ts_zscore`+`group_rank`+`ts_decay_linear`）S≈2.4** ⇒ 报表类数据集的收益来源是**"同一经济量的不同估计口径之差"**（估计分歧），不是"增长一致性"（时序动量）。**选形态优先于选算子。**
+- 若要在无 TWN 权限下复现原文，**必须找到"月度/环比"高频增长字段**（keyword：`mom_percent` / `_1m` / `_mom_` / monthly），而非 `_growth_rate` / `_growth_metric`（多为 FY / 季度）。
+
+## 使用规则
+
+1. 每个模板代入字段前，先过 `gate.py`（语法 / 幽灵算子 / 元数）+ 确认算子签名（命名参数坑：winsorize std=、ts_decay_linear dense=、hump hump=、ts_backfill lookback=）
+2. B 体系模板空间大（1240+），优先按经济含义定向生成，不要全空间枚举
+3. D 模板高 turnover 信号必须配 decay≥12 或长窗（本项目 GLB 实测 decay16+250 窗解决 margin）
+4. 模板与数据集匹配度：先查 WebDataScope 数据体检（分布形状/频率）再选模板族
+5. **模板迁移前先核对"字段更新频率"是否匹配模板假设**：`ts_ir`/CV 类模板假设高频序列（月度/日度），套在季度/年度报表字段上会退化（见 C+ 实测）。
+
 ## D. 动量/反转模板（forum 35771635460247, 2025-10-21，出信号率非常高）
 
 `(+/-)ts_max_diff/ts_av_diff(<norm>(F), day)`

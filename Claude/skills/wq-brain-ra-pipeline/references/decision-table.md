@@ -175,7 +175,8 @@
 | --- | --- |
 | Regular Alpha：OS ACTIVE ≥ 10（用户给目标 N 时按 N） | **停**，可转 SuperAlpha（平台要求本区已 ACTIVE 的 REGULAR ≥ 10） |
 | PPA 日循环：submit-ready ≥ 4 | **停**（操作约定）。PPA 走**独立配额 `POWER_POOL_SUBMISSION` 1 / ET 日**，与 `REGULAR_SUBMISSION` 4 / 日**并行、不互占**；当天应先提 PPA 那一颗 |
-| 配额有槽（`python tools/quota_status.py`）且**用户确认** | POST submit（`worldquant-submit-alpha`；**不可逆**） |
+| 配额有槽（`python tools/quota_status.py`）且**用户确认** | POST submit（`worldquant-submit-alpha`；**不可逆**）。**2026-10-02 起节点自动前置三闸**：`_submit_gate`（模拟层 FAIL / 硬闸 WARNING / Failed RA·PPA / **robustness 台账 REJECT**）+ 配额闸（ET 今日满 4 → blocked）+ **prod 闸**（`check_correlation(production, refresh=True)`，max ≥ 0.7 或未出数 → blocked，fail-closed）——人工只需确认「用户明确确认」一项；`force` **不豁免** prod / 配额闸（prod 须显式 `allow_prod_above_07=True` 留痕） |
+| 提交前未跑 robustness 审计 | 台账 `robustness_<alpha_id>` 无记录时，节点仍要求 `robustness_audited=True` 显式声明（fail-closed）；**审计结论落台账后本声明闸降为辅助**（REJECT 由 `_submit_gate` 直接拦下） |
 | 提交响应异常（201 / 空体 / 403） | 按 `worldquant-submit-alpha` 的四态表处置；**不再有「201 + success:false 是工具 bug」的说法**（D1 已删） |
 | 同数据集同腿兄弟 | 相关性 0.82–1.0，提交前 `compute_mutual_correlation` 核查 |
 | PPA 提交 | 仅当 `get_messages` 主题匹配**且**用户确认；**合法 PPA 只能走平台 web UI**（MCP 通道不感知 PPA），agent 停下交接（`ppa-vs-ra.md`） |

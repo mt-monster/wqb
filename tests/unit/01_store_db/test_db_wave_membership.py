@@ -22,7 +22,7 @@ def test_wave_membership_is_backtest_provenance(tmp_path, monkeypatch):
         "db_wave_membership_test", Path(__file__).resolve().parents[3] / "wqb_db_mcp.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    monkeypatch.setattr(module, "DB_PATH", path)
+    module.set_db_path(path)        # 读写同源；隔离失效由 get_db_path() 的结果闸兜住
     assert [x["alpha_id"] for x in module.list_alphas_by_wave("EUR", 251)] == ["OLD"]
     rows = module.list_alphas_by_wave("EUR", 252)
     assert [(x["alpha_id"], x["region"], x["wave_number"]) for x in rows] == [("NEW", "EUR", "252")]

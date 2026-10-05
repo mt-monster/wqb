@@ -26,7 +26,7 @@ allowed-tools:
 | 概念 | 存放 | 读 | 写 |
 |---|---|---|---|
 | 区域静态配置（合法 universe / delay 档位、默认中性化） | `regions` 表（`universe_legal` / `delay_legal` / `neutralization_default`）；**权威清单是 `src/wqb/config.py::REGIONS`** | `get_region_config` | 表行在该区首次入库时由 `CampaignStore` 自动建；档位内容以 `get_platform_setting_options` 实测为准并写进 `config.REGIONS`，**不外推别区档位** |
-| 数据集资产（类别 / 字段数 / 覆盖 / 拥挤度 / tier） | `datasets` 表（`catalog_json` 为 typed catalog） | 字段级 `mcp__wqb-db__get_field_catalog`；数据集清单以平台 `mcp__wq-brain-http__get_datasets` 为准（本地表是缓存） | `tools/discover_datasets.py` / `tools/ingest_dataset_assets.py`；字段级由 toolkit `scan_fields.py` |
+| 数据集资产（类别 / 字段数 / 覆盖 / 拥挤度 / tier） | `datasets` 表（`catalog_json` 为 typed catalog） | 字段级 `mcp__wqb-db__get_field_catalog`；数据集清单以平台 `mcp__wq-brain-http__get_datasets` 为准（本地表是缓存） | `tools/discover_datasets.py` / `tools/fetch_dataset_assets.py`（直连入库）；字段级由 toolkit `scan_fields.py` |
 | 死路（dead_end） | `registry_empirical` · `layer='dead_end'` | `get_dead_ends` | RA 步 9 §9.5（`seal_dead_end`）或 CLI `add-dead-end` |
 | 胜绩（win） | `registry_empirical` · `layer='win'` | assemble-priors / SQL | RA 步 9 §9.6 或 CLI `add-win` |
 | 数据集战役进度 | `registry_empirical` · `layer='campaign'`（`status` ∈ untried / in_progress / exhausted） | `get_campaigns` | CLI `upsert-campaign` |
@@ -63,6 +63,12 @@ allowed-tools:
 | `candidate_datasets[]` | campaign 层 `untried` / `in_progress` 的集。**是待 S0 筛选的超集，不是白名单**：已点亮塔的剔除、win 族与跨区弱先验的并入、体检硬门，全由 S0（RA 步 2）执行，本 skill 不重复实现 |
 | `prod_risk` | `high`：候选数据集 / 信号族与某条 `dead_end`（`reason` 含 PROD_CORRELATION 类墙）重叠，并附该条 `id`；否则 `none` |
 | `prod_saturation` | `likely`：`tools/region_status.py --regions <R> --json` 的 `pass_ge_158 ≥ 10`；`no`：< 10；`unknown`：该区没有回测记录。**口径只此一处**（next-move §5.5 同源，勿另写第三份实现）。这两个标注只作 S2 的方向提示（信号族 PROD 风险高时优先正交方向）；撞墙后怎么处置只看 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md) |
+
+> **⚠ 选集铁律（2026-10-02 实证，开波前必读）**
+> 1. **硬地板是区域动态的**：逐区配在 `tracking/<R>/config/thresholds.json::dataset_health`（`coverage_hard_min` / `field_count_hard_min` / `alpha_count_max` / `tier1_score_pct`），另有 `src/wqb/config.py` 的**全局绝对底**。实测差异：USA `0.65/5/50/P80`、GBR `0.65/10/1000`、EUR `0.6/10/1500`、DEU/IND/KOR `0.5/5/1500`。**禁止凭记忆跨区套用，禁止把某个区的 whitelist note 当通用口径。**
+> 2. **硬地板 ≠ S0**：真 S0（`score_datasets.py`）是 6 道叠加 = 硬地板 + `assign_quantile_tiers`（tier1≥本区 **P60** / tier2≥**P30**，区域自适应）+ `crowd_band` 保底 + `category_weight` + `empirical_prior` + `saturation_demotion`。**禁止手写几行 filter 冒充 S0**（读本地 `datasets` 缓存更差——是过期快照）。**唯一权威 = 跑 `score_datasets.py --campaign-dir tracking/<R>`，读它写的 ledger `s0_ranking`**（含 `tier` / `score` / `pyramid_view`）。反例（真实踩坑）：手写 `cov≥0.6 & ac≤1500 & flds≥10` 选出 4 个目标，权威 S0 一跑 3 个是 `excluded`，3 个 GEM 白跑。
+> 3. **白名单 = 三重交集**：`S0 tier1/tier2` ∩ **非 registry dead_end** ∩ **本区未测**（`backtest_results` 零行）。⚠ **S0 榜只剔 `_dead` ledger 键**（EUR 仅 4 个），**不读 registry 的 `dead_end` 层**（EUR 137 条）⇒ 只信 S0 榜会把区域级判死族当候选（EUR 的 news17/20/31/48、model354、analyst_earnings_ibes 在 S0 里是 tier1 alive）。
+> 4. **TRI 闸（`s1_triage_<region>`）与 S0 是两道独立闸**，会互相否决（S0 tier 却 TRI `block` / TRI ★ 却 S0 `excluded`）——**落地前两闸都要过**。跨区"未测"最容易被误当"机会"，用本三重交集过一遍再开 GEM。
 
 完整样例（KOR / regular；数据集名与条目为**格式示意**，真值以查表为准）：
 

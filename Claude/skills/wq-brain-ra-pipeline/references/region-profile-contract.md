@@ -45,3 +45,39 @@ profile 正文按下面的顺序写，agent 想查「这个区能挖什么」时
 | ALL | 平台 `get_platform_setting_options` 有（D1，LARGE / MEDIUM / SMALL），**不在** `config.REGIONS`；REGULAR 仿真返回 400「Region ALL is not available for simulation type REGULAR」（2026-09-19 当日实测，未复核） | 不是挖掘区，步 1 拒绝 |
 
 区域清单与 profile / 战役目录的对齐表在 [INDEX §区域清单](../../INDEX.md)（权威是 `config.REGIONS`）。
+
+## 5. datasets 精确层与漂移钩子（2026-10-01 落地）
+
+**背景**：旧版 `datasets.green/red` 是自由文本（`analyst 系（评级/预期）`），无法机检——KOR 实证：profile 写着「烧不起配额、8 探针即判死」却 37 天未核对，跨区死族混进白名单。2026-10-01 全部 14 个 profile 一次性迁移为结构化形态（`tools/migrate_profile_datasets.py`，一次性工具，不留兼容层）。
+
+**新形态**（green / red 各为条目列表；yellow 保持简单标量列表）：
+
+```yaml
+datasets:
+  red:
+    - datasets: [model109, model170]     # 数据集级（精确层）：id 必须落在 datasets.name（本区）
+      reason: "已判死（ledger *_dead）"
+    - scope: family                       # 族级：本来就不绑定单个数据集（如 glb_emotion）
+      families: [chart_patterns, ai_ml]
+      reason: "3 连死"
+  green:
+    - datasets: [other466]
+      note: "registry win 层实证绑定"
+```
+
+**漂移钩子（profile 接回流水线的机制）**：`upsert_registry_empirical` 在 `layer ∈ {win, dead_end}` 写入成功后，自动跑一次 `wqb.profile_drift.check_profile_drift`，完整报告幂等写入 ledger 键 `profile_drift`，摘要（`needs_refresh` / `summary` / `hint`）随回写返回值带出。**fail-open**：检查失败只降级为提示，绝不阻断回写本体。
+
+判定全部是集合运算（实现与判据表的唯一来源 = `src/wqb/profile_drift.py` 模块 docstring）：
+
+- **high（触发 needs_refresh）**：`green_but_dead`（green 收录但 ledger `*_dead` 已整集判死）/ `red_but_won`（red 收录但 win 层有胜绩）
+- **medium**：`green_but_family_dead`（green 收录但 dead_end 层有族级判死——族死 ≠ 整集死，人工核实）/ `unknown_dataset_ref`（引用不在本区 `datasets` 表）/ `dead_not_listed`（整集判死但 red 未收录）/ `win_not_listed`（胜绩未认领）
+- **low**：`stale_last_verified`（last_verified 早于最近一次实证回写——提示复核，不构成 needs_refresh）
+
+**两档死亡证据严格分开**：ledger `*_dead` = 整集判死（唯一无歧义）；registry `dead_end` 的 `payload.dataset` = 该集语境下某族死了。族级死**不**驱动 `dead_not_listed`（族死不妨碍 S0 选该集其它族）。
+
+**纪律**：
+- 钩子只报告，**永不自动改 profile**——修改永远人工复核后做，并 bump `last_verified`（§3 的禁批量规则不变）。
+- 新增 win/dead_end 条目**必须**带 `payload.dataset`（canonical id，本区 `datasets.name` 内）才能进精确层；不带的记 `unbound_entries` 计数并提示——不补绑的条目永远停在 advisory 层（这是逼着补齐的杠杆）。
+- 全区体检：`python tools/profile_drift_check.py --all`（`--write-ledger` 落台账）；退出码 1 = 存在 high 级冲突。
+- 回归：`tests/unit/01_store_db/test_profile_drift.py`。
+

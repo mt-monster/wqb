@@ -48,25 +48,55 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S1"  dataset=$DS
 
 ```
 python tools/field_semantic_classify.py --region $REGION --dataset $DS --write-ledger
-#   产出 ledger `s1_semantic_<ds>`：signal_fields / blocked_fields / by_category
+#   产出 ledger `s1_semantic_<ds>`：
+#     signal_fields / blocked_fields / by_category     （L3 语义归类）
+#     families / family_stats                          （L3.5 结构族，2026-10-01 新增）
+
+# 批量补跑（2026-10-01 新增；清历史欠账用）：
+python tools/field_semantic_classify.py --region $REGION --all --write-ledger
+#   默认只跑「有 catalog ∧ 有字段 ∧ 未判死」的活跃集；已有台账的跳过。
+#   --dry-run 只列清单 / --force 连已有也重跑。
 ```
 
 **时间朝向提示（2026-10-04 新增；只提示、不拦截）**：输出里有 `-- 时间朝向提示 --` 一段与台账的 `orientation_stats`：把信号字段标成 `realized`（`actual_*` / `reported_*`，已实现、事后）/ `forecast`（`mean_estimate_*` / `forecast_*` / `consensus_*`，预测、前瞻）/ `mixed`（surprise 之类，两类都命中）。**字段族名要逐词读**：同一数据集里已实现与预测是两个完全不同的信号源——GLB analyst_consensus 前 16 条全灭，真因是选了 `actual_*`（已实现、无预测力），换成 `mean_estimate_*` 后同结构大幅提升；当时被误诊成「窗口不匹配」，多烧了一轮。两类并存时先各出 1 批探针比较，别默认从 `actual_*` 起手。口径是名字词元锚定 + 描述开头，不会拦任何字段（`actual − estimate` 的 surprise 是合法构造）。
 
-**归类口径**（`tools/field_semantic_classify.py` 内可改）：非信号黑名单 = 货币 / 报表币种代码、汇率换算（叉乘多为恒等式）、标识符（country / iso / ticker / cusip / isin / gvkey）、分类码与标志位、日期期间口径、股份类别标签；信号字段按经济大类分桶（valuation / profitability / growth / cash_quality / leverage_solvency / efficiency / liquidity_risk / size_level / per_share / dividend）。
+**归类口径**（`tools/field_semantic_classify.py` 内可改）：非信号黑名单 = 货币 / 报表币种代码、汇率换算（叉乘多为恒等式）、标识符（country / iso / ticker / cusip / isin / gvkey）、分类码与标志位、日期期间口径、股份类别标签；信号字段按经济大类分桶（valuation / profitability / growth / cash_quality / leverage_solvency / efficiency / liquidity_risk / size_level / per_share / dividend）**+ 技术指标大类**（tech_trend / tech_momentum / tech_volume / tech_volatility）。
 
-**fail-closed 的真实范围（单重 + 一项人工约定，不是「双重」）**：
+> **★ 2026-10-01 两处扩展**（出处：`output_report/field_analysis_demo_model264_20261001.md`）：
+> ① **技术指标大类前置**——此前 304 个技术指标（Bollinger / ADL / Amihud / Money Flow / Stochastic）因描述含 `change`/`trend` 被 `growth` 规则抢走，全部误归「成长/趋势」；`TECHNICAL_CATEGORIES` 现插在 `ECON_CATEGORIES` **之前**匹配。实测 `growth` 从 304 → 248，另分出 `tech_volume 24 / tech_trend 20 / tech_momentum 12`。
+> ② **L3.5 结构族**——把同源字段（`<前缀>_l1/_l2/_l3/_class/_se`）聚成族，`families` 段输出。**族是 L4 机制推理的最小单位，不是单个字段**。实测 GBR/model264：380 信号字段 → 161 族，其中 **36 个三分类概率族全部齐全**。
+>
+> **完整方法论（四层漏斗定义、L4 形态构建五步法、三源验证、合规红线）见** [`signal-hypothesis-construction.md`](signal-hypothesis-construction.md)。**L3/L3.5 只划边界、不产信号；信号来自 L4**——不要把本步的字段池当终点。
+
+**fail-closed 的真实范围（单重 + 两处生成侧消费，2026-10-01 修复后）**：
 
 | 位置 | 行为 | 由谁保证 |
 |---|---|---|
 | 步 5 `tools/wave_gate.py` 闸 SEM | 缺 `s1_semantic_<ds>` → **exit 2 整波阻断**并打印生成命令；命中黑名单字段的表达式**直接剔出候选** | **代码**（`tests/unit/04_gates/test_semantic_gate_failclosed.py`：删闸即红） |
-| 步 4 GEM `economic_field_pool_check` | 自己用 `build_economic_field_pool` 建字段池（缓存命中则沿用旧池），**并不读 `s1_semantic_<ds>`**，也不会因它失败 | **无代码保证**——不要以为 GEM 侧已过滤 |
+| 步 4 GEM 字段池（`build_economic_field_pool` / `build_candidate_field_pool`） | 建池前按 `s1_semantic_<ds>.blocked_fields` **剔除非信号字段**，payload 带 `semantic_filter` 元数据 | **代码**（`tests/unit/01_store_db/test_semantic_field_pool_filter.py`），**fail-open**：台账缺失即不剔（过滤是减负，不是把关） |
+| 步 3 S1 节点（`workflow_campaign(stage="S1")`） | 附带一次语义覆盖检查：缺台账 → 自动跑 `field_semantic_classify.py --write-ledger`（本地零配额秒级） | **代码**（`tests/unit/02_workflow/test_s1_semantic_autoclassify.py`），**fail-open**：脚本失败只 warning |
 
-「把语义干净的字段重排回 GEM 字段池」（写 `s2_field_pool_<ds>`）目前**没有任何命令**实现，属人工约定；它不是安全网。**最容易被绕过的一处就是这里**——过滤只在闸 SEM 才真正落地。
+> ★ **2026-10-01 断流修复（止血 A + 通气 B）**：此前 `s1_semantic_<ds>` 只被步 5 闸 SEM 消费，**
+> 生成侧完全不读**——等于「先生成后治理」，非信号字段照样进表达式直到闸才被剔。
+> 实测 `IND/insiders1` 的字段池含 `transaction_currency_code` / `insd1_gvkey`（22.2% 是垃圾）。
+> 同时实测语义台账覆盖极低：**catalog 697 个 vs s1_semantic 33 个（4.7%）**，EUR/IND/GLB/JPN 全为 0
+> ——闸 SEM 在多数区域只能靠「阻断」而非「过滤」生效。
+> 现修：① 字段池建池前剔除非信号字段（`POOL_BUILDER_VERSION` 3→4，旧池强制重建）；
+> ② S1 默认附带语义归类。**A 依赖 B**——`semantic_filter.ledger=False` 的地方过滤不生效，
+> 必须先把该集的语义台账跑出来。
 
-**模式**：`--semantic-gate {off,warn,enforce}` / `WQB_SEM_MODE`，**缺省 `enforce`**。`off`（= `--skip-semantic-gate`）是唯一逃生口，必须显式传、会打印醒目告警，且须先有 `semantic` waiver（AGENTS.md §8.1.2）；`warn` = 缺台账仅告警（黑名单剔除仍生效）。三个同构闸的缺省不同（SEM enforce / 体检 warn / 区域闸按日期），见 [INDEX 总表](../../INDEX.md)。
+> ★ **清历史欠账（存量批量补跑）**：全区域实测 **409 个活跃集 / 380 个待跑**，一次清掉：
+> ```
+> for R in USA KOR GBR EUR IND GLB ASI DEU JPN CHN HKG AMR MEA; do
+>   python tools/field_semantic_classify.py --region $R --all --write-ledger
+> done
+> ```
+> 口径 =「有 catalog ∧ 有字段 ∧ 未判死」——**幽灵键必须排除**：实测 249 个 `cache_*` 前缀
+> 的 catalog 键在 `fields` 表零字段（如 IND/cache_earnings3），只按「有 catalog 键」选会把
+> 37% 的工作量浪费在跑不出结果的键上。判死排除复用 `wqb.profile_drift.dead_dataset_index`
+> （禁另写一份判死口径）。
 
-> ⚠ **产物是「字段池」，不是 ideas**——严禁把本步结果当 `ideas.md` 注入 GEM（同 3.4）。本步约束的是**哪些字段可用**，不是**怎么组合**。
+> ⚠ 产物是「字段池」，不是 ideas——严禁把本步结果当 `ideas.md` 注入 GEM（同 3.4）。本步约束的是**哪些字段可用**，不是**怎么组合**。
 
 ## 3.6 失败分支
 
@@ -76,3 +106,4 @@ python tools/field_semantic_classify.py --region $REGION --dataset $DS --write-l
 | VECTOR 比例高 | `get_datafields` 确认 | 步 4 必须传对 `data_type` |
 | `catalog_<ds>` 覆盖为空 | 铁律 ① | 写 `<ds>_dead`，换集 |
 | wave_gate 报缺 `s1_semantic_<ds>` | exit 2 | 跑上面的 classify 命令；不要 `--skip-semantic-gate` 蒙混 |
+| 字段池的 `semantic_filter.ledger` 为 `false` | 该集语义台账缺失 | 过滤未生效（fail-open）；跑 `field_semantic_classify.py --write-ledger` 补齐后重建池 |

@@ -298,6 +298,22 @@ def _region_whitelist_datasets(campaign_dir, region):
             import sqlite3
             conn = db_connect(db_path)
             try:
+                # ★ 走「有效白名单」单源：归一 + 剔除本区已判死集（2026-10-01）。
+                # 判死可能发生在白名单写入之后（GBR/news48 即此例），故必须在读取侧过滤。
+                try:
+                    wroot = resolve_workspace_root(campaign_dir)
+                    _src = os.path.join(wroot, "src") if wroot else None
+                    if _src and os.path.isdir(_src) and _src not in sys.path:
+                        sys.path.insert(0, _src)
+                    from wqb.ledger_whitelist import effective_datasets as _eff
+                    keep, dropped = _eff(conn, region)
+                    if dropped:
+                        print(f"[whitelist] {region}：白名单剔除已判死集 {dropped} "
+                              f"（判死晚于白名单写入，本区须重跑 S0 刷新）", file=sys.stderr)
+                    if keep or dropped:
+                        return keep, None
+                except Exception:
+                    pass
                 row = conn.execute(
                     "SELECT value FROM ledger_kv WHERE region=? AND key='s0_whitelist'",
                     (region,)).fetchone()

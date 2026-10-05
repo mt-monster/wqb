@@ -702,6 +702,63 @@ async def _cmd_pyramid(a):
 # s4-prescreen：S4 预筛压缩（batch_get_alpha_metrics 分层）
 # ---------------------------------------------------------------------------
 
+def _load_prescreen_row():
+    """取 `_lib/prescreen.prescreen_row`（唯一口径源）。找不到返回 None（调用方走内联兜底）。
+
+    2026-10-02 P1：三处预筛口径分裂的收敛点。优先仓库副本，再退安装位
+    （安装位 `~/.claude/skills` 可能滞后本仓，实测其无 prescreen.py）。
+    """
+    import os as _os
+    import sys as _sys
+    # 从本文件位置**向上找**含 Claude/skills/wq-brain-campaign-toolkit/scripts 的仓库根，
+    # 不写死层级（2026-10-02：写死 fixed-depth 曾在 src 侧 off-by-one 踩坑，这里一并防）。
+    _d = _os.path.dirname(_os.path.abspath(__file__))
+    _repo = None
+    for _ in range(6):
+        _cand = _os.path.join(_d, "Claude", "skills",
+                              "wq-brain-campaign-toolkit", "scripts")
+        if _os.path.isfile(_os.path.join(_cand, "_lib", "prescreen.py")):
+            _repo = _cand
+            break
+        _nd = _os.path.dirname(_d)
+        if _nd == _d:
+            break
+        _d = _nd
+    _cands = [_repo] if _repo else []
+    if _os.environ.get("WQB_ROOT"):
+        _cands.append(_os.path.join(_os.environ["WQB_ROOT"], "Claude", "skills",
+                                    "wq-brain-campaign-toolkit", "scripts"))
+    for _c in _cands:
+        if _c and _os.path.isfile(_os.path.join(_c, "_lib", "prescreen.py")):
+            if _c not in _sys.path:
+                _sys.path.insert(0, _c)
+            try:
+                from _lib.prescreen import prescreen_row as _pr  # type: ignore
+                return _pr
+            except Exception:  # noqa: BLE001
+                return None
+    return None
+
+
+def _legacy_tier(item):
+    """内联兜底分层（`_lib/prescreen` 不可达时）。口径与旧实现一致。"""
+    sharpe = item.get("sharpe") or 0
+    fitness = item.get("fitness") or 0
+    two_year = item.get("two_year_sharpe") or 0
+    prod = item.get("prod_correlation")
+    selfc = item.get("self_correlation")
+    prod = 0 if prod is None else prod
+    selfc = 0 if selfc is None else selfc
+    tvr = item.get("turnover") or 0
+    hard_pass = (sharpe >= 1.58 and fitness >= 1.0 and two_year >= 1.58
+                 and prod <= 0.7 and selfc <= 0.7)
+    if hard_pass and 0.04 <= tvr <= 0.40:
+        return "READY"
+    if sharpe >= 1.0 or fitness >= 0.5:
+        return "REVIEW"
+    return "REJECT"
+
+
 async def _cmd_s4_prescreen(a):
     from brain_api import BrainApiClient  # noqa: F402
     brain = BrainApiClient()
@@ -717,11 +774,14 @@ async def _cmd_s4_prescreen(a):
 
     # 逐条拉详情并分层（复刻 tools_alpha.batch_get_alpha_metrics 的分层逻辑，
     # 直接调 brain_client.get_alpha_details，不依赖 MCP 工具层包装）。
-    # 硬闸口径与 judge 节点一致：sharpe>=1.58 / fitness>=1.0 / 2Y>=1.58 /
-    # prod<=0.7 / self<=0.7 / turnover 0.04~0.40。
-    SHARPE_MIN, FITNESS_MIN, TWO_Y_MIN = 1.58, 1.0, 1.58
-    PROD_MAX, SELF_MAX = 0.7, 0.7
-    TVR_LO, TVR_HI = 0.04, 0.40
+    # 2026-10-02 P1：口径收敛到 `_lib/prescreen.prescreen_row`（唯一源）——此前本命令与
+    # auto_review / review_wave 三处各自一套常量，实测同批三种结论；且 `or 0` 把 NULL 当 0
+    # 静默判死（全库 222 行 sharpe≥1.58 且 fitness≥1.0 但 2Y 缺失者受影响）。
+    # 在线版唯一额外输入 = prod/self（平台详情有，离线表没有），由 prescreen 的 prod/self 闸承接。
+    _ps_row = _load_prescreen_row()
+    THRESH = {"sharpe_min": 1.58, "fitness_min": 1.0, "two_year_min": 1.58,
+              "prod_corr_max": 0.7, "self_corr_max": 0.7,
+              "turnover_min": 0.04, "turnover_max": 0.40}
 
     all_results, prescreen = [], {"READY": [], "REVIEW": [], "REJECT": []}
     for aid in alpha_ids:
@@ -747,22 +807,11 @@ async def _cmd_s4_prescreen(a):
             continue
         all_results.append(item)
 
-        sharpe = item["sharpe"] or 0
-        fitness = item["fitness"] or 0
-        two_year = item["two_year_sharpe"] or 0
-        prod = item["prod_correlation"] if item["prod_correlation"] is not None else 0
-        selfc = item["self_correlation"] if item["self_correlation"] is not None else 0
-        tvr = item["turnover"] or 0
-        hard_pass = (sharpe >= SHARPE_MIN and fitness >= FITNESS_MIN
-                     and two_year >= TWO_Y_MIN and prod <= PROD_MAX and selfc <= SELF_MAX)
-        any_signal = sharpe >= 1.0 or fitness >= 0.5
-        tvr_ok = TVR_LO <= tvr <= TVR_HI
-        if hard_pass and tvr_ok:
-            prescreen["READY"].append(aid)
-        elif any_signal:
-            prescreen["REVIEW"].append(aid)
-        else:
-            prescreen["REJECT"].append(aid)
+        if _ps_row is not None:
+            tier, _reasons = _ps_row(item, THRESH)
+        else:  # fail-open：prescreen 不可达时退回内联旧口径
+            tier = _legacy_tier(item)
+        prescreen[tier].append(aid)
 
     print(f"=== S4 预筛 {len(alpha_ids)} 个 alpha ===")
     print(f"READY {len(prescreen['READY'])} / REVIEW {len(prescreen['REVIEW'])} / "

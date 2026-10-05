@@ -368,11 +368,16 @@ def near_fields(ctx):
     return flds
 
 
-def load_family_map(exprs_path=None, meta_file=None):
-    """加载 final_expressions_meta.json 的 expr->family 映射（P3: family 标签贯穿分桶）。
+def load_family_map(exprs_path=None, meta_file=None, conn=None, region=None):
+    """加载 expr->family 映射（P3: family 标签贯穿分桶）。
 
-    显式 --meta-file 优先；否则在 --file 同目录自动探测 final_expressions_meta.json。
-    返回 {norm_expr(expr): family}；无 meta 时返回 {}（回落算子树分桶）。
+    优先级：显式 --meta-file > --file 同目录 final_expressions_meta.json >
+      **DB expressions.family 列**（2026-10-01 P0：--from-db 主路径的 family 来源）。
+    返回 {norm_expr(expr): family}；全无时返回 {}（回落算子树分桶）。
+
+    DB 路径的意义：--from-db 下 a.file=None、无 meta 文件，此前 family_map 恒为空 →
+      「每族 cap」静默失效。GEM 落库时已把 skeleton family 写进 expressions.family，
+      这里从 DB 读回，使族配额在主路径真正生效。
     """
     cands = []
     if meta_file:
@@ -399,6 +404,28 @@ def load_family_map(exprs_path=None, meta_file=None):
         if fam_map:
             print(f"[family] meta 载入 {len(fam_map)} 条 family 标签 <- {p}")
             return fam_map
+
+    # 2026-10-01 P0：DB 兜底（--from-db 主路径）
+    if conn is not None and region:
+        try:
+            rows = conn.execute(
+                "SELECT expression, family FROM expressions "
+                "WHERE region=? AND family IS NOT NULL AND family<>''",
+                (region,),
+            ).fetchall()
+            fam_map = {}
+            for r in rows:
+                try:
+                    ex, fam = r[0], r[1]
+                except Exception:
+                    continue
+                if ex and fam:
+                    fam_map[norm_expr(ex)] = str(fam)
+            if fam_map:
+                print(f"[family] DB 载入 {len(fam_map)} 条 family 标签 <- expressions.family")
+                return fam_map
+        except Exception as exc:
+            print(f"[family] warn: DB family 读取失败（回落算子树分桶）: {exc}")
     return {}
 
 
@@ -848,8 +875,29 @@ def main():
         -(qp_est[e].get("pred_sharpe") or -9.0) if e in qp_est else 0.0,
     ))
 
-    # P3: family 标签（skeleton mode meta）增强分桶；无标签式回落算子树 bucket_key
-    family_map = load_family_map(a.file, a.meta_file)
+    # P3: family 标签（skeleton mode meta / DB expressions.family）增强分桶；
+    # 无标签式回落算子树 bucket_key。
+    # 2026-10-01 P0：--from-db 主路径下 a.file 为空、无 meta 文件，family 须从 DB 读回，
+    #   否则「每族 cap」静默失效（见 load_family_map 文档）。
+    _fam_conn = None
+    try:
+        if a.from_db or not a.file:
+            _fam_conn = get_store(ctx).connection
+    except Exception as _fc:
+        print(f"[family] warn: 取 DB 连接失败，family 仅走 meta 路径: {_fc}")
+    family_map = load_family_map(a.file, a.meta_file, conn=_fam_conn, region=ctx.region)
+
+    # 2026-10-01 P3：静默降级告警 —— 有 family 数据却读不到时点名，防回归。
+    if not family_map and (a.from_db or not a.file):
+        try:
+            _n_fam = (_fam_conn.execute(
+                "SELECT COUNT(*) FROM expressions WHERE region=? AND family IS NOT NULL AND family<>''",
+                (ctx.region,)).fetchone() or [0])[0] if _fam_conn else 0
+            if _n_fam:
+                print(f"[family] ⚠ WARN: 库内有 {_n_fam} 条 family 标签但本次未载入 "
+                      f"（族配额将不生效）。检查 expressions.family 列与 load_family_map DB 路径。")
+        except Exception:
+            pass
 
     def wave_bucket(expr):
         fam = family_map.get(norm_expr(expr))
@@ -875,6 +923,43 @@ def main():
     family_count = collections.Counter()
     max_per_family = max(2, a.size // 6)  # 默认每族最多 size/6 条
     econ_option_cap = max(1, a.size // 8)  # econ_option 族 cap 为 size/8
+
+    # ---- 2026-10-01 P1：探针先于扩批（族级）----
+    # 完成定义要求「探针先于扩批」，但此前选波层无法区分探针与扩批（atom_flag 全空、
+    #   无 probe 逻辑）。这里按族判定「该族是否已验证」：
+    #   - 某族在全库**尚无任何已回测行**（alpha_id 非空）→ 本波该族 cap 收紧为 probe_cap
+    #     （默认 1），即只放 1 条探针去验机制，不扩批烧配额；
+    #   - 该族**已有已回测行** → 维持原 cap（可扩批）。
+    # 「全库」而非「本波」：本波候选普遍未回测，只看本波会把所有族都判成未验证。
+    #   已回测证据通常在历史波（status='backtested'/有 alpha_id）。
+    # 开关 WQB_PROBE_GATE=off 可关闭（灰度/回滚）；无 family 标签时该检查不生效。
+    probe_gate_on = os.environ.get("WQB_PROBE_GATE", "on") != "off"
+    probe_cap = max(1, int(os.environ.get("WQB_PROBE_CAP", "1") or 1))
+    probe_limited_families = set()
+    if probe_gate_on and family_map:
+        if _fam_conn is None:
+            try:
+                _fam_conn = get_store(ctx).connection
+            except Exception as _pc:
+                print(f"[probe] warn: 取 DB 连接失败，跳过探针收紧: {_pc}")
+        if _fam_conn is not None:
+            try:
+                _bt_rows = _fam_conn.execute(
+                    "SELECT DISTINCT family FROM expressions "
+                    "WHERE region=? AND family IS NOT NULL AND family<>'' "
+                    "AND alpha_id IS NOT NULL AND alpha_id<>''",
+                    (ctx.region,)).fetchall()
+                _verified_fams = {r[0] for r in _bt_rows if r[0]}
+                _cand_fams = {family_map.get(norm_expr(e)) for e in deduped}
+                _cand_fams.discard(None)
+                probe_limited_families = {f for f in _cand_fams if f not in _verified_fams}
+            except Exception as _pe:
+                print(f"[probe] warn: 探针判定失败（跳过探针收紧）: {_pe}")
+    if probe_limited_families:
+        print(f"[probe] 探针优先：{len(probe_limited_families)} 个族尚无已回测行，"
+              f"本波每族限 {probe_cap} 条（{sorted(probe_limited_families)[:8]}"
+              f"{'...' if len(probe_limited_families) > 8 else ''}）")
+
     # 轮转分桶抽样：每桶最多 per-bucket；linear_mix 骨架受配额约束；族类配额约束
     progress = True
     while progress and len(picked) < a.size:
@@ -898,9 +983,14 @@ def main():
                 if fam or _cap_unknown:
                     fam_key = fam or "unknown"
                     fam_cap = econ_option_cap if fam_key == "econ_option" else max_per_family
+                    # 2026-10-01 P1：探针先于扩批 —— 该族尚无已回测行时 cap 收紧为 probe_cap。
+                    if fam_key in probe_limited_families:
+                        fam_cap = min(fam_cap, probe_cap)
                     if family_count[fam_key] >= fam_cap:
-                        exclusion_reasons[e] = "family_cap"
-                        selection_rejections["family_cap"] += 1
+                        exclusion_reasons[e] = (
+                            "probe_cap" if fam_key in probe_limited_families else "family_cap")
+                        selection_rejections[
+                            "probe_cap" if fam_key in probe_limited_families else "family_cap"] += 1
                         lst.pop(0)  # 族类配额已满，弃此式看下一式
                         continue
                 else:
@@ -1088,6 +1178,8 @@ def main():
         "skeleton_distribution": dict(sk_dist),
         "family_tagged": sum(1 for e in picked if norm_expr(e) in family_map),
         "family_distribution": dict(fam_dist),
+        "probe_limited_families": sorted(probe_limited_families),
+        "probe_cap": probe_cap,
         "linear_mix_cap": lm_cap,
         "diversity_enhanced": bool(diversity_report and diversity_report.get("enhanced")),
     }
@@ -1120,7 +1212,11 @@ def main():
                                  + json.dumps(protected, ensure_ascii=False))
             st.upsert_expressions(
                 ctx.region, str(a.wave),
-                [{"expression": e, "status": "selected", "dataset": a.dataset} for e in picked],
+                # 2026-10-01 P0：回写 selected 时必须带上 family —— upsert_expressions 的
+                #   UPDATE 会写全字段，漏带 family 会把它覆盖成 None（选完波 family 全丢，
+                #   后续波次读不到 → 族 cap 再次静默失效）。
+                [{"expression": e, "status": "selected", "dataset": a.dataset,
+                  "family": family_map.get(norm_expr(e))} for e in picked],
                 dataset=a.dataset, status="selected", commit=False,
             )
             persisted = st.connection.execute(

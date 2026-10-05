@@ -9,7 +9,9 @@
 > ⚠ **不可逆：`POST /alphas/{id}/submit`——通过即提交，无撤回。** 平台把它同时当「提交」和「提交前检查」，所以**没有零成本的 POST 探测**：
 > 任何一次「试探性 POST」只要全过，就是一次真提交。
 > **前置（缺一不得执行）**：① `submit_verdict` 不是 `BLOCKED`（§2 步 2）；② 资格门 Failed RA / PPA = 0（步 1）；③ `check_correlation(alpha_id, refresh=True)`
-> 实测 prod < 0.7（步 3）；④ **用户明确确认**（步 5）；⑤ 本 ET 日 REGULAR 配额未满（`python tools/quota_status.py`）。
+> 实测 prod < 0.7（步 3）；④ **用户明确确认**（步 5）；⑤ 本 ET 日 REGULAR 配额未满（`python tools/quota_status.py`）；
+> ⑥ **稳健性结论落台账** `robustness_<alpha_id>`（步 4；未落台账时节点仍要求 `robustness_audited=True` 显式声明）。
+> **2026-10-02 起 ①②③⑤⑥ 已焊进 `submit_alpha` 节点自动执行**（见 §2 表下方的说明）；人工只需 ④。
 > **默认形态（预检 / 干跑）**：`workflow_submit_alpha(alpha_id=…, confirm_submit=False)`——只做本地预检并查状态，不 POST。
 > **需要用户明确确认**：是（`confirm_submit=True`、`super_build.py submit`、PPA 走 web UI 都一样）。
 > **执行后必须核验**：`get_alpha_details` → `status == ACTIVE` 且 `dateSubmitted` 非空。**异常**：见 §4；不盲重试，仅「异步受理未翻转」可补发一次。
@@ -30,11 +32,17 @@
 | 1 | **资格门**：`Failed RA == 0`（PPA 看 `Failed PPA`）；名单内若仍有 `PENDING`，`Failed=0` 只表示「暂无失败」，**待其算完再判** | 否决 | `wqb.config.compute_webdata_failed_counts`（`submit_verdict` 已内含；输出里的 `pending_ra` / `pending_ppa`） | 非零 → 回 ra-pipeline 步 7 修 | 是 |
 | 2 | **模拟层 + 硬闸类 WARNING**：`is.checks` 无 FAIL；`LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE` 的 WARNING 视同 FAIL | 否决 | `python tools/submit_verdict.py --alpha-id <ID>`（或 MCP `submit_verdict`；同一份实现 `wqb.submit_verdict_core`） | 见 §2.1 退出码 | 是 |
 | 3 | **prod 实测 < 0.7**（`GET correlations/prod`，账号级单并发；忙时立即返回 `correlation_busy`，阻塞轮询窗口见 `WAIT_THRESHOLDS`） | 否决 | `mcp__wq-brain-http__check_correlation(alpha_id, refresh=True)`；SUPER 用 `super_build.py probe` | ≥ 0.7 → prod 墙决策表（ra-pipeline `decision-table.md` D0） | 是 |
-| 4 | **稳健性闸** | 否决（**有代码读取**：结论落台账 `robustness_<alpha_id>`，`submit_verdict` 三入口读它——`REJECT` → `BLOCKED`；`CONDITIONAL` / 无记录只在 `next_step` 提示，不拦） | brain-alpha-robustness | `REJECT` → 停 | 是 |
+| 4 | **稳健性闸** | 否决（**有代码读取**：结论落台账 `robustness_<alpha_id>`；`submit_verdict` 三入口读它——`REJECT` → `BLOCKED`；`CONDITIONAL` / 无记录只在 `next_step` 提示，不拦。**2026-10-02 起 `submit_alpha` 节点的 `_submit_gate` 也读同一台账**：`REJECT` → 提交闸 blocked，两入口口径一致） | brain-alpha-robustness | `REJECT` → 停 | 是 |
 | 5 | **用户明确确认** | 放行的必要条件 | 人 | 未确认 → 停在这里，列出候选与证据交用户 | 是 |
 | 6 | **提交** `workflow_submit_alpha(confirm_submit=True)` | **放行（不可逆）** | 本 skill §4 四态表 | 200 = 已提交；201 / 202 / 空体 200 = 异步受理 | **否** |
 | 7 | **轮询与补发**：等状态离开 `UNSUBMITTED`；窗口内未翻 → 补发一次 → 再等一个窗口 → 仍未翻记 `ASYNC_STUCK` 并知会用户 | — | 窗口取 `WAIT_THRESHOLDS`（`submit_flip_wait_s` / `submit_flip_poll_s` / `submit_repost_max`） | `ACTIVE` = 完成 | — |
 | 分支 | **PPA**：MCP 预检线不满足的合法 PPA 走 web UI 人工通道，agent 停下并交接（`ppa-handoff.md`）；**SUPER**：`super_build.py submit` 默认带 prod 闸（`--allow-prod-above-07` 才豁免），且**第一次通过的 POST 就是真提交**，不是「预检」 | | | | |
+
+> **2026-10-02 起，步 2 / 3 / 4 与配额闸、prod 闸已在 `submit_alpha` 节点自动执行**（无需再手动前置）：
+> 步 2 / 4 → `_submit_gate`（模拟层 FAIL、硬闸类 WARNING、Failed RA·PPA、robustness 台账 REJECT 任一即 blocked）；
+> 步 3 → 步 1.6 prod 闸（`check_correlation(production, refresh=True)`，max ≥ 0.7 或未出数 → blocked，**fail-closed**）；
+> 配额 → 步 1.4（ET 今日 REGULAR 满 4 → blocked，fail-open）。**`force` 不豁免 prod / 配额闸**（prod 须显式 `allow_prod_above_07=True` 留痕）。
+> 人工只需负责步 5（用户明确确认）。「审计结论落台账」= brain-alpha-robustness Phase D 经 `upsert_ledger_key` 写 `robustness_<alpha_id>`。
 
 ### 2.1 `submit_verdict` 状态与退出码
 

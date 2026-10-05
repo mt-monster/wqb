@@ -59,7 +59,7 @@ allowed-tools:
 
 ### 步 1　建 SUPER simulation
 - **目的**：用 selection + combo 建一颗 `type=SUPER` 的 simulation。
-- **前置**：步 0 = GO；已确定**中性化档位**（**无缺省，必须显式**：USA / GLB 已知最优 SUBINDUSTRY，KOR / IND 已知 STATISTICAL，结论不可跨区照搬，见 levers §1）；universe / delay 缺省取 `wqb.config.REGIONS`（旧缺省 `TOP400` 只对 MEA 合法，非法档位平台回 HTTP 500）。
+- **前置**：步 0 = GO；已确定**中性化档位**（**无缺省，必须显式**；已知最优见 levers §1，但**先枚举本区存量 SA 占用了哪 (neutralization, decay) 并错开**——USA 2026-10-01 实证：存量已占 SUBINDUSTRY(`KPGvRMg1`) / MARKET(`gJ8eVmNM`)，新 SA 用 **STATISTICAL** 才过，见 levers §6）；universe / delay 缺省取 `wqb.config.REGIONS`（旧缺省 `TOP400` 只对 MEA 合法，非法档位平台回 HTTP 500）。
 - **调用**：
   ```
   python tools/super_build.py select --region KOR --neutralization STATISTICAL --decay 5 --selection-limit 10 --self-gate 0.55
@@ -68,17 +68,17 @@ allowed-tools:
 - **产物**：SUPER alpha id（stdout 的 `alpha id = …`）。
 - **完成定义**：拿到 id，且步 2 不是 `ERROR`。
 - **失败分支**：**201 ≠ SA 合法**——平台不在创建时校验，错误异步出现在模拟结果里（`GET /simulations/{id}` → `status: ERROR`，`message: "At least 10 component alphas are required for Super Alpha."`，`location.property: combo`）→ 转情景 SA-02（组件恰好 10 颗：放宽 gate）；「PROD 一直偏高」转 levers §3。
-- **不做**：不用旧的 `combination(alpha(...))`（平台已报 "inaccessible or unknown operator combination"）；不把 `selectionLimit` 当杠杆（超过有效池后无效，USA 1000 与 50 逐位相同——要改篮宽改**门**）。
+- **不做**：不用旧的 `combination(alpha(...))`（平台已报 "inaccessible or unknown operator combination"）。⚠ **记法修正（2026-10-01）**：旧写「不把 `selectionLimit` 当杠杆」只在**超过有效池之后**成立（USA 1000 与 50 逐位相同）；**有效池以内它是强杠杆**——USA sl10→15→30 使 IS sharpe 2.63→3.85→4.02、SUB ratio 0.789→0.880→0.966（levers §6）。口诀：**改「篮的有效宽度」动门**（self_gate / prod_ceiling / turnover 带），**改「篮里取多少」动 `selectionLimit`**。
 
 ### 步 2　查状态
 - **调用**：`python tools/super_build.py status --alpha-id <ID>`（打印 sharpe / fitness / turnover 与全部 checks，`FAIL` 时退出码 1）。
 - **完成定义**：`status` 不是 `ERROR`，且无 `FAIL` 检查。
-- **失败分支**：`ERROR` + `At least 10 component alphas` → 步 1 失败分支；`LOW_SUB_UNIVERSE_SHARPE` / `LOW_TURNOVER`（SUPER 下限 0.02）→ levers §3 的对应行。
+- **失败分支**：`ERROR` + `At least 10 component alphas` → 步 1 失败分支；`LOW_SUB_UNIVERSE_SHARPE` → **levers §6（它是比值闸 limit≈0.431×IS sharpe；盯 `ratio = sub/limit`，两杠杆 = decay↓ 与 selectionLimit↑（有效池内））**；`LOW_TURNOVER`（SUPER 下限 0.02）→ levers §0 决策表对应行。
 
 ### 步 3　双闸探针
 - **调用**：`python tools/super_build.py probe --alpha-id <ID>`（SELF 本地 + PROD 平台；`PASS` / `BLOCKED`，退出码 0 / 1）。
 - **完成定义**：`VERDICT: PASS`（SELF 与 PROD 都 < 0.7）。
-- **失败分支**：SELF ≈ 0.9+ 且命中已 ACTIVE 的 SA = **近克隆**，SELF 闸必拒 → 情景 SA-03（换成分 / 错开 (neutralization, decay)）；PROD ≥ 0.7 → levers §3（PROD 饱和 → 停止调参，回 RA 挖新血）。
+- **失败分支**：SELF ≈ 0.9+ 且命中已 ACTIVE 的 SA = **近克隆**，SELF 闸必拒 → 情景 SA-03（换成分 / 错开 (neutralization, decay)）；PROD ≥ 0.7 → **先跑 levers §6 的三杠杆**（错开中性化档 + decay↓ + 宽篮）——USA 2026-10-01 在无任何新血下把 PROD 0.8495 压到 0.6751，**旧止损线「PROD 饱和即停止调参、回 RA 挖新血」已推翻**，三杠杆用完确实无解才回 RA。
 - **不做**：**本地 SELF 对近期新提交的孪生体结构性失明**（selfcorr-quick 实测：本地 0.229 vs 平台 0.8392；SA 恰是「池子被消耗、近克隆风险高」的场景）——近期有同构 SA 提交时，探针的 SELF 只能当下限；先枚举存量 SA 的 (neutralization, decay) 并错开（情景 SA-03）。`mcp__wq-brain-http__run_selection` 是**选股（instrument filtering）**工具，与 SA 的 `selection` 表达式无关，别混。
 
 ### 步 4　提交（不可逆；见上「不可逆动作块」）
@@ -117,7 +117,7 @@ combo:     stats = generate_stats(alpha); innerCorr = self_corr(stats.returns, 5
 |---|---|---|
 | `--neutralization` | **无缺省** | 因区而异，需逐区扫描；已知最优（区域，日期）见 levers §1。缺省值会把人引向错误起点，故 2026-09-29 取消 |
 | `--decay` | 5 | 窄篮下 decay↑ → SELF↓（levers §2 的 KOR 曲线）；宽篮下 decay↑ → PROD↑ |
-| `--selection-limit` | 10 | 平台下限；**超过有效池后无效**，想改篮宽改 self_gate |
+| `--selection-limit` | 10 | 平台下限；⚠ **有效池以内是强杠杆**（USA sl10→15→30：IS sharpe 2.63→3.85→4.02、SUB ratio 0.789→0.880→0.966，levers §6），**超过有效池后才无效**（USA 1000 与 50 逐位相同）。改「篮的有效宽度」动门（self_gate），改「篮里取多少」动它 |
 | `--self-gate` | 0.55 | `self_correlation < gate` 的硬闸。组件恰好 10 颗时 0.65 → 0.70 → 0.85 逐档放宽（成本极低：组件不足的 sim 秒级失败回错） |
 | `--turnover-min / --turnover-max` | 0.01 / 0.5 | 池内成分 turnover 最高 0.5495 时改 0.6（MEA 案例） |
 | `--prod-ceiling` | 0.7 | 评分项 `(0.7 - prod_correlation)`：偏好 prod 低的 novel 成分。池内存在 prod > 0.7 的成分被 POSITIVE 剔除致不足 10 颗时改 1.0（超标成分降权参与而非出局） |
@@ -126,11 +126,19 @@ combo:     stats = generate_stats(alpha); innerCorr = self_corr(stats.returns, 5
 ## 验证清单
 
 - [ ] 同区域 ACTIVE REGULAR ≥ 10 颗（`sa_probe` = GO）；恰好 10 颗时已放宽 gate。
-- [ ] **中性化已逐区扫描**：需扫描的档位 + 已知最优（区域，日期）——USA / GLB = SUBINDUSTRY、KOR / IND = STATISTICAL（见 levers §1；IND 极差 0.199）。
+- [ ] **中性化已逐区扫描，且已枚举本区存量 SA 占用的 (neutralization, decay) 档位并错开**：已知最优（区域，日期）见 levers §1——USA / GLB = SUBINDUSTRY、KOR / IND = STATISTICAL（IND 极差 0.199）；⚠ **USA 2026-10-01 例外**：存量已占 SUBINDUSTRY / MARKET，新 SA 用 **STATISTICAL** 才过（levers §6）。
 - [ ] `probe` 双闸通过；**prod 闸**（`super_build.py submit` 默认强制）通过，或用户显式豁免。
+- [ ] **不追 IS 业绩指标**（`references/selection-playbook.md` §1）：IQC 顶尖 SA 的 OS/IS 达 0.3 都很少，追 IS 是追噪声，且会抬高 SUB 比值闸的 limit（≈0.431×sharpe）并推高 prod/self。**正确止损 = 双闸达标 + 多样性达标就提。**
 - [ ] 提交判定看 `result`，且我方 prod 实测 < 0.7。
 - [ ] status 翻 ACTIVE（2–3 分钟后）；name 用 `<REGION>_S_<N>comp_<id 尾 6 位>`。
 - [ ] **淘汰的同构变体**按 `docs/alpha_properties_spec.md`：打 `RETIRE_<YYYYMMDD>` 并 hidden；撞了谁写进描述而不是新造标签前缀（新前缀须先登记规范）；color **不用 RED**（规范里 RED = 已提交 · 待退役，这些变体从未提交）。
+  - ⚠ **MCP 的 `set_alpha_properties` 没有 `hidden` 参数**（只有 name / color / tags / descriptions），`build_alpha_properties_payload` 也不认它 → 设 hidden 必须走原始 PATCH：
+    ```python
+    cur = (await brain._request("GET", f"{brain.base_url}/alphas/{aid}")).json()   # 先回读
+    tags = list(cur.get("tags") or []) + ["RETIRE_<YYYYMMDD>"]                    # ★ tags 整组替换
+    await brain._request("PATCH", f"{brain.base_url}/alphas/{aid}", json={"tags": tags, "hidden": True})
+    ```
+    **不先 GET 回读会把已有 tags 抹成只剩 RETIRE**（`super_build.py` 造的变体实测 tags 为空，但别赌）。可复用脚本 `logs/retire_sa_variants.py`（改 `IDS` / `TAG` 即可，2026-10-01 USA 10 颗 10/10 成功）。
 
 ## SUPER 专属检查名（`get_alpha_details` / 提交响应里出现）
 
@@ -146,6 +154,7 @@ IS 闸门的通用阈值见 `brain-how-to-pass-alpha-test`；它不覆盖上表 
 
 ## 相关 skill
 
+- `brain-forum-browse`：要查论坛新经验时走它（只读检索）；本 skill 的 `references/selection-playbook.md` 是它 2026-10-01 的沉淀结果，**先看沉淀，不够再查**。
 - `worldquant-submit-alpha`：单颗 REGULAR 的提交与响应处置；提交链状态机见其 `references/submit-chain.md`。
 - `brain-how-to-pass-alpha-test`：各 IS 闸门阈值（Fitness / Sharpe / Turnover / Self-Corr / PROD_CORR）。
 - `brain-calculate-alpha-selfcorr-quick`：本地 SELF 快筛及其盲区。

@@ -62,7 +62,7 @@ def campaign(tmp_path, monkeypatch):
 def db_mcp(db_path, campaign, monkeypatch):
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", db_path)
+    mod.set_db_path(db_path)        # 读写同源；隔离失效由 get_db_path() 的结果闸兜住
     return mod
 
 

@@ -11,9 +11,8 @@ static:
   notes: "小宇宙预案：继承 KOR 严闸；与 A 股相关性高"
 datasets:
   red: []
-  red_reason: ""
-  yellow: []
   green: []
+  yellow: []
 priors:
   signal_families_include: [analyst, pv]
   signal_families_exclude: [glb_emotion]
@@ -62,3 +61,9 @@ KOR 实证有效的分析师预期变化面（评级修正 × SH 混合）作为
 
 - 小宇宙配额纪律同 KOR：8 探针快判死，不扩批。
 - 不因"香港市场国际化"假设外推 USA/EUR 配方——无本地实证前一律探针待遇。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：pv1(alphaCount=3572, cov=1); pv30(alphaCount=1608, cov=0.93); risk70(alphaCount=732, cov=0.93)
+- 白空间候选（未测 + 覆盖≥60% + 低 alphaCount）：analyst_earnings_ibes(cov=1, alphaCount=0); news_sentiment_transfer(cov=1, alphaCount=0); pattern_scores(cov=1, alphaCount=0); pv149(cov=1, alphaCount=0); shortinterest5(cov=1, alphaCount=0)
+- 已判死（勿重试）：HKG-FUND-HOLDINGS-PANEL-WEAK-SIGNAL, HKG-MDL238-SCREEN-OWNER-CEILING-139, HKG-MMP-NLP-SENTIMENT-NO-SIGNAL
+- 实证笔记：HKG-DUALGATE-EXP-20260909: 流动性门×拥挤度门嵌套，主闸 PENDING——明日提交探测候选 | HKG-QMWLONOE-MODEC2-ZFIX-20260909: 双制度确认（sign+zfix 均值化），sharpe 全场最高 | HKG-QMWLONOE-MODEC-ROUND1-20260909: 全指标反号→修正方向后 +1.72/+1.15/+1.50

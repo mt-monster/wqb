@@ -10,10 +10,19 @@ static:
   neutralization_default: SUBINDUSTRY
   notes: "档位实证充分，delay0 可探"
 datasets:
-  red: [pv1, mdl177]
-  red_reason: "exhausted；seed basics 全族（value/quality 种子）死"
+  red:
+    - datasets: [pv1]
+      reason: "exhausted；seed basics 全族（value/quality 种子）死（键 = ledger *_dead ∪ 旧 red 文本 id；明细查 get_dead_datasets）"
+    - scope: family
+      families: [mdl177]
+      reason: "exhausted；seed basics 全族（value/quality 种子）死"
+  green:
+    - datasets: [option9]
+      note: "旧 green 文本 id ∪ registry win 层实证绑定"
+    - scope: family
+      families: [analyst 细分集, news 高级情绪集, event/earnings 集]
+      note: "族级方向（2026-10-01 迁移自旧文本形态；逐数据集绑定待实证补齐）"
   yellow: []
-  green: [option9, analyst 细分集, news 高级情绪集, event/earnings 集]
 priors:
   signal_families_include: [option, analyst_revision, event_driven, news_advanced]
   signal_families_exclude: [classic_value, classic_quality, book_ratio, seed_basics]
@@ -67,3 +76,9 @@ USA REGULAR 的修复保持 `TOP3000` 默认 universe（`config.REGIONS['USA']['
 - 禁止生成 book/PE/ROE 等经典基本面单因子及其线性变体（必死）。
 - 禁止"先摊满 8 条再查 prod"（全局反模式，USA 代价翻倍）。
 - delay0 探针单独成批，不与 delay1 混批，避免设置噪声误判信号族。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：model77(alphaCount=150364, cov=0.83); analyst15(alphaCount=102357, cov=0.99); risk70(alphaCount=82093, cov=1.0)
+- 白空间候选（未测 + 覆盖≥60% + 低 alphaCount）：dl_equity_signal(cov=0.64, alphaCount=13); other476(cov=0.99, alphaCount=1030)
+- 已判死（勿重试）：USA-ANALYST-CONSENSUS-FXSPREAD-PROD-SAT, USA-ANALYST44-BREADTH-DEAD-EP-PRODWALL, USA-INSIDER-MATRIX-SPARSE-EVENT-WALL, USA-IPV-CORR-PRECLOSE-FITNESS-WALL-20260921, USA-OBI-LEVEL-FAMILIES-PROD-WALL, USA-OPTION40-IV-SURFACE-WEAK, USA-ORDER-FLOW-IMB-RANK-WEAK, USA-SHORTINTEREST29-RANK-WEAK
+- 实证笔记：mdl177 族: 价值/盈利风格，book 饱和

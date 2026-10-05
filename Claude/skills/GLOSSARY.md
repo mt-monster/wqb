@@ -10,7 +10,7 @@
 
 | 词 | 本库采用的含义 | 弃用 / 易混的说法 | 定义所在 |
 |---|---|---|---|
-| **并发令牌** `sim_token` | 平台同时在飞的仿真上限（Token-Bucket，`slots=7`，安全瞬时 ≤6） | 裸写「槽」 | `config.CONCURRENCY` |
+| **并发令牌** `sim_token` | 平台同时在飞的仿真上限（平台 Token-Bucket 容量 C≈7；**本工作区操作档 `slots=2`**） | 裸写「槽」 | `config.CONCURRENCY` |
 | **波内配额** `wave_quota` | 一波里表达式要满足的配比（如「跨金字塔 ≥2 条」） | 裸写「槽」「七槽」 | `config.MINING`；ra-pipeline 决策表 D8 |
 | **批** | 一次 multisimulation（8 条子模拟；一轮 7 批同提） | 「槽」 | wqb-concurrency |
 | **dispatch（派发）** | 把表达式派去仿真：`POST /simulations`（`tools/submit_batch.py`、MCP `submit_batch` / `create_multi_simulation`） | 「批量提交」「submit」 | brain-sim-alphas-in-batch-and-track |

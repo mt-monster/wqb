@@ -18,42 +18,111 @@ CATEGORY_PRIMITIVES = {
         "intensity-weighted tone: sentiment scaled by item count or novelty",
         "revision of tone: ts_delta of backfilled sentiment, not the level",
         "skew / polarization: fat-tail of sentiment vs the mean",
+        "event clustering: news count spikes vs baseline (ts_zscore of count)",
+        "source credibility: tier-1 vs tier-2 source sentiment divergence",
     ],
     "analyst": [
         "revision surprise: change in FY1/FY2 vs the stale level",
         "dispersion: disagreement across estimates, not the consensus mean",
         "breadth vs magnitude: how many estimates moved, not how far the mean moved",
         "horizon gap: FY2 minus FY1 as a growth-expectation residual",
+        "rating momentum: upgrade/downgrade frequency vs historical baseline",
+        "target price gap: current price vs consensus target (upside/downside)",
+        "estimate acceleration: second derivative of estimate revisions",
     ],
     "model": [
         "industry residual: group_zscore so the factor is not the sector bet",
         "quality minus yield: a slow fundamental residual, not the raw score",
         "invert only when the economic story is crowding or mean-reversion",
         "never ship a lone rank(model_score) as a concept",
+        "model disagreement: ensemble variance across model outputs",
+        "regime conditional: model signal only in specific market regimes",
     ],
     "pv": [
         "continuation vs reversal: short-horizon pattern vs longer mean",
         "intraday vs overnight: session-specific pressure",
         "volume-conditioned return: price move that happened on unusual volume",
         "fast+slow interaction must be ONE coherent signal (ratio / ts_corr / conditional), never a weighted sum of two legs",
+        "volatility regime: high-vol vs low-vol period signal divergence",
+        "liquidity shock: volume spike vs historical average (ts_zscore of volume)",
+        "price efficiency: bid-ask spread or price impact proxy",
     ],
     "fundamental": [
         "accrual / cash gap: earnings quality, not the earnings level",
         "leverage change: delta of debt or interest burden",
         "efficiency: turnover or incremental margin, not the stock of assets",
         "invert value only as a residual after industry neutralization",
+        "asset growth: delta of total assets vs revenue growth (efficiency)",
+        "margin trajectory: gross margin change vs operating margin change",
+        "capital allocation: capex vs depreciation (growth vs maintenance)",
     ],
     "institutions": [
         "owner change vs owner level: flow, not the stale holding",
         "concentration vs breadth of holders",
         "country/industry relative ownership, not a screening flag",
+        "institutional momentum: new positions vs closed positions",
+        "ownership stability: long-term holders vs short-term traders",
     ],
     "sentiment": [
         "disagreement and intensity, not the raw score",
         "change in sentiment after backfill, not the snapshot",
+        "sentiment divergence: retail vs institutional sentiment gap",
+        "sentiment persistence: autocorrelation of sentiment changes",
+    ],
+    "option": [
+        "implied volatility skew: put-call IV difference (tail risk pricing)",
+        "volatility term structure: short-dated vs long-dated IV",
+        "option flow: unusual volume or open interest changes",
+        "put-call ratio: sentiment indicator from option positioning",
+        "gamma exposure: dealer hedging pressure from option Greeks",
+    ],
+    "risk": [
+        "tail risk: skewness or kurtosis of return distribution",
+        "drawdown risk: maximum drawdown vs historical average",
+        "correlation breakdown: pairwise correlation vs historical average",
+        "volatility clustering: GARCH effects or volatility persistence",
+        "liquidity risk: bid-ask spread or Amihud illiquidity measure",
+    ],
+    "shortinterest": [
+        "short interest change: delta of short interest vs float",
+        "short squeeze potential: high short interest + positive catalyst",
+        "short covering: rapid decline in short interest",
+        "days to cover: short interest vs average daily volume",
+        "short interest momentum: acceleration of short interest changes",
+    ],
+    "earnings": [
+        "earnings surprise: actual vs consensus (standardized unexpected earnings)",
+        "earnings revision: post-earnings estimate changes",
+        "earnings quality: accruals vs cash flow divergence",
+        "guidance vs consensus: management guidance vs analyst estimates",
+        "earnings momentum: year-over-year growth acceleration",
+        "earnings call sentiment: tone analysis of earnings call transcripts",
     ],
     "other": [
         "name the priced risk first; the operator is secondary",
+    ],
+}
+
+
+# 类别特定禁止事项（2026-09-30 新增）：按数据集类别定制禁止事项，避免实测痛点
+CATEGORY_FORBIDDEN = {
+    "news": [
+        "禁止使用 ts_entropy / ts_skewness / ts_percentage / ts_decay_exp_window（幽灵算子，整批 CANCELLED 连坐）",
+        "禁止使用裸 rank(sentiment_score)（必须 group_neutralize 或 ts_delta）",
+    ],
+    "pv": [
+        "禁止使用加权混合（0.4*rank(A) + 0.6*rank(B) / add(multiply(0.4,A),multiply(0.6,B))）",
+        "禁止使用 ts_entropy / ts_skewness（幽灵算子）",
+    ],
+    "fundamental": [
+        "禁止使用裸 rank(fundamental_score)（必须 group_neutralize 或 group_zscore）",
+        "禁止使用加权混合（0.4*rank(A) + 0.6*rank(B)）",
+    ],
+    "analyst": [
+        "禁止使用裸 rank(estimate)（必须 ts_delta 或 group_zscore）",
+    ],
+    "model": [
+        "禁止使用裸 rank(model_score)（必须 group_neutralize 或 industry residual）",
     ],
 }
 
@@ -109,6 +178,25 @@ def primitives_for(category: str | None) -> list[str]:
         return CATEGORY_PRIMITIVES["other"]
     key = str(category).strip().lower()
     return CATEGORY_PRIMITIVES.get(key, CATEGORY_PRIMITIVES["other"])
+
+
+def forbidden_for(category: str | None) -> list[str]:
+    """获取类别特定禁止事项（2026-09-30 新增）。"""
+    if not category:
+        return []
+    key = str(category).strip().lower()
+    return CATEGORY_FORBIDDEN.get(key, [])
+
+
+def category_forbidden_text(category: str | None) -> str:
+    """生成类别特定禁止事项文本（2026-09-30 新增）。"""
+    forbidden = forbidden_for(category)
+    if not forbidden:
+        return ""
+    lines = ["", "CATEGORY-SPECIFIC FORBIDDEN (本数据集类别特定禁止事项):"]
+    for item in forbidden:
+        lines.append(f"- {item}")
+    return "\n".join(lines)
 
 
 def compact_priors_text(priors: dict[str, Any], category: str | None) -> str:
@@ -235,7 +323,32 @@ SPARSE-EVENT DATASET RULES (本数据集为稀疏事件型, sparse_ratio=%.2f, d
 """ % (sparse_ratio, dominant)
 
 
-def concept_first_rules(data_profile: dict | None = None) -> str:
+def concept_first_rules(data_profile: dict | None = None, category: str | None = None,
+                        version: int | None = None, use_kb: bool = True) -> str:
+    """生成概念优先规则（2026-09-30 新增 category/version/use_kb 参数，支持类别定制与知识库）。
+    
+    Args:
+        data_profile: 数据集形状画像（稀疏事件型判定）
+        category: 数据集类别（如 news/analyst/pv/fundamental），用于类别定制禁止事项
+        version: 提示词版本号（None=最新激活版本，仅 use_kb=True 时有效）
+        use_kb: 是否使用提示词知识库（默认 True；False 时使用内置默认提示词）
+    """
+    # 2026-09-30 长期方案：优先从提示词知识库加载（如果启用且类别存在）
+    if use_kb and category:
+        try:
+            from prompt_kb import get_prompt_template
+            template = get_prompt_template(category, version=version, active_only=True)
+            if template:
+                # 从知识库加载成功，使用知识库中的提示词内容
+                base = template["content"]
+                # 类别特定禁止事项仍从 CATEGORY_FORBIDDEN 加载（知识库可能未包含）
+                category_forbidden = category_forbidden_text(category)
+                return base + category_forbidden + shape_constraint_rules(data_profile)
+        except Exception:
+            # 知识库加载失败，降级到内置默认提示词
+            pass
+    
+    # 内置默认提示词（知识库未启用或加载失败时使用）
     base = """You design WorldQuant BRAIN Regular Alpha CONCEPTS, not field×operator wrappers.
 
 For EACH concept, answer in this order before writing a template:
@@ -356,4 +469,6 @@ Implementation Example MUST be a Python format template using {variable}.
 {variable} should be the distinctive suffix of the intended field (or the full id
 if short). Do not emit a generic {score}/{value}/{field} that matches everything.
 """
-    return base + shape_constraint_rules(data_profile)
+    # 2026-09-30 新增：类别特定禁止事项（在通用禁止事项之后追加）
+    category_forbidden = category_forbidden_text(category)
+    return base + category_forbidden + shape_constraint_rules(data_profile)

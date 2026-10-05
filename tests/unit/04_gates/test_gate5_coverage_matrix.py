@@ -117,12 +117,14 @@ def test_subtract_and_infix_minus_are_the_same_spread(g):
     assert _blocked(g, "subtract(rank(aaa1), rank(bbb1))") == _blocked(g, "rank(aaa1) - rank(bbb1)") is False
 
 
-# ── 价差规则（用户 2026-09-28 裁定）─────────────────────────────────────────────
+# ── 价差规则（用户 2026-09-28 裁定 + 2026-10-01 修正）──────────────────────────
 FD = {"aaa1": "D1", "aaa2": "D1", "bbb1": "D2"}
 
 
-def test_cross_dataset_spread_is_blocked_only_with_a_field_dataset_map(g):
+def test_cross_dataset_spread_blocked_only_when_undeclared(g):
+    """2026-10-01 用户修正：跨集本身不是违规判据；判据 = 跨集 且 未声明经济含义。"""
     expr = "subtract(rank(aaa1), rank(bbb1))"
+    # 未声明 → 拦
     item = _check(g, expr, fields=("aaa1", "aaa2", "bbb1"), field_dataset=FD)
     assert _poison(item) == ["spread_cross_dataset"]
     # 中缀减号同判
@@ -131,6 +133,35 @@ def test_cross_dataset_spread_is_blocked_only_with_a_field_dataset_map(g):
     # 同源（同一数据集）放行；单数据集批（无映射）放行
     assert _poison(_check(g, "subtract(rank(aaa1), rank(aaa2))", fields=("aaa1", "aaa2"), field_dataset=FD)) == []
     assert _poison(_check(g, expr, fields=("aaa1", "bbb1"))) == []
+
+
+def test_declared_cross_spread_pair_is_allowed(g):
+    """已声明 (D1,D2) 经济含义 → 跨集价差放行（用户 2026-10-01 澄清：合规且鼓励）。"""
+    expr = "subtract(rank(aaa1), rank(bbb1))"
+    pc = _pc()
+    pc["_field_dataset"] = FD
+    pc["_declared_spread_pairs"] = [["D1", "D2"]]
+    wl = ({"aaa1", "aaa2", "bbb1"}, "MATRIX", {f: "MATRIX" for f in ("aaa1", "aaa2", "bbb1")}, [])
+    item = g.check_one(expr, wl, "D1", list(pc["poison_patterns"]), pc)
+    assert _poison(item) == [], "已声明的跨集价差应放行"
+    # 顺序无关
+    pc["_declared_spread_pairs"] = [["D2", "D1"]]
+    item2 = g.check_one(expr, wl, "D1", list(pc["poison_patterns"]), pc)
+    assert _poison(item2) == []
+    # 声明了别的集对 → 仍拦
+    pc["_declared_spread_pairs"] = [["D1", "D9"]]
+    item3 = g.check_one(expr, wl, "D1", list(pc["poison_patterns"]), pc)
+    assert _poison(item3) == ["spread_cross_dataset"]
+
+
+def test_declared_cross_spread_does_not_whitelist_add(g):
+    """声明只豁免 subtract 价差，绝不豁免 add 混腿（用户铁律）。"""
+    pc = _pc()
+    pc["_field_dataset"] = FD
+    pc["_declared_spread_pairs"] = [["D1", "D2"]]
+    wl = ({"aaa1", "bbb1"}, "MATRIX", {f: "MATRIX" for f in ("aaa1", "bbb1")}, [])
+    item = g.check_one("add(rank(aaa1), rank(bbb1))", wl, "D1", list(pc["poison_patterns"]), pc)
+    assert "equal_weight_leg_add" in _poison(item) or "infix_leg_sum" in _poison(item)
 
 
 def test_weighted_spread_only_warns(g):

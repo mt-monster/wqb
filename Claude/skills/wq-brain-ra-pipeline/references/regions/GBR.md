@@ -10,10 +10,13 @@ static:
   neutralization_default: SUBINDUSTRY
   notes: "TOP700/delay1/SUBINDUSTRY 为 region_kb settings_proven 实测；delay0 可探"
 datasets:
-  red: [predictive_starmine, analyst_earnings_ibes, pattern_scores, other455, model264, news104, model53, fund_holdings_panel, news17, analyst9, news20]
-  red_reason: "s0_whitelist_2026-08-26 excluded：PROD 饱和 4 族 + 简单结构判死 3 + dead 标记 5（registry dead_end 层 10 条实证）"
+  red:
+    - datasets: [analyst45, analyst9, analyst93, analyst_earnings_ibes, fund_holdings_panel, institutions4, model264, model53, news104, news17, news20, news38, news48, option1, order_book_imbalance, other250, other384, other455, other47, other699, pattern_scores, predictive_starmine, pv109, risk88, sentiment7, socialmedia39, stock_cluster_dl]
+      reason: "s0_whitelist_2026-08-26 excluded：PROD 饱和 4 族 + 简单结构判死 3 + dead 标记 5（registry dead_end 层 10 条实证）（键 = ledger *_dead ∪ 旧 red 文本 id；明细查 get_dead_datasets）"
+  green:
+    - datasets: [dl_riskfree_returns, institutions6, model106, model238, model28, model36, news18, pv29, sentiment27, shortinterest3]
+      note: "旧 green 文本 id ∪ registry win 层实证绑定"
   yellow: []
-  green: [model238, model106, dl_riskfree_returns, institutions6, news18, sentiment27, shortinterest3, model28, model36, pv29]
 priors:
   signal_families_include: [model, institutions, news, sentiment, shortinterest, pv]
   signal_families_exclude: [starmine, analyst_estimate, pattern_scores, other455, model264, dl_riskfree_label, model238_rank]

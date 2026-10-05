@@ -478,3 +478,66 @@ def test_unreliable_reason_table():
     assert fr._unreliable_reason(dict(ok, search_errors=1))[0] == "search_failed"
     assert fr._unreliable_reason(dict(ok, reads_ok=0))[0] == "read_failed"
     assert fr._unreliable_reason({"searches_ok": 2, "hits": 0, "reads_ok": 0, "search_errors": 0}) is None   # 真没搜到任何结果
+
+
+# ---------------------------------------------------------------- click_href → 标量 post_id（2026-10-01 实测根因）
+class _ResolveFr:
+    """复刻 forum_research.resolve_id 的真实契约：返回 (post_id, is_community_post, url) 三元组。"""
+
+    def __init__(self, ret=None, exc=None):
+        self._ret, self._exc = ret, exc
+        self.seen_hrefs = []
+
+    def resolve_id(self, session, click_href, **kw):
+        self.seen_hrefs.append(click_href)
+        if self._exc:
+            raise self._exc
+        return self._ret
+
+
+def test_resolve_post_id_unpacks_the_triple_not_the_tuple_itself():
+    """★ 核心回归：resolve_id 返回三元组，绝不能把整个元组当 id 用。
+
+    旧写法 `pid = fr.resolve_id(...)` 把 `('33036460396567', True, 'https://...')` 拼进 URL
+    → `/community/posts/('330...', True, 'https://...').json` → 恒定 404 InvalidEndpoint
+    → 读帖 100% 失败，整链静默退化成 read_failed（看起来和「论坛无解」一样）。
+    """
+    f = _ResolveFr(ret=("33036460396567", True, "https://example/posts/33036460396567-x"))
+    pid = fr._resolve_post_id(None, f, "https://example/search/click?x=1")
+    assert pid == "33036460396567", f"必须是标量 id，实际 {pid!r}"
+    assert isinstance(pid, str) and "(" not in pid and "'" not in pid
+
+
+def test_resolve_post_id_skips_non_community_posts():
+    """is_community=False（帮助中心文章）没有 /community/posts/{id}.json 端点，硬读必 404 → 跳过。"""
+    f = _ResolveFr(ret=("999", False, "https://example/hc/articles/999"))
+    assert fr._resolve_post_id(None, f, "click") is None
+
+
+def test_resolve_post_id_returns_none_on_empty_or_exception():
+    assert fr._resolve_post_id(None, _ResolveFr(ret=(None, False, None)), "click") is None
+    assert fr._resolve_post_id(None, _ResolveFr(exc=RuntimeError("boom")), "click") is None
+
+
+def test_resolve_post_id_tolerates_a_scalar_contract():
+    """契约若变回标量也不炸（防御）。"""
+    assert fr._resolve_post_id(None, _ResolveFr(ret="777"), "click") == "777"
+
+
+def test_live_round_feeds_a_scalar_id_to_read_post(monkeypatch):
+    """端到端守护：命中只有 click_href 时，read_post 收到的必须是标量，且能读到正文。"""
+    monkeypatch.setattr(fr.time, "sleep", lambda s: None)
+    seen = []
+
+    class _Fr(_ResolveFr):
+        def search_html(self, session, query, max_pages=2):
+            return [{"click_href": "https://example/search/click?x=1"}]     # 无 post_id / id，必须走 resolve
+
+        def read_post(self, session, pid):
+            seen.append(pid)
+            return {"title": "t", "body": LONG_BODY} if isinstance(pid, str) else None
+
+    st = {}
+    out = fr.live_search_round(None, _Fr(ret=("12345", True, "url")), "q", 1, 3, set(), stats=st)
+    assert seen == ["12345"], f"read_post 必须收到标量 id，实际 {seen}"
+    assert len(out) == 1 and st["reads_ok"] == 1 and st["read_errors"] == 0

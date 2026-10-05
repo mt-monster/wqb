@@ -8,7 +8,10 @@
 四层闭环：
   L1 采集  runner 收割后 extract_signals() 从结果自动识别模式 -> 候选规则
   L2 结构化 RuleStore 读写 rules.json（原子写），md 给人看 / rules.json 给机器消费
-  L3 消费  build_wave/gate/pipeline 执行前 query() 强制注入（硬门拦截/提示）
+  L3 消费  两路：① 专属分支（各阶段按 action.op 硬编码，覆盖面窄，易漏）；
+           ② **声明式通用注入** inject_rules()——规则自带 when/emit，通用执行器消费，
+              新增规则不必改代码。步 7（wave_review）兜底接收未接入专属阶段的规则，
+              保证无孤儿。契约见 references/rules-declarative-injection.md
   L4 验证  validate() 新数据与旧规则冲突 -> 降级 confidence / 标 contested / 触发翻案批
 
 规则 schema（单条）：
@@ -266,6 +269,120 @@ def apply_rules(ctx, rule_type, context=None):
     return sorted(rules, key=lambda r: -r.get("confidence", 0))
 
 
+# ---------------- L3：声明式通用注入（补"写了规则没人消费"的断点） ----------------
+#
+# 背景：规则消费原靠调用方为每个 action.op 硬编码一个分支，导致「写了规则但没接分支」
+# 的规则永远不生效（2026-10-03 审计：23 条里仅 4 条真正生效）。
+#
+# 解法：规则自带**声明式**字段，通用执行器消费，新增规则不必再改代码：
+#   when  结构化触发条件 {"all":[{"fact":"max_prod","op":">","value":0.7}]}
+#         —— 缺省 = 无条件命中，但降级为「常驻提示」（优先级 ×0.4），不静默也不喧宾夺主
+#   emit  可选覆盖 {"direction":..,"action_hint":..,"priority":..}
+#         —— 缺省由 action.message 派生
+# 向后兼容：存量规则无 when/emit 也能立即生效，之后可逐条补 when 升级为精准触发。
+
+#: 已接入专属注入点的 phase。其余 phase 的规则由步 7（wave_review）兜底接收，
+#: 保证「任何 active 规则都至少有一个露面点」，接入专属阶段后从此集合登记即可不再兜底。
+WIRED_PHASES = {"wave_review"}
+
+_CMP = {
+    ">": lambda a, b: a is not None and a > b,
+    ">=": lambda a, b: a is not None and a >= b,
+    "<": lambda a, b: a is not None and a < b,
+    "<=": lambda a, b: a is not None and a <= b,
+    "==": lambda a, b: a == b,
+    "!=": lambda a, b: a != b,
+    "in": lambda a, b: b is not None and a in b,
+    "not_in": lambda a, b: b is not None and a not in b,
+}
+
+
+def _eval_one(cond, facts):
+    """单条 when 子句求值。事实缺失 -> False（保守，宁可不提示也不制造噪声）。"""
+    if not isinstance(cond, dict):
+        return False
+    name = cond.get("fact")
+    if name not in facts:
+        return False
+    fn = _CMP.get(str(cond.get("op", "==")))
+    if fn is None:
+        return False
+    try:
+        return bool(fn(facts.get(name), cond.get("value")))
+    except TypeError:
+        return False
+
+
+def evaluate_when(when, facts):
+    """返回 (matched, gated)。
+
+    when 为空 -> (True, False)：命中但**未条件化**（存量规则，降级为常驻提示）。
+    when 有值 -> 严格求值，gated=True。
+    """
+    if not when:
+        return True, False
+    if "all" in when:
+        return (all(_eval_one(c, facts) for c in (when.get("all") or [])), True)
+    if "any" in when:
+        return (any(_eval_one(c, facts) for c in (when.get("any") or [])), True)
+    return (_eval_one(when, facts), True)
+
+
+def _hint_from_action(action):
+    """缺省 action_hint：优先显式 hint，其次 params，最后退化到 op 名。"""
+    if not isinstance(action, dict):
+        return ""
+    if action.get("hint"):
+        return str(action["hint"])
+    params = action.get("params") or {}
+    if params:
+        return "参数：" + ", ".join(f"{k}={v}" for k, v in params.items())
+    return f"op={action.get('op')}" if action.get("op") else ""
+
+
+def inject_rules(ctx, facts=None, phase=None, context=None,
+                 fallback_unrouted=False):
+    """声明式通用注入：返回结构化建议列表（按 priority 降序）。
+
+    facts   当前上下文事实 dict（如 max_sharpe / max_prod / dom_wall / verdict）
+    phase   目标阶段（"dataset_select" / "wave_design" / "simulate" / "wave_review" / "submit"）
+    fallback_unrouted  True 时，phase 未接入专属注入点的规则也一并接收（步 7 兜底用）
+    """
+    facts = facts or {}
+    context = context or {}
+    store = _store_for(ctx)
+    out = []
+    for r in store.query(region=context.get("region")):
+        rph = (r.get("trigger") or {}).get("phase")
+        if phase is not None and rph:
+            if rph == phase:
+                pass
+            elif fallback_unrouted and rph not in WIRED_PHASES:
+                pass
+            else:
+                continue
+        matched, gated = evaluate_when(r.get("when"), facts)
+        if not matched:
+            continue
+        action = r.get("action") or {}
+        emit = r.get("emit") or {}
+        conf = float(r.get("confidence") or 0.5)
+        prio = emit.get("priority")
+        if prio is None:
+            # 条件化命中按置信度全额计优先级；未条件化的常驻提示降权，避免淹没精准建议
+            prio = round(conf * 100) if gated else round(conf * 40)
+        out.append({
+            "direction": emit.get("direction") or f"[{r.get('type')}] {r['rule_id']}",
+            "rationale": action.get("message", ""),
+            "priority": int(prio),
+            "action_hint": emit.get("action_hint") or _hint_from_action(action),
+            "source_rule": r["rule_id"],
+            "when_gated": gated,
+        })
+    out.sort(key=lambda x: -x["priority"])
+    return out
+
+
 def check_universe_lever(ctx, intended_universe):
     """OPT-2 修复：runner 启动前校验 universe 是否命中"判死杠杆"规则。
 
@@ -298,10 +415,9 @@ def extract_signals(rows, wave_meta=None):
     rows = [r for r in rows if isinstance(r, dict)]
     if not rows:
         return signals
-    # 模式1：prod corr 随某权重单调变化 -> 稀释策略信号
-    sig = _detect_dilution(rows)
-    if sig:
-        signals.append(sig)
+    # 模式1（prod corr 随权重单调变化 -> 稀释策略信号）已于 2026-10-04 撤销：它从「权重 ↔ prod」曲线学出
+    # 『梯度稀释』规则，而加权混合属混信号违规族（mixed_signal_leg_ban_v1，闸 5 拦）——不得再自动生成建议。
+    # `_detect_dilution` 保留仅供审计 / 复盘读曲线，不再接入采集。
     # 模式2：universe 变窄 IS 全崩 -> universe 杠杆判死
     sig = _detect_universe_collapse(rows, wave_meta)
     if sig:
@@ -587,8 +703,12 @@ def consume_contract(ctx, rule_id, digest):
 
 def issue_contract(ctx, required_operators, skeleton_quota, region,
                    per_batch_min_operators=2, expires_after_batches=10,
-                   exempt=("repair",), evidence=None, factor_templates=None):
+                   exempt=("repair", "probe"), evidence=None, factor_templates=None):
     """diversity_audit 调用：签发新多样性注入契约（写区域规则库）。
+
+    exempt 默认 ("repair", "probe")：
+      repair = 修复/设置变体批；probe = 探针批（单骨架裸测，骨架多样性会污染归因）。
+      依据 diversity_gate_is_portfolio_level_not_per_wave_v1（2026-10-04 KOR 818 波次实证）。
 
     factor_templates: 可选，语义驱动全覆盖的实例化因子 {op: {expr,fields,meaning,...}}，
       写入 action 供 build_wave 直接消费（get_active_contract 返回的 action 携带）。
@@ -923,30 +1043,9 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
                 "source_rule": r["rule_id"],
             })
 
-    # 稀释策略：IS 强 + prod_corr 撞墙 -> 梯度稀释（命中 prod_wall_dilution_v1）
-    if max_sharpe is not None and max_sharpe >= 1.0 and max_prod is not None and max_prod > 0.7:
-        for r in strat_rules:
-            if (r.get("action") or {}).get("op") == "gradient_dilute":
-                params = (r.get("action") or {}).get("params") or {}
-                recs.append({
-                    "direction": "prod 墙稀释：IS 强但 prod_corr>0.7",
-                    "rationale": (r.get("action") or {}).get("message", ""),
-                    "priority": 90,
-                    "action_hint": f"compute_mutual_correlation 找 |corr|<{params.get('corr_threshold', 0.3)} "
-                                   f"低相关分量，梯度稀释步长 {params.get('weight_step', 0.1)}",
-                    "source_rule": r["rule_id"],
-                })
-                # rnf 权衡警告（rnf_dilution_tradeoff_v1）
-                for dr in diag_rules:
-                    if (dr.get("action") or {}).get("op") == "warn_rnf_drop":
-                        recs.append({
-                            "direction": "注意 rnf 随稀释下降",
-                            "rationale": (dr.get("action") or {}).get("message", ""),
-                            "priority": 50,
-                            "action_hint": "稀释破 prod 墙时同步评估 rnf 是否跌破用户闸（默认 0.6）",
-                            "source_rule": dr["rule_id"],
-                        })
-                break
+    # 稀释策略分支已于 2026-10-04 删除：『IS 强 + prod 撞墙 → 梯度稀释（步长 0.1）』是加权混合，
+    # 违反 mixed_signal_leg_ban_v1（决策表 D3 / D14 早已撤回），prod 墙一律按决策表 D0-P（含「诊断前置」）处置。
+    # 对应的 prod_wall_dilution_v1 / rnf_dilution_tradeoff_v1 规则已 deprecated，不再有 active 规则带 gradient_dilute。
 
     # ---- walls 驱动的基础方向 ----
     if dom_wall == "SHARPE" and max_sharpe is not None and max_sharpe < 1.0:
@@ -966,7 +1065,7 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
                          f"IS 已强仅需参数微调",
             "priority": 70,
             "action_hint": {"2Y": "缩短窗口/提高信号近期权重", "MARGIN": "降换手/调 decay",
-                            "TVR": "调 truncation/decay 压或提升手"}.get(dom_wall, "调参数"),
+                            "TVR": "调 decay / ts_decay_linear / 窗口压或提升换手（truncation 实测零杠杆，别扫）"}.get(dom_wall, "调参数"),
             "source_rule": None,
         })
     elif dom_wall == "CW":
@@ -974,7 +1073,7 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
             "direction": "集中度墙：骨架多样性不足",
             "rationale": f"{wall_count.get('CW', 0)} 行卡 CONCENTRATED_WEIGHT，权重过度集中",
             "priority": 75,
-            "action_hint": "group_neut/分组包裹/换骨架，参考闸6 多样性契约",
+            "action_hint": "先查覆盖率（<40% 换集）→ 数据类型 → 窗口 → ts_backfill 最小窗口；decay / truncation / 中性化修不了 CW，修 CW 须改持仓构造（trade_when 门控 / 更多分组轴），见规则 concentrated_weight_is_data_quality_not_params_v1；骨架多样性参考闸6",
             "source_rule": None,
         })
 
@@ -1008,6 +1107,29 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
                 r["action_hint"] = (f"{r['action_hint']}；fail-fast 命中 {len(ff['hits'])} 项："
                                     + "、".join(ff["hits"]))
                 break
+
+    # ---- 声明式通用注入：让「有专属分支」之外的 active 规则也能在步 7 露面 ----
+    # 兜底接收 phase 未接入专属注入点的规则，保证任何 active 规则都不会成为孤儿。
+    try:
+        facts = {
+            "max_sharpe": max_sharpe,
+            "max_prod": max_prod,
+            "dom_wall": dom_wall,
+            "has_near": bool(near),
+            "n_rows": len(rows or []),
+            "verdict": ff.get("verdict"),
+            "universe": meta.get("universe"),
+            "region": region,
+        }
+        emitted = {r.get("source_rule") for r in recs if r.get("source_rule")}
+        for gr in inject_rules(ctx, facts, phase="wave_review",
+                               context={"region": region}, fallback_unrouted=True):
+            if gr["source_rule"] in emitted:
+                continue  # 已有专属分支产出，不重复
+            recs.append(gr)
+            emitted.add(gr["source_rule"])
+    except Exception as e:
+        print(f"[rules] 通用注入异常（不阻断）: {e}", file=sys.stderr)
 
     # 按优先级降序
     recs.sort(key=lambda x: -x["priority"])

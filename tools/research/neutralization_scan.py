@@ -18,13 +18,13 @@ CLUSTER 与区域 Sharpe。
 
 用法::
 
-    python tools/neutralization_scan.py --path exprs.txt --region KOR \
+    python tools/research/neutralization_scan.py --path exprs.txt --region KOR \
         --universe TOP600 --decay 4 \
         --neutralizations CROWDING,MARKET,SUBINDUSTRY,REVERSION_AND_MOMENTUM \
         --out logs/_kor_neut_map.json
 
     # 只打印 payload 不提交
-    python tools/neutralization_scan.py --path exprs.txt --region KOR \
+    python tools/research/neutralization_scan.py --path exprs.txt --region KOR \
         --neutralizations CROWDING --dry-run
 
 退出码：0=全部提交成功；2=某档 POST 失败；3=字段预检失败。
@@ -37,7 +37,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "world-quant-brain-mcp"))
 
 # KOR/D1/TOP600 等常见区的合法档位（get_platform_setting_options 实测，2026-10-04）。
@@ -93,12 +93,53 @@ def read_exprs(path: str) -> list:
     return exprs
 
 
+def preflight(exprs: list) -> int:
+    """发批前三闸（2026-10-04 补）：括号平衡 → 算子名存在性 → 元数。
+
+    血泪教训（同一晚连踩三次，每次都连坐整批 CANCELLED）：
+      ① 括号整体失衡 ⇒ 平台 "Unexpected end of input"（`check_expression` 放行！）
+      ② 算子名拼错（`tade_when`）⇒ 平台 "unknown operator"
+      ③ 只跑元数闸、漏了算子存在性闸
+    三闸任一不过即 ABORT，绝不发批。
+    """
+    sys.path.insert(0, str(ROOT / "src"))
+    try:
+        from wqb.expression import op_arity as oa
+    except Exception as e:
+        print(f"[neut-scan] 跳过离线预检（op_arity 不可用: {e}）")
+        return 0
+    bad = 0
+    for i, e in enumerate(exprs, 1):
+        errs = []
+        bal = e.count("(") - e.count(")")
+        if bal:
+            errs.append(f"[PAREN] 括号不平衡 balance={bal:+d}")
+        errs += list(oa.check_unknown_operators(e))
+        try:
+            oa.check_expression(e)
+        except Exception as ex:
+            errs.append(f"[SYNTAX] {ex}")
+        if errs:
+            bad += 1
+            print(f"[neut-scan] 第 {i} 条不通过：")
+            for x in errs:
+                print(f"          {x}")
+    if bad:
+        print(f"[neut-scan] ABORT: {bad}/{len(exprs)} 条未过三闸 —— 修完再发，否则整批连坐 CANCELLED。")
+    else:
+        print(f"[neut-scan] 发批前三闸 OK（{len(exprs)} 条）")
+    return bad
+
+
 async def main_async(a: argparse.Namespace) -> int:
     from brain_api import brain_client as brain  # noqa: E402
 
     exprs = read_exprs(a.path)
     if not exprs:
         print("[neut-scan] 没有可提交的表达式")
+        return 3
+
+    if not a.dry_run and preflight(exprs):
         return 3
 
     neuts = [x.strip() for x in a.neutralizations.split(",") if x.strip()]

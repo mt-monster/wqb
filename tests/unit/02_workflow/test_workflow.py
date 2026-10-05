@@ -441,11 +441,31 @@ def test_infer_data_category():
     # 2026-09-01 统一口径：分类一律以平台 category 为准（data/wqb.db 快照存大写，
     # 如 ANALYST/MODEL）；DB 无记录时回退前缀推断（小写）。
     # GEM 管道内做 .lower() 比较，大小写不敏感。
-    assert _common.infer_data_category("analyst45") in ("analyst", "ANALYST")
-    assert _common.infer_data_category("model238") in ("model", "MODEL")
-    assert _common.infer_data_category("news76") in ("news", "NEWS")
-    assert _common.infer_data_category("fundamental94") in ("fundamental", "FUNDAMENTAL")
-    assert _common.infer_data_category("xyz") == "other"
+    # 2026-10-05：region 改为必填（同名 dataset 跨区多行，不给区取错行）。
+    R = "USA"
+    assert _common.infer_data_category("analyst45", R) in ("analyst", "ANALYST")
+    assert _common.infer_data_category("model238", R) in ("model", "MODEL")
+    assert _common.infer_data_category("news76", R) in ("news", "NEWS")
+    assert _common.infer_data_category("fundamental94", R) in ("fundamental", "FUNDAMENTAL")
+    assert _common.infer_data_category("xyz", R) == "other"
+
+
+def test_infer_data_category_region_is_required():
+    """region 必填：不传区直接 TypeError，不允许静默回退到跨区查询。"""
+    import pytest as _pytest
+
+    with _pytest.raises(TypeError):
+        _common.infer_data_category("analyst45")
+
+
+def test_infer_data_category_is_region_scoped():
+    """同名 dataset 在不同区可能给出不同 category —— 证明查询确实按区走。
+
+    `shortinterest6` 在 KOR 记 MODEL 塔；不给区时旧实现会取 id 最大的行，
+    可能拿到别区的分类。此处只断言「给了区就能拿到该区记录」，不假设具体值。
+    """
+    got = _common.infer_data_category("shortinterest6", "KOR")
+    assert got and got.lower() in ("model", "shortinterest")
 
 
 def test_wq_py_resolves_to_venv_or_python():

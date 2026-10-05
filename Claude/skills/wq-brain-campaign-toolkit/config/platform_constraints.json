@@ -225,7 +225,7 @@
    "_structural": true,
    "regex": "(?!)",
    "severity": "block",
-   "rule": "【结构判定，非正则】subtract(A,B) / A-B 的两腿字段分属**不同数据集** = 拼腿（用户 2026-09-28 裁定 spread_signal_ruling：价差须同源 + 有单一经济含义，不同数据集/不同经济概念的差值无单一解释）。仅在多数据集 mix 批（--datasets，有 field→dataset 映射）里判定；单数据集批所有字段同源，无须判。带数值系数的价差腿只告警（[SPREAD_WEIGHTED]，靠调权重凑指标属违规族）。"
+   "rule": "【结构判定，非正则】**跨集且未声明经济含义**的价差 = 拼腿（用户 2026-10-01 修正）。判据从「两腿字段分属不同数据集」改为「跨集 且 该集对未在 declared_cross_spreads 声明」。用户 2026-10-01 澄清：`rank(预期A) − rank(约束B)`（A/B 不同数据集、最好不同更新节奏）**合规且鼓励**——属 §7.7.2 ⑤ 换信号概念（两腿独立 → self-corr 低），与 §7.7.2 ② 同源价差是**并列的两类合规形态**。合规内核 = 价差有**方向性经济解释**（背离 / 对冲 / 预期-约束缺口），违规内核 = 无经济含义的机械拼腿（`add` 一律违规，含等权）。因机器无法自动判「有无经济含义」，改用**显式声明**：调用方（或战役级 `declared_cross_spreads`）声明本波认定的 (A集,B集) 经济含义集对 → 放行；跨集但未声明 → 仍阻断（错误消息指引声明路径）。空声明 = 全部跨集阻断（向后兼容旧版）。仅在多数据集 mix 批（--datasets）里判定。带数值系数的价差腿只告警（[SPREAD_WEIGHTED]）。"
   }
  ],
  "_weighted_mix_note": "2026-09-16 回滚记录：v1.1 曾将两条 func 式加权混腿毒模式窄化为仅拦非 {0.4,0.6} 权重（Agent 误读任务书硬约束#5 字面）。用户当日重申『警惕 add(A,B) 模式』全局禁令后，v1.2 恢复 v1.0 全量拦截语义。结论：任何对用户定案纪律的放宽必须先经用户明确确认；任务书含混表述不构成例外。2026-09-17 v1.3 加固：新增 weighted_signal_mix_structural（gate.check_one 括号平衡结构判定，见 _structural 标记）堵住正则版 81% 的镜像腿漏网；四条正则保留为辅助层。",
@@ -375,6 +375,11 @@
   "JPN"
  ],
  "_region_vector_ts_note": "2026-09-19 实证：JPN 下 ts_*(…vec_*(…)) 必 ERROR 'Invalid data field close'（VECTOR 日频对齐依赖 pv1；rank(vec_avg(f)) 可 COMPLETE=O0NKlYVb）。闸2b 判 FAIL；GEM pregate has_ts_over_vec 同源丢弃。",
+ "declared_cross_spreads": {
+  "_doc": "用户 2026-10-01 修正：跨数据集价差合规，但须显式声明「方向性经济解释」。未声明集对 → 闸5 spread_cross_dataset 阻断。每项 [集A, 集B]（顺序无关），或 [集A, 集B, 说明]。",
+  "_howto": "在战役目录 reference/<region>_generation_constraints.json 里加同名键做区域级声明，或由生成脚本经 --declared-cross-spreads 传入；平台级默认集对放这里。",
+  "pairs": []
+ },
  "spread_signal_ruling": {
   "_doc": "用户 2026-09-28 裁定：subtract(rank(A),rank(B)) 何时算「单一价差信号」（合规）而非「拼腿」（违规）。",
   "compliant_when": [
@@ -383,7 +388,7 @@
    "适用：subtract(rank(A),rank(B)) / subtract(ts_rank(A,n),ts_rank(B,n)) / 其外层再包 group_rank/group_zscore/ts_rank/ts_decay_linear 等**单信号几何**"
   ],
   "violation_when": [
-   "两腿来自**不同数据集或不同经济概念**（典型：EPS 修正腿 + 价差腿），差值无单一经济解释 = 拼腿",
+   "两腿来自**不同数据集或不同经济概念**，且**未声明**方向性经济解释（背离/对冲/预期-约束缺口）= 拼腿；声明路径见 declared_cross_spreads。⚠ 2026-10-01 修正：跨集本身**不是**违规判据——`rank(预期A) − rank(约束B)`（A/B 不同数据集、不同更新节奏）属 §7.7.2 ⑤ 换信号概念，**合规且鼓励**。",
    "把 subtract 换成 **add**（求和无价差语义）—— add 一律违规，含等权",
    "靠增删腿数或调权重凑指标"
   ],

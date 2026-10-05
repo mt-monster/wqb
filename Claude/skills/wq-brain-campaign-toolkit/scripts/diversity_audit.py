@@ -39,7 +39,13 @@ INJECTION_PRIORITY = [
 SKELETON_UNDERREP_RATIO = 0.15
 MAX_REQUIRED_OPERATORS = 4
 INJECTION_EXPIRY_BATCHES = 10
-INJECTION_EXEMPT = ["repair"]
+# 豁免批次类型：
+#   repair — 修复/设置变体批（不注入新信号概念）
+#   probe  — 探针批（单骨架裸测信号强度，专为归因；骨架多样性会污染归因）
+# 依据：diversity_gate_is_portfolio_level_not_per_wave_v1
+#   （2026-10-04 KOR 实证 818 波次：骨架单一 S>=1.58 命中率 51.6% vs 骨架多样 25.2%——
+#    多样性闸的收益在「组合层」不在「单波产出层」，探针/深挖阶段应豁免）
+INJECTION_EXEMPT = ["repair", "probe"]
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import CampaignContext, add_campaign_arg, load_platform_constraints, read_exprs_file, skeleton

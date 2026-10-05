@@ -130,7 +130,7 @@ class WorkflowRegistry:
                     optional_params=["name", "color", "tags", "descriptions", "force",
                                      "confirm_submit", "verify_timeout",
                                      "dataset", "wave", "expr_family", "channel",
-                                     "robustness_audited"],
+                                     "robustness_audited", "allow_prod_above_07"],
                 )
             )
         except ImportError as e:
@@ -184,7 +184,8 @@ class WorkflowRegistry:
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],
                     optional_params=["data_category", "instrument_type", "data_type",
-                                     "priors_file", "priors_from_db", "ideas_file", "detached",
+                                     "dataset_ids", "priors_file", "priors_from_db",
+                                     "ideas_file", "detached",
                                      "launch_only", "console", "pipeline_mode", "batch_size",
                                      "require_operators", "require_count",
                                      "prod_first", "prod_first_top_k"],

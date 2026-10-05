@@ -28,6 +28,7 @@ allowed-tools:
 ## 提交流程
 
 **前置**（缺一不得进入步骤 2）：`submit_verdict` 退出码 ≠ 1；prod 实测 < 0.7；用户明确确认；当日 REGULAR 配额未满（`python tools/quota_status.py`）。
+> **2026-10-02**：prod 闸与配额闸已**焊进节点**（步骤 2 自动执行，无需再手动前置）：`submit_gate` 读 `robustness_<alpha_id>` 台账（`REJECT` → blocked）；配额闸数 ET 今日 OS 池（满 4 → blocked，fail-open）；prod 闸 `check_correlation(production, refresh=True)` 取真值（max ≥ 0.7 或未出数 → blocked，fail-closed）。上面第 2 / 4 条由节点自动核对，人工只需保证**用户明确确认**。
 
 **步骤 1 · 预检（默认形态，不 POST）**
 
@@ -43,7 +44,7 @@ mcp__wq-brain-http__workflow_submit_alpha(
 
 **步骤 2 · 提交（仅在用户明确确认后；不可逆）**：同参数把 `confirm_submit` 置 `True`，再按下面的「响应处置」分支。`verify_timeout` 缺省 = `WAIT_THRESHOLDS.submit_flip_wait_s`（240 s），不要自己改小。
 **稳健性声明（2026-10-04 起 MCP 入口可直接传）**：`confirm_submit=True` 时，台账 `robustness_<alpha_id>` 无记录就**必须**显式 `robustness_audited=True`（缺省 False，fail-closed）才放行；台账已有记录则该声明降为辅助（`REJECT` 由节点直接拦下）。顺序：先跑 `brain-alpha-robustness` 并把结论落台账，再提交——不要只靠声明过关。`allow_prod_above_07` **不**在快捷入口里：prod 红线豁免须用户明确指令，显式走 `workflow_execute(node="submit_alpha", params={…, "allow_prod_above_07": True})` 留痕。
-`force=True` 只跳过**本地预检**（内容与允许场景见 `references/ppa-handoff.md` §1），**不放行任何平台检查**；REGULAR 一般不用。
+`force=True` 只跳过**本地预检**（`_submit_gate` 内容与允许场景见 `references/ppa-handoff.md` §1），**不放行任何平台检查**；REGULAR 一般不用。**`force` 不豁免 prod 闸与配额闸**——两者与预检分离（prod 是用户红线，须显式 `allow_prod_above_07=True`；配额满无需绕过，等 ET 次日重置）。
 
 **步骤 3 · 核验**：`mcp__wq-brain-http__get_alpha_details(alpha_id=…)` → `status == ACTIVE`（或 `SUBMITTED` 后转 `ACTIVE`）且 `dateSubmitted` 非空。
 
@@ -91,7 +92,7 @@ MCP 不可用时的 REST 兜底见 [`references/fallback-rest.md`](references/fa
 | 提交后一直 `UNSUBMITTED` | 201 / 202 / 空体 200 | ②③：等窗口 → 确认 `dateSubmitted` 空 → 补发一次 |
 | 403 `REGULAR_SUBMISSION` | `value ≥ limit` | 配额用尽：停，不判死，待次日 |
 | 403 其他 `FAIL` | `is.checks` 里的 FAIL 名 | 候选问题：回步 7，不要重试 |
-| `workflow_submit_alpha` 预检就 `blocked` | `pre_submit_check` 未过（本地放宽筛：Sharpe > 1.3、Fitness > 0.75、Turnover 4%–40%、Returns > 4%、无 FAIL；数字见其文档串） | 合法 PPA 走 `ppa-handoff.md`；其余回修 |
+| `workflow_submit_alpha` 预检就 `blocked` | 步 1 `_submit_gate`：模拟层有 `FAIL` / 硬闸类 `WARNING`（`LOW_FITNESS`/`LOW_SHARPE`/`LOW_2Y_SHARPE`）/ `Failed RA·PPA ≠ 0` / robustness 台账 `REJECT`；或步 1.4 配额满 / 步 1.6 prod ≥ 0.7。**旧 `pre_submit_check`（Sharpe 1.3 / Fitness 0.75 弱启发式）已于 2026-09-29 退役、2026-10-02 物理删除，不再存在于代码中** | 看 `blocked_reasons` 定真因；合法 PPA 走 `ppa-handoff.md`；其余回修 |
 | 400 `Unexpected property` | 扁平 description | 用嵌套写法（`set_alpha_properties` 已封装） |
 
 ## 不做什么

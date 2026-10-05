@@ -85,6 +85,8 @@ async def main():
         result = decide(a.alpha_id, detail)
         print(f"\nVERDICT: {result['verdict']}（status={status}）")
         print(f"  {result['verdict_note']}")
+        # 2026-10-05：本分支提前 return，务必在此同步队列降级（否则 mark_blocked 成死代码）
+        _sync_queue(a.alpha_id, result, detail)
         return _finish(result, a.json, EXIT_CODES)
 
     # 提交层：GET /alphas/{id}/submit（零成本；平台恒 404，见头注）
@@ -123,13 +125,32 @@ async def main():
         print(f"  {result['verdict_note']}")
     print(f"  下一步: {result['next_step']}")
 
-    # 队列状态升级：仅 SUBMITTABLE（防御分支）时把待提交队列该条 IS_ONLY → SUBMIT_LAYER_VERIFIED。
-    # 容错：绝不影响判定结果与退出码。
-    if result["verdict"] == "SUBMITTABLE":
+    _sync_queue(a.alpha_id, result, detail)
+    return _finish(result, a.json, EXIT_CODES)
+
+
+def _sync_queue(alpha_id: str, result: dict, detail: dict) -> None:
+    """把判定结果同步进 `submit_ready` 台账。容错：绝不影响判定结果与退出码。
+
+    **升级**（模拟层干净）：SUBMITTABLE / UNVERIFIABLE → SUBMIT_LAYER_VERIFIED。
+      2026-10-02（F12）：此前只认 SUBMITTABLE，而该态**现实中不会出现**（GET /submit 恒 404）
+      ——分支永不触发、成为死代码。「模拟层干净」的真实形态是 UNVERIFIABLE（处女提交 404），
+      故一并纳入。
+
+    **降级**（2026-10-05）：BLOCKED / ALREADY_SUBMITTED → 退出台账。
+      此前只升不降：队列行继续挂上一轮手写的 `gate=PASS` + `status=READY`，盘点时把已被
+      平台 RA 硬闸拦住的候选（A1vOb5pE/ZYAWx9J3）和已 ACTIVE 的候选（9qWaRGEK/gJZ7AvZO）
+      当成「可提交」——8 条 READY 实测只有 1 颗真可提交。本函数补上这一缺口。
+
+    抽成独立函数是因为 ALREADY_SUBMITTED 在 main() 里**提前 return**（见 main 内
+    `is_already_submitted(detail)` 分支），内联写法会让降级分支成为死代码。
+    """
+    v = result.get("verdict")
+    if v in ("SUBMITTABLE", "UNVERIFIABLE"):
         try:
             from wqb.store.submit_queue import mark_verified
             is_ = detail.get("is") or {}
-            n = mark_verified(a.alpha_id, rec={
+            n = mark_verified(alpha_id, rec={
                 "sharpe": is_.get("sharpe"), "fitness": is_.get("fitness"),
                 "turnover": is_.get("turnover"),
             })
@@ -137,7 +158,20 @@ async def main():
                   else "  [queue] 队列中无此条，跳过升级")
         except Exception as e:  # noqa: BLE001
             print(f"  [queue] 升级跳过：{e}")
-    return _finish(result, a.json, EXIT_CODES)
+    elif v in ("BLOCKED", "ALREADY_SUBMITTED"):
+        try:
+            from wqb.store.submit_queue import mark_blocked
+            r = mark_blocked(alpha_id, reason=result.get("reason_code") or "BLOCKED")
+            why = r.get("why")
+            if r.get("changed") and why == "rechecked":
+                print(f"  [queue] 已是 DEAD（gate={r['gate']}），仅补 recheck 留痕")
+            elif r.get("changed"):
+                print(f"  [queue] 已退出台账 → {r['status']}（gate={r['gate']}，"
+                      f"原 status={r.get('old_status')} gate={r.get('old_gate')}）")
+            else:
+                print("  [queue] 队列中无此条（或已 SUBMITTED 终态），跳过降级")
+        except Exception as e:  # noqa: BLE001
+            print(f"  [queue] 降级跳过：{e}")
 
 
 def _finish(result, as_json, exit_codes):

@@ -34,10 +34,13 @@ _DEFAULT_REL = Path("data") / "wqb.db"
 DIRECT_CONNECT_WHITELIST = (
     "src/wqb/db_conn.py",           # 本文件
     "wqb_db_mcp.py",                # MCP server 自管连接（配置同规范）
+    # 2026-10-04 拆分尝试已回滚：入口拆到 src/wqb/db_mcp/context.py 时本行改指该路径。
+    # 完整四类耦合与行号清单见 reports/db_mcp_split_20261004.md（别改回去时忘了这条）。
     "tools/lib/wqb_db.py",          # tools 层兼容 re-export
     "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/db.py",  # toolkit 同构工厂
     "Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py",
     "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py",
+    "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/prompt_kb.py",  # 2026-09-30 新增：提示词知识库
     "Claude/skills/brain-data-feature-engineering/scripts/feature_engineering.py",
 )
 

@@ -47,6 +47,7 @@ import _pyenv  # noqa: E402  跨平台解释器解析（tools/_pyenv.py）；作
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "world-quant-brain-mcp"))
+sys.path.insert(0, str(REPO_ROOT / "src"))
 
 BANNED_REGIONS = {"MEA"}
 
@@ -128,6 +129,60 @@ async def platform_recheck(brain, alpha_id: str):
             for x in checks if isinstance(x, dict) and x.get("result") == "FAIL"]
 
 
+def _candidate_datasets(conn, region: str, fields) -> set:
+    """经 fields 表把表达式用到的字段回填到数据集名（region 作用域）。
+
+    查不到归属 → 空集（不归因；调用方 fail-open 保留候选，宁可漏剔不可误杀）。
+    """
+    if not fields:
+        return set()
+    marks = ",".join("?" for _ in fields)
+    cur = conn.execute(
+        "SELECT DISTINCT ds.name FROM fields f "
+        "JOIN datasets ds ON f.dataset_id=ds.id JOIN regions r ON ds.region_id=r.id "
+        f"WHERE r.name=? AND f.field_name IN ({marks})",
+        (region, *sorted(fields)),
+    )
+    return {str(r[0]).strip().lower() for r in cur.fetchall() if r[0]}
+
+
+def apply_dead_exclusions(conn, cands: list):
+    """判死/饱和数据集剔除（2026-10-01 P1 断流修复；**默认开启**，`--no-exclude-dead` 才关）。
+
+    动机：本工具四道处理此前不消费判死/饱和台账，「IS 过闸但所属族已撞 prod 墙判死」的候选
+    会被带进篮子，烧完步 7 诊断链到步 8 才被 prod 实测挡掉。
+
+    规则（两档与 wqb.profile_drift 同源）：
+      - 候选任一字段归属 ∈ dataset_dead ∪ saturated → **剔除**
+      - 命中 family_dead（族级死，未必整集死）→ 保留但计数告警
+      - 字段查不到归属（fields 表未覆盖该区/集）→ 保留并计数（fail-open）
+    返回 (kept, dropped, stats)；dropped 元素 = {"id", "region", "datasets"}。
+    """
+    from wqb.profile_drift import dead_dataset_index
+
+    by_region: dict = {}
+    stats = {"unattributed": 0, "family_dead_hits": 0}
+    kept, dropped = [], []
+    for c in cands:
+        region = c.get("region") or ""
+        if region not in by_region:
+            by_region[region] = dead_dataset_index(conn, region)
+        idx = by_region[region]
+        dss = _candidate_datasets(conn, region, fields_of(c.get("code") or ""))
+        if not dss:
+            stats["unattributed"] += 1
+            kept.append(c)
+            continue
+        hard = sorted(dss & (idx["dataset_dead"] | idx["saturated"]))
+        if hard:
+            dropped.append({"id": c.get("id"), "region": region, "datasets": hard})
+            continue
+        if dss & idx["family_dead"]:
+            stats["family_dead_hits"] += 1
+        kept.append(c)
+    return kept, dropped, stats
+
+
 #: prod 值的新鲜度缺省（天）。2026-10-03：IND 旧候选 09-19~23 实测 prod 0.51–0.67，10-02 复测**全部** 0.83–0.99
 #: （社区同族 alpha 持续进 book，WorkBuddy 记忆 MEMORY §1.3「陈旧 prod 值一律作废」）。
 PROD_FRESH_DAYS = 2
@@ -191,6 +246,20 @@ async def main_async(a):
     from brain_api import BrainApiClient
 
     raw = json.loads(Path(a.candidates).read_text(encoding="utf-8"))
+    if getattr(a, "exclude_dead", False):
+        try:
+            from wqb.db_conn import connect as db_connect, default_db_path
+            conn = db_connect(a.db or default_db_path(), readonly=True)
+            try:
+                raw, dropped, ex_stats = apply_dead_exclusions(conn, raw)
+            finally:
+                conn.close()
+            print(f"[剔死] 剔除 {len(dropped)} 条命中判死/饱和数据集"
+                  f"（族级死保留 {ex_stats['family_dead_hits']} 条，未归因 {ex_stats['unattributed']} 条）")
+            for d in dropped[:10]:
+                print(f"      - {d['id']} ({d['region']}): {', '.join(d['datasets'])}")
+        except Exception as e:  # fail-open：DB 不可用不阻断选篮
+            print(f"[剔死] 跳过（{type(e).__name__}: {e}）")
     ranked = dedup_and_rotate(raw)
     print(f"[去重] 候选 {len(raw)} -> 独立信号 {len(ranked)} "
           f"（压缩 {len(raw) / max(len(ranked), 1):.1f}x）")
@@ -313,6 +382,11 @@ def main():
     ap.add_argument("--threshold", type=float, default=0.7, help="相关性阈值（默认 0.7）")
     ap.add_argument("--years", type=int, default=4, help="相关性计算的回看年数（默认 4）")
     ap.add_argument("--out", default=None, help="篮子 JSON 输出路径")
+    ap.add_argument("--exclude-dead", dest="exclude_dead", action="store_true", default=True,
+                    help="剔除判死/饱和数据集的候选（**默认开启**，workflow 节点不传标志也会走到；"
+                         "2026-10-01 P1 断流修复）")
+    ap.add_argument("--no-exclude-dead", dest="exclude_dead", action="store_false",
+                    help="显式关闭剔除（仅调试；把死族带进篮子的风险自行承担）")
     ap.add_argument("--db", default=None, help="wqb.db 路径（缺省自动探测仓库根）")
     ap.add_argument("--prod-max-age-days", dest="prod_max_age_days", type=float, default=PROD_FRESH_DAYS,
                     help=f"库内 prod 值算「新鲜」的天数（缺省 {PROD_FRESH_DAYS}）；更早测的值作废、须重测")

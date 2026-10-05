@@ -134,6 +134,22 @@ class SchemaMixin:
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE(region, key)
             );
+            -- 相关性查询缓存（2026-10-04）：把平台「单账号单并发」的相关性结果落本地库。
+            -- 动机：prod 结果此前只缓存在 Redis，而本机 Redis 常未启动 →
+            -- 缓存整条失效 → 多会话各自重复打平台队列，每颗等 1-5 分钟。
+            -- 本表与 alphas 解耦：仿真 alpha（UNSUBMITTED）不在 alphas 表里，也能缓存。
+            CREATE TABLE IF NOT EXISTS alpha_corr_cache (
+                alpha_id TEXT PRIMARY KEY,
+                prod_correlation REAL,
+                self_correlation REAL,
+                prod_records TEXT,
+                source TEXT,
+                checked_at TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS idx_alpha_corr_cache_checked
+                ON alpha_corr_cache(checked_at);
             CREATE TABLE IF NOT EXISTS gate_results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 region TEXT NOT NULL,
@@ -275,8 +291,12 @@ class SchemaMixin:
             # ---- 2026-09-30：atom/combined 分类标签（写入期自动计算）----
             # 平台 "Atom Alpha" = 单数据集信号；写入 upsert_expressions 时按字段数据集
             # 归属自动打标（见 wqb.expression.atom）。atom_flag ∈ {atom, combined, unknown}。
+            # stale_flag ∈ {NULL, dirty, stale_field, stale_field_unverified}：
+            #   unknown 行的数据清洗细分——dirty=损坏/非表达式，stale_field=引用平台已下架字段，
+            #   stale_field_unverified=未完整索引区（ASI/CHN/GBR/JPN）可能仅本地未缓存。
             ("atom_flag", "VARCHAR(16)"),
             ("atom_n_datasets", "INTEGER"),
+            ("stale_flag", "VARCHAR(16)"),
         ):
             self._add_column("expressions", col, ddl)
         for col, ddl in (
@@ -370,6 +390,9 @@ class SchemaMixin:
         )
         self._add_column("datasets", "data_type", "TEXT")
         self._add_column("datasets", "catalog_json", "TEXT")
+        # 2026-10-01：delay 此前只存在于线上库（手工 ALTER，未纳入 schema）→ 新建库缺列，
+        # `_ensure_dataset`/`upsert_dataset_meta` 写 delay 即报 no such column。纳入迁移清单。
+        self._add_column("datasets", "delay", "INTEGER")
         # 2026-09-27 N30：toolkit `_lib/wave_results` 旧版建表语句没有 created_at。该表若由它先建，
         # 写入契约（插入 created_at）与停止规则 B 的窗口（读 created_at）都会出错。只补列，可空。
         self._add_column("wave_results", "created_at", "TIMESTAMP")
@@ -558,6 +581,7 @@ class SchemaMixin:
             sets = []
             args: List[Any] = []
             for k in ("category", "field_count", "coverage", "alpha_count",
+                      "value_score", "pyramid_multiplier", "delay",
                       "tier", "status", "data_type", "catalog_json"):
                 if k in extra and extra[k] is not None:
                     sets.append(f"{k}=?")
@@ -573,14 +597,18 @@ class SchemaMixin:
         cur.execute(
             """INSERT INTO datasets
                (name, region_id, category, field_count, coverage, alpha_count,
-                tier, status, data_type, catalog_json, created_at, updated_at)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+                value_score, pyramid_multiplier, delay, tier, status, data_type,
+                catalog_json, created_at, updated_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 name, rid,
                 extra.get("category"),
                 extra.get("field_count"),
                 extra.get("coverage"),
                 extra.get("alpha_count"),
+                extra.get("value_score"),
+                extra.get("pyramid_multiplier"),
+                extra.get("delay"),
                 extra.get("tier"),
                 extra.get("status"),
                 extra.get("data_type"),

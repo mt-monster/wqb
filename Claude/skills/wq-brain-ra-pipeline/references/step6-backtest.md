@@ -16,7 +16,7 @@
 ## 6.2 调用（按需，不是顺序清单）
 
 ```
-# 发批（异步返回 task_id；并发由 pipeline 内部锁定为 min(7, 批数)，不从外部传）
+# 发批（异步返回 task_id；并发由 pipeline 内部锁定为 min(2, 批数)，不从外部传）
 mcp__wq-brain-http__workflow_batch_track  region=$REGION  wave=$W  dataset=$DS
 # 后台任务状态（不要 shell 翻日志）
 mcp__wq-brain-http__workflow_task_status  task_id="<上一步返回的 task_id>"
@@ -30,7 +30,7 @@ mcp__wqb-db__harvest_multisim_results        region=$REGION  wave=$W  alphas=<�
 mcp__wqb-db__workflow_auto_harvest           region=$REGION  wave=$W  multisim_id=<id>
 ```
 
-入库即级联本波 `wave_results` 暂定结论（评审会覆盖）与 `salvage_pool`；`multisim_id` 写进每条回测行。
+入库即级联本波 `wave_results` 暂定结论（评审会覆盖）与 `salvage_pool`；**multisim id 写在 `wave_results.batches`**（`auto_upsert_from_review(..., multisim_ids=…)`），**不在 `backtest_results` 行里**——该表无 `multisim_id` 列（2026-10-02 更正：旧文「写进每条回测行」与库结构不符）。要按批反查 alpha 走 `wave_results.batches`。
 
 ## 6.3 设置与探针规则
 
@@ -55,7 +55,7 @@ mcp__wqb-db__workflow_auto_harvest           region=$REGION  wave=$W  multisim_i
 | CROWDING 连续 2 次全 ERROR | 重发仍失败 | **跳过**该中性化 |
 | fatal operator 级联 CANCEL 整批 | 批内含不确定算子（ts_entropy：20 条全 CANCEL） | **隔离不确定算子到独立小批次**（提交前预防）；提交后的连坐由 pipeline 自动处理（见下） |
 | 瞬态 "try again" 整批命中 | e10a / e10b | **拆成 5 条 / 批**重试 |
-| **429 THROTTLED** | 账户级限速 | ① 等待退避（MCP 内建 `Retry-After` + 指数）；② `WQB_GLOBAL_SLOTS=<n>` 降账户级并发（缺省 7；0 关闭；由 `_lib/slots.py` 仲裁）；③ 批大小 ≤ 5。**注意**：外部往 pipeline 传非 7 的并发只会收到 warning，不会降并发 |
+| **429 THROTTLED** | 账户级限速 | ① 等待退避（MCP 内建 `Retry-After` + 指数）；② `WQB_GLOBAL_SLOTS=<n>` 降账户级并发（缺省 7；0 关闭；由 `_lib/slots.py` 仲裁）；③ 批大小 ≤ 5。**注意**：外部往 pipeline 传非 7 的并发只会收到 warning，不会降并发。**④ 提交期 429 会丢批**：`submit_batch` 抛 429 的批次此前只落 `SUBMIT_FAIL` 就丢弃（2026-10-02 P0 已改为自动重发至多 2 次）；若日志见 `⚠ SUBMIT_FAIL 累计 N 批` 仍须**重跑本波**补齐（SUBMIT_FAIL 不在 TERMINAL，重跑自动重取该批表达式） |
 | MCP 超时无 result | 服务进程假死 | 在 WQ BRAIN 控制台查看该批（进程排障命令依 OS 而异，见 wqb-concurrency） |
 | "took too much resource" | **真问题**：model26 364 字段实证 | 去 backfill 或缩短窗口 |
 | `create_multi_simulation` / `preflight_expressions` / `batch_get_alpha_metrics` 报 `must be array` | MCP 数组参数在 WorkBuddy 宿主的 DeferExecuteTool 通道上**间歇性**被损坏，**与表达式内容无关**；`upsert_expressions` 还会把 `[[...]]` 压成字面量 `"item"` 的脏行（WorkBuddy 记忆 2026-10-02 / 10-03） | 不要重试、不要改表达式。绕行：`tools/submit_batch.py`（settings 固定，与 MCP 批不可比）/ `tools/ind_sim_submit.py`（settings 全显式）直连 `POST /simulations`；写库走 `CampaignStore.upsert_expressions(region=, wave=, items=[...])`（形参是 `items`），**写后必复核**行内容 |
@@ -72,3 +72,5 @@ mcp__wqb-db__workflow_auto_harvest           region=$REGION  wave=$W  multisim_i
 ## 6.5 完成定义
 
 本波全部 multisim 到**终态**，且 `backtest_results` 行数 = 波内表达式数（含 ERROR / CANCELLED 的标记行）。整批 CANCELLED → 回步 5。
+
+**自动校验（2026-10-02 P1）**：`pipeline.py stage_review` 收批后调用 `_report_completeness`，比对 `闸 5 通过数(planned)` vs 库里本波 `backtest_results` **实际行数**，打印 `[complete] 完成度 OK/⚠ 不达标`（缺口与 SUBMIT_FAIL 批数同列），结果落 `ckpt.stages.review.completeness`。见 `⚠ 完成度不达标` 即**未真正完成**，须补跑——主因是提交期 429 丢批（P0 已加自动重发，但重发上限耗尽仍需重跑）。判据口径：`saved` 取库里本波行数（非本次 upsert 数），故既往行/同 alpha 合并不会误判。

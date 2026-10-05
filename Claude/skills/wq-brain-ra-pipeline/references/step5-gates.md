@@ -20,6 +20,14 @@ python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $
 - 脚本归属：`wave_gate.py` / `preflight_wave.py` / `field_inspect_gate.py` 在仓库根 `tools/`；`gate.py` / `pipeline.py` / `build_wave.py` / `score_datasets.py` / `assemble_priors.py` 在 toolkit `Claude/skills/wq-brain-campaign-toolkit/scripts/`。`--wave` 全链路为**字符串**（`97` 与 `s2_xxx_d1` 都可）。
 - VECTOR 字段用 `mcp__wq-brain-http__preflight_expressions(auto_fix_vector=true)`；repair / probe 批的多样性豁免见 5.4。
 - **完成定义**：`mcp__wqb-db__get_gate_result(region, wave, dataset)` 有本波记录且 `all_pass=1`（`all_pass` 只有 true / false 两种终态；门禁脚本崩溃 = ERROR 终态、退出码 2，不是 FAIL）。
+  - **PASS 只看 `all_pass`**：`gate_results.all_pass` 由 `wave_gate` 末尾用**最终 verdict** 覆盖写（`_persist_gate_report(final_all_pass=...)`），与 `report_json.gate.all_pass`（`gate.py` 子进程的逐条结论）**语义不同**——后者只是 8 闸那一段的结果，不含 SEM / 体检 / 饱和 / PF / 质量 / GEM 等聚合项。判「这波能不能进 S3」永远读外层 `all_pass`，不要拿 `gate.all_pass=true` 当放行。
+
+## 5.1.1 闸 SEM 留痕（2026-10-01 起）
+
+`gate_results.report_json.semantic` = 闸 SEM 的**脱敏摘要**（`mode` / `ledger_missing` / `blocked_field_count` / `n_removed` / `n_kept` / `dropped_in_db` / `removed_sample` 前 10 条）。
+- 此前 SEM 结论**只打印、不落库**（写入端断流）：剔了哪些式、是否因缺台账 exit 2 在 `get_gate_result` 里看不见，下游误判「本步没跑 SEM」（实测 846 条非 mcp 记录含 `semantic` 键 = 0）。
+- 修复后：`--skip-semantic-gate` / `--semantic-gate off` 也会落 `{"mode": "off", "skipped": true}`，明确记录「本波未做语义归类」。
+- `removed` 只落**样本**（前 10），全量会撑爆 `report_json`；要查全量看 `gate.py` stdout 的 `[sem  ]` 行或 `expressions.status='dropped'`。
 
 ## 5.2 失败分支：闸 → 现象 → 动作 → 回哪步 → 能否豁免
 
@@ -34,7 +42,7 @@ python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $
 | longCount（闸 7）/ EVENT 类型（闸 8）/ 非标窗口（闸 9） | 7、9 = WARN；8 = FAIL（引用 `type==EVENT` 字段） | 8：移除 EVENT 字段或先单条探针；7：低 longCount 字段降级为条件腿 | 步 4 | 否 |
 | **闸 SEM** | **exit 2**：缺 `s1_semantic_<ds>`；命中黑名单字段的表达式被剔出 | 跑 `field_semantic_classify.py --write-ledger` | **步 3** | `semantic` |
 | **体检硬门** | 违规计入 FAIL；缺体检包按 `--inspect-mode`（warn 放行 / enforce 整波拦） | 补预处理（低覆盖 → `ts_backfill`；高偏度 / 厚尾 → `rank` / `winsorize`；稀疏事件 → `trade_when`）或补体检包 | 步 4 / 步 2 | `inspect` |
-| **闸 PF** | 命中**已死路骨架**（本区 `prod_family_<region>_<骨架指纹>` / alphas 表里同骨架前 2 个算子 ≥ 3 条实测且 prod ≥ 0.7）→ **enforced 拦整波**；**新骨架**（本区无 prod 记录）、**小样本**（n < 3）、**混合骨架**（既有 ≥ 0.7 又有干净记录，先加深到前 3 个算子再判）→ 只 WARN（与闸 2.6 `prod_saturation_gate`〔字段热度 / 数据集占比〕互补） | 换骨架 / 机制；新骨架先 prod-first 探针（步 5b） | 步 4 / 步 5b | `prod_family`（CLI 开关 `--no-prod-family-gate`） |
+| **闸 PF** | 命中**已死路骨架**（本区 `prod_family_<region>_<骨架指纹>` / alphas 表里同骨架前 2 个算子 ≥ 3 条实测且 prod ≥ 0.7）→ **enforced 拦整波**；**新骨架**（本区无 prod 记录）、**小样本**（n < 3）、**混合骨架**（既有 ≥ 0.7 又有干净记录，先加深到前 3 个算子再判）→ 默认只 WARN（与闸 2.6 `prod_saturation_gate`〔字段热度 / 数据集占比〕互补）。`--pf-unknown-mode enforce`（或 `WQB_PF_UNKNOWN_MODE=enforce`）可把「未探明骨架」也升为拦截（饱和区「先 prod-first 探针后扩批」的强制档） | 换骨架 / 机制；新骨架先 prod-first 探针（步 5b）；或开 `--pf-unknown-mode enforce` | 步 4 / 步 5b | `prod_family`（CLI 开关 `--no-prod-family-gate`） |
 | 开波区域闸 | **exit 2**（enforce）：signal_floor / stop_rules / backlog / catalog 命中 | 按闸提示消化积压 / 补 catalog / 换区；用户显式要求继续 → waiver | 步 2 / 步 1 | `stop_rules` / `backlog` / `region_gates` |
 
 > 「拦整波」（闸 PF、开波区域闸）与「只剔出命中表达式」（闸 SEM）粒度不同：前者是骨架 / 区域级证据，后者是逐条字段问题。

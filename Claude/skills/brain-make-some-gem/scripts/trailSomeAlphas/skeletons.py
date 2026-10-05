@@ -207,9 +207,11 @@ _EPS_VOL = "0.001"
 # ---------------------------------------------------------------------------
 
 from skeletons_data_base import SKELETONS as _BASE_SKELETONS
-from skeletons_data_decouple import SKELETONS as _DECOUPLING_SKELETONS
+from skeletons_data_decouple import SKELETONS as _DECOUPLE_SKELETONS
+# 论坛来源骨架（2026-10-02 调研降维而来；见 skeletons_data_forum.py 模块头）
+from skeletons_data_forum import SKELETONS as _FORUM_SKELETONS
 
-SKELETONS = _BASE_SKELETONS + _DECOUPLING_SKELETONS
+SKELETONS = _BASE_SKELETONS + _DECOUPLE_SKELETONS + _FORUM_SKELETONS
 
 
 SKELETONS_BY_ID = {s["id"]: s for s in SKELETONS}

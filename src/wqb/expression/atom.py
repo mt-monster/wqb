@@ -94,6 +94,31 @@ def resolve_kind(field: str, dataset_map) -> tuple[str, str | None]:
     return ("dataset", ds) if ds else ("unknown", None)
 
 
+def has_non_ascii(text: str) -> bool:
+    """表达式里是否含非 ASCII 字符（中文注释占位 / 损坏行）。"""
+    return any(ord(c) > 127 for c in (text or ""))
+
+
+def classify_stale(expr: str, unknown_fields: Iterable[str]) -> str:
+    """对 unknown 判定结果做数据清洗细分。
+
+    返回 ``'dirty'``（损坏 / 非表达式行）或 ``'stale_field'``（引用平台已下架字段）。
+
+    判定依据（2026-09-30 实证，对 1142 条 unknown 全量复核）：
+      - 含非 ASCII：多为中文注释占位（``'capex/cfo再投资动量'``）或笔记
+        （``'M窗口504.40+e3.60'``），根本不是可执行表达式 → ``dirty``。
+      - 残留未声明短变量（抽取器已剔除赋值 / kwarg 左值）：截断表达式
+        （``'...mu'`` / ``'...sh'``）或裸变量 → ``dirty``。
+      - 其余：字段名像真实字段却不在 ``fields`` 表 → 平台已下架 → ``stale_field``。
+    """
+    if has_non_ascii(expr):
+        return "dirty"
+    for f in unknown_fields:
+        if len(f) <= 2 and f.isalpha() and f.lower() not in RESERVED:
+            return "dirty"
+    return "stale_field"
+
+
 def classify_atom(
     expr: str,
     dataset_map,

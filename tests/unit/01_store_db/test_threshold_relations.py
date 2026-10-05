@@ -46,32 +46,75 @@ def test_submit_queue_lines_come_from_config():
     assert LIM["turnover_hi"] == GATES_PLATFORM["turnover_range"][1]
 
 
-def _pre_submit_numbers():
+def test_pre_submit_check_is_removed_and_never_reintroduced():
+    """`pre_submit_check` 已于 2026-10-02 **物理删除**（定义 + 单测 + GBR 配套脚本簇）。
+
+    该方法是放宽的本地启发式（Sharpe 1.3 / Fitness 0.75 / Turnover 4%–40% / Returns 4%，
+    预检异常即放行 = fail-open），2026-09-29 起提交路由已改用 fail-closed 的
+    `submit_alpha._submit_gate`，生产调用方为 0。
+
+    本测试守护「不得复活」：
+      1. `brain_mixin_simulation.py` 里**不得**再有 `def pre_submit_check` 定义；
+      2. `src/` 全树不得出现 `pre_submit_check(` 的方法调用形态
+         （允许「已移除」说明性注释，注释里不写调用括号）；
+      3. 配套 GBR 脚本簇（`tools/gbr_pre_submit_check.py` 等）不得回流。
+
+    路由的**活机制**由 `test_submit_gate_thresholds_are_pinned` 守护（`_submit_gate` /
+    配额 / prod 三闸常量）——这才是提交的唯一本地闸。
+    """
     src = (ROOT / "world-quant-brain-mcp" / "brain_mixin_simulation.py").read_text(encoding="utf-8")
-    body = src[src.index("def pre_submit_check"):]
-    body = body[:body.index("return {", body.index("failures = []"))]
-    return {
-        "sharpe": float(re.search(r"if sharpe <= ([\d.]+)", body).group(1)),
-        "fitness": float(re.search(r"if fitness <= ([\d.]+)", body).group(1)),
-        "turn_lo": float(re.search(r"if turnover < ([\d.]+)", body).group(1)),
-        "turn_hi": float(re.search(r"elif turnover > ([\d.]+)", body).group(1)),
-        "returns": float(re.search(r"if returns <= ([\d.]+)", body).group(1)),
-    }
+    assert "def pre_submit_check" not in src, "pre_submit_check 已删除，不得复活定义"
+    assert "pre_submit_check() 已移除" in src, "应保留「已移除」说明注释，指向 _submit_gate"
+
+    call_re = re.compile(r"(?:\.|\b)pre_submit_check\s*\(")
+    hits = []
+    for p in (ROOT / "src").rglob("*.py"):
+        text = p.read_text(encoding="utf-8", errors="replace")
+        for m in call_re.finditer(text):
+            line_start = text.rfind("\n", 0, m.start()) + 1
+            line = text[line_start:text.find("\n", m.start())]
+            hits.append(f"{p.relative_to(ROOT)}: {line.strip()[:80]}")
+    assert hits == [], f"pre_submit_check 已删除，不应再被调用：{hits}"
+
+    for gone in ("tools/gbr_pre_submit_check.py", "tools/validate_gbr_fields.py",
+                 "tools/test_gbr_batch_isolation.py"):
+        assert not (ROOT / gone).exists(), f"GBR 配套脚本 {gone} 已随 pre_submit_check 一并删除"
 
 
-def test_pre_submit_check_is_a_relaxed_local_screen_with_pinned_relations():
-    """pre_submit_check 是宽松的本地预检（不是平台线、也不是内部线）；关系钉死，漂移即红。"""
-    n = _pre_submit_numbers()
-    assert n == {"sharpe": 1.3, "fitness": 0.75, "turn_lo": 0.04, "turn_hi": 0.40, "returns": 0.04}
-    assert n["sharpe"] < GATES_INTERNAL["sharpe_min"]                     # 比内部线宽
-    assert n["sharpe"] > PL["low_sharpe_min"]["delay1"]                   # 但不低于平台 LOW_SHARPE 线
-    assert n["fitness"] < GATES_PLATFORM["fitness_min"]                   # 比平台 Fitness 线宽（平台在提交时复核）
-    lo_i, hi_i = GATES_INTERNAL["turnover_range"]
-    assert n["turn_lo"] <= lo_i and n["turn_hi"] >= hi_i                  # 换手窗 ⊇ 内部窗
-    assert n["returns"] < GATES_INTERNAL["returns_min"]                   # 比内部 Returns 线宽
+def test_submit_gate_thresholds_are_pinned():
+    """提交路由本地闸（submit_alpha._submit_gate / 配额闸 / prod 闸）的关键常量钉死。
+
+    这些是「不过闸就提交不出去」的代码承载点；漂移即红：
+      - 硬闸 WARNING 集合 = {LOW_FITNESS, LOW_SHARPE, LOW_2Y_SHARPE}（模拟层 WARNING、提交层升级 FAIL）；
+      - REGULAR 配额上限 = 4 / ET 日（与 tools/quota_status.py REGULAR_LIMIT 一致）；
+      - prod 闸阈值 = 0.7（用户铁律，与 super_build --prod-gate 默认一致）。
+    """
+    src = (ROOT / "src" / "wqb" / "workflow" / "nodes" / "submit_alpha.py").read_text(encoding="utf-8")
+    assert '_SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"}' in src
+    assert "_REGULAR_QUOTA_LIMIT = REGULAR_DAILY_LIMIT" in src
+    assert "_PROD_THRESHOLD = 0.7" in src
+    # 与唯一实现源对比
+    from wqb.submit_verdict_core import SUBMIT_HARD_GATE_WARNINGS as CORE_HARD
+    assert CORE_HARD == frozenset({"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"})
+    # REGULAR / SUPER 配额上限的唯一实现 = wqb.quota（2026-10-05 起类型化：两条独立配额线）。
+    # 值仍钉死；两个消费点必须从该实现取数，不得各自硬编码（漂移即红）。
+    from wqb.quota import REGULAR_DAILY_LIMIT, SUPER_DAILY_LIMIT
+    assert (REGULAR_DAILY_LIMIT, SUPER_DAILY_LIMIT) == (4, 1)
+    quota_src = (ROOT / "tools" / "quota_status.py").read_text(encoding="utf-8")
+    assert "wqb.quota" in quota_src
 
 
-def test_pre_submit_docstring_states_it_is_not_the_platform_line():
-    src = (ROOT / "world-quant-brain-mcp" / "brain_mixin_simulation.py").read_text(encoding="utf-8")
-    doc = src[src.index("def pre_submit_check"):][:900]
-    assert "NOT the platform lines" in doc and "PLATFORM_CHECK_LINES" in doc
+def test_is_ppa_alpha_is_shared_between_gate_and_core():
+    """_submit_gate 的 PPA 判定必须与 submit_verdict_core.is_ppa_alpha 同口径（F10b 修复）。
+
+    {type: REGULAR, tags: [PowerPoolSelected]} 两端都必须判 True（否则计数组错位）。
+    """
+    sys.path.insert(0, str(ROOT / "src"))
+    from wqb.submit_verdict_core import is_ppa_alpha as core_is_ppa
+    from wqb.workflow.nodes.submit_alpha import _is_ppa_alpha as gate_is_ppa
+    tagged = {"type": "REGULAR", "tags": ["PowerPoolSelected", "SRC_x"]}
+    assert core_is_ppa(tagged) is True
+    assert gate_is_ppa(tagged) is True
+    plain = {"type": "REGULAR", "tags": ["CH_REG"]}
+    assert core_is_ppa(plain) is False and gate_is_ppa(plain) is False
+    assert gate_is_ppa({"type": "PPA"}) is True

@@ -50,19 +50,172 @@ def fetch_all_datasets(api, settings):
             return out
 
 
-def usable_fields(ctx, dataset_id, raw_fc):
-    """P3 可用字段精修：已建 typed catalog 的数据集，用目录内 coverage>=0.85 的字段数
-    代替原始 fieldCount（原始值把稀疏字段也算进广度，高估可挖空间）；无目录则回退原始值。"""
-    cat = ctx.catalog_path(dataset_id)
-    if os.path.exists(cat):
-        try:
-            d = load_json(cat)
-            n = sum(1 for f in d.get("fields", []) if (f.get("coverage") or 0) >= 0.85)
-            if n:
-                return n, "catalog"
-        except Exception:
-            pass
+# ---------------- P7（2026-10-02）：字段语义可做性预判 ----------------
+#
+# 背景（DEU 2026-10-02 全类目穷尽 + 论坛六探针帖 43791732585879 整合）：
+#   S0 的 usable_fields 只数「coverage>=0.85 的字段数」，**不区分字段语义类型**。
+#   结果是「字段多但全是事件/计数型」的集被当作高广度富矿选进白名单，
+#   建波后才发现平台侧有效持仓（longCount）根本不够，配额白烧。
+#
+# 实测证据（同一区域 DEU/TOP500/D1，5 次独立验证）：
+#   字段语义类型              -> 实测 longCount        -> 结果
+#   -------------------------  ---------------------  ----------------------------
+#   连续/比率/概率/预测型      -> 高（全市场覆盖）       dlrr prob 字段 150 ⇒ S 1.45
+#                                                       pattern simscore 143~147
+#   事件/计数/稀疏型          -> 低（仅事件股有值）     predictive_starmine count 8~54
+#                                                       order_book_imbalance 27~37
+#                                                       fundamental6 财报科目 8~18
+#   ⇒ 规律：**字段语义类型决定 longCount，longCount 决定该集能否做信号**。
+#   ⇒ longCount 只能跑 sim 才知道，但**语义类型可以从名字/描述预判**，这正是 S0 该补的一层。
+#
+# 设计原则（保守优先）：
+#   1. **默认关闭**（h.viability_filter_enable，缺省 False）=> 各区域行为与旧版逐条一致；
+#   2. 只把「**明确的事件/计数口径**」标记为低可做性，避免误杀（沿用 semantic_classify
+#      09-28/10-01 两次教训：标识符判定必须词元锚定，禁裸子串）；
+#   3. 不影响 excluded 判定（硬地板仍只看 coverage/field_count），只调 breadth 权重来源。
+#
+# 词元锚定写法（`(?:^|_)tok(?:$|_)`）：防 `_count` 咬到 `accounts`、`_num` 咬到 `numeric`。
+#
+# ⚠ 2026-10-02 自审修正（防误杀，同 semantic_classify 09-28/10-01 教训）：
+#   初版把**事件主题词**（downgrade/upgrade/revision/announcement/...）也当作低可做性，
+#   但 `revision_magnitude`（修正**幅度**，连续值）、`upgrade_ratio`（升级**比例**）这类
+#   字段会被误杀 —— 主题词只说明「关于什么事件」，不说明「是计数还是幅度」。
+#   ⇒ 收敛为**只认强计数词 + 布尔标记**（实测两个 longCount 失败案例
+#   `analyst_downgrade_count_7d_4` / `analyst_downward_revision_count_fq1_*` 都含 `count`，
+#   去掉主题词不影响召回，却消除误杀）。**宁可漏判，不可误杀**。
+EVENT_LIKE_PATTERNS = [
+    # 计数口径：名字明确是「多少个」——事件驱动，稀疏
+    (r"(?:^|_)(?:count|cnt|nbr)(?:s)?(?:_|$)|(?:^|_)num(?:ber)?(?:_|$)", "计数口径（事件稀疏）"),
+    # 布尔/触发标记（独立词元）
+    (r"(?:^|_)(?:flag|triggered|occurred)(?:_|$)", "触发布尔（稀疏）"),
+]
+EVENT_LIKE_DESC_PATTERNS = [
+    # ⚠ 只认**事件名词**（稀疏）。**不可含** estimates/analysts/contributors（那是覆盖计数=密集，
+    #    见 COVERAGE_COUNT_DESC_PATTERNS；DEU/analyst7 实测：混入 estimates 致 231 字段全灭）。
+    (r"\bnumber of\b[^.]{0,60}?"
+     r"\b(?:revisions?|upgrades?|downgrades?|events?|announcements?|filings?|"
+     r"meetings?|articles?|stories?|mentions?)\b", "事件计数（稀疏）"),
+    (r"\bcount of\b[^.]{0,60}?"
+     r"\b(?:revisions?|upgrades?|downgrades?|events?|announcements?|filings?)\b",
+     "事件计数（稀疏）"),
+]
+
+#: 高可做性语义（连续/比率/概率/预测）—— 显式命中即视为可做，即便名字含疑似事件词
+VIABLE_DESC_PATTERNS = [
+    (r"\bprobabilit(?:y|ies)\b|log[- ]?prob|\bscore\b|\bpercentile\b|\bquantile\b", "概率/分数"),
+    (r"\bratio\b|\bpercentage\b|\bpct\b|\bfraction\b|\bproportion\b", "比率/百分比"),
+    (r"\bforecast|\bpredicted?\b|\bestimate[sd]?\b|\bexpected\b", "预测/预期"),
+    (r"\breturn\b|\bvolatility\b|\bbeta\b|\bz[- ]?score\b", "连续统计量"),
+]
+
+
+#: ★ 覆盖/样本计数：**密集**（每只股票都有值）—— 与「事件计数」相反，必须放行。
+# 2026-10-02 自审修正（DEU/analyst7 实测暴露）：
+#   `act_q_cpx_surprisenum` 描述 = "Number of estimates used for surprise calculation"，
+#   初版按「计数=稀疏」判 False ⇒ **analyst7 231 个字段全灭**。
+#   但「覆盖该股的分析师/估计数」是全市场覆盖（1~20 个），longCount 高，与
+#   「降级**次数**」（仅发生降级的股票有值）语义相反。
+#   ⇒ **同是 "number of"，语义可密集可稀疏，必须按名词区分**：
+#     覆盖名词（estimates/analysts/contributors/observations/brokers）→ 密集 → 放行
+#     事件名词（downgrades/revisions/upgrades/events/announcements/filings）→ 稀疏 → 拦截
+COVERAGE_COUNT_DESC_PATTERNS = [
+    # 无歧义覆盖名词（被计数的就是它本身）
+    (r"\bnumber of\b[^.]{0,40}?"
+     r"\b(?:estimates?|contributors?|observations?|brokers?|forecasts?|coverage)\b",
+     "覆盖/样本计数（密集，放行）"),
+    # ⚠ `analysts` 有歧义：`Number of analyst rating downgrades`（事件计数，稀疏）
+    #    vs `Number of analysts covering the company`（覆盖计数，密集）
+    #    ⇒ 必须要求紧跟 covering/contributing 类动词才判密集
+    #    （DEU/predictive_starmine 实测：`analyst_downgrade_count_*` 全族因裸 `analysts?` 被误放行）。
+    (r"\bnumber of\s+analysts?\s+(?:covering|contributing|providing|following|issuing)\b",
+     "分析师覆盖数（密集，放行）"),
+]
+
+
+def field_viability(name, desc):
+    """P7：单字段可做性（True=连续/比率/预测型，longCount 预期充足；False=事件/计数型）。
+
+    判定顺序（**顺序即优先级**，2026-10-02 两轮自审修正）：
+      ① **覆盖/样本计数**（"number of estimates/analysts"）→ **True**
+         ⚠ 必须最早：这类是**密集**计数（全市场覆盖），与事件计数语义相反
+         （DEU/analyst7 实测：初版误判致 231 字段全灭）。
+      ② **事件计数描述**（"number of downgrades/revisions"）→ False
+         ⚠ 必须早于 ③：否则 `Number of estimates` 会因含 "estimates" 命中预测白名单而被误判可做
+         （回归测试 `test_p7_viability_known_cases[actual_last_quarter_earnings_3]` 暴露）。
+      ③ 高可做性描述 → True（概率/比率/预测/连续统计量；防误杀）
+      ④ 事件/计数**名字**（词元锚定）→ False
+      ⑤ 缺省 True（保守：不认识的语义不降权）
+    """
+    n = (name or "").lower()
+    d = (desc or "").lower()
+    for pat, _why in COVERAGE_COUNT_DESC_PATTERNS:
+        if re.search(pat, d):
+            return True
+    for pat, _why in EVENT_LIKE_DESC_PATTERNS:
+        if re.search(pat, d):
+            return False
+    for pat, _why in VIABLE_DESC_PATTERNS:
+        if re.search(pat, d):
+            return True
+    for pat, _why in EVENT_LIKE_PATTERNS:
+        if re.search(pat, n):
+            return False
+    return True
+
+
+def usable_fields(ctx, dataset_id, raw_fc, h=None):
+    """P3 可用字段精修 + P7 可做性过滤。
+
+    P3（原）：已建 typed catalog 的数据集，用目录内 coverage>=0.85 的字段数代替原始
+    fieldCount（原始值把稀疏字段也算进广度，高估可挖空间）；无目录则回退原始值。
+    2026-10-01：DB（field_catalog）为单一事实源，优先读 DB；文件面仅兜底。
+
+    P7（2026-10-02 新增，opt-in h.viability_filter_enable）：在 cov>=0.85 之上再要求
+    **字段语义可做**（非事件/计数型）。返回可用字段数；可做字段数另经
+    `viable_field_count()` 取（调用方按开关决定 breadth 用哪个）。
+
+    返回 (n, src)：n 语义与旧版一致（cov>=0.85 计数），开关只影响 viable 那一支。
+    """
+    d = None
+    try:
+        from _lib.wqb_store import load_catalog
+        d = load_catalog(ctx, dataset_id) or None
+    except Exception:
+        d = None
+    if not d or not d.get("fields"):
+        cat = ctx.catalog_path(dataset_id)
+        if os.path.exists(cat):
+            try:
+                d = load_json(cat)
+            except Exception:
+                d = None
+    if isinstance(d, dict) and d.get("fields"):
+        n = sum(1 for f in d.get("fields", []) if (f.get("coverage") or 0) >= 0.85)
+        if n:
+            return n, "catalog"
     return raw_fc, "raw"
+
+
+def viable_field_count(ctx, dataset_id):
+    """P7：数「cov>=0.85 且语义可做」的字段数。无 catalog 时返回 None（调用方回退）。"""
+    d = None
+    try:
+        from _lib.wqb_store import load_catalog
+        d = load_catalog(ctx, dataset_id) or None
+    except Exception:
+        d = None
+    if not d or not d.get("fields"):
+        cat = ctx.catalog_path(dataset_id)
+        if os.path.exists(cat):
+            try:
+                d = load_json(cat)
+            except Exception:
+                d = None
+    if not (isinstance(d, dict) and d.get("fields")):
+        return None
+    return sum(1 for f in d.get("fields", [])
+               if (f.get("coverage") or 0) >= 0.85
+               and field_viability(f.get("id") or f.get("name"), f.get("description")))
 
 
 def crowd_penalty(ac, h=None):
@@ -434,23 +587,33 @@ def cmd_score(ctx):
     h["_region_saturated"] = bool(saturated)  # P5：区域饱和态 → 拍平 model 权重
     mode = h.get("mode", "general")            # P1：general|ppa
     method = h.get("tier_method", "quantile")  # P2：quantile|threshold
+    _p7 = bool(h.get("viability_filter_enable", False))  # P7：字段语义可做性过滤（opt-in）
     _region_lc = str(ctx.region).lower()
     _delay = str(ctx.settings.get("delay", 1))
     rows = []
+    _p7_used = 0
     for ds in dss:
         did = ds.get("id")
         cov = ds.get("coverage") or 0
         fc, fc_src = usable_fields(ctx, did, ds.get("fieldCount") or 0)  # P3
+        # P7：可做字段数（cov>=0.85 且非事件/计数型）。开关关闭时不查（省一次 catalog 读）。
+        vfc = viable_field_count(ctx, did) if _p7 else None
+        # breadth 来源：P7 开启且能算出 viable 时用 viable（>0 防全零塌陷）；否则退回 P3 值。
+        fc_for_score = vfc if (isinstance(vfc, int) and vfc > 0) else fc
+        if isinstance(vfc, int) and vfc > 0 and vfc != fc:
+            _p7_used += 1
         rows.append({
-            "id": did, "score": round(score(ds, fc, h, emp), 4),  # P0：emp 经验强度先验
+            "id": did, "score": round(score(ds, fc_for_score, h, emp), 4),  # P0/P7
             "coverage": ds.get("coverage"), "fieldCount": ds.get("fieldCount"),
             "usableFieldCount": fc, "fieldCount_src": fc_src,
+            "viableFieldCount": vfc,                     # P7：与 usableFieldCount 对比即见语义损耗
             "alphaCount": ds.get("alphaCount"), "userCount": ds.get("userCount"),
             "valueScore": ds.get("valueScore"),
             "pyramidMultiplier": (ds.get("pyramidMultiplier") or {}).get("multiplier")
                 if isinstance(ds.get("pyramidMultiplier"), dict) else ds.get("pyramidMultiplier"),
             "category": (ds.get("category") or {}).get("id") if isinstance(ds.get("category"), dict) else ds.get("category"),
             "dead": did in dead,
+            # P7 不影响硬地板（设计原则 3）：硬地板仍只看 coverage 与 P3 字段数
             "hard_excluded": hard_excluded(cov, fc, h),
         })
         rows[-1]["pyramid"] = f"{_region_lc}_d{_delay}_{(rows[-1].get('category') or '').lower()}"
@@ -489,6 +652,8 @@ def cmd_score(ctx):
         "mode": mode, "tier_method": method,
         "excluded_pyramids": h.get("excluded_pyramids") or [],
         "empirical_weight": float(h.get("empirical_weight", 0.0) or 0.0),  # P0
+        "viability_filter": _p7,                                          # P7
+        "viability_changed_rows": _p7_used,                               # P7：viable 与 P3 不一致的集数
         "region_saturated": bool(saturated),                              # P5/P2
         "saturated_demoted": n_sat,                                       # P2
         "score_formula": ("0.4*cov + crowd_penalty(alphaCount)[分段: <=50→0.30, 500→0.15, >=5000→0.02] "
@@ -496,6 +661,8 @@ def cmd_score(ctx):
                           + (f" + {h.get('empirical_weight')}*empirical_prior[天花板比 best/gate]"
                              if float(h.get("empirical_weight", 0.0) or 0.0) > 0 else "")
                           + ") × category_weight[0.9~1.15]"
+                          + ("（P7 开启：fc 取 viableFieldCount = cov>=0.85 且非事件/计数型字段数）"
+                             if _p7 else "")
                           + ("（P5 饱和区 model 拍平<=1.0）" if bool(saturated) else "")),
         "tier_rule": tier_rule + ("；保底带（O2/O4/O6，tier_note 溯源）：backfill_band(0.65<=cov<0.85 "
                                    "& alphaCount<=50 & valueScore>=6)→tier2[生成须 ts_backfill(66)，季频/年频用 252]；"
@@ -514,7 +681,19 @@ def cmd_score(ctx):
           f"{f' pyramid_quota={n_quota}' if n_quota else ''}"
           f"{f' pyramid_excluded={n_pyx}' if n_pyx else ''}"
           f"{f' saturated_demoted={n_sat}' if n_sat else ''}) "
-          f"dead_skipped={len(dead)} mode={mode} method={method}")
+          f"dead_skipped={len(dead)} mode={mode} method={method}"
+          + (f" [P7 viability=on affected={_p7_used}]" if _p7 else ""))
+    if _p7:
+        _loss = [(r["id"], r["usableFieldCount"], r["viableFieldCount"])
+                 for r in rows if isinstance(r.get("viableFieldCount"), int)
+                 and r["viableFieldCount"] < r["usableFieldCount"]]
+        _loss.sort(key=lambda t: -(t[1] - t[2]))
+        if _loss:
+            print(f"[P7] 语义损耗 top10（usable->viable，差值=被剔除的事件/计数型字段数）:")
+            for did, u, v in _loss[:10]:
+                print(f"  {did:32s} {u:5d} -> {v:5d}  (-{u - v})")
+        else:
+            print("[P7] 无语义损耗（本区字段无事件/计数型，或 catalog 缺失）")
     print(f"{'rank':>4} {'score':>7} {'tier':>5}  {'id':28s} cov/fields/alphas")
     for i, r in enumerate(alive[:20], 1):
         print(f"{i:>4} {r['score']:>7} {r['tier']:>5}  {r['id']:28s} "

@@ -11,10 +11,10 @@
 | ② | **判 verdict** | §9.3 判定表 | `PASS` / `PARTIAL` / `FAIL` |
 | ③ | **点塔进度** | `python tools/campaign_intel.py pyramid --region $REGION --delay $DELAY`；取输出末尾的 `[key_findings]` 单行 | 供下一波 S0 直接消费平台真实塔状态 |
 | ④ | **写波结论**（③ 的行与本波其它 key_findings **一次带齐**） | `mcp__wqb-db__upsert_wave_result`（§9.4） | `wave_results.verdict` = **唯一结论源** |
-| ⑤ | **判死 / 胜绩** | 判死 → §9.5；胜绩 → §9.6 | `registry_empirical` |
+| ⑤ | **判死 / 胜绩** | 判死 → §9.5；胜绩 → §9.6 | `registry_empirical`（**自动钩子**：win/dead_end 写入成功后触发 profile 漂移核对，摘要随返回值带出，报告落 ledger `profile_drift`；机制与判据见 [`region-profile-contract.md`](region-profile-contract.md) §5） |
 | ⑥ | **饱和反馈**（本波候选**全部**被 prod 墙卡死时） | `python tools/campaign_intel.py mark-saturated --region $REGION --dataset $DS --reason "<原因>" --wave $W --prod-corr <值> --write-ledger` | ledger `saturated_datasets`（S0 打分读取，把该集降 `excluded`；不加 `--write-ledger` 只预览）。**旧做法**（往 `submit_ready_blocked` 追加饱和记录）已废止——S0 从未读过那个键，只有 `step_funnel` 计数 |
-| ⑦ | **逐数据集经验沉淀** | 对本波**每个实际回测的数据集**：`workflow_campaign(stage="S6", subcommand="dataset-experience", dataset=$DS, extra_args=["--delay", str($DELAY)])`，收取后台任务终态，再补充块外的中文字段 / 机制复盘 | `reports/dataset_experience/<region>_<dataset>_campain.md`（只读 DB 生成，保留人工复盘块；默认累计该数据集历史，专门总结本次战役才传 `--waves`） |
-| ⑧ | **刷新先验快照** | `mcp__wq-brain-http__workflow_campaign(region=$REGION, stage="S2", subcommand="assemble-priors")`（默认带 `--snapshot-ledger`） | `priors_snapshot_<region>` |
+| ⑦ | **逐数据集经验沉淀** | 对本波**每个实际回测的数据集**：`workflow_campaign(stage="S6", subcommand="dataset-experience", dataset=$DS, extra_args=["--delay", str($DELAY)])`，收取后台任务终态，再补充块外的中文字段 / 机制复盘 | `reports/dataset_experience/<region>_<dataset>_campain.md`（只读 DB 生成，保留人工复盘块；默认累计该数据集历史，专门总结本次战役才传 `--waves`）。⚠ 文件名后缀 `campain` 是**历史拼写、缺 g 且不可单点改**：它已是被存量文件与消费方依赖的稳定契约，改拼写会让旧文件失配被当新文件重写（详见 `src/wqb/research/dataset_experience.py` 注释） |
+| ⑧ | **刷新先验快照** | `mcp__wq-brain-http__workflow_campaign(region=$REGION, stage="S2", subcommand="assemble-priors")`（默认带 `--snapshot-ledger`） | `priors_snapshot_<region>`（成功时旁路记 `step_events` 事件 `region_kb_refreshed`，供 `step_eval` 的 KB 刷新维度消费） |
 
 未回测、诊断中、待出相关性的不能记成已验证成果（步 7 → 步 8 的候选不是 win）。
 
@@ -37,18 +37,23 @@
 
 - 「达标」在本库有三种口径，**别混**：`meets_internal_line`（Sharpe>1.58 且 Fitness>1.0；停止规则 A）/ `ra_clean`（Failed RA = 0；严格产出率）/ `review_passed`（评审闸全过；**本表用这个**）。词义见 [`GLOSSARY.md`](../../GLOSSARY.md)。
 - 波结论只用 `PASS / PARTIAL / FAIL`，**不用颜色词**（GREEN / YELLOW / RED 属 alpha 提交标签，见 GLOSSARY §2.6）。
-- 被拒时返回里的 `suggestion` 是按此表对原文的**建议**（带依据与置信度；low 置信通常是「无提交」——有 near 候选就该是 PARTIAL），**不会自动采用**：核对后显式传 `verdict=<枚举>`，原文放进 `key_findings`。补记旧波同理。
+- 被拒时返回里的 `suggestion` 是按此表对原文的**建议**（带依据与置信度），**不会自动采用**：核对后显式传 `verdict=<枚举>`，原文放进 `key_findings`。补记旧波同理。
+- ★ **建议的证据质量分两档（2026-10-02）——能传计数就传**：
+  - **计数证据**（`evidence="counts"`，置信 `high`）：调用时同时传 `n_pass` / `n_near`（本波达标 / near 的逐条计数）→ 按判定表**用事实**判，不用猜。**`pipeline --review` 的自动路径 `auto_upsert_from_review` 就是这么做的**（用真实 `n_cand` / `n_near`）。
+  - **文本启发式**（`evidence="text"`）：没给计数时，才退回按原文关键词（`NEAR`/`全灭`/`无提交`…）猜——**low 置信通常是「无提交」，此时若本波有 near 候选就该是 PARTIAL，最好补传计数**。
+  - 即：**手写自由文本被拒后想拿准建议，就把 `n_pass` / `n_near` 一起传**。
 - 停止规则 B 的「最近 3 个 closed 波」按**波的开始时刻**（该波首次入库表达式的时间）取，补记结论 / 补写 findings 不会把旧波顶进窗口（2026-09-27 起；此前按 `updated_at`，补记旧波 PASS 会解除区域停波）。闸结果的 `evidence.recent_closed_waves` 列出窗口内的波号。
 
 ## 9.4 写入契约：`upsert_wave_result`
 
 ```
-mcp__wqb-db__upsert_wave_result  region=$REGION  wave_number=$W  verdict=<PASS|PARTIAL|FAIL>  key_findings=[…]  [focus=…  candidates=…  status=…]
+mcp__wqb-db__upsert_wave_result  region=$REGION  wave_number=$W  verdict=<PASS|PARTIAL|FAIL>  key_findings=[…]  [focus=…  candidates=…  status=…  n_pass=…  n_near=…]
 ```
 
 - **合并语义**（2026-09-27）：行已存在时只覆盖本次传入的字段；只补写 `key_findings` 不会再清空 verdict（此前会，停止规则 B 随之失效）。
 - `key_findings` / `candidates` / `batches` / `full_payload` 一旦传入即**整列替换**：事后补写要带上原有条目——所以 ③ 的点塔行必须与其它 findings **在同一次调用里**传。
 - `verdict` 只接受 `PASS / FAIL / PARTIAL`：`FAIL_xxx：…` / `CLOSED_DEAD_END_…` 这类前缀形态归一到枚举，并把原文搬进 `key_findings[0]`；无法辨认的直接拒绝。描述性结论请写 `key_findings`。
+- `n_pass` / `n_near`（**可选，2026-10-02**）：本波「达标 / near」逐条计数。**不作为列写入**，只在 verdict 无法辨认时把建议从「文本猜」升级为「计数事实」（见 §9.3）。拿得到计数就透传。
 - `status='closed'`（新行缺省即 closed）**必须带 verdict**；结论未定传 `status='open'`。`wave_number` 可传字符串（如 `s2_<ds>_d1`）。
 - `pipeline.py --review` 收批后自动刷新 `region_kb` 的 `recent_waves` / `gate_priors_local` / `updated_at`（手动部分只剩 win / dead_end / 饱和 / 点塔）。
 - **不要**再写 `s6_verdict_<wave>` / `wave<N>_verdict` 这类旧键：结论只有 `wave_results.verdict` 一个来源（2026-09-28 去重；旧键已废止）。
@@ -84,6 +89,7 @@ mcp__wqb-db__seal_dead_end  region=$REGION  entry_id=<ID>  family=<族名>  reas
    - **`family` / `reason` / `rule` 新建时必填**（与 CLI `add-dead-end` 同一份校验，`wqb.registry_contract`）：缺任一项返回 `status=error` 且**不沉降、不写库**；条目已存在时可省，已有的 `rule` 会保留。`rule` = 下次怎么办（配置包排除该族时引用它）。
    - `wave_numbers` **只识别整数波号**：字符串波号（`s2_<ds>_d1`）会被跳过、不沉降；这类波的残值已在收批级联里入池，需要补池用 `mcp__wqb-db__backfill_salvage_pool`。
    - 封存后 `registry_empirical` 的 `dead_end` 层进入下一次 assemble-priors 的 `dead_ends`（倒序，新封存者靠前）。
+   - **沉降旁路记账（2026-10-02）**：`seal_dead_end` 在残值真正入池（`salvaged_count > 0`）时旁路记一条 `step_events` 事件 `salvage_collected`（`source=wqb_db_mcp.py::seal_dead_end`，`dedupe_key=seal_dead_end:<entry_id>` 幂等——重封不重复计数），供 `step_eval` 的 salvage 维度消费；0 条不记（事件语义是「动作发生」）。
 3. **写入路径**：MCP 可用时用上面的调用；无 MCP 或批量回写时用 toolkit 的带校验 CLI：`python Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/$REGION registry add-dead-end --id … --family … --reason … --rule …`（`id / family / reason / rule` 必填，`--dry-run` 可先校验）——两条路径写同一张表、同一份**字段**校验（`wqb.registry_contract`），任选其一，**不要两边各写一遍**。⚠ **取证闸与残值沉降只在 `seal_dead_end` 上**：CLI 备选路径（以及 `upsert_registry_empirical(layer="dead_end")`）两样都不带，走它们时判死前须人工按上面 ① 核对取证（见触发表末节「已知缺口」）。
 
 ## 9.6 胜绩回写
@@ -105,6 +111,12 @@ mcp__wqb-db__upsert_registry_empirical  region=$REGION  layer="win"  entry_id=<I
 - [ ] 本波候选全被 prod 墙卡死 → 已 `mark-saturated`
 - [ ] 每个实际回测的数据集都已 `dataset-experience`
 - [ ] **assemble-priors 已再跑**：`priors_snapshot_<region>` 不早于本次回写（GBR 实测：快照停在 09-19，而 `region_kb` 已 09-25、`registry_empirical` 已 09-26 → 落后 8 天，本波结论不回流）
+
+> ★ **勾完用 `python tools/step9_audit.py --region $REGION [--wave $W]` 机器复核（2026-10-02 新增）**：
+> 只读，逐项打印 `[OK] / [FAIL] / [ ? ]`（`[ ? ]`=无法核验，**不等于失败**），并给缺项与修法。
+> 第 ①⑥ 项是**硬判据**（可直接断定）；②③④⑤ 是**软判据**（无显式标记，需人工核对）。
+> 默认 `--enforce warn` 只报告；`--enforce strict` 把软判据也算失败并退出码 1（可作为开下一波前的自检）。
+> 之前这一步全靠自律——GEM 对 stale 快照只 WARN，所以漏做 ⑥⑦⑧ 不会报错。
 
 产物归属见 [CONTRACT §4 共享产物归属](../../CONTRACT.md)。
 

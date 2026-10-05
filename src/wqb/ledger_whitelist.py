@@ -2,15 +2,16 @@
 """s0_whitelist 的容错读取 —— 单一契约入口（2026-09-17 P0-4）。
 
 ## 问题（实测）
-同一 ledger 键 `s0_whitelist` 在 13 个区域存在 **5 种互不兼容形态**：
+同一 ledger 键 `s0_whitelist` 在 13 个区域存在 **6 种互不兼容形态**：
 
 | 形态 | 区域 | 数据集所在键 |
 |---|---|---|
-| `candidates[]` | CHN / DEU / EUR / KOR | `candidates[].dataset` |
+| `candidates[]` | CHN / DEU / EUR | `candidates[].dataset` |
 | `whitelist[]` | HKG / JPN / MEA / USA | `whitelist[]`（字符串列表）|
 | `datasets[]` | IND | `datasets[]` |
 | `other` | ASI（counts/gate/delay…）/ GLB（analyst/earnings…）| 无显式列表 |
 | **非 dict** | **GBR** | JSON 串内再包一层 JSON（双重序列化）|
+| `campaign` | **KOR**（2026-10-02 起）| `primary_focus.slots.item` + `reserve.<类目>.item`（无顶层列表键）|
 
 对照：`s0_ranking` 在全部 10 个有记录的区域统一为 `ranking[]`，**零漂移** ——
 说明漂移特异地集中在本键（写入方缺统一契约）。
@@ -160,6 +161,40 @@ def _entries_to_datasets(entries: Any) -> List[str]:
     return uniq
 
 
+def _campaign_locked_datasets(data: Dict[str, Any]) -> List[str]:
+    """战役锁定形态（KOR 2026-10-02 起）的数据集抽取。
+
+    该形态把白名单拆成 `primary_focus`（主攻类目）与 `reserve`（储备类目），
+    数据集名落在各自的 `slots.item` / `<类目>.item` 下，**没有顶层列表键** ——
+    故已知键直命中（1）与顶层列表推断（2）都够不到它。
+
+    刻意**只**取这两条路径：同一 payload 里 `settings.neutralization_candidates.item`
+    （STATISTICAL / SECTOR…）与 `region_constraints.item`（longCount<80=FAIL…）也
+    是 `item` 列表，但装的是中性化档位与约束规则，不是数据集 id —— 泛化抓 `item`
+    会把档位名与规则串污染进白名单。
+    """
+    out: List[str] = []
+    pf = data.get("primary_focus")
+    if isinstance(pf, dict):
+        slots = pf.get("slots")
+        out.extend(_entries_to_datasets(slots.get("item") if isinstance(slots, dict) else None))
+    reserve = data.get("reserve")
+    if isinstance(reserve, dict):
+        for v in reserve.values():
+            if isinstance(v, dict):
+                out.extend(_entries_to_datasets(v.get("item")))
+            elif isinstance(v, list):
+                out.extend(_entries_to_datasets(v))
+    # 保序去重（跨 primary_focus 与 reserve 两来源）
+    seen: set = set()
+    uniq: List[str] = []
+    for d in out:
+        if d not in seen:
+            seen.add(d)
+            uniq.append(d)
+    return uniq
+
+
 def normalize(raw: Any) -> Dict[str, Any]:
     """把任意已知形态的 `s0_whitelist` 归一为统一结构。
 
@@ -220,6 +255,15 @@ def normalize(raw: Any) -> Dict[str, Any]:
                 out["reason"] = f"命中 `{key}` 但其中无有效数据集 id"
             return out
 
+    # 1b) 战役锁定形态（KOR 2026-10-02 起）：数据集嵌在 primary_focus.slots.item
+    #     与 reserve.<类目>.item，无顶层列表键 —— 1) 与 2) 都够不到
+    ds = _campaign_locked_datasets(data)
+    if ds:
+        out["schema"] = "campaign"
+        out["datasets"] = ds
+        out["ok"] = True
+        return out
+
     # 2) 未命中已知键：尝试从任意列表值里推断（ASI/GLB 一类）
     inferred: List[str] = []
     for k, v in data.items():
@@ -276,3 +320,49 @@ def to_canonical(rec: Dict[str, Any], keep_legacy: Any = None) -> Dict[str, Any]
         canonical["_legacy"] = keep_legacy
     canonical["_schema_from"] = rec.get("schema")
     return canonical
+
+
+# ---------------------------------------------------------------- 有效白名单（去判死）
+
+DEAD_SUFFIX = "_dead"
+
+
+def dead_datasets(conn, region: str):
+    """本区已判死的数据集集合（判死口径 = ledger 存在 `<ds>_dead` 键）。
+
+    ⚠ 只认 `key LIKE '%_dead'` 且**以 `_dead` 结尾**的键：`dead_datasets`、
+    `s0_dead_empty_20260923`、`asi_w7_multisource_dead_20260916` 这类**不是**
+    数据集判死键，不能被误剔除。
+    """
+    try:
+        rows = conn.execute(
+            "SELECT key FROM ledger_kv WHERE region=? AND key LIKE '%_dead'",
+            (region,)).fetchall()
+    except Exception:
+        return set()
+    out = set()
+    for r in rows:
+        k = r[0] if isinstance(r, (tuple, list)) else (
+            r["key"] if hasattr(r, "keys") else None)
+        if isinstance(k, str) and k.endswith(DEAD_SUFFIX) and len(k) > len(DEAD_SUFFIX):
+            out.add(k[: -len(DEAD_SUFFIX)])
+    return out
+
+
+def effective_datasets(conn, region: str, raw=None):
+    """**有效白名单** = 归一后的 datasets − 本区已判死集。返回 (keep, dropped)。
+
+    为什么必须在读取侧过滤（2026-10-01 实测）：
+    `GBR/news48` 被判为幽灵集（`news48_dead`，S1 扫描 fields=0）且 rule 明写
+    「不进白名单、不生成」，但 `s0_whitelist` 里**仍有它**——判死发生在白名单
+    写入**之后**，写侧过滤够不到这种时序。读取侧过滤才能让**所有**下游
+    （开波 catalog 闸、评分、选波）立即一致地看不到已判死集。
+
+    `raw=None` 时自行从 ledger 读 `s0_whitelist`；否则对给定 payload 归一。
+    """
+    rec = load_from_ledger(conn, region) if raw is None else normalize(raw)
+    ds = [str(d) for d in (rec.get("datasets") or []) if d]
+    dead = dead_datasets(conn, region)
+    keep = [d for d in ds if d not in dead]
+    dropped = [d for d in ds if d in dead]
+    return keep, dropped

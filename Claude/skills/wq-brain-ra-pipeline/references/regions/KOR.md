@@ -10,10 +10,21 @@ static:
   neutralization_default: STATISTICAL
   notes: "小宇宙放大 CW/longCount 问题；档位禁止外推"
 datasets:
-  red: [chart_patterns, news_sentiment, ai_ml, credit_risk]
-  red_reason: "图表形态 3 连死 / 新闻情绪 3 连死 / AI-ML 3 连死 / 信用风险双死；GLB emotion 跨区铁律同禁"
-  yellow: []
-  green: [analyst 系（评级/预期）, insiders, pv]
+  red:
+    - datasets: [acquisition_model, fundamental44, institutions6, model109, model170, model192, model230, model30, model32, model53, multi_source_model, news79, sentiment21, shortinterest3, smoke_ds, wave30_model252]
+      reason: "图表形态 3 连死 / 新闻情绪 3 连死 / AI-ML 3 连死 / 信用风险双死；GLB emotion 跨区铁律同禁（键 = ledger *_dead ∪ 旧 red 文本 id；明细查 get_dead_datasets；smoke_ds / wave30_model252 是 ledger 里的测试残留 *_dead 键、不在本区 datasets 表，drift 检查会报 unknown_dataset_ref——已知噪声，清掉要删 ledger 键，未动）"
+    - datasets: [insiders5, insider_feats, pv106, pv30, risk59, risk60, risk68, risk70, risk71, risk88, other455, other496, other553, analyst10, analyst16, analyst44, analyst_consensus, fundamental17, fund_holdings_panel]
+      reason: "2026-10-03 汇总的 KOR 已判死族（WorkBuddy 记忆 RULES §G）：insiders5 天花板 1.05、insider_feats prod 饱和 0.7185、pv106 流动性天花板 1.1、pv30 聚类标签无信号、risk60 借券域 8 探针 max|S| 0.18、risk70 族连坐 risk88、risk71 MFM2 残差反转 2Y 翻号、risk88 载荷直截面不达线、other455 n2v 网络嵌入全灭、other496 `_t` 时间戳陷阱、other553 分析师绝对值全灭、analyst10/16/44/consensus prod 墙、fundamental17 202 条天花板 1.30、fund_holdings_panel 8/8 RED；族级判死 ≠ 整集死，整集以 get_dead_datasets 为准"
+    - scope: family
+      families: [chart_patterns, news_sentiment, ai_ml, credit_risk]
+      reason: "图表形态 3 连死 / 新闻情绪 3 连死 / AI-ML 3 连死 / 信用风险双死；GLB emotion 跨区铁律同禁"
+  green:
+    - datasets: [other466]
+      note: "旧 green 文本 id ∪ registry win 层实证绑定"
+    - scope: family
+      families: ["分析师预期变化面只作辅助腿 / 条件（主信号族 analyst10/16/44/consensus 已撞 prod 墙，见 red）"]
+      note: "2026-10-04 改写：旧文把 analyst 系 / insiders / pv 整族列绿榜，与 2026-10-02/03 的实证相反（insiders5 天花板 1.05、pv106 / pv30 判死、analyst 族 prod 墙）"
+  yellow: ["shortinterest38（输入频率二选一：累积 accum_* 口径 2Y 1.72–1.93 但 S 仅 0.80–0.98，当日 stk_* 口径 S 2.00 但 2Y 1.12–1.20；四闸难兼得，仅作选区先验，非全 KOR 结论）"]
 priors:
   signal_families_include: [financial_ratio_fundamental]
   signal_families_exclude: [chart_pattern, news_emotion, ai_ml, credit_risk, glb_emotion, insiders, pv_liquidity, risk_factor, analyst_prod_wall]
@@ -99,3 +110,9 @@ CW 为动态指标不进静态闸，在步 7 review 时检查：CW>0.5 的 alpha
 - 四大红灯族 + GLB emotion：生成阶段直接排除，不抱"换参数复活"幻想。
 - 事件类数据集（earnings 等）：**平台没有 `ts_event_*` 系列**（KOR wave16 实测 8/8 ERROR；闸 8 引用 `type==EVENT` 字段即 FAIL）。先单条探针确认该字段能否直接进标准算子，再生成；预设 CW 必查。旧文「优先生成 `ts_event_*` 裸 rank」已更正。
 - 禁止 delay0 外推（KOR 实证仅 delay1）。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：pv1(alphaCount=67041, cov=1); analyst15(alphaCount=12004, cov=0.53); model25(alphaCount=9873, cov=0.86)
+- 白空间候选（未测 + 覆盖≥60% + 低 alphaCount）：event_stock_model(cov=0.92, alphaCount=1); behavioral_signals(cov=0.87, alphaCount=1); model140(cov=0.79, alphaCount=1); model307(cov=0.67, alphaCount=1); equity_forum_data(cov=0.89, alphaCount=2)
+- 已判死（勿重试）：KOR-ANALYST16-EST-PCT-DEAD, KOR-EPS-REVISION-SPREAD-PROD-FLOOR-0723, KOR-FND93-ACCRUALS-DEAD, KOR-FND94-FORWARD-PROFITABILITY, KOR-PV106-COST-DISPERSION-COVERAGE-DEAD, KOR-PV106-LIQUIDITY-WEAK, KOR-RISK60-CROWDDING-NOSIGNAL-20261002, KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD
+- 实证笔记：KOR-OTHER466-CORE-EARN-YIELD-MKT-WIN: DB 回滚后凭 memory/平台状态重建（原记录在 WAL 期丢失） | KOR-INSIDERS5-CEILING-20260909: 族降级暂停：不再投槽位；与 profile 绿榜不冲突——insiders 数据集天花板低是数据集属性，非方向错误

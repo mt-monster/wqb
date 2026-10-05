@@ -105,15 +105,26 @@ def _run_wave_gate(mode, dataset="model109", region="KOR", campaign="tracking/KO
 
 @pytest.fixture(scope="module")
 def kor_no_pack_ready():
-    """前置：KOR/model109 有 field whitelist（gate.py 能跑通）但无体检包。"""
-    has_wl = os.path.isfile(
-        os.path.join(REPO, "tracking", "KOR", "reference", "kor_model109_field_whitelist.json")
-    )
+    """前置：KOR/model109 有 catalog（DB；gate.py 能跑通）但无体检包。"""
+    # 2026-10-01：reference/*_fields.json（含 legacy *_field_whitelist.json）已下线，
+    # catalog 单一事实源 = DB，故前置改为查 DB 而非文件（对齐 gate.load_whitelist DB 优先）。
+    has_cat = False
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src"))
+        from wqb.store import CampaignStore
+        st = CampaignStore(os.path.join(REPO, "data", "wqb.db"))
+        try:
+            cat = st.get_field_catalog("KOR", "model109")
+            has_cat = bool(isinstance(cat, dict) and cat.get("fields"))
+        finally:
+            st.close()
+    except Exception:
+        has_cat = False
     has_pack = os.path.isfile(
         os.path.join(REPO, "tracking", "mining", "field_inspect_kor_model109.json")
     )
-    if not has_wl or has_pack:
-        pytest.skip("KOR/model109 前置不满足（需有白名单且无体检包）")
+    if not has_cat or has_pack:
+        pytest.skip("KOR/model109 前置不满足（需 DB 有 catalog 且无体检包）")
     return True
 
 

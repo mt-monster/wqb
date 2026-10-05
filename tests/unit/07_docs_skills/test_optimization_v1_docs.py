@@ -57,13 +57,18 @@ def test_forms_doc_only_uses_verified_operators():
     assert not used & BAD
 
 
-def test_forms_f1_is_restricted_to_same_source_like_the_user_ruling():
+def test_forms_f1_has_both_same_source_and_cross_dataset_spread():
+    """2026-10-01 修正：F1 族拆成 ⑤ 同源价差 与 ⑤b 跨集价差（后者合规且鼓励，须声明经济含义）。"""
     text = _t(SK / "references" / "structural-interaction-forms.md")
-    assert "仅限同源辅助腿" in text and "spread_cross_dataset" in text
+    assert "spread_cross_dataset" in text
+    assert "⑤b" in text and "跨集价差" in text, "形态库缺 ⑤b 跨集价差（2026-10-01 用户定案）"
+    assert "declared_cross_spreads" in text, "形态库须写明跨集价差的声明入口"
     ruling = PC["spread_signal_ruling"]
-    assert any("不同数据集" in v for v in ruling["violation_when"]), "spread_signal_ruling 的违规条件变了：请同步形态库 F1"
+    assert any("未声明" in v for v in ruling["violation_when"]), \
+        "spread_signal_ruling 的违规条件应改为「跨集且未声明」：请同步形态库 F1"
+    assert "declared_cross_spreads" in PC, "platform_constraints 缺 declared_cross_spreads 配置"
     # 每个入场方式都在判据表里
-    for way in ("① 条件", "② 分组轴", "③ 残差化", "④ 协动对象", "⑤ 同源价差"):
+    for way in ("① 条件", "② 分组轴", "③ 残差化", "④ 协动对象", "⑤ 同源价差", "⑤b **跨集价差**"):
         assert way in text
 
 

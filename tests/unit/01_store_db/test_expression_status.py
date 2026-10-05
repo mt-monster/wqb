@@ -188,7 +188,7 @@ def _load_db_mcp(tmp_path):
     spec = importlib.util.spec_from_file_location("_wqb_db_mcp_status", str(REPO_ROOT / "wqb_db_mcp.py"))
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    mod.DB_PATH = tmp_path / "mcp.db"  # _store() 每次读模块级 DB_PATH，绝不碰真库
+    mod.set_db_path(tmp_path / "mcp.db")  # 本测试自行载入独立模块实例，无跳测试泄漏；确保不碰真库
     return mod
 
 

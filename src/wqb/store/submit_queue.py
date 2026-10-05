@@ -23,7 +23,7 @@ import json
 import re
 import sqlite3
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ._common import default_db_path, _now
 from ..db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口：WAL + busy_timeout 60s）
@@ -58,6 +58,9 @@ STATUS_EXPIRED = "EXPIRED"
 STATUS_SUBMITTED = "SUBMITTED"
 #: 同骨架去重时被更优兄弟取代（不是硬闸失败，故与 DEAD 区分）
 STATUS_SUPERSEDED = "SUPERSEDED"
+#: 模拟层全过、仅 prod/self 撞 0.7 墙（2026-09-30 用户定调）。与 DEAD 区分：可随生产池变化恢复，
+#: 单独追踪；**不直接 POST**（提交会进一步污染池子、废掉同族兄弟）。
+STATUS_PROD_BLOCKED = "PROD_BLOCKED"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS submit_ready (
@@ -233,14 +236,88 @@ def is_pass(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks=N
 
 
 def gate_of(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks=None, expr=None):
-    """返回 (gate, status)。未过闸者一律不进 READY。"""
+    """返回 (gate, status)。未过闸者一律不进 READY。
+
+    2026-09-30 新增 PROD_BLOCKED：**模拟层全过（S/F/2Y/T + RA 硬闸全 PASS），仅 prod/self
+    撞 0.7 墙** 的候选。这类 alpha 与真正参数不达标的 DEAD 语义不同——它是「本来可提交、
+    只是当前生产池太挤」，会随生产池变化（新提交/退市）而恢复。用户 2026-09-30 定调：
+    这类候选应单独追踪、不直接 POST（POST 会进一步污染生产池），等池子有空间再提。
+    """
     ok, why = is_pass(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks, expr)
     if not ok:
+        if why in ("PROD", "SELF"):
+            return "FAIL:" + why, STATUS_PROD_BLOCKED
         return "FAIL:" + why, STATUS_DEAD
     if prod is None or selfc is None:
         # IS 达标但相关性未测 → 可入队待验，提交前必须 verify
         return "IS_ONLY", STATUS_READY
     return "SUBMIT_LAYER_VERIFIED", STATUS_READY
+
+
+def normalize_towers(raw) -> List[Tuple[str, Optional[float]]]:
+    """``towers`` 列归一为 ``[(塔名, 倍率)]``（无倍率则为 None）。
+
+    2026-10-05 实测该列**三种格式并存**，且旧 ``priority`` 只认其中一种：
+      * ``'["USA/D1/MODEL"]'``   —— JSON list of str（tools/submit_queue.py add 产出）
+      * ``'{"name":..,"multiplier":..}'`` 元素 —— JSON list of dict（原 priority 期望）
+      * ``'USA/D1/MODEL'``       —— **裸字符串**（无引号无括号，json.loads 抛错静默退化）
+      * ``'[]'`` / ``None``      —— harvest 时 pyramids 缺失（UNSUBMITTED alpha 无 pyramids）
+    旧实现三态里两态全部退化为 1.0 ⇒ 塔倍率被静默丢弃、优先级排序失真。本函数统一解析。
+    """
+    if not raw:
+        return []
+    if isinstance(raw, (list, tuple)):
+        items = list(raw)
+    else:
+        s = str(raw).strip()
+        if not s:
+            return []
+        items = None
+        try:
+            v = json.loads(s)
+            if v is None:
+                return []  # JSON "null" ⇒ 空
+            if isinstance(v, (list, tuple)):
+                items = list(v)
+            elif isinstance(v, dict):
+                items = [v]
+        except (ValueError, TypeError):
+            pass
+        if items is None:
+            # 裸字符串："USA/D1/MODEL"，或逗号/空白分隔的多塔
+            parts = [p.strip() for p in re.split(r"[,;\s]+", s) if p.strip()]
+            items = [p for p in parts if "/" in p] or parts
+    out: List[Tuple[str, Optional[float]]] = []
+    for it in items:
+        if isinstance(it, str):
+            nm = it.strip()
+            if nm:
+                out.append((nm, None))
+        elif isinstance(it, dict):
+            nm = it.get("name") or it.get("id") or it.get("pyramid")
+            if not nm:
+                # {"region": "USA", "delay": 1, "category": {"id": "MODEL"}} 形态
+                rg, dl = it.get("region"), it.get("delay")
+                cat = it.get("category")
+                cid = cat.get("id") if isinstance(cat, dict) else cat
+                if rg and cid:
+                    nm = f"{rg}/D{dl if dl is not None else '?'}/{cid}"
+            if not nm:
+                continue
+            m = it.get("multiplier")
+            try:
+                m = float(m) if m is not None else None
+            except (TypeError, ValueError):
+                m = None
+            out.append((str(nm).strip(), m))
+    return out
+
+
+def _towers_multiplier(raw, default: float = 1.0) -> float:
+    """取 towers 里的最大倍率；解析不出任何倍率时返回 default（保留旧行为）。"""
+    tw = normalize_towers(raw)
+    ms = [m for _n, m in tw if m is not None]
+    return max(ms) if ms else default
 
 
 def priority(row) -> float:
@@ -256,13 +333,7 @@ def priority(row) -> float:
         margin += (LIM["prod"] - g("prod"))
     if g("self") is not None:
         margin += (LIM["self"] - g("self"))
-    mult = 1.0
-    try:
-        tw = json.loads(g("towers") or "[]")
-        if tw:
-            mult = max(float(t.get("multiplier", 1.0)) for t in tw)
-    except Exception:
-        pass
+    mult = _towers_multiplier(g("towers"))
     return round(fit * mult + margin * 0.5, 4)
 
 
@@ -399,12 +470,12 @@ def _upsert(con: sqlite3.Connection, rec: Dict[str, Any], note: str = "") -> str
     gate, st = gate_of(rec.get("sharpe"), rec.get("fitness"), rec.get("two_year"),
                        rec.get("turnover"), rec.get("prod"), rec.get("self"),
                        rec.get("ra_failed_checks"), rec.get("expr"))
-    # 坑 2b：同骨架兄弟已实测 prod>=0.7 而本条 prod 未测 → 标 DEAD（FAIL:PROD_SIBLING）；
+    # 坑 2b：同骨架兄弟已实测 prod>=0.7 而本条 prod 未测 → 标 PROD_BLOCKED（FAIL:PROD_SIBLING）；
     # verify/add 实测 prod<0.7 时 mark_verified 可复活。避免"裸主腿 0.8 撞墙家族"靠 prod=None 混进 READY。
     if st == STATUS_READY and rec.get("prod") is None and rec.get("expr"):
         sib = _prod_wall_sibling(con, rec.get("region"), rec.get("expr"), rec.get("alpha_id"))
         if sib:
-            gate, st = "FAIL:PROD_SIBLING(%s=%.2f)" % sib, STATUS_DEAD
+            gate, st = "FAIL:PROD_SIBLING(%s=%.2f)" % sib, STATUS_PROD_BLOCKED
     vb = rec.get("verified_by") or (
         "API" if (rec.get("prod") is not None or rec.get("self") is not None) else "IS_only")
     con.execute(
@@ -421,11 +492,17 @@ def _upsert(con: sqlite3.Connection, rec: Dict[str, Any], note: str = "") -> str
           skeleton=COALESCE(excluded.skeleton, submit_ready.skeleton),
           suggested_tags=excluded.suggested_tags,
           status=CASE WHEN submit_ready.status='SUBMITTED' THEN submit_ready.status
-                      WHEN submit_ready.status='DEAD' AND excluded.status='READY' THEN 'READY'
+                      WHEN submit_ready.status IN ('DEAD','PROD_BLOCKED')
+                           AND excluded.status='READY' THEN 'READY'
                       WHEN submit_ready.status='DEAD' THEN submit_ready.status
+                      -- PROD_BLOCKED 且新判定仍为 blocked：保留 PROD_BLOCKED（不被 DEAD 降级）
+                      WHEN submit_ready.status='PROD_BLOCKED'
+                           AND excluded.status='PROD_BLOCKED' THEN 'PROD_BLOCKED'
+                      WHEN submit_ready.status='PROD_BLOCKED' THEN 'DEAD'
                       ELSE excluded.status END,
           note=CASE WHEN submit_ready.status='SUBMITTED' THEN submit_ready.note
-                    WHEN submit_ready.status='DEAD' AND excluded.status='READY'
+                    WHEN submit_ready.status IN ('DEAD','PROD_BLOCKED')
+                         AND excluded.status='READY'
                          THEN COALESCE(excluded.note,'')||' | revived:'||COALESCE(submit_ready.gate,'')
                     WHEN submit_ready.status='DEAD' THEN submit_ready.note
                     ELSE excluded.note END
@@ -771,7 +848,7 @@ def regrade_ready(region: Optional[str] = None, db_path: Optional[str] = None,
             if st == STATUS_READY and r.get("prod") is None and r.get("expr"):
                 sib = _prod_wall_sibling(con, r.get("region"), r.get("expr"), r.get("alpha_id"))
                 if sib:
-                    gate, st = "FAIL:PROD_SIBLING(%s=%.2f)" % sib, STATUS_DEAD
+                    gate, st = "FAIL:PROD_SIBLING(%s=%.2f)" % sib, STATUS_PROD_BLOCKED
             if st != STATUS_READY or gate != r.get("gate"):
                 changes.append((r["alpha_id"], r.get("gate"), gate))
                 if not dry_run:
@@ -823,6 +900,75 @@ def mark_verified(alpha_id: str, region: Optional[str] = None,
         con.close()
 
 
+def mark_blocked(alpha_id: str, reason: str = "", status: Optional[str] = None,
+                 region: Optional[str] = None, note: str = "",
+                 db_path: Optional[str] = None) -> Dict[str, Any]:
+    """降级队列状态：平台判定不可提交时把该条退出台账（与 ``mark_verified`` 对称）。
+
+    2026-10-05 教训（A1vOb5pE / ZYAWx9J3）：``tools/submit_verdict.py`` 只会在
+    「模拟层干净」时升级（``mark_verified``），出 ``BLOCKED`` / ``ALREADY_SUBMITTED``
+    时**不写回队列** → 队列行继续挂着上一轮手写的 ``gate=PASS`` 与 ``status=READY``，
+    盘点时把已被平台 RA 硬闸拦住的候选当成「可提交」。本函数补上「只升不降」的缺口。
+
+    ``status`` 为 None 时按 ``reason`` 推断：
+      - ``ALREADY_SUBMITTED``            → SUBMITTED（平台已 ACTIVE，勿重复 POST）
+      - ``FAILED_COUNT_*`` / ``FAIL:*``  → DEAD（候选缺陷，须修复后重新回测再判）
+      - 其他 BLOCKED                     → DEAD
+
+    保护：已是 SUBMITTED 的行不动；已是 DEAD 的行只刷新 gate/note（不复活、不降级）。
+    容错：表不存在或无该行返回 ``changed=0``，不抛异常（与 ``mark_verified`` 同口径）。
+    """
+    if status is None:
+        status = (STATUS_SUBMITTED if reason == "ALREADY_SUBMITTED"
+                  else STATUS_DEAD)
+    out: Dict[str, Any] = {"alpha_id": alpha_id, "status": status,
+                           "gate": reason, "changed": 0}
+    con = connect(db_path)
+    try:
+        ensure_table(con)
+        where = "alpha_id=? AND status<>'SUBMITTED'"
+        ps: List[Any] = [alpha_id]
+        if region:
+            where = "alpha_id=? AND region=? AND status<>'SUBMITTED'"
+            ps.append(region)
+        row = con.execute(f"SELECT id, status, gate FROM submit_ready WHERE {where}",
+                          ps).fetchone()
+        if not row:
+            out["why"] = "not_found"
+            return out
+        old_status, old_gate = row["status"], row["gate"]
+        # 已 DEAD 且 gate 一致：幂等，只补 recheck note（同 reason 连续跑不再累加）
+        same_gate = (not reason) or old_gate == reason
+        if old_status == STATUS_DEAD and same_gate:
+            note_txt = ""
+            if reason:
+                old_note = con.execute(
+                    "SELECT note FROM submit_ready WHERE id=?", (row["id"],)).fetchone()[0] or ""
+                if f"recheck:{reason}" not in old_note:
+                    note_txt = f" | recheck:{reason}"
+            if note_txt:
+                con.execute("UPDATE submit_ready SET note=COALESCE(note,'')||? WHERE id=?",
+                            (note_txt, row["id"]))
+                con.commit()
+            out["changed"] = 1
+            out["why"] = "rechecked"
+            return out
+        con.execute(
+            f"UPDATE submit_ready SET status=?, gate=?, verified_at=?, "
+            f"note=COALESCE(note,'')||? WHERE id=?",
+            (status, reason or old_gate, _now(),
+             f" | submit_verdict:{reason}{(' / ' + note) if note else ''}", row["id"]))
+        con.commit()
+        out.update({"changed": 1, "why": "downgraded",
+                    "old_status": old_status, "old_gate": old_gate})
+        return out
+    except sqlite3.Error:
+        out["why"] = out.get("why") or "db_error"
+        return out
+    finally:
+        con.close()
+
+
 def refresh_tags(region: Optional[str] = None, db_path: Optional[str] = None,
                  dry_run: bool = False) -> int:
     """按当前规范**重算**队列所有行的 `suggested_tags`（回填）。
@@ -856,6 +1002,40 @@ def refresh_tags(region: Optional[str] = None, db_path: Optional[str] = None,
         con.close()
 
 
+def refresh_family(region: Optional[str] = None, db_path: Optional[str] = None,
+                   dry_run: bool = False) -> int:
+    """按 `骨架 → 短族名` 重算并回填 `family` 列（与 `refresh_tags` 同一 idiom）。
+
+    为什么回填而不是删列：`_upsert` 一直写 `family`，`_family_of(skeleton)` 是它的规范
+    推导实现，但存量行**从未回填**（2026-10-01 实测 218/218 全 NULL）→ 列存在却永不生效，
+    既可能被误当成有效分组依据、又白占空间。由于 INSERT 语句显式引用该列，**不能 DROP**
+    （会直接写崩入队链路），正确解法是把它补成真实数据。
+
+    Returns: 发生变化的行数
+    """
+    con = connect(db_path)
+    try:
+        ensure_table(con)
+        q = "SELECT id, skeleton, expr, family FROM submit_ready"
+        ps: List[Any] = []
+        if region:
+            q += " WHERE region = ?"
+            ps.append(region)
+        changed = 0
+        for r in con.execute(q, ps).fetchall():
+            sk = r["skeleton"] or _sig(r["expr"])
+            new = _family_of(sk) if sk else ""
+            if new != (r["family"] or ""):
+                changed += 1
+                if not dry_run:
+                    con.execute("UPDATE submit_ready SET family=? WHERE id=?", (new, r["id"]))
+        if not dry_run:
+            con.commit()
+        return changed
+    finally:
+        con.close()
+
+
 def list_ready(region: Optional[str] = None, db_path: Optional[str] = None,
                all_status: bool = False) -> List[Dict[str, Any]]:
     """列出候选（默认仅 READY），按优先级降序。"""
@@ -871,5 +1051,30 @@ def list_ready(region: Optional[str] = None, db_path: Optional[str] = None,
             ps.append(region)
         rows = [dict(r) for r in con.execute(q, ps).fetchall()]
         return sorted(rows, key=priority, reverse=True)
+    finally:
+        con.close()
+
+
+def list_prod_blocked(region: Optional[str] = None, db_path: Optional[str] = None) -> List[Dict[str, Any]]:
+    """列出「模拟层全过、仅被生产池 prod/self 撞墙」的候选（2026-09-30 用户口径）。
+
+    这类候选不是废品：S/F/2Y/T 与 RA 硬闸全 PASS，只是提交会撞 0.7 相关性墙。
+    它们**不应直接 POST**（POST 会进一步污染生产池、废掉同族兄弟），而应等生产池
+    有空间（新提交退市 / 池子结构变化）时再复核。按「离 0.7 最近的」优先排序
+    ——prod 越接近 0.7 越有希望在池子松动后翻过。"""
+    con = connect(db_path)
+    try:
+        ensure_table(con)
+        q = "SELECT * FROM submit_ready WHERE status=?"
+        ps: List[Any] = [STATUS_PROD_BLOCKED]
+        if region:
+            q += " AND region = ?"
+            ps.append(region)
+        rows = [dict(r) for r in con.execute(q, ps).fetchall()]
+        # 按「离墙距离」升序：prod/self 越接近 0.7 越靠前
+        def _gap(r):
+            vals = [v for v in (r.get("prod"), r.get("self")) if v is not None]
+            return min((abs(LIM["prod"] - v) for v in vals), default=9.9)
+        return sorted(rows, key=lambda r: (-(r.get("fitness") or 0), _gap(r)))
     finally:
         con.close()

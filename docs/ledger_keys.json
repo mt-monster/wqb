@@ -367,7 +367,7 @@
    "writers": [
     {
      "kind": "code",
-     "ref": "src/wqb/workflow/nodes/campaign.py",
+     "ref": "src/wqb/workflow/nodes/_campaign_open_gates.py",
      "via": "闸拦截时提示 agent 写入"
     }
    ],
@@ -375,7 +375,7 @@
     {
      "kind": "code",
      "ref": "src/wqb/waiver.py",
-     "via": "campaign.py 经 waiver.load 读取"
+     "via": "_campaign_open_gates.py（积压闸 `_run_backlog_gate`）经 waiver.load 读取"
     }
    ],
    "missing": "闸按规则拦截",
@@ -1294,8 +1294,12 @@
   {
    "key": "s4_walls_<region>_<wave>",
    "status": "active",
-   "purpose": "S4 墙统计（审计）",
+   "purpose": "S4 墙统计（审计）；结构化 payload {walls:{墙名:计数}, per_alpha, n_rows, n_candidates, reviewed_at}",
    "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py"
+    },
     {
      "kind": "code",
      "ref": "src/wqb/workflow/nodes/campaign.py"
@@ -1305,9 +1309,13 @@
     {
      "kind": "code",
      "ref": "src/wqb/step_eval.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
     }
    ],
-   "missing": "step_eval 的 walls_coverage 记 n/a（未知，不报 0）",
+   "missing": "step_eval 的 walls_coverage 记 n/a（未知，不报 0）；2026-10-02 起 SOP 主路径（pipeline.stage_review）在 normal 与全灭快速通道均写该键",
    "refresh": "每波覆盖"
   },
   {
@@ -1503,6 +1511,26 @@
    ],
    "missing": "无记录 → 判定不变，仅在 next_step 提示「稳健性结论未落台账」（fail-open：旧候选与非 RA 链候选不被一刀切挡死）；REJECT 记录一律拦（fail-closed）",
    "refresh": "每次 robustness 审计覆盖（同一 alpha 重审后以最新为准）"
+  },
+  {
+   "key": "profile_drift",
+   "status": "active",
+   "purpose": "Profile 漂移检查报告 {needs_refresh, summary, findings, hint, trigger, checked_at}——步9 win/dead_end 回写后自动核对 profile datasets.green/red 精确层与 DB 实证（registry win/dead_end ∪ ledger *_dead）的一致性",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "wqb_db_mcp.py",
+     "via": "upsert_registry_empirical → _profile_drift_hook（仅 win/dead_end 层触发）"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/profile_drift_check.py",
+     "via": "--write-ledger"
+    }
+   ],
+   "readers": [],
+   "missing": "视为从未核对（首次 win/dead_end 回写后由钩子补齐）；当前消费通道=钩子返回值（随 upsert_registry_empirical 带出），台账键供审计与人工 get_ledger_key 查阅",
+   "refresh": "每次 win/dead_end 回写后整体覆盖（幂等，反映当前状态而非历史）"
   }
  ]
 }

@@ -428,3 +428,69 @@ def test_history_expressions_across_waves(store):
     store.upsert_expressions("EUR", "2", ["rank(b)"])
     hist = set(store.history_expressions("EUR"))
     assert hist == {"rank(a)", "rank(b)"}
+
+
+# --- alpha_corr_cache（2026-10-04 相关性查询缓存） ---------------------------
+
+
+def test_corr_cache_roundtrip_and_records(store):
+    """仿真 alpha（不在 alphas 表）也能缓存 prod/self 与直方图。"""
+    assert store.get_corr_cache("sim1") is None
+
+    r = store.set_corr_cache("sim1", prod=0.8474, records=[[0.7, 0.8, 9]], source="platform")
+    assert r["prod_correlation"] == 0.8474
+
+    got = store.get_corr_cache("sim1")
+    assert abs(got["max"] - 0.8474) < 1e-9
+    assert abs(got["prod_correlation"] - 0.8474) < 1e-9
+    assert got["records"] == [[0.7, 0.8, 9]]
+    assert got["source"] == "platform"
+    assert got["checked_at"]
+
+
+def test_corr_cache_partial_write_preserves_existing(store):
+    """只补 self 时不得抹掉已存的 prod（COALESCE 保旧值）。"""
+    store.set_corr_cache("sim2", prod=0.69)
+    store.set_corr_cache("sim2", self_=0.31)
+    got = store.get_corr_cache("sim2")
+    assert abs(got["prod_correlation"] - 0.69) < 1e-9
+    assert abs(got["self_correlation"] - 0.31) < 1e-9
+
+
+def test_corr_cache_rejects_out_of_range_and_is_idempotent(store):
+    r = store.set_corr_cache("sim3", prod=1.5)
+    assert r.get("skipped") == "no_valid_value"
+    assert store.get_corr_cache("sim3") is None
+
+    r_neg = store.set_corr_cache("sim3", prod=-0.1)
+    assert r_neg.get("skipped") == "no_valid_value"
+
+    assert store.set_corr_cache("", prod=0.5).get("skipped") == "no_alpha_id"
+
+    # 幂等：同值重写仍是单行
+    store.set_corr_cache("sim4", prod=0.4)
+    store.set_corr_cache("sim4", prod=0.4)
+    n = store.connection.execute(
+        "SELECT COUNT(*) FROM alpha_corr_cache WHERE alpha_id='sim4'"
+    ).fetchone()[0]
+    assert n == 1
+
+
+def test_corr_cache_batch_read_skips_missing(store):
+    store.set_corr_cache("a1", prod=0.1)
+    store.set_corr_cache("a2", prod=0.2)
+    out = store.list_corr_cache(["a1", "a2", "missing"])
+    assert set(out) == {"a1", "a2"}
+    assert abs(out["a2"]["prod_correlation"] - 0.2) < 1e-9
+    assert store.list_corr_cache([]) == {}
+
+
+def test_corr_cache_table_created_by_schema(store):
+    """ensure_schema 必须幂等建出 alpha_corr_cache（含 checked_at 索引）。"""
+    names = {
+        r[0] for r in store.connection.execute(
+            "SELECT name FROM sqlite_master WHERE type IN ('table', 'index')"
+        ).fetchall()
+    }
+    assert "alpha_corr_cache" in names
+    assert "idx_alpha_corr_cache_checked" in names

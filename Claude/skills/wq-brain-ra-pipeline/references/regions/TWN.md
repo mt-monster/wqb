@@ -11,9 +11,8 @@ static:
   notes: "半导体/电子权重极高，行业集中度天然大，中性化选择敏感"
 datasets:
   red: []
-  red_reason: ""
-  yellow: []
   green: []
+  yellow: []
 priors:
   signal_families_include: [analyst, pv]
   signal_families_exclude: [glb_emotion]

@@ -353,17 +353,29 @@ class CoverageLedger:
 
 
 def _dataset_has_vector(ctx):
-    """当前数据集是否含 VECTOR 字段（从 typed catalog / settings 推断）。"""
-    # 优先：settings.dataset 对应 typed catalog 的 data_type
+    """当前数据集是否含 VECTOR 字段（DB catalog 优先，reference 文件兜底）。"""
+    ds = (ctx.settings or {}).get("dataset")
+    if not ds:
+        return False
+    # 1) DB（单一事实源）
     try:
-        ds = (ctx.settings or {}).get("dataset")
-        if ds:
-            cat_dir = ctx.path("reference")
-            for fp in glob.glob(os.path.join(cat_dir, f"*_{ds}_fields.json")):
-                cat = load_json(fp)
-                for f in (cat.get("fields") or []):
-                    if isinstance(f, dict) and str(f.get("type", "")).upper() == "VECTOR":
-                        return True
+        from _lib.wqb_store import load_catalog
+        cat = load_catalog(ctx, ds)
+        for f in ((cat or {}).get("fields") or []):
+            if isinstance(f, dict) and str(f.get("type", "")).upper() == "VECTOR":
+                return True
+        if cat and cat.get("fields"):
+            return False
+    except Exception:
+        pass
+    # 2) 文件面兜底
+    try:
+        cat_dir = ctx.path("reference")
+        for fp in glob.glob(os.path.join(cat_dir, f"*_{ds}_fields.json")):
+            cat = load_json(fp)
+            for f in (cat.get("fields") or []):
+                if isinstance(f, dict) and str(f.get("type", "")).upper() == "VECTOR":
+                    return True
     except Exception:
         pass
     return False
@@ -726,22 +738,25 @@ def dataset_role_pool(ctx, dataset=None):
         return role_pool, has_vector, all_fields
     cat_dir = ctx.path("reference")
     cat = None
-    for fp in glob.glob(os.path.join(cat_dir, "*_fields.json")):
-        try:
-            d = load_json(fp)
-        except Exception:
-            continue
-        if d.get("dataset") == ds or os.path.basename(fp).endswith(f"_{ds}_fields.json"):
-            cat = d
-            break
-    if not cat:
-        # 2026-08-25 DB catalog 回退：scan-fields 的产物落 CampaignStore（data/wqb.db），
-        # 不一定有 reference 文件；无文件时读 DB typed catalog（同构 {dataset, fields}）。
-        try:
-            from _lib.wqb_store import load_catalog
-            cat = load_catalog(ctx, ds) or None
-        except Exception:
-            cat = None
+    # 1) DB（单一事实源，2026-10-01 提为优先；scan-fields 的产物落 CampaignStore，
+    #    不一定有 reference 文件）
+    try:
+        from _lib.wqb_store import load_catalog
+        cat = load_catalog(ctx, ds) or None
+    except Exception:
+        cat = None
+    # 2) 文件面兜底（DB 未收录的老 catalog）
+    if not cat or not cat.get("fields"):
+        for fp in glob.glob(os.path.join(cat_dir, "*_fields.json")):
+            try:
+                d = load_json(fp)
+            except Exception:
+                continue
+            if not isinstance(d, dict):
+                continue
+            if d.get("dataset") == ds or os.path.basename(fp).endswith(f"_{ds}_fields.json"):
+                cat = d
+                break
     if not cat:
         return role_pool, has_vector, all_fields
     flds = []
@@ -906,13 +921,24 @@ def instantiable_operators(ctx, dataset=None, semantics=None):
 # 无 typed catalog 的 region 优雅降级裸算子池，保证任何 region 至少能签裸契约。
 
 def list_typed_datasets(ctx):
-    """列出当前 region 所有有 typed catalog 的数据集 id（region 自适应前缀）。"""
+    """列出当前 region 所有有 typed catalog 的数据集 id（DB ∪ reference 文件，region 自适应前缀）。
+
+    2026-10-01：DB（`field_catalog`）为单一事实源——原先只枚举 reference 文件，会漏掉
+    只入库未落盘的 catalog（scan_fields 直写 DB）。取并集：DB 覆盖全，文件面保留老副本。
+    """
     pref = (getattr(ctx, "prefix", None) or str(getattr(ctx, "region", "")).lower()) + "_"
-    out = []
+    out = set()
+    # 1) DB
+    try:
+        from _lib.wqb_store import list_catalog_datasets
+        out |= set(list_catalog_datasets(ctx) or [])
+    except Exception:
+        pass
+    # 2) 文件面（含 DB 未收录的老 catalog）
     for fp in glob.glob(ctx.path("reference", "*_fields.json")):
         b = os.path.basename(fp)
         if b.startswith(pref) and b.endswith("_fields.json"):
-            out.append(b[len(pref):-len("_fields.json")])
+            out.add(b[len(pref):-len("_fields.json")])
     return sorted(out)
 
 
@@ -954,20 +980,28 @@ def _dataset_field_kind(ctx, dataset):
     相等（含全 0）-> MIXED；无 catalog -> UNKNOWN。
     锚点选择优先 MATRIX（VECTOR 字段需 vec_* 包裹，契约因子直接引用会触闸3）。
     """
-    cat_dir = ctx.path("reference")
-    pref = (getattr(ctx, "prefix", None) or str(getattr(ctx, "region", "")).lower()) + "_"
     cat = None
-    for fp in glob.glob(os.path.join(cat_dir, "*_fields.json")):
-        b = os.path.basename(fp)
-        if not (b.startswith(pref) and b.endswith("_fields.json")):
-            continue
-        if b[len(pref):-len("_fields.json")] != dataset:
-            continue
-        try:
-            cat = load_json(fp)
-        except Exception:
-            cat = None
-        break
+    # 1) DB（单一事实源，2026-10-01 提为优先）
+    try:
+        from _lib.wqb_store import load_catalog
+        cat = load_catalog(ctx, dataset) or None
+    except Exception:
+        cat = None
+    # 2) 文件面兜底
+    if not cat or not cat.get("fields"):
+        cat_dir = ctx.path("reference")
+        pref = (getattr(ctx, "prefix", None) or str(getattr(ctx, "region", "")).lower()) + "_"
+        for fp in glob.glob(os.path.join(cat_dir, "*_fields.json")):
+            b = os.path.basename(fp)
+            if not (b.startswith(pref) and b.endswith("_fields.json")):
+                continue
+            if b[len(pref):-len("_fields.json")] != dataset:
+                continue
+            try:
+                cat = load_json(fp)
+            except Exception:
+                cat = None
+            break
     if not cat:
         return "UNKNOWN"
     n_vec = n_mat = 0

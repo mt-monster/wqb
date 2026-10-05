@@ -93,9 +93,14 @@ def run_quality_stage(a, campaign, items, syntax, report):
         dataset_data_type = None
         try:
             conn_tmp = _sq.connect(_wqb_db_path(campaign))
+            # 2026-10-05 修：原写法 `WHERE name=? LIMIT 1` **无区过滤且无 ORDER**，
+            # 同名 dataset 跨区多行（实测 risk70 7 行 / pv1 11 行）⇒ 取到哪个区不确定，
+            # data_type 可能来自别区（MATRIX/VECTOR 判定错 ⇒ 误豁免或误杀 Vector 类别闸）。
+            _qregion = (a.region or _settings_region(campaign) or "").upper()
             row_tmp = conn_tmp.execute(
-                "SELECT data_type FROM datasets WHERE name=? LIMIT 1",
-                (a.dataset,)
+                "SELECT d.data_type FROM datasets d JOIN regions g ON g.id = d.region_id "
+                "WHERE d.name=? AND g.name=? LIMIT 1",
+                (a.dataset, _qregion)
             ).fetchone()
             conn_tmp.close()
             if row_tmp:

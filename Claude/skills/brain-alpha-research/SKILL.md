@@ -40,6 +40,19 @@ allowed-tools:
 6. **论坛模板整合**：论坛帖里的模板经 `python tools/forum_recon.py --question "<决策问题>" --out kb` 入库（**`KB/community_tpl_kb.forum_recon_entries[]` 的唯一写入方**，按 post_id 幂等合并；触发点与额度见 ra-pipeline `forum-recon-triggers.md`）。每个有希望的模板对照 `config.PARADIGMS` 分类；**≥ 50 赞**且归不进现有范式 → 先记研究记录，由维护者补范式名。检索 / 导出：`python tools/kb_templates.py --json [--category c --search kw]`；`--emit-ideas` 产出的是**确定性模板**——直接注入 GEM 会让它一行 LLM 都不调（ra-pipeline 步 4 不允许），只作**人读参考**，或经 LLM 改写后再注入。**不要手写 `KB/template_kb`**（它目前没有写入方代码，`docs/ledger_keys.json` 登记为 orphan）。
 7. **算子覆盖**：论坛模板用了语法生成器不认识的算子，先用 `get_operators` 核对它在当前平台真实存在，再谈扩展；**幽灵算子**（平台不存在，用了整批静默失败）的权威清单 = `config.GHOST_OPERATORS`（`mcp__wq-brain-http__operator_audit` 可批量查），替换表在 ledger `KB/community_tpl_kb.ghost_operator_advisory`——含幽灵算子的模板按替换表改写或弃用。
 8. **形状覆盖**：入库前用 `wqb.expression.validator.classify_shape(expr)`（及 `_shape_signature`）给模板分类，核对每个范式至少有一个代表形状；缺形状变体时记研究记录（`op1(A) - op2(B)` / `A - op2(B)` / `rank(A) vs group_rank(B, g)` 等非对称骨架，两侧前置算子的取值约定写清，不冻结成唯一写法）。**`check_batch` 不是门禁**——它零调用方、只作方法论参考；批级多样性的真门禁是 toolkit `gate.py` 闸 6（`check_batch_diversity`）。
+9. **数据契约断流诊断法**（2026-10-01 沉淀，本方法论在步 3 / 步 4 各命中一次真 bug）：
+   - **症状族**：某条纪律「文档写了、gate 有、但就是不生效」，或某字段/标签「prompt 里有、DB 里无、消费侧读不到」。
+   - **四端排查（缺一即漏）**：① **写入侧**（谁写这个数据？写了没？）② **回退路径**（主路径写了，回退路径是不是绕过了？）③ **缓存版本**（内容变了但 version 没 bump → 旧缓存继续被消费）④ **消费侧入口**（消费方到底读不读这个键？）。
+   - **取证铁律**：判定「生效/失效」**必须查真实数据**（DB 行数、字段填充率），不能只看代码「看起来对」。例：`family` 标签在 GEM 侧有产出、prompt 侧有引用，但 DB `expressions` 表**根本没有该列** → 选波族配额 100% 静默失效（全库 15650 行 family 空）。
+   - **写入口保底**：新增一个会被多处回写的列，**UPDATE 必须用 `COALESCE(?, col)` 保底**——否则任何不带该列的调用点（回测回写 / gate 回写）都会把它覆盖成 NULL。本条踩过：`build_wave` 回写 selected 时漏带 family → 选完波 family 全丢。
+   - **静态标注 vs 动态判定**：纪律若「每波动态变化」（如「探针先于扩批」），**选波时实时判定**优于落库时静态打标（`atom_flag` 的教训：静态标注依赖 field_map，常失败→全库 0 行）。
+   - **★ 返回值契约漂移（第 5 端，2026-10-01 命中）**：函数返回类型变了，**调用方没同步解包** → 值被当标量塞进 URL / 拼进表达式 → 下游恒定失败。
+     典型：`forum_research.resolve_id` 返回 **三元组** `(post_id, is_community_post, url)`，而 `forum_recon` 写 `pid = fr.resolve_id(...)`
+     → URL 变 `/community/posts/('33036...', True, 'https://...').json` → **404 InvalidEndpoint** → 读帖 100% 失败。
+     **危害放大器**：这类失败常被下游**静默吞掉**（重试器不重试 4xx、解析层见非 200 返回 `None`），
+     最终表现成 `read_failed` 这类**与"真无解"无法区分的假象**——是「故障 ≠ 无解」纪律最防不住的一族。
+     **排查法**：凡「某通路 100% 失败且无异常堆栈」，先**打印原始 HTTP 状态与最终 URL**（诊断脚本范式：`tools/diag_forum_read.py`），
+     别只看聚合统计；修好后在**适配层**解包并兼容旧契约，配一条断言「下游收到的是标量」的守护测试。
 
 ## 3. 平台约束：只留指针（各有唯一出处）
 

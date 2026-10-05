@@ -3,7 +3,12 @@
   "universe": "TOP500",
   "delay": 1,
   "neutralization_default": "STATISTICAL",
-  "neutralization_ranking": ["SUBINDUSTRY", "SECTOR", "STATISTICAL", "REVERSION_AND_MOMENTUM"],
+  "neutralization_ranking": [
+    "SUBINDUSTRY",
+    "SECTOR",
+    "STATISTICAL",
+    "REVERSION_AND_MOMENTUM"
+  ],
   "win_recipes": [
     {
       "id": "IND-ANALYST9-SUBIND-WIN",
@@ -39,11 +44,31 @@
     "IND pv70 region mismatch (APAC ex-Japan/ex-China only)",
     "IND fnd94 group_neutralize反向稀释 (比率类字段不要用 group_neutralize)",
     "IND fnd86 + fnd94 信号冲突禁止组合",
-    "IND fnd94 + mdl28 稀释 IS 禁止组合"
+    "IND fnd94 + mdl28 稀释 IS 禁止组合",
+    "IND behavioral_signals rank family (consecutive_return_streak_length / chronological_return_sequence_correlation) is IS-complete but prod-pinned: 9 measured constructions (ts_mean win1/5/22/66, ts_decay_linear, ts_rank/zscore/delta, ts_corr; group_rank axis market/industry/sector/subindustry; decay 1/4/8/10/20; STATISTICAL vs SUBINDUSTRY; trade_when event gates) all pass every IS gate (S 2.0-2.4, F 1.15-1.25, 2Y 1.71-2.44, robust 1.06-1.53, checks.fail=[]) yet prod = 0.7161-0.8261. One book alpha family pins it. Do NOT expand this family in IND; rank normalization is mandatory (group_neutralize/group_zscore collapse S to 0.39-1.33).",
+    "IND low-alphaCount white spaces are DEAD as of 2026-10-03: pv70/event_relation (relation network, ac0-1, S0.13-0.14), model176 (ESG/employee, ac0-8, cov0.4, S-0.24~0.93), quant_factor_lib (credit risk factors, ac1-81, S-1.36~0.84 + TO0.45-0.72 all fail), analyst45 (analyst idea, ac0-466, S-0.76~1.25). Low usage only loosens the prod wall, it does NOT guarantee IS strength - both conditions must hold.",
+    "IND mean_flash_estimate_eps family (ANALYST tower 1.4x, prod 0.5707/0.5898 clean) is DEAD on robust_universe_sharpe 0.58-0.77: tried all group axes, decay 4/8/16, STATISTICAL vs SUBINDUSTRY, group_neutralize/zscore, and 4 denominator conventions (div|eps|, div std_dev, div delayed eps, ts_zscore). Best 2Y ever reached 2.72 with S2.19/F1.63 but robust stayed 0.74. Family-level dead end.",
+    "IND denominator/neutralization/axis tricks are FAMILY-SPECIFIC, not portable: KOR's divide-denominator trick lifted self+prod by 0.12 each, but the same family in IND moved robust by 0.00. Same class as 'group axis is not a universal SUB-gate knob'."
   ],
   "operator_preferences": {
-    "preferred": ["ts_backfill", "ts_mean", "ts_delta", "ts_zscore", "rank", "group_rank", "group_neutralize", "quantile", "subtract", "divide", "multiply", "add"],
-    "avoid": ["hump", "reverse(rank(...))"],
+    "preferred": [
+      "ts_backfill",
+      "ts_mean",
+      "ts_delta",
+      "ts_zscore",
+      "rank",
+      "group_rank",
+      "group_neutralize",
+      "quantile",
+      "subtract",
+      "divide",
+      "multiply",
+      "add"
+    ],
+    "avoid": [
+      "hump",
+      "reverse(rank(...))"
+    ],
     "note": "reverse(rank(x)) 不过 robust 闸，用 -rank(x) 替代"
   },
   "field_count_strategy": {
@@ -55,6 +80,23 @@
     "model238": "prod_corr 0.70-0.92 saturated",
     "analyst_revision_horizons": "prod_corr 0.82-0.96 saturated",
     "Operating-Margin": "prod_corr 0.70-0.72 saturated",
-    "note": "prod_corr >= 0.7 一律不提交，回 Mode B 换字段组合"
+    "note": "prod_corr >= 0.7 一律不提交，回 Mode B 换字段组合",
+    "behavioral_signals_streak_recency_rank": {
+      "prod_range": [
+        0.7161,
+        0.8261
+      ],
+      "n_measured": 9,
+      "is_clean": true,
+      "best": "recency mean-5 @industry decay1 -> 0.7161",
+      "note": "9 constructions all pass every IS gate; one book-alpha family pins prod >= 0.7161"
+    }
+  },
+  "settings_sensitivity": {
+    "nanHandling": "ON required - OFF collapses behavioral streak S 2.19 -> 0.46",
+    "maxTrade": "OFF required - ON caps the fast rebalance edge",
+    "decay": "match to signal speed: mean-5 level signal peaks at decay 1; raw(window1) needs decay 8; decay 20 kills 2Y",
+    "truncation": "0.02 vs 0.08 produced bit-identical metrics (no lever)",
+    "neutralization": "STATISTICAL only - SUBINDUSTRY halves S (2.36 -> 1.28)"
   }
 }

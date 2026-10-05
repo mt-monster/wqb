@@ -15,7 +15,7 @@ import sys
 import pytest
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-sys.path.insert(0, os.path.join(REPO, "tools"))
+sys.path.insert(0, os.path.join(REPO, "tools", "verdict"))
 
 import os_decay_benchmark as B  # noqa: E402
 
@@ -77,7 +77,7 @@ def test_benchmark_json_carries_predictivity_caveat(tmp_path, monkeypatch):
     """机读基准必须带 `is_predictivity` 与 `selection_standard`（防止下游只见数字不见前提）。"""
     out = os.path.join(REPO, "data", "os_decay_benchmark.json")
     if not os.path.isfile(out):
-        pytest.skip("尚未生成机读基准（先跑 tools/os_decay_benchmark.py）")
+        pytest.skip("尚未生成机读基准（先跑 tools/verdict/os_decay_benchmark.py）")
     with open(out, encoding="utf-8") as f:
         d = json.load(f)
     assert "coverage_caveat" in d and "USA" in d["coverage_caveat"]

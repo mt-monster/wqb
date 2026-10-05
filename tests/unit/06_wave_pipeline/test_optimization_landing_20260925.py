@@ -35,7 +35,7 @@ def dbm(tmp_path):
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    mod.DB_PATH = tmp_path / "opt.db"  # 绝不碰真库
+    mod.set_db_path(tmp_path / "opt.db")  # 绝不碰真库
     conn = sqlite3.connect(str(mod.DB_PATH))
     conn.executescript(_SCHEMA)
     conn.commit()

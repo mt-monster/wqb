@@ -130,23 +130,34 @@ def _reclaim_dead_holder(tok: str) -> bool:
     return False
 
 def acquire(tag: str = "generic", ttl_sec: float = 900.0,
-            wait_timeout: float = 90.0, owner: str = None) -> dict:
+            wait_timeout: float = 90.0, owner: str = None,
+            name: str = "dbwrite.lock.json", fail_fast: bool = False) -> dict:
     """抢写锁 token；失败退避轮询至 wait_timeout；异常降级放行。
 
-    互斥语义：单文件锁 ``dbwrite.lock.json``，``O_CREAT|O_EXCL`` 原子创建；
+    互斥语义：单文件锁（默认 ``dbwrite.lock.json``），``O_CREAT|O_EXCL`` 原子创建；
     持有者 = 文件内容中的 pid；同 pid 重入视为续约（utime 延长 TTL）。
 
+    Args:
+        name: token 文件名。默认 ``dbwrite.lock.json``（写库互斥）；调用方可传
+            其它名字，把本模块当作**通用跨进程单文件锁**使用（2026-10-02：新增，
+            供 MCP 相关性锁在无 Redis 时做跨进程兜底）。
+        fail_fast: ``True`` 时不做退避等待——token 已被他人持有时**立即**返回
+            ``{"ok": False, "busy": True}``，既不等待也不降级放行。用于「宁可
+            快速返回忙、也不要并发放行」的场景（如平台单并发相关性接口）。
+            默认 ``False`` 保持原有「等待 + 超时降级放行」语义，向后兼容。
+
     Returns:
-        {"ok": bool, "token": path|None, "waited": float, "degraded": bool}
+        {"ok": bool, "token": path|None, "waited": float, "degraded": bool,
+         "busy": bool}   # busy 仅在 fail_fast=True 且他人持锁时为 True
     """
-    info = {"ok": True, "token": None, "waited": 0.0, "degraded": False}
+    info = {"ok": True, "token": None, "waited": 0.0, "degraded": False, "busy": False}
     if os.environ.get("WQB_DBLOCK_DISABLE") == "1":
         return info
     pid = os.getpid()
     owner = owner or f"{pid}@{os.uname().nodename if hasattr(os, 'uname') else 'win'}"
     deadline = time.time() + max(wait_timeout, 0.0)
     d = lock_dir()
-    tok = os.path.join(d, "dbwrite.lock.json")
+    tok = os.path.join(d, name)
     try:
         os.makedirs(d, exist_ok=True)
     except OSError as e:
@@ -175,7 +186,11 @@ def acquire(tag: str = "generic", ttl_sec: float = 900.0,
             info["token"] = tok
             return info
         except FileExistsError:
-            pass  # 他人持有 → 轮询等待
+            if fail_fast:
+                # 他人持有 → 立即返回忙，不等待、不降级放行
+                info["ok"] = False
+                info["busy"] = True
+                return info
         except OSError as e:
             print(f"[dblock][WARN] token 写入失败，降级放行: {e}")
             info["degraded"] = True

@@ -91,6 +91,25 @@ def run(
         "success": True,
     })
 
+    # 2026-10-01 P0：数据集对矩阵分析（找空白格子进行挖掘）
+    try:
+        from wqb.dataset_pair_matrix import get_dataset_pair_recommendations
+        recommendations = get_dataset_pair_recommendations(region, top_n=10, priority="high")
+        result["steps"].append({
+            "step": "dataset_pair_matrix",
+            "success": True,
+            "recommendations_count": len(recommendations),
+            "recommendations": recommendations[:5],  # 只返回前 5 个推荐
+        })
+        result["dataset_pair_recommendations"] = recommendations
+    except Exception as _dp_err:
+        logger.warning(f"Dataset pair matrix analysis failed: {_dp_err}")
+        result["steps"].append({
+            "step": "dataset_pair_matrix",
+            "success": False,
+            "error": str(_dp_err),
+        })
+
     # 如果是 dry-run，到此为止
     if ctx.get("dry_run"):
         result["success"] = True

@@ -35,7 +35,7 @@ last_verified: 2026-10-05
 |---|---|---|---|---|---|---|---|---|---|---|
 | 阶段 | S-PRE | S0 | S1 | S2 | S2→S3 | S3 收批后 | S3 | S4 | S4→S5 | S6 |
 
-**术语**（同一个词一种含义，全表见 [`../GLOSSARY.md`](../GLOSSARY.md)）：**波内配额** = 一波里表达式的配比（旧称「七槽」）；**并发令牌** = 账户同时在飞的仿真上限（`slots=7`）；**批** = 一次 `create_multi_simulation`（8 条子模拟）。**dispatch（派发仿真）** = `POST /simulations`（`pipeline.py --submit`、`submit_batch` 都是它）；**submit（提交）** = 把 alpha 提交上平台，**不可逆**。信号族 = 字段集合，骨架指纹 = 前 2 个算子。
+**术语**（同一个词一种含义，全表见 [`../GLOSSARY.md`](../GLOSSARY.md)）：**波内配额** = 一波里表达式的配比（旧称「七槽」）；**并发令牌** = 账户同时在飞的仿真上限（本工作区操作档 `slots=2`；平台容量 C≈7）；**批** = 一次 `create_multi_simulation`（8 条子模拟）。**dispatch（派发仿真）** = `POST /simulations`（`pipeline.py --submit`、`submit_batch` 都是它）；**submit（提交）** = 把 alpha 提交上平台，**不可逆**。信号族 = 字段集合，骨架指纹 = 前 2 个算子。
 
 **变量**（前置块列全；缺则回问，不猜）：
 
@@ -110,36 +110,37 @@ last_verified: 2026-10-05
 - **不做**：**已点亮塔（当前自然季度 ACTIVE ≥ 3 的 category；塔计数每季度首日清零，查上季须显式传 `start_date` / `end_date`）不进白名单**（用户 2026-09-19 定案，`s0-select` 默认剔）；不用 `recommend_datasets` 代替体检；不整值覆盖 `s0_whitelist`。
 - **细则**：[`step2-s0.md`](references/step2-s0.md)（含白名单硬约束 0–7 的「硬 / 准则」分栏与执行点）。适用决策表：D4 / D6 / D13。
 
-### 步 3（S1）字段扫描 · 结构体检 · 字段语义归类
+### 步 3（S1）字段扫描 · 结构体检 · 字段语义归类（L1–L3.5）
 
-- **目的**：字段是什么类型 / 覆盖多少（typed catalog）、这个数据集能不能挖、这个字段能不能当信号（闸 SEM 前置）。
+- **目的**：字段是什么类型 / 覆盖多少（typed catalog）、这个数据集能不能挖、这个字段能不能当信号（闸 SEM 前置）、**哪些字段同源成族**（L3.5，L4 的输入）。
 - **前置**：步 2 白名单。
 - **调用**：`workflow_campaign(stage="S1", dataset=$DS)`；然后 `python tools/field_semantic_classify.py --region $REGION --dataset $DS --write-ledger`（**本地、零配额、秒级，GEM 之前必做**）。
-- **产物**：`fields` 表 + ledger `catalog_<ds>` / `s1_prefix_<ds>` / `s1_semantic_<ds>`。
-- **完成定义**：`catalog_<ds>` 里 coverage > 0 的字段数 ≥ 10，且 `s1_semantic_<ds>` 已写。
+- **产物**：`fields` 表 + ledger `catalog_<ds>` / `s1_prefix_<ds>` / `s1_semantic_<ds>`（含 L3 黑名单/大类 + **L3.5 `families` 段**）。
+- **完成定义**：`catalog_<ds>` 里 coverage > 0 的字段数 ≥ 10，且 `s1_semantic_<ds>` 已写（含 `families`）。
 - **失败分支**：字段数 < 10 → 回步 2 把该集移出白名单（**< 5 → 仅条件腿**）；`catalog_<ds>` 覆盖为空 → 写 `<ds>_dead`；`wave_gate` 报缺 `s1_semantic_<ds>`（exit 2）→ 跑上面的 classify，**不要** `--skip-semantic-gate` 蒙混。
-- **不做**：不把 `workflow_feature_engineering` 的产物（确定性模板渲染，非 LLM 推理）当 ideas 注入 GEM；不指望 GEM 侧已过滤非信号字段——**过滤只在步 5 的闸 SEM 才真正落地**。
-- **细则**：[`step3-s1-semantic.md`](references/step3-s1-semantic.md)（两条必做铁律：字段级覆盖审计、验活幽灵字段）。适用决策表：D13。
+- **不做**：不把 `workflow_feature_engineering` 的产物（确定性模板渲染，非 LLM 推理）当 ideas 注入 GEM；不指望 GEM 侧已过滤非信号字段——**过滤只在步 5 的闸 SEM 才真正落地**；**不把 L3 归类当终点**——它只划边界、不产信号。
+- **细则**：[`step3-s1-semantic.md`](references/step3-s1-semantic.md)（两条必做铁律：字段级覆盖审计、验活幽灵字段）；四层漏斗（L1 数据集级 → L2 字段级 → L3 语义归类 → **L3.5 结构族**）定义与实测数字见 [`signal-hypothesis-construction.md`](references/signal-hypothesis-construction.md) §0–§1。适用决策表：D13。
 
 ### 步 4（S2）概念优先生成 + 选波
 
 - **目的**：为白名单数据集产出候选表达式并选成一波（GEM 强制；`build-wave` 只去重 / 分桶 / 骨架配给，**不产表达式**）。
-- **前置**：步 3 完成；有胜绩则本波**至少 2 个波内配额位按机制换腿**；时间窗口只用 1 / 5 / 22 / 66 / 252 / 504 / 1008 / 1260（其它窗口须给解释或实测证据）。
-- **调用**：`workflow_campaign(stage="S2", subcommand="assemble-priors")` → `workflow_gem`（`pipeline_mode` 缺省 `phased`）→ `workflow_campaign(stage="S2", dataset=$DS, wave=$W)`（选波）。**取骨架前必查 `KB/community_tpl_kb` 的 `ghost_operator_advisory`**。
+- **前置**：步 3 完成（含 L3.5 `families`）；**先完成 L4 形态构建五步法**（本步细则 §2）——族 → 经济量 → 形态枚举 → 避判死 → 三源验证 → 探针配给；有胜绩则本波**至少 2 个波内配额位按机制换腿**；时间窗口只用 1 / 5 / 22 / 66 / 252 / 504 / 1008 / 1260（其它窗口须给解释或实测证据）。
+- **调用**：L4 形态构建（[`signal-hypothesis-construction.md`](references/signal-hypothesis-construction.md) §2，**零配额阶段**：避判死 + 三源验证）→ `workflow_campaign(stage="S2", subcommand="assemble-priors")` → `workflow_gem`（`pipeline_mode` 缺省 `phased`）→ `workflow_campaign(stage="S2", dataset=$DS, wave=$W)`（选波）。**取骨架前必查 `KB/community_tpl_kb` 的 `ghost_operator_advisory`**。
 - **产物**：`expressions`（status `gem` / `enhanced` / `selected`）、ledger idea、`priors_snapshot_<region>`。
-- **完成定义**：`list_expressions` 查到本波条目——**未验证 DB 有表达式，不得声称步 4 成功**。
+- **完成定义**：`list_expressions` 查到本波条目——**未验证 DB 有表达式，不得声称步 4 成功**；且本波形态**从族出发**（非按字段平铺）、**探针先于扩批**。
+- **选波机检（2026-10-01 起）**：选波段 `build_wave` **已有机检**兜底上面两条纪律——① 每族 cap 从 DB `expressions.family` 读取（`--from-db` 主路径生效；GEM 落库时带入 family）；② 某族**全库尚无已回测行**时，本波该族 cap 收紧为 `WQB_PROBE_CAP`（默认 1）→ 强制「先放 1 条探针验证机制，再扩批」。`WQB_PROBE_GATE=off` 可关；`meta.probe_limited_families` 可查本波被收紧的族。**family 由落库带入（`final_expressions_meta.json`），2026-10-01 前生成的存量行无 family，存量波次不生效。** 字段池另带 L3.5 `families` 段（`s2_field_pool_<ds>`，v5），供概念优先消费。
 - **失败分支**：GEM 报「no meta.json within 90s」→ **先查 LLM 通道**（`402` 余额不足会被误报；干跑验证不了可达性），不要重试；候选不足 → 显式扩容或分波，**不补参数变体凑数**；机制枯竭 → `forum_recon`（触发表 #2）。
-- **不做**：不手写表达式（**手写 ideas ≠ 手写表达式**）；不手写 priors；不加权 / 等权相加两条信号腿（CLAUDE.md「禁止混信号调参」；允许的组合形态见步 7 §7.7）；不每个字段套一层 `rank`。
-- **细则**：[`step4-generation.md`](references/step4-generation.md)（含 §4.5.1 模板形状配额与形状源）、[`assemble-priors-internals.md`](references/assemble-priors-internals.md)。适用决策表：D3 / D6 / D11。
+- **不做**：不手写表达式（**手写 ideas ≠ 手写表达式**）；不手写 priors；不加权 / 等权相加两条信号腿（CLAUDE.md「禁止混信号调参」；允许的组合形态见步 7 §7.7）；不每个字段套一层 `rank`；**不从单个字段出发、从族出发**；**不跳过 L3.5 直接拍骨架**。
+- **细则**：[`step4-generation.md`](references/step4-generation.md)（含 §4.5.1 模板形状配额与形状源）、[`assemble-priors-internals.md`](references/assemble-priors-internals.md)、[`signal-hypothesis-construction.md`](references/signal-hypothesis-construction.md)（**L4 形态构建五步法 + 三源验证 + 合规红线**）。适用决策表：D3 / D6 / D11。
 
 ### 步 5（S2→S3）门禁
 
 - **目的**：在配额之前拦下坏表达式（一条坏式 ERROR 会取消整批 8 条兄弟）与同质化批。
 - **前置**：本波表达式已入库；含 VECTOR 字段先 `preflight_expressions(auto_fix_vector=true)`。
 - **调用**：① `python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <txt>`（幽灵算子硬闸，零配额，先拦）② `python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $W --from-db`（节点等价 `workflow_execute(node="wave_gate")`；`workflow_campaign(stage="S2")` 是**选波**，不能代替本步）。
-- **产物**：`gate_results`。**闸清单只在 [INDEX 两张生成表](../INDEX.md)**（`GATE_REGISTRY` / `waiver.GATE_POLICIES`），这里不复述编号与开关。
-- **完成定义**：`get_gate_result(region, wave, dataset)` 有本波记录且 `all_pass=1`（门禁脚本崩溃 = ERROR 终态、退出码 2，不是 FAIL）。
-- **失败分支**：闸 → 现象 → 动作 → 回哪步 → 能否豁免的全表见 [`step5-gates.md`](references/step5-gates.md) §5.2；开波区域闸命中（exit 2）→ 消化积压 / 补 catalog / 换区，用户显式要求继续才写 waiver。
+- **产物**：`gate_results`（含 `report_json.semantic` 脱敏摘要：闸 SEM 的 `ledger_missing`/`n_removed`/`n_kept`/`dropped_in_db`，2026-10-01 起）。**闸清单只在 [INDEX 两张生成表](../INDEX.md)**（`GATE_REGISTRY` / `waiver.GATE_POLICIES`），这里不复述编号与开关。
+- **完成定义**：`get_gate_result(region, wave, dataset)` 有本波记录且 **外层 `all_pass=1`**（门禁脚本崩溃 = ERROR 终态、退出码 2，不是 FAIL）。⚠ `all_pass` 与 `report_json.gate.all_pass` **不同**：后者只是 `gate.py` 8 闸段的结果，不含 SEM / 体检 / 饱和 / PF / 质量聚合——放行永远读外层。
+- **失败分支**：闸 → 现象 → 动作 → 回哪步 → 能否豁免的全表见 [`step5-gates.md`](references/step5-gates.md) §5.2；开波区域闸命中（exit 2）→ 消化积压 / 补 catalog / 换区，用户显式要求继续才写 waiver。闸 PF 对「未探明骨架（新骨架/低置信度/混合）」默认只 WARN，饱和区可用 `--pf-unknown-mode enforce`（`WQB_PF_UNKNOWN_MODE`）升级为拦截。
 - **不做**：不新建 `_gate_waveNN.py`、不写 `cache/gate_wave*.json`（用 `wave_gate.py`，结果落 `gate_results`）；不以为 `validate_expressions` / `preflight_expressions` 查了幽灵算子（**不查**）；不把「干跑绿」当「LLM 可达」。
 - **细则**：[`step5-gates.md`](references/step5-gates.md)；情景卡 RA-05（体检包缺失）。适用决策表：D1 / D2。
 
@@ -165,7 +166,6 @@ last_verified: 2026-10-05
   - 工具缺省与 settings.json 不一致时**显式传参覆盖**，不要依赖工具缺省；
   - 本波结论用于**选族 / 判死**前，先确认用的是权威档位——否则等于用不同实验否定同一个族；
   - 需要 settings 全显式可控时用 `tools/ind_sim_submit.py`（该工具会自动回显实际档位并在命中弱档时告警）。
-
 - **细则**：[`step6-backtest.md`](references/step6-backtest.md)。适用决策表：D5 / D8 / D11。
 
 ### 步 7（S4）诊断改进
@@ -197,7 +197,7 @@ last_verified: 2026-10-05
 - **前置**：步 7 / 8 已有去向；先跑 `tools/step_funnel.py` 定位掉得最狠的一跳。
 - **调用**（**有序**，全流程见 [`step9-writeback.md`](references/step9-writeback.md) §9.1）：① `step_funnel` ② 判 verdict（`PASS` ≥ 1 条过全部评审闸 / `PARTIAL` 0 达标但 ≥ 1 条 near / `FAIL` 0 达标 0 near）③ `campaign_intel.py pyramid` ④ `upsert_wave_result`（key_findings 一次带齐）⑤ 判死 `seal_dead_end`（先取证——收批时 `forum_recon_wave` 已默认问过一次；把 `question_key` 传给它，取证闸 fail-closed，规则见 §9.5）/ 胜绩 `upsert_registry_empirical(layer="win")` ⑥ 全波撞 prod 墙 → `campaign_intel.py mark-saturated` ⑦ 逐数据集 `dataset-experience` ⑧ 再跑一次 `assemble-priors`。
 - **产物**：`wave_results.verdict`（**唯一结论源**）、`registry_empirical`、`priors_snapshot_<region>`、`reports/dataset_experience/*_campain.md`。
-- **完成定义**：`step9-writeback.md` §9.7 的清单全勾；**缺任何一项 = 本波未完成**（GEM 对 stale 先验快照只 WARN 不阻断，只能由本步兜底）。
+- **完成定义**：`step9-writeback.md` §9.7 的清单全勾；**缺任何一项 = 本波未完成**（GEM 对 stale 先验快照只 WARN 不阻断，只能由本步兜底）。**勾完用 `python tools/step9_audit.py --region $REGION` 机器复核**（只读，逐项 `[OK]/[FAIL]/[?]`；`--enforce strict` 可作开下一波前自检）。
 - **失败分支**：`upsert_wave_result` 被拒（verdict 不可辨认）→ 用返回的 `suggestion` 核对后显式传枚举，原文进 `key_findings`。
 - **不做**：不写 `s6_verdict_<wave>` / `wave<N>_verdict`（已废止，双写会分叉）；不往五张 `step_*` 表写（恒 0 行）；**未选、未回测不能写成 dead_end**；不在 win 里记混合比例。
 - **细则**：[`step9-writeback.md`](references/step9-writeback.md)；情景卡 RA-06（判死粒度）。适用决策表：D1 / D9。

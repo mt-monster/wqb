@@ -43,7 +43,7 @@ mcp__wq-brain-http__get_documentations / get_documentation_page                 
 python tools/field_semantic_classify.py --region <R> --dataset <ds> --write-ledger
 ```
 
-产物 = ledger `s1_semantic_<ds>`（signal 白名单 / blocked 黑名单 + 经济大类）——**这是唯一有下游消费者的分类**：RA 步 3 的完成定义要求它，`wave_gate` 缺它整波 exit 2。脚本读 DB `fields` 表，所以要先有字段目录（步 3 的 `workflow_campaign(stage="S1", dataset=<ds>)`）。经济大类偏财报口径（估值 / 盈利 / 成长 / 现金流 / 杠杆 / 效率 / 流动性风险 / 规模 / 每股 / 分红 共 10 类 + `other`），非财报数据集（news / pv / model）大多落 `other`——**看 signal / blocked 的分界即可**。
+产物 = ledger `s1_semantic_<ds>`（signal 白名单 / blocked 黑名单 + 经济大类）——**这是唯一有下游消费者的分类**：RA 步 3 的完成定义要求它，`wave_gate` 缺它整波 exit 2。脚本读 DB `fields` 表，所以要先有字段目录（步 3 的 `workflow_campaign(stage="S1", dataset=<ds>)`）。经济大类偏财报口径（价格收益 / 估值 / 盈利 / 成长 / 现金流 / 杠杆 / 效率 / 流动性风险 / 规模 / 每股 / 分红 共 11 类 + `other`，与 `tools/field_semantic_classify.py::ECON_CATEGORIES` 逐项对齐），非财报数据集（news / pv / model）大多落 `other`——**看 signal / blocked 的分界即可**。
 
 旧文的四个维度（业务职能 / 数据类型 / 更新频率 / 层级）只是**写审计结论时的阅读辅助**，没有机器落点；数据类型来自 `get_datafields` 的 `type`，更新频率来自体检包 `frequency`。全库共有下面几套分类法，互相不替代：
 

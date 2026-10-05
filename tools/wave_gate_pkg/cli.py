@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""每波门禁编排器：main() 编排（argparse 契约在 argparser.py）。
+"""每波门禁编排器：main() 编排（argparse 契约在入口 shim）。
 
 从 2026-09-30 单文件 `tools/wave_gate.py` 拆分而来。本文件只做**编排**：
 按序调用各闸位模块，聚合成终止判定并落库。
-argparse 契约在 `.argparser`（位置敏感，见其 docstring）；各闸实现在 `gates_*`。
+argparse 契约在入口 shim `tools/wave_gate.py`（位置敏感，见 shim 的 module docstring）；
+各闸实现在 `gates_*`。
 """
 import json
 import os
@@ -20,6 +21,7 @@ from .gates_pf import check_prod_family_gate, format_prod_family_report
 from .gates_quality import run_quality_stage, run_variant_clustering
 from .gates_semantic import _semantic_gate
 from .gates_syntax import run_syntax_gate
+from .gates_waiver import _waiver_phase
 from .payload import (env_error_exit, gate_error_exit, gate_fail_reasons,
                       parse_gate_payload)
 
@@ -49,11 +51,15 @@ def main(argv=None, parser_factory=None):
     # 体检硬门缺包策略（2026-09-17 P1-1：由"恒静默放行"升级为可选 fail-closed）
     _inspect_mode = resolve_inspect_mode(a.inspect_mode)
 
+    # 逃生口 → waiver 检查（首屏；见 gates_waiver._waiver_phase）
+    _rg = _compat.load_region_gates()
+    _wv_region = a.region or _compat.settings_region(campaign) or os.path.basename(campaign).upper()
+    _wv_decisions = _waiver_phase(a, campaign, _wv_region, _inspect_mode, _rg)
+
     # ---- 开波前区域闸（2026-09-17 P0-1 下沉）----
     # signal_floor / stop_rules / backlog 三道闸原先只在 workflow 的 S2/S3 节点生效；
     # 直调本脚本会绕过它们（实证 JPN 2026-09-16）。模式由 toolkit region_gates.resolve_mode 定：
     # --gate-mode > WQB_GATE_MODE > 按日期的缺省（灰度期 warn，2026-10-12 起 enforce）。
-    _rg = _compat.load_region_gates()
     if _rg is None:
         print("[wave_gate] [region-gates] ★未找到 toolkit region_gates，本次跳过开波闸"
               "（设 WQ_TOOLKIT_DIR 可解）", file=sys.stderr)
@@ -227,8 +233,31 @@ def main(argv=None, parser_factory=None):
     }
     if state_writeback is not None:
         report["state_writeback"] = state_writeback
+    if _wv_decisions:
+        report["waivers"] = [d.to_dict() for d in _wv_decisions]
     if s2_field_report:
         report["s2_field_validation"] = s2_field_report
+    # 闸 SEM 落痕（2026-10-01 P0）：此前 sem_report 只用于打印 + 剔式，
+    # **从未写进 report** → gate_results 里看不到「剔了哪些式 / 是否因缺台账 exit 2」，
+    # get_gate_result 回读拿不到证据，下游以为本步没跑 SEM（实测 846 条非 mcp 记录 0 条含 semantic）。
+    # 这里落**脱敏摘要**（removed 全量会撑爆 report_json；只留计数 + 前 10 条样本）。
+    if sem_report is not None:
+        _sem_removed = sem_report.get("removed") or []
+        report["semantic"] = {
+            "mode": _sem_mode,
+            "region": sem_report.get("region"),
+            "dataset": sem_report.get("dataset"),
+            "ledger_missing": bool(sem_report.get("ledger_missing")),
+            "blocked_field_count": sem_report.get("blocked_field_count", 0),
+            "n_removed": len(_sem_removed),
+            "n_kept": len(sem_report.get("items") or []),
+            "dropped_in_db": sem_report.get("dropped_in_db", 0),
+            "removed_sample": [
+                {"id": cid, "fields": hit} for cid, _e, hit in _sem_removed[:10]
+            ],
+        }
+    elif _sem_mode == "off":
+        report["semantic"] = {"mode": "off", "skipped": True}
 
     # ---- 2.5) 体检→表达式硬门（2026-09-06 接线；2026-09-17 补 fail-closed 档）----
     inspect_patch, inspect_report, inspect_unavailable, _inspect_mode = run_inspect_gate(
@@ -239,12 +268,19 @@ def main(argv=None, parser_factory=None):
     report.update(run_prod_saturation_gate(a, campaign, items))
 
     # ---- 2.7) 闸 PF：信号族死路预检（2026-09-25 P2 落地）----
+    # 2026-10-01 P1：unknown_mode（CLI --pf-unknown-mode > WQB_PF_UNKNOWN_MODE > 缺省 warn）。
+    #   warn（默认）= 新骨架只 WARN，保持历史行为；
+    #   enforce = 新骨架也拦截（饱和区「先探针后扩批」可强制）。
+    _pf_unknown_mode = (a.pf_unknown_mode or os.environ.get("WQB_PF_UNKNOWN_MODE") or "warn").strip().lower()
+    if _pf_unknown_mode not in ("warn", "enforce"):
+        _pf_unknown_mode = "warn"
     pf_report = None
     try:
         _region = a.region or _compat.settings_region(campaign) or ""
         if _region:
             pf_report = check_prod_family_gate(
-                [e for _, e in items], region=_region, dataset=a.dataset
+                [e for _, e in items], region=_region, dataset=a.dataset,
+                unknown_mode=_pf_unknown_mode,
             )
             print("\n" + format_prod_family_report(pf_report))
             report["prod_family"] = pf_report
@@ -284,7 +320,11 @@ def main(argv=None, parser_factory=None):
 
     _persist_gate_report()
 
-    # ---- 4) 探针批模式（可选）----
+    # ---- 4) 探针批规划（可选，**只做结构预判，不跑回测**）----
+    # 2026-10-01 P2：本分支在 gate 阶段只调用 dry_run=True 的 select_probe_candidates，
+    # 从不真回测，saved_quota 恒 0。原 status 写 "PROBE_ASSIGNED" 会被误读为「探针已派发/
+    # 已节省配额」——实际真实探针回测在步 5b（prod-first）与 probe_batch_mode.py。
+    # 改名为 PROBE_PLANNED（= 仅规划），并把 decision_reason 写明不执行回测。
     probe_report = None
     if a.probe_mode and len(items) > 2:
         try:
@@ -298,19 +338,18 @@ def main(argv=None, parser_factory=None):
             # 只做探针分配，不执行回测
             probe_candidates = executor.select_probe_candidates(candidates_for_probe, n=2)
             probe_report = {
-                "status": "PROBE_ASSIGNED",
+                "status": "PROBE_PLANNED",
                 "probe_ids": [c.get("id") for c in probe_candidates],
                 "probe_count": len(probe_candidates),
                 "total_count": len(candidates_for_probe),
-                "decision_reason": "gate 阶段探针分配（回测判死走 probe_batch_mode.py）",
+                "decision_reason": "gate 阶段仅规划探针（dry_run，不回测）；真回测走步 5b prod-first / probe_batch_mode.py",
                 "saved_quota": 0,
+                "executed": False,
             }
-            print(f"[probe] 探针批模式: {probe_report['status']}")
+            print(f"[probe] 探针批规划: {probe_report['status']}（gate 阶段不回测，实际探针见步 5b）")
             print(f"[probe] 决策原因: {probe_report['decision_reason']}")
-            if probe_report["saved_quota"] > 0:
-                print(f"[probe] 节省配额: {probe_report['saved_quota']} 条")
         except Exception as e:
-            print(f"[probe] 探针批模式失败（不阻断）: {e}")
+            print(f"[probe] 探针批规划失败（不阻断）: {e}")
 
     all_pass = all(s["valid"] for s in syntax) and gate_pass
     if a.quality_block and quality_block_ids:
@@ -319,7 +358,12 @@ def main(argv=None, parser_factory=None):
         all_pass = False
     if s2_field_report and not s2_field_report["pass"] and a.s2_field_block:
         all_pass = False
-    if probe_report and probe_report["status"] == "PROBE_DEAD":
+    # 探针批判死数据集 → 整波拦截。
+    # 2026-10-01 P2：本分支不再由 gate 阶段产生（gate 只规划 PROBE_PLANNED，status 恒非
+    # PROBE_DEAD），但**保留**该判定：它是 probe_batch_mode.py 真回测后的合法终态，
+    # 若未来 gate 内联探针结论（或外部注入 probe_report）仍需据此拦波。此处不再是死代码陷阱
+    # ——它明确是"外部注入"的接口，注释说明来源。
+    if probe_report and probe_report.get("status") == "PROBE_DEAD":
         all_pass = False
         print(f"[done ] 探针批判死数据集，整波拦截")
     # 体检硬门违规硬阻断（有体检数据才可能出现 violations；无数据不阻断）
@@ -338,10 +382,15 @@ def main(argv=None, parser_factory=None):
         print(f"[done ] PROD 饱和闸拦截：{n_v} 条命中饱和字段"
               + ("；当前数据集整判饱和" if prod_sat_report.get("current_dataset_saturated") else ""))
     # 闸 PF 硬阻断：命中已死路信号族 → 整波拦截
+    # 2026-10-01 P1：status=enforced 的两种来源——已死路骨架 / unknown_mode=enforce 下未探明骨架；
+    # 分别打印原因，避免把「新骨架需先探针」误读成「已实测死路」。
     if pf_report and pf_report.get("status") == "enforced" and pf_report.get("violations"):
         all_pass = False
         n_v = len(pf_report.get("violations") or [])
-        print(f"[done ] 闸 PF 拦截：{n_v} 条命中已死路信号族（prod_corr ≥0.7 已实测死路）")
+        if pf_report.get("unknown_mode") == "enforce" and not pf_report.get("n_dead_families"):
+            print(f"[done ] 闸 PF 拦截：{n_v} 条骨架指纹未探明（unknown_mode=enforce，须先 prod-first 探针）")
+        else:
+            print(f"[done ] 闸 PF 拦截：{n_v} 条命中已死路信号族（prod_corr ≥0.7 已实测死路）")
     g = gate_json  # ERROR 已在调用处退出，此处 all_pass 必为 bool（不再有 None 终态）
     qp = report.get("quality_predict") or {}
     qp_note = ""

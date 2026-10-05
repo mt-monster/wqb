@@ -29,17 +29,17 @@
    "source": "region_kb"
   },
   {
-   "id": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
-   "what": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
-   "key": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
-   "evidence": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
-   "source": "registry_win"
-  },
-  {
    "id": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
    "what": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
    "key": "",
    "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
+   "what": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
+   "key": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
+   "evidence": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
    "source": "registry_win"
   }
  ],
@@ -116,23 +116,172 @@
    "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
    "profile_fallback (仅 DB KB 空时)",
    "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
-  ]
+  ],
+  "truncated": {
+   "wins": [
+    "EUR-Xgojww1X-RISK-NEWS-ACTIVE",
+    "T-KB-01 慢×快跨周期混合",
+    "T-KB-02 镜像反转翻案",
+    "T-KB-04 镜像稀释破 PROD 墙"
+   ],
+   "dead_ends": [
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "EUR-FND23-WORKINGCAP-INVENTORY-DEAD",
+    "EUR-FND23-ACCRUAL-EXPENSE-DEAD",
+    "EUR-FND23-CAPSTRUCT-DIVIDEND-DEAD",
+    "EUR-FND93-TAXACCRUAL-ZERO-SIGNAL-DEAD",
+    "EUR-UNTESTED-CHANNEL-FIRSTPROBE-DEAD",
+    "EUR-NEWS46-ZERO-IS-SIGNAL",
+    "EUR-W255-EARNINGS6-EPS-EVENT-PAIRS",
+    "EUR-W254-OTHER460-FORWARD-PROBABILITY-PAIRS",
+    "EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS",
+    "EUR-W252-FUNDAMENTAL17-MEASUREMENT-RETEST",
+    "EUR-W251-FUNDAMENTAL17-QUALITY-PROBE",
+    "EUR-W246-news50-mechanisms-D1",
+    "EUR-W245-news46-mechanisms-D1",
+    "EUR-NEWS17-INSPECT-GATE-WALL",
+    "EUR-NEWS31-INSPECT-GATE-WALL",
+    "EUR-NEWS20-INSPECT-GATE-WALL",
+    "EUR-NEWS48-INSPECT-GATE-WALL",
+    "EUR-NEWS29-WEAK",
+    "EUR-ANALYST-FACTOR-SIGNALS-WEAK",
+    "EUR-INSIDER-FEATS-WEAK",
+    "EUR-SENTIMENT21-WEAK",
+    "EUR-OTHER401-WEAK",
+    "EUR-EVENT-RELATION-WEAK",
+    "EUR-RISK72-RESIDUAL-RETURN-WEAK",
+    "EUR-ACQUISITION-MODEL-COLD-ZERO-YIELD",
+    "EUR-INSTITUTIONS6-COLD-ZERO-YIELD",
+    "EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD",
+    "EUR-ANALYST9-COLD-ZERO-YIELD",
+    "EUR-SENTIMENT7-WIKI-ATTENTION-DEAD",
+    "EUR-ANALYST10-PREDICTED-SURPRISE-DEAD",
+    "EUR-NEWS21-EVENT-CALENDAR-DEAD",
+    "EUR-RISK60-BORROW-FEE-PROD-WALL",
+    "EUR-W170-FASTPV-NEGATED-WEAK-DEAD",
+    "EUR-W169-FASTPV-SPREAD-REVERSED-DEAD",
+    "EUR-NONMODEL-TOWER-CEILING",
+    "EUR-GSM-SAME-SRC-BUCKET-RATIO",
+    "EUR-DLRFR-OHLCV-GEOM-WALL",
+    "EUR-INST6-INSTITUTIONS-TOWER-EXHAUSTED",
+    "EUR-ANL11-ESG-SLOWVAR-LONGCOUNT",
+    "EUR-SNT26-ATTENTION-FITNESS-CEILING",
+    "EUR-DLRF-BOTH-FAMILIES-DEAD-MATH-PROOF",
+    "EUR-DLRF-EUROHLCMA-TURNOVER-FITNESS-WALL",
+    "EUR-DLRF-OHLCV-PRODWALL-FIELD-LEVEL",
+    "EUR-FHP-INSTITUTIONS-WEAK",
+    "EUR-O567-COVERAGE-STRUCTURAL",
+    "EUR-AINEWS-POS-INTENSITY-WEAK",
+    "EUR-NSNLP-SPARSE-TWO-WALLS",
+    "EUR-DLRF-PROD-WALL-080",
+    "EUR-MODEL193-W129-CREDIT-AXIS-DEAD",
+    "EUR-INTRADAY-PV-W126-128-NEAR-MISS",
+    "EUR-AEIBES-W125-OPERATOR-LEVERAGE-WEAK",
+    "EUR-pattern_scores-BREAKAWAY-GAP-WEAK",
+    "EUR-predictive_starmine-SMEST-IV-WEAK",
+    "EUR-predictive_starmine-EQVR-WEAK",
+    "EUR-chart_cnn_alpha-MODEB-CEILING",
+    "EUR-other571-WIKI-WEAK",
+    "EUR-news54-TIMESTAMP-INVALID",
+    "EUR-analyst45-RET-WEAK",
+    "EUR-chart_cnn_alpha-LEAPSTAR-WEAK",
+    "EUR-price_signal_dl-NO-DATA",
+    "EUR-news_sentiment_dl-SENTIMENT-WEAK",
+    "EUR-predictive_starmine-NEWS-MIX-WEAK",
+    "EUR-STARMINE-SIBLING-PROD-WALL",
+    "EUR-shortinterest6-PATTERN-FAST-LEG-PROD",
+    "EUR-shortinterest6-PATTERN-MIX-PROD",
+    "EUR-shortinterest6-CHANGE-OWNER-WEAK",
+    "EUR-ai_news_scores-ADVANCED-NEG",
+    "EUR-news_sentiment_nlp-STRUCTURE-DEAD",
+    "EUR-insider_trx_matrix-WEAK-DRIFT",
+    "EUR-risk72-wave104-all-fail",
+    "EUR-pattern_scores-wave83-skeleton-fail",
+    "EUR-MH-FCF-INVERT-PROD",
+    "EUR-MH-LEVERAGE-INVERT-RN",
+    "EUR-MH-DEEPVALUE-INVERT-PROD",
+    "EUR-STAR-ARM-LEFTOVER-WEAK",
+    "EUR-STAR-ACTUAL-UPGDNG-ARMCOUNTRY-WEAK",
+    "EUR-STAR-PV-ASCT-TREND-WEAK",
+    "EUR-STAR-GAP-FACTOR-NEUT-WEAK",
+    "EUR-STAR-REC-SMEST-WEAK",
+    "EUR-STAR-REVCOUNT-ARM-WEAK",
+    "EUR-GSM-EVENT-WEAK",
+    "EUR-AFT-OSC2-WEAK",
+    "EUR-STAR-RELVAL-EVEBITDA-2Y-DEAD",
+    "EUR-MLFP-0ALPHA-OPS-WEAK",
+    "EUR-M354-VALUATION-YIELD-WEAK",
+    "EUR-NEWS36-NOVELTY-SENT-WEAK",
+    "EUR-NEWS38-CONCEPT-WEAK",
+    "EUR-CONSENSUS-SURPRISE-TP-WEAK",
+    "EUR-ANL39-EPS-GM-BOOK-WEAK",
+    "EUR-ANL45-TRADE-IDEAS-WEAK",
+    "EUR-M193-NAMED-SLOW-INERT",
+    "EUR-PV-RISING-WEDGE-TRIANGLE-CONT-FAST-WEAK",
+    "EUR-MH-EV-EBITDA-3LEG-RN-PROD",
+    "EUR-AIEQ-W57-EQA-FCHG-PTB-DEBT-WEAK",
+    "EUR-MH-NREV-LADDER-WALL",
+    "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK",
+    "EUR-MH-W49-UNUSED-3LEG-WEAK",
+    "EUR-MH-ROE-3LEG-WEAK",
+    "EUR-MH-INCOME-STMT-3LEG-PROD",
+    "EUR-MH-FS-RANK-3LEG-PROD",
+    "EUR-MH-VALUE-ANALYST-3LEG-PROD",
+    "EUR-MH-GROWTH-FLOW-3LEG-PROD",
+    "EUR-MH-LEVERAGE-3LEG-VREV-WEDGE-PROD",
+    "EUR-MH-LEVERAGE-RESID-DOMINANT",
+    "EUR-STARHOLD-COUNTRY-RANK-PROD",
+    "EUR-STARHOLD-INDUSTRY-RANK-PROD",
+    "EUR-NEWS84-SENTIMENT-MATRIX-WEAK",
+    "EUR-MH-VALUE-COUNTRY-SALES-WEAK",
+    "EUR-MH-NOA-PEG-WEAK",
+    "EUR-AIEQ-FORENSIC-ACCRUAL-MIX-PROD",
+    "EUR-MH-FY2-INVERT-CROWD",
+    "EUR-MH-MGEFF-INVERT-GZ-PROD",
+    "EUR-NEWS85-SENTIMENT-MATRIX-WEAK",
+    "EUR-MH-QUALITY-BS-EPS-WEAK",
+    "EUR-AIEQ-ANALYST-REV-NOSCORE-WEAK",
+    "EUR-MH-CAPACQ-INVERT-RESID-PROD",
+    "EUR-STARHOLD-SECTOR-RANK-PROD",
+    "EUR-MH-ESTREV-INVERT-DILUTE-PROD",
+    "EUR-M238-UNCROWDED-ALIGN-INDREL-PROD",
+    "EUR-MH-MIDTERM-ESTREV-WEAK",
+    "EUR-MH-ESTREV-RESID-INVERT-CROWD",
+    "EUR-M238-D1-RANK-COMBO-PROD",
+    "EUR-FCF-MINORITY-VALUE-MIX-PROD",
+    "EUR-M36-DEFAULTRISK-RESID-PROD",
+    "EUR-PATTERN-BREAKAWAY-RESID-WEAK",
+    "EUR-ARH-SURPRISE-RESID-WEAK",
+    "EUR-FCF-PURE-INVERT-RESID-PROD",
+    "EUR-STARHOLD-SCREENING-RESID-PROD",
+    "EUR-ARH-SURPRISE-PRIMARY-PROD",
+    "EUR-M36-CREDIT-DEFAULTRISK-PROD",
+    "EUR-STARHOLD-SCREENING-GZSCORE-PROD",
+    "EUR-CONTINUATION-COMPOSITE-WEAK",
+    "EUR-AIEQ-VOL-SCORE-PRODCORR"
+   ]
+  }
  },
  "gate_priors": {
   "sample_size": 1000,
-  "pass_rate": 0.17,
+  "pass_rate": 0.172,
   "by_neutralization": {
    "SECTOR": {
-    "rate": 0.2,
-    "n": 25
+    "rate": 0.2083,
+    "n": 24
    },
    "INDUSTRY": {
-    "rate": 0.058,
-    "n": 207
+    "rate": 0.0583,
+    "n": 206
    },
    "SUBINDUSTRY": {
-    "rate": 0.236,
-    "n": 572
+    "rate": 0.2416,
+    "n": 567
    },
    "STATISTICAL": {
     "rate": 0.1519,
@@ -146,6 +295,10 @@
     "rate": 0.16,
     "n": 25
    },
+   "NONE": {
+    "rate": 0.0,
+    "n": 15
+   },
    "CROWDING": {
     "rate": 0.0,
     "n": 18
@@ -153,56 +306,56 @@
   },
   "by_universe": {
    "TOPCS1600": {
-    "rate": 0.0678,
-    "n": 295
+    "rate": 0.0731,
+    "n": 301
    },
    "TOP2500": {
-    "rate": 0.2222,
-    "n": 675
+    "rate": 0.2246,
+    "n": 668
    },
    "TOP1200": {
     "rate": 0.0,
-    "n": 24
+    "n": 25
    }
   },
   "by_operator_count": {
    "5-8": {
-    "rate": 0.1927,
-    "n": 384
+    "rate": 0.1958,
+    "n": 383
    },
    "<=4": {
-    "rate": 0.1128,
-    "n": 266
+    "rate": 0.1111,
+    "n": 270
    },
    ">8": {
-    "rate": 0.1886,
-    "n": 350
+    "rate": 0.1931,
+    "n": 347
    }
   },
   "by_decay": {
    "4": {
-    "rate": 0.2572,
-    "n": 587
+    "rate": 0.2615,
+    "n": 585
    },
    "2": {
-    "rate": 0.1556,
-    "n": 45
+    "rate": 0.1628,
+    "n": 43
    },
    "6": {
     "rate": 0.0541,
     "n": 74
    },
    "0": {
-    "rate": 0.087,
-    "n": 23
+    "rate": 0.0645,
+    "n": 31
    },
    "8": {
-    "rate": 0.0625,
-    "n": 80
+    "rate": 0.0633,
+    "n": 79
    },
    "5": {
     "rate": 0.0,
-    "n": 111
+    "n": 109
    },
    "3": {
     "rate": 0.05,
@@ -223,8 +376,8 @@
     "n": 32
    },
    "mdl": {
-    "rate": 0.0079,
-    "n": 126
+    "rate": 0.0081,
+    "n": 124
    },
    "?": {
     "rate": 0.1746,
@@ -252,7 +405,7 @@
    },
    "cfg": {
     "rate": 0.0,
-    "n": 133
+    "n": 131
    },
    "probability": {
     "rate": 0.2,
@@ -263,23 +416,23 @@
     "n": 17
    },
    "surprise": {
-    "rate": 0.3396,
-    "n": 53
+    "rate": 0.3529,
+    "n": 51
    },
    "star": {
-    "rate": 0.0526,
-    "n": 38
+    "rate": 0.0571,
+    "n": 35
    }
   },
   "avoid": [
    "field_family=relative(0%, n=32)",
    "field_family=anl(0%, n=32)",
-   "field_family=mdl(1%, n=126)",
+   "field_family=mdl(1%, n=124)",
    "field_family=fnd(2%, n=55)",
    "field_family=rsk(1%, n=85)",
-   "field_family=cfg(0%, n=133)"
+   "field_family=cfg(0%, n=131)"
   ],
-  "generated_at": "2026-09-22T12:31:48.403080+00:00",
+  "generated_at": "2026-09-25T09:12:08.584138+00:00",
   "source": "tools/build_gate_prior_from_inventory.py"
  },
  "settings_prior": {
@@ -288,11 +441,11 @@
    {
     "dim": "decay",
     "current": 4,
-    "current_rate": 0.2572,
-    "current_n": 587,
+    "current_rate": 0.2615,
+    "current_n": 585,
     "recommended": 4,
-    "rate": 0.2572,
-    "n": 587,
+    "rate": 0.2615,
+    "n": 585,
     "lift": 1.0,
     "source": "gate_priors",
     "apply": false
@@ -300,11 +453,11 @@
    {
     "dim": "neutralization",
     "current": "SUBINDUSTRY",
-    "current_rate": 0.236,
-    "current_n": 572,
+    "current_rate": 0.2416,
+    "current_n": 567,
     "recommended": "SUBINDUSTRY",
-    "rate": 0.236,
-    "n": 572,
+    "rate": 0.2416,
+    "n": 567,
     "lift": 1.0,
     "source": "gate_priors",
     "apply": false

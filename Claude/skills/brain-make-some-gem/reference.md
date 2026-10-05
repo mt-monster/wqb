@@ -38,7 +38,7 @@ brain-make-some-gem/
 | `priors_file` / `priors_from_db` | ✓ | ✓ | 空 / `True`（DB 快照，缺则 fail-closed） |
 | `ideas_file` | ✓ | ✓ | 空（S1 ledger 自动注入） |
 | `detached` / `launch_only` / `console` | ✓ | ✓ | `True` / `False` / `False`（`console` 仅 Windows） |
-| `pipeline_mode` | ✓ | ✓ | MCP 缺省 `None`（→ config → `phased`）；节点缺省 `phased` |
+| `pipeline_mode` | ✓ | ✓ | MCP 缺省 `None`（→ config → `phased`）；节点缺省 `None`（**自动识别**：字段数 < 50 → `single`；字段可分层 → `skeleton`；否则 → `phased`） |
 | `batch_size` / `require_operators` / `require_count` / `prod_first` / `prod_first_top_k` | — | ✓ | 100 / 空 / 2 / `False` / 2 |
 | `dry_run` | ✓ | 经 executor 注入 | `False`（**只验证命令构建，验证不了 LLM**） |
 

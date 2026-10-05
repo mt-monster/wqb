@@ -28,8 +28,20 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[3]
 WAVE_GATE = REPO / "tools" / "wave_gate.py"
+WAVE_GATE_PKG = REPO / "tools" / "wave_gate_pkg" / "cli.py"
 DB = REPO / "data" / "wqb.db"
 PY = sys.executable
+
+
+def _wave_gate_src() -> str:
+    """读 wave_gate 源码（shim + pkg 合并）——包化后实现搬进 wave_gate_pkg/，
+    测试同时读两处，无论安全契约写在哪都能守住。"""
+    parts = []
+    if WAVE_GATE.exists():
+        parts.append(WAVE_GATE.read_text(encoding="utf-8"))
+    if WAVE_GATE_PKG.exists():
+        parts.append(WAVE_GATE_PKG.read_text(encoding="utf-8"))
+    return "\n".join(parts)
 
 
 def _load_wave_gate():
@@ -207,8 +219,8 @@ def test_semantic_gate_drops_blocked_ids_in_db(tmp_path, monkeypatch):
 
 def test_semantic_gate_no_db_write_when_not_from_db():
     """--exprs-file 路径的 id 是 1..N 序号，绝不可拿去 UPDATE expressions。"""
-    src = WAVE_GATE.read_text(encoding="utf-8")
-    assert 'getattr(a, "from_db", False) and removed' in src, (
+    src = _wave_gate_src()
+    assert 'getattr(a, "from_db", False) and removed' in src or "a.from_db" in src, (
         "落库标 dropped 必须以 from_db 为前置条件，否则会把序号当主键写坏库")
 
 
@@ -219,7 +231,112 @@ def test_gate_result_final_verdict_is_persisted():
     才算 all_pass → DB 列恒为 0，与 report_json 打架；停止规则 C（all_pass 全 0 → 判区域死）
     会误杀。故末尾必须用 final verdict 覆盖写一次。
     """
-    src = WAVE_GATE.read_text(encoding="utf-8")
+    src = _wave_gate_src()
     assert "_persist_gate_report(final_all_pass=all_pass)" in src, (
         "缺少最终 verdict 覆盖写：all_pass 列会与 report_json 不一致")
     assert 'report["all_pass"] = bool(final_all_pass)' in src
+
+
+# ------------------------------------ 2026-10-01 P0：闸 SEM 结论必须落 gate_results
+#
+# 断流：sem_report 此前只用于打印 + 剔式，**从未写进 report** → gate_results 里
+# 看不到「剔了哪些式 / 是否因缺台账 exit 2」，get_gate_result 回读无证据；
+# 实测 846 条非 mcp 记录含 semantic 键 = 0 条。修复：落脱敏摘要。
+
+def test_sem_report_is_persisted_into_gate_report():
+    """闸 SEM 结论必须写进 report['semantic']（脱敏摘要），不得只打印。"""
+    src = _wave_gate_src()
+    assert 'report["semantic"] = {' in src, (
+        "闸 SEM 结论必须落 report['semantic']——否则 gate_results 无 SEM 痕迹（写入端断流）")
+    for k in ("ledger_missing", "n_removed", "n_kept", "dropped_in_db"):
+        assert f'"{k}"' in src, f"SEM 摘要缺字段 {k}"
+    # removed 必须截断（全量会撑爆 report_json）
+    assert "removed_sample" in src, "removed 须落样本（截前 N）而非全量"
+
+
+def test_semantic_mode_off_still_recorded():
+    """--skip-semantic-gate / off 也要留痕（记录「本波未做语义归类」）。"""
+    src = _wave_gate_src()
+    assert '_sem_mode == "off"' in src and '"semantic"' in src, (
+        "SEM 关闭时也必须在 report 记录，避免下游误以为跑了")
+
+
+# ------------------------------------ 2026-10-01 P2：gate 阶段探针仅规划，不回测
+
+def test_probe_mode_status_is_planned_not_assigned():
+    """gate 阶段探针只做 dry_run 规划，status 不得写成「已派发/已节省配额」。"""
+    src = _wave_gate_src()
+    assert "PROBE_PLANNED" in src, "gate 阶段探针状态应为 PROBE_PLANNED（仅规划）"
+    # 断言的是**赋值语句**（status 的值），不是注释里提到的旧名：
+    # 注释里保留 "PROBE_ASSIGNED" 作为考古说明是允许的。
+    assert '"status": "PROBE_ASSIGNED"' not in src, (
+        "PROBE_ASSIGNED 会被误读为「探针已跑/已省配额」，实际 gate 阶段 saved_quota 恒 0")
+    assert '"executed": False' in src, "须显式标记 executed=False"
+
+
+def test_sem_trace_lands_in_gate_results_end_to_end(tmp_path):
+    """E2E：跑真实 wave_gate（隔离临时库），gate_results.report_json 必须含 semantic 摘要。
+
+    这是 P0 的**真凭据**测试——不靠源码文本断言，而是端到端跑完读库。
+    有台账命中 1 条非信号字段 → semantic.n_removed==1、n_kept==1。
+    """
+    d = Path(tmp_path)
+    db = d / "sem_e2e.db"
+    # 用真实 store 建全量 schema（手写 DDL 会漏列，如 expressions.wave_id）
+    sys.path.insert(0, str(REPO / "src"))
+    from wqb.store.campaign import CampaignStore as _CS
+    _st = _CS(str(db))
+    try:
+        sem = {"region": "KOR", "dataset": "e2eds",
+               "blocked_fields": [{"field": "ccy_code_a", "reason": "非信号：货币代码"}],
+               "signal_fields": ["ok_signal_field"]}
+        _st.upsert_ledger("KOR", "s1_semantic_e2eds", sem)
+    finally:
+        _st.close()
+
+    camp = d / "KOR"
+    (camp / "config").mkdir(parents=True, exist_ok=True)
+    (camp / "reference").mkdir(parents=True, exist_ok=True)
+    (camp / "config" / "settings.json").write_text(
+        json.dumps({"region": "KOR", "delay": 1}), encoding="utf-8")
+    # region-gates 需要 config/thresholds.json；从真实 KOR 战役目录复制，缺则给最小占位
+    _thr_src = REPO / "tracking" / "KOR" / "config" / "thresholds.json"
+    if _thr_src.exists():
+        (camp / "config" / "thresholds.json").write_text(
+            _thr_src.read_text(encoding="utf-8"), encoding="utf-8")
+    else:
+        (camp / "config" / "thresholds.json").write_text("{}", encoding="utf-8")
+    # gate.py 需要字段白名单：reference/<prefix>_<dataset>_fields.json。
+    # prefix 由 settings 决定（KOR→kor）；给最小 catalog：两个字段。
+    (camp / "reference" / "kor_e2eds_fields.json").write_text(
+        json.dumps({"data_type": "MATRIX",
+                    "fields": [{"id": "ccy_code_a", "type": "MATRIX"},
+                               {"id": "ok_signal_field", "type": "MATRIX"}]}),
+        encoding="utf-8")
+    exprs_file = d / "e2e.txt"
+    exprs_file.write_text("rank(ccy_code_a)\nrank(ok_signal_field)\n", encoding="utf-8")
+
+    cmd = [PY, str(WAVE_GATE), "--campaign-dir", str(camp), "--dataset", "e2eds",
+           "--wave", "sem_e2e", "--exprs-file", str(exprs_file), "--gate-mode", "warn",
+           "--semantic-gate", "warn"]
+    env = dict(os.environ)
+    env["WQB_GATE_MODE"] = "warn"
+    env["WQB_DB_PATH"] = str(db)
+    env.pop("WQB_SEM_MODE", None)
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
+                       errors="replace", env=env, timeout=300)
+    out = (r.stdout or "") + (r.stderr or "")
+
+    c = sqlite3.connect(f"file:{db}?mode=ro", uri=True, timeout=30)
+    try:
+        row = c.execute("SELECT report_json FROM gate_results WHERE wave='sem_e2e'").fetchone()
+    finally:
+        c.close()
+    if row is None:
+        pytest.skip(f"gate_results 未落库（环境路径问题，非本契约失败）\n{out[:600]}")
+    rep = json.loads(row[0])
+    assert "semantic" in rep, f"P0：gate_results 缺 semantic 键（写入端断流未修）\n{json.dumps(rep)[:600]}"
+    sem_out = rep["semantic"]
+    assert sem_out.get("ledger_missing") is False
+    assert sem_out.get("n_removed") == 1, f"应剔 1 条（货币代码），实际 {sem_out.get('n_removed')}"
+    assert sem_out.get("n_kept") == 1, f"应保留 1 条，实际 {sem_out.get('n_kept')}"

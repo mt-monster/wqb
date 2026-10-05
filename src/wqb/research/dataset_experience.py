@@ -220,6 +220,10 @@ def main(argv=None):
     for ds in datasets:
         if not re.fullmatch(r'[A-Za-z0-9_-]+', ds) or not re.fullmatch(r'[A-Za-z0-9_-]+', region):
             raise ValueError('region/dataset 不能用于安全文件名')
+        # 注意：文件名刻意保留历史拼写 `campain`（缺 g），**不是笔误可改**——
+        # 该后缀已被既有 reports/dataset_experience/*.md 与消费方（skill 文档、
+        # 经验检索）当作稳定契约；改拼写会使旧文件失配、被当成新文件重写。
+        # 若要规范化，须一次性迁移所有存量文件 + 同步 skill 文档，勿单点修改。
         path = Path(args.out_dir) / f'{region.lower()}_{ds}_campain.md'
         block = render_dataset(evidence, ds)
         changed = False if args.dry_run else write_report(path, block, f'{region} · {ds} 因子挖掘经验')

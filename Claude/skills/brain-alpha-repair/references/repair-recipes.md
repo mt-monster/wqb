@@ -24,6 +24,51 @@
 | 类 | 症状 | 模板 | 适用条件 | 预期效果（方向） |
 |---|---|---|---|---|
 | **turnover** | `HIGH_TURNOVER`，或 Fitness 因换手偏高偏低 | `ts_decay_linear(<信号>, 5)` 或 `ts_mean(<信号>, 5)`（窗口取白名单 5 / 22）；调高仿真 `decay`；`hump(<信号>, hump=0.01)`（**必须命名参数**）；`ts_target_tvr_hump(<信号>, target_tvr=0.15)` | 信号本身有效、只是跳变多；换手已低于 12.5% 时**不要再降**（Fitness 分母被 floor） | 换手下降；Sharpe 可能小幅下降——先看 Fitness 是否净增 |
+
+**turnover 类实测幅度（2026-10-01，USA/TOP2000/STATISTICAL，唯一一处库内实测）**：外层 `ts_decay_linear(<信号>, D)` 对 Fitness 的净效应存在**甜点区与反转点**，D 越大不等于越好：
+
+| D | turnover | Fitness | SUB | 判定 |
+|---|---|---|---|---|
+| 无（0） | 0.3534 | 0.84 | — | Fitness FAIL |
+| **5** | 0.1398 | **1.41** | 1.38 PASS | ✅ 最优 |
+| **10** | 0.0955 | **1.44** | 1.32 PASS | ✅ 次优 |
+| 22 | — | — | — | 提交层 504（未取到） |
+| 66 | 0.0498 | **1.52**（Fitness 最高） | **1.17 FAIL** | ✗ SUB 被破 |
+
+**结论**：Fitness 随 D 单调上升，但 **SUB 同步下降**——D ≥ 22 时 SUB 会跌破 `0.4333 × S` 门槛（本条 S=2.48，SUB 门槛 1.075，D=66 时 SUB=1.17 已贴线，再大即破）。**⇒ 平滑窗口的唯一合法选定依据是「SUB 仍充裕」**，不是「Fitness 最高」；D 取 5~10 是实测甜点。另：**外层 `ts_decay_linear` 平滑后的 alpha 换手 0.05~0.14 仍远高于 12.5% floor，未触发 Fitness 分母下限**。
+
+**turnover 类第二次实测（2026-10-01 深夜，`forecast_yield_metric_2−3` 价差，USA/TOP2000/STATISTICAL，S≈2.3）**：⚠️ **与上表结论不矛盾但更丰富** —— D 增大时 **F 与 2Y 可同时上升**（这条信号 SUB 始终充裕，未被 D 破闸）：
+
+| D | S | F | 2Y | SUB | 判定 |
+|---|---|---|---|---|---|
+| 3 | 2.14 | 0.68 | 2.08 PASS | 1.36 | F FAIL |
+| 5 | 2.27 | 0.91 | 2.19 PASS | 1.40 | F FAIL |
+| **8** | 2.33 | **1.08** | 2.22 PASS | 1.38 | ✅ 全过 |
+| **12** | 2.37 | **1.27** | 2.30 PASS | 1.38 | ✅ 全过 |
+| **20** | **2.45** | **1.55** | **2.55 PASS** | 1.47 | ✅ **全项更优** |
+
+**⇒ 修正认识**：D 对 F/2Y 的净效应**取决于该信号的 SUB 裕度**——SUB 充裕（≥0.4333×S 有余）时，D 越大越好（F、2Y、S 可同时升）；SUB 贴线时（上表 D=66 案例）D 必须停在甜点。**判据顺序：先看 SUB 裕度 → 再定 D**。**同族不同 D 互为近克隆，只能提交 1 颗。**
+
+## 二-B. ★ 骨架适用边界：「同族双口径价差」不是通用骨架（2026-10-01 实测）
+
+**实测背景**：USA 多塔并行探索（prod06/07/08/09 共 86 条探针），验证 `ts_decay_linear(group_rank(ts_zscore(ts_backfill(subtract(A, B), 252), 252), industry), D)` 骨架的跨塔通用性。
+
+| 塔 / 数据集 | 字段性质 | 骨架效果（最佳 S） | 结论 |
+|---|---|---|---|
+| **model** / `ai_equity_alpha` | **日频 VECTOR AI 财报因子**（同族多口径） | **2.45**（biz_clarity / forecast_yield） | ✅ **强** |
+| analyst / `analyst_consensus` | 预期意外（相对高频） | 1.03 天花板 | ⚠️ 需换形态 |
+| PV / `pattern_scores`、`continuation_score` | **形态相似度**（非经济量） | 0.86 | ❌ |
+| INSIDERS / `insider_agg_matrix` | **稀疏事件型** | 0.76 | ❌ |
+| SENTIMENT / `sentiment22` | 稀疏新闻事件 | 0.16 | ❌ |
+| OTHER / `mmp_nlp_sentiment`、`ml_factor_proj` | 文本特征 / ML 投影 | 0.42（含 unknown variable 报错） | ❌ |
+| FUNDAMENTAL / `fundamental1` | 低频财报（期权/股权激励） | 0.74 | ❌ |
+
+**⇒ 骨架成立的三要件（缺一即退化）**：
+1. **日频连续**（`vec_avg`/`ts_backfill` 后可得密集序列）—— 稀疏事件型、月度/季度字段不满足；
+2. **同族多口径估计**（A、B 是同一经济量的不同估计）—— 单一指标无 pair 可用；
+3. **字段是经济量而非派生分数**（形态相似度、纯 ML 分数无价差经济含义）。
+
+**代偿方向**：稀疏/低频/非经济量字段需换形态 —— 事件门控（`trade_when`）、`ts_delta`/`ts_av_diff`（修正速率）、`ts_rank`（相对位置）、`ts_sum`/`ts_decay_linear`（事件累积）。
 | **coverage** | 体检 `CoverageRatio` < 0.4（长 / 短持仓过少） | `ts_backfill(<字段>, 66)`（低频字段）或 `group_backfill`；VECTOR 字段先经 `vec_avg` 等聚合 | 字段缺失来自更新频率低，而非数据真的没有 | 覆盖率上升、`CONCENTRATED_WEIGHT` 风险下降 |
 | **correlation** | `SELF_CORRELATION` / `PROD_CORRELATION` 偏高 | **先读 D0-P，再选动作**：< 0.60 不用修；0.60–0.70 不扩变体、当天进步 8；0.70–0.75 仅 1 次结构性尝试（删腿 / 换广度轴，或 `group_neutralize(同信号, sector)` 包裹）；≥ 0.75 → 换机制 | 见 D0-P；**禁止**磨 decay / 中性化 / 窗口、bucket / 门控 / 平滑、镜像稀释、两条腿相加 | 只在踩线带有救；≥ 0.75 以判死 + 换机制为准 |
 

@@ -11,10 +11,16 @@ static:
   notes: "旧文档曾错写 TOP3000 / TOP2000 / TOP1000 / TOP500，全部无效——一切以平台实测为准；中性化 SUBINDUSTRY/SECTOR 实测不可用（见硬事实 3）"
 datasets:
   red: []
-  red_reason: ""
+  green:
+    - datasets: [analyst_base_ref, continuation_score, fundamental109, intraday_pv_feats, mmp_nlp_sentiment, pattern_scores]
+      note: "旧 green 文本 id ∪ registry win 层实证绑定"
+    - scope: family
+      families: [analyst_consensus, fund_holdings_panel, acquisition_model, news_sentiment_transfer]
+      note: "族级方向（2026-10-01 迁移自旧文本形态；逐数据集绑定待实证补齐）"
+    - scope: family
+      families: ["s0_whitelist（2026-09-15 重建，pyramid_view 战略榜口径）：放宽档 coverage≥0.6 / alphaCount≤1500 / fieldCount≥10 + 补偿三件套；10 集均无 WebDataScope 体检包；备选 price_signal_dl / analyst_factor_signals / dl_riskfree_returns（拥挤）"]
+      note: "迁移自旧 green_note"
   yellow: []
-  green: [intraday_pv_feats, continuation_score, pattern_scores, analyst_consensus, analyst_base_ref, fundamental109, fund_holdings_panel, mmp_nlp_sentiment, acquisition_model, news_sentiment_transfer]
-  green_note: "s0_whitelist（2026-09-15 重建，pyramid_view 战略榜口径）：放宽档 coverage≥0.6 / alphaCount≤1500 / fieldCount≥10 + 补偿三件套；10 集均无 WebDataScope 体检包；备选 price_signal_dl / analyst_factor_signals / dl_riskfree_returns（拥挤）"
 priors:
   signal_families_include: []
   signal_families_exclude: [emotion]
@@ -100,3 +106,7 @@ JPN 为 2026-09-15 首度开挖的 active 区：无 win 层、无 dead_end、无
 - 规则：JPN 表达式**禁用 pv1 字段、禁用 VECTOR+ts_\* 组合**；VECTOR 只能 `rank(vec_avg(f))`/`group_rank(vec_avg(f), market)` 级别；
   需要"变化/修正"类机制的 VECTOR 数据集（analyst_consensus 等）在 JPN 不可实现 → 分析师塔只能靠 MATRIX 集（analyst_revision_horizons 已实证衰减）。
 - GEM 预闸/闸2：JPN 下含 `close|open|high|low|volume|returns|vwap|cap|adv20` 的表达式直接丢弃；含 `ts_*(...vec_*(...))` 的表达式直接丢弃。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：analyst14(alphaCount=0, cov=None); model25(alphaCount=0, cov=None); intraday_pv_feats(alphaCount=0, cov=None)
+- 已判死（勿重试）：JPN-IPV-PRECLOSE2-FIELDS-PLATFORM-INVALID-20260921, JPN-MULTI-SOURCE-MODEL-QUANTILE-DEAD

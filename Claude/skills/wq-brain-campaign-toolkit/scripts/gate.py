@@ -1106,6 +1106,19 @@ def check_batch_diversity(exprs, ctx, batch_type="explore", skip=False, dataset=
     if skip:
         return [], None
 
+    # ---- 探针批短路（2026-10-04）：batch_type="probe" 一律豁免闸6 ----
+    # 依据 diversity_gate_is_portfolio_level_not_per_wave_v1：
+    #   探针批的目的 = 单骨架裸测「机制有没有 IS 强度」，用于干净归因；
+    #   骨架多样性要求会把波次摊成多骨架 → 「是机制无信号、还是骨架没配好」无法归因。
+    # 实证（本库 818 波次）：骨架单一 S>=1.58 命中率 51.6% vs 骨架多样 25.2%。
+    # 注意：这只豁免闸6（骨架/算子多样性），不豁免闸1-5/闸7-8；
+    #   批量产出阶段仍应用 batch_type=explore 或 repair 以开闸。
+    # 放在契约查找之前：探针批即使无契约、或契约已过期，也不应因闸6 被阻断。
+    if batch_type == "probe":
+        print("[DIVERSITY-SKIP] batch_type=probe（探针批）：闸6 骨架多样性豁免；"
+              "闸1-5/7-8 仍生效。依据 diversity_gate_is_portfolio_level_not_per_wave_v1")
+        return [], None
+
     # ---- P1-2 家族天花板预检（2026-08-31 新增，WARN 不阻断） ----
     # 主导腿信号族占比 ≥2/3 的批（wave94/95/98/104 实证 SELF≥0.9 必死），
     # 与闸6 的骨架/算子/exposure 多样性互补（字段信号族维度）。

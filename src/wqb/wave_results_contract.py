@@ -90,21 +90,35 @@ def verdict_from_counts(n_pass: int, n_near: int = 0) -> str:
     return "FAIL"
 
 
-def suggest_verdict(verdict: Any) -> Optional[Dict[str, str]]:
+def suggest_verdict(verdict: Any,
+                    n_pass: Optional[int] = None,
+                    n_near: Optional[int] = None) -> Optional[Dict[str, object]]:
     """normalize_verdict 认不出的自由文本 → 按判定表给出**建议**（只进拒绝信息，绝不自动写入）。
 
-    写入路径保持保守，但拒绝时告诉写入方"按判定表这条大概率是什么、依据是哪几个字"，
-    省掉一轮来回。KOR 真实历史 30 条 verdict 原文里有 24 条被拒（no_submit / 无提交(…) /
-    FULL_RED / 8/8 RED / 2 GREEN + 6 RED / ✅ 2 RA 提交成功），每条都能得到建议（2026-09-27 R20）。
-    返回 {"verdict", "confidence": high|medium|low, "rule"}；认不出返回 None。
+    **证据优先（2026-10-02）**：给了 `n_pass` / `n_near` 计数时，直接按判定表
+    （`verdict_from_counts`）判定，`evidence="counts"`、置信 `high`——这是**事实**，不猜。
+    没给计数时才退回**文本启发式**（`evidence="text"`）——那是「按判定表这条大概率是什么、
+    依据是哪几个字」，是猜。**两条路径的证据质量不同，调用方应优先透传计数。**
+
+    写入路径保持保守：无论走哪条路径，建议都只进拒绝信息，**绝不自动写入**；要落库须显式传枚举。
+    KOR 真实历史 30 条 verdict 原文里有 24 条被拒（no_submit / 无提交(…) / FULL_RED /
+    8/8 RED / 2 GREEN + 6 RED / ✅ 2 RA 提交成功），每条都能得到建议（2026-09-27 R20）。
+    返回 {"verdict", "confidence": high|medium|low, "rule", "evidence"}；认不出返回 None。
     """
     v = str(verdict or "").strip()
     if not v:
         return None
     up = v.upper()
 
-    def hit(enum, confidence, rule):
-        return {"verdict": enum, "confidence": confidence, "rule": rule}
+    def hit(enum, confidence, rule, evidence="text"):
+        return {"verdict": enum, "confidence": confidence, "rule": rule, "evidence": evidence}
+
+    # 证据优先：有计数就按判定表定，不再猜文本
+    if n_pass is not None or n_near is not None:
+        enum = verdict_from_counts(int(n_pass or 0), int(n_near or 0))
+        rule = (f"按判定表（计数事实）：n_pass={int(n_pass or 0)} / n_near={int(n_near or 0)} "
+                f"→ {enum}")
+        return hit(enum, "high", rule, evidence="counts")
 
     if re.search(r"提交成功|✅", v) or re.search(r"(?<!\d)[1-9]\d*\s*GREEN", up):
         return hit("PASS", "high", "提交成功 / ✅ / N GREEN（≥1 条达标）")
@@ -116,7 +130,8 @@ def suggest_verdict(verdict: Any) -> Optional[Dict[str, str]]:
     if re.search(r"判死|天花板|无法破|结构性上限|无挖掘价值", v) or "FAIL" in up:
         return hit("FAIL", "medium", "判死 / 天花板 / FAIL")
     if re.search(r"无提交|0\s*可提交", v) or "NO_SUBMIT" in up:
-        return hit("FAIL", "low", "无提交 / no_submit——若本波有 near 候选应为 PARTIAL")
+        return hit("FAIL", "low", "无提交 / no_submit——若本波有 near 候选应为 PARTIAL；"
+                                  "**建议透传 n_pass/n_near 计数**（文本猜不出 near）")
     return None
 
 
@@ -137,8 +152,13 @@ def _as_list(raw: Any) -> List[Any]:
 
 
 def upsert_wave_result(conn, region: str, wave_number: Any, now: str,
+                       n_pass: Optional[int] = None, n_near: Optional[int] = None,
                        **fields: Any) -> Dict[str, Any]:
     """按本模块契约写一行 wave_results。
+
+    `n_pass` / `n_near`（2026-10-02，可选）：本波「达标 / near」逐条计数。**不作为列写入**，
+    只在 verdict 无法辨认时把它交给 `suggest_verdict` 做**证据判定**（不猜文本）；有计数时
+    建议带 `evidence="counts"`、置信 high。调用方拿得到计数就应透传。
 
     返回 ``{"action": "inserted"|"updated"|"noop", "region", "wave_number",
     "verdict", "status", "updated_fields"}``；违反契约时返回 ``{"error": ...}`` 且不写库。
@@ -163,11 +183,13 @@ def upsert_wave_result(conn, region: str, wave_number: Any, now: str,
         if norm is None:
             msg = (f"verdict 必须是 PASS/FAIL/PARTIAL（或带该前缀），收到 {provided['verdict']!r}；"
                    f"描述性结论请放 key_findings。判定表：{VERDICT_TABLE}")
-            suggestion = suggest_verdict(provided["verdict"])
+            suggestion = suggest_verdict(provided["verdict"], n_pass=n_pass, n_near=n_near)
             if suggestion is None:
                 return {"error": msg, **base}
+            ev = suggestion.get("evidence", "text")
             return {"error": msg + (f"。按判定表建议 verdict='{suggestion['verdict']}'"
-                                    f"（依据：{suggestion['rule']}；置信 {suggestion['confidence']}）"
+                                    f"（依据：{suggestion['rule']}；置信 {suggestion['confidence']}；"
+                                    f"证据来源：{ev}）"
                                     "，未自动采用——确认后显式传入"),
                     "suggestion": suggestion, **base}
         raw = str(provided["verdict"]).strip()

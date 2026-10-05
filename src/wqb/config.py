@@ -8,6 +8,7 @@ blacklist and WebDataScope gate accounting.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Set
 
@@ -526,11 +527,27 @@ WAIT_THRESHOLDS: Dict[str, object] = {
     "sim_timeout_min": 360,
 }
 
-#: 七槽填槽并发模式（2026-08-25 更新：5→7，基于 Token-Bucket 模型 C≈7 实测）。旧「单批在飞串行」与固定槽位模型已废弃。
+#: ★★★★★ 全局禁提交开关（2026-10-05，用户指令）：「只挖不提交」——挖掘产出的 alpha 一律**积攒**，
+#: 是否提交由**用户**决定。这是本工作区的全局限制，非区域/单次。
+#:   - 唯一咽喉：`wqb.workflow.nodes.submit_alpha.run(confirm_submit=True)`（MCP `workflow_submit_alpha`
+#:     与 `workflow_execute(node="submit_alpha")` 都汇聚到此）在**任何副作用（改属性 / POST /submit）
+#:     之前** fail-closed 拒绝；`force=True` 不豁免。
+#:   - `confirm_submit=False` 的预检/查状态**不受影响**（仍可跑 submit_verdict 判定是否够格提交）。
+#:   - 需放行时二选一：
+#:     ① 设环境变量 ``WQB_ALLOW_ALPHA_SUBMIT=1``（仅对当次进程有效）；
+#:     ② **推荐**：在 `.mcp.json` / `mcp_config.json` 的 `wq-brain-http.env` 块里加
+#:        ``"WQB_ALLOW_ALPHA_SUBMIT": "1"``。MCP 服务是**独立进程**，只继承 env 块里显式列的变量，
+#:        在 shell 里 export 的传不进去（2026-10-05 提交被误拦的根因）。改完需重启 MCP 服务。
+#:   - 守护测试 `tests/unit/*/test_global_submit_lock.py`。
+ALLOW_ALPHA_SUBMIT: bool = os.getenv("WQB_ALLOW_ALPHA_SUBMIT", "").strip().lower() in ("1", "true", "yes", "on")
+
+#: 填槽并发模式（2026-10-04 更新：7→2，多会话/多流水线共享同一账户池，保守降档留余量）。
+#: ⚠ 平台 Token-Bucket 实测容量仍为 C≈7（平台事实，未变）；本工作区的**操作档**统一取 2，
+#:   给并行的其它流水线（其它 region / 其它会话）留出余量。旧「单批在飞串行」与固定槽位模型已废弃。
 CONCURRENCY: Dict[str, object] = {
-    "slots": 7,
-    "burst_capacity": 7,
-    "safe_instant_submits": 6,
+    "slots": 2,
+    "burst_capacity": 2,
+    "safe_instant_submits": 2,
     "min_batch_interval_sec": 45,
     "refill_sec_per_token": (20, 40),
 }

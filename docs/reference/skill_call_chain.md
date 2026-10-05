@@ -37,7 +37,7 @@
 - 提交 MCP 工具名是 **`workflow_submit_alpha`**（不存在名为 `submit_alpha` 的 MCP 工具；
   直连 DB 侧的批量提交工具是 `submit_batch`）。
 - 并发纪律唯一权威 = `wqb-concurrency §8`；`pipeline.py` **没有 `--concurrency` 参数**，
-  n_slots 由内部锁定 `min(7, 批数)`，把 `concurrency: 7` 拼进命令只会得到 warning / argparse 拒绝。
+  n_slots 由内部锁定 `min(2, 批数)`，把 `concurrency: 2` 拼进命令只会得到 warning / argparse 拒绝。
 - 表达式输入默认 **`--from-db`**（读 `expressions` 表）；`alpha_list.json` / `simulation_status.csv`
   仅作排障与断点续跑兼容，**不是**交接真相源（战场产物只入 `data/wqb.db`）。
 - 依赖/路径：`WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR` 或自动搜索安装位；**禁止**写死 `C:\Users\...` 或 `.qoder-cn/skills/...` 绝对路径（见 `AGENTS.md §6`）。

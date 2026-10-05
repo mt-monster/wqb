@@ -6,16 +6,18 @@
 
 | 目录 | 职责 | 变更注意 |
 |---|---|---|
-| `world-quant-brain-mcp/` | MCP 服务（`wq-brain-http`）：`brain_api.py` 为门面（36 行），方法体 verbatim 拆至 `brain_mixin_transport/auth/simulation/spcread/correlation.py`；模型 `brain_api_models.py`、配置 `brain_config.py`；回测/提交/论坛工具在 `tools_*` | 运行中服务，改 `brain_mixin_*` 需回归 `world-quant-brain-mcp/tests/` |
 | `tracking/` | 区域战役追踪（KOR/USA/EUR/IND/GLB/DEU…）：candidates/results/reviews/scripts | `tracking/mining/` 为共享数据湖，勿改动/移动；全量索引见 `tracking/reference/tooling/generate_manifest.py`（`MANIFEST.json` 当前未生成） |
-| `mining/` | 挖掘脚本与归档 | 改动影响战役 pipeline |
-| `tools/` | 工具链（字段解析、质量检查、同步等） | 被多区域脚本引用，改动前先查调用点 |
-| `reports/` | 报告产物 | — |
-| `data/` `data_ref/` | 事件数据与参考字段 | 只读数据 |
+| `tools/` | 工具链（字段解析、质量检查、同步等）；**新脚本一律进这里**，索引见 `tools/README.md` | 被多区域脚本引用，改动前先查调用点 |
 | `src/wqb/` | **规范核心包（single source of truth）**：config/expression/research/search/memory；区域/算子/中性化域常量唯一来源（见 `config.py`） | 行为变更须保持根 `tests/` 全绿（数量以 `pytest --collect-only -q \| tail -1` 为准，不在此硬编码） |
 | `tests/` | pytest 单元测试（根 `tests/` + MCP 包 `world-quant-brain-mcp/tests/`；数量以 collect-only 为准；根 `tests/` 递归包含 `tests/unit/`，见 §4） | 见 §4 |
-| `docs/` | 计划、参考、经验文档 | 行为变更需同步相关文档 |
-| `attic/` | 隔离归档（`tools_archive`/`mining_archive`/`root_scripts`/`experience_scripts`）+ `brain_api_backup/`（原码与拆解态备份） | 只读归档，勿回迁进活跃代码 |
+| `world-quant-brain-mcp/` | MCP 服务（`wq-brain-http`）：`brain_api.py` 为门面（36 行），方法体 verbatim 拆至 `brain_mixin_transport/auth/simulation/spcread/correlation.py`；模型 `brain_api_models.py`、配置 `brain_config.py`；回测/提交/论坛工具在 `tools_*` | 运行中服务，改 `brain_mixin_*` 需回归 `world-quant-brain-mcp/tests/` |
+| `docs/` | 计划、参考、经验文档（**长期规范 / SOP / 速查**，不写一次性结论） | 行为变更需同步相关文档 |
+| `reports/` | **人工审计与复盘**报告（结构审计、DB 审计、评审复盘） | 与 `output_report/` 分工判据见 §8.13 |
+| `output_report/` | **报告唯一出口**（2026-10-01 组织审计定案）：战役 / ideas / 评审**产物**，含工具直写文件（`archive_submit_ready.py`、`complexity_scan.py`、`run_grouped_tests.py`） | 工具按路径直写，改目录要先查写方 |
+| `data/` | 运行期数据与规范库 `data/wqb.db`（只读数据，整体 gitignore） | 备份数受 `test_retention.py` 硬闸（≤ 2），清理走 `tools/retention.py` |
+| `attic/` | 隔离归档，**日期化归档包** `<主题>_<YYYYMMDD>/`（现状：`root_clutter_*`/`ppa_mining_*`/`mining_scripts_20261004`/`forum_workbench_20261004`/`brain_api_backup` 等） | 只读归档，勿回迁进活跃代码；除早期存量外不入仓库 |
+| `cache/` `logs/` `results/` | 断点 / 日志 / checkpoint 等运行期产物（均已 gitignore） | `results/` 的续跑断点被 `backfill_longcount.py`、`batch_submit_verdict.py`、`prod_blocked_recheck.py` 硬编码引用，**移动会破坏续跑** |
+| `research-data/` `extensions/` | 外部数据包与浏览器扩展源（gitignore，只读） | `research-data/operators_platform_*.json` 被 `op_arity.py` 读取，整目录不可动 |
 
 ## 2. 核心入口文件
 
@@ -485,6 +487,66 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
      已验证非空过：`git stash` 掉源码改动后 **5 例立即变红**。
    - ⚠ 扫描发现同类静默吞异常 15+ 处（`except Exception: pass`），**本次只修决策路径上这一处**；
      其余多在采集层且有 `data_caveat` 或更弱的后果，待有具体故障证据再动，别批量改。
+9. **⚠ 拆 `wqb_db_mcp.py` 入包：已尝试并当场回滚（2026-10-04，P2-2）** —— 结论：**先别拆**，
+   除非同时下列三类耦合都处理完。**完整实测与可照做的执行顺位见
+   [`reports/db_mcp_split_20261004.md`](../reports/db_mcp_split_20261004.md)**，
+   回归凭据工具已入仓：`python tools/code-audit/mcp_surface_diff.py`。
+   实测结论一行：拆分本身成功（入口 2792→91 行门面，**MCP 工具面 47=47 逐项一致**），
+   失败全部来自耦合面。**两次尝试后测得共 6 类**（数字均为实测，不是估算）：
+   ① **17 处**属性式 `DB_PATH` patch → 静默写生产库（✅已消灭，见下）；
+   ② **28 个测试文件 66 处**引用入口，其中 **26 条断言**会因拆分变红（响亮）；
+   ③ **6 处**测试 patch 入口的**内部符号**（`mod._conn`、`mod._get_ledger_raw`×5）——
+     第二危险类：若门面转发了同名对象，patch 打不到实现 → **测试空过（假绿）**，
+     所以门面**不得导出 `_*` 私有名**；
+   ④ **4 个守护**靠解析入口源码枚举那 47 个工具（`skill_lint`/`test_se_docs`/
+     `test_skill_integrity`/`test_docs_consistency`）→ 拆完它们看到 0 个工具；
+   ⑤ 1 条连接白名单（✅已验证改法）；⑥ 常量访问（`getattr(mod, "HARVEST_SOURCE")` 等）。
+   只有①会写坏数据、③会造假绿；②④⑥ 只会响亮地红 —— 所以它能分批做，
+   但也说明入口的**命名空间已是 30 个测试文件的事实 API**，不能当一次性任务推。
+   - 入口 2723 行 / 69 个顶层函数 / 47 个 `@mcp.tool()`。生成式拆分（逐字节搬运 + 组间 DAG 环
+     检测）本身是成功的：工具面**逐项一致**（47=47，docstring 与入参 schema 零差异，
+     入口降到 67 行）。但全量回归从 1 failed 变 6 failed。
+   - 根因 = 入口被三类东西直接耦合：
+     ① **6 处测试隔离靠 `mod.DB_PATH = tmp` / `monkeypatch.setattr(mod, "DB_PATH", …)`**。拆包后
+     该赋值变成一个无人读取的悬空属性 → **不报错，测试直接写进生产 `data/wqb.db`**；
+     ② 约 10 处断言直接读根文件的**源码文本**（`test_wave_verdict_enum`〔历史命名，非 `wave<N>_verdict` 废止键〕、`test_se_docs`、
+     `test_skill_lint::test_mcp_registry_reads_real_signatures`、`test_ledger_key_catalog`、
+     `test_index_tables` 等）；③ `wqb_db_mcp.py` 在 `db_conn.DIRECT_CONNECT_WHITELIST` 名单里。
+   - **本次造成的数据污染（待处置，已精确圈定）**：失败那次全量运行在
+     `2026-10-04T03:33:3x~4x` 时间窗写进了生产库 —— `registry_empirical` 2 行
+     （`KOR-GATE-DEAD`、`KOR-LEGACY-DEAD`，均为测试字面量，可安全删）、
+     `wave_results` 12 行 KOR 真实波次被覆盖、`ledger_kv` 5 行。
+     复查方法：`SELECT … WHERE updated_at LIKE '2026-10-04T03:33%'`（只读）。
+   - **不属于本次的同期变更**（已逐条归属）：非枚举 verdict `KOR/s2_oth466_d33 = MIXED_NO_SUBMIT`、
+     裸 `sqlite3.connect`、本机盘符常量，均来自并行会话的 `tools/_kor_d33_writeback.py` 与
+     `tools/_tmp_anl69_fields.py`；`test_sync_skills_reports_no_drift` 红是仓库副本新于安装位（
+     跑 `python tools/sync_skills.py` 自愈，§8.12）。
+   - **可复用的铁律（下次改结构前先过这一问）**：**任何改变模块结构的改动，都要问
+     「测试的隔离机制会不会静默失效」**。按属性 patch（`mod.X = tmp`）在拆包/改名/重定位后
+     不会报错，只会静默失去作用。正确顺序：**先把隐式 patch 换成显式 hook（如 `set_db_path()`）
+     + 加生效断言 + 跑绿，第才能动文件**；顺序反了就是把生产库当测试沙箱。
+   - ✅ **安全前置已落地（2026-10-04，同一会话）** —— 拆分现在可做，但仍有约 10 处
+     「直接读根文件源码文本」的断言要一并改（见下）。已做的三件事：
+     ① `wqb_db_mcp` 新增 `set_db_path()/get_db_path()`，`_store()`/`_conn()`/`get_submit_ready()`
+     三个读库点全部改走 getter（**读写同源**：若只 patch getter，那些“patch 完再读
+     `mod.DB_PATH` 做校验”的测试会读到陈值 —— 实测踩过）；
+     ② **结果层硬闸** `_reject_production_db_under_tests()`：pytest 运行中（`PYTEST_CURRENT_TEST`）
+     一旦库指向生产 `data/wqb.db` 就报错。故意只读真库的存量体检测试需显式
+     `monkeypatch.setenv('WQB_ALLOW_REAL_DB','1')` 并写明理由（已按此放过
+     `test_get_mining_yield_separates_conversion_from_yield`）；
+     ③ **17 处**属性式 patch 全量迁到 hook（实际数量不是初估的 6 处），包括
+     `monkeypatch.setattr(mod,"DB_PATH",…)` → `mod.set_db_path(…)`；
+     另 `_GuardedModule` 只能**条件安装**（`sys.modules.get(__name__)`）—— 测试用
+     `spec_from_file_location` 且不注册进 sys.modules 时，`sys.modules[__name__]` 会 KeyError（实测踩过）。
+   - ⚠ 拆分仍待处理的**第二类耦合**：约 10 处断言直接读根文件源码文本
+     （`test_wave_verdict_enum`〔历史命名，非 `wave<N>_verdict` 废止键〕、`test_se_docs`、`test_skill_lint::test_mcp_registry_reads_real_signatures`、
+     `test_ledger_key_catalog`、`test_index_tables` 等）。它们会**响亮地红**（不是静默写库），
+     所以风险等级低于 DB_PATH 那一类，但必须同批改。
+10. **`tools/` 顶层仍在长（S11 已当场抓到）** —— 2026-10-04 冻结基线（171 个）后，并行会话又往
+    顶层丢了 5 个一次性脚本（`_kor_d33_writeback.py`、`_tmp_anl69_fields.py`、`_tmp_build_a69.py`、
+    `_tmp_build_afsf.py`、`_tmp_build_an82p.py`），其中 2 个已让 `test_db_write_guards`（裸 sqlite）
+    与 `test_sd_portability`（本机盘符）变红。**处置归属**：这些是并行会话的在途工作，
+    不要跨会话代删；按 §8.13 它们应落 `logs/_tmp_*.py` 或 `tracking/<REGION>/scripts/`。
 
 ### 8.5 审计纠错记录（2026-09-20，**方法论教训**）
 
@@ -634,8 +696,16 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   依据是当时 2709 个测试全绿，回归网足够。
 - **`tools/audit_structure.py` 是结构守护，已挂 pre-commit**（`core.hooksPath = tools/git-hooks`）：
   S1 sys.path 自举/外挂分类 · S2 src→tools 依赖方向 · S3 跨层同名 · S4 硬编码盘符 ·
-  S5 reports/ 散落脚本 · S6 skills 副本漂移。**S1/S2/S4 判 FAIL 阻断提交；S3/S5/S6 判 WARN（存量不阻塞）**。
-  单项自查：`python tools/audit_structure.py --only s1`。当前 **FAIL=0 / WARN=2**（两 WARN 是已登记的已知技术债）。
+  S5 reports/ 散落脚本 · S6 skills 副本漂移 · **S7 根目录白名单 · S8 根↔子目录同名分叉 ·
+  S9 文档声明目录存在性 · S10 区域子目录完整性 · S11 tools/ 顶层冻结 ·
+  **S12 已下架路径不得复活**
+  （2026-10-04 新增，后六条是为根目录第 5 次污染、`tools/` 上帝目录、与
+  “归档后又被恢复”三件事补的闸）。
+  **FAIL 阻断：S1/S2/S4/S7/S8/S9/S10/S11/S12**（S8 分叉、S11 新增顶层、S12 复活
+  都不进基线豁免：分叉没有合法存量形态，顶层只减不增，已下架不得回来）；
+  **WARN 不阻塞：S3/S5/S6**（存量已登记）。
+  单项自查：`python tools/audit_structure.py --only s7`。S11 基线 = 171 个顶层脚本，
+  建/重置用 `--freeze-tools-top`；S12 清单在基线的 `retired_paths`。
 - **S3「同名」不是缺陷**：`tools/x.py` 与 `src/wqb/**/x.py` 分属脚本与包两套命名空间，import 不会撞
   （实测 `import wave_gate` 报 ModuleNotFoundError，它只以 `wqb.workflow.nodes.wave_gate` 存在）。**勿改名。**
 - **`wave_gate` 包化收尾（2026-09-30）**：`tools/wave_gate.py` = 入口 shim（~140 行：argparse 契约字面 +
@@ -664,6 +734,69 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 - **测试的两个环境前提**（Windows）：符号链接需开发者模式/管理员，否则 `test_pull_skills_safety`
   的链接识别用例 skip；`test_sync_skills_reports_no_drift` 会因「仓库已改 / 安装位未同步」的时序差失败，
   跑一次 `python tools/sync_skills.py` 即自愈——**判断回归归属前先看 `git status` 有没有你改过该文件**。
+
+### 8.13 目录归属与命名规范（2026-10-04 结构治理固化）
+
+新增文件先问「放哪」，只有一条路（机器守卫：`audit_structure` S7 白名单 + S8 分叉 + S9 声明存在性）：
+
+| 你要放的东西 | 唯一去处 | 反例（都曾真实发生过） |
+|---|---|---|
+| 可复用 CLI | `tools/`，并在 `tools/README.md` 登记一行 | 6 个「论坛工作台」脚本散落仓库根 → 与 `tools/` 副本分叉成**互为超集**的两份 |
+| 一次性/会话草稿脚本 | `logs/_tmp_*.py`（用完即删） | `cache/` 里 22 个 `_gen_*/_log_*.py` 固化成无人管的资产 |
+| 区域专属探针 | `tracking/<REGION>/scripts/`，用完进 `scripts/archive/` | `tracking/reference/` 积了 54 个 `tmp_*` + 37 个 `gen_*` |
+| 战役/评审**产物**报告 | `output_report/`（2026-10-01 定案的**报告唯一出口**） | `reports/` 与 `output_report/` 两头分流，检索靠运气 |
+| 人工审计与复盘 | `reports/<主题>_<YYYYMMDD>.md` | 同一份 review 在两个目录各留一版 |
+| 长期规范 / SOP / 速查 | `docs/`（`docs/README.md` 索引必须与实际目录一致） | `docs/README.md` 索引着不存在的 `architecture/` |
+| 运行期产物 | `cache/`（断点）`logs/`（日志）`results/`（续跑 checkpoint） | `sa_*.log`、`dump.rdb`、`0` 落在根 |
+| 归档 | `attic/<主题>_<YYYYMMDD>/`（**归档而非删除**，§7） | `mining/` 14 个脚本被工作树清空却仍留在 git 索引 |
+
+**命名规范**（新建即守，存量不强制回改）：
+
+- **目录**：小写 kebab-case；`_` 前缀 = 同层内部/横切；第三方源码只进 `vendor/`
+  （下一份 WebDataScope 副本放这里，别再往 `research-data/` 与 `extensions/` 各拷一份）。
+  例外：`tracking/<REGION>` 三字母大写是**平台数据标识**，不属目录命名；`Claude/`、`output_report/`
+  为历史名，保留但不新增此类风格。
+  ⚠ `tracking/` 同层的 `FORUM`/`PPA_USA`/`prod_probe`/`hypotheses`/`mining` **都不是区域**，
+  新 Agent 极易当成区域读；现有五个搬迁代价 > 收益，**只做约定**：再增非区域目录一律 `_` 前缀。
+- **文件**：纯 snake_case；包内私有实现 `_` 前缀（`store/_alphas.py` 已是范式）。
+- **活探针禁止 `test_` 前缀**：用 `probe_*` / `*_live`。`test_` 名字 + 不在 `testpaths` 内
+  = 既不被收集又骗人（`world-quant-brain-mcp/probe_direct_auth.py`、`probe_labs_live.py` 即此形态，
+  2026-10-04 改名）。处置纪律 = **改名，不搬家**：搬进 `tests/` 会让 pytest 真去跑平台 API
+  （与 §8.4 第 4 条对 `tools/test_*.py` 的结论同一）。
+- **日期**：产物与报告一律 `YYYYMMDD` **作后缀**（`skills_review_20261003.md`）；
+  `docs/plans/` 保持 `YYYY-MM-DD-<主题>.md` **前缀**（该目录已成型，同目录内不混用）。
+  停止 `2026-10-02_xxx.md` 这种前缀带杠写法。
+- **路径一律纯 ASCII**，不含空格/中文/Windows 保留名（`nul`/`con`/`0`/`-`）。非 ASCII 名会让
+  `git` 需 `core.quotepath=false`、脚本处理与跨平台同步都出摩擦；中文放正文，别放文件名。
+- **仓库根推导一律层数无关**（2026-10-04 P2-1 新增）：新代码用 `from wqb.paths import repo_root`
+  （向上探测 `pyproject.toml` + `src/wqb` 双标记，解析失败**显式报错**不猜根）；
+  脚本里写 `find_repo_root(__file__)` 即可与自身深度解耦。
+  **禁止新增** `parents[1]` / `dirname(dirname())` 这类层数硬编码——实测仓库内有 5 种同义写法并存，
+  文件一旦移动一层就静默指错目录（DB 路径/报告输出/归档全错）。存量不强制回改，
+  但按 `tools/README.md` 「单文件迁移配方」在每次实际移动该文件时顺手换掉。
+
+**tools/ 主题下沉（P2-1，2026-10-04）**：顶层 171 个脚本的目标结构与逐文件归属已固化到
+`tools/THEMES.json`（19 个 kebab 主题目录，171/171 已归属；另 4 个区域专属脚本标记应迁出至
+`tracking/KOR/scripts/`）。**当场全量下沉已评估并否定**：实测全仓 80 处 `sys.path.insert(...'tools')`、
+`index_tables`/`migrate_wave_verdict_enum`〔历史命名，非 `wave<N>_verdict` 废止键〕等被当模块 import、仓库根推导 5 种写法——下沉一层同时改变
+import 解析与路径层数，且都在运行期才爆。因此采用 S11 冻结顶层（新增即 FAIL）+ 按主题逐批迁移，
+配方与实测耦合数据见 `tools/README.md` 「目录结构与迁移状态」。
+
+**本轮定案**（作为 §8.4 台账的补充，两边不得重复描述）：
+
+1. **`output_report/` 仍是报告唯一出口**。上一轮结构建议里「把 `output_report/` 并入 `reports/`」的方向
+   **已作废**（与 2026-10-01 定案冲突）；同样作废的还有「`info_data.bin` 外迁」与
+   「`tools/test_field_catalog_cache.py` 搬进 `tests/`」——它们都是已结案项（§8.4 第 1/4 条）。
+2. **论坛/工作台整端下架** `attic/forum_workbench_20261004/`：UI 模板 `wq_workbench.html`
+   **从未入库且全盘不存在** → 部署/托管链路不可运行；论坛读取能力由 MCP
+   `search_forum_posts`/`read_forum_post` + `tools/forum_recon.py` + `brain-forum-browse` 承接；
+   滚动清理由 `tools/retention.py`（§8.4 第 6 项）承接。不依赖 UI 的测试跑批半段**转正为工具**：
+   `tools/scan_test_groups.py` + `tools/run_grouped_tests.py`（产物 `cache/test_groups.json`）。
+   ⚠ 指向 `tools/forum_workbench/wq_daily_refresh.py` 的每晚 21:30 自动化必须停用（否则每晚 exit≠0）。
+3. **`mining/` 幽灵索引已摘**：15 个文件从 HEAD 恢复后归档 `attic/mining_scripts_20261004/`；
+   §1 职责表不再声明 `mining/` 与 `data_ref/`（两者磁盘均不存在），S9 会持续校这一点。
+4. `world-quant-brain-mcp/downloads/`（`brain_mixin_correlation.py:72` 的 `cache_dir`）与
+   `config/info_data.bin`（`brain_mixin_transport.py:105`）**不是冗余**，是代码硬编码的运行时位，勿外迁。
 
 ### 8.14 区域 × 类别控制层（2026-10-04 落地；方案与落地记录 `docs/plans/2026-10-04-ra-region-category-split.md`）
 

@@ -94,6 +94,15 @@ def save_catalog(ctx, catalog):
         store.close()
 
 
+def list_catalog_datasets(ctx):
+    """该区 DB 里已有字段目录的数据集名列表（文件面枚举的 DB 替代，2026-10-01）。"""
+    store = get_store(ctx)
+    try:
+        return store.list_catalog_datasets(ctx.region)
+    finally:
+        store.close()
+
+
 def load_ranking(ctx):
     store = get_store(ctx)
     try:

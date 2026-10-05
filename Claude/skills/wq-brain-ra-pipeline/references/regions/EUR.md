@@ -10,10 +10,14 @@ static:
   neutralization_default: SUBINDUSTRY
   notes: "SUBINDUSTRY + decay4 为 win 实证设置；档位以 src/wqb/config.py::REGIONS['EUR'] 为准（2026-09-22 实测：ILLIQUID_MINVOL1M 已不可用、TOP1600 不在档位表；IS 强度集中在 TOP2500，窄档易塔陷）"
 datasets:
-  red: []
-  red_reason: ""
+  red:
+    - datasets: [ml_factor_proj, model354, news36, news38]
+      reason: "DB 实证判死（键 = ledger *_dead ∪ 旧 red 文本 id；明细查 get_dead_datasets）"
+  green:
+    - scope: family
+      families: [model 系（慢残差腿）, pv 系（快腿）, analyst 系]
+      note: "族级方向（2026-10-01 迁移自旧文本形态；逐数据集绑定待实证补齐）"
   yellow: []
-  green: [model 系（慢残差腿）, pv 系（快腿）, analyst 系]
 priors:
   signal_families_include: [slow_model_residual, fast_pv, analyst]
   signal_families_exclude: []
@@ -76,3 +80,9 @@ EUR 已有平台级验证的**机制**：慢 MODEL 残差（低相关底座）×
 - 禁止只穷举同金字塔换字段（骨架反模式，EUR 最容易犯）。
 - **不调混合比例**：加权 / 等权相加已被闸 5 禁止（路线 A，2026-09-13 起），也违背「禁止混信号调参」；换腿时每波只动一个变量（慢腿字段 / 快腿字段 / 条件分位阈值）。
 - EUR 无死路记录不等于安全：新数据集仍走 8 探针快判死。
+
+## priors
+- 拥挤数据集 TOP3（避免重复挖）：risk70(alphaCount=196510, cov=0.98); analyst69(alphaCount=167628, cov=0.65); model38(alphaCount=56424, cov=0.78)
+- 白空间候选（未测 + 覆盖≥60% + 低 alphaCount）：univ2(cov=0.67, alphaCount=0); univ1(cov=1, alphaCount=1); model27(cov=0.78, alphaCount=3); analyst_base_ref(cov=0.83, alphaCount=7); pv149(cov=1, alphaCount=10)
+- 已判死（勿重试）：EUR-ANALYST9-COLD-ZERO-YIELD, EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD, EUR-INSTITUTIONS6-COLD-ZERO-YIELD, EUR-NEWS46-ZERO-IS-SIGNAL, EUR-UNTESTED-CHANNEL-FIRSTPROBE-DEAD, EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS, EUR-W254-OTHER460-FORWARD-PROBABILITY-PAIRS, EUR-W255-EARNINGS6-EPS-EVENT-PAIRS
+- 实证笔记：EUR-D1-20260924-NEW-AXES: 只D1；本 session 补齐 fundamental23 salvage 候选 prod 实测与 news46 复合结构第二轮。 | EUR-CS1600-SURPRISE-FCF-INSIDER-WIN: predicted_surprise-FCF价差+ts_backfill(22)平滑+insider交易计数bucket稀释;换宇宙TOPCS1600让2020不塌(IS_LADDER过),TOP2500同信号IS_LADDER仅1.53 | EUR-Xgojww1X-RISK-NEWS-ACTIVE: 库存盘点产出。EUR 库存高 sharpe 普遍 prod 墙，唯此条 prod 0.59 通过。
