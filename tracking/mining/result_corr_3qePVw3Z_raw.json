@@ -1,4 +1,0 @@
-﻿event: message
-data: {"jsonrpc":"2.0","id":1001,"result":{"content":[{"type":"text","text":"Unknown tool: check_alpha_correlation"}],"isError":true}}
-
-
