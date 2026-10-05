@@ -55,7 +55,7 @@
 | `POST /alphas/{id}/submit` | 提交层真相：200 / 201·202 / 403（带全量 `is.checks` 与真因） | **是——通过即提交** |
 | `get_alpha_details(alpha_id).is.checks` | 模拟层各检查的 `PASS` / `FAIL` / `WARNING` / `PENDING`；`status` / `dateSubmitted` | 否 |
 | `submit_verdict` 输出 | 上面两类模拟层信息 + 资格门 + 硬闸类 WARNING 的合成判定（**否决**用） | 否 |
-| `check_correlation(refresh=True)` | prod / self 相关性实测（异步排队，已决结果缓存 7 天；终验用 `refresh=True`） | 否 |
+| `check_correlation(refresh=True)` | prod / self 相关性实测（异步排队，已决结果缓存 **48 小时**，落 SQLite 权威表 `alpha_corr_cache`；终验用 `refresh=True`） | 否 |
 
 > 「提交层视图」一词只指第一行那个死端点；其余都直接说来源名。
 

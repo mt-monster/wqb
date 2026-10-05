@@ -873,3 +873,56 @@ def list_ready(region: Optional[str] = None, db_path: Optional[str] = None,
         return sorted(rows, key=priority, reverse=True)
     finally:
         con.close()
+
+
+def normalize_towers(raw) -> list:
+    """``towers`` 列归一为 ``[(塔名, 倍率)]``（无倍率则为 ``None``）。
+
+    2026-10-05 实测该列**三种格式并存**，且旧 ``priority`` 只认其中一种：
+      * ``'["USA/D1/MODEL"]'``   —— JSON list of str（tools/submit_queue.py add 产出）
+      * ``'{"name":..,"multiplier":..}'`` 元素 —— JSON list of dict（原 priority 期望）
+      * ``'USA/D1/MODEL'``       —— **裸字符串**（无引号无括号，json.loads 抛错静默退化）
+      * ``'[]'`` / ``None``      —— harvest 时 pyramids 缺失（UNSUBMITTED alpha 无 pyramids）
+    旧实现三态里两态全部退化为 1.0 ⇒ 塔倍率被静默丢弃、优先级排序失真。本函数统一解析。
+
+    注（2026-10-06）：本函数原为工作区未跟踪改动，被外部 ``cline restore transaction``
+    一并清除且无 git 历史；此版本依据残留字节码常量重建。
+    """
+    out = []
+    if raw is None:
+        return out
+    if isinstance(raw, (list, tuple)):
+        items = list(raw)
+    else:
+        s = str(raw).strip()
+        if not s:
+            return out
+        try:
+            items = json.loads(s)
+        except (ValueError, TypeError):
+            items = re.split(r"[,;\s]+", s)
+        if isinstance(items, dict):
+            items = [items]
+        elif not isinstance(items, (list, tuple)):
+            items = [items]
+    for it in items or []:
+        mult = None
+        if isinstance(it, dict):
+            nm = it.get("name") or it.get("id")
+            if not nm:
+                pyr = it.get("pyramid")
+                if isinstance(pyr, dict) and pyr.get("region") is not None:
+                    nm = "%s/D%s/%s" % (pyr.get("region"),
+                                        pyr.get("delay") if pyr.get("delay") is not None else "?",
+                                        pyr.get("category") or "?")
+            mv = it.get("multiplier")
+            if mv is not None:
+                try:
+                    mult = float(mv)
+                except (TypeError, ValueError):
+                    mult = None
+        else:
+            nm = str(it).strip() if it is not None else ""
+        if nm:
+            out.append((str(nm).strip(), mult))
+    return out

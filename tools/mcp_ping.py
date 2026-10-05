@@ -142,6 +142,26 @@ class McpStdioClient:
         """
         return _call_tool_timed(self, name, args)
 
+    def close(self):
+        """收掉自己拉起的 stdio 子进程（服务是子进程，不收就漏在那儿占平台会话）。
+
+        ⚠ 2026-10-06 修正：本方法原本被缩进错放到下面的模块级 `_call_tool_timed` 里
+        （且在 `return` 之后 ⇒ 死代码），`McpStdioClient` 事实上**没有** `close`，
+        而 `main()` 的 `finally: client.close()` 无条件调用它 —— stdio 分支上真正的
+        调用结果会被顶成 `AttributeError`，看的人只会去查 close 而忘了首因是缩进。
+        教训：`finally` 里调用的方法必须随类定义存在，宁可用一个显式空实现。
+        """
+        try:
+            if self.proc and self.proc.poll() is None:
+                self.proc.terminate()
+                try:
+                    self.proc.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    self.proc.kill()
+                    self.proc.wait(timeout=5)
+        except Exception:  # noqa: BLE001 — 收尾失败不该顶掉主流程的结论
+            pass
+
 
 def _call_tool_timed(client, name, args):
     t0 = time.perf_counter()
@@ -159,18 +179,6 @@ def _call_tool_timed(client, name, args):
                 break
         return False, ms, text or "tool returned isError"
     return True, ms, None
-
-    def close(self):
-        try:
-            if self.proc and self.proc.poll() is None:
-                self.proc.terminate()
-                try:
-                    self.proc.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    self.proc.kill()
-                    self.proc.wait(timeout=5)
-        except Exception:
-            pass
 
 
 def load_services():

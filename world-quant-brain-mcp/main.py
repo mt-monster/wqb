@@ -52,12 +52,9 @@ if __name__ == "__main__":
     if not creds.get("email") or not creds.get("password"):
         print("[WARNING] No BRAIN credentials found in config. Authentication will fail until credentials are provided.", file=sys.stderr)
     
-    # Verify Redis connectivity
-    if brain_client.redis_client:
-        print("[INFO] Redis connection established successfully", file=sys.stderr)
-    else:
-        # 2026-09-01 降噪：Redis 为可选缓存，不可用时 INFO 一行即可（见 brain_mixin_transport）
-        print("[INFO] Redis not available - caching disabled (optional)", file=sys.stderr)
+    # Cache backend (2026-10-06: Redis removed, SQLite only — see brain_mixin_transport)
+    print("[INFO] Cache backend: sqlite (data/wqb.db) — Redis removed on 2026-10-06",
+          file=sys.stderr)
 
     # Run using configured transport:
     #   MCP_TRANSPORT=streamable-http -> HTTP server (DEFAULT now)

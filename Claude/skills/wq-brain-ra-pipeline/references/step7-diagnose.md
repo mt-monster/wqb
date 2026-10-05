@@ -29,7 +29,7 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S4"  dataset=$DS  
 ```
 
 - ③ **解析不到本波 alpha_id 即 FAIL（干跑也 FAIL）并列出该区最近波次** → 用其中的**字符串波号**（如 `s2_<ds>_d1`）重试；不要手拼 alpha_id。
-- ① 的「首探」口径与处置一律按 D0-P；本文不再复述 prod 阈值。**多候选时的 prod 排队**（串行泳道、7 天结果缓存、`refresh` 终验）见 [`prod-corr-avoidance.md`](prod-corr-avoidance.md)「排队纪律」。
+- ① 的「首探」口径与处置一律按 D0-P；本文不再复述 prod 阈值。**多候选时的 prod 排队**（串行泳道、48 小时结果缓存、`refresh` 终验）见 [`prod-corr-avoidance.md`](prod-corr-avoidance.md)「排队纪律」。
 
 ## 7.3 墙与池：判据 → 后果（RA-86 词汇）
 

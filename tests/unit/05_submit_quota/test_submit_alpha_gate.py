@@ -82,6 +82,10 @@ def test_gate_ppa_uses_ppa_count(gate):
 @pytest.fixture
 def sa(monkeypatch):
     from wqb.workflow.nodes import submit_alpha as sa_mod
+    # 全局提交闸默认 fail-closed（AGENTS.md §3.5 / docs/env_registry.json：“缺
+    # WQB_ALLOW_ALPHA_SUBMIT 即拦下提交”；服务进程里由 mcp/main.py setdefault 为 1）。
+    # 单测不在服务进程内，所以要测提交路径必须**显式开闸**（而不是把默认值改成开）。
+    monkeypatch.setattr(sa_mod, "ALLOW_ALPHA_SUBMIT", True)
     return sa_mod
 
 
@@ -90,6 +94,10 @@ def _patch_client(monkeypatch, sa, details):
     # details 兼作 submit 的返回：带 success=True 使 result["submitted"] 判定成立
     _d = dict(details) if isinstance(details, dict) else {"is": {}}
     _d.setdefault("success", True)
+    # prod 闸（F8，2026-10-02）从同一个返回值里取 `checks.production.max_correlation`，
+    # 未出数 = fail-closed → 不喂它就提交不出去了。本文件测的是 submit_gate 与
+    # robustness 声明，所以给一个低于 0.7 的值让路径继续（prod 闸自身另有用例）。
+    _d.setdefault("checks", {})["production"] = {"max_correlation": 0.55, "status": "ok"}
     monkeypatch.setattr(sa, "_run_async", lambda x, *a, **k: _d)
     # 避免走到提交后的 poll 轮询（180s）卡住单测
     monkeypatch.setattr(sa, "_poll_status", lambda *a, **k: "ACTIVE")

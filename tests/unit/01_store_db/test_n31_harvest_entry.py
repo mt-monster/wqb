@@ -70,7 +70,7 @@ def db_mcp(db_path, tmp_path, monkeypatch):
     monkeypatch.setenv("WQB_CAMPAIGN_DIR", str(cdir))
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", db_path)
+    mod.set_db_path(db_path)
     return mod
 
 

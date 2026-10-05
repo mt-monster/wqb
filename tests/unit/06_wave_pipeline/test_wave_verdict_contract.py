@@ -194,6 +194,55 @@ def test_toolkit_copies_in_sync(rel):
         assert got == ref, f"{rel} 两份副本漂移：\n  {base / rel}\n  {other / rel}"
 
 
+# ---------------- 3b. 写入方转发的参数，契约必须接得住 ----------------
+
+def test_mcp_wrapper_params_are_accepted_by_contract(tmp_path):
+    """`wqb_db_mcp.upsert_wave_result` 声明的每个参数，契约都得吃下（不许报未知列）。
+
+    战例（2026-10-06 实测）：包装层自 2026-10-02 起无条件转发 `n_pass` / `n_near`，
+    而契约把它们当未知列拒绝 ⇒ **这个写库工具每一次调用都 TypeError**，在 HEAD 上
+    全程哑巴。它藏了 9 天不被发现的原因很值得记：同文件的守护用例先因
+    `DB_PATH` 属性式 patch 被硬闸拦下而 ERROR，**报错盖住了真 bug**——所以修完
+    fixture 必须回头看那些“从 ERROR 变 FAILED”的用例，别当噪声。
+
+    表与契约都只有 9 个可写列（`wave_results` 实测 16 列，无 n_pass/n_near）：
+    计数是“证据”，不是列。本用例不绑实现细节（不猜哪些是证据参数），
+    只钉住一条：按写入方签名原样传进来不得抛 TypeError。
+    """
+    import inspect
+    import sqlite3
+
+    from wqb import wave_results_contract as contract
+    from wqb.store import CampaignStore
+    import wqb_db_mcp
+
+    tool = getattr(wqb_db_mcp.upsert_wave_result, "fn", wqb_db_mcp.upsert_wave_result)
+    params = [p.name for p in inspect.signature(tool).parameters.values()
+              if p.kind in (p.POSITIONAL_OR_KEYWORD, p.KEYWORD_ONLY)]
+    assert "n_pass" in params and "n_near" in params, \
+        "写入方签名变了——本用例的意义就在于盯住它与契约的一致性"
+
+    db = tmp_path / "contract.db"
+    CampaignStore(str(db)).close()                      # 建表
+    conn = sqlite3.connect(str(db))
+    try:
+        forwarded = {name: None for name in params if name not in ("region", "wave_number")}
+        forwarded["verdict"] = "PASS"                   # 给个合法结论，让它真能落库
+        try:
+            res = contract.upsert_wave_result(conn, "KOR", "999", "2026-10-06T00:00:00",
+                                              **forwarded)
+        except TypeError as e:
+            pytest.fail(f"契约不接受写入方转发的参数：{e}")
+        conn.commit()
+        row = conn.execute("SELECT verdict, status FROM wave_results"
+                           " WHERE region='KOR' AND wave_number='999'").fetchone()
+    finally:
+        conn.close()
+    assert "不认识的列" not in json.dumps(res, ensure_ascii=False), res
+    assert res.get("action") == "inserted", res          # 参数全被吃下且真的写了库
+    assert row == ("PASS", "closed"), row                # 计数没被当成列弄坏行
+
+
 # ---------------- 4. 历史行归一迁移 ----------------
 
 @pytest.mark.parametrize("verdict,expect", [

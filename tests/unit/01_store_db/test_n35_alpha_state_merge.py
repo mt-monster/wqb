@@ -214,7 +214,7 @@ def test_mcp_reharvest_of_a_submitted_alpha_keeps_it_submitted(tmp_path, monkeyp
     monkeypatch.setenv("WQB_CAMPAIGN_DIR", str(cdir))
     sys.modules.pop("wqb_db_mcp", None)
     mod = importlib.import_module("wqb_db_mcp")
-    monkeypatch.setattr(mod, "DB_PATH", path)
+    mod.set_db_path(path)
     raw = json.loads(FIXTURE.read_text(encoding="utf-8"))
     raw.update(id="S1", status="ACTIVE", regular={"code": "rank(ts_delta(x, 5))"})
     st = CampaignStore(str(path))
