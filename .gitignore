@@ -24,13 +24,21 @@ src/wqb.egg-info/
 .reasonix/
 .workbuddy/
 .trae-html-share-packages/
-.claude/          # Agent 项目级加载位（skills 副本），**非源** —— 源是 Claude/skills/
-                 # 实测 2026-10-04 与源逐文件一致（441/441），由 Cursor 等宿主读取。
-                 # tools/sync_skills.py 只管用户级 ~\.claude/skills，不覆盖此处；
-                 # 故本目录**不受版本控制也不自动同步**，改动源后需手动同步或重建。
+# Agent 项目级加载位（skills 副本），**非源** —— 源是 Claude/skills/。
+# 实测 2026-10-04 与源逐文件一致（441/441），由 Cursor 等宿主读取。
+# tools/sync_skills.py 只管用户级 ~\.claude/skills，不覆盖此处；
+# 故本目录**不受版本控制也不自动同步**，改动源后需手动同步或重建。
+# ⚠ 原先把说明写成行内 `# …`：gitignore 不支持行内注释，模式串被当成含空格的
+#   字面量 ⇒ 2026-10-06 实测 `.claude/` 仍以 `??` 出现在 git status（快照时被迫用
+#   `:(exclude).claude` 绕过）。注释一律独立成行。
+.claude/
 .cursor/
 .trae/
 .zcode/
+
+# brain-calculate-alpha-selfcorr-quick 的 Excel 汇总输出位（工具直写、每次跑都变，
+# 属运行期产物；2026-10-06 实测在 git status 里以 ?? 出现，补此条降噪）
+selfcorr_quick_out/
 
 # ===== OS =====
 .DS_Store

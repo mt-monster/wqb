@@ -18,29 +18,60 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-# 数据库路径（与 wqb.db 同库）
-DB_PATH = Path(__file__).resolve().parent.parent.parent.parent.parent.parent / "data" / "wqb.db"
+
+def _find_repo_root() -> Optional[Path]:
+    """上溯找含 `src/wqb` 的祖先当仓库根（同目录 pipeline_kb._store / pipeline_paths 同口径，
+    不硬编码盘符，也不假设 skill 一定装在仓库里）。找不到返回 None。"""
+    here = Path(__file__).resolve()
+    for anc in [here.parent, *here.parents]:
+        if (anc / "src" / "wqb").is_dir():
+            return anc
+    return None
+
+
+def _default_db_path() -> Optional[Path]:
+    """`WQB_DB_PATH` 覆盖 > 仓库根 `data/wqb.db`；脱离仓库返回 None（由 _conn 明确报错）。"""
+    env = os.environ.get("WQB_DB_PATH")
+    if env:
+        return Path(env)
+    root = _find_repo_root()
+    return (root / "data" / "wqb.db") if root else None
+
+
+#: 数据库路径（与 wqb.db 同库）。旧写法固定上溯 6 层，在 skill 安装位
+#: （`~/.claude/skills/…`）会算出 `<用户主目录>/data/wqb.db` 并被 sqlite3 静默建成空库，
+#: 故改为按仓库根判定；测试可 monkeypatch 本常量。
+DB_PATH: Optional[Path] = _default_db_path()
 
 
 def _conn() -> sqlite3.Connection:
-    """获取数据库连接（row_factory=Row，WAL 模式）。
-    
-    注意：本函数使用裸 sqlite3.connect 是因为 prompt_kb 是 GEM 引擎内部模块，
-    需要独立于 wqb.db_conn 工厂（避免循环依赖）。已加入 DIRECT_CONNECT_WHITELIST
-    白名单（src/wqb/db_conn.py），符合 test_db_write_guards 守护要求。
+    """取数据库连接 —— 一律走规范工厂 `wqb.db_conn.connect`（WAL + busy_timeout=60s +
+    synchronous=NORMAL 的全库单口径），本文件不留裸 `sqlite3.connect`。
+
+    原先手写四行 PRAGMA + timeout=30 既与 `src/wqb/db_conn.py` 口径漂移，也踩
+    `test_db_write_guards` 的白名单外禁令（该守卫正是防 database is locked：全库曾有
+    busy_timeout 5s/10s/30s 不一）；注释里说的「避免循环依赖」并不成立 —— 同目录
+    pipeline_kb.py 与 run_pipeline.py 都直接 `from wqb.… import`。
     """
-    conn = sqlite3.connect(str(DB_PATH), timeout=30.0)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys=ON")
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA synchronous=NORMAL")
-    conn.execute("PRAGMA busy_timeout=30000")  # 白名单要求：busy_timeout PRAGMA
-    return conn
+    root = _find_repo_root()
+    src = str(root / "src") if root else None
+    if src and src not in sys.path:
+        sys.path.insert(0, src)
+    try:
+        from wqb.db_conn import connect
+    except ImportError as e:                      # 脱离仓库运行：明确报错，不再猜路径建空库
+        raise ImportError(
+            "wqb.db_conn 不可用：prompt_kb 需在 wqb 工作区内运行"
+            "（或把 <repo>/src 加入 sys.path / 设 WQB_WORKSPACE）"
+        ) from e
+    return connect(str(DB_PATH) if DB_PATH else None, row_factory=sqlite3.Row)
 
 
 def _now() -> str:

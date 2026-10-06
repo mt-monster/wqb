@@ -1503,6 +1503,26 @@
    ],
    "missing": "无记录 → 判定不变，仅在 next_step 提示「稳健性结论未落台账」（fail-open：旧候选与非 RA 链候选不被一刀切挡死）；REJECT 记录一律拦（fail-closed）",
    "refresh": "每次 robustness 审计覆盖（同一 alpha 重审后以最新为准）"
+  },
+  {
+   "key": "profile_drift",
+   "status": "active",
+   "purpose": "registry 回写 win / dead_end 后的 profile 漂移体检报告（profile 的 datasets.green/red 精确层 ↔ DB 实证）：{needs_refresh, summary, hint, trigger{layer, entry_id}, checked_at, …}，region 级一键覆盖",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "wqb_db_mcp.py",
+     "via": "_profile_drift_hook → _upsert_ledger_raw(region, \"profile_drift\", report)，挂在 upsert_registry_empirical 写成功之后（fail-open：体检异常只回 error，绝不阻断回写）"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/profile_drift_check.py",
+     "via": "人工体检 `--region X --write-ledger`（SQL INSERT OR REPLACE INTO ledger_kv）"
+    }
+   ],
+   "readers": [],
+   "missing": "无记录 = 该区还没做过 win/dead_end 回写，或钩子异常被 fail-open 吞掉；读取方按「无历史报告」处理，不影响回写与选集（profile 本身仍走文档 + `-m wqb.profiles render --apply`）",
+   "refresh": "每次 registry 回写 win/dead_end 后自动覆盖同 region 值；要全量重算跑 `python tools/profile_drift_check.py --region <R> [--write-ledger]`。改 profile 结论永远需人工复核，本键只报告不写回 profile"
   }
  ]
 }
