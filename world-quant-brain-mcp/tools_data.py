@@ -351,28 +351,24 @@ async def _verify_fields_exist(
             "lookup_errors": lookup_errors,
         }
 
-    # --- Redis cache: check which fields are already verified ---
+    # --- 字段存在性缓存（2026-10-06：Redis → SQLite api_cache）---
     cache_prefix = f"field_exists:{instrument_type}:{region}:{universe}:{delay}"
     uncached: List[str] = []
-    redis_cli = getattr(client, 'redis_client', None)
-    if redis_cli:
-        for fid in ordered:
-            try:
-                cached_val = redis_cli.get(f"{cache_prefix}:{fid}")
-                if cached_val is not None:
-                    val = cached_val.decode() if isinstance(cached_val, bytes) else str(cached_val)
-                    if val == "1":
-                        known.append(fid)
-                    elif val == "0":
-                        unknown.append(fid)
-                    else:
-                        uncached.append(fid)
-                else:
-                    uncached.append(fid)
-            except Exception:
+    for fid in ordered:
+        try:
+            cached_val = client._get_cached_data(f"{cache_prefix}:{fid}")
+        except Exception:
+            cached_val = None
+        if isinstance(cached_val, dict):
+            flag = cached_val.get("exists")
+            if flag is True:
+                known.append(fid)
+            elif flag is False:
+                unknown.append(fid)
+            else:
                 uncached.append(fid)
-    else:
-        uncached = list(ordered)
+        else:
+            uncached.append(fid)
 
     if not uncached:
         return {
@@ -403,19 +399,19 @@ async def _verify_fields_exist(
                     return (field_id, "error", "incomplete lookup payload")
                 if field_id in _ids_from_datafields_payload(payload):
                     # Cache the positive result
-                    if redis_cli:
-                        try:
-                            redis_cli.setex(f"{cache_prefix}:{field_id}", cache_ttl, "1")
-                        except Exception:
-                            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
+                    try:
+                        client._set_cached_data(f"{cache_prefix}:{field_id}",
+                                                {"exists": True}, ttl=cache_ttl)
+                    except Exception:
+                        logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
                     return (field_id, "known", None)
                 else:
                     # Cache the negative result
-                    if redis_cli:
-                        try:
-                            redis_cli.setex(f"{cache_prefix}:{field_id}", cache_ttl, "0")
-                        except Exception:
-                            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
+                    try:
+                        client._set_cached_data(f"{cache_prefix}:{field_id}",
+                                                {"exists": False}, ttl=cache_ttl)
+                    except Exception:
+                        logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
                     return (field_id, "unknown", None)
             except Exception as exc:
                 return (field_id, "error", str(exc))

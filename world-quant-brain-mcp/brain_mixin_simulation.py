@@ -339,32 +339,24 @@ class SimulationMixin:
         targeted_search = bool(search and str(search).strip())
         search_term = str(search).strip() if targeted_search else None
         
-        # Redis-based distributed lock for concurrency control (limit to 1)
-        lock_key = "lock:get_datafields"
+        # 并发控制：非定向（全量 dump）请求限 1 个在飞，避免打爆平台字段接口。
+        # 2026-10-06：原为 Redis 分布式锁，Redis 移除后改用本地 asyncio 锁——
+        # 本机 MCP 服务是单进程，语义等价（原先 Redis 不可用时也是"无锁直行"）。
         lock_acquired = False
-        lock_timeout = 300  # Lock expires after 5 minutes to prevent deadlock
         max_wait_time = 600  # Maximum wait time for acquiring lock (10 minutes)
-        wait_interval = 2  # Check every 2 seconds
-        
-        if self.redis_client and not targeted_search:
-            start_wait = time.time()
-            while time.time() - start_wait < max_wait_time:
-                try:
-                    # Try to acquire lock with NX (only set if not exists) and EX (expiration)
-                    lock_acquired = self.redis_client.set(lock_key, "locked", ex=lock_timeout, nx=True)
-                    if lock_acquired:
-                        self.log(f"Acquired Redis lock for get_datafields", "INFO")
-                        break
-                    else:
-                        # Lock is held by another process, wait and retry
-                        ttl = self.redis_client.ttl(lock_key)
-                        self.log(f"Waiting for get_datafields lock (TTL: {ttl}s)...", "INFO")
-                        await asyncio.sleep(wait_interval)
-                except Exception as e:
-                    self.log(f"Redis lock acquisition failed: {str(e)}, proceeding without lock", "WARNING")
-                    break
-            
-            if not lock_acquired and self.redis_client:
+
+        if not targeted_search:
+            # 惰性取锁：空壳实例（单测用 BrainApiClient.__new__）不走 __init__，
+            # 直接取属性会 AttributeError（与 _cache_backend 同处理）。
+            lock = getattr(self, "_datafields_local_lock", None)
+            if lock is None:
+                lock = asyncio.Lock()
+                self._datafields_local_lock = lock
+            try:
+                await asyncio.wait_for(lock.acquire(), timeout=max_wait_time)
+                lock_acquired = True
+                self.log("Acquired local lock for get_datafields", "INFO")
+            except asyncio.TimeoutError:
                 self.log(f"Could not acquire get_datafields lock after {max_wait_time}s, proceeding anyway", "WARNING")
         
         try:
@@ -591,13 +583,13 @@ class SimulationMixin:
             self.log(f"Failed to get datafields: {str(e)}", "ERROR")
             raise
         finally:
-            # Release Redis lock if acquired
-            if lock_acquired and self.redis_client:
+            # Release local lock if acquired
+            if lock_acquired:
                 try:
-                    self.redis_client.delete(lock_key)
-                    self.log(f"Released Redis lock for get_datafields", "INFO")
+                    lock.release()
+                    self.log("Released local lock for get_datafields", "INFO")
                 except Exception as e:
-                    self.log(f"Failed to release Redis lock: {str(e)}", "WARNING")
+                    self.log(f"Failed to release datafields lock: {str(e)}", "WARNING")
 
     async def get_alpha_pnl(self, alpha_id: str) -> Dict[str, Any]:
         """Get PnL data for an alpha with retry logic."""

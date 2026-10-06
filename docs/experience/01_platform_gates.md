@@ -78,6 +78,7 @@
 | **prod** | 直轮询 `GET /alphas/{id}/correlations/prod`（15s 长窗口，恒 200，**空体 = 平台在算**），`max` 即判定值；耗时 45s ~ 12min |
 | **self（本地）** | 累计 PnL **必须 diff 成日收益**再 Pearson，窗口 **4×252**（误差 < 0.001） |
 | 列表 self-corr | 在 `records[i][5]` |
+| **缓存（2026-10-06 改）** | 已决 prod 落 SQLite 权威表 `data/wqb.db::alpha_corr_cache`，**保鲜期 48h**，过期自动回源；**不再依赖 Redis**（旧版 Redis 未启动 ⇒ 缓存静默失效，且 TTL 7 天与 48h 纪律冲突）。命中响应带 `from_cache: true` |
 
 **prod 端点机制**：只返回"已算好"的值，**请求不触发计算**；单账号单并发 + 异步排队 → **高频 refresh 是反效果，等的收益为零**。
 → prod 取数走只读 `GET correlations/prod`（`check_correlation`）；被拒的 POST 也会回带真实 prod 值，但**不能为此去 POST**（通过即真提交）。

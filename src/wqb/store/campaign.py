@@ -19,7 +19,9 @@ CampaignStore inherits all mixins; public API is unchanged.
       ├── BacktestMixin        (_backtest.py)       upsert_backtest_rows, record_submission
       ├── DiversityMixin       (_diversity.py)      diversity, ranking, checkpoint, rules, ideas
       ├── AlphasMixin          (_alphas.py)         get/list/search alphas
-      └── SubmissionsMixin     (_submissions.py)    upsert/get/list_submissions, quota_status
+      ├── SubmissionsMixin     (_submissions.py)    upsert/get/list_submissions, quota_status
+      ├── CorrCacheMixin       (_corr_cache.py)     prod/self 权威读写（2026-10-06 才真正挂上）
+      └── ApiCacheMixin        (_api_cache.py)      通用 KV 缓存，替代 Redis（2026-10-06）
 
 Shared utilities (ExprItem, default_db_path, _now, _dumps, _loads, _as_expr)
 live in _common.py and are re-exported here for backward compatibility.
@@ -63,6 +65,12 @@ from ._backtest import BacktestMixin
 from ._diversity import DiversityMixin
 from ._alphas import AlphasMixin
 from ._submissions import SubmissionsMixin
+# 2026-10-06 补：`_corr_cache.py` 自 2026-10-04 建模块起**从未被挂载**（设计文档
+# §6.2 第 3 条声称已挂）。后果：`CampaignStore` 没有 `get_corr_cache` / `set_corr_cache`
+# 方法，任何"写权威表"的调用方（含 check_correlation）都只能 AttributeError 或干脆
+# 不写。此处补挂载，prod 单源化才真正成立。
+from ._corr_cache import CorrCacheMixin
+from ._api_cache import ApiCacheMixin
 
 
 class CampaignStore(
@@ -76,6 +84,8 @@ class CampaignStore(
     DiversityMixin,
     AlphasMixin,
     SubmissionsMixin,
+    CorrCacheMixin,
+    ApiCacheMixin,
 ):
     """SQLite campaign artifact store.
 

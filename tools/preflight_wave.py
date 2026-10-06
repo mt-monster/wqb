@@ -198,6 +198,64 @@ def run_preflight(campaign_dir, dataset, repair=False, ttl_days=DEFAULT_TTL_DAYS
         add("catalog_db", "FAIL", "DB 字段 catalog 缺失（续战/历史数据集需补录）",
             preflight_repair)
 
+    # ---- 3.5) catalog 覆盖体检（2026-10-06 新增，每波固定动作）----
+    # 为什么必须前置：本地 catalog 残缺是**静默错误** —— 看不到的字段不会出现在任何
+    # 「剩余未测」统计里，也没有任何下游会报错。GBR 实测曾 131 个数据集本地 0 行
+    # （缺 13,158 字段），直接导致两个池（model26 / model25）完全隐形。
+    #
+    # 两级检查（口径见 `wqb_tools.py catalog-coverage`）：
+    #   ① 数据集级：**本波数据集在本区本地 0 字段** ⇒ FAIL（字段清单无本地依据，全靠猜）
+    #   ② 区级：**可行动盲区数**（真盲区 − 平台已确认本区为空）⇒ WARN
+    #      ⚠ 刻意**不用** `本地行数 < datasets.field_count`：该列**非区级口径**，
+    #        实测 38 个报警里 10 个是假阳性（analyst_consensus 表面缺 1472、平台只 100–200）。
+    try:
+        import sqlite3 as _sq
+        _db = os.path.join(_wqb_root(), "data", "wqb.db")
+        conn = _sq.connect(_db)
+        conn.row_factory = _sq.Row
+        _rid_row = conn.execute("SELECT id FROM regions WHERE name=?", (region,)).fetchone()
+        if _rid_row is None:
+            add("catalog_coverage", "WARN", f"区域 {region} 不在 regions 表，跳过覆盖体检")
+        else:
+            _rid = _rid_row["id"]
+            _n_ds = conn.execute("SELECT COUNT(*) c FROM datasets WHERE region_id=?",
+                                 (_rid,)).fetchone()["c"]
+            _blind = set(r["name"] for r in conn.execute(
+                "SELECT d.name FROM datasets d WHERE d.region_id=? AND "
+                "(SELECT COUNT(*) FROM fields f WHERE f.dataset_id=d.id)=0", (_rid,)))
+            # 减去「平台已确认本区为空」的（由 catalog-fill 打标），避免同一个门反复误报
+            _empty = {}
+            _emp_path = os.path.join(_wqb_root(), "cache", "catalog",
+                                     "_platform_empty_verified.json")
+            try:
+                _empty = (json.load(open(_emp_path, encoding="utf-8")) or {}).get(region.upper(), {})
+            except Exception:
+                _empty = {}
+            _act = sorted(_blind - set(_empty))
+            _n_ds_fields = conn.execute(
+                "SELECT COUNT(*) c FROM fields f JOIN datasets d ON d.id=f.dataset_id "
+                "WHERE d.region_id=? AND lower(d.name)=?", (_rid, str(dataset).lower())
+            ).fetchone()["c"]
+            if _n_ds_fields == 0:
+                add("catalog_dataset", "FAIL",
+                    f"{dataset}@{region} 本地 0 字段（本波字段清单无本地依据）",
+                    f"python C:\\Users\\MENGTAO\\wqb-scripts\\wqb_tools.py catalog-fill "
+                    f"--region {region} --datasets {dataset}")
+            else:
+                add("catalog_dataset", "PASS", f"{dataset}@{region} 本地 {_n_ds_fields} 字段")
+            if _act:
+                add("catalog_coverage", "WARN",
+                    f"{region} 可行动盲区 {len(_act)}/{_n_ds} 个数据集本地 0 字段；"
+                    f"首 5: {', '.join(_act[:5])}",
+                    f"python C:\\Users\\MENGTAO\\wqb-scripts\\wqb_tools.py "
+                    f"catalog-fill --region {region}")
+            else:
+                add("catalog_coverage", "PASS",
+                    f"{region} {_n_ds} 个数据集全部有本地字段（真盲区 {len(_blind)} 个均已确认本区为空）")
+        conn.close()
+    except Exception as e:
+        add("catalog_coverage", "WARN", f"覆盖体检异常跳过（不阻断）: {e}")
+
     # ---- 4) 修复：缺失侧回灌 ----
     if repair:
         if (not fpath or file_cat is None) and isinstance(db_cat, dict) and db_cat.get("fields"):

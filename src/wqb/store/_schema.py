@@ -253,6 +253,33 @@ class SchemaMixin:
                 UNIQUE(region_id),
                 FOREIGN KEY (region_id) REFERENCES regions(id)
             );
+            -- 2026-10-06 补：此前本表**只有手工建库的 DDL**，`_schema.py` 里根本没有
+            -- CREATE TABLE（设计文档 §6.2 第 1 条声称有）。后果：新建库/新环境不会有
+            -- 这张表，CorrCacheMixin 的读写全线 OperationalError，而调用方只看到
+            -- "缓存没命中"。这里按现网 DDL 原样补齐（IF NOT EXISTS 不动存量）。
+            CREATE TABLE IF NOT EXISTS alpha_corr_cache (
+                alpha_id TEXT PRIMARY KEY,
+                prod_correlation REAL,
+                self_correlation REAL,
+                prod_records TEXT,
+                source TEXT,
+                checked_at TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS idx_alpha_corr_cache_checked
+                ON alpha_corr_cache(checked_at);
+            -- 2026-10-06 新：平台查询结果的通用 KV 缓存，替代 Redis（见 _api_cache.py）。
+            -- expires_at 为 unix epoch 秒；NULL = 不过期。
+            CREATE TABLE IF NOT EXISTS api_cache (
+                cache_key TEXT PRIMARY KEY,
+                payload TEXT NOT NULL,
+                expires_at REAL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS idx_api_cache_expires
+                ON api_cache(expires_at);
             """
         )
         for col, ddl in (

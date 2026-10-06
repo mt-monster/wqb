@@ -57,7 +57,10 @@ async def health_check(context: Context):
         "status": "healthy",
         "service": "brain-platform-mcp",
         "timestamp": datetime.now(timezone.utc).isoformat(),
-        "redis_connected": brain_client.redis_client is not None
+        # 2026-10-06：Redis 已移除，缓存后端统一为 SQLite（data/wqb.db）。
+        # 保留字段名以免破坏既有调用方，但值恒为 False。
+        "redis_connected": False,
+        "cache_backend": "sqlite"
     })
 
 # ============================================================================

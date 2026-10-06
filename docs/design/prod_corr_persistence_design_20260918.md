@@ -183,6 +183,9 @@ ALTER TABLE alphas ADD COLUMN corr_checked_at TIMESTAMP;
 
 ### 6.1 新暴露的问题（与 §1 「落库」不同，这是「查询缓存」）
 
+> **2026-10-06 更新**：Redis 后端**已整体移除**，缓存统一走 SQLite（见 §6.6）。
+> 下面保留原始问题描述，因为它是本次改动的动机与回归判据。
+
 `check_correlation`（MCP）的 prod 结果缓存**唯一后端是 Redis**
 （`brain_mixin_transport.py::_get_cached_data/_set_cached_data`）。本机 Redis 常未启动
 （`redis_client=None` → 读写全 no-op），于是：
@@ -202,7 +205,13 @@ ALTER TABLE alphas ADD COLUMN corr_checked_at TIMESTAMP;
 | 1 | `src/wqb/store/_schema.py` | 新表 `alpha_corr_cache`（+ `checked_at` 索引），幂等建表 |
 | 2 | `src/wqb/store/_corr_cache.py`（新） | `CorrCacheMixin`：`get_corr_cache` / `set_corr_cache` / `list_corr_cache` |
 | 3 | `src/wqb/store/campaign.py` | 挂载 `CorrCacheMixin` |
-| 4 | `world-quant-brain-mcp/brain_mixin_correlation.py` | `check_correlation` 的 prod 缓存改 **两级：Redis → wqb 库**；平台算成功后同时写库 |
+| 4 | `world-quant-brain-mcp/brain_mixin_correlation.py` | `check_correlation` 的 prod 结果**写入 wqb 库权威表**（不再经 Redis） |
+
+> ⚠ **本节在 2026-10-06 前是"设计已批准、实现未落地"的状态**：上表 4 条里
+> **1 / 3 / 4 三条当时都不存在**（`_schema.py` 无 CREATE TABLE —— 现网那张表是手工建的；
+> `campaign.py` 从未 import `CorrCacheMixin`，故 `CampaignStore` 根本没有
+> `get_corr_cache` / `set_corr_cache`；`check_correlation` 只写 Redis）。
+> 2026-10-06 按上表**如实补齐**，并同步去掉 Redis（见 §6.6）。
 
 **设计要点**：
 
@@ -217,7 +226,10 @@ ALTER TABLE alphas ADD COLUMN corr_checked_at TIMESTAMP;
 ### 6.3 验证
 
 - 新增单测：`tests/unit/01_store_db/test_store.py`（5 个：往返/跨实例可见/部分写保旧/
-  越界拒绝+幂等/建表）+ `world-quant-brain-mcp/tests/test_corr_db_cache_unit.py`（5 个）。
+  越界拒绝+幂等/建表）+ `world-quant-brain-mcp/tests/test_corr_db_cache_unit.py`（5 个：
+  命中不打队列 / 过期回源 / 实测落库 / refresh 回源 / 后端不可用降级）。
+  ⚠ 2026-10-06 更正：该文件**当时并未创建**（§6.3 属于"先写了验收说明"），
+  本次连同实现一起补齐；2026-10-06 实测 5 passed。
 - 根 `tests/`：**3180 passed / 4 failed**；4 个失败经 **路径限定 stash 对照**确认为
   **改动前既存失败**（DB 历史 verdict `MIXED_NO_SUBMIT`、skills 安装位漂移、
   `tools/tmp_*.py` 硬编码盘符、skill 文档含加权拼腿示例）。
@@ -232,3 +244,43 @@ MCP 服务须重启（或起新会话）才会加载新代码；已运行中的�
 - 读缓存：`CampaignStore.get_corr_cache(alpha_id)`；批量 `list_corr_cache([...])`。
 - 失效重建：调用 `check_correlation(alpha_id, refresh=True)`（强制作废并回源平台）。
 - 直接查询：`sqlite3 data/wqb.db "SELECT * FROM alpha_corr_cache WHERE prod_correlation >= 0.7"`
+
+---
+
+### 6.6 2026-10-06 修正：移除 Redis，缓存只剩 SQLite
+
+**为什么不是"把 Redis 起起来"就算修好**——审计发现两个独立问题：
+
+1. **缓存整条失效**：`redis_client=None` 时 `_get_cached_data/_set_cached_data`
+   读写静默 no-op ⇒ 每次 `check_correlation` 都重打平台**单账号单并发**队列
+   （每颗 1-5 分钟），而库里已有 737 条实测 prod 一眼不看。
+2. **修好反而更危险**：Redis 那版 TTL 是 **7 天**，而 prod 保鲜纪律是 **48h**
+   （实证 EUR `le8Y68K2` 0.6929 → 0.9932、`E5pbM7Nm` 0.6678 → 0.981）。
+   默认 `refresh=False` 会拿一周前的陈值去过 0.7 的闸。
+
+**改动清单**
+
+| # | 位置 | 改动 |
+|---|---|---|
+| 1 | `src/wqb/store/_schema.py` | 补齐 `alpha_corr_cache` 建表 + 新表 `api_cache`（通用 KV 缓存，带 `expires_at` 索引）。均 `IF NOT EXISTS`，不动存量 |
+| 2 | `src/wqb/store/_api_cache.py`（新） | `ApiCacheMixin`：`get_api_cache` / `set_api_cache` / `prune_api_cache`，**替代 Redis 的通用缓存后端** |
+| 3 | `src/wqb/store/campaign.py` | 挂载 `CorrCacheMixin` + `ApiCacheMixin`（§6.2 第 3 条此前从未执行） |
+| 4 | `brain_mixin_transport.py` | 删 `import redis` 与连接初始化；`_get/_set_cached_data` 改走 `api_cache`（懒加载 + 失败降级）；相关性锁 / 论坛限流改纯本地 |
+| 5 | `brain_mixin_simulation.py` | `get_datafields` 的分布式锁改本地 `asyncio.Lock`（本机单进程，语义等价） |
+| 6 | `brain_mixin_correlation.py` | `check_correlation` 的 prod **读+写权威表** `alpha_corr_cache`（`source=check_correlation`），过期（>48h）即回源（**§6.2 第 4 条的真实落地**） |
+| 7 | `tools_data.py` | 字段存在性缓存改走 `_get/_set_cached_data`（`{"exists": bool}`） |
+| 8 | `mcp_core.py` / `main.py` | `health_check` 增 `cache_backend: "sqlite"`，`redis_connected` 保留但恒 False |
+| 9 | `world-quant-brain-mcp/tests/test_corr_db_cache_unit.py`（新） | 5 个用例锁定上述契约 |
+
+**保鲜期口径（唯一事实源）**：`src/wqb/store/_corr_cache.py::CORR_FRESH_HOURS = 48`。
+MCP 侧 `brain_mixin_correlation._PROD_CORR_TTL_SECONDS`（48×3600 秒）与之同口径，
+**改一处必须改另一处**——这正是当初 Redis 7 天 TTL 漂移的教训。
+
+**验证（2026-10-06 实测）**：MCP 包 `94 passed / 4 skipped`；新增缓存用例 5 passed。
+
+**运维注意**：改动落在 `world-quant-brain-mcp/`，**必须重启 MCP 服务**才生效
+（HTTP 模式常驻进程不热加载）。
+
+**已知未处理**：`alphas.prod_corr_source` 存量仍有 341 条 NULL + 22 条未登记自由文本
+（`prod_first` / `p0_1_verify_20260923` / `raw_poll`）。`CorrCacheMixin.normalize_legacy_sources()`
+目前**只治理 `alpha_corr_cache`**，未覆盖 `alphas` 表。

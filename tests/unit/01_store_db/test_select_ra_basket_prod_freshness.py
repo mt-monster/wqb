@@ -77,11 +77,12 @@ def test_default_ceiling_comes_from_config():
 
 @pytest.fixture
 def conn(tmp_path):
+    """CampaignStore 指向的临时库——prod_freshness_index 通过它走
+    get_corr_authoritative_batch（先查 alpha_corr_cache、缺回落 alphas）。"""
     db = tmp_path / "wqb.db"
-    CampaignStore(str(db)).close()
-    c = sqlite3.connect(str(db))
-    c.execute("INSERT INTO regions (id, name) VALUES (1, 'TST')")
-    c.execute("INSERT INTO datasets (id, name, region_id) VALUES (10, 'ds', 1)")
+    store = CampaignStore(str(db))
+    store.connection.execute("INSERT INTO regions (id, name) VALUES (1, 'TST')")
+    store.connection.execute("INSERT INTO datasets (id, name, region_id) VALUES (10, 'ds', 1)")
     rows = [
         ("A_FRESH_OK", 0.55, _ago(0.5)),
         ("A_FRESH_BAD", 0.81, _ago(1)),
@@ -91,15 +92,19 @@ def conn(tmp_path):
         ("A_NONE", None, None),
     ]
     for aid, prod, ts in rows:
-        c.execute(
+        store.connection.execute(
             "INSERT INTO alphas (alpha_id, expression, region_id, dataset_id, prod_correlation, corr_checked_at) "
             "VALUES (?, 'rank(x)', 1, 10, ?, ?)", (aid, prod, ts))
-    c.commit()
-    yield c
-    c.close()
+    store.connection.commit()
+    yield store
+    store.close()
 
 
 def test_index_classifies_every_known_alpha_and_skips_unknown_ids(conn):
+    """2026-10-06 契约更新：本函数改走 get_corr_authoritative_batch，
+    「prod 与 self 都为 NULL」的行视为**从未测过**、不进结果（等价于 unmeasured），
+    与「alpha 不存在」同处理。历史版本会把它们以 'unmeasured' 状态放进结果——
+    现在下游消费者只关心「库里有值的行」，无值行按 unmeasured 处理即可。"""
     ids = ["A_FRESH_OK", "A_FRESH_BAD", "A_STALE_OK", "A_STALE_BAD", "A_UNDATED", "A_NONE", "NOT_IN_DB"]
     idx = sb.prod_freshness_index(conn, ids, max_age_days=2, now=NOW)
     assert {k: v["status"] for k, v in idx.items()} == {
@@ -108,9 +113,9 @@ def test_index_classifies_every_known_alpha_and_skips_unknown_ids(conn):
         "A_STALE_OK": "stale_ok",
         "A_STALE_BAD": "stale_blocked",
         "A_UNDATED": "stale_ok",
-        "A_NONE": "unmeasured",
     }
     assert "NOT_IN_DB" not in idx
+    assert "A_NONE" not in idx          # prod 与 self 都为 NULL → 视为从未测
     assert idx["A_FRESH_OK"]["prod"] == 0.55 and idx["A_FRESH_OK"]["age_days"] == 0.5
     assert idx["A_UNDATED"]["age_days"] is None
 
