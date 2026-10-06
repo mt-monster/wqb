@@ -317,6 +317,10 @@
       "cat": "tooldir",
       "what": "`op_arity` 读的算子目录路径覆盖（缺省按 `docs/reference` → `data/` → `research-data/` 顺序找）"
     },
+    "WQB_PBR_BOOTSTRAPPED": {
+      "cat": "internal",
+      "what": "`tools/prod_blocked_recheck.py` 的防递归重入标记（勿手设）"
+    },
     "WQB_PYENV_REEXEC": {
       "cat": "internal",
       "what": "`tools/_pyenv.py` 的防递归重入标记（勿手设）"
@@ -336,6 +340,10 @@
     "WQB_SLOTS_DIR": {
       "cat": "path",
       "what": "账户级槽位 token 目录（缺省 `logs/_slots`）"
+    },
+    "WQB_SCRIPTS": {
+      "cat": "tooldir",
+      "what": "仓库外自建脚本目录覆盖（缺省 `~/wqb-scripts`）；`tools/preflight_wave.py` 用它拼 `wqb_tools.py` CLI 路径，以免在源码里写死盘符绝对路径（S4 守卫）"
     },
     "WQB_SQ_BOOTSTRAPPED": {
       "cat": "internal",
@@ -427,7 +435,7 @@
     },
     "SA_PROBE_CACHE_TTL_HOURS": {
       "cat": "wait",
-      "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
+      "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
     }
   }
 }

@@ -16,7 +16,7 @@
   ],
   "_retired_paths_doc": "S12 用：这些路径已归档到 attic/（论坛工作台缺 UI 模板、mining/ 工作树已清空等），不得回到活跃目录树。2026-10-04 实测工作台在归档后同一会话内被恢复过（3 个 .py 回来、模板仍不在），所以靠搬文件完不成下架。确要恢复：先从 attic/ 取回**完整**内容，再从本列表删除。",
   "s6_skill_drift": [
-    "validator.py@0d734458f411",
+    "validator.py@049b3e52d912",
     "helpful_functions.py@d1dc77336551",
     "ace_lib.py@6f0b70a9eb8d",
     "diversity_enhancer.py@4988be9cd599"

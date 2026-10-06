@@ -361,7 +361,11 @@ def test_history_expressions_still_honours_exclude_waves(tmp_path):
 # 10. 实测产出率工具（选区最硬先验，此前库里躺着没人查）
 # ---------------------------------------------------------------------------
 
-def test_get_mining_yield_separates_conversion_from_yield():
+def test_get_mining_yield_separates_conversion_from_yield(monkeypatch):
+    # 本测试**就是要读真库**：产出率是「该区历史实际产出/回测了多少」的统计量，
+    # 喂空库只会得到空 rows，下面所有断言静默落空（假绿）。按 wqb_db_mcp 守卫
+    # `_reject_production_db_under_tests` 指定的唯一放行方式显式豁免，理由如上。
+    monkeypatch.setenv("WQB_ALLOW_REAL_DB", "1")
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(

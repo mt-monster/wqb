@@ -27,8 +27,6 @@ docs/
 │   ├── feature_engineering_sop.md           标准化特征工程流程 SOP（六阶段）
 │   ├── feature_engineering_template.md      特征工程文档模板（波级六节式）
 │   └── campaign_kickoff_prompt.md           RA 战役启动提示词模板（区域无关，九步流水线+硬纪律+形状分流）
-├── architecture/                          ← 架构与结构类
-│   └── project_structure_analysis.md        项目目录结构分析（含迁移状态）
 ├── tutorials/                             ← 教程课件类
 │   └── 课件.md                              5个 Skill 实操课件（含实验全过程）
 └── plans/                                 ← 历史计划类
@@ -105,18 +103,9 @@ docs/
 **内容**：一句话启动指令、7 条硬纪律（禁 PV×model 混/禁同信号加权调参/skill 链/Mode B 资格线/产物入 wqb.db 等）、九步流水线（S-PRE→S6 每步 MCP 调用+产物+失败分支）、循环与停止条件、区域 Profile 路由、反模式、Artifact 契约、字段画像与模板族（形状分流）集成点。
 **适用场景**：开新区域/新数据集战役时，把 `$REGION`/`$DATASET` 填入复用；与 `wq-brain-ra-pipeline` 九步 SOP 对齐。
 
-### 三、架构与结构（architecture/）
+### 三、教程课件（tutorials/）
 
-#### 4. 项目目录结构分析 `architecture/project_structure_analysis.md`
-**定位**：项目目录组织分析、问题诊断、目标结构树、迁移执行状态。
-**内容**（9章）：当前目录清点→功能分类→职责边界→问题风险→目标结构树→迁移指引→执行状态。
-**当前状态**：2026-08-09 已完成目录清理（见 §9 更新），原 2_reference/ 已删除归档，wqb-share-03/ 已归档，__pycache__ 已清理。
-
-**适用场景**：理解项目结构、规划目录调整、排查文件归属。
-
-### 四、教程课件（tutorials/）
-
-#### 5. Skill 实操课件 `tutorials/课件.md`
+#### 4. Skill 实操课件 `tutorials/课件.md`
 **定位**：5 个 BRAIN 挖矿 Agent Skill 的完整实操教程。
 **内容**（5章+附录）：
 1. 准备工作（目录结构/数据包三层结构/MCP配置）
@@ -131,9 +120,9 @@ docs/
 
 **适用场景**：学习 Skill 使用方法、理解挖掘实验全流程、参考提示词模板。
 
-### 五、历史计划（plans/）
+### 四、历史计划（plans/）
 
-#### 6. src/wqb/ 重建计划 `plans/2026-08-02-wqb-src-reconstruction.md`
+#### 5. src/wqb/ 重建计划 `plans/2026-08-02-wqb-src-reconstruction.md`
 **定位**：从 5 个 SKILL.md 反向推断并重建 `src/wqb/` Python 包的实施计划。
 **内容**：推理来源（13个SKILL引用映射）→文件结构（6子包15模块）→分步实施任务清单。
 **当前状态**：已执行完成（src/wqb/ 包已落地，含 config/expression/research/search/memory/submit 子包）。
