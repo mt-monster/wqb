@@ -652,7 +652,23 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
             return False
         new_bi = _next_bi
         _next_bi += 1
-        _tok = slots_mod.acquire(label=f"pending-b{new_bi}")
+        # 2026-10-02 死锁修复（自 wip/cline-restore-1005-1929 移植，cap 仍按仓库定案 7）：
+        # 补批跑在主线程，在此阻塞等待会让负责释放槽位的 _poll_single_batch future
+        # 永远得不到推进 —— 本进程自己锁死自己（实测 GLB 第一波 / 第二波两条流水线同时停在
+        # 「[slots] 账户级在飞 7 >= cap 7，等待…」，直到被宿主回收）。
+        _tok = slots_mod.acquire(label=f"pending-b{new_bi}", nonblock=True)
+        # acquire 返回 None 有两种相反的含义：真·在飞已满 vs 不仲裁（cap<=0 / 目录不可用）。
+        # 只有「仲裁开着且在飞已满」才跳过本次补批；不仲裁时照常提交（token=None 对
+        # release / relabel 安全）。2026-10-04 实测：把任何 None 都当「满」，则
+        # WQB_GLOBAL_SLOTS=0 下重发 / 补批永远提交不出去、白等 30 分钟。
+        if _tok is None and slots_mod.is_full():
+            # 未拿到槽位：回滚批次编号，把该批放回队头，等下一轮回收后再补。
+            _next_bi -= 1
+            if origin is not None:
+                _retry_queue.insert(0, (new_batch, origin))
+            else:
+                _pending.insert(0, new_batch)
+            return False
         try:
             new_msid = submit_batch(api, ctx.settings, _resolve_batch_items(ck, new_batch))
             slots_mod.relabel(_tok, new_msid)
