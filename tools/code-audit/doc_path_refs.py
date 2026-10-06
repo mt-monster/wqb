@@ -92,7 +92,12 @@ BASELINE = REPO / "tests" / "fixtures" / "doc_path_refs_baseline.json"
 #: 计划(docs/plans/)不参与判定：它们记录的是"当时的树"，路径过期属正常。
 LIVE_EXACT = {"AGENTS.md", "README.md", "CLAUDE.md", "tools/README.md"}
 LIVE_PREFIX = ("docs/", "Claude/skills/")
-NOT_LIVE_PREFIX = ("docs/plans/",)
+#: ⚠ `docs/governance/snapshot_adjudication.md` 也归为**非活文档**（2026-10-06）：
+#: 它是「对象库有、main 没有」的**清单（inventory）**，列出这些路径本身就是它的职责，
+#: 不是在承诺它们可达。实测把它当活文档扫会新增 542 条 BROKEN（全部来自本清单），
+#: 并把闸顶成永久红 —— 那会退化成「基线里登记 542 条假违规」或逼人绕过钩子。
+#: 它的一致性由 `snapshot_adjudicate.py --check`（台账 ↔ 对象库逐字一致）专门守，不靠死指针闸。
+NOT_LIVE_PREFIX = ("docs/plans/", "docs/governance/snapshot_adjudication.md")
 
 #: 按设计不入库的根：文档引用它们属正常，整体豁免
 BOOT_NOT_TRACKED = (

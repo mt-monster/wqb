@@ -160,6 +160,12 @@ def render(rows: list[dict], stats_note: str = "") -> str:
         "> 要改裁决请改 `tests/fixtures/snapshot_adjudication.json`（人工依据的唯一入口），再重跑生成。",
         "> 上位文档：[`branch_policy.md`](branch_policy.md)（取件纪律与抢救点清单）。",
         "",
+        "> ⚠ **本文件是清单，不是路径承诺**：表里绝大多数路径**按定义就不在工作区**（它们只在对象库"
+        "的某个快照里）。因此 `tools/code-audit/doc_path_refs.py` 把本文件归为**非活文档**，"
+        "不对它做死指针判定（实测当活文档扫会新增 542 条假 BROKEN，把闸顶成永久红）；"
+        "本文件自身的一致性由它自己的生成器守：`snapshot_adjudicate.py --check`，"
+        "并由 `tests/unit/07_docs_skills/test_governance_gates_selfcheck.py` 在 pre-commit 里拦过期台账。",
+        "",
         "## 0. 这份台账解决什么问题",
         "",
         "抢救点（`preserve/*` tag 与 `wip/DANGER-*` 分支）里有一批「对象库有、`main` 没有」的源码与文档。",
