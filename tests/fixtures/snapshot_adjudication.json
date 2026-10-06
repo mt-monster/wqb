@@ -42,6 +42,22 @@
     "tests/unit/01_store_db/test_corr_single_source.py": {
       "verdict": "DROPPED",
       "basis": "它断言的是 `_corr_cache.py` 的**第三版契约**，而该实现无论在 main 还是在快照里都不存在：实测 `git show 05b64a6:src/wqb/store/_corr_cache.py` 的 `normalize_corr_source()` 返回 `{\"source\",\"detail\"}` 且 `_LEGACY_SOURCE_ALIASES` 把 `prod_first` 映射到 `prod_first_screen`；测试却要求 `CORR_FRESH_SECONDS`、`source_detail`、并把 6 个自由文本一律收敛到 `platform_sync`。按 pathspec 取回 = 当场 7 红（`ImportError: CORR_FRESH_SECONDS`），且会把一条未完成的契约伪装成「守卫测试」。顶层符号比对显示 main 的 `_corr_cache.py` 是快照版的超集（多出 `get_corr_authoritative_batch`），故该件属未合入分叉线 —— 由该线所有者整线合并，不做单件回迁。"
+    },
+    "tools/hkg_d1_model_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-06 用户主动退役（同批还有 probe2 / triage_platform_status_sweep_v3 / verify_ready8）。引用面实测：除历史面外全仓命中只剩 `tools/THEMES.json` 与 `tools/audit_structure_baseline.json` 两处登记痕迹（code=0 doc=0 test=0），即**零活动引用**。已 `git rm` 并连带把 `s11_tools_top_level` 159→155、`retired_paths` 17→21（S12 拦复活）、THEMES `probe.files` 与 `counts`/`top_n` 同步收紧。不搬 `attic/`：`.gitignore:87` 整目录忽略 `attic/`，搬过去等于造出「未跟踪源码」新债。取看：`git show b62447f:tools/hkg_d1_model_probe.py`。"
+    },
+    "tools/hkg_d1_model_probe2.py": {
+      "verdict": "DROPPED",
+      "basis": "同上批：零活动引用（只剩 THEMES/基线登记痕迹），2026-10-06 `git rm` 退役并登记 `retired_paths`。probe2 是 probe 的第二版变体，两者职责已被 `tools/probe/` 主题目录下的现役探针覆盖。取看：`git show b62447f:tools/hkg_d1_model_probe2.py`。"
+    },
+    "tools/triage_platform_status_sweep_v3.py": {
+      "verdict": "DROPPED",
+      "basis": "零活动引用（`tools/legacy/README.md` L79 那行是退役记录本身，不是调用）。`tools/legacy/README.md` 当时写的是临时保留理由（「并发会话在飞、避免误删」，mtime 2026-09-24），已于 2026-10-06 追认完成并改写为退役记录。存量分诊/状态横扫的职责已由 `tools/triage_*` 现役脚本与 `prod_blocked_recheck.py` 覆盖。取看：`git show b62447f:tools/triage_platform_status_sweep_v3.py`。"
+    },
+    "tools/verify_ready8.py": {
+      "verdict": "DROPPED",
+      "basis": "零活动引用（只剩 THEMES/基线登记痕迹）。名字里的 ready8 是 2026-09 某批候选的一次性核对手套，不属于任何现役链（提交判定走 `tools/verdict/submit_inventory.py` 与 `wqb.submit_verdict_core`，AGENTS.md §3.5 已写明后者是否决权威）。取看：`git show b62447f:tools/verify_ready8.py`。"
     }
   },
   "_restored_history": {

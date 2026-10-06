@@ -24,8 +24,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**794**
-- `RESTORED` = 0；`DROPPED` = 62；`ARTIFACT` = 216；`PENDING` = 516
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**798**
+- `RESTORED` = 0；`DROPPED` = 66；`ARTIFACT` = 216；`PENDING` = 516
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -37,7 +37,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 
 ## 3. 逐件表
 
-### 3.2 `DROPPED`（62 件）
+### 3.2 `DROPPED`（66 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -98,11 +98,15 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/fix_submit_ready_check_20260928.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/legacy/fix_submit_ready_check_20260928.py`（blob 相等） | rule |
 | `tools/harvest_batch.py` | §5.3：`pipeline.py` 里的 `_harvest_batch_alphas` 是本地函数非该脚本；收批已统一走 `tools/harvest_multisim.py`（多 multisim 批量收）。零活动引用。已登记 retired_paths。 | human |
 | `tools/harvest_by_expr.py` | §5.3：零活动引用；按表达式收批的需求已由 `tools/harvest_multisim.py` 覆盖。已登记 retired_paths。 | human |
+| `tools/hkg_d1_model_probe.py` | 2026-10-06 用户主动退役（同批还有 probe2 / triage_platform_status_sweep_v3 / verify_ready8）。引用面实测：除历史面外全仓命中只剩 `tools/THEMES.json` 与 `tools/audit_structure_baseline.json` 两处登记痕迹（code=0 doc=0 test=0），即**零活动引用**。已 `git rm` 并连带把 `s11_tools_top_level` 159→155、`retired_paths` 17→21（S12 拦复活）、THEMES `probe.files` 与 `counts`/`top_n` 同步收紧。不搬 `attic/`：`.gitignore:87` 整目录忽略 `attic/`，搬过去等于造出「未跟踪源码」新债。取看：`git show b62447f:tools/hkg_d1_model_probe.py`。 | human |
+| `tools/hkg_d1_model_probe2.py` | 同上批：零活动引用（只剩 THEMES/基线登记痕迹），2026-10-06 `git rm` 退役并登记 `retired_paths`。probe2 是 probe 的第二版变体，两者职责已被 `tools/probe/` 主题目录下的现役探针覆盖。取看：`git show b62447f:tools/hkg_d1_model_probe2.py`。 | human |
 | `tools/kor_ledger_write.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tracking/KOR/scripts/kor_ledger_write.py`（blob 相等） | rule |
 | `tools/kor_spre_read.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tracking/KOR/scripts/kor_spre_read.py`（blob 相等） | rule |
 | `tools/parse_simresult.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/backtest/parse_simresult.py`（blob 相等） | rule |
 | `tools/self_batch.py` | §5.3：零活动引用；self 侧走 MCP `check_self_correlation` 与 skill `brain-calculate-alpha-selfcorr-quick`。已登记 retired_paths。 | human |
 | `tools/sync_reference.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/legacy/sync_reference.py`（blob 相等） | rule |
+| `tools/triage_platform_status_sweep_v3.py` | 零活动引用（`tools/legacy/README.md` L79 那行是退役记录本身，不是调用）。`tools/legacy/README.md` 当时写的是临时保留理由（「并发会话在飞、避免误删」，mtime 2026-09-24），已于 2026-10-06 追认完成并改写为退役记录。存量分诊/状态横扫的职责已由 `tools/triage_*` 现役脚本与 `prod_blocked_recheck.py` 覆盖。取看：`git show b62447f:tools/triage_platform_status_sweep_v3.py`。 | human |
+| `tools/verify_ready8.py` | 零活动引用（只剩 THEMES/基线登记痕迹）。名字里的 ready8 是 2026-09 某批候选的一次性核对手套，不属于任何现役链（提交判定走 `tools/verdict/submit_inventory.py` 与 `wqb.submit_verdict_core`，AGENTS.md §3.5 已写明后者是否决权威）。取看：`git show b62447f:tools/verify_ready8.py`。 | human |
 
 ### 3.3 `ARTIFACT`（216 件）
 
