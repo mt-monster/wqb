@@ -42,10 +42,10 @@
     "tests/unit/01_store_db/test_corr_single_source.py": {
       "verdict": "DROPPED",
       "basis": "它断言的是 `_corr_cache.py` 的**第三版契约**，而该实现无论在 main 还是在快照里都不存在：实测 `git show 05b64a6:src/wqb/store/_corr_cache.py` 的 `normalize_corr_source()` 返回 `{\"source\",\"detail\"}` 且 `_LEGACY_SOURCE_ALIASES` 把 `prod_first` 映射到 `prod_first_screen`；测试却要求 `CORR_FRESH_SECONDS`、`source_detail`、并把 6 个自由文本一律收敛到 `platform_sync`。按 pathspec 取回 = 当场 7 红（`ImportError: CORR_FRESH_SECONDS`），且会把一条未完成的契约伪装成「守卫测试」。顶层符号比对显示 main 的 `_corr_cache.py` 是快照版的超集（多出 `get_corr_authoritative_batch`），故该件属未合入分叉线 —— 由该线所有者整线合并，不做单件回迁。"
-    },
-    "tests/unit/09_core/test_paths.py": {
-      "verdict": "RESTORED",
-      "basis": "2026-10-06 治理实施时取回：`git checkout 4910e65 -- tests/unit/09_core/test_paths.py`，7 条全绿。它是 AGENTS.md「仓库根推导一律层数无关 / 禁新增 `parents[1]`」这条单源约定的**唯一机器守卫**（此前 main 侧对 `wqb.paths` 零测试覆盖：`git grep 'wqb.paths|find_repo_root' -- tests/*.py` = 0 命中）。"
     }
+  },
+  "_restored_history": {
+    "_doc": "已取回并入库的件不再属于「main 没有」清单，故从 verdicts 移出，只在这里留痕（否则会被 `stale_overrides` 报成陈旧条目）。取回动作的完整证据另见 commit 997afa5 与 `docs/governance/branch_policy.md` §3。",
+    "tests/unit/09_core/test_paths.py": "2026-10-06 取回（`git checkout 4910e65 -- …`，7 条全绿）。它是 AGENTS.md「仓库根推导一律层数无关 / 禁新增 `parents[1]`」这条单源约定的**唯一机器守卫**；取回前 main 侧对 `wqb.paths` 零测试覆盖（`git grep 'wqb.paths|find_repo_root' -- tests/*.py` = 0 命中）。"
   }
 }

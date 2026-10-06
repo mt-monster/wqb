@@ -22,8 +22,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**795**
-- `RESTORED` = 1；`DROPPED` = 62；`ARTIFACT` = 216；`PENDING` = 516
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**794**
+- `RESTORED` = 0；`DROPPED` = 62；`ARTIFACT` = 216；`PENDING` = 516
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -34,12 +34,6 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 ```
 
 ## 3. 逐件表
-
-### 3.1 `RESTORED`（1 件）
-
-| 路径 | 依据 | 来源 |
-|---|---|---|
-| `tests/unit/09_core/test_paths.py` | 2026-10-06 治理实施时取回：`git checkout 4910e65 -- tests/unit/09_core/test_paths.py`，7 条全绿。它是 AGENTS.md「仓库根推导一律层数无关 / 禁新增 `parents[1]`」这条单源约定的**唯一机器守卫**（此前 main 侧对 `wqb.paths` 零测试覆盖：`git grep 'wqb.paths\|find_repo_root' -- tests/*.py` = 0 命中）。 | human |
 
 ### 3.2 `DROPPED`（62 件）
 
