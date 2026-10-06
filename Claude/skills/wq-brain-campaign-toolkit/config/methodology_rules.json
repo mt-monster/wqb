@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated_at": "2026-09-29T01:40:00",
+ "updated_at": "2026-10-06T00:00:00",
  "_note": "全局方法论规则库（L2 结构化层）：跨 region 共享，所有战役通用。trigger.region=\"*\" 或不设 region 的规则放这里；区域专属规则放 tracking/<REGION>/reference/methodology_rules.json。rules.json 给机器消费（build_wave/gate/pipeline 强制注入），docs/experience/*.md 给人看，两者同源。种子来自 2026-08-18 EUR 战役复盘（通用部分）。",
  "rules": [
   {
@@ -514,6 +514,473 @@
    "times_succeeded": 0,
    "created_at": "2026-09-29T01:40:00",
    "source": "experience_kb_03"
+  },
+  {
+   "rule_id": "concentrated_weight_is_data_quality_not_params_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "CONCENTRATED_WEIGHT in ra_failed_checks",
+    "region": "*",
+    "dataset_type": "*"
+   },
+   "action": {
+    "op": "cw_root_cause_diagnosis",
+    "params": {
+     "core_claim": "★ 90% 的 CW 失败不是参数问题。truncation / decay / neutralization 修不了 CW —— CW 是数据品质问题。",
+     "order": [
+      {
+       "step": 1,
+       "check": "数据集覆盖率",
+       "rule": "<40% 立即换数据集（最高 ROI，勿在算子上浪费变体）"
+      },
+      {
+       "step": 2,
+       "check": "数据类型",
+       "VECTOR": "vec_avg 转标量 + ts_backfill",
+       "事件型（财报/一致预期）": "跨 Category rank 加法（同 Category 内算子修复有 50+ 变体失败证明）",
+       "时序型": "进 step3"
+      },
+      {
+       "step": 3,
+       "check": "信号窗口长度",
+       "rule": "拉长 2-5 天，CW 转 PASS？"
+      },
+      {
+       "step": 4,
+       "check": "ts_backfill 最小窗口",
+       "rule": "从 1-5 天起试（推荐 d=2~40，基本面可 60）"
+      },
+      {
+       "step": 5,
+       "check": "仍 FAIL",
+       "rule": "换 alpha 思路 —— 某些想法天然无法以合规方式表达"
+      }
+     ],
+     "tools": {
+      "coverage": "ts_backfill(x,d) / group_backfill / group_extra / group_count(is_nan(a), market) > N ? a : nan",
+      "distribution": "rank / ts_rank / group_rank（最常用，转均匀分布）/ zscore（配 truncation 0.01-0.05）/ scale / truncate / left_tail / right_tail / log",
+      "smoothing": "ts_decay_linear / ts_weighted_delay / days_from_last_change / last_diff_value / keep",
+      "neutralization": "换层级（强行业倾斜时 market 中性化产生大额对冲头寸）",
+      "holding": "trade_when（显著降低换手与权重波动）",
+      "emerging": "group_count 检测初期数据不全；微小噪声填充法 add(b, 0.0001*group_rank(-t, industry), filter=true)"
+     },
+     "ghosts": "⚠ 论坛 2026-06 手册点名的 ts_decay_exp_window / exp_window 在当前 103 算子表中已不存在（GHOST，回测 ERROR 连坐整批 CANCELLED）⇒ 论坛给的算子必须先过门禁 GHOST 校验或查 get_operators。",
+     "forum_source": "LC97552《CONCENTRATED WEIGHT 系统性排查与修复手册-1》2026-06-04（66赞/29评）"
+    },
+    "message": "★ CW 排查顺序：先查覆盖率（<40% 换集）→ 查数据类型（VECTOR/事件型/时序型各有解法）→ 查窗口 → ts_backfill 最小窗口 → 换思路。**不要先调 truncation/decay/neutralization**。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "wave": "s2_si38_d18 (参数类无效) vs s2_si38_d19 (数据类成功)",
+    "param_approach_failed": {
+     "operator": "ts_decay_linear(22)",
+     "turnover": "0.298 → 0.14 (−53%)",
+     "sharpe": "2.00 → 2.15 (↑)",
+     "CW": "FAIL 0.342 → FAIL 0.345（纹丝不动）"
+    },
+    "data_approach_worked": {
+     "operator": "ts_backfill(x, 66)",
+     "CW": "FAIL 0.342 → PASS",
+     "result": "raf 2→1，仅剩 LOW_2Y_SHARPE"
+    },
+    "key_insight": "降换手 53% 对 CW 零效果；补时间维覆盖率直接过闸。论坛「纹丝不动」在本地精确复现。"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-10-03T11:40",
+   "validated_at": "2026-10-03T11:40",
+   "source": "论坛 66 赞手册 + KOR 2026-10-03 d18/d19 对照实测"
+  }
+,
+  {
+   "rule_id": "denominator_is_the_real_self_wall_variable_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "prod_corr > 0.7 AND 已提交通族兄弟",
+    "region": "*",
+    "dataset_type": "ratio"
+   },
+   "caveat_d33_20261004": "★ 修正（KOR d33 实证）：换分母【不保证】破墙。d33 固定已验证骨架，把分母从权益侧 bs_eq_tot_q 换成资产侧 bs_assets_tot_q，prod 从 0.6413 升到 0.7671（更差）。根因：撞墙变量是【分子经济概念】——consol_net_inc_q（归属普通股股东净利）与已 ACTIVE 的 0mrnWojG 分子 net_inc_basic_q 同义，同义 ⇒ 同持仓 ⇒ 同墙。**判定顺序改为：先查分子经济概念是否与已提交兄弟同义（同义则必撞，换分母无用）→ 分子概念确实不同才谈换分母。** 原表述「换分子只改经济量，不改比较基准」仅在【分子概念已不同】时成立。",
+   "when": {
+    "all": [
+     {
+      "fact": "max_prod",
+      "op": ">",
+      "value": 0.7
+     },
+     {
+      "fact": "n_rows",
+      "op": ">=",
+      "value": 1
+     }
+    ]
+   },
+   "emit": {
+    "direction": "换分母破 SELF/prod 墙（真变量是分母，不是分子）",
+    "action_hint": "compute_mutual_correlation 定位撞哪颗 → 同族兄弟先比分母 → 相同则换分母（换口径类别）；扫分子无效",
+    "priority": 88
+   },
+   "action": {
+    "op": "swap_denominator",
+    "params": {
+     "root_cause": "divide(A,B) 的分母 B 决定横截面比较基准；同分母 ⇒ 持仓结构相似 ⇒ 高相关。**换分子只改经济量，不改比较基准，撞同一面墙。**",
+     "tool": "compute_mutual_correlation（先定位撞的是哪一颗）+ check_correlation(refresh=True)",
+     "denominator_candidates": {
+      "asset_side": [
+       "bs_assets_curr_q",
+       "bs_assets_tot_q",
+       "bs_assets_oth_q"
+      ],
+      "equity_side": [
+       "bs_eq_tot_q",
+       "q_qe_moc_sb",
+       "q_qe_srdlhs_sb",
+       "des_wkcap_q"
+      ],
+      "market_side": [
+       "des_mkt_cap_q",
+       "des_com_shs_out_secs_q"
+      ],
+      "note": "KOR 实证：资产侧口径出 2Y（2.22/2.12），权益/股本侧口径全灭（1.12-1.18）⇒ 基准口径决定信号强度，不只是相关性"
+     },
+     "measured_evidence": "KOR other466 同分子 is_net_inc_basic_q：分母 bs_eq_tot_q → self 0.7422 / prod 0.8061 ❌；分母 bs_assets_curr_q → self 0.6244 / prod 0.6843 ✅（同分子、只换分母，两闸同时降 0.12）"
+    },
+    "message": "★ 同族 prod 撞墙时先查「是不是同分母」。分母 = 横截面比较基准，同分母必高相关。换分母破 SELF 墙，换分子没用。分母口径还决定信号强度（KOR：资产侧 2Y 2.22 vs 权益侧 1.12-1.18）。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "wave": "s2_xfam_d11 (撞墙) -> d12 (换分母通过)",
+    "before": {
+     "denominator": "oth466_bs_eq_tot_q",
+     "self": 0.7422,
+     "prod": 0.8061,
+     "two_year_sharpe": 2.12
+    },
+    "after": {
+     "denominator": "oth466_bs_assets_curr_q",
+     "self": 0.6244,
+     "prod": 0.6843,
+     "two_year_sharpe": 2.22
+    },
+    "molecular_scan_failed": "d11 扫 8 个分子（同分母）最高只到 prod 0.8061，无一过闸 ⇒ 换分子确实无效",
+    "submitted": "0mrnWojG (ACTIVE 2026-10-03, KOR/D1/FUNDAMENTAL 1.6x 第 2/3 颗)"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-10-03T03:00",
+   "source": "KOR 2026-10-03 d11/d12 实证",
+   "validated_at": "2026-10-03T03:00"
+  }
+,
+  {
+   "rule_id": "sparse_field_long_window_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "input_turnover > 0.2 OR dataset_is_event_type",
+    "region": "*",
+    "dataset_type": "high_frequency_sparse"
+   },
+   "action": {
+    "op": "time_aggregate_before_rank",
+    "params": {
+     "prefer": "ts_mean(vec_avg(field), 60) / ts_decay_linear",
+     "avoid": [
+      "ts_rank(long_window) on high-freq input",
+      "ts_backfill on event inputs"
+     ],
+     "note": "先做时间聚合让输入稳定，再排序；长窗 ts_rank 只对低频输入有效"
+    },
+    "message": "【修正版，原表述过度概括】判别标准是「输入时变频率」不是 coverage：① 低频输入（季度财报/窗口聚合）→ 长窗 ts_rank + signed_power 有效；② 高频输入（日频新闻情绪）→ 长窗无效（KOR w41 实证 S 从 -0.03 掉到 -0.20），须先 ts_mean/ts_decay_linear 做时间聚合。佐证=换手率 T：成功配方 T≈0.075~0.136，日频事件型失败组 T≈0.25（2~3倍）。另两条硬约束：ts_backfill 不支持事件型输入；平台无 ts_co_skewness（用 ts_corr/ts_covariance/ts_regression 替代）。"
+   },
+   "evidence": {
+    "campaign": "HKG+KOR",
+    "waves": [
+     "hkg_w34",
+     "hkg_w35",
+     "hkg_w36",
+     "kor_w39",
+     "kor_w40",
+     "kor_w41"
+    ],
+    "bare_group_rank_best_S": {
+     "w34": 0.49,
+     "w35": 0.59,
+     "w36": 0.63,
+     "kor_w39": -0.03
+    },
+    "long_window_on_high_freq_S": {
+     "kor_w41_G1_market": -0.2,
+     "kor_w41_G1_industry": -0.1,
+     "kor_w41_G1_market_neg": 0.13
+    },
+    "turnover_signal": {
+     "success_recipes": "0.075~0.136",
+     "high_freq_failures": "0.248~0.251"
+    },
+    "hard_constraints": [
+     "ts_backfill does not support event inputs (kor_w40 26/26 ERROR)",
+     "no ts_co_skewness operator in platform (103 ops, 26 ts_*)"
+    ],
+    "correct_standard": "input_time_variation_frequency, NOT coverage",
+    "note": "长窗平滑只对低频输入提纯；高频输入需先时间聚合。原规则表述过宽已修正。"
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 0,
+   "created_at": "2026-09-30T22:30:00",
+   "validated_at": "2026-09-30T23:30:00",
+   "source": "manual_retro"
+  }
+,
+  {
+   "rule_id": "cross_region_port_settings_alignment_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_design",
+    "condition": "porting_recipe_across_regions"
+   },
+   "action": {
+    "op": "align_settings_with_source",
+    "params": {
+     "must_copy": [
+      "neutralization",
+      "decay",
+      "truncation",
+      "delay",
+      "universe档位"
+     ],
+     "verify_cmd": "SELECT neutralization, universe, turnover FROM alphas WHERE alpha_id='<源ID>'",
+     "legal_universe_source": "config.REGIONS[region].universes",
+     "decay_unknown_policy": "小扫描 (0/4/22) 定标，勿沿用上一波默认值",
+     "diagnose_order": [
+      "设置(nu/decay/universe)",
+      "表达式几何"
+     ]
+    },
+    "message": "REGULAR 配方跨区移植 = 端口：表达式与 (neutralization, decay, truncation, universe档位) 必须一起搬；只搬表达式等于换了实验。战例：KOR zq87zzqO (nu=STATISTICAL, S=1.76) 移植 HKG w43 时中性化擅填 INDUSTRY → 全部 A 族 S≤1.25；HKG w44 仅改回 STATISTICAL（其余逐字不变）验证。诊断顺序：结果显著低于源配方时先查设置再查几何——设置差异杀伤力 > 几何微调。universe 档位必须查 config.REGIONS[region].universes（HKG=TOP800/TOP500，KOR=TOP600），跨区外推会 400。"
+   },
+   "evidence": {
+    "campaign": "HKG+KOR",
+    "waves": [
+     "kor_other466_zq87zzqO",
+     "hkg_w43",
+     "hkg_w44"
+    ],
+    "source_alpha": "zq87zzqO",
+    "source_settings": {
+     "neutralization": "STATISTICAL",
+     "sharpe": 1.76,
+     "fitness": 1.38,
+     "turnover": 0.1361
+    },
+    "broken_settings": {
+     "neutralization": "INDUSTRY",
+     "best_abs_sharpe": 1.25
+    },
+    "region": "HKG"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "created_at": "2026-09-30T23:58:00",
+   "times_applied": 1,
+   "times_succeeded": 0
+  }
+,
+  {
+   "rule_id": "multileg_strength_not_decomposable_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "dataset_select",
+    "condition": "reusing_legacy_multileg_inventory"
+   },
+   "action": {
+    "op": "check_single_leg_peak_before_reuse",
+    "params": {
+     "metric": "max_single_leg_abs_sharpe",
+     "threshold": 1.58,
+     "if_below": "该存量族整体不可抢救 —— 换字段族或换区，勿浪费回测预算",
+     "preferred_geometry": "ts_decay_linear(leg, N) 平滑 + group_rank（优于长窗 ts_rank/signed_power）"
+    },
+    "message": "多腿强度不可逆拆分：把违规多腿组合拆成单腿做单信号结构化，会散掉强度。DEU w45 实证：原多腿 S=2.17 → 拆出单腿最高仅 1.36，82 条 S>=1.58 = 0。DEU 历史上所有 best_S>1.58 的波次全是 s2_* 多腿/增强波，纯单信号波从未过线。判据：复用存量前先看「单腿峰值」而非「多腿峰值」，max(单腿|S|)<1.58 即该族整体不可抢救。"
+   },
+   "evidence": {
+    "campaign": "DEU",
+    "waves": [
+     "deu_w45"
+    ],
+    "n_tested": 82,
+    "s_ge_158": 0,
+    "best_single_leg_sharpe": 1.36,
+    "source_multileg_sharpe": 2.17,
+    "geometry_avg_abs_sharpe": {
+     "g2_decay_linear": 0.86,
+     "g1_signed_power": 0.66,
+     "g3_double_rank": 0.62
+    }
+   },
+   "confidence": 0.88,
+   "status": "active",
+   "created_at": "2026-10-01T01:05:00",
+   "times_applied": 1,
+   "times_succeeded": 0
+  }
+,
+  {
+   "rule_id": "equivalent_operator_substitution_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "is_strong_but_blocked AND 几何已扫尽",
+    "region": "*",
+    "dataset_type": "*"
+   },
+   "when": {
+    "all": [
+     {
+      "fact": "max_sharpe",
+      "op": ">=",
+      "value": 1.0
+     },
+     {
+      "fact": "max_prod",
+      "op": ">",
+      "value": 0.6
+     }
+    ]
+   },
+   "emit": {
+    "direction": "扫等价算子替换（判定「天花板/无解」之前必扫）",
+    "action_hint": "冻结骨架（分子/分母/轴/窗口）只换实现算子，如 signed_power(x,0.5)→quantile(x)，再跑批对比四闸",
+    "priority": 92
+   },
+   "action": {
+    "op": "scan_equivalent_operators",
+    "params": {
+     "freeze": "骨架（分子/分母/分组轴/窗口），只换实现算子",
+     "candidates": [
+      {
+       "from": "signed_power(x,0.5)",
+       "to": "quantile(x)",
+       "note": "KOR 实证 2Y +0.05~0.11、prod -0.015、多空拉齐"
+      },
+      {
+       "from": "ts_rank(x,d)",
+       "to": "ts_quantile(x,d)",
+       "note": "KOR 反向变差，但必须实测"
+      },
+      {
+       "from": "ts_rank(x,d)",
+       "to": "ts_zscore(x,d)",
+       "note": "KOR 反向变差"
+      },
+      {
+       "from": "group_rank(x,g)",
+       "to": "group_zscore(x,g)",
+       "note": "KOR 该族依赖组内秩，替换后 2Y 崩"
+      },
+      {
+       "from": "divide(a,b)",
+       "to": "multiply(a,inverse(b))",
+       "note": "逐项相同，仅作数值稳定性探针"
+      },
+      {
+       "from": "scale(-rank(x))",
+       "to": "scale(rank(x))",
+       "note": "记忆语法级效应可能反向，须本区实测"
+      },
+      {
+       "from": "winsorize(x,std)",
+       "to": "signed_power(x,0.5)",
+       "note": "两者都做尾部处理，数值路径不同"
+      }
+     ],
+     "tool": "wave_gate + create_multi_simulation"
+    },
+    "message": "★ 判定「不可能/天花板/已到顶/无解」之前必须先扫等价算子替换。几何调整（分子/分母/窗口/轴）往往一次只动一个闸门，等价算子换的是数值实现路径，可同时改动多个闸门。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "wave": "s2_xfam_d7 -> d10",
+    "before": {
+     "wrapper": "signed_power(.,0.5)",
+     "two_year_sharpe": 1.51,
+     "prod": 0.6544,
+     "long_short": "350/288"
+    },
+    "after": {
+     "wrapper": "quantile(.) + 外层轴 market",
+     "two_year_sharpe": 1.62,
+     "prod": 0.6413,
+     "long_short": "319/319"
+    },
+    "refuted_claim": "d7 曾判定「2Y 与 prod 在分组轴上反向搬运、不可能三角、该族已到天花板」——换 quantile 包装后互斥消失",
+    "submitted": "gJZ7AvZO (ACTIVE 2026-10-03, KOR/D1/FUNDAMENTAL 1.6x)"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "created_at": "2026-10-03T02:20",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "validated_at": "2026-10-03T02:20",
+   "source": "KOR 2026-10-02/03 战役 d1-d12（用户提出等价算子替换方向）"
+  }
+,
+  {
+   "rule_id": "diversity_gate_is_portfolio_level_not_per_wave_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "is_probe_wave OR is_deep_dive_wave",
+    "region": "*",
+    "dataset_type": "*"
+   },
+   "action": {
+    "op": "skip_diversity_gate_when_probing",
+    "params": {
+     "flag": "--skip-diversity-gate",
+     "apply_when": "batch_type=explore(探针/深挖)",
+     "keep_when": "batch_type=full(批量产出)"
+    },
+    "message": "★ 骨架多样性闸的收益在「组合层」不在「单波产出层」——实证：本库 818 个波次按波内骨架熵分三档，S>=1.58 命中率 = 骨架单一 51.6% / 中等 42.9% / 骨架多样 25.2%（多样性越高产出率越低近 2 倍）。原因：信号强度来自「把一个机制挖透」（同骨架换字段/换轴可累积强度），骨架一摊开每条都浅尝、谁都过不了 1.58。因此分阶段用：①探针/深挖阶段 skip（单骨架、纯归因，d29/d30 正确形态）；②批量产出阶段开闸（骨架混合，为 book 自相关与 SuperAlpha 质量负责）。禁止用单波产出率去否定或吹捧该闸——口径错误。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "waves": [
+     "s2_afs_d29",
+     "s2_oth455_d30"
+    ],
+    "n_waves_analyzed": 818,
+    "hit_rate_by_diversity": {
+     "single_skeleton": 0.516,
+     "medium": 0.429,
+     "diverse": 0.252
+    },
+    "probe_examples": {
+     "d29_bare": {
+      "dataset": "analyst_factor_signals",
+      "result": "best S=0.99 判死",
+      "verdict": "族无 IS 强度"
+     },
+     "d30_bare": {
+      "dataset": "other455",
+      "result": "best S=0.43 判死",
+      "verdict": "PCA 分量符号随机"
+     }
+    },
+    "note": "探针波用 skip-diversity 是官方逃生阀（gate.py L1545），repair 批亦豁免（gate.py L952）"
+   },
+   "confidence": 0.8,
+   "status": "active",
+   "times_applied": 2,
+   "times_succeeded": 2,
+   "created_at": "2026-10-04T02:50:00",
+   "validated_at": "2026-10-04T02:50:00",
+   "source": "manual_retro"
   }
  ]
 }
