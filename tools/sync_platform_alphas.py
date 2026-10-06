@@ -29,7 +29,11 @@ from collections import Counter
 from typing import Any, Dict, List
 import sys as _sys_pe, os as _os_pe
 _sys_pe.path.insert(0, _os_pe.path.dirname(_os_pe.path.abspath(__file__)))
+# 同主题目录也要进 sys.path：`backfill_alpha_metrics_from_platform` 于 2026-10-06
+# 下沉到 tools/data-repair/（S11「tools 顶层只减不增」）。见 tools/README.md 单文件迁移配方。
+_sys_pe.path.insert(0, _os_pe.path.join(_os_pe.path.dirname(_os_pe.path.abspath(__file__)), "data-repair"))
 import _pyenv  # noqa: E402  跨平台解释器解析（tools/_pyenv.py）；作为脚本运行时自动切到 MCP venv，故文档里可写裸 python
+from backfill_alpha_metrics_from_platform import extract_is_metrics  # noqa: E402  ★ 共享 2Y/sub 抽取（2026-10-06）
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MCP_DIR = os.path.join(REPO_ROOT, "world-quant-brain-mcp")
@@ -79,6 +83,8 @@ def to_store_payload(a: Dict[str, Any]) -> Dict[str, Any]:
     isd = a.get("is") or {}
     osd = a.get("os") or {}
     reg = a.get("regular")
+    # ★ 2026-10-06：平台 2Y/sub 藏在 is.checks[].value（或 metrics），此前硬编码 None 导致漏记
+    two_year, sub_universe, is_ladder = extract_is_metrics(a)
     return {
         "alpha_id": a.get("id"),
         "region": st.get("region"),
@@ -89,7 +95,9 @@ def to_store_payload(a: Dict[str, Any]) -> Dict[str, Any]:
         "sharpe": isd.get("sharpe"),
         "fitness": isd.get("fitness"),
         "turnover": isd.get("turnover"),
-        "two_year_sharpe": None,  # 平台 is 段无此字段（本地从回测落）
+        "two_year_sharpe": two_year,
+        "sub_universe_sharpe": sub_universe,
+        "is_ladder_sharpe": is_ladder,
         "prod_correlation": isd.get("prodCorrelation"),
         "self_correlation": isd.get("selfCorrelation"),
         "platform_status": a.get("status"),

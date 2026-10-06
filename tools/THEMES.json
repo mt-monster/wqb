@@ -1,5 +1,5 @@
 {
-  "_doc": "tools/ 顶层脚本主题归属计划（P2-1，2026-10-04）。目录名一律 kebab-case（AGENTS.md §8.13）。status: pending=仍在顶层待搬 / moved=已下沉。棘轮由 audit_structure S11 保证：tools/ 顶层只减不增，新增 CLI 必须落主题目录。",
+  "_doc": "tools/ 顶层脚本主题归属计划（P2-1，2026-10-04）。目录名一律 kebab-case（AGENTS.md §8.13）。status: frozen-pending=仍全员在顶层待搬 / moved-partial=部分已下沉（见各主题 moved_files）/ moved=已下沉完。棘轮由 audit_structure S11 保证：tools/ 顶层只减不增，新增 CLI 必须落主题目录。",
   "_source": "tools/README.md 主题节（表格首列）优先，其余按前缀规则兜底；都命不中的进 _unassigned 等人工裁定，不允许默认塞进已有目录。",
   "_why_not_moved": "2026-10-04 实测：全仓 80 处 `sys.path.insert(... 'tools')`，且 index_tables / migrate_wave_verdict_enum 等被当模块 import；仓库根推导写法同主题内就有 5 种（dirname(dirname()) / parents[1] / parent.parent / '..','src' 拼接）。下沉一层会同时改变 import 解析与路径层数，逐文件迁改需跟验收流程（见 tools/README.md 「迁移配方」）；本表先把目标结构与存量基线定下来，由 S11 保证顶层只减不增。",
   "themes": {
@@ -54,9 +54,19 @@
         "prod_bucket_scan.py",
         "prod_scan.py",
         "three_dataset_probe.py",
-        "tiered_probe.py"
+        "tiered_probe.py",
+        "category_probe.py",
+        "category_sweep.py",
+        "probe_sa_candidates.py",
+        "probe_sa_unsubmitted.py"
       ],
-      "status": "frozen-pending"
+      "status": "moved-partial",
+      "moved_files": [
+        "category_probe.py",
+        "category_sweep.py",
+        "probe_sa_candidates.py",
+        "probe_sa_unsubmitted.py"
+      ]
     },
     "super": {
       "dir": "tools/super",
@@ -90,9 +100,17 @@
         "submit_verdict.py",
         "triage_platform_status_sweep_v3.py",
         "triage_prodcorr_batch.py",
-        "verify_ready8.py"
+        "verify_ready8.py",
+        "candidate_health_card.py",
+        "submit_inventory.py",
+        "verify_region_op.py"
       ],
-      "status": "frozen-pending"
+      "status": "moved-partial",
+      "moved_files": [
+        "candidate_health_card.py",
+        "submit_inventory.py",
+        "verify_region_op.py"
+      ]
     },
     "pool-hygiene": {
       "dir": "tools/pool-hygiene",
@@ -151,9 +169,13 @@
         "migrate_wave_verdict_enum.py",
         "normalize_wave_ids.py",
         "populate_external_fields.py",
-        "seed_region_priors.py"
+        "seed_region_priors.py",
+        "backfill_alpha_metrics_from_platform.py"
       ],
-      "status": "moved-partial"
+      "status": "moved-partial",
+      "moved_files": [
+        "backfill_alpha_metrics_from_platform.py"
+      ]
     },
     "research": {
       "dir": "tools/research",
@@ -211,9 +233,15 @@
         "ledger_keys.py",
         "normalize_ledger_whitelist.py",
         "sync_platform_alphas.py",
-        "waiver.py"
+        "waiver.py",
+        "enqueue_propose.py",
+        "scan_backup_ra.py"
       ],
-      "status": "moved-partial"
+      "status": "moved-partial",
+      "moved_files": [
+        "enqueue_propose.py",
+        "scan_backup_ra.py"
+      ]
     },
     "db": {
       "dir": "tools/db",
@@ -352,5 +380,30 @@
   "_blocked_by_import": "2026-10-04 实测：tools/ 189 个顶层模块中 54 个被全库 import（AST 扫描），其中被生产代码/技能代码反向依赖的**必须留顶层**，下沉会直接断链，例如：\n  wave_gate            <- src/wqb/workflow/registry.py、tests/test_toolified_cli.py\n  submit_queue         <- src/wqb/workflow/nodes/submit_alpha.py\n  alpha_properties     <- src/wqb/store/submit_queue.py\n  forum_recon          <- src/wqb/workflow/registry.py\n  dataset_experience / economic_mechanism_kb / field_quality_scorer\n                      <- Claude/skills/brain-make-some-gem/.../skeletons.py\n另有 39 处 sys.path.insert(..., 'tools') 与 3 种仓库根推导写法（parents[N] 167 处 / '..','src' 拼接 43 处 / parent.parent 39 处）。\n结论：**tools/ 不是纯脚本堆，而是被 src/ 与 Claude/skills/ 反向依赖的共享层**。整体下沉必须先把这些依赖改成包内相对 import，属独立重构，不在机械搬迁范围。",
   "_adopted_20261004": {
     "note": "2026-10-04：用户确认不再有并行会话后，把此前会话遗留的 7 个未受控功能脚本纳入主题目录（S11 顶层冻结要求新 CLI 落子目录，**不许塞基线**——基线只豁免存量）。归属按脚本功能人工裁定：_kor_d33_writeback/backfill_alphas_from_ckpt -> data-repair；neutralization_scan -> research；prod4_quick/prod_bucket_scan/prod_scan -> probe；region_whitelist -> rotation。"
+  },
+  "_moved_20261006": {
+    "date": "2026-10-06",
+    "reason": "S11「tools 顶层只减不增」：10 个新 CLI 未跟踪文件堆在 tools/ 顶层触发 FAIL，按本表归属下沉。",
+    "batch": {
+      "probe": [
+        "category_probe.py",
+        "category_sweep.py",
+        "probe_sa_candidates.py",
+        "probe_sa_unsubmitted.py"
+      ],
+      "verdict": [
+        "candidate_health_card.py",
+        "submit_inventory.py",
+        "verify_region_op.py"
+      ],
+      "ledger": [
+        "enqueue_propose.py",
+        "scan_backup_ra.py"
+      ],
+      "data-repair": [
+        "backfill_alpha_metrics_from_platform.py"
+      ]
+    },
+    "note": "被移文件此前均未被 git 跟踪；迁移按 tools/README.md「单文件迁移配方」执行。probe/verdict 两主题此前磁盘无目录，随本批首次落地。"
   }
 }

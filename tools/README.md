@@ -7,13 +7,28 @@
 
 ## 目录结构与迁移状态（P2-1，2026-10-04）
 
-顶层现在平铺 **171 个脚本**，主题分类已由本索引的 `## <主题>` 节定义但磁盘未落目录。
-目标结构与逐文件归属已固化到 **[`tools/THEMES.json`](THEMES.json)**（19 个主题目录，kebab-case，
-171/171 已归属，`status=frozen-pending`），另有 4 个区域专属脚本标记为应迁出 `tools/`
+顶层现在平铺 **142 个脚本**（2026-10-06 实测），主题分类已由本索引的 `## <主题>` 节定义，
+部分已落目录。目标结构与逐文件归属固化在 **[`tools/THEMES.json`](THEMES.json)**（19 个主题目录，
+kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 （`relocate_out_of_tools` → `tracking/KOR/scripts/`）。
 
 **新脚本一律落主题子目录**，不得再往顶层堆 —— 由 `python tools/audit_structure.py --only s11`
 强制（顶层只减不增，新增即 FAIL 阻断提交）。
+
+### 迁移批次记录
+
+| 批次 | 日期 | 文件数 | 落点 |
+|---|---|---|---|
+| P2-1 止血 | 2026-10-04 | 0 | 只冻基线（S11）+ 出 THEMES.json，全部 `frozen-pending` |
+| **第一批下沉** | **2026-10-06** | **10** | `probe/` ×4 · `verdict/` ×3 · `ledger/` ×2 · `data-repair/` ×1 |
+
+> 第一批按本文件「单文件迁移配方」执行，两处与配方的偏差记在此：
+> ① 配方第 1 步的工具 **`refs_scan.py` 本身已不在工作区**（属事故丢失的 17 个之一），
+> 改用等价 `grep -rn "tools/<stem>.py"` 判命中形态；
+> ② 配方第 2 步推荐的 `from wqb.paths import repo_root` **该模块不存在**，故退化为按新层级
+> 修正 `dirname` 层数 / `..` 级数（下沉后逐脚本 `--help` 实测通过）。
+> 另：被移文件此前均**未被 git 跟踪**，`git mv` 不适用（会报 not under version control），
+> 故用文件系统搬移 + `git add` 记录。
 
 ### 为什么不当场把 171 个全下沉（实测数据）
 
@@ -84,6 +99,8 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 |---|---|---|
 | `probe_batch_mode.py` | 2+6 探针批模式：L0（2 条）快速判死 → L1（6 条）信号确认，真实回测（入库→pipeline→DB 拉指标） | 手写 8 探针表达式 + 手动判定 |
 | `tiered_probe.py` | 三层探针编排器：L0 判死 → L1 确认 → L2 ModeA 变体自动升级；组合腿快腿轮换（fast_pool 多样性）；慢腿预处理轮换（raw/reverse/ts_decay_linear） | 手写 ModeA 变体波 |
+| `probe/category_sweep.py` | **L0 类别普查**（2026-10-06 下沉）：指定 region 遍历**全部** category，产出每类字段池。**零回测零 API**；产物是「字段池」不是 ideas，**禁止直接注入 GEM**。边界：只做普查不做判死（判死是 `category_field_triage.py`，其甜点判据 `alpha_count∈[10,50]` 与真实产出矛盾，本工具不复用其判级） | 手写逐 category 查 catalog |
+| `probe/category_probe.py` | **L1 苗子探针生成**（2026-10-06 下沉）：为 L0 筛出的类别生成**机制多样**的探针表达式（上游 `probe/category_sweep.py --seed-fields --json <out>`），产物逐行喂 `submit_batch.py --path` 跑 QUICK，收割后 `--classify` 判苗头。★ 铁律：**条数不是首要变量、机制多样性才是**（历史命中率中位 7%；DEU 164 条达标只来自 73 个独立表达式，去重比 2.2x）。**本工具自己不派发仿真**（零配额、可 dry-run） | 手写探针表达式 |
 
 > `wave_gate.py --probe-mode` 只做门禁阶段探针分配标记（结构预判），真实回测判死走 `probe_batch_mode.py` / `tiered_probe.py`。
 
@@ -93,6 +110,8 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 |---|---|---|
 | `sa_probe.py` | 组件池探针：≥10 ACTIVE REGULAR 硬前置，GO/BLOCKED | `probe_kor_sa.py`、`tracking/_scratch/probe_sa2_*.py` |
 | `super_build.py` | select / status / probe / submit 四子命令全流程；**submit 内置 prod 闸（2026-09-25）：probe max≥0.7 或超时一律拒提（fail-closed），豁免须 `--allow-prod-above-07`** | `track_mea_super.py` / `_resume` / `_submit` 三件套 |
+| `probe/probe_sa_candidates.py` | **SA 候选与组件池盘点**（2026-10-06 下沉；与 `verdict/submit_inventory.py` 互补——后者盘 RA/REGULAR，本脚本盘 SA/SUPER）：组件池 eligibility（GO/BLOCKED）、全部 SUPER alpha、未提交 SA 候选。★ 关键语义：组件 eligibility **只看「已提交且 ACTIVE」的 REGULAR**，IS 阶段 UNSUBMITTED 不计入；SA 可提交的 selection 字段无 sharpe/fitness，只能按 turnover/decay 排。`--save-json` / `--cache-ttl-hours`（env `SA_PROBE_CACHE_TTL_HOURS`，默认 6h） | 手查 SUPER 控制台 |
+| `probe/probe_sa_unsubmitted.py` | 对 SA 探针列出的**未提交候选逐颗取真实双闸**（`check_self_correlation` + `check_correlation(production)`），判定是否双双 <0.7。★ 「UNSUBMITTED（已建未提交）」≠「待提交（已验证可交）」——探针文件里这些候选的 prod 恒为 `None`，本工具是**推荐序「余量」列的唯一来源**。★ 处理范围铁律（用户定，勿回退）：**只处理增量数据 + 无 prod 值但业绩已明确记录者**（⛔ 禁 `--all`） | 手写逐颗打相关性 |
 
 ## 提交判定
 
@@ -114,6 +133,10 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `restore_alpha_props.py` | **事故恢复**：1966 `set_alpha_properties` 全量覆盖曾清空 name / 覆写 description。从 `logs/_os_alphas_raw.json`（事故前转储，221 条）复原 name+regular/selection/combo description。**最小字段 PATCH**（只发要恢复的键，不碰 tags/color）。默认 dry-run，`--apply` 写 | 手工重写描述 |
 | `name_missing.py` | 给仍缺 name 的 ACTIVE 补**唯一规范名**（`{REGION}_{R\|S}_{family}_{id尾6位}`；family 由表达式字段反查 SRC 推断）。**必须用 id 短码做后缀**（同族同源会撞名）。默认 dry-run，`--apply` 写 | 手工命名 |
 | `finalize_props.py` | **SUPER 命名优化 + 超 5 标签瘦身**（规范化收尾）。SUPER 用 `<REGION>_S_<N>comp_<id6>`（`selectionLimit` 得组件数）；超 5 标签收紧到 ≤5，**必保 `CH_*`/`SRC_*`/`RETIRE_*`/`WAIT_*`**（运维/留痕标记不可砍）。精确 PATCH；默认 dry-run，`--apply` 写 | 手工 |
+
+| `verdict/submit_inventory.py` | **「当前可提交候选清单」一跑即出**（2026-10-06 下沉；每日盘点主力）。⛔ 铁律：**只读平台、只判不提交**——绝不 POST `/alphas/{id}/submit`。判定口径与 `submit_verdict.py` **共用** `wqb.submit_verdict_core.decide`，不另起一套：模拟层 checks → 资格门（WebDataScope Failed-count，唯一权威；本地 `submit_ready.gate` 不可信）→ 相关性（`refresh=True`，>48h 视为过期必重测）。七分类输出 + `--no-csv`（只出 JSON）。★ **只读 `submit_ready` 表 ⇒ 从未入队的候选对它完全隐形**，补扫见 `ledger/scan_backup_ra.py` | 手工逐条查控制台 |
+| `verdict/candidate_health_card.py` | **推荐候选「三层体检卡」**（2026-10-06 下沉）：① 闸层（`ra_failed_checks=0` / prod<0.7 / self<0.7 / turnover≤0.30）② 回报层（judge 六指标 + drawdown + 多空均衡）③ 加钱层（VF 三项：单α表现 / 多样性 / 独特性）。★ 补上 `submit_ready` 表**根本没有**的两项：`margin`（官方「好 alpha」线 >4bps）与**约束变体** `is.investabilityConstrained.*` / `is.riskNeutralized.*`（约束后普遍低 31–34%，平台真正扣分的是它们） | 手工拼体检表 |
+| `verdict/verify_region_op.py` | **逐区核验平台 ACTIVE 的两种口径**（2026-10-06 下沉）：strict-active = `status=ACTIVE` 且 `osmosisPoints>0`（已分配 OP，排除 DECOMMISSIONED）vs 探针用的宽松 `active`（只看 status）。扫 OS+IS 阶段 `get_user_alphas(alpha_type="REGULAR")` 客户端按区过滤，出 `active_total` / `active_op` / `decom`，并**交叉校验** `active_total` 与探针缓存是否一致（不一致要报警） | 手比控制台与缓存 |
 
 ## 存量池卫生（门禁断链 / 积压裁决）
 
@@ -149,6 +172,8 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `backfill_expression_dataset.py [--apply]` | 修复 `expressions.dataset` 被写成 region 名（7,434/13,855 行，2026-09-15 审计）与 `backtest_results.dataset` 缺失：waves→datasets / wave 标签 / gate_results 三路解析，未解析者置 NULL；默认干跑，`--apply` 先备份再写 | 手写 UPDATE SQL |
 | `migrate_wave_verdict_enum.py [--dry-run]` | `wave_results.verdict` 归一到 PASS/FAIL/PARTIAL（前缀/关键词规则，原文入 key_findings 首条）；写入侧 `mcp__wqb-db__upsert_wave_result` 已同规则强制 | 人工改行 |
 | `backfill_check_columns.py [--apply]` | 回填 **checks 派生列**（`cluster_test` / `concentrated_weight` / `sub_universe_sharpe`）。★ 2026-09-19 修复配套：`harvest_multisim._pick_checks` 此前找的 4 条路径全落空（真实位置是**顶层 `is.checks`**）→ `cluster_test` 一度 0/4,926。本工具用平台详情补齐存量：默认 scope=ACTIVE、只填 NULL、幂等、断点续跑（state 文件）、dry-run 默认。**需用 MCP venv 的 Python 跑** | 逐条手查详情 |
+
+| `data-repair/backfill_alpha_metrics_from_platform.py` | **从平台补 `alphas` / `submit_ready` 缺失的 IS 指标**（2026-10-06 下沉）：`two_year_sharpe` / `sub_universe_sharpe` / `is_ladder_sharpe`，以及体检卡三层所需的 `margin` 与约束变体指标。★ 全库实测 **1798/11002 行 2Y 为 NULL**（两条成因：`sync_platform_alphas` 曾显式传 `None`；非 harvest 路径从不抽 2Y/sub）。**只补空**（`--overwrite` 才覆盖）、每颗落盘断点续跑、默认 dry-run。★ 其 `extract_is_metrics()` 被 `sync_platform_alphas.py` 复用（跨目录导入，改动路径须同步）；**不改 ingest 逻辑、不改回测** | 手工逐条查平台补库 |
 
 ## Cluster Alpha（低门槛区刻意版；依据帖 43562853669655）
 
@@ -192,6 +217,9 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | 工具 | 用途 |
 |---|---|
 | `sync_platform_alphas.py` | 把平台 OS 池（已提交 alpha）全量同步进本地 `alphas` 表，含 **OS（样本外）指标**（`os_sharpe`/`os_fitness`/`osISSharpeRatio`/`os_sharpe60-500` 等 15 列）。解决「平台 228 个已提交 vs 本地台账 94」的漏记缺口（2026-09-20 实测漏 134 条）。`--dry-run` 只报告差异、`--baseline` 打印 OS 衰减基线、`--region X` 限定统计视角。走 MCP venv（brain_api），零配额（只读平台） |
+
+| `ledger/scan_backup_ra.py` | **备选 RA 补扫**（2026-10-06 下沉）：把「全闸但未入队」的候选自动补进 `submit_ready`（默认 dry-run，`--apply` 落库）。★ 动机：`verdict/submit_inventory.py` 只读 `submit_ready`，任何「在 `alphas` 里躺着、却从未入队」的达标候选对每日盘点**完全隐形**（典型受害 `WjegEmQO`：EUR S1.94/F1.38/2Y1.59/sub1.96，实测 prod 0.5012/self 0.1616 全过，却连续多轮扫不到）。★ 口径：`2Y/sub` 用 `(x IS NULL OR x >= ?)` 放宽、缺值行进「待核」列，`--apply` 默认跳过待核行（`--apply-pending` 才含） | 手工 SQL 补录 / 让达标候选沉底 |
+| `ledger/enqueue_propose.py` | **入队「三层裁决」网关**（2026-10-06 下沉）：L1 策略筛（平台 RA 检查干净 + S/F + 2Y/TO + 非 add_mix + prod/self）→ L2 择优（同族只留代表 + 塔优先 + `--top-per-region`）→ L3 人工确认。★ 政策依据：**入队必须有人工/策略裁决，不做「全闸即自动入队」**——实测全量入队 64% 立即 DEAD（`alphas` 里 S≥1.58/F≥1.0/prod<0.7 的未入队候选 393 条，251 条平台 RA 硬闸已 FAIL）。`--apply --proposal <json> --approved-by <人>` 才落库（校验哈希 + 重跑 L1），缺批准/哈希不符退出码 4；决策留痕 `results/enqueue_decisions.jsonl` | 手工挑候选入队 / 凭 S、F 线拍脑袋 |
 
 ## 纪律（AGENTS.md §9）
 
