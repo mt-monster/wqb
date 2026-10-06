@@ -848,6 +848,7 @@ def build_parser():
 
 
 def main():
+    _bootstrap()  # 切到 MCP venv + src 入 path（须在 build_parser 之前，否则 import wqb 失败）
     args = build_parser().parse_args()
     if args.stale_hours <= 0 or args.thin_margin < 0:
         print("参数错误：stale-hours 须 >0，thin-margin 须 >=0")

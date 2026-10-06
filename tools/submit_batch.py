@@ -163,6 +163,11 @@ def batches_from_args(args):
 
 
 async def run(batches, sleep, dry_run):
+    # 2026-10-06 修：循环内 `os.chdir(MCP_DIR)` 从不还原 ⇒ 第 2 批起相对路径失效、
+    # `load(path)` 抛 FileNotFoundError、**脚本静默死在第一批之后**（--spec 多批实际只发第 1 批）。
+    # 解：开跑前把全部 path 固化为绝对路径。
+    batches = [(tag, os.path.abspath(path), decay, neut, ov)
+               for tag, path, decay, neut, ov in batches]
     for tag, path, decay, neut, overrides in batches:
         exprs = load(path)
         payload = build_payload(exprs, decay, neut, overrides.get("type", "REGULAR"), overrides)

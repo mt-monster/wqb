@@ -78,6 +78,21 @@ def parse_submitted_at(raw: Any) -> Optional[_dt.datetime]:
         return None
 
 
+def todays_submissions(
+    results: Optional[Iterable[Dict[str, Any]]], now_utc: Optional[_dt.datetime] = None
+) -> List[tuple]:
+    """``probe_today`` 的列表视图：``[(region, alpha_id, dateSubmitted), ...]``。
+
+    **保留此形状是为了兼容既有调用方与测试**（``tools/quota_status.py`` 与
+    ``tests/unit/05_submit_quota/test_quota_et_day.py`` 断言 3 元组且索引 2 是原始时间戳）。
+    新代码请直接用 :func:`probe_today`——它带类型分流，本函数不区分类型。
+    """
+    return [
+        (e["region"], e["alpha_id"], e["dateSubmitted"])
+        for e in probe_today(results, now_utc)["entries"]
+    ]
+
+
 def probe_today(results: Optional[Iterable[Dict[str, Any]]], now_utc: Optional[_dt.datetime] = None) -> Dict[str, Any]:
     """统计 ``results`` 中 ``dateSubmitted`` 落在**当前 ET 日历日**的条目，并按类型分流。
 
