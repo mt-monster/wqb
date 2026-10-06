@@ -11,7 +11,7 @@
 | 事实 | 出处 |
 |---|---|
 | `check_correlation` 内置阻塞轮询（间隔 `prod_corr_poll_s` = 30 s，最长 `prod_corr_timeout_s` = 3600 s）；账号级单并发，忙时**立即**返回 `correlation_busy`（fail-fast） | `wqb.config.WAIT_THRESHOLDS` |
-| 同一 alpha 的已决结果缓存 **7 天**——**仅在有 Redis 时**（键 `prod_corr:<alpha_id>`）。Redis **只是可选缓存**：无 Redis 功能不受影响，只是不缓存、每次都排队；「等死」的原因是上一行的 30 s × 120 次阻塞轮询与账号级单并发，不是 Redis。`pending` / `correlation_busy` / `data_unavailable` **不缓存**；命中缓存的响应带 `from_cache: true` | `brain_mixin_correlation.py`、`brain_mixin_transport.py`（`_get_cached_data`：无 `redis_client` 直接返回 None） |
+| 同一 alpha 的已决结果缓存 **48 小时**（2026-10-06 改：后端由 Redis 换成 SQLite 权威表 `data/wqb.db::alpha_corr_cache`，**不再依赖 Redis**）。过期即回源平台——生产池会漂移，陈值比没值更危险。`pending` / `correlation_busy` / `data_unavailable` **不缓存**；命中缓存的响应带 `from_cache: true` | `brain_mixin_correlation.py::_prod_corr_cached`（TTL 与 `wqb.store._corr_cache.CORR_FRESH_HOURS=48` 同口径） |
 | `correlation_busy` 带 `retry_after`（缺省 180 s，环境变量 `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS`） | `brain_mixin_transport.py` |
 | **提交前终验必须 `refresh=True`** 强制回源——本地 / 缓存的 prod 值会随平台 prod 池变动快速漂移（0.6997 → 1.0000 一小时内发生过） | `incidents.md` I-2 |
 
@@ -19,7 +19,7 @@
 
 | 返回 | 含义 | 动作 |
 |---|---|---|
-| 命中缓存（`from_cache: true`） | 7 天内的已决结果（仅有 Redis 时会有） | 直接用；**提交前终验**仍须 `refresh=True` 回源 |
+| 命中缓存（`from_cache: true`） | **48 小时**内的已决结果（SQLite 权威表，无需 Redis） | 直接用；**提交前终验**仍须 `refresh=True` 回源 |
 | `pending` | 轮询超时（≥ 1 h）仍无数据 | 视为**未决**：不据此放行、不据此判死；隔一段时间再查一次，再空则向用户报错，**不得编造数字** |
 | `correlation_busy` | 账号级单并发已被占用（fail-fast，立即返回） | 按 `retry_after` 等待后**串行**重试；不要另起并行进程去抢 |
 

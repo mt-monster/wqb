@@ -43,8 +43,19 @@ class AlphasMixin:
         region: Optional[str] = None,
         min_sharpe: float = 1.0,
         limit: int = 20,
+        merge_corr_cache: bool = True,
     ) -> List[Dict[str, Any]]:
-        """按 sharpe 搜索 alpha（sharpe >= min_sharpe）。"""
+        """按 sharpe 搜索 alpha（sharpe >= min_sharpe）。
+
+        2026-10-06 新增 ``merge_corr_cache``：默认为 ``True``，命中后对返回行的
+        ``prod_correlation`` / ``self_correlation`` 做一次**权威表优先**的合并——
+        若 ``alpha_corr_cache`` 里有值就用缓存，否则保留 ``alphas`` 表原值。
+
+        动机：``prod_saturation_gate`` 靠 ``prod_correlation`` 判字段/数据集是否已撞墙，
+        但 2026-10-05 单源化之后，权威表比 ``alphas`` 表更"新"（mirror 也曾是
+        NULL-only 造成 3 行 >0.01 冲突）。不合并会让饱和度统计看不到 191 条 cache-only
+        行的实测 prod，进而误判字段还没撞墙。合并是**只读**行为，不改任何表。
+        """
         cur = self.connection.cursor()
         sql = (
             "SELECT a.*, r.name AS region FROM alphas a "
@@ -58,7 +69,22 @@ class AlphasMixin:
         sql += " ORDER BY a.sharpe DESC LIMIT ?"
         params.append(limit)
         cur.execute(sql, params)
-        return [dict(row) for row in cur.fetchall()]
+        rows = [dict(row) for row in cur.fetchall()]
+        if merge_corr_cache and rows:
+            ids = [r.get("alpha_id") for r in rows if r.get("alpha_id")]
+            try:
+                recs = self.get_corr_authoritative_batch(ids)
+            except Exception:  # noqa: BLE001 - 缓存表可能不存在（老库），降级为不合并
+                recs = {}
+            for r in rows:
+                rec = recs.get(r.get("alpha_id"))
+                if not rec:
+                    continue
+                if rec.get("prod_correlation") is not None:
+                    r["prod_correlation"] = rec["prod_correlation"]
+                if rec.get("self_correlation") is not None:
+                    r["self_correlation"] = rec["self_correlation"]
+        return rows
 
     def upsert_alpha_os_metrics(self, alpha_id: str, os_data: Dict[str, Any],
                                 region: Optional[str] = None,

@@ -974,7 +974,12 @@ class SpcDataMixin:
 
     async def _poll_production_correlation(self, alpha_id: str) -> Dict[str, Any]:
         max_wait_seconds = 3600  # 1 hour total
-        poll_interval = 30       # 30 seconds per attempt (matches reference implementation)
+        # 2026-10-06 实测调优：平台单槽串行，实测单条 94s 出结果（4 次轮询）。
+        # 原 30s 固定间隔 ⇒ 结果落在第 92s 时仍要等到第 120s，**平均白等约 15s/条**
+        # （≈ 平台耗时的 16%）。改成 10s 起、前 12 次 10s、之后 30s 的阶梯：
+        # 短任务（多数 1–2 分钟）更快收敛，长尾任务仍不会被请求数放大。
+        poll_interval = 30       # 长尾阶段的稳态间隔
+        poll_fast = 10           # 前 12 次的快轮询间隔
         start_time = time.time()
         attempt = 0
         consecutive_empty = 0    # track consecutive empty-body responses
@@ -1014,7 +1019,7 @@ class SpcDataMixin:
                             "平台正在计算中，通常需要 1-5 分钟，请耐心等待...",
                             "INFO"
                         )
-                    await asyncio.sleep(poll_interval)
+                    await asyncio.sleep(poll_fast if attempt <= 12 else poll_interval)
                     continue
                 
                 # Got a non-empty response — reset empty counter
@@ -1040,5 +1045,5 @@ class SpcDataMixin:
                 continue
 
             consecutive_network_failures = 0
-            
-            await asyncio.sleep(poll_interval)
+
+            await asyncio.sleep(poll_fast if attempt <= 12 else poll_interval)

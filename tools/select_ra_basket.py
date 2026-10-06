@@ -128,8 +128,22 @@ async def platform_recheck(brain, alpha_id: str):
             for x in checks if isinstance(x, dict) and x.get("result") == "FAIL"]
 
 
-#: prod 值的新鲜度缺省（天）。2026-10-03：IND 旧候选 09-19~23 实测 prod 0.51–0.67，10-02 复测**全部** 0.83–0.99
+# 存储层单一事实源（供本文件内部按小时做算术时使用；本工具的对外 CLI 口径仍是天）。
+# 2026-10-06：修复文档中「48h 单源化」承诺的落空——此前 `PROD_FRESH_DAYS = 2` 是硬编码，
+# 与 store 侧 48h 各自漂移（Redis 7 天 TTL 教训，见
+# docs/design/prod_corr_persistence_design_20260918.md §6.6）。此处至少保证
+# 「小时基准」来自单一事实源，避免以后 store 侧改保鲜期时本工具跟着漂。
+try:
+    from wqb.store._corr_cache import CORR_FRESH_HOURS as _STORE_FRESH_HOURS
+except Exception:  # noqa: BLE001
+    _STORE_FRESH_HOURS = 48.0
+
+#: prod 值算「新鲜」的天数缺省。
+#: 2026-10-03：IND 旧候选 09-19~23 实测 prod 0.51–0.67，10-02 复测**全部** 0.83–0.99
 #: （社区同族 alpha 持续进 book，WorkBuddy 记忆 MEMORY §1.3「陈旧 prod 值一律作废」）。
+#: ⚠ 本工具刻意比 store 侧的 :data:`_corr_cache.CORR_FRESH_HOURS`（48h）**更严**：
+#: 提交篮子的门槛严于「权威表新鲜」的门槛，因为篮子送进限流队列前先剔一次比事后返工便宜。
+#: 改动 48h 常请同步检查这里。
 PROD_FRESH_DAYS = 2
 
 
@@ -170,20 +184,52 @@ def classify_prod(prod, checked_at, max_age_days=PROD_FRESH_DAYS, now=None, ceil
 
 
 def prod_freshness_index(conn, ids, max_age_days=PROD_FRESH_DAYS, now=None):
-    """只读 `alphas` 表，返回 {alpha_id: {prod, checked_at, age_days, status}}（查不到的 id 不在结果里）。"""
+    """返回 {alpha_id: {prod, checked_at, age_days, status}}（查不到的 id 不在结果里）。
+
+    2026-10-06 修复：此前**只读** ``alphas`` 表，导致权威表 ``alpha_corr_cache`` 里
+    有、``alphas`` 里没有（或仍是旧值）的行全部判成 ``unmeasured``，被消费者重新排队
+    打平台单并发接口（实测 191 条 cache-only 行不可见，历史「6 颗 GBR 重复测量」的
+    根因就是这条链路）。改为优先走 ``get_corr_authoritative_batch``——先查权威表，
+    缺再回落 ``alphas``，两条都查不到才跳过。
+
+    ``conn`` 可以是 ``sqlite3.Connection`` 或 ``CampaignStore``：优先从其属性拿到 db
+    路径（``db_path`` / ``path``），实在拿不到才回落到默认路径。**关闭连接归调用方管**
+    （本函数不 close 传入的 ``conn``，避免与调用方生命周期冲突）。
+    """
+    from wqb.store import CampaignStore
+    from wqb.db_conn import default_db_path
+
     ids = [i for i in dict.fromkeys(ids) if i]
+    if not ids:
+        return {}
+    # 优先复用调用方给的 CampaignStore（已含 mixin）；否则从裸 conn 推 db 路径自开一个。
+    own = False
+    if hasattr(conn, "get_corr_authoritative_batch"):
+        store = conn
+    else:
+        path = getattr(conn, "db_path", None) or getattr(conn, "path", None) or default_db_path()
+        store = CampaignStore(path)
+        own = True
+    try:
+        recs = store.get_corr_authoritative_batch(ids)
+    finally:
+        if own:
+            try:
+                store.close()
+            except Exception:  # noqa: BLE001
+                pass
     out = {}
-    for start in range(0, len(ids), 500):  # 分块：避开 SQLite 变量个数上限
-        chunk = ids[start:start + 500]
-        marks = ",".join("?" for _ in chunk)
-        rows = conn.execute(
-            "SELECT alpha_id, prod_correlation, corr_checked_at FROM alphas "
-            f"WHERE alpha_id IN ({marks})", chunk,
-        ).fetchall()
-        for aid, prod, checked in rows:
-            status, age = classify_prod(prod, checked, max_age_days, now)
-            out[aid] = {"prod": prod, "checked_at": checked,
-                        "age_days": None if age is None else round(age, 2), "status": status}
+    for aid, rec in recs.items():
+        prod = rec.get("prod_correlation")
+        checked = rec.get("checked_at")
+        status, age = classify_prod(prod, checked, max_age_days, now)
+        out[aid] = {
+            "prod": prod,
+            "checked_at": checked,
+            "age_days": None if age is None else round(age, 2),
+            "status": status,
+            "from_alphas": bool(rec.get("from_alphas")),
+        }
     return out
 
 

@@ -8,9 +8,11 @@
 
 行为：
   - 枚举区域内 IS 合格 & 未提交的 alpha（口径：sharpe≥1.58 & fitness≥1.0 & 2Y≥1.58 & margin 非空 & 未 ACTIVE）
-  - 逐条测 **prod（原始 GET 轮询：空体=平台仍在算，非空取 `max`；见 2026-09-22 修正）** 与 **self（本地计算）**
+  - 逐条测 **prod（走 `get_production_correlation`：内置锁 + 30s 轮询 + 1h 超时；2026-10-06 修正）**
+    与 **self（本地计算）**
   - **断点续跑**：state 文件记录已测 alpha；网络失败不入 state（下次重试）
-  - 测得的值**回写 alphas.prod_correlation / self_correlation / corr_checked_at**（测量落库，幂等）
+  - 测得的值**回写 alphas 表**（persist_correlation），并经 mirror 联动 alpha_corr_cache
+    （2026-10-06 修正：mirror 现以 overwrite=True 落盘，避免"新值只进权威表、alphas 留旧值"）
   - 输出 CSV + JSON；打印「<0.7 可提交清单」
 
 用法（需 MCP venv 的 Python）：
@@ -127,6 +129,12 @@ def persist(alpha_id, prod, self_v=None, source="prod_first_screen"):
     2026-09-30：平台侧候选（--from-file）常常根本不在本地 alphas 表，旧版裸 UPDATE
     影响 0 行且不报错 → 测了等于没测（EUR 前四轮“49 条已测”只存在于丢失的 state JSON、
     库里只余 18 条）。现在先 upsert_alpha_from_platform 登记再 persist_correlation。
+
+    2026-10-06 修正：改走 ``set_corr_cache``（权威表唯一写入口）而非直接
+    ``persist_correlation``。此前旧实现只写 alphas 表——结果不进 alpha_corr_cache，
+    盘点（select_ra_basket / submit_inventory / submit_queue）读到「无新鲜度依据」
+    再排队测一次，白占平台单并发队列。set_corr_cache 内部会以 overwrite=True
+    联动 alphas，两表一致。
     """
     if not isinstance(prod, (int, float)) and not isinstance(self_v, (int, float)):
         return "no_valid_value"
@@ -138,9 +146,8 @@ def persist(alpha_id, prod, self_v=None, source="prod_first_screen"):
         if not store.connection.execute(
                 "SELECT 1 FROM alphas WHERE alpha_id=?", (alpha_id,)).fetchone():
             return "not_found"            # 登记在 enumerate_from_file 阶段已做完
-        r = store.persist_correlation(alpha_id, prod=prod, self_=self_v,
-                                      source=source, overwrite=False)
-    return "ok" if "skipped" not in r else r["skipped"]
+        r = store.set_corr_cache(alpha_id, prod=prod, self_=self_v, source=source)
+    return "ok" if r.get("action") == "upserted" else (r.get("skipped") or "unknown")
 
 
 # ------------------------- 平台侧候选枚举（--from-file）-------------------------
@@ -477,34 +484,37 @@ async def main():
     measured, failed = 0, 0
     for i, row in enumerate(todo, 1):
         aid = row["alpha_id"]
-        # 2026-09-22 修正：改用**原始端点轮询**取 prod——
-        # 客户端 check_correlation 是同一 GET 的阻塞式轮询，且结果缓存依赖 Redis（本环境不可用）
-        # → 每次回源、易「等死」。原始 GET 始终秒回（空体=平台仍在算），自己控节奏更稳。
+        # 2026-10-06 修复：改走 `get_production_correlation`——它是「MCP 侧唯一走锁 +
+        # 缓存」的正门。此前的原始 GET 轮询（2026-09-22 版）绕开了两处机制：
+        #   1) `_try_acquire_brain_correlation_lock`（Redis 移除后已是纯本地 asyncio.Lock，
+        #      跨进程并行跑 prod_first_screen / backfill_prod_corr / triage_prodcorr_batch
+        #      会一起打单并发平台接口，被限流）；
+        #   2) `alpha_corr_cache` 缓存表（结果不进缓存 → 下次盘点判成「未测」重复排队）。
+        # 内部会 30s 间隔、最多等 1 小时；平台返回空 body 表示还在计算，函数自己处理。
         # 非空返回体形如 {schema, records(直方图), max, min}，**max 即 0.7 判定值**。
         prod = self_v = None
-        for _ in range(int(a.window_s / a.poll_gap) or 1):
-            try:
-                resp = await asyncio.wait_for(
-                    bc._request("GET", f"{bc.base_url}/alphas/{aid}/correlations/prod"),
-                    timeout=25)
-                txt = (resp.text or "").strip()
-                if txt:
-                    j = json.loads(txt)
-                    if j.get("max") is not None:
-                        prod = j["max"]
+        pc = None
+        try:
+            pc = await bc.get_production_correlation(aid)
+        except Exception as e:  # noqa: BLE001 - 平台故障/网络抖动降级为「取不到」
+            print(f"  [warn] {aid} get_production_correlation 抛异常 {type(e).__name__}: {e}")
+        status = (pc or {}).get("status")
+        if status == "correlation_busy":
+            # 单并发锁竞争 → 让出这一轮，等下一颗；不计入 state，下次重试
+            await asyncio.sleep(float((pc or {}).get("retry_after") or 30))
+            failed += 1
+            print(f"  [{i}/{len(todo)}] {aid} correlation_busy（本轮让出，下次重试）")
+        else:
+            prod = (pc or {}).get("max")
+            for _ in range(2):
+                try:
+                    sc = await bc.check_self_correlation(aid, threshold=0.7)
+                    self_v = (sc or {}).get("max_correlation")
+                    if self_v is not None:
                         break
-            except Exception:
-                pass
-            await asyncio.sleep(a.poll_gap)
-        for _ in range(2):
-            try:
-                sc = await bc.check_self_correlation(aid, threshold=0.7)
-                self_v = (sc or {}).get("max_correlation")
-                if self_v is not None:
-                    break
-            except Exception:
-                pass
-            await asyncio.sleep(0.8)
+                except Exception:
+                    pass
+                await asyncio.sleep(0.8)
 
         if prod is None:                      # prod 取不到 → 不入 state，下次重试
             failed += 1
@@ -516,7 +526,8 @@ async def main():
                           "at": datetime.now().isoformat(timespec="seconds")}
             with open(state_path, "w", encoding="utf-8") as f:
                 json.dump(state, f, ensure_ascii=False, indent=1)
-            # 测量落库（只填 NULL，保留平台权威值；走 CampaignStore）
+            # 测量落库：persist() 走 persist_correlation（mirror 到 alpha_corr_cache，
+            # 2026-10-06 修复 mirror overwrite=True），保证「走锁的正门」结果也进缓存。
             wrote = persist(aid, prod, self_v)
             if wrote == "not_found":
                 print(f"  [warn] {aid} 不在 alphas 表，prod 值仅存 state（请查登记步骤是否失败）")

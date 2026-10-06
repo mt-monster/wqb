@@ -9,7 +9,6 @@ import os
 import sys
 from pathlib import Path
 from urllib.parse import urljoin
-import redis
 import hashlib
 import uuid
 import random
@@ -63,6 +62,8 @@ class TransportMixin:
         except Exception:
             self._auth_check_ttl_seconds = 300.0
         self._brain_correlation_local_lock = asyncio.Lock()
+        # get_datafields 全量 dump 的并发闸（原 Redis 分布式锁，2026-10-06 改本地）
+        self._datafields_local_lock = asyncio.Lock()
         self._os_pnl_pool_locks: Dict[str, asyncio.Lock] = {}
         self._os_pnl_pool_locks_guard = asyncio.Lock()
         self._os_pnl_pool_last_sync: Dict[str, Any] = {}
@@ -112,30 +113,15 @@ class TransportMixin:
         except Exception as e:
             self.log(f"Failed to load OS/IS Sharpe data: {str(e)}, sharpe filtering disabled", "WARNING")
 
-        # Initialize Redis connection
-        try:
-            redis_host = os.environ.get('REDIS_HOST', 'localhost')
-            try:
-                redis_port = int(os.environ.get('REDIS_PORT', str(6379)))
-            except Exception:
-                redis_port = 6379
-
-            self.redis_client = redis.Redis(
-                host=redis_host,
-                port=redis_port,
-                db=0,
-                decode_responses=True,
-                socket_connect_timeout=5
-            )
-            # Test connection
-            self.redis_client.ping()
-            self.log("Redis connection established", "INFO")
-        except Exception as e:
-            # 2026-09-01 降噪：Redis 是可选缓存（无 Redis 功能不受影响，只是无缓存），
-            # 连接失败降为一次性 INFO 提示，不再刷 WARNING（CLI 工具如 submit_verdict
-            # 每次调用都会初始化客户端，WARNING 噪音掩盖真实告警）。
-            self.log(f"Redis not available ({type(e).__name__}), caching disabled (optional)", "INFO")
-            self.redis_client = None
+        # ---- 缓存后端（2026-10-06：Redis 移除，改用 SQLite）----
+        # 原实现连 Redis，失败即 ``redis_client=None``，于是 ``_get_cached_data`` /
+        # ``_set_cached_data`` 读写**静默 no-op**——缓存整条失效，prod 相关性每次都重打
+        # 平台单并发队列。且 Redis 那版默认 TTL 7 天，与 prod 48h 保鲜纪律冲突。
+        # 现统一走 ``data/wqb.db::api_cache``（跨进程共享，不依赖额外服务）。
+        # ``_cache_store`` 懒加载：首次用到时才 import wqb.store，导入失败置哨兵并
+        # 只告警一次，**绝不阻断查询主流程**（与旧 Redis 失败降级同哲学）。
+        self._cache_store = None
+        self._cache_store_loaded = False
 
     def log(self, message: str, level: str = "INFO"):
         """Log messages to stderr to avoid MCP protocol interference."""
@@ -196,25 +182,55 @@ class TransportMixin:
         hash_str = hashlib.md5(param_str.encode()).hexdigest()
         return f"{prefix}:{hash_str}"
 
+    def _cache_backend(self):
+        """返回 SQLite 缓存 store；不可用返回 ``None``（懒加载 + 一次性告警）。
+
+        2026-10-06：原先返回 Redis 客户端，Redis 未启动时整条缓存链路静默失效。
+        现改为 ``wqb.store.CampaignStore``（``data/wqb.db::api_cache``），
+        它天然跨进程共享——这正是当初选 Redis 的唯一理由。
+        """
+        # getattr 惰性取值：``BrainApiClient.__new__`` 造的空壳实例（单测常用）不会
+        # 走 __init__，直接取属性会 AttributeError。这里按"未初始化"处理。
+        if getattr(self, "_cache_store_loaded", False):
+            return getattr(self, "_cache_store", None)
+        self._cache_store_loaded = True
+        try:
+            from wqb.store import CampaignStore  # 延迟导入：MCP 包不强依赖 src
+            self._cache_store = CampaignStore.from_workspace()
+            self.log("Cache backend: sqlite (data/wqb.db::api_cache)", "INFO")
+        except Exception as e:
+            # 只告警一次：CLI 工具每次调用都初始化客户端，重复告警会掩盖真实问题。
+            self.log(f"Cache backend unavailable ({type(e).__name__}: {e}), caching disabled", "INFO")
+            self._cache_store = None
+        return self._cache_store
+
     def _get_cached_data(self, cache_key: str) -> Optional[Dict[str, Any]]:
-        """Get data from Redis cache."""
-        if not self.redis_client:
+        """读缓存（SQLite ``api_cache`` 表）。未命中 / 已过期 / 后端不可用 → ``None``。"""
+        store = self._cache_backend()
+        if store is None:
             return None
         try:
-            cached = self.redis_client.get(cache_key)
-            if cached:
-                self.log(f"Cache hit for key: {cache_key}", "INFO")
-                return json.loads(cached)
+            hit = store.get_api_cache(cache_key)
         except Exception as e:
             self.log(f"Cache read error: {str(e)}", "WARNING")
-        return None
+            return None
+        if hit:
+            self.log(f"Cache hit for key: {cache_key}", "INFO")
+        return hit
 
     def _set_cached_data(self, cache_key: str, data: Dict[str, Any], ttl: int = 604800):
-        """Set data in Redis cache with TTL (default 1 week = 604800 seconds)."""
-        if not self.redis_client:
+        """写缓存（SQLite ``api_cache`` 表），TTL 单位为秒。
+
+        ⚠ 默认 TTL 保留 604800（1 周）只为兼容既有调用点（datafields / mutual 等），
+        但 **prod 相关性不走这个默认值**——它在 ``check_correlation`` 里按 48h 保鲜
+        期显式传 TTL（见 ``brain_mixin_correlation._PROD_CORR_TTL_SECONDS``）。
+        生产池会漂移，7 天陈值用于提交判定会出事。
+        """
+        store = self._cache_backend()
+        if store is None:
             return
         try:
-            self.redis_client.setex(cache_key, ttl, json.dumps(data))
+            store.set_api_cache(cache_key, data, ttl=ttl)
             self.log(f"Cached data with key: {cache_key}, TTL: {ttl}s", "INFO")
         except Exception as e:
             self.log(f"Cache write error: {str(e)}", "WARNING")
@@ -230,44 +246,14 @@ class TransportMixin:
         return "lock:brain_correlation"
 
     async def _try_acquire_brain_correlation_lock(self, op_name: str) -> Dict[str, Any]:
-        """Try once to acquire the per-account platform correlation slot."""
-        lock_key = self._brain_correlation_lock_key()
-        try:
-            lock_ttl = int(os.environ.get("BRAIN_CORRELATION_LOCK_TTL_SECONDS", "3700"))
-        except Exception:
-            lock_ttl = 3700
-        lock_token = uuid.uuid4().hex
+        """Try once to acquire the per-account platform correlation slot.
 
-        if self.redis_client:
-            try:
-                if self.redis_client.set(lock_key, lock_token, ex=lock_ttl, nx=True):
-                    self.log(
-                        f"[corr-lock] Acquired {lock_key} for {op_name} (ttl={lock_ttl}s)",
-                        "INFO",
-                    )
-                    return {
-                        'acquired': True,
-                        'backend': 'redis',
-                        'lock_key': lock_key,
-                        'lock_token': lock_token,
-                    }
-                ttl = self.redis_client.ttl(lock_key)
-                self.log(
-                    f"[corr-lock] Busy {lock_key} for {op_name} (holder_ttl={ttl}s)",
-                    "INFO",
-                )
-                return {
-                    'acquired': False,
-                    'backend': 'redis',
-                    'lock_key': lock_key,
-                    'retry_after': ttl if ttl and ttl > 0 else None,
-                }
-            except Exception as e:
-                self.log(
-                    f"[corr-lock] Redis error acquiring lock for {op_name}: {e}. "
-                    "Falling back to local fail-fast lock.",
-                    "WARNING",
-                )
+        2026-10-06：原实现优先用 Redis 分布式锁、失败才回退本地 asyncio 锁。Redis 移除后
+        只保留本地锁——语义不变（都是 fail-fast：拿不到就回 busy 而不是排队），
+        代价只是**跨进程**不再互斥（本机 MCP 服务是单进程，无影响）。
+        """
+        lock_key = self._brain_correlation_lock_key()
+        lock_token = uuid.uuid4().hex
 
         if self._brain_correlation_local_lock.locked():
             self.log(f"[corr-lock] Busy local correlation lock for {op_name}", "INFO")
@@ -291,20 +277,6 @@ class TransportMixin:
         if not lock_info or not lock_info.get('acquired'):
             return
         backend = lock_info.get('backend')
-        if backend == 'redis' and self.redis_client:
-            try:
-                self.redis_client.eval(
-                    "if redis.call('get', KEYS[1]) == ARGV[1] then "
-                    "return redis.call('del', KEYS[1]) else return 0 end",
-                    1,
-                    lock_info['lock_key'],
-                    lock_info['lock_token'],
-                )
-                self.log(f"[corr-lock] Released {lock_info['lock_key']} for {op_name}", "INFO")
-            except Exception as e:
-                self.log(f"[corr-lock] Lock release failed for {op_name}: {e}", "WARNING")
-            return
-
         if backend == 'local' and self._brain_correlation_local_lock.locked():
             self._brain_correlation_local_lock.release()
             self.log(f"[corr-lock] Released local correlation lock for {op_name}", "INFO")
@@ -312,21 +284,6 @@ class TransportMixin:
     async def _rate_limit_forum_op(self, op_name: str) -> Optional[Dict[str, Any]]:
         if self._forum_rate_limit_seconds <= 0:
             return None
-
-        if self.redis_client:
-            try:
-                lock_key = "rate_limit:forum_ops"
-                if not self.redis_client.set(lock_key, "locked", ex=self._forum_rate_limit_seconds, nx=True):
-                    ttl = self.redis_client.ttl(lock_key)
-                    if not isinstance(ttl, int) or ttl < 0:
-                        ttl = self._forum_rate_limit_seconds
-                    return {
-                        'status': 'rate_limited',
-                        'message': f"Rate limit exceeded. Please wait {ttl} seconds before trying again.",
-                        'retry_after': ttl,
-                    }
-            except Exception as e:
-                self.log(f"Rate limiting for {op_name} failed, falling back to local limiter: {str(e)}", "WARNING")
 
         async with self._forum_rate_limit_lock:
             now = time.time()

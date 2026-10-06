@@ -77,6 +77,18 @@ CREATE TABLE IF NOT EXISTS submit_ready (
     two_year       REAL,
     sub_universe   REAL,
     cluster_test   REAL,
+    -- ---- 2026-10-06：体检卡三层的台账落点（此前只存在于 alphas/backtest_results，
+    --   submit_ready 完全没有 → 直连候选的 margin / 约束后表现全库不可见，
+    --   体检卡每次只能绕过 DB 打平台 GET）。全部可空，不破坏既有数据。----
+    margin         REAL,          -- 每单位换手收益，官方「好 alpha」三线之一（单位=小数，×1e4=bp）
+    returns        REAL,          -- judge 六指标之一（年化收益，小数）
+    drawdown       REAL,          -- 回报层风险项（最大回撤）
+    long_count     INTEGER,       -- 多头持仓数（与 short_count 判多空均衡）
+    short_count    INTEGER,       -- 空头持仓数
+    -- LOW_INVESTABILITY_CONSTRAINED_SHARPE 是 RA_HARD_FAILS 里的硬闸 → 原始值必须可查。
+    investability_constrained_sharpe REAL,
+    -- 加钱层（VF 单α表现）：风险中性化后 sharpe，与 backtest_results.risk_neutralized_sharpe 同口径。
+    risk_neutralized_sharpe          REAL,
     prod           REAL,
     self           REAL,
     gate           TEXT    DEFAULT 'UNVERIFIED',
@@ -306,6 +318,22 @@ def _migrate(con: sqlite3.Connection) -> None:
             con.execute("ALTER TABLE submit_ready ADD COLUMN suggested_tags TEXT")
         except sqlite3.Error:
             pass
+    # 2026-10-06：体检卡三层所需的 7 列（老库自愈）。SCHEMA 的 CREATE TABLE IF NOT EXISTS
+    # 对已存在的表是 no-op，故老库只能靠这里 ALTER 补齐；顺序无关（都只补列）。
+    for _col, _ddl in (
+        ("margin", "REAL"),
+        ("returns", "REAL"),
+        ("drawdown", "REAL"),
+        ("long_count", "INTEGER"),
+        ("short_count", "INTEGER"),
+        ("investability_constrained_sharpe", "REAL"),
+        ("risk_neutralized_sharpe", "REAL"),
+    ):
+        if _col not in cols:
+            try:
+                con.execute(f"ALTER TABLE submit_ready ADD COLUMN {_col} {_ddl}")
+            except sqlite3.Error:
+                pass
     try:
         con.execute("CREATE INDEX IF NOT EXISTS ix_sr_skeleton ON submit_ready(skeleton)")
     except sqlite3.Error:
@@ -410,12 +438,26 @@ def _upsert(con: sqlite3.Connection, rec: Dict[str, Any], note: str = "") -> str
     con.execute(
         """INSERT INTO submit_ready
         (alpha_id,region,universe,delay,decay,neutralization,expr,skeleton,suggested_tags,
-         sharpe,fitness,turnover,two_year,sub_universe,cluster_test,prod,self,
+         sharpe,fitness,turnover,two_year,sub_universe,cluster_test,
+         margin,returns,drawdown,long_count,short_count,
+         investability_constrained_sharpe,risk_neutralized_sharpe,
+         prod,self,
          gate,verified_at,verified_by,towers,family,status,added_at,note)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ON CONFLICT(alpha_id,region) DO UPDATE SET
           sharpe=excluded.sharpe, fitness=excluded.fitness, turnover=excluded.turnover,
-          two_year=excluded.two_year, prod=excluded.prod, self=excluded.self,
+          two_year=excluded.two_year,
+          margin=COALESCE(excluded.margin, submit_ready.margin),
+          returns=COALESCE(excluded.returns, submit_ready.returns),
+          drawdown=COALESCE(excluded.drawdown, submit_ready.drawdown),
+          long_count=COALESCE(excluded.long_count, submit_ready.long_count),
+          short_count=COALESCE(excluded.short_count, submit_ready.short_count),
+          investability_constrained_sharpe=COALESCE(
+              excluded.investability_constrained_sharpe,
+              submit_ready.investability_constrained_sharpe),
+          risk_neutralized_sharpe=COALESCE(
+              excluded.risk_neutralized_sharpe, submit_ready.risk_neutralized_sharpe),
+          prod=excluded.prod, self=excluded.self,
           gate=excluded.gate, verified_at=excluded.verified_at,
           verified_by=excluded.verified_by, towers=excluded.towers,
           skeleton=COALESCE(excluded.skeleton, submit_ready.skeleton),
@@ -436,6 +478,9 @@ def _upsert(con: sqlite3.Connection, rec: Dict[str, Any], note: str = "") -> str
          rec.get("suggested_tags") or _tags_for(rec),
          rec.get("sharpe"), rec.get("fitness"), rec.get("turnover"),
          rec.get("two_year"), rec.get("sub_universe"), rec.get("cluster_test"),
+         rec.get("margin"), rec.get("returns"), rec.get("drawdown"),
+         rec.get("long_count"), rec.get("short_count"),
+         rec.get("investability_constrained_sharpe"), rec.get("risk_neutralized_sharpe"),
          rec.get("prod"), rec.get("self"), gate, _now(), vb,
          rec.get("towers") or "[]", rec.get("family"), st, _now(), note),
     )
@@ -805,7 +850,10 @@ def mark_verified(alpha_id: str, region: Optional[str] = None,
         ps: List[Any] = [gate, _now(), source, STATUS_READY]
         if rec:
             for k in ("sharpe", "fitness", "turnover", "two_year", "sub_universe",
-                      "cluster_test", "prod", "self", "expr"):
+                      "cluster_test", "prod", "self", "expr",
+                      # 2026-10-06：体检卡三层新增列也随判定点刷新
+                      "margin", "returns", "drawdown", "long_count", "short_count",
+                      "investability_constrained_sharpe", "risk_neutralized_sharpe"):
                 if rec.get(k) is not None:
                     sets.append(f"{k}=?")
                     ps.append(rec[k])
@@ -873,3 +921,56 @@ def list_ready(region: Optional[str] = None, db_path: Optional[str] = None,
         return sorted(rows, key=priority, reverse=True)
     finally:
         con.close()
+
+
+def normalize_towers(raw) -> list:
+    """``towers`` 列归一为 ``[(塔名, 倍率)]``（无倍率则为 ``None``）。
+
+    2026-10-05 实测该列**三种格式并存**，且旧 ``priority`` 只认其中一种：
+      * ``'["USA/D1/MODEL"]'``   —— JSON list of str（tools/submit_queue.py add 产出）
+      * ``'{"name":..,"multiplier":..}'`` 元素 —— JSON list of dict（原 priority 期望）
+      * ``'USA/D1/MODEL'``       —— **裸字符串**（无引号无括号，json.loads 抛错静默退化）
+      * ``'[]'`` / ``None``      —— harvest 时 pyramids 缺失（UNSUBMITTED alpha 无 pyramids）
+    旧实现三态里两态全部退化为 1.0 ⇒ 塔倍率被静默丢弃、优先级排序失真。本函数统一解析。
+
+    注（2026-10-06）：本函数原为工作区未跟踪改动，被外部 ``cline restore transaction``
+    一并清除且无 git 历史；此版本依据残留字节码常量重建。
+    """
+    out = []
+    if raw is None:
+        return out
+    if isinstance(raw, (list, tuple)):
+        items = list(raw)
+    else:
+        s = str(raw).strip()
+        if not s:
+            return out
+        try:
+            items = json.loads(s)
+        except (ValueError, TypeError):
+            items = re.split(r"[,;\s]+", s)
+        if isinstance(items, dict):
+            items = [items]
+        elif not isinstance(items, (list, tuple)):
+            items = [items]
+    for it in items or []:
+        mult = None
+        if isinstance(it, dict):
+            nm = it.get("name") or it.get("id")
+            if not nm:
+                pyr = it.get("pyramid")
+                if isinstance(pyr, dict) and pyr.get("region") is not None:
+                    nm = "%s/D%s/%s" % (pyr.get("region"),
+                                        pyr.get("delay") if pyr.get("delay") is not None else "?",
+                                        pyr.get("category") or "?")
+            mv = it.get("multiplier")
+            if mv is not None:
+                try:
+                    mult = float(mv)
+                except (TypeError, ValueError):
+                    mult = None
+        else:
+            nm = str(it).strip() if it is not None else ""
+        if nm:
+            out.append((str(nm).strip(), mult))
+    return out

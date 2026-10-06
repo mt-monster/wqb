@@ -69,8 +69,14 @@ def test_no_quota_via_submit_and_no_stale_environment_claims():
         assert stale not in blob, f"how-to-pass 里还有过期的 check_correlation 环境说法：{stale}"
     assert "prod-corr-avoidance.md" in _t(SK / "SKILL.md")                 # 环境事实只写那一处
     ra = _t(ROOT / "Claude" / "skills" / "wq-brain-ra-pipeline" / "references" / "prod-corr-avoidance.md")
-    for fact in ("仅在有 Redis 时", "retry_after", "至多 1 次", "5 分钟"):
+    # 2026-10-06：缓存后端已由 Redis 换成 SQLite 权威表（`wqb.store._corr_cache`，
+    # `CORR_FRESH_HOURS=48`）。原断言锁的「仅在有 Redis 时」是**旧架构事实**，会把已完成的
+    # 架构变更误判成回归。改为锁新事实，并显式禁止 Redis 说法回潮——这才是本测试
+    # 「no stale environment claims」的本意。
+    for fact in ("48 小时", "alpha_corr_cache", "retry_after", "至多 1 次", "5 分钟"):
         assert fact in ra
+    assert "不再依赖 Redis" in ra, "prod-corr-avoidance.md 应当写明缓存已不依赖 Redis"
+    assert "仅在有 Redis 时" not in ra, "prod-corr-avoidance.md 又出现过期的 Redis 依赖说法"
 
 
 def test_reference_no_longer_carries_idea_layer_or_unsafe_examples():

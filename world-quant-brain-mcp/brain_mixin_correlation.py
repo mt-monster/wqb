@@ -704,10 +704,54 @@ class CorrelationMixin:
             'correlation_data': correlation_data,
         }
 
-    def _prod_corr_cache_key(self, alpha_id: str) -> str:
-        """prod 结果缓存 key。同一 alpha 仿真后生产池相关性不再变化（重仿真产生新 id），
-        故可按 alpha_id 缓存 7 天，避免重复占用平台单并发相关性队列。"""
-        return f"prod_corr:{alpha_id}"
+    #: prod 缓存保鲜期（秒）——**⚠ 本属性未在任何代码路径中被读取**（2026-10-06 审计）：
+    #: 实际生效的唯一事实源是 ``wqb.store._corr_cache.CORR_FRESH_HOURS``
+    #: （由 ``_prod_corr_cached`` / ``get_corr_cache._row_to_corr`` 使用）。
+    #: 本属性保留只是让「48h 口径」在文档里能被引用，**改保鲜期请改 store 侧**，
+    #: 这里同步改只是让注释一致，不会改变实际行为。历史上 Redis 7 天 TTL 与 48h 单源化
+    #: 正面冲突（见 docs/design/prod_corr_persistence_design_20260918.md §6.6），
+    #: 本处保留常量只是给读者一个搜索锚点，别再当它是权威。
+    _PROD_CORR_TTL_SECONDS = 48 * 3600  # noqa: SLF001  见上方 note，未真正消费
+
+    def _prod_corr_cached(self, alpha_id: str) -> Optional[Dict[str, Any]]:
+        """读权威表 ``alpha_corr_cache``；**命中且未过期**才返回，否则 ``None``（回源平台）。
+
+        过期（>48h）或无时间戳一律按"没有"处理——把陈值当缓存命中，是拿漂移过的
+        生产池数据去过 0.7 的闸，比不缓存更危险。
+        """
+        store = self._cache_backend()
+        if store is None:
+            return None
+        try:
+            rec = store.get_corr_cache(alpha_id)
+        except Exception as e:
+            self.log(f"prod corr cache read failed for {alpha_id}: {e}", "WARNING")
+            return None
+        if not rec or rec.get("prod_correlation") is None or rec.get("stale"):
+            return None
+        return {
+            "max": rec["prod_correlation"],
+            "records": rec.get("records") or [],
+            "cached_at": rec.get("checked_at"),
+        }
+
+    def _prod_corr_store(self, alpha_id: str, correlation_data: Dict[str, Any]) -> None:
+        """把平台实测 prod 写进权威表（并联动 ``alphas`` 表——见 CorrCacheMixin）。
+
+        失败只告警、绝不阻断查询主流程（与旧 Redis 写失败同哲学）。
+        """
+        store = self._cache_backend()
+        if store is None:
+            return
+        try:
+            store.set_corr_cache(
+                alpha_id,
+                prod=correlation_data.get("max"),
+                records=correlation_data.get("records") or [],
+                source="check_correlation",
+            )
+        except Exception as e:
+            self.log(f"prod corr cache write failed for {alpha_id}: {e}", "WARNING")
 
     async def check_correlation(self, alpha_id: str, correlation_type: str = "production", threshold: float = 0.7, refresh: bool = False) -> Dict[str, Any]:
         """ Only where all IS metrics PASS to Check alpha correlation, Check alpha correlation against production alphas, self alphas, or both.
@@ -717,9 +761,15 @@ class CorrelationMixin:
         fail-fast lock, so concurrent production checks return busy instead of
         waiting. The ``self`` path is computed locally and is not gated here.
 
-        Caching (2026-09-01): 平台 prod 计算为异步排队（1-5 分钟，单并发），
-        同一 alpha 的有效结果缓存 7 天；``pending``/``correlation_busy``/
-        ``data_unavailable`` 不缓存；``refresh=True`` 强制重新走平台并覆盖缓存。
+        Caching (2026-10-06 改): 平台 prod 计算为异步排队（1-5 分钟，单并发），
+        已决结果写入 ``data/wqb.db::alpha_corr_cache``（全库 prod 的单一权威，
+        联动 ``alphas`` 表）。**保鲜期 48h**（生产池会漂移），过期即回源平台；
+        ``pending``/``correlation_busy``/``data_unavailable`` 不缓存；
+        ``refresh=True`` 强制重新走平台并覆盖缓存。
+
+        ⚠ 2026-10-06 修正：此前缓存唯一后端是 Redis，而 Redis 常未启动
+        （``redis_client=None`` → 读写静默 no-op）⇒ 每次调用都重打平台队列；
+        且那版 TTL 是 7 天，与 48h 保鲜纪律冲突。现统一走 SQLite。
         """
         await self.ensure_authenticated()
 
@@ -742,10 +792,9 @@ class CorrelationMixin:
             
             for check_type in check_types:
                 if check_type == "production":
-                    # 结果缓存：同 alpha 的已决结果 7 天内直接命中，不占平台单并发队列；
-                    # refresh=True 或缓存缺失/未决时回源平台。
-                    cache_key = self._prod_corr_cache_key(alpha_id)
-                    cached = None if refresh else self._get_cached_data(cache_key)
+                    # 结果缓存：读权威表 alpha_corr_cache，48h 内直接命中，
+                    # 不占平台单并发队列；refresh=True / 缺失 / 已过期则回源平台。
+                    cached = None if refresh else self._prod_corr_cached(alpha_id)
                     if cached and cached.get('max') is not None:
                         max_correlation = cached['max']
                         passes_check = max_correlation < threshold
@@ -801,15 +850,10 @@ class CorrelationMixin:
                     ):
                         max_correlation = correlation_data['max']
                         passes_check = max_correlation < threshold
-                        # 仅已决结果入缓存（pending/busy 分支已提前 return，不会走到这里）
-                        try:
-                            self._set_cached_data(cache_key, {
-                                'max': correlation_data['max'],
-                                'records': correlation_data.get('records', []),
-                                'cached_at': datetime.utcnow().isoformat() + 'Z',
-                            }, ttl=604800)
-                        except Exception as cache_err:
-                            self.log(f"prod corr cache write failed for {alpha_id}: {cache_err}", "WARNING")
+                        # 仅已决结果入缓存（pending/busy 分支已提前 return，不会走到这里）。
+                        # 写权威表并联动 alphas——这是设计文档 §6.2 第 4 条自 2026-10-04
+                        # 声称、却直到 2026-10-06 才真正实现的一步。
+                        self._prod_corr_store(alpha_id, correlation_data)
                         results['checks'][check_type] = {
                             'max_correlation': max_correlation,
                             'passes_check': passes_check,

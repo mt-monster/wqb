@@ -155,7 +155,12 @@ def test_correlation_is_written_with_provenance_and_never_wiped(store):
 
 
 def test_platform_sync_payload_keeps_local_backtest_values(store):
-    """tools/sync_platform_alphas.to_store_payload 的真实转换：two_year_sharpe=None、status=COMPLETE。"""
+    """tools/sync_platform_alphas.to_store_payload 的真实转换：status=COMPLETE，2Y/sub 从 is.checks[] 抽。
+
+    2026-10-06：此前 `to_store_payload` 把 two_year_sharpe 硬编码 None（假设"平台 is 段无此字段"），
+    与平台实证相反——真值就藏在 `is.checks[LOW_2Y_SHARPE/LOW_SUB_UNIVERSE_SHARPE].value` 里
+    （见 `backfill_alpha_metrics_from_platform.extract_is_metrics`）。断言随之更新为「抽得到」。
+    """
     from sync_platform_alphas import to_store_payload
 
     raw = json.loads(FIXTURE.read_text(encoding="utf-8"))
@@ -164,7 +169,9 @@ def test_platform_sync_payload_keeps_local_backtest_values(store):
     raw["is"].update(prodCorrelation=0.48, selfCorrelation=0.22)
     payload = to_store_payload(raw)
     payload.pop("os_data")
-    assert payload["two_year_sharpe"] is None and payload["status"] == "COMPLETE"
+    # 2026-10-06：2Y/sub 不再被硬编码丢弃，而是从 is.checks[] 抽出（fixture 里为 3.59 / 1.88）
+    assert payload["two_year_sharpe"] == 3.59 and payload["status"] == "COMPLETE"
+    assert payload["sub_universe_sharpe"] == 1.88 and payload["is_ladder_sharpe"] is None
     aid, region = payload["alpha_id"], payload["region"]
     store.upsert_backtest_rows(region, "w1", [{**HARVEST_ROW, "alpha_id": aid, "two_year_sharpe": 3.59}],
                                dataset="dsA")
