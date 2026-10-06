@@ -222,6 +222,51 @@ python tools/code-audit/repo_governance_check.py --quiet  # 只看退出码（�
 > `harvest_batch.py` / `self_batch.py` / `harvest_by_expr.py` 的命令**都已失效**，
 > 勿照抄执行 —— MEMORY 侧已于 2026-10-06 改指真实通道（`tools/harvest_multisim.py`）。
 
+### 5.4 脚本退役判据：引用面实测，不看 mtime（2026-10-06 实锤后定）
+
+同一天内两次走错又走对，这一节是把过程固定下来。
+
+**错法**：「这脚本放得久、看着没再用」→ 删。实测代价：一次删了 26 个已跟踪
+`tools/*.py`，其中 **22 个是运行时依赖**（`src/wqb/workflow/nodes/forum_recon_wave.py:25`
+拼的就是那个路径；`superalpha.py:201` 直接 `from sa_probe import fetch_pool`；
+`render.py:453` 把 `tools/mode_b_qualify.py` 渲染进**每个区域 profile**），
+当场造成 `pytest` 30 failed + `skill_lint` 新增 41 条死指针。
+
+**对法：五种引用形态全为 0 才算死件**（缺一即不可退）：
+
+| # | 形态 | 查法 | 为什么单独列 |
+|---|---|---|---|
+| 1 | 模块 import / 子进程路径 | `git grep -l "<stem>.py" -- src tools world-quant-brain-mcp Claude/skills` | 最直接的断链 |
+| 2 | **无 `.py` 后缀**的调用 | `git grep -e "tools/<stem>\b"` | SOP 常写 `python tools/foo --x`；只查带后缀会漏 |
+| 3 | 动态导入 | `git grep -F import_module` 再看站点同文件的字符串字面量 | `build_wave.py`/`campaign.py` 按变量名加载 |
+| 4 | 字符串表 / 注册表 | `git grep -F '"<stem>"'`（registry、argv 拼装、子命令表） | workflow 节点名就是字符串 |
+| 5 | 真实测试断言 | **只看 `tests/**/test_*.py`** | 见下：TOC/baseline 不是断言 |
+
+**两个实测到的「空判陷阱」**（0 命中 ≠ 没引用）：
+
+1. `git grep -e "import_module\\("` 在基本正则下 **rc=128**（`\(` 被当分组），命令报错时
+   打印出来的仍是「0 命中」——看着像结论，其实是空判。改 `-F` 后真实命中 34 处。
+   **口径：任何 0 命中都要配一个正对照**（如同一 grep 形式跑一个已知存在的名字）。
+2. 测试面命中要分两类：`tests/TESTS_TOC.md`、`tests/.gen_tests_toc.py`、
+   `tests/fixtures/*_baseline.json` 是**名录**，不是断言。按修正口径重查，
+   本批 35 件的真实测试依赖 = 0（未修正前会多出 1 件假阳性）。
+3. 反向也成立：通用名会**高估**引用 —— `tools/legacy/gate.py` 按 basename 数出 code=64，
+   而 legacy README 自己的分析是「代码零引用」（真正的调用方加载的是 toolkit 版）。
+   **逐件读命中行，不只看计数。**
+
+**退役必须配套做完的 5 件事**（只做 `git rm` = 一半）：
+`s11_tools_top_level` 收紧 → `retired_paths` 登记（S12 机械拦复活）→ `THEMES.json` 清归属
+→ 台账 `snapshot_adjudication.json` 逐件补 `DROPPED` 依据 → 相关 README 改退役记录。
+`counts`/`top_n` 这类普查快照**不回填**（见本文顶部「不复制会漂移的计数」）。
+
+**为什么不搬 `attic/`**：`.gitignore` 整目录忽略 `attic/`，把受控脚本搬进去等于
+把它变成「未跟踪源码」= 本文 §0 铁律要防的形状。`git rm` 的内容永久留在历史与抢救点，
+取看：`git show <退役前主干>:<路径>`。
+
+**不得连坐删**：按目录批量删必错 —— `tools/legacy/` 29 个 .py 里只有 25 个可退，
+剩下 4 个 `gate.py`（被文档与历史调用链引用）、`fix_stale_fk_20260928.py`、`opswap_driver.py`
+（被 import）、`backfill_backtest_dataset.py`（被 SOP 叫）都必须留。
+
 ## 6. 会话隔离（2026-10-06 新增，与 §0 铁律同级）
 
 工作丢失的**根因不是分支模型，是多写者共用一棵未提交的工作树**。

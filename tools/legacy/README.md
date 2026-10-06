@@ -3,6 +3,18 @@
 本目录存放**已跑完、无外部引用**（repo 内 refs=0）的一次性/批量脚本。
 归档是**移动而非删除**：文件仍在版本库、git 历史完整保留，需要时可直接调用。
 
+> ⚠ **2026-10-06 二批：本目录原有 29 个 .py 中的 25 个已 `git rm`（不再适用「移动而非删除」）**。
+> 判据与配套动作见 [`docs/governance/branch_policy.md`](../../docs/governance/branch_policy.md) §5.4
+> ——五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）全为 0 才退。
+> 内容永久留在 git 历史与本仓抢救点，取看：`git show f58ddc3:tools/legacy/<file>.py`；
+> 清单在 `tools/audit_structure_baseline.json` 的 `retired_paths`（S12 机械拦复活）与
+> `tools/THEMES.json` 的 `_retired_20261006`。下面 A/C 两节列的就是其中 17 件，
+> 保留作「当时凭什么归档」的判断记录，**不要再当作「文件还在本目录」的清单读**。
+>
+> **本目录仍存的 4 个 .py（经复核不得退役）**：`gate.py`（被文档与历史调用链引用）、
+> `fix_stale_fk_20260928.py`、`opswap_driver.py`（均被 import）、`backfill_backtest_dataset.py`（被活 SOP 叫）。
+> 这条止住的是「按目录连坐删」——上一批就差点这么干。
+
 ## 归档判据（二选一，2026-09-25 扩展）
 
 **判据 P（一次性脚本，同前）** —— 三条同时满足：
@@ -141,7 +153,11 @@ refs=0 对 CLI 不构成死代码判据。已全部补登记进 `tools/README.md
 ## 恢复方式
 
 ```bash
-git mv tools/legacy/<file>.py tools/<file>.py   # 重新挂回活跃区
+# 本目录**仍存的** 4 件：搬回活跃区（移动，不涉历史）
+git mv tools/legacy/<file>.py tools/<file>.py
+
+# 已于 2026-10-06 退役的 25 件：先从历史取回，再从 retired_paths 移除（S12 会拦）
+git show f58ddc3:tools/legacy/<file>.py > tools/<file>.py
 ```
 
-移出后需重新用上面的判据核查引用，并同步更新本索引。
+移出后需重新用上面的判据核查引用（五种形态都重跑一遍），并同步更新本索引与 S11/S12 基线。

@@ -48,9 +48,7 @@
       "files": [
         "dryrun_multidim.py",
         "probe_batch_mode.py",
-        "prod4_quick.py",
         "prod_bucket_scan.py",
-        "prod_scan.py",
         "three_dataset_probe.py",
         "tiered_probe.py",
         "category_probe.py",
@@ -139,7 +137,6 @@
         "modeb_improvement_pipeline.py",
         "profile_drift_check.py",
         "region_status.py",
-        "region_whitelist.py",
         "select_ra_basket.py",
         "structural_reconstruct_cli.py"
       ],
@@ -152,7 +149,6 @@
         "_backfill_reference_once.py",
         "_kor_d33_writeback.py",
         "backfill_2y_from_platform.py",
-        "backfill_alphas_from_ckpt.py",
         "backfill_check_columns.py",
         "backfill_expression_dataset.py",
         "backfill_longcount.py",
@@ -187,7 +183,6 @@
         "economic_mechanism_kb.py",
         "economic_mechanism_templates.py",
         "kb_templates.py",
-        "neutralization_scan.py",
         "operator_diversity_analyzer.py",
         "quality_control_engine.py",
         "role_cluster.py",
@@ -250,7 +245,6 @@
       "dir": "tools/db",
       "title": "db",
       "files": [
-        "_db_quality_check.py",
         "db_lock_audit.py",
         "db_maintenance.py"
       ],
@@ -408,5 +402,47 @@
       ]
     },
     "note": "被移文件此前均未被 git 跟踪；迁移按 tools/README.md「单文件迁移配方」执行。probe/verdict 两主题此前磁盘无目录，随本批首次落地。"
-  }
+  },
+  "_retired_20261006": {
+    "_doc": "本表列出的脚本已于 2026-10-06 规范退役（git rm）。判据是**引用面实测**：活代码 import / 子进程路径 / 活 SOP 命令 / 真实测试断言全为 0，只剩 THEMES 与本基线的登记痕迹。取看：`git show <退役前的主干 commit>:<路径>`。",
+    "count": 35,
+    "files": [
+      "tools/_db_quality_check.py",
+      "tools/data-repair/archive_json_files.py",
+      "tools/data-repair/archive_json_to_attic.py",
+      "tools/data-repair/backfill_alpha_metrics.py",
+      "tools/data-repair/backfill_alphas_from_ckpt.py",
+      "tools/fields/convert_alpha_list_to_exprs.py",
+      "tools/legacy/_db_fk_fix.py",
+      "tools/legacy/_db_p0_fix.py",
+      "tools/legacy/backfill_2y_six.py",
+      "tools/legacy/backfill_expression_status_once.py",
+      "tools/legacy/backfill_fingerprints.py",
+      "tools/legacy/calibrate_q3_alphas.py",
+      "tools/legacy/corr_batch_head_candidates.py",
+      "tools/legacy/death_level.py",
+      "tools/legacy/fix_submit_ready_check_20260928.py",
+      "tools/legacy/migrate_campaign_state.py",
+      "tools/legacy/migrate_db_schema.py",
+      "tools/legacy/migrate_field_validation.py",
+      "tools/legacy/migrate_ideas_to_db.py",
+      "tools/legacy/n1qmj_decorrelate_variants.py",
+      "tools/legacy/operator_usage_audit.py",
+      "tools/legacy/opswap_analyze.py",
+      "tools/legacy/opswap_build_plan.py",
+      "tools/legacy/submit_883wzj1w.py",
+      "tools/legacy/submit_883wzj1w_writeback.py",
+      "tools/legacy/sync_reference.py",
+      "tools/legacy/triage_pass4_check.py",
+      "tools/legacy/triage_platform_status_sweep.py",
+      "tools/legacy/triage_salvage_neut.py",
+      "tools/legacy/triage_salvage_top300.py",
+      "tools/legacy/triage_softdelete_batch1.py",
+      "tools/probe/prod4_quick.py",
+      "tools/probe/prod_scan.py",
+      "tools/research/neutralization_scan.py",
+      "tools/rotation/region_whitelist.py"
+    ]
+  },
+  "_counts_note": "`counts` / `top_n` 是 2026-10-04 那次顶层普查的**历史快照**，不随退役回填；现役顶层脚本数一律现跑 `python tools/audit_structure.py --only s11` 取数（AGENTS.md §4「文档不复制会漂移的计数」同一口径）。"
 }
