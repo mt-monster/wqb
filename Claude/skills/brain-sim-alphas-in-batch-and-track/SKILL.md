@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-06
 name: brain-sim-alphas-in-batch-and-track
 description: "批量发起 alpha 回测并跟踪（发起回测 ≠ 提交 alpha）：手写 / 外部 alpha 列表的批量回测、断点续跑、失败项重跑，用 batch_simulator.py 或 workflow_batch_track。战役目录内正式波次的入口选用见本文；并发调优找 wqb-concurrency，战役引擎参数找 wq-brain-campaign-toolkit。"
 layer: L3

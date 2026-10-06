@@ -2,7 +2,7 @@
 name: brain-make-some-gem
 layer: L2
 description: "S2 概念优先的 GEM 表达式生成引擎：标准入口是 workflow_gem，本 skill 写引擎契约（priors / ideas 注入、LLM 通道与凭据前置、产物与落库核对）和排障。要为某 region / dataset / delay / universe 生成候选表达式，或排查 GEM 失败（no meta.json / 402 / [skill-doc] MISSING）时使用。触发词：生成表达式 / 跑 GEM / 概念优先生成 / final_expressions。"
-last_verified: 2026-10-01
+last_verified: 2026-10-06
 allowed-tools:
   - Read
   - Bash

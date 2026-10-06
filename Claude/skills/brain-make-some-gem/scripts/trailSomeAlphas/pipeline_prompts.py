@@ -71,7 +71,7 @@ def build_prompt(
             "Do not copy the skill file. Each answer must be a priced mechanism."
         )
     prompt_lines = [
-            concept_first_rules(data_profile),
+            concept_first_rules(data_profile, category=data_category),  # 2026-09-30：传递 category 参数（类别定制禁止事项 + 知识库加载）
             fe_hint,
             compact_priors_text(priors, data_category),
             "",
@@ -353,6 +353,10 @@ def build_phased_prompts(
         # Phase 2: Map fields to operators (medium prompt, one batch of fields)
         batch_fields_json = json.dumps(batch_fields or [], ensure_ascii=False)
         structure_json = structure_result or "{}"
+        # 2026-09-30 P1：在 Phase 2 的 system_prompt 中添加 concept_first_rules 的类别定制禁止事项
+        # （知识库加载在 build_prompt 中已完成，Phase 2 只需要类别定制禁止事项）
+        from economic_priors import category_forbidden_text
+        category_forbidden = category_forbidden_text(data_category)
         system_prompt = (
             "You generate WorldQuant BRAIN CONCEPTS, not per-field operator wraps.\n"
             "Read the field batch as a story. Propose 3-6 mechanisms that need 2-3 fields each.\n"
@@ -366,6 +370,7 @@ def build_phased_prompts(
             "6. quantile(x) takes ONE argument (default driver is gaussian; do not pass driver=).\n"
             "7. NEVER blend legs with fixed weights (add(multiply(0.4,A),multiply(0.6,B)) / 0.4*rank(A)+0.6*rank(B)):"
             " blocked as mixed-signal tuning. Combine structurally (ts_corr / divide / subtract / if_else / trade_when / group_*)."
+            + category_forbidden  # 2026-09-30 P1：类别定制禁止事项
         )
         user_content = {
             "operator_map": structure_json,

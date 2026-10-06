@@ -184,6 +184,7 @@ class WorkflowRegistry:
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],
                     optional_params=["data_category", "instrument_type", "data_type",
+                                     "dataset_ids",
                                      "priors_file", "priors_from_db", "ideas_file", "detached",
                                      "launch_only", "console", "pipeline_mode", "batch_size",
                                      "require_operators", "require_count",

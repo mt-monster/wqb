@@ -1387,7 +1387,11 @@ def test_gm_mcp_and_node_parameters_match_the_reference_table():
     only_node = {"batch_size", "require_operators", "require_count", "prod_first", "prod_first_top_k"}
     assert only_node <= set(node_names) and not (only_node & set(mcp_names))
     assert set(mcp_names) - {"dry_run"} <= set(node_names)
-    assert node_def["pipeline_mode"] == "phased" and mcp_def["pipeline_mode"] is None
+    # pipeline_mode 自 2026-09-30 起支持自动识别：节点默认 None = 触发
+    # `_auto_detect_pipeline_mode`（字段数 >100 / news 类 → phased，见
+    # tests/unit/03_gem/test_gem_pipeline_mode.py），MCP 层也保持 None（把「未指定」
+    # 原样透传给节点，不在中间层填默认值）。旧断言写的是自动识别之前的固定默认值。
+    assert node_def["pipeline_mode"] is None and mcp_def["pipeline_mode"] is None
     assert node_def["priors_from_db"] is True and mcp_def["priors_from_db"] is True
     assert node_def["detached"] is True and node_def["batch_size"] == 100 and node_def["require_count"] == 2
     assert node_def["prod_first"] is False and node_def["prod_first_top_k"] == 2

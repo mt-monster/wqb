@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-05
+last_verified: 2026-10-06
 name: wq-brain-campaign-toolkit
 description: "战役目录内执行引擎（gate / pipeline / build_wave / score_datasets / review_wave / campaign.py 的 ledger·registry·wave）的用法与契约。要跑战役脚本、查子命令与台账键、处理超时或重发时使用；何时用、怎么判由 wq-brain-ra-pipeline 定。"
 layer: L-TOOL

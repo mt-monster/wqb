@@ -378,6 +378,12 @@ def main():
     parser.add_argument("--delay", required=True, type=int, help="Delay (0 or 1)")
     parser.add_argument("--universe", default="TOP3000", help="Universe (default: TOP3000)")
     parser.add_argument("--dataset-id", required=True, help="Dataset id (required)")
+    parser.add_argument(
+        "--dataset-ids",
+        default=None,
+        help="Comma-separated dataset ids (e.g., 'analyst4,fundamental6'). "
+             "When provided, fields from all datasets are merged into one pool (2026-10-01 新增：支持跨数据集组合）。",
+    )
     parser.add_argument("--instrument-type", default="EQUITY", help="Instrument type (default: EQUITY)")
     parser.add_argument(
         "--data-type",
@@ -605,15 +611,36 @@ def main():
                 dataset_name = row.get(name_col) if name_col else None
                 dataset_description = row.get(desc_col) if desc_col else None
 
-        fields_df = ace_lib.get_datafields(
-            session,
-            instrument_type=args.instrument_type,
-            region=args.region,
-            delay=args.delay,
-            universe=args.universe,
-            dataset_id=args.dataset_id,
-            data_type=args.data_type,
-        )
+        # 2026-10-01 P0：支持多数据集合并（--dataset-ids 参数）
+        if args.dataset_ids:
+            # 多数据集模式：合并多个数据集的字段
+            dataset_ids = [d.strip() for d in args.dataset_ids.split(",")]
+            print(f"[multi-dataset] 合并 {len(dataset_ids)} 个数据集的字段: {dataset_ids}", flush=True)
+            fields_dfs = []
+            for ds_id in dataset_ids:
+                df = ace_lib.get_datafields(
+                    session,
+                    instrument_type=args.instrument_type,
+                    region=args.region,
+                    delay=args.delay,
+                    universe=args.universe,
+                    dataset_id=ds_id,
+                    data_type=args.data_type,
+                )
+                fields_dfs.append(df)
+            fields_df = pd.concat(fields_dfs, ignore_index=True)
+            print(f"[multi-dataset] 合并后字段数: {len(fields_df)}", flush=True)
+        else:
+            # 单数据集模式（原有逻辑）
+            fields_df = ace_lib.get_datafields(
+                session,
+                instrument_type=args.instrument_type,
+                region=args.region,
+                delay=args.delay,
+                universe=args.universe,
+                dataset_id=args.dataset_id,
+                data_type=args.data_type,
+            )
 
         # 2026-09-26：skill 目录解析来源与文档缺失必须**可见**。此前 dfe 的 SKILL.md 因解析到
         # 内嵌 legacy 副本（该副本无 SKILL.md）而静默为空串。注意（2026-09-29 更正）：SKILL.md 正文**不进 prompt**——
@@ -1341,8 +1368,34 @@ def main():
                     from contextlib import nullcontext as _nc
                     _wlock = lambda **kw: _nc()  # 降级：无 src 环境不仲裁
                 with _wlock(tag="dbwrite_gem", ttl_sec=600, wait_timeout=120):
+                    # 2026-10-01 P0：把 family（机制族）随表达式落库。
+                    # 背景：family 只在 skeleton 模式由 final_expressions_meta.json 产出，
+                    #   此前落库只传纯字符串列表 → expressions.family 恒空 → 步4 选波
+                    #   build_wave --from-db 的「每族 cap」纪律静默失效。
+                    # 这里读 meta（若存在）建 expr→family 映射；非 skeleton 模式无 meta，
+                    #   映射为空 → 落库时 family=None（不阻断，行为同前）。
+                    _fam_map = {}
+                    try:
+                        _meta_p = final_path.parent / "final_expressions_meta.json"
+                        if _meta_p.exists():
+                            _metas = json.loads(_meta_p.read_text(encoding="utf-8"))
+                            if isinstance(_metas, list):
+                                for _m in _metas:
+                                    if isinstance(_m, dict) and _m.get("expr") and _m.get("family"):
+                                        _fam_map[str(_m["expr"]).strip()] = str(_m["family"])
+                                if _fam_map:
+                                    print(f"[family] 落库带入 {len(_fam_map)} 条 family 标签", flush=True)
+                    except Exception as _fe:
+                        print(f"[family] warn: 读取 meta family 失败（{_fe}），本次不带 family 落库", flush=True)
+                    if _fam_map:
+                        _expr_items = [
+                            {"expression": e, "family": _fam_map.get(str(e).strip())}
+                            for e in valid_expressions
+                        ]
+                    else:
+                        _expr_items = valid_expressions
                     st.upsert_expressions(
-                        args.region, str(wave), valid_expressions,
+                        args.region, str(wave), _expr_items,
                         dataset=dataset_id, status="gem",
                     )
                 idea_payload = {
@@ -1389,6 +1442,44 @@ def main():
 
     print(f"Ideas report: {ideas_path}")
     print(f"Expressions -> db (wave={args.wave or f's2_{dataset_id}_d{args.delay}'})")
+
+    # 2026-09-30 P1：自动优化提示词的触发机制（定期分析性能，性能不佳时自动优化）
+    # 触发条件：每 10 波分析一次（wave_number % 10 == 0），性能不佳（avg_pass_rate < 0.5）时自动优化
+    try:
+        from prompt_kb import analyze_prompt_performance, optimize_prompt_template
+        # 从 wave 提取波次号（如 s2_news1_d1 → 1）
+        wave_str = args.wave or f"s2_{dataset_id}_d{args.delay}"
+        wave_number = 0
+        try:
+            # 尝试从 wave 字符串提取数字（如 s2_news1_d1 → 1）
+            import re as _re_wave
+            m = _re_wave.search(r"d(\d+)$", wave_str)
+            if m:
+                wave_number = int(m.group(1))
+        except Exception:
+            wave_number = 0
+        
+        # 每 10 波分析一次
+        if wave_number > 0 and wave_number % 10 == 0:
+            data_category = args.data_category or "other"
+            result = analyze_prompt_performance(
+                category=data_category,
+                region=args.region,
+                min_backtest_count=50,
+            )
+            if result.get("best_template_id") and result.get("avg_pass_rate", 0.0) < 0.5:
+                # 性能不佳，自动优化
+                new_template_id = optimize_prompt_template(
+                    category=data_category,
+                    optimization_reason="基于历史回测结果加强高过闸率机制",
+                    performance_data=result,
+                )
+                if new_template_id:
+                    print(f"[prompt_kb] 自动优化提示词：v{result.get('best_template_id')} → v{new_template_id} "
+                          f"(avg_pass_rate={result.get('avg_pass_rate', 0.0):.1%})", flush=True)
+    except Exception as _pk_opt_err:
+        # 自动优化失败不阻断主流程
+        print(f"[prompt_kb] warn: 自动优化失败: {_pk_opt_err}", flush=True)
 
 
 if __name__ == "__main__":

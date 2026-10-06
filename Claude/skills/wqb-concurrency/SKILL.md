@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-06
 name: wqb-concurrency
 description: "回测被 429 / CONCURRENT_SIMULATION_LIMIT_EXCEEDED 卡住、回测吞吐低、孤儿模拟占槽、要弄清填槽并发口径时使用：并发上限 C 的测定、在飞数锁定原则、孤儿模拟与三类卡住根因、七槽填槽 SOP 的并发纪律。"
 layer: L3
