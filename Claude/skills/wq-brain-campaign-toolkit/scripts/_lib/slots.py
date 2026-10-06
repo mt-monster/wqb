@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """_lib/slots.py - 账户级回测槽位仲裁（跨进程，2026-09-19）。
 
-背景：pipeline.py 每个进程各自锁 n_slots=min(7, 批数)，两条流水线同跑（IND w171 + JPN w8
+背景：pipeline.py 每个进程各自锁 n_slots=min(2, 批数)，两条流水线同跑（IND w171 + JPN w8
 实测）在飞 10-13 个 multisim，超过 wqb-concurrency §8 实测的账户级 C≈7；此前只能靠 429 退避
 被动兜底，没有主动仲裁。
 
@@ -19,12 +19,16 @@
 补批、把主线程让回去轮询回收。补批是"即收即补"的优化路径，跳过一轮只损失少量
 吞吐，绝不阻塞主循环。
 
-环境变量：WQB_GLOBAL_SLOTS（cap，缺省 7；0 关闭）、WQB_SLOTS_DIR（目录）。
+环境变量：WQB_GLOBAL_SLOTS（cap，缺省 2；0 关闭）、WQB_SLOTS_DIR（目录）。
 
-⚠ 缺省值定在 7，与 `wqb.config.CONCURRENCY['slots']` 一致（wqb-concurrency §8 实测账户级 C≈7），
-一致性由 tests/unit/07_docs_skills/test_sd_docs.py::test_concurrency_numbers_are_pinned_to_one_source
-守。开发线上曾一度把缺省降到 2（作为 2026-10-02 自锁事故的第二重保险），但那轮事故的**正解**
-是下面的 `acquire(nonblock=True)`；cap 回到 2 会把账户级并发吞吐削到不足三分之一，改之前需用户定案。
+⚠ cap 定在 2 是 **2026-10-06 用户定案**（从早期的账户级实测值 7 下调）：
+  • 实测账户级容量 C≈7（wqb-concurrency §8），但那是“能跑”的上限，不是安全水位；
+    本仓与并行会话共用同一账号配额与槽位，跑满会频繁 429 + 退避，反而拖慢总吞吐。
+  • 7 槽还直接诱发过 2026-10-02 的主线程自锁（见下）；降到 2 是该事故的第二重保险。
+    第一重保险（`acquire(nonblock=True)`）已保留，两者叠加后补批路径不可能死锁。
+因此代码（`wqb.config.CONCURRENCY`）、本文档与 `wqb-concurrency` 统一按 **2** 口径；
+一致性由 test_sd_docs::test_concurrency_numbers_are_pinned_to_one_source 守护。
+临时提高用 `WQB_GLOBAL_SLOTS=<n>`（无需改代码）。
 """
 from __future__ import annotations
 
@@ -51,9 +55,9 @@ def slots_dir():
 
 def global_cap():
     try:
-        return int(os.environ.get("WQB_GLOBAL_SLOTS", "7"))
+        return int(os.environ.get("WQB_GLOBAL_SLOTS", "2"))
     except ValueError:
-        return 7
+        return 2
 
 
 def _pid_alive(pid: int) -> bool:

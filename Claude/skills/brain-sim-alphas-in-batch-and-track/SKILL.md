@@ -23,11 +23,11 @@ allowed-tools:
 
 | 场景 | 入口 | 说明 |
 |---|---|---|
-| 战役目录内、DB 里已有本波表达式，要整波过闸后回测 | **`mcp__wq-brain-http__workflow_batch_track`**（推荐） | 节点内含区域闸；七槽填槽；细则 RA 步 6 §6.1 |
+| 战役目录内、DB 里已有本波表达式，要整波过闸后回测 | **`mcp__wq-brain-http__workflow_batch_track`**（推荐） | 节点内含区域闸；填槽；细则 RA 步 6 §6.1 |
 | 战役目录内、要调引擎参数 / 调试 | toolkit `pipeline.py run …`（`wq-brain-campaign-toolkit`） | 引擎本体；`--submit` = 发起回测 |
 | **手写 / 外部来源的 alpha 列表，或非战役目录的跨区临时批** | **本 skill 的 `scripts/batch_simulator.py`**（兼容路径） | CSV 是进度缓存；见下 |
 
-**并发纪律（七槽填槽、C≈7、账户级仲裁）的唯一权威在 `wqb-concurrency`（§8）**，本 skill 只引用。填槽内容（组合优先 vs 弱探针）的硬约束在 RA 步 4 / 步 6，这里不复写。
+**并发纪律（填槽、C≈7、账户级仲裁）的唯一权威在 `wqb-concurrency`（§8）**，本 skill 只引用。填槽内容（组合优先 vs 弱探针）的硬约束在 RA 步 4 / 步 6，这里不复写。
 
 ## 持久化铁律（DB 单轨）
 
@@ -62,9 +62,9 @@ mcp__wq-brain-http__workflow_batch_track(region="KOR", wave="<W>", dataset="<ds>
 mcp__wq-brain-http__batch_status(simulation_ids=["<id1>", "<id2>"])     # 单次状态查询，非轮询
 ```
 
-> MCP 节点的 `concurrency` 是节点内部参数（映射七槽填槽）；CLI 层**禁止**给 `pipeline.py run` 拼 `--concurrency`（argparse 未声明，会被 `validate_argv` 拦截）——两者不是一回事。
+> MCP 节点的 `concurrency` 是节点内部参数（映射填槽）；CLI 层**禁止**给 `pipeline.py run` 拼 `--concurrency`（argparse 未声明，会被 `validate_argv` 拦截）——两者不是一回事。
 
-**兼容路径**（`batch_simulator.py`，跨区临时批 / 手写列表）。⚠️ **先看警告**：下面的 `<B>` / `<C>` 是**占位**，不是推荐值——旧文的示例数字是保守的试探值，被人当默认抄进了正式波次；**战役目录内的正式 wave 一律走七槽填槽**，不要用本路径。
+**兼容路径**（`batch_simulator.py`，跨区临时批 / 手写列表）。⚠️ **先看警告**：下面的 `<B>` / `<C>` 是**占位**，不是推荐值——旧文的示例数字是保守的试探值，被人当默认抄进了正式波次；**战役目录内的正式 wave 一律走填槽**，不要用本路径。
 
 ```powershell
 Set-Location "<skills_root>/brain-sim-alphas-in-batch-and-track"      # 真相源 = 仓库 Claude/skills，各宿主安装位同名

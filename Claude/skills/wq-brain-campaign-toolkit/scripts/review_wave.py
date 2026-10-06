@@ -201,11 +201,23 @@ def combo_candidate(r, t):
     return True
 
 
-def _salvage_entry(r, tag):
+#: 表达式 → 数据集名的兜底正则（2026-10-02 F5）。
+#: 旧版只认 anl\d+/fnd\d+/pv\d+/risk\d+/shortinterest\d+/intraday_/mmp_/news\d+/model\d+，
+#: 实测 `insd1_*` / `count_institutional_*` / `mean_flash_*` 等通用前缀一律漏 → dataset=None
+#: （全库 79% 803/1019 条）。这里补上 insd\d* / institutional / flash / sentiment / insider 等
+#: 常见族；**真值以 DB 的 backtest_results/expressions.dataset 为准**（resolve_salvage_entries
+#: 自愈），本正则是无 DB 时的最佳努力。
+_SALVAGE_DS_RE = re.compile(
+    r"(anl\d+|fnd\d+|pv\d+|risk\d+|shortinterest\d+|intraday_\w+|mmp_\w+"
+    r"|news\d+|model\d+|insd\d*|insider|institutional|flash|sentiment)")
+
+
+def _salvage_entry(r, tag, default_dataset=None):
     """review 行 -> salvage_pool entry（结构对齐 wqb_db_mcp._salvage_to_pool）。
 
     入池对象 = combo_candidates（快达标：S>=1.0 且 prod_corr<0.5）+ near 补充；
     标注 boost_dims 供 Mode B 组合腿救援按卡点消费（get_salvage_pool boost_dim）。
+    dataset 解析优先级：表达式正则 > default_dataset（本波数据集）> None。
     """
     sh, fit = r.get("sharpe"), r.get("fitness")
     ty, tvr_pct = r.get("two_year_sharpe"), r.get("turnover_pct")
@@ -220,9 +232,10 @@ def _salvage_entry(r, tag):
         boost.append("boost_sharpe")
     if not any("CONCENTRATED" in (fc or "") for fc in r.get("failed_checks") or []):
         boost.append("boost_cw")  # 无权重集中失败 -> 可作子宇宙稳健补强腿
-    m = re.search(r"(anl\d+|fnd\d+|pv\d+|risk\d+|shortinterest\d+|intraday_\w+|mmp_\w+|news\d+|model\d+)", code)
+    m = _SALVAGE_DS_RE.search(code)
+    ds = m.group(1) if m else (r.get("dataset") or default_dataset)
     return {"alpha_id": r["id"], "expression": code,
-            "dataset": m.group(1) if m else None,
+            "dataset": ds,
             "wave": str(tag), "sharpe": sh, "fitness": fit,
             "two_year_sharpe": ty, "turnover": tvr,
             "boost_dims": boost, "walls": r.get("walls") or [],
@@ -391,9 +404,10 @@ def main():
             known = {e.get("alpha_id") for e in pool["entries"] if e.get("alpha_id")}
             combo_ids = {c["id"] for c in combo_candidates}
             salvage_src = list(combo_candidates) + [n for n in near if n["id"] not in combo_ids]
+            _def_ds = (ctx.settings or {}).get("dataset")
             for r in salvage_src:
                 if r["id"] not in known:
-                    pool["entries"].append(_salvage_entry(r, tag))
+                    pool["entries"].append(_salvage_entry(r, tag, default_dataset=_def_ds))
                     known.add(r["id"])
             pool["updated_at"] = today()
         d = store.update(mut)

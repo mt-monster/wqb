@@ -193,7 +193,7 @@ def test_index_layers_stages_gates_and_counts_state_the_single_versions():
     layers = stages.split("健康检查判据分层", 1)[1].split("\n\n", 1)[0]
     assert "回填带" in layers and not re.search(r"\d\.\d\d", layers), "三层健康线的数字只在 config / decision-table，本文不复写"
     # IX-09：索引只写「阶段 → 子命令」，实现细节留 toolkit / wqb-concurrency
-    for detail in ("ThreadPoolExecutor", "N=min(7", "--max-rounds>1", "linear_mix", "单批在飞串行"):
+    for detail in ("ThreadPoolExecutor", "N=min(", "--max-rounds>1", "linear_mix", "单批在飞串行"):
         assert detail not in idx, f"{detail!r} 是实现细节，不属于索引"
     # IX-11：闸表来自注册表，含子闸与附加闸
     for gate in ("| 闸2b |", "| 闸2b-2 |", "| 闸9 |"):

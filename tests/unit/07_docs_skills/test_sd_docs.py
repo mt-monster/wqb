@@ -166,7 +166,9 @@ def test_toolkit_quota_semantics_are_stated_as_the_code_behaves():
     assert "缺省**不**因提交额度中止回测发起" in t
     assert "dispatch" in t and "submit" in t
     src = (TK_SCRIPTS / "pipeline.py").read_text(encoding="utf-8")
-    assert "n_slots = min(7, n_total)" in src
+    # 槽位数不抄写：由 wqb.config.CONCURRENCY 派生（2026-10-06 定案：7 → 2）
+    from wqb.config import CONCURRENCY as _C
+    assert f"n_slots = min({_C['slots']}, n_total)" in src
     assert "pipeline.py` 没有任何提交 alpha 的动作" in t
 
 
@@ -252,7 +254,10 @@ def test_poll_and_quota_tables_equal_the_code_constants():
     assert f"| `backoff_factor` | {poller.DEFAULT_POLL['backoff_factor']} |" in t
     assert poller.DEFAULT_POLL["stall_minutes"] == WAIT_THRESHOLDS["sim_stall_min"]
     assert "sim_stall_min" in t and "sim_timeout_min" in t
-    assert CONCURRENCY["slots"] == 7 and "min(7" in t and "min(5" not in t
+    assert CONCURRENCY["slots"] == 2 and f"min({CONCURRENCY['slots']}" in t
+    # 旧数字不得残留（防止文档只改一半：5 = 上上代，7 = 2026-08-25→2026-10-06 之间那一代）
+    for stale in ("min(5", "min(7"):
+        assert stale not in t, f"{stale} 是已废止的槽位数，该文档未同步"
     assert "单批在飞" in t and "已废止" in t
     assert "不区分通道" in t and "POST /submit" in t
 
@@ -307,7 +312,7 @@ def test_concurrency_numbers_are_pinned_to_one_source():
     from wqb.config import CONCURRENCY
     import slots
     t = _skill("wqb-concurrency")
-    assert CONCURRENCY["slots"] == 7 and CONCURRENCY["burst_capacity"] == 7
+    assert CONCURRENCY["slots"] == CONCURRENCY["burst_capacity"] == 2      # 2026-10-06 定案 7 → 2
     monkey_env = __import__("os").environ.pop("WQB_GLOBAL_SLOTS", None)
     try:
         assert slots.global_cap() == CONCURRENCY["slots"]
@@ -315,9 +320,13 @@ def test_concurrency_numbers_are_pinned_to_one_source():
         if monkey_env is not None:
             __import__("os").environ["WQB_GLOBAL_SLOTS"] = monkey_env
     src = (TK_SCRIPTS / "pipeline.py").read_text(encoding="utf-8")
-    assert _re.search(r"n_slots = min\(7, n_total\)", src)
-    assert "`slots=7`" in t and "`WQB_GLOBAL_SLOTS`" in t
+    assert _re.search(rf"n_slots = min\({CONCURRENCY['slots']}, n_total\)", src)
+    assert f"`slots={CONCURRENCY['slots']}`" in t and "`WQB_GLOBAL_SLOTS`" in t
     assert "C=5" not in t.replace("旧的固定槽位 C=5", "").replace("「C=5、", "")
+    # 旧值 7 不得作为“现行口径”残留（只允许出现在历史叙述里）
+    for ln in t.splitlines():
+        if "C=7" in ln or "slots=7" in ln:
+            assert any(w in ln for w in ("旧", "曾", "废止", "→ 2", "下调")), f"现行口径里残留 7：{ln[:80]}"
 
 
 def test_conservative_envelope_constants_have_no_readers_yet_and_the_doc_says_so():
@@ -338,7 +347,7 @@ def test_concurrency_boundary_no_longer_swallows_the_ledger_loop():
     assert "不管台账、复盘与选波" in t
     assert "每 10 波" not in t and "台账同步门（执行层硬门）" not in t
     assert "文件时代" in t and "step_funnel" in t
-    for anchor in ("## 4. 🚨 孤儿模拟占槽", "## 8. 🌟 七槽填槽模式", "### 8.1 账户级槽位仲裁"):
+    for anchor in ("## 4. 🚨 孤儿模拟占槽", "## 8. 🌟 填槽模式", "### 8.1 账户级槽位仲裁"):
         assert anchor in t, f"{anchor} 被其它文档引用（§4 / §8 / §8.1），编号不能变"
     assert "harvest_multisim_alphas" in t and "validate_fields" in t
     assert "agent 不读取 `.env`" in t

@@ -14,9 +14,9 @@
 
 `TERMINAL = {COMPLETE, ERROR, CANCELLED}`。`COMPLETE` → 自动拉全量 child alpha 指标；`ERROR` → **全量 child 逐个取 error**（`[:8]` 截断是历史 bug，会漏 > 8 批次的错误定位）。
 
-## 2. 并发：七槽填槽
+## 2. 并发：填槽（本工作区操作档 = 2）
 
-**现行规则只有一条**：每轮最多 7 批（`config.CONCURRENCY['slots']`；`pipeline.py` 内部 `n_slots = min(7, 批数)`）×`_multi_sim_batch_size`（缺省 8）条同提、统一轮询、**即收即补**保持槽位常满；SOP 全文与账户级仲裁见 `wqb-concurrency` §8。`stage_submit_poll` 用线程池并行提交 + 轮询，`--max-rounds > 1` 启用多轮即收即补，`--serial` 一次只提 1 批（排障）。**旧的「单批在飞」规则与固定 5 槽模型已废止**（历史见 CHANGELOG：当时 CANCELLED 的真根因是批内坏表达式连坐兄弟批，不是平台禁止并发 multisim）。
+**现行规则只有一条**：每轮最多 2 批（`config.CONCURRENCY['slots']`；`pipeline.py` 内部 `n_slots = min(2, 批数)`）×`_multi_sim_batch_size`（缺省 8）条同提、统一轮询、**即收即补**保持槽位常满；SOP 全文与账户级仲裁见 `wqb-concurrency` §8。`stage_submit_poll` 用线程池并行提交 + 轮询，`--max-rounds > 1` 启用多轮即收即补，`--serial` 一次只提 1 批（排障）。**旧的「单批在飞」规则与固定 5 槽模型已废止**（历史见 CHANGELOG：当时 CANCELLED 的真根因是批内坏表达式连坐兄弟批，不是平台禁止并发 multisim）。
 
 战役目录外的一次性临时批跑不在此列（用 `brain-sim-alphas-in-batch-and-track`）。
 

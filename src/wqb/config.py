@@ -539,11 +539,18 @@ WAIT_THRESHOLDS: Dict[str, object] = {
     "sim_timeout_min": 360,
 }
 
-#: 七槽填槽并发模式（2026-08-25 更新：5→7，基于 Token-Bucket 模型 C≈7 实测）。旧「单批在飞串行」与固定槽位模型已废弃。
+#: 回测并发口径。**2026-10-06 用户定案：7 → 2**。
+#: 背景：账户级实测容量 C≈7（2026-08-25 由 5→7，基于 Token-Bucket 模型），但那是“能跑”的
+#: 上限而非安全水位：多条流水线 / 并行会话共用同一账号槽位，跑满会频繁 429 + 退避，
+#: 总吞吐反而下降；7 槽也直接诱发过 2026-10-02 的 pipeline 主线程自锁（见
+#: `Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/slots.py`，现已用
+#: `acquire(nonblock=True)` 修掉，cap=2 是叠加的第二重保险）。
+#: 临时提高可用环境变量 `WQB_GLOBAL_SLOTS=<n>`（不改动本常量）。
+#: 旧「单批在飞串行」与固定槽位模型已废弃。
 CONCURRENCY: Dict[str, object] = {
-    "slots": 7,
-    "burst_capacity": 7,
-    "safe_instant_submits": 6,
+    "slots": 2,
+    "burst_capacity": 2,
+    "safe_instant_submits": 2,
     "min_batch_interval_sec": 45,
     "refill_sec_per_token": (20, 40),
 }

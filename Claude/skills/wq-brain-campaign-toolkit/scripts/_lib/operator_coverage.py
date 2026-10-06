@@ -375,7 +375,7 @@ def plan_coverage_wave(ctx, wave_size=8, cover_ratio=0.4, cover_per_wave=None,
                        auto_build_catalog=True, catalog_top_n=3):
     """规划本波算子全覆盖契约：按遗忘度选 required_operators 并签发 explore_contract。
 
-    wave_size:       本波候选数（七槽填槽通常 8-24）。
+    wave_size:       本波候选数（填槽通常 8-24）。
     cover_ratio:     欠用池覆盖步进比例（默认每波推进欠用算子的 40%）。
     cover_per_wave:  显式指定本波覆盖算子数（覆盖 cover_ratio）。
     semantic:        True=语义驱动（默认）：可选池=可实例化算子（有经济含义），

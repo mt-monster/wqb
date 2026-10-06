@@ -15,7 +15,7 @@
 
 ## 运行方式
 
-在本目录执行（`<B>` / `<C>` 是**占位**，不是推荐值；战役内正式波次走七槽填槽，见 `wqb-concurrency` §8）：
+在本目录执行（`<B>` / `<C>` 是**占位**，不是推荐值；战役内正式波次走填槽，见 `wqb-concurrency` §8）：
 
 ```powershell
 & $WQ_PY scripts/batch_simulator.py --config configs/config.json --alpha-json data/alpha_list.json `

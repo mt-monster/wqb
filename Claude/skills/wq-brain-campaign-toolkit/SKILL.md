@@ -36,7 +36,7 @@ allowed-tools:
 | S1 字段 | `scan_fields.py`（typed catalog） | `field_semantic_classify.py`（语义归类） |
 | S2 选波 | `build_wave.py`（去重 / 分桶 / 配给，**不生成**表达式）、`assemble_priors.py`、`diversity_extract.py` | — |
 | S2→S3 门禁 | `gate.py`（闸 0–9） | **`wave_gate.py`**（= `gate.py` + 体检硬门 + 闸 SEM / PF / 2b / 2.6 + 区域闸；**每波必走它**，也是 MCP 节点 `workflow_execute node="wave_gate"`） |
-| S3 发批 / 收批 | `pipeline.py`（七槽填槽）、`metrics_cache.py` | `submit_batch.py`（批量**派发仿真**，不是提交 alpha）、`batch_status.py`（状态轮询）、`harvest_multisim.py`（收批入库） |
+| S3 发批 / 收批 | `pipeline.py`（填槽）、`metrics_cache.py` | `submit_batch.py`（批量**派发仿真**，不是提交 alpha）、`batch_status.py`（状态轮询）、`harvest_multisim.py`（收批入库） |
 | S4 评审 | `review_wave.py` | `campaign_intel.py prod-first`、`step_funnel.py`、`forum_recon.py`（收批时 `pipeline.py --forum-recon` 自动跑 `forum_recon_wave.py`） |
 | S5 提交判定 | — | `submit_verdict.py`（唯一权威）；SUPER 只走 `super_build.py` |
 | S6 回写 | `campaign.py ledger` / `registry` / `wave`、`diversity_audit.py`、`dataset_experience`（`campaign.py dataset-experience`） | `campaign_intel.py mark-saturated`、`export_wave_ledger_md.py`、`step_funnel.py` |
@@ -111,7 +111,7 @@ $CD = "tracking/<REGION>"
 | `gate` | `gate.py` | **8 闸 + 可选闸0**（子闸 1b / 2b / 2b-2，附加闸 9）；闸表由代码生成（`gate.py --print-gate-table`，INDEX 已收录），细则 [`gate-rules.md`](references/gate-rules.md) |
 | `build-wave` | `build_wave.py` | 选波后处理（去重 / 分桶 / 骨架配给 / near 加权 / 选波权威化）；数量与身份契约见 [`selection-plan.md`](references/selection-plan.md) |
 | `assemble-priors` | `assemble_priors.py` | 从 DB 确定性组装 GEM priors（内部映射见 RA `assemble-priors-internals.md`）；**回写后必须再跑** |
-| `pipeline` | `pipeline.py` | 端到端编排（七槽填槽）与 `quota`，细则 [`poll-and-quota.md`](references/poll-and-quota.md) |
+| `pipeline` | `pipeline.py` | 端到端编排（填槽）与 `quota`，细则 [`poll-and-quota.md`](references/poll-and-quota.md) |
 | `review` | `review_wave.py` | walls 诊断 + 台账回写 |
 | `dataset-experience` | `dataset_experience.py` | 数据集 / 字段经验 Markdown（保留人工复盘段），方法见 `brain-dataset-mining-experience` |
 | `metrics` | `metrics_cache.py` | alpha IS 指标读穿缓存（`--multisim=<id>` / `--refresh`） |

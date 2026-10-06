@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """pipeline.py - 战役端到端编排器：gate -> submit -> poll -> review -> ledger。
 
-带 checkpoint/resume（断点续跑纪律）。七槽填槽多轮即收即补（2026-08-25 更新：5→7）：
-- 单轮模式（默认）：并行提交 N 批（N=min(7, 批数)），统一轮询，全提全收。
+带 checkpoint/resume（断点续跑纪律）。填槽多轮即收即补（2026-08-25 5→7；2026-10-06 定案 7→2，槽位数唯一来源 = wqb.config.CONCURRENCY['slots']）：
+- 单轮模式（默认）：并行提交 N 批（N=min(2, 批数)），统一轮询，全提全收。
 - 多轮模式（--max-rounds>1）：每轮并行提交 n_slots 批，轮询回收后空槽补新批，
   保持槽位常满直至全部批次处理完毕或达到最大轮次。
 轮询退避+挂起熔断（_lib/poller）；提交前 ET 日历日配额闸（REGULAR 4/日 + SUPER 1/日，00:00 ET 重置）。
@@ -13,7 +13,7 @@
   python pipeline.py --campaign-dir <DIR> run --file candidates/x.json --dataset model219 --wave 01A
       默认只跑 gate 并打印提交计划（不烧配额）
   python pipeline.py --campaign-dir <DIR> run ... --submit [--max-batches 2] [--max-rounds 3] [--force]
-      过闸后按批提交（七槽填槽模式）+ 轮询到 terminal（挂起熔断）
+      过闸后按批提交（填槽模式）+ 轮询到 terminal（挂起熔断）
   python pipeline.py --campaign-dir <DIR> run ... --submit --review --write-ledger
       全链路：评审 + 回写台账
   恢复：重跑同一 --wave 自动从 checkpoint 续跑；--fresh 强制全新。
@@ -576,9 +576,44 @@ def _update_ck_batch(ck, bi, batch, msid, status, detail, api):
     return rec
 
 
+#: 提交期失败的重发上限（2026-10-02 P0）。429/瞬时网络错误是账户级限速或抖动，
+#: 重发通常能过；但若平台持续拒绝，无限重发会烧光整轮时间。故按"批内容"计数，
+#: 达到上限即落 SUBMIT_FAIL 终态（可由下一次跨轮重跑续命——SUBMIT_FAIL 不在 TERMINAL）。
+MAX_SUBMIT_RETRY = 2
+
+#: 在飞已空、账户级槽位被外部进程占满时的最长等待秒数（2026-10-02 死锁修复配套）。
+#: 超过即放弃剩余队列并正常收尾（不静默丢失则打印放弃条数）。
+_EXTERNAL_SLOT_WAIT_SEC = 1800
+
+
+def _is_retryable_submit_error(err):
+    """判断提交期异常是否值得重发（2026-10-02 P0）。
+
+    可重发：HTTP 429（账户级限速）/ 5xx / 网络类（超时、连接重置/断开、SSL、URLError）。
+    不可重发：4xx 其余（400 载荷非法、403 无权限等）——重发只会烧时间与配额。
+    """
+    if not err:
+        return False
+    s = str(err).lower()
+    if "429" in s or "too many requests" in s:
+        return True
+    if " 50" in s or "503" in s or "502" in s or "504" in s:  # 5xx
+        return True
+    transient = ("timeout", "timed out", "connection reset", "connection aborted",
+                 "remote end closed", "ssl", "urlopen error", "temporary failure",
+                 "bad gateway", "service unavailable", "incompleteread",
+                 "remotedisconnected", "connectionrefused")
+    return any(t in s for t in transient)
+
+
+def _batch_key(batch):
+    """批次内容指纹：用于跨补批/重发跟踪已尝试次数（顺序敏感，同批同文本才同 key）。"""
+    return "\x1f".join(batch)
+
+
 def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round_idx,
-               pending_batches=None, isolate_errors=True):
-    """执行单轮七槽填槽（事件驱动即收即补，2026-09-17 P0 优化）。
+               pending_batches=None, isolate_errors=True, max_submit_retry=MAX_SUBMIT_RETRY):
+    """执行单轮填槽（事件驱动即收即补，2026-09-17 P0 优化）。
 
     此前：两个独立 ThreadPoolExecutor（提交+轮询），全部完成后才返回进下一轮。
     问题：早完成的槽位空闲等待（如 1 批 5 分钟 COMPLETE，其余 6 批 15 分钟，
@@ -590,16 +625,51 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
     2026-09-19 连坐隔离（isolate_errors，默认开）：某批 ERROR 时解析子模拟错误，
     定位坏式 → 坏式回写 expressions.status='fail' → 其余无辜表达式作为「重发批」
     **优先于** pending 队列在下一个空槽重发；重发批再 ERROR 不再重发（防死循环）。
+
+    2026-10-02 P0 提交期失败重发：此前 Phase 1 提交抛异常（429/网络）即写
+    SUBMIT_FAIL 后**永久丢弃**（不进 _retry_queue，同一次 run 内不再补），实测全库
+    42 批 = 330 条表达式静默丢失（GBR s2_institutions6_d1 gate=93 却只入库 83）。
+    现改为：可重发的提交失败（_is_retryable_submit_error）进入同一 _retry_queue
+    （优先于 pending），按批内容指纹计数，重发至多 max_submit_retry 次；超限或
+    不可重发的错误才落 SUBMIT_FAIL 终态。_refill 内的补批提交失败同规则。
     """
     n_batches = len(round_batches)
     if n_batches == 0:
         return 0, 0, {}
 
-    print(f"[round{round_idx}] 七槽填槽（即收即补）：{n_batches} 批分 {n_slots} 槽并行")
+    print(f"[round{round_idx}] 填槽（即收即补）：{n_batches} 批分 {n_slots} 槽并行")
 
     # ---- Phase 1: 并行提交（不变，几秒完成）----
+    # 2026-10-02 P0：重发队列与尝试计数在提交前建立，提交期失败即可入队。
+    _retry_queue = []          # [(batch, origin_label, kind)]，重发优先于 pending；kind ∈ {isolation, submit}
+    _retry_origin = {}         # new_bi -> origin（仅记录重发来源，便于排障）
+    _isolation_retry = set()   # new_bi 集合：连坐隔离产生的重发批（再 ERROR 不重发，防死循环）
+    _submit_attempts = {}      # batch 指纹 -> 已尝试次数（跨 Phase1/_refill 统一计数）
+    _pending = pending_batches if pending_batches is not None else []
+    _next_bi = n_batches + 1   # 补新批时的批次编号
+    # 批次编号 → 该批表达式（round_batches 只存 ≤ n_batches 的首轮批；补批/重发批也要能反查）
+    _batch_by_bi = {bi: round_batches[bi - 1] for bi in range(1, n_batches + 1)}
     submit_results = {}
     _slot_tokens = {}   # bi -> 账户级槽位 token（terminal 后释放）
+
+    def _queue_retry_or_fail(batch, err, origin=None):
+        """提交期失败处置（2026-10-02 P0）：可重发且未达上限 → 入重发队列；否则落 SUBMIT_FAIL。"""
+        key = _batch_key(batch)
+        tried = _submit_attempts.get(key, 0)
+        if _is_retryable_submit_error(err) and tried < max_submit_retry:
+            _submit_attempts[key] = tried + 1
+            _retry_queue.append((batch, origin, "submit"))
+            print(f"[submit] 提交失败可重发（第 {tried + 1}/{max_submit_retry} 次）: {err}")
+            return
+        rec = {"exprs": batch, "status": "SUBMIT_FAIL", "error": err}
+        if origin:
+            rec["retry_of"] = origin
+        ck["batches"].append(rec)
+        if _is_retryable_submit_error(err):
+            print(f"[submit] 提交失败已达重发上限({max_submit_retry})，落 SUBMIT_FAIL: {err}")
+        else:
+            print(f"[submit] 提交失败（不可重发）: {err}")
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=n_slots) as pool:
         futures = {
             pool.submit(_submit_single_batch, api, ctx.settings,
@@ -613,7 +683,7 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
                 _slot_tokens[bi] = _tok
             if err:
                 print(f"[submit] round{round_idx} batch{bi}/{n_batches} 失败: {err}")
-                ck["batches"].append({"exprs": round_batches[bi-1], "status": "SUBMIT_FAIL", "error": err})
+                _queue_retry_or_fail(round_batches[bi-1], err)
             else:
                 print(f"[submit] round{round_idx} batch{bi}/{n_batches} multisim={msid} n={len(round_batches[bi-1])}")
                 ck["batches"].append({
@@ -623,51 +693,51 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
             ckpt_save(ctx, ck, checkpoint_dir)
 
     running = {bi: msid for bi, (msid, err) in submit_results.items() if not err}
-    if not running:
+    # 2026-10-02 P0：Phase 1 全军覆没但重发队列非空时，不能直接返回——交给 Phase 2 补发。
+    if not running and not _retry_queue:
         print(f"[round{round_idx}] 无成功提交批次")
         return 0, 0, {}
 
     # ---- Phase 2: 事件驱动轮询+即收即补（P0 核心改动）----
-    print(f"[poll] round{round_idx} 事件驱动轮询 {len(running)} 个 multisim（即收即补）...")
+    if running:
+        print(f"[poll] round{round_idx} 事件驱动轮询 {len(running)} 个 multisim（即收即补）...")
+    else:
+        print(f"[poll] round{round_idx} 首轮全部提交失败，改为重发队列驱动（{len(_retry_queue)} 批）")
     poll_results = {}
-    _pending = pending_batches if pending_batches is not None else []
-    _next_bi = n_batches + 1  # 补新批时的批次编号
-    # 连坐隔离：重发队列优先于 pending；_retry_origin 记录哪些批次编号是重发批（只重发一次）
-    _retry_queue = []
-    _retry_origin = {}
-    # 批次编号 → 该批表达式（round_batches 只存 ≤ n_batches 的首轮批；补批/重发批也要能反查）
-    _batch_by_bi = {bi: round_batches[bi - 1] for bi in range(1, n_batches + 1)}
+    n_batch_retry = len(_retry_queue)   # 提交期失败入队数（统计用）
     isolated_total = 0
     resubmitted_total = 0
 
     def _refill(pool, futures):
-        """槽位空出时补一批：重发批优先，其次 pending。返回是否补了。"""
+        """槽位空出时补一批：重发批优先，其次 pending。返回是否补了。
+
+        重发队列元素为三元组 (batch, origin, kind)：kind ∈ {"isolation", "submit"}。
+        isolation = 连坐隔离的无辜兄弟（再 ERROR 不再重发）；submit = 提交期失败重发。
+        """
         nonlocal _next_bi, resubmitted_total
         origin = None
+        kind = "pending"
         if _retry_queue:
-            new_batch, origin = _retry_queue.pop(0)
+            new_batch, origin, kind = _retry_queue.pop(0)
         elif _pending:
             new_batch = _pending.pop(0)
         else:
             return False
         new_bi = _next_bi
         _next_bi += 1
-        # 2026-10-02 死锁修复（自 wip/cline-restore-1005-1929 移植，cap 仍按仓库定案 7）：
-        # 补批跑在主线程，在此阻塞等待会让负责释放槽位的 _poll_single_batch future
-        # 永远得不到推进 —— 本进程自己锁死自己（实测 GLB 第一波 / 第二波两条流水线同时停在
-        # 「[slots] 账户级在飞 7 >= cap 7，等待…」，直到被宿主回收）。
+        # 2026-10-02 死锁修复：补批路径在主线程，必须在飞满时**非阻塞放弃**本次补批，
+        # 让主线程回去轮询回收 future（否则 7 token 全被本进程未轮询批次持有 = 自锁）。
         _tok = slots_mod.acquire(label=f"pending-b{new_bi}", nonblock=True)
-        # acquire 返回 None 有两种相反的含义：真·在飞已满 vs 不仲裁（cap<=0 / 目录不可用）。
-        # 只有「仲裁开着且在飞已满」才跳过本次补批；不仲裁时照常提交（token=None 对
-        # release / relabel 安全）。2026-10-04 实测：把任何 None 都当「满」，则
-        # WQB_GLOBAL_SLOTS=0 下重发 / 补批永远提交不出去、白等 30 分钟。
+        # acquire 返回 None 有两种相反的含义：真·槽位已满 vs 不仲裁（cap<=0 / 目录不可用）。
+        # 只有「仲裁开着且在飞已满」才跳过补批；不仲裁时照常提交（token=None，release / relabel 对 None 安全）。
+        # 2026-10-04：此前把任何 None 都当「满」，WQB_GLOBAL_SLOTS=0 下重发 / 补批永远提交不出去、空等 30 分钟。
         if _tok is None and slots_mod.is_full():
-            # 未拿到槽位：回滚批次编号，把该批放回队头，等下一轮回收后再补。
+            # 未拿到槽位：回滚批次编号，把该批放回队列头，等下一轮回收后再补。
             _next_bi -= 1
-            if origin is not None:
-                _retry_queue.insert(0, (new_batch, origin))
-            else:
+            if kind == "pending":
                 _pending.insert(0, new_batch)
+            else:
+                _retry_queue.insert(0, (new_batch, origin, kind))
             return False
         try:
             new_msid = submit_batch(api, ctx.settings, _resolve_batch_items(ck, new_batch))
@@ -683,17 +753,52 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
                 entry["retry_of"] = origin
                 _retry_origin[new_bi] = origin
                 resubmitted_total += 1
+            if kind == "isolation":
+                _isolation_retry.add(new_bi)   # 连坐重发批：再 ERROR 不再重发
             ck["batches"].append(entry)
             new_fut = pool.submit(_poll_single_batch, api, new_msid, pcfg, new_bi)
             futures[new_fut] = new_bi
-            tag = f"连坐重发(源 {origin})" if origin else "即收即补"
+            if kind == "isolation":
+                tag = f"连坐重发(源 {origin})"
+            elif kind == "submit":
+                tag = "提交失败重发"
+            else:
+                tag = "即收即补"
             print(f"[poll] round{round_idx} {tag}：batch{new_bi} multisim={new_msid} n={len(new_batch)}（槽位常满）")
         except Exception as e:
             slots_mod.release(_tok)
+            # 2026-10-02 P0：补批提交失败同样按可重发规则处理（回队或落 SUBMIT_FAIL）
             print(f"[poll] round{round_idx} 即收即补失败: {e}")
-            ck["batches"].append({"exprs": new_batch, "status": "SUBMIT_FAIL", "error": str(e)[:200],
-                                  **({"retry_of": origin} if origin else {})})
+            _queue_retry_or_fail(new_batch, str(e)[:200], origin=origin)
         ckpt_save(ctx, ck, checkpoint_dir)
+        return True
+
+    def _fill_slots(pool, futures):
+        """把在飞数补到 n_slots（重发队列优先于 pending）；返回本轮是否补了。
+
+        2026-10-02 P0：重发/补批的**提交**也在此发生，故提交失败会再次入队或被落
+        SUBMIT_FAIL——因此必须在主循环里反复调用，直到队列与在飞都空。
+
+        2026-10-02 死锁修复：_refill 内 acquire 走 nonblock；在飞满时本函数立即
+        返回 False（不阻塞主线程），主循环据此转入 futures.wait() 回收。"""
+        filled = False
+        while len(futures) < n_slots:
+            if not _retry_queue and not _pending:
+                break
+            if not _refill(pool, futures):
+                break
+            filled = True
+        return filled
+
+    _slot_wait_deadline = {"t": None}
+
+    def _wait_external_slot(deadline_sec=_EXTERNAL_SLOT_WAIT_SEC):
+        """在飞已空、仅剩外部进程占槽时，短暂休眠等待其释放。返回是否应继续重试。"""
+        if _slot_wait_deadline["t"] is None:
+            _slot_wait_deadline["t"] = time.time() + deadline_sec
+        if time.time() > _slot_wait_deadline["t"]:
+            return False
+        time.sleep(10.0)
         return True
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=n_slots) as pool:
@@ -702,8 +807,22 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
             pool.submit(_poll_single_batch, api, msid, pcfg, bi): bi
             for bi, msid in running.items()
         }
-        # 事件驱动：每完成一个 future 立即处理并补新批
-        while futures:
+        # 引导：Phase 1 全失败（futures 空）时，用重发队列把槽位填起来。
+        _fill_slots(pool, futures)
+        # 事件驱动：只要还有在飞 future，或还有重发/待补批（其提交会失败重入队或落库），就继续。
+        # 旧写法 `while futures:` 在「引导补批全部提交失败」时退出，导致队列里剩余的重发被静默丢弃。
+        while futures or _retry_queue or _pending:
+            if not futures:
+                # 在飞空但队列非空：补批。
+                if _fill_slots(pool, futures):
+                    continue
+                # 补不进批 = 账户级槽位被外部进程占满（非本进程自锁，本进程在飞已空）。
+                # 2026-10-02：此处**不可 break**（否则静默丢弃队列中剩余批）——
+                # 改为短暂等待外部释放后重试；超时（默认 30min）才降级放弃。
+                if not _wait_external_slot(deadline_sec=_EXTERNAL_SLOT_WAIT_SEC):
+                    print(f"[poll] round{round_idx} 等待账户级槽位超时，放弃剩余 {len(_retry_queue) + len(_pending)} 批")
+                    break
+                continue
             # 等待任意一个 future 完成（不等待全部）
             done, _ = concurrent.futures.wait(
                 futures.keys(), return_when=concurrent.futures.FIRST_COMPLETED
@@ -723,7 +842,9 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
                     print(f"[poll] round{round_idx} batch{bi} {running.get(bi, '')} ERROR"
                           f"（{n_bad} 个子模拟报错，{len(errs) - n_bad} 个连坐 CANCELLED）")
                     # ---- 连坐隔离：定位坏式 → 回写 fail → 无辜兄弟重发一次 ----
-                    if isolate_errors and bi not in _retry_origin:
+                    # 只有「连坐隔离产生的重发批」再 ERROR 才不再重发（防死循环）；
+                    # 提交期失败重发批首次 ERROR 仍应走隔离（它此前根本没跑起来）。
+                    if isolate_errors and bi not in _isolation_retry:
                         culprits, survivors = _isolate_error_batch(batch_exprs, errs)
                         if culprits:
                             rec["isolated_culprits"] = culprits
@@ -732,29 +853,35 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
                                 print(f"[isolate] 坏式: {c['expr'][:90]} <- {c['error'][:80]}")
                             _mark_culprits_in_db(ctx, ck.get("wave"), culprits)
                             if survivors:
-                                _retry_queue.append((survivors, running.get(bi, "")))
+                                _retry_queue.append((survivors, running.get(bi, ""), "isolation"))
                                 print(f"[isolate] {len(survivors)} 条无辜表达式排入重发队列（源 {running.get(bi, '')}）")
                         else:
                             print("[isolate] 无法从子模拟定位坏式（平台未回表达式），本批按整批失败处理，不重发")
                     elif isolate_errors:
-                        print(f"[isolate] batch{bi} 是重发批（源 {_retry_origin[bi]}）再次 ERROR，不再重发")
+                        print(f"[isolate] batch{bi} 是重发批（源 {_retry_origin.get(bi, '?')}）再次 ERROR，不再重发")
                 else:
                     print(f"[poll] round{round_idx} batch{bi} {running.get(bi, '')} -> {status}")
                 ckpt_save(ctx, ck, checkpoint_dir)
 
-                # 即收即补：槽位空出，立即补新批（重发批优先）
-                _refill(pool, futures)
+            # 即收即补：本轮所有完成项处理后，把槽位补满（重发批优先；提交失败会在队列/落库间自处理）
+            _fill_slots(pool, futures)
 
     completed = sum(1 for s, _ in poll_results.values() if s == "COMPLETE")
     failed = sum(1 for s, _ in poll_results.values() if s in ("ERROR", "CANCELLED", "STALLED", "TIMEOUT"))
+    # 提交期仍落在 SUBMIT_FAIL 的批次（重发上限耗尽/不可重发）——列出条数便于对齐 §6.5 完成定义
+    n_submit_fail = sum(1 for b in ck.get("batches", [])
+                        if isinstance(b, dict) and b.get("status") == "SUBMIT_FAIL")
     extra = f" 隔离坏式={isolated_total} 重发批={resubmitted_total}" if isolate_errors else ""
-    print(f"[round{round_idx}] 回收：COMPLETE={completed} FAIL={failed} 补新批={_next_bi - n_batches - 1}{extra}")
+    if n_batch_retry:
+        extra += f" 提交失败重发={n_batch_retry}"
+    warn = f" ⚠ SUBMIT_FAIL 累计={n_submit_fail} 批（重发上限耗尽/不可重发，完成度不达标）" if n_submit_fail else ""
+    print(f"[round{round_idx}] 回收：COMPLETE={completed} FAIL={failed} 补新批={_next_bi - n_batches - 1}{extra}{warn}")
     return completed, failed, poll_results
 
 
 def stage_submit_poll(ctx, ck, passed, max_batches, force, checkpoint_dir=None,
                       max_rounds=1, serial=False, isolate_errors=True):
-    """七槽填槽多轮即收即补：max_rounds 轮，每轮并行提交 N 批、统一轮询、空槽补新批。
+    """填槽多轮即收即补：max_rounds 轮，每轮并行提交 N 批、统一轮询、空槽补新批。
     serial=True 时每轮仅提 1 批并等其 terminal（单批在飞纪律，防平台并发取消）。"""
     api = Api(); api.login(*load_credentials())
     qc = quota_cfg(ctx)
@@ -781,10 +908,10 @@ def stage_submit_poll(ctx, ck, passed, max_batches, force, checkpoint_dir=None,
     all_batches = [todo[i:i + batch_size] for i in range(0, len(todo), batch_size)]
     all_batches = all_batches[:max_batches]
     n_total = len(all_batches)
-    n_slots = min(7, n_total) if not serial else 1
+    n_slots = min(2, n_total) if not serial else 1
     pcfg = poll_config(ctx)
 
-    mode = "串行单批" if serial else "七槽填槽多轮"
+    mode = "串行单批" if serial else "填槽多轮"
     print(f"[slot] {mode}：总 {n_total} 批，{n_slots} 槽，最多 {max_rounds} 轮")
 
     total_completed = 0
@@ -813,7 +940,14 @@ def stage_submit_poll(ctx, ck, passed, max_batches, force, checkpoint_dir=None,
         else:
             print(f"[slot] 全部批次处理完毕")
 
+    # 2026-10-02 P0：终局仍带 SUBMIT_FAIL 的批次（重发上限耗尽/不可重发）显式告警——
+    # 这些批次的表达式没进 backtest_results，§6.5 完成度不达标，需重跑本波补齐。
+    n_submit_fail_total = sum(1 for b in ck.get("batches", [])
+                              if isinstance(b, dict) and b.get("status") == "SUBMIT_FAIL")
     print(f"[slot] 多轮汇总：{round_idx} 轮，COMPLETE={total_completed} FAIL={total_failed} 总批={n_total}")
+    if n_submit_fail_total:
+        print(f"[slot] ⚠ SUBMIT_FAIL 累计 {n_submit_fail_total} 批未入回测（提交期失败且重发上限耗尽）"
+              f"——重跑本波可补齐（SUBMIT_FAIL 不在 TERMINAL，todo 会自动重取）")
 
 
 
@@ -832,6 +966,140 @@ def _submit_ready_list(d):
         return v
     d["submit_ready"] = []
     return d["submit_ready"]
+
+#: 完成度闸容差（2026-10-02 P1）：planned - saved 超过该值即 WARN（默认 0 = 严格对齐 §6.5）。
+#: 之所以允许配置：平台偶发「同 alpha 重复入库被 alpha_id 唯一键合并」会让 saved 略小于 planned，
+#: 属正常收敛；真正的丢批（SUBMIT_FAIL 未重发）缺口是整批量级（≥ batch_size）。
+COMPLETENESS_TOLERANCE = 0
+
+
+def check_backtest_completeness(ck, n_saved, tolerance=COMPLETENESS_TOLERANCE):
+    """波末完成度自检（2026-10-02 P1，对齐 step6-backtest.md §6.5）。
+
+    §6.5 定义「backtest_results 行数 = 波内表达式数」，但此前**无任何代码校验**——
+    提交期失败（429 等）落 SUBMIT_FAIL 的批次会被静默丢弃，波仍写 wave_results 判为
+    完成（GBR s2_institutions6_d1 实证：gate=93 却只入库 83，零告警）。
+
+    本函数比对 planned（= 闸 5 通过数）与 n_saved（= 本波 backtest_results 行数），
+    返回 {planned, saved, missing, submit_fail_batches, ok, warn}。缺口 > tolerance 即
+    warn=True（调用方决定打印/阻断）。**纯函数，不写库、不阻断**——是否升级为硬闸由调用方定。
+    """
+    planned = len((ck.get("stages", {}).get("gate", {}) or {}).get("passed") or [])
+    batches = ck.get("batches") or []
+    fail_batches = [b for b in batches if isinstance(b, dict) and b.get("status") == "SUBMIT_FAIL"]
+    missing = max(0, planned - int(n_saved or 0))
+    return {
+        "planned": planned,
+        "saved": int(n_saved or 0),
+        "missing": missing,
+        "submit_fail_batches": len(fail_batches),
+        "ok": planned == 0 or missing <= tolerance,
+        "warn": planned > 0 and missing > tolerance,
+    }
+
+
+def _count_wave_backtest_rows(ctx, wave):
+    """查本波 backtest_results 现况行数（2026-10-02 P1）。库不可达返回 None（降级跳过）。"""
+    try:
+        st = _get_store(ctx)
+        try:
+            cur = st.connection.cursor()
+            cur.execute("SELECT COUNT(*) FROM backtest_results WHERE wave=?", (str(wave),))
+            return int(cur.fetchone()[0])
+        finally:
+            st.close()
+    except Exception as e:
+        print(f"[complete] 行数查询失败，跳过完成度闸: {e}")
+        return None
+
+
+def _report_completeness(ctx, ck, n_saved, tolerance=COMPLETENESS_TOLERANCE):
+    """波末完成度自检并打印（2026-10-02 P1）。以库里本波实际行数为准（非本次 upsert 数）。
+
+    返回 result dict；n_saved 仅作 upsert 计数展示（库里可能有既往行或同 alpha 合并）。
+    """
+    live = _count_wave_backtest_rows(ctx, ck["wave"])
+    result = check_backtest_completeness(ck, live if live is not None else n_saved, tolerance)
+    result["live_rows"] = live
+    result["upserted"] = int(n_saved or 0)
+    if result["warn"]:
+        print(f"[complete] ⚠ 完成度不达标：planned={result['planned']} 入库={result['saved']} "
+              f"缺={result['missing']}（SUBMIT_FAIL 批={result['submit_fail_batches']}）"
+              f"——核对 step6-backtest.md §6.5，缺批多为提交期 429 未重发，应重跑本波补齐")
+    else:
+        print(f"[complete] 完成度 OK：planned={result['planned']} 入库={result['saved']}"
+              f"（本轮 upsert={result['upserted']}）")
+    return result
+
+
+# ---------------------------------------------------------------------------
+# 步 7 P0（2026-10-02）：s4_walls 结构化写盘
+# ---------------------------------------------------------------------------
+# 断流实证：`s4_walls_<region>_<wave>` 此前唯一写者是 campaign.py:715，而它只在
+# `workflow_campaign(stage="S4")` 路径上执行。SOP 主路径 `pipeline.py --review`
+# 只把 walls 塞进 wave_results，**从不写该键** → 近 21 天 25 个 s2_ 波 0 个有该键，
+# `step_eval.py:350` 的 S4 质量指标 `walls_coverage` 实测恒为 0。
+# 更糟的是 campaign.py 的写者靠**关键词扫描子进程 stdout**（_extract_walls_summary），
+# 实测会漏报（全 PASS 输出 → None）与误报（含 "structural" 字样的告警行 → 假墙）。
+# 本函数用**已算好的结构化 r["walls"]** 聚合，不经任何文本解析。
+
+def build_s4_walls_payload(region, wave, rows, reviewed_at=None):
+    """把评审行的 `walls` 聚合成结构化 s4_walls payload（纯函数，单测用）。
+
+    rows: 每行 dict（须已由 review_mod.walls() 填好 `walls` 列表；无 walls 者视为达标）。
+    返回 {"walls": {墙名: 命中条数}, "n_rows", "n_candidates", "per_alpha": {...},
+         "reviewed_at", "region", "wave"}。
+    与 campaign.py 的**旧**关键词产物（{structural: True, ...}）格式不同：旧值是 bool、
+    新值是计数；下游 step_eval 只数键数，两种都兼容，但新格式可读性显著更高。
+    """
+    import datetime as _dt
+    per_alpha = {}
+    wall_count = {}
+    n_cand = 0
+    for r in rows or []:
+        if not isinstance(r, dict):
+            continue
+        aid = r.get("id") or r.get("alpha_id")
+        ws = [w for w in (r.get("walls") or []) if w]
+        if not ws:
+            n_cand += 1
+        for w in ws:
+            wall_count[w] = wall_count.get(w, 0) + 1
+        if aid:
+            per_alpha[aid] = ws
+    # 按命中数降序，便于人读（dict 保序）
+    ordered = {k: wall_count[k] for k in sorted(wall_count, key=lambda x: -wall_count[x])}
+    return {
+        "walls": ordered,
+        "n_rows": len([r for r in (rows or []) if isinstance(r, dict)]),
+        "n_candidates": n_cand,
+        "per_alpha": per_alpha,
+        "reviewed_at": reviewed_at or _dt.datetime.now().isoformat(timespec="seconds"),
+        "region": region,
+        "wave": str(wave),
+    }
+
+
+def _write_s4_walls(ctx, ck, rows, reviewed_at=None):
+    """写结构化 `s4_walls_<region>_<wave>` 到 ledger（2026-10-02 P0）。失败不阻断。
+
+    键名与 campaign.py 保持 `s4_walls_<region>_<wave>` 一致（step_eval 按
+    `key LIKE 's4_walls_%_%'` 统计），值换成结构化 payload。
+    """
+    try:
+        payload = build_s4_walls_payload(ctx.region, ck["wave"], rows, reviewed_at)
+        store = make_ledger_store(ctx)
+
+        def mut(d):
+            d[f"s4_walls_{ctx.region}_{ck['wave']}"] = payload
+        store.update(mut)
+        print(f"[s4_walls] 已写结构化墙摘要：{len(payload['walls'])} 类墙 / "
+              f"{payload['n_rows']} 行（{len(payload['per_alpha'])} 条 per-alpha 明细）")
+        return payload
+    except Exception as e:  # noqa: BLE001 — 台账写入失败不阻断评审
+        print(f"[s4_walls] 写入失败（不阻断）: {e}")
+        return None
+
 
 def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     if ck["stages"].get("review", {}).get("done"):
@@ -860,6 +1128,8 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
             print(f"[db] backtest_results +{n_saved}/{len(rows)}（wave={ck['wave']}，全灭快速入库）")
         finally:
             st.close()
+        # 2026-10-02 P1：完成度自检（全灭通道同样要查——丢批与是否全灭无关）
+        completeness = _report_completeness(ctx, ck, n_saved)
         try:
             from _lib.wave_results import WaveResultsStore
             wr = WaveResultsStore(ctx.region, ctx=ctx)
@@ -875,7 +1145,16 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         except (Exception, SystemExit) as e:
             print(f"[region_kb] 刷新异常（不阻断）: {e}")
         print(f"[review] total={len(rows)} candidates=0 near=0（全灭快速通道）")
-        ck["stages"]["review"] = {"done": True, "candidates": 0, "near": 0}
+        # 2026-10-02 P0：全灭通道也要写 s4_walls——否则"整波撞同一堵墙"这一最需要留档的
+        # 场景反而无键可查（step_eval walls_coverage 会把这类波记成未覆盖）。
+        # 全灭通道此前刻意跳过 walls 诊断（对判死波无价值），但**记账**成本极低（纯计算不调 API），
+        # 且正是停止规则 B（连续 3 波 FAIL）判据的依据来源，故此处补算 walls。
+        for _r in rows:
+            if _r.get("sharpe") is not None and not _r.get("walls"):
+                _r["walls"] = review_mod.walls(_r, t)
+        _write_s4_walls(ctx, ck, rows)
+        ck["stages"]["review"] = {"done": True, "candidates": 0, "near": 0,
+                                  "completeness": completeness}
         ckpt_save(ctx, ck, checkpoint_dir)
         return
     # ---- 回测结果入 backtest_results（必须成功；库为唯一持久化）----
@@ -888,6 +1167,8 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         print(f"[db] backtest_results +{n_saved}/{len(rows)}（wave={ck['wave']}）")
     finally:
         st.close()
+    # 2026-10-02 P1：完成度自检（防提交期丢批被当"完成"）
+    completeness = _report_completeness(ctx, ck, n_saved)
     candidates = [r for r in rows if review_mod.passes(r, t)]
     near = []
     t_near = ctx.thresh("near")
@@ -937,6 +1218,8 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     except (Exception, SystemExit) as e:
         print(f"[region_kb] 刷新异常（不阻断）: {e}")
     print(f"[review] total={len(rows)} candidates={len(candidates)} near={len(near)}")
+    # 2026-10-02 P0：写结构化 s4_walls（消除「SOP 主路径不写该键」断流；见 build_s4_walls_payload 注释）
+    _write_s4_walls(ctx, ck, rows)
     if write_ledger:
         store = make_ledger_store(ctx)
 
@@ -948,7 +1231,8 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
                                "queued_at": today()})
         store.update(mut)
         print(f"[ledger] submit_ready +{len(candidates)}")
-    ck["stages"]["review"] = {"done": True, "candidates": len(candidates), "near": len(near)}
+    ck["stages"]["review"] = {"done": True, "candidates": len(candidates), "near": len(near),
+                              "completeness": completeness}
     ckpt_save(ctx, ck, checkpoint_dir)
 
     # ---- L1 采集：收割后自动提取方法论信号 -> 候选规则 ----
@@ -1032,7 +1316,7 @@ def main():
                    help="覆盖 settings 任意字段，可多次（如 --set maxTrade=ON --set startDate=2014-01-01）；复刻已知强 alpha 必需")
     p.add_argument("--max-batches", type=int, default=99)
     p.add_argument("--max-rounds", type=int, default=1,
-                   help="七槽填槽最大轮次（默认 1=单轮全提全收；>1 启用多轮即收即补）")
+                   help="填槽最大轮次（默认 1=单轮全提全收；>1 启用多轮即收即补）")
     p.add_argument("--no-isolate-errors", action="store_true",
                    help="关闭连坐隔离（默认开：ERROR 批解析坏式→回写 fail→无辜兄弟重发一次）")
     p.add_argument("--serial", action="store_true",
@@ -1223,9 +1507,16 @@ def _cmd_main(a, ctx):
     passed = stage_gate(ctx, ck, exprs, a.dataset, a.checkpoint_dir, a.datasets)
     # ---- 批级闸（闸6 多样性契约 + 可选闸7/8 sanity）：自动批量防退化 ----
     # 仅真实提交（--submit 且非 dry-run）时消费契约（幂等）；dry-run/plan 只检查不消费
+    # 探针批（batch_type=probe）语义即豁免闸6：单骨架裸测用于归因，骨架多样性会污染归因。
+    # 依据 diversity_gate_is_portfolio_level_not_per_wave_v1（2026-10-04 KOR 818 波次实证）。
+    # 与 --skip-diversity-gate 等价但语义自解释——探针波应优先用 --batch-type probe 而非手动逃生阀。
+    _skip_div = a.skip_diversity_gate or a.batch_type == "probe"
+    if a.batch_type == "probe" and not a.skip_diversity_gate:
+        print("[gate] batch_type=probe（探针批）→ 自动豁免闸6 骨架多样性"
+              "（依据 diversity_gate_is_portfolio_level_not_per_wave_v1）")
     ok_batch, _ = stage_batch_gates(
         ctx, ck, passed, a.dataset,
-        batch_type=a.batch_type, skip_diversity=a.skip_diversity_gate,
+        batch_type=a.batch_type, skip_diversity=_skip_div,
         sanity_all=a.sanity_all, consume=(a.submit and not a.dry_run),
         checkpoint_dir=a.checkpoint_dir, datasets_extra=a.datasets)
     if not ok_batch:
@@ -1234,12 +1525,12 @@ def _cmd_main(a, ctx):
     if a.dry_run:
         batch_size = ctx.batch_size()
         n_batches = (len(passed) + batch_size - 1) // batch_size
-        n_slots = min(7, n_batches)
+        n_slots = min(2, n_batches)
         print(f"[dry-run] gate 过 {len(passed)} 式，将分 {n_batches} 批（batch={batch_size}，"
-              f"七槽填槽 n_slots={n_slots}）；未提交。checkpoint: {ckpt_path(ctx, a.wave, a.checkpoint_dir)}")
+              f"填槽 n_slots={n_slots}）；未提交。checkpoint: {ckpt_path(ctx, a.wave, a.checkpoint_dir)}")
         return 0
     if not a.submit:
-        print(f"[plan] gate 过 {len(passed)} 式；加 --submit 提交（七槽填槽 + 配额闸）")
+        print(f"[plan] gate 过 {len(passed)} 式；加 --submit 提交（填槽 + 配额闸）")
         return 0
     stage_submit_poll(ctx, ck, passed, a.max_batches, a.force, a.checkpoint_dir,
                       max_rounds=a.max_rounds, serial=a.serial,

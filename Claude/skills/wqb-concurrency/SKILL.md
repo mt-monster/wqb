@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-09-29
 name: wqb-concurrency
-description: "回测被 429 / CONCURRENT_SIMULATION_LIMIT_EXCEEDED 卡住、回测吞吐低、孤儿模拟占槽、要弄清七槽并发口径时使用：并发上限 C 的测定、在飞数锁定原则、孤儿模拟与三类卡住根因、七槽填槽 SOP 的并发纪律。"
+description: "回测被 429 / CONCURRENT_SIMULATION_LIMIT_EXCEEDED 卡住、回测吞吐低、孤儿模拟占槽、要弄清填槽并发口径时使用：并发上限 C 的测定、在飞数锁定原则、孤儿模拟与三类卡住根因、七槽填槽 SOP 的并发纪律。"
 layer: L3
 allowed-tools:
   - Read
@@ -14,17 +14,29 @@ agent_created: true
 
 ## 职责边界
 
-- **本 skill 负责**：**并发口径与纪律**——账户级并发上限 C（Token-Bucket，C≈7）的测定方法、在飞数锁定原则、孤儿模拟与卡住根因、七槽填槽 SOP 的**并发部分**、429 时怎么降并发。
+- **本 skill 负责**：**并发口径与纪律**——账户级并发上限 C（Token-Bucket，C≈7）的测定方法、在飞数锁定原则、孤儿模拟与卡住根因、填槽 SOP 的**并发部分**、429 时怎么降并发。
 - **本 skill 不做**：不发起回测本身（`brain-sim-alphas-in-batch-and-track` / toolkit）、不改表达式、不提交；**不管台账、复盘与选波**（那是 RA 步 1 / 步 9：写波结论 `upsert_wave_result`，选波前读 `get_latest_wave` / `tools/step_funnel.py`）。
 - **上游 / 下游**：被 `brain-sim-alphas-in-batch-and-track` 与 `wq-brain-campaign-toolkit`（`pipeline.py`）引用；纪律落回调用方的执行参数（批大小 / 账户级并发上限 / 批间隔），不产出独立工件。
 
-> **读者分层**：§1、§4、§5、§8 是**给 agent 的规则**；§2–§3 与 §7 是**给引擎维护者的实现原理**（七槽已由 `pipeline.py` 内部锁定，agent 不要手写 runner / 一次性脚本，AGENTS.md 禁止）。
+> **读者分层**：§1、§4、§5、§8 是**给 agent 的规则**；§2–§3 与 §7 是**给引擎维护者的实现原理**（槽位数已由 `pipeline.py` 内部锁定，agent 不要手写 runner / 一次性脚本，AGENTS.md 禁止）。
 
 WorldQuant Brain 的「并发模拟数」是**服务端硬性上限 C**，与本地开多少线程无关：本地在飞回测数 = min(本地工作线程数, C)，超过 C 的提交拿到 `429`，白白浪费重试。
 
 ## 1. 口径与测定 C（别猜，实测）
 
-**现行模型**（2026-08 实测）：**Token-Bucket，突发容量 C≈7，慢补充约 1 令牌 / 20–40 s**（详见 `wq-backtest-monitor` §6）；旧的固定槽位 C=5 是 2026-07 的测量，已作废。数字的唯一来源是 `src/wqb/config.py::CONCURRENCY`：`slots=7`（七槽 = 在飞 multisim 上限）、`burst_capacity=7`、`refill_sec_per_token=(20, 40)`。同一表里还有保守档 `safe_instant_submits=6` 与 `min_batch_interval_sec=45`——**目前没有代码读取这两个值**，`pipeline.py` 实际按 7 槽同提（实证 7 批同提全部被接受）；它们是「刚遇 429 风暴 / 有孤儿占槽」时的手动保守做法（`WQB_GLOBAL_SLOTS=6` 且批间 ≥ 45 s，见 §8.1）。**七槽 = 7（容量）与保守档 = 6（余量）是两个不同的量，别当成同一个包络的两种说法。**
+**现行模型**（2026-08 实测）：**Token-Bucket，突发容量 C≈7，慢补充约 1 令牌 / 20–40 s**（详见 `wq-backtest-monitor` §6）；旧的固定槽位 C=5 是 2026-07 的测量，已作废。数字的唯一来源是 `src/wqb/config.py::CONCURRENCY`。
+
+> **现行采用水位 = `slots=2`**（2026-10-06 用户定案，从实测上限 C≈7 下调）：
+> ① 多条流水线 / 并行会话共用同一账号的槽位与配额，跑满上限会频繁 429 + 退避，总吞吐反而下降；
+> ② 7 槽直接诱发过 2026-10-02 的 `pipeline` 主线程自锁（正解是 `acquire(nonblock=True)`，
+>    cap=2 是叠加的第二重保险，见 §8.1）。
+> 临时提高用 `WQB_GLOBAL_SLOTS=<n>`，不要改常量、也不要往 `pipeline.py` 传并发形参。
+>
+> 键位现状：`slots=2`（= 在飞 multisim 上限）、`burst_capacity=2`、`refill_sec_per_token=(20, 40)`。
+> 同一表里还有保守档 `safe_instant_submits` 与 `min_batch_interval_sec=45` ——
+> **目前没有代码读取这两个值**，它们是「刚遇 429 风暴 / 有孤儿占槽」时的手动保守做法
+> （`WQB_GLOBAL_SLOTS=1` 且批间 ≥ 45 s，见 §8.1）。
+> **cap（在飞上限）与保守档余量是两个不同的量，别当成同一个包络的两种说法。**
 
 需要**复测** C 时（正常战役不需要）：
 
@@ -47,11 +59,11 @@ def run_backtest(self, expr, settings, ...):
 self._sub_sem = threading.Semaphore(C)   # C 取自 config.CONCURRENCY['slots']，不要硬编码
 ```
 
-若信号量只在 `POST` 处 `with`，轮询时信号量已释放 → 实际在飞数 = 工作线程数，会超额提交、疯狂 429。这是最隐蔽的 bug。`pipeline.py` 已按此实现（`n_slots = min(7, 批数)`），改引擎时保持。
+若信号量只在 `POST` 处 `with`，轮询时信号量已释放 → 实际在飞数 = 工作线程数，会超额提交、疯狂 429。这是最隐蔽的 bug。`pipeline.py` 已按此实现（`n_slots = min(CONCURRENCY['slots'], 批数)`），改引擎时保持。
 
 ## 3. 线程数（给引擎维护者）
 
-在飞数 = min(工作线程, C)；要打满吞吐需**工作线程 ≥ C**，推荐 **C + 1**（多 1 个缓冲线程，随时补位）。例：C = 7 → 信号量 7、8 个工作线程。（旧文的「C=5、每数据集 3 线程 × 2 数据集」是 2026-07 的数字。）
+在飞数 = min(工作线程, C)；要打满吞吐需**工作线程 ≥ C**，推荐 **C + 1**（多 1 个缓冲线程，随时补位）。例：cap = 2 → 信号量 2、3 个工作线程。（旧文的「C=5、每数据集 3 线程 × 2 数据集」是 2026-07 的数字。）
 
 ## 4. 🚨 孤儿模拟占槽（最阴的坑）
 
@@ -77,9 +89,9 @@ self._sub_sem = threading.Semaphore(C)   # C 取自 config.CONCURRENCY['slots']�
 
 ## 7. 战役场景：参数化退避
 
-战役目录（`tracking/<REGION>/`）内的正式 wave 回测走七槽填槽（§8）；退避 / 熔断参数化由 toolkit `pipeline.py` 内部提供（缺省值与 `poll` 节覆盖见 `wq-brain-campaign-toolkit/references/poll-and-quota.md`）。
+战役目录（`tracking/<REGION>/`）内的正式 wave 回测走填槽（§8）；退避 / 熔断参数化由 toolkit `pipeline.py` 内部提供（缺省值与 `poll` 节覆盖见 `wq-brain-campaign-toolkit/references/poll-and-quota.md`）。
 
-## 8. 🌟 七槽填槽模式（并发纪律）
+## 8. 🌟 填槽模式（并发纪律）
 
 **实证**：7 个 multisim（各 8 条）同时提交全部被接受且 ~90 秒同步 COMPLETE，连续多波 0 ERROR / 0 连坐。旧「多批 multisim 会 CANCELLED」的结论实为批内坏表达式连坐所致，门禁后已可安全并行。
 
@@ -89,7 +101,7 @@ self._sub_sem = threading.Semaphore(C)   # C 取自 config.CONCURRENCY['slots']�
 2. **7 批同提**：`mcp__wq-brain-http__create_multi_simulation`（异步模式）每轮同时提交 7 批 × 8 条；**禁止串行「提交 → 等完 → 再提」**（槽位利用率仅 ~14%）。**`validate_fields` 分场景**：**验活探针**（新字段先验活幽灵字段，RA 步 3）用 `true`；**正式批**用 `false`（避免预检超时）。
 3. **统一轮询与收批**：用 `mcp__wq-brain-http__harvest_multisim_alphas` 一次取回 multisim 全部子 alpha 详情（含 `checks`；把旧的「`lookINTO_SimError_message` → children → `get_alpha_details` 逐 ID」三段链压成 2 次调用），再 `harvest_multisim_results` 入库；批内 ERROR 的定位用 `lookINTO_SimError_message`。**不用 `get_user_alphas`**：它按时间排序拉摘要列表，无法保证目标 ID 全在里面，也可能不含完整 `checks`。
 4. **即收即补**：任一批 COMPLETE 立即回收筛选，空槽当轮补新批，保持 7 槽常满，单轮吞吐 ×7。
-5. **批间间隔**：缺省不设（七槽同提）；遇 429 时按 §8.1 降账户级并发，并把批间隔拉到 ≥ 45 s（令牌约 1 个 / 20–40 s 补充）。
+5. **批间间隔**：缺省不设（N 槽同提，N = `CONCURRENCY['slots']`）；遇 429 时按 §8.1 降账户级并发，并把批间隔拉到 ≥ 45 s（令牌约 1 个 / 20–40 s 补充）。
 
 **台账与复盘不在本 SOP 里**：写波结论（`upsert_wave_result`）、「未写结论不得开下一波」、选波前读 `get_latest_wave` / `step_funnel`、多样性评估，都是 RA 步 1 / 步 9 的事。现行的「台账同步门」= 开波三道区域闸（DB 判定）+ `tools/step_funnel.py`；`check_ledger_sync.py`（`tools/` 与 toolkit 各一份）校验的是 `runs/` 批次字母与 `WAVE_LEDGER.md`——**文件时代**的做法，仅当战役目录仍保留这些文件时才有意义。
 
@@ -97,23 +109,23 @@ self._sub_sem = threading.Semaphore(C)   # C 取自 config.CONCURRENCY['slots']�
 
 ### 8.1 账户级槽位仲裁（跨进程；`_lib/slots.py`）
 
-`pipeline.py` 每个进程各自把并发锁在 `min(7, 批数)`；**两条流水线同跑**（IND w171 + JPN w8 实测）在飞 10–13 个 multisim，超过账户级 C≈7，此前只能靠 429 退避被动兜底。现由 toolkit `_lib/slots.py` 做主动仲裁：
+`pipeline.py` 每个进程各自把并发锁在 `min(CONCURRENCY['slots'], 批数)`；**两条流水线同跑**（IND w171 + JPN w8 实测）在飞 10–13 个 multisim，超过账户级 C≈7，此前只能靠 429 退避被动兜底。现由 toolkit `_lib/slots.py` 做主动仲裁：
 
 - 目录 `<repo>/logs/_slots/` 下**每个在飞 multisim 一个 token 文件**（内容 pid / multisim id / 时间戳）；提交前 `acquire()` 数活 token，≥ cap 则轮询等待，拿到即写 token；进入终态后 `release()` 删 token。
 - **陈旧 token**（进程已死，或超过 max_age 秒）自动回收，避免崩溃残留占坑；任何异常都降级为「不仲裁」（打印 warn），**绝不阻断提交**。
-- 环境变量：`WQB_GLOBAL_SLOTS`（账户级 cap，缺省 7；`0` = 关闭仲裁）、`WQB_SLOTS_DIR`（目录）。
-- **429 时怎么降并发**（可执行手段，RA 步 6 的故障表只保留指向这里的一句）：① 等待退避（MCP 内建 `Retry-After` + 指数）；② 设 `WQB_GLOBAL_SLOTS=<n>` 降账户级并发（保守档 6）；③ 批大小 ≤ 5。**注意**：外部往 `pipeline.py` 传非 7 的并发形参**只会收到 warning，不会降并发**（并发在 pipeline 内部锁定）。
+- 环境变量：`WQB_GLOBAL_SLOTS`（账户级 cap，缺省 2；`0` = 关闭仲裁）、`WQB_SLOTS_DIR`（目录）。
+- **429 时怎么降并发**（可执行手段，RA 步 6 的故障表只保留指向这里的一句）：① 等待退避（MCP 内建 `Retry-After` + 指数）；② 设 `WQB_GLOBAL_SLOTS=<n>` 降账户级并发（要更保守就设 1；**大于现行 cap 的值是升并发，不是降**）；③ 批大小 ≤ 5。**注意**：外部往 `pipeline.py` 传与 `CONCURRENCY['slots']` 不同的并发形参**只会收到 warning，不会降并发**（并发在 pipeline 内部锁定）。
 
 ## 情景卡
 
 ### 情景 WC-A　新一轮开波后全 429、接受数 0
 
 - **前置状态**：刚 `TaskStop` 过上一个挖矿进程，或另一条流水线在跑。
-- **步骤**：① 不再 `TaskStop`；② `logs/_slots/` 看有几个活 token（两条流水线同跑会超 7）；③ 短退避重试等孤儿释放；④ 仍卡 → `WQB_GLOBAL_SLOTS=6` 并拉开批间隔 ≥ 45 s。
+- **步骤**：① 不再 `TaskStop`；② `logs/_slots/` 看有几个活 token（两条流水线同跑会超出 cap）；③ 短退避重试等孤儿释放；④ 仍卡 → `WQB_GLOBAL_SLOTS=1` 并拉开批间隔 ≥ 45 s。
 - **完成定义**：接受数随孤儿释放回升，没有候选因限流被丢弃。
 - **反例**：把 429 当「表达式有问题」去改式子；强杀进程「清场」。
 
 ### 情景 WC-B　同事问「我该开几个线程」
 
-- **步骤**：告诉对方**别开**——七槽由 `pipeline.py` 内部锁定，外部传并发形参只收 warning；要提高吞吐只能保证 7 槽常满（即收即补），而不是加线程。
+- **步骤**：告诉对方**别开**——槽位数由 `pipeline.py` 内部锁定，外部传并发形参只收 warning；要提高吞吐只能保证槽位常满（即收即补），而不是加线程。
 - **反例**：手写 runner 并把信号量只包在 `POST` 上。

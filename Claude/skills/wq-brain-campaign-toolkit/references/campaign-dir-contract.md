@@ -40,7 +40,7 @@ tracking/<REGION>/                       # 区域大写；region 只从 settings
 }
 ```
 
-- `_` 前缀键是本地约定，不进提交 payload（pipeline 自动剔除）；`_concurrency_rule` 标的是七槽填槽（见 `wqb-concurrency` §8）。
+- `_` 前缀键是本地约定，不进提交 payload（pipeline 自动剔除）；`_concurrency_rule` 标的是填槽（见 `wqb-concurrency` §8）。
 - region / universe / neutralization 的合法档位以 `config.REGIONS` 与 `mcp__wq-brain-http__get_platform_setting_options` 实测为准，**勿外推**（TOP1500 等非法档教训）。中性化取值受 RA 决策表 D5 约束（SECTOR / MARKET 会压垮 IS ladder），示例值 `STATISTICAL` 不是推荐值。
 
 ## thresholds.json：六节 + 可选节

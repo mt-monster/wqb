@@ -213,7 +213,7 @@ def _drop_type_mismatched(exprs, data_type, known_ops=None):
     而当前集是纯 MATRIX），而字面量无法被角色池过滤掉。EUR wave142 实测：
     dl_riskfree_returns（纯 MATRIX）拿到了 vec_max(...) 因子，撞 gate 的
     [TYPE] MATRIX 数据集禁用 vec_* 闸。这里在注入前按同一权威名单预先过滤，
-    不白占候选名额（否则七槽会被注定过不了闸的因子挤掉）。
+    不白占候选名额（否则槽位会被注定过不了闸的因子挤掉）。
     """
     if data_type != "MATRIX" or not exprs:
         return exprs, []

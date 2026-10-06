@@ -290,7 +290,7 @@
     },
     "WQB_GLOBAL_SLOTS": {
       "cat": "wait",
-      "what": "账户级模拟并发令牌数（缺省 7，= `config.CONCURRENCY`；多流水线同跑共享）",
+      "what": "账户级模拟并发令牌数（多流水线同跑共享）；缺省 = `config.CONCURRENCY['slots']`，2026-10-06 定案为 2（旧 7）；0 = 关闭仲裁",
       "since": "2026-09-19"
     },
     "WQB_INSPECT_MODE": {
