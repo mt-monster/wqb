@@ -76,7 +76,7 @@
 
 | 文件 | 保留理由 |
 |---|---|
-| `tools/triage_platform_status_sweep_v3.py` | mtime 2026-09-24 22:36，并发会话在飞，避免误删在写文件 |
+| `tools/triage_platform_status_sweep_v3.py` | 当时（2026-10-04）mtime 2026-09-24 22:36，并发会话可能在飞，避免误删在写文件。**已追认完成：2026-10-06 全仓零活动引用（只剩 THEMES 与基线登记痕迹），用户主动退役并 `git rm`**，同时登记进 `audit_structure_baseline.json` 的 `retired_paths`（S12 拦复活）。内容留在 git 历史与抢救点，取看：`git show b62447f:tools/triage_platform_status_sweep_v3.py`（退役前的最后一个主干 commit）|
 | `tools/db_maintenance.py` | 有 `__main__`；且为 2026-09-20 17:15 落盘的一批 DB 维护 CLI，属未登记工具 |
 | `tools/operator_diversity_analyzer.py` | 有 `__main__`，算子多样性分析 CLI，属未登记工具 |
 | `tools/discover_datasets.py`、`tools/fix_db_residuals.py`、`tools/populate_external_fields.py` | 三个均以 2026-09-20 16:58 同批落盘（疑似同一次 DB 迁移），全部带 `__main__` CLI |

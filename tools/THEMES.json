@@ -47,8 +47,6 @@
       "title": "probe",
       "files": [
         "dryrun_multidim.py",
-        "hkg_d1_model_probe.py",
-        "hkg_d1_model_probe2.py",
         "probe_batch_mode.py",
         "prod4_quick.py",
         "prod_bucket_scan.py",
@@ -98,9 +96,7 @@
         "restore_alpha_props.py",
         "submit_queue.py",
         "submit_verdict.py",
-        "triage_platform_status_sweep_v3.py",
         "triage_prodcorr_batch.py",
-        "verify_ready8.py",
         "candidate_health_card.py",
         "submit_inventory.py",
         "verify_region_op.py"
@@ -359,17 +355,17 @@
     "gates": 15,
     "ledger": 5,
     "pool-hygiene": 4,
-    "probe": 9,
+    "probe": 7,
     "reporting": 4,
     "research": 17,
     "rotation": 7,
     "skills": 3,
     "super": 2,
-    "verdict": 20,
+    "verdict": 18,
     "wave": 6
   },
   "unassigned_n": 0,
-  "top_n": 171,
+  "top_n": 167,
   "_moved_20261004": {
     "note": "首轮下沉（2026-10-04）：仅迁移「零 import 依赖 + 零文档按路径引用 + 内部无 sys.path.insert/parents[N]/dirname(dirname())」的脚本。其余顶层脚本的阻塞点见 _blocked_by_import。",
     "moved": {
