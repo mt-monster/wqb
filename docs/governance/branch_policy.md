@@ -33,9 +33,11 @@
 - **`wip/<date>-<topic>`**：短期工作分支，约定**当日合并或当日删除**；不允许长期滞留。
   长期滞留的 wip 分支会被误当成"已合并"而删掉，其上未合入的内容随之只能在
   `git fsck` 里考古。
-  ⚠ 例外只在本文 §3 逐条登记：违反「当日删除」而故意保留的分支必须在这里写明理由，
-  否则它就是下一个会话眼里的「可以删」（已发生过：`wip/DANGER-*` 违反了本约定，
-  却被 §3 追认成「故意保留」——追认可以，但不得反过来拿追认当「约定本来就有例外」）。
+  ⚠ 例外必须在本文 §3 **逐条写明理由**，否则它就是下一个会话眼里的「可以删」。
+  历史教训：`wip/DANGER-*` 曾违反本约定又被 §3 追认成「故意保留」——追认可以，
+  但不得反过来拿追认当「约定本来就有例外」。**2026-10-06 已按 §3 的裁决把两者降为 tag-only
+  并删除分支** ⇒ 现在 `git branch` 应只剩 `main`；再出现 `wip/*` 就是新的欠债。
+  （`repo_governance_check.py` 的 `danger_branches` 读数就是盯这个：非空即有人新造了长期 wip 分支。）
 - **`preserve/*` tag**：抢救点，**永久保留、永不合并**。语义是"这是某时刻工作区的
   快照，供日后取件用"，不是一条开发线。
 
@@ -111,23 +113,34 @@ git diff --numstat main preserve/wip-cline-restore-1005-1929 -- <path>
 `deleted=0` 表示"快照 = main + 追加"，恢复不可能覆盖现有内容（本次 §10–§16 即按此判据恢复）。
 若 `deleted>0`，那就是**分叉**而不是损失，必须逐文件判断，禁止整体 checkout。
 
-## 3. 两个 `wip/DANGER-*` 分支（逐条裁决，2026-10-06）
+## 3. `wip/DANGER-*` 分支：已逐条裁决并于 2026-10-06 **降为 tag-only（分支已删）**
 
-`wip/DANGER-restore-1006-0056-gutted`（`22a8e4a`）与
-`wip/DANGER-restore-1006-0056-gutted-untracked`（`05b64a6`）**故意保留**（即 §1「当日删除」
-的显式例外）：
+原本两条分支与同名 tag 指向同一 commit，语义是「tag = 对象根（保险），分支 = 路牌」。
+它们与 §1「`wip/*` 当日删除」的冲突曾靠本节的追认勉强调和；2026-10-06 用户定案「删分支、留 tag」。
 
-- 分支名里的 `DANGER` 是给未来的自己看的警告：这批内容处于"被清空/半清空"状态。
-- **永不合并进 `main`**。它们的作用是"把损坏现场原样冻住"，便于日后比对
-  "到底哪些东西曾经存在过"。
-- 它们与 `preserve/*` tag 指向同一 commit，tag 是保险，分支是路牌。
+### 3.1 当时的定级依据（保留作历史，不要因为分支已删就删掉这段）
 
-2026-10-06 逐件定级（不再笼统写「都留着」）：
-
-| ref | 内容实测 | 裁决 |
+| ref | 内容实测 | 当时的结论 |
 |---|---|---|
-| `22a8e4a`（tracked 侧） | 相对 `main` = 630 files / +5159 / −94689；`Claude/skills` 只剩 32 个 vs main 434（**差 402**，而分支说明写的「398」本身就是漂的数）——对 `main` 是「纯损坏 + 分叉旧版」 | 取证价值**低于** untracked 侧。完成 §1.1 的双介质备份后可**降为 tag-only**（删分支留 tag = 对象不丢、路牌变少）。本轮**未删**：删 ref 是不可逆动作，等用户点头 |
-| `05b64a6`（untracked 侧） | 只 4 件，其中 `tests/unit/01_store_db/test_corr_single_source.py` **不在 main** | **必留**。但该测试断言的是 `_corr_cache.py` 的第三版契约（`CORR_FRESH_SECONDS` / `source_detail`，main 与快照两份实现都没有），取回即 7 红 —— 已在台账里裁决 `DROPPED`（附可复核验据），**属未合入分叉线，由该线所有者整线合并** |
+| `22a8e4a`（tracked 侧） | 相对 `main` = 630 files / +5159 / −94689；`Claude/skills` 只剩 32 个 vs main 434（**差 402**，而分支说明写的「398」本身就是漂的数）——对 `main` 是「纯损坏 + 分叉旧版」 | 取证价值**低于** untracked 侧；完成 §1.1 双介质备份后可降为 tag-only |
+| `05b64a6`（untracked 侧） | 只 4 件：两份 `.arxiv_cache.json`（运行期缓存）、`src/wqb/store/_corr_cache.py`（**main 版是它的超集**，多出 `get_corr_authoritative_batch`）、`tests/unit/01_store_db/test_corr_single_source.py`（**不在 main**） | 对象**必留**；但该测试断言的是 `_corr_cache.py` 的第三版契约（`CORR_FRESH_SECONDS` / `source_detail`，main 与快照两份实现都没有），取回即 7 红 —— 台账里裁决 `DROPPED`，属未合入分叉线，由该线所有者整线合并 |
+
+### 3.2 执行记录与验证（删的是分支，**对象一件没丢**）
+
+```powershell
+git branch -D wip/DANGER-restore-1006-0056-gutted wip/DANGER-restore-1006-0056-gutted-untracked
+git push origin --delete wip/DANGER-restore-1006-0056-gutted wip/DANGER-restore-1006-0056-gutted-untracked
+
+# 验证：tag 仍指向原 commit（annotated tag 要加 ^{commit} 才能比 commit sha）
+git rev-parse "preserve/wip-DANGER-restore-1006-0056-gutted^{commit}"           # 22a8e4a
+git rev-parse "preserve/wip-DANGER-restore-1006-0056-gutted-untracked^{commit}" # 05b64a6
+```
+
+实测结果：`git branch` 只剩 `main`；origin 变为 **1 head + 21 tag**；
+`snapshot_adjudicate.py --check` 仍是「台账与对象库一致（794 件）」——因为两个 commit 本来就被 tag 持有，
+删分支不改变清单集合。这也印证了本文件顶部的那句：**删分支不丢内容，删 tag 才丢**。
+
+需要重新挂路牌时（比如又要做事故比对）：`git branch wip/<name> 22a8e4a`，**不要重建对象**。
 
 ## 4. 卫生检查
 
@@ -140,7 +153,7 @@ python tools/code-audit/repo_governance_check.py --quiet  # 只看退出码（�
 1. **未跟踪源码类文件数**（唯一先行指标，应为 0）；
 2. 被 gitignore 排除的源码类文件数（设计内排除，但**若含结论/报告类即为隐患**）；
 3. 相对各远端的 ahead/behind（领先未推送 = 只在本地存在；参 §1.1 硬约定）；
-4. 抢救点与 DANGER 分支是否安在；
+4. 抢救点 tag 是否安在，以及 `wip/DANGER-*` 分支是否又长出来了（2026-10-06 降为 tag-only 后**应为空**）；
 5. **★ 抢救点独有源码数**（对象库有、`main` 没有）—— 逐件裁决看 §2.1 的台账。
 
 > 已实证的第 2 类隐患：`tracking/.gitignore` 曾整目录忽略 `DEU/reports/`、

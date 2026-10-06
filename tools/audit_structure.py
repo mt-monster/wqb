@@ -900,11 +900,18 @@ def check_s14_tools_readme_registry(rep: Report) -> None:
         rep.fail("S14 tools/README 登记", "tools/README.md 不存在 —— 登记面消失，按 FAIL 处理")
         return
     try:
-        tracked = [n for n in _tools_tracked_scripts() if _looks_like_cli(n)]
+        tracked = _tools_tracked_scripts()
     except RuntimeError as e:
         rep.fail("S14 tools/README 登记", f"无法取受控清单（{e}）—— 不当作「全部已登记」放过")
         return
+    tracked = [n for n in tracked if _looks_like_cli(n)]
     mentioned = _readme_mentions()
+    # 受控但磁盘已无的件 = **删除事件**，不是「新脚本没登记」（那是 S11/git status 的事）。
+    # 不先筛存在性会得到假阳性：实测 2026-10-06 有会话从工作树删了 26 个顶层脚本，
+    # 而 `_looks_like_cli()` 对读不到文件的默认保守（当它是 CLI）⇒ 6 个根本没 argparse
+    # 的一次性脚本被报成「新增未登记」，把 S14 顶红并混淆两类问题。
+    missing = [n for n in tracked if not (TOOLS / n).is_file()]
+    tracked = [n for n in tracked if (TOOLS / n).is_file()]
     unreg = sorted(n for n in tracked if n not in mentioned)
     baseline = _s14_baseline()
     new_ones = [n for n in unreg if n not in baseline]
@@ -913,15 +920,20 @@ def check_s14_tools_readme_registry(rep: Report) -> None:
                  f"新增 {len(new_ones)} 个脚本未在 tools/README.md 登记：{new_ones}；"
                  "每个 CLI 都必须在 README 的主题表里占一行（干什么用 / 用法），"
                  "否则后来者只能靠猜（AGENTS.md §8.13）")
+    if missing:
+        rep.warn("S14 tools/README 登记",
+                 f"{len(missing)} 个受控脚本在磁盘上已不存在（属删除/迁移事件，S14 不判它）："
+                 f"{missing[:8]}{' …' if len(missing) > 8 else ''}；"
+                 "若确是迁移就同步基线与 README，若是误删就从 HEAD 取回")
     carried = [n for n in unreg if n in baseline]
     if carried:
         rep.warn("S14 tools/README 登记",
                  f"基线内存量欠债 {len(carried)} 个：{carried[:12]}"
                  f"{'' if len(carried) <= 12 else ' …共 ' + str(len(carried))}；补登记后请从 "
                  f"tools/audit_structure_baseline.json 的 s14_unregistered_tools 移出")
-    if not new_ones and not carried:
+    if not new_ones and not carried and not missing:
         rep.ok("S14 tools/README 登记",
-               f"受控脚本 {len(tracked)} 个全部已在 tools/README.md 登记")
+               f"受控 CLI 脚本 {len(tracked)} 个全部已在 tools/README.md 登记")
 
 
 #: S12：已下架路径清单（读基线 retired_paths；出现即 FAIL）。

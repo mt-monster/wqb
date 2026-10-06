@@ -118,6 +118,25 @@ def _in_allowlisted_prefix(rel: str) -> bool:
     return any(p.startswith(x) for x in EXPECTED_UNTRACKED_PREFIXES)
 
 
+def _snapshot_refs() -> list:
+    """参算「抢救点独有文件」的 ref 集：`preserve/*` + `backup/*` tag，外加滞留下的 `wip/*` 分支。
+
+    ⚠ annotated tag 必须用 `<tag>^{commit}` / `ls-tree <tag>` 解引用后比 —— `git rev-parse <tag>`
+    返回的是 **tag 对象**的 sha，不是 commit sha（本日实测差点因此误判「tag 与分支不同指一个 commit」）。
+    `wip/*` 仍入集（2026-10-06 防御保留）：两条 `wip/DANGER-*` 已降为 tag-only 并删除，
+    但「会话新造一条长期 wip 分支并在其上存未入库内容」是本仓反复出现过的形状，只扫 tag
+    会让这种新快照永远不进台账（`branch_policy.md` §1 现约定此集应为空，由 `danger_branches` 读数盯）。
+    """
+    refs: list[str] = []
+    rc, out = _git("tag", "-l", "preserve/*", "backup/*")
+    if rc == 0:
+        refs += [t.strip() for t in out.splitlines() if t.strip()]
+    rc, out = _git("branch", "--format=%(refname:short)")
+    if rc == 0:
+        refs += [b for b in out.splitlines() if b.startswith("wip/")]
+    return refs
+
+
 def snapshot_unique_sources(main_ref: str = "main") -> list:
     """只存在于各抢救点 / 事故快照、而 `main` 里没有的**源码类**路径（去重排序）。
 
@@ -135,16 +154,8 @@ def snapshot_unique_sources(main_ref: str = "main") -> list:
         return []
     in_main = set(out.splitlines())
 
-    refs = []
-    rc, out = _git("tag", "-l", "preserve/*", "backup/*")
-    if rc == 0:
-        refs += [t.strip() for t in out.splitlines() if t.strip()]
-    rc, out = _git("branch", "--format=%(refname:short)")
-    if rc == 0:
-        refs += [b for b in out.splitlines() if b.startswith("wip/")]
-
     found = set()
-    for ref in refs:
+    for ref in _snapshot_refs():
         for suffix in ("", "^3"):  # 未跟踪父提交不存在时 git 报错，忽略即可
             rc, out = _git("ls-tree", "-r", "--name-only", f"{ref}{suffix}")
             if rc != 0:
@@ -248,16 +259,8 @@ def snapshot_unique_records(main_ref: str = "main") -> list:
         return []
     in_main = set(out.splitlines())
 
-    refs = []
-    rc, out = _git("tag", "-l", "preserve/*", "backup/*")
-    if rc == 0:
-        refs += [t.strip() for t in out.splitlines() if t.strip()]
-    rc, out = _git("branch", "--format=%(refname:short)")
-    if rc == 0:
-        refs += [b for b in out.splitlines() if b.startswith("wip/")]
-
     found: dict[str, dict] = {}
-    for ref in refs:
+    for ref in _snapshot_refs():
         for suffix in ("", "^3"):
             rc, out = _git("ls-tree", "-r", f"{ref}{suffix}")
             if rc != 0:
@@ -325,7 +328,12 @@ def render(d: dict) -> str:
         lines.append(f"  相对 {r}/main：本地 main 领先 {d['ahead'].get(r, '?')} / "
                      f"落后 {d['behind'].get(r, '?')}（领先未推送，落后未拉取 → `git push {r} main`）")
     lines.append(f"  抢救点保留（preserve/* tag）：{d['preserve_tags']} 个")
-    lines.append(f"  仍存在的 wip/DANGER-* 分支：{d['danger_branches'] or '无'}")
+    # 2026-10-06：两条 `wip/DANGER-*` 已降为 tag-only（对象由同名 tag 持有），
+    # 所以这一栏**预期为空**。非空 = 有人又造了长期 wip 分支（违反 branch_policy §1），
+    # 而不是「一切正常」——因此它不是状态汇报，是欠债读数。
+    danger = d["danger_branches"]
+    lines.append(f"  长期滞留的 wip/DANGER-* 分支（应为空，§1 约定当日清）："
+                 f"{danger if danger else '无'}")
     n_snap = d.get("snapshot_unique_source_count", 0)
     lines.append(f"  ★ 抢救点独有源码（对象库里有、main 没有）：{n_snap} 个")
     if n_snap:
