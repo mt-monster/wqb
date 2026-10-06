@@ -12,9 +12,16 @@
     "wq_test_scan.py",
     "wq_fulltest_run.py",
     "build_deploy.py",
-    "start_test_server.bat"
+    "start_test_server.bat",
+    "tools/direct_submit.py",
+    "tools/gate.py",
+    "tools/harvest_batch.py",
+    "tools/self_batch.py",
+    "tools/harvest_by_expr.py",
+    "tools/eu_field_coverage.py"
   ],
-  "_retired_paths_doc": "S12 用：这些路径已归档到 attic/（论坛工作台缺 UI 模板、mining/ 工作树已清空等），不得回到活跃目录树。2026-10-04 实测工作台在归档后同一会话内被恢复过（3 个 .py 回来、模板仍不在），所以靠搬文件完不成下架。确要恢复：先从 attic/ 取回**完整**内容，再从本列表删除。",
+  "_retired_paths_doc": "S12 用：这些路径已归档/已裁决下架，不得回到活跃目录树。2026-10-04 实测工作台在归档后同一会话内被恢复过（3 个 .py 回来、模板仍不在），所以靠搬文件完不成下架。确要恢复：先从 attic/ 或抢救点取回**完整**内容，再从本列表删除。⚠ 路径一律**相对仓库根**：裸名 `mining` 指仓库根的已清空工作树 `mining/`，**不是**活跃的 `tracking/mining/`（共享数据湖，AGENTS.md §1 明令勿动）——写这两个名字前先核对基准目录。末尾 6 项 = 2026-10-06 §5.3 裁决「不回迁」的 tools/ 顶层脚本（零活动引用；证据仍在抢救点），登记目的是拦住「从抢救点 checkout 回顶层」这条复活路径，见 docs/governance/snapshot_adjudication.md。",
+  "_s12_registered_at": "2026-10-06",
   "s6_skill_drift": [
     "validator.py@049b3e52d912",
     "helpful_functions.py@d1dc77336551",
@@ -182,5 +189,7 @@
     "wave_results_writer.py",
     "webdata_quality.py"
   ],
-  "_s11_note": "基线 = tools/ 顶层脚本快照，S11 只减不增。脚本下沉到主题子目录或归档后，从本表移除该条目（移除即棘轮收紧，可接受；新增即 FAIL，不接受）。归属见 tools/THEMES.json。差额为未受控新文件（git 未跟踪）：它们会触发 S11 FAIL——须下沉或归档，不允许塞进本表（基线只豁免存量，不豁免新增）。⚠ 2026-10-05 更正：本表一度被误冻结为 95（当时工作树有 76 个受控文件意外缺失，磁盘实测偏小）；文件恢复后重冻为 170。教训：冻结基线前必须确认工作树完整（git status 无意外删除），否则会把「文件丢失」固化成「已迁移」。"
+  "_s11_note": "基线 = tools/ 顶层脚本快照，S11 只减不增。脚本下沉到主题子目录或归档后，从本表移除该条目（移除即棘轮收紧，可接受；新增即 FAIL，不接受）。归属见 tools/THEMES.json。差额为未受控新文件（git 未跟踪）：它们会触发 S11 FAIL——须下沉或归档，不允许塞进本表（基线只豁免存量，不豁免新增）。⚠ 2026-10-05 更正：本表一度被误冻结为 95（当时工作树有 76 个受控文件意外缺失，磁盘实测偏小）；文件恢复后重冻为 170。教训：冻结基线前必须确认工作树完整（git status 无意外删除），否则会把「文件丢失」固化成「已迁移」。",
+  "s14_unregistered_tools": [],
+  "_s14_note": "S14 存量欠债：这些 tools/ 脚本未在 tools/README.md 登记（2026-10-06 冻结）。WARN 不阻塞；补登记后请从本表**移出**（移出即棘轮收紧），新增未登记即 FAIL。"
 }

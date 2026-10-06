@@ -113,7 +113,24 @@ def param_sources(regions: Optional[List[str]] = None, db: Optional[str] = None)
 
 # ---------------------------------------------------------------- 未读阈值键
 
-_CODE_DIRS = ("src", "tools", "Claude/skills", "world-quant-brain-mcp")
+#: **代码扫描的目录口径（单源，2026-10-06 治理评审 P1-6）**。
+#: 动因：`tools/code-audit/audit_destructive_default.py` 自己抄了一份扫描范围，
+#: 既只覆盖 324/980 个 `.py`（把 `Claude/skills/`、`world-quant-brain-mcp/` 这两堆
+#: 执行频率最高的代码留在闸外），又漏了 `.venv` / `site-packages` —— 按文档建议一扩范围
+#: 就抱出几千条第三方误报（实测 `pytz/__init__.py` 的时区列表被当成 `subprocess rm`）。
+#: 全仓静态扫描类工具一律从本处取，不要再抄第四份。
+CODE_DIRS = ("src", "tools", "Claude/skills", "world-quant-brain-mcp")
+
+#: 扫描时必须排除的路径片段（测试 / 归档 / 第三方依赖）。
+#: 口径与 `region_literal_branches` 原内置表一致，只补上第三方那几项：
+#: 对缺省扫描集（src / tools / Claude/skills/...）行为不变，因为那些目录里
+#: 本来就没有 `site-packages` / `node_modules`。
+CODE_SKIP_PARTS = (
+    "/tests/", "/legacy/", "/attic/", "/vendor/",
+    "/.venv/", "/site-packages/", "/node_modules/", "/__pycache__/",
+)
+
+_CODE_DIRS = CODE_DIRS  # 历史名，保留已有引用点
 
 
 def _code_blob(root: Path) -> str:
@@ -177,7 +194,7 @@ def region_literal_branches(paths: Optional[List[Path]] = None, root: Optional[P
     codes = _region_codes()
     files = paths or [f for base in ("src", "tools", "Claude/skills/wq-brain-campaign-toolkit/scripts")
                       for f in (root / base).rglob("*.py")]
-    skip_parts = ("/tests/", "/legacy/", "/attic/", "/.venv/", "/__pycache__/")
+    skip_parts = CODE_SKIP_PARTS  # 单源（原内置表与本处同序，2026-10-06 收敛到 CODE_SKIP_PARTS）
     skip_files = {"src/wqb/config.py", "src/wqb/profiles/audit.py", "src/wqb/profiles/taxonomy.py"}
     found: set = set()
     for f in files:

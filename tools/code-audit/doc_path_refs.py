@@ -133,11 +133,33 @@ PROTOCOL_TOKENS = {
 #: 文档里写明「不存在 / 已归档 / 旧文」的路径是**有意提及**（用于记录已下架事实），
 #: 不是死指针。不认这个豁免，闸就会把正确的文档判成违规——两边口径必须一致。
 EXEMPT_MARK = "lint:counterexample"
+#: ⚠ 本表与 `tools/skill_lint.py::_NONEXIST` **必须同集**，两边注释都写了这条；
+#: 对齐由 `tests/unit/07_docs_skills/test_governance_gates_selfcheck.py` 守护（本轮上线当场
+#: 就抓到两边各缺一项）。改一个不改另一个 = 同一句话在一个工具里豁免、在另一个里违规。
 NONEXIST = re.compile(
-    r"不存在|从未存在|已归档|已删除|已删|旧文|旧稿|not exist|已移除|已迁|已下架|已废弃|已废止|已停止"
+    r"不存在|从未存在|never existed|已归档|已删除|已删|旧文|旧稿|not exist|已移除|已迁|已下架|已废弃|已废止|已停止"
     r"|未生成|还没生成|丢了|丢失|已丢|已停用|停用",
     re.I,
 )
+
+#: 抢救点独有文件的裁决台账（2026-10-06 治理评审 P0-2 的连带修正）。
+#: 为什么要把它当成豁免源：关键词豁免（行里写没写「已归档」）解决不了
+#: **「路径只存在于对象库、不存在于工作区」**这一类引用 —— 而治理文档**必须**能写出这种路径
+#: （`branch_policy.md` §5.3 的「三源交叉」就是要人拿对象库反驳工作区）。
+#: 没有这条豁免，「如实交代件在哪里」会被判成死指针，于是文档只会退化成「删掉提及」——
+#: 那正是把误判重新固化的路径。台账里登记过的路径一律认作**有意提及**，不算腐烂。
+LEDGER_FIXTURE = REPO / "tests" / "fixtures" / "snapshot_adjudication.json"
+
+
+def snapshot_only_paths() -> set:
+    """裁决台账里登记过的路径集合（台账缺失/解析失败 = 空集，不影响其它判定）。"""
+    if not LEDGER_FIXTURE.is_file():
+        return set()
+    try:
+        data = json.loads(LEDGER_FIXTURE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return set()
+    return {str(k).strip("/ ") for k in (data.get("verdicts") or {})}
 
 
 def _git(*args: str) -> subprocess.CompletedProcess:
@@ -205,11 +227,14 @@ def collect(tracked: set[str], include_history: bool) -> dict[str, set[str]]:
 
     逐行扫描（不用全文正则）是为了能看**行内语境**：
     写明「不存在 / 已归档 / 旧文」的行是有意提及，必须豁免（同 skill_lint 口径）。
+    另一类豁免是**抢救点裁决台账**里登记过的路径（只存在于对象库）——见 `snapshot_only_paths`。
     """
     top = {p.split("/", 1)[0] for p in tracked if "/" in p}
     for entry in os.listdir(REPO):
         if (REPO / entry).is_dir() and entry != ".git":
             top.add(entry)
+
+    ledger = snapshot_only_paths()   # 抢救点裁决台账：登记过的路径 = 有意提及，不是死指针
 
     refs: dict[str, set[str]] = defaultdict(set)
     for md in sorted(tracked):
@@ -237,6 +262,8 @@ def collect(tracked: set[str], include_history: bool) -> dict[str, set[str]]:
                     if not t or "/" not in t:
                         continue
                     if t.split("/", 1)[0] not in top:
+                        continue
+                    if t in ledger:            # 只存在于抢救点、已逐件裁决过的路径
                         continue
                     refs[t].add(md)
     return refs

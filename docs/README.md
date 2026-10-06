@@ -31,7 +31,8 @@ docs/
 │   └── 课件.md                              5个 Skill 实操课件（含实验全过程）
 ├── governance/                            ← 仓库治理类（2026-10-06 建立）
 │   ├── branch_policy.md                     分支与抢救点策略（含「禁 git clean -fd」铁律 + 取件方法）
-│   └── untracked_allowlist.md               未跟踪文件白名单；先行指标=未跟踪源码数
+│   ├── untracked_allowlist.md               未跟踪文件白名单；先行指标=未跟踪源码数
+│   └── snapshot_adjudication.md             抢救点独有文件的三态裁决台账（**生成物**，勿手改）
 └── plans/                                 ← 历史计划类
     └── 2026-08-02-wqb-src-reconstruction.md src/wqb/ 包重建实施计划
 ```
@@ -146,14 +147,23 @@ docs/
 #### 7. 未跟踪文件白名单 `governance/untracked_allowlist.md`
 **定位**：回答"这个文件到底该不该入库"。
 **内容**：唯一判据（**重跑能再得到的可以不入库，人的判断与结论必须入库**）；
-允许长期未跟踪的 9 类运行产物；明确禁止未跟踪的源码/结论路径；
+允许长期未跟踪的运行产物路径；明确禁止未跟踪的源码/结论路径；
 设计内被 gitignore 的例外；以及**整目录忽略是危险模式**的实证（`DEU/reports/`、`USA/reports/*.md`）。
 **适用场景**：新增脚本/报告后不确定要不要提交；看到 gitignore 想加"整目录排除"之前。
+⚠ §1 表与 `repo_governance_check.py::EXPECTED_UNTRACKED_PREFIXES` 是**逐条对齐的双轨**，改一边不改另一边即红。
+
+#### 8. 抢救点裁决台账 `governance/snapshot_adjudication.md`
+**定位**：回答「快照里有、`main` 没有的那批件，到底有没有人判过」。
+**生成物**：正文由 `python tools/code-audit/snapshot_adjudicate.py --apply` 生成，**勿手改表**；
+人工唯一入口是 `tests/fixtures/snapshot_adjudication.json`（判 `DROPPED` 不写依据会被工具直接拒）。
+三态口径：`RESTORED` / `DROPPED` / `ARTIFACT` / `PENDING`；**`PENDING` 非 0 = 欠债可见**，不得伪装成已收尾。
+**适用场景**：从抢救点取件前先看该件是否已裁决；`--check` 红时说明出现了无人判过的新独有件。
 
 #### 执行器：`tools/code-audit/repo_governance_check.py`
 **唯一先行指标 = 未跟踪的源码类文件数**（应为 0；不为 0 即是"下次清理的损失清单"）。
-辅助读数：被忽略的源码类文件数、相对各远端 ahead/behind、抢救点与 DANGER 分支是否安在。
-`--quiet` 可只取退出码进 CI。
+辅助读数：被忽略的源码类文件数、相对各远端 ahead/behind、抢救点与 DANGER 分支是否安在、
+**★ 抢救点独有源码数**（对象库有、`main` 没有，配合 `snapshot_adjudicate.py` 逐件裁决）。
+`--quiet` 可只取退出码进 CI；`--warn` 是给 pre-commit 用的恒 exit 0 告警位。
 
 ---
 

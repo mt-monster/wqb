@@ -278,13 +278,24 @@ python -m pytest tests/ -x
 
 ### pre-commit 钩子（推荐激活）
 
-提交前自动运行上述 pytest 验证路由，测试失败即阻止提交：
+提交前自动跑结构守护与 pytest 验证路由，失败即阻止提交：
 
 ```bash
 git config core.hooksPath tools/git-hooks
 ```
 
-- 钩子脚本：`tools/git-hooks/pre-commit`（调用 `python -m pytest tests/ -x`）。
+- 钩子脚本：`tools/git-hooks/pre-commit`，**五道顺序**（正文口径以脚本头为准，别在本文件里叉写一行）：
+  ① 解释器与依赖自检 → ② `tools/audit_structure.py`（结构契约 S1–S14，FAIL 阻断）
+  → ③ `code-audit/repo_governance_check.py --warn`（未跟踪源码，**告警位，不阻断**）
+  → ④ `code-audit/doc_path_refs.py`（活文档死指针，棘轮阻断）
+  → ⑤ `code-audit/audit_destructive_default.py`（默认即破坏，棘轮阻断）
+  → ⑥ `python -m pytest tests/ -x`（失败阻断）。
+- **① 是硬闸（2026-10-06 改）**：仓库 `.venv` 不存在 ⇒ **直接 BLOCKED，不再退回 PATH python**。
+  原回退是 fail-open：实测 PATH 解释器缺 `redis`，带 `importorskip("redis")` 的守卫测试被**静默 skip**，
+  而 `pytest -x` 对 skip 返 0 ⇒ 钩子打印「pytest passed」，真正的检查一条没跑。
+  现在还会做一次 `import pytest, redis` 自检，并在输出里把 skipped 顶屏提示。
+- **skip 口径补充**（接 §4 上面一条）：环境耦合的 `needs_*` skip 是设计内；但出现在
+  **已声明依赖**上的 skip（`redis` / `mcp_core` / `score_datasets`）= 闸失效，必须查因，不得当成通过。
 - 紧急跳过（仅临时）：`git commit --no-verify`。
 
 ## 5. Shell 命令规约（根治引号转义事故）
@@ -343,9 +354,15 @@ git config core.hooksPath tools/git-hooks
 > 实证代价：`tools/` 一次丢过 **17 个被 AGENTS.md / tools/README.md 引用的脚本**；
 > `docs/experience/02_signal_patterns.md` 丢过 **332 行**（16 节 → 9 节）。
 > 需要「看清干净」时：`git clean -n`（dry-run，只列清单）→ **逐条**判断该入库还是该 gitignore。
-> 先行指标与判定工具（都已挂 pre-commit，**新增未跟踪源码 / 新增死指针即阻断提交**）：
-> `python tools/code-audit/repo_governance_check.py`（数未跟踪源码 = 事故先行指标）、
-> `python tools/code-audit/doc_path_refs.py`（文档引用的路径是否仍可达，含"未入库"前兆）。
+> 先行指标与判定工具（都已挂 pre-commit，但**只有后一个是硬闸**，读这段话时别看错）：
+> `python tools/code-audit/repo_governance_check.py`——数未跟踪源码 = 事故先行指标。
+> **它在钩子里是告警位（`--warn` 恒 exit 0，不阻断）**：并行会话常态有未跟踪文件，
+> 硬卡只会逼人 `--no-verify`。所以「新增未跟踪源码」**不会被钩子拦住**，人工对齐不可省：
+> 提交前自己跑一次不带 `--warn` 的本命令，退出码 1 = 有。
+> `python tools/code-audit/doc_path_refs.py`——活文档死指针：**棘轮阻断**（只拦新增）。
+> `python tools/code-audit/audit_destructive_default.py`——默认即破坏：**棘轮阻断**（只拦新增）。
+> `python tools/code-audit/snapshot_adjudicate.py --check`——抢救点独有文件的裁决台账（见
+> `docs/governance/branch_policy.md` §2.1）。
 
 **并行写入者的注意**：本机可能同时有其他 Agent/会话在改同一棵树（实测发生过
 `assemble_priors.py` 被并发改写、`sync_skills.py` 报"已同步 0 个文件"而文件实际已在位）。
@@ -582,7 +599,7 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
      （`test_wave_verdict_enum`〔历史命名，非 `wave<N>_verdict` 废止键〕、`test_se_docs`、`test_skill_lint::test_mcp_registry_reads_real_signatures`、
      `test_ledger_key_catalog`、`test_index_tables` 等）。它们会**响亮地红**（不是静默写库），
      所以风险等级低于 DB_PATH 那一类，但必须同批改。
-10. **`tools/` 顶层仍在长（S11 已当场抓到）** —— 2026-10-04 冻结基线（171 个）后，并行会话又往
+10. **`tools/` 顶层仍在长（S11 已当场抓到）** —— 2026-10-04 冻结基线后，并行会话又往
     顶层丢了 5 个一次性脚本（`_kor_d33_writeback.py`、`_tmp_anl69_fields.py`、`_tmp_build_a69.py`、
     `_tmp_build_afsf.py`、`_tmp_build_an82p.py`），其中 2 个已让 `test_db_write_guards`（裸 sqlite）
     与 `test_sd_portability`（本机盘符）变红。**处置归属**：这些是并行会话的在途工作，
@@ -741,11 +758,17 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   **S12 已下架路径不得复活**
   （2026-10-04 新增，后六条是为根目录第 5 次污染、`tools/` 上帝目录、与
   “归档后又被恢复”三件事补的闸）。
-  **FAIL 阻断：S1/S2/S4/S7/S8/S9/S10/S11/S12**（S8 分叉、S11 新增顶层、S12 复活
-  都不进基线豁免：分叉没有合法存量形态，顶层只减不增，已下架不得回来）；
-  **WARN 不阻塞：S3/S5/S6**（存量已登记）。
-  单项自查：`python tools/audit_structure.py --only s7`。S11 基线 = 171 个顶层脚本，
-  建/重置用 `--freeze-tools-top`；S12 清单在基线的 `retired_paths`。
+  **FAIL 阻断：S1/S2/S4/S7/S8/S9/S10/S11/S12/S14**（S8 分叉、S11 新增顶层或无主题归属、
+  S12 复活、S14 新增未登记都不进基线豁免：分叉没有合法存量形态，顶层只减不增，
+  已下架不得回来）；**WARN 不阻塞：S3/S5**（存量已登记）。
+  ⚠ S6 已于 2026-10-03 升为 **FAIL + 基线棘轮**（旧文写它 WARN 不符实际，2026-10-06 更正）：
+  分叉副本无条件 FAIL，基线外的新增跨 skill 副本 FAIL，**被委托工具缺失/异常/输出不可解析
+  也 FAIL**（2026-10-06 改掉：原先这三条是 warn，而 pre-commit 只拦 FAIL ⇒ 闸会静默消失）。
+  单项自查：`python tools/audit_structure.py --only s7`。S11 基线 =
+  `tools/audit_structure_baseline.json` 的 `s11_tools_top_level`（**本文件不复制该数字**，
+  历史写 171、实为 159，两边打架过；现数：`python tools/audit_structure.py --only s11`）；
+  建/重置用 `--freeze-tools-top`；S12 清单在基线的 `retired_paths`，S14 存量欠债在
+  `s14_unregistered_tools`（重置用 `--freeze-unregistered`，只登记欠债不是豁免）。
 - **S3「同名」不是缺陷**：`tools/<name>.py` 与 `src/wqb/**/<name>.py` 分属脚本与包两套命名空间，import 不会撞
   （实测 `import wave_gate` 报 ModuleNotFoundError，它只以 `wqb.workflow.nodes.wave_gate` 存在）。**勿改名。**
 - **`wave_gate` 包化收尾（2026-09-30）**：`tools/wave_gate.py` = 入口 shim（~140 行：argparse 契约字面 +
@@ -814,9 +837,10 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   文件一旦移动一层就静默指错目录（DB 路径/报告输出/归档全错）。存量不强制回改，
   但按 `tools/README.md` 「单文件迁移配方」在每次实际移动该文件时顺手换掉。
 
-**tools/ 主题下沉（P2-1，2026-10-04）**：顶层 171 个脚本的目标结构与逐文件归属已固化到
-`tools/THEMES.json`（19 个 kebab 主题目录，171/171 已归属；另 4 个区域专属脚本标记应迁出至
-`tracking/KOR/scripts/`）。**当场全量下沉已评估并否定**：实测全仓 80 处 `sys.path.insert(...'tools')`、
+**tools/ 主题下沉（P2-1，2026-10-04；2026-10-06 口径修正）**：顶层脚本的目标结构与逐文件归属已固化到
+`tools/THEMES.json`（19 个 kebab 主题目录，顶层现存件 **100% 已归属**：实测「磁盘顶层集 − THEMES 归属集」= 空，
+另 4 个区域专属脚本标记应迁出至 `tracking/KOR/scripts/`）。S11 现在**机械校归属**：顶层件无主题归属即 FAIL
+（不让「默认塞进已有目录」）。**当场全量下沉已评估并否定**：实测全仓 80 处 `sys.path.insert(...'tools')`、
 `index_tables`/`migrate_wave_verdict_enum`〔历史命名，非 `wave<N>_verdict` 废止键〕等被当模块 import、仓库根推导 5 种写法——下沉一层同时改变
 import 解析与路径层数，且都在运行期才爆。因此采用 S11 冻结顶层（新增即 FAIL）+ 按主题逐批迁移，
 配方与实测耦合数据见 `tools/README.md` 「目录结构与迁移状态」。

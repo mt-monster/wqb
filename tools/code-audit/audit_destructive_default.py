@@ -72,13 +72,22 @@ def _bootstrap_src() -> None:
 _bootstrap_src()
 
 from wqb.paths import find_repo_root  # noqa: E402
+from wqb.profiles.audit import CODE_DIRS, CODE_SKIP_PARTS  # noqa: E402  扫描口径单源
 
 REPO = find_repo_root(__file__)
 
 BASELINE = REPO / "tests" / "fixtures" / "destructive_default_baseline.json"
 
-DEFAULT_DIRS = ("tools", "src/wqb")
-SKIP_PARTS = ("__pycache__", "/attic/", "/legacy/", "/vendor/")
+#: 扫描范围与排除片段均**从 `wqb.profiles.audit` 取**（2026-10-06 治理评审 P1-6）。
+#: 原先这里自己写了一对 `DEFAULT_DIRS = ("tools", "src/wqb")` + `SKIP_PARTS`：
+#:   ① 只覆盖 324/980 个 `.py`，把 `Claude/skills/*/scripts/`（96 个）与
+#:      `world-quant-brain-mcp/`（执行链路上最常跑的两堆）全留在闸外 —— 而 commit message
+#:      说「补上这条红线」，实际只补了 1/3；
+#:   ② `SKIP_PARTS` 没有 `.venv` / `site-packages`：实测 `--path world-quant-brain-mcp`
+#:      会扫 9270 个文件并抱出 22 条第三方误报（`pytz` 的时区列表被当成 `subprocess rm`）。
+#: 现在两边同序：范围 = CODE_DIRS，排除 = CODE_SKIP_PARTS。
+DEFAULT_DIRS = CODE_DIRS
+SKIP_PARTS = CODE_SKIP_PARTS
 
 #: 破坏性方法名（按 attr 匹配，不看对象类型 —— 宁可多报，人工复核）
 DESTRUCTIVE_ATTRS = {
@@ -223,16 +232,28 @@ def scan_file(p: Path) -> list[dict]:
 
 
 def iter_files(dirs: list[str]) -> list[Path]:
-    files = []
+    """按目录取待扫 `.py`。
+
+    ⚠ 目录缺失不是「没东西可扫」而是**口径坑了**：2026-10-06 评审实测，原先这里
+    `if not base.exists(): continue` —— `tools` 或 `src/wqb` 任一目录改名/被扫空
+    就整目录静默跳过，只有**全部为空**才 rc=2；部分为空一声不吞，于是「闸在跑」
+    与「闸没扫任何东西」两种状态输出完全一样。现区分两者。
+    """
+    files: list[Path] = []
+    missing: list[str] = []
     for d in dirs:
         base = REPO / d
-        if not base.exists():
+        if not base.is_dir():
+            missing.append(d)
             continue
         for p in base.rglob("*.py"):
-            rp = p.as_posix()
+            rp = "/" + p.relative_to(REPO).as_posix()
             if any(s in rp for s in SKIP_PARTS):
                 continue
             files.append(p)
+    if missing:
+        print(f"[destructive-default] ⚠ 扫描目录缺失 {missing} —— 这些目录里的代码本轮**未被扫描**",
+              file=sys.stderr)
     return sorted(set(files))
 
 
@@ -262,7 +283,9 @@ def main() -> int:
 
     files = iter_files(a.path or list(DEFAULT_DIRS))
     if not files:
-        print("[destructive-default] 没扫到文件（路径给错了？）", file=sys.stderr)
+        # 一个文件也没扫到 = 闸完全空转，必须响亮失败（rc=2），不能当成「无违规」放过。
+        print("[destructive-default] 没扫到任何 .py（路径给错了 / 目录被扫空）—— 闸未生效，按工具故障处理",
+              file=sys.stderr)
         return 2
     findings: list[dict] = []
     for p in files:

@@ -221,3 +221,55 @@
 - **取字段的端点**：`GET /data-fields?...&dataset.id=<id>&limit=50`；`/data-sets/{name}/data-fields` 是 404。本地 `datasets.name` 存的是数据集 **id**（`analyst14`），平台 `/data-sets` 返回的 `name` 是长描述名——按 id 匹配，别按 name。
 - **FASTEXPR 参数写法**：`rank` 只收 1 参，`rank(x, -1)` 非法；`trade_when(c, x, -1)` 的第 3 参是 exit 条件、不是符号，取负要写 `subtract(0.5, rank(x))` / `multiply(-1, rank(x))`（取负位置见决策表 D6）；`bucket` / `hump` 必须命名参数，`quantile(x)` 只接受 1 参。
 - **跨区回测不能当本区回测用**：`backtest_results` 的 `dataset` 列跨区共享，任何「该数据集已测过」的结论必须带 `AND region = ?`（2026-10-02 曾把 DEU 的 S=2.17 当成 GLB 本区战绩，矩阵推翻重做）。
+
+## 14. 2026-10-06 增补：治理闸自身的坑（结构审计与代码评审后的实施沉淀）
+
+> 这一节不写挖掘结论，只写**工具链自身的失效模式**。背景：2026-10-06 对本仓做了一轮治理评审，
+> 发现多个「看起来在跑、实则空转」的闸。写代码时遵守以下四条，比事后审计便宜。
+
+### 14.1 「丢失件是否存在」必须三源交叉，不得拿工作区当全仓
+
+- **实锤错例**：同日提交把 `src/wqb/semantic_ledger.py` 写成「全仓从未落地」，依据是
+  `git ls-files` + 磁盘存在性；而 `git cat-file -s 4910e65:src/wqb/semantic_ledger.py` = **2407 字节**。
+- **后果不是学术性的**：错句写进活 skill，下一个 Agent 会按它**放弃一个可取回的模块**。
+- **正确口径**（已写进 `docs/governance/branch_policy.md` §5.3）：
+  `git ls-files`（main）+ `git ls-tree -r <每个 preserve/* tag 及其 ^3>` + `git log --all --diff-filter=D -- <path>`；
+  任一为「有」就**只能写「不在 main，存在于 <ref>，裁决 = …」**。
+- 取回前先看台账：`docs/governance/snapshot_adjudication.md`（生成物）与
+  `tests/fixtures/snapshot_adjudication.json`（人工入口）。**单件回迁造孤儿模块**是常见错方向
+  （本仓的 workflow 节点有「五处同步」纪律，单文件进来必然漂移）。
+
+### 14.2 闸的默认态必须是 fail-closed：工具自己坏了要响亮失败
+
+反复出现的形状：**委托式 / 降级式 fail-open**。三例均已于 2026-10-06 改掉：
+
+| 位置 | 原行为 | 为何是 fail-open |
+|---|---|---|
+| `audit_structure.py` S6 | 被委托脚本缺失/异常退出/输出不可解析 ⇒ `warn` 跳过 | pre-commit **只拦 FAIL**，于是闸静默消失；而「被委托文件被清理」恰是本仓高发故障 |
+| `tools/git-hooks/pre-commit` | `.venv` 不在 ⇒ 退回 PATH python | 退回的解释器缺 `redis` ⇒ `importorskip` **静默 skip**，而 `pytest -x` 对 skip 返 0 ⇒ 钩子打印 "passed" |
+| `audit_destructive_default.py` | `if not base.exists(): continue` | 扫描目录改名/被扫空 ⇒ 整目录静默跳过；「闸在跑」与「闸什么都没扫」输出完全一样 |
+
+**写闸时的判据**：任何 `return`/`continue` 路径都要问「这条分支是不是把『我不知道』输出成了『通过』」。
+不确定就抬 rc=2（工具故障），**永远不把工具崩溃当成无违规**。
+
+### 14.3 「告警位 vs 阻断位」必须写进文档正文，否则读者会当成已硬拦
+
+`repo_governance_check.py --warn` 是**恒 exit 0** 的告警位（设计正确：并行会话常态有未跟踪文件，
+硬卡只会训练出 `--no-verify`）。但 AGENTS.md 当时写的是「新增未跟踪源码 / 新增死指针**即阻断提交**」——
+规范与实现直接矛盾，后果是读者以为已被拦而**不再人工盯**，而这条恰恰是唯一那条
+「下次 `git clean` 会永久带走」的先行指标。**新增/改动闸时，同一提交里把它的档位（告警/棘轮/硬闸）写进文档。**
+
+### 14.4 文档不复制会漂移的计数
+
+实测同一天内：`branch_policy.md` 写 gitcode 落后 `109`（已是 `112`）；分支说明写「398 个文件被抹」（实为 `402`）；
+AGENTS.md 三处写 S11 基线 `171`（基线文件是 `159`，与 `branch_policy.md` 打架）。
+一律改为**现场取数**命令；棘轮基线的唯一事实源是 `tools/audit_structure_baseline.json` 与 `tests/fixtures/*.json`。
+同理：`skill_lint.py` 与 `doc_path_refs.py` 自述「同口径」的豁免词表实际各缺一项（已由
+`tests/unit/07_docs_skills/test_governance_gates_selfcheck.py` 钉住）——**两个工具同一件事就必须同集，否则一边拦一边放**。
+
+### 14.5 本目录下两条旧记录已作废（勿照抄）
+
+- `.claude/skills` **不再是 junction**：2026-10-06 实测 `(Get-Item .claude -Force).Attributes = Directory`（无 `ReparsePoint`），
+  且 `.gitignore` 的 `.claude/` 已独立成行生效 ⇒「`git add -A` 会穿进 junction 重复收录 399 条」的入口已消失。
+  但它现在是 505 文件的**手工镜像**（不自动同步）：当前与 `Claude/skills` 零漂移，却**无闸盯着**。
+- `.gitignore` 行内注释导致规则失效的 bug 已修（见 `.gitignore` 里的修复记录）。

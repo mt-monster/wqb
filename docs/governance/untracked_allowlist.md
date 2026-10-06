@@ -2,6 +2,12 @@
 
 > 建立：2026-10-06 ｜ 执行者：`tools/code-audit/repo_governance_check.py`
 > 上位文档：[`branch_policy.md`](branch_policy.md) §0 铁律
+>
+> ⚠ **本节 §1 的表与代码常量 `EXPECTED_UNTRACKED_PREFIXES` 是逐条对齐的双轨**（2026-10-06 接上线）：
+> 以前文档自述「执行者 = 本脚本」而代码里那个常量声明后从未被使用（`= ()`），两边已分叉
+> ——代码多 `outputs`、文档多 `.claude/.codex/.cline`。现在对齐由
+> `tests/unit/07_docs_skills/test_governance_gates_selfcheck.py` 机械守护：**改一边不改另一边即红**。
+> 代码侧是**可执行投影**（单一事实源），本节是给人看的说明。
 
 ## 判据只有一句话
 
@@ -21,7 +27,11 @@
 | `research-data/` | 外部数据包（`operators_platform_*.json` 被 `op_arity.py` 读取，整目录不可动） |
 | `extensions/` | 浏览器扩展源 |
 | `selfcorr_quick_out/` | 相关性快筛缓存（pickle/xlsx） |
-| `.claude/`、`.codex/`、`.cline/` 等 | skill 安装位镜像，由 `tools/sync_skills.py` 单向生成 |
+| `outputs/` | 工具默认输出目录（与 `output_report/` **不是同一个**：后者受控入库） |
+| `.claude/` | skill 安装位镜像（仓库内手工镜像，由 `tools/sync_skills.py` 单向生成） |
+| `.codex/` | skill 安装位镜像（同上） |
+| `.cline/` | skill 安装位镜像（同上） |
+| `.agents/` | skill 安装位镜像（同上） |
 
 ## 2. 明确禁止未跟踪（源码 / 结论）
 

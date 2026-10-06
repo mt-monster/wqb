@@ -654,11 +654,33 @@ def _const_patterns() -> Dict[str, "re.Pattern[str]"]:
 
 _PATH_TOKEN = re.compile(
     r"`((?:tools|src/wqb|docs|Claude/skills|world-quant-brain-mcp|tests)/[A-Za-z0-9_./\-<>*{}]+\.(?:py|md|json|yaml|yml))(?:::[A-Za-z_]+)?`")
-_NONEXIST = re.compile(r"不存在|从未存在|never existed|已归档|已删除|已删|旧文|not exist|已移除|已迁", re.I)
+# 词表与 `tools/code-audit/doc_path_refs.py::NONEXIST` **必须同集**（两边自述同口径；
+# 2026-10-06 对齐：本表原缺「已下架/已废弃/已废止/已停止/未生成/还没生成/丢失/已丢/已停用/停用/旧稿」
+# 九项，于是同一句话在两个工具里一边判违规一边放过）。
+_NONEXIST = re.compile(
+    r"不存在|从未存在|never existed|已归档|已删除|已删|旧文|旧稿|not exist|已移除|已迁"
+    r"|已下架|已废弃|已废止|已停止|未生成|还没生成|丢了|丢失|已丢|已停用|停用",
+    re.I,
+)
+
+#: 抢救点裁决台账（与 doc_path_refs.py 同源）。登过台账的路径 = 只存在于对象库、
+#: 已逐件判过，文档提及它是**治理要求的正确措辞**，不得判死指针。
+_LEDGER_FIXTURE = REPO / "tests" / "fixtures" / "snapshot_adjudication.json"
+
+
+def _snapshot_only_paths() -> set:
+    if not _LEDGER_FIXTURE.is_file():
+        return set()
+    try:
+        data = json.loads(_LEDGER_FIXTURE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    return {str(k).strip("/ ") for k in (data.get("verdicts") or {})}
 
 
 def check_path_tokens() -> List[dict]:
     out = []
+    ledger = _snapshot_only_paths()
     for doc in iter_docs():
         if doc.name == "CHANGELOG.md":
             continue
@@ -668,6 +690,8 @@ def check_path_tokens() -> List[dict]:
                 continue
             for m in _PATH_TOKEN.finditer(ln):
                 tok = m.group(1)
+                if tok in ledger:
+                    continue                                     # 抢救点独有、已逐件裁决
                 if any(c in tok for c in "<>*{}"):
                     continue                                     # 占位符 / 通配
                 try:

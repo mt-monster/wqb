@@ -194,8 +194,9 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `fix_bom.py` | BOM(U+FEFF) 剥离修复：默认 `--dry-run` 列出含 BOM 的 .py；`--apply` 才修（备份 + CJK 数量校验 + ast.parse 校验） | `tracking/_scratch/_fix_bom.py`（**已删**） |
 | `clean_unused_imports.py` | 清理未用 import：默认 `--dry-run` 列出；`--apply` 才删（**跨文件 re-export 校验**防 SHAPE_CLASSES 误删 + `.bak_imp` 备份 + ast.parse 校验）；可 `--report` 接 scan_deadcode 的 JSON | `tracking/_scratch/_clean_unused_imports.py`（**已删**） |
 | `audit_node_registration.py` | **新增/修改 workflow 节点必跑**：审计「四处同步」——① registry.py 注册与 NodeMeta 签名 ② `test_registry_lists_all_core_nodes` 期望集合 ③ `_DRY_RUN_CASES` 用例表 ④ INDEX.md 节点计数。`--node X` 单节点自检；退出码 1 = 有漂移并列出全部缺口 | 改一处跑一次测试的往返 |
-| `audit_structure.py` | **仓库结构守护（2026-09-30 新增，已挂 pre-commit）**：S1 sys.path 自举/外挂分类 · S2 src→tools 依赖方向 · S3 tools 与 src 同名模块 · S4 硬编码盘符路径 · S5 reports/ 里的散落脚本 · S6 skills 副本漂移。`--only s1` 跑单项。只读；S1/S2/S4 判 FAIL，S3/S5/S6 判 WARN（存量不阻塞） | 靠 AGENTS.md 文字纪律 |
+| `audit_structure.py` | **仓库结构守护（2026-09-30 新增，已挂 pre-commit）**：S1 sys.path 自举/外挂分类 · S2 src→tools 依赖方向 · S3 tools 与 src 同名模块 · S4 硬编码盘符路径 · S5 reports/ 里的散落脚本 · S6 skills 副本漂移（**已升 FAIL：基线外新增与分叉均阻断；被委托工具 `audit_skill_drift.py` 缺失/异常/输出不可解析也判 FAIL**，2026-10-06 改掉原先的 warn 跳过）· S7 根目录白名单 · S8 根↔子目录同名分叉 · S9 声明目录存在性 · S10 区域子目录骨架 · S11 tools/ 顶层只减不增**且必须已登记主题归属** · S12 已下架路径不得复活 · S13 tracking/ 非区域目录登记 · **S14 tools/ 顶层 CLI 必须在 tools/README.md 登记（2026-10-06 新增，棘轮）**。`--only s1` 跑单项；`--freeze-tools-top` / `--freeze-unregistered` 建立/重置基线。只读 | 靠 AGENTS.md 文字纪律 |
 | `code-audit/repo_governance_check.py` | **未跟踪源码数 = 事故唯一先行指标**（2026-10-06 新增，已挂 pre-commit）：数出「`git ls-files` 之外、且不在运行期/归档目录（`logs`/`cache`/`data`/`attic`…）下的源码类文件」（`.py/.md/.json/.sh/…`）。动机：本仓反复发生「源码从未入库、只以工作区未跟踪文件存在」，`git clean -fd` 一清即**永久**丢失（`tools/` 一次丢 17 个脚本）；`audit_structure.py` 的 S11 只看**顶层脚本数量**，看不见这类缺口。退出码 0=干净 / 1=有未跟踪源码（"下次清理会带走 N 个"）/ 2=无法判定。`--json` / `--quiet` | 事后从 git 里捞不回来的损失 |
+| `code-audit/snapshot_adjudicate.py` | **抢救点独有文件的三态裁决台账**（2026-10-06 治理评审 P2-7）：从 `preserve/*` tag 与 `wip/*` 分支（含 `^3` 未跟踪父提交）算出「对象库有、`main` 没有」的源码清单，规则初判（运行产物 / blob 逐字相同的路径重组）+ `tests/fixtures/snapshot_adjudication.json` 里的人工裁决，渲染 `docs/governance/snapshot_adjudication.md`。三态 `RESTORED`/`DROPPED`/`ARTIFACT`/`PENDING`；**判 DROPPED 不写依据直接拒**（防「没人看过」被固化成「已裁决」）。默认**干跑不写盘**，`--apply` 生成、`--check` 校一致性（退出码 1 = 台账过期或有新增无人裁决）、`--json` 取明细；工具自身异常一律 rc=2，**绝不把崩溃当成「无欠债」** | 那串「P4 收尾」只裁决了 6 件，余下无人判过也没人看得见 |
 | `code-audit/doc_path_refs.py` | **活文档引用的仓库内路径必须真实可达**（2026-10-06 新增，已挂 pre-commit）：把「文档 → 路径」变成可机检断言，分两类 —— **BROKEN**（文档引用了，但 git 未跟踪**且**磁盘不存在 ⇒ 文档腐烂 / 又一批丢失件）与 **UNTRACKED**（磁盘在、git 不在 ⇒ 事故前兆）。范围 = `AGENTS.md`/`README.md`/`CLAUDE.md`/`tools/README.md` + `docs/`（除 `plans/`）+ `Claude/skills/`；`data`/`logs`/`cache`/`attic` 等**按设计不入库**的根、`.gitignore` 命中的路径、以及写明「不存在/已归档/旧文」的行整体豁免（与 `skill_lint.py` 同口径）。**棘轮**：存量违规记 `tests/fixtures/doc_path_refs_baseline.json`，只对**新增**违规 FAIL。与 `skill_lint.py` 的 `path-token` 分工：后者管 skills 目录内的细粒度死指针，本工具补上**非 skills 活文档 + git 索引维度**。`--report`/`--json`/`--update-baseline` | 人工逐个点开文档核对；以及「文档承诺的路径其实早就没了」 |
 | `code-audit/audit_destructive_default.py` | **「默认即破坏」守护**（2026-10-06 新增，已挂 pre-commit）：AST 扫模块级（`def`/`class` 之外，即 **import 时就会执行**）的写盘/删除调用（`write_text`/`unlink`/`rmtree`/`open(...,'w')`/`json.dump`/`to_csv`…），若其**前置**没有「提前退出型开关」（`if ...: sys.exit()`，test 提到 `apply`/`dry`/`plan`/`force`/`confirm`）⇒ 报 **DRY-RUN-MISSING**。动机是 2026-10-06 的实测事故：`db_mcp_split.py` 的开关（`--plan`）在破坏性写盘**之后**，跑一次 `--help` 就把被跟踪的 2808 行文件截成 91 行。**已认可的解法**＝把破坏性动作整个收进 `def main()` + `if __name__ == "__main__"` 守卫（工具不进函数体，故不再报）；`__main__` 块**内**的调用归 ADVISORY（不判失败）；`PARSE-FAIL` **只告警不阻断**（编辑中间态居多，硬卡只会训练出 `--no-verify`）。**棘轮**：存量记 `tests/fixtures/destructive_default_baseline.json`（键 `file::kind::detail`，**不含行号**），只拦新增。`--all`/`--json`/`--path`/`--update-baseline` | 靠人记住「默认只读、落盘要 `--apply`」这条文字纪律 |
 | `audit_skill_drift.py` | skills 脚本副本漂移检测：A 类（GEM 内嵌快照，设计内）不报，只报 B 类跨 skill 复制（`validator.py` 4 份 / `helpful_functions.py` 4 份 / `ace_lib.py` 2 份）。`--check` 只判退出码，`--json` 机器读 | 手工 md5 对比 |
@@ -243,14 +244,23 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 命令行工具本就靠人敲。按 AGENTS.md §8.5 判据（有 CLI 入口 → 未登记的 CLI → 文档缺口，不能删），
 此处补登记。**引用为零不代表该删**——要判断是否还有用，看模块 docstring 与 `--help`。
 
+> 2026-10-06 起本表的「登记」不再靠自觉：`audit_structure` **S14** 机械核对
+> 「顶层 + 有 CLI 入口（argparse / `__main__` 守卫）的脚本是否在本 README 占一行」，
+> **新增未登记即 FAIL**（存量欠债走基线 `s14_unregistered_tools` WARN）。
+> 下面四条是 S14 上线时实测的缺口（前一次补登记漏掉的），现已补齐、基线已收紧为空。
+> 子目录里的包实现模块（`wave_gate_pkg/*.py`、`_lib/*.py`）**不在登记义务内**：它们不是 CLI，
+> 登记入口在它们的顶层 shim。
+
 | 工具 | 用途（模块 docstring 首句） | 调用形态 |
 |---|---|---|
 | `atom_labeler.py` | WorldQuant BRAIN "atom / combined" 信号分类器（CLI + 批量回写）。 | 需参数 |
 | `audit_dead_code.py` | 高置信度死代码侦察（只读，不删任何东西）。 | 无参直跑 |
 | `audit_file_sizes.py` | 全量扫描项目内 Python 文件：行数 / 函数类规模 / 圈复杂度 / 职责数量。 | 无参直跑 |
 | `combo_precheck.py` | 组合预检串联工作流（P1-C + P1-D，2026-08-31）。 | 需参数 |
+| `complexity_scan.py` | 全项目 Python 文件复杂度 / 职责度量（只读、零副作用）：出 JSON + 终端 Top-N，用作「哪些文件该拆」的排序依据。 | 无参直跑 |
 | `db_maintenance.py` | wqb.db 维护工具（2026-09-20 L4）。 | 需参数 |
 | `demo_layered_mining.py` | 层层推进挖掘策略演示 | 无参直跑 |
+| `fetch_all_universes.py` | 向平台 `OPTIONS /simulations` 拉全部区域（InstrumentType=EQUITY）的合法 universe / 中性化 / 衰减等设置选项，落 `research-data/`（`--dry-run` 零副作用）。 | `--dry-run` 可选 |
 | `field_axis.py` | 字段信息轴自动识别（P0-B，2026-08-31）。 | 需参数 |
 | `field_quality_scorer_v2.py` | 8 维字段质量评分器. | 需参数 |
 | `field_signal_mine.py` | L0 零回测选基：从 backtest_results 的表达式文本挖【字段级】与【字段对】历史信号先验。 | 需参数 |
@@ -259,12 +269,14 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `fix_wave_backfill.py` | 波级低覆盖字段 ts_backfill 修复器（幂等）。 | 需参数 |
 | `fix_wave_vectors.py` | 波级 VECTOR 字段 vec_* 包裹修复器（幂等）。 | 需参数 |
 | `gem_validator.py` | GEM 候选池强制校验。 | 需参数 |
+| `index_tables.py` | `Claude/skills/INDEX.md` 与 `docs/env_and_switches.md` 里「可由代码导出的表」的生成器（区域表 / 平台硬线阶梯 / 环境变量清单），防文档与 config 漂移。 | `--check` / `--apply` |
 | `kor_ledger_write.py` | KOR 台账写入（wqb-db MCP 未连接时的降级写库）。 | 无参直跑 |
 | `operator_diversity_analyzer.py` | 算子多样性分析器. | 需参数 |
 | `pipeline_integration.py` | （无模块 docstring） | 需参数 |
 | `populate_external_fields.py` | 灌 external_fields 表。 | 需参数 |
 | `pre_backtest_filter.py` | 回测前快筛闭环（self/PPAC + 关键闸）。 | 需参数 |
 | `role_cluster.py` | 职责聚类 + 跨文件重复逻辑检测（只读）。 | 无参直跑 |
+| `scan_fields.py` | 通用字段扫描器（区域无关）：取代 KOR 专用版，输出 typed catalog 到 `<campaign-dir>/reference/<region>_<dataset>_fields.json`。 | 需参数 |
 | `s0_enhanced_screening.py` | S0 数据集体检增强预筛（WebDataScope 零成本预筛）。 | 需参数 |
 | `seed_region_priors.py` | 区域 priors 自动装配器（evidence-driven，不手写、不编造）。 | 需参数 |
 | `skeleton_origin_report.py` | 骨架来源过闸率报告：forum（论坛来源） vs native（原生）对比。 | 需参数 |

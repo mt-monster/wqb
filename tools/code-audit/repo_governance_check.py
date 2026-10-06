@@ -80,8 +80,23 @@ RUNTIME_DIRS = {
     "extensions", "outputs",
 }
 
-#: 预期长期存在未跟踪文件的路径前缀（外部数据包 / 浏览器扩展源，整目录 gitignore）
-EXPECTED_UNTRACKED_PREFIXES = ()
+#: 预期长期存在未跟踪文件的路径前缀（外部数据包 / 浏览器扩展源 / skill 安装位镜像）。
+#: **与 `docs/governance/untracked_allowlist.md` §1 逐条对齐**（2026-10-06 治理评审 P1-8）：
+#: 那个常量曾在 `= ()` 处声明后从未被使用，文档却自述「执行者 = 本脚本」，
+#: 于是「文档写了但流程不认」——同一件事两处各说一套。现在两边真接上了，
+#: 对齐由 `tests/unit/07_docs_skills/test_untracked_allowlist.py` 机械守护。
+#: 口径：本处是**代码可执行投影**（单一事实源），文档是给人看的说明；改一处必须改两处。
+EXPECTED_UNTRACKED_PREFIXES = (
+    "logs/", "cache/", "results/", "data/", "attic/",
+    "research-data/", "extensions/", "selfcorr_quick_out/",
+    "outputs/", ".claude/", ".codex/", ".cline/", ".agents/",
+)
+
+#: 抢救点 / 事故快照里「main 没有」的源码归档位置说明（读数只供裁决，不自行判定）
+ADJUDICATION_DOC = "docs/governance/snapshot_adjudication.md"
+
+#: 参算「源码类」的顶层目录（跳运期产物目录后还要这一层，否则 `logs/*.json` 会被当成资产）
+CODE_ROOTS = ("src", "tools", "tests", "world-quant-brain-mcp", "Claude", "docs", "tracking", "reports", "output_report")
 
 
 def _git(*args: str) -> tuple[int, str]:
@@ -95,6 +110,55 @@ def _git(*args: str) -> tuple[int, str]:
 
 def _in_runtime_dir(rel: str) -> bool:
     return any(part in RUNTIME_DIRS for part in rel.replace("\\", "/").split("/"))
+
+
+def _in_allowlisted_prefix(rel: str) -> bool:
+    """是否落在文档 §1「允许长期未跟踪」的路径下（白名单命中）。"""
+    p = rel.replace("\\", "/")
+    return any(p.startswith(x) for x in EXPECTED_UNTRACKED_PREFIXES)
+
+
+def snapshot_unique_sources(main_ref: str = "main") -> list:
+    """只存在于各抢救点 / 事故快照、而 `main` 里没有的**源码类**路径（去重排序）。
+
+    为什么需要这一类读数（2026-10-06 治理评审 P2-7）：S1–S14 与本工具的先行指标都只看
+    **工作区与 main**，看不见「对象库里有、主干上没有」的那批件。实测抢救点
+    `4910e65` 与 `05b64a6` 合计独有 90+ 个 src/tools/tests 文件（含 `src/wqb/semantic_ledger.py`、
+    `tests/unit/09_core/test_paths.py`），其中绝大部分无人裁决 —— 不读数就是「无台账、无裁决、无闸」。
+
+    口径：每个 ref 都取**两条腿** —— 受跟踪树（`ls-tree -r <ref>`）与未跟踪父提交
+    （`<ref>^3`，stash 式快照才有）。只取受跟踪部分会漏掉关键依赖（本仓已踩过）。
+    行尾归一不参与比较（只比路径集）。
+    """
+    rc, out = _git("ls-tree", "-r", "--name-only", main_ref)
+    if rc != 0:
+        return []
+    in_main = set(out.splitlines())
+
+    refs = []
+    rc, out = _git("tag", "-l", "preserve/*", "backup/*")
+    if rc == 0:
+        refs += [t.strip() for t in out.splitlines() if t.strip()]
+    rc, out = _git("branch", "--format=%(refname:short)")
+    if rc == 0:
+        refs += [b for b in out.splitlines() if b.startswith("wip/")]
+
+    found = set()
+    for ref in refs:
+        for suffix in ("", "^3"):  # 未跟踪父提交不存在时 git 报错，忽略即可
+            rc, out = _git("ls-tree", "-r", "--name-only", f"{ref}{suffix}")
+            if rc != 0:
+                continue
+            for p in out.splitlines():
+                if not p or p in in_main:
+                    continue
+                ext = os.path.splitext(p)[1].lower()
+                if ext not in SOURCE_EXTS or _in_runtime_dir(p):
+                    continue
+                if p.split("/", 1)[0] not in CODE_ROOTS:
+                    continue
+                found.add(p)
+    return sorted(found)
 
 
 def collect() -> dict:
@@ -143,18 +207,94 @@ def collect() -> dict:
     rc, out = _git("branch", "--format=%(refname:short)")
     danger = [b for b in out.splitlines() if b.startswith("wip/DANGER-")]
 
+    # 白名单命中（未跟踪且落在文档 §1 的路径里）：设计内，不算欠债。
+    # 它们已被 `--exclude-standard`（gitignore）与 RUNTIME_DIRS 两道隔掉，
+    # 这里只作**可观测性**：让读数能回答「为何不卡我」。文档↔代码一致性由守护测试管。
+    allowed_hits = sorted(p for p in untracked if _in_allowlisted_prefix(p))
+
+    # 抢救点独有源码（对象库里有、主干上没有）——必须有人逐件三态裁决，
+    # 否则就是一批「没人知道为什么留着」的债（裁决表见 ADJUDICATION_DOC）。
+    snap = snapshot_unique_sources()
+
     return {
         "ok": True,
         "untracked_source": sorted(src),
         "untracked_source_count": len(src),
         "untracked_other_count": len(other),
+        "allowed_untracked_count": len(allowed_hits),
+        "allowed_untracked_prefixes": list(EXPECTED_UNTRACKED_PREFIXES),
         "ignored_source_count": len(ignored_src),
         "ignored_source_sample": sorted(ignored_src)[:15],
         "ahead": ahead,
         "behind": behind,
         "preserve_tags": len(preserve),
         "danger_branches": danger,
+        "snapshot_unique_source_count": len(snap),
+        "snapshot_unique_sources": snap,
+        "adjudication_doc": ADJUDICATION_DOC,
     }
+
+
+def snapshot_unique_records(main_ref: str = "main") -> list:
+    """同 `snapshot_unique_sources()`，但返回带 blob 的记录（裁决台账需要内容比较）。
+
+    每条：`{"path", "blob", "refs"}`。blob = 该件在快照里的 blob id；
+    同名件在 main 的哪个路径上由调用方自查（路径重组 vs 内容分叉得靠 blob 相等才能区分）。
+    ⚠ 只同算法才能比：本仓是 sha1 仓库，快照与 main 的 blob 同一口径；
+    **不要拿 blob id 去和文件层的 SHA-256 哈希互比**（本仓曾因此误判出「三条血统」）。
+    """
+    rc, out = _git("ls-tree", "-r", "--name-only", main_ref)
+    if rc != 0:
+        return []
+    in_main = set(out.splitlines())
+
+    refs = []
+    rc, out = _git("tag", "-l", "preserve/*", "backup/*")
+    if rc == 0:
+        refs += [t.strip() for t in out.splitlines() if t.strip()]
+    rc, out = _git("branch", "--format=%(refname:short)")
+    if rc == 0:
+        refs += [b for b in out.splitlines() if b.startswith("wip/")]
+
+    found: dict[str, dict] = {}
+    for ref in refs:
+        for suffix in ("", "^3"):
+            rc, out = _git("ls-tree", "-r", f"{ref}{suffix}")
+            if rc != 0:
+                continue
+            for line in out.splitlines():
+                # 形式：`<mode> <type> <sha>\t<path>`
+                meta, _, path = line.partition("\t")
+                parts = meta.split()
+                if not path or len(parts) < 3 or parts[1] != "blob":
+                    continue
+                if path in in_main:
+                    continue
+                ext = os.path.splitext(path)[1].lower()
+                if ext not in SOURCE_EXTS or _in_runtime_dir(path):
+                    continue
+                if path.split("/", 1)[0] not in CODE_ROOTS:
+                    continue
+                rec = found.setdefault(path, {"path": path, "blob": parts[2], "refs": []})
+                tag = f"{ref}{suffix}"
+                if tag not in rec["refs"]:
+                    rec["refs"].append(tag)
+    return [found[k] for k in sorted(found)]
+
+
+def main_blob_index(main_ref: str = "main") -> dict:
+    """`{文件名: [(路径, blob), …]}` —— 给「同名件是否只是搬了目录」提供查表。"""
+    rc, out = _git("ls-tree", "-r", main_ref)
+    idx: dict[str, list] = {}
+    if rc != 0:
+        return idx
+    for line in out.splitlines():
+        meta, _, path = line.partition("\t")
+        parts = meta.split()
+        if not path or len(parts) < 3 or parts[1] != "blob":
+            continue
+        idx.setdefault(os.path.basename(path), []).append((path, parts[2]))
+    return idx
 
 
 def render(d: dict) -> str:
@@ -174,7 +314,8 @@ def render(d: dict) -> str:
         lines.append("  含义：工作区里没有「只存在于磁盘」的源码 —— 清理不会再造成资产损失。")
     lines.append("")
     lines.append("--- 辅助读数 ---")
-    lines.append(f"  未跟踪的非源码文件（运行产物等）：{d['untracked_other_count']}")
+    lines.append(f"  未跟踪的非源码文件（运行产物等）：{d['untracked_other_count']}"
+                 f"（其中落在文档 §1 白名单路径下、属设计内的：{d.get('allowed_untracked_count', 0)}）")
     lines.append(f"  被 gitignore 排除的源码类文件数：{d['ignored_source_count']}")
     if d["ignored_source_count"]:
         lines.append("    ⚠ 其中若有「结论/报告类」，说明它们被整目录规则挡住、永远落不了库：")
@@ -185,6 +326,13 @@ def render(d: dict) -> str:
                      f"落后 {d['behind'].get(r, '?')}（领先未推送，落后未拉取 → `git push {r} main`）")
     lines.append(f"  抢救点保留（preserve/* tag）：{d['preserve_tags']} 个")
     lines.append(f"  仍存在的 wip/DANGER-* 分支：{d['danger_branches'] or '无'}")
+    n_snap = d.get("snapshot_unique_source_count", 0)
+    lines.append(f"  ★ 抢救点独有源码（对象库里有、main 没有）：{n_snap} 个")
+    if n_snap:
+        doc = d.get("adjudication_doc", "")
+        lines.append(f"    含义：这批件只活在本地 tag 上。未逐件裁决前，它们既是「可取回的资产」")
+        lines.append(f"          也是「将来会被遗忘的债」（全量清单：--json 取 snapshot_unique_sources）。")
+        lines.append(f"    处置：在 {doc} 里逐件标「恢复 / 有意放弃 / 运行产物」三态之一。")
     return "\n".join(lines)
 
 

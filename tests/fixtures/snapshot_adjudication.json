@@ -1,0 +1,51 @@
+{
+  "_doc": "抢救点独有文件的**人工裁决**表（唯一入口）。生成物是 docs/governance/snapshot_adjudication.md，改这里后跑 `python tools/code-audit/snapshot_adjudicate.py --apply`。三态口径 RESTORED / DROPPED / ARTIFACT / PENDING；判 DROPPED/RESTORED 不写依据会被工具直接拒绝（`DROPPED` 的依据必须是可复核的事实，不是「看起来没用」）。",
+  "_policy": "规则初判只机械区分「运行产物」与「main 已有 blob 逐字相同的同名件（路径重组）」。除此之外一律 PENDING —— 不允许把「没人看过」写成「已裁决」。",
+  "_verified_at": "2026-10-06",
+  "verdicts": {
+    "src/wqb/semantic_ledger.py": {
+      "verdict": "DROPPED",
+      "basis": "属「S1 语义自动补做」整条未合入工作线，单件回迁即造孤儿模块：其文档明列的两个消费方在 main 都不存在（`git grep '_semantic_coverage_check' -- src tools` = 0 命中；`tools/field_semantic_classify.py` 的产物 schema 里根本没有 `families`/`family_stats` 键，见其 L200-L212）。main 侧读同一台账键的是 `tools/wave_gate_pkg/gates_semantic.py`，它只用 `blocked_fields`，不需要 `ledger_has_l35`。配套件同属该线：`tests/unit/02_workflow/test_s1_semantic_autoclassify.py`、`tests/unit/10_toolkit_scripts/test_semantic_classify_all.py`、`test_semantic_field_pool_filter.py`。⚠ 更正记录：HEAD 曾按「全仓从未存在」结案，那是把「工作区/`git ls-files` 没有」当成「对象库没有」——实测 `git cat-file -s 4910e65:src/wqb/semantic_ledger.py` = 2407 字节。证据留在抢救点，取回须**整线成套**。"
+    },
+    "src/wqb/dataset_pair_matrix.py": {
+      "verdict": "DROPPED",
+      "basis": "main 侧零消费方：`git grep 'get_dataset_pair_recommendations|dataset_pair_matrix' -- src tools` = 0 命中；唯一提及处 `tests/unit/02_workflow/test_inventory_scan_basket_shape.py:38` 写的是 `try: import … except ImportError: dpm = None`，即节点已按「该模块可能不存在」设计。单件回迁会**静默启用一个未经评审的功能**（跨数据集对推荐），属危险方向。配套 `tests/unit/test_dataset_pair_matrix.py` 同线。要启用请整线取回并补 registry/README 登记。"
+    },
+    "tests/unit/test_dataset_pair_matrix.py": {
+      "verdict": "DROPPED",
+      "basis": "被测对象 `src/wqb/dataset_pair_matrix.py` 不在 main（见该件裁决），回迁即造 collection 期 ImportError。与 subject 同线成套取回。"
+    },
+    "src/wqb/workflow/nodes/_campaign_open_gates.py": {
+      "verdict": "DROPPED",
+      "basis": "main 零引用：`git grep 'campaign_open_gates' -- src tools tests` = 0 命中，且 `src/wqb/workflow/registry.py` 未注册其节点。回迁即造「代码里有、链路上不跑」的幽灵模块（本仓对 workflow 节点有五处同步登记纪律，单文件回迁必然漂移）。"
+    },
+    "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/prescreen.py": {
+      "verdict": "DROPPED",
+      "basis": "main 侧调用通道尚未接线：`src/wqb/workflow/_common.py:274 resolve_toolkit_file()` 全仓**零调用方**（`git grep 'resolve_toolkit_file(' -- src tools` 只命中其定义），其 docstring 提到本文件只是为了说明「安装位可能滞后于仓库副本」。因此缺它不产生任何故障，回迁也不会生效 —— 属同一条预筛线，接线时成套取。"
+    },
+    "tools/direct_submit.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-06 §5.3 逐件核验（`docs/governance/branch_policy.md`）：全仓只命中治理文档自身；`tools/wave_gate.py`·`quality_predict.py` 里的 `direct_submit` 是 `qp_summary[\"direct_submit\"]` 计数字段键；`DIRECT_CONNECT_WHITELIST`（7 项，有 `test_db_write_guards.py::test_whitelist_files_exist` 断言）不含它；提交链已由 MCP `workflow_submit_alpha` + `tools/super_build.py submit` 覆盖。已同时登记进 `audit_structure_baseline.json` 的 `retired_paths`（S12 拦复活）。"
+    },
+    "tools/harvest_batch.py": {
+      "verdict": "DROPPED",
+      "basis": "§5.3：`pipeline.py` 里的 `_harvest_batch_alphas` 是本地函数非该脚本；收批已统一走 `tools/harvest_multisim.py`（多 multisim 批量收）。零活动引用。已登记 retired_paths。"
+    },
+    "tools/self_batch.py": {
+      "verdict": "DROPPED",
+      "basis": "§5.3：零活动引用；self 侧走 MCP `check_self_correlation` 与 skill `brain-calculate-alpha-selfcorr-quick`。已登记 retired_paths。"
+    },
+    "tools/harvest_by_expr.py": {
+      "verdict": "DROPPED",
+      "basis": "§5.3：零活动引用；按表达式收批的需求已由 `tools/harvest_multisim.py` 覆盖。已登记 retired_paths。"
+    },
+    "tests/unit/01_store_db/test_corr_single_source.py": {
+      "verdict": "DROPPED",
+      "basis": "它断言的是 `_corr_cache.py` 的**第三版契约**，而该实现无论在 main 还是在快照里都不存在：实测 `git show 05b64a6:src/wqb/store/_corr_cache.py` 的 `normalize_corr_source()` 返回 `{\"source\",\"detail\"}` 且 `_LEGACY_SOURCE_ALIASES` 把 `prod_first` 映射到 `prod_first_screen`；测试却要求 `CORR_FRESH_SECONDS`、`source_detail`、并把 6 个自由文本一律收敛到 `platform_sync`。按 pathspec 取回 = 当场 7 红（`ImportError: CORR_FRESH_SECONDS`），且会把一条未完成的契约伪装成「守卫测试」。顶层符号比对显示 main 的 `_corr_cache.py` 是快照版的超集（多出 `get_corr_authoritative_batch`），故该件属未合入分叉线 —— 由该线所有者整线合并，不做单件回迁。"
+    },
+    "tests/unit/09_core/test_paths.py": {
+      "verdict": "RESTORED",
+      "basis": "2026-10-06 治理实施时取回：`git checkout 4910e65 -- tests/unit/09_core/test_paths.py`，7 条全绿。它是 AGENTS.md「仓库根推导一律层数无关 / 禁新增 `parents[1]`」这条单源约定的**唯一机器守卫**（此前 main 侧对 `wqb.paths` 零测试覆盖：`git grep 'wqb.paths|find_repo_root' -- tests/*.py` = 0 命中）。"
+    }
+  }
+}

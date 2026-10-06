@@ -43,6 +43,10 @@
   区域——隐式约定无法自动执行；AGENTS.md §8.13 已把「新 Agent 极易当成区域读」
   列为风险，但约定不会自动执行。**本检查只登记不搬**：`reference/` 有 88 处引用、
   `mining/` 有 46 处引用且 AGENTS.md §1 明令勿动，物理搬迁风险远大于收益。
+- **S14 tools/README 登记**：`tools/` 下的**受控**脚本必须在 `tools/README.md` 占一行
+  （2026-10-06 治理评审 P2-8 新增）。**棘轮**：存量欠债登记在基线 `s14_unregistered_tools`
+  → WARN，**新增未登记 → FAIL**。背景：AGENTS.md §8.13「并在 tools/README.md 登记一行」
+  长期纯靠自觉（S7/S8/S9/S11 都看不上这件事），实测顶层 159 个里 8 个从未登记。
 
 退出码
 ------
@@ -60,6 +64,7 @@ import ast
 import hashlib
 import io
 import re
+import subprocess
 import sys
 import tokenize
 from collections import defaultdict
@@ -427,21 +432,31 @@ def check_s6_skill_drift(rep: Report) -> None:
 
     script = REPO_ROOT / "tools" / "audit_skill_drift.py"
     if not script.exists():
-        rep.warn("S6 skills 漂移", "audit_skill_drift.py 缺失，跳过")
+        # 2026-10-06 治理评审：原先这里是 warn（跳过）。但本闸 2026-10-03 已升为 FAIL，
+        # 而 pre-commit 只拦 FAIL ⇒ 「被委托脚本不见了」这个**最可能**的故障模式会让 S6
+        # 静默消失（历史上 `audit_skill_drift.py` 这类文件确实被清理过）。工具自身不可用
+        # 必须响亮失败，不能把已登记的闸装成自毁开关。
+        rep.fail("S6 skills 漂移",
+                 "audit_skill_drift.py 缺失 —— S6 无法执行，按结构性 FAIL 处理："
+                 "请从 attic/ 或抢救点取回该文件，不要留空转")
         return
 
     r = subprocess.run([sys.executable, str(script), "--json"],
                        capture_output=True, text=True, cwd=str(REPO_ROOT))
     if r.returncode not in (0, 1):
-        rep.warn("S6 skills 漂移",
-                 f"audit_skill_drift.py 异常退出（rc={r.returncode}），跳过")
+        # 0/1 是「跑通了，只是有无违规」；其余 = 工具自身坏了（缺依赖 / 崩了）。
+        rep.fail("S6 skills 漂移",
+                 f"audit_skill_drift.py 异常退出（rc={r.returncode}）—— 工具故障不等于无违规，"
+                 f"按 FAIL 处理。stderr 前 200 字：{(r.stderr or '').strip()[:200]}")
         return
     try:
         payload = json.loads(r.stdout)
         cross = payload.get("cross_skill") or []
         diverged = payload.get("diverged") or []
-    except (json.JSONDecodeError, KeyError, TypeError):
-        rep.warn("S6 skills 漂移", "audit_skill_drift.py 输出不可解析，跳过")
+    except (json.JSONDecodeError, KeyError, TypeError) as e:
+        rep.fail("S6 skills 漂移",
+                 f"audit_skill_drift.py 输出不可解析（{e}）—— 按 FAIL 处理，"
+                 f"stdout 前 200 字：{(r.stdout or '').strip()[:200]}")
         return
 
     # ★ 分叉副本 = 同名脚本在不同 skill 下内容已不同 = "改一处漏三处"已经发生。
@@ -720,14 +735,43 @@ def _s11_baseline() -> set:
         return set()
 
 
+def _themes_assigned() -> set:
+    """`tools/THEMES.json` 里已归属的**顶层脚本名**集合（含已下沉的 moved_files）。
+
+    读不到文件 / 解析失败 = 空集 —— 宁可把现有顶层脚本全判为「未归属」，
+    也不要因为登记表本身坏掉而让 S11 静默不生效（2026-10-06 治理评审的 fail-open 主题）。
+    """
+    import json
+
+    p = REPO_ROOT / "tools" / "THEMES.json"
+    if not p.is_file():
+        return set()
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return set()
+    names: set = set()
+    for th in (data.get("themes") or {}).values():
+        names |= {Path(f).name for f in (th.get("files") or [])}
+        names |= {Path(f).name for f in (th.get("moved_files") or [])}
+    return names
+
+
 def check_s11_tools_top_frozen(rep: Report) -> None:
-    """S11：tools/ 顶层只减不增（2026-10-04 P2-1）。
+    """S11：tools/ 顶层只减不增（2026-10-04 P2-1）+ 可度量去冻结（2026-10-06）。
 
     背景：tools/ 顶层平铺 171 个脚本，而 tools/README.md 早已写好 14 个主题分类（磁盘上
     却没分）。一次性下沉并不安全：实测全仓 80 处 `sys.path.insert(... 'tools')`，
     `index_tables` / `migrate_wave_verdict_enum` 等还被当模块 import，且仓库根推导写法
     同主题内就有 5 种（层数硬编码）。目标结构与逐文件归属已写进 `tools/THEMES.json`，
     迁移按主题分批走；在那之前先把顶层**冻住**，避免上帝目录继续长。
+
+    2026-10-06 治理评审补的两条（原缺）：
+      1. `ac2cf35` 号称「10 个 CLI 下沉」实测是在子目录**新建**（10 条 create mode、
+         0 条 rename/delete，顶层数 159→159）——「下沉」这个表述让迁移进度看起来推进了
+         10 步而实际顶层规模未变。故这里把**读数**摆到台面上：顶层现数 / 基线 / 已下沉数。
+      2. 「冻结」只防新增，不防「永不迁移」。新增必须同时在 THEMES.json 登记归属，
+         存量也必须逐条有归属 —— 未归属数就是可度量的迁移债，不得靠默认塞进已有目录。
     """
     now = {p.name for p in TOOLS.glob("*.py")}
     baseline = _s11_baseline()
@@ -747,8 +791,137 @@ def check_s11_tools_top_frozen(rep: Report) -> None:
         rep.warn("S11 tools 顶层冻结",
                  f"{len(gone)} 个已不在顶层（迁移成功或已删），请同步从 "
                  f"tools/audit_structure_baseline.json 移出：{gone}")
-    if not added and not gone:
-        rep.ok("S11 tools 顶层冻结", f"顶层 {len(now)} 个与基线一致（只减不增）")
+
+    # 归属棘轮：磁盘上的顶层脚本必须在 THEMES.json 里有主题归属（2026-10-06 实测已 0 条欠债）
+    unassigned = sorted(now - _themes_assigned())
+    if unassigned:
+        rep.fail("S11 tools 顶层冻结",
+                 f"{len(unassigned)} 个顶层脚本在 tools/THEMES.json 里**无主题归属**：{unassigned}；"
+                 "要么给它加 themes.<主题>.files 条目，要么迁进 tracking/<REGION>/scripts/ "
+                 "或归档 —— 不允许默认塞进已有目录（THEMES.json._source 明文禁止）")
+
+    moved = len(baseline) - len(now & baseline)
+    if not added and not gone and not unassigned:
+        rep.ok("S11 tools 顶层冻结",
+               f"顶层 {len(now)} 个与基线一致（只减不增；基线 {len(baseline)}、"
+               f"已下沉 {moved} 个、未归属 0 个）")
+
+
+def _s14_baseline() -> set:
+    """S14 存量基线：允许「未在 tools/README.md 登记」的脚本名集合（只减不增）。"""
+    import json
+
+    p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+    if not p.is_file():
+        return set()
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return set(data.get("s14_unregistered_tools") or [])
+    except (json.JSONDecodeError, OSError):
+        return set()
+
+
+def _tools_tracked_scripts(recursive: bool = False) -> list:
+    """`tools/` 下的**受控**脚本（相对 `tools/` 的 posix 路径）。
+
+    只看 git 跟踪的：并行会话的在途未跟踪文件不该拦住本次提交（AGENTS.md §7）。
+    缺省只看**顶层**：AGENTS.md §8.13 的登记义务针对「可复用 CLI」，
+    子目录里的包实现模块（`wave_gate_pkg/gates_semantic.py`、`_lib/prescreen.py`）
+    不是 CLI，逼它们逐个登记只会逼出无意义的表格灌水。
+
+    ⚠ 不能拿 `tools/*.py` 当 pathspec：git 缺省把 `*` 当跨 `/` 匹配（无 FNM_PATHNAME），
+    实测它会连着吐 `legacy/opswap_driver.py` 这类子目录件——目录过滤必须在 Python 侧做。
+    """
+    r = subprocess.run(["git", "ls-files", "-z", "--", "tools/*.py"],
+                       capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        # 拿不到清单就报错：静默给空集 = S14 看似在跑实则永不过（fail-open）。
+        raise RuntimeError(f"git ls-files 失败（rc={r.returncode}）：{r.stderr.strip()[:200]}")
+    out = []
+    for x in filter(None, r.stdout.split("\0")):
+        rel = Path(x).relative_to(Path("tools")).as_posix()
+        if not recursive and "/" in rel:
+            continue
+        out.append(rel)
+    return sorted(out)
+
+
+def _looks_like_cli(rel: str) -> bool:
+    """是否为对用户跑的 CLI：有 argparse，或带 `if __name__ == "__main__"` 守卫。
+
+    读不了文件（编码/权限）时**当它是 CLI**（保守：宁可多要求登记，不要把真 CLI 漏成
+    「免登记」—— 那正是本检查要防的「靠猜」）。
+    """
+    p = TOOLS / rel
+    try:
+        text = p.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return True
+    return "argparse" in text or '__name__ == "__main__"' in text or "__name__ == '__main__'" in text
+
+
+def _readme_mentions() -> set:
+    """`tools/README.md` 里提到过的脚本路径（归一为相对 `tools/` 的 posix）。
+
+    README 里同时存在三种写法：`code-audit/repo_governance_check.py`（下沉后）、
+    `tools/sync_skills.py`（带顶层前缀）、`wave_gate.py`（裸名，存量写法）。
+    只比裸名会把 `legacy/gate.py` 与 `gate.py` 当成同一个，故**保留目录段**归一。
+    """
+    p = TOOLS / "README.md"
+    if not p.is_file():
+        return set()
+    text = p.read_text(encoding="utf-8", errors="replace")
+    toks = set(re.findall(r"[A-Za-z0-9_\-./]+\.(?:py|sh|ps1)\b", text))
+    norm = set()
+    for t in toks:
+        t = t.strip("./")
+        if t.startswith("tools/"):
+            t = t[len("tools/"):]
+        norm.add(t)
+    return norm
+
+
+def check_s14_tools_readme_registry(rep: Report) -> None:
+    """S14：`tools/` 顶层的 **CLI** 必须在 `tools/README.md` 登记（棘轮：未登记数只减不增）。
+
+    为什么单独立一条（2026-10-06 治理评审）：AGENTS.md §8.13 写「可复用 CLI → `tools/`
+    并在 tools/README.md 登记一行」，但 S7/S8/S9/S11 都不看这件事，登记纯靠自觉 ——
+    实测顶层 159 个里有 8 个从未登记，而其中 `fetch_all_universes.py` 正是 HEAD 唯一
+    动过的生产脚本（改了却没补登记）。本检查把「登记」从文字纪律变成读数。
+
+    范围口径：只盯**顶层 + 像 CLI 的**（有 argparse 或 `__main__` 守卫）。
+    子目录里的包实现模块（`wave_gate_pkg/gates_*.py`、`_lib/*.py`）不是 CLI，不逼登记；
+    否则只会灌水表格、把真正的缺口淹没。
+
+    棘轮语义：存量欠债登记在基线 `s14_unregistered_tools`（WARN 可见不阻塞），
+    新增未登记 → FAIL。补登记后应从基线移出（收紧）。
+    """
+    if not (TOOLS / "README.md").is_file():
+        rep.fail("S14 tools/README 登记", "tools/README.md 不存在 —— 登记面消失，按 FAIL 处理")
+        return
+    try:
+        tracked = [n for n in _tools_tracked_scripts() if _looks_like_cli(n)]
+    except RuntimeError as e:
+        rep.fail("S14 tools/README 登记", f"无法取受控清单（{e}）—— 不当作「全部已登记」放过")
+        return
+    mentioned = _readme_mentions()
+    unreg = sorted(n for n in tracked if n not in mentioned)
+    baseline = _s14_baseline()
+    new_ones = [n for n in unreg if n not in baseline]
+    if new_ones:
+        rep.fail("S14 tools/README 登记",
+                 f"新增 {len(new_ones)} 个脚本未在 tools/README.md 登记：{new_ones}；"
+                 "每个 CLI 都必须在 README 的主题表里占一行（干什么用 / 用法），"
+                 "否则后来者只能靠猜（AGENTS.md §8.13）")
+    carried = [n for n in unreg if n in baseline]
+    if carried:
+        rep.warn("S14 tools/README 登记",
+                 f"基线内存量欠债 {len(carried)} 个：{carried[:12]}"
+                 f"{'' if len(carried) <= 12 else ' …共 ' + str(len(carried))}；补登记后请从 "
+                 f"tools/audit_structure_baseline.json 的 s14_unregistered_tools 移出")
+    if not new_ones and not carried:
+        rep.ok("S14 tools/README 登记",
+               f"受控脚本 {len(tracked)} 个全部已在 tools/README.md 登记")
 
 
 #: S12：已下架路径清单（读基线 retired_paths；出现即 FAIL）。
@@ -866,6 +1039,7 @@ CHECKS = {
     "s11": ("S11 tools 顶层冻结", check_s11_tools_top_frozen),
     "s12": ("S12 已下架路径复活", check_s12_no_resurrection),
     "s13": ("S13 tracking 非区域目录登记", check_s13_tracking_nonregion_registry),
+    "s14": ("S14 tools/README 登记", check_s14_tools_readme_registry),
 }
 
 
@@ -875,7 +1049,25 @@ def main(argv: list[str] | None = None) -> int:
                     help="只跑指定检查（可重复）")
     ap.add_argument("--freeze-tools-top", action="store_true",
                     help="把当前 tools/ 顶层 .py 清单写进 S11 基线（建立/重置存量用）")
+    ap.add_argument("--freeze-unregistered", action="store_true",
+                    help="把当前「未在 tools/README.md 登记」的脚本清单写进 S14 基线（只登记存量欠债）")
     args = ap.parse_args(argv)
+
+    if args.freeze_unregistered:
+        import json
+
+        p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+        data = json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+        mentioned = _readme_mentions()
+        names = sorted(n for n in _tools_tracked_scripts() if _looks_like_cli(n) and n not in mentioned)
+        data["s14_unregistered_tools"] = names
+        data["_s14_note"] = (
+            "S14 存量欠债：这些 tools/ 脚本未在 tools/README.md 登记（2026-10-06 冻结）。"
+            "WARN 不阻塞；补登记后请从本表**移出**（移出即棘轮收紧），新增未登记即 FAIL。"
+        )
+        p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"[audit_structure] S14 基线已写入 {len(names)} 个未登记脚本 → {p.name}")
+        return 0
 
     if args.freeze_tools_top:
         import json

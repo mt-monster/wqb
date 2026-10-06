@@ -50,9 +50,17 @@ families 为空  → 退化：用 L3 的 by_category（经济大类）当聚合�
 1. **不许为了"凑出族"硬堆后缀规则**——实测给原生集补 4 类后缀后 `fundamental17` 仅 0→1 族、
    `pv30/news38` 仍 0；继续加规则就是过拟合，聚出来的族没有经济学含义，比没有族更糟。
 2. **"族为空" ≠ "要补做"**。判定台账要不要重跑，看的是**台账是否由含 L3.5 的版本生成**
-   （即 `family_stats` / `families` 两个键是否存在——**直接查台账键**即可；
-   不要再去找某个 `semantic_ledger` 模块做口径校验，那个模块从未落地，`ledger_has_l35` 也不存在），
-   不是看族是否非空。按"族为空"判补做会让原生集**永不幂等**（每次 S1 都重跑）。
+   （即 `family_stats` / `families` 两个键是否存在；主干上**直接查台账键**即可），
+   **不是看族是否非空** —— 按"族为空"判补做会让原生集**永不幂等**（每次 S1 都重跑）。
+   ⚠ 那个口径校验模块 `src/wqb/semantic_ledger.py`（含 `ledger_has_l35`）在工作区**不存在**
+   （不在 `main`），但**并非从未存在** —— 它在抢救点 `4910e65` 的对象库里（取看：
+   `git show 4910e65:src/wqb/semantic_ledger.py`；为何不回迁的逐件依据见
+   [`docs/governance/snapshot_adjudication.md`](../../../../docs/governance/snapshot_adjudication.md)）。
+   要启用它必须**整线成套取**（配套还有 `test_s1_semantic_autoclassify`、`test_semantic_classify_all`），
+   单件回迁就是孤儿模块。
+   ⚠ 另需注意：`main` 侧 `tools/field_semantic_classify.py` 现在的产物 schema **不写**
+   `family_stats` / `families`（它写 `blocked_fields` / `by_category` / `category_stats`），
+   所以在主干上「这两个键存在」等价于「该台账由带 L3.5 的那条分支产出」。
 3. **空族不等于数据集没价值**——`analyst_consensus` 2298 个信号字段照样能挖，
    只是聚合轴从"族"换成"经济大类"。
 
