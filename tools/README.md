@@ -163,7 +163,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `region_status.py` | 区域状态记分板（本地 DB 驱动、零平台请求）：逐区回测量/sharpe 达标/命中率/ACTIVE/波次/战役 exhausted% + entry_verdict + 建议动作；`--json` 机读 | `brain-next-move-analysis §5.5` 区域饱和手算 |
 | `region_status.py --rotate --current <R> --target <N>` | **区域轮转决策**：当前区证实结构性饱和→按证据（产出率/可行库存/prod 墙/战役穷尽/profile）排序推荐下一区并承接目标 N；`--write-ledger` 幂等写 `ledger_kv(<R>,region_rotation)`；`--json` 机读 | 人工逐区查表拼“换哪个区”结论 |
 
-> 轮转判定/打分逻辑的**单一事实源** = `src/wqb/region_rotation.py`（纯函数，`tests/unit/test_region_rotation.py` 守护）；CLI（`region_status.py --rotate`）与 MCP（`mcp__wqb-db__region_rotation`）同源。关键纪律：`alphas.prod_correlation` 只对做过相关核查的 alpha 有值，**NULL prod ≠ 可行**（会假阳性），可行集/prod 墙仅在 measured 子集上判定，薄样本回 `data_caveat`；仍有未提交可行存量（feasible_unsubmitted≥`feasible_reprieve_min`）则豁免降级为 WATCH。
+> 轮转判定/打分逻辑的**单一事实源** = `src/wqb/region_rotation.py`（纯函数，`tests/unit/06_wave_pipeline/test_region_rotation.py` 守护）；CLI（`region_status.py --rotate`）与 MCP（`mcp__wqb-db__region_rotation`）同源。关键纪律：`alphas.prod_correlation` 只对做过相关核查的 alpha 有值，**NULL prod ≠ 可行**（会假阳性），可行集/prod 墙仅在 measured 子集上判定，薄样本回 `data_caveat`；仍有未提交可行存量（feasible_unsubmitted≥`feasible_reprieve_min`）则豁免降级为 WATCH。
 
 ## 数据修复（一次性回填，幂等）
 
@@ -195,6 +195,8 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `clean_unused_imports.py` | 清理未用 import：默认 `--dry-run` 列出；`--apply` 才删（**跨文件 re-export 校验**防 SHAPE_CLASSES 误删 + `.bak_imp` 备份 + ast.parse 校验）；可 `--report` 接 scan_deadcode 的 JSON | `tracking/_scratch/_clean_unused_imports.py` |
 | `audit_node_registration.py` | **新增/修改 workflow 节点必跑**：审计「四处同步」——① registry.py 注册与 NodeMeta 签名 ② `test_registry_lists_all_core_nodes` 期望集合 ③ `_DRY_RUN_CASES` 用例表 ④ INDEX.md 节点计数。`--node X` 单节点自检；退出码 1 = 有漂移并列出全部缺口 | 改一处跑一次测试的往返 |
 | `audit_structure.py` | **仓库结构守护（2026-09-30 新增，已挂 pre-commit）**：S1 sys.path 自举/外挂分类 · S2 src→tools 依赖方向 · S3 tools 与 src 同名模块 · S4 硬编码盘符路径 · S5 reports/ 里的散落脚本 · S6 skills 副本漂移。`--only s1` 跑单项。只读；S1/S2/S4 判 FAIL，S3/S5/S6 判 WARN（存量不阻塞） | 靠 AGENTS.md 文字纪律 |
+| `code-audit/repo_governance_check.py` | **未跟踪源码数 = 事故唯一先行指标**（2026-10-06 新增，已挂 pre-commit）：数出「`git ls-files` 之外、且不在运行期/归档目录（`logs`/`cache`/`data`/`attic`…）下的源码类文件」（`.py/.md/.json/.sh/…`）。动机：本仓反复发生「源码从未入库、只以工作区未跟踪文件存在」，`git clean -fd` 一清即**永久**丢失（`tools/` 一次丢 17 个脚本）；`audit_structure.py` 的 S11 只看**顶层脚本数量**，看不见这类缺口。退出码 0=干净 / 1=有未跟踪源码（"下次清理会带走 N 个"）/ 2=无法判定。`--json` / `--quiet` | 事后从 git 里捞不回来的损失 |
+| `code-audit/doc_path_refs.py` | **活文档引用的仓库内路径必须真实可达**（2026-10-06 新增，已挂 pre-commit）：把「文档 → 路径」变成可机检断言，分两类 —— **BROKEN**（文档引用了，但 git 未跟踪**且**磁盘不存在 ⇒ 文档腐烂 / 又一批丢失件）与 **UNTRACKED**（磁盘在、git 不在 ⇒ 事故前兆）。范围 = `AGENTS.md`/`README.md`/`CLAUDE.md`/`tools/README.md` + `docs/`（除 `plans/`）+ `Claude/skills/`；`data`/`logs`/`cache`/`attic` 等**按设计不入库**的根、`.gitignore` 命中的路径、以及写明「不存在/已归档/旧文」的行整体豁免（与 `skill_lint.py` 同口径）。**棘轮**：存量违规记 `tests/fixtures/doc_path_refs_baseline.json`，只对**新增**违规 FAIL。与 `skill_lint.py` 的 `path-token` 分工：后者管 skills 目录内的细粒度死指针，本工具补上**非 skills 活文档 + git 索引维度**。`--report`/`--json`/`--update-baseline` | 人工逐个点开文档核对；以及「文档承诺的路径其实早就没了」 |
 | `audit_skill_drift.py` | skills 脚本副本漂移检测：A 类（GEM 内嵌快照，设计内）不报，只报 B 类跨 skill 复制（`validator.py` 4 份 / `helpful_functions.py` 4 份 / `ace_lib.py` 2 份）。`--check` 只判退出码，`--json` 机器读 | 手工 md5 对比 |
 | `clean_logs.py` | `logs/` 运行期清理：默认 dry-run，`--apply` 才删；`--report-locked` 探测 ACL 锁死目录并打印**需管理员执行**的 takeown/icacls/rmdir 命令（不自行提权——删除纪律要求人工确认） | 手工清 logs |
 
@@ -203,7 +205,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 > 另有 skill 资产同步（不属清理类）：
 > | 工具 | 用途 | 取代 |
 > |---|---|---|
-> | `sync_gem_embedded_skill.py` | 同步 GEM 引擎内嵌的两份 skill 副本到顶层权威版：`brain-feature-implementation/SKILL.md` 与 `brain-data-feature-engineering` 的 `reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md`（同名文件不许互相矛盾；**它们不会被拼进 LLM prompt**，2026-09-29 更正，2026-09-26 前内嵌 FI 停在 49 行旧英文稿）。`--check` 只校验（退出码 1 = 漂移）、`--apply` 覆盖写入。**绝不动内嵌 `scripts/`**（`ace_lib`/`validator` 是引擎硬依赖），也不创建 dfe 的 `SKILL.md`。由 `tests/unit/test_gem_skill_paths.py` 守护 | 手动复制 |
+> | `sync_gem_embedded_skill.py` | 同步 GEM 引擎内嵌的两份 skill 副本到顶层权威版：`brain-feature-implementation/SKILL.md` 与 `brain-data-feature-engineering` 的 `reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md`（同名文件不许互相矛盾；**它们不会被拼进 LLM prompt**，2026-09-29 更正，2026-09-26 前内嵌 FI 停在 49 行旧英文稿）。`--check` 只校验（退出码 1 = 漂移）、`--apply` 覆盖写入。**绝不动内嵌 `scripts/`**（`ace_lib`/`validator` 是引擎硬依赖），也不创建 dfe 的 `SKILL.md`。由 `tests/unit/03_gem/test_gem_skill_paths.py` 守护 | 手动复制 |
 
 ## MCP 体检
 

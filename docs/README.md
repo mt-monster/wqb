@@ -29,6 +29,9 @@ docs/
 │   └── campaign_kickoff_prompt.md           RA 战役启动提示词模板（区域无关，九步流水线+硬纪律+形状分流）
 ├── tutorials/                             ← 教程课件类
 │   └── 课件.md                              5个 Skill 实操课件（含实验全过程）
+├── governance/                            ← 仓库治理类（2026-10-06 建立）
+│   ├── branch_policy.md                     分支与抢救点策略（含「禁 git clean -fd」铁律 + 取件方法）
+│   └── untracked_allowlist.md               未跟踪文件白名单；先行指标=未跟踪源码数
 └── plans/                                 ← 历史计划类
     └── 2026-08-02-wqb-src-reconstruction.md src/wqb/ 包重建实施计划
 ```
@@ -128,6 +131,29 @@ docs/
 **当前状态**：已执行完成（src/wqb/ 包已落地，含 config/expression/research/search/memory/submit 子包）。
 
 **适用场景**：理解 src/wqb/ 包的设计思路与模块职责。
+
+---
+
+### 五、仓库治理（governance/）
+
+#### 6. 分支与抢救点策略 `governance/branch_policy.md`
+**定位**：一次事故复盘换来的操作铁律与取件手册。
+**内容**：两条铁律（**禁 `git clean -fd`**）；分支模型（`main` + 当日 `wip/*` + 永久 `preserve/*` tag）；
+8 个抢救点清单（tag ↔ commit ↔ 内容）；从抢救点**安全取件**的三条命令与「`deleted=0` 才可整体恢复」判据；
+两个 `wip/DANGER-*` 分支为何故意保留。
+**适用场景**：清理工作区之前；要判断某个"以前好像有这个文件"的东西去哪了；决定能不能删某个分支/tag。
+
+#### 7. 未跟踪文件白名单 `governance/untracked_allowlist.md`
+**定位**：回答"这个文件到底该不该入库"。
+**内容**：唯一判据（**重跑能再得到的可以不入库，人的判断与结论必须入库**）；
+允许长期未跟踪的 9 类运行产物；明确禁止未跟踪的源码/结论路径；
+设计内被 gitignore 的例外；以及**整目录忽略是危险模式**的实证（`DEU/reports/`、`USA/reports/*.md`）。
+**适用场景**：新增脚本/报告后不确定要不要提交；看到 gitignore 想加"整目录排除"之前。
+
+#### 执行器：`tools/code-audit/repo_governance_check.py`
+**唯一先行指标 = 未跟踪的源码类文件数**（应为 0；不为 0 即是"下次清理的损失清单"）。
+辅助读数：被忽略的源码类文件数、相对各远端 ahead/behind、抢救点与 DANGER 分支是否安在。
+`--quiet` 可只取退出码进 CI。
 
 ---
 

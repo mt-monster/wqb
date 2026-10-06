@@ -44,7 +44,7 @@
   | 选区 / 选数据集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md)（含停投结论） |
   | 改工程链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) |
   | 复盘 / 准备放弃某方向 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) |
-  ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局。**实际消费点**：`build_wave.py` 的 `apply_rules("dead_end")` 拦截 + 打印 strategy 提示；`pipeline.py` 的 L1 采集 / L4 证伪 + strategy 提示；`review_wave.py` → `recommend_next_wave` → 通用 `inject_rules`（声明了 `when` / `emit` 的规则条件化命中，其余 active 规则作常驻提示兜底）；`gate.py` **只**消费 `explore_contract` 契约规则，不消费 strategy / diagnosis 规则。旧文写「四处 `RuleStore.query()` 强制注入」不符合实际，2026-10-04 更正）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/test_experience_kb_refs.py`。
+  ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局。**实际消费点**：`build_wave.py` 的 `apply_rules("dead_end")` 拦截 + 打印 strategy 提示；`pipeline.py` 的 L1 采集 / L4 证伪 + strategy 提示；`review_wave.py` → `recommend_next_wave` → 通用 `inject_rules`（声明了 `when` / `emit` 的规则条件化命中，其余 active 规则作常驻提示兜底）；`gate.py` **只**消费 `explore_contract` 契约规则，不消费 strategy / diagnosis 规则。旧文写「四处 `RuleStore.query()` 强制注入」不符合实际，2026-10-04 更正）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/07_docs_skills/test_experience_kb_refs.py`。
 - 凭据位于 `world-quant-brain-mcp/.env`：禁止读取、打印或提交到 git。
 
 ## 3.5 Skills 回测标准路径（2026-09-05 单源化）
@@ -81,7 +81,7 @@
 整链可用 `mcp__wq-brain-http__workflow_chain`（先 `dry_run=True` 看每步构建出的命令）。
 **但提交类节点不入自动链**：`workflow_submit_alpha` / `workflow_superalpha` 的
 `confirm_submit=True` 必须由用户在步 8 明确确认后单独调用。这条由代码强制（`wqb.workflow.executor.execute_chain`：
-链里出现即整链拒绝、一步都不执行，干跑也拒；`tests/unit/test_workflow_chain_irreversible_guard.py`）。
+链里出现即整链拒绝、一步都不执行，干跑也拒；`tests/unit/02_workflow/test_workflow_chain_irreversible_guard.py`）。
 
 **几条不在 SKILL.md、属仓库工程约定的补充**：
 
@@ -90,11 +90,11 @@
   `brain-alpha-judge` / `workflow_judge` 是**参考评审层**，2026-09-05 起代码里已无提交路径。
 - **workflow 节点元数据**：`registry.py` 的 `required_params` / `optional_params` 必须与节点
   `run()` 签名一致（`_context` / `dry_run` 除外）。`workflow_list_nodes` 把它当 API 文档
-  暴露给 Agent，漂移即误导。回归由 `tests/unit/test_skill_integrity.py` 守护。
+  暴露给 Agent，漂移即误导。回归由 `tests/unit/07_docs_skills/test_skill_integrity.py` 守护。
 - **新增/修改 workflow 节点 → 五处必须同步（2026-09-18 固化四处，2026-09-29 补第五处）**：注册信息散在五处，
   漏一处测试即红：① `src/wqb/workflow/registry.py`（register + NodeMeta，与 run() 签名逐字一致）
-  ② `tests/unit/test_workflow.py::test_registry_lists_all_core_nodes` 期望集合
-  ③ `tests/unit/test_skill_integrity.py::_DRY_RUN_CASES` 干跑用例表
+  ② `tests/unit/02_workflow/test_workflow.py::test_registry_lists_all_core_nodes` 期望集合
+  ③ `tests/unit/07_docs_skills/test_skill_integrity.py::_DRY_RUN_CASES` 干跑用例表
   ④ `Claude/skills/INDEX.md` workflow 节点计数
   ⑤ `world-quant-brain-mcp/tests/test_tools_workflow_unit.py` 的 `expected_nodes` 集合。
   ⚠ ⑤ 是 2026-09-29 全量测试转红才暴露的：`forum_recon_wave` 上线时四处全绿、MCP 包测试 20≠19。
@@ -170,7 +170,7 @@
 - **skill 多目标单向同步（2026-09-10 起；2026-10-03 加 cline/agents 后 6 个安装位）**：仓库 `Claude/skills/` 是源，**全部安装位**是派生物。
   改 skill 只改仓库副本，然后 `python tools/sync_skills.py`（自动枚举全部已存在的安装位：
   claude / codex / **cline / agents** / qoder-cn / cursor / workbuddy，逐个同步 + 逐个校验）；`--check` 模式由
-  `tests/unit/test_audit_fixes.py::test_sync_skills_reports_no_drift` 守护（多目标断言）。
+  `tests/unit/07_docs_skills/test_audit_fixes.py::test_sync_skills_reports_no_drift` 守护（多目标断言）。
   历史教训：① 安装位曾落后仓库两周（make-some-gem 停在 08-22、仓库已 09-05）；
   ② 2026-09-10 审计发现旧版脚本只同步**首个**目标（`resolve_install_root()`），致使
   `~/.codex`、`~/.workbuddy` 反复分叉（ra-pipeline 落后 67 行，缺 09-09 的
@@ -212,7 +212,7 @@
   （如 `wq-brain-ra-pipeline: version "2.2"` + `layer: L-RA`）。
 - `last_verified` = 最近一次对照平台核实内容正确的日期（`YYYY-MM-DD`）；改正文后应更新。
   2026-09-10 审计已补齐全部 32 个 skill 的该字段（此前 8 个缺失）。
-- 守护：`tests/unit/test_skill_integrity.py` 校验 `name` 与目录名一致、frontmatter 完整。
+- 守护：`tests/unit/07_docs_skills/test_skill_integrity.py` 校验 `name` 与目录名一致、frontmatter 完整。
 
 ### Skill 命名规范（2026-09-10 审计固化）
 
@@ -337,6 +337,16 @@ git config core.hooksPath tools/git-hooks
 5. 提交前扫硬编码密钥/凭据（`sk-*`、`api_key=`、`password=`、私钥块）；`.env` / `config.json`
    一律不在版本控制内（`.gitignore` 已覆盖，勿 `-f` 强提）。
 
+> **⛔ 红线：本仓库禁止 `git clean`（含 `-fd` / `-fdx` / `-x`，任何人批准都无效）。**
+> 原因不是洁癖，而是本仓的**结构性事实**：存在大量**只以工作区未跟踪文件存在**的
+> 源码与文档——它们**从未进过 git**，所以 `git checkout` / `reflog` / `fsck` **全都救不回来**。
+> 实证代价：`tools/` 一次丢过 **17 个被 AGENTS.md / tools/README.md 引用的脚本**；
+> `docs/experience/02_signal_patterns.md` 丢过 **332 行**（16 节 → 9 节）。
+> 需要「看清干净」时：`git clean -n`（dry-run，只列清单）→ **逐条**判断该入库还是该 gitignore。
+> 先行指标与判定工具（都已挂 pre-commit，**新增未跟踪源码 / 新增死指针即阻断提交**）：
+> `python tools/code-audit/repo_governance_check.py`（数未跟踪源码 = 事故先行指标）、
+> `python tools/code-audit/doc_path_refs.py`（文档引用的路径是否仍可达，含"未入库"前兆）。
+
 **并行写入者的注意**：本机可能同时有其他 Agent/会话在改同一棵树（实测发生过
 `assemble_priors.py` 被并发改写、`sync_skills.py` 报"已同步 0 个文件"而文件实际已在位）。
 因此：① 被漂移断言拦下时**先重跑 `sync_skills.py` 再提交**，不要改测试去迁就；
@@ -385,7 +395,7 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
   按 gate-mode 走。
 - **CLI 的 gate-mode**：`--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省。**2026-10-11 及以前 warn，
   2026-10-12 起 enforce。** 唯一事实源是 toolkit `_lib/region_gates.WARN_SUNSET`；改期只改这一处，并同步两份
-  SKILL.md、本节与 `tests/unit/test_region_gates_p0p1.py`。依据见报告 §14.9.7。
+  SKILL.md、本节与 `tests/unit/01_store_db/test_region_gates_p0p1.py`。依据见报告 §14.9.7。
 - **放行**：停波区域要继续开波，写 waiver（§8.1.2；旧键 `stop_rules_override` 仍被识别，新写入用
   `waiver_stop_rules_<region>_all`）。`--gate-mode warn` / `WQB_GATE_MODE=warn` 只作临时回退（灰度期结束后同样需要
   `region_gates` waiver）；非法取值被忽略，不会降级成 warn。
@@ -415,7 +425,7 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
   无法解析则 fail closed。读取路径已收成 `wqb.waiver.load` 一处，新代码不得再手写这类 SQL。
 - **红线（任何人批准都无效）**：提交 alpha 前的用户明确确认、凭据（`.env` 只在本地，禁止读取 / 打印 / 提交 / 外发）、平台条款与限额。
   `RED_LINES` 里的名字调用 `load` 一律 INVALID；新增红线改 `wqb.waiver.RED_LINES`。
-- **新增可豁免的闸**：先在 `GATE_POLICIES` 登记（批准人、最长天数、逃生口），再写文案；`tests/unit/test_waiver.py` 守登记一致。
+- **新增可豁免的闸**：先在 `GATE_POLICIES` 登记（批准人、最长天数、逃生口），再写文案；`tests/unit/09_core/test_waiver.py` 守登记一致。
 
 ### 8.2 双 MCP 系统分工（**不要合并，职责不同**）
 
@@ -427,7 +437,7 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
   `mcp__wqb-db__*` 与工具前缀强绑定，改名即全线失配。
 - **工具注册**：新函数不要插在某个 `@mcp.tool()` 与它原本装饰的函数之间（2026-09-19 就这样把
   `harvest_multisim_results` 挤出了工具表，N31）；下划线开头的函数不得是工具；SKILL.md 引用的工具必须已注册。
-  三条都由 `tests/unit/test_skill_integrity.py` 守护，"已移除工具"白名单只收真正下线的工具。
+  三条都由 `tests/unit/07_docs_skills/test_skill_integrity.py` 守护，"已移除工具"白名单只收真正下线的工具。
 
 ### 8.3 配置文件权威源
 
@@ -466,7 +476,8 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
    - ~~僵尸测试：`tools/` 下 2 个 `test_*.py` 从不执行~~ —— **已解决（commit `c393bca`）**。
      二者文件头有 `__test__ = False` 显式自保护，且**非 pytest 用例是正确设计**：
      `test_field_catalog_cache.py` 被 docs 以 CLI 方式调用、非 dry-run 分支会**真打平台 API**；
-     `test_gbr_batch_isolation.py` 被 `tools/gbr_pre_submit_check.py` 以子进程调用。
+     `test_gbr_batch_isolation.py` 被 `tools/gbr_pre_submit_check.py`（均已归档）以子进程调用
+     —— 2026-10-05 归档至 `attic/gbr_pre_submit_20261005/`，不在活跃树，勿去活跃目录找。
      **不要搬进 `tests/`**（会让 pytest 真去跑它们、打平台）。
    - ~~`data/`、`logs/` 无保留策略~~ —— **已解决（2026-10-03）**，见下一条第 6 项。
 6. **`data/` 磁盘复发（第 5 次）** —— **工具已落地，但复发机制已加硬闸**。
@@ -625,9 +636,9 @@ pre-commit 钩子已绕过第 2 条（见下一节：唯一 basetemp + TMPDIR �
 
 `wave_results` 是停止规则 B（`campaign._run_stop_rules_gate`）的唯一输入，写错一行就是误停区或误放行。
 
-- **只经写入契约写**：`src/wqb/wave_results_contract.upsert_wave_result`（合并式：只写传入的列；结案必带
+- **只经写入契约写**：`src/wqb/wave_results_contract.py` 的 `upsert_wave_result()`（合并式：只写传入的列；结案必带
   PASS/FAIL/PARTIAL；`created_at` 首写后不变）。现有写入方全部走它：wqb-db `upsert_wave_result`、
-  `tools/mcp_batch_writer` 直写兜底、收批级联 `wqb_db_mcp._cascade_wave_result`、toolkit `_lib/wave_results`
+  `tools/mcp_batch_writer.py` 直写兜底、收批级联 `wqb_db_mcp._cascade_wave_result`、toolkit `_lib/wave_results`
   （review_wave / pipeline / `campaign.py wave upsert`）、`auto_pyramid` 点塔回写。**新增写入方禁止直写 SQL /
   `INSERT OR REPLACE`**（一次性迁移工具 `tools/migrate_*` 除外，须人工复核）。
 - **波号一律原字符串**：`97`、`91c`、`s2_<ds>_d1` 原样入库，与 `backtest_results.wave` / `waves.wave_number`
@@ -656,7 +667,7 @@ pre-commit 钩子已绕过第 2 条（见下一节：唯一 basetemp + TMPDIR �
 ### 8.8 alphas / backtest_results 写入是合并式（2026-09-28 N35 固化）
 
 同一个 alpha 会被多条路径反复写入：收批（wqb-db `harvest_multisim_results`、`tools/harvest_multisim.py`）、
-toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_alphas`）、相关性落库。
+toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_alphas.py`）、相关性落库。
 每次写入都只带它自己知道的那几列。
 
 - **只经 CampaignStore 写**：
@@ -683,25 +694,25 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 ### 8.9 ledger 键目录 / 时间炸弹登记 / skill 文档棘轮（2026-09-29 固化）
 
 - **ledger 键目录** `docs/ledger_keys.json` 是全库 `ledger_kv` 键的单一真相源（用途 / 写入方 / 读取方 / 缺失行为 / 刷新责任 / 状态）。
-  `tools/ledger_keys.py` 从代码（AST + SQL 字面量）与文档抽取实际出现的键，`tests/unit/test_ledger_key_catalog.py` 守：**新增或改名一个
+  `tools/ledger_keys.py` 从代码（AST + SQL 字面量）与文档抽取实际出现的键，`tests/unit/01_store_db/test_ledger_key_catalog.py` 守：**新增或改名一个
   ledger 键必须先登记**；被读取的键必须有写入方（已知缺口登记 `orphan` 并指向审查条目，缺口补上后必须删登记）；登记的代码引用必须真实存在；
   已废止的键（`wave<N>_verdict` 等）只能出现在带「废止 / 历史」字样的行。`python tools/ledger_keys.py` 打印差异，`--print-table` 生成文档表。
 - **时间炸弹登记** `docs/time_bombs.json`：凡「到某日会自动改变行为或让文案失效」（灰度截止、到期放行、夏令时……）先登记再写文案。
-  `tests/unit/test_time_bombs.py` 守：证据文件 / 测试真实存在、人工项过期未办完即红、文档里出现的**未来日期**必须已登记。
+  `tests/unit/09_core/test_time_bombs.py` 守：证据文件 / 测试真实存在、人工项过期未办完即红、文档里出现的**未来日期**必须已登记。
 - **skill 文档「内容为真」棘轮** `tools/skill_lint.py`：命令 / 子命令 / 必填参数（argparse AST）、MCP 工具签名、表达式过闸、`.env` 读取、裸 `python`。
   现存违规登记在 `tests/fixtures/skill_lint_baseline.json`，**新增必红、修复必须从基线移除**；反例段落用 `<!-- lint:counterexample -->` 豁免。
 
 ### 8.10 INDEX 拆分 / 生成表 / 环境变量与凭据登记（2026-09-29 固化，skills 审查 IX-01…24）
 
 - **INDEX 只做路由与分层**。契约（frontmatter / 职责边界 / 命名 / 共享产物 / 质量门禁）在 `Claude/skills/CONTRACT.md`；术语与状态词表在 `GLOSSARY.md`；
-  变更历史与迁移记录在 `Claude/skills/CHANGELOG.md`（带日期的 ⚠ 条目**不得**再写进 INDEX，`tests/unit/test_index_tables.py` 守）；
+  变更历史与迁移记录在 `Claude/skills/CHANGELOG.md`（带日期的 ⚠ 条目**不得**再写进 INDEX，`tests/unit/09_core/test_index_tables.py` 守）；
   环境变量、开关、凭据来源在 `docs/env_and_switches.md`。用户意图 → skill 的**场景路由表**在 INDEX 首节。
 - **可由代码导出的表由代码生成并嵌入文档**：区域清单（`config.REGIONS` × profile × `tracking/<R>/config/`）、闸门阶梯（`config` 的 `GATES_*` / `PLATFORM_CHECK_LINES`）、
   环境变量目录（代码扫描 + `docs/env_registry.json` 的用途）。生成器 `python tools/index_tables.py {regions|ladder|env}`；`--apply` 覆盖嵌入块、`--check` 比对。
   **改 profile / 目录 / config 常量 / 读取了新环境变量后必须重新 `--apply`**，不要手改表。
 - **环境变量登记**：代码里新读一个环境变量 = 先在 `docs/env_registry.json` 登记（类别 + 用途）再 `--apply`；登记的变量不再被读取时必须删除。
   **凭据只登记名字与来源，不登记值**；标准名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`，新增凭据消费者必须先认标准名，并在 `docs/env_and_switches.md` §1 登记来源顺序与是否落盘。
-  vendored `ace_lib.get_credentials()` 会把口令**明文写进** `~/secrets/platform-brain.json`——任何调用 `ace_lib.start_session()` 的脚本必须先覆盖它（`tests/unit/test_sf_docs.py` 守）。
+  vendored `ace_lib.get_credentials()` 会把口令**明文写进** `~/secrets/platform-brain.json`——任何调用 `ace_lib.start_session()` 的脚本必须先覆盖它（`tests/unit/07_docs_skills/test_sf_docs.py` 守）。
 - **改 skill 的生效流程**：仓库 `Claude/skills/` 是编辑权威，各安装位是运行时优先——**改完必须 `$WQ_PY tools/sync_skills.py`（`--check` 零漂移）才对 Agent 生效**。
   `description` ≤ 300 字且只写触发条件（`test_sf_docs.py` 守）。
 
@@ -713,7 +724,7 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 - **`seal_dead_end` 取证闸是 fail-closed**：按 `question_key` 回 ledger 核对，只放行可靠的「论坛无解」；拒绝时**不沉降、不写库**。绕过只有 `force_seal=True` / `require_forum_recon=False`，**必须人工确认**，都留痕在 `payload.forum_recon_gate`。
   ⚠ **闸只在 `seal_dead_end` 上**：`campaign.py registry add-dead-end`（CLI 备选）与 `upsert_registry_empirical(layer="dead_end")`（低层写入口）不经闸——判死统一走 `seal_dead_end`；闸不核对证据的相关性、不给证据龄设上限（留痕的 `question` / `searched_at` 供人复核）。
 - **波级默认取证**：`tools/forum_recon_wave.py` = 节点 `forum_recon_wave` = `pipeline.py --forum-recon`（`batch_track` 缺省带上，`forum_recon=False` 关）。问题由本波回测行机械派生（`src/wqb/recon_wave.py`），每波 ≤ 1 次，
-  可靠结局占额度、故障不占。**墙词表必须与 `config.RA_CHECK_NAMES` 一一对应**（`tests/unit/test_recon_wave.py` 守）——config 新增一项 RA 闸而这里没给它墙，测试即红。
+  可靠结局占额度、故障不占。**墙词表必须与 `config.RA_CHECK_NAMES` 一一对应**（`tests/unit/08_forum_recon/test_recon_wave.py` 守）——config 新增一项 RA 闸而这里没给它墙，测试即红。
 - **形状配额**：`tools/shape_quota_check.py`（分类规则 `src/wqb/shape_quota.py`，启发式；阈值 ≥ 3 个形状族、`trade_when` ≤ 40% 来自步 4 §4.5.1 准则）只读、不入闸链，闸 6 才是批级多样性的权威。
 - **live 论坛路径没有端到端实测过**（无凭据 / 无出口）：测试覆盖到假 session / 假检索轮；首次真跑先 `--dry-run`。此前该路径**从未跑通过**（`load_creds(None)` 永远 TypeError），所有真实调用都落进了「鉴权失败 → 记成无解」。
 

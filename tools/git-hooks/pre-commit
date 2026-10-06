@@ -61,6 +61,28 @@ if ! "$PY" tools/audit_structure.py; then
 fi
 echo "[pre-commit] structure audit passed."
 
+# --- 治理先行指标（2026-10-06 新增，**只告警不阻断**）------------------------
+# 「未跟踪源码类文件数」= 下次 `git clean -fd` 会永久带走几个文件（它们从未进 git，
+# checkout / reflog 都救不回；实证：tools/ 一次丢 17 个被文档引用的脚本）。
+# 为什么**不阻断**：本机常态有多条并行会话（AGENTS.md §7），未跟踪文件是情境性的；
+# 拿它卡提交只会逼人 `--no-verify`——那正是我们要避免的。真正要阻断的是
+# 「新增死指针」（下方棘轮）与「真去跑 git clean」这个动作本身（AGENTS.md §7 红线）。
+"$PY" tools/code-audit/repo_governance_check.py --warn || true
+
+# --- 活文档路径引用（2026-10-06 新增，**棘轮：只拦新增**）--------------------
+# 文档写了某个路径、而它既不在 git 也不在磁盘 → 文档腐烂，或又一批丢失件。
+# 只对**新增**违规 FAIL（存量登记在 tests/fixtures/doc_path_refs_baseline.json），
+# 因此历史债务不会卡住日常提交。
+if ! "$PY" tools/code-audit/doc_path_refs.py; then
+    echo ""
+    echo "[pre-commit] BLOCKED: 活文档引用了不可达路径（新增死指针）。"
+    echo "[pre-commit] 修法：① 改文档指向真实路径 ② 恢复丢失文件 ③ 归档到 attic 并在文中写明"
+    echo "[pre-commit]       ④ 若引用确实合理（如 TWN 这类未初始化区域的模板引用），"
+    echo "[pre-commit]          跑 python tools/code-audit/doc_path_refs.py --update-baseline 登记。"
+    exit 1
+fi
+echo "[pre-commit] doc path refs passed."
+
 # --- pytest -----------------------------------------------------------------
 echo "[pre-commit] running pytest validation route..."
 if ! "$PY" -m pytest tests/ -x "--basetemp=$_WQB_BASETEMP"; then
