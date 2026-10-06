@@ -515,7 +515,7 @@ ROOT_ALLOWLIST = {
     ".mcp.json", "mcp_config.json", "pyproject.toml", "pytest.ini",
     "requirements.txt", "conftest.py", "wqb_db_mcp.py",
     # VCS
-    ".gitignore", ".gitattributes",
+    ".gitignore", ".gitattributes", ".mailmap",
     # 文档三件套（定位分工见 AGENTS.md §8.4 第 3 条）
     "AGENTS.md", "CLAUDE.md", "README.md",
     # 会话草稿（planning-with-files 三件套，已 gitignore，不入仓库）

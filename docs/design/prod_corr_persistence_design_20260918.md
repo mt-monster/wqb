@@ -134,7 +134,7 @@ ALTER TABLE alphas ADD COLUMN corr_checked_at TIMESTAMP;
 
 ## 3. 验证方案
 
-1. 单元测试：`tests/unit/test_store.py` 增补 `persist_correlation` 用例
+1. 单元测试：`tests/unit/01_store_db/test_store.py` 增补 `persist_correlation` 用例
    （NULL-only / overwrite / 边界值拒绝 / 幂等）。
 2. 回归：`pytest tests/ -q`（根 313 用例须全绿）。
 3. 一致性核对：随机抽 20 条 alphas，比对 `backtest_results` 与 `alphas` 同名字段。
@@ -159,7 +159,7 @@ ALTER TABLE alphas ADD COLUMN corr_checked_at TIMESTAMP;
 | 7 | `tools/query_alpha_metrics.py` | ✅ 新建 | `--coverage` 填充率 / 多维筛选 / CSV 导出 |
 
 **验证结果**：
-- 单测：`tests/unit/test_store.py` 18 passed（新增 4 个用例：全指标落库 / NULL-only / overwrite+校验 / 幂等）。
+- 单测：`tests/unit/01_store_db/test_store.py` 18 passed（新增 4 个用例：全指标落库 / NULL-only / overwrite+校验 / 幂等）。
 - 全量回归：`pytest tests/ -q` → **1183 passed, 7 failed**；7 个失败经 stash 对照确认为**改动前既存失败**（test_workflow registry / skills 漂移 / docs 计数 / toolkit 同步），与本次改动无关。
 - 端到端：临时库实测 upsert 全指标 → alphas 九列齐落；persist_correlation 五态（首次/NULL-only/overwrite/越界拒/不存在）全部符合契约；`DirectDBWriter` 委托链路正常写入 alphas（原实现只写 backtest_results 9 列）。
 

@@ -256,7 +256,7 @@ CLI / harvest / 提交节点三方共用，判定口径不会漂移。
   `logs/archive_ledger_submit_ready_<ts>.json`（48.9KB，含 MEA 18 / EUR 6 / KOR 2 / DEU 4 条零散候选），
   再从库中删除。随后**以 `alphas` 为权威源全区域重建**队列（106 条 READY）。
 
-### ✅ 三个坑已补（2026-09-20 下午，`tests/unit/test_submit_queue_gates.py` 27 例回归）
+### ✅ 三个坑已补（2026-09-20 下午，`tests/unit/01_store_db/test_submit_queue_gates.py` 27 例回归）
 
 首版上线当天用 IND 实战暴露三个坑，全部收口在 `src/wqb/store/submit_queue.py`（三方共用，口径不漂移）：
 

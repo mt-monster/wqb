@@ -12,7 +12,7 @@
 | # | 动作 | 工具 | 产物 |
 |---|---|---|---|
 | 1 | 19 个 workflow 节点四方同步审计 | `tools/audit_node_registration.py` | registry/test/DRY_RUN/INDEX 四处一致，19 全绿 |
-| 2 | 全量 skill frontmatter + 干跑用例回归 | `python -m pytest tests/unit/test_skill_integrity.py` + `test_workflow.py` | **110 passed**（带 `--junitxml` 落盘） |
+| 2 | 全量 skill frontmatter + 干跑用例回归 | `python -m pytest tests/unit/07_docs_skills/test_skill_integrity.py` + `test_workflow.py` | **110 passed**（带 `--junitxml` 落盘） |
 | 3 | DB 健康诊断（产出率 / 断链 / 库存 / 提交池） | `logs/dryrun_audit_20260925/db_health.py` + `verify.py` | 全部落到 `data/wqb.db` 本地 |
 | 4 | 区域路由链路回归 | `python tools/region_status.py --json` / `--rotate --current USA --target 10` | USA 判 SATURATED、转 IND 链路可跑通 |
 | 5 | 关键数值交叉校验 | `verify.py` | ASI 假象、IND 19 颗凭证新鲜度复核 |

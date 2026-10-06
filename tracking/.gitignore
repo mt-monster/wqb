@@ -22,10 +22,11 @@ mining/field_inspect_*.json
 prod_probe/
 FORUM/forum_recon_cache.json
 # 区域级报告 / 脚本草稿
-DEU/reports/
-DEU/scripts/
-EUR/scripts/tmp_*.py
-KOR/scripts/tmp_*.py
-KOR/scripts/archive/
-USA/reports/*.md
+# 2026-10-06 修正：此前 `DEU/reports/` + `DEU/scripts/` 与 `USA/reports/*.md` 被
+# **整目录**忽略，而其它区域只忽略 tmp_/archive —— 等于让这两个区域的报告与脚本
+# 永久落不了库。这与治理原则「不允许源码/结论只存在于工作区」（同类事故 vector）
+# 直接冲突，故改为与其它区域同口径。
+# 注：原 `EUR/scripts/tmp_*.py`、`KOR/scripts/tmp_*.py`、`KOR/scripts/archive/`
+# 三行本就已被上面的 `**/scripts/tmp_*.py` 与 `**/scripts/archive/` 覆盖，一并删去。
+**/reports/tmp_*.md
 HKG/priors/ideas_analyst39_wave1.md

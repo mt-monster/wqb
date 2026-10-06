@@ -223,7 +223,13 @@
         "start_wq_mcp.py",
         "sync_gem_embedded_skill.py"
       ],
-      "status": "frozen-pending"
+      "status": "moved-partial",
+      "moved_files": [
+        "db_mcp_split.py",
+        "doc_path_refs.py",
+        "mcp_surface_diff.py",
+        "repo_governance_check.py"
+      ]
     },
     "ledger": {
       "dir": "tools/ledger",

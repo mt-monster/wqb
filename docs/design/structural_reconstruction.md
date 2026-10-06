@@ -266,4 +266,4 @@ S6 台账回写
 - `src/wqb/workflow/structural_variant_tracker.py` - 效果追踪器
 - `src/wqb/workflow/nodes/structural_reconstruct.py` - Workflow 节点
 - `tools/structural_reconstruct_cli.py` - CLI 工具
-- `tests/unit/test_structural_reconstruct.py` - 单元测试
+- `tests/unit/09_core/test_structural_reconstruct.py` - 单元测试

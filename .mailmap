@@ -1,0 +1,13 @@
+# .mailmap — 统一 git 历史里的提交身份（2026-10-06 建立）
+#
+# 为什么需要它：本仓库历史上同一个人的提交散在 3 个邮箱下，加上代跑的 agent 身份，
+# 共 4 个 author，`git shortlog -sne` 会把一个人算成四个，使「贡献度 / 作者数」
+# 这类治理判断失真（`.workbuddy/memory/MEMORY.md` 的 P2 项）。
+#
+# 语义：只影响展示类命令（`git shortlog`、`git log --use-mailmap`、`git blame --mailmap`），
+# **不改写已存提交的对象内容**，故完全可逆；删掉本文件即回到原样。
+#
+# 规范身份：MENGTAO <mthyzx@gmail.com>
+MENGTAO <mthyzx@gmail.com> <mthyzx@126.com>
+MENGTAO <mthyzx@gmail.com> <mt@wqb.local>
+MENGTAO <mthyzx@gmail.com> Claude <noreply@anthropic.com>

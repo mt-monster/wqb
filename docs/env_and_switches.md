@@ -4,7 +4,7 @@
 > 想找「怎么关连坐隔离」只能读历史条目）。
 >
 > - §2 的表由 `python tools/index_tables.py env` **生成**（缺省值与读取方来自代码扫描，用途来自 [`env_registry.json`](env_registry.json)）；
->   `tests/unit/test_index_tables.py` 守护：**代码里读取的每个变量必须登记，登记的每个变量必须仍被读取**。加变量 = 改 `env_registry.json` → `python tools/index_tables.py --apply`。
+>   `tests/unit/09_core/test_index_tables.py` 守护：**代码里读取的每个变量必须登记，登记的每个变量必须仍被读取**。加变量 = 改 `env_registry.json` → `python tools/index_tables.py --apply`。
 > - 闸与逃生口的**政策**（waiver、日期翻转、谁批准）不在这里，见 [`Claude/skills/INDEX.md`](../Claude/skills/INDEX.md)「闸与逃生口总表」。
 > - **凭据类变量只登记名字与来源。任何文档、日志、回报都不得出现值；agent 不读 `.env` / `config.json`**（AGENTS.md 安全约束）。
 
@@ -74,9 +74,9 @@
 | `WQB_ALLOW_REAL_DB` | — | `=1` 允许测试运行中 wqb-db 连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**，见 `wqb_db_mcp._reject_production_db_under_tests`）。只给确实要读真库的存量体检测试用，必须在测试里写明理由 | `tests/unit/07_docs_skills/test_audit_fixes.py` · `wqb_db_mcp.py` | — |
 | `WQB_CAMPAIGN_DIR` | — | workflow 节点使用的战役目录覆盖 | `src/wqb/workflow/_common.py` · `tests/unit/01_store_db/test_n30_wave_results_writers.py` · +3 | — |
 | `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` · +2 | — |
-| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +45 | — |
+| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +46 | — |
 | `WQB_GEM_DATA_ROOT` | — | GEM 产物根（缺省 `data/gem_runs`；`final_expressions.json` 与 `output_report/` 都在其下） | `brain-feature-implementation/scripts/fetch_dataset.py` · `brain-feature-implementation/scripts/implement_idea.py` · +9 | — |
-| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +19 | — |
+| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +20 | — |
 | `WQB_SLOTS_DIR` | — | 账户级槽位 token 目录（缺省 `logs/_slots`） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` · `tests/unit/10_toolkit_scripts/test_slots_arbitration.py` | — |
 | `WQB_TASK_ROOT` | — | 后台任务目录（缺省 `logs/_async_tasks`；`workflow_task_status` 读它） | `src/wqb/workflow/_common.py` · `tests/unit/02_workflow/test_mining_efficiency_guards.py` · +4 | — |
 | `WQB_WORKSPACE` | — | 工作区根覆盖（同 `WQB_ROOT`，wave_gate / GEM 等按各自的解析顺序取用） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/headless_runner/run.py` · +9 | — |
