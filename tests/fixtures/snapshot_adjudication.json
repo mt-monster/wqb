@@ -198,6 +198,58 @@
     "tools/rotation/region_whitelist.py": {
       "verdict": "DROPPED",
       "basis": "2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/rotation/region_whitelist.py`。"
+    },
+    "reports/operator_usage_audit.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/operator_usage_audit.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/operator_usage_audit.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/operator_usage_audit.py`。"
+    },
+    "reports/opswap_analyze.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_analyze.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_analyze.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_analyze.py`。"
+    },
+    "reports/opswap_build_plan.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_build_plan.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_build_plan.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_build_plan.py`。"
+    },
+    "tools/_db_fk_fix.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/_db_fk_fix.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/_db_fk_fix.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/_db_fk_fix.py`。"
+    },
+    "tools/_db_p0_fix.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/_db_p0_fix.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/_db_p0_fix.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/_db_p0_fix.py`。"
+    },
+    "tools/archive_json_files.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/archive_json_files.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/archive_json_files.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/archive_json_files.py`。"
+    },
+    "tools/archive_json_to_attic.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/archive_json_to_attic.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/archive_json_to_attic.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/archive_json_to_attic.py`。"
+    },
+    "tools/backfill_alpha_metrics.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/backfill_alpha_metrics.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/backfill_alpha_metrics.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/backfill_alpha_metrics.py`。"
+    },
+    "tools/backfill_expression_status_once.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/backfill_expression_status_once.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/backfill_expression_status_once.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/backfill_expression_status_once.py`。"
+    },
+    "tools/convert_alpha_list_to_exprs.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/fields/convert_alpha_list_to_exprs.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/fields/convert_alpha_list_to_exprs.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/fields/convert_alpha_list_to_exprs.py`。"
+    },
+    "tools/fix_submit_ready_check_20260928.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/fix_submit_ready_check_20260928.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/fix_submit_ready_check_20260928.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/fix_submit_ready_check_20260928.py`。"
+    },
+    "tools/sync_reference.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/sync_reference.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/sync_reference.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/sync_reference.py`。"
+    },
+    "tracking/EUR/scripts/backfill_alphas_from_ckpt.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/backfill_alphas_from_ckpt.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/backfill_alphas_from_ckpt.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/backfill_alphas_from_ckpt.py`。"
     }
   },
   "_restored_history": {
