@@ -225,6 +225,7 @@
       ],
       "status": "moved-partial",
       "moved_files": [
+        "audit_destructive_default.py",
         "db_mcp_split.py",
         "doc_path_refs.py",
         "mcp_surface_diff.py",

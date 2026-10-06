@@ -200,7 +200,7 @@ expressions 状态分布（全部 region）
 
 **理由**：`verify.py` 实测 **8 颗全是低 prod 优质候选**（最低 0.364、最高 0.595），且 2 颗 `platform_status=None`（可能是 `get_alpha_details` 未同步），提交前必须先 `GET /alphas/{id}` 核对。`step_funnel` 单次算出"已达成"的单点能贡献 90%+ 的新增 ACTIVE；这比再开 5 波新 GEM 而来的是数量级差异。
 
-**流程**（已布置 `docs/ra-mining-prompt-10x.md` §1 步0 的库存优先就位）：
+**流程**（已布置 `docs/ra-mining-prompt-10x.md`（**已删**）§1 步0 的库存优先就位）：
 ```powershell
 # 1. 取 IND 19 颗列表（已测 prod、三闸过、未提交）
 #     我安排的这个查询已存在：logs/dryrun_audit_20260925/verify.py

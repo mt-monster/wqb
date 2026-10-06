@@ -558,8 +558,8 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
      `wave_results` 12 行 KOR 真实波次被覆盖、`ledger_kv` 5 行。
      复查方法：`SELECT … WHERE updated_at LIKE '2026-10-04T03:33%'`（只读）。
    - **不属于本次的同期变更**（已逐条归属）：非枚举 verdict `KOR/s2_oth466_d33 = MIXED_NO_SUBMIT`、
-     裸 `sqlite3.connect`、本机盘符常量，均来自并行会话的 `tools/_kor_d33_writeback.py` 与
-     `tools/_tmp_anl69_fields.py`；`test_sync_skills_reports_no_drift` 红是仓库副本新于安装位（
+     裸 `sqlite3.connect`、本机盘符常量，均来自并行会话的一次性脚本 `tools/_kor_d33_writeback.py` / `tools/_tmp_anl69_fields.py`（两个都没入库、**现已不存在**）；
+     `test_sync_skills_reports_no_drift` 红是仓库副本新于安装位（
      跑 `python tools/sync_skills.py` 自愈，§8.12）。
    - **可复用的铁律（下次改结构前先过这一问）**：**任何改变模块结构的改动，都要问
      「测试的隔离机制会不会静默失效」**。按属性 patch（`mod.X = tmp`）在拆包/改名/重定位后
@@ -746,7 +746,7 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   **WARN 不阻塞：S3/S5/S6**（存量已登记）。
   单项自查：`python tools/audit_structure.py --only s7`。S11 基线 = 171 个顶层脚本，
   建/重置用 `--freeze-tools-top`；S12 清单在基线的 `retired_paths`。
-- **S3「同名」不是缺陷**：`tools/x.py` 与 `src/wqb/**/x.py` 分属脚本与包两套命名空间，import 不会撞
+- **S3「同名」不是缺陷**：`tools/<name>.py` 与 `src/wqb/**/<name>.py` 分属脚本与包两套命名空间，import 不会撞
   （实测 `import wave_gate` 报 ModuleNotFoundError，它只以 `wqb.workflow.nodes.wave_gate` 存在）。**勿改名。**
 - **`wave_gate` 包化收尾（2026-09-30）**：`tools/wave_gate.py` = 入口 shim（~140 行：argparse 契约字面 +
   `parser_factory()` + 历史符号全量重导出）；实现 12 模块在 `tools/wave_gate_pkg/`（编排 `cli.py`，
@@ -800,8 +800,7 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   新 Agent 极易当成区域读；现有五个搬迁代价 > 收益，**只做约定**：再增非区域目录一律 `_` 前缀。
 - **文件**：纯 snake_case；包内私有实现 `_` 前缀（`store/_alphas.py` 已是范式）。
 - **活探针禁止 `test_` 前缀**：用 `probe_*` / `*_live`。`test_` 名字 + 不在 `testpaths` 内
-  = 既不被收集又骗人（`world-quant-brain-mcp/probe_direct_auth.py`、`probe_labs_live.py` 即此形态，
-  2026-10-04 改名）。处置纪律 = **改名，不搬家**：搬进 `tests/` 会让 pytest 真去跑平台 API
+  = 既不被收集又骗人（`world-quant-brain-mcp/probe_direct_auth.py` —— 2026-10-04 已改名，**旧路径现已不存在**；`probe_labs_live.py` 同形态）。处置纪律 = **改名，不搬家**：搬进 `tests/` 会让 pytest 真去跑平台 API
   （与 §8.4 第 4 条对 `tools/test_*.py` 的结论同一）。
 - **日期**：产物与报告一律 `YYYYMMDD` **作后缀**（`skills_review_20261003.md`）；
   `docs/plans/` 保持 `YYYY-MM-DD-<主题>.md` **前缀**（该目录已成型，同目录内不混用）。

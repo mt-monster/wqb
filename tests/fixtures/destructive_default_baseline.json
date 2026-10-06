@@ -1,0 +1,6 @@
+{
+ "_doc": "audit_destructive_default.py 的棘轮基线（2026-10-06）。列出的条目是『模块级破坏性调用且前置开关在后面』的**存量**违规：不阻断提交，但不得新增。键 = file::kind::detail（不含行号，行号漂移不该算新增）。修好一条请重跑 --update-baseline 收紧；只在确认合理时才手工放宽。",
+ "_generated_at": "2026-10-06T10:12:13Z",
+ "_scanned": 324,
+ "hard": []
+}

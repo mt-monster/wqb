@@ -93,7 +93,7 @@
 
 ### 失效引用
 
-- `tracking/_submit_kit/_tower_map.py`、`_quota_now2.py` → 改用 `tools/campaign_intel.py pyramid` / `tools/quota_status.py`
+- `tracking/_submit_kit/_tower_map.py`、`_quota_now2.py`（**均已删**） → 改用 `tools/campaign_intel.py pyramid` / `tools/quota_status.py`
 - `create_multiSim`（**非真实工具**，6 处/3 文件）→ `create_multi_simulation`
 
 ### 失效候选 skill

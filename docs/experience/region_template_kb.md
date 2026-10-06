@@ -9,11 +9,11 @@
 
 | 既有建设 | 层次 | 与本 KB 的关系 |
 |---|---|---|
-| `docs/experience/wq_alpha_mining_knowledge_base.md` | 方法层（流程/算子/提交/效率） | 互不替代：那份讲"怎么挖 alpha"，本 KB 讲"这个区/这个模板挖成过什么" |
+| `docs/experience/wq_alpha_mining_knowledge_base.md`（**已删**） | 方法层（流程/算子/提交/效率） | 互不替代：那份讲"怎么挖 alpha"，本 KB 讲"这个区/这个模板挖成过什么" |
 | `docs/reference/economic_alpha_template_library.md` | 模板理论层（T1-T12 经济学骨架） | 本 KB 的 `template_kb` 只收**有跨区实证**的模板（T-KB-01~10），理论骨架仍看那份 |
 | `cross_region_lessons` 表 | 跨区铁律（9 条） | 铁律已吸收进 region_kb.dead_patterns 与 template_kb.iron_law |
 | `registry_empirical`（win/dead_end/campaign 层） | 明细层 | KB 的 win_recipes/dead_patterns 是其蒸馏，evidence 字段回指 entry_id |
-| `docs/experience/2026-08-22-full-campaign-history-retro.md` | 复盘文档 | GBR/HKG/ASI/GLB 知识卡的来源（这四区无 registry 行） |
+| `docs/experience/2026-08-22-full-campaign-history-retro.md`（**已删**） | 复盘文档 | GBR/HKG/ASI/GLB 知识卡的来源（这四区无 registry 行） |
 | `docs/experience/` 各专题 retro | 单战役复盘 | KB 的上游；KB 是它们的可机读浓缩 |
 
 ## 2. 键布局（ledger_kv）

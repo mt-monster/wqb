@@ -122,7 +122,7 @@ claude mcp add wqb-mcp --transport http http://127.0.0.1:8876/mcp
 
 ## 5、实验过程与结论
 
-> 完整逐批日志见 [`tracking/experiment_log.md`](tracking/experiment_log.md)（28 批、280 次模拟、9 个数据集的完整记录）。本节为提炼。
+> 完整逐批日志见 [`tracking/mining/experiment_log.md`](tracking/mining/experiment_log.md)（28 批、280 次模拟、9 个数据集的完整记录）。本节为提炼。
 
 ### 5.1 实验轨迹总览
 

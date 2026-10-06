@@ -90,20 +90,47 @@ python tools/code-audit/repo_governance_check.py --quiet  # 只看退出码（�
 > `DEU/scripts/` 与 `USA/reports/*.md`，使这两个区域的报告**永久落不了库**。
 > 2026-10-06 已改为与其它区域同口径（只忽略 `tmp_` / `archive`）。
 
-## 5. 尚未处理（需人工决策）
+## 5. 尚未处理 / 已裁决
 
-- **远端同步**：`gitcode/main` 落后本地 `main` **109 个提交**，`origin/main` 落后 5 个。
-  推送是外发动作，需用户明确指令。
-- **`git gc --prune=now`**：本机同时存在 cline（`refs/cline/checkpoints/*`）与
-  codex（`refs/codex/turn-diffs/*`）的 ref 命名空间，且有正在运行的回测/选区进程
-  （含另一个工作副本 `D:/coding/hw_project/wqb`）⇒ **判定不安全，暂不执行**。
-- **抢救点内容全面比对**：抢救点相对 `main` 仍持有约 470 个文件的差异。
-  本次已恢复"纯追加且被测试/文档引用"的确定安全部分：
-  17 个 `tools/` 脚本 · 经验库双轨（`docs/experience/02_signal_patterns.md` 补回 332 行
-  + 7 条 `methodology_rules`）· 2 个 `tools/code-audit/` 工具 · 3 份报告 · `src/wqb/paths.py`。
-  **仍缺、且被 MEMORY / 文档引用的件**（已确认这些在抢救点 `4910e65` 内、可 `git checkout` 取回；
-  但恢复它们会顶到 S11「tools/ 顶层只减不增」硬闸，需要"恢复即重冻基线"的人工决策，
-  故**暂不批量 checkout**——抢救点里可能夹带已废弃的半成品）：
-  `tools/direct_submit.py`、`tools/harvest_batch.py`、`tools/self_batch.py`（均已丢失）、
-  `tools/harvest_by_expr.py`、`tools/eu_field_coverage.py`、`tools/gate.py`（均已丢失）。
-  ⚠ 在补齐之前，`MEMORY.md §4` 与任何 skill 里指向这些脚本的命令**都已失效**，勿照抄执行。
+### 5.1 远端同步
+
+- `origin/main`：**已同步**。2026-10-06 推送了 P2/P3 两个提交（`0a89cbe..4bf3bab`，
+  共 30 个文件）。此前的缺口（落后 5 个提交）已清零。
+- `gitcode/main`：仍落后本地 `main` **109 个提交**。**用户明确指示"先不管"**，
+  故本文件不再把它列为待办；推送是外发动作，需用户再次明确指令。
+
+### 5.2 `git gc --prune=now` —— 判定不安全，不执行
+
+本机同时存在 cline（`refs/cline/checkpoints/*`）与 codex（`refs/codex/turn-diffs/*`）
+的 ref 命名空间，且有正在运行的回测/选区进程（含另一个工作副本 `D:/coding/hw_project/wqb`）。
+在这些 ref 与进程存在期间做 prune，可能回收掉**只被这些 ref 引用**的 blob。
+保持现状；若要清理，须先确认上述 ref 命名空间与并行进程都已停止。
+
+### 5.3 抢救点比对：6 个"可恢复"文件的**终局裁决 —— 不回迁**
+
+抢救点 `4910e65` 内仍可 `git checkout` 取回以下 6 件（此前列为"待人工决策"）。
+2026-10-06 逐件核验后**裁决：全部不回迁**。
+
+**核验方法与结论**
+
+| 文件 | 活动引用核验 | 裁决依据 |
+|---|---|---|
+| `tools/direct_submit.py`（已丢失） | 全仓只命中我自己的治理文档 | ① `tools/wave_gate.py`·`quality_predict.py` 里的 `direct_submit` 是 `qp_summary["direct_submit"]` **计数字段键**，不是该脚本；② `DIRECT_CONNECT_WHITELIST`（7 项，`test_db_write_guards.py::test_whitelist_files_exist` 断言必须存在）**不含它**；③ 提交链已被 MCP `workflow_submit_alpha` + `tools/super_build.py submit` 覆盖 |
+| `tools/harvest_batch.py`（已丢失） | 同上 | `pipeline.py` 里的 `_harvest_batch_alphas` 是**本地函数**（非该脚本）；收批已统一走 `tools/harvest_multisim.py`（支持多 multisim 批量收） |
+| `tools/self_batch.py`（已丢失） | 同上 | 零活动引用；self 侧走 MCP `check_self_correlation` 与 `brain-calculate-alpha-selfcorr-quick` |
+| `tools/harvest_by_expr.py`（已丢失） | 同上 | 零活动引用；按表达式收批的需求已由 `harvest_multisim` 覆盖 |
+| `tools/eu_field_coverage.py`（已丢失） | 仅历史报告引用 | 活文档 `wq-brain-ra-pipeline/references/ppa-mining-experience.md` 已明写**前者不存在**；`reports/` 里的引用是**时点记录**（描述当时存在过什么），不是待办 |
+| `tools/gate.py`（已丢失） | 无 | `AGENTS.md` L363 早已标注「代码零引用的遗留文件（**已归档**）」；表达式预检职责由 `wqb.expression.op_arity.ensure_safe_for_dispatch` 与 `tools/code-audit/*` 承接 |
+
+**不回迁的第二重理由（工程侧）**：`tools/` 顶层有 S11 硬闸「只减不增」，基线 159 项
+**不含**这些文件 —— 从抢救点 checkout 回 `tools/` 顶层会把基线顶爆（新增即 FAIL）。
+要解就得"恢复即重冻基线"，而重冻基线等于给一个零引用文件发永久通行证，**收益为负**。
+
+**若将来确实需要**：正确路径是**在主题子目录里新写一个工具**（如
+`tools/verdict/` / `tools/ledger/`），而不是从抢救点把旧文件 checkout 回 `tools/` 顶层。
+抢救点 `4910e65` 保留不动，作为"曾存在过什么"的唯一证据。
+
+> ⚠ 连带影响：`MEMORY.md §4` 与部分 skill 里指向 `direct_submit.py` /
+> `harvest_batch.py` / `self_batch.py` / `harvest_by_expr.py` 的命令**都已失效**，
+> 勿照抄执行 —— MEMORY 侧已于 2026-10-06 改指真实通道（`tools/harvest_multisim.py`）。
+

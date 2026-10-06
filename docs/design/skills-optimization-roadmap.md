@@ -18,7 +18,7 @@ IND 19 颗 UNSUBMITTED 里 prod_corr 分布：
 ```
 **8 颗 prod 0.364–0.595 全在干净段**，且 prod 测量时间 9-20~9-23（凭证新鲜）。
 
-**改法**（走 `docs/ra-mining-prompt-10x.md` §1 步 8）：
+**改法**（走 `docs/ra-mining-prompt-10x.md`（**已删**）§1 步 8）：
 ```powershell
 # 1. 对 8 颗（prod 0.364-0.595）逐个 submit_verdict 判 SUBMITTABLE + Failed count 检查
 mcp__wq-brain-http__submit_verdict alpha_id=<ID>

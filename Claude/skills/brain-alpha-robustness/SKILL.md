@@ -109,7 +109,7 @@ mcp__wqb-db__upsert_ledger_key(region=<alpha 的区域>, key="robustness_<alpha_
 1. **台账**：`mcp__wqb-db__upsert_ledger_key` 写 `robustness_<alpha_id>`（格式见「结论去哪」）——这是唯一被代码读取的落点。
 2. **报告**：完整归因报告 + 判定追加到 `tracking/YYYY-MM-DD_robustness.md`（给人读；路径填进台账的 `report_path`）。
 3. PASS 带 CONDITIONAL 软标记：把存活的软标记写进台账 `soft_flags`，并在用户确认提交前的三段式 description 里如实带上一行（`worldquant-submit-alpha` 设属性时），用户一年后复盘 OS 表现时有可读审计痕迹。
-4. 旧版还要求发 `alpha.robustness_audit` 事件（`wqb.memory.events.emit`）、REJECT 时调 `wqb.search.failure_memory.record(...)`（需要写 Python，且要私有函数 `validator._shape_signature`）。**这两条已移出必做项**：两个模块全仓库**没有任何消费方**（只写 `data/events/*.jsonl` 与 `tracking/mining/failure_memory.jsonl`），DB 单轨里没有落点；需要时的入口在 `src/wqb/memory/events.py` / `src/wqb/search/failure_memory.py`。
+4. 旧版还要求发 `alpha.robustness_audit` 事件（`wqb.memory.events.emit`）、REJECT 时调 `wqb.search.failure_memory.record(...)`（需要写 Python，且要私有函数 `validator._shape_signature`）。**这两条已移出必做项**：两个模块全仓库**没有任何消费方**（只写 `data/events/*.jsonl` 与 `tracking/mining/failure_memory.jsonl`，后者按需生成、**当前不存在**），DB 单轨里没有落点；需要时的入口在 `src/wqb/memory/events.py` / `src/wqb/search/failure_memory.py`。
 
 ### Phase E — PPA 提交规则
 

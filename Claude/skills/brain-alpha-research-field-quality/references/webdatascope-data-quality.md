@@ -16,7 +16,7 @@
 > **不是** `webdata_quality.py` 的替代品——两者是调用关系，不是替代关系）。
 
 来源：WebDataScope-1.3.1 插件（幻华，2026-08-02 发布；2026-08-05 更新，zip 曾在旧检出目录 `wqb-share-03/`（现仓库的 `research-data/` 与外部下载位置为准））+ 离线数据包 `WebData_20260219_V0.10.9.zip`（数据包与插件版本解耦，格式不变）。
-数据包为 zlib + msgpack 编码，导入后存入插件 IndexedDB（`WQP_Extension_Data_Files`）。以下规则在挖矿 research 阶段作为**零成本预筛**使用（不消耗模拟额度）。注：本档规则转写自 1.0.6，2026-08-05 已核对 1.3.1 源码（`src/background/background.js:270` 的 `getAlphaCheckStates` failed-count 门禁逻辑保留，规则一致；插件 1.3.1 新增 alpha 描述助手/社区帖标记/prod memo/会话保活等扩展功能，不影响离线预筛规则）。
+数据包为 zlib + msgpack 编码，导入后存入插件 IndexedDB（`WQP_Extension_Data_Files`）。以下规则在挖矿 research 阶段作为**零成本预筛**使用（不消耗模拟额度）。注：本档规则转写自 1.0.6，2026-08-05 已核对 1.3.1 源码（插件仓 `background.js:270` 的 `getAlphaCheckStates` failed-count 门禁逻辑保留，规则一致；插件 1.3.1 新增 alpha 描述助手/社区帖标记/prod memo/会话保活等扩展功能，不影响离线预筛规则）。
 
 ## 数据包结构（实测）
 

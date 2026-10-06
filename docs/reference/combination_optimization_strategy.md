@@ -333,7 +333,7 @@ combo = 'add(add(add(sig1, sig2), sig3), sig4)'  # 禁止！过拟合风险
 
 - 分层阈值优化方案: `docs/plans/2026-08-31-tiered-threshold-optimization.md`
 - 特征工程 SOP: `docs/reference/feature_engineering_sop.md`
-- IND 战役经验: `docs/experience/project_experience_master.md`
+- IND 战役经验: `docs/experience/project_experience_master.md`（**已删**）
 
 ---
 

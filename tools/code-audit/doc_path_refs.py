@@ -110,6 +110,25 @@ SYM_SUF = re.compile(r"::.*$")
 BADCHARS = set('*<>{}|^$\\"\'`[]~ ')
 TEMPLATE_WORDS = ("YYYY", "NN_", "XXXX", "<", ">")
 
+#: 已知"文件型"扩展名。用于剥掉 `foo/config.json.ghost_ops` 这类
+#: **「文件 + 其中某个键」**的引用尾巴 —— `.ghost_ops` 是 JSON 里的键名，
+#: 不是路径的一部分；不剥掉的话真实存在的文件会被判成 BROKEN（假阳性）。
+#: 用**前瞻**匹配"扩展名 + 点 + 标识符(至行尾)"，再截到扩展名末位。
+KNOWN_EXTS = (
+    "py", "pyi", "md", "json", "jsonl", "sql", "yaml", "yml", "toml", "ini", "cfg",
+    "sh", "ps1", "bat", "js", "mjs", "cjs", "ts", "tsx", "txt", "csv", "lock",
+)
+EXT_THEN_KEY = re.compile(r"\.(" + "|".join(KNOWN_EXTS) + r")(?=\.[A-Za-z_]\w*$)")
+
+#: MCP JSON-RPC 方法名：长得像路径（`tools/list`）、也命中顶层目录 `tools`，
+#: 但它是协议方法名，**不是文件**。不豁免就永远是假阳性。
+PROTOCOL_TOKENS = {
+    "tools/list", "tools/call", "tools/get",
+    "prompts/list", "prompts/get",
+    "resources/list", "resources/read", "resources/templates/list",
+    "notifications/initialized", "notifications/cancelled",
+}
+
 #: 与 `tools/skill_lint.py` 的 path-token 检查**同口径**的豁免标记。
 #: 文档里写明「不存在 / 已归档 / 旧文」的路径是**有意提及**（用于记录已下架事实），
 #: 不是死指针。不认这个豁免，闸就会把正确的文档判成违规——两边口径必须一致。
@@ -146,6 +165,9 @@ def normalize(token: str) -> str | None:
     t = SYM_SUF.sub("", t)
     t = LINE_SUF.sub("", t)
     t = t.replace("\\", "/").strip()
+    m = EXT_THEN_KEY.search(t)
+    if m:
+        t = t[: m.end(1)]  # `a/config.json.ghost_ops` -> `a/config.json`
     while t.startswith("./"):
         t = t[2:]
     for ell in ("…", "..."):
@@ -162,6 +184,8 @@ def normalize(token: str) -> str | None:
     if any(c in t for c in BADCHARS):
         return None
     if any(w in t for w in TEMPLATE_WORDS):
+        return None
+    if t in PROTOCOL_TOKENS:  # `tools/list` —— MCP 方法名，不是文件
         return None
     return t or None
 
@@ -279,6 +303,21 @@ def load_baseline() -> set[str]:
     return got
 
 
+#: 剩余存量违规的三类合理成因（2026-10-06 逐条复核后写入基线，避免它变成"没人知道为什么留着"的债）。
+#: 不带仓库路径 token（否则本文件自身会被本闸判违规）。
+TRIAGE_NOTE = (
+    "剩余条目全部属于「**有意缺席**」，逐条复核于 2026-10-06，共三类："
+    "① docs/design/ 下的**计划 / 设计稿**引用尚未落地的模块（如 modeb_* 一族、corr_screen 节点、"
+    "family_key 工具、某个尚未编写的测试）——这类文档描述的是「将要建什么」，不是「现在有什么」，"
+    "与 docs/plans/ 同性质；"
+    "② **未初始化区域 TWN 的模板路径**（tracking/TWN/**）——开区前按设计就不存在，"
+    "相关 SKILL 已写明「本区没有战役目录、开波前先补」；"
+    "③ **运行期按需生成的目录**（tracking/runs、tracking/taxonomies）——首次跑对应流程才出现。"
+    "处置纪律：这些**不阻断提交**，但也不要「顺手清掉」——清掉会把「计划中」误表达成「已放弃」。"
+    "要收紧基线，先在对应的设计文档里给这些路径加上「尚未落地」的说明（本工具认同行/上一行的豁免标记）。"
+)
+
+
 def write_baseline(violations: list[str], untracked: list[str], n_docs: int) -> None:
     BASELINE.parent.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -287,6 +326,7 @@ def write_baseline(violations: list[str], untracked: list[str], n_docs: int) -> 
             "『活文档引用但当前不可达』的**存量**违规：不阻断提交，但不得新增。"
             "修好一条请重跑 --update-baseline 收紧；只在确认违规合理时才手工放宽。"
         ),
+        "_triage": TRIAGE_NOTE,
         "_generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "_live_docs_checked": n_docs,
         "violations": sorted(violations),

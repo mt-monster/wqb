@@ -1,7 +1,7 @@
 # GLB PPA 点塔方法论（jump_decay 算子）——论坛学习沉淀
 
 > 来源：post 37877587810327《GLB区域使用ppa点塔》（YB44630, 2026-01-23, 15 votes, 14 comments）
-> 学习时间：2026-08-05。原始存档：`tracking/forum_glb_ppa_pyramid.json`
+> 学习时间：2026-08-05。原始存档：`tracking/forum_glb_ppa_pyramid.json`（**已删**）
 > 状态：**[未验证 · 推测性文档]** jump_decay 权限未开放（当前账号 inaccessible）——方法论先行沉淀，权限开放后按本档实验；文中的适配方案已实测无效（见 §3）
 
 ## 1. 核心表达式（帖子模板）

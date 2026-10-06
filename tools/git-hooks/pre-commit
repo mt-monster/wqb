@@ -83,6 +83,21 @@ if ! "$PY" tools/code-audit/doc_path_refs.py; then
 fi
 echo "[pre-commit] doc path refs passed."
 
+# --- 默认即破坏（2026-10-06 新增，**棘轮：只拦新增**）-------------------------
+# 模块级（import 时就会跑的）写盘 / 删除调用，且"提前退出型开关"在其**后面** ⇒
+# 任何一次误调用（历史上就发生过：跑一次 `--help` 把被跟踪的 2808 行文件截成 91 行）
+# 都会真落盘。棘轮语义同 doc_path_refs：存量登记在
+# tests/fixtures/destructive_default_baseline.json，只拦新增。
+if ! "$PY" tools/code-audit/audit_destructive_default.py; then
+    echo ""
+    echo "[pre-commit] BLOCKED: 新增了『默认即破坏』的模块级破坏性调用。"
+    echo "[pre-commit] 修法：① 调用前放默认干跑闸（--apply 才落盘）"
+    echo "[pre-commit]       ② 把破坏性动作收进 def main() + if __name__ == \"__main__\" 守卫"
+    echo "[pre-commit]       ③ 复核确认是合理存量债 → python tools/code-audit/audit_destructive_default.py --update-baseline"
+    exit 1
+fi
+echo "[pre-commit] destructive-default audit passed."
+
 # --- pytest -----------------------------------------------------------------
 echo "[pre-commit] running pytest validation route..."
 if ! "$PY" -m pytest tests/ -x "--basetemp=$_WQB_BASETEMP"; then
