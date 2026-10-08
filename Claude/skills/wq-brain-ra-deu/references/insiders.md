@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category insiders`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：Insider　**类别卡**：insiders
+**状态**：probe（跟区域入场 probe-only）　**分组**：Insider　**类别卡**：insiders
 
 **涉及数据集**：insider_agg_matrix
 
@@ -87,4 +87,10 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 38｜`DEAD` 4（共 42）—— **0 产出**
+
+`insider_agg_matrix` 的 `directional_indicator` / `directional_indicator_2` 历史 S1.86 **全来自多腿组合**（单信号 0 条）。
+**⇒ 本类别在 DEU 可用面几乎为零。**
 <!-- profiles:manual:end -->

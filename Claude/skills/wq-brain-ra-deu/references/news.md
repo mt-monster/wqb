@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category news`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：News-Sentiment　**类别卡**：news
+**状态**：probe（跟区域入场 probe-only）　**分组**：News-Sentiment　**类别卡**：news
 
 **涉及数据集**：news18、news20
 
@@ -91,4 +91,14 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 311｜`UNTESTED` 202｜**`DEAD_TURNOVER` 6**｜`DEAD` 4（共 523）—— **0 产出**
+
+**★ 结构性障碍：换手爆表率全场最高**（6/523 = **1.1%**，全 DEU 仅 0.08%）⇒ **新闻类字段的更新频率与 DEU 的换手约束（≤0.70）结构性冲突**。
+
+**⇒ 开批前必须先验换手**：`nws17/20/50` 的 `event_sentiment_score` 等已因换手 >0.7 被判死。
+未测的 202 个里，`nws17/18/20` 大量为 **VECTOR**（须 `vec_*`）。
+
+**注**：论坛指出新闻类另类数据「未被大量 Alpha 使用」（prod 墙压力小）—— 但**本区的主要障碍是换手，不是 prod**。
 <!-- profiles:manual:end -->

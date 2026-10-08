@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category sentiment`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：News-Sentiment　**类别卡**：sentiment
+**状态**：probe（跟区域入场 probe-only）　**分组**：News-Sentiment　**类别卡**：sentiment
 
 **涉及数据集**：sentiment27、sentiment7
 
@@ -77,4 +77,10 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 255｜`UNTESTED` 21（共 276）—— **未测**
+
+可用面仅 `sentiment27` 的 18 个（`snl27_*`：`relpopularity` / `top50pctranking` / `avgranking`，**全 VECTOR** ⇒ 须 `vec_*`）。
+机制 = **零售关注度 / 人气排名**（attention-driven buying）。**开批前先查同族换手**。
 <!-- profiles:manual:end -->

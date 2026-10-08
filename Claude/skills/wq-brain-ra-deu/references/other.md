@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category other`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：Other　**类别卡**：other
+**状态**：probe（跟区域入场 probe-only）　**分组**：Other　**类别卡**：other
 
 **涉及数据集**：dl_riskfree_returns、grtransform、insider_matrix、insider_trx_matrix、lean_le89、order_book_imbalance、other250、other455、other47、other47 (semrush)、other545、other699、tower_sprint_r103、tower_sprint_r104
 
@@ -95,4 +95,17 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 2306｜**`AXIS_ONLY` 1200**｜`UNTESTED` 366｜`DEAD` 41｜`WEAK` 6｜`DEAD_STATIC` 1｜`DEAD_TURNOVER` 1（共 3921）
+
+**★ 最强的「看起来很大其实没用」案例**：`AXIS_ONLY` **1200 个**全部来自 `other455` 的 `*_{customer,partner,competitor,relation}_*_cluster_*`
+⇒ **只能作 `group_neutralize` 的分组轴，不进信号白名单**。
+
+**★ 另一半也不可用**：`other455` 的 300 个 MATRIX `*_value`（关系图节点嵌入）**换手仅 0.012** ⇒ 静态结构特征，实测作信号最高 S0.60。
+
+**★ 修正（2026-10-08）**：曾判为「假信号（分位数分桶标签）」—— **错了**。查 `description`：`probability_label*` 是「未来 N 日**市场中性收益**落入第 i 分位桶」的 **log 概率**，`quantile_label_*bucket_*` 是**连续回归预测值**（注明 *requires winsorization before use*）⇒ **是「模型对收益的直接预测」，机制独立于 estimate_change**。⇒ 已派 W201 单独探测（带 `winsorize` + 变化形式）。
+
+**⇒ `other` 在 DEU 实质可用面极小**（366 个 UNTESTED 里大部分是 `other455` 的剩余字段）。
+`other47`（搜索流量）/ `other250`（电商评价）/ `other532`（特质收益）为小池，未测。
 <!-- profiles:manual:end -->

@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category pv`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：PV　**类别卡**：pv
+**状态**：probe（跟区域入场 probe-only）　**分组**：PV　**类别卡**：pv
 
 **涉及数据集**：intraday_pv_feats、pattern_scores、pv30
 
@@ -92,4 +92,13 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 2137｜`UNTESTED` 527｜**`AXIS_ONLY` 190**｜`DEAD` 23（共 2877）—— **0 产出，0 WEAK**
+
+- `pattern_scores`（504 全高覆盖）：**40 条全灭，最高 S0.46** ⇒ 已判死，**未测的 487 个不必再投**。
+- `pv30`（180）/ `pv29`（50）：`AXIS_ONLY` ⇒ **只能当轴**。
+- `pv1` 元字段（`close`/`vwap`/`volume`/`cap`）：可作分母或轴；**单独作信号 prod 必高**（平台 sector 3749 / industry 3251 alphas）。
+
+**⇒ 本类别在 DEU 无可用信号面。**
 <!-- profiles:manual:end -->

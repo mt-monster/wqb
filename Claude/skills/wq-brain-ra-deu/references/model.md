@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category model`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：MODEL　**类别卡**：model
+**状态**：probe（跟区域入场 probe-only）　**分组**：MODEL　**类别卡**：model
 
 **涉及数据集**：analyst_earnings_ibes、model106_probe_r54、model216、model238、model25、model250、model25_model216、model264、model28、model36、model53、predictive_starmine
 
@@ -97,4 +97,25 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 6498｜`UNTESTED` 1526｜`DEAD` 120｜**`WEAK` 15**｜`DEAD_STATIC` 8｜`DEAD_TURNOVER` 6（共 8173）
+
+**★ 本类别有全 DEU 最多的 WEAK（15 个 = 全部 WEAK 的 58%）**：
+`mean_estimate_change_pct_f12m_earnings_14d_4`（**S1.57 / 2Y1.44 / sub0.97**，即已提交 `58gkLAkk` 的字段）｜
+`mdl216_armpreferredrevisionscore`（**S1.45**，VECTOR）｜
+`mean_estimate_change_pct_f12m_ebitda_14d_4`（**S1.41 / 2Y1.22 / sub1.20**）｜
+`mdl238_industry_rank`（1.33）｜`mdl250_malta_eq_score`（1.33）｜`mdl25_eq_v4_2_1_v6`（1.18）
+
+**★ VECTOR 处理**：`model216`（45 个）**全为 VECTOR** ⇒ 必须 `vec_*` 聚合，且**聚合算子是搜索维度**（实测 `vec_max` 0.43 > `vec_avg` 0.35）。
+
+**★ 已否证（按字段族判，不按数据集判）**：
+- `model264`：单信号最高 0.74；历史 1.94 **全来自多腿** ⇒ 不建议投入。
+- `model26` 的 **`mdl26_*`（模型因子）**：历史全崩 ⇒ 不建议。
+- **★ 但 `model26` 的 `avg_estimate_change_pct_*` 族例外**（**唯一有效机制的载体**）：
+  `avg_estimate_change_pct_year1_earnings_90d` → **S1.27 / 2Y1.33 / sub0.75 ⇒ 进 WEAK**（W170 实测，2026-10-08）。
+  ⇒ **"数据集判死"必须落到字段族粒度** —— 同型错误此前在 `analyst93` 上犯过一次。
+`model28/36/53`（信用/违约风险，67 字段）已实测**最高 S1.08**，核心字段换手 **0.022~0.028（静态）**。
+
+**开批前**：优先 `mdl216_*`（用 `vec_max`）与 `predictive_starmine` 的 536 未测 —— 后者是**唯一产出过 alpha 的数据集**。
 <!-- profiles:manual:end -->

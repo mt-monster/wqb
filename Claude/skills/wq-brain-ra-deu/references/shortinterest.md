@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category shortinterest`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：ShortInterest　**类别卡**：shortinterest
+**状态**：probe（跟区域入场 probe-only）　**分组**：ShortInterest　**类别卡**：shortinterest
 
 **涉及数据集**：shortinterest3
 
@@ -90,4 +90,12 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`DEAD` 13｜`UNTESTED` 12（共 25）—— **0 产出，且作信号全负**
+
+**★ 已实测否证**：`shortinterest3` + `risk60` 的 10 个代表字段，**S 全在 −0.07 ~ −0.74**（`min_loan_rate_main` S−0.74、`lending_fee_bid` S−0.70）⇒ **借券费率/拥挤度族在 DEU 作信号无效，甚至反向**。
+
+**注**：历史记录里 `mean_loan_rate_main` 的 S2.02 / `directional_indicator` 的 1.86 **全部来自多腿 `add` 组合**（单信号仅 0.73 / 0 条）。
+**⇒ 全为 VECTOR，须 `vec_*`；但族级已否证，不建议继续投入。**
 <!-- profiles:manual:end -->

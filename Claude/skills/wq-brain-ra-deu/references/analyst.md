@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category analyst`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：Analyst　**类别卡**：analyst
+**状态**：probe（跟区域入场 probe-only）　**分组**：Analyst　**类别卡**：analyst
 
 **涉及数据集**：analyst44、analyst47、analyst7、analyst9、analyst93、analyst_consensus、analyst_factor_signals
 
@@ -91,4 +91,17 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 3655｜`UNTESTED` 550｜`DEAD` 81｜**`DEAD_STATIC` 11**｜`DEAD_TURNOVER` 5｜**`WEAK` 5**｜**`DEAD_COUNT` 4**｜**`ALIVE` 1**（共 4312）
+
+**★ 全 DEU 唯一的 ALIVE 在本类别**：`eps_y1_estimate_change_3mo`（单信号 **S1.66 / 2Y2.14 / sub0.98 / n_sg 60**）。
+
+**★ 两个已判死的失败模式高度集中**：
+1. **`DEAD_STATIC` 11 个里 7 个是 `anl93_*`**（`{accuracy,consistency,correv,estimator}_*`，换手 **0.019~0.029**）⇒ 「分析师技能元数据」整类是**静态结构属性**。但注意 `anl93_recprofitabilityprev_*_profitability2` 族（换手 0.079、历史单信号 1.30）是**活的** —— **别把整个 analyst93 判死**。
+2. **`DEAD_COUNT` 4 个全在 `analyst7`**（`rec_lowerednum_4wks` S0.01/2Y1.90 等）⇒ 「分析师数量」类 = 教科书级「2Y 有 S 无」。
+
+**WEAK 池**：`netprofit_y1_estimate_change_3mo`（S1.32 / 2Y1.21 / **sub1.00**，仅 2 条样本 ⇒ 值得补测）｜`anl93_recprofitabilityprev_analyst_profitability2`（1.30）｜`eps_y2_estimate_coeff_var`（1.23 / **2Y1.49**）。
+
+**开批前**：`analyst7` 的 395 未测里约 41% 是 `*num*` 计数类（`DEAD_COUNT` 形态）⇒ 先按名字过滤；`analyst44` / `analyst9` 属换手爆表族。
 <!-- profiles:manual:end -->

@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category institutions`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：Institutions　**类别卡**：institutions
+**状态**：probe（跟区域入场 probe-only）　**分组**：Institutions　**类别卡**：institutions
 
 **涉及数据集**：fund_holdings_panel、institutions1、institutions6
 
@@ -87,4 +87,15 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 37｜`DEAD` 12｜`UNTESTED` 9｜**`DEAD_STATIC` 7**｜`DEAD_TURNOVER` 1（共 66）—— **0 产出**
+
+**★ 整类被判为静态**：`count_institutional_{buyers,holders,sellers}_security`（换手 **0.0151~0.0204**）、
+`aggregate_share_count_institutions`（**0.0146**）⇒ **「机构家数」整类是静态结构属性，任何骨架都无用**。
+
+**⇒ 我曾在未查画像时把 `count_institutional_buyers_security` 列为「最快上手（MATRIX cov=1）」的首选 —— 这是错的**（它开批前就已是 `DEAD_STATIC`）。
+实测该族最好 S0.82（`quantity_institutional_shares_acquired`，2Y1.68 = 「2Y有S无」形态）。
+
+**开批前**：`institutions6` 的 19 个 UNTESTED 里，先查 `to_med` —— **机构家数/持股数类大概率 <0.03**。
 <!-- profiles:manual:end -->

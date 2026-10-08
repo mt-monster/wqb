@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category fundamental`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：Fundamental　**类别卡**：fundamental
+**状态**：probe（跟区域入场 probe-only）　**分组**：Fundamental　**类别卡**：fundamental
 
 **涉及数据集**：fundamental22、fundamental6
 
@@ -90,4 +90,14 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 2096｜`UNTESTED` 36｜`DEAD` 11｜`DEAD_STATIC` 3（共 2146）—— **0 产出**
+
+- 可用面只剩 `fundamental6` 的 **38 个高覆盖字段**，已测 7 机制 × 70 条，**最高 S1.03**（事件门控，CW 互斥）。
+- 子机制天花板：内部比率 0.37｜**价值收益率 0.89（族内最强）**｜规模化改善 0.60｜回归残差 0.33。
+- `fnd6_oancfy`（经营现金流）已判 `DEAD_STATIC`（换手 0.0263）。
+- **平台无 `regression_neut`**（只有 `group_neutralize` / `ts_regression`）。
+
+**⇒ 本类别在 DEU 无可用信号面**（`fundamental72` 1031 字段、`fundamental89` 407 字段的覆盖率全为 0）。
 <!-- profiles:manual:end -->

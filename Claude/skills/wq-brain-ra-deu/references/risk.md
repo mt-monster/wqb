@@ -3,7 +3,7 @@
 > 回到 [DEU 区域流程](../SKILL.md) · [DEU profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/DEU.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region DEU --category risk`
 
 <!-- profiles:cell-panel:start -->
-**状态**：active（跟区域入场 active）　**分组**：Risk　**类别卡**：risk
+**状态**：probe（跟区域入场 probe-only）　**分组**：Risk　**类别卡**：risk
 
 **涉及数据集**：risk60
 
@@ -85,4 +85,10 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 字段画像结论（2026-10-08）
+
+`UNUSABLE` 46｜`DEAD` 3｜`UNTESTED` 3（共 52）
+
+可用面极小（`risk60` 5 个 + `risk88` 1 个）。已实测 `rsk60_crowding`（S0.26）/ `lending_fee_bid_rate`（S0.29）⇒ 无信号。
+**全 VECTOR。**
 <!-- profiles:manual:end -->
