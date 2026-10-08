@@ -51,6 +51,13 @@
   `Claude/skills/` 逐文件一致。2026-10-06 第二轮治理复核 P1-3 新增。背景：该副本被
   `.gitignore` 整目录排除，**既不入库也无人比对**，改了源不同步时宿主会静默读旧版。
   加闸当日实测基线 0 差异（`diff -rq` 全绿），属"基线干净时加闸最便宜"。
+- **S16 报告命名规范**：`output_report/**`、`reports/**` 与 `tracking/` **顶层**的报告类文件
+  必须守 §8.13：纯 ASCII 无空格、日期**不带杠**、带日期时 `YYYYMMDD` **作后缀**。
+  2026-10-08 第二轮输出目录复核新增。**棘轮**：存量违规登记进基线 → WARN，**新增违规 → FAIL**。
+  背景：第一轮治理把 `output_report/`+`reports/` 的日期带杠件全部改名后，
+  同一个治理动作**漏扫了 `tracking/` 顶层**（4 个 `2026-10-0X_robustness.md` 一直躺着），
+  且随后仍有会话把分析报告写进 `cache/`（不入库、会被 `git clean -fd` 带走）
+  ——文字纪律守不住持续写入，必须有读数。
 
 退出码
 ------
@@ -1155,6 +1162,116 @@ def check_s15_agent_skill_copy_drift(rep: Report) -> None:
                f"副本与源逐文件一致（{len(shared)} 个文件；同一 inode 者 {len(linked)} 个）")
 
 
+# ---------------------------------------------------------------- S16 报告/产物命名
+#: 扫描面：`output_report/**` + `reports/**` 的报告类文件，外加 `tracking/` **顶层** .md。
+#: `tracking/` 之所以只取顶层：`<REGION>/` 下是战役产物（另有区域目录约定），
+#: 而 2026-10-08 复核发现的 4 个「日期带杠」件（`tracking/2026-10-0X_robustness.md`）
+#: 正躺在顶层 —— 第一轮治理扫了 output_report/reports，**漏的就是这一层**。
+S16_SUFFIXES = {".md", ".json", ".txt", ".csv", ".html"}
+#: 报告类文件里不算违规的例外名（目录说明等）。
+S16_EXEMPT_NAMES = {"README.md", "MANIFEST.md", "CHANGELOG.md"}
+_DASH_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
+_D8_RE = re.compile(r"(?<!\d)\d{8}(?!\d)")
+
+
+def _s16_targets() -> list:
+    """S16 扫描件（相对仓库根的 posix 路径）。
+
+    只取 **git 跟踪的**（含已暂存）：与 S14 同口径 —— 未跟踪的在途文件不该拦住别人的提交；
+    而一旦 `git add`，新文件即进入 `git ls-files`，正是本闸要拦的时刻（pre-commit 在建
+    提交对象**之前**跑，此时新文件已在索引里）。
+    """
+    r = subprocess.run(["git", "ls-files", "-z", "--", "output_report", "reports", "tracking/*.md"],
+                       capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        # 拿不到清单就报错：静默给空清单 = S16 看似在跑实则永不过（fail-open）。
+        raise RuntimeError(f"git ls-files 失败（rc={r.returncode}）：{r.stderr.strip()[:200]}")
+    out = []
+    for x in filter(None, r.stdout.split("\0")):
+        rel = Path(x).as_posix()
+        if Path(x).name in S16_EXEMPT_NAMES:
+            continue
+        if Path(x).suffix.lower() not in S16_SUFFIXES:
+            continue
+        # git 缺省把 `*` 当跨 `/` 匹配（无 FNM_PATHNAME），`tracking/*.md` 会连子目录一起吐
+        # ⇒ 目录层级过滤必须在 Python 侧做（同 S14 的 `_tools_tracked_scripts`）。
+        if rel.startswith("tracking/") and rel.count("/") > 1:
+            continue
+        out.append(rel)
+    return sorted(out)
+
+
+def _naming_violations(rel: str) -> list:
+    """返回该文件名违反 §8.13 命名规范的理由列表（空 = 合规）。
+
+    三条（AGENTS.md §8.13「命名规范」，新建即守、存量不强制回改）：
+      ① 纯 ASCII、无空格；
+      ② 日期不带杠（`20261008` 而非 `2026-10-08`）；
+      ③ 带日期时 `YYYYMMDD` **必须作后缀**（`skills_review_20261003.md`）。
+    """
+    name = Path(rel).name
+    stem = name.rsplit(".", 1)[0]
+    bad = []
+    if any(ord(c) > 127 or c == " " for c in name):
+        bad.append("非 ASCII / 含空格")
+    if _DASH_DATE_RE.search(stem):
+        bad.append("日期带杠（应为 YYYYMMDD 无杠）")
+    for m in _D8_RE.finditer(stem):
+        if not stem.endswith("_" + m.group(0)):
+            bad.append(f"日期 {m.group(0)} 不在末尾（应作后缀）")
+            break
+    return bad
+
+
+def _s16_baseline() -> set:
+    """S16 存量基线：允许「违反命名规范」的存量件（路径集合，只减不增）。"""
+    import json
+
+    p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+    if not p.is_file():
+        return set()
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return set(data.get("s16_naming_violations") or [])
+    except (json.JSONDecodeError, OSError):
+        return set()
+
+
+def check_s16_output_naming(rep: Report) -> None:
+    """S16：`output_report/`+`reports/`+`tracking/` 顶层的报告类文件命名（2026-10-08 新增）。
+
+    背景：§8.13 的命名规范（`YYYYMMDD` 作后缀、纯 ASCII、日期不带杠）此前**只写在文档里**，
+    没有机械闸，于是第一轮治理改完 `output_report/`+`reports/` 后：
+      ① 同一个治理动作**漏扫了 `tracking/` 顶层**（4 个 `2026-10-0X_robustness.md` 一直躺着）；
+      ② 并行会话随后又往 `cache/` 写了一份分析报告（属会丢的位置，见复核报告 §2.B）。
+    文字纪律守不住持续的写入，故加棘轮：存量入基线（WARN 可见不阻塞），**新增违规 → FAIL**。
+    """
+    try:
+        targets = _s16_targets()
+    except RuntimeError as e:
+        rep.fail("S16 报告命名规范", f"无法取受控清单（{e}）—— 不当作「全部合规」放过")
+        return
+    viol = {rel: _naming_violations(rel) for rel in targets}
+    viol = {k: v for k, v in viol.items() if v}
+    baseline = _s16_baseline()
+    new_ones = sorted(k for k in viol if k not in baseline)
+    if new_ones:
+        sample = "；".join(f"{k}（{'、'.join(viol[k])}）" for k in new_ones[:5])
+        rep.fail("S16 报告命名规范",
+                 f"新增 {len(new_ones)} 个文件名违反 §8.13（日期 YYYYMMDD 作后缀 / 不带杠 / 纯 ASCII 无空格）："
+                 f"{sample}{' …' if len(new_ones) > 5 else ''}；"
+                 "改名为 `<主题>_<YYYYMMDD>.md` 并同步引用，或确认有意的例外后登记进基线")
+    carried = sorted(k for k in viol if k in baseline)
+    if carried:
+        rep.warn("S16 报告命名规范",
+                 f"基线内存量违规 {len(carried)} 个（§8.13 明示存量不强制回改，仅提示）："
+                 f"{carried[:6]}{'' if len(carried) <= 6 else ' …共 ' + str(len(carried))}；"
+                 "改一个就请从 tools/audit_structure_baseline.json 的 s16_naming_violations 移出（棘轮收紧）")
+    if not new_ones and not carried:
+        rep.ok("S16 报告命名规范",
+               f"{len(targets)} 个报告/产物文件名全部符合 §8.13")
+
+
 CHECKS = {
     "s1": ("S1 sys.path 注入", check_s1_syspath),
     "s2": ("S2 依赖方向", check_s2_dep_direction),
@@ -1171,6 +1288,7 @@ CHECKS = {
     "s13": ("S13 tracking 非区域目录登记", check_s13_tracking_nonregion_registry),
     "s14": ("S14 tools/README 登记", check_s14_tools_readme_registry),
     "s15": ("S15 skills 副本同步", check_s15_agent_skill_copy_drift),
+    "s16": ("S16 报告命名规范", check_s16_output_naming),
 }
 
 
@@ -1182,6 +1300,8 @@ def main(argv: list[str] | None = None) -> int:
                     help="把当前 tools/ 顶层 .py 清单写进 S11 基线（建立/重置存量用）")
     ap.add_argument("--freeze-unregistered", action="store_true",
                     help="把当前「未在 tools/README.md 登记」的脚本清单写进 S14 基线（只登记存量欠债）")
+    ap.add_argument("--freeze-naming", action="store_true",
+                    help="把当前「违反 §8.13 命名规范」的报告/产物清单写进 S16 基线（存量不回改，只登记欠债）")
     args = ap.parse_args(argv)
 
     if args.freeze_unregistered:
@@ -1198,6 +1318,24 @@ def main(argv: list[str] | None = None) -> int:
         )
         p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"[audit_structure] S14 基线已写入 {len(names)} 个未登记脚本 → {p.name}")
+        return 0
+
+    if args.freeze_naming:
+        import json
+
+        p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
+        data = json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+        names = sorted(k for k, v in
+                       ((rel, _naming_violations(rel)) for rel in _s16_targets()) if v)
+        data["s16_naming_violations"] = names
+        data["_s16_note"] = (
+            "S16 存量欠债：这些报告/产物文件名违反 AGENTS.md §8.13 命名规范"
+            "（日期带杠 / 日期未作后缀 / 非 ASCII 或含空格），2026-10-08 冻结，"
+            "按 §8.13「存量不强制回改」处理 → WARN 不阻塞。"
+            "新件违规即 FAIL；改一个请从本表**移出**（移出即棘轮收紧）。"
+        )
+        p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"[audit_structure] S16 基线已写入 {len(names)} 个命名违规文件 → {p.name}")
         return 0
 
     if args.freeze_tools_top:

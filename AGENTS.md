@@ -285,7 +285,7 @@ git config core.hooksPath tools/git-hooks
 ```
 
 - 钩子脚本：`tools/git-hooks/pre-commit`，**五道顺序**（正文口径以脚本头为准，别在本文件里叉写一行）：
-  ① 解释器与依赖自检 → ② `tools/audit_structure.py`（结构契约 S1–S14，FAIL 阻断）
+  ① 解释器与依赖自检 → ② `tools/audit_structure.py`（结构契约 S1–S16，FAIL 阻断）
   → ③ `code-audit/repo_governance_check.py --warn`（未跟踪源码，**告警位，不阻断**）
   → ④ `code-audit/doc_path_refs.py`（活文档死指针，棘轮阻断）
   → ⑤ `code-audit/audit_destructive_default.py`（默认即破坏，棘轮阻断）
@@ -758,9 +758,9 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   **S12 已下架路径不得复活**
   （2026-10-04 新增，后六条是为根目录第 5 次污染、`tools/` 上帝目录、与
   “归档后又被恢复”三件事补的闸）。
-  **FAIL 阻断：S1/S2/S4/S7/S8/S9/S10/S11/S12/S14**（S8 分叉、S11 新增顶层或无主题归属、
-  S12 复活、S14 新增未登记都不进基线豁免：分叉没有合法存量形态，顶层只减不增，
-  已下架不得回来）；**WARN 不阻塞：S3/S5**（存量已登记）。
+  **FAIL 阻断：S1/S2/S4/S7/S8/S9/S10/S11/S12/S14/S16**（S8 分叉、S11 新增顶层或无主题归属、
+  S12 复活、S14 新增未登记、**S16 新增命名违规**都不进基线豁免：分叉没有合法存量形态，顶层只减不增，
+  已下架不得回来，命名是新建即守）；**WARN 不阻塞：S3/S5**（存量已登记）。
   ⚠ S6 已于 2026-10-03 升为 **FAIL + 基线棘轮**（旧文写它 WARN 不符实际，2026-10-06 更正）：
   分叉副本无条件 FAIL，基线外的新增跨 skill 副本 FAIL，**被委托工具缺失/异常/输出不可解析
   也 FAIL**（2026-10-06 改掉：原先这三条是 warn，而 pre-commit 只拦 FAIL ⇒ 闸会静默消失）。
@@ -769,6 +769,10 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   历史写 171、实为 159，两边打架过；现数：`python tools/audit_structure.py --only s11`）；
   建/重置用 `--freeze-tools-top`；S12 清单在基线的 `retired_paths`，S14 存量欠债在
   `s14_unregistered_tools`（重置用 `--freeze-unregistered`，只登记欠债不是豁免）。
+  **S15**（2026-10-06 新增）只比 `.claude/skills/` 副本与 `Claude/skills/` 源是否逐文件一致，无基线；
+  **S16**（2026-10-08 新增）守报告/产物命名（`output_report/**`+`reports/**`+`tracking/` **顶层**：
+  日期 `YYYYMMDD` 作后缀、不带杠、纯 ASCII 无空格），存量欠债在 `s16_naming_violations`
+  （重置用 `--freeze-naming`，只登记欠债不是豁免）。
 - **S3「同名」不是缺陷**：`tools/<name>.py` 与 `src/wqb/**/<name>.py` 分属脚本与包两套命名空间，import 不会撞
   （实测 `import wave_gate` 报 ModuleNotFoundError，它只以 `wqb.workflow.nodes.wave_gate` 存在）。**勿改名。**
 - **`wave_gate` 包化收尾（2026-09-30）**：`tools/wave_gate.py` = 入口 shim（~140 行：argparse 契约字面 +

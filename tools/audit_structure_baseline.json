@@ -226,5 +226,23 @@
   ],
   "_s11_note": "基线 = tools/ 顶层脚本快照，S11 只减不增。脚本下沉到主题子目录或归档后，从本表移除该条目（移除即棘轮收紧，可接受；新增即 FAIL，不接受）。归属见 tools/THEMES.json。差额为未受控新文件（git 未跟踪）：它们会触发 S11 FAIL——须下沉或归档，不允许塞进本表（基线只豁免存量，不豁免新增）。⚠ 2026-10-05 更正：本表一度被误冻结为 95（当时工作树有 76 个受控文件意外缺失，磁盘实测偏小）；文件恢复后重冻为 170。教训：冻结基线前必须确认工作树完整（git status 无意外删除），否则会把「文件丢失」固化成「已迁移」。",
   "s14_unregistered_tools": [],
-  "_s14_note": "S14 存量欠债：这些 tools/ 脚本未在 tools/README.md 登记（2026-10-06 冻结）。WARN 不阻塞；补登记后请从本表**移出**（移出即棘轮收紧），新增未登记即 FAIL。"
+  "_s14_note": "S14 存量欠债：这些 tools/ 脚本未在 tools/README.md 登记（2026-10-06 冻结）。WARN 不阻塞；补登记后请从本表**移出**（移出即棘轮收紧），新增未登记即 FAIL。",
+  "s16_naming_violations": [
+    "output_report/glb_campaign_20261008_breakthrough.md",
+    "reports/d9_status_backfill_rollback_20260928_batch2.json",
+    "reports/eur_d1_20260924_financing_mode_b1.md",
+    "reports/eur_d1_20260924_financing_mode_b1_remainder.md",
+    "reports/eur_d1_20260924_financing_mode_b2.md",
+    "reports/eur_d1_20260924_fundamental17_controls.md",
+    "reports/eur_d1_20260924_fundamental17_measurement_repair.md",
+    "reports/eur_d1_20260924_fundamental17_quality_probe.md",
+    "reports/eur_d1_20260924_fundamental23_mechanisms.md",
+    "reports/eur_d1_20260924_news46_mechanisms.md",
+    "reports/eur_d1_20260924_news50_mechanisms.md",
+    "reports/eur_d1_20260924_other455_network_probe.md",
+    "reports/eur_d1_20260925_earnings6_event_probe.md",
+    "reports/eur_d1_20260925_other460_probability_probe.md",
+    "reports/skills_review_20260929_closure.md"
+  ],
+  "_s16_note": "S16 存量欠债：这些报告/产物文件名违反 AGENTS.md §8.13 命名规范（日期带杠 / 日期未作后缀 / 非 ASCII 或含空格），2026-10-08 冻结，按 §8.13「存量不强制回改」处理 → WARN 不阻塞。新件违规即 FAIL；改一个请从本表**移出**（移出即棘轮收紧）。"
 }
