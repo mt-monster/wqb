@@ -83,8 +83,23 @@ cleanup_tmp.py
 .qoder/
 .vscode/
 
-# attic = 本地归档区（历史备份/旧代码/DB 快照），只留磁盘不进仓库
-attic/
+# attic = 本地归档区（历史备份/旧代码/DB 快照）。
+# 2026-10-07 第二轮治理复核 P0-2 裁决（此前悬而未决）：
+#   原写法 `attic/` 整目录 ignore，但已有 35 件早期存量仍在 git 追踪中，
+#   形成「一边声明不入库、一边已经入库」的自相矛盾（首轮评估 §5.3 点名）。
+#   裁决：**已入库的 6 个日期化归档包保持入库**，新建归档包不再入库。
+#   理由：这 6 包合计仅 0.2 MB，且每包都带 README 交代「为什么归档、何时、从哪来」——
+#   一旦 `git rm --cached` 退出追踪，归档**理由**会先于归档内容消失，后人只能看到
+#   一堆不懂为何存在的隔离物。留着的成本近乎为零，丢失的是不可再生的上下文。
+#   ⇒ 因此改用 `attic/*` + 逐包 `!` 豁免（注意：`attic/` 排除目录后 git 不会进入子层，
+#      目录下的 `!` 例外**无效**，必须用 `attic/*` 这种匹配子项而非目录本身的写法）。
+attic/*
+!attic/tmp_scripts_20261004/
+!attic/toolkit_zero_ref_20260928/
+!attic/toolkit_docs_20260929/
+!attic/ra_pipeline_shell_20260928/
+!attic/judge_planning_docs_20260929/
+!attic/ppa_mining_20260929/
 
 # Skills mirror (local sync copy, not project code)
 .qoder-cn/
