@@ -93,3 +93,21 @@ GBR   1.55 万字段   285 已测   2578 未测   83 活弱(49 ALIVE + 34 WEAK) 
 3. **框架与机制耦合，不可跨机制外推**：同框架对 estimate 族 +0.31、对 anl93 族 −0.38。
 4. **画像只是「存在性证明」，不是「可复现证明」**：命中后必须本框架实测。
 5. **高 S 陷阱**：`*_label*` / `*_bucket*` / `dl_riskfree_returns` 类分位桶标签不是信号，开批前核 `description`。
+
+
+## 6. ★ 算子对账必须单列 `genius` 子集（2026-10-08 新增）
+
+判「方向 / 算子穷尽」时，只对 `get_operators` 做差集**不够** —— API 的 `category` 只有 9 类（无 Genius），
+`level` 字段恒为 `ALL`/`None`，**不暴露平台 UI 的 `base`/`genius` 分级**。
+
+**权威表**：`docs/reference/operators_notes.md`（Category / Definition / Count / Scope / **Level**）。
+**genius 级共 17 个**：`pasteurize`｜`ts_returns`｜`ts_kurtosis`｜`ts_ir`｜`ts_max_diff`｜
+`ts_target_tvr_decay`｜`ts_target_tvr_hump`｜`vec_min`｜`vec_max`｜`vec_stddev`｜`vec_range`｜`vec_count`｜
+`tail`｜`group_count`｜`group_std_dev`｜`group_sum`｜`group_cartesian_product`。
+
+**★ VECTOR 聚合有 7 种**（`vec_min/max/stddev/range/count/avg/sum`）—— **勿只用 `vec_avg`/`vec_sum`**。
+
+**GBR 实测（2026-10-08）**：唯一产出的 genius 算子是 **`ts_target_tvr_hump`**
+（新候选 S1.62/F1.03/2Y1.89，`Failed RA=0`）；`vec_*` 另 5 种、`group_std_dev/count/sum`、`pasteurize`
+在本区已试家族上均无产出；`group_cartesian_product` 语法可用但劣于 `sector`；
+`tail` 语义为「区间内置 newval」⇒ 销毁信息，判为非合理尝试。
