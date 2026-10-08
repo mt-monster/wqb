@@ -45,6 +45,11 @@ def rgc():
     return _load("tools/code-audit/repo_governance_check.py", "repo_governance_check")
 
 
+@pytest.fixture(scope="module")
+def sa():
+    return _load("tools/code-audit/snapshot_adjudicate.py", "snapshot_adjudicate_mod")
+
+
 # ---------------------------------------------------------------- 1. 白名单双轨对齐
 
 ALLOWLIST_DOC = REPO / "docs" / "governance" / "untracked_allowlist.md"
@@ -181,6 +186,39 @@ def test_adjudicate_tool_failure_is_loud():
     src = SA.read_text(encoding="utf-8")
     assert "sys.exit(2)" in src, "工具异常未映射到 rc=2（静默失败就是 fail-open）"
     assert "except Exception" in src, "没有兜底异常处理：脚本崩溃时退出码不可预期"
+
+
+# ---------------------------------------------------------------- 6. 改名识别（止住幻影 PENDING）
+
+
+def test_rename_is_adjudicated_as_not_lost(sa):
+    """文件名按规范改过、内容没变的件不得再挂 PENDING。
+
+    2026-10-08 实证：`tracking/2026-10-06_robustness.md` → `tracking/robustness_20261006.md`
+    这类改名让快照里的旧名在 main「无同名件」⇒ 台账凭空多一条 PENDING。
+    PENDING 的语义是「**没人看过**」，把「已改名入库」算进去就是台账自己制造的假象。
+    """
+    idx = {"robustness_20261006.md": [("tracking/robustness_20261006.md", "b1")]}
+    v, basis = sa.rule_verdict("tracking/2026-10-06_robustness.md", "b1", idx)
+    assert v == "DROPPED", f"改名被判 {v}（应为 DROPPED）：{basis}"
+    assert "改名" in basis and "robustness_20261006.md" in basis
+
+
+def test_rename_needs_identical_content(sa):
+    """词干相同但**内容不同** = 真分叉，不许借「改名」之名判成件未丢失。"""
+    idx = {"robustness_20261006.md": [("tracking/robustness_20261006.md", "other-blob")]}
+    v, _basis = sa.rule_verdict("tracking/2026-10-06_robustness.md", "b1", idx)
+    assert v == "PENDING", "内容不同却判了已处理 —— 分叉件会被静默丢掉"
+
+
+def test_same_blob_with_unrelated_stem_is_not_a_rename(sa):
+    """同 blob 但词干无关（空 `__init__.py` / 同模板头这类成片同内容件）不得冒充改名。
+
+    不设这道闸，改名识别就会退化成「机器替人判不回迁」——那正是本台账明确不做的事。
+    """
+    idx = {"zzz.md": [("docs/zzz.md", "b1")]}
+    v, _basis = sa.rule_verdict("tracking/2026-10-06_robustness.md", "b1", idx)
+    assert v == "PENDING", "词干无关的同内容件被误认成改名"
 
 
 # ---------------------------------------------------------------- 5. 活文档不许再说谎

@@ -18,14 +18,14 @@
 | 态 | 含义 | 判据 |
 |---|---|---|
 | `RESTORED` | 已取回 `main` | 本次或历次治理已 checkout 并入库，留痕用 |
-| `DROPPED` | 裁决**不回迁** | 零活动引用 / 职责已被现通道覆盖 / 属未合入工作线且单件回迁会造悬空依赖；**逐件必须写依据**。另含一类**机械判定**：路径重组且 blob 逐字相等（件未丢失，只是搬过目录） |
+| `DROPPED` | 裁决**不回迁** | 零活动引用 / 职责已被现通道覆盖 / 属未合入工作线且单件回迁会造悬空依赖；**逐件必须写依据**。另含两类**机械判定**（`blob` 逐字相等 ⇒ 件没丢，只是换了位置或名字）：① 路径重组（同文件名、不同目录）；② **改名**（文件名按命名规范改过，`2026-10-06_robustness.md` → `robustness_20261006.md`；两者**归一化词干**必须相同，否则不判改名 —— 防同内容模板文件被误认） |
 | `ARTIFACT` | 运行产物 / 数据转储 | 可重跑的 dump、断点、缓存；不是「人的结论」，不入库 |
 | `PENDING` | 待人工裁决 | 代码 / 文档 / 结论类资产且尚无人判过 —— **这一态非 0 就是欠债** |
 
 ## 2. 读数
 
 - 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**845**
-- `RESTORED` = 0；`DROPPED` = 102；`ARTIFACT` = 216；`PENDING` = 527
+- `RESTORED` = 0；`DROPPED` = 115；`ARTIFACT` = 216；`PENDING` = 514
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -37,7 +37,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 
 ## 3. 逐件表
 
-### 3.2 `DROPPED`（102 件）
+### 3.2 `DROPPED`（115 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -62,10 +62,22 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `docs/operator_modeb_research.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/operator_modeb_research.md`（blob 相等） | rule |
 | `docs/skills_pipeline_analysis.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/skills_pipeline_analysis.md`（blob 相等） | rule |
 | `docs/skills_pipeline_optimization.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/skills_pipeline_optimization.md`（blob 相等） | rule |
+| `output_report/GLB_RA_campaign_20260919_S-PRE_to_S1.md` | 改名，件未丢失：main 已有内容逐字相同的 `output_report/GLB_RA_campaign_S-PRE_to_S1_20260919.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `output_report/ra_pipeline_stage_audit_20260916_v3.md` | 改名，件未丢失：main 已有内容逐字相同的 `output_report/ra_pipeline_stage_audit_v3_20260916.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/db_schema_audit_2026-08-26.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/db_schema_audit_20260826.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/db_table_structure_review_2026-08-26.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/db_table_structure_review_20260826.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/feature_engineering_eval_2026-08-27.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/feature_engineering_eval_20260827.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/forum-experience/alpha_templates_forum_2026-08-05.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/forum-experience/alpha_templates_forum_20260805.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/forum-experience/glb_forum_experience_2026-08-05.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/forum-experience/glb_forum_experience_20260805.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/forum-experience/ppa_forum_experience_2026-08-07.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/forum-experience/ppa_forum_experience_20260807.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/operator_usage_audit.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/operator_usage_audit.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/operator_usage_audit.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/operator_usage_audit.py`。 | human |
 | `reports/opswap_analyze.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_analyze.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_analyze.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_analyze.py`。 | human |
 | `reports/opswap_build_plan.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_build_plan.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_build_plan.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_build_plan.py`。 | human |
 | `reports/opswap_driver.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/legacy/opswap_driver.py`（blob 相等） | rule |
+| `reports/project-audit/progress_2026-08-15.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/project-audit/progress_20260815.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/temp_and_deadcode_scan_2026-08-28.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/temp_and_deadcode_scan_20260828.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/tmp_cleanup_2026-08-30.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/tmp_cleanup_20260830.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/toolkit_usage_review_2026-08-31.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/toolkit_usage_review_20260831.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `src/wqb/dataset_pair_matrix.py` | main 侧零消费方：`git grep 'get_dataset_pair_recommendations\|dataset_pair_matrix' -- src tools` = 0 命中；唯一提及处 `tests/unit/02_workflow/test_inventory_scan_basket_shape.py:38` 写的是 `try: import … except ImportError: dpm = None`，即节点已按「该模块可能不存在」设计。单件回迁会**静默启用一个未经评审的功能**（跨数据集对推荐），属危险方向。配套 `tests/unit/test_dataset_pair_matrix.py` 同线。要启用请整线取回并补 registry/README 登记。 | human |
 | `src/wqb/semantic_ledger.py` | 属「S1 语义自动补做」整条未合入工作线，单件回迁即造孤儿模块：其文档明列的两个消费方在 main 都不存在（`git grep '_semantic_coverage_check' -- src tools` = 0 命中；`tools/field_semantic_classify.py` 的产物 schema 里根本没有 `families`/`family_stats` 键，见其 L200-L212）。main 侧读同一台账键的是 `tools/wave_gate_pkg/gates_semantic.py`，它只用 `blocked_fields`，不需要 `ledger_has_l35`。配套件同属该线：`tests/unit/02_workflow/test_s1_semantic_autoclassify.py`、`tests/unit/10_toolkit_scripts/test_semantic_classify_all.py`、`test_semantic_field_pool_filter.py`。⚠ 更正记录：HEAD 曾按「全仓从未存在」结案，那是把「工作区/`git ls-files` 没有」当成「对象库没有」——实测 `git cat-file -s 4910e65:src/wqb/semantic_ledger.py` = 2407 字节。证据留在抢救点，取回须**整线成套**。 | human |
 | `src/wqb/workflow/nodes/_campaign_open_gates.py` | main 零引用：`git grep 'campaign_open_gates' -- src tools tests` = 0 命中，且 `src/wqb/workflow/registry.py` 未注册其节点。回迁即造「代码里有、链路上不跑」的幽灵模块（本仓对 workflow 节点有五处同步登记纪律，单文件回迁必然漂移）。 | human |
@@ -143,6 +155,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/triage_platform_status_sweep_v3.py` | 零活动引用（`tools/legacy/README.md` L79 那行是退役记录本身，不是调用）。`tools/legacy/README.md` 当时写的是临时保留理由（「并发会话在飞、避免误删」，mtime 2026-09-24），已于 2026-10-06 追认完成并改写为退役记录。存量分诊/状态横扫的职责已由 `tools/triage_*` 现役脚本与 `prod_blocked_recheck.py` 覆盖。取看：`git show b62447f:tools/triage_platform_status_sweep_v3.py`。 | human |
 | `tools/verify_ready8.py` | 零活动引用（只剩 THEMES/基线登记痕迹）。名字里的 ready8 是 2026-09 某批候选的一次性核对手套，不属于任何现役链（提交判定走 `tools/verdict/submit_inventory.py` 与 `wqb.submit_verdict_core`，AGENTS.md §3.5 已写明后者是否决权威）。取看：`git show b62447f:tools/verify_ready8.py`。 | human |
 | `tracking/EUR/scripts/backfill_alphas_from_ckpt.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/backfill_alphas_from_ckpt.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/backfill_alphas_from_ckpt.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/backfill_alphas_from_ckpt.py`。 | human |
+| `world-quant-brain-mcp/docs/MCP_TEST_REPORT_20260913.md` | 改名，件未丢失：main 已有内容逐字相同的 `world-quant-brain-mcp/MCP_TEST_REPORT.md`（blob 相等，只是文件名按命名规范改过） | rule |
 
 ### 3.3 `ARTIFACT`（216 件）
 
@@ -365,7 +378,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/strong_ds_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/zero_competition_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 
-### 3.4 `PENDING`（527 件）
+### 3.4 `PENDING`（514 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -400,7 +413,6 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `docs/submit_queue_design.md` | 同名件在 main 是 `docs/design/submit_queue_design.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `docs/submittable_alpha_optimization.md` | 同名件在 main 是 `docs/design/submittable_alpha_optimization.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `output_report/EUR_wave269_campaign_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/GLB_RA_campaign_20260919_S-PRE_to_S1.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/db_quality_assessment_20260928.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/eur_2y_sharpe_raise_methodology_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/eur_new_category_progress_20261005.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -416,7 +428,6 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `output_report/org_audit_20261001.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/py_file_audit_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/pyramid_tower_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/ra_pipeline_stage_audit_20260916_v3.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/skills_fix_plan_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/skills_review_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/skills_stage_review_20261001.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -434,19 +445,9 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `reports/dataset_experience/asi_model28_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/dataset_experience/asi_pattern_scores_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/dataset_experience/asi_pv13_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/db_schema_audit_2026-08-26.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/db_table_structure_review_2026-08-26.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/feature_engineering_eval_2026-08-27.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/forum-experience/alpha_templates_forum_2026-08-05.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/forum-experience/glb_forum_experience_2026-08-05.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/forum-experience/ppa_forum_experience_2026-08-07.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/forum_alpha_inspiration_taxonomy_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/forum_to_skills_integration_plan_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/project-audit/progress_2026-08-15.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/structure_review_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/temp_and_deadcode_scan_2026-08-28.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/tmp_cleanup_2026-08-30.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/toolkit_usage_review_2026-08-31.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_build_wave_family_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_dataset_meta.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_region_catalog.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -890,7 +891,6 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/tmp_study_eur_actives.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/reference/tmp_tower_map.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/reference/tmp_two_ds.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `world-quant-brain-mcp/docs/MCP_TEST_REPORT_20260913.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `world-quant-brain-mcp/docs/QUICK_START.md` | 同名件在 main 是 `world-quant-brain-mcp/QUICK_START.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `world-quant-brain-mcp/probe_direct_auth.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `world-quant-brain-mcp/probe_labs_live.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |

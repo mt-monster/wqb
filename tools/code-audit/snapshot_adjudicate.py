@@ -20,7 +20,10 @@
 三态口径（与文档一致，不得自造第四态）
 --------------------------------------
 - `RESTORED`   已取回 main（本次或历次治理），列出即留痕；
-- `DROPPED`    裁决**不回迁**：零活动引用 / 职责已被现通道覆盖 / 属未合入工作线且单件回迁会造悬空依赖；
+- `DROPPED`    裁决**不回迁**：零活动引用 / 职责已被现通道覆盖 / 属未合入工作线且单件回迁会造悬空依赖。
+               另含两类**机械判定**（blob 逐字相等 ⇒ 件未丢失，只是换了位置或换了名字）：
+               路径重组（同文件名不同目录）；改名（文件名按命名规范改过，如
+               `tracking/2026-10-06_robustness.md` → `tracking/robustness_20261006.md`）；
 - `ARTIFACT`   运行产物 / 数据转储（可重跑、或区域数据湖的时点快照），**不是资产**，不入库；
 - `PENDING`    待人工裁决 —— 这一态**必须为 0 才叫裁决完成**；非 0 时 `--check` 给出清单。
 
@@ -40,6 +43,8 @@ from __future__ import annotations
 import argparse
 import importlib.util as _ilu
 import json
+import os
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -89,8 +94,36 @@ def load_overrides() -> dict:
     return {"verdicts": data.get("verdicts") or {}, "_doc": data.get("_doc", "")}
 
 
+#: 日期 token：`20261006` 与 `2026-10-06` 两种写法都算。
+#: 背景：把文件按命名规范整改（日期移到末尾 / 去连字符）会**只改文件名、不改内容**，
+#: 而旧名仍留在抢救点快照里 ⇒ 台账里出现一批「main 无同名件」的**幻影 PENDING**。
+_DATE_TOKEN_RE = re.compile(r"(?<!\d)\d{4}-?\d{2}-?\d{2}(?!\d)")
+
+
+def _norm_stem(basename: str) -> str:
+    """文件名去掉日期与分隔符后的**词干**——判「只是改名」用。"""
+    return re.sub(r"[\s_\-]+", "", _DATE_TOKEN_RE.sub("", basename)).lower()
+
+
+def _rename_targets(main_idx: dict, path: str, blob: str) -> list[str]:
+    """main 里 **blob 相等但文件名不同**、且**归一化词干相同**的路径（真改名）。
+
+    ⚠ 「词干相同」这道闸不能省：只比 blob 会把空 `__init__.py`、同模板头这类
+    **成片同内容文件**全判成「改名」，等于让机器替人做「不回迁」的价值判断 ——
+    本工具明确不做这件事（见模块 docstring）。词干相同才说明「是同一个件的两个名字」。
+    """
+    if not blob:
+        return []
+    name = path.rsplit("/", 1)[-1]
+    stem = _norm_stem(name)
+    hits = {p for _n, lst in main_idx.items() for p, b in lst
+            if b == blob and p != path and p.rsplit("/", 1)[-1] != name
+            and _norm_stem(p.rsplit("/", 1)[-1]) == stem}
+    return sorted(hits, key=lambda p: (len(p), p))
+
+
 def rule_verdict(path: str, blob: str, main_idx: dict) -> tuple[str, str]:
-    """机械初判：只区分三件事 —— 运行产物 / 只是搬了目录 / 真正需要人判。
+    """机械初判：只区分四件事 —— 运行产物 / 只是搬了目录 / 只是改了名 / 真正需要人判。
 
     ⚠ 规则**故意不自判「不回迁」**（除非 blob 逐字相等）：「零活动引用 / 职责已被覆盖」
     是价值判断，必须由人在 fixture 里写下依据，否则就是把「没人看」固化成「已裁决」。
@@ -113,6 +146,10 @@ def rule_verdict(path: str, blob: str, main_idx: dict) -> tuple[str, str]:
     if blob and any(b == blob for p, b in same_name):
         where = next(p for p, b in same_name if b == blob)
         return "DROPPED", f"路径重组，件未丢失：main 已有内容逐字相同的 `{where}`（blob 相等）"
+    renamed = _rename_targets(main_idx, path, blob)
+    if renamed:
+        return "DROPPED", (f"改名，件未丢失：main 已有内容逐字相同的 `{renamed[0]}`"
+                          f"（blob 相等，只是文件名按命名规范改过）")
     if same_name:
         where = ", ".join(f"`{p}`" for p, _b in same_name[:2])
         return "PENDING", f"同名件在 main 是 {where} 但**内容不同**（分叉或版本差）——需人工比对"
@@ -180,7 +217,7 @@ def render(rows: list[dict], stats_note: str = "") -> str:
         "| 态 | 含义 | 判据 |",
         "|---|---|---|",
         "| `RESTORED` | 已取回 `main` | 本次或历次治理已 checkout 并入库，留痕用 |",
-        "| `DROPPED` | 裁决**不回迁** | 零活动引用 / 职责已被现通道覆盖 / 属未合入工作线且单件回迁会造悬空依赖；**逐件必须写依据**。另含一类**机械判定**：路径重组且 blob 逐字相等（件未丢失，只是搬过目录） |",
+        "| `DROPPED` | 裁决**不回迁** | 零活动引用 / 职责已被现通道覆盖 / 属未合入工作线且单件回迁会造悬空依赖；**逐件必须写依据**。另含两类**机械判定**（`blob` 逐字相等 ⇒ 件没丢，只是换了位置或名字）：① 路径重组（同文件名、不同目录）；② **改名**（文件名按命名规范改过，`2026-10-06_robustness.md` → `robustness_20261006.md`；两者**归一化词干**必须相同，否则不判改名 —— 防同内容模板文件被误认） |",
         "| `ARTIFACT` | 运行产物 / 数据转储 | 可重跑的 dump、断点、缓存；不是「人的结论」，不入库 |",
         "| `PENDING` | 待人工裁决 | 代码 / 文档 / 结论类资产且尚无人判过 —— **这一态非 0 就是欠债** |",
         "",
