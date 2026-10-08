@@ -252,3 +252,80 @@
 
 **结论**：本区**可行动字段已基本探明**（285 已测字段 / 83 个活弱）；剩余 2,578 个未测字段中，除 `pattern_scores`(471)、`analyst7`(296)、`analyst9`(44) 外，多为文本元数据或已知弱族。
 **真正的瓶颈不在画像覆盖，而在 prod 饱和**（两条活腿 `analyst7`、`pv47` 实测 prod 0.76–0.86）。
+
+
+---
+
+## 十、★ 修正：`DEAD_COUNT` 由「名字驱动」改为「description 驱动」（2026-10-08）
+
+**用户指正**：「判断字段时通过读 description 而不是光看字段名」。
+
+审计确认：本画像的 9 类 verdict 中，**只有 `DEAD_COUNT` 是名字驱动的** ——
+旧实现 `COUNT_PAT = re.compile(r"(raisednum|lowerednum|surprisenum|_num|count)", re.I)` 直接对**字段名**跑正则。
+
+### 审计出的三类错误（均有实例）
+
+| 类型 | 实例 | description 揭示的真相 |
+|---|---|---|
+| **名字误匹配** | `acquisition_model.**count**ry_percentile_acquisition_likelihood` | 实为 **Percentile score**（`count` 无词边界命中 `country`） |
+| | `model109.**accounts**_receivable_turnover_ratio` | 实为 turnover **ratio** |
+| **语义混淆** | `analyst7.act_q_roe_surprisenum` | 描述 "Number of **estimates used for** surprise calculation" = **参与家数/覆盖度**，与 `raisednum/lowerednum`（**方向性**修正家数）不是同一机制 |
+| | `insider_trx_matrix.mean_buy_transaction_count` | 描述 "**Average** per event" ⇒ 已是均值 |
+| **漏杀** | `other47.oth47_organic_keywords` | 描述 "**Count of** unique keywords … **unit: count**"，S0.51/2Y1.61 ⇒ 完全符合形态，却因名字无 count/num 逃过 |
+| **反例警示** | `model307.mdl307_sales_pct_gb` | 描述含 "expressed as a **number**"，但实为 **Fraction（比例）** ⇒ **描述出现 number ≠ 计数** |
+
+### 修法（两次迭代；第一次我修错了）
+
+1. ❌ **只加词边界** `count` ⇒ **过度修正**：`count_50bps`（`_` 属 `\w`）与 `_numup` 全部失配，**DEAD_COUNT 4→0 是假象**。
+2. ✅ **最终：以 description 为准，名字只作注释** ——
+   `COUNT_DESC_PAT`（"number of ｜ count of ｜ counts ｜ how many ｜ breadth ｜ …"）**且非** `COUNT_DESC_NEG`（ratio ｜ percentage ｜ percentile ｜ fraction ｜ average ｜ per event ｜ rank ｜ weighted ｜ …»）。
+   实测该版比「名字+描述双确认」**多捕获 1 例漏杀**，且不引入假阳性。
+
+**结果**：`DEAD_COUNT` 4 → **5**；`--all-regions` 重建通过（USA 亦为 4）⇒ 规则跨区可用。
+
+### 对画像数字的影响
+
+| verdict | 修正前 | 修正后 |
+|---|---:|---:|
+| DEAD | 465 | **464** |
+| DEAD_COUNT | 4 | **5** |
+| 其余（ALIVE 49 / WEAK 34 / UNTESTED 2578 / AXIS_ONLY 1390 / DEAD_STATIC 28 / DEAD_TURNOVER 7） | — | **不变** |
+
+### 顺便的纪律（已写入 skill 的 `_field-profile-playbook.md §7`）
+
+1. 类型/机制归类**必须读 `description`**；名字正则只能用于**缩小候选**，不得单独作判死依据。
+2. **关键词出现 ≠ 语义成立**（描述里的 `number` 可能指「数值范围」）。
+3. **反向也要查**（名字不像但描述是）⇒ 否则漏杀。
+
+---
+
+## 十一、★ 用 description 正向扫未测池：挖出「名字完全看不出」的新目标
+
+非 MODEL 的 UNTESTED 1,491 个（有描述）分类：**疑似真信号 1,196 ｜ 中性 181 ｜ 元数据/非信号 114**。
+其中名字完全无法揭示机制的高价值目标：
+
+| 字段 | description 揭示 | 为何名字视角会漏 |
+|---|---|---|
+| **`news17.analyst_recommendation_change_score`**（cov 0.97，VECTOR） | "score representing **changes in analyst recommendations**, such as **upgrade or downgrade**" | 带 `news17_` 前缀 ⇒ 误以为只是新闻情绪；**实为评级变动分**（NEWS 塔 0/3，全新机制） |
+| **`news104.nws104_prob_neg` / `_prob_ntr` / `_confidence`**（cov 0.97，VECTOR） | **正/负/中三分类概率 + 置信度** | 此前只探过 `nws20_*`，**完全没碰 news104** |
+| **`analyst7.est_12m_bps_high_4wks_ago` / `_3mth_ago`** | "…made in the **past 3 months / past 4 weeks**" | 判为「同族变体」；描述揭示是 **vintage 快照** ⇒ 可做**长周期修正** |
+| `institutions6.aggregate_equity_value_all_owners`（cov 1.00） | 机构持股聚合市值 | 此前只看 `fund_holdings_panel` |
+
+### Wave 18 实测（标准水平型骨架）—— 全弱
+
+| 目标 | S | 2Y |
+|---|---:|---:|
+| `analyst_recommendation_change_score` | 0.05 | −0.23 |
+| `nws104_prob_neg` / `_prob_ntr` / `_confidence` | 0.06 / −0.39 / −0.12 | 0.98 / −1.12 / −0.85 |
+| `est_12m_bps_low` | −0.26 | −0.52 |
+| `divide(est_12m_bps_high, _4wks_ago)` | −0.00 | 0.25 |
+| `aggregate_equity_value_all_owners` | 0.03 | **1.74** |
+| `ts_delta(est_12m_bps_low, 66)` | −0.04 | 0.53 |
+
+**★ 判读（不要把负结果误读为「描述方法无效」）**：
+- **描述方法的有效性已由「修正 DEAD_COUNT 三类错误 + 挖出名字看不到的字段」证明**；Wave18 的负结果只说明**这些字段配「水平型 group_rank 骨架」无信号**。
+- 存在明显的**骨架-量类型错配**：
+  · `analyst_recommendation_change_score` 是**事件型**（升级/降级）⇒ 应用**变化型**（`ts_delta` / `ts_rank`），不是水平型；
+  · 两个水平相除 ≈ 1 ⇒ **比值近似常量**（实测 S = −0.00）；vintage 用法应是**差值**或**分位**，不是 `divide`；
+  · `aggregate_equity_value_all_owners` **2Y 1.74 健康、S 弱** ⇒ 与 `oth47_organic_traffic` 同型，值得换量纲再试。
+- **⇒ 建议下一步**：对这 3 类「骨架错配/待换量纲」目标再发一波（变化型 / 分位型骨架）。
