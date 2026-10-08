@@ -111,3 +111,25 @@ GBR   1.55 万字段   285 已测   2578 未测   83 活弱(49 ALIVE + 34 WEAK) 
 （新候选 S1.62/F1.03/2Y1.89，`Failed RA=0`）；`vec_*` 另 5 种、`group_std_dev/count/sum`、`pasteurize`
 在本区已试家族上均无产出；`group_cartesian_product` 语法可用但劣于 `sector`；
 `tail` 语义为「区间内置 newval」⇒ 销毁信息，判为非合理尝试。
+
+
+## 7. ★ 判字段以 `description` 为准，名字只是线索（2026-10-08 新增）
+
+**用户指正**：「判断字段时通过读 description 而不是光看字段名」。据此审计发现 **`field_profile.py` 里 `DEAD_COUNT`
+是唯一的名字驱动规则**，且它有三类错误（均已在 2026-10-08 修正为**纯 description 驱动**）：
+
+| 类型 | 实例 |
+|---|---|
+| 名字误匹配 | `count` 无词边界 ⇒ 命中 `**count**ry_percentile_*`（实为 Percentile）、`**accounts**_receivable_turnover_ratio`（实为 ratio） |
+| 语义混淆 | `*_surprisenum` 描述 "Number of **estimates used for** surprise calculation" = **参与家数/覆盖度**，非方向性修正家数 |
+| 漏杀 | `oth47_organic_keywords` 描述 "**Count of** unique keywords … unit: count"，名字无 count/num 而逃过 |
+| 反例 | `mdl307_sales_pct_gb` 描述含 "expressed as a **number**" 但实为 **Fraction（比例）** |
+
+**纪律**：
+1. 类型/机制归类**必须读 `description`**；名字正则只用于**缩小候选**，不得单独作判死依据。
+2. **关键词出现 ≠ 语义成立**：描述里的 `number` 可能指「数值范围」。
+3. **反向也要查**：名字不像但描述是（`*_keywords` = "Count of…"）⇒ 会漏杀。
+4. **正向价值**（用 description 扫未测池的直接产出）：`news17.analyst_recommendation_change_score`
+   （实为**分析师评级变动分**，非新闻情绪）、`news104.nws104_prob_*`（情绪三分类概率）、
+   `analyst7.est_12m_bps_*_4wks_ago/_3mth_ago`（**vintage 快照** ⇒ 可做长周期修正）、
+   `institutions6.aggregate_equity_value_all_owners` —— 这四类**从名字上完全看不出来**。
