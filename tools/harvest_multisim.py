@@ -561,10 +561,10 @@ async def main():
                         except Exception as e:  # 队列记账失败绝不阻断收批
                             # 2026-10-06：此前只 print，收批 stdout 一滚就丢了 —— 正是它掩盖了
                             # "auto-enqueue 只覆盖 9 个 wave、而候选来自 ~68 个 wave" 的缺口。
-                            # 改为显式 stderr + 兜底提示（真正的源头保障是 tools/enqueue_sweep.py）。
+                            # 改为显式 stderr + 兜底提示（真正的源头保障是 tools/ledger/enqueue_sweep.py）。
                             print(f"  [queue] !! 入队失败（未阻断收批）：{type(e).__name__}: {e}",
                                   file=sys.stderr, flush=True)
-                            print("  [queue] !! 可事后用 `python tools/enqueue_sweep.py` 补入队")
+                            print("  [queue] !! 可事后用 `python tools/ledger/enqueue_sweep.py` 补入队")
                     # 2026-09-18（设计文档 §2.2 改动#5）：相关性来源标记。
                     # 2026-09-28 N35：upsert_backtest_rows 写相关性时已一并记 prod_corr_source=platform_sync
                     # 与 corr_checked_at（行里没带就不动已有值），这里的补写通常是空操作，留作兜底。

@@ -103,7 +103,8 @@
       "moved_files": [
         "candidate_health_card.py",
         "submit_inventory.py",
-        "verify_region_op.py"
+        "verify_region_op.py",
+        "perf_max.py"
       ]
     },
     "pool-hygiene": {
@@ -166,7 +167,8 @@
       ],
       "status": "moved-partial",
       "moved_files": [
-        "backfill_alpha_metrics_from_platform.py"
+        "backfill_alpha_metrics_from_platform.py",
+        "backfill_deu_from_platform.py"
       ]
     },
     "research": {
@@ -233,12 +235,15 @@
         "sync_platform_alphas.py",
         "waiver.py",
         "enqueue_propose.py",
-        "scan_backup_ra.py"
+        "scan_backup_ra.py",
+        "mining_ledger.py"
       ],
       "status": "moved-partial",
       "moved_files": [
         "enqueue_propose.py",
-        "scan_backup_ra.py"
+        "scan_backup_ra.py",
+        "mining_ledger.py",
+        "enqueue_sweep.py"
       ]
     },
     "db": {
@@ -282,7 +287,11 @@
         "scan_fields.py",
         "validate_fields_batch.py"
       ],
-      "status": "moved-partial"
+      "status": "moved-partial",
+      "moved_files": [
+        "field_profile.py",
+        "field_profile_deu.py"
+      ]
     },
     "wave": {
       "dir": "tools/wave",
