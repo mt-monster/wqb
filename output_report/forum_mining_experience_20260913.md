@@ -9,9 +9,9 @@
 | 语料 | 规模 | 性质 |
 |---|---|---|
 | `reports/forum_alpha_research/` | 175 帖检索 → **深读 22 篇**（含评论） | 2026-08-17 MCP 抓取 |
-| `reports/forum-experience/alpha_templates_forum_2026-08-05.md` | 50 帖 → **15 个可落地模板** | 2026-08-05 |
-| `reports/forum-experience/glb_forum_experience_2026-08-05.md` | 160 命中 → **精读 22 篇** | 2026-08-05 |
-| `reports/forum-experience/ppa_forum_experience_2026-08-07.md` | 327 命中 → **精读 42 篇** | 2026-08-07 |
+| `reports/forum-experience/alpha_templates_forum_20260805.md` | 50 帖 → **15 个可落地模板** | 2026-08-05 |
+| `reports/forum-experience/glb_forum_experience_20260805.md` | 160 命中 → **精读 22 篇** | 2026-08-05 |
+| `reports/forum-experience/ppa_forum_experience_20260807.md` | 327 命中 → **精读 42 篇** | 2026-08-07 |
 | `brain-alpha-judge/data/forum_corpus/` | **20 篇 GM/PPAC/IQC 原帖** | 2026-04 抓取 |
 
 合计去重后约 **100+ 篇高价值帖**（含 252 赞、216 赞、209 赞、171 赞级头部帖）。

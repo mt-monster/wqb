@@ -31,7 +31,7 @@
 
 ### 1.3 WAL 演进史（前人审计已指出方向）
 
-- `reports/db_schema_audit_2026-08-26.md`：当时 journal_mode=delete，**建议改 WAL** → 后已落地（今天 `-wal/-shm` 文件存在证实）。
+- `reports/db_schema_audit_20260826.md`：当时 journal_mode=delete，**建议改 WAL** → 后已落地（今天 `-wal/-shm` 文件存在证实）。
 - `output_report/skills_review_and_mining_optimization_20260912.md` R3：**「连接工厂统一 PRAGMA」建议未全面落实**——只有 tools 层接了工厂。
 - `docs/submit_queue_design.md:237`：已预告「本表会被 MCP/CLI/多钩子并发写」。
 

@@ -830,6 +830,16 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   停止 `2026-10-02_xxx.md` 这种前缀带杠写法。
 - **路径一律纯 ASCII**，不含空格/中文/Windows 保留名（`nul`/`con`/`0`/`-`）。非 ASCII 名会让
   `git` 需 `core.quotepath=false`、脚本处理与跨平台同步都出摩擦；中文放正文，别放文件名。
+- **output_report vs reports 边界判据**（2026-10-08 治理审计固化，消除「评审产物/审计复盘」语义重叠导致的两头分流）：
+  **凡 workflow/战役自动产出**（ideas、candidates、wave 结果、`archive_submit_ready.py`/`complexity_scan.py`/`run_grouped_tests.py` 等工具直写）→ `output_report/`；
+  **凡人工撰写的审计/评审/复盘/演练/价值评估**（含 dry-run 演练复盘、阶段价值审计）→ `reports/`。
+  实测反例：`output_report/ra_pipeline_stage_audit_20260916.md` 通篇是审计/演练/价值评估，应属 `reports/`。
+- **文件名区域码大写豁免**：`DEU/EUR/GBR/GLB/IND/KOR/MEA/USA/ASI` 等区域码开头大写是**平台数据标识**
+  （与 `tracking/<REGION>` 目录豁免同逻辑），不属 snake_case 违规；**纯英文大写开头**（`ANALYST_`/`READY_`）不在豁免列。
+- **`campain` 是既定文件名，非拼写错误**（2026-10-08 纠错）：`reports/dataset_experience/<region>_<ds>_campain.md`
+  由 `dataset_experience.py` 生成、`step9_audit.py` 校验、多个 skill 文档引用（见 `step1-inventory.md`「既定文件名，非笔误」）。
+  **禁止单独把 campain 改为 campaign**——会造成与生成/校验代码的系统性不一致；若要统一修正拼写，
+  须连同生成代码、校验代码、测试、全部存量与在途文件作为一个独立重构专项处理。
 - **仓库根推导一律层数无关**（2026-10-04 P2-1 新增）：新代码用 `from wqb.paths import repo_root`
   （向上探测 `pyproject.toml` + `src/wqb` 双标记，解析失败**显式报错**不猜根）；
   脚本里写 `find_repo_root(__file__)` 即可与自身深度解耦。

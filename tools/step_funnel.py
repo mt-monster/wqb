@@ -22,7 +22,7 @@
 | 9 个质量指标 | **全部可从既有表实时推导**（本工具即是证明）→ 写进新表 = 重复存储、双真相源 |
 | 6 个增益指标 | `avoided_backtests` / `saved_time` / `saved_tokens` / `saved_api_calls` / `reduced_invalid_simulations` / `avoided_submits` 全是**反事实估算，无客观来源** → 写入即制造不可验证数字，与「报数前必须核实」「禁止推测记账」纪律冲突 |
 | `token_count` / `api_calls` | MCP 层不回传 → 同样无源 |
-| 命名陷阱 | `campaign_summary` 表与**被所有战役提示词引用的** `get_campaign_summary` 工具**同名但无关**（后者读 `wave_results`，见 `reports/db_schema_audit_2026-08-26.md:59`）→ 表一旦有数据会更误导 |
+| 命名陷阱 | `campaign_summary` 表与**被所有战役提示词引用的** `get_campaign_summary` 工具**同名但无关**（后者读 `wave_results`，见 `reports/db_schema_audit_20260826.md:59`）→ 表一旦有数据会更误导 |
 
 → 结论：**收益为负**；已下线该子系统，改用本工具提供同一视图。
 
