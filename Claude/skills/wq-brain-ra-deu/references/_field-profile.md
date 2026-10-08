@@ -161,3 +161,23 @@ $WQ_PY tools/fields/field_profile.py --query --region DEU --verdict UNTESTED --l
 
 本页讲"DEU 的画像是什么"；**「怎么用画像判断有无信号」的 7 步否决漏斗 + 三层证据等级**，
 以及 13 区完整画像汇总，见 [`docs/reference/field_profile_usage_guide.md`](../../../../docs/reference/field_profile_usage_guide.md)。
+
+## ★★ 按 description 机制选字段（2026-10-08 新增，替代"按名字族"）
+
+**★ 字段名会骗人** —— 实证：`iv_projected_*`（实为股息预测）、`probability_label*`（实为**收益预测**，EUR S4.65）、
+`analyst7` 的 `est_q_dps_raised*`（实为**分析师上调家数**）。DEU 有 **2,845 个（10.5%）字段的名字机制 ≠ description 机制**。
+
+```bash
+# ① 先看该区的「真实机制」分布（选字段的第一步）
+$WQ_PY tools/fields/field_profile.py --list-tags --region DEU
+
+# ② 按机制筛选（逗号分隔 = OR）
+$WQ_PY tools/fields/field_profile.py --query --region DEU --desc-tag count_breadth --verdict UNTESTED
+$WQ_PY tools/fields/field_profile.py --query --region DEU --desc-tag surprise,revision
+```
+
+**可用标签**：`volatility` `probability` `percentile_rank` `regression_pred` `surprise` `revision` `estimate`
+`forecast` `dividend` `valuation` `quantile_bucket` `count_breadth` `growth` `liquidity` `score` `return` `risk` `ratio`
+
+**★ 立刻可见的价值**：DEU 按机制看，`probability` **729 个字段（含 5 个活/弱、316 未测）**、`count_breadth` **1,016 个（106 未测）**、
+`forecast` **876 个（5 活/弱）** —— 这三个大机制都曾被我按名字误判。
