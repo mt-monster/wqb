@@ -67,6 +67,7 @@
     "ace_lib.py@6f0b70a9eb8d",
     "diversity_enhancer.py@4988be9cd599"
   ],
+  "_s6_note": "基线 = 已登记的存量「跨 skill 复制」组（键 = 文件名@内容哈希前12位）。2026-10-07 复核结论：**这 4 组不建议强行统一为共享位**，理由如下。① (4 份) / (4 份) / (2 份) —— 各组内哈希**完全相同**，当前无漂移；且 S6 棘轮已保证「改一处漏其余」会立即 FAIL（同名但哈希变 = 按新增处理），风险已被机制兜住。②  是**设计内分叉**（audit_skill_drift 的 DIVERGED_ALLOWLIST 已登记）：brain-feature-implementation 顶层版(1553 行，get_datasets 带 6 次重试/429 处理) vs GEM 内嵌快照（由 sync_gem_embedded_skill.py 同步）vs 另两个 skill 的历史拷贝(1535 行，无重试)。把带重试版推给历史拷贝 = **行为变更**而非结构治理，不在治理范围内。③ 更关键的权衡：skill 是**自包含分发单元**（整目录被联接/复制到 6 个安装位，见 S15）。提取到共享位会让单 skill 导出即缺依赖——副本是**有意代价**，不是疏忽。⇒ 维持现状，靠棘轮防分叉。若将来要统一，应先解决「单 skill 可独立导出」的替代方案（如 vendoring 生成器 / 安装时展开），再动这批文件。",
   "s11_tools_top_level": [
     "_pyenv.py",
     "ab_test_framework.py",

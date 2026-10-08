@@ -47,6 +47,10 @@
   （2026-10-06 治理评审 P2-8 新增）。**棘轮**：存量欠债登记在基线 `s14_unregistered_tools`
   → WARN，**新增未登记 → FAIL**。背景：AGENTS.md §8.13「并在 tools/README.md 登记一行」
   长期纯靠自觉（S7/S8/S9/S11 都看不上这件事），实测顶层 159 个里 8 个从未登记。
+- **S15 skills 副本同步**：`.claude/skills/`（Agent 宿主读取的副本）必须与源
+  `Claude/skills/` 逐文件一致。2026-10-06 第二轮治理复核 P1-3 新增。背景：该副本被
+  `.gitignore` 整目录排除，**既不入库也无人比对**，改了源不同步时宿主会静默读旧版。
+  加闸当日实测基线 0 差异（`diff -rq` 全绿），属"基线干净时加闸最便宜"。
 
 退出码
 ------
@@ -70,7 +74,23 @@ import tokenize
 from collections import defaultdict
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+
+def _bootstrap_src() -> None:
+    """把 `src/` 放上 sys.path：向上探测双标记，**与文件层数无关**
+    （AGENTS.md §8 禁止新增 `parents[N]` / `dirname(dirname())` 这类层数硬编码）。
+    """
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            src = str(parent / "src")
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            return
+    raise RuntimeError("仓库根未找到（向上未见 pyproject.toml + src/wqb 双标记）")
+
+
+_bootstrap_src()
+from wqb.paths import find_repo_root  # noqa: E402
+REPO_ROOT = find_repo_root(__file__)
 SRC = REPO_ROOT / "src"
 TOOLS = REPO_ROOT / "tools"
 REPORTS = REPO_ROOT / "reports"
@@ -1037,6 +1057,104 @@ def check_s13_tracking_nonregion_registry(rep: Report) -> None:
                + (f"（另有 {len(stale)} 项登记项磁盘已不存在，仅 WARN）" if stale else ""))
 
 
+def check_s15_agent_skill_copy_drift(rep: Report) -> None:
+    """S15：Agent 宿主的 skills 副本必须与源逐文件一致。
+
+    为什么需要这条闸
+    ----------------
+    `.claude/skills/` 是给 Cursor 等 Agent 宿主读取的**副本**，源是 `Claude/skills/`。
+    根 `.gitignore` 把 `.claude/` 整目录排除（注释自承「改动源后需手动同步或重建」），
+    因此副本**永不被扫描**：既不入库、也无人比对。一旦改了源而忘了手动同步，
+    宿主读到的是旧 skills，且**不会有任何报错** —— 一种纯粹的静默不一致。
+
+    2026-10-06 第二轮治理复核时实测两侧的 `diff -rq` 为 0 差异……但这个观测有陷阱，
+    实测结论后来被**推翻**：见下方「硬链接」。
+
+    ★★ 第三次实测（同一天，推翻前两次）：它其实是**目录联接**
+    --------------------------------------------------------
+    加闸当天做正反向验证：① 往副本追加内容后重跑 → 仍 OK；② 往副本放一个孤儿文件
+    → 两边文件数**同时**从 505 变 506。追下去才是真相：
+
+        os.path.realpath('.claude/skills') == os.path.realpath('Claude/skills')
+        # => True，两边解析到同一个目录 D:\\...\\Claude\\skills
+
+    即 `.claude/skills` 是 `Claude/skills` 的 **junction（联接）**——不存在两份文件，
+    所以 content-based 比对**永远不可能报警**（那是在拿一个目录和它自己比）。
+    顺带澄清：本机 `os.path.samefile` 是可信的（对内容不同的独立文件返回 False、
+    对真硬链接返回 True），这次失效的原因在junction本身，不在 samefile。
+
+    这个结论同时否掉了根 `.gitignore` 里那句注释的**误导**：那里写
+    「由 Cursor 等宿主读取……**不受版本控制也不自动同步**，改动源后需手动同步或重建」
+    ——读作"有一份独立副本需要人工维护"，实际是"同一个目录的第二个入口，无需维护"。
+    后来的人照注释去"手动同步"，会把 racing 精力花在一个不存在的问题上。
+    注释已于 2026-10-07 更正（详见 `.gitignore` 该处）。
+
+    ⇒ 本闸因此先判 realpath：**解析到同一目录就明确报 junction**，不做无效的内容比对；
+      只有两侧真正分离（有人用 `xcopy`/`robocopy`/重克隆把它换成真拷贝）时，
+      才落到内容比对 + 孤儿检测。形态一变，闸在同一瞬间接手。
+
+    语义
+    ----
+      - 两侧 realpath 相同 → OK，**明确写明是 junction**（无副本，无可比对象）
+      - 真拷贝下有内容差异 / 单侧独有 → FAIL（宿主会读到过期 skills）
+    """
+    src_root = REPO_ROOT / "Claude" / "skills"
+    copy_root = REPO_ROOT / ".claude" / "skills"
+
+    if not copy_root.is_dir() or not any(copy_root.rglob("*")):
+        rep.ok("S15 skills 副本同步",
+               "无 .claude/skills/ 副本（干净克隆常态），跳过")
+        return
+    if not src_root.is_dir():
+        rep.fail("S15 skills 副本同步",
+                 f"副本 {copy_root.relative_to(REPO_ROOT)} 存在，但源 "
+                 f"Claude/skills/ 不存在——副本成了唯一归档，请先恢复源")
+        return
+
+    import os as _os
+
+    # 第一段：先判两侧是不是**同一个目录**。junction（联接）会让下面的内容比对
+    # 变成"一个目录和它自己比"，那是 100% 恒等的无效检查，必须前置识别并说清楚。
+    if copy_root.exists() and _os.path.realpath(copy_root) == _os.path.realpath(src_root):
+        rep.ok("S15 skills 副本同步",
+               f".claude/skills 是 Claude/skills 的联接（realpath 同址）——"
+               f"不存在第二份拷贝，无漂移概念，内容比对在此形态下无效故跳过"
+               f"（一旦被换成真拷贝，本闸自动转为内容比对 + 孤儿检测）")
+        return
+
+    def _rel(root: Path) -> set[str]:
+        return {str(p.relative_to(root)).replace("\\", "/")
+                for p in root.rglob("*") if p.is_file()}
+
+    src_files, copy_files = _rel(src_root), _rel(copy_root)
+    shared = sorted(src_files & copy_files)
+
+    # 第二段：真拷贝形态。逐个 inode 比对（同一 inode 的两个目录项是硬链接，
+    # 写了这一个等于写了那一个，不算漂移）。
+    linked = {n for n in shared
+              if _os.path.samefile(str(src_root / n), str(copy_root / n))}
+    only_src = sorted(src_files - copy_files)
+    only_copy = sorted(copy_files - src_files)
+    changed = sorted(n for n in shared if n not in linked
+                     and _sha12(src_root / n) != _sha12(copy_root / n))
+
+    for name in changed:
+        rep.fail("S15 skills 副本同步",
+                 f"{name}：副本与源内容不一致（改了 Claude/skills/ "
+                 f"却没同步 .claude/skills/——宿主会静默读旧版）"
+                 f"（修法：重拷该目录，或重建副本）")
+    for name in only_src:
+        rep.fail("S15 skills 副本同步",
+                 f"{name}：源有、副本缺（新增 skill 后需同步到 .claude/skills/）")
+    for name in only_copy:
+        rep.fail("S15 skills 副本同步",
+                 f"{name}：副本有、源无（孤儿文件，宿主可能读到不在库中未归档的内容）")
+
+    if not (only_src or only_copy or changed):
+        rep.ok("S15 skills 副本同步",
+               f"副本与源逐文件一致（{len(shared)} 个文件；同一 inode 者 {len(linked)} 个）")
+
+
 CHECKS = {
     "s1": ("S1 sys.path 注入", check_s1_syspath),
     "s2": ("S2 依赖方向", check_s2_dep_direction),
@@ -1052,6 +1170,7 @@ CHECKS = {
     "s12": ("S12 已下架路径复活", check_s12_no_resurrection),
     "s13": ("S13 tracking 非区域目录登记", check_s13_tracking_nonregion_registry),
     "s14": ("S14 tools/README 登记", check_s14_tools_readme_registry),
+    "s15": ("S15 skills 副本同步", check_s15_agent_skill_copy_drift),
 }
 
 
