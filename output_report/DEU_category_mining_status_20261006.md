@@ -48,7 +48,7 @@
 |---|---|
 | 台账 `DEU::submit_ready`（**append** 模式） | ✅ 已写入 `58gkLAkk` 全量记录（expr / S1.75 / F1.42 / TO0.1457 / 2Y2.07 / sub1.22 / margin0.001316 / **prod 0.5381 / self 0.5153** / 塔 MODEL+OTHER / `failed_ra_count=0` / `robustness=PASS` / `ops=14` / `not_submitted: true`） |
 | 台账 `DEU::robustness_58gkLAkk` | ✅ `PASS`（含 4 条软标记与 summary） |
-| 报告 | `tracking/2026-10-06_robustness.md` |
+| 报告 | `tracking/robustness_20261006.md` |
 | ⚠ 弃用 | `tools/submit_queue.py add --dry-run` **卡在网络调用 >5 分钟无输出**（已 kill）⇒ 累积改走台账 append |
 | **提交** | **零提交**（等用户逐次批准） |
 
