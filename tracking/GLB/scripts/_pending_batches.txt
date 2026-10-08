@@ -1,0 +1,7 @@
+s42 b1 3DSUma2Kq50ibTKZe2J8wWm / b2 nchbf8Bl4Lwc8Pksy3dzts / b3 gyOqY8vF536b3NIvlK08VL
+s43_mdl239 -> 3QG7EodhI4pr8QgcA9cZBKt
+s44 b1 4uzlsPb0G5aB9Wm14YNG3ZN / b2 BvmBR31s52JaSndTfm5Cic
+s45_gate_core -> 1gNdEM8Te4jIcgKFz5mlilN
+s46_core_swap -> see log
+s47_gate_diverse -> 3pOEomfVB4H2aDl8zvSlMM7
+s48 b1/b2/b3 -> see s48 log
