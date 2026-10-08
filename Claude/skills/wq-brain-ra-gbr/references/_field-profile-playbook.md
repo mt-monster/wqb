@@ -133,3 +133,31 @@ GBR   1.55 万字段   285 已测   2578 未测   83 活弱(49 ALIVE + 34 WEAK) 
    （实为**分析师评级变动分**，非新闻情绪）、`news104.nws104_prob_*`（情绪三分类概率）、
    `analyst7.est_12m_bps_*_4wks_ago/_3mth_ago`（**vintage 快照** ⇒ 可做长周期修正）、
    `institutions6.aggregate_equity_value_all_owners` —— 这四类**从名字上完全看不出来**。
+
+
+## 8. 语义类型层：`tools/fields/field_semantic_type.py`（2026-10-08 新增）
+
+**两层分工**：`field_profile.py` 判「**强不强**」（verdict，S 驱动）；本工具判「**是什么量**」（sem_type，**description 驱动**）。
+**骨架选择完全取决于后者** ⇒ 两层必须交叉使用。
+
+```bash
+$WQ_PY tools/fields/field_semantic_type.py --build  --region GBR      # 建表 field_semantic_type
+$WQ_PY tools/fields/field_semantic_type.py --report --region GBR      # 语义 × category 报告
+```
+
+**19 类语义**（5 类非信号）：`count`｜`ratio`｜`level_amount`｜`percentile`｜`probability`｜`score`｜
+`revision_change`｜`sentiment`｜`estimate_level`｜`dispersion`｜`indicator_name`｜`direction`｜`correlation`｜
+`novelty_time`｜`unknown`（须人工读描述）‖ **非信号**：`cluster_label`（只作轴）｜`identifier`｜`temporal_meta`｜`text`（禁用）。
+
+**GBR 实测结论**：
+- 15,522 字段中**名字与 description 语义冲突 = 1,470（9.5%）**；
+- **83 个活/弱字段只落在 10 类语义上，前三类（`count`19 / `ratio`10 / `level_amount`14）占 62%**；
+- **能出东西的量类型收敛为：计数型 / 比率型 / 水平型**；
+- 未测池里 **PV `score` 329 个**（形态相似度分）是本区最大未被系统开采的语义块；
+  **FUNDAMENTAL/OTHER 以 `unknown` 为主（587/1375，领域专有复合量）** ⇒ 必须先解决「读描述定骨架」；
+- **非信号 754 个**（cluster 322 / identifier 255 / temporal 148 / text 29）应从候选池硬排除。
+
+**规则设计的三个坑（我实际踩过，务必避免）**：
+1. 不能按**固定规则优先级**：应按「description 中**最靠前的主量词**」（"Number of … per share" 主量是家数）；
+2. **复合名词**要单独处理："price-to-revenue **ratio**" 的主量词在**词尾**，`price` 会抢先误判；
+3. 泛化词要收紧（`expected` ⇒ `expect(ed)?\s+(annual|forward|fiscal|\d)`，否则 "Expected annualized percent change" 被判估计水平）。

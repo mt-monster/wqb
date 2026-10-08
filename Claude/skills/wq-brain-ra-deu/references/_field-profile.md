@@ -100,21 +100,41 @@ $WQ_PY tools/fields/field_profile_deu.py --query --region DEU --verdict UNTESTED
 
 **⇒ 开新批次前，先查该族**已有代表字段的 `to_med`，**就能预判整族值不值得探**。
 
-## DEU 画像现状（2026-10-08）
+## DEU 画像现状（2026-10-08 重建，实测口径）
 
-| verdict | 数量 |
-|---|---:|
-| `UNUSABLE` | 17460 |
-| `UNTESTED` | 3252 |
-| `AXIS_ONLY` | 1390 |
-| `DEAD` | 312 |
-| `DEAD_STATIC` | 30 |
-| `WEAK` | 26 |
-| `DEAD_TURNOVER` | 19 |
-| `DEAD_COUNT` | 4 |
-| **`ALIVE`** | **1** |
+| verdict | 数量 | 占比 |
+|---|---:|---:|
+| `UNUSABLE` | 17460 | 77.62% |
+| `UNTESTED` | **3196** | 14.21% |
+| `AXIS_ONLY` | 1390 | 6.18% |
+| `DEAD` | 358 | 1.59% |
+| `DEAD_STATIC` | 34 | 0.15% |
+| `WEAK` | **29** | 0.13% |
+| `DEAD_TURNOVER` | 19 | 0.08% |
+| `DEAD_COUNT` | 6 | 0.03% |
+| **`ALIVE`** | **2** | 0.01% |
 
-**全 DEU 唯一过线字段**：`eps_y1_estimate_change_3mo`（`analyst_factor_signals`，单信号 **S1.66 / 2Y2.14 / sub0.98 / n_sg 60**）。
+- **已测 448 个**（31 活/弱 + 417 判死）＝全量 1.99%；**可寻址池 = 3,644**（已测 448 + 未测 3,196）。
+- **两个 ALIVE**：`eps_y1_estimate_change_3mo`（S1.67/2Y2.14）、`netprofit_y1_estimate_change_3mo`（S1.70/2Y1.66）。
+- 按语义归族后，31 个活/弱只来自 **5 个机制族**：分析师修正 16、收益预测概率 6、ML/评级合成分 7、分析师跟随收益 2。
+- 完整语义画像报告：`output_report/DEU_field_profile_by_description_20261008.md`。
+
+## ★★ 未测池的真实结构（2026-10-08 新增，勿再误读「3,196 个没试过的普通字段」）
+
+**100% 是非标量类型**：`MATRIX 2,775` + `VECTOR 410` + `SYMBOL 11`。
+
+| 类型 | 能否直接用 | 证据 |
+|---|---|---|
+| MATRIX | **能裸用**（DEU 实证） | `group_rank(ts_scale(pattern_field,66),sector)`、`rank(mdl264_*_class)` 都跑出真实 sharpe（组合腿最高 S1.94）|
+| VECTOR | **不能裸用**，需 `vec_*` | `vec_avg(mean_loan_rate_main)` 成功（analyst93，组合 S2.02）|
+| SYMBOL | **不是信号** | 日期/时间戳/ISO 国家码/序号 ⇒ 11 个应从「潜在空间」里扣除 ⇒ **有效未测 3,185** |
+
+> ⚠ **USA 的「MATRIX 禁套」结论不可外推到 DEU** —— 同一周内两区实测结论相反。类型处置必须**逐区实测**。
+
+未测池的其余关键结构：
+- **496 个（16%）来自「零测试兄弟」的 dataset**：`other455` 300（**供应链图谱 Node2Vec 嵌入的 PCA 分量**，数据源是 USA 图谱）、`news17` 48、`pv29` 40（行业聚类，可当轴）、`news50` 37、`sentiment27` 18（**SYMBOL 毒药**）。
+- **含毒药字段的未测池**：ANALYST/estimate 379 里大量是「覆盖标识 / ISO 币种代码」（如 `anl44_2_dps_coveredby`、`..._lastactccy`）⇒ 探测前必须读 description。
+- **PV/score 415** ＝ 图表形态相似度（`pattern_scores` 两代命名：`*_simscore_lookback*` 已测 17 个，`dynamic_similarity*` 未测）。
 
 ## 已知局限（别把 `UNTESTED` 当"从未测过"）
 
@@ -164,20 +184,45 @@ $WQ_PY tools/fields/field_profile.py --query --region DEU --verdict UNTESTED --l
 
 ## ★★ 按 description 机制选字段（2026-10-08 新增，替代"按名字族"）
 
-**★ 字段名会骗人** —— 实证：`iv_projected_*`（实为股息预测）、`probability_label*`（实为**收益预测**，EUR S4.65）、
-`analyst7` 的 `est_q_dps_raised*`（实为**分析师上调家数**）。DEU 有 **2,845 个（10.5%）字段的名字机制 ≠ description 机制**。
+**★ 字段名会骗人，数据集名也会。** 实测（DEU 22,494 字段，description 覆盖率 100%）：
+名字机制与 description 机制的不一致比例**视规则宽严在 10% ~ 75% 之间** ⇒ 结论只有一个：**名字不可作为选字段依据**。
+已实证 10 类硬误判，其中两类连数据集名都是错的：
+
+| 字段 / 数据集 | 名字暗示 | description 真实语义 |
+|---|---|---|
+| `liquidity_money_flow_alignment` | 流动性-资金流对齐 | **Relative Turnover (RTN63D)** |
+| `volume_anomaly_price_positioning_2` | 量价异常定位 | **Detrended Price Oscillator (DPO)** |
+| `iv_projected_dividends_fy11_3` | 隐含波动率 | **内在价值模型 DPS 预测** |
+| `dl_riskfree_returns`（数据集）| 无风险收益率 | **前瞻市场中性收益的分位桶/概率/回归预测** |
+| `probability_label3_5quantile_*` | 概率标签 | 前瞻收益落入第 3 桶的 log 概率 |
+| `est_12m_*_raisednum_*` | 预期上调 | **上调家数**（count_breadth）|
+| `act_q_cpx_surprisenum` | 惊喜值 | **计算 surprise 所用的估计数**（参与量）|
+| `anl93_profitabilityprev_estimator_*` | 盈利能力 | **正确预测概率 / 跟单日收益** |
+| `mdl238_industry_rank` | 行业排名 | **Smart Holdings 分的行业百分位（机构持股概率）** |
+| `news17`（数据集）| 新闻 | 内含**分析师荐股变化分**（`analyst_recommendation_change_score`）|
 
 ```bash
-# ① 先看该区的「真实机制」分布（选字段的第一步）
+# ① 先看该区的「真实机制」分布（选字段的第一步）—— 26 族
 $WQ_PY tools/fields/field_profile.py --list-tags --region DEU
 
-# ② 按机制筛选（逗号分隔 = OR）
+# ② 按机制筛选（逗号分隔 = OR）；mech_all 列显示**全部**命中标签
 $WQ_PY tools/fields/field_profile.py --query --region DEU --desc-tag count_breadth --verdict UNTESTED
 $WQ_PY tools/fields/field_profile.py --query --region DEU --desc-tag surprise,revision
+
+# ③ coverage 边界人口（0.6 刀切线两侧；DEU 有 1593 个字段落在 [0.5,0.6) 被整体弃用）
+$WQ_PY tools/fields/field_profile.py --query --region DEU --min-cov 0.5 --max-cov 0.6
 ```
 
-**可用标签**：`volatility` `probability` `percentile_rank` `regression_pred` `surprise` `revision` `estimate`
-`forecast` `dividend` `valuation` `quantile_bucket` `count_breadth` `growth` `liquidity` `score` `return` `risk` `ratio`
+**26 个机制标签**：`volatility` `probability` `percentile_rank` `regression_pred` `surprise` `revision` `estimate`
+`forecast` `dividend` `valuation` `quantile_bucket` `count_breadth` `growth` `liquidity` **`cluster_label`** `score`
+`return` `risk` `ratio` **`level_amount`** **`intraday`** **`technical`** **`sentiment`** **`uncertainty`** **`event`**
 
-**★ 立刻可见的价值**：DEU 按机制看，`probability` **729 个字段（含 5 个活/弱、316 未测）**、`count_breadth` **1,016 个（106 未测）**、
-`forecast` **876 个（5 活/弱）** —— 这三个大机制都曾被我按名字误判。
+**★ 三个必须知道的读数口径**（都是实测踩出来的）：
+1. **`mech_all` 与筛选不同源**：`--desc-tag` 是 LIKE 过滤，单标签只显示优先级首个命中 ⇒ 用 `mech_all` 列确认「为什么命中」。
+   例：`act_q_cpx_surprisenum` 的 `mech_all = surprise/estimate/count_breadth` —— 名义 surprise 实为「参与家数」。
+2. **标签优先级把「家数」藏在「预期」里**：`estimate`(#7) 先于 `count_breadth`(#12) ⇒ "Number of raised analyst estimates…" 单标签显示 `estimate`。
+   刻意不改（会改写 9,051 个字段标签且误伤真均值），**查广度语义请用 `--desc-tag count_breadth`**。
+3. **关键词匹配带词边界**（已修）：裸子串会让 `"Operating Activities - Net Cash Flow"` 命中 `rating` → `score`。
+
+**★ 立刻可见的价值**：DEU 按机制看，`probability` 732 个（含 5 活/弱、**316 未测**）、`count_breadth` 1,023 个（106 未测）、
+`forecast` 743 个（5 活/弱）、**`cluster_label` 1,799 个（341 未测，纯图谱嵌入）** —— 后三个大机制都曾被我按名字误判。
