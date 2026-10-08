@@ -23,7 +23,23 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-REPO = Path(__file__).resolve().parents[1]
+
+def _bootstrap_src() -> None:
+    """把 `src/` 放上 sys.path：向上探测双标记，**与文件层数无关**
+    （AGENTS.md §8 禁止新增 `parents[N]` / `dirname(dirname())` 这类层数硬编码）。
+    """
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            src = str(parent / "src")
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            return
+    raise RuntimeError("仓库根未找到（向上未见 pyproject.toml + src/wqb 双标记）")
+
+
+_bootstrap_src()
+from wqb.paths import find_repo_root  # noqa: E402
+REPO = find_repo_root(__file__)
 sys.path.insert(0, str(REPO / "src"))
 
 INDEX = REPO / "Claude" / "skills" / "INDEX.md"
@@ -249,6 +265,11 @@ def render_env() -> str:
 
 _RENDER = {"region-table": render_regions, "gate-ladder": render_ladder, "env-table": render_env}
 
+#: 行尾 HTML 注释（`<!-- lint:counterexample: ... -->`），在比较和替换时保留。
+#: 作用：允许在生成块的表行尾挂 `lint:counterexample` 等豁免标记，
+#: `--apply` 不会覆盖它们，`--check` 不会因它们报 DRIFT。
+_TRAILING_COMMENT = re.compile(r"\s*<!--\s*(lint:[\w-]+(?::[^>]*)?)\s*-->\s*$")
+
 
 def _block_re(name: str) -> "re.Pattern[str]":
     return re.compile(rf"(<!-- {re.escape(name)}:start -->)(.*?)(<!-- {re.escape(name)}:end -->)", re.S)
@@ -259,13 +280,31 @@ def embedded(name: str) -> Optional[str]:
     return m.group(2).strip("\n") if m else None
 
 
+def _strip_trailing_comments(text: str) -> str:
+    """剥掉每行行尾的 ``<!-- lint:... -->`` 注释，使比较只看表格内容。"""
+    out = []
+    for line in text.split("\n"):
+        out.append(_TRAILING_COMMENT.sub("", line).rstrip())
+    return "\n".join(out).strip()
+
+
+def _extract_trailing_comments(text: str) -> dict:
+    """提取每行行尾注释，返回 ``{行索引: 注释文本}``（用于 apply 时保留）。"""
+    comments = {}
+    for i, line in enumerate(text.split("\n")):
+        m = _TRAILING_COMMENT.search(line)
+        if m:
+            comments[i] = m.group(0).strip()
+    return comments
+
+
 def drifted() -> List[Tuple[str, str]]:
     bad = []
     for name in BLOCKS:
         cur = embedded(name)
         if cur is None:
             bad.append((name, "文档里没有嵌入块"))
-        elif cur.strip() != _RENDER[name]().strip():
+        elif _strip_trailing_comments(cur) != _RENDER[name]().strip():
             bad.append((name, "嵌入块与生成结果不一致"))
     return bad
 
@@ -279,7 +318,16 @@ def apply() -> List[str]:
         if not m:
             print(f"[ERROR] {doc.relative_to(REPO)} 缺 <!-- {name}:start/end --> 标记", file=sys.stderr)
             continue
-        new = rx.sub(lambda mm: mm.group(1) + "\n" + _RENDER[name]() + "\n" + mm.group(3), text, count=1)
+        old_block = m.group(2)
+        # 提取旧块里每行行尾的 lint 注释，保留到生成结果对应行尾
+        old_comments = _extract_trailing_comments(old_block)
+        gen_lines = _RENDER[name]().split("\n")
+        # 把旧注释挂到生成结果对应行尾（行索引从 0 算）
+        for idx, cmt in old_comments.items():
+            if idx < len(gen_lines):
+                gen_lines[idx] = gen_lines[idx].rstrip() + " " + cmt
+        gen = "\n".join(gen_lines)
+        new = rx.sub(lambda mm: mm.group(1) + "\n" + gen + "\n" + mm.group(3), text, count=1)
         if new != text:
             doc.write_text(new, encoding="utf-8")
             changed.append(name)

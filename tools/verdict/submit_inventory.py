@@ -29,6 +29,7 @@
   python tools/verdict/submit_inventory.py                            # 盘点 READY + 拉新 corr + 同步台账
   python tools/verdict/submit_inventory.py --no-sync-queue             # 只读，完全不动 submit_ready
   python tools/verdict/submit_inventory.py --skip-corr                 # 只用库里已存相关性（最快）
+  python tools/verdict/submit_inventory.py --snapshot-only             # 纯快照模式：不调平台相关性、不查缓存，直接用台账值分类（最快）
   python tools/verdict/submit_inventory.py --include-prod-blocked --skip-corr
   python tools/verdict/submit_inventory.py --refresh-all               # 全部强制 refresh=True
   python tools/verdict/submit_inventory.py --region GBR --limit 10
@@ -545,7 +546,8 @@ def print_report(rows, snapshot_before, snapshot_after, args, started_at, done_a
     bar = "=" * 100
     print(bar)
     print(f"候选 alpha 可提交性盘点   {started_at} → {done_at}   (stale={args.stale_hours}h"
-          f", thin_margin={args.thin_margin})")
+          f", thin_margin={args.thin_margin}"
+          f"{', snapshot-only' if args.snapshot_only else ''})")
     print("⛔ 本脚本只读不提交：任何提交须用户逐次明示 + 平台配额 1 次/天/区")
     print(bar)
     print("分类                 数量")
@@ -587,6 +589,9 @@ def print_report(rows, snapshot_before, snapshot_after, args, started_at, done_a
                       f"prod={r['prod']} self={r['self']}  S={r['sharpe']} F={r['fitness']}")
         print("  提交流程：用户明示 → 稳健性台账 → check_correlation(refresh=True) 终验"
               " → workflow_submit_alpha(confirm_submit=True)")
+        if args.snapshot_only:
+            print("  ⚠ snapshot-only 模式：相关性为台账快照值，可能已过期。")
+            print("    提交时平台会做实时终验，拦不住则淘汰换下一颗。")
     else:
         print("\n" + bar)
         print("▶ 当前无「全闸通过 + 相关性新鲜 + 余量充足」的可提交候选。")
@@ -606,7 +611,8 @@ def write_outputs(rows, counts, args, started_at):
     jpath = RESULTS_DIR / f"submit_inventory_{stamp}.json"
     payload = {"generated_at": _now_iso(), "started_at": started_at,
                "stale_hours": args.stale_hours, "thin_margin": args.thin_margin,
-               "sync_queue": args.sync_queue, "counts": counts,
+               "sync_queue": args.sync_queue, "snapshot_only": args.snapshot_only,
+               "counts": counts,
                "row_count": len(rows),
                "discipline": "read-only: no alpha was submitted; quota is 1/day/region",
                "rows": rows}
@@ -646,7 +652,7 @@ async def run(args):
     print(f"读取 submit_ready：{len(rows_in)} 条待盘点"
           f"（region={args.region or 'ALL'}，sync_queue={args.sync_queue}）")
 
-    ckpt = load_ckpt() if (not args.skip_corr and not args.no_ckpt) else {"corr": {}}
+    ckpt = load_ckpt() if (not args.skip_corr and not args.no_ckpt and not args.snapshot_only) else {"corr": {}}
     ckpt["corr"] = ckpt.get("corr") or {}
     lim_prod, lim_self = sq.LIM["prod"], sq.LIM["self"]
     out_rows = []
@@ -706,6 +712,9 @@ async def run(args):
         checked_at = None
         need_corr = (args.skip_corr is False) and base["verdict"] not in (
             "ALREADY_SUBMITTED", "BLOCKED")
+        # --snapshot-only: 跳过所有平台相关性调用，纯用台账快照值
+        if args.snapshot_only:
+            need_corr = False
         at_quota = args.max_corr > 0 and n_corr_called >= args.max_corr
         if need_corr and not at_quota:
             resolved = None  # (prod, selfc, checked_at, source)
@@ -782,6 +791,10 @@ async def run(args):
         age = _age_hours(checked_at)
         fresh, reason = corr_fresh(age if age is not None else None,
                                    age if age is not None else None, args.stale_hours)
+        # --snapshot-only: 过期快照视为可用（提交时平台自会拦截）
+        if args.snapshot_only:
+            fresh = True
+            reason = ""
         # prod / self 的实测时间同源（同一次 check_correlation），故共用 age
         bucket, reason_code, note = classify(res, prod, selfc, fresh, args.thin_margin,
                                              lim_prod, lim_self)
@@ -819,6 +832,8 @@ def build_parser():
                     help="同时复查 DEAD 行（成本高；用于发现平台闸变化）")
     ap.add_argument("--skip-corr", action="store_true",
                     help="不调用 check_correlation，只用库里已存值（最快，但相关性可能已过期）")
+    ap.add_argument("--snapshot-only", action="store_true",
+                    help="纯快照模式：不调平台相关性、不查缓存，直接用台账值分类（最快；过期值视为可用）")
     ap.add_argument("--refresh-all", action="store_true",
                     help="忽略 checkpoint，全部强制 refresh=True 回源")
     ap.add_argument("--no-ckpt", action="store_true", help="忽略 checkpoint 缓存")

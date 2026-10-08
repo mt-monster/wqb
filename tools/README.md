@@ -224,6 +224,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 
 | `ledger/scan_backup_ra.py` | **备选 RA 补扫**（2026-10-06 下沉）：把「全闸但未入队」的候选自动补进 `submit_ready`（默认 dry-run，`--apply` 落库）。★ 动机：`verdict/submit_inventory.py` 只读 `submit_ready`，任何「在 `alphas` 里躺着、却从未入队」的达标候选对每日盘点**完全隐形**（典型受害 `WjegEmQO`：EUR S1.94/F1.38/2Y1.59/sub1.96，实测 prod 0.5012/self 0.1616 全过，却连续多轮扫不到）。★ 口径：`2Y/sub` 用 `(x IS NULL OR x >= ?)` 放宽、缺值行进「待核」列，`--apply` 默认跳过待核行（`--apply-pending` 才含） | 手工 SQL 补录 / 让达标候选沉底 |
 | `ledger/enqueue_propose.py` | **入队「三层裁决」网关**（2026-10-06 下沉）：L1 策略筛（平台 RA 检查干净 + S/F + 2Y/TO + 非 add_mix + prod/self）→ L2 择优（同族只留代表 + 塔优先 + `--top-per-region`）→ L3 人工确认。★ 政策依据：**入队必须有人工/策略裁决，不做「全闸即自动入队」**——实测全量入队 64% 立即 DEAD（`alphas` 里 S≥1.58/F≥1.0/prod<0.7 的未入队候选 393 条，251 条平台 RA 硬闸已 FAIL）。`--apply --proposal <json> --approved-by <人>` 才落库（校验哈希 + 重跑 L1），缺批准/哈希不符退出码 4；决策留痕 `results/enqueue_decisions.jsonl` | 手工挑候选入队 / 凭 S、F 线拍脑袋 |
+| `ledger/mining_ledger.py` | **挖掘产出第一落点队列**（2026-10-07 下沉）：append-only JSONL，零依赖、零阻塞、不碰 DB、不调平台。挖出一颗 → 立刻 `add` + fsync 一行，上下文随时断都不丢。状态机 NEW→SIM_OK→QUEUED→DONE / SIM_FAIL→DEAD。`promote --apply --approved-by <人>` 把有 ID 的推进 `submit_ready`（默认 dry-run）。`selftest` 在临时目录跑完整闭环。SOP 见 `docs/mining_ledger.md` | alpha 停在对话/记忆里、一截断就永久丢 |
 
 ## 纪律（AGENTS.md §9）
 

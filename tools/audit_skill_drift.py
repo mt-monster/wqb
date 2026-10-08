@@ -43,7 +43,23 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+
+def _bootstrap_src() -> None:
+    """把 `src/` 放上 sys.path：向上探测双标记，**与文件层数无关**
+    （AGENTS.md §8 禁止新增 `parents[N]` / `dirname(dirname())` 这类层数硬编码）。
+    """
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            src = str(parent / "src")
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            return
+    raise RuntimeError("仓库根未找到（向上未见 pyproject.toml + src/wqb 双标记）")
+
+
+_bootstrap_src()
+from wqb.paths import find_repo_root  # noqa: E402
+REPO_ROOT = find_repo_root(__file__)
 SKILLS = REPO_ROOT / "Claude" / "skills"
 
 #: GEM 内嵌快照的路径标记——其下一层才是真正的 skill 名

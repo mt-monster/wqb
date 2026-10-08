@@ -42,12 +42,16 @@ _SIB_RE = re.compile(r"^FAIL:PROD_SIBLING\(([^=)]+)=([0-9.]+)\)")
 
 
 def _mcp_venv_python():
-    env = os.environ.get("WQ_PY")
-    cands = [env, os.path.join(_REPO, "world-quant-brain-mcp", ".venv", "Scripts", "python.exe")]
-    for c in cands:
-        if c and os.path.isfile(c):
-            return c
-    return sys.executable
+    """复用 tools/_pyenv 的规范解析（含「$WQ_PY 串仓」防护），不再各抄一份候选列表。
+
+    事故（2026-10-06）：环境残留的 ``WQ_PY`` 指向另一个 wqb 工作区的 venv，只看 ``isfile``
+    的候选列表会放行，进程被 re-exec 到错误解释器后卡死。
+    """
+    _tools = os.path.join(_REPO, "tools")
+    if _tools not in sys.path:
+        sys.path.insert(0, _tools)
+    import _pyenv
+    return _pyenv.venv_python()
 
 
 def _add_paths():

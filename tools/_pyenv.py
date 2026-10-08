@@ -6,8 +6,9 @@
 非 Windows 环境（含云端容器）里 venv 解释器永远找不到、MCP 目录指向不存在的盘符。
 现统一到这里：
 
-    venv_python():  $WQ_PY（须是存在的文件）→ <MCP_DIR>/.venv/Scripts/python.exe（Windows）
+    venv_python():  $WQ_PY（须是存在的文件**且不串仓**）→ <MCP_DIR>/.venv/Scripts/python.exe（Windows）
                     → <MCP_DIR>/.venv/bin/python（POSIX）→ sys.executable
+                    「串仓」= $WQ_PY 挂在别的 wqb 工作区的 world-quant-brain-mcp 下（见 is_foreign_wqb_python）
     mcp_dir():      $WQ_MCP_DIR → <repo>/world-quant-brain-mcp
 
 用法（脚本头部）::
@@ -23,7 +24,23 @@ import re
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+
+def _bootstrap_src() -> None:
+    """把 `src/` 放上 sys.path：向上探测双标记，**与文件层数无关**
+    （AGENTS.md §8 禁止新增 `parents[N]` / `dirname(dirname())` 这类层数硬编码）。
+    """
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            src = str(parent / "src")
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            return
+    raise RuntimeError("仓库根未找到（向上未见 pyproject.toml + src/wqb 双标记）")
+
+
+_bootstrap_src()
+from wqb.paths import find_repo_root  # noqa: E402
+REPO_ROOT = find_repo_root(__file__)
 
 
 def mcp_dir() -> Path:
@@ -31,12 +48,50 @@ def mcp_dir() -> Path:
     return Path(env) if env else REPO_ROOT / "world-quant-brain-mcp"
 
 
+_MCP_MARKER = "world-quant-brain-mcp"
+
+
+def is_foreign_wqb_python(candidate: str) -> bool:
+    """``$WQ_PY`` 是否指向**另一个 wqb 工作区**的 venv（串仓）。
+
+    判据：候选路径的祖先里含 ``world-quant-brain-mcp``（即它挂在某个 wqb 工作区下），
+    但那个目录不是本仓的 MCP 目录。
+
+    事故背景（2026-10-06）：环境里残留 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/
+    .venv/Scripts/python.exe``（另一份仓库副本）。它是**存在的文件**，旧实现只看
+    ``os.path.isfile`` 于是放行，``tools/submit_queue.py`` 被 re-exec 到那个解释器，
+    三层进程互相等待、13 分钟无输出。
+    """
+    if not candidate:
+        return False
+    try:
+        p = Path(candidate).resolve()
+    except OSError:
+        return False
+    own = os.path.normcase(str(Path(mcp_dir()).resolve()))
+    for parent in p.parents:
+        if parent.name == _MCP_MARKER:
+            return os.path.normcase(str(parent)) != own
+    return False
+
+
 def venv_python() -> str:
-    """MCP venv 的解释器；都不存在时退回当前解释器（不抛错，交给后续 import 报缺依赖）。"""
+    """MCP venv 的解释器；都不存在时退回当前解释器（不抛错，交给后续 import 报缺依赖）。
+
+    顺序：``$WQ_PY``（存在的文件，**且不串仓**）→ <MCP_DIR>/.venv/Scripts/python.exe（Windows）
+    → <MCP_DIR>/.venv/bin/python（POSIX）→ sys.executable。
+    """
     v = mcp_dir() / ".venv"
-    cands = [os.environ.get("WQ_PY"), str(v / "Scripts" / "python.exe"), str(v / "bin" / "python")]
-    for c in cands:
-        if c and os.path.isfile(c):
+    explicit = os.environ.get("WQ_PY")
+    if explicit and os.path.isfile(explicit):
+        if is_foreign_wqb_python(explicit):
+            print(f"[WARN] $WQ_PY 指向另一个 wqb 工作区的 venv（串仓）：{explicit}\n"
+                  f"       已忽略，改用本仓 venv {v / 'Scripts' / 'python.exe'}。"
+                  f"彻底修复请在 shell 里 unset WQ_PY。", file=sys.stderr)
+        else:
+            return explicit
+    for c in (str(v / "Scripts" / "python.exe"), str(v / "bin" / "python")):
+        if os.path.isfile(c):
             return c
     return sys.executable
 

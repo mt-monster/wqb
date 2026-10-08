@@ -1,0 +1,60 @@
+#!/bin/sh
+# commit-msg hook — 零信息提交消息检查（AGENTS.md §4 治理延伸）
+# 安装：git config core.hooksPath tools/git-hooks（与 pre-commit 同一个目录）
+#
+# 为什么必须是 commit-msg 而不是 pre-commit（技术上绕不过去）：
+#   pre-commit 运行时，提交消息**还不存在**（尚在编辑器/命令行里），拿不到 $@ 之外的任何线索。
+#   唯一能读到最终 message 的时机是 commit-msg，它把 message 文件路径放在 $1。
+#
+# 为什么是告警位而不是阻断位（与 pre-commit 第 2 步同一取舍）：
+#   2026-10-06 治理评审已确认——硬卡的结果是人用 --no-verify 绕过去，
+#   那等于把整道钩子的其它四步也一并绕掉。我们要保护的是钩子本身不被绕过。
+#   所以：发现零信息消息 → 大声提醒 + 给出改写建议，但让提交过去（退出 0）。
+#
+# 背景（这条不是洁癖，是复盘结论）：
+#   HEAD 世代里混着 `20261006` 这种纯日期提交，它把 646 行新脚本、5 份报告、
+#   quota.py 的修改、3 个 tools 改动塞在一次提交里——12 个文件、7 个互不相关主题。
+#   后果不是"不好看"，而是**回滚粒度变成全或无**：想撤掉那次 Kaputt 的报告改动，
+#   就得连配额逻辑一起撤。而提交历史是事后唯一能查"当时为什么改"的地方，
+#   一条日期在那儿等于永久丢答案。
+#
+# 退出码：恒为 0（只读 $1，不改消息文件）。
+
+MSG_FILE="$1"
+[ -f "$MSG_FILE" ] || exit 0
+
+# 取主题行（去掉行尾空白）；跳过 merge 的默认cmsg
+SUBJ=$(head -n 1 "$MSG_FILE" | sed 's/[[:space:]]*$//')
+[ -n "$SUBJ" ] || exit 0
+case "$SUBJ" in
+    "Merge"*|"Revert"*) exit 0 ;;
+esac
+
+# 零信息模式：纯数字日期/版本号 / 单单词占位 / 空壳 conventional prefix
+#   - 20261006 / 1006 / 2026-10-06
+#   - v33 / r7 / wip / tmp / update / misc / done / test / fix / save
+#   - "chore:" / "fix:" 这种**只有前缀没有内容**也算（比没有更糟：看着像规范其实是空的）
+if printf '%s\n' "$SUBJ" | grep -qiE '^([0-9]{2,8}|[0-9]{4}-[0-9]{2}-[0-9]{2}|v[0-9]+|r[0-9]+|step[0-9]+|wip|tmp|temp|update|updates|misc|save|done|todo|test|fix|note|aaa|asdf)$'; then
+    echo ""
+    echo "[commit-msg] ⚠ 提交主题「${SUBJ}」没有信息量——它是纯日期/版本号/占位词。"
+    echo "[commit-msg]   提交历史是事后唯一能查「当时为什么改」的地方，一条日期等于永久丢答案。"
+    echo "[commit-msg]   建议改成 conventional commits 型式，例如："
+    echo "[commit-msg]     feat(tools): osmosis_allocate 配额回填脚本（新增）"
+    echo "[commit-msg]     fix(quota): 修正 SUPER 配额判定的 off-by-one"
+    echo "[commit-msg]     chore(reports): DEU/GBR 当日进展报告入库"
+    echo "[commit-msg]   （本钩子只提醒不阻断：真要跳过请用 `git commit --no-verify`，"
+    echo "[commit-msg]     但那会连带跳过结构守护与 pytest，请确认确实可接受。）"
+    echo ""
+    exit 0
+fi
+
+# 有前缀但没内容：`fix:` / `chore:` 之类
+if printf '%s\n' "$SUBJ" | grep -qE '^(feat|fix|chore|docs|refactor|test|perf|style|build|ci|revert)(\(.*\))?:[[:space:]]*$'; then
+    echo ""
+    echo "[commit-msg] ⚠ 提交主题「${SUBJ}」有前缀但没有内容——比纯写日期更有迷惑性。"
+    echo "[commit-msg]   请补上正文，如 fix(quota): 修正配额判定边界。"
+    echo ""
+    exit 0
+fi
+
+exit 0

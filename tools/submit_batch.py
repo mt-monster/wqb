@@ -186,7 +186,11 @@ async def run(batches, sleep, dry_run):
         from brain_api import BrainApiClient  # noqa: E402
         client = BrainApiClient()
         await client.ensure_authenticated()
-        resp = await client._request("POST", f"{client.base_url}/simulations", json=payload)
+        # 2026-10-08：n=1 时平台拒收包裹数组（"Multi-simulations require multiple
+        # simulations…Single simulations are required to be submitted without the
+        # wrapping array"）⇒ 单条发裸 dict，多条才用数组。
+        body = payload[0] if len(payload) == 1 else payload
+        resp = await client._request("POST", f"{client.base_url}/simulations", json=body)
         loc = resp.headers.get("Location", "")
         print(f"  status={resp.status_code} -> {loc}")
         if resp.status_code != 201:

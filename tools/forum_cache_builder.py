@@ -19,7 +19,23 @@ from pathlib import Path
 
 # 缓存位置：仓库内 skill 目录下（随 skill 分发）。2026-09-29 前写死为 `~/.qoder-cn/skills/...`——那是某一个宿主的
 # 安装位，其它宿主 / 云端环境不存在（skills 审查 RB-04）。可用 WQ_ROBUSTNESS_SKILL_DIR 覆盖。
-_REPO = Path(__file__).resolve().parents[1]
+
+def _bootstrap_src() -> None:
+    """把 `src/` 放上 sys.path：向上探测双标记，**与文件层数无关**
+    （AGENTS.md §8 禁止新增 `parents[N]` / `dirname(dirname())` 这类层数硬编码）。
+    """
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            src = str(parent / "src")
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            return
+    raise RuntimeError("仓库根未找到（向上未见 pyproject.toml + src/wqb 双标记）")
+
+
+_bootstrap_src()
+from wqb.paths import find_repo_root  # noqa: E402
+_REPO = find_repo_root(__file__)
 SKILL_DIR = Path(os.environ.get("WQ_ROBUSTNESS_SKILL_DIR")
                  or (_REPO / "Claude" / "skills" / "brain-alpha-robustness"))
 CACHE_FILE = SKILL_DIR / "data" / "forum_cache.json"
