@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -321,6 +322,35 @@ def test_sync_skills_reports_no_drift():
         )
         + " 跑 `python tools/sync_skills.py` 同步。"
     )
+
+
+def test_prune_never_archives_user_native_skills():
+    """宿主原生 skill（仓库历史里从未出现）不得进入归档清单。
+
+    2026-10-08 实证：安装位 `~/.workbuddy/skills` 下 7 个条目
+    （`wq-batch-dispatch-safety`、`wq-operator-playbook-by-gate`…）在
+    `git log --all -- Claude/skills/<name>` 里**零提交** —— 它们由用户级会话直接创建，
+    与本仓无源流关系。`--apply` 是**移动**，归档即宿主当场失去在用 skill，代价远大于
+    留着占位。反向也不能一刀切关掉扫描：本仓改名前的旧目录**必然有历史**，仍须可被清理。
+    """
+    sync = REPO_ROOT / "tools" / "sync_skills.py"
+    if not sync.is_file():
+        pytest.skip("sync_skills.py 不存在")
+    import sync_skills
+
+    if not sync_skills.SOURCE.is_dir():
+        pytest.skip("仓库 Claude/skills 不在场")
+
+    r = subprocess.run(["git", "ls-files", "Claude/skills"], cwd=str(REPO_ROOT),
+                       capture_output=True, text=True)
+    tracked = {p.split("/", 2)[2] for p in r.stdout.splitlines() if p.count("/") >= 2}
+    assert tracked, "Claude/skills 下没有任何受控文件 —— 本测试无法自证方向"
+    sample = sorted(tracked)[0]
+    assert sync_skills._never_in_repo_history(sample) is False, (
+        f"{sample} 是仓库受控的 skill，却被判「仓库历史中从未出现」——"
+        "那本仓改名前的旧目录也会被误判成宿主原生而永久逃过清理")
+    assert sync_skills._never_in_repo_history("no-such-skill-zzz-20261008") is True, \
+        "不存在的名字应判为「无历史」——否则宿主原生 skill 的保护形同虚设"
 
 
 # ---------------------------------------------------------------------------

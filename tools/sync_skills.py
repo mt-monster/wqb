@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -143,7 +144,32 @@ def resolve_install_root() -> Optional[Path]:
 PROTECTED_ORPHANS = {
     "code-optimization", "dead-code-cleanup", "gold-analysis", "jin10-news",
     "brain-enhance-template",  # 已废止，裁决保留原位（P2-1）
+    # 2026-10-08 新增：宿主原生 skill（仓库全部历史里从未出现过，见 `_never_in_repo_history`）。
+    # 它们不是「本仓改名前的遗留」，归档等于把宿主上正在用的 skill 摘掉。
+    "wq-batch-dispatch-safety", "wq-operator-playbook-by-gate",
+    "wq-post-rank-clip-break-prod-wall", "wq-prod-lever-self-lock-guard",
+    "wq-wave-preflight-dispatch", "wq-window-valley-break-prod-wall",
+    "wqb-test-failure-triage",
 }
+
+
+def _never_in_repo_history(name: str) -> bool:
+    """该顶层条目在**仓库全部历史**里都没出现过 ⇒ 宿主原生 skill，不是本仓遗留。
+
+    2026-10-08 实证：安装位 `~/.workbuddy/skills` 下 7 个条目在
+    `git log --all -- Claude/skills/<name>` 里**零提交** —— 它们由用户级会话直接创建、
+    与仓库无源流关系。把它们当「孤儿」归档（`--apply` 是**移动**）＝ 宿主当场失去
+    在用 skill，代价远大于留着占位；而「本仓改名前的旧目录」必然有历史，仍会被清理。
+    """
+    try:
+        rel = SOURCE.relative_to(REPO_ROOT)
+    except ValueError:
+        return False
+    r = subprocess.run(["git", "log", "--all", "--oneline", "-1", "--",
+                        f"{rel.as_posix()}/{name}"],
+                       cwd=str(REPO_ROOT), capture_output=True, text=True)
+    # 查不动（非 git 仓库 / git 缺失）时按「可能有历史」处理 —— 保守，不扩大清理面。
+    return r.returncode == 0 and not (r.stdout or "").strip()
 
 
 def prune_orphans(target: Path, apply: bool = False) -> List[str]:
@@ -161,13 +187,24 @@ def prune_orphans(target: Path, apply: bool = False) -> List[str]:
     if not target.is_dir():
         return []
     src_top = {p.name for p in SOURCE.iterdir()}
-    orphans = [
+    candidates = [
         entry.name for entry in sorted(target.iterdir(), key=lambda p: p.name)
         if entry.name not in src_top
-        and entry.name not in PROTECTED_ORPHANS
         and not entry.name.startswith(".")
         and "migration" not in entry.name.lower()   # WorkBuddy 迁移标记（_bm_skillid_migration.json 等）
     ]
+    # 三层筛，每层都在报告里留名：静默吞掉的条目会让「扫描 0 项」看起来像机制失效。
+    protected = [n for n in candidates if n in PROTECTED_ORPHANS]
+    rest = [n for n in candidates if n not in PROTECTED_ORPHANS]
+    # 宿主原生 skill（仓库历史里从未出现）：归档＝从宿主摘掉在用 skill，永不自动清理。
+    native = [n for n in rest if _never_in_repo_history(n)]
+    orphans = [n for n in rest if n not in native]
+    if protected:
+        print(f"    [protected] {len(protected)} 项在白名单（非本仓 skill / 已裁决保留原位）："
+              f"{', '.join(protected)}")
+    if native:
+        print(f"    [user-native] {len(native)} 项在仓库历史中从未出现（宿主原生 skill，"
+              f"归档＝摘掉在用 skill，故跳过）：{', '.join(native)}")
     if not orphans or not apply:
         return orphans
 
