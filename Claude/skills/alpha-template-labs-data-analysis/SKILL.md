@@ -2,7 +2,7 @@
 name: alpha-template-labs-data-analysis
 layer: L0
 description: "要在 Brain Labs 里用 Python 做原始数据分析（覆盖 / 缺失 / 频率 / 离群 / 相关性）时使用：为 USA/TOP3000/D1 的 MATRIX 数据集生成 Labs 脚本、回收结果，给出 Python 原生抽取机制。触发词：Labs 分析 / 原始数据分析 / labs data analysis / Python alpha 设计前置。Python 轨道，不进 FASTEXPR 提交路径。"
-last_verified: 2026-09-29
+last_verified: 2026-10-08
 user-invocable: true
 allowed-tools:
   - Read
@@ -82,7 +82,7 @@ mcp__wq-brain-http__ingest_labs_result(result_json="<JSON 字符串或本机文�
 
 **7. 落盘（可选，一次性产物）**
 
-需要留档时用 CLI `ingest`（见下）合并元数据、生成 markdown；建议 `--output tracking/_scratch/labs_<dataset_id>.json`（`tracking/_scratch/` 不入版本库）。**这个 JSON 是一次性分析输出：不是战役产物、不入 DB、下游不读取**——与「DB 是真相源、不写战役 JSON」不冲突；缺省路径 `tracking/runs/…` 会被 git 跟踪，别用。
+需要留档时用 CLI `ingest`（见下）合并元数据、生成 markdown；建议 `--output tracking/_scratch/labs_<dataset_id>.json`（`tracking/_scratch/` 不入版本库）。**这个 JSON 是一次性分析输出：不是战役产物、不入 DB、下游不读取**——与「DB 是真相源、不写战役 JSON」不冲突；缺省路径 `tracking/runs/…` 会被 git 跟踪，别用。 <!-- lint:counterexample: 该目录为工具的**缺省输出位**（文档劝阻使用），并非已存在的战役目录 -->
 
 **8. 按下面的格式回报**
 

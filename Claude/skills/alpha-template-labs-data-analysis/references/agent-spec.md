@@ -58,4 +58,4 @@
 ```
 
 - 键名以引擎实际输出为准；`constraint_checks.violations` 为空时 `artifact_decision_use` = `production_decisive`，非空则降为 `diagnostic_only`。
-- 缺省输出路径 `tracking/runs/<ts>_labs_data_analysis_<dataset_id>.json` 会被 git 跟踪；建议用 `--output tracking/_scratch/…` 指向不入库的目录。这是**一次性分析输出**，不是战役产物，不入 DB，下游不读取。
+- 缺省输出路径 `tracking/runs/<ts>_labs_data_analysis_<dataset_id>.json` 会被 git 跟踪；建议用 `--output tracking/_scratch/…` 指向不入库的目录。这是**一次性分析输出**，不是战役产物，不入 DB，下游不读取。 <!-- lint:counterexample: 同上：缺省输出路径，文档正是在说明「别用这个目录」 -->

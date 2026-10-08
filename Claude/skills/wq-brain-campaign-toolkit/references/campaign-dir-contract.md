@@ -18,7 +18,7 @@ tracking/<REGION>/                       # 区域大写；region 只从 settings
   # 战役台账 = data/wqb.db 的 ledger_kv 表（见 ledger-schema.md）
 ```
 
-**缺目录 / 缺配置时的行为**（区域覆盖情况见 INDEX §区域清单；例：TWN 有 profile 但没有 `tracking/TWN/`，AMR 只有 `config/`）：
+**缺目录 / 缺配置时的行为**（区域覆盖情况见 INDEX §区域清单；例：TWN 有 profile 但没有 `tracking/TWN/`，AMR 只有 `config/`）： <!-- lint:counterexample: 契约文档举例说明「区域覆盖不全」的情形：TWN 缺目录本身就是要描述的现状 -->
 
 | 缺什么 | toolkit 脚本 | workflow 节点 |
 |---|---|---|

@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-05
+last_verified: 2026-10-08
 ---
 
 # TWN 区域挖掘流程（RA 区域分支）
@@ -42,7 +42,7 @@ last_verified: 2026-10-05
 <!-- profiles:region-panel:start -->
 **入场状态**：`probe-only`　小宇宙类 KOR：继承严闸 + 先实测档位，半导体权重股结构注意集中度
 
-> 本区没有战役目录（`tracking/TWN/config/` 缺 settings.json）：开新区前先补 settings.json / thresholds.json，见 INDEX「开新区检查表」。
+> 本区没有战役目录（`tracking/TWN/config/` 缺 settings.json）：开新区前先补 settings.json / thresholds.json，见 INDEX「开新区检查表」。 <!-- lint:counterexample: 本区尚未初始化：这些配置文件是「开新区前需补」的前置清单，引用待创建路径属有意提及 -->
 
 | 阈值 | 值 | 来源 |
 |---|---|---|
@@ -61,7 +61,7 @@ last_verified: 2026-10-05
 ## 组合分支（区域 × 类别）
 
 <!-- profiles:cells-index:start -->
-本区还没有组合文件（`tracking/TWN/config/cells.json` 不存在或为空）：所有类别跟区域缺省。有回测证据后跑 `$WQ_PY -m wqb.profiles sync-cells --region TWN --apply`。
+本区还没有组合文件（`tracking/TWN/config/cells.json` 不存在或为空）：所有类别跟区域缺省。有回测证据后跑 `$WQ_PY -m wqb.profiles sync-cells --region TWN --apply`。 <!-- lint:counterexample: 本区尚未初始化：这些配置文件是「开新区前需补」的前置清单，引用待创建路径属有意提及 -->
 <!-- profiles:cells-index:end -->
 
 ## 本区流程差异（相对九步骨架）
@@ -75,8 +75,8 @@ last_verified: 2026-10-05
 
 ## 改控制
 
-- **区域级**：`tracking/TWN/config/settings.json`（仿真设置）、`tracking/TWN/config/thresholds.json`（阈值）。
-- **组合级**：`tracking/TWN/config/cells.json`——只写覆盖值，每个覆盖在同级 `_evidence` 写证据（波号 / alpha id / 日期）；没有证据的覆盖校验不通过。改完先校验再重渲：
+- **区域级**：`tracking/TWN/config/settings.json`（仿真设置）、`tracking/TWN/config/thresholds.json`（阈值）。 <!-- lint:counterexample: 本区尚未初始化：这些配置文件是「开新区前需补」的前置清单，引用待创建路径属有意提及 -->
+- **组合级**：`tracking/TWN/config/cells.json`——只写覆盖值，每个覆盖在同级 `_evidence` 写证据（波号 / alpha id / 日期）；没有证据的覆盖校验不通过。改完先校验再重渲： <!-- lint:counterexample: 本区尚未初始化：这些配置文件是「开新区前需补」的前置清单，引用待创建路径属有意提及 -->
 
   ```bash
   $WQ_PY -m wqb.profiles check --region TWN

@@ -43,7 +43,7 @@ TWN 小宇宙，registry 空白。结构上半导体/电子权重极高（单一
 ### 步 1 注入：档位实测
 
 `get_platform_setting_options(TWN)` 实测合法档，禁止外推 KOR TOP600。
-**缺口**：`tracking/TWN/` 目录**不存在**（有 profile、无战役目录）——开波前先补 `tracking/TWN/config/{settings,thresholds}.json`（开新区前置，见 [`../region-profile-contract.md`](../region-profile-contract.md) §4）。
+**缺口**：`tracking/TWN/` 目录**不存在**（有 profile、无战役目录）——开波前先补 `tracking/TWN/config/{settings,thresholds}.json`（开新区前置，见 [`../region-profile-contract.md`](../region-profile-contract.md) §4）。 <!-- lint:counterexample: 区域 profile 的「缺口」小节：目录不存在正是本行要陈述的事实 -->
 
 ### 步 5 注入：继承 KOR 严闸
 

@@ -1,7 +1,7 @@
 ---
 region: DEU
 entry_verdict: probe-only
-one_liner: "全域 16 类 0 alpha 的处女地（统一 1.9× 倍率、PPA 点塔无竞争），但存在 sub_universe 结构性墙（limit≈0.47×sharpe，DEU 需 0.8，实测仅 0.30）——先探针定墙，再决定是否升 active"
+one_liner: "全域 16 类 0 alpha 的处女地（统一 1.9× 倍率、PPA 点塔无竞争）。★ 2026-10-08 更正：sub_universe 不是固定墙 —— limit≈0.47×IS_sharpe 是**比值闸**，S 高了自动过；实测已出现 sub=0.74/0.75/1.00。真瓶颈是**合规字段稀缺**（单信号过线仅 1 个字段）"
 static:
   universe: [TOP500]
   universe_default: TOP500
@@ -48,7 +48,7 @@ empirical_anchor:
 | 倍率 | 全域统一 **1.9×**（仅 shortinterest 1.7×）→ 点塔收益高 |
 | 竞争度 | 极低：零竞争 1 个、超低竞争（alphaCount≤5）4 个 |
 | 通过 PPA 硬门槛（cov≥0.85/α≤50/fields≥10） | **11 个数据集** |
-| ⚠ 已知瓶颈 | **sub_universe 结构性墙**：limit ≈ 0.47×sharpe（DEU 需 0.8），实测最好仅 0.30。已在 model264 / model238 / model53 / pattern_scores / news104 / analyst_earnings_ibes / institutions6 / sentiment27 上验证 |
+| ⚠ 已知瓶颈 | ★ **2026-10-08 更正：`sub_universe` 不是固定墙。** `limit ≈ 0.47 × IS_sharpe` 是**比值闸** ⇒ S 高了自动过；旧记录的「实测最好仅 0.30」来自 **S≈0.6 的低分批**（0.47×0.6≈0.28）被误读成墙。**本会话实测已出现 `sub=0.74 / 0.75 / 1.00`**（W170/W171 批次）。**真瓶颈是「合规字段稀缺」**：全 DEU 22494 个字段中仅 1 个（`eps_y1_estimate_change_3mo`）在单信号形态下 S 与 2Y 同时过线。低分批的 sub 实测值**不能**外推成墙。 |
 
 **台账实况**：`backtest_results` 中 DEU **0 条**、`wave_results` **0 条**、`registry_empirical` **0 条**
 （即 S3 从未产出）→ 故 `entry_verdict: probe-only`，不是 active。

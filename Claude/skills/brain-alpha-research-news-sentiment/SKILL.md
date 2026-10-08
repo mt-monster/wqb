@@ -2,7 +2,7 @@
 name: brain-alpha-research-news-sentiment
 layer: L1
 description: "新闻 / 情绪 / 社媒类数据集的研究指引：字段 5 家族分类、家族 × 6 桶配对设计、Tier A / Tier B 候选数据集的路由前核对。要在 news / sentiment / socialmedia 数据集上分类字段、设计一批表达式、判断新闻类数据集值不值得挖时使用；指引层，不是闸门，选集仍走 S0。触发词：新闻数据集 / 情绪数据集 / 5 家族 / 6 桶 / Tier A。"
-last_verified: 2026-09-29
+last_verified: 2026-10-08
 allowed-tools:
   - Read
   - Bash
@@ -61,7 +61,7 @@ allowed-tools:
 & $WQ_PY -c "import sys,json; sys.path.insert(0,'src'); from wqb.research.news_field_classifier import classify_dataset_fields, save_taxonomy; t=classify_dataset_fields(json.load(open('cache/<ds>_fields.json',encoding='utf-8')), dataset_id='<ds>'); print(save_taxonomy('<ds>','<REGION>',t))"
 ```
 
-缓存写到 `tracking/taxonomies/taxonomy_<ds>_<REGION>.json`（运行时缓存）。**没有任何流水线节点调用这个分类器**，它只是本 skill 的辅助工具，结果不会自动进 S1 台账。
+缓存写到 `tracking/taxonomies/taxonomy_<ds>_<REGION>.json`（运行时缓存）。**没有任何流水线节点调用这个分类器**，它只是本 skill 的辅助工具，结果不会自动进 S1 台账。 <!-- lint:counterexample: 运行期缓存目录：首次运行后生成，文中已说明它是本 skill 的辅助产物 -->
 
 **已知盲区（分类后必须人工复核）**：① 缺省 direction 会吞掉所有无关键词命中的字段——`news12` 以外几乎全靠关键词，先看哪些字段落进了缺省；② `novelty` 归 attention（关键词表如此，不是 dispersion）；③ `is_news_dataset` 只认 `category == "news"` 与前缀 `news` / `snt` / `sentiment`——`socialmedia*` / `nws*` / `twitter_*` / `creator_*` / `event_return_model` 不会被自动识别，**分类函数本身不设门**，对任意数据集都能跑，触发条件以 `get_datasets` 的 `category` 或数据集 id 前缀为准。
 
@@ -103,5 +103,5 @@ news12 没有语气 / 极性标量——它是新闻事件驱动的**价格反�
 ## 验证清单（每项写产物）
 
 1. **路由前三查已做**：`s0_whitelist` 的 `entries[].reason` 写明该新闻集的判死 / 跨区弱 / lit 状态；Tier B 已告知用户并选定一个分支。
-2. **字段已分类**：`tracking/taxonomies/taxonomy_<ds>_<REGION>.json` 存在（或对话里有家族表）；缺省 direction 的字段已人工复核；覆盖 < 0.4 的字段有 backfill 或已弃用。
+2. **字段已分类**：`tracking/taxonomies/taxonomy_<ds>_<REGION>.json` 存在（或对话里有家族表）；缺省 direction 的字段已人工复核；覆盖 < 0.4 的字段有 backfill 或已弃用。 <!-- lint:counterexample: 运行期缓存目录：首次运行后生成，文中已说明它是本 skill 的辅助产物 -->
 3. **批设计有留痕**：本批每条表达式标 (家族, 桶, `vec_*`)；≥ 3 桶、≥ 1 HIGH、VECTOR 时 ≥ 2 种聚合、每批无 3 个同家族字段——写进本波 `key_findings`。

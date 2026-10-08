@@ -39,7 +39,7 @@ profile 正文按下面的顺序写，agent 想查「这个区能挖什么」时
 | 区域 | 缺口 | 步 1 的行为 |
 |---|---|---|
 | HKG | （已补）`universe` 于 2026-09-29 从 `config.REGIONS` 回填为 `[TOP800, TOP500]` | 步 1 仍 `get_platform_setting_options` 复核；不再是缺口 |
-| TWN | 有 profile，**没有** `tracking/TWN/` 目录 | 开新区前先补 `tracking/TWN/config/`（`settings.json` / `thresholds.json`）；当前 `probe-only` |
+| TWN | 有 profile，**没有** `tracking/TWN/` 目录 | 开新区前先补 `tracking/TWN/config/`（`settings.json` / `thresholds.json`）；当前 `probe-only` | <!-- lint:counterexample: 同上：开新区前置检查项，引用的是「待创建」的目录 -->
 | MEA | `frozen` | 步 1 即拒；后门见 [`scenarios.md`](scenarios.md) 情景 RA-08 |
 | AMR | `config.REGIONS` 有，profile 已于 2026-09-28 补建（`active`），`tracking/AMR/config/` 存在；平台档位实测见 profile | 已转为持续自我挖掘区（处女地 → active），走通用处女地模板（参照 ASI） |
 | ALL | 平台 `get_platform_setting_options` 有（D1，LARGE / MEDIUM / SMALL），**不在** `config.REGIONS`；REGULAR 仿真返回 400「Region ALL is not available for simulation type REGULAR」（2026-09-19 当日实测，未复核） | 不是挖掘区，步 1 拒绝 |

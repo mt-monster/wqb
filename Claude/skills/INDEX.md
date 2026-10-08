@@ -84,7 +84,7 @@
 | KOR | ✓ | ✓ | `active` | — |
 | MEA | ✓ | ✓ | `frozen` | 步 1 即拒，不进步 2（后门见 RA `scenarios.md` 情景 RA-08） |
 | TWN | ✓ | ✗ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile）；无战役目录：开波前先补 `tracking/TWN/config/{settings,thresholds}.json` |
-| USA | ✓ | ✓ | `active` | — |
+| USA | ✓ | ✓ | `active` | — | <!-- lint:counterexample: TWN 为 probe-only 区：有 profile 但没有战役目录 -->
 <!-- region-table:end -->
 
 - **AMR**：`config.REGIONS` 里有，但**当前不是 RA 挖掘区**；要开必须先补 profile + 实测档位。**ALL** 是平台设置选项里的区域但不在 `config.REGIONS`——同样不是挖掘区。两者的平台侧事实（可用数据集、REGULAR 仿真的报错）是带日期的快照，登记在 [`region-profile-contract.md` §4](wq-brain-ra-pipeline/references/region-profile-contract.md)，不写在本文。

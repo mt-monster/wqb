@@ -13,7 +13,7 @@
 | 2 | **stop_rules（停止规则）** | 见 L.2 | 见 L.2 | 见 L.2 | 见 L.2 |
 | 3 | **backlog（积压）** | region | `conversion`（已回测 ÷ 已生成）< 0.10 **且**总量 ≥ 200 → 拦；`pending+gated` 占比 > 0.30 且总量 ≥ 200 → 拦；**未消费**占比（`gem+selected+pending+gated`）> 0.30 **默认只报不拦**（`unconsumed_enforce=false`，灰度） | GLB 0%、EUR 1%、GBR / ASI 3%、CHN / KOR 7%、USA 9% 都曾在违反时继续开新波 | 先消化近闸积压，再开新波；清理走 `python tools/campaign_intel.py backlog-drop --region $REGION`（缺省 dry-run，`--apply` 写库）；**判据只有这一套**（旧文另有 `conversion<10%` 与步 6 的 `2 倍` 两套说法，已并入此表）；禁止无脑新建表达式堆库 |
 
-> **signal_floor 参数的权威位置** = `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（**不在** `references/regions/*.md` 的 profile 里——profile 只写区域画像）。实测 13/13 区域均已配该节（AMR / ASI / CHN / DEU / EUR / GBR / GLB / HKG / IND / JPN / KOR / MEA / USA；TWN 有 profile 但没有 `tracking/TWN/` 目录，不在此列）。注意：`_evidence` 里「样本 0 波」指的是回填需 ≥ 8 波的样本门槛未达（故不上调 floor），**不是**该区闸失效。
+> **signal_floor 参数的权威位置** = `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（**不在** `references/regions/*.md` 的 profile 里——profile 只写区域画像）。实测 13/13 区域均已配该节（AMR / ASI / CHN / DEU / EUR / GBR / GLB / HKG / IND / JPN / KOR / MEA / USA；TWN 有 profile 但没有 `tracking/TWN/` 目录，不在此列）。注意：`_evidence` 里「样本 0 波」指的是回填需 ≥ 8 波的样本门槛未达（故不上调 floor），**不是**该区闸失效。 <!-- lint:counterexample: 同上：以 TWN 为例说明「profile 有但目录缺」不计入 13/13 实测样本 -->
 >
 > 两个易混点：① `signal_floor` 看的是**最近两个波**的 max\|sharpe\|，不是全历史（取全历史会让闸永不触发——GBR 全局 max 1.04 > floor，哪怕最近 10 批都是 0.3）；② `signal_floor` 拦的是「**信号缺席**」，`stop_rules` 拦的是「**撞墙型或重复失败**」，两者正交（stop_rules 只在 evidence 里标 `wall` / `signal_absent`）。
 

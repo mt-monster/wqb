@@ -7,8 +7,8 @@ allowed-tools:
   - Bash
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
-version: "1.0"
-last_verified: 2026-10-05
+version: "1.1"
+last_verified: 2026-10-08
 ---
 
 # GBR 区域挖掘流程（RA 区域分支）
@@ -21,6 +21,7 @@ last_verified: 2026-10-05
 
 ## 怎么用
 
+0. **先读方法论主文** `docs/reference/field_profile_to_alpha_playbook.md`（七层链路：选区域 → 选字段族 → 开批前三闸 → 信号构造 → **结构维度** → 参数微调 → 闸门判定 → 闭环回填）。**七层是「想什么」，九步是「怎么做」**；本区落地映射见下面「字段画像驱动流程」。
 1. **入场**：看下面「区域控制面板」的入场状态。`frozen` 只走 profile 写明的后门；`probe-only` 只许探针批。
 2. **每次回测前**按数据集取生效画像（回测设置、阈值、Mode B 主闸、生成与改进要点，每项带来源）：
 
@@ -103,6 +104,86 @@ last_verified: 2026-10-05
 
 说明：5 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
+
+## 字段画像驱动流程（Playbook 七层链路 → 九步映射）
+
+> **方法论主文**：`docs/reference/field_profile_to_alpha_playbook.md`（跨区域通用；本区只写差异）。
+> 读法：**先按本表定位当前在哪一层，再走九步** —— 七层是「想什么」，九步是「怎么做」，画像回填让两者复利。
+
+| Playbook 层 | 核心动作 | 九步 | GBR 落地 |
+|---|---|---|---|
+| **0 选区域** | 画像 `ALIVE` 数 + 未测池规模定优先级 | 步 1 | `$WQ_PY tools/fields/field_profile.py --list`（GBR：1.55 万字段 / 285 已测 / 2578 未测 / **49 ALIVE + 34 WEAK** / 465 判死） |
+| **1 选字段族** | 九类 verdict 处置 + ★跨区对照 | 步 2 / 3 | `$WQ_PY tools/fields/field_profile.py --query --region GBR --verdict ALIVE` |
+| **2 开批前三闸** | 值型 / 元数 / 算子实集合 / **字段存在性** | 步 5 | `_lint_expr_values` ＋ `op_arity.ensure_safe_for_dispatch` ＋ `dispatch` 内置 `op-lint` / `field-type-lint` ＋ `validate_expressions` |
+| **3 信号构造** | 禁混信号；**5 放行形态用满** | 步 4 | 见下「合规模板」 |
+| **4 结构维度** ★ | 合成模板 / 外层算子 / 残差化轴 / 分组粒度 | 步 4 / 7 | ★ **最大杠杆 —— 先扫结构，再扫参数** |
+| **5 参数微调** | 窗长 / gran / decay / 中性化档 | 步 7 | 必须在结构确定**之后**（换结构后参数最优会漂移） |
+| **6 闸门判定** | IS 闸 ＋ `submit_verdict` ＋ **prod/self 双端点** | 步 7 / 8 | 见下「判定口径」 |
+| **7 闭环回填** | 画像复利 | 步 9 | `$WQ_PY tools/fields/field_profile.py --build --region GBR` |
+
+> 本区基线快照（ALIVE/WEAK 字段全表 + 各类 verdict 分布 + 战役目标）见 [`references/_field-profile-playbook.md`](references/_field-profile-playbook.md)。
+
+### 第 1 层 · verdict 九类处置表
+
+| verdict | 判据 | 处置 | GBR 规模 |
+|---|---|---|---|
+| `UNUSABLE` | `coverage < 0.6` | **永久剔除** | ANALYST 1742 / MODEL 4071 / OTHER 1930 / PV 1412 |
+| `AXIS_ONLY` | `ftype == GROUP` | **只能当分组轴**，不进信号白名单 | OTHER 1200 / PV 190 |
+| `UNTESTED` | 过前两关且 `n_tests == 0` | 可探（按机制族排优先级） | **2578**（MODEL 1160 / PV 537 / ANALYST 474 / OTHER 365 …） |
+| **`ALIVE`** | 单信号 `S ≥ 1.58` | **过闸线 ⇒ 直接可做** | **49**（MODEL 14 / ANALYST 16 / PV 3 …） |
+| `WEAK` | 单信号 `S ≥ 1.10` | **有信号但不够强 ⇒ 优先深挖** | **34** |
+| `DEAD` | 已测 `S < 1.10` | 不再投入 | **465** |
+| **`DEAD_STATIC`** | `to_med < 0.03` | **静态属性，任何骨架都无用** | 32 |
+| **`DEAD_TURNOVER`** | `to_med > 0.70` | **被 HIGH_TURNOVER 闸直接拒** | NEWS 6 / MODEL 2 / PV 1 |
+| **`DEAD_COUNT`** | 名字含 `num/count` 且 2Y≥1.3 且 S≤0.7 | **「2Y 有 S 无」判死形态** | INSTITUTIONS 3 |
+
+### 第 1 层 · ★ 跨区对照（最强的筛字段手段）
+
+**规则**：同机制在某区 `ALIVE`、在另一区未测 ⇒ **优先在对它有效的区做，或回本区补测那个「形式」**。
+- **形式 > 机制**：EUR 的 `predicted_surprise_pct_*` ALIVE（S2.09），DEU 只测过绝对版（0.74）⇒ DEU 的 34 个 pct 变体未测 = **被误判的机制**。
+- **同机制跨区可反向**：`shortinterest` 在 KOR ALIVE（S2.35）、在 DEU 族级否证。
+- **⚠ 高 S 陷阱**：`*_label*` / `*_bucket*`（分位数 / 概率桶标签）**不是信号** ⇒ **开批前必核 `fields.description`**。
+- **字段名骗人**：`iv_projected_*` 实为 DPS 预测；`liquidity_money_flow_alignment` 实为 Relative Turnover；**后缀判类型会翻车**（`_tribes` 有 MATRIX 也有 VECTOR）⇒ 以 `get_datafields` 的 `type` 为准。
+
+### 第 3 层 · 合规模板（5 放行形态，必须用满）
+
+| 形态 | 示例 | 经济含义 |
+|---|---|---|
+| `add`（双窗） | `add(ts_mean(F,1), ts_mean(F,120))` | 快慢双窗：短期变化 + 中期水平 |
+| `divide` | `divide(A, B)` | 信息比率 / 标准化 |
+| `subtract(rank,rank)` | `subtract(rank(A), rank(B))` | 相对强弱 / **行业内相对** |
+| `if_else` / `trade_when` | `trade_when(cond, sig, -1)` | 事件门控 / 条件筛选 |
+| `group_rank` / `group_zscore` | `group_zscore(x, group)` | 组内标准化（非保序 ⇒ 独立杠杆） |
+
+**算子数 < 10**（超了判复杂）；**禁止两条独立信号腿相加**（加权 / 等权 / `add` / 中缀 `+` 一律违规）。
+
+### 第 4 层 · ★★ 结构维度 > 参数维度（本区与 DEU 的共同铁律）
+
+**GBR 实证**：`ts_arg_max`（时效量纲）、`group_neutralize` **施加在原始信号上**（而非加工后）、`残差化 × 平滑` 串联 —— 三者都是**结构级**发现；而「保序变换 / `truncation` / 模拟层 `decay` / `nanHandling`」这类**参数级**动作在本区全灭。
+**⇒ 纪律：卡住时先问「结构维度扫过没有」，再问「参数扫过没有」。**
+
+结构维度清单（每项独立杠杆）：
+
+| 维度 | 扫描范围 | GBR 结论 |
+|---|---|---|
+| **合成模板** | 双窗 / 差值 / 比率 / 行业内相对 / 门控 | 「行业内相对」与「残差化 × 平滑」是最大单次增益 |
+| **外层算子** | `rank` / `ts_decay_linear` / `signed_power` / `group_zscore` / `winsorize` / `ts_rank` | `ts_decay_linear` 有效（不牺牲 TO）；`signed_power` 给 2Y 但压 S |
+| **算子作用位置** ★ | `group_neutralize` 施于**原始信号** vs **加工后** | 顺序决定 2Y 过 / 不过（1.71 vs 1.57） |
+| **残差化轴** | `vector_neut(SIG, rank(axis))` | GBR 实测偏弱，但是「改持仓」类杠杆，值得按族试 |
+| **分组轴粒度** | `subindustry` / `industry` / `sector` / 统计聚类 | **轴越细 S 越高、PROD 也越高** ⇒ 核心取舍 |
+| **换量纲** | `ts_delta` / `ts_rank` / `ts_arg_max` / `ts_returns` / `ts_max_diff` | **族特异极强**（M1 有效、M2 毁灭）⇒ 严禁跨集外推 |
+| **算子叠加** | `signed_power(ts_decay_linear(...))` | **叠加无效**（2Y 反降）⇒ 单算子最优 |
+
+### 第 6 层 · 判定口径（GBR 版）
+
+1. **IS 层**：`LOW_SHARPE ≥ 1.58` ｜ `LOW_FITNESS ≥ 1.0` ｜ `TO ∈ [0.03, 0.70]` ｜ `sub ≥ 0.78` ｜ `CLUSTER_TEST ≥ 1` ｜ `LOW_2Y_SHARPE ≥ 1.58`（数值随 delay/区域浮动，权威见 config.PLATFORM_CHECK_LINES）。
+   **★ 平台把 ladder 四舍五入到 2 位再严格比较 ⇒ 真值须 ≥ limit + 0.005。**
+2. **`submit_verdict`**：唯一否决权威（只能拦不能放）；`UNVERIFIABLE_404` = 处女提交的真实形态，**不是 BLOCKED**。
+3. **★ 相关性双端点（最易漏、代价最大）**：
+   - `check_correlation` → **prod ≤ 0.70**；`check_self_correlation` → **self ≤ 0.70**。
+   - **一条腿（机制）只产 1 颗** —— 同族提交一颗后，同持仓变体的 prod/self 会被推爆（GBR 实证：`gJZQZkZe` 提交后同腿 `rKe5L9q3` prod 0.6737 → **0.9933**）。
+   - 降 prod 杠杆分两类：**改持仓**（换残差轴 / 字段 / 概念 / `trade_when` 分层）✅ ｜ **只改时序**（`hump` / `decay` / `ts_mean` 慢化）⚠️ **爆 self**。
+   - **拥挤层诊断**：换 2–3 种结构 prod 会动（>0.01）= **结构层**（改持仓仍可用）；换 ≥5 种纹丝不动 = **机制层**（弃族）。
 
 ## 本区流程差异（相对九步骨架）
 

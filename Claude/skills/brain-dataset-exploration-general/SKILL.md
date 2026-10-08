@@ -2,7 +2,7 @@
 name: brain-dataset-exploration-general
 layer: L1
 description: "对已在 S0 白名单（或用户点名）的某一个数据集做数据集级审计：画像（字段数 / 覆盖 / 拥挤度）、字段分类落台账、按覆盖与使用量抽样深挖关键字段。用户要审计某个数据集、给数据集字段分类、探索新数据集时使用；选集走 S0，单字段评测走 datafield-exploration。"
-last_verified: 2026-09-29
+last_verified: 2026-10-08
 allowed-tools:
   - Read
   - Bash
@@ -50,7 +50,7 @@ python tools/field_semantic_classify.py --region <R> --dataset <ds> --write-ledg
 | 分类法 | 维度 | 用在哪 | 落点 |
 |---|---|---|---|
 | **S1 语义**（本 skill 的落点） | signal / blocked + 10 个经济大类 | 闸 SEM、GEM 字段池 | ledger `s1_semantic_<ds>` |
-| 新闻 5 家族 | direction / attention / dispersion / event_type / peer_context | news / sentiment 数据集的配对设计 | `tracking/taxonomies/…`（[`news-sentiment`](../brain-alpha-research-news-sentiment/SKILL.md) §2） |
+| 新闻 5 家族 | direction / attention / dispersion / event_type / peer_context | news / sentiment 数据集的配对设计 | `tracking/taxonomies/…`（[`news-sentiment`](../brain-alpha-research-news-sentiment/SKILL.md) §2） | <!-- lint:counterexample: 同上：由 news-sentiment skill 在运行中生成，引用的是运行期产物路径 -->
 | dfe 8 问 ↔ GEM 概念位 ↔ hypothesis 12 类 | 三套本体互相映射 | 特征工程 ideas、GEM 生成配额、饱和集假设目录 | 见 [`concept-taxonomy-map.md`](../wq-brain-ra-pipeline/references/concept-taxonomy-map.md) |
 
 ## 4. 评分：只留指针，不手算
