@@ -382,9 +382,15 @@ def build_all_regions(con: sqlite3.Connection) -> int:
 # ── 查询与盘点 ────────────────────────────────────────────────────────
 
 # ★ description 派生的机制标签（2026-10-08）
-# 动机：字段名会骗人（`iv_projected_*` 实为股息预测、`probability_label*` 实为收益预测、
+# 动机：字段名会骗人（`iv_projected_*` 实为内在价值模型预测、`probability_label*` 实为收益预测、
 #       `analyst7` 的 `est_q_dps_raised*` 实为「分析师上调家数」）。**选字段必须按真实机制而非名字族。**
 # 用法：`--desc-tag surprise,revision`（逗号分隔，OR 关系）｜`--list-tags` 看某区机制分布
+#
+# ★ 2026-10-08 二轮扩充（按用户要求「用 description 重新对 DEU 所有 category 画像」时自查发现）：
+#   首轮 18 族把 **35%（7,844/22,494）** 的 DEU 字段漏成 `?`——全是机制明确但关键词没覆盖的族。
+#   本轮补 7 族；其中 `cluster_label` 必须插在 `score` **之前**（PCA/embedding 比泛化的
+#   "score" 更具体：oth455 的 "Continuous PCA score of component 1 …" 应归图谱而非打分）。
+#   其余新族一律**追加在尾部** ⇒ 已有标签零变化（只把 `?` 收窄），`--list-tags` 口径可比。
 DESC_MECHS = [
     ("volatility",      ["volatility", "implied vol", "realized vol"]),
     ("probability",     ["log-probability", "probability that", "probability of"]),
@@ -395,42 +401,99 @@ DESC_MECHS = [
     ("estimate",        ["estimate", "estimated"]),
     ("forecast",        ["forecast"]),
     ("dividend",        ["dividend", "dps"]),
-    ("valuation",       ["valuation", "price-to-", "p/e", "pe ratio", "book value"]),
+    ("valuation",       ["valuation", "price-to", "p/e", "pe ratio", "book value"]),
     ("quantile_bucket", ["quantile bucket", "bucket index", "decile", "quintile"]),
     ("count_breadth",   ["number of", "count of", "raised", "lowered"]),
     ("growth",          ["growth"]),
     ("liquidity",       ["liquidity", "trading volume"]),
+    # ↓ 2026-10-08 二轮新增（顺序即优先级）
+    ("cluster_label",   ["cluster", "kmeans", "principal component", "pca", "eigenvalue",
+                         "embedding", "node2vec", "n2v"]),
     ("score",           ["score", "rating"]),
     ("return",          ["return"]),
     ("risk",            ["risk", "downside"]),
     ("ratio",           ["ratio", "margin", "yield"]),
+    # ↓ 2026-10-08 二轮新增（尾部追加，不动存量标签）
+    ("sentiment",       ["sentiment", "emotion", "mood"]),
+    ("technical",       ["williams", "rsi", "relative strength", "detrended price", "chaikin",
+                         "%r", "moving average", "macd", "bollinger", "price momentum",
+                         "price change", "logarithmic price"]),
+    ("level_amount",    ["amount owed", "cost of goods", "total assets", "total revenue",
+                         "income before", "pretax income", "cash and cash equivalents",
+                         "accounts payable", "accounts receivable", "total"]),
+    ("intraday",        ["intraday", "order imbalance", "auction", "order book", "bid order",
+                         "ask order", "bid-ask", "spread"]),
+    ("event",           ["announcement", "merger", "acquisition", "activist", "earnings call",
+                         "earnings result"]),
+    ("uncertainty",     ["confidence", "uncertainty", "standard deviation", "dispersion"]),
+]
+
+# ★ 2026-10-08 二轮：匹配必须带**词边界** —— 裸子串会假阳性。
+#   实测 `Operating Activities - Net Cash Flow` 命中 `score` 的关键词 "rating"
+#   （"ope-RATING-activities"）；`count of` 类同理。正则：
+#     左侧 (?<![a-z0-9]) + 关键词 + 可选复数 (es|s)? + 右侧 (?![a-z0-9])
+#   兼容 "price-to"（尾连字符自身不在词字符类里）与 "Income Taxes - Total" 两类写法。
+#
+# ★ 已知口径缺陷（**刻意不改**，记录在此以便读数时不误判）：
+#   `estimate`(#7) 排在 `count_breadth`(#12) 之前 ⇒ 形如
+#   "Number of raised analyst estimates of EBIT…" 的字段**单标签显示 estimate**，
+#   尽管它语义上是"家数/广度"。实测把 count_breadth 提前会改写 **9,051 个字段的标签**
+#   （DEU 722 / USA 1,936 / EUR 1,244 …），且会误伤 "Forecast-plus-actual mean…number of…"
+#   这类真均值字段 ⇒ 跨 13 区大面积churn 不值得。
+#   **正确查法**：`--desc-tag count_breadth`（LIKE 过滤，命中即含广度语义），
+#   再看 `mech_all` 列确认它同时带 estimate 标签。
+_DESC_PATS = [
+    (name, [_re.compile(r"(?<![a-z0-9])" + _re.escape(k.strip()) + r"(?:es|s)?(?![a-z0-9])")
+            for k in kws])
+    for name, kws in DESC_MECHS
 ]
 def _desc_sql(con, region: str) -> str:
-    """字段名→description 的子查询，**按 region 限定**。
+    """字段名→description 的子查询，**按 region 限定**，且**按 (dataset, field) 分组**。
 
     2026-10-08：`fields` 表**没有 region 列**（区域经 `datasets.region_id` 关联），
     裸写 `FROM fields` 会跨区取同名字段的描述（静默串区）。故经 `datasets` 关联、
     以 `d.region_id = <该区 id>` 限定；区域不存在时退化为空集（不返回任何描述）。
     由 `tests/unit/01_store_db/test_region_query_guard.py` 棘轮守护。
+
+    2026-10-08 二轮：原先只 `GROUP BY field_name`，撞名字段会**串 description**——
+    实测 `baltic_dry_index` 在 model193 是「对 BDI 的敏感度」、在 model219 是「BDI 本身」，
+    MIN() 取值与 profile 行的 dataset 不保证对应。改为连 dataset 名一起分组，
+    调用方按 (dataset, field) 双列 join ⇒ 一行 profile 恰好命中一条描述。
     """
     row = con.execute("SELECT id FROM regions WHERE name=?", (region,)).fetchone()
     if not row:
-        return "(SELECT field_name, NULL AS d FROM datasets WHERE 0)"
-    return ("(SELECT f.field_name, MIN(COALESCE(f.description,'')) AS d "
+        return "(SELECT field_name, NULL AS ds, NULL AS d FROM datasets WHERE 0)"
+    return ("(SELECT f.field_name, d.name AS ds, MIN(COALESCE(f.description,'')) AS d "
             "FROM fields f JOIN datasets d ON f.dataset_id=d.id "
-            f"WHERE d.region_id = {int(row[0])} GROUP BY f.field_name)")
+            f"WHERE d.region_id = {int(row[0])} GROUP BY f.field_name, d.name)")
 
 
 def desc_mech(description: str) -> str:
-    """从 description 提取机制标签（按 DESC_MECHS 优先级顺序，返回 '?' 表示未匹配）。"""
+    """从 description 提取机制标签（按 DESC_MECHS 优先级顺序，返回 '?' 表示未匹配）。
+
+    ★ 词边界匹配（_DESC_PATS）："ope-rating-activities" 不再命中 "rating"。
+    """
     t = (description or "").lower()
-    for name, kws in DESC_MECHS:
-        if any(k in t for k in kws):
+    for name, pats in _DESC_PATS:
+        if any(p.search(t) for p in pats):
             return name
     return "?"
 
 
-def query(con, region, category, verdict, min_s, limit, desc_tag=None):
+def desc_mech_all(description: str) -> str:
+    """description 命中的**全部**机制标签（'/' 连接，无命中返回 '?'）。
+
+    存在的理由：`--desc-tag estimate` 是 LIKE 过滤（desc 含 estimate 即中），而单标签列
+    只显示优先级首个 ⇒ 查回来的字段标签常是 probability/revision，读者会以为筛错了。
+    全标签列让「为什么命中筛选」一眼可查。
+    """
+    t = (description or "").lower()
+    hits = [name for name, pats in _DESC_PATS if any(p.search(t) for p in pats)]
+    return "/".join(hits) if hits else "?"
+
+
+def query(con, region, category, verdict, min_s, limit, desc_tag=None,
+          min_cov=None, max_cov=None):
     cur = con.cursor()
     w, p = ["p.region=?"], [region]
     if category:
@@ -439,6 +502,10 @@ def query(con, region, category, verdict, min_s, limit, desc_tag=None):
         w.append("p.verdict=?"); p.append(verdict)
     if min_s is not None:
         w.append("COALESCE(p.best_s_sg,p.best_s)>=?"); p.append(min_s)
+    if min_cov is not None:
+        w.append("p.coverage>=?"); p.append(min_cov)
+    if max_cov is not None:
+        w.append("p.coverage<?"); p.append(max_cov)
     tags = [t.strip() for t in (desc_tag or "").split(",") if t.strip()]
     if tags:
         kws = [kw for name, ks in DESC_MECHS if name in tags for kw in ks]
@@ -449,14 +516,16 @@ def query(con, region, category, verdict, min_s, limit, desc_tag=None):
         w.append(f"({ors})")
         p.extend([f"%{k.lower()}%" for k in kws])
     p.append(limit)
+    # ★ 双列 join：(dataset, field) —— 防撞名字段串 description（2026-10-08 二轮）
     sql = f"""SELECT p.dataset, p.field, p.ftype, p.coverage, p.family, p.n_tests, p.to_med,
                      p.best_s_sg, p.best_2y_sg, p.best_sub_sg, p.verdict, p.best_s, f.d
-              FROM {PERF_TABLE} p LEFT JOIN {_desc_sql(con, region)} f ON f.field_name = p.field
+              FROM {PERF_TABLE} p LEFT JOIN {_desc_sql(con, region)} f
+                ON f.field_name = p.field AND f.ds = p.dataset
               WHERE {' AND '.join(w)}
               ORDER BY COALESCE(p.best_s_sg,-9) DESC, COALESCE(p.coverage,0) DESC LIMIT ?"""
     rows = cur.execute(sql, p).fetchall()
     print(f"{'dataset':<18}{'field':<40}{'type':<7}{'cov':>6}{'n':>4}{'to_med':>7}"
-          f"{'S_sg':>6}{'2Y_sg':>7}{'sub':>6}{'S_all':>7}  {'verdict':<10}{'mech':<16}desc")
+          f"{'S_sg':>6}{'2Y_sg':>7}{'sub':>6}{'S_all':>7}  {'verdict':<10}{'mech_all':<24}desc")
     for ds, fld, ft, cov, fam, n, to, s, t2, sub, v, s_all, d in rows:
         print(f"{ds[:17]:<18}{fld[:39]:<40}{ft or '':<8}"
               f"{(f'{cov:.2f}' if cov is not None else '-'):>6}{n:>4}"
@@ -464,19 +533,21 @@ def query(con, region, category, verdict, min_s, limit, desc_tag=None):
               f"{(f'{s:.2f}' if s is not None else '-'):>6}"
               f"{(f'{t2:.2f}' if t2 is not None else '-'):>6}"
               f"{(f'{sub:.2f}' if sub is not None else '-'):>6}"
-              f"{(f'{s_all:.2f}' if s_all is not None else '-'):>7}  {v:<10}{desc_mech(d):<16}{(d or '')[:44]}")
+              f"{(f'{s_all:.2f}' if s_all is not None else '-'):>7}  {v:<10}{desc_mech_all(d):<24}{(d or '')[:40]}")
     tg = f" ｜机制标签={'/'.join(tags)}" if tags else ""
-    print(f"[query] {region} / {len(rows)} 行{tg}")
+    cv = f" ｜cov[{min_cov},{max_cov})" if (min_cov is not None or max_cov is not None) else ""
+    print(f"[query] {region} / {len(rows)} 行{tg}{cv}")
 
 
 def list_desc_tags(con, region: str, limit: int = 40) -> int:
     """列出某区的 description 机制分布（★ 按真实机制选字段的第一步）。"""
     cur = con.cursor()
     rows = cur.execute(f"""
-        SELECT f.d, COUNT(DISTINCT p.field) n,
+        SELECT f.d, COUNT(DISTINCT p.field || '|' || p.dataset) n,
                SUM(CASE WHEN p.verdict IN ('ALIVE','WEAK') THEN 1 ELSE 0 END) alive,
                SUM(CASE WHEN p.verdict='UNTESTED' THEN 1 ELSE 0 END) unt
-        FROM {PERF_TABLE} p LEFT JOIN {_desc_sql(con, region)} f ON f.field_name = p.field
+        FROM {PERF_TABLE} p LEFT JOIN {_desc_sql(con, region)} f
+          ON f.field_name = p.field AND f.ds = p.dataset
         WHERE p.region = ?
         GROUP BY f.d
     """, (region,)).fetchall()
@@ -579,6 +650,10 @@ def main():
     ap.add_argument("--category")
     ap.add_argument("--verdict")
     ap.add_argument("--min-s", type=float)
+    ap.add_argument("--min-cov", dest="min_cov", type=float, default=None,
+                    help="★ 覆盖率下界（含）—— 刀切线 0.6 两侧的边界人口专用")
+    ap.add_argument("--max-cov", dest="max_cov", type=float, default=None,
+                    help="★ 覆盖率上界（不含）")
     ap.add_argument("--limit", type=int, default=30)
     ap.add_argument("--desc-tag", dest="desc_tag",
                     help="★ 按 description 派生的机制标签筛选（逗号分隔，OR）："
@@ -600,7 +675,8 @@ def main():
         if a.all_regions:
             return build_all_regions(con)
         if a.query:
-            query(con, a.region, a.category, a.verdict, a.min_s, a.limit, a.desc_tag)
+            query(con, a.region, a.category, a.verdict, a.min_s, a.limit, a.desc_tag,
+                  a.min_cov, a.max_cov)
             return 0
         if a.list_tags:
             return list_desc_tags(con, a.region, a.limit)

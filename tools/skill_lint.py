@@ -402,6 +402,11 @@ def check_commands() -> List[dict]:
             script_tok = next((t for t in toks if t.replace("\\", "/").endswith(".py")), None)
             if not script_tok:
                 continue
+            # 占位路径按定义无脚本可核：`<repo 外>/x.py` 含空格，词法切开后残留 `外>/x.py`，
+            # 判「脚本不存在」是假阳性（2026-10-08 实证：GBR playbook §9 的两条命令被误拦）。
+            # 含尖括号即跳过**存在性**检查（flag / 子命令检查照旧走）。
+            if "<" in script_tok or ">" in script_tok:
+                continue
             path, status = resolve_script(script_tok, doc)
             snippet = c["raw"][:110]
             if status == "missing":
