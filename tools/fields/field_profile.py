@@ -99,7 +99,25 @@ SKIP_TOKENS = {
     "ts_arg_max", "ts_arg_min", "vec_avg", "vec_max", "vec_min", "vec_sum", "vec_stddev",
     "vec_range", "vec_count", "densify", "group_backfill", "group_cartesian_product",
 }
+# ★ 2026-10-08 修正（用户指正「判断字段要读 description，不能光看字段名」）。
+#   两条纪律由此固化：
+#   ① 名字匹配必须**子串**（`count`/`_num` 后面常跟 `_` 或字母：`count_50bps`、`_numup`、`_numanalysts`，
+#      用 `\b` 会误放走合法 case —— 实测 `\bcount\b` 会把 DEAD_COUNT 从 4 打到 0）。
+#   ② 匹配到名字后**必须用 description 二次确认语义**，因为名字会骗人：
+#      · 名字无 count 但描述是计数：`oth47_organic_keywords` = "Count of unique keywords … unit: count"
+#      · 名字有 count 但描述是比值/百分位：`country_percentile_*`(Percentile)/`accounts_receivable_turnover_ratio`(ratio)
+#      · 名字有 num 但语义是「参与家数/覆盖度」而非「方向性修正家数」：`*_surprisenum` = "Number of
+#        estimates used for surprise calculation"
+#      · 名字有 count 但已是均值：`mean_buy_transaction_count` = "Average per event of insider buy activity"
 COUNT_PAT = _re.compile(r"(raisednum|lowerednum|surprisenum|_num|count)", _re.I)
+#: description 侧「确属计数/参与量」的证据
+COUNT_DESC_PAT = _re.compile(
+    r"(number of|count of|\bcounts?\b|how many|breadth|number of estimates|number of accounts|"
+    r"number of transactions|number of analysts|number of investors|number of shares)", _re.I)
+#: description 侧「并非原始计数」的反证（比例/百分位/均值/排名 ⇒ 不属于 DEAD_COUNT 形态）
+COUNT_DESC_NEG = _re.compile(
+    r"(ratio|percentage|percentile|per\s?cent|fraction|average|per event|normaliz|scaled|"
+    r"\brank\b|code representing|type of index|weighted)", _re.I)
 MULTILEG_PAT = _re.compile(r"add\(")
 
 
@@ -225,7 +243,7 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
     cat_clause = "AND lower(d.category)=lower(?)" if category else ""
     params: List[Any] = [rid] + ([category] if category else [])
     fields = cur.execute(
-        f"""SELECT d.name, d.category, f.field_name, f.field_type, MAX(f.coverage)
+        f"""SELECT d.name, d.category, f.field_name, f.field_type, MAX(f.coverage), MAX(f.description)
             FROM fields f JOIN datasets d ON f.dataset_id=d.id
             WHERE d.region_id=? {cat_clause}
             GROUP BY d.name, d.category, f.field_name, f.field_type""",
@@ -263,7 +281,7 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
                 a["sg_sub"].append(sub)
 
     rows = []
-    for ds, cat, fld, ftype, cov in fields:
+    for ds, cat, fld, ftype, cov, desc in fields:
         a = agg.get(fld)
         n = len(a["s"]) if a else 0
         if a and a["to"]:
@@ -295,7 +313,11 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
         elif to_med is not None and to_med > 0.70:
             verdict = "DEAD_TURNOVER"
         elif (
-            COUNT_PAT.search(fld)
+            # ★ 2026-10-08：类型判定**以 description 为准**，名字只作辅助（用户指正「读 description 而不是看名字」）。
+            #   纯描述驱动比「名字+描述」多捕获 1 例（`oth47_organic_keywords` 名字无 count 但描述
+            #   写明 "Count of unique keywords … unit: count"），且不引入 `country`/`accounts` 类假阳性。
+            COUNT_DESC_PAT.search(desc or "")
+            and not COUNT_DESC_NEG.search(desc or "")
             and best_2y is not None
             and best_2y >= 1.30
             and best_s_sg is not None
