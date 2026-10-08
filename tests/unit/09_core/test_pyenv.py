@@ -44,6 +44,40 @@ def test_resolution_order(tmp_path, monkeypatch):
     assert _pyenv.venv_python() == str(win)                         # $WQ_PY 指向不存在的文件 → 忽略
 
 
+def test_foreign_wqb_python_is_ignored(tmp_path, monkeypatch):
+    """``$WQ_PY`` 指向**另一个 wqb 工作区**的 venv（串仓）→ 忽略，回退本仓 venv。
+
+    事故（2026-10-06）：环境残留 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/.venv/
+    Scripts/python.exe``，旧实现只查 ``os.path.isfile`` 于是放行，``tools/submit_queue.py``
+    被 re-exec 到那个解释器，三层进程互相等待、13 分钟无输出。
+    """
+    mcp = tmp_path / "mcp"
+    monkeypatch.setenv("WQ_MCP_DIR", str(mcp))
+    win = mcp / ".venv" / "Scripts" / "python.exe"
+    win.parent.mkdir(parents=True)
+    win.write_text("")
+
+    other = tmp_path / "other_wqb" / "world-quant-brain-mcp" / ".venv" / "Scripts" / "python.exe"
+    other.parent.mkdir(parents=True)
+    other.write_text("")
+
+    assert _pyenv.is_foreign_wqb_python(str(other))      # 挂在别人的 world-quant-brain-mcp 下
+    monkeypatch.setenv("WQ_PY", str(other))
+    assert _pyenv.venv_python() == str(win)              # 串仓 → 忽略，回退本仓
+
+    assert not _pyenv.is_foreign_wqb_python(str(win))    # 本仓 venv 自己不算串仓
+    monkeypatch.setenv("WQ_PY", str(win))
+    assert _pyenv.venv_python() == str(win)              # 合法覆盖仍然生效
+
+
+def test_plain_custom_python_is_not_treated_as_foreign(tmp_path):
+    """普通自定义解释器（不在任何 wqb 工作区下）不算串仓，仍可覆盖。"""
+    custom = tmp_path / "my_python"
+    custom.write_text("")
+    assert not _pyenv.is_foreign_wqb_python(str(custom))
+    assert not _pyenv.is_foreign_wqb_python("")
+
+
 def test_default_mcp_dir_is_repo_relative(monkeypatch):
     monkeypatch.delenv("WQ_MCP_DIR", raising=False)
     assert _pyenv.mcp_dir() == ROOT / "world-quant-brain-mcp"

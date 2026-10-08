@@ -330,14 +330,37 @@ def resolve_campaign_dir(region: str) -> Optional[str]:
     return None
 
 
+def _is_foreign_wqb_python(candidate: str) -> bool:
+    """``$WQ_PY`` 是否指向**另一个 wqb 工作区**的 venv（串仓）。
+
+    判据与 ``tools/_pyenv.py::is_foreign_wqb_python`` 一致；src 层不 import tools（_pyenv 须在
+    re-exec 前零依赖运行），故内联一份 —— 改判据时**两处都要改**。
+
+    事故（2026-10-06）：环境残留 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/.venv/
+    Scripts/python.exe``，只看 ``isfile`` 的实现会放行，进程被 re-exec 到另一个仓库的解释器后
+    三层互相等待、13 分钟无输出。
+    """
+    if not candidate:
+        return False
+    try:
+        p = Path(candidate).resolve()
+    except OSError:
+        return False
+    own = os.path.normcase(str((REPO_ROOT / "world-quant-brain-mcp").resolve()))
+    for parent in p.parents:
+        if parent.name == "world-quant-brain-mcp":
+            return os.path.normcase(str(parent)) != own
+    return False
+
+
 def wq_py() -> str:
     """返回 MCP venv 的 python 解释器路径。
 
-    优先 WQ_PY 环境变量；回退到 world-quant-brain-mcp/.venv/Scripts/python.exe；
-    最后回退 "python"。
+    优先 WQ_PY 环境变量（存在的文件**且不串仓**）；回退到 world-quant-brain-mcp/.venv/
+    Scripts/python.exe；最后回退 "python"。
     """
     env = os.environ.get("WQ_PY")
-    if env and os.path.isfile(env):
+    if env and os.path.isfile(env) and not _is_foreign_wqb_python(env):
         return env
     for rel in (
         os.path.join("world-quant-brain-mcp", ".venv", "Scripts", "python.exe"),

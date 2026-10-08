@@ -523,6 +523,16 @@ def apply(items: List[Tuple[Path, Optional[str], str]]) -> List[Path]:
     return written
 
 
+# ★ `references/` 下以 `_` 开头的 .md 是「跨类别补充文档」（如 `_field-profile.md`），
+#   不是「区域 × 类别」的组合分支文件 ⇒ 孤儿检查必须跳过它们，否则跨类别文档永远报孤儿。
+SUPPLEMENTARY_PREFIX = "_"
+
+
+def _is_supplementary(ref_md) -> bool:
+    """该 references/*.md 是否为跨类别补充文档（`_` 前缀）而非组合分支文件。"""
+    return ref_md.name.startswith(SUPPLEMENTARY_PREFIX)
+
+
 def check_structure(regions: Optional[List[str]] = None) -> List[str]:
     """轻量校验（测试用）：skill 与组合分支文件齐全、生成块标记在、无孤儿；区域面板里的回测设置与 settings.json 一致。
 
@@ -557,6 +567,8 @@ def check_structure(regions: Optional[List[str]] = None) -> List[str]:
                 problems.append(f"{cp}: 缺生成块 cell-panel")
         if refs.is_dir():
             for f in refs.glob("*.md"):
+                if _is_supplementary(f):
+                    continue
                 if f.stem not in cats:
                     problems.append(f"孤儿分支文件：{f}")
     return problems
@@ -575,6 +587,8 @@ def check(regions: Optional[List[str]] = None) -> List[str]:
         cats = set(load_cells(r).get("cells") or {})
         if refs.is_dir():
             for f in refs.glob("*.md"):
+                if _is_supplementary(f):
+                    continue
                 if f.stem not in cats:
                     problems.append(f"孤儿分支文件：{f}（cells.json 里已没有 {f.stem}；确认后删除）")
     return problems

@@ -181,11 +181,16 @@ def test_legacy_root_is_gone(tmp_path, clean_env):
 def test_wave_gate_db_path_never_hardcoded(tmp_path, clean_env):
     import wave_gate
 
-    assert wave_gate._wqb_db_path() == os.path.join(str(REPO_ROOT), "data", "wqb.db")
+    # Windows 路径大小写不敏感：wave_gate._REPO_ROOT 由 abspath(__file__) 得来，盘符大小写
+    # 随 import 命中的 sys.path 条目而变（d: / D:）。比较前归一，避免时绿时红。
+    def _nc(p):
+        return os.path.normcase(os.path.abspath(str(p)))
+
+    assert _nc(wave_gate._wqb_db_path()) == _nc(os.path.join(str(REPO_ROOT), "data", "wqb.db"))
     camp = _workspace(tmp_path / "ws")
-    assert wave_gate._wqb_db_path(str(camp)) == str(tmp_path / "ws" / "data" / "wqb.db")
+    assert _nc(wave_gate._wqb_db_path(str(camp))) == _nc(tmp_path / "ws" / "data" / "wqb.db")
     clean_env.setenv("WQB_DB_PATH", str(tmp_path / "x.db"))
-    assert wave_gate._wqb_db_path(str(camp)) == str(tmp_path / "x.db")
+    assert _nc(wave_gate._wqb_db_path(str(camp))) == _nc(tmp_path / "x.db")
     assert "traeCN_project" not in Path(wave_gate.__file__).read_text(encoding="utf-8")
 
 

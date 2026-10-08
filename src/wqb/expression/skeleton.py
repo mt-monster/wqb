@@ -44,6 +44,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 __all__ = [
     "structural_signature",
+    "extract_fields",
     "dedup_by_skeleton",
     "skeleton_distribution",
     "DEFAULT_MAX_PER_SKELETON",
@@ -96,6 +97,54 @@ def structural_signature(expr: str) -> str:
             j += 1
         out.append(tok if (j < n and expr[j] == "(") else "F")
     return " ".join(out)
+
+
+def extract_fields(expr: str) -> frozenset:
+    """提取表达式中的实际数据字段名（用于 L2 去重时区分不同信号）。
+
+    与 :func:`structural_signature` 共享同一套分词逻辑（_TOKEN_RE），
+    但**保留**而非替换字段名：
+
+    - 后跟 ``(`` 的 token → 算子（跳过，不计入字段集合）
+    - 数字 token → 参数（跳过）
+    - 其余 → 字段名（保留）
+
+    典型用例：区分 ``rank(ts_backfill(close,66))`` 与
+    ``rank(ts_backfill(open,66))``——两者骨架相同（``rank(ts_backfill(F,N))``），
+    但字段不同（``{close}`` vs ``{open}``），是不同信号不应互相去重。
+
+    >>> sorted(extract_fields("rank(ts_backfill(close, 66))"))
+    ['close']
+    >>> sorted(extract_fields("rank(ts_backfill(open, 66))"))
+    ['open']
+    >>> extract_fields("rank(ts_backfill(close,66))") == extract_fields("rank(ts_backfill(close, 99))")
+    True
+    """
+    if not expr:
+        return frozenset()
+    fields: set[str] = set()
+    i = 0
+    n = len(expr)
+    while i < n:
+        ch = expr[i]
+        if ch in _PUNCT:
+            i += 1
+            continue
+        m = _TOKEN_RE.match(expr, i)
+        if not m:
+            i += 1  # 运算符/空白等一律忽略
+            continue
+        tok = m.group(0)
+        i = m.end()
+        if tok[0].isdigit():
+            continue
+        # 向后看一个非空白字符：是 `(` 则为算子（跳过），否则为字段
+        j = i
+        while j < n and expr[j] in " \t":
+            j += 1
+        if j >= n or expr[j] != "(":
+            fields.add(tok)
+    return frozenset(fields)
 
 
 def _expr_of(item: Any, expr_key: str) -> str:
