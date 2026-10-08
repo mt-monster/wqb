@@ -1,0 +1,141 @@
+{
+ "tool": "perf_max",
+ "alpha_id": "RR6bv6rz",
+ "region": "USA",
+ "objective": "fitness",
+ "created": "2026-10-08T09:37:24",
+ "baseline": {
+  "alpha_id": "RR6bv6rz",
+  "code": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)",
+  "settings": {
+   "instrumentType": "EQUITY",
+   "region": "USA",
+   "universe": "TOP3000",
+   "delay": 1,
+   "decay": 500,
+   "neutralization": "STATISTICAL",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "ON",
+   "maxTrade": "OFF",
+   "maxPosition": "OFF",
+   "language": "FASTEXPR",
+   "visualization": false,
+   "startDate": "2014-01-01",
+   "endDate": "2023-12-31",
+   "simulationMode": "FULL"
+  },
+  "metrics": {
+   "sharpe": 2.04,
+   "fitness": 1.2,
+   "turnover": 0.0382,
+   "returns": 0.0432,
+   "margin": 0.00226,
+   "pnl": 4313390,
+   "two_year_sharpe": 1.71,
+   "sub_universe_sharpe": 0.89
+  },
+  "sharpe": 2.04,
+  "fitness": 1.2,
+  "turnover": 0.0382,
+  "returns": 0.0432,
+  "margin": 0.00226,
+  "pnl": 4313390,
+  "two_year_sharpe": 1.71,
+  "sub_universe_sharpe": 0.89,
+  "checks_fail": [],
+  "checks_fail_names": [],
+  "checks_warn_names": [
+   "CLUSTER_TEST",
+   "MATCHES_COMPETITION",
+   "MATCHES_THEMES"
+  ],
+  "ra_failed_checks": [],
+  "failed_ra_count": 0,
+  "ra_pending_count": 0
+ },
+ "variants": [
+  {
+   "label": "EQ_SP05",
+   "lever": "EQ",
+   "expr": "signed_power(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), 0.5)",
+   "settings_patch": {},
+   "status": "planned",
+   "alpha_id": null,
+   "result": null
+  },
+  {
+   "label": "EQ_WINS2",
+   "lever": "EQ",
+   "expr": "winsorize(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), std=2)",
+   "settings_patch": {},
+   "status": "planned",
+   "alpha_id": null,
+   "result": null
+  },
+  {
+   "label": "EQ_NORMSTD",
+   "lever": "EQ",
+   "expr": "normalize(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), useStd=true)",
+   "settings_patch": {},
+   "status": "planned",
+   "alpha_id": null,
+   "result": null
+  },
+  {
+   "label": "WIN_HALF_5",
+   "lever": "WIN",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 5), subindustry), sigma=1.0)",
+   "settings_patch": {},
+   "status": "planned",
+   "alpha_id": null,
+   "result": null
+  },
+  {
+   "label": "WIN_DBL_20",
+   "lever": "WIN",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry), sigma=1.0)",
+   "settings_patch": {},
+   "status": "planned",
+   "alpha_id": null,
+   "result": null
+  },
+  {
+   "label": "DECAY_HALF_250",
+   "lever": "DECAY",
+   "expr": null,
+   "settings_patch": {
+    "decay": 250
+   },
+   "status": "planned",
+   "alpha_id": null,
+   "result": null,
+   "base_expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)"
+  },
+  {
+   "label": "DECAY_DBL_512",
+   "lever": "DECAY",
+   "expr": null,
+   "settings_patch": {
+    "decay": 512
+   },
+   "status": "planned",
+   "alpha_id": null,
+   "result": null,
+   "base_expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)"
+  },
+  {
+   "label": "CTRL_NANOFF",
+   "lever": "CTRL",
+   "expr": null,
+   "settings_patch": {
+    "nanHandling": "OFF"
+   },
+   "status": "planned",
+   "alpha_id": null,
+   "result": null,
+   "base_expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)"
+  }
+ ]
+}

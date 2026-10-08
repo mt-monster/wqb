@@ -1,0 +1,685 @@
+{
+ "tool": "perf_max",
+ "alpha_id": "RR6bv6rz",
+ "region": "USA",
+ "objective": "fitness",
+ "created": "2026-10-08T09:41:23",
+ "baseline": {
+  "alpha_id": "RR6bv6rz",
+  "code": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)",
+  "settings": {
+   "instrumentType": "EQUITY",
+   "region": "USA",
+   "universe": "TOP3000",
+   "delay": 1,
+   "decay": 500,
+   "neutralization": "STATISTICAL",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "ON",
+   "maxTrade": "OFF",
+   "maxPosition": "OFF",
+   "language": "FASTEXPR",
+   "visualization": false,
+   "startDate": "2014-01-01",
+   "endDate": "2023-12-31",
+   "simulationMode": "FULL"
+  },
+  "metrics": {
+   "sharpe": 2.04,
+   "fitness": 1.2,
+   "turnover": 0.0382,
+   "returns": 0.0432,
+   "margin": 0.00226,
+   "pnl": 4313390,
+   "two_year_sharpe": 1.71,
+   "sub_universe_sharpe": 0.89
+  },
+  "sharpe": 2.04,
+  "fitness": 1.2,
+  "turnover": 0.0382,
+  "returns": 0.0432,
+  "margin": 0.00226,
+  "pnl": 4313390,
+  "two_year_sharpe": 1.71,
+  "sub_universe_sharpe": 0.89,
+  "checks_fail": [],
+  "checks_fail_names": [],
+  "checks_warn_names": [
+   "CLUSTER_TEST",
+   "MATCHES_COMPETITION",
+   "MATCHES_THEMES"
+  ],
+  "ra_failed_checks": [],
+  "failed_ra_count": 0,
+  "ra_pending_count": 0
+ },
+ "variants": [
+  {
+   "label": "EQ_SP05",
+   "lever": "EQ",
+   "expr": "signed_power(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), 0.5)",
+   "settings_patch": {},
+   "status": "harvested",
+   "alpha_id": "akxbmZr5",
+   "result": {
+    "alpha_id": "akxbmZr5",
+    "code": "signed_power(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), 0.5)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 500,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "ON",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 2.16,
+     "fitness": 1.33,
+     "turnover": 0.0389,
+     "returns": 0.0471,
+     "margin": 0.002424,
+     "pnl": 4699327,
+     "two_year_sharpe": 1.54,
+     "sub_universe_sharpe": 0.82
+    },
+    "sharpe": 2.16,
+    "fitness": 1.33,
+    "turnover": 0.0389,
+    "returns": 0.0471,
+    "margin": 0.002424,
+    "pnl": 4699327,
+    "two_year_sharpe": 1.54,
+    "sub_universe_sharpe": 0.82,
+    "checks_fail": [
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": 0.82,
+      "limit": 0.94
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 1.54,
+      "limit": 1.58
+     }
+    ],
+    "checks_fail_names": [
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "failed_ra_count": 2,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": false,
+     "broken": [
+      "LOW_2Y_SHARPE",
+      "LOW_SUB_UNIVERSE_SHARPE"
+     ]
+    },
+    "score": 1.33
+   }
+  },
+  {
+   "label": "EQ_WINS2",
+   "lever": "EQ",
+   "expr": "winsorize(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), std=2)",
+   "settings_patch": {},
+   "status": "harvested",
+   "alpha_id": "RR6bxQR1",
+   "result": {
+    "alpha_id": "RR6bxQR1",
+    "code": "winsorize(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), std=2)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 500,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "ON",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 1.89,
+     "fitness": 1.04,
+     "turnover": 0.0368,
+     "returns": 0.0382,
+     "margin": 0.002075,
+     "pnl": 3814079,
+     "two_year_sharpe": 1.52,
+     "sub_universe_sharpe": 0.82
+    },
+    "sharpe": 1.89,
+    "fitness": 1.04,
+    "turnover": 0.0368,
+    "returns": 0.0382,
+    "margin": 0.002075,
+    "pnl": 3814079,
+    "two_year_sharpe": 1.52,
+    "sub_universe_sharpe": 0.82,
+    "checks_fail": [],
+    "checks_fail_names": [],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [
+     "LOW_2Y_SHARPE"
+    ],
+    "failed_ra_count": 1,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": false,
+     "broken": [
+      "LOW_2Y_SHARPE"
+     ]
+    },
+    "score": 1.04
+   }
+  },
+  {
+   "label": "EQ_NORMSTD",
+   "lever": "EQ",
+   "expr": "normalize(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), useStd=true)",
+   "settings_patch": {},
+   "status": "harvested",
+   "alpha_id": "akxbg1gO",
+   "result": {
+    "alpha_id": "akxbg1gO",
+    "code": "normalize(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), useStd=true)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 500,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "ON",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 1.9,
+     "fitness": 1.05,
+     "turnover": 0.0369,
+     "returns": 0.0385,
+     "margin": 0.002086,
+     "pnl": 3841683,
+     "two_year_sharpe": 1.53,
+     "sub_universe_sharpe": 0.83
+    },
+    "sharpe": 1.9,
+    "fitness": 1.05,
+    "turnover": 0.0369,
+    "returns": 0.0385,
+    "margin": 0.002086,
+    "pnl": 3841683,
+    "two_year_sharpe": 1.53,
+    "sub_universe_sharpe": 0.83,
+    "checks_fail": [],
+    "checks_fail_names": [],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [
+     "LOW_2Y_SHARPE"
+    ],
+    "failed_ra_count": 1,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": false,
+     "broken": [
+      "LOW_2Y_SHARPE"
+     ]
+    },
+    "score": 1.05
+   }
+  },
+  {
+   "label": "WIN_HALF_5",
+   "lever": "WIN",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 5), subindustry), sigma=1.0)",
+   "settings_patch": {},
+   "status": "harvested",
+   "alpha_id": "58gzK081",
+   "result": {
+    "alpha_id": "58gzK081",
+    "code": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 5), subindustry), sigma=1.0)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 500,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "ON",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 2.04,
+     "fitness": 1.21,
+     "turnover": 0.0387,
+     "returns": 0.0437,
+     "margin": 0.002261,
+     "pnl": 4361974,
+     "two_year_sharpe": 1.77,
+     "sub_universe_sharpe": 0.87
+    },
+    "sharpe": 2.04,
+    "fitness": 1.21,
+    "turnover": 0.0387,
+    "returns": 0.0437,
+    "margin": 0.002261,
+    "pnl": 4361974,
+    "two_year_sharpe": 1.77,
+    "sub_universe_sharpe": 0.87,
+    "checks_fail": [
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": 0.87,
+      "limit": 0.88
+     }
+    ],
+    "checks_fail_names": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "failed_ra_count": 1,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": false,
+     "broken": [
+      "LOW_SUB_UNIVERSE_SHARPE"
+     ]
+    },
+    "score": 1.21
+   }
+  },
+  {
+   "label": "WIN_DBL_20",
+   "lever": "WIN",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry), sigma=1.0)",
+   "settings_patch": {},
+   "status": "harvested",
+   "alpha_id": "pw5RbrYX",
+   "result": {
+    "alpha_id": "pw5RbrYX",
+    "code": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry), sigma=1.0)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 500,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "ON",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 2.07,
+     "fitness": 1.21,
+     "turnover": 0.0375,
+     "returns": 0.0429,
+     "margin": 0.002284,
+     "pnl": 4277413,
+     "drawdown": 0.0346,
+     "long_count": 1661,
+     "short_count": 1464,
+     "investability_constrained_sharpe": 2.11,
+     "cluster_test": 1.54,
+     "two_year_sharpe": 1.67,
+     "sub_universe_sharpe": 0.9
+    },
+    "sharpe": 2.07,
+    "fitness": 1.21,
+    "turnover": 0.0375,
+    "returns": 0.0429,
+    "margin": 0.002284,
+    "pnl": 4277413,
+    "drawdown": 0.0346,
+    "long_count": 1661,
+    "short_count": 1464,
+    "investability_constrained_sharpe": 2.11,
+    "cluster_test": 1.54,
+    "towers": [],
+    "two_year_sharpe": 1.67,
+    "sub_universe_sharpe": 0.9,
+    "checks_fail": [],
+    "checks_fail_names": [],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [],
+    "failed_ra_count": 0,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": true,
+     "broken": []
+    },
+    "score": 1.21
+   }
+  },
+  {
+   "label": "DECAY_HALF_250",
+   "lever": "DECAY",
+   "expr": null,
+   "settings_patch": {
+    "decay": 250
+   },
+   "status": "harvested",
+   "alpha_id": "j28AkbMo",
+   "result": {
+    "alpha_id": "j28AkbMo",
+    "code": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 250,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "ON",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 1.89,
+     "fitness": 1.03,
+     "turnover": 0.0368,
+     "returns": 0.0373,
+     "margin": 0.002025,
+     "pnl": 3723338,
+     "two_year_sharpe": 1.74,
+     "sub_universe_sharpe": 0.76
+    },
+    "sharpe": 1.89,
+    "fitness": 1.03,
+    "turnover": 0.0368,
+    "returns": 0.0373,
+    "margin": 0.002025,
+    "pnl": 3723338,
+    "two_year_sharpe": 1.74,
+    "sub_universe_sharpe": 0.76,
+    "checks_fail": [
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": 0.76,
+      "limit": 0.82
+     }
+    ],
+    "checks_fail_names": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "failed_ra_count": 1,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": false,
+     "broken": [
+      "LOW_SUB_UNIVERSE_SHARPE"
+     ]
+    },
+    "score": 1.03
+   },
+   "base_expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)"
+  },
+  {
+   "label": "DECAY_DBL_512",
+   "lever": "DECAY",
+   "expr": null,
+   "settings_patch": {
+    "decay": 512
+   },
+   "status": "harvested",
+   "alpha_id": "rKeOaLvo",
+   "result": {
+    "alpha_id": "rKeOaLvo",
+    "code": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 512,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "ON",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 2.04,
+     "fitness": 1.2,
+     "turnover": 0.0383,
+     "returns": 0.0433,
+     "margin": 0.002261,
+     "pnl": 4323296,
+     "drawdown": 0.0347,
+     "long_count": 1671,
+     "short_count": 1454,
+     "investability_constrained_sharpe": 2.1,
+     "cluster_test": 1.56,
+     "two_year_sharpe": 1.71,
+     "sub_universe_sharpe": 0.89
+    },
+    "sharpe": 2.04,
+    "fitness": 1.2,
+    "turnover": 0.0383,
+    "returns": 0.0433,
+    "margin": 0.002261,
+    "pnl": 4323296,
+    "drawdown": 0.0347,
+    "long_count": 1671,
+    "short_count": 1454,
+    "investability_constrained_sharpe": 2.1,
+    "cluster_test": 1.56,
+    "towers": [],
+    "two_year_sharpe": 1.71,
+    "sub_universe_sharpe": 0.89,
+    "checks_fail": [],
+    "checks_fail_names": [],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [],
+    "failed_ra_count": 0,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": true,
+     "broken": []
+    },
+    "score": 1.2
+   },
+   "base_expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)"
+  },
+  {
+   "label": "CTRL_NANOFF",
+   "lever": "CTRL",
+   "expr": null,
+   "settings_patch": {
+    "nanHandling": "OFF"
+   },
+   "status": "harvested",
+   "alpha_id": "LLZNobG9",
+   "result": {
+    "alpha_id": "LLZNobG9",
+    "code": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "decay": 500,
+     "neutralization": "STATISTICAL",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false,
+     "startDate": "2014-01-01",
+     "endDate": "2023-12-31",
+     "simulationMode": "FULL"
+    },
+    "metrics": {
+     "sharpe": 0.34,
+     "fitness": 0.08,
+     "turnover": 0.0339,
+     "returns": 0.0062,
+     "margin": 0.000367,
+     "pnl": 621257,
+     "two_year_sharpe": 0.03,
+     "sub_universe_sharpe": 0.43
+    },
+    "sharpe": 0.34,
+    "fitness": 0.08,
+    "turnover": 0.0339,
+    "returns": 0.0062,
+    "margin": 0.000367,
+    "pnl": 621257,
+    "two_year_sharpe": 0.03,
+    "sub_universe_sharpe": 0.43,
+    "checks_fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.34,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.08,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 0.03,
+      "limit": 1.58
+     }
+    ],
+    "checks_fail_names": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "checks_warn_names": [
+     "CLUSTER_TEST",
+     "MATCHES_COMPETITION",
+     "MATCHES_THEMES"
+    ],
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "failed_ra_count": 3,
+    "ra_pending_count": 0,
+    "gate": {
+     "preserved": false,
+     "broken": [
+      "LOW_2Y_SHARPE",
+      "LOW_FITNESS",
+      "LOW_SHARPE"
+     ]
+    },
+    "score": 0.08
+   },
+   "base_expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry), sigma=1.0)"
+  }
+ ]
+}

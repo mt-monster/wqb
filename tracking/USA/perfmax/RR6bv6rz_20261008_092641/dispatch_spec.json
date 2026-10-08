@@ -1,0 +1,17 @@
+[
+ {
+  "path": "d:\\coding\\traeCN_project\\wqb\\tracking\\USA\\perfmax\\RR6bv6rz_20261008_092641\\variants_EQ_SP05.txt"
+ },
+ {
+  "path": "d:\\coding\\traeCN_project\\wqb\\tracking\\USA\\perfmax\\RR6bv6rz_20261008_092641\\variants_decay250.txt",
+  "decay": 250
+ },
+ {
+  "path": "d:\\coding\\traeCN_project\\wqb\\tracking\\USA\\perfmax\\RR6bv6rz_20261008_092641\\variants_decay512.txt",
+  "decay": 512
+ },
+ {
+  "path": "d:\\coding\\traeCN_project\\wqb\\tracking\\USA\\perfmax\\RR6bv6rz_20261008_092641\\variants_nanHandlingOFF.txt",
+  "nanHandling": "OFF"
+ }
+]

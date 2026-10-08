@@ -447,6 +447,9 @@ def _upsert(con: sqlite3.Connection, rec: Dict[str, Any], note: str = "") -> str
         ON CONFLICT(alpha_id,region) DO UPDATE SET
           sharpe=excluded.sharpe, fitness=excluded.fitness, turnover=excluded.turnover,
           two_year=excluded.two_year,
+          sub_universe=COALESCE(excluded.sub_universe, submit_ready.sub_universe),
+          cluster_test=COALESCE(excluded.cluster_test, submit_ready.cluster_test),
+          expr=COALESCE(excluded.expr, submit_ready.expr),
           margin=COALESCE(excluded.margin, submit_ready.margin),
           returns=COALESCE(excluded.returns, submit_ready.returns),
           drawdown=COALESCE(excluded.drawdown, submit_ready.drawdown),
@@ -462,6 +465,7 @@ def _upsert(con: sqlite3.Connection, rec: Dict[str, Any], note: str = "") -> str
           verified_by=excluded.verified_by, towers=excluded.towers,
           skeleton=COALESCE(excluded.skeleton, submit_ready.skeleton),
           suggested_tags=excluded.suggested_tags,
+          family=COALESCE(excluded.family, submit_ready.family),
           status=CASE WHEN submit_ready.status='SUBMITTED' THEN submit_ready.status
                       WHEN submit_ready.status='DEAD' AND excluded.status='READY' THEN 'READY'
                       WHEN submit_ready.status='DEAD' THEN submit_ready.status
@@ -974,3 +978,43 @@ def normalize_towers(raw) -> list:
         if nm:
             out.append((str(nm).strip(), mult))
     return out
+
+
+# ---------------- 入队列填充审计（2026-10-08，memory 铁律「入队必须补齐所有可得字段」） ----------------
+
+#: 入队时**凡平台/本地拿得到就该有值**的列。column_fill_audit 逐列查 None/""/"[]"，
+#: 入队后必须跑（perf_max enqueue / enqueue_sweep / submit_queue add 均内置调用）。
+AUDIT_FILL_COLS = (
+    "universe", "delay", "neutralization", "expr", "skeleton",
+    "sharpe", "fitness", "turnover", "two_year", "sub_universe", "cluster_test",
+    "margin", "returns", "drawdown", "long_count", "short_count",
+    "investability_constrained_sharpe", "risk_neutralized_sharpe",
+    "prod", "self", "towers", "family",
+)
+
+
+def family_of_expr(expr: Optional[str]) -> str:
+    """表达式 → 短族名（公开入口，与 _upsert 的 skeleton/family 派生同源）。"""
+    return _family_of(_sig(expr))
+
+
+def column_fill_audit(con: sqlite3.Connection, alpha_id: str, region: str) -> Optional[List[str]]:
+    """入队后列填充审计：返回该行 AUDIT_FILL_COLS 里仍为空的列名列表。
+
+    返回 ``None`` 表示该 (alpha_id, region) 行不存在。空列表 = 全部填满。
+    注意这是**信息性审计**不是闸：prod/self 未实测、risk_neutralized_sharpe 平台不给
+    时允许为空，但必须被看见（不许静默 None）。
+    """
+    row = con.execute("SELECT * FROM submit_ready WHERE alpha_id=? AND region=?",
+                      (alpha_id, region)).fetchone()
+    if row is None:
+        return None
+    keys = row.keys()
+    missing = []
+    for c in AUDIT_FILL_COLS:
+        if c not in keys:
+            continue
+        v = row[c]
+        if v is None or v == "" or v == "[]":
+            missing.append(c)
+    return missing

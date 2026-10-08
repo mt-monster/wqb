@@ -36,12 +36,17 @@ _REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def _mcp_venv_python():
-    env = os.environ.get("WQ_PY")
-    cands = [env, os.path.join(_REPO, "world-quant-brain-mcp", ".venv", "Scripts", "python.exe")]
-    for c in cands:
-        if c and os.path.isfile(c):
-            return c
-    return sys.executable
+    """复用 tools/_pyenv 的规范解析（含「$WQ_PY 串仓」防护），不再各抄一份候选列表。
+
+    事故（2026-10-06）：本函数原为 ``cands = [$WQ_PY, <repo>/.venv/...]`` 只看 ``isfile``，
+    环境残留的 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe``
+    是**存在的文件**于是被放行，进程 re-exec 到另一个仓库的解释器后三层互相等待、13 分钟无输出。
+    """
+    _tools = os.path.join(_REPO, "tools")
+    if _tools not in sys.path:
+        sys.path.insert(0, _tools)
+    import _pyenv
+    return _pyenv.venv_python()
 
 
 def _add_paths():
@@ -207,19 +212,49 @@ async def _fetch(brain, aid):
         pass
     reg = d.get("regular")
     # 坑 1：平台 IS checks 的 FAIL 名单（robust / sub-universe / CW / ladder ...）随记录带入闸门
-    ra_fails = [c.get("name") for c in (isv.get("checks") or [])
-                if isinstance(c, dict) and c.get("result") == "FAIL"]
+    checks = [c for c in (isv.get("checks") or []) if isinstance(c, dict)]
+    ra_fails = [c.get("name") for c in checks if c.get("result") == "FAIL"]
+
+    # 2026-10-08 入队铁律「拿得到的一律落库」补齐：2Y/SUB/cluster 在 checks 里
+    # （原始 is 块没有 twoYearSharpe 等 camelCase 键，旧取值恒 None）。
+    from wqb.config import RA_2Y_NAMES
+
+    def _chk(name):
+        for c in checks:
+            if c.get("name") == name:
+                return c.get("value")
+        return None
+
+    two_y = None
+    for nm in RA_2Y_NAMES:
+        two_y = _chk(nm)
+        if two_y is not None:
+            break
+    inv = isv.get("investabilityConstrained")
+    inv_sharpe = inv.get("sharpe") if isinstance(inv, dict) else (
+        inv if isinstance(inv, (int, float)) else None)
+    pyr = d.get("pyramids") or []
+    if isinstance(pyr, dict):
+        pyr = pyr.get("list") or []          # 原始形态 {effective, list} → 取塔列表
+    expr = reg.get("code") if isinstance(reg, dict) else None
+    from wqb.store.submit_queue import family_of_expr as sq_family_of
     return {
         "ra_failed_checks": ra_fails,
         "alpha_id": aid, "region": s.get("region"), "universe": s.get("universe"),
         "delay": s.get("delay"), "decay": s.get("decay"),
         "neutralization": s.get("neutralization"),
-        "expr": reg.get("code") if isinstance(reg, dict) else None,
+        "expr": expr,
+        "family": sq_family_of(expr),
         "sharpe": isv.get("sharpe"), "fitness": isv.get("fitness"),
-        "turnover": isv.get("turnover"), "two_year": isv.get("twoYearSharpe"),
-        "sub_universe": isv.get("subUniverseSharpe"), "cluster_test": isv.get("clusterTest"),
+        "turnover": isv.get("turnover"), "two_year": two_y,
+        "sub_universe": _chk("LOW_SUB_UNIVERSE_SHARPE"),
+        "cluster_test": _chk("CLUSTER_TEST"),
+        "margin": isv.get("margin"), "returns": isv.get("returns"),
+        "drawdown": isv.get("drawdown"),
+        "long_count": isv.get("longCount"), "short_count": isv.get("shortCount"),
+        "investability_constrained_sharpe": inv_sharpe,
         "prod": prod, "self": selfc,
-        "towers": json.dumps(d.get("pyramids") or [], ensure_ascii=False),
+        "towers": json.dumps(pyr, ensure_ascii=False),
     }
 
 
@@ -239,8 +274,10 @@ async def _cmd_add(a):
                 print(f"  {aid}: 取不到区域，跳过")
                 continue
             gate = sq.enqueue(con, rec, note=a.note or "")
+            missing = sq.column_fill_audit(con, rec["alpha_id"], rec["region"]) or []
             print(f"  {aid} [{rec['region']}] sh={rec['sharpe']} fit={rec['fitness']} "
-                  f"prod={rec['prod']} self={rec['self']} → {gate}")
+                  f"prod={rec['prod']} self={rec['self']} → {gate}"
+                  + (f" 未填列: {','.join(missing)}" if missing else " 列填充完整"))
         if a.dry_run:
             con.rollback()
             print("[add] dry-run，未写入")

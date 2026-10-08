@@ -1,0 +1,236 @@
+{
+ "BASE": {
+  "tag": "BASE",
+  "alpha_id": "3qVV22bQ",
+  "sharpe": 1.84,
+  "fitness": 1.32,
+  "turnover": 0.015,
+  "margin": 0.008617,
+  "returns": 0.0646,
+  "sub": 0.74,
+  "sub_limit": 0.8,
+  "sub_result": "FAIL",
+  "two_year": 1.6,
+  "two_year_limit": 1.58,
+  "two_year_result": "PASS",
+  "fails": [
+   "LOW_SUB_UNIVERSE_SHARPE"
+  ],
+  "recent3": [
+   2.32,
+   2.51,
+   0.61
+  ],
+  "maxmin": 4.114754098360655,
+  "decay": 0.33152173913043476,
+  "cv0": 0.4711838487158249
+ },
+ "W10_GIND": {
+  "tag": "W10_GIND",
+  "alpha_id": "ZYAAvPOn",
+  "sharpe": 1.67,
+  "fitness": 1.23,
+  "turnover": 0.0146,
+  "margin": 0.009258,
+  "returns": 0.0675,
+  "sub": 0.71,
+  "sub_limit": 0.72,
+  "sub_result": "FAIL",
+  "two_year": 1.43,
+  "two_year_limit": 1.58,
+  "two_year_result": "FAIL",
+  "fails": [
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "recent3": [
+   2.12,
+   1.91,
+   0.86
+  ],
+  "maxmin": 2.465116279069768,
+  "decay": 0.5149700598802396,
+  "cv0": 0.33814757741155016
+ },
+ "W10_SECTOR": {
+  "tag": "W10_SECTOR",
+  "alpha_id": "Vk00bw3G",
+  "sharpe": 1.75,
+  "fitness": 1.34,
+  "turnover": 0.0146,
+  "margin": 0.010058,
+  "returns": 0.0736,
+  "sub": 0.78,
+  "sub_limit": 0.76,
+  "sub_result": "PASS",
+  "two_year": 1.52,
+  "two_year_limit": 1.58,
+  "two_year_result": "WARNING",
+  "fails": [],
+  "recent3": [
+   2.18,
+   2.05,
+   0.89
+  ],
+  "maxmin": 2.449438202247191,
+  "decay": 0.5085714285714286,
+  "cv0": 0.3397876210832382
+ },
+ "W10_MKT": {
+  "tag": "W10_MKT",
+  "alpha_id": "gJZZ52jO",
+  "sharpe": 1.71,
+  "fitness": 1.31,
+  "turnover": 0.0147,
+  "margin": 0.01,
+  "returns": 0.0734,
+  "sub": 0.78,
+  "sub_limit": 0.74,
+  "sub_result": "PASS",
+  "two_year": 1.45,
+  "two_year_limit": 1.58,
+  "two_year_result": "WARNING",
+  "fails": [],
+  "recent3": [
+   2.13,
+   1.95,
+   0.86
+  ],
+  "maxmin": 2.4767441860465116,
+  "decay": 0.5029239766081871,
+  "cv0": 0.34074304167909303
+ },
+ "W10_D512": {
+  "tag": "W10_D512",
+  "alpha_id": "kqgg60Qk",
+  "sharpe": 1.85,
+  "fitness": 1.33,
+  "turnover": 0.015,
+  "margin": 0.008666,
+  "returns": 0.0648,
+  "sub": 0.74,
+  "sub_limit": 0.8,
+  "sub_result": "FAIL",
+  "two_year": 1.61,
+  "two_year_limit": 1.58,
+  "two_year_result": "PASS",
+  "fails": [
+   "LOW_SUB_UNIVERSE_SHARPE"
+  ],
+  "recent3": [
+   2.33,
+   2.55,
+   0.6
+  ],
+  "maxmin": 4.25,
+  "decay": 0.3243243243243243,
+  "cv0": 0.47738426065862055
+ },
+ "W5_D512": {
+  "tag": "W5_D512",
+  "alpha_id": "qM00JkVO",
+  "sharpe": 1.85,
+  "fitness": 1.34,
+  "turnover": 0.0153,
+  "margin": 0.008601,
+  "returns": 0.0656,
+  "sub": 0.72,
+  "sub_limit": 0.8,
+  "sub_result": "FAIL",
+  "two_year": 1.64,
+  "two_year_limit": 1.58,
+  "two_year_result": "PASS",
+  "fails": [
+   "LOW_SUB_UNIVERSE_SHARPE"
+  ],
+  "recent3": [
+   2.31,
+   2.57,
+   0.63
+  ],
+  "maxmin": 4.079365079365079,
+  "decay": 0.3405405405405405,
+  "cv0": 0.4681410720988124
+ },
+ "W10_ZS": {
+  "tag": "W10_ZS",
+  "alpha_id": "YPMMo5AA",
+  "sharpe": 1.68,
+  "fitness": 1.14,
+  "turnover": 0.0148,
+  "margin": 0.007742,
+  "returns": 0.0573,
+  "sub": 0.65,
+  "sub_limit": 0.73,
+  "sub_result": "FAIL",
+  "two_year": 1.39,
+  "two_year_limit": 1.58,
+  "two_year_result": "FAIL",
+  "fails": [
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "recent3": [
+   2.05,
+   2.24,
+   0.47
+  ],
+  "maxmin": 4.765957446808511,
+  "decay": 0.27976190476190477,
+  "cv0": 0.5000441333534265
+ },
+ "W10_WIN": {
+  "tag": "W10_WIN",
+  "alpha_id": "akxx9ARx",
+  "sharpe": 1.67,
+  "fitness": 1.13,
+  "turnover": 0.0148,
+  "margin": 0.007713,
+  "returns": 0.0569,
+  "sub": 0.65,
+  "sub_limit": 0.72,
+  "sub_result": "FAIL",
+  "two_year": 1.38,
+  "two_year_limit": 1.58,
+  "two_year_result": "FAIL",
+  "fails": [
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "recent3": [
+   2.05,
+   2.23,
+   0.47
+  ],
+  "maxmin": 4.74468085106383,
+  "decay": 0.281437125748503,
+  "cv0": 0.49936913109029135
+ },
+ "W10_GIND_D512": {
+  "tag": "W10_GIND_D512",
+  "alpha_id": "vR22Xj6r",
+  "sharpe": 1.68,
+  "fitness": 1.24,
+  "turnover": 0.0146,
+  "margin": 0.00932,
+  "returns": 0.0678,
+  "sub": 0.72,
+  "sub_limit": 0.73,
+  "sub_result": "FAIL",
+  "two_year": 1.44,
+  "two_year_limit": 1.58,
+  "two_year_result": "FAIL",
+  "fails": [
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "recent3": [
+   2.13,
+   1.95,
+   0.86
+  ],
+  "maxmin": 2.4767441860465116,
+  "decay": 0.5119047619047619,
+  "cv0": 0.34074304167909303
+ }
+}

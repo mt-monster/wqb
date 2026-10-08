@@ -1,0 +1,50 @@
+{
+ "W40": {
+  "http": 200,
+  "status": "COMPLETE",
+  "alpha": "omWWG8WJ",
+  "message": null
+ },
+ "W60": {
+  "http": 200,
+  "status": null,
+  "alpha": null,
+  "message": null
+ },
+ "W120": {
+  "http": 200,
+  "status": "COMPLETE",
+  "alpha": "kqggGnX6",
+  "message": null
+ },
+ "TDL20": {
+  "http": 200,
+  "status": "COMPLETE",
+  "alpha": "leKKGb9l",
+  "message": null
+ },
+ "GZ20": {
+  "http": 200,
+  "status": "COMPLETE",
+  "alpha": "wpbbG69Y",
+  "message": null
+ },
+ "U1000": {
+  "http": 200,
+  "status": null,
+  "alpha": null,
+  "message": null
+ },
+ "NEU_IND": {
+  "http": 200,
+  "status": null,
+  "alpha": null,
+  "message": null
+ },
+ "NEU_SLOW": {
+  "http": 200,
+  "status": null,
+  "alpha": null,
+  "message": null
+ }
+}

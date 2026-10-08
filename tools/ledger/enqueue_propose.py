@@ -55,6 +55,7 @@ from datetime import datetime, timezone, timedelta
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "src"))
 
 from wqb.store import submit_queue as sq  # noqa: E402
+from wqb.expression.skeleton import extract_fields as _extract_fields  # noqa: E402
 
 DEF_MIN_SHARPE = 1.58
 DEF_MIN_FITNESS = 1.0
@@ -223,13 +224,36 @@ def _sort_key(r):
 
 
 def l2_select(rows, top_per_region=0):
-    """同族只留代表 → （可选）每区配额。返回 (picked, n_groups)。"""
+    """同族只留代表 → （可选）每区配额。返回 (picked, n_groups, deduped)。
+
+    deduped = list of {alpha_id, region, skeleton, won_by, sharpe, fitness, fields}
+    记录被 L2 去重杀掉的候选（同族非代表），供报告展示「被扫到但被去重」的明细。
+
+    ★ 分组键 = (region, 骨架签名, 字段名集合)
+    骨架签名只保留算子结构（字段→F、数字→N），用于识别「同骨架」；
+    字段名集合区分同骨架下的不同数据源（close vs open 是不同信号，不应去重）。
+    """
     groups = defaultdict(list)
     for r in rows:
-        groups[(r["region"], sq._sig(r.get("expr")))].append(r)
+        key = (r["region"], sq._sig(r.get("expr")), _extract_fields(r.get("expr")))
+        groups[key].append(r)
     picked = []
+    deduped = []
     for _k, g in groups.items():
-        picked.append(sorted(g, key=_sort_key)[0])
+        g_sorted = sorted(g, key=_sort_key)
+        winner = g_sorted[0]
+        picked.append(winner)
+        for loser in g_sorted[1:]:
+            deduped.append({
+                "alpha_id": loser["alpha_id"],
+                "region": loser.get("region"),
+                "skeleton": sq._sig(loser.get("expr")),
+                "fields": sorted(_extract_fields(loser.get("expr"))),
+                "won_by": winner["alpha_id"],
+                "winner_fields": sorted(_extract_fields(winner.get("expr"))),
+                "sharpe": loser.get("sharpe"),
+                "fitness": loser.get("fitness"),
+            })
     if top_per_region > 0:
         by_reg = defaultdict(list)
         for r in picked:
@@ -238,7 +262,7 @@ def l2_select(rows, top_per_region=0):
         for _reg, g in by_reg.items():
             picked.extend(sorted(g, key=_sort_key)[:top_per_region])
     picked.sort(key=_sort_key)
-    return picked, len(groups)
+    return picked, len(groups), deduped
 
 
 # ---------------- L3 ----------------
@@ -339,9 +363,9 @@ def main() -> int:
             l1.append(r)
 
         if a.no_dedup:
-            picked, n_groups = sorted(l1, key=_sort_key), len(l1)
+            picked, n_groups, deduped = sorted(l1, key=_sort_key), len(l1), []
         else:
-            picked, n_groups = l2_select(l1, a.top_per_region)
+            picked, n_groups, deduped = l2_select(l1, a.top_per_region)
 
         cands = [{"alpha_id": r["alpha_id"], "region": r["region"],
                   "sharpe": r.get("sharpe"), "fitness": r.get("fitness"),
@@ -349,7 +373,8 @@ def main() -> int:
                   "prod": r.get("prod"), "self": r.get("selfc"),
                   "tower": r.get("tower"), "tower_count": r.get("count"),
                   "tower_lit": r.get("lit"),
-                  "skeleton": sq._sig(r.get("expr"))} for r in picked]
+                  "skeleton": sq._sig(r.get("expr")),
+                  "fields": sorted(_extract_fields(r.get("expr")))} for r in picked]
 
         stamp = datetime.now(_CST)
         payload = {"proposal": stamp.strftime("enq-%Y%m%d-%H%M%S"),
@@ -357,6 +382,8 @@ def main() -> int:
                    "applied": False, "scope": a.region or "全库",
                    "s0": len(raw), "l1": len(l1), "proposal_count": len(cands),
                    "killed": dict(killed),
+                   "l2_deduped": deduped,
+                   "l2_deduped_count": len(deduped),
                    "params": {"min_sharpe": a.min_sharpe, "min_fitness": a.min_fitness,
                               "min_2y": a.min_2y, "max_corr": a.max_corr,
                               "top_per_region": a.top_per_region, "dedup": not a.no_dedup,
@@ -376,18 +403,30 @@ def main() -> int:
             print("L1 剔除理由 top10:")
             for k, v in killed.most_common(10):
                 print(f"   {k:34} {v}")
+        if deduped:
+            print(f"L2 同族去重（被代表挤掉的候选）: {len(deduped)} 条")
+            # 按 region 汇总
+            by_reg = defaultdict(list)
+            for d in deduped:
+                by_reg[d.get("region")].append(d)
+            for reg in sorted(by_reg):
+                items = by_reg[reg]
+                print(f"   {reg} ({len(items)} 条):", ", ".join(
+                    f"{d['alpha_id']}(→{d['won_by']})" for d in items[:8])
+                    + ("..." if len(items) > 8 else ""))
 
         print(f"\n{'alpha_id':11}{'reg':5}{'S':>7}{'F':>7}{'2Y':>7}{'prod':>8}  "
-              f"{'tower':16}{'ACT':>4} {'点':3} skeleton")
-        print("-" * 118)
+              f"{'tower':16}{'ACT':>4} {'点':3} {'fields':6} skeleton")
+        print("-" * 122)
         for c in cands:
             ty = _fmt(c["two_year"])
             pd_ = _fmt(c["prod"], 4)
             tws = (c["tower"] or "—")[:16]
             flag = "亮" if c["tower_lit"] else ("未" if c["tower_lit"] is False else "?")
+            fc = len(c.get("fields") or [])
             print(f"{c['alpha_id']:11}{str(c['region']):5}{c['sharpe'] or 0:>7.2f}{c['fitness'] or 0:>7.2f}"
                   f"{ty:>7}{pd_:>8}  {tws:16}{str(c['tower_count'] if c['tower_count'] is not None else '—'):>4} "
-                  f"{flag:3} {(c['skeleton'] or '')[:26]}")
+                  f"{flag:3} {fc:>6} {(c['skeleton'] or '')[:26]}")
 
         out = a.json_out or _root(os.path.join(
             "results", f"enqueue_proposal_{stamp.strftime('%Y%m%d-%H%M%S')}.json"))

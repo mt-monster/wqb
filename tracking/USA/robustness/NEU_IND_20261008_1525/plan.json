@@ -1,0 +1,82 @@
+{
+ "base": {
+  "alpha_id": "omWWGdlv",
+  "note": "NEU_IND: S1.86 F1.33 2Y1.57(chk limit1.58) SUB0.74(limit0.81) 2023=0.63 max/min3.90 衰减0.339"
+ },
+ "target": "补 SUB >=0.81 与 2Y >=1.58，保住 2023>=0.62 / max-min<=5 / 衰减>=0.30",
+ "variants": [
+  {
+   "tag": "W10",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 10), subindustry))",
+   "decay": 500,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP3000",
+   "result": null,
+   "sim_id": "2dfejegh4WOahuY2cBO4wh"
+  },
+  {
+   "tag": "W5",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 5), subindustry))",
+   "decay": 500,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP3000",
+   "result": null,
+   "sim_id": "W7hkTeap4oFcxz12ZCCbgpV"
+  },
+  {
+   "tag": "D250",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry))",
+   "decay": 250,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP3000",
+   "result": null,
+   "sim_id": "2PJfTUd0Y4RWbGo4HYXHtsA"
+  },
+  {
+   "tag": "D1000",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry))",
+   "decay": 512,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP3000",
+   "result": null,
+   "note": "decay 1000 被平台 400，改 512（上限）",
+   "sim_id": "3Dplfm8w852p9vb3snxug6U"
+  },
+  {
+   "tag": "TOP2000",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry))",
+   "decay": 500,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP2000",
+   "result": null,
+   "sim_id": "UERVJ5fc4NIcjQjoqeGWNF"
+  },
+  {
+   "tag": "TDL20",
+   "expr": "quantile(group_rank(ts_decay_linear(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry))",
+   "decay": 500,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP3000",
+   "result": null,
+   "sim_id": "2kXRa42Q153qa8wvSVQdA62"
+  },
+  {
+   "tag": "GIND",
+   "expr": "quantile(group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), industry))",
+   "decay": 500,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP3000",
+   "result": null,
+   "sim_id": "3zp1MWfCH5khajn12dFn12Q9"
+  },
+  {
+   "tag": "NOQ",
+   "expr": "group_rank(ts_mean(if_else(greater(mean_estimate_targetprice_annual12_tribes, median_estimate_targetprice_annual12_tribes), stddev_estimate_fxadj_targetprice_annual12_tribes, reverse(stddev_estimate_fxadj_targetprice_annual12_tribes)), 20), subindustry)",
+   "decay": 500,
+   "neutralization": "INDUSTRY",
+   "universe": "TOP3000",
+   "result": null,
+   "sim_id": "3kv0EO3ED5bw8Avq8DIQNUY"
+  }
+ ]
+}
