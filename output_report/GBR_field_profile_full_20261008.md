@@ -329,3 +329,59 @@
   · 两个水平相除 ≈ 1 ⇒ **比值近似常量**（实测 S = −0.00）；vintage 用法应是**差值**或**分位**，不是 `divide`；
   · `aggregate_equity_value_all_owners` **2Y 1.74 健康、S 弱** ⇒ 与 `oth47_organic_traffic` 同型，值得换量纲再试。
 - **⇒ 建议下一步**：对这 3 类「骨架错配/待换量纲」目标再发一波（变化型 / 分位型骨架）。
+
+
+---
+
+## 十二、继续执行：换骨架复测 + NEWS 情绪分族（Wave 19/20）
+
+### 12.1 Wave 19 —— 对「骨架错配」目标改换变化型/分位型骨架 → 全弱
+
+| 目标 | 换的骨架 | S | 2Y |
+|---|---|---:|---:|
+| `analyst_recommendation_change_score` | `ts_delta`22 / `ts_rank`252 / `ts_zscore`252 | −0.02 / 0.31 / −0.14 | 0.07 / 0.49 / **1.41** |
+| `est_12m_bps_high` − `_4wks_ago` | `subtract(rank, rank)`（vintage 差值） | −0.22 | −0.10 |
+| `est_12m_bps_high` | `ts_rank`252 | −0.48 | −0.37 |
+| `aggregate_equity_value_all_owners` | `ts_zscore` / `ts_rank` | −0.20 / −0.32 | −0.51 / −0.59 |
+| `oth47_organic_traffic` | `ts_rank`252 | 0.88 | 0.82 |
+
+**⇒ 这批目标不是「骨架错配」，而是本区确实无信号**（换骨架后仍 ≤ 0.88）。
+唯一亮点：`analyst_recommendation_change_score + ts_zscore` 的 **2Y = 1.41**（S 仅 −0.14）。
+
+### 12.2 ★★ description 深挖 NEWS：**110 个真情绪分字段**（此前只探过 6 个）
+
+按 `description`（而非名字）过滤元数据（date/time/country_code/headline/text/reporting period）后的真信号字段数：
+
+| 数据集 | 真信号字段 | 代表（名字完全看不出） |
+|---|---:|---|
+| `news18` | **38** | `analyst_recommendation_change`（ternary −1/0/1，aCnt 15）、`event_sentiment_score`、`nws18_ghc_lna`（=**Change in analyst recommendation**） |
+| `news20` | **25** | `nws20_ber`（推荐变动分）、`nws20_ghc_lna`、`nws20_event_similarity_days` |
+| `news17` | **24** | `nws17_ber`（推荐变动分）、`nws17_bee`（盈利评估分类器） |
+| `news50` | **18** | `mws50_ess`（0–100 粒度情绪）、`mws50_ens`（**Event Novelty Score**）、`mws50_aes` |
+| `news104` | **5** | `nws104_prob_pos/neg/ntr`（情绪**三分类概率**）、`nws104_confidence` |
+
+### 12.3 Wave 20 —— NEWS 情绪分族实测 → 全弱
+
+| 字段 | S | 2Y |
+|---|---:|---:|
+| `mws50_ess`（0–100 粒度情绪） | **0.83** | 0.94 |
+| `nws104_prob_pos` | 0.42 | 1.04 |
+| `nws18_bee` | 0.23 | **1.83** |
+| `nws20_ber` | −0.13 | **1.75** |
+| `nws17_bee` / `nws17_ber` | 0.06 / −0.05 | 1.49 / 1.21 |
+| `analyst_recommendation_change`（变化型 / 水平型） | −0.58 / −0.33 | −1.36 / −0.41 |
+
+**⇒ NEWS 塔（GBR）判弱**：累计 3 波 ≈ 24 条探针，全部 S ≤ 0.83。
+
+### 12.4 ★ 新识别的第 4 类结果形态：「2Y 稳、S 弱」
+
+| 形态 | 判据 | GBR 实例 | 处置 |
+|---|---|---|---|
+| A prod 墙 | IS 全过、prod > 0.70 | `analyst7` / `pv47` 全腿 | 跨区 |
+| B 2Y 塌 | IS 强、2Y ≪ 1.58 | `analyst_factor_signals` / `analyst9` | 判死（杠杆穷尽） |
+| C 低于闸线 | S/F 不足但非无信号 | `analyst47`（F 0.97） | 保留复访 |
+| **D ★「2Y 稳、S 弱」** | **2Y ≥ 1.58 但 S ≤ 1.0** | `nws18_bee`（S0.23/**2Y1.83**）、`nws20_ber`（S−0.13/**2Y1.75**）、`aggregate_equity_value_all_owners`（**2Y1.74**）、`oth47_organic_traffic`（**2Y1.61**）、`analyst_recommendation_change_score+ts_zscore`（**2Y1.41**） | **值得「换量纲/换骨架」复访**（近年有效但强度不足） |
+
+> **对报告的修正**：`DEAD_TURNOVER`（to_med > 0.70）本质是**骨架属性**而非字段属性 —— 换手可由
+> `ts_decay_linear(·,d)` / `ts_target_tvr_decay(tvr=…)` 压低，而该判据下 7 个字段的 `n_tests` 全为 **1**
+> （单次测量）。⇒ 建议后续把 `DEAD_TURNOVER` 降级为**提示**而非判死（与 `DEAD_COUNT` 同类问题）。
