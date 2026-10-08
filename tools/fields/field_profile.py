@@ -381,31 +381,118 @@ def build_all_regions(con: sqlite3.Connection) -> int:
 
 # ── 查询与盘点 ────────────────────────────────────────────────────────
 
-def query(con, region, category, verdict, min_s, limit):
+# ★ description 派生的机制标签（2026-10-08）
+# 动机：字段名会骗人（`iv_projected_*` 实为股息预测、`probability_label*` 实为收益预测、
+#       `analyst7` 的 `est_q_dps_raised*` 实为「分析师上调家数」）。**选字段必须按真实机制而非名字族。**
+# 用法：`--desc-tag surprise,revision`（逗号分隔，OR 关系）｜`--list-tags` 看某区机制分布
+DESC_MECHS = [
+    ("volatility",      ["volatility", "implied vol", "realized vol"]),
+    ("probability",     ["log-probability", "probability that", "probability of"]),
+    ("percentile_rank", ["percentile rank", "percentile"]),
+    ("regression_pred", ["regression prediction", "regression forecast"]),
+    ("surprise",        ["surprise"]),
+    ("revision",        ["revision", "revised"]),
+    ("estimate",        ["estimate", "estimated"]),
+    ("forecast",        ["forecast"]),
+    ("dividend",        ["dividend", "dps"]),
+    ("valuation",       ["valuation", "price-to-", "p/e", "pe ratio", "book value"]),
+    ("quantile_bucket", ["quantile bucket", "bucket index", "decile", "quintile"]),
+    ("count_breadth",   ["number of", "count of", "raised", "lowered"]),
+    ("growth",          ["growth"]),
+    ("liquidity",       ["liquidity", "trading volume"]),
+    ("score",           ["score", "rating"]),
+    ("return",          ["return"]),
+    ("risk",            ["risk", "downside"]),
+    ("ratio",           ["ratio", "margin", "yield"]),
+]
+def _desc_sql(con, region: str) -> str:
+    """字段名→description 的子查询，**按 region 限定**。
+
+    2026-10-08：`fields` 表**没有 region 列**（区域经 `datasets.region_id` 关联），
+    裸写 `FROM fields` 会跨区取同名字段的描述（静默串区）。故经 `datasets` 关联、
+    以 `d.region_id = <该区 id>` 限定；区域不存在时退化为空集（不返回任何描述）。
+    由 `tests/unit/01_store_db/test_region_query_guard.py` 棘轮守护。
+    """
+    row = con.execute("SELECT id FROM regions WHERE name=?", (region,)).fetchone()
+    if not row:
+        return "(SELECT field_name, NULL AS d FROM datasets WHERE 0)"
+    return ("(SELECT f.field_name, MIN(COALESCE(f.description,'')) AS d "
+            "FROM fields f JOIN datasets d ON f.dataset_id=d.id "
+            f"WHERE d.region_id = {int(row[0])} GROUP BY f.field_name)")
+
+
+def desc_mech(description: str) -> str:
+    """从 description 提取机制标签（按 DESC_MECHS 优先级顺序，返回 '?' 表示未匹配）。"""
+    t = (description or "").lower()
+    for name, kws in DESC_MECHS:
+        if any(k in t for k in kws):
+            return name
+    return "?"
+
+
+def query(con, region, category, verdict, min_s, limit, desc_tag=None):
     cur = con.cursor()
-    w, p = ["region=?"], [region]
+    w, p = ["p.region=?"], [region]
     if category:
-        w.append("lower(category)=lower(?)"); p.append(category)
+        w.append("lower(p.category)=lower(?)"); p.append(category)
     if verdict:
-        w.append("verdict=?"); p.append(verdict)
+        w.append("p.verdict=?"); p.append(verdict)
     if min_s is not None:
-        w.append("COALESCE(best_s_sg,best_s)>=?"); p.append(min_s)
+        w.append("COALESCE(p.best_s_sg,p.best_s)>=?"); p.append(min_s)
+    tags = [t.strip() for t in (desc_tag or "").split(",") if t.strip()]
+    if tags:
+        kws = [kw for name, ks in DESC_MECHS if name in tags for kw in ks]
+        if not kws:
+            print(f"[query] 未知机制标签 {tags}；可选：{', '.join(n for n, _ in DESC_MECHS)}")
+            return
+        ors = " OR ".join(["LOWER(COALESCE(f.d,'')) LIKE ?"] * len(kws))
+        w.append(f"({ors})")
+        p.extend([f"%{k.lower()}%" for k in kws])
     p.append(limit)
-    sql = f"""SELECT dataset, field, ftype, coverage, family, n_tests, to_med,
-                     best_s_sg, best_2y_sg, best_sub_sg, verdict, best_s
-              FROM {PERF_TABLE} WHERE {' AND '.join(w)}
-              ORDER BY COALESCE(best_s_sg,-9) DESC, COALESCE(coverage,0) DESC LIMIT ?"""
+    sql = f"""SELECT p.dataset, p.field, p.ftype, p.coverage, p.family, p.n_tests, p.to_med,
+                     p.best_s_sg, p.best_2y_sg, p.best_sub_sg, p.verdict, p.best_s, f.d
+              FROM {PERF_TABLE} p LEFT JOIN {_desc_sql(con, region)} f ON f.field_name = p.field
+              WHERE {' AND '.join(w)}
+              ORDER BY COALESCE(p.best_s_sg,-9) DESC, COALESCE(p.coverage,0) DESC LIMIT ?"""
     rows = cur.execute(sql, p).fetchall()
-    print(f"{'dataset':<18}{'field':<44}{'type':<7}{'cov':>6}{'n':>4}{'to_med':>7}{'S_sg':>6}{'2Y_sg':>7}{'sub':>6}{'S_all':>7}  verdict")
-    for ds, fld, ft, cov, fam, n, to, s, t2, sub, v, s_all in rows:
-        print(f"{ds[:17]:<18}{fld[:43]:<44}{ft or '':<8}"
+    print(f"{'dataset':<18}{'field':<40}{'type':<7}{'cov':>6}{'n':>4}{'to_med':>7}"
+          f"{'S_sg':>6}{'2Y_sg':>7}{'sub':>6}{'S_all':>7}  {'verdict':<10}{'mech':<16}desc")
+    for ds, fld, ft, cov, fam, n, to, s, t2, sub, v, s_all, d in rows:
+        print(f"{ds[:17]:<18}{fld[:39]:<40}{ft or '':<8}"
               f"{(f'{cov:.2f}' if cov is not None else '-'):>6}{n:>4}"
               f"{(f'{to:.3f}' if to is not None else '-'):>8}"
               f"{(f'{s:.2f}' if s is not None else '-'):>6}"
               f"{(f'{t2:.2f}' if t2 is not None else '-'):>6}"
               f"{(f'{sub:.2f}' if sub is not None else '-'):>6}"
-              f"{(f'{s_all:.2f}' if s_all is not None else '-'):>7}  {v}")
-    print(f"[query] {region} / {len(rows)} 行")
+              f"{(f'{s_all:.2f}' if s_all is not None else '-'):>7}  {v:<10}{desc_mech(d):<16}{(d or '')[:44]}")
+    tg = f" ｜机制标签={'/'.join(tags)}" if tags else ""
+    print(f"[query] {region} / {len(rows)} 行{tg}")
+
+
+def list_desc_tags(con, region: str, limit: int = 40) -> int:
+    """列出某区的 description 机制分布（★ 按真实机制选字段的第一步）。"""
+    cur = con.cursor()
+    rows = cur.execute(f"""
+        SELECT f.d, COUNT(DISTINCT p.field) n,
+               SUM(CASE WHEN p.verdict IN ('ALIVE','WEAK') THEN 1 ELSE 0 END) alive,
+               SUM(CASE WHEN p.verdict='UNTESTED' THEN 1 ELSE 0 END) unt
+        FROM {PERF_TABLE} p LEFT JOIN {_desc_sql(con, region)} f ON f.field_name = p.field
+        WHERE p.region = ?
+        GROUP BY f.d
+    """, (region,)).fetchall()
+    from collections import Counter
+    agg = {}
+    for d, n, al, unt in rows:
+        m = desc_mech(d)
+        a = agg.setdefault(m, {"n": 0, "al": 0, "unt": 0})
+        a["n"] += n; a["al"] += al or 0; a["unt"] += unt or 0
+    print(f"=== {region} 的 description 机制分布（★ 按机制选字段）===")
+    print(f"  {'机制':<18}{'字段数':>8}{'活/弱':>7}{'未测':>7}  说明")
+    for m, a in sorted(agg.items(), key=lambda x: -x[1]["n"])[:limit]:
+        kws = next((k for n, ks in DESC_MECHS if n == m for k in ks), "")
+        print(f"  {m:<18}{a['n']:>8}{a['al']:>7}{a['unt']:>7}  {kws}")
+    print(f"[list-tags] {region} / {len(agg)} 个机制标签")
+    return 0
 
 
 def list_regions(con) -> int:
@@ -493,6 +580,13 @@ def main():
     ap.add_argument("--verdict")
     ap.add_argument("--min-s", type=float)
     ap.add_argument("--limit", type=int, default=30)
+    ap.add_argument("--desc-tag", dest="desc_tag",
+                    help="★ 按 description 派生的机制标签筛选（逗号分隔，OR）："
+                         "volatility,probability,percentile_rank,regression_pred,surprise,revision,"
+                         "estimate,forecast,dividend,valuation,quantile_bucket,count_breadth,growth,"
+                         "liquidity,score,return,risk,ratio")
+    ap.add_argument("--list-tags", action="store_true",
+                    help="★ 列出该区的 description 机制分布（按真实机制选字段的第一步）")
     a = ap.parse_args()
     if not os.path.exists(DB):
         print(f"[error] 找不到 {DB}")
@@ -506,8 +600,10 @@ def main():
         if a.all_regions:
             return build_all_regions(con)
         if a.query:
-            query(con, a.region, a.category, a.verdict, a.min_s, a.limit)
+            query(con, a.region, a.category, a.verdict, a.min_s, a.limit, a.desc_tag)
             return 0
+        if a.list_tags:
+            return list_desc_tags(con, a.region, a.limit)
         if a.list:
             return list_regions(con)
         ap.print_help()
