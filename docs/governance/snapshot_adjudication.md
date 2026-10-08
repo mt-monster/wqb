@@ -24,8 +24,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**833**
-- `RESTORED` = 0；`DROPPED` = 105；`ARTIFACT` = 216；`PENDING` = 512
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**845**
+- `RESTORED` = 0；`DROPPED` = 105；`ARTIFACT` = 216；`PENDING` = 524
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -368,7 +368,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/strong_ds_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/zero_competition_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 
-### 3.4 `PENDING`（512 件）
+### 3.4 `PENDING`（524 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -400,6 +400,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `docs/structural_reconstruction_integration.md` | 同名件在 main 是 `docs/design/structural_reconstruction_integration.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `docs/submit_queue_design.md` | 同名件在 main 是 `docs/design/submit_queue_design.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `output_report/EUR_wave269_campaign_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `output_report/GLB_RA_campaign_20260919_S-PRE_to_S1.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/db_quality_assessment_20260928.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/eur_2y_sharpe_raise_methodology_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/eur_new_category_progress_20261005.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -415,6 +416,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `output_report/org_audit_20261001.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/py_file_audit_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/pyramid_tower_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `output_report/ra_pipeline_stage_audit_20260916_v3.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/skills_fix_plan_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/skills_review_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `output_report/skills_stage_review_20261001.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -432,9 +434,19 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `reports/dataset_experience/asi_model28_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/dataset_experience/asi_pattern_scores_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/dataset_experience/asi_pv13_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/db_schema_audit_2026-08-26.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/db_table_structure_review_2026-08-26.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/feature_engineering_eval_2026-08-27.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/forum-experience/alpha_templates_forum_2026-08-05.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/forum-experience/glb_forum_experience_2026-08-05.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/forum-experience/ppa_forum_experience_2026-08-07.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/forum_alpha_inspiration_taxonomy_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/forum_to_skills_integration_plan_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/project-audit/progress_2026-08-15.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/structure_review_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/temp_and_deadcode_scan_2026-08-28.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/tmp_cleanup_2026-08-30.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/toolkit_usage_review_2026-08-31.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_build_wave_family_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_dataset_meta.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_region_catalog.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |

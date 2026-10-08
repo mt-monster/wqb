@@ -186,7 +186,7 @@ family_deadend(
 
 | 步 | 内容 | 产物 | 依赖 |
 |---|---|---|---|
-| 1 | 族指纹计算函数 `fam_key(region, dataset, fields, skeleton, level)` | `tools/family_key.py` | 无 |
+| 1 | 族指纹计算函数 `fam_key(region, dataset, fields, skeleton, level)` | `tools/family_key.py` | 无 | <!-- lint:counterexample: 本表第 1 项「族指纹计算函数」为**提案**：实现一栏写「无」，该路径从未落地 -->
 | 2 | 对现存 69281 条 `expressions` 回填 fam_key（双粒度） | `expressions` 新增 2 列 | 步 1 |
 | 3 | 一次性把 198 条自然语言 family 映射到 fam_key（人工核对） | `family_deadend` 初始数据 | 步 1 |
 | 4 | 自动派生：族样本 ≥8 且 ra_clean=0 且 max\|S\|<1.0 → soft 条目 | `family_deadend` | 步 2 |

@@ -18,8 +18,35 @@
 **四者必须同时成立**。另有区域专属闸：
 - `LOW_ROBUST_UNIVERSE_SHARPE`（IND，limit **1.0**）
 - `CONCENTRATED_WEIGHT` ≤ 0.1
-- `HIGH_TURNOVER` ≤ 0.4
+- `HIGH_TURNOVER` — ⚠ **上限区域特异**：本文旧记 0.4，**GBR/D1 实测 = 0.7**（2026-10-07，`checks.HIGH_TURNOVER limit 0.7`）。取阈值前**以本区平台返回的 limit 为准**，勿套用他区。
 - `IS_LADDER_SHARPE`
+
+### ★ 换手前置判据（SOP 标准步骤，2026-10-07 定）
+
+> **在候选进入「候选池 / 台账 / 提交队列」之前执行，区间外一律剔除，不进池。**
+
+```
+保留区间：  TO ∈ [0.03, 0.70]
+  TO < 0.03  ⇒ 剔除（近乎静态：换手过低意味着持仓几乎不动，
+                往往是"数据未更新/字段近似常量/伪信号"，margin 与容量都不可信）
+  TO > 0.70  ⇒ 剔除（超过平台 HIGH_TURNOVER 上限，GBR）
+```
+
+**与平台闸的关系（两者都要过，本判据更严）**
+
+| | 平台闸 | 本前置判据 |
+|---|---|---|
+| 下界 | `LOW_TURNOVER` ≥ **0.01** | **≥ 0.03**（更严） |
+| 上界 | `HIGH_TURNOVER` ≤ **0.7**（GBR；他区可能不同） | **≤ 0.70**（对齐） |
+
+**执行工具**：`python to_prefilter.py --wave <波次>` 或 `--alpha-id <ID>...`
+（输出 KEEP / CULL(低 TO) / CULL(高 TO) / UNKNOWN 四类，并给出逐条理由）。
+
+**为什么放在「前置」**：TO 在回测后即已知，而 prod/self 相关性昂贵且排队 ⇒
+**先用零成本判据砍掉结构性不合格项，再做昂贵检查**，可显著减少无效相关性查询与台账污染。
+
+**历史核查（2026-10-07）**：GBR ANALYST 战役全部候选 + 最近 60 条记录，**区间内 100%、零违规**
+（实际分布 TO 0.047–0.23）⇒ 该判据对既有工作无回溯影响。
 
 ### 关键判据
 
@@ -45,6 +72,8 @@
 
 **破比值闸的合规旋钮（实测有效）**：
 - 分组轴换到 **`market`**（决定性，给比值）或 **`exchange`**（给 2Y）
+  ⚠ **2026-10-06 DEU 实测不迁移**：在 `agent_factor_signals` 族（字段 `eps_revision_magnitude`）上，加 `market` 或把 `subindustry` 换成 `market`
+  ⇒ **S 1.37→0.56~0.60、sub 0.64→≤0.21（反噬）**。原结论来自 EUR/KOR ⇒ **逐区逐族实测，勿照搬**。
 - `signed_power` 压尾（⚠ 压尾前先看持仓对称性：会造成多空不对称而触发 `LOW_INVESTABILITY_CONSTRAINED_SHARPE`；优先试等价的 `quantile`，见 `brain-how-to-pass-alpha-test` §5b）
 - 长窗 `ts_rank` / `ts_decay_linear` 平滑
 - ⚠ **分组轴不是 SUB 闸的通用旋钮**：EUR 有效，KOR other466 六种轴向全灭——逐区实测
@@ -121,6 +150,10 @@
 
 ### 提交前必做
 
+- **★ prod 无需本地单独复测（2026-10-08 用户裁定）**：`prod_gate` 节点在 `confirm_submit=True` 时会**自己实时拉取 prod**（拿不到即 fail-closed 拒发，这正是 `correlation_busy` 的成因）。
+  ⇒ 提交前那次独立的 `check_correlation(refresh=True)` 属**冗余动作**：它与节点抢同一个**单并发**队列，反而更容易把端点挤爆。**跳过它不降低安全标准**（硬闸在节点内）。
+  ⇒ 处置：**用户确认后**执行 `workflow_submit_alpha(confirm_submit=True)`（真提交、**不可逆**）；若节点报 `correlation_busy`，**间隔重试**（≥90s），**切勿改参数或降标准**。
+  ⚠ 仅当需要**事先排序/取舍**多个候选（不打算立即提交）时，才需 `check_correlation(refresh=True)` 复测。
 - **name + description（≥100 字，house style ~1200 字）必须预先写好并回读**——空描述会被平台**静默丢弃**（POST 返回 201 但被丢）。
 - **REGULAR 用 `set_alpha_properties`，SUPER 必须裸 PATCH**（`set_alpha_properties` 对 SUPER 必 400）。
 - ⚠ **`set_alpha_properties` 是全量覆盖接口不是局部更新**：曾清空 **115 颗 ACTIVE 的 name** 并覆写 description。改单个属性用**最小字段 PATCH** `{"tags":[...]}`，**改前先 dump 快照**。
@@ -166,7 +199,7 @@ combo:     线性 1-maxCorr
 |---|---|---|
 | **IND** | **仅 `TOP500`** | 无档可换 |
 | KOR | `TOP600` | CLUSTER_TEST limit = 1.0 |
-| DEU | `TOP500` / `TOP300` | |
+| DEU | **仅 `TOP500`** | ⚠ **2026-10-06 实测更正**：`TOP300` 报 `Universe TOP300 is not available for instrument type EQUITY and region DEU` ⇒ **原记载「TOP500 / TOP300」有误**，DEU 无第二档位可换 |
 | USA | `TOP500` / `TOP1000` / `TOP2000` / `TOP3000` | 降 PROD 首选 **TOP1000** |
 | EUR | 6 档 | |
 | GLB | `MINVOL1M` | |

@@ -142,7 +142,7 @@ avoided_backtests）与"可提交"几乎无关。建议：
 
 | 优先级 | 动作 | 涉及文件 | 预期产出 |
 |--------|------|---------|---------|
-| P0.1 | 新增 `corr_screen` 节点批量跑双墙入库 | `src/wqb/workflow/nodes/corr_screen.py` + `wqb_db_mcp.py` + `registry.py` | 1050 虚胖→真可提交集 |
+| P0.1 | 新增 `corr_screen` 节点批量跑双墙入库 | `src/wqb/workflow/nodes/corr_screen.py` + `wqb_db_mcp.py` + `registry.py` | 1050 虚胖→真可提交集 | <!-- lint:counterexample: 本表 P0.1 是**待实施项**：corr_screen 节点尚未创建，此处引用的是拟新增的目标路径 -->
 | P0.2 | backlog_gate 输出消化排批计划 | `src/wqb/workflow/nodes/campaign.py` `_run_backlog_gate` | IND ~140 潜在过闸 |
 | P1.1 | yield=0 闸接生成侧 | `gem.py` / `gem_wave.py` 前置查询 | 阻断 JPN/CHN/HKG 浪费 |
 | P1.2 | 伪 alpha 字段黑名单 | `src/wqb/config.py` + GEM 生成约束 | 剔除 riskfree/beta 陷阱 |

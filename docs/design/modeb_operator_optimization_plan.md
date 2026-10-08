@@ -339,24 +339,24 @@ Mode B 执行
 | 任务 | 文件 | 描述 |
 |-----|------|------|
 | 1.1 算子分类表 | `src/wqb/config.py` | 新增 `MODEB_OPERATOR_POOL` |
-| 1.2 变换操作实现 | `src/wqb/expression/modeb_transform.py` | 替换/插入/包裹/分组轴变换 |
-| 1.3 约束校验 | `src/wqb/expression/modeb_constraints.py` | 防过拟合规则 |
+| 1.2 变换操作实现 | `src/wqb/expression/modeb_transform.py` | 替换/插入/包裹/分组轴变换 | <!-- lint:counterexample: 本表是 2026-09 的**实施计划**快照：该路径为计划形态，实际实现收敛到 src/wqb/workflow/nodes/modeb_improve.py 与 mode_b_adaptive.py，此文件从未创建 -->
+| 1.3 约束校验 | `src/wqb/expression/modeb_constraints.py` | 防过拟合规则 | <!-- lint:counterexample: 同上：计划形态，实际约束校验落在 expression/op_arity.py 与 validator.py -->
 
 ### Phase 2：智能变体生成（2-3 天）
 
 | 任务 | 文件 | 描述 |
 |-----|------|------|
-| 2.1 变体生成器 | `src/wqb/workflow/modeb_generator.py` | 自适应变体生成 |
-| 2.2 问题诊断器 | `src/wqb/workflow/modeb_diagnoser.py` | 自动诊断主要问题 |
+| 2.1 变体生成器 | `src/wqb/workflow/modeb_generator.py` | 自适应变体生成 | <!-- lint:counterexample: 同上：计划形态，实际变体生成落在 structural_variants.py -->
+| 2.2 问题诊断器 | `src/wqb/workflow/modeb_diagnoser.py` | 自动诊断主要问题 | <!-- lint:counterexample: 同上：计划形态，实际诊断聚合在 nodes/modeb_improve.py -->
 | 2.3 集成到 tiered_probe | `tools/tiered_probe.py` | 替换 `_generate_modea_variants` |
 
 ### Phase 3：效果追踪与学习（2-3 天）
 
 | 任务 | 文件 | 描述 |
 |-----|------|------|
-| 3.1 统计表结构 | `src/wqb/store/schema.sql` | 新增 `operator_modeb_stats` |
-| 3.2 统计收集 | `src/wqb/workflow/modeb_stats.py` | 回测后自动记录 |
-| 3.3 推荐引擎 | `src/wqb/workflow/modeb_recommender.py` | 基于胜率推荐 |
+| 3.1 统计表结构 | `src/wqb/store/schema.sql` | 新增 `operator_modeb_stats` | <!-- lint:counterexample: 同上：计划形态，实际建表语句随 store 层 Python 代码维护 -->
+| 3.2 统计收集 | `src/wqb/workflow/modeb_stats.py` | 回测后自动记录 | <!-- lint:counterexample: 同上：计划形态，实际统计经 store 层表记录，未单独成模块 -->
+| 3.3 推荐引擎 | `src/wqb/workflow/modeb_recommender.py` | 基于胜率推荐 | <!-- lint:counterexample: 同上：计划形态，推荐逻辑并入 _lib/rules.py 的策略回路 -->
 
 ### Phase 4：验证与调优（持续）
 
@@ -420,7 +420,7 @@ def _generate_modea_variants(self, best: Dict) -> List[Dict]:
 ### 8.2 算子变换示例
 
 ```python
-# src/wqb/expression/modeb_transform.py
+# src/wqb/expression/modeb_transform.py <!-- lint:counterexample: 本表是 2026-09 的**实施计划**快照：该路径为计划形态，实际实现收敛到 src/wqb/workflow/nodes/modeb_improve.py 与 mode_b_adaptive.py，此文件从未创建 -->
 
 def replace_core_operator(expr: str, new_op: str) -> str:
     """替换核心算子（同功能类别内）"""

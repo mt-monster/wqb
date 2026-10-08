@@ -38,6 +38,16 @@
 ---
 
 ## 关联资料（目录外）
+**按区域的三层结构总账**（`Category → Mechanism → Field`；每个 category 下按「可用字段池 → 机制 → 字段」组织）
+目录约定：`docs/reference/<REGION>/`
+
+| 区域文档 | 区域 | 规模 | 核心内容 |
+|---|---|---|---|
+| [../reference/DEU/mining_experience_by_category.md](../reference/DEU/mining_experience_by_category.md) | DEU | ≈375 次测试 | 四 category（MODEL/ANALYST/FUNDAMENTAL/PV）；11 机制总表；**只 M1 变化率水平有效** |
+| [../reference/DEU/mechanism_field_pairing.md](../reference/DEU/mechanism_field_pairing.md) | DEU | 同上 | 机制 × 字段搭配手册（机制按"时间结构"分类 + 字段类型→机制搭配表） |
+| [../reference/GBR/mining_experience_by_category.md](../reference/GBR/mining_experience_by_category.md) | **GBR** | **≈250 次测试 + 跨区历史库审计** | 七 category（ANALYST 为唯一产出塔）；**14 机制台账**；★ 卡点类型学三型（prod 墙 / 2Y 塌 / 低于闸线）；**造独立腿三路径**；骨架 × 量类型匹配；区域强度对照 |
+
+
 
 | 位置 | 内容 |
 |---|---|
