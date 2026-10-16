@@ -124,6 +124,8 @@ world-quant-brain-mcp/super_alpha_result_*.json
 .box-agent/
 # local reference material (kept on disk, not part of the repo)
 alpha模板.docx
+# 同上，2026-10-14 按 AGENTS.md §8.13「路径纯 ASCII」更名为 docs/reference/alpha_template_community.docx
+docs/reference/alpha_template_community.docx
 # session planning scratch (planning-with-files 三件套：会话级草稿，不入库)
 /findings.md
 /progress.md
@@ -184,12 +186,29 @@ world-quant-brain-mcp/.venv_linux/
 # tracking/hypotheses/ledger.jsonl 由 hypothesis_round 节点持续追加写入，属运行时产物，
 # 每次运行都会变更、不应入库。已 git rm --cached 取消跟踪，这里忽略整个目录。
 tracking/hypotheses/
+# 派发/消融实验的工作目录（perf_max 与手工 --plan-dir 的落盘位）：里面只有
+# plan.json / dispatch_spec*.json / score.json / all_exprs.txt / variants_*.txt / dispatch.log
+# 这类断点件，不是结论。2026-10-14 布局审计 §2.B-2 实测旧缺省把 89 件写进了版本控制，
+# 同日把 perf_max 缺省输出位改到 results/，并对存量做 git rm --cached（保盘、不删）。
+# 复发由 tools/audit_structure.py S18 在索引面拦。
+tracking/*/perfmax/
+tracking/*/robustness/
+# 区域战役的日期化运行目录（如 campaign_20261014/）：叙述件已迁 output_report/
+# （USA_campaign_*_20261014.md），断点件（tmp/exp1.json 等）保盘不入库。
+# 2026-10-15 按 reports/project_layout_audit_20261014.md §4 处置；复发由 S18 拦。
+tracking/*/campaign_????????/
 
 # ===== 外部工具痕迹与根目录误重定向产物（2026-09-28 新增）=====
 # .box-agent/ 已有同类规则；-scratch 变体是另一宿主的一次性工作区
 .box-agent-scratch/
 # Kimi Code 会话配置（本机绝对路径，非项目代码）
 .kimi-code/
+# Cline 宿主记忆位（实测只有 memory.md，与已忽略的 .workbuddy/ 同性质：宿主自管、
+# 内容是本机会话记忆而非项目源码）。2026-10-14 布局审计 §2.A-2 要求显式登记，
+# 止住它作为仓库根唯一 `??` 噪声反复出现在每次 git status。
+# ⚠ Cline 的项目级 skill 扫描位 `.clinerules/skills` 由 Cline 自己扫，wqb 侧不为其
+# 复制副本（AGENTS.md §3.5：避免三处重复进 skill 列表）—— 本规则不改变那个行为。
+.clinerules/
 # 外部命令重定向事故产物：`> nul` / `> -` 会在根目录静默生成同名真实文件
 # （实测 `-` 落过一个 3.4MB JSON dump），且会被长跑进程反复重建，忽略而不是追；
 # gate 分级 dump 误落到根目录同理，已归档到 attic/scratch_gate_20260925/
