@@ -55,7 +55,7 @@
 
 | 字段 | 读法 |
 |---|---|
-| `backtested` / `pass_ge_158` / `pass_rate_pct` | 本地 `backtest_results` 的条数 / `sharpe ≥ 1.58` 的条数 / 比例（**宽口径**，不代表可提交） |
+| `backtested` / `pass_ge_158` / `pass_rate_pct` | 本地 `backtest_results` 的条数 / `sharpe ≥ 1.58` 的条数 / 比例（**宽口径**，不代表可提交） | <!-- from config -->
 | `active_local` | 本地库里 `platform_status=ACTIVE` 的条数（与平台全量可能有偏差） |
 | `campaigns` / `exhausted_pct` | registry 里 campaign 层的 untried / in_progress / exhausted 分布与穷尽占比 |
 | `suggested_action` | 数据侧提示，判据在 SKILL §4 表；不覆盖 `entry_verdict`，不是转区结论 |

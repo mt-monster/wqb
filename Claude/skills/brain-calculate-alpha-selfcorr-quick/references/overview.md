@@ -37,7 +37,7 @@ $WQ_PY Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py --sta
 
 - **`Alpha Results` sheet**：`alpha_id`、`exp`（表达式）、`check_status`（`Check OK`：平台检查无 FAIL 且 long+short > 100——**不是**相关性结论）、`Rank`（按 Sharpe）、`sharpe`、`self_correlation`、`ppac_correlation`、`turnover`、`fitness`、`margin`、`dateCreated`、`longCount`、`shortCount`、`decay`、`neutralization`、`neutralization_name`。
 - **`Meta` sheet**：`pool_last_refreshed`（缓存池文件最后刷新时间）、`pool_alpha_count`（池内 alpha 数）、`generated_at`、`region`、日期区间与盲区提示。
-- **终端**：前 10 个结果、SELF / PPAC 的均值 / 最大 / 最小、中性化设置分布；本批本地 SELF 最大值 < 0.7 时打印 `[盲区警告]`。
+- **终端**：前 10 个结果、SELF / PPAC 的均值 / 最大 / 最小、中性化设置分布；本批本地 SELF 最大值 < 0.7 时打印 `[盲区警告]`。 <!-- from config -->
 
 ## 依赖
 

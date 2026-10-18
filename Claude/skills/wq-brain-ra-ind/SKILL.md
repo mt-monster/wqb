@@ -181,6 +181,7 @@ last_verified: 2026-10-18
   - **★★★ 2026-10-17 修正：恒 0 字段的正确用法 = 「挂塔器」，macro 塔已实证可达。** 它不产生信号（恒 0），但 `add(<腿>, mcr63_membership)` 能让**信号逐位不变**、只把 `MATCHES_PYRAMID` 的类别并集从 1 类改成 2 类（eff=2），从而把该 alpha 记到 macro 塔上。
     - **硬约束 ①**：腿用到的**数据集类别数必须 ≤1**（挂 macro 后 =2）。≥3 类别 ⇒ `effective` 归零、塔位全废。
     - **硬约束 ②**：含 `returns` 的腿若还含别的集字段（如 institutions6）已是 2 类别，**不能再挂**。⇒ 正解是**同类别残差腿**：`returns` 与 `volume`/`adv20`/`ts_std_dev(returns,20)` 同属 **PV** 类，所以「PV 残差」是天然单类别腿。
+<!-- lint:counterexample -->
     - **实测**：`add(rank(-ts_regression(ts_zscore(returns,252), ts_zscore(ts_std_dev(returns,20),252),252,rettype=0)), mcr63_membership)` = `vRO9nG3w`，**S 2.90 / 2Y 3.14 / robust 1.78 / self 0.2838 / prod 0.6695 / 塔归 macro+pv eff=2 / 十年全正 / RA failed=0**。
     - **对照验证**：两组 add-zero 对照逐位相同（`KPm6xeGx`≡`mLYeO51`、`omovwGMv`≡`rKdL6GgE`）⇒ **信号零增益是设计预期，不是 bug**。
     - **代价**：multiplier 由 1.1 降为 1.0（双塔分摊），且属**蹭塔位合规灰区** ⇒ **只在「某塔只差 1 颗就点亮」时用，且用前须让用户知情**。当前 IND macro=2/3，正差 1 颗。
