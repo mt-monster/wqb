@@ -446,25 +446,27 @@ def check_expression(expr: str,
                     msg += f"；多出的参数只能用命名参数传（可用: {hint}）"
             msg += f"　签名: {sig.definition}"
             errors.append(msg)
-        # 2) 位置参数过少
-        elif n_pos < sig.min_positional:
+        # 2) 参数过少（位置 + 命名可互补：bare 参数可作 keyword 传参填补空缺，
+        #    如 kth_element(x, d, k=1) 中 k 是 bare 位置参数但平台允许命名传法）
+        elif (n_pos + len(site.named)) < sig.min_positional:
+            total_args = n_pos + len(site.named)
             errors.append(
-                f"[ARITY] {site.name} 至少需要 {sig.min_positional} 个位置参数，"
-                f"实际 {n_pos} 个　签名: {sig.definition}")
+                f"[ARITY] {site.name} 至少需要 {sig.min_positional} 个参数，"
+                f"实际 {total_args} 个　签名: {sig.definition}")
 
-        # 3) 命名参数不存在 / 与位置参数重名 / 重复
+        # 3) 命名参数不存在 / 重复
+        #    bare 位置参数（definition 里无 `=`）也可作为 keyword 传参，
+        #    如 kth_element(x, d, k, ignore="NaN") 允许 kth_element(x, 5, k=1)。
+        #    只有 named-only 参数（`name = <字面量>`）和占位符参数才算合法命名参数。
         seen = set()
         for key, _value in site.named:
             if key not in sig.named_set:
-                if key in sig.positional:
-                    errors.append(
-                        f"[KWARG] {site.name} 的 '{key}' 是位置参数，不能写成 "
-                        f"'{key}='　签名: {sig.definition}")
-                else:
+                if key not in sig.positional:
                     allowed = ", ".join(sig.named) or "无"
                     errors.append(
                         f"[KWARG] {site.name} 没有命名参数 '{key}'（可用: {allowed}）"
                         f"　签名: {sig.definition}")
+                # else: bare param 允许作为 keyword 传参，不报错
             elif key in seen:
                 errors.append(f"[KWARG] {site.name} 的命名参数 '{key}' 重复")
             seen.add(key)
