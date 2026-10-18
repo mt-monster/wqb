@@ -129,5 +129,5 @@ allowed-tools:
 | 文件 | 何时读 |
 |---|---|
 | [`OUTPUT_TEMPLATE.md`](OUTPUT_TEMPLATE.md) | 写完整分析报告（执行摘要 / 字段解构 / Q1–Q8 概念 / 实现考量）时的**唯一提纲**；SKILL 不再复述一遍 |
-| [`reference.md`](reference.md) | 想看 8 问的思维方式与设计理念时 |
+| [`references/overview.md`](references/overview.md) | 想看 8 问的思维方式与设计理念时 |
 | [`examples.md`](examples.md) | 想看一个完整的教学案例（**虚构数据集**，不是真实字段）时 |

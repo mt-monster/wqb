@@ -186,7 +186,7 @@ def test_nm_matrix_prod_saturation_shares_the_same_constant():
 
 def test_nm_every_cited_mcp_tool_exists_and_arity_claims_hold():
     http, db = _all_http_tools(), _all_db_tools()
-    text = _skill("brain-next-move-analysis") + _read(SKILLS / "brain-next-move-analysis" / "reference.md")
+    text = _skill("brain-next-move-analysis") + _read(SKILLS / "brain-next-move-analysis" / "references/overview.md")
     # `mcp__wq-brain-http__<tool>` 与裸写的 `get_xxx(` 都要真实存在
     for name in _cited_tools(text, r"mcp__wq-brain-http"):
         assert name in http, f"wq-brain-http 没有工具 {name}"
@@ -203,7 +203,7 @@ def test_nm_every_cited_mcp_tool_exists_and_arity_claims_hold():
 
 
 def test_nm_reference_has_no_credential_passing_or_ghost_script_instruction():
-    ref = _read(SKILLS / "brain-next-move-analysis" / "reference.md")
+    ref = _read(SKILLS / "brain-next-move-analysis" / "references/overview.md")
     sk = _skill("brain-next-move-analysis")
     assert "提供用户的电子邮件和密码" not in ref
     assert "不得读取**凭据文件" in ref and "不得向用户索要口令" in ref and "不得把口令传给任何工具" in ref
@@ -1123,13 +1123,13 @@ def test_de_scoring_and_research_sections_point_at_the_current_sources():
 
 
 def test_de_reference_is_short_chinese_and_the_six_tips_live_only_in_datafield_exploration():
-    ref = _read(DE / "reference.md")
+    ref = _read(DE / "references/overview.md")
     assert len(ref.splitlines()) <= 60 and "Job Duty Manual" in ref
     assert "scale_down" not in ref and "ts_median" not in ref and "Position Overview" not in ref
-    assert "reference.md" in _read(DE / "SKILL.md")
+    assert "references/overview.md" in _read(DE / "SKILL.md")
     tools = _all_http_tools()
     for name in re.findall(r"`((?:get|create|search|read)_[a-z_]+)`", ref.split("MCP 工具速查", 1)[1].split("平台文档页", 1)[0]):
-        assert name in tools, f"reference.md 速查表里的工具 {name} 不存在"
+        assert name in tools, f"references/overview.md 速查表里的工具 {name} 不存在"
     assert "ensure_authenticated" in _read(MCP_DIR / "tools_sim.py") and not _required_params(tools["authenticate"])
 
 
@@ -1143,14 +1143,14 @@ def test_df_every_operator_is_in_the_platform_catalog_unless_marked_as_a_counter
     assert len(cat) == 103 and "scale_down" not in cat and "ts_median" not in cat and not any(n.startswith("ts_event_") for n in cat)
     marks = ("不要", "不在", "幽灵", "不存在", "旧文", "原帖", "没有", "过不了", "会被拒", "替换", "换成", "不能")
     pat = re.compile(r"\b(ts_[a-z_]+|vec_[a-z_]+|group_[a-z_]+|scale_down|zscore|rank|abs|if_else|trade_when|winsorize)\(")
-    for f in (DF / "SKILL.md", DF / "reference.md"):
+    for f in (DF / "SKILL.md", DF / "references/overview.md"):
         for i, line in enumerate(_read(f).splitlines(), 1):
             for name in pat.findall(line):
                 if name not in cat:
                     assert any(m in line for m in marks), f"{f.name}:{i} 出现目录外算子 {name}：{line[:80]}"
     t = _read(DF / "SKILL.md")
     for v in ("vec_avg", "vec_sum", "vec_max", "vec_min", "vec_count", "vec_stddev", "vec_range"):
-        assert v in cat and f"`{v}`" in t + _read(DF / "reference.md"), v
+        assert v in cat and f"`{v}`" in t + _read(DF / "references/overview.md"), v
 
 
 def test_df_vector_matrix_event_rules_match_gate_3_gate_8_and_the_fix_tool():
@@ -1175,7 +1175,7 @@ def test_df_documented_method_expressions_pass_the_mcp_static_gate_grammar():
     sys.modules["_df_validator"] = mod
     spec.loader.exec_module(mod)
     v = mod.ExpressionValidator()
-    rows = _md_table_rows(_read(DF / "reference.md"), "| 法 | MATRIX")
+    rows = _md_table_rows(_read(DF / "references/overview.md"), "| 法 | MATRIX")
     assert len(rows) == 6
     for cells in rows:
         for cell in cells[1:3]:
@@ -1334,7 +1334,7 @@ def test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent():
     assert "唯一提纲" in tpl and "`{字段后缀}`" in tpl
     assert "虚构的教学案例" in _read(FE / "examples.md").split("## Dataset Overview", 1)[0]
     assert "第 3 步 8 问" not in t.split("## 第 0 步", 1)[0]
-    for name in ("OUTPUT_TEMPLATE.md", "reference.md", "examples.md"):
+    for name in ("OUTPUT_TEMPLATE.md", "references/overview.md", "examples.md"):
         assert f"[`{name}`]({name})" in t and (FE / name).is_file(), name
     head = t.split("## 第 0 步", 1)[0]
     assert "**不选数据集**（没有 `dataset_id` → 回 RA 步 2，不自行挑）" in head and "基于元数据选择" not in t        # FE-04：选集属 S0
@@ -1395,7 +1395,7 @@ def test_gm_mcp_and_node_parameters_match_the_reference_table():
     assert node_def["priors_from_db"] is True and mcp_def["priors_from_db"] is True
     assert node_def["detached"] is True and node_def["batch_size"] == 100 and node_def["require_count"] == 2
     assert node_def["prod_first"] is False and node_def["prod_first_top_k"] == 2
-    ref = _read(GEM / "reference.md")
+    ref = _read(GEM / "references/overview.md")
     for n in only_node:
         assert f"`{n}`" in ref
     assert "`workflow_execute(node=\"gem\", params={…})`" in _read(GEM / "SKILL.md")
@@ -1483,7 +1483,7 @@ def test_gm_runner_writes_expressions_itself_and_the_documented_commands_are_val
     assert '"source": "s2_nested"' in rp and 'print(f"[db] expressions/{args.region}/{wave}' in rp
     run_src = _read(GEM / "scripts" / "headless_runner" / "run.py")
     assert '"--wave"' not in run_src and '"--priors-from-db", default=None' in run_src and "nargs" not in run_src.split('"--priors-from-db"', 1)[1][:200]
-    for doc in (GEM / "SKILL.md", GEM / "scripts" / "headless_runner" / "README.md", GEM / "reference.md"):
+    for doc in (GEM / "SKILL.md", GEM / "scripts" / "headless_runner" / "README.md", GEM / "references/overview.md"):
         txt = _read(doc)
         assert not re.search(r"--priors-from-db\s+--", txt), f"{doc.name}: --priors-from-db 后面漏了区域值"
         assert "cd scripts/headless_runner" not in txt, doc.name
@@ -1570,7 +1570,7 @@ def test_gm_embedded_readme_and_maintenance_guards_are_documented():
     assert "`validator.py` 与 `alpha-expression-verifier` 权威版四处一起改" in t
     readme = _read(TRAIL / "skills" / "README.md")
     assert "从不拼进 LLM prompt" in readme and "GENERATED.md" in readme
-    for f in ("reference.md", "examples.md"):
+    for f in ("references/overview.md", "examples.md"):
         txt = _read(GEM / f)
         assert "skills/brain-feature-implementation/data/{datasetID}" not in txt.split("旧位", 1)[0]
         assert "data/gem_runs" in txt or f == "examples.md"
