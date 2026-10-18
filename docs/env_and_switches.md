@@ -187,6 +187,7 @@
 | `WQB_PBR_BOOTSTRAPPED` | — | `tools/prod_blocked_recheck.py` 的防递归重入标记（勿手设） | `tools/prod_blocked_recheck.py` | — |
 | `WQB_PYENV_REEXEC` | — | `tools/_pyenv.py` 的防递归重入标记（勿手设） | `tests/unit/09_core/test_pyenv.py` · `tools/_pyenv.py` | — |
 | `WQB_SQ_BOOTSTRAPPED` | — | `tools/submit_queue.py` 的防递归重入标记（勿手设） | `tools/submit_queue.py` | — |
+| `WQ_MCP_LOOP` | `selector` | 内部标记：MCP 循环调用检测（agent 不直接设置） | `mcp/main.py` · `wqb_db_mcp.py` | — |
 <!-- env-table:end -->
 
 ## 3. CLI 开关（不是环境变量）

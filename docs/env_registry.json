@@ -401,6 +401,10 @@
       "cat": "tooldir",
       "what": "MCP 目录覆盖（缺省 `<仓库根>/world-quant-brain-mcp`）"
     },
+    "WQ_MCP_LOOP": {
+      "cat": "internal",
+      "what": "内部标记：MCP 循环调用检测（agent 不直接设置）"
+    },
     "WQ_PASSWORD": {
       "cat": "cred",
       "what": "toolkit 传统别名（口令）：同上"
