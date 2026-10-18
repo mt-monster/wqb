@@ -52,6 +52,24 @@
         "test": "tests/unit/09_core/test_timeutil.py::test_fixed_utc_minus_4_would_be_wrong_after_november_first"
       },
       "before": "无需操作；若文档里仍出现「00:00 ET = 12:00 GMT+8」的固定句式，改成「夏令时 12:00 / 冬令时 13:00，以 quota_status 输出为准」。"
+    },
+    {
+      "id": "TB-04",
+      "date": "2026-11-16",
+      "mentions": [
+        "2026-11-16"
+      ],
+      "what": "KOR SKILL.md 里引用的未来裁断日期（8 问法适用边界 / 跨字段等权相加实证补强）；文案写完后需在到期前复核是否仍准确。",
+      "where": [
+        "Claude/skills/wq-brain-ra-kor/SKILL.md::2026-11-16"
+      ],
+      "resolution": {
+        "kind": "manual",
+        "mechanism": "人工复核：到期后检查文档里的裁断结论是否仍成立，不成立则更新",
+        "test": ""
+      },
+      "before": "2026-11-16 后复核：若 8 问法边界或跨字段等权相加结论已变化，更新 SKILL.md 文案。",
+      "owner": "user"
     }
   ]
 }
