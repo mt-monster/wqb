@@ -430,6 +430,7 @@ NONE / REVERSION_AND_MOMENTUM / STATISTICAL / CROWDING / FAST / SLOW / MARKET / 
 | [`_dataset-scan-sop.md`](references/_dataset-scan-sop.md)             | S0 选集：数据集评分与排除口径、离线体检包退化范围        |
 | [`_workflow-pipeline.md`](references/_workflow-pipeline.md)           | 把六步接回九步骨架：每步产物与落库位置               |
 | [`_kor-gatebreak-evidence.md`](references/_kor-gatebreak-evidence.md) | **要具体数值 / 配方 / 逐年表时**             |
+| [`_field-profile-and-templates.md`](references/_field-profile-and-templates.md) | **进新数据集前必读**：字段画像（哪些字段能用 / 已判死名单）+ 适用模板 P-ATOM-1 参数甜区 + 禁用清单 + 基线指标表 |
 | [`_kor-campaign-log.md`](references/_kor-campaign-log.md)             | 判断「这条结论还有效吗」（历史层 + §0 裁决表）        |
 | `references/<类别>.md`（11 份）                                            | 进入某个「区域 × 类别」组合时——清单见下方「组合分支」表    |
 
@@ -487,68 +488,71 @@ $WQ_PY -m wqb.profiles sync-cells --region KOR --apply  # 刷新判死 / 胜绩
 
 ## 区域控制面板
 
+<!-- profiles:region-panel:start -->
 **入场状态**：`active`　TOP600 小宇宙：排除口径 = 数据集级已提交 ≥3 颗（名单查 get_submit_ready(region=KOR)），不按塔排除——pv / risk / analyst 里红的是「已试结构」而非字段，pv47+risk68 换构型即出 failed_ra=0；支配性障碍 = prod 墙（IS 全闸可过、新腿 prod 恒 0.73–0.89；族级判据 = check_correlation 直方图 0.7–0.8 桶 n≥1 ⇒ 密墙别扫窗口）；结构性约束 = 2Y 与 IS 因输入频率此消彼长、会计质量与财务基本面族 S 天花板 0.61，CW 闸升级 FAIL
 
-| 回测设置           | 值           | 来源            |
-| -------------- | ----------- | ------------- |
-| instrumentType | EQUITY      | settings.json |
-| region         | KOR         | settings.json |
-| universe       | TOP600      | settings.json |
-| delay          | 1           | settings.json |
+| 回测设置 | 值 | 来源 |
+|---|---|---|
+| instrumentType | EQUITY | settings.json |
+| region | KOR | settings.json |
+| universe | TOP600 | settings.json |
+| delay | 1 | settings.json |
 | neutralization | STATISTICAL | settings.json |
-| decay          | 4           | settings.json |
-| truncation     | 0.08        | settings.json |
-| pasteurization | ON          | settings.json |
-| unitHandling   | VERIFY      | settings.json |
-| nanHandling    | OFF         | settings.json |
-| maxTrade       | OFF         | settings.json |
-| language       | FASTEXPR    | settings.json |
-| visualization  | false       | settings.json |
-| startDate      | 2013-01-01  | settings.json |
-| endDate        | 2023-12-31  | settings.json |
+| decay | 4 | settings.json |
+| truncation | 0.08 | settings.json |
+| pasteurization | ON | settings.json |
+| unitHandling | VERIFY | settings.json |
+| nanHandling | OFF | settings.json |
+| maxTrade | OFF | settings.json |
+| language | FASTEXPR | settings.json |
+| visualization | false | settings.json |
+| startDate | 2013-01-01 | settings.json |
+| endDate | 2023-12-31 | settings.json |
 
-| 阈值                                      | 值          | 来源                          |
-| --------------------------------------- | ---------- | --------------------------- |
-| Mode B 主闸（sharpe / fitness）             | 1.25 / 0.8 | default（实时值含区域台账，看 explain） |
-| review.sharpe_min                       | 1.58       | thresholds.json             |
-| review.fitness_min                      | 1.0        | thresholds.json             |
-| review.turnover_min                     | 0.01       | thresholds.json             |
-| review.turnover_max                     | 0.7        | thresholds.json             |
-| review.two_year_sharpe_min              | 1.0        | thresholds.json             |
-| near.sharpe_min                         | 1.0        | thresholds.json             |
-| diversity.signal_floor.max_sharpe_floor | 0.5        | thresholds.json             |
+| 阈值 | 值 | 来源 |
+|---|---|---|
+| Mode B 主闸（sharpe / fitness） | 1.25 / 0.8 | default（实时值含区域台账，看 explain） |
+| review.sharpe_min | 1.58 | thresholds.json |
+| review.fitness_min | 1.0 | thresholds.json |
+| review.turnover_min | 0.01 | thresholds.json |
+| review.turnover_max | 0.7 | thresholds.json |
+| review.two_year_sharpe_min | 1.0 | thresholds.json |
+| near.sharpe_min | 1.0 | thresholds.json |
+| diversity.signal_floor.max_sharpe_floor | 0.5 | thresholds.json |
 
 **循环与闸门（profile front-matter）**
-
 - 每波探针位上限：1
 - 快判死：新数据集 8 探针无 ／S／≥0.5 即判死回写，不扩批（小宇宙烧不起配额）
 - 停止条件：白名单被 dead_end 全覆盖
 - 闸门特化（文档级）：cw_gate=FAIL、longcount_verdict=FAIL——代码尚未读取（闸 7 恒 WARN，CW 在步 7 人工判），按此执行由 agent 负责
 
 **平台事实**
-
 - 宇宙是单一国家（config.REGION_COUNTRY_SCOPE）：country 轴中性化 / 分组等于全市场，别用
+<!-- profiles:region-panel:end -->
 
 ## 组合分支（区域 × 类别）
 
-| 类别            | 分组             | 状态     | 回测覆盖 | 阈值覆盖 | 回测 / RA 全过 | prod 已测（低于上限） | 判死 / 胜绩 | 分支文件                                                       |
-| ------------- | -------------- | ------ | ---- | ---- | ---------- | ------------- | ------- | ---------------------------------------------------------- |
-| analyst       | Analyst        | active | —    | —    | 175 / 13   | 2（2）          | 10 / 0  | [references/analyst.md](references/analyst.md)             |
-| fundamental   | Fundamental    | active | —    | —    | 171 / 20   | 8（2）          | 6 / 5   | [references/fundamental.md](references/fundamental.md)     |
-| shortinterest | ShortInterest  | active | —    | —    | 81 / 5     | 25（20）        | 0 / 0   | [references/shortinterest.md](references/shortinterest.md) |
-| pv            | PV             | active | —    | —    | 40 / 0     | 0（0）          | 7 / 0   | [references/pv.md](references/pv.md)                       |
-| insiders      | Insider        | active | —    | —    | 27 / 0     | 0（0）          | 1 / 0   | [references/insiders.md](references/insiders.md)           |
-| news          | News-Sentiment | active | —    | —    | 27 / 0     | 0（0）          | 4 / 0   | [references/news.md](references/news.md)                   |
-| risk          | Risk           | active | —    | —    | 24 / 0     | 0（0）          | 3 / 0   | [references/risk.md](references/risk.md)                   |
-| sentiment     | News-Sentiment | active | —    | —    | 18 / 0     | 0（0）          | 3 / 0   | [references/sentiment.md](references/sentiment.md)         |
-| other         | Other          | active | —    | —    | 10 / 0     | 4（2）          | 36 / 7  | [references/other.md](references/other.md)                 |
-| model         | MODEL          | active | —    | —    | 2 / 0      | 4（4）          | 12 / 0  | [references/model.md](references/model.md)                 |
-| institutions  | Institutions   | active | —    | —    | 0 / 0      | 0（0）          | 1 / 0   | [references/institutions.md](references/institutions.md)   |
+<!-- profiles:cells-index:start -->
+| 类别 | 分组 | 状态 | 回测覆盖 | 阈值覆盖 | 回测 / RA 全过 | prod 已测（低于上限） | 判死 / 胜绩 | 分支文件 |
+|---|---|---|---|---|---|---|---|---|
+| analyst | Analyst | active | — | — | 175 / 13 | 2（2） | 10 / 0 | [references/analyst.md](references/analyst.md) |
+| fundamental | Fundamental | active | — | — | 171 / 20 | 8（2） | 6 / 5 | [references/fundamental.md](references/fundamental.md) |
+| shortinterest | ShortInterest | active | — | — | 81 / 5 | 25（20） | 0 / 0 | [references/shortinterest.md](references/shortinterest.md) |
+| pv | PV | active | — | — | 40 / 0 | 0（0） | 7 / 0 | [references/pv.md](references/pv.md) |
+| insiders | Insider | active | — | — | 27 / 0 | 0（0） | 1 / 0 | [references/insiders.md](references/insiders.md) |
+| news | News-Sentiment | active | — | — | 27 / 0 | 0（0） | 4 / 0 | [references/news.md](references/news.md) |
+| risk | Risk | active | — | — | 24 / 0 | 0（0） | 3 / 0 | [references/risk.md](references/risk.md) |
+| sentiment | News-Sentiment | active | — | — | 18 / 0 | 0（0） | 3 / 0 | [references/sentiment.md](references/sentiment.md) |
+| other | Other | active | — | — | 10 / 0 | 4（2） | 36 / 7 | [references/other.md](references/other.md) |
+| model | MODEL | active | — | — | 2 / 0 | 4（4） | 12 / 0 | [references/model.md](references/model.md) |
+| institutions | Institutions | active | — | — | 0 / 0 | 0（0） | 1 / 0 | [references/institutions.md](references/institutions.md) |
 
 说明：另有 101 条回测行没写数据集，无法归到组合；证据于 2026-10-04 只读汇总。
+<!-- profiles:cells-index:end -->
 
 ## 本区流程差异（相对九步骨架）
 
+<!-- profiles:manual:start -->
 > **本节只写「当前有效、已裁决」的结论**（含流程差异 / 硬闸 / 实证判据，≤30 行）。
 > **历史层与作废依据**见 [`references/_kor-campaign-log.md`](references/_kor-campaign-log.md)（§0 裁决表，作废项就地标 ⛔）；
 > **数值 / 配方 / 逐年表**见 [`references/_kor-gatebreak-evidence.md`](references/_kor-gatebreak-evidence.md)；
@@ -579,6 +583,8 @@ $WQ_PY -m wqb.profiles sync-cells --region KOR --apply  # 刷新判死 / 胜绩
 2. **族级命运判据**：`check_correlation` 直方图 `[0.7,0.8)` 桶 **n≥1 ⇒ 密墙，别扫窗口**；n=0 才可扫 W。
 3. **结构性结论**：KOR 强信号与 prod 白空间互斥（IS 全过的族 prod 撞墙，prod 干净的族 S 不过闸）⇒ 单区可提交产出封顶；全破需换 region 或引入机制正交第二族。
 4. **returns 缺口只用中性化档解**：KOR `truncation` 多档 returns 逐位相同、`universe` 唯一 TOP600 被平台锁死、仿真 `decay` 只动 TO 不动 returns ⇒ **returns 唯一活轴是中性化档**；实测 `STATISTICAL`(ret .0569/TO .082) < **`CROWDING`(ret .0615/TO .065)**，`CROWDING × decay12` → ret .0638 / margin .00236 / TO .054。⚠ **CROWDING 压 2Y、FAST 提 2Y(1.53)** ⇒ **2Y 与 returns 是对立轴，选档即取舍**。
+
+<!-- profiles:manual:end -->
 
 ## 改控制
 

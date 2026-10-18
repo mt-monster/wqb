@@ -115,7 +115,7 @@ last_verified: 2026-10-18
 
 ## 算子覆盖
 
-**REGULAR 84 个算子 × DEU 用量 = 68 用 / 16 未用**；未用者的四类归因（等价替代 / 语义不匹配 / 阈值变体 / 真未试构造）与补测结论见 [references/operator-inventory.md](references/operator-inventory.md)。**两条硬结论**：① `kth_element` 的 `k` **必须具名**（位置写法连坐整批）；② **本地 `op_arity` 对 kth_element 签名判反**（拒绝 `k=`），以平台实测为准。
+**REGULAR 84 个算子 × DEU 用量 = 68 用 / 16 未用**；未用者的四类归因（等价替代 / 语义不匹配 / 阈值变体 / 真未试构造）与补测结论见 [references/_operator-inventory.md](references/_operator-inventory.md)。**两条硬结论**：① `kth_element` 的 `k` **必须具名**（位置写法连坐整批）；② **本地 `op_arity` 对 kth_element 签名判反**（拒绝 `k=`），以平台实测为准。
 
 ## 战役总复盘（一页式）
 

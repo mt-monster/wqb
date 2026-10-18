@@ -1,7 +1,7 @@
 # GBR · 组合候选机制盘点（2026-10-14 夜）
 
 > 「用正交搭骨架 + 用权重把饱和腿压成配角」这套方法论的**候选池全量地图**。
-> 配套：`analyst-channel-breakthrough.md`（已落地腿）｜`pv-channel-breakthrough.md`（PV 通道）
+> 配套：`_analyst-channel-breakthrough.md`（已落地腿）｜`_pv-channel-breakthrough.md`（PV 通道）
 
 ---
 

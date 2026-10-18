@@ -1,6 +1,6 @@
 # EUR · 组合候选机制盘点（combo-candidate-inventory，2026-10-14 夜）
 
-> 学习 GBR `combo-candidate-inventory.md` 的「**用正交搭骨架 + 用权重把饱和腿压成配角**」方法论，
+> 学习 GBR `_combo-candidate-inventory.md` 的「**用正交搭骨架 + 用权重把饱和腿压成配角**」方法论，
 > 在 EUR 做同样尝试。配套：`_dataset-inventory.md`（数据集普查）、`_probe-sop.md`（探针 SOP）。
 > **结果：成功产出 1 条全新独立全闸腿（`LL5a6pdn`）**，并挖出 2 条可迁移铁律。
 

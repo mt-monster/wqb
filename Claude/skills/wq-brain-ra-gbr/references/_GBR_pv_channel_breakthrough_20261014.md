@@ -211,7 +211,7 @@ group_rank(ts_decay_linear(group_neutralize(-ts_sum(pv47_spret, 5), sector), 22)
 
 | 目标 | 状态 |
 |---|---|
-| 系统性总结经验并沉淀 skills | ✅ `references/pv-channel-breakthrough.md`（五步方法论 + 参数地图 + 降 prod 杠杆表 + 工程铁律） |
+| 系统性总结经验并沉淀 skills | ✅ `references/_pv-channel-breakthrough.md`（五步方法论 + 参数地图 + 降 prod 杠杆表 + 工程铁律） |
 | 全面扫描数据集、筛选有潜力数据集 | ✅ 177 数据集 × 15,523 字段；本轮补扫全库读数命中 pv47 |
 | 字段完整梳理 + 字段画像分析 | ✅ 已完成（profile verdict 全分布 + 平台实时类型核验） |
 | 不换 region | ✅ 全程 GBR |
@@ -236,4 +236,4 @@ group_rank(ts_decay_linear(group_neutralize(-ts_sum(pv47_spret, 5), sector), 22)
 
 ---
 
-*生成时间：2026-10-14 · 15 波 · 190+ 仿真 · skill：`wq-brain-ra-gbr` + `references/pv-channel-breakthrough.md`*
+*生成时间：2026-10-14 · 15 波 · 190+ 仿真 · skill：`wq-brain-ra-gbr` + `references/_pv-channel-breakthrough.md`*
