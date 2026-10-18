@@ -105,6 +105,14 @@
      }
     ],
     "wins": []
+   },
+   "generation": {
+    "notes": [
+     "★★★ 【MATRIX ⇒ TO 崩」的适用边界修正】此前基于 f72/f17（年度/季度财报）得出「MATRIX ⇒ TO 崩 0.017–0.029」；但 **analyst_factor_signals（108 字段全 MATRIX，日频分析师修正）实测 TO 可达 0.087**（`eps_q1_estimate_change_1mo` S0.71/TO0.087）。⇒ ★ **规则应表述为：TO 崩的是「低频更新字段」（年度/季度财报），而非所有 MATRIX**；**日频事件型 MATRIX（分析师修正/预估值）TO 正常** ⇒ 选集时看**更新频率**而非仅看 type。⚠ 但仍需逐字段实测：同数据集内 `eps_estimate_volatility_adj_3yr` TO 仅 0.0272（慢变量）、`eps_actual_q1_yoy_growth` TO 0.0253 ⇒ **快变量（change/revision/surprise）TO 合格，慢变量（level/volatility/CAGR）TO 崩**。",
+     "★★★★ 【EUR Analyst 首个全闸门通过配方】（2026-10-13，wave472–485，13 波 104 条实证）：\n**数据集 = `analyst_factor_signals`**（108 字段全 MATRIX、104 个 user≤3；**日频分析师修正 ⇒ TO 正常**，推翻「MATRIX ⇒ TO 崩」的过度泛化）。\n**达标表达式**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 1.8), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha `ZYAJZL93`：**S1.67 / F1.04 / TO0.1047 / 2Y1.81 / margin9.27bp / PROD0.6617 / SELF0.2278，FAIL 0 WARNING 1（仅信息性），all_passed=True**。\n**四层杠杆（按增益排序）**：\n① ★★★**「修正幅度 ÷ 分歧度」原语**（`revision_magnitude / coeff_var`）= 0.71→**1.32**（S +0.61）—— 对应 S2 类别原语的 revision surprise ÷ dispersion；\n② ★★**分组轴 `industry`**（vs sector 1.32 / market 1.29 / c5 0.96）；\n③ ★★**`target_tvr` = S 与 2Y 的同步杠杆**（0.06→0.10 使 S1.43→1.58、2Y1.34→1.53；0.12 后饱和）；\n④ ★★★**分母 `ts_mean` 平滑（窗 55）= 三重杠杆**：提 2Y（1.55→**1.81**）、降 prod（0.7064→**0.6617**）、保 S —— 机制：平滑分歧度 ⇒ 分母稳定 ⇒ 持仓集中 ⇒ 小宇宙改善 + 与存量 alpha 相似度下降。\n**幂次**：`signed_power` 1.6–1.8 最优（1.8 给 F≥1.0，1.45–1.55 给 2Y 更高）。\n⚠ **失效项**：`revenue_*` / `netprofit_*` 版本（同结构下 S 仅 1.13/1.07）；跨指标 multiply；`eps_y2_estimate_coeff_var` 分母（S1.45）；horizon gap（y2−y1 consensus，S −0.75 需翻转）；TOP2500（S 崩到 1.34–1.40）；decay=4（S 1.47）⇒ **TOPCS1600+SUBINDUSTRY+decay1+maxTradeOFF 是必要条件**。",
+     "★★★★★ 【EUR Analyst 战役终局定论】（2026-10-13，wave472–492，**21 波 168 条实证**）：\n**结论：Analyst 类别可提交 regular alpha = 1 颗**（不是 10 颗）。\n**唯一达标形态**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 3.0), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha **`O083qZQp`**：S1.71 / F1.09 / TO0.1123 / 2Y1.78 / margin9.02bp / **PROD 0.6170** / verdict FAIL 0。\n**为何只能是 1 颗（互相关实测）**：同族 4 颗达标候选 `get_mutual_correlation` = **0.9757–0.9993**，`max_mutually_below_subset_size=1` ⇒ 提交 1 颗后其余全部触发 self-corr ⇒ **一条腿只出 1 颗**。\n**六层杠杆（增益排序，全部实证）**：\n① ★★★`eps_revision_magnitude ÷ 分歧度` 原语（0.71→1.32）；\n② ★★轴 = `industry`（industry 1.38 > sector 1.32 > market 1.29 > c5 0.96）；\n③ ★★★`target_tvr` = S 与 2Y 同步杠杆（0.06→0.18；0.22 后饱和）；\n④ ★★★分母 `ts_mean` 平滑（窗 **55**；窗88 亦达标，窗44/33 使 2Y 崩）；\n⑤ ★★★**`signed_power` 幂次 = S/F 提升器 + prod 降低器**（1.8→3.0：S1.67→1.71、F1.04→1.09、**prod0.6617→0.6170**）；\n⑥ 窗 55 是 prod 的关键（窗44 prod 0.7064 > 0.7 ⇒ 失败）。\n⚠ **判死清单**：`revenue_*`/`netprofit_*` 版本（S≤1.49）；`eps_y2_coeff_var` 分母（1.45）；`change_3mo` 分子（0.91）；`consensus_value` 分子（负）；期限差（−0.97）；`cagr_*` 分子（≤0.51）；`asymmetry`/`volatility` 分母（≤0.42）；跨指标 multiply（0.11）；`analyst_consensus` breadth（≤0.21）；`analyst45`（0.36）；`analyst9/10` 共识水平（≤0.76）；sector/market/subindustry 轴（2Y ≤1.50）。\n→ **要凑够 10 颗须离开 Analyst 类别**（Analyst 内唯一有效结构已穷尽）。",
+     "★★★★★ 【EUR × analyst 数据集【全量 16 个】最终覆盖表】（2026-10-13 收官）\n| 数据集 | 规模 | 最佳 S | 判定 |\n|---|---|---:|---|\n| ★**`analyst_factor_signals`** | 108 MATRIX | **1.71** | ★**胜出**（`786pLKnb` 全闸门+prod/self 过） |\n| `analyst69` | 297（**247 VECTOR**, cov 1.0） | 1.48 | ❌ **结构性矛盾**：alpha 依赖高频换手（TO 0.29）；压制换手后 S→0.75 且 2Y 转负 |\n| `analyst4` | 264（134 VECTOR, cov 0.965） | 0.65 | ❌ TO 仅 0.020（低于下限）+ 2Y 0.05 |\n| `analyst45` | 61 VECTOR | 0.36 | ❌ |\n| `analyst14` | 113 MATRIX | 0.48 | ❌ 2Y 负 |\n| `analyst15` | 297 MATRIX（含多窗修正变化 `*_gr_12_m_{1m,3m,6m}_chg`） | 0.17 | ❌ |\n| `analyst39` | 24 MATRIX | 0.19 | ❌ |\n| `analyst40` | 16（董事变动） | 0.20 | ❌ **TO 1.50–1.63 爆炸** |\n| `analyst7` | 299 MATRIX（actual 值） | 0.10 | ❌ |\n| `analyst9` | 111 VECTOR | 0.45 | ❌ |\n| `analyst10` | 961（39 VECTOR 多为元数据） | ≤0.76 | ❌ |\n| `analyst11`/`analyst_consensus` | 445/1929 | ≤0.21 | ❌（breadth 无信号） |\n| `analyst_base_ref` | 17（股数/价格参考） | 0.36 | ❌ 2Y −0.58 |\n| `model52`（列在 analyst 类） | 3（违约概率 PD） | −0.17 | ❌ cov 0.199 过低 |\n| `analyst81` | 5 | — | 跳过（cov 0.25 < 0.35） |\n⇒ ★★ **analyst 类别 16 个数据集全部探过，唯一可提交结构 = `eps_revision_magnitude ÷ 分歧度`**。"
+    ]
    }
   },
   "earnings": {
@@ -135,6 +143,12 @@
      }
     ],
     "wins": []
+   },
+   "generation": {
+    "notes": [
+     "★★★ 【EUR × earnings 判死】（2026-10-13，波 449）：\n**`earnings6`**（55 VECTOR）：`eps_change_percentage_value` / `eps_change_absolute_value` 等 EPS 变化字段**返回 S=0.0 / TO=0.0（空信号，事件稀疏 ⇒ `vec_avg` 归约后全 NaN）**；预告区间类字段 S ≤ −0.08 ⇒ **判死**。",
+     "★★★ 【EUR × earnings 补充】（wave502/504）：\n`earnings_sent_matrix`（7 MATRIX，财报电话情绪）：`overall_sentiment_score` S=−0.20 且 **TO=1.61 爆炸**；`likelihood_of_neutral_tone`/`*_sentiment_probability_3` 同族 ⇒ **判死**。\n⇒ earnings 类别 2 个数据集（`earnings6` / `earnings_sent_matrix`）**全部判死**。"
+    ]
    }
   },
   "fundamental": {
@@ -219,7 +233,7 @@
     ],
     "wins": []
    },
-   "note": "EUR 破 prod 墙的唯一有效杠杆：vector_neut 残差化，残差轴的选择决定成败",
+   "note": "EUR 破 prod 墙的残差化路径：★ vector_neut 已于 2026-10-10 实测被平台移除（op-lint 拦截：平台算子清单外）⇒ 改用 ts_regression / group_neutralize / subtract(rank,rank) 三种可用残差化；残差轴的选择仍决定成败",
    "generation": {
     "use": [
      "嵌套残差化：先削自由现金流，再削投资（CAPEX）或经营现金流维度（WorkBuddy MEMORY §1.7）"
@@ -227,12 +241,14 @@
     "skeletons": [
      {
       "text": "vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets))), rank(divide(free_cash_flow, assets))), rank(divide(operating_cashflow, assets)))",
-      "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；当前最佳 JjQmx9nm（fcf→capex→ocf，12 算子）S 1.73 / F 1.17 / prod 0.6695 / self 0.3397"
+      "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；当前最佳 JjQmx9nm（fcf→capex→ocf，12 算子）S 1.73 / F 1.17 / prod 0.6695 / self 0.3397；⚠ 2026-10-10 实测：vector_neut 已被平台移除（op-lint 拦截），此骨架不可再执行，仅存历史证据"
      }
     ],
     "notes": [
      "ts_backfill 在 EUR / TOPCS1600 / nanHandling=ON 下是 no-op：写 EUR 表达式先删它；但 /assets 归一化是真信号，残差轴也要归一化",
-     "hump 必须写命名参数（hump=k）；hump(vec_avg(x), …) 会 FAIL"
+     "hump 必须写命名参数（hump=k）；hump(vec_avg(x), …) 会 FAIL",
+     "★★ vector_neut 已被平台移除（2026-10-10 op-lint 实测「平台算子清单外的名字」）⇒ 本 cell 旧记「唯一有效杠杆：vector_neut 残差化」作废。残差化可用替代（本轮验证）：ts_regression(y,x,d,rettype=0) / group_neutralize(x,group)（内层须细于 setting 的 SUBINDUSTRY）/ subtract(rank(A),rank(B))（合规放行形态）",
+     "★★★ 【三层闸门口径差异·实测样本】EUR fnd72 `mL617YPx`（2026-10-11）：**平台 review 闸全过**（S1.82/F1.25/TO0.0675/**2年 ladder 2.23**/margin17.6bp/Failed RA=0/prod0.5421/self0.3999），但 **skill Phase C 判 REJECT**（近 **3年** CV_Sharpe 0.661 / max-min 5.26）。★ 差异点：**平台看 2 年窗口，skill 看近 3 年波动性** —— 该腿 2021 年异常高（3.63）拉大 CV。★ repair 2 轮实证（16 条变体）：`target_tvr` 0.06→0.30 仅改善 CV 0.020（饱和于 0.641）；max/min 可从 5.26 修复至 **4.63**（tvr=0.10）；**CV 属结构性，参数层不可弥合**。⇒ **选腿先验：若某腿单年 Sharpre 异常突出（如 2021），它会被 skill Phase C 拦，应优先找年度分布均匀的腿**。"
     ]
    },
    "s4": {
@@ -323,6 +339,12 @@
       "bound": "keyword"
      }
     ]
+   },
+   "generation": {
+    "notes": [
+     "★★★ 【EUR × insiders 判死】（2026-10-13，波 496，8 条）：\n**数据集 `insiders1`**（9 VECTOR，cov 0.551，含 `insd1_tradesignificance`/`insd1_valueeur`）：\n**8/8 探针 S ≤0.50，且 TO = 1.52–1.61（远超 0.7 硬线）、margin ≈ 0.1–1.2bp（近乎零）** ⇒ **判死**。\n⇒ ★ 根因：**稀疏事件型 VECTOR + `vec_avg` 归约 ⇒ 个股间剧烈跳变 ⇒ TO 爆炸**。\n⚠ `insiders12`（8 VECTOR）cov 仅 **0.193 < 0.35** ⇒ 直接跳过；`insider_agg_matrix` 全 MATRIX。\n⇒ **通用判据：探针若 TO > 0.7 立即弃该数据集（不必看 S）**。",
+     "★★★ 【EUR × insiders 补充】（wave496/504）：`insider_agg_matrix`（34 MATRIX）：`directional_indicator_2` S=−0.05 且 **TO=1.43 爆炸**；`directional_significant_value_*` 同族 ⇒ 判死。\n⇒ insiders 类别 3 个数据集（`insiders1`/`insiders12`/`insider_agg_matrix`）**全部判死**。"
+    ]
    }
   },
   "institutions": {
@@ -372,6 +394,11 @@
      }
     ],
     "wins": []
+   },
+   "generation": {
+    "notes": [
+     "★★★ 【EUR × institutions 判死】（2026-10-13，波 444–446、495）：\n**`fund_holdings_panel`**（30 VECTOR、user 0–6 极低竞争）：\n有效方向 = `ts_delta(herfindahl_index_holdings, 252)`（机构持仓集中度变化），S **0.80–0.81**（幂次 3.0 仅 +0.01）。\n⇒ ★ **S 距线 0.77，且反推 returns 仅 2.33%** ⇒ 在 S=1.58 时 F 上限 = 1.58×sqrt(0.0233/0.125) = **0.68 < 1.0** ⇒ **数学上不可能过 F 闸** ⇒ 判死。\n⚠ `institutions6` 全 MATRIX（11 字段）；形态 `boundary_total / ts_mean(holding_value,55)` 使 TO 爆到 1.13。"
+    ]
    }
   },
   "model": {
@@ -1109,6 +1136,11 @@
      }
     ],
     "wins": []
+   },
+   "generation": {
+    "notes": [
+     "★★★ 【EUR × news 判死】（2026-10-13，波 508/516，16 条）\n| 数据集 | 规模 | S | TO | margin | 判定 |\n|---|---|---:|---:|---:|---|\n| `news20`（多分类器情绪，cov 0.963 **稠密**） | 64 VECTOR | ≤0.28 | **0.88–1.24** | ~0.1bp | ❌ TO 爆炸 |\n| `news54`（事件因子） | 40 VECTOR | ≤0.14 | **1.44** | — | ❌ |\n⇒ ★★ **「稠密覆盖」不能救 news VECTOR**：cov 0.963 仍 TO 1.1（个股情绪日间翻转）⇒ \n**判据修正：news/sentiment/事件类 VECTOR 的失败与覆盖无关，与「事件驱动 + 情绪符号翻转」有关** ⇒ 一律跳过。"
+    ]
    }
   },
   "other": {
@@ -1314,6 +1346,15 @@
      }
     ],
     "wins": []
+   },
+   "generation": {
+    "notes": [
+     "★★★★★ 【EUR × other 数据集实测】（2026-10-13，波 508–523，约 60 条）\n| 数据集 | 规模 | 最佳 | S | F | TO | **returns** | 判死依据 |\n|---|---|---|---:|---:|---:|---:|---|\n| ★`insider_feats`（内部人买卖比） | 118 MATRIX cov .916 αC 43 | `top5_buy_tx_count_250d` / 双窗 add | **1.11** | 0.60 | 0.023 | **3.68%** | ❌ **returns 天花板 3.9% ⇒ 需 S≥1.84** |\n| ★`dl_riskfree_returns`（ML 前瞻收益概率） | 133 MATRIX cov **1.000** αC 167 | 2quantile **60day** 概率差 | **1.40** | 0.71 | 0.10–0.22 | **3.8%** | ❌ **returns 天花板 3.8% ⇒ 需 S≥1.82** |\n| `news_sentiment_dl`(αC1)/`news_sentiment_nlp`(αC5)/`acquisition_model` | — | 情绪/并购概率 | ≤0.43 | — | **0.97–1.45** | — | ❌ TO 爆炸 |\n⇒ ★★★ **两者均为 F 闸数学封顶**（F_max@S1.58 = 0.87/0.88 < 1.0）。\n**`dl_riskfree_returns` 细节**：horizon 是关键（60d S 1.37 >> 20d 0.29 >> 5d 0.55）；分位越细越差（2q>3q>4q>5q）；\n修订类结构（ts_delta / 跨 horizon 差 / rank 差 / 乘 / 除）**全部失败（S≤0.87）**⇒ 该模型信号是「水平」非「变化」。\n**`insider_feats` 细节**：buy-only 计数 > buy/sell ratio（验证 JMZ 2003）；250d margin 32bp vs 60d 8.8bp；\n`ts_ir`/`ts_std_dev` 分母结构**灾难**（S→0）；`ts_delta` 混合可提 TO（0.023→0.056）而不杀 S。",
+     "★★★★★★ 【EUR × other 本轮第二批深挖】（2026-10-14，波 529–536，≈60 条）\n① **`techindi_model`（300 MATRIX，cov **1.000**，αC 2072）= 多分位×多 horizon 的**预测收益率模型**\n   （`predicted_{first..fifth}_quantile_{one,five,ten}_day_return_{V}`，V=13/131/14/141/15/16/17）。\n   ★ **IS 极强**：8/8 探针 S ≥1.5；最优 `QPYZ5ePX` = `signed_power(group_rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,2), industry), 3.0)`\n   ⇒ **S 3.49 / F 1.53 / TO 0.5422 / 2Y 1.90 / ROBUST 0.87 / sub 1.88**，**returns 反算 10.1%**（EUR 本会话最高）。\n   ★ **判死 = prod 墙**：6 条实测 prod 0.7213–0.7685，`prod_bucket_scan` 的 **n[0.7,0.8) = 3–4 ⇒ DEAD（单钉子卡死）**。\n   ⇒ **几何改造确能降 prod**（0.7514→0.7213，用 `ts_zscore(·,252)`）**但同步把 sub/S 压到 0.463** ⇒ sub 失败 ⇒ **无解**。\n② **`stock_search_trends`（Google Trends，αC **2**）/ `other571`（Wikipedia 浏览，αC 61）双双判死**：\n   注意力类 TO 0.41–0.98 爆炸（Trends）/ S ≤0.44 且 2Y 1.53 但 S 0.24（Wikipedia，2Y 有 S 无）。\n③ ★★★★★ **两条新闸门铁律（EUR 实测）**：\n   `LOW_SUB_UNIVERSE_SHARPE` 闸线 = **0.53 × S**（786pLKnb S1.71→0.91；leMpQ5E2 S3.78→2.0）\n   `LOW_ROBUST_UNIVERSE_SHARPE` 闸线 = **0.7 固定**\n   ⇒ **高 S 是双刃剑**：sub 是**比率闸**，若 `sub/S < 0.53` 则任何 S 都过不了；`ts_zscore` 是最强 S 放大器但压 sub/S。\n④ ★ **降 TO 算子谱**（该数据集实证）：`ts_mean(P,2)` ✅保 robust（TO 0.79→0.542，robust 不变）；\n   `decay=2` 设置 ✅（TO→0.585，robust 0.86→0.80）；`ts_decay_linear(P,3)` ✅（TO 0.506，robust 0.75）；\n   ❌ `ts_mean(P,5)` / `tvr_decay` / `hump` **均摧毁 robust**（0.87→0.45/0.53/0.55）；`hump` 档位过陡无甜区。\n⑤ ⚠ `quantile(P, driver=gaussian)` 被 `group_rank` 包裹时是 **no-op**；horizon 期限差完全无效（S ≤0.22）。",
+     "★★★★★★★ 【EUR × other 重大突破：双窗秩乘积破 prod 墙】(2026-10-14, wave539–542)\n**达标候选 #2 = `e76kv2xE`**（techindi_model, other 未点亮）：\n`signed_power(group_rank(multiply(rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,2)), rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,252))), industry), 3.0)`\n⇒ S 2.60 / F 1.23 / TO 0.3834 / SUB 1.67 / ROBUST 0.93 / 2Y 1.94 / **returns 8.54%** / **PROD 0.6916** / SELF −0.0149 / Failed RA=0。\n⇒ 与 Analyst 腿 `786pLKnb` 互相关 **0.0907** ⇒ 两条独立腿。\n★★★★★ **通用结构「双窗秩乘积」**：`multiply(rank(ts_mean(F,W_short)), rank(ts_mean(F,W_long)))`\n   —— 相对朴素 `group_rank(ts_mean(F,2))`：**prod 0.7514→0.6916（跨线）+ TO 0.542→0.383 + robust 0.87→0.93 + sub比率 0.539→0.642**（一石四鸟）。\n   ⚠ **非普适**：sentiment27(1.33→1.14) / dl_riskfree(1.40→1.20) / insider_feats(1.11→1.08,TO 0.032) 均降 S ⇒ 逐数据集实测。\n⚠ **该数据集同族只出 1 颗**：`RRAjKw2b`(prod 0.6824)/`zqrK0nPO`(0.6911) 也过线，但三者互相关 0.81–0.87 ⇒ 同腿。\n⚠ **`pv13` 图网络特征（客户 PageRank / 竞争者 HITS）判死**：近静态 TO 0.012–0.086、S ≤0.13；\n   且 `pv13_new_*l_scibr` 是 **GROUP 类型**（不能当信号）⇒ 整批 CANCELLED（字段类型坑再现）。",
+     "★★★★★★ 【EUR × other 续推收官（wave543–546）】三个假设的证伪/修正：\n① **「预测型数据必胜」修正为「只有直接预测收益率的模型有效」**：\n   ✅ `techindi_model`（预测收益率分位 S 3.41）/ `dl_riskfree_returns`（收益率概率 S 1.40）；\n   ❌ `other545` **NEMO 2.0 综合模型评分**（7 子模型聚合 + 价格动量 + NLP 网络动量）**S 仅 0.05–0.63、2Y 全死**\n② **双窗秩乘积非普适**：在 `pv1`（经典价量，αC 43728）上 S 反降、2Y 转负；`news18` TO 0.73–0.94 爆炸。\n③ ★ **网络/嵌入型数据集一律近静态**：`pv13`（客户 PageRank/竞争者 HITS）TO 0.012–0.086；\n   `other455`（竞争者 node2vec → PCA factor）TO **0.010–0.012** ⇒ **S ≤0.12 全灭** ⇒ 与「状态量/评级」同类，**开波前可预筛**。\n⇒ 本会话 EUR 未点亮空间最终产出 = **2 条独立腿**：`786pLKnb`(Analyst) + `e76kv2xE`(Other/techindi_model)，互相关 0.0907。",
+     "★★★★★★ 【EUR 数据集全量普查 + 本轮新铁律（2026-10-14）】\n① **平台权威枚举：EUR 共 173 个数据集 / 14 类**（未点亮 10 类 = 93 个：other36/news20/pv20/sentiment5/insiders3/earnings2/institutions2/macro2/socialmedia2/imbalance1）；已点亮 4 类（model46/fundamental13/analyst16/risk5）。\n   ⇒ 普查表 + 逐数据集判死速查（死因七分类）见 `references/_dataset-inventory.md`。\n② ★★★ **`earningscall_sentiment`（财报电话会语调，152 字段/137 MATRIX-计数）判死**：\n   `vec_avg` 后 **TO 1.07–1.57 爆炸**、S ≤0.21 ⇒ 与 news/sentiment 事件 VECTOR 同族。\n   ⚠ 类型坑：`{topic}_*_score`/`*_polarity`=**VECTOR**（需 vec_avg），`count_*`/`mean_polarity_*`=**MATRIX** ⇒ 混用整批 CANCELLED；\n   且 `count_negative_cashflow_answer` **不存在**（只有 positive/neutral）。\n③ ★★ **`pv173`（91 VECTOR 全 `*_unit_name`）/`other384`（cov≥0.5=0）/`investor_activity`（cov≥0.5=0）判死**：元数据/低覆盖。\n④ ★★★ 未测集（60 个）以 **news 事件族群（TO 爆炸）+ PV 拥挤族（αC 585–885）+ 微型/低覆盖集** 为主 ⇒\n   **唯剩的机制性机会 = `pv29`/`pv30` 的「统计聚类 GROUP 轴」**（GROUP 字段只能当 `group_*` 的第 2 参，不能当信号）。"
+    ]
    }
   },
   "pv": {
@@ -1437,6 +1478,11 @@
      }
     ],
     "wins": []
+   },
+   "generation": {
+    "notes": [
+     "★★★★★ 【EUR × pv 数据集实测判死总表】（2026-10-13，波 506–526，约 40 条）\n**EUR 合法 universe（平台权威）**：TOPCS1600｜TOP2500｜TOP1200｜TOP800｜TOP400\n| 数据集 | 规模 | 最佳形态 | S | TO | 2Y | 判死依据 |\n|---|---|---|---:|---:|---:|---|\n| `pattern_scores`（图形形态相似度） | 504 MATRIX cov .998 | 形态相似度差 | ≤0.52 | — | 负 | 噪声型 |\n| `continuation_score`（延续形态） | 560 MATRIX cov .998 | `avg_similarity_bearish_flag` | 0.56（2Y 1.32） | 0.39 | — | ★**平滑即杀**（ts_mean 后 S −0.79）⇒ alpha 全在高频 |\n| `intraday_pv_feats`（日内特征） | 585 MATRIX cov .999 | — | ≤0.37 | **1.15** | — | TO 爆炸 |\n| `pv106`（买卖价差/交易成本） | 13 MATRIX cov 1.0 | `pv106_spreadbp` | **−0.51~−1.65** | 0.40–0.97 | 负 | ❌ **流动性水平信号为负**（无 Amihud 溢价）；`transaction_cost_estimate` 的 S=11.18 是**退化假信号**（TO=1.0、2Y=0） |\n| `pv37`（原始价量+时段快照） | 245 MATRIX cov 1.0 | `reverse(ts_delta(close,5))` 等经典反转 | ≤1.15 | **0.46–1.28** | ≤0.95 | ❌ **TO 爆炸**（价量反转在此宇宙换手过高） |\n**⇒ pv 类别（本季度未点亮 αC=0）本轮 5 个数据集全部判死**：噪声型（平滑即杀）/ TO 爆炸 / 流动性负号。\n⚠ **universe 档实证**：dl_riskfree 信号在 TOP400（S 1.01）/TOP800（S 1.16）/TOP2500（S 1.41 但 2Y 0.4–0.76）/TOP1200（S 1.14）**全部劣于 TOPCS1600（S 1.40）**\n⇒ ★ **TOPCS1600 是 EUR 的最优档**（外部资料称「更流动的小宇宙提 Sharpe」在 EUR 不成立）。"
+    ]
    }
   },
   "risk": {
@@ -1549,10 +1595,28 @@
      }
     ],
     "wins": []
+   },
+   "generation": {
+    "notes": [
+     "★★★★ 【EUR × sentiment 收官】（2026-10-13，波 450–497，约 90 条）：\n**唯一可用数据集 = `sentiment27`（30 VECTOR，snl27_* 低竞争字段）**；S 上限 **1.33**（4 次独立验证）。\n**最优形态**：`group_rank(multiply(divide(snl27_skewness, ts_mean(snl27_totaldomains,55)), divide(snl27_relpopularity1, ts_mean(snl27_totalcountrydomains,55))), sector)`\n⇒ S 1.29 / F 0.87 / **2Y 1.61 ✅** / returns **5.68%**（够过 F）—— **唯一瓶颈是 S 距 1.58 差 0.25**。\n**S 提升轨迹**：0.63（单字段）→ **1.14（轴 c5→sector，+0.51 最大单步）** → 1.22（乘积）→ 1.30（同分母双对比）→ 1.32（**交叉分母** `(A/td)×(B/tcd)`）→ 1.33（幂次 1.5）⇒ 收敛。\n⚠ **判死清单**：`snt27_*` 家族（覆盖 1.0 但竞争高，S ≤1.08）；`sentiment7`（Wikipedia 浏览量，S ≤0.43）；`other553`（财报电话文本，S≈0）；`sentiment21/26`（MATRIX 或高竞争）；**L2 双窗级联**（`multiply(rank(ts_delta(x,240)), rank(ts_delta(x,176)))`，S 0.32–0.66 —— skill 记载的 L2 杠杆在此数据集上失效）；跨数据集组合（≤单腿）；vec 聚合 5 档（无差异）；16 个包装算子（无增益）。"
+    ]
+   }
+  },
+  "macro": {
+   "generation": {
+    "notes": [
+     "★★★ 【EUR × macro 判定】（wave498/502）：`macro10`（1 MATRIX，`mcr10_value`）S=−0.52、**2Y=−1.56**；`macro27`（招聘数据）S=0.54、returns 2.27% ⇒ **两数据集均判死**（macro 类别穷尽）。"
+    ]
    }
   }
  },
  "evidence_synced_at": "2026-10-04",
  "unbound_registry_entries": 3,
- "unattributed_backtests": 20
+ "unattributed_backtests": 20,
+ "region_notes": [
+  "★★★★★ 【EUR 选集的数学判据：returns ≥ 0.05】（2026-10-13 实证确立）\n平台 Fitness 计算式：**F = Sharpe × sqrt(returns / max(turnover, 0.125))**\n⇒ 反推 **returns = 0.125 × (F / S)²**（可直接从任何回测的 S/F 反算，无需额外取数）\n⇒ **过 F 闸（≥1.0）的必要条件**：当 S = 1.58（Sharpe 闸线）时，需 returns ≥ 0.125×(1/1.58)² = **0.0501**\n⇒ ★★ **筛选判据：数据集的信号必须能产出 returns ≥ 5%**，否则即使 S 达标，F 也数学上不可达。\n**实测验证**：\n| 数据集/信号 | S | F | 反推 returns | 能否过 F（S=1.58 时） |\n|---|---:|---:|---:|---|\n| ★`analyst_factor_signals`（修正÷分歧） | 1.71 | 1.09 | **5.07%** | ✅ F=1.09 |\n| `sentiment27`（平滑双对比） | 1.29 | 0.87 | **5.68%** | ✅ 但 S 卡 1.33 |\n| `fund_holdings_panel`（herfindahl） | 0.81 | 0.35 | **2.33%** | ❌ F 上限 0.68 |\n| `macro27`（招聘） | 0.54 | 0.23 | **2.27%** | ❌ |\n⇒ ★ 这解释了 skill 原记载「EUR 数据集 returns 普遍低于 0.03 ⇒ 未点亮塔路径数学封闭」：\n**绝大多数 EUR 数据集 returns < 3% ⇒ F 上限 < 0.63（在 S=1.58 时）⇒ 结构性不可提交**。\n⇒ **选集的第一个动作应是：快速探针 → 反算 returns → 只有 returns ≥ 5% 的数据集才值得深挖**。\n⇒ EUR 升 active 的条件（skill 原文「须出现 returns ≥ 0.05 的新信号源」）与此判据一致。\n**对算子的启示**：任何**降低 returns 的算子**（如 `ts_mean` 长时间平滑、`winsorize` 过强）在 EUR 都是隐性致命；任何**提高 per-trade 收益的算子**（`signed_power` 放大极端值、`trade_when` 精简持仓）则双重有利。",
+  "★★★★★★ 【EUR 未点亮 8 类别【完全穷尽】总表】（2026-10-13 收官，波 444–498，**34 波 ≈272 条仿真**）\n| 类别 | 最优数据集 | S 上限 | 反推 returns | 判定 |\n|---|---|---:|---:|---|\n| **Analyst** | ★`analyst_factor_signals` | ★**1.71** | **5.07%** | ★**产出 1 颗可提交**（`786pLKnb`） |\n| Sentiment | `sentiment27` | 1.33 | **5.68%** | S 距线 0.25（returns 够，S 不够） |\n| Imbalance | `imbalance5` | 1.43 | 2.66% | ❌ **2Y≈0.05**（recency 结构性失效）+ returns 不足 |\n| Institutions | `fund_holdings_panel` | 0.81 | 2.33% | ❌ returns 不足（F 上限 0.68） |\n| Macro | `macro27` | 0.54 | 2.27% | ❌ returns 不足 |\n| Insiders | `insiders1` | 0.50 | ~0 | ❌ **TO 爆炸 1.52–1.61**（>0.7 硬线）+ margin≈0 |\n| Social Media | `socialmedia15` | −0.03 | — | ❌ **TO 爆炸 1.23–1.33** |\n| Earnings | `earnings6` | ~0 | — | ❌ 字段全 NaN |\n\n**★★★ 三条通用规律（本轮新增，可迁移到任何区域）**：\n1. ★★★★**`returns ≥ 0.05` 是 EUR 可提交的硬前提**：F = S × sqrt(returns/max(TO,0.125))；S=1.58 时需 returns ≥ 0.0501。**上表 8 类中只有 2 类的信号 returns ≥ 5%**（Analyst 5.07% / Sentiment 5.68%）⇒ **其余 6 类在数学上就不可能过 F 闸**，无论怎么调算子。\n   ⇒ ★ **选集第一步应为：8 条探针 → 反推 returns = 0.125×(F/S)² → returns < 5% 的直接放弃**（省掉整轮深挖）。\n2. ★★★★**稀疏事件型 VECTOR 数据 + `vec_avg` ⇒ TO 爆炸**（insiders1 1.52–1.61 / socialmedia15 1.23–1.33）：事件稀疏 ⇒ 归约后个股间剧烈跳变。**判据：若探针的 TO > 0.7，立即放弃该数据集**（不必看 S）。\n3. ★★★**配方与数据集强绑定，不可迁移**：`A ÷ ts_mean(B,55)` + `signed_power 3.0` 在 analyst（日频修正 + 稠密分歧度）上有效；换到情绪评分/持仓数据后要么 TO 爆炸、要么 S 天花板不变（+0.01）。\n\n**★ 各杠杆在 EUR 的实测有效性（跨类别汇总）**：`signed_power` 幂次 ✅（提 S/F 且降 prod）；`ts_mean` 平滑分母 ✅（提 2Y + 降 prod，但降 returns ⇒ 需 returns 有余量）；轴 `industry` ✅（> sector > market > c5）；`target_tvr` 仅在 TO>t 时有效（否则 no-op 可删）；❌ L2 双窗级联（S 0.32–0.66）、跨数据集组合（≤单腿）、TOP2500（S 崩）、decay 4（S/F 双降）、sector/market 中性化（S −25%）、稀疏数据上的 vec_avg（TO 爆）。",
+  "★★★★★★ 【EUR 未点亮 8 类别【33 个数据集】100% 覆盖终表】（2026-10-13 最终收官，波 444–504，**38 波 ≈300 条仿真**）\n**33 个数据集全部探过**（此前曾误称「21 个已穷尽」，经用户质询后做全量枚举纠正）。\n**唯一可提交产出：`786pLKnb`**（Analyst/`analyst_factor_signals`，4 算子，S1.71/F1.09/TO0.1124/2Y1.78/PROD0.6171/SELF0.1752/verdict FAIL 0）。\n**近线遗憾：`sentiment27`**（S 1.33 卡线 4 次，returns 5.68% 够过 F）。\n**判死原因归类（可迁移）**：\n① **returns < 5%**（数学不可能过 F）：fund_holdings_panel 2.33%｜macro27 2.27%｜analyst4 1.4%｜imbalance5 2.66%｜analyst69 4.79%\n② **TO 爆炸 > 0.7**：insiders1 1.52–1.61｜socialmedia15 1.23–1.33｜earnings_sent_matrix 1.61｜insider_agg_matrix 1.43｜analyst40 1.50–1.63\n③ **TO 过低 < 0.05**：analyst4 0.020\n④ **2Y ≈ 0 或负**：imbalance5 0.05｜macro10 −1.56｜analyst14/15/7/39 负｜analyst_base_ref −0.58\n⑤ **字段全 NaN/空信号**：earnings6\n⑥ **S 不足**：analyst45 0.36｜analyst9 0.45｜analyst39 0.19｜analyst7 0.10｜sentiment7 0.43｜other553 ≈0\n⇒ ★ **选集第一步（强制）**：全量枚举该类数据集 → 逐个 8 探针 → **反算 returns = max(TO,0.125)×(F/S)²**；returns < 5% 或 TO ∉ [0.05,0.3] 的直接弃。",
+  "★★★★★★ 【EUR 全类别字段画像 + 金字塔状态纠正】（2026-10-13，波 506–507）\n**EUR 全量：14 类别 / 173 数据集 / 35,225 字段。**\n**★★★ 金字塔纠正**：`get_pyramid_alphas` **按自然季度清零**。EUR/D1 2026Q4 实际仅为：Model=1｜Fundamental=1｜Analyst=1｜Risk=1｜**PV=0｜News=0｜Other=0｜其余 10 类全 0**。\n⇒ **我此前把 PV/News/Other 当作「已点亮」是错的** —— 它们本季度 alphaCount=0（未点亮），且**不在已穷尽的 8 类中** ⇒ **76 个数据集 / 10,735 字段可用**。\n**★★ 新失败模式「噪声型信号」**（wave506/507 实证）：形态相似度（`pattern_scores`/`continuation_score`）、日内特征（`intraday_pv_feats`）、新闻情绪（`ai_news_scores`）三类数据集呈现：**不平滑 ⇒ TO 0.36–1.36 爆炸 + 2Y 负；平滑（`ts_mean`/`ts_target_tvr_decay`）⇒ S 从 +0.56 崩到 −0.79**。\n⇒ **alpha 全在高频日间跳变中**，与 `analyst69` 同源 ⇒ **EUR 的 TO 上限(0.3) 与 2Y 闸(≥1.58) 联合排除该类信号**。\n⇒ ★ **判据**：探针若 `TO > 0.3` 且 `ts_target_tvr_decay`/`ts_mean` 一压就掉 S ⇒ **数据集结构性不可用**。\n**潜力榜（低拥挤×大字段×高覆盖）Top**：`multifactor_return_pre`(αC 13)｜`pattern_scores`(26,已测死)｜`continuation_score`(35,已测死)｜`intraday_pv_feats`(54,已测死)｜`ai_news_scores`(12,已测死)｜`news_sentiment_dl`(αC **1**,未测)｜`quant_factor_lib`(αC 4,未测)｜`insider_feats`(43,未测)。\n**覆盖度现状**：类别级 14/14；数据集级 ≈50/173（未点亮 33 已 100%，PV/Other 仅 5 个）；字段级 ≈120/35,225。"
+ ]
 }

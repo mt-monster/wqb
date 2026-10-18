@@ -45,6 +45,32 @@ tracking/KOR/
 | `kor_ledger.py` | 台账统一 CLI：原子写 + .bak 备份 + 写时重读合并 |
 | `metrics_cache.py` | 指标读穿缓存 + 单进程单登录 |
 
+**2026-10-15 从 `Claude/skills/wq-brain-ra-kor/scripts/` 迁入的 3 个分析脚本**（原先只在技能目录里、
+且从未入库；技能目录是 `sync_skills.py` 的同步面，放脚本等于给每个安装位复制一份**跑不通**的副本 ——
+它们读的是 `Claude/skills/.../template_families.json` 与 `tracking/KOR/reference/*.json`，只有仓库根下有）：
+
+| 脚本 | 用途 | 调用方 |
+|---|---|---|
+| `kor_s0_scan.py` | S0 选集：给 KOR/TOP600 全部数据集打分排序，排除已点亮（≥3 提交）与已判死者，产白名单 `<repo>/logs/_kor_s0_whitelist.json`。⚠ 内置 `DS` 清单是 2026-10-15 的 `get_datasets` 快照，换轮先重拉 | `references/_dataset-scan-sop.md`、`references/_workflow-pipeline.md` |
+| `kor_pool_rank.py` | 候选池排序：吃 `get_user_alphas` 落盘 dump，按 `failed_ra_count` 再按 sharpe 排，输出「失败闸签名」聚类。只读文件，不发请求、不占配额 | `references/_dataset-scan-sop.md` |
+| `scan_diversity.py` | 族驱动扫描（防「模板单一」）：`--build <field> [--all-families]` 按 9 族骨架生成网格；`--audit <batch.txt>` 对手写批次跑三闸（族≥2 / 未用或 force 算子≥2 / 单条算子<10）。**不落库** | `references/_probe-sop.md` 第 1.5 步 |
+
+⚠ **`scan_diversity.py` 与 toolkit 的 `diversity_audit.py` 不是重复实现**（2026-10-15 核过；上一轮清理
+把 `diversity_audit.py` 的 KOR 副本归档进 `archive/` 是对的，但别顺手把本脚本也当副本清掉）：
+`diversity_audit.py` 吃**战役目录的 wave 产物**、写台账并产出 `next_round_injections`（gate.py 闸 6 消费的契约）；
+`scan_diversity.py` 吃**手写批次文本**、只往 stdout 打三闸判定，是发批前自查。输入、输出、消费方三处都不同。
+
+**仓库根解析（本目录新脚本一律照此写）**：`from _repo_path import REPO`（`_repo_path.py`，2026-10-15 新增）。
+判据 = 向上探测到同时含 `pyproject.toml` 与 `src/wqb/` 的目录，优先用已安装的 `wqb.paths`。
+**不要**再写 `parents[N]` / `dirname(dirname(...))` —— 本目录已有 **3 个文件因此指错**（2026-10-15 实测）：
+`kor_ledger_write.py:11`、`kor_spre_read.py:6` 的 `parents[1] / "src"` 解析成 `tracking/KOR/src`，
+`_kor_s6_writeback.py:15` 的 `parents[1]` 解析成 `tracking/KOR` —— 都少两层。
+**这类错不报错**：往 `sys.path` 塞一个不存在的路径是静默 no-op，`import wqb` 靠 pip 的 editable 安装
+救回来就一切如常，换台机器或换个 cwd 才 ImportError。
+正确写法本目录已有先例：`kor_opportunity_scan.py:32-35`（向上探测双标记，注释写明了为什么不用 `parents[N]`）；
+`preflight.py:11` 的 `parents[3]` 数值上对，但层数一变就错，属同一类债。
+存量按 §8.13「每次实际移动该文件时顺手换掉」处理，本轮只改迁入的 3 个。
+
 **已归档（2026-09-01 移入 `archive/`，非活跃勿用）**：v1 旧链 `kor_pipeline.py` / `kor_poll_pipeline.py` / `review_wave.py`；与 toolkit 重复的历史副本 `scan_fields.py` / `score_datasets.py` / `diversity_audit.py`；一次性探针与散件 `kor_preflight_check.py` / `batch_validate_kor.py` / `select_wave1.py` / `validate_wave2v2.py` / `validate_wave3.py` / `scan_whitelists.py` / `scan_dl_riskfree.py` / `probe_*.py` / `extract_p32.py` / `fetch_ac_fields.py` / `filter_ac.py` / `_gen_other455_catalog.py` / `_inspect_fail_p*.py` / `_q_kor_registry.py` / `_replay_*.py`。scan/评分/多样性等通用能力一律走 toolkit（`--campaign-dir tracking/KOR`）。
 
 ## 既有脚本补丁（向后兼容）

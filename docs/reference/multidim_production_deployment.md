@@ -15,7 +15,7 @@
 | tracking/KOR/scripts/build_wave.py | 默认启用多维选波，--legacy 标记传统模式为已废弃 | ✅ |
 | tools/pool_diversity.py | 默认启用多维评估，--legacy 标记传统模式为已废弃 | ✅ |
 | tools/skeleton_tags.py | 四维标签提取引擎（结构/构造链/机制/字段匹配） | ✅ |
-| tools/skeleton_quota.json | 多维配额配置（11 结构 + 16 机制） | ✅ |
+| tracking/KOR/reference/skeleton_quota.json | 多维配额配置（11 结构 + 16 机制）；**2026-10-14 自 `tools/` 顶层迁入**（唯一读取方是本区 `build_wave.py`，口径见 toolkit `config/platform_constraints.json._doc`） | ✅ |
 
 ### 1.2 备份文件
 

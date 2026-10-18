@@ -1,7 +1,7 @@
 # 多维骨架标签系统落地总结
 
 > 落地日期：2026-09-09
-> 落地范围：tools/skeleton_tags.py + tools/skeleton_quota.json + build_wave.py + pool_diversity.py + ab_test_framework.py + dryrun_multidim.py
+> 落地范围：tools/skeleton_tags.py + tracking/KOR/reference/skeleton_quota.json（落地时在 `tools/` 顶层，2026-10-14 布局治理迁入区目录）+ build_wave.py + pool_diversity.py + ab_test_framework.py + dryrun_multidim.py
 > 验证状态：dry-run 通过，对比实验显示显著优势
 
 ---
@@ -13,7 +13,7 @@
 | 文件 | 功能 | 状态 |
 |------|------|------|
 | `tools/skeleton_tags.py` | 多维骨架标签提取器（四维标签：结构/构造链/机制/字段匹配） | ✅ 已创建 |
-| `tools/skeleton_quota.json` | 多维配额配置（结构 11 类 + 机制 16 类） | ✅ 已创建 |
+| `tracking/KOR/reference/skeleton_quota.json` | 多维配额配置（结构 11 类 + 机制 16 类）；原建在 `tools/` 顶层，2026-10-14 按 §8.13 迁入本区 `reference/`（唯一读取方 = 本区 `build_wave.py`） | ✅ 已创建 |
 | `tools/ab_test_framework.py` | 对比实验框架（传统 vs 多维选波） | ✅ 已创建 |
 | `tools/dryrun_multidim.py` | Dry-run 验证脚本 | ✅ 已创建 |
 | `docs/reference/multidim_ab_test_report_template.md` | 对比实验报告模板 | ✅ 已创建 |

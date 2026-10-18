@@ -1,6 +1,6 @@
 # Alpha 模板手册 · 社区模板库篇（续集）
 
-> 落盘：2026-08-31。来源：用户上传 `alpha模板.docx`（《Alpha模板手册》续篇，社区模板库 TPL 系列，作者 FF56620 原帖的论坛大模型总结）。
+> 落盘：2026-08-31。来源：用户上传 `alpha模板.docx`（《Alpha模板手册》续篇，社区模板库 TPL 系列，作者 FF56620 原帖的论坛大模型总结）。本地二进制留存件已按 AGENTS.md §8.13「路径纯 ASCII」更名为 `docs/reference/alpha_template_community.docx`（gitignored，仅溯源用，正文已全部消化进本卡与 `KB/community_tpl_kb`）。
 > 定位：**人读参考卡**。机器可读候选层在 `data/wqb.db` ledger_kv `KB/community_tpl_kb`（2026-08-31 已合并本册增量），读写协议见 [region_template_kb](../experience/region_template_kb.md)。
 > 与第一册（行为经济学模板、官方 Templates & Inspirations）配套使用。
 

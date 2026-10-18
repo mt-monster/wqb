@@ -1,0 +1,167 @@
+[
+ {
+  "id": "anl81_class",
+  "description": "Creditwrothiness class indices in integers: 9(AAA), 5(AA), 4(A), 1(BBB), 2(BB), 3(B), 7(CCC), 8(CC), 6(C), 10(D)",
+  "dataset": {
+   "id": "analyst81",
+   "name": "Creditworthiness model"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-ratings",
+   "name": "Analyst Ratings"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.2579,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ },
+ {
+  "id": "anl81_confidence_level_percent",
+  "description": "Confidence level of the assessment, measuring data completeness and reliability as a percentage from 0 to 100",
+  "dataset": {
+   "id": "analyst81",
+   "name": "Creditworthiness model"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-ratings",
+   "name": "Analyst Ratings"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.2579,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ },
+ {
+  "id": "anl81_probability_of_default_percent",
+  "description": "Estimated probability of default over the rating horizon, expressed as a percentage from 0 to 100",
+  "dataset": {
+   "id": "analyst81",
+   "name": "Creditworthiness model"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-ratings",
+   "name": "Analyst Ratings"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.2579,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ },
+ {
+  "id": "default_likelihood_percent",
+  "description": "Previous-period probability of default estimated by mode_finance, expressed as a percentage from 0 to 100",
+  "dataset": {
+   "id": "analyst81",
+   "name": "Creditworthiness model"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-ratings",
+   "name": "Analyst Ratings"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.276,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ },
+ {
+  "id": "financial_data_completeness_percent",
+  "description": "Confidence level for the lagged assessment, 0–100%, indicating completeness/reliability of available data",
+  "dataset": {
+   "id": "analyst81",
+   "name": "Creditworthiness model"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-ratings",
+   "name": "Analyst Ratings"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.276,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ }
+]

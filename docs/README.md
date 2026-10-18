@@ -32,7 +32,8 @@ docs/
 ├── governance/                            ← 仓库治理类（2026-10-06 建立）
 │   ├── branch_policy.md                     分支与抢救点策略（含「禁 git clean -fd」铁律 + 取件方法）
 │   ├── untracked_allowlist.md               未跟踪文件白名单；先行指标=未跟踪源码数
-│   └── snapshot_adjudication.md             抢救点独有文件的三态裁决台账（**生成物**，勿手改）
+│   ├── snapshot_adjudication.md             抢救点独有文件的三态裁决台账（**生成物**，勿手改）
+│   └── output_dirs_taxonomy.md              输出目录分类方案（谁放哪 / 命名即分类 / 闸门映射）
 └── plans/                                 ← 历史计划类
     └── 2026-08-02-wqb-src-reconstruction.md src/wqb/ 包重建实施计划
 ```
@@ -93,7 +94,7 @@ docs/
 **适用场景**：表达式编写时查算子签名、确认算子可用性、规划算子探索率。
 
 #### 3a. 社区模板库续集手册 `reference/community_tpl_library_sequel.md`
-**定位**：《Alpha模板手册·社区模板库篇（续集）》（用户上传 alpha模板.docx）的人读全文参考卡，机器可读候选层在 `KB/community_tpl_kb`（141 TPL/19 大类，2026-08-31 合并续集增量）。
+**定位**：《Alpha模板手册·社区模板库篇（续集）》（用户上传 `alpha模板.docx`，本地留存件已更名 `reference/alpha_template_community.docx`）的人读全文参考卡，机器可读候选层在 `KB/community_tpl_kb`（141 TPL/19 大类，2026-08-31 合并续集增量）。
 **内容**：17+2 个部分的模板骨架与参数速查表、**幽灵算子→已验证等价映射表**（§十八，入批前必查）、附加模板（IND 情感/速度加速度差分）、模板群动态管理方法论、与挖掘流程的集成点速查。
 **适用场景**：Mode B B1 / ra-pipeline 步 5 补骨架时查候选模板；含幽灵算子骨架替换等价算子后再入批。
 

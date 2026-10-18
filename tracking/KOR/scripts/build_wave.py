@@ -5,7 +5,7 @@
   - 全历史去重（M6）：对 tracking/KOR 下全部 kor_wave*_exprs.json / candidates/*.json
     建表达式哈希集，重复候选直接丢弃（战役实测 92/854 重复 = 11% 配额浪费）
   - 多维骨架标签（默认启用）：四维标签选波（结构/构造链/机制/字段匹配）
-  - 配额约束：按 tools/skeleton_quota.json 的配额配置限制各维度占比
+  - 配额约束：按 tracking/KOR/reference/skeleton_quota.json 的配额配置限制各维度占比
   - near-miss 加权：读 reviews/*.json 的 near 池字段，含近门槛字段的候选优先
   - 波内字段去重：同一字段在单波出现次数上限
 
@@ -78,12 +78,38 @@ def expr_fields(e):
 
 
 def load_quota_config():
-    """加载多维配额配置。"""
-    quota_path = os.path.join(TOOLS_DIR, "skeleton_quota.json")
+    """加载多维配额配置（缺失返回 None，兜底交给 `default_quota_config()` 并顶屏告警）。
+
+    位置：2026-10-14 布局治理把本件从 `tools/` 顶层迁入 `tracking/KOR/reference/` ——
+    判据是「唯一读取方是本区脚本」＋ toolkit `config/platform_constraints.json._doc`
+    的既定口径「区域级 skeleton_quota 放战役目录 reference/」。
+    """
+    quota_path = os.path.join(ROOT, "reference", "skeleton_quota.json")
     if os.path.exists(quota_path):
         with open(quota_path, encoding="utf-8") as f:
             return json.load(f)
+    print(f"[warn] 未找到多维配额配置 {quota_path}，改用代码缺省（仅 cap、无 min）；"
+          "配置文件缺失不该静默改变选波行为")
     return None
+
+
+def default_quota_config():
+    """把 `skeleton_tags.DEFAULT_QUOTA` 转成 `load_quota_config()` 的返回形状。
+
+    ⚠ 这不是可有可无的适配层 —— 旧写法 `quota_config = DEFAULT_QUOTA` 直接塞了**另一种形状**
+    （`{'structure': {名: float}}`），而下面的抽样读的是
+    `quota_config['dimensions']['mechanism'][名]['cap']`。于是配置文件一旦缺失，
+    `.get('dimensions', {})` 拿到空 dict → 两轮抽样**一次都不执行** → 选波**静默返回 0 条**，
+    不报错也不告警（AGENTS.md §8.4 第 7/8 条同类的「降级不吭声」）。
+    """
+    dims = DEFAULT_QUOTA if "dimensions" in DEFAULT_QUOTA else {"dimensions": DEFAULT_QUOTA}
+    out = {"dimensions": {}}
+    for dim, table in (dims.get("dimensions") or {}).items():
+        out["dimensions"][dim] = {
+            name: (conf if isinstance(conf, dict) else {"cap": conf})
+            for name, conf in (table or {}).items()
+        }
+    return out
 
 
 def select_with_multidim(exprs, size, field_profiles=None, quota_config=None, max_field_repeat=3):
@@ -107,7 +133,7 @@ def select_with_multidim(exprs, size, field_profiles=None, quota_config=None, ma
     if quota_config is None:
         quota_config = load_quota_config()
     if quota_config is None:
-        quota_config = DEFAULT_QUOTA
+        quota_config = default_quota_config()
 
     # 按机制族分桶
     mechanism_buckets = collections.defaultdict(list)

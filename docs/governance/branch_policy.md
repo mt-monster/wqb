@@ -176,7 +176,7 @@ python tools/code-audit/repo_governance_check.py --quiet  # 只看退出码（�
 ### 5.2 `git gc --prune=now` —— 判定不安全，不执行
 
 本机同时存在 cline（`refs/cline/checkpoints/*`）与 codex（`refs/codex/turn-diffs/*`）
-的 ref 命名空间，且有正在运行的回测/选区进程（含另一个工作副本 `D:/coding/hw_project/wqb`）。
+的 ref 命名空间，且有正在运行的回测/选区进程（含本机另一份 wqb 工作副本）。
 在这些 ref 与进程存在期间做 prune，可能回收掉**只被这些 ref 引用**的 blob。
 保持现状；若要清理，须先确认上述 ref 命名空间与并行进程都已停止。
 

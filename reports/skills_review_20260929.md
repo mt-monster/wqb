@@ -3,7 +3,7 @@
 > **日期** 2026-09-29　**基线** `6003238`（= origin/main）　**性质** 只读审查（未改动任何 skill / 代码 / 台账）
 > **范围** `Claude/skills/` 下 33 个 `SKILL.md` + `INDEX.md`，按“阶段（章节 / 步骤 / 相）”逐段评审，并抽读其 `references/`、`reference.md`、`examples`、区域 profile（抽样范围见附录 A）
 > **评审维度** ① 书写逻辑是否清晰　② 职责划分是否明确　③ 边界界定是否清晰　④ 是否需要用具体情景/场景来规范表述，避免有价值的信息因表述模糊而被绕过或遗漏
-> **配套证据** `reports/skills_review_20260929/check_skills.py`（可重跑的机械检查）与 `check_skills_output.txt`；关键论断均标注了对应的代码/配置核对（见各条“问题”列）
+> **配套证据** `reports/skills_review_20260929_refs/check_skills.py`（可重跑的机械检查）与 `check_skills_output.txt`；关键论断均标注了对应的代码/配置核对（见各条“问题”列）
 
 ---
 
@@ -2369,9 +2369,9 @@
 ### 附录 B　复现命令
 
 ```bash
-# 机械检查（只读；输出即 reports/skills_review_20260929/check_skills_output.txt）
-world-quant-brain-mcp/.venv/bin/python reports/skills_review_20260929/check_skills.py            # 全部
-world-quant-brain-mcp/.venv/bin/python reports/skills_review_20260929/check_skills.py --section D,E
+# 机械检查（只读；输出即 reports/skills_review_20260929_refs/check_skills_output.txt）
+world-quant-brain-mcp/.venv/bin/python reports/skills_review_20260929_refs/check_skills.py            # 全部
+world-quant-brain-mcp/.venv/bin/python reports/skills_review_20260929_refs/check_skills.py --section D,E
 
 # 现有守护测试
 world-quant-brain-mcp/.venv/bin/python -m pytest tests/unit/test_skill_integrity.py \

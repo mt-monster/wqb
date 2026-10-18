@@ -3,7 +3,7 @@
 > **对象**：`Claude/skills/wq-brain-ra-pipeline/SKILL.md`（v2.2，last_verified 2026-09-19）定义的唯一挖掘编排 SOP（S-PRE→S6 九步），以及它调用的 workflow 节点、`tools/`、toolkit 脚本与 MCP 函数。
 > **代码基线**：`c393bca`（2026-09-25）。
 > **前序审计**：`output_report/ra_pipeline_stage_audit_20260916.md`（v2）、`…_v3.md`、`ra_pipeline_remediation_plan_20260917.md`。本报告**不是增量补丁**：九步按"输入 / 处理 / 输出 / 价值"重新完整展开，并对前序结论逐条做代码级复核。
-> **附件**（同名目录 `reports/ra_pipeline_stage_review_20260927/`）：`dryrun_transcript.txt`（完整演练实录）、`reproduce.sh` + `run_dryrun.py` / `seed_db.py` / `sbx_guard.py`（一条命令复现）。
+> **附件**（同名目录 `reports/ra_pipeline_stage_review_20260927_refs/`）：`dryrun_transcript.txt`（完整演练实录）、`reproduce.sh` + `run_dryrun.py` / `seed_db.py` / `sbx_guard.py`（一条命令复现）。
 > **第二轮（同日更新，见 §14，首读建议从 §14.0 开始）**：按审阅意见先修两个 P0（N1 / N2），再在**真实环境**复跑九步。真实环境 = 真实仓库工作树 + 两个 MCP server 经 stdio 真实启动 + `tracking/KOR` 真实历史经 MCP 导入，并用修复前的原始代码做对照。复跑暴露了 P0-2 的两处残缺（N16 / N17，已一并修复），另记新发现 N18–N27。附件 `realenv/`：`run_realenv.py`、`reproduce_realenv.sh`、`realenv_transcript_p0.txt`（第二轮实录）。
 > **第三轮（同日更新，见 §14.8）**：按审阅意见修复四个 P1（R18–R21），用修复后的代码在真实环境把九步完整再跑一遍，每一步打印【阶段小结】（输入 / 处理 / 输出变化 / 价值判定，数字取自本次运行）。首跑又暴露 R19 / R21 的两处残缺（N28 / N29，已一并修复）。实录 `realenv/realenv_transcript_r18_r21.txt`。
 > **第四轮（同日更新，见 §14.9）**：按审阅意见修 P1 第二批 R22 / R5 / R12 / R4 / R3，第四轮真实环境复跑，末尾验证清单 8 ✅ + 1 ➖（R4：真实数据无触发样本，靠单测）。验证中顺手修了两处"本批修复让测试走得更远才暴露"的问题，新记 N30（P1；第五轮已修，§14.10）。随后按审阅意见定下 CLI 开波闸灰度截止日：2026-10-11 及以前 warn，2026-10-12 起缺省 enforce（§14.9.7）。实录 `realenv/realenv_transcript.txt`。
@@ -513,7 +513,7 @@
 ## 14. 修复后真实环境复跑（第二轮，2026-09-27）
 
 > 审阅意见："先修复两个 P0 问题，在真实环境而不是沙箱环境 dry-run，再做一次"。本节是第二轮的全部结果；第一轮（§1–§13）的结论除本节明确修订处外仍然有效。
-> 复现：`bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh`。实录 `realenv/realenv_transcript.txt`，路径已脱敏为 `<repo>` / `<scratch>` / `<base>`。
+> 复现：`bash reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv.sh`。实录 `realenv/realenv_transcript.txt`，路径已脱敏为 `<repo>` / `<scratch>` / `<base>`。
 
 ### 14.0 一页结论
 
@@ -1231,8 +1231,8 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
 ## 附录 A：复现
 
 ```bash
-bash reports/ra_pipeline_stage_review_20260927/reproduce.sh            # 默认在 mktemp 目录
-bash reports/ra_pipeline_stage_review_20260927/reproduce.sh /tmp/wqb_dryrun   # 指定工作目录
+bash reports/ra_pipeline_stage_review_20260927_refs/reproduce.sh            # 默认在 mktemp 目录
+bash reports/ra_pipeline_stage_review_20260927_refs/reproduce.sh /tmp/wqb_dryrun   # 指定工作目录
 ```
 
 脚本在工作目录里 `git archive HEAD`、建 mcp stub、`pip install --target` 装 `ply`/`msgpack`、播种合成库、跑 `run_dryrun.py`。全程不读写真实仓库与 `data/wqb.db`，不触网。本次在全新目录复跑，关键行（节点结论、退出码、闸判定、Failed-count、快照存在性）与 `dryrun_transcript.txt` 逐行一致。
@@ -1240,7 +1240,7 @@ bash reports/ra_pipeline_stage_review_20260927/reproduce.sh /tmp/wqb_dryrun   # 
 **第二轮（真实环境）**：
 
 ```bash
-bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh
+bash reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv.sh
 # 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<修复前提交，默认 d1c7d78>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
 ```
 
@@ -1279,7 +1279,7 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh
 **第五轮（N30 修复后的专项探针）**：
 
 ```bash
-bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh
+bash reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n30.sh
 # 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<N30 修复前的提交，默认 3ea1931>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
 ```
 
@@ -1294,7 +1294,7 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh
 **第六轮（N31 修复后的专项探针）**：
 
 ```bash
-bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n31.sh
+bash reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n31.sh
 # 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<N31 修复前的提交，默认 9ca1cc8>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
 ```
 
@@ -1303,7 +1303,7 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n31.sh
 **第七轮（第 4 项 `ra_failed_checks` 口径修复后的专项探针）**：
 
 ```bash
-bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.sh
+bash reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_item4.sh
 # 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<第 4 项修复前的提交，默认 baf6f19>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
 ```
 
@@ -1316,7 +1316,7 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.s
 **第八轮（N35 修复后的专项探针）**：
 
 ```bash
-bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n35.sh
+bash reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n35.sh
 # 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<N35 修复前的提交，默认 023bdb9>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
 ```
 

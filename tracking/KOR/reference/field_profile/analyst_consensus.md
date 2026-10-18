@@ -1,0 +1,65 @@
+# KOR 字段画像 — analyst_consensus
+
+字段总数 2343；MATRIX 18 / VECTOR 2325
+零使用(userCount=0) 2184
+
+## 机制簇
+- **RANGE(max/min/high/low)** (n=489, uc0=461): max_estimate_bvps_annual12, max_estimate_bvps_annual12_tribes, max_estimate_capex_annual12, max_estimate_capex_annual12_2, max_estimate_cashflowfinancing_annual12, max_estimate_cashflowinvesting_annual12, max_estimate_cfo_annual12, max_estimate_cfps_annual12...
+- **DISPERSION(stddev/coeffvar)** (n=295, uc0=286): stddev_current_period_pretax_annual12, stddev_current_period_roe_annual12, stddev_estimate_bvps_annual12, stddev_estimate_bvps_annual12_2, stddev_estimate_capex_annual12, stddev_estimate_capex_annual12_2, stddev_estimate_cashflowfinancing_annual12, stddev_estimate_cashflowinvesting_annual12...
+- **mean_estimate** (n=238, uc0=210): mean_estimate_bvps_annual12, mean_estimate_bvps_annual12_tribes, mean_estimate_capex_annual12, mean_estimate_capex_annual12_2, mean_estimate_cashflowfinancing_annual12, mean_estimate_cfinvest_annual12_tribes, mean_estimate_cfo_annual12, mean_estimate_cfps_annual12...
+- **median_estimate** (n=237, uc0=221): median_estimate_bvps_annual12, median_estimate_bvps_annual12_tribes, median_estimate_capex_annual12, median_estimate_capex_annual12_2, median_estimate_cashflowfinancing_annual12, median_estimate_cashflowinvesting_annual12, median_estimate_cfo_annual12, median_estimate_cfps_annual12...
+- **COUNT** (n=157, uc0=149): count_net_income_3mth_prior, count_net_income_4wks_prior, count_net_income_estimates, count_recent_net_income_estimates, estimate_count_capex_annual12, estimate_count_cashflowfinancing_annual12, estimate_count_cashflowinvesting_annual12, estimate_count_cfo_annual12...
+- **median_surprise** (n=143, uc0=129): median_surprise_ebitda_annual12, median_surprise_enterprisevalue_annual12, median_surprise_fxadj_ebitda_annual12, median_surprise_fxadj_enterprisevalue_annual12, median_surprise_fxadj_gross_income_quarterly16, median_surprise_fxadj_netdebt_annual12_tribes_2, median_surprise_fxadj_total_debt_annual12, median_surprise_gross_income_quarterly16...
+- **mean_forecast** (n=141, uc0=126): mean_forecast_actual_cogs_annual12_tribes, mean_forecast_actual_combined_bvps_annual12, mean_forecast_actual_combined_bvps_annual12_tribes, mean_forecast_actual_combined_capex_annual12_2, mean_forecast_actual_combined_capex_annual12_3, mean_forecast_actual_combined_cashflowfinancing_annual12, mean_forecast_actual_combined_cashflowinvesting_annual12, mean_forecast_actual_combined_cfo_annual12...
+- **mean_surprise** (n=141, uc0=135): mean_surprise_cashflowfinancing_annual12_tribes, mean_surprise_ebitda_annual12, mean_surprise_enterprisevalue_annual12, mean_surprise_fxadj_ebitda_annual12, mean_surprise_fxadj_enterprisevalue_annual12, mean_surprise_fxadj_gross_income_quarterly16_2, mean_surprise_fxadj_total_debt_annual12, mean_surprise_gross_income_quarterly16...
+- **median_forecast** (n=141, uc0=129): median_forecast_actual_cogs_annual12_tribes, median_forecast_actual_combined_bvps_annual12, median_forecast_actual_combined_bvps_annual12_2, median_forecast_actual_combined_capex_annual12, median_forecast_actual_combined_capex_annual12_2, median_forecast_actual_combined_cashflowfinancing_annual12, median_forecast_actual_combined_cfinvest_annual12_tribes, median_forecast_actual_combined_cfo_annual12...
+- **forecast_actual** (n=121, uc0=116): forecast_actual_flag, forecast_actual_flag_bvps_annual12_tribes, forecast_actual_flag_capex_annual12_2, forecast_actual_flag_cashflowfinancing_annual12, forecast_actual_flag_cashflowinvesting_annual12, forecast_actual_flag_cfo_annual12, forecast_actual_flag_cfps_annual12_2, forecast_actual_flag_cogs_annual12_tribes...
+- **mean_flash** (n=41, uc0=36): mean_flash_estimate_bvps_annual12, mean_flash_estimate_capex_annual12_2, mean_flash_estimate_cfps_annual12, mean_flash_estimate_dividend_annual12, mean_flash_estimate_ebit_annual12_2, mean_flash_estimate_ebit_quarterly16, mean_flash_estimate_ebt_annual12, mean_flash_estimate_eps_annual12_3...
+- **actual_value** (n=22, uc0=20): actual_value_ebit_quarterly16, actual_value_ebitda_annual12, actual_value_enterprisevalue_annual12, actual_value_eps_annual12, actual_value_eps_quarterly16_tribes, actual_value_fxadj_ebit_quarterly16, actual_value_fxadj_ebitda_annual12, actual_value_fxadj_enterprisevalue_annual12...
+- **estimate_currency** (n=20, uc0=18): estimate_currency_code_bvps_annual12_tribes, estimate_currency_code_cashflowinvesting_annual12, estimate_currency_code_cfps_annual12_2, estimate_currency_code_cogs_annual12_tribes, estimate_currency_code_depreciation_annual12, estimate_currency_code_dividend_annual12_tribes, estimate_currency_code_fullyreported, estimate_currency_code_inventory_annual12...
+- **actual_pretax** (n=15, uc0=15): actual_pretax_reported_value_annual12, actual_pretax_reported_value_annual12_tribes, actual_pretax_reported_value_fxadj_annual12, actual_pretax_reported_value_fxadj_quarterly16, actual_pretax_reported_value_quarterly16, actual_pretax_value, actual_pretax_value_annual12, actual_pretax_value_annual12_2...
+- **avg_net** (n=8, uc0=8): avg_net_income_3mth_prior, avg_net_income_3mth_prior_fxadj, avg_net_income_4wks_prior, avg_net_income_4wks_prior_fxadj, avg_net_income_estimate, avg_net_income_estimate_fxadj, avg_net_income_forecast_actual, avg_net_income_forecast_actual_fxadj
+- **median_net** (n=8, uc0=8): median_net_income_3mth_prior, median_net_income_3mth_prior_fxadj, median_net_income_4wks_prior, median_net_income_4wks_prior_fxadj, median_net_income_estimate, median_net_income_estimate_fxadj, median_net_income_forecast_actual, median_net_income_forecast_actual_fxadj
+- **actual_revenue** (n=7, uc0=6): actual_revenue_value_annual12, actual_revenue_value_annual12_tribes, actual_revenue_value_fxadj_annual12, actual_revenue_value_fxadj_quarterly16, actual_revenue_value_fxadj_quarterly16_3, actual_revenue_value_quarterly16, actual_revenue_value_quarterly16_3
+- **actual_dividend** (n=6, uc0=6): actual_dividend_value_annual12, actual_dividend_value_annual12_2, actual_dividend_value_annual12_tribes, actual_dividend_value_fxadj_annual12_2, actual_dividend_value_fxadj_annual12_3, actual_dividend_value_fxadj_annual12_tribes
+- **actual_ebit** (n=6, uc0=6): actual_ebit_value_annual12, actual_ebit_value_annual12_2, actual_ebit_value_fxadj_annual12, actual_ebit_value_fxadj_annual12_2, actual_ebit_value_fxadj_quarterly16_tribes, actual_ebit_value_quarterly16_2
+- **actual_eps** (n=6, uc0=5): actual_eps_reported_value_fxadj_quarterly16, actual_eps_reported_value_quarterly16, actual_eps_value_annual12_3, actual_eps_value_fxadj_annual12_3, actual_eps_value_fxadj_quarterly16, actual_eps_value_quarterly16
+- **actual_netprofit** (n=6, uc0=6): actual_netprofit_reported_value_fxadj_quarterly16, actual_netprofit_reported_value_quarterly16, actual_netprofit_value_annual12, actual_netprofit_value_fxadj_annual12, actual_netprofit_value_fxadj_quarterly16, actual_netprofit_value_quarterly16
+- **mean_recent** (n=6, uc0=6): mean_recent_estimates_fxadj_gps, mean_recent_estimates_fxadj_net2, mean_recent_estimates_fxadj_pre2, mean_recent_estimates_gps, mean_recent_estimates_net2, mean_recent_estimates_pre2
+- **currency_code** (n=5, uc0=5): currency_code_cashflowfinancing_annual12, currency_code_currentliabilities_annual12, currency_code_epsreported_annual12, currency_code_nav_annual12_tribes, currency_code_netprofit_quarterly16
+- **actual_bvps** (n=4, uc0=3): actual_bvps_value_annual12, actual_bvps_value_annual12_tribes, actual_bvps_value_fxadj_annual12, actual_bvps_value_fxadj_annual12_2
+- **actual_capex** (n=4, uc0=4): actual_capex_value_annual12_2, actual_capex_value_annual12_3, actual_capex_value_fxadj_annual12_2, actual_capex_value_fxadj_annual12_3
+- **actual_cfps** (n=4, uc0=4): actual_cfps_value_annual12, actual_cfps_value_annual12_2, actual_cfps_value_fxadj_annual12, actual_cfps_value_fxadj_annual12_2
+- **actual_net** (n=4, uc0=4): actual_net_income, actual_net_income_fxadj, actual_net_value, actual_net_value_fxadj
+- **actual_netdebt** (n=4, uc0=4): actual_netdebt_value_annual12, actual_netdebt_value_annual12_tribes_2, actual_netdebt_value_fxadj_annual12, actual_netdebt_value_fxadj_annual12_2
+- **actual_reportednet** (n=4, uc0=3): actual_reportednet_value, actual_reportednet_value_annual12_2, actual_reportednet_value_fxadj, actual_reportednet_value_fxadj_annual12_2
+- **currency_type** (n=4, uc0=4): currency_type_ebit_quarterly16, currency_type_eps_annual12, currency_type_interest_expense_annual12, currency_type_parent_profit_annual12
+- **actual_nav** (n=3, uc0=3): actual_nav_value_annual12, actual_nav_value_annual12_tribes, actual_nav_value_fxadj_annual12
+- **actual_roe** (n=3, uc0=3): actual_roe_value_annual12, actual_roe_value_annual12_tribes, actual_roe_value_annual12_tribes_2
+- **actual_cashflowfinancing** (n=2, uc0=2): actual_cashflowfinancing_value_annual12, actual_cashflowfinancing_value_fxadj_annual12
+- **actual_cashflowinvesting** (n=2, uc0=1): actual_cashflowinvesting_value_annual12, actual_cashflowinvesting_value_fxadj_annual12
+- **actual_cfo** (n=2, uc0=2): actual_cfo_value_annual12, actual_cfo_value_fxadj_annual12
+- **actual_cogs** (n=2, uc0=2): actual_cogs_value_annual12_tribes, actual_cogs_value_fxadj_annual12_tribes
+- **actual_currentassets** (n=2, uc0=1): actual_currentassets_value_annual12, actual_currentassets_value_fxadj_annual12
+- **actual_currentliabilities** (n=2, uc0=1): actual_currentliabilities_value_annual12, actual_currentliabilities_value_fxadj_annual12
+- **actual_depreciation** (n=2, uc0=2): actual_depreciation_value_annual12, actual_depreciation_value_fxadj_annual12
+- **actual_ebitdarep** (n=2, uc0=2): actual_ebitdarep_value_annual12, actual_ebitdarep_value_fxadj_annual12
+- **actual_ebt** (n=2, uc0=2): actual_ebt_value_annual12, actual_ebt_value_fxadj_annual12
+- **actual_epsreported** (n=2, uc0=1): actual_epsreported_value_annual12, actual_epsreported_value_fxadj_annual12
+- **actual_fcf** (n=2, uc0=2): actual_fcf_value_annual12, actual_fcf_value_fxadj_annual12
+- **actual_fullyreported** (n=2, uc0=2): actual_fullyreported_value, actual_fullyreported_value_fxadj
+- **actual_gps** (n=2, uc0=2): actual_gps_value, actual_gps_value_fxadj
+- **actual_grossmargin** (n=2, uc0=2): actual_grossmargin_value_annual12, actual_grossmargin_value_annual12_tribes
+- **actual_inventory** (n=2, uc0=2): actual_inventory_value_annual12, actual_inventory_value_fxadj_annual12
+- **actual_marketable** (n=2, uc0=2): actual_marketable_securities_value_annual12, actual_marketable_securities_value_fxadj_annual12
+- **actual_netprofitreported** (n=2, uc0=1): actual_netprofitreported_value_annual12, actual_netprofitreported_value_fxadj_annual12
+- **actual_tangbookvalue** (n=2, uc0=2): actual_tangbookvalue_value_annual12_tribes, actual_tangbookvalue_value_fxadj_annual12_tribes
+- **actual_taxrate** (n=2, uc0=2): actual_taxrate_value_annual12, actual_taxrate_value_fxadj_annual12
+- **actual_total** (n=2, uc0=2): actual_total_assets_value_annual12, actual_total_assets_value_fxadj_annual12
+- **actual_totalliab** (n=2, uc0=2): actual_totalliab_value_annual12_tribes, actual_totalliab_value_fxadj_annual12_tribes
+- **avg_recent** (n=2, uc0=2): avg_recent_net_income_estimates, avg_recent_net_income_fxadj
+- **avg_surprise** (n=2, uc0=2): avg_surprise_net_income, avg_surprise_net_income_fxadj
+- **actual_return** (n=1, uc0=1): actual_return_on_capital_value_annual12
+- **actual_sharesoutstanding** (n=1, uc0=1): actual_sharesoutstanding_value_annual12
+- **actual_taxprovision** (n=1, uc0=1): actual_taxprovision_value_annual12_tribes
+- **forecast_currency** (n=1, uc0=1): forecast_currency_type

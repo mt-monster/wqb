@@ -221,7 +221,7 @@
     },
     "WQB_ALLOW_REAL_DB": {
       "cat": "path",
-      "what": "`=1` 允许测试运行中 wqb-db 连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**，见 `wqb_db_mcp._reject_production_db_under_tests`）。只给确实要读真库的存量体检测试用，必须在测试里写明理由"
+      "what": "`=1` 允许测试运行中连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**。判定本体 2026-10-14 上移到 `wqb.db_conn.reject_production_db_under_tests`，`CampaignStore.__init__` 与 `wqb_db_mcp` 门面**共用这一份**——此前只挂门面，tools/ 与 toolkit 的直写路径一行都不经它）。只给确实要读写真库的存量体检测试用，必须在测试里写明理由"
     },
     "WQB_CALIBRATE_TIMEOUT": {
       "cat": "wait",
@@ -312,6 +312,14 @@
     "WQB_MAX_FIELD_REPEAT": {
       "cat": "gate",
       "what": "gate.py：同批内同一字段允许出现的次数上限"
+    },
+    "WQB_MCP_SESSION_FILE": {
+      "cat": "mcp",
+      "what": "`tools/mcp_http_caller.py`：MCP session id 落盘位覆盖（缺省 `cache/_mcp_http_caller_session`，gitignore 运行期区）"
+    },
+    "WQB_MCP_URI": {
+      "cat": "mcp",
+      "what": "`tools/mcp_http_caller.py` 的端点覆盖，优先级高于 `--service`（缺省从仓库根 `.mcp.json` 解析 `wq-brain-http` / `wqb-db` 的 url）"
     },
     "WQB_OPERATORS_CATALOG": {
       "cat": "tooldir",

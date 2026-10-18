@@ -71,7 +71,7 @@
 |---|---|---|---|---|
 | `BRAIN_API_URL` | `https://api.worldquantbrain.com` | 平台 API 根（judge / helpful_functions / ace_lib 读；测试环境可改指别处） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-feature-implementation/scripts/ace_lib.py` · +8 | — |
 | `BRAIN_URL` | `https://platform.worldquantbrain.com` | 平台网页根（拼 alpha 链接用；judge / helpful_functions 读） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-feature-implementation/scripts/helpful_functions.py` · +4 | — |
-| `WQB_ALLOW_REAL_DB` | — | `=1` 允许测试运行中 wqb-db 连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**，见 `wqb_db_mcp._reject_production_db_under_tests`）。只给确实要读真库的存量体检测试用，必须在测试里写明理由 | `tests/unit/07_docs_skills/test_audit_fixes.py` · `wqb_db_mcp.py` | — |
+| `WQB_ALLOW_REAL_DB` | — | `=1` 允许测试运行中连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**。判定本体 2026-10-14 上移到 `wqb.db_conn.reject_production_db_under_tests`，`CampaignStore.__init__` 与 `wqb_db_mcp` 门面**共用这一份**——此前只挂门面，tools/ 与 toolkit 的直写路径一行都不经它）。只给确实要读写真库的存量体检测试用，必须在测试里写明理由 | `src/wqb/db_conn.py` · `tests/unit/01_store_db/test_db_write_guards.py` · +1 | — |
 | `WQB_CAMPAIGN_DIR` | — | workflow 节点使用的战役目录覆盖 | `src/wqb/workflow/_common.py` · `tests/unit/01_store_db/test_n30_wave_results_writers.py` · +3 | — |
 | `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` · +2 | — |
 | `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +46 | — |
@@ -159,6 +159,8 @@
 | `MCP_PORT` | `8000` | streamable-http 监听端口 | `mcp/main.py` · `mcp/mcp_core.py` · +1 | — |
 | `MCP_STREAMABLE_HTTP_PATH` | `/mcp` | streamable-http 路径 | `mcp/mcp_core.py` | — |
 | `MCP_TRANSPORT` | `streamable-http` | MCP 服务传输方式（缺省 `streamable-http`；2026-10-05 起两个 server 常驻 HTTP，客户端只连 URL 不再起进程） | `mcp/main.py` · `wqb_db_mcp.py` | — |
+| `WQB_MCP_SESSION_FILE` | — | `tools/mcp_http_caller.py`：MCP session id 落盘位覆盖（缺省 `cache/_mcp_http_caller_session`，gitignore 运行期区） | `tools/mcp_http_caller.py` | — |
+| `WQB_MCP_URI` | — | `tools/mcp_http_caller.py` 的端点覆盖，优先级高于 `--service`（缺省从仓库根 `.mcp.json` 解析 `wq-brain-http` / `wqb-db` 的 url） | `tools/mcp_http_caller.py` | — |
 
 #### 论坛 / Labs 浏览器通道
 
