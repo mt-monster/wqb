@@ -83,7 +83,7 @@ def test_embedded_dfe_copies_match_authoritative():
     if not EMBEDDED_DFE.is_dir():
         pytest.skip("内嵌 dfe 目录不存在，无需守护")
     top = SKILLS_DIR / "brain-data-feature-engineering"
-    for name in ("reference.md", "examples.md", "OUTPUT_TEMPLATE.md"):
+    for name in ("references/overview.md", "examples.md", "OUTPUT_TEMPLATE.md"):
         assert (top / name).is_file(), f"权威版缺失：{top / name}"
         assert (EMBEDDED_DFE / name).is_file(), f"内嵌副本缺失：{EMBEDDED_DFE / name}"
         assert _norm(top / name) == _norm(EMBEDDED_DFE / name), (

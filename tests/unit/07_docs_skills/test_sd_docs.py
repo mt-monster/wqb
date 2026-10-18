@@ -365,7 +365,7 @@ def test_sim_alphas_entry_table_and_no_stale_claims():
     assert "缺省 `never`" in t
     body_after_env = t.split("## 运行环境", 1)[1]
     assert not re.search(r"^python ", body_after_env, re.M)             # 不用裸 python
-    for f in ("README.md", "reference.md", "examples.md"):
+    for f in ("README.md", "references/overview.md", "examples.md"):
         s = _read(SKILLS / "brain-sim-alphas-in-batch-and-track" / f)
         assert "$env:BRAIN_PASSWORD" not in s and "--batch-size 3" not in s
 

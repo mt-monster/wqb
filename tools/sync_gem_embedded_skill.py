@@ -6,7 +6,7 @@
 | 权威（`Claude/skills/…`） | 内嵌副本（`brain-make-some-gem/scripts/trailSomeAlphas/skills/…`） |
 |---|---|
 | `brain-feature-implementation/SKILL.md` | 同名 |
-| `brain-data-feature-engineering/reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md` | 同名（2026-09-29 起纳入；此前 `reference.md` 已悄悄漂移到 399 行旧稿，Jaccard 0.82） |
+| `brain-data-feature-engineering/references/overview.md` / `examples.md` / `OUTPUT_TEMPLATE.md` | 同名（2026-09-29 起纳入；此前 `reference.md` 已悄悄漂移到 399 行旧稿，Jaccard 0.82；2026-10-18 起 `reference.md` → `references/overview.md`） |
 
 `brain-data-feature-engineering` 的内嵌目录**故意不放 `SKILL.md`**——解析探针（`pipeline_paths._resolve_skill_dir`）
 用它把内嵌目录排除掉；本工具不会、也不许创建它。
@@ -47,7 +47,7 @@ EMBEDDED = EMBEDDED_ROOT / "brain-feature-implementation" / "SKILL.md"
 #: (skill 名, 文件名)——权威与内嵌同名同相对位置
 SYNCED = (
     ("brain-feature-implementation", "SKILL.md"),
-    ("brain-data-feature-engineering", "reference.md"),
+    ("brain-data-feature-engineering", "references/overview.md"),
     ("brain-data-feature-engineering", "examples.md"),
     ("brain-data-feature-engineering", "OUTPUT_TEMPLATE.md"),
 )

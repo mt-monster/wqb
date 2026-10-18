@@ -197,9 +197,13 @@ def test_skeleton_quota_relocated_to_region_reference(az):
     # 治理文档（AGENTS.md / 根 README）允许提旧路径，但必须是**带日期状态的叙述**，
     # 由下面那条测试按 `doc_path_refs.NONEXIST` 同口径校。本闸自身（`tools/audit_structure.py`）
     # 与这条测试的正文同理 —— 那是战例叙述、不是指针，扫进来只会逼下次讲战例时删掉上下文。
+    # `docs/governance/snapshot_adjudication.md` 同理且更硬：它是 `snapshot_adjudicate.py --apply`
+    # 的**生成物**，第一列就是抢救点里的**历史路径**（件本来就不在 main，列名不是指针）。
+    # 把它扫进来只会逼生成器改写历史路径名 —— 那正是台账要防的「把没人看过写成已裁决」。
     faces = [REPO / "docs", REPO / "src", REPO / "Claude" / "skills",
              REPO / "tracking" / "KOR", REPO / "world-quant-brain-mcp",
              REPO / "tools" / "README.md"]
+    generated = {REPO / "docs" / "governance" / "snapshot_adjudication.md"}
     hits = []
     for root in faces:
         if root.is_file():
@@ -210,6 +214,8 @@ def test_skeleton_quota_relocated_to_region_reference(az):
         else:
             continue
         for p in files:
+            if p in generated:
+                continue
             if "tools/skeleton_quota.json" in p.read_text(encoding="utf-8", errors="replace"):
                 hits.append(str(p.relative_to(REPO)))
     assert not hits, f"仍有文件按旧路径 `tools/skeleton_quota.json` 引用（活文档死指针）：{hits}"
