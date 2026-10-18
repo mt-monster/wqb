@@ -2,7 +2,7 @@
 name: brain-datafield-exploration-general
 layer: L1
 description: "对单个 datafield 做定性评测：覆盖率、非零率、更新频率、取值范围、中心趋势、分布形态六种方法，先查离线体检包、再用最小仿真集在线复核，并给出每法「测完怎么用」。要弄清某个字段多久更新、值域多大、能不能当信号时使用；只测不决策，测完交特征工程。"
-last_verified: 2026-09-29
+last_verified: 2026-10-18
 allowed-tools:
   - Read
   - Bash

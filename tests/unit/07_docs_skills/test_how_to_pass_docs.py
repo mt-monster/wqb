@@ -62,7 +62,7 @@ def test_boundary_says_read_only_and_does_not_execute_dead_end_writeback():
 
 
 def test_no_quota_via_submit_and_no_stale_environment_claims():
-    blob = _t(SK / "SKILL.md") + _t(SK / "reference.md")
+    blob = _t(SK / "SKILL.md") + _t(SK / "references" / "overview.md")
     assert "get_submission_quota" not in blob
     assert "从 submit 响应" not in blob
     for stale in ("依赖 Redis（本环境不可用）", "15s 间隔", "易「等死」"):
@@ -80,10 +80,10 @@ def test_no_quota_via_submit_and_no_stale_environment_claims():
 
 
 def test_reference_no_longer_carries_idea_layer_or_unsafe_examples():
-    ref = _t(SK / "reference.md")
+    ref = _t(SK / "references" / "overview.md")
     for stale in ("scale_down", "ts_median(", "oth455", "Multi-Smoothing Ranking Signal", "102 operators",
                   "low turnover < 250%", "TOP3000 (USA, D1)"):
-        assert stale not in ref, f"reference.md 里还留着：{stale}"
+        assert stale not in ref, f"references/overview.md 里还留着：{stale}"
     assert "confirm_submit=False" in ref and "irreversible" in ref
     # 权重相加示例只允许作为「被 gate 5 拦下的反例」出现
     assert "ts_decay_linear(signal,5)*rank(volume*close)" not in ref

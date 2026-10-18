@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-18
 name: alpha-expression-verifier
 description: "检查一条 alpha 表达式字符串的语法是否合法（括号匹配、函数是否存在、参数个数）时使用。只看语法，不关心字段是否存在或类型对不对；战役级预检（字段 / 类型 / 毒化）走 wq-brain-campaign-toolkit 的 gate.py。"
 layer: L2

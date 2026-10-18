@@ -1,0 +1,3599 @@
+[
+ {
+  "id": "actual_change_fiscal_year_end_month",
+  "description": "The fiscal month in which the reporting period ends for the actual change.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5032,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_change_period_length",
+  "description": "The duration of the reporting period for the actual change, typically in months.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5032,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_change_window_length",
+  "description": "The length of the time window used for the actual change calculation.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5032,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_currency_adjustment",
+  "description": "The adjustment factor to convert the actual value to a default currency.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_default_currency_adjustment_twn",
+  "description": "The adjustment factor to convert the actual value to the default currency for Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_fiscal_year_end_month",
+  "description": "The fiscal year end month for the period covered by the actual value.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_fiscal_year_end_month_twn",
+  "description": "The fiscal month in which the reporting period ends for the actual value in Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_normalization_currency_adjustment_twn",
+  "description": "The currency adjustment factor applied during normalization of the actual value in Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_normalization_split_adjustment_twn",
+  "description": "The adjustment factor for stock splits applied during normalization of the actual value in Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6945,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_period_duration",
+  "description": "The length of the period covered by the actual value, such as number of months or quarters.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_period_length_twn",
+  "description": "The duration of the reporting period for the actual value in Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_reported_value",
+  "description": "The reported financial value for the specified period and measure.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_unit_scale_contributed_twn",
+  "description": "The scaling factor for the contributed actual value in the Taiwan partition.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_unit_scale_normalized_twn",
+  "description": "The scaling factor applied to the normalized actual value in Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_unit_scale_twn",
+  "description": "The scaling factor applied to the actual value in the Taiwan partition.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_value_contributed_twn",
+  "description": "The contributed actual value for the reporting period in Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "actual_value_normalized_twn",
+  "description": "The normalized actual value for the reporting period in Taiwan.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6947,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "anl16_1scermun",
+  "description": "Number of recommendations with a value of 1 in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 17,
+  "alphaCount": 27,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_2scermun",
+  "description": "Number of recommendations with a value of 2 in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 14,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_3scermun",
+  "description": "Number of recommendations with a value of 3 in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 11,
+  "alphaCount": 19,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_4scermun",
+  "description": "Number of recommendations with a value of 4",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 4,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_5scermun",
+  "description": "Number of recommendations with a value of 5 (typically \"Sell\" or lowest rating)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actchgnorm_estcomsplitadj",
+  "description": "Adjustment to the actual change value in the fiscal report to account for corporate actions like splits, resulting in split-adjusted values",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5032,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actchgnorm_estnormcuradj",
+  "description": "Adjustment to the actual change value in the fiscal report to account for currency changes, resulting in currency-adjusted values",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5032,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actgrowth",
+  "description": "Growth rate of the reported actual value (such as earnings, revenue) in the fiscal report over the past several years",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.2972,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "anl16_actnorm_estcomsplitadj",
+  "description": "Adjustment factor for common stock split normalization applied to activity/estimate values",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 7,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actnorm_estnormcuradj",
+  "description": "Currency-adjusted normalized actual value in the fiscal report.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actstability",
+  "description": "Measurement of stability (volatility or consistency) of the reported actual value in the fiscal report",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.2972,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "anl16_actsuescore",
+  "description": "Sentiment score of the actual value surprise, quantifying the degree and direction (positive/negative) of the surprise",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5041,
+  "userCount": 5,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actsurprise",
+  "description": "The magnitude of the actual value surprise in the fiscal report, i.e., difference between actual and consensus or estimate",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6241,
+  "userCount": 20,
+  "alphaCount": 20,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actunit_scale",
+  "description": "Scale factor applied to the actual value (e.g., 1, 1e6)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actunit_scale_ascontrib",
+  "description": "Contributor-specific scale factor for the actual value (e.g., thousands, millions)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actunit_scale_normal",
+  "description": "Normalized scale factor for the actual value to ensure comparability",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actvalue",
+  "description": "Numeric value of the actual reported measure (e.g., EPS, revenue)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actvalue_ascontrib",
+  "description": "Actual value as provided by the contributor, unadjusted",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_actvalue_normal",
+  "description": "Activity value after normalization for currency, units, and corporate actions",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6969,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_aftercons_difference",
+  "description": "Difference between consensus values after and before the event (after change value minus before change value)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6174,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "anl16_aftercons_high",
+  "description": "Highest value in the consensus after the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6531,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_aftercons_low",
+  "description": "Lowest value in the consensus after the event",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6531,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_aftercons_mean",
+  "description": "Mean value in the consensus after the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6553,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_aftercons_median",
+  "description": "Median value in the consensus after the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6531,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_aftercons_numitems",
+  "description": "Number of estimated values in the consensus after the event",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6692,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_aftercons_percentage",
+  "description": "Relative change in consensus value: (after change value minus before change value) divided by before change value",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6174,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "anl16_aftercons_stddev",
+  "description": "Standard deviation of the estimated values in the consensus after the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6527,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_afterest_difference",
+  "description": "Difference between estimate values after and before the event (after change value minus before change value)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5758,
+  "userCount": 10,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_afterest_percentage",
+  "description": "Relative change in the earnings estimate: (after change value minus before change value) divided by before change value",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5758,
+  "userCount": 8,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_afterest_value",
+  "description": "Value of the earnings estimate after the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6589,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforecons_high",
+  "description": "Highest value in the consensus before the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.636,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforecons_low",
+  "description": "Lowest value in the consensus before the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.636,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforecons_mean",
+  "description": "Mean value in the consensus before the event",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6401,
+  "userCount": 5,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforecons_median",
+  "description": "Median value in the consensus before the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.636,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforecons_numitems",
+  "description": "number of values included in the consensus multiply multiplier",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6691,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforecons_numitems_orig",
+  "description": "number of individual estimates included in the consensus before the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6692,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforecons_stddev",
+  "description": "Standard deviation of the estimated values in the consensus before the change",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6357,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_beforeest_value",
+  "description": "Value of the earnings estimate before the event",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6206,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estnorm_estcomsplitadj",
+  "description": "Split-adjusted normalized estimate value.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estnorm_estnormcuradj",
+  "description": "Normalized currency adjustment used in estimate normalization",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_eststddev",
+  "description": "Standard deviation of the estimates, indicating dispersion among contributors",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_eststddev_normal",
+  "description": "Normalized standard deviation of all estimates for the period (shows consensus dispersion)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 2,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estunit_scale",
+  "description": "Numeric scale factor applied to the estimate units (e.g., 1, 1e6)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estunit_scale_ascontrib",
+  "description": "Contributor-reported unit scale factor for the estimate",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estunit_scale_normal",
+  "description": "Normalized unit scale indicating how the estimate value should be scaled for normalized data",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 6,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estvalue",
+  "description": "Raw estimate value reported for the measure",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estvalue_ascontrib",
+  "description": "Raw estimate value as contributed by the analyst (unadjusted)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_estvalue_normal",
+  "description": "Fully normalized estimate value adjusted for currency, units, and corporate actions",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 5,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_highest",
+  "description": "Highest estimate among contributors",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_highest_normal",
+  "description": "Highest contributor estimate after normalization",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_highrec",
+  "description": "Highest recommendation value present in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 10,
+  "alphaCount": 18,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_interimperiodend",
+  "description": "The date when the interim fiscal period ends for the company",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6692,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_interimperiodnum",
+  "description": "Number assigned to an interim period (e.g., 1=Q1, 2=Q2, 3=Q3, 4=Q4)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6692,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_lowest",
+  "description": "Lowest estimate value in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_lowest_normal",
+  "description": "Lowest contributor estimate after normalization",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 3,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_lowrec",
+  "description": "Lowest recommendation value present in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_meanest",
+  "description": "Mean value of the consensus estimate for the period",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 5,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_meanest_normal",
+  "description": "Normalized mean consensus estimate value",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_meanestnorm_estcomsplitadj",
+  "description": "split adjusted mean of estimate value in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_meanestnorm_estnormcuradj",
+  "description": "Normalization adjustment applied to the mean estimate for currency conversion",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_meanestunit_scale",
+  "description": "Scale factor applied to the mean estimate units",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_meanestunit_scale_normal",
+  "description": "Normalized scale factor applied to the mean estimate units after currency/unit normalization",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_meanrec",
+  "description": "Mean (average) value of all recommendation scores in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 8,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_medianest",
+  "description": "Median value of the consensus estimate for the period",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 3,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_medianest_normal",
+  "description": "Median of contributor estimates after normalization",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_medianrec",
+  "description": "Median value of all recommendation scores in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 7,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_numests",
+  "description": "Number of contributing estimates included in the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 5,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_numincests",
+  "description": "the number of estimates used to generate the summary analytic values",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 2,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_reccode",
+  "description": "The recommendation code indicating the type or category of the analyst recommendation",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.5255,
+  "coverage": 0.5942,
+  "userCount": 12,
+  "alphaCount": 20,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_recvalue",
+  "description": "Recommendation value or score (e.g., numeric buy/hold/sell code)",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.622,
+  "userCount": 2,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl16_scermun",
+  "description": "Total number of recommendations contributing to the summary",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "basedata_instrument_to_ticker_map_twn",
+  "description": "A mapping from instrument identifiers to company tickers for the Taiwan partition.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "basedata_ticker_to_instrument_map_twn",
+  "description": "A mapping from company tickers to instrument identifiers for the Taiwan partition.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9068,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "estimate_change_currency_code",
+  "description": "Currency code used for the estimate change.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6692,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "estimate_currency_adjustment_factor",
+  "description": "The adjustment factor to convert the estimate to the default currency.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "estimate_fiscal_year_end_month",
+  "description": "The fiscal year end month for the estimate period.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7164,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "estimate_period_length",
+  "description": "The duration of the reporting period for the estimate.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7229,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "fiscal_year_value_9",
+  "description": "The fiscal year associated with the reporting period.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.4886,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "mean_estimate_fiscal_year_end_month",
+  "description": "The fiscal year end month for the period covered by the mean estimate.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.6971,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "mean_estimate_period_duration",
+  "description": "The length of the period covered by the mean estimate, such as number of months or quarters.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.7056,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "no_opinion_recommendation_count",
+  "description": "The number of recommendations classified as 'no opinion' for the period.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5079,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "period_advance_fiscal_year_end_month",
+  "description": "The fiscal year end month for the period advance indicator.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.797,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "period_advance_period_length",
+  "description": "The duration of the reporting period for the period advance indicator.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.797,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "period_index_duration",
+  "description": "The length of the period for the period index mapping.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.4909,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "period_index_fiscal_year_end_month",
+  "description": "The fiscal year end month for the period index mapping.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.4886,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "premap_instrument_to_ticker_map_twn",
+  "description": "A mapping from instrument identifiers to company tickers in the pre-mapped Taiwan partition.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "premap_ticker_to_instrument_map_twn",
+  "description": "A mapping from company tickers to instrument identifiers in the pre-mapped Taiwan partition.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9936,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "relative_fiscal_period_position",
+  "description": "The position of the period within the fiscal year, such as quarter number.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.4909,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "relative_period_index",
+  "description": "A relative index indicating the position of the period, such as 0 for current or 1 for next.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.4909,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "surprise_window_fiscal_year_end_month",
+  "description": "The fiscal year end month for the period analyzed in the actual surprise window.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.691,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "surprise_window_length",
+  "description": "The length of the time window used for the actual surprise analysis.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.691,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "surprise_window_period_duration",
+  "description": "The length of the period covered by the actual surprise window analysis.",
+  "dataset": {
+   "id": "analyst16",
+   "name": "Real Time Estimates"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-crowdsourced-estimates",
+   "name": "Crowdsourced Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.691,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2026-03-01"
+ }
+]

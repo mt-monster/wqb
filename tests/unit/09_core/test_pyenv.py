@@ -47,9 +47,10 @@ def test_resolution_order(tmp_path, monkeypatch):
 def test_foreign_wqb_python_is_ignored(tmp_path, monkeypatch):
     """``$WQ_PY`` 指向**另一个 wqb 工作区**的 venv（串仓）→ 忽略，回退本仓 venv。
 
-    事故（2026-10-06）：环境残留 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/.venv/
-    Scripts/python.exe``，旧实现只查 ``os.path.isfile`` 于是放行，``tools/submit_queue.py``
+    事故（2026-10-06）：环境残留一个 ``WQ_PY`` 指向**另一份 wqb 仓库副本**的 venv，
+    旧实现只查 ``os.path.isfile`` 于是放行，``tools/submit_queue.py``
     被 re-exec 到那个解释器，三层进程互相等待、13 分钟无输出。
+    （2026-10-09 已在用户级注册表层面根治。）
     """
     mcp = tmp_path / "mcp"
     monkeypatch.setenv("WQ_MCP_DIR", str(mcp))

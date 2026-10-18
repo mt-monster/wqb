@@ -2,7 +2,7 @@
 name: brain-dataset-exploration-general
 layer: L1
 description: "对已在 S0 白名单（或用户点名）的某一个数据集做数据集级审计：画像（字段数 / 覆盖 / 拥挤度）、字段分类落台账、按覆盖与使用量抽样深挖关键字段。用户要审计某个数据集、给数据集字段分类、探索新数据集时使用；选集走 S0，单字段评测走 datafield-exploration。"
-last_verified: 2026-10-08
+last_verified: 2026-10-18
 allowed-tools:
   - Read
   - Bash

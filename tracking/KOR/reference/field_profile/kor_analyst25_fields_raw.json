@@ -1,0 +1,6833 @@
+[
+ {
+  "id": "anl25_12f_td_dts",
+  "description": "Reference date for Analyst Consensus calculation",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 33,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_1_my_sg",
+  "description": "Fiscal End",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_adj_eps_min",
+  "description": "EPS(adj.) (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_adj_oper_p_max",
+  "description": "Operating Income (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 52,
+  "alphaCount": 85,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_adj_oper_p_med",
+  "description": "Operating Income (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 59,
+  "alphaCount": 88,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_adj_oper_p_min",
+  "description": "Operating Income (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 39,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_adj_oper_profit",
+  "description": "Operating Income",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 79,
+  "alphaCount": 141,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_adj_oper_profit_12f",
+  "description": "Operating Income, 12 Month Forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 176,
+  "alphaCount": 337,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_adj_oper_profit_12t",
+  "description": "Operating Income, Trailing 12 Months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 32,
+  "alphaCount": 43,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_adj_oper_profit_margin",
+  "description": "Adjusted Operating Profit Margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_aor",
+  "description": "ROA",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 32,
+  "alphaCount": 40,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_asset_to_ratio",
+  "description": "Asset Turnover Ratio",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 27,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_asset_tot",
+  "description": "Assets",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bf_tax_income",
+  "description": "Pretax Continued Operation Income",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 56,
+  "alphaCount": 84,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bf_tax_income_growth",
+  "description": "Pretax Continued Operation Income Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 24,
+  "alphaCount": 39,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bf_tax_income_growth_p",
+  "description": "Pretax Continued Operation Income Growth (QoQ)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bf_tax_income_max",
+  "description": "Pretax Continued Operation Income (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 47,
+  "alphaCount": 61,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bf_tax_income_med",
+  "description": "Pretax Continued Operation Income (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 39,
+  "alphaCount": 64,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bf_tax_income_min",
+  "description": "Pretax Continued Operation Income (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 46,
+  "alphaCount": 111,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bf_tax_profit",
+  "description": "Net Income Before Taxes",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 34,
+  "alphaCount": 61,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_borrow",
+  "description": "Borrowings",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_borrow_rate",
+  "description": "Interest-bearing Liabilities to Equity",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bps_growth",
+  "description": "BPS Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 48,
+  "alphaCount": 86,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bps_max",
+  "description": "BPS (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 26,
+  "alphaCount": 39,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_bps_min",
+  "description": "BPS (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cap",
+  "description": "Capital Stock",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cap_ratio",
+  "description": "Stockholders' Equity to Total Assets",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cap_tot",
+  "description": "Stockholders' Equity",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cap_tot_growth",
+  "description": "Total Capital Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cash_asset",
+  "description": "Cash asset",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cash_flow_tot_12f",
+  "description": "Cash Flow, 12 month forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 19,
+  "alphaCount": 29,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cls_prc_rate",
+  "description": "Close price return",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 33,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_control_equity",
+  "description": "Parent Company's Equity",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cps_max",
+  "description": "CPS (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 45,
+  "alphaCount": 64,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_cps_min",
+  "description": "CPS (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 23,
+  "alphaCount": 37,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_crp_slc",
+  "description": "Close price",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 23,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_current_asset",
+  "description": "Current asset",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_current_liability",
+  "description": "Current liability",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_current_long_liability",
+  "description": "Current Long Liability",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_current_ratio",
+  "description": "Current Ratio",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_debt_rate",
+  "description": "Debt to Equity Ratio",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_debt_rate_rate",
+  "description": "Debt to Equity Ratio (1W Chg)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 33,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_debt_tot",
+  "description": "Liabilities",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_debt_tot_growth",
+  "description": "Total Liabilities Growth Rate (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dem_aor",
+  "description": "ROA (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 57,
+  "alphaCount": 75,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dem_rbp",
+  "description": "PBR (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dem_spb",
+  "description": "BPS (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dem_spc",
+  "description": "CPS (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 22,
+  "alphaCount": 35,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dem_spd",
+  "description": "DPS (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dem_sps",
+  "description": "SPS (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_depreciation",
+  "description": "Depreciation & Amortization (Manuf.)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_depreciation_i",
+  "description": "Amortization of Intangible Assets",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dps_growth",
+  "description": "DPS Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dps_max",
+  "description": "DPS (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_dps_min",
+  "description": "DPS (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebit",
+  "description": "EBIT (Manuf.)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 21,
+  "alphaCount": 35,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebit_growth",
+  "description": "EBIT Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 25,
+  "alphaCount": 43,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebit_margin",
+  "description": "EBIT margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 73,
+  "alphaCount": 195,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebit_max",
+  "description": "EBIT (Manuf. Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 67,
+  "alphaCount": 183,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebit_med",
+  "description": "EBIT (Manuf. Med)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebit_min",
+  "description": "EBIT (Manuf. Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 31,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebitda_12f",
+  "description": "EBITDA, 12 months forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 61,
+  "alphaCount": 86,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_ebitda_growth",
+  "description": "EBITDA Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebitda_margin",
+  "description": "EBITDA margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebitda_med",
+  "description": "EBITDA (Manufacturing Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 24,
+  "alphaCount": 32,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_ebitda_min",
+  "description": "EBITDA (Manuf. Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebitdaps",
+  "description": "EBITDAPS",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 48,
+  "alphaCount": 75,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ebitdaps_med",
+  "description": "EBITDAPS (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 26,
+  "alphaCount": 38,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_eps_down_cnt",
+  "description": "Number ofEPS Estimates Down",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 91,
+  "alphaCount": 198,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_eps_even_cnt",
+  "description": "Number ofEPS Estimates Hold",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_eps_growth",
+  "description": "EPS Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_eps_growth_p",
+  "description": "EPS Growth (QoQ)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_eps_max",
+  "description": "EPS (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 78,
+  "alphaCount": 104,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_eps_min",
+  "description": "EPS (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 41,
+  "alphaCount": 55,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_eps_new_cnt",
+  "description": "Number ofNew EPS Estimates",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_equity_eps",
+  "description": "EPS from Parent Company(Consolidated)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_equity_per_max",
+  "description": "PER from Parent Company(Consolidated)(MAX)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_est_dt_recent",
+  "description": "Latest Estimate Date",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 19,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_ebit",
+  "description": "EV/EBIT",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_ebit_12f",
+  "description": "EV/EBIT, 12 months forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 31,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_ev_ebitda",
+  "description": "EV/EBITDA",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 20,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_ebitda_12f",
+  "description": "EV/EBITDA, 12 month forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_ebitda_max",
+  "description": "EV/EBITDA (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_ebitda_med",
+  "description": "EV/EBITDA (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_ebitda_min",
+  "description": "EV/EBITDA (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_sales",
+  "description": "EV/Sales",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ev_sales_12f",
+  "description": "EV/Sales, 12 month forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_f21_fcf",
+  "description": "FCF, 12 months forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_f21_rbp",
+  "description": "PBR, 12 month forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_f21_spb",
+  "description": "BPS, 12 months forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_f21_spe",
+  "description": "EPS, 12 month forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 177,
+  "alphaCount": 397,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_fcf",
+  "description": "FCF",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_finance_cf",
+  "description": "Cashflow from Financing Activity",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_general_expense",
+  "description": "Selling and Administrative Expenses",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_gross_profit_margin",
+  "description": "Gross Profit Margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_intang_asset",
+  "description": "Intangible Assets",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_interest_income",
+  "description": "Interest Income",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_invest_cf",
+  "description": "Cashflow from Investing Activity",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_long_borrow",
+  "description": "Long Borrow",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_long_financial_debt",
+  "description": "Long financial debt",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_asset",
+  "description": "Book Value",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_borrow_rate",
+  "description": "Net Interest-bearing Liabilities to Equity (Manuf.)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_p_max",
+  "description": "Net Income (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_p_med",
+  "description": "Net Income (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 19,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_p_min",
+  "description": "Net Income (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_profit",
+  "description": "Net Income",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_profit_12f",
+  "description": "Net Income, 12 months forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 72,
+  "alphaCount": 149,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_net_profit_12t",
+  "description": "Net Income, trailing 12 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 22,
+  "alphaCount": 34,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_net_profit_growth",
+  "description": "Net Income Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 19,
+  "alphaCount": 25,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_profit_growth_p",
+  "description": "Net Income Growth (QoQ)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_profit_margin",
+  "description": "Net Profit Margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_net_profit_margin_con",
+  "description": "Parent Company's Net Profit Margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 39,
+  "alphaCount": 74,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_non_current_liability",
+  "description": "Non-Current Liability",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_oper_p_max",
+  "description": "Adjusted Operating Income (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_p_med",
+  "description": "Adjusted Operating Income (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_p_min",
+  "description": "Adjusted Operating Income (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_profit",
+  "description": "Adjusted Operating Income",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_profit_12f",
+  "description": "Adjusted Operating Income, 12 month forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_profit_12t",
+  "description": "Adjusted Operating Income, trailing 12 month",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_profit_growth",
+  "description": "Adjusted Operating Income Growth (YoY)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_profit_growth_p",
+  "description": "Adjusted Operating Income Growth (YoY, %)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_oper_profit_margin",
+  "description": "Operating Profit Margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 60,
+  "alphaCount": 140,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_operate_cf",
+  "description": "Cashflow from Operating Activity",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ordinary_p_med",
+  "description": "Ordinary Income (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ordinary_p_min",
+  "description": "Ordinary Income (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ordinary_profit",
+  "description": "Ordinary Income",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_ordinary_profit_growth",
+  "description": "Ordinary Income Growth",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_payout_ratio",
+  "description": "Payout Ratio",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_pbr_min",
+  "description": "PBR (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_per",
+  "description": "PER",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 24,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_per_12f",
+  "description": "PER, 12 Months Forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 36,
+  "alphaCount": 74,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_per_12t",
+  "description": "PER, trailing 12 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_per_max",
+  "description": "PER (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_per_med",
+  "description": "PER (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_pretax_oper_inc_margin",
+  "description": "Pretax Continued Operation Income Margin",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 22,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_private_loan",
+  "description": "Private Loan",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_rbp",
+  "description": "PBR",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 23,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_recom_val",
+  "description": "Target price",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_recom_val_chg_1m",
+  "description": "Change in target price, 1 month",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_recom_val_chg_1w",
+  "description": "Change in target price, 1 week",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_recom_val_chg_3m",
+  "description": "Change in Target Price, 3 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_recom_val_chg_6m",
+  "description": "Change in target price, 6 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_recom_val_down_cnt",
+  "description": "Number of Analysts with Target Price Revised Downwards",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_recom_val_even_cnt",
+  "description": "Number of analysts with target price unchanged",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_recom_val_max",
+  "description": "Target price, max",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_recom_val_med",
+  "description": "Target price, median",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_recom_val_min",
+  "description": "Target Price (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_recom_val_new_cnt",
+  "description": "Number of New Analysts with Target Price",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_recom_val_up_cnt",
+  "description": "Number of analysts with target price revised upwards",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_revert_net_p_max",
+  "description": "Net Income from Parent Company (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 32,
+  "alphaCount": 50,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_revert_net_p_min",
+  "description": "Net Income from Parent Company (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 21,
+  "alphaCount": 31,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_revert_net_profit_12f",
+  "description": "Net Income from Parent Company, 12 months forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 122,
+  "alphaCount": 304,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_revert_net_profit_12t",
+  "description": "Net Income from Parent Company, trailing 12 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_revert_net_profit_growth",
+  "description": "Net Income from Parent Company Growth",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 22,
+  "alphaCount": 28,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_revert_net_profit_growth_p",
+  "description": "Net Income from Parent Company Growth (%)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_rfcp",
+  "description": "PCFR",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roa_max",
+  "description": "ROA (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 45,
+  "alphaCount": 72,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roa_min",
+  "description": "ROA (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roe",
+  "description": "ROE",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 73,
+  "alphaCount": 195,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roe_max",
+  "description": "ROE (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 51,
+  "alphaCount": 76,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roe_min",
+  "description": "ROE (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 27,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roic",
+  "description": "ROIC",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roic_max",
+  "description": "ROIC (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roic_med",
+  "description": "ROIC (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_roic_min",
+  "description": "ROIC (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sales_12f",
+  "description": "Sales, 12 months forward",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_sales_12t",
+  "description": "Sales, Trailing 12 Months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_sales_growth",
+  "description": "Sales Growth",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 53,
+  "alphaCount": 91,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sales_growth_p",
+  "description": "Sales Growth (%)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 28,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_sales_max",
+  "description": "Sales (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 18,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sales_med",
+  "description": "Sales (Median)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sales_min",
+  "description": "Sales (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sales_profit",
+  "description": "Gross Profit (Dis.)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 18,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_short_borrow",
+  "description": "Short Borrow",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_short_financial_debt",
+  "description": "Short financial debt",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_spb",
+  "description": "BPS",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_spc",
+  "description": "CPS",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 55,
+  "alphaCount": 71,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_spe",
+  "description": "EPS",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 38,
+  "alphaCount": 52,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sps",
+  "description": "SPS",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sps_max",
+  "description": "SPS (Max)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 64,
+  "alphaCount": 146,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_sps_min",
+  "description": "SPS (Min)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_t21_rbp",
+  "description": "PBR, trailing 12 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_t21_spb",
+  "description": "BPS, Trailing 12 Months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_t21_spe",
+  "description": "EPS, trailing 12 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_tangible_asset",
+  "description": "Tangible asset",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc",
+  "description": "Target price",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc_chg_1m",
+  "description": "Change in target price, 1 month",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc_chg_1w",
+  "description": "Change in target price, 1 week",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc_chg_3m",
+  "description": "Change in target price, 3 months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_target_prc_chg_6m",
+  "description": "Change in Target Price, 6 Months",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_target_prc_down_cnt",
+  "description": "Number of analysts with target price revised downwards",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_target_prc_even_cnt",
+  "description": "Number of analysts with target price unchanged",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_target_prc_max",
+  "description": "Target price, max",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc_med",
+  "description": "Target price, median",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc_min",
+  "description": "Target price, min",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc_new_cnt",
+  "description": "Number of New Analysts with Target Price",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_target_prc_stddev",
+  "description": "Target price, standard deviation of different analyst estimates",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_target_prc_up_cnt",
+  "description": "Number of Analysts with Target Price Revised Upwards",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_td_dts",
+  "description": "Standard Date for Consensus Data Example: If std_dt = '20130528', then the corresponding consensus data is the consensus of reports issued between 20130228-20130528",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_times_interest_earned",
+  "description": "Interest Coverage Ratio (Manufacturing)",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_tnc_pu_spe",
+  "description": "Number of EPS Estimates Up",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 48,
+  "alphaCount": 73,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_tnc_tsni_tse",
+  "description": "# of Ests inst",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 29,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_tot_eps_ests_num",
+  "description": "Number ofEPS Estimates",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 23,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_tot_recomm_num",
+  "description": "Number of Analysts with Target Recommended Value Estimation",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_tot_target_prc_num",
+  "description": "Number of Analysts with Target Price Estimation",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl25_trade_payable",
+  "description": "Trade payable",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ },
+ {
+  "id": "anl25_trade_receivable",
+  "description": "Trade receivable",
+  "dataset": {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2022-12-01"
+ }
+]

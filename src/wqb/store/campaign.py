@@ -33,6 +33,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
+from wqb.db_conn import reject_production_db_under_tests  # 测试期禁连生产库（2026-10-14）
 from wqb.config import is_pseudo_alpha  # 伪 alpha 黑名单（经济学池生成侧剔除，单源）
 
 # Re-export shared utilities for backward compatibility
@@ -238,6 +239,8 @@ class CampaignStore(
 
     def __init__(self, path: Optional[str] = None):
         self.path = path or default_db_path()
+        # 结果层硬闸（2026-10-14，AGENTS.md §8.4 第 9 项）：门面的同名闸管不到这条直写路径。
+        reject_production_db_under_tests(self.path, entry="CampaignStore")
         Path(self.path).parent.mkdir(parents=True, exist_ok=True)
         self.connection = db_connect(self.path)
         self.connection.row_factory = sqlite3.Row

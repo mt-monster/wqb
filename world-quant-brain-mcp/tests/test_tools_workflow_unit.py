@@ -195,7 +195,8 @@ def test_submit_alpha_robustness_audited_defaults_false_and_passes_through(monke
     """`robustness_audited`（2026-10-04 暴露）：缺省必须 False（fail-closed），显式 True 原样透传到节点。
 
     此前 MCP 快捷入口没有这个参数，confirm_submit=True 时台账无 robustness 记录只能绕道 workflow_execute。
-    反向负例：`allow_prod_above_07` 不得出现在快捷入口里——prod 红线豁免要用户明确指令、走 workflow_execute 留痕。
+    反向负例：`allow_prod_above_07` 不得出现在快捷入口里——该豁免参数已于 2026-10-18 彻底移除
+    （用户判定「不合规」），prod 红线无豁免入口，任何路径传它都应报错。
     """
     import inspect
 

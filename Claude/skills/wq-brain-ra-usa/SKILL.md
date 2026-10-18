@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-05
+last_verified: 2026-10-18
 ---
 
 # USA 区域挖掘流程（RA 区域分支）
@@ -146,6 +146,10 @@ last_verified: 2026-10-05
 
 2026-10-14 起 16 波 / 64 条的未点亮塔横跨 6 数据集实证（字段画像 / 纪律表 / 判死清单 / 最优候选 `N1ewm5Jw`）
 已全部下沉 → **[references/_unlit-tower-campaign-20261014.md](references/_unlit-tower-campaign-20261014.md)**。
+
+**逐字段档案**（挖过的每个字段族的类型/覆盖/αC/机制/读数/判死）→
+**[references/_usa-field-profile-playbook-20261018.md](references/_usa-field-profile-playbook-20261018.md)**
+（含 `risk_neutralized_sharpe` 判死口径：<0.3 = 纯风格 beta，别花仿真）。
 
 - 本季 USA/D1 只有 **model=4 / analyst=1 / earnings=1** 亮着；`score_datasets.py` 的 signal-score top20 **全是 model 族**
   ⇒ **白名单只能用「未点亮塔 × 低 alphaCount」筛，按 score 排序等于往已点亮塔堆料**。

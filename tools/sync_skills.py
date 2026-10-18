@@ -25,6 +25,12 @@
 
 方向是单向的：**仓库是源，安装位是派生物**。安装位的本地修改会被覆盖，
 要改 skill 请改仓库副本再同步。
+
+⚠ 单向同步**不会传播删除**：仓库里删掉一个 skill，安装位的副本会原地留下，
+被 `prune_orphans` 分成 protected / user-native / 可归档三类。其中 user-native 的
+判据是「仓库全部历史零提交」，而「建了又删、从未提交」的 skill 也零提交 ⇒ 会被误判成
+宿主原生而永久跳过。这类**已裁定退役**的 skill 必须显式登记进 `RETIRED_SKILLS`
+（登记即优先于 native 判定，归档到 attic 并写下裁定依据）。删仓库 skill 时同批登记。
 """
 from __future__ import annotations
 
@@ -110,6 +116,40 @@ def _candidate_roots() -> List[Path]:
     return [Path(r) for r in raw if r]
 
 
+def _is_repo_related(candidate: Path) -> bool:
+    """安装位解析结果与仓库存在「相同 / 祖先 / 子孙」三种危险关系之一。
+
+    命中即危险：同步会把 `Claude/skills/<name>/` 逐个铺成 `<安装位>/<name>/`，
+    于是**仓库内长出整棵技能树**（`wq-brain-ra-usa/SKILL.md`、`alpha-expression-verifier/` …）。
+
+    实测复发三次，前两次（2026-10-14）是 `WQ_SKILLS_DIR` 被指到**仓库根**；
+    第三次（2026-10-17 22:50）是安装位被指到**仓库内的某个子目录**，长出
+    `<repo>/wq-brain-ra-usa/`（466 件、48 个子目录、与 `Claude/skills` 同源的完整副本）。
+    ⇒ 只判「相同 / 祖先」拦不住第三种，必须把**子孙**一并纳入。
+    见 AGENTS.md §8.13 命名规范第 6 条。
+
+    为什么连子孙也要拦：安装位落在仓库内任意深处，都会把技能树铺进工作树，
+    污染 `git status`、被后来者误当「在用的技能源」，且因未追踪而对取 git 面的守卫失明。
+    """
+    try:
+        resolved = candidate.resolve()
+    except OSError:
+        return False
+    repo = REPO_ROOT.resolve()
+    if resolved == repo:
+        return True            # 相同：铺成仓库根顶层杂物
+    if repo.is_relative_to(resolved):
+        return True            # 祖先：仓库是安装位的子目录
+    if resolved.is_relative_to(repo):
+        return True            # 子孙：安装位在仓库内
+    return False
+
+
+def _is_repo_root_or_ancestor(candidate: Path) -> bool:
+    """向后兼容别名 —— 语义已扩展为 `_is_repo_related`（含子孙判定）。"""
+    return _is_repo_related(candidate)
+
+
 def resolve_install_roots() -> List[Path]:
     """全部已存在的 skill 安装位（按解析顺序，去重，排除仓库源自身）。
 
@@ -117,17 +157,34 @@ def resolve_install_roots() -> List[Path]:
     目录"。2026-09-10 起返回**列表**（多目标），不再只取首个命中。
     """
     source_resolved = SOURCE.resolve()
-    seen, ordered = set(), []
+    seen, ordered, blocked, aliased = set(), [], [], []
     for candidate in _candidate_roots():
         try:
             resolved = candidate.resolve()
         except OSError:
             continue
-        if resolved == source_resolved or resolved in seen:
+        if resolved == source_resolved:
+            continue
+        if resolved in seen:
+            # 不是"少同步了一个"，是**同一个物理目录的另一个入口**：Windows 目录
+            # junction 的 `is_symlink()` 恒 False、但 `resolve()` 会跟过去。
+            # 实测 2026-10-15：`~/.qoder-cn/skills` → `~/.claude/skills`，故宿主数 7、
+            # 物理目标 6。静默去重会让人以为漏了一个安装位而去"修"一个非缺陷。
+            aliased.append(f"{candidate} -> {resolved}")
+            continue
+        if _is_repo_related(candidate):
+            blocked.append(candidate)
             continue
         if candidate.is_dir():
             seen.add(resolved)
             ordered.append(candidate)
+    if blocked:
+        # 静默丢弃会让人以为"同步成功了 8 个目标"，其实少了一个 —— 顶屏说清楚。
+        print(f"[sync_skills] ⚠ 已拒绝 {len(blocked)} 个安装位（与仓库相同/祖先/子孙三种关系之一，"
+              f"同步会在工作树里长出整棵技能树）：{[str(b) for b in blocked]}", file=sys.stderr)
+    if aliased:
+        print(f"[sync_skills] 去重 {len(aliased)} 个安装位入口（junction / 同物理目录，"
+              f"已由前序目标覆盖）：{aliased}", file=sys.stderr)
     return ordered
 
 
@@ -160,6 +217,10 @@ def _never_in_repo_history(name: str) -> bool:
     `git log --all -- Claude/skills/<name>` 里**零提交** —— 它们由用户级会话直接创建、
     与仓库无源流关系。把它们当「孤儿」归档（`--apply` 是**移动**）＝ 宿主当场失去
     在用 skill，代价远大于留着占位；而「本仓改名前的旧目录」必然有历史，仍会被清理。
+
+    ⚠ 已知失效方向（2026-10-15 实证）：「在同一个未提交的工作区状态里建了又删」的
+    skill 同样是零提交 ⇒ 会被本函数误判成宿主原生而永久跳过清理。这类条目必须显式
+    登记进 `RETIRED_SKILLS`，否则裁定退役只在仓库侧生效、安装位上留着已作废的副本。
     """
     try:
         rel = SOURCE.relative_to(REPO_ROOT)
@@ -170,6 +231,24 @@ def _never_in_repo_history(name: str) -> bool:
                        cwd=str(REPO_ROOT), capture_output=True, text=True)
     # 查不动（非 git 仓库 / git 缺失）时按「可能有历史」处理 —— 保守，不扩大清理面。
     return r.returncode == 0 and not (r.stdout or "").strip()
+
+
+#: 已裁定**退役**的 skill 名 → 裁定依据（谁裁的 / 何时 / 由谁承接）。
+#: 为什么需要这张表：见 `_never_in_repo_history` 的 ⚠ —— 零提交既可能是「宿主原生」，
+#: 也可能是「本仓建了又删、从未提交」。前者绝不能清（摘掉在用 skill），后者必须清
+#: （留着就是同一套方法论以两个 skill 名并存，Agent 按名字调到已作废的那份）。
+#: 两种形态在 git 里**不可区分**，所以由本表提供人工反证：登记即「有裁定、该归档」，
+#: 优先于 native 判定；归档仍是**移动**到 `attic/sync_orphans_<date>/<host>/`，可回滚。
+#: 纪律：删一个仓库 skill 时若它可能已被同步到安装位，**同批登记到这里**。
+RETIRED_SKILLS = {
+    "wq-brain-gatebreak-kor": (
+        "2026-10-15 22:20 用户裁定：KOR「字段体检 → 归因 → 破闸」工作流改由区域 skill "
+        "wq-brain-ra-kor（src/wqb/profiles/render.py 的 KOR 特化分支生成）承载。仓库侧副本"
+        "当天已删；其比 ra-kor 更丰富的片段已合并进 ra-kor 的 SKILL.md 与 "
+        "references/_kor-gatebreak-evidence.md（单腿 S0.89、离线包 1126/1333 退化、pow≥0.9 "
+        "跳变）。裁定记录：.workbuddy/memory/2026-10-15.md。"
+    ),
+}
 
 
 def prune_orphans(target: Path, apply: bool = False) -> List[str]:
@@ -193,15 +272,20 @@ def prune_orphans(target: Path, apply: bool = False) -> List[str]:
         and not entry.name.startswith(".")
         and "migration" not in entry.name.lower()   # WorkBuddy 迁移标记（_bm_skillid_migration.json 等）
     ]
-    # 三层筛，每层都在报告里留名：静默吞掉的条目会让「扫描 0 项」看起来像机制失效。
+    # 四层筛，每层都在报告里留名：静默吞掉的条目会让「扫描 0 项」看起来像机制失效。
     protected = [n for n in candidates if n in PROTECTED_ORPHANS]
     rest = [n for n in candidates if n not in PROTECTED_ORPHANS]
+    # 已裁定退役（零提交但确有裁定）：必须清，否则安装位留着已作废的副本。
+    retired = [n for n in rest if n in RETIRED_SKILLS]
     # 宿主原生 skill（仓库历史里从未出现）：归档＝从宿主摘掉在用 skill，永不自动清理。
-    native = [n for n in rest if _never_in_repo_history(n)]
+    native = [n for n in rest if n not in RETIRED_SKILLS and _never_in_repo_history(n)]
     orphans = [n for n in rest if n not in native]
     if protected:
         print(f"    [protected] {len(protected)} 项在白名单（非本仓 skill / 已裁决保留原位）："
               f"{', '.join(protected)}")
+    if retired:
+        print(f"    [retired] {len(retired)} 项已裁定退役（仓库侧已删、安装位是作废副本，"
+              f"零提交故 native 判据抓不到）：{', '.join(retired)}")
     if native:
         print(f"    [user-native] {len(native)} 项在仓库历史中从未出现（宿主原生 skill，"
               f"归档＝摘掉在用 skill，故跳过）：{', '.join(native)}")
@@ -242,6 +326,17 @@ def prune_orphans(target: Path, apply: bool = False) -> List[str]:
         with open(dest_root / "dangling_symlinks.txt", "w", encoding="utf-8", newline="") as f:
             f.write("# 已删除的悬空符号链接（内容不在本机，仅留 target 备查）\n")
             f.write("\n".join(links) + "\n")
+    # 归档目录自带裁定依据：否则半年后看到 attic 里一个 skill 目录，无从判断是
+    # 「改名前的旧目录」还是「被裁定退役、已由别人承接」——两者处置完全不同。
+    archived_retired = [n for n in orphans if n in RETIRED_SKILLS]
+    if archived_retired:
+        dest_root.mkdir(parents=True, exist_ok=True)
+        with open(dest_root / "retired_skills.txt", "w", encoding="utf-8", newline="") as f:
+            f.write("# 本次归档中属于「已裁定退役」的条目（登记于 sync_skills.RETIRED_SKILLS）\n")
+            f.write("# 退役 ≠ 作废内容：其增量片段应已合并进承接方，归档只为让安装位不再\n")
+            f.write("# 以两个 skill 名并存同一套方法论。\n\n")
+            for n in archived_retired:
+                f.write(f"## {n}\n{RETIRED_SKILLS[n]}\n\n")
     return orphans
 
 
@@ -371,6 +466,15 @@ def main() -> int:
 
     if a.target:
         targets = [Path(t) for t in a.target]
+        # 显式 --target 同样硬拦：把仓库根/仓库内子目录交给 --target 与设错 WQ_SKILLS_DIR
+        # 是同一个事故，而且手滑一次就把 51 个技能目录铺进根层或仓库内
+        # （2026-10-14 / 2026-10-17 两次复发实测形态，第三次是仓库内子目录）。
+        hit = [str(t) for t in targets if _is_repo_related(t)]
+        if hit:
+            print(f"[sync_skills] 拒绝执行：--target 里有与仓库相关的路径 {hit}；"
+                  f"技能源就是 {SOURCE}，往仓库根或仓库内同步等于在工作树里复制整棵树（S17 会判红）",
+                  file=sys.stderr)
+            return 2
     else:
         targets = resolve_install_roots()
     if not targets:
@@ -402,6 +506,31 @@ def main() -> int:
         total += sync(SOURCE, t, dry_run=a.dry_run)
     verb = "将同步" if a.dry_run else "已同步"
     print(f"\n[sync_skills] {verb} {total} 个文件（{len(targets)} 个安装位）")
+
+    # 同步成功后跑 S17 自检：同步曾把技能树铺进仓库根/仓库内子目录
+    # （2026-10-14 / 2026-10-17 两次复发，守卫加了子孙判定但**执行缺口**
+    # 仍存在——没人跑 audit_structure ⇒ 问题滞留一天才被发现）。
+    # 这里加一个轻量自检：只看仓库根有没有非白名单目录，不跑全套审计。
+    if not a.dry_run:
+        s17_offenders = []
+        for p in sorted(REPO_ROOT.iterdir()):
+            if not p.is_dir():
+                continue
+            if p.name in {"__pycache__", ".venv", ".venvs", "node_modules", ".cache"}:
+                continue
+            if p.name.startswith("."):
+                continue
+            # S17_TOP_DIR_ALLOWLIST（内联避免循环 import）
+            if p.name in {"src", "tools", "tests", "world-quant-brain-mcp", "Claude",
+                          "tracking", "research-data", "extensions", "data",
+                          "docs", "reports", "output_report", "attic",
+                          "cache", "logs", "results"}:
+                continue
+            s17_offenders.append(p.name)
+        if s17_offenders:
+            print(f"[sync_skills] ⚠ S17 自检发现 {len(s17_offenders)} 个未声明顶层目录："
+                  f"{s17_offenders}（同步可能把技能树铺进了仓库；见 attic/sync_strays_*）",
+                  file=sys.stderr)
 
     if a.prune_orphans:
         print("\n[sync_skills] 孤儿扫描（安装位有、仓库没有的**顶层条目**；"

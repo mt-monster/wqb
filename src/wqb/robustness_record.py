@@ -6,7 +6,11 @@
 
     region = alpha 的区域，key = ``robustness_<alpha_id>``
     value  = {"alpha_id", "verdict": PASS|CONDITIONAL|REJECT, "failed_checks": [...], "soft_flags": [...],
-              "checked_at": ISO 时间, "report_path": "tracking/..md"}
+              "checked_at": ISO 时间, "report_path": "reports/robustness_<YYYYMMDD>.md"}
+
+⚠ ``report_path`` 自 2026-10-14 起指向 **`reports/`**（此前写 `tracking/robustness_*.md`，
+把人工审计报告混进业务目录顶层；布局审计 §2.B-3 / §4 迁回，复发由 `audit_structure` S18 拦）。
+本模块只透传该字符串，不校验文件存在性——历史台账里的 `tracking/…` 值仍可读，不影响判定。
 
 写入方 = agent（`mcp__wqb-db__upsert_ledger_key`，见 brain-alpha-robustness Phase D）；
 读取方 = :mod:`wqb.submit_verdict_core` 经本模块（CLI / MCP / 批量三入口共用）：

@@ -94,15 +94,17 @@
 ### 环境
 
 ```bash
-# 根环境（运行测试、通用工具）
-python -m venv .venv && .venv/Scripts/activate
-pip install -r requirements.txt
-
-# MCP 环境（所有网络/回测操作，必须用它）
-world-quant-brain-mcp/.venv/Scripts/python.exe -m pip install -r world-quant-brain-mcp/requirements.txt
+# 全仓库只有**一个** venv（2026-10-09 收敛：原根 .venv 与 MCP .venv 装包完全一致，已合并）
+python -m venv world-quant-brain-mcp/.venv
+world-quant-brain-mcp/.venv/Scripts/python.exe -m pip install -r requirements.txt
 ```
 
-> ⚠️ **网络类工具一律用 MCP 虚拟环境运行**（`world-quant-brain-mcp/.venv`）。工具已内置自动切换，切勿手写 `requests` 脚本——这是历史上 429 限流事故的根因之一，统一走 `BrainApiClient`（自带 429 退避）。
+> 根目录 `requirements.txt` = `-r world-quant-brain-mcp/requirements.txt` + `pytest`，装它即全覆盖。
+> 选 `world-quant-brain-mcp/.venv` 作为唯一 venv，是因为 `tools/_pyenv.py` 的回退默认、
+> `src/wqb/workflow/_common.py` 的硬编码路径、`is_foreign_wqb_python` 判定「本仓」的标记目录
+> 三者都指向它 —— 保留第二个 venv 只会让「哪个才是本仓解释器」产生歧义（串仓事故的温床）。
+>
+> ⚠️ **网络类工具一律用该 venv 运行**。工具已内置自动切换，切勿手写 `requests` 脚本——这是历史上 429 限流事故的根因之一，统一走 `BrainApiClient`（自带 429 退避）。
 
 ### 凭据
 
@@ -111,7 +113,7 @@ BRAIN 凭据位于 `world-quant-brain-mcp/.env`。**禁止读取、打印或提�
 ### 验证安装
 
 ```bash
-python -m pytest tests/ -x          # 根套件，~1356 个用例应全绿（含 tests/unit/ 递归）
+world-quant-brain-mcp/.venv/Scripts/python.exe -m pytest tests/ -x          # 根套件，~1356 个用例应全绿（含 tests/unit/ 递归）
 world-quant-brain-mcp/.venv/Scripts/python.exe -m pytest world-quant-brain-mcp/tests   # MCP 包 84 个
 ```
 
@@ -256,7 +258,7 @@ python tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/b
 
 | 维度 | 现状 |
 |---|---|
-| 测试 | 根套件 **1356 passed**（`tests/` 递归含 `tests/unit/`）；MCP 包 **84 passed**（需 `.venv` 单独运行） |
+| 测试 | 根套件 **1356 passed**（`tests/` 递归含 `tests/unit/`）；MCP 包 **84 passed**（需单独运行，用 `world-quant-brain-mcp/.venv`） |
 | MCP 工具 | `wq-brain-http` 69 · `wqb-db` 44 · workflow 节点 19（计数基准：`Claude/skills/INDEX.md`「MCP 工具/节点计数」，单测机械守护；README 此前写 45 是漂移） |
 | Skills | 32 个（L-RA/L-PRE/L-TOOL/L0–L7 分层），4 个安装位与仓库零漂移 |
 | 工具链 | 139 个 CLI（`tools/`） |

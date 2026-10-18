@@ -1,0 +1,441 @@
+{
+ "dataset": "analyst9",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "nfields": 48,
+ "fields": [
+  {
+   "id": "anl9_confirmtime",
+   "type": "VECTOR",
+   "coverage": 0.4656,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Intraday time of the most recent confirmation of the current estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_consensusanalysis_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.6056,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Numeric consensus estimate value for the specified data item",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_consensusanalysis_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.6057,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Intra-day time when the consensus estimate calculation became effective",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.5788,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Numeric consensus estimate value for the specified data item",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.5788,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Intra-day time when the estimate becomes effective or is calculated",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_splitfactor",
+   "type": "VECTOR",
+   "coverage": 0.5787,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Ratio used to unadjust per-share EPS estimates for stock splits that occur after the estimate’s EffectiveDate",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_totime",
+   "type": "VECTOR",
+   "coverage": 0.5788,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "End time when the estimate’s validity window ends",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.6016,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Numeric consensus estimate value for the specified data item",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.6016,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Intra-day time when the consensus estimate became effective (time of calculation)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_splitfactor",
+   "type": "VECTOR",
+   "coverage": 0.5436,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjustment factor for corporate actions (e.g., stock splits) applied to maintain comparability of estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_totime",
+   "type": "VECTOR",
+   "coverage": 0.6016,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Intra-day time when the estimate’s validity period ends",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_daily_numanalystall",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of analysts contributing estimates for the company, including those excluded from the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_daily_numanalysts",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts whose estimates are included in the consensus for the revision period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_daily_numdn",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Count of downward revisions among analysts included in the consensus",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_daily_numdownunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Total number of analysts whose estimates were revised downward, including those excluded from the consensus",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_daily_numnochangeunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total number of analysts that did not change their estimates, including those excluded from the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_daily_numnochg",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 1,
+   "alphaCount": 6,
+   "description": "Count of revisions with no change among analysts included in the consensus",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_daily_numup",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Count of upward revisions among analysts included in the consensus",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_daily_numupunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Total number of analysts whose estimates were revised upward, including those excluded from the consensus",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_detail_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.5277,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Numeric value of the estimated metric",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_detail_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.5277,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Time of day when the estimate became effective (start time of validity)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_detail_totime",
+   "type": "VECTOR",
+   "coverage": 0.5277,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "End time of the estimate’s validity period (intraday)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_eps_splitfactor",
+   "type": "VECTOR",
+   "coverage": 0.5614,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Split factor",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_estanalystmap",
+   "type": "MATRIX",
+   "coverage": 0.8392,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Human-readable name/description of the analyst corresponding to estimateAnalystIx",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_estimatetime",
+   "type": "VECTOR",
+   "coverage": 0.5276,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Intra-day time at which the estimate was recorded/issued",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_isexcluded",
+   "type": "VECTOR",
+   "coverage": 0.5277,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Flag indicating the estimate is excluded from consensus/analysis due to data quality rules",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_isnmflag",
+   "type": "VECTOR",
+   "coverage": 0.6057,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Flag indicating the estimate is not meaningful (NM)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_others_splitfactor",
+   "type": "VECTOR",
+   "coverage": 0.5407,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Split factor",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_parentflag",
+   "type": "VECTOR",
+   "coverage": 0.5277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Entity consolidation flag: 0=consolidated entity estimate, 1=parent-only entity estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_revisiondaily_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Time when the revision metrics were calculated or became effective",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_revisions_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Time when the revision snapshot/estimate was calculated",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_s_numanalystall",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total number of contributing analysts, including those excluded from the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "anl9_s_numanalysts",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 7,
+   "alphaCount": 14,
+   "description": "Number of analysts whose estimates are included in the consensus for the revision period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_s_numdn",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Count of downward revisions included in the consensus during the specified revision period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_s_numdownunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Total analysts with downward revisions, including those excluded from the consensus",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_s_numnochangeunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Total number of no-change revisions, without exclusions",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_s_numnochg",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Number of revisions with no change in the consensus (included analysts) over the period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_s_numup",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Count of upward revisions included in the consensus during the specified revision period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl9_s_numupunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 6,
+   "alphaCount": 12,
+   "description": "Total analysts with upward revisions, including those excluded from the consensus",
+   "crowding": "mid"
+  },
+  {
+   "id": "consensus_analysis_value",
+   "type": "VECTOR",
+   "coverage": 0.6057,
+   "userCount": 1,
+   "alphaCount": 6,
+   "description": "<baseModule>.ConsensusIdIx idx",
+   "crowding": "mid"
+  },
+  {
+   "id": "consensus_exclusion_flag",
+   "type": "VECTOR",
+   "coverage": 0.4634,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Boolean flag marking the estimate as excluded from analysis due to unreliability or rules",
+   "crowding": "low"
+  },
+  {
+   "id": "eps_consensus_estimate_value",
+   "type": "VECTOR",
+   "coverage": 0.5788,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lookup index identifying the consensus category/type for the estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_currency_code_2",
+   "type": "VECTOR",
+   "coverage": 0.4524,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency in which the estimate is reported.",
+   "crowding": "low"
+  },
+  {
+   "id": "estimated_metric_value",
+   "type": "VECTOR",
+   "coverage": 0.4634,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Numeric value of the estimate for the specified metric",
+   "crowding": "low"
+  },
+  {
+   "id": "income_other_consensus_value",
+   "type": "VECTOR",
+   "coverage": 0.6016,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "<baseModule>.ConsensusIdIx idx",
+   "crowding": "low"
+  },
+  {
+   "id": "parent_company_only_flag",
+   "type": "VECTOR",
+   "coverage": 0.4634,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating if the estimate is for the parent entity only.",
+   "crowding": "low"
+  },
+  {
+   "id": "revision_consensus_value",
+   "type": "VECTOR",
+   "coverage": 0.4433,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Index key referencing the consensus estimate category in the ConsensusId lookup",
+   "crowding": "low"
+  },
+  {
+   "id": "revision_consensus_value_revisions",
+   "type": "VECTOR",
+   "coverage": 0.7109,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Integer code identifying the consensus estimate category for the metric/period, joinable to a consensus lookup",
+   "crowding": "low"
+  }
+ ]
+}

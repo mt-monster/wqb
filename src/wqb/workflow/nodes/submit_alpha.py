@@ -169,7 +169,6 @@ def run(
     descriptions: Optional[str] = None,
     force: bool = False,
     robustness_audited: bool = False,
-    allow_prod_above_07: bool = False,
     confirm_submit: bool = False,
     verify_timeout: int = _FLIP_WAIT_S,
     dataset: Optional[str] = None,
@@ -189,17 +188,13 @@ def run(
         tags: 标签。**默认 None → 按规范自动生成**（见下）；显式传入则以传入为准。
         descriptions: 描述文本（三段式，≥100 英文词）
         force: 是否跳过本地预检（仅当 confirm_submit=True 时有意义）。
-            **不豁免 prod 闸**（见 allow_prod_above_07）——prod 是用户铁律，与预检分离。
+            **不豁免 prod 闸**——prod 是用户合规红线，与预检分离，且无任何豁免入口。
         robustness_audited: 是否已通过 brain-alpha-robustness 审计（Phase B/C 逐年归因）。
             **fail-closed（2026-09-29 P0）**：confirm_submit=True 时必须为 True，
             否则拒绝提交（除非 force）。robustness 的 Phase B.0 硬门（Failed RA/PPA==0）
             已由 submit_gate 自动判定，此参数补齐无法自动的逐年归因部分。
             **2026-10-02**：若 ledger 已有 ``robustness_<alpha_id>`` 记录（agent 已跑过审计
             并落库），本声明闸降为辅助——不再强制重复声明；台账 ``REJECT`` 由 Step 1 直接拦下。
-        allow_prod_above_07: 是否显式豁免 prod 闸（默认 False）。**不能由 force 隐式触发**：
-            用户铁律「prod ≥ 0.7 不得提交」是必须显式留痕的红线。为 True 时才跳过
-            Step 1.6 的 prod probe（与 super_build `--allow-prod-above-07` 同名同义）。
-            仅 REGULAR/PPA 走本闸；SUPER 在本节点被拒（走 super_build）。
         confirm_submit: 是否真正 POST submit（默认 False，只做预检+状态查询）
         verify_timeout: 提交后状态确认超时（秒）
         dataset: 来源数据集 → 自动生成 `SRC_<dataset>` 标签
@@ -248,7 +243,6 @@ def run(
                 "confirm_submit": confirm_submit,
                 "force": force,
                 "robustness_audited": robustness_audited,
-                "allow_prod_above_07": allow_prod_above_07,
                 "verify_timeout": verify_timeout,
                 "calls": (
                     ["get_alpha_details(alpha_id)",
@@ -256,9 +250,8 @@ def run(
                     + ([
                         "robustness_audited 声明（confirm_submit 时 fail-closed 必过；台账已有记录则降为辅助）",
                         "quota 闸：list stage=OS 数 ET 今日提交数，满 4/日 → blocked（fail-open）",
-                        ("prod 闸：check_correlation(production, refresh=True)，max≥0.7 或未出数 → blocked"
-                         if not allow_prod_above_07 else
-                         "prod 闸：allow_prod_above_07=True 显式豁免（留痕）"),
+                        "prod 闸：check_correlation(production, refresh=True)，max≥0.7 或未出数 → blocked"
+                        "（合规红线，2026-10-18 起无豁免入口）",
                         "set_alpha_properties(alpha_id, name/color/tags/descriptions)",
                         "POST /alphas/{id}/submit",
                         f"poll get_alpha_details until OS/ACTIVE (<= {verify_timeout}s)",
@@ -369,23 +362,20 @@ def run(
     # Step 1.6: prod 闸（P0，2026-10-02，F8 修复）——REGULAR/PPA 提交前自动核对生产池相关性真值。
     # 用户铁律「prod ≥ 0.7 不得提交」此前只在 SUPER（super_build）有代码承载，REGULAR 侧纯靠
     # Agent 手动跑 check_correlation；本步把它焊进提交路由（与 super_build `_prod_gate_verdict` 同语义）。
-    # **force 不豁免本闸**：probe 未出数（pending/busy/超时）一律 fail-closed；
-    # 仅 `allow_prod_above_07=True` 显式豁免并留痕（Step 0 已在 dry-run plan 里列出）。
-    if confirm_submit and not allow_prod_above_07:
+    # **force 不豁免本闸**：probe 未出数（pending/busy/超时）一律 fail-closed。
+    # ★★ 2026-10-18 收紧：原 `allow_prod_above_07` 显式豁免参数已**彻底移除**
+    #    （用户明令该闸门不合规）。prod ≥ 0.7 是合规红线，不存在任何豁免入口，
+    #    也不接受"平台 result 可能 PASS"作为放行理由。
+    if confirm_submit:
         prod = _prod_gate(client, alpha_id)
         result["steps"].append({"step": "prod_gate", **prod})
         if not prod.get("allowed"):
             result["reason"] = "prod_gate blocked: " + str(prod.get("reason") or "")
             result["blocked"] = True
             result["blocked_reason"] = (
-                "用户铁律 prod ≥ 0.7 不得提交；或 prod 未出数（fail-closed）。"
-                "确要提交须显式传 allow_prod_above_07=True（留痕）。")
+                "合规红线 prod ≥ 0.7 不得提交；或 prod 未出数（fail-closed）。"
+                "无豁免入口，须更换候选或稍后重跑等平台算完。")
             return _finalize(result, store, alpha_id)
-    elif confirm_submit and allow_prod_above_07:
-        result["steps"].append({
-            "step": "prod_gate", "skipped": True, "allowed": True,
-            "note": "allow_prod_above_07=True 显式豁免 prod 闸（用户红线留痕）",
-        })
 
     # Step 2: 设置属性（仅在实际提交前做，避免空改）
     if confirm_submit:

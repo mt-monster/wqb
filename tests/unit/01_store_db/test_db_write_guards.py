@@ -188,11 +188,12 @@ class TestNoNakedSqliteConnect:
 
 class TestLockAuditProbe:
     def test_probe_once_on_tmp_db(self, tmp_path):
-        sys.path.insert(0, str(REPO / "tools"))
+        # 2026-10-14 主题下沉：db_lock_audit.py 现住 tools/db/（脚本不是包，按目录加 path）
+        sys.path.insert(0, str(REPO / "tools" / "db"))
         try:
             from db_lock_audit import probe_once  # noqa
         except ImportError:
-            pytest.skip("tools 不在可导入路径（由 CLI 直接跑）")
+            pytest.skip("tools/db 不在可导入路径（由 CLI 直接跑）")
         db = tmp_path / "probe.db"
         conn = sqlite3.connect(str(db))
         conn.execute("CREATE TABLE t(x)"); conn.commit(); conn.close()
@@ -200,3 +201,134 @@ class TestLockAuditProbe:
         assert ev["error"] is None
         assert ev["wait_sec"] < 10.0
         assert ev["alert"] is False
+
+
+# ---------------- 5. 测试期禁连生产库（结果层硬闸） ----------------
+#
+# 战例（AGENTS.md §8.4 第 9 项）：2026-10-04 拆 `wqb_db_mcp` 使 `mod.DB_PATH = tmp` 这类
+# 属性式隔离**静默失效**，测试把 14 行写进了生产 `data/wqb.db`。事后在门面上加了
+# `_reject_production_db_under_tests`。2026-10-14 全量回归实测到**同一类失效换了条路**：
+# tools/ 与 toolkit 的直写路径走 `CampaignStore`，不经门面 ——
+# `tests/unit/04_gates/test_inspect_mode_failclosed_p1p1.py` 起 subprocess 跑
+# `tools/wave_gate.py`，子进程拿 CLI 缺省库位，往生产 `ledger_kv` 写了
+# `KOR/gate_ws2_pytest_inspect_model109`（`updated_at=2026-10-14T23:27:21`），
+# 而库里同期还躺着 2026-09-28 / 10-03 / 10-04 的测试件。所以判定本体上移到
+# `wqb.db_conn`，store 与门面**共用一份**。下面这组用例守的就是这个形状。
+
+PRODUCTION_DB = REPO / "data" / "wqb.db"
+
+
+class TestProductionDbGuardUnderTests:
+    def test_store_rejects_production_db_under_pytest(self, monkeypatch):
+        """pytest 下 `CampaignStore(生产库)` 必须**就地报错**，不是静默写进去。"""
+        from wqb.store import CampaignStore
+
+        monkeypatch.setenv("PYTEST_CURRENT_TEST", "manual::case")
+        monkeypatch.delenv("WQB_ALLOW_REAL_DB", raising=False)
+        with pytest.raises(RuntimeError, match="隔离未生效"):
+            CampaignStore(str(PRODUCTION_DB))
+
+    def test_facade_and_store_share_one_implementation(self):
+        """判定本体只许一处（两处各写一份早晚分叉，§8.4 第 9 项「读写同源」同一条纪律）。
+
+        取面 = `SCAN_ROOTS`（src / tools / 三个 toolkit）+ 门面 `wqb_db_mcp.py`：
+        门面必须算进来，因为这次要防的正是「门面有闸、直写路径没闸」这种半边守住的形状。
+        """
+        faces = [REPO / "wqb_db_mcp.py"]
+        for root in SCAN_ROOTS:
+            if root.is_dir():
+                faces.extend(root.rglob("*.py"))
+        hits = sorted(
+            str(p.relative_to(REPO)).replace("\\", "/")
+            for p in faces
+            if not (set(p.parts) & EXCLUDE_DIR_PARTS)
+            and "PYTEST_CURRENT_TEST" in p.read_text(encoding="utf-8", errors="replace")
+        )
+        assert hits == ["src/wqb/db_conn.py"], f"生产库闸出现第二份判定（应收敛到 wqb.db_conn）：{hits}"
+
+    def test_tmp_db_still_constructs_under_pytest(self, tmp_path, monkeypatch):
+        """非空过守卫的另一面：**已隔离**的临时库照常能用。
+
+        ⚠ 路径形态刻意取 `tmp_path/ws/data/wqb.db`（与本仓大量用例的隔离布局一致：
+        `CampaignStore.from_workspace(tmp_path/"ws")` 派生出来的就是这种仿生产结构）。
+        第一版判定按「以 `/data/wqb.db` 结尾」匹配，把这类**已经隔离好**的库全认成生产库，
+        实测 27 个用例 ERROR + 5 个 FAILED —— 后缀匹配是错的判据，见 `db_conn` 的说明。
+        """
+        from wqb.store import CampaignStore
+
+        monkeypatch.setenv("PYTEST_CURRENT_TEST", "manual::case")
+        monkeypatch.delenv("WQB_ALLOW_REAL_DB", raising=False)
+        isolated = tmp_path / "ws" / "data" / "wqb.db"
+        store = CampaignStore(str(isolated))
+        try:
+            store.upsert_ledger("KOR", "guard_probe_key", {"ok": True})
+            assert store.get_ledger("KOR", "guard_probe_key") == {"ok": True}
+        finally:
+            store.close()
+        # 顺带钉住判据的边界：仓库根那个才是生产库，临时目录里同名同布局的不算
+        assert Path(db_conn.production_db_path()).resolve() == PRODUCTION_DB.resolve()
+
+    def test_escape_hatch_is_explicit(self, monkeypatch):
+        """放行必须靠显式声明：`WQB_ALLOW_REAL_DB=1` 才放行，缺省一律拦。"""
+        monkeypatch.setenv("PYTEST_CURRENT_TEST", "manual::case")
+        monkeypatch.delenv("WQB_ALLOW_REAL_DB", raising=False)
+        with pytest.raises(RuntimeError):
+            db_conn.reject_production_db_under_tests(PRODUCTION_DB, entry="probe")
+        monkeypatch.setenv("WQB_ALLOW_REAL_DB", "1")
+        assert db_conn.reject_production_db_under_tests(PRODUCTION_DB, entry="probe") is None
+
+    def test_production_runs_outside_pytest_untouched(self, monkeypatch):
+        """闸只在 pytest 下生效：生产服务/CLI（无 PYTEST_CURRENT_TEST）不得被这条闸拦掉。"""
+        monkeypatch.delenv("PYTEST_CURRENT_TEST", raising=False)
+        monkeypatch.delenv("WQB_ALLOW_REAL_DB", raising=False)
+        assert db_conn.reject_production_db_under_tests(PRODUCTION_DB, entry="probe") is None
+
+    def test_windows_path_forms_are_both_caught(self, monkeypatch):
+        """盘符与分隔符形态都要命中：生产库路径在 Windows 上是反斜杠的。"""
+        monkeypatch.setenv("PYTEST_CURRENT_TEST", "manual::case")
+        monkeypatch.delenv("WQB_ALLOW_REAL_DB", raising=False)
+        for form in (str(PRODUCTION_DB), str(PRODUCTION_DB).replace("\\", "/"),
+                     str(PRODUCTION_DB).upper()):
+            with pytest.raises(RuntimeError, match="生产库"):
+                db_conn.reject_production_db_under_tests(form, entry="probe")
+
+    def test_toolkit_lib_db_delegates_to_core_guard(self, monkeypatch, tmp_path):
+        """**第三条路径**（2026-10-15 补）：toolkit `_lib/db.connect()` 也必须被守住。
+
+        门面与 CampaignStore 都接上判定之后，还剩一条独立取连接路径：toolkit 为了
+        「装在仓库外也能跑」自带一份同构连接工厂 `_lib/db.py`，而 `_lib/ledger.py` /
+        `_lib/registry.py` / `_lib/wave_results.py` / `_lib/region_gates.py` 全部经它取连接、
+        且都被 `tests/` 直接驱动（库里 2026-09-29 那批 `wave_meta_covtest*` /
+        `diversity_report_wcovtest*` 就是这个形状写进生产库的）。
+
+        这一条**刻意不是再写一份判据**：`_lib/db.connect()` 委托 `wqb.db_conn` 的判定本体，
+        所以上一条 `test_facade_and_store_share_one_implementation` 的
+        「`PYTEST_CURRENT_TEST` 只出现在 `src/wqb/db_conn.py`」仍然成立 —— 有人把判据复制进
+        skill 侧，那条用例立刻红；本条用例保证委托关系没被摘掉。
+        """
+        import importlib.util
+
+        monkeypatch.setenv("PYTEST_CURRENT_TEST", "manual::case")
+        monkeypatch.delenv("WQB_ALLOW_REAL_DB", raising=False)
+        monkeypatch.delenv("WQB_DB_PATH", raising=False)
+
+        mod_path = (REPO / "Claude" / "skills" / "wq-brain-campaign-toolkit"
+                    / "scripts" / "_lib" / "db.py")
+        spec = importlib.util.spec_from_file_location("_wq_toolkit_db_probe", mod_path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
+        # 缺省库位在这台机器上就是生产库（向上探测命中仓库根）⇒ 正是静默写库的形状
+        assert Path(mod.default_db_path()).resolve() == PRODUCTION_DB.resolve()
+        with pytest.raises(RuntimeError, match="隔离未生效"):
+            mod.connect()
+        # 显式传临时库照常可用（非空过：证明拦的是「身份」而不是「toolkit 不许连库」）
+        # 注：toolkit 的 connect() 不建父目录（建目录是 CampaignStore 的职责），先自建
+        isolated = tmp_path / "ws" / "data" / "wqb.db"
+        isolated.parent.mkdir(parents=True, exist_ok=True)
+        conn = mod.connect(str(isolated))
+        try:
+            conn.execute("CREATE TABLE t (x)")
+            conn.commit()
+        finally:
+            conn.close()

@@ -162,6 +162,46 @@ def test_cli_refuses_a_live_root_without_the_flag_and_skips_risky_even_with_it(t
     assert json.loads(accepted.stdout)["dest_is_live_root"] is True
 
 
+# ---------------------------------------------------------------------------
+# 仓库根不是暂存位（2026-10-14 布局审计：一天内两次在仓库根长出整棵技能树）
+# 危害与 live root 不同类：不是「凭据外泄」，而是 §7 禁 git clean 的那类不可恢复债
+# + 第二技能源（`_skill_roots()` 从不解析 `repo_root/<skill-name>`，零引用却能被误当在用）。
+
+
+def test_repo_root_dest_is_detected_without_writing_anything(ps, tmp_path):
+    repo = tmp_path / "repo"
+    (repo / "Claude" / "skills").mkdir(parents=True)
+    assert ps.is_repo_root_dest(str(repo), str(repo)) is True
+    assert ps.is_repo_root_dest(str(tmp_path), str(repo)) is True          # 祖先目录同样命中
+    assert ps.is_repo_root_dest(str(repo / "attic" / "import_staging"), str(repo)) is False
+    assert ps.is_repo_root_dest(str(tmp_path / "elsewhere"), str(repo)) is False
+    # 工具的默认暂存位必须**不被**这条误杀（它在仓库内，但是子目录）
+    assert not ps.is_repo_root_dest(ps.default_staging_dir(str(repo)), str(repo))
+    # 不在任何仓库里运行时不该凭空拒绝
+    assert ps.is_repo_root_dest(str(tmp_path / "free"), str(tmp_path / "free")) is False
+
+
+def test_cli_refuses_repo_root_dest_even_with_the_live_flag(tmp_path):
+    repo = tmp_path / "repo"
+    (repo / "Claude" / "skills").mkdir(parents=True)
+    src = tmp_path / "src"
+    _mk(src, "good", BENIGN)
+    work = tmp_path / "work"
+    work.mkdir()
+
+    refused = _run([str(src), "--dest", str(repo)], tmp_path / "home", work)
+    data = json.loads(refused.stdout)
+    assert refused.returncode == 3 and data["stage"] == "dest_check"
+    assert not (repo / "good").exists()                                   # 一个字节都没落
+    # 逃生口对这一条无效（与 live root 的关键区别）
+    harder = _run([str(src), "--dest", str(repo), "--allow-live-dest", "--accept-risk"],
+                  tmp_path / "home", work)
+    assert harder.returncode == 3 and not (repo / "good").exists()
+    # 默认暂存位照常可用
+    ok = _run([str(src)], tmp_path / "home", repo)
+    assert ok.returncode == 0 and (repo / "attic" / "import_staging" / "good" / "SKILL.md").is_file()
+
+
 def test_source_never_deletes_anything_but_its_own_tempdir():
     text = SCRIPT.read_text(encoding="utf-8")
     calls = [ln.strip() for ln in text.splitlines() if "shutil.rmtree(" in ln and not ln.strip().startswith("#")]

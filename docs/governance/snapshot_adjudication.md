@@ -24,8 +24,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**845**
-- `RESTORED` = 0；`DROPPED` = 115；`ARTIFACT` = 216；`PENDING` = 514
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**885**
+- `RESTORED` = 0；`DROPPED` = 130；`ARTIFACT` = 216；`PENDING` = 539
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -37,7 +37,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 
 ## 3. 逐件表
 
-### 3.2 `DROPPED`（115 件）
+### 3.2 `DROPPED`（130 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -59,6 +59,9 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `Claude/skills/wq-brain-ra-pipeline/scripts/ralph_daily_loop.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/ra_pipeline_shell_20260928/ralph_daily_loop.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-ra-pipeline/scripts/ralph_runner.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/ra_pipeline_shell_20260928/ralph_runner.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-ra-pipeline/templates/daily_state.template.json` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/ra_pipeline_shell_20260928/daily_state.template.json`（blob 相等） | rule |
+| `docs/S1_FIELD_CATALOG_CACHE_GUIDE.md` | 改名，件未丢失：main 已有内容逐字相同的 `docs/reference/s1_field_catalog_cache_guide.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `docs/modeb_full_operator_coverage.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/modeb_full_operator_coverage.md`（blob 相等） | rule |
+| `docs/modeb_implementation_summary.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/modeb_implementation_summary.md`（blob 相等） | rule |
 | `docs/operator_modeb_research.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/operator_modeb_research.md`（blob 相等） | rule |
 | `docs/skills_pipeline_analysis.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/skills_pipeline_analysis.md`（blob 相等） | rule |
 | `docs/skills_pipeline_optimization.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/skills_pipeline_optimization.md`（blob 相等） | rule |
@@ -75,6 +78,14 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `reports/opswap_build_plan.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_build_plan.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_build_plan.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_build_plan.py`。 | human |
 | `reports/opswap_driver.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/legacy/opswap_driver.py`（blob 相等） | rule |
 | `reports/project-audit/progress_2026-08-15.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/project-audit/progress_20260815.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/ra_pipeline_stage_review_20260927/README.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/README.md`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_item4.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_item4.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_n30.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_n30.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_n31.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_n31.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_n35.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_n35.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/run_dryrun.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/run_dryrun.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/sbx_guard.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/sbx_guard.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/seed_db.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/seed_db.py`（blob 相等） | rule |
 | `reports/temp_and_deadcode_scan_2026-08-28.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/temp_and_deadcode_scan_20260828.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/tmp_cleanup_2026-08-30.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/tmp_cleanup_20260830.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/toolkit_usage_review_2026-08-31.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/toolkit_usage_review_20260831.md`（blob 相等，只是文件名按命名规范改过） | rule |
@@ -95,6 +106,10 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/test_stop_rules_axis_scope.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_stop_rules_axis_scope.py`（blob 相等） | rule |
 | `tests/unit/test_stop_rules_verdict_p0p3.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_stop_rules_verdict_p0p3.py`（blob 相等） | rule |
 | `tests/unit/test_wave_key_contract.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_wave_key_contract.py`（blob 相等） | rule |
+| `tools/README_ECONOMIC_MECHANISM_TEMPLATES.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_ECONOMIC_MECHANISM_TEMPLATES.md`（blob 相等） | rule |
+| `tools/README_FIELD_SCORER_V2.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_FIELD_SCORER_V2.md`（blob 相等） | rule |
+| `tools/README_GEM_OPTIMIZATION.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_GEM_OPTIMIZATION.md`（blob 相等） | rule |
+| `tools/README_OPTIMIZATION.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_OPTIMIZATION.md`（blob 相等） | rule |
 | `tools/_db_fk_fix.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/_db_fk_fix.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/_db_fk_fix.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/_db_fk_fix.py`。 | human |
 | `tools/_db_p0_fix.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/_db_p0_fix.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/_db_p0_fix.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/_db_p0_fix.py`。 | human |
 | `tools/_db_quality_check.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 2（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-01。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/_db_quality_check.py`。 | human |
@@ -378,11 +393,15 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/strong_ds_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/zero_competition_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 
-### 3.4 `PENDING`（514 件）
+### 3.4 `PENDING`（539 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
 | `Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md` | 同名件在 main 是 `Claude/skills/brain-alpha-research-field-quality/references/webdatascope-data-quality.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-datafield-exploration-general/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-dataset-exploration-general/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-explain-alphas/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-explain-alphas/scripts/arxiv_api.py` | 同名件在 main 是 `Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/references/contribution-and-diversity.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/contribution-and-diversity.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/references/evidence-and-review.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/evidence-and-review.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
@@ -395,6 +414,12 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `Claude/skills/brain-forum-browse/references/write-style-zh.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/write-style-zh.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/templates/forum_findings.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/templates/write-path/forum_findings.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/templates/run_contract.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/templates/write-path/run_contract.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-how-to-pass-alpha-test/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-make-some-gem/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-next-move-analysis/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-sim-alphas-in-batch-and-track/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/planning-with-files/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/wq-brain-alpha-optimization-v1/reference.md` | 同名件在 main 是 `Claude/skills/brain-data-feature-engineering/reference.md`, `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/wq-brain-alpha-optimization-v1/scripts/.arxiv_cache.json` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_CHECKLIST.md` | 同名件在 main 是 `attic/toolkit_docs_20260929/S2_COMPLIANCE_CHECKLIST.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md` | 同名件在 main 是 `attic/toolkit_docs_20260929/S2_COMPLIANCE_GUIDE.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
@@ -403,9 +428,13 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `Claude/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py` | 同名件在 main 是 `attic/ppa_mining_20260929/dataset_health_check.py`, `attic/ra_pipeline_shell_20260928/dataset_health_check.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/wq-brain-superalpha/references/selection-playbook.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `docs/design_s1_family_deadend.md` | 同名件在 main 是 `docs/design/design_s1_family_deadend.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `docs/dryrun-audit-20260925.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `docs/modeb_operator_optimization_plan.md` | 同名件在 main 是 `docs/design/modeb_operator_optimization_plan.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `docs/prod_corr_persistence_design_20260918.md` | 同名件在 main 是 `docs/design/prod_corr_persistence_design_20260918.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `docs/reference/CODE_QUALITY_SUMMARY.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `docs/reference/INTEGRATION_COMPLETE.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `docs/reference/brain-labs-data-analysis-agent.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `docs/region_universe_update_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `docs/skills-optimization-roadmap.md` | 同名件在 main 是 `docs/design/skills-optimization-roadmap.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `docs/skills_review_decisions.md` | 同名件在 main 是 `docs/design/skills_review_decisions.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `docs/structural_reconstruction.md` | 同名件在 main 是 `docs/design/structural_reconstruction.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
@@ -447,6 +476,14 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `reports/dataset_experience/asi_pv13_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/forum_alpha_inspiration_taxonomy_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `reports/forum_to_skills_integration_plan_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_item4.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n30.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n31.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n31.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n35.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n35.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `reports/ra_pipeline_stage_review_20260927/reproduce.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/reproduce.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `reports/skills_review_20260929/check_skills.py` | 同名件在 main 是 `reports/skills_review_20260929_refs/check_skills.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `reports/structure_review_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_build_wave_family_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/01_store_db/test_dataset_meta.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -634,6 +671,8 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/_kor_s6_writeback2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tools/backfill_alpha_metrics_from_platform.py` | 同名件在 main 是 `tools/data-repair/backfill_alpha_metrics_from_platform.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tools/candidate_health_card.py` | 同名件在 main 是 `tools/verdict/candidate_health_card.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `tools/db_lock_audit.py` | 同名件在 main 是 `tools/db/db_lock_audit.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `tools/db_maintenance.py` | 同名件在 main 是 `tools/db/db_maintenance.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tools/enqueue_propose.py` | 同名件在 main 是 `tools/ledger/enqueue_propose.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tools/gbr_pre_submit_check.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tools/gen_gbr_candidates_report.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -643,6 +682,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/probe_towers_sa.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tools/research/build_cluster_variants.py` | 同名件在 main 是 `tools/build_cluster_variants.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tools/scan_backup_ra.py` | 同名件在 main 是 `tools/ledger/scan_backup_ra.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `tracking/KOR/reference/skeleton_quota.json` | 同名件在 main 是 `tracking/KOR/reference/skeleton_quota.json` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tools/submit_inventory.py` | 同名件在 main 是 `tools/verdict/submit_inventory.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tools/test_gbr_batch_isolation.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tools/tmp_a16_axes.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |

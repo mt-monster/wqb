@@ -1,0 +1,2709 @@
+{
+ "dataset": "analyst10",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "nfields": 300,
+ "fields": [
+  {
+   "id": "actual_update_flag_bps",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 20,
+   "description": "Flag indicating if book value per share smart estimate was updated based on actual results.",
+   "crowding": "mid"
+  },
+  {
+   "id": "actual_update_flag_ebi",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Flag indicating if EBIT smart estimate was updated based on actual results.",
+   "crowding": "mid"
+  },
+  {
+   "id": "actual_update_flag_nav",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Flag indicating if net asset value smart estimate was updated based on actual results.",
+   "crowding": "mid"
+  },
+  {
+   "id": "actual_update_flag_ndt",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Flag indicating if net debt smart estimate was updated based on actual results.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_innovate_decrease_fy1",
+   "type": "MATRIX",
+   "coverage": 0.574,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of analysts with innovative negative revisions for dividends per share FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_innovate_decrease_fy2",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Innovation decrease in fiscal year 2 (DPS)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_innovate_increase_fy1",
+   "type": "MATRIX",
+   "coverage": 0.574,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for fiscal year 1 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_innovate_increase_fy2",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for fiscal year 2 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_innovation_score_fy1",
+   "type": "MATRIX",
+   "coverage": 0.574,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Innovation score for fiscal year 1 (DPS)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_innovation_score_fy2",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Innovation score for fiscal year 2 (DPS)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_normal_decrease_fy1",
+   "type": "MATRIX",
+   "coverage": 0.574,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in data for fiscal year 1 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_normal_decrease_fy2",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in data for fiscal year 2 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_normal_increase_fy1",
+   "type": "MATRIX",
+   "coverage": 0.574,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase forecast for fiscal year 1 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_normal_increase_fy2",
+   "type": "MATRIX",
+   "coverage": 0.5765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase forecast for fiscal year 2 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_revise_ratio_to_close_fy1",
+   "type": "MATRIX",
+   "coverage": 0.4727,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised ratio to close in fiscal year 1 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_revise_ratio_to_close_fy2",
+   "type": "MATRIX",
+   "coverage": 0.4822,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised ratio to close in fiscal year 2 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_revise_ratio_to_consensus_fy1",
+   "type": "MATRIX",
+   "coverage": 0.4727,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for fiscal year 1 (DPS)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_revise_ratio_to_consensus_fy2",
+   "type": "MATRIX",
+   "coverage": 0.4822,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for fiscal year 2 (DPS)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_revise_value_fy1",
+   "type": "MATRIX",
+   "coverage": 0.4727,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised value in fiscal year 1 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_dps_revise_value_fy2",
+   "type": "MATRIX",
+   "coverage": 0.4822,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised value in fiscal year 2 for dividend per share (DPS) forecasts",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_decrease_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5185,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative negative revisions for pre-tax or preliminary Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_decrease_fq2",
+   "type": "MATRIX",
+   "coverage": 0.4682,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Decrease forecast of innovation estimate for the second quarter",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_decrease_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6551,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of analysts with innovative negative revisions for pre-tax or preliminary FY1",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_decrease_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Innovation decrease in fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_increase_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5185,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for quarter 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_increase_fq2",
+   "type": "MATRIX",
+   "coverage": 0.4682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for quarter 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_increase_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6551,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase in innovation forecast for fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovate_increase_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovation_score_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5185,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Innovation score for quarter 1 (FQ1)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovation_score_fq2",
+   "type": "MATRIX",
+   "coverage": 0.4682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Innovation score for quarter 2 (FQ2)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovation_score_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6551,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Innovation score for fiscal year 1 (FY1)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_innovation_score_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Innovation score for fiscal year 2 (FY2)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_decrease_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5185,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in data for quarter 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_decrease_fq2",
+   "type": "MATRIX",
+   "coverage": 0.4682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in data for quarter 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_decrease_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6551,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Normal decrease in data for fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_decrease_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in data for fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_increase_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5185,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase forecast for quarter 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_increase_fq2",
+   "type": "MATRIX",
+   "coverage": 0.4682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase in data for quarter 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_increase_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6551,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase forecast for fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_normal_increase_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Normal increase forecast for fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_close_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5181,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised ratio to close in fq1 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_close_fq2",
+   "type": "MATRIX",
+   "coverage": 0.468,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised ratio to close in fq2 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_close_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6549,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised ratio to close in fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_close_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised ratio to close in fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_consensus_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5181,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for the first quarter",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_consensus_fq2",
+   "type": "MATRIX",
+   "coverage": 0.468,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for the second quarter",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_consensus_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6549,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Revision ratio to consensus forecast for the first fiscal year",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_ratio_to_consensus_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revision ratio to consensus forecast for the second fiscal year",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_value_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5181,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised value in fq1 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_value_fq2",
+   "type": "MATRIX",
+   "coverage": 0.468,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised value in fq2 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_value_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6549,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Revised value in fiscal year 1",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_analyst_innovation_pre_revise_value_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6284,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised value in fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_decrease_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative negative revisions for sales Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_decrease_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Decrease forecast of innovation estimate for the second quarter",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_decrease_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6664,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative negative revisions for sales FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_decrease_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6322,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Decrease in innovation forecast for fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_increase_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for quarter 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_increase_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for quarter 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_increase_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6664,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase in innovation forecast for fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovate_increase_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6322,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in innovation forecast for fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovation_score_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Innovation score for quarter 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovation_score_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Innovation score for quarter 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovation_score_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6664,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Innovation score for fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_innovation_score_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6322,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Innovation score for fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_decrease_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Normal decrease in data for quarter 1",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_decrease_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in data for quarter 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_decrease_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6664,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in data for fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_decrease_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6322,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal decrease in sales estimates for FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_increase_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase forecast for fq1 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_increase_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase in data for quarter 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_increase_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6664,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normal increase in sales estimates for FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_normal_increase_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6322,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Normal increase forecast for fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_close_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised ratio to close in fq1 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_close_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised ratio to close in fq2 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_close_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6662,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised ratio to close in fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_close_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6321,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised ratio to close in fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_consensus_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for the first quarter",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_consensus_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for the second quarter",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_consensus_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6662,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for the first fiscal year",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_ratio_to_consensus_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6321,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision ratio to consensus forecast for the second fiscal year",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_value_fq1",
+   "type": "MATRIX",
+   "coverage": 0.5901,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised value in fq1 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_value_fq2",
+   "type": "MATRIX",
+   "coverage": 0.534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised value in fq2 period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_value_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6662,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised value in fiscal year 1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_analyst_innovation_sal_revise_value_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6321,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revised value in fiscal year 2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_bpspast_det_analyst_7306",
+   "type": "VECTOR",
+   "coverage": 0.7783,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Analyst ID for book value per share estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_bpspast_det_anntime_7313",
+   "type": "VECTOR",
+   "coverage": 0.7783,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Announce time for book value per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_bpspast_det_estage_7310",
+   "type": "VECTOR",
+   "coverage": 0.7783,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Age of book value per share estimates in days",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_bpspast_det_estflag_7314",
+   "type": "VECTOR",
+   "coverage": 0.7783,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate flag for book value per share",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_bpspast_det_estvalue_7305",
+   "type": "VECTOR",
+   "coverage": 0.7783,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate value for book value per share",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_bpspast_det_excflag_7311",
+   "type": "VECTOR",
+   "coverage": 0.7783,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exclusion flag for book value per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_bpspast_det_indicator_7309",
+   "type": "VECTOR",
+   "coverage": 0.7783,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for book value per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_cpxpast_det_analyst_6548",
+   "type": "VECTOR",
+   "coverage": 0.7283,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Analyst ID for capital expenditures estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_cpxpast_det_anntime_6554",
+   "type": "VECTOR",
+   "coverage": 0.7283,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Announce time for capital expenditures estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_cpxpast_det_estage_6549",
+   "type": "VECTOR",
+   "coverage": 0.7283,
+   "userCount": 26,
+   "alphaCount": 37,
+   "description": "Age of capital expenditures estimates in days",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_cpxpast_det_estflag_6550",
+   "type": "VECTOR",
+   "coverage": 0.7283,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimate flag for capital expenditures",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_cpxpast_det_estvalue_6553",
+   "type": "VECTOR",
+   "coverage": 0.7283,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimate value for capital expenditures",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_cpxpast_det_excflag_6551",
+   "type": "VECTOR",
+   "coverage": 0.7283,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion flag for capital expenditures estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_cpxpast_det_indicator_6556",
+   "type": "VECTOR",
+   "coverage": 0.7283,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for capital expenditures estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_det_full_bps_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unique identifier for the analyst who issued the estimate/event in the detailed IBES chain",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_bps_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time of day when the analyst issued the estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_bps_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision age or sequence number of the estimate within its update chain",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_bps_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Validity flag for the estimate (0 = valid; non-zero = masked/missing)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_bps_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Numeric forecast estimate value captured at the event date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_bps_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion/regime flag indicating whether the analyst/event is active; 0 = active/valid, non-zero = excluded",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_bps_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Code indicating the event type (e.g., revision, initiation)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_cpx_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unique identifier of the analyst who issued the estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_cpx_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.7029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of day of the analyst announcement to disambiguate multiple events on the same date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_cpx_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.7029,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Age of the estimate within its revision chain (e.g., revision count since initiation)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_det_full_cpx_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.7029,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Validity/status flag for the per-analyst estimate at the event time, where 0 indicates a valid estimate and nonzero indicates masked or excluded",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_cpx_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst forecast value captured at the event date (snapshot as-of date)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_cpx_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.7029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion or regime boundary flag indicating whether the analyst/estimate is active (0) or excluded/non-active (non-zero)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_cpx_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.7029,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Event type code identifying the kind of event (e.g., revision, initiation, update, end)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_dps_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7279,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unique identifier for the analyst providing the estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_dps_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.7279,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of day when the analyst issued the DPS forecast",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_dps_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.7279,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision age or sequence number of the analyst’s estimate within the revision chain for that period",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_dps_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.7279,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Validity flag for the DPS estimate at the event time, where 0 means valid and non-zero indicates masked or invalid",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_dps_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7279,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The per-analyst DPS forecast value recorded at the event date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_dps_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.7279,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion or inactivity flag for the analyst event, where 0 means active and non-zero indicates the event is excluded",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_dps_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.7279,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Code indicating the type of event (e.g., initiation, revision, update, end) for this DPS forecast",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebi_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7919,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Unique identifier for the analyst who issued the estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebi_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.7919,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time of day the analyst published the estimate or report",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebi_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.7919,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision age/count of the estimate within the analyst’s revision timeline (sequence number of the update)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebi_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.7919,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Validity flag for the estimate value (0=valid, non-zero=masked or invalid)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebi_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7919,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Numeric estimate value provided by the analyst at that event",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_det_full_ebi_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.7919,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Flag indicating exclusion status of the analyst event under the regime (0=active, non-zero=excluded)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebi_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.7919,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Indicator code for the event type in the analyst chain (e.g., initiation, revision)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebt_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unique identifier for the analyst providing the EBT estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebt_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of day when the EBT forecast was issued",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebt_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Age of the EBT estimate in the revision chain (revision count/order)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebt_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Validity/inclusion flag for the EBT forecast estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebt_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Analyst’s EBT forecast value recorded at the event date (as-of snapshot)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_det_full_ebt_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion/regime flag for the analyst estimate (0 active; non-zero indicates exclusion or regime break)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ebt_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Event type indicator for the analyst action (e.g., initiation, revision, termination)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_gps_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7855,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Unique identifier for the analyst within this module",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_gps_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.7855,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time of day the analyst announced or filed the estimate, used to disambiguate same-day events",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_gps_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.7855,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revision age or count of the estimate within its update timeline",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_gps_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.7855,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Validity flag for the estimate (0 = valid, non-zero = invalid or masked)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_gps_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7855,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The analyst’s forecast value recorded at the event date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_gps_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.7855,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion/regime-boundary flag for the analyst at that time (0 = active; non-zero indicates exclusion or break)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_gps_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.7855,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Code indicating the event type (e.g., initiation, revision, update)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_nav_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Unique identifier for the analyst providing the estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_nav_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of day when the analyst report/estimate was issued",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_nav_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revision count or age of the analyst’s NAV estimate within the per-analyst event chain (how many revisions or how old the estimate is at that event)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_nav_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Validity flag for the NAV estimate at the event; 0 means valid, non-zero indicates masked/invalid/missing",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_nav_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Analyst’s NAV forecast value captured as of the event (point-in-time estimate)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_nav_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion/regime flag for analyst activity at the event; 0 means included/active, non-zero indicates excluded/inactive",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_nav_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Event type indicator for the analyst action (e.g., new estimate, revision, initiation) in the NAV detail chain",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ndt_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unique identifier of the analyst associated with the estimate/event in this module",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ndt_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Time of day when the analyst report/forecast was issued, used to order multiple events on the same date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ndt_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revision count or age of the estimate within the analyst’s revision timeline",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ndt_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating validity/inclusion status of the forecast at that time",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ndt_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Numeric value of the analyst’s forecast captured as of the event date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ndt_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating analyst exclusion or regime boundary (0 active, non-zero indicates exclusion/break)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_ndt_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Code indicating the event type in the analyst event chain (e.g., initiation, revision, termination)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_net_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Unique identifier of the analyst who issued the estimate/revision event",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_net_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of day of the analyst announcement/estimate to disambiguate multiple same-day events",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_net_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Age or revision count of the estimate within the analyst’s revision timeline",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_net_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimate validity flag at the event (0=valid, non-zero=invalid or masked)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_net_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Analyst’s forecast value captured as-of the event date",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_det_full_net_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating analyst exclusion or regime boundary (0 active; non-zero excluded)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_net_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Code indicating the event type in the estimate chain (e.g., initiation, revision, end)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_det_full_pre_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Unique identifier for the analyst",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_pre_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time of day the analyst report or forecast was announced/issued",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_pre_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Age or revision count of the estimate within the analyst’s revision timeline",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_pre_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Validity/inclusion flag for the forecast estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_pre_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst forecast/estimate value at the event date (as-of snapshot)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_pre_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion/regime flag for the analyst/estimate (0 active, non-zero excluded or regime break)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_pre_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Code indicating the type of analyst event (e.g., initiation, revision, update/end)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_sal_past_det_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7912,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Identifier for the individual analyst who submitted the estimate",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_sal_past_det_anntime",
+   "type": "VECTOR",
+   "coverage": 0.7912,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Time of day when the analyst announcement was made for the estimate",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_det_full_sal_past_det_estage",
+   "type": "VECTOR",
+   "coverage": 0.7912,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Age or revision count of the estimate within the analyst’s sequence at that time",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_sal_past_det_estflag",
+   "type": "VECTOR",
+   "coverage": 0.7912,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Flag indicating estimate validity/status (0 valid, non-zero invalid/masked)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_sal_past_det_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7912,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Analyst’s sales forecast value captured at the event date (as-of-date snapshot)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_sal_past_det_excflag",
+   "type": "VECTOR",
+   "coverage": 0.7912,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating whether the analyst/event is excluded or inactive (0 active, non-zero excluded)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_det_full_sal_past_det_indicator",
+   "type": "VECTOR",
+   "coverage": 0.7912,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Event type indicator for the analyst action (e.g., initiation, revision, update, termination)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsinnovate_decrease_fy1_7038",
+   "type": "MATRIX",
+   "coverage": 0.5583,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative negative revisions for dividends per share FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsinnovate_decrease_fy2_7053",
+   "type": "MATRIX",
+   "coverage": 0.5833,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative negative revisions for dividends per share FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsinnovate_increase_fy1_7054",
+   "type": "MATRIX",
+   "coverage": 0.5967,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative positive revisions for dividends per share FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsinnovate_increase_fy2_7061",
+   "type": "MATRIX",
+   "coverage": 0.5833,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative positive revisions for dividends per share FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsinnovation_score_fy1_7059",
+   "type": "MATRIX",
+   "coverage": 0.5967,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Innovation score for dividends per share FY1 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsinnovation_score_fy2_7065",
+   "type": "MATRIX",
+   "coverage": 0.5833,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Innovation score for dividends per share FY2 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsnormal_decrease_fy1_7058",
+   "type": "MATRIX",
+   "coverage": 0.5967,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal negative revisions for dividends per share FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsnormal_decrease_fy2_7045",
+   "type": "MATRIX",
+   "coverage": 0.5833,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with normal negative revisions for dividends per share FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsnormal_increase_fy1_7067",
+   "type": "MATRIX",
+   "coverage": 0.5967,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for dividends per share FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsnormal_increase_fy2_7055",
+   "type": "MATRIX",
+   "coverage": 0.5833,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for dividends per share FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpspast_det_analyst_6850",
+   "type": "VECTOR",
+   "coverage": 0.74,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Analyst ID for dividends per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpspast_det_anntime_6852",
+   "type": "VECTOR",
+   "coverage": 0.74,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Announce time for dividends per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpspast_det_estage_6848",
+   "type": "VECTOR",
+   "coverage": 0.74,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Age of dividends per share estimates in days",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpspast_det_estflag_6846",
+   "type": "VECTOR",
+   "coverage": 0.74,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate flag for dividends per share",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpspast_det_estvalue_6845",
+   "type": "VECTOR",
+   "coverage": 0.74,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate value for dividends per share",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpspast_det_excflag_6853",
+   "type": "VECTOR",
+   "coverage": 0.74,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exclusion flag for dividends per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpspast_det_indicator_6849",
+   "type": "VECTOR",
+   "coverage": 0.74,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for dividends per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsrevise_ratio_to_close_fy1_7044",
+   "type": "MATRIX",
+   "coverage": 0.48,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of delta consensus to adjusted close for dividends per share FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsrevise_ratio_to_close_fy2_7049",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of delta consensus to adjusted close for dividends per share FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsrevise_ratio_to_consensus_fy1_7040",
+   "type": "MATRIX",
+   "coverage": 0.48,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Consensus estimate value for dividends per share FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsrevise_ratio_to_consensus_fy2_7063",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consensus estimate value for dividends per share FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsrevise_value_fy1_7066",
+   "type": "MATRIX",
+   "coverage": 0.48,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Delta consensus for dividends per share FY1 (difference between old and current updated value)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_dpsrevise_value_fy2_7042",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Delta consensus for dividends per share FY2 (difference between old and current updated value)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebipast_det_analyst_7394",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Analyst ID for earnings before interest estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_ebipast_det_anntime_7395",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Announce time for earnings before interest estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_ebipast_det_estage_7392",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Age of earnings before interest estimates in days",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_ebipast_det_estflag_7388",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Estimate flag for earnings before interest",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_ebipast_det_estvalue_7389",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Estimate value for earnings before interest",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_ebipast_det_excflag_7393",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exclusion flag for earnings before interest estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebipast_det_indicator_7386",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for earnings before interest estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebtpast_det_analyst_7241",
+   "type": "VECTOR",
+   "coverage": 0.7567,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst ID for earnings before tax estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebtpast_det_anntime_7239",
+   "type": "VECTOR",
+   "coverage": 0.7567,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Announce time for earnings before tax estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebtpast_det_estage_7235",
+   "type": "VECTOR",
+   "coverage": 0.7567,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Age of earnings before tax estimates in days",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebtpast_det_estflag_7237",
+   "type": "VECTOR",
+   "coverage": 0.7567,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate flag for earnings before tax",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebtpast_det_estvalue_7238",
+   "type": "VECTOR",
+   "coverage": 0.7567,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate value for earnings before tax",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebtpast_det_excflag_7242",
+   "type": "VECTOR",
+   "coverage": 0.7567,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion flag for earnings before tax estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ebtpast_det_indicator_7240",
+   "type": "VECTOR",
+   "coverage": 0.7567,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for earnings before tax estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_gpspast_det_analyst_6505",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst ID for gross profit per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_gpspast_det_anntime_6506",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Announce time for gross profit per share estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_gpspast_det_estage_6500",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Age of gross profit per share estimates in days",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_gpspast_det_estflag_6501",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimate flag for gross profit per share",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_gpspast_det_estvalue_6498",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Estimate value for gross profit per share",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_gpspast_det_excflag_6502",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Exclusion flag for gross profit per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_gpspast_det_indicator_6499",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for gross profit per share estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_navpast_det_analyst_7485",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst ID for net asset value estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_navpast_det_anntime_7478",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Announce time for net asset value estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_navpast_det_estage_7480",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Age of net asset value estimates in days",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_navpast_det_estflag_7479",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate flag for net asset value",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_navpast_det_estvalue_7481",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimate value for net asset value",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_navpast_det_excflag_7482",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exclusion flag for net asset value estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_navpast_det_indicator_7483",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for net asset value estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ndtpast_det_analyst_6835",
+   "type": "VECTOR",
+   "coverage": 0.7217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst ID for date estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ndtpast_det_anntime_6834",
+   "type": "VECTOR",
+   "coverage": 0.7217,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Announce time for date estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ndtpast_det_estage_6838",
+   "type": "VECTOR",
+   "coverage": 0.7217,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Age of date estimates in days",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_ndtpast_det_estflag_6842",
+   "type": "VECTOR",
+   "coverage": 0.7217,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimate flag for date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ndtpast_det_estvalue_6837",
+   "type": "VECTOR",
+   "coverage": 0.7217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate value for date",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_ndtpast_det_excflag_6839",
+   "type": "VECTOR",
+   "coverage": 0.7217,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Exclusion flag for date estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_ndtpast_det_indicator_6836",
+   "type": "VECTOR",
+   "coverage": 0.7217,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for date estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_netpast_det_analyst_7300",
+   "type": "VECTOR",
+   "coverage": 0.7967,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Analyst ID for net income estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_netpast_det_anntime_7296",
+   "type": "VECTOR",
+   "coverage": 0.7967,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Announce time for net income estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_netpast_det_estage_7302",
+   "type": "VECTOR",
+   "coverage": 0.7967,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Age of net income estimates in days",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_netpast_det_estflag_7295",
+   "type": "VECTOR",
+   "coverage": 0.7967,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimate flag for net income",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_netpast_det_estvalue_7301",
+   "type": "VECTOR",
+   "coverage": 0.7967,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Estimate value for net income",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_netpast_det_excflag_7304",
+   "type": "VECTOR",
+   "coverage": 0.7967,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Exclusion flag for net income estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_netpast_det_indicator_7303",
+   "type": "VECTOR",
+   "coverage": 0.7967,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for net income estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_preinnovate_decrease_fq1_7795",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative negative revisions for pre-tax or preliminary Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovate_decrease_fq2_7816",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of analysts with innovative negative revisions for pre-tax or preliminary Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovate_decrease_fy1_7823",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Number of analysts with innovative negative revisions for pre-tax or preliminary FY1",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_preinnovate_decrease_fy2_7806",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative negative revisions for pre-tax or preliminary FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovate_increase_fq1_7808",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative positive revisions for pre-tax or preliminary Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovate_increase_fq2_7815",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative positive revisions for pre-tax or preliminary Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovate_increase_fy1_7820",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of analysts with innovative positive revisions for pre-tax or preliminary FY1",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_preinnovate_increase_fy2_7794",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative positive revisions for pre-tax or preliminary FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovation_score_fq1_7824",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Innovation score for pre-tax or preliminary Q1 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovation_score_fq2_7807",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Innovation score for pre-tax or preliminary Q2 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_preinnovation_score_fy1_7809",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 13,
+   "alphaCount": 18,
+   "description": "Innovation score for pre-tax or preliminary FY1 (innovate_increase - innovate_decrease)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_preinnovation_score_fy2_7812",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Innovation score for pre-tax or preliminary FY2 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_decrease_fq1_7799",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal negative revisions for pre-tax or preliminary Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_decrease_fq2_7810",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal negative revisions for pre-tax or preliminary Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_decrease_fy1_7813",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of analysts with normal negative revisions for pre-tax or preliminary FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_decrease_fy2_7818",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal negative revisions for pre-tax or preliminary FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_increase_fq1_7796",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for pre-tax or preliminary Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_increase_fq2_7798",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for pre-tax or preliminary Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_increase_fy1_7825",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for pre-tax or preliminary FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prenormal_increase_fy2_7800",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for pre-tax or preliminary FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prepast_det_analyst_7332",
+   "type": "VECTOR",
+   "coverage": 0.7917,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Analyst ID for pre-tax or preliminary estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_prepast_det_anntime_7325",
+   "type": "VECTOR",
+   "coverage": 0.7917,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Announce time for pre-tax or preliminary estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prepast_det_estage_7328",
+   "type": "VECTOR",
+   "coverage": 0.7917,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Age of pre-tax or preliminary estimates in days",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prepast_det_estflag_7326",
+   "type": "VECTOR",
+   "coverage": 0.7917,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate flag for pre-tax or preliminary",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prepast_det_estvalue_7329",
+   "type": "VECTOR",
+   "coverage": 0.7917,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimate value for pre-tax or preliminary",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prepast_det_excflag_7334",
+   "type": "VECTOR",
+   "coverage": 0.7917,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exclusion flag for pre-tax or preliminary estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prepast_det_indicator_7330",
+   "type": "VECTOR",
+   "coverage": 0.7917,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Indicator for fiscal periods in ASCII values (54=fq1, 55=fq2, 49=fy1, 50=fy2) for pre-tax or preliminary estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_close_fq1_7797",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of delta consensus to adjusted close for pre-tax or preliminary Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_close_fq2_7814",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of delta consensus to adjusted close for pre-tax or preliminary Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_close_fy1_7801",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of delta consensus to adjusted close for pre-tax or preliminary FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_close_fy2_7822",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of delta consensus to adjusted close for pre-tax or preliminary FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_consensus_fq1_7817",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consensus estimate value for pre-tax or preliminary Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_consensus_fq2_7802",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consensus estimate value for pre-tax or preliminary Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_consensus_fy1_7803",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Consensus estimate value for pre-tax or preliminary FY1",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_prerevise_ratio_to_consensus_fy2_7804",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Consensus estimate value for pre-tax or preliminary FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_value_fq1_7811",
+   "type": "MATRIX",
+   "coverage": 0.535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Delta consensus for pre-tax or preliminary Q1 (difference between old and current updated value)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_value_fq2_7805",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Delta consensus for pre-tax or preliminary Q2 (difference between old and current updated value)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_prerevise_value_fy1_7821",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Delta consensus for pre-tax or preliminary FY1 (difference between old and current updated value)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_prerevise_value_fy2_7819",
+   "type": "MATRIX",
+   "coverage": 0.6383,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Delta consensus for pre-tax or preliminary FY2 (difference between old and current updated value)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovate_decrease_fq1_7872",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative negative revisions for sales Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovate_decrease_fq2_7848",
+   "type": "MATRIX",
+   "coverage": 0.5467,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative negative revisions for sales Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovate_decrease_fy1_7876",
+   "type": "MATRIX",
+   "coverage": 0.6817,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Number of analysts with innovative negative revisions for sales FY1",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_salinnovate_decrease_fy2_7865",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative negative revisions for sales FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovate_increase_fq1_7857",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with innovative positive revisions for sales Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovate_increase_fq2_7847",
+   "type": "MATRIX",
+   "coverage": 0.5467,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative positive revisions for sales Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovate_increase_fy1_7850",
+   "type": "MATRIX",
+   "coverage": 0.6817,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative positive revisions for sales FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovate_increase_fy2_7870",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with innovative positive revisions for sales FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovation_score_fq1_7866",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Innovation score for sales Q1 (innovate_increase - innovate_decrease)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl10_salinnovation_score_fq2_7869",
+   "type": "MATRIX",
+   "coverage": 0.5467,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Innovation score for sales Q2 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovation_score_fy1_7851",
+   "type": "MATRIX",
+   "coverage": 0.6817,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Innovation score for sales FY1 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salinnovation_score_fy2_7864",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Innovation score for sales FY2 (innovate_increase - innovate_decrease)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_decrease_fq1_7861",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal negative revisions for sales Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_decrease_fq2_7852",
+   "type": "MATRIX",
+   "coverage": 0.5467,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal negative revisions for sales Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_decrease_fy1_7858",
+   "type": "MATRIX",
+   "coverage": 0.6817,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with normal negative revisions for sales FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_decrease_fy2_7875",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal negative revisions for sales FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_increase_fq1_7859",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with normal positive revisions for sales Q1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_increase_fq2_7846",
+   "type": "MATRIX",
+   "coverage": 0.5217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for sales Q2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_increase_fy1_7849",
+   "type": "MATRIX",
+   "coverage": 0.6817,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts with normal positive revisions for sales FY1",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salnormal_increase_fy2_7868",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts with normal positive revisions for sales FY2",
+   "crowding": "low"
+  },
+  {
+   "id": "anl10_salpast_det_analyst_6647",
+   "type": "VECTOR",
+   "coverage": 0.7983,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Analyst ID for sales estimates",
+   "crowding": "mid"
+  }
+ ]
+}

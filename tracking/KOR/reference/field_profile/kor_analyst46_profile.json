@@ -1,0 +1,63 @@
+{
+ "dataset": "analyst46",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "nfields": 6,
+ "fields": [
+  {
+   "id": "anl46_alphadecay",
+   "type": "MATRIX",
+   "coverage": 0.4192,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "A component value measuring the impact of idea age (i.e., how recent or stale the contributing ideas are) on the signal",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl46_experts",
+   "type": "MATRIX",
+   "coverage": 0.4192,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "A component showing the contribution from the historical performance of analysts who submitted ideas for the stock; higher values indicate more credible input",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl46_indicator",
+   "type": "MATRIX",
+   "coverage": 0.4192,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Cross-sectional ranking score from 1 to 10 for the stock within the region on a given day, with 10 being most bullish and 1 most bearish",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl46_performancepercentile",
+   "type": "MATRIX",
+   "coverage": 0.4274,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "A percentile rank (1–100) showing how well the Indicator signal has historically predicted price movement for the stock over the past 12 months in backtesting",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl46_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.4192,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "A composite score representing aggregated sell-side idea sentiment for the stock, combining decay, contributor skill, proximity to earnings, and idea volume/direction information",
+   "crowding": "mid"
+  },
+  {
+   "id": "profit_report_component",
+   "type": "MATRIX",
+   "coverage": 0.4192,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A component reflecting how close the stock is to an earnings event, adjusting the signal according to proximity to earnings",
+   "crowding": "low"
+  }
+ ]
+}

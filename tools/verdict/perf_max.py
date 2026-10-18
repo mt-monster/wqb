@@ -29,13 +29,15 @@
   - prod/self 相关性是终验项（>48h 规则），report 只提示、不在此调用（占账号级单并发队列）
 
 用法：
-  python tools/perf_max.py plan --alpha-id RR6bv6rz --objective fitness
-  python tools/perf_max.py plan --baseline-json baseline.json --region USA   # 离线基线
-  python tools/submit_batch.py --spec tracking/USA/perfmax/RR6bv6rz_<ts>/dispatch_spec.json
+  python tools/verdict/perf_max.py plan --alpha-id RR6bv6rz --objective fitness
+  python tools/verdict/perf_max.py plan --baseline-json baseline.json --region USA   # 离线基线
+  python tools/submit_batch.py --spec results/perfmax/USA/RR6bv6rz_<ts>/dispatch_spec.json
   python tools/harvest_multisim.py --multisim-id <id> --json-out harvest.json
-  python tools/perf_max.py harvest --plan-dir tracking/USA/perfmax/RR6bv6rz_<ts> \
+  python tools/verdict/perf_max.py harvest --plan-dir results/perfmax/USA/RR6bv6rz_<ts> \
       --from-harvest harvest.json          # 或 --alpha-ids EQ_QUANTILE=AbCd1234 ...
-  python tools/perf_max.py report --plan-dir tracking/USA/perfmax/RR6bv6rz_<ts>
+  python tools/verdict/perf_max.py report --plan-dir results/perfmax/USA/RR6bv6rz_<ts>
+⚠ `plan` 的子命令缺省输出位是 `results/perfmax/<region>/<alpha_id>_<时间戳>/`（gitignore 区，
+   派发断点不入库）；历史件仍在 `tracking/USA/{perfmax,robustness}/<同名>/`，只读、用 `--plan-dir` 指过去即可。
 """
 from __future__ import annotations
 
@@ -656,7 +658,12 @@ def cmd_plan(args: argparse.Namespace) -> int:
     region = (snap.get("settings") or {}).get("region") or args.region or "USA"
     alpha_id = snap.get("alpha_id") or args.alpha_id or "offline"
     plan_dir = args.plan_dir or os.path.join(
-        REPO, "tracking", region, "perfmax", f"{alpha_id}_{time.strftime('%Y%m%d_%H%M%S')}")
+        # 缺省落 `results/`（已 gitignore），**不落 tracking/**：这里每个目录都是
+        # `plan/dispatch_spec/score/variants_*` 的派发断点，属 AGENTS.md §8.13「运行期产物」，
+        # 落在 tracking/<REGION>/ 下就是把运行中间态写进业务目录并入版本控制
+        # （2026-10-14 布局审计 §2.B-2 实测：旧缺省这样写，攒下 89 个跟踪件；
+        # 现由 audit_structure S18 在索引面上拦复发）。显式 `--plan-dir` 不受影响。
+        REPO, "results", "perfmax", region, f"{alpha_id}_{time.strftime('%Y%m%d_%H%M%S')}")
     os.makedirs(plan_dir, exist_ok=True)
 
     variants = generate_variants(snap["code"], snap.get("settings") or {},
@@ -701,7 +708,7 @@ def cmd_plan(args: argparse.Namespace) -> int:
         print(f"  {v['label']:<16} [{v['lever']}] {desc[:110]}")
     print("[next] python tools/submit_batch.py --spec "
           f"{os.path.join(plan_dir, 'dispatch_spec.json')}")
-    print(f"[next] python tools/perf_max.py harvest --plan-dir {plan_dir} --alpha-ids L=ID ...")
+    print(f"[next] python tools/verdict/perf_max.py harvest --plan-dir {plan_dir} --alpha-ids L=ID ...")
     return 0
 
 

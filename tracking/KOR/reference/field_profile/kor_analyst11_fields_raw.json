@@ -1,0 +1,6932 @@
+[
+ {
+  "id": "anti_pollution_policy_industry_percentile",
+  "description": "Percentile ranking of the company within its industry peer group on the OWL E2 KPI, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.652,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anti_pollution_policy_industry_rank",
+  "description": "Rank of the company within its industry peer group based on the OWL E2 KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6556,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anti_pollution_policy_score",
+  "description": "Aggregated environmental transparency KPI reflecting company policies, reporting, and dedication to environmental transparency",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6708,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anti_pollution_policy_sector_percentile",
+  "description": "Percentile ranking of the company within its sector peer group on the OWL E2 KPI, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.652,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anti_pollution_policy_sector_rank",
+  "description": "Rank of the company within its sector peer group based on the OWL E2 KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6556,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anti_pollution_policy_subsector_percentile",
+  "description": "Percentile ranking of the company within its subsector peer group on the OWL E2 KPI, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.652,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anti_pollution_policy_subsector_rank",
+  "description": "Rank of the company within its subsector peer group based on the OWL E2 KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6556,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "board_independence_diversity_score",
+  "description": "KPI for Board Effectiveness, aggregating data on Board independence, diversity, and effectiveness in meeting financial and sustainability goals",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6564,
+  "userCount": 2,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "board_independence_industry_percentile",
+  "description": "Percentile ranking of a company's Board Effectiveness KPI (G1) within its industry peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6375,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "board_independence_industry_rank",
+  "description": "Rank of the company's Board Effectiveness KPI (G1) within its industry peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6412,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "board_independence_sector_percentile",
+  "description": "Percentile ranking of a company's Board Effectiveness KPI (G1) within its sector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6375,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "board_independence_sector_rank",
+  "description": "Rank of the company's Board Effectiveness KPI (G1) within its sector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6412,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "board_independence_subsector_percentile",
+  "description": "Percentile ranking of a company's Board Effectiveness KPI (G1) within its subsector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6375,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "board_independence_subsector_rank",
+  "description": "Rank of the company's Board Effectiveness KPI (G1) within its subsector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6412,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_corr_weighted_score",
+  "description": "Score for Capital Investment KPIs (CIT1, CIT2, CIT3) weighted by strongest (positive and negative) correlations with financial metrics linked to company returns; emphasizes materiality to financial outcomes",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_engagement_industry_percentile",
+  "description": "Percentile ranking of a company's performance on the OWL CIT1 KPI within its industry peer group, with 100% being the highest/best possible score",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6751,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_engagement_industry_rank",
+  "description": "Rank of company within its industry peer group on the CIT1 KPI (community & charity), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6787,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_engagement_score",
+  "description": "KPI measuring company performance in community and charitable activities, public health, and local social/environmental impacts",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6939,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_engagement_sector_percentile",
+  "description": "Percentile ranking of a company's performance on the OWL CIT1 KPI within its sector peer group, with 100% being the highest/best possible score",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6751,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_engagement_sector_rank",
+  "description": "Rank of company within its sector peer group on the CIT1 KPI (community & charity), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6787,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_engagement_subsector_percentile",
+  "description": "Percentile of a company within its industry subsector peer group for the CIT1 citizenship KPI, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6751,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_engagement_subsector_rank",
+  "description": "Rank of company within its subsector peer group on the CIT1 KPI (community & charity), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6787,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_hybrid_industry_percentile",
+  "description": "Percentile ranking of a company's CIT Hybrid score within its industry peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4553,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_hybrid_industry_position",
+  "description": "Rank of a company's CIT Hybrid score within its industry peer group, with 1 representing the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.461,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_hybrid_sector_percentile",
+  "description": "Percentile ranking of the Citizenship hybrid score for the company within its sector peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4553,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_hybrid_sector_position",
+  "description": "Rank of a company's CIT Hybrid score within its sector peer group, with 1 representing the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.461,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_hybrid_subsector_percentile",
+  "description": "Percentile ranking of a company's CIT Hybrid score within its subsector peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4553,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_hybrid_subsector_position",
+  "description": "Rank of a company's CIT Hybrid score within its subsector peer group, with 1 representing the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.461,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_maxcorr_industry_percentile",
+  "description": "Percentile ranking of a company's CIT Max Correlation score within its industry peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.488,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_maxcorr_industry_position",
+  "description": "Rank of a company's CIT Max Correlation score within its industry peer group, where 1 is the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_maxcorr_sector_percentile",
+  "description": "Percentile ranking of a company's CIT Max Correlation score within its sector peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.488,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_maxcorr_sector_position",
+  "description": "Rank of a company's CIT Max Correlation score within its sector peer group, where 1 is the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_maxcorr_subsector_percentile",
+  "description": "Percentile ranking of a company's CIT Max Correlation score within its subsector peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.488,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_maxcorr_subsector_position",
+  "description": "Rank of a company's CIT Max Correlation score within its subsector peer group, where 1 is the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_pillar_composite_score",
+  "description": "Capital Investment Score; average of CIT1, CIT2, and CIT3, representing overall capital investment-related ESG performance for a company",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.697,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_positive_corr_score",
+  "description": "Score for Capital Investment KPIs (CIT1, CIT2, CIT3) weighted by positive correlations with financial metrics linked to company returns; emphasizes beneficial capital investment metrics for financial performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.461,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_score_industry_percentile",
+  "description": "Percentile ranking of the company within its industry peer group based on the Citizenship (CIT) score, where 100% represents the top performer",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6782,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_score_industry_position",
+  "description": "Rank of the company within its industry peer group based on the overall CIT Score, with 1 as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6818,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_score_sector_percentile",
+  "description": "Percentile ranking of a company's Capital Investment Score within its sector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6782,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_score_subsector_percentile",
+  "description": "Percentile ranking of the company within its subsector peer group based on the Citizenship (CIT) score, where 100% represents the top performer",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6782,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_score_subsector_position",
+  "description": "Rank of the company within its subsector peer group based on the overall CIT Score, with 1 as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6818,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "community_sector_position",
+  "description": "Rank of the company within its sector peer group based on the overall CIT Score, with 1 as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6818,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "disclosure_transparency_accountability_score",
+  "description": "A composite KPI measuring Disclosure & Accountability: assesses the quality of financial and sustainability reporting, engagement in sustainability performance by employees and management, and overall transparency to stakeholders. Indicates how well a company has transitioned to high-quality reporting and transparency",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6618,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "disclosure_transparency_industry_percentile",
+  "description": "Percentile of company within its industry for the OWL G3 Disclosure & Accountability KPI, with 100% best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.643,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "disclosure_transparency_industry_rank",
+  "description": "Rank of a company within its industry peer group on the G3 governance KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6466,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "disclosure_transparency_sector_percentile",
+  "description": "Percentile of company within its sector for the OWL G3 Disclosure & Accountability KPI, with 100% best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.643,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "disclosure_transparency_sector_rank",
+  "description": "Rank of company within its sector based on the OWL G3 Disclosure & Accountability KPI, with 1 being the top rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6466,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "disclosure_transparency_subsector_percentile",
+  "description": "Percentile of company within its subsector for the OWL G3 Disclosure & Accountability KPI, with 100% best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.643,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "disclosure_transparency_subsector_rank",
+  "description": "Rank of company within its subsector based on the OWL G3 Disclosure & Accountability KPI, with 1 being the top rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6466,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_compensation_industry_percentile",
+  "description": "Percentile of a company within its industry peer group on the EMP1 KPI (Compensation & Satisfaction), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6324,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_compensation_industry_rank",
+  "description": "Rank of Employment KPI 1 for the company within its industry peer group, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.636,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_compensation_satisfaction_score",
+  "description": "Employment KPI 1 measures how well the company fosters employee satisfaction through fair pay, benefits, and practices promoting productivity, indicating transition to a fair-compensation workplace",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6512,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_compensation_sector_percentile",
+  "description": "Percentile of a company within its sector peer group on the EMP1 KPI (Compensation & Satisfaction), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6324,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_compensation_sector_rank",
+  "description": "Rank of company within its sector peer group on the EMP1 KPI (compensation & satisfaction), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.636,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_compensation_subsector_percentile",
+  "description": "Percentile ranking of Employment KPI 1 for the company within its subsector peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6324,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_compensation_subsector_rank",
+  "description": "Rank of company within its subsector peer group on the EMP1 KPI (compensation & satisfaction), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.636,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_training_industry_percentile",
+  "description": "Percentile of a company within its industry peer group on the EMP3 KPI (Education & Work Conditions), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6444,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_training_industry_rank",
+  "description": "Rank of company within its industry peer group on the EMP3 KPI (education & work conditions), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.648,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_training_safety_score",
+  "description": "KPI measuring company performance on education, work conditions, workplace safety, training, and health",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6632,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_training_sector_percentile",
+  "description": "Percentile of a company within its sector peer group on the EMP3 KPI (Education & Work Conditions), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6444,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_training_sector_rank",
+  "description": "Rank of company within its sector peer group on the EMP3 KPI (education & work conditions), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_training_subsector_percentile",
+  "description": "Percentile of a company within its subsector peer group on the EMP3 KPI (Education & Work Conditions), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6444,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "employee_training_subsector_rank",
+  "description": "Rank of company within its subsector peer group on the EMP3 KPI (education & work conditions), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.648,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_corr_weighted_industry_percentile",
+  "description": "Percentile of company’s E Max Correlation score within industry peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4679,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_corr_weighted_industry_position",
+  "description": "Rank of company’s E Max Correlation score within industry peer group, with 1 being highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4693,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_corr_weighted_score",
+  "description": "A composite Environmental (E) score built by weighting E1, E2, and E3 KPIs according to the strength of both positive and negative correlations with financial metrics (such as 1-year and 3-year total returns) observed in the most granular available peer group. Rewards companies for being strong or weak on metrics depending on whether those differences are linked to superior financial results",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4693,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_corr_weighted_sector_percentile",
+  "description": "Percentile of company’s E Max Correlation score within sector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4679,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_corr_weighted_sector_position",
+  "description": "Rank of company’s E Max Correlation score within sector peer group, with 1 being highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4693,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_corr_weighted_subsector_percentile",
+  "description": "Percentile of company’s E Max Correlation score within subsector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4679,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_corr_weighted_subsector_position",
+  "description": "Rank of company’s E Max Correlation score within subsector peer group, with 1 being highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4693,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_industry_percentile",
+  "description": "Percentile of company’s E score within industry peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6785,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_industry_position",
+  "description": "Rank of company’s E score within its industry peer group, with 1 being highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6821,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_pillar_composite_score",
+  "description": "The average Environmental Score (E), calculated as the unweighted mean of E1, E2, and E3 KPIs; this field shows a company’s overall environmental performance relative to peers without prioritizing any sub-component",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6973,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_positive_corr_industry_percentile",
+  "description": "Percentile of company’s E Hybrid score within industry peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4391,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_positive_corr_industry_position",
+  "description": "Rank of company’s E Hybrid score within industry peer group, 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4448,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_positive_corr_score",
+  "description": "A composite Environmental (E) score built by weighting E1, E2, and E3 KPIs according to their positive correlations with financially relevant metrics (such as total returns over 1 and 3 years), using the most granular available peer group. Rewards only strong performance on metrics positively linked to returns",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4448,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_positive_corr_sector_percentile",
+  "description": "Percentile of company’s E Hybrid score within sector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4391,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_positive_corr_sector_position",
+  "description": "Rank of company’s E Hybrid score within sector peer group, 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4448,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_positive_corr_subsector_percentile",
+  "description": "Percentile of company’s E Hybrid score within subsector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4391,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_positive_corr_subsector_position",
+  "description": "Rank of company’s E Hybrid score within subsector peer group, 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4448,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_sector_percentile",
+  "description": "Percentile of company’s E score within sector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6785,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_sector_position",
+  "description": "Rank of company’s E score within its sector peer group, with 1 being highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6821,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_subsector_percentile",
+  "description": "Percentile of company’s E score within subsector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6785,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "environmental_subsector_position",
+  "description": "Rank of company’s E score within its subsector peer group, with 1 being highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6821,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_corr_weighted_industry_percentile",
+  "description": "Percentile of a company within its industry peer group based on the Governance Max Correlation Score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4655,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_corr_weighted_industry_position",
+  "description": "Rank of a company within its industry peer group based on the Governance Max Correlation Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4669,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_corr_weighted_score",
+  "description": "Governance Max Correlation Score, calculated by weighting G1, G2, and G3 based on their rank correlation (positive and negative) with financial metrics strongly correlated to 1 and 3 year returns in the company’s peer group",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4669,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_corr_weighted_sector_percentile",
+  "description": "Percentile of a company within its sector peer group based on the Governance Max Correlation Score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4655,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_corr_weighted_sector_position",
+  "description": "Rank of a company within its sector peer group based on the Governance Max Correlation Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4669,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_corr_weighted_subsector_percentile",
+  "description": "Percentile of a company within its subsector peer group based on the Governance Max Correlation Score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4655,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_corr_weighted_subsector_position",
+  "description": "Rank of a company within its subsector peer group based on the Governance Max Correlation Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4669,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_industry_percentile",
+  "description": "Percentile of a company within its industry peer group based on the Governance (G) Score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6531,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_industry_position",
+  "description": "Rank of a company within its industry peer group based on the Governance (G) Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6567,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_pillar_composite_score",
+  "description": "Governance score, which is the average of the subcomponent scores G1, G2, and G3, representing broad governance performance with no subjective weighting",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6719,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_positive_corr_industry_percentile",
+  "description": "Percentile ranking of the Governance (G) Hybrid Score within the company's industry peer group, with higher percentiles indicating better relative performance (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4346,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_positive_corr_industry_position",
+  "description": "Rank of a company within its industry peer group based on the Governance Hybrid Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4403,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_positive_corr_score",
+  "description": "Governance Hybrid Score, calculated by weighting G1, G2, and G3 based on positive rank correlation with financial metrics strongly correlated to 1 and 3 year returns in the peer group",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4403,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_positive_corr_sector_percentile",
+  "description": "Percentile of a company within its sector peer group based on the Governance Hybrid Score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4346,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_positive_corr_sector_position",
+  "description": "Rank of a company within its sector peer group based on the Governance Hybrid Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4403,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_positive_corr_subsector_percentile",
+  "description": "Percentile ranking of the Governance (G) Hybrid Score within the company's subsector peer group, with higher percentiles indicating better relative performance (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4346,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_positive_corr_subsector_position",
+  "description": "Rank of a company within its subsector peer group based on the Governance Hybrid Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4403,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_sector_percentile",
+  "description": "Percentile of a company within its sector peer group based on the Governance (G) Score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6531,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_sector_position",
+  "description": "Rank of a company within its sector peer group based on the Governance (G) Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6567,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_subsector_percentile",
+  "description": "Percentile of a company within its subsector peer group based on the Governance (G) Score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6531,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "governance_subsector_position",
+  "description": "Rank of a company within its subsector peer group based on the Governance (G) Score; 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6567,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "human_rights_industry_percentile",
+  "description": "Percentile ranking of a company's Human Rights KPI (CIT2) within its industry peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6698,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "human_rights_industry_rank",
+  "description": "Rank of the company's Human Rights KPI (CIT2) within its industry peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6734,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "human_rights_sector_percentile",
+  "description": "Percentile ranking of a company's Human Rights KPI (CIT2) within its sector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6698,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "human_rights_sector_rank",
+  "description": "Rank of the company's Human Rights KPI (CIT2) within its sector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6734,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "human_rights_subsector_percentile",
+  "description": "Percentile ranking of a company's Human Rights KPI (CIT2) within its subsector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6698,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "human_rights_subsector_rank",
+  "description": "Rank of the company's Human Rights KPI (CIT2) within its subsector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6734,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "human_rights_supply_chain_score",
+  "description": "KPI for Human Rights, aggregating data on a company's policies and performance regarding human rights issues such as child or compulsory labor and community treatment",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6886,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "management_ethics_industry_percentile",
+  "description": "Percentile score of a company's G2 KPI standing within its industry peer group, with 100% being the highest/best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6516,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "management_ethics_industry_rank",
+  "description": "Rank of the company's Management Ethics KPI (G2) within its industry peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6552,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "management_ethics_sector_percentile",
+  "description": "Percentile ranking of a company's Management Ethics KPI (G2) within its sector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6516,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "management_ethics_sector_rank",
+  "description": "Rank of the company's Management Ethics KPI (G2) within its sector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6552,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "management_ethics_standards_score",
+  "description": "KPI for Management Ethics, measuring management's stakeholder relations, ethical decision-making, equitable shareholder treatment, and ESG integration",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6704,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "management_ethics_subsector_percentile",
+  "description": "Percentile ranking of a company's Management Ethics KPI (G2) within its subsector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6516,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "management_ethics_subsector_rank",
+  "description": "Rank of the company's Management Ethics KPI (G2) within its subsector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6552,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "overall_sustainability_score",
+  "description": "The ESG Score for a company, calculated as a simple average of its Environmental (E), Social (S), and Governance (G) scores with equal weighting, providing an overall, unweighted ESG assessment without subjective prioritization among E, S, and G components",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6975,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "pollution_prevention_industry_percentile",
+  "description": "Percentile ranking of the company within its industry peer group on the OWL E1 KPI, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6777,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "pollution_prevention_industry_rank",
+  "description": "Rank of the company within its industry peer group based on the OWL E1 KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6813,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "pollution_prevention_score",
+  "description": "Aggregated pollution prevention KPI reflecting how well a company is reducing pollution and transitioning to less harmful technologies",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6965,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "pollution_prevention_sector_percentile",
+  "description": "Percentile ranking of the company within its sector peer group on the OWL E1 KPI, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6777,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "pollution_prevention_sector_rank",
+  "description": "Rank of the company within its sector peer group based on the OWL E1 KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6813,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "pollution_prevention_subsector_percentile",
+  "description": "Percentile ranking of the company within its subsector peer group on the OWL E1 KPI, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6777,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "pollution_prevention_subsector_rank",
+  "description": "Rank of the company within its subsector peer group based on the OWL E1 KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6813,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "resource_efficiency_industry_percentile",
+  "description": "The percentile position of a company within its industry peer group based on the OWL E3 KPI; higher percentiles indicate better performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6771,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "resource_efficiency_industry_rank",
+  "description": "Rank of company within its industry peer group on the OWL E3 KPI, with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6807,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "resource_efficiency_score",
+  "description": "Aggregated resource efficiency KPI reflecting how well a company reduces resource use and implements recycling",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6959,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "resource_efficiency_sector_percentile",
+  "description": "The percentile position of a company within its sector peer group based on the OWL E3 KPI; higher percentiles indicate better performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6771,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "resource_efficiency_sector_rank",
+  "description": "Rank of the company within its sector peer group based on the OWL E3 KPI, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6807,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "resource_efficiency_subsector_percentile",
+  "description": "The percentile position of a company within its subsector peer group based on the OWL E3 KPI; higher percentiles indicate better performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6771,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "resource_efficiency_subsector_rank",
+  "description": "Rank of company within its subsector peer group on the OWL E3 KPI, with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6807,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_corr_weighted_industry_percentile",
+  "description": "Percentile within the Industry peer group based on the maximum correlation score for the Social (S) pillar, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4881,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_corr_weighted_industry_position",
+  "description": "Rank within the Industry peer group based on the maximum correlation score for the Social (S) pillar, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_corr_weighted_score",
+  "description": "Composite score for social KPIs (EMP1, EMP2, EMP3, CIT1, CIT2, CIT3) weighted by their absolute correlation (positive and negative) to financial metrics related to returns; rewards both strong and weak metrics as causally relevant to performance, within the most granular peer group",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_corr_weighted_sector_percentile",
+  "description": "Percentile within the Sector peer group based on the maximum correlation score for the Social (S) pillar, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4881,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_corr_weighted_sector_position",
+  "description": "Rank of company’s S Max Correlation score within sector peer group, 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_corr_weighted_subsector_percentile",
+  "description": "Percentile within the SubSector peer group based on the maximum correlation score for the Social (S) pillar, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4881,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_corr_weighted_subsector_position",
+  "description": "Rank within the SubSector peer group based on the maximum correlation score for the Social (S) pillar, with 1 representing the top rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4894,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_industry_percentile",
+  "description": "Percentile of company’s S score within industry peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6782,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_industry_position",
+  "description": "Rank of company’s S score within industry peer group, 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6818,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_pillar_composite_score",
+  "description": "Composite Social (S) Score calculated as the average of the CIT (Citizenship) and EMP (Employment) scores, with no subjective weighting between them",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.697,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_positive_corr_industry_percentile",
+  "description": "Percentile of a company within its industry peer group based on the Social (S) Hybrid score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.464,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_positive_corr_industry_position",
+  "description": "Rank of a company within its industry peer group based on the Social (S) Hybrid score; 1 is the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4697,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_positive_corr_score",
+  "description": "A composite Social (S) score created by weighting EMP1, EMP2, EMP3, CIT1, CIT2, and CIT3 according to their positive correlations with financial metrics highly correlated to 1- and 3-year total returns; rewards strong performance on metrics positively linked to returns, using the most granular peer group possible",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4697,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_positive_corr_sector_percentile",
+  "description": "Percentile ranking of the Social hybrid score for the company within its sector peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.464,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_positive_corr_sector_position",
+  "description": "Rank of a company within its sector peer group based on the Social (S) Hybrid score; 1 is the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4697,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_positive_corr_subsector_percentile",
+  "description": "Percentile of a company within its subsector peer group based on the Social (S) Hybrid score; 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.464,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_positive_corr_subsector_position",
+  "description": "Rank of a company within its subsector peer group on the S Hybrid score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4697,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_sector_percentile",
+  "description": "Percentile of company’s S score within sector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6782,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_sector_position",
+  "description": "Rank of company’s S score within sector peer group, 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6818,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_subsector_percentile",
+  "description": "Percentile of company’s S score within subsector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6782,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "social_subsector_position",
+  "description": "Rank of company’s S score within subsector peer group, 1 is highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6818,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_corr_weighted_industry_percentile",
+  "description": "Percentile score of a company's ESG Max Correlation score within its industry peer group, with 100% being the highest/best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4902,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_corr_weighted_industry_position",
+  "description": "Rank of a company's ESG Max Correlation score within its industry peer group, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4916,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_corr_weighted_sector_percentile",
+  "description": "Percentile score of a company's ESG Max Correlation score within its sector peer group, with 100% being the highest/best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4902,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_corr_weighted_sector_position",
+  "description": "Rank of company within its sector based on its ESG Max Correlation score, with 1 being highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4916,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_corr_weighted_subsector_percentile",
+  "description": "Percentile score of a company's ESG Max Correlation score within its subsector peer group, with 100% being the highest/best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4902,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_corr_weighted_subsector_position",
+  "description": "Rank of a company's ESG Max Correlation score within its subsector peer group, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4916,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_hybrid_score",
+  "description": "A composite ESG score where underlying KPIs are weighted by positive correlations with financial metrics strongly tied to company performance within the relevant peer group, rewarding companies for strong performance on ESG elements most associated with good financial results; uses the most granular peer group available",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4831,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_industry_percentile",
+  "description": "Percentile ranking of a company’s ESG score within its industry peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6787,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_industry_rank",
+  "description": "Rank of company within its industry based on its overall ESG score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6823,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_max_correlation_score",
+  "description": "A composite ESG score where each underlying KPI is weighted according to its strongest (positive or negative) correlation with financially relevant metrics (such as returns or profitability), rewarding companies for performance on ESG elements most linked to financial outcomes relative to peers; always uses the most granular peer group available",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4916,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_positive_corr_industry_percentile",
+  "description": "Percentile score of a company's ESG Hybrid score within its industry peer group, with 100% being the highest/best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4774,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_positive_corr_industry_position",
+  "description": "Rank of a company's ESG Hybrid score within its industry peer group, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4831,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_positive_corr_sector_percentile",
+  "description": "Percentile score of a company's ESG Hybrid score within its sector peer group, with 100% being the highest/best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4774,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_positive_corr_sector_position",
+  "description": "Rank of company within its sector for ESG Hybrid score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4831,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_positive_corr_subsector_percentile",
+  "description": "Percentile score of a company's ESG Hybrid score within its subsector peer group, with 100% being the highest/best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4774,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_positive_corr_subsector_position",
+  "description": "Rank of a company's ESG Hybrid score within its subsector peer group, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4831,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_sector_percentile",
+  "description": "Percentile of company within its sector for its overall ESG score, with 100% being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6787,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_sector_rank",
+  "description": "Rank of company within its sector based on its overall ESG score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6823,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_subsector_percentile",
+  "description": "Percentile ranking of the company's ESG score within its subsector peer group, with 100% being the best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6787,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainability_subsector_rank",
+  "description": "Rank of company within its subsector based on its overall ESG score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6823,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainable_product_business_model_score",
+  "description": "KPI for Sustainability Integration, measuring how well a company transitions its products and operations toward sustainable, low-impact offerings",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.657,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainable_product_industry_percentile",
+  "description": "Percentile ranking of a company's Sustainability Integration KPI (CIT3) within its industry peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6382,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainable_product_industry_rank",
+  "description": "Rank of the company's Sustainability Integration KPI (CIT3) within its industry peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6418,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainable_product_sector_percentile",
+  "description": "Percentile ranking of a company's Sustainability Integration KPI (CIT3) within its sector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6382,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainable_product_sector_rank",
+  "description": "Rank of the company's Sustainability Integration KPI (CIT3) within its sector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6418,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainable_product_subsector_percentile",
+  "description": "Percentile ranking of a company's Sustainability Integration KPI (CIT3) within its subsector peer group, where 100% is best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6382,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "sustainable_product_subsector_rank",
+  "description": "Rank of the company's Sustainability Integration KPI (CIT3) within its subsector peer group, with 1 being best",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6418,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_corr_weighted_industry_percentile",
+  "description": "Percentile ranking of a company's Employment Max Correlation Score within its industry (100% is best/highest correlation to material financial performance)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4448,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_corr_weighted_industry_position",
+  "description": "Rank of the company within its industry peer group based on the EMP Max Correlation Score, with 1 as the top performer",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4462,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_corr_weighted_score",
+  "description": "Score for Employment KPIs (EMP1, EMP2, EMP3) weighted by their strongest correlations (positive and negative) with financial metrics linked to company returns; emphasizes materiality to financial outcomes",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4462,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_corr_weighted_sector_percentile",
+  "description": "Percentile ranking of a company's Employment Max Correlation Score within its sector (100% is best/highest correlation to material financial performance)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4448,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_corr_weighted_sector_position",
+  "description": "Rank of the company within its sector peer group based on the EMP Max Correlation Score, with 1 as the top performer",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4462,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_corr_weighted_subsector_percentile",
+  "description": "Percentile ranking of a company's Employment Max Correlation Score within its subsector (100% is best/highest correlation to material financial performance)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4448,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_corr_weighted_subsector_position",
+  "description": "Rank of the company within its subsector peer group based on the EMP Max Correlation Score, with 1 as the top performer",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4462,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_industry_percentile",
+  "description": "Percentile ranking of a company's Employment Score within its industry peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6458,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_industry_position",
+  "description": "Rank position of the company within its Industry peer group for the EMP Score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6494,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_pillar_composite_score",
+  "description": "Average score of EMP1, EMP2, and EMP3, measuring employment-related performance without subjective weighting among these KPIs",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6646,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_positive_corr_industry_percentile",
+  "description": "Percentile ranking of a company's Employment Hybrid Score within its industry peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4318,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_positive_corr_industry_position",
+  "description": "Rank of the company within industry peer group based on EMP Hybrid Score, with 1 as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4375,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_positive_corr_score",
+  "description": "Score for Employment KPIs (EMP1, EMP2, EMP3) weighted by their positive correlations with financial metrics linked to company returns; emphasizes beneficial employment metrics for financial performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4375,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_positive_corr_sector_percentile",
+  "description": "Percentile ranking of a company's Employment Hybrid Score within its sector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4318,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_positive_corr_sector_position",
+  "description": "Rank of the company within sector peer group based on EMP Hybrid Score, with 1 as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4375,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_positive_corr_subsector_percentile",
+  "description": "Percentile ranking of a company's Employment Hybrid Score within its subsector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4318,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_positive_corr_subsector_position",
+  "description": "Rank of the company within subsector peer group based on EMP Hybrid Score, with 1 as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4375,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_sector_percentile",
+  "description": "Percentile ranking of a company's Employment Score within its sector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6458,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_sector_position",
+  "description": "Rank position of the company within its Sector peer group for the EMP Score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6494,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_subsector_percentile",
+  "description": "Percentile ranking of a company's Employment Score within its subsector peer group (100% is best)",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6458,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workforce_subsector_position",
+  "description": "Rank position of the company within its SubSector peer group for the EMP Score, with 1 being the highest",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6494,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workplace_diversity_industry_percentile",
+  "description": "Percentile of a company within its industry peer group on the EMP2 KPI (Diversity & Rights), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6344,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workplace_diversity_industry_rank",
+  "description": "Rank of a company within its industry peer group on the EMP2 employment KPI, with 1 being the highest (best) rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.638,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workplace_diversity_labor_rights_score",
+  "description": "KPI measuring company performance on workplace diversity, labor-management relations, and workforce rights",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.653,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workplace_diversity_sector_percentile",
+  "description": "Percentile of a company within its sector peer group on the EMP2 KPI (Diversity & Rights), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6344,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workplace_diversity_sector_rank",
+  "description": "Rank of company within its sector peer group on the EMP2 KPI (diversity & rights), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.638,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workplace_diversity_subsector_percentile",
+  "description": "Percentile of a company within its subsector peer group on the EMP2 KPI (Diversity & Rights), with 100% as the best performance",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6344,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "workplace_diversity_subsector_rank",
+  "description": "Rank of company within its subsector peer group on the EMP2 KPI (diversity & rights), with 1 being the highest rank",
+  "dataset": {
+   "id": "analyst11",
+   "name": "ESG scores"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-esg",
+   "name": "ESG"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.638,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ }
+]

@@ -128,7 +128,7 @@ class WorkflowRegistry:
                     phase=1,
                     required_params=["alpha_id"],
                     optional_params=["name", "color", "tags", "descriptions", "force",
-                                     "robustness_audited", "allow_prod_above_07",
+                                     "robustness_audited",
                                      "confirm_submit", "verify_timeout",
                                      "dataset", "wave", "expr_family", "channel"],
                 )

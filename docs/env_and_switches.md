@@ -203,5 +203,5 @@
 | `--waiver-mode {off,warn,enforce}`（或 `WQB_WAIVER_MODE`） | `tools/wave_gate.py` | 用了逃生口但台账没有 waiver 时：不检查 / 首屏告警 / exit 2 | `warn` |
 | `--dry-run` / `dry_run` | GEM runner、多数节点 | 只验证命令 / 计划能构建；**验证不了 LLM 可达性、平台状态**（GEM 的 `402` 干跑照样 OK） | 关 |
 | `--detached` | GEM runner、sim-alphas | 后台启动并写 `meta.json`；用 `workflow_task_status` 查，不翻日志 | 关（节点缺省 True） |
-| `--allow-prod-above-07` | `tools/super_build.py` | 豁免 SUPER 的 prod ≥ 0.7 闸——**红线邻近，须用户明确要求** | 闸强制 |
+| `--allow-prod-above-07` | `tools/super_build.py` | **已彻底移除**（2026-10-18，用户判定「不合规」）：原 prod ≥ 0.7 豁免开关，传入即 argparse 报错退出；prod 红线无任何豁免入口 | — |
 | `--confirm-submit` | judge `judge_alpha.py` | **已移除**的旧参数：传入即报错 exit 2（judge 不提交；提交只走 `workflow_submit_alpha`） | — |

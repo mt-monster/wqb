@@ -42,9 +42,14 @@ DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000          # wq-brain-http
 DEFAULT_DB_PORT = 8001       # wqb-db（两者不可相同，否则第二个起不来）
 #: 各server 的启动目标：name → (入口脚本相对仓库根的路径, 用哪个解释器)
+#: 2026-10-09：两个 venv 收敛为一个 —— 原本 wqb-db 走根 `.venv`、wq-brain-http 走
+#: MCP venv，二者装包完全一致（96 vs 96 零差异），保留根那份只会多占 705 MB 并让
+#: 「哪个才是本仓解释器」产生歧义（串仓事故的温床）。统一用 world-quant-brain-mcp/.venv：
+#: 它是 tools/_pyenv.py 的回退默认、_common.py 的硬编码路径，也是 is_foreign_wqb_python
+#: 判定「本仓」的标记目录。
 SERVERS = {
     "wq-brain-http": ("world-quant-brain-mcp/main.py", "world-quant-brain-mcp/.venv"),
-    "wqb-db": ("wqb_db_mcp.py", ".venv"),
+    "wqb-db": ("wqb_db_mcp.py", "world-quant-brain-mcp/.venv"),
 }
 
 

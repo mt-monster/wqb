@@ -40,6 +40,7 @@ if str(SRC) not in sys.path:
 DB_PATH = ROOT / "data" / "wqb.db"
 
 from wqb.store import CampaignStore  # noqa: E402
+from wqb.db_conn import reject_production_db_under_tests as _db_conn_guard  # noqa: E402  测试期禁连生产库的唯一判定本体
 from wqb import wave_results_contract as _wave_contract  # noqa: E402
 from wqb import registry_contract as _registry_contract  # noqa: E402  registry 写入校验唯一实现（DEC-34）
 from wqb import recon_evidence as _recon_evidence  # noqa: E402  论坛取证证据契约唯一实现（判死闸 / 写入方 / 统计方共用）
@@ -77,17 +78,13 @@ def _reject_production_db_under_tests() -> None:
 
     确需读真库的测试（如 `test_real_db_*` 这类存量体检）请显式设
     ``WQB_ALLOW_REAL_DB=1`` —— 要绕过它就必须在测试里写明理由，不会静默通过。
+
+    ⚠ **判定本体 2026-10-14 上移到 ``wqb.db_conn.reject_production_db_under_tests``**：
+    闸只挂在这条 MCP 门面上不够 —— tools/ 与 toolkit 的直写路径走 `CampaignStore`，
+    不经门面，实测当天全量回归又从那条路写进生产库一行。两份口径必须一致，
+    所以只留一处实现，本函数退化为一层带入口名的转发。
     """
-    if "PYTEST_CURRENT_TEST" not in os.environ:
-        return
-    if os.environ.get("WQB_ALLOW_REAL_DB") == "1":
-        return
-    p = str(DB_PATH).replace("\\", "/").lower()
-    if p.endswith("/data/wqb.db"):
-        raise RuntimeError(
-            f"测试运行中 wqb-db 指向生产库 {DB_PATH} —— 隔离未生效。"
-            "本文件请用 set_db_path(tmp)（读写同源），其他入口走 WQB_DB_PATH 环境变量；"
-            "确需读真库请显式 monkeypatch.setenv('WQB_ALLOW_REAL_DB', '1') 并写明理由。")
+    _db_conn_guard(DB_PATH, entry="wqb-db 门面")
 
 
 class _GuardedModule(types.ModuleType):
@@ -2801,6 +2798,25 @@ if __name__ == "__main__":
     #   MCP_TRANSPORT=stdio           -> stdio 子进程（.mcp.json 注册的经典形态）
     # 原先只有 `mcp.run()`（FastMCP 默认 stdio），无法起 HTTP 服务。
     _transport = _os_sc.environ.get("MCP_TRANSPORT", "streamable-http")
+
+    # --- Windows 事件循环策略：Proactor → Selector（2026-10-13）-------------
+    # 与 world-quant-brain-mcp/main.py 同构：FastMCP.run() 走 anyio.run() ⇒ 事件循环
+    # 由 anyio 依**事件循环策略**创建；Windows 默认 Proactor，在长连 HTTP 服务上易出现
+    # accept 循环异常（8000 已多次挂死复现）。改 Selector 规避；本项目不用 asyncio 子进程。
+    # 回退：设置 WQ_MCP_LOOP=proactor（或 auto）即恢复默认。
+    _loop_mode = _os_sc.environ.get("WQ_MCP_LOOP", "selector").strip().lower()
+    if sys.platform == "win32" and _loop_mode == "selector":
+        try:
+            import asyncio
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+            print("[INFO] Event loop policy: WindowsSelectorEventLoop "
+                  "(WQ_MCP_LOOP=selector)", file=sys.stderr)
+        except Exception as e:  # noqa: BLE001 — 切换失败不阻止启动
+            print(f"[WARN] 切换 Selector 事件循环失败，沿用默认：{e}", file=sys.stderr)
+    elif sys.platform == "win32":
+        print(f"[INFO] Event loop policy: 默认 Proactor (WQ_MCP_LOOP={_loop_mode})",
+              file=sys.stderr)
+
     try:
         mcp.run(transport=_transport)
     except TypeError:

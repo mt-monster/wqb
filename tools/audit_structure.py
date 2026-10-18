@@ -18,7 +18,7 @@
 - **S5 一次性脚本纪律**：脚本应落在 `tools/`，不应出现在 `reports/`。
 - **S6 skills 脚本漂移**：`Claude/skills/` 下按内容去重，报告被 vendoring
   复制多份的脚本。
-- **S7 根目录白名单**：仓库根只允许入口 / 配置 / 三份文档 / 会话草稿。
+- **S7 根目录白名单**：仓库根只允许入口 / 配置 / 三份文档 / 会话草稿（**只校文件**，目录归 S17）。
   新增顶层 `.py`/`.log`/无扩展名件一律 FAIL（根目录污染在本仓已复发 5 次，
   靠 `.gitignore` 逐条追赶不能治本）。
 - **S8 根↔子目录同名分叉**：仓库根的 `.py` 与子目录同名 `.py` 内容不一致 → FAIL。
@@ -58,6 +58,30 @@
   同一个治理动作**漏扫了 `tracking/` 顶层**（4 个 `2026-10-0X_robustness.md` 一直躺着），
   且随后仍有会话把分析报告写进 `cache/`（不入库、会被 `git clean -fd` 带走）
   ——文字纪律守不住持续写入，必须有读数。
+- **S17 顶层目录已声明**：仓库根的非点开头目录必须在 `S17_TOP_DIR_ALLOWLIST` 里。
+  2026-10-14 结构审计新增，**FAIL 不进基线**。起因：根出现一整棵 skills 树
+  `wq-brain-ra-usa/`（455 件，与 `Claude/skills/` 名单 100% 相同），而 S7 对目录是
+  `if p.is_dir(): continue` 无条件跳过、S9 只校「声明的在不在」 ⇒ 未声明顶层目录是整套守护的空白。
+  点开头目录（宿主配置 / VCS / 解释器缓存）一律放行：逐个登记会随客户端增减反复误红。
+- **S18 `tracking/` 产物纯度**：`tracking/` 的**索引面**不得含运行期产物 —— 路径里有
+  `<名>_<YYYYMMDD>[_<HHMM>]` 形态的目录段，或是 `.log` → FAIL（**不进基线**）。
+  2026-10-14 结构审计新增。起因是 `perf_max` 的缺省 `plan_dir` 指向 `tracking/<region>/perfmax/…_<时间戳>/`，
+  实测把 89 件派发断点（`plan/dispatch_spec/score/variants_*.txt`）写进了版本控制。
+  ⚠ 签名**只按目录形态**、不按 `plan.json`/`score.json` 这类文件名：实测后者在 tracking/ 索引面
+  另有 4 个合法业务件（`candidates/*_plan.json`、`mining/field_inspect_*_score.json`），按名拦会误伤战役台账。
+- **S20 索引↔工作树一致**：`git ls-files --deleted` 非空 → FAIL（索引挂着工作树已不存在的幽灵路径）。
+  2026-10-14 同轮新增。起因：`reports/<主题>_<日期>/` 改名成 `…_refs/` 时只暂存了新路径，
+  旧路径 25 件删除未暂存 ⇒ 按索引取面的 S16 照扫旧路径并 FAIL，而 pre-commit 跑在建提交对象之前
+  ⇒ 磁盘上根本不存在的路径卡住整条提交链。
+- **S21 跟踪件扩展名**：`git ls-files` 全仓面上，基名不含 `.` 的件 → FAIL（**不进基线**）。
+  2026-10-15 批次I 新增，将 §6 规则⑤「文件必须有扩展名」从「只管 `tools/` 顶层」补到全仓。
+  背景：S11 只看 `tools/*` 一层，S16/S18 取面先按扩展名筛 ⇒ 三条合起来对其余位置的
+  无扩展名件**结构性失明**。活样本 `tools/mcp_py`：一个无扩展名的 Python 脚本，
+  因基名无 `.` 同时躲过 S4（盘符）/S11/S14 与全仓 `*.py` 扫描。
+  豁免两份：**名字型**（`Makefile`/`Dockerfile`/`LICENSE`… 由工具按全名识别，加扩展名反而认不出）、
+  **路径型**（`tools/git-hooks/pre-commit|commit-msg`，git 只执行精确名）——
+  两者不可互换，把 hook 名挪进名字型等于给任意目录的 `pre-commit` 开口子。
+  路径型条目从索引消失 → WARN 催删（防它变永久豁免通道，同 S13/S11）。
 
 退出码
 ------
@@ -101,6 +125,7 @@ REPO_ROOT = find_repo_root(__file__)
 SRC = REPO_ROOT / "src"
 TOOLS = REPO_ROOT / "tools"
 REPORTS = REPO_ROOT / "reports"
+OUTPUT_REPORT = REPO_ROOT / "output_report"
 SKILLS = REPO_ROOT / "Claude" / "skills"
 
 #: 扫 Python 文件时跳过的目录名
@@ -406,14 +431,18 @@ def check_s4_abs_path(rep: Report) -> None:
 #: 「可复现：python reports/xxx.py」指引失效。用 `git grep -w` 核过 refs ≥ 1。
 #: 详见 tools/legacy/README.md 的「明确不归档的」表。
 S5_EXEMPT_PREFIXES = (
-    "reports/ra_pipeline_stage_review_20260927/",
-    "reports/skills_review_20260929/",
+    "reports/ra_pipeline_stage_review_20260927_refs/",
+    "reports/skills_review_20260929_refs/",
     "reports/forum_alpha_research/",
     # 文件级：这两份有审查报告写明「可复现：python reports/xxx.py」
     "reports/skills_pipeline_stage_review_20260927",
     "reports/skills_stage_review_v2_20260927",
     "reports/dryrun_chain_runner_20260927",
     "reports/dryrun_chain_runner_v2_20260927",
+    # T4 字段名 diff 证据脚本，与 `output_report/deu_field_name_verification_20261010.md`
+    # 配对（该报告点名「diff 脚本」）。2026-10-10 第四轮治理自 output_report/ 迁入
+    # （S16 规则⑤：产物目录不得混入脚本）——同 dryrun_chain_runner 的可重跑证据语义。
+    "reports/diff_t4_20261010",
 )
 
 
@@ -745,6 +774,31 @@ def check_s10_region_skeleton(rep: Report) -> None:
         rep.ok("S10 区域子目录", f"{len(regions)} 个区域五个核心子目录齐整")
 
 
+#: S11 取面扩展（2026-10-14 布局审计批次F）：`tools/` 顶层**允许常驻的非 .py 件**。
+#:
+#: 为什么要有这张表
+#: ----------------
+#: S11 的取面一直是 `TOOLS.glob("*.py")`，加上后来补的「无扩展名」一条 —— 于是
+#: **带扩展名但非 `.py` 的顶层件对整条闸链结构性失明**（S4 盘符扫 `*.py`、S14 按脚本名登记、
+#: S16 只看报告面）。活样本是 `tools/skeleton_quota.json`：一个数据配置文件，
+#: 在顶层躺了一个多月，`THEMES.json` 里没有它、`tools/README.md` 里没有它、
+#: 没有任何一道闸看过它一眼 —— 报告 §2.C-3 是靠人读目录才发现的。
+#: 同一目录出现「一种文件形态永久看不见」就是结构性缺口，与 `mcp_py`（无扩展名）同族。
+#:
+#: 口径：`tools/` 是 **CLI 层**，顶层只该有脚本 + 闸自己的登记表 + 唯一索引。
+#: 判据不是「名字像不像配置」而是「**谁读它**」：
+#:   - 数据件 → 区域级进 `tracking/<R>/reference/`，规范级进 `src/wqb/<包>/*.json`
+#:     （现成先例：`src/wqb/profiles/category_cards.json`）；
+#:   - 工具文档 → `tools/docs/` 或主题目录（2026-10-14 批次1 已把 5 份 `README_*.md` 迁进 `tools/docs/`）；
+#:   - 运行期可写产物 → `cache/` / `logs/`（§8.13）。
+#: 确实需要常驻顶层 → 在本表登记并**写明理由**（理由缺失=表退化成黑名单，同 S13 的纪律）。
+TOOLS_TOP_DATA_ALLOWLIST = {
+    "README.md": "tools/ 的唯一索引（S14 的登记面），AGENTS.md §1 指它当入口",
+    "THEMES.json": "S11 自己的归属登记表，本闸逐条读它，移走等于拆闸",
+    "audit_structure_baseline.json": "S6/S11/S14/S16 的存量基线，本闸自己读",
+}
+
+
 def _s11_baseline() -> set:
     """S11 存量基线：tools/ 顶层允许存在的 .py 文件名集合。
 
@@ -784,6 +838,41 @@ def _themes_assigned() -> set:
     return names
 
 
+def _themes_moved_verified() -> tuple[int, list]:
+    """各主题 `moved_files` 的**磁盘核验**：返回 (真下沉数, 名不副实清单)。
+
+    真下沉判据两条都要满足：① 该名字**不在** `tools/` 顶层；② 该名字**在**主题目录里存在。
+    起因是本闸 docstring 第 1 条战例（`ac2cf35` 号称下沉 10 个、实为子目录新建，顶层一个没少）——
+    当时靠人工读 git log 才发现。旧读数 `len(baseline) - len(now & baseline)` 更是**反的**：
+    真下沉后按纪律要把名字移出基线（本闸自己就是这么提示的），于是移出后读数归零，
+    「已下沉 0 个」与「从没下沉过」长得一样，进度不可见。改成按登记表 + 磁盘实核，
+    2026-10-14 实测真下沉 23 个、名不副实 0 个。
+    """
+    import json
+
+    p = REPO_ROOT / "tools" / "THEMES.json"
+    if not p.is_file():
+        return 0, []
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return 0, []
+    top = {q.name for q in TOOLS.glob("*.py")}
+    ok, bogus = 0, []
+    for key, th in (data.get("themes") or {}).items():
+        thdir = TOOLS / Path(str(th.get("dir") or "")).name
+        for f in th.get("moved_files") or []:
+            name = Path(f).name
+            still_top = name in top
+            in_sub = (thdir / name).is_file()
+            if not still_top and in_sub:
+                ok += 1
+            else:
+                why = "顶层仍在（未真迁）" if still_top else "主题目录里不存在（漏 mv / 已回滚 / 登记名写错）"
+                bogus.append(f"{key}/{name}：{why}")
+    return ok, bogus
+
+
 def check_s11_tools_top_frozen(rep: Report) -> None:
     """S11：tools/ 顶层只减不增（2026-10-04 P2-1）+ 可度量去冻结（2026-10-06）。
 
@@ -802,22 +891,65 @@ def check_s11_tools_top_frozen(rep: Report) -> None:
     """
     now = {p.name for p in TOOLS.glob("*.py")}
     baseline = _s11_baseline()
-    if not baseline:
+    # ⚠ 基线缺失**不得**整闸早退（2026-10-14 批次F 改掉）。旧写法 `if not baseline: warn; return`
+    # 让「.py 存量清单读不到」连带关掉同闸其余各条 —— 无扩展名件、顶层数据件、主题归属棘轮、
+    # moved_files 核验全都不跑，而读数只有一行 WARN，看着像「本闸已评估」。
+    # 现在只关掉确实依赖基线的那两条（added / gone），其余各条照校。
+    no_baseline = not baseline
+    # 无扩展名件单独成条（2026-10-14 布局审计新增）：活样本是原 `tools/mcp_py` ——
+    # 一个 UTF-8 Python 脚本，只因名字没有 `.py`，就同时躲过了 S4（硬编码盘符）、
+    # S11（顶层冻结）、S14（README 登记）与全仓 `*.py` 扫描，于是它带着 `D:\...` 绝对路径
+    # 和已退役的 8876 端点长期躺在顶层、无人知。取面按扩展名筛的闸，对无扩展名文件是**结构性失明**，
+    # 所以这里不是补一条命名洁癖，而是把这类件重新拉回所有闸的视野。
+    extless = sorted(p.name for p in TOOLS.iterdir()
+                     if p.is_file() and not p.suffix and not p.name.startswith("."))
+    if extless:
+        rep.fail("S11 tools 顶层冻结",
+                 f"tools/ 顶层有无扩展名文件 {extless}：脚本必须带 `.py`（否则 S4/S11/S14 与"
+                 "一切 `*.py` 取面的闸都看不见它），文档必须带 `.md`；"
+                 "活样本 `tools/mcp_py` 已于 2026-10-14 更名为 `mcp_http_caller.py`")
+
+    # 取面扩展的另一半（2026-10-14 批次F）：**带扩展名但不是 `.py`** 的顶层件。
+    # 活样本是 `tools/skeleton_quota.json` —— 数据配置在 CLI 层顶层躺了一个多月，
+    # THEMES.json 没它、README 没它、S4/S14/S16 也都不看它（报告 §2.C-3 靠人读目录才发现）。
+    # `TOOLS_TOP_DATA_ALLOWLIST` 的注释写明判据（看「谁读它」，不看名字像不像配置）。
+    others = sorted(p.name for p in TOOLS.iterdir()
+                    if p.is_file() and p.suffix and not p.name.startswith(".")
+                    and p.suffix != ".py")
+    stray = [n for n in others if n not in TOOLS_TOP_DATA_ALLOWLIST]
+    for name in stray:
+        rep.fail("S11 tools 顶层冻结",
+                 f"tools/ 顶层有未登记的非脚本件 `{name}`：`tools/` 是 CLI 层，顶层只允许脚本 + "
+                 f"`audit_structure.TOOLS_TOP_DATA_ALLOWLIST` 里的登记表与唯一索引。"
+                 f"按 §8.13 归属：数据件 → 区域级 `tracking/<R>/reference/`、"
+                 f"规范级 `src/wqb/<包>/`（先例 `profiles/category_cards.json`）；"
+                 f"工具文档 → `tools/docs/` 或主题目录；运行期产物 → `cache/`|`logs/`。"
+                 f"（活样本 `tools/skeleton_quota.json` 已于 2026-10-14 迁至 "
+                 f"`tracking/KOR/reference/`）")
+    allow_gone = sorted(n for n in TOOLS_TOP_DATA_ALLOWLIST if n not in others)
+    if allow_gone:
         rep.warn("S11 tools 顶层冻结",
-                 "基线为空或未登记 s11_tools_top_level —— 未生效，先跑 "
-                 "`python tools/audit_structure.py --freeze-tools-top` 写入存量清单")
-        return
+                 f"TOOLS_TOP_DATA_ALLOWLIST 有 {len(allow_gone)} 项顶层已不在：{allow_gone}；"
+                 "确认它真是「不再需要常驻」再从表里删 —— 参照 S13 的教训："
+                 "直接照 WARN 提示删登记项，可能把闸变成陷阱（登记表缺失≠该件不该存在）")
+
     added = sorted(now - baseline)
     gone = sorted(baseline - now)
-    if added:
-        rep.fail("S11 tools 顶层冻结",
-                 f"tools/ 顶层新增 {len(added)} 个脚本：{added}；新 CLI 必须落在主题子目录"
-                 "（归属查 tools/THEMES.json 的 themes，目录名 kebab-case），并在 "
-                 "tools/README.md 登记；不得继续往顶层堆")
-    if gone:
+    if no_baseline:
         rep.warn("S11 tools 顶层冻结",
-                 f"{len(gone)} 个已不在顶层（迁移成功或已删），请同步从 "
-                 f"tools/audit_structure_baseline.json 移出：{gone}")
+                 "基线为空或未登记 s11_tools_top_level —— 仅「新增脚本」与「已移出」两条读数未生效，"
+                 "先跑 `python tools/audit_structure.py --freeze-tools-top` 写入存量清单；"
+                 "本闸其余各条（无扩展名 / 顶层数据件 / 主题归属 / moved_files）照旧校")
+    else:
+        if added:
+            rep.fail("S11 tools 顶层冻结",
+                     f"tools/ 顶层新增 {len(added)} 个脚本：{added}；新 CLI 必须落在主题子目录"
+                     "（归属查 tools/THEMES.json 的 themes，目录名 kebab-case），并在 "
+                     "tools/README.md 登记；不得继续往顶层堆")
+        if gone:
+            rep.warn("S11 tools 顶层冻结",
+                     f"{len(gone)} 个已不在顶层（迁移成功或已删），请同步从 "
+                     f"tools/audit_structure_baseline.json 移出：{gone}")
 
     # 归属棘轮：磁盘上的顶层脚本必须在 THEMES.json 里有主题归属（2026-10-06 实测已 0 条欠债）
     unassigned = sorted(now - _themes_assigned())
@@ -827,11 +959,18 @@ def check_s11_tools_top_frozen(rep: Report) -> None:
                  "要么给它加 themes.<主题>.files 条目，要么迁进 tracking/<REGION>/scripts/ "
                  "或归档 —— 不允许默认塞进已有目录（THEMES.json._source 明文禁止）")
 
-    moved = len(baseline) - len(now & baseline)
-    if not added and not gone and not unassigned:
+    moved, bogus = _themes_moved_verified()
+    if bogus:
+        rep.fail("S11 tools 顶层冻结",
+                 f"{len(bogus)} 条 `moved_files` 登记与磁盘不符：{bogus}；"
+                 "「下沉」必须是 `git mv`（顶层少一个、子目录多一个），"
+                 "在子目录**新建**一份不算下沉（战例见本闸 docstring）")
+    if not added and not gone and not unassigned and not stray and not extless and not bogus:
         rep.ok("S11 tools 顶层冻结",
-               f"顶层 {len(now)} 个与基线一致（只减不增；基线 {len(baseline)}、"
-               f"已下沉 {moved} 个、未归属 0 个）")
+               f"顶层 {len(now)} 个脚本与基线一致（只减不增；基线 {len(baseline)}、"
+               f"已下沉 {moved} 个（THEMES 登记 ∩ 磁盘核验）、未归属 0 个），"
+               f"非脚本件 {len(others)} 个全部在允许清单内（{others}）")
+
 
 
 def _s14_baseline() -> set:
@@ -1018,6 +1157,14 @@ NON_REGION_DIRS = {
     "_scratch": "临时区（§6 第 3 条：用完清空）",
 }
 
+#: 登记了、但**允许磁盘上暂时没有**的非区域目录（S13 的 stale WARN 对此静音）。
+#: 为什么留而不是按 WARN 提示删掉：`PPA_USA` 是 PPA 战役的运行期产物目录，
+#: 2026-10-14 实测磁盘无此目录 = 该区战役当前没开（产物已归档 `attic/ppa_mining_*`），
+#: 一旦有人复跑 PPA 战役它就长回来 —— 而那时它不在登记表里就是 **FAIL**。
+#: 即「WARN 提示的清理动作会把闸变成陷阱」。守护见
+#: `tests/unit/07_docs_skills/test_audit_structure_s13.py`（本集合必须是 NON_REGION_DIRS 的子集）。
+NON_REGION_DIRS_ALLOW_ABSENT = frozenset({"PPA_USA"})
+
 
 def check_s13_tracking_nonregion_registry(rep: Report) -> None:
     """S13：`tracking/` 下的非区域目录必须**显式登记**在 NON_REGION_DIRS。
@@ -1046,11 +1193,12 @@ def check_s13_tracking_nonregion_registry(rep: Report) -> None:
                  f"（AGENTS.md §8.13：再增非区域目录一律加 `_` 前缀），"
                  f"否则 S10 永远识别不到它，新 Agent 极易当成区域读")
 
-    stale = sorted(set(NON_REGION_DIRS) - on_disk)
+    stale = sorted(set(NON_REGION_DIRS) - on_disk - NON_REGION_DIRS_ALLOW_ABSENT)
     if stale:
         rep.warn("S13 tracking 非区域目录",
                  f"登记表里有 {len(stale)} 项磁盘上已不存在，可从 "
                  f"NON_REGION_DIRS 清理：{stale}")
+    absent_ok = sorted(n for n in NON_REGION_DIRS_ALLOW_ABSENT if n not in on_disk)
 
     misnamed = sorted(n for n in (regions & set(NON_REGION_DIRS))
                       if _re.match(r"^[A-Z]{3}$", n))
@@ -1061,7 +1209,9 @@ def check_s13_tracking_nonregion_registry(rep: Report) -> None:
     if not undeclared and not misnamed:
         rep.ok("S13 tracking 非区域目录",
                f"{len(actual_nonregion)} 个非区域目录全部已登记"
-               + (f"（另有 {len(stale)} 项登记项磁盘已不存在，仅 WARN）" if stale else ""))
+               + (f"（另有 {len(stale)} 项登记项磁盘已不存在，仅 WARN）" if stale else "")
+               + (f"（{absent_ok} 属运行期目录，允许暂缺、不按 stale 报：见 "
+                  f"NON_REGION_DIRS_ALLOW_ABSENT）" if absent_ok else ""))
 
 
 def check_s15_agent_skill_copy_drift(rep: Report) -> None:
@@ -1172,6 +1322,83 @@ S16_SUFFIXES = {".md", ".json", ".txt", ".csv", ".html"}
 S16_EXEMPT_NAMES = {"README.md", "MANIFEST.md", "CHANGELOG.md"}
 _DASH_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 _D8_RE = re.compile(r"(?<!\d)\d{8}(?!\d)")
+#: 机器生成产物的命名后缀 —— 豁免「缺日期」规则④。理由：这些名字由生成器模板拼出，
+#: 且消费方依赖**同名覆盖**语义（`feature_engineering.py` 的 `stale_ideas_md_path`、
+#: `dataset_experience.py` 生成 + `step9_audit.py` 校验的既定文件名，见 §8.13）。
+#: 给它们塞日期会让同一数据集每跑一次多出一个新文件，stale 比对随之失效。
+#: 其余三条规则（ASCII / 不带杠 / 日期须作后缀）对它们**照样生效**。
+S16_MACHINE_SUFFIXES = ("_ideas.md", "_campain.md")
+
+#: S16 规则⑦（2026-10-14 布局审计 §6 规则⑦「同一父目录内风格不混用」）：
+#: `reports/` 与 `output_report/` 的**一层子目录名**一律 kebab-case（§8.13「目录：小写 kebab-case」）。
+#: ⚠ **布局审计报告 `reports/project_layout_audit_20261014.md` §3 树注释与 §5 第 10 条原写
+#: 「`reports/` 子目录命名统一为 snake_case」，与本闸方向相反 —— 按 §8.13 裁决作废（报告内已同步更正）**：
+#: §8.13 是全仓目录规范的唯一权威（S11 的 19 个主题目录、S17 的顶层目录都按它建），
+#: 若为 reports/ 单开一套 snake，等于给「同仓两套目录风格」再多一个例外面。
+#: 改名代价实测（`git grep -o -h -- <路径>` 命中行数 / 文件数，2026-10-14 tracked 面）：
+#: `dataset_experience` 40/24、`forum_alpha_research` 20/12、
+#: `ra_pipeline_stage_review_20260927_refs` 43/17、`skills_review_20260929_refs` 9/5
+#: —— 四个都不合规，也**没有一个**能安全单件改名。故：新目录按 kebab 守，存量 4 个登记不回改。
+#: 只扫**一层**：规则⑦ 的观察单位是「同一父目录内的兄弟」；二层实测只有
+#: `reports/ra_pipeline_stage_review_20260927_refs/realenv/` 一个目录且已是 kebab，无混用。
+S16_DIR_FACE = ("reports", "output_report")
+_KEBAB_DIR_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+#: 存量欠债。**移出条件 = 该目录改名后旧路径全库 refs=0**（不是「看着不顺眼」）。
+#: 每条理由都是「为什么单独改它会制造事故」，不是「为什么可以不改」。
+S16_DIR_LEGACY = {
+    "reports/dataset_experience":
+        "生成器 `dataset_experience.py` 写名 + `step9_audit.py` 校验 + 实测 40 行/24 文件引用"
+        "（含 §8.13 登记的既定文件名 `<region>_<ds>_campain.md`）；"
+        "同 §8.13「campain 非笔误，禁止单独改」那条纪律 —— 要改就连生成/校验/测试/存量一起专项处理",
+    "reports/forum_alpha_research":
+        "目录内脚本自引用自身路径（gather_search_v2.py / make_digest.py 等）+ 实测 20 行/12 文件引用；"
+        "改名即 `doc_path_refs.py` 棘轮硬闸的活文档死指针",
+    "reports/ra_pipeline_stage_review_20260927_refs":
+        "§8.13 已登记的**同名消歧后缀**（输出目录治理第三轮 P2-C：目录加 `_refs`、`.md` 主体不动）；"
+        "实测 43 行/17 文件引用（含报告主体自己的复现命令 `…_refs/reproduce.sh`、`realenv/`），"
+        "再改一次名就是死指针",
+    "reports/skills_review_20260929_refs":
+        "同上（P2-C 同批裁决），实测 9 行/5 文件引用，主体指向 `…_refs/check_skills.py`",
+}
+
+
+def _s16_dir_names(others: bool = False) -> list:
+    """`reports/` 与 `output_report/` 的一层子目录名（来自 git 的文件清单派生）。
+
+    为什么从**文件清单**派生而不是 `iterdir()`：目录本身不在 git 索引里（git 只跟踪文件），
+    `iterdir()` 会把 `__pycache__`、别的会话刚 mkdir 还没落件的空中目录都算进来 ——
+    那是「目录存在性」问题，不是「命名风格」问题，混在一起只会造出与内容无关的红。
+    fail-closed：取不到清单即抛 `RuntimeError`，由调用方转 FAIL。
+    """
+    cmd = ["git", "ls-files", "-z"]
+    cmd += ["--others", "--exclude-standard"] if others else ["--"]
+    cmd += ["--", *S16_DIR_FACE]
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        raise RuntimeError(f"git ls-files 失败（rc={r.returncode}）：{r.stderr.strip()[:200]}")
+    out = set()
+    for x in filter(None, (r.stdout or "").split("\0")):
+        parts = Path(x).as_posix().split("/")
+        # ⚠ 本闸首跑就是把这条判据写错才判红的：`len(parts) < 2` 时 `parts[1]` 取到的是
+        # `reports/skills_review_20260929_closure.md` 这类**顶层文件**，于是 30+ 个 .md 被当成
+        # 「不合规的子目录」。子目录的证据是路径里**还有第三段**，不是第二段存在。
+        if len(parts) < 3:
+            continue  # 面上直接散落的文件，不是子目录
+        if "__pycache__" in parts:
+            continue
+        out.add(f"{parts[0]}/{parts[1]}")
+    return sorted(out)
+
+
+def _s16_dir_on_disk(rel: str) -> bool:
+    """存量登记项是否**真的还在盘上**（独立成一个函数就是为了可被测试替换）。
+
+    ⚠ 判据不用 `rel in dirs_tracked`（git 跟踪面）：那会把「目录在盘上、只是里面暂时没有
+    跟踪件」误报成「登记已失效」。而这条 WARN 让人做的动作是**删掉条目** —— 误报等于诱导人
+    摘掉一把仍然有效的伞，下次那个目录复跑就 FAIL 阻断提交（S13 的 `PPA_USA` 是同一形态，
+    AGENTS.md §8.13 专门为它写过「别按 S13 的 WARN 提示把它删掉」）。
+    """
+    return (REPO_ROOT / rel).is_dir()
 
 
 def _s16_targets() -> list:
@@ -1201,13 +1428,61 @@ def _s16_targets() -> list:
     return sorted(out)
 
 
-def _naming_violations(rel: str) -> list:
+def _s16_untracked() -> list:
+    """S16 预检面：**未跟踪**的报告类文件（在途，还没进索引）。
+
+    为什么单独取这一面：`_s16_targets()` 只取 git 跟踪的，那是**有意的取舍**
+    （在途文件不该拦住别人的提交）。但代价是违规在 `git add` 之前**完全隐形**，
+    而 `git add` 的那一刻它就 FAIL —— 恰好撞上 S16 的立项理由「文字纪律守不住
+    持续的写入」（2026-10-10 实测复发一次：`tracking/2026-10-09_robustness.md`
+    在 `git add` 前静默通过，一 add 即 FAIL，而这已是同类问题第二轮）。
+
+    故本节只做 **WARN 预检**，不动 `_s16_targets()` 的 FAIL 语义：让人在写盘后
+    立刻看见命名违规，而不是等到提交被拦。未跟踪件**不进基线**（它们随时会被
+    改名或删除），也**不算 FAIL**（并行会话的在途文件不该互相拦截）。
+    """
+    r = subprocess.run(
+        ["git", "ls-files", "--others", "--exclude-standard", "-z", "--",
+         "output_report", "reports", "tracking/*.md"],
+        capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        return []
+    out = []
+    for x in filter(None, r.stdout.split("\0")):
+        rel = Path(x).as_posix()
+        if Path(x).name in S16_EXEMPT_NAMES:
+            continue
+        if Path(x).suffix.lower() not in S16_SUFFIXES:
+            continue
+        if rel.startswith("tracking/") and rel.count("/") > 1:
+            continue
+        machine = _is_machine_name(x)
+        if _naming_violations(rel, machine_ok=machine):
+            out.append(rel)
+    return sorted(out)
+
+
+def _is_machine_name(rel: str) -> bool:
+    """该报告类文件是否机器产物（豁免「缺日期」规则④）。见 `S16_MACHINE_SUFFIXES`。"""
+    return any(Path(rel).name.endswith(s) for s in S16_MACHINE_SUFFIXES)
+
+
+def _naming_violations(rel: str, machine_ok: bool = False) -> list:
     """返回该文件名违反 §8.13 命名规范的理由列表（空 = 合规）。
 
-    三条（AGENTS.md §8.13「命名规范」，新建即守、存量不强制回改）：
+    四条（AGENTS.md §8.13「命名规范」，新建即守、存量不强制回改）：
       ① 纯 ASCII、无空格；
       ② 日期不带杠（`20261008` 而非 `2026-10-08`）；
-      ③ 带日期时 `YYYYMMDD` **必须作后缀**（`skills_review_20261003.md`）。
+      ③ 带日期时 `YYYYMMDD` **必须作后缀**（`skills_review_20261003.md`）；
+      ④ **人工撰写的报告必须带日期**（`reports/`/`tracking/` 顶层的报告）。
+         机器产物豁免（`machine_ok=True`）：见 `S16_MACHINE_SUFFIXES` 的说明 ——
+         它们的名字由生成器拼出，消费方依赖同名覆盖，塞日期会破坏 stale 语义。
+
+    规则④的由来（2026-10-10 P2-D）：§8.13 原文写「产物与报告**一律** `YYYYMMDD`
+    作后缀」，而实现此前只在**已含日期**时校验格式位置 —— 无日期的文件名永不过闸、
+    也永进不了基线（实测 `output_report/` 有 62 个、`reports/` 子目录 25 个无日期件）。
+    文档与实现漂移 ⇒ 下一个人读 §8.13 会以为那 87 个都是违规。故补齐实现，让两边
+    对「什么叫合规」有同一个答案；存量的 25 件进 `s16_naming_violations` 基线（WARN）。
     """
     name = Path(rel).name
     stem = name.rsplit(".", 1)[0]
@@ -1220,6 +1495,8 @@ def _naming_violations(rel: str) -> list:
         if not stem.endswith("_" + m.group(0)):
             bad.append(f"日期 {m.group(0)} 不在末尾（应作后缀）")
             break
+    if not bad and not machine_ok and not _D8_RE.search(stem):
+        bad.append("缺日期（报告应带 YYYYMMDD）")
     return bad
 
 
@@ -1237,6 +1514,79 @@ def _s16_baseline() -> set:
         return set()
 
 
+def _s16_script_hits() -> tuple:
+    """S16 规则⑤扫面：`output_report/**/*.py`（脚本不该出现在产物目录）。
+
+    返回 `(已跟踪, 未跟踪在途)` 两个列表。命名规则天然管不到 `.py`
+    （`S16_SUFFIXES` 只含报告类扩展名），实测曾有 `output_report/diff_t4.py`
+    长期隐形（2026-10-10 第四轮 P1-4 补闸）。取舍与命名预检一致：
+    跟踪件 FAIL（进索引就是提交时刻），在途件 WARN（写盘即见、不拦别人）。
+    """
+    tracked, pend = [], []
+    for p in py_files(OUTPUT_REPORT):
+        rel = p.relative_to(REPO_ROOT).as_posix()
+        r = subprocess.run(["git", "ls-files", "--error-unmatch", "--", rel],
+                           capture_output=True, cwd=str(REPO_ROOT))
+        (tracked if r.returncode == 0 else pend).append(rel)
+    return sorted(tracked), sorted(pend)
+
+
+#: S16 规则⑥（2026-10-14 布局审计 §4「docs 混结论件」新增）：`docs/**` 的命名与归属面。
+#: 取这里而不是新起一道 S：规则①②③与报告面**完全同源**，只差「要不要带日期」这一条，
+#: 分成两道闸会让下一个人以为 docs/ 也要求日期（实测 docs/ 有 79 个 .md，其中规范类无日期件占多数）。
+#: ⚠ docs/ **不适用规则④（必须带日期）**：`docs/` 是长期规范 / SOP / 速查（§8.13），
+#: 一份 `tool_registry.md` 不该为了过闸而编一个日期。
+S16_DOCS_FACE = "docs"
+#: `docs/plans/` 保持 `YYYY-MM-DD-<主题>.md` **前缀带杠**写法（§8.13 明示的成型例外，实测 8 个）。
+#: 该目录内不混用，故整目录豁免规则②③；规则①（ASCII）与⑤（snake_case）照样生效。
+S16_DOCS_EXEMPT_DIRS = ("docs/plans/",)
+
+
+def _s16_docs_targets(others: bool = False) -> list:
+    """`docs/**` 的文档面（`others=True` 取未跟踪在途件）。
+
+    fail-closed：`git ls-files` 取不到清单即抛 `RuntimeError`，由调用方转 FAIL ——
+    与 S14/S16/S18/S20 同口径（静默空集 = 闸形同虚设）。
+    """
+    cmd = ["git", "ls-files", "-z"]
+    if others:
+        cmd += ["--others", "--exclude-standard"]
+    cmd += ["--", S16_DOCS_FACE]
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        raise RuntimeError(
+            f"git ls-files（docs 面{'' if others else ' / 在途'}）失败 rc={r.returncode}："
+            f"{r.stderr.strip()[:200]}")
+    out = []
+    for x in filter(None, r.stdout.split("\0")):
+        if Path(x).suffix.lower() not in S16_SUFFIXES:
+            continue
+        if Path(x).name in S16_EXEMPT_NAMES:
+            continue
+        out.append(Path(x).as_posix())
+    return sorted(out)
+
+
+def _docs_naming_violations(rel: str) -> list:
+    """`docs/` 面适用的 §8.13 命名子集（空 = 合规）。与报告面的四条**不同**，见 `S16_DOCS_FACE` 说明。"""
+    name = Path(rel).name
+    stem = name.rsplit(".", 1)[0]
+    in_plans = rel.startswith(S16_DOCS_EXEMPT_DIRS)
+    bad = []
+    if any(ord(c) > 127 or c == " " for c in name):
+        bad.append("非 ASCII / 含空格")
+    if re.search(r"[A-Z]", name):
+        bad.append("含大写字母（§8.13 文件一律 snake_case；实测 docs/ 面唯一合法的大写件是 README/CHANGELOG，已在豁免名单）")
+    if not in_plans:
+        if _DASH_DATE_RE.search(stem):
+            bad.append("日期带杠（应为 YYYYMMDD 无杠）")
+        for m in _D8_RE.finditer(stem):
+            if not stem.endswith("_" + m.group(0)):
+                bad.append(f"日期 {m.group(0)} 不在末尾（应作后缀）")
+                break
+    return bad
+
+
 def check_s16_output_naming(rep: Report) -> None:
     """S16：`output_report/`+`reports/`+`tracking/` 顶层的报告类文件命名（2026-10-08 新增）。
 
@@ -1245,13 +1595,33 @@ def check_s16_output_naming(rep: Report) -> None:
       ① 同一个治理动作**漏扫了 `tracking/` 顶层**（4 个 `2026-10-0X_robustness.md` 一直躺着）；
       ② 并行会话随后又往 `cache/` 写了一份分析报告（属会丢的位置，见复核报告 §2.B）。
     文字纪律守不住持续的写入，故加棘轮：存量入基线（WARN 可见不阻塞），**新增违规 → FAIL**。
+
+    规则⑤（2026-10-10 第四轮 P1-4）：`output_report/` **不得混入脚本**（`.py`）——
+    产物目录不是代码目录（§8.13）。第三轮曾人工核过「0 .py」但没有机械闸守，
+    随即又出现 `output_report/diff_t4.py`；脚本按 §8.13 去 `tools/`（可复用）或
+    `logs/_tmp_*.py`（一次性），审计证据脚本走 `reports/` + `S5_EXEMPT_PREFIXES` 登记。
+
+    规则⑥（2026-10-14 布局审计 §4）：**`docs/**` 也进命名面**。起因是本轮治理在 `docs/reference/`
+    抓到两份结论式报告（`CODE_QUALITY_SUMMARY.md`、`INTEGRATION_COMPLETE.md`，已迁 `reports/`），
+    而 S16 此前的取面是 `output_report` + `reports` + `tracking/` 顶层 —— **`docs/` 整个不在扫描面里**，
+    于是「大写命名 + 报告混进规范目录」这类问题对本闸结构性失明（同 S11 的扩展名失明、S18 的顶层失明）。
+    docs/ 面只校 §8.13 的 ASCII / snake_case / 日期形态三条，**不校「必须带日期」**
+    （`docs/` 是长期规范区，一份 `tool_registry.md` 不该为过闸编日期）；`docs/plans/` 整目录豁免日期形态
+    （§8.13 明示它保持 `YYYY-MM-DD-<主题>.md` 前缀写法，实测 8 个）。
+
+    规则⑦（2026-10-14 布局审计 §6 规则⑦）：**报告子目录名 = kebab-case**。同一父目录内
+    5 个 kebab 与 4 个 snake 并存（`forum-experience` vs `dataset_experience`），存量入
+    `S16_DIR_LEGACY`（逐条写明「为什么单独改名会造事故」），**新建即守**。
+    ⚠ 与本闸方向相反的旧建议（报告 §5 第 10 条「统一为 snake_case」）已在 `S16_DIR_FACE`
+    注释处裁决：以 §8.13 的目录规范（kebab）为唯一权威。
     """
     try:
         targets = _s16_targets()
     except RuntimeError as e:
         rep.fail("S16 报告命名规范", f"无法取受控清单（{e}）—— 不当作「全部合规」放过")
         return
-    viol = {rel: _naming_violations(rel) for rel in targets}
+    viol = {rel: _naming_violations(rel, machine_ok=_is_machine_name(rel))
+            for rel in targets}
     viol = {k: v for k, v in viol.items() if v}
     baseline = _s16_baseline()
     new_ones = sorted(k for k in viol if k not in baseline)
@@ -1267,9 +1637,414 @@ def check_s16_output_naming(rep: Report) -> None:
                  f"基线内存量违规 {len(carried)} 个（§8.13 明示存量不强制回改，仅提示）："
                  f"{carried[:6]}{'' if len(carried) <= 6 else ' …共 ' + str(len(carried))}；"
                  "改一个就请从 tools/audit_structure_baseline.json 的 s16_naming_violations 移出（棘轮收紧）")
-    if not new_ones and not carried:
+    # 在途件预检：WARN，不进基线、不算 FAIL。理由见 `_s16_untracked()` 文档字符串 ——
+    # 不做这一步的话，命名违规在 `git add` 之前完全隐形（2026-10-10 第二轮复发）。
+    pend = _s16_untracked()
+    if pend:
+        rep.warn("S16 报告命名规范",
+                 f"{len(pend)} 个**未跟踪**（在途）报告文件名违反 §8.13，"
+                 f"`git add` 后会转为 FAIL：{pend[:6]}{'' if len(pend) <= 6 else ' …' }；"
+                 "建议现在就改名为 `<主题>_<YYYYMMDD>.md`"
+                 "（本条只提示不阻断：并行会话的在途文件不该互相拦截）")
+    # 规则⑤（2026-10-10 第四轮 P1-4）：output_report/ 不得混入脚本。取舍与命名预检一致：
+    # 跟踪件 FAIL、在途件 WARN —— 见 `_s16_script_hits()` 文档字符串。
+    try:
+        py_tracked, py_pend = _s16_script_hits()
+    except RuntimeError as e:
+        rep.fail("S16 报告命名规范", f"无法扫描 output_report/ 的脚本（{e}）—— 不当作「无脚本」放过")
+        return
+    for h in py_tracked:
+        rep.fail("S16 报告命名规范",
+                 f"{h} —— output_report/ 不得混入脚本（§8.13：产物目录不是代码目录）；"
+                 "可复用 CLI → tools/，一次性 → logs/_tmp_*.py，审计证据脚本 → reports/（S5 豁免登记）")
+    if py_pend:
+        rep.warn("S16 报告命名规范",
+                 f"{len(py_pend)} 个**未跟踪**（在途）脚本混在 output_report/，`git add` 后会转为 FAIL："
+                 f"{py_pend}（本条只提示不阻断：并行会话的在途文件不该互相拦截）")
+    # 规则⑥（2026-10-14 布局审计 §4）：docs/ 进命名面。取舍与①⑤一致 ——
+    # 跟踪件 FAIL（进索引就是提交时刻）、在途件 WARN（不拦并行会话）。docs/ 无基线：
+    # 实测当前跟踪面违规为 0（大写件只剩 3 个 README，已豁免；带杠日期 8 个全在 docs/plans/，已豁免），
+    # 建基线等于给一个空债面留永久通道。
+    try:
+        docs_targets = _s16_docs_targets()
+        docs_pend = _s16_docs_targets(others=True)
+    except RuntimeError as e:
+        rep.fail("S16 报告命名规范", f"无法取 docs/ 受控清单（{e}）—— 不当作「docs 全部合规」放过")
+        docs_targets, docs_pend = [], []
+    docs_viol = {rel: _docs_naming_violations(rel) for rel in docs_targets}
+    docs_viol = {k: v for k, v in docs_viol.items() if v}
+    for k, reasons in sorted(docs_viol.items()):
+        rep.fail("S16 报告命名规范",
+                 f"{k} —— docs/ 文档名违反 §8.13（{'、'.join(reasons)}）；"
+                 "规范/SOP 改 snake_case 留在 docs/；**一次性结论报告**按 §8.13 归属迁 "
+                 "`reports/<主题>_<YYYYMMDD>.md`（人工审计/复盘桶），别再混进规范目录")
+    docs_pend_bad = sorted(rel for rel in docs_pend if _docs_naming_violations(rel))
+    if docs_pend_bad:
+        rep.warn("S16 报告命名规范",
+                 f"{len(docs_pend_bad)} 个**未跟踪**（在途）docs/ 文档名违反 §8.13，"
+                 f"`git add` 后会转为 FAIL：{docs_pend_bad[:6]}"
+                 f"{'' if len(docs_pend_bad) <= 6 else ' …'}（只提示不阻断）")
+    # 规则⑦（2026-10-14 布局审计 §6 规则⑦）：`reports/`+`output_report/` 的**一层子目录名**风格。
+    # 起因：同一父目录里 5 个 kebab 与 4 个 snake 并存（`forum-experience` vs `dataset_experience`），
+    # 而「找一份报告在哪个目录」本来就该是**一次确定**的事 —— 风格混用把它变成了两套猜。
+    # 取舍与前几条一致：跟踪件 FAIL、在途件 WARN；存量 4 条进 `S16_DIR_LEGACY`（只登记不回改，
+    # 理由逐条写在常量里，移出条件是「改名后旧路径 refs=0」而不是「看着不顺眼」）。
+    try:
+        dirs_tracked = _s16_dir_names()
+        dirs_pend = [d for d in _s16_dir_names(others=True) if d not in dirs_tracked]
+    except RuntimeError as e:
+        rep.fail("S16 报告命名规范", f"无法取报告子目录清单（{e}）—— 不当作「目录风格全部合规」放过")
+        dirs_tracked, dirs_pend = [], []
+    dir_bad = [d for d in dirs_tracked
+               if not _KEBAB_DIR_RE.match(d.split("/", 1)[1]) and d not in S16_DIR_LEGACY]
+    for d in dir_bad:
+        rep.fail("S16 报告命名规范",
+                 f"子目录 `{d}/` 违反 §8.13「目录 = 小写 kebab-case」（规则⑦：同一父目录内不混用风格）；"
+                 f"新建报告目录请用 kebab（`{d.split('/',1)[1].replace('_','-')}/`）。"
+                 f"**别往 `S16_DIR_LEGACY` 里塞**：那 4 条是因为改名会造成活文档死指针才登记的，"
+                 "新建目录没有历史包袱，没有登记理由")
+    legacy_gone = [d for d in S16_DIR_LEGACY if not _s16_dir_on_disk(d)]
+    if legacy_gone:
+        rep.warn("S16 报告命名规范",
+                 f"{len(legacy_gone)} 条 `S16_DIR_LEGACY` 登记已不在盘上：{legacy_gone}；"
+                 "存量目录被改名或清空后请同步删掉条目 —— 留着就是一条**永久豁免通道**（同 S13/S11 的坑）")
+    dir_pend_bad = [d for d in dirs_pend if not _KEBAB_DIR_RE.match(d.split("/", 1)[1])]
+    if dir_pend_bad:
+        rep.warn("S16 报告命名规范",
+                 f"{len(dir_pend_bad)} 个**未跟踪**（在途）报告子目录名不是 kebab-case，"
+                 f"`git add` 后会转为 FAIL：{dir_pend_bad}（只提示不阻断）")
+    if (not new_ones and not carried and not pend and not py_tracked and not py_pend
+            and not docs_viol and not docs_pend and not dir_bad and not dir_pend_bad
+            # `legacy_gone` 一并入条件：否则同一闸会同时打出 `[OK] …存量登记 4 个` 与
+            # `[WARN] 4 条登记已不在盘上` —— 本仓其余 WARN 项（carried/pend/docs_pend）都在此列，
+            # 口径一致才有「看到 OK 就等于本闸全部评估且干净」这个读数契约。
+            and not legacy_gone):
         rep.ok("S16 报告命名规范",
-               f"{len(targets)} 个报告/产物文件名全部符合 §8.13")
+               f"{len(targets)} 个报告/产物文件名 + {len(docs_targets)} 个 docs/ 文档名全部符合 §8.13，"
+               f"output_report/ 无脚本混入，报告子目录 {len(dirs_tracked)} 个风格一致"
+               f"（kebab + 存量登记 {len(S16_DIR_LEGACY)} 个）")
+
+
+#: S17：允许存在的顶层目录（2026-10-14 新增）。
+#: 前半 = AGENTS.md §1 职责表声明的活跃目录；后半 = 运行期 / 宿主配置目录（gitignore 区，
+#: 由 tools/retention.py 与各项目自身管理，不属结构治理面）。
+#: ⚠ 这里刻意**不**用「§1 动态解析 + gitignore 推断」：S9 校的是「声明的在不在」，
+#: 与本闸「不在名单的就不该存在」是相反方向，动态化只会让名单随文档措辞漂。
+#: 新增顶层目录 = 先在 AGENTS.md §1 立项（写清职责与变更注意），再往这里加一行。
+S17_TOP_DIR_ALLOWLIST = {
+    # 源码与工具链
+    "src", "tools", "tests", "world-quant-brain-mcp", "Claude",
+    # 数据与业务
+    "tracking", "research-data", "extensions", "data",
+    # 文档与产物
+    "docs", "reports", "output_report", "attic",
+    # 运行期（gitignore）
+    "cache", "logs", "results",
+}
+#: 点开头的目录一律放行：宿主配置（.claude/.clinerules/.qoder-cn/.workbuddy/.mcp 等）
+#: 与各客户端自管，逐个登记会随宿主增减反复误红；VCS/解释器缓存也在这一类。
+S17_DOT_DIRS_OK = True
+#: 机器自生成目录（**非点开头**，但仍不是「模块」）：解释器/虚拟环境/包管理器随手重建，
+#: 判 FAIL 只会让钩子永久变红而不指向任何可修的事实。实测反例：本闸首跑就因根 `__pycache__` FAIL
+#: —— 任何在仓库根跑 python 的动作（含 pytest）都会把它建回来。
+S17_MACHINE_DIRS = {"__pycache__", ".venv", ".venvs", "node_modules", ".cache"}
+
+
+def check_s17_top_level_dirs(rep: Report) -> None:
+    """S17：顶层目录必须已声明。
+
+    起因（2026-10-14 结构审计）：仓库根出现一整棵 skills 树 `wq-brain-ra-usa/`（455 件，
+    与 `Claude/skills/` 名单 100% 相同、内容零差异），**16 道闸一道都没报**——因为
+    `check_s7_root_allowlist` 里是 `if p.is_dir(): continue`（无条件跳过所有目录，
+    `ROOT_SKIP_DIRS` 形同虚设），而 S9 只校「已声明的目录在不在」、S10 只管区域子目录。
+    即「未声明的顶层目录」是整套守护的结构性空白。
+
+    危害不是观感：① 455 个文件只以未跟踪形态存在 = §7 禁止 `git clean` 的那类不可恢复债；
+    ② 它是第二技能源，任何把 skill 搜索根指到仓库根的误操作（`WQ_SKILLS_DIR=.`）都会让它
+    盖过规范源；③ `_skill_roots()` 从不解析 `repo_root/<skill-name>`，它零引用却能被误当在用。
+
+    顶层目录出现名单外项 → FAIL，**不进基线**（同 S8/S11/S16 的取舍：这类问题没有合法存量形态）。
+
+    **复发记录（守卫有效，缺的是执行）**：
+    - 2026-10-14 首次：仓库根 `wq-brain-ra-usa/`（455 件）→ 本闸上线。
+    - 2026-10-17 22:50 **第 3 次**：同一形态再现 466 件 / 6.1 MB。实跑本闸仍能拦
+      （`S17_TOP_DIR_ALLOWLIST` 不含该名、判据取 `REPO_ROOT.iterdir()` **磁盘面**），
+      说明**不是守卫缺口而是没人跑**——`tools/sync_skills.py` 只在自己的流程里工作，
+      同步完不触发任何结构审计，问题滞留近一天才在布局快照里被发现。
+      配套双修：① `sync_skills.py::_is_repo_root_or_ancestor` 扩为 `_is_repo_related`
+      （增「子孙」判定，覆盖仓库内子目录这一形态）② `sync_skills.py` 同步成功后
+      内联跑一次本闸逻辑，发现未声明顶层目录即顶屏告警。
+    - 该副本已按 §7「归档而非删除」移入 `attic/sync_strays_20261018/`。
+    """
+    offenders = []
+    machine_seen = []
+    for p in sorted(REPO_ROOT.iterdir()):
+        if not p.is_dir():
+            continue
+        if p.name in S17_MACHINE_DIRS:
+            machine_seen.append(p.name)
+            continue
+        if p.name.startswith("."):
+            if S17_DOT_DIRS_OK:
+                continue
+        if p.name in S17_TOP_DIR_ALLOWLIST:
+            continue
+        offenders.append(p.name)
+    if offenders:
+        rep.fail(
+            "S17 顶层目录已声明",
+            f"{len(offenders)} 个顶层目录不在 S17_TOP_DIR_ALLOWLIST：{offenders}；"
+            "归属判据见 AGENTS.md §8.13（脚本→tools/，产物→output_report/，运行期→cache|logs|results/，"
+            "归档→attic/<主题>_<YYYYMMDD>/）；确属新模块则先在 §1 职责表立项再登记白名单",
+        )
+    else:
+        n = len([p for p in REPO_ROOT.iterdir()
+                 if p.is_dir() and not p.name.startswith(".")
+                 and p.name not in S17_MACHINE_DIRS])
+        extra = f"（另跳过机器自生成目录 {machine_seen}）" if machine_seen else ""
+        rep.ok("S17 顶层目录已声明", f"顶层 {n} 个目录全部已声明{extra}")
+
+
+#: S18：`tracking/` 入库面的运行产物签名（2026-10-14 布局审计 §2.B-2 / §7 新增）。
+#:
+#: ⚠ **只按目录形态判，不按文件名判**。曾考虑用 `plan.json` / `score.json` /
+#: `dispatch_spec.json` / `all_exprs.txt` / `variants_*.txt` 这套派发文件名做签名，
+#: 实测 `tracking/` 索引面命中 93 件，其中 **4 件是合法业务件**：
+#: `tracking/EUR/candidates/EUR_matrix_plan.json`、`tracking/KOR/candidates/kor_wave2_plan.json`、
+#: `tracking/KOR/candidates/kor_wave3_plan.json`、`tracking/mining/field_inspect_hkg_continuation_score.json`。
+#: 按文件名拦会把战役台账判成运行产物 —— 一次误红就没人再信这道闸。
+#: 剩下的 89 件全部落在 `<名>_<YYYYMMDD>_<HHMM>` 形态的目录里，所以**目录签名既完备又不误伤**。
+S18_RUN_DIR_RE = re.compile(r"^[^/]+_\d{8}(?:_\d{2,6})?$")
+#: `.log` 是纯运行噪声（实测 9 个 `dispatch*.log` 早已被 .gitignore 挡住，
+#: 这条留着是因为「被忽略」不等于「没入库」——历史上同类件一旦先被 `git add -f` 就永久留在索引）。
+S18_LOG_SUFFIXES = (".log",)
+
+#: S18 规则③：`tracking/` **顶层**（深度恰好 2 的跟踪件）允许的件。
+#: 起因（2026-10-14 布局审计 §2.B-3 / §5 P1#7）：`brain-alpha-robustness` 让 agent 把
+#: 稳健性归因报告**追加**到 `tracking/robustness_<YYYYMMDD>.md`，于是 7 份人工审计报告长期住在
+#: 业务目录顶层（其中 5 份已入库）。它们的名字完全合规（S16 四条全过），
+#: 但归属错了：§8.13 规定「人工审计与复盘 → `reports/<主题>_<YYYYMMDD>.md`」。
+#: ⇒ **命名合规 ≠ 归属合规**，S16 看不见这件事，必须有一道闸校「`tracking/` 顶层是谁的目录」。
+#: 白名单只放这一层的**基础设施件**，不放任何报告/产物：
+#: `.gitignore` 与 `region_config.json` 是目录自身配置，`README.md` 是归属说明，
+#: `MANIFEST.json` 是 §4「数据湖索引」既定落点（`generate_manifest.py` 写死 `tracking/MANIFEST.json`，
+#: 本轮因 zip 副作用待用户裁决，先留位，生成时不必改闸）。
+S18_TRACKING_TOP_ALLOWLIST = frozenset({
+    ".gitignore", "README.md", "region_config.json", "MANIFEST.json",
+})
+
+
+def _s18_tracking_index_face() -> list:
+    """`tracking/` 的**索引面**（含已暂存）。取不到就抛 —— 静默空集 = 本闸形同虚设
+    （与 S14/S16/S20 同一口径：pre-commit 只拦 FAIL，闸失效必须响）。"""
+    r = subprocess.run(["git", "ls-files", "-z", "--", "tracking"],
+                       capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        raise RuntimeError(f"git ls-files rc={r.returncode}：{r.stderr.strip()[:200]}")
+    return sorted(x for x in filter(None, r.stdout.split("\0")))
+
+
+def check_s18_tracking_runtime_purity(rep: Report) -> None:
+    """S18：`tracking/` 入库面不得含运行期产物（派发断点 / 日志），顶层不得含报告。
+
+    三条判定（同一取面：`git ls-files -- tracking`）：
+    ① 路径中间段命中 `<名>_<YYYYMMDD>[_<HHMM>]` ⇒ 时间戳运行目录；
+    ② `*.log` ⇒ 运行噪声；
+    ③ **深度恰好 2 的件**（`tracking/` 顶层）不在白名单 ⇒ 归属错位。
+
+    起因一（2026-10-14 布局审计 §2.B-2）：`tools/verdict/perf_max.py` 的缺省 `plan_dir` 是
+    `tracking/<region>/perfmax/<alpha_id>_<时间戳>/`，里面写的是 `plan.json`、`dispatch_spec*.json`、
+    `score.json`、`all_exprs.txt`、`variants_*.txt` —— **续跑断点，不是结论**。旧缺省这样写了几天，
+    实测把 **89 件**（30 `.json` + 59 `.txt`，9 个时间戳目录）送进了版本控制，
+    位置还在业务目录 `tracking/USA/` 下，违反 AGENTS.md §8.13「运行期产物 → cache|logs|results」
+    与 §5 规约 0「战役产物只入库、禁止当持久化目录用」。
+
+    起因二（同日 §2.B-3 / §5 P1#7，规则③）：`brain-alpha-robustness` 把稳健性归因报告写成
+    `tracking/robustness_<YYYYMMDD>.md`，7 份（5 份已入库）住业务目录顶层。
+    **这七件的名字全都合规**（S16 四条全过）——所以 S16 结构性看不见，
+    而 §8.13 的归属表要求人工审计在 `reports/`。本条把「归属」与「命名」拆成两件事来校。
+
+    同日做的处置（本闸是最后一步）：① 缺省输出位改 `results/perfmax/<region>/`（已 gitignore）
+    与 skill 的报告输出位改 `reports/`；② 存量 `git rm -r --cached` / `git mv`（**保盘不删**，
+    §7「归档而非删除」；磁盘 98 件一件不少）；③ 本闸在**索引面**拦复发。
+
+    判据取索引而非磁盘：违规的定义是「进了版本控制」；磁盘上被 gitignore 的时间戳目录是设计内。
+    **FAIL 不进基线**（同 S8/S11/S17 的取舍：运行产物入库没有「合法存量」形态，
+    本轮清完后索引面读数就是 0，留基线等于给下一次放行开门）。
+    """
+    try:
+        face = _s18_tracking_index_face()
+    except Exception as e:                      # 取不到清单不当作通过
+        rep.fail("S18 tracking 产物纯度", f"无法取 `tracking/` 索引清单：{e}")
+        return
+    bad_dirs, bad_logs = [], []
+    bad_top = []
+    for rel in face:
+        parts = rel.split("/")
+        if len(parts) == 2 and parts[1] not in S18_TRACKING_TOP_ALLOWLIST:
+            bad_top.append(rel)
+        if any(S18_RUN_DIR_RE.match(d) for d in parts[1:-1]):
+            bad_dirs.append(rel)
+        elif rel.endswith(S18_LOG_SUFFIXES):
+            bad_logs.append(rel)
+    if bad_dirs or bad_logs or bad_top:
+        seg = []
+        if bad_dirs:
+            dirs = sorted({"/".join(p.split("/")[:-1]) for p in bad_dirs})
+            seg.append(f"{len(bad_dirs)} 件落在**时间戳运行目录**里，涉及 {len(dirs)} 个目录：{dirs[:4]}"
+                       f"{' …' if len(dirs) > 4 else ''}")
+        if bad_logs:
+            seg.append(f"{len(bad_logs)} 件是 `.log`：{bad_logs[:4]}{' …' if len(bad_logs) > 4 else ''}")
+        if bad_top:
+            seg.append(
+                f"{len(bad_top)} 件直接躺在 `tracking/` **顶层**：{bad_top[:4]}"
+                f"{' …' if len(bad_top) > 4 else ''}"
+                f"（该层只允许 {sorted(S18_TRACKING_TOP_ALLOWLIST)}）")
+        rep.fail(
+            "S18 tracking 产物纯度",
+            "；".join(seg) +
+            "。派发断点/日志属运行期产物，AGENTS.md §8.13 规定去处是 `results/`（续跑）、"
+            "`cache/`（断点）、`logs/`（日志），不是 `tracking/<REGION>/`；"
+            "**人工审计/复盘报告去处是 `reports/<主题>_<YYYYMMDD>.md`**，业务目录顶层不放报告"
+            "（名字合规不等于归属合规，本条就是为这一区分加的）。"
+            "修法：运行产物 `git rm -r --cached <目录>`（保盘，不是删除）+ 把写入方缺省输出位改到 "
+            "`results/` 下（本轮已这样处理 `tools/verdict/perf_max.py`，新缺省 "
+            "`results/perfmax/<region>/<alpha_id>_<时间戳>/`）；"
+            "报告类 `git mv tracking/<名> reports/<名>` 并同步 `report_path` 与生成方 skill",
+        )
+    else:
+        rep.ok("S18 tracking 产物纯度",
+               f"tracking/ 索引面 {len(face)} 件，无时间戳运行目录、无 `.log`、"
+               f"顶层除 {sorted(S18_TRACKING_TOP_ALLOWLIST)} 外无杂件")
+
+
+def check_s20_index_worktree_consistency(rep: Report) -> None:
+    """S20：索引里不得挂工作树已不存在的文件（未暂存删除）。
+
+    起因（2026-10-14 同一轮审计）：`reports/ra_pipeline_stage_review_20260927/` 改名成
+    `…_refs/` 时，新路径已 `git add` 入索引、旧路径的删除**没暂存** —— 索引同时挂着 23 件
+    幽灵路径与 23 件新路径。后果不是脏，是**卡闸**：`_s16_targets()` 取面是 `git ls-files`
+    （含已暂存），于是 S16 照扫旧路径下 9 个「缺日期」的 `.txt` 并 FAIL，
+    而 pre-commit 跑在建提交对象之前 ⇒ 整条提交链被一个磁盘上根本不存在的路径拦住。
+    实测本轮全仓未暂存删除恰好 25 件且 100% 落在 `reports/`（两组 23 + 2），
+    同形态出现两次 ⇒ 按 §4 第 7 条固化为闸。
+
+    修法一行：`git add -u -- <路径>`（只暂存删除与修改，不动文件内容、不损历史）。
+    刻意不叫 `git add -A`：本仓禁止顺带把别人的未跟踪件拖进暂存面（§7 第 1/2 条）。
+    """
+    r = subprocess.run(["git", "ls-files", "-z", "--deleted"],
+                       capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        # 拿不到清单就 FAIL：静默放过 = 本闸形同虚设（与 S16 的「取不到受控清单不当作通过」同口径）
+        rep.fail("S20 索引↔工作树一致",
+                 f"git ls-files --deleted 失败（rc={r.returncode}）：{r.stderr.strip()[:200]}")
+        return
+    deleted = sorted(x for x in filter(None, r.stdout.split("\0")))
+    if deleted:
+        sample = "；".join(deleted[:6])
+        rep.fail(
+            "S20 索引↔工作树一致",
+            f"{len(deleted)} 个文件在索引里但工作树已不存在（删除未暂存，索引挂着幽灵路径）：{sample}"
+            f"{' …' if len(deleted) > 6 else ''}；"
+            "确认这些删除是有意的之后 `git add -u -- <路径>` 暂存即可（改名场景务必连旧路径一起暂存，"
+            "否则 S16 一类按索引取面的闸会持续误红）",
+        )
+    else:
+        rep.ok("S20 索引↔工作树一致", "索引无未暂存删除")
+
+
+#: S21：约定**按全名识别**、因此本就没有扩展名的件（§6 规则⑤，2026-10-15 批次I 新增）。
+#: 这类名字由工具链自己规定（make 找 `Makefile`、docker 找 `Dockerfile`），
+#: 加扩展名等于让它们认不出来 —— 所以按**文件名**豁免，不按路径豁免。
+S21_EXEMPT_NAMES = {
+    "Makefile", "Dockerfile", "Containerfile",
+    "LICENSE", "LICENCE", "NOTICE", "Vagrantfile", "Procfile",
+}
+#: S21：必须**按路径**豁免的件。git 只执行 `hooks/<精确名>`（本仓 `core.hooksPath`
+#: = `tools/git-hooks`），改名即不执行。⚠ 这类条目**不能挪进 `S21_EXEMPT_NAMES`**：
+#: 按名字豁免 `pre-commit` 等于给任何目录里的 `pre-commit` 开口子，
+#: 而本仓要的豁免面只有那一个 hooks 目录（伞的半径必须等于事实的半径）。
+S21_EXEMPT_PATHS = {
+    "tools/git-hooks/pre-commit",
+    "tools/git-hooks/commit-msg",
+}
+
+
+def check_s21_files_have_extension(rep: Report) -> None:
+    """S21：全仓跟踪件必须有扩展名（点开头文件与两份白名单除外）。
+
+    为什么单开一道（2026-10-15，同族于 §10.3 的「按扩展名取面的闸结构性失明」）：
+    §6 规则⑤「文件必须有扩展名」此前**只在 `tools/` 顶层机械化**（S11 规则①），
+    而 S11 取面是 `tools/*` 一层、S16/S18 取面又先按 `S16_SUFFIXES` 筛扩展名 ——
+    三条合起来，对「仓库其余位置的无扩展名件」完全失明。
+
+    反例不是假想，是本轮亲手抓到的 `tools/mcp_py`：一个无扩展名的 UTF-8 Python 脚本，
+    因为名字里没有 `.`，**同时**躲过 S4（硬编码盘符）、S11、S14 与全仓 `*.py` 扫描，
+    带着 `D:\\...` 绝对路径和一个已退役的 8876 端点长期躺在仓库里（2026-10-14 才
+    改名 `tools/mcp_http_caller.py` 并修掉硬编码）。⇒ 一条只覆盖 1/N 个位置的命名规则
+    不等于有规则；把它补到全跟踪面才是「机械口径」。
+
+    判据形状（吸取 §10.10.6 的教训：**先定身份再写判据**）：
+      ① 取面 = `git ls-files`（索引面，与 S16/S18/S20 同口径）；
+      ② 「无扩展名」的定义 = **基名里不含 `.`**。这一条看着太简单，但它是对的写法：
+         直觉写法 `Path(p).suffix == ""` 会把**每一个点开头文件**判成违规
+         （实测 `PurePath(".gitignore").suffix == ""`、`".mcp.json"` 同），
+         于是本闸首跑就会在 `.gitignore` 上永久误红 —— 与 S17 首跑被根 `__pycache__`
+         纠正是同一类错误（判据拦的是工具约定的既有形态，不指向任何可修事实）。
+         点开头件按定义就含 `.`，所以「含点即放过」天然覆盖它们，不需要额外豁免分支；
+         它们的「扩展名」由全名承担（`.gitignore` 之于 git），本就不是本条要管的形态。
+      ③ **无基线**：与 S16 docs 面、S17、S18 同一取舍 —— 实测当前违规 0 件
+         （跟踪面 4107 件里只有 4 件无扩展名，且 4 件全在白名单），
+         给空债面建基线 = 留一条永久豁免通道。
+    """
+    r = subprocess.run(["git", "ls-files", "-z"],
+                       capture_output=True, text=True, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        rep.fail("S21 跟踪件扩展名",
+                 f"git ls-files 失败（rc={r.returncode}）：{r.stderr.strip()[:200]}")
+        return
+    face = [x.replace("\\", "/") for x in filter(None, r.stdout.split("\0"))]
+    if not face:
+        # 空面不当通过：与 S14/S16/S18/S20 同口径（取不到清单 = 闸这一轮根本没跑）
+        rep.fail("S21 跟踪件扩展名", "git ls-files 返回空集：取不到跟踪面不等于没问题")
+        return
+
+    offenders, name_hits, path_hits = [], set(), set()
+    for p in face:
+        name = p.rsplit("/", 1)[-1]
+        if "." in name:
+            continue
+        if name in S21_EXEMPT_NAMES:
+            name_hits.add(name)
+            continue
+        if p in S21_EXEMPT_PATHS:
+            path_hits.add(p)
+            continue
+        offenders.append(p)
+
+    if offenders:
+        sample = "、".join(offenders[:8])
+        rep.fail(
+            "S21 跟踪件扩展名",
+            f"{len(offenders)} 个跟踪件没有扩展名：{sample}"
+            f"{' …' if len(offenders) > 8 else ''}；"
+            "无扩展名的脚本对 `file` 判定、语法高亮、全仓 `*.py` 扫描与 S4/S11/S14 一并失明"
+            "（战例 `tools/mcp_py`）。修法 = 改名补扩展名并同步引用点"
+            "（`tools/README.md` 登记名、S12 下架清单、活文档指针），**不是删除**",
+        )
+    else:
+        rep.ok("S21 跟踪件扩展名",
+               f"跟踪面 {len(face)} 件，无扩展名件全部落在白名单内"
+               f"（名字豁免命中 {sorted(name_hits)}；路径豁免命中 {sorted(path_hits)}）")
+
+    # 伞失效反查：白名单条目已不在索引 ⇒ 要求同步删除条目。
+    # 只校**路径型**白名单：名字型（Makefile/Dockerfile…）是通用约定，
+    # 本仓今天没有 `Procfile` 不代表以后不会有，不该据此判红或催删。
+    gone = sorted(p for p in S21_EXEMPT_PATHS if p not in set(face))
+    if gone:
+        rep.warn("S21 跟踪件扩展名",
+                 f"S21_EXEMPT_PATHS 有 {len(gone)} 项已不在索引：{gone}；"
+                 "条目留着就是一条永久豁免通道（同 S13/S11 的坑），请一并删掉")
 
 
 CHECKS = {
@@ -1289,6 +2064,10 @@ CHECKS = {
     "s14": ("S14 tools/README 登记", check_s14_tools_readme_registry),
     "s15": ("S15 skills 副本同步", check_s15_agent_skill_copy_drift),
     "s16": ("S16 报告命名规范", check_s16_output_naming),
+    "s17": ("S17 顶层目录已声明", check_s17_top_level_dirs),
+    "s18": ("S18 tracking 产物纯度", check_s18_tracking_runtime_purity),
+    "s20": ("S20 索引↔工作树一致", check_s20_index_worktree_consistency),
+    "s21": ("S21 跟踪件扩展名", check_s21_files_have_extension),
 }
 
 

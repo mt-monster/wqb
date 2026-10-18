@@ -1,17 +1,34 @@
-\---
+---
 name: wq-brain-ra-kor
 description: "在 KOR 区从字段体检起步挖 REGULAR alpha：字段定性 → 立机制组装骨架 → 归因 → 逐闸破法 → 算子穷举 → 终验。核心是「六步纵深 + 一圈发波闭环」：无归因不得发下一波，波次必须是因果依赖链而非并列扫参，已死轴禁入。组装环节先立经济机制（说不出收益从哪来不许组装），骨架形态由体检体征决定、壳层由机制决定，取证走论坛 + 外部金融论文双通道。仅适用 KOR/TOP600/D1。"
 layer: L4
 agent_created: true
 allowed-tools:
-\- Read
-\- Bash
-\- mcp\_\_wq-brain-http\__*
-\- mcp\_\_wqb-db\__*
-last_verified: 2026-10-16
-\---
+- Read
+- Bash
+- mcp__wq-brain-http__*
+- mcp__wqb-db__*
+last_verified: 2026-10-18
+---
 
 # KOR 字段体检 → 组装 → 归因 → 破闸
+
+## 职责边界
+
+**本 skill 负责**：
+- KOR 区域字段体检（六法）与信号组装
+- 逐闸破法与算子穷举
+- 归因分析与天花板判定
+
+**本 skill 不做**：
+- 数据集选择（→ `wq-brain-campaign-matrix`）
+- 提交判定与动作（→ `submit_verdict` / `worldquant-submit-alpha`）
+- 反过拟合复审（→ `brain-alpha-robustness`，破闸后）
+- 跨区域迁移（换区须重扫）
+
+**上游 / 下游**：
+- 上游：`wq-brain-campaign-matrix`（数据集选择）
+- 下游：`submit_verdict`（判定）→ `worldquant-submit-alpha`（提交）→ `brain-alpha-robustness`（反过拟合复审）
 
 ## 定位与边界
 

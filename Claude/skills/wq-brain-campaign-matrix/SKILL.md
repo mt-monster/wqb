@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-18
 name: wq-brain-campaign-matrix
 description: "区域已定、要看这个区有哪些数据集 / 哪些信号族已判死 / 战役挖到哪一步时使用：把 region + 意图查成预解析配置包，并提供 registry 回写的 schema 与命令模板。整链挖掘走 wq-brain-ra-pipeline；选区（哪个区好）走 brain-next-move-analysis。"
 layer: L-PRE

@@ -146,22 +146,67 @@ def _add_arg_count(code: str) -> int:
     return best
 
 
-def is_multileg(code: str) -> bool:
-    """多腿组合判据（v4）：`add(` 存在 **且** 表达式里出现 >=2 个**不同信号字段**。
+def _add_legs(code: str) -> List[List[str]]:
+    """返回每个 `add(...)` 调用的**顶层参数列表**（用于逐 add 判多腿）。"""
+    out: List[List[str]] = []
+    for m in MULTILEG_PAT.finditer(code or ""):
+        i = m.end()
+        depth, start, legs = 1, i, []
+        while i < len(code):
+            ch = code[i]
+            if ch == "(":
+                depth += 1
+            elif ch == ")":
+                depth -= 1
+                if depth == 0:
+                    if code[start:i].strip():
+                        legs.append(code[start:i])
+                    break
+            elif ch == "," and depth == 1:
+                if code[start:i].strip():
+                    legs.append(code[start:i])
+                start = i + 1
+            i += 1
+        out.append(legs)
+    return out
 
-    区分要点：
-      违禁 = add(<信号A>, <信号B>)             —— 不同信号字段（混信号）
-      合规 = add(ts_mean(F,w1), ts_mean(F,w2)) —— 同字段不同窗（时序混合，即双窗骨架）
+
+def is_multileg(code: str) -> bool:
+    """多腿组合判据（v5，2026-10-09 修正）：**同一个 `add(...)` 的参数里**出现 >=2 个不同信号字段。
+
+    ★ v4 的缺陷（实测误伤，必读）：
+      v4 = 「表达式里有 `add(` 且**全局** >=2 个不同信号字段」。
+      它会把 `divide(分子, add(分母, 0.0001))` 判成多腿 —— 因为全局有 2 个 token 且存在 `add(`，
+      但这两个 token 分属 **divide 的两条腿**、`add` 里只有 1 个信号量 + 1 个常数 ε。
+      这是**比值构造**（同一构念的分子/分母，量纲变换），属放行形态，**不是混信号**。
+      实证：论坛已提交的 DEU institutions1 三段式
+      `tail(winsorize(group_rank(ts_sum(divide(vec_sum(inst1_valueeur),
+       add(vec_sum(inst1_holdings),0.0001)),66),industry),std=2),...)`
+      被 v4 误判为多腿，而平台 `ra_failed_count=0` 并已提交。
+
+    区分要点（v5）：
+      违禁 = add(<信号A>, <信号B>)          —— **同一个 add** 的两条腿里各含一个不同信号字段
+      合规 = add(ts_mean(F,w1), ts_mean(F,w2)) —— 同字段不同窗（双窗骨架）
+      合规 = divide(A, add(B, eps))          —— A/B 不在同一 add 内（比值构造）
+
+    ★ 截断保护（2026-10-09 同日补）：`backtest_results.code` 里有 **2.9%（DEU 69 条）括号不平衡**的
+      残缺记录（集中在 `s2_analyst93_d1`/`s2_starmine_r*` 等旧 wave，只存了前 ~122 字符）。
+      对残缺串 `_add_legs` 解析不出参数 ⇒ v5 会**误判为合规**把真多腿放进 sg 池
+      （实测：`add(add(rank(A),rank(B)),...)` 被截断后判 False，使 DEU ALIVE 虚增 4→5、WEAK 27→36）。
+      ⇒ **括号不平衡一律保守判 `True`（无法验证合规 ⇒ 不进 sg 池）**。
     """
     c = code or ""
-    if not MULTILEG_PAT.search(c):
-        return False
-    toks = {
-        t
-        for t in _re.findall(r"\b([a-z][a-z0-9_]{9,})\b", c)
-        if t not in SKIP_TOKENS and not t.startswith(("ts_", "vec_", "group_", "oth455_"))
-    }
-    return len(toks) >= 2
+    if c.count("(") != c.count(")"):
+        return True
+    for legs in _add_legs(c):
+        found = set()
+        for leg in legs:
+            for t in _re.findall(r"\b([a-z][a-z0-9_]{9,})\b", leg):
+                if t not in SKIP_TOKENS and not t.startswith(("ts_", "vec_", "group_", "oth455_")):
+                    found.add(t)
+        if len(found) >= 2:
+            return True
+    return False
 
 
 def field_of(code: str) -> Optional[str]:
@@ -189,10 +234,68 @@ def norm_cov(c) -> Optional[float]:
     return round(float(c) / 100.0, 4) if float(c) > 1.0 else round(float(c), 4)
 
 
+# ── 骨架多样性统计（2026-10-09 Phase 0：用户明令「不同字段画像用不同骨架」）──
+# 族分类按优先级首个命中（改顺序 = 改归类，勿乱动）；与 skeleton_panel.PANEL 的族名对齐。
+_SKEL_FAMILY_RULES = [
+    ("gn_first",      r"group_neutralize"),
+    ("double_window", r"add\s*\(\s*ts_mean"),
+    ("gate",          r"trade_when|if_else"),
+    ("hump",          r"ts_target_tvr_hump"),
+    ("decay_linear",  r"ts_decay_linear"),
+    ("ts_corr",       r"ts_corr"),
+    ("delta",         r"ts_delta|ts_returns"),
+    ("ts_zscore",     r"ts_zscore"),
+    ("ts_rank",       r"ts_rank"),
+    ("quantile",      r"ts_quantile"),
+    ("av_diff",       r"ts_av_diff"),
+    ("argmax",        r"ts_arg_max|ts_arg_min|ts_argmax|ts_argmin"),
+    ("subtract",      r"subtract"),
+    ("divide",        r"divide"),
+    # ★ 2026-10-10：补齐时序聚合族（此前它们全被兜底进 level_rank，导致字段级审计误判）
+    ("ts_sum",        r"ts_sum"),
+    ("ts_max",        r"ts_max|ts_min"),
+    ("ts_median",     r"ts_median"),
+    ("ts_std",        r"ts_std_dev|ts_stddev"),
+    ("ts_mean",       r"ts_mean"),
+    ("level_rank",    r"\brank\s*\("),   # house 水平直排兜底
+]
+_SKEL_FAMILY_RULES = [(n, _re.compile(p, _re.I)) for n, p in _SKEL_FAMILY_RULES]
+_GROUP_TOKENS = {"sector", "industry", "subindustry", "market", "country", "exchange"}
+
+
+def skeleton_family_of(code: str) -> str:
+    """把一条表达式归入一个骨架族（优先级首个命中）。"""
+    c = code or ""
+    for name, pat in _SKEL_FAMILY_RULES:
+        if pat.search(c):
+            return name
+    return "other"
+
+
+def skeleton_template(code: str, field_names) -> str:
+    """模板归一：字段名→F、分组名→G、数字→N，只留算子骨架（用于统计字段「见过几种结构」）。"""
+    toks = _re.findall(r"[A-Za-z_][A-Za-z0-9_]*|\d+\.?\d*|[(),]", code or "")
+    out = []
+    for t in toks:
+        if _re.fullmatch(r"\d+\.?\d*", t):
+            out.append("N")
+        elif t in field_names:
+            out.append("F")
+        elif t in _GROUP_TOKENS:
+            out.append("G")
+        else:
+            out.append(t)
+    return " ".join(out)
+
+
 # ── 表 / 视图管理 ─────────────────────────────────────────────────────
 
 def ensure_perf_table(con: sqlite3.Connection) -> None:
-    """建主表（IF NOT EXISTS —— **绝不 DROP**，这是多区不串号的关键）。"""
+    """建主表（IF NOT EXISTS —— **绝不 DROP**，这是多区不串号的关键）。
+
+    ★ 2026-10-09 Phase 0（骨架多样性，用户明令「不同字段画像用不同骨架」）：
+      新增两列 `n_skeletons` / `skeleton_fams`，用 PRAGMA+ALTER 幂等迁移（旧库无这两列也能平滑升级）。
+    """
     con.execute(
         """CREATE TABLE IF NOT EXISTS field_profile_perf (
             region TEXT, dataset TEXT, category TEXT, field TEXT, ftype TEXT,
@@ -201,8 +304,14 @@ def ensure_perf_table(con: sqlite3.Connection) -> None:
             best_s REAL, best_2y REAL, best_sub REAL, best_f REAL,
             best_2y_when_s_hi REAL, verdict TEXT,
             best_s_sg REAL, best_2y_sg REAL, best_sub_sg REAL, n_sg INTEGER,
+            n_skeletons INTEGER, skeleton_fams TEXT,
             PRIMARY KEY (region, dataset, field))"""
     )
+    # 幂等列迁移：老表无新列时 ALTER 补上（列序与 CREATE 保持一致，追加在末尾）
+    cols = {r[1] for r in con.execute(f"PRAGMA table_info({PERF_TABLE})")}
+    for col, ddl in (("n_skeletons", "INTEGER"), ("skeleton_fams", "TEXT")):
+        if col not in cols:
+            con.execute(f"ALTER TABLE {PERF_TABLE} ADD COLUMN {col} {ddl}")
     con.execute(
         f"CREATE INDEX IF NOT EXISTS idx_{PERF_TABLE}_region_verdict "
         f"ON {PERF_TABLE}(region, verdict)"
@@ -251,6 +360,8 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
     ).fetchall()
 
     # 实测副产品：从 backtest_results 取（**只取该区**）
+    field_names = {fld for _ds, _c, fld, _ft, _cv, _dc in fields}
+    skel: Dict[str, Dict[str, set]] = {}
     agg: Dict[str, Dict[str, List]] = {}
     for code, _ds, s, t2, sub, f_, to in cur.execute(
         """SELECT code, dataset, sharpe, two_year_sharpe, sub_universe_sharpe,
@@ -258,6 +369,14 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
            FROM backtest_results WHERE region=? AND sharpe IS NOT NULL""",
         (region,),
     ):
+        # ★ 骨架多样性：一条表达式里的**所有**字段都记入「见过该骨架族/模板」（2026-10-09 Phase 0）
+        fam = skeleton_family_of(code)
+        tmpl = skeleton_template(code, field_names)
+        toks = set(_re.findall(r"[A-Za-z_][A-Za-z0-9_]*", code or "")) & field_names
+        for tf in toks:
+            d2 = skel.setdefault(tf, {"fams": set(), "tmpls": set()})
+            d2["fams"].add(fam)
+            d2["tmpls"].add(tmpl)
         fld = field_of(code)
         if not fld:
             continue
@@ -302,7 +421,21 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
             b2w = max(a["pair"], key=lambda x: x[0])[1]
 
         if n == 0:
-            if cov is None or norm_cov(cov) is None or norm_cov(cov) < 0.6:
+            # ★ 2026-10-08 修正（用户质疑「coverage<0.6 是不是一定没信号价值」）：
+            #   原规则 `cov is None or norm_cov(cov) is None or norm_cov(cov) < 0.6 → UNUSABLE`
+            #   有两个缺陷，实测证据：
+            #   ① **cov == 0.00 实为「未采集」而非「零覆盖」** —— 铁证：`model38` 全部字段 cov 记为 0.0，
+            #      其中 9 个是 ALIVE（S 1.87–2.44）、5 个 DEAD、**57 个仅因这个 0.0 被判 UNUSABLE**；
+            #      `pv47` cov=0.0 而 2 个字段全 ALIVE。⇒ **cov==0/None 不构成判死依据**，
+            #      应标 `UNKNOWN_COVERAGE` 回平台复核（`get_datafields` 的 coverage 才是权威）。
+            #   ② 即便「真·低覆盖」(0<cov<0.6) 也能出强信号：`model28` 族 cov 0.5837–0.5862 → **4 个 ALIVE（S 1.77–1.94）**；
+            #      `model109.expected_dividend_yield` cov **0.478** → ALIVE S 1.69。
+            #      ⇒ 低覆盖由平台的 `LOW_SUB_UNIVERSE_SHARPE` 闸判，不应在字段画像层预判死亡。
+            #   处置：cov 缺失/为 0 → `UNKNOWN_COVERAGE`；真低覆盖 → 仍标 `UNUSABLE` 但视为**低优先**（非永久剔除）。
+            _cv = norm_cov(cov)
+            if _cv is None or (cov is None) or (float(cov) == 0.0):
+                verdict = "UNKNOWN_COVERAGE"
+            elif _cv < 0.6:
                 verdict = "UNUSABLE"
             elif (ftype or "").upper() == "GROUP":
                 verdict = "AXIS_ONLY"
@@ -331,6 +464,9 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
         else:
             verdict = "DEAD"
 
+        _sk = skel.get(fld)
+        n_skel = len(_sk["tmpls"]) if (_sk and n) else None
+        fams = ",".join(sorted(_sk["fams"])) if (_sk and n) else None
         rows.append(
             (
                 region, ds, cat, fld, ftype, norm_cov(cov), family_of(fld), n,
@@ -339,6 +475,7 @@ def build(con: sqlite3.Connection, region: str, category: Optional[str]) -> int:
                 round(to_max, 4) if to_max is not None else None,
                 best_s, best_2y, best_sub, best_f, b2w, verdict,
                 best_s_sg, best_2y_sg, best_sub_sg, len(sg),
+                n_skel, fams,
             )
         )
 

@@ -13,7 +13,13 @@ kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 （`relocate_out_of_tools` → `tracking/KOR/scripts/`）。
 
 **新脚本一律落主题子目录**，不得再往顶层堆 —— 由 `python tools/audit_structure.py --only s11`
-强制（顶层只减不增，新增即 FAIL 阻断提交）。
+强制（顶层只减不增，新增即 FAIL 阻断提交；2026-10-14 起该闸还管**无扩展名文件**——
+原 `mcp_py`（无扩展名旧名）因缺 `.py` 同时躲过 S4/S11/S14，现更名 `mcp_http_caller.py`）。
+
+**工具文档一律落 [`tools/docs/`](docs/)**，顶层只留本文件一个索引（2026-10-14 布局审计 §3 落地：
+原 5 份 `README_*.md` 平铺在顶层，与「顶层只放 CLI + 一个索引」的布局互相矛盾；
+现址 `tools/docs/README_ECONOMIC_MECHANISM_TEMPLATES.md`、`README_FIELD_SCORER_V2.md`、
+`README_GEM_OPTIMIZATION.md`、`README_OPTIMIZATION.md`、`README_PERF_MAX.md`）。
 
 ### 迁移批次记录
 
@@ -21,6 +27,17 @@ kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 |---|---|---|---|
 | P2-1 止血 | 2026-10-04 | 0 | 只冻基线（S11）+ 出 THEMES.json，全部 `frozen-pending` |
 | **第一批下沉** | **2026-10-06** | **10** | `probe/` ×4 · `verdict/` ×3 · `ledger/` ×2 · `data-repair/` ×1 |
+| **第二批下沉** | **2026-10-14** | **2** | `db/` ×2（`db_lock_audit.py` · `db_maintenance.py`）——布局审计 §3 的「按主题逐批推进」首批 |
+
+> 第二批与前一批的**三点差别**（记在此，避免下次又按旧配方退化）：
+> ① 被移文件**均已 git 跟踪**，用 `git mv`（索引留 `R`，历史可回溯）；
+> ② 配方第 2 步的 `wqb.paths` **现已存在**，两个脚本里的层数硬编码
+> `REPO = Path(__file__).resolve().parent.parent` 已换成向上探测 `pyproject.toml` + `src/wqb`
+> 双标记的 `_find_repo_root()`——这类写法下沉一层会**静默**把仓库根解析成 `tools/`
+> （DB 路径、`logs/` 路径全错且不报错），是 §8.13 禁层数硬编码的活样本；
+> ③ 下沉进度改为机械可读：`audit_structure` S11 的「已下沉 N 个」不再由基线差推导
+> （真迁完并把基线收紧后它会归零，与「一个没迁」输出相同），而是 **THEMES `moved_files` ∩ 磁盘核验**，
+> 登记与磁盘不符即 FAIL。2026-10-14 实测累计 23 个。
 
 > 第一批按本文件「单文件迁移配方」执行，两处与配方的偏差记在此：
 > ① 配方第 1 步的工具 **`refs_scan.py` 本身已不在工作区**（属事故丢失的 17 个之一），
@@ -68,6 +85,7 @@ kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 | `wave_gate.py` | 每波门禁编排：语法校验 + 5 闸 + 六维多样性 + 质量预估（EXPECTED_BLOCK 默认标注，`--quality-block` 硬拦截），一键落盘 `cache/gate_wave<N>_<ds>.{json,txt}`。**2026-09-30 包化**：入口为 shim（argparse 契约字面保留，供 `validate_argv` 静态解析），实现 12 个模块在 `tools/wave_gate_pkg/` | `tracking/<R>/scripts/_gate_waveNN.py` 族 |
 | `pool_diversity.py` | 候选池表达式结构多样性评估（算子熵/骨架配额/字段集中度/预处理/成对相似度/主导族风险，六维），`--file/--exprs/DB`，`--json` 落盘；已被 `wave_gate.py` 集成调用 | 手写多样性统计脚本 |
 | `quality_predict.py` | 候选池质量预估（回测前）：三层先验预估 Sharpe/Fitness + 本地结构代理预估 SELF_CORR 风险，输出 EXPECTED_PASS/REVIEW/EXPECTED_BLOCK；`--status UNSUBMITTED` 直筛存量池，已被 `wave_gate.py` 集成调用 | 手写相关性/质量预判脚本 |
+| `gate_attribution.py` | **闸失败归因 CLI（零仿真，只读）**（2026-10-16 落地）：「只差一两闸」时先归因、再定向推闸，**不盲扫**。判定逻辑全在 `wqb.gate_attribution`，本文件只做取数 + 渲染 + 退出码（0=READY/PUSH_TARGETED、3=SWITCH_AXIS、4=BLOCKED_BY_CORRELATION、5=闸数≥3）。三条闭式判据：① `to_target = returns×(S/F_target)² ≤ 0.125` ⇒ F 闸减速路线数学不可达，别再刷 decay/backfill/hump ② **prod 余量 <0.01 禁止先推 S**（抬 S 同步抬 prod）③ 同族 (S,prod) ≥3 点拟合 `prod@S1.58 ≥ 0.70` ⇒ 剪刀差 = 机制层不可达。逐年分诊 `single_collapse` / `recent_decay` | 手写 robustness 归因脚本 |
 | `legacy/gate.py` | **遗留归档**：通用提交前闸门（5 闸 + 批级多样性）。**权威实现是 skill toolkit 的 `gate.py`**；本文件代码零引用（`wave_gate.py` 走 `_TOOLKIT_CANDIDATES` 加载 toolkit 版），2026-09-20 归档至 `tools/legacy/` | — |
 | `legacy/backfill_backtest_dataset.py` | **一次性回填已跑完**（`backtest_results.dataset` 只填空），2026-09-28 按 §6.4 归档至 `tools/legacy/`（三维引用全 0） | — |
 | `forum_recon.py` | **问题驱动论坛只读检索（recon，2026-09-28）**：单问题 → 有效文章 → 入库（`KB/community_tpl_kb.forum_recon_entries` 或 ledger `forum_recon_<qkey>`；无解落 `forum_recon_negative_*` 作「论坛无解」判死证据）。额度以查出有效文章为标准（自适应扩关键词，命中即收束）；同问题 7 天缓存；抓取核心复用 `forum_research.py`（不重复 HTTP 实现）；`--dry-run` 零副作用；退出码 0=有货 / 2=**可靠的**无解 / 1=**工具故障**（故障落 `forum_recon_error_*`、不入缓存，**故障 ≠ 无解**，2026-09-29 事故后落地；共享契约 `src/wqb/recon_evidence.py`） | 手写论坛抓取、每次现搜不落库 |
@@ -109,7 +127,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | 工具 | 用途 | 取代 |
 |---|---|---|
 | `sa_probe.py` | 组件池探针：≥10 ACTIVE REGULAR 硬前置，GO/BLOCKED | `probe_kor_sa.py`、`tracking/_scratch/probe_sa2_*.py` |
-| `super_build.py` | select / status / probe / submit 四子命令全流程；**submit 内置 prod 闸（2026-09-25）：probe max≥0.7 或超时一律拒提（fail-closed），豁免须 `--allow-prod-above-07`** | `track_mea_super.py` / `_resume` / `_submit` 三件套 |
+| `super_build.py` | select / status / probe / submit 四子命令全流程；**submit 内置 prod 闸（2026-09-25 起，无豁免入口）：probe max≥0.7 或超时一律拒提（fail-closed）** | `track_mea_super.py` / `_resume` / `_submit` 三件套 |
 | `probe/probe_sa_candidates.py` | **SA 候选与组件池盘点**（2026-10-06 下沉；与 `verdict/submit_inventory.py` 互补——后者盘 RA/REGULAR，本脚本盘 SA/SUPER）：组件池 eligibility（GO/BLOCKED）、全部 SUPER alpha、未提交 SA 候选。★ 关键语义：组件 eligibility **只看「已提交且 ACTIVE」的 REGULAR**，IS 阶段 UNSUBMITTED 不计入；SA 可提交的 selection 字段无 sharpe/fitness，只能按 turnover/decay 排。`--save-json` / `--cache-ttl-hours`（env `SA_PROBE_CACHE_TTL_HOURS`，默认 6h） | 手查 SUPER 控制台 |
 | `probe/probe_sa_unsubmitted.py` | 对 SA 探针列出的**未提交候选逐颗取真实双闸**（`check_self_correlation` + `check_correlation(production)`），判定是否双双 <0.7。★ 「UNSUBMITTED（已建未提交）」≠「待提交（已验证可交）」——探针文件里这些候选的 prod 恒为 `None`，本工具是**推荐序「余量」列的唯一来源**。★ 处理范围铁律（用户定，勿回退）：**只处理增量数据 + 无 prod 值但业绩已明确记录者**（⛔ 禁 `--all`） | 手写逐颗打相关性 |
 
@@ -214,7 +232,8 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | 工具 | 用途 |
 |---|---|
 | `mcp_ping.py` | MCP 服务连通性与调用计时；`--service X` 单服务、`--full` 工具清单、`--timeout N` 每次请求写入及响应的等待上限。显式调用：`--call TOOL --args-file args.json` 或 `--calls-file calls.json`（`[{"tool":"...","args":{}}]`）。工具错误退出码 1；超时退出码 2，包含 method/tool/request_id/outcome_unknown/retry_safe=false，废弃连接且停止后续调用。超时不证明远端未执行，先核对任务/DB再决定重试。默认探针只读；显式调用具有所选工具的效果。 |
-| `start_wq_mcp.py` | 启动/确保 `wq-brain-http` MCP 服务在 8876 可用（防"论坛工具找不到"） | `--check` / `--wait N` | — |
+| `start_wq_mcp.py` | 启动/确保 MCP 服务在跑：`wq-brain-http` @ **8000**、`wqb-db` @ **8001**（以仓库根 `.mcp.json` 为准；`--all` 起两个、`--check` 只探活、`--wait N` 等就绪）。⚠ 旧文案写的 8876 是 stdio 时代遗留端口，2026-10-14 按 `DEFAULT_PORT`/`DEFAULT_DB_PORT` 更正 |
+| `mcp_http_caller.py` | **手工直调单个 MCP 工具**（streamable-HTTP：initialize → notifications/initialized → tools/call，含 SSE 解析与 session 复用）。用于 MCP 客户端侧不可用、或要绕开 Agent 参数包装时。`--service wqb-db <tool> '<json>'`，参数走 `@args.json` 文件通道（§5 规约 2）；`--list-tools` 看注册面、`--new-session` 强制重握手；退出码 0/1/2。地址默认解析 `.mcp.json`（`--uri` / `WQB_MCP_URI` 覆盖），session 落 `cache/_mcp_http_caller_session`（gitignore 运行期区）。**只用于只读工具**——回测与提交必须走 MCP 工具链（那里有 waiver 台账与用户确认闸，本脚本不理解任何业务闸）。前身 `mcp_py`（无扩展名旧名）：内嵌 `D:\...` 绝对路径 + 退役 8876 端点，2026-10-14 一并修掉 |
 
 ## 平台台账同步
 
@@ -259,7 +278,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `audit_file_sizes.py` | 全量扫描项目内 Python 文件：行数 / 函数类规模 / 圈复杂度 / 职责数量。 | 无参直跑 |
 | `combo_precheck.py` | 组合预检串联工作流（P1-C + P1-D，2026-08-31）。 | 需参数 |
 | `complexity_scan.py` | 全项目 Python 文件复杂度 / 职责度量（只读、零副作用）：出 JSON + 终端 Top-N，用作「哪些文件该拆」的排序依据。 | 无参直跑 |
-| `db_maintenance.py` | wqb.db 维护工具（2026-09-20 L4）。 | 需参数 |
+| `db/db_maintenance.py` | wqb.db 维护工具（2026-09-20 L4；2026-10-14 主题下沉进 `db/`）。 | 需参数 |
 | `demo_layered_mining.py` | 层层推进挖掘策略演示 | 无参直跑 |
 | `fetch_all_universes.py` | 向平台 `OPTIONS /simulations` 拉全部区域（InstrumentType=EQUITY）的合法 universe / 中性化 / 衰减等设置选项，落 `research-data/`（`--dry-run` 零副作用）。 | `--dry-run` 可选 |
 | `field_axis.py` | 字段信息轴自动识别（P0-B，2026-08-31）。 | 需参数 |
@@ -272,6 +291,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `gem_validator.py` | GEM 候选池强制校验。 | 需参数 |
 | `index_tables.py` | `Claude/skills/INDEX.md` 与 `docs/env_and_switches.md` 里「可由代码导出的表」的生成器（区域表 / 平台硬线阶梯 / 环境变量清单），防文档与 config 漂移。 | `--check` / `--apply` |
 | `kor_ledger_write.py` | KOR 台账写入（wqb-db MCP 未连接时的降级写库）。 | 无参直跑 |
+| `gates/operator_coverage_audit.py` | 算子覆盖审计（**用算子必须考虑所有可能情况的机械化闸**，2026-10-09）：`--checklist` 打印 REGULAR 全量算子清单+「何时用」提示（设计前必看）；`--glob/--expr-file/--wave` 审计已用覆盖率并列出从未用过的算子，`--min-coverage` 低于阈值 exit 1 ⇒ **覆盖率不足不得宣称「方向穷尽」**。 | 需参数 |
 | `operator_diversity_analyzer.py` | 算子多样性分析器. | 需参数 |
 | `pipeline_integration.py` | （无模块 docstring） | 需参数 |
 | `populate_external_fields.py` | 灌 external_fields 表。 | 需参数 |
@@ -305,7 +325,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `cleanup_async_tasks.py` | logs/_async_tasks TTL 归档清理工具（2026-09-25 结构优化目标 D）。 | `src/wqb/workflow/_common.py` |
 | `closure_ledger.py` | closure_ledger.py — skills 审查（reports/skills_review_20260929.md）条目的「处置登记」（评审 → | `docs/skills_review_closure.json` |
 | `concept_overlap.py` | concept_overlap.py — 概念重叠检查（skills 审查 EX-01 / EX-10）。 | `Claude/skills/CHANGELOG.md` |
-| `db_lock_audit.py` | db_lock_audit.py - wqb.db 写锁探针（2026-09-20 L2）。 | `tests/unit/01_store_db/test_db_write_guards.py` |
+| `db/db_lock_audit.py` | db_lock_audit.py - wqb.db 写锁探针（2026-09-20 L2；2026-10-14 主题下沉进 `db/`）。 | `tests/unit/01_store_db/test_db_write_guards.py` |
 | `diag_forum_read.py` | forum_recon 读帖链路最小诊断（只读、零回测配额）。 | `Claude/skills/brain-alpha-research/SKILL.md` |
 | `discover_datasets.py` | discover_datasets.py - 数据集发现（灌 datasets 表）。 | `Claude/skills/INDEX.md` |
 | `dryrun_multidim.py` | dryrun_multidim.py — 多维骨架标签 dry-run 验证脚本 | `docs/reference/multidim_production_deployment.md` |
@@ -314,7 +334,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `economic_mechanism_templates.py` | economic_mechanism_templates.py - 经济学机制模板库. | `Claude/skills/brain-forum-browse/SKILL.md` |
 | `export_wave_ledger_md.py` | export_wave_ledger_md.py - 从数据库生成 WAVE_LEDGER.md 快照（单轨 DB 模式）。 | `Claude/skills/wq-brain-campaign-toolkit/SKILL.md` |
 | `fetch_dataset_assets.py` | fetch_dataset_assets.py - 全 Region 数据集资产拉取（**直连入库**，不落 JSON）。 | `Claude/skills/INDEX.md` |
-| `field_catalog_cache_manager.py` | field_catalog_cache_manager.py - S1 字段扫描缓存管理工具。 | `docs/S1_FIELD_CATALOG_CACHE_GUIDE.md` |
+| `field_catalog_cache_manager.py` | field_catalog_cache_manager.py - S1 字段扫描缓存管理工具。 | `docs/reference/s1_field_catalog_cache_guide.md` |
 | `field_inspect_gate.py` | 体检→表达式硬门（S2→S3 第二道硬门）的可执行接线。 | `Claude/skills/INDEX.md` |
 | `field_pool_ab.py` | field_pool_ab.py — 字段分类→GEM 机制 A/B 评估器（2026-09-26 落地）。 | `docs/ledger_keys.json` |
 | `field_profile_backfill.py` | field_profile_backfill.py - 从 WebDataScope zip 解析字段画像并回填 data/wqb.db。 | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` |
@@ -322,6 +342,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `field_quality_scorer.py` | field_quality_scorer.py - 字段质量预筛器. | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py` |
 | `field_semantic_classify.py` | field_semantic_classify.py — 数据集字段的经济含义归类（S1 补做环节）。 | `Claude/skills/CHANGELOG.md` |
 | `fields/field_semantic_type.py` | **基于 description 的字段语义类型分类**（19 类量型 + 骨架建议；名字只作对照并报冲突）。产物表 `field_semantic_type`。`--build` / `--report`。 | `Claude/skills/wq-brain-ra-gbr/references/_field-profile-playbook.md` |
+| `fields/skeleton_panel.py` | **骨架多样性面板**（10 族骨架 × 语义→优选族映射）。`audit`（发批多样性闸，R2）/ `gen`（按字段画像配骨架生成初筛波，R1）/ `list`。 | `Claude/skills/wq-brain-ra-gbr/references/_field-profile-playbook.md §11` |
 | `forum_cache_builder.py` | Forum post cache builder for brain-alpha-robustness Phase A. | `Claude/skills/CHANGELOG.md` |
 | `gen_field_inspect_packs.py` | 从 WebDataScope 数据包生成体检硬门用的按数据集分文件体检包。 | `Claude/skills/CHANGELOG.md` |
 | `gen_inspect_from_db.py` | 从 wqb.db fields 表生成降级版体检包（P1-4 HKG 解锁，2026-09-07）。 | `tests/unit/10_toolkit_scripts/test_inspect_degraded_pack_marking.py` |
@@ -346,7 +367,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `profile_drift_check.py` | 区域 profile 漂移体检（profile green/red 精确层 ↔ DB 实证）。 | `Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md` |
 | `quality_control_engine.py` | （无模块docstring） | `docs/reference/quality_control_landing_summary.md` |
 | `refresh_operator_catalog.py` | 把 ``get_operators`` 的实时输出刷进 docs/reference/operators_catalog.json。 | `docs/reference/operators_catalog.json` |
-| `retention.py` | retention.py — data/ cache/ logs/ 运行期保留策略（2026-10-03 立项） | `tests/unit/01_store_db/test_retention.py` |
+| `retention.py` | data/ cache/ logs/ 运行期保留策略（2026-10-03 立项，默认 dry-run，`--apply` 才删）。四条：`data/*.bak*` 只留最新 1 份（live `wqb.db`/`-wal`/`-shm` 硬保护）· `cache/_probe/*.db` 超 7 天回收 · `logs/` 过期文件与 pytest 临时目录（`_async_tasks`/`_slots`/`_dblock` 永不碰）· **`cache/_scratch/` 的 pytest basetemp**（2026-10-14 新增：按 `test_<用例名><序号>` **命名签名**识别，容器名 `pt`/`pt2` 都认；≥24 h 才收，避免抽掉在跑会话的临时目录；顶层草稿件需 `--scratch-files` 显式开启，且 `*_spec.json`/`*_variants.txt` 这类**批次输入件**永不收）。首轮回收 749 个 basetemp = 65.3 MB | `tests/unit/01_store_db/test_retention.py`（含陈旧 basetemp 计数硬闸 ≤200） |
 | `s2_field_validator.py` | s2_field_validator.py - S2 表达式字段强制校验器 | `Claude/skills/brain-data-feature-engineering/SKILL.md` |
 | `select_ra_basket.py` | select_ra_basket.py — 从过闸候选池选出 N 条互不相关、可提交的 RA 篮子。 | `Claude/skills/CHANGELOG.md` |
 | `skeleton_tags.py` | skeleton_tags.py — 多维骨架标签提取器（经济学构造链感知） | `docs/reference/multidim_ab_test_report_template.md` |
@@ -354,7 +375,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `step9_audit.py` | step9_audit.py — 步 9（S6）完成定义只读校验器（2026-10-02 新增）。 | `Claude/skills/wq-brain-ra-pipeline/SKILL.md` |
 | `step_funnel.py` | step_funnel.py — 步级漏斗（S2→S6）只读推导，单一事实源（2026-09-17 新增）。 | `Claude/skills/CHANGELOG.md` |
 | `structural_reconstruct_cli.py` | structural_reconstruct_cli.py - 结构重构命令行工具. | `docs/design/structural_reconstruction.md` |
-| `test_field_catalog_cache.py` | test_field_catalog_cache.py - S1 字段扫描缓存功能**手动校验脚本**。 | `docs/S1_FIELD_CATALOG_CACHE_GUIDE.md` |
+| `test_field_catalog_cache.py` | test_field_catalog_cache.py - S1 字段扫描缓存功能**手动校验脚本**。 | `docs/reference/s1_field_catalog_cache_guide.md` |
 | `update_operator_stats.py` | 工具：统计区域算子使用频率并写入 region_kb（供 assemble_priors 注入 GEM）。 | `docs/experience/field_operator_pattern.md` |
 | `waiver.py` | waiver.py — 闸「放行 / 豁免」台账协议的命令行（实现见 src/wqb/waiver.py）。 | `Claude/skills/GLOSSARY.md` |
 | `wave_results_writer.py` | wave_results_writer.py - wave 结果台账入库工具（单轨 DB 模式，DirectDBWriter 优化版）。 | `Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/wave_results.py` |

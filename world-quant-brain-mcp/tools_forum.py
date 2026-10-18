@@ -74,7 +74,8 @@ async def search_forum_posts(search_query: str, max_results: int = 50) -> Dict[s
             
         return await brain_client.search_forum_posts(email, password, search_query, max_results)
     except Exception as e:
-        return {"error": f"An unexpected error occurred: {str(e)}"}
+        logger.error(f"Error in search_forum_posts: {e!r}")
+        return {"error": f"An unexpected error occurred: {e!r}"}
 
 @mcp.tool()
 

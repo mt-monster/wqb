@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-18
 name: brain-inspect-raw-template-create-setting
 description: "把外部 / 手写的 idea JSON（*_idea_*.json：template / idea / expression_list）解析出来，核对该 region/delay 的合法仿真设置选项，并把表达式按给定设置写入 expressions 表（S2→S3 的 DB 入库通道之一）。只用于外部或手写的 idea 文件；GEM 生成的表达式已直接入库，不必经过本 skill。"
 layer: L3

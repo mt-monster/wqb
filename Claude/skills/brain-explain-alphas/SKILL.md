@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-18
 name: brain-explain-alphas
 description: "拆解并解释一个 WorldQuant BRAIN alpha 表达式：数据字段含义、算子作用、收益来源归因；并可在 Mode B 换概念前做与本区 book 的概念重叠检查。当用户要求解释某个具体 alpha 表达式、某个 datafield 的作用、算子如何协同，或要确认候选的收益来源 / 概念是否与既有 alpha 重叠时使用。按需调用，不是每候选必经。"
 layer: L4

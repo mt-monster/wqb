@@ -1,0 +1,54 @@
+{
+ "dataset": "analyst81",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "nfields": 5,
+ "fields": [
+  {
+   "id": "anl81_class",
+   "type": "MATRIX",
+   "coverage": 0.2579,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Creditwrothiness class indices in integers: 9(AAA), 5(AA), 4(A), 1(BBB), 2(BB), 3(B), 7(CCC), 8(CC), 6(C), 10(D)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl81_confidence_level_percent",
+   "type": "MATRIX",
+   "coverage": 0.2579,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Confidence level of the assessment, measuring data completeness and reliability as a percentage from 0 to 100",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl81_probability_of_default_percent",
+   "type": "MATRIX",
+   "coverage": 0.2579,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Estimated probability of default over the rating horizon, expressed as a percentage from 0 to 100",
+   "crowding": "mid"
+  },
+  {
+   "id": "default_likelihood_percent",
+   "type": "MATRIX",
+   "coverage": 0.276,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous-period probability of default estimated by mode_finance, expressed as a percentage from 0 to 100",
+   "crowding": "low"
+  },
+  {
+   "id": "financial_data_completeness_percent",
+   "type": "MATRIX",
+   "coverage": 0.276,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Confidence level for the lagged assessment, 0–100%, indicating completeness/reliability of available data",
+   "crowding": "mid"
+  }
+ ]
+}

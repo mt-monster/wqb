@@ -2,7 +2,7 @@
 name: brain-alpha-research-news-sentiment
 layer: L1
 description: "新闻 / 情绪 / 社媒类数据集的研究指引：字段 5 家族分类、家族 × 6 桶配对设计、Tier A / Tier B 候选数据集的路由前核对。要在 news / sentiment / socialmedia 数据集上分类字段、设计一批表达式、判断新闻类数据集值不值得挖时使用；指引层，不是闸门，选集仍走 S0。触发词：新闻数据集 / 情绪数据集 / 5 家族 / 6 桶 / Tier A。"
-last_verified: 2026-10-08
+last_verified: 2026-10-18
 allowed-tools:
   - Read
   - Bash

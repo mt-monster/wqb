@@ -73,6 +73,28 @@ if __name__ == "__main__":
             mcp.settings.port = _port
         except Exception as e:  # noqa: BLE001 — 不因改端口起不来
             print(f"[WARN] 设置 host/port 失败，用默认监听：{e}", file=sys.stderr)
+    # --- Windows 事件循环策略：Proactor → Selector（2026-10-13）-------------
+    # 现象：8000 服务在 Windows 上偶发「Accept failed on a socket / WinError 64」后
+    #   整个进程挂死或静默退出（10-11 / 10-12 多次复现），只能靠守护强杀重启兜底。
+    # 根因链：FastMCP.run() 走 anyio.run() ⇒ 事件循环由 anyio 用
+    #   asyncio.new_event_loop() 创建 ⇒ **遵循事件循环策略**；Windows 默认是
+    #   WindowsProactorEventLoopPolicy（实测默认拿到 ProactorEventLoop），
+    #   其在长连 HTTP 服务上易出现 accept 循环异常。
+    # 改为 Selector：已核查本项目代码不使用 asyncio 子进程，Selector 无功能损失。
+    # 回退：设置 WQ_MCP_LOOP=proactor（或 auto）即恢复默认行为。
+    _loop_mode = os.environ.get("WQ_MCP_LOOP", "selector").strip().lower()
+    if sys.platform == "win32" and _loop_mode == "selector":
+        try:
+            import asyncio
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+            print("[INFO] Event loop policy: WindowsSelectorEventLoop "
+                  "(WQ_MCP_LOOP=selector)", file=sys.stderr)
+        except Exception as e:  # noqa: BLE001 — 切换失败不阻止启动
+            print(f"[WARN] 切换 Selector 事件循环失败，沿用默认：{e}", file=sys.stderr)
+    elif sys.platform == "win32":
+        print(f"[INFO] Event loop policy: 默认 Proactor (WQ_MCP_LOOP={_loop_mode})",
+              file=sys.stderr)
+
     try:
         mcp.run(transport=transport)
     except TypeError:

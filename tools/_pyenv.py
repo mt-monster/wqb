@@ -57,10 +57,10 @@ def is_foreign_wqb_python(candidate: str) -> bool:
     判据：候选路径的祖先里含 ``world-quant-brain-mcp``（即它挂在某个 wqb 工作区下），
     但那个目录不是本仓的 MCP 目录。
 
-    事故背景（2026-10-06）：环境里残留 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/
-    .venv/Scripts/python.exe``（另一份仓库副本）。它是**存在的文件**，旧实现只看
-    ``os.path.isfile`` 于是放行，``tools/submit_queue.py`` 被 re-exec 到那个解释器，
-    三层进程互相等待、13 分钟无输出。
+    事故背景（2026-10-06）：环境里残留一个 ``WQ_PY``，指向**另一份 wqb 仓库副本**的
+    ``world-quant-brain-mcp/.venv``。它是**存在的文件**，旧实现只看 ``os.path.isfile``
+    于是放行，``tools/submit_queue.py`` 被 re-exec 到那个解释器，三层进程互相等待、
+    13 分钟无输出。（该变量已于 2026-10-09 在用户级注册表层面根治。）
     """
     if not candidate:
         return False

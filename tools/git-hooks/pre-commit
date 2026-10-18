@@ -6,7 +6,7 @@
 #
 # 执行顺序（五道，全为阻断位除标注）：
 #   0) 解释器与依赖自检（缺 .venv / 缺 pytest・redis ⇒ BLOCKED，不退回到 PATH python）
-#   1) tools/audit_structure.py      —— 结构契约 S1–S14（FAIL 阻断）
+#   1) tools/audit_structure.py      —— 结构契约 S1–S21（FAIL 阻断；S17 顶层目录 / S18 tracking 产物纯度 / S20 索引↔工作树 为 2026-10-14 新增，S21 跟踪件扩展名 为 2026-10-15 批次I 新增；S19 尚未落地 = 待用户裁决）
 #   2) code-audit/repo_governance_check.py --warn —— 未跟踪源码（**告警位，不阻断**）
 #   3) code-audit/doc_path_refs.py   —— 活文档死指针（棘轮：只拦新增，FAIL 阻断）
 #   4) code-audit/audit_destructive_default.py —— 默认即破坏（棘轮：只拦新增，FAIL 阻断）
@@ -28,18 +28,21 @@
 # 被吞掉的是结论级守卫（瞬断重试吞 error、`ra_failed_checks` 单一定义闸等）。
 # 「宁可误拦一次提交」优于「假装绿一次」。
 _REPO_ROOT=$(cd "$(dirname "$0")/../.." && pwd)
-if [ -x "$_REPO_ROOT/.venv/Scripts/python.exe" ]; then
-    PY="$_REPO_ROOT/.venv/Scripts/python.exe"
-elif [ -x "$_REPO_ROOT/.venv/bin/python" ]; then
-    PY="$_REPO_ROOT/.venv/bin/python"
+# 2026-10-09：仓库 venv 收敛为**单一** world-quant-brain-mcp/.venv（原根 .venv 已删）。
+# 选它是因为 tools/_pyenv.py 的回退默认、_common.py 的硬编码路径、
+# is_foreign_wqb_python 的本仓标记三者都指向它 —— 钩子与工具链必须用同一个解释器。
+_VENV="$_REPO_ROOT/world-quant-brain-mcp/.venv"
+if [ -x "$_VENV/Scripts/python.exe" ]; then
+    PY="$_VENV/Scripts/python.exe"
+elif [ -x "$_VENV/bin/python" ]; then
+    PY="$_VENV/bin/python"
 else
-    echo "[pre-commit] BLOCKED: 仓库 .venv 不存在（$_REPO_ROOT/.venv）。"
+    echo "[pre-commit] BLOCKED: 仓库 venv 不存在（$_VENV）。"
     echo "[pre-commit] 不退回 PATH 解释器：那会静默 skip 掉 redis/mcp_core 类守卫测试，"
     echo "[pre-commit] 而 pytest 对 skip 返回 0 —— 钩子会假装通过。"
     echo "[pre-commit] 修法："
-    echo "[pre-commit]   python -m venv .venv"
-    echo "[pre-commit]   .venv/Scripts/python.exe -m pip install -r requirements.txt"
-    echo "[pre-commit]   .venv/Scripts/python.exe -m pip install -r world-quant-brain-mcp/requirements.txt"
+    echo "[pre-commit]   python -m venv world-quant-brain-mcp/.venv"
+    echo "[pre-commit]   world-quant-brain-mcp/.venv/Scripts/python.exe -m pip install -r requirements.txt"
     exit 1
 fi
 if [ -z "$PY" ]; then

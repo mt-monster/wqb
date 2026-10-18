@@ -25,6 +25,12 @@ from .taxonomy import card_of, group_of
 
 PREFIX = "wq-brain-ra-"
 LAYER = "L-RA-R"
+
+#: 需要特殊化正文/前言的区域（2026-10-15）：KOR 的控制面板骨架换成
+#: 「字段体检 → 归因 → 破闸」工作流（layer L4），其余 13 区仍用通用 L-RA-R 骨架。
+#: 生成块（region-panel / cells-index / manual）与校验契约不变——只换骨架文字。
+_FIELDCHECK_REGIONS = {"KOR"}
+_FIELDCHECK_LAYER = "L4"
 _START = "<!-- profiles:{0}:start -->"
 _END = "<!-- profiles:{0}:end -->"
 _CONST_OK = " <!-- lint:const-ok 证据原文 -->"
@@ -160,9 +166,21 @@ def _platform_facts(region: str) -> List[str]:
 
 def _frontmatter(region: str) -> str:
     r = region.upper()
+    today = _dt.date.today().isoformat()
+    if r in _FIELDCHECK_REGIONS:
+        desc = (f"在 {r} 区从字段体检起步挖 alpha：做字段体检、构建骨架、诊断某闸为什么不过、破 prod 墙、"
+                f"把候选推到可提交时使用。含六法体检 → 组装 → 归因 → 逐闸杠杆 → 算子穷举 → 终验六步。"
+                f"仅适用 {r}（全部实证在 {r}）。")
+        return ("---\n"
+                f"name: {skill_name(r)}\n"
+                f"description: \"{desc}\"\n"
+                f"layer: {_FIELDCHECK_LAYER}\n"
+                "agent_created: true\n"
+                "allowed-tools:\n  - Read\n  - Bash\n  - mcp__wq-brain-http__*\n  - mcp__wqb-db__*\n"
+                f"last_verified: {today}\n"
+                "---\n")
     desc = (f"在 {r} 区挖 REGULAR alpha、调 {r} 的回测设置或阈值、查 {r} 某类数据集（区域 × 类别组合）的配方与禁区时使用："
             f"{r} 的区域分支流程与回测把控面板。通用九步走 wq-brain-ra-pipeline，判提交与提交走 worldquant-submit-alpha。")
-    today = _dt.date.today().isoformat()
     return ("---\n"
             f"name: {skill_name(r)}\n"
             f"description: \"{desc}\"\n"
@@ -175,6 +193,8 @@ def _frontmatter(region: str) -> str:
 
 def _skeleton(region: str) -> str:
     r = region.upper()
+    if r in _FIELDCHECK_REGIONS:
+        return _fieldcheck_skeleton(r)
     return f"""
 # {r} 区域挖掘流程（RA 区域分支）
 
@@ -201,6 +221,229 @@ def _skeleton(region: str) -> str:
    $WQ_PY -m wqb.profiles sync-cells --region {r} --apply
    $WQ_PY -m wqb.profiles render --region {r} --apply
    ```
+
+## 区域控制面板
+
+{_START.format('region-panel')}
+{_END.format('region-panel')}
+
+## 组合分支（区域 × 类别）
+
+{_START.format('cells-index')}
+{_END.format('cells-index')}
+
+## 本区流程差异（相对九步骨架）
+
+{_START.format('manual')}
+{_END.format('manual')}
+
+## 改控制
+
+- **区域级**：`tracking/{r}/config/settings.json`（仿真设置）、`tracking/{r}/config/thresholds.json`（阈值）。
+- **组合级**：`tracking/{r}/config/cells.json`——只写覆盖值，每个覆盖在同级 `_evidence` 写证据（波号 / alpha id / 日期）；没有证据的覆盖校验不通过。改完先校验再重渲：
+
+  ```bash
+  $WQ_PY -m wqb.profiles check --region {r}
+  $WQ_PY -m wqb.profiles render --region {r} --apply
+  ```
+
+- **锁定项**（任何层都不能放宽）：禁混信号、Mode B 主闸下限、决策表 D0-P、平台线、窗口白名单、点塔按平台类别、提交前用户确认、truncation 不作扫描维度——全文见 `$WQ_PY -m wqb.profiles explain` 末尾。
+- **证据与历史**：[{r} profile](../wq-brain-ra-pipeline/references/regions/{r}.md)（入场裁决、红绿榜、证据附录）。
+""".lstrip("\n")
+
+
+def _fieldcheck_skeleton(region: str) -> str:
+    """KOR 专用骨架：字段体检 → 归因 → 破闸六步（2026-10-15）。
+
+    与通用 `_skeleton` 的差别只有正文；生成块与「改控制」段完全沿用——保证
+    `check_structure()` 的三个必检块（region-panel / cells-index / manual）仍在。
+    正文与 `Claude/skills/wq-brain-ra-kor/SKILL.md` 一致；实证数值在
+    `references/_kor-gatebreak-evidence.md`。
+    """
+    r = region.upper()
+    return f"""
+# {r} 字段体检 → 归因 → 破闸工作流
+
+## 职责边界
+
+- **本 skill 负责**：**从字段体检起步**的 {r} 挖掘方法论——字段定性 → 骨架组装 → 归因 → 逐闸破法 → 算子穷举 → 终验。产出 = 推到全闸通过的候选，或诚实的天花板判定。
+- **本 skill 不做**：不选数据集（→ `wq-brain-campaign-matrix` / RA 步 2）；不做提交判定（→ `submit_verdict` 只有否决权）与提交动作（→ `worldquant-submit-alpha`，须用户确认）；不做反过拟合闸（→ `brain-alpha-robustness`，本 skill 在破闸**后**调用它复审）。
+- **上游 / 下游**：上游 = 已选数据集 + 字段清单；下游 = `submit_verdict` → prod 实测 → 用户确认。
+- **区域配套**：九步通用正文在 [`wq-brain-ra-pipeline`](../wq-brain-ra-pipeline/SKILL.md)；本 skill 是 {r} 的 L4 诊断分支。
+
+> **入口不是「已有信号」，是「字段体检」**——先摸清字段的性格（覆盖 / 非零 / 频率 / 范围 / 中心 / 形态），再决定怎么构建、怎么修。
+> **仅适用 {r}/TOP600/D1**——全部杠杆档位、中性化档、算子实证都在 {r} 实测；**换区须重扫**（铁律：结构最优性逐字段实测）。
+> **本文件写通用方法**；本战役的全部实测数值与战例见 [`references/_kor-gatebreak-evidence.md`](references/_kor-gatebreak-evidence.md)。
+
+## 工作流主线（六步，{r} 固化）
+
+```
+① 六法体检   ★ 入口。先看分布再写表达式（单边恒正 → 变化率；稀疏 → 门控；有界 → 直接 rank）
+   ↓
+② 组装       骨架两层：核心信号 + 壳层（vector_neut / trade_when / group_neutralize / bucket / tail）
+   ↓
+③ 归因       时期归因 + raw vs risk-neutralized 分解 → 判「因子暴露」还是「信号衰减」
+   ↓
+④ 破闸       每闸一根杠杆，单变量对照（杠杆图谱见下）
+   ↓
+⑤ 算子穷举   对照 103 算子目录，覆盖未试家族；顺序 = 先中性化/分组轴，再时序平滑，最后幂次
+   ↓
+⑥ 终验       prod/self 实测 + Phase C 反过拟合 → 交用户
+```
+
+## ① 六法体检（★ 入口）
+
+**先离线，缺则在线**。离线包 `tracking/mining/field_inspect_kor_<ds>.json`。
+⚠ **{r} 离线包大面积退化**：WebData 的 `dataSetList.json` 里 {r} 组合极少 ⇒ 离线包中大多数字段的 skew/kurt/freq/shape 为 null ⇒ **多数字段必须走在线六法**。
+
+**在线最小集**（每字段 6 条仿真，`Neutralization=None` / `Decay=0` / `P0Y0M0D`，{r}/TOP600）：
+
+| 法 | 表达式 | 判读 → 决策 |
+|---|---|---|
+| 1 覆盖 | `F` | cov<0.4 → 必须 `ts_backfill` |
+| 2 非零 | `F != 0` | 与法 1 差值大 = 稀疏事件型 → `trade_when` 门控，**禁裸 rank** |
+| 3 频率 | `ts_std_dev(F,5/22/66) != 0` | 季频 ⇒ 窗口 ≥63d；⚠ 短窗读数被 NaN 污染时按季频取 252 |
+| 4 范围 | `abs(F) > 1/10/100` | 量纲跨度大 → `rank`/`ts_zscore`；有界小量纲 → 直接 `rank` |
+| 5 **中心趋势** | `ts_mean(F,252) > 0` | **★ 单边恒正 ⇒ 禁裸水平做多空，取 `ts_delta` 变化率** |
+| 6 形态 | `zscore(F) > 0/1` | 近正态 ⇒ 无预处理；`zero_inflated`/`point_mass` ⇒ 事件门控 |
+
+**铁律 A**：单边恒正 + 有界小量纲 ⇒ 禁裸水平，取 `ts_delta(F, 252)` 变化率。
+**铁律 B**：方向必须正反各测一条——`reverse()` 与正向**不精确反号**（截断 + decay 与符号交互），猜方向会系统性错。
+**VECTOR 必先套 `vec_*`**。
+
+## ② 组装（骨架两层，别把壳层当信号）
+
+```
+核心信号（真 alpha 源）: 同机制多时间窗的秩乘积
+  例 multiply(rank(·), rank(ts_rank(·, 中窗)), rank(ts_rank(·, 长窗)))   ← 三腿乘积
+壳层（四层，逐层剥离非目标暴露）:
+  ① vector_neut(·, power(rank(<流量/规模字段>), pow))  ← 规模/流动性轴残差化（investability 钥匙）
+  ② trade_when(greater(rank(<流动性字段>), T), ..., -1)  ← 流动性门控（T 默认 ~0.1，调高崩 S）
+  ③ group_neutralize(·, sector) + bucket(rank(cap))      ← 剥行业暴露 + 市值分桶
+  ④ tail(·, lower, upper, newval)                        ← 尾部裁剪
+```
+
+| 组装规则 | 要点 |
+|---|---|
+| **核心多腿缺一不可** | 单腿常崩 |
+| **同字段多时间窗 = 单信号结构化** | 合规（同字段不同窗口，不属混信号） |
+| **多字段组合只走条件门控** | `add/multiply` 相加 = **混信号违规**；`trade_when`/`if_else` 合规 |
+| **条件字段须机制正交** | 频段/机制不同的字段用 AND 门常双杀；先单测门控收益再上 |
+| **组装顺序敏感** | `group_neutralize` 在 `group_rank` **之前**；`tail` 在其后 |
+
+## ③ 归因（先判类型，再选杠杆）
+
+| 归因类 | 工具 | 判读 → 处置 |
+|---|---|---|
+| 时期 | `get_alpha_yearly_stats` | 逐年 Sharpe；是否单一年份撑起 |
+| **因子暴露** | **`get_alpha_pnl` 的 `risk-neutralized-pnl` 列** | 逐年 `因子暴露贡献 = raw增量 − RN增量` |
+| 行业 | 导出 PnL | 收益集中少数行业 ⇒ 只是行业轮动 |
+| 市值分位 | 导出 PnL | 收益集中于最小/最大分位 ⇒ 结构性问题 |
+
+**★ 铁律 E**：报告期塌陷**先做 raw vs RN 分解**，再决定修什么。
+- **RN 增量 ≫ raw 增量**（因子贡献为负）⇒ **因子暴露拖累**，纯 alpha 没坏 ⇒ **换中性化档**；
+- raw 与 RN 同步走弱 ⇒ 信号本身衰减 ⇒ 换字段 / 换机制族。
+
+## ④ 破闸杠杆图谱（每闸一根，{r} 实测）
+
+| 闸 / 症状 | 杠杆 | 方向 |
+|---|---|---|
+| 报告期塌陷 | 先 raw vs RN 分解（铁律 E）| RN≫raw ⇒ 因子暴露 ⇒ 换中性化档 |
+| **中性化档** | **换族必重扫 11 档**（逐族择优，勿照搬）| 本战役峰度族 REVISION_AND_MOMENTUM 最优 |
+| LOW_SHARPE | decay 降（S↑）/ 加正交腿 | decay↓ 推高 S 同时推高 inv 门槛 |
+| LOW_FITNESS | **tail 收紧**（如 0.2/0.8→0.25/0.75）纯改善 | 0.92→0.95 |
+| IS_LADDER（2Y）| **decay 调至峰值**（S↔2Y 权衡）| 本战役峰值 decay=3 |
+| **IS 推全过** | **★ `group_neutralize(·, sector)`**（剥行业暴露）| 综合改善 F 与 2Y、清 failed_ra |
+| INVESTABILITY | vector_neut 幂次调至甜蜜区；**过高触发 ladder window 跳变致 2Y 崩** | 本战役 0.80–0.85 甜区，≥0.9 跳变 |
+| prod | **先判 n 判据**：`[0.7,0.8)` 桶 n≥1 ⇒ 密墙；n=0 ⇒ 可扫窗口 | 见下 |
+
+**F 公式反推缺口**：`F = S × √(returns / max(TO, 0.125))` ⇒ 缺口归属 S / TO / returns 哪一档。
+
+**{r} 中性化 11 档**（`get_platform_setting_options` 实测合法）：
+NONE / REVERSION_AND_MOMENTUM / STATISTICAL / CROWDING / FAST / SLOW / MARKET / SECTOR / INDUSTRY / SUBINDUSTRY / SLOW_AND_FAST。
+**默认别用 MARKET**——逐族实测择优（本战役峰度族 REVISION_AND_MOMENTUM 最优）。
+
+**{r} prod 墙的处置顺序**：换族 → 换连续桶分组轴（`bucket(rank(<规模字段>))`）→ 加 rank 阈值门控（`trade_when(rank(<流动性字段>)>T)`）。
+⚠ **每桶必实测、不可跨族照搬**——同一杠杆在不同族可能反向。
+
+## ⑤ 算子穷举（正确顺序 = 先中性化/分组轴，再时序平滑，最后幂次）
+
+对照 103 算子目录，优先补未试家族；但**当格局是「IS 全过 + prod 墙」时，族内穷举算子通常无新杠杆 ⇒ 及时止损转下一族**。
+
+本战役峰度族实测（详见 evidence）：`group_neutralize(sector)` 是唯一突破；`group_zscore` 有害；`signed_power` 在秩积上 no-op；`ts_mean`/`ts_decay_linear`/`hump` 毁 S；`trunc` 小改等价可删；门控阈值上调毁 S。
+
+## ⑥ 终验
+
+- `check_correlation(alpha_id)`（prod）+ `check_self_correlation(alpha_id)`（self，本地不占配额）。
+- **Phase C 反过拟合**（`brain-alpha-robustness`）：Recent-3yr 强度 / CV_Sharpe / 衰减比 / 平年 / max-min 比。
+- **prod n 判据**：`check_correlation` 直方图 `[0.7,0.8)` 桶 n≥1 ⇒ 结构性密墙。
+- **提交权归用户**（`worldquant-submit-alpha` 确认后才走 `POST submit`）。
+
+## 工程坑（{r} 血泪，务必遵守）
+
+- **发批前三闸**：`ensure_safe_for_dispatch` + 新算子 2 条小批验存在性 + 字段 `get_datafields` 实名核对。
+- **{r} 不可用算子**：`ts_ir`、`ts_target_tvr_hump`（整批连坐 FAIL 且无报错）。
+- **僵尸批次判据**：`progress` 非空（如 0.35/0.9）**只是慢，不是僵尸**（会自行 COMPLETE）。
+- **`get_user_alphas` 不支持 `order=-sharpe`**（400）；`results[].datasets` 在 {r} 为空 ⇒ **解析 `code` 字段前缀**归组；返回体积极大 ⇒ 落盘再解析；`batch_get_alpha_metrics` 对新建 alpha 全返回 null ⇒ 逐个 `get_alpha_details`。
+- **batch 工具 `nan_handling` 参数被静默忽略**（提交 ON、回读恒 OFF）⇒ 该维度不可经此工具调。
+- **比较不同 pow 的 2Y 必须先核对 ladder window 是否同档**（过高 pow 会把 window 跳档），否则比较无效。
+- **长批后 `lookINTO` 报 HTTP 401** ⇒ `authenticate` 重认证即恢复。
+- **`performance_comparison` 不是风险因子归因工具**（端点是 merged performance check）⇒ 风险因子暴露归因子走 `get_alpha_pnl` 的 `risk-neutralized-pnl` 列。
+- **本地库含已下架数据集** ⇒ **发批前必 `preflight_expressions`**；平台算子目录可能过期 ⇒ 以实测为准。
+
+## Resources
+
+> 本文件写**通用方法**；「按什么顺序做、用什么工具、去哪查数值」从这张表出发。
+> 脚本一律在**仓库根**执行，`$WQ_PY` = `world-quant-brain-mcp/.venv` 的解释器（登记见 `docs/env_and_switches.md`）。
+
+**参考文档（`references/`，按需加载，别一次全读）**
+
+| 文件 | 什么时候读 |
+|---|---|
+| [`_probe-sop.md`](references/_probe-sop.md) | 设计 / 派发一批探针前：8 槽配比、构型分工、读数三分法、多样性三闸 |
+| [`_dataset-scan-sop.md`](references/_dataset-scan-sop.md) | S0 选集：数据集级评分与排除口径、离线体检包退化范围 |
+| [`_workflow-pipeline.md`](references/_workflow-pipeline.md) | 把六步接回九步骨架：每步产物与落库位置 |
+| [`_kor-gatebreak-evidence.md`](references/_kor-gatebreak-evidence.md) | 要具体数值 / 配方 / 逐年表时（实测证据附录） |
+| [`_kor-campaign-log.md`](references/_kor-campaign-log.md) | 判断「这条结论还有效吗」时（历史层 + §0 裁决表） |
+| `references/<类别>.md`（11 份） | 进入某个「区域 × 类别」组合时——清单与状态见下面生成的「组合分支」表 |
+
+**脚本（区域专属探针，家 = `tracking/{r}/scripts/`，AGENTS.md §8.13）**
+
+| 命令 | 用途 |
+|---|---|
+| `$WQ_PY tracking/{r}/scripts/kor_s0_scan.py` | S0 数据集评分 → `logs/_kor_s0_whitelist.json` |
+| `$WQ_PY tracking/{r}/scripts/kor_pool_rank.py <dump.json>` | 候选池按「还差哪道闸」排序（只读文件，不占配额） |
+| `$WQ_PY tracking/{r}/scripts/scan_diversity.py --audit <手写批次.txt>` | 发批前多样性三闸（族数 / 未用算子 / 算子数） |
+| `$WQ_PY tracking/{r}/scripts/scan_diversity.py --build <字段> --all-families` | 反向：按 9 族骨架生成扫描网格 |
+| `$WQ_PY tracking/{r}/scripts/gate.py --dataset <ds> --file <exprs.json>` | {r} 统一提交前闸门（语法 / 白名单 / 类型 / 禁用算子 / 毒模式） |
+| `$WQ_PY tools/fields/field_profile.py --query --region {r}` | 字段画像（coverage / to_med / S 分档） |
+| `$WQ_PY tools/webdata_quality.py --zip <pack> --region {r} --fields <ds>` | 离线体检包生成（{r} 仅 `analyst25` 完整） |
+| `$WQ_PY tools/submit_batch.py` | 批量派发仿真（**不是**提交 alpha） |
+
+⚠ **脚本不放技能目录**：技能目录是 `tools/sync_skills.py` 的同步面，副本装到 `~/.claude/skills` 后读不到仓库内的
+`template_families.json` / `tracking/{r}/reference/*.json` ⇒ 必然跑不通（2026-10-15 迁出，登记见 `tracking/{r}/scripts/README_NEW_TOOLING.md`）。
+
+**面板 / 阈值 / 组合覆盖（改控制的入口）**
+
+```bash
+$WQ_PY -m wqb.profiles explain --region {r}             # 每个生效值带来源层
+$WQ_PY -m wqb.profiles check --region {r}               # 校验（改完必先跑）
+$WQ_PY -m wqb.profiles render --region {r} --apply      # 重渲生成块
+$WQ_PY -m wqb.profiles sync-cells --region {r} --apply  # 刷新判死 / 胜绩
+```
+
+**MCP 工具 · 平台侧 `wq-brain-http`**：`get_datafields`（字段实名核对）、`preflight_expressions`（发批前必跑）、
+`get_platform_setting_options`（合法设置档，别照搬别区）、`batch_create_simulations` / `batch_status`、
+`get_alpha_details`（新建 alpha 逐个拉，`batch_get_alpha_metrics` 对其返回 null）、`get_alpha_pnl`（`risk-neutralized-pnl` 列做归因）、
+`get_alpha_yearly_stats`、`check_correlation`（prod，`refresh=True`）、`check_self_correlation`（self，本地不占配额）、`submit_verdict`（只有否决权）。
+
+**MCP 工具 · 台账侧 `wqb-db`**：`get_dead_ends`（判死名单）、`list_wave_results` / `get_latest_wave`、
+`get_submit_ready`（可提交与已提交颗数）、`get_cross_region_lessons`、
+`upsert_wave_result` / `upsert_registry_empirical` / `seal_dead_end`（判死回写；取证闸 fail-closed，绕过须人工确认）。
+
+**兄弟 skill**：`wq-brain-ra-pipeline`（九步编排，本 skill 是它的 {r} L4 分支）、`wq-brain-campaign-matrix`（选区选集）、
+`wq-brain-campaign-toolkit`（战役目录执行引擎）、`wq-operator-playbook-by-gate`（按闸挑算子）、
+`brain-alpha-robustness`（Phase C 反过拟合）、`worldquant-submit-alpha`（提交，须用户确认）、`wqb-concurrency`（槽位纪律）。
 
 ## 区域控制面板
 

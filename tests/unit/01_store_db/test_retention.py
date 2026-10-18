@@ -27,6 +27,7 @@ TOOL = REPO / "tools" / "retention.py"
 MAX_DATA_BAKS = 2          # 最新 1 份 + 允许 1 份在途（正在恢复/比对中）
 MAX_STALE_PROBE_MB = 1024  # cache/_probe 允许的陈旧体积上限
 PROBE_STALE_DAYS = 7
+MAX_STALE_BASTEMP_DIRS = 200  # cache/_scratch 允许的陈旧 pytest basetemp 目录数
 
 
 def _load_tool():
@@ -101,6 +102,58 @@ def test_collect_stale_probe_dbs_respects_age(ret, tmp_path, monkeypatch):
     assert [t.path.name for t in targets] == ["old.db"]
 
 
+def test_collect_results_recycles_stale_checkpoints_and_spares_fresh(ret, tmp_path, monkeypatch):
+    """results/ 超期 checkpoint 进候选；近期（= 活跃批次）保留。
+
+    2026-10-18 随 `collect_results` 一同新增：`results/` 是续跑断点区，
+    策略必须**只按年龄回收**——正在跑的批次断点一定比阈值新，天然被挡住。
+    """
+    results = tmp_path / "results"
+    results.mkdir()
+    now = time.time()
+    stale, fresh = results / "backfill_checkpoint.json", results / "batch_submit_verdict_checkpoint.json"
+    for f, age in ((stale, 45.0), (fresh, 1.0)):
+        f.write_bytes(b"{}")
+        _age(f, age, now)
+    # 非 checkpoint 的运行件与子目录一律不碰
+    (results / "notes.md").write_bytes(b"x")
+    sub = results / "sub"
+    sub.mkdir()
+    (sub / "old.json").write_bytes(b"{}")
+    _age(sub / "old.json", 45.0, now)
+    monkeypatch.setattr(ret, "RESULTS", results)
+
+    targets = ret.collect_results(keep_days=30, now=now)
+    assert [t.path.name for t in targets] == ["backfill_checkpoint.json"]
+
+
+def test_collect_results_never_touches_registered_names(ret, tmp_path, monkeypatch):
+    """`RESULTS_NEVER_DELETE` 登记的件即便超期也不进候选（防将来有人把阈值调到 0）。"""
+    results = tmp_path / "results"
+    results.mkdir()
+    now = time.time()
+    guarded = results / "wqb.db"
+    guarded.write_bytes(b"live")
+    _age(guarded, 999.0, now)
+    monkeypatch.setattr(ret, "RESULTS", results)
+
+    assert ret.collect_results(keep_days=30, now=now) == []
+
+
+def test_collect_wires_results_policy_into_aggregate(ret, tmp_path, monkeypatch):
+    """`collect()` 必须把 results/ 策略串进去，否则加函数等于没加。"""
+    now = time.time()
+    for mod_name in ("RESULTS", "DATA", "CACHE", "LOGS"):
+        d = tmp_path / mod_name.lower()
+        d.mkdir()
+        monkeypatch.setattr(ret, mod_name, d)
+    stale = tmp_path / "results" / "old_checkpoint.json"
+    stale.write_bytes(b"{}")
+    _age(stale, 90.0, now)
+
+    targets = ret.collect(keep_data_baks=1, probe_keep_days=7, logs_keep_days=14, now=now)
+    assert "old_checkpoint.json" in [t.path.name for t in targets]
+
 
 def test_collect_logs_skips_protected_runtime_dirs(ret, tmp_path, monkeypatch):
     """⚠ 并发会话的运行时状态目录（_dblock/_slots/_async_tasks）绝不可进候选。
@@ -124,6 +177,70 @@ def test_collect_logs_skips_protected_runtime_dirs(ret, tmp_path, monkeypatch):
     assert any(n.startswith("_pytest_") for n in names)
     for protected in ret.LOGS_PROTECTED_DIRS:
         assert protected not in names, f"受保护运行时目录被列入回收：{protected}"
+
+
+def test_collect_scratch_recycles_stale_basetemp_and_spares_fresh(ret, tmp_path, monkeypatch):
+    """cache/_scratch 里的 pytest basetemp：超时的回收、新鲜的保留、非容器目录永不碰。
+
+    三条各自的理由：
+    - 容器按**形状**识别（`pt` 与 `pt2` 实测都在用，按名字白名单会漏 `pt2`）；
+    - 新鲜目录属于**正在跑的并行会话**，秒删等于把它的临时目录从脚下抽走；
+    - 同层的 `asi_46_probe/` 一类子目录不是 basetemp，本工具只删已识别模式。
+    """
+    scratch = tmp_path / "cache" / "_scratch"
+    pt = scratch / "pt"
+    pt2 = scratch / "pt2"
+    other = scratch / "asi_46_probe"
+    for d in (pt, pt2, other):
+        d.mkdir(parents=True)
+    now = time.time()
+    stale = pt / "test_a_stale_case0"
+    fresh = pt / "test_a_running_case0"        # 并行会话正在跑
+    stale2 = pt2 / "test_b_stale_case0"
+    junk_in_other = other / "test_looks_like_a_case"   # 非容器里的同名目录，必须不碰
+    for d in (stale, fresh, stale2, junk_in_other):
+        d.mkdir()
+        (d / "f.txt").write_text("x")
+    _age(stale, 2.0, now)
+    _age(stale2, 2.0, now)
+    _age(junk_in_other, 60.0, now)
+    monkeypatch.setattr(ret, "CACHE", tmp_path / "cache")
+
+    targets = ret.collect_scratch(temp_keep_hours=24.0, files_keep_days=30.0, now=now)
+    names = sorted(t.path.name for t in targets)
+    assert names == ["test_a_stale_case0", "test_b_stale_case0"], names
+    assert fresh.name not in names, "新鲜 basetemp 被列入回收——会截断在跑的会话"
+    assert junk_in_other.name not in names, "非 basetemp 容器里的同名目录被误收"
+
+
+def test_collect_scratch_files_is_opt_in_and_never_touches_batch_inputs(ret, tmp_path,
+                                                                       monkeypatch):
+    """★ 顶层散件默认不回收；开了 --scratch-files 也只收草稿形态，批次输入件永不碰。
+
+    实测依据：`cache/_scratch/asi_fix2_spec.json` 里逐条写着
+    `cache/_scratch/asi_fix2_variants.txt` —— 那是**可复跑的派批输入**，
+    删了不是省 300 KB，是废掉一次批次。
+    """
+    scratch = tmp_path / "cache" / "_scratch"
+    scratch.mkdir(parents=True)
+    now = time.time()
+    draft_py = scratch / "_chk9.py"
+    diff_file = scratch / "_gates.diff"
+    spec = scratch / "asi_fix2_spec.json"
+    variants = scratch / "asi_fix2_variants.txt"
+    draft_named_input = scratch / "_keep_spec.json"   # `_` 前缀但命中输入件模式
+    for f in (draft_py, diff_file, spec, variants, draft_named_input):
+        f.write_text("x" * 64)
+        _age(f, 90.0, now)
+    monkeypatch.setattr(ret, "CACHE", tmp_path / "cache")
+
+    kw = dict(temp_keep_hours=24.0, files_keep_days=30.0, now=now)
+    assert ret.collect_scratch(**kw) == [], "默认（未开 --scratch-files）就收了顶层文件"
+
+    names = {t.path.name for t in ret.collect_scratch(include_files=True, **kw)}
+    assert names == {"_chk9.py", "_gates.diff"}, names
+    assert not any(n in names for n in ("asi_fix2_spec.json", "asi_fix2_variants.txt",
+                                        "_keep_spec.json")), "批次输入件被误收"
 
 
 def test_main_check_exit_codes(ret, tmp_path, monkeypatch):
@@ -217,6 +334,27 @@ def test_real_cache_stale_probe_volume_within_limit(ret):
     )
 
 
+def test_real_cache_scratch_basetemp_count_within_limit(ret):
+    """★ 真实 cache/_scratch 的陈旧 basetemp 目录数必须在阈值内。
+
+    2026-10-14 布局审计实测 749 个（`pt` 737 + `pt2` 12）、65 MB，是全仓
+    153 个空目录的主要来源。阈值 200 = 一轮全量回归（≈3200 用例，按文件分批）
+    留下的合理余量；再往上就是"回收策略没被执行"，而不是"刚跑过测试"。
+    """
+    scratch = ret.CACHE / ret.SCRATCH_DIRNAME
+    if not scratch.is_dir():
+        pytest.skip("cache/_scratch 不存在（干净克隆）")
+    now = time.time()
+    stale = ret.collect_scratch(temp_keep_hours=ret.PYTEST_TEMP_KEEP_HOURS_DEFAULT,
+                                files_keep_days=ret.SCRATCH_FILES_KEEP_DAYS_DEFAULT,
+                                now=now)
+    stale_dirs = [t for t in stale if t.is_dir]
+    assert len(stale_dirs) <= MAX_STALE_BASTEMP_DIRS, (
+        f"cache/_scratch 有 {len(stale_dirs)} 个陈旧 basetemp 目录"
+        f"（>{MAX_STALE_BASTEMP_DIRS}）→ 跑 `python tools/retention.py --apply` 回收"
+    )
+
+
 def test_retention_cli_help_is_self_documenting(ret):
     """--help 自文档（AGENTS.md §6：工具化纪律要求 --help 自解释）。"""
     import contextlib
@@ -229,5 +367,6 @@ def test_retention_cli_help_is_self_documenting(ret):
             pass
     text = buf.getvalue()
     for flag in ("--keep-data-baks", "--probe-keep-days", "--logs-keep-days",
+                 "--pytest-temp-keep-hours", "--scratch-files", "--scratch-keep-days",
                  "--apply", "--check"):
         assert flag in text, f"--help 未提及 {flag}"

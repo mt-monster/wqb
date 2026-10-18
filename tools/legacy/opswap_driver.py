@@ -8,8 +8,8 @@
 - 在飞上限 INFLIGHT_MAX=5（保守，给并行会话留余量）
 
 用法：
-  python reports/opswap_driver.py            # 续跑（读 cache/opswap_state.json）
-  OPSWAP_FRESH=1 python reports/opswap_driver.py  # 全新（丢弃状态，含已提交 sim！慎用）
+  python tools/legacy/opswap_driver.py                  # 续跑（读 cache/opswap_state.json）
+  OPSWAP_FRESH=1 python tools/legacy/opswap_driver.py   # 全新（丢弃状态，含已提交 sim！慎用）
 """
 from __future__ import annotations
 
@@ -20,7 +20,16 @@ import time
 
 import requests
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#: 仓库根用 `wqb.paths.find_repo_root`（向上探测 pyproject.toml + src/wqb 双标记），
+#: **不写 `parents[1]` / `dirname(dirname())` 这类层数硬编码**（AGENTS.md §8.4）。
+#: 战例：本脚本 2026-10 迁进 `tools/legacy/`（深度 2）后 `dirname(dirname(__file__))`
+#: 只回退一层 → ROOT 落在 `tools/`，ENV_PATH 指向 `tools/world-quant-brain-mcp/.env`
+#: 与 `tools/cache/opswap_plan.json` —— 两处都找不到，脚本直接跑不起来。
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__)))), "src"))
+from wqb.paths import find_repo_root  # noqa: E402
+
+ROOT = find_repo_root(__file__)
 ENV_PATH = os.path.join(ROOT, "world-quant-brain-mcp", ".env")
 PLAN_PATH = os.path.join(ROOT, "cache", "opswap_plan.json")
 STATE_PATH = os.path.join(ROOT, "cache", "opswap_state.json")

@@ -1,0 +1,2312 @@
+[
+ {
+  "id": "anl48_bbpdiip",
+  "description": "Amount of projected dividends expressed in index points, indicating the expected dividend impact within a specific index",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3253,
+  "userCount": 3,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bbpsa",
+  "description": "The amount of dividend projected or paid per share",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 5,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bbt",
+  "description": "Indicator or metric showing the trend or direction of dividend projections, potentially up/down or growth/decline signal",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 1,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bc_dvd_declared_dt",
+  "description": "The date on which the dividend was formally declared by the company",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5155,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bdha",
+  "description": "Amount of dividend historically announced for the security",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4765,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bdhad",
+  "description": "Date when the dividend was announced for the security in question",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5044,
+  "userCount": 12,
+  "alphaCount": 42,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bdhed",
+  "description": "Ex-dividend date, historically, when entitlement to dividend ceases",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5044,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bdhpd",
+  "description": "Date when the dividend was historically paid for the security",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4688,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bdhrd",
+  "description": "Date when ownership is recorded for dividend entitlement (record date), historically",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4815,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bdvd_curr_dir_therm",
+  "description": "Type of security (equity, ADR, ETF, etc.), likely using numeric or floating-point codes",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ },
+ {
+  "id": "anl48_bdvd_curr_dvd_health",
+  "description": "Current metric indicating the strength or sustainability of the dividend",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 5,
+  "alphaCount": 42,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bdvd_next_est_ex_dt",
+  "description": "Estimated date when shares will go ex-dividend for the next dividend event",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5155,
+  "userCount": 4,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bedhga",
+  "description": "Historical gross dividend amount per share",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4836,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bedhgad",
+  "description": "Date when dividend was historically announced",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5066,
+  "userCount": 7,
+  "alphaCount": 25,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bedhged",
+  "description": "Historical ex-dividend date for dividend event",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5066,
+  "userCount": 3,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bedhgpd",
+  "description": "Historical dividend payment date",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4669,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bedhgrd",
+  "description": "Date recording ownership entitlement for the dividend payout (record date)",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.488,
+  "userCount": 4,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bnedd",
+  "description": "Next estimated date when the dividend will be officially declared",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 2,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bnepd",
+  "description": "Next estimated dividend payment date (expected when the dividend will be paid)",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.816,
+  "coverage": 0.5371,
+  "userCount": 10,
+  "alphaCount": 31,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bp12m_dip",
+  "description": "Projected total dividend for the next 12 months, expressed in index points for the index",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3244,
+  "userCount": 1,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bp12m_yld",
+  "description": "Projected dividend yield over the next 12 months",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5135,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bp3y_dg",
+  "description": "Projected growth rate of dividends over the next 3 years",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4795,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bpda",
+  "description": "The next projected dividend per share amount according to Bloomberg's forecasts",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5155,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_bdvd_all_projections_ibs",
+  "description": "Bloomberg security identifier; unique code for the specific security as listed in Bloomberg",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_bdvd_all_projections_par_amt",
+  "description": "Par amount, i.e., the face value of the security issued",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5146,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_count_index_members",
+  "description": "The number of constituent stocks in the index",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3253,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_dvd_hist_ibs",
+  "description": "Bloomberg security identifier, uniquely identifies individual security",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4944,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_dvd_hist_par_amt",
+  "description": "Par amount or face value of the security issued",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5038,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_eqy_dvd_hist_gross_ibs",
+  "description": "Bloomberg unique identifier for the security (e.g., specific share class or instrument)",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5067,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_eqy_dvd_hist_gross_par_amt",
+  "description": "Face value or principal amount of the security issued",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5061,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_bulk_idivisor",
+  "description": "The divisor used in index calculations to maintain continuity following changes such as corporate actions",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.2311,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ },
+ {
+  "id": "anl48_bulk_indx_typ",
+  "description": "Numeric code representing the type of index (e.g., price, total return, sector-based, etc.)",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.2985,
+  "userCount": 3,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_count_index_members",
+  "description": "The total number of stocks that are members of the index",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3489,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_dvd_declared_dt",
+  "description": "The official date when the dividend was formally declared by the company",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 2,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_dvd_pay_dt",
+  "description": "Date on which the dividend payment is made to eligible shareholders",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4752,
+  "userCount": 1,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_dvd_record_dt",
+  "description": "Date when shareholders are recorded for dividend entitlement",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4905,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_dvd_xe",
+  "description": "Ex-dividend amount or relevant value indicating the period when securities are traded without dividend entitlement",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3139,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_edg3yr_g",
+  "description": "Growth rate of gross dividends per share over the past 3 years",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4361,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_bdvd_all_projections_ibc",
+  "description": "Bloomberg company identifier; unique code for the issuing company of the security",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 1,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_bdvd_all_projections_nfields",
+  "description": "The number of fields present in the record or data row",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_bdvd_all_projections_return_code",
+  "description": "Code indicating the status or result of a data retrieval, update, or event in the dataset",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_dvd_hist_ibc",
+  "description": "Bloomberg Company Identifier, a unique code used by Bloomberg to identify the company",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5044,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_dvd_hist_nfields",
+  "description": "Number of fields present in the data record or dataset",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5044,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_dvd_hist_return_code",
+  "description": "Code indicating the status or result of the data retrieval or processing for the record",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5044,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_eqy_dvd_hist_gross_ibc",
+  "description": "Bloomberg unique identifier for the company",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5067,
+  "userCount": 2,
+  "alphaCount": 21,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_eqy_dvd_hist_gross_nfields",
+  "description": "Number of fields included in the record or dataset",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5067,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_bulk_eqy_dvd_hist_gross_return_code",
+  "description": "Status code indicating success, error, or other result of data fetch or record; may also signal record revision or notification status",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5067,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_dvd_sh_last",
+  "description": "The most recent net dividend amount paid per share",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4817,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_ibc",
+  "description": "Bloomberg unique identifier for the company associated with the security",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5155,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_ldg",
+  "description": "Most recently reported dividend per share (gross, before taxes/withholding) for the given equity",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4815,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_m21_dly_dvd_yqe",
+  "description": "Gross dividend yield for the past 12 months, often calculated as dividends paid over current stock price",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4784,
+  "userCount": 8,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_nfields",
+  "description": "Number of fields in the record or dataset returned for the query",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_return_code",
+  "description": "Code indicating the status or result of the data retrieval, such as normal, error, or special notification status",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5155,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_equity_td_xe_dvd",
+  "description": "Date on which the equity goes ex-dividend, i.e., after which buyers are not entitled to the declared dividend",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_ibs",
+  "description": "Bloomberg Security Identifier (BBGID) – unique global security ID",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5155,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_idivisor",
+  "description": "The divisor value used in the index calculation (essential for price or market cap aggregation)",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.2403,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-10-01"
+ },
+ {
+  "id": "anl48_index_bulk_ibc",
+  "description": "Unique Bloomberg identifier for the company associated with the index or security",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3253,
+  "userCount": 2,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_bulk_nfields",
+  "description": "Number of fields present within this dataset record",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3253,
+  "userCount": 2,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_bulk_return_code",
+  "description": "Code indicating the result or status of a data retrieval or event, such as success or error",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3253,
+  "userCount": 3,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_dvd_sh_last",
+  "description": "The most recent net dividend amount paid per share for the index",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3139,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_ibc",
+  "description": "Unique Bloomberg identifier assigned to the company used in this index",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3489,
+  "userCount": 1,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_ldg",
+  "description": "The most recent gross dividend amount paid per share for the index, before taxes or deductions",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3139,
+  "userCount": 1,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_m21_dly_dvd_yqe",
+  "description": "Gross dividend yield over the previous 12 months (annualized)",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.2795,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_nfields",
+  "description": "Number of fields recorded in the data row or dataset",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3489,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_return_code",
+  "description": "Code indicating status or result of data retrieval, e.g., success, warning, error",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3489,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_index_td_xe_dvd",
+  "description": "The last or most recent ex-dividend date, i.e., the date when new buyers of the index constituents are not entitled to the latest declared dividends",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3139,
+  "userCount": 1,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_indx_typ",
+  "description": "Numeric code representing the type or classification of the index",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3062,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_m21_hs_dvd",
+  "description": "Total gross dividend per share distributed over the last 12 months",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.3113,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_par_amt",
+  "description": "The face value or nominal amount of the security issued",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5148,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl48_td_xe_dvd_cb",
+  "description": "The ex-dividend date for the dividend event, i.e., the date after which buyers of the security are no longer entitled to receive the dividend",
+  "dataset": {
+   "id": "analyst48",
+   "name": "Dividend estimation data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5152,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ }
+]

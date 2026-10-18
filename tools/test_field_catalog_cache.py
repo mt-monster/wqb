@@ -8,7 +8,7 @@
 4. 缓存 TTL 机制
 5. 批量预热功能
 
-用法（另有完整说明见 docs/S1_FIELD_CATALOG_CACHE_GUIDE.md）:
+用法（另有完整说明见 docs/reference/s1_field_catalog_cache_guide.md）:
   python tools/test_field_catalog_cache.py --campaign-dir tracking/EUR --dataset ai_equity_alpha
 
 ⚠️ 本文件是**手动 CLI 脚本**，不是 pytest 用例：

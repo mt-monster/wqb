@@ -115,7 +115,7 @@
 ### 阈值与判定
 
 - 平台**名义阈值 0.7**，但 **SUPER 判定只看 `result` 不看 `value`**：0.8094 / 0.8571 判 PASS，0.8938 / 0.9729 判 FAIL → 实际分界在 **0.86 ~ 0.89**。
-- **我方铁律更严**：prod ≥ 0.7 **一律拒提**（`super_build.py` 已强制 probe + fail-closed，唯一豁免 `--allow-prod-above-07`）。REGULAR 同口径。
+- **我方铁律更严**：prod ≥ 0.7 **一律拒提**（`super_build.py` 已强制 probe + fail-closed；**无任何豁免入口**——原 `--allow-prod-above-07` 开关已于 2026-10-18 按用户判定「不合规」彻底移除）。REGULAR 同口径。
 - **`PROD > 0.7` 未必 FAIL**：`N1QMJ10q` 0.7225 判 WARNING、`gJjnXv8g` 0.7864 成功 ACTIVE；同批 `omqxJmO6` 0.7255 却 FAIL → **判定非纯阈值，以平台实测值为准**（`check_correlation` 读 prod；`submit_verdict` 看模拟层）。
 
 ### 两个必知的失效场景

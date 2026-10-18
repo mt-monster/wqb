@@ -89,7 +89,7 @@
 | 文件 | 保留理由 |
 |---|---|
 | `tools/triage_platform_status_sweep_v3.py` | 当时（2026-10-04）mtime 2026-09-24 22:36，并发会话可能在飞，避免误删在写文件。**已追认完成：2026-10-06 全仓零活动引用（只剩 THEMES 与基线登记痕迹），用户主动退役并 `git rm`**，同时登记进 `audit_structure_baseline.json` 的 `retired_paths`（S12 拦复活）。内容留在 git 历史与抢救点，取看：`git show b62447f:tools/triage_platform_status_sweep_v3.py`（退役前的最后一个主干 commit）|
-| `tools/db_maintenance.py` | 有 `__main__`；且为 2026-09-20 17:15 落盘的一批 DB 维护 CLI，属未登记工具 |
+| `tools/db/db_maintenance.py` | 有 `__main__`；且为 2026-09-20 17:15 落盘的一批 DB 维护 CLI，属未登记工具（2026-10-14 主题下沉进 `db/`） |
 | `tools/operator_diversity_analyzer.py` | 有 `__main__`，算子多样性分析 CLI，属未登记工具 |
 | `tools/discover_datasets.py`、`tools/fix_db_residuals.py`、`tools/populate_external_fields.py` | 三个均以 2026-09-20 16:58 同批落盘（疑似同一次 DB 迁移），全部带 `__main__` CLI |
 
@@ -116,8 +116,8 @@
 |---|---|
 | `dryrun_chain_runner_20260927.py` | `reports/skills_pipeline_stage_review_20260927.md` 写明「可复现：`python reports/dryrun_chain_runner_20260927.py`」，且配套读 `dryrun_chain_result_20260927.json`。refs=1 |
 | `dryrun_chain_runner_v2_20260927.py` | 同上，见 `reports/skills_stage_review_v2_20260927.md`。refs=1 |
-| `ra_pipeline_stage_review_20260927/*.py`（3 个） | 阶段审查证据 |
-| `skills_review_20260929/check_skills.py` | skills 全量审查的可重跑检查器 |
+| `ra_pipeline_stage_review_20260927_refs/*.py`（3 个） | 阶段审查证据 |
+| `skills_review_20260929_refs/check_skills.py` | skills 全量审查的可重跑检查器 |
 | `forum_alpha_research/*.py`（3 个） | 论坛取证流水线 |
 
 > **教训**：搬 `reports/*.py` 前必须先核 refs。日期前缀看着像"一次性产物"，

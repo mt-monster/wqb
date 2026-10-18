@@ -1,0 +1,990 @@
+{
+ "dataset": "analyst16",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "nfields": 109,
+ "fields": [
+  {
+   "id": "actual_change_fiscal_year_end_month",
+   "type": "VECTOR",
+   "coverage": 0.5032,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal month in which the reporting period ends for the actual change.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_change_period_length",
+   "type": "VECTOR",
+   "coverage": 0.5032,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The duration of the reporting period for the actual change, typically in months.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_change_window_length",
+   "type": "VECTOR",
+   "coverage": 0.5032,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The length of the time window used for the actual change calculation.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_currency_adjustment",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The adjustment factor to convert the actual value to a default currency.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_default_currency_adjustment_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The adjustment factor to convert the actual value to the default currency for Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_fiscal_year_end_month",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal year end month for the period covered by the actual value.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_fiscal_year_end_month_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal month in which the reporting period ends for the actual value in Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_normalization_currency_adjustment_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The currency adjustment factor applied during normalization of the actual value in Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_normalization_split_adjustment_twn",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The adjustment factor for stock splits applied during normalization of the actual value in Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_period_duration",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The length of the period covered by the actual value, such as number of months or quarters.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_period_length_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The duration of the reporting period for the actual value in Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_reported_value",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The reported financial value for the specified period and measure.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_unit_scale_contributed_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The scaling factor for the contributed actual value in the Taiwan partition.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_unit_scale_normalized_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The scaling factor applied to the normalized actual value in Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_unit_scale_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The scaling factor applied to the actual value in the Taiwan partition.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_contributed_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The contributed actual value for the reporting period in Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_normalized_twn",
+   "type": "VECTOR",
+   "coverage": 0.6947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The normalized actual value for the reporting period in Taiwan.",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_1scermun",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 17,
+   "alphaCount": 27,
+   "description": "Number of recommendations with a value of 1 in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_2scermun",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Number of recommendations with a value of 2 in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_3scermun",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 11,
+   "alphaCount": 19,
+   "description": "Number of recommendations with a value of 3 in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_4scermun",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Number of recommendations with a value of 4",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_5scermun",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of recommendations with a value of 5 (typically \"Sell\" or lowest rating)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actchgnorm_estcomsplitadj",
+   "type": "VECTOR",
+   "coverage": 0.5032,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Adjustment to the actual change value in the fiscal report to account for corporate actions like splits, resulting in split-adjusted values",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actchgnorm_estnormcuradj",
+   "type": "VECTOR",
+   "coverage": 0.5032,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjustment to the actual change value in the fiscal report to account for currency changes, resulting in currency-adjusted values",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actgrowth",
+   "type": "VECTOR",
+   "coverage": 0.2972,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Growth rate of the reported actual value (such as earnings, revenue) in the fiscal report over the past several years",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actnorm_estcomsplitadj",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Adjustment factor for common stock split normalization applied to activity/estimate values",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_actnorm_estnormcuradj",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency-adjusted normalized actual value in the fiscal report.",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actstability",
+   "type": "VECTOR",
+   "coverage": 0.2972,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measurement of stability (volatility or consistency) of the reported actual value in the fiscal report",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actsuescore",
+   "type": "VECTOR",
+   "coverage": 0.5041,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Sentiment score of the actual value surprise, quantifying the degree and direction (positive/negative) of the surprise",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_actsurprise",
+   "type": "VECTOR",
+   "coverage": 0.6241,
+   "userCount": 20,
+   "alphaCount": 20,
+   "description": "The magnitude of the actual value surprise in the fiscal report, i.e., difference between actual and consensus or estimate",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_actunit_scale",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Scale factor applied to the actual value (e.g., 1, 1e6)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actunit_scale_ascontrib",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Contributor-specific scale factor for the actual value (e.g., thousands, millions)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_actunit_scale_normal",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Normalized scale factor for the actual value to ensure comparability",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_actvalue",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Numeric value of the actual reported measure (e.g., EPS, revenue)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actvalue_ascontrib",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual value as provided by the contributor, unadjusted",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_actvalue_normal",
+   "type": "VECTOR",
+   "coverage": 0.6969,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Activity value after normalization for currency, units, and corporate actions",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_aftercons_difference",
+   "type": "VECTOR",
+   "coverage": 0.6174,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Difference between consensus values after and before the event (after change value minus before change value)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_aftercons_high",
+   "type": "VECTOR",
+   "coverage": 0.6531,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Highest value in the consensus after the change",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_aftercons_low",
+   "type": "VECTOR",
+   "coverage": 0.6531,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest value in the consensus after the event",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_aftercons_mean",
+   "type": "VECTOR",
+   "coverage": 0.6553,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean value in the consensus after the change",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_aftercons_median",
+   "type": "VECTOR",
+   "coverage": 0.6531,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Median value in the consensus after the change",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_aftercons_numitems",
+   "type": "VECTOR",
+   "coverage": 0.6692,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Number of estimated values in the consensus after the event",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_aftercons_percentage",
+   "type": "VECTOR",
+   "coverage": 0.6174,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Relative change in consensus value: (after change value minus before change value) divided by before change value",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_aftercons_stddev",
+   "type": "VECTOR",
+   "coverage": 0.6527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of the estimated values in the consensus after the change",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_afterest_difference",
+   "type": "VECTOR",
+   "coverage": 0.5758,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Difference between estimate values after and before the event (after change value minus before change value)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_afterest_percentage",
+   "type": "VECTOR",
+   "coverage": 0.5758,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Relative change in the earnings estimate: (after change value minus before change value) divided by before change value",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_afterest_value",
+   "type": "VECTOR",
+   "coverage": 0.6589,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Value of the earnings estimate after the change",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_beforecons_high",
+   "type": "VECTOR",
+   "coverage": 0.636,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Highest value in the consensus before the change",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_beforecons_low",
+   "type": "VECTOR",
+   "coverage": 0.636,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest value in the consensus before the change",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_beforecons_mean",
+   "type": "VECTOR",
+   "coverage": 0.6401,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Mean value in the consensus before the event",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_beforecons_median",
+   "type": "VECTOR",
+   "coverage": 0.636,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value in the consensus before the change",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_beforecons_numitems",
+   "type": "VECTOR",
+   "coverage": 0.6691,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "number of values included in the consensus multiply multiplier",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_beforecons_numitems_orig",
+   "type": "VECTOR",
+   "coverage": 0.6692,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "number of individual estimates included in the consensus before the change",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_beforecons_stddev",
+   "type": "VECTOR",
+   "coverage": 0.6357,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of the estimated values in the consensus before the change",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_beforeest_value",
+   "type": "VECTOR",
+   "coverage": 0.6206,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Value of the earnings estimate before the event",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_estnorm_estcomsplitadj",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Split-adjusted normalized estimate value.",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_estnorm_estnormcuradj",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Normalized currency adjustment used in estimate normalization",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_eststddev",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of the estimates, indicating dispersion among contributors",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_eststddev_normal",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Normalized standard deviation of all estimates for the period (shows consensus dispersion)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_estunit_scale",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Numeric scale factor applied to the estimate units (e.g., 1, 1e6)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_estunit_scale_ascontrib",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Contributor-reported unit scale factor for the estimate",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_estunit_scale_normal",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Normalized unit scale indicating how the estimate value should be scaled for normalized data",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Raw estimate value reported for the measure",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_estvalue_ascontrib",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Raw estimate value as contributed by the analyst (unadjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_estvalue_normal",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Fully normalized estimate value adjusted for currency, units, and corporate actions",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_highest",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Highest estimate among contributors",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_highest_normal",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Highest contributor estimate after normalization",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_highrec",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Highest recommendation value present in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_interimperiodend",
+   "type": "VECTOR",
+   "coverage": 0.6692,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "The date when the interim fiscal period ends for the company",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_interimperiodnum",
+   "type": "VECTOR",
+   "coverage": 0.6692,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number assigned to an interim period (e.g., 1=Q1, 2=Q2, 3=Q3, 4=Q4)",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_lowest",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Lowest estimate value in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_lowest_normal",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Lowest contributor estimate after normalization",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_lowrec",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Lowest recommendation value present in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_meanest",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Mean value of the consensus estimate for the period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_meanest_normal",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Normalized mean consensus estimate value",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_meanestnorm_estcomsplitadj",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "split adjusted mean of estimate value in the summary",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_meanestnorm_estnormcuradj",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Normalization adjustment applied to the mean estimate for currency conversion",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_meanestunit_scale",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Scale factor applied to the mean estimate units",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_meanestunit_scale_normal",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Normalized scale factor applied to the mean estimate units after currency/unit normalization",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_meanrec",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Mean (average) value of all recommendation scores in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_medianest",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Median value of the consensus estimate for the period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_medianest_normal",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median of contributor estimates after normalization",
+   "crowding": "low"
+  },
+  {
+   "id": "anl16_medianrec",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Median value of all recommendation scores in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_numests",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Number of contributing estimates included in the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_numincests",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "the number of estimates used to generate the summary analytic values",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_reccode",
+   "type": "VECTOR",
+   "coverage": 0.5942,
+   "userCount": 12,
+   "alphaCount": 20,
+   "description": "The recommendation code indicating the type or category of the analyst recommendation",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_recvalue",
+   "type": "VECTOR",
+   "coverage": 0.622,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Recommendation value or score (e.g., numeric buy/hold/sell code)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl16_scermun",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total number of recommendations contributing to the summary",
+   "crowding": "mid"
+  },
+  {
+   "id": "basedata_instrument_to_ticker_map_twn",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A mapping from instrument identifiers to company tickers for the Taiwan partition.",
+   "crowding": "low"
+  },
+  {
+   "id": "basedata_ticker_to_instrument_map_twn",
+   "type": "VECTOR",
+   "coverage": 0.9068,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A mapping from company tickers to instrument identifiers for the Taiwan partition.",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_change_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.6692,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code used for the estimate change.",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_currency_adjustment_factor",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The adjustment factor to convert the estimate to the default currency.",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_fiscal_year_end_month",
+   "type": "VECTOR",
+   "coverage": 0.7164,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal year end month for the estimate period.",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_period_length",
+   "type": "VECTOR",
+   "coverage": 0.7229,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The duration of the reporting period for the estimate.",
+   "crowding": "low"
+  },
+  {
+   "id": "fiscal_year_value_9",
+   "type": "VECTOR",
+   "coverage": 0.4886,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The fiscal year associated with the reporting period.",
+   "crowding": "low"
+  },
+  {
+   "id": "mean_estimate_fiscal_year_end_month",
+   "type": "VECTOR",
+   "coverage": 0.6971,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal year end month for the period covered by the mean estimate.",
+   "crowding": "low"
+  },
+  {
+   "id": "mean_estimate_period_duration",
+   "type": "VECTOR",
+   "coverage": 0.7056,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The length of the period covered by the mean estimate, such as number of months or quarters.",
+   "crowding": "low"
+  },
+  {
+   "id": "no_opinion_recommendation_count",
+   "type": "VECTOR",
+   "coverage": 0.5079,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The number of recommendations classified as 'no opinion' for the period.",
+   "crowding": "low"
+  },
+  {
+   "id": "period_advance_fiscal_year_end_month",
+   "type": "VECTOR",
+   "coverage": 0.797,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal year end month for the period advance indicator.",
+   "crowding": "low"
+  },
+  {
+   "id": "period_advance_period_length",
+   "type": "VECTOR",
+   "coverage": 0.797,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The duration of the reporting period for the period advance indicator.",
+   "crowding": "low"
+  },
+  {
+   "id": "period_index_duration",
+   "type": "VECTOR",
+   "coverage": 0.4909,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The length of the period for the period index mapping.",
+   "crowding": "low"
+  },
+  {
+   "id": "period_index_fiscal_year_end_month",
+   "type": "VECTOR",
+   "coverage": 0.4886,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The fiscal year end month for the period index mapping.",
+   "crowding": "low"
+  },
+  {
+   "id": "premap_instrument_to_ticker_map_twn",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A mapping from instrument identifiers to company tickers in the pre-mapped Taiwan partition.",
+   "crowding": "low"
+  },
+  {
+   "id": "premap_ticker_to_instrument_map_twn",
+   "type": "VECTOR",
+   "coverage": 0.9936,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A mapping from company tickers to instrument identifiers in the pre-mapped Taiwan partition.",
+   "crowding": "low"
+  },
+  {
+   "id": "relative_fiscal_period_position",
+   "type": "VECTOR",
+   "coverage": 0.4909,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The position of the period within the fiscal year, such as quarter number.",
+   "crowding": "low"
+  },
+  {
+   "id": "relative_period_index",
+   "type": "VECTOR",
+   "coverage": 0.4909,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A relative index indicating the position of the period, such as 0 for current or 1 for next.",
+   "crowding": "low"
+  },
+  {
+   "id": "surprise_window_fiscal_year_end_month",
+   "type": "VECTOR",
+   "coverage": 0.691,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal year end month for the period analyzed in the actual surprise window.",
+   "crowding": "low"
+  },
+  {
+   "id": "surprise_window_length",
+   "type": "VECTOR",
+   "coverage": 0.691,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The length of the time window used for the actual surprise analysis.",
+   "crowding": "low"
+  },
+  {
+   "id": "surprise_window_period_duration",
+   "type": "VECTOR",
+   "coverage": 0.691,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The length of the period covered by the actual surprise window analysis.",
+   "crowding": "low"
+  }
+ ]
+}

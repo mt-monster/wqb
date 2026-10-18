@@ -2,7 +2,7 @@
 name: brain-alpha-research-hypothesis-first
 layer: L1
 description: "饱和数据集（平台 alphaCount ≥ 1 万，或该集连续 2 波模板全灭）改走假设驱动：起草可证伪假设目录，用 hypothesis_round 节点构建主假设 / 去门控消融 / 对照 / 变体四条一组的实验，回测后交 judge() 判定。条件激活：目录缺失时先起草。触发词：饱和数据集 / 假设优先 / hypothesis-first / 模板挖尽。"
-last_verified: 2026-09-29
+last_verified: 2026-10-18
 allowed-tools:
   - Read
   - Bash

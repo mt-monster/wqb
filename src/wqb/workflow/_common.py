@@ -336,9 +336,9 @@ def _is_foreign_wqb_python(candidate: str) -> bool:
     判据与 ``tools/_pyenv.py::is_foreign_wqb_python`` 一致；src 层不 import tools（_pyenv 须在
     re-exec 前零依赖运行），故内联一份 —— 改判据时**两处都要改**。
 
-    事故（2026-10-06）：环境残留 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/.venv/
-    Scripts/python.exe``，只看 ``isfile`` 的实现会放行，进程被 re-exec 到另一个仓库的解释器后
-    三层互相等待、13 分钟无输出。
+    事故（2026-10-06）：环境残留一个 ``WQ_PY`` 指向**另一份 wqb 仓库副本**的 venv，
+    只看 ``isfile`` 的实现会放行，进程被 re-exec 到另一个仓库的解释器后
+    三层互相等待、13 分钟无输出。（2026-10-09 已在用户级注册表层面根治。）
     """
     if not candidate:
         return False

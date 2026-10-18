@@ -195,6 +195,45 @@ def _parse_glossary_terms(content: str) -> List[Dict[str, str]]:
 class ForumClient:
     """Forum client for WorldQuant BRAIN support site, using Playwright."""
     
+    @staticmethod
+    def _needs_proactor() -> bool:
+        """Check if current event loop supports subprocess creation on Windows."""
+        try:
+            import asyncio, sys
+            if sys.platform != 'win32':
+                return False
+            loop = asyncio.get_event_loop()
+            loop_name = loop.__class__.__name__
+            # ProactorEventLoop supports subprocess; SelectorEventLoop does not
+            return 'Proactor' not in loop_name
+        except Exception:
+            return False
+
+    @staticmethod
+    def _run_in_proactor(coro):
+        """Run a coroutine in a thread with ProactorEventLoop (supports subprocess on Windows)."""
+        import asyncio, threading
+        
+        result = [None, None]  # [value, exception]
+        
+        def runner():
+            try:
+                loop = asyncio.ProactorEventLoop()
+                asyncio.set_event_loop(loop)
+                try:
+                    result[0] = loop.run_until_complete(coro)
+                finally:
+                    loop.close()
+            except Exception as e:
+                result[1] = e
+        
+        t = threading.Thread(target=runner)
+        t.start()
+        t.join()
+        if result[1]:
+            raise result[1]
+        return result[0]
+    
     def __init__(self):
         # Load .env to allow overrides via environment
         try:
@@ -401,6 +440,13 @@ class ForumClient:
         if async_playwright is None:
             raise ImportError("Playwright not available. Please install it with: pip install playwright")
 
+        if self._needs_proactor():
+            return self._run_in_proactor(self._get_glossary_terms_impl(email, password))
+        return await self._get_glossary_terms_impl(email, password)
+
+    async def _get_glossary_terms_impl(self, email: str, password: str) -> List[Dict[str, str]]:
+        """Glossary implementation (assumes ProactorEventLoop-compatible context)."""
+
         async with self._forum_operation_semaphore:
             async with async_playwright() as p:
                 browser = None
@@ -433,6 +479,16 @@ class ForumClient:
         """Search for posts on the forum using Playwright, with pagination and timeout protection."""
         if async_playwright is None:
             raise ImportError("Playwright not available. Please install it with: pip install playwright")
+        
+        if self._needs_proactor():
+            # SelectorEventLoop can't create subprocesses; run in a thread with ProactorEventLoop
+            return self._run_in_proactor(
+                self._search_forum_posts_impl(email, password, search_query, max_results, locale)
+            )
+        return await self._search_forum_posts_impl(email, password, search_query, max_results, locale)
+
+    async def _search_forum_posts_impl(self, email: str, password: str, search_query: str, max_results: int = 50, locale: str = "zh-cn") -> Dict[str, Any]:
+        """Search implementation (assumes ProactorEventLoop-compatible context)."""
         
         timeout_seconds = 30  # Per-operation timeout
         overall_timeout = 120  # Overall timeout for entire search

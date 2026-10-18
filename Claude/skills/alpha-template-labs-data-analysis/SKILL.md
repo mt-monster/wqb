@@ -2,7 +2,7 @@
 name: alpha-template-labs-data-analysis
 layer: L0
 description: "要在 Brain Labs 里用 Python 做原始数据分析（覆盖 / 缺失 / 频率 / 离群 / 相关性）时使用：为 USA/TOP3000/D1 的 MATRIX 数据集生成 Labs 脚本、回收结果，给出 Python 原生抽取机制。触发词：Labs 分析 / 原始数据分析 / labs data analysis / Python alpha 设计前置。Python 轨道，不进 FASTEXPR 提交路径。"
-last_verified: 2026-10-08
+last_verified: 2026-10-18
 user-invocable: true
 allowed-tools:
   - Read

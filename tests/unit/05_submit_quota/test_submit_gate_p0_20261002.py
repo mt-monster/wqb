@@ -222,12 +222,29 @@ def test_run_prod_gate_blocks(patched, monkeypatch):
     assert out["blocked"] is True and "prod_gate" in out["reason"]
 
 
-def test_run_prod_gate_exempt_by_flag(patched, monkeypatch):
-    """allow_prod_above_07=True 显式豁免 → 继续提交。"""
-    monkeypatch.setattr(patched, "_prod_gate", lambda *a, **k: pytest.fail("不应调用 prod 闸"))
-    out = patched.run(alpha_id="A1", confirm_submit=True, robustness_audited=True,
-                      allow_prod_above_07=True)
-    assert out.get("submitted") is True
+def test_run_prod_gate_no_exemption_param(patched):
+    """2026-10-18 收紧：prod 闸豁免参数已移除，传入即 TypeError（不留后门）。"""
+    with pytest.raises(TypeError):
+        patched.run(alpha_id="A1", confirm_submit=True, robustness_audited=True,
+                    allow_prod_above_07=True)
+
+
+def test_run_prod_gate_always_enforced(patched, monkeypatch):
+    """2026-10-18 收紧：confirm_submit=True 时 prod 闸**恒执行**，无豁免路径。
+
+    与旧 `test_run_prod_gate_exempt_by_flag` 相反——旧行为（flag 可跳过闸）已判定
+    不合规并移除。此处守护"闸一定被调用"这一新不变量。
+    """
+    called = {"n": 0}
+
+    def _gate(*a, **k):
+        called["n"] += 1
+        return {"allowed": True, "prod_max": 0.42, "threshold": 0.7, "status": "ok",
+                "reason": "prod max=0.42 < 0.7"}
+
+    monkeypatch.setattr(patched, "_prod_gate", _gate)
+    out = patched.run(alpha_id="A1", confirm_submit=True, robustness_audited=True)
+    assert called["n"] == 1, "prod 闸必须被调用，不存在豁免路径"
     steps = [s.get("step") for s in out["steps"]]
     assert "prod_gate" in steps
 

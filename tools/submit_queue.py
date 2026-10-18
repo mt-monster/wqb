@@ -39,8 +39,9 @@ def _mcp_venv_python():
     """复用 tools/_pyenv 的规范解析（含「$WQ_PY 串仓」防护），不再各抄一份候选列表。
 
     事故（2026-10-06）：本函数原为 ``cands = [$WQ_PY, <repo>/.venv/...]`` 只看 ``isfile``，
-    环境残留的 ``WQ_PY=D:/coding/hw_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe``
-    是**存在的文件**于是被放行，进程 re-exec 到另一个仓库的解释器后三层互相等待、13 分钟无输出。
+    而环境里残留的 ``WQ_PY`` 指向**另一份 wqb 仓库副本**的 venv —— 那是**存在的文件**于是被
+    放行，进程 re-exec 到另一个仓库的解释器后三层互相等待、13 分钟无输出。
+    （2026-10-09 已在用户级注册表层面根治。）
     """
     _tools = os.path.join(_REPO, "tools")
     if _tools not in sys.path:

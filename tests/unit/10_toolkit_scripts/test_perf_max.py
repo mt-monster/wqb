@@ -303,6 +303,29 @@ def test_plan_spec_carries_full_baseline_settings(tmp_path):
     assert nan_entry["nanHandling"] == "OFF" and nan_entry["decay"] == 500
 
 
+def test_plan_default_output_lands_in_results_not_tracking(tmp_path, monkeypatch):
+    """缺省 plan_dir 必须在 gitignore 的 `results/` 下，**不得**写进 `tracking/`。
+
+    2026-10-14 布局审计 §2.B-2 的止血用例：旧缺省是
+    `tracking/<region>/perfmax/<alpha_id>_<时间戳>/`，于是 `plan/dispatch_spec/score/variants_*`
+    这些**派发断点**成批进了版本控制（实测 89 件）。复发由 `audit_structure` S18 在索引面拦，
+    本用例守的是**源头**——写入位一挪回 tracking/ 就红，比提交被拦更省事。
+    """
+    src = tmp_path / "baseline.json"
+    src.write_text(json.dumps(_fake_details()), encoding="utf-8")
+    monkeypatch.setattr(P, "REPO", str(tmp_path))          # 不碰真实仓库
+    rc = P.main(["plan", "--baseline-json", str(src), "--objective", "fitness"])
+    assert rc == 0
+    created = [p for p in tmp_path.rglob("dispatch_spec.json")]
+    assert len(created) == 1, f"没生成派发材料：{created}"
+    rel = created[0].relative_to(tmp_path).as_posix().split("/")
+    assert rel[:3] == ["results", "perfmax", "USA"], f"缺省输出位漂移：{rel}"
+    assert "tracking" not in rel, f"派发断点又写回业务目录了：{rel}"
+    # 目录名仍守 <alpha_id>_<YYYYMMDD>_<HHMMSS>（S18 的时间戳签名靠它）
+    import re
+    assert re.match(r"^[^/]+_\d{8}_\d{6}$", rel[3]), rel[3]
+
+
 # ------------------------------------------------------- 2 submit_ready 入队（可交付必入）
 def test_build_enqueue_record_fills_all_fields():
     rec = P.build_enqueue_record(P.flatten_details(_fake_raw_details()),

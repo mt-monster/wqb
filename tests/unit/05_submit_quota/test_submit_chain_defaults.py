@@ -34,7 +34,7 @@ def test_workflow_submit_alpha_defaults_are_safe():
     assert d["color"] is None, "缺省交给节点取 BLUE；GREEN 须由 OS 结果挣得，禁当默认值"
     assert d["dry_run"] is False
     assert d["robustness_audited"] is False, "稳健性声明缺省必须 fail-closed（2026-10-04 起快捷入口暴露该参数）"
-    assert "allow_prod_above_07" not in d, "prod 红线豁免不进快捷入口，须走 workflow_execute 留痕"
+    assert "allow_prod_above_07" not in d, "prod 红线豁免已于 2026-10-18 彻底移除（不合规），任何入口都不得出现"
 
 
 def test_submit_alpha_node_default_color_is_pending_blue():

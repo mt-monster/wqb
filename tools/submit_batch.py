@@ -227,8 +227,18 @@ def main():
     if args.spec:
         spec = json.load(open(args.spec, encoding="utf-8"))
         batches = []
+        # 2026-10-09 修（--spec 分支曾**完全忽略** CLI 的区域/档位参数）：
+        #   实测 `--spec ... --region DEU --truncation 0.08` 生成的 payload 是
+        #   region='USA' + truncation=0.0（BASE 硬编码）⇒ 整批跑错区域/档位。
+        #   与 `--path` 分支（batches_from_args）对齐：CLI 显式值作为**默认值**，
+        #   spec 条目里的同名键再覆盖它（条目优先）。
+        cli_defaults = {k: v for k, v in (
+            ("region", args.region), ("universe", args.universe), ("delay", args.delay),
+            ("startDate", args.start), ("endDate", args.end), ("truncation", args.truncation),
+            ("nanHandling", args.nan_handling), ("maxTrade", args.max_trade),
+        ) if v is not None}
         for b in spec:
-            ov = {}
+            ov = dict(cli_defaults)
             # 2026-10-02：放开到 SETTINGS_PASSTHROUGH 白名单（原先只 6 个键，
             # nanHandling 等区域配置项被静默丢弃 → 与 settings.json 口径漂移）
             for k, v in b.items():

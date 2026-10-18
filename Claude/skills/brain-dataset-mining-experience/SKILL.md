@@ -2,7 +2,7 @@
 name: brain-dataset-mining-experience
 layer: L6
 description: 每波 S6 收尾、或下一轮选字段前要读某区域某数据集的已验证机制与失败边界时使用：按区域 / 数据集沉淀字段级经验（中文文档 reports/dataset_experience/<region>_<ds>_campain.md）。只读台账，不回测、不判死、不替代闸门。
-last_verified: 2026-09-29
+last_verified: 2026-10-18
 ---
 
 # 数据集与字段挖掘经验

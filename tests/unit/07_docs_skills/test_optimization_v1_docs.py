@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """optimization-v1 文档与代码的一致性守护（skills 审查 OP-04/06/07/09/11/12/13/16）。
 
-  1. reference.md §8 主题算子表：「已核验」栏 ⊂ known_ops，「未列入清单」栏 ∩ known_ops = ∅，且都不含 ghost / inaccessible 算子；
+  1. references/overview.md §8 主题算子表：「已核验」栏 ⊂ known_ops，「未列入清单」栏 ∩ known_ops = ∅，且都不含 ghost / inaccessible 算子；
   2. structural-interaction-forms.md 里出现的每个算子都在 known_ops（文档声称「均已核验」）；
   3. 不再指示写自建结果文本文件 / 不再出现旧的工具名与 0.5 的 salvage 过滤；
   4. 组合腿救援的入场方式与 `platform_constraints.json` 的 `spread_signal_ruling` 一致（F1 仅限同源）；
@@ -24,7 +24,7 @@ def _t(p: Path) -> str:
 
 
 def _theme_rows():
-    text = _t(SK / "reference.md")
+    text = _t(SK / "references" / "overview.md")
     section = text.split("## 8. 主题配额", 1)[1].split("## 9.", 1)[0]
     rows = [ln for ln in section.splitlines() if re.match(r"^\| [A-F] \|", ln)]
     assert len(rows) == 6, "主题表应有 A–F 六行"
@@ -69,7 +69,7 @@ def test_forms_f1_is_restricted_to_same_source_like_the_user_ruling():
 
 def test_no_self_made_result_text_file_and_no_stale_names():
     # 「不要另写 …_optimization_results.txt」这类**禁止句**里允许出现旧名；其余行不得出现
-    blob = "\n".join(ln for p in (SK / "SKILL.md", SK / "reference.md", SK / "examples.md")
+    blob = "\n".join(ln for p in (SK / "SKILL.md", SK / "references" / "overview.md", SK / "examples.md")
                      for ln in _t(p).splitlines() if "不要" not in ln)
     for stale in ("_optimization_results.txt", "open(target_file", "create_multiSim", "get_SimError_detail", "min_sharpe=0.5",
                   "Skill-ImproveTheme"):

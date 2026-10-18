@@ -4,7 +4,7 @@
 背景（2026-10-08 用户指令）：用户后续都从 submit_ready 取当日候选比较提交，
 因此「挖掘出可交付的 alpha 后一定要入 submit_ready」。正常链路各有自动入队：
   - 收批：`tools/harvest_multisim.py --auto-upsert`（默认开）→ enqueue_from_alphas
-  - 业绩极致优化：`tools/perf_max.py report`（默认开）/ `enqueue`
+  - 业绩极致优化：`tools/verdict/perf_max.py report`（默认开）/ `enqueue`
 本工具是**事后兜底**（harvest_multisim 报错信息里承诺的 enqueue_sweep）：
 扫本地 alphas/backtest_results，把「可交付但不在 submit_ready」的漏网补上。
 

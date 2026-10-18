@@ -1,0 +1,2709 @@
+{
+ "dataset": "analyst_consensus",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "nfields": 300,
+ "fields": [
+  {
+   "id": "actual_bvps_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7856,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Company-reported actual annual Book Value per Share (unadjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_bvps_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7825,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual BVPS values for the periods (forecast periods may be empty)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_bvps_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7856,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted actual reported Book Value Per Share value (currency/split adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_bvps_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7825,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime and currency-adjusted actual reported BVPS value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_capex_value_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported CPX values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_capex_value_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.7476,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported CAPEX value (as reported, unadjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_capex_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported CPX values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_capex_value_fxadj_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.7476,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/regime-adjusted actual reported CAPEX value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cashflowfinancing_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7251,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual annual Cash Flow from Financing (CFFINANCE)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cashflowfinancing_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7251,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual annual Cash Flow from Financing adjusted for currency/splits/regime",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cashflowinvesting_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7274,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual reported annual CFINVEST values, with forecast periods typically filled with NaN",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cashflowinvesting_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7274,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency-adjusted actual reported Cash Flow from Investing (converted to default currency and split-adjusted as applicable)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cfo_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7321,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual operating cash flow values; forecast periods are typically NaN",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cfo_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7321,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual operating cash flow values adjusted for currency and splits",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cfps_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6713,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Vendor-reported actual value of annual cash flow per share (CPS)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cfps_value_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7014,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual annual CFPS value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cfps_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6713,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported value of annual cash flow per share (CPS)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cfps_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7014,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split-adjusted actual CFPS values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cogs_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual Cost of Goods Sold",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_cogs_value_fxadj_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split adjusted actual annual COGS value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_currentassets_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6221,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual current assets amount as disclosed by the company",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_currentassets_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6221,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency/split/regime-adjusted actual reported annual current assets amount",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_currentliabilities_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual value for annual current liabilities (unadjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_currentliabilities_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6201,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual reported annual current liabilities adjusted for currency/regime effects",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_depreciation_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual depreciation values aligned to events (NaN for pure forecast periods)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_depreciation_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted actual annual depreciation values vector (currency/split/regime adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_dividend_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7761,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual DPS value(s)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_dividend_value_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7715,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual dividends-per-share (DPS) value for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_dividend_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7196,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported total dividend value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_dividend_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7761,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual annual DPS (currency/split adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_dividend_value_fxadj_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.7715,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual annual DPS value adjusted for currency/splits/regime effects",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_dividend_value_fxadj_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7196,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual total dividend value (currency/splits adjustments)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebit_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7986,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual annual EBIT value as released by the company",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebit_value_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.8026,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual EBI value, unadjusted",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebit_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7986,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split-adjusted actual reported annual EBIT values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebit_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.8026,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split adjusted actual reported EBI figures",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebit_value_fxadj_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.6431,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency-adjusted actual reported quarterly EBIT value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebit_value_quarterly16_2",
+   "type": "VECTOR",
+   "coverage": 0.6562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported quarterly EBI value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebitdarep_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.729,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual EBITDA values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebitdarep_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.729,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency-adjusted actual values for annual Reported EBITDA aligned to event periods",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebt_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported EBT value (regime-aware)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_ebt_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime- and currency-adjusted actual reported annual EBT",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_eps_reported_value_fxadj_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4309,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual EPS value adjusted for currency/splits/regime",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_eps_reported_value_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4309,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual EPS value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_eps_value_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.8005,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual EPS value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_eps_value_fxadj_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.8005,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted actual reported annual EPS values (currency/split/regime adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_eps_value_fxadj_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4814,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Regime-adjusted reported quarterly EPS actual value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_eps_value_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported quarterly EPS actual value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_epsreported_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.794,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual reported EPS value (EPSREP)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_epsreported_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual reported EPS value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_fcf_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.691,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual Free Cash Flow value for the company, point-in-time and regime-aware",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_fcf_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.691,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual annual FCF value (currency/split adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_fullyreported_value",
+   "type": "VECTOR",
+   "coverage": 0.4446,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for the GPS metric (latest quarterly report)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_fullyreported_value_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.4446,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime- and currency-adjusted actual reported values for the GPS metric",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_gps_value",
+   "type": "VECTOR",
+   "coverage": 0.7982,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for the GPS measure (as reported, unadjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_gps_value_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.7982,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split-adjusted actual reported values for the GPS measure",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_grossmargin_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7094,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual gross margin value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_grossmargin_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7048,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual GPM value for the relevant fiscal period",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_inventory_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7243,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual Inventory value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_inventory_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7243,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/regime-adjusted actual annual inventory value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_marketable_securities_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6444,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual value for Marketable Securities",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_marketable_securities_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6444,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split-adjusted actual reported values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_nav_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported net asset value for the annual period.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_nav_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7746,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported NAV value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_nav_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual NAV value adjusted for currency/splits/regime",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_net_income",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported quarterly Net Income values (aligned to event periods)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_net_income_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported quarterly net income (currency/splits/embargo adjustments)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_net_value",
+   "type": "VECTOR",
+   "coverage": 0.803,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual Net Income (NET) values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_net_value_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.803,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime- and currency-adjusted actual reported annual Net Income (NET) values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netdebt_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7255,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Vector of actual reported figures for the measure aligned to event periods",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netdebt_value_annual12_tribes_2",
+   "type": "VECTOR",
+   "coverage": 0.7207,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual Net Debt (NDEBT) value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netdebt_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7255,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime- and currency-adjusted actual reported values vector",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netdebt_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7207,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted actual annual Net Debt value (currency/split/regime adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofit_reported_value_fxadj_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6144,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted reported actual value for quarterly Net Profit (Reported)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofit_reported_value_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6144,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual net profit for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofit_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7981,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual Net Profit values aligned to the event periods (forecast slots empty)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofit_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7981,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual reported annual net profit values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofit_value_fxadj_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6241,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported quarterly net profit adjusted for currency, splits, and regime effects",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofit_value_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6241,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported quarterly net profit",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofitreported_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7947,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual reported annual Net Profit (NPROFITREP) values aligned to events; forecast periods are blank or NaN",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_netprofitreported_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency- and split-adjusted actual reported annual Net Profit values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_reported_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7875,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported pre-tax profit for the annual period.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_reported_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported pre-tax profit values aligned to event dates (forecast lead periods are NaN)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_reported_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7875,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported PRR values vector",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_reported_value_fxadj_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual value for the PPROFITREP measure",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_reported_value_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for PPROFITREP",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value",
+   "type": "VECTOR",
+   "coverage": 0.5926,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for the PRE measure for the relevant quarterly period",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for the PRE measure (annual); vector aligned to events with NaN for forecast periods",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7879,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual PPROFIT value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.5926,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported value(s) for the PRE measure",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported values for the PRE metric (currency/split adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7879,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency-adjusted actual annual pre-tax profit value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_fxadj_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted actual reported figure for the PRR measure (currency and split corrected)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_fxadj_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.5794,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime and currency adjusted actual reported quarterly PPROFIT",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported pretax profit for the quarterly period.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_pretax_value_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.5794,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for the PPROFIT quarterly metric",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_reportednet_value",
+   "type": "VECTOR",
+   "coverage": 0.63,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for the NER metric",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_reportednet_value_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7996,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual reported NER value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_reportednet_value_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.63,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported value for the NER metric (currency/split adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_reportednet_value_fxadj_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7996,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual NER value (currency/splits adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_return_on_capital_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.3235,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value of return on capital for the annual period.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_revenue_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.8029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual sales value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_revenue_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7977,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual reported annual revenue (vendor-reported)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_revenue_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.8029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted actual reported sales values (currency/splits/regime adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_revenue_value_fxadj_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6473,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency-adjusted actual reported quarterly revenue",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_revenue_value_fxadj_quarterly16_3",
+   "type": "VECTOR",
+   "coverage": 0.6542,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual reported quarterly sales values (currency/split adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_revenue_value_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6473,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported quarterly revenue actuals (NaN during forecast periods)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_revenue_value_quarterly16_3",
+   "type": "VECTOR",
+   "coverage": 0.6542,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported quarterly sales figure from vendor actuals",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_roe_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7981,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for annual return on equity.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_roe_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7693,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual annual ROA value for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_roe_value_annual12_tribes_2",
+   "type": "VECTOR",
+   "coverage": 0.7936,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Company-reported actual annual ROE value as captured point-in-time under the dataset’s regime rules",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_sharesoutstanding_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4231,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported Number of Shares Outstanding for the period (vector aligned to events; forecasts filled with nulls before actuals)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_tangbookvalue_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported values for the SEQUITY measure (vector; forecast positions are NaN)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_tangbookvalue_value_fxadj_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency-adjusted actual reported value(s) for the SEquity measure",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_taxprovision_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7594,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported TAXPROV values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_taxrate_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4974,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported TAXRATE value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_taxrate_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4974,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported effective tax rate for the annual period, adjusted for currency.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_total_assets_value_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual values vector (NaN in forecast periods)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_total_assets_value_fxadj_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual reported value for the measure",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_totalliab_value_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.634,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported Total Liabilities value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_totalliab_value_fxadj_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.634,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual reported Total Liabilities value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_ebit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6431,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for quarterly EBIT",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_ebitda_annual12",
+   "type": "VECTOR",
+   "coverage": 0.771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual EBITDA value for the corresponding fiscal period",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_enterprisevalue_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4336,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported EV values vector, with forecast periods filled with nulls/NaNs",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_eps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7968,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported annual EPS values vector; forecast periods are null/NaN",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_eps_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.4731,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual reported quarterly EPS (unadjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_ebit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime-adjusted actual EBI values (currency/split adjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_ebitda_annual12",
+   "type": "VECTOR",
+   "coverage": 0.771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual EBITDA value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_enterprisevalue_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4336,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/regime-adjusted actual reported value for the EV metric",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_eps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7968,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency/split-adjusted actual reported annual EPS values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_eps_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.4731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual reported quarterly EPS",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_gross_income_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.3517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency and split adjusted actual reported quarterly gross income values",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_interest_expense_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6903,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual annual Interest Expense adjusted for currency/splits",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_nav_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7746,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual values adjusted for currency, splits, and regime effects",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_pretax_reported_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual values for the measure adjusted for currency/splits/regime",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_revenue_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7977,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted actual reported annual revenue",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_taxprovision_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7594,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported Tax Provision figures adjusted for currency/splits",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_fxadj_total_debt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6185,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency-adjusted actual reported Total Debt value",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_gross_income_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.3517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported quarterly gross income values; forecast periods are empty or NaN until actuals are reported",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_gross_margin_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.3025,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported gross margin in the current quarter.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_grossmargin_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.317,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported gross margin value for the quarter.",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_interest_expense_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6903,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reported actual annual Interest Expense",
+   "crowding": "low"
+  },
+  {
+   "id": "actual_value_total_debt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6185,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual reported value for Total Debt",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_3mth_prior",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean NET consensus value 3 months ago",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_3mth_prior_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean quarterly Net Income estimate three months ago, adjusted for currency, splits, and regime effects",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_4wks_prior",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean consensus estimate for quarterly net income as of four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_4wks_prior_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency/split/regime-adjusted mean NET consensus as of 4 weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_estimate",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current mean of quarterly Net Income estimates in the consensus (unadjusted)",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_estimate_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of current analyst consensus for quarterly Net Income, adjusted for currency, splits, and regime effects",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_forecast_actual",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of net income across both forecast and actual data points.",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_net_income_forecast_actual_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of net income across forecast and actuals, adjusted for currency effects.",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_recent_net_income_estimates",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of the vendor flash snapshot for quarterly NET estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_recent_net_income_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency and split adjusted mean of flash quarterly Net Income estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_surprise_net_income",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean surprise value (actual minus consensus) overlay",
+   "crowding": "low"
+  },
+  {
+   "id": "avg_surprise_net_income_fxadj",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency and split adjusted mean surprise for quarterly Net Income (actual minus consensus)",
+   "crowding": "low"
+  },
+  {
+   "id": "count_net_income_3mth_prior",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates in the NET consensus 3 months ago",
+   "crowding": "low"
+  },
+  {
+   "id": "count_net_income_4wks_prior",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing quarterly Net Income estimates as of four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "count_net_income_estimates",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst estimates in the quarterly NET consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "count_recent_net_income_estimates",
+   "type": "VECTOR",
+   "coverage": 0.6382,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of estimates in the vendor flash snapshot for NET",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_code_cashflowfinancing_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7251,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer code for the reporting currency associated with the values (decode via currency table)",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_code_currentliabilities_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer code identifying the reporting currency for the values",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_code_epsreported_annual12",
+   "type": "VECTOR",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer currency code referencing decode table for the measure’s reporting/estimate currency",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_code_nav_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7746,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code in which the net asset value is reported for the annual period.",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_code_netprofit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6241,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer currency code indicating the reporting/estimate currency for the net profit values",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_type_ebit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6431,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer currency code for the measure’s units, mapped via a decode table by report date",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_type_eps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7968,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer code for the report/measure currency, to be decoded via currency table",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_type_interest_expense_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6903,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer currency code for the measure, decoded to reporting currency by date",
+   "crowding": "low"
+  },
+  {
+   "id": "currency_type_parent_profit_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7879,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer currency code for the measure, decoded to the reporting currency by date",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_capex_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of estimates contributing to the consensus for the CPX measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_cashflowfinancing_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7251,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to form the consensus for Cash Flow from Financing",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_cashflowinvesting_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7274,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used in the consensus for annual CFINVEST",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_cfo_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7321,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_cogs_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the annual COGS consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_bvps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7856,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing BPS estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_bvps_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7825,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst BVPS estimates used in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_capex_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7476,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst CAPEX forecasts contributing to the consensus in the current window",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_cfps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing analyst estimates for the annual CPS consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_cfps_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7014,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst CFPS estimates used to compute the consensus for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_depreciation_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_dividend_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7761,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of DPS estimates in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_dividend_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7715,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the DPS consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_ebt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst EBT estimates contributing to the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_eps_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.8005,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Current number of analyst estimates contributing to the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_eps_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_fullyreported",
+   "type": "VECTOR",
+   "coverage": 0.4446,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst estimates contributing to the GPS consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_gps",
+   "type": "VECTOR",
+   "coverage": 0.7982,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing analyst estimates for the GPS measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_grossmargin_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7094,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the current gross margin consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_nav_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts contributing to the current annual NAV consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_netdebt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7255,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing estimates in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_netprofitreported_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7947,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the consensus for each period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_pretax_annual12",
+   "type": "VECTOR",
+   "coverage": 0.792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst estimates contributing to the annual PRE consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_pretax_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst estimates contributing to the PRR consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_reportednet",
+   "type": "VECTOR",
+   "coverage": 0.63,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates in the current NER consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_revenue_annual12",
+   "type": "VECTOR",
+   "coverage": 0.8029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the current annual sales consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_revenue_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6542,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing analyst Sales estimates in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_roe_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7981,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst estimates contributing to ROE consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_roe_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7936,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst ROE estimates used to compute the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_sharesoutstanding_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4231,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the consensus for shares outstanding",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_tangbookvalue_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus for the SEQUITY measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_targetprice_annual12_tribes",
+   "type": "MATRIX",
+   "coverage": 0.8037,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of analyst target price estimates used in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_taxrate_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4974,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to TAXRATE consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_current_period_totalliab_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.634,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the consensus for annual total liabilities",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_currentassets_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6221,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst estimates used to compute the consensus for Current Assets",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_currentliabilities_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6201,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Number of individual analyst estimates contributing to the consensus for annual current liabilities",
+   "crowding": "mid"
+  },
+  {
+   "id": "estimate_count_depreciation_amortization_annual12",
+   "type": "VECTOR",
+   "coverage": 0.652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the DEPAMORT consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_dividend_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7196,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the total dividend consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_ebit_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7986,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the annual EBIT consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_ebit_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.8026,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing analyst estimates for EBI",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_ebit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of EBI estimates in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_ebit_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.6431,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst EBIT estimates used to compute consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_ebitda_annual12",
+   "type": "VECTOR",
+   "coverage": 0.771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the EBITDA consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_ebitdarep_annual12",
+   "type": "VECTOR",
+   "coverage": 0.729,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to form the consensus for annual Reported EBITDA",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_enterprisevalue_annual12",
+   "type": "VECTOR",
+   "coverage": 0.4336,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the EV consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_eps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7968,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to form the EPS consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_eps_longterm",
+   "type": "MATRIX",
+   "coverage": 0.4556,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst EPS estimates used to form the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_eps_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of EPS estimates contributing to the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_epsreported_annual12",
+   "type": "VECTOR",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus for EPSREP",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_fcf_annual12",
+   "type": "VECTOR",
+   "coverage": 0.691,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst estimates contributing to the consensus for annual FCF",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_bvps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7856,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash BPS estimates in the vendor snapshot",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_capex_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst flash CPX estimates in the flash snapshot",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_cfps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash CPS estimates in the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_dividend_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7761,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash DPS estimates used in consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_ebit_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.8026,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates in the flash snapshot for annual EBI",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_ebit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash quarterly EBI estimates contributing to the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_ebt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash analyst estimates for annual Earnings Before Taxes (EBT)",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_eps_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.8005,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash annual EPS estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_eps_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash analyst EPS estimates in the snapshot",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_gps_fq16",
+   "type": "VECTOR",
+   "coverage": 0.4446,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash estimates for the GPS measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_grossmargin_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.7094,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of the most recent gross margin estimates for the annual period.",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_grossmargin_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.317,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash (intra-cycle) gross margin estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_nav_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash annual NAV estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_netdebt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7255,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash estimates (analyst count in flash snapshot)",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_pretax_annual12",
+   "type": "VECTOR",
+   "coverage": 0.792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash (intra-day) analyst estimates contributing to the annual PRE consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_pretax_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash estimates contributing to the PRR consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_pretax_reported_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7875,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash PRR estimates currently in the consensus window",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_reportednet",
+   "type": "VECTOR",
+   "coverage": 0.63,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of flash estimates recorded for the NER metric",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_reportednet_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7996,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash (intra-period) analyst estimates for the NER measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_revenue_annual12",
+   "type": "VECTOR",
+   "coverage": 0.8029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst Sales flash estimates in the flash snapshot",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_revenue_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6542,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst “flash” Sales estimates in the latest flash snapshot",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_flash_period_roe_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7981,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst flash estimates contributing to ROE consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_bvps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7856,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of BPS estimates as of four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_capex_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of CPX estimates 4 weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_cfps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates four weeks ago for annual CPS",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_dividend_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7761,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates for annual DPS as of 4 weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_ebit_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.8026,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to EBI consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_ebit_quarterly16_2",
+   "type": "VECTOR",
+   "coverage": 0.6562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of EBI estimates in the consensus 4 weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_ebt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst EBT estimates four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_eps_annual12_3",
+   "type": "VECTOR",
+   "coverage": 0.8005,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of annual EPS estimates four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_eps_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.4814,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst EPS estimates in the consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_gps",
+   "type": "VECTOR",
+   "coverage": 0.7982,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates for the GPS measure as of 4 weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_gps_fq16",
+   "type": "VECTOR",
+   "coverage": 0.4446,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to GPS consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_grossmargin_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7094,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of GRM estimates in the consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_grossmargin_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.317,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates four weeks ago for quarterly gross margin",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_nav_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of annual NAV estimates in the consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_net2",
+   "type": "VECTOR",
+   "coverage": 0.803,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates in the NET consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_netdebt_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7255,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates four weeks ago for the NDT annual metric (Asia, IBES, p12 window)",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_pre2",
+   "type": "VECTOR",
+   "coverage": 0.5926,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates for the PRE measure four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_pretax_annual12",
+   "type": "VECTOR",
+   "coverage": 0.792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the PRE consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_pretax_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates for the PRR consensus recorded four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_pretax_reported_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7875,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of PRR estimates (analyst contributions) four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_reportednet",
+   "type": "VECTOR",
+   "coverage": 0.63,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates for NER four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_reportednet_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7996,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the consensus 4 weeks ago for the NER measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_revenue_annual12",
+   "type": "VECTOR",
+   "coverage": 0.8029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of Sales estimates in the consensus four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_revenue_quarterly16_3",
+   "type": "VECTOR",
+   "coverage": 0.6542,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst sales estimates four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_four_weeks_prior_roe_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7981,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates for annual ROE as of four weeks ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_fullyreported_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.4309,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_gross_income_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.3517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus for quarterly gross income",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_gross_margin_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.3025,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the GPM consensus for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_grossmargin_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7048,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the consensus for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_grossmargin_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.317,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing gross margin estimates",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_interest_expense_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6903,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus for annual Interest Expense",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_inventory_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7243,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used in the INVENTORY consensus for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_marketable_securities_annual12",
+   "type": "VECTOR",
+   "coverage": 0.6444,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_nav_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7746,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_net2",
+   "type": "VECTOR",
+   "coverage": 0.803,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the current NET consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_netdebt_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7207,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_netprofit_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7981,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the annual Net Profit consensus for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_netprofit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6241,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates included in the consensus for quarterly net profit",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_netprofit_reported_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6144,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus for reported net profit",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_pre2",
+   "type": "VECTOR",
+   "coverage": 0.5926,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the PRE consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_pretax_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7879,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to form the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_pretax_quarterly16_tribes",
+   "type": "VECTOR",
+   "coverage": 0.5794,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to compute the pre-tax profit consensus for the period",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_pretax_reported_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7875,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst estimates contributing to the PRR consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_pretax_reported_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates used to form the consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_pretax_reported_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.5652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the consensus for PPROFITREP",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_recent_gps",
+   "type": "VECTOR",
+   "coverage": 0.7982,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash analyst estimates for the GPS measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_recent_net2",
+   "type": "VECTOR",
+   "coverage": 0.803,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates in the NET flash snapshot",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_recent_pre2",
+   "type": "VECTOR",
+   "coverage": 0.5926,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash (embargoed snapshot) estimates for the PRE measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_reportednet_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7996,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of analyst estimates in the consensus for the annual NER measure",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_return_on_capital_annual12",
+   "type": "VECTOR",
+   "coverage": 0.3235,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the ROC consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_revenue_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7977,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the annual revenue consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_revenue_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6473,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates used to compute the consensus for quarterly revenue",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_roe_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7693,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the ROA consensus",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_taxprovision_annual12_tribes",
+   "type": "VECTOR",
+   "coverage": 0.7594,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to the consensus for annual Tax Provision",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_three_months_prior_bvps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7856,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of BPS estimates as of three months ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_three_months_prior_capex_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.7534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of CPX estimates 3 months ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_three_months_prior_cfps_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7755,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst estimates three months ago for annual CPS",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_three_months_prior_dividend_annual12",
+   "type": "VECTOR",
+   "coverage": 0.7761,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of DPS estimates three months ago (vendor overlay)",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_three_months_prior_ebit_annual12_2",
+   "type": "VECTOR",
+   "coverage": 0.8026,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst estimates contributing to EBI consensus three months ago",
+   "crowding": "low"
+  },
+  {
+   "id": "estimate_count_three_months_prior_ebit_quarterly16",
+   "type": "VECTOR",
+   "coverage": 0.6562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of EBI estimates in the consensus 3 months ago",
+   "crowding": "low"
+  }
+ ]
+}

@@ -3,8 +3,10 @@
 
 为什么要有 S13
 --------------
-`tracking/` 下混着 13 个区域目录与 7 个非区域目录（`reference/`、`mining/`、
-`FORUM`、`PPA_USA`、`prod_probe`、`hypotheses`、`_scratch`）。S10 靠 `^[A-Z]{3}$`
+`tracking/` 下混着区域目录与非区域目录。2026-10-14 实测：磁盘上 13 个区域目录 +
+6 个非区域目录（`reference/`、`mining/`、`FORUM`、`prod_probe`、`hypotheses`、`_scratch`），
+登记表里 7 项 —— 多出的 `PPA_USA` 是 PPA 战役的运行期产物目录，当前没开战役所以不在磁盘上
+（见 `NON_REGION_DIRS_ALLOW_ABSENT`）。S10 靠 `^[A-Z]{3}$`
 识别区域，于是 `FORUM`（5 字母）**恰好不匹配**才没被当成区域——这是隐式约定。
 任何人新增一个 `FORUM2` / `TASK` / `TEMP` 之类的目录，只要字母数不对就永远
 不会被 S10 提示，而 AGENTS.md §8.13 早已把「新 Agent 极易当成区域读」列为风险。
@@ -116,6 +118,42 @@ def test_region_code_named_nonregion_entry_fails(az, tmp_path, monkeypatch):
         assert any("XXX" in r[2] for r in fails)
     finally:
         az.NON_REGION_DIRS.pop("XXX", None)
+
+
+def test_allow_absent_must_be_subset_of_registry(az):
+    """`NON_REGION_DIRS_ALLOW_ABSENT` 里的名字必须同时在登记表里 —— 否则是个静默洞。
+
+    这个集合的语义是「允许磁盘暂缺」，若有人往里加了个**未登记**的名字，
+    S13 既不会 WARN 也不会 FAIL，而那正是「未登记目录」本该 FAIL 的形态。
+    """
+    holes = sorted(set(az.NON_REGION_DIRS_ALLOW_ABSENT) - set(az.NON_REGION_DIRS))
+    assert not holes, f"ALLOW_ABSENT 里有未登记的名字（等于给它开了免检）：{holes}"
+
+
+def test_allow_absent_entry_absent_from_disk_does_not_warn(az, tmp_path, monkeypatch):
+    """按 WARN 提示去删登记表会把闸变陷阱：运行期目录暂缺必须**静音**。
+
+    实测动因（2026-10-14）：S13 打的是「`PPA_USA` 磁盘已不存在，可从 NON_REGION_DIRS 清理」。
+    但它只是 PPA 战役没开，产物已归档 `attic/ppa_mining_*`；谁真按提示删了登记，
+    下次复跑 PPA 就长出 `tracking/PPA_USA/` ⇒ **FAIL 阻断提交**。
+    """
+    tr = _mk(tmp_path, ["EUR"])
+    assert "PPA_USA" not in {p.name for p in tr.iterdir()}
+    rows = _run(az, monkeypatch, tr)
+    assert not [r for r in rows if r[0] == "WARN" and "PPA_USA" in r[2]], rows
+    ok = [r for r in rows if r[0] == "OK"]
+    assert ok and "PPA_USA" in ok[0][2], f"OK 读数必须说明为什么它不算 stale：{rows}"
+
+
+def test_other_stale_entries_still_warn(az, tmp_path, monkeypatch):
+    """静音只给白名单：其它登记项暂缺照旧 WARN（棘轮不能被整体放宽）。"""
+    tr = _mk(tmp_path, ["EUR"])
+    monkeypatch.setitem(az.NON_REGION_DIRS, "__probe_missing__", "负例：登记了但磁盘没有")
+    try:
+        rows = _run(az, monkeypatch, tr)
+        assert [r for r in rows if r[0] == "WARN" and "__probe_missing__" in r[2]], rows
+    finally:
+        az.NON_REGION_DIRS.pop("__probe_missing__", None)
 
 
 def test_s13_is_registered_in_checks(az):

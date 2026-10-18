@@ -1,0 +1,162 @@
+[
+ {
+  "dataset": "analyst25",
+  "nfields": 207,
+  "vector": 207,
+  "matrix": 0,
+  "cov_mean": 0.5,
+  "cov_ge_0_5": 207,
+  "low_crowded": 24,
+  "lit": false
+ },
+ {
+  "dataset": "analyst_consensus",
+  "nfields": 300,
+  "vector": 298,
+  "matrix": 2,
+  "cov_mean": 0.6859,
+  "cov_ge_0_5": 264,
+  "low_crowded": 299,
+  "lit": false
+ },
+ {
+  "dataset": "analyst44",
+  "nfields": 300,
+  "vector": 252,
+  "matrix": 48,
+  "cov_mean": 0.7258,
+  "cov_ge_0_5": 268,
+  "low_crowded": 159,
+  "lit": false
+ },
+ {
+  "dataset": "analyst81",
+  "nfields": 5,
+  "vector": 0,
+  "matrix": 5,
+  "cov_mean": 0.2651,
+  "cov_ge_0_5": 0,
+  "low_crowded": 1,
+  "lit": false
+ },
+ {
+  "dataset": "analyst_factor_signals",
+  "nfields": 59,
+  "vector": 0,
+  "matrix": 59,
+  "cov_mean": 0.577,
+  "cov_ge_0_5": 40,
+  "low_crowded": 45,
+  "lit": false
+ },
+ {
+  "dataset": "analyst_base_ref",
+  "nfields": 14,
+  "vector": 10,
+  "matrix": 4,
+  "cov_mean": 0.7322,
+  "cov_ge_0_5": 14,
+  "low_crowded": 6,
+  "lit": false
+ },
+ {
+  "dataset": "analyst39",
+  "nfields": 43,
+  "vector": 0,
+  "matrix": 43,
+  "cov_mean": 0.8952,
+  "cov_ge_0_5": 43,
+  "low_crowded": 0,
+  "lit": false
+ },
+ {
+  "dataset": "analyst9",
+  "nfields": 48,
+  "vector": 47,
+  "matrix": 1,
+  "cov_mean": 0.5672,
+  "cov_ge_0_5": 33,
+  "low_crowded": 26,
+  "lit": false
+ },
+ {
+  "dataset": "analyst10",
+  "nfields": 300,
+  "vector": 148,
+  "matrix": 152,
+  "cov_mean": 0.6578,
+  "cov_ge_0_5": 272,
+  "low_crowded": 256,
+  "lit": false
+ },
+ {
+  "dataset": "analyst11",
+  "nfields": 210,
+  "vector": 0,
+  "matrix": 210,
+  "cov_mean": 0.5831,
+  "cov_ge_0_5": 126,
+  "low_crowded": 202,
+  "lit": false
+ },
+ {
+  "dataset": "analyst14",
+  "nfields": 300,
+  "vector": 5,
+  "matrix": 295,
+  "cov_mean": 0.5,
+  "cov_ge_0_5": 300,
+  "low_crowded": 138,
+  "lit": false
+ },
+ {
+  "dataset": "analyst15",
+  "nfields": 300,
+  "vector": 0,
+  "matrix": 300,
+  "cov_mean": 0.5192,
+  "cov_ge_0_5": 300,
+  "low_crowded": 13,
+  "lit": false
+ },
+ {
+  "dataset": "analyst16",
+  "nfields": 109,
+  "vector": 109,
+  "matrix": 0,
+  "cov_mean": 0.6526,
+  "cov_ge_0_5": 102,
+  "low_crowded": 64,
+  "lit": false
+ },
+ {
+  "dataset": "analyst45",
+  "nfields": 241,
+  "vector": 241,
+  "matrix": 0,
+  "cov_mean": 0.2527,
+  "cov_ge_0_5": 0,
+  "low_crowded": 225,
+  "lit": false
+ },
+ {
+  "dataset": "analyst46",
+  "nfields": 6,
+  "vector": 0,
+  "matrix": 6,
+  "cov_mean": 0.4206,
+  "cov_ge_0_5": 0,
+  "low_crowded": 1,
+  "lit": false
+ },
+ {
+  "dataset": "analyst48",
+  "nfields": 70,
+  "vector": 70,
+  "matrix": 0,
+  "cov_mean": 0.4411,
+  "cov_ge_0_5": 35,
+  "low_crowded": 39,
+  "lit": false
+ }
+]

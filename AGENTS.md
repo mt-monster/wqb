@@ -175,6 +175,39 @@
   ② 2026-09-10 审计发现旧版脚本只同步**首个**目标（`resolve_install_root()`），致使
   `~/.codex`、`~/.workbuddy` 反复分叉（ra-pipeline 落后 67 行，缺 09-09 的
   `campaign_intel s0-select` 选集与 `ghost-audit` 幽灵算子硬闸）—— 故改为多目标。
+  ③ **2026-10-14：安装位解析成仓库根 ⇒ 同步脚本亲手在仓库根长出第二技能源**。形态是
+  `WQ_SKILLS_DIR`（或环境变量指向的父目录）落到仓库根/根的祖先，`Claude/skills/*` 被整棵树
+  平铺成 `repo_root/wq-brain-ra-usa/…`（实测 455 件、与 `Claude/skills/` 名单 100% 相同、内容零差异，
+  且 S1–S16 **一道都不报**， hence 新增 S17）。**当天同一形态复发一次**（归档后又被建回来），
+  所以按 §4 第 7 条把处置从「人工归档」升级为「机制拒绝」：`sync_skills.py::_is_repo_root_or_ancestor()`
+  在枚举与显式 `--target` 两条路径上都拒绝「仓库根本身或其祖先目录」（显式指定 ⇒ 退出码 2 并写明理由），
+  自动枚举时跳过并在 stderr 报「已拒绝 N 个安装位」。
+  ⚠ **第二次复发的指纹不是 sync_skills**：20:01 建回来的那份，同名件 mtime 与 `Claude/skills/`
+  **逐纳秒相同** ⇒ `shutil.copytree`（默认 `copy2` 带 `copystat`），而 `tools/` 与 `src/` 里 `copytree`
+  零命中（实测 `git grep -l copytree -- tools/ src/` 只命中审计器自己的关键词表）。
+  唯一的自有写入路径是 `Claude/skills/pull-brain-skills/scripts/pull_skills.py`：它把候选写到
+  `<dest>/<skill-name>/`，而 `live_roots()` 只列活跃 skill 根、**不含仓库根本身**，于是
+  `--dest <仓库根>` 一路放行。同轮补 `is_repo_root_dest()`（dest == 仓库根或其祖先 ⇒ exit 3，
+  **刻意不给 `--allow-live-dest` 逃生口**：那不是「知道自己在写活跃根」，是把技能树铺到仓库根；
+  且判定同时从 cwd 与 dest 两处反推仓库根，只信 cwd 会在被复制目录之外调用时静默失效）。
+  守卫 `tests/unit/07_docs_skills/test_pull_skills_safety.py`（含「默认暂存位 `<repo>/attic/import_staging`
+  不得被这条误杀」——所以不能简单把仓库根塞进 `live_roots()`）。
+  ⚠ **第三次再现（22:16）把上一轮的两条猜测都证伪了**，别再照旧说法处置（全文与指纹表见
+  `attic/root_skills_mirror3_20261014/README.md`）：
+  ① **源树是仓库自己的 `Claude/skills/`，不是任何安装位** —— 同一排除条件下与 6 个安装位逐文件 `diff -rq`
+  分别是 121/107/44/44/112/138 行，只有 `Claude/skills/` = **0 行**； ⇒ 取证只跟仓库源比。
+  ② **写入方不是 `cp -r`，也不是 ZIP/git 导出** —— 缺的文件恰好只有 `parsetab.py`、`headless_runner/config.json`、
+  `trailSomeAlphas/ace.log` 三个，`git check-ignore -v` 三条**全部命中**（`cp -r` 不会跳、`sync_skills._is_secret_file`
+  只跳 `config.json`）；而同名件 mtime **逐纳秒**相同（ZIP 的 DOS 时间戳只到 2 秒、checkout 会覆盖成当下）。
+  ⇒ 是个**带 gitignore 感知过滤 + `copytree(copy2)` 语义**的拷贝器，**本仓工具里没有**，**写入方至今未定位**。
+  ③ 第三方 `cnhkmcp`（装在唯一 venv、`requirements.txt`/`pyproject.toml` **均未声明**）的 QuantFlow
+  「mirror into Project」曾被怀疑为根因，**已排除**：其目标位是 `<工作目录>/.quantflow/general_tools/<tool_key>`
+  且每次只装**一个** skill，而仓库根**没有 `.quantflow/`**。⚠ 但它是**另一条独立的债**（与镜像无关，别混谈）：
+  `cnhkmcp/untracked/skills/` 带 23 个**改名前**的僵尸 skill，其中 `pull_BRAINSkill/scripts/pull_skills.py` 是
+  **无守卫的老版本**（守卫命中 0）——`tools/sync_skills.py` 结构上修不到 site-packages 里那份，按 skill 名调到就绕过全部防护。
+  **处置属于动第三方包/动 venv，需用户拍板，本轮只登记不动手。**
+  可执行结论：**闸追不到写入方，但 S17 追得到结果**——再现即在 pre-commit 阻断，处置按
+  `attic/root_skills_mirror2_20261014/README.md` 的「核三项再归档」，并补一条**比对源=仓库 `Claude/skills/`**。
   失效安装器（`install_now.py` / `install_claude_skills.*` / `verify_claude_skills.py` /
   `install_skills_direct.py` / `INSTALLATION_GUIDE.md`）已归档 `attic/install_legacy_20260910/`，
   勿再用它们做更新（`if target.exists(): skip` 永不更新）。
@@ -191,7 +224,7 @@
 | layer | 含义 | 例 |
 |---|---|---|
 | `L-RA` | 唯一编排入口 | `wq-brain-ra-pipeline` |
-| `L-RA-R` | RA 的区域分支（区域控制面板 + 区域 × 类别组合文件；**生成物**，改 `tracking/<R>/config/cells.json` 后 `$WQ_PY -m wqb.profiles render --apply`，不手改生成块） | `wq-brain-ra-kor` 等 14 个 `wq-brain-ra-<区域小写>` |
+| `L-RA-R` | RA 的区域分支（区域控制面板 + 区域 × 类别组合文件；**生成物**，改 `tracking/<R>/config/cells.json` 后 `$WQ_PY -m wqb.profiles render --apply`，不手改生成块）。⚠ **KOR 例外**：`wq-brain-ra-kor` 的骨架由 `render.py` 特化分支渲染成「字段体检 → 归因 → 破闸」六步（layer 标 `L4`、带 `agent_created`），仍是生成物 | `wq-brain-ra-kor` 等 14 个 `wq-brain-ra-<区域小写>` |
 | `L-PRE` | 开战役前的查表选集 | `wq-brain-campaign-matrix` |
 | `L-TOOL` | 战役执行引擎（被编排调用） | `wq-brain-campaign-toolkit` |
 | `L0` | 战役外的态势/情报 | `brain-next-move-analysis`、`brain-forum-browse`、`wq-brain-ppa-mining` |
@@ -272,7 +305,7 @@ python -m pytest tests/ -x
 7. **沉淀固化**：同一类漂移出现第二次，就写工具或写测试把它机械拦住，不要靠人记。
 
 - 结果自动写入 `logs/test-results.xml`（JUnit XML，可追溯）。
-- 根 `tests/` 全量应全绿（历史数字：2026-09-18 实测 1201 个，2026-09-30 为 2709 个；**今天的数量一律以 `pytest --collect-only -q | tail -1` 为准，此处不再维护**；`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建；仓库根 `conftest.py` **只负责环境耦合测试的 skip 标记**（`needs_operators_verified` 等：依赖被 gitignore 的本机产物，缺失时跳过并写明原因，不是失败）；`sys.path` 由 `tests/conftest.py` 同时把 `src/` 与 `world-quant-brain-mcp/` 注入，`tests/unit/` 继承之）。MCP 包 `world-quant-brain-mcp/tests/` 另有一批测试（需 `.venv`；其 `conftest.py` 只注入 MCP 目录，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `.venv` 跑。
+- 根 `tests/` 全量应全绿（历史数字：2026-09-18 实测 1201 个，2026-09-30 为 2709 个；**今天的数量一律以 `pytest --collect-only -q | tail -1` 为准，此处不再维护**；`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建；仓库根 `conftest.py` **只负责环境耦合测试的 skip 标记**（`needs_operators_verified` 等：依赖被 gitignore 的本机产物，缺失时跳过并写明原因，不是失败）；`sys.path` 由 `tests/conftest.py` 同时把 `src/` 与 `world-quant-brain-mcp/` 注入，`tests/unit/` 继承之）。MCP 包 `world-quant-brain-mcp/tests/` 另有一批测试（需 `world-quant-brain-mcp/.venv`；其 `conftest.py` 只注入 MCP 目录，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `world-quant-brain-mcp/.venv` 跑。
 - **计数口径：根 `tests/` 递归包含 `tests/unit/`，勿把两者相加。** `tests/` 直接子层只有 `test_toolified_cli.py` + `conftest.py`，其余在 `tests/unit/`。故 `pytest tests/` 与 `pytest tests/unit tests` 收集数相同。**新增用例时以 `pytest --collect-only -q | tail -1` 为准，不在此处硬编码逐文件明细**（此处的总数随用例增删会漂，只作量级参考）。
 - 依赖声明于根 `requirements.txt` 与 `world-quant-brain-mcp/requirements.txt`，新增依赖需同步相应文件。
 
@@ -285,12 +318,12 @@ git config core.hooksPath tools/git-hooks
 ```
 
 - 钩子脚本：`tools/git-hooks/pre-commit`，**五道顺序**（正文口径以脚本头为准，别在本文件里叉写一行）：
-  ① 解释器与依赖自检 → ② `tools/audit_structure.py`（结构契约 S1–S16，FAIL 阻断）
+  ① 解释器与依赖自检 → ② `tools/audit_structure.py`（结构契约 S1–S21，FAIL 阻断；S19 尚未落地）
   → ③ `code-audit/repo_governance_check.py --warn`（未跟踪源码，**告警位，不阻断**）
   → ④ `code-audit/doc_path_refs.py`（活文档死指针，棘轮阻断）
   → ⑤ `code-audit/audit_destructive_default.py`（默认即破坏，棘轮阻断）
   → ⑥ `python -m pytest tests/ -x`（失败阻断）。
-- **① 是硬闸（2026-10-06 改）**：仓库 `.venv` 不存在 ⇒ **直接 BLOCKED，不再退回 PATH python**。
+- **① 是硬闸（2026-10-06 改）**：仓库 venv（`world-quant-brain-mcp/.venv`，2026-10-09 起全仓唯一）不存在 ⇒ **直接 BLOCKED，不再退回 PATH python**。
   原回退是 fail-open：实测 PATH 解释器缺 `redis`，带 `importorskip("redis")` 的守卫测试被**静默 skip**，
   而 `pytest -x` 对 skip 返 0 ⇒ 钩子打印「pytest passed」，真正的检查一条没跑。
   现在还会做一次 `import pytest, redis` 自检，并在输出里把 skipped 顶屏提示。
@@ -501,14 +534,20 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
    过程：2026-09-20 清到 390M/29M → 09-25 回涨 472M/46M → **10-03 再回涨 1210M + `cache/` 296M**
    （旧报告只盯 `data/`+`logs/`，**漏掉 `cache/`**，这是复发能持续的原因）。
    - **工具**：`tools/retention.py`（2026-10-03 新建，dry-run 默认，`--apply` 才删）。
-     三条策略：`data/*.bak*` 只留最新 1 份（live `wqb.db` 与 `-wal`/`-shm` **硬保护，永不删**）；
-     `cache/_probe/*.db` 超 7 天回收；`logs/` 过期文件 + pytest 临时目录。
-     `_async_tasks`/`_slots`/`_dblock` **在保护名单里**（并发会话 MCP 进程在读写）。
+     **五条策略**：① `data/*.bak*` 只留最新 1 份（live `wqb.db` 与 `-wal`/`-shm` **硬保护，永不删**）；
+     ② `cache/_probe/*.db` 超 7 天回收；③ `logs/` 过期文件 + pytest 临时目录；
+     ④（2026-10-14 补）`cache/_scratch/pt/` 下的 **pytest basetemp 子目录**超 24 h 回收——
+     口径靠 `--basetemp` 的**命名签名** `^(?:test_|pytest-).+\d$`（必须带尾序号）判定，
+     所以 `asi_46_probe/test_looks_like_a_case` 这类**人工目录不会被误收**（该签名第一版漏了尾序号，
+     被自己的回归测试逮到）；⑤（同批补，**默认关**，`--scratch-files` 才开）`cache/_scratch/` 顶层
+     草稿件（`_` 前缀 / `.diff`），且 `*_spec.json`、`*_variants.txt`、`*.items.json` 是**发批输入件**，
+     任何情况下不进候选。`_async_tasks`/`_slots`/`_dblock` **在保护名单里**（并发会话 MCP 进程在读写）。
    - **硬闸**：`tests/unit/01_store_db/test_retention.py::test_real_data_dir_backup_count_within_policy`
      断言 `data/` 备份数 ≤ 2。**再堆备份测试即红**，不再依赖"人记得跑清理"。
-   - 首轮执行回收 **592 MB**（1210M → 617M）。
-   - ⚠ 遗留观察（未处理）：`cache/_probe/probe.db` 单文件 **282.7 MB**，当时仅 4.07 天、
-     未超 7 天阈值故未回收。它说明 `cache/` 与 `data/` 一样只增不减，只是阈值尚未到。
+     同批新增 `test_real_cache_scratch_basetemp_count_within_limit`（basetemp 目录数阈值）。
+   - 首轮执行回收 **592 MB**（1210M → 617M）；2026-10-14 加策略④后一轮回收 **749 个 basetemp 目录 / 65.3 MB**。
+   - ⚠ 遗留观察（未处理）：`cache/_probe/probe.db` 单文件 **282.7 MB**，2026-10-03 时仅 4.07 天、
+     未超 7 天阈值故未回收（现已超期，属**用户确认后才删**的回收动作，工具默认 dry-run）。
 7. **`tools/audit_skill_drift.py` 只查"相同"、查不出"分叉"** —— **已解决（2026-10-03）**。
    原理性缺口：`collect()` 按内容哈希分组且只留 `len(v) > 1` → 一旦有人改一份没同步其余，
    各份哈希互异、各自成为长度 1 的组而被过滤 → **完全不可见**。而"改一处漏三处"恰恰就是这个形态
@@ -604,6 +643,61 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
     `_tmp_build_afsf.py`、`_tmp_build_an82p.py`），其中 2 个已让 `test_db_write_guards`（裸 sqlite）
     与 `test_sd_portability`（本机盘符）变红。**处置归属**：这些是并行会话的在途工作，
     不要跨会话代删；按 §8.13 它们应落 `logs/_tmp_*.py` 或 `tracking/<REGION>/scripts/`。
+    - **同一目录反向也出事（2026-10-15 00:48:51 实测）**：一个并行会话把 **44 个 `tools/*.py` 跟踪件
+      从工作树删掉且未暂存**，S20 首跑当日即 FAIL（幽灵路径）。取证与归属四条排除见
+      `reports/project_layout_audit_20261014.md` §10.12：不是搬家（子目录零命中、`THEMES.json` 未登记）、
+      不是归档（`attic/` 无今日新增）、不是 stash（列表空）⇒ 未暂存删除。
+      44/44 可从 `HEAD` 无损取回（612,960 B / 13,322 行）。**处置仍归写入会话或用户**，
+      本仓不代他人暂存删除、也不擅自恢复。⚠ 两条禁忌：
+      **不要 `git checkout -- tools/`**（目录级 pathspec 会连带回退他人在 `tools/` 的 18 个在途修改件），
+      **不要为了「让闸变绿」先 `git add -A`**（§7 第 1 条）。
+11. **第 9 项那条闸只守住了 MCP 门面，直写路径仍在静默写生产库** —— **已解决（2026-10-14 批次H；10-15 补第三条路径）**。
+    `_reject_production_db_under_tests` 挂在 `wqb_db_mcp.get_db_path()` 上，而 **`tools/` 与 toolkit
+    的直写路径走 `wqb.store.CampaignStore`，一行都不经门面**。当天全量回归实测抓到：
+    `tests/unit/04_gates/test_inspect_mode_failclosed_p1p1.py` 用 subprocess 起 `tools/wave_gate.py`，
+    子进程拿 CLI 缺省库位 = 生产 `data/wqb.db`，往 `ledger_kv` 写了 `KOR/gate_ws2_pytest_inspect_model109`
+    （`updated_at=2026-10-14T23:27:21`）；库里同期还躺着 2026-09-28 / 09-29 / 10-03 / 10-04 四批测试形态件
+    —— 即第 9 项说的「静默写生产库」从来没被那条闸防住过，只是没人查过结果面。
+    - **修法 = 判定本体上移到 `wqb.db_conn.reject_production_db_under_tests`**，`CampaignStore.__init__`
+      与门面**共这一份**（守护 `test_facade_and_store_share_one_implementation`：全仓活跃面里
+      `PYTEST_CURRENT_TEST` 只许出现在 `src/wqb/db_conn.py`，出现第二份判定即红）。
+    - ⚠ **还有第三条路径（2026-10-15 补，同一批的延续）**：toolkit 为了「装在仓库外也能跑」
+      自带一份同构连接工厂 `Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/db.py`，
+      `_lib/ledger.py` / `_lib/registry.py` / `_lib/wave_results.py` / `_lib/region_gates.py`
+      全经它取连接、且都被 `tests/` 直接驱动 —— 库里 2026-09-29 那批 `wave_meta_covtest*` /
+      `diversity_report_wcovtest*` 就是这个形状写进去的。修法**不是再复制一份判据**（那正好违反
+      上一条守护），而是 `connect()` **委托** `wqb.db_conn` 的判定本体；`wqb` 不可导入只发生在
+      「技能装在仓库外」，那种场景服务的是真实战役运行而非 pytest，放行是设计内行为。
+      守卫 `test_toolkit_lib_db_delegates_to_core_guard`（先断 `default_db_path()` 在生产库上，
+      再断 `connect()` 报错 / 传临时库照常可用）。
+      ⚠ **其余白名单件（GEM `headless_runner/run.py`、`trailSomeAlphas/run_pipeline.py`、
+      `feature_engineering.py`）实测其连接点附近无 `INSERT/UPDATE/commit`，属只读取数**，
+      故不逐个加闸；判据形态改为「白名单 + 只读」而非复制粘贴守卫。
+    - ⚠ **判据必须是「与仓库根那个生产库同一个文件」，不是「以 `/data/wqb.db` 结尾」**。
+      第一版就是后缀匹配，实测把 **27 个用例打成 ERROR、5 个 FAILED**：本仓大量用例的隔离布局是
+      `tmp_path/ws/data/wqb.db`（`CampaignStore.from_workspace(tmp)` 派生出来的正是这种仿生产结构），
+      后缀把它们全认成生产库。闸的失效方向从「静默写生产」变成「把隔离好的测试全砸了」，一样不可用。
+      现判据 = `normcase(realpath())` 相等，盘符/分隔符/大小写三种写法都覆盖，临时库天然不相等。
+    - **闸放在构造连接时而非 `commit()`**：`PRAGMA journal_mode=WAL` 是持久化的库级属性，
+      连接一开就改库文件字节，且 `ensure_schema()` 会 `CREATE TABLE`——等 commit 才拦，隔离失效已经落地。
+    - 不在 pytest 下 / `WQB_ALLOW_REAL_DB=1` / 探不到仓库根 ⇒ 放行（最后一条是**不猜**：
+      本函数只在「确认是生产库」时才有拦截权）。
+    - **结果面已核验（2026-10-15 凌晨，三条路径入闸后）**：跨零点跑完整套回归
+      （**6 failed / 3248 passed / 22 skipped**，6 条红全部归属并行会话），生产库
+      `ledger_kv` 里 `updated_at >= 2026-10-15` = **0 行**，`MAX(updated_at)` 仍是建闸前那条
+      一手证据；`wave_results`/`registry_empirical`/`backtest_results`/`expressions`/`alphas` 同口径均 0。
+      单独重跑曾污染的那个 subprocess 测试前后，宽探测面计数 **29 行逐字不变** ⇒
+      闸是真的拦住了，不是测试没跑到。⚠ **口径别混**：29 是「宽探测面、按 (region,key) 去重」，
+      用于抓变化；下面 24 是「三条具名判据并集、按键名去重」，用于存量处置。
+    - ⚠ 存量测试形态件**未清**：删 `ledger_kv` 行是对生产库的写操作，须用户点头。
+      三条判据取并集实测 **24 行 / 23 个键名**（F1 夹具指纹 16 · F2 键名内嵌假 alpha id
+      `0123456789` 4 · F3 仅 `_test` 结尾 4），逐条见 `reports/project_layout_audit_20261014.md` §10.10.4。
+      **这个数还是下限**：2026-10-04T03:00–03:41 窗口共 **17 行**，其中 `KOR/gate_ws2_oth466_d33_other466`、
+      `KOR/ckpt_ws2_oth466_d33`/`d34`、`KOR/gate_cache_risk71` 等与真实波次**命名同形、不含任何夹具指纹**，
+      机械判据抓不到 ⇒ 「按时间窗切」也不可靠：第 9 项当年记该窗 `ledger_kv` 5 行，今天按
+      `updated_at LIKE '2026-10-04T03:33%'` 复测只 4 行，少的那行是被后续写入覆盖了 `updated_at`。
+      ⚠ `ledger_kv` 主键是 `id`，唯一性在 **(region, key)**：全表 6117 行 / 只有 4787 个不同键名，
+      **按键名计数会少数**（`forum_recon_negative_0123456789` 就有 GLOBAL 与 KOR 两行）。
 
 ### 8.5 审计纠错记录（2026-09-20，**方法论教训**）
 
@@ -753,14 +847,90 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   依据是当时 2709 个测试全绿，回归网足够。
 - **`tools/audit_structure.py` 是结构守护，已挂 pre-commit**（`core.hooksPath = tools/git-hooks`）：
   S1 sys.path 自举/外挂分类 · S2 src→tools 依赖方向 · S3 跨层同名 · S4 硬编码盘符 ·
-  S5 reports/ 散落脚本 · S6 skills 副本漂移 · **S7 根目录白名单 · S8 根↔子目录同名分叉 ·
+  S5 reports/ 散落脚本 · S6 skills 副本漂移 · **S7 根目录白名单（只校文件）· S8 根↔子目录同名分叉 ·
   S9 文档声明目录存在性 · S10 区域子目录完整性 · S11 tools/ 顶层冻结 ·
-  **S12 已下架路径不得复活**
-  （2026-10-04 新增，后六条是为根目录第 5 次污染、`tools/` 上帝目录、与
-  “归档后又被恢复”三件事补的闸）。
-  **FAIL 阻断：S1/S2/S4/S7/S8/S9/S10/S11/S12/S14/S16**（S8 分叉、S11 新增顶层或无主题归属、
-  S12 复活、S14 新增未登记、**S16 新增命名违规**都不进基线豁免：分叉没有合法存量形态，顶层只减不增，
-  已下架不得回来，命名是新建即守）；**WARN 不阻塞：S3/S5**（存量已登记）。
+  **S12 已下架路径不得复活**（2026-10-04 新增，后六条是为根目录第 5 次污染、`tools/` 上帝目录、与
+  “归档后又被恢复”三件事补的闸）· S13 tracking 非区域目录登记 · S14 tools/README 登记 ·
+  S15 .claude/skills 副本同步 · S16 报告/产物命名（含 **docs/ 面**，规则⑥，2026-10-14）·
+  **S17 顶层目录已声明** · **S18 tracking 产物纯度** · **S20 索引↔工作树一致** · **S21 跟踪件扩展名**
+  （这四条 = 2026-10-14 布局审计新增，见下方专门说明）。
+  **FAIL 阻断：S1/S2/S4/S7/S8/S9/S10/S11/S12/S14/S16/S17/S18/S20/S21**（S8 分叉、S11 新增顶层或无主题归属、
+  **S11 顶层无扩展名文件**、**S11 顶层未登记数据件**、**S11 `moved_files` 与磁盘不符**、
+  S12 复活、S14 新增未登记、**S16 新增命名违规**、**S17 未声明顶层目录**、
+  **S18 运行期产物入索引**、**S20 索引挂幽灵路径**、**S21 无扩展名件进索引**都不进基线豁免：分叉没有合法存量形态，顶层只减不增，
+  已下架不得回来，命名是新建即守，幽灵路径当场暂存即清，**运行期产物出库是保盘动作、没有「合法存量」**，
+  **S21 实测违规 0（4 个无扩展名件全在白名单）⇒ 无基线，建基线等于给空债面留永久通道**）；**WARN 不阻塞：S3/S5**（存量已登记）。
+  ⚠ **S11 的 2026-10-14 三条新增，都源于「按扩展名取面的闸对无扩展名/子目录/非脚本件是结构性失明」**：
+  ① 顶层**无扩展名文件**直接 FAIL——旧名 `mcp_py`（无扩展名）是个 UTF-8 Python 脚本，只因没有 `.py`
+  就同时躲过 S4（盘符）/S11/S14 与全仓 `*.py` 扫描，带着 `D:\...` 绝对路径和已退役的 8876 端点
+  长期躺在顶层无人知（2026-10-14 更名并补 `.py` ⇒ 现名 `tools/mcp_http_caller.py`，硬编码两处一并修掉）；
+  ② 顶层**非 `.py` 数据件**必须进 `TOOLS_TOP_DATA_ALLOWLIST`，否则 FAIL。同一失明形态换了个载体再现：
+  `glob("*.py")` 只看见脚本，于是多维选波配额那份 json（旧路径 `tools/skeleton_quota.json`，现已迁出，见下）
+  在顶层**住了一年多**、四个闸全都没读过它。判据不是「文件像什么」而是**「看谁读它」**——唯一读取方是
+  `tracking/KOR/scripts/build_wave.py` ⇒ 按 toolkit `config/platform_constraints.json._doc` 的既定口径
+  「区域级 skeleton_quota 放战役目录 `reference/`」`git mv` 到 `tracking/KOR/reference/`。
+  白名单只允许三条**且必须留在顶层**的理由写死在常量里（README=S14 登记面、THEMES.json=S11 归属表、
+  baseline=S6/S11/S14/S16 基线面）；**白名单里的件不在盘上 ⇒ WARN**（防它被移走后条目变成长期豁免伞，
+  同 S13 的坑）。允许位指向：`tracking/<R>/reference/`、`src/wqb/<包>/`、`tools/docs/`、`cache/`|`logs/`。
+  ③ 「已下沉 N 个」的读数改为 **`THEMES.json` 的 `moved_files` ∩ 磁盘实核**（顶层少一个 **且**
+  子目录多一个才算）。旧读数 `len(baseline) - len(now & baseline)` 是**反向失真**的：真迁完并按本闸
+  提示把名字移出基线后它就归零，「迁了 23 个」与「一个没迁」输出一模一样；登记与磁盘不符 ⇒ FAIL
+  （呼应本闸 docstring 记的 `ac2cf35` 战例：号称下沉 10 个、实为子目录新建，顶层 159→159）。
+  ⚠ 同轮还改掉本闸第二处 **fail-open**：旧代码 `if not baseline: return` —— 基线一旦被清，
+  整个 S11（含无扩展名、归属棘轮、moved_files 核验）**一道都不跑**。现改为 `no_baseline` 只降这一条为 WARN，
+  其余照跑。守护测试 `tests/unit/07_docs_skills/test_audit_structure_s11_moved.py` +
+  `..._s11_dataface.py`（后者含「真实仓库顶层非脚本件全部已登记」「白名单条目必须在盘上」
+  「空基线不关掉其余检查」，以及 `skeleton_quota` 迁移的**双向**核验：旧路径 0 引用 + 新路径被真实读取 +
+  `quota_config` 不得再直接取 `DEFAULT_QUOTA`，用 AST 判定而非源码字符串）。
+  ⚠ **搬件时顺手挖出一个静默 0 候选的真 bug**：`build_wave.py` 缺配置时兜到 `DEFAULT_QUOTA`，而
+  `skeleton_tags.DEFAULT_QUOTA` 的**形状与消费方不兼容**（少一层 `dimensions`、值是裸 `int` 而非 `{"cap","min"}`）
+  ⇒ 选波**静默返回 0 条**，不报错。实测：旧写法 `picked=[]`、新写法 `picked=3`。修法 = `default_quota_config()`
+  做形状归一 + `load_quota_config()` 缺件时顶屏 `[warn]`。**教训：搬一个数据件要顺手核它的兜底路径，
+  缺省值形状不匹配 = 静默罢工，比缺文件更糟。**
+  ⚠ **S17 / S20 补的是两个此前 S1–S16 全看不见的空白**（报告
+  `reports/project_layout_audit_20261014.md`）：
+  ① S7 的循环体是 `if p.is_dir(): continue` —— **无条件跳过所有目录**（`ROOT_SKIP_DIRS` 因此形同虚设），
+  S9 只校「声明的在不在」（反向），于是仓库根长出整棵 skills 树 `wq-brain-ra-usa/`（455 件、与
+  `Claude/skills/` 名单 100% 相同、内容零差异）时读数仍是 `S7 [OK]`。危害 = §7 禁 `git clean`
+  的那类不可恢复债 + 第二技能源（`_skill_roots()` 从不解析 `repo_root/<skill-name>`，它零引用却能被
+  误当在用）。**点开头目录一律放行**（宿主配置随客户端增减，逐个登记会反复误红）；
+  **机器自生成目录 `__pycache__` / `.venv` / `node_modules` 一律跳过且要在读数里说出来**
+  ——本闸首跑就因根 `__pycache__` FAIL（任何在仓库根跑 python 的动作都会把它建回来，判红不指向任何可修事实）。
+  ② 改名只暂存新路径 ⇒ 索引挂幽灵路径：`reports/<主题>_<日期>/` → `…_refs/` 时旧路径 25 件删除未暂存，
+  而 `_s16_targets()` 取面是 `git ls-files`（含已暂存）、pre-commit 跑在**建提交对象之前**
+  ⇒ 一个磁盘上不存在的路径让 S16 FAIL、卡住整条提交链。修法 `git add -u -- <路径>`
+  （**刻意不叫 `git add -A`**：本仓禁止顺带把别人的未跟踪件拖进暂存面，§7 第 1/2 条）。
+  守护测试 `tests/unit/07_docs_skills/test_audit_structure_s17_s20.py`（含 `__pycache__` 误红回归、
+  S20 fail-closed、以及「AGENTS.md §1 声明集必须 ⊆ S17 白名单」的双向一致性反查）。
+  ⚠ **S18 校的是 §8.13「运行期产物」那条归属在 `tracking/` 上从未机械化**（同一轮布局审计新增）：
+  `perf_max` 的缺省 `--plan-dir` 写 `tracking/<REGION>/perfmax/<alpha>_<YYYYMMDD_HHMMSS>/`，每目录都是
+  `plan.json / dispatch_spec*.json / score.json / all_exprs.txt / variants_<tag>.txt` 的**派发断点**，
+  于是运行期中间态被当业务资产并入版本控制（实测 `tracking/USA/{perfmax,robustness}/` 攒下 **89 个跟踪件**，
+  报告 §2.B-2 初记 65 是估算，已按实测更正）。处置 = ① 缺省输出位改 gitignored `results/perfmax/<REGION>/`；
+  ② 存量 `git rm -r --cached`（**保盘出库**：磁盘 98 件仍在，续跑不受影响）+ `.gitignore` 补
+  `tracking/*/perfmax/`、`tracking/*/robustness/`；③ 本闸按**索引面**（`git ls-files -- tracking`）校，
+  判据取「进了版本控制」而非「磁盘存在」。
+  ⚠ **签名只按目录形态**（`<前缀>_<8位日期>[_<时间>]` 的目录段）+ `*.log`：先前按**文件名**试写过
+  `plan/score/dispatch_spec/all_exprs/variants_*`，实测命中 93 件、其中 **4 件是合法业务产物**
+  （`tracking/EUR/candidates/EUR_matrix_plan.json`、`tracking/KOR/candidates/kor_wave{2,3}_plan.json`、
+  `tracking/mining/field_inspect_hkg_continuation_score.json`）⇒ 会误伤，故收成目录形态。
+  守护测试 `tests/unit/07_docs_skills/test_audit_structure_s18_runtime_purity.py`（含「不误伤这 4 件」
+  与「出库≠删除」两条回归）＋ `test_perf_max.py::test_plan_default_output_lands_in_results_not_tracking`。
+  ⚠ **S21 补的是 §6 规则⑤「文件必须有扩展名」此前只有 S11 覆盖 `tools/` 顶层这一个缺口**（批次I，2026-10-15）：
+  起因与 S11① 同源 —— 旧名 `mcp_py` 因为名字里没有 `.py`，同时躲过 S4/S11/S14 与全仓 `*.py` 扫描；但 S11 只管
+  `tools/` 顶层，**仓库其余 4000+ 件无人校过这件事**。S21 取面 = `git ls-files -z`（**整索引面、不带 pathspec**），
+  判据 = 末段名不含 `.` ⇒ FAIL。两条落地时被自己的首跑纠正的口径，必须照此写别再改回去：
+  ① **点开头文件天然合法，别按 `Path(p).suffix == ""` 判** —— 那个直觉写法会把 `.gitignore` / `.mcp.json`
+  / `.env.example` 全判成违规，与 S17 首跑被根 `__pycache__` 误红是同一类事故（判据拦得住事故、也拦了约定形态）。
+  现判据是 `"." not in name`，点开头文件因为名字里就带点而自然通过；守护用**变异反查**证明这条确实承重
+  （把判定换成 `Path(name).suffix == ""`，同一份人造面必须立刻 FAIL）。
+  ② **两类豁免伞不可互换**：`S21_EXEMPT_NAMES`（`Makefile`/`Dockerfile`/`LICENSE`… = **按名字**豁免，任何位置）
+  与 `S21_EXEMPT_PATHS`（`tools/git-hooks/pre-commit`、`commit-msg` = **按完整路径**豁免，git 硬要求 hook 无名可改）。
+  把 hook 名塞进 `EXEMPT_NAMES` 会让 `任意目录/pre-commit` 一起获得豁免 ⇒ 用例断言「`scripts/pre-commit` 必须 FAIL」。
+  路径型条目从盘上消失 ⇒ **WARN 催删条目**（同 S13/S11：留着的死条目就是一条永久豁免通道）。
+  实测违规 0（跟踪面 4107 件，4 个无扩展名件全落在白名单）⇒ **本闸无基线**。
+  守护测试 `tests/unit/07_docs_skills/test_audit_structure_s21_extension.py` 11 例（含取面不得带 pathspec、
+  两类伞不可互换、伞失效 WARN、两条 fail-closed、真实面非空过反查、以及上述变异反查）。
   ⚠ S6 已于 2026-10-03 升为 **FAIL + 基线棘轮**（旧文写它 WARN 不符实际，2026-10-06 更正）：
   分叉副本无条件 FAIL，基线外的新增跨 skill 副本 FAIL，**被委托工具缺失/异常/输出不可解析
   也 FAIL**（2026-10-06 改掉：原先这三条是 warn，而 pre-commit 只拦 FAIL ⇒ 闸会静默消失）。
@@ -771,8 +941,26 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   `s14_unregistered_tools`（重置用 `--freeze-unregistered`，只登记欠债不是豁免）。
   **S15**（2026-10-06 新增）只比 `.claude/skills/` 副本与 `Claude/skills/` 源是否逐文件一致，无基线；
   **S16**（2026-10-08 新增）守报告/产物命名（`output_report/**`+`reports/**`+`tracking/` **顶层**：
-  日期 `YYYYMMDD` 作后缀、不带杠、纯 ASCII 无空格），存量欠债在 `s16_naming_violations`
-  （重置用 `--freeze-naming`，只登记欠债不是豁免）。
+  纯 ASCII 无空格、日期不带杠、**有日期则须作后缀**、**人工报告必须有日期**），存量欠债在 `s16_naming_violations`
+  （重置用 `--freeze-naming`，只登记欠债不是豁免）。⚠ 第四条「必须有日期」**不覆盖机器产物**
+  `*_ideas.md` / `*_campain.md`（`S16_MACHINE_SUFFIXES`：名字由生成器模板拼出，消费方依赖同名覆盖语义
+  —— 塞日期会让同一数据集每跑一次多一个文件、`stale_ideas_md_path` 比对失效）。
+  S16 另对**未跟踪**件做 WARN 预检（只提示不阻断），避免命名违规在 `git add` 前完全隐形。
+  **规则⑤**（2026-10-10 第四轮新增）：`output_report/` **不得混入 `.py`**（产物目录不是代码目录；
+  跟踪件 FAIL / 在途件 WARN，同上取舍）——起因是第三轮人工核过「0 .py」却无机械闸守，
+  随即再现一例 T4 diff 脚本混入（已按本条迁出为 `reports/` 证据脚本并作 S5 豁免登记）。
+  **规则⑥**（2026-10-14 布局审计 §4 新增）：**`docs/**` 也进命名面** —— 此前 `_s16_targets()` 只取
+  `output_report`+`reports`+`tracking/` 顶层，`docs/` **整个不在扫描面里**，于是本轮在 `docs/reference/`
+  抓到的两份结论式报告（`CODE_QUALITY_SUMMARY.md` / `INTEGRATION_COMPLETE.md`，已 `git mv` 成
+  `reports/code_quality_summary_20260819.md` / `reports/diversity_enhancer_integration_20260817.md`）
+  对 S16 完全失明 —— 与 S11 的「无扩展名失明」、S18 的「顶层失明」是同一类结构性盲区。
+  ⚠ **docs/ 面只校三条**（纯 ASCII、**文件名不含大写字母**、日期形态），**刻意不校「必须带日期」**：
+  `docs/` 是长期规范 / SOP 区，一份 `tool_registry.md` 不该为过闸编一个日期（实测 79 篇 .md 里无日期件占多数，
+  套上规则④会把闸顶成天天误红）。`docs/plans/` 整目录**只豁免日期形态**（§8.13 明示它保持
+  `YYYY-MM-DD-<主题>.md` 前缀，实测 8 个），非 ASCII 与大写在 plans 里照样 FAIL；README/MANIFEST/CHANGELOG
+  走 `S16_EXEMPT_NAMES`。docs/ 面**无基线**（实测当前违规 0，建基线等于给空债面留永久通道）。
+  守护 `tests/unit/07_docs_skills/test_audit_structure_s16.py`（含「docs/ 面非空过」「plans 豁免只到日期形态」
+  「取不到清单即 FAIL」三条反查）。
 - **S3「同名」不是缺陷**：`tools/<name>.py` 与 `src/wqb/**/<name>.py` 分属脚本与包两套命名空间，import 不会撞
   （实测 `import wave_gate` 报 ModuleNotFoundError，它只以 `wqb.workflow.nodes.wave_gate` 存在）。**勿改名。**
 - **`wave_gate` 包化收尾（2026-09-30）**：`tools/wave_gate.py` = 入口 shim（~140 行：argparse 契约字面 +
@@ -782,7 +970,8 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   `monkeypatch.setattr(wave_gate, ...)` 的测试契约由 `_compat` 晚绑定保住。
 - **pre-commit 钩子的解释器**：钩子由 git 自带的 sh 执行，PATH 与交互式 shell 不同（实测会把 `python`
   解析到无 pytest 的 LobsterAI 运行时，导致钩子每次提交都误报失败）。钩子已改为**优先用
-  `<repo>/.venv/Scripts/python.exe`**，无 venv 才退回 PATH。手写 shell 调用时注意同一问题。
+  `<repo>/world-quant-brain-mcp/.venv/Scripts/python.exe`**（2026-10-09 起全仓唯一 venv，
+  原根 `.venv` 已删），无 venv 才退回 PATH。手写 shell 调用时注意同一问题。
 - **`tools/audit_skill_drift.py` 管仓库内 skill 之间的副本漂移**（区别于 `sync_skills.py` 的仓库→安装位同步）：
   A 类（GEM 内嵌快照，由 `sync_gem_embedded_skill.py` 同步，设计内保留）不报，只报 B 类跨 skill 复制。
   当前 B=3 组：`validator.py`（4 份）/ `helpful_functions.py`（4 份）/ `ace_lib.py`（2 份）。
@@ -825,15 +1014,67 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   为历史名，保留但不新增此类风格。
   ⚠ `tracking/` 同层的 `FORUM`/`PPA_USA`/`prod_probe`/`hypotheses`/`mining` **都不是区域**，
   新 Agent 极易当成区域读；现有五个搬迁代价 > 收益，**只做约定**：再增非区域目录一律 `_` 前缀。
+  2026-10-14 实测口径：磁盘上非区域目录 6 个（`PPA_USA` 不在 —— PPA 战役未开、产物已归档 `attic/ppa_mining_*`），
+  登记表 7 项，差的那项走 `NON_REGION_DIRS_ALLOW_ABSENT` 静音。**别按 S13 的 WARN 提示把它删掉**：
+  删了下次复跑 PPA 就长出 `tracking/PPA_USA/`（该目录当前不存在，登记 = 承认它可能存在）。
+  ⚠ **`reports/` 与 `output_report/` 的一层子目录名同受本条约束（2026-10-14 批次G 起有闸 = S16 规则⑦）**。
+  此前 S16 的取面**全是文件**（按扩展名筛），目录名对它结构性失明（与批次F 的 S11 数据件失明同族），
+  于是同一层里 5 个 kebab（`forum-experience`）与 4 个不合规并存（2 个 snake：`dataset_experience`/`forum_alpha_research`，
+  2 个 `_refs`）——「这份报告在哪个目录」从一次确定变成两套猜。
+  **存量 4 条进 `S16_DIR_LEGACY` 只登记不回改**，逐条带代价证据：`dataset_experience` 由生成器写名 + 校验器核对 + 全库引用；
+  `forum_alpha_research` 被目录内脚本自引用路径；两个 `*_refs` 是 2026-10-10 P2-C 的**同名消歧后缀**（见本节 `_refs` 语义条）。
+  伞的失效判据取**磁盘**而非 git 跟踪面（用跟踪面会把「目录还在、只是暂无跟踪件」误报成伞失效，
+  而这条 WARN 让人做的动作恰恰是**删条目**）；登记项不在盘上即 WARN 要求同步删 —— 留着就是一条**永久豁免通道**（S13/S11 同坑）。
+  `output_report/` 现无一层子目录 ⇒ 它的第一个新目录起就是 kebab。
+  ⚠ **本条方向已裁定，别再翻：`reports/project_layout_audit_20261014.md` §3 树注释与 §5 第 10 条原写
+  「`reports/` 子目录统一为 snake_case」，与本条相反，2026-10-14 批次G 已按 §8.4（本文件是治理规约权威源）作废该建议并在报告内更正**：
+  snake 化要同时动 `Claude/skills/wq-brain-campaign-toolkit/config/template_families.json` 里的目录名、
+  S16 基线键与 20+ 处活文档引用 = 造死指针。**守卫 `tests/unit/07_docs_skills/test_audit_structure_s16_dir_style.py`
+  里有口径反查用例**（读 AGENTS.md 这句声明的样式）：谁照那句旧建议批量改 snake，本闸会全部拦下，
+  他必须来改这条测试 —— 改的时候就必然读到这段裁决。
 - **文件**：纯 snake_case；包内私有实现 `_` 前缀（`store/_alphas.py` 已是范式）。
+- **文件必须有扩展名**（2026-10-15 批次I 定案，闸门 = S21，全仓跟踪面）：无扩展名的脚本对
+  `file` 判定、语法高亮、全仓 `*.py` 扫描以及 S4/S11/S14 **一并失明**（战例旧名 `mcp_py` ——
+  带 `D:\...` 绝对路径与已退役端点长期躺在顶层无人知，正因为它基名里没有 `.`）。
+  修法 = **改名并同步引用点，不是删除**。两类豁免不可互换：① **名字型** `S21_EXEMPT_NAMES`
+  （`Makefile`/`Dockerfile`/`LICENSE`/`NOTICE`… 由工具按全名识别，加扩展名反而认不出）；
+  ② **路径型** `S21_EXEMPT_PATHS`（`tools/git-hooks/pre-commit`、`commit-msg` —— git 硬要求 hook 无名可改）。
+  ⚠ 点开头文件（`.gitignore`/`.mcp.json`/`.env.example`）**天然合法**：判据取「基名不含 `.`」，
+  **不得用 `Path(p).suffix == ""`** —— 那写法会把每个 dotfile 永久误红（与 S17 首跑被 `__pycache__` 误红同族）。
 - **活探针禁止 `test_` 前缀**：用 `probe_*` / `*_live`。`test_` 名字 + 不在 `testpaths` 内
   = 既不被收集又骗人（`world-quant-brain-mcp/probe_direct_auth.py` —— 2026-10-04 已改名，**旧路径现已不存在**；`probe_labs_live.py` 同形态）。处置纪律 = **改名，不搬家**：搬进 `tests/` 会让 pytest 真去跑平台 API
   （与 §8.4 第 4 条对 `tools/test_*.py` 的结论同一）。
-- **日期**：产物与报告一律 `YYYYMMDD` **作后缀**（`skills_review_20261003.md`）；
+- **日期**：人工报告与产物一律带 `YYYYMMDD` **作后缀**（`skills_review_20261003.md`）。
   `docs/plans/` 保持 `YYYY-MM-DD-<主题>.md` **前缀**（该目录已成型，同目录内不混用）。
-  停止 `2026-10-02_xxx.md` 这种前缀带杠写法。
+  其余地方停止 `2026-10-02_xxx.md` 这种前缀带杠写法。
+  **例外（机器产物不强制）**：`*_ideas.md` / `*_campain.md` 由生成器模板拼名、消费方依赖同名覆盖
+  （`stale_ideas_md_path` 比对 / `dataset_experience` 的既定文件名），塞日期会破坏该语义；
+  其余三条（纯 ASCII、不带杠、有日期则作后缀）对它们照样生效。闸门 = S16，存量在 `s16_naming_violations`。
+  ⚠ **「必须带日期」这条不适用于 `docs/`**：docs/ 是长期规范 / SOP / 速查区（S16 规则⑥只校
+  纯 ASCII + 不含大写字母 + 日期形态）。别为了过闸给一份规范文档编日期。
+- **`docs/` 只放长期规范，不放结论**（2026-10-14 布局审计 §4 定案，S16 规则⑥机械拦）：
+  带日期的一次性完工总结 / 质量分析（曾以 `CODE_QUALITY_SUMMARY.md`、`INTEGRATION_COMPLETE.md`
+  躺在 `docs/reference/`）属本节表格的「人工审计与复盘」桶 ⇒ `reports/<主题>_<YYYYMMDD>.md`。
+  判据不是文件名大小写而是**读者会不会照它做决定**：规范 = 长期有效，结论 = 某天快照（正文须自标快照日）。
+  大写开头在 docs/ 面只合法出现在 `README.md` / `MANIFEST.md` / `CHANGELOG.md`（`S16_EXEMPT_NAMES`）。
 - **路径一律纯 ASCII**，不含空格/中文/Windows 保留名（`nul`/`con`/`0`/`-`）。非 ASCII 名会让
   `git` 需 `core.quotepath=false`、脚本处理与跨平台同步都出摩擦；中文放正文，别放文件名。
+- **`reports/<主题>_<日期>_refs/` 的语义（2026-10-14 布局审计登记，止住「像笔误」的反复误判）**：
+  `_refs` 后缀 = **同名消歧后缀**，出自 2026-10-10 输出目录治理第三轮 **P2-C**（见
+  `reports/output_dirs_governance_review3_20261010.md` §P2-C）：`reports/` 里 `<主题>_<日期>.md` 与
+  **同名目录** `<主题>_<日期>/` 并存，检索与引用都要猜是哪个。裁决取的是「**目录加 `_refs` 后缀、
+  `.md` 主体不动**」——主体被 `closure_ledger.py` + tests + skills 文档 20+ 处引用，改主体的代价远大于改目录。
+  现状两件：`reports/ra_pipeline_stage_review_20260927_refs/`、`reports/skills_review_20260929_refs/`。
+  ⚠ **它不是 `references/` 的缩写、不是临时区，也不是抢救点/快照目录**——后者是
+  `docs/governance/snapshot_adjudication.md` 的口径，实测那份台账里**没有任何 `_refs/` 路径**
+  （只有 `doc_path_refs.py` / `test_experience_kb_refs.py` 这类恰好含该子串的文件名）。
+  **谁在读**：报告主体自己的复现命令 —— `reports/ra_pipeline_stage_review_20260927.md:6,516,1234-1319`
+  指 `…_refs/reproduce.sh`、`realenv/reproduce_realenv*.sh`；`reports/skills_review_20260929.md:6,2372-2374`
+  指 `…_refs/check_skills.py`；`_refs/` 内脚本与 transcript 也自引用自身路径。
+  ⇒ 因此**再改一次名就是活文档死指针**（`doc_path_refs.py` 是棘轮硬闸，只拦新增）；
+  本轮**只做约定、不回改存量**，也不能按「目录统一 snake_case / 去掉多余后缀」单独处理。
+  机械侧配套 = `audit_structure.S5_EXEMPT_PREFIXES` 已登记这两个前缀（审计证据脚本与报告配对，
+  不判 `reports/` 散落脚本），以及 S16 的「有日期则须作后缀」判定。
 - **output_report vs reports 边界判据**（2026-10-08 治理审计固化，消除「评审产物/审计复盘」语义重叠导致的两头分流）：
   **凡 workflow/战役自动产出**（ideas、candidates、wave 结果、`archive_submit_ready.py`/`complexity_scan.py`/`run_grouped_tests.py` 等工具直写）→ `output_report/`；
   **凡人工撰写的审计/评审/复盘/演练/价值评估**（含 dry-run 演练复盘、阶段价值审计）→ `reports/`。

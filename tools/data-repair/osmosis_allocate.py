@@ -35,6 +35,7 @@
 用法
   python tools/data-repair/osmosis_allocate.py                 # review：读范围覆盖 + 写 plan（不写平台）
   python tools/data-repair/osmosis_allocate.py --sync          # review 前先拉平台 OS 指标改善权重
+  python tools/data-repair/osmosis_allocate.py --source platform --prod-policy exclude --prod-max 0.695  # 平台权威源+实盘业绩加权（避 stale DB）
   python tools/data-repair/osmosis_allocate.py --region USA    # 只针对某区（范围覆盖统计仍全量）
   python tools/data-repair/osmosis_allocate.py --apply         # ★ 写入平台（PATCH osmosisPoints，带断点续跑 + 自动 replan）
   python tools/data-repair/osmosis_allocate.py --apply --dry-run   # 预览 PATCH（不真正写）
@@ -104,6 +105,14 @@ PROD_POLICY = "discount"
 PROD_MAX = 0.70
 PROD_PENALTY_FLOOR = 0.05    # prod=1.0 时质量保留的最低比例
 
+# investability 加权（2026-10-13 定案）
+#   平台 is.investabilityConstrained.sharpe = 实盘约束（maxtrade/maxpos）后的真实 Sharpe，
+#   是本工具 quality() 的**首选**质量口径——IS sharpe 是纸面值，高换手 alpha 施加
+#   investability 约束后常暴跌 60%+（官方 osmotic 文档：衰减≥60% 应剔除）。
+#   ⚠ 该字段仅 platform 源可得（312 颗里 150 颗有）；DB alphas 表无此列 ⇒ 源=db 时全 None。
+#   缺失时回退 (os_sharpe or sharpe) * INVEST_FALLBACK 作保守估计。
+INVEST_FALLBACK = 0.65       # 缺失 investability 时按 IS 的这个比例保守折算
+
 
 # --------------------------------------------------------------------------- #
 # venv reexec（必须在 import brain_api 之前）
@@ -146,9 +155,84 @@ def load_candidates(region: Optional[str] = None) -> List[Dict[str, Any]]:
         d = dict(r)
         # 权威优先缓存（与 search_alphas_by_sharpe.merge_corr_cache 同口径）
         d["prod"] = d["prod_cache"] if d.get("prod_cache") is not None else d.get("prod_a")
+        # DB alphas 表无 investability 列 ⇒ 恒定 None，quality() 走 INVEST_FALLBACK 回退。
+        # 想用真实 investability 请走 --source platform。
+        d["investability_sharpe"] = None
         rows.append(d)
     con.close()
     return rows
+
+
+def load_candidates_platform() -> List[Dict[str, Any]]:
+    """平台权威候选（避本地 DB stale）：拉 OS 池全量，过滤 ACTIVE+REGULAR。
+
+    抽取 region/delay/IS(sharpe,turnover)/OS(sharpe)/prod，键名与 load_candidates 对齐，
+    使 quality()/build_plan() 无需改动即可复用。prod 优先 is.prodCorrelation，回退顶层 prod。
+    """
+    async def _fetch() -> List[Dict[str, Any]]:
+        from brain_api import brain_client
+        rows: List[Dict[str, Any]] = []
+        off = 0
+        for _ in range(200):
+            r = await brain_client.get_user_alphas(stage="OS", limit=100, offset=off)
+            pl = r["result"] if isinstance(r, dict) and isinstance(r.get("result"), dict) else r
+            res = pl.get("results", []) or []
+            if not res:
+                break
+            rows.extend(res)
+            if not pl.get("next"):
+                break
+            off += 100
+        return rows
+    pool = asyncio.run(_fetch())
+    out: List[Dict[str, Any]] = []
+    for a in pool:
+        if a.get("status") != "ACTIVE" or a.get("type") != "REGULAR":
+            continue
+        st = a.get("settings") or {}
+        isd = a.get("is") or {}
+        osd = a.get("os") or {}
+        prod = isd.get("prodCorrelation")
+        if prod is None:
+            prod = a.get("prod")
+        # investability 口径：平台 is.investabilityConstrained.sharpe
+        # （= MCP HTTP 源 metrics.investability_sharpe，两者同值；150/312 颗有）
+        inv = (isd.get("investabilityConstrained") or {}).get("sharpe")
+        out.append({
+            "investability_sharpe": inv,
+            "alpha_id": a.get("id"),
+            "region": st.get("region"),
+            "delay": st.get("delay"),
+            "sharpe": isd.get("sharpe"),
+            "os_sharpe": osd.get("sharpe"),
+            "fitness": isd.get("fitness"),
+            "turnover": isd.get("turnover"),
+            "margin": isd.get("margin"),
+            "two_year_sharpe": isd.get("twoYearSharpe"),
+            "stage": a.get("stage"),
+            "platform_status": a.get("status"),
+            "alpha_type": a.get("type"),
+            "prod": prod,
+        })
+    # 合并 DB 的 os_sharpe（sync 已落库，比平台列表 os 段更完整）：平台无则用 DB。
+    # 这样 prod/status/存在性 走平台权威，实盘业绩权重走最完整的 OS sharpe。
+    try:
+        from wqb.db_conn import connect as _db_connect
+        con = _db_connect(readonly=True, row_factory=sqlite3.Row)
+        db_os = {r["alpha_id"]: r["os_sharpe"] for r in con.execute(
+            "SELECT alpha_id, os_sharpe FROM alphas WHERE os_sharpe IS NOT NULL").fetchall()}
+        con.close()
+        merged = 0
+        for rec in out:
+            if rec.get("os_sharpe") is None and rec["alpha_id"] in db_os:
+                rec["os_sharpe"] = db_os[rec["alpha_id"]]
+                merged += 1
+        if merged:
+            print(f"  [platform] 合并 DB os_sharpe: {merged} 颗 (平台列表 os 段缺，用 sync 落库值)",
+                  file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        print(f"  [platform] DB os_sharpe 合并失败(忽略，退 IS): {e}", file=sys.stderr)
+    return out
 
 
 def build_scopes(rows: List[Dict[str, Any]]) -> Dict[Tuple[str, int], List[Dict[str, Any]]]:
@@ -171,13 +255,29 @@ def prod_penalty(prod: Optional[float], policy: str, prod_max: float) -> float:
 
 
 def quality(a: Dict[str, Any]) -> float:
-    """质量 = 优先 OS、缺失回退 IS、超低频换手打 0.6 折，再乘 prod 折扣。"""
-    v = a["os_sharpe"] if a["os_sharpe"] is not None else a["sharpe"]
-    if v is None:
-        return 0.0
-    to = a["turnover"] or 0
+    """质量 = 优先 investability_sharpe，缺失回退 (OS|IS)×INVEST_FALLBACK，再乘 prod 折扣。
+
+    2026-10-13 改：原实现直接用 IS sharpe 加权，是**纸面质量**——高换手 alpha 施加
+    investability 约束（maxtrade/maxpos）后 Sharpe 常暴跌 60%+，却仍按 IS 拿满权重，
+    导致权重与真实质量严重错配（实测：IND/1 占 43% 权重但 investability 衰减 51%）。
+
+    ★ 不再额外惩罚高换手：官方《High Turnover Alphas》文档明确**鼓励** TO>20% 的 alpha
+      （"less correlated with traditional lower-turnover ideas"，提供正交收益源），
+      且 investability_sharpe 本身已含成本与约束，再人工打折会误伤真正稳健的高换手 alpha
+      （实测反例：d5bnE8jJ GLB TO=0.446 但 investability=3.19，极稳健）。
+      原实现的 `pen = 0.6 if to < 0.05` 只惩罚**超低**换手（疑似僵尸信号），予以保留。
+    """
+    inv = a.get("investability_sharpe")
+    if inv is not None:
+        v = float(inv)
+    else:
+        base = a.get("os_sharpe") if a.get("os_sharpe") is not None else a.get("sharpe")
+        if base is None:
+            return 0.0
+        v = float(base) * INVEST_FALLBACK
+    to = a.get("turnover") or 0
     pen = 0.6 if to < 0.05 else 1.0
-    q = max(float(v), 0.0) * pen
+    q = max(v, 0.0) * pen
     return q * prod_penalty(a.get("prod"), PROD_POLICY, PROD_MAX)
 
 
@@ -535,7 +635,11 @@ def print_review(rows: List[Dict[str, Any]], scopes: Dict[Tuple[str, int], List[
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="WorldQuant BRAIN Osmosis points 分配（review+apply+自动replan）")
-    ap.add_argument("--sync", action="store_true", help="review 前先拉平台 OS 指标改善权重")
+    ap.add_argument("--sync", action="store_true", help="review 前先拉平台 OS 指标改善权重（仅 source=db 生效）")
+    ap.add_argument("--source", choices=["db", "platform"], default="db",
+                   help="候选来源：db=本地 alphas 表(默认)；platform=直接拉平台 OS 池(权威，避 stale DB)")
+    ap.add_argument("--exclude-region", default=None,
+                   help="排除某区不参与分配(逗号分隔，如 USA)；该区 alpha 仍会被零化。其余区 rescale 到 10 万")
     ap.add_argument("--apply", action="store_true", help="写入平台（默认仅 review+写本地 plan）")
     ap.add_argument("--dry-run", action="store_true", help="与 --apply 同用：只预览 PATCH 不真正写")
     ap.add_argument("--region", default=None, help="范围覆盖统计/分配限区（写平台仍为全量 plan）")
@@ -543,6 +647,13 @@ def main() -> int:
     ap.add_argument("--prod-policy", choices=["ignore", "discount", "exclude"], default="discount",
                    help="prod 相关性策略：discount=质量递减打折(默认)；exclude=剔除 prod>阈值；ignore=不纳 prod")
     ap.add_argument("--prod-max", type=float, default=0.70, help="prod 阈值（默认 0.70，与提交闸一致）")
+    ap.add_argument("--force-repatch", action="store_true",
+                   help="apply 前清空 checkpoint，强制重新 PATCH 全部 alpha（用于**更新已分配 alpha 的点数**）。"
+                        "默认保留 checkpoint 作断点续跑；不清则已分配过的 alpha 会被 skip、点数不更新。")
+    ap.add_argument("--drop-invest-decay", type=float, default=None,
+                   help="剔除 investability 后 Sharpe 衰减≥该比例的 alpha（官方建议 0.6，"
+                        "如 `--drop-invest-decay 0.6`）；默认 None=不剔除（剔除可能令范围掉到 <10 失格）。"
+                        "仅对 investability 数据可得的 alpha 生效；需 --source platform。")
     a = ap.parse_args()
 
     global PROD_POLICY, PROD_MAX
@@ -550,13 +661,23 @@ def main() -> int:
     PROD_MAX = a.prod_max
 
     try:
-        rows = load_candidates(a.region)
+        if a.source == "platform":
+            rows = load_candidates_platform()
+        else:
+            rows = load_candidates(a.region)
     except FileNotFoundError as e:
         print(f"[ERROR] {e}", file=sys.stderr)
         return 3
 
     # 零化非计划 alpha 用的「完整候选池」快照（过滤前的最新全量，含被 exclude 剔除的 prod≥阈值 alpha）
     all_rows = list(rows)
+    if a.source == "platform" and a.region:
+        # platform 源：all_rows 保留全量（零化用），分配只限区
+        rows = [r for r in rows if r["region"] == a.region]
+    if a.exclude_region:
+        # 排除某区：从分配集剔除，但 all_rows 仍含该区（zero_others 会把它零化）
+        _excl = {x.strip().upper() for x in a.exclude_region.split(",") if x.strip()}
+        rows = [r for r in rows if (r.get("region") or "").upper() not in _excl]
 
     # exclude 模式：剔除 prod>=阈值 的 alpha（含恰好阈值；可能令某范围掉到 <10 而失格）。
     # ★ 保守硬规则：本地 prod 为 None（无数据）也一并剔除——"不知道是否干净"时不应分配，
@@ -568,7 +689,27 @@ def main() -> int:
         print(f"[exclude] 剔除 prod>={PROD_MAX} 或 未知(None) 的 alpha: {before} -> {len(rows)} 颗 "
               f"(其中 None-prod {none_ct} 颗因本地无 prod 数据被保守剔除)", file=sys.stderr)
 
-    if a.sync:
+    # 可选：剔除 investability 后 Sharpe 衰减≥阈值的 alpha。
+    # 依据：官方《Osmosis Allocation Guide》"Exclude Alphas whose Sharpe ratio declines by
+    #   approximately 60% or more after investability constraints are applied"。
+    # ⚠ 默认 None（不剔除）——剔除可能令某范围掉到 <10 而失格，故须用户显式开启。
+    # ⚠ 仅对 investability_sharpe 可得者生效；缺失（DB 源或老 alpha）不剔除（不冤枉）。
+    if a.drop_invest_decay is not None:
+        thr = a.drop_invest_decay
+
+        def _decayed(r: Dict[str, Any]) -> bool:
+            inv = r.get("investability_sharpe")
+            sv = r.get("sharpe")
+            if inv is None or sv is None or sv <= 0:
+                return False
+            return inv < sv * (1.0 - thr)
+
+        before = len(rows)
+        rows = [r for r in rows if not _decayed(r)]
+        print(f"[drop-invest] 剔除 investability 衰减≥{thr:.0%} 的 alpha: "
+              f"{before} -> {len(rows)} 颗", file=sys.stderr)
+
+    if a.sync and a.source != "platform":
         st = sync_os()
         print(f"[sync] 结果: {st}", file=sys.stderr)
         # sync 后重新读（OS 指标已落库），并刷新快照（仍为过滤前全量）
@@ -591,6 +732,14 @@ def main() -> int:
         return 0
 
     # ---- apply 阶段：PATCH + 自动 replan 闭环 ----
+    # ★ 2026-10-13：checkpoint 是**断点续跑**机制（用户铁律：脚本必须可 resume），不能删。
+    #   副作用：已分配过的 alpha 在 apply_plan 里被 `if aid in applied: skip` 跳过，
+    #   ⇒ 重跑分配时这些 alpha 的点数**不会更新**（仍保持上一次的值）。
+    #   故提供 --force-repatch 显式清 checkpoint；不清则只补新 alpha、不动旧点数。
+    if a.force_repatch and not a.dry_run:
+        save_ckpt(set())
+        print("[force-repatch] 已清 checkpoint，本轮强制重新 PATCH 全部 alpha（更新点数）",
+              file=sys.stderr)
     dry = a.dry_run
     attempt = 0
     last_plan_sig = None

@@ -21,6 +21,8 @@
 import os
 import subprocess
 import sys
+import tempfile
+from pathlib import Path
 
 import pytest
 
@@ -83,7 +85,17 @@ def test_missing_pack_reports_unavailable():
 # ---- 3. 端到端：warn 放行 vs enforce 拦截 ---------------------------------
 
 def _run_wave_gate(mode, dataset="model109", region="KOR", campaign="tracking/KOR"):
-    """跑一次单表达式 wave_gate（零平台请求、零配额）。"""
+    """跑一次单表达式 wave_gate（零平台请求、零配额）。
+
+    ⚠ **必须给子进程一个临时库**（2026-10-14 补，AGENTS.md §8.4 第 9 项）：
+    `wave_gate.py` 会把本波门禁结论写进 `ledger_kv`（键 `gate_w<wave>_<dataset>`），
+    而子进程拿的是 CLI 缺省库位 = **生产 `data/wqb.db`**。本文件此前的实测后果：
+    全量回归期间写入 `KOR/gate_ws2_pytest_inspect_model109` 一行，且库里已存着
+    2026-09-28 / 10-03 / 10-04 三份同期测试件 —— 门面上的 `_reject_production_db_under_tests`
+    只守 MCP 那条路，直写路径走 `CampaignStore`，所以当时是**静默写进去**的。
+    现在 `CampaignStore` 一侧也有结果层硬闸：不注入 `WQB_DB_PATH` 就地报错，不再静默。
+    判据只看 stdout 的 warn/enforce 结论，临时空库不影响本测试的断言（缺台账一律优雅降级）。
+    """
     cmd = [
         sys.executable, os.path.join(REPO, "tools", "wave_gate.py"),
         "--campaign-dir", campaign,
@@ -98,9 +110,12 @@ def _run_wave_gate(mode, dataset="model109", region="KOR", campaign="tracking/KO
         "--skip-semantic-gate",
         "--inspect-mode", mode,
     ]
-    return subprocess.run(
-        cmd, cwd=REPO, capture_output=True, text=True, encoding="utf-8", timeout=300
-    )
+    with tempfile.TemporaryDirectory(prefix="wq_wave_gate_db_") as tmp_dir:
+        env = {**os.environ, "WQB_DB_PATH": str(Path(tmp_dir) / "wqb.db")}
+        return subprocess.run(
+            cmd, cwd=REPO, capture_output=True, text=True, encoding="utf-8",
+            timeout=300, env=env,
+        )
 
 
 @pytest.fixture(scope="module")

@@ -20,10 +20,9 @@
           python tools/super_build.py probe --alpha-id KPGvRMg1
   submit  设置属性（内置 ≥100 英文描述）+ 两次 submit 判定
           python tools/super_build.py submit --alpha-id KPGvRMg1 --name 0.6944
-          ★ 2026-09-25 起 submit 内置 **prod 闸**（默认开启）：提交前轮询
+          ★ 2026-09-25 起 submit 内置 **prod 闸**（默认开启、无豁免入口）：提交前轮询
           GET /alphas/{id}/correlations/prod，max ≥ 0.7 一律拒绝（用户铁律，即使平台
-          result=PASS 也不提交）；probe 超时同样 fail-closed。确要豁免须显式
-          --allow-prod-above-07。相关参数：--prod-gate（阈值，默认 0.7）、
+          result=PASS 也不提交）；probe 超时同样 fail-closed。相关参数：--prod-gate（阈值，默认 0.7）、
           --probe-timeout（轮询窗口秒数，默认 900）。
 
 退出码: 0=成功（select 已创建 / probe 双闸过 / submit 已受理）, 1=失败
@@ -105,10 +104,10 @@ async def _probe_prod_max(brain, alpha_id, timeout_s=900.0, interval_s=15.0,
 def _prod_gate_verdict(prod_max, threshold=0.7):
     """纯函数：prod 闸判定。返回 (allowed: bool, reason: str)。
 
-    规则（用户铁律 2026-09-25）：**prod ≥ 0.7 不得提交**——即使平台提交层对 SUPER
+    规则（用户铁律 2026-09-25，2026-10-18 收紧）：**prod ≥ 0.7 不得提交**——即使平台提交层对 SUPER
     回带 value>limit 且 result=PASS（GLB 0.8094 / KOR 0.8571 PASS 实证）也不提交。
-    probe 未出数（超时/无数据）按 fail-closed 处理；两类拒绝都可用
-    `--allow-prod-above-07` 显式豁免。
+    probe 未出数（超时/无数据）按 fail-closed 处理；两类拒绝**均无豁免入口**
+    （原显式豁免开关已于 2026-10-18 按用户判定「不合规」彻底移除）。
 
     >>> _prod_gate_verdict(0.8571)
     (False, ...)
@@ -290,14 +289,14 @@ async def cmd_probe(a):
 
 async def cmd_submit(a):
     # ★★★★★ 全局禁提交闸（2026-10-05，用户指令）：本工作区「只挖不提交」，产出的 alpha 一律积攒，
-    # 是否提交由用户决定。置于任何网络副作用之前；`--allow-prod-above-07` 亦不豁免。
+    # 是否提交由用户决定。置于任何网络副作用之前，无任何豁免路径。
     try:
         from wqb.config import ALLOW_ALPHA_SUBMIT  # noqa: WPS433
     except Exception:  # pragma: no cover - 路径兜底
         sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
         from wqb.config import ALLOW_ALPHA_SUBMIT  # type: ignore
     if not ALLOW_ALPHA_SUBMIT:
-        print("[global-lock] ALLOW_ALPHA_SUBMIT=False：本工作区只挖不提交，已拒绝（--allow-prod-above-07 亦不豁免）。")
+        print("[global-lock] ALLOW_ALPHA_SUBMIT=False：本工作区只挖不提交，已拒绝（无豁免入口）。")
         print("              放行需用户改 wqb.config.ALLOW_ALPHA_SUBMIT=True 或设 WQB_ALLOW_ALPHA_SUBMIT=1。")
         return 1
 
@@ -305,20 +304,20 @@ async def cmd_submit(a):
     brain = BrainApiClient()
     await brain.ensure_authenticated()
 
-    # 0) ★ prod 闸（2026-09-25 落地，默认强制）：提交前先拿 prod 真值，
+    # 0) ★ prod 闸（2026-09-25 落地，强制）：提交前先拿 prod 真值，
     #    max ≥ 阈值（或 probe 超时）一律不提交、不写属性、不发任何 POST。
-    if getattr(a, "allow_prod_above_07", False):
-        print("[prod-gate] --allow-prod-above-07 显式豁免，跳过 probe 闸")
-    else:
-        print(f"[prod-gate] 轮询 correlations/prod（间隔 15s，窗口 {a.probe_timeout}s）...")
-        prod_max, attempts = await _probe_prod_max(
-            brain, a.alpha_id, timeout_s=a.probe_timeout)
-        allowed, reason = _prod_gate_verdict(prod_max, getattr(a, "prod_gate", 0.7))
-        print(f"[prod-gate] attempts={attempts} max={prod_max} → {reason}")
-        if not allowed:
-            print("  如确要提交（平台 result 可能 PASS），显式加 --allow-prod-above-07；"
-                  "或稍后重跑等平台算完")
-            return 1
+    #    ★★ 2026-10-18 收紧：原 `--allow-prod-above-07` 豁免开关已**彻底移除**——
+    #    prod ≥ 阈值是合规红线，不存在任何豁免入口（用户明令该闸门不合规）。
+    #    任何试图绕过 prod 闸的路径都应被拒绝，不接受"平台 result 可能 PASS"作为理由。
+    print(f"[prod-gate] 轮询 correlations/prod（间隔 15s，窗口 {a.probe_timeout}s）...")
+    prod_max, attempts = await _probe_prod_max(
+        brain, a.alpha_id, timeout_s=a.probe_timeout)
+    allowed, reason = _prod_gate_verdict(prod_max, getattr(a, "prod_gate", 0.7))
+    print(f"[prod-gate] attempts={attempts} max={prod_max} → {reason}")
+    if not allowed:
+        print("  prod 闸未过 ⇒ 拒绝提交（合规红线，无豁免入口）。"
+              "可稍后重跑等平台算完，或更换候选。")
+        return 1
 
     # 1) 详情必拉（region 覆盖与命名都依赖它；★ 2026-09-25 修：--skip-precheck 时
     #    d 未定义 → UnboundLocalError。原实现把 get_alpha_details 藏在 precheck 分支内）
@@ -435,8 +434,8 @@ def main():
                    help="prod 闸阈值（默认 0.7）；probe max ≥ 该值即拒绝提交")
     p.add_argument("--probe-timeout", type=float, default=900,
                    help="probe 轮询窗口秒数（默认 900s）；超时未出数按 fail-closed 拒绝")
-    p.add_argument("--allow-prod-above-07", action="store_true",
-                   help="显式豁免 prod 闸（含 value≥阈值 与 probe 超时两种情形）")
+    # ★★ 2026-10-18 移除：`--allow-prod-above-07` 豁免开关已删除（用户明令不合规）。
+    #    prod ≥ 阈值是合规红线，不留任何豁免入口。若传入该参数 argparse 会直接报错退出。
     p.set_defaults(fn=cmd_submit)
 
     a = ap.parse_args()

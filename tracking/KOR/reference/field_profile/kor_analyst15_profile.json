@@ -1,0 +1,2709 @@
+{
+ "dataset": "analyst15",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "nfields": 300,
+ "fields": [
+  {
+   "id": "anl15_gr_12_m_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 123,
+   "alphaCount": 370,
+   "description": "Weighted one-month percent change in 12-month forward earnings forecasts at the group level (constant sample)",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 131,
+   "alphaCount": 1006,
+   "description": "Weighted three-month percent change in 12-month forward earnings forecasts for the group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 78,
+   "alphaCount": 435,
+   "description": "Weighted six-month percent change in 12-month forward earnings forecasts for the group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 66,
+   "alphaCount": 243,
+   "description": "The number of companies with a 12-month forward mean EPS estimation within GICS group grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 123,
+   "alphaCount": 903,
+   "description": "Number of companies in the group with the 12-month forward mean EPS lowered since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 111,
+   "alphaCount": 1028,
+   "description": "Number of companies in the group whose 12-month forward mean EPS was raised since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 120,
+   "alphaCount": 771,
+   "description": "Number of estimates for the group’s forward 12‑month period",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 20,
+   "alphaCount": 24,
+   "description": "Pro-rated number of forward 12-month EPS estimates that were lowered since last month for the group",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_12_m_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 110,
+   "alphaCount": 801,
+   "description": "Pro-rated number of 12-month forward estimates raised since last month at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 109,
+   "alphaCount": 911,
+   "description": "Weighted 12-month forward year-over-year EPS growth at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 138,
+   "alphaCount": 554,
+   "description": "Weighted average forward 12‑month EPS at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 107,
+   "alphaCount": 513,
+   "description": "Total market capitalization of companies in the group that have a 12-month forward EPS mean",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 153,
+   "alphaCount": 713,
+   "description": "Group-level weighted average price-to-earnings ratio based on 12-month forward EPS",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 22,
+   "alphaCount": 25,
+   "description": "Weighted average standard deviation of 12-month forward EPS forecasts at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_12_m_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 121,
+   "alphaCount": 958,
+   "description": "The total of 12-month forward earnings estimation aggregated within GICS group grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_12_m_tr_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 118,
+   "alphaCount": 677,
+   "description": "Weighted average trailing 12-month EPS, aggregated at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 768,
+   "description": "Weighted one-month percent change in 18-month forward earnings forecasts, using a constant sample, aggregated at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 105,
+   "alphaCount": 773,
+   "description": "Weighted three-month percent change in the 18-month forward earnings forecasts at the group level, using a constant sample",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 107,
+   "alphaCount": 1126,
+   "description": "Weighted six‑month percent change in the forward 18‑month earnings forecast, constant sample, at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "The number of companies with an 18-month forward mean EPS estimation within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_18_m_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "The number of companies for which 18-month forward mean EPS estimation has been lowered from last month within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_18_m_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 101,
+   "alphaCount": 1028,
+   "description": "Number of companies in the group that raised their 18‑month forward mean earnings estimate since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Number of analyst estimates for the 18-month forward period in the group",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_18_m_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 104,
+   "alphaCount": 1035,
+   "description": "Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date, symbol, and transaction type in question.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 20,
+   "description": "Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date, symbol, and transaction type in question.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_18_m_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "The weighted 18-month forward year-over-year growth of EPS estimation aggregated within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_18_m_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 197,
+   "alphaCount": 845,
+   "description": "Group-level weighted average 18-month forward EPS consensus estimate",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 109,
+   "alphaCount": 820,
+   "description": "Total market capitalization for companies in the industry group that have an 18-month forward mean forecast",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 119,
+   "alphaCount": 685,
+   "description": "Weighted average price/earnings ratio based on 18‑month forward earnings at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 97,
+   "alphaCount": 540,
+   "description": "Weighted average standard deviation of 18‑month forward earnings forecasts for the group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_18_m_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 61,
+   "alphaCount": 316,
+   "description": "Total earnings for the forward 18 months for companies in the group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy0_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 106,
+   "alphaCount": 1092,
+   "description": "The weighted year-over-year growth of EPS estimation for the current calendarized fiscal year aggregated within GICS group grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy0_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 52,
+   "alphaCount": 220,
+   "description": "Weighted average price-to-earnings ratio for calendarized FY0 at the industry group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy0_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "The total of earnings estimation for the current calendarized fiscal year aggregated within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy0_val",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "The weighted average of EPS estimation for the current calendarized fiscal year aggregated within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Weighted one-month percent change in calendarized FY1 earnings forecasts for the group, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Weighted three-month percent change in calendarized FY1 earnings forecasts at the group level (constant sample)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Weighted six-month percent change in calendarized FY1 earnings forecasts for the group, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "The number of companies with a calendarized 1 fiscal year EPS estimation within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 645,
+   "description": "Number of estimates for the calendarized Fiscal Year 1 period, aggregated at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Weighted year-over-year growth in earnings for calendarized Fiscal Year 1 at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 64,
+   "alphaCount": 444,
+   "description": "Weighted average EPS for calendarized FY1 for the industry group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "The total market capitalization for the companies aggregated within GICS group grouping with a calendarized 1 fiscal year mean price estimation.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 20,
+   "alphaCount": 30,
+   "description": "Weighted average price-to-earnings ratio based on calendarized Fiscal Year 1 EPS at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "Weighted average standard deviation of EPS forecasts for calendarized Fiscal Year 1, aggregated at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy1_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 93,
+   "alphaCount": 427,
+   "description": "The total of earnings estimation for the calendarized 1 fiscal year aggregated within GICS group grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 16,
+   "alphaCount": 21,
+   "description": "Weighted one-month percent change in calendarized FY2 earnings forecasts at the group level (constant sample)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 102,
+   "alphaCount": 888,
+   "description": "Weighted three-month percent change in the calendarized FY2 earnings forecast for the industry group, using a constant sample",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Weighted six-month percent change in calendarized Fiscal Year 2 earnings forecasts using a constant sample, aggregated at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "The number of companies with a calendarized 2 fiscal year EPS estimation within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Number of estimates for calendarized FY2 at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Weighted year-over-year earnings growth for calendarized FY2 at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 111,
+   "alphaCount": 1042,
+   "description": "Weighted average EPS for the calendarized Fiscal Year 2 period, aggregated at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 107,
+   "alphaCount": 557,
+   "description": "The total market capitalization for the companies aggregated within GICS group grouping with a calendarized 2 fiscal year mean price estimation.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Weighted average price-to-earnings ratio for calendarized FY2 at the industry group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 17,
+   "description": "Weighted average standard deviation of EPS forecasts for calendarized Fiscal Year 2 at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy2_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 18,
+   "description": "Total earnings for the calendarized Fiscal Year 2 period for the group",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Group-level weighted one-month percent change in calendarized FY3 earnings forecasts using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Weighted three-month percent change in calendarized FY3 earnings forecasts at the group level (constant sample)",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 111,
+   "alphaCount": 723,
+   "description": "Weighted six-month percent change in calendarized FY3 earnings forecasts for the group, using a constant sample",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 14,
+   "description": "The number of companies with a calendarized 3 fiscal year EPS estimation within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 129,
+   "alphaCount": 1214,
+   "description": "Number of analyst estimates contributing to the calendarized FY3 consensus for the industry group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 109,
+   "alphaCount": 732,
+   "description": "Weighted year-over-year earnings growth for calendarized Fiscal Year 3 at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 63,
+   "alphaCount": 161,
+   "description": "Weighted average EPS for calendarized Fiscal Year 3 at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Total market capitalization of companies in the group with a calendarized Fiscal Year 3 mean estimate",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 16,
+   "alphaCount": 21,
+   "description": "Weighted average Price/Earnings ratio based on calendarized FY3 EPS at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 110,
+   "alphaCount": 407,
+   "description": "The weighted average standard deviation of EPS estimation for the calendarized 3 fiscal year aggregated within GICS group grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_cal_fy3_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 19,
+   "description": "Total sum of calendarized Fiscal Year 3 earnings/estimates aggregated at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_div_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 13,
+   "alphaCount": 25,
+   "description": "The number of companies for which indicated annual dividend data is available within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_divyld",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "The weighted average dividend yield aggregated within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy1_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Number of companies in the group whose calendarized Fiscal Year 1 consensus mean was lowered since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy1_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 96,
+   "alphaCount": 496,
+   "description": "The number of companies for which EPS estimation for the calendarized 1 fiscal year has been raised from last month within GICS group grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_fy1_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "Number of Fiscal Year 1 earnings estimates lowered since last month, aggregated at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy1_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Number of Fiscal Year 1 estimates raised since last month at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy2_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 92,
+   "alphaCount": 444,
+   "description": "Number of companies in the industry group whose calendarized FY2 mean has been lowered since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_fy2_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Number of companies in the group whose calendarized FY2 mean estimate was raised since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy2_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "Number of Fiscal Year 2 analyst estimates lowered since last month in the group",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy2_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Number of FY2 estimates raised since last month in the group",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy3_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 88,
+   "alphaCount": 546,
+   "description": "Number of companies in the group whose calendarized Fiscal Year 3 consensus mean was lowered since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_fy3_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 82,
+   "alphaCount": 261,
+   "description": "Number of companies in the industry group for which the calendarized FY3 mean has been raised since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_fy3_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 16,
+   "description": "Number of calendarized Fiscal Year 3 estimates lowered since last month at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_fy3_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 107,
+   "alphaCount": 964,
+   "description": "Number of Fiscal Year 3 estimates raised since last month at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_hist_eps_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 108,
+   "alphaCount": 929,
+   "description": "Weighted annual EPS growth rate over the past five years for the group, from a loglinear regression of the last five years of annual EPS",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_ltg_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Weighted one-month percent change in long-term growth forecasts for the group",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_ltg_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 14,
+   "description": "Weighted three-month percent change in the long-term growth forecast at the group level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_ltg_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Weighted six‑month percent change in the long‑term growth (LTG) consensus for the group, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_ltg_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 102,
+   "alphaCount": 844,
+   "description": "The number of companies with a long-term growth EPS estimation within GICS group grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_ltg_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Number of companies in the group for which the long-term growth (LTG) median was lowered since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_ltg_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 140,
+   "alphaCount": 2920,
+   "description": "Number of companies in the group whose long-term growth median was raised since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_ltg_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 108,
+   "alphaCount": 1092,
+   "description": "Number of long-term growth estimates (consensus coverage) for the group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_ltg_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of long-term growth estimates lowered since last month in the group",
+   "crowding": "low"
+  },
+  {
+   "id": "anl15_gr_ltg_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 101,
+   "alphaCount": 1004,
+   "description": "Number of Long‑Term Growth estimates that were raised since last month at the group level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_ltg_mdn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 107,
+   "alphaCount": 1263,
+   "description": "Weighted median long-term growth forecast for the group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_ltg_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 93,
+   "alphaCount": 712,
+   "description": "Total market capitalization of companies with long-term growth forecasts in the group",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_gr_ltg_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 11,
+   "description": "Group-level standard deviation of long-term growth estimates",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_gr_prc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 17,
+   "alphaCount": 23,
+   "description": "The weighted average price aggregated within GICS group grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Weighted one-month percent change in 12-month forward earnings forecasts for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "The weighted 3-month percent change of 12-month forward EPS estimation aggregated within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Weighted six-month percent change in 12-month forward earnings forecasts at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "The number of companies with a 12-month forward mean EPS estimation within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 95,
+   "alphaCount": 985,
+   "description": "Number of companies in the industry whose 12-month forward consensus EPS was lowered since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_12_m_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Number of companies in the industry with 12-month forward mean EPS raised since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 100,
+   "alphaCount": 1146,
+   "description": "The 12-month forward pro-rated total number of estimates within GICS industry grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_12_m_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 16,
+   "alphaCount": 23,
+   "description": "Pro-rated number of 12-month forward estimates that have been lowered since last month for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Pro-rated number of 12-month forward estimates raised since last month, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Weighted 12‑month forward year‑over‑year earnings growth at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 101,
+   "alphaCount": 926,
+   "description": "Weighted average 12-month forward EPS at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_12_m_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Total market capitalization for companies in the industry with a 12-month forward mean EPS",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 19,
+   "alphaCount": 28,
+   "description": "Weighted average price-to-earnings ratio based on 12-month forward earnings for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 19,
+   "description": "Weighted average standard deviation of forward 12-month EPS forecasts for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 26,
+   "description": "The total of 12-month forward earnings estimation aggregated within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_12_m_tr_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 109,
+   "alphaCount": 1288,
+   "description": "Weighted average trailing 12-month EPS for the industry",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_18_m_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "Weighted one‑month percent change in the forward 18‑month earnings forecast, constant sample, at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 20,
+   "description": "Weighted three‑month percent change in the forward 18‑month earnings forecast, constant sample, at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Weighted six-month percent change in the 18-month forward earnings forecast for the industry, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "The number of companies with an 18-month forward mean EPS estimation within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 17,
+   "description": "Number of companies in the industry whose forward 18-month mean EPS was lowered since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 15,
+   "description": "The number of companies for which 18-month forward mean EPS estimation has been raised from last month within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 15,
+   "description": "Number of estimates for the trailing 18-month forward period at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "Industry-level number of estimates with negative revision over the trailing 18-month period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 15,
+   "description": "Number of estimates revised up for the forward 18‑month horizon at the industry level since the prior period",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "The weighted 18-month forward year-over-year growth of EPS estimation aggregated within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 19,
+   "alphaCount": 32,
+   "description": "The weighted average of 18 month forward EPS estimation aggregated within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Total market capitalization of companies in the industry that have an 18‑month forward mean estimate",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 21,
+   "alphaCount": 25,
+   "description": "Weighted average price/earnings ratio based on 18‑month forward earnings at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Weighted average standard deviation of 18‑month forward earnings forecasts for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_18_m_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 22,
+   "alphaCount": 28,
+   "description": "The total of 18-month forward earnings estimation aggregated within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy0_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 97,
+   "alphaCount": 770,
+   "description": "Year-over-year growth in earnings for the current calendarized fiscal year (FY0), aggregated at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy0_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Weighted average price-to-earnings ratio based on calendarized FY0 forecasts for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy0_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 16,
+   "description": "The total of earnings estimation for the current calendarized fiscal year aggregated within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy0_val",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Weighted average EPS for calendarized FY0 for the industry, calculated using shares and EPS weights",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Weighted one-month percent change in calendarized Fiscal Year 1 earnings forecasts, using a constant sample, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Weighted three-month percent change in calendarized FY1 EPS forecasts for the industry, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Weighted six-month percent change in calendarized Fiscal Year 1 EPS forecasts for the industry, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 94,
+   "alphaCount": 555,
+   "description": "The number of companies with a calendarized 1 fiscal year EPS estimation within GICS industry grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 87,
+   "alphaCount": 432,
+   "description": "Number of estimates for calendarized FY1 at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 14,
+   "description": "Weighted year-over-year EPS growth for calendarized Fiscal Year 1 aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Weighted average EPS for calendarized Fiscal Year 1 at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 14,
+   "description": "Industry-level total market capitalization of companies with calendarized FY1 mean",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 18,
+   "description": "Weighted average price/earnings ratio for calendarized Fiscal Year 1 at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Weighted average standard deviation of calendarized FY1 earnings forecasts for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy1_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Total earnings for the calendarized Fiscal Year 1 period, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 19,
+   "description": "One-month percent change in Fiscal Year 2 earnings forecasts, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Weighted three-month percent change in the calendarized Fiscal Year 2 earnings forecast for the industry, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Weighted six-month percent change in calendarized Fiscal Year 2 earnings forecasts, using a constant sample, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "The number of companies with a calendarized 2 fiscal year EPS estimation within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 98,
+   "alphaCount": 1188,
+   "description": "Total number of analyst estimates contributing to the calendarized Fiscal Year 2 consensus for the industry",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Weighted year-over-year EPS growth for calendarized Fiscal Year 2 aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 14,
+   "alphaCount": 17,
+   "description": "Weighted average EPS for the calendarized Fiscal Year 2 period at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Total market capitalization of companies in the industry that have a calendarized Fiscal Year 2 EPS mean",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 43,
+   "alphaCount": 64,
+   "description": "Weighted average Price/Earnings ratio for the calendarized Fiscal Year 2 period, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Industry-level weighted average standard deviation of calendarized FY2 EPS forecasts",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy2_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Total earnings for the calendarized Fiscal Year 2 period at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Weighted one‑month percent change in calendarized Fiscal Year 3 earnings forecasts, constant sample, at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Weighted three‑month percent change in the industry’s calendarized FY3 earnings forecast, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 17,
+   "description": "Weighted six-month percent change in calendarized FY3 earnings forecasts for the industry, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 98,
+   "alphaCount": 544,
+   "description": "The number of companies with a calendarized 3 fiscal year EPS estimation within GICS industry grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 105,
+   "alphaCount": 1259,
+   "description": "Number of analyst estimates for calendarized Fiscal Year 3 at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Weighted year-over-year growth in calendarized FY3 EPS for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 98,
+   "alphaCount": 483,
+   "description": "Weighted average EPS for calendarized Fiscal Year 3 at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 10,
+   "description": "Total market capitalization of companies in the industry with a calendarized Fiscal Year 3 mean estimate",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Weighted average price-to-earnings ratio for calendarized FY3 at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 999,
+   "description": "The weighted average standard deviation of EPS estimation for the calendarized 3 fiscal year aggregated within GICS industry grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_cal_fy3_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "Industry-level total earnings for calendarized FY3",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_div_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 16,
+   "description": "The number of companies for which indicated annual dividend data is available within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_divyld",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 16,
+   "description": "Weighted average dividend yield based on the indicated annual dividend for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_fy1_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 109,
+   "alphaCount": 1489,
+   "description": "Number of companies for which the calendarized Fiscal Year 1 mean was lowered since last month, aggregated at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_fy1_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "The number of companies for which EPS estimation for the calendarized 1 fiscal year has been raised from last month within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_fy1_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 110,
+   "alphaCount": 750,
+   "description": "Number of FY1 earnings estimates lowered since last month for the industry",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_fy1_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Number of Fiscal Year 1 estimates that were raised since last month in the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_fy2_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 104,
+   "alphaCount": 1352,
+   "description": "Number of companies in the industry whose calendarized Fiscal Year 2 mean EPS was lowered since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_fy2_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Number of companies in the industry whose calendarized Fiscal Year 2 consensus was raised since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_fy2_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of FY2 EPS estimates lowered since last month for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_fy2_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of Fiscal Year 2 estimates raised since last month in the industry",
+   "crowding": "low"
+  },
+  {
+   "id": "anl15_ind_fy3_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 10,
+   "description": "Number of companies for which the calendarized Fiscal Year 3 mean was lowered since last month, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_fy3_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 879,
+   "description": "The number of companies for which EPS estimation for the calendarized 3 fiscal year has been raised from last month within GICS industry grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_fy3_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Number of calendarized FY3 estimates lowered since last month at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_fy3_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 13,
+   "description": "Number of calendarized Fiscal Year 3 analyst estimates raised since last month at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_hist_eps_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 15,
+   "alphaCount": 19,
+   "description": "Weighted annual EPS growth rate over the past five years based on a loglinear regression at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 13,
+   "description": "Weighted one-month percent change in long-term growth (LTG) forecasts, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 16,
+   "description": "Weighted three-month percent change in long-term growth (LTG) forecasts at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Weighted six-month percent change in long-term growth forecasts for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "The number of companies with a long-term growth EPS estimation within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "The number of companies for which long-term growth EPS estimation has been lowered from last month within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 105,
+   "alphaCount": 1960,
+   "description": "Number of companies for which the long-term growth consensus was raised since last month at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_ltg_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 96,
+   "alphaCount": 825,
+   "description": "Number of long‑term growth estimates (consensus), aggregated at the industry level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_ind_ltg_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Number of long-term growth estimates lowered since last month for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of long-term growth estimates raised since last month at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_mdn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "The weighted average of long-term growth EPS estimation aggregated within GICS industry grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Total market capitalization of companies with long-term growth (LTG) forecasts, aggregated at the industry level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_ltg_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Standard deviation of long-term growth (LTG) estimates for the industry",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_ind_prc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 120,
+   "alphaCount": 1779,
+   "description": "Weighted average share price of companies in the industry",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 1064,
+   "description": "Weighted one‑month percent change in the sector’s 12‑month forward earnings forecasts, using a constant sample",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 100,
+   "alphaCount": 859,
+   "description": "Weighted three-month percent change in 12-month forward earnings forecasts at the sector level (constant sample)",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 58,
+   "alphaCount": 275,
+   "description": "Weighted six-month percent change in 12-month forward earnings forecasts for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 111,
+   "alphaCount": 968,
+   "description": "The number of companies with a 12-month forward mean EPS estimation within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 65,
+   "alphaCount": 383,
+   "description": "Number of companies in the sector with a lower 12-month forward mean EPS since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 16,
+   "description": "Number of companies in the sector whose 12-month forward consensus EPS was raised since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_12_m_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 139,
+   "alphaCount": 1572,
+   "description": "Number of analyst estimates contributing to the 12-month forward period for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 125,
+   "alphaCount": 1632,
+   "description": "Number of 12-month forward estimates lowered since last month at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 131,
+   "alphaCount": 1564,
+   "description": "Pro-rated number of forward 12-month earnings estimates raised since last month for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Weighted 12-month forward year-over-year earnings growth at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_12_m_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 115,
+   "alphaCount": 993,
+   "description": "Weighted average forward 12-month EPS for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 97,
+   "alphaCount": 828,
+   "description": "Total market capitalization for companies in the sector with a 12‑month forward mean",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 132,
+   "alphaCount": 1160,
+   "description": "Weighted average price-to-earnings ratio based on forward 12-month EPS for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 105,
+   "alphaCount": 925,
+   "description": "Weighted average standard deviation of 12-month forward EPS forecasts at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 98,
+   "alphaCount": 813,
+   "description": "Total forward 12‑month earnings for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_12_m_tr_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 19,
+   "description": "Weighted average trailing 12-month EPS for the sector",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_18_m_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Weighted one-month percent change in 18-month forward earnings forecasts for the sector, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_18_m_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 96,
+   "alphaCount": 414,
+   "description": "Weighted three‑month percent change in the forward 18‑month earnings forecast, constant sample, at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 107,
+   "alphaCount": 1625,
+   "description": "Weighted six-month percent change in 18-month forward earnings forecasts for the sector, using a constant sample",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 104,
+   "alphaCount": 1280,
+   "description": "The number of companies with an 18-month forward mean EPS estimation within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 106,
+   "alphaCount": 800,
+   "description": "Number of companies in the sector with 18-month forward mean EPS lowered since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 20,
+   "description": "Number of companies in the sector whose forward 18-month mean EPS was raised since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_18_m_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 142,
+   "alphaCount": 2321,
+   "description": "Number of analyst estimates for the 18-month forward period in the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 124,
+   "alphaCount": 1700,
+   "description": "Number of estimates with negative revisions for the sector’s 18‑month forward period",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 121,
+   "alphaCount": 1309,
+   "description": "Sector-level number of estimates with positive revision over the trailing 18-month period",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 108,
+   "alphaCount": 2143,
+   "description": "Weighted 18‑month forward earnings growth for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 14,
+   "alphaCount": 21,
+   "description": "Weighted average 18-month forward EPS at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_18_m_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Total market capitalization for companies in the sector with an 18‑month forward mean",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_18_m_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 111,
+   "alphaCount": 660,
+   "description": "The weighted average price/earnings ratio based on 18-month forward EPS estimation aggregated within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_18_m_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 15,
+   "description": "Weighted average standard deviation of 18-month forward EPS forecasts, aggregated at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_18_m_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 103,
+   "alphaCount": 789,
+   "description": "Total earnings for the forward 18‑month horizon at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy0_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "Weighted year‑over‑year earnings growth for calendarized Fiscal Year 0 at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy0_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Weighted average price/earnings ratio for the current calendarized fiscal year (FY0) at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy0_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 100,
+   "alphaCount": 871,
+   "description": "The total of earnings estimation for the current calendarized fiscal year aggregated within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy0_val",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 871,
+   "description": "Sector-level weighted average EPS for calendarized FY0",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Weighted one-month percent change in earnings forecasts for calendarized Fiscal Year 1 using a constant sample at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy1_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 48,
+   "alphaCount": 226,
+   "description": "Sector-level weighted three-month percent change in calendarized FY1 earnings forecasts using a constant sample",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 101,
+   "alphaCount": 955,
+   "description": "Weighted six‑month percent change in calendarized Fiscal Year 1 earnings forecasts, constant sample, at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 109,
+   "alphaCount": 1323,
+   "description": "The number of companies with a calendarized 1 fiscal year EPS estimation within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 111,
+   "alphaCount": 1169,
+   "description": "Total number of calendarized Fiscal Year 1 estimates aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 96,
+   "alphaCount": 914,
+   "description": "Weighted year-over-year growth in calendarized FY1 EPS for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 758,
+   "description": "Weighted average EPS for the calendarized Fiscal Year 1 period, aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 12,
+   "alphaCount": 18,
+   "description": "The total market capitalization for the companies aggregated within GICS sector grouping with a calendarized 1 fiscal year mean price estimation.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy1_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Weighted average price/earnings ratio for calendarized Fiscal Year 1 at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy1_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 99,
+   "alphaCount": 830,
+   "description": "Weighted average standard deviation of EPS forecasts for calendarized Fiscal Year 1 at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy1_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Total earnings for the calendarized Fiscal Year 1 period at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy2_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "Weighted one-month percent change in calendarized FY2 EPS forecasts for the sector, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy2_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Weighted three-month percent change in the calendarized FY2 earnings forecast for the sector, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy2_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 93,
+   "alphaCount": 676,
+   "description": "Weighted six-month percent change in calendarized Fiscal Year 2 EPS forecasts for the sector, using a constant sample",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy2_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 100,
+   "alphaCount": 927,
+   "description": "The number of companies with a calendarized 2 fiscal year EPS estimation within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy2_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 193,
+   "alphaCount": 1898,
+   "description": "Number of estimates for calendarized Fiscal Year 2 at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy2_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 15,
+   "description": "Weighted year‑over‑year earnings growth for calendarized Fiscal Year 2 at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy2_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 54,
+   "alphaCount": 246,
+   "description": "Weighted average EPS forecast for calendarized FY2 for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy2_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 100,
+   "alphaCount": 674,
+   "description": "Total market capitalization for companies in the sector with a calendarized Fiscal Year 2 mean",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy2_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 113,
+   "alphaCount": 525,
+   "description": "Weighted average price-to-earnings ratio for calendarized FY2 at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy2_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Weighted average standard deviation of calendarized Fiscal Year 2 EPS forecasts for the sector",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy2_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 111,
+   "alphaCount": 1255,
+   "description": "The total of earnings estimation for the calendarized 2 fiscal year aggregated within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Weighted one-month percent change in calendarized Fiscal Year 3 earnings forecasts, using a constant sample, aggregated at the sector level",
+   "crowding": "low"
+  },
+  {
+   "id": "anl15_s_cal_fy3_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 98,
+   "alphaCount": 1006,
+   "description": "Three-month percent change in calendarized Fiscal Year 3 earnings forecasts, aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 12,
+   "description": "Weighted six‑month percent change in the sector’s calendarized FY3 earnings forecast, using a constant sample",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy3_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 107,
+   "alphaCount": 1237,
+   "description": "The number of companies with a calendarized 3 fiscal year EPS estimation within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 165,
+   "alphaCount": 2773,
+   "description": "Number of estimates for calendarized Fiscal Year 3 at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 102,
+   "alphaCount": 1212,
+   "description": "Weighted year-over-year growth in earnings for calendarized Fiscal Year 3, aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_mean",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 102,
+   "alphaCount": 1206,
+   "description": "Weighted average EPS forecast for calendarized FY3 at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 90,
+   "alphaCount": 728,
+   "description": "Total market capitalization for companies in the sector with a calendarized Fiscal Year 3 mean",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_pe",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Weighted average price/earnings ratio for calendarized Fiscal Year 3 at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_cal_fy3_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 95,
+   "alphaCount": 1095,
+   "description": "Weighted average standard deviation of EPS forecasts for calendarized FY3 at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_cal_fy3_total",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 49,
+   "alphaCount": 236,
+   "description": "The total of earnings estimation for the calendarized 3 fiscal year aggregated within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_div_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 104,
+   "alphaCount": 872,
+   "description": "The number of companies for which indicated annual dividend data is available within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_divyld",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Weighted average dividend yield based on indicated annual dividend for the sector",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_fy1_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 14,
+   "alphaCount": 24,
+   "description": "The number of companies for which EPS estimation for the calendarized one fiscal year has been lowered from last month within GICS sector grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_fy1_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 123,
+   "alphaCount": 1064,
+   "description": "The number of companies for which EPS estimation for the calendarized 1 fiscal year has been raised from last month within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy1_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 136,
+   "alphaCount": 1388,
+   "description": "Number of Fiscal Year 1 earnings estimates lowered since last month, aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy1_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 112,
+   "alphaCount": 1905,
+   "description": "Number of Fiscal Year 1 analyst estimates raised since last month in the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy2_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 118,
+   "alphaCount": 941,
+   "description": "Number of companies in the sector whose calendarized Fiscal Year 2 consensus mean was lowered since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy2_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 118,
+   "alphaCount": 924,
+   "description": "Number of companies for which the calendarized Fiscal Year 2 mean was raised since last month, aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy2_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 106,
+   "alphaCount": 1214,
+   "description": "Number of Fiscal Year 2 estimates lowered since last month, aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy2_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 114,
+   "alphaCount": 1623,
+   "description": "Number of FY2 earnings estimates raised since last month for the sector",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy3_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 149,
+   "alphaCount": 1339,
+   "description": "The number of companies for which EPS estimation for the calendarized 3 fiscal years has been lowered from last month within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy3_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 97,
+   "alphaCount": 1236,
+   "description": "Number of companies in the sector whose calendarized FY3 mean EPS was raised since last month",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy3_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 98,
+   "alphaCount": 705,
+   "description": "Number of calendarized Fiscal Year 3 estimates lowered since last month at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_fy3_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 101,
+   "alphaCount": 698,
+   "description": "Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date, symbol, and transaction type in question.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_hist_eps_gro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 13,
+   "alphaCount": 20,
+   "description": "Weighted annual EPS growth rate over the past five years for the sector, from a loglinear regression of the last five years of annual EPS",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_1m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Weighted one-month percent change in long-term growth forecasts for the sector",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_3m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 101,
+   "alphaCount": 990,
+   "description": "Weighted three-month percent change in long-term growth (LTG) forecasts, aggregated at the sector level",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_ltg_6m_chg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 16,
+   "description": "Weighted six-month percent change in the long-term growth forecast at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_cos",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 109,
+   "alphaCount": 2225,
+   "description": "The number of companies with a long-term growth EPS estimation within GICS sector grouping.",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_ltg_cos_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Number of companies for which the long-term growth median has been lowered since last month at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_cos_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 16,
+   "description": "Number of companies in the sector for which the Long‑Term Growth (LTG) median was raised since last month",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_ests",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Number of long-term growth estimates (consensus) for the sector",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_ests_dn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 22,
+   "description": "Number of long-term growth estimates lowered since last month at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_ests_up",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 15,
+   "description": "Number of long-term growth estimates raised since last month for the sector",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_mdn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 15,
+   "alphaCount": 23,
+   "description": "The weighted average of long-term growth EPS estimation aggregated within GICS sector grouping.",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_ltg_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 104,
+   "alphaCount": 994,
+   "description": "Total market capitalization for companies in the sector with long-term growth forecasts",
+   "crowding": "high"
+  },
+  {
+   "id": "anl15_s_ltg_st_dev",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Standard deviation of Long‑Term Growth estimates at the sector level",
+   "crowding": "mid"
+  },
+  {
+   "id": "anl15_s_prc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Weighted average price per share for companies in the sector, as of the date",
+   "crowding": "mid"
+  },
+  {
+   "id": "group_12mo_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The percentage of market capitalization for the group based on twelve-month forward data.",
+   "crowding": "low"
+  },
+  {
+   "id": "group_18mo_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The percentage of market capitalization for the group based on eighteen-month forward data.",
+   "crowding": "low"
+  },
+  {
+   "id": "group_fy2_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The percentage of market capitalization for the group in calendarized fiscal year 2.",
+   "crowding": "low"
+  },
+  {
+   "id": "group_fy3_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The percentage of market capitalization for the group in calendarized fiscal year 3.",
+   "crowding": "low"
+  },
+  {
+   "id": "group_longterm_growth_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The percentage of market capitalization for the group based on long-term growth forecasts.",
+   "crowding": "low"
+  },
+  {
+   "id": "industry_12mo_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "The percentage of market capitalization for the industry based on twelve-month forward data.",
+   "crowding": "mid"
+  },
+  {
+   "id": "industry_18mo_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The percentage of market capitalization for the industry based on eighteen-month forward data.",
+   "crowding": "low"
+  },
+  {
+   "id": "industry_fy2_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "The percentage of market capitalization represented by the industry in calendarized fiscal year 2.",
+   "crowding": "mid"
+  },
+  {
+   "id": "industry_fy3_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The percentage of market capitalization represented by the industry in calendarized fiscal year 3.",
+   "crowding": "low"
+  },
+  {
+   "id": "industry_longterm_growth_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 0.7517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The percentage of market capitalization for the industry based on long-term growth forecasts.",
+   "crowding": "low"
+  },
+  {
+   "id": "sector_12mo_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The percentage of market capitalization for the sector based on twelve-month forward data.",
+   "crowding": "low"
+  },
+  {
+   "id": "sector_18mo_marketcap_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The percentage of market capitalization for the sector based on eighteen-month forward data.",
+   "crowding": "low"
+  }
+ ]
+}

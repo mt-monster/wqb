@@ -1,0 +1,1586 @@
+[
+ {
+  "id": "anl9_confirmtime",
+  "description": "Intraday time of the most recent confirmation of the current estimate",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4656,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusanalysis_dataitemvalue",
+  "description": "Numeric consensus estimate value for the specified data item",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6056,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusanalysis_effectivetime",
+  "description": "Intra-day time when the consensus estimate calculation became effective",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6057,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeeps_dataitemvalue",
+  "description": "Numeric consensus estimate value for the specified data item",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5788,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeeps_effectivetime",
+  "description": "Intra-day time when the estimate becomes effective or is calculated",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5788,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeeps_splitfactor",
+  "description": "Ratio used to unadjust per-share EPS estimates for stock splits that occur after the estimate’s EffectiveDate",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5787,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeeps_totime",
+  "description": "End time when the estimate’s validity window ends",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5788,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeothers_dataitemvalue",
+  "description": "Numeric consensus estimate value for the specified data item",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6016,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeothers_effectivetime",
+  "description": "Intra-day time when the consensus estimate became effective (time of calculation)",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6016,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeothers_splitfactor",
+  "description": "Adjustment factor for corporate actions (e.g., stock splits) applied to maintain comparability of estimates",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5436,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anl9_consensusv2span_incomeothers_totime",
+  "description": "Intra-day time when the estimate’s validity period ends",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6016,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numanalystall",
+  "description": "Total number of analysts contributing estimates for the company, including those excluded from the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numanalysts",
+  "description": "Number of analysts whose estimates are included in the consensus for the revision period",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numdn",
+  "description": "Count of downward revisions among analysts included in the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 6,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numdownunfiltered",
+  "description": "Total number of analysts whose estimates were revised downward, including those excluded from the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 5,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numnochangeunfiltered",
+  "description": "Total number of analysts that did not change their estimates, including those excluded from the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numnochg",
+  "description": "Count of revisions with no change among analysts included in the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 1,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numup",
+  "description": "Count of upward revisions among analysts included in the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 10,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_daily_numupunfiltered",
+  "description": "Total number of analysts whose estimates were revised upward, including those excluded from the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_detail_dataitemvalue",
+  "description": "Numeric value of the estimated metric",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5277,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_detail_effectivetime",
+  "description": "Time of day when the estimate became effective (start time of validity)",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5277,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_detail_totime",
+  "description": "End time of the estimate’s validity period (intraday)",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5277,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_eps_splitfactor",
+  "description": "Split factor",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5614,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_estanalystmap",
+  "description": "Human-readable name/description of the analyst corresponding to estimateAnalystIx",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8392,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "anl9_estimatetime",
+  "description": "Intra-day time at which the estimate was recorded/issued",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5276,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_isexcluded",
+  "description": "Flag indicating the estimate is excluded from consensus/analysis due to data quality rules",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5277,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_isnmflag",
+  "description": "Flag indicating the estimate is not meaningful (NM)",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6057,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_others_splitfactor",
+  "description": "Split factor",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.5407,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_parentflag",
+  "description": "Entity consolidation flag: 0=consolidated entity estimate, 1=parent-only entity estimate",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5277,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_revisiondaily_effectivetime",
+  "description": "Time when the revision metrics were calculated or became effective",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 1,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_revisions_effectivetime",
+  "description": "Time when the revision snapshot/estimate was calculated",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 3,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numanalystall",
+  "description": "Total number of contributing analysts, including those excluded from the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numanalysts",
+  "description": "Number of analysts whose estimates are included in the consensus for the revision period",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 7,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numdn",
+  "description": "Count of downward revisions included in the consensus during the specified revision period",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 7,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numdownunfiltered",
+  "description": "Total analysts with downward revisions, including those excluded from the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numnochangeunfiltered",
+  "description": "Total number of no-change revisions, without exclusions",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numnochg",
+  "description": "Number of revisions with no change in the consensus (included analysts) over the period",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numup",
+  "description": "Count of upward revisions included in the consensus during the specified revision period",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 6,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "anl9_s_numupunfiltered",
+  "description": "Total analysts with upward revisions, including those excluded from the consensus",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 6,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2023-01-01"
+ },
+ {
+  "id": "consensus_analysis_value",
+  "description": "<baseModule>.ConsensusIdIx idx",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6057,
+  "userCount": 1,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "consensus_exclusion_flag",
+  "description": "Boolean flag marking the estimate as excluded from analysis due to unreliability or rules",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4634,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "eps_consensus_estimate_value",
+  "description": "Lookup index identifying the consensus category/type for the estimate",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5788,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "estimate_currency_code_2",
+  "description": "Currency in which the estimate is reported.",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4524,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "estimated_metric_value",
+  "description": "Numeric value of the estimate for the specified metric",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4634,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "income_other_consensus_value",
+  "description": "<baseModule>.ConsensusIdIx idx",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6016,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "parent_company_only_flag",
+  "description": "Flag indicating if the estimate is for the parent entity only.",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4634,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "revision_consensus_value",
+  "description": "Index key referencing the consensus estimate category in the ConsensusId lookup",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4433,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "revision_consensus_value_revisions",
+  "description": "Integer code identifying the consensus estimate category for the metric/period, joinable to a consensus lookup",
+  "dataset": {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data"
+  },
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "subcategory": {
+   "id": "analyst-analyst-estimates",
+   "name": "Analyst Estimates"
+  },
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7109,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.6,
+  "themes": [
+   {
+    "id": "ZDXgJ5B",
+    "name": "D1 Power Pool Oct`26 2",
+    "multiplier": 1.0
+   }
+  ],
+  "dateCreated": "2025-11-01"
+ }
+]

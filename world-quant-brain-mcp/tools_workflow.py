@@ -171,8 +171,9 @@ def workflow_submit_alpha(
         robustness_audited: 声明本候选已过 brain-alpha-robustness 审计（默认 False，fail-closed）。
             `confirm_submit=True` 时台账 `robustness_<alpha_id>` 无记录就**必须**显式声明才放行；台账已有记录则
             此声明降为辅助（REJECT 由节点直接拦下）。2026-10-04 起本签名暴露它——此前只能绕道
-            `workflow_execute(node="submit_alpha", params=...)`。**不暴露 `allow_prod_above_07`**：
-            prod 红线豁免须用户明确指令、显式走 `workflow_execute` 留痕，不放进快捷入口
+            `workflow_execute(node="submit_alpha", params=...)`。
+            ★ prod 红线（≥0.7）**无任何豁免入口**：原 `allow_prod_above_07` 豁免参数已于 2026-10-18
+            按用户判定「不合规」彻底移除，任何路径传它都会报错
         verify_timeout: 状态确认超时（秒）
         dry_run: 是否干跑
 

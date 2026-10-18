@@ -1,4 +1,4 @@
-# DEU 字段画像总盘点（2026-10-14）
+﻿# DEU 字段画像总盘点（2026-10-14）
 
 > 数据源：`field_profile_deu` 视图（22,494 字段全量）× 台账 `backtest_results`（600+ 条 / 60+ 波）× 平台实时核验。
 > 判词口径与生成逻辑见 `tools/fields/field_profile.py`；本报告同时给出与「台账 token 法」的对账。
@@ -151,7 +151,7 @@
 
 ---
 
-**关联文档**：`DEU_field_census_20261013_v2.md`（初版普查）、`DEU_potential_scan_20261014.md`（潜力榜+扫描终局）、`DEU_pv_pattern_scores_20261014.md`、`DEU_campaign_dlr_m238_20261014.md`；skill `references/campaign-review.md`（一页式复盘）。
+**关联文档**：`DEU_field_census_v2_20261013.md`（初版普查）、`DEU_potential_scan_20261014.md`（潜力榜+扫描终局）、`DEU_pv_pattern_scores_20261014.md`、`DEU_campaign_dlr_m238_20261014.md`；skill `references/campaign-review.md`（一页式复盘）。
 
 ---
 
