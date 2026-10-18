@@ -250,6 +250,46 @@
     "tracking/EUR/scripts/backfill_alphas_from_ckpt.py": {
       "verdict": "DROPPED",
       "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/backfill_alphas_from_ckpt.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/backfill_alphas_from_ckpt.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/backfill_alphas_from_ckpt.py`。"
+    },
+    "Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-calculate-alpha-selfcorr-quick/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-datafield-exploration-general/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-datafield-exploration-general/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-dataset-exploration-general/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-dataset-exploration-general/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-explain-alphas/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-explain-alphas/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-how-to-pass-alpha-test/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-how-to-pass-alpha-test/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-make-some-gem/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-make-some-gem/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-next-move-analysis/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-next-move-analysis/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-sim-alphas-in-batch-and-track/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-sim-alphas-in-batch-and-track/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/planning-with-files/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/planning-with-files/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/wq-brain-alpha-optimization-v1/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/wq-brain-alpha-optimization-v1/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
     }
   },
   "_restored_history": {
