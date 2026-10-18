@@ -24,8 +24,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**886**
-- `RESTORED` = 0；`DROPPED` = 140；`ARTIFACT` = 216；`PENDING` = 530
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**887**
+- `RESTORED` = 0；`DROPPED` = 139；`ARTIFACT` = 216；`PENDING` = 532
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -37,14 +37,13 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 
 ## 3. 逐件表
 
-### 3.2 `DROPPED`（140 件）
+### 3.2 `DROPPED`（139 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
 | `Claude/skills/brain-alpha-judge/references/future-improvement-guide.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/judge_planning_docs_20260929/future-improvement-guide.md`（blob 相等） | rule |
 | `Claude/skills/brain-alpha-judge/references/improvement-roadmap.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/judge_planning_docs_20260929/improvement-roadmap.md`（blob 相等） | rule |
 | `Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-calculate-alpha-selfcorr-quick/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
-| `Claude/skills/brain-data-feature-engineering/reference.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md`（blob 相等） | rule |
 | `Claude/skills/brain-datafield-exploration-general/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-datafield-exploration-general/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-dataset-exploration-general/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-dataset-exploration-general/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-explain-alphas/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-explain-alphas/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
@@ -403,11 +402,12 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/strong_ds_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/zero_competition_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 
-### 3.4 `PENDING`（530 件）
+### 3.4 `PENDING`（532 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
 | `Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md` | 同名件在 main 是 `Claude/skills/brain-alpha-research-field-quality/references/webdatascope-data-quality.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-data-feature-engineering/reference.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `Claude/skills/brain-explain-alphas/scripts/arxiv_api.py` | 同名件在 main 是 `Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/references/contribution-and-diversity.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/contribution-and-diversity.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/references/evidence-and-review.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/evidence-and-review.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
@@ -420,6 +420,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `Claude/skills/brain-forum-browse/references/write-style-zh.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/write-style-zh.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/templates/forum_findings.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/templates/write-path/forum_findings.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/brain-forum-browse/templates/run_contract.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/templates/write-path/run_contract.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
+| `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `Claude/skills/wq-brain-alpha-optimization-v1/scripts/.arxiv_cache.json` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_CHECKLIST.md` | 同名件在 main 是 `attic/toolkit_docs_20260929/S2_COMPLIANCE_CHECKLIST.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md` | 同名件在 main 是 `attic/toolkit_docs_20260929/S2_COMPLIANCE_GUIDE.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
