@@ -21,7 +21,9 @@
         "prod_saturation_gate.py",
         "quality_predict.py",
         "shape_quota_check.py",
-        "wave_gate.py"
+        "wave_gate.py",
+        "operator_coverage_audit.py",
+        "gate_attribution.py"
       ],
       "status": "frozen-pending"
     },
@@ -208,6 +210,7 @@
         "clean_logs.py",
         "clean_unused_imports.py",
         "fix_bom.py",
+        "mcp_http_caller.py",
         "mcp_ping.py",
         "refs_scan.py",
         "retention.py",
@@ -253,7 +256,11 @@
         "db_lock_audit.py",
         "db_maintenance.py"
       ],
-      "status": "frozen-pending"
+      "status": "moved",
+      "moved_files": [
+        "db_lock_audit.py",
+        "db_maintenance.py"
+      ]
     },
     "reporting": {
       "dir": "tools/reporting",
@@ -332,6 +339,7 @@
       "dir": "tools/skills",
       "title": "skills",
       "files": [
+        "gen_region_skill_scaffold.py",
         "skill_lint.py",
         "skill_paths.py",
         "sync_skills.py"
@@ -411,6 +419,21 @@
       ]
     },
     "note": "被移文件此前均未被 git 跟踪；迁移按 tools/README.md「单文件迁移配方」执行。probe/verdict 两主题此前磁盘无目录，随本批首次落地。"
+  },
+  "_moved_20261014": {
+    "date": "2026-10-14",
+    "reason": "布局审计（reports/project_layout_audit_20261014.md §3/§5 P1-5）开始执行「按主题逐批下沉」，不再是 S11 被动冻结。首批选 **db** 主题（2 件）——判据是引用面实测：这两个脚本在 `Claude/skills/**` 里 **零命令引用**，外部耦合只有 1 个测试的 `sys.path` 注入 + 4 处文档指针，是全 19 主题里最小的一张。",
+    "batch": {
+      "db": [
+        "db_lock_audit.py",
+        "db_maintenance.py"
+      ]
+    },
+    "recipe_followed": "按 tools/README.md「单文件迁移配方」：git mv 保历史 → 两个脚本内部原本写 `REPO = Path(__file__).resolve().parent.parent`（层数硬编码，AGENTS.md §8.13 禁止），下沉一层会**静默**把仓库根解析成 `tools/`（DB 路径、logs 路径全错且不报错），已同步改为向上探测 `pyproject.toml` + `src/wqb` 双标记的 `_find_repo_root()` → 测试注入路径 `tools/db` → 文档指针 5 处 → 基线 `s11_tools_top_level` 摘名 → `--help` 与探针 `--once` 实跑验证（**不看 --help 假绿**，见 _moved_20261004.batch2_note 的战例）。",
+    "not_moved_this_batch": {
+      "forum": "候选第二主题（3 件），实测**放弃本批**：`forum_cache_builder.py` 单件就被 3 份 skill 文档（brain-alpha-robustness 的 SKILL.md + references/techniques.md、Claude/skills/CHANGELOG.md）、`docs/env_and_switches.md`、`docs/env_registry.json`、`docs/skills_review_closure.json` 按名引用，并有专用路径测试 `tests/unit/08_forum_recon/test_forum_cache_builder_paths.py`；另 `forum_recon*.py` 的归属在本表里挂在 **gates** 主题下、不在 forum 主题，主题边界本身要先裁。按 §3「一次一个主题、每批跑全套验证」留作下一批。",
+      "src/wqb 散模块收纳": "contracts / metrics / db 三个子包的收纳**未执行**，已评估并记为待办。按 §8.4 第 9 条那一问做了机械清点（取面 = git 跟踪件 3817 个，排除 src/wqb/ 包内自引用与 attic/）：**属性式模块 patch = 0**（正则命中的 2 处是 `tools/campaign_intel.py` SQL 里的 `e.wave_id=w.id` 列赋值，人工核过，不是 `monkeypatch.setattr(mod, …)` 形态）⇒ 静默失效这一最坏风险**不存在**。因此暂缓的理由不是那一问，而是外部引用面实测 **87 个文件 / 121 处 `from wqb.<模块> import`**，其中 `db_conn` 单件 66 个文件 71 处（它还持有 `DIRECT_CONNECT_WHITELIST`，被裸连接守护测试当单源读），且 `wq-brain-http` / `wqb-db` 两个 MCP 服务**正在运行**、改包路径要重启才生效。数字与判据见报告 §9。"
+    }
   },
   "_retired_20261006": {
     "_doc": "本表列出的脚本已于 2026-10-06 规范退役（git rm）。判据是**引用面实测**：活代码 import / 子进程路径 / 活 SOP 命令 / 真实测试断言全为 0，只剩 THEMES 与本基线的登记痕迹。取看：`git show <退役前的主干 commit>:<路径>`。",

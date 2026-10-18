@@ -1,0 +1,53 @@
+{
+  "region": "USA",
+  "as_of": "2026-10-18",
+  "_note": "配置视图（非事实源）。真身=tracking/USA/config/*.json；改配置只改真身后 render --apply。",
+  "source_of_truth": {
+    "settings": "tracking/USA/config/settings.json",
+    "thresholds": "tracking/USA/config/thresholds.json",
+    "cells": "tracking/USA/config/cells.json"
+  },
+  "region_defaults": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 5,
+    "truncation": 0.08,
+    "maxTrade": "OFF",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "language": "FASTEXPR"
+  },
+  "cells": {
+    "categories": [
+      "analyst",
+      "insiders",
+      "institutions",
+      "model",
+      "news",
+      "option",
+      "other",
+      "pv",
+      "sentiment",
+      "shortinterest"
+    ],
+    "count": 10,
+    "overrides_with_evidence": 0,
+    "gap": "零覆盖：explain 只给区域默认(SUBINDUSTRY/decay5)，与 2026-10 分析师族实测(SECTOR/RAM/CROWDING + decay10~20)不一致；建议补覆盖并附 _evidence"
+  },
+  "lit_pyramids_2026_10_18": {
+    "ANALYST": 1.2,
+    "MODEL": null,
+    "EARNINGS": null
+  },
+  "excluded_families_count": 23,
+  "orthogonal_directions": [
+    "earnings_surprise 长窗(group_rank+signed_power+decay90)",
+    "fund_ownership 变化(ts_zscore 长窗)",
+    "eur_top_value 慢 value(ts_zscore 189 + group_zscore industry)",
+    "institutional 持仓变化(rank+ts_rank 长窗)"
+  ]
+}

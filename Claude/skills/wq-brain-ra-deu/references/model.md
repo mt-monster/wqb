@@ -118,4 +118,76 @@
 `model28/36/53`（信用/违约风险，67 字段）已实测**最高 S1.08**，核心字段换手 **0.022~0.028（静态）**。
 
 **开批前**：优先 `mdl216_*`（用 `vec_max`）与 `predictive_starmine` 的 536 未测 —— 后者是**唯一产出过 alpha 的数据集**。
+
+---
+
+## ★★★ `model106`（晨星式评级）—— DEU 第二强机制（2026-10-13 WANL28–30）
+
+**字段**（全 MATRIX，cov 1.0）：`mdl106_stars`(0-4星) / `global_evaluation`(−2~+2) / `rv`(估值 −2~+2) / `fnb`(坏消息因子，越高越差) / `fmb`(熊市敏感度) / `fmb/fnb/rv` 方向需实测定。
+
+**实测（30 结构全谱）**：
+| 机制 | 最好读数 | 判定 |
+|---|---|---|
+| **`rv` 估值评分水平量 × 框架(1/210)+桶轴** | **S0.90 / F0.64 / 2Y1.67 / TO0.142** | **强但差 0.68 够不到闸**；reverse 精确 −0.90（单调） |
+| `ts_delta(stars,66)` 评级变化 | S0.77 / 2Y0.37 | 方向有效，2Y 弱 |
+| `rv` × DEU核心 / industry / oth455 / MARKET中性化 | 0.31–0.70 | **全部更差** |
+
+**四条铁律：**
+1. **`rv` 的信号在「行业内相对估值」里**：换 MARKET 中性化 S 0.90→0.53（信号被市场中性化洗掉）；SUBINDUSTRY 是最优档。
+2. **DEU 核心结构（quantile+decay）在 rv 上有害**（0.66 vs 0.90）⇒ **结构最优性三分实证**：框架赢（eps_y1）/ 核心赢（starmine）/ 都不赢（rv、残差动量）——**移植结构前必须逐字段实测**。
+3. `winsorize(std=4)` 逐位不变（保序变换不改门槛指标，第 3 次实证）。
+4. `fnb` 框架 0.05 / reverse −0.05 ⇒ 坏消息因子在 DEU 无信号。
+
+**⇒ model106 判定：`rv` 是 DEU 第二强独立机制，但天花板 0.90 不可达闸；除非引入新结构范式，否则关闭。**
+
+---
+
+## ★★★ `model238` / `model264` / `analyst7` 判死（2026-10-14 WANL35–38）
+
+| 数据集 | 机制 | 最好读数 | 判定 |
+|---|---|---|---|
+| **`model238`** | 偏好/筛选排名 0–100（`change_in_preference_rank`、`*_screening_rank`、`*_factor_alignment_rank`、`*_peer_investment_concentration_rank`） | **筛选排名族**（收口批 WANL39）：`global_screening_factor_alignment_rank` **S0.99 / F0.73 / TO0.10**；`mdl238_global_screening_rank` S0.97、`ts_delta(·,66)` S0.95/2Y0.95；**偏好变化族**：`ts_delta(global_chgpref,66)`+industry → **S0.81 / 2Y1.66 ✅**；水平量 S0.44；同业集中度族 −0.09~−0.14 | **两条子线剖面互补：一条 S0.99 但 2Y0.49，一条 2Y1.66 但 S0.81** ⇒ 跨不过双闸，不可达 |
+| **`model264`** | 技术指标趋势概率（380 字段、78% α=0） | `mdl264_1l_ist` −0.22 / `mdl264_1l_lda` −0.11 | 与 `dl_riskfree_returns` **同族**（ML 概率），判死 |
+| `analyst7` | 分析师估计水平/计数（355 可用） | `est_12m_bps_lowerednum_4wks` −0.53（反向 +0.53） | 弱 ⇒ 判死 |
+
+**★ `model238` 的价值与教训**：
+- 它是**唯一把 2Y 抬过闸**（1.66）的字段族——机制是「**偏好变化**」（`ts_delta` 构造，与 DEU 唯一有效机制「预期变化率」同源，都是**变化量**而非水平量）。
+- 但 **S 封顶 0.81**；15 种窗（delta 22/66/126/252）/轴（sector/industry）/桶粒度变体全扫无效。
+- **⇒ 再次实证「变化量 > 水平量」**（水平量 0.44 → 变化量 0.81，+0.37）。
+
+**⇒ model 塔在 DEU 的可挖面：`predictive_starmine`（已挖，同腿）× `model106`（rv 0.90）× `model238`（0.81）——全部封顶，无可提交。**
+
+---
+
+## ★★★ 低覆盖大池判死（2026-10-14 WANL44）—— `model109` / `multifactor_return_pred`
+
+**背景修正**：`coverage<0.6 剔除` 是**区域启发式，不是平台限制**（`preflight_expressions` 证明低覆盖字段可正常仿真）。据此复查发现两个**从未探测**的大池：
+
+| 池 | 字段 | 覆盖分布 | 族数 | 语义 | 实测最好 |
+|---|---|---|---|---|---|
+| **`multifactor_return_pred`** | **648** | 0.3–0.6（492 个在 0.5–0.6） | 15 | ML 收益预测**置信度/分桶/对冲预测** | `short_term_20d_quantile5_confidence_score` **S0.48**（TO 0.450 偏高） |
+| **`model109`** | **544** | 0.2–0.6（511 个在 0.5–0.6） | **87** | 基本面/流动性/杠杆/修订比/增长 | `mdl109_es_ebit_fy1_d1m`（修订上下比）**S0.45**；`mdl109_matrix_bookp` S0.24 / **2Y0.78** |
+| `model262` / `model307` / `model144` | 159/11/2 | 0.2–0.5 | 2/3/1 | Compustat 预测 / 区域销售占比 / 预测分数 | 未出信号 |
+
+**⇒ 判死**：双结构 × 跨 9 族，max |S| 0.48 ⇒ **model 塔在 DEU 无剩余可挖面**。
+
+---
+
+## ★★★ `model216` blended-revision 族 = **已占用腿**（2026-10-14 未采样族扫描发现）
+
+**背景**：未采样族扫描（`scripts/sweep_unsampled.py`）在 `WANLS49` 出现**全程最佳读数**，且该批前 6 名全来自 `model216` 的 blended-revision 族（此前**从未测过**）：
+
+| 字段 | 结构 | S | F | 2Y | corr(·, `2rjrMZ25`) |
+|---|---|---|---|---|---|
+| **`mdl216_preferredblendedrevisionfy1percent`** | A 级框架 | **1.45** | **1.21** | 1.12 | **0.8879 ⇒ 同腿** |
+| `mdl216_armglobalcombinationscore` | 框架 | 0.68 | 0.40 | 0.87 | 0.7980 ⇒ 同腿 |
+| `mdl216_armsector1rank` / `armregion1rank` | 核心/框架 | 0.69 / 0.63 | — | 0.93 / 0.79 | 0.7504 / 0.7450 ⇒ 同腿 |
+| `mdl216_revenueblendedrevisionfy1percent` | 框架 | 0.60 | 0.32 | 1.22 | **0.6856（唯一未超线）** |
+
+**⇒ 该族 = DEU 唯一那条「预期变化率」腿的另一种表达**（与已提交的 `2rjrMZ25` 相关 **0.89**）。
+**即便把 S1.45 推到 1.58，也会被 self 相关（0.89 > 0.7）拦下**；唯一 <0.7 的 `Grg13NYP`（0.686）S 仅 0.60。
+**⇒ `model216` 不可提交。这是「DEU 只有一条腿」的第 4 次独立验证**（前三次：eps_y1 全变体 0.999 / starmine 0.991 / model238 变体）。
+
+**★ 方法论铁律**：**扫描出的强读数必须立即做 PnL 同腿判定**（`GET /alphas/{id}/recordsets/pnl` → Pearson，零配额）——只看 S 会把「同腿的另一表达」误判成新发现。
+
 <!-- profiles:manual:end -->

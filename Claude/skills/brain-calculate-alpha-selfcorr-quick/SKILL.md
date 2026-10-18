@@ -70,7 +70,7 @@ $WQ_PY Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py --sta
 - **凭据**：只读进程环境变量 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（旧别名 `BRAIN_USERNAME` / `BRAIN_PASSWORD` 仍认）。命令行口令参数仍兼容但**不要用**（进进程列表与 shell 历史，使用时会告警）。
 - **产物目录**（固定，不随 CWD）：`$WQ_SELFCORR_OUT_DIR`，缺省 `data/selfcorr_quick/`（已 gitignore）。里面有 OS PnL 池缓存（`os_alpha_ids.pickle` / `os_alpha_pnls.pickle` / `ppac_alpha_ids.pickle`）与 Excel。`--out-dir` 可改。
 - **预期输出列**：`alpha_id` / `exp` / `check_status`（`Check OK`＝平台检查无 FAIL 且 long+short>100；**不是**相关性结论）/ `Rank`（按 Sharpe）/ `sharpe` / `self_correlation` / `ppac_correlation` / `turnover` / `fitness` / `margin` / `dateCreated` / `longCount` / `shortCount` / `decay` / `neutralization`；`Meta` sheet 有池最后刷新时间与池大小。
-- 参数详情与默认值见 [reference.md](reference.md)。
+- 参数详情与默认值见 [references/overview.md](references/overview.md)。
 
 ## 衔接协议
 

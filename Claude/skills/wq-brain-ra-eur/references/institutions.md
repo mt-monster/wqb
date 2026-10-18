@@ -47,6 +47,7 @@
 
 ### S2 生成
 
+- **说明**：★★★ 【EUR × institutions 判死】（2026-10-13，波 444–446、495）： **'fund_holdings_panel'**（30 VECTOR、user 0–6 极低竞争）： 有效方向 = 'ts_delta(herfindahl_index_holdings, 252)'（机构持仓集中度变化），S **0.80–0.81**（幂次 3.0 仅 +0.01）。 ⇒ ★ **S 距线 0.77，且反推 returns 仅 2.33%** ⇒ 在 S=1.58 时 F 上限 = 1.58×sqrt(0.0233/0.125) = **0.68 < 1.0** ⇒ **数学上不可能过 F 闸** ⇒ 判死。 ⚠ 'institutions6' 全 MATRIX（11 字段）；形态 'boundary_total / ts_mean(holding_value,55)' 使 TO 爆到 1.13。
 - **类别通用原语**（类别卡，跨区）：
   - owner change vs owner level: flow, not the stale holding
   - concentration vs breadth of holders
@@ -54,7 +55,7 @@
   - institutional momentum: new positions vs closed positions
   - ownership stability: long-term holders vs short-term traders
 - **跨区结论**（IND/ASI/KOR/EUR；negative）：institutions6 作主信号判死；作慢门控腿可用（IND levk5JYN：机构持股比例 rank>0.5，prod 0.55）（证据：IND institutions6 best 0.32；ASI 死名单；KOR 红榜；EUR-INSTITUTIONS6-COLD-ZERO-YIELD） <!-- lint:const-ok 证据原文 -->
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

@@ -44,4 +44,4 @@
 - **前置状态**：`probe` 的 PROD ≥ 0.7，且 levers §3 的「prod < 0.6 硬门」探针报 `At least 10 component alphas`（合格低 prod 成分不足 10 颗）。
 - **步骤**：**停止调参**（decay / 评分 / 中性化都动不了成分池的 prod 地板：USA 0.85–0.91、KOR 0.78）→ 输出缺口清单（区域、需要 N 颗 prod < 0.55 的新 REGULAR）交 `wq-brain-ra-pipeline` → 新血 ACTIVE 后回 SA-01 第 2 步，用「宽篮 + 低 decay（3–10）」这套已过 SELF 的配置直接重提。
 - **完成定义**：已交接给 RA，且不再消耗仿真槽在同一个池上调参。
-- **反例**：不要用 `--allow-prod-above-07` 绕过这条线：那是用户显式豁免才有的开关，不是「PROD 饱和」的解法。
+- **反例**：不要试图绕过 prod ≥ 0.7 这条线（原 `--allow-prod-above-07` 豁免开关已于 2026-10-18 按用户判定「不合规」彻底移除）：PROD 饱和的正解是回 RA 挖 prod 更低的新血，不是找豁免入口。

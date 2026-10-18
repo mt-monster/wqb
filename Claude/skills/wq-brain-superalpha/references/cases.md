@@ -1,7 +1,7 @@
 # SA 真实案例（每例：背景 / 操作 / 结果 / 是否可复现）
 
 > 主 SOP 见 [`../SKILL.md`](../SKILL.md)。旧版把 4 个案例按时间堆叠在正文里，★ 教训只出现在案例里、不在规则区；这里每例压成 5 行，教训并入 [`levers-and-evidence.md`](levers-and-evidence.md) 的规则表。
-> **重要**：案例 3 / 4 提交时**没有** prod 闸（2026-09-25 才默认强制）。它们回带 value 0.8094 / 0.8571 仍判 PASS——**按今天的默认 CLI 这两颗会被 prod 闸拒绝**，除非显式 `--allow-prod-above-07`；当时是否使用豁免无记录。别把它们当成「value > 0.7 也可提交」的依据。
+> **重要**：案例 3 / 4 提交时**没有** prod 闸（2026-09-25 才默认强制）。它们回带 value 0.8094 / 0.8571 仍判 PASS——**按今天的 CLI 这两颗会被 prod 闸拒绝，且自 2026-10-18 起已无任何豁免入口**（原 `--allow-prod-above-07` 开关已按用户判定「不合规」彻底移除）；当时是否使用豁免无记录。别把它们当成「value > 0.7 也可提交」的依据。
 
 | # | 案例 | 状态 |
 |---|---|---|
@@ -29,7 +29,7 @@
 - **背景**：GLB ACTIVE REGULAR 恰好 10 颗、0 颗 SUPER（池子未被消耗，新鲜度最高）、当日 SUPER 配额未用。
 - **操作**：settings 对齐组件主流（MINVOL1M / d1 / dec10 / tr0.08 / maxTrade OFF，nu = SUBINDUSTRY）。self_gate 0.65 时三中性化全撞 "At least 10 component alphas are required"（有一颗 self_corr 落在 [0.65, 0.70)）→ 放宽到 0.70 即成（梯度放宽成本极低：先 0.65，不行 0.70 / 0.85）。
 - **结果**：IS S 4.26 / F 3.72 / T 0.101，CLUSTER 3.0，IS_LADDER 4.82，GLB 分区 sharpe AMER / EMEA / APAC 全 PASS。平台对 SUPER 的 SELF / PROD 回带 0.8094 > limit 0.7 仍 `result = PASS`。
-- **可复现性**：**部分**——放宽 gate 的路径可复用（情景 SA-02）；提交那一步现需 `--allow-prod-above-07`（见页首警告）。库存盘点坑（`region=` 参数不生效）已并入 SKILL 步 0。
+- **可复现性**：**部分**——放宽 gate 的路径可复用（情景 SA-02）；提交那一步在现行规则下不可复现（prod ≥ 0.7 一律拒提、无豁免入口，见页首警告）。库存盘点坑（`region=` 参数不生效）已并入 SKILL 步 0。
 
 ## 案例 4　KOR 9qjGvaWe（同构淘汰法，2026-09-25）
 
@@ -37,4 +37,4 @@
 - **操作**：同轮建 3 个差异化变体，逐个 `super_build.py submit` 试提（被 403 拒绝**零配额成本**，SUPER_SUBMISSION 始终 0/1）：STATISTICAL/dec5 → ❌ SELF 0.9729（与存量 rKOPg9gd 同构）；STATISTICAL/dec30 → ❌ SELF 0.8938（与存量 j23jgb8Z 同构）；**SUBINDUSTRY/dec10 → ✅ SELF / PROD 0.8571，`result = PASS` → ACTIVE**（S 3.27 / F 4.13 / T 0.0925）。
 - **结果**：可复制打法 = 先枚举存量 SA 的 (neutralization, decay) 组合，新变体**刻意错开**；被拒变体按规范淘汰（`RETIRE_<YYYYMMDD>` + hidden，见 SKILL 验证清单）。
 - **注意**：这里「逐个试提」在**当时**是「被拒 = 零成本」的探测；但**第一个通过的就是真提交**，未必是最优变体——所以现在先 `probe`、再在用户确认后提交，不用「试提」当探针。KOR 的优势中性化是 STATISTICAL（最强一颗即 STATISTICAL），与 USA / GLB 相反，再次说明中性化必须逐区扫描。
-- **可复现性**：**部分**（提交那一步同案例 3 需豁免 prod 闸）。
+- **可复现性**：**部分**（提交那一步同案例 3，现行规则下 prod ≥ 0.7 无豁免）。

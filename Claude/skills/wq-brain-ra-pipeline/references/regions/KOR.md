@@ -1,7 +1,7 @@
 ---
 region: KOR
 entry_verdict: active
-one_liner: "TOP600 小宇宙：2026-10-03 起唯一活路 = other466 财务比率族（fundamental 塔，等价算子替换 signed_power→quantile 后全闸过）；分析师 / insiders / pv / 图表 / 新闻 / AI / 信用 / risk 全红灯；结构性约束 = 2Y 与 IS 因输入频率此消彼长，CW 闸升级 FAIL"
+one_liner: "TOP600 小宇宙：排除口径 = 数据集级已提交 ≥3 颗（名单查 get_submit_ready(region=KOR)），不按塔排除——pv / risk / analyst 里红的是「已试结构」而非字段，pv47+risk68 换构型即出 failed_ra=0；支配性障碍 = prod 墙（IS 全闸可过、新腿 prod 恒 0.73–0.89；族级判据 = check_correlation 直方图 0.7–0.8 桶 n≥1 ⇒ 密墙别扫窗口）；结构性约束 = 2Y 与 IS 因输入频率此消彼长、会计质量与财务基本面族 S 天花板 0.61，CW 闸升级 FAIL"
 static:
   universe: [TOP600]
   universe_default: TOP600
@@ -34,6 +34,23 @@ empirical_anchor:
 ---
 
 # KOR — 小宇宙红灯区
+
+## ★ 2026-10-15 `one_liner` 口径更正（只改措辞，未重验下面七条约束与 green/red）
+
+`one_liner` 会渲进区域 skill 的「区域控制面板 · 入场状态」，是 agent 开波前读到的第一句话，所以它的措辞错误会直接变成选集行为错误。本次改掉的两句：
+
+| 旧写法 | 为什么作废 | 现行写法 |
+|---|---|---|
+| 「分析师 / insiders / pv / 图表 / 新闻 / AI / 信用 / risk **全红灯**」 | **按塔排除**。实证：`pv47`/`pv103`/`pv13`/`pv14` 与 `risk59/60/68/71` 都**不在判死名单**；`pv47_for_statssimple_only_spret` + `rsk68_weight_dadv` 换构型后出 4 颗 `failed_ra_count=0`（`wq-brain-ra-kor` 战役日志 §4.1 结论 1） | 红的是**「已试结构」**，不是字段或塔 |
+| 「2026-10-03 起**唯一活路** = other466 财务比率族」 | 一是「唯一」已被后续提交推翻（`shortinterest38` 亦达 3 颗）；二是**封顶颗数是移动计数器**，写进文档必然过期 | 只写**口径**（数据集级已提交 ≥3），**名单查台账** `get_submit_ready(region=KOR)` |
+
+同时补上今天才有充分证据的一条：KOR 的**支配性障碍是 prod 墙**，不是 IS 闸——2026-10-14 战役在 5 个不同数据集上造出 IS 全闸通过候选（S 1.5–2.5、2Y 1.6–2.2），但新腿 prod 一律 0.81–0.89；族级判据 = `check_correlation` 直方图 0.7–0.8 桶 n≥1 ⇒ 密墙。
+
+⚠ **`empirical_anchor.last_verified` 刻意保持 `2026-10-03`，没有跟着 bump**：本次只复核了「排除口径」与「主障碍判定」，
+**没有**重验下面那七条结构性约束，也**没有**按 `src/wqb/profile_drift.py` 的要求逐条复核 `datasets.green/red`
+（`green` 里的 `analyst 系` / `insiders` 与今天的 prod 墙证据存在张力：insiders 最好的一条腿 prod 0.8527 不过线）。
+改 green/red 会直接改闸门与 GEM 生成行为，属功能性变更，须单独裁决 ⇒ `stale_last_verified` 这条 low 级提示**应当继续亮着**，
+它是准确的。谁复核完 green/red 再 bump。
 
 ## ★ 2026-10-03 现状：七个结构性约束（来源：WorkBuddy 记忆 2026-10-02 一夜实测，MEMORY §1.7）
 

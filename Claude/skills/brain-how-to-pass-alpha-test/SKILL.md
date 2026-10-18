@@ -17,7 +17,7 @@ allowed-tools:
 - **本 skill 不做**：不产生新表达式、不回测、不改候选——需要动手改 → `wq-brain-alpha-optimization-v1`（判据：**是否产生新表达式**）；**不执行**分流与判死回写（写台账 / 终止候选归 RA 步 5b / 步 9 的 `seal_dead_end` 流程）；不做提交判定（`tools/submit_verdict.py`）。
 - **上游 / 下游**：上游 = 失败的候选指标（S3 `brain-sim-alphas-in-batch-and-track`；结果读 `backtest_results` 表）；下游 = `wq-brain-alpha-optimization-v1` → `brain-calculate-alpha-selfcorr-quick` →（可选）`brain-explain-alphas` → `brain-alpha-robustness` → `tools/submit_verdict.py`。
 
-完整细节与社区背景见 [reference.md](reference.md)；每类失败的「症状 → 根因 → 动作 → 验收」情景卡见 [references/scenarios.md](references/scenarios.md)。
+完整细节与社区背景见 [overview.md](references/overview.md)；每类失败的「症状 → 根因 → 动作 → 验收」情景卡见 [references/scenarios.md](references/scenarios.md)。
 
 ## 0. 检查名 → 线 → 读哪节
 

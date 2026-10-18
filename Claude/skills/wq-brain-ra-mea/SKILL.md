@@ -37,6 +37,18 @@ last_verified: 2026-10-05
    $WQ_PY -m wqb.profiles render --region MEA --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **MEA 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/MEA/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/MEA/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -94,6 +106,28 @@ last_verified: 2026-10-05
 
 说明：另有 379 条回测行没写数据集，无法归到组合；7 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
+
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **MEA 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **入场即拒（frozen）**：9 个数据集全部 exhausted ⇒ 六步在本区**默认不启动**。
+- **唯一后门**：用户明确要求继续时，只探白名单外新上线的数据集，**单波 8 探针**，一波结束无论成败回到 frozen（事先说明配额成本）。
+- **待实测**：（frozen 区不投入实测资源）。
+
+### ② 组装 · 本区覆盖
+
+- **沿用主 skills**（仅后门探针时执行）。
+- **沿用主 skills**。
+- **沿用主 skills**。
+- **待实测**：（frozen 区无实证计划）。
+- **沿用主 skills**。
+- **SuperAlpha 通道已关闭**：`POST /simulations` 带 `region=MEA` 返回 400，既有 2 颗是存量。
+- **死路记录保留**，作 HKG / TWN 等小宇宙区的跨区语料。
 
 ## 本区流程差异（相对九步骨架）
 

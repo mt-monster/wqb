@@ -48,6 +48,8 @@
 
 ### S2 生成
 
+- **说明**：★★★ 【EUR × earnings 判死】（2026-10-13，波 449）： **'earnings6'**（55 VECTOR）：'eps_change_percentage_value' / 'eps_change_absolute_value' 等 EPS 变化字段**返回 S=0.0 / TO=0.0（空信号，事件稀疏 ⇒ 'vec_avg' 归约后全 NaN）**；预告区间类字段 S ≤ −0.08 ⇒ **判死**。
+- **说明**：★★★ 【EUR × earnings 补充】（wave502/504）： 'earnings_sent_matrix'（7 MATRIX，财报电话情绪）：'overall_sentiment_score' S=−0.20 且 **TO=1.61 爆炸**；'likelihood_of_neutral_tone'/'*_sentiment_probability_3' 同族 ⇒ **判死**。 ⇒ earnings 类别 2 个数据集（'earnings6' / 'earnings_sent_matrix'）**全部判死**。
 - **类别通用原语**（类别卡，跨区）：
   - earnings surprise: actual vs consensus (standardized unexpected earnings)
   - earnings revision: post-earnings estimate changes
@@ -56,7 +58,7 @@
   - earnings momentum: year-over-year growth acceleration
   - earnings call sentiment: tone analysis of earnings call transcripts
 - **跨区结论**（IND/MEA；negative）：earnings3 的日历 / 计时字段作主信号判死，只能作条件（计时）腿（证据：IND-EARNINGS3-TIMING-DEAD；MEA-EARNINGS3-CALENDAR-DEAD） <!-- lint:const-ok 证据原文 -->
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

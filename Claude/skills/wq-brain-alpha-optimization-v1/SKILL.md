@@ -40,7 +40,7 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
 
 ## 模式调度与止损（一条规则）
 
-- **先想法后参数**：Mode B 决定「改什么信号」，Mode A 只在核心想法已验证后做参数收敛。进 Mode A 的线（Stage B）：最优候选 Sharpe > 1.40 且 Fitness > 0.90（[`reference.md`](reference.md) §6.5）。
+- **先想法后参数**：Mode B 决定「改什么信号」，Mode A 只在核心想法已验证后做参数收敛。进 Mode A 的线（Stage B）：最优候选 Sharpe > 1.40 且 Fitness > 0.90（[`overview.md`](references/overview.md) §6.5）。
 - **★ 判「无解 / 天花板 / 已到顶」之前，必须先扫等价算子替换（2026-10-03 补）**：
   等价算子数学含义相同但**数值路径不同**，能**同时改动多个闸门**；几何调整往往一次只动一个。
   跳过这一步会把**「实现路径的约束」误判成「结构性的约束」**，从而错杀可救的族。
@@ -75,7 +75,7 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
 |---|---|---|
 | **B1 收集** | `get_alpha_details`（表达式 / 设置 / 指标 / `is.checks`）；相关性读 `alphas.prod_correlation`，缺才 `check_correlation`（阻塞轮询 ≤ 60 min、账号级单并发，见 [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md) §1）。记录失败项与对应 `mode_b_action` | ≤ 2 次平台调用 |
 | **B2 评估核心字段** | 字段 `type`（VECTOR / EVENT）与 coverage；用 `brain-datafield-exploration-general` 的评测在中性设置下摸清数据性质（如「季度稀疏 → 优先 persistence 类想法」）。**EVENT 字段会让整个 multi-sim 批次失败**（如 `winsorize` 报 `does not support event inputs`），闸 8 会拦：移除 EVENT 字段或先单条探针 | 每字段 1 次评测 |
-| **B3 提想法级改进** | **先取本组合的杠杆**：区域 skill `wq-brain-ra-<区域小写>` 的组合分支文件 S4 段（或 `$WQ_PY -m wqb.profiles explain --region <R> --dataset <ds>`；「不要用」的杠杆直接排除），再查平台文档 / 社区技巧；arXiv 概念检索（**外发边界见下**）；头脑风暴 4–6 个变体，**每个只动 1–2 个概念**；变体所用算子对照 `known_ops`（[`reference.md`](reference.md) §8 标注了哪些未核验） | 4–6 条变体 |
+| **B3 提想法级改进** | **先取本组合的杠杆**：区域 skill `wq-brain-ra-<区域小写>` 的组合分支文件 S4 段（或 `$WQ_PY -m wqb.profiles explain --region <R> --dataset <ds>`；「不要用」的杠杆直接排除），再查平台文档 / 社区技巧；arXiv 概念检索（**外发边界见下**）；头脑风暴 4–6 个变体，**每个只动 1–2 个概念**；变体所用算子对照 `known_ops`（[`overview.md`](references/overview.md) §8 标注了哪些未核验） | 4–6 条变体 |
 | **B4 仿真对比** | 变体**先过 `ghost-audit` 与 `wave_gate --batch-type repair`**（命令见 Mode A 校验层），再 `create_multi_simulation`（2–8 条；multi 失败退并行单仿）；收割入库（`harvest_multisim_alphas` → `wqb-db harvest_multisim_results`）；按 Fitness / Sharpe 排名，查 sub-universe 与逐年一致性，负信号可翻转 | 1 个 multi 批 |
 | **B5 验证迭代** | Top 变体做相关性检查。失败 → 回 B3（受上面的止损阶梯约束）；通过 → 交 Mode A 收敛，然后走下游链，**不直接提交** | — |
 
@@ -87,7 +87,7 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
 
 ## Mode A：参数层优化（8 候选严格批）
 
-对现有 alpha 做端到端参数优化：严格预检、结构化迭代、强制低相关检查。全部规则（硬规则 / 阶段 / 主题配额 / 执行流）见 [`reference.md`](reference.md)。
+对现有 alpha 做端到端参数优化：严格预检、结构化迭代、强制低相关检查。全部规则（硬规则 / 阶段 / 主题配额 / 执行流）见 [`overview.md`](references/overview.md)。
 
 **硬规则**：
 
@@ -95,7 +95,7 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
 2. **任何仿真之前，每个候选必须先过本地校验与门禁**（见下）。
 3. 每轮恰好 8 个候选表达式。
 4. **PPA** 候选的 `operatorCount` 上限 8（平台 Power Pool 规则）；REGULAR 无此上限，复杂度纪律见 `brain-make-some-gem`「复杂度预算」。平台返回的 `operatorCount` 是最终裁判。
-5. Stage A（最优候选未达 Sharpe > 1.40 且 Fitness > 0.90）禁止纯微调，只能做结构化升级（定义见 `reference.md` §6.5 / §7）。
+5. Stage A（最优候选未达 Sharpe > 1.40 且 Fitness > 0.90）禁止纯微调，只能做结构化升级（定义见 `references/overview.md` §6.5 / §7）。
 6. 全部检查零 FAIL 的候选立即做 PROD 相关性检查，读数按 D0-P 处置。
 7. **结果入库、不写自建文本文件**：批回测结束后确认 `backtest_results` 已入库（`harvest_multisim_alphas` → `wqb-db harvest_multisim_results`）；迭代日志（8 槽角色 / 失败项 / next_actions）写在本轮回复里，S6 回写时进 `wave_result.key_findings`（RA [step9](../wq-brain-ra-pipeline/references/step9-writeback.md)）。
 8. 校验或仿真失败时只修精确的报错点；不得为过校验而删核心逻辑。
@@ -158,7 +158,7 @@ Mode B → Mode A 迭代，直到出现**至少一个达标候选**，或触发�
 
 ## 渐进式文档
 
-- Mode A 完整规则、主题配额、逐步执行流：[reference.md](reference.md)
+- Mode A 完整规则、主题配额、逐步执行流：[overview.md](references/overview.md)
 - 示例（直接优化 / Stage A / 负信号翻转 / 校验合同 / 迭代日志）与场景卡：[examples.md](examples.md)
 - Mode B 资格判定表：[references/mode-b-qualification.md](references/mode-b-qualification.md)
 - 组合腿救援形态库：[references/structural-interaction-forms.md](references/structural-interaction-forms.md)

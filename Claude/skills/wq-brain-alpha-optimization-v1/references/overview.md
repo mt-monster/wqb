@@ -1,6 +1,6 @@
 # WQ BRAIN Alpha Optimization V1 — Mode A 参考
 
-本页是 **Mode A（参数层）** 的操作规则：在不浪费模拟配额的前提下，对现有 alpha 做 8 候选严格批优化。Mode B（想法层）与入场判定见 [SKILL.md](SKILL.md) 与 [`references/mode-b-qualification.md`](references/mode-b-qualification.md)；arXiv 工具见 [arXiv_API_Tool_Manual.md](arXiv_API_Tool_Manual.md)。
+本页是 **Mode A（参数层）** 的操作规则：在不浪费模拟配额的前提下，对现有 alpha 做 8 候选严格批优化。Mode B（想法层）与入场判定见 [SKILL.md](../SKILL.md) 与 [`references/mode-b-qualification.md`](mode-b-qualification.md)；arXiv 工具见 [arXiv_API_Tool_Manual.md](../arXiv_API_Tool_Manual.md)。
 
 ## 1. 目标
 
@@ -10,9 +10,9 @@
 
 候选「达标」需同时满足：
 
-- 平台全部检查 PASS，`Failed RA == 0`（口径与 PENDING / WARNING 语义见 RA [`webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md)），其中含 `IS_LADDER_SHARPE`、Sub-universe、`CONCENTRATED_WEIGHT`；
+- 平台全部检查 PASS，`Failed RA == 0`（口径与 PENDING / WARNING 语义见 RA [`webdatascope-failed-gates.md`](../../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md)），其中含 `IS_LADDER_SHARPE`、Sub-universe、`CONCENTRATED_WEIGHT`；
 - 内部闸线：`wqb.config.GATES_INTERNAL`（Sharpe / Fitness / Turnover / margin 等**数值以 config 为准，本页不复写**；平台线更宽，别互相顶替）；
-- PROD 相关性读数（`check_correlation`，只读）按 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md) 可放行。**PROD ≥ 0.7 时候选不算 done**，即便其余全过。
+- PROD 相关性读数（`check_correlation`，只读）按 RA 决策表 [D0-P](../../wq-brain-ra-pipeline/references/decision-table.md) 可放行。**PROD ≥ 0.7 时候选不算 done**，即便其余全过。
 
 ## 3. 输入
 
@@ -43,9 +43,9 @@
 
 **本地校验入口**（回测前的硬闸，三段顺序执行；命令见 SKILL「Mode A 校验层」）：
 
-1. 语法 / 算子元数：[expression verifier skill](../alpha-expression-verifier/SKILL.md)（`wave_gate.py` 内含，与闸 1 同源）；
+1. 语法 / 算子元数：[expression verifier skill](../../alpha-expression-verifier/SKILL.md)（`wave_gate.py` 内含，与闸 1 同源）；
 2. 幽灵算子：`tools/campaign_intel.py ghost-audit`。`validate_expressions` / `preflight_expressions` **不查幽灵算子**（会对 `ts_median` 返回 valid=true）；
-3. 闸 1–9 + SEM：`tools/wave_gate.py --batch-type repair`（修复批不做质量预估标注、默认豁免批级多样性；闸的处置见 RA [step5-gates.md](../wq-brain-ra-pipeline/references/step5-gates.md)）。
+3. 闸 1–9 + SEM：`tools/wave_gate.py --batch-type repair`（修复批不做质量预估标注、默认豁免批级多样性；闸的处置见 RA [step5-gates.md](../../wq-brain-ra-pipeline/references/step5-gates.md)）。
 
 ## 6. 全局约束
 

@@ -38,6 +38,18 @@ last_verified: 2026-10-09
    $WQ_PY -m wqb.profiles render --region GBR --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **GBR 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/GBR/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/GBR/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -185,6 +197,44 @@ last_verified: 2026-10-09
    - 降 prod 杠杆分两类：**改持仓**（换残差轴 / 字段 / 概念 / `trade_when` 分层）✅ ｜ **只改时序**（`hump` / `decay` / `ts_mean` 慢化）⚠️ **爆 self**。
    - **拥挤层诊断**：换 2–3 种结构 prod 会动（>0.01）= **结构层**（改持仓仍可用）；换 ≥5 种纹丝不动 = **机制层**（弃族）。
 
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **GBR 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **字段画像驱动**：本区走「Playbook 七层链路 → 九步映射」（见上文「字段画像驱动流程」）。
+- **待实测**：离线体检包退化范围、不可用算子。
+
+### ② 组装 · 本区覆盖
+
+- **白名单 10 个数据集**（2026-08-26 建）；本波至少 2 槽按 win 机制换腿。
+- **PROD 饱和族**（starmine 四向、delta66、other455×model264）**不生成新变体**；`model238` 只作复合从腿。
+- **判定口径（GBR 版）**见上文「第 6 层 · 判定口径（GBR 版）」。
+
+### ③ 归因 · 本区覆盖
+
+- **硬墙是 prod，不是 IS** ⇒ 归因读数多指向因子暴露而非强度。
+- **rn 低于 0.3 的反转候选按因子暴露处理**。
+
+### ④ 破闸杠杆 · 本区覆盖
+
+- **`SUBINDUSTRY` + `decay 4` 跟 win**；`STATISTICAL` 是有实证的 **A / B 对照轨**（wave57 8/8 孪生提升，见 [GBR × model](references/model.md)）。
+- **★★ 2Y 闸随中性化浮动**（内置轴 **1.58 宽** / 因子型 **2.02 严**）⇒ 换中性化档即换 2Y 线，**逐档重判**。
+- **结构维度 > 参数维度**（本区与 DEU 的共同铁律）。
+- **★ 2026-10-13 晚场**：全面字段画像 + `LOW_2Y_SHARPE` 闸线地图（区域级铁律）见上文。
+
+### ⑤ 算子穷举 · 本区覆盖
+
+- **待实测**：完整算子清单（本区实证集中在七层链路，算子穷举记录待补）。
+
+### ⑥ 终验 · 本区覆盖
+
+- **待实测**：本区 prod 分布（已知硬墙是 prod）。
+- **S9 回写**：每波 FAIL 必须写 `dead_end`，可精确定义的族另加规则；win 过闸即回写 `win_recipes`。
+
 ## 本区流程差异（相对九步骨架）
 
 <!-- profiles:manual:start -->
@@ -193,6 +243,74 @@ last_verified: 2026-10-09
 - **S4 改进**：GBR 的硬墙是 prod，不是 IS；rn 低于 0.3 的反转候选按因子暴露处理。
 - **S9 回写**：每波 FAIL 必须写 dead_end，可精确定义的族另加规则；win 过闸即回写 win_recipes。2026-09-15 曾因 0 / 327 的产出触发停止规则，新波次先过开波闸。
 （来源：GBR profile）
+
+### ★★ 2026-10-13 · GBR 空间封闭裁决（88 条新仿真后的终局）
+
+**结论：GBR 在「未点亮塔」里已无可挖空间；「10 颗可提交」不可达；连「补塔」都不可行。**
+
+| 未点亮塔 | ALIVE 字段 | 终局 |
+|---|---|---|
+| **ANALYST**（塔 2） | 20 | 五数据集全判死：analyst7（breadth 族拥挤 + 182 未测字段全属该族且「换字段不造腿」）／analyst47（**F 墙**）／analyst9（处女池无信号）／analyst_factor_signals（IS 弱）／analyst93（类型 D，S 0.80）|
+| **OTHER**（塔 1） | 3 | techindi_model 三字段**同一条腿**（互相关 0.88~0.93，已被 `3qVP6pNO` 占）；未测 40 字段（`dl_riskfree_returns`）= `probability_label*`/`quantile_label*` **桶标签 + 连续预测**，连续预测已实测 **2Y −0.28 全塌** |
+| **PV**（塔 1） | 3 | `pv47_spret`/`pv47_for_statssimple_only_spret` 撞既有硬 dead_end（PROD-SAT）；`pattern_scores` 唯一 ALIVE 字段已被 `A1G7o1EE` 占；未测 37 字段（`pv29`）= `industry_grouping_*` **聚类标签（AXIS_ONLY，非信号）** |
+| 其余 11 类 | **0** | 无 ALIVE |
+
+**★ 三条终局证据**
+1. **「未测大盘」的真相**：GBR 未测字段集中在 `analyst7`(182，属已判死族) / `model*`(已点亮塔) / `pv29`(轴) / `dl_riskfree_returns`(标签) ⇒ **未测 ≠ 有信号**，多数是标签/轴类非信号字段。
+2. **历储备候选已被同腿自锁**：`rKe5L9q3` prod/self **0.9933 FAIL**、`zqbYwOmV` **0.9411 FAIL**（与已提交的 `gJZQZkZe` 同腿）⇒ ANALYST 塔**无法由旧储备补到 3/3**。
+3. **新增判死形态「F 墙（不变量型）」**（详见 [analyst.md](references/analyst.md)）：`F = S×√(returns/max(TO,0.125))`，若族内 **S 与 1/√TO 严格同向** ⇒ 乘积是经济不变量，全参数空间扫不上去。
+
+⇒ **GBR 的下一步只能是换 region 或接受现有 19 颗 ACTIVE**（两者均需用户明示）。
+
+### ★★★ 2026-10-13 晚场 · 全面字段画像 + `LOW_2Y_SHARPE` 闸线地图（区域级铁律）
+
+**① 全面画像方法（可复用）**：平台 `get_datasets(GBR,D1,TOP700)` = **177 数据集** × 本地 `field_profile --query --region GBR --limit 20000` = **15,523 字段** 交叉 ⇒ **66 个未点亮塔候选**（有未测/未知池 + 画像无判死）。画像 verdict 全分布：`UNKNOWN_COVERAGE 7444 / UNUSABLE 3409 / UNTESTED 2501 / AXIS_ONLY 1390 / DEAD 388 / ALIVE 52 / WEAK 47 / DEAD_STATIC 20 / DEAD_COUNT 5 / DEAD_TURNOVER 4`。
+
+**② ★★★ `LOW_2Y_SHARPE` 闸线机制（2026-10-14 深挖修正，取代 10-13 的初版结论）**：
+
+**初版（不完整）**：闸线按中性化浮动——内置轴 1.58 / 因子模型型 2.02。
+
+**修正版（get_alpha_details 逐条读真值后）**：**闸线是「分档」的，显示的是当前正在卡的那一档**——
+1. **`2Y < 1.58` ⇒ 显示 limit 1.58**（卡第 1 档）；
+2. **`2Y ≥ 1.58` ⇒ 显示 limit 2.02**（已过第 1 档、进第 2 档）。
+   ⇒ 实测序列完美阶跃：2Y 1.51/1.53/1.55/1.56/1.57 → limit 1.58；2Y 1.58/1.59/1.60/1.61/1.64/1.66/1.73/1.79/1.82 → limit 2.02。
+   ⇒ **真正要过 2Y 闸需 2Y ≥ 2.02**（除非该 alpha 所处的档位本身低于 2.02）。
+3. **例外：高换手 alpha 的档位更低**——技术指标冠军 `O0J1A88J`（**TO 0.2068**，CROWDING + sector 轴）**以 2Y 1.90 通过**，说明其适用档位 ≤1.90 ≠ 2.02。本区低换手信号（TO 0.03~0.08）**无法进该档**。
+4. **表达式内分组轴影响 S 与 2Y**（sector 轴 S 1.53 / 2Y 1.53；subindustry 轴 S 1.72 / 2Y 1.73 @ CROWDING），但不改变上述分档规则。
+5. ⚠ **`harvest` 输出的 `2Y_OK / 2Y_DEAD` 用房子静态阈值 1.58，对严档会误判** ⇒ **判定必须逐条 `get_alpha_details` 读 `is.checks` 的 limit**。
+
+**★ 2026-10-14 晨 · 「窄带」精确化（30+ 条真值实证，决策级结论）**：
+平台比较**真值**（显示四舍五入）⇒ **唯一可过带 = 真值 2Y ∈ [1.580, 1.585)**（显示 1.58、limit 1.58、判 PASS；**带宽仅 0.005**）。
+- 真值 <1.580 → 显示 1.57/1.58、limit 1.58 → FAIL；
+- 真值 ≥1.585 → 显示 1.59+、**limit 跳 2.02** → FAIL。
+⚠ **危险特性：本区可用杠杆是「跳跃式」的**——CDS 腿（S 1.62）在 CROWDING/w66~85 时真值 ≈1.578（带下方 0.002）；一旦 `maxTrade OFF`（2Y 显示 1.59）或换 FAST 中性化（1.61）**立刻跳出带外并触发 2.02 档**。**⇒ 缺 0.002 也等于不可达；不要指望参数微调落在 0.005 带内。**
+
+**★ 破闸纪律（最终版）**：① 要么把 **S 与 2Y 一起抬过 2.02**（需族级新机制，本区未找到）；② 要么进 **高换手低档位**（仅技术指标类信号可达 TO ≥0.15；CDS/信用类天然 TO ≤0.08 进不去）；③ **禁止**在 1.58 附近做微调——只会触发跳档。
+
+⚠ 另：**GBR 平台 `LOW_SHARPE` 实测闸线 = 1.58**（非 config 的 delay1=1.25）；须 ≥ 1.585 真值。
+
+**★ 破闸纪律（2026-10-14 修正）**：不要在宽档上盲目追高 S——**S 与 2Y 要一起抬过 2.02**，或**设法进入高换手低档位**（本区仅技术指标类信号可达 TO ≥0.15）。
+
+**③ CDS 信用价差 = 未点亮塔处女池唯一活机制，但撞 2Y 墙**（详见 [other.md](references/other.md)）：16 机制探针筛选，仅 `other169.mid_par_spread_basis_points` 活（S 1.52 / F 1.07 / 2Y 1.57 @ SUBINDUSTRY）；~65 条全扫描（窗口/算子族/vec 聚合/外层/复合轴/11 中性化/decay 网格/字段）**无一提过 base**。
+
+**④ 处女池「近静态」判据（新判死形态）**：GBR TOP700 上状态量/评级/低频类数据（ESG、分析师创新度、供应链占比、期权 IV）单字段水平信号 **TO 0.016~0.041（< review.turnover_min 0.05）且 2Y 多负** ⇒ 任何骨架无用。**开波前按机制类型预筛**。
+
+**⑤ 本轮判定**：新增可提交 **0 颗**；GBR「10 颗可提交」在本区现有数据下**不可达**（唯一活腿卡 `LOW_2Y_SHARPE`，最接近处差 0.01）。报告 `output_report/GBR_field_profile_cds_20261013.md`。
+
+### ★★★★ 探针派发 SOP（2026-10-14 定稿，全文见 [references/_probe-sop.md](references/_probe-sop.md)）
+
+**GBR 特有前提**：multi-sim **上限 8 条**（DEU 为 10）；**`LOW_2Y_SHARPE` 闸线随中性化浮动**（内置轴 1.58 宽 / 因子模型型 2.02 严）；单一 universe **TOP700**（D0 多数数据集无字段）。
+
+**第 0 步零成本筛选（按序）**：① **塔闸**（只挖未点亮塔 × ALIVE 密度；model 已点亮→排除）；② **语义闸**（字段级 description，剔标签/轴/元数据类）；③ **画像闸**（cov<0.6、to_med<0.03、count 族）；④ **★近静态闸**（状态量/评级/低频类 TO 0.016~0.041 ⇒ 直跳，本轮 16 机制中 8 个命中）；⑤ **历史闸**（禁自造结构、禁重测已判死族）；⑥ 概念族分组（同族免测）。
+
+**第 1 步探针批构造（8 槽 = 2 结构 × 3 跨族字段 + 2 机动）**：
+- 结构 A = house 底座 `group_rank(ts_mean(vec_avg(F),N), subindustry)`；结构 B = techindi 配方（双窗 + `group_neutralize` + `ts_target_tvr_decay` @ CROWDING/decay2）。
+- 机动 2 槽 = `vec_max`（VECTOR）/ `reverse`（方向不明——GBR 实证 `days_from_last_change` 原始 −1.39、反向 +1.39）。
+- **发批前六闸**：expr-lint / op-arity / **平台实时字段类型（MATRIX 错标 VECTOR ⇒ 整批 FAIL）** / op-lint（GBR 102 算子；`vector_neut` 不在清单、`tail` 必用命名参）/ **骨架 R2（单模板 ≤60%，须重组骨架非绕闸）** / probe-slot。
+
+**第 2 步读数三分法（GBR 闸线口径）**：S≥1.58 **且 2Y ≥ 本档闸线**（宽 1.58 / 严 2.02，真值须 ≥ 闸线+0.005）→ 全闸验证；**S 1.0–1.58 不判死**（结构没找对的信号带）；S<0.5 判死（自检「真双结构？真跨族？」）。识别两种 GBR 判死形态：**「F 墙」**与**「2Y 有 S 无」**。
+
+**第 3 步出闸去重**：PnL Pearson / `compute_mutual_correlation`（同族跨数据集 = 同腿，只出 1 颗）；GBR 硬墙是 **prod** 不是 IS。
 <!-- profiles:manual:end -->
 
 ## 改控制

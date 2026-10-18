@@ -1,0 +1,42 @@
+{
+  "region": "KOR",
+  "as_of": "2026-10-18",
+  "_note": "配置视图（非事实源）。真身=tracking/<R>/config/*.json；改配置只改真身后 render --apply。",
+  "source_of_truth": {
+    "settings": "tracking/KOR/config/settings.json",
+    "thresholds": "tracking/KOR/config/thresholds.json",
+    "cells": "tracking/KOR/config/cells.json"
+  },
+  "region_defaults": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "neutralization": "STATISTICAL",
+    "decay": 4,
+    "truncation": 0.08,
+    "maxTrade": "OFF",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "language": "FASTEXPR"
+  },
+  "cells": {
+    "categories": [
+      "analyst",
+      "fundamental",
+      "insiders",
+      "institutions",
+      "model",
+      "news",
+      "other",
+      "pv",
+      "risk",
+      "sentiment",
+      "shortinterest"
+    ],
+    "count": 11,
+    "overrides": 0,
+    "gap": "零覆盖：explain 只给区域默认档；若本区实测用过其它档位，应补覆盖并附 _evidence"
+  }
+}

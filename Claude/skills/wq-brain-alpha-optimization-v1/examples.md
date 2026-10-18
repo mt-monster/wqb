@@ -1,6 +1,6 @@
 # WQ BRAIN Alpha Optimization V1 — 示例与情景卡
 
-> 主 SOP 见 [SKILL.md](SKILL.md)；Mode A 规则见 [reference.md](reference.md)；入场资格见 [`references/mode-b-qualification.md`](references/mode-b-qualification.md)。
+> 主 SOP 见 [SKILL.md](SKILL.md)；Mode A 规则见 [overview.md](references/overview.md)；入场资格见 [`references/mode-b-qualification.md`](references/mode-b-qualification.md)。
 > 命令里的 `$WQ_PY` 是 MCP venv 解释器（`python tools/_pyenv.py` 打印其路径）。
 
 ## 一、触发示例（用户怎么说 → 应该做什么）

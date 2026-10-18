@@ -48,6 +48,7 @@
 
 ### S2 生成
 
+- **说明**：★★★★★ 【EUR × pv 数据集实测判死总表】（2026-10-13，波 506–526，约 40 条） **EUR 合法 universe（平台权威）**：TOPCS1600｜TOP2500｜TOP1200｜TOP800｜TOP400 ／ 数据集 ／ 规模 ／ 最佳形态 ／ S ／ TO ／ 2Y ／ 判死依据 ／ ／---／---／---／---:／---:／---:／---／ ／ 'pattern_scores'（图形形态相似度） ／ 504 MATRIX cov .998 ／ 形态相似度差 ／ ≤0.52 ／ — ／ 负 ／ 噪声型 ／ ／ 'continuation_score'（延续形态） ／ 560 MATRIX cov .998 ／ 'avg_similarity_bearish_flag' ／ 0.56（2Y 1.32） ／ 0.39 ／ — ／ ★**平滑即杀**（ts_mean 后 S −0.79）⇒ alpha 全在高频 ／ ／ 'intraday_pv_feats'（日内特征） ／ 585 MATRIX cov .999 ／ — ／ ≤0.37 ／ **1.15** ／ — ／ TO 爆炸 ／ ／ 'pv106'（买卖价差/交易成本） ／ 13 MATRIX cov 1.0 ／ 'pv106_spreadbp' ／ **−0.51~−1.65** ／ 0.40–0.97 ／ 负 ／ ❌ **流动性水平信号为负**（无 Amihud 溢价）；'transaction_cost_estimate' 的 S=11.18 是**退化假信号**（TO=1.0、2Y=0） ／ ／ 'pv37'（原始价量+时段快照） ／ 245 MATRIX cov 1.0 ／ 'reverse(ts_delta(close,5))' 等经典反转 ／ ≤1.15 ／ **0.46–1.28** ／ ≤0.95 ／ ❌ **TO 爆炸**（价量反转在此宇宙换手过高） ／ **⇒ pv 类别（本季度未点亮 αC=0）本轮 5 个数据集全部判死**：噪声型（平滑即杀）/ TO 爆炸 / 流动性负号。 ⚠ **universe 档实证**：dl_riskfree 信号在 TOP400（S 1.01）/TOP800（S 1.16）/TOP2500（S 1.41 但 2Y 0.4–0.76）/TOP1200（S 1.14）**全部劣于 TOPCS1600（S 1.40）** ⇒ ★ **TOPCS1600 是 EUR 的最优档**（外部资料称「更流动的小宇宙提 Sharpe」在 EUR 不成立）。
 - **类别通用原语**（类别卡，跨区）：
   - continuation vs reversal: short-horizon pattern vs longer mean
   - intraday vs overnight: session-specific pressure
@@ -61,7 +62,7 @@
 - **跨区结论**（KOR/GBR/DEU/AMR；negative）：图表形态族（pattern_scores / continuation_score / chart_cnn）（证据：KOR 三连死（chart_cnn 1.51 → continuation 0.34 → pattern_scores 0.49）；GBR-SIMPLE-STRUCTURE-DEAD；DEU-PATTERN_SCORES-PROBE-DEAD-20261002；AMR 红榜） <!-- lint:const-ok 证据原文 -->
 - **禁止**（类别卡）：禁止使用加权混合（0.4*rank(A) + 0.6*rank(B) / add(multiply(0.4,A),multiply(0.6,B))）
 - **禁止**（类别卡）：禁止使用 ts_entropy / ts_skewness（幽灵算子）
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

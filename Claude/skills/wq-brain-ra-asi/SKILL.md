@@ -37,6 +37,18 @@ last_verified: 2026-10-05
    $WQ_PY -m wqb.profiles render --region ASI --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **ASI 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/ASI/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/ASI/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -96,6 +108,42 @@ last_verified: 2026-10-05
 
 说明：另有 45 条回测行没写数据集，无法归到组合；1 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
+
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **ASI 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **平台档位**：universe 只有 `MINVOL1M` / `MINVOL10M` / `TOP500`（以 `config.REGIONS` 为准）；
+  ⚠ 数据库 `regions` 表还写着 TOP2000 / TOP1000，是**陈旧值**，以 config 为准。
+- **待实测**：离线体检包退化范围、在线体检档、不可用算子（处女地，尚无记录）。
+
+### ② 组装 · 本区覆盖
+
+- **唯一出过货的机制**：ipv 尾盘 30 分钟反转 × 注意力 ∩ 成交量占比门控，见 [ASI × pv](references/pv.md)。
+- **死名单**见各组合分支文件。
+- **待实测**：本区概念预算与组装禁区（处女地，先按主 skills 通用值执行）。
+
+### ③ 归因 · 本区覆盖
+
+- **硬墙性质**：`JPN` 子集 Sharpe 与 robust 保留率 —— 是「信号在哪些股票上成立」的问题，**不是强度问题**。
+- **待实测**：本区逐年 S 分布基线。
+
+### ④ 破闸杠杆 · 本区覆盖
+
+- **档位冲突警示**：门控模板当时用 `SECTOR`、decay 10–12，与 `settings.json` 的 `SUBINDUSTRY` / decay 6 **不同** ⇒ 复用模板时用 `--set` 显式传，别依赖缺省。
+- **待实测**：本区各闸最优杠杆（处女地，无历史 win 档可循）。
+
+### ⑤ 算子穷举 · 本区覆盖
+
+- **待实测**：本区算子实证（从零建 baseline）。
+
+### ⑥ 终验 · 本区覆盖
+
+- **待实测**：本区 prod 分布（处女地，先建直方图基线）。
 
 ## 本区流程差异（相对九步骨架）
 

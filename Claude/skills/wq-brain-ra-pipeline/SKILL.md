@@ -199,12 +199,22 @@ last_verified: 2026-10-08
 
 - **目的**：这一波的候选下一步去哪——提交链 / 改进 / 判死。
 - **前置**：步 6 完成定义满足；prod-first（步 5b）已跑；已读本组合分支文件的 S4 段（组合杠杆、不要用的杠杆——Mode B 的 B3 先取它们）。
-- **调用**：`s4-prescreen`（全灭直接判死）→ `workflow_campaign(stage="S4", dataset=$DS, wave=$W)`（评审；解析不到 alpha_id 即 FAIL，用其列出的字符串波号重试）→ 逐候选链（selfcorr-quick → `check_self_correlation` → `compute_mutual_correlation` → `check_correlation` → `brain-alpha-robustness` → judge）。
+- **调用**：`s4-prescreen`（全灭直接判死）→ `workflow_campaign(stage="S4", dataset=$DS, wave=$W)`（评审；解析不到 alpha_id 即 FAIL，用其列出的字符串波号重试）→ **对 `failed_ra_count` 只剩 1–2 闸的候选插「闸失败归因」**（`tools/gate_attribution.py --alpha-id <id> --correlation`，零仿真；细则见 [`references/gate-attribution.md`](references/gate-attribution.md)）→ 逐候选链（selfcorr-quick → `check_self_correlation` → `compute_mutual_correlation` → `check_correlation` → `brain-alpha-robustness` → judge）。
+- **★ 闸失败归因（只差一两闸时必做，先归因再推闸）**：`failed_ra_count ∈ {1,2}` 的候选**不得直接开始刷参数**。先跑 `tools/gate_attribution.py` 拿 `verdict` + 逐闸 `levers` + `stop_rule`：
+  | 退出码 | verdict | 本步动作 |
+  |---|---|---|
+  | 0 | `READY` | RA + prod + self 全过 ⇒ **停手**，不得再做结构性改动（会重掷骰子，prod 余量可低至 0.0009）；提交权归用户 |
+  | 0 | `PUSH_TARGETED` | 按 `diagnoses[].levers` 的 rank 逐条推，**每条只动一个变量**（改完回本步重跑归因，不重发盲扫批）。⚠ **若相关性未实测，此裁决不等于可推**——先跑 `check_correlation` + `check_self_correlation` |
+  | 0 | `PUSH_CORRELATION_CORNER` | **RA 全过、仅相关性差 ≤0.01**（刀锋区）⇒ 不改结构，在 `(门控窗口 × winsorize std)` 二维找角点（KOR 实测 gate6×std0.22 命中 prod 0.6991 / S 1.60） |
+  | 3 | `SWITCH_AXIS` | 本腿到机制层天花板 ⇒ 换字段/数据集，**不得**再在本腿发批 |
+  | 4 | `BLOCKED_BY_CORRELATION` | prod 余量 < 0.01 ⇒ 任何抬 S 杠杆都先验撞线；先找 prod 中性杠杆，否则所有仿真白跑 |
+  | 5 | 两闸以上 | 不属本机制，回常规多轮诊断 / `s4-prescreen` |
+  两条**零成本前置判据**（归因报告自带，别重算）：① **F 闸 `F = S×√(returns/max(TO,0.125))`** ⇒ `to_target = returns×(S/F_target)²`；`to_target ≤ 0.125` 说明**减速路线数学上不可达**，别再刷 `decay`/`backfill`/`hump`。② **prod 余量先测再决定推不推 S**（抬 S 的杠杆多半同时抬 prod）。**收敛即天花板**：同一闸在 ≥3 个互不相关杠杆上收敛到同一档 ⇒ 停手换轴（细则 §8 停手线四条）。
 - **产物**：ledger `s4_walls_<region>_<wave>`、`salvage_pool`；每条候选有去向。
 - **完成定义**：本波每条候选都有去向——进步 8 / 留 near / salvage（带墙名）/ 判死（进步 9）。
 - **失败分支**：卡闸 → `get_salvage_pool(boost_dim=…)` 找辅助腿；Mode B 2–3 轮仍卡墙 → 找武器（`forum_recon` 触发表 #4，每波 ≤ 1 次）；同一想法 > 10 种结构仍不过 → 步 9 记 `dead_end`；**判「无解 / 天花板」或记 `dead_end` 之前，IS 强但被某闸卡住的族必须先扫等价算子替换**（`signed_power`→`quantile`、`ts_scale`→`quantile` / `normalize` 等：换数值路径、一次动多个闸，几何调整一次只动一个；决策表 D15 前置、步 9 细则 §9.5 1b），prod 墙先做 D0-P 的诊断前置。
-- **不做**：**任何两条独立信号腿相加（加权 / 等权 / `add` / 中缀 `+`）一律违规**；辅助腿只能以**条件 / 分组 / 残差**三式入场；`risk_neutralized_sharpe ≤ 0` 且 raw ≥ 1.58 → 停止调参；**门禁通过 ≠ 合规**。IS→OS 衰减折算**不抬高 IS 阈值**。
-- **细则**：[`step7-diagnose.md`](references/step7-diagnose.md)（墙与池的判据、组合形态**唯一一份**允许清单、辅助腿入场三式、§7.6.1 提交层四闸与 SUB 比值律）；事故 [`incidents.md`](references/incidents.md) I-1。适用决策表：D0 / D0-P / D1 / D2 / D3 / D12 / D14。
+- **不做**：**任何两条独立信号腿相加（加权 / 等权 / `add` / 中缀 `+`）一律违规**；辅助腿只能以**条件 / 分组 / 残差**三式入场；`risk_neutralized_sharpe ≤ 0` 且 raw ≥ 1.58 → 停止调参；**门禁通过 ≠ 合规**。IS→OS 衰减折算**不抬高 IS 阈值**。**闸失败归因不是「免推闸」**：拿到杠杆表后照样要一条条推仿真——它替代的是无差别盲扫，不是推闸本身；归因判 `SWITCH_AXIS` 后也不得在同一结构族继续发批。
+- **细则**：[`step7-diagnose.md`](references/step7-diagnose.md)（墙与池的判据、组合形态**唯一一份**允许清单、辅助腿入场三式、§7.6.1 提交层四闸与 SUB 比值律）；**闸失败归因机制** [`gate-attribution.md`](references/gate-attribution.md)（1–2 闸候选的零成本归因、F 闸闭式公式、逐年分诊、剪刀差检测、杠杆表与停手线）；事故 [`incidents.md`](references/incidents.md) I-1。适用决策表：D0 / D0-P / D1 / D2 / D3 / D12 / D14 / **D16**。
 
 ### 步 8（S4→S5）稳健闸与提交判定
 

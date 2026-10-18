@@ -1,0 +1,36 @@
+{
+  "region": "MEA",
+  "as_of": "2026-10-18",
+  "_note": "配置视图（非事实源）。真身=tracking/<R>/config/*.json；改配置只改真身后 render --apply。",
+  "source_of_truth": {
+    "settings": "tracking/MEA/config/settings.json",
+    "thresholds": "tracking/MEA/config/thresholds.json",
+    "cells": "tracking/MEA/config/cells.json"
+  },
+  "region_defaults": {
+    "instrumentType": "EQUITY",
+    "region": "MEA",
+    "universe": "TOP400",
+    "delay": 1,
+    "neutralization": "SECTOR",
+    "decay": 4,
+    "truncation": 0.08,
+    "maxTrade": "ON",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "language": "FASTEXPR"
+  },
+  "cells": {
+    "categories": [
+      "analyst",
+      "earnings",
+      "fundamental",
+      "model",
+      "pv"
+    ],
+    "count": 5,
+    "overrides": 0,
+    "gap": "零覆盖：explain 只给区域默认档；若本区实测用过其它档位，应补覆盖并附 _evidence"
+  }
+}

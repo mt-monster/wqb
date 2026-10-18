@@ -37,6 +37,18 @@ last_verified: 2026-10-05
    $WQ_PY -m wqb.profiles render --region CHN --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **CHN 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/CHN/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/CHN/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -90,6 +102,41 @@ last_verified: 2026-10-05
 
 说明：证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
+
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **CHN 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **平台档位**：`config.REGIONS` 只有 `TOP2000U`；**每个档先用 1 条裸 PV 探针验证会不会返空**（本区有默认档返空类试错前科）。
+- **铁律级**：static 层必须实测建立，**禁止任何外推**。
+- **待实测**：离线体检包退化范围、不可用算子。
+
+### ② 组装 · 本区覆盖
+
+- **截断常识审查（硬）**：A 股涨跌停截断、T+1 ⇒ 量价信号**先过截断常识审查**再组装。
+- **已判死**：新闻情绪 / 资金流在 CHN 已被判为成本伪迹（`CHN-PV27-MONEYFLOW-COST-ARTTFACT-DEAD`、`CHN-NEWS-SENTIMENT-COST-ARTIFACT-DEAD`）。
+
+### ③ 归因 · 本区覆盖
+
+- **沿用主 skills**（本区归因实证尚无独立记录）。
+- **待实测**：本区逐年 S 分布基线。
+
+### ④ 破闸杠杆 · 本区覆盖
+
+- **高门槛区**：CHN 的 Sharpe 线 **2.07**、`LOW_RETURNS` 还要求 **8% 净收益** ⇒ 主 skills 的 F 公式反推缺口时，本区 returns 门槛显著更高。
+- **待实测**：本区合法中性化档与各闸最优杠杆。
+
+### ⑤ 算子穷举 · 本区覆盖
+
+- **待实测**：本区算子实证。
+
+### ⑥ 终验 · 本区覆盖
+
+- **待实测**：本区 prod 分布。
 
 ## 本区流程差异（相对九步骨架）
 

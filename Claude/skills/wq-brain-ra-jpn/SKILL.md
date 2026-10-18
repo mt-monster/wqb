@@ -37,6 +37,18 @@ last_verified: 2026-10-05
    $WQ_PY -m wqb.profiles render --region JPN --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **JPN 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/JPN/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/JPN/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -95,6 +107,45 @@ last_verified: 2026-10-05
 
 说明：另有 92 条回测行没写数据集，无法归到组合；证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
+
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **JPN 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **平台硬事实**：universe **只有 `TOP1600` / `TOP1200`**；
+  **`SUBINDUSTRY` / `SECTOR` 中性化执行必 ERROR**（用 `MARKET` / `STATISTICAL` / `NONE`）；
+  **没有 `pv1`**（close / adv20 / returns 不可用）；**VECTOR 聚合后再套 `ts_*` 报错**；
+  `sector` / `subindustry` / `industry` 分组字段**非法**。
+- **2026-09-15 首度开挖**：D1 共 7 塔全 0 亮；白名单 10 集（pyramid_view 战略榜重建，6 塔覆盖）。
+- **待实测**：离线体检包退化范围。
+
+### ② 组装 · 本区覆盖
+
+- **辅助腿只以条件 / 分组 / 残差三式入场**，**任何加权 / 等权相加都不行**。
+- **待实测**：本区概念预算。
+
+### ③ 归因 · 本区覆盖
+
+- **★ 放宽档的补偿三件套**（coverage 0.6 / alphaCount 1500 / fieldCount 10）：
+  users 达 50 的字段只做方向验证；10–49 进池、提交前必实测；0–9 优先，且**冷门字段占批次预算一半以上**。
+- **待实测**：本区逐年 S 分布基线。
+
+### ④ 破闸杠杆 · 本区覆盖
+
+- **中性化只能用 `MARKET` / `STATISTICAL` / `NONE`**（SUBINDUSTRY / SECTOR 必 ERROR）⇒ 主 skills 的「换粗轴」在本区**不适用**。
+- **待实测**：各闸最优杠杆。
+
+### ⑤ 算子穷举 · 本区覆盖
+
+- **待实测**：本区算子实证（注意 VECTOR 聚合后套 `ts_*` 报错）。
+
+### ⑥ 终验 · 本区覆盖
+
+- **待实测**：本区 prod 分布。
 
 ## 本区流程差异（相对九步骨架）
 

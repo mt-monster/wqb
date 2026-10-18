@@ -14,7 +14,7 @@
 | 用户说 | 首选 | 不选谁（为什么） |
 |---|---|---|
 | 「在 KOR 开战役 / 一键战役 / 持续挖掘 / 挖 regular 一路跑到可提交」 | `wq-brain-ra-pipeline` | `wq-brain-campaign-toolkit` 只是引擎（何时用、怎么判由 RA 定）；`wq-brain-campaign-matrix` 只查表 |
-| 「调 KOR 的回测设置 / 阈值、看 KOR 某类数据集的配方与禁区」 | 区域 skill `wq-brain-ra-<区域小写>`（如 `wq-brain-ra-kor`） | 九步通用正文仍在 `wq-brain-ra-pipeline`；控制值改 `tracking/<R>/config/cells.json` 后重渲（`$WQ_PY -m wqb.profiles render --apply`），不手改生成块 |
+| 「调 KOR 的回测设置 / 阈值、看 KOR 某类数据集的配方与禁区」 | 区域 skill `wq-brain-ra-<区域小写>`（如 `wq-brain-ra-kor`） | 九步通用正文仍在 `wq-brain-ra-pipeline`；控制值改 `tracking/<R>/config/cells.json` 后重渲（`$WQ_PY -m wqb.profiles render --apply`），不手改生成块。⚠ KOR 骨架是「字段体检 → 归因 → 破闸」六步（render.py 特化），其余 13 区为通用区域分支 |
 | 「日报 / 早报 / 哪个区更值得挖 / 该不该转区」 | `brain-next-move-analysis` | 它只报告不决策：选区决策归 `wqb.region_rotation`，开战役走 RA |
 | 「这个区有哪些数据集 / 哪些族已判死 / 挖到哪一步了」 | `wq-brain-campaign-matrix` | 整链挖掘走 RA；选区走 next-move |
 | 「审计 / 探索某个数据集」 | `brain-dataset-exploration-general` | 选集是 RA 步 2（S0）；单字段评测走 `brain-datafield-exploration-general` |
@@ -84,7 +84,7 @@
 | KOR | ✓ | ✓ | `active` | — |
 | MEA | ✓ | ✓ | `frozen` | 步 1 即拒，不进步 2（后门见 RA `scenarios.md` 情景 RA-08） |
 | TWN | ✓ | ✗ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile）；无战役目录：开波前先补 `tracking/TWN/config/{settings,thresholds}.json` |
-| USA | ✓ | ✓ | `active` | — | <!-- lint:counterexample: TWN 为 probe-only 区：有 profile 但没有战役目录 -->
+| USA | ✓ | ✓ | `active` | — |
 <!-- region-table:end -->
 
 - **AMR**：`config.REGIONS` 里有，但**当前不是 RA 挖掘区**；要开必须先补 profile + 实测档位。**ALL** 是平台设置选项里的区域但不在 `config.REGIONS`——同样不是挖掘区。两者的平台侧事实（可用数据集、REGULAR 仿真的报错）是带日期的快照，登记在 [`region-profile-contract.md` §4](wq-brain-ra-pipeline/references/region-profile-contract.md)，不写在本文。

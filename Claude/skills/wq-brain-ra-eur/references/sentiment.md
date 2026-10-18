@@ -47,6 +47,7 @@
 
 ### S2 生成
 
+- **说明**：★★★★ 【EUR × sentiment 收官】（2026-10-13，波 450–497，约 90 条）： **唯一可用数据集 = 'sentiment27'（30 VECTOR，snl27_* 低竞争字段）**；S 上限 **1.33**（4 次独立验证）。 **最优形态**：'group_rank(multiply(divide(snl27_skewness, ts_mean(snl27_totaldomains,55)), divide(snl27_relpopularity1, ts_mean(snl27_totalcountrydomains,55))), sector)' ⇒ S 1.29 / F 0.87 / **2Y 1.61 ✅** / returns **5.68%**（够过 F）—— **唯一瓶颈是 S 距 1.58 差 0.25**。 **S 提升轨迹**：0.63（单字段）→ **1.14（轴 c5→sector，+0.51 最大单步）** → 1.22（乘积）→ 1.30（同分母双对比）→ 1.32（**交叉分母** '(A/td)×(B/tcd)'）→ 1.33（幂次 1.5）⇒ 收敛。 ⚠ **判死清单**：'snt27_*' 家族（覆盖 1.0 但竞争高，S ≤1.08）；'sentiment7'（Wikipedia 浏览量，S ≤0.43）；'other553'（财报电话文本，S≈0）；'sentiment21/26'（MATRIX 或高竞争）；**L2 双窗级联**（'multiply(rank(ts_delta(x,240)), rank(ts_delta(x,176)))'，S 0.32–0.66 —— skill 记载的 L2 杠杆在此数据集上失效）；跨数据集组合（≤单腿）；vec 聚合 5 档（无差异）；16 个包装算子（无增益）。
 - **类别通用原语**（类别卡，跨区）：
   - disagreement and intensity, not the raw score
   - change in sentiment after backfill, not the snapshot
@@ -54,7 +55,7 @@
   - sentiment persistence: autocorrelation of sentiment changes
 - **跨区结论**（USA/EUR/IND/KOR/AMR/GLB；negative）：新闻 / 情绪作主信号在多区同型全灭（robust 墙、CW 或换手墙）（证据：AMR profile 跨区负先验；KOR 新闻情绪四连死（news38/50/54/79）；IND sentiment21 robust 0.24；GLB-NEWS23-MNA-EVENT-DEAD、GLB news73 sentiment 判死） <!-- lint:const-ok 证据原文 -->
 - **跨区结论**（GLB/KOR/HKG/AMR；negative）：emotion 系（含 sentiment / mood 命名的变体）跨区死路（证据：GLB 铁律（registry cross_region 层）；KOR / HKG / AMR profile 排除） <!-- lint:const-ok 证据原文 -->
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

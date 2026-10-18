@@ -189,7 +189,7 @@ SessionStart/PreToolUse/PostToolUse 为 POSIX 命令（`bash`、`head`、`grep`�
 
 - 模板：[templates/task_plan.md](templates/task_plan.md)（阶段跟踪）、[templates/findings.md](templates/findings.md)（研究存储）、[templates/progress.md](templates/progress.md)（会话日志）。
 - 脚本（**bash**；Windows 需 Git Bash / WSL）：`scripts/init-session.sh` 初始化三个文件；`scripts/check-complete.sh` 校验阶段是否全部完成。`check-complete.sh` 靠 `### Phase` 与 `**Status:** complete` 两个字符串计数，**与模板文本强耦合**——改了模板格式就会失效。
-- 高级：Manus 原则见 [reference.md](reference.md)；真实示例见 [examples.md](examples.md)。
+- 高级：Manus 原则见 [overview.md](references/overview.md)；真实示例见 [examples.md](examples.md)。
 
 ## 反模式
 

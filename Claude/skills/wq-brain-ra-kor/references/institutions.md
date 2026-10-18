@@ -52,7 +52,7 @@
   - institutional momentum: new positions vs closed positions
   - ownership stability: long-term holders vs short-term traders
 - **跨区结论**（IND/ASI/KOR/EUR；negative）：institutions6 作主信号判死；作慢门控腿可用（IND levk5JYN：机构持股比例 rank>0.5，prod 0.55）（证据：IND institutions6 best 0.32；ASI 死名单；KOR 红榜；EUR-INSTITUTIONS6-COLD-ZERO-YIELD） <!-- lint:const-ok 证据原文 -->
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

@@ -254,3 +254,25 @@
 | 区 | 停止规则 A / B1 / B2；`signal_floor`（`loop-and-stop.md`）——**是开波闸，不是「记录」** | 闸的 `evidence` |
 
 **未选、未回测不能写成 dead_end**（选波清单里的延后项不是判死）。
+
+## D16. 只差一两闸时的归因路由（用户指令 2026-10-16；KOR 两轮约 50 次仿真复盘）
+
+*被引用：步 7。机制细则见 [`gate-attribution.md`](gate-attribution.md)，执行器 `tools/gate_attribution.py`（零仿真、只读）。此前步 7 只给「卡闸 → salvage → 找武器 → >10 结构判死」这条**串行**路径，缺「先归因再定向推」这一环，实测代价是分析师族在 S↔prod 剪刀差上白跑约 15 次仿真。*
+
+| 情形 | 判据 | 动作 |
+| --- | --- | --- |
+| 闸数 ∈ {1, 2} | `failed_ra_count`（口径含 WARNING） | **先跑归因**再推闸；退出码 0 对应 `READY`（全过⇒停手）/ `PUSH_TARGETED`（按杠杆推）/ `PUSH_CORRELATION_CORNER`（仅相关性差≤0.01⇒二维找角点），3 = `SWITCH_AXIS`，4 = `BLOCKED_BY_CORRELATION` |
+| 闸数 = 0 | 无失败 | 跳步 8，不在本机制磨 |
+| 闸数 ≥ 3 | — | 退出码 5；不属本机制，回常规多轮诊断 / `s4-prescreen` |
+| F 闸减速路线 | `to_target = returns×(S/F_target)² ≤ 0.125`（TO 地板） | **不可达** ⇒ 停刷 `decay`/`backfill`/`hump`；必须抬 returns 或 S |
+| prod 余量 | `0.70 − max_corr < 0.01` 且同时 LOW_SHARPE 不过 | **先验否决抬 S**（抬 S 杠杆多同步抬 prod）；先找 prod 中性杠杆 |
+| 剪刀差 | 同族 ≥3 点拟合 `prod~aS+b`，`a>0` 且 `prod@S1.58 ≥ 0.70` | `SWITCH_AXIS`：该腿当前机制层不可达 |
+| 近段衰减 | 逐年 `sample_ok`（≥5 年）且末 2 年均值 < 前段 − 0.5 | ladder 类判天花板 ⇒ 换字段/数据集 |
+
+**停手线（四条，写进每份归因报告）**：① 同一杠杆两次 `Δ ≤ 0.005` ⇒ 分辨率极限；
+② 同一闸在 ≥3 个**互不相关**杠杆上收敛 ⇒ 机制层天花板；③ `SWITCH_AXIS` /
+`BLOCKED_BY_CORRELATION` 后不得在同一结构族继续发批；④ 论坛/处方杠杆在本腿失效 ≥3 个 ⇒ 记跨区实证。
+
+**本机制不替代推闸**：它替代的是无差别盲扫，不是推闸本身；归因出 `PUSH_TARGETED`
+后照样要按 rank 逐条发仿真。闸线一律取平台 `limit`（KOR D1 实测 LOW_SHARPE limit=1.58，
+与 `config.PLATFORM_CHECK_LINES` 的 delay1=1.25 冲突时以平台为准）。

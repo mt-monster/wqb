@@ -35,6 +35,8 @@ DIRECT_CONNECT_WHITELIST = (
     "src/wqb/db_conn.py",           # 本文件
     "wqb_db_mcp.py",                # MCP server 自管连接（配置同规范）
     "tools/lib/wqb_db.py",          # tools 层兼容 re-export
+    "tools/fields/skeleton_panel.py",  # 区域字段骨架探针（pre-existing untracked）
+    "tools/gates/operator_coverage_audit.py",  # 算子覆盖审计（pre-existing untracked）
     "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/db.py",  # toolkit 同构工厂
     "Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py",
     "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py",
@@ -59,6 +61,66 @@ def default_db_path(workspace_root: Optional[str] = None) -> str:
         if cand.exists() or (parent / "src" / "wqb").is_dir():
             return str(parent / _DEFAULT_REL)
     return str(Path.cwd() / _DEFAULT_REL)
+
+
+def production_db_path() -> str:
+    """本仓库的生产库绝对路径（``<仓库根>/data/wqb.db``）；探不到仓库根则返回空串。
+
+    与 :func:`default_db_path` 用同一对标记向上探测，但**刻意不看 `WQB_DB_PATH`**：
+    本函数的职责就是回答「哪个路径是生产库」，环境变量是待检对象而不是判据。
+    """
+    here = Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            return str(parent / _DEFAULT_REL)
+    return ""
+
+
+def reject_production_db_under_tests(path: Any, *, entry: str) -> None:
+    """结果层硬闸：**pytest 运行期间**不得拿生产 ``data/wqb.db`` 的**可写**连接。
+
+    为什么在 ``wqb_db_mcp`` 之外还要有一份（2026-10-14 实测补，AGENTS.md §8.4 第 9 项）：
+    那份闸只挂在 MCP 门面的 ``get_db_path()`` 上，而 **tools/ 与 toolkit 的直写路径走
+    ``wqb.store.CampaignStore``，不经门面**。于是同一类失效（隔离静默不起作用 → 写生产库）
+    在门面被守住之后**照样发生**：本次全量回归期间，``tests/unit/04_gates/
+    test_inspect_mode_failclosed_p1p1.py`` 用 subprocess 起 ``tools/wave_gate.py``，
+    子进程拿的是 CLI 缺省库位（生产 ``data/wqb.db``），实测往 ``ledger_kv`` 写了
+    ``KOR/gate_ws2_pytest_inspect_model109`` 一行（``updated_at=2026-10-14T23:27:21``）。
+    该键在库里已存在三份同期测试件（2026-09-28 / 10-03 / 10-04），说明这一类**不是第一次**，
+    按 §4 第 7 条必须机械拦住而不是靠人记。
+
+    ⚠ **判据必须是「与仓库根那个生产库同一个文件」，不是「以 `/data/wqb.db` 结尾」**。
+    第一版就是写成后缀匹配的，实测把 **27 个用例打成 ERROR、5 个 FAILED**：本仓大量用例
+    用 `tmp_path/ws/data/wqb.db` 这种**已经正确隔离**的临时库（目录结构刻意仿生产布局，
+    例如 `CampaignStore.from_workspace(tmp)`），后缀匹配把它们全认成了生产库 —— 闸的
+    失效方向从「静默写生产」变成「把隔离好的测试全砸了」，一样不可用。
+    现判据 = `os.path.samefile` 级别的路径归一比较（`normcase(realpath)`），
+    盘符/分隔符/大小写三种写法都覆盖，且临时库天然不相等。
+
+    为什么闸在**构造连接**时而不是 ``commit()`` 时：``PRAGMA journal_mode=WAL`` 是持久化的
+    库级属性（见 :func:`connect` 的 ``readonly`` 说明），门店一开就已经改库文件字节；
+    且 ``ensure_schema()`` 会 ``CREATE TABLE``。等到 commit 才拦，隔离失效已经落了地。
+
+    放行口径与门面**保持一致**（同一套语义才不会出现「门面拦、store 放」）：
+      - 不在 pytest 下 ⇒ 不管（生产服务/CLI 正常写库是设计内行为）；
+      - ``WQB_ALLOW_REAL_DB=1`` ⇒ 放行（要绕过就得在测试里写明理由，不会静默通过）；
+      - 探不到仓库根 ⇒ 无从判定，**放行而不是猜**（本函数只在「确认是生产库」时才有拦截权）；
+      - 其他一律走 ``WQB_DB_PATH`` 或显式传临时库路径。
+    """
+    if "PYTEST_CURRENT_TEST" not in os.environ:
+        return
+    if os.environ.get("WQB_ALLOW_REAL_DB") == "1":
+        return
+    prod = production_db_path()
+    if not prod or not path:
+        return
+    if os.path.normcase(os.path.realpath(str(path))) != os.path.normcase(os.path.realpath(prod)):
+        return
+    raise RuntimeError(
+        f"测试运行中 {entry} 指向生产库 {path} —— 隔离未生效，拒绝打开可写连接。"
+        "临时库请传 CampaignStore(tmp_path) 或设 WQB_DB_PATH"
+        "（子进程用 env 注入，见 tests/unit/04_gates/test_inspect_mode_failclosed_p1p1.py 的 "
+        "_run_wave_gate）；确需读写真库请显式 monkeypatch.setenv('WQB_ALLOW_REAL_DB', '1') 并写明理由。")
 
 
 def connect(

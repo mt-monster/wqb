@@ -37,6 +37,18 @@ last_verified: 2026-10-08
    $WQ_PY -m wqb.profiles render --region TWN --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **TWN 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/TWN/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| `references/` | **实证**：本区暂无组合分支文件（未开战役）⇒ 不建目录 | — |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/TWN/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -63,6 +75,41 @@ last_verified: 2026-10-08
 <!-- profiles:cells-index:start -->
 本区还没有组合文件（`tracking/TWN/config/cells.json` 不存在或为空）：所有类别跟区域缺省。有回测证据后跑 `$WQ_PY -m wqb.profiles sync-cells --region TWN --apply`。 <!-- lint:counterexample: 本区尚未初始化：这些配置文件是「开新区前需补」的前置清单，引用待创建路径属有意提及 -->
 <!-- profiles:cells-index:end -->
+
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **TWN 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **★ 开新区前置**：`tracking/TWN/config` **不存在** —— 先补 `settings.json` / `thresholds.json`。
+- **档位必须实测**：`config.REGIONS` 写 TOP1000 / TOP500，`campaign_intel` 的兜底写 TOP500，**都未实测**。
+- **待实测**：离线体检包退化范围、不可用算子。
+
+### ② 组装 · 本区覆盖
+
+- **半导体权重极高，行业集中度天然大** ⇒ 组装前先过集中度审查。
+- **待实测**：本区概念预算与组装禁区。
+
+### ③ 归因 · 本区覆盖
+
+- **待实测**：本区逐年 S 分布（未初始化，无基线）。
+
+### ④ 破闸杠杆 · 本区覆盖
+
+- **每个新信号族首波做 `STATISTICAL` 与 `SUBINDUSTRY` 对照**（各占半槽），定下来再回写。
+- **小宇宙严闸同 KOR**（文档级）。
+- **待实测**：本区各闸最优杠杆（档位未实测，勿照搬）。
+
+### ⑤ 算子穷举 · 本区覆盖
+
+- **待实测**：本区算子实证。
+
+### ⑥ 终验 · 本区覆盖
+
+- **待实测**：本区 prod 分布。
 
 ## 本区流程差异（相对九步骨架）
 

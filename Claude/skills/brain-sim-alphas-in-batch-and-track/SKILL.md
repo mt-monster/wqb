@@ -118,7 +118,7 @@ Set-Location "<skills_root>/brain-sim-alphas-in-batch-and-track"      # 真相�
 
 ## 参考与工具化纪律
 
-- 字段与文件映射：[reference.md](reference.md)；触发示例：[examples.md](examples.md)；CLI 使用说明：[README.md](README.md)。
+- 字段与文件映射：[references/overview.md](references/overview.md)；触发示例：[examples.md](examples.md)；CLI 使用说明：[README.md](README.md)。
 - 批次 / 子任务状态查询与轮询**不要手写** `check_*batch*.py`，用通用工具（内置 429 退避）：
 
 ```powershell

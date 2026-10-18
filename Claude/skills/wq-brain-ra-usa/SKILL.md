@@ -37,6 +37,20 @@ last_verified: 2026-10-05
    $WQ_PY -m wqb.profiles render --region USA --apply
    ```
 
+## 本区结构导航（四目录）
+
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **本文件 SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **USA 独有规则与纪律**：六步覆盖详解、改控制纪律、闸门与提交纪律 | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/USA/config/`）：三表分工、区域默认档、本区覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/analyst.md) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（当前为空；区域探针脚本家 = `tracking/USA/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -92,7 +106,7 @@ last_verified: 2026-10-05
 | shortinterest | ShortInterest | active | — | — | 78 / 0 | 0（0） | 1 / 1 | [references/shortinterest.md](references/shortinterest.md) |
 | institutions | Institutions | active | — | — | 56 / 6 | 1（0） | 0 / 0 | [references/institutions.md](references/institutions.md) |
 | option | Option | active | — | — | 25 / 0 | 0（0） | 4 / 0 | [references/option.md](references/option.md) |
-| analyst | Analyst | active | — | — | 19 / 0 | 1（0） | 2 / 0 | [references/analyst.md](references/analyst.md) |
+| analyst | Analyst | active | neutralization=REVERSION_AND_MOMENTUM、decay=20 | — | 19 / 0 | 1（0） | 2 / 0 | [references/analyst.md](references/analyst.md) |
 | insiders | Insider | active | — | — | 8 / 0 | 0（0） | 1 / 0 | [references/insiders.md](references/insiders.md) |
 | news | News-Sentiment | active | — | — | 0 / 0 | 0（0） | 1 / 0 | [references/news.md](references/news.md) |
 | sentiment | News-Sentiment | active | — | — | 0 / 0 | 0（0） | 1 / 0 | [references/sentiment.md](references/sentiment.md) |
@@ -100,6 +114,14 @@ last_verified: 2026-10-05
 说明：另有 99 条回测行没写数据集，无法归到组合；8 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
 
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> **USA 的 override 细则（① 六法体检 / ② 组装 / ③ 归因 / ④ 破闸杠杆 / ⑤ 算子穷举 / ⑥ 终验 + 改控制纪律）已下沉**
+> → **[rules/six-step-usa-override.md](rules/six-step-usa-override.md)**（as_of 2026-10-18）。
+> 要点：最深最饱和市场（value/quality/book 必死，book/value 145 颗同族 ACTIVE）；扩批前先查 prod-first；
+> delay 0 探针单独成批；破 prod 靠换 neutralization 不是磨算子；`ts_av_diff` > `ts_zscore(ts_backfill())`；
+> `reverse` 必须与原方向成对发批；`winsorize` 必须具名 `std=`（preflight 误报 ≠ 不可用）。
 ## 本区流程差异（相对九步骨架）
 
 <!-- profiles:manual:start -->
@@ -112,13 +134,21 @@ last_verified: 2026-10-05
 
 ## 改控制
 
-- **区域级**：`tracking/USA/config/settings.json`（仿真设置）、`tracking/USA/config/thresholds.json`（阈值）。
-- **组合级**：`tracking/USA/config/cells.json`——只写覆盖值，每个覆盖在同级 `_evidence` 写证据（波号 / alpha id / 日期）；没有证据的覆盖校验不通过。改完先校验再重渲：
+- 区域级 `tracking/USA/config/settings.json`（仿真设置 + `_spre` 步 1 产物）、`thresholds.json`（审查阈值）；
+  组合级 `cells.json`（只写覆盖值，每个覆盖须同级 `_evidence`，无证据校验不通过）。
+- 改完先校验再重渲：`$WQ_PY -m wqb.profiles check --region USA` → `render --region USA --apply`。
+- 三表分工与**本区覆盖落差（cells 零覆盖 ⇒ explain 与实测不一致）** → [config/README.md](config/README.md)；
+  纪律细则 → [rules/six-step-usa-override.md](rules/six-step-usa-override.md)「改控制纪律」。
+- 锁定项（任何层都不能放宽）：禁混信号、Mode B 主闸下限、决策表 D0-P、平台线、窗口白名单、点塔按平台类别、
+  提交前用户确认、truncation 不作扫描维度——全文见 `$WQ_PY -m wqb.profiles explain` 末尾。
+- 证据与历史：[USA profile](../wq-brain-ra-pipeline/references/regions/USA.md)（入场裁决、红绿榜、证据附录）。
+## ★ 未点亮塔实证速查（指针）
 
-  ```bash
-  $WQ_PY -m wqb.profiles check --region USA
-  $WQ_PY -m wqb.profiles render --region USA --apply
-  ```
+2026-10-14 起 16 波 / 64 条的未点亮塔横跨 6 数据集实证（字段画像 / 纪律表 / 判死清单 / 最优候选 `N1ewm5Jw`）
+已全部下沉 → **[references/_unlit-tower-campaign-20261014.md](references/_unlit-tower-campaign-20261014.md)**。
 
-- **锁定项**（任何层都不能放宽）：禁混信号、Mode B 主闸下限、决策表 D0-P、平台线、窗口白名单、点塔按平台类别、提交前用户确认、truncation 不作扫描维度——全文见 `$WQ_PY -m wqb.profiles explain` 末尾。
-- **证据与历史**：[USA profile](../wq-brain-ra-pipeline/references/regions/USA.md)（入场裁决、红绿榜、证据附录）。
+- 本季 USA/D1 只有 **model=4 / analyst=1 / earnings=1** 亮着；`score_datasets.py` 的 signal-score top20 **全是 model 族**
+  ⇒ **白名单只能用「未点亮塔 × 低 alphaCount」筛，按 score 排序等于往已点亮塔堆料**。
+- Analyst 战役（2026-10-17/18，15 波 / 60 条，交付 2 颗 ACTIVE）的字段画像 × 模板 × 指标
+  → **[references/_usa-mining-playbook-20261018.md](references/_usa-mining-playbook-20261018.md)**；
+  破 prod 墙的旋钮与提交纪律 → **[rules/gate-and-submit-discipline.md](rules/gate-and-submit-discipline.md)**。

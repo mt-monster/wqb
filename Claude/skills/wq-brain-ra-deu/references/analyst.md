@@ -104,4 +104,176 @@
 **WEAK 池**：`netprofit_y1_estimate_change_3mo`（S1.32 / 2Y1.21 / **sub1.00**，仅 2 条样本 ⇒ 值得补测）｜`anl93_recprofitabilityprev_analyst_profitability2`（1.30）｜`eps_y2_estimate_coeff_var`（1.23 / **2Y1.49**）。
 
 **开批前**：`analyst7` 的 395 未测里约 41% 是 `*num*` 计数类（`DEAD_COUNT` 形态）⇒ 先按名字过滤；`analyst44` / `analyst9` 属换手爆表族。
+### ★★★★★ 决定性更新（2026-10-13 晚）：**2Y「墙」是结构问题，不是字段问题** —— 已产出全闸通过 alpha
+
+**背景**：自造 40 条结构（`group_rank` / `ts_mean` / `ts_delta` 级联 / `ts_sum` 累积 / `group_zscore` / 各轴）**2Y 全部 ≤1.17**，一度误判「本集 2Y 不可破」。
+
+**★ 转折**：检索仓库历史产物 → `output_report/DEU_gem_templates_after_skeleton_audit.md` 载有 **2026-10-07 已过闸的 DEU A 级框架**。
+**同字段、同设置，只换结构**：
+
+| 结构 | S | F | 2Y | 判定 |
+|---|---|---|---|---|
+| `group_rank(eps_y1_estimate_change_3mo, sector)` | 1.81 | 1.61 | 1.12 | 卡 2Y |
+| 自造 40 条（ts_mean / 级联 / ts_sum / 各轴…） | ≤1.81 | ≤1.61 | **≤1.17** | 全卡 2Y |
+| **A 级框架** | 1.65 | 1.47 | **1.69** | ✅ 全过（`9qWX78vV`） |
+| **★ HYBRID（框架 × `group_rank`）** | **1.77** | **1.61** | **1.83** | ✅ **最强**（`WjLEOqLP`） |
+
+**★★ A 级框架（三要素缺一不可）**：
+```
+bf(F) = ts_backfill(F, 1008)
+group_neutralize(rank(add(ts_mean(bf,1), ts_mean(bf,210))),        # 双窗：短腿必须 = 1
+                 bucket(rank(ts_mean(bf,252)), range="0,1,0.05"))  # 单桶轴：粒度 0.05
+```
+**★★ HYBRID 变体（当前最优形态）= 把框架的 `rank` 换成 `group_rank(..., sector)`**：
+```
+group_neutralize(group_rank(add(ts_mean(bf,1), ts_mean(bf,210)), sector),
+                 bucket(rank(ts_mean(bf,252)), range="0,1,0.05"))
+```
+⇒ 同时拿到 S（group_rank 载重）与 2Y（双窗 + 桶轴）。
+
+**★ 已到手的两颗（ANALYST 塔，DEU/D1，全闸 0 失败）**：
+| Alpha | 结构 | S | F | 2Y | self | prod |
+|---|---|---|---|---|---|---|
+| **`WjLEOqLP`** | HYBRID | **1.77** | **1.61** | **1.83** | 0.3437 ✅ | 0.6510 ✅ |
+| `9qWX78vV` | 框架 | 1.65 | 1.47 | 1.69 | 0.3014 ✅ | 0.6197 ✅ |
+
+**⚠ 二者同腿（均为 `eps_y1_estimate_change_3mo`）⇒ 互相关系数 0.9372 ⇒ 只能提交其一**（平台 self 只算已提交 OS 池）。
+**⚠ prod 余量小（0.651 vs 0.7）且逐日漂移 ⇒ 提交当日必须 `check_correlation(refresh=True)` 复核。**
+
+**★ 框架 × 同族字段的可迁移性（批 W-ANL5/6，20 条）**：`eps_y1_change` 1.77 ✅；
+`netprofit_y1` 最好 **1.36**、`eps_y2` **1.30**、`netprofit_y2` 1.08、`revenue_y1` 1.01、`revenue_y2` 0.75、
+`*_q1_change_1mo` 0.23~0.60、`eps_revision_magnitude` 0.50 ⇒ **框架可迁移（2Y 都 ≥0.26）但 S 过不了 1.58**。
+⇒ **`analyst_factor_signals` 的可提交上限 = 1 颗**（与 2026-10-07 战役「≈205 次测试 → 0 颗」相比，本轮靠框架首次过闸）。
+
+**★★★ 方法论铁律（本轮最重要）**：
+1. **墙常在「结构」不在「字段」** —— 开新战场前**必须先检索仓库内历史战役产物**（`output_report/DEU_*`、skill 的 `win_recipes`、`.workbuddy/memory/*`），不要从零自造结构。
+2. **HYBRID（框架 2Y 机制 + `group_rank` S 载重）是本区最优形态模板**，可迁往其它数据集/类别先试。
+3. `ts_delta` 双窗级联只对**水平量**有效；对**变化率**字段连续三次崩塌（本轮 0.91/0.83）；`ts_sum` 累积迁移同样失败。
+4. `analyst7`（608 字段）实测无门槛候选（最优 S1.18/2Y0.28；高 2Y 全为计数类且 S≈0）；`analyst93` S 天花板 1.31；`analyst44/9/48/47` 属元数据/计数/时间戳族（DEAD）。
+
+### ★★ 合规判据精确化 + 双窗 `add` 消融实验（2026-10-13 用户质疑后）
+
+**质疑**：A 级框架里的 `add(ts_mean(bf,1), ts_mean(bf,210))` 是否属被禁的 `add(A,B)` 混信号？
+**判定：不违规。** 规则禁的是「**两条独立信号腿**」= **不同字段/不同数据集/不同机制**相加。
+本式两个腿是**同一字段**的 1 日窗 + 210 日窗 ⇒ **单信号结构化（多窗口平滑）**，不是混信号。
+（真违规反例：`blRnKEk6` = 4 字段 / 3 数据集 add。）
+
+**消融实验（批 W-ANL9，全部去掉 `add` 只留单窗口）**：
+
+| 核心 | S | F | 2Y |
+|---|---|---|---|
+| **含 add：`add(ts_mean(bf,1),ts_mean(bf,210))`** | **1.77** | **1.61** | **1.83** |
+| `bf` / `ts_mean(bf,1)`（短腿单窗） | 1.56 | 1.29 | 1.18 |
+| `ts_decay_linear(bf,210)` | 1.40 | 1.13 | 1.20 |
+| `ts_mean(bf,66)` | 1.37 | 1.07 | 1.22 |
+| `ts_mean(bf,105)` | 1.26 | 0.95 | 0.78 |
+| `ts_mean(bf,210)`（长腿单窗） | 0.97 | 0.65 | 0.29 |
+
+**⇒ 去掉 `add` 后最好仅 S1.56 / 2Y1.22，全不过闸。**
+**⇒ 长腿单用 0.97（几乎无效）、短腿单用 1.56、相加 1.77/1.83 ⇒ 真正的多窗口互补增益，不是两个独立信号叠加。**
+**⇒ 双窗 `add` 是承重结构，合规且不可删。**
+
+### ★★★ 跨类别 + 最后一片未测面实测（2026-10-13，批 W-ANL7/8/12）：**框架救不活其它类别**
+
+**A 级框架 / HYBRID × 跨类别字段**（`HYBRID` = 把框架的 `rank` 换成 `group_rank(..., sector)`）：
+
+| 字段（类别） | S | 2Y |
+|---|---|---|
+| `snl27_relpopularity1`（sentiment） | **0.64** | 0.96 |
+| `credit_risk_leverage_score_d1`（model） | 0.53 | 0.59 |
+| `snl27_totaldomains`（sentiment） | 0.46 | 0.77 |
+| `stable_boundary_trade_count_21d_active`（institutions） | 0.44 | 0.75 |
+| `mdl28_..._distance_to_default`（model） | 0.29 | 0.51 |
+| `event_sentiment_score`（news） | 0.23 | 0.34 |
+| `count_institutional_buyers_security`（institutions） | 0.02 | 0.45 |
+| `rsk60_crowding` / `oth47_organic_traffic` / `annualized_pd_1_month_jc7` / `herfindahl_index_transactions` | −0.05 ~ −0.17 | −0.65~0.59 |
+| `loaned_*` / `transaction_count_main` / `loan_rate_volatility_main`（shortinterest3） | **−0.18 ~ −0.44** | 负 |
+| `lending_fee_bid_rate`（risk60） | **−0.52** | −0.24 |
+| `count_institutional_sellers_security`（institutions） | −0.50 | 0.03 |
+
+**★ 批 W-ANL12（最后一片未测面）**：`pattern_scores`（PV 未点亮塔，**504 个 MATRIX 字段、cov 1.0、alphaCount 0 全平台零竞争**，历史仅用自造结构测过 15 条 max S 0.42）在框架下 **全部 |S| ≤ 0.09**，且 TO 0.21–0.36（图表形态相似度天然高频）；
+`insider_agg_matrix.directional_indicator` −0.10、`risk88.alternative_market_cap_usd` −0.03（均 cov 1.0）。
+
+**⇒ 三条结论**：
+1. **借券族（shortinterest3/risk60）在 DEU 无信号甚至反向**（−0.18~−0.52）—— 第三次确认族级否证。
+2. **零售关注度（sentiment27）0.64 是跨类别最优，但仍远不及格**；「零竞争」≠ 有信号（`pattern_scores` 504 字段第二次实证）。
+3. **A 级框架不是万能钥匙**：它只在**携带信号的字段**上把 2Y 从 1.1 抬到 1.8；对无信号字段（跨类别 29 + pattern_scores 10 = 39 个）毫无作用（框架改的是「结构」，信号的有无仍取决于「字段」）。
+
+**★★ DEU 定案（本轮 12 批 / 103 条合规表达式）**：
+- **可提交产出 = 1 颗**：`2rjrMZ25`（**10 算子**，S1.77/F1.61/2Y1.83/prod0.651/self0.3437/robustness PASS）；prod 漂移退路 `9qWX78vV`（prod 0.6197、稳健性更优、已审计）。
+- **已穷尽**：`analyst_factor_signals` 全 6 类字段族、`analyst7`(608)/`analyst93`/`analyst44/9/48/47`、跨类别 29 字段、`pattern_scores` 10 字段。
+- ⇒ **要凑 10 颗必须换区域或引入新数据源；DEU 已实证触顶。**
+
+---
+
+## ★★★ 第二轮重构（2026-10-13 晚，WANL21–25）：DEU 只有一条腿
+
+### 1. DEU 核心结构 vs A 级框架：**逐字段不同**
+
+「DEU 核心」= `group_neutralize(group_rank|group_zscore(ts_decay_linear(quantile(add(ts_mean(bf,5), ts_mean(bf,200))), 8), 轴), 桶轴)`（来自 `GrOWMGp0`，把 starmine 从 0.97 抬到 1.81）。
+
+| 字段 | A 级框架 | DEU 核心 | 胜者 |
+|---|---|---|---|
+| `eps_y1_estimate_change_3mo` | **1.77 / 2Y1.83** | 1.55 / 2Y1.55 | **框架** |
+| `netprofit_y1_estimate_change_3mo` | 1.36 | 1.27 | 框架 |
+| `predictive_starmine` `mean_estimate_change_pct_f12m_earnings_14d_4` | 0.97 | **1.81** | **核心** |
+
+**⇒ 结构最优性逐字段实测；「某个结构更强」是字段属性，不是普适规律。**
+
+### 2. 三个新否证（本轮）
+
+- **`oth455` 内轴 × analyst 全族：max S 1.46**（低于框架 1.77）⇒ starmine 上的高 S 增益**字段特异、不可迁移**。
+- **`model30` StarMine 族**（`star_new_eps_smart_estimate_*` / `surprise_prediction_*`，cov 0.62–0.67、α=0 真空白）：框架/核心/`ts_delta` 共 10 结构 **max S 0.74** ⇒ **SmartEstimate「水平量」在 DEU 无信号**；只有「变化率」字段有效（水平量已被定价，变化量才含增量信息 —— 与 DEU fundamental 类同规律）。
+- **未点亮类别 10 字段**（`sentiment27` 排名族 / `news17` 情绪 / `news50`，全部 `vec_avg` + DEU 核心）：**max S 0.59**，`snl27_topranking` −0.33、`mws50_ens` −0.49 ⇒ 未点亮类别在 DEU **无信号**，其「低竞争」源于**无数据/无信号**（约半数未点亮类别数据集在 DEU 覆盖率 = 0：earnings/option/macro/socialmedia/imbalance）。
+
+### 3. ★★ 决定性实证：跨数据集同机制 = **同一条腿**
+
+6 个候选逐日 PnL（2579 日）直算互相关：
+
+| 对 | corr |
+|---|---|
+| `2rjrMZ25`(eps_y1·框架) ↔ `kqJqQL08`(eps_y1·bucket0.1) | **0.9992** |
+| `2rjrMZ25` ↔ `9qWX78vV`(eps_y1·pure rank) | **0.9992** |
+| `2rjrMZ25` ↔ `P0M0vX3p`(eps_y1·核心 w1=1) | 0.9989 |
+| `2rjrMZ25` ↔ `e767nR9O`(eps_y1·核心 5/200 d8) | 0.9988 |
+| **`2rjrMZ25` ↔ `npApoGRx`（predictive_starmine）** | **0.9910** |
+
+**⇒ 三条铁律：**
+1. **eps_y1 的一切结构/轴/算子变体互相关 0.9988–0.9992** ⇒ 改结构不产生新腿，**一条腿只能出 1 颗**。
+2. **跨数据集同机制 = 同一条腿**（starmine 与 analyst 的「预期变化率」相关 **0.991**）⇒ **修正 2026-10-08 的推断**：「同机制跨数据集迁移**有效**」≠「迁移能出**新腿**」。迁移只换表达，不换因子。
+3. `kqJqQL08` 全 IS 闸 PASS（S1.78/F1.62/2Y1.64），但与 `2rjrMZ25` 互相关 **0.9857** ⇒ **同腿二者只能取一**。
+
+**★ 平台口径陷阱（务必记住）**：`self` 相关池**包含本人尚未提交的 alpha**（`POST /alphas/{id}/correlations/self` 可强制重算并返回逐条记录）。`kqJqQL08` 的 `self max = 0.9857` **不是**被已提交 alpha 占用，而是与**我们自己的** `2rjrMZ25` 相关；**对已提交池（`58gkLAkk`/`2rOe10qY`/`883Y3bAW`/`JjxrYjre`/`blRnKEk6`）的真实相关仅 0.3437 ✅** ⇒ **腿未被占用**。
+**⇒ 判「是否被占用」必须看 `self` 记录里驱动 max 的那个 alpha 是不是自己创建的；不得只看 `max` 数值。**
+
+**⇒ DEU 终局：可交易腿数 = 1（本轮新增可提交 = 1 颗 `2rjrMZ25`）；要凑 10 颗只能引入 DEU 未覆盖的新数据源或换区域。**
+
+### 5. ★ 提交状态（2026-10-13）
+- **`2rjrMZ25` 已由用户提交 → `ACTIVE` / `REGULAR`**（10 算子，S1.77/F1.61/2Y1.83/prod 0.651/self 0.3437，全 IS 闸 PASS）。**DEU `analyst` 塔由 0→1 即该颗点亮。**
+- **该腿已被自己占用** ⇒ 同腿变体 `kqJqQL08` / `9qWX78vV` / `P0M0vX3p` / `e767nR9O` / `npApoGRx`（互相关 0.986–0.999）**永久不可再提交**；本区后续新候选的 `self` 池将含该颗。
+- **DEU 剩余可挖空间**：仅「引入 DEU 未覆盖的新数据源」或换区域。
+
+### 4. 工具沉淀
+
+- `cache/verify_alpha.py`（本次新建）：**MCP 索引不可用时的替代通道** —— 直连 `api.worldquantbrain.com` 取 `alphas/{id}`（checks）+ `correlations/prod|self`（自动轮询 202）。用法 `python cache/verify_alpha.py <id> ...`。
+- **PnL 直算互相关**：`GET /alphas/{id}/recordsets/pnl` → 两条 PnL 序列求 Pearson，**不占平台相关性配额**，是判「是否同一条腿」的零成本方法。
+
 <!-- profiles:manual:end -->
+
+---
+
+## ★★★ `analyst83`（财报电话会可读性）判死（2026-10-14 WANL44）
+
+**背景**：`analyst83`（345 字段，cov **0.343**，16 族）此前被 `coverage<0.6` 规则整体排除、**从未探测**——而该规则已被证明只是**区域启发式而非平台限制**（preflight 证明低覆盖字段可正常仿真）。
+
+**机制语义（全新）**：**财报电话会的可读性/复杂度分数** —— `ARI`（Automated Readability Index）、`FRE`（Flesch Reading Ease）、`SMOG`，按发言角色分：CEO / 分析师 / 运营商 / 其他参会者 / 公司参会者；分 Presentation 与 Q&A 两段。
+
+**实测（双结构 × vec_avg）**：
+
+| 字段 | S |
+|---|---|
+| `anl83_ceo_smog_pres`（CEO 讲话 SMOG） | **0.40** |
+| `other_participant_ari_score_presentation` | −0.43 |
+| `anl83_analyst_ari_qa` | −0.02 |
+
+**⇒ 判死（max \|S\| 0.43）**：可读性/叙事复杂度在 DEU 无 alpha。**analyst 塔全线封闭**（含全部低覆盖池）。

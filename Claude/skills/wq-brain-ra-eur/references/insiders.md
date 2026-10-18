@@ -47,12 +47,14 @@
 
 ### S2 生成
 
+- **说明**：★★★ 【EUR × insiders 判死】（2026-10-13，波 496，8 条）： **数据集 'insiders1'**（9 VECTOR，cov 0.551，含 'insd1_tradesignificance'/'insd1_valueeur'）： **8/8 探针 S ≤0.50，且 TO = 1.52–1.61（远超 0.7 硬线）、margin ≈ 0.1–1.2bp（近乎零）** ⇒ **判死**。 ⇒ ★ 根因：**稀疏事件型 VECTOR + 'vec_avg' 归约 ⇒ 个股间剧烈跳变 ⇒ TO 爆炸**。 ⚠ 'insiders12'（8 VECTOR）cov 仅 **0.193 < 0.35** ⇒ 直接跳过；'insider_agg_matrix' 全 MATRIX。 ⇒ **通用判据：探针若 TO > 0.7 立即弃该数据集（不必看 S）**。
+- **说明**：★★★ 【EUR × insiders 补充】（wave496/504）：'insider_agg_matrix'（34 MATRIX）：'directional_indicator_2' S=−0.05 且 **TO=1.43 爆炸**；'directional_significant_value_*' 同族 ⇒ 判死。 ⇒ insiders 类别 3 个数据集（'insiders1'/'insiders12'/'insider_agg_matrix'）**全部判死**。
 - **类别通用原语**（类别卡，跨区）：
   - 交易方向与规模：净买入 / 净卖出，取负放在 rank 之后并保持零均值（决策表 D6）
   - 持续性：内部人连续同向交易的次数，而不是单次交易
   - 相对：按行业 / 市值分组比较，避免把行业交易季节性当信号
 - **跨区结论**（KOR/DEU/USA/EUR；negative）：insiders 数据集作主信号天花板低（证据：KOR insiders5 1.05、insider_feats prod 0.7185；DEU insider_trx_matrix 0.33；USA-INSIDER-MATRIX-SPARSE-EVENT-WALL；EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD） <!-- lint:const-ok 证据原文 -->
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

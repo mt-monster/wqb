@@ -37,6 +37,18 @@ last_verified: 2026-10-09
    $WQ_PY -m wqb.profiles render --region DEU --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **DEU 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/DEU/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/DEU/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -101,6 +113,51 @@ last_verified: 2026-10-09
 说明：另有 8 条回测行没写数据集，无法归到组合；11 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
 
+## 算子覆盖
+
+**REGULAR 84 个算子 × DEU 用量 = 68 用 / 16 未用**；未用者的四类归因（等价替代 / 语义不匹配 / 阈值变体 / 真未试构造）与补测结论见 [references/operator-inventory.md](references/operator-inventory.md)。**两条硬结论**：① `kth_element` 的 `k` **必须具名**（位置写法连坐整批）；② **本地 `op_arity` 对 kth_element 签名判反**（拒绝 `k=`），以平台实测为准。
+
+## 战役总复盘（一页式）
+
+**45+ 波 / 500+ 条实证的全量复盘见 [references/_campaign-review.md](references/_campaign-review.md)** —— 产出总账、「一条腿」四次验证、机制裁定总表、15 条可迁移铁律、未尽事项入口。
+
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **DEU 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **★ 开批前先查字段画像，再决定开不开批**（见 [references/](references/)）：
+  `$WQ_PY tools/fields/field_profile.py --query --region DEU --verdict UNTESTED --limit 40`
+- **`to_med < 0.03`** ⇒ **静态属性，任何骨架都无用**（`DEAD_STATIC`，已 30 字段实证）。
+- **`to_med > 0.70`** ⇒ 被 `HIGH_TURNOVER` 闸直接拒（`DEAD_TURNOVER`）。
+- **待实测**：离线体检包退化范围、不可用算子。
+
+### ② 组装 · 本区覆盖
+
+- **全域 16 类 0 alpha 的处女地**（统一 1.9× 倍率、PPA 点塔无竞争）⇒ 机制可放开试，但**每步仍须本区实测**。
+- **待实测**：本区概念预算与组装禁区。
+
+### ③ 归因 · 本区覆盖
+
+- **沿用主 skills**。
+- **待实测**：本区逐年 S 分布 baseline（处女地）。
+
+### ④ 破闸杠杆 · 本区覆盖
+
+- **★★ 关键更正**：`sub_universe` **不是固定墙** —— `limit ≈ 0.47 × IS_sharpe` 是**比值闸**，S 高了自动过；实测已出现 sub=0.74 / 0.7。
+- **待实测**：本区合法中性化档与各闸最优杠杆。
+
+### ⑤ 算子穷举 · 本区覆盖
+
+- **待实测**：本区算子实证（全域 16 类，逐类建）。
+
+### ⑥ 终验 · 本区覆盖
+
+- **待实测**：本区 prod 分布（处女地，先建基线）。
+
 ## 本区流程差异（相对九步骨架）
 
 <!-- profiles:manual:start -->
@@ -114,7 +171,7 @@ $WQ_PY tools/fields/field_profile.py --query --region DEU --verdict UNTESTED --l
 ```
 - `to_med < 0.03` ⇒ **静态属性，任何骨架都无用**（`DEAD_STATIC`，已 30 字段实证）
 - `to_med > 0.70` ⇒ **被 `HIGH_TURNOVER` 闸直接拒**（`DEAD_TURNOVER`，已 19 字段实证）
-- **未测字段可用「同族外推」**：`count_institutional_*` 全 0.015~0.020｜`mdl28_*_rank` 0.024~0.028｜`star_sr_*` 0.022 ⇒ 整族免探
+- **★★ 2026-10-14 修正：`coverage<0.6 剔除` 是「区域启发式」，不是「平台限制」** —— `preflight_expressions` 证明 cov 0.27–0.34 的字段（`institutions4` / `sentiment33` / `socialmedia39`）**平台全部有效、可正常仿真**；实测 10 条（WANL43）**max |S| 0.48** ⇒ 规则作为**省预算的筛选器有效**，但理由应表述为「实测无 alpha」而非「平台不可用」。- **未测字段可用「同族外推」**：`count_institutional_*` 全 0.015~0.020｜`mdl28_*_rank` 0.024~0.028｜`star_sr_*` 0.022 ⇒ 整族免探
 - **判死不必探**：`DEAD_STATIC` / `DEAD_TURNOVER` / `DEAD_COUNT`（名字含 `num/count` 且 2Y≥1.3 且 S≤0.7）三类**开批前就能定论**
 
 **① 校验字段名与类型（零成本，MCP）**：`preflight_expressions(alpha_expressions=[...], region="DEU", universe="TOP500", delay=1)`
@@ -125,6 +182,18 @@ $WQ_PY tools/fields/field_profile.py --query --region DEU --verdict UNTESTED --l
 
 **③ 每波探针位上限 1**（数值见上方 panels 生成块）；结论输出走 `submit_verdict`，提交必须用户确认。
 **⚠️ 这条只有文档、没有代码闸**（`grep -n "probe_limit|probe_slot" src/ tools/` 无命中）⇒ 靠 agent 自觉；建议后续落成 ledger 计数 + 发批前检查。
+
+### ★★★★ 探针派发 SOP（2026-10-13 定稿，全文见 [references/_probe-sop.md](references/_probe-sop.md)）
+
+**10 槽 = 2 个已验证结构 × 4 个跨概念族代表字段 + 2 机动（vec_max / reverse）**。读数三分法：
+
+| 双结构最好读数 | 动作 |
+|---|---|
+| S≥1.58 且 2Y≥1.58 | 全闸验证 → PnL 互相关去重（一条腿 1 颗） |
+| **S 1.0–1.58** | **不判死**——「结构没找对」信号带；升级窗/轴/算子扫描（实证 1.38→1.81） |
+| S<0.5（双结构都） | 判死；同族免测（机制是族属性，族内 PnL 0.991） |
+
+**反例驱动的四条铁律**：① 先查历史产物再设计结构（自造 40 条全灭 vs 历史框架 1.77）；② 只测一个结构会错杀（starmine 框架 0.97 vs 核心 1.81）；③ 发批前本地四闸（元数/类型/单位/preflight 带 dataset_id——一条错整批 CANCELLED）；④ 判死前自检「真的双结构？真的跨族？」。
 
 ### ★★★ 四条判词的修正（2026-10-08 实证推翻 / 补充）
 

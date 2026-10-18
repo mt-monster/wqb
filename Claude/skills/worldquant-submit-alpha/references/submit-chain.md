@@ -34,7 +34,7 @@
 | 5 | **用户明确确认** | 放行的必要条件 | 人 | 未确认 → 停在这里，列出候选与证据交用户 | 是 |
 | 6 | **提交** `workflow_submit_alpha(confirm_submit=True)` | **放行（不可逆）** | 本 skill §4 四态表 | 200 = 已提交；201 / 202 / 空体 200 = 异步受理 | **否** |
 | 7 | **轮询与补发**：等状态离开 `UNSUBMITTED`；窗口内未翻 → 补发一次 → 再等一个窗口 → 仍未翻记 `ASYNC_STUCK` 并知会用户 | — | 窗口取 `WAIT_THRESHOLDS`（`submit_flip_wait_s` / `submit_flip_poll_s` / `submit_repost_max`） | `ACTIVE` = 完成 | — |
-| 分支 | **PPA**：MCP 预检线不满足的合法 PPA 走 web UI 人工通道，agent 停下并交接（`ppa-handoff.md`）；**SUPER**：`super_build.py submit` 默认带 prod 闸（`--allow-prod-above-07` 才豁免），且**第一次通过的 POST 就是真提交**，不是「预检」 | | | | |
+| 分支 | **PPA**：MCP 预检线不满足的合法 PPA 走 web UI 人工通道，agent 停下并交接（`ppa-handoff.md`）；**SUPER**：`super_build.py submit` 强制带 prod 闸（2026-10-18 起无豁免入口），且**第一次通过的 POST 就是真提交**，不是「预检」 | | | | |
 
 ### 2.1 `submit_verdict` 状态与退出码
 

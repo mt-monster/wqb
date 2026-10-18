@@ -91,4 +91,34 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+
+### ★ 2026-10-13 · GBR × Fundamental 全量清点与封闭（用户问「都试了吗」）
+
+**结论：13 个 Fundamental 数据集现已全部覆盖。本回合补完最后 3 块处女集，全部无信号 ⇒ GBR Fundamental 域封闭。**
+
+| 数据集 | GBR 平台字段 | 状态 | 证据 |
+|---|---:|---|---|
+| `fundamental6` | 197 | 已判死 | `GBR-FUNDAMENTAL6-CEILING` |
+| `fundamental17` | 135 | 已判死（数据集级） | `GBR-FUNDAMENTAL17-DEAD` |
+| `fundamental72` | 156 | 已判死 | `GBR-FND72-FASTKILL` |
+| `fundamental90` | 63 | 已判死 | 会计质量经典库（Piotroski F / Ohlson O / Montier C / CHS 破产 / NOA / iCFROE）24 条 → **max S 0.28** |
+| **`fundamental93`** | **17** | **本回合首次测 → 判死** | 递延税费用比率 / 应计比率 / 资产变化率：S **−0.22 ~ −0.37**，TO 0.022~0.046（近静态），2Y 0.43~0.89 |
+| **`fundamental89`** | **42** | **本回合首次测 → 判死** | 资产翻倍/减半 0-1 指示器 + 应计观测数：S **−0.55 ~ 0.36**，TO 0.019~0.078 |
+| **`fundamental86`** | **7** | **本回合首次测 → 判死** | 六维质量分位打分（1–10）：S **−0.40 ~ 0.01**，2Y 多为负 |
+| `fundamental45` | 12 | 覆盖不足 | cov 0.27 ⇒ `UNUSABLE` |
+| `fundamental1` / `alpha_factor_lib` / `digital_ad_spend` / `fundamental22` / `fundamental31` | **0** | **GBR 平台无字段** | `get_datafields` 实测 `count=0`（**本地 `fields` 表失真，勿信**）|
+
+**★ 机制级结论**：GBR Fundamental 的**全部可用机制**（报表行项 / 质量价值 / 会计质量经典库 / 递延税·应计 / 质量打分）**均无横截面超额信号**——与原判死理由完全一致：**TOP700 / SUBINDUSTRY 下规模与价值因子暴露主导**。
+**★ 结构特征**：3 块处女集的 TO 落 **0.019~0.078**（多数低于 `review.turnover_min=0.05`）⇒ 属「**近静态**」属性，**任何骨架都无用**（等价 `DEAD_STATIC` 语义）⇒ 以后见此区间直接跳过，别烧波次。
+
+**本回合派发（3 波 24 条，全过五道发批闸 + 骨架审计）**
+
+| 波 | sim | 目标 | 结果 |
+|---|---|---|---|
+| `gbr_fnd93_f1` | `xSvke64i5bYakKHhSEySq2` | fnd93（递延税/应计）× 5 骨架族 | S −0.22~−0.35（全负）|
+| `gbr_fnd86_f2` | `2BUd21duW4POaMjowGOtBhD` | fnd86（六维质量分）× 5 骨架族 | S −0.40~0.01（全负）|
+| `gbr_fnd89_f3` | `1peZQA6lZ4E79oc13gD5nCi2` | fnd89（资产波动指示器）+ fnd93 换量纲复核 | S −0.55~0.36（全弱）|
+
+**★ 工程纪律（再次验证）**：本地 `fields` 表含 `fundamental1`(124) / `alpha_factor_lib`(82) / `digital_ad_spend`(6)，但 **GBR 平台 `get_datafields` 返回 0** ⇒ **开波前必须逐数据集用平台验存**；「本地有」≠「平台可用」。
+
 <!-- profiles:manual:end -->

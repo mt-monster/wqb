@@ -37,6 +37,18 @@ last_verified: 2026-10-05
    $WQ_PY -m wqb.profiles render --region AMR --apply
    ```
 
+<!-- region-scaffold:nav:start -->
+| 目录 | 装什么 | 入口 |
+|---|---|---|
+| **SKILL.md** | 职责边界 + 怎么用 + 生成块（区域控制面板 / 组合分支 / 流程差异） | 本文 |
+| [`rules/`](rules/README.md) | **AMR 独有规则与纪律**（六步覆盖、改控制、闸门与提交纪律） | [rules/README.md](rules/README.md) |
+| [`config/`](config/README.md) | **配置视图**（真身在 `tracking/AMR/config/`）：三表分工、区域默认档、覆盖落差 | [config/README.md](config/README.md) |
+| [`references/`](references/) | **实证**：`<类别>.md` 组合分支卡（render 生成）+ `_` 前缀专题（战役 / 手册 / 快照） | [references/](references/) |
+| [`scripts/`](scripts/README.md) | 本 skill 级脚本（区域探针脚本家 = `tracking/AMR/scripts/`） | [scripts/README.md](scripts/README.md) |
+
+细则不写在 SKILL.md：规则 → `rules/`，实证 → `references/`，配置 → `config/`，脚本 → `scripts/`。
+<!-- region-scaffold:nav:end -->
+
 ## 区域控制面板
 
 <!-- profiles:region-panel:start -->
@@ -93,6 +105,43 @@ last_verified: 2026-10-05
 
 说明：证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->
+
+## 六步纵深骨架（本区覆盖）
+
+> 通用方法见 [六步纵深骨架 · 通用主文档](../wq-brain-ra-pipeline/references/_six-step-core.md)。
+> 本节只写 **AMR 的 override**：主 skills 未覆盖的本区平台事实、实测杠杆、已死轴、工程坑。
+> **覆盖主 skills 同名条目；铁律与锁定项不可放宽。** 无实证处标「待实测」。
+
+### ① 六法体检 · 本区覆盖
+
+- **平台档位**：universe 只有 `TOP600`、delay 只 `1`；中性化 **7 选**（**没有 CROWDING / FAST / SLOW**），`SUBINDUSTRY` 跟 win。
+- **待实测**：离线体检包在本区的退化范围、在线体检设置档（当前无记录）。
+- **不可用算子**：本区未见记录 ⇒ 沿用主 skills，发批前按「新算子小批验存在性」自检。
+
+### ② 组装 · 本区覆盖
+
+- **已验证形状**：事件类用 `trade_when` / `if_else` / `ts_arg_max` / `days_from_last_change`。
+- **观察名单**：`longCount` 低于 80 的 VECTOR 字段进观察（profile 要求 FAIL，代码闸 7 仍 WARN）。
+- **S0 选集**：红榜 chart_patterns / news_sentiment / ai_ml / credit_risk / glb_emotion；绿榜 analyst / insiders / pv；MODEL 数据集不作主数据集。
+
+### ③ 归因 · 本区覆盖
+
+- **沿用主 skills**（本区归因实证尚无记录）。
+- **待实测**：本区归因常见误判（先跑 `get_alpha_yearly_stats` + `get_alpha_pnl` 建立基线）。
+
+### ④ 破闸杠杆 · 本区覆盖
+
+- **中性化**：只有 7 档（无 CROWDING / FAST / SLOW）⇒ **主 skills 的「逐族重扫全档」在本区即这 7 档**；`SUBINDUSTRY` 跟 win。
+- **待实测**：各闸最优杠杆与数值 —— **禁止照搬别区**（KOR 的 CROWDING×decay12 在本区不适用，本区无 CROWDING）。
+
+### ⑤ 算子穷举 · 本区覆盖
+
+- **待实测**：本区有效 / 有害算子清单（先用小批验存在性，再逐族记）。
+
+### ⑥ 终验 · 本区覆盖
+
+- **快判死**：新数据集 8 探针无 ／S／≥0.5 即判死回写，不扩批。
+- **待实测**：本区 prod 直方图分布（密墙 / 白空间）。
 
 ## 本区流程差异（相对九步骨架）
 

@@ -17,7 +17,7 @@ allowed-tools:
 - **本 skill 不做**：不改表达式、不回测、不判提交；**不是每候选必经**——按需调用，跳过它不影响下游 `brain-alpha-robustness` 入场。
 - **上游 / 下游**：上游 = 具体 alpha（常在 `brain-calculate-alpha-selfcorr-quick` 之后）；下游 = `wq-brain-alpha-optimization-v1` Mode B（换概念）、`brain-alpha-robustness`（S4 → S5 必经闸）。链图：`selfcorr-quick →（可选）explain-alphas → robustness`。
 
-完整详细工作流、成品示例与两张情景卡见 [reference.md](reference.md)。
+完整详细工作流、成品示例与两张情景卡见 [references/overview.md](references/overview.md)。
 
 ## 第 1 步：拆解 Alpha 表达式
 
@@ -56,7 +56,7 @@ allowed-tools:
 
 ## 第 6 步：综合并解释
 
-按四段组织（成品示例见 reference.md §成品示例）：
+按四段组织（成品示例见 references/overview.md §成品示例）：
 
 1. **思路（Idea）**：策略的高层概述。
 2. **数据理由（Rationale for data）**：字段代表什么。**事实（取自数据集描述）与推测分开写**；收益来源要有证据——哪一年（`get_alpha_yearly_stats`）、PnL 曲线形状（`get_alpha_pnl`）；long / short 侧与行业集中度平台没有直接接口，**未核验就写「未核验」，不要编**。

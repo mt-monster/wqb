@@ -27,7 +27,7 @@ Phase C 的三态判定**必须**写进台账，这样 `submit_verdict` 才读�
 ```
 mcp__wqb-db__upsert_ledger_key(region=<alpha 的区域>, key="robustness_<alpha_id>",
     value={"alpha_id": "<id>", "verdict": "PASS|CONDITIONAL|REJECT", "failed_checks": ["…"],
-           "soft_flags": ["…"], "checked_at": "<ISO 时间>", "report_path": "tracking/<日期>_robustness.md"})
+           "soft_flags": ["…"], "checked_at": "<ISO 时间>", "report_path": "reports/robustness_<YYYYMMDD>.md"})
 ```
 
 读取方 = `wqb.robustness_record` → `submit_verdict`（CLI / MCP / 批量共用，`src/wqb/submit_verdict_core.py`）：
@@ -107,7 +107,14 @@ mcp__wqb-db__upsert_ledger_key(region=<alpha 的区域>, key="robustness_<alpha_
 ### Phase D — 回写（永远执行）
 
 1. **台账**：`mcp__wqb-db__upsert_ledger_key` 写 `robustness_<alpha_id>`（格式见「结论去哪」）——这是唯一被代码读取的落点。
-2. **报告**：完整归因报告 + 判定追加到 `tracking/YYYY-MM-DD_robustness.md`（给人读；路径填进台账的 `report_path`）。
+2. **报告**：完整归因报告 + 判定追加到 `reports/robustness_YYYYMMDD.md`（给人读；路径填进台账的 `report_path`）。
+   ⚠ **输出位是 `reports/` 不是 `tracking/`**（2026-10-14 布局审计 §2.B-3 / §4「顶层报告」定案）：
+   本报告的读者是人（审计痕迹），属 AGENTS.md §8.13「人工审计与复盘」桶；`tracking/<REGION>/` 顶层是业务目录，
+   放日期报告等于把结论混进数据资产区。**复发由 `audit_structure` S18 在索引面上拦**（`tracking/` 顶层只允许
+   `README.md` / `region_config.json` / `.gitignore`）。同一天多区共用一份 `robustness_<YYYYMMDD>.md`（追加写，不是每区一份）。
+   ⚠ **`report_path` 只写已落盘的件路径**（实测战例：EUR `mL617YPx` 台账写了 `robustness_20261011.md`，那份报告从未生成 ⇒ 死指针）；
+   文件名只用每日一份 `robustness_<YYYYMMDD>.md`，**不要**自创 `robustness_<alpha_id>_<日期>.md`（KOR `zq87zzqO` 即如此，全盘无件、无法核对）；
+   报告确实没写出来时，宁可把 `report_path` 留空并写 `report_status: "MISSING"` + `report_note`（人读的说明），不要留一个指向不存在文件的路径。
 3. PASS 带 CONDITIONAL 软标记：把存活的软标记写进台账 `soft_flags`，并在用户确认提交前的三段式 description 里如实带上一行（`worldquant-submit-alpha` 设属性时），用户一年后复盘 OS 表现时有可读审计痕迹。
 4. 旧版还要求发 `alpha.robustness_audit` 事件（`wqb.memory.events.emit`）、REJECT 时调 `wqb.search.failure_memory.record(...)`（需要写 Python，且要私有函数 `validator._shape_signature`）。**这两条已移出必做项**：两个模块全仓库**没有任何消费方**（只写 `data/events/*.jsonl` 与 `tracking/mining/failure_memory.jsonl`，后者按需生成、**当前不存在**），DB 单轨里没有落点；需要时的入口在 `src/wqb/memory/events.py` / `src/wqb/search/failure_memory.py`。
 

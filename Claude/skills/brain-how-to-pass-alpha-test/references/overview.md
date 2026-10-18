@@ -2,7 +2,7 @@
 
 This document compiles the key requirements for passing alpha submission tests on the WorldQuant BRAIN platform, based on official documentation and community experiences from the forum. I've focused on the main tests (Fitness, Sharpe, Turnover, Weight, Sub-universe, and Self-Correlation). For each, I'll outline the thresholds, explanations, and strategies to improve or pass them, drawing from doc pages like "Clear these tests before submitting an Alpha" and forum searches on specific topics.
 
-> **本页的定位（2026-09-29 瘦身）**：只保留 6 项提交测试的**官方文档要求与社区技巧**（§1–§6）。检查名 → 线 → 读哪节的总表、数值例与本库的口径见 [`SKILL.md`](SKILL.md) §0；此前混在这里的「想法层通识」（idea 来源、arXiv、ATOM、6 种字段探测、社区模板、官方例子，共 63 行）已删——它们与提交测试阈值无关，且与 `wq-brain-alpha-optimization-v1` Mode B、`brain-datafield-exploration-general` 重复（arXiv 用法见 optimization-v1 的 `arXiv_API_Tool_Manual.md`）。
+> **本页的定位（2026-09-29 瘦身）**：只保留 6 项提交测试的**官方文档要求与社区技巧**（§1–§6）。检查名 → 线 → 读哪节的总表、数值例与本库的口径见 [`SKILL.md`](../SKILL.md) §0；此前混在这里的「想法层通识」（idea 来源、arXiv、ATOM、6 种字段探测、社区模板、官方例子，共 63 行）已删——它们与提交测试阈值无关，且与 `wq-brain-alpha-optimization-v1` Mode B、`brain-datafield-exploration-general` 重复（arXiv 用法见 optimization-v1 的 `arXiv_API_Tool_Manual.md`）。
 > **阈值以 `wqb.config` 为准**（`PLATFORM_CHECK_LINES` / `GATES_INTERNAL` / `GATES_PLATFORM`）；下面各节里的数字是官方文档原文，与 config 出入时以 config / `is.checks` 的 `limit` 为准。
 
 ## What Are Alpha Tests?
@@ -75,7 +75,7 @@ Ensures diversification; fails if concentrated or too few stocks weighted.
 ### Tips to Improve
 - **From Docs**: Avoid expressions that overly concentrate weights. Assign weights broadly after simulation start.
 - **Forum Experiences**: (Limited direct posts; inferred from general submission tips)
-  - ⚠ The forum tip "use neutralization to distribute weights" was **tested and found ineffective** for `CONCENTRATED_WEIGHT` (SKILL §4, [evidence](references/concentrated-weight-evidence.md)): the effective fix is time smoothing of instantaneous count/event signals.
+  - ⚠ The forum tip "use neutralization to distribute weights" was **tested and found ineffective** for `CONCENTRATED_WEIGHT` (SKILL §4, [evidence](concentrated-weight-evidence.md)): the effective fix is time smoothing of instantaneous count/event signals.
   - Check via simulation stats.
 
 ## 5. Sub-universe Test

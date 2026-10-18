@@ -67,7 +67,7 @@ python tools/field_semantic_classify.py --region <R> --dataset <ds> --write-ledg
 
 ## 7. 审计结论怎么写
 
-- **机器可读的只有 `s1_semantic_<ds>`**（§3）与步 3 写的 `catalog_<ds>`；其余都是给人读的结论，写在对话里，需要留档时写 `reports/dataset_audit_<REGION>_<ds>.md`（**不是事实源**，事实源在 DB）。结论模板见 [`reference.md`](reference.md)。
+- **机器可读的只有 `s1_semantic_<ds>`**（§3）与步 3 写的 `catalog_<ds>`；其余都是给人读的结论，写在对话里，需要留档时写 `reports/dataset_audit_<REGION>_<ds>.md`（**不是事实源**，事实源在 DB）。结论模板见 [`references/overview.md`](references/overview.md)。
 - **Alpha 思路**只写**机制假设**（一句话经济叙事 + 该用哪一类数据当主 / 辅信号），**不写表达式**——表达式走 RA 步 4 的概念优先生成。
 
 ## 验证清单（每项写产物）
@@ -81,4 +81,4 @@ python tools/field_semantic_classify.py --region <R> --dataset <ds> --write-ledg
 
 | 文件 | 何时读 |
 |---|---|
-| [`reference.md`](reference.md) | 要写审计结论（模板）、查 MCP 工具速查、找平台文档页时 |
+| [`references/overview.md`](references/overview.md) | 要写审计结论（模板）、查 MCP 工具速查、找平台文档页时 |

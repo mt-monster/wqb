@@ -98,4 +98,4 @@ allowed-tools:
 
 | 文件 | 何时读 |
 |---|---|
-| [`reference.md`](reference.md) | 要看六法的出处、MATRIX / VECTOR 两种写法对照、原帖的验证例时 |
+| [`references/overview.md`](references/overview.md) | 要看六法的出处、MATRIX / VECTOR 两种写法对照、原帖的验证例时 |

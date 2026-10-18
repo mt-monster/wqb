@@ -113,6 +113,32 @@ def is_live_dest(dest: str, cwd: Optional[str] = None) -> bool:
     return any(d == r or d.startswith(r + os.sep) for r in live_roots(cwd))
 
 
+def is_repo_root_dest(dest: str, cwd: Optional[str] = None) -> bool:
+    """dest 就是仓库根本身，或是仓库根的**祖先**目录。
+
+    与 `is_live_dest` 是两回事，别混：live root 的检查可以靠 `--allow-live-dest` 放行
+    （人也许真的知道自己要写活跃根），而这个形态**没有合法用法**——
+    `copy_skill_folder()` 写的是 `<dest>/<skill-name>/`，于是 dest 取仓库根时，
+    落点是 `仓库根/<skill-name>/…`：**整棵技能树长在仓库根**。
+    实测 2026-10-14 一天内发生两次（455 件未跟踪、与 `Claude/skills/` 零差异、
+    `_skill_roots()` 从不解析这一层，零引用却能被后来者误当在用的技能源）。
+    默认暂存位 `<repo>/attic/import_staging` 虽然也在仓库内，但它是**子目录**，
+    落点是 `attic/import_staging/<skill>/`——所以这里不能简单把仓库根加进 `live_roots()`
+    （那会把工具自己的默认暂存位判成活跃根）。
+    两个方向都要判，且**不能只信 cwd**：从 `dest` 自身也能反推出仓库根（`dest/Claude/skills`
+    存在即 dest 就是一个仓库根），否则在被复制目录之外调用本工具时这条会静默失效。
+    """
+    targets = [find_repo_root(cwd), find_repo_root(dest)]
+    d = os.path.realpath(dest)
+    for repo in targets:
+        if not repo:
+            continue
+        repo = os.path.realpath(repo)
+        if d == repo or (repo + os.sep).startswith(d + os.sep):
+            return True
+    return False
+
+
 # ---------------------------------------------------------------- audit
 def _frontmatter(text: str) -> str:
     m = re.match(r"^---\s*\n(.*?)\n---\s*(\n|$)", text, re.S)
@@ -283,6 +309,16 @@ def main() -> None:
     o = parse_args(sys.argv[1:])
     repo_url = str(o["src"])
     dest = str(o["dest"] or default_staging_dir())
+    if is_repo_root_dest(dest):
+        # 无逃生口：--allow-live-dest 也不放行（那不是「知道自己在写活跃根」，是把技能树铺到仓库根）
+        print(json.dumps({
+            "ok": False, "stage": "dest_check", "dest": dest, "error":
+                "destination is the repository root (or an ancestor of it). copy_skill_folder() writes "
+                "<dest>/<skill-name>/, so this would grow a whole skill tree at the repo root — untracked, "
+                "zero references, and never resolved by _skill_roots(). Omit --dest to use the default "
+                "staging (attic/import_staging), or pass a directory outside the repo.",
+        }, ensure_ascii=False))
+        sys.exit(3)
     live = is_live_dest(dest)
     if live and not o["allow_live"]:
         print(json.dumps({

@@ -1,0 +1,37 @@
+{
+  "region": "ASI",
+  "as_of": "2026-10-18",
+  "_note": "配置视图（非事实源）。真身=tracking/<R>/config/*.json；改配置只改真身后 render --apply。",
+  "source_of_truth": {
+    "settings": "tracking/ASI/config/settings.json",
+    "thresholds": "tracking/ASI/config/thresholds.json",
+    "cells": "tracking/ASI/config/cells.json"
+  },
+  "region_defaults": {
+    "instrumentType": "EQUITY",
+    "region": "ASI",
+    "universe": "MINVOL1M",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 6,
+    "truncation": 0.08,
+    "maxTrade": "ON",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "language": "FASTEXPR"
+  },
+  "cells": {
+    "categories": [
+      "analyst",
+      "model",
+      "other",
+      "pv",
+      "sentiment",
+      "shortinterest"
+    ],
+    "count": 6,
+    "overrides": 0,
+    "gap": "零覆盖：explain 只给区域默认档；若本区实测用过其它档位，应补覆盖并附 _evidence"
+  }
+}

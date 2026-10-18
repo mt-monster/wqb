@@ -101,4 +101,26 @@
 未测的 202 个里，`nws17/18/20` 大量为 **VECTOR**（须 `vec_*`）。
 
 **注**：论坛指出新闻类另类数据「未被大量 Alpha 使用」（prod 墙压力小）—— 但**本区的主要障碍是换手，不是 prod**。
+
+---
+
+## ★★★ news 族终局（2026-10-13 WANL24/26 实测）
+
+**news 全族在 DEU 判死。** 两轮实测（DEU 核心结构 + A 级框架，含 `vec_avg`/`vec_max` 聚合与 `reverse` 方向杠杆）：
+
+| 字段 | 结构 | S | TO |
+|---|---|---|---|
+| `multi_entity_story_event_count`（news18，事件密度） | 框架 | **0.26** | 0.379 |
+| `nws104_relevance` | 框架 | 0.23 | 0.434 |
+| `nws104_marketimpactscore` | 框架·reverse | 0.18 | 0.307 |
+| `nws104_confidence` | 框架 | 0.17 | 0.331 |
+| `nws104_novelty`（**新概念**） | 核心 `vec_avg`/`vec_max` | 0.05 / 0.07 | 0.18 |
+| `nws104_sentiment` / `prob_pos` / `prob_neg` | 核心 | ≤0.05 或负 | 0.17–0.20 |
+| `nws17_event_sentiment_score` / `nws17_bee` / `mws50_ens`（news50） | 核心 `vec_avg` | 0.40 / 0.10 / −0.49 | 0.13–0.15 |
+
+**三条结论：**
+1. **`news104`（cov 0.963、11 个 VECTOR 字段、含 novelty/marketimpact/prob_pos/neg 等全新概念）也不出信号**（max 0.05）⇒ 不是「概念没试过」，是**该源在 DEU 无 alpha**。
+2. **换手结构性冲突确认**：news 事件族实测 TO **0.17–0.43**，远高于 DEU 可用区间，且提到 0.43 的字段 S 反而更低。
+3. **DEU 全量 172 数据集中，未点亮类别有真实覆盖的仅 19 个**，其中唯一未开采的 news104/news18/news20 **已在 WANL26 判死** ⇒ **DEU 无未开采数据源可用**。
+
 <!-- profiles:manual:end -->

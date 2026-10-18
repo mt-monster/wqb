@@ -32,12 +32,30 @@ loop_policy:
   stop_conditions: ["白名单被 dead_end 全覆盖", "已知 14+ 族全部 IS 死或撞 prod 钉子（2026-10-03 扫描穷尽）——升 active 须出现新的信息维度（不在 prod book 里）"]
 empirical_anchor:
   dead_ends_ref: "get_dead_ends(IND)"
-  last_verified: 2026-10-03
+  last_verified: 2026-10-17
 ---
 
 # IND — 长窗结构区
 
-## ★ 2026-10-03 收官结论：可提交空间已系统扫描穷尽 → `probe-only`
+## ★★ 2026-10-17 修正：「可提交空间已穷尽」结论作废
+
+新增族 = **残差化**（`rank(-ts_regression(ts_zscore(returns,252), ts_zscore(<F>,252), 252, rettype=0))` + **decay 126**）。这是 2026-10-03 那轮 14+ 族扫描里**没有的信息维度**，且**直接过 prod 墙**（不是只过 IS）：
+
+| 数据集族 | 结果 | S 区间 | TO | robust | prod |
+|---|---|---|---|---|---|
+| **institutions6**（13F 季频） | **10/10 RA 全过**，贪心互不相关子集 3 颗 | 2.65–3.12 | 0.24–0.26 | 1.14–1.97 | 0.59–0.67 |
+| **analyst 族** | 11/18 全过 | 1.94–3.04 | 0.20–0.23 | 1.0–2.02 | 0.55 |
+| **PV 残差 + 挂 macro** | `vRO9nG3w` 全过 | 2.90（2Y 3.14） | — | 1.78 | 0.6695 |
+
+机理两条（跨区通用，见项目 `MEMORY.md §2`）：
+1. **剥掉「股价已跟随」部分** ⇒ 天然市场中性和 ⇒ `LOW_ROBUST_UNIVERSE_SHARPE` 自动达标（裸腿 0.59–0.98 全卡，残差化后 1.0–2.02）。
+2. **输出换手由 252 窗滚动回归自身产生，与输入字段换手无关** ⇒ 季频报类（TO 0.58–1.08 判死）变 TO 0.24；近静态字段（TO<0.02）变 0.07–0.16。**双向形态矫正器**。
+
+⚠ **边界**：残差化治「形态病」不治「信号病」。IV 曲面（S 0.68–1.18）/ insiders1（0.68–0.92）/ sentiment26 DNS（0.09–0.39）残差化后仍全灭 ⇒ 靶点必须「连续慢变量 + 有经济锚」。
+
+⇒ **`probe-only` 的「只许探针批」限制对残差化族不适用**；`entry_verdict` 是否升 `active` 由用户定（agent 不自改）。
+
+## ★ 2026-10-03 收官结论（历史 · 已被上节修正）：可提交空间已系统扫描穷尽 → `probe-only`
 
 来源：WorkBuddy 记忆 2026-10-02 / 10-03（20 批 / ~170 表达式 / 14+ 族），报告 `output_report/ind_campaign_report_20261003.md`；机器层已写进 `tracking/IND/reference/region_kb.json`（`dead_end_rule` / `prod_saturation_risk` / `settings_sensitivity`），**勿再扩该族**。
 

@@ -1,0 +1,1579 @@
+{
+ "analyst44|ANALYST|forecast_currency": [
+  "forecast_currency_roe",
+  "forecast_currency_dps",
+  "forecast_currency_sales",
+  "forecast_currency_netprofit"
+ ],
+ "analyst44|ANALYST|netdebt_currency": [
+  "netdebt_currency_code"
+ ],
+ "analyst44|ANALYST|ebitda_currency": [
+  "ebitda_currency_code"
+ ],
+ "analyst44|ANALYST|eps_currency": [
+  "eps_currency_code_2"
+ ],
+ "analyst44|ANALYST|epsr_currency": [
+  "epsr_currency_code"
+ ],
+ "analyst47|ANALYST|anl47_indicator": [
+  "anl47_indicator"
+ ],
+ "analyst48|ANALYST|anl48_bulk": [
+  "anl48_bulk_indx_typ",
+  "anl48_bulk_count_index_members",
+  "anl48_bulk_idivisor"
+ ],
+ "analyst48|ANALYST|anl48_index": [
+  "anl48_index_bulk_return_code",
+  "anl48_index_bulk_ibc",
+  "anl48_index_bulk_nfields"
+ ],
+ "analyst48|ANALYST|anl48_bbpdiip": [
+  "anl48_bbpdiip"
+ ],
+ "analyst9|ANALYST|ebt_consensus": [
+  "ebt_consensus_estimate_value"
+ ],
+ "analyst9|ANALYST|revision_consensus": [
+  "revision_consensus_value_revisions"
+ ],
+ "analyst9|ANALYST|span_consensus": [
+  "span_consensus_estimate_value"
+ ],
+ "analyst9|ANALYST|anl9_revisions": [
+  "anl9_revisions_effectivetime"
+ ],
+ "analyst_earnings_ibes|MODEL|market_capitalization": [
+  "market_capitalization_dlr3",
+  "market_capitalization_dlr2",
+  "market_capitalization_dlr1"
+ ],
+ "analyst_earnings_ibes|MODEL|lowest_price": [
+  "lowest_price_dlr1",
+  "lowest_price_dlr3",
+  "lowest_price_dlr2"
+ ],
+ "analyst_factor_signals|ANALYST|netprofit_q2": [
+  "netprofit_q2_estimate_skewness",
+  "netprofit_q2_estimate_qoq_growth"
+ ],
+ "analyst_factor_signals|ANALYST|eps_q2": [
+  "eps_q2_estimate_skewness",
+  "eps_q2_estimate_qoq_growth"
+ ],
+ "analyst_factor_signals|ANALYST|revenue_q2": [
+  "revenue_q2_estimate_skewness",
+  "revenue_q2_estimate_qoq_growth"
+ ],
+ "analyst_factor_signals|ANALYST|netprofit_estimate": [
+  "netprofit_estimate_trend_slope_1yr"
+ ],
+ "fund_holdings_panel|INSTITUTIONS|large_trade": [
+  "large_trade_count_50bps",
+  "large_trade_count_50bps_active"
+ ],
+ "fund_holdings_panel|INSTITUTIONS|transaction_value": [
+  "transaction_value_distribution_score_active",
+  "transaction_value_distribution_score"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_txc": [
+  "fnd6_txc"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_ibmiiy": [
+  "fnd6_ibmiiy"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_revtsa": [
+  "fnd6_revtsa"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_ibmiisa": [
+  "fnd6_ibmiisa"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_xinty": [
+  "fnd6_xinty"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_teq": [
+  "fnd6_teq"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_ibsa": [
+  "fnd6_ibsa"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_idesindq": [
+  "fnd6_idesindq_curcd"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_pisa": [
+  "fnd6_pisa"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_txtsa": [
+  "fnd6_txtsa"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_piy": [
+  "fnd6_piy"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_adesinda": [
+  "fnd6_adesinda_curcd"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_dpsa": [
+  "fnd6_dpsa"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_dpy": [
+  "fnd6_dpy"
+ ],
+ "fundamental6|FUNDAMENTAL|fnd6_txty": [
+  "fnd6_txty"
+ ],
+ "insider_matrix|OTHER|director_intensity": [
+  "director_intensity_score"
+ ],
+ "model106|MODEL|mdl106_ycc": [
+  "mdl106_ycc"
+ ],
+ "model106|MODEL|mdl106_country": [
+  "mdl106_country"
+ ],
+ "model216|MODEL|mdl216_armrecommendation5rank": [
+  "mdl216_armrecommendation5rank"
+ ],
+ "model216|MODEL|mdl216_revenueblendedrevisionfq1percent": [
+  "mdl216_revenueblendedrevisionfq1percent"
+ ],
+ "model216|MODEL|mdl216_armrevenuerevisioncomponent100rank": [
+  "mdl216_armrevenuerevisioncomponent100rank"
+ ],
+ "model216|MODEL|mdl216_armrevenuerevision1rank": [
+  "mdl216_armrevenuerevision1rank"
+ ],
+ "model216|MODEL|mdl216_armsector1rank": [
+  "mdl216_armsector1rank"
+ ],
+ "model216|MODEL|mdl216_industryclassification": [
+  "mdl216_industryclassification"
+ ],
+ "model216|MODEL|mdl216_armregion5score": [
+  "mdl216_armregion5score"
+ ],
+ "model216|MODEL|mdl216_preferredblendedrevisionfy1percent": [
+  "mdl216_preferredblendedrevisionfy1percent"
+ ],
+ "model216|MODEL|mdl216_armglobalcombinationscore": [
+  "mdl216_armglobalcombinationscore"
+ ],
+ "model216|MODEL|mdl216_armregion100score": [
+  "mdl216_armregion100score"
+ ],
+ "model216|MODEL|mdl216_armsecondaryrevisioncomponent5rank": [
+  "mdl216_armsecondaryrevisioncomponent5rank"
+ ],
+ "model216|MODEL|mdl216_revenueblendedrevisionfy1percent": [
+  "mdl216_revenueblendedrevisionfy1percent"
+ ],
+ "model216|MODEL|mdl216_sectorclassification": [
+  "mdl216_sectorclassification"
+ ],
+ "model216|MODEL|mdl216_armsecondaryrevisionscore": [
+  "mdl216_armsecondaryrevisionscore"
+ ],
+ "model216|MODEL|mdl216_secondaryblendedrevisionfy2percent": [
+  "mdl216_secondaryblendedrevisionfy2percent"
+ ],
+ "model216|MODEL|mdl216_secondaryblendedrevisionfq1percent": [
+  "mdl216_secondaryblendedrevisionfq1percent"
+ ],
+ "model216|MODEL|mdl216_armsecondaryrevision1rank": [
+  "mdl216_armsecondaryrevision1rank"
+ ],
+ "model216|MODEL|mdl216_armsector5score": [
+  "mdl216_armsector5score"
+ ],
+ "model216|MODEL|mdl216_revenueblendedrevisionfy2percent": [
+  "mdl216_revenueblendedrevisionfy2percent"
+ ],
+ "model216|MODEL|mdl216_armregion1rank": [
+  "mdl216_armregion1rank"
+ ],
+ "model216|MODEL|mdl216_recommendationblendedrevisionpercent": [
+  "mdl216_recommendationblendedrevisionpercent"
+ ],
+ "model216|MODEL|mdl216_armsector100score": [
+  "mdl216_armsector100score"
+ ],
+ "model216|MODEL|mdl216_preferredblendedrevisionfq1percent": [
+  "mdl216_preferredblendedrevisionfq1percent"
+ ],
+ "model216|MODEL|mdl216_armsecondaryrevisioncomponent100rank": [
+  "mdl216_armsecondaryrevisioncomponent100rank"
+ ],
+ "model238|MODEL|country_relative": [
+  "country_relative_investment_rank"
+ ],
+ "model238|MODEL|mdl238_country": [
+  "mdl238_country_rank"
+ ],
+ "model238|MODEL|sector_relative": [
+  "sector_relative_investment_rank"
+ ],
+ "model238|MODEL|global_institutional": [
+  "global_institutional_preference_rank"
+ ],
+ "model238|MODEL|industry_relative": [
+  "industry_relative_investment_rank"
+ ],
+ "model238|MODEL|mdl238_sector": [
+  "mdl238_sector_rank"
+ ],
+ "model25|MODEL|value_momentum": [
+  "value_momentum_industry_rank_float",
+  "value_momentum_global_rank_float",
+  "value_momentum_sector_percentile",
+  "value_momentum_region_rank_float",
+  "value_momentum_region_percentile",
+  "value_momentum_industry_percentile",
+  "value_momentum_global_percentile",
+  "value_momentum_sector_rank_float"
+ ],
+ "model25|MODEL|operating_efficiency": [
+  "operating_efficiency_component_raw_score",
+  "operating_efficiency_component_percentile"
+ ],
+ "model25|MODEL|regional_momentum": [
+  "regional_momentum_percentile"
+ ],
+ "model25|MODEL|exclusions_component": [
+  "exclusions_component_percentile"
+ ],
+ "model25|MODEL|accruals_component": [
+  "accruals_component_raw_score"
+ ],
+ "model25|MODEL|earnings_quality": [
+  "earnings_quality_raw_score"
+ ],
+ "model250|MODEL|mdl250_lmt": [
+  "mdl250_lmt_close_eq_sector",
+  "mdl250_lmt_open_eq_sector"
+ ],
+ "model250|MODEL|mdl250_maltahc": [
+  "mdl250_maltahc_eq_sector"
+ ],
+ "model250|MODEL|mdl250_malta": [
+  "mdl250_malta_eq_sector"
+ ],
+ "model26|MODEL|mdl26_mstchg": [
+  "mdl26_mstchg_pct_f12m_rvn_30",
+  "mdl26_mstchg_pct_f12m_rvn_90",
+  "mdl26_mstchg_pct_fy1_btd_14",
+  "mdl26_mstchg_pct_fy1_rnngs_60",
+  "mdl26_mstchg_pct_f12m_rnngs_60",
+  "mdl26_mstchg_pct_f12m_btd_14",
+  "mdl26_mstchg_pct_fy1_rnngs_7",
+  "mdl26_mstchg_pct_fy1_rvn_90",
+  "mdl26_mstchg_pct_f12m_btd_7",
+  "mdl26_mstchg_pct_fy1_rnngs_14",
+  "mdl26_mstchg_pct_fy1_rvn_60",
+  "mdl26_mstchg_pct_f12m_btd_90",
+  "mdl26_mstchg_pct_f12m_rvn_14",
+  "mdl26_mstchg_pct_f12m_rnngs_14",
+  "mdl26_mstchg_pct_fy1_btd_90",
+  "mdl26_mstchg_pct_f12m_rvn_60",
+  "mdl26_mstchg_pct_fy1_btd_30",
+  "mdl26_mstchg_pct_fy1_btd_7",
+  "mdl26_mstchg_pct_f12m_rvn_7",
+  "mdl26_mstchg_pct_f12m_rnngs_7",
+  "mdl26_mstchg_pct_f12m_btd_60",
+  "mdl26_mstchg_pct_f12m_rnngs_90",
+  "mdl26_mstchg_pct_f12m_rnngs_30",
+  "mdl26_mstchg_pct_fy1_rnngs_90",
+  "mdl26_mstchg_pct_fy1_rvn_30",
+  "mdl26_mstchg_pct_fy1_rnngs_30",
+  "mdl26_mstchg_pct_fy1_rvn_7",
+  "mdl26_mstchg_pct_f12m_btd_30",
+  "mdl26_mstchg_pct_fy1_rvn_14",
+  "mdl26_mstchg_pct_fy1_btd_60"
+ ],
+ "model26|MODEL|count_analysts": [
+  "count_analysts_raise_curr_qtr_earnings_14d",
+  "count_analysts_raise_ebitda_est_next_qtr_30d_d1",
+  "count_analysts_raise_revenue_est_qtr_30d",
+  "count_analysts_raise_ebitda_est_next_qtr_7d",
+  "count_analysts_lower_curr_qtr_earnings_30d",
+  "count_analysts_lower_earnings_est_next_qtr_7d",
+  "count_analysts_raise_next_year_ebitda_30d",
+  "count_analysts_raise_earnings_est_qtr_14d_d1",
+  "count_analysts_raise_year2_revenue_14d",
+  "count_analysts_raise_year2_earnings_7d",
+  "count_analysts_raise_revenue_est_next_qtr_14d_d1",
+  "count_analysts_raise_ebitda_est_next_qtr_7d_d1",
+  "count_analysts_raise_ebitda_est_qtr_14d_d1",
+  "count_analysts_lower_qtr2_ebitda_7d",
+  "count_analysts_lower_curr_qtr_revenue_14d",
+  "count_analysts_lower_earnings_est_next_qtr_14d_d1",
+  "count_analysts_lower_ebitda_est_next_qtr_7d_d1",
+  "count_analysts_raise_ebitda_est_next_qtr_14d_d1",
+  "count_analysts_lower_earnings_est_year_7d",
+  "count_analysts_lower_revenue_est_year_7d",
+  "count_analysts_raise_ebitda_est_qtr_7d_d1",
+  "count_analysts_lower_ebitda_est_qtr_30d_d1",
+  "count_analysts_raise_ebitda_est_next_qtr_30d",
+  "count_analysts_raise_qtr2_earnings_7d",
+  "count_analysts_raise_earnings_est_qtr_7d",
+  "count_analysts_raise_ebitda_est_qtr_30d_d1",
+  "count_analysts_raise_ebitda_est_7d",
+  "count_analysts_raise_qtr2_earnings_14d",
+  "count_analysts_lower_ebitda_est_qtr_14d_d1",
+  "count_analysts_raise_earnings_est_qtr_7d_d1",
+  "count_analysts_lower_revenue_est_next_qtr_14d",
+  "count_analysts_lower_earnings_est_next_qtr_30d",
+  "count_analysts_raise_earnings_est_next_qtr_7d_d1",
+  "count_analysts_lower_qtr2_revenue_7d",
+  "count_analysts_raise_curr_qtr_ebitda_30d",
+  "count_analysts_raise_next_year_ebitda_7d",
+  "count_analysts_lower_next_year_revenue_14d",
+  "count_analysts_raise_revenue_est_next_qtr_30d_d1",
+  "count_analysts_lower_ebitda_est_next_qtr_30d_d1",
+  "count_analysts_lower_ebitda_est_qtr_7d_d1",
+  "count_analysts_lower_ebitda_est_next_qtr_14d",
+  "count_analysts_raise_earnings_est_next_qtr_14d",
+  "count_analysts_lower_qtr2_earnings_14d",
+  "count_analysts_raise_year2_ebitda_7d",
+  "count_analysts_lower_ebitda_est_next_qtr_14d_d1",
+  "count_analysts_lower_earnings_est_next_qtr_7d_d1",
+  "count_analysts_lower_next_year_earnings_30d",
+  "count_analysts_lower_curr_qtr_ebitda_30d",
+  "count_analysts_raise_next_year_earnings_30d",
+  "count_analysts_lower_revenue_est_next_qtr_7d_d1",
+  "count_analysts_raise_earnings_est_next_qtr_30d_d1",
+  "count_analysts_raise_year2_revenue_30d",
+  "count_analysts_raise_revenue_est_next_qtr_14d",
+  "count_analysts_raise_revenue_est_next_qtr_7d_d1",
+  "count_analysts_raise_year2_earnings_30d",
+  "count_analysts_raise_curr_qtr_ebitda_14d",
+  "count_analysts_lower_qtr2_revenue_30d",
+  "count_analysts_raise_next_year_revenue_30d"
+ ],
+ "model26|MODEL|mdl26_prsprise": [
+  "mdl26_prsprise_fy1_ebitda",
+  "mdl26_prsprise_fy2_revenue",
+  "mdl26_prsprise_fy2_ebitda",
+  "mdl26_prsprise_fy2_earnings",
+  "mdl26_prsprise_pct_fy2_revenue",
+  "mdl26_prsprise_pct_f12m_ebitda",
+  "mdl26_prsprise_pct_fy1_ebitda",
+  "mdl26_prsprise_f12m_revenue",
+  "mdl26_prsprise_fy1_revenue",
+  "mdl26_prsprise_pct_fy2_earnings",
+  "mdl26_prsprise_pct_f12m_earnings",
+  "mdl26_prsprise_pct_fy1_revenue",
+  "mdl26_prsprise_pct_f12m_revenue",
+  "mdl26_prsprise_pct_fy1_earnings",
+  "mdl26_prsprise_fy1_earnings",
+  "mdl26_prsprise_pct_fy2_ebitda",
+  "mdl26_prsprise_f12m_ebitda",
+  "mdl26_prsprise_f12m_earnings"
+ ],
+ "model26|MODEL|mdl26_nnlyst": [
+  "mdl26_nnlyst_rvsng_dwn_fy1_rvn_30",
+  "mdl26_nnlyst_rvsng_p_fy2_btd_7",
+  "mdl26_nnlyst_rvsng_dwn_fy1_rvn_14",
+  "mdl26_nnlyst_rvsng_dwn_fy1_rnngs_7",
+  "mdl26_nnlyst_rvsng_dwn_fq2_rnngs_30",
+  "mdl26_nnlyst_rvsng_dwn_fy1_rnngs_14",
+  "mdl26_nnlyst_rvsng_dwn_fy1_btd_14",
+  "mdl26_nnlyst_rvsng_dwn_fy1_btd_30",
+  "mdl26_nnlyst_rvsng_p_fq1_rvn_30",
+  "mdl26_nnlyst_rvsng_p_fy1_rvn_30",
+  "mdl26_nnlyst_rvsng_p_fy1_rvn_7",
+  "mdl26_nnlyst_rvsng_p_fq1_rvn_7",
+  "mdl26_nnlyst_rvsng_p_fy2_rvn_30",
+  "mdl26_nnlyst_rvsng_dwn_fy1_btd_7",
+  "mdl26_nnlyst_rvsng_p_fy2_rnngs_14",
+  "mdl26_nnlyst_rvsng_p_fy2_rnngs_7",
+  "mdl26_nnlyst_rvsng_dwn_fq1_rvn_30",
+  "mdl26_nnlyst_rvsng_dwn_fq1_rvn_14",
+  "mdl26_nnlyst_rvsng_p_fy1_rnngs_30",
+  "mdl26_nnlyst_rvsng_p_fy1_btd_7",
+  "mdl26_nnlyst_rvsng_p_fy2_rvn_7",
+  "mdl26_nnlyst_rvsng_p_fy2_btd_30",
+  "mdl26_nnlyst_rvsng_p_fy2_rnngs_30",
+  "mdl26_nnlyst_rvsng_dwn_fq2_rvn_14",
+  "mdl26_nnlyst_rvsng_p_fy1_rnngs_7",
+  "mdl26_nnlyst_rvsng_dwn_fy1_rnngs_30",
+  "mdl26_nnlyst_rvsng_dwn_fq1_rnngs_14",
+  "mdl26_nnlyst_rvsng_p_fy2_btd_14",
+  "mdl26_nnlyst_rvsng_p_fy1_btd_14",
+  "mdl26_nnlyst_rvsng_p_fy1_rvn_14",
+  "mdl26_nnlyst_rvsng_dwn_fq1_rnngs_7",
+  "mdl26_nnlyst_rvsng_dwn_fq2_rvn_30",
+  "mdl26_nnlyst_rvsng_p_fy1_rnngs_14",
+  "mdl26_nnlyst_rvsng_p_fq1_rvn_14",
+  "mdl26_nnlyst_rvsng_dwn_fq1_rvn_7",
+  "mdl26_nnlyst_rvsng_p_fy1_btd_30",
+  "mdl26_nnlyst_rvsng_p_fy2_rvn_14",
+  "mdl26_nnlyst_rvsng_dwn_fy1_rvn_7"
+ ],
+ "model26|MODEL|count_analyst": [
+  "count_analyst_downward_revision_next_quarter_ebitda_30d",
+  "count_analyst_downward_revision_year_revenue_30d",
+  "count_analyst_upward_revision_quarter_revenue_7d",
+  "count_analyst_upward_revision_quarter_revenue_14d",
+  "count_analyst_recommendation_downgrades_90d",
+  "count_analyst_downward_revision_quarter_earnings_14d",
+  "count_analyst_upward_revision_year_ebitda_14d",
+  "count_analyst_upward_revision_next_year_earnings_14d",
+  "count_analyst_upward_revision_quarter_earnings_30d",
+  "count_analyst_downward_revision_year_ebitda_7d",
+  "count_analyst_upward_revision_year_revenue_14d",
+  "count_analyst_upward_revision_year_revenue_7d",
+  "count_analyst_recommendation_downgrades_14d",
+  "count_analyst_upward_revision_next_year_ebitda_30d",
+  "count_analyst_downward_revision_quarter_revenue_30d",
+  "count_analyst_recommendation_downgrades_60d",
+  "count_analyst_downward_revision_quarter_ebitda_7d",
+  "count_analyst_recommendation_downgrades_7d",
+  "count_analyst_recommendation_upgrades_90d",
+  "count_analyst_recommendation_upgrades_7d",
+  "count_analyst_downward_revision_quarter_revenue_7d",
+  "count_analyst_downward_revision_year_ebitda_30d",
+  "count_analyst_upward_revision_next_quarter_ebitda_14d",
+  "count_analyst_upward_revision_next_quarter_revenue_7d",
+  "count_analyst_recommendation_upgrades_60d",
+  "count_analyst_upward_revision_year_earnings_7d",
+  "count_analyst_upward_revision_next_quarter_revenue_30d",
+  "count_analyst_upward_revision_year_earnings_14d",
+  "count_analyst_recommendation_upgrades_14d",
+  "count_analyst_downward_revision_quarter_ebitda_14d",
+  "count_analyst_upward_revision_next_year_revenue_7d",
+  "count_analyst_recommendation_downgrades_30d"
+ ],
+ "model26|MODEL|mdl26_forward": [
+  "mdl26_forward_pe_mean_fy2",
+  "mdl26_forward_pe_mean_f12m",
+  "mdl26_forward_pe_mean_fy1"
+ ],
+ "model26|MODEL|mdl26_frwrd": [
+  "mdl26_frwrd_p_stm_fy1",
+  "mdl26_frwrd_p_stm_f12m",
+  "mdl26_frwrd_p_stm_fy2"
+ ],
+ "model26|MODEL|mdl26_sm": [
+  "mdl26_sm_rcmmndtn_mn_chng_30",
+  "mdl26_sm_nnlyst_rvsng_dwn_fq1_rnngs_30",
+  "mdl26_sm_nnlyst_rvsng_p_fq1_rnngs_30",
+  "mdl26_sm_rm_prfrrd_rnngs_cmpnnt",
+  "mdl26_sm_rm_rcmmndtns_cmpnnt",
+  "mdl26_sm_rm_scndry_rnngs_cmpnnt",
+  "mdl26_sm_nlyst_rvsns_scr"
+ ],
+ "model26|MODEL|price_to": [
+  "price_to_mean_estimate_ratio_year2_ebitda",
+  "price_to_smartest_earnings_ratio_next_year",
+  "price_to_mean_estimate_ratio_year2_revenue",
+  "price_to_smartest_estimate_ratio_year2_revenue",
+  "price_to_mean_earnings_ratio_12m",
+  "price_to_mean_estimate_ratio_next_year_revenue",
+  "price_to_mean_revenue_ratio_12m",
+  "price_to_smartest_forward_revenue_ratio",
+  "price_to_mean_estimate_ratio_12m_ebitda",
+  "price_to_smartest_estimate_ratio_12m_earnings",
+  "price_to_smartest_estimate_ratio_next_year_revenue",
+  "price_to_mean_estimate_next_year_earnings_ratio"
+ ],
+ "model26|MODEL|mdl26_mn": [
+  "mdl26_mn_stmt_prc_rt_fy2_rnngs",
+  "mdl26_mn_stmt_prc_rt_fy2_btd",
+  "mdl26_mn_stmt_prc_rt_fy1_rnngs",
+  "mdl26_mn_stmt_prc_rt_f12m_rnngs",
+  "mdl26_mn_stmt_prc_rt_f12m_btd",
+  "mdl26_mn_stmt_prc_rt_f12m_rvn",
+  "mdl26_mn_stmt_prc_rt_fy2_rvn",
+  "mdl26_mn_stmt_prc_rt_fy1_rvn",
+  "mdl26_mn_stmt_prc_rt_fy1_btd"
+ ],
+ "model26|MODEL|pct_expected": [
+  "pct_expected_surprise_next_year_ebitda",
+  "pct_expected_surprise_next_year_earnings",
+  "pct_expected_surprise_year_ebitda",
+  "pct_expected_surprise_year_revenue"
+ ],
+ "model26|MODEL|forecasted_surprise": [
+  "forecasted_surprise_pct_12m_revenue",
+  "forecasted_surprise_pct_earnings_12m",
+  "forecasted_surprise_pct_year2_revenue",
+  "forecasted_surprise_12m_revenue",
+  "forecasted_surprise_pct_next_year_earnings",
+  "forecasted_surprise_pct_ebitda_12m",
+  "forecasted_surprise_earnings_next_year",
+  "forecasted_surprise_year2_revenue"
+ ],
+ "model26|MODEL|country_percentile": [
+  "country_percentile_rank_score",
+  "country_percentile_rank_model_score"
+ ],
+ "model26|MODEL|avg_pct": [
+  "avg_pct_change_estimate_year_ebitda_30d",
+  "avg_pct_change_estimate_12m_earnings_7d",
+  "avg_pct_change_estimate_forward_revenue_60d",
+  "avg_pct_change_estimate_year_ebitda_90d",
+  "avg_pct_change_estimate_next_year_earnings_7d",
+  "avg_pct_change_estimate_12m_ebitda_60d",
+  "avg_pct_change_earnings_est_year_14d",
+  "avg_pct_change_estimate_12m_earnings_14d",
+  "avg_pct_change_estimate_12m_ebitda_30d",
+  "avg_pct_change_earnings_est_12m_90d",
+  "avg_pct_change_estimate_year_ebitda_60d",
+  "avg_pct_change_estimate_next_year_ebitda_14d",
+  "avg_pct_change_ebitda_est_12m_14d",
+  "avg_pct_change_estimate_12m_earnings_60d",
+  "avg_pct_change_estimate_next_year_earnings_60d",
+  "avg_pct_change_estimate_next_year_revenue_14d",
+  "avg_pct_change_estimate_12m_revenue_90d",
+  "avg_pct_change_revenue_est_year_60d",
+  "avg_pct_change_estimate_12m_revenue_30d",
+  "avg_pct_change_estimate_next_year_earnings_30d",
+  "avg_pct_change_estimate_forward_revenue_14d",
+  "avg_pct_change_earnings_est_12m_30d",
+  "avg_pct_change_estimate_12m_revenue_7d",
+  "avg_pct_change_estimate_year_ebitda_7d",
+  "avg_pct_change_estimate_year_revenue_30d",
+  "avg_pct_change_ebitda_est_12m_90d",
+  "avg_pct_change_revenue_est_year_7d"
+ ],
+ "model26|MODEL|reported_revenue": [
+  "reported_revenue_last_fiscal_year"
+ ],
+ "model26|MODEL|analyst_revision": [
+  "analyst_revision_revenue_score",
+  "analyst_revision_revenue_score_d1",
+  "analyst_revision_primary_earnings_score",
+  "analyst_revision_secondary_earnings_score"
+ ],
+ "model26|MODEL|mdl26_secondary": [
+  "mdl26_secondary"
+ ],
+ "model26|MODEL|weighted_estimate": [
+  "weighted_estimate_next_year_ebitda_2",
+  "weighted_estimate_next_year_earnings_2",
+  "weighted_estimate_next_year_earnings",
+  "weighted_estimate_year2_revenue",
+  "weighted_estimate_next_year_revenue",
+  "weighted_estimate_next_year_ebitda",
+  "weighted_estimate_12m_earnings",
+  "weighted_estimate_forward_12m_revenue",
+  "weighted_estimate_12m_ebitda"
+ ],
+ "model26|MODEL|mdl26_arm": [
+  "mdl26_arm_score_change_60",
+  "mdl26_arm_score_change_1",
+  "mdl26_arm_score_change_3",
+  "mdl26_arm_score_change_7",
+  "mdl26_arm_score_change_90"
+ ],
+ "model26|MODEL|mdl26_median": [
+  "mdl26_median_historical_f12m_pe"
+ ],
+ "model26|MODEL|mdl26_smrtst": [
+  "mdl26_smrtst_grwth_nxt_yrths_yr_rvn",
+  "mdl26_smrtst_grwth_f24mf12m_rnngs",
+  "mdl26_smrtst_grwth_nxt_yrths_yr_rnngs",
+  "mdl26_smrtst_grwth_ths_yrlst_yr_rvn"
+ ],
+ "model26|MODEL|mean_estimate": [
+  "mean_estimate_to_price_ratio_year1_ebitda"
+ ],
+ "model26|MODEL|global_percentile": [
+  "global_percentile_rank_score",
+  "global_percentile_score_float",
+  "global_percentile_score"
+ ],
+ "model26|MODEL|predicted_surprise": [
+  "predicted_surprise_pct_year2_ebitda",
+  "predicted_surprise_pct_year1_revenue"
+ ],
+ "model26|MODEL|mdl26_num": [
+  "mdl26_num_downgrades_60",
+  "mdl26_num_downgrades_14",
+  "mdl26_num_upgrades_90",
+  "mdl26_num_upgrades_14",
+  "mdl26_num_downgrades_90",
+  "mdl26_num_downgrades_7",
+  "mdl26_num_upgrades_60",
+  "mdl26_num_upgrades_7"
+ ],
+ "model26|MODEL|mdl26_preferred": [
+  "mdl26_preferred"
+ ],
+ "model26|MODEL|expected_surprise": [
+  "expected_surprise_forward_ebitda_12m",
+  "expected_surprise_forward_earnings_12m",
+  "expected_surprise_year_ebitda",
+  "expected_surprise_year_earnings"
+ ],
+ "model26|MODEL|mdl26_srprs": [
+  "mdl26_srprs_pct_lst_y_rvn",
+  "mdl26_srprs_pct_lst_y_rnngs"
+ ],
+ "model26|MODEL|forward_pe": [
+  "forward_pe_ratio_mean_year2",
+  "forward_pe_ratio_smartest_12m",
+  "forward_pe_ratio_mean_12m",
+  "forward_pe_ratio_smartest_year2"
+ ],
+ "model26|MODEL|reported_earnings": [
+  "reported_earnings_last_fiscal_year"
+ ],
+ "model26|MODEL|analysts_count": [
+  "analysts_count_revising_down_quarter1_earnings_7d",
+  "analysts_count_revising_down_year1_earnings_14d",
+  "analysts_count_revising_up_quarter2_earnings_30d",
+  "analysts_count_revising_up_year2_ebitda_14d",
+  "analysts_count_revising_down_year1_ebitda_14d"
+ ],
+ "model26|MODEL|mdl26_dffrnc": [
+  "mdl26_dffrnc_frm_hstrcl_p",
+  "mdl26_dffrnc_frm_hstrcl_prc_rt_rnngs"
+ ],
+ "model26|MODEL|earnings_to": [
+  "earnings_to_price_yield_smartest_next_year",
+  "earnings_to_price_yield_smartest_12m",
+  "earnings_to_price_yield_smartest_year2"
+ ],
+ "model26|MODEL|mdl26_lt": [
+  "mdl26_lt_grwth_ndstry_prcntl",
+  "mdl26_lt_grwth_sctr_prcntl"
+ ],
+ "model26|MODEL|mdl26_grwth": [
+  "mdl26_grwth_nxt_yr_sctr_prcntl_rnngs",
+  "mdl26_grwth_nxt_yr_ndstry_prcntl_rnngs"
+ ],
+ "model26|MODEL|mdl26_mdn": [
+  "mdl26_mdn_hstrcl_f12m_prc_rt_rnngs"
+ ],
+ "model26|MODEL|mdl26_p": [
+  "mdl26_p_yld_pct_stm_fy2",
+  "mdl26_p_yld_pct_stm_fy1",
+  "mdl26_p_yld_pct_stm_f12m"
+ ],
+ "model26|MODEL|mdl26_stm": [
+  "mdl26_stm_f12m_rnngs",
+  "mdl26_stm_prc_rt_fy2_rnngs",
+  "mdl26_stm_prc_rt_fy1_rvn",
+  "mdl26_stm_prc_rt_fy2_rvn",
+  "mdl26_stm_prc_rt_fy1_rnngs",
+  "mdl26_stm_prc_rt_f12m_rnngs",
+  "mdl26_stm_prc_rt_f12m_rvn"
+ ],
+ "model26|MODEL|mdl26_ep": [
+  "mdl26_ep_sector_percentile_fy1",
+  "mdl26_ep_industry_percentile_fy1",
+  "mdl26_ep_yield_smartestimate_fy1"
+ ],
+ "model26|MODEL|pct_surprise": [
+  "pct_surprise_reported_earnings_previous_year",
+  "pct_surprise_reported_revenue_previous_year"
+ ],
+ "model26|MODEL|mdl26_rcmmndtn": [
+  "mdl26_rcmmndtn_mn_chng_7",
+  "mdl26_rcmmndtn_mn_chng_14",
+  "mdl26_rcmmndtn_mn_chng_90",
+  "mdl26_rcmmndtn_mn_chng_60"
+ ],
+ "model26|MODEL|secondary_earnings": [
+  "secondary_earnings_score_component",
+  "secondary_earnings_score"
+ ],
+ "model26|MODEL|score_change": [
+  "score_change_model_7d",
+  "score_change_model_30d"
+ ],
+ "model26|MODEL|growth_rate": [
+  "growth_rate_estimate_current_vs_prior_year_revenue",
+  "growth_rate_estimate_next_vs_current_year_revenue"
+ ],
+ "model26|MODEL|score_delta": [
+  "score_delta_90d",
+  "score_delta_1d"
+ ],
+ "model26|MODEL|mdl26_smartestimate": [
+  "mdl26_smartestimate_f12m_revenue",
+  "mdl26_smartestimate_fy1_revenue",
+  "mdl26_smartestimate_fy2_revenue",
+  "mdl26_smartestimate_fy1_ebitda",
+  "mdl26_smartestimate_fy2_ebitda",
+  "mdl26_smartestimate_fy1_earnings",
+  "mdl26_smartestimate_f12m_ebitda",
+  "mdl26_smartestimate_fy2_earnings"
+ ],
+ "model26|MODEL|mdl26_yld": [
+  "mdl26_yld_sctr_prcntl_fy1_rnngs",
+  "mdl26_yld_stm_fy1_rnngs",
+  "mdl26_yld_ndstry_prcntl_fy1_rnngs"
+ ],
+ "model26|MODEL|model_score": [
+  "model_score_delta_60d",
+  "model_score_delta_3d"
+ ],
+ "model26|MODEL|mdl26_actual": [
+  "mdl26_actual_last_y_revenue",
+  "mdl26_actual_last_y_earnings"
+ ],
+ "model26|MODEL|score_analyst": [
+  "score_analyst_estimate_revisions"
+ ],
+ "model26|MODEL|mdl26_blndd": [
+  "mdl26_blndd_grwth_ndstry_prcntl",
+  "mdl26_blndd_grwth_rt_smrtstmt",
+  "mdl26_blndd_grwth_sctr_prcntl"
+ ],
+ "model26|MODEL|analyst_recommendation": [
+  "analyst_recommendation_upgrades_count_30d",
+  "analyst_recommendation_score_component"
+ ],
+ "model26|MODEL|score_avg": [
+  "score_avg_5d"
+ ],
+ "model26|MODEL|region_rank": [
+  "region_rank_score_decimal",
+  "region_rank_decimal_score"
+ ],
+ "model26|MODEL|country_rank": [
+  "country_rank_score_float"
+ ],
+ "model26|MODEL|score_component": [
+  "score_component_primary_earnings",
+  "score_component_primary_earnings_float"
+ ],
+ "model26|MODEL|recommendation_change": [
+  "recommendation_change_score",
+  "recommendation_change_score_component"
+ ],
+ "model26|MODEL|new_model": [
+  "new_model_activity_indicator"
+ ],
+ "model264|MODEL|mdl264_fca": [
+  "mdl264_fca_class"
+ ],
+ "model264|MODEL|mdl264_mi": [
+  "mdl264_mi_class"
+ ],
+ "model264|MODEL|mdl264_hr": [
+  "mdl264_hr_epsyld_class"
+ ],
+ "model264|MODEL|mdl264_trix": [
+  "mdl264_trix_class",
+  "mdl264_trix_l3",
+  "mdl264_trix_l2",
+  "mdl264_trix_l1"
+ ],
+ "model264|MODEL|mdl264_psale": [
+  "mdl264_psale_class",
+  "mdl264_psale_l3",
+  "mdl264_psale_l2",
+  "mdl264_psale_l1"
+ ],
+ "model264|MODEL|mdl264_fincf": [
+  "mdl264_fincf_l3",
+  "mdl264_fincf_l2",
+  "mdl264_fincf_l1",
+  "mdl264_fincf_class"
+ ],
+ "model264|MODEL|mdl264_div": [
+  "mdl264_div_payout_l2",
+  "mdl264_div_payout_class",
+  "mdl264_div_payout_l1",
+  "mdl264_div_payout_l3"
+ ],
+ "model264|MODEL|mdl264_clv": [
+  "mdl264_clv_class"
+ ],
+ "model264|MODEL|mdl264_gr": [
+  "mdl264_gr_eintr_cfps_class",
+  "mdl264_gr_5y_cfps_class",
+  "mdl264_gr_5y_eps_class",
+  "mdl264_gr_5y_oeps_class"
+ ],
+ "model264|MODEL|mdl264_hilomid": [
+  "mdl264_hilomid_l1",
+  "mdl264_hilomid_l3",
+  "mdl264_hilomid_class",
+  "mdl264_hilomid_l2"
+ ],
+ "model264|MODEL|mdl264_vpt": [
+  "mdl264_vpt_class"
+ ],
+ "model264|MODEL|mdl264_tstk": [
+  "mdl264_tstk_l1",
+  "mdl264_tstk_l2",
+  "mdl264_tstk_l3",
+  "mdl264_tstk_class"
+ ],
+ "model264|MODEL|mdl264_payable": [
+  "mdl264_payable_to_l3",
+  "mdl264_payable_to_class",
+  "mdl264_payable_to_l1",
+  "mdl264_payable_to_l2"
+ ],
+ "model264|MODEL|mdl264_pvo": [
+  "mdl264_pvo_class"
+ ],
+ "model264|MODEL|mdl264_emv": [
+  "mdl264_emv_class"
+ ],
+ "model264|MODEL|mdl264_do": [
+  "mdl264_do_class"
+ ],
+ "model264|MODEL|mdl264_compustat": [
+  "mdl264_compustat_a2_xgb_dl8_d1_xido_class",
+  "mdl264_compustat_a2_xgb_dl8_d1_xido_l3",
+  "mdl264_compustat_a2_xgb_dl8_d1_xido_l2",
+  "mdl264_compustat_a2_xgb_dl8_d1_xido_l1"
+ ],
+ "model264|MODEL|mdl264_macd": [
+  "mdl264_macd_l1",
+  "mdl264_macd_l3",
+  "mdl264_macd_class",
+  "mdl264_macd_l2"
+ ],
+ "model264|MODEL|mdl264_ext": [
+  "mdl264_ext_fin_noa_l1",
+  "mdl264_ext_fin_noa_l3",
+  "mdl264_ext_fin_noa_l2",
+  "mdl264_ext_fin_noa_class"
+ ],
+ "model264|MODEL|mdl264_float": [
+  "mdl264_float_to_l2",
+  "mdl264_float_to_l3",
+  "mdl264_float_to_class",
+  "mdl264_float_to_l1"
+ ],
+ "model264|MODEL|mdl264_tsi": [
+  "mdl264_tsi_class"
+ ],
+ "model264|MODEL|mdl264_rtn21d": [
+  "mdl264_rtn21d_class"
+ ],
+ "model264|MODEL|mdl264_lottery": [
+  "mdl264_lottery_class",
+  "mdl264_lottery_l1",
+  "mdl264_lottery_l3",
+  "mdl264_lottery_l2"
+ ],
+ "model264|MODEL|mdl264_ma": [
+  "mdl264_ma_30_75_class",
+  "mdl264_ma_15_36_class"
+ ],
+ "model264|MODEL|mdl264_wr": [
+  "mdl264_wr_class"
+ ],
+ "model264|MODEL|mdl264_dpo": [
+  "mdl264_dpo_class"
+ ],
+ "model264|MODEL|mdl264_lt": [
+  "mdl264_lt_dt_eq_chg_class"
+ ],
+ "model264|MODEL|mdl264_nvi": [
+  "mdl264_nvi_class"
+ ],
+ "model264|MODEL|mdl264_ppo": [
+  "mdl264_ppo_class"
+ ],
+ "model264|MODEL|mdl264_rtn": [
+  "mdl264_rtn_12m1m_class"
+ ],
+ "model264|MODEL|mdl264_so": [
+  "mdl264_so_class"
+ ],
+ "model264|MODEL|mdl264_rtn63d": [
+  "mdl264_rtn63d_class"
+ ],
+ "model264|MODEL|mdl264_mfi": [
+  "mdl264_mfi_class"
+ ],
+ "model264|MODEL|mdl264_rtn2520d": [
+  "mdl264_rtn2520d_class"
+ ],
+ "model264|MODEL|mdl264_cci": [
+  "mdl264_cci_class"
+ ],
+ "model264|MODEL|mdl264_obv": [
+  "mdl264_obv_class"
+ ],
+ "model264|MODEL|mdl264_spi": [
+  "mdl264_spi_class"
+ ],
+ "model264|MODEL|mdl264_vi": [
+  "mdl264_vi_class"
+ ],
+ "model264|MODEL|mdl264_lco": [
+  "mdl264_lco_class"
+ ],
+ "model36|MODEL|default_risk": [
+  "default_risk_sector_percentile_d1_2",
+  "default_risk_industry_percentile_d1_2",
+  "default_risk_global_percentile_d1_2",
+  "default_risk_country_percentile_d1_2",
+  "default_risk_region_percentile_d1_2"
+ ],
+ "news104|NEWS|nws104_headlineonly": [
+  "nws104_headlineonly"
+ ],
+ "news104|NEWS|nws104_timestamp": [
+  "nws104_timestamp"
+ ],
+ "news104|NEWS|nws104_automessage": [
+  "nws104_automessage"
+ ],
+ "news17|NEWS|nws17_multiple": [
+  "nws17_multiple_comp_rp_story_event_count",
+  "nws17_multiple_comp_headline",
+  "nws17_multiple_comp_qep",
+  "nws17_multiple_comp_rp_story_event_index",
+  "nws17_multiple_comp_ber",
+  "nws17_multiple_comp_bam",
+  "nws17_multiple_comp_acb",
+  "nws17_multiple_comp_reporting_end_time_utc",
+  "nws17_multiple_comp_qmb",
+  "nws17_multiple_comp_event_end_time_utc",
+  "nws17_multiple_comp_relevance",
+  "nws17_multiple_comp_bee",
+  "nws17_multiple_comp_event_start_time_utc",
+  "nws17_multiple_comp_event_text",
+  "nws17_multiple_comp_nip",
+  "nws17_multiple_comp_ssc",
+  "nws17_multiple_comp_timestamp_utc_time",
+  "nws17_multiple_comp_country_code",
+  "nws17_multiple_comp_reporting_start_time_utc",
+  "nws17_multiple_comp_event_similarity_days",
+  "nws17_multiple_comp_qcm",
+  "nws17_multiple_comp_event_sentiment_score",
+  "nws17_multiple_comp_event_relevance"
+ ],
+ "news17|NEWS|analyst_recommendation": [
+  "analyst_recommendation_change_score"
+ ],
+ "news17|NEWS|nws17_reporting": [
+  "nws17_reporting_end_time_utc",
+  "nws17_reporting_start_time_utc"
+ ],
+ "news17|NEWS|nws17_headline": [
+  "nws17_headline"
+ ],
+ "news17|NEWS|nws17_nip": [
+  "nws17_nip"
+ ],
+ "news17|NEWS|nws17_country": [
+  "nws17_country_code"
+ ],
+ "news17|NEWS|nws17_qcm": [
+  "nws17_qcm"
+ ],
+ "news17|NEWS|nws17_relevance": [
+  "nws17_relevance"
+ ],
+ "news17|NEWS|nws17_timestamp": [
+  "nws17_timestamp_utc_time"
+ ],
+ "news17|NEWS|nws17_qmb": [
+  "nws17_qmb"
+ ],
+ "news17|NEWS|nws17_acb": [
+  "nws17_acb"
+ ],
+ "news17|NEWS|nws17_bam": [
+  "nws17_bam"
+ ],
+ "news17|NEWS|nws17_ber": [
+  "nws17_ber"
+ ],
+ "news17|NEWS|nws17_rp": [
+  "nws17_rp_story_event_count",
+  "nws17_rp_story_event_index"
+ ],
+ "news17|NEWS|nws17_ssc": [
+  "nws17_ssc"
+ ],
+ "news17|NEWS|nws17_qep": [
+  "nws17_qep"
+ ],
+ "news18|NEWS|event_start": [
+  "event_start_date_utc",
+  "event_start_time_utc"
+ ],
+ "news18|NEWS|nws18_bam": [
+  "nws18_bam"
+ ],
+ "news18|NEWS|nws18_relevance": [
+  "nws18_relevance"
+ ],
+ "news18|NEWS|nws18_qmb": [
+  "nws18_qmb"
+ ],
+ "news18|NEWS|sentiment_commentary": [
+  "sentiment_commentary_classifier"
+ ],
+ "news18|NEWS|nws18_mltpl": [
+  "nws18_mltpl_cmp_event_simildays",
+  "nws18_mltpl_cmp_event_relevance"
+ ],
+ "news18|NEWS|sentiment_relevance": [
+  "sentiment_relevance_score"
+ ],
+ "news18|NEWS|sentiment_peq": [
+  "sentiment_peq_score_d1"
+ ],
+ "news18|NEWS|event_end": [
+  "event_end_time_utc",
+  "event_end_date_utc"
+ ],
+ "news18|NEWS|reporting_period": [
+  "reporting_period_end_time_utc",
+  "reporting_period_start_time_utc",
+  "reporting_period_end_date_utc",
+  "reporting_period_start_date_utc"
+ ],
+ "news18|NEWS|entity_country": [
+  "entity_country_iso_code_4"
+ ],
+ "news18|NEWS|nws18_ber": [
+  "nws18_ber"
+ ],
+ "news18|NEWS|sentiment_m": [
+  "sentiment_m_and_a_classifier"
+ ],
+ "news18|NEWS|story_event": [
+  "story_event_record_count"
+ ],
+ "news18|NEWS|sentiment_news": [
+  "sentiment_news_impact_projection_d1"
+ ],
+ "news18|NEWS|analyst_recommendation": [
+  "analyst_recommendation_change"
+ ],
+ "news18|NEWS|sentiment_corporate": [
+  "sentiment_corporate_action_bca"
+ ],
+ "news18|NEWS|nws18_bee": [
+  "nws18_bee"
+ ],
+ "news18|NEWS|sentiment_earnings": [
+  "sentiment_earnings_classifier_d1",
+  "sentiment_earnings_release_classifier"
+ ],
+ "news18|NEWS|company_event": [
+  "company_event_summary"
+ ],
+ "news18|NEWS|company_story": [
+  "company_story_headline"
+ ],
+ "news18|NEWS|event_relevance": [
+  "event_relevance_score"
+ ],
+ "news18|NEWS|nws18_ghc": [
+  "nws18_ghc_lna"
+ ],
+ "news18|NEWS|nws18_acb": [
+  "nws18_acb"
+ ],
+ "news18|NEWS|story_entity": [
+  "story_entity_record_count_d1"
+ ],
+ "news18|NEWS|nws18_qep": [
+  "nws18_qep"
+ ],
+ "news20|NEWS|nws20_country": [
+  "nws20_country_code"
+ ],
+ "news20|NEWS|nws20_qcm": [
+  "nws20_qcm"
+ ],
+ "news20|NEWS|nws20_relevance": [
+  "nws20_relevance"
+ ],
+ "news20|NEWS|nws20_ber": [
+  "nws20_ber"
+ ],
+ "news20|NEWS|nws20_bam": [
+  "nws20_bam"
+ ],
+ "news20|NEWS|nws20_reporting": [
+  "nws20_reporting_start_time_utc",
+  "nws20_reporting_end_time_utc"
+ ],
+ "news20|NEWS|nws20_rp": [
+  "nws20_rp_story_event_index",
+  "nws20_rp_story_event_count"
+ ],
+ "news20|NEWS|nws20_acb": [
+  "nws20_acb"
+ ],
+ "news20|NEWS|nws20_bee": [
+  "nws20_bee"
+ ],
+ "news20|NEWS|nws20_timestamp": [
+  "nws20_timestamp_utc_time"
+ ],
+ "news20|NEWS|nws20_qep": [
+  "nws20_qep"
+ ],
+ "news20|NEWS|nws20_ghc": [
+  "nws20_ghc_lna"
+ ],
+ "news20|NEWS|nws20_headline": [
+  "nws20_headline"
+ ],
+ "news20|NEWS|nws20_qmb": [
+  "nws20_qmb"
+ ],
+ "news50|NEWS|mws50_bam": [
+  "mws50_bam"
+ ],
+ "news50|NEWS|mws50_type": [
+  "mws50_type"
+ ],
+ "news50|NEWS|mws50_topic": [
+  "mws50_topic"
+ ],
+ "news50|NEWS|mws50_news": [
+  "mws50_news_type"
+ ],
+ "news50|NEWS|mws50_qmb": [
+  "mws50_qmb"
+ ],
+ "news50|NEWS|mws50_country": [
+  "mws50_country_code"
+ ],
+ "news50|NEWS|mws50_ess": [
+  "mws50_ess"
+ ],
+ "news50|NEWS|mws50_ghc": [
+  "mws50_ghc_lna"
+ ],
+ "news50|NEWS|mws50_rp": [
+  "mws50_rp_story_event_count",
+  "mws50_rp_story_event_index"
+ ],
+ "news50|NEWS|mws50_ber": [
+  "mws50_ber"
+ ],
+ "news50|NEWS|mws50_qcm": [
+  "mws50_qcm"
+ ],
+ "news50|NEWS|mws50_time": [
+  "mws50_time"
+ ],
+ "news50|NEWS|mws50_nip": [
+  "mws50_nip"
+ ],
+ "news50|NEWS|mws50_vea": [
+  "mws50_vea"
+ ],
+ "news50|NEWS|mws50_position": [
+  "mws50_position_name"
+ ],
+ "news50|NEWS|mws50_aes": [
+  "mws50_aes"
+ ],
+ "news50|NEWS|mws50_category": [
+  "mws50_category"
+ ],
+ "news50|NEWS|mws50_g": [
+  "mws50_g_ens_key",
+  "mws50_g_ens",
+  "mws50_g_ens_elapsed",
+  "mws50_g_ens_similarity_gap"
+ ],
+ "news50|NEWS|mws50_product": [
+  "mws50_product_key"
+ ],
+ "news50|NEWS|mws50_property": [
+  "mws50_property"
+ ],
+ "news50|NEWS|mws50_qep": [
+  "mws50_qep"
+ ],
+ "news50|NEWS|mws50_maturity": [
+  "mws50_maturity"
+ ],
+ "news50|NEWS|mws50_sub": [
+  "mws50_sub_type"
+ ],
+ "news50|NEWS|mws50_bee": [
+  "mws50_bee"
+ ],
+ "news50|NEWS|mws50_relevance": [
+  "mws50_relevance"
+ ],
+ "news50|NEWS|mws50_ssc": [
+  "mws50_ssc"
+ ],
+ "news50|NEWS|mws50_evaluation": [
+  "mws50_evaluation_method"
+ ],
+ "news50|NEWS|mws50_group": [
+  "mws50_group"
+ ],
+ "news50|NEWS|mws50_acb": [
+  "mws50_acb"
+ ],
+ "other250|OTHER|oth250_price": [
+  "oth250_price_range_max",
+  "oth250_price_range_min"
+ ],
+ "other250|OTHER|product_price": [
+  "product_price_upper_bound",
+  "product_price_lower_bound"
+ ],
+ "other47|OTHER|product_listing": [
+  "product_listing_ad_terms"
+ ],
+ "pattern_scores|PV|cont_rising": [
+  "cont_rising_wedge_median_simscore_lookback120",
+  "cont_rising_wedge_std_simscore_lookback120",
+  "cont_rising_wedge_std_simscore_lookback60",
+  "cont_rising_wedge_dynamic_simscore_lookback60",
+  "cont_rising_wedge_q95_simscore_lookback60",
+  "cont_rising_wedge_median_simscore_lookback60"
+ ],
+ "pattern_scores|PV|stddev_similarity": [
+  "stddev_similarity_rising_wedge_pattern",
+  "stddev_similarity_downward_ascending_triangle",
+  "stddev_similarity_downward_common_gap_120",
+  "stddev_similarity_continuation_rising_wedge",
+  "stddev_similarity_upward_breakaway_gap_120",
+  "stddev_similarity_symmetrical_triangle_up",
+  "stddev_similarity_falling_wedge_pattern_2",
+  "stddev_similarity_continuation_falling_wedge",
+  "stddev_similarity_falling_wedge_pattern",
+  "stddev_similarity_falling_support_flat_resistance_120",
+  "stddev_similarity_breakaway_gap_up_pattern",
+  "stddev_similarity_upward_common_gap",
+  "stddev_similarity_upward_descending_triangle_120",
+  "stddev_similarity_continuation_v_top_pattern",
+  "stddev_similarity_continuation_v_bottom_pattern",
+  "stddev_similarity_rising_support_flat_resistance_120",
+  "stddev_similarity_breakaway_gap_down_pattern",
+  "stddev_similarity_common_gap_up_pattern",
+  "stddev_similarity_upward_symmetrical_triangle_120",
+  "stddev_similarity_common_gap_down_pattern",
+  "stddev_similarity_v_reversal_top",
+  "stddev_similarity_v_reversal_top_120",
+  "stddev_similarity_descending_triangle_pattern",
+  "stddev_similarity_descending_triangle_up_pattern",
+  "stddev_similarity_rising_support_flat_resistance",
+  "stddev_similarity_v_continuation_bottom",
+  "stddev_similarity_rising_wedge_pattern_120",
+  "stddev_similarity_v_continuation_top",
+  "stddev_similarity_v_reversal_bottom_120",
+  "stddev_similarity_reversal_v_bottom_pattern"
+ ],
+ "pattern_scores|PV|upward_wedge": [
+  "upward_wedge_dynamic_similarity",
+  "upward_wedge_min_similarity",
+  "upward_wedge_max_similarity",
+  "upward_wedge_mean_similarity",
+  "upward_wedge_std_similarity"
+ ],
+ "pattern_scores|PV|simscore_desc": [
+  "simscore_desc_triangle_avg_40w",
+  "simscore_desc_triangle_max_40w",
+  "simscore_desc_triangle_up_max_40w",
+  "simscore_desc_triangle_up_dyn_40w"
+ ],
+ "pattern_scores|PV|trendline_divergence": [
+  "trendline_divergence_dynamic_similarity",
+  "trendline_divergence_max_similarity",
+  "trendline_divergence_upward_std_similarity",
+  "trendline_divergence_median_similarity",
+  "trendline_divergence_upward_median_similarity",
+  "trendline_divergence_upward_mean_similarity",
+  "trendline_divergence_upward_max_similarity",
+  "trendline_divergence_mean_similarity_40d",
+  "trendline_divergence_upward_min_similarity",
+  "trendline_divergence_min_similarity"
+ ],
+ "pattern_scores|PV|rising_wedge": [
+  "rising_wedge_median_simscore_lookback60",
+  "rising_wedge_min_simscore_lookback120",
+  "rising_wedge_dynamic_simscore_lookback120",
+  "rising_wedge_median_simscore_lookback120",
+  "rising_wedge_q95_simscore_lookback60"
+ ],
+ "pattern_scores|PV|trendline_convergence": [
+  "trendline_convergence_downward_median_similarity",
+  "trendline_convergence_max_similarity_40d",
+  "trendline_convergence_downward_max_similarity",
+  "trendline_convergence_dynamic_similarity",
+  "trendline_convergence_downward_std_similarity",
+  "trendline_convergence_max_similarity",
+  "trendline_convergence_quantile95_similarity",
+  "trendline_convergence_min_similarity",
+  "trendline_convergence_downward_quantile95_similarity",
+  "trendline_convergence_downward_mean_similarity",
+  "trendline_convergence_downward_dynamic_similarity"
+ ],
+ "pattern_scores|PV|simscore_cont": [
+  "simscore_cont_vtop_avg_40w",
+  "simscore_cont_vtop_min_40w",
+  "simscore_cont_rising_wedge_q95_40w",
+  "simscore_cont_vtop_dyn_40w"
+ ],
+ "pattern_scores|PV|cont_falling": [
+  "cont_falling_wedge_min_simscore_lookback60",
+  "cont_falling_wedge_std_simscore_lookback60",
+  "cont_falling_wedge_dynamic_simscore_lookback120",
+  "cont_falling_wedge_std_simscore_lookback120",
+  "cont_falling_wedge_median_simscore_lookback120",
+  "cont_falling_wedge_mean_simscore_lookback120"
+ ],
+ "pattern_scores|PV|simscore_symm": [
+  "simscore_symm_triangle_down_stddev_40w"
+ ],
+ "pattern_scores|PV|simscore_falling": [
+  "simscore_falling_wedge_max_40w",
+  "simscore_falling_wedge_q95_40w"
+ ],
+ "pattern_scores|PV|simscore_asc": [
+  "simscore_asc_triangle_down_median_40w",
+  "simscore_asc_triangle_max_40w"
+ ],
+ "pattern_scores|PV|regular_downward": [
+  "regular_downward_gap_dynamic_similarity",
+  "regular_downward_gap_quantile95_similarity",
+  "regular_downward_gap_median_similarity",
+  "regular_downward_gap_max_similarity",
+  "regular_downward_gap_mean_similarity",
+  "regular_downward_gap_quantile95_similarity_40d"
+ ],
+ "pattern_scores|PV|downward_wedge": [
+  "downward_wedge_std_similarity",
+  "downward_wedge_max_similarity",
+  "downward_wedge_median_similarity",
+  "downward_wedge_quantile95_similarity_40d",
+  "downward_wedge_min_similarity",
+  "downward_wedge_quantile95_similarity"
+ ],
+ "pattern_scores|PV|upward_gap": [
+  "upward_gap_break_min_similarity_40d",
+  "upward_gap_break_min_similarity",
+  "upward_gap_break_max_similarity",
+  "upward_gap_break_median_similarity",
+  "upward_gap_break_dynamic_similarity_40d"
+ ],
+ "pattern_scores|PV|regular_upward": [
+  "regular_upward_gap_std_similarity",
+  "regular_upward_gap_dynamic_similarity",
+  "regular_upward_gap_mean_similarity"
+ ],
+ "pattern_scores|PV|simscore_common": [
+  "simscore_common_gap_up_min_40w",
+  "simscore_common_gap_up_avg_40w",
+  "simscore_common_gap_down_median_40w",
+  "simscore_common_gap_down_min_40w",
+  "simscore_common_gap_up_median_40w"
+ ],
+ "pattern_scores|PV|simscore_break": [
+  "simscore_break_gap_up_q95_40w",
+  "simscore_break_gap_down_max_40w"
+ ],
+ "pattern_scores|PV|adaptive_similarity": [
+  "adaptive_similarity_upward_breakaway_gap_120",
+  "adaptive_similarity_upward_gap_pattern"
+ ],
+ "pattern_scores|PV|falling_wedge": [
+  "falling_wedge_min_simscore_lookback120",
+  "falling_wedge_dynamic_simscore_lookback120",
+  "falling_wedge_dynamic_simscore_lookback60",
+  "falling_wedge_mean_simscore_lookback60",
+  "falling_wedge_median_simscore_lookback120"
+ ],
+ "pattern_scores|PV|quantile95_rising": [
+  "quantile95_rising_wedge_similarity_value"
+ ],
+ "pattern_scores|PV|max_reversal": [
+  "max_reversal_v_bottom_similarity_score"
+ ],
+ "pattern_scores|PV|min_ascending": [
+  "min_ascending_triangle_similarity_metric"
+ ],
+ "pattern_scores|PV|median_asc": [
+  "median_asc_triangle_downward_similarity"
+ ],
+ "predictive_starmine|MODEL|eq_vr": [
+  "eq_vr_dlra2_region_rank_change",
+  "eq_vr_dlra2_exclusions_component_change",
+  "eq_vr_dlra2_v16",
+  "eq_vr_dlra2_cashflow_component",
+  "eq_vr_dlra2_raw_score",
+  "eq_vr_dlra1_operating_efficiency_component",
+  "eq_vr_dlra1_region_rank",
+  "eq_vr_dlra1_cashflow_component_change_2",
+  "eq_vr_dlra1_operating_efficiency_component_2",
+  "eq_vr_dlra2_v8",
+  "eq_vr_dlra2_score",
+  "eq_vr_dlra3_v18",
+  "eq_vr_dlra1_exclusions_component_change",
+  "eq_vr_dlra1_cashflow_component_change",
+  "eq_vr_dlra3_v17",
+  "eq_vr_dlra3_v11",
+  "eq_vr_dlra3_new_sector_diff",
+  "eq_vr_dlra2_accruals_component",
+  "eq_vr_dlra2_cashflow_component_change",
+  "eq_vr_dlra3_v19",
+  "eq_vr_dlra3_v16",
+  "eq_vr_dlra3_v14",
+  "eq_vr_dlra2_operating_efficiency_change",
+  "eq_vr_dlra1_region_rank_change",
+  "eq_vr_dlra3_v9",
+  "eq_vr_dlra3_v10",
+  "eq_vr_dlra3_v7",
+  "eq_vr_dlra3_v12",
+  "eq_vr_dlra1_accruals_component",
+  "eq_vr_dlra1_score",
+  "eq_vr_dlra3_new_region_rank",
+  "eq_vr_dlra3_new_sector_median",
+  "eq_vr_dlra2_region_rank",
+  "eq_vr_dlra2_operating_efficiency_component",
+  "eq_vr_dlra1_exclusions_component",
+  "eq_vr_dlra1_accruals_component_change",
+  "eq_vr_dlra1_operating_efficiency_change",
+  "eq_vr_dlra1_operating_efficiency_component_change",
+  "eq_vr_dlra3_v8",
+  "eq_vr_dlra2_v7",
+  "eq_vr_dlra2_accruals_component_change",
+  "eq_vr_dlra3_v13",
+  "eq_vr_dlra2_exclusions_component",
+  "eq_vr_dlra1_raw_score",
+  "eq_vr_dlra1_cashflow_component"
+ ],
+ "predictive_starmine|MODEL|smest_fq2": [
+  "smest_fq2_ebitda_3",
+  "smest_fq2_revenue_4",
+  "smest_fq2_earnings_4"
+ ],
+ "predictive_starmine|MODEL|iv_steady": [
+  "iv_steady_state_dividend_payout_rate_3",
+  "iv_steady_state_growth_earnings_3",
+  "iv_steady_state_year_dividends_3",
+  "iv_steady_state_year_dividends_4",
+  "iv_steady_state_year_earnings_3"
+ ],
+ "predictive_starmine|MODEL|arm_recommendations": [
+  "arm_recommendations_component_score_6",
+  "arm_recommendations_component_score_3"
+ ],
+ "predictive_starmine|MODEL|smest_fq1": [
+  "smest_fq1_revenue_7",
+  "smest_fq1_ebitda_4",
+  "smest_fq1_revenue_5",
+  "smest_fq1_earnings_5"
+ ],
+ "predictive_starmine|MODEL|iv_warranted": [
+  "iv_warranted_f12m_pe_3"
+ ],
+ "predictive_starmine|MODEL|iv_cagr": [
+  "iv_cagr_base_year_3"
+ ],
+ "predictive_starmine|MODEL|steady_state": [
+  "steady_state_annual_earnings_projection",
+  "steady_state_dividend_payout_ratio",
+  "steady_state_earnings_growth_rate"
+ ],
+ "predictive_starmine|MODEL|smest_fy2": [
+  "smest_fy2_earnings_7",
+  "smest_fy2_ebitda_4",
+  "smest_fy2_revenue_5",
+  "smest_fy2_earnings_4",
+  "smest_fy2_revenue_3",
+  "smest_fy2_ebitda_7"
+ ],
+ "predictive_starmine|MODEL|intrinsic_valuation": [
+  "intrinsic_valuation_discount_rate"
+ ],
+ "predictive_starmine|MODEL|intrinsic_value": [
+  "intrinsic_value_projection_currency_3",
+  "intrinsic_value_projection_currency_4"
+ ],
+ "predictive_starmine|MODEL|cagr_base": [
+  "cagr_base_year_projection"
+ ],
+ "predictive_starmine|MODEL|arm_preferred": [
+  "arm_preferred_earnings_component_score",
+  "arm_preferred_earnings_component_score_6"
+ ],
+ "predictive_starmine|MODEL|market_implied": [
+  "market_implied_5yr_eps_cagr_dlr1"
+ ],
+ "predictive_starmine|MODEL|arm_revenue": [
+  "arm_revenue_component_score_4",
+  "arm_revenue_component_score_3"
+ ],
+ "predictive_starmine|MODEL|arm_secondary": [
+  "arm_secondary_earnings_component_score_7",
+  "arm_secondary_earnings_component_score_3"
+ ],
+ "predictive_starmine|MODEL|iv_market": [
+  "iv_market_implied_5yr_eps_cagr_3",
+  "iv_market_implied_10yr_eps_cagr_4",
+  "iv_market_implied_10yr_eps_cagr_3"
+ ],
+ "predictive_starmine|MODEL|iv_discount": [
+  "iv_discount_rate_3"
+ ],
+ "predictive_starmine|MODEL|arm_region": [
+  "arm_region_rank_decimal_2",
+  "arm_region_rank_decimal_6"
+ ],
+ "predictive_starmine|MODEL|trailing_pe": [
+  "trailing_pe_last_fiscal_year_2",
+  "trailing_pe_last_4q",
+  "trailing_pe_last_fiscal_year_6"
+ ],
+ "predictive_starmine|MODEL|forward_10yr": [
+  "forward_10yr_eps_cagr_projection"
+ ],
+ "predictive_starmine|MODEL|arm_country": [
+  "arm_country_rank_score_7",
+  "arm_country_rank_score_3"
+ ],
+ "predictive_starmine|MODEL|warranted_forward": [
+  "warranted_forward_pe_ratio"
+ ],
+ "predictive_starmine|MODEL|forward_5yr": [
+  "forward_5yr_eps_cagr_projection"
+ ],
+ "predictive_starmine|MODEL|arm_global": [
+  "arm_global_rank_score",
+  "arm_global_rank_score_3"
+ ],
+ "risk60|RISK|rsk60_last": [
+  "rsk60_last"
+ ],
+ "risk60|RISK|rsk60_offer": [
+  "rsk60_offer"
+ ],
+ "sentiment27|SENTIMENT|snl27_top75pctranking": [
+  "snl27_top75pctranking"
+ ],
+ "sentiment27|SENTIMENT|snl27_skewness": [
+  "snl27_skewness"
+ ],
+ "sentiment27|SENTIMENT|snl27_relpopularity08": [
+  "snl27_relpopularity08"
+ ],
+ "sentiment27|SENTIMENT|snl27_kurtosis": [
+  "snl27_kurtosis"
+ ],
+ "sentiment27|SENTIMENT|snl27_wq": [
+  "snl27_wq_pit"
+ ],
+ "sentiment27|SENTIMENT|snl27_totalcountrydomains": [
+  "snl27_totalcountrydomains"
+ ],
+ "sentiment7|SENTIMENT|snt7_timestamp": [
+  "snt7_timestamp"
+ ],
+ "sentiment7|SENTIMENT|snt7_all": [
+  "snt7_all_languages_views"
+ ],
+ "sentiment7|SENTIMENT|snt7_views": [
+  "snt7_views"
+ ]
+}

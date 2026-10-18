@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-01
+last_verified: 2026-10-14
 name: pull-brain-skills
 description: "把外部 skill（ZIP URL / Git 仓库 / 本地目录）拉进**隔离暂存区**并出具静态审查报告（hooks / allowed-tools / scripts / 符号链接 / 风险模式 / 同名碰撞）；不安装、不执行被导入内容。包含 SKILL.md / skill.md（不区分大小写）的文件夹视为候选 skill。"
 layer: L7
@@ -47,14 +47,14 @@ $WQ_PY Claude/skills/pull-brain-skills/scripts/pull_skills.py "/path/to/my-skill
 
 | 选项 | 含义 |
 |---|---|
-| `--dest <dir>` | 目的地。缺省 = 暂存目录（仓库内 `attic/import_staging/`；不在仓库里则 `<cwd>/import_staging`）。指向活跃 skill 根需 `--allow-live-dest` |
+| `--dest <dir>` | 目的地。缺省 = 暂存目录（仓库内 `attic/import_staging/`；不在仓库里则 `<cwd>/import_staging`）。指向活跃 skill 根需 `--allow-live-dest`；**等于仓库根（或其祖先）一律拒绝**——`copy_skill_folder()` 写 `<dest>/<skill>/`，那样会在仓库根长出整棵技能树（2026-10-14 实测一天复发两次），`--allow-live-dest` 对这一条无效 |
 | `--branch <b>` | 只对 Git URL 生效（ZIP / 本地目录忽略并提示） |
 | `--subdir <rel>` | 从获取到的仓库里的这个子目录扫描（很多仓库把 skill 放在 `skills/<name>/`，此时必须 `--subdir skills`）；路径不得越出仓库 |
 | `--overwrite` | 目的地已有同名文件夹时替换——**不删除**：旧的被挪到 `<dest>/.backup/<name>_<时间戳>`，可恢复 |
 | `--allow-live-dest` | 允许写进活跃 skill 根（`Claude/skills/`、`~/.claude/skills/` 等）；风险非 `low` 的候选仍被跳过 |
 | `--accept-risk` | 与上一项同用，才会写入 `review` / `high` 的候选 |
 
-**退出码**：`0` 至少导入 / 暂存了一个 skill；`1` 用法错误；`2` 拉取 / 克隆 / 子目录失败；`3` 目的地是活跃根但没给 `--allow-live-dest`；`4` 拉取成功但**一个都没导入**（顶层没有含 SKILL.md 的文件夹，或全被跳过）——这不是成功。
+**退出码**：`0` 至少导入 / 暂存了一个 skill；`1` 用法错误；`2` 拉取 / 克隆 / 子目录失败；`3` 目的地是活跃根但没给 `--allow-live-dest`，**或目的地 == 仓库根 / 其祖先（这一形态没有逃生口，给了 flag 同样 `3`）**；`4` 拉取成功但**一个都没导入**（顶层没有含 SKILL.md 的文件夹，或全被跳过）——这不是成功。
 
 ZIP 下载有超时（60 s）与大小上限（50 MB），解压有 zip-slip 防护；本工具从不执行被导入内容，唯一的删除是它自己的临时目录。
 

@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：probe（跟区域入场 probe-only）　**分组**：Fundamental　**类别卡**：fundamental
 
-**备注**：EUR 破 prod 墙的唯一有效杠杆：vector_neut 残差化，残差轴的选择决定成败
+**备注**：EUR 破 prod 墙的残差化路径：★ vector_neut 已于 2026-10-10 实测被平台移除（op-lint 拦截：平台算子清单外）⇒ 改用 ts_regression / group_neutralize / subtract(rank,rank) 三种可用残差化；残差轴的选择仍决定成败
 
 **涉及数据集**：fundamental17、fundamental23、fundamental93、other401
 
@@ -53,13 +53,15 @@
 - **用**：嵌套残差化：先削自由现金流，再削投资（CAPEX）或经营现金流维度（WorkBuddy MEMORY §1.7）
 - **说明**：ts_backfill 在 EUR / TOPCS1600 / nanHandling=ON 下是 no-op：写 EUR 表达式先删它；但 /assets 归一化是真信号，残差轴也要归一化
 - **说明**：hump 必须写命名参数（hump=k）；hump(vec_avg(x), …) 会 FAIL
+- **说明**：★★ vector_neut 已被平台移除（2026-10-10 op-lint 实测「平台算子清单外的名字」）⇒ 本 cell 旧记「唯一有效杠杆：vector_neut 残差化」作废。残差化可用替代（本轮验证）：ts_regression(y,x,d,rettype=0) / group_neutralize(x,group)（内层须细于 setting 的 SUBINDUSTRY）/ subtract(rank(A),rank(B))（合规放行形态）
+- **说明**：★★★ 【三层闸门口径差异·实测样本】EUR fnd72 'mL617YPx'（2026-10-11）：**平台 review 闸全过**（S1.82/F1.25/TO0.0675/**2年 ladder 2.23**/margin17.6bp/Failed RA=0/prod0.5421/self0.3999），但 **skill Phase C 判 REJECT**（近 **3年** CV_Sharpe 0.661 / max-min 5.26）。★ 差异点：**平台看 2 年窗口，skill 看近 3 年波动性** —— 该腿 2021 年异常高（3.63）拉大 CV。★ repair 2 轮实证（16 条变体）：'target_tvr' 0.06→0.30 仅改善 CV 0.020（饱和于 0.641）；max/min 可从 5.26 修复至 **4.63**（tvr=0.10）；**CV 属结构性，参数层不可弥合**。⇒ **选腿先验：若某腿单年 Sharpre 异常突出（如 2021），它会被 skill Phase C 拦，应优先找年度分布均匀的腿**。
 - **已验证骨架**（证据见每行注释；照抄前先按本组合当前 prod 复核）：
 
   ```text
   vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets))), rank(divide(free_cash_flow, assets))), rank(divide(operating_cashflow, assets)))
   ```
 
-  - vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets)… ← 2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；当前最佳 JjQmx9nm（fcf→capex→ocf，12 算子）S 1.73 / F 1.17 / prod 0.6695 / self 0.3397
+  - vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets)… ← 2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；当前最佳 JjQmx9nm（fcf→capex→ocf，12 算子）S 1.73 / F 1.17 / prod 0.6695 / self 0.3397；⚠ 2026-10-10 实测：vector_neut 已被平台移除（op-lint 拦截），此骨架不可再执行，仅存历史证据
 - **类别通用原语**（类别卡，跨区）：
   - accrual / cash gap: earnings quality, not the earnings level
   - leverage change: delta of debt or interest burden
@@ -72,7 +74,7 @@
 - **跨区结论**（USA/KOR；negative）：慢变的经典基本面单因子（value / quality / book 及其线性变体）判死或 prod 饱和（证据：USA seed basics 全族死、book/value 145 颗同族 ACTIVE；KOR 慢变基本面族 fnd86/89/93/f21 四连死） <!-- lint:const-ok 证据原文 -->
 - **禁止**（类别卡）：禁止使用裸 rank(fundamental_score)（必须 group_neutralize 或 group_zscore）
 - **禁止**（类别卡）：禁止使用加权混合（0.4*rank(A) + 0.6*rank(B)）
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

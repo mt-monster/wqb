@@ -161,3 +161,97 @@ $WQ_PY tools/fields/field_semantic_type.py --report --region GBR      # 语义 �
 1. 不能按**固定规则优先级**：应按「description 中**最靠前的主量词**」（"Number of … per share" 主量是家数）；
 2. **复合名词**要单独处理："price-to-revenue **ratio**" 的主量词在**词尾**，`price` 会抢先误判；
 3. 泛化词要收紧（`expected` ⇒ `expect(ed)?\s+(annual|forward|fiscal|\d)`，否则 "Expected annualized percent change" 被判估计水平）。
+
+
+## 9. ★★★★ 硬纪律：已测字段的命中率**不能**预测未测字段（2026-10-08 实测确立）
+
+**同日内两次栽在同一坑，固化为此纪律**：
+- §十二 被 **`score` 的未测数量**（533 个）误导 ⇒ 建议扫 score ⇒ 实测命中率仅 1.3%；
+- §十四 被 **`count` 的已测命中率**（10.6%）误导 ⇒ 建议优先 count ⇒ 实测未测 count 中位 S 仅 **0.08**。
+
+**根因**：**已测集合不是随机样本** —— 字段是历史上被**刻意挑选**（如已看到信号迹象）才去测的，
+因此「已测字段的命中率」同时包含「语义能力」与「挑选偏差」，**外推到未测池必然失效**。
+
+> **⇒ 要估计未测池的产出率，唯一可靠做法 = 直接测未测字段（配匹配骨架）** —— 即「语义抽样扫测」。
+
+### 语义抽样扫测（新区域第 0 步，建议固化）
+
+```bash
+$WQ_PY <repo 外>/wqb-scripts/semtype_scan.py gen --region <R> --per-type 4   # 生成波文件+manifest
+$WQ_PY <repo 外>/wqb-scripts/semtype_scan.py run --region <R> --waves 1-N   # 逐波派发+收割
+```
+- 每类取 **UNTESTED** 字段（非 MODEL 优先、类内按 coverage 降序、每数据集至多 1 个）；
+- 套该 sem_type 的**匹配骨架**（见 §7/§8 的 `SKELETON_HINT`）；8 条一波；
+- `manifest.json` 保留 `expr → (sem_type, field)` 映射，供事后归因。
+
+### GBR 实测结论（62 条 / 8 波 / 17 类，2026-10-08）
+
+| 判读 | sem_type | 中位 S |
+|---|---|---|
+| **有效语义（有序号语义）** | **`ratio` 0.50 > `percentile` 0.23 > `revision_change` 0.11 > `estimate_level` 0.10 > `count` 0.08 > `sentiment` 0.05** | — |
+| **spurious（无序号语义，分数无意义）** | `identifier` 0.65 ｜ `text` 0.45 ｜ `cluster_label` 0.30 ｜ `temporal_meta` 0.06 | — |
+| **反效** | `dispersion` −0.41 ｜ `probability` −0.51 ｜ `level_amount` −0.59 | — |
+
+**62 条中 S≥1.58 = 0**。⇒ 用 8 波（而非盲挖的 ≈322 波）证明了「GBR 非 MODEL 未测池不值得挖」。
+
+**★ 附带的判读纪律**：`identifier`/`text`/`cluster_label`/`temporal_meta` 的高 S 是 **spurious**
+（对 ISO 国家代码按字母序 rank、对 cluster id 按数字序 rank ⇒ 排序无经济含义）。
+**判定「能不能当信号」必须靠 description 判断它是否有 ordinal 语义** —— 这是「读 description」纪律的又一个落点。
+
+
+## 10. ★★★★ 硬纪律：判据只允许建立在「字段本质」之上（2026-10-09）
+
+**代理量（coverage / turnover / 字段名正则）只能作线索或降权，不得单独作判死依据。** 同日已踩三次同类坑：
+
+| # | 判据 | 错在哪 | 铁证 | 处置 |
+|---|---|---|---|---|
+| 1 | `DEAD_COUNT`：字段名正则 | 名字会骗人 | `country`/`accounts` 误匹配；`*_surprisenum` 语义实为覆盖度 | ✅ 改为 description 驱动 |
+| 2 | `DEAD_TURNOVER`：`to_med > 0.70` | **换手是骨架属性**（`ts_decay_linear`/`ts_target_tvr_decay` 可压低），且该判据下 7 个字段 `n_tests` 全为 1 | — | ⏳ **待修**（建议降级为提示） |
+| 3 | **`UNUSABLE`：`coverage < 0.6`** | **coverage 是 `区域×universe×delay` 属性**；且 `cov == 0.00` 实为**未采集** | ★ **`model38` 全部字段 cov=0.0，其中 9 个 ALIVE（S1.87–2.44）、另 57 个仅因同一个 0.0 被判 UNUSABLE**；`pv47` cov=0.0 而 2 字段全 ALIVE；真低覆盖的 `model28` 族 cov 0.5837–0.5862 出 **4 个 ALIVE（S1.77–1.94）** | ✅ **已修**：`cov==0/None → UNKNOWN_COVERAGE`（回平台复核） |
+
+### 修正效果（GBR 15,522）
+
+```
+修正前：UNUSABLE 10,967（70.7%）｜UNTESTED 2,578
+修正后：UNUSABLE  3,409（22.0%）｜UNKNOWN_COVERAGE 7,558（48.7%）｜UNTESTED 2,508
+⇒ 可探池上限 2,578 → 10,066（+290%）
+```
+
+**★ 附带纪律**：**低覆盖由平台的 `LOW_SUB_UNIVERSE_SHARPE` 闸判**，不应在字段画像层预判死亡。
+
+
+## 11. ★★★ 骨架多样性（2026-10-09 用户明令，v2 已审）
+
+**纪律**：**字段画像决定骨架** —— 不同 sem_type/field_type 的字段必须配不同骨架族；禁止一套 house 骨架打所有字段。
+
+**工具**：`tools/fields/skeleton_panel.py`
+- `list`：12 族骨架面板与语义映射；
+- `gap-report --region R`：每字段「应配（SEM_PREFERRED）→ 已见（skeleton_fams 列）→ 缺口」；
+- `gen`：按字段画像生成多族初筛波（count 自动配对对偶字段差）；
+- `audit`：发批第 7 闸，**两级** —— 波级（模板 ≥3 族、单模板 ≤60%）+ 字段级（`--region`，每字段 ≥2 族）；
+  深挖/参数扫用 `--param-sweep` 显式豁免。
+
+**SEM_PREFERRED v2（实测校准，证据见 GBR_skeleton_mapping_review_20261009.md）**：
+```
+count           → subtract_pair（对偶差 1.96）→ quantile → gn_first → decay_linear
+ratio           → delta（2.15）→ av_diff（2.02）→ quantile → level_rank
+percentile      → delta（2.61）→ gn_first → double_window → gate → level_rank
+estimate_level  → delta（1.90）→ ts_rank（1.79）→ level_rank
+probability     → delta（1.80）→ level_rank → av_diff
+score           → level_rank（1.61 唯一 ALIVE 族）→ ts_rank → quantile（待证）
+level_amount    → delta（1.78）→ level_rank ｜ ⚠ ts_zscore 实测 0.65 弱，降为对照
+sentiment       → quantile（1.75 唯一 ALIVE 族）→ level_rank
+revision_change → level_rank → decay_linear（1.50）→ ts_rank
+dispersion      → delta → divide（全族低置信待证）
+unknown         → level_rank → delta → decay_linear → gate（2.07）
+```
+**反模式（实测推翻，勿再用）**：ts_rank/ts_zscore 对 ratio/level_amount/sentiment 当首选（实测 0.3~0.9 弱）；
+`count` 只用单字段 level_rank（1.36）而丢对偶差（1.96）。
+
+**画像列**：`field_profile_perf.n_skeletons` / `skeleton_fams`（Phase 0 已建）；
+`n_skeletons==1` 的 DEAD = 低置信，进复活候选池，禁当终局结论。
+
+  **v3 回归结论（2026-10-09，3a 复活补测 89 条）**：v2 映射在合并新数据后**全部站住**；
+  GBR WEAK 池复活率仅 **2.1%**（1/47，ΔS 中位 −0.88）⇒ **「单骨架判死=假死」在 GBR 不成立，
+  原骨架通常已是该字段最强形态**；DEAD 池大规模复活（3b/3d）已取消（期望更低）。
+  骨架多样性的价值在「**置信度分级 + 排除嫌疑**」，不在「大量复活」。

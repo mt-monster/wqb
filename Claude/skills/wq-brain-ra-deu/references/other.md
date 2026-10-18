@@ -108,4 +108,37 @@
 
 **⇒ `other` 在 DEU 实质可用面极小**（366 个 UNTESTED 里大部分是 `other455` 的剩余字段）。
 `other47`（搜索流量）/ `other250`（电商评价）/ `other532`（特质收益）为小池，未测。
+
+---
+
+## ★★★ `other532`（Barra 残差收益）判死（2026-10-13 WANL27）
+
+**字段语义（平台核验，description 误标为「标识符映射」）**：`oth532_global_daily_specificreturn` / `oth532_emerging_daily_specificreturn`（cov **0.97**）/ `idiosyncratic_return_*` —— **Barra 风险模型残差收益**，即残差动量（residual momentum, Blitz/Huij/Martens 2011）的标准输入。
+
+**实测（10 结构全谱）**：max S **0.36**（6m 累积 `ts_sum(126)`）；Blitz 经典「跳月动量 `sum(210)−sum(21)`」仅 **0.08**；`ts_zscore`/`ts_delta`/框架(1/210) 换手 **0.76**（超 0.7 闸）；五层 252-120 差分 **−0.58**。
+
+**⇒ 残差动量在 DEU 判死**（与文献「动量在德国弱」一致）。**教训：数据集 description 会骗人，必须以字段名+字段级 description 为准（本轮靠字段名发现真语义）。**
+
+**⇒ `other` 类别终局**：`other455` 仅可作轴；`other47`/`other532`/`insider_matrix`（仅 1 字段 cov≥0.6）/`stock_cluster_dl`（PCA 轴）全部实测无信号。**other 塔在 DEU 已无未开采面。**
+
+---
+
+## ★★★ `dl_riskfree_returns`（ML 收益概率）判死（2026-10-14 WANL35–38）
+
+**机制语义（最新颖的一类）**：字段是 **未来收益落入分位桶的 log 概率**
+- `probability_label{K}_{N}quantile_{D}day_ohlcv{_2}`：K=桶号（0 起）、N=桶数、D=前瞻天数（5/20/60）
+- `quantile_label_{N}bucket_{D}day_ohlcv`：分配到的桶索引
+
+**实测（4 批 40 条中的 15 条专攻此集）**：
+| 线 | 最好 | 剖面 |
+|---|---|---|
+| `quantile_label_1bucket_20day_ohlcv` × F 框架 | **S1.18 / 2Y0.41** | S 够不着 1.58、2Y 远不够 |
+| `probability_label0_5quantile_60day_ohlcv_2` | −0.49（反向 +0.49） | 弱 |
+| 窗（252/176）/轴（industry/subindustry）/算子（zscore/ts_delta）/桶粒度 0.1 全扫 | ≤1.18 | 封顶 |
+
+**★ 根因（文献支持）**：ML 概率类因子的收益来自**多指标模型组合**——Bai & Pukthuanthong（ML 分类组合 Sharpe 1.67/3.35）、Random-Forest「outperformance probability」（Sharpe 1.95）均如此，且后者**原文明确「单个技术指标不太可能预测收益」**。**合规单信号框架禁止跨字段组合 ⇒ 该机制在此框架下不可兑现。**
+**⇒ 判死：`dl_riskfree_returns` 不投。**
+
+**★ 同族警告**：`model264`（380 字段 `mdl264_1l_*` = 技术指标趋势概率，78% α=0）属**同一机制族**，本轮 `mdl264_1l_ist/lda` 实测 −0.22/−0.11 ⇒ **同族免投**。
+
 <!-- profiles:manual:end -->

@@ -102,7 +102,7 @@ mcp__wq-brain-http__workflow_gem  region=$REGION  dataset_id=$DS  delay=$DELAY  
 
 | 文件 | 何时读 |
 |---|---|
-| [`reference.md`](reference.md) | 查目录结构、`run.py` 参数、`workflow_gem` 与节点的参数差异时 |
+| [`references/overview.md`](references/overview.md) | 查目录结构、`run.py` 参数、`workflow_gem` 与节点的参数差异时 |
 | [`examples.md`](examples.md) | 想看触发例与期望行为（含 `402` 场景）时 |
 | [`scripts/headless_runner/README.md`](scripts/headless_runner/README.md) | 手工运行 `run.py`、配置凭据来源时 |
 | [`scripts/trailSomeAlphas/skills/README.md`](scripts/trailSomeAlphas/skills/README.md) | 弄清内嵌兜底副本与守护测试时 |

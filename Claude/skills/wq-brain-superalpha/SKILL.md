@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-10-01
 name: wq-brain-superalpha
-description: "构建并提交 WorldQuant BRAIN SuperAlpha（type=SUPER，selection + combo 工作流）。触发词：组 SuperAlpha / 组 SA / 合成超级 alpha / 把多个 alpha 组合成一个。前置：单一区域已有 ≥10 颗 ACTIVE REGULAR 作组件；目标：合成后 SELF / PROD 相关性均 < 0.7 且 status → ACTIVE。范围：组件计数 → 建 SUPER simulation → 双闸探针 → 提交（不可逆，需用户明确确认）。"
+description: "构建并提交 WorldQuant BRAIN SuperAlpha（type=SUPER，selection + combo 工作流）。触发词：组 SuperAlpha / 组 SA / 合成超级 alpha / 把多个 alpha 组合成一个。前置：单一区域已有 ≥10 颗 ACTIVE REGULAR 作组件；目标：合成后 SELF / PROD 相关性均 < 0.7（<!-- from config.prod_corr_max -->）且 status → ACTIVE。范围：组件计数 → 建 SUPER simulation → 双闸探针 → 提交（不可逆，需用户明确确认）。"
 layer: L5
 allowed-tools:
   - Read
@@ -42,7 +42,7 @@ allowed-tools:
 > **默认形态**：`select` / `status` / `probe` 与 `workflow_superalpha(confirm_submit=False)` 都不提交。
 > **需要用户明确确认**：是。
 > **执行后必须核验**：`python tools/super_build.py status --alpha-id <ID>` → `ACTIVE`。
-> **豁免**：`--allow-prod-above-07` 只在用户显式要求时用（它同时豁免「value ≥ 0.7」与「探针超时」两种拒绝，且平台可能仍回 PASS）；不得默认携带。
+> **无豁免（2026-10-18 收紧）**：原 `--allow-prod-above-07` 豁免开关已按用户判定「不合规」**彻底移除**——prod ≥ 0.7 或探针超时一律拒提，不存在任何豁免入口，也不接受「平台可能回 PASS」作为放行理由。
 
 **判定优先级**：提交 = 平台 `result == PASS`（必要）**且**我方 prod 实测 < 0.7（必要）。后者更严：平台对 SUPER 可能回带 value > 0.7 仍判 PASS（GLB 0.8094 / KOR 0.8571 实证，见 cases），但**我方铁律是 prod ≥ 0.7 不提交**——两者不冲突，任一说「不」就停。别自己按 value 预判 PASS / FAIL（分界不稳定），判定永远看 `result`。
 
@@ -82,7 +82,7 @@ allowed-tools:
 - **不做**：**本地 SELF 对近期新提交的孪生体结构性失明**（selfcorr-quick 实测：本地 0.229 vs 平台 0.8392；SA 恰是「池子被消耗、近克隆风险高」的场景）——近期有同构 SA 提交时，探针的 SELF 只能当下限；先枚举存量 SA 的 (neutralization, decay) 并错开（情景 SA-03）。`mcp__wq-brain-http__run_selection` 是**选股（instrument filtering）**工具，与 SA 的 `selection` 表达式无关，别混。
 
 ### 步 4　提交（不可逆；见上「不可逆动作块」）
-- **调用**：`python tools/super_build.py submit --alpha-id <ID>`：prod 闸（轮询 `GET /alphas/{id}/correlations/prod`，15 s 间隔、窗口缺省 900 s）→ 取详情与提交层预检 → 写 name + 两段描述 → POST（CLI 只发这一次；受理后用 `status` 子命令轮询核验，窗口见 `wqb.config.WAIT_THRESHOLDS`）。选项：`--prod-gate`（阈值，缺省 0.7）、`--probe-timeout`、`--allow-prod-above-07`（豁免，见上）。
+- **调用**：`python tools/super_build.py submit --alpha-id <ID>`：prod 闸（轮询 `GET /alphas/{id}/correlations/prod`，15 s 间隔、窗口缺省 900 s）→ 取详情与提交层预检 → 写 name + 两段描述 → POST（CLI 只发这一次；受理后用 `status` 子命令轮询核验，窗口见 `wqb.config.WAIT_THRESHOLDS`）。选项：`--prod-gate`（阈值，缺省 0.7）、`--probe-timeout`。
 - **描述写入**：CLI 内置 ≥ 100 英文字的 selection / combo 描述，**走 CLI 就不需要手工 PATCH**。手工路径只传 `selection_description` + `combo_description`（**不要传 `descriptions`**：它会给 PATCH body 加 `regular` 字段，SUPER 被平台 400）；写完 `get_alpha_details` 回读两段描述长度 > 0 再提交。
 - **命名**：`<REGION>_S_<N>comp_<alpha_id 尾 6 位>`（规范见 `docs/alpha_properties_spec.md`；**不要把 PROD 数值放进 name**——提交时快照会过期骗人，也不要固定序号 `_01`：同区多颗必重名，GLB 曾一轮造出三颗同名候选）。
 - **完成定义**：`status` 子命令 → `ACTIVE`。

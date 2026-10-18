@@ -48,6 +48,7 @@
 
 ### S2 生成
 
+- **说明**：★★★ 【EUR × news 判死】（2026-10-13，波 508/516，16 条） ／ 数据集 ／ 规模 ／ S ／ TO ／ margin ／ 判定 ／ ／---／---／---:／---:／---:／---／ ／ 'news20'（多分类器情绪，cov 0.963 **稠密**） ／ 64 VECTOR ／ ≤0.28 ／ **0.88–1.24** ／ ~0.1bp ／ ❌ TO 爆炸 ／ ／ 'news54'（事件因子） ／ 40 VECTOR ／ ≤0.14 ／ **1.44** ／ — ／ ❌ ／ ⇒ ★★ **「稠密覆盖」不能救 news VECTOR**：cov 0.963 仍 TO 1.1（个股情绪日间翻转）⇒ **判据修正：news/sentiment/事件类 VECTOR 的失败与覆盖无关，与「事件驱动 + 情绪符号翻转」有关** ⇒ 一律跳过。
 - **类别通用原语**（类别卡，跨区）：
   - disagreement: primary vs secondary / source A vs source B sentiment
   - intensity-weighted tone: sentiment scaled by item count or novelty
@@ -60,7 +61,7 @@
 - **跨区结论**（GLB/KOR/HKG/AMR；negative）：emotion 系（含 sentiment / mood 命名的变体）跨区死路（证据：GLB 铁律（registry cross_region 层）；KOR / HKG / AMR profile 排除） <!-- lint:const-ok 证据原文 -->
 - **禁止**（类别卡）：禁止使用 ts_entropy / ts_skewness / ts_percentage / ts_decay_exp_window（幽灵算子，整批 CANCELLED 连坐）
 - **禁止**（类别卡）：禁止使用裸 rank(sentiment_score)（必须 group_neutralize 或 ts_delta）
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

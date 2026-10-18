@@ -42,7 +42,7 @@ mcp__wq-brain-http__workflow_submit_alpha(
 ```
 
 **步骤 2 · 提交（仅在用户明确确认后；不可逆）**：同参数把 `confirm_submit` 置 `True`，再按下面的「响应处置」分支。`verify_timeout` 缺省 = `WAIT_THRESHOLDS.submit_flip_wait_s`（240 s），不要自己改小。
-**稳健性声明（2026-10-04 起 MCP 入口可直接传）**：`confirm_submit=True` 时，台账 `robustness_<alpha_id>` 无记录就**必须**显式 `robustness_audited=True`（缺省 False，fail-closed）才放行；台账已有记录则该声明降为辅助（`REJECT` 由节点直接拦下）。顺序：先跑 `brain-alpha-robustness` 并把结论落台账，再提交——不要只靠声明过关。`allow_prod_above_07` **不**在快捷入口里：prod 红线豁免须用户明确指令，显式走 `workflow_execute(node="submit_alpha", params={…, "allow_prod_above_07": True})` 留痕。
+**稳健性声明（2026-10-04 起 MCP 入口可直接传）**：`confirm_submit=True` 时，台账 `robustness_<alpha_id>` 无记录就**必须**显式 `robustness_audited=True`（缺省 False，fail-closed）才放行；台账已有记录则该声明降为辅助（`REJECT` 由节点直接拦下）。顺序：先跑 `brain-alpha-robustness` 并把结论落台账，再提交——不要只靠声明过关。**prod 红线（≥0.7）无任何豁免入口**：显式豁免参数已于 2026-10-18 按用户判定「不合规」彻底移除——任何路径（含 `workflow_execute`）传该参数都会直接报错，不存在留痕放行的通道。
 `force=True` 只跳过**本地预检**（内容与允许场景见 `references/ppa-handoff.md` §1），**不放行任何平台检查**；REGULAR 一般不用。
 
 **步骤 3 · 核验**：`mcp__wq-brain-http__get_alpha_details(alpha_id=…)` → `status == ACTIVE`（或 `SUBMITTED` 后转 `ACTIVE`）且 `dateSubmitted` 非空。

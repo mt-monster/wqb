@@ -1,6 +1,6 @@
 # trailSomeAlphas（GEM 引擎本体）
 
-> 标准入口是 `workflow_gem`（MCP）/ `gem` 节点；流程、铁律与排障见 [`../../SKILL.md`](../../SKILL.md)，模块职责与产物路径速查见 [`../../reference.md`](../../reference.md)。
+> 标准入口是 `workflow_gem`（MCP）/ `gem` 节点；流程、铁律与排障见 [`../../SKILL.md`](../../SKILL.md)，模块职责与产物路径速查见 [`../../references/overview.md`](../../references/overview.md)。
 > 本目录只是引擎代码：`run_pipeline.py`（主流水线）· `pipeline_*.py` · `economic_priors.py` · `skeletons*.py` · `skill_roots.py`，以及内嵌兜底副本 `skills/`（见 [`skills/README.md`](skills/README.md)）。
 > 2026-09-29 由英文旧稿重写：旧稿把已迁走的深嵌套路径当产物位置、把已废止的 `.qoder/skills` 当运行位置、教 PowerShell 设 key + 裸 `python`，
 > 还列了代码里并不存在的 `MOONSHOT_MODEL` 环境变量。
