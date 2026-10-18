@@ -468,7 +468,7 @@
    "status": "fixed",
    "title": "“撰写详细描述”“改进描述”“为所有字段编目”——无输出位置/格式；对 1000+ 字段的数据集（JPN analyst 1026）不可行，无范围控制",
    "cat": "情景·P2",
-   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md | Claude/skills/brain-dataset-exploration-general/reference.md",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md | Claude/skills/brain-dataset-exploration-general/references/overview.md",
    "note": "§1 范围控制：分类永远全量（本地脚本零配额），深挖代表字段 ≤ 12（每类 1–2 + 3 冷门）；不产「增强描述」；审计结论模板与落点写清（对话 / reports/dataset_audit_*.md，非事实源）",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_de_scoring_and_research_sections_point_at_the_current_sources"
   },
@@ -476,7 +476,7 @@
    "status": "fixed",
    "title": "英文岗位手册体裁（Position Overview、Deliverables），与中文 SKILL 混用；含旧流程",
    "cat": "逻辑·P3",
-   "where": "Claude/skills/brain-dataset-exploration-general/reference.md",
+   "where": "Claude/skills/brain-dataset-exploration-general/references/overview.md",
    "note": "436 行英文岗位手册 → ≤ 60 行中文背景（结论模板 / MCP 速查 / 文档页）；其中的 6-Tips 方法只在 datafield-exploration 保留一份（此前两处各抄一遍，都带不可用算子）",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_de_reference_is_short_chinese_and_the_six_tips_live_only_in_datafield_exploration"
   },
@@ -492,7 +492,7 @@
    "status": "fixed",
    "title": "“运行这些模拟时用 Neutralization None、Decay 0、Test Period **P0Y0M**”——6 种方法每个字段各需 ≥1 次仿真，文中**没有成本提",
    "cat": "情景·P1",
-   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/reference.md",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/references/overview.md",
    "note": "§0 先离线后在线 + 成本：体检包先答法 1 / 3 / 6；在线最小集 6 条一批 / 扩展集 ≤ 8，全跑六法 ≈ 15 条；create_multi_simulation 单次 2–10 条、连坐、有静态门禁；手工探索不入库不进战役统计；testPeriod 统一 P0Y0M0D",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_df_settings_trap_and_cost_claims_are_backed_by_code"
   },
@@ -508,7 +508,7 @@
    "status": "fixed",
    "title": "“VECTOR 字段应**直接**用于 rank/ts_*，**不要**包在 `vec_*` 里；`winsorize` 安全”——与全库相反：toolkit 闸 3“type==",
    "cat": "边界·P1",
-   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/reference.md",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/references/overview.md",
    "note": "「类型先行」表：MATRIX 不包 vec_*；VECTOR 必须先 vec_*（闸 3；裸用 → 平台 400 event inputs；fix_vector_fields / preflight auto_fix_vector）；旧「直接用、winsorize 安全」标已更正",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_df_vector_matrix_event_rules_match_gate_3_gate_8_and_the_fix_tool"
   },
@@ -540,7 +540,7 @@
    "status": "fixed",
    "title": "**算子口径与库内清单/闸门不一致（上一轮评审 P0-1，至今未修）**：方法 5 用 `ts_median(datafield, 1000)`——`ts_median` 在 `p",
    "cat": "边界·**P1**",
-   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/reference.md",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/references/overview.md",
    "note": "算子口径以平台 103 算子目录裁决：ts_median（幽灵）→ ts_mean；scale_down（不在目录）→ zscore 刻度；ts_event_*（平台没有）删；机械检查：SKILL / reference 里出现的算子必须在目录内或标为反例（测试）；顺带发现 ? : 三元过不了 MCP 静态语法闸，六法表达式改比较式并逐条过校验器",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_df_documented_method_expressions_pass_the_mcp_static_gate_grammar"
   },
@@ -595,28 +595,28 @@
    "status": "fixed",
    "title": "“必填/推荐参数：`instrument_type`（如 EQUITY）、region、delay、universe、data_type、search”——MCP `get_dat",
    "cat": "边界·**P1**",
-   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/references/overview.md",
    "note": "get_datafields 真实签名（region / dataset_id / universe 必传，无 instrument_type），区分必填 / 推荐"
   },
   "EX-03": {
    "status": "fixed",
    "title": "第 2 步“获取每个数据字段的详细信息”，但工具默认 `filter_sharpe=True`——**OS/IS Sharpe<0 的字段被静默过滤**。解释一个已有 alpha ",
    "cat": "情景·**P1**",
-   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/references/overview.md",
    "note": "解释既有 alpha 时 filter_sharpe=False、search 用完整 field id、返回为空的排查顺序"
   },
   "EX-04": {
    "status": "fixed",
    "title": "首例 `quantile(ts_regression(oth423_find, group_mean(oth423_find, vec_max(shrt3_bar), countr",
    "cat": "情景·P2",
-   "where": "Claude/skills/brain-explain-alphas/reference.md",
+   "where": "Claude/skills/brain-explain-alphas/references/overview.md",
    "note": "示例标注 VECTOR→必须 vec_*、MATRIX→禁 vec_*；country 作 group 部分区域无效；字段含义分「事实 / 推测」两栏"
   },
   "EX-05": {
    "status": "fixed",
    "title": "reference 说“本手册附录提供了最常用算子的速查表”，但附录只有“附录 A：理解 Vector 数据”——**指向不存在的附录**；第 3 步全量 `get_operato",
    "cat": "边界·P3",
-   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/references/overview.md",
    "note": "删「附录速查表」的不存在引用；改「取回全量后只读用到的算子」"
   },
   "EX-06": {
@@ -630,14 +630,14 @@
    "status": "fixed",
    "title": "🟢 四段模板与“收益来源归因”的用途对得上。P2：①“数据理由”只问“它们代表什么”，**没有证据要求**——收益主要来自 long 侧还是 short 侧、哪一年、哪个行业（`g",
    "cat": "情景·🟢+P2",
-   "where": "Claude/skills/brain-explain-alphas/reference.md | Claude/skills/brain-explain-alphas/SKILL.md",
+   "where": "Claude/skills/brain-explain-alphas/references/overview.md | Claude/skills/brain-explain-alphas/SKILL.md",
    "note": "给出对首例的完整四段成品示例；证据要求（逐年 / PnL / long-short 与行业未核验就写未核验）；落点（回复 / key_findings，不新造键）；「进一步启发」改结构化 3 栏"
   },
   "EX-08": {
    "status": "fixed",
    "title": "“需要聚合（如 `vec_mean`、`vec_sum`）”——**`vec_mean` 不在 `known_ops`（103）**，平台算子是 `vec_avg`（`vector",
    "cat": "边界·**P1**",
-   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/references/overview.md",
    "note": "vec_mean → vec_avg，并以 platform_constraints.vector_only_ops 为准列出（vec_norm 标需复核）"
   },
   "EX-09": {
@@ -651,7 +651,7 @@
    "status": "fixed",
    "title": "缺两个情景：①“Mode B 换概念前查重叠”——给一个含 3 个 ACTIVE alpha 的 book，目标候选与其中 1 个共享（字段族、时序骨架），输出“重叠高 → 建议换",
    "cat": "情景·**是**",
-   "where": "Claude/skills/brain-explain-alphas/reference.md | tests/unit/08_forum_recon/test_concept_overlap.py",
+   "where": "Claude/skills/brain-explain-alphas/references/overview.md | tests/unit/08_forum_recon/test_concept_overlap.py",
    "note": "两张情景卡：Mode B 换概念前查重叠（3 个 ACTIVE alpha 的 book，输出 HIGH + 换概念）/ 战略级候选提交前确认收益来源（三条警示信号，未核验不得写成通过）"
   },
   "FB-01": {
@@ -892,7 +892,7 @@
    "title": "`brain-make-some-gem/scripts/trailSomeAlphas/skills/` 下的 `brain-data-feature-engineering`、",
    "cat": "职责·P2",
    "where": "tools/sync_gem_embedded_skill.py | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/README.md | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/GENERATED.md | tests/unit/03_gem/test_gem_skill_paths.py",
-   "note": "更正一个更大的事实：这两份内嵌 SKILL.md **从不拼进 LLM prompt**（build_prompt 只把 dfe「是否非空」当真值判断附固定 8 问提示，FI 完全不用；AST 测试钉死），所以「拆 prompt 部分 / 人读部分」不成立。落地的是另外三件：内嵌 dfe 目录加 GENERATED.md 标记；sync_gem_embedded_skill 改成 pairs 制（FI SKILL.md + dfe reference / examples / OUTPUT_TEMPLATE 四个文件，--check / --apply）；test_gem_skill_paths 守护扩到 dfe 三个文件（此前 reference.md 已漂移到 399 行旧稿）。顺带：解析实跑测试此前只认 Windows 的 Scripts/python.exe，在 Linux 永远 skip，现两种 venv 布局都认",
+   "note": "更正一个更大的事实：这两份内嵌 SKILL.md **从不拼进 LLM prompt**（build_prompt 只把 dfe「是否非空」当真值判断附固定 8 问提示，FI 完全不用；AST 测试钉死），所以「拆 prompt 部分 / 人读部分」不成立。落地的是另外三件：内嵌 dfe 目录加 GENERATED.md 标记；sync_gem_embedded_skill 改成 pairs 制（FI SKILL.md + dfe reference / examples / OUTPUT_TEMPLATE 四个文件，--check / --apply）；test_gem_skill_paths 守护扩到 dfe 三个文件（此前 references/overview.md 已漂移到 399 行旧稿）。顺带：解析实跑测试此前只认 Windows 的 Scripts/python.exe，在 Linux 永远 skip，现两种 venv 布局都认",
    "verify": "tests/unit/03_gem/test_gem_skill_paths.py::test_embedded_dfe_copies_match_authoritative"
   },
   "FI-01": {
@@ -1172,7 +1172,7 @@
    "status": "fixed",
    "title": "仍把**旧深嵌套路径**（`scripts/trailSomeAlphas/skills/brain-feature-implementation/data/...`）当**产物与",
    "cat": "边界·P1",
-   "where": "Claude/skills/brain-make-some-gem/reference.md | Claude/skills/brain-make-some-gem/examples.md",
+   "where": "Claude/skills/brain-make-some-gem/references/overview.md | Claude/skills/brain-make-some-gem/examples.md",
    "note": "两份英文旧稿整体重写为中文并与 SKILL 对齐：reference 只放目录结构 / 模块职责 / workflow_gem 与节点的参数差异表（测试对照两者源码签名与缺省）/ run.py 参数 / 产物路径（data/gem_runs + DB，旧深嵌套位只标历史）/ 环境变量；examples 标准入口 = workflow_gem（此前把 run.py 当标准入口，与 SKILL 倒置），期望行为含落库核对，错误处理表 4 行（config 缺失 / 401 / 402 或 no meta.json / 候选不足）对应 SKILL 失败表的用户可见部分",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_gm_mcp_and_node_parameters_match_the_reference_table"
   },
@@ -1292,7 +1292,7 @@
    "status": "fixed",
    "title": "“对流动性/非流动性股票分别做 decay”在 §2 与 §5 各出现一次而无表达式；reference L166 的示例 `ts_decay_linear(s,5)*rank(v",
    "cat": "边界·P2",
-   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/reference.md | Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/references/overview.md | Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md",
    "note": "「分别对流动性/非流动性 decay」的加权相加示例删除，改用 bucket / group_* 写法（形态库 F4）；闸 5 infix_leg_sum / 加权混合会拦相加写法；同一结构两种写法判定相反的问题不再靠示例放行",
    "verify": "tests/unit/07_docs_skills/test_how_to_pass_docs.py::test_reference_no_longer_carries_idea_layer_or_unsafe_examples"
   },
@@ -1345,7 +1345,7 @@
    "status": "fixed",
    "title": "SKILL 版 SELF 判据只有“相关 <0.7”，漏掉平台的第二条通过路径——reference L175：“Or Sharpe at least 10% greater th",
    "cat": "边界·P1",
-   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/reference.md",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/references/overview.md",
    "note": "决定：本库按单阈值处理，不实现平台「Sharpe 高 10%」豁免（GATES_PLATFORM / submit_queue.LIM 均单阈值）；写明数值例（1.9 vs 1.6 过 / 1.7 vs 1.6 不过）与「平台可能放行、本库先拦」的保守偏差"
   },
   "HP-13": {
@@ -1398,7 +1398,7 @@
    "status": "fixed",
    "title": "63 行“想法层通识”（idea sources、arXiv、ATOM、6 种字段探测、社区模板、官方例子）与提交测试阈值无关，且与 optimization-v1 Mode B、",
    "cat": "职责·P2",
-   "where": "Claude/skills/brain-how-to-pass-alpha-test/reference.md",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/references/overview.md",
    "note": "删 63 行想法层通识（idea 来源 / arXiv / ATOM / 6 种字段探测 / 社区模板 / 官方例子），含 scale_down、中缀减法 + 窗口 240 的幽灵 / 非标写法；arXiv 路径问题随之消失",
    "verify": "tests/unit/07_docs_skills/test_how_to_pass_docs.py::test_reference_no_longer_carries_idea_layer_or_unsafe_examples"
   },
@@ -1406,7 +1406,7 @@
    "status": "fixed",
    "title": "①arxiv 脚本路径 `wq-brain-alpha-optimization-v1/scripts/arxiv_api.py` 无根前缀（checker 判 MISSING；库",
    "cat": "边界·P1",
-   "where": "Claude/skills/brain-how-to-pass-alpha-test/reference.md",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/references/overview.md",
    "note": "删 63 行想法层通识（idea 来源 / arXiv / ATOM / 6 种字段探测 / 社区模板 / 官方例子），含 scale_down、中缀减法 + 窗口 240 的幽灵 / 非标写法；arXiv 路径问题随之消失",
    "verify": "tests/unit/07_docs_skills/test_how_to_pass_docs.py::test_reference_no_longer_carries_idea_layer_or_unsafe_examples"
   },
@@ -1642,7 +1642,7 @@
   },
   "IX-21": {
    "status": "fixed",
-   "title": "质量门禁三条命令 + 7 项校验，但：①“无已废弃路径引用（`.qoder/skills/` 等）”**未覆盖 reference.md**（selfcorr-quick 的 re",
+   "title": "质量门禁三条命令 + 7 项校验，但：①“无已废弃路径引用（`.qoder/skills/` 等）”**未覆盖 references/overview.md**（selfcorr-quick 的 re",
    "cat": "边界·P2",
    "where": "Claude/skills/CONTRACT.md | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/README.md | tests/unit/03_gem/test_gem_skill_paths.py | tests/unit/07_docs_skills/test_sf_docs.py",
    "note": "①已废弃路径：GEM trailSomeAlphas/README.md 里残留的 .qoder/skills 随其重写清掉（该文件是英文旧稿，另有旧深嵌套产物路径、虚构的 MOONSHOT_MODEL 环境变量）；②相对链接 / .py 引用检查递归覆盖 references/**（test_docs_consistency 扫全部 *.md）；③守护输入可指定：_resolve_skills_dir 复用 _skill_roots（WQ_SKILLS_DIR 优先），依赖 gitignore 数据的测试在干净克隆里 skip 并说明原因，「失败于环境 vs 失败于内容」写入 CONTRACT §5；顺带：test_gem_skill_paths 的实跑解析此前在 Linux 永远 skip（DEC-57）",
@@ -2022,14 +2022,14 @@
    "status": "fixed",
    "title": "叙事体（“帮助秘书接手”“请随时与前任秘书联系”），对 agent 无指令价值；示例日期 2025-08-09、GAC2025 已过期",
    "cat": "逻辑·P3",
-   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "where": "Claude/skills/brain-next-move-analysis/references/overview.md",
    "note": "reference 改规范体：不再「交接给秘书」，示例日期 / 用户 ID 全部占位；只写各章怎么取数与字段怎么读"
   },
   "NM-12": {
    "status": "fixed",
    "title": "“获取当前时间，running `get_ny_time.py`”——脚本不存在（机械检查 MISSING），且与 L99“使用系统日期动态获取”并存；日期错则事件过滤全错",
    "cat": "边界·P1",
-   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/reference.md",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/references/overview.md",
    "note": "get_ny_time.py 指令删除（脚本从未存在）；唯一取时方式 = wqb.timeutil.et_now()，命令写入 SKILL §1 且由测试实跑",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_nm_reference_has_no_credential_passing_or_ghost_script_instruction"
   },
@@ -2037,14 +2037,14 @@
    "status": "fixed",
    "title": "与 SKILL 不一致：reference 是 0 摘要/1 基本信息/2 平台/3 比赛/4 活动/5 建议/6 Alpha；SKILL 是 0 摘要/1 平台/2 比赛/3 事",
    "cat": "逻辑·P2",
-   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/reference.md",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/references/overview.md",
    "note": "大纲只在 SKILL 一份（含区域态势章）；reference 各章按「怎么取数 / 字段怎么读」组织，无第二套章节号"
   },
   "NM-14": {
    "status": "fixed",
    "title": "①要求“`authenticate` 提供用户的电子邮件和密码”——`authenticate(email, password)` 确实收明文，但 AGENTS.md 规定凭据只在",
    "cat": "边界·P1",
-   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "where": "Claude/skills/brain-next-move-analysis/references/overview.md",
    "note": "删除「authenticate 提供邮箱和密码」——MCP 的 authenticate 没有参数、凭据由服务端读取（测试绑到签名）；leaderboard 用户 ID 占位；get_events 无参数（删 random_string）；get_messages 与 RA 对齐 limit=30；认证失败请用户在本机登录",
    "verify": "tests/unit/07_docs_skills/test_se_docs.py::test_nm_reference_has_no_credential_passing_or_ghost_script_instruction"
   },
@@ -2052,21 +2052,21 @@
    "status": "fixed",
    "title": "“IS = 正在回测的 alpha”“OS = 最近成功提交的”语义不准（IS=样本内阶段的 alpha，OS=已提交）；`get_alpha_yearly_stats` 在同一行",
    "cat": "逻辑·P2",
-   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/reference.md",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/references/overview.md",
    "note": "IS/OS 词义按平台（IS=未提交、OS=已提交），正在回测的归 wq-backtest-monitor；工具清单去重"
   },
   "NM-16": {
    "status": "fixed",
    "title": "“善用论坛”（与 RA“论坛默认不查”冲突，且无具体工具）；“`todo_write`”是某宿主专有工具",
    "cat": "边界·P3",
-   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "where": "Claude/skills/brain-next-move-analysis/references/overview.md",
    "note": "论坛默认不查，仅用户点名或公告出现需查证的规则变更时才读；任务清单不指定宿主专有工具名"
   },
   "NM-17": {
    "status": "fixed",
    "title": "错误防范里只有 GAC 一个**具体场景**（好）；“数据解读错误/输出格式错误/持续改进机制”是空泛口号",
    "cat": "情景·P2",
-   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "where": "Claude/skills/brain-next-move-analysis/references/overview.md",
    "note": "错误防范改「常见误读（症状 → 原因 → 防范）」表：达标≠可提交、已点亮塔被推荐、停波区仍建议再开一波、事件章含过期项；GAC 案例保留并写成三段式"
   },
   "NS-01": {
@@ -2159,7 +2159,7 @@
    "status": "fixed",
    "title": "硬规则 7 与工作流 8：回测后“立即以 UTF-8 追加模式把本批结果写入**指定的文本文件**”——与 DB 单轨（回测结果已由 harvest 入 `backtest_res",
    "cat": "边界·P1",
-   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md | Claude/skills/wq-brain-alpha-optimization-v1/examples.md",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/overview.md | Claude/skills/wq-brain-alpha-optimization-v1/examples.md",
    "note": "Mode A 结果入库（harvest_multisim_alphas → harvest_multisim_results → backtest_results），迭代日志写回复并进 S6 key_findings，不再写自建文本文件；示例 / 提示模式同步改",
    "verify": "tests/unit/07_docs_skills/test_optimization_v1_docs.py::test_no_self_made_result_text_file_and_no_stale_names"
   },
@@ -2167,7 +2167,7 @@
    "status": "fixed",
    "title": "“operatorCount>8 的候选无效”“平台是最终裁判”——**算子≤8 是 PPA 的限制**；REGULAR 无此上限（GEM 过闸样本 p90=12 个算子），rob",
    "cat": "边界·P2",
-   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/overview.md",
    "note": "算子数 ≤8 标注 PPA-only；REGULAR 无上限，复杂度纪律引 GEM「复杂度预算」与 robustness 软标记；operatorCount 仍以平台返回为准",
    "verify": "tests/unit/07_docs_skills/test_optimization_v1_docs.py::test_skill_declares_operator_ceiling_is_ppa_only_and_uses_config_for_thresholds"
   },
@@ -2175,14 +2175,14 @@
    "status": "fixed",
    "title": "“Stage A 阶段禁止纯微调”——Stage A 在全库只在 toolkit 探针里有定义（Stage A/B 探针），此处未定义",
    "cat": "逻辑·P2",
-   "where": "Claude/skills/wq-brain-alpha-optimization-v1/reference.md | Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/references/overview.md | Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
    "note": "Stage A / B 在 reference §6.5 定义（微调闸 Sharpe>1.40 且 Fitness>0.90），SKILL 硬规则 5 指向；注明与 toolkit 探针里的 Stage A/B 不是一回事"
   },
   "OP-09": {
    "status": "fixed",
    "title": "Mode A/B 的变体只经“本地 `validate_expression` + verifier”就直接 `create_multi_simulation`，**没有经过 `w",
    "cat": "边界·P1",
-   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/overview.md",
    "note": "校验层固定三段：verifier → campaign_intel ghost-audit → wave_gate --batch-type repair（写明命令、退出码、validate_expressions 不查幽灵算子）；删「当前项目暴露时使用」的条件式措辞",
    "verify": "tests/unit/07_docs_skills/test_optimization_v1_docs.py::test_mode_a_validation_layer_and_gate_command_are_documented"
   },
@@ -2235,7 +2235,7 @@
    "status": "fixed",
    "title": "预期产出把 Turnover 写成“1%–40%（内部目标 ≤40%）”；全库换手区间现有：平台 1–70%（config）、内部 5–20%（config）、D0 “5–20%”",
    "cat": "边界·P1",
-   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/overview.md",
    "note": "预期产出 / 完成定义不再手抄 Sharpe / Fitness / 换手区间，改引 wqb.config.GATES_INTERNAL 与 Failed RA==0",
    "verify": "tests/unit/07_docs_skills/test_optimization_v1_docs.py::test_skill_declares_operator_ceiling_is_ppa_only_and_uses_config_for_thresholds"
   },
@@ -4294,7 +4294,7 @@
    "status": "fixed",
    "title": "“长任务执行规则”整节以**文件模式**为主线：启动前预检 `alpha_list.json` 存在、“进度真相源=输出 CSV”、“失败=进程停止 且 CSV 无进展≥**3 分",
    "cat": "情景·P1",
-   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/brain-sim-alphas-in-batch-and-track/reference.md",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/brain-sim-alphas-in-batch-and-track/references/overview.md",
    "note": "长任务规则分两路：MCP / 引擎路径（无 CSV，看 workflow_task_status + backtest_results，卡住 = WAIT_THRESHOLDS 的 60 / 360 分钟）与兼容 CLI 路径（CSV 进度，≥3 分钟无更新 + 进程不可达 = 本地进程死了）；注明两个判据判的是不同层，不是「相差 20 倍」的同一件事",
    "verify": "tests/unit/07_docs_skills/test_sd_docs.py::test_sim_alphas_entry_table_and_no_stale_claims"
   },
@@ -4302,7 +4302,7 @@
    "status": "fixed",
    "title": "兼容命令示例用保守值（`--batch-size 3 --concurrency 2`），⚠ 警告放在代码**之后**；裸 `python` 与“$WQ_PY”规则不符",
    "cat": "情景·P3",
-   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/brain-sim-alphas-in-batch-and-track/README.md | Claude/skills/brain-sim-alphas-in-batch-and-track/reference.md | Claude/skills/brain-sim-alphas-in-batch-and-track/examples.md",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/brain-sim-alphas-in-batch-and-track/README.md | Claude/skills/brain-sim-alphas-in-batch-and-track/references/overview.md | Claude/skills/brain-sim-alphas-in-batch-and-track/examples.md",
    "note": "警告前置；示例数字换占位 <B> / <C>；裸 python 全换 $WQ_PY（README 的 $env:BRAIN_PASSWORD 示例一并删）",
    "verify": "tests/unit/07_docs_skills/test_sd_docs.py::test_sim_alphas_entry_table_and_no_stale_claims"
   },
@@ -4529,7 +4529,7 @@
    "status": "fixed",
    "title": "🟢 见总评。P2：①未给“近期”的量化界线（新提交多久后进池？池刷新周期？）；②无“何时本地值可信”的检查步骤（如比较池文件 mtime 与最近提交时间）；③“务必先读”的 ★★ ",
    "cat": "边界·🟢+P2",
-   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py | Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py | Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/references/overview.md",
    "note": "脚本输出池最后刷新时间与池大小（终端 + Excel Meta sheet），本地 SELF 最大值 <0.7 自动打印盲区警告；强调符号只留 ★★",
    "verify": "tests/unit/05_submit_quota/test_selfcorr_quick_script.py::test_pool_meta_reports_refresh_time_and_size"
   },
@@ -4558,7 +4558,7 @@
    "status": "fixed",
    "title": "脚本段：①示例 `python <SKILL_ROOT>/…/skill.py`——`<SKILL_ROOT>` 未定义，裸 `python` 而非库内约定的 `$WQ_PY`；r",
    "cat": "情景·**P1**",
-   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py | Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py | Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/references/overview.md",
    "note": "补「被测对象是谁」（UNSUBMITTED/IS_FAIL 候选按创建日期区间圈定）；命令统一 $WQ_PY 与仓库相对路径；凭据环境变量优先（--password 兼容但告警）；importlib.metadata 替代 pkg_resources、tqdm 缺失降级、非交互不 input()（此前在 MCP venv 里根本跑不起来）",
    "verify": "tests/unit/05_submit_quota/test_selfcorr_quick_script.py"
   },
@@ -4573,7 +4573,7 @@
    "status": "fixed",
    "title": "英文原译混在中文 skill 里；`--sharpe-threshold -1.0`/`--fitness-threshold -1.0` 默认意味着“不过滤”，未解释；结果“保存",
    "cat": "边界·P2",
-   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/references/overview.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py",
    "note": "reference 重写为中文参数 / 产物 / 依赖表；产物目录固定（$WQ_SELFCORR_OUT_DIR / data/selfcorr_quick，gitignore）；-1.0 阈值 = 实际不过滤；check_status 含义（平台检查无 FAIL 且 long+short>100，非相关性结论）",
    "verify": "tests/unit/05_submit_quota/test_selfcorr_quick_script.py::test_out_dir_is_fixed_not_cwd"
   },
