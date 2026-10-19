@@ -159,3 +159,44 @@ wqb/
 - 首轮用裸 `grep` 全仓找写盘，被 `.venv/` 里第三方库的写法污染结论 —— **审计必须走排除清单的静态扫描**，`.venv` / `site-packages` / `attic` / `node_modules` 一律排除。
 - 路径分类不能只看**调用行**：变量常在 3 行外赋值。本次用赋值图 2 层展开才把 `scheduler.py:175` 那类「看起来是变量、实际落 cwd」的点揪出来。
 - 目录归属不能只看 `git ls-files` 顶层计数：`tracking/` 2692 件里 242 件曾被误判为"数据湖 dump"，实际 156 件是 `tracking/*/scripts/*.py` 探针脚本（130 个是 `tmp_` 草稿）。**聚类要用 3 层路径 + 扩展名**。
+
+---
+
+## 6. 复核更正（2026-10-20 二次核查）
+
+初次审计的两条 P1/P2 建议**违反 AGENTS.md §8.13 已有裁决**，现予撤回。
+
+### 6.1 撤回：`reports/` 10 个日期化战役目录迁出（原 P1）
+
+**误判经过**：初看 `reports/` 顶层有 9 个目录名（`dataset_experience`、`eur-mining`、`forum_alpha_research`、`ra_pipeline_stage_review_20260927_refs`…），带日期或战役名的形态像"运行产物"。
+
+**实际**：§8.13 明文规定 `reports/<主题>_<YYYYMMDD>.md`，且「**`reports/` 与 `output_report/` 的一层子目录名同受 kebab-case 约束（2026-10-14 批次G 起有闸 = S16 规则⑦）**」；现存 9 个顶层目录里 5 个已是 kebab，**4 个不合规的进 `S16_DIR_LEGACY` 只登记不回改**，逐条带代价证据：
+- `dataset_experience` — 由 `dataset_experience.py` 生成器写名 + `step9_audit.py` 校验 + 全库引用
+- `forum_alpha_research` — 被目录内脚本自引用路径
+- 两个 `*_refs` — 2026-10-10 P2-C 的同名消歧后缀（`_refs` 语义条）
+
+⇒ 迁出任何一个都会造成活文档死指针。**§8.13 已把这条判为"存量不回改"，本条建议作废**。
+
+### 6.2 撤回：`output_report/` 加 `<REGION>/` 二级分区（原 P2）
+
+**误判经过**：140 个 REGION 前缀 `.md` 平铺在一层，看着像需要按区域分文件夹。
+
+**实际**：§8.13 明文「**`output_report/` 现无一层子目录 ⇒ 它的第一个新目录起就是 kebab**」；REGION 码是纯大写（`DEU`/`KOR`），与 kebab-case 结构上冲突，且 §8.13 明确豁免「`output_report/` 为历史名，保留但不新增此类风格」。
+
+⇒ 按 REGION 分目录是**新增不合规命名风格**，与 §8.13 已裁方向相反。**建议作废**。若真要二级分区，命名需 kebab（`dea-brief/` / `ind-campaign/`），代价是所有既有引用与 §8.13 表格同步重构，属独立专项而非本轮顺手做。
+
+### 6.3 保留 P0：4 处裸写盘 + 写盘审计闸
+
+- 4 处里 3 处经复查是扫描器**假警报**（`complexity_scan.py` 用 `ROOT` 变量、`batch_track.py` 用 `resolve_async_tasks_root()`、`sync_skills.py` 用 `dest_root`）；只有 `scheduler.py:175` 是真违规，已修。
+- 写盘审计闸 `tools/code-audit/audit_write_targets.py` 已落地，配 14 条测试，当前扫描 0 违规 / 0 新增违规 / 97 条 UNKNOWN（短变量名 `p`/`tmp`/`out`/`doc` 解析不出路径，抽查确认合规）。
+
+### 6.4 新洞察：`reports/` 与 `output_report/` 的分工判据已经够机器可判
+
+初版报告说"§8.13 缺一条机器可判的区分规则"，复查后**这是错的**：§8.13 已有明文判据：
+
+> **凡 workflow/战役自动产出** → `output_report/`；
+> **凡人工撰写的审计/评审/复盘/演练/价值评估** → `reports/`。
+
+代码侧验证：`grep -rn '"reports/.*write\|dump\|open\(.*w"' src tools` **零命中** —— 代码从不写 `reports/`；`output_report/` 的写入全部通过 `wqb.output_repo` 类工具或 `ROOT / "output_report"` 变量锚定，也是 §8.13 允许的形式。
+
+⇒ **两个目录的分工已经在实际执行**，审计报告无需提出结构改动。真正的短板只是"没有闸挡违规"，这条已由 `audit_write_targets.py` 补齐。

@@ -84,6 +84,25 @@ def test_violate_writes_into_docs_or_reports():
         assert kind == "VIOLATE", f"{t} 未判违规：{label}"
 
 
+def test_violate_matches_docs_without_trailing_slash():
+    """Python 里 `REPO / "docs" / "x"` 展开后是 `"docs"`（无尾斜杠），
+    这类写法必须被识别为违规。2026-10-20 index_tables.py 就踩过：
+    `ENV_DOC = REPO / "docs" / "env_and_switches.md"` 一度被漏报成 UNKNOWN。"""
+    at = _load_tool()
+    for t in ['REPO / "docs" / "env_and_switches.md"', '"docs" "env_registry.json"']:
+        kind, label = at.classify_target(t)
+        assert kind == "VIOLATE", f"无斜杠形式漏报：{t} → {kind}"
+        assert label == "docs"
+
+
+def test_violate_ignores_identifier_prefix():
+    """`my_docs` / `docs_count` 这种含 docs 的标识符不算违规（前/后有单词字符）。"""
+    at = _load_tool()
+    for t in ['my_docs_xxx', 'docs_count']:
+        kind, _ = at.classify_target(t)
+        assert kind != "VIOLATE", f"标识符含 docs 被误判：{t}"
+
+
 def test_unknown_for_short_varname_is_not_violate():
     """短变量名（`p`/`tmp`/`out`）解析不出路径 → UNKNOWN，绝不判 VIOLATE。
 

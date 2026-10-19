@@ -204,11 +204,12 @@ def classify_target(material: str) -> Tuple[str, str]:
     if not material.strip():
         return "UNKNOWN", "?"
     # 违规优先（避免 docs/xxx 里恰好含 "tmp" 时被误放行）
+    # 违规前缀匹配去掉尾部 "/"，并要求前后不是标识符字符 —— 因为 Python 里
+    # `REPO / "docs" / "x"` 展开后是 `"docs"` 而不是 `"docs/"`。
     for pre in _VIOLATE_PREFIXES:
-        # 违规前缀本身已含 "/", 匹配 "src/" "tools/" 等作为目录开头即可。
-        # 不做 lookbehind 约束：`Path("docs/foo.md")` 与 `"docs/foo.md"` 都应算违规。
-        if re.search(re.escape(pre), material):
-            return "VIOLATE", pre.rstrip("/")
+        bare = pre.rstrip("/")
+        if re.search(r"(?<![A-Za-z0-9_-])" + re.escape(bare) + r"\b", material):
+            return "VIOLATE", bare
     # 允许
     for tok in _ALLOW_SUBSTRINGS:
         if tok in material:
