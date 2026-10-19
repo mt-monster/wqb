@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-18
+last_verified: 2026-10-20
 ---
 
 # USA 区域挖掘流程（RA 区域分支）
@@ -150,6 +150,19 @@ last_verified: 2026-10-18
 **逐字段档案**（挖过的每个字段族的类型/覆盖/αC/机制/读数/判死）→
 **[references/_usa-field-profile-playbook-20261018.md](references/_usa-field-profile-playbook-20261018.md)**
 （含 `risk_neutralized_sharpe` 判死口径：<0.3 = 纯风格 beta，别花仿真）。
+
+**Fundamental 战役档案（2026-10-19）**：类别级扫描 →
+[`references/_usa-fundamental-dataset-scan-20261019.md`](references/_usa-fundamental-dataset-scan-20261019.md)；
+单集档案按**字段八问**组织（命名 = `_usa-<字段前缀>-field-profile-<asOf>.md`）：
+[`fnd67`](references/_usa-fnd67-field-profile-20261019.md)、[`fnd93`](references/_usa-fnd93-field-profile-20261019.md)。
+
+**ShortInterest 类别扫描（2026-10-19）** →
+[`references/_usa-shortinterest-dataset-scan-20261019.md`](references/_usa-shortinterest-dataset-scan-20261019.md)
+（6 集全景 + 三族字段八问 + 判死依据：日频做空量=噪声、借券方向对但 S 上限 1.07/SUB 缺口 0.3）。
+
+**Institutions / PV 扫描（2026-10-19 战役二）** →
+[`references/_usa-institutions-pv-dataset-scan-20261019.md`](references/_usa-institutions-pv-dataset-scan-20261019.md)
+（20 条实测：机构 `mean_security_weight` Δ63 S1.34/DD 2.45%；DL 图表预测 2Y 2.21 但全期 S 0.54；概率价差为负）。
 
 - 本季 USA/D1 只有 **model=4 / analyst=1 / earnings=1** 亮着；`score_datasets.py` 的 signal-score top20 **全是 model 族**
   ⇒ **白名单只能用「未点亮塔 × 低 alphaCount」筛，按 score 排序等于往已点亮塔堆料**。

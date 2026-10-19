@@ -1,1624 +1,1640 @@
 {
- "schema_version": 1,
- "region": "EUR",
- "cells": {
-  "analyst": {
-   "status": "auto",
-   "datasets": [
-    "analyst10",
-    "analyst11",
-    "analyst39",
-    "analyst45",
-    "analyst9",
-    "analyst_consensus",
-    "analyst_factor_signals"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 74,
-    "ra_clean": 0,
-    "prod_measured": 0,
-    "prod_clean": 0,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "analyst9",
-      "backtests": 27
-     },
-     {
-      "dataset": "analyst45",
-      "backtests": 14
-     },
-     {
-      "dataset": "analyst_factor_signals",
-      "backtests": 9
-     },
-     {
-      "dataset": "analyst_consensus",
-      "backtests": 8
-     },
-     {
-      "dataset": "analyst11",
-      "backtests": 8
-     },
-     {
-      "dataset": "analyst10",
-      "backtests": 8
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-ANALYST-FACTOR-SIGNALS-WEAK",
-      "family": "analyst_factor_signals 分析师因子信号族（EPS/revenue revision magnitude × coeff_var）",
-      "text": "wave243 9 探针全灭 best |sharpe|=0.31 → 达 fast_kill 判死线。ANALYST 塔候选出局。今日 7 集回测探针全灭（max|S| 0.16-0.91），与 2026-09-22 零竞争轴证伪结论互证。",
-      "dataset": "analyst_factor_signals",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-ANALYST10-PREDICTED-SURPRISE-DEAD",
-      "family": "analyst10 performance-weighted estimates (predicted surprise EBT/net/pretax/sales, innovation counts, revision ratio)",
-      "text": "EUR analyst tower: predicted-surprise family closed",
-      "dataset": "analyst10",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ANALYST9-COLD-ZERO-YIELD",
-      "family": "一致预期修正标准化劾量 / 预期陈旧度 / 修正广度",
-      "text": "本区该集不再投槽位；同机制（一致预期修正）在其他 analyst 集要进先跑 1-2 条 prod-first + 强度探针",
-      "dataset": "analyst9",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ANL11-ESG-SLOWVAR-LONGCOUNT",
-      "family": "analyst11 ESG 评分体系（三支柱 + 行业排名 + 改善动量）",
-      "text": "Leave analyst11（ESG）在 EUR。analyst 塔（1.3x）完全 exhausted：analyst_consensus（CW=0.5 全灭）+ analyst45 + analyst11（longCount 3-52）均判死。慢变量评分类数据集（ESG/治理/年度基本面）在 EUR D1 普遍有",
-      "dataset": "analyst11",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ANL39-EPS-GM-BOOK-WEAK",
-      "family": "analyst39 EPS/margin/book residual x v_rev/wedge",
-      "text": "Do not reuse analyst39 EPS/margin/book residuals as 0.30 slow legs with v_rev/falling_wedge.",
-      "dataset": "analyst39",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-ANL45-TRADE-IDEAS-WEAK",
-      "family": "analyst45 VECTOR trade-idea residual x v_rev/wedge",
-      "text": "Do not reuse analyst45 trade-idea vec_avg residuals as 0.30 slow legs with v_rev/falling_wedge.",
-      "dataset": "analyst45",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-CONSENSUS-SURPRISE-TP-WEAK",
-      "family": "analyst_consensus surprise/estimate/target x v_rev/wedge",
-      "text": "Do not reuse analyst_consensus surprise/target residuals as 0.30 slow legs with v_rev/falling_wedge. Prefer GEM concept generation on NEWS.",
-      "dataset": "analyst_consensus",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-analyst45-RET-WEAK",
-      "family": "analyst45 return/benchmark fields",
-      "text": "Leave analyst45 return/benchmark fields in EUR. Do not retry ts_mean/ts_delta/ts_decay_linear on anl45_*_ret fields or if_else/trade_when conditional logic.",
-      "dataset": "analyst45",
-      "bound": "payload"
-     }
-    ],
-    "wins": []
-   },
-   "generation": {
-    "notes": [
-     "★★★ 【MATRIX ⇒ TO 崩」的适用边界修正】此前基于 f72/f17（年度/季度财报）得出「MATRIX ⇒ TO 崩 0.017–0.029」；但 **analyst_factor_signals（108 字段全 MATRIX，日频分析师修正）实测 TO 可达 0.087**（`eps_q1_estimate_change_1mo` S0.71/TO0.087）。⇒ ★ **规则应表述为：TO 崩的是「低频更新字段」（年度/季度财报），而非所有 MATRIX**；**日频事件型 MATRIX（分析师修正/预估值）TO 正常** ⇒ 选集时看**更新频率**而非仅看 type。⚠ 但仍需逐字段实测：同数据集内 `eps_estimate_volatility_adj_3yr` TO 仅 0.0272（慢变量）、`eps_actual_q1_yoy_growth` TO 0.0253 ⇒ **快变量（change/revision/surprise）TO 合格，慢变量（level/volatility/CAGR）TO 崩**。",
-     "★★★★ 【EUR Analyst 首个全闸门通过配方】（2026-10-13，wave472–485，13 波 104 条实证）：\n**数据集 = `analyst_factor_signals`**（108 字段全 MATRIX、104 个 user≤3；**日频分析师修正 ⇒ TO 正常**，推翻「MATRIX ⇒ TO 崩」的过度泛化）。\n**达标表达式**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 1.8), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha `ZYAJZL93`：**S1.67 / F1.04 / TO0.1047 / 2Y1.81 / margin9.27bp / PROD0.6617 / SELF0.2278，FAIL 0 WARNING 1（仅信息性），all_passed=True**。\n**四层杠杆（按增益排序）**：\n① ★★★**「修正幅度 ÷ 分歧度」原语**（`revision_magnitude / coeff_var`）= 0.71→**1.32**（S +0.61）—— 对应 S2 类别原语的 revision surprise ÷ dispersion；\n② ★★**分组轴 `industry`**（vs sector 1.32 / market 1.29 / c5 0.96）；\n③ ★★**`target_tvr` = S 与 2Y 的同步杠杆**（0.06→0.10 使 S1.43→1.58、2Y1.34→1.53；0.12 后饱和）；\n④ ★★★**分母 `ts_mean` 平滑（窗 55）= 三重杠杆**：提 2Y（1.55→**1.81**）、降 prod（0.7064→**0.6617**）、保 S —— 机制：平滑分歧度 ⇒ 分母稳定 ⇒ 持仓集中 ⇒ 小宇宙改善 + 与存量 alpha 相似度下降。\n**幂次**：`signed_power` 1.6–1.8 最优（1.8 给 F≥1.0，1.45–1.55 给 2Y 更高）。\n⚠ **失效项**：`revenue_*` / `netprofit_*` 版本（同结构下 S 仅 1.13/1.07）；跨指标 multiply；`eps_y2_estimate_coeff_var` 分母（S1.45）；horizon gap（y2−y1 consensus，S −0.75 需翻转）；TOP2500（S 崩到 1.34–1.40）；decay=4（S 1.47）⇒ **TOPCS1600+SUBINDUSTRY+decay1+maxTradeOFF 是必要条件**。",
-     "★★★★★ 【EUR Analyst 战役终局定论】（2026-10-13，wave472–492，**21 波 168 条实证**）：\n**结论：Analyst 类别可提交 regular alpha = 1 颗**（不是 10 颗）。\n**唯一达标形态**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 3.0), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha **`O083qZQp`**：S1.71 / F1.09 / TO0.1123 / 2Y1.78 / margin9.02bp / **PROD 0.6170** / verdict FAIL 0。\n**为何只能是 1 颗（互相关实测）**：同族 4 颗达标候选 `get_mutual_correlation` = **0.9757–0.9993**，`max_mutually_below_subset_size=1` ⇒ 提交 1 颗后其余全部触发 self-corr ⇒ **一条腿只出 1 颗**。\n**六层杠杆（增益排序，全部实证）**：\n① ★★★`eps_revision_magnitude ÷ 分歧度` 原语（0.71→1.32）；\n② ★★轴 = `industry`（industry 1.38 > sector 1.32 > market 1.29 > c5 0.96）；\n③ ★★★`target_tvr` = S 与 2Y 同步杠杆（0.06→0.18；0.22 后饱和）；\n④ ★★★分母 `ts_mean` 平滑（窗 **55**；窗88 亦达标，窗44/33 使 2Y 崩）；\n⑤ ★★★**`signed_power` 幂次 = S/F 提升器 + prod 降低器**（1.8→3.0：S1.67→1.71、F1.04→1.09、**prod0.6617→0.6170**）；\n⑥ 窗 55 是 prod 的关键（窗44 prod 0.7064 > 0.7 ⇒ 失败）。\n⚠ **判死清单**：`revenue_*`/`netprofit_*` 版本（S≤1.49）；`eps_y2_coeff_var` 分母（1.45）；`change_3mo` 分子（0.91）；`consensus_value` 分子（负）；期限差（−0.97）；`cagr_*` 分子（≤0.51）；`asymmetry`/`volatility` 分母（≤0.42）；跨指标 multiply（0.11）；`analyst_consensus` breadth（≤0.21）；`analyst45`（0.36）；`analyst9/10` 共识水平（≤0.76）；sector/market/subindustry 轴（2Y ≤1.50）。\n→ **要凑够 10 颗须离开 Analyst 类别**（Analyst 内唯一有效结构已穷尽）。",
-     "★★★★★ 【EUR × analyst 数据集【全量 16 个】最终覆盖表】（2026-10-13 收官）\n| 数据集 | 规模 | 最佳 S | 判定 |\n|---|---|---:|---|\n| ★**`analyst_factor_signals`** | 108 MATRIX | **1.71** | ★**胜出**（`786pLKnb` 全闸门+prod/self 过） |\n| `analyst69` | 297（**247 VECTOR**, cov 1.0） | 1.48 | ❌ **结构性矛盾**：alpha 依赖高频换手（TO 0.29）；压制换手后 S→0.75 且 2Y 转负 |\n| `analyst4` | 264（134 VECTOR, cov 0.965） | 0.65 | ❌ TO 仅 0.020（低于下限）+ 2Y 0.05 |\n| `analyst45` | 61 VECTOR | 0.36 | ❌ |\n| `analyst14` | 113 MATRIX | 0.48 | ❌ 2Y 负 |\n| `analyst15` | 297 MATRIX（含多窗修正变化 `*_gr_12_m_{1m,3m,6m}_chg`） | 0.17 | ❌ |\n| `analyst39` | 24 MATRIX | 0.19 | ❌ |\n| `analyst40` | 16（董事变动） | 0.20 | ❌ **TO 1.50–1.63 爆炸** |\n| `analyst7` | 299 MATRIX（actual 值） | 0.10 | ❌ |\n| `analyst9` | 111 VECTOR | 0.45 | ❌ |\n| `analyst10` | 961（39 VECTOR 多为元数据） | ≤0.76 | ❌ |\n| `analyst11`/`analyst_consensus` | 445/1929 | ≤0.21 | ❌（breadth 无信号） |\n| `analyst_base_ref` | 17（股数/价格参考） | 0.36 | ❌ 2Y −0.58 |\n| `model52`（列在 analyst 类） | 3（违约概率 PD） | −0.17 | ❌ cov 0.199 过低 |\n| `analyst81` | 5 | — | 跳过（cov 0.25 < 0.35） |\n⇒ ★★ **analyst 类别 16 个数据集全部探过，唯一可提交结构 = `eps_revision_magnitude ÷ 分歧度`**。",
-     "★★★★★★ 【EUR × analyst 收官补充：RA 通道被 PPA 占腿封闭】（2026-10-17，波 568–577，10 波 ≈100 条）\n① **塔态权威**：EUR/D1 analyst 塔 = 1（`786pLKnb`，**PPA 通道**）⇒ 按项目口径该塔实际无 RA 产出。\n② ★★★★★ **唯一有效原语的 IS 甜点窗谱**（`eps_revision_magnitude ÷ ts_mean(eps_y1_estimate_coeff_var, W)` + tvr0.18 + p3.0 @ industry）：\n   | 窗 W | S | 2Y | prod | 判定 |\n   |---:|---:|---:|---:|---|\n   | 55 | 1.71 | 1.78 | 0.6170 | = `786pLKnb`（PPA ACTIVE） |\n   | **60** | **1.75** | **1.74** | **0.9920** | ★ IS 全过（`0mj9nM36`/`58j39lpM` failed_ra=0）但**同腿**（互相关 0.994） |\n   | 66 | 1.66 | 1.50 | 0.9818 | 2Y 差 0.08 + 同腿 |\n   | 77 | 1.58 | 1.48 | — | 双差 |\n   | 88 | 1.52 | 1.20 | — | 双差 |\n   ⇒ ★★★ **全部窗变体与 786pLKnb 互相关 ≥0.98 ⇒ `revision_magnitude ÷ dispersion` 族对 RA 通道封闭**（PPA 在 prod 池）。\n③ **`eps_y1_estimate_change_3mo` = 最强单字段（S 1.90/F 1.33）但 2Y 硬顶 ~0.93**：\n   tvr/ts_mean 平滑/换 sector·market 轴/换分母(skewness·asymmetry)/ts_delta 加速度/TOP2500宇宙 **全部无效**（2Y 0.28–0.93）⇒ 快信号结构性缺 2Y。\n④ **`analyst10`（294 字段）判死 = 噪声型**：原始 revise 值 TO 1.40–1.75 爆炸；ts_mean(22) 平滑后 TO 修复但 S 塌到 0.03–0.70、2Y 转负（平滑即杀）。\n   breadth（innovate_increase−decrease）、Margin Scissor（cpxrevise−ebirevise）、pred_surps、smun 归一化**全灭**。\n⑤ **`analyst_consensus`（300 字段）无预测值字段**（只有 actual_value + estimate_count + flag）⇒ vec_avg 动量/vec_stddev 分歧度/count 动量全灭（S ≤0.88）。\n⑥ **残差化（IND 2026-10-16 新结构）在 EUR analyst 不适用**：decay126 下 S 0.51–1.65 但 2Y 全 DEAD（0.37–1.08）—— EUR analyst 信号本就「残差状」。\n⑦ **算子替换杠杆无效**：`group_zscore` 替 `signed_power(group_rank)` ⇒ S 1.75→1.12；`quantile/normalize/ts_scale` 批两次整批 ERROR（平台瞬态，毒表达式未隔离，但该杠杆已被 group_zscore 结果否证）。\n⑧ **门控杠杆无效**：trade_when(高分歧度) ⇒ S 1.35；trade_when(正修正) ⇒ S 1.05（虽 2Y 1.89）。\n⑨ surprise(SUE)/trend_slope/zscore/trailing_4q 族 S ≤0.88 全灭。\n⇒ ★ **EUR analyst 类别 = prod 墙内的结构性穷尽；要凑 RA 腿必须离开 analyst 原语族**（换类别或跨区复用已验证结构）。",
-     "★★★★★ 【EUR × analyst 换腿降 prod 专项：五级全试，全面封死】（2026-10-17，波 580–582）\n**问题**：`0mj9nM36`（IS 全闸过）prod 0.9920（与 PPA 的 786pLKnb 互相关 0.994）——换腿能否降 prod？\n**答案：不能。五级换腿实测**：\n① **参数级**（幂次 6.0 / INDUSTRY 中性化档 / lambda_max=0.5）：互相关地板 **0.92–0.94**（幂次6 = 0.9362、INDUSTRY = 0.9349），prod 地板 **0.9231** ⇒ 离 0.7 差 0.22，无接近者。\n② **输入级**（change_3mo/q1/revenue/netprofit 包 cv 分母，6 变体）：S 全塌 **0.74–1.13** ⇒ **「修正÷分歧度」的强度是 `eps_revision_magnitude` 字段特有**（Street revision 缩放构造），非结构通用。\n③ **门控级**（trade_when 跨度量门控 ×6）：S 全塌 **0.49–1.50** ⇒ 信号强度需全暴露。\n④ **universe 级**（TOP1200/TOP800）：S **0.57–0.82** ⇒ analyst 覆盖集中于大市值，小宇宙丢覆盖。\n⑤ **decay 级**（decay 4）：S 1.58/1.59 但 **F 0.97** 差 0.03；且同序 ⇒ prod 仍 ~0.99。\n⇒ ★★★★★ **根论「强度-占用」锁死**：prod 0.99 与 S 1.75 **同源**（同为该原语在 TOPCS1600 上的排序之结果）。保序变换保强度但保高相关；改序变换降相关但丢强度。⇒ **换腿不能降 prod；要出 RA 腿必须换原语/换数据集/换区域**。\n★ **附带最优发现**：winner 原语 @ **INDUSTRY** 中性化（`LL56W0Q9`）= S 1.78/F 1.17/**2Y 1.89**/robust 1.23/failed_ra=0 —— **全场最优 IS 配置**；区域 settings 的 SUBINDUSTRY 并非该原语最优档（**历史从未扫过 neutralization 设置档，只扫过 group_rank 轴**）。prod 0.9231 仍同腿，但 prod 墙松解时优先提交此版。"
-    ]
-   }
+  "schema_version": 1,
+  "region": "EUR",
+  "cells": {
+    "analyst": {
+      "status": "auto",
+      "datasets": [
+        "analyst_consensus",
+        "analyst15",
+        "analyst7",
+        "analyst10",
+        "analyst69",
+        "analyst4",
+        "analyst11",
+        "analyst14",
+        "analyst9",
+        "analyst_factor_signals",
+        "analyst45",
+        "analyst39",
+        "analyst40",
+        "analyst_base_ref",
+        "analyst81",
+        "model52"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 74,
+        "ra_clean": 0,
+        "prod_measured": 0,
+        "prod_clean": 0,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "analyst9",
+            "backtests": 27
+          },
+          {
+            "dataset": "analyst45",
+            "backtests": 14
+          },
+          {
+            "dataset": "analyst_factor_signals",
+            "backtests": 9
+          },
+          {
+            "dataset": "analyst_consensus",
+            "backtests": 8
+          },
+          {
+            "dataset": "analyst11",
+            "backtests": 8
+          },
+          {
+            "dataset": "analyst10",
+            "backtests": 8
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-ANALYST-FACTOR-SIGNALS-WEAK",
+            "family": "analyst_factor_signals 分析师因子信号族（EPS/revenue revision magnitude × coeff_var）",
+            "text": "wave243 9 探针全灭 best |sharpe|=0.31 → 达 fast_kill 判死线。ANALYST 塔候选出局。今日 7 集回测探针全灭（max|S| 0.16-0.91），与 2026-09-22 零竞争轴证伪结论互证。",
+            "dataset": "analyst_factor_signals",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-ANALYST10-PREDICTED-SURPRISE-DEAD",
+            "family": "analyst10 performance-weighted estimates (predicted surprise EBT/net/pretax/sales, innovation counts, revision ratio)",
+            "text": "EUR analyst tower: predicted-surprise family closed",
+            "dataset": "analyst10",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ANALYST9-COLD-ZERO-YIELD",
+            "family": "一致预期修正标准化劾量 / 预期陈旧度 / 修正广度",
+            "text": "本区该集不再投槽位；同机制（一致预期修正）在其他 analyst 集要进先跑 1-2 条 prod-first + 强度探针",
+            "dataset": "analyst9",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ANL11-ESG-SLOWVAR-LONGCOUNT",
+            "family": "analyst11 ESG 评分体系（三支柱 + 行业排名 + 改善动量）",
+            "text": "Leave analyst11（ESG）在 EUR。analyst 塔（1.3x）完全 exhausted：analyst_consensus（CW=0.5 全灭）+ analyst45 + analyst11（longCount 3-52）均判死。慢变量评分类数据集（ESG/治理/年度基本面）在 EUR D1 普遍有",
+            "dataset": "analyst11",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ANL39-EPS-GM-BOOK-WEAK",
+            "family": "analyst39 EPS/margin/book residual x v_rev/wedge",
+            "text": "Do not reuse analyst39 EPS/margin/book residuals as 0.30 slow legs with v_rev/falling_wedge.",
+            "dataset": "analyst39",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-ANL45-TRADE-IDEAS-WEAK",
+            "family": "analyst45 VECTOR trade-idea residual x v_rev/wedge",
+            "text": "Do not reuse analyst45 trade-idea vec_avg residuals as 0.30 slow legs with v_rev/falling_wedge.",
+            "dataset": "analyst45",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-CONSENSUS-SURPRISE-TP-WEAK",
+            "family": "analyst_consensus surprise/estimate/target x v_rev/wedge",
+            "text": "Do not reuse analyst_consensus surprise/target residuals as 0.30 slow legs with v_rev/falling_wedge. Prefer GEM concept generation on NEWS.",
+            "dataset": "analyst_consensus",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-analyst45-RET-WEAK",
+            "family": "analyst45 return/benchmark fields",
+            "text": "Leave analyst45 return/benchmark fields in EUR. Do not retry ts_mean/ts_delta/ts_decay_linear on anl45_*_ret fields or if_else/trade_when conditional logic.",
+            "dataset": "analyst45",
+            "bound": "payload"
+          }
+        ],
+        "wins": []
+      },
+      "generation": {
+        "notes": [
+          "★★★ 【MATRIX ⇒ TO 崩」的适用边界修正】此前基于 f72/f17（年度/季度财报）得出「MATRIX ⇒ TO 崩 0.017–0.029」；但 **analyst_factor_signals（108 字段全 MATRIX，日频分析师修正）实测 TO 可达 0.087**（`eps_q1_estimate_change_1mo` S0.71/TO0.087）。⇒ ★ **规则应表述为：TO 崩的是「低频更新字段」（年度/季度财报），而非所有 MATRIX**；**日频事件型 MATRIX（分析师修正/预估值）TO 正常** ⇒ 选集时看**更新频率**而非仅看 type。⚠ 但仍需逐字段实测：同数据集内 `eps_estimate_volatility_adj_3yr` TO 仅 0.0272（慢变量）、`eps_actual_q1_yoy_growth` TO 0.0253 ⇒ **快变量（change/revision/surprise）TO 合格，慢变量（level/volatility/CAGR）TO 崩**。",
+          "★★★★ 【EUR Analyst 首个全闸门通过配方】（2026-10-13，wave472–485，13 波 104 条实证）：\n**数据集 = `analyst_factor_signals`**（108 字段全 MATRIX、104 个 user≤3；**日频分析师修正 ⇒ TO 正常**，推翻「MATRIX ⇒ TO 崩」的过度泛化）。\n**达标表达式**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 1.8), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha `ZYAJZL93`：**S1.67 / F1.04 / TO0.1047 / 2Y1.81 / margin9.27bp / PROD0.6617 / SELF0.2278，FAIL 0 WARNING 1（仅信息性），all_passed=True**。\n**四层杠杆（按增益排序）**：\n① ★★★**「修正幅度 ÷ 分歧度」原语**（`revision_magnitude / coeff_var`）= 0.71→**1.32**（S +0.61）—— 对应 S2 类别原语的 revision surprise ÷ dispersion；\n② ★★**分组轴 `industry`**（vs sector 1.32 / market 1.29 / c5 0.96）；\n③ ★★**`target_tvr` = S 与 2Y 的同步杠杆**（0.06→0.10 使 S1.43→1.58、2Y1.34→1.53；0.12 后饱和）；\n④ ★★★**分母 `ts_mean` 平滑（窗 55）= 三重杠杆**：提 2Y（1.55→**1.81**）、降 prod（0.7064→**0.6617**）、保 S —— 机制：平滑分歧度 ⇒ 分母稳定 ⇒ 持仓集中 ⇒ 小宇宙改善 + 与存量 alpha 相似度下降。\n**幂次**：`signed_power` 1.6–1.8 最优（1.8 给 F≥1.0，1.45–1.55 给 2Y 更高）。\n⚠ **失效项**：`revenue_*` / `netprofit_*` 版本（同结构下 S 仅 1.13/1.07）；跨指标 multiply；`eps_y2_estimate_coeff_var` 分母（S1.45）；horizon gap（y2−y1 consensus，S −0.75 需翻转）；TOP2500（S 崩到 1.34–1.40）；decay=4（S 1.47）⇒ **TOPCS1600+SUBINDUSTRY+decay1+maxTradeOFF 是必要条件**。",
+          "★★★★★ 【EUR Analyst 战役终局定论】（2026-10-13，wave472–492，**21 波 168 条实证**）：\n**结论：Analyst 类别可提交 regular alpha = 1 颗**（不是 10 颗）。\n**唯一达标形态**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 3.0), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha **`O083qZQp`**：S1.71 / F1.09 / TO0.1123 / 2Y1.78 / margin9.02bp / **PROD 0.6170** / verdict FAIL 0。\n**为何只能是 1 颗（互相关实测）**：同族 4 颗达标候选 `get_mutual_correlation` = **0.9757–0.9993**，`max_mutually_below_subset_size=1` ⇒ 提交 1 颗后其余全部触发 self-corr ⇒ **一条腿只出 1 颗**。\n**六层杠杆（增益排序，全部实证）**：\n① ★★★`eps_revision_magnitude ÷ 分歧度` 原语（0.71→1.32）；\n② ★★轴 = `industry`（industry 1.38 > sector 1.32 > market 1.29 > c5 0.96）；\n③ ★★★`target_tvr` = S 与 2Y 同步杠杆（0.06→0.18；0.22 后饱和）；\n④ ★★★分母 `ts_mean` 平滑（窗 **55**；窗88 亦达标，窗44/33 使 2Y 崩）；\n⑤ ★★★**`signed_power` 幂次 = S/F 提升器 + prod 降低器**（1.8→3.0：S1.67→1.71、F1.04→1.09、**prod0.6617→0.6170**）；\n⑥ 窗 55 是 prod 的关键（窗44 prod 0.7064 > 0.7 ⇒ 失败）。\n⚠ **判死清单**：`revenue_*`/`netprofit_*` 版本（S≤1.49）；`eps_y2_coeff_var` 分母（1.45）；`change_3mo` 分子（0.91）；`consensus_value` 分子（负）；期限差（−0.97）；`cagr_*` 分子（≤0.51）；`asymmetry`/`volatility` 分母（≤0.42）；跨指标 multiply（0.11）；`analyst_consensus` breadth（≤0.21）；`analyst45`（0.36）；`analyst9/10` 共识水平（≤0.76）；sector/market/subindustry 轴（2Y ≤1.50）。\n→ **要凑够 10 颗须离开 Analyst 类别**（Analyst 内唯一有效结构已穷尽）。",
+          "★★★★★ 【EUR × analyst 数据集【全量 16 个】最终覆盖表】（2026-10-13 收官）\n| 数据集 | 规模 | 最佳 S | 判定 |\n|---|---|---:|---|\n| ★**`analyst_factor_signals`** | 108 MATRIX | **1.71** | ★**胜出**（`786pLKnb` 全闸门+prod/self 过） |\n| `analyst69` | 297（**247 VECTOR**, cov 1.0） | 1.48 | ❌ **结构性矛盾**：alpha 依赖高频换手（TO 0.29）；压制换手后 S→0.75 且 2Y 转负 |\n| `analyst4` | 264（134 VECTOR, cov 0.965） | 0.65 | ❌ TO 仅 0.020（低于下限）+ 2Y 0.05 |\n| `analyst45` | 61 VECTOR | 0.36 | ❌ |\n| `analyst14` | 113 MATRIX | 0.48 | ❌ 2Y 负 |\n| `analyst15` | 297 MATRIX（含多窗修正变化 `*_gr_12_m_{1m,3m,6m}_chg`） | 0.17 | ❌ |\n| `analyst39` | 24 MATRIX | 0.19 | ❌ |\n| `analyst40` | 16（董事变动） | 0.20 | ❌ **TO 1.50–1.63 爆炸** |\n| `analyst7` | 299 MATRIX（actual 值） | 0.10 | ❌ |\n| `analyst9` | 111 VECTOR | 0.45 | ❌ |\n| `analyst10` | 961（39 VECTOR 多为元数据） | ≤0.76 | ❌ |\n| `analyst11`/`analyst_consensus` | 445/1929 | ≤0.21 | ❌（breadth 无信号） |\n| `analyst_base_ref` | 17（股数/价格参考） | 0.36 | ❌ 2Y −0.58 |\n| `model52`（列在 analyst 类） | 3（违约概率 PD） | −0.17 | ❌ cov 0.199 过低 |\n| `analyst81` | 5 | — | 跳过（cov 0.25 < 0.35） |\n⇒ ★★ **analyst 类别 16 个数据集全部探过，唯一可提交结构 = `eps_revision_magnitude ÷ 分歧度`**。",
+          "★★★★★★ 【EUR × analyst 收官补充：RA 通道被 PPA 占腿封闭】（2026-10-17，波 568–577，10 波 ≈100 条）\n① **塔态权威**：EUR/D1 analyst 塔 = 1（`786pLKnb`，**PPA 通道**）⇒ 按项目口径该塔实际无 RA 产出。\n② ★★★★★ **唯一有效原语的 IS 甜点窗谱**（`eps_revision_magnitude ÷ ts_mean(eps_y1_estimate_coeff_var, W)` + tvr0.18 + p3.0 @ industry）：\n   | 窗 W | S | 2Y | prod | 判定 |\n   |---:|---:|---:|---:|---|\n   | 55 | 1.71 | 1.78 | 0.6170 | = `786pLKnb`（PPA ACTIVE） |\n   | **60** | **1.75** | **1.74** | **0.9920** | ★ IS 全过（`0mj9nM36`/`58j39lpM` failed_ra=0）但**同腿**（互相关 0.994） |\n   | 66 | 1.66 | 1.50 | 0.9818 | 2Y 差 0.08 + 同腿 |\n   | 77 | 1.58 | 1.48 | — | 双差 |\n   | 88 | 1.52 | 1.20 | — | 双差 |\n   ⇒ ★★★ **全部窗变体与 786pLKnb 互相关 ≥0.98 ⇒ `revision_magnitude ÷ dispersion` 族对 RA 通道封闭**（PPA 在 prod 池）。\n③ **`eps_y1_estimate_change_3mo` = 最强单字段（S 1.90/F 1.33）但 2Y 硬顶 ~0.93**：\n   tvr/ts_mean 平滑/换 sector·market 轴/换分母(skewness·asymmetry)/ts_delta 加速度/TOP2500宇宙 **全部无效**（2Y 0.28–0.93）⇒ 快信号结构性缺 2Y。\n④ **`analyst10`（294 字段）判死 = 噪声型**：原始 revise 值 TO 1.40–1.75 爆炸；ts_mean(22) 平滑后 TO 修复但 S 塌到 0.03–0.70、2Y 转负（平滑即杀）。\n   breadth（innovate_increase−decrease）、Margin Scissor（cpxrevise−ebirevise）、pred_surps、smun 归一化**全灭**。\n⑤ **`analyst_consensus`（300 字段）无预测值字段**（只有 actual_value + estimate_count + flag）⇒ vec_avg 动量/vec_stddev 分歧度/count 动量全灭（S ≤0.88）。\n⑥ **残差化（IND 2026-10-16 新结构）在 EUR analyst 不适用**：decay126 下 S 0.51–1.65 但 2Y 全 DEAD（0.37–1.08）—— EUR analyst 信号本就「残差状」。\n⑦ **算子替换杠杆无效**：`group_zscore` 替 `signed_power(group_rank)` ⇒ S 1.75→1.12；`quantile/normalize/ts_scale` 批两次整批 ERROR（平台瞬态，毒表达式未隔离，但该杠杆已被 group_zscore 结果否证）。\n⑧ **门控杠杆无效**：trade_when(高分歧度) ⇒ S 1.35；trade_when(正修正) ⇒ S 1.05（虽 2Y 1.89）。\n⑨ surprise(SUE)/trend_slope/zscore/trailing_4q 族 S ≤0.88 全灭。\n⇒ ★ **EUR analyst 类别 = prod 墙内的结构性穷尽；要凑 RA 腿必须离开 analyst 原语族**（换类别或跨区复用已验证结构）。",
+          "★★★★★ 【EUR × analyst 换腿降 prod 专项：五级全试，全面封死】（2026-10-17，波 580–582）\n**问题**：`0mj9nM36`（IS 全闸过）prod 0.9920（与 PPA 的 786pLKnb 互相关 0.994）——换腿能否降 prod？\n**答案：不能。五级换腿实测**：\n① **参数级**（幂次 6.0 / INDUSTRY 中性化档 / lambda_max=0.5）：互相关地板 **0.92–0.94**（幂次6 = 0.9362、INDUSTRY = 0.9349），prod 地板 **0.9231** ⇒ 离 0.7 差 0.22，无接近者。\n② **输入级**（change_3mo/q1/revenue/netprofit 包 cv 分母，6 变体）：S 全塌 **0.74–1.13** ⇒ **「修正÷分歧度」的强度是 `eps_revision_magnitude` 字段特有**（Street revision 缩放构造），非结构通用。\n③ **门控级**（trade_when 跨度量门控 ×6）：S 全塌 **0.49–1.50** ⇒ 信号强度需全暴露。\n④ **universe 级**（TOP1200/TOP800）：S **0.57–0.82** ⇒ analyst 覆盖集中于大市值，小宇宙丢覆盖。\n⑤ **decay 级**（decay 4）：S 1.58/1.59 但 **F 0.97** 差 0.03；且同序 ⇒ prod 仍 ~0.99。\n⇒ ★★★★★ **根论「强度-占用」锁死**：prod 0.99 与 S 1.75 **同源**（同为该原语在 TOPCS1600 上的排序之结果）。保序变换保强度但保高相关；改序变换降相关但丢强度。⇒ **换腿不能降 prod；要出 RA 腿必须换原语/换数据集/换区域**。\n★ **附带最优发现**：winner 原语 @ **INDUSTRY** 中性化（`LL56W0Q9`）= S 1.78/F 1.17/**2Y 1.89**/robust 1.23/failed_ra=0 —— **全场最优 IS 配置**；区域 settings 的 SUBINDUSTRY 并非该原语最优档（**历史从未扫过 neutralization 设置档，只扫过 group_rank 轴**）。prod 0.9231 仍同腿，但 prod 墙松解时优先提交此版。",
+          "★★★★★★ 【2026-10-18 重大纠错：旧画像只覆盖 15–36% 的字段，「Analyst 结构性穷尽」结论作废】平台 `/data-fields` 的 `limit≤50` 且 **`offset>50` 返回空** ⇒ 旧画像按前缀分页抓取时静默截断。真实规模 vs 旧记录：analyst_consensus **1929**（旧记 300，漏掉 **18 个 MATRIX** targetprice 字段）、analyst15 **1744**（旧 297）、analyst7 **1111**（旧 299）、analyst10 **961**（旧 294）、analyst69 **813**（旧 297）、analyst4 **776**（旧 264）。⇒ 纪律：**任何「类别穷尽」声明前，必须核对本地 `fields` 计数 == 平台 `dataset.field_count`**。",
+          "★★★ 新机制层（旧战役从未碰过）：① `analyst_consensus` **18 个 MATRIX 预测值**（`mean/stddev/median/max/min_estimate_targetprice_annual12_tribes`、`*_fxadj_*`、`*_eps_longterm`，cov 0.9477/0.7809，平台 aCnt 0–6）；② `analyst7` **32 个指标具备四件套**（`mean` 当前 + `mean_3mth_ago` + `std` 当前 + `mean_4wks_ago`），覆盖 `cpx/fcf/roa/roe/tbv/nav/dps/sal/grm/opr/ebi/ebt/net/eps/bps/cps/csh/gps/pre/prr/ner/ent/ndt`（12m）+ 9 个 q 期限；③ `analyst15` **1744 M = 行业/板块/集团级聚合**（`anl15_{ebg,ebt,bps,cps,dps,sal}_{ind,s,gr}_{fy1..fy3,cal,1m,3m,6m,ltg}_{chg,up,dn,mean,dev,cos,ests}`）；④ `analyst10` **`pred_surps` 111 个（cov 1.0，直接预测惊喜）** + 31 个 `revise_ratio_to_close`（天然无量纲）+ `smart_ests` 111 + `innovate/normal_increase/decrease` 广度。",
+          "★★★★★ 【wave589–594，60 条实测：全部 2Y_DEAD，单字段 S 上限 0.88】analyst7 快照差分÷std（20 条，最优 eps S1.37/2Y0.35、sal S1.36）、analyst_consensus targetprice 修正÷std（5 条，最优 S0.97 但 2Y −0.28）、analyst10 revise_ratio + pred_surps + analyst15 行业级（10 条，最优 S0.71）、predictive_starmine 单字段（10 条，最优 S0.88）、predictive_starmine 同集双字段价差（10 条，最优 `LL5kxVMn` S0.95/2Y1.40/TO0.084）。⇒ **EUR 单字段 S 上限约 0.9；S≥1.58 只能靠多腿叠加，而多腿跨数据集破 ATOM。同集双字段价差只能提 2Y（0.6→1.4）不提 S（≤0.95）。**",
+          "★★★★ 【有量纲字段禁与常数相加，否则整批 WARNING 且无任何指标】`add(stddev_estimate_targetprice_annual12_tribes, 0.01)` ⇒ 10/10 `Incompatible unit for input of \"add\" at index 1, expected \"Unit[TSPrice:1]\", found \"Unit[]\"`。**推翻此前「只产生 UNITS warning、不阻塞回测」的认知**。防零除必须用**同单位字段直除**，或改用天然无量纲字段（ROA/ROE/`revise_ratio_to_close`/`coeff_var`）。",
+          "★★★★★ 【EUR 已有 1 颗完全合规的 RA ATOM：`N1VnJjXg`（2026-10-06 ACTIVE，tags 无 PowerPoolSelected，failed_ra=0，单塔 MODEL）】表达式 `hump(rank(ts_delta(vec_avg(qfl_cassie_convention_ocf_currliab), 22)), hump=0.001)`，设置 **TOPCS1600 / INDUSTRY / decay 40 / maxTrade ON** ⇒ S1.75 / F1.17 / TO0.041 / returns 5.57% / 2Y1.76 / sub1.63 / robust1.44 / **prod 0.5378** / self 0.1954，九闸全 CLEAN。**对照 `WjegEmQO`**（同字段同 `hump`，但外层 `group_zscore(...,subindustry)` + decay 1 + SUBINDUSTRY）prod **0.7188 FAIL**。⇒ ★★★★★ **prod 卡 0.7 且结构里有外层 `group_*` 归一化时，先试「拆掉外层 group_* + decay 提到 40 + 中性化换 INDUSTRY」，比换字段/换轴有效得多（本证降 prod 0.18）。**",
+          "★★★ 【quant_factor_lib 只有 `ocf_currliab` 单腿能过闸】`N1VnJjXg` 形态套用到 current_ratio/quick_ratio/debt_equity/cassie_score/altman_zscore/ohlson_oscore/merton/longdebt_equity/debt_weighted_interest_rate/shortterm_debt_ratio（wave595，10 条，decay40+INDUSTRY）**全部 2Y_DEAD，最高仅 S1.24**（融资成本）。该集 126 字段全 VECTOR cov 0.56–0.785，另含 `cassie_impliedalpha`（隐含超额收益）与破产压力族待测。",
+          "★★★ 【算子静默下线（本月第 2 例）】`vector_neut` 已不在平台算子清单，`dispatch --op-lint` 直接拒绝整批 ⇒ 依赖它的 `78NoOeVx`（fundamental23, S1.67/F1.06/2Y2.42/prod0.7432）与 `XgJYWLg1`（risk70, S1.68/prod0.6831）**均无法复现**。前例：`multi_horizon_alpha` 杠杆族全族下线。⇒ 复现任何老 alpha 前必须先过 `op-lint` + `preflight`。"
+        ]
+      }
+    },
+    "earnings": {
+      "status": "auto",
+      "datasets": [
+        "earnings6"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 4,
+        "ra_clean": 0,
+        "prod_measured": 0,
+        "prod_clean": 0,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "earnings6",
+            "backtests": 4
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-W255-EARNINGS6-EPS-EVENT-PAIRS",
+            "family": "earnings6 normalized EPS surprise and preliminary range SUBINDUSTRY decay4",
+            "text": "",
+            "dataset": "earnings6",
+            "bound": "payload"
+          }
+        ],
+        "wins": []
+      },
+      "generation": {
+        "notes": [
+          "★★★ 【EUR × earnings 判死】（2026-10-13，波 449）：\n**`earnings6`**（55 VECTOR）：`eps_change_percentage_value` / `eps_change_absolute_value` 等 EPS 变化字段**返回 S=0.0 / TO=0.0（空信号，事件稀疏 ⇒ `vec_avg` 归约后全 NaN）**；预告区间类字段 S ≤ −0.08 ⇒ **判死**。",
+          "★★★ 【EUR × earnings 补充】（wave502/504）：\n`earnings_sent_matrix`（7 MATRIX，财报电话情绪）：`overall_sentiment_score` S=−0.20 且 **TO=1.61 爆炸**；`likelihood_of_neutral_tone`/`*_sentiment_probability_3` 同族 ⇒ **判死**。\n⇒ earnings 类别 2 个数据集（`earnings6` / `earnings_sent_matrix`）**全部判死**。"
+        ]
+      }
+    },
+    "fundamental": {
+      "status": "auto",
+      "datasets": [
+        "fundamental17",
+        "fundamental23",
+        "fundamental93",
+        "other401"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 41,
+        "ra_clean": 2,
+        "prod_measured": 6,
+        "prod_clean": 0,
+        "prod_blocked": 6,
+        "top_datasets": [
+          {
+            "dataset": "fundamental23",
+            "backtests": 18
+          },
+          {
+            "dataset": "fundamental17",
+            "backtests": 14
+          },
+          {
+            "dataset": "other401",
+            "backtests": 9
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-FND23-ACCRUAL-EXPENSE-DEAD",
+            "family": "fundamental23 应计质量/费用结构族",
+            "text": "Leave fundamental23 应计质量/费用结构族 in EUR。accrual anomaly 在 EUR D1 无效（与美股文献结论相反，勿再按美股经验搬）。本 session 已在 fundamental23 累计 4 个正交概念 22 式全灭（税务会计质量 / 资产负债表杠杆 / 股东回报 / 费用结",
+            "dataset": "fundamental23",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-FND23-CAPSTRUCT-DIVIDEND-DEAD",
+            "family": "fundamental23 资本结构/杠杆族 + 股息族",
+            "text": "Leave fundamental23 的资本结构与股息族在 EUR。已验证「高覆盖 × 零竞争」字段也不产生信号，故不必再在 fundamental23 内部按 coverage/userCount 筛选——该筛选维度已证伪。换概念必须离开资产负债表/股东回报语义域（如费用结构、存货周转、员工薪酬强度），且仍需 4 ",
+            "dataset": "fundamental23",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-FND23-WORKINGCAP-INVENTORY-DEAD",
+            "family": "fundamental23 营运资本/存货效率族",
+            "text": "Leave fundamental23 营运资本/存货族 in EUR。本 session 已在 fundamental23 累计 5 个正交概念 28 式全灭（税务会计质量 / 资产负债表杠杆 / 股东回报 / 费用结构应计 / 营运资本存货），覆盖字段 quality 0.65-0.96 且多为 userCount",
+            "dataset": "fundamental23",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-FND93-TAXACCRUAL-ZERO-SIGNAL-DEAD",
+            "family": "fundamental93 Earnings Tax Data（递延税/税务应计族）",
+            "text": "Leave fundamental93 in EUR。开波前先用 4 式探针预算判定，不要直接开 10 式波。fitness 1.0 在本集数学上不可达（returns 天花板 0.016 vs 需求 0.05），不要试图用衰减/窗口/分组变量调优——四种正交机制已全灭。",
+            "dataset": "fundamental93",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-OTHER401-WEAK",
+            "family": "other401 基本面矩阵族（oth401_* 65 字段 MATRIX）",
+            "text": "wave235 9 探针全灭：best sharpe 0.70 / fit 0.34 / 2Y 1.07，CONCENTRATED_WEIGHT+LOW_ROBUST_UNIVERSE；D4 资格线 1.25 未达 → 判死。1 条 group_cartesian_product(sector,sector) 坏式被自",
+            "dataset": "other401",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-W251-FUNDAMENTAL17-QUALITY-PROBE",
+            "family": "fundamental17 operating-quality changes and matched levels",
+            "text": "Do not parameter-expand these 12 mechanisms/settings. Deferred untested variants are not empirical dead ends; reopening requires independent evidence and review",
+            "dataset": "fundamental17",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-W252-FUNDAMENTAL17-MEASUREMENT-RETEST",
+            "family": "fundamental17 reported earnings level and accounting adjustment",
+            "text": "No parameter expansion of these weak expressions. Retain profitability-level research lead; entire dataset and untested fields not condemned.",
+            "dataset": "fundamental17",
+            "bound": "payload"
+          }
+        ],
+        "wins": []
+      },
+      "note": "EUR 破 prod 墙的残差化路径：★ vector_neut 已于 2026-10-10 实测被平台移除（op-lint 拦截：平台算子清单外）⇒ 改用 ts_regression / group_neutralize / subtract(rank,rank) 三种可用残差化；残差轴的选择仍决定成败",
+      "generation": {
+        "use": [
+          "嵌套残差化：先削自由现金流，再削投资（CAPEX）或经营现金流维度（WorkBuddy MEMORY §1.7）"
+        ],
+        "skeletons": [
+          {
+            "text": "vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets))), rank(divide(free_cash_flow, assets))), rank(divide(operating_cashflow, assets)))",
+            "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；当前最佳 JjQmx9nm（fcf→capex→ocf，12 算子）S 1.73 / F 1.17 / prod 0.6695 / self 0.3397；⚠ 2026-10-10 实测：vector_neut 已被平台移除（op-lint 拦截），此骨架不可再执行，仅存历史证据"
+          }
+        ],
+        "notes": [
+          "ts_backfill 在 EUR / TOPCS1600 / nanHandling=ON 下是 no-op：写 EUR 表达式先删它；但 /assets 归一化是真信号，残差轴也要归一化",
+          "hump 必须写命名参数（hump=k）；hump(vec_avg(x), …) 会 FAIL",
+          "★★ vector_neut 已被平台移除（2026-10-10 op-lint 实测「平台算子清单外的名字」）⇒ 本 cell 旧记「唯一有效杠杆：vector_neut 残差化」作废。残差化可用替代（本轮验证）：ts_regression(y,x,d,rettype=0) / group_neutralize(x,group)（内层须细于 setting 的 SUBINDUSTRY）/ subtract(rank(A),rank(B))（合规放行形态）",
+          "★★★ 【三层闸门口径差异·实测样本】EUR fnd72 `mL617YPx`（2026-10-11）：**平台 review 闸全过**（S1.82/F1.25/TO0.0675/**2年 ladder 2.23**/margin17.6bp/Failed RA=0/prod0.5421/self0.3999），但 **skill Phase C 判 REJECT**（近 **3年** CV_Sharpe 0.661 / max-min 5.26）。★ 差异点：**平台看 2 年窗口，skill 看近 3 年波动性** —— 该腿 2021 年异常高（3.63）拉大 CV。★ repair 2 轮实证（16 条变体）：`target_tvr` 0.06→0.30 仅改善 CV 0.020（饱和于 0.641）；max/min 可从 5.26 修复至 **4.63**（tvr=0.10）；**CV 属结构性，参数层不可弥合**。⇒ **选腿先验：若某腿单年 Sharpre 异常突出（如 2021），它会被 skill Phase C 拦，应优先找年度分布均匀的腿**。"
+        ]
+      },
+      "s4": {
+        "levers": [
+          {
+            "id": "eur-fund-switch-dimension",
+            "what": "降 prod 换维度而不是加层：同维度加层边际几何衰减（0.9073→0.7432→0.7071→0.6997），换到投资维度（CAPEX / 资产）一次降 0.029",
+            "evidence": "WorkBuddy MEMORY §1.7（2026-10-04）",
+            "no_extrapolate": true
+          },
+          {
+            "id": "eur-fund-replace",
+            "what": "替换优于叠加，且顺序敏感：2 层 fcf→capex（9 算子）prod 0.6708 < 3 层 fcf→ocf→capex 0.6776",
+            "evidence": "WorkBuddy MEMORY §1.7",
+            "no_extrapolate": true
+          },
+          {
+            "id": "eur-fund-hump",
+            "what": "hump 档位降 prod 最强（0.0012→0.01：0.686→0.568），可用窗口约 0.0012–0.0035；只能在该族尚无提交时用，否则 self 爆",
+            "evidence": "wave273 / wave274（WorkBuddy MEMORY §1.7）",
+            "no_extrapolate": true
+          }
+        ],
+        "avoid": [
+          {
+            "what": "换分母：在 EUR 是毒药（value_investment S 0.10 全灭）",
+            "evidence": "WorkBuddy MEMORY §1.7"
+          },
+          {
+            "what": "削应计 / ROA 维度：等于削信号本体（S 1.76→1.12）",
+            "evidence": "WorkBuddy MEMORY §1.7"
+          },
+          {
+            "what": "慢化（ts_mean）：反而抬 prod（0.7071→0.7974）",
+            "evidence": "WorkBuddy MEMORY §1.7"
+          },
+          {
+            "what": "ts_target_tvr_hump：只对齐换手、不降 prod",
+            "evidence": "WorkBuddy MEMORY §1.7"
+          },
+          {
+            "what": "中性化切到 MARKET：IS 最高但 prod 涨到 0.7254",
+            "evidence": "WorkBuddy MEMORY §1.7"
+          }
+        ]
+      }
+    },
+    "insiders": {
+      "status": "auto",
+      "datasets": [
+        "insider_agg_matrix"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 9,
+        "ra_clean": 0,
+        "prod_measured": 0,
+        "prod_clean": 0,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "insider_agg_matrix",
+            "backtests": 9
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD",
+            "family": "内部人买入股数比例与二级买入广度",
+            "text": "命中 EUR profile fast_kill（新集 8 探针无 |S|>=0.5）；INSIDERS 塔另一集 insider_matrix / insider_trx_matrix 已分标 yield=0@8bt / SATURATED，不重试",
+            "dataset": "insider_agg_matrix",
+            "bound": "payload"
+          }
+        ],
+        "wins": [
+          {
+            "id": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
+            "family": "predicted_surprise_value_insider_neutralize",
+            "text": "",
+            "dataset": null,
+            "bound": "keyword"
+          },
+          {
+            "id": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
+            "family": "predicted_surprise-FCF-insider bucket 换腿扩配",
+            "text": "",
+            "dataset": null,
+            "bound": "keyword"
+          }
+        ]
+      },
+      "generation": {
+        "notes": [
+          "★★★ 【EUR × insiders 判死】（2026-10-13，波 496，8 条）：\n**数据集 `insiders1`**（9 VECTOR，cov 0.551，含 `insd1_tradesignificance`/`insd1_valueeur`）：\n**8/8 探针 S ≤0.50，且 TO = 1.52–1.61（远超 0.7 硬线）、margin ≈ 0.1–1.2bp（近乎零）** ⇒ **判死**。\n⇒ ★ 根因：**稀疏事件型 VECTOR + `vec_avg` 归约 ⇒ 个股间剧烈跳变 ⇒ TO 爆炸**。\n⚠ `insiders12`（8 VECTOR）cov 仅 **0.193 < 0.35** ⇒ 直接跳过；`insider_agg_matrix` 全 MATRIX。\n⇒ **通用判据：探针若 TO > 0.7 立即弃该数据集（不必看 S）**。",
+          "★★★ 【EUR × insiders 补充】（wave496/504）：`insider_agg_matrix`（34 MATRIX）：`directional_indicator_2` S=−0.05 且 **TO=1.43 爆炸**；`directional_significant_value_*` 同族 ⇒ 判死。\n⇒ insiders 类别 3 个数据集（`insiders1`/`insiders12`/`insider_agg_matrix`）**全部判死**。"
+        ]
+      }
+    },
+    "institutions": {
+      "status": "auto",
+      "datasets": [
+        "fund_holdings_panel",
+        "institutions6"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 22,
+        "ra_clean": 0,
+        "prod_measured": 0,
+        "prod_clean": 0,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "fund_holdings_panel",
+            "backtests": 14
+          },
+          {
+            "dataset": "institutions6",
+            "backtests": 8
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-FHP-INSTITUTIONS-WEAK",
+            "family": "",
+            "text": "Leave fund_holdings_panel 在 EUR。institutions 塔在 EUR D1 无可挖数据集。",
+            "dataset": "fund_holdings_panel",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-INST6-INSTITUTIONS-TOWER-EXHAUSTED",
+            "family": "institutions6 机构持股聚合（净流向/存量/动量三机制）",
+            "text": "Leave institutions6 在 EUR。institutions 塔（1.1x）完全 exhausted：fund_holdings_panel（S-0.39~0.40）+ institutions6（S0.09~0.30）双判死。机构持股类数据在 EUR D1 无预测力。",
+            "dataset": "institutions6",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-INSTITUTIONS6-COLD-ZERO-YIELD",
+            "family": "机构持有人广度比例 / 机构权益占比 / 买入-卖出股数差",
+            "text": "INSTITUTIONS 塔仅 11 字段且机构持股类字段本质是慢变存量，不具备日频预测力；本区不再投槽",
+            "dataset": "institutions6",
+            "bound": "payload"
+          }
+        ],
+        "wins": []
+      },
+      "generation": {
+        "notes": [
+          "★★★ 【EUR × institutions 判死】（2026-10-13，波 444–446、495）：\n**`fund_holdings_panel`**（30 VECTOR、user 0–6 极低竞争）：\n有效方向 = `ts_delta(herfindahl_index_holdings, 252)`（机构持仓集中度变化），S **0.80–0.81**（幂次 3.0 仅 +0.01）。\n⇒ ★ **S 距线 0.77，且反推 returns 仅 2.33%** ⇒ 在 S=1.58 时 F 上限 = 1.58×sqrt(0.0233/0.125) = **0.68 < 1.0** ⇒ **数学上不可能过 F 闸** ⇒ 判死。\n⚠ `institutions6` 全 MATRIX（11 字段）；形态 `boundary_total / ts_mean(holding_value,55)` 使 TO 爆到 1.13。"
+        ]
+      }
+    },
+    "model": {
+      "status": "auto",
+      "datasets": [
+        "ai_equity_alpha",
+        "ai_factor_transfer",
+        "analyst_earnings_ibes",
+        "analyst_revision_horizons",
+        "chart_cnn_alpha",
+        "global_seasonal_model",
+        "model193",
+        "model238",
+        "model264",
+        "model354",
+        "model36",
+        "model50",
+        "multi_horizon_alpha",
+        "multifactor_return_pred",
+        "other460",
+        "predictive_starmine",
+        "price_signal_dl",
+        "shortinterest6"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 156,
+        "ra_clean": 3,
+        "prod_measured": 4,
+        "prod_clean": 4,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "predictive_starmine",
+            "backtests": 38
+          },
+          {
+            "dataset": "shortinterest6",
+            "backtests": 28
+          },
+          {
+            "dataset": "model50",
+            "backtests": 23
+          },
+          {
+            "dataset": "global_seasonal_model",
+            "backtests": 21
+          },
+          {
+            "dataset": "model264",
+            "backtests": 14
+          },
+          {
+            "dataset": "other460",
+            "backtests": 13
+          },
+          {
+            "dataset": "chart_cnn_alpha",
+            "backtests": 9
+          },
+          {
+            "dataset": "price_signal_dl",
+            "backtests": 5
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-AEIBES-W125-OPERATOR-LEVERAGE-WEAK",
+            "family": "analyst_earnings_ibes event-masked OHLCV × 未用算子族",
+            "text": "Leave analyst_earnings_ibes 这 8 个机制（规模桶内漂移残差/日内分歧/加速度门控翻转/量价确认度/执行压力残差/彩票需求/T-KB-01 单集跨周期）。不判死整个数据集——换手率方向有存活线索见 salvage。",
+            "dataset": "analyst_earnings_ibes",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AFT-OSC2-WEAK",
+            "family": "ai_factor_transfer _2 oscillators/money-flow",
+            "text": "Leave ai_factor_transfer. Next unused whitelist: global_seasonal_model non-return seasonal features. Do not deepen RelVal EV/EBITDA or v_rev/wedge.",
+            "dataset": "ai_factor_transfer",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AIEQ-ANALYST-REV-NOSCORE-WEAK",
+            "family": "ai_equity_alpha analyst revision without vol/score",
+            "text": "Do not occupy slots with AIEQ analyst-revision family without vol/score. Composite after still |S|<0.6.",
+            "dataset": "ai_equity_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AIEQ-FORENSIC-ACCRUAL-MIX-PROD",
+            "family": "ai_equity forensic+accrual mix dominant",
+            "text": "Do not use forensic+accrual mix as dominant. Mode B must change AIEQ concept.",
+            "dataset": "ai_equity_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AIEQ-VOL-SCORE-PRODCORR",
+            "family": "ai_equity_alpha financial_statement_volatility_factor / alpha_score dominant legs",
+            "text": "Do not use financial_statement_volatility_factor or alpha_score as the dominant (weight>=0.6) leg. Wrappers/group/ts_av_diff/SLOW-X-FAST mix still prod 0.78-0.8",
+            "dataset": "ai_equity_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK",
+            "family": "ai_equity quality/opacity/unused liquidity/clarity x v_rev x wedge",
+            "text": "Do not occupy slots with earnings_quality, information_opacity, liquidity_buffer/asset_liquidity_score_2, business_clarity, or five_day x v_rev x wedge.",
+            "dataset": "ai_equity_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AIEQ-W51-MOAT-UTIL-REPL-PSPAT-WEAK",
+            "family": "ai_equity_alpha",
+            "text": "Wave51 0.30/0.40/0.30 × v_rev/wedge: max S1.09 failed cheap gate; pspat volume/trend also weak; competitive slot ERROR",
+            "dataset": "ai_equity_alpha",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-AIEQ-W52-MARGIN-GROWTH-CASH-WEAK",
+            "family": "ai_equity_alpha",
+            "text": "Wave52 0.30/0.40/0.30 × v_rev/wedge: max S1.20 failed cheap gate",
+            "dataset": "ai_equity_alpha",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-AIEQ-W53-DEBT-VAL-YIELD-PHYS-WEAK",
+            "family": "ai_equity_alpha",
+            "text": "Wave53 0.30/0.40/0.30 × v_rev/wedge: max S1.02 failed cheap gate",
+            "dataset": "ai_equity_alpha",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-AIEQ-W54-DIV-YIELD-CORR-TVAL-WEAK",
+            "family": "ai_equity_alpha",
+            "text": "Wave54 0.30/0.40/0.30 × v_rev/wedge: max S1.18 failed cheap gate",
+            "dataset": "ai_equity_alpha",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-AIEQ-W55-SHTR-FDISP-FACC-FFLOW-WEAK",
+            "family": "ai_equity_alpha",
+            "text": "Wave55 0.30/0.40/0.30 x v_rev/wedge: max S1.20 failed cheap gate",
+            "dataset": "ai_equity_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AIEQ-W56-BUYB-BUZZ-FIN-SIZE-WEAK",
+            "family": "ai_equity_alpha",
+            "text": "Wave56 0.30/0.40/0.30 x v_rev/wedge: max S1.35 failed cheap gate",
+            "dataset": "ai_equity_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-AIEQ-W57-EQA-FCHG-PTB-DEBT-WEAK",
+            "family": "ai_equity_alpha",
+            "text": "Wave57 leftover AIEQ 0.30/0.40/0.30 x v_rev/wedge max S0.82. W50-W57 leftover path exhausted.",
+            "dataset": "ai_equity_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ARH-PROFIT90D-GZSCORE-PROD",
+            "family": "analyst_revision",
+            "text": "IS Sharpe/Fitness pass but prod_corr 0.86>=0.7. Dominant profit90d 90d estimate-change is crowded. Do not Mode A clone this skeleton; Mode B must change field/c",
+            "dataset": "analyst_revision_horizons",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ARH-PROFIT90D-PRIMARY-MIX-PROD",
+            "family": "analyst_revision",
+            "text": "Fitness 0.94 near gate but prod 0.95. Mixing primary_profit into profit90d does not dilute prod. Leave profit90d as dominant leg.",
+            "dataset": "analyst_revision_horizons",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ARH-SIGNEDPOWER-COUNTRY-DECAY6",
+            "family": "analyst_revision",
+            "text": "Same expression as YP7NQQLW (S1.38 F0.92 SUBINDUSTRY/4) drops to S1.13 under COUNTRY/6. Do not Mode A signed_power+COUNTRY; the working wrapper is group_zscore(",
+            "dataset": "analyst_revision_horizons",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ARH-SURPRISE-PRIMARY-PROD",
+            "family": "analyst_revision",
+            "text": "Surprise×primary_profit has IS (S1.04 F0.71) but prod 0.95. Same crowding as profit90d mixes. Do not Mode A; only residual/diff.",
+            "dataset": "analyst_revision_horizons",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ARH-SURPRISE-RESID-WEAK",
+            "family": "analyst_revision surprise/primary residual",
+            "text": "ts_av_diff/group_mean residual of surprise+primary killed IS vs wave34 surprise×primary S1.04. Best wpj5lVJp S0.48. Residual path on this pair is dead.",
+            "dataset": "analyst_revision_horizons",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-FCF-MINORITY-VALUE-MIX-PROD",
+            "family": "multi_horizon FCF invert residual mixed with to-price value",
+            "text": "FCF as minority mixed with other to-price/value fields does not break prod 0.7. np7n8Mgd S1.17 F0.69 2Y2.03 prod 0.8693 vs pure FCF 88lOQrdm prod 0.9381. Three-",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-FCF-PURE-INVERT-RESID-PROD",
+            "family": "multi_horizon FCF invert industry residual dominant",
+            "text": "IS S/F/2Y pass but prod 0.94 because pure FCF without heterogeneous dilution. Self vs Wj71Q12o 0.45 so not a clone of the submitted mix, but FCF-to-price domina",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-GSM-EVENT-WEAK",
+            "family": "global_seasonal_model event flags",
+            "text": "Leave global_seasonal_model. Do not mix PV. Do not use calendar constants or return-quantile fields. Next unused whitelist: chart_cnn leapstar unused or starmin",
+            "dataset": "global_seasonal_model",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-GSM-SAME-SRC-BUCKET-RATIO",
+            "family": "",
+            "text": "confidence/prob 同源分桶置信度 divide 比值近乎常数零区分度；5d vs calendar_5d 变体同源相关；multiply(ts_zscore) 交互同源高相关",
+            "dataset": "global_seasonal_model",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-M193-NAMED-SLOW-INERT",
+            "family": "model193 named MATRIX residual x v_rev/wedge",
+            "text": "Do not reuse model193 high-coverage named fields as 0.30 slow legs with v_rev/falling_wedge. Do not Mode A the weights.",
+            "dataset": "model193",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-M238-D1-RANK-COMBO-PROD",
+            "family": "model238 d1 rank combos of screening/change/industry/country",
+            "text": "Intra-dataset d1 rank combos do not beat wave26 single-field rank(mdl238_global_screening_rank) S1.32 F0.87. Best 1YwozLvz S1.28 F0.85 2Y1.48 prod 0.896; lej73X",
+            "dataset": "model238",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-M238-UNCROWDED-ALIGN-INDREL-PROD",
+            "family": "model238 uncrowded alignment / industry_relative / preference",
+            "text": "Uncrowded m238 fields have IS but do NOT beat the change/screening prod ~0.89 wall. 9qX9pVKe industry_relative S1.34 F0.90 2Y1.59 prod=0.8787; ZY7jE0qd alignmen",
+            "dataset": "model238",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-M354-VALUATION-YIELD-WEAK",
+            "family": "model354 group valuation yield concepts",
+            "text": "Leave model354 standalone valuation densify. Next unused whitelist: ml_factor_proj low-competition non-return MATRIX concepts (not NEWS, not news54, not predict",
+            "dataset": "model354",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-M36-CREDIT-DEFAULTRISK-PROD",
+            "family": "model36 credit / default_risk dominant",
+            "text": "Credit/default_risk dominant not near-gate (max S0.96 F0.58) and prod 0.91>=0.7. Do not Mode A clone decay/neut. Next only ts_av_diff or group_mean residual, or",
+            "dataset": "model36",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-M36-DEFAULTRISK-RESID-PROD",
+            "family": "model36 default_risk residual",
+            "text": "Industry residual lifts S to 1.04 vs naked 0.96 but Fitness still 0.58 and prod 0.86. ts_av_diff weaker. Leave MODEL credit/default_risk.",
+            "dataset": "model36",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-CAPACQ-INVERT-RESID-PROD",
+            "family": "multi_horizon capital_acquisition invert residual dominant",
+            "text": "Do not use invert long_term_capital_acquisition_ratio_3 industry residual as dominant. Mode B must change field/concept.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-DEEPVALUE-INVERT-PROD",
+            "family": "multi_horizon deep_value invert x common_gap_up",
+            "text": "Do not Mode A deep_value invert. Do not submit prod>=0.7.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-ESTREV-INVERT-DILUTE-PROD",
+            "family": "multi_horizon long_term estrev invert residual as minority",
+            "text": "Salvage of EUR-MH-ESTREV-RESID-INVERT-CROWD failed. 0.30 invert x growth/FS killed IS (S~-0.08). 0.40 invert + 0.60 mid_term O07nGp8Y S1.08 F0.51 2Y0.88 prod=0.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-ESTREV-RESID-INVERT-CROWD",
+            "family": "multi_horizon long_term estimate_revision industry residual full invert",
+            "text": "Has independent IS (|S|1.48, self vs Wj71Q12o 0.17) but the profitable invert aligns with model238 institutional crowding (mutual -0.74 on uninverted => +0.74 a",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-EV-EBITDA-3LEG-RN-PROD",
+            "family": "multi_horizon EV rank / ebitda-to-EV x v_rev x wedge",
+            "text": "Do not grind long_term_enterprise_value_europe_rank or ebitda_to_enterprise_value x v_rev x wedge. Mode B must change slow field or fast PV.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-FCF-INVERT-PROD",
+            "family": "multi_horizon trailing FCF-to-price invert x common_gap_up",
+            "text": "Do not Mode A FCF invert. Do not submit prod>=0.7. Leave FCF-to-price 2/3 aliases.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-FS-RANK-3LEG-PROD",
+            "family": "multi_horizon FS rank residual x v_rev x wedge",
+            "text": "Do not grind FS rank/strength x v_rev x wedge. Leave FS family as slow leg.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-FY2-INVERT-CROWD",
+            "family": "multi_horizon invert FY2 three-month revision",
+            "text": "Do not use invert FY2 revision as dominant. Same crowd as estrev invert.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-GROWTH-FLOW-3LEG-PROD",
+            "family": "multi_horizon growth_flow_to_price residual x v_rev x wedge",
+            "text": "Do not grind growth_flow_to_price x v_rev x wedge weights. Mode B must change slow field.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-INCOME-STMT-3LEG-PROD",
+            "family": "multi_horizon income_statement_rank residual x v_rev x wedge",
+            "text": "Do not grind income_statement_rank x v_rev x wedge. Leave OLL/income as slow leg.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-LEVERAGE-3LEG-VREV-WEDGE-PROD",
+            "family": "multi_horizon leverage residual x v_reversal x falling_wedge",
+            "text": "Do not grind leverage x v_reversal x falling_wedge weights. Mode B must change slow field or fast PV.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-LEVERAGE-INVERT-RN",
+            "family": "multi_horizon mgmt leverage invert x common_gap_up",
+            "text": "Do not Mode A leverage invert. Keep invert recipe on unused MH fields. Keep gJj1nxLM CONDITIONAL.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-LEVERAGE-RESID-DOMINANT",
+            "family": "multi_horizon leverage industry residual as dominant",
+            "text": "Do not use leverage residual as dominant. Wave41 slot5 uses it as 0.40 slow x PV.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-MGEFF-INVERT-GZ-PROD",
+            "family": "multi_horizon invert management_efficiency gzscore",
+            "text": "Do not use invert management_efficiency gzscore as dominant.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-MIDTERM-ESTREV-WEAK",
+            "family": "multi_horizon mid_term estimate_revision",
+            "text": "Horizon shift from long_term estrev residual (|S|1.48) to mid_term (alphaCount=0) failed. Best 88lOpzjm invert residual+growth S0.52 F0.19 2Y-0.03. Not independ",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-NOA-PEG-WEAK",
+            "family": "multi_horizon NOA change and PEG",
+            "text": "Do not occupy slots with NOA or PEG probes.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-NREV-LADDER-WALL",
+            "family": "multi_horizon_nrev",
+            "text": "Wave49 Mode A/B: S/F tunable to pass; IS ladder / 2Y sharpe hard ceiling ~1.1-1.28; rn_sharpe weak",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-QUALITY-BS-EPS-WEAK",
+            "family": "multi_horizon balance_sheet and price_adj_eps residual",
+            "text": "Do not occupy another slot with BS or price_adj_eps residual probes.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-ROE-3LEG-WEAK",
+            "family": "multi_horizon ROE residual x v_rev x wedge",
+            "text": "Do not occupy slots with ROE residual x v_rev x wedge.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-VALUE-ANALYST-3LEG-PROD",
+            "family": "multi_horizon value_analyst residual x v_rev x wedge",
+            "text": "Do not grind value_analyst x v_rev x wedge. Mode B must change slow field.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-VALUE-COUNTRY-SALES-WEAK",
+            "family": "multi_horizon country gz value and sales_to_price",
+            "text": "Do not occupy slots with country-gz deep_value or sales_to_price.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MH-W49-UNUSED-3LEG-WEAK",
+            "family": "multi_horizon PTA/street/nrev/pmom/rational_decay x v_rev x wedge",
+            "text": "Do not occupy slots with PTA, street_revision FY1, nrev FY1, price_momentum, or rational_decay x v_rev x wedge.",
+            "dataset": "multi_horizon_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-MODEL193-W129-CREDIT-AXIS-DEAD",
+            "family": "model193 信用风险/CDS/困境轴",
+            "text": "Leave model193 的 CDS 利差波动/beta、破产风险(Altman Z / Ohlson)、违约概率、空头回补压力、现金流-稀释、ebitdaev-CDS 名义敷口全系。",
+            "dataset": "model193",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STAR-ACTUAL-UPGDNG-ARMCOUNTRY-WEAK",
+            "family": "starmine actual EPS/revenue and upgrade/downgrade and ARM country as slow legs",
+            "text": "new slows dilute winning surprise x gap mix",
+            "dataset": "predictive_starmine",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STAR-REC-SMEST-WEAK",
+            "family": "starmine rec mean change / smest levels",
+            "text": "Do not reuse recommendation_mean_change or smest levels as slow legs. Surprise last-year EPS may mix unused PV not v_rev/wedge/breakaway/rising-wedge/triangle/c",
+            "dataset": "predictive_starmine",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STAR-RELVAL-EVEBITDA-2Y-DEAD",
+            "family": "starmine RelVal EV/EBITDA ts_delta × v_rev/wedge",
+            "text": "Leave RelVal EV/EBITDA ts_delta family. Do not deepen v_rev/wedge on this slow. Do not clone FCF×gap. Next unused whitelist: ai_factor_transfer money-flow (skip",
+            "dataset": "predictive_starmine",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STAR-REVCOUNT-ARM-WEAK",
+            "family": "starmine revision counts / ARM rec-activity",
+            "text": "Do not reuse starmine revision counts or ARM rec/activity as slow legs. Do not deepen RelVal EV/EBITDA or v_rev/wedge. Next unused whitelist: model28 non-credit",
+            "dataset": "predictive_starmine",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STARHOLD-COUNTRY-RANK-PROD",
+            "family": "shortinterest star_hold_country_rank dominant",
+            "text": "Do not use star_hold_country_rank as dominant.",
+            "dataset": "shortinterest6",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STARHOLD-INDUSTRY-RANK-PROD",
+            "family": "shortinterest star_hold_industry_rank dominant",
+            "text": "Do not use star_hold_industry_rank as dominant. Leave starhold rank family as dominant.",
+            "dataset": "shortinterest6",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STARHOLD-SCREENING-GZSCORE-PROD",
+            "family": "shortinterest",
+            "text": "COUNTRY/6 wrapper lifts starhold to S1.39 F0.96 2Y1.45 but prod 0.89 and LOW_SUB 0.39. EUR/D1/MODEL crowded. Sibling E5lqK9gL S1.38 F0.96 2Y1.49 same wall likel",
+            "dataset": "shortinterest6",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STARHOLD-SCREENING-RESID-PROD",
+            "family": "shortinterest residual of screening_rank",
+            "text": "group_mean residual ≈ gzscore; still prod 0.85-0.89. ts_av_diff killed Sharpe (0.20-0.55). Do not Mode A clone residual wrappers of screening_rank.",
+            "dataset": "shortinterest6",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STARHOLD-SECTOR-RANK-PROD",
+            "family": "shortinterest star_hold_sector_rank dominant",
+            "text": "Do not use star_hold_sector_rank as dominant. Do not Mode A decay/neut. Leave starhold sector/screening family.",
+            "dataset": "shortinterest6",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-W254-OTHER460-FORWARD-PROBABILITY-PAIRS",
+            "family": "other460 four target probability directions SUBINDUSTRY decay4",
+            "text": "",
+            "dataset": "other460",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-chart_cnn_alpha-LEAPSTAR-WEAK",
+            "family": "chart_cnn_alpha leapstar6/malta2 image features",
+            "text": "Leave chart_cnn_alpha leapstar6/malta2 in EUR. Do not retry ts_decay_linear/zscore on leapstar6 features or group_sum on malta2 quantile_label.",
+            "dataset": "chart_cnn_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-chart_cnn_alpha-MODEB-CEILING",
+            "family": "chart_cnn_alpha malta2 q3 × leapstar6 Mode B ceiling",
+            "text": "Leave chart_cnn_alpha malta2 q3 × leapstar6 in EUR. Do not retry Mode B optimization on this combination; ceiling reached (S1.44/F0.91).",
+            "dataset": "chart_cnn_alpha",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-predictive_starmine-EQVR-WEAK",
+            "family": "predictive_starmine eq_vr_dlra1 accruals/cashflow",
+            "text": "Leave predictive_starmine eq_vr_dlra1 in EUR. Do not retry ts_mean/ts_delta on accruals/cashflow components.",
+            "dataset": "predictive_starmine",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-predictive_starmine-SMEST-IV-WEAK",
+            "family": "predictive_starmine smest/iv family",
+            "text": "Leave predictive_starmine smest/iv in EUR. Do not retry ts_mean/ts_delta on smest_f12m or iv_cagr fields.",
+            "dataset": "predictive_starmine",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-price_signal_dl-NO-DATA",
+            "family": "price_signal_dl trend/volume indicators",
+            "text": "Leave price_signal_dl in EUR. Do not retry any trend/volume indicator expressions.",
+            "dataset": "price_signal_dl",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-shortinterest6-CHANGE-OWNER-WEAK",
+            "family": "shortinterest6 change/owner component",
+            "text": "change/owner 组件单独使用信号强度不足（IS 天花板 1.24），无法突破 EUR 硬闸；需回归 win recipe 结构",
+            "dataset": "shortinterest6",
+            "bound": "payload"
+          }
+        ],
+        "wins": [
+          {
+            "id": "EUR-WIN-SLOW-MODEL-X-FAST-PV",
+            "family": "0.40 slow MODEL residual invert + 0.60 fast PV pattern invert",
+            "text": "cross-pyramid mix; follow SUBINDUSTRY decay4; do not clone FCF+gap",
+            "dataset": null,
+            "bound": "keyword"
+          },
+          {
+            "id": "EUR-WIN-SLOW-MODEL-X-FAST-PV-3LEG",
+            "family": "capacq residual x v_reversal x falling_wedge",
+            "text": "",
+            "dataset": null,
+            "bound": "keyword"
+          },
+          {
+            "id": "EUR-Wj71Q12o-slow-fast-mix",
+            "family": "0.4 slow MODEL residual + 0.6 fast PV",
+            "text": "mix=0.4*slow_model_leg + 0.6*fast_pv_leg; neutralization=SUBINDUSTRY; decay=4; universe=TOP2500; delay=1",
+            "dataset": null,
+            "bound": "keyword"
+          }
+        ]
+      },
+      "generation": {
+        "notes": [
+          "历史胜绩机制「慢 MODEL 残差 × 快 PV」只许以条件 / 分组 / 残差入场；0.40 / 0.60 加权写法被闸 5 禁止（EUR profile）"
+        ],
+        "avoid": [
+          "model 族 62 条判死；库存 47 / 47 族 prod 不低于上限（EUR profile 2026-10-02）"
+        ]
+      }
+    },
+    "news": {
+      "status": "auto",
+      "datasets": [
+        "news17",
+        "news20",
+        "news21",
+        "news29",
+        "news31",
+        "news36",
+        "news38",
+        "news46",
+        "news48",
+        "news50",
+        "news54",
+        "news73",
+        "news84",
+        "news85",
+        "predictive_starmine × news73",
+        "{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 46,
+        "ra_clean": 0,
+        "prod_measured": 0,
+        "prod_clean": 0,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "news46",
+            "backtests": 15
+          },
+          {
+            "dataset": "news21",
+            "backtests": 8
+          },
+          {
+            "dataset": "news50",
+            "backtests": 8
+          },
+          {
+            "dataset": "news54",
+            "backtests": 7
+          },
+          {
+            "dataset": "news73",
+            "backtests": 4
+          },
+          {
+            "dataset": "news29",
+            "backtests": 4
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-NEWS17-INSPECT-GATE-WALL",
+            "family": "news17 comp_d1 分数族",
+            "text": "news17 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+            "dataset": "news17",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-NEWS20-INSPECT-GATE-WALL",
+            "family": "news20 multiple_comp 事件分族",
+            "text": "news20 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+            "dataset": "news20",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-NEWS21-EVENT-CALENDAR-DEAD",
+            "family": "news21 event calendar / transcript tone (post-call drift, pre-call premium, tone level/change, attention)",
+            "text": "EUR news tower: event-calendar family closed",
+            "dataset": "news21",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-NEWS29-WEAK",
+            "family": "news29 主题显著性族（nws29_topic/significance VECTOR）",
+            "text": "wave244 4 探针全灭 best |sharpe|=0.25（另 4 条 group_rank 单位错误被隔离）→ fast_kill 判死。NEWS 族五集全灭。",
+            "dataset": "news29",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-NEWS31-INSPECT-GATE-WALL",
+            "family": "news31 事件/相似度分族",
+            "text": "news31 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+            "dataset": "news31",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-NEWS36-NOVELTY-SENT-WEAK",
+            "family": "news36 novelty/phrase/word/confidence concepts",
+            "text": "Leave news36 standalone novelty/sentiment densify. NEWS whitelist concept track exhausted (news38/36/84/85). Skip news54 timestamps. Next unused non-NEWS whitel",
+            "dataset": "news36",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-NEWS38-CONCEPT-WEAK",
+            "family": "news38 densified tone/polarity/relevance concepts",
+            "text": "Leave news38 standalone densify concepts. Do not mix v_rev/wedge. Skip news54 timestamps/headline-text. Next NEWS=news36 if numeric fields; else unused MODEL (m",
+            "dataset": "news38",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-NEWS46-ZERO-IS-SIGNAL",
+            "family": "mws46_* ravenpack news sentiment/impact MATRIX",
+            "text": "两轮实测均无 IS 信号：wave245 基础探针(单字段 rank/ts_delta/rank差) best|S|=0.46 n=5；wave257 复合结构第二轮(group_rank 新中性化几何 + trade_when 事件门控跨字段比值 divide) best|S|=0.41 signed best 0.",
+            "dataset": "news46",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-NEWS48-INSPECT-GATE-WALL",
+            "family": "news48 ENS 情绪分族",
+            "text": "news48 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+            "dataset": "news48",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-NEWS84-SENTIMENT-MATRIX-WEAK",
+            "family": "news84 migration sentiment MATRIX probe",
+            "text": "Leave news84/news85. Do not occupy another slot with EUR news sentiment MATRIX probes.",
+            "dataset": "news84",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-NEWS85-SENTIMENT-MATRIX-WEAK",
+            "family": "news85 DNN sentiment MATRIX probe",
+            "text": "Leave news85. Do not second-round probe.",
+            "dataset": "news85",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-NONMODEL-TOWER-CEILING",
+            "family": "non_model_tower_sparse_event_sentiment_analyst",
+            "text": "",
+            "dataset": "{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-W245-news46-mechanisms-D1",
+            "family": "news46_cashless_news_mechanism_probe",
+            "text": "EUR TOPCS1600 D1 本轮5条概念原式 max S=0.42, max |S|=0.46; 无 S>=1.25 且 F>=0.8，停止本轮机制增强。仅封存所测机制，不宣称全数据集无效。",
+            "dataset": "news46",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-W246-news50-mechanisms-D1",
+            "family": "news50_cashless_news_mechanism_probe",
+            "text": "EUR TOPCS1600 D1 本轮8条概念原式 max S=0.32, max |S|=0.52; 无 S>=1.25 且 F>=0.8，停止本轮机制增强。仅封存所测机制，不宣称全数据集无效。",
+            "dataset": "news50",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-news54-TIMESTAMP-INVALID",
+            "family": "news54 event timestamp fields",
+            "text": "Leave news54 timestamp fields in EUR. Do not use ts_mean/ts_delta on UNIX timestamp fields; convert to days_from_last_change or ts_step - timestamp first.",
+            "dataset": "news54",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-predictive_starmine-NEWS-MIX-WEAK",
+            "family": "predictive_starmine × news73 sentiment mix",
+            "text": "Do not mix predictive_starmine surprise with news73 sentiment fields in EUR TOP2500 — weak signal combination",
+            "dataset": "predictive_starmine × news73",
+            "bound": "payload"
+          }
+        ],
+        "wins": []
+      },
+      "generation": {
+        "notes": [
+          "★★★ 【EUR × news 判死】（2026-10-13，波 508/516，16 条）\n| 数据集 | 规模 | S | TO | margin | 判定 |\n|---|---|---:|---:|---:|---|\n| `news20`（多分类器情绪，cov 0.963 **稠密**） | 64 VECTOR | ≤0.28 | **0.88–1.24** | ~0.1bp | ❌ TO 爆炸 |\n| `news54`（事件因子） | 40 VECTOR | ≤0.14 | **1.44** | — | ❌ |\n⇒ ★★ **「稠密覆盖」不能救 news VECTOR**：cov 0.963 仍 TO 1.1（个股情绪日间翻转）⇒ \n**判据修正：news/sentiment/事件类 VECTOR 的失败与覆盖无关，与「事件驱动 + 情绪符号翻转」有关** ⇒ 一律跳过。"
+        ]
+      }
+    },
+    "other": {
+      "status": "auto",
+      "datasets": [
+        "acquisition_model",
+        "ai_news_scores",
+        "dl_riskfree_returns",
+        "event_relation",
+        "insider_feats",
+        "insider_matrix",
+        "insider_trx_matrix",
+        "ml_factor_proj",
+        "news_sentiment_dl",
+        "news_sentiment_nlp",
+        "other128",
+        "other455",
+        "other567",
+        "other571",
+        "predictive_starmine,pattern_scores"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 119,
+        "ra_clean": 0,
+        "prod_measured": 19,
+        "prod_clean": 1,
+        "prod_blocked": 18,
+        "top_datasets": [
+          {
+            "dataset": "other128",
+            "backtests": 22
+          },
+          {
+            "dataset": "insider_trx_matrix",
+            "backtests": 15
+          },
+          {
+            "dataset": "news_sentiment_nlp",
+            "backtests": 12
+          },
+          {
+            "dataset": "insider_feats",
+            "backtests": 10
+          },
+          {
+            "dataset": "news_sentiment_dl",
+            "backtests": 9
+          },
+          {
+            "dataset": "other571",
+            "backtests": 9
+          },
+          {
+            "dataset": "ai_news_scores",
+            "backtests": 8
+          },
+          {
+            "dataset": "insider_matrix",
+            "backtests": 8
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-ACQUISITION-MODEL-COLD-ZERO-YIELD",
+            "family": "mna_target_likelihood_percentile (acquisition_model 全 15 字段 VECTOR percentile)",
+            "text": "wave218 8 探针全灭 max|sharpe|=0.16（best 2y 1.46 但 IS 无强度），达 EUR profile fast_kill 线（新集 8 探针无 |S|>=0.5 即判死）。字段全冷门（users<=4）理论 prod≈0，死因是纯信号缺席。2 条 group_cartesian_pr",
+            "dataset": "acquisition_model",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-AINEWS-POS-INTENSITY-WEAK",
+            "family": "",
+            "text": "Leave ai_news_scores 全部字段族在 EUR。新闻情绪类信号在 EUR D1 普遍无预测力。",
+            "dataset": "ai_news_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-DLRF-BOTH-FAMILIES-DEAD-MATH-PROOF",
+            "family": "dl_riskfree_returns 全数据集（ohlcv 通用族 + eur_ohlc_ma 专用族）",
+            "text": "Leave dl_riskfree_returns 全数据集在 EUR（含 ohlcv 与 eur_ohlc_ma 两族、133 字段）。后续如遇同类型 DL 分位数预测数据集，先用 Fitness 墙预筛判据评估，再决定是否开波。",
+            "dataset": "dl_riskfree_returns",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-DLRF-EUROHLCMA-TURNOVER-FITNESS-WALL",
+            "family": "dl_riskfree_returns eur_ohlc_ma EUR 专用模型族 × 跨期分位数差",
+            "text": "Leave dl_riskfree_returns 的 eur_ohlc_ma 族跨期分位数差在 EUR：prod 极低但 Fitness 墙结构性不可破（turnover 源于数据更新频率，非表达式可修）。不再试 label 对/期限对/窗口变体。",
+            "dataset": "dl_riskfree_returns",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-DLRF-OHLCV-PRODWALL-FIELD-LEVEL",
+            "family": "dl_riskfree_returns ohlcv 通用模型字段族 × 四种算子几何",
+            "text": "Leave dl_riskfree_returns 的 *_ohlcv 通用模型字段族在 EUR：IS 强但 prod 墙字段级不可破，任何算子几何变换无效。转向 *_eur_ohlc_ma EUR 专用字段族（prod 低但 IS 弱，需在族内找 IS 更强的字段组合）。",
+            "dataset": "dl_riskfree_returns",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-DLRF-PROD-WALL-080",
+            "family": "",
+            "text": "Leave dl_riskfree_returns 的 quantile_label_1bucket/probability_label 分位数概率族在 EUR。信号强但 prod 墙结构性不可破。如需复用，仅在多区域组合中作为低权重稀释腿。",
+            "dataset": "dl_riskfree_returns",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-DLRFR-OHLCV-GEOM-WALL",
+            "family": "dl_riskfree_returns",
+            "text": "",
+            "dataset": "dl_riskfree_returns",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-EVENT-RELATION-WEAK",
+            "family": "event_relation 实体关系强度族（relation_strength_rank/score × merger/partner/financial/general）",
+            "text": "wave233 8 探针全灭 max|sharpe|=0.43 < 0.5 → 达 EUR fast_kill 判死线。字段全冷门（users<=1）理论 prod≈0，纯信号缺席。OTHER 塔已连续三集判死（acquisition_model 0.16 / insider_feats 多样性墙 / event_re",
+            "dataset": "event_relation",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-INSIDER-FEATS-WEAK",
+            "family": "insider_feats 内部人买卖比率族（buy/sell ratio × tx count × lookback）",
+            "text": "wave238 10 探针全灭 best |sharpe|=0.47 < 0.5 → 达 fast_kill 判死线。此前 w232 多样性闸（flow 单 exposure）+ 字段名拼接幻觉 + 低覆盖无 backfill 三轮门禁墙已记录。OTHER 塔 4 候选全灭（acquisition_model/insi",
+            "dataset": "insider_feats",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-MLFP-0ALPHA-OPS-WEAK",
+            "family": "ml_factor_proj 0-alpha coverage/rating/CCC/capex",
+            "text": "Leave this ml_factor_proj ops/coverage family. Do not replay Wave9 EPS/price/FCF ranks. Next: predictive_starmine high-coverage fields unused in Wave21 ARM/RelV",
+            "dataset": "ml_factor_proj",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-NSNLP-SPARSE-TWO-WALLS",
+            "family": "",
+            "text": "Leave news_sentiment_nlp 全部字段族在 EUR。稀疏事件流的 CW+turnover 双墙是结构性问题，不是信号问题。",
+            "dataset": "news_sentiment_nlp",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-O567-COVERAGE-STRUCTURAL",
+            "family": "",
+            "text": "Leave other567 在 EUR。员工评价数据在 EUR 市场覆盖率不足，无法形成有效横截面分散。",
+            "dataset": "other567",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STAR-ARM-LEFTOVER-WEAK",
+            "family": "starmine ARM preferred/revenue/score-change/region-global as slow; regular_upward_gap as fast",
+            "text": "weaker than surprise x common_gap_up",
+            "dataset": "predictive_starmine,pattern_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-STAR-GAP-FACTOR-NEUT-WEAK",
+            "family": "predictive_starmine surprise x common_gap_up factor neutralization",
+            "text": "factor neutralization kills F vs SUBINDUSTRY, does not produce RN>1",
+            "dataset": "predictive_starmine,pattern_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS",
+            "family": "other455 customer network monthly returns seed1 k5",
+            "text": "",
+            "dataset": "other455",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-ai_news_scores-ADVANCED-NEG",
+            "family": "ai_news_scores advanced stats",
+            "text": "",
+            "dataset": "ai_news_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-insider_trx_matrix-WEAK-DRIFT",
+            "family": "insider",
+            "text": "",
+            "dataset": "insider_trx_matrix",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-news_sentiment_dl-SENTIMENT-WEAK",
+            "family": "news_sentiment_dl sentiment word stats",
+            "text": "Leave news_sentiment_dl sentiment word stats and text complexity in EUR. Do not retry ts_mean/ts_std_dev/ts_delta on positive/negative sentiment fields.",
+            "dataset": "news_sentiment_dl",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-news_sentiment_nlp-STRUCTURE-DEAD",
+            "family": "news_sentiment_structure",
+            "text": "",
+            "dataset": "news_sentiment_nlp",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-other571-WIKI-WEAK",
+            "family": "other571 Wikipedia page views",
+            "text": "Leave other571 Wikipedia page views in EUR. Do not retry ts_mean/ts_delta/ts_decay_linear/zscore on oth571_views* fields.",
+            "dataset": "other571",
+            "bound": "payload"
+          }
+        ],
+        "wins": []
+      },
+      "generation": {
+        "notes": [
+          "★★★★★ 【EUR × other 数据集实测】（2026-10-13，波 508–523，约 60 条）\n| 数据集 | 规模 | 最佳 | S | F | TO | **returns** | 判死依据 |\n|---|---|---|---:|---:|---:|---:|---|\n| ★`insider_feats`（内部人买卖比） | 118 MATRIX cov .916 αC 43 | `top5_buy_tx_count_250d` / 双窗 add | **1.11** | 0.60 | 0.023 | **3.68%** | ❌ **returns 天花板 3.9% ⇒ 需 S≥1.84** |\n| ★`dl_riskfree_returns`（ML 前瞻收益概率） | 133 MATRIX cov **1.000** αC 167 | 2quantile **60day** 概率差 | **1.40** | 0.71 | 0.10–0.22 | **3.8%** | ❌ **returns 天花板 3.8% ⇒ 需 S≥1.82** |\n| `news_sentiment_dl`(αC1)/`news_sentiment_nlp`(αC5)/`acquisition_model` | — | 情绪/并购概率 | ≤0.43 | — | **0.97–1.45** | — | ❌ TO 爆炸 |\n⇒ ★★★ **两者均为 F 闸数学封顶**（F_max@S1.58 = 0.87/0.88 < 1.0）。\n**`dl_riskfree_returns` 细节**：horizon 是关键（60d S 1.37 >> 20d 0.29 >> 5d 0.55）；分位越细越差（2q>3q>4q>5q）；\n修订类结构（ts_delta / 跨 horizon 差 / rank 差 / 乘 / 除）**全部失败（S≤0.87）**⇒ 该模型信号是「水平」非「变化」。\n**`insider_feats` 细节**：buy-only 计数 > buy/sell ratio（验证 JMZ 2003）；250d margin 32bp vs 60d 8.8bp；\n`ts_ir`/`ts_std_dev` 分母结构**灾难**（S→0）；`ts_delta` 混合可提 TO（0.023→0.056）而不杀 S。",
+          "★★★★★★ 【EUR × other 本轮第二批深挖】（2026-10-14，波 529–536，≈60 条）\n① **`techindi_model`（300 MATRIX，cov **1.000**，αC 2072）= 多分位×多 horizon 的**预测收益率模型**\n   （`predicted_{first..fifth}_quantile_{one,five,ten}_day_return_{V}`，V=13/131/14/141/15/16/17）。\n   ★ **IS 极强**：8/8 探针 S ≥1.5；最优 `QPYZ5ePX` = `signed_power(group_rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,2), industry), 3.0)`\n   ⇒ **S 3.49 / F 1.53 / TO 0.5422 / 2Y 1.90 / ROBUST 0.87 / sub 1.88**，**returns 反算 10.1%**（EUR 本会话最高）。\n   ★ **判死 = prod 墙**：6 条实测 prod 0.7213–0.7685，`prod_bucket_scan` 的 **n[0.7,0.8) = 3–4 ⇒ DEAD（单钉子卡死）**。\n   ⇒ **几何改造确能降 prod**（0.7514→0.7213，用 `ts_zscore(·,252)`）**但同步把 sub/S 压到 0.463** ⇒ sub 失败 ⇒ **无解**。\n② **`stock_search_trends`（Google Trends，αC **2**）/ `other571`（Wikipedia 浏览，αC 61）双双判死**：\n   注意力类 TO 0.41–0.98 爆炸（Trends）/ S ≤0.44 且 2Y 1.53 但 S 0.24（Wikipedia，2Y 有 S 无）。\n③ ★★★★★ **两条新闸门铁律（EUR 实测）**：\n   `LOW_SUB_UNIVERSE_SHARPE` 闸线 = **0.53 × S**（786pLKnb S1.71→0.91；leMpQ5E2 S3.78→2.0）\n   `LOW_ROBUST_UNIVERSE_SHARPE` 闸线 = **0.7 固定**\n   ⇒ **高 S 是双刃剑**：sub 是**比率闸**，若 `sub/S < 0.53` 则任何 S 都过不了；`ts_zscore` 是最强 S 放大器但压 sub/S。\n④ ★ **降 TO 算子谱**（该数据集实证）：`ts_mean(P,2)` ✅保 robust（TO 0.79→0.542，robust 不变）；\n   `decay=2` 设置 ✅（TO→0.585，robust 0.86→0.80）；`ts_decay_linear(P,3)` ✅（TO 0.506，robust 0.75）；\n   ❌ `ts_mean(P,5)` / `tvr_decay` / `hump` **均摧毁 robust**（0.87→0.45/0.53/0.55）；`hump` 档位过陡无甜区。\n⑤ ⚠ `quantile(P, driver=gaussian)` 被 `group_rank` 包裹时是 **no-op**；horizon 期限差完全无效（S ≤0.22）。",
+          "★★★★★★★ 【EUR × other 重大突破：双窗秩乘积破 prod 墙】(2026-10-14, wave539–542)\n**达标候选 #2 = `e76kv2xE`**（techindi_model, other 未点亮）：\n`signed_power(group_rank(multiply(rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,2)), rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,252))), industry), 3.0)`\n⇒ S 2.60 / F 1.23 / TO 0.3834 / SUB 1.67 / ROBUST 0.93 / 2Y 1.94 / **returns 8.54%** / **PROD 0.6916** / SELF −0.0149 / Failed RA=0。\n⇒ 与 Analyst 腿 `786pLKnb` 互相关 **0.0907** ⇒ 两条独立腿。\n★★★★★ **通用结构「双窗秩乘积」**：`multiply(rank(ts_mean(F,W_short)), rank(ts_mean(F,W_long)))`\n   —— 相对朴素 `group_rank(ts_mean(F,2))`：**prod 0.7514→0.6916（跨线）+ TO 0.542→0.383 + robust 0.87→0.93 + sub比率 0.539→0.642**（一石四鸟）。\n   ⚠ **非普适**：sentiment27(1.33→1.14) / dl_riskfree(1.40→1.20) / insider_feats(1.11→1.08,TO 0.032) 均降 S ⇒ 逐数据集实测。\n⚠ **该数据集同族只出 1 颗**：`RRAjKw2b`(prod 0.6824)/`zqrK0nPO`(0.6911) 也过线，但三者互相关 0.81–0.87 ⇒ 同腿。\n⚠ **`pv13` 图网络特征（客户 PageRank / 竞争者 HITS）判死**：近静态 TO 0.012–0.086、S ≤0.13；\n   且 `pv13_new_*l_scibr` 是 **GROUP 类型**（不能当信号）⇒ 整批 CANCELLED（字段类型坑再现）。",
+          "★★★★★★ 【EUR × other 续推收官（wave543–546）】三个假设的证伪/修正：\n① **「预测型数据必胜」修正为「只有直接预测收益率的模型有效」**：\n   ✅ `techindi_model`（预测收益率分位 S 3.41）/ `dl_riskfree_returns`（收益率概率 S 1.40）；\n   ❌ `other545` **NEMO 2.0 综合模型评分**（7 子模型聚合 + 价格动量 + NLP 网络动量）**S 仅 0.05–0.63、2Y 全死**\n② **双窗秩乘积非普适**：在 `pv1`（经典价量，αC 43728）上 S 反降、2Y 转负；`news18` TO 0.73–0.94 爆炸。\n③ ★ **网络/嵌入型数据集一律近静态**：`pv13`（客户 PageRank/竞争者 HITS）TO 0.012–0.086；\n   `other455`（竞争者 node2vec → PCA factor）TO **0.010–0.012** ⇒ **S ≤0.12 全灭** ⇒ 与「状态量/评级」同类，**开波前可预筛**。\n⇒ 本会话 EUR 未点亮空间最终产出 = **2 条独立腿**：`786pLKnb`(Analyst) + `e76kv2xE`(Other/techindi_model)，互相关 0.0907。",
+          "★★★★★★ 【EUR 数据集全量普查 + 本轮新铁律（2026-10-14）】\n① **平台权威枚举：EUR 共 173 个数据集 / 14 类**（未点亮 10 类 = 93 个：other36/news20/pv20/sentiment5/insiders3/earnings2/institutions2/macro2/socialmedia2/imbalance1）；已点亮 4 类（model46/fundamental13/analyst16/risk5）。\n   ⇒ 普查表 + 逐数据集判死速查（死因七分类）见 `references/_dataset-inventory.md`。\n② ★★★ **`earningscall_sentiment`（财报电话会语调，152 字段/137 MATRIX-计数）判死**：\n   `vec_avg` 后 **TO 1.07–1.57 爆炸**、S ≤0.21 ⇒ 与 news/sentiment 事件 VECTOR 同族。\n   ⚠ 类型坑：`{topic}_*_score`/`*_polarity`=**VECTOR**（需 vec_avg），`count_*`/`mean_polarity_*`=**MATRIX** ⇒ 混用整批 CANCELLED；\n   且 `count_negative_cashflow_answer` **不存在**（只有 positive/neutral）。\n③ ★★ **`pv173`（91 VECTOR 全 `*_unit_name`）/`other384`（cov≥0.5=0）/`investor_activity`（cov≥0.5=0）判死**：元数据/低覆盖。\n④ ★★★ 未测集（60 个）以 **news 事件族群（TO 爆炸）+ PV 拥挤族（αC 585–885）+ 微型/低覆盖集** 为主 ⇒\n   **唯剩的机制性机会 = `pv29`/`pv30` 的「统计聚类 GROUP 轴」**（GROUP 字段只能当 `group_*` 的第 2 参，不能当信号）。"
+        ]
+      }
+    },
+    "pv": {
+      "status": "auto",
+      "datasets": [
+        "continuation_score",
+        "intraday_pv_feats",
+        "pattern_scores",
+        "pv106",
+        "pv37"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 108,
+        "ra_clean": 10,
+        "prod_measured": 0,
+        "prod_clean": 0,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "continuation_score",
+            "backtests": 81
+          },
+          {
+            "dataset": "pv106",
+            "backtests": 11
+          },
+          {
+            "dataset": "pattern_scores",
+            "backtests": 8
+          },
+          {
+            "dataset": "pv37",
+            "backtests": 8
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-CONTINUATION-COMPOSITE-WEAK",
+            "family": "continuation_score chart-similarity composites",
+            "text": "After composite round (bull-bear subtract, group_rank, ts_av_diff, ts_corr) max |sharpe| 0.44. Not worth another probe round.",
+            "dataset": "continuation_score",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-INTRADAY-PV-W126-128-NEAR-MISS",
+            "family": "intraday_pv_feats 事件门控 × 成交量厚尾分位",
+            "text": "Leave intraday_pv_feats 的下列已试机制：挂单深度倾斜(group_zscore)、宽价差买盘偏离(if_else)、量价确认度(ts_corr/ts_covariance)、VWAP 积压、报价厚尾不对称、T-KB-01 日内版、整数价位聚集全族、成交量时钟不对称。数据集本身不判死——585 字",
+            "dataset": "intraday_pv_feats",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-PATTERN-BREAKAWAY-RESID-WEAK",
+            "family": "pattern_scores breakaway residual alone",
+            "text": "Breakaway-gap residual/invert max S0.71 F0.29. PV pyramid but weak as standalone. Wj71Q12o used gap as 0.60 mix with FCF; gap-only residual is not a RA path. Do",
+            "dataset": "pattern_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-PV-RISING-WEDGE-TRIANGLE-CONT-FAST-WEAK",
+            "family": "pattern_scores rising_wedge / symmetrical_triangle / continuation as fast legs",
+            "text": "Do not use rising_wedge, symmetrical_triangle, or continuation_falling_wedge as the 0.40/0.30 fast pair replacing v_rev/falling_wedge.",
+            "dataset": "pattern_scores",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-STAR-PV-ASCT-TREND-WEAK",
+            "family": "pattern_scores asc_triangle / support-resistance / trendline / regular gap as fast legs",
+            "text": "unused PV families weak vs common_gap_up winner",
+            "dataset": "pattern_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-UNTESTED-CHANNEL-FIRSTPROBE-DEAD",
+            "family": "EUR 未测数据集通道（pv106 PV价差 / model50 MODEL估值）",
+            "text": "EUR 未测通道亦穷尽：新赛季（Q4）不改变 returns 天花板与 prod 池，故本区不再投槽位；如需继续须先出现全新数据集（非新赛季）或 prod 池实质衰减，否则转 IND/KOR。",
+            "dataset": "pv106",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-W169-FASTPV-SPREAD-REVERSED-DEAD",
+            "family": "continuation_score/intraday_pv_feats 快腿 - predicted_surprise 慢腿 价差骨架",
+            "text": "EUR D1 快腿 PV 族(continuation_score/intraday_pv) 禁止作正向 rank 腿；其信号方向为反转，若用必须取负(-rank)且与慢腿同向叠加而非价差。intraday_pv corr 字段高换手(>0.49)需长窗平滑。该族与已 ACTIVE 的 MODEL-insider桶 骨",
+            "dataset": "intraday_pv_feats",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-W170-FASTPV-NEGATED-WEAK-DEAD",
+            "family": "predicted_surprise 慢 - continuation_score 快(取负同向) 价差",
+            "text": "EUR 快腿 PV 族(continuation_score/intraday_pv_feats) 判死：正向价差方向反(wave169)、取负同向强度不足(wave170)，两向都过不了 1.58。与 wave166 实证一致(纯信号族 max0.62、非MODEL塔 0.32-0.40)。EUR 可挖空间=慢腿 p",
+            "dataset": "continuation_score",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-pattern_scores-BREAKAWAY-GAP-WEAK",
+            "family": "EUR-pattern_scores-BREAKAWAY-GAP-WEAK",
+            "text": "breakaway_gap 字段族信号弱，8 条全灭，最高 Sharpe 0.03",
+            "dataset": "pattern_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-pattern_scores-wave83-skeleton-fail",
+            "family": "",
+            "text": "",
+            "dataset": "pattern_scores",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-shortinterest6-PATTERN-FAST-LEG-PROD",
+            "family": "shortinterest6 × pattern_scores fast leg variants",
+            "text": "star_hold 家族与任何 pattern_scores 快腿组合 prod_corr 必超 0.7（wave110 0.74-0.77），换快腿字段无法破墙；shortinterest6 在 EUR 区域 IS 天花板 1.24-1.71 但 prod 墙无法突破",
+            "dataset": "pattern_scores",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-shortinterest6-PATTERN-MIX-PROD",
+            "family": "shortinterest6 × pattern_scores win mix",
+            "text": "star_hold 家族与 pattern_scores 快腿组合 prod_corr 0.74-0.77 超 0.7 硬闸，无法提交",
+            "dataset": "pattern_scores",
+            "bound": "inferred"
+          }
+        ],
+        "wins": []
+      },
+      "generation": {
+        "notes": [
+          "★★★★★ 【EUR × pv 数据集实测判死总表】（2026-10-13，波 506–526，约 40 条）\n**EUR 合法 universe（平台权威）**：TOPCS1600｜TOP2500｜TOP1200｜TOP800｜TOP400\n| 数据集 | 规模 | 最佳形态 | S | TO | 2Y | 判死依据 |\n|---|---|---|---:|---:|---:|---|\n| `pattern_scores`（图形形态相似度） | 504 MATRIX cov .998 | 形态相似度差 | ≤0.52 | — | 负 | 噪声型 |\n| `continuation_score`（延续形态） | 560 MATRIX cov .998 | `avg_similarity_bearish_flag` | 0.56（2Y 1.32） | 0.39 | — | ★**平滑即杀**（ts_mean 后 S −0.79）⇒ alpha 全在高频 |\n| `intraday_pv_feats`（日内特征） | 585 MATRIX cov .999 | — | ≤0.37 | **1.15** | — | TO 爆炸 |\n| `pv106`（买卖价差/交易成本） | 13 MATRIX cov 1.0 | `pv106_spreadbp` | **−0.51~−1.65** | 0.40–0.97 | 负 | ❌ **流动性水平信号为负**（无 Amihud 溢价）；`transaction_cost_estimate` 的 S=11.18 是**退化假信号**（TO=1.0、2Y=0） |\n| `pv37`（原始价量+时段快照） | 245 MATRIX cov 1.0 | `reverse(ts_delta(close,5))` 等经典反转 | ≤1.15 | **0.46–1.28** | ≤0.95 | ❌ **TO 爆炸**（价量反转在此宇宙换手过高） |\n**⇒ pv 类别（本季度未点亮 αC=0）本轮 5 个数据集全部判死**：噪声型（平滑即杀）/ TO 爆炸 / 流动性负号。\n⚠ **universe 档实证**：dl_riskfree 信号在 TOP400（S 1.01）/TOP800（S 1.16）/TOP2500（S 1.41 但 2Y 0.4–0.76）/TOP1200（S 1.14）**全部劣于 TOPCS1600（S 1.40）**\n⇒ ★ **TOPCS1600 是 EUR 的最优档**（外部资料称「更流动的小宇宙提 Sharpe」在 EUR 不成立）。"
+        ]
+      }
+    },
+    "risk": {
+      "status": "auto",
+      "datasets": [
+        "risk60",
+        "risk62",
+        "risk72"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 40,
+        "ra_clean": 0,
+        "prod_measured": 2,
+        "prod_clean": 0,
+        "prod_blocked": 2,
+        "top_datasets": [
+          {
+            "dataset": "risk72",
+            "backtests": 16
+          },
+          {
+            "dataset": "risk60",
+            "backtests": 16
+          },
+          {
+            "dataset": "risk62",
+            "backtests": 8
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-RISK60-BORROW-FEE-PROD-WALL",
+            "family": "risk60 securities lending borrow fee level (rsk60_offer / rsk60_last / bid-offer spread)",
+            "text": "EUR risk tower: borrow-fee level is closed; only fee-change / crowding mechanisms remain and they have no signal.",
+            "dataset": "risk60",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-RISK72-RESIDUAL-RETURN-WEAK",
+            "family": "risk72 equity_residualized_return 残差族（cfg2/ecs/ats × top1200/top2500 残差价差）",
+            "text": "wave230 8 探针全灭：best sharpe 0.91 / fitness 0.48，2Y 1.65 但 LOW_ROBUST_UNIVERSE_SHARPE；未达 Mode B 资格线 1.25（D4）→ 判死。2 条 group_cartesian_product/group_count 单位错误被自动隔离",
+            "dataset": "risk72",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-risk72-wave104-all-fail",
+            "family": "risk72 residualized return family",
+            "text": "Leave risk72 residualized-return family in EUR. Do not retry ts_delta/slow-momentum/mix wrappers. Next unused whitelist: insider_trx_matrix (Other/insider, zero",
+            "dataset": "risk72",
+            "bound": "payload"
+          }
+        ],
+        "wins": [
+          {
+            "id": "EUR-Xgojww1X-RISK-NEWS-ACTIVE",
+            "family": "inventory_ravenpack_story_count_x_earnyild",
+            "text": "",
+            "dataset": null,
+            "bound": "keyword"
+          }
+        ]
+      }
+    },
+    "sentiment": {
+      "status": "auto",
+      "datasets": [
+        "sentiment21",
+        "sentiment26",
+        "sentiment7"
+      ],
+      "evidence": {
+        "synced_at": "2026-10-04",
+        "backtests": 11,
+        "ra_clean": 0,
+        "prod_measured": 0,
+        "prod_clean": 0,
+        "prod_blocked": 0,
+        "top_datasets": [
+          {
+            "dataset": "sentiment21",
+            "backtests": 7
+          },
+          {
+            "dataset": "sentiment7",
+            "backtests": 4
+          }
+        ],
+        "dead_ends": [
+          {
+            "id": "EUR-SENTIMENT21-WEAK",
+            "family": "sentiment21 情绪评分族（snt21_* 210 字段）",
+            "text": "wave237 11 探针全灭 best |sharpe|=0.49 < 0.5 → 达 fast_kill 判死线。cov 0.97 高覆盖但 IS 无强度；SENTIMENT 塔差 3 但此路无供给。",
+            "dataset": "sentiment21",
+            "bound": "inferred"
+          },
+          {
+            "id": "EUR-SENTIMENT7-WIKI-ATTENTION-DEAD",
+            "family": "sentiment7 Wikipedia page-view attention (shock reversal / ratio / cap-decile / 66d trend)",
+            "text": "EUR: wiki attention closed",
+            "dataset": "sentiment7",
+            "bound": "payload"
+          },
+          {
+            "id": "EUR-SNT26-ATTENTION-FITNESS-CEILING",
+            "family": "sentiment26 网站流行度/投资者注意力族",
+            "text": "Leave sentiment26 在 EUR。sentiment 塔（1.4x）在 EUR D1 无可用数据集：sentiment26 信号弱（Fitness 上限 0.455）、sentiment21/27 被 crowd_veto excluded（alphaCount 2843/6828）、other553 c",
+            "dataset": "sentiment26",
+            "bound": "payload"
+          }
+        ],
+        "wins": []
+      },
+      "generation": {
+        "notes": [
+          "★★★★ 【EUR × sentiment 收官】（2026-10-13，波 450–497，约 90 条）：\n**唯一可用数据集 = `sentiment27`（30 VECTOR，snl27_* 低竞争字段）**；S 上限 **1.33**（4 次独立验证）。\n**最优形态**：`group_rank(multiply(divide(snl27_skewness, ts_mean(snl27_totaldomains,55)), divide(snl27_relpopularity1, ts_mean(snl27_totalcountrydomains,55))), sector)`\n⇒ S 1.29 / F 0.87 / **2Y 1.61 ✅** / returns **5.68%**（够过 F）—— **唯一瓶颈是 S 距 1.58 差 0.25**。\n**S 提升轨迹**：0.63（单字段）→ **1.14（轴 c5→sector，+0.51 最大单步）** → 1.22（乘积）→ 1.30（同分母双对比）→ 1.32（**交叉分母** `(A/td)×(B/tcd)`）→ 1.33（幂次 1.5）⇒ 收敛。\n⚠ **判死清单**：`snt27_*` 家族（覆盖 1.0 但竞争高，S ≤1.08）；`sentiment7`（Wikipedia 浏览量，S ≤0.43）；`other553`（财报电话文本，S≈0）；`sentiment21/26`（MATRIX 或高竞争）；**L2 双窗级联**（`multiply(rank(ts_delta(x,240)), rank(ts_delta(x,176)))`，S 0.32–0.66 —— skill 记载的 L2 杠杆在此数据集上失效）；跨数据集组合（≤单腿）；vec 聚合 5 档（无差异）；16 个包装算子（无增益）。"
+        ]
+      }
+    },
+    "macro": {
+      "generation": {
+        "notes": [
+          "★★★ 【EUR × macro 判定】（wave498/502）：`macro10`（1 MATRIX，`mcr10_value`）S=−0.52、**2Y=−1.56**；`macro27`（招聘数据）S=0.54、returns 2.27% ⇒ **两数据集均判死**（macro 类别穷尽）。"
+        ]
+      }
+    }
   },
-  "earnings": {
-   "status": "auto",
-   "datasets": [
-    "earnings6"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 4,
-    "ra_clean": 0,
-    "prod_measured": 0,
-    "prod_clean": 0,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "earnings6",
-      "backtests": 4
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-W255-EARNINGS6-EPS-EVENT-PAIRS",
-      "family": "earnings6 normalized EPS surprise and preliminary range SUBINDUSTRY decay4",
-      "text": "",
-      "dataset": "earnings6",
-      "bound": "payload"
-     }
-    ],
-    "wins": []
-   },
-   "generation": {
-    "notes": [
-     "★★★ 【EUR × earnings 判死】（2026-10-13，波 449）：\n**`earnings6`**（55 VECTOR）：`eps_change_percentage_value` / `eps_change_absolute_value` 等 EPS 变化字段**返回 S=0.0 / TO=0.0（空信号，事件稀疏 ⇒ `vec_avg` 归约后全 NaN）**；预告区间类字段 S ≤ −0.08 ⇒ **判死**。",
-     "★★★ 【EUR × earnings 补充】（wave502/504）：\n`earnings_sent_matrix`（7 MATRIX，财报电话情绪）：`overall_sentiment_score` S=−0.20 且 **TO=1.61 爆炸**；`likelihood_of_neutral_tone`/`*_sentiment_probability_3` 同族 ⇒ **判死**。\n⇒ earnings 类别 2 个数据集（`earnings6` / `earnings_sent_matrix`）**全部判死**。"
-    ]
-   }
-  },
-  "fundamental": {
-   "status": "auto",
-   "datasets": [
-    "fundamental17",
-    "fundamental23",
-    "fundamental93",
-    "other401"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 41,
-    "ra_clean": 2,
-    "prod_measured": 6,
-    "prod_clean": 0,
-    "prod_blocked": 6,
-    "top_datasets": [
-     {
-      "dataset": "fundamental23",
-      "backtests": 18
-     },
-     {
-      "dataset": "fundamental17",
-      "backtests": 14
-     },
-     {
-      "dataset": "other401",
-      "backtests": 9
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-FND23-ACCRUAL-EXPENSE-DEAD",
-      "family": "fundamental23 应计质量/费用结构族",
-      "text": "Leave fundamental23 应计质量/费用结构族 in EUR。accrual anomaly 在 EUR D1 无效（与美股文献结论相反，勿再按美股经验搬）。本 session 已在 fundamental23 累计 4 个正交概念 22 式全灭（税务会计质量 / 资产负债表杠杆 / 股东回报 / 费用结",
-      "dataset": "fundamental23",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-FND23-CAPSTRUCT-DIVIDEND-DEAD",
-      "family": "fundamental23 资本结构/杠杆族 + 股息族",
-      "text": "Leave fundamental23 的资本结构与股息族在 EUR。已验证「高覆盖 × 零竞争」字段也不产生信号，故不必再在 fundamental23 内部按 coverage/userCount 筛选——该筛选维度已证伪。换概念必须离开资产负债表/股东回报语义域（如费用结构、存货周转、员工薪酬强度），且仍需 4 ",
-      "dataset": "fundamental23",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-FND23-WORKINGCAP-INVENTORY-DEAD",
-      "family": "fundamental23 营运资本/存货效率族",
-      "text": "Leave fundamental23 营运资本/存货族 in EUR。本 session 已在 fundamental23 累计 5 个正交概念 28 式全灭（税务会计质量 / 资产负债表杠杆 / 股东回报 / 费用结构应计 / 营运资本存货），覆盖字段 quality 0.65-0.96 且多为 userCount",
-      "dataset": "fundamental23",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-FND93-TAXACCRUAL-ZERO-SIGNAL-DEAD",
-      "family": "fundamental93 Earnings Tax Data（递延税/税务应计族）",
-      "text": "Leave fundamental93 in EUR。开波前先用 4 式探针预算判定，不要直接开 10 式波。fitness 1.0 在本集数学上不可达（returns 天花板 0.016 vs 需求 0.05），不要试图用衰减/窗口/分组变量调优——四种正交机制已全灭。",
-      "dataset": "fundamental93",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-OTHER401-WEAK",
-      "family": "other401 基本面矩阵族（oth401_* 65 字段 MATRIX）",
-      "text": "wave235 9 探针全灭：best sharpe 0.70 / fit 0.34 / 2Y 1.07，CONCENTRATED_WEIGHT+LOW_ROBUST_UNIVERSE；D4 资格线 1.25 未达 → 判死。1 条 group_cartesian_product(sector,sector) 坏式被自",
-      "dataset": "other401",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-W251-FUNDAMENTAL17-QUALITY-PROBE",
-      "family": "fundamental17 operating-quality changes and matched levels",
-      "text": "Do not parameter-expand these 12 mechanisms/settings. Deferred untested variants are not empirical dead ends; reopening requires independent evidence and review",
-      "dataset": "fundamental17",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-W252-FUNDAMENTAL17-MEASUREMENT-RETEST",
-      "family": "fundamental17 reported earnings level and accounting adjustment",
-      "text": "No parameter expansion of these weak expressions. Retain profitability-level research lead; entire dataset and untested fields not condemned.",
-      "dataset": "fundamental17",
-      "bound": "payload"
-     }
-    ],
-    "wins": []
-   },
-   "note": "EUR 破 prod 墙的残差化路径：★ vector_neut 已于 2026-10-10 实测被平台移除（op-lint 拦截：平台算子清单外）⇒ 改用 ts_regression / group_neutralize / subtract(rank,rank) 三种可用残差化；残差轴的选择仍决定成败",
-   "generation": {
-    "use": [
-     "嵌套残差化：先削自由现金流，再削投资（CAPEX）或经营现金流维度（WorkBuddy MEMORY §1.7）"
-    ],
-    "skeletons": [
-     {
-      "text": "vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets))), rank(divide(free_cash_flow, assets))), rank(divide(operating_cashflow, assets)))",
-      "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；当前最佳 JjQmx9nm（fcf→capex→ocf，12 算子）S 1.73 / F 1.17 / prod 0.6695 / self 0.3397；⚠ 2026-10-10 实测：vector_neut 已被平台移除（op-lint 拦截），此骨架不可再执行，仅存历史证据"
-     }
-    ],
-    "notes": [
-     "ts_backfill 在 EUR / TOPCS1600 / nanHandling=ON 下是 no-op：写 EUR 表达式先删它；但 /assets 归一化是真信号，残差轴也要归一化",
-     "hump 必须写命名参数（hump=k）；hump(vec_avg(x), …) 会 FAIL",
-     "★★ vector_neut 已被平台移除（2026-10-10 op-lint 实测「平台算子清单外的名字」）⇒ 本 cell 旧记「唯一有效杠杆：vector_neut 残差化」作废。残差化可用替代（本轮验证）：ts_regression(y,x,d,rettype=0) / group_neutralize(x,group)（内层须细于 setting 的 SUBINDUSTRY）/ subtract(rank(A),rank(B))（合规放行形态）",
-     "★★★ 【三层闸门口径差异·实测样本】EUR fnd72 `mL617YPx`（2026-10-11）：**平台 review 闸全过**（S1.82/F1.25/TO0.0675/**2年 ladder 2.23**/margin17.6bp/Failed RA=0/prod0.5421/self0.3999），但 **skill Phase C 判 REJECT**（近 **3年** CV_Sharpe 0.661 / max-min 5.26）。★ 差异点：**平台看 2 年窗口，skill 看近 3 年波动性** —— 该腿 2021 年异常高（3.63）拉大 CV。★ repair 2 轮实证（16 条变体）：`target_tvr` 0.06→0.30 仅改善 CV 0.020（饱和于 0.641）；max/min 可从 5.26 修复至 **4.63**（tvr=0.10）；**CV 属结构性，参数层不可弥合**。⇒ **选腿先验：若某腿单年 Sharpre 异常突出（如 2021），它会被 skill Phase C 拦，应优先找年度分布均匀的腿**。"
-    ]
-   },
-   "s4": {
-    "levers": [
-     {
-      "id": "eur-fund-switch-dimension",
-      "what": "降 prod 换维度而不是加层：同维度加层边际几何衰减（0.9073→0.7432→0.7071→0.6997），换到投资维度（CAPEX / 资产）一次降 0.029",
-      "evidence": "WorkBuddy MEMORY §1.7（2026-10-04）",
-      "no_extrapolate": true
-     },
-     {
-      "id": "eur-fund-replace",
-      "what": "替换优于叠加，且顺序敏感：2 层 fcf→capex（9 算子）prod 0.6708 < 3 层 fcf→ocf→capex 0.6776",
-      "evidence": "WorkBuddy MEMORY §1.7",
-      "no_extrapolate": true
-     },
-     {
-      "id": "eur-fund-hump",
-      "what": "hump 档位降 prod 最强（0.0012→0.01：0.686→0.568），可用窗口约 0.0012–0.0035；只能在该族尚无提交时用，否则 self 爆",
-      "evidence": "wave273 / wave274（WorkBuddy MEMORY §1.7）",
-      "no_extrapolate": true
-     }
-    ],
-    "avoid": [
-     {
-      "what": "换分母：在 EUR 是毒药（value_investment S 0.10 全灭）",
-      "evidence": "WorkBuddy MEMORY §1.7"
-     },
-     {
-      "what": "削应计 / ROA 维度：等于削信号本体（S 1.76→1.12）",
-      "evidence": "WorkBuddy MEMORY §1.7"
-     },
-     {
-      "what": "慢化（ts_mean）：反而抬 prod（0.7071→0.7974）",
-      "evidence": "WorkBuddy MEMORY §1.7"
-     },
-     {
-      "what": "ts_target_tvr_hump：只对齐换手、不降 prod",
-      "evidence": "WorkBuddy MEMORY §1.7"
-     },
-     {
-      "what": "中性化切到 MARKET：IS 最高但 prod 涨到 0.7254",
-      "evidence": "WorkBuddy MEMORY §1.7"
-     }
-    ]
-   }
-  },
-  "insiders": {
-   "status": "auto",
-   "datasets": [
-    "insider_agg_matrix"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 9,
-    "ra_clean": 0,
-    "prod_measured": 0,
-    "prod_clean": 0,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "insider_agg_matrix",
-      "backtests": 9
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD",
-      "family": "内部人买入股数比例与二级买入广度",
-      "text": "命中 EUR profile fast_kill（新集 8 探针无 |S|>=0.5）；INSIDERS 塔另一集 insider_matrix / insider_trx_matrix 已分标 yield=0@8bt / SATURATED，不重试",
-      "dataset": "insider_agg_matrix",
-      "bound": "payload"
-     }
-    ],
-    "wins": [
-     {
-      "id": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
-      "family": "predicted_surprise_value_insider_neutralize",
-      "text": "",
-      "dataset": null,
-      "bound": "keyword"
-     },
-     {
-      "id": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
-      "family": "predicted_surprise-FCF-insider bucket 换腿扩配",
-      "text": "",
-      "dataset": null,
-      "bound": "keyword"
-     }
-    ]
-   },
-   "generation": {
-    "notes": [
-     "★★★ 【EUR × insiders 判死】（2026-10-13，波 496，8 条）：\n**数据集 `insiders1`**（9 VECTOR，cov 0.551，含 `insd1_tradesignificance`/`insd1_valueeur`）：\n**8/8 探针 S ≤0.50，且 TO = 1.52–1.61（远超 0.7 硬线）、margin ≈ 0.1–1.2bp（近乎零）** ⇒ **判死**。\n⇒ ★ 根因：**稀疏事件型 VECTOR + `vec_avg` 归约 ⇒ 个股间剧烈跳变 ⇒ TO 爆炸**。\n⚠ `insiders12`（8 VECTOR）cov 仅 **0.193 < 0.35** ⇒ 直接跳过；`insider_agg_matrix` 全 MATRIX。\n⇒ **通用判据：探针若 TO > 0.7 立即弃该数据集（不必看 S）**。",
-     "★★★ 【EUR × insiders 补充】（wave496/504）：`insider_agg_matrix`（34 MATRIX）：`directional_indicator_2` S=−0.05 且 **TO=1.43 爆炸**；`directional_significant_value_*` 同族 ⇒ 判死。\n⇒ insiders 类别 3 个数据集（`insiders1`/`insiders12`/`insider_agg_matrix`）**全部判死**。"
-    ]
-   }
-  },
-  "institutions": {
-   "status": "auto",
-   "datasets": [
-    "fund_holdings_panel",
-    "institutions6"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 22,
-    "ra_clean": 0,
-    "prod_measured": 0,
-    "prod_clean": 0,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "fund_holdings_panel",
-      "backtests": 14
-     },
-     {
-      "dataset": "institutions6",
-      "backtests": 8
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-FHP-INSTITUTIONS-WEAK",
-      "family": "",
-      "text": "Leave fund_holdings_panel 在 EUR。institutions 塔在 EUR D1 无可挖数据集。",
-      "dataset": "fund_holdings_panel",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-INST6-INSTITUTIONS-TOWER-EXHAUSTED",
-      "family": "institutions6 机构持股聚合（净流向/存量/动量三机制）",
-      "text": "Leave institutions6 在 EUR。institutions 塔（1.1x）完全 exhausted：fund_holdings_panel（S-0.39~0.40）+ institutions6（S0.09~0.30）双判死。机构持股类数据在 EUR D1 无预测力。",
-      "dataset": "institutions6",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-INSTITUTIONS6-COLD-ZERO-YIELD",
-      "family": "机构持有人广度比例 / 机构权益占比 / 买入-卖出股数差",
-      "text": "INSTITUTIONS 塔仅 11 字段且机构持股类字段本质是慢变存量，不具备日频预测力；本区不再投槽",
-      "dataset": "institutions6",
-      "bound": "payload"
-     }
-    ],
-    "wins": []
-   },
-   "generation": {
-    "notes": [
-     "★★★ 【EUR × institutions 判死】（2026-10-13，波 444–446、495）：\n**`fund_holdings_panel`**（30 VECTOR、user 0–6 极低竞争）：\n有效方向 = `ts_delta(herfindahl_index_holdings, 252)`（机构持仓集中度变化），S **0.80–0.81**（幂次 3.0 仅 +0.01）。\n⇒ ★ **S 距线 0.77，且反推 returns 仅 2.33%** ⇒ 在 S=1.58 时 F 上限 = 1.58×sqrt(0.0233/0.125) = **0.68 < 1.0** ⇒ **数学上不可能过 F 闸** ⇒ 判死。\n⚠ `institutions6` 全 MATRIX（11 字段）；形态 `boundary_total / ts_mean(holding_value,55)` 使 TO 爆到 1.13。"
-    ]
-   }
-  },
-  "model": {
-   "status": "auto",
-   "datasets": [
-    "ai_equity_alpha",
-    "ai_factor_transfer",
-    "analyst_earnings_ibes",
-    "analyst_revision_horizons",
-    "chart_cnn_alpha",
-    "global_seasonal_model",
-    "model193",
-    "model238",
-    "model264",
-    "model354",
-    "model36",
-    "model50",
-    "multi_horizon_alpha",
-    "multifactor_return_pred",
-    "other460",
-    "predictive_starmine",
-    "price_signal_dl",
-    "shortinterest6"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 156,
-    "ra_clean": 3,
-    "prod_measured": 4,
-    "prod_clean": 4,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "predictive_starmine",
-      "backtests": 38
-     },
-     {
-      "dataset": "shortinterest6",
-      "backtests": 28
-     },
-     {
-      "dataset": "model50",
-      "backtests": 23
-     },
-     {
-      "dataset": "global_seasonal_model",
-      "backtests": 21
-     },
-     {
-      "dataset": "model264",
-      "backtests": 14
-     },
-     {
-      "dataset": "other460",
-      "backtests": 13
-     },
-     {
-      "dataset": "chart_cnn_alpha",
-      "backtests": 9
-     },
-     {
-      "dataset": "price_signal_dl",
-      "backtests": 5
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-AEIBES-W125-OPERATOR-LEVERAGE-WEAK",
-      "family": "analyst_earnings_ibes event-masked OHLCV × 未用算子族",
-      "text": "Leave analyst_earnings_ibes 这 8 个机制（规模桶内漂移残差/日内分歧/加速度门控翻转/量价确认度/执行压力残差/彩票需求/T-KB-01 单集跨周期）。不判死整个数据集——换手率方向有存活线索见 salvage。",
-      "dataset": "analyst_earnings_ibes",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AFT-OSC2-WEAK",
-      "family": "ai_factor_transfer _2 oscillators/money-flow",
-      "text": "Leave ai_factor_transfer. Next unused whitelist: global_seasonal_model non-return seasonal features. Do not deepen RelVal EV/EBITDA or v_rev/wedge.",
-      "dataset": "ai_factor_transfer",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AIEQ-ANALYST-REV-NOSCORE-WEAK",
-      "family": "ai_equity_alpha analyst revision without vol/score",
-      "text": "Do not occupy slots with AIEQ analyst-revision family without vol/score. Composite after still |S|<0.6.",
-      "dataset": "ai_equity_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AIEQ-FORENSIC-ACCRUAL-MIX-PROD",
-      "family": "ai_equity forensic+accrual mix dominant",
-      "text": "Do not use forensic+accrual mix as dominant. Mode B must change AIEQ concept.",
-      "dataset": "ai_equity_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AIEQ-VOL-SCORE-PRODCORR",
-      "family": "ai_equity_alpha financial_statement_volatility_factor / alpha_score dominant legs",
-      "text": "Do not use financial_statement_volatility_factor or alpha_score as the dominant (weight>=0.6) leg. Wrappers/group/ts_av_diff/SLOW-X-FAST mix still prod 0.78-0.8",
-      "dataset": "ai_equity_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK",
-      "family": "ai_equity quality/opacity/unused liquidity/clarity x v_rev x wedge",
-      "text": "Do not occupy slots with earnings_quality, information_opacity, liquidity_buffer/asset_liquidity_score_2, business_clarity, or five_day x v_rev x wedge.",
-      "dataset": "ai_equity_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AIEQ-W51-MOAT-UTIL-REPL-PSPAT-WEAK",
-      "family": "ai_equity_alpha",
-      "text": "Wave51 0.30/0.40/0.30 × v_rev/wedge: max S1.09 failed cheap gate; pspat volume/trend also weak; competitive slot ERROR",
-      "dataset": "ai_equity_alpha",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-AIEQ-W52-MARGIN-GROWTH-CASH-WEAK",
-      "family": "ai_equity_alpha",
-      "text": "Wave52 0.30/0.40/0.30 × v_rev/wedge: max S1.20 failed cheap gate",
-      "dataset": "ai_equity_alpha",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-AIEQ-W53-DEBT-VAL-YIELD-PHYS-WEAK",
-      "family": "ai_equity_alpha",
-      "text": "Wave53 0.30/0.40/0.30 × v_rev/wedge: max S1.02 failed cheap gate",
-      "dataset": "ai_equity_alpha",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-AIEQ-W54-DIV-YIELD-CORR-TVAL-WEAK",
-      "family": "ai_equity_alpha",
-      "text": "Wave54 0.30/0.40/0.30 × v_rev/wedge: max S1.18 failed cheap gate",
-      "dataset": "ai_equity_alpha",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-AIEQ-W55-SHTR-FDISP-FACC-FFLOW-WEAK",
-      "family": "ai_equity_alpha",
-      "text": "Wave55 0.30/0.40/0.30 x v_rev/wedge: max S1.20 failed cheap gate",
-      "dataset": "ai_equity_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AIEQ-W56-BUYB-BUZZ-FIN-SIZE-WEAK",
-      "family": "ai_equity_alpha",
-      "text": "Wave56 0.30/0.40/0.30 x v_rev/wedge: max S1.35 failed cheap gate",
-      "dataset": "ai_equity_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-AIEQ-W57-EQA-FCHG-PTB-DEBT-WEAK",
-      "family": "ai_equity_alpha",
-      "text": "Wave57 leftover AIEQ 0.30/0.40/0.30 x v_rev/wedge max S0.82. W50-W57 leftover path exhausted.",
-      "dataset": "ai_equity_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ARH-PROFIT90D-GZSCORE-PROD",
-      "family": "analyst_revision",
-      "text": "IS Sharpe/Fitness pass but prod_corr 0.86>=0.7. Dominant profit90d 90d estimate-change is crowded. Do not Mode A clone this skeleton; Mode B must change field/c",
-      "dataset": "analyst_revision_horizons",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ARH-PROFIT90D-PRIMARY-MIX-PROD",
-      "family": "analyst_revision",
-      "text": "Fitness 0.94 near gate but prod 0.95. Mixing primary_profit into profit90d does not dilute prod. Leave profit90d as dominant leg.",
-      "dataset": "analyst_revision_horizons",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ARH-SIGNEDPOWER-COUNTRY-DECAY6",
-      "family": "analyst_revision",
-      "text": "Same expression as YP7NQQLW (S1.38 F0.92 SUBINDUSTRY/4) drops to S1.13 under COUNTRY/6. Do not Mode A signed_power+COUNTRY; the working wrapper is group_zscore(",
-      "dataset": "analyst_revision_horizons",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ARH-SURPRISE-PRIMARY-PROD",
-      "family": "analyst_revision",
-      "text": "Surprise×primary_profit has IS (S1.04 F0.71) but prod 0.95. Same crowding as profit90d mixes. Do not Mode A; only residual/diff.",
-      "dataset": "analyst_revision_horizons",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ARH-SURPRISE-RESID-WEAK",
-      "family": "analyst_revision surprise/primary residual",
-      "text": "ts_av_diff/group_mean residual of surprise+primary killed IS vs wave34 surprise×primary S1.04. Best wpj5lVJp S0.48. Residual path on this pair is dead.",
-      "dataset": "analyst_revision_horizons",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-FCF-MINORITY-VALUE-MIX-PROD",
-      "family": "multi_horizon FCF invert residual mixed with to-price value",
-      "text": "FCF as minority mixed with other to-price/value fields does not break prod 0.7. np7n8Mgd S1.17 F0.69 2Y2.03 prod 0.8693 vs pure FCF 88lOQrdm prod 0.9381. Three-",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-FCF-PURE-INVERT-RESID-PROD",
-      "family": "multi_horizon FCF invert industry residual dominant",
-      "text": "IS S/F/2Y pass but prod 0.94 because pure FCF without heterogeneous dilution. Self vs Wj71Q12o 0.45 so not a clone of the submitted mix, but FCF-to-price domina",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-GSM-EVENT-WEAK",
-      "family": "global_seasonal_model event flags",
-      "text": "Leave global_seasonal_model. Do not mix PV. Do not use calendar constants or return-quantile fields. Next unused whitelist: chart_cnn leapstar unused or starmin",
-      "dataset": "global_seasonal_model",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-GSM-SAME-SRC-BUCKET-RATIO",
-      "family": "",
-      "text": "confidence/prob 同源分桶置信度 divide 比值近乎常数零区分度；5d vs calendar_5d 变体同源相关；multiply(ts_zscore) 交互同源高相关",
-      "dataset": "global_seasonal_model",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-M193-NAMED-SLOW-INERT",
-      "family": "model193 named MATRIX residual x v_rev/wedge",
-      "text": "Do not reuse model193 high-coverage named fields as 0.30 slow legs with v_rev/falling_wedge. Do not Mode A the weights.",
-      "dataset": "model193",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-M238-D1-RANK-COMBO-PROD",
-      "family": "model238 d1 rank combos of screening/change/industry/country",
-      "text": "Intra-dataset d1 rank combos do not beat wave26 single-field rank(mdl238_global_screening_rank) S1.32 F0.87. Best 1YwozLvz S1.28 F0.85 2Y1.48 prod 0.896; lej73X",
-      "dataset": "model238",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-M238-UNCROWDED-ALIGN-INDREL-PROD",
-      "family": "model238 uncrowded alignment / industry_relative / preference",
-      "text": "Uncrowded m238 fields have IS but do NOT beat the change/screening prod ~0.89 wall. 9qX9pVKe industry_relative S1.34 F0.90 2Y1.59 prod=0.8787; ZY7jE0qd alignmen",
-      "dataset": "model238",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-M354-VALUATION-YIELD-WEAK",
-      "family": "model354 group valuation yield concepts",
-      "text": "Leave model354 standalone valuation densify. Next unused whitelist: ml_factor_proj low-competition non-return MATRIX concepts (not NEWS, not news54, not predict",
-      "dataset": "model354",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-M36-CREDIT-DEFAULTRISK-PROD",
-      "family": "model36 credit / default_risk dominant",
-      "text": "Credit/default_risk dominant not near-gate (max S0.96 F0.58) and prod 0.91>=0.7. Do not Mode A clone decay/neut. Next only ts_av_diff or group_mean residual, or",
-      "dataset": "model36",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-M36-DEFAULTRISK-RESID-PROD",
-      "family": "model36 default_risk residual",
-      "text": "Industry residual lifts S to 1.04 vs naked 0.96 but Fitness still 0.58 and prod 0.86. ts_av_diff weaker. Leave MODEL credit/default_risk.",
-      "dataset": "model36",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-CAPACQ-INVERT-RESID-PROD",
-      "family": "multi_horizon capital_acquisition invert residual dominant",
-      "text": "Do not use invert long_term_capital_acquisition_ratio_3 industry residual as dominant. Mode B must change field/concept.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-DEEPVALUE-INVERT-PROD",
-      "family": "multi_horizon deep_value invert x common_gap_up",
-      "text": "Do not Mode A deep_value invert. Do not submit prod>=0.7.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-ESTREV-INVERT-DILUTE-PROD",
-      "family": "multi_horizon long_term estrev invert residual as minority",
-      "text": "Salvage of EUR-MH-ESTREV-RESID-INVERT-CROWD failed. 0.30 invert x growth/FS killed IS (S~-0.08). 0.40 invert + 0.60 mid_term O07nGp8Y S1.08 F0.51 2Y0.88 prod=0.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-ESTREV-RESID-INVERT-CROWD",
-      "family": "multi_horizon long_term estimate_revision industry residual full invert",
-      "text": "Has independent IS (|S|1.48, self vs Wj71Q12o 0.17) but the profitable invert aligns with model238 institutional crowding (mutual -0.74 on uninverted => +0.74 a",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-EV-EBITDA-3LEG-RN-PROD",
-      "family": "multi_horizon EV rank / ebitda-to-EV x v_rev x wedge",
-      "text": "Do not grind long_term_enterprise_value_europe_rank or ebitda_to_enterprise_value x v_rev x wedge. Mode B must change slow field or fast PV.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-FCF-INVERT-PROD",
-      "family": "multi_horizon trailing FCF-to-price invert x common_gap_up",
-      "text": "Do not Mode A FCF invert. Do not submit prod>=0.7. Leave FCF-to-price 2/3 aliases.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-FS-RANK-3LEG-PROD",
-      "family": "multi_horizon FS rank residual x v_rev x wedge",
-      "text": "Do not grind FS rank/strength x v_rev x wedge. Leave FS family as slow leg.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-FY2-INVERT-CROWD",
-      "family": "multi_horizon invert FY2 three-month revision",
-      "text": "Do not use invert FY2 revision as dominant. Same crowd as estrev invert.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-GROWTH-FLOW-3LEG-PROD",
-      "family": "multi_horizon growth_flow_to_price residual x v_rev x wedge",
-      "text": "Do not grind growth_flow_to_price x v_rev x wedge weights. Mode B must change slow field.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-INCOME-STMT-3LEG-PROD",
-      "family": "multi_horizon income_statement_rank residual x v_rev x wedge",
-      "text": "Do not grind income_statement_rank x v_rev x wedge. Leave OLL/income as slow leg.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-LEVERAGE-3LEG-VREV-WEDGE-PROD",
-      "family": "multi_horizon leverage residual x v_reversal x falling_wedge",
-      "text": "Do not grind leverage x v_reversal x falling_wedge weights. Mode B must change slow field or fast PV.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-LEVERAGE-INVERT-RN",
-      "family": "multi_horizon mgmt leverage invert x common_gap_up",
-      "text": "Do not Mode A leverage invert. Keep invert recipe on unused MH fields. Keep gJj1nxLM CONDITIONAL.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-LEVERAGE-RESID-DOMINANT",
-      "family": "multi_horizon leverage industry residual as dominant",
-      "text": "Do not use leverage residual as dominant. Wave41 slot5 uses it as 0.40 slow x PV.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-MGEFF-INVERT-GZ-PROD",
-      "family": "multi_horizon invert management_efficiency gzscore",
-      "text": "Do not use invert management_efficiency gzscore as dominant.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-MIDTERM-ESTREV-WEAK",
-      "family": "multi_horizon mid_term estimate_revision",
-      "text": "Horizon shift from long_term estrev residual (|S|1.48) to mid_term (alphaCount=0) failed. Best 88lOpzjm invert residual+growth S0.52 F0.19 2Y-0.03. Not independ",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-NOA-PEG-WEAK",
-      "family": "multi_horizon NOA change and PEG",
-      "text": "Do not occupy slots with NOA or PEG probes.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-NREV-LADDER-WALL",
-      "family": "multi_horizon_nrev",
-      "text": "Wave49 Mode A/B: S/F tunable to pass; IS ladder / 2Y sharpe hard ceiling ~1.1-1.28; rn_sharpe weak",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-QUALITY-BS-EPS-WEAK",
-      "family": "multi_horizon balance_sheet and price_adj_eps residual",
-      "text": "Do not occupy another slot with BS or price_adj_eps residual probes.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-ROE-3LEG-WEAK",
-      "family": "multi_horizon ROE residual x v_rev x wedge",
-      "text": "Do not occupy slots with ROE residual x v_rev x wedge.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-VALUE-ANALYST-3LEG-PROD",
-      "family": "multi_horizon value_analyst residual x v_rev x wedge",
-      "text": "Do not grind value_analyst x v_rev x wedge. Mode B must change slow field.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-VALUE-COUNTRY-SALES-WEAK",
-      "family": "multi_horizon country gz value and sales_to_price",
-      "text": "Do not occupy slots with country-gz deep_value or sales_to_price.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MH-W49-UNUSED-3LEG-WEAK",
-      "family": "multi_horizon PTA/street/nrev/pmom/rational_decay x v_rev x wedge",
-      "text": "Do not occupy slots with PTA, street_revision FY1, nrev FY1, price_momentum, or rational_decay x v_rev x wedge.",
-      "dataset": "multi_horizon_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-MODEL193-W129-CREDIT-AXIS-DEAD",
-      "family": "model193 信用风险/CDS/困境轴",
-      "text": "Leave model193 的 CDS 利差波动/beta、破产风险(Altman Z / Ohlson)、违约概率、空头回补压力、现金流-稀释、ebitdaev-CDS 名义敷口全系。",
-      "dataset": "model193",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STAR-ACTUAL-UPGDNG-ARMCOUNTRY-WEAK",
-      "family": "starmine actual EPS/revenue and upgrade/downgrade and ARM country as slow legs",
-      "text": "new slows dilute winning surprise x gap mix",
-      "dataset": "predictive_starmine",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STAR-REC-SMEST-WEAK",
-      "family": "starmine rec mean change / smest levels",
-      "text": "Do not reuse recommendation_mean_change or smest levels as slow legs. Surprise last-year EPS may mix unused PV not v_rev/wedge/breakaway/rising-wedge/triangle/c",
-      "dataset": "predictive_starmine",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STAR-RELVAL-EVEBITDA-2Y-DEAD",
-      "family": "starmine RelVal EV/EBITDA ts_delta × v_rev/wedge",
-      "text": "Leave RelVal EV/EBITDA ts_delta family. Do not deepen v_rev/wedge on this slow. Do not clone FCF×gap. Next unused whitelist: ai_factor_transfer money-flow (skip",
-      "dataset": "predictive_starmine",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STAR-REVCOUNT-ARM-WEAK",
-      "family": "starmine revision counts / ARM rec-activity",
-      "text": "Do not reuse starmine revision counts or ARM rec/activity as slow legs. Do not deepen RelVal EV/EBITDA or v_rev/wedge. Next unused whitelist: model28 non-credit",
-      "dataset": "predictive_starmine",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STARHOLD-COUNTRY-RANK-PROD",
-      "family": "shortinterest star_hold_country_rank dominant",
-      "text": "Do not use star_hold_country_rank as dominant.",
-      "dataset": "shortinterest6",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STARHOLD-INDUSTRY-RANK-PROD",
-      "family": "shortinterest star_hold_industry_rank dominant",
-      "text": "Do not use star_hold_industry_rank as dominant. Leave starhold rank family as dominant.",
-      "dataset": "shortinterest6",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STARHOLD-SCREENING-GZSCORE-PROD",
-      "family": "shortinterest",
-      "text": "COUNTRY/6 wrapper lifts starhold to S1.39 F0.96 2Y1.45 but prod 0.89 and LOW_SUB 0.39. EUR/D1/MODEL crowded. Sibling E5lqK9gL S1.38 F0.96 2Y1.49 same wall likel",
-      "dataset": "shortinterest6",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STARHOLD-SCREENING-RESID-PROD",
-      "family": "shortinterest residual of screening_rank",
-      "text": "group_mean residual ≈ gzscore; still prod 0.85-0.89. ts_av_diff killed Sharpe (0.20-0.55). Do not Mode A clone residual wrappers of screening_rank.",
-      "dataset": "shortinterest6",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STARHOLD-SECTOR-RANK-PROD",
-      "family": "shortinterest star_hold_sector_rank dominant",
-      "text": "Do not use star_hold_sector_rank as dominant. Do not Mode A decay/neut. Leave starhold sector/screening family.",
-      "dataset": "shortinterest6",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-W254-OTHER460-FORWARD-PROBABILITY-PAIRS",
-      "family": "other460 four target probability directions SUBINDUSTRY decay4",
-      "text": "",
-      "dataset": "other460",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-chart_cnn_alpha-LEAPSTAR-WEAK",
-      "family": "chart_cnn_alpha leapstar6/malta2 image features",
-      "text": "Leave chart_cnn_alpha leapstar6/malta2 in EUR. Do not retry ts_decay_linear/zscore on leapstar6 features or group_sum on malta2 quantile_label.",
-      "dataset": "chart_cnn_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-chart_cnn_alpha-MODEB-CEILING",
-      "family": "chart_cnn_alpha malta2 q3 × leapstar6 Mode B ceiling",
-      "text": "Leave chart_cnn_alpha malta2 q3 × leapstar6 in EUR. Do not retry Mode B optimization on this combination; ceiling reached (S1.44/F0.91).",
-      "dataset": "chart_cnn_alpha",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-predictive_starmine-EQVR-WEAK",
-      "family": "predictive_starmine eq_vr_dlra1 accruals/cashflow",
-      "text": "Leave predictive_starmine eq_vr_dlra1 in EUR. Do not retry ts_mean/ts_delta on accruals/cashflow components.",
-      "dataset": "predictive_starmine",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-predictive_starmine-SMEST-IV-WEAK",
-      "family": "predictive_starmine smest/iv family",
-      "text": "Leave predictive_starmine smest/iv in EUR. Do not retry ts_mean/ts_delta on smest_f12m or iv_cagr fields.",
-      "dataset": "predictive_starmine",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-price_signal_dl-NO-DATA",
-      "family": "price_signal_dl trend/volume indicators",
-      "text": "Leave price_signal_dl in EUR. Do not retry any trend/volume indicator expressions.",
-      "dataset": "price_signal_dl",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-shortinterest6-CHANGE-OWNER-WEAK",
-      "family": "shortinterest6 change/owner component",
-      "text": "change/owner 组件单独使用信号强度不足（IS 天花板 1.24），无法突破 EUR 硬闸；需回归 win recipe 结构",
-      "dataset": "shortinterest6",
-      "bound": "payload"
-     }
-    ],
-    "wins": [
-     {
-      "id": "EUR-WIN-SLOW-MODEL-X-FAST-PV",
-      "family": "0.40 slow MODEL residual invert + 0.60 fast PV pattern invert",
-      "text": "cross-pyramid mix; follow SUBINDUSTRY decay4; do not clone FCF+gap",
-      "dataset": null,
-      "bound": "keyword"
-     },
-     {
-      "id": "EUR-WIN-SLOW-MODEL-X-FAST-PV-3LEG",
-      "family": "capacq residual x v_reversal x falling_wedge",
-      "text": "",
-      "dataset": null,
-      "bound": "keyword"
-     },
-     {
-      "id": "EUR-Wj71Q12o-slow-fast-mix",
-      "family": "0.4 slow MODEL residual + 0.6 fast PV",
-      "text": "mix=0.4*slow_model_leg + 0.6*fast_pv_leg; neutralization=SUBINDUSTRY; decay=4; universe=TOP2500; delay=1",
-      "dataset": null,
-      "bound": "keyword"
-     }
-    ]
-   },
-   "generation": {
-    "notes": [
-     "历史胜绩机制「慢 MODEL 残差 × 快 PV」只许以条件 / 分组 / 残差入场；0.40 / 0.60 加权写法被闸 5 禁止（EUR profile）"
-    ],
-    "avoid": [
-     "model 族 62 条判死；库存 47 / 47 族 prod 不低于上限（EUR profile 2026-10-02）"
-    ]
-   }
-  },
-  "news": {
-   "status": "auto",
-   "datasets": [
-    "news17",
-    "news20",
-    "news21",
-    "news29",
-    "news31",
-    "news36",
-    "news38",
-    "news46",
-    "news48",
-    "news50",
-    "news54",
-    "news73",
-    "news84",
-    "news85",
-    "predictive_starmine × news73",
-    "{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 46,
-    "ra_clean": 0,
-    "prod_measured": 0,
-    "prod_clean": 0,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "news46",
-      "backtests": 15
-     },
-     {
-      "dataset": "news21",
-      "backtests": 8
-     },
-     {
-      "dataset": "news50",
-      "backtests": 8
-     },
-     {
-      "dataset": "news54",
-      "backtests": 7
-     },
-     {
-      "dataset": "news73",
-      "backtests": 4
-     },
-     {
-      "dataset": "news29",
-      "backtests": 4
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-NEWS17-INSPECT-GATE-WALL",
-      "family": "news17 comp_d1 分数族",
-      "text": "news17 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
-      "dataset": "news17",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-NEWS20-INSPECT-GATE-WALL",
-      "family": "news20 multiple_comp 事件分族",
-      "text": "news20 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
-      "dataset": "news20",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-NEWS21-EVENT-CALENDAR-DEAD",
-      "family": "news21 event calendar / transcript tone (post-call drift, pre-call premium, tone level/change, attention)",
-      "text": "EUR news tower: event-calendar family closed",
-      "dataset": "news21",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-NEWS29-WEAK",
-      "family": "news29 主题显著性族（nws29_topic/significance VECTOR）",
-      "text": "wave244 4 探针全灭 best |sharpe|=0.25（另 4 条 group_rank 单位错误被隔离）→ fast_kill 判死。NEWS 族五集全灭。",
-      "dataset": "news29",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-NEWS31-INSPECT-GATE-WALL",
-      "family": "news31 事件/相似度分族",
-      "text": "news31 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
-      "dataset": "news31",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-NEWS36-NOVELTY-SENT-WEAK",
-      "family": "news36 novelty/phrase/word/confidence concepts",
-      "text": "Leave news36 standalone novelty/sentiment densify. NEWS whitelist concept track exhausted (news38/36/84/85). Skip news54 timestamps. Next unused non-NEWS whitel",
-      "dataset": "news36",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-NEWS38-CONCEPT-WEAK",
-      "family": "news38 densified tone/polarity/relevance concepts",
-      "text": "Leave news38 standalone densify concepts. Do not mix v_rev/wedge. Skip news54 timestamps/headline-text. Next NEWS=news36 if numeric fields; else unused MODEL (m",
-      "dataset": "news38",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-NEWS46-ZERO-IS-SIGNAL",
-      "family": "mws46_* ravenpack news sentiment/impact MATRIX",
-      "text": "两轮实测均无 IS 信号：wave245 基础探针(单字段 rank/ts_delta/rank差) best|S|=0.46 n=5；wave257 复合结构第二轮(group_rank 新中性化几何 + trade_when 事件门控跨字段比值 divide) best|S|=0.41 signed best 0.",
-      "dataset": "news46",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-NEWS48-INSPECT-GATE-WALL",
-      "family": "news48 ENS 情绪分族",
-      "text": "news48 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
-      "dataset": "news48",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-NEWS84-SENTIMENT-MATRIX-WEAK",
-      "family": "news84 migration sentiment MATRIX probe",
-      "text": "Leave news84/news85. Do not occupy another slot with EUR news sentiment MATRIX probes.",
-      "dataset": "news84",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-NEWS85-SENTIMENT-MATRIX-WEAK",
-      "family": "news85 DNN sentiment MATRIX probe",
-      "text": "Leave news85. Do not second-round probe.",
-      "dataset": "news85",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-NONMODEL-TOWER-CEILING",
-      "family": "non_model_tower_sparse_event_sentiment_analyst",
-      "text": "",
-      "dataset": "{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-W245-news46-mechanisms-D1",
-      "family": "news46_cashless_news_mechanism_probe",
-      "text": "EUR TOPCS1600 D1 本轮5条概念原式 max S=0.42, max |S|=0.46; 无 S>=1.25 且 F>=0.8，停止本轮机制增强。仅封存所测机制，不宣称全数据集无效。",
-      "dataset": "news46",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-W246-news50-mechanisms-D1",
-      "family": "news50_cashless_news_mechanism_probe",
-      "text": "EUR TOPCS1600 D1 本轮8条概念原式 max S=0.32, max |S|=0.52; 无 S>=1.25 且 F>=0.8，停止本轮机制增强。仅封存所测机制，不宣称全数据集无效。",
-      "dataset": "news50",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-news54-TIMESTAMP-INVALID",
-      "family": "news54 event timestamp fields",
-      "text": "Leave news54 timestamp fields in EUR. Do not use ts_mean/ts_delta on UNIX timestamp fields; convert to days_from_last_change or ts_step - timestamp first.",
-      "dataset": "news54",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-predictive_starmine-NEWS-MIX-WEAK",
-      "family": "predictive_starmine × news73 sentiment mix",
-      "text": "Do not mix predictive_starmine surprise with news73 sentiment fields in EUR TOP2500 — weak signal combination",
-      "dataset": "predictive_starmine × news73",
-      "bound": "payload"
-     }
-    ],
-    "wins": []
-   },
-   "generation": {
-    "notes": [
-     "★★★ 【EUR × news 判死】（2026-10-13，波 508/516，16 条）\n| 数据集 | 规模 | S | TO | margin | 判定 |\n|---|---|---:|---:|---:|---|\n| `news20`（多分类器情绪，cov 0.963 **稠密**） | 64 VECTOR | ≤0.28 | **0.88–1.24** | ~0.1bp | ❌ TO 爆炸 |\n| `news54`（事件因子） | 40 VECTOR | ≤0.14 | **1.44** | — | ❌ |\n⇒ ★★ **「稠密覆盖」不能救 news VECTOR**：cov 0.963 仍 TO 1.1（个股情绪日间翻转）⇒ \n**判据修正：news/sentiment/事件类 VECTOR 的失败与覆盖无关，与「事件驱动 + 情绪符号翻转」有关** ⇒ 一律跳过。"
-    ]
-   }
-  },
-  "other": {
-   "status": "auto",
-   "datasets": [
-    "acquisition_model",
-    "ai_news_scores",
-    "dl_riskfree_returns",
-    "event_relation",
-    "insider_feats",
-    "insider_matrix",
-    "insider_trx_matrix",
-    "ml_factor_proj",
-    "news_sentiment_dl",
-    "news_sentiment_nlp",
-    "other128",
-    "other455",
-    "other567",
-    "other571",
-    "predictive_starmine,pattern_scores"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 119,
-    "ra_clean": 0,
-    "prod_measured": 19,
-    "prod_clean": 1,
-    "prod_blocked": 18,
-    "top_datasets": [
-     {
-      "dataset": "other128",
-      "backtests": 22
-     },
-     {
-      "dataset": "insider_trx_matrix",
-      "backtests": 15
-     },
-     {
-      "dataset": "news_sentiment_nlp",
-      "backtests": 12
-     },
-     {
-      "dataset": "insider_feats",
-      "backtests": 10
-     },
-     {
-      "dataset": "news_sentiment_dl",
-      "backtests": 9
-     },
-     {
-      "dataset": "other571",
-      "backtests": 9
-     },
-     {
-      "dataset": "ai_news_scores",
-      "backtests": 8
-     },
-     {
-      "dataset": "insider_matrix",
-      "backtests": 8
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-ACQUISITION-MODEL-COLD-ZERO-YIELD",
-      "family": "mna_target_likelihood_percentile (acquisition_model 全 15 字段 VECTOR percentile)",
-      "text": "wave218 8 探针全灭 max|sharpe|=0.16（best 2y 1.46 但 IS 无强度），达 EUR profile fast_kill 线（新集 8 探针无 |S|>=0.5 即判死）。字段全冷门（users<=4）理论 prod≈0，死因是纯信号缺席。2 条 group_cartesian_pr",
-      "dataset": "acquisition_model",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-AINEWS-POS-INTENSITY-WEAK",
-      "family": "",
-      "text": "Leave ai_news_scores 全部字段族在 EUR。新闻情绪类信号在 EUR D1 普遍无预测力。",
-      "dataset": "ai_news_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-DLRF-BOTH-FAMILIES-DEAD-MATH-PROOF",
-      "family": "dl_riskfree_returns 全数据集（ohlcv 通用族 + eur_ohlc_ma 专用族）",
-      "text": "Leave dl_riskfree_returns 全数据集在 EUR（含 ohlcv 与 eur_ohlc_ma 两族、133 字段）。后续如遇同类型 DL 分位数预测数据集，先用 Fitness 墙预筛判据评估，再决定是否开波。",
-      "dataset": "dl_riskfree_returns",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-DLRF-EUROHLCMA-TURNOVER-FITNESS-WALL",
-      "family": "dl_riskfree_returns eur_ohlc_ma EUR 专用模型族 × 跨期分位数差",
-      "text": "Leave dl_riskfree_returns 的 eur_ohlc_ma 族跨期分位数差在 EUR：prod 极低但 Fitness 墙结构性不可破（turnover 源于数据更新频率，非表达式可修）。不再试 label 对/期限对/窗口变体。",
-      "dataset": "dl_riskfree_returns",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-DLRF-OHLCV-PRODWALL-FIELD-LEVEL",
-      "family": "dl_riskfree_returns ohlcv 通用模型字段族 × 四种算子几何",
-      "text": "Leave dl_riskfree_returns 的 *_ohlcv 通用模型字段族在 EUR：IS 强但 prod 墙字段级不可破，任何算子几何变换无效。转向 *_eur_ohlc_ma EUR 专用字段族（prod 低但 IS 弱，需在族内找 IS 更强的字段组合）。",
-      "dataset": "dl_riskfree_returns",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-DLRF-PROD-WALL-080",
-      "family": "",
-      "text": "Leave dl_riskfree_returns 的 quantile_label_1bucket/probability_label 分位数概率族在 EUR。信号强但 prod 墙结构性不可破。如需复用，仅在多区域组合中作为低权重稀释腿。",
-      "dataset": "dl_riskfree_returns",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-DLRFR-OHLCV-GEOM-WALL",
-      "family": "dl_riskfree_returns",
-      "text": "",
-      "dataset": "dl_riskfree_returns",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-EVENT-RELATION-WEAK",
-      "family": "event_relation 实体关系强度族（relation_strength_rank/score × merger/partner/financial/general）",
-      "text": "wave233 8 探针全灭 max|sharpe|=0.43 < 0.5 → 达 EUR fast_kill 判死线。字段全冷门（users<=1）理论 prod≈0，纯信号缺席。OTHER 塔已连续三集判死（acquisition_model 0.16 / insider_feats 多样性墙 / event_re",
-      "dataset": "event_relation",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-INSIDER-FEATS-WEAK",
-      "family": "insider_feats 内部人买卖比率族（buy/sell ratio × tx count × lookback）",
-      "text": "wave238 10 探针全灭 best |sharpe|=0.47 < 0.5 → 达 fast_kill 判死线。此前 w232 多样性闸（flow 单 exposure）+ 字段名拼接幻觉 + 低覆盖无 backfill 三轮门禁墙已记录。OTHER 塔 4 候选全灭（acquisition_model/insi",
-      "dataset": "insider_feats",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-MLFP-0ALPHA-OPS-WEAK",
-      "family": "ml_factor_proj 0-alpha coverage/rating/CCC/capex",
-      "text": "Leave this ml_factor_proj ops/coverage family. Do not replay Wave9 EPS/price/FCF ranks. Next: predictive_starmine high-coverage fields unused in Wave21 ARM/RelV",
-      "dataset": "ml_factor_proj",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-NSNLP-SPARSE-TWO-WALLS",
-      "family": "",
-      "text": "Leave news_sentiment_nlp 全部字段族在 EUR。稀疏事件流的 CW+turnover 双墙是结构性问题，不是信号问题。",
-      "dataset": "news_sentiment_nlp",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-O567-COVERAGE-STRUCTURAL",
-      "family": "",
-      "text": "Leave other567 在 EUR。员工评价数据在 EUR 市场覆盖率不足，无法形成有效横截面分散。",
-      "dataset": "other567",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STAR-ARM-LEFTOVER-WEAK",
-      "family": "starmine ARM preferred/revenue/score-change/region-global as slow; regular_upward_gap as fast",
-      "text": "weaker than surprise x common_gap_up",
-      "dataset": "predictive_starmine,pattern_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-STAR-GAP-FACTOR-NEUT-WEAK",
-      "family": "predictive_starmine surprise x common_gap_up factor neutralization",
-      "text": "factor neutralization kills F vs SUBINDUSTRY, does not produce RN>1",
-      "dataset": "predictive_starmine,pattern_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS",
-      "family": "other455 customer network monthly returns seed1 k5",
-      "text": "",
-      "dataset": "other455",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-ai_news_scores-ADVANCED-NEG",
-      "family": "ai_news_scores advanced stats",
-      "text": "",
-      "dataset": "ai_news_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-insider_trx_matrix-WEAK-DRIFT",
-      "family": "insider",
-      "text": "",
-      "dataset": "insider_trx_matrix",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-news_sentiment_dl-SENTIMENT-WEAK",
-      "family": "news_sentiment_dl sentiment word stats",
-      "text": "Leave news_sentiment_dl sentiment word stats and text complexity in EUR. Do not retry ts_mean/ts_std_dev/ts_delta on positive/negative sentiment fields.",
-      "dataset": "news_sentiment_dl",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-news_sentiment_nlp-STRUCTURE-DEAD",
-      "family": "news_sentiment_structure",
-      "text": "",
-      "dataset": "news_sentiment_nlp",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-other571-WIKI-WEAK",
-      "family": "other571 Wikipedia page views",
-      "text": "Leave other571 Wikipedia page views in EUR. Do not retry ts_mean/ts_delta/ts_decay_linear/zscore on oth571_views* fields.",
-      "dataset": "other571",
-      "bound": "payload"
-     }
-    ],
-    "wins": []
-   },
-   "generation": {
-    "notes": [
-     "★★★★★ 【EUR × other 数据集实测】（2026-10-13，波 508–523，约 60 条）\n| 数据集 | 规模 | 最佳 | S | F | TO | **returns** | 判死依据 |\n|---|---|---|---:|---:|---:|---:|---|\n| ★`insider_feats`（内部人买卖比） | 118 MATRIX cov .916 αC 43 | `top5_buy_tx_count_250d` / 双窗 add | **1.11** | 0.60 | 0.023 | **3.68%** | ❌ **returns 天花板 3.9% ⇒ 需 S≥1.84** |\n| ★`dl_riskfree_returns`（ML 前瞻收益概率） | 133 MATRIX cov **1.000** αC 167 | 2quantile **60day** 概率差 | **1.40** | 0.71 | 0.10–0.22 | **3.8%** | ❌ **returns 天花板 3.8% ⇒ 需 S≥1.82** |\n| `news_sentiment_dl`(αC1)/`news_sentiment_nlp`(αC5)/`acquisition_model` | — | 情绪/并购概率 | ≤0.43 | — | **0.97–1.45** | — | ❌ TO 爆炸 |\n⇒ ★★★ **两者均为 F 闸数学封顶**（F_max@S1.58 = 0.87/0.88 < 1.0）。\n**`dl_riskfree_returns` 细节**：horizon 是关键（60d S 1.37 >> 20d 0.29 >> 5d 0.55）；分位越细越差（2q>3q>4q>5q）；\n修订类结构（ts_delta / 跨 horizon 差 / rank 差 / 乘 / 除）**全部失败（S≤0.87）**⇒ 该模型信号是「水平」非「变化」。\n**`insider_feats` 细节**：buy-only 计数 > buy/sell ratio（验证 JMZ 2003）；250d margin 32bp vs 60d 8.8bp；\n`ts_ir`/`ts_std_dev` 分母结构**灾难**（S→0）；`ts_delta` 混合可提 TO（0.023→0.056）而不杀 S。",
-     "★★★★★★ 【EUR × other 本轮第二批深挖】（2026-10-14，波 529–536，≈60 条）\n① **`techindi_model`（300 MATRIX，cov **1.000**，αC 2072）= 多分位×多 horizon 的**预测收益率模型**\n   （`predicted_{first..fifth}_quantile_{one,five,ten}_day_return_{V}`，V=13/131/14/141/15/16/17）。\n   ★ **IS 极强**：8/8 探针 S ≥1.5；最优 `QPYZ5ePX` = `signed_power(group_rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,2), industry), 3.0)`\n   ⇒ **S 3.49 / F 1.53 / TO 0.5422 / 2Y 1.90 / ROBUST 0.87 / sub 1.88**，**returns 反算 10.1%**（EUR 本会话最高）。\n   ★ **判死 = prod 墙**：6 条实测 prod 0.7213–0.7685，`prod_bucket_scan` 的 **n[0.7,0.8) = 3–4 ⇒ DEAD（单钉子卡死）**。\n   ⇒ **几何改造确能降 prod**（0.7514→0.7213，用 `ts_zscore(·,252)`）**但同步把 sub/S 压到 0.463** ⇒ sub 失败 ⇒ **无解**。\n② **`stock_search_trends`（Google Trends，αC **2**）/ `other571`（Wikipedia 浏览，αC 61）双双判死**：\n   注意力类 TO 0.41–0.98 爆炸（Trends）/ S ≤0.44 且 2Y 1.53 但 S 0.24（Wikipedia，2Y 有 S 无）。\n③ ★★★★★ **两条新闸门铁律（EUR 实测）**：\n   `LOW_SUB_UNIVERSE_SHARPE` 闸线 = **0.53 × S**（786pLKnb S1.71→0.91；leMpQ5E2 S3.78→2.0）\n   `LOW_ROBUST_UNIVERSE_SHARPE` 闸线 = **0.7 固定**\n   ⇒ **高 S 是双刃剑**：sub 是**比率闸**，若 `sub/S < 0.53` 则任何 S 都过不了；`ts_zscore` 是最强 S 放大器但压 sub/S。\n④ ★ **降 TO 算子谱**（该数据集实证）：`ts_mean(P,2)` ✅保 robust（TO 0.79→0.542，robust 不变）；\n   `decay=2` 设置 ✅（TO→0.585，robust 0.86→0.80）；`ts_decay_linear(P,3)` ✅（TO 0.506，robust 0.75）；\n   ❌ `ts_mean(P,5)` / `tvr_decay` / `hump` **均摧毁 robust**（0.87→0.45/0.53/0.55）；`hump` 档位过陡无甜区。\n⑤ ⚠ `quantile(P, driver=gaussian)` 被 `group_rank` 包裹时是 **no-op**；horizon 期限差完全无效（S ≤0.22）。",
-     "★★★★★★★ 【EUR × other 重大突破：双窗秩乘积破 prod 墙】(2026-10-14, wave539–542)\n**达标候选 #2 = `e76kv2xE`**（techindi_model, other 未点亮）：\n`signed_power(group_rank(multiply(rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,2)), rank(ts_mean(predicted_fifth_quantile_ten_day_return_15,252))), industry), 3.0)`\n⇒ S 2.60 / F 1.23 / TO 0.3834 / SUB 1.67 / ROBUST 0.93 / 2Y 1.94 / **returns 8.54%** / **PROD 0.6916** / SELF −0.0149 / Failed RA=0。\n⇒ 与 Analyst 腿 `786pLKnb` 互相关 **0.0907** ⇒ 两条独立腿。\n★★★★★ **通用结构「双窗秩乘积」**：`multiply(rank(ts_mean(F,W_short)), rank(ts_mean(F,W_long)))`\n   —— 相对朴素 `group_rank(ts_mean(F,2))`：**prod 0.7514→0.6916（跨线）+ TO 0.542→0.383 + robust 0.87→0.93 + sub比率 0.539→0.642**（一石四鸟）。\n   ⚠ **非普适**：sentiment27(1.33→1.14) / dl_riskfree(1.40→1.20) / insider_feats(1.11→1.08,TO 0.032) 均降 S ⇒ 逐数据集实测。\n⚠ **该数据集同族只出 1 颗**：`RRAjKw2b`(prod 0.6824)/`zqrK0nPO`(0.6911) 也过线，但三者互相关 0.81–0.87 ⇒ 同腿。\n⚠ **`pv13` 图网络特征（客户 PageRank / 竞争者 HITS）判死**：近静态 TO 0.012–0.086、S ≤0.13；\n   且 `pv13_new_*l_scibr` 是 **GROUP 类型**（不能当信号）⇒ 整批 CANCELLED（字段类型坑再现）。",
-     "★★★★★★ 【EUR × other 续推收官（wave543–546）】三个假设的证伪/修正：\n① **「预测型数据必胜」修正为「只有直接预测收益率的模型有效」**：\n   ✅ `techindi_model`（预测收益率分位 S 3.41）/ `dl_riskfree_returns`（收益率概率 S 1.40）；\n   ❌ `other545` **NEMO 2.0 综合模型评分**（7 子模型聚合 + 价格动量 + NLP 网络动量）**S 仅 0.05–0.63、2Y 全死**\n② **双窗秩乘积非普适**：在 `pv1`（经典价量，αC 43728）上 S 反降、2Y 转负；`news18` TO 0.73–0.94 爆炸。\n③ ★ **网络/嵌入型数据集一律近静态**：`pv13`（客户 PageRank/竞争者 HITS）TO 0.012–0.086；\n   `other455`（竞争者 node2vec → PCA factor）TO **0.010–0.012** ⇒ **S ≤0.12 全灭** ⇒ 与「状态量/评级」同类，**开波前可预筛**。\n⇒ 本会话 EUR 未点亮空间最终产出 = **2 条独立腿**：`786pLKnb`(Analyst) + `e76kv2xE`(Other/techindi_model)，互相关 0.0907。",
-     "★★★★★★ 【EUR 数据集全量普查 + 本轮新铁律（2026-10-14）】\n① **平台权威枚举：EUR 共 173 个数据集 / 14 类**（未点亮 10 类 = 93 个：other36/news20/pv20/sentiment5/insiders3/earnings2/institutions2/macro2/socialmedia2/imbalance1）；已点亮 4 类（model46/fundamental13/analyst16/risk5）。\n   ⇒ 普查表 + 逐数据集判死速查（死因七分类）见 `references/_dataset-inventory.md`。\n② ★★★ **`earningscall_sentiment`（财报电话会语调，152 字段/137 MATRIX-计数）判死**：\n   `vec_avg` 后 **TO 1.07–1.57 爆炸**、S ≤0.21 ⇒ 与 news/sentiment 事件 VECTOR 同族。\n   ⚠ 类型坑：`{topic}_*_score`/`*_polarity`=**VECTOR**（需 vec_avg），`count_*`/`mean_polarity_*`=**MATRIX** ⇒ 混用整批 CANCELLED；\n   且 `count_negative_cashflow_answer` **不存在**（只有 positive/neutral）。\n③ ★★ **`pv173`（91 VECTOR 全 `*_unit_name`）/`other384`（cov≥0.5=0）/`investor_activity`（cov≥0.5=0）判死**：元数据/低覆盖。\n④ ★★★ 未测集（60 个）以 **news 事件族群（TO 爆炸）+ PV 拥挤族（αC 585–885）+ 微型/低覆盖集** 为主 ⇒\n   **唯剩的机制性机会 = `pv29`/`pv30` 的「统计聚类 GROUP 轴」**（GROUP 字段只能当 `group_*` 的第 2 参，不能当信号）。"
-    ]
-   }
-  },
-  "pv": {
-   "status": "auto",
-   "datasets": [
-    "continuation_score",
-    "intraday_pv_feats",
-    "pattern_scores",
-    "pv106",
-    "pv37"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 108,
-    "ra_clean": 10,
-    "prod_measured": 0,
-    "prod_clean": 0,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "continuation_score",
-      "backtests": 81
-     },
-     {
-      "dataset": "pv106",
-      "backtests": 11
-     },
-     {
-      "dataset": "pattern_scores",
-      "backtests": 8
-     },
-     {
-      "dataset": "pv37",
-      "backtests": 8
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-CONTINUATION-COMPOSITE-WEAK",
-      "family": "continuation_score chart-similarity composites",
-      "text": "After composite round (bull-bear subtract, group_rank, ts_av_diff, ts_corr) max |sharpe| 0.44. Not worth another probe round.",
-      "dataset": "continuation_score",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-INTRADAY-PV-W126-128-NEAR-MISS",
-      "family": "intraday_pv_feats 事件门控 × 成交量厚尾分位",
-      "text": "Leave intraday_pv_feats 的下列已试机制：挂单深度倾斜(group_zscore)、宽价差买盘偏离(if_else)、量价确认度(ts_corr/ts_covariance)、VWAP 积压、报价厚尾不对称、T-KB-01 日内版、整数价位聚集全族、成交量时钟不对称。数据集本身不判死——585 字",
-      "dataset": "intraday_pv_feats",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-PATTERN-BREAKAWAY-RESID-WEAK",
-      "family": "pattern_scores breakaway residual alone",
-      "text": "Breakaway-gap residual/invert max S0.71 F0.29. PV pyramid but weak as standalone. Wj71Q12o used gap as 0.60 mix with FCF; gap-only residual is not a RA path. Do",
-      "dataset": "pattern_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-PV-RISING-WEDGE-TRIANGLE-CONT-FAST-WEAK",
-      "family": "pattern_scores rising_wedge / symmetrical_triangle / continuation as fast legs",
-      "text": "Do not use rising_wedge, symmetrical_triangle, or continuation_falling_wedge as the 0.40/0.30 fast pair replacing v_rev/falling_wedge.",
-      "dataset": "pattern_scores",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-STAR-PV-ASCT-TREND-WEAK",
-      "family": "pattern_scores asc_triangle / support-resistance / trendline / regular gap as fast legs",
-      "text": "unused PV families weak vs common_gap_up winner",
-      "dataset": "pattern_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-UNTESTED-CHANNEL-FIRSTPROBE-DEAD",
-      "family": "EUR 未测数据集通道（pv106 PV价差 / model50 MODEL估值）",
-      "text": "EUR 未测通道亦穷尽：新赛季（Q4）不改变 returns 天花板与 prod 池，故本区不再投槽位；如需继续须先出现全新数据集（非新赛季）或 prod 池实质衰减，否则转 IND/KOR。",
-      "dataset": "pv106",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-W169-FASTPV-SPREAD-REVERSED-DEAD",
-      "family": "continuation_score/intraday_pv_feats 快腿 - predicted_surprise 慢腿 价差骨架",
-      "text": "EUR D1 快腿 PV 族(continuation_score/intraday_pv) 禁止作正向 rank 腿；其信号方向为反转，若用必须取负(-rank)且与慢腿同向叠加而非价差。intraday_pv corr 字段高换手(>0.49)需长窗平滑。该族与已 ACTIVE 的 MODEL-insider桶 骨",
-      "dataset": "intraday_pv_feats",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-W170-FASTPV-NEGATED-WEAK-DEAD",
-      "family": "predicted_surprise 慢 - continuation_score 快(取负同向) 价差",
-      "text": "EUR 快腿 PV 族(continuation_score/intraday_pv_feats) 判死：正向价差方向反(wave169)、取负同向强度不足(wave170)，两向都过不了 1.58。与 wave166 实证一致(纯信号族 max0.62、非MODEL塔 0.32-0.40)。EUR 可挖空间=慢腿 p",
-      "dataset": "continuation_score",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-pattern_scores-BREAKAWAY-GAP-WEAK",
-      "family": "EUR-pattern_scores-BREAKAWAY-GAP-WEAK",
-      "text": "breakaway_gap 字段族信号弱，8 条全灭，最高 Sharpe 0.03",
-      "dataset": "pattern_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-pattern_scores-wave83-skeleton-fail",
-      "family": "",
-      "text": "",
-      "dataset": "pattern_scores",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-shortinterest6-PATTERN-FAST-LEG-PROD",
-      "family": "shortinterest6 × pattern_scores fast leg variants",
-      "text": "star_hold 家族与任何 pattern_scores 快腿组合 prod_corr 必超 0.7（wave110 0.74-0.77），换快腿字段无法破墙；shortinterest6 在 EUR 区域 IS 天花板 1.24-1.71 但 prod 墙无法突破",
-      "dataset": "pattern_scores",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-shortinterest6-PATTERN-MIX-PROD",
-      "family": "shortinterest6 × pattern_scores win mix",
-      "text": "star_hold 家族与 pattern_scores 快腿组合 prod_corr 0.74-0.77 超 0.7 硬闸，无法提交",
-      "dataset": "pattern_scores",
-      "bound": "inferred"
-     }
-    ],
-    "wins": []
-   },
-   "generation": {
-    "notes": [
-     "★★★★★ 【EUR × pv 数据集实测判死总表】（2026-10-13，波 506–526，约 40 条）\n**EUR 合法 universe（平台权威）**：TOPCS1600｜TOP2500｜TOP1200｜TOP800｜TOP400\n| 数据集 | 规模 | 最佳形态 | S | TO | 2Y | 判死依据 |\n|---|---|---|---:|---:|---:|---|\n| `pattern_scores`（图形形态相似度） | 504 MATRIX cov .998 | 形态相似度差 | ≤0.52 | — | 负 | 噪声型 |\n| `continuation_score`（延续形态） | 560 MATRIX cov .998 | `avg_similarity_bearish_flag` | 0.56（2Y 1.32） | 0.39 | — | ★**平滑即杀**（ts_mean 后 S −0.79）⇒ alpha 全在高频 |\n| `intraday_pv_feats`（日内特征） | 585 MATRIX cov .999 | — | ≤0.37 | **1.15** | — | TO 爆炸 |\n| `pv106`（买卖价差/交易成本） | 13 MATRIX cov 1.0 | `pv106_spreadbp` | **−0.51~−1.65** | 0.40–0.97 | 负 | ❌ **流动性水平信号为负**（无 Amihud 溢价）；`transaction_cost_estimate` 的 S=11.18 是**退化假信号**（TO=1.0、2Y=0） |\n| `pv37`（原始价量+时段快照） | 245 MATRIX cov 1.0 | `reverse(ts_delta(close,5))` 等经典反转 | ≤1.15 | **0.46–1.28** | ≤0.95 | ❌ **TO 爆炸**（价量反转在此宇宙换手过高） |\n**⇒ pv 类别（本季度未点亮 αC=0）本轮 5 个数据集全部判死**：噪声型（平滑即杀）/ TO 爆炸 / 流动性负号。\n⚠ **universe 档实证**：dl_riskfree 信号在 TOP400（S 1.01）/TOP800（S 1.16）/TOP2500（S 1.41 但 2Y 0.4–0.76）/TOP1200（S 1.14）**全部劣于 TOPCS1600（S 1.40）**\n⇒ ★ **TOPCS1600 是 EUR 的最优档**（外部资料称「更流动的小宇宙提 Sharpe」在 EUR 不成立）。"
-    ]
-   }
-  },
-  "risk": {
-   "status": "auto",
-   "datasets": [
-    "risk60",
-    "risk62",
-    "risk72"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 40,
-    "ra_clean": 0,
-    "prod_measured": 2,
-    "prod_clean": 0,
-    "prod_blocked": 2,
-    "top_datasets": [
-     {
-      "dataset": "risk72",
-      "backtests": 16
-     },
-     {
-      "dataset": "risk60",
-      "backtests": 16
-     },
-     {
-      "dataset": "risk62",
-      "backtests": 8
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-RISK60-BORROW-FEE-PROD-WALL",
-      "family": "risk60 securities lending borrow fee level (rsk60_offer / rsk60_last / bid-offer spread)",
-      "text": "EUR risk tower: borrow-fee level is closed; only fee-change / crowding mechanisms remain and they have no signal.",
-      "dataset": "risk60",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-RISK72-RESIDUAL-RETURN-WEAK",
-      "family": "risk72 equity_residualized_return 残差族（cfg2/ecs/ats × top1200/top2500 残差价差）",
-      "text": "wave230 8 探针全灭：best sharpe 0.91 / fitness 0.48，2Y 1.65 但 LOW_ROBUST_UNIVERSE_SHARPE；未达 Mode B 资格线 1.25（D4）→ 判死。2 条 group_cartesian_product/group_count 单位错误被自动隔离",
-      "dataset": "risk72",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-risk72-wave104-all-fail",
-      "family": "risk72 residualized return family",
-      "text": "Leave risk72 residualized-return family in EUR. Do not retry ts_delta/slow-momentum/mix wrappers. Next unused whitelist: insider_trx_matrix (Other/insider, zero",
-      "dataset": "risk72",
-      "bound": "payload"
-     }
-    ],
-    "wins": [
-     {
-      "id": "EUR-Xgojww1X-RISK-NEWS-ACTIVE",
-      "family": "inventory_ravenpack_story_count_x_earnyild",
-      "text": "",
-      "dataset": null,
-      "bound": "keyword"
-     }
-    ]
-   }
-  },
-  "sentiment": {
-   "status": "auto",
-   "datasets": [
-    "sentiment21",
-    "sentiment26",
-    "sentiment7"
-   ],
-   "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 11,
-    "ra_clean": 0,
-    "prod_measured": 0,
-    "prod_clean": 0,
-    "prod_blocked": 0,
-    "top_datasets": [
-     {
-      "dataset": "sentiment21",
-      "backtests": 7
-     },
-     {
-      "dataset": "sentiment7",
-      "backtests": 4
-     }
-    ],
-    "dead_ends": [
-     {
-      "id": "EUR-SENTIMENT21-WEAK",
-      "family": "sentiment21 情绪评分族（snt21_* 210 字段）",
-      "text": "wave237 11 探针全灭 best |sharpe|=0.49 < 0.5 → 达 fast_kill 判死线。cov 0.97 高覆盖但 IS 无强度；SENTIMENT 塔差 3 但此路无供给。",
-      "dataset": "sentiment21",
-      "bound": "inferred"
-     },
-     {
-      "id": "EUR-SENTIMENT7-WIKI-ATTENTION-DEAD",
-      "family": "sentiment7 Wikipedia page-view attention (shock reversal / ratio / cap-decile / 66d trend)",
-      "text": "EUR: wiki attention closed",
-      "dataset": "sentiment7",
-      "bound": "payload"
-     },
-     {
-      "id": "EUR-SNT26-ATTENTION-FITNESS-CEILING",
-      "family": "sentiment26 网站流行度/投资者注意力族",
-      "text": "Leave sentiment26 在 EUR。sentiment 塔（1.4x）在 EUR D1 无可用数据集：sentiment26 信号弱（Fitness 上限 0.455）、sentiment21/27 被 crowd_veto excluded（alphaCount 2843/6828）、other553 c",
-      "dataset": "sentiment26",
-      "bound": "payload"
-     }
-    ],
-    "wins": []
-   },
-   "generation": {
-    "notes": [
-     "★★★★ 【EUR × sentiment 收官】（2026-10-13，波 450–497，约 90 条）：\n**唯一可用数据集 = `sentiment27`（30 VECTOR，snl27_* 低竞争字段）**；S 上限 **1.33**（4 次独立验证）。\n**最优形态**：`group_rank(multiply(divide(snl27_skewness, ts_mean(snl27_totaldomains,55)), divide(snl27_relpopularity1, ts_mean(snl27_totalcountrydomains,55))), sector)`\n⇒ S 1.29 / F 0.87 / **2Y 1.61 ✅** / returns **5.68%**（够过 F）—— **唯一瓶颈是 S 距 1.58 差 0.25**。\n**S 提升轨迹**：0.63（单字段）→ **1.14（轴 c5→sector，+0.51 最大单步）** → 1.22（乘积）→ 1.30（同分母双对比）→ 1.32（**交叉分母** `(A/td)×(B/tcd)`）→ 1.33（幂次 1.5）⇒ 收敛。\n⚠ **判死清单**：`snt27_*` 家族（覆盖 1.0 但竞争高，S ≤1.08）；`sentiment7`（Wikipedia 浏览量，S ≤0.43）；`other553`（财报电话文本，S≈0）；`sentiment21/26`（MATRIX 或高竞争）；**L2 双窗级联**（`multiply(rank(ts_delta(x,240)), rank(ts_delta(x,176)))`，S 0.32–0.66 —— skill 记载的 L2 杠杆在此数据集上失效）；跨数据集组合（≤单腿）；vec 聚合 5 档（无差异）；16 个包装算子（无增益）。"
-    ]
-   }
-  },
-  "macro": {
-   "generation": {
-    "notes": [
-     "★★★ 【EUR × macro 判定】（wave498/502）：`macro10`（1 MATRIX，`mcr10_value`）S=−0.52、**2Y=−1.56**；`macro27`（招聘数据）S=0.54、returns 2.27% ⇒ **两数据集均判死**（macro 类别穷尽）。"
-    ]
-   }
-  }
- },
- "evidence_synced_at": "2026-10-04",
- "unbound_registry_entries": 3,
- "unattributed_backtests": 20,
- "region_notes": [
-  "★★★★★ 【EUR 选集的数学判据：returns ≥ 0.05】（2026-10-13 实证确立）\n平台 Fitness 计算式：**F = Sharpe × sqrt(returns / max(turnover, 0.125))**\n⇒ 反推 **returns = 0.125 × (F / S)²**（可直接从任何回测的 S/F 反算，无需额外取数）\n⇒ **过 F 闸（≥1.0）的必要条件**：当 S = 1.58（Sharpe 闸线）时，需 returns ≥ 0.125×(1/1.58)² = **0.0501**\n⇒ ★★ **筛选判据：数据集的信号必须能产出 returns ≥ 5%**，否则即使 S 达标，F 也数学上不可达。\n**实测验证**：\n| 数据集/信号 | S | F | 反推 returns | 能否过 F（S=1.58 时） |\n|---|---:|---:|---:|---|\n| ★`analyst_factor_signals`（修正÷分歧） | 1.71 | 1.09 | **5.07%** | ✅ F=1.09 |\n| `sentiment27`（平滑双对比） | 1.29 | 0.87 | **5.68%** | ✅ 但 S 卡 1.33 |\n| `fund_holdings_panel`（herfindahl） | 0.81 | 0.35 | **2.33%** | ❌ F 上限 0.68 |\n| `macro27`（招聘） | 0.54 | 0.23 | **2.27%** | ❌ |\n⇒ ★ 这解释了 skill 原记载「EUR 数据集 returns 普遍低于 0.03 ⇒ 未点亮塔路径数学封闭」：\n**绝大多数 EUR 数据集 returns < 3% ⇒ F 上限 < 0.63（在 S=1.58 时）⇒ 结构性不可提交**。\n⇒ **选集的第一个动作应是：快速探针 → 反算 returns → 只有 returns ≥ 5% 的数据集才值得深挖**。\n⇒ EUR 升 active 的条件（skill 原文「须出现 returns ≥ 0.05 的新信号源」）与此判据一致。\n**对算子的启示**：任何**降低 returns 的算子**（如 `ts_mean` 长时间平滑、`winsorize` 过强）在 EUR 都是隐性致命；任何**提高 per-trade 收益的算子**（`signed_power` 放大极端值、`trade_when` 精简持仓）则双重有利。",
-  "★★★★★★ 【EUR 未点亮 8 类别【完全穷尽】总表】（2026-10-13 收官，波 444–498，**34 波 ≈272 条仿真**）\n| 类别 | 最优数据集 | S 上限 | 反推 returns | 判定 |\n|---|---|---:|---:|---|\n| **Analyst** | ★`analyst_factor_signals` | ★**1.71** | **5.07%** | ★**产出 1 颗可提交**（`786pLKnb`） |\n| Sentiment | `sentiment27` | 1.33 | **5.68%** | S 距线 0.25（returns 够，S 不够） |\n| Imbalance | `imbalance5` | 1.43 | 2.66% | ❌ **2Y≈0.05**（recency 结构性失效）+ returns 不足 |\n| Institutions | `fund_holdings_panel` | 0.81 | 2.33% | ❌ returns 不足（F 上限 0.68） |\n| Macro | `macro27` | 0.54 | 2.27% | ❌ returns 不足 |\n| Insiders | `insiders1` | 0.50 | ~0 | ❌ **TO 爆炸 1.52–1.61**（>0.7 硬线）+ margin≈0 |\n| Social Media | `socialmedia15` | −0.03 | — | ❌ **TO 爆炸 1.23–1.33** |\n| Earnings | `earnings6` | ~0 | — | ❌ 字段全 NaN |\n\n**★★★ 三条通用规律（本轮新增，可迁移到任何区域）**：\n1. ★★★★**`returns ≥ 0.05` 是 EUR 可提交的硬前提**：F = S × sqrt(returns/max(TO,0.125))；S=1.58 时需 returns ≥ 0.0501。**上表 8 类中只有 2 类的信号 returns ≥ 5%**（Analyst 5.07% / Sentiment 5.68%）⇒ **其余 6 类在数学上就不可能过 F 闸**，无论怎么调算子。\n   ⇒ ★ **选集第一步应为：8 条探针 → 反推 returns = 0.125×(F/S)² → returns < 5% 的直接放弃**（省掉整轮深挖）。\n2. ★★★★**稀疏事件型 VECTOR 数据 + `vec_avg` ⇒ TO 爆炸**（insiders1 1.52–1.61 / socialmedia15 1.23–1.33）：事件稀疏 ⇒ 归约后个股间剧烈跳变。**判据：若探针的 TO > 0.7，立即放弃该数据集**（不必看 S）。\n3. ★★★**配方与数据集强绑定，不可迁移**：`A ÷ ts_mean(B,55)` + `signed_power 3.0` 在 analyst（日频修正 + 稠密分歧度）上有效；换到情绪评分/持仓数据后要么 TO 爆炸、要么 S 天花板不变（+0.01）。\n\n**★ 各杠杆在 EUR 的实测有效性（跨类别汇总）**：`signed_power` 幂次 ✅（提 S/F 且降 prod）；`ts_mean` 平滑分母 ✅（提 2Y + 降 prod，但降 returns ⇒ 需 returns 有余量）；轴 `industry` ✅（> sector > market > c5）；`target_tvr` 仅在 TO>t 时有效（否则 no-op 可删）；❌ L2 双窗级联（S 0.32–0.66）、跨数据集组合（≤单腿）、TOP2500（S 崩）、decay 4（S/F 双降）、sector/market 中性化（S −25%）、稀疏数据上的 vec_avg（TO 爆）。",
-  "★★★★★★ 【EUR 未点亮 8 类别【33 个数据集】100% 覆盖终表】（2026-10-13 最终收官，波 444–504，**38 波 ≈300 条仿真**）\n**33 个数据集全部探过**（此前曾误称「21 个已穷尽」，经用户质询后做全量枚举纠正）。\n**唯一可提交产出：`786pLKnb`**（Analyst/`analyst_factor_signals`，4 算子，S1.71/F1.09/TO0.1124/2Y1.78/PROD0.6171/SELF0.1752/verdict FAIL 0）。\n**近线遗憾：`sentiment27`**（S 1.33 卡线 4 次，returns 5.68% 够过 F）。\n**判死原因归类（可迁移）**：\n① **returns < 5%**（数学不可能过 F）：fund_holdings_panel 2.33%｜macro27 2.27%｜analyst4 1.4%｜imbalance5 2.66%｜analyst69 4.79%\n② **TO 爆炸 > 0.7**：insiders1 1.52–1.61｜socialmedia15 1.23–1.33｜earnings_sent_matrix 1.61｜insider_agg_matrix 1.43｜analyst40 1.50–1.63\n③ **TO 过低 < 0.05**：analyst4 0.020\n④ **2Y ≈ 0 或负**：imbalance5 0.05｜macro10 −1.56｜analyst14/15/7/39 负｜analyst_base_ref −0.58\n⑤ **字段全 NaN/空信号**：earnings6\n⑥ **S 不足**：analyst45 0.36｜analyst9 0.45｜analyst39 0.19｜analyst7 0.10｜sentiment7 0.43｜other553 ≈0\n⇒ ★ **选集第一步（强制）**：全量枚举该类数据集 → 逐个 8 探针 → **反算 returns = max(TO,0.125)×(F/S)²**；returns < 5% 或 TO ∉ [0.05,0.3] 的直接弃。",
-  "★★★★★★ 【EUR 全类别字段画像 + 金字塔状态纠正】（2026-10-13，波 506–507）\n**EUR 全量：14 类别 / 173 数据集 / 35,225 字段。**\n**★★★ 金字塔纠正**：`get_pyramid_alphas` **按自然季度清零**。EUR/D1 2026Q4 实际仅为：Model=1｜Fundamental=1｜Analyst=1｜Risk=1｜**PV=0｜News=0｜Other=0｜其余 10 类全 0**。\n⇒ **我此前把 PV/News/Other 当作「已点亮」是错的** —— 它们本季度 alphaCount=0（未点亮），且**不在已穷尽的 8 类中** ⇒ **76 个数据集 / 10,735 字段可用**。\n**★★ 新失败模式「噪声型信号」**（wave506/507 实证）：形态相似度（`pattern_scores`/`continuation_score`）、日内特征（`intraday_pv_feats`）、新闻情绪（`ai_news_scores`）三类数据集呈现：**不平滑 ⇒ TO 0.36–1.36 爆炸 + 2Y 负；平滑（`ts_mean`/`ts_target_tvr_decay`）⇒ S 从 +0.56 崩到 −0.79**。\n⇒ **alpha 全在高频日间跳变中**，与 `analyst69` 同源 ⇒ **EUR 的 TO 上限(0.3) 与 2Y 闸(≥1.58) 联合排除该类信号**。\n⇒ ★ **判据**：探针若 `TO > 0.3` 且 `ts_target_tvr_decay`/`ts_mean` 一压就掉 S ⇒ **数据集结构性不可用**。\n**潜力榜（低拥挤×大字段×高覆盖）Top**：`multifactor_return_pre`(αC 13)｜`pattern_scores`(26,已测死)｜`continuation_score`(35,已测死)｜`intraday_pv_feats`(54,已测死)｜`ai_news_scores`(12,已测死)｜`news_sentiment_dl`(αC **1**,未测)｜`quant_factor_lib`(αC 4,未测)｜`insider_feats`(43,未测)。\n**覆盖度现状**：类别级 14/14；数据集级 ≈50/173（未点亮 33 已 100%，PV/Other 仅 5 个）；字段级 ≈120/35,225。"
- ]
+  "evidence_synced_at": "2026-10-04",
+  "unbound_registry_entries": 3,
+  "unattributed_backtests": 20,
+  "region_notes": [
+    "★★★★★ 【EUR 选集的数学判据：returns ≥ 0.05】（2026-10-13 实证确立）\n平台 Fitness 计算式：**F = Sharpe × sqrt(returns / max(turnover, 0.125))**\n⇒ 反推 **returns = 0.125 × (F / S)²**（可直接从任何回测的 S/F 反算，无需额外取数）\n⇒ **过 F 闸（≥1.0）的必要条件**：当 S = 1.58（Sharpe 闸线）时，需 returns ≥ 0.125×(1/1.58)² = **0.0501**\n⇒ ★★ **筛选判据：数据集的信号必须能产出 returns ≥ 5%**，否则即使 S 达标，F 也数学上不可达。\n**实测验证**：\n| 数据集/信号 | S | F | 反推 returns | 能否过 F（S=1.58 时） |\n|---|---:|---:|---:|---|\n| ★`analyst_factor_signals`（修正÷分歧） | 1.71 | 1.09 | **5.07%** | ✅ F=1.09 |\n| `sentiment27`（平滑双对比） | 1.29 | 0.87 | **5.68%** | ✅ 但 S 卡 1.33 |\n| `fund_holdings_panel`（herfindahl） | 0.81 | 0.35 | **2.33%** | ❌ F 上限 0.68 |\n| `macro27`（招聘） | 0.54 | 0.23 | **2.27%** | ❌ |\n⇒ ★ 这解释了 skill 原记载「EUR 数据集 returns 普遍低于 0.03 ⇒ 未点亮塔路径数学封闭」：\n**绝大多数 EUR 数据集 returns < 3% ⇒ F 上限 < 0.63（在 S=1.58 时）⇒ 结构性不可提交**。\n⇒ **选集的第一个动作应是：快速探针 → 反算 returns → 只有 returns ≥ 5% 的数据集才值得深挖**。\n⇒ EUR 升 active 的条件（skill 原文「须出现 returns ≥ 0.05 的新信号源」）与此判据一致。\n**对算子的启示**：任何**降低 returns 的算子**（如 `ts_mean` 长时间平滑、`winsorize` 过强）在 EUR 都是隐性致命；任何**提高 per-trade 收益的算子**（`signed_power` 放大极端值、`trade_when` 精简持仓）则双重有利。",
+    "★★★★★★ 【EUR 未点亮 8 类别【完全穷尽】总表】（2026-10-13 收官，波 444–498，**34 波 ≈272 条仿真**）\n| 类别 | 最优数据集 | S 上限 | 反推 returns | 判定 |\n|---|---|---:|---:|---|\n| **Analyst** | ★`analyst_factor_signals` | ★**1.71** | **5.07%** | ★**产出 1 颗可提交**（`786pLKnb`） |\n| Sentiment | `sentiment27` | 1.33 | **5.68%** | S 距线 0.25（returns 够，S 不够） |\n| Imbalance | `imbalance5` | 1.43 | 2.66% | ❌ **2Y≈0.05**（recency 结构性失效）+ returns 不足 |\n| Institutions | `fund_holdings_panel` | 0.81 | 2.33% | ❌ returns 不足（F 上限 0.68） |\n| Macro | `macro27` | 0.54 | 2.27% | ❌ returns 不足 |\n| Insiders | `insiders1` | 0.50 | ~0 | ❌ **TO 爆炸 1.52–1.61**（>0.7 硬线）+ margin≈0 |\n| Social Media | `socialmedia15` | −0.03 | — | ❌ **TO 爆炸 1.23–1.33** |\n| Earnings | `earnings6` | ~0 | — | ❌ 字段全 NaN |\n\n**★★★ 三条通用规律（本轮新增，可迁移到任何区域）**：\n1. ★★★★**`returns ≥ 0.05` 是 EUR 可提交的硬前提**：F = S × sqrt(returns/max(TO,0.125))；S=1.58 时需 returns ≥ 0.0501。**上表 8 类中只有 2 类的信号 returns ≥ 5%**（Analyst 5.07% / Sentiment 5.68%）⇒ **其余 6 类在数学上就不可能过 F 闸**，无论怎么调算子。\n   ⇒ ★ **选集第一步应为：8 条探针 → 反推 returns = 0.125×(F/S)² → returns < 5% 的直接放弃**（省掉整轮深挖）。\n2. ★★★★**稀疏事件型 VECTOR 数据 + `vec_avg` ⇒ TO 爆炸**（insiders1 1.52–1.61 / socialmedia15 1.23–1.33）：事件稀疏 ⇒ 归约后个股间剧烈跳变。**判据：若探针的 TO > 0.7，立即放弃该数据集**（不必看 S）。\n3. ★★★**配方与数据集强绑定，不可迁移**：`A ÷ ts_mean(B,55)` + `signed_power 3.0` 在 analyst（日频修正 + 稠密分歧度）上有效；换到情绪评分/持仓数据后要么 TO 爆炸、要么 S 天花板不变（+0.01）。\n\n**★ 各杠杆在 EUR 的实测有效性（跨类别汇总）**：`signed_power` 幂次 ✅（提 S/F 且降 prod）；`ts_mean` 平滑分母 ✅（提 2Y + 降 prod，但降 returns ⇒ 需 returns 有余量）；轴 `industry` ✅（> sector > market > c5）；`target_tvr` 仅在 TO>t 时有效（否则 no-op 可删）；❌ L2 双窗级联（S 0.32–0.66）、跨数据集组合（≤单腿）、TOP2500（S 崩）、decay 4（S/F 双降）、sector/market 中性化（S −25%）、稀疏数据上的 vec_avg（TO 爆）。",
+    "★★★★★★ 【EUR 未点亮 8 类别【33 个数据集】100% 覆盖终表】（2026-10-13 最终收官，波 444–504，**38 波 ≈300 条仿真**）\n**33 个数据集全部探过**（此前曾误称「21 个已穷尽」，经用户质询后做全量枚举纠正）。\n**唯一可提交产出：`786pLKnb`**（Analyst/`analyst_factor_signals`，4 算子，S1.71/F1.09/TO0.1124/2Y1.78/PROD0.6171/SELF0.1752/verdict FAIL 0）。\n**近线遗憾：`sentiment27`**（S 1.33 卡线 4 次，returns 5.68% 够过 F）。\n**判死原因归类（可迁移）**：\n① **returns < 5%**（数学不可能过 F）：fund_holdings_panel 2.33%｜macro27 2.27%｜analyst4 1.4%｜imbalance5 2.66%｜analyst69 4.79%\n② **TO 爆炸 > 0.7**：insiders1 1.52–1.61｜socialmedia15 1.23–1.33｜earnings_sent_matrix 1.61｜insider_agg_matrix 1.43｜analyst40 1.50–1.63\n③ **TO 过低 < 0.05**：analyst4 0.020\n④ **2Y ≈ 0 或负**：imbalance5 0.05｜macro10 −1.56｜analyst14/15/7/39 负｜analyst_base_ref −0.58\n⑤ **字段全 NaN/空信号**：earnings6\n⑥ **S 不足**：analyst45 0.36｜analyst9 0.45｜analyst39 0.19｜analyst7 0.10｜sentiment7 0.43｜other553 ≈0\n⇒ ★ **选集第一步（强制）**：全量枚举该类数据集 → 逐个 8 探针 → **反算 returns = max(TO,0.125)×(F/S)²**；returns < 5% 或 TO ∉ [0.05,0.3] 的直接弃。",
+    "★★★★★★ 【EUR 全类别字段画像 + 金字塔状态纠正】（2026-10-13，波 506–507）\n**EUR 全量：14 类别 / 173 数据集 / 35,225 字段。**\n**★★★ 金字塔纠正**：`get_pyramid_alphas` **按自然季度清零**。EUR/D1 2026Q4 实际仅为：Model=1｜Fundamental=1｜Analyst=1｜Risk=1｜**PV=0｜News=0｜Other=0｜其余 10 类全 0**。\n⇒ **我此前把 PV/News/Other 当作「已点亮」是错的** —— 它们本季度 alphaCount=0（未点亮），且**不在已穷尽的 8 类中** ⇒ **76 个数据集 / 10,735 字段可用**。\n**★★ 新失败模式「噪声型信号」**（wave506/507 实证）：形态相似度（`pattern_scores`/`continuation_score`）、日内特征（`intraday_pv_feats`）、新闻情绪（`ai_news_scores`）三类数据集呈现：**不平滑 ⇒ TO 0.36–1.36 爆炸 + 2Y 负；平滑（`ts_mean`/`ts_target_tvr_decay`）⇒ S 从 +0.56 崩到 −0.79**。\n⇒ **alpha 全在高频日间跳变中**，与 `analyst69` 同源 ⇒ **EUR 的 TO 上限(0.3) 与 2Y 闸(≥1.58) 联合排除该类信号**。\n⇒ ★ **判据**：探针若 `TO > 0.3` 且 `ts_target_tvr_decay`/`ts_mean` 一压就掉 S ⇒ **数据集结构性不可用**。\n**潜力榜（低拥挤×大字段×高覆盖）Top**：`multifactor_return_pre`(αC 13)｜`pattern_scores`(26,已测死)｜`continuation_score`(35,已测死)｜`intraday_pv_feats`(54,已测死)｜`ai_news_scores`(12,已测死)｜`news_sentiment_dl`(αC **1**,未测)｜`quant_factor_lib`(αC 4,未测)｜`insider_feats`(43,未测)。\n**覆盖度现状**：类别级 14/14；数据集级 ≈50/173（未点亮 33 已 100%，PV/Other 仅 5 个）；字段级 ≈120/35,225。"
+  ]
 }

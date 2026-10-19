@@ -123,6 +123,14 @@
       "cat": "forum",
       "what": "论坛浏览器是否无头（缺省 true）"
     },
+    "FORUM_SETTINGS_NAV_TIMEOUT": {
+      "cat": "forum",
+      "what": "论坛浏览器导航超时（秒，默认 40）"
+    },
+    "FORUM_SETTINGS_PROXY": {
+      "cat": "forum",
+      "what": "论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY"
+    },
     "FORUM_SETTINGS_TIMEOUT": {
       "cat": "forum",
       "what": "论坛选择器等待超时（秒）"
@@ -142,6 +150,14 @@
     "GEM_META_TIMEOUT_SEC": {
       "cat": "wait",
       "what": "gem 节点等 runner 写出 `meta.json` 握手的秒数（缺省 90）；超时报「no meta.json」——先查 LLM 通道"
+    },
+    "HTTPS_PROXY": {
+      "cat": "forum",
+      "what": "标准 HTTPS 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY 缺省时回落读取"
+    },
+    "HTTP_PROXY": {
+      "cat": "forum",
+      "what": "标准 HTTP 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY/HTTPS_PROXY 缺省时回落读取"
     },
     "LABS_AGENT_SCRIPT": {
       "cat": "forum",
@@ -214,6 +230,10 @@
     "OPENAI_MODEL": {
       "cat": "cred",
       "what": "同上：LLM 模型名"
+    },
+    "SA_PROBE_CACHE_TTL_HOURS": {
+      "cat": "wait",
+      "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
     },
     "WQB_ALLOW_ALPHA_SUBMIT": {
       "cat": "gate",
@@ -341,6 +361,10 @@
       "cat": "gate",
       "what": "`=1` 时 toolkit 规则只读文件、不读 DB（隔离 / 排障用）"
     },
+    "WQB_SCRIPTS": {
+      "cat": "tooldir",
+      "what": "仓库外自建脚本目录覆盖（缺省 `~/wqb-scripts`）；`tools/preflight_wave.py` 用它拼 `wqb_tools.py` CLI 路径，以免在源码里写死盘符绝对路径（S4 守卫）"
+    },
     "WQB_SEM_MODE": {
       "cat": "gate",
       "what": "闸 SEM（字段语义归类）模式 `off|warn|enforce`（缺省 enforce）"
@@ -348,10 +372,6 @@
     "WQB_SLOTS_DIR": {
       "cat": "path",
       "what": "账户级槽位 token 目录（缺省 `logs/_slots`）"
-    },
-    "WQB_SCRIPTS": {
-      "cat": "tooldir",
-      "what": "仓库外自建脚本目录覆盖（缺省 `~/wqb-scripts`）；`tools/preflight_wave.py` 用它拼 `wqb_tools.py` CLI 路径，以免在源码里写死盘符绝对路径（S4 守卫）"
     },
     "WQB_SQ_BOOTSTRAPPED": {
       "cat": "internal",
@@ -444,10 +464,6 @@
     "WQ_VALIDATOR_DIR": {
       "cat": "tooldir",
       "what": "alpha-expression-verifier `scripts/` 目录覆盖"
-    },
-    "SA_PROBE_CACHE_TTL_HOURS": {
-      "cat": "wait",
-      "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
     }
   }
 }

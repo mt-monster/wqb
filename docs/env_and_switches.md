@@ -142,13 +142,13 @@
 | `BRAIN_USER_ALPHAS_CLIENT_FILTER_MAX_SCAN` | `1000` | `get_user_alphas` 客户端过滤的最大扫描条数（缺省 1000） | `mcp/brain_mixin_simulation.py` | — |
 | `FE_API_TIMEOUT` | `120` | feature_engineering 拉字段的平台 API 超时（秒，缺省 120） | `brain-data-feature-engineering/scripts/feature_engineering.py` | — |
 | `GEM_META_TIMEOUT_SEC` | `90` | gem 节点等 runner 写出 `meta.json` 握手的秒数（缺省 90）；超时报「no meta.json」——先查 LLM 通道 | `src/wqb/workflow/nodes/gem.py` | — |
+| `SA_PROBE_CACHE_TTL_HOURS` | `6` | SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先 | `tools/probe/probe_sa_candidates.py` | — |
 | `WQB_CALIBRATE_TIMEOUT` | — | score_datasets 校准阶段的软超时（秒；超预算后周期性打线程栈） | `wq-brain-campaign-toolkit/scripts/score_datasets.py` | — |
 | `WQB_CAMPAIGN_TIMEOUT` | — | campaign 节点子进程超时（秒） | `src/wqb/workflow/nodes/campaign.py` · `tests/unit/02_workflow/test_workflow_nodes.py` | — |
 | `WQB_DETACHED_FIRST_OUTPUT_SEC` | `20` | detached 后台任务的首次输出心跳窗口（秒；超时判启动即死） | `src/wqb/workflow/nodes/batch_track.py` | — |
 | `WQB_FORUM_RECON_TIMEOUT_SEC` | — | forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900） | `wq-brain-campaign-toolkit/scripts/pipeline.py` · `src/wqb/workflow/nodes/forum_recon.py` · +1 | — |
 | `WQB_GLOBAL_SLOTS` | `2` | 账户级模拟并发令牌数（多流水线同跑共享）；缺省 = `config.CONCURRENCY['slots']`，2026-10-06 定案为 2（旧 7）；0 = 关闭仲裁 | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` · `tests/unit/02_workflow/test_pipeline_error_isolation.py` · +2 | 2026-09-19 |
 | `WQB_WAVE_GATE_TIMEOUT_SEC` | — | wave_gate 节点子进程超时（秒） | `src/wqb/workflow/nodes/wave_gate.py` · `tests/unit/02_workflow/test_run_logged_subprocess.py` | — |
-| `SA_PROBE_CACHE_TTL_HOURS` | `6` | SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先 | `tools/probe/probe_sa_candidates.py` | — |
 
 #### MCP 服务与平台传输
 
@@ -169,7 +169,11 @@
 | `FORUM_MAX_CONCURRENCY` | `1` | 论坛浏览器会话并发（缺省 1） | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_BASE_URL` | `https://support.worldquantbrain.com` | 论坛站点根（缺省官方支持站；测试环境可改指别处） | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_HEADLESS` | `true` | 论坛浏览器是否无头（缺省 true） | `mcp/forum_functions.py` | — |
+| `FORUM_SETTINGS_NAV_TIMEOUT` | `40` | 论坛浏览器导航超时（秒，默认 40） | `mcp/forum_functions.py` | — |
+| `FORUM_SETTINGS_PROXY` | — | 论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_TIMEOUT` | `15` | 论坛选择器等待超时（秒） | `mcp/forum_functions.py` | — |
+| `HTTPS_PROXY` | — | 标准 HTTPS 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY 缺省时回落读取 | `mcp/forum_functions.py` | — |
+| `HTTP_PROXY` | — | 标准 HTTP 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY/HTTPS_PROXY 缺省时回落读取 | `mcp/forum_functions.py` | — |
 | `LABS_AGENT_SCRIPT` | — | Labs 分析引擎脚本路径覆盖 | `mcp/labs_functions.py` | — |
 | `LABS_MAX_CONCURRENCY` | `1` | Labs 浏览器会话并发（缺省 1） | `mcp/labs_functions.py` | — |
 | `LABS_PLATFORM_URL` | `https://platform.worldquantbrain.com` | Labs 所在的平台站点根 | `mcp/labs_functions.py` | — |

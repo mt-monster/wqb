@@ -8,7 +8,7 @@ allowed-tools:
 - Bash
 - mcp__wq-brain-http__*
 - mcp__wqb-db__*
-last_verified: 2026-10-18
+last_verified: 2026-10-20
 ---
 
 # KOR 字段体检 → 组装 → 归因 → 破闸
@@ -153,9 +153,13 @@ TOP30 里**资产负债表科目家数 + BVPS 实际值 + flash 快照家数**�
 且窗口标记写法不统一（`four_weeks_prior_` / `_3mth_prior` / `recent_` / `flash_period_`）⇒ **按名分类会丢失四窗梯度**。
 只有读 description 才还原成同一个「30 标的物 × 4 时间窗」矩阵（打样实测）。
 
-**0.1–0.3 的产物落盘**：`tracking/<REGION>/reference/datasets/<dataset>.md`（**每数据集一份**，
-生成器 `kor_build_dataset_docs.py`，含名 vs description 差异表 + 质量先验 TOP30 + 五问 + 预处理决策；
-手工回填过的文档带保护，需 `--force` 才覆盖）。
+**0.1–0.3 的产物落盘**：`tracking/<REGION>/reference/datasets/<dataset>.md`（**每数据集一份，手工维护**；
+含名 vs description 差异表 + 质量先验 TOP30 + 五问 + 预处理决策 + 字段全表 + 实测记录）。
+⚠ **扫全字段时必须显式传 `filter_sharpe=false`**：默认 `filter_sharpe=true` 会隐藏低夏普字段
+（`institutions6` 实测 4/11 vs 11/11），而**被隐藏的常常正是成对字段的对侧腿**
+（`quantity_*_disposed`、`market_value_*_acquired`、`count_*_buyers`），
+缺了它们就无法构造「净额 / 价差」结构 ⇒ 漏字段等于漏机制。
+⚠ 早期版本称此处由 `kor_build_dataset_docs.py` 生成，该脚本**并不存在**，文档为手工维护。
 
 **KOR 特例（其余回 L1）**：
 
@@ -431,6 +435,7 @@ NONE / REVERSION_AND_MOMENTUM / STATISTICAL / CROWDING / FAST / SLOW / MARKET / 
 | [`_workflow-pipeline.md`](references/_workflow-pipeline.md)           | 把六步接回九步骨架：每步产物与落库位置               |
 | [`_kor-gatebreak-evidence.md`](references/_kor-gatebreak-evidence.md) | **要具体数值 / 配方 / 逐年表时**             |
 | [`_field-profile-and-templates.md`](references/_field-profile-and-templates.md) | **进新数据集前必读**：字段画像（哪些字段能用 / 已判死名单）+ 适用模板 P-ATOM-1 参数甜区 + 禁用清单 + 基线指标表 |
+| [`_kor-operator-matrix.md`](references/_kor-operator-matrix.md) | **⑤算子穷举前必读**：闸→算子映射表、6 组已证否算子族、论坛/论文交叉引用、**以及「什么时候才值得做算子穷举」的判据** |
 | [`_kor-campaign-log.md`](references/_kor-campaign-log.md)             | 判断「这条结论还有效吗」（历史层 + §0 裁决表）        |
 | `references/<类别>.md`（11 份）                                            | 进入某个「区域 × 类别」组合时——清单见下方「组合分支」表    |
 

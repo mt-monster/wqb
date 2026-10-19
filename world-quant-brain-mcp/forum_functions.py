@@ -210,12 +210,18 @@ class ForumClient:
             return False
 
     @staticmethod
-    def _run_in_proactor(coro):
-        """Run a coroutine in a thread with ProactorEventLoop (supports subprocess on Windows)."""
+    async def _run_in_proactor(coro):
+        """Run a coroutine in a thread with ProactorEventLoop (supports subprocess on Windows).
+
+        IMPORTANT: ``join()`` must never block the caller's event loop, otherwise the
+        uvicorn loop cannot answer health probes (watchdog initialize has a 4s timeout)
+        and the watchdog will taskkill the server mid-operation. Await the join via the
+        default executor so the main loop stays responsive for the whole operation.
+        """
         import asyncio, threading
-        
+
         result = [None, None]  # [value, exception]
-        
+
         def runner():
             try:
                 loop = asyncio.ProactorEventLoop()
@@ -226,10 +232,10 @@ class ForumClient:
                     loop.close()
             except Exception as e:
                 result[1] = e
-        
+
         t = threading.Thread(target=runner)
         t.start()
-        t.join()
+        await asyncio.get_running_loop().run_in_executor(None, t.join)
         if result[1]:
             raise result[1]
         return result[0]
@@ -274,6 +280,16 @@ class ForumClient:
     def _get_comments_api_url(self, post_id: str, page: int) -> str:
         return f"{self.base_url}/api/v2/community/posts/{post_id}/comments.json?page={page}&include=users"
 
+    @staticmethod
+    def _forum_proxies():
+        """代理映射：仅用于论坛（Zendesk）流量，BRAIN API 调用保持直连。"""
+        proxy_url = (os.getenv("FORUM_SETTINGS_PROXY") or os.getenv("HTTPS_PROXY")
+                     or os.getenv("https_proxy") or os.getenv("HTTP_PROXY")
+                     or os.getenv("http_proxy"))
+        if not proxy_url:
+            return None
+        return {"http": proxy_url, "https": proxy_url}
+
     async def _ensure_support_session(self, email: str, password: str, locale: str = "zh-cn", timeout_seconds: int = 30):
         """Establish a Zendesk support session using the authenticated BRAIN session."""
         try:
@@ -309,6 +325,7 @@ class ForumClient:
                 access_url,
                 timeout=timeout_seconds,
                 allow_redirects=True,
+                proxies=self._forum_proxies(),
                 headers={
                     'User-Agent': self.session.headers['User-Agent'],
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -328,6 +345,7 @@ class ForumClient:
             response = session.get(
                 url,
                 timeout=timeout_seconds,
+                proxies=self._forum_proxies(),
                 headers={
                     'User-Agent': self.session.headers['User-Agent'],
                     'Accept': 'application/json',
@@ -370,6 +388,15 @@ class ForumClient:
             except asyncio.TimeoutError:
                 log(f"Authentication timed out after {timeout_seconds}s, continuing with partial session.", "WARNING")
 
+        # 论坛（Zendesk）是独立 SSO 域：仅带 BRAIN API cookie 会被重定向到
+        # platform.worldquantbrain.com/sign-in。先完成 Zendesk SSO 握手，
+        # 让 brain_client.session 持有 support/zendesk 域 cookie，再注入浏览器。
+        try:
+            await self._ensure_support_session(email, password, timeout_seconds=timeout_seconds)
+            log("Zendesk 支持会话已建立（SSO）", "SUCCESS")
+        except Exception as e:
+            log(f"Zendesk SSO 会话建立失败，将沿用现有 cookie: {str(e)[:200]}", "WARNING")
+
         # 获取可用的浏览器路径
         browser_path = get_browser_path()
         
@@ -384,18 +411,30 @@ class ForumClient:
             '--disable-sync',
             '--no-first-run'
         ]
+
+        # 可选代理：support.worldquantbrain.com（Zendesk）在部分网络下需代理才能访问。
+        # Playwright 启动的 Chromium 不会自动走系统代理，故显式支持：
+        #   FORUM_SETTINGS_PROXY=http://127.0.0.1:7897
+        # 未设置任何代理变量时行为不变。
+        proxy_url = (os.getenv("FORUM_SETTINGS_PROXY") or os.getenv("HTTPS_PROXY")
+                     or os.getenv("https_proxy") or os.getenv("HTTP_PROXY")
+                     or os.getenv("http_proxy"))
+        launch_kwargs = {}
+        if proxy_url:
+            launch_kwargs["proxy"] = {"server": proxy_url}
+            log(f"论坛浏览器使用代理: {proxy_url}", "INFO")
         
         try:
             if browser_path and os.path.exists(browser_path):
                 log(f"使用自定义浏览器路径: {browser_path}", "INFO")
                 browser = await asyncio.wait_for(
-                    p.chromium.launch(executable_path=browser_path, args=browser_args, timeout=timeout_seconds * 1000),
+                    p.chromium.launch(executable_path=browser_path, args=browser_args, timeout=timeout_seconds * 1000, **launch_kwargs),
                     timeout=timeout_seconds + 10
                 )
             else:
                 log("使用默认Playwright浏览器", "INFO")
                 browser = await asyncio.wait_for(
-                    p.chromium.launch(headless=self.headless, args=browser_args, timeout=timeout_seconds * 1000),
+                    p.chromium.launch(headless=self.headless, args=browser_args, timeout=timeout_seconds * 1000, **launch_kwargs),
                     timeout=timeout_seconds + 10
                 )
         except asyncio.TimeoutError:
@@ -441,7 +480,7 @@ class ForumClient:
             raise ImportError("Playwright not available. Please install it with: pip install playwright")
 
         if self._needs_proactor():
-            return self._run_in_proactor(self._get_glossary_terms_impl(email, password))
+            return await self._run_in_proactor(self._get_glossary_terms_impl(email, password))
         return await self._get_glossary_terms_impl(email, password)
 
     async def _get_glossary_terms_impl(self, email: str, password: str) -> List[Dict[str, str]]:
@@ -482,7 +521,7 @@ class ForumClient:
         
         if self._needs_proactor():
             # SelectorEventLoop can't create subprocesses; run in a thread with ProactorEventLoop
-            return self._run_in_proactor(
+            return await self._run_in_proactor(
                 self._search_forum_posts_impl(email, password, search_query, max_results, locale)
             )
         return await self._search_forum_posts_impl(email, password, search_query, max_results, locale)
@@ -491,6 +530,11 @@ class ForumClient:
         """Search implementation (assumes ProactorEventLoop-compatible context)."""
         
         timeout_seconds = 30  # Per-operation timeout
+        # 导航单独放宽：直连 Zendesk 时 TLS 握手 + Cloudflare 挑战可达 20–40s
+        try:
+            nav_timeout = int(float(os.getenv("FORUM_SETTINGS_NAV_TIMEOUT", "40")))
+        except (TypeError, ValueError):
+            nav_timeout = 40
         overall_timeout = 120  # Overall timeout for entire search
         browser = None
         
@@ -502,14 +546,16 @@ class ForumClient:
                         log(f"Starting forum search for '{search_query}'", "INFO")
                         browser, context = await asyncio.wait_for(
                             self._get_browser_context(p, email, password, timeout_seconds),
-                            timeout=timeout_seconds + 15
+                            # SSO 握手 + 浏览器启动比纯 API 认证慢，45s 会误杀；放宽到 90s
+                            timeout=timeout_seconds * 2 + 30
                         )
 
                         page = await asyncio.wait_for(context.new_page(), timeout=timeout_seconds)
                         page.set_default_timeout(timeout_seconds * 1000)
-                        page.set_default_navigation_timeout(timeout_seconds * 1000)
+                        page.set_default_navigation_timeout(nav_timeout * 1000)
                         
                         search_results = []
+                        nav_failed = False
                         page_num = 1
                         max_pages = 5  # Limit pages to prevent infinite loops
                         
@@ -517,21 +563,42 @@ class ForumClient:
                             search_url = f"{self.base_url}/hc/{locale}/search?page={page_num}&query={search_query}#results"
                             log(f"Navigating to search page {page_num}: {search_url}", "INFO")
                             
-                            try:
-                                response = await asyncio.wait_for(
-                                    page.goto(search_url, wait_until="domcontentloaded"),
-                                    timeout=timeout_seconds
-                                )
-                                if response and response.status == 404:
-                                    log(f"Page {page_num} not found. End of results.", "INFO")
+                            goto_ok = False
+                            response = None
+                            for attempt in range(1, 3):  # 直连抖动时重试一次
+                                try:
+                                    response = await asyncio.wait_for(
+                                        page.goto(search_url, wait_until="domcontentloaded"),
+                                        timeout=nav_timeout
+                                    )
+                                    goto_ok = True
                                     break
-                                
+                                except Exception as nav_exc:  # noqa: BLE001
+                                    log(
+                                        f"Page {page_num} navigation attempt {attempt} failed: "
+                                        f"{type(nav_exc).__name__}: {str(nav_exc)[:120]}",
+                                        "WARNING",
+                                    )
+                                    if attempt < 2:
+                                        await asyncio.sleep(3)
+
+                            if not goto_ok:
+                                nav_failed = True
+                                log(f"Page {page_num} navigation failed after 2 attempts, stopping.", "WARNING")
+                                break
+
+                            if response and response.status == 404:
+                                log(f"Page {page_num} not found. End of results.", "INFO")
+                                break
+
+                            try:
                                 await asyncio.wait_for(
                                     page.wait_for_selector('ul.search-results-list', timeout=self.selector_timeout_ms),
-                                    timeout=min(timeout_seconds, 15)
+                                    timeout=min(nav_timeout, 20)
                                 )
                             except asyncio.TimeoutError:
-                                log(f"Page {page_num} navigation timed out, stopping.", "WARNING")
+                                # 选择器未出现：可能是真的没有结果，也可能是挑战页；不判 nav_failed
+                                log(f"Page {page_num}: results list not found, stopping.", "WARNING")
                                 break
                             except Exception as e:
                                 log(f"Could not load search results on page {page_num}: {e}", "WARNING")
@@ -620,7 +687,8 @@ class ForumClient:
                         return {
                             "success": True,
                             "results": search_results,
-                            "total_found": len(search_results)
+                            "total_found": len(search_results),
+                            "navigation_failed": nav_failed
                         }
 
                     except Exception as e:

@@ -145,7 +145,7 @@ def main():
         print(f"{mf['lines']:>5} (cc {mf['cc']:>3}) {mf['name']:<40}  {r['path']}")
 
     print("\n=== Top 15 by max cyclomatic complexity ===")
-    bycc = sorted(rows, key=lambda r: -r["max_cc"])
+    bycc = sorted(rows, key=lambda r: -r.get("max_cc", 0))
     for r in bycc[:15]:
         mf = r.get("max_func") or {}
         print(f"cc {r['max_cc']:>4}  {mf.get('name',''):<40} {r['path']}")

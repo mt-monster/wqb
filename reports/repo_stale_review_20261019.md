@@ -156,14 +156,18 @@ allowlist 里把"为什么各自演化"写全，避免后人当成 drift 去合�
 
 ## 6. 扫描卫生（这套不改，下次审查还会被脏数据带偏）
 
-1. **`.venv` 743M 在仓库内**（已 ignore，但污染每一次全仓 grep）：本次统计 `TODO` 命中 3969 处，
-   其中 **3963 处来自 `world-quant-brain-mcp/.venv/Lib/site-packages`**（sklearn / statsmodels）。
-   建议把 `.venv` 迁出仓库（或用 pyproject 声明解释器），并给所有审计脚本加
-   `.venv|node_modules|cache/|research-data/` 排除。
+1. **`.venv` 743M 在仓库内**（已 ignore）：本次统计 `TODO` 命中 3969 处，其中 **3963 处来自
+   `world-quant-brain-mcp/.venv/Lib/site-packages`**（sklearn / statsmodels）。
+   ⚠ **更正（同日复核）**：`audit_dead_code` / `audit_file_sizes` 两个工具**本身已排除** `.venv`、
+   `site-packages`、`node_modules`、`attic`、`cache`（各自的 `EXCLUDE_DIRS`）——被污染的是**临时写的
+   `grep -rn` 全仓扫描**，不是这两个闸。⇒ 结论收窄为：**临时排查不要裸 grep 全仓**（用 `git ls-files`
+   或带 `--exclude-dir`），工具无需改；`.venv` 迁出仓库仍值得做（省 743M 盘 + 少一个误扫源）。
 2. **统一扫描面 = `git ls-files`**：`audit_dead_code` / `audit_file_sizes` / `doc_path_refs`
    若以文件系统为输入，会把 ignored 产物当源码。改成以索引为输入，读数立刻可信。
-3. `audit_file_sizes.py` 当前在 `main()` 里 **KeyError: 'max_cc'** 直接崩（Top-15 那段）→ 顺手修掉，
-   否则这个工具等于没有。
+3. ~~`audit_file_sizes.py` 在 `main()` 里 KeyError: 'max_cc' 直接崩~~
+   **已修（2026-10-19）**：`r["max_cc"]` → `r.get("max_cc", 0)`（无函数的解析失败行不参与排序）。
+   现已能跑完并给出 Top-15 复杂度：`step_eval.py::build_step_eval` cc 124、
+   `headless_runner/run.py::main` cc 118、`step_funnel` 相关 `body` cc 111。
 4. 6 个安装位镜像（`.claude/.codex/.cline/.agents/.cursor/.workbuddy` 下共 1891 个被 ignore 的源码件）
    是设计内的（`sync_skills.py`），但 `repo_governance_check` 会把它们列进"被 gitignore 排除的源码类文件"
    的告警里，每次都刷屏 —— 建议按 `S15` 的结论（`.claude/skills` 是联接同址）直接豁免安装位。
