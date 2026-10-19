@@ -82,6 +82,19 @@ ARTIFACT_NAME_RULES = (
 )
 ARTIFACT_SUFFIXES = ("_ckpt.json", ".pkl", ".xlsx", ".log")
 
+#: 判 `ARTIFACT` 的**命名契约**规则（2026-10-19 补，止住 138 条幻影 PENDING）。
+#: 出处：AGENTS.md §8.13 目录职责表 —— 「一次性/会话草稿脚本 = `logs/_tmp_*.py`（用完即删）」、
+#: 「区域专属探针 = `tracking/<R>/scripts/`，用完进 `scripts/archive/`」。
+#: 因此 `tmp_` 前缀与「单波生成器 `gen_wave<NNN>.py`」都是**命名即契约**的用完即弃件：
+#: 它们本来就不是资产，判 ARTIFACT（与 DROPPED 的分工：ARTIFACT = 不是资产，
+#: DROPPED = 是资产但裁决不回迁 —— 只有后者需要人写依据）。
+ARTIFACT_NAME_PREFIX_RULES = (
+    ("tracking/", "tmp_"),
+    ("tracking/", "_tmp_"),
+)
+#: 单波候选生成器：波号写死在文件名里，一次性；现行波生成由 toolkit `build_wave.py` 统一负责
+_GEN_WAVE_RE = re.compile(r"^gen_wave\d+\.py$")
+
 
 def load_overrides() -> dict:
     """人工裁决表：`{"verdicts": {"<path>": {"verdict": "...", "basis": "..."}}}`。"""
@@ -142,6 +155,14 @@ def rule_verdict(path: str, blob: str, main_idx: dict) -> tuple[str, str]:
             return "ARTIFACT", f"{dirp} 下的 {ext} 运行产物（可重跑）"
 
     name = path.rsplit("/", 1)[-1]
+    # 命名契约：一次性草稿 / 单波生成器 —— 本来就不是资产（AGENTS.md §8.13）
+    for dirp, pref in ARTIFACT_NAME_PREFIX_RULES:
+        if path.startswith(dirp) and name.startswith(pref):
+            return "ARTIFACT", (f"一次性会话草稿脚本（`{pref}` 前缀；AGENTS.md §8.13 目录职责表："
+                                f"「一次性/会话草稿脚本用完即删」）")
+    if _GEN_WAVE_RE.match(name):
+        return "ARTIFACT", ("单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit "
+                            "`build_wave.py`）")
     same_name = [(p, b) for p, b in main_idx.get(name, []) if p != path]
     if blob and any(b == blob for p, b in same_name):
         where = next(p for p, b in same_name if b == blob)

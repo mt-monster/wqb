@@ -25,7 +25,7 @@
 ## 2. 读数
 
 - 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**887**
-- `RESTORED` = 0；`DROPPED` = 139；`ARTIFACT` = 216；`PENDING` = 532
+- `RESTORED` = 0；`DROPPED` = 292；`ARTIFACT` = 401；`PENDING` = 194
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -37,7 +37,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 
 ## 3. 逐件表
 
-### 3.2 `DROPPED`（139 件）
+### 3.2 `DROPPED`（292 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -102,19 +102,172 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `src/wqb/semantic_ledger.py` | 属「S1 语义自动补做」整条未合入工作线，单件回迁即造孤儿模块：其文档明列的两个消费方在 main 都不存在（`git grep '_semantic_coverage_check' -- src tools` = 0 命中；`tools/field_semantic_classify.py` 的产物 schema 里根本没有 `families`/`family_stats` 键，见其 L200-L212）。main 侧读同一台账键的是 `tools/wave_gate_pkg/gates_semantic.py`，它只用 `blocked_fields`，不需要 `ledger_has_l35`。配套件同属该线：`tests/unit/02_workflow/test_s1_semantic_autoclassify.py`、`tests/unit/10_toolkit_scripts/test_semantic_classify_all.py`、`test_semantic_field_pool_filter.py`。⚠ 更正记录：HEAD 曾按「全仓从未存在」结案，那是把「工作区/`git ls-files` 没有」当成「对象库没有」——实测 `git cat-file -s 4910e65:src/wqb/semantic_ledger.py` = 2407 字节。证据留在抢救点，取回须**整线成套**。 | human |
 | `src/wqb/workflow/nodes/_campaign_open_gates.py` | main 零引用：`git grep 'campaign_open_gates' -- src tools tests` = 0 命中，且 `src/wqb/workflow/registry.py` 未注册其节点。回迁即造「代码里有、链路上不跑」的幽灵模块（本仓对 workflow 节点有五处同步登记纪律，单文件回迁必然漂移）。 | human |
 | `tests/unit/01_store_db/test_corr_single_source.py` | 它断言的是 `_corr_cache.py` 的**第三版契约**，而该实现无论在 main 还是在快照里都不存在：实测 `git show 05b64a6:src/wqb/store/_corr_cache.py` 的 `normalize_corr_source()` 返回 `{"source","detail"}` 且 `_LEGACY_SOURCE_ALIASES` 把 `prod_first` 映射到 `prod_first_screen`；测试却要求 `CORR_FRESH_SECONDS`、`source_detail`、并把 6 个自由文本一律收敛到 `platform_sync`。按 pathspec 取回 = 当场 7 红（`ImportError: CORR_FRESH_SECONDS`），且会把一条未完成的契约伪装成「守卫测试」。顶层符号比对显示 main 的 `_corr_cache.py` 是快照版的超集（多出 `get_corr_authoritative_batch`），故该件属未合入分叉线 —— 由该线所有者整线合并，不做单件回迁。 | human |
+| `tests/unit/test_alpha_properties_patch_partial.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_alpha_properties_patch_partial.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 08f4357a` vs `tests/unit/02_workflow/test_alpha_properties_patch_partial.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_audit_fixes.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_audit_fixes.py`，其 test 函数集合**完整包含**快照版全部 36 个（main 37 个 ⊇ 快照 36 个；逐函数名比对 `git cat-file -p 4617ce24` vs `tests/unit/07_docs_skills/test_audit_fixes.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_auth_transient_retry.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_auth_transient_retry.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p f32eed2b` vs `tests/unit/05_submit_quota/test_auth_transient_retry.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_backlog_drop_guard.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_backlog_drop_guard.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 620588fc` vs `tests/unit/06_wave_pipeline/test_backlog_drop_guard.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_backlog_gate_unconsumed_p0p2.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_backlog_gate_unconsumed_p0p2.py`（blob 相等） | rule |
+| `tests/unit/test_batch_status_auth.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_batch_status_auth.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 36a6d91b` vs `tests/unit/05_submit_quota/test_batch_status_auth.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_batch_status_watch_transient.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_batch_status_watch_transient.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 44423fb3` vs `tests/unit/05_submit_quota/test_batch_status_watch_transient.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_batch_submit_verdict_phase2.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/05_submit_quota/test_batch_submit_verdict_phase2.py`（blob 相等） | rule |
+| `tests/unit/test_brain_alpha_repair_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_brain_alpha_repair_docs.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 63613a18` vs `tests/unit/07_docs_skills/test_brain_alpha_repair_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_build_wave_selection.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_build_wave_selection.py`，其 test 函数集合**完整包含**快照版全部 12 个（main 12 个 ⊇ 快照 12 个；逐函数名比对 `git cat-file -p 1ec89441` vs `tests/unit/01_store_db/test_build_wave_selection.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_campaign_intel_20260919_landing.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_campaign_intel_20260919_landing.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 9423a710` vs `tests/unit/08_forum_recon/test_campaign_intel_20260919_landing.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_campaign_intel_mark_saturated.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_campaign_intel_mark_saturated.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p f1db7e1f` vs `tests/unit/08_forum_recon/test_campaign_intel_mark_saturated.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_campaign_intel_prod_first.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_campaign_intel_prod_first.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p 78e65c1e` vs `tests/unit/08_forum_recon/test_campaign_intel_prod_first.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_campaign_intel_s0_rank_p1.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_campaign_intel_s0_rank_p1.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 784efc0b` vs `tests/unit/08_forum_recon/test_campaign_intel_s0_rank_p1.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_campaign_prompt_commands_p4.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_campaign_prompt_commands_p4.py`，其 test 函数集合**完整包含**快照版全部 9 个（main 9 个 ⊇ 快照 9 个；逐函数名比对 `git cat-file -p 3349774b` vs `tests/unit/02_workflow/test_campaign_prompt_commands_p4.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_catalog_gate_p3.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_catalog_gate_p3.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p 45fac152` vs `tests/unit/04_gates/test_catalog_gate_p3.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_category_field_triage_b.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_category_field_triage_b.py`，其 test 函数集合**完整包含**快照版全部 19 个（main 19 个 ⊇ 快照 19 个；逐函数名比对 `git cat-file -p b4a8df9e` vs `tests/unit/01_store_db/test_category_field_triage_b.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_closure_ledger.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_closure_ledger.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p ea69424d` vs `tests/unit/08_forum_recon/test_closure_ledger.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_cluster_variants.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_cluster_variants.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 9084ab43` vs `tests/unit/04_gates/test_cluster_variants.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_concept_overlap.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_concept_overlap.py`，其 test 函数集合**完整包含**快照版全部 11 个（main 11 个 ⊇ 快照 11 个；逐函数名比对 `git cat-file -p 092ed91d` vs `tests/unit/08_forum_recon/test_concept_overlap.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_concept_taxonomy_map.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_concept_taxonomy_map.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 34143480` vs `tests/unit/08_forum_recon/test_concept_taxonomy_map.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_dataset_experience.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_dataset_experience.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p fd237dec` vs `tests/unit/09_core/test_dataset_experience.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_dataset_pair_matrix.py` | 被测对象 `src/wqb/dataset_pair_matrix.py` 不在 main（见该件裁决），回迁即造 collection 期 ImportError。与 subject 同线成套取回。 | human |
+| `tests/unit/test_db_wave_membership.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_db_wave_membership.py`，其 test 函数集合**完整包含**快照版全部 1 个（main 1 个 ⊇ 快照 1 个；逐函数名比对 `git cat-file -p 9ca2d9ca` vs `tests/unit/01_store_db/test_db_wave_membership.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_db_write_guards.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_db_write_guards.py`，其 test 函数集合**完整包含**快照版全部 14 个（main 21 个 ⊇ 快照 14 个；逐函数名比对 `git cat-file -p 09e6919c` vs `tests/unit/01_store_db/test_db_write_guards.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_dblock_dead_holder.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_dblock_dead_holder.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p b75b5d66` vs `tests/unit/01_store_db/test_dblock_dead_holder.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_dead_end_forum_gate.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_dead_end_forum_gate.py`，其 test 函数集合**完整包含**快照版全部 14 个（main 14 个 ⊇ 快照 14 个；逐函数名比对 `git cat-file -p 76078fa0` vs `tests/unit/08_forum_recon/test_dead_end_forum_gate.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_detached_first_output_heartbeat.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_detached_first_output_heartbeat.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 5 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p f4b471e8` vs `tests/unit/02_workflow/test_detached_first_output_heartbeat.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_diagnostics.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_diagnostics.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p eaed57a3` vs `tests/unit/08_forum_recon/test_diagnostics.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_diversity.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_diversity.py`，其 test 函数集合**完整包含**快照版全部 9 个（main 9 个 ⊇ 快照 9 个；逐函数名比对 `git cat-file -p cbb0f04e` vs `tests/unit/09_core/test_diversity.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_docs_consistency.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_docs_consistency.py`，其 test 函数集合**完整包含**快照版全部 36 个（main 36 个 ⊇ 快照 36 个；逐函数名比对 `git cat-file -p 459db54f` vs `tests/unit/07_docs_skills/test_docs_consistency.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_experience_kb_refs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_experience_kb_refs.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p a92958ac` vs `tests/unit/07_docs_skills/test_experience_kb_refs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_expression_status.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_expression_status.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 11c317f6` vs `tests/unit/01_store_db/test_expression_status.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_field_semantic_classify.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_field_semantic_classify.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 9 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 20999d5f` vs `tests/unit/09_core/test_field_semantic_classify.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_forum_cache_builder_paths.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_forum_cache_builder_paths.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p 54c8619e` vs `tests/unit/08_forum_recon/test_forum_cache_builder_paths.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_forum_recon.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_forum_recon.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 31 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 7bcdc1bc` vs `tests/unit/08_forum_recon/test_forum_recon.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_forum_recon_node.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_forum_recon_node.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 6 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 915b49d8` vs `tests/unit/08_forum_recon/test_forum_recon_node.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_forum_recon_wave.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_forum_recon_wave.py`，其 test 函数集合**完整包含**快照版全部 31 个（main 31 个 ⊇ 快照 31 个；逐函数名比对 `git cat-file -p f54008b6` vs `tests/unit/08_forum_recon/test_forum_recon_wave.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gate5_coverage_matrix.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_gate5_coverage_matrix.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p 0129a1ac` vs `tests/unit/04_gates/test_gate5_coverage_matrix.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gate_equal_weight_leg_add.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_gate_equal_weight_leg_add.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 0fdbf645` vs `tests/unit/04_gates/test_gate_equal_weight_leg_add.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gate_region_invalid_group_fields.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_gate_region_invalid_group_fields.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p ec055bfb` vs `tests/unit/04_gates/test_gate_region_invalid_group_fields.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gate_registry_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_gate_registry_docs.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p b16c32b6` vs `tests/unit/04_gates/test_gate_registry_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gem_console_watch.py` | 件未丢失：main 已有同名测试 `tests/unit/03_gem/test_gem_console_watch.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 7cb7a6f7` vs `tests/unit/03_gem/test_gem_console_watch.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gem_group_fields.py` | 件未丢失：main 已有同名测试 `tests/unit/03_gem/test_gem_group_fields.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p c09a1fd2` vs `tests/unit/03_gem/test_gem_group_fields.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gem_pregate_platform_constraints.py` | 件未丢失：main 已有同名测试 `tests/unit/03_gem/test_gem_pregate_platform_constraints.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 5a326080` vs `tests/unit/03_gem/test_gem_pregate_platform_constraints.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gem_provenance_p1p2p3.py` | 件未丢失：main 已有同名测试 `tests/unit/03_gem/test_gem_provenance_p1p2p3.py`，其 test 函数集合**完整包含**快照版全部 23 个（main 23 个 ⊇ 快照 23 个；逐函数名比对 `git cat-file -p 9f6ec189` vs `tests/unit/03_gem/test_gem_provenance_p1p2p3.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gem_repeated_placeholder.py` | 件未丢失：main 已有同名测试 `tests/unit/03_gem/test_gem_repeated_placeholder.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p 22323b84` vs `tests/unit/03_gem/test_gem_repeated_placeholder.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_gem_skill_paths.py` | 件未丢失：main 已有同名测试 `tests/unit/03_gem/test_gem_skill_paths.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 8 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 384f238d` vs `tests/unit/03_gem/test_gem_skill_paths.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_ghost_operator_lists.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_ghost_operator_lists.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p a431db85` vs `tests/unit/09_core/test_ghost_operator_lists.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_glossary_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_glossary_docs.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 65011208` vs `tests/unit/07_docs_skills/test_glossary_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_grammar.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_grammar.py`，其 test 函数集合**完整包含**快照版全部 56 个（main 56 个 ⊇ 快照 56 个；逐函数名比对 `git cat-file -p fa59a4cd` vs `tests/unit/09_core/test_grammar.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_handoff.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/09_core/test_handoff.py`（blob 相等） | rule |
+| `tests/unit/test_harvest_checks_path.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_harvest_checks_path.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p 68021eba` vs `tests/unit/06_wave_pipeline/test_harvest_checks_path.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_harvest_longcount_fields.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_harvest_longcount_fields.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p c135fe26` vs `tests/unit/06_wave_pipeline/test_harvest_longcount_fields.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_harvest_multisim_retry.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_harvest_multisim_retry.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 179b5afd` vs `tests/unit/06_wave_pipeline/test_harvest_multisim_retry.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_harvest_multisim_transient_retry.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_harvest_multisim_transient_retry.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p cc8e6f69` vs `tests/unit/06_wave_pipeline/test_harvest_multisim_transient_retry.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_how_to_pass_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_how_to_pass_docs.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 57a65310` vs `tests/unit/07_docs_skills/test_how_to_pass_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_index_tables.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_index_tables.py`，其 test 函数集合**完整包含**快照版全部 12 个（main 12 个 ⊇ 快照 12 个；逐函数名比对 `git cat-file -p b0933e80` vs `tests/unit/09_core/test_index_tables.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_inspect_degraded_pack_marking.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_inspect_degraded_pack_marking.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p cb0c447e` vs `tests/unit/10_toolkit_scripts/test_inspect_degraded_pack_marking.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_inspect_mode_failclosed_p1p1.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_inspect_mode_failclosed_p1p1.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p edfaca56` vs `tests/unit/04_gates/test_inspect_mode_failclosed_p1p1.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_jpn_no_pv1_rules.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_jpn_no_pv1_rules.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 2c0ce654` vs `tests/unit/04_gates/test_jpn_no_pv1_rules.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_judge_checklist_p3.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_judge_checklist_p3.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 6923fbf6` vs `tests/unit/02_workflow/test_judge_checklist_p3.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_judge_gates_match_config.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_judge_gates_match_config.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p 7b844d88` vs `tests/unit/02_workflow/test_judge_gates_match_config.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_judge_never_submits.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_judge_never_submits.py`，其 test 函数集合**完整包含**快照版全部 21 个（main 21 个 ⊇ 快照 21 个；逐函数名比对 `git cat-file -p 35adc7e2` vs `tests/unit/02_workflow/test_judge_never_submits.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_ledger_key_catalog.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_ledger_key_catalog.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 7a52ac18` vs `tests/unit/01_store_db/test_ledger_key_catalog.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_ledger_set_at_file.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_ledger_set_at_file.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p bc529424` vs `tests/unit/01_store_db/test_ledger_set_at_file.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_ledger_whitelist_schema_p0p4.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_ledger_whitelist_schema_p0p4.py`，其 test 函数集合**完整包含**快照版全部 14 个（main 14 个 ⊇ 快照 14 个；逐函数名比对 `git cat-file -p ab51a28f` vs `tests/unit/01_store_db/test_ledger_whitelist_schema_p0p4.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_mcp_ping_calls.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_mcp_ping_calls.py`，其 test 函数集合**完整包含**快照版全部 1 个（main 1 个 ⊇ 快照 1 个；逐函数名比对 `git cat-file -p f1b2c7ed` vs `tests/unit/06_wave_pipeline/test_mcp_ping_calls.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_memory.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/09_core/test_memory.py`（blob 相等） | rule |
+| `tests/unit/test_mining_efficiency_guards.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_mining_efficiency_guards.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 3092e1b0` vs `tests/unit/02_workflow/test_mining_efficiency_guards.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_mode_b_qualification_doc.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_mode_b_qualification_doc.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 10 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 28039017` vs `tests/unit/07_docs_skills/test_mode_b_qualification_doc.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_mode_b_qualify_cli.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_mode_b_qualify_cli.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 727506d4` vs `tests/unit/07_docs_skills/test_mode_b_qualify_cli.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_n30_wave_results_writers.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_n30_wave_results_writers.py`，其 test 函数集合**完整包含**快照版全部 20 个（main 20 个 ⊇ 快照 20 个；逐函数名比对 `git cat-file -p a763f8a5` vs `tests/unit/01_store_db/test_n30_wave_results_writers.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_n31_harvest_entry.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_n31_harvest_entry.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 30e73da3` vs `tests/unit/01_store_db/test_n31_harvest_entry.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_n32_review_entry.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_n32_review_entry.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 75c17859` vs `tests/unit/01_store_db/test_n32_review_entry.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_n35_alpha_state_merge.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_n35_alpha_state_merge.py`，其 test 函数集合**完整包含**快照版全部 9 个（main 9 个 ⊇ 快照 9 个；逐函数名比对 `git cat-file -p 9c7f7651` vs `tests/unit/01_store_db/test_n35_alpha_state_merge.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_n35_reharvest_state_preservation.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/01_store_db/test_n35_reharvest_state_preservation.py`（blob 相等） | rule |
 | `tests/unit/test_observability.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/09_core/test_observability.py`（blob 相等） | rule |
+| `tests/unit/test_op_arity.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_op_arity.py`，其 test 函数集合**完整包含**快照版全部 22 个（main 22 个 ⊇ 快照 22 个；逐函数名比对 `git cat-file -p 0d90ff54` vs `tests/unit/09_core/test_op_arity.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_opportunity_scan_xregion.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_opportunity_scan_xregion.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 1b505f33` vs `tests/unit/08_forum_recon/test_opportunity_scan_xregion.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_optimization_landing_20260925.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_optimization_landing_20260925.py`，其 test 函数集合**完整包含**快照版全部 11 个（main 11 个 ⊇ 快照 11 个；逐函数名比对 `git cat-file -p 0cee6807` vs `tests/unit/06_wave_pipeline/test_optimization_landing_20260925.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_optimization_v1_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_optimization_v1_docs.py`，其 test 函数集合**完整包含**快照版全部 9 个（main 9 个 ⊇ 快照 9 个；逐函数名比对 `git cat-file -p 6183c98f` vs `tests/unit/07_docs_skills/test_optimization_v1_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_os_decay_benchmark.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_os_decay_benchmark.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 60fe8891` vs `tests/unit/10_toolkit_scripts/test_os_decay_benchmark.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_os_decay_calibration.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_os_decay_calibration.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 561e62d1` vs `tests/unit/10_toolkit_scripts/test_os_decay_calibration.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_p0_fixes_20260927.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_p0_fixes_20260927.py`，其 test 函数集合**完整包含**快照版全部 21 个（main 21 个 ⊇ 快照 21 个；逐函数名比对 `git cat-file -p 944f8872` vs `tests/unit/06_wave_pipeline/test_p0_fixes_20260927.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_p1_batch2_20260927.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_p1_batch2_20260927.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p 4bb5366f` vs `tests/unit/06_wave_pipeline/test_p1_batch2_20260927.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_pf_family_aggregation.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_pf_family_aggregation.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p f0f4129e` vs `tests/unit/04_gates/test_pf_family_aggregation.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_pipeline_error_isolation.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_pipeline_error_isolation.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 629a3cab` vs `tests/unit/02_workflow/test_pipeline_error_isolation.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_pipeline_submit_ready_shape.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_pipeline_submit_ready_shape.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p 15ebc7c6` vs `tests/unit/05_submit_quota/test_pipeline_submit_ready_shape.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_planning_with_files_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_planning_with_files_docs.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p f4941876` vs `tests/unit/07_docs_skills/test_planning_with_files_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_ppa_handoff.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_ppa_handoff.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 8cfd10ef` vs `tests/unit/05_submit_quota/test_ppa_handoff.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_priors_cache_key_p2p12.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_priors_cache_key_p2p12.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p af51e302` vs `tests/unit/02_workflow/test_priors_cache_key_p2p12.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_prod_screen_from_file.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_prod_screen_from_file.py`，其 test 函数集合**完整包含**快照版全部 11 个（main 11 个 ⊇ 快照 11 个；逐函数名比对 `git cat-file -p 2d967b47` vs `tests/unit/05_submit_quota/test_prod_screen_from_file.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_pull_skills_safety.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_pull_skills_safety.py`，其 test 函数集合**完整包含**快照版全部 11 个（main 13 个 ⊇ 快照 11 个；逐函数名比对 `git cat-file -p d32ee200` vs `tests/unit/07_docs_skills/test_pull_skills_safety.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_pyenv.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_pyenv.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 10 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 86f9f56b` vs `tests/unit/09_core/test_pyenv.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_quota_et_day.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_quota_et_day.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 449b1711` vs `tests/unit/05_submit_quota/test_quota_et_day.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_r3_failed_count_single_source.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_r3_failed_count_single_source.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p abac5562` vs `tests/unit/05_submit_quota/test_r3_failed_count_single_source.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_ra_failed_checks_single_definition.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_ra_failed_checks_single_definition.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p 0b659f5a` vs `tests/unit/05_submit_quota/test_ra_failed_checks_single_definition.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_ra_sop_template.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_ra_sop_template.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 183d93b3` vs `tests/unit/07_docs_skills/test_ra_sop_template.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_recon_evidence.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_recon_evidence.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p 09ee59eb` vs `tests/unit/08_forum_recon/test_recon_evidence.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_recon_wave.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_recon_wave.py`，其 test 函数集合**完整包含**快照版全部 18 个（main 18 个 ⊇ 快照 18 个；逐函数名比对 `git cat-file -p 5147bb31` vs `tests/unit/08_forum_recon/test_recon_wave.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_region_alignment.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_region_alignment.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p 50aedcdf` vs `tests/unit/06_wave_pipeline/test_region_alignment.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_region_gates_p0p1.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/01_store_db/test_region_gates_p0p1.py`（blob 相等） | rule |
+| `tests/unit/test_region_rotation.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_region_rotation.py`，其 test 函数集合**完整包含**快照版全部 32 个（main 38 个 ⊇ 快照 32 个；逐函数名比对 `git cat-file -p 92871031` vs `tests/unit/06_wave_pipeline/test_region_rotation.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_research.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_research.py`，其 test 函数集合**完整包含**快照版全部 39 个（main 43 个 ⊇ 快照 39 个；逐函数名比对 `git cat-file -p 6c6eb5f4` vs `tests/unit/09_core/test_research.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_review_near_structural_dead.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_review_near_structural_dead.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p bb4792b0` vs `tests/unit/08_forum_recon/test_review_near_structural_dead.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_run_logged_subprocess.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_run_logged_subprocess.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 2c2ae2a4` vs `tests/unit/02_workflow/test_run_logged_subprocess.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_s2_field_validator.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_s2_field_validator.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p a0312e8b` vs `tests/unit/10_toolkit_scripts/test_s2_field_validator.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_scheduler.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/09_core/test_scheduler.py`（blob 相等） | rule |
+| `tests/unit/test_score_datasets_whitelist_p0p6.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_score_datasets_whitelist_p0p6.py`，其 test 函数集合**完整包含**快照版全部 19 个（main 19 个 ⊇ 快照 19 个；逐函数名比对 `git cat-file -p 8bb786d1` vs `tests/unit/04_gates/test_score_datasets_whitelist_p0p6.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_sd_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_sd_docs.py`，其 test 函数集合**完整包含**快照版全部 30 个（main 30 个 ⊇ 快照 30 个；逐函数名比对 `git cat-file -p 44e46636` vs `tests/unit/07_docs_skills/test_sd_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_sd_engine_contracts.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_sd_engine_contracts.py`，其 test 函数集合**完整包含**快照版全部 19 个（main 19 个 ⊇ 快照 19 个；逐函数名比对 `git cat-file -p ddaf073b` vs `tests/unit/01_store_db/test_sd_engine_contracts.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_sd_portability.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_sd_portability.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p c1e5ff51` vs `tests/unit/07_docs_skills/test_sd_portability.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_se_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_se_docs.py`，其 test 函数集合**完整包含**快照版全部 82 个（main 82 个 ⊇ 快照 82 个；逐函数名比对 `git cat-file -p 07f3e7e1` vs `tests/unit/07_docs_skills/test_se_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_seal_dead_end_gate.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_seal_dead_end_gate.py`，其 test 函数集合**完整包含**快照版全部 18 个（main 18 个 ⊇ 快照 18 个；逐函数名比对 `git cat-file -p 4786a17c` vs `tests/unit/01_store_db/test_seal_dead_end_gate.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_search.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/09_core/test_search.py`（blob 相等） | rule |
+| `tests/unit/test_selfcorr_quick_script.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_selfcorr_quick_script.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p c172b49f` vs `tests/unit/05_submit_quota/test_selfcorr_quick_script.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_semantic_gate_failclosed.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_semantic_gate_failclosed.py`，其 test 函数集合**完整包含**快照版全部 9 个（main 9 个 ⊇ 快照 9 个；逐函数名比对 `git cat-file -p 4b9c12b5` vs `tests/unit/04_gates/test_semantic_gate_failclosed.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_sf_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_sf_docs.py`，其 test 函数集合**完整包含**快照版全部 12 个（main 12 个 ⊇ 快照 12 个；逐函数名比对 `git cat-file -p 5af0f182` vs `tests/unit/07_docs_skills/test_sf_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_sf_sweeps.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_sf_sweeps.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p f625a3f1` vs `tests/unit/07_docs_skills/test_sf_sweeps.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_shape_quota.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_shape_quota.py`，其 test 函数集合**完整包含**快照版全部 26 个（main 26 个 ⊇ 快照 26 个；逐函数名比对 `git cat-file -p 49e9be00` vs `tests/unit/01_store_db/test_shape_quota.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_skeleton_dedup_p5.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_skeleton_dedup_p5.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p c1850185` vs `tests/unit/09_core/test_skeleton_dedup_p5.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_skill_hooks_and_tools_guard.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_skill_hooks_and_tools_guard.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p aa1d0739` vs `tests/unit/07_docs_skills/test_skill_hooks_and_tools_guard.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_skill_integrity.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_skill_integrity.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p ecb9af60` vs `tests/unit/07_docs_skills/test_skill_integrity.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_skill_lint.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_skill_lint.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p af1f71a5` vs `tests/unit/07_docs_skills/test_skill_lint.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_skills.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_skills.py`，其 test 函数集合**完整包含**快照版全部 23 个（main 23 个 ⊇ 快照 23 个；逐函数名比对 `git cat-file -p 575739bc` vs `tests/unit/07_docs_skills/test_skills.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_slots_arbitration.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_slots_arbitration.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 5 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p 423b1a2d` vs `tests/unit/10_toolkit_scripts/test_slots_arbitration.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_step_eval.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_step_eval.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p 6cbcdb88` vs `tests/unit/02_workflow/test_step_eval.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_step_funnel_p5.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_step_funnel_p5.py`，其 test 函数集合**完整包含**快照版全部 14 个（main 14 个 ⊇ 快照 14 个；逐函数名比对 `git cat-file -p 655f3e2c` vs `tests/unit/02_workflow/test_step_funnel_p5.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_stop_rules_axis_scope.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_stop_rules_axis_scope.py`（blob 相等） | rule |
 | `tests/unit/test_stop_rules_verdict_p0p3.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_stop_rules_verdict_p0p3.py`（blob 相等） | rule |
+| `tests/unit/test_store.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_store.py`，其 test 函数集合**完整包含**快照版全部 22 个（main 24 个 ⊇ 快照 22 个；逐函数名比对 `git cat-file -p 84fd6797` vs `tests/unit/01_store_db/test_store.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_structural_reconstruct.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_structural_reconstruct.py`，其 test 函数集合**完整包含**快照版全部 13 个（main 13 个 ⊇ 快照 13 个；逐函数名比对 `git cat-file -p b6a5960e` vs `tests/unit/09_core/test_structural_reconstruct.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_submit_alpha_gate.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_submit_alpha_gate.py`，其 test 函数集合**完整包含**快照版全部 12 个（main 12 个 ⊇ 快照 12 个；逐函数名比对 `git cat-file -p b2ea310a` vs `tests/unit/05_submit_quota/test_submit_alpha_gate.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_submit_alpha_super_guard.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_submit_alpha_super_guard.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 380e5223` vs `tests/unit/05_submit_quota/test_submit_alpha_super_guard.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_submit_chain_defaults.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_submit_chain_defaults.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p d3d66d8b` vs `tests/unit/05_submit_quota/test_submit_chain_defaults.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_submit_queue_gates.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_submit_queue_gates.py`，其 test 函数集合**完整包含**快照版全部 13 个（main 14 个 ⊇ 快照 13 个；逐函数名比对 `git cat-file -p 71fbfb29` vs `tests/unit/01_store_db/test_submit_queue_gates.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_submit_queue_turnover_limit.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_submit_queue_turnover_limit.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p aa722931` vs `tests/unit/01_store_db/test_submit_queue_turnover_limit.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_submit_ready_unique_selfheal.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_submit_ready_unique_selfheal.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 44c04e72` vs `tests/unit/01_store_db/test_submit_ready_unique_selfheal.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_submit_verdict_core.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_submit_verdict_core.py`，其 test 函数集合**完整包含**快照版全部 25 个（main 25 个 ⊇ 快照 25 个；逐函数名比对 `git cat-file -p bfd1f23b` vs `tests/unit/05_submit_quota/test_submit_verdict_core.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_super_build_prod_gate.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_super_build_prod_gate.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 12 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 2641f306` vs `tests/unit/05_submit_quota/test_super_build_prod_gate.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_sync_skills_ignores_secret_files.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_sync_skills_ignores_secret_files.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p 9ae62394` vs `tests/unit/07_docs_skills/test_sync_skills_ignores_secret_files.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_threshold_relations.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_threshold_relations.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 05e08cd5` vs `tests/unit/01_store_db/test_threshold_relations.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_time_bombs.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_time_bombs.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 7022e068` vs `tests/unit/09_core/test_time_bombs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_timeutil.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_timeutil.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p 00718f84` vs `tests/unit/09_core/test_timeutil.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_toolkit_api_429_backoff.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_toolkit_api_429_backoff.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p b36c4ecf` vs `tests/unit/10_toolkit_scripts/test_toolkit_api_429_backoff.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_triage_gate_failclosed.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_triage_gate_failclosed.py`，其 test 函数集合**完整包含**快照版全部 18 个（main 18 个 ⊇ 快照 18 个；逐函数名比对 `git cat-file -p 1ad1fdbc` vs `tests/unit/04_gates/test_triage_gate_failclosed.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_validator_bucket_range_required.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_validator_bucket_range_required.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p e0d7ad42` vs `tests/unit/10_toolkit_scripts/test_validator_bucket_range_required.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_validator_densify_group.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_validator_densify_group.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 420bbcfe` vs `tests/unit/10_toolkit_scripts/test_validator_densify_group.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wait_thresholds.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_wait_thresholds.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p a108c2ca` vs `tests/unit/07_docs_skills/test_wait_thresholds.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_waiver.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_waiver.py`，其 test 函数集合**完整包含**快照版全部 28 个（main 28 个 ⊇ 快照 28 个；逐函数名比对 `git cat-file -p 810a37fa` vs `tests/unit/09_core/test_waiver.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wave_gate_auto_insert_contract.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_wave_gate_auto_insert_contract.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 8bdc974b` vs `tests/unit/06_wave_pipeline/test_wave_gate_auto_insert_contract.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wave_gate_terminal_states.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_wave_gate_terminal_states.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p d09f4f97` vs `tests/unit/06_wave_pipeline/test_wave_gate_terminal_states.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wave_gate_waiver_phase.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_wave_gate_waiver_phase.py`，其 test 函数集合**完整包含**快照版全部 12 个（main 12 个 ⊇ 快照 12 个；逐函数名比对 `git cat-file -p 61c4c6c5` vs `tests/unit/06_wave_pipeline/test_wave_gate_waiver_phase.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wave_id_contract_p2p6.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_wave_id_contract_p2p6.py`，其 test 函数集合**完整包含**快照版全部 12 个（main 12 个 ⊇ 快照 12 个；逐函数名比对 `git cat-file -p 9f04fd81` vs `tests/unit/02_workflow/test_wave_id_contract_p2p6.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_wave_key_contract.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_wave_key_contract.py`（blob 相等） | rule |
+| `tests/unit/test_wave_verdict_contract.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_wave_verdict_contract.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 7 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 2917155b` vs `tests/unit/06_wave_pipeline/test_wave_verdict_contract.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wave_verdict_enum.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_wave_verdict_enum.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 57d3269f` vs `tests/unit/06_wave_pipeline/test_wave_verdict_enum.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_weighted_mix_structural_gate5.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_weighted_mix_structural_gate5.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p d2cfcea6` vs `tests/unit/04_gates/test_weighted_mix_structural_gate5.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_window_whitelist_p4.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_window_whitelist_p4.py`，其 test 函数集合**完整包含**快照版全部 12 个（main 12 个 ⊇ 快照 12 个；逐函数名比对 `git cat-file -p 75f10995` vs `tests/unit/06_wave_pipeline/test_window_whitelist_p4.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wiring_fixes_20260915.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_wiring_fixes_20260915.py`，其 test 函数集合**完整包含**快照版全部 18 个（main 18 个 ⊇ 快照 18 个；逐函数名比对 `git cat-file -p 56a6a559` vs `tests/unit/06_wave_pipeline/test_wiring_fixes_20260915.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_workflow.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_workflow.py`，其 test 函数集合**完整包含**快照版全部 19 个（main 19 个 ⊇ 快照 19 个；逐函数名比对 `git cat-file -p 385e0dd8` vs `tests/unit/02_workflow/test_workflow.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_workflow_chain_irreversible_guard.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_workflow_chain_irreversible_guard.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p d0ab6f6f` vs `tests/unit/02_workflow/test_workflow_chain_irreversible_guard.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_workflow_nodes.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_workflow_nodes.py`，其 test 函数集合**完整包含**快照版全部 41 个（main 45 个 ⊇ 快照 41 个；逐函数名比对 `git cat-file -p b0b2e896` vs `tests/unit/02_workflow/test_workflow_nodes.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_workflow_popen_stdin_devnull.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_workflow_popen_stdin_devnull.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p 2fa3dae7` vs `tests/unit/02_workflow/test_workflow_popen_stdin_devnull.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_wq_backtest_monitor_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_wq_backtest_monitor_docs.py`，其 test 函数集合**完整包含**快照版全部 11 个（main 11 个 ⊇ 快照 11 个；逐函数名比对 `git cat-file -p 7fc8efef` vs `tests/unit/07_docs_skills/test_wq_backtest_monitor_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tools/README_ECONOMIC_MECHANISM_TEMPLATES.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_ECONOMIC_MECHANISM_TEMPLATES.md`（blob 相等） | rule |
 | `tools/README_FIELD_SCORER_V2.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_FIELD_SCORER_V2.md`（blob 相等） | rule |
 | `tools/README_GEM_OPTIMIZATION.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_GEM_OPTIMIZATION.md`（blob 相等） | rule |
@@ -181,7 +334,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/EUR/scripts/backfill_alphas_from_ckpt.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/backfill_alphas_from_ckpt.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/backfill_alphas_from_ckpt.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/backfill_alphas_from_ckpt.py`。 | human |
 | `world-quant-brain-mcp/docs/MCP_TEST_REPORT_20260913.md` | 改名，件未丢失：main 已有内容逐字相同的 `world-quant-brain-mcp/MCP_TEST_REPORT.md`（blob 相等，只是文件名按命名规范改过） | rule |
 
-### 3.3 `ARTIFACT`（216 件）
+### 3.3 `ARTIFACT`（401 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -237,6 +390,19 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/DEU/candidates/wave_DEUDUAL2_results.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/DEU/candidates/wave_DEUDUAL_checkpoint.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/DEU/candidates/wave_DEUDUAL_results.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
+| `tracking/DEU/scripts/tmp_deu_datasets.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_deu_err.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_deu_err2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_deu_fields.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_harvest_deu.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_harvest_deu2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_poll_deu.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_probe_deu3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_probe_deu4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_probe_deu_syntax.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_run_deu_dual.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_run_deu_dual2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/DEU/scripts/tmp_scan_targets.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
 | `tracking/EUR/candidates/DEAD_ENDS_pattern_scores.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/EUR/candidates/probe_eur_diag1_s1.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/EUR/candidates/probe_eur_diag1_subind.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
@@ -250,6 +416,18 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/EUR/candidates/probe_eur_diag9_final.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/EUR/candidates/probe_eur_pattern_p01.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/EUR/candidates/probe_eur_wiki_v1.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
+| `tracking/EUR/scripts/gen_wave333.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/gen_wave334.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/gen_wave335.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/gen_wave336.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/gen_wave337.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/gen_wave338.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/gen_wave339.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/gen_wave340.py` | 单波候选生成器（波号写死在文件名里 = 一次性；现行波生成统一走 toolkit `build_wave.py`） | rule |
+| `tracking/EUR/scripts/tmp_eur_nlp_fields.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/EUR/scripts/tmp_eur_pricedl.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/EUR/scripts/tmp_eur_probe.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/EUR/scripts/tmp_eur_probe2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
 | `tracking/FORUM/forum_recon_cache.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/GLB/reports/glb_10tower_viable_20261002.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/GLB/scripts/_serial_s23_ckpt.json` | 断点 / 缓存 / 报表类运行产物 | rule |
@@ -332,6 +510,119 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/KOR/candidates/wave_SI8_submitted.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/KOR/candidates/wave_SI9_submitted.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/KOR/candidates/wave_SIFINAL_ledger.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
+| `tracking/KOR/scripts/tmp_check.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_check_props.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_check_pyr.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_check_val.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_check_wave104.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_clear_tag.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_cmp_settings.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_db_writeback.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_desc_si12.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_err2_si5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_err_pricedl.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_err_si5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_events.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_find_recent.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_get_metrics.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_harvest2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_harvest3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_harvest_si12.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_inspect.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_isolate_si5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_kor_active_list.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_kor_pricedl_probe.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_kor_si_fields.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_map_wave.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_measure3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_measure_batch.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_measure_prod.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_measure_prod2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_name_mLmG.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_patch_desc.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll6.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll7.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll8.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll_all.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll_all2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_poll_si.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_pp_quota.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_ppa_count.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_pricedl_single.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_probe_ops.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_probe_pool.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_probe_prod.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_prod2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_prod3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_prod4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_prod5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_prod_ratio.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_pyr_status.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_risk59.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_cross.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_crossfield.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_decouple.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_decouple2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_decouple3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_decouple4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_final.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_hump.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_hump2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_hump3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_hump4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_ratio_b.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_ratio_c.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_ratio_c2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_ratio_c3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_ratio_d.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_ratio_e.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_rsk59.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_rsk59b.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_rsk59b2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_shortsell.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si10.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si11.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si12.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si13.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si14.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si15.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si16.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si17.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si38agg.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si3_wave.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si3main_wave.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si3util_wave.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si5_wave.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si6.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si7.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si8.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_run_si9.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_set_desc.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_si3_probe.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_si3_validate.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_si_finalize.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_submit.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_submit1.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_submit_plan.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_submit_serial.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_summary.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_theme_cmp.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_themes_probe.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_today_ppa.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_validate_agg.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_validate_cross.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_validate_pricedl2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_validate_ratio_d.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_validate_ratio_d2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_validate_si5_rel.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_verdict.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/KOR/scripts/tmp_write_props.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
 | `tracking/PPA_USA/README.md` | 运行期数据目录（可重跑 / 探针 dump） | rule |
 | `tracking/PPA_USA/handoff_2rmEZlKx.md` | 运行期数据目录（可重跑 / 探针 dump） | rule |
 | `tracking/PPA_USA/handoff_mL6Ozm72.md` | 运行期数据目录（可重跑 / 探针 dump） | rule |
@@ -400,9 +691,56 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/pyramid_state_20260929.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/round_status_20260929.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/strong_ds_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
+| `tracking/reference/tmp_alpha_full.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_audit_noprod.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_audit_ready.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_axis_check.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_check_family.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_diag6_grid.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_diag7_decay.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_diag8_2y.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_diag9_final.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_diag_err.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_ds_fields.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_ds_fields2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_ds_meta.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_eur_ds_by_cat.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_explore_fields.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_fetch_pyramid.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_fields_price_dl.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_find_eur_pattern_alphas.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_eur_diag1.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_eur_diag2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_eur_diag3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_eur_diag4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_eur_diag5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_eur_pattern.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_eur_wiki.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_kor_insd5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_kor_insd5_w2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_kor_insd5_w3.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_kor_insd5_w4.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_kor_insd5_w5.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_gen_kor_insd5_w6.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_list_targets.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_now_status.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_other571_fields.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_probe_conc.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_probe_generic.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_probe_prod.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_probe_serial.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_probe_serial2.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_pyr_radar.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_scan_strong_ds.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_scan_zero_comp.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_show_probe.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_study_all_actives.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_study_eur_actives.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_tower_map.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
+| `tracking/reference/tmp_two_ds.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
 | `tracking/reference/zero_competition_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 
-### 3.4 `PENDING`（532 件）
+### 3.4 `PENDING`（194 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -510,163 +848,10 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/10_toolkit_scripts/test_slots_is_full_refill.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/10_toolkit_scripts/test_step9_audit.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tests/unit/10_toolkit_scripts/test_submit_inventory_classify.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/test_alpha_properties_patch_partial.py` | 同名件在 main 是 `tests/unit/02_workflow/test_alpha_properties_patch_partial.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_audit_fixes.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_audit_fixes.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_auth_transient_retry.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_auth_transient_retry.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_backlog_drop_guard.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_backlog_drop_guard.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_batch_status_auth.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_batch_status_auth.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_batch_status_watch_transient.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_batch_status_watch_transient.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_brain_alpha_repair_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_brain_alpha_repair_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_build_wave_selection.py` | 同名件在 main 是 `tests/unit/01_store_db/test_build_wave_selection.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_campaign_intel_20260919_landing.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_campaign_intel_20260919_landing.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_campaign_intel_mark_saturated.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_campaign_intel_mark_saturated.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_campaign_intel_prod_first.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_campaign_intel_prod_first.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_campaign_intel_s0_rank_p1.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_campaign_intel_s0_rank_p1.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_campaign_prompt_commands_p4.py` | 同名件在 main 是 `tests/unit/02_workflow/test_campaign_prompt_commands_p4.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_catalog_gate_p3.py` | 同名件在 main 是 `tests/unit/04_gates/test_catalog_gate_p3.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_category_field_triage_b.py` | 同名件在 main 是 `tests/unit/01_store_db/test_category_field_triage_b.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_closure_ledger.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_closure_ledger.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_cluster_variants.py` | 同名件在 main 是 `tests/unit/04_gates/test_cluster_variants.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_concept_overlap.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_concept_overlap.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_concept_taxonomy_map.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_concept_taxonomy_map.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tests/unit/test_config.py` | 同名件在 main 是 `tests/unit/09_core/test_config.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_dataset_experience.py` | 同名件在 main 是 `tests/unit/09_core/test_dataset_experience.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_db_wave_membership.py` | 同名件在 main 是 `tests/unit/01_store_db/test_db_wave_membership.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_db_write_guards.py` | 同名件在 main 是 `tests/unit/01_store_db/test_db_write_guards.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_dblock_dead_holder.py` | 同名件在 main 是 `tests/unit/01_store_db/test_dblock_dead_holder.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_dead_end_forum_gate.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_dead_end_forum_gate.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_detached_first_output_heartbeat.py` | 同名件在 main 是 `tests/unit/02_workflow/test_detached_first_output_heartbeat.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_diagnostics.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_diagnostics.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_diversity.py` | 同名件在 main 是 `tests/unit/09_core/test_diversity.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_docs_consistency.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_docs_consistency.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_experience_kb_refs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_experience_kb_refs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_expression_status.py` | 同名件在 main 是 `tests/unit/01_store_db/test_expression_status.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_field_semantic_classify.py` | 同名件在 main 是 `tests/unit/09_core/test_field_semantic_classify.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_forum_cache_builder_paths.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_forum_cache_builder_paths.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_forum_recon.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_forum_recon.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_forum_recon_node.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_forum_recon_node.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_forum_recon_wave.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_forum_recon_wave.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gate5_coverage_matrix.py` | 同名件在 main 是 `tests/unit/04_gates/test_gate5_coverage_matrix.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gate_equal_weight_leg_add.py` | 同名件在 main 是 `tests/unit/04_gates/test_gate_equal_weight_leg_add.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gate_region_invalid_group_fields.py` | 同名件在 main 是 `tests/unit/04_gates/test_gate_region_invalid_group_fields.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gate_registry_docs.py` | 同名件在 main 是 `tests/unit/04_gates/test_gate_registry_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gem_console_watch.py` | 同名件在 main 是 `tests/unit/03_gem/test_gem_console_watch.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gem_group_fields.py` | 同名件在 main 是 `tests/unit/03_gem/test_gem_group_fields.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gem_pregate_platform_constraints.py` | 同名件在 main 是 `tests/unit/03_gem/test_gem_pregate_platform_constraints.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gem_provenance_p1p2p3.py` | 同名件在 main 是 `tests/unit/03_gem/test_gem_provenance_p1p2p3.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gem_repeated_placeholder.py` | 同名件在 main 是 `tests/unit/03_gem/test_gem_repeated_placeholder.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_gem_skill_paths.py` | 同名件在 main 是 `tests/unit/03_gem/test_gem_skill_paths.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_ghost_operator_lists.py` | 同名件在 main 是 `tests/unit/09_core/test_ghost_operator_lists.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_glossary_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_glossary_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_grammar.py` | 同名件在 main 是 `tests/unit/09_core/test_grammar.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_harvest_checks_path.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_harvest_checks_path.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_harvest_longcount_fields.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_harvest_longcount_fields.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_harvest_multisim_retry.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_harvest_multisim_retry.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_harvest_multisim_transient_retry.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_harvest_multisim_transient_retry.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_how_to_pass_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_how_to_pass_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_index_tables.py` | 同名件在 main 是 `tests/unit/09_core/test_index_tables.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_inspect_degraded_pack_marking.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_inspect_degraded_pack_marking.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_inspect_mode_failclosed_p1p1.py` | 同名件在 main 是 `tests/unit/04_gates/test_inspect_mode_failclosed_p1p1.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_jpn_no_pv1_rules.py` | 同名件在 main 是 `tests/unit/04_gates/test_jpn_no_pv1_rules.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_judge_checklist_p3.py` | 同名件在 main 是 `tests/unit/02_workflow/test_judge_checklist_p3.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_judge_gates_match_config.py` | 同名件在 main 是 `tests/unit/02_workflow/test_judge_gates_match_config.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_judge_never_submits.py` | 同名件在 main 是 `tests/unit/02_workflow/test_judge_never_submits.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_ledger_key_catalog.py` | 同名件在 main 是 `tests/unit/01_store_db/test_ledger_key_catalog.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_ledger_set_at_file.py` | 同名件在 main 是 `tests/unit/01_store_db/test_ledger_set_at_file.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_ledger_whitelist_schema_p0p4.py` | 同名件在 main 是 `tests/unit/01_store_db/test_ledger_whitelist_schema_p0p4.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tests/unit/test_mcp_config_portable.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_mcp_config_portable.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_mcp_ping_calls.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_mcp_ping_calls.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_mining_efficiency_guards.py` | 同名件在 main 是 `tests/unit/02_workflow/test_mining_efficiency_guards.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_mode_b_qualification_doc.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_mode_b_qualification_doc.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_mode_b_qualify_cli.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_mode_b_qualify_cli.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_n30_wave_results_writers.py` | 同名件在 main 是 `tests/unit/01_store_db/test_n30_wave_results_writers.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_n31_harvest_entry.py` | 同名件在 main 是 `tests/unit/01_store_db/test_n31_harvest_entry.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_n32_review_entry.py` | 同名件在 main 是 `tests/unit/01_store_db/test_n32_review_entry.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_n35_alpha_state_merge.py` | 同名件在 main 是 `tests/unit/01_store_db/test_n35_alpha_state_merge.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_op_arity.py` | 同名件在 main 是 `tests/unit/09_core/test_op_arity.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_opportunity_scan_xregion.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_opportunity_scan_xregion.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_optimization_landing_20260925.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_optimization_landing_20260925.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_optimization_v1_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_optimization_v1_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_os_decay_benchmark.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_os_decay_benchmark.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_os_decay_calibration.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_os_decay_calibration.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_p0_fixes_20260927.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_p0_fixes_20260927.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_p1_batch2_20260927.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_p1_batch2_20260927.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tests/unit/test_p1_fixes_20260927.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_p1_fixes_20260927.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_pf_family_aggregation.py` | 同名件在 main 是 `tests/unit/04_gates/test_pf_family_aggregation.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_pipeline_error_isolation.py` | 同名件在 main 是 `tests/unit/02_workflow/test_pipeline_error_isolation.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_pipeline_submit_ready_shape.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_pipeline_submit_ready_shape.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_planning_with_files_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_planning_with_files_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_ppa_handoff.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_ppa_handoff.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_priors_cache_key_p2p12.py` | 同名件在 main 是 `tests/unit/02_workflow/test_priors_cache_key_p2p12.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_prod_screen_from_file.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_prod_screen_from_file.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_pull_skills_safety.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_pull_skills_safety.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_pyenv.py` | 同名件在 main 是 `tests/unit/09_core/test_pyenv.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_quota_et_day.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_quota_et_day.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_r3_failed_count_single_source.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_r3_failed_count_single_source.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_ra_failed_checks_single_definition.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_ra_failed_checks_single_definition.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_ra_sop_template.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_ra_sop_template.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_recon_evidence.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_recon_evidence.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_recon_wave.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_recon_wave.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_region_alignment.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_region_alignment.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_region_rotation.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_region_rotation.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_research.py` | 同名件在 main 是 `tests/unit/09_core/test_research.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_review_near_structural_dead.py` | 同名件在 main 是 `tests/unit/08_forum_recon/test_review_near_structural_dead.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_run_logged_subprocess.py` | 同名件在 main 是 `tests/unit/02_workflow/test_run_logged_subprocess.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_s2_field_validator.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_s2_field_validator.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_score_datasets_whitelist_p0p6.py` | 同名件在 main 是 `tests/unit/04_gates/test_score_datasets_whitelist_p0p6.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_sd_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_sd_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_sd_engine_contracts.py` | 同名件在 main 是 `tests/unit/01_store_db/test_sd_engine_contracts.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_sd_portability.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_sd_portability.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_se_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_se_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_seal_dead_end_gate.py` | 同名件在 main 是 `tests/unit/01_store_db/test_seal_dead_end_gate.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_selfcorr_quick_script.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_selfcorr_quick_script.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_semantic_gate_failclosed.py` | 同名件在 main 是 `tests/unit/04_gates/test_semantic_gate_failclosed.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_sf_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_sf_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_sf_sweeps.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_sf_sweeps.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_shape_quota.py` | 同名件在 main 是 `tests/unit/01_store_db/test_shape_quota.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_skeleton_dedup_p5.py` | 同名件在 main 是 `tests/unit/09_core/test_skeleton_dedup_p5.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tests/unit/test_skill_boundaries.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_skill_boundaries.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_skill_hooks_and_tools_guard.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_skill_hooks_and_tools_guard.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_skill_integrity.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_skill_integrity.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_skill_lint.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_skill_lint.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_skills.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_skills.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_slots_arbitration.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_slots_arbitration.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_step_eval.py` | 同名件在 main 是 `tests/unit/02_workflow/test_step_eval.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_step_funnel_p5.py` | 同名件在 main 是 `tests/unit/02_workflow/test_step_funnel_p5.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_store.py` | 同名件在 main 是 `tests/unit/01_store_db/test_store.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_structural_reconstruct.py` | 同名件在 main 是 `tests/unit/09_core/test_structural_reconstruct.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_submit_alpha_gate.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_submit_alpha_gate.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_submit_alpha_super_guard.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_submit_alpha_super_guard.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_submit_chain_defaults.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_submit_chain_defaults.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_submit_queue_gates.py` | 同名件在 main 是 `tests/unit/01_store_db/test_submit_queue_gates.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_submit_queue_turnover_limit.py` | 同名件在 main 是 `tests/unit/01_store_db/test_submit_queue_turnover_limit.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_submit_ready_unique_selfheal.py` | 同名件在 main 是 `tests/unit/01_store_db/test_submit_ready_unique_selfheal.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_submit_verdict_core.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_submit_verdict_core.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_super_build_prod_gate.py` | 同名件在 main 是 `tests/unit/05_submit_quota/test_super_build_prod_gate.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_sync_skills_ignores_secret_files.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_sync_skills_ignores_secret_files.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_threshold_relations.py` | 同名件在 main 是 `tests/unit/01_store_db/test_threshold_relations.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_time_bombs.py` | 同名件在 main 是 `tests/unit/09_core/test_time_bombs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_timeutil.py` | 同名件在 main 是 `tests/unit/09_core/test_timeutil.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_toolkit_api_429_backoff.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_toolkit_api_429_backoff.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_triage_gate_failclosed.py` | 同名件在 main 是 `tests/unit/04_gates/test_triage_gate_failclosed.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_validator_bucket_range_required.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_validator_bucket_range_required.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_validator_densify_group.py` | 同名件在 main 是 `tests/unit/10_toolkit_scripts/test_validator_densify_group.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wait_thresholds.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_wait_thresholds.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_waiver.py` | 同名件在 main 是 `tests/unit/09_core/test_waiver.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wave_gate_auto_insert_contract.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_wave_gate_auto_insert_contract.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wave_gate_terminal_states.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_wave_gate_terminal_states.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wave_gate_waiver_phase.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_wave_gate_waiver_phase.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wave_id_contract_p2p6.py` | 同名件在 main 是 `tests/unit/02_workflow/test_wave_id_contract_p2p6.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wave_verdict_contract.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_wave_verdict_contract.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wave_verdict_enum.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_wave_verdict_enum.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_weighted_mix_structural_gate5.py` | 同名件在 main 是 `tests/unit/04_gates/test_weighted_mix_structural_gate5.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_window_whitelist_p4.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_window_whitelist_p4.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wiring_fixes_20260915.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_wiring_fixes_20260915.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_workflow.py` | 同名件在 main 是 `tests/unit/02_workflow/test_workflow.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_workflow_chain_irreversible_guard.py` | 同名件在 main 是 `tests/unit/02_workflow/test_workflow_chain_irreversible_guard.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_workflow_nodes.py` | 同名件在 main 是 `tests/unit/02_workflow/test_workflow_nodes.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_workflow_popen_stdin_devnull.py` | 同名件在 main 是 `tests/unit/02_workflow/test_workflow_popen_stdin_devnull.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_wq_backtest_monitor_docs.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_wq_backtest_monitor_docs.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tools/_check_op_submitted.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tools/_fix_queue_20261005.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tools/_kor_harvest_wave.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -702,37 +887,12 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/ASI/ideas/ideas_pattern_scores_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/ASI/ideas/ideas_pv13_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/ASI/ideas/ideas_pv13_post_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_deu_datasets.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_deu_err.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_deu_err2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_deu_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_harvest_deu.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_harvest_deu2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_poll_deu.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_probe_deu3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_probe_deu4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_probe_deu_syntax.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_run_deu_dual.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_run_deu_dual2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/DEU/scripts/tmp_scan_targets.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/EUR/ACCUMULATED_CANDIDATES.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/EUR/scripts/check_wave_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/EUR/scripts/direct_submit.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/EUR/scripts/fetch_prod.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave333.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave334.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave335.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave336.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave337.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave338.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave339.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/gen_wave340.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/EUR/scripts/run_wave269_fincf_residual.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/EUR/scripts/run_wave_single_fanout.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/tmp_eur_nlp_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/tmp_eur_pricedl.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/tmp_eur_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/tmp_eur_probe2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/GBR/scripts/check_corr.py` | 同名件在 main 是 `tools/data-repair/check_corr.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tracking/GBR/scripts/dispatch_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/GBR/scripts/gen_candidates_report.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
@@ -752,119 +912,6 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/KOR/ideas/ideas_xfam_wave186_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/KOR/scripts/harvest_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/KOR/scripts/self_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_check.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_check_props.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_check_pyr.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_check_val.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_check_wave104.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_clear_tag.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_cmp_settings.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_db_writeback.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_desc_si12.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_err2_si5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_err_pricedl.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_err_si5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_events.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_find_recent.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_get_metrics.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_harvest2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_harvest3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_harvest_si12.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_inspect.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_isolate_si5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_kor_active_list.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_kor_pricedl_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_kor_si_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_map_wave.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_measure3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_measure_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_measure_prod.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_measure_prod2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_name_mLmG.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_patch_desc.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll6.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll7.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll8.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll_all.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll_all2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_poll_si.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_pp_quota.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_ppa_count.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_pricedl_single.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_probe_ops.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_probe_pool.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_probe_prod.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_prod2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_prod3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_prod4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_prod5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_prod_ratio.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_pyr_status.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_risk59.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_cross.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_crossfield.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_decouple.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_decouple2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_decouple3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_decouple4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_final.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_hump.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_hump2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_hump3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_hump4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_ratio_b.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_ratio_c.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_ratio_c2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_ratio_c3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_ratio_d.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_ratio_e.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_rsk59.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_rsk59b.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_rsk59b2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_shortsell.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si10.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si11.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si12.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si13.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si14.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si15.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si16.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si17.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si38agg.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si3_wave.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si3main_wave.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si3util_wave.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si5_wave.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si6.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si7.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si8.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_run_si9.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_set_desc.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_si3_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_si3_validate.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_si_finalize.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_submit.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_submit1.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_submit_plan.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_submit_serial.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_summary.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_theme_cmp.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_themes_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_today_ppa.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_validate_agg.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_validate_cross.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_validate_pricedl2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_validate_ratio_d.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_validate_ratio_d2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_validate_si5_rel.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_verdict.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/tmp_write_props.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/USA/reference/usa_earn_wave01_findings.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/_archive/findings.md` | 同名件在 main 是 `Claude/skills/planning-with-files/templates/findings.md`, `docs/plans/findings.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `tracking/_archive/progress.md` | 同名件在 main 是 `Claude/skills/planning-with-files/templates/progress.md`, `docs/plans/progress.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
@@ -886,53 +933,6 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/gen_w13.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/reference/gen_w14.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `tracking/reference/gen_w15.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_alpha_full.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_audit_noprod.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_audit_ready.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_axis_check.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_check_family.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_diag6_grid.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_diag7_decay.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_diag8_2y.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_diag9_final.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_diag_err.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_ds_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_ds_fields2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_ds_meta.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_eur_ds_by_cat.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_explore_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_fetch_pyramid.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_fields_price_dl.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_find_eur_pattern_alphas.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_eur_diag1.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_eur_diag2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_eur_diag3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_eur_diag4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_eur_diag5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_eur_pattern.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_eur_wiki.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_kor_insd5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_kor_insd5_w2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_kor_insd5_w3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_kor_insd5_w4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_kor_insd5_w5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_gen_kor_insd5_w6.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_list_targets.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_now_status.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_other571_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_probe_conc.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_probe_generic.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_probe_prod.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_probe_serial.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_probe_serial2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_pyr_radar.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_scan_strong_ds.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_scan_zero_comp.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_show_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_study_all_actives.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_study_eur_actives.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_tower_map.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/tmp_two_ds.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `world-quant-brain-mcp/docs/QUICK_START.md` | 同名件在 main 是 `world-quant-brain-mcp/QUICK_START.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
 | `world-quant-brain-mcp/probe_direct_auth.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 | `world-quant-brain-mcp/probe_labs_live.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |

@@ -211,6 +211,31 @@ def test_rename_needs_identical_content(sa):
     assert v == "PENDING", "内容不同却判了已处理 —— 分叉件会被静默丢掉"
 
 
+def test_tmp_prefixed_draft_scripts_are_artifacts_not_pending(sa):
+    """`tmp_` 前缀 = 一次性会话草稿（AGENTS.md §8.13「用完即删」）——**不是资产**，判 ARTIFACT。
+
+    2026-10-19 实证：抢救点里 130 个 `tracking/*/scripts/tmp_*.py` 全挂 PENDING，
+    占当时总 PENDING 的三分之一；它们是当次会话的排障草稿，不是待裁决资产。
+    """
+    v, basis = sa.rule_verdict("tracking/KOR/scripts/tmp_deu_scan.py", "b1", {})
+    assert v == "ARTIFACT", f"一次性和草稿被判 {v}（应为 ARTIFACT）：{basis}"
+    assert "用完即删" in basis
+
+
+def test_single_wave_generators_are_artifacts(sa):
+    """`gen_wave<NNN>.py` 波号写死 = 单波一次性生成器；现行波生成统一走 toolkit `build_wave.py`。"""
+    v, basis = sa.rule_verdict("tracking/EUR/scripts/gen_wave333.py", "b1", {})
+    assert v == "ARTIFACT", f"单波生成器被判 {v}（应为 ARTIFACT）：{basis}"
+    assert "build_wave.py" in basis
+
+
+def test_naming_rules_do_not_swallow_real_assets(sa):
+    """命名契约只认前缀，**正常命名的探针脚本仍是 PENDING**——不能让规则替人判「不回迁」。"""
+    for p in ("tracking/KOR/scripts/kor_s0_scan.py", "tracking/IND/scripts/_probe_is.py"):
+        v, _basis = sa.rule_verdict(p, "b1", {})
+        assert v == "PENDING", f"{p} 被命名规则误吞（判了 {v}）"
+
+
 def test_same_blob_with_unrelated_stem_is_not_a_rename(sa):
     """同 blob 但词干无关（空 `__init__.py` / 同模板头这类成片同内容件）不得冒充改名。
 
