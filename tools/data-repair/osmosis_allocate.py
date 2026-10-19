@@ -285,11 +285,18 @@ def quality(a: Dict[str, Any]) -> float:
 # 计划生成（质量比例 + 范围保底 + rescale 到预算）
 # --------------------------------------------------------------------------- #
 def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
-               eligible_only: bool = True) -> List[Dict[str, Any]]:
+               eligible_only: bool = True,
+               per_scope_budget: bool = False) -> List[Dict[str, Any]]:
     """按质量比例分配 TOTAL_BUDGET 到点。
 
     eligible_only=True 时只在 (n>=10) 的范围里分配；若达标范围 <3，退化为取质量最高的
     前 3 个范围（平台仍不计数，但至少把点数设上去，便于用户后续补到 ≥3）。
+
+    ★ per_scope_budget=True（2026-10-19 修正）：按官方《Osmosis Allocation Guide》
+    「Within each scope, you need to allocate **exactly 100k points** to at least 10 Alphas」，
+    **每个 eligible scope 独立分配 100k**（不是总 100k 按比例拆）。否则平台判
+    "did not meet the eligibility criteria"。此模式下 scope 间不再共享预算、不再
+    按 scope_q 比例拆分；每 scope 内部仍按 quality 等比分配 100k。
     """
     scope_stats = []
     for (reg, d), al in scopes.items():
@@ -316,7 +323,24 @@ def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
         cand = scope_stats[:MIN_SCOPES]
         met = False
 
-    # 范围预算 = 范围内质量之和，带保底，再归一
+    if per_scope_budget:
+        # 每 scope 独立 100k（官方 eligibility 要求 exactly 100k per scope）
+        plan: List[Dict[str, Any]] = []
+        for s in cand:
+            key = (s["region"], s["delay"])
+            al = sorted(scopes[key], key=quality, reverse=True)
+            scope_budget = TOTAL_BUDGET  # 每 scope 各 100k
+            sq = sum(quality(a) for a in al) or 1.0
+            for a in al:
+                pts = int(round(scope_budget * quality(a) / sq))
+                pts = max(MIN_PTS, min(MAX_PTS, pts))
+                plan.append({"region": key[0], "delay": key[1],
+                             "alpha_id": a["alpha_id"], "points": pts,
+                             "prod": a.get("prod")})
+        _trim_per_scope(plan)
+        return plan
+
+    # 旧逻辑（总 100k 按 scope_q 比例拆）—— 保留向后兼容，但不再用于 eligibility
     scope_q: Dict[Tuple[str, int], float] = {}
     for s in cand:
         key = (s["region"], s["delay"])
@@ -326,7 +350,7 @@ def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
     sf = sum(budgets.values()) or 1.0
     budgets = {k: v / sf for k, v in budgets.items()}
 
-    plan: List[Dict[str, Any]] = []
+    plan = []
     for s in cand:
         key = (s["region"], s["delay"])
         al = sorted(scopes[key], key=quality, reverse=True)
@@ -340,6 +364,32 @@ def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
                          "prod": a.get("prod")})
     _trim_to_budget(plan)
     return plan
+
+
+def _trim_per_scope(plan: List[Dict[str, Any]]) -> None:
+    """每 scope 独立 trim 到 100k：从该 scope 最大项扣回。"""
+    agg: Dict[Tuple[str, int], List[int]] = defaultdict(list)
+    idx_by_scope: Dict[Tuple[str, int], List[int]] = defaultdict(list)
+    for i, e in enumerate(plan):
+        k = (e["region"], e["delay"])
+        agg[k].append(e["points"])
+        idx_by_scope[k].append(i)
+    for k, pts in agg.items():
+        total = sum(pts)
+        excess = total - TOTAL_BUDGET
+        if excess <= 0:
+            continue
+        # 按 points 降序，扣到 MIN_PTS
+        order = sorted(idx_by_scope[k], key=lambda i: -plan[i]["points"])
+        for i in order:
+            if excess <= 0:
+                break
+            reducible = plan[i]["points"] - MIN_PTS
+            if reducible <= 0:
+                continue
+            cut = min(reducible, excess)
+            plan[i]["points"] -= cut
+            excess -= cut
 
 
 def _trim_to_budget(plan: List[Dict[str, Any]]) -> None:
@@ -654,6 +704,10 @@ def main() -> int:
                    help="剔除 investability 后 Sharpe 衰减≥该比例的 alpha（官方建议 0.6，"
                         "如 `--drop-invest-decay 0.6`）；默认 None=不剔除（剔除可能令范围掉到 <10 失格）。"
                         "仅对 investability 数据可得的 alpha 生效；需 --source platform。")
+    ap.add_argument("--per-scope-budget", action="store_true",
+                   help="★ 官方 eligibility 模式（2026-10-19）：每 eligible scope 独立分配 100k 点"
+                        "（官方要求 exactly 100k per scope, not total 100k）。"
+                        "不加此 flag 则用旧的「总 100k 按 scope 比例拆」逻辑（会导致 not eligible）。")
     a = ap.parse_args()
 
     global PROD_POLICY, PROD_MAX
@@ -720,7 +774,7 @@ def main() -> int:
             rows = [r for r in rows if not (r.get("prod") is None or r["prod"] >= PROD_MAX)]
 
     scopes = build_scopes(rows)
-    plan = build_plan(scopes)
+    plan = build_plan(scopes, per_scope_budget=a.per_scope_budget)
     save_plan(plan)
     # met 标记仅用于展示；build_plan 内部已决定退化
     eligible = sum(1 for (reg, d), al in scopes.items() if len(al) >= MIN_PER_SCOPE)

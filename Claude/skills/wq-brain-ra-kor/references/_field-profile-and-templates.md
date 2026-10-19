@@ -18,9 +18,13 @@
 |---|---|---|---|
 | **F-1** | **只有「变化量 / 修正量 / 意外度」类字段有信号；水平量字段无信号** | `analyst_factor_signals`：change/revision 类 S 1.40–1.66，而 `cagr_*`/`*_consensus_value`/年份差分 0.88–1.06 全灭；`institutions6`：水平量 S 0.15–0.5，只有 `ts_delta` 类到 \|S\| 0.79 | 进新数据集**先筛变化类字段**，水平量直接跳过，省 1 次仿真/字段 |
 | **F-2** | **覆盖率（coverage）不构成可用性保证** | `institutions6` cov **0.9996** 却全族 \|S\| ≤ 0.8；`sentiment21` os_is 0.7725 全区最高、实测 S 0.02；反之 `pv47` cov=0 信号最强（GBR） | `cov` 只判「能否回测」，**绝不作为信号判据** |
+| **F-2b** | **cov=1.0 也可能是恒等信号（零方差）** | `macro63.mcr63_membership` cov **1.0**、ac 189，但是「是否在 WisdomTree WTIDJH 指数内」的二元标记，**KOR TOP600 内无成分股 ⇒ 横截面零方差** ⇒ `ts_delta` 恒为 0 ⇒ `kqJ326Pl` 全部读数为 0（longCount 0 / pnl 0 / bookSize 0） | 画像判据加一项：**横截面方差**。单一成分标记 / 全局常数类字段直接出局，不耗仿真额度 |
+| **F-2c** | **cov≈0.4 的成分股/指数类数据集 ⇒ 先看多空比，别先看 S** | `other106`（cov **0.404**，KOSPI200 成分）实测 `9qEwEo9V` **longCount 136 / shortCount 463（1:3.4）**、S −0.16。`earnings3`（cov 0.776）同构问题较轻：213/411 | **首测先看 longCount/shortCount 比值**：接近 1:3 以上说明横截面已退化为准等权，当场停止，不必再扫窗口 |
+| **F-2d** | **扫全字段必须显式传 `filter_sharpe=false`** | `institutions6` 默认只返 4/11，被隐藏的 7 个里含 `quantity_*_disposed`(ac106)、`market_value_*_acquired`(ac110)、`count_*_buyers`(ac83) —— 正是「净额/价差」结构必需的**对侧腿** | 漏字段等于漏机制。全字段画像一律加 `filter_sharpe=false` |
 | **F-3** | **字段名自解释 ≠ 本区可用** | `analyst_factor_signals` 59 字段实测有效仅约 2 个；`eps_y1_estimate_change_3mo` 与 `eps_revision_magnitude` 描述几乎相同，S 差 0.26 | 必看 `description`，且必实测 |
 | **F-4** | **KOR 里 S ≥ 1.58 只出现在 `analyst` 与 `shortinterest` 两个塔** | 本轮共实测 13 个数据集：analyst 1.66、shortinterest 2.09；其余 11 个最高仅 0.05–1.46（risk68 0.05、news_sentiment 0.07、pv106 0.38、fund_holdings 0.53、risk71 0.58、institutions6 0.80、analyst_consensus 0.93、other553 1.46） | **进新数据集先用 1 条探针试 \|S\| 能否到 1.0**；若 <1.0 且该集无同构强字段，直接弃，别扩批 |
 | **F-5** | **「已被行业中性化消掉的信息」= 系统性弱** | institutions6(0.80) / fund_holdings_panel(0.53) / risk71(0.58) / risk68(0.05) 共同点：机构持仓、风险模型残差、波动率暴露——**这些正是 INDUSTRY 中性化 + sector 分组要消掉的东西** | 遇到描述含 ownership / residual / volatility / beta 的数据集，预期 S 上限 0.6–0.8，优先度下调 |
+| **F-6** | **regime 条件型数据集 ⇒ 2Y ladder 闸结构性不可达**（**时序问题**，与 F-5 的**截面问题**并列，修法完全不同） | `imbalance5.imb5_score`（SHIELD-OIL 油价冲击韧性分）三种机制形态（水平 1.09 / 规模中性化 0.86 / 66d 变动 1.08）的 **2Y 全部 ≈0.17–0.18**；逐年 S `0.02/1.63/2.68/1.92/1.25/1.38/0.32/1.85/0.84/−0.28`，**S<1.0 占 40%** + 近年断崖 | 描述含 `regime / shock / resilience / weather / 情景 / 条件` ⇒ 标 `2Y-risky`，优先级降到最低，**≤2 条探针即止损**（按发波决策表：S<1.0 年份 ≥3 成时禁扫 decay/平滑/门控） |
 
 ### 1.2 逐数据集画像（本战役实测）
 
