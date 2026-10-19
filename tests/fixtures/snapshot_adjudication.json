@@ -902,6 +902,26 @@
     "tests/unit/test_wq_backtest_monitor_docs.py": {
       "verdict": "DROPPED",
       "basis": "件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_wq_backtest_monitor_docs.py`，其 test 函数集合**完整包含**快照版全部 11 个（main 11 个 ⊇ 快照 11 个；逐函数名比对 `git cat-file -p 7fc8efef` vs `tests/unit/07_docs_skills/test_wq_backtest_monitor_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。"
+    },
+    "Claude/skills/brain-data-feature-engineering/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708` 系列），main 已有 `Claude/skills/brain-data-feature-engineering/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。"
+    },
+    "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md": {
+      "verdict": "DROPPED",
+      "basis": "件未丢失：同上迁移（GEM 内嵌副本位）。main 同路径已是 `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/references/overview.md`，由 `tools/sync_gem_embedded_skill.py` 的 SYNCED 表同步（2026-10-19 已把该表项改为 `references/overview.md`）。"
+    },
+    "Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_CHECKLIST.md": {
+      "verdict": "DROPPED",
+      "basis": "**已退休，不是丢失**：2026-09-29 整批迁进 `attic/toolkit_docs_20260929/`，并由 `tests/unit/07_docs_skills/test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short` 逐名钉住（断言文件在 attic 且**不在** skill 的 references/ 下）；内容已合并进 `references/diversity-extract.md`（同一测试断言合并页 ≤60 行）。"
+    },
+    "Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md": {
+      "verdict": "DROPPED",
+      "basis": "**已退休，不是丢失**：同 `S2_COMPLIANCE_CHECKLIST.md` —— 2026-09-29 迁进 `attic/toolkit_docs_20260929/`，由 `test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short` 钉住（该文件也在断言名单里）。"
+    },
+    "Claude/skills/wq-brain-alpha-optimization-v1/scripts/.arxiv_cache.json": {
+      "verdict": "ARTIFACT",
+      "basis": "arXiv 检索缓存（脚本运行期产物，可按脚本重跑），不是资产。"
     }
   },
   "_restored_history": {
