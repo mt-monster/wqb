@@ -19,6 +19,7 @@ from wqb.config import (
     default_universe,
     neutralization_search_order,
 )
+from wqb.paths import find_repo_root
 from wqb.search import failure_memory
 
 # Category → representative datasets for arm construction.
@@ -164,8 +165,16 @@ class Scheduler:
 
     def prepare_session_pack(self, date: str,
                              materialize: bool = False) -> str:
-        """Return (and optionally materialize) the session pack directory."""
-        pack_dir = os.path.join("tracking", "sessions", date)
+        """Return (and optionally materialize) the session pack directory.
+
+        2026-10-20 修：`pack_dir` 曾是相对 cwd 的 ``"tracking/sessions/<date>"`` ——
+        在仓库根外执行（MCP 服务进程 cwd、CI runner、scp 到 Linux 的场景）时
+        ``materialize=True`` 会把 ``agent-brief.md`` / ``mcp-plan.json`` 甩到
+        调用方 cwd，与 `batch_track` 2026-09-04 那次「任务文件不存在」同源。
+        现统一锚到仓库根：走 ``wqb.paths.find_repo_root``（`WQB_ROOT` env 覆盖 +
+        向上探测 `pyproject.toml` + `src/wqb`），不写死层数、单测可注入。
+        """
+        pack_dir = str(find_repo_root() / "tracking" / "sessions" / date)
         if not materialize:
             return pack_dir
 
