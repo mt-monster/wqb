@@ -311,16 +311,16 @@ cause=mechanism_crowded  levres 排名：
 
 ## 9. 两个工具：照妖镜预筛 + prod 巡检（2026-10-18 落地）
 
-### 9.1 `tools/nemesis_prescreen.py` —— 照妖镜（判断信号是否为因子换皮）
+### 9.1 `tools/gates/nemesis_prescreen.py` —— 照妖镜（判断信号是否为因子换皮）
 
 ```bash
 # ① 生成 vector_neut 变体（零仿真）
-$WQ_PY tools/nemesis_prescreen.py --gen \
+$WQ_PY tools/gates/nemesis_prescreen.py --gen \
     --signals tracking/USA/candidates/nemesis_input.json \
     --proxies "eps_y1_cagr_2yr,eps_estimate_trend_slope_1yr,eps_y1_consensus_value" --json
 # ② 派发（MCP create_multi_simulation，settings 与原信号完全一致）
 # ③ 判定（输入 harvest_multisim_alphas 的结果文件）
-$WQ_PY tools/nemesis_prescreen.py --judge harvest.json
+$WQ_PY tools/gates/nemesis_prescreen.py --judge harvest.json
 ```
 
 判定：`S 掉幅 <30% = PASS｜30–50% = WEAK｜>50% = KILL`。
@@ -333,11 +333,11 @@ $WQ_PY tools/nemesis_prescreen.py --judge harvest.json
 | 规模/水平 | `eps_y1_consensus_value`、`eps_trailing_4q_estimate` |
 | 分歧 | `eps_y1_estimate_coeff_var`、`eps_y1_estimate_skewness` |
 
-### 9.2 `tools/prod_watch.py` —— 每日 prod 巡检（候选池）
+### 9.2 `tools/pool-hygiene/prod_watch.py` —— 每日 prod 巡检（候选池）
 
 ```bash
-$WQ_PY tools/prod_watch.py --pool tracking/USA/candidates/prod_waitlist.json
-$WQ_PY tools/prod_watch.py --pool ... --json --no-write   # CI/自动化
+$WQ_PY tools/pool-hygiene/prod_watch.py --pool tracking/USA/candidates/prod_waitlist.json
+$WQ_PY tools/pool-hygiene/prod_watch.py --pool ... --json --no-write   # CI/自动化
 ```
 
 - 端点 = **`/alphas/{id}/correlations/prod`**（`/correlations/production` 会 404）；
@@ -365,3 +365,45 @@ $WQ_PY tools/prod_watch.py --pool ... --json --no-write   # CI/自动化
 3. 七闸仿真 + prod 实测 → 全过则进池、否则按 gate_attribution 的杠杆排名定向推
 4. 进池后每日 prod_watch；<0.70 即提交（唯一零成本路径）
 ```
+
+### 9.4 每日自动化（已建）
+
+**任务名**：`USA 候选池 prod 巡检（每日）`｜每天 09:40｜
+`$WQ_PY tools/pool-hygiene/prod_watch.py --pool tracking/USA/candidates/prod_waitlist.json`
+→ 有 READY 会在回复开头醒目列出；无 READY 只报最优一条与 0.70 的差距。
+
+**2026-10-19 10:35 全池基线（7 条，prod 与 10-18 完全一致 ⇒ 该族暂未漂移）**：
+
+| alpha | prod | 余量 | 状态 |
+|---|---:|---:|---|
+| `1YjoKAz6` | 0.7094 | −0.0094 | NEAR（最优） |
+| `vRO5Gz5v` | 0.7497 | −0.0497 | NEAR |
+| `88vaY1Jq` | 0.8068 | −0.1068 | BLOCKED |
+| `A1QgNQZY` | 0.8476 | −0.1476 | BLOCKED |
+| `A1Qg0XmR` | 0.8484 | −0.1484 | BLOCKED |
+| `Vkd2adjb` | 0.8532 | −0.1532 | BLOCKED |
+| `JjPgQgqe` | 0.8673 | −0.1673 | BLOCKED |
+
+⚠ **工具使用陷阱（2026-10-19 自己踩的）**：`--limit N` 曾写回截断后的池（7→1 条）。
+已修为 `work = pool[:limit]` 且加了源码级回归断言；调试时仍建议加 `--no-write`。
+
+### 9.4 每日自动化（已建）
+
+**任务名**：`USA 候选池 prod 巡检（每日）`｜每天 09:40｜
+`$WQ_PY tools/pool-hygiene/prod_watch.py --pool tracking/USA/candidates/prod_waitlist.json`
+→ 有 READY 会在回复开头醒目列出；无 READY 只报最优一条与 0.70 的差距。
+
+**2026-10-19 10:35 全池基线（7 条，prod 与 10-18 完全一致 ⇒ 该族暂未漂移）**：
+
+| alpha | prod | 余量 | 状态 |
+|---|---:|---:|---|
+| `1YjoKAz6` | 0.7094 | −0.0094 | NEAR（最优） |
+| `vRO5Gz5v` | 0.7497 | −0.0497 | NEAR |
+| `88vaY1Jq` | 0.8068 | −0.1068 | BLOCKED |
+| `A1QgNQZY` | 0.8476 | −0.1476 | BLOCKED |
+| `A1Qg0XmR` | 0.8484 | −0.1484 | BLOCKED |
+| `Vkd2adjb` | 0.8532 | −0.1532 | BLOCKED |
+| `JjPgQgqe` | 0.8673 | −0.1673 | BLOCKED |
+
+⚠ **工具使用陷阱（2026-10-19 自己踩的）**：`--limit N` 曾写回截断后的池（7→1 条）。
+已修为 `work = pool[:limit]` 且加了源码级回归断言；调试时仍建议加 `--no-write`。

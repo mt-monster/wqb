@@ -93,6 +93,7 @@ kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 | `shape_quota_check.py` | **模板形状配额机检（2026-09-30）**：一波候选须覆盖 ≥ 3 个形状族、`trade_when` 占比 ≤ 40%（步 4 §4.5.1）；只读、`--verbose` 逐条列族、`--json`；退出码 0=达标或候选不足 3 条 / 1=不达标 / 2=无法检查；不入闸链（闸 6 才是批级多样性权威）。分类规则见 `src/wqb/shape_quota.py` | 人工数一遍算子形状 |
 | `expr_lint.py` | 算子签名/字段白名单快速门禁（非战役场景） | — |
 | `corr_precheck.py` | 相关性墙预判（设计阶段字段重叠检查） | — |
+| `gates/nemesis_prescreen.py` | **照妖镜预筛（2026-10-18 落地，2026-10-19 归位 `tools/gates/`）**：用 `vector_neut(signal, 代理)` 正交化，判断信号是不是**因子换皮**。掉幅 `<30%`=PASS（有独立 alpha）／`30–50%`=WEAK（一半是因子）／`>50%`=KILL（信号本体=该因子，**别再微调，直接换信息源**）。实证：`eps_q1_estimate_qoq_growth` 腿 S 1.89 → 正交化后 0.62（−67%），据此判定 prod 0.75 是「因子拥挤」而非「字段拥挤」 | 「prod 高就一直调参/换中性化」的盲试 |
 
 ## 回测与状态
 
@@ -164,6 +165,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `backfill_catalogs.py` | 补缺失 typed catalog：枚举白名单缺集（scan_fields 走平台 API，**零配额**）→ `--apply` 逐个生成。2026-09-17 实测 JPN 10/10 成功（2m45s） | 手工逐集跑 scan_fields |
 | `backfill_skeletons.py` | 为存量表达式回填骨架签名（`structural_signature`；只填 NULL、幂等、dry-run 默认）。写入侧已自动计算，此工具是一次性回填 | — |
 | `pick_backlog_representatives.py` | 积压按骨架去重挑代表 → 直接产出 `mcp_7slot_batch.py --alpha-json` 可消费的清单；`--gate-filter` 先用当前门禁全量筛（失败者不回测），`--drop-list` 落盘失败者 id；**`--apply-drop`** 把失败者标 `dropped`（纪律终态）——三守卫：必须配 `--gate-filter` + `--db-backup`、只动 `alpha_id IS NULL` 且状态未变者、分批 rowcount 校验 + ledger 台账留痕 | 手工挑候选 / 手改状态 |
+| `pool-hygiene/prod_watch.py` | **prod 候选巡检（2026-10-18 落地，2026-10-19 归位 `tools/pool-hygiene/`）**：对「七闸全过、只差 prod」的候选池重测生产相关性并回写 `--pool` 文件；生产池每日漂移实测可达 ±0.29/半天 ⇒ **唯一零成本路径 = 每日重测、<0.7 即刻提交**（无需重跑仿真）。`--json` 机器可读、`--no-write` 只看不写（CI 用）。⚠ `--limit N` 只限制本轮查几条，**绝不许裁池**（2026-10-19 事故：一次 `--limit 1` 把 7 条削成 1 条，已由单测钉住） | 靠记忆隔几天手查一次 prod |
 
 ## 战役情报（S0 选集 / 点塔进度 / S4 预筛 / 幽灵算子）
 

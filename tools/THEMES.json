@@ -13,17 +13,18 @@
         "expr_lint.py",
         "forum_recon.py",
         "forum_recon_wave.py",
+        "gate_attribution.py",
         "gem_validator.py",
         "mode_b_qualify.py",
+        "nemesis_prescreen.py",
+        "operator_coverage_audit.py",
         "pool_diversity.py",
         "pre_backtest_filter.py",
         "prescreen_gate.py",
         "prod_saturation_gate.py",
         "quality_predict.py",
         "shape_quota_check.py",
-        "wave_gate.py",
-        "operator_coverage_audit.py",
-        "gate_attribution.py"
+        "wave_gate.py"
       ],
       "status": "frozen-pending"
     },
@@ -116,7 +117,8 @@
         "backfill_catalogs.py",
         "backfill_gate_plan.py",
         "backfill_skeletons.py",
-        "pick_backlog_representatives.py"
+        "pick_backlog_representatives.py",
+        "prod_watch.py"
       ],
       "status": "frozen-pending"
     },
@@ -363,9 +365,9 @@
     "db": 3,
     "fields": 16,
     "forum": 3,
-    "gates": 15,
+    "gates": 18,
     "ledger": 5,
-    "pool-hygiene": 4,
+    "pool-hygiene": 5,
     "probe": 7,
     "reporting": 4,
     "research": 17,
