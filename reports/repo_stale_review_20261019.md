@@ -199,3 +199,44 @@ git ls-files | wc -l && du -sh .git                    # 4361 件 / 92M
 | 5 | 0 引用且 ≥30 天的报告进 attic | 报告面消肿 | 低（先跑引用扫描） |
 | 6 | helpful_functions / diversity_enhancer 单一来源 | 消除 3 份全同副本 | 低 |
 | 7 | sys.path 收敛 + audit_file_sizes 修崩 + 扫描面改 git ls-files | 工具有效性恢复 | 低 |
+
+---
+
+## 9. P1 执行进度补记（2026-10-20）
+
+抢救点 **PENDING 532 → 189**，三条路子：
+
+| 路子 | 件数 | 做法 | 性质 |
+|---|---:|---|---|
+| tests 旧副本判 DROPPED | 153 | 逐 **test 函数名**比对：main 同名件函数集合 ⊇ 快照（basis 写清 main 路径 + 个数 + 快照 blob 前 8 位） | 证据裁决 |
+| 加**规则**（不是手写 fixture） | 138 | `tracking/` 下 `tmp_`·`_tmp_` 前缀 → ARTIFACT（AGENTS.md §8.13「一次性草稿用完即删」）；`gen_wave<NNN>.py` → ARTIFACT（单波一次性，现行走 toolkit `build_wave.py`） | 命名契约 |
+| 单件证据裁决 | 5 | dfe `reference.md`×2（本轮迁移）、toolkit `S2_COMPLIANCE_*`（2026-09-29 已退休进 attic，有 `test_sd_docs.py` 钉住）、`.arxiv_cache.json`（缓存） | 证据裁决 |
+
+规则那条配了 3 条测试钉住：规则生效 + **不误吞正常命名的探针脚本**。
+
+### ★★ 顺带挖出来的 4 处「疑似真丢覆盖」（优先级最高）
+
+153 个超集之外，**4 个文件的快照里有 main 没有的 test 函数**——不是旧副本，是覆盖缺口：
+
+| 快照件 | main 缺的测试 | 缺口性质 |
+|---|---|---|
+| `tests/unit/test_mcp_config_portable.py` | `test_expand_env_semantics`、`test_defaults_expand_to_the_legacy_windows_values`、`test_env_overrides_make_it_work_on_linux` | **MCP 配置 Linux 可移植性**：断言 `WQB_HOME/WQB_MCP_PY/WQB_DB_MCP_PY` 展开后的 command/args/env。**全仓 `grep WQB_MCP_PY` = 0 命中** ⇒ 该覆盖在 main 已彻底消失 |
+| `tests/unit/test_config.py` | `test_neutralization_best_returns_campaign_conclusions` | 中性化「最佳 returns」战役结论（全仓 0 命中同名） |
+| `tests/unit/test_p1_fixes_20260927.py` | `test_legacy_root_only_when_it_exists` | legacy 根路径存在性分支 |
+| `tests/unit/test_skill_boundaries.py` | `test_index_declares_boundary_contract_as_required` | INDEX.md 必须把「职责边界」列为必备契约（规范守护） |
+
+**建议**：这 4 件判 **RESTORED**（取回补进 main 对应测试文件），尤其是 MCP 可移植性那 3 个 —— 项目要 scp 到 Linux 跑，丢了等于「只能靠我本机不炸」。
+⚠ 取回前先确认断言仍成立（`_pyenv.expand_env` 的签名 / LEGACY 常量是否还在）。
+
+### 剩余 189 的构成与建议
+
+| 桶 | 件数 | 建议 |
+|---|---:|---|
+| `reports/` + `output_report/` | 45 | 历史战役/评审报告。先跑引用扫描，0 引用且 ≥90 天的整包进 `attic/` |
+| `docs/` | 43 | 设计稿/审计/路线图（`design_s1_family_deadend`、`prod_corr_persistence_design`、`skills-optimization-roadmap`…）。多半已被后续文档取代，需逐份看标题判断 |
+| `tracking/` | 57 | 区域探针脚本（非 `tmp_` 命名的正经探针 15）+ ideas/reports 产物 |
+| `tests/unit` | 27 | 含上表 4 件；其余 23 件 main 无同名（多为已删功能的测试，如 `test_semantic_*` 系） |
+| `Claude/skills` | 17 | 主要是 `brain-forum-browse` 的 11 份旧拆分 reference（该 skill 已精简到只剩 `tools-and-troubleshooting.md` + `write-path`，SKILL.md 不再引用旧文档） |
+
+**forum-browse 那 11 份是最后一个能整批决的**：技能已重构精简、SKILL.md 零引用 ⇒ 判 DROPPED（证据：目录清单 + SKILL.md 引用数为 0）。
+要不要我直接判，还是你想先翻一眼有没有舍不得的内容？
