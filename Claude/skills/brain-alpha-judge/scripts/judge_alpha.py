@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import re
 import sys
 import time
@@ -16,6 +17,49 @@ SKILL_DIR = SCRIPT_DIR.parent
 VENDOR_DIR = SCRIPT_DIR / "vendor"
 if str(VENDOR_DIR) not in sys.path:
     sys.path.insert(0, str(VENDOR_DIR))
+
+
+def _resolve_repo_root() -> Path | None:
+    """向上探测仓库根（`pyproject.toml` + `src/wqb` 双标记）。
+
+    脱离仓库（skill 独立安装在 `~/.workbuddy/skills/…`）时返回 None，
+    调用方回退到 SKILL_DIR 局部目录。
+    """
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            return parent
+    return None
+
+
+def _resolve_outputs_dir() -> Path:
+    """评审产物目录：与 skill 安装位解耦（2026-10-20 修）。
+
+    背景：judge_alpha.py 曾把 `judge_<ts>.{json,md}` 直写到 `SKILL_DIR/outputs/` ——
+    `SKILL_DIR` 是「谁跑就落到哪」的浮动路径，实测同步到 4 个安装位（`~/.workbuddy/skills`、
+    `~/.claude/skills`、`~/.cursor/skills`、`~/.codex/skills`）共 585 件产物，
+    `sync_skills.py --apply` 一跑会被判 orphan 清掉。这是 2026-09-26 `pipeline_reports.py`
+    迁到 `GEM_REPORT_ROOT` 修过的同款 bug（见 `pipeline_reports.py` 注释）。
+
+    优先级：
+    ① `WQB_JUDGE_DATA_ROOT` env —— 单测 / 部署显式注入
+    ② `REPO_ROOT/output_report/brain-alpha-judge/` —— 仓库内运行落唯一出口
+       （§8.13「战役/评审产物报告 → output_report/」；alpha judge 属评审产物）
+    ③ `SKILL_DIR/outputs/` —— 脱离仓库时兜底（保留旧位兼容历史脚本）
+    """
+    env = os.environ.get("WQB_JUDGE_DATA_ROOT")
+    if env:
+        p = Path(env).resolve()
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+    repo = _resolve_repo_root()
+    if repo is not None:
+        p = repo / "output_report" / "brain-alpha-judge"
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+    p = SKILL_DIR / "outputs"
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
 
 from ace_client import AceClient, classify_check_pass, extract_max_correlation
 from llm_judge import LlmJudge
@@ -1198,8 +1242,7 @@ def main() -> int:
     judge_cfg = config.get("judge", {}) if isinstance(config, dict) else {}
     trend_cfg = judge_cfg.get("value_factor_trend", {}) if isinstance(judge_cfg, dict) else {}
     llm_cfg = judge_cfg.get("llm", {}) if isinstance(judge_cfg, dict) else {}
-    outputs_dir = SKILL_DIR / "outputs"
-    outputs_dir.mkdir(parents=True, exist_ok=True)
+    outputs_dir = _resolve_outputs_dir()
 
     rubric = load_json(SKILL_DIR / "data" / "extra_submission_rubric.json", [])
     candidates = load_candidates(args.alpha_id, args.input_json)

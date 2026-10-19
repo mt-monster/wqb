@@ -164,12 +164,35 @@
 **规范**：`reports/` 是**人工面**（评审、审计、复盘），代码写它的场景应接近于零。
 
 **实际写者**：
-- `tools/closure_ledger.py` — 关闭台账生成器（`reports/closure_ledger.md`）
-- `Claude/skills/brain-alpha-judge/scripts/judge_alpha.py` — **可能违规**，alpha judge 产物应属 `output_report/`
-- `world-quant-brain-mcp/brain_mixin_correlation.py` — **可能违规**，MCP 服务写 `reports/`
-- 其余是治理工具（`tools/code-audit/*`, `tools/audit_structure.py`, `tools/refs_scan.py`, `tools/mcp_http_caller.py`, `tools/code-audit/db_mcp_split.py`）读为主
+- `tools/closure_ledger.py` — 关闭台账生成器（`reports/closure_ledger.md`），**合法登记**（一次性台账快照，属治理类）
+- 其余 7 个（`tools/code-audit/*`, `tools/audit_structure.py`, `tools/refs_scan.py`, `tools/mcp_http_caller.py`）均是**治理工具读为主写为辅**——把审计日志 append 到 `reports/` 下的 `audit_*.md`，属合法登记
 
-**⚠ 需要复核**：前两条 `judge_alpha.py` 与 `brain_mixin_correlation.py` 是不是真的往 `reports/` 写内容文件；如果是，则应改到 `output_report/`。这是本轮扫描发现的可疑点。
+**2026-10-20 复核结果**：先前扫描把 `judge_alpha.py` 和 `brain_mixin_correlation.py` 标为「⚠ 疑似违规」——经复核**均非真违规**：
+- `brain_mixin_correlation.py`：命中点是英文注释里的「BRAIN reports two distinct correlations」单词，非路径；
+- `judge_alpha.py`：命中点是变量 `reports = []`（Python 列表变量名），非路径；真正的写盘目标是 `SKILL_DIR / "outputs"`——**这确实是真 bug**，见 §2.10。
+
+⇒ `reports/` 目前无真违规写者，纪律矩阵中「⚠ 2 个疑似写者」标记可撤销。
+
+---
+
+### 2.10 `Claude/skills/*/outputs/` — Skill 运行时产物误锚定安装位（**真违规已修**）
+
+**发现（2026-10-20）**：`Claude/skills/brain-alpha-judge/scripts/judge_alpha.py` 原实现用
+`SKILL_DIR = Path(__file__).resolve().parents[1]` + `outputs_dir = SKILL_DIR / "outputs"`，
+把运行期产物直接写回 skill 安装位。后果：
+
+- **产物泄漏到 6 个同步安装位**：`.workbuddy/`, `.claude/`, `.cursor/`, `.codex/`, `.cline/`, `.agents/`
+  每个都能成为写目标，任一处运行都会污染 skill 目录；
+- **下次 `sync_skills.py --apply` 时会被同步逻辑识别为「安装位漂移」清理/覆盖**；
+- **违反 §8.13**：`Claude/skills/` 是"只读源码面"，运行期产物必须去 `output_report/`；
+- **同类 bug 曾在 GEM 侧犯过**（2026-09-26 `pipeline_reports.py` 迁移到 `GEM_REPORT_ROOT` 已修复）。
+
+**修复（本次提交）**：`judge_alpha.py` 新增 `_resolve_repo_root()` + `_resolve_outputs_dir()`，
+优先级：`WQB_JUDGE_DATA_ROOT` env → `<REPO_ROOT>/output_report/brain-alpha-judge/` → `SKILL_DIR/outputs/` 兜底。
+
+**存量清理**：本次审计时各安装位 `outputs/` 目录均已清空（此前 sync 清理过），无残留需迁移。
+
+**教训**：与 2026-09-26 GEM `pipeline_reports.py`、2026-07-22 `prepare_session_pack` 属同一 bug 家族——**skill/工具用 `Path(__file__)` 锚定相对路径，一旦该文件被部署到多个位置就产生漂移**。此后凡新写 skill，产物目录必须走 env + REPO_ROOT 双保险模式（参考 `wqb/provision/gem/pipeline_reports.py`）。
 
 ---
 
@@ -182,7 +205,8 @@
 | `attic/` | 治理工具（`audit_*`, `sync_skills`, `retention`） | 应用代码写 `attic/` | `audit_write_targets` 白名单 ✅ |
 | `cache/` `logs/` `results/` `data/` | 全部运行期脚本 | 人工编辑 | `.gitignore` ✅ |
 | `docs/` | **已登记生成器**（`index_tables.py` 等） | 未登记的迁移/清理脚本 | `audit_write_targets` 违规判定 ⚠ 待核对 15 个疑似写者 |
-| `reports/` | **理论应为空**（人工面） | 所有代码 | `audit_write_targets` 违规判定 ⚠ 2 个疑似写者 |
+| `reports/` | **已登记治理工具**（`closure_ledger.py` + 审计闸日志） | 应用代码 | `audit_write_targets` 违规判定 ✅（先前 2 个疑似均复核为假警报） |
+| `Claude/skills/*/outputs/` | **无**（skill 安装位不允许运行期写入） | 任何 skill 脚本 | 2026-10-20 已修 `judge_alpha.py`（env + REPO_ROOT 双保险）✅；`sync_skills.py` 同步会清理漂移 |
 | `Claude/skills/` | **唯一写者 = `tools/sync_skills.py --apply`** | 任何其它脚本 | 待补闸（本轮未加，属审计闸白名单外） |
 | `src/` `tools/` `world-quant-brain-mcp/` | 只有 IDE/编辑器写 | 任何运行期代码自改 | `audit_write_targets` 违规判定 ✅ |
 
