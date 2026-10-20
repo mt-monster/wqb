@@ -78,8 +78,8 @@ frontmatter 只说「我是谁」，**职责边界**才说清「我不管什么�
 
 ```bash
 $WQ_PY -m pytest tests/unit/07_docs_skills/test_skill_integrity.py tests/unit/07_docs_skills/test_skill_boundaries.py tests/unit/07_docs_skills/test_docs_consistency.py tests/unit/07_docs_skills/test_sf_docs.py -q
-$WQ_PY tools/sync_skills.py            # 仓库 → 全部安装位（改完必须 sync 才对 Agent 生效）
-$WQ_PY tools/sync_skills.py --check    # 仓库与全部安装位零漂移
+$WQ_PY tools/sync_skills.py            # 仓库 → 受维护的安装位（已关闭项除外；改完必须 sync 才对 Agent 生效）
+$WQ_PY tools/sync_skills.py --check    # 仓库与受维护安装位零漂移
 $WQ_PY tools/skill_lint.py             # 命令 / 子命令 / 必填参数 / MCP 签名 / 表达式过闸 / .env 读取 / 裸 python 棘轮
 ```
 

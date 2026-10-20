@@ -167,9 +167,10 @@
   是 stdio 时代遗留，可安全丢弃。**HTTP 模式无认证，只绑回环**（`tools/start_wq_mcp.py` 的 `MCP_HOST`
   缺省 `127.0.0.1`），别改成 `0.0.0.0`——`wq-brain-http` 持平台凭据。
   验证手段：`python tools/mcp_ping.py`（只读探针，走 HTTP 客户端，不起进程）。
-- **skill 多目标单向同步（2026-09-10 起；2026-10-03 加 cline/agents 后 6 个安装位）**：仓库 `Claude/skills/` 是源，**全部安装位**是派生物。
+- **skill 多目标单向同步（2026-09-10 起；2026-10-20 关闭 Cursor 安装位）**：仓库 `Claude/skills/` 是源，**全部受维护的安装位**是派生物。
   改 skill 只改仓库副本，然后 `python tools/sync_skills.py`（自动枚举全部已存在的安装位：
-  claude / codex / **cline / agents** / qoder-cn / cursor / workbuddy，逐个同步 + 逐个校验）；`--check` 模式由
+  claude / codex / **cline / agents** / qoder-cn / workbuddy；`~/.cursor/skills` 由用户 2026-10-20 裁定不再维护，
+  登记在 `tools/sync_skills.py::DISABLED_INSTALL_ROOTS`，自动枚举与 `--target` 均拒绝），逐个同步 + 逐个校验；`--check` 模式由
   `tests/unit/07_docs_skills/test_audit_fixes.py::test_sync_skills_reports_no_drift` 守护（多目标断言）。
   历史教训：① 安装位曾落后仓库两周（make-some-gem 停在 08-22、仓库已 09-05）；
   ② 2026-09-10 审计发现旧版脚本只同步**首个**目标（`resolve_install_root()`），致使

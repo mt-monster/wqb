@@ -69,7 +69,7 @@ kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 4. 全仓改写字符串引用：`tools/<x>.py` → `tools/<theme>/<x>.py`（AGENTS.md、docs、reports、
    `Claude/skills/**`、`src/wqb/workflow/registry.py` 与节点体里的子进程命令）。
 5. 若有 `sys.path.insert(... 'tools')` 的导入方：改成指向新目录，或改走 `wqb` 包导入。
-6. `python tools/sync_skills.py`（把 skills 内的路径改动推到 6 个安装位）+ 更新本索引行与
+6. `python tools/sync_skills.py`（把 skills 内的路径改动推到受维护的安装位；当前 5 个物理目标）+ 更新本索引行与
    `THEMES.json` 的 `status`，并把该文件从 `audit_structure_baseline.json` 的
    `s11_tools_top_level` 移出（S11 会点名提醒）。
 7. 验证：`python tools/audit_node_registration.py`（若涉节点 argv）→ `python -m pytest tests/ -x`

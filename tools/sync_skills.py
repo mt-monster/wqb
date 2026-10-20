@@ -14,17 +14,20 @@
 2026-09-10 审计补强：此前本脚本**只同步单个目标**（`resolve_install_root()` 取
 首个命中），于是 `~/.codex/skills` / `~/.workbuddy/skills` 等不在同步链上的宿主
 反复分叉——09-08 修过一次，09-10 又复发（ra-pipeline 落后 67 行）。现改为**多目标
-同步**：自动枚举全部已存在的安装位，逐个同步 + 逐个校验。
+同步**：自动枚举全部受维护的安装位，逐个同步 + 逐个校验。
 
     python tools/sync_skills.py --check     # 只报告漂移，任一目标有漂移则 exit 1（CI/单测用）
     python tools/sync_skills.py --dry-run   # 打印将要执行的动作，不写盘
-    python tools/sync_skills.py             # 同步全部安装位
-    python tools/sync_skills.py --target ~/.codex/skills --target ~/.cursor/skills
+    python tools/sync_skills.py             # 同步全部安装位（已关闭项除外）
+    python tools/sync_skills.py --target ~/.codex/skills --target ~/.workbuddy/skills
     python tools/sync_skills.py --prune-orphans            # 只列出安装位孤儿（仓库没有的顶层条目）
     python tools/sync_skills.py --prune-orphans --apply    # 归档孤儿到 attic/sync_orphans_<date>/
 
 方向是单向的：**仓库是源，安装位是派生物**。安装位的本地修改会被覆盖，
 要改 skill 请改仓库副本再同步。
+
+2026-10-20 用户裁定不再维护 `~/.cursor/skills`：登记在 `DISABLED_INSTALL_ROOTS`，
+自动枚举与 `--target` 都会拒绝。只清空目录内容不够 —— 下一次同步会回填。
 
 ⚠ 单向同步**不会传播删除**：仓库里删掉一个 skill，安装位的副本会原地留下，
 被 `prune_orphans` 分成 protected / user-native / 可归档三类。其中 user-native 的
@@ -60,6 +63,14 @@ _bootstrap_src()
 from wqb.paths import find_repo_root  # noqa: E402
 REPO_ROOT = find_repo_root(__file__)
 SOURCE = REPO_ROOT / "Claude" / "skills"
+
+#: 明确不再维护的安装位 → 关闭原因。只影响**同步面**，不改
+#: `wqb.workflow._common._skill_roots()` 的运行时解析顺序（目录不存在时自然跳过）。
+#: 2026-10-20 用户裁定：不需要 Cursor 下的 skill 副本。只清空目录内容不够 ——
+#: 实测清空 6 分钟后被一次 `sync_skills.py` 回填 51 项；必须在同步源头关掉。
+DISABLED_INSTALL_ROOTS = {
+    Path(os.path.expanduser("~/.cursor/skills")).resolve(): "用户 2026-10-20 指定不再维护 Cursor 安装位",
+}
 
 #: 不参与同步的产物/缓存（与 .gitignore 的 Claude/skills 规则同口径）
 IGNORE_DIRS = {"__pycache__", "outputs", "output_report", "processed_templates", ".git"}
@@ -150,20 +161,39 @@ def _is_repo_root_or_ancestor(candidate: Path) -> bool:
     return _is_repo_related(candidate)
 
 
+def _disabled_reason(candidate: Path) -> Optional[str]:
+    """安装位是否被显式关闭（同步面）。关闭项仍可被运行时解析，但不再写入。
+
+    `--target ~/.cursor/skills` 这种波浪号写法也要拦住 —— 不展开会变成字面量
+    `~` 目录，既匹配不到登记项，又可能真在 CWD 下建出一个 `~` 目录。
+    """
+    try:
+        resolved = candidate.expanduser().resolve()
+    except OSError:
+        return None
+    return DISABLED_INSTALL_ROOTS.get(resolved)
+
+
 def resolve_install_roots() -> List[Path]:
-    """全部已存在的 skill 安装位（按解析顺序，去重，排除仓库源自身）。
+    """全部已存在的 skill 安装位（按解析顺序，去重，排除仓库源自身与已关闭项）。
 
     与 `wqb.workflow._common._skill_roots()` 同源，避免"同步到一个没人读的
     目录"。2026-09-10 起返回**列表**（多目标），不再只取首个命中。
+    `DISABLED_INSTALL_ROOTS` 中的安装位不参与同步（用户显式裁定不再维护）。
     """
     source_resolved = SOURCE.resolve()
-    seen, ordered, blocked, aliased = set(), [], [], []
+    seen, ordered, blocked, aliased, disabled = set(), [], [], [], []
     for candidate in _candidate_roots():
         try:
             resolved = candidate.resolve()
         except OSError:
             continue
         if resolved == source_resolved:
+            continue
+        reason = DISABLED_INSTALL_ROOTS.get(resolved)
+        if reason:
+            if candidate.is_dir():
+                disabled.append(f"{candidate}（{reason}）")
             continue
         if resolved in seen:
             # 不是"少同步了一个"，是**同一个物理目录的另一个入口**：Windows 目录
@@ -185,6 +215,9 @@ def resolve_install_roots() -> List[Path]:
     if aliased:
         print(f"[sync_skills] 去重 {len(aliased)} 个安装位入口（junction / 同物理目录，"
               f"已由前序目标覆盖）：{aliased}", file=sys.stderr)
+    if disabled:
+        print(f"[sync_skills] 跳过 {len(disabled)} 个已关闭的安装位（不同步）：{disabled}",
+              file=sys.stderr)
     return ordered
 
 
@@ -465,7 +498,9 @@ def main() -> int:
         return 2
 
     if a.target:
-        targets = [Path(t) for t in a.target]
+        # 先展开 `~`：PowerShell 不会替原生命令展开，字面量 `~` 会被当成仓库内
+        # 相对路径（误报「与仓库相关」）或真的在 CWD 下建目录。
+        targets = [Path(t).expanduser() for t in a.target]
         # 显式 --target 同样硬拦：把仓库根/仓库内子目录交给 --target 与设错 WQ_SKILLS_DIR
         # 是同一个事故，而且手滑一次就把 51 个技能目录铺进根层或仓库内
         # （2026-10-14 / 2026-10-17 两次复发实测形态，第三次是仓库内子目录）。
@@ -474,6 +509,15 @@ def main() -> int:
             print(f"[sync_skills] 拒绝执行：--target 里有与仓库相关的路径 {hit}；"
                   f"技能源就是 {SOURCE}，往仓库根或仓库内同步等于在工作树里复制整棵树（S17 会判红）",
                   file=sys.stderr)
+            return 2
+        disabled_hit = []
+        for t in targets:
+            reason = _disabled_reason(t)
+            if reason:
+                disabled_hit.append(f"{t}（{reason}）")
+        if disabled_hit:
+            print(f"[sync_skills] 拒绝执行：--target 里有已关闭的安装位 {disabled_hit}；"
+                  f"若确需恢复，先删除 DISABLED_INSTALL_ROOTS 中的登记", file=sys.stderr)
             return 2
     else:
         targets = resolve_install_roots()
@@ -497,7 +541,7 @@ def main() -> int:
             print(f"[sync_skills] 共 {total_drift} 个文件漂移，涉及 {len(drifted)} 个安装位；"
                   f"跑 `python tools/sync_skills.py` 同步", file=sys.stderr)
             return 1
-        print("[sync_skills] 全部安装位与仓库一致")
+        print("[sync_skills] 全部受维护安装位与仓库一致")
         return 0
 
     total = 0

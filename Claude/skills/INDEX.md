@@ -34,7 +34,7 @@
 ## 权威副本与生效方式
 
 - **仓库 `Claude/skills/` = 编辑权威**（git 跟踪、单一可审）：所有新增 / 修改只改这里。
-- **各宿主安装位 = 运行时优先**：Agent 实际加载、脚本实际解析的是安装位（`~/.claude/skills`、`~/.codex/skills`、`~/.cursor/skills`、`~/.workbuddy/skills` 等；`~/.qoder-cn/skills` 是指向 `~/.claude/skills` 的 Junction），仓库副本只在解析链**最末**兜底。
+- **各宿主安装位 = 运行时优先**：Agent 实际加载、脚本实际解析的是安装位（`~/.claude/skills`、`~/.codex/skills`、`~/.workbuddy/skills` 等；`~/.qoder-cn/skills` 是指向 `~/.claude/skills` 的 Junction；`~/.cursor/skills` 已于 2026-10-20 关闭，不再同步），仓库副本只在解析链**最末**兜底。
 - 所以 **改完必须 `$WQ_PY tools/sync_skills.py`（`--check` 断言零漂移）才对 Agent 生效**；一旦漂移，运行时读到的是安装位那份，不是你刚改的那份。流程写在 AGENTS.md「skill 多目标单向同步」。
 - 解析顺序以 `src/wqb/workflow/_common.py::_skill_roots()` 为准（`tools/wave_gate.py` 同序）：`WQ_SKILLS_DIR`（脚本级另有 `WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR`）> Claude 安装位 > `~/.claude/skills` > `~/.codex/skills` > 历史 Agent 位 > 仓库 `Claude/skills`（兜底）。
 - 已归档 / 废弃的位置（项目内 `_unpacked_*` 扩展区、`cnhkmcp/untracked/skills` 僵尸副本）的处置记录在 CHANGELOG——**禁止调用**。
