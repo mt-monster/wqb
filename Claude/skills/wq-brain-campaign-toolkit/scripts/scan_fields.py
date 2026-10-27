@@ -27,7 +27,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import (CampaignContext, add_campaign_arg, load_credentials)
-from _lib.api import Api
+from _lib.api import Api, paginate_all
 from _lib.wqb_store import save_catalog
 from _lib.field_catalog_cache import get_cache_manager
 
@@ -121,20 +121,16 @@ def _triage_gate(region, dataset, conn=None):
 
 
 def fetch_fields(api, settings, dataset, limit=None):
-    """分页拉取指定 dataset 的全部字段。过滤必须 dataset.id=<id>（裸 dataset= 被静默忽略）。"""
+    """分页拉取指定 dataset 的全部字段（all-or-error）。
+
+    过滤必须 dataset.id=<id>（裸 dataset= 被静默忽略）。返回 paginate_all 的
+    结果 dict；短于平台 count 即抛 PaginationError，绝不再返回静默截断的字段集
+    （2026-10-18 analyst7 画像 299/1111 的根因就是无完整性校验的循环）。
+    """
     base = ("/data-fields?instrumentType={instrumentType}&region={region}"
-            "&delay={delay}&universe={universe}&dataset.id={ds}&limit={pg}").format(
-                pg=PAGE, ds=dataset, **settings)
-    out, offset = [], 0
-    while True:
-        j = json.load(api.get(f"{base}&offset={offset}"))
-        results = j.get("results", [])
-        out.extend(results)
-        if limit and len(out) >= limit:
-            return out[:limit]
-        offset += len(results)
-        if not results or offset >= j.get("count", 0):
-            return out
+            "&delay={delay}&universe={universe}&dataset.id={ds}").format(
+                ds=dataset, **settings)
+    return paginate_all(api, base, limit=PAGE, max_items=limit)
 
 
 # 2026-09-04 新增：字段类型自动标注 + 算子类别推荐
@@ -188,7 +184,7 @@ def _recommend_operators(field_type, data_type="MATRIX"):
     return base_ops
 
 
-def build_catalog(settings, dataset, raw):
+def build_catalog(settings, dataset, raw, pagination=None):
     types = collections.Counter((f.get("type") or "UNKNOWN") for f in raw)
     data_type = types.most_common(1)[0][0] if types else "UNKNOWN"
     fields = [{
@@ -218,6 +214,11 @@ def build_catalog(settings, dataset, raw):
         "type_distribution": dict(types),
         "field_type_distribution": dict(field_type_dist),  # 2026-09-04 新增
         "field_count": len(fields),
+        # 完整性凭据（2026-10-20）：platform_count 是平台声明的总数，
+        # complete=False / truncated_reason 非空表示这不是完整目录。
+        "platform_count": (pagination or {}).get("platform_count"),
+        "complete": (pagination or {}).get("complete"),
+        "truncated_reason": (pagination or {}).get("truncated_reason"),
         "fetched_at": datetime.datetime.now().isoformat(timespec="seconds"),
         "fields": fields,
     }
@@ -293,19 +294,29 @@ def main():
     e, pw = load_credentials()
     api = Api()
     api.login(e, pw)
-    raw = fetch_fields(api, ctx.settings, a.dataset, limit=a.limit)
+    pagination = fetch_fields(api, ctx.settings, a.dataset, limit=a.limit)
+    raw = pagination["items"]
     if a.zero_comp:
         raw = [f for f in raw if (f.get("userCount") or 0) == 0]
-    cat = build_catalog(ctx.settings, a.dataset, raw)
+    cat = build_catalog(ctx.settings, a.dataset, raw, pagination=pagination)
     
-    print(f"dataset={a.dataset} fields={cat['field_count']} data_type={cat['data_type']} "
-          f"types={cat['type_distribution']}", file=sys.stderr)
+    print(f"dataset={a.dataset} fields={cat['field_count']} "
+          f"platform_count={cat['platform_count']} complete={cat['complete']} "
+          f"data_type={cat['data_type']} types={cat['type_distribution']}",
+          file=sys.stderr)
     
     if a.stdout:
         print(json.dumps(cat, ensure_ascii=False, indent=1))
         return
     
-    # 3. 保存到缓存和 DB
+    # 3. 保存到缓存和 DB（只收完整目录）
+    # catalog_* / field_catalog 是下游 S1/S2 的权威字段源；把 --limit 冒烟
+    # 或截断结果写进去，等于让 299/1111 这类画像继续误导选字段。
+    if not pagination.get("complete"):
+        print(f"[warn] 拉取不完整（platform_count={pagination.get('platform_count')}, "
+              f"truncated_reason={pagination.get('truncated_reason')}），"
+              f"已跳过落库/缓存；去掉 --limit 后重跑可得到完整目录。", file=sys.stderr)
+        return
     save_catalog(ctx, cat)
     cache_manager.save_catalog_cache(a.dataset, cat)
     print(f"catalog -> db fields/{ctx.region}/{a.dataset} ({cat['field_count']}) [fresh]")

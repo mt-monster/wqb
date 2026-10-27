@@ -328,3 +328,37 @@
 
 - s58（明星字段 W3/W10/rank/country + last_half backfill×5）、s59（明星字段 × TOPDIV3000/TOP3000/MINVOL10M/SUBINDUSTRY/decay4/decay12/trunc0.08 + 3 新机制探针；后 5 组撞 429 待重发）。
 - 破 prod 的三条路（按优先级）：① 窗口谷扫描（W 连续扫描找 prod 局部最小）；② 换 universe（不同名字集 ⇒ 不同 PnL）；③ 换字段语义（kurtosis/modulo10/size_to_volume 族探针在飞）。
+
+---
+
+# 第四轮：prod 墙归因 + intraday_pv_feats 收官（2026-10-26）
+
+## 16 ★ 归因结论（按「合格候选处置纪律」执行）
+
+用 `compute_mutual_correlation`（本地日收益相关，不占队列）对自持 ACTIVE 复现平台 prod 值，**误差 <0.001**：
+
+| 候选 | 本地 vs 对手 | 平台 prod | 对手（自家 Q3 提交） |
+|---|---|---|---|
+| YPxrGndM | **0.8563** ↔ gJboYLRl | 0.8563 | gJboYLRl（corr_last_trade_price_with_volume 反转） |
+| d5KXzqbg | **0.8154** ↔ mLmxKN12 | 0.8158 | mLmxKN12（mean_high_price_return_30m_pre_close_2） |
+| vROqo58r | 0.8143 ↔ mLmxKN12 | 0.8145 | 同上 |
+| RRA3vNje | 0.7767 ↔ mLmxKN12 | 0.7771 | 同上 |
+
+⇒ **prod 墙 100% 来自自家两颗 Q3 alpha**（le3E3nM7 仅 0.17–0.27，不构成障碍）。6 颗 RA 全净候选彼此自相关 **0.94–0.99（同一席位）** ⇒ 该通道已闭。
+**判定**：底层信号被自家占位 ⇒ 按纪律「换信息源」，不再调窗口。
+
+## 17 新通道探针（s62，10 结构）—— 全灭
+
+| 字段族 | 最优 S | 判定 |
+|---|---|---|
+| `max_trade_volume_60m_pre_close_2`（量激增，W5/W10） | 0.52 / 0.57 | 死（三区全崩） |
+| `avg_price_modulo_10_ratio_*`（价格取整） | −0.58 | 死（反向 0.58） |
+| `avg_ask/bid_size_to_volume_ratio_first_half`（订单规模） | 0.49 / 0.46 | 死 |
+| `kurtosis_*_interval`（分布形态） | 0.26 / 0.06 | 死 |
+| `max_bid_ask_price_ratio_daily`（价差） | −0.52 | 死 |
+| `corr_volume_with_ask_price_last_half` W20 | 2.02（F0.56/EMEA0.34） | 两闸，缺口过大 |
+
+## 18 intraday_pv_feats 收官判定（累计 ~120 结构）
+
+**有效通道仅 2 条，且全部被自家 Q3 alpha 占位**：① 价量相关反转（gJboYLRl）② 盘前 30/60m 收益路径（mLmxKN12）。其余 8 族判死（slippage corr / post_open / last_half+backfill / ts_delta / 量激增 / 取整 / 订单规模 / 峰度 / 价差）。
+⇒ **本数据集对新增 GLB regular 已无可挖通道**，按「确实无计可施」条款切换数据集。

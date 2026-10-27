@@ -186,18 +186,25 @@ def test_platform_sync_payload_keeps_local_backtest_values(store):
 
 def test_backtest_row_keeps_known_metrics_and_updates_ra_only_when_known(store):
     store.upsert_backtest_rows("USA", "w1", [{**HARVEST_ROW, "ra_failed_checks": ["LOW_2Y_SHARPE"]}], dataset="dsA")
-    store.upsert_backtest_rows("USA", "w1", [REVIEW_ROW])                 # failed_checks=[] → 这一行说得清：RA 全过
+    store.upsert_backtest_rows("USA", "w1", [REVIEW_ROW])                 # failed_checks=[] → 这一行**说不清** RA
     b = _bt(store)
     assert (b["returns"], b["drawdown"], b["long_count"], b["short_count"], b["pnl"], b["book_size"],
             b["risk_neutralized_sharpe"]) == (0.21, 0.04, 310, 290, 1.2e6, 2e7, 1.4)   # 此前：全部 NULL
     assert (b["sharpe"], b["two_year_sharpe"]) == (2.01, 1.9)
-    assert b["ra_failed_checks"] is None                                  # 已知全过：旧名单清掉
+    # 2026-10-23（P0-3）：这一行只带 failed_checks=[] —— 它**说不出** RA 是否全过
+    #（RA 项的 WARNING / ERROR 不在 failed_checks 里）⇒ 不动这一列，保留上一次说得清的结论。
+    # 此前这里写 NULL，把收批行记下的 LOW_2Y_SHARPE 抹掉了。
+    assert b["ra_failed_checks"] == '["LOW_2Y_SHARPE"]'
     assert "returns" not in json.loads(b["payload_json"])                 # payload 仍是最近一次入库的原始行
+    # 这一行说得清（RA 项 FAIL）⇒ 覆盖
     store.upsert_backtest_rows("USA", "w1", [{**REVIEW_ROW, "failed_checks": ["LOW_SHARPE"]}])
     assert _bt(store)["ra_failed_checks"] == '["LOW_SHARPE"]'
+    # 这一行说得清（RA 全过：调用方给了空名单）⇒ 覆盖成 '[]'（**已知**全过，不是 NULL）
+    store.upsert_backtest_rows("USA", "w1", [{**REVIEW_ROW, "ra_failed_checks": []}])
+    assert _bt(store)["ra_failed_checks"] == "[]"
     unknown = {k: v for k, v in REVIEW_ROW.items() if k != "failed_checks"}
     store.upsert_backtest_rows("USA", "w1", [unknown])                    # 说不清 RA → 不动
-    assert _bt(store)["ra_failed_checks"] == '["LOW_SHARPE"]'
+    assert _bt(store)["ra_failed_checks"] == "[]"
 
 
 def test_new_rows_keep_their_defaults(store):

@@ -1,0 +1,924 @@
+{
+ "dataset": "pv13",
+ "region": "GLB",
+ "universe": "TOPDIV3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "VECTOR": 8,
+  "MATRIX": 24,
+  "GROUP": 24
+ },
+ "field_type_distribution": {
+  "signal": 56
+ },
+ "field_count": 56,
+ "platform_count": 56,
+ "complete": true,
+ "truncated_reason": null,
+ "fetched_at": "2026-10-27T16:30:44",
+ "fields": [
+  {
+   "id": "business_partnership_category",
+   "type": "VECTOR",
+   "coverage": 0.7288,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Type of strategic partnership between companies (e.g., joint venture, licensing).",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "company_competitor_entity_2",
+   "type": "VECTOR",
+   "coverage": 0.4027,
+   "userCount": 48,
+   "alphaCount": 52,
+   "description": "Entity identified as a competitor to the company.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "company_customer_entity",
+   "type": "VECTOR",
+   "coverage": 0.4689,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Entity identified as a customer of the company.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "company_partner_entity",
+   "type": "VECTOR",
+   "coverage": 0.7288,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Entity identified as a strategic partner of the company.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "customer_revenue_share_percent",
+   "type": "VECTOR",
+   "coverage": 0.4689,
+   "userCount": 19,
+   "alphaCount": 19,
+   "description": "Percentage of company revenue attributed to a specific customer.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "eqy_minvol_company_relationship_type",
+   "type": "VECTOR",
+   "coverage": 0.8442,
+   "userCount": 21,
+   "alphaCount": 23,
+   "description": "Type of business relationship between two companies in the minimum volatility equity grouping.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "eqy_minvol_sector_overlap_count",
+   "type": "VECTOR",
+   "coverage": 0.8442,
+   "userCount": 66,
+   "alphaCount": 81,
+   "description": "Number of sectors shared by two companies in the minimum volatility equity grouping.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "eqy_minvol_terminal_focus_overlap_count",
+   "type": "VECTOR",
+   "coverage": 0.8442,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "Number of terminal sectors where both companies are focused in the minimum volatility equity grouping.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "hierarchy_grouping_sector_name_min10_f2_g4",
+   "type": "MATRIX",
+   "coverage": 0.3549,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Sector name in the hierarchy grouping for the specified configuration.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "hierarchy_grouping_sector_name_min10_f3_g2",
+   "type": "MATRIX",
+   "coverage": 0.3549,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector name in the hierarchy grouping for the specified configuration.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "hierarchy_grouping_sector_name_min2_f3_g2",
+   "type": "MATRIX",
+   "coverage": 0.3549,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Sector name in the hierarchy grouping for the specified configuration.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_10_f2_g3_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 0.999,
+   "userCount": 22,
+   "alphaCount": 25,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_10_f2_g4_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 0.999,
+   "userCount": 19,
+   "alphaCount": 21,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_10_f3_g2_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 0.9991,
+   "userCount": 18,
+   "alphaCount": 18,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_10_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 52,
+   "alphaCount": 70,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_10_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 21,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_1l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9403,
+   "userCount": 96,
+   "alphaCount": 132,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_20_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 29,
+   "alphaCount": 38,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_2_f3_g2_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 0.9991,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_2_f4_g3_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 0.999,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_2_minvol_1m_all_delay_1_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 35,
+   "alphaCount": 42,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_2_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 20,
+   "alphaCount": 23,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_2_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 26,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_2l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9403,
+   "userCount": 103,
+   "alphaCount": 157,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_3l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9403,
+   "userCount": 102,
+   "alphaCount": 151,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_4l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9403,
+   "userCount": 29,
+   "alphaCount": 37,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_52_minvol_1m_all_delay_1_sector",
+   "type": "GROUP",
+   "coverage": 0.9997,
+   "userCount": 98,
+   "alphaCount": 142,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_52_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 0.9991,
+   "userCount": 157,
+   "alphaCount": 232,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_5_f3_g2_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 0.9991,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_5_f3_g2_sector",
+   "type": "GROUP",
+   "coverage": 0.3549,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_5_minvol_1m_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 19,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_5l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9403,
+   "userCount": 22,
+   "alphaCount": 32,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_6l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9403,
+   "userCount": 45,
+   "alphaCount": 55,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_com_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.7389,
+   "userCount": 108,
+   "alphaCount": 160,
+   "description": "the PageRank of competitors",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_com_rk_au",
+   "type": "MATRIX",
+   "coverage": 0.7389,
+   "userCount": 208,
+   "alphaCount": 364,
+   "description": "the HITS authority score of competitors",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_h_min2_sector",
+   "type": "GROUP",
+   "coverage": 0.3551,
+   "userCount": 65,
+   "alphaCount": 73,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_h_min52_sector",
+   "type": "MATRIX",
+   "coverage": 0.3549,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_hierarchy_min10_sector",
+   "type": "GROUP",
+   "coverage": 0.3551,
+   "userCount": 29,
+   "alphaCount": 30,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_new_1l_scibr",
+   "type": "MATRIX",
+   "coverage": 0.7969,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_new_2l_scibr",
+   "type": "MATRIX",
+   "coverage": 0.7969,
+   "userCount": 15,
+   "alphaCount": 15,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_new_3l_scibr",
+   "type": "MATRIX",
+   "coverage": 0.7969,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_new_4l_scibr",
+   "type": "MATRIX",
+   "coverage": 0.7969,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_new_5l_scibr",
+   "type": "MATRIX",
+   "coverage": 0.7969,
+   "userCount": 49,
+   "alphaCount": 55,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_new_6l_scibr",
+   "type": "MATRIX",
+   "coverage": 0.7969,
+   "userCount": 16,
+   "alphaCount": 16,
+   "description": "grouping fields",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ompetitor_graphrank_auth_rank",
+   "type": "MATRIX",
+   "coverage": 0.7318,
+   "userCount": 44,
+   "alphaCount": 49,
+   "description": "the HITS authority score of competitors",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ompetitor_graphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.3809,
+   "userCount": 27,
+   "alphaCount": 32,
+   "description": "the HITS hub score of competitors",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ompetitor_graphrank_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.77,
+   "userCount": 41,
+   "alphaCount": 48,
+   "description": "the PageRank score of competitors",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ompetitorgraphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.7389,
+   "userCount": 122,
+   "alphaCount": 231,
+   "description": "the HITS hub score of competitors",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_reverebasedatamap_2",
+   "type": "MATRIX",
+   "coverage": 0.9967,
+   "userCount": 45,
+   "alphaCount": 65,
+   "description": "Mapping data",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_reveremap",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Mapping data",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ustomer_graphrank_auth_rank",
+   "type": "MATRIX",
+   "coverage": 0.7959,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "the HITS authority score of customers",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ustomer_graphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.4791,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "the HITS hub score of customers",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ustomer_graphrank_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.8858,
+   "userCount": 18,
+   "alphaCount": 18,
+   "description": "the PageRank score of customers",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ustomergraphrank_auth_rank",
+   "type": "MATRIX",
+   "coverage": 0.7947,
+   "userCount": 41,
+   "alphaCount": 63,
+   "description": "the HITS authority score of customers",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ustomergraphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.7947,
+   "userCount": 63,
+   "alphaCount": 156,
+   "description": "the HITS hub score of customers",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pv13_ustomergraphrank_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.7947,
+   "userCount": 38,
+   "alphaCount": 62,
+   "description": "the PageRank of customers",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  }
+ ],
+ "cache_metadata": {
+  "cached_at": "2026-10-27T16:30:44",
+  "ttl_seconds": 86400,
+  "source": "platform_api"
+ },
+ "exported_from_db_at": "2026-10-27T16:38:07"
+}

@@ -465,6 +465,46 @@ def test_live_round_counts_search_failures_and_successes(monkeypatch):
     assert (st2["searches_ok"], st2["hits"], st2["reads_ok"], st2["read_errors"]) == (1, 3, 1, 2)
 
 
+class _ResolveFr(_SearchFr):
+    """搜索结果只有 click_href（无 post_id），走 resolve_id 解析的形态。"""
+
+    def __init__(self, resolve_result, posts=None):
+        super().__init__(hits=[{"click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?d=abc"}],
+                         posts=posts or {})
+        self._resolve_result = resolve_result
+        self.seen_pids = []
+
+    def resolve_id(self, session, click_href):
+        if isinstance(self._resolve_result, Exception):
+            raise self._resolve_result
+        return self._resolve_result
+
+    def read_post(self, session, pid):
+        self.seen_pids.append(pid)
+        return super().read_post(session, pid)
+
+
+def test_click_href_resolution_unwraps_resolve_id_tuple(monkeypatch):
+    """2026-10-26 事故回归：resolve_id 返回 (id, is_comment, url) 三元组，
+    旧版把它整个当 pid 拼进读帖 URL ⇒ 37/37 读帖失败（read_failed）。"""
+    monkeypatch.setattr(fr.time, "sleep", lambda s: None)
+    fake = _ResolveFr(("12345", False, "https://support.worldquantbrain.com/community/posts/12345"),
+                      posts={"12345": {"title": "t", "body": LONG_BODY}})
+    st = {}
+    out = fr.live_search_round(None, fake, "q", 1, 5, set(), stats=st)
+    assert fake.seen_pids == ["12345"], "read_post 必须收到字符串 id，不能是 resolve_id 的返回值本身"
+    assert [p["post_id"] for p in out] == ["12345"]
+    assert (st["reads_ok"], st["read_errors"]) == (1, 0)
+
+
+def test_resolve_post_id_returns_none_on_failure(monkeypatch):
+    assert fr._resolve_post_id(None, _ResolveFr(None), "https://x/click") is None
+    assert fr._resolve_post_id(None, _ResolveFr((None, False, None)), "https://x/click") is None
+    assert fr._resolve_post_id(None, _ResolveFr(RuntimeError("boom")), "https://x/click") is None
+    assert fr._resolve_post_id(None, _ResolveFr(("9", False, "u")), "") is None
+
+
+
 def test_control_probe_helper():
     assert fr._control_probe(None, _SearchFr(hits=[{"post_id": "x"}])) is None
     assert fr._control_probe(None, _SearchFr(hits=[]))[0] == "control_probe_failed"

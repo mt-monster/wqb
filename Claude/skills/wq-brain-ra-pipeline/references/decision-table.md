@@ -46,9 +46,9 @@
 | 步骤 | 动作 | 通过条件 |
 | --- | --- | --- |
 | 1 | test robust（不同 universe / neutralization 重跑） | 各档稳健、无塌陷 |
-| 2 | 过拟合测试（2Y sharpe） | `LOW_2Y_SHARPE` 过**平台线**（`config.PLATFORM_CHECK_LINES["low_2y_sharpe_min"]`；平台把 `LOW_2Y_SHARPE` / `LOW_SHARPE` / `LOW_FITNESS` 的 WARNING 视同 FAIL） |
+| 2 | 过拟合测试（2Y sharpe） | `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`（**两载体**，平台按 alpha 代际只发其一；同义见 `wqb.config.RA_2Y_NAMES`）过**平台线**（`config.PLATFORM_CHECK_LINES["low_2y_sharpe_min"]`；平台把这两个 2Y 载体 / `LOW_SHARPE` / `LOW_FITNESS` 的 WARNING 视同 FAIL） |
 | 3 | 相关性矩阵 `compute_mutual_correlation`（候选集内两两） | 彼此 < 0.5（内部线） |
-| 4 | 硬闸核查：`get_alpha_details` 的 `is.checks` + 本地 SELF / PPAC（PPAC = Power Pool Alpha Correlation） | **平台线**：PROD < 0.7、`LOW_2Y_SHARPE` 过线、CW（`CONCENTRATED_WEIGHT`）必过；**内部线**：SELF < 0.5（平台线为 0.7，别互相顶替） |
+| 4 | 硬闸核查：`get_alpha_details` 的 `is.checks` + 本地 SELF / PPAC（PPAC = Power Pool Alpha Correlation） | **平台线**：PROD < 0.7、`LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`（两载体）过线、CW（`CONCENTRATED_WEIGHT`）必过；**内部线**：SELF < 0.5（平台线为 0.7，别互相顶替） |
 | 5 | Failed-count 清零后才可 `set_alpha_properties` 设属性（口径见 [`webdatascope-failed-gates.md`](webdatascope-failed-gates.md)） | — |
 | 6 | 入待提交队列：**独立 SQL 表 `submit_ready`**（`src/wqb/store/submit_queue.py` 是单一事实源；CLI `tools/submit_queue.py`；收批自动入队、提交自动退役）——**不是** `ledger_kv` 键，也不再写战役 state json | — |
 

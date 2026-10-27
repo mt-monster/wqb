@@ -58,7 +58,7 @@ last_verified: 2026-10-18
 |---|---|---|
 | instrumentType | EQUITY | settings.json |
 | region | ASI | settings.json |
-| universe | MINVOL1M | settings.json |
+| universe | TOP500 | settings.json |
 | delay | 1 | settings.json |
 | neutralization | SUBINDUSTRY | settings.json |
 | decay | 6 | settings.json |

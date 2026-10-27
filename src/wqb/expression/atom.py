@@ -1,13 +1,29 @@
 # -*- coding: utf-8 -*-
 """atom.py — WorldQuant BRAIN "atom / combined" 信号分类（纯函数，单一口径源）。
 
-平台 "Atom Alpha" = 单数据集 alpha：表达式引用的所有**数据字段**来自同一 dataset。
-基础行情字段（returns/volume/close…）本身是"市场"这一个数据源，计为单一伪数据集
-``BASE_MARKET``；分组键（industry/sector/market…）中性、不计数。一旦出现第二个数据集
-的字段即判 combined。
+口径锚定平台官方文档 **`single-dataset-alphas`**（"❗ Single Dataset Alphas"，
+lastModified 2026-09-18；平台原文，2026-10-26 复核）：
 
-判定 = 抽取数据字段 → 逐字段解析数据集 → distinct 数据集数 ≤1 为 atom，≥2 为 combined，
-存在未解析字段为 unknown。
+1. 「Single Dataset Alphas must utilize data fields from **only one dataset**, with
+   exceptions for the following **6 permitted grouping fields** – country, exchange,
+   market, sector, industry and subindustry.」
+2. 「The use of **`inst_pnl()` and `convert()`** operators is considered as utilizing
+   the **pv1** dataset since these operators rely on pv1 data for calculations.」
+
+⇒ 「ATOM」是论坛对官方 Single Dataset Alpha 的简称（MH33574《四类 Alpha》），
+   **判据只有两条：非豁免字段的 dataset id 唯一 + 无 inst_pnl/convert**。
+
+实现要点（2026-10-26 纠正，此前两处与官方原文不符）：
+  a. 基础行情字段（returns/volume/close/cap/vwap…）属于 **pv1 数据集**，此前记为伪数据集
+     ``BASE_MARKET`` ⇒ 同一个 pv1 数据集被数成两个，``pv1 字段 + returns`` 会被误判 combined。
+     现统一归到 ``pv1``（保留 ``BASE_MARKET_NAME`` 旧名作别名）。
+  b. ``inst_pnl`` / ``convert`` 此前完全不检查 ⇒ 非 pv1 集上用了它们仍被判 atom（假阳）。
+     现按官方原文计为引用 pv1。
+  c. 豁免分组字段收窄为官方那 6 个（此前还含 region/asset/group/supersector 等自造键；
+     若某数据集恰有同名字段，会被误当豁免 ⇒ 假阳）。
+
+判定 = 抽取数据字段 → 逐字段解析数据集 → distinct 数据集数 ≤1 且无 pv1 算子 ⇒ atom；
+≥2 ⇒ combined；存在未解析字段 ⇒ unknown（fail-closed，不猜）。
 
 抽取器三处关键修正（2026-09-30 实证）——此前把非字段 token 误判为字段：
   1. 剥字符串字面量：``driver="gaussian"`` / ``buckets="2,5,6,7,10"`` 里的值不是字段。
@@ -24,8 +40,10 @@ from __future__ import annotations
 import re
 from typing import Callable, Iterable
 
-#: 基础行情 / 参考字段 —— 平台始终可用，归属单一伪数据集 BASE_MARKET，参与计数。
-BASE_MARKET_NAME = "BASE_MARKET"
+#: 基础行情 / 参考字段 —— 官方口径属 **pv1** 数据集（`returns`/`close`/`cap`… 都是 pv1 字段）。
+#: 名字仍是数据集 id，参与 distinct 计数；旧名 ``BASE_MARKET`` 保留为别名以免外部引用断裂。
+PV1_DATASET = "pv1"
+BASE_MARKET_NAME = PV1_DATASET
 BASE_MARKET_FIELDS = frozenset("""
 returns volume close open high low cap price prc
 vwap bid ask bid_price ask_price mid_price spread
@@ -35,10 +53,12 @@ open_interest turnover_vol turnover
 amihud illiq log_ret log_return
 """.split())
 
-#: 分组维度键（传给 group_* / *_neutralize 的字面量，不是数据集；大小写不敏感）。
+#: 官方原文：使用这些算子即"视为使用 pv1 数据集"，与显式写 pv1 字段同罪。
+PV1_OPERATORS = frozenset("inst_pnl convert".split())
+
+#: 官方豁免的分组字段 —— **恰好这 6 个**，多一个都不豁免（`single-dataset-alphas` 原文）。
 GROUPING_KEYS = frozenset("""
-industry sector subindustry supersector subsector industrygroup sectorgroup
-market exchange country group asset region
+country exchange market sector industry subindustry
 """.split())
 
 #: 保留字（既非字段也非变量）。
@@ -87,7 +107,7 @@ def resolve_kind(field: str, dataset_map) -> tuple[str, str | None]:
     返回 (kind, dataset)，kind ∈ {base, grouping, dataset, unknown}。
     """
     if field in BASE_MARKET_FIELDS:
-        return ("base", BASE_MARKET_NAME)
+        return ("base", PV1_DATASET)
     if field.lower() in GROUPING_KEYS:
         return ("grouping", None)
     ds = dataset_map.get(field)
@@ -107,6 +127,9 @@ def classify_atom(
     """
     fields = extract_fields(expr)
     _resolve = resolve or (lambda f: resolve_kind(f, dataset_map))
+    # 官方原文：inst_pnl() / convert() 视为使用 pv1 ⇒ 只在非 pv1 集上才改变判决，
+    # 但这里一律计入 datasets，由 distinct 计数自然处理（pv1 集自身仍是 atom）。
+    pv1_ops = sorted(set(_CALL_RE.findall(strip_strings(strip_comments(expr)))) & PV1_OPERATORS)
     base_fields: list[str] = []
     grouping: list[str] = []
     datasets: set[str] = set()
@@ -115,13 +138,15 @@ def classify_atom(
         kind, ds = _resolve(f)
         if kind == "base":
             base_fields.append(f)
-            datasets.add(ds or BASE_MARKET_NAME)
+            datasets.add(ds or PV1_DATASET)
         elif kind == "grouping":
             grouping.append(f)
         elif kind == "dataset":
             datasets.add(ds)
         else:
             unknown.append(f)
+    if pv1_ops:
+        datasets.add(PV1_DATASET)
     if unknown:
         verdict = "unknown"
     elif len(datasets) <= 1:
@@ -135,5 +160,6 @@ def classify_atom(
         "n_fields": len(fields),
         "base_fields": sorted(set(base_fields)),
         "grouping_keys": sorted(set(grouping)),
+        "pv1_operators": pv1_ops,
         "unknown_fields": sorted(set(unknown)),
     }

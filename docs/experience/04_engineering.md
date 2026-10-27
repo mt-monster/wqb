@@ -219,6 +219,7 @@
 - **直连 `brain_client._request` 是协程**：须 `await`，且须先 `await brain.ensure_authenticated()`（否则 401）；返回的是 `Response`，要 `.json()`。平台限流敏感——连发 9 次 `GET /alphas/{id}` 就触发 rate limit，批量取数走 MCP 或加 sleep（`select_ra_basket` 用 0.3 s 间隔）。
 - **`get_operators` 的 schema 是空对象**：用 `{}` 调用，不接受任何参数。
 - **取字段的端点**：`GET /data-fields?...&dataset.id=<id>&limit=50`；`/data-sets/{name}/data-fields` 是 404。本地 `datasets.name` 存的是数据集 **id**（`analyst14`），平台 `/data-sets` 返回的 `name` 是长描述名——按 id 匹配，别按 name。
+  分页契约（2026-10-20 EUR/D1/TOP2500 实测）：`limit` 上限 50（100 直接 400）；**`dataset.id=` 可翻到任意深度**（analyst7 1111 字段 / 23 页），必须拉到平台 `count`；`search=` 只能在 `offset+limit<=100` 窗口内取前 100 个匹配，且其 `count` 是**未过滤**总数 —— 建目录不要带 search。旧客户端在 dataset 域套了 300 条上限，把 analyst7 截成 299/1111 并缓存 7 天；现全部改 all-or-error（短于 count 即抛错，缓存只收 `complete=True`）。
 - **FASTEXPR 参数写法**：`rank` 只收 1 参，`rank(x, -1)` 非法；`trade_when(c, x, -1)` 的第 3 参是 exit 条件、不是符号，取负要写 `subtract(0.5, rank(x))` / `multiply(-1, rank(x))`（取负位置见决策表 D6）；`bucket` / `hump` 必须命名参数，`quantile(x)` 只接受 1 参。
 - **跨区回测不能当本区回测用**：`backtest_results` 的 `dataset` 列跨区共享，任何「该数据集已测过」的结论必须带 `AND region = ?`（2026-10-02 曾把 DEU 的 S=2.17 当成 GLB 本区战绩，矩阵推翻重做）。
 
@@ -273,3 +274,58 @@ AGENTS.md 三处写 S11 基线 `171`（基线文件是 `159`，与 `branch_polic
   且 `.gitignore` 的 `.claude/` 已独立成行生效 ⇒「`git add -A` 会穿进 junction 重复收录 399 条」的入口已消失。
   但它现在是 505 文件的**手工镜像**（不自动同步）：当前与 `Claude/skills` 零漂移，却**无闸盯着**。
 - `.gitignore` 行内注释导致规则失效的 bug 已修（见 `.gitignore` 里的修复记录）。
+
+### 14.6 元数闸对「catalog 里没有的算子」曾是 fail-open —— 已改闸，不再靠自写预检（2026-10-23）
+
+- **事故**：USA other596 波 84（8 臂）整批报废 —— 1 条 `ERROR: Attempted to use inaccessible or
+  unknown operator "ts_max"` + 7 条 `CANCELLED`（batch-kill 连坐）。零信息产出，8 个槽位净损失。
+- **根因在闸本身，不是机制**：`wqb.expression.op_arity.check_expression` 签名查不到时走
+  `if sig is None: continue` —— 把「我没有这个算子的签名」当成了「这个算子合法」，于是
+  `[arity] 8/8 PASS` 是真的通过、也是真的没拦。**修法不是绕开它自己写预检，而是让闸 fail-closed**
+  （2026-10-23 已改，`src/wqb/expression/op_arity.py`）：
+  * 目录外的算子报 `[UNKNOWN_OP]`；`wqb.config.GHOST_OPERATORS` 里的报 `[GHOST]`（带替代建议）；
+  * 存在性用新增的 `load_catalog_names()`（catalog 全部 103 个名字）判定，不是
+    `load_signatures()` 的 101 个 —— `in` / `universe_size` 在目录里但推不出签名，只跳元数、不报未知；
+  * `strict_unknown=False` 只给"扫描已归档 / 截断语料"用；`ensure_safe_for_dispatch` 不暴露该开关，
+    发批路径恒为 strict。
+- **改闸前先量爆炸半径**：对 17,427 条"平台已接受"的表达式（`alphas.expression` ∪
+  `backtest_results.code`，85 个不同算子）跑 fail-closed，未知面只有 5 个 token
+  （`gr_M22` / `gr_D90` / `NM` / `ern_next_delta21` / `RM`），全部来自入库前的截断脏行
+  ⇒ 对真实 alpha 的误杀率 ≈ 0。守护：`test_accepted_corpus_has_no_real_unknown_operators` /
+  `test_ts_max_is_rejected_as_unknown` / `test_unknown_operator_blocks_dispatch_batch`。
+- **第二道闸本来就有，只是当时没走**：`platform_constraints.json` 的 `inaccessible_ops`
+  已列 `["ts_max","ts_min"]`，`gate.py:486-487` 也写了「必须对 idents 判定（对 ops_used 判定是死代码）」。
+  那批是绕过 `wave_gate`、只调 `op_arity` 发的 —— 两层都漏，缺一不可。
+- **发批纪律（不变）**：走 `wave_gate.py`（闸 1 = PLY 语法 + op_arity，闸 6 = 多样性）；
+  自写 `logs/_tmp_*_preflight.py` 时至少要调 `ensure_safe_for_dispatch`（现已含存在性判定）；
+  用到新算子时仍建议 2 条小批先验平台存在性。
+- **`ts_max` 的 REGULAR 安全替代**：`reverse(ts_max(x, d))` → `multiply(-1, ts_rank(x, d))`
+  （当日值越接近 d 日高点 ts_rank 越大，单调等价；`ts_arg_max` 虽然合法但返回日索引，语义不对）。
+- **同类前科**：2026-10-22 `to_nan` 同形态（平台拒 `inaccessible or unknown operator`，
+  arity 放行），当时只补进了 `KNOWN_GHOST_SEED`。⇒ 这是**第二次**，所以这次改的是闸的行为，
+  不是再加一条「记得自己检查」的纪律。
+
+### 14.7 USA 复盘（2026-10-23）暴露的四类「数据不保真」，已于 2026-10-24 落地
+
+> 复盘全文 `reports/usa_mining_history_review_20261023.md` §9；机读契约 `AGENTS.md` §8.7 / §8.8。
+
+1. **载荷 schema 分裂：原始 checks 曾被三条收批路径丢掉**，只剩「名字列表」⇒ `limit`/`value` 不可重建、
+   RA 项的 WARNING/ERROR 不可见、跨波自动归因做不了（173/1698 行缺 FAIL 名单、47 行无 payload）。
+   现在 `checks`（`name/result/value/limit`）透传进 `payload_json.checks`；写入方不再各自数 FAIL，
+   而是把完整 checks 交给存储层按定义现算。**判据：手里有完整 checks 就一定带着入库**，
+   否则读方只能得出「未知」而不是「全过」。
+2. **`NULL` 的二义曾让该列不可统计**：「RA 全过」与「这一行没有 RA 信息」都落 NULL。
+   现在「全过」落 `'[]'`（已知），NULL 只剩「未知」；读方仍按 NULL 宽容计 `ra_clean`，
+   但必须同时看 `ra_unknown` 计数——**别把「没读过」当成「平台 RA 硬闸全过」**。
+3. **提交队列的骨架签名曾抹掉分组参数**：`d5KzLo7v`（`market`）与 `zqrGqVXo`（`subindustry`）被判同族，
+   而分组轴恰是 USA 最有效的 prod 杠杆（0.6964 vs 0.8092）。现在家族签名含**函数体骨架 + 分组轴 + 全部设置档**；
+   回归 `tests/unit/01_store_db/test_submit_queue_gates.py` 要求这两颗**必须判不同族**。
+4. **复盘文本缺 prod 列**：110 波里只有 15% 提到 prod，而 prod 是 56.5% 的淘汰主因。
+   现在 `wave_results.key_findings` 固定四列（① 强度上限 max|S| / ② 机制方向与证伪条件 /
+   ③ prod 读数，未测显式标注 / ④ 闸缺口按差值排序），并附 TO 越界标注
+   （保留区间 **[0.03, 0.70]**，只标注不删行；越界行不进 prod/self 队列）。
+   **「未测」是显式结论，不是及格线**：提交前仍必须 `check_correlation(refresh=True)`。
+
+> 共同形状与 §14.2 一致：**把「不知道」输出成「通过」**。写收批/复盘/去重代码时先问
+> 「这个字段缺失时，下游会读成什么」。守护：`test_ra_failed_checks_single_definition.py`、
+> `test_review_four_columns_p12.py`、`test_submit_queue_gates.py`。

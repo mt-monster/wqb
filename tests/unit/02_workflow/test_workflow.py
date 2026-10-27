@@ -245,6 +245,10 @@ def test_gem_consumes_field_prefix_summary(monkeypatch, tmp_path):
     from wqb.store import CampaignStore
     from wqb.workflow.nodes import gem
 
+    # 2026-10-20 P1-5：gem.run 实跑路径会查 priors 快照新鲜度（resolve_db_path →
+    # WQB_DB_PATH 优先）。不隔离则读到生产库，GBR 快照过期会触发实跑拦截，
+    # 测试与生产库状态耦合。isolate 到本用例的临时库（无快照 → 仅告警不拦截）。
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "camp.db"))
     store = CampaignStore(str(tmp_path / "camp.db"))
     try:
         store.upsert_field_catalog("IND", {
@@ -333,6 +337,8 @@ def test_gem_launch_only_does_not_pipe_child_output(monkeypatch, tmp_path):
     from wqb.store import CampaignStore
     from wqb.workflow.nodes import gem
 
+    # 2026-10-20 P1-5：实跑会查 priors 快照新鲜度，必须隔离到临时库（同上条说明）。
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "camp.db"))
     store = CampaignStore(str(tmp_path / "camp.db"))
     try:
         store.upsert_field_catalog("GBR", {

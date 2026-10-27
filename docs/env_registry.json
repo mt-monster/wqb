@@ -1,469 +1,585 @@
 {
-  "_doc": "环境变量登记（docs/env_and_switches.md 的表由 tools/index_tables.py env 生成；tests/unit/09_core/test_index_tables.py 守护：代码里读取的每个变量必须登记，登记的每个变量必须仍被读取）。默认值与读取方从代码自动提取，这里只写用途。",
-  "categories": {
-    "cred": "凭据与外发通道（只登记名字与来源；任何文档 / 日志 / 回报都不得出现值）",
-    "path": "路径与根",
-    "tooldir": "解释器与 skill / 工具目录",
-    "gate": "闸、开关与生成约束",
-    "wait": "并发、超时与轮询",
-    "mcp": "MCP 服务与平台传输",
-    "forum": "论坛 / Labs 浏览器通道",
-    "internal": "内部标记（勿手设）"
+ "_doc": "环境变量登记（docs/env_and_switches.md 的表由 tools/index_tables.py env 生成；tests/unit/09_core/test_index_tables.py 守护：代码里读取的每个变量必须登记，登记的每个变量必须仍被读取）。默认值与读取方从代码自动提取，这里只写用途。",
+ "categories": {
+  "cred": "凭据与外发通道（只登记名字与来源；任何文档 / 日志 / 回报都不得出现值）",
+  "path": "路径与根",
+  "tooldir": "解释器与 skill / 工具目录",
+  "gate": "闸、开关与生成约束",
+  "wait": "并发、超时与轮询",
+  "mcp": "MCP 服务与平台传输",
+  "forum": "论坛 / Labs 浏览器通道",
+  "internal": "内部标记（勿手设）"
+ },
+ "vars": {
+  "API_SETTINGS_TIMEOUT": {
+   "cat": "wait",
+   "what": "MCP 传输层默认 API 超时（秒，缺省 30）"
   },
-  "vars": {
-    "API_SETTINGS_TIMEOUT": {
-      "cat": "wait",
-      "what": "MCP 传输层默认 API 超时（秒，缺省 30）"
-    },
-    "BACKFILL_PC_FRESH": {
-      "cat": "gate",
-      "what": "`tools/backfill_prod_corr.py`：`=1` 忽略缓存重新取 prod 相关性"
-    },
-    "BRAIN_API_URL": {
-      "cat": "path",
-      "what": "平台 API 根（judge / helpful_functions / ace_lib 读；测试环境可改指别处）"
-    },
-    "BRAIN_AUTH_CHECK_TTL_SECONDS": {
-      "cat": "wait",
-      "what": "MCP 认证有效性检查的缓存秒数（缺省 300）"
-    },
-    "BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS": {
-      "cat": "wait",
-      "what": "相关性槽位忙时返回的建议重试秒数（缺省 180）"
-    },
-    "BRAIN_CREATE_SIMULATION_MAX_CONCURRENCY": {
-      "cat": "wait",
-      "what": "MCP `create_simulation` 的并发上限（缺省 6）"
-    },
-    "BRAIN_CREDENTIALS": {
-      "cat": "cred",
-      "what": "toolkit `_lib/common.py`：凭据**文件**路径（缺省 `~/.brain_credentials`，JSON 列表 / 对象）——只放本机、不入库"
-    },
-    "BRAIN_CREDENTIAL_EMAIL": {
-      "cat": "cred",
-      "what": "vendored `ace_lib.get_credentials()` 读的邮箱（sim-alphas / feature-implementation / inspect-raw 共用的那份库）。**注意**：该库在 `~/secrets/platform-brain.json` 不存在时会把它**明文写盘**——调用方必须覆盖 `ace_lib.get_credentials`（sim-alphas 的 `batch_simulator`、GEM、`fetch_dataset` 都已覆盖）"
-    },
-    "BRAIN_CREDENTIAL_PASSWORD": {
-      "cat": "cred",
-      "what": "vendored `ace_lib.get_credentials()` 读的口令（同上）"
-    },
-    "BRAIN_EMAIL": {
-      "cat": "cred",
-      "what": "旧别名（BRAIN 邮箱）；同时是 GEM runner / sim-alphas 传给下游子进程的**内部变量**（runner 自己写它）。新代码用 `CREDENTIALS_EMAIL`"
-    },
-    "BRAIN_JUDGE_LLM_API_KEY": {
-      "cat": "cred",
-      "what": "judge `llm_judge.py` 的 LLM 通道密钥（缺省不启用；启用即外发候选字段——见 judge SKILL 的外发边界）"
-    },
-    "BRAIN_MAX_CONCURRENCY": {
-      "cat": "wait",
-      "what": "MCP 层 HTTP 请求并发上限（缺省 8）——**与模拟并发令牌 `slots=2` 不是同一个量**"
-    },
-    "BRAIN_PASSWORD": {
-      "cat": "cred",
-      "what": "旧别名（BRAIN 口令）；同时是 GEM runner / sim-alphas 传给下游子进程的内部变量。新代码用 `CREDENTIALS_PASSWORD`"
-    },
-    "BRAIN_PYRAMID_ALPHAS_TIMEOUT_SECONDS": {
-      "cat": "wait",
-      "what": "金字塔 alphas 查询超时（缺省 15）"
-    },
-    "BRAIN_SC_POOL_SYNC_DEBOUNCE_SECONDS": {
-      "cat": "wait",
-      "what": "SELF 相关性池同步的去抖秒数（缺省 1）"
-    },
-    "BRAIN_URL": {
-      "cat": "path",
-      "what": "平台网页根（拼 alpha 链接用；judge / helpful_functions 读）"
-    },
-    "BRAIN_USERNAME": {
-      "cat": "cred",
-      "what": "旧别名（BRAIN 邮箱）：judge 的 `load_credentials`、feature-implementation、GEM runner 兜底。新代码用 `CREDENTIALS_EMAIL`"
-    },
-    "BRAIN_USER_ALPHAS_CLIENT_FILTER_MAX_SCAN": {
-      "cat": "wait",
-      "what": "`get_user_alphas` 客户端过滤的最大扫描条数（缺省 1000）"
-    },
-    "BRAIN_VALID_OP_PATH": {
-      "cat": "tooldir",
-      "what": "validator 读的算子清单 JSON 路径覆盖"
-    },
-    "CAMPAIGN_NO_CACHE": {
-      "cat": "gate",
-      "what": "`=1` 关闭 toolkit 的 metrics_cache"
-    },
-    "CAMPAIGN_SKIP_DIR_CHECK": {
-      "cat": "gate",
-      "what": "`=1` 跳过战役目录合法性检查（仅测试）"
-    },
-    "CREDENTIALS_EMAIL": {
-      "cat": "cred",
-      "what": "BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名"
-    },
-    "CREDENTIALS_PASSWORD": {
-      "cat": "cred",
-      "what": "BRAIN 账号口令——标准名（同上）"
-    },
-    "FE_API_TIMEOUT": {
-      "cat": "wait",
-      "what": "feature_engineering 拉字段的平台 API 超时（秒，缺省 120）"
-    },
-    "FORUM_MAX_CONCURRENCY": {
-      "cat": "forum",
-      "what": "论坛浏览器会话并发（缺省 1）"
-    },
-    "FORUM_RATE_LIMIT_SECONDS": {
-      "cat": "mcp",
-      "what": "MCP 传输层对论坛请求的最小间隔（秒，缺省 0）"
-    },
-    "FORUM_SETTINGS_BASE_URL": {
-      "cat": "forum",
-      "what": "论坛站点根（缺省官方支持站；测试环境可改指别处）"
-    },
-    "FORUM_SETTINGS_HEADLESS": {
-      "cat": "forum",
-      "what": "论坛浏览器是否无头（缺省 true）"
-    },
-    "FORUM_SETTINGS_NAV_TIMEOUT": {
-      "cat": "forum",
-      "what": "论坛浏览器导航超时（秒，默认 40）"
-    },
-    "FORUM_SETTINGS_PROXY": {
-      "cat": "forum",
-      "what": "论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY"
-    },
-    "FORUM_SETTINGS_TIMEOUT": {
-      "cat": "forum",
-      "what": "论坛选择器等待超时（秒）"
-    },
-    "GEM_ERR_FILE": {
-      "cat": "internal",
-      "what": "GEM runner 子进程的 stderr 文件路径（runner 自己设，勿手设）"
-    },
-    "GEM_LOG_FILE": {
-      "cat": "internal",
-      "what": "GEM runner `--detached` 子进程的日志文件路径（runner 自己设，勿手设）"
-    },
-    "GEM_META_FILE": {
-      "cat": "internal",
-      "what": "GEM runner 子进程的 `meta.json` 握手文件路径（runner 自己设，勿手设）"
-    },
-    "GEM_META_TIMEOUT_SEC": {
-      "cat": "wait",
-      "what": "gem 节点等 runner 写出 `meta.json` 握手的秒数（缺省 90）；超时报「no meta.json」——先查 LLM 通道"
-    },
-    "HTTPS_PROXY": {
-      "cat": "forum",
-      "what": "标准 HTTPS 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY 缺省时回落读取"
-    },
-    "HTTP_PROXY": {
-      "cat": "forum",
-      "what": "标准 HTTP 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY/HTTPS_PROXY 缺省时回落读取"
-    },
-    "LABS_AGENT_SCRIPT": {
-      "cat": "forum",
-      "what": "Labs 分析引擎脚本路径覆盖"
-    },
-    "LABS_MAX_CONCURRENCY": {
-      "cat": "forum",
-      "what": "Labs 浏览器会话并发（缺省 1）"
-    },
-    "LABS_PLATFORM_URL": {
-      "cat": "forum",
-      "what": "Labs 所在的平台站点根"
-    },
-    "LABS_SETTINGS_HEADLESS": {
-      "cat": "forum",
-      "what": "Labs 浏览器是否无头（缺省跟随 `FORUM_SETTINGS_HEADLESS`）"
-    },
-    "LABS_SETTINGS_TIMEOUT": {
-      "cat": "forum",
-      "what": "Labs 选择器等待超时（秒）"
-    },
-    "LC_FRESH": {
-      "cat": "gate",
-      "what": "`tools/backfill_longcount.py`：`=1` 忽略 checkpoint 强制全量重跑（同 --fresh）"
-    },
-    "MCP_CONFIG_FILE": {
-      "cat": "cred",
-      "what": "toolkit / `tools/lib/api_client.py`：`~/.brain_mcp_config.json` 路径覆盖（凭据来源之一）"
-    },
-    "MCP_HOST": {
-      "cat": "mcp",
-      "what": "streamable-http 监听地址"
-    },
-    "MCP_PORT": {
-      "cat": "mcp",
-      "what": "streamable-http 监听端口"
-    },
-    "MCP_STREAMABLE_HTTP_PATH": {
-      "cat": "mcp",
-      "what": "streamable-http 路径"
-    },
-    "MCP_TRANSPORT": {
-      "cat": "mcp",
-      "what": "MCP 服务传输方式（缺省 `streamable-http`；2026-10-05 起两个 server 常驻 HTTP，客户端只连 URL 不再起进程）"
-    },
-    "MOONSHOT_API_KEY": {
-      "cat": "cred",
-      "what": "GEM 的 LLM 通道密钥（优先于 `config.json` 的 `moonshot_api_key`；给了 `ideas_file` 就不需要）"
-    },
-    "MOONSHOT_BASE_URL": {
-      "cat": "cred",
-      "what": "GEM 的 LLM 端点（runner 从 `config.json` 的 `moonshot_base_url` 写入）"
-    },
-    "MOONSHOT_RETRIES": {
-      "cat": "cred",
-      "what": "GEM LLM 调用的重试次数（runner 缺省 3，`pipeline_llm` 缺省 2）；401 / 402 / 403 不重试"
-    },
-    "MOONSHOT_RETRY_BACKOFF": {
-      "cat": "cred",
-      "what": "GEM LLM 重试的退避秒数"
-    },
-    "OPENAI_API_KEY": {
-      "cat": "cred",
-      "what": "optimization-v1 `concept_extract.py`（arXiv 概念抽取）的 LLM 密钥；也读 `scripts/.arxiv_llm.env` / `.env`（gitignore、不参与 sync）。会外发论文文本，**不**外发候选表达式"
-    },
-    "OPENAI_BASE_URL": {
-      "cat": "cred",
-      "what": "同上：LLM 端点（缺省 DeepSeek 兼容端点）"
-    },
-    "OPENAI_MODEL": {
-      "cat": "cred",
-      "what": "同上：LLM 模型名"
-    },
-    "SA_PROBE_CACHE_TTL_HOURS": {
-      "cat": "wait",
-      "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
-    },
-    "WQB_ALLOW_ALPHA_SUBMIT": {
-      "cat": "gate",
-      "what": "`=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入）"
-    },
-    "WQB_ALLOW_REAL_DB": {
-      "cat": "path",
-      "what": "`=1` 允许测试运行中连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**。判定本体 2026-10-14 上移到 `wqb.db_conn.reject_production_db_under_tests`，`CampaignStore.__init__` 与 `wqb_db_mcp` 门面**共用这一份**——此前只挂门面，tools/ 与 toolkit 的直写路径一行都不经它）。只给确实要读写真库的存量体检测试用，必须在测试里写明理由"
-    },
-    "WQB_CALIBRATE_TIMEOUT": {
-      "cat": "wait",
-      "what": "score_datasets 校准阶段的软超时（秒；超预算后周期性打线程栈）"
-    },
-    "WQB_CAMPAIGN_DIR": {
-      "cat": "path",
-      "what": "workflow 节点使用的战役目录覆盖"
-    },
-    "WQB_CAMPAIGN_TIMEOUT": {
-      "cat": "wait",
-      "what": "campaign 节点子进程超时（秒）"
-    },
-    "WQB_DBLOCK_DIR": {
-      "cat": "path",
-      "what": "DB 写锁文件目录（缺省在仓库根下）"
-    },
-    "WQB_DBLOCK_DISABLE": {
-      "cat": "internal",
-      "what": "`=1` 关闭 DB 写锁——仅测试隔离，生产禁用"
-    },
-    "WQB_DB_PATH": {
-      "cat": "path",
-      "what": "`data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它）"
-    },
-    "WQB_DETACHED_FIRST_OUTPUT_SEC": {
-      "cat": "wait",
-      "what": "detached 后台任务的首次输出心跳窗口（秒；超时判启动即死）"
-    },
-    "WQB_DISABLE_BACKLOG_GATE": {
-      "cat": "gate",
-      "what": "=1 跳过积压闸——开波闸簇 _run_backlog_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法：那是拆分文件未落盘导致读取点暂时消失的误判）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
-    },
-    "WQB_DISABLE_REGION_GATES": {
-      "cat": "gate",
-      "what": "`=1` 关闭 toolkit 开波区域闸整体（catalog / signal_floor / stop_rules / backlog）——仅测试隔离；生产上跳过闸须走 waiver（AGENTS.md §8.1.2）"
-    },
-    "WQB_DISABLE_SIGNAL_FLOOR_GATE": {
-      "cat": "gate",
-      "what": "=1 跳过信号天花板闸——开波闸簇 _run_signal_floor_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
-    },
-    "WQB_DISABLE_STOP_RULES_GATE": {
-      "cat": "gate",
-      "what": "=1 跳过停止规则闸——开波闸簇 _run_stop_rules_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
-    },
-    "WQB_FAMILY_CAP_UNKNOWN": {
-      "cat": "gate",
-      "what": "build_wave：`=1` 时对「未知」族也套同族封顶（缺省 0）"
-    },
-    "WQB_FORUM_RECON_TIMEOUT_SEC": {
-      "cat": "wait",
-      "what": "forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900）"
-    },
-    "WQB_GATE_MODE": {
-      "cat": "gate",
-      "what": "wave_gate / build_wave 的开波区域闸模式 `off|warn|enforce`（缺省 warn；日期翻转见 INDEX 闸与逃生口总表）"
-    },
-    "WQB_GEM_DATA_ROOT": {
-      "cat": "path",
-      "what": "GEM 产物根（缺省 `data/gem_runs`；`final_expressions.json` 与 `output_report/` 都在其下）"
-    },
-    "WQB_GEM_MAX_PER_SKELETON": {
-      "cat": "gate",
-      "what": "GEM 预闸：同骨架变体封顶（缺省 12，0 关闭）",
-      "since": "2026-09-19"
-    },
-    "WQB_GLOBAL_SLOTS": {
-      "cat": "wait",
-      "what": "账户级模拟并发令牌数（多流水线同跑共享）；缺省 = `config.CONCURRENCY['slots']`，2026-10-06 定案为 2（旧 7）；0 = 关闭仲裁",
-      "since": "2026-09-19"
-    },
-    "WQB_INSPECT_MODE": {
-      "cat": "gate",
-      "what": "体检硬门模式 `off|warn|enforce`（缺省 warn；新数据集首波自适应 enforce）"
-    },
-    "WQB_INVALID_FIELDS": {
-      "cat": "gate",
-      "what": "GEM 预闸：区域不可用字段覆盖（缺省读 `platform_constraints.json` 的 `region_invalid_fields`）"
-    },
-    "WQB_INVALID_GROUP_FIELDS": {
-      "cat": "gate",
-      "what": "GEM 预闸：区域非法 group 字段覆盖（缺省读 `region_invalid_group_fields`）"
-    },
-    "WQB_LEDGER_BACKEND": {
-      "cat": "gate",
-      "what": "toolkit ledger 后端（缺省 `sqlite`）"
-    },
-    "WQB_MAX_FIELD_REPEAT": {
-      "cat": "gate",
-      "what": "gate.py：同批内同一字段允许出现的次数上限"
-    },
-    "WQB_MCP_SESSION_FILE": {
-      "cat": "mcp",
-      "what": "`tools/mcp_http_caller.py`：MCP session id 落盘位覆盖（缺省 `cache/_mcp_http_caller_session`，gitignore 运行期区）"
-    },
-    "WQB_MCP_URI": {
-      "cat": "mcp",
-      "what": "`tools/mcp_http_caller.py` 的端点覆盖，优先级高于 `--service`（缺省从仓库根 `.mcp.json` 解析 `wq-brain-http` / `wqb-db` 的 url）"
-    },
-    "WQB_OPERATORS_CATALOG": {
-      "cat": "tooldir",
-      "what": "`op_arity` 读的算子目录路径覆盖（缺省按 `docs/reference` → `data/` → `research-data/` 顺序找）"
-    },
-    "WQB_PBR_BOOTSTRAPPED": {
-      "cat": "internal",
-      "what": "`tools/prod_blocked_recheck.py` 的防递归重入标记（勿手设）"
-    },
-    "WQB_PYENV_REEXEC": {
-      "cat": "internal",
-      "what": "`tools/_pyenv.py` 的防递归重入标记（勿手设）"
-    },
-    "WQB_ROOT": {
-      "cat": "path",
-      "what": "工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设）"
-    },
-    "WQB_RULES_FILE_ONLY": {
-      "cat": "gate",
-      "what": "`=1` 时 toolkit 规则只读文件、不读 DB（隔离 / 排障用）"
-    },
-    "WQB_SCRIPTS": {
-      "cat": "tooldir",
-      "what": "仓库外自建脚本目录覆盖（缺省 `~/wqb-scripts`）；`tools/preflight_wave.py` 用它拼 `wqb_tools.py` CLI 路径，以免在源码里写死盘符绝对路径（S4 守卫）"
-    },
-    "WQB_SEM_MODE": {
-      "cat": "gate",
-      "what": "闸 SEM（字段语义归类）模式 `off|warn|enforce`（缺省 enforce）"
-    },
-    "WQB_SLOTS_DIR": {
-      "cat": "path",
-      "what": "账户级槽位 token 目录（缺省 `logs/_slots`）"
-    },
-    "WQB_SQ_BOOTSTRAPPED": {
-      "cat": "internal",
-      "what": "`tools/submit_queue.py` 的防递归重入标记（勿手设）"
-    },
-    "WQB_STARTUP_CHECKS": {
-      "cat": "gate",
-      "what": "DB `ensure_schema` 启动自检：`always`（缺省）/ `once`（每进程一次）/ `0`（关）"
-    },
-    "WQB_TASK_ROOT": {
-      "cat": "path",
-      "what": "后台任务目录（缺省 `logs/_async_tasks`；`workflow_task_status` 读它）"
-    },
-    "WQB_TOOLS_LIB": {
-      "cat": "tooldir",
-      "what": "GEM 引擎找 `tools/lib`（`vector_wrap.py` 所在）的覆盖"
-    },
-    "WQB_TRI_MODE": {
-      "cat": "gate",
-      "what": "S1 分诊闸逃生口：`=off` 关闭 fail-closed 分诊（同 --triage-gate off），醒目告警"
-    },
-    "WQB_VECTOR_TS_FORBIDDEN_REGIONS": {
-      "cat": "gate",
-      "what": "GEM 预闸：禁止 `ts_*(vec_*)` 的区域清单覆盖（缺省读 `region_vector_ts_forbidden`）"
-    },
-    "WQB_WAIVER_MODE": {
-      "cat": "gate",
-      "what": "waiver 模式 `off|warn|enforce`（`--waiver-mode` 优先；缺省 warn：用了逃生口但台账没有 waiver 只在首屏告警，enforce 则 exit 2）"
-    },
-    "WQB_WAVE_GATE_TIMEOUT_SEC": {
-      "cat": "wait",
-      "what": "wave_gate 节点子进程超时（秒）"
-    },
-    "WQB_WORKSPACE": {
-      "cat": "path",
-      "what": "工作区根覆盖（同 `WQB_ROOT`，wave_gate / GEM 等按各自的解析顺序取用）"
-    },
-    "WQB_WORKSPACE_ROOT": {
-      "cat": "path",
-      "what": "工作区根覆盖（同 `WQB_ROOT`，toolkit 的 gate / pipeline 用）"
-    },
-    "WQ_ENV_PATH": {
-      "cat": "cred",
-      "what": "`tools/fetch_all_universes.py`：MCP `.env` 路径（缺省 `world-quant-brain-mcp/.env`）；agent 不读该文件"
-    },
-    "WQ_MCP_DIR": {
-      "cat": "tooldir",
-      "what": "MCP 目录覆盖（缺省 `<仓库根>/world-quant-brain-mcp`）"
-    },
-    "WQ_MCP_LOOP": {
-      "cat": "internal",
-      "what": "内部标记：MCP 循环调用检测（agent 不直接设置）"
-    },
-    "WQ_PASSWORD": {
-      "cat": "cred",
-      "what": "toolkit 传统别名（口令）：同上"
-    },
-    "WQ_PROJECT_ROOT": {
-      "cat": "path",
-      "what": "工作区根覆盖（同 `WQB_ROOT`，GEM 的 pipeline_kb 等用）"
-    },
-    "WQ_PY": {
-      "cat": "tooldir",
-      "what": "MCP venv 解释器覆盖（`tools/_pyenv.py`、workflow 节点子进程）；文档里的 `$WQ_PY` 就是它"
-    },
-    "WQ_RA_PIPELINE_DIR": {
-      "cat": "tooldir",
-      "what": "GEM `skeletons.py` 找 RA skill 目录的覆盖"
-    },
-    "WQ_ROBUSTNESS_SKILL_DIR": {
-      "cat": "tooldir",
-      "what": "`tools/forum_cache_builder.py` 找 robustness skill 目录的覆盖"
-    },
-    "WQ_SELFCORR_OUT_DIR": {
-      "cat": "path",
-      "what": "selfcorr-quick 的产物目录（缺省 `data/selfcorr_quick`）"
-    },
-    "WQ_SKILLS_DIR": {
-      "cat": "tooldir",
-      "what": "skill 根覆盖（解析顺序首位；测试也用它指定被守护的 skills 目录）"
-    },
-    "WQ_TOOLKIT_DIR": {
-      "cat": "tooldir",
-      "what": "toolkit `scripts/` 目录覆盖"
-    },
-    "WQ_USERNAME": {
-      "cat": "cred",
-      "what": "toolkit 传统别名（邮箱）：`_lib/common.py`、`tools/fetch_all_universes.py` 兜底；workflow 节点会把标准名桥接成它"
-    },
-    "WQ_VALIDATOR_DIR": {
-      "cat": "tooldir",
-      "what": "alpha-expression-verifier `scripts/` 目录覆盖"
-    }
+  "BACKFILL_PC_FRESH": {
+   "cat": "gate",
+   "what": "`tools/backfill_prod_corr.py`：`=1` 忽略缓存重新取 prod 相关性"
+  },
+  "BRAIN_API_URL": {
+   "cat": "path",
+   "what": "平台 API 根（judge / helpful_functions / ace_lib 读；测试环境可改指别处）"
+  },
+  "BRAIN_AUTH_CHECK_TTL_SECONDS": {
+   "cat": "wait",
+   "what": "MCP 认证有效性检查的缓存秒数（缺省 300）"
+  },
+  "BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS": {
+   "cat": "wait",
+   "what": "相关性槽位忙时返回的建议重试秒数（缺省 180）"
+  },
+  "BRAIN_CORRELATION_LOCK_TTL_SECONDS": {
+   "cat": "wait",
+   "what": "相关性跨进程槽 token 的 TTL（秒，缺省 3700）——须 ≥ 单次轮询窗口（900s），否则长轮询期间 token 被 TTL 自愈回收、第二个进程会并发打同一个单并发接口"
+  },
+  "BRAIN_CREATE_SIMULATION_MAX_CONCURRENCY": {
+   "cat": "wait",
+   "what": "MCP `create_simulation` 的并发上限（缺省 6）"
+  },
+  "BRAIN_CREDENTIALS": {
+   "cat": "cred",
+   "what": "toolkit `_lib/common.py`：凭据**文件**路径（缺省 `~/.brain_credentials`，JSON 列表 / 对象）——只放本机、不入库"
+  },
+  "BRAIN_CREDENTIAL_EMAIL": {
+   "cat": "cred",
+   "what": "vendored `ace_lib.get_credentials()` 读的邮箱（sim-alphas / feature-implementation / inspect-raw 共用的那份库）。**注意**：该库在 `~/secrets/platform-brain.json` 不存在时会把它**明文写盘**——调用方必须覆盖 `ace_lib.get_credentials`（sim-alphas 的 `batch_simulator`、GEM、`fetch_dataset` 都已覆盖）"
+  },
+  "BRAIN_CREDENTIAL_PASSWORD": {
+   "cat": "cred",
+   "what": "vendored `ace_lib.get_credentials()` 读的口令（同上）"
+  },
+  "BRAIN_EMAIL": {
+   "cat": "cred",
+   "what": "旧别名（BRAIN 邮箱）；同时是 GEM runner / sim-alphas 传给下游子进程的**内部变量**（runner 自己写它）。新代码用 `CREDENTIALS_EMAIL`"
+  },
+  "BRAIN_JUDGE_LLM_API_KEY": {
+   "cat": "cred",
+   "what": "judge `llm_judge.py` 的 LLM 通道密钥（缺省不启用；启用即外发候选字段——见 judge SKILL 的外发边界）"
+  },
+  "BRAIN_MAX_CONCURRENCY": {
+   "cat": "wait",
+   "what": "MCP 层 HTTP 请求并发上限（缺省 8）——**与模拟并发令牌 `slots=2` 不是同一个量**"
+  },
+  "BRAIN_PASSWORD": {
+   "cat": "cred",
+   "what": "旧别名（BRAIN 口令）；同时是 GEM runner / sim-alphas 传给下游子进程的内部变量。新代码用 `CREDENTIALS_PASSWORD`"
+  },
+  "BRAIN_POOL_IDLE_SWEEP_SEC": {
+   "cat": "wait",
+   "what": "MCP 客户端连接池的空闲 socket 清扫周期（秒，缺省 90，下限 30）。长驻 MCP 服务堆积 CloseWait 的修复件之一，见 `brain_mixin_transport` 连接池修复注释"
+  },
+  "BRAIN_POOL_MAXSIZE": {
+   "cat": "wait",
+   "what": "MCP 客户端 `HTTPAdapter` 的连接池大小（`pool_connections`/`pool_maxsize`，缺省 24）。缺省 HTTPAdapter 是 10，与 `_request_semaphore(8)` + `_create_simulation_semaphore(6)` 的 14 并发上限不匹配"
+  },
+  "BRAIN_PYRAMID_ALPHAS_TIMEOUT_SECONDS": {
+   "cat": "wait",
+   "what": "金字塔 alphas 查询超时（缺省 15）"
+  },
+  "BRAIN_SC_POOL_SYNC_DEBOUNCE_SECONDS": {
+   "cat": "wait",
+   "what": "SELF 相关性池同步的去抖秒数（缺省 1）"
+  },
+  "BRAIN_URL": {
+   "cat": "path",
+   "what": "平台网页根（拼 alpha 链接用；judge / helpful_functions 读）"
+  },
+  "BRAIN_USERNAME": {
+   "cat": "cred",
+   "what": "旧别名（BRAIN 邮箱）：judge 的 `load_credentials`、feature-implementation、GEM runner 兜底。新代码用 `CREDENTIALS_EMAIL`"
+  },
+  "BRAIN_USER_ALPHAS_CLIENT_FILTER_MAX_SCAN": {
+   "cat": "wait",
+   "what": "`get_user_alphas` 客户端过滤的最大扫描条数（缺省 1000）"
+  },
+  "BRAIN_VALID_OP_PATH": {
+   "cat": "tooldir",
+   "what": "validator 读的算子清单 JSON 路径覆盖"
+  },
+  "CAMPAIGN_NO_CACHE": {
+   "cat": "gate",
+   "what": "`=1` 关闭 toolkit 的 metrics_cache"
+  },
+  "CAMPAIGN_SKIP_DIR_CHECK": {
+   "cat": "gate",
+   "what": "`=1` 跳过战役目录合法性检查（仅测试）"
+  },
+  "CREDENTIALS_EMAIL": {
+   "cat": "cred",
+   "what": "BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名"
+  },
+  "CREDENTIALS_PASSWORD": {
+   "cat": "cred",
+   "what": "BRAIN 账号口令——标准名（同上）"
+  },
+  "FE_API_TIMEOUT": {
+   "cat": "wait",
+   "what": "feature_engineering 拉字段的平台 API 超时（秒，缺省 120）"
+  },
+  "FORUM_MAX_CONCURRENCY": {
+   "cat": "forum",
+   "what": "论坛浏览器会话并发（缺省 1）"
+  },
+  "FORUM_RATE_LIMIT_SECONDS": {
+   "cat": "mcp",
+   "what": "MCP 传输层对论坛请求的最小间隔（秒，缺省 0）"
+  },
+  "FORUM_SETTINGS_BASE_URL": {
+   "cat": "forum",
+   "what": "论坛站点根（缺省官方支持站；测试环境可改指别处）"
+  },
+  "FORUM_SETTINGS_HEADLESS": {
+   "cat": "forum",
+   "what": "论坛浏览器是否无头（缺省 true）"
+  },
+  "FORUM_SETTINGS_NAV_TIMEOUT": {
+   "cat": "forum",
+   "what": "论坛浏览器导航超时（秒，默认 40）"
+  },
+  "FORUM_SETTINGS_PROXY": {
+   "cat": "forum",
+   "what": "论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY"
+  },
+  "FORUM_SETTINGS_TIMEOUT": {
+   "cat": "forum",
+   "what": "论坛选择器等待超时（秒）"
+  },
+  "GEM_ERR_FILE": {
+   "cat": "internal",
+   "what": "GEM runner 子进程的 stderr 文件路径（runner 自己设，勿手设）"
+  },
+  "GEM_LOG_FILE": {
+   "cat": "internal",
+   "what": "GEM runner `--detached` 子进程的日志文件路径（runner 自己设，勿手设）"
+  },
+  "GEM_META_FILE": {
+   "cat": "internal",
+   "what": "GEM runner 子进程的 `meta.json` 握手文件路径（runner 自己设，勿手设）"
+  },
+  "GEM_META_TIMEOUT_SEC": {
+   "cat": "wait",
+   "what": "gem 节点等 runner 写出 `meta.json` 握手的秒数（缺省 90）；超时报「no meta.json」——先查 LLM 通道"
+  },
+  "HTTPS_PROXY": {
+   "cat": "forum",
+   "what": "标准 HTTPS 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY 缺省时回落读取"
+  },
+  "HTTP_PROXY": {
+   "cat": "forum",
+   "what": "标准 HTTP 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY/HTTPS_PROXY 缺省时回落读取"
+  },
+  "LABS_AGENT_SCRIPT": {
+   "cat": "forum",
+   "what": "Labs 分析引擎脚本路径覆盖"
+  },
+  "LABS_MAX_CONCURRENCY": {
+   "cat": "forum",
+   "what": "Labs 浏览器会话并发（缺省 1）"
+  },
+  "LABS_PLATFORM_URL": {
+   "cat": "forum",
+   "what": "Labs 所在的平台站点根"
+  },
+  "LABS_SETTINGS_HEADLESS": {
+   "cat": "forum",
+   "what": "Labs 浏览器是否无头（缺省跟随 `FORUM_SETTINGS_HEADLESS`）"
+  },
+  "LABS_SETTINGS_TIMEOUT": {
+   "cat": "forum",
+   "what": "Labs 选择器等待超时（秒）"
+  },
+  "LC_FRESH": {
+   "cat": "gate",
+   "what": "`tools/backfill_longcount.py`：`=1` 忽略 checkpoint 强制全量重跑（同 --fresh）"
+  },
+  "MCP_CONFIG_FILE": {
+   "cat": "cred",
+   "what": "toolkit / `tools/lib/api_client.py`：`~/.brain_mcp_config.json` 路径覆盖（凭据来源之一）"
+  },
+  "MCP_HOST": {
+   "cat": "mcp",
+   "what": "streamable-http 监听地址"
+  },
+  "MCP_PORT": {
+   "cat": "mcp",
+   "what": "streamable-http 监听端口"
+  },
+  "MCP_STREAMABLE_HTTP_PATH": {
+   "cat": "mcp",
+   "what": "streamable-http 路径"
+  },
+  "MCP_TRANSPORT": {
+   "cat": "mcp",
+   "what": "MCP 服务传输方式（缺省 `streamable-http`；2026-10-05 起两个 server 常驻 HTTP，客户端只连 URL 不再起进程）"
+  },
+  "MOONSHOT_API_KEY": {
+   "cat": "cred",
+   "what": "GEM 的 LLM 通道密钥（优先于 `config.json` 的 `moonshot_api_key`；给了 `ideas_file` 就不需要）"
+  },
+  "MOONSHOT_BASE_URL": {
+   "cat": "cred",
+   "what": "GEM 的 LLM 端点（runner 从 `config.json` 的 `moonshot_base_url` 写入）"
+  },
+  "MOONSHOT_RETRIES": {
+   "cat": "cred",
+   "what": "GEM LLM 调用的重试次数（runner 缺省 3，`pipeline_llm` 缺省 2）；401 / 402 / 403 不重试"
+  },
+  "MOONSHOT_RETRY_BACKOFF": {
+   "cat": "cred",
+   "what": "GEM LLM 重试的退避秒数"
+  },
+  "OPENAI_API_KEY": {
+   "cat": "cred",
+   "what": "optimization-v1 `concept_extract.py`（arXiv 概念抽取）的 LLM 密钥；也读 `scripts/.arxiv_llm.env` / `.env`（gitignore、不参与 sync）。会外发论文文本，**不**外发候选表达式"
+  },
+  "OPENAI_BASE_URL": {
+   "cat": "cred",
+   "what": "同上：LLM 端点（缺省 DeepSeek 兼容端点）"
+  },
+  "OPENAI_MODEL": {
+   "cat": "cred",
+   "what": "同上：LLM 模型名"
+  },
+  "SA_PROBE_CACHE_TTL_HOURS": {
+   "cat": "wait",
+   "what": "SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先"
+  },
+  "WQB_ALLOW_ALPHA_SUBMIT": {
+   "cat": "gate",
+   "what": "`=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入）"
+  },
+  "WQB_ALLOW_REAL_DB": {
+   "cat": "path",
+   "what": "`=1` 允许测试运行中连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**。判定本体 2026-10-14 上移到 `wqb.db_conn.reject_production_db_under_tests`，`CampaignStore.__init__` 与 `wqb_db_mcp` 门面**共用这一份**——此前只挂门面，tools/ 与 toolkit 的直写路径一行都不经它）。只给确实要读写真库的存量体检测试用，必须在测试里写明理由"
+  },
+  "WQB_ATOM_ONLY": {
+   "cat": "gate",
+   "what": "`=1` 让 IND 战役只派发纯 ATOM（单数据集）表达式：`wq_campaign.generate.build_residual()` 返回空，残差族（含 PV `returns`，属组腿）整段跳过。缺省不设 = 保留残差族（该族是 IND 唯一被证实能过 prod 墙的配方）。用户口径 2026-10-26「IND 优先挖掘 ATOM」；模块级常量，长驻进程不热加载"
+  },
+  "WQB_CALIBRATE_TIMEOUT": {
+   "cat": "wait",
+   "what": "score_datasets 校准阶段的软超时（秒；超预算后周期性打线程栈）"
+  },
+  "WQB_CAMPAIGN_DIR": {
+   "cat": "path",
+   "what": "workflow 节点使用的战役目录覆盖"
+  },
+  "WQB_CAMPAIGN_FRESH": {
+   "cat": "gate",
+   "what": "非空时 `wq_campaign.persist.load_ckpt()` 忽略磁盘断点、返回空 checkpoint（全新一轮战役，不续跑）。ind/usa campaign 包读；只影响本进程"
+  },
+  "WQB_CAMPAIGN_FULL_CAP": {
+   "cat": "gate",
+   "what": "车道级字段上限覆写（正整数；`wq_campaign.fields` 把它当 `FULL_FIELD_CAP`，0/缺省 = 用常量 8）。仅影响本进程，用于「某集字段覆盖太窄」的补测"
+  },
+  "WQB_CAMPAIGN_REGION": {
+   "cat": "path",
+   "what": "战役区域代码（`wq_campaign.config` / `campaign_semantics` 缺省 EUR；`ind_runner.py` / `usa_runner.py` 在 import 前硬钉 IND / USA 防止与 EUR 共用断点与 universe）"
+  },
+  "WQB_CAMPAIGN_STATE_DIR": {
+   "cat": "path",
+   "what": "战役断点 / 结果 / digest 目录覆盖（缺省 `<仓库根>/results`；ind/usa runner 与 `wq_campaign.config` 同一口径，区域隔离靠文件名的 `_<REGION>` 后缀而非目录）"
+  },
+  "WQB_CAMPAIGN_TIMEOUT": {
+   "cat": "wait",
+   "what": "campaign 节点子进程超时（秒）"
+  },
+  "WQB_CORR_COOLDOWN_SEC": {
+   "cat": "wait",
+   "what": "相关性槽位 release 后的本地冷却秒数（缺省 195，略大于平台 `retry_after=180s`；`wqb.correlation_slot._cooldown_sec` 读取）。本地锁只管跨进程互斥，平台槽位在算完后仍占一段时间，不冷却就会出现「加了锁还撞 correlation_busy」"
+  },
+  "WQB_DB": {
+   "cat": "path",
+   "what": "`tools/full_coverage_gate.py` 的库路径覆盖（缺省 `<仓库根>/data/wqb.db`；与 `WQB_DB_PATH` 是两个独立读取点，后者管 `wqb.db_conn`）"
+  },
+  "WQB_DBLOCK_DIR": {
+   "cat": "path",
+   "what": "DB 写锁文件目录（缺省在仓库根下）"
+  },
+  "WQB_DBLOCK_DISABLE": {
+   "cat": "internal",
+   "what": "`=1` 关闭 DB 写锁——仅测试隔离，生产禁用"
+  },
+  "WQB_DB_PATH": {
+   "cat": "path",
+   "what": "`data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它）"
+  },
+  "WQB_DETACHED_FIRST_OUTPUT_SEC": {
+   "cat": "wait",
+   "what": "detached 后台任务的首次输出心跳窗口（秒；超时判启动即死）"
+  },
+  "WQB_DETAIL_REGIONS": {
+   "cat": "gate",
+   "what": "`tools/data-repair/review_scope_quality.py` 出明细的区域清单（逗号分隔，缺省 EUR）"
+  },
+  "WQB_DISPATCH_DELAY": {
+   "cat": "wait",
+   "what": "`tools/wqb_tools_shim.py` 转调 `tools/submit_batch.py` 时两批之间的 sleep 秒数（缺省 1；EUR/KOR/GLB 均按 1 调）"
+  },
+  "WQB_DISABLE_BACKLOG_GATE": {
+   "cat": "gate",
+   "what": "=1 跳过积压闸——开波闸簇 _run_backlog_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法：那是拆分文件未落盘导致读取点暂时消失的误判）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
+  },
+  "WQB_DISABLE_REGION_GATES": {
+   "cat": "gate",
+   "what": "`=1` 关闭 toolkit 开波区域闸整体（catalog / signal_floor / stop_rules / backlog）——仅测试隔离；生产上跳过闸须走 waiver（AGENTS.md §8.1.2）"
+  },
+  "WQB_DISABLE_SIGNAL_FLOOR_GATE": {
+   "cat": "gate",
+   "what": "=1 跳过信号天花板闸——开波闸簇 _run_signal_floor_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
+  },
+  "WQB_DISABLE_STOP_RULES_GATE": {
+   "cat": "gate",
+   "what": "=1 跳过停止规则闸——开波闸簇 _run_stop_rules_gate 确实读取它（2026-10-06 更正旧「幽灵开关」说法）。仅测试/沙箱隔离；生产放行走 waiver（AGENTS.md §8.1.2）"
+  },
+  "WQB_FAMILY_CAP_UNKNOWN": {
+   "cat": "gate",
+   "what": "build_wave：`=1` 时对「未知」族也套同族封顶（缺省 0）"
+  },
+  "WQB_FCOV_MODE": {
+   "cat": "gate",
+   "what": "全量覆盖闸模式 `off|warn|enforce`（`--fcov-mode` 优先；缺省随区域闸按日缺省；仅战役 reference/boundary_ops_<region>.json 存在时激活）"
+  },
+  "WQB_FORUM_RECON_TIMEOUT_SEC": {
+   "cat": "wait",
+   "what": "forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900）"
+  },
+  "WQB_GATE_MODE": {
+   "cat": "gate",
+   "what": "wave_gate / build_wave 的开波区域闸模式 `off|warn|enforce`（缺省 warn；日期翻转见 INDEX 闸与逃生口总表）"
+  },
+  "WQB_GEM_DATA_ROOT": {
+   "cat": "path",
+   "what": "GEM 产物根（缺省 `data/gem_runs`；`final_expressions.json` 与 `output_report/` 都在其下）"
+  },
+  "WQB_GEM_MAX_PER_SKELETON": {
+   "cat": "gate",
+   "what": "GEM 预闸：同骨架变体封顶（缺省 12，0 关闭）",
+   "since": "2026-09-19"
+  },
+  "WQB_GLOBAL_SLOTS": {
+   "cat": "wait",
+   "what": "账户级模拟并发令牌数（多流水线同跑共享）；缺省 = `config.CONCURRENCY['slots']`，2026-10-06 定案为 2（旧 7）；0 = 关闭仲裁",
+   "since": "2026-09-19"
+  },
+  "WQB_INSPECT_MODE": {
+   "cat": "gate",
+   "what": "体检硬门模式 `off|warn|enforce`（缺省 warn；新数据集首波自适应 enforce）"
+  },
+  "WQB_INVALID_FIELDS": {
+   "cat": "gate",
+   "what": "GEM 预闸：区域不可用字段覆盖（缺省读 `platform_constraints.json` 的 `region_invalid_fields`）"
+  },
+  "WQB_INVALID_GROUP_FIELDS": {
+   "cat": "gate",
+   "what": "GEM 预闸：区域非法 group 字段覆盖（缺省读 `region_invalid_group_fields`）"
+  },
+  "WQB_JUDGE_DATA_ROOT": {
+   "cat": "path",
+   "what": "`brain-alpha-judge` 评审报告根：单测 / 部署显式注入，缺省落 `output_report/brain-alpha-judge/`，脱离仓库时退 `SKILL_DIR/outputs/`"
+  },
+  "WQB_LEDGER_BACKEND": {
+   "cat": "gate",
+   "what": "toolkit ledger 后端（缺省 `sqlite`）"
+  },
+  "WQB_LEGACY_FAMILIES": {
+   "cat": "gate",
+   "what": "IND campaign 模板族回退开关（`1` = 恢复退役前的全量笛卡尔积）。缺省关：`RETIRED_FAMILIES` 只退役差分几何 d2_rk/d2_qc（decay 10 复核 6/6 <1.0）；ed_rk / dw / ir_pl / tl 的旧 decay-4 退役结论已被 A/B #6 证伪（ed_rk 2.91、dw 2.48）⇒ 已恢复（见 `reports/ind_campaign_template_eval_20261026.md` §11）。模块级常量，长驻进程不热加载"
+  },
+  "WQB_MAX_FIELD_REPEAT": {
+   "cat": "gate",
+   "what": "gate.py：同批内同一字段允许出现的次数上限"
+  },
+  "WQB_MCP_SESSION_FILE": {
+   "cat": "mcp",
+   "what": "`tools/mcp_http_caller.py`：MCP session id 落盘位覆盖（缺省 `cache/_mcp_http_caller_session`，gitignore 运行期区）"
+  },
+  "WQB_MCP_URI": {
+   "cat": "mcp",
+   "what": "`tools/mcp_http_caller.py` 的端点覆盖，优先级高于 `--service`（缺省从仓库根 `.mcp.json` 解析 `wq-brain-http` / `wqb-db` 的 url）"
+  },
+  "WQB_NO_BACKFILL": {
+   "cat": "gate",
+   "what": "`=1` 让 `wq_campaign.generate` 把 L1 模板里的 `ts_backfill` 全部剥掉（保留其余结构）；IND 十年硬要求下用于「字段本身足够密、无需回填」的对照波"
+  },
+  "WQB_OPERATORS_CATALOG": {
+   "cat": "tooldir",
+   "what": "`op_arity` 读的算子目录路径覆盖（缺省按 `docs/reference` → `data/` → `research-data/` 顺序找）"
+  },
+  "WQB_OUT_DIR": {
+   "cat": "path",
+   "what": "`tools/vwap_histogram.py` 输出根覆盖（缺省 `<仓库根>/output_report`）"
+  },
+  "WQB_PBR_BOOTSTRAPPED": {
+   "cat": "internal",
+   "what": "`tools/prod_blocked_recheck.py` 的防递归重入标记（勿手设）"
+  },
+  "WQB_PROD_QUEUE_PATH": {
+   "cat": "path",
+   "what": "`wqb.prod_queue` 的队列文件覆盖（缺省 `<仓库根>/cache/prod_queue.json`）"
+  },
+  "WQB_PYENV_REEXEC": {
+   "cat": "internal",
+   "what": "`tools/_pyenv.py` 的防递归重入标记（勿手设）"
+  },
+  "WQB_REGION": {
+   "cat": "gate",
+   "what": "`tools/data-repair/check_usa_os_subset.py` 的目标区域（缺省 USA）"
+  },
+  "WQB_REPO_ROOT": {
+   "cat": "path",
+   "what": "显式仓库根（`wq_campaign.config` / `ind_runner.py` / `usa_runner.py` 的首选，最可靠；缺省从文件位置上溯找 `pyproject.toml` + `src/wqb`）"
+  },
+  "WQB_RG_BACKFILL_DS": {
+   "cat": "gate",
+   "what": "逗号分隔的数据集名单：这些集里的 VECTOR 字段在 robust 几何族中**保留** `ts_backfill`（缺省空 = VECTOR 一律剥掉 backfill，因为平台报 `ts_backfill does not support event inputs` 会连坐整批）。只对 `WQB_ROBUST_GEOM` 生效"
+  },
+  "WQB_RG_LV_SMOOTH": {
+   "cat": "gate",
+   "what": "robust 几何族里低波模板的平滑窗口（整数，缺省 IND=2 / 其他区 3）。`rg_lvvol` 的 `ts_mean(ts_std(...,65), N)`；fnd86 实证 smooth=2 + decay 2 才能复现 `gJWnrZgg`（S 2.18 / rob 1.06），N=3 时跌破闸。改它会移动整组 `rg_lvvol*` 的可比基线"
+  },
+  "WQB_PP_POW": {
+   "cat": "gate",
+   "what": "后处理电池里 `signed_power(code, p)` 的幂次（浮点，缺省 IND=3 / 其他区 0.7）。0.7 是凹变换（压尾），fnd86 史册实证有效方向是凸（≥1.5，signed_power(·,3) 曾把 robust 从 0.9x 抬到 1.00）⇒ IND 缺省改凸。改了它 pp 变体与原式的可比性会变，跨区域对比须显式钉住"
+  },
+  "WQB_ROBUST_DECAY": {
+   "cat": "gate",
+   "what": "robust 几何族的 decay（整数，缺省 10）。IND 实测：同一 `rank(z(pretax,22→252))` 结构 decay=4 时 robust 0.87 ✗、decay=10 时 1.02 ✓；基础 decay=4 复现不了。`rg` 批按此档独立派发，不跟随核心族的 decay=4"
+  },
+  "WQB_ROBUST_PROBE": {
+   "cat": "gate",
+   "what": "探针字段的 robust 几何开关（`1/0`；缺省 `REGION == \"IND\"` 时开）。开时 `tier==\"probe\"` 的字段只产出 `ROBUST_PROBE_TPL`（当前 `rg_grdev_p3_sec`，decay 走 `robust_decay()`=6）一条，而不是 11 族全产；关时探针不产 robust。模块级常量，长驻进程不热加载"
+  },
+  "WQB_ROBUST_GEOM": {
+   "cat": "gate",
+   "what": "robust 几何族开关（`1/0`；缺省 `REGION == \"IND\"` 时开）。7 个族 = {rank, group_rank(·,sector|industry), signed_power(group_rank,3)} × {固定 z 窗 252, 归一化趋势偏离}，bf 固定 22、decay 取 `WQB_ROBUST_DECAY`。破 IND `LOW_ROBUST_UNIVERSE_SHARPE`=1.0 墙的三条已验证杠杆；模块级常量，长驻进程不热加载"
+  },
+  "WQB_ROOT": {
+   "cat": "path",
+   "what": "工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设）"
+  },
+  "WQB_RULES_FILE_ONLY": {
+   "cat": "gate",
+   "what": "`=1` 时 toolkit 规则只读文件、不读 DB（隔离 / 排障用）"
+  },
+  "WQB_SCRIPTS": {
+   "cat": "tooldir",
+   "what": "仓库外自建脚本目录覆盖（缺省 `~/wqb-scripts`）；`tools/preflight_wave.py` 用它拼 `wqb_tools.py` CLI 路径，以免在源码里写死盘符绝对路径（S4 守卫）"
+  },
+  "WQB_SEM_MODE": {
+   "cat": "gate",
+   "what": "闸 SEM（字段语义归类）模式 `off|warn|enforce`（缺省 enforce）"
+  },
+  "WQB_SLOTS_DIR": {
+   "cat": "path",
+   "what": "账户级槽位 token 目录（缺省 `logs/_slots`）"
+  },
+  "WQB_SQ_BOOTSTRAPPED": {
+   "cat": "internal",
+   "what": "`tools/submit_queue.py` 的防递归重入标记（勿手设）"
+  },
+  "WQB_STARTUP_CHECKS": {
+   "cat": "gate",
+   "what": "DB `ensure_schema` 启动自检：`always`（缺省）/ `once`（每进程一次）/ `0`（关）"
+  },
+  "WQB_TASK_ROOT": {
+   "cat": "path",
+   "what": "后台任务目录（缺省 `logs/_async_tasks`；`workflow_task_status` 读它）"
+  },
+  "WQB_TOOLS_LIB": {
+   "cat": "tooldir",
+   "what": "GEM 引擎找 `tools/lib`（`vector_wrap.py` 所在）的覆盖"
+  },
+  "WQB_TRI_MODE": {
+   "cat": "gate",
+   "what": "S1 分诊闸逃生口：`=off` 关闭 fail-closed 分诊（同 --triage-gate off），醒目告警"
+  },
+  "WQB_VECTOR_TS_FORBIDDEN_REGIONS": {
+   "cat": "gate",
+   "what": "GEM 预闸：禁止 `ts_*(vec_*)` 的区域清单覆盖（缺省读 `region_vector_ts_forbidden`）"
+  },
+  "WQB_WAIVER_MODE": {
+   "cat": "gate",
+   "what": "waiver 模式 `off|warn|enforce`（`--waiver-mode` 优先；缺省 warn：用了逃生口但台账没有 waiver 只在首屏告警，enforce 则 exit 2）"
+  },
+  "WQB_WAVE_GATE_TIMEOUT_SEC": {
+   "cat": "wait",
+   "what": "wave_gate 节点子进程超时（秒）"
+  },
+  "WQB_WORKSPACE": {
+   "cat": "path",
+   "what": "工作区根覆盖（同 `WQB_ROOT`，wave_gate / GEM 等按各自的解析顺序取用）"
+  },
+  "WQB_WORKSPACE_ROOT": {
+   "cat": "path",
+   "what": "工作区根覆盖（同 `WQB_ROOT`，toolkit 的 gate / pipeline 用）"
+  },
+  "WQ_ENV_PATH": {
+   "cat": "cred",
+   "what": "`tools/fetch_all_universes.py`：MCP `.env` 路径（缺省 `world-quant-brain-mcp/.env`）；agent 不读该文件"
+  },
+  "WQ_MCP_DIR": {
+   "cat": "tooldir",
+   "what": "MCP 目录覆盖（缺省 `<仓库根>/world-quant-brain-mcp`）"
+  },
+  "WQ_MCP_LOOP": {
+   "cat": "internal",
+   "what": "内部标记：MCP 循环调用检测（agent 不直接设置）"
+  },
+  "WQ_PASSWORD": {
+   "cat": "cred",
+   "what": "toolkit 传统别名（口令）：同上"
+  },
+  "WQ_PROJECT_ROOT": {
+   "cat": "path",
+   "what": "工作区根覆盖（同 `WQB_ROOT`，GEM 的 pipeline_kb 等用）"
+  },
+  "WQ_PY": {
+   "cat": "tooldir",
+   "what": "MCP venv 解释器覆盖（`tools/_pyenv.py`、workflow 节点子进程）；文档里的 `$WQ_PY` 就是它"
+  },
+  "WQ_RA_PIPELINE_DIR": {
+   "cat": "tooldir",
+   "what": "GEM `skeletons.py` 找 RA skill 目录的覆盖"
+  },
+  "WQ_ROBUSTNESS_SKILL_DIR": {
+   "cat": "tooldir",
+   "what": "`tools/forum_cache_builder.py` 找 robustness skill 目录的覆盖"
+  },
+  "WQ_SELFCORR_OUT_DIR": {
+   "cat": "path",
+   "what": "selfcorr-quick 的产物目录（缺省 `data/selfcorr_quick`）"
+  },
+  "WQ_SKILLS_DIR": {
+   "cat": "tooldir",
+   "what": "skill 根覆盖（解析顺序首位；测试也用它指定被守护的 skills 目录）"
+  },
+  "WQ_TEMPLATE_FAMILY": {
+   "cat": "gate",
+   "what": "`tools/full_coverage_gate.py`：本波候选所属模板族提示（模板族闸计数用；缺省不注入，按已测族统计）"
+  },
+  "WQ_TOOLKIT_DIR": {
+   "cat": "tooldir",
+   "what": "toolkit `scripts/` 目录覆盖"
+  },
+  "WQ_USERNAME": {
+   "cat": "cred",
+   "what": "toolkit 传统别名（邮箱）：`_lib/common.py`、`tools/fetch_all_universes.py` 兜底；workflow 节点会把标准名桥接成它"
+  },
+  "WQ_VALIDATOR_DIR": {
+   "cat": "tooldir",
+   "what": "alpha-expression-verifier `scripts/` 目录覆盖"
+  },
+  "WQB_NEG_MIRROR": {
+   "cat": "gate",
+   "what": "负向强信号镜像开关（`1/0`；缺省 `REGION == \"IND\"` 时开）。开时对本集 S≤-1.58 的**奇对称** ATOM 源（白名单 `generate.MIRROR_TPL`）派一条 `multiply(-1, code)` 镜像批，结果单列 `neg` 块、**不并入** `max_s`/`joint`/`near_gate`/设置轴扫描；镜像不改变换手，源 TO>0.40 的镜像照旧卡 `HIGH_TURNOVER`（每条带 `turnover_blocked` 标记）。关时只统计 `neg_stats` 并把集判 `DEAD_NEG`（不派仿真）。模块级常量，长驻进程不热加载"
+  },
+  "WQB_PROD_GATE_REFRESH": {
+   "cat": "gate",
+   "what": "`=1` 让提交链的 prod 闸**强制回源平台**重算相关性，忽略 `wqb.db::alpha_corr_cache` 的 48h 缓存（`src/wqb/workflow/nodes/submit_alpha.py::_prod_gate`）。默认不设 = 缓存优先（有值就用，避免每次提交都排队打单并发相关性队列）；合规语义不变：prod ≥0.7 一律 blocked，拿不到值仍 fail-closed。终验/怀疑漂移时置 1"
   }
+ }
 }

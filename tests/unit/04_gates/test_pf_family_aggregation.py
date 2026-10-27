@@ -116,3 +116,116 @@ def test_mixed_deepens_to_three_ops(fake_store):
     assert by_idx[0]["verdict"] == "DEAD"        # 加深后全墙 → 拦截
     assert by_idx[1]["verdict"] == "OK_DEEP"     # 加深后干净 → 放行
     assert rep["passed"] is False
+
+
+# ---------------------------------------------------------------------------
+# 2026-10-24 P0-1：开波前 prod 探针封族（report §10）
+#   `campaign_intel.py prod-probe` 写 `{"probe": true, "prod_corr": …}` 指纹；
+#   闸 PF 读到 probe 标记且族 max ≥ PROBE_SEAL_THRESHOLD(0.75) 且 min ≥ 0.7
+#   ⇒ 免 min_confidence_n 直接 enforced。无 probe 标记（prod-first 指纹）行为不变。
+# ---------------------------------------------------------------------------
+import json  # noqa: E402
+import sqlite3  # noqa: E402
+
+from wave_gate_pkg.gates_pf import PROBE_SEAL_THRESHOLD  # noqa: E402
+
+
+@pytest.fixture
+def add_fingerprint(tmp_path, monkeypatch, fake_store):
+    """把 _wqb_root 指到 tmp，返回向 ledger_kv 写 prod_family_* 指纹的函数。"""
+    (tmp_path / "data").mkdir()
+    db = tmp_path / "data" / "wqb.db"
+    c = sqlite3.connect(db)
+    c.execute("CREATE TABLE ledger_kv (id INTEGER PRIMARY KEY AUTOINCREMENT, region TEXT NOT NULL, "
+              "key TEXT NOT NULL, value JSON NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+              "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE(region, key))")
+    c.commit()
+    c.close()
+    monkeypatch.setattr(wave_gate, "_wqb_root", lambda *a, **k: str(tmp_path))
+
+    def _add(family, payload):
+        cc = sqlite3.connect(db)
+        cc.execute("INSERT INTO ledger_kv(region, key, value) VALUES(?,?,?)",
+                   ("TESTREG", f"prod_family_TESTREG_{family}", json.dumps(payload)))
+        cc.commit()
+        cc.close()
+
+    return _add
+
+
+def test_probe_seal_enforced_below_min_confidence_n(add_fingerprint):
+    """probe=true + prod 0.76（仅 1 条）⇒ 免 n≥3 直接 enforced（判定性证据不等攒样本）。"""
+    add_fingerprint("rank→ts_mean", {"prod_corr": 0.76, "probe": True,
+                                     "at": "2026-10-24T01:02:03", "sealed": True})
+    rep = wave_gate.check_prod_family_gate(
+        ["rank(ts_mean(new_field, 22))"], "TESTREG", "ds")
+    assert rep["status"] == "enforced"
+    assert rep["passed"] is False
+    assert rep["n_probe_sealed_families"] == 1
+    assert rep["n_low_conf_dead_families"] == 0          # 封族与低置信度互斥计数
+    assert "开波前 prod 探针封族" in rep["violations"][0]["reason"]
+    assert "2026-10-24T01:02:03" in rep["violations"][0]["reason"]
+    assert rep["probe_sealed_families_sample"] == ["rank→ts_mean"]
+
+
+def test_probe_below_threshold_is_only_low_conf_warn(add_fingerprint):
+    """0.72 ∈ [0.7, 0.75)：探针未达封族线 ⇒ 仍按低置信度 WARN（不误封整族）。"""
+    assert 0.72 < PROBE_SEAL_THRESHOLD
+    add_fingerprint("rank→ts_mean", {"prod_corr": 0.72, "probe": True, "sealed": False})
+    rep = wave_gate.check_prod_family_gate(
+        ["rank(ts_mean(new_field, 22))"], "TESTREG", "ds")
+    assert rep["passed"] is True
+    assert rep["status"] == "warn"
+    assert rep["n_probe_sealed_families"] == 0
+    assert rep["n_low_conf_dead_families"] == 1
+    assert rep["expr_status"][0]["verdict"] == "WARN_LOW_CONF"
+
+
+def test_probe_seal_respects_clean_counterexample(add_fingerprint, fake_store):
+    """族内还有 <0.7 的干净反例（min<0.7）⇒ 不算封族，走既有 MIXED 加深路径。
+
+    候选刻意用 3 算子形态：2 算子候选加深后指纹不变（rank→ts_mean），会被干净行
+    直接判成 OK_DEEP；要覆盖「加深后仍无证据」的 WARN_MIXED 分支，第 3 个算子必须
+    使它落到一个没有记录的更细指纹上。
+    """
+    add_fingerprint("rank→ts_mean", {"prod_corr": 0.78, "probe": True, "sealed": True})
+    fake_store.rows = [
+        _FakeRow(expression="rank(ts_mean(clean_field, 22))", prod_correlation=0.45),
+    ]
+    rep = wave_gate.check_prod_family_gate(
+        ["rank(ts_mean(ts_backfill(new_field, 66), 22))"], "TESTREG", "ds")
+    assert rep["passed"] is True                          # 「全族皆墙」纪律仍生效
+    assert rep["n_probe_sealed_families"] == 0
+    assert rep["n_mixed_families"] == 1
+    assert rep["expr_status"][0]["verdict"] == "WARN_MIXED"
+
+
+def test_fingerprint_without_probe_marker_keeps_old_behavior(add_fingerprint):
+    """prod-first 指纹不带 probe ⇒ 行为不变（n=1 只 WARN，证明 marker 是承重件）。"""
+    add_fingerprint("rank→ts_mean", {"prod_corr": 0.78})
+    rep = wave_gate.check_prod_family_gate(
+        ["rank(ts_mean(new_field, 22))"], "TESTREG", "ds")
+    assert rep["passed"] is True
+    assert rep["n_probe_sealed_families"] == 0
+    assert rep["expr_status"][0]["verdict"] == "WARN_LOW_CONF"
+
+
+def test_wave_gate_pf_is_single_authority():
+    """闸 PF 只有一份实现：CLI 必须绑定包内实现（2026-10-24 去重守护）。
+
+    历史事故：2026-09-30 包化后 `tools/wave_gate.py` 仍留着一份旧拷贝，且其
+    `_load_prod_wall_families` 引用未定义全局 `wqb_root`（NameError 被
+    `except Exception: pass` 静默吞掉）⇒ `campaign_intel prod-first/prod-probe`
+    回写的 ledger 骨架指纹**从未被 CLI 读到**（闸 PF 只看 alphas 表，prod 覆盖率 4.4%）。
+    两份实现并存时，改包内那份等于没改 —— 所以这里钉死「同一个函数对象」。
+    """
+    import inspect
+
+    from wave_gate_pkg import gates_pf
+
+    assert wave_gate.check_prod_family_gate is gates_pf.check_prod_family_gate
+    assert wave_gate._load_prod_wall_families is gates_pf._load_prod_wall_families
+    assert inspect.getsourcefile(wave_gate.check_prod_family_gate) == \
+        inspect.getsourcefile(gates_pf.check_prod_family_gate)
+    assert wave_gate.PROBE_SEAL_THRESHOLD == gates_pf.PROBE_SEAL_THRESHOLD
+

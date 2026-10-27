@@ -26,6 +26,13 @@
   "const-literal|Claude/skills/wq-brain-superalpha/SKILL.md|- **完成定义**：`VERDICT: PASS`（SELF 与 PROD 都 < 0.7）。|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
   "const-literal|Claude/skills/wq-brain-superalpha/SKILL.md|- [ ] 提交判定看 `result`，且我方 prod 实测 < 0.7。|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
   "const-literal|Claude/skills/wq-brain-superalpha/references/cases.md|- **操作**：早期用 5 个显式 alpha 的 `combination()` 思路（该算子现已被平台禁用，仅作等价思路说明）；验收标准 = 等价体 PR|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
-  "const-literal|Claude/skills/wq-brain-superalpha/references/cases.md|- **结果**：PROD 0.6996 / SELF 0.6996（双双擦线 < 0.7），与既有 SA 仅 0.4731 相关；sharpe 2.52 / |门槛数字 self-corr-platform 的抄写（写「见 config.X」，或加 <!-- from confi": 1
+  "const-literal|Claude/skills/wq-brain-superalpha/references/cases.md|- **结果**：PROD 0.6996 / SELF 0.6996（双双擦线 < 0.7），与既有 SA 仅 0.4731 相关；sharpe 2.52 / |门槛数字 self-corr-platform 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "expr-gate|Claude/skills/wq-brain-ra-usa/references/_usa-atom-delivery-log-20261020.md|add(z60, z120)|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 2,
+  "expr-gate|Claude/skills/wq-brain-ra-usa/references/_usa-atom-delivery-log-20261020.md|group_rank(add(add(D1,D2),add(D3,D4)), …)|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
+  "expr-gate|Claude/skills/wq-brain-ra-usa/references/_usa-insider-field-profile-20261022.md|group_rank(add(add(D1,D2),add(D3,D4)), subindustry)|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
+  "expr-gate|Claude/skills/wq-brain-ra-usa/references/_usa-pv149-field-profile-20261023.md|reverse(group_rank(ts_decay_linear(add(2a, 3a), 22), subindustry))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
+  "expr-gate|Claude/skills/wq-brain-ra-usa/references/_usa-pv149-field-profile-20261023.md|ts_decay_linear(add(2a, 3a), 22)|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
+  "expr-gate|Claude/skills/wq-brain-ra-usa/references/_usa-pv63-order-flow-field-profile-20261020.md|add(bain,nias)|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
+  "expr-gate|Claude/skills/wq-brain-ra-usa/references/_usa-pv63-order-flow-field-profile-20261020.md|ts_zscore(divide(add(nibw, wain), add(add(nibp, pain), 1)), 66)|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1
  }
 }

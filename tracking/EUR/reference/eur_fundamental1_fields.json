@@ -1,0 +1,1649 @@
+[
+ {
+  "id": "aggregate_director_compensation",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Sum of salary and bonus received by the director for the report period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "aggregate_director_compensation_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Sum of the director's salary and bonus for the report period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "annual_base_salary",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Base annual cash salary for the director in the report period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "annual_bonus_payment",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Bonus payment received by the director during the report period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "board_nationality_diversity_ratio",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Proportion of executive directors from different countries on the board",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "board_nationality_diversity_ratio_2",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "Proportion of directors from different countries among executive directors (board nationality diversity)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "bonus_proportion_total_comp",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Bonus amount as a proportion of total direct compensation excluding defined contribution pension",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "bonus_to_compensation_ratio",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Bonus as a proportion of total direct compensation less defined contribution pension for the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "cash_incentive_plan_value",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of any cash-based incentive plan awarded",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "cash_incentive_plan_value_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value held in cash-based incentive plans for the director or period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "cash_incentive_plan_value_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of any cash-based incentive plan held",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "compensation_change_percent",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Percentage change in the director's total compensation compared to the previous reporting period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "compensation_change_percent_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Percentage change in total compensation from previous report period for the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "compensation_currency_code",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "ISO currency code representing the currency in which all values in the row are displayed",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "compensation_currency_code_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "ISO code of the currency in which all reported values are displayed",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "current_other_board_total",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of other boards the director serves on as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "current_other_listed_boards_count",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of other types of boards (neither quoted nor private) an executive director serves on as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "current_other_listed_boards_count_2",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of other boards the individual currently serves on as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "director_attrition_ratio",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Proportion of executive directors who left since previous period to average number of directors in previous period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "director_attrition_ratio_2",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 8,
+  "alphaCount": 9,
+  "description": "Proportion of executive directors who have left roles relative to average number for the preceding reporting period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "director_attrition_ratio_3yr",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Proportion of executive directors who have left roles relative to average number for the preceding 3 years",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "director_base_salary",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Base annual cash salary paid to the director during the reported period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "director_bonus_payment",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Bonus payments received by the director during the report period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "director_current_other_listed_boards_count",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of other types of boards the individual currently serves on at the selected date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "director_total_other_listed_boards_count",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total number of other types of boards the individual has served on up to the selected date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "employer_pension_contribution",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Employer's defined contribution to the director's pension for each report period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "employer_pension_contribution_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Employer’s defined pension contribution for each director during the reporting period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "equity_linked_compensation_ratio",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ratio of equity-linked compensation to total compensation for the director, calculated at closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "equity_linked_compensation_ratio_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Equity-linked compensation (such as shares/options/LTIPs) as a proportion of total compensation, based on annual report date stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_option_value_held",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated value of options held by the director at the end of the reporting period, calculated at the closing stock price of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_exercisable_options",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated value of exercisable options awarded in the period, valued at closing stock price on annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_exercisable_options_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated valuation of exercisable options awarded in the period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_exercisable_options_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Valuation of exercisable options awarded in the period at closing price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_exercisable_options_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated value of exercisable options awarded in the period, valued at the closing stock price of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_options_awarded",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated valuation of options awarded to the director during the period, calculated at the closing stock price on the report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_options_awarded_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Estimated value of options awarded to the director during the period, based on closing stock price from the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_options_held",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Estimated value of options held at end of period by the director, valued at annual report closing price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_unexercisable_options",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated value of unexercisable options awarded in the period, valued at closing stock price on annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_unexercisable_options_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated valuation of unexercisable options awarded in the period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_unexercisable_options_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Valuation of unexercisable options awarded in the period at closing price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "estimated_value_unexercisable_options_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated value of unexercisable options awarded in the period, valued at the closing stock price of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "exercisable_option_estimated_value",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Estimated value of exercisable options awarded, valued at the closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "exercisable_option_intrinsic_value",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Valuation of exercisable options, usually at the period's closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "exercisable_option_quantity",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Maximum number of exercisable options awarded for that incentive plan in the period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "exercisable_option_quantity_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of exercisable options awarded in the incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "exercisable_option_quantity_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of exercisable options awarded in that plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "exercisable_option_quantity_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of exercisable options awarded under the plan for the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "exercisable_option_volume",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of exercisable options awarded in the incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "expired_option_quantity",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of expired options in the incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "expired_option_quantity_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of expired options in the incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "expired_option_quantity_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of expired options in the incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "expired_option_quantity_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of expired options under the conditional incentive plan for the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "expired_option_volume",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of expired options in the director's incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_avgtimeothco",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Average time executive directors serve on other quoted boards (excluding the one analyzed)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_avgtimeothco",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Average time executive directors sit on the boards of quoted companies (excluding current organization)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_noquals",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of educational qualifications undergraduate and above held by the individual",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_timebrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 18,
+  "alphaCount": 21,
+  "description": "Length of time the individual has served on the board up to the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_timeinco",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Tenure of the individual at the company as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_timeretirement",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Time to retirement for the individual at the chosen AnnualReportDate",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_timerole",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 10,
+  "alphaCount": 10,
+  "description": "Time in current role for the individual at the chosen AnnualReportDate",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_totcurrnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of quoted (publicly listed) boards an executive director serves on as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_totcurrnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of private (non-quoted) boards an executive director serves on as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_totnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Total number of quoted (public) boards an individual has served up to the AnnualReportDate",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_filtered_totnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of private (non-quoted) boards an executive director has ever served on to date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_noquals",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of educational qualifications at undergraduate level or above as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_timebrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Average time spent on the board by executive directors as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_timeinco",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Average time spent at the company by executive directors as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_timeretirement",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Average time to retirement for executive directors as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_timerole",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The average length of time executive directors have served in their current role",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_totcurrnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The average number of quoted (public) boards currently served on by executive directors in the company",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_totcurrnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The average number of private (unlisted) boards currently served on by executive directors in the company",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_totnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The average cumulative number of quoted (public) boards served on over time by executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_board_characteristics_totnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Average number of private boards served on over time by Executive Directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_avgtimeothco",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Average time the director sits on boards of quoted (public) companies",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_avgtimeothco",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Average time the director sits on the boards of other quoted companies",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_noquals",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of educational qualifications (undergraduate and above) held by the individual",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_timebrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Length of time the individual has served on the board at the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_timeinco",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Total time the individual has been with the company at the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_timeretirement",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Time to retirement for the individual at the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_timerole",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Length of time the individual has served in the current role at the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_totcurrnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of quoted boards the individual currently serves on at the selected date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_totcurrnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of private boards the individual currently serves on at the selected date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_totnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total number of quoted (public) boards the individual has served on up to the selected date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_filtered_totnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of private boards the individual has served on up to the selected date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_noquals",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total number of educational qualifications (undergraduate and above) for the director as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_timebrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Time spent by the director on the board as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_timeinco",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Time spent by the director in the company as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_timeretirement",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of years or time until the director's retirement at the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_timerole",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Time spent by the director in their current role as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_totcurrnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of quoted (public) boards the director serves on as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_totcurrnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of private (unlisted) boards the director serves on as of the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_totnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total number of quoted (publicly-listed) boards the director has served on historically up to the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_director_characteristics_totnounlstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of private (unlisted) boards served by the director up to the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_attrition3yr",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Proportion of executive directors who left over the preceding 3 years compared to average number of directors in that period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_genderratio",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Proportion of male executive directors on the board",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_numberdirectors",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of executive directors as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_stdevage",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation across the executive directors on the board for their ages (how spread out the ages are among executive directors)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_stdevnoquals",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation across the executive directors on the board for the number of educational or professional qualifications each executive director holds",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_stdevtimebrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of time served on board among executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_stdevtimeincompany",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Standard deviation of time in company among executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_stdevtotcurrnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of the number of quoted boards currently served on by executive directors in the board",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_stdevtotnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of total quoted boards served among executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_filtered_succession",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Measure of how many directors are clustered near retirement age (succession risk)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_genderratio",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Proportion of male directors among executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_numberdirectors",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of Executive Directors on the board",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_stdevage",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of ages of Executive Directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_stdevnoquals",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The standard deviation of the number of educational qualifications (undergraduate and above) for executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_stdevtimebrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Standard deviation of “time on board” for executive directors (i.e., how long they have sat on boards)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_stdevtimeincompany",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of time in company among executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_stdevtotcurrnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of the number of quoted boards currently served on by executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_stdevtotnolstdbrd",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of total number of quoted boards served on over time among executive directors",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "fnd1_succession",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Degree to which Executive Directors’ ages are clustered near retirement age, indicating succession risk",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_exercisable_options",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Exercise price at which the exercisable options can be exercised",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_exercisable_options_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Valuation of exercisable options awarded, based on closing stock price at annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_exercisable_options_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Valuation of exercisable options at closing stock price of the report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_exercisable_options_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Valuation of exercisable options awarded in the period, calculated at the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_options_awarded",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Intrinsic value of options awarded to the director during the period, valued at closing stock price on the report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_options_awarded_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Intrinsic value of options awarded during the period, valued at annual report date closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_options_held",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Valuation of stock options held by the director at period end, using the closing share price on the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_options_held_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of stock options held by the director at period end, using closing stock price from the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_unexercisable_options",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Valuation of unexercisable options awarded in the period, using the closing stock price at the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_unexercisable_options_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Valuation of unexercisable options awarded, based on closing stock price at annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_unexercisable_options_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Valuation of unexercisable options at closing stock price of the report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "intrinsic_value_unexercisable_options_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Valuation of unexercisable options awarded in the period, valued at the closing stock price of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "ltip_award_value",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Value of long-term incentive plan (LTIP) awards granted during the period, measured at the closing stock price of the report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "ltip_award_value_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of Long-Term Incentive Plans (LTIPs) awarded during the period, valued at closing stock price on the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "ltip_plan_value_held",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Value of long-term incentive plans (LTIPs) held by the director at the end of the period, at closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "ltip_plan_value_held_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Value of LTIPs held at period end, valued at closing stock price on annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "ltip_to_total_remuneration_ratio",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ratio of LTIP value to total compensation for the director during the report period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "ltip_to_total_remuneration_ratio_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Ratio of LTIP value to total awards for the period (LTIPValue/TotRemPeriod)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "ltip_wealth_stock_price",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Stock price for the awarded security on the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "matched_share_award_quantity",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Maximum number of shares awarded plus the matched percentage in the period under a specific incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "matched_share_award_quantity_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Maximum number of shares awarded plus any matched percentage in the period for the relevant incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "matched_share_award_quantity_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Maximum number of shares awarded plus the matched percentage in the period for a specific conditional LTIP incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "matched_share_award_value",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Value of shares awarded plus matched percentage for the given incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "matched_share_award_value_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total value of shares awarded, including the value of any additional matched shares, for a given incentive plan during the period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "matched_share_award_value_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Monetary value of shares awarded plus the matched percentage for a specific incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "monetary_unit_code",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "ISO code of the currency in which all monetary values are reported",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "monetary_unit_code_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "ISO 4217 code of the currency used for monetary values in this module",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "monetary_unit_code_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "ISO currency code in which all values are shown",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "monetary_unit_code_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "ISO code representing the currency for all monetary values in this record",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "option_exercise_price",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Price at which options can be exercised by the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "option_plan_currency_code",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "ISO code of the currency in which financial values are expressed",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "option_plan_stock_price",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Closing price of the stock at the time of the annual report or the relevant award date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "option_strike_price",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Price at which awarded options can be exercised",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "option_strike_price_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Price at which awarded options can be exercised",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "option_strike_price_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Exercise price at which options can be exercised",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "option_strike_price_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Price at which awarded options can be exercised by the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "other_board_total_count",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of other boards the director has served on up to the selected annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "other_cash_payments",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Annual ad hoc cash payments made to the director, such as relocation allowances or similar items",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "other_cash_payments_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Annual value of ad hoc cash payments such as relocation allowances",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "security_market_price_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Stock price at the grant date (or annual report date) for the awarded plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "security_market_price_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Stock price of the awarded stock at the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "security_market_price_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Price of the stock as of the relevant report date, used for valuing awards",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_quantity",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Maximum number of shares awarded during the period for the specified incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_quantity_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Maximum number of shares awarded in the period for a given incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_quantity_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Maximum number of shares awarded in the period for a given incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_value",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Value of shares awarded to the director during the reporting period, measured at closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_value_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Value of shares awarded during the period, using closing stock price on the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_value_3",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Total value of shares awarded for a given incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_value_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of shares awarded for a given incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "share_award_value_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of shares awarded for a given incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_awards_period",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total compensation or awards received by the director for the reporting period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_director_cash_comp",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total direct compensation: sum of salary, bonus, other cash, and pension employer contributions for the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_director_cash_compensation",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total direct compensation received by the director, calculated as Salary plus Bonus plus Other plus PenEmpCont (Pension/Employer contributions)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_equity_at_risk",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total value or volume of equity at risk (held or awarded shares and options)",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_equity_at_risk_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total stock",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_equity_linked_wealth",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Total value of equity-linked wealth (e.g., shares, options) held by the director at the end of the period, valued using closing stock price on the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_equity_linked_wealth_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Total valuation of director’s equity-linked wealth at period end, calculated at closing stock price of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_other_listed_boards_count",
+  "type": "VECTOR",
+  "coverage": 0.6474,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total number of other boards (neither quoted nor private) an executive director has served on to date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_other_listed_boards_count_2",
+  "type": "VECTOR",
+  "coverage": 0.6476,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total number of other (non-quoted, non-private) boards an individual has served on as of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_remuneration_period",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total remuneration or awards received by the director during the period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_shareholding_value",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of shares held by the individual director at the end of the reporting period, measured at the closing stock price of the annual report date",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "total_shareholding_value_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Value of shares held by the director at the end of the reporting period, calculated using the annual report date's closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "unexercisable_option_estimated_value",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimated value of unexercisable options awarded, valued at the closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "unexercisable_option_intrinsic_value",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Valuation of unexercisable options, usually at the closing stock price for the period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "unexercisable_option_quantity",
+  "type": "VECTOR",
+  "coverage": 0.2991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Maximum number of unexercisable options awarded for the incentive plan in the period",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "unexercisable_option_quantity_ltip",
+  "type": "VECTOR",
+  "coverage": 0.29,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of unexercisable options awarded in the incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "unexercisable_option_quantity_ltipw",
+  "type": "VECTOR",
+  "coverage": 0.2183,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of unexercisable options awarded in that plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "unexercisable_option_quantity_opt",
+  "type": "VECTOR",
+  "coverage": 0.2174,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of unexercisable options awarded under the plan for the director",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "unexercisable_option_volume",
+  "type": "VECTOR",
+  "coverage": 0.2554,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of unexercisable options awarded in the incentive plan",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "wealth_sensitivity_to_stock",
+  "type": "VECTOR",
+  "coverage": 0.6479,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Change in the director's wealth in the company for a 1% change in share price at the annual report date; calculated using holdings and the closing stock price",
+  "dataset": "fundamental1"
+ },
+ {
+  "id": "wealth_sensitivity_to_stock_2",
+  "type": "VECTOR",
+  "coverage": 0.648,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Change in the director's company-specific wealth for a 1% change in stock price at the annual report date, as valued at that date",
+  "dataset": "fundamental1"
+ }
+]

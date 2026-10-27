@@ -9,6 +9,9 @@
   status         "auto"（跟区域 entry_verdict）| active | probe | archived；非 auto 必须写 status_note
   backtest       {"overrides": {设置名: 值}, "_evidence": {设置名: 证据}} —— 进回测的设置覆盖
                  （workflow_batch_track 以 --set 钉住；toolkit CampaignContext.bind_cell 同样生效）
+  dataset_overrides {数据集: {"backtest": {同 backtest 结构}, "note": 说明}} —— 数据集级回测覆盖，
+                 只在该数据集被点名（backtest_pins / resolve 传 dataset）时生效并压过组合级；
+                 用于「同类别里某个数据集有已验证配方（如 analyst7 只需 TOP2500）」的场景。
   thresholds     {"overrides": {"review.sharpe_min": 值, "mode_b.sharpe_min": 值, ...}, "_evidence": {...}}
   generation     {"use": [...], "avoid": [...], "skeletons": [{"text","evidence","window_note"}], "notes": [...]}
   s4             {"levers": [{"id","what","evidence","no_extrapolate"}], "avoid": [{"what","evidence"}]}
@@ -34,7 +37,7 @@ BACKTEST_KEYS = ("universe", "delay", "neutralization", "decay", "truncation",
 THRESHOLD_PREFIXES = ("review.", "near.", "mode_b.", "gates.", "diversity.")
 #: flow = 本组合与主流程的**控制流**差异（新步骤 / 新工具 / 新停止规则），只有它非空才可能被判「够格拆 skill」
 CELL_KEYS = {"status", "status_note", "datasets", "backtest", "thresholds", "generation", "s4", "evidence",
-             "note", "flow"}
+             "note", "flow", "dataset_overrides"}
 STATUS_VALUES = ("auto", "active", "probe", "archived")
 
 
@@ -118,6 +121,31 @@ def validate_cells(region: str, data: Dict[str, Any]) -> List[str]:
                 errs.append(f"{where}.backtest.{k}: 覆盖没有 _evidence")
             if k in legal and legal[k] and v not in legal[k]:
                 errs.append(f"{where}.backtest.{k}={v!r} 不在本区合法档 {legal[k]}（config.REGIONS）")
+        # 数据集级覆盖（2026-10-20 P0-2）：只在该数据集被点名时生效；结构同 backtest，逐数据集核对
+        ds_all = body.get("dataset_overrides") or {}
+        if ds_all and not isinstance(ds_all, dict):
+            errs.append(f"{where}.dataset_overrides: 必须是 {{数据集: 覆盖块}} 字典")
+            ds_all = {}
+        for ds, dbody in ds_all.items():
+            dw = f"{where}.dataset_overrides[{ds}]"
+            if not str(ds).strip():
+                errs.append(f"{where}.dataset_overrides: 数据集键不能为空")
+            if not isinstance(dbody, dict):
+                errs.append(f"{dw}: 必须是字典（只允许 backtest / note）")
+                continue
+            d_extra = set(dbody) - {"backtest", "note"}
+            if d_extra:
+                errs.append(f"{dw}: 未知键 {sorted(d_extra)}（只允许 backtest / note）")
+            dbt = dbody.get("backtest") or {}
+            dbt_ov, dbt_ev = dbt.get("overrides") or {}, dbt.get("_evidence") or {}
+            for k, v in dbt_ov.items():
+                if k not in BACKTEST_KEYS:
+                    errs.append(f"{dw}.backtest: 不可覆盖的设置 {k}（可覆盖：{BACKTEST_KEYS}）")
+                    continue
+                if not str(dbt_ev.get(k) or "").strip():
+                    errs.append(f"{dw}.backtest.{k}: 覆盖没有 _evidence")
+                if k in legal and legal[k] and v not in legal[k]:
+                    errs.append(f"{dw}.backtest.{k}={v!r} 不在本区合法档 {legal[k]}（config.REGIONS）")
         th = body.get("thresholds") or {}
         th_ov, th_ev = th.get("overrides") or {}, th.get("_evidence") or {}
         for k, v in th_ov.items():

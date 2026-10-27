@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "region": "EUR",
+  "doc": "EUR 边界算子合法档配置（full_coverage_gate 闸 3 的白名单来源）。人可读版在 Claude/skills/wq-brain-ra-eur/references/_boundary-ops-eur.md。任一算子参数不在 legal_values 即 FAIL。",
+  "last_verified": "2026-10-20",
+  "operators": {
+    "ts_mean": {
+      "kind": "window",
+      "legal_values": [1, 2, 3, 5, 12, 22, 66, 132, 252, 504],
+      "min_coverage_for_near_gate": 2,
+      "must_include_long_window": 66
+    },
+    "ts_decay_linear": {
+      "kind": "window",
+      "legal_values": [1, 2, 3, 5, 12, 30, 66, 252],
+      "min_coverage_for_near_gate": 2
+    },
+    "ts_regression": {
+      "kind": "window",
+      "legal_values": [252, 504],
+      "min_coverage_for_near_gate": 1
+    },
+    "ts_corr": {
+      "kind": "window",
+      "legal_values": [5, 12, 22, 66, 252],
+      "min_coverage_for_near_gate": 2
+    },
+    "ts_zscore": {
+      "kind": "window",
+      "legal_values": [22, 66, 252, 504],
+      "min_coverage_for_near_gate": 2
+    },
+    "ts_std_dev": {
+      "kind": "window",
+      "legal_values": [5, 12, 22, 66],
+      "min_coverage_for_near_gate": 2
+    },
+    "ts_quantile": {
+      "kind": "window",
+      "legal_values": [22, 66],
+      "min_coverage_for_near_gate": 1
+    },
+    "ts_rank": {
+      "kind": "window",
+      "legal_values": [22, 66, 252],
+      "min_coverage_for_near_gate": 2
+    },
+    "ts_min": {
+      "kind": "window",
+      "legal_values": [5, 12, 22, 66],
+      "min_coverage_for_near_gate": 2
+    },
+    "ts_max": {
+      "kind": "window",
+      "legal_values": [5, 12, 22, 66],
+      "min_coverage_for_near_gate": 2
+    },
+    "ts_backfill": {
+      "kind": "window",
+      "legal_values": [5, 20, 66],
+      "min_coverage_for_near_gate": 2
+    },
+    "signed_power": {
+      "kind": "exponent",
+      "legal_values": [1.0, 1.2, 1.4, 1.5, 1.6, 1.8, 2.0, 2.5, 3.0],
+      "min_coverage_for_near_gate": 3,
+      "note": "破 prod 墙核心算子，近闸候选必须穷举 ≥3 档。1.0/1.2/1.4/1.6/1.8 为 analyst7 修订族实测档（2026-10-20：p 1.0–1.4 出 14 颗全过；p1.6 sub 0.97 低于比率线 1.01）；1.5/2.0/2.5/3.0 为历史通用档"
+    },
+    "power": {
+      "kind": "exponent",
+      "legal_values": [2, 3],
+      "min_coverage_for_near_gate": 1
+    },
+    "tail": {
+      "kind": "quantile",
+      "legal_values": [0.1, 0.2, 0.25, 0.3],
+      "min_coverage_for_near_gate": 2
+    },
+    "winsorize": {
+      "kind": "std",
+      "legal_values": [0.15, 0.25, 0.3, 0.35, 0.4, 0.5, 0.65, 0.8, 1.5, 2.0, 2.5, 4.0],
+      "min_coverage_for_near_gate": 2,
+      "note": "参数以 kwargs `std=X` 出现。0.15–0.8 为 other401 pscore 族实测档（2026-10-20：45 颗外层 winsorize(hump(rank(F),H),std=W) 全部出有效平台读数）；1.5/2.0/2.5/4.0 为历史通用档，其中 4.0 对 [0,1] 有界信号近似 no-op，用作平台表达式去重的指纹垫片"
+    },
+    "hump": {
+      "kind": "threshold",
+      "legal_values": [0.001, 0.0015, 0.002, 0.0025, 0.003, 0.004, 0.01, 0.02, 0.05],
+      "min_coverage_for_near_gate": 1,
+      "note": "必须写命名参数 `hump=k`（`hump(vec_avg(x), …)` 会 FAIL）。0.001–0.004 为 other401 pscore 族实测档（2026-10-20：hump 0.001→2Y 1.53–1.81 但 prod 0.730–0.745；hump 0.002→prod 0.669–0.700 但 2Y 降到 1.36–1.41，二者存在 2Y↔prod 权衡）；0.01/0.02/0.05 为通用档（wave273/274 实测降 prod 最强档 0.0012–0.0035）"
+    },
+    "group_rank": {
+      "kind": "axis",
+      "legal_axes": ["industry", "sector", "subindustry", "market"],
+      "min_coverage_for_near_gate": 2,
+      "must_include": ["subindustry", "industry"]
+    },
+    "group_zscore": {
+      "kind": "axis",
+      "legal_axes": ["industry", "sector", "subindustry", "market", "country"],
+      "min_coverage_for_near_gate": 2,
+      "note": "country 轴为 other401 pscore 族实测档（2026-10-20：group_zscore(hump(rank(pscore),0.001),country) → S1.73 F1.26 2Y1.81 T0.0219 prod0.745，是该族最接近交付的骨架）"
+    },
+    "group_neutralize": {
+      "kind": "axis",
+      "legal_axes": ["industry", "sector", "subindustry", "market", "country"],
+      "min_coverage_for_near_gate": 2
+    },
+    "bucket": {
+      "kind": "axis",
+      "legal_axes": ["industry", "sector"],
+      "min_coverage_for_near_gate": 1
+    },
+    "quantile": {
+      "kind": "bins",
+      "legal_values": [3, 5, 10, 20],
+      "min_coverage_for_near_gate": 2
+    }
+  },
+  "poison_structures": [
+    {
+      "name": "equal_weight_leg_add",
+      "pattern": "add(multiply(<w1>,<A>), multiply(<w2>,<B>))",
+      "forbidden_reason": "同一数据集内加权两腿相加；MEMORY §2 明文禁令（2026-09-28 定案，KOR wave189/190 因此作废 7 条）"
+    },
+    {
+      "name": "spread_cross_dataset",
+      "pattern": "subtract(<A_from_ds1>, <B_from_ds2>)",
+      "forbidden_reason": "跨数据集价差 = 破 ATOM"
+    }
+  ]
+}

@@ -89,6 +89,8 @@ def _region_behaviour(row: dict) -> str:
     parts = []
     if ev == "frozen":
         parts.append("步 1 即拒，不进步 2（后门见 RA `scenarios.md` 情景 RA-08）")
+    elif ev == "full-coverage":
+        parts.append("数据集必须做尽（字段全量 / 模板族 ≥3 / 边界算子档穷举），三闸全过才许判死")
     elif ev == "probe-only":
         parts.append("只许探针批，不开常规波（探针上限见 profile）")
     if not row["tracking"]:

@@ -234,6 +234,37 @@ def test_regrade_ready_applies_new_gates_to_legacy_rows(db):
     assert sq.regrade_ready(region="IND")["changes"] == []   # 幂等
 
 
+def test_regrade_revives_sibling_dead_row_once_prod_is_measured(db):
+    """#88：入队早于相关性实测 → 被兄弟闸判死，此后再也进不了复判集（旧实现只扫 READY）。
+
+    真实事故 `88vXxaqv` / `LL53QVvn`：14:15:24 入队（prod=NULL）被兄弟 `qMEVJPo2=0.81` 判 DEAD；
+    2 分钟后自身 prod 实测 0.6811 / 0.5761 落进 `alphas`（persist_correlation 不回写队列表），
+    队列表停在 NULL/DEAD，结论与事实相反且永久不可申诉。
+    """
+    _ins_alpha(db, "SIB", "multiply(-1, ts_mean(f1, 66))", prod_correlation=0.81)
+    _ins_alpha(db, "ME", "rank(ts_mean(y, 5))", prod_correlation=0.6811)
+    sq.enqueue_from_alphas(region="IND", dedup=False)
+    con = sqlite3.connect(db)
+    # 复现事故形态：队列表里 prod 还是入队快照（NULL），兄弟闸已经把本行判死
+    con.execute("UPDATE submit_ready SET prod=NULL, self=NULL, status='DEAD', "
+                "gate='FAIL:PROD_SIBLING(SIB=0.81)' WHERE alpha_id='ME'")
+    con.execute("UPDATE submit_ready SET status='DEAD', gate='FAIL:PROD_WALL' WHERE alpha_id='SIB'")
+    con.commit(); con.close()
+
+    assert sq.regrade_ready(region="IND", dry_run=True)["revived"] == 1
+    assert _status(db, "ME")[0] == sq.STATUS_DEAD            # dry-run 不写
+    d = sq.regrade_ready(region="IND")
+    assert d["revived"] == 1
+    st, gate, note = _status(db, "ME")
+    assert st == sq.STATUS_READY and gate == "IS_ONLY"       # self 仍未测 → 待验，不是可提交
+    assert "regrade:revived(FAIL:PROD_SIBLING(SIB=0.81))" in note
+    con = sqlite3.connect(db)
+    prod = con.execute("SELECT prod FROM submit_ready WHERE alpha_id='ME'").fetchone()[0]
+    con.close()
+    assert prod == pytest.approx(0.6811)                     # 以 alphas 镜像回填
+    assert sq.regrade_ready(region="IND")["changes"] == []    # 幂等
+
+
 def test_bulk_enqueue_never_overwrites_platform_verified_rows(db):
     # 坑 4：verify/add（平台实测）写回的 prod 不能被并行的 add-many/harvest 用 alphas 表旧值覆盖
     _ins_alpha(db, "V1", "rank(ts_mean(x, 5))", prod_correlation=0.48, self_correlation=0.2)
@@ -277,3 +308,60 @@ def test_enqueue_from_alphas_on_campaignstore_db(tmp_path):
     assert n == 1
     row = _status(path, "N33A")
     assert row is not None and row[0] == sq.STATUS_READY
+
+
+# ---------------- P1-3：族签名必须含分组轴与设置档（USA d5KzLo7v 事故回归） ----------------
+
+#: 真实事故对（2026-10-23 USA 复盘 §9.3）：主体形状**逐字相同**，只差分组轴与中性化。
+#: d5KzLo7v 是当时全 USA 唯一同时过 prod/self 双闸、且落在**未点亮塔**的候选，
+#: 旧口径（仅主体形状）把它与 zqrGqVXo 判同族并标 PROD_SIBLING 判死。
+_INCIDENT_PAIR = {
+    # (expr, neutralization, universe, delay)
+    "d5KzLo7v": ("tail(winsorize(group_rank(ts_zscore(eur_aggregated_value_1, 252), subindustry), "
+                 "std=2), lower=0.2, upper=0.8, newval=0.5)", "SUBINDUSTRY", "TOP3000", 1),
+    "zqrGqVXo": ("tail(winsorize(group_rank(ts_zscore(eur_aggregated_value_1, 252), industry), "
+                 "std=2), lower=0.25, upper=0.75, newval=0.5)", "MARKET", "TOP3000", 1),
+}
+
+
+def test_family_signature_separates_incident_pair():
+    """P1-3 验收（报告 §10 原文）：`d5KzLo7v`（market）vs `zqrGqVXo`（subindustry）**必须判不同族**。"""
+    rows, parts = {}, {}
+    for aid, (expr, neut, uni, delay) in _INCIDENT_PAIR.items():
+        rows[aid] = {"alpha_id": aid, "expr": expr, "neutralization": neut,
+                     "universe": uni, "delay": delay}
+        parts[aid] = sq.family_parts_of_row(rows[aid])
+    # 前提：主体骨架确实相同（否则这条回归没测到东西）
+    assert parts["d5KzLo7v"]["body"] == parts["zqrGqVXo"]["body"]
+    # 判据一：严格字符串签名不同（去重侧）
+    assert sq.family_signature_of_row(rows["d5KzLo7v"]) != sq.family_signature_of_row(rows["zqrGqVXo"])
+    # 判据二：通配口径（兄弟连坐侧）同样不同族
+    assert not sq._same_family(parts["d5KzLo7v"], parts["zqrGqVXo"])
+
+
+def test_family_signature_keeps_sibling_rule_alive_when_settings_partial():
+    """P1-3 反向保护：设置档记账不全（老队列行 / alphas 镜像缺 decay）时，
+    兄弟连坐**不能整条失效**（通配口径：一侧未知 ⇒ 放行）。"""
+    a = sq.family_parts("rank(ts_mean(f1, 22))", {"neutralization": "SUBINDUSTRY", "universe": "TOP3000"},
+                        row_key="A")
+    b = sq.family_parts("rank(ts_mean(f1, 22))", {}, row_key="B")     # 一行设置档全缺
+    assert sq._same_family(a, b)
+    # 但「两侧都知道且不同」必须分族
+    c = sq.family_parts("rank(ts_mean(f1, 22))", {"neutralization": "MARKET", "universe": "TOP3000"},
+                        row_key="C")
+    assert not sq._same_family(a, c)
+
+
+def test_family_signature_differs_on_settings_profile():
+    """P1-3：decay/truncation 不同 ⇒ 不同族（报告 §10：设置档必须进签名）。"""
+    e = "rank(ts_mean(f1, 22))"
+    s1 = sq.family_signature(e, {"decay": 4, "truncation": 0.08, "neutralization": "SUBINDUSTRY"})
+    s2 = sq.family_signature(e, {"decay": 20, "truncation": 0.05, "neutralization": "SUBINDUSTRY"})
+    assert s1 != s2 and s1.startswith(sq.FAMILY_SIG_PREFIX)
+    # 平台 camelCase 与本地 snake_case 归一后同签名
+    assert sq.family_signature(e, {"nanHandling": "ON", "maxTrade": "OFF"}) == \
+        sq.family_signature(e, {"nan_handling": "ON", "max_trade": "OFF"})
+    # 设置档全缺 ⇒ 字符串签名降级为行级唯一（保守：不与其他行同族），且带前缀可识别
+    s3 = sq.family_signature(e, {}, row_key="K1")
+    s4 = sq.family_signature(e, {}, row_key="K2")
+    assert s3 != s4 and "NOSETTINGS#K1" in s3

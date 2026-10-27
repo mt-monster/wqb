@@ -53,40 +53,63 @@ def _save_pool(path: Path, pool: list[dict]) -> None:
 
 
 async def _prod_corr(brain, alpha_id: str, attempts: int = 10, base_wait: float = 20.0) -> float | None:
-    """轮询 production 相关性。202 = 队列未就绪，必须继续等（不能当失败）。"""
+    """轮询 production 相关性。202 = 队列未就绪，必须继续等（不能当失败）。
+
+    ⚠ **账号级单并发槽**（2026-10-22）：平台 prod 接口每账号仅 1 个在飞。本脚本
+    绕过 MCP 客户端的锁直接轮询 ⇒ 会与 MCP 服务 / 其它脚本抢同一个槽，把对方堵到
+    轮询上限（实测事故：一方卡住，另一方空转 800s+ 拿不到数）。故显式申请同一个
+    跨进程槽（``wqb.correlation_slot``，token 文件与 MCP 侧同名 ⇒ 跨进程真互斥）；
+    拿不到就返回 None（调用方按 UNKNOWN 处置，不编造数字）。
+    """
     # 真实端点 = /correlations/prod（MCP brain_mixin_spcread._poll_production_correlation 同源）；
     # `/correlations/production` 会 404。响应顶层直接带 `max`，不在 checks.production 里。
     url = f"{brain.base_url}/alphas/{alpha_id}/correlations/prod"
-    for i in range(attempts):
-        try:
-            r = await brain._request("GET", url)
-        except Exception as exc:  # noqa: BLE001
-            print(f"[warn] {alpha_id} 请求异常：{exc}", file=sys.stderr)
-            return None
-        if r.status_code == 200:
-            text = (r.text or "").strip()
-            if not text:
-                # 空体 200 = 平台仍在计算（MCP 实测：通常 1–5 分钟）
-                await asyncio.sleep(base_wait / 2 if i < 6 else base_wait)
-                continue
+
+    try:
+        from wqb.correlation_slot import slot as _corr_slot
+    except Exception:  # pragma: no cover - 依赖缺失时退回无锁
+        _corr_slot = None
+
+    async def _poll() -> float | None:
+        for i in range(attempts):
             try:
-                body = r.json()
-            except Exception:  # noqa: BLE001
+                r = await brain._request("GET", url)
+            except Exception as exc:  # noqa: BLE001
+                print(f"[warn] {alpha_id} 请求异常：{exc}", file=sys.stderr)
                 return None
-            val = (body or {}).get("max")
-            return float(val) if val is not None else None
-        if r.status_code in (202, 429):
-            wait = base_wait
-            try:
-                wait = float(r.headers.get("Retry-After") or base_wait)
-            except Exception:  # noqa: BLE001
-                pass
-            await asyncio.sleep(min(max(wait, 5.0), 120.0))
-            continue
-        print(f"[warn] {alpha_id} 返回 {r.status_code}：{r.text[:160]}", file=sys.stderr)
+            if r.status_code == 200:
+                text = (r.text or "").strip()
+                if not text:
+                    # 空体 200 = 平台仍在计算（MCP 实测：通常 1–5 分钟）
+                    await asyncio.sleep(base_wait / 2 if i < 6 else base_wait)
+                    continue
+                try:
+                    body = r.json()
+                except Exception:  # noqa: BLE001
+                    return None
+                val = (body or {}).get("max")
+                return float(val) if val is not None else None
+            if r.status_code in (202, 429):
+                wait = base_wait
+                try:
+                    wait = float(r.headers.get("Retry-After") or base_wait)
+                except Exception:  # noqa: BLE001
+                    pass
+                await asyncio.sleep(min(max(wait, 5.0), 120.0))
+                continue
+            print(f"[warn] {alpha_id} 返回 {r.status_code}：{r.text[:160]}", file=sys.stderr)
+            return None
+        print(f"[warn] {alpha_id} 轮询 {attempts} 次仍未就绪", file=sys.stderr)
         return None
-    print(f"[warn] {alpha_id} 轮询 {attempts} 次仍未就绪", file=sys.stderr)
-    return None
+
+    if _corr_slot is None:
+        return await _poll()
+    with _corr_slot(f"prod_watch({alpha_id})", ttl_sec=attempts * base_wait + 300.0) as s:
+        if not s.get("acquired"):
+            print(f"[warn] {alpha_id} 账号级相关性槽被其它进程占用 → 跳过（不排队）",
+                  file=sys.stderr)
+            return None
+        return await _poll()
 
 
 def _status(v: float | None) -> str:

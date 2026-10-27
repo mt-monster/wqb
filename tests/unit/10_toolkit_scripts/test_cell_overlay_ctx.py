@@ -35,6 +35,16 @@ def _cell():
     }}
 
 
+def _cell_with_ds_override():
+    """同 _cell()，另挂 other466 的数据集级覆盖：decay 8 压过组合级 6，universe 组合级没写。"""
+    cells = _cell()
+    cells["fundamental"]["dataset_overrides"] = {"other466": {
+        "backtest": {"overrides": {"decay": 8, "universe": "TOP2500"},
+                     "_evidence": {"decay": "w9", "universe": "w9"}},
+        "note": "other466 已验证配方（2026-10-20 P0-2）"}}
+    return cells
+
+
 def test_bind_cell_applies_overrides_respects_cli_pins_and_locks(tmp_path, monkeypatch):
     common = _lib("common")
     import wqb.profiles.taxonomy as T
@@ -110,3 +120,36 @@ def test_pipeline_cli_without_cell_keeps_region_settings(tmp_path, monkeypatch):
     rc, ctx = _drive_pipeline_settings(tmp_path, monkeypatch, {})
     assert rc == 2
     assert ctx.settings["decay"] == 4 and ctx.settings["neutralization"] == "STATISTICAL"   # 反向前提：无组合即区域值
+
+
+def test_bind_cell_dataset_overrides_win_and_respect_pins(tmp_path, monkeypatch):
+    common = _lib("common")
+    import wqb.profiles.taxonomy as T
+    monkeypatch.setattr(T, "dataset_category", lambda region, ds, db=None: "fundamental")
+    camp = str(_campaign(tmp_path, _cell_with_ds_override()))
+
+    logs = []
+    ctx = common.CampaignContext(camp)
+    applied = ctx.bind_cell("other466", log=logs.append)
+    assert applied == {"decay": 8, "neutralization": "MARKET", "universe": "TOP2500"}   # 数据集级压过组合级
+    assert ctx.settings["decay"] == 8 and ctx.settings["universe"] == "TOP2500"
+    assert ctx.cell_pinned == {"decay", "neutralization", "universe"}
+    assert any("dataset_overrides" in s for s in logs)
+
+    # 反向前提：数据集没被点名（组合文件里没有它）就只走组合级
+    ctx2 = common.CampaignContext(camp)
+    assert ctx2.bind_cell("pv999", log=lambda *_: None) == {"decay": 6, "neutralization": "MARKET"}
+    assert ctx2.settings["universe"] == "TOP600"
+
+    # 数据集级同样让位 CLI 钉住（--set decay=… 时两个层级都不动 decay）
+    ctx3 = common.CampaignContext(camp)
+    assert ctx3.bind_cell("other466", pinned={"decay"}, log=lambda *_: None) == \
+        {"neutralization": "MARKET", "universe": "TOP2500"}
+    assert ctx3.settings["decay"] == 4
+
+
+def test_pipeline_cli_applies_dataset_overrides(tmp_path, monkeypatch):
+    rc, ctx = _drive_pipeline_settings(tmp_path, monkeypatch, _cell_with_ds_override())
+    assert rc == 2
+    assert ctx.settings["decay"] == 8 and ctx.settings["universe"] == "TOP2500"   # 数据集级（other466 被点名）生效
+    assert ctx.settings["neutralization"] == "MARKET"                              # 组合级同时保留

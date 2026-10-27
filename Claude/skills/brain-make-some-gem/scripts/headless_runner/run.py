@@ -480,6 +480,13 @@ def _build_datafields_df(
         if isinstance(p, dict):
             results.extend(p.get("results", []))
 
+    # all-or-error（2026-10-20）：平台 count 是权威总数，短一页也会让 GEM 的
+    # 字段空间悄悄缺族。宁可整步失败，也不拿截断的字段表生成表达式。
+    if total and len(results) < total:
+        raise RuntimeError(
+            "data-fields incomplete: got %d/%d (dataset_id=%s, region=%s)"
+            % (len(results), total, dataset_id, region))
+
     df = pd.DataFrame(results)
 
     before_count = len(df)

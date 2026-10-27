@@ -1,0 +1,202 @@
+{
+ "dataset": "model250",
+ "region": "ASI",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 20
+ },
+ "field_count": 20,
+ "platform_count": 20,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 440,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.8812,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-22T23:45:00",
+ "fields": [
+  {
+   "id": "mdl250_close_eq_cap",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Market capitalization of the security at prior close; expressed in US dollars for US and in local currency for other reg"
+  },
+  {
+   "id": "mdl250_eq_hedge",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Machine learning signal indicating defensive, downside-protective characteristics (predicts resilience during market str"
+  },
+  {
+   "id": "mdl250_eq_medium",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Machine learning sub-signal score targeting medium-term returns (1–4 week horizon), trained on a rolling 12-month window"
+  },
+  {
+   "id": "mdl250_eq_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Market capitalization for the security, in local currency (USD for US), as of prior close"
+  },
+  {
+   "id": "mdl250_eq_seasonality",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 440,
+   "description": "Machine learning signal capturing systematic seasonal or calendar patterns in returns, trained over approximately 10 yea"
+  },
+  {
+   "id": "mdl250_eq_short",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Machine learning sub-signal targeting short-term returns (about 2–3 trading day horizon), trained on recent data (previo"
+  },
+  {
+   "id": "mdl250_hc_eq_hedge",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "ML model sub-signal score predicting securities with downside resilience, providing defensive/insurance overlay especial"
+  },
+  {
+   "id": "mdl250_hc_eq_medium",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 440,
+   "description": "Machine learning output signal forecasting expected medium-term (1–4 weeks) returns for the security; trained on a rolli"
+  },
+  {
+   "id": "mdl250_hc_eq_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Market capitalization of the stock, in US dollars for US listings and in local currency for each other region"
+  },
+  {
+   "id": "mdl250_hc_eq_seasonality",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 440,
+   "description": "ML-generated signal capturing systematic calendar or seasonal effects for the security, trained using a rolling 10-year "
+  },
+  {
+   "id": "mdl250_hc_eq_short",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "ML-generated signal forecasting expected short-term (2–3 day) returns for the security, using only previous month data"
+  },
+  {
+   "id": "mdl250_lmt_close_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.8814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Primary composite machine learning alpha score from the MALTA model, representing expected relative returns for the stoc"
+  },
+  {
+   "id": "mdl250_lmt_close_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.8814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Industry sector classification (likely GICS sector) to which the company or security belongs"
+  },
+  {
+   "id": "mdl250_lmt_open_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.8814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "The primary machine-learning composite alpha signal output by MALTA, indicating expected relative returns, z-score stand"
+  },
+  {
+   "id": "mdl250_lmt_open_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.8814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Standardized industry classification of the security according to GICS sector"
+  },
+  {
+   "id": "mdl250_malta_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Primary composite machine learning alpha score for each security, summarizing the overall ML model’s stock selection sig"
+  },
+  {
+   "id": "mdl250_malta_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Industry group or sector classification of the stock, based on GICS taxonomy for grouping, risk modeling, and neutraliza"
+  },
+  {
+   "id": "mdl250_maltahc_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 440,
+   "description": "Primary composite ML score for each stock, indicating overall expected return (relative); daily cross-sectional z-score"
+  },
+  {
+   "id": "mdl250_maltahc_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Company's sector classification, typically using GICS standard"
+  },
+  {
+   "id": "mdl250_open_eq_cap",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Market capitalization of the security, expressed in U.S. dollars for U.S. securities and local currency for each respect"
+  }
+ ]
+}

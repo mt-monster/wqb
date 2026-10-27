@@ -1,0 +1,596 @@
+[
+ {
+  "id": "fnd90_game_accruals_vol",
+  "type": "MATRIX",
+  "coverage": 0.4216,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "The volatility of accounting accruals, measuring variability in accruals over time; higher values indicate greater manipulation or lower earnings quality",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_amortization_rate",
+  "type": "MATRIX",
+  "coverage": 0.2548,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Amortization Rate",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_an_cov_chng",
+  "type": "MATRIX",
+  "coverage": 0.2817,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Period-over-period change in the number of financial analysts covering the company, positive values indicate increasing analyst attention",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_asset_turnover_chg",
+  "type": "MATRIX",
+  "coverage": 0.5704,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The change in asset turnover ratio (typically sales/assets), reflecting improvement or deterioration in capital utilization over time",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_capex_dep",
+  "type": "MATRIX",
+  "coverage": 0.3353,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "Ratio of capital expenditures to depreciation, with higher values indicating more aggressive reinvestment relative to asset aging",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_capex_sale",
+  "type": "MATRIX",
+  "coverage": 0.5525,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Ratio of capital expenditures to sales, indicating investment intensity compared to revenue generation",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_cash_flow_coverage",
+  "type": "MATRIX",
+  "coverage": 0.5351,
+  "userCount": 22,
+  "alphaCount": 27,
+  "description": "A ratio measuring how well a company's operating cash flow covers its obligations (likely total debt or interest); higher values signal stronger ability to service liabilities",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_contingent_liab",
+  "type": "MATRIX",
+  "coverage": 0.2261,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The ratio of contingent liabilities (potential future obligations) to equity, indicating off-balance-sheet or unrecognized risk; higher values mean higher risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_deferred_sal_chg",
+  "type": "MATRIX",
+  "coverage": 0.3447,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "The period-over-period change in deferred revenue (sales received but not yet recognized), which may reflect aggressive revenue recognition practices; positive changes may warrant scrutiny",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_deferred_tax_asset_chg",
+  "type": "MATRIX",
+  "coverage": 0.505,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The period-over-period change in the amount of deferred tax assets on the balance sheet, reflecting adjustments or aggressive accounting in tax accruals or recognition timing",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_deferred_tax_liab_chg",
+  "type": "MATRIX",
+  "coverage": 0.5238,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The period-over-period change in deferred tax liabilities, indicating shifts in future tax obligations possibly due to accounting policies or estimates",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_depreciation_chg",
+  "type": "MATRIX",
+  "coverage": 0.3359,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The change in the depreciation rate (either method or level), which can indicate changes in accounting estimate or potential earnings management",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_earning_smooth",
+  "type": "MATRIX",
+  "coverage": 0.5318,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "A measure of how stable or \"smooth\" reported earnings are over time, potentially capturing both persistent profitability or possible earnings management/smoothing practices",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_eff_interest_rate",
+  "type": "MATRIX",
+  "coverage": 0.4803,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The effective interest rate experienced by the company, representing the cost of debt factoring in all forms of financing; higher rates signal more financial leverage risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_eps_sur_vol",
+  "type": "MATRIX",
+  "coverage": 0.4868,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Volatility of analyst EPS (earnings per share) forecast errors, reflecting the unpredictability or low quality of reported earnings versus market expectations",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_eps_vol",
+  "type": "MATRIX",
+  "coverage": 0.5163,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Volatility (standard deviation) of earnings per share over a period, with higher values indicating unstable profitability",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_equity_dilution",
+  "type": "MATRIX",
+  "coverage": 0.5719,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "An indicator of new equity issuance or dilution, such as through new share issuance or conversion of convertibles, reflecting risk of ownership dilution to existing shareholders",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_esop_grant",
+  "type": "MATRIX",
+  "coverage": 0.1854,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "ESOP grants [ ] - [Quality.Capital structure]",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_finished_goods",
+  "type": "MATRIX",
+  "coverage": 0.3414,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ratio of finished goods to total inventory, indicating the proportion of inventory in final form; higher values may signal slow sales, overproduction, or potential risk in working capital management",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_gma_chg",
+  "type": "MATRIX",
+  "coverage": 0.5325,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Change in gross margin (as a percentage or ratio) from one period to the next, capturing improvement or deterioration in efficiency",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_gross_margin_vol",
+  "type": "MATRIX",
+  "coverage": 0.5324,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Volatility in gross margin over time; high volatility signals instability or unpredictability in profitability, indicating potential business risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_inc_cash_tax",
+  "type": "MATRIX",
+  "coverage": 0.5411,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Ratio of tax expense per income statement to actual cash taxes paid, designed to highlight aggressive tax recognition or earnings quality red flags",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_interest_investment_inc",
+  "type": "MATRIX",
+  "coverage": 0.4965,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The amount of income earned from interest and investments, as opposed to operating earnings, which might distort quality of earnings if high relative to core business profit",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_inventory_chg",
+  "type": "MATRIX",
+  "coverage": 0.4484,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Change in company inventory levels over a specific period, typically quarter-over-quarter or year-over-year, reflecting working capital changes and operational efficiency; higher changes may indicate risk of inventory buildup or fluctuations in demand",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_inventory_days",
+  "type": "MATRIX",
+  "coverage": 0.4484,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of days inventory remains on hand before being sold, calculated as inventory divided by average daily sales; a higher value suggests slower inventory turnover and potential working capital inefficiency or sales weakness",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_labor_efficiency_chg",
+  "type": "MATRIX",
+  "coverage": 0.5159,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Period-to-period change in labor efficiency (e.g., revenue or profit per employee), with increases reflecting greater efficiency",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_minority_interest",
+  "type": "MATRIX",
+  "coverage": 0.391,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The ratio of minority interest (equity attributable to non-controlling shareholders in subsidiaries) to total equity; higher values may reflect more complex ownership structures and potential earnings quality concerns",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_noa",
+  "type": "MATRIX",
+  "coverage": 0.5685,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Net Operating Assets; represents the company's operating assets minus operating liabilities, indicating capital employed in operations",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_non_oper_inc",
+  "type": "MATRIX",
+  "coverage": 0.5023,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Non-operating income as a share of EBITDA, highlighting the proportion of earnings derived from sources outside the core business; higher ratios may imply lower earnings quality or potential one-off items",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_non_production_asset",
+  "type": "MATRIX",
+  "coverage": 0.4505,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Amount or ratio of company assets not directly tied to production or core operations (such as investments, property held for sale); higher values may indicate inefficient capital utilization or non-core area exposure",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_optimism_gma",
+  "type": "MATRIX",
+  "coverage": 0.4767,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Analyst Optimism Gross Margin [ Descending] - [Quality.Profitability]",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_optimism_sale",
+  "type": "MATRIX",
+  "coverage": 0.5584,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Analyst Optimism Sales [ Descending] - [Quality.Profitability]",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_other_asset_gr",
+  "type": "MATRIX",
+  "coverage": 0.5725,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Other Asset Growth [ Descending] - [Quality.Capital utilization]",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_payble_days",
+  "type": "MATRIX",
+  "coverage": 0.5331,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Average number of days the company takes to pay its suppliers (accounts payable days); a higher value means slower payments, which could indicate cash flow management or payment risk to suppliers",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_pension_debt_equi_pbo",
+  "type": "MATRIX",
+  "coverage": 0.3797,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Value of the company's net pension benefit obligation (PBO) expressed as debt equivalent; a higher value indicates greater pension-related financial risk relative to debt",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_pension_discount_rate",
+  "type": "MATRIX",
+  "coverage": 0.3058,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The discount rate used to calculate the present value of pension obligations; higher values may indicate more aggressive accounting practices (lowering reported liabilities)",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_pension_ev",
+  "type": "MATRIX",
+  "coverage": 0.4119,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "Ratio of pension and other post-employment benefit obligations to total enterprise value; higher values mean greater pension-related liability risks relative to the company's market worth",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_pension_expense",
+  "type": "MATRIX",
+  "coverage": 0.5409,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Pension-related expense scaled by EBITDA, where higher values indicate greater pension-related liability risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_pension_interest",
+  "type": "MATRIX",
+  "coverage": 0.3358,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Interest cost component of pension expense, representing the increase in projected pension liability due to the passage of time",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_pension_pbo",
+  "type": "MATRIX",
+  "coverage": 0.378,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ratio of projected pension benefit obligations (pension liabilities) to total enterprise value, indicating pension-related financial risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_prepaid_expense",
+  "type": "MATRIX",
+  "coverage": 0.3878,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ratio of prepaid expenses to sales, indicating the extent of accounting items paid in advance relative to revenue, which may signal aggressive accounting practices",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_receivable_chg",
+  "type": "MATRIX",
+  "coverage": 0.5742,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Change in receivables (typically quarter-over-quarter or year-over-year), showing how much accounts receivable increased or decreased, reflecting shifts in working capital",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_receivable_days",
+  "type": "MATRIX",
+  "coverage": 0.5742,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of days, on average, it takes a company to collect receivables from customers; a measure of working capital efficiency",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_relative_rtn_vol",
+  "type": "MATRIX",
+  "coverage": 0.5788,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Volatility of a security’s returns relative to a benchmark or peers, representing relative risk or instability of stock returns",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_serial_special",
+  "type": "MATRIX",
+  "coverage": 0.574,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total of special (non-recurring/one-off) accounting items as a proportion of sales, highlighting the prevalence of such adjustments and potential earnings manipulation",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_sg_a_cost_ratio",
+  "type": "MATRIX",
+  "coverage": 0.5537,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Selling, General, & Administrative (SG&A) expenses as a ratio to a base (likely sales or revenue), measuring company efficiency in overhead spending",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_sg_a_inefficiency",
+  "type": "MATRIX",
+  "coverage": 0.558,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Level of inefficiency in SG&A (Selling, General & Administrative) expenses; higher values suggest less efficient management of overhead costs",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_sg_a_vol",
+  "type": "MATRIX",
+  "coverage": 0.5289,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Volatility or variability in SG&A expenses over time, with higher values indicating instability or unpredictability in overhead costs, which could be a risk factor for efficiency",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_short_term_debt",
+  "type": "MATRIX",
+  "coverage": 0.5158,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ratio of short-term (due within one year) debt to a base (likely total assets or capitalization), indicating near-term financial leverage or refinancing risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_tax_rate",
+  "type": "MATRIX",
+  "coverage": 0.5686,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Effective tax rate, with lower rates possibly indicating aggressive accounting or tax minimization strategies",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_game_total_debt_chg",
+  "type": "MATRIX",
+  "coverage": 0.5104,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Change in total debt balance (period-over-period), measuring increases or decreases in company leverage",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_cashflow_var",
+  "type": "MATRIX",
+  "coverage": 0.5662,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Variability (volatility) of operating cashflows; higher values indicate more unpredictable or volatile cashflow generation, which means higher risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_chs_default",
+  "type": "MATRIX",
+  "coverage": 0.5467,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standardized probability of bankruptcy/default (z-score) based on the Campbell, Hilscher, Szilagyi model; higher values = greater default risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_cscore",
+  "type": "MATRIX",
+  "coverage": 0.579,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Montier’s C-score, an integer-based composite designed to flag accounting manipulation or fraud risk (higher is more risk)",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_earn_var",
+  "type": "MATRIX",
+  "coverage": 0.5431,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Earnings variability, typically representing the standard deviation or volatility of a company's earnings over a period; higher values indicate less stable or more unpredictable earnings, signaling higher risk",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_earnigs_timeliness",
+  "type": "MATRIX",
+  "coverage": 0.2742,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Z-score measuring the timeliness of a company's earnings releases, where higher values typically indicate quicker (more timely) earnings reporting, which may reflect better governance or information transparency",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_grossprofit_asset",
+  "type": "MATRIX",
+  "coverage": 0.5361,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Gross profit divided by total assets, a quality/profitability metric where higher values indicate better profitability",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_icfroe_1y",
+  "type": "MATRIX",
+  "coverage": 0.5278,
+  "userCount": 7,
+  "alphaCount": 9,
+  "description": "Incremental Cash Flow Return on Equity over the past 1 year; higher values indicate stronger cash generation relative to equity for the recent year",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_icfroe_3y",
+  "type": "MATRIX",
+  "coverage": 0.5035,
+  "userCount": 4,
+  "alphaCount": 6,
+  "description": "Incremental Cash Flow Return on Equity over the past 3 years; higher values indicate stronger multi-year cash flow returns relative to equity",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_icfroe_5y",
+  "type": "MATRIX",
+  "coverage": 0.4798,
+  "userCount": 9,
+  "alphaCount": 11,
+  "description": "Incremental Cash Flow Return on Equity over the past 5 years; higher values indicate sustained cash flow return performance relative to equity over a longer period",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_mohanram",
+  "type": "MATRIX",
+  "coverage": 0.579,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Mohanram “G-score” assessing risk of earnings manipulation in growth stocks (higher indicates greater fraud or earnings risk)",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_negative_earnings",
+  "type": "MATRIX",
+  "coverage": 0.5767,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Frequency or indicator of negative earnings occurrences for the entity; higher numbers suggest more frequent negative earnings results",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_ohlson",
+  "type": "MATRIX",
+  "coverage": 0.5711,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Ohlson O-score, a bankruptcy prediction model score; higher scores indicate higher risk of bankruptcy for a company",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_pscore",
+  "type": "MATRIX",
+  "coverage": 0.579,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Piotroski F-score (0–9), a composite accounting quality score based on fundamental signals; higher values indicate better accounting quality and financial health",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "fnd90_qes_gamef_score",
+  "type": "MATRIX",
+  "coverage": 0.5665,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "SCORE",
+  "dataset": "fundamental90"
+ },
+ {
+  "id": "nonliquid_asset_ratio",
+  "type": "MATRIX",
+  "coverage": 0.5733,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ratio of illiquid assets (such as plant, equipment, intangibles, or other hard-to-sell assets) to total assets, indicating potential capital utilization or liquidity risk",
+  "dataset": "fundamental90"
+ }
+]

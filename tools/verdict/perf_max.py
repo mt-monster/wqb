@@ -546,6 +546,10 @@ def build_enqueue_record(snap: Dict[str, Any], plan: Optional[Dict[str, Any]] = 
         "delay": s.get("delay"),
         "decay": s.get("decay"),
         "neutralization": s.get("neutralization"),
+        # 2026-10-23（P1-3）：族签名要含**全部设置档**（truncation / nanHandling / maxTrade）。
+        "truncation": s.get("truncation"),
+        "nan_handling": s.get("nanHandling"),
+        "max_trade": s.get("maxTrade"),
         "expr": expr,
         "alpha_type": "REGULAR",
         "sharpe": snap.get("sharpe"),

@@ -123,7 +123,10 @@ def extract_is_metrics(d: Dict[str, Any]) -> Tuple[Optional[float], Optional[flo
             sub = v
         elif n == "IS_LADDER_SHARPE":
             ladder = v
-    ty = _first_not_none(ty, isd.get("two_year_sharpe"), met.get("two_year_sharpe"),
+    # 2Y 有两个载体（`wqb.config.RA_2Y_NAMES`: LOW_2Y_SHARPE / IS_LADDER_SHARPE）；
+    # 平台按 alpha 代际只发其一 ⇒ 只发 ladder 时必须回落，否则该颗 2Y 落空
+    # （2026-10-23 IND/wave232 实测 10/29 颗）。
+    ty = _first_not_none(ty, ladder, isd.get("two_year_sharpe"), met.get("two_year_sharpe"),
                          (d.get("two_year_sharpe")))
     sub = _first_not_none(sub, isd.get("sub_universe_sharpe"), met.get("sub_universe_sharpe"),
                           (d.get("sub_universe_sharpe")))

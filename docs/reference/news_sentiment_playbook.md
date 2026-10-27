@@ -54,7 +54,7 @@ Detailed pairing matrix lives in `news_bucket_field_map.md` §1 (matrix) and §3
 - VECTOR fields: rotate `vec_op` across families; require ≥2 distinct `vec_op` per batch.
 
 ## 5. Ghost-operator substitution hints (hand-edited expressions)
-Authority for *which* operators are ghosts = `wqb.config.GHOST_OPERATORS` (18 names; the
+Authority for *which* operators are ghosts = `wqb.config.GHOST_OPERATORS` (19 names; the
 table below must list exactly those — pinned by `tests/unit/07_docs_skills/test_se_docs.py`). These
 operators were never on the live platform. If a forum post cites one, rewrite with the
 real-op substitute **before** pasting:
@@ -79,6 +79,7 @@ real-op substitute **before** pasting:
 | `s_log_1p` | `log(1+abs(x))*sign(x)` / `winsorize` |
 | `ts_decay_exp_window` | `ts_decay_linear` |
 | `neutralize` | `group_neutralize(x, g)` (the platform has no bare `neutralize` expression operator) |
+| `to_nan` | `if_else(is_nan(x), <value>, x)`; for `ts_sum(<event count>)` the zeros are already additive-neutral, so drop the wrapper |
 
 ## 6. Per-batch design targets (guidance — no code gate)
 - ≥3 distinct buckets per batch

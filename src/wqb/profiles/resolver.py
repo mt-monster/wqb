@@ -79,7 +79,8 @@ def _cell_status(cell: Dict[str, Any], entry_verdict: str) -> str:
     st = cell.get("status") or "auto"
     if st != "auto":
         return st
-    return {"active": "active", "probe-only": "probe", "frozen": "archived"}.get(entry_verdict, "probe")
+    return {"active": "active", "full-coverage": "active",
+            "probe-only": "probe", "frozen": "archived"}.get(entry_verdict, "probe")
 
 
 def resolve(region: str, category: Optional[str] = None, dataset: Optional[str] = None, *,
@@ -109,6 +110,18 @@ def resolve(region: str, category: Optional[str] = None, dataset: Optional[str] 
         backtest[k] = {"value": v, "source": f"cells.json:{cat}",
                        "evidence": (bt.get("_evidence") or {}).get(k, ""),
                        "region_value": settings.get(k)}
+    # 数据集级覆盖（cells.json dataset_overrides，2026-10-20 P0-2）：只在该数据集被点名时生效，压过组合级
+    ds_bt = {}
+    if dataset and cat:
+        ds_ov = (cell.get("dataset_overrides") or {}).get(dataset) or {}
+        ds_bt = ds_ov.get("backtest") or {}
+    for k, v in (ds_bt.get("overrides") or {}).items():
+        entry = {"value": v, "source": f"cells.json:{cat}:{dataset}",
+                 "evidence": (ds_bt.get("_evidence") or {}).get(k, ""),
+                 "region_value": settings.get(k)}
+        if k in (bt.get("overrides") or {}):
+            entry["cell_value"] = (bt.get("overrides") or {})[k]  # 被数据集级压过的组合级值
+        backtest[k] = entry
 
     # ---- 阈值：thresholds.json 的 S4/S5 节 → 组合覆盖（受锁定表约束）----
     th: Dict[str, Dict[str, Any]] = {}
@@ -172,13 +185,20 @@ def resolve(region: str, category: Optional[str] = None, dataset: Optional[str] 
 
 def backtest_pins(region: str, dataset: Optional[str] = None, category: Optional[str] = None,
                   config_dir: Optional[Path] = None, db: Optional[str] = None) -> List[str]:
-    """组合的回测设置覆盖，按 pipeline.py 的 `--set KEY=VALUE` 形态返回（无覆盖返回空列表）。"""
+    """组合的回测设置覆盖，按 pipeline.py 的 `--set KEY=VALUE` 形态返回（无覆盖返回空列表）。
+
+    点名 dataset 时叠加 cells.json 的 `dataset_overrides[<dataset>].backtest`（数据集级压过组合级，2026-10-20 P0-2）。
+    """
     if dataset and not category:
         category = dataset_category(region, dataset, db=db)
     if not category:
         return []
     cdir = Path(config_dir) if config_dir else config_dir_of(region)
-    ov = ((cell_for(region, category, cdir).get("backtest") or {}).get("overrides")) or {}
+    cell = cell_for(region, category, cdir)
+    ov = dict(((cell.get("backtest") or {}).get("overrides")) or {})
+    if dataset:
+        ds_ov = (cell.get("dataset_overrides") or {}).get(dataset) or {}
+        ov.update((ds_ov.get("backtest") or {}).get("overrides") or {})
     return [f"{k}={v}" for k, v in ov.items()]
 
 
@@ -211,6 +231,8 @@ def explain_text(p: Dict[str, Any]) -> str:
     L.append("-- 回测设置（进仿真的值；来源：settings.json = 区域，cells.json = 本组合覆盖）")
     for k, v in p["backtest"].items():
         extra = f"  ← 区域值 {_fmt_val(v.get('region_value'))}；证据：{v.get('evidence')}" if "region_value" in v else ""
+        if "cell_value" in v:
+            extra += f"；组合级值 {_fmt_val(v['cell_value'])}（被数据集级压过）"
         L.append(f"  {k:<16} {_fmt_val(v['value']):<14} [{v['source']}]{extra}")
     L.append("")
     mb = p["mode_b"]

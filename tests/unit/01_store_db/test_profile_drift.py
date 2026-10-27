@@ -104,7 +104,7 @@ def test_all_real_profiles_parse(path):
               "priors", "gate_overrides", "loop_policy", "empirical_anchor"):
         assert k in fm, f"{path.name} 缺键 {k}"
     assert fm["region"] == path.stem
-    assert fm["entry_verdict"] in ("active", "probe-only", "frozen")
+    assert fm["entry_verdict"] in ("active", "full-coverage", "probe-only", "frozen")
     prof = RP.load_profile(path.stem, path.parent)
     assert prof is not None and prof.last_verified
 

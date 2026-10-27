@@ -371,7 +371,8 @@ def _print_one(name, r, stream):
             print(f"[waiver]    ⚠ {w}", file=stream)
     if r.get("evidence"):
         keys = ("total", "backtested", "pending_gated", "gem", "selected",
-                "unconsumed", "conversion", "pending_gated_ratio", "unconsumed_ratio")
+                "unconsumed", "consumed", "conversion", "conversion_status_only",
+                "pending_gated_ratio", "unconsumed_ratio")
         ev = r["evidence"]
         picked = ", ".join(f"{k}={ev[k]}" for k in keys if k in ev)
         if picked:

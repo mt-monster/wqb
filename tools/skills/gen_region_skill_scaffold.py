@@ -27,7 +27,13 @@ import sys
 from datetime import date
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[1]
+# 仓库根推导一律层数无关（AGENTS.md §8.13）：本文件在 `tools/skills/` 下，
+# `parents[1]` 会算成 `tools/` ⇒ 生成物落进 `tools/Claude/skills/...`（错误落点）。
+# 改用 wqb.paths 的向上探测（仓库根标记 = pyproject.toml + src/wqb）。
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+from wqb.paths import find_repo_root  # noqa: E402
+
+REPO = find_repo_root(__file__)
 SKILLS = REPO / "Claude" / "skills"
 NAV_TITLE = "## 本区结构导航（四目录）"
 NAV_MARK = "<!-- region-scaffold:nav:start -->"
@@ -172,6 +178,7 @@ def put(path: Path, text: str, apply_: bool) -> str:
     if apply_:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8", newline="\n")
+        return "OK"
     return "PLAN"
 
 

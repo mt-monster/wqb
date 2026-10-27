@@ -362,3 +362,51 @@ Institutions 已做 **32 条 / 6 轮**：
 ### 10.5 论坛检索通道状态（记录以备复查）
 
 `forum_recon.py` 返回 **HTTP 429（限流）**，非内容为空 ⇒ 改日重试；本次结论全部由外部文献驱动。
+
+---
+
+## 11. 补充（2026-10-20）：持股「水平」字段的 prod 实测 —— 0.9394，纯风格 beta
+
+候选 `leKLRA1N`（`group_rank(ts_backfill(inst18_instownership_pct_held, 66), subindustry)`，S 1.71 / F 1.27 / 2Y 1.86 / SUB 0.91，IS 全闸过）在提交层相关性实测：
+
+| 相关性 | 值 | 判定 |
+|---|---:|---|
+| **PROD max** | **0.9394** | 远超 0.7 ⇒ **不可提交** |
+| PROD 直方图 | [0.9,1] n=6、[0.8,0.9] n=963 | 高相关不是单点，是一整片 |
+
+**判读**：机构持股**百分比水平**是平台上已被大量复制的 size/ownership 风格 beta；本集此前测的是「变化量」（Δ10，S 1.5 量级），而水平字段的本体信号几乎完全等于既有 prod 因子。
+⇒ **可复用纪律**：Institutions 类字段进入相关性实测前，先分清「水平」与「变化」——水平版即使 IS 全闸过，prod 也大概率 0.9+；变化版才是本集唯一值得投入的形态（且如前文，2Y 已衰减）。
+⇒ 同族 `JjQV5eO2`（同一字段 + decay 线性）不重复实测，按同族判死处理。
+
+---
+
+## 12. 补充（2026-10-21）：水平机制的 neutralization 扫描 —— 两条支路都过不了闸
+
+依据 USA 规则「破 prod 靠换 neutralization 不是磨算子」，对 §11 那条水平机制（同一组表达式，
+22/66 窗 × industry/subindustry 四个壳）换 **STATISTICAL** 与 **CROWDING** 重跑，共 8 条。
+
+| 中性化 | 表达式 | alpha | S | F | 2Y | SUB | TO | ret | 失败项 |
+|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| CROWDING | mean22 / industry | `Grgb99qx` | 1.35 | 1.05 | 1.39 | 0.80 | 2.2% | 7.60% | LOW_SHARPE, LOW_2Y |
+| CROWDING | mean66 / industry | `d5Kbvv5X` | 1.30 | 1.00 | 1.39 | 0.66 | 1.7% | 7.33% | 同上 |
+| CROWDING | mean22 / subindustry | `3qjXJJqX` | 1.44 | 1.12 | 1.42 | 0.85 | 2.3% | 7.60% | 同上 |
+| CROWDING | mean66 / subindustry | `Grgb991P` | 1.40 | 1.07 | 1.42 | 0.75 | 1.8% | 7.37% | 同上 |
+| STATISTICAL | mean22 / industry | `KPmNZWqp` | **1.89** | 1.10 | **1.66** | **0.32** | 5.1% | 4.26% | LOW_SUB_UNIVERSE_SHARPE |
+| STATISTICAL | mean66 / industry | `bl8bAeMM` | 1.82 | 1.04 | 1.66 | **0.13** | 4.6% | 4.12% | 同上 |
+| STATISTICAL | mean22 / subindustry | `9qEjkNKx` | **2.02** | 1.20 | **1.71** | **0.30** | 5.1% | 4.42% | 同上 |
+| STATISTICAL | mean66 / subindustry | `VkdaeAlV` | 1.99 | 1.17 | **1.71** | **0.18** | 4.6% | 4.35% | 同上 |
+
+**归因**：
+- **STATISTICAL** 把收益**腰斩**（7.6% → 4.3%）却把 Sharpe 抬高 —— 因为波动降得更多。产出集中在
+  大市值可投子集 ⇒ `SUB/|S|` 掉到 **0.06–0.15**（线是 0.43），这是**结构性失效**不是噪声。
+  ⇒ 可复用：**STATISTICAL 在 USA 慢变量上是「大盘投影」**，它在 S/2Y 上的漂亮读数必须用 SUB 交叉验证。
+- **CROWDING** 保住收益与换手，但把 S 从 1.82 压到 1.30–1.44、2Y 压到 1.39 ⇒ 双闸 FAIL。
+- 两者都**过不了 IS 闸**，因此**没有进入 prod 实测**的价值（prod 只对过闸候选测）。
+
+**封存结论**：`inst18_instownership_pct_held` 的**水平机制**（S 1.82 / F 1.44 / 2Y 1.96 那条曲线）
+在三条中性化下都不成立：SUBINDUSTRY ⇒ prod **0.9394**（§11）；STATISTICAL ⇒ SUB 崩；
+CROWDING ⇒ S/2Y 崩。**不再在本机制上调参**。
+⇒ 与论坛实证一致（`36680834830743`：*PC 是数据源内容决定的*；同族兄弟变体会集体撞 SELF_CORRELATION）。
+
+**去向**：转 Fundamental 塔（本库 0 回测的未开发面），首个对象 `fundamental21`，
+画像与探针批见 [`_usa-fnd21-field-profile-20261021.md`](_usa-fnd21-field-profile-20261021.md)。

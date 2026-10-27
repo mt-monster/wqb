@@ -2,7 +2,7 @@
 name: brain-alpha-research-news-sentiment
 layer: L1
 description: "新闻 / 情绪 / 社媒类数据集的研究指引：字段 5 家族分类、家族 × 6 桶配对设计、Tier A / Tier B 候选数据集的路由前核对。要在 news / sentiment / socialmedia 数据集上分类字段、设计一批表达式、判断新闻类数据集值不值得挖时使用；指引层，不是闸门，选集仍走 S0。触发词：新闻数据集 / 情绪数据集 / 5 家族 / 6 桶 / Tier A。"
-last_verified: 2026-10-18
+last_verified: 2026-10-23
 allowed-tools:
   - Read
   - Bash
@@ -85,6 +85,26 @@ allowed-tools:
 - **窗口**：事件信号对窗口敏感（2026-04 经验，未复测）——先短窗（1 / 5 / 22）再谈长窗；仍只用标准窗口 1 / 5 / 22 / 66 / 252 / 504 / 1008 / 1260，非标窗口须给证据。S0 的探针电池 P1–P8 是**探针**，不是设计模板。
 - 主题与设计目标（动机，不是公式）见 [`docs/reference/news_sentiment_playbook.md`](docs/reference/news_sentiment_playbook.md)；家族 × 桶矩阵全表与 VECTOR 处理见 [`docs/reference/news_bucket_field_map.md`](docs/reference/news_bucket_field_map.md)。
 - **结果归因**：每条结果在本波 `key_findings` 里带 (家族, 桶, `vec_*`)，供下一波取舍（`failure_memory` 不按新闻桶记忆，桶级教训只在笔记里）。
+
+## 3.5 论坛已验证配方（跨数据集，2026-10-23 补）
+
+两条在 USA / EUR 都有落地证言、且**不属于上面 6 桶中任何单一桶**的配方——
+它们是「算子 × 设置」组合层，可与任意桶叠加。
+
+| 配方 | 表达式骨架 | 出处 | 适用前提 |
+|---|---|---|---|
+| **R1 相关性族 + FAST** | `ts_corr(<sent_field>, returns, d)` / `ts_covariance(<sent_field>, returns, d)` / `ts_regression(returns, <sent_field>, d, lag=0, rettype=2)`；外层 `rank` 或 `group_zscore(..., <group>)`；**中性化用 `FAST`** | 论坛 93 票 / 22 评〈使用 nip 族数据点亮 news 塔〉id `40847481080087` | 有情绪标量字段即可。`returns` 是 PV 内置字段 ⇒ **严格 ATOM 口径下不算 ATOM**，交付要标 `atom_flag=False`。原帖的 `nip`（news impact projection）字段是加分项，不是必需项 |
+| **R2 情绪波动率反转** | `group_neutralize(reverse(ts_rank(<pos_std> - <neg_std>, d)), <group>)` | 论坛 18 票〈sentiment 模板〉id `41449516289687`；原模板用 `ts_max`，该算子平台不可访问、发批即整批 CANCELLED ⇒ 按单调同向换成 `ts_rank` | 数据集要同时有**正 / 负情绪的标准差**字段（`*_pos_std` / `*_neg_std`）。`pos_std - neg_std` = 分歧度净值，取 d 日峰值后反转 |
+
+- **R1 的 `FAST` 不是可选装饰**：原帖把「相关性算子 + FAST neutralization」当作一个整体结论，
+  评论里 USA/D1 的落地证言也是在这个设置下取得的。只抄算子不抄中性化 = 换了一个实验
+  （见 `docs/experience/02_signal_patterns.md`「跨区移植配方时，中性化必须逐字对齐」）。
+- **窗口**：原帖用 20 / 60 / 180；仍按 §3 的标准窗口白名单（1 / 5 / 22 / 66 / 252 / 504 …）取最近值，
+  非标窗口要给证据。
+- **检索通道**：这两条是 2026-10-23 用 MCP `search_forum_posts(search_query="news sentiment")`
+  （50 条命中、可读）捞到、再用 `read_forum_post` 取正文的。同一时刻 `tools/forum_recon.py`
+  的读帖链路**失败**（42 命中 / 34 读失败 / 0 正文，按证据契约记 `status=error`）
+  ⇒ **论坛复查优先走 MCP**，本地 recon 脚本的读帖通道另有工程债。
 
 ## 4. news12 专项（USA/D1，2026-04-21）
 

@@ -8,6 +8,10 @@
 
 缓存策略：
 - TTL 机制：默认 24 小时缓存有效期
+- **完整性前置（2026-10-20）**：只有带 `complete is True` 且无 `truncated_reason`
+  的目录才可命中/写入。TTL 只能证明"取得早"，证明不了"取得全" —— 旧缓存里
+  的 299/1111 就是这样在有效期内被反复复用的。缺 `complete` 的存量条目按不完整
+  处理，强制全量重拉一次。
 - 强制刷新：支持 --force-refresh 参数
 - 增量更新：只更新变化的字段
 - 批量预热：战役开始前批量预热缓存
@@ -55,6 +59,18 @@ class FieldCatalogCache:
             return catalog
             
         return None
+
+    @staticmethod
+    def _is_complete_catalog(catalog: Dict[str, Any]) -> bool:
+        """目录必须带「拉全了」的正面证据才可复用/写入（2026-10-20）。
+
+        平台 /data-fields 是分页接口，旧代码在 dataset 域上也套了 300 条上限，
+        于是 analyst7 的目录只存到 299/1111 且被当成有效缓存复用。`complete`
+        与 `platform_count` 由 `_lib.api.paginate_all` 在收满平台 count 后写入；
+        缺失（历史条目）或 False、或带 `truncated_reason`，一律视为不完整。
+        """
+        return (catalog.get("complete") is True
+                and not catalog.get("truncated_reason"))
     
     def _get_ledger_cache(self, dataset: str) -> Optional[Dict[str, Any]]:
         """从 ledger_kv 获取缓存"""
@@ -64,8 +80,14 @@ class FieldCatalogCache:
             try:
                 cached = store.get_ledger(self.region, f"catalog_cache_{dataset}")
                 if cached and isinstance(cached, dict):
-                    # 检查缓存是否过期
-                    if self._is_cache_valid(cached):
+                    if not self._is_complete_catalog(cached):
+                        print(f"[cache] 忽略 {dataset} 的不完整缓存（fields={len(cached.get('fields') or [])} "
+                              f"platform_count={cached.get('platform_count')} "
+                              f"complete={cached.get('complete')!r} "
+                              f"truncated_reason={cached.get('truncated_reason')!r}），将全量重拉",
+                              file=sys.stderr)
+                    # 完整性 + TTL 双闸：TTL 证明不了内容全
+                    elif self._is_cache_valid(cached):
                         return cached
             finally:
                 store.close()
@@ -81,8 +103,13 @@ class FieldCatalogCache:
             try:
                 catalog = store.get_field_catalog(self.region, dataset)
                 if catalog and catalog.get("fields"):
-                    # 检查 fetched_at 时间
-                    if self._is_catalog_valid(catalog):
+                    if not self._is_complete_catalog(catalog):
+                        print(f"[cache] 忽略 {dataset} 的历史目录（fields={len(catalog.get('fields') or [])} "
+                              f"platform_count={catalog.get('platform_count')} "
+                              f"complete={catalog.get('complete')!r}）：无完整性凭据，将全量重拉",
+                              file=sys.stderr)
+                    # 完整性 + TTL 双闸（历史目录缺 complete 即视为不可信）
+                    elif self._is_catalog_valid(catalog):
                         return catalog
             finally:
                 store.close()
@@ -123,6 +150,16 @@ class FieldCatalogCache:
             dataset: 数据集 ID
             catalog: 字段目录数据
         """
+        # 写入端也 fail-closed：不完整目录一旦进缓存，TTL 有效期内会被
+        # 当成权威字段源反复复用（299/1111 的复发路径）。
+        if not self._is_complete_catalog(catalog):
+            print(f"[cache] 拒绝缓存 {dataset} 的不完整目录（fields={len(catalog.get('fields') or [])} "
+                  f"platform_count={catalog.get('platform_count')} "
+                  f"complete={catalog.get('complete')!r} "
+                  f"truncated_reason={catalog.get('truncated_reason')!r}）",
+                  file=sys.stderr)
+            return
+
         # 添加缓存元数据
         catalog["cache_metadata"] = {
             "cached_at": datetime.datetime.now().isoformat(timespec="seconds"),

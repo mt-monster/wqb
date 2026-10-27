@@ -9,12 +9,27 @@ import asyncio
 import os
 import sys
 
+import pytest
+
 TOOLS = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
     "tools")
 sys.path.insert(0, TOOLS)
 
 from super_build import _prod_gate_verdict, _probe_prod_max  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def _isolate_correlation_slot(tmp_path, monkeypatch):
+    """隔离跨进程锁目录（2026-10-22）。
+
+    `_probe_prod_max` 现在会申请平台「账号级单并发槽」（`wqb.correlation_slot`,
+    token 落在 `logs/_dblock/correlation.lock.json`）。不隔离就会读到**本机真实在跑**
+    的相关性查询 token ⇒ 假客户端用例全部 fail-fast 拿到 `(None, 0)`。
+    这里把锁目录指到 `tmp_path`，保证用例只验证轮询逻辑本身。
+    """
+    monkeypatch.setenv("WQB_DBLOCK_DIR", str(tmp_path / "_dblock"))
+    monkeypatch.delenv("WQB_DBLOCK_DISABLE", raising=False)
 
 
 # ------------------------------------------------- 判定（纯函数）

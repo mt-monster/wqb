@@ -22,30 +22,55 @@ def _check_names(v: Any) -> Optional[List[str]]:
     return [n for n in names if isinstance(n, str) and n]
 
 
+def _complete_checks(v: Any) -> Optional[List[Dict[str, Any]]]:
+    """行里的 checks 是否是**完整未分桶**的数组（每项都有 result）。
+
+    平台精简结构（`harvest_multisim_alphas` 的 slim 形态）把 checks 压成
+    `{fail, warning, pass, pending}` 四个桶再摊平：ERROR 被并进 pass 桶，
+    摊平后的数组**不能拿来重算 RA 名单**（wqb_db_mcp 拍平层因此打 `checks_bucketed` 标记）。
+    「每项都有 result」是完整数组的判据：桶摊平出来的项也带 result，
+    但完整数组一定每项都带（平台 is.checks 原样）。
+    """
+    if not isinstance(v, list) or not v:
+        return None
+    if not all(isinstance(c, dict) and "result" in c for c in v):
+        return None
+    return v
+
+
 def ra_failed_names(r: Dict[str, Any]) -> Optional[List[str]]:
-    """一行回测的 RA 资格门失败项名——`backtest_results.ra_failed_checks` 列的唯一写法（2026-09-28）。
+    """一行回测的 RA 资格门失败项名——`backtest_results.ra_failed_checks` 列的唯一写法。
 
     口径是 wqb.config 的 RA 唯一定义（R3）：18 项 RA check 里 result 既不是 PASS 也不是 PENDING 的。
-    按行里现有的信息取，优先级：
-      1. ra_failed_checks（拍平层 / 平台精简结构按同一定义算好的；空列表 = RA 全过），只留 RA 项名；
-      2. 完整 checks（[{name, result, …}]）→ compute_webdata_failed_counts 现算；
-      3. 只有 failed_checks（全部 FAIL 项名：旧指标缓存行、旧调用方）→ 只留 RA 项名。这一档看不到
-         RA 项的 WARNING / ERROR（真实数据里 RA 项只出现 PASS / FAIL）。
-    三者都没有 → None（入库为 NULL，读取方按"无失败"计，与此前一致）。
+    按行里现有的信息取，优先级（2026-10-23 P0-3 调整，见下）：
 
-    此前这一列存 `failed_checks or ra_failed_checks`，实际是所有 check 里 FAIL 的名字：相关性等
-    非 RA 项 FAIL 时被记成"RA 不干净"，RA 项 WARNING / ERROR 时又被记成干净。
-    failed_checks（全部 FAIL）原样留在 payload_json 里。
+      1. **完整未分桶的 checks（每项带 result）→ 按定义现算**（权威档）。
+         此前「行里给了 ra_failed_checks 就用它」排在这条前面，导致调用方预算好的空名单
+         （RA 全过）盖住了行里 checks 里的 RA-WARNING —— 那一列因此非空不了、
+         「RA 全过」与「无信息」都落成 NULL，二义不可统计。
+      2. 调用方按同一定义预算好的 `ra_failed_checks`（拍平层 / 平台精简结构 `ra` 块；空列表 = RA 全过），
+         只留 RA 项名。**精简结构（分桶 checks）走这一档**——桶摊平会把 ERROR 并进 pass 桶，不能重算。
+      3. 只有 `failed_checks`（全部 FAIL 项名：旧指标缓存行、旧调用方）→ 只留 RA 项名。
+         **这一档不得判「RA 全过」**：failed_checks 只含 FAIL 名，RA 项的 WARNING / ERROR 看不见
+         ⇒ 「FAIL 名单里没有 RA 项」≠「RA 全过」。所以过滤后为空时落 None（未知），不是空列表。
+         （旧路径写下的 payload 兜底档就此废止：它既不能枚举全部 RA 失败，也不能认证全过。）
+      4. 都没有 → None（**未知**，入库为 NULL）。
+
+    **NULL 的语义（2026-10-23 P0-3）**：写库时「RA 全过」落 `'[]'` 而不是 NULL
+    ⇒ NULL 只剩一个含义「这一行的 RA 状态未知」，`'[]'` 是「已知全过」，
+    两者不再混同，该列可统计。
     """
+    checks = _complete_checks(r.get("checks"))
+    if checks is not None and not r.get("checks_bucketed"):
+        return compute_webdata_failed_counts(checks)["ra_failed_names"]
     given = _check_names(r.get("ra_failed_checks"))
     if given is not None:
         return list(dict.fromkeys(n for n in given if n in RA_CHECK_NAMES))
-    checks = r.get("checks")
-    if isinstance(checks, list) and any(isinstance(c, dict) and "result" in c for c in checks):
-        return compute_webdata_failed_counts(checks)["ra_failed_names"]
     failed = _check_names(r.get("failed_checks"))
     if failed is not None:
-        return list(dict.fromkeys(n for n in failed if n in RA_CHECK_NAMES))
+        ra = list(dict.fromkeys(n for n in failed if n in RA_CHECK_NAMES))
+        # 空 ⇒ 不能认证「RA 全过」（RA 项的 WARNING / ERROR 不在 failed_checks 里）⇒ 落未知。
+        return ra or None
     return None
 
 
@@ -192,7 +217,10 @@ class BacktestMixin:
                         r.get("risk_neutralized_sharpe"),
                         r.get("long_count"), r.get("short_count"),
                         r.get("pnl"), r.get("book_size"),
-                        _dumps(failed) if failed else None,
+                        # 2026-10-23（P0-3）：RA 全过写 '[]'（已知），不写 NULL（未知）。
+                        # 此前 `_dumps(failed) if failed else None` 把空列表也落成 NULL，
+                        # 于是「RA 全过」与「这一行没有 RA 信息」在列上不可区分 ⇒ 该列不可统计。
+                        _dumps(failed) if failed is not None else None,
                         region, str(wave), dataset, code, payload, now,
                         failed is not None,
                     ),
@@ -450,39 +478,42 @@ class BacktestMixin:
         if p is None and s is None:
             return {"skipped": "no_valid_value", "alpha_id": alpha_id}
 
-        cur = self.connection.cursor()
-        cur.execute(
-            "SELECT id, prod_correlation, self_correlation FROM alphas WHERE alpha_id=?",
-            (alpha_id,),
-        )
-        row = cur.fetchone()
-        if not row:
-            return {"skipped": "not_found", "alpha_id": alpha_id}
+        # ★ 2026-10-27 P0：跨线程共用连接，SELECT+UPDATE+commit 在同一把锁内完成
+        # （本方法被 set_corr_cache 的 mirror 调用，那时外层已持锁 → RLock 可重入）。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            cur.execute(
+                "SELECT id, prod_correlation, self_correlation FROM alphas WHERE alpha_id=?",
+                (alpha_id,),
+            )
+            row = cur.fetchone()
+            if not row:
+                return {"skipped": "not_found", "alpha_id": alpha_id}
 
-        cur_prod = _corr_value(row[1])
-        cur_self = _corr_value(row[2])
-        new_prod = p if (p is not None and (overwrite or cur_prod is None)) else None
-        new_self = s if (s is not None and (overwrite or cur_self is None)) else None
-        if new_prod is None and new_self is None:
-            return {"skipped": "already_set", "alpha_id": alpha_id}
+            cur_prod = _corr_value(row[1])
+            cur_self = _corr_value(row[2])
+            new_prod = p if (p is not None and (overwrite or cur_prod is None)) else None
+            new_self = s if (s is not None and (overwrite or cur_self is None)) else None
+            if new_prod is None and new_self is None:
+                return {"skipped": "already_set", "alpha_id": alpha_id}
 
-        now = _now()
-        sets, vals = [], []
-        if new_prod is not None:
-            sets.append("prod_correlation=?")
-            vals.append(new_prod)
-        if new_self is not None:
-            sets.append("self_correlation=?")
-            vals.append(new_self)
-        sets.append("prod_corr_source=?")
-        vals.append(source)
-        sets.append("corr_checked_at=?")
-        vals.append(now)
-        sets.append("updated_at=?")
-        vals.append(now)
-        vals.append(int(row[0]))
-        cur.execute(f"UPDATE alphas SET {', '.join(sets)} WHERE id=?", vals)
-        self.connection.commit()
+            now = _now()
+            sets, vals = [], []
+            if new_prod is not None:
+                sets.append("prod_correlation=?")
+                vals.append(new_prod)
+            if new_self is not None:
+                sets.append("self_correlation=?")
+                vals.append(new_self)
+            sets.append("prod_corr_source=?")
+            vals.append(source)
+            sets.append("corr_checked_at=?")
+            vals.append(now)
+            sets.append("updated_at=?")
+            vals.append(now)
+            vals.append(int(row[0]))
+            cur.execute(f"UPDATE alphas SET {', '.join(sets)} WHERE id=?", vals)
+            self.connection.commit()
         return {
             "alpha_id": alpha_id,
             "prod_correlation": new_prod,

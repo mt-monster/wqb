@@ -39,7 +39,7 @@ def test_extract_fields_keeps_base_and_grouping():
 # --------------------------------------------------------------------------
 FAKE = {
     "anl14_a": "analyst14", "anl14_b": "analyst14",
-    "news_x": "news104", "pv_y": "pv29", "macro_z": "macro12",
+    "news_x": "news104", "pv_y": "pv29", "pv1_x": "pv1", "macro_z": "macro12",
 }
 
 
@@ -49,21 +49,53 @@ def test_classify_atom_single_dataset():
 
 
 def test_classify_atom_base_only_is_atom():
-    # 纯基础行情信号仍是 atom（社区把 rank(returns) 列为 atom 范例）
+    # 官方口径：基础行情字段属 pv1 数据集；纯 pv1 信号是单数据集 ⇒ atom
     res = classify_atom("rank(returns)", FAKE)
     assert res["verdict"] == "atom"
-    assert res["datasets"] == ["BASE_MARKET"]
+    assert res["datasets"] == ["pv1"]
+
+
+def test_classify_atom_pv1_field_plus_base_is_still_atom():
+    # 纠正点 a：pv1 字段 + returns 是同一个数据集，不得数成两个
+    m = dict(FAKE, pv1_px="pv1")
+    res = classify_atom("rank(pv1_px - returns)", m)
+    assert res["verdict"] == "atom"
+    assert res["datasets"] == ["pv1"]
 
 
 def test_classify_combined_cross_dataset():
     res = classify_atom("ts_co_skewness(news_x, returns, 20)", FAKE)
     assert res["verdict"] == "combined"
-    assert set(res["datasets"]) == {"news104", "BASE_MARKET"}
+    assert set(res["datasets"]) == {"news104", "pv1"}
     assert classify_atom("regression_neut(anl14_a, pv_y)", FAKE)["verdict"] == "combined"
 
 
 def test_classify_grouping_key_is_neutral():
-    assert classify_atom("group_rank(anl14_a, industry)", FAKE)["verdict"] == "atom"
+    for g in ("country", "exchange", "market", "sector", "industry", "subindustry"):
+        assert classify_atom("group_rank(anl14_a, %s)" % g, FAKE)["verdict"] == "atom"
+
+
+def test_classify_grouping_key_beyond_official_six_is_not_neutral():
+    # 纠正点 c：官方只豁免 6 个；region 之类不再无条件中性（不在字段表 ⇒ unknown）
+    assert classify_atom("group_rank(anl14_a, region)", FAKE)["verdict"] == "unknown"
+
+
+def test_classify_pv1_operators_break_atom():
+    # 纠正点 b：官方原文「inst_pnl() / convert() 视为使用 pv1」
+    for e in ("inst_pnl(anl14_a)", "convert(anl14_a)"):
+        res = classify_atom(e, FAKE)
+        assert res["verdict"] == "combined", e
+        assert res["datasets"] == ["analyst14", "pv1"], e
+        assert res["pv1_operators"] == [e.split("(")[0]]
+    # pv1 集自身用 inst_pnl 仍是单数据集
+    assert classify_atom("inst_pnl(pv1_x)", FAKE)["verdict"] == "atom"
+
+
+def test_classify_size_arg_breaks_atom():
+    # 用 pv1 字段当算子参数（非豁免）同样破坏 ATOM
+    res = classify_atom("vector_neut(anl14_a, rank(cap))", FAKE)
+    assert res["verdict"] == "combined"
+    assert set(res["datasets"]) == {"analyst14", "pv1"}
 
 
 def test_classify_unknown_field():

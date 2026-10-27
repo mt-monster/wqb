@@ -304,6 +304,12 @@ class SchemaMixin:
             # 归属自动打标（见 wqb.expression.atom）。atom_flag ∈ {atom, combined, unknown}。
             ("atom_flag", "VARCHAR(16)"),
             ("atom_n_datasets", "INTEGER"),
+            # ---- 2026-10-20 P0-1：GEM 机制族列（skeleton 模式 final_expressions_meta.json 产出）----
+            # GEM runner 自 2026-10-01 起在 dict 条目里带 family，但 upsert_expressions 的
+            # SQL 层从未包含该列 → 静默丢弃（生产库该列仅 112/75464 行有值，均来自一次性回写）。
+            # 补列后：写入方 = upsert_expressions（条目带 family 才写，UPDATE 端 COALESCE 保旧值）；
+            # 消费方 = tools/full_coverage_gate.load_db_families（模板族全量闸的 DB 历史）。
+            ("family", "TEXT"),
         ):
             self._add_column("expressions", col, ddl)
         for col, ddl in (

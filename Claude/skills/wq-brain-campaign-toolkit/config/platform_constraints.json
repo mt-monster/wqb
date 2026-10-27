@@ -1,7 +1,7 @@
 {
  "_doc": "平台级约束单一事实源（跨 region 共享，2026-08-15 自 tracking/KOR 抽象）。区域级实测数据（operator_stats/skeleton_quota/dataset_ranking/typed catalog）放战役目录 reference/，不进本文件。",
- "version": "1.6",
- "updated_at": "2026-09-29T10:00:00",
+ "version": "1.7",
+ "updated_at": "2026-10-21T00:00:00",
  "inaccessible_ops": [
   "ts_min",
   "ts_max"
@@ -143,8 +143,10 @@
   "industry",
   "market",
   "country",
-  "exchange"
+  "exchange",
+  "sta1_allc5"
  ],
+ "_group_identifier_note": "2026-10-21：新增 sta1_allc5（EUR 平台合法 group 轴）。证据：EUR alpha mL617YPx（fundamental72，RA 全过 failed_ra_count=0，S1.82/F1.25/2Y2.23/prod 0.5421）在 EUR 用 sta1_allc5 做 group_rank 跑到 COMPLETE ⇒ 平台接受。此前不在白名单 ⇒ 闸2 把 platform-legal 的表达式误判成非法字段。新增前必须留平台证据（alpha 在该 region 跑到 COMPLETE）。",
  "region_invalid_group_fields": {
   "JPN": [
    "sector",

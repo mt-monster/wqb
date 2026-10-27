@@ -156,6 +156,10 @@ class ExpressionsMixin:
         try:
             self._add_column("expressions", "atom_flag", "VARCHAR(16)")
             self._add_column("expressions", "atom_n_datasets", "INTEGER")
+            # 2026-10-20 P0-1：family（GEM 机制族）列迁移（双保险；_schema.ensure_schema
+            # 已含该列）。此前 dict 条目里的 family 键在本函数 SQL 层被静默丢弃 ——
+            # GEM runner 的「family 随表达式落库」（2026-10-01 P0）实际从未生效。
+            self._add_column("expressions", "family", "TEXT")
             _atom_ready = {"atom_flag", "atom_n_datasets"} <= self._columns("expressions")
         except Exception:
             _atom_ready = False
@@ -171,27 +175,29 @@ class ExpressionsMixin:
                 "UPDATE expressions SET fingerprint=?, status=?, alpha_id=?, sharpe=?, "
                 "fitness=?, margin=?, turnover=?, region=?, wave=?, dataset=?, "
                 "settings_json=?, source=?, bucket=?, skeleton=?, selected=?, "
-                "expected_exposure=?, atom_flag=?, atom_n_datasets=?, updated_at=? WHERE id=?"
+                "expected_exposure=?, family=COALESCE(?, family), atom_flag=?, "
+                "atom_n_datasets=?, updated_at=? WHERE id=?"
             )
             _sql_insert = (
                 "INSERT INTO expressions (wave_id, expression, fingerprint, status, alpha_id, "
                 "sharpe, fitness, margin, turnover, region, wave, dataset, settings_json, "
-                "source, bucket, skeleton, selected, expected_exposure, atom_flag, "
+                "source, bucket, skeleton, selected, expected_exposure, family, atom_flag, "
                 "atom_n_datasets, created_at, updated_at) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             )
         else:
             _sql_update = (
                 "UPDATE expressions SET fingerprint=?, status=?, alpha_id=?, sharpe=?, "
                 "fitness=?, margin=?, turnover=?, region=?, wave=?, dataset=?, "
                 "settings_json=?, source=?, bucket=?, skeleton=?, selected=?, "
-                "expected_exposure=?, updated_at=? WHERE id=?"
+                "expected_exposure=?, family=COALESCE(?, family), updated_at=? WHERE id=?"
             )
             _sql_insert = (
                 "INSERT INTO expressions (wave_id, expression, fingerprint, status, alpha_id, "
                 "sharpe, fitness, margin, turnover, region, wave, dataset, settings_json, "
-                "source, bucket, skeleton, selected, expected_exposure, created_at, updated_at) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                "source, bucket, skeleton, selected, expected_exposure, family, "
+                "created_at, updated_at) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             )
 
         for raw in items:
@@ -233,6 +239,9 @@ class ExpressionsMixin:
                 item.get("skeleton") or _expr_skeleton(expr),
                 1 if item.get("selected") else 0,
                 item.get("expected_exposure") or item.get("exposure"),
+                # family：GEM skeleton 模式机制族；UPDATE 端用 COALESCE(?, family)
+                # 保旧值（没带 ≠ 清空），INSERT 端照常写入。
+                item.get("family"),
                 *((atom_map.get(expr) or (None, None)) if _atom_ready else ()),
                 now,
             )

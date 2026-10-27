@@ -97,6 +97,18 @@ MIN_SCOPES = 3               # 平台 eligibility 最低范围数
 MIN_PTS = 1
 MAX_PTS = 100_000
 
+# ★ SA/RA 分池（2026-10-21）：RA 保底占比。
+# 取论坛 DL61056（22赞）的 `REGULAR_MIN_POINT_SHARE = 0.65`。
+# 作用：即使 --super-budget-share 填到 0.50，RA 也会被保到 65%
+# ⇒ **SUPER 实际占比硬上限 = 1 - 0.65 = 35%**（与该帖 RA 保底分支等价）。
+REGULAR_MIN_SHARE = 0.65
+
+# ★ 单颗 SUPER 点数硬上限（2026-10-21）：取论坛 DL61056 的 `SUPER_MAX_POINTS_PER_ALPHA = 10_000`
+# ⇒ 恰好 = 单 scope 预算（100k）的 10%。
+# 动机（实证反例）：首版 --super-top-n 是**全局** topN，把 IND 的 SA 池压到 2 颗，
+# 单颗吃到 11,704（11.7%），超本上限 17%。封顶后腾出的预算回流给同 scope 的 REGULAR。
+SUPER_MAX_PTS = 10_000
+
 # prod 相关性策略（与本项目提交闸 prod<0.7 一致）：
 #   discount = 对 prod∈(PROD_MAX,1] 的质量递减打折（保留范围资格，仅挪权重）
 #   exclude  = 剔除 prod>=PROD_MAX 的 alpha（含恰好阈值；含本地 prod 为 None 的保守剔除；可能令某范围掉到 <10 而失格）
@@ -164,7 +176,13 @@ def load_candidates(region: Optional[str] = None) -> List[Dict[str, Any]]:
 
 
 def load_candidates_platform() -> List[Dict[str, Any]]:
-    """平台权威候选（避本地 DB stale）：拉 OS 池全量，过滤 ACTIVE+REGULAR。
+    """平台权威候选（避本地 DB stale）：拉 OS 池全量，过滤 ACTIVE + type∈{REGULAR,SUPER}。
+
+    ★ 2026-10-21 修正（用户发现 UI 超线）：平台 Genius Status 页的 scope 点数和
+    = REGULAR + SUPER 之和（UI 截图 KOR 126,148 / IND 111,359 = REGULAR 100k +
+    SUPER 残留 26k/11k 逐颗吻合）。此前只过滤 REGULAR 导致 SUPER 的 47,593 点
+    历史残留游离在管理之外 ⇒ KOR/IND 不满足 exactly-100k。
+    官方明确支持分配 SuperAlpha，故纳入统一管理。
 
     抽取 region/delay/IS(sharpe,turnover)/OS(sharpe)/prod，键名与 load_candidates 对齐，
     使 quality()/build_plan() 无需改动即可复用。prod 优先 is.prodCorrelation，回退顶层 prod。
@@ -187,7 +205,7 @@ def load_candidates_platform() -> List[Dict[str, Any]]:
     pool = asyncio.run(_fetch())
     out: List[Dict[str, Any]] = []
     for a in pool:
-        if a.get("status") != "ACTIVE" or a.get("type") != "REGULAR":
+        if a.get("status") != "ACTIVE" or a.get("type") not in ("REGULAR", "SUPER"):
             continue
         st = a.get("settings") or {}
         isd = a.get("is") or {}
@@ -286,7 +304,9 @@ def quality(a: Dict[str, Any]) -> float:
 # --------------------------------------------------------------------------- #
 def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
                eligible_only: bool = True,
-               per_scope_budget: bool = False) -> List[Dict[str, Any]]:
+               per_scope_budget: bool = False,
+               super_budget_share: Optional[float] = None,
+               super_max_pts: Optional[int] = None) -> List[Dict[str, Any]]:
     """按质量比例分配 TOTAL_BUDGET 到点。
 
     eligible_only=True 时只在 (n>=10) 的范围里分配；若达标范围 <3，退化为取质量最高的
@@ -297,6 +317,23 @@ def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
     **每个 eligible scope 独立分配 100k**（不是总 100k 按比例拆）。否则平台判
     "did not meet the eligibility criteria"。此模式下 scope 间不再共享预算、不再
     按 scope_q 比例拆分；每 scope 内部仍按 quality 等比分配 100k。
+
+    ★ super_budget_share（2026-10-21 新增，SA/RA 分池）：论坛实证方案（DL61056，22赞）
+    的做法是 **REGULAR 与 SUPER 分开评分、分开预算**，理由：SUPER 的 Fitness/Sharpe
+    是**组合层面**指标，尺度天然高于单 alpha（论坛 LY43440 评论），同池排序会碾压 REGULAR。
+    本参数 = 每 scope 内 SUPER 预算占比；None = 不分池（旧行为，两类型同池按 quality 分配）。
+    实际生效值会被 RA 保底 `REGULAR_MIN_SHARE` 压住：
+        share = min(super_budget_share, 1 - REGULAR_MIN_SHARE)   # 即 SA 有效硬上限 35%
+    与 DL61056 的 `SUPER_POINT_SHARE=0.22` + `REGULAR_MIN_POINT_SHARE=0.65` 一致。
+    某一类型在该 scope 为空时，预算整体流转到另一类型（同 SP74109 的 `pool_ra += pool_sa`）。
+
+    ★ super_max_pts（2026-10-21 新增，单颗 SA 硬上限）：对齐论坛 DL61056 的
+    `SUPER_MAX_POINTS_PER_ALPHA = 10_000`（即单 scope 预算的 10%）。
+    动机（实证反例）：2026-10-21 首版 `--super-top-n` 是**全局** topN，而 IND 的 11 颗 SUPER
+    inv 集中在 2.15~3.98 的窄带里，全局门槛线（inv 3.12）正好切在带子中间 ⇒ IND 只剩 2 颗 SA，
+    22k 预算由 2 颗分，单颗 11,704（**11.7%，超论坛上限 17%**）。
+    封顶后**腾出的预算回流 RA**（同 SP74109 的 `pool_ra += pool_sa` 思路），
+    不浪费、也不改变 SA 池的选股。
     """
     scope_stats = []
     for (reg, d), al in scopes.items():
@@ -330,13 +367,59 @@ def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
             key = (s["region"], s["delay"])
             al = sorted(scopes[key], key=quality, reverse=True)
             scope_budget = TOTAL_BUDGET  # 每 scope 各 100k
-            sq = sum(quality(a) for a in al) or 1.0
-            for a in al:
-                pts = int(round(scope_budget * quality(a) / sq))
-                pts = max(MIN_PTS, min(MAX_PTS, pts))
-                plan.append({"region": key[0], "delay": key[1],
-                             "alpha_id": a["alpha_id"], "points": pts,
-                             "prod": a.get("prod")})
+
+            if super_budget_share is not None:
+                # ★ SA/RA 分池：两个池各自在池内按 quality 归一化分配预算。
+                sa = [a for a in al if a.get("alpha_type") == "SUPER"]
+                ra = [a for a in al if a.get("alpha_type") != "SUPER"]
+                share = max(0.0, min(float(super_budget_share),
+                                     1.0 - REGULAR_MIN_SHARE))
+                # —— 第一步：SA 池（带单颗上限）——
+                # 必须先算 SA 实际落点，才能把「封顶腾出的预算」准确回流给 RA。
+                sa_alloc: Dict[str, int] = {}
+                if sa:
+                    sq_sa = sum(quality(a) for a in sa) or 1.0
+                    if ra:
+                        sa_b = int(round(scope_budget * share))
+                        for a in sa:
+                            pts = int(round(sa_b * quality(a) / sq_sa))
+                            if super_max_pts is not None:
+                                pts = min(pts, int(super_max_pts))
+                            sa_alloc[a["alpha_id"]] = max(MIN_PTS, min(MAX_PTS, pts))
+                    else:
+                        # 无 RA 可承接回流 ⇒ 不封顶，否则剩余预算会凭空蒸发
+                        for a in sa:
+                            pts = int(round(scope_budget * quality(a) / sq_sa))
+                            sa_alloc[a["alpha_id"]] = max(MIN_PTS, min(MAX_PTS, pts))
+                # —— 第二步：RA 拿「scope 预算 − SA 实际占用」——
+                ra_budget = scope_budget - sum(sa_alloc.values())
+                pools = [([a for a in sa if a["alpha_id"] in sa_alloc], None, "SA"),
+                         (ra, ra_budget, "RA")]
+            else:
+                pools = [(al, scope_budget, "-")]
+
+            for pool, budget, tag in pools:
+                if not pool:
+                    continue
+                if tag == "SA":
+                    # SA 点数已在第一步算好（受 super_max_pts 约束），此处直接落计划
+                    for a in pool:
+                        plan.append({"region": key[0], "delay": key[1],
+                                     "alpha_id": a["alpha_id"],
+                                     "points": sa_alloc[a["alpha_id"]],
+                                     "prod": a.get("prod"),
+                                     "alpha_type": a.get("alpha_type"),
+                                     "pool": tag})
+                    continue
+                sq = sum(quality(a) for a in pool) or 1.0
+                for a in pool:
+                    pts = int(round(budget * quality(a) / sq))
+                    pts = max(MIN_PTS, min(MAX_PTS, pts))
+                    plan.append({"region": key[0], "delay": key[1],
+                                 "alpha_id": a["alpha_id"], "points": pts,
+                                 "prod": a.get("prod"),
+                                 "alpha_type": a.get("alpha_type"),
+                                 "pool": tag})
         _trim_per_scope(plan)
         return plan
 
@@ -367,7 +450,12 @@ def build_plan(scopes: Dict[Tuple[str, int], List[Dict[str, Any]]],
 
 
 def _trim_per_scope(plan: List[Dict[str, Any]]) -> None:
-    """每 scope 独立 trim 到 100k：从该 scope 最大项扣回。"""
+    """每 scope 独立 trim 到 exactly 100k：超出则从大项扣回，不足则补到最大项。
+
+    ★ 2026-10-21 修正：平台 eligibility 是「每 scope exactly 100k」逐项校验
+    （UI 只有点数精确=100,000 的 scope 有左侧达标徽章）。此前四舍五入后只减不补，
+    导致 GLB 100,001 / DEU 99,999 差 1。
+    """
     agg: Dict[Tuple[str, int], List[int]] = defaultdict(list)
     idx_by_scope: Dict[Tuple[str, int], List[int]] = defaultdict(list)
     for i, e in enumerate(plan):
@@ -377,7 +465,12 @@ def _trim_per_scope(plan: List[Dict[str, Any]]) -> None:
     for k, pts in agg.items():
         total = sum(pts)
         excess = total - TOTAL_BUDGET
-        if excess <= 0:
+        if excess < 0:
+            # 补足：差额全部加到该 scope 最大项（不影响其他项的相对比例）
+            top = max(idx_by_scope[k], key=lambda i: plan[i]["points"])
+            plan[top]["points"] = min(MAX_PTS, plan[top]["points"] + (-excess))
+            continue
+        if excess == 0:
             continue
         # 按 points 降序，扣到 MIN_PTS
         order = sorted(idx_by_scope[k], key=lambda i: -plan[i]["points"])
@@ -596,11 +689,19 @@ def replan(plan: List[Dict[str, Any]], applied: set, failed_ids: set
 # --------------------------------------------------------------------------- #
 # 零化非计划 alpha（"替换式分配"语义）：计划外的候选一律清零，避免旧分配残留
 # 与本次分配冲突（尤其 prod≥0.7 被剔除的、以及上一轮已写过点的 GLB 等范围）。
-# 平台 osmosisPoints 范围 1–100000；若 0 被拒则回退到最小值 1（近似零暴露）。
+#
+# ★ 2026-10-21 修正（实测）：清零点必须发 JSON **null**，不能发 0。
+#   - PATCH {"osmosisPoints": 0}    -> HTTP 400（"greater than or equal to 1"）
+#   - PATCH {"osmosisPoints": null} -> HTTP 200，回读 osmosisPoints=None（真正清零）
+#   旧实现发 0、失败后回退到 1，导致每个 scope 实际点数和 = 100,000 + 计划外颗数
+#   （实测 IND/KOR 各 +12、GBR +3、GLB +2、DEU +1），只能靠 balance_osmosis.py 事后扣回。
+#   现改为优先发 null，1 仅作极端兜底。
+#   来源：论坛帖 DL61056 评论区 CM59456（2026-09-21）实证 + 本仓库 verify_zero_null.py 复现。
 # --------------------------------------------------------------------------- #
 async def zero_others(all_rows: List[Dict[str, Any]], plan: List[Dict[str, Any]],
                       dry_run: bool) -> Tuple[int, int, int]:
-    """PATCH 所有「候选池内但不在最终 plan」的 alpha 为 0。返回 (ok_zero, fallback_1, fail)。"""
+    """PATCH 所有「候选池内但不在最终 plan」的 alpha 清零。
+    返回 (ok_zero_null, fallback_1, fail)。"""
     if dry_run:
         print("[dry-run] 零化非计划 alpha 跳过（未真正写）", file=sys.stderr)
         return 0, 0, 0
@@ -613,32 +714,33 @@ async def zero_others(all_rows: List[Dict[str, Any]], plan: List[Dict[str, Any]]
     for r in other:
         aid = r["alpha_id"]
         try:
+            # ★ 首选 null（平台唯一可真正清零的写法）
             resp = await brain_client._request("PATCH", f"{base}/alphas/{aid}",
-                                               json={"osmosisPoints": 0})
+                                               json={"osmosisPoints": None})
             if resp.status_code < 400:
                 ok += 1
             elif resp.status_code == 400 and (
-                "greater than or equal to 1" in (getattr(resp, "text", "") or "")
-                or "between 1 and 100000" in (getattr(resp, "text", "") or "")
+                "non-compensated" in (getattr(resp, "text", "") or "").lower()
             ):
-                # 平台最小值就是 1（osmosisPoints=0 被拒），回退到最小值 1 = 近似零暴露
+                # 非补偿池 alpha 本身不可写点，跳过即失败（不影响合计）
+                err += 1
+                print(f"  [zero] SKIP {aid} non-compensated", file=sys.stderr)
+            else:
+                # 极端兜底：老接口/异常分支下回退到最小值 1（近似零暴露）
                 r2 = await brain_client._request("PATCH", f"{base}/alphas/{aid}",
                                                  json={"osmosisPoints": 1})
                 if r2.status_code < 400:
                     fb += 1
-                    print(f"  [zero] {aid}: 0 被拒，回退到最小值 1", file=sys.stderr)
+                    print(f"  [zero] {aid}: null 被拒({resp.status_code})，回退到 1",
+                          file=sys.stderr)
                 else:
                     err += 1
                     print(f"  [zero] FAIL(回退) {aid} {r2.status_code}: "
                           f"{(getattr(r2,'text','') or '')[:160]}", file=sys.stderr)
-            else:
-                err += 1
-                print(f"  [zero] FAIL {aid} {resp.status_code}: "
-                      f"{(getattr(resp,'text','') or '')[:160]}", file=sys.stderr)
         except Exception as ex:  # noqa: BLE001
             err += 1
             print(f"  [zero] ERR {aid}: {ex}", file=sys.stderr)
-    print(f"\n[zero] 非计划 alpha 零化: 成功(0)={ok}  回退(1)={fb}  失败={err}  共 {len(other)} 颗",
+    print(f"\n[zero] 非计划 alpha 零化: 成功(null)={ok}  回退(1)={fb}  失败={err}  共 {len(other)} 颗",
           file=sys.stderr)
     return ok, fb, err
 
@@ -704,11 +806,41 @@ def main() -> int:
                    help="剔除 investability 后 Sharpe 衰减≥该比例的 alpha（官方建议 0.6，"
                         "如 `--drop-invest-decay 0.6`）；默认 None=不剔除（剔除可能令范围掉到 <10 失格）。"
                         "仅对 investability 数据可得的 alpha 生效；需 --source platform。")
+    ap.add_argument("--drop-inv-below", type=float, default=None,
+                   help="剔除 investability 约束后 Sharpe **绝对值**低于该阈值的 alpha（如 `--drop-inv-below 1.0`"
+                        " 剔除 inv<1.0 的硬伤 alpha）。与 --drop-invest-decay 的区别：后者按**衰减比例**剔除"
+                        "（会把 IS 4.4→inv 1.36 这种仍可用的也剔掉），本参数只看约束后的绝对水平，更保守。"
+                        "仅对 investability 数据可得者生效；需 --source platform。")
+    ap.add_argument("--super-top-n", type=int, default=None, metavar="N",
+                   help="★ 每 scope 只纳入 investability Sharpe 最高的 N 颗 SUPER（SuperAlpha），其余清零。"
+                        "SUPER 的 Sharpe/inv 是组合层面指标，天然高于单 alpha，且其组件池就是该区 "
+                        "REGULAR ⇒ 全纳入会造成「同一批信号重复押注 + 少数组合吃走大额权重」。"
+                        "⚠ 2026-10-21 修正：原实现是**全局** topN，实测把 IND 的 SA 池压到 2 颗、"
+                        "单颗占 11.7%%（超论坛上限），故改为**按 scope 各取 topN**。需 --source platform。")
+    ap.add_argument("--super-max-pts", type=int, default=10_000, metavar="PTS",
+                   help="★ 单颗 SUPER 的点数硬上限（默认 10000 = 单 scope 预算的 10%%），"
+                        "对齐论坛 DL61056 的 SUPER_MAX_POINTS_PER_ALPHA。"
+                        "封顶腾出的预算**回流给同 scope 的 REGULAR 池**。传 0 或负数 = 不封顶。")
     ap.add_argument("--per-scope-budget", action="store_true",
                    help="★ 官方 eligibility 模式（2026-10-19）：每 eligible scope 独立分配 100k 点"
                         "（官方要求 exactly 100k per scope, not total 100k）。"
                         "不加此 flag 则用旧的「总 100k 按 scope 比例拆」逻辑（会导致 not eligible）。")
+    ap.add_argument("--super-budget-share", type=float, default=None, metavar="SHARE",
+                   help="★ SA/RA 分池（2026-10-21）：每 scope 内 SUPER 预算占比，如 0.22。"
+                        "论坛 DL61056（22赞）实证做法：REGULAR 与 SUPER 分开评分、分开预算，"
+                        "避免 SUPER 的组合层面高数值碾压单 alpha。"
+                        "实际生效 = min(SHARE, 1-REGULAR_MIN_SHARE)，即 SA 硬上限 35%%；"
+                        "某类型为空时预算整体流转给对方。不给此参数 = 不分池（旧行为）。")
     a = ap.parse_args()
+
+    if a.super_budget_share is not None:
+        if not (0.0 <= a.super_budget_share <= 0.50):
+            print(f"[error] --super-budget-share 必须在 0~0.50，收到 {a.super_budget_share}",
+                  file=sys.stderr)
+            return 2
+        if a.super_budget_share > 1 - REGULAR_MIN_SHARE + 1e-9:
+            print(f"[warn] --super-budget-share={a.super_budget_share} 超过 RA 保底允许的上限，"
+                  f"实际生效值将被压到 {1 - REGULAR_MIN_SHARE:.2f}", file=sys.stderr)
 
     global PROD_POLICY, PROD_MAX
     PROD_POLICY = a.prod_policy
@@ -763,6 +895,67 @@ def main() -> int:
         print(f"[drop-invest] 剔除 investability 衰减≥{thr:.0%} 的 alpha: "
               f"{before} -> {len(rows)} 颗", file=sys.stderr)
 
+    # 可选：剔除 investability 约束后 Sharpe 绝对值低于阈值的 alpha（方案 A，2026-10-21）。
+    # 与 --drop-invest-decay 的区别：本参数只看约束后的**绝对水平**（inv<1.0 = 加约束后
+    # Sharpe 不到 1，属硬伤），不惩罚「IS 很高但衰减大、约束后仍 >1」的 alpha。
+    if a.drop_inv_below is not None:
+        thr = a.drop_inv_below
+
+        def _weak(r: Dict[str, Any]) -> bool:
+            inv = r.get("investability_sharpe")
+            return inv is not None and inv < thr
+
+        before = len(rows)
+        dropped = [r for r in rows if _weak(r)]
+        rows = [r for r in rows if not _weak(r)]
+        print(f"[drop-inv] 剔除 investability<{thr} 的 alpha: {before} -> {len(rows)} 颗",
+              file=sys.stderr)
+        for r in sorted(dropped, key=lambda x: (x.get("investability_sharpe") or 0)):
+            print(f"   - {r['alpha_id']}  {r['region']}D{r.get('delay')}  "
+                  f"IS={r.get('sharpe')}  inv={r.get('investability_sharpe'):.3f}",
+                  file=sys.stderr)
+
+    # ★ SUPER 限额（2026-10-21 修正为**每 scope** topN，用户同日确认）：
+    # 理由：SUPER 的 Sharpe/inv 是组合层面（天然高于单 alpha），且组件池就是本区 REGULAR
+    # ⇒ 全纳入 = 同一批信号重复押注 + 少数组合吃掉过大权重。取 top N 作点缀即可。
+    # ⚠ 原实现是**全局** topN，实测踩坑：IND 的 11 颗 SUPER inv 集中在 2.15~3.98 窄带，
+    #   全局门槛线（inv 3.12）恰好切在带子中间 ⇒ IND 只剩 2 颗 SA，22k 预算由 2 颗分，
+    #   单颗 11,704 = **11.7%**（突破论坛 DL61056 的 SUPER_MAX_POINTS_PER_ALPHA=10,000 上限 17%）。
+    #   改成按 scope 各取 topN 后，IND/KOR/GLB 各 4 颗，单颗降到 ~5,500（5.5%）。
+    if a.super_top_n is not None:
+        supers = [r for r in rows if r.get("alpha_type") == "SUPER"]
+        others = [r for r in rows if r.get("alpha_type") != "SUPER"]
+        by_scope: Dict[Tuple[str, Any], List[Dict[str, Any]]] = defaultdict(list)
+        for r in supers:
+            by_scope[(r.get("region"), r.get("delay"))].append(r)
+        keep: List[Dict[str, Any]] = []
+        drop: List[Dict[str, Any]] = []
+        print(f"[super-top] SUPER 按 inv 保留**每 scope** top{a.super_top_n}（共 "
+              f"{len(by_scope)} 个 scope）:", file=sys.stderr)
+        for k in sorted(by_scope, key=lambda k: (str(k[0]), str(k[1]))):
+            grp = sorted(by_scope[k],
+                         key=lambda r: (r.get("investability_sharpe") or 0.0),
+                         reverse=True)
+            kept = grp[:a.super_top_n]
+            keep.extend(kept)
+            drop.extend(grp[a.super_top_n:])
+            print(f"   [{k[0]}D{k[1]}] {len(grp)} -> {len(kept)} 颗", file=sys.stderr)
+            for r in kept:
+                print(f"      + {r['alpha_id']}  inv={r.get('investability_sharpe'):.3f}"
+                      f"  IS={r.get('sharpe')}", file=sys.stderr)
+            for r in grp[a.super_top_n:]:
+                print(f"      x {r['alpha_id']}  inv={r.get('investability_sharpe'):.3f}"
+                      f"  IS={r.get('sharpe')}", file=sys.stderr)
+        rows = others + keep
+        print(f"[super-top] 合计: {len(supers)} -> {len(keep)} 颗（剔除 {len(drop)} 颗）",
+              file=sys.stderr)
+        for r in keep:
+            print(f"   + {r['alpha_id']}  {r['region']}D{r.get('delay')}  "
+                  f"inv={r.get('investability_sharpe'):.3f}  IS={r.get('sharpe')}", file=sys.stderr)
+        for r in drop:
+            print(f"   x {r['alpha_id']}  {r['region']}D{r.get('delay')}  "
+                  f"inv={r.get('investability_sharpe'):.3f}  IS={r.get('sharpe')}", file=sys.stderr)
+
     if a.sync and a.source != "platform":
         st = sync_os()
         print(f"[sync] 结果: {st}", file=sys.stderr)
@@ -774,7 +967,10 @@ def main() -> int:
             rows = [r for r in rows if not (r.get("prod") is None or r["prod"] >= PROD_MAX)]
 
     scopes = build_scopes(rows)
-    plan = build_plan(scopes, per_scope_budget=a.per_scope_budget)
+    _smp = a.super_max_pts if (a.super_max_pts and a.super_max_pts > 0) else None
+    plan = build_plan(scopes, per_scope_budget=a.per_scope_budget,
+                      super_budget_share=a.super_budget_share,
+                      super_max_pts=_smp)
     save_plan(plan)
     # met 标记仅用于展示；build_plan 内部已决定退化
     eligible = sum(1 for (reg, d), al in scopes.items() if len(al) >= MIN_PER_SCOPE)

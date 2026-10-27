@@ -207,7 +207,7 @@
 | `docs/` | **已登记生成器**（`index_tables.py` 等） | 未登记的迁移/清理脚本 | `audit_write_targets` 违规判定 ⚠ 待核对 15 个疑似写者 |
 | `reports/` | **已登记治理工具**（`closure_ledger.py` + 审计闸日志） | 应用代码 | `audit_write_targets` 违规判定 ✅（先前 2 个疑似均复核为假警报） |
 | `Claude/skills/*/outputs/` | **无**（skill 安装位不允许运行期写入） | 任何 skill 脚本 | 2026-10-20 已修 `judge_alpha.py`（env + REPO_ROOT 双保险）✅；`sync_skills.py` 同步会清理漂移 |
-| `Claude/skills/` | **唯一写者 = `tools/sync_skills.py --apply`** | 任何其它脚本 | 待补闸（本轮未加，属审计闸白名单外） |
+| `Claude/skills/` | **唯一写者 = `tools/sync_skills.py --apply`** | 任何其它脚本 | ✅ 2026-10-20 人工复核通过（详见 `reports/claude_skills_writer_convergence_20261020.md`）；`audit_write_targets` 对 `Path.home()` 类动态路径是盲区 |
 | `src/` `tools/` `world-quant-brain-mcp/` | 只有 IDE/编辑器写 | 任何运行期代码自改 | `audit_write_targets` 违规判定 ✅ |
 
 ---

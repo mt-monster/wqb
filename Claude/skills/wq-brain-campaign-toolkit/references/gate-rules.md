@@ -74,7 +74,7 @@ skeleton 槽判定速查：含 `if_else(` / `trade_when(` → event_gated；含 
 
 ## 三、review_wave.py：walls 诊断
 
-- **missing ≠ fail**：指标缺失（None）不算败，单独标 `*_UNKNOWN`（`FIT_UNKNOWN` / `2Y_UNKNOWN` / `MARGIN_UNKNOWN` / `TVR_UNKNOWN`；平台未返回 `LOW_2Y_SHARPE` 时不能算 2Y 败）；无 sharpe 标 `NO_DATA`。
+- **missing ≠ fail**：指标缺失（None）不算败，单独标 `*_UNKNOWN`（`FIT_UNKNOWN` / `2Y_UNKNOWN` / `MARGIN_UNKNOWN` / `TVR_UNKNOWN`；平台未返回任一 2Y 载体（`LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`）时不能算 2Y 败）；无 sharpe 标 `NO_DATA`。
 - **墙枚举**（`walls()` 的输出词表）：`SHARPE` / `FITNESS` / `2Y` / `MARGIN` / `TVR` / `CW`（平台 `CONCENTRATED_WEIGHT` 映射）/ 平台其它失败检查名原样带出 / `RN_EXPOSURE`（风险中性化后 sharpe ≤ `review.rn_sharpe_min`，缺省 0，就是风险因子暴露本身）/ `RA_OTHER`；**近闸池的排除类**另有 `ROBUST_STRUCTURAL`（robust / limit 过低的结构性死信号）与 `RN_EXPOSURE`——这两类不进 near / salvage 池与组合候选。prod 类墙由 prod-first 与 RA 决策表 D0-P 处理，不在 `walls()` 里。
 - candidates = 全门槛过；near = 未过但 `sharpe > near.sharpe_min`（附 walls 诊断）。
 - `--write-ledger` 幂等回写 `review_<tag>` / `near_pool` / `salvage_pool`，另在 `submit_ready` ledger 键留一条**审计副本**（不是提交队列，见 SKILL §3）。

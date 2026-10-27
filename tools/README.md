@@ -7,10 +7,12 @@
 
 ## 目录结构与迁移状态（P2-1，2026-10-04）
 
-顶层现在平铺 **142 个脚本**（2026-10-06 实测），主题分类已由本索引的 `## <主题>` 节定义，
-部分已落目录。目标结构与逐文件归属固化在 **[`tools/THEMES.json`](THEMES.json)**（19 个主题目录，
-kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
+顶层现在平铺 **154 个脚本**（2026-10-20 实测；`python tools/audit_structure.py --only s11` 取数），
+主题分类已由本索引的 `## <主题>` 节定义，部分已落目录。目标结构与逐文件归属固化在
+**[`tools/THEMES.json`](THEMES.json)**（20 个主题目录，kebab-case；含 `legacy` 归档主题），
+另有 4 个区域专属脚本标记为应迁出 `tools/`
 （`relocate_out_of_tools` → `tracking/KOR/scripts/`）。
+**子目录**里的 CLI 见下方「子目录 CLI 登记」节（2026-10-20 归类补全，21 件此前无归属）。
 
 **新脚本一律落主题子目录**，不得再往顶层堆 —— 由 `python tools/audit_structure.py --only s11`
 强制（顶层只减不增，新增即 FAIL 阻断提交；2026-10-14 起该闸还管**无扩展名文件**——
@@ -91,9 +93,11 @@ kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 | `forum_recon.py` | **问题驱动论坛只读检索（recon，2026-09-28）**：单问题 → 有效文章 → 入库（`KB/community_tpl_kb.forum_recon_entries` 或 ledger `forum_recon_<qkey>`；无解落 `forum_recon_negative_*` 作「论坛无解」判死证据）。额度以查出有效文章为标准（自适应扩关键词，命中即收束）；同问题 7 天缓存；抓取核心复用 `forum_research.py`（不重复 HTTP 实现）；`--dry-run` 零副作用；退出码 0=有货 / 2=**可靠的**无解 / 1=**工具故障**（故障落 `forum_recon_error_*`、不入缓存，**故障 ≠ 无解**，2026-09-29 事故后落地；共享契约 `src/wqb/recon_evidence.py`） | 手写论坛抓取、每次现搜不落库 |
 | `forum_recon_wave.py` | **波级默认取证（2026-09-30）**：收批时对本波共同卡住的墙（全灭时为「有无解法」）问一次论坛——本波回测结果机械派生决策问题（`src/wqb/recon_wave.py`），交 `forum_recon.recon()` 执行，落 ledger + 完成标记 `forum_recon_wave_<wave>`；每波 ≤ 1 次（可靠结局占额度，故障不占）；`--force` 重跑、`--dry-run` 只读库零网络零写库；退出码同 `forum_recon`；节点 `forum_recon_wave`、`pipeline.py --forum-recon`（`batch_track` 缺省带上） | 卡墙时靠 Agent 记性想起去查论坛 |
 | `shape_quota_check.py` | **模板形状配额机检（2026-09-30）**：一波候选须覆盖 ≥ 3 个形状族、`trade_when` 占比 ≤ 40%（步 4 §4.5.1）；只读、`--verbose` 逐条列族、`--json`；退出码 0=达标或候选不足 3 条 / 1=不达标 / 2=无法检查；不入闸链（闸 6 才是批级多样性权威）。分类规则见 `src/wqb/shape_quota.py` | 人工数一遍算子形状 |
+| `l1_backfill_validate.py` | **补测批字段名校验（本地，零平台调用）**：读 `cache/_l1_backfill.json`（`[{"ds","tpl","e"}]`），从表达式反提字段名并与本地库 `fields`（EUR）比对，滤掉不存在的名字，避免 `unknown variable` 连坐整批 CANCELLED。上游 `gem_pilot_sample.py` 产物，下游 `submit_batch.py --path` | 手数批内字段名 |
 | `expr_lint.py` | 算子签名/字段白名单快速门禁（非战役场景） | — |
 | `corr_precheck.py` | 相关性墙预判（设计阶段字段重叠检查） | — |
 | `gates/nemesis_prescreen.py` | **照妖镜预筛（2026-10-18 落地，2026-10-19 归位 `tools/gates/`）**：用 `vector_neut(signal, 代理)` 正交化，判断信号是不是**因子换皮**。掉幅 `<30%`=PASS（有独立 alpha）／`30–50%`=WEAK（一半是因子）／`>50%`=KILL（信号本体=该因子，**别再微调，直接换信息源**）。实证：`eps_q1_estimate_qoq_growth` 腿 S 1.89 → 正交化后 0.62（−67%），据此判定 prod 0.75 是「因子拥挤」而非「字段拥挤」 | 「prod 高就一直调参/换中性化」的盲试 |
+| `full_coverage_gate.py` | **全量覆盖闸（EUR 2026-10-20 起，反探针模式）**：字段全量覆盖 / 模板族全量 / 边界算子穷举 三道一次过，`--gate-mode {off,warn,enforce}` 三档，`--near-gate` 触发近闸分支（要求算子已试完 min_coverage 档），`--json` 结构化输出；候选批组装后、送 `wave_gate.py` 前跑本脚本，避免探针式挖矿通过单条闸但整个数据集仍没扫完。字段源解析支持 `str` / `{id,name,...}` / `{fields:[...]}` 三种形态；边界算子配置默认读 `tracking/EUR/reference/boundary_ops_eur.json`，文档见 `Claude/skills/wq-brain-ra-eur/references/_boundary-ops-eur.md` | 探针式派批（8-10 槽稀疏派发） |
 
 ## 回测与状态
 
@@ -101,12 +105,18 @@ kebab-case），另有 4 个区域专属脚本标记为应迁出 `tools/`
 `reports/dataset_experience/eur_<dataset>_campain.md`。支持 `--dataset`、`--waves`、`--dry-run`；
 只读数据库，保留人工复盘段。S6 入口为 `workflow_campaign(subcommand="dataset-experience")`。
 
+字段画像快照：`fields/dataset_profile_doc.py --region <REGION> --apply` 生成
+`docs/reference/<REGION>/datasets/<dataset>_field_profile.md`（索引 `README.md`），只读数据库、
+保留人工复盘段。S6 入口为 `workflow_campaign(stage="S6", subcommand="field-profile")`。
+
 | 工具 | 用途 | 取代 |
 |---|---|---|
 | `mcp_7slot_batch.py` | 七槽并发回测（MCP 驱动，`--alpha-json` + `--settings-json` + `--output-csv`）。★ 2026-09-17 修正：此前本表写 `mcp_5slot_batch.py`，**该文件并不存在** | — |
 | `batch_status.py` | 批次/子任务状态查询与 `--watch` 轮询（multisim 或单条） | `tracking/_scratch/check_*batch*.py`、`track_mea_super_resume.py` 轮询段 |
 | `harvest_multisim.py` | multisim 收批：拉 children → 拉 alpha 详情 → 关联 expressions → 可选 upsert backtest_rows | `tracking/*/scripts/poll_wave*.py`、手写收批脚本 |
 | `submit_batch.py` | 批量**派发仿真**（`POST /simulations`；`--spec` 支持逐批不同设置）。⚠ 不是把 alpha 提交上平台——那是不可逆的 `workflow_submit_alpha(confirm_submit=True)` | 31 个 `_submit_*.py` |
+| `campaign_report.py` | **全量流水线增量汇报器**：唯一事实源 `results/campaign_digest.md`（每跑完一个集追加一行），已汇报游标存 `cache/campaign_report_state.json`，只打印新增；`--wait-secs N` 空转最多等 N 秒（轮询 15s）便于「跑完一个就报」；`--reset` 重置游标。★ **无 argparse：传任何参数都会直接开跑**（含 `--help`），别拿它当普通 CLI 试探 | 手工翻 `campaign_digest.md` 数进度 |
+| `reset_low_cov_skips.py` | **把 `SKIPPED_LOW_COV` 的集从 checkpoint / 结果里摘除，使它们重新入队**：覆盖率门槛 0.8→0.6 后，原先被判低覆盖的 32 个集仍在 checkpoint `done` 里，续跑会直接跳过。只动 `verdict==SKIPPED_LOW_COV`；`SKIPPED_TOO_FEW_FIELDS` / `DEAD` / `ALIVE` 一律不碰；默认 `--dry-run` | 手改 `results/full_template_campaign_checkpoint.json` |
 
 ## 探针编排（新数据集首探）
 
@@ -119,6 +129,10 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `probe_batch_mode.py` | 2+6 探针批模式：L0（2 条）快速判死 → L1（6 条）信号确认，真实回测（入库→pipeline→DB 拉指标） | 手写 8 探针表达式 + 手动判定 |
 | `tiered_probe.py` | 三层探针编排器：L0 判死 → L1 确认 → L2 ModeA 变体自动升级；组合腿快腿轮换（fast_pool 多样性）；慢腿预处理轮换（raw/reverse/ts_decay_linear） | 手写 ModeA 变体波 |
 | `probe/category_sweep.py` | **L0 类别普查**（2026-10-06 下沉）：指定 region 遍历**全部** category，产出每类字段池。**零回测零 API**；产物是「字段池」不是 ideas，**禁止直接注入 GEM**。边界：只做普查不做判死（判死是 `category_field_triage.py`，其甜点判据 `alpha_count∈[10,50]` 与真实产出矛盾，本工具不复用其判级） | 手写逐 category 查 catalog |
+| `gem_pilot_sample.py` | **GEM 池结构分层打样（2026-10-24）**：从 `cache/gem_eur_dedup.json` 按**结构层**分层抽样——层 = 我方模板矩阵**缺失**的 8 个算子维度（subtract / bucket / group_neutralize / ts_std_dev / trade_when / vector_neut / quantile / group_zscore），`plain` 层作**对照组**。`--quota` 定每层条数、`--out` 落文件。零平台调用；产物先过 `l1_backfill_validate.py` 再派发 | 手挑 GEM 表达式（结构维度不可控） |
+| `kor_year_probe.py` | **十年数据存在性探针（KOR/TOP600/D1，2026-10-25 用户指令）**：单个数据集跑一次最小仿真 → `yearly-stats` 判 2014–2023 是否**逐年**有数据（`pnl≠0` 且 `longCount+shortCount>0`）；任一年缺失 ⇒ 整集出局（不接受「近几年才有效」）。`--dataset` / `--field` / `--expr` / `--tag`，每条一行 JSON。**每次调用重新认证**，批量请用 `kor_year_sweep.py` | 手查覆盖率推断数据年限 |
+| `kor_year_sweep.py` | **KOR 十年覆盖批量探针（断点续跑）**：复用 `kor_year_probe.py` 的 `probe/pick_field/build_expr`，改为**单客户端 + 信号量并发 + 逐条落盘** `results/kor_year_probe.jsonl`，重启跳过已完成（`kor_year_probe.py` 逐集认证 ≈5s/次，164 集纯握手 14 分钟）。`--from-db` 从 `dataset_profile` 取池子、`--datasets` 指定、`--conc` 并发、`--fresh` 忽略续跑 | 循环调单集探针 |
+| `kor_near_gate_watch.py` | **十年探针哨兵（近闸即时告警）**：tail `results/kor_year_probe.jsonl`，每条新记录按 KOR 闸线判 `ALERT`（`sharpe ≥ --s-min` 默认 1.25 = Mode B 主闸；或十年全 + `≥ --near-min` 1.0）/ `WATCH`（仅存档）；命中即**追加** `logs/kor_near_gate_alerts.log` 并打印，不缓冲不等扫完。上游文件静默超 `--idle-sec` 即退出并打汇总 | 扫完才回头看谁近闸 |
 | `probe/category_probe.py` | **L1 苗子探针生成**（2026-10-06 下沉）：为 L0 筛出的类别生成**机制多样**的探针表达式（上游 `probe/category_sweep.py --seed-fields --json <out>`），产物逐行喂 `submit_batch.py --path` 跑 QUICK，收割后 `--classify` 判苗头。★ 铁律：**条数不是首要变量、机制多样性才是**（历史命中率中位 7%；DEU 164 条达标只来自 73 个独立表达式，去重比 2.2x）。**本工具自己不派发仿真**（零配额、可 dry-run） | 手写探针表达式 |
 
 > `wave_gate.py --probe-mode` 只做门禁阶段探针分配标记（结构预判），真实回测判死走 `probe_batch_mode.py` / `tiered_probe.py`。
@@ -137,6 +151,8 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | 工具 | 用途 | 取代 |
 |---|---|---|
 | `prod_first_screen.py` | **区域未提交存量的 prod 首筛**（prod-first 纪律的机械执行）：枚举区域内 IS 合格 & 未提交的 alpha → 逐条测 prod（`refresh=true`，服务端计算）+ self（本地）→ **断点续跑**（state 文件，prod 取不到不入 state 下次重试）→ 测得的数值**回写 `alphas.prod_correlation/self_correlation/corr_checked_at`** → 输出「prod<0.7 可提交清单」。★ 背景：全库 370 颗未提交存量里只 97 颗测过 prod、仅 6 颗 <0.7（瓶颈是 prod 不是 IS）；**ASI 95 颗从未测过**故优先。**需 MCP venv 的 Python 跑** | 手工逐条查相关性 |
+| `prod_wait.py` | **prod 锁等待器（严格退避，根治自锁）**：prod 端点是**账号级单并发**，被占用时返回 `correlation_busy` + `retry_after`；旧探针每 10s 重打 ⇒ 互相加锁、越等越久。本脚本**按 `retry_after` 精确退避**再测单颗 alpha。`prod_wait.py <alpha_id> [--minutes 45]`，产出 `results/prod_wait_<alpha>.json`。**需 MCP venv 的 Python 跑** | 每 10s 轮询 correlations/prod |
+| `submit_rravgrn0.py` | **单颗提交脚本（一次性，2026-10-24 用户明确授权 `RRAvGrn0`/`EUR_R_ARMINS_01`）**：提交前内置终验（`status==UNSUBMITTED` / RA 零失败 / sharpe≥1.58·fitness≥1.0·turnover∈[0.01,0.7] / prod<0.7 / self<0.7），任一不过即中止不发提交；提交后按 ~260s 翻转窗轮询至 ACTIVE。⚠ **一次性脚本，不是提交模板**——常规提交走 `workflow_submit_alpha(confirm_submit=True)`；归档归宿 `tools/legacy/`（需用户确认） | 手写一次性提交探针 |
 | `quota_status.py` | **当日提交配额实况（ET 日口径）**：列 `stage=OS` 按 `dateSubmitted` 倒序数**今日（ET）**已提交颗数 → REGULAR 用量/剩余。★ 2026-09-21 事故配套：`GET /users/self/activities/submissions` **只有 yesterday/current/previous/ytd 快照、缺 today**，据此判断当日配额必然误判（实测当日已用 2 个仍显示“昨日 5”）→ 撞 `REGULAR_SUBMISSION(4/4)` 配额墙。**需 MCP venv 的 Python 跑** | 手数控制台提交记录 |
 | `submit_verdict.py` | 提交层判定双视图：模拟 checks + `GET /alphas/{id}/submit`（403 盲区拦截，零配额）。★ 出 `SUBMITTABLE` 时**自动把待提交队列该条升级为 `SUBMIT_LAYER_VERIFIED`**（`mark_verified`，2026-09-20） | 手写 GET/POST submit 探针 |
 | `os_decay_benchmark.py` | **IS→OS 衰减基准与选品定标**：从 OS 缓存计算保留率分位（ACTIVE / DECOMMISSIONED 双队列）、IS→期望 OS 映射、目标 OS 反推所需 IS，并固化「**IS 对 OS 无预测力**」的决定性检验（n=124：corr(IS,保留率)=+0.001、负 OS 比例恒 ~22%）→ `data/os_decay_benchmark.json`。`--for <IS>` 供选品时查期望 OS 区间 | 口头经验「IS 到 OS 会衰减」 |
@@ -145,6 +161,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `triage_prodcorr_batch.py` | prod_corr 族级抽样（提交层预筛 → 族去重 → 串行抽测，checkpoint 续跑，结果写 `logs/_triage_prodcorr.json`） | 逐条手查 correlations/prod |
 | `persist_prod_corr.py` | 把上面的 checkpoint 回填 `alphas` 的 prod/self 相关性（只填 NULL、幂等、默认 dry-run 加 `--apply`；支持 `--source` 溯源与 `--overwrite`）。**运行手册：每轮 S3 批次后跑 triage → 再跑本工具落库**，0.6 预警线才有过程数据 | 手工 UPDATE |
 | `query_alpha_metrics.py` | 本地库直查 alpha 全指标（`--coverage` 看填充率；`--region/--max-prod/--max-self/--min-sharpe/--source` 筛候选；`--csv` 导出）。**候选筛选零配额，免打平台 `check_correlation`** | 逐条打平台 correlations API |
+| `query_profile.py` | **离线字段画像查询（数据集 / 字段 / 维度 / 统计）**：读 `dataset_profile` / `field_profile_full`。`datasets --sort ev` 按 `value_score × 平均覆盖 × 未测占比 ÷ (1+alphaCount/1000)` 排选集优先级（**EV 不反映信号强度**）；`fields` / `dims` 供维度地图；`stats` 看覆盖率与空库提示。region 缺省 EUR，USA 需先跑 `load_field_profiles_to_db.py --region USA --no-catalog` | 手写 SQL 翻画像表 |
 | `submit_queue.py` | **待提交候选队列**：把回测过闸的 alpha 持久化到独立表 `submit_ready`，解决"找到可提交项但不当天提交就遗忘"。子命令 `init` / `add`（平台拉指标+相关性）/ `add-many`（离线从 `alphas` 批量导入）/ **`dedup`**（按骨架去重，同区域同骨架只留最优 N 条，其余标 `SUPERSEDED`）/ **`retag`**（按当前规范**重算全队列** `suggested_tags`，规范/解析器升级后回填；`--dry-run`）/ `verify`（相关性时效复检 + **RA 硬闸 + add 混腿**，过期变坏标 EXPIRED/DEAD，开跑前自动退役已 ACTIVE）/ **`sync`**（退役平台已 ACTIVE/已提交的 READY 行，`--offline` 零配额）/ **`regrade`**（离线复判 READY 行：RA 硬闸 / 加权混腿 / prod 兄弟）/ `list`（按优先级排）/ `pick`（取最优先 1 条）/ `retire`（退役）。★ 未过硬闸者自动标 `DEAD` 并从默认视图剔除；★ 2026-09-20 补三坑：RA FAIL（robust/sub-universe/CW/ladder…）不进 READY；加权混腿口径 = gate.py 闸5；同骨架兄弟 prod≥0.7 且本条未测 → `PROD_SIBLING` 判死；SUBMITTED/DEAD 终态粘性（harvest 再入队不复活）+ 排除平台 ACTIVE；`IS_ONLY` 表示 IS 达标但相关性待测，提交前必跑 `verify`。★ 骨架去重复用权威实现 `wqb.expression.skeleton::structural_signature`，`add-many` 默认开启（`--no-dedup` 关，`--max-per-skeleton N` 调） | 手写备忘 / `ledger_kv('submit_ready')` 旧临时队列（**2026-09-20 已归档并删除**，见 `logs/archive_ledger_submit_ready_*.json`） |
 | `prod_blocked_recheck.py` | **PROD_BLOCKED 候选的**平台实时**复核器**（`submit_ready` 队列专用）：差分两路径——**A 自家撞墙**（重测自己 prod，跌破 0.7 即复活 READY）与 **B 兄弟带累**（`FAIL:PROD_SIBLING(<id>=<v>)`，本条 prod 从未测过；查**兄弟的实时 prod**，松动才解锁）。★ 动机：`store._prod_wall_sibling` 判定兄弟时读的是**库内存量 prod**，而项目铁律是「库内 prod 会过期→提交前必实测」，故本工具在它之上补实时口径。**同兄弟进程内缓存**（实测 `9qjPxmre` 被 3 行点名，不缓存等于同笔相关性连测三遍，PC 还占平台单并发队列）。`--dry-run` / `--region` / `--limit` / `--fresh`（忽略断点）/ `--sleep`；断点 `results/prod_blocked_recheck_ckpt.json`，**dry-run 不写断点**（否则正式跑会跳过未落库的行）。**需 MCP venv 的 Python 跑** | 手工逐条打平台 correlations 再人工判恢复 |
 | `archive_submit_ready.py` | **`submit_ready` 终态残留归档**（移动非删除、可回滚）：把 DEAD/EXPIRED/SUPERSEDED/SUBMITTED 行移入 `submit_ready_archive`（含 `orig_id`/`batch`/`archive_reason`），主表只留活水。三重安全：同一事务 INSERT→DELETE、导出 JSON 快照到 `output_report/archive_submit_ready_<batch>.json`、`--restore <batch>` 完整迁回。**拒不带 `--region` 的整表操作**（须显式 `--all-regions`）。默认 dry-run 友好 | 手写 DELETE / 让终态行无限堆积成坟场 |
@@ -171,10 +188,13 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 
 | 工具 | 用途 | 取代 |
 |---|---|---|
-| `campaign_intel.py s0-select` | S0 选集增强：recommend_datasets（平台真实点塔）× mining_yield（历史产出率）× dead_datasets（判死清单）三方交叉 → 「未点亮塔 × 高产出 × 未判死」候选清单 | Agent 逐个调 MCP 再人工拼结论 |
+| `campaign_intel.py s0-select` | S0 选集增强：recommend_datasets（平台真实点塔）× mining_yield（历史产出率）× 区域判死清单 × 机制标注 四方交叉 → 「未点亮塔 × 高产出 × 未判死 × 机制优先」候选清单。**2026-10-24 起**：① 区域判死清单读 `tracking/<REGION>/reference/<r>_dead_datasets.md` 的 ```json 块（`as_of` 超 `review_after_days` ⇒ 降级 advisory 不剔除，提示补证；`--include-region-dead` 可复核）；② 机制标注读 `<r>_dataset_mechanisms.md`，排序层 = 经典异象 > 未标注 > 明示非经典（P0-4：选「机制经典」而非「数据集冷门」）；③ `--json` 产物含 `pyramid_snapshot`（P1-4 塔位快照，零额外请求）、顶层 `est_seats`（`build_wave --max-size-auto` 消费）、`region_dead_list` / `mechanism_map` 审计块 | Agent 逐个调 MCP 再人工拼结论 |
 | `campaign_intel.py pyramid` | 点塔进度快照：各 catalog 点亮状态/乘数/还差几颗（S6 回写时调，输出 `[key_findings]` 单行供直接嵌入 wave_result） | 手工查 pyramid 端点 |
 | `campaign_intel.py s4-prescreen` | S4 预筛压缩：批量拉指标 → READY/REVIEW/REJECT 分层，REJECT 直接判死不进 S4 链 | 逐条 get_alpha_details 进 S4 链 |
 | `campaign_intel.py ghost-audit` | 幽灵算子硬闸：检测表达式是否含平台不认的算子（S2 产物入库后、wave_gate 前调，防整批 CANCELLED 连坐） | 手写算子比对 |
+| `campaign_intel.py prod-probe` | **开波前 prod 探针（P0-1）**：对本区域本数据集全部历史行每信号族探 1 条 prod（不占回测槽，串行；与 `prod-first` 共用一个进程锁）→ `prod ≥ 0.75` **封族**：ledger 写 `prod_family_<region>_<family>`（`probe: true`）+ `prod_probe_<region>_<dataset>` 汇总（含「探测→封族」耗时），闸 PF 对该族免 `min_confidence_n` 直接拦整波；**exit 2 = 有族被封**。`--dry-run` 只列拟探族、零网络零写库 | 开完整波后才发现整族撞墙（USA 历史 13/110 波 = 11.8%） |
+| `l1_ladder.py` | **L1 时间导数层梯度读数**：把一个数据集的已回测 alpha 按「字段 × L1 层」排成矩阵（`lvl` 水平 / `d1` 一阶差分 / `d2` 二阶差分 / `ed` 事件衰减 / `ir` 信噪比 / `dsp` 组内离散），专治「预筛只测水平层就判死」的系统性盲区——实测同一字段 lvl −0.24 / d1 −0.94 / d2 **+0.83**（符号翻转，信号只在加速度层）。`--multisim <id…>` 直连收批，或 `--json` 读本地已收批结果；零额外配额 | 逐条肉眼比指标，看不出导数层 |
+| `campaign_intel.py atom-first` | **ATOM 优先候选单（2026-10-26 用户指令）**：读 `backtest_results × expressions.atom_flag`（判据源 `wqb.expression.atom.classify_atom`，平台文档 single-dataset-alphas 口径）→ 单数据集区在前、跨数据集只进备选区，**绝不混排**；排序 = 过闸数（S/F/2Y/sub/TO，线全部取自 `config.PLATFORM_CHECK_LINES`）降序→Sharpe 降序；缺省排除已 ACTIVE/SUBMITTED/DECOMMISSIONED，`alphas.prod_correlation ≥ 0.7` 打警告；输出各数据集最佳 ATOM + `--json`。**零平台调用，只作本地初筛**，平台侧仍以 `get_alpha_details` 的 checks（有 `LOW_2Y_SHARPE`、无 `IS_LADDER_SHARPE`）为准 | 人工按 Sharpe 排序把非 ATOM（`res`/`reslag`/`pp`、含 `returns` 的跨集腿）当首选 |
 
 ## 区域态势与轮转（饱和检测 → 转区继续挖）
 
@@ -191,9 +211,10 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 |---|---|---|
 | `backfill_expression_dataset.py [--apply]` | 修复 `expressions.dataset` 被写成 region 名（7,434/13,855 行，2026-09-15 审计）与 `backtest_results.dataset` 缺失：waves→datasets / wave 标签 / gate_results 三路解析，未解析者置 NULL；默认干跑，`--apply` 先备份再写 | 手写 UPDATE SQL |
 | `migrate_wave_verdict_enum.py [--dry-run]` | `wave_results.verdict` 归一到 PASS/FAIL/PARTIAL（前缀/关键词规则，原文入 key_findings 首条）；写入侧 `mcp__wqb-db__upsert_wave_result` 已同规则强制 | 人工改行 |
-| `backfill_check_columns.py [--apply]` | 回填 **checks 派生列**（`cluster_test` / `concentrated_weight` / `sub_universe_sharpe`）。★ 2026-09-19 修复配套：`harvest_multisim._pick_checks` 此前找的 4 条路径全落空（真实位置是**顶层 `is.checks`**）→ `cluster_test` 一度 0/4,926。本工具用平台详情补齐存量：默认 scope=ACTIVE、只填 NULL、幂等、断点续跑（state 文件）、dry-run 默认。**需用 MCP venv 的 Python 跑** | 逐条手查详情 |
+| ~~`backfill_check_columns.py`~~ | **2026-10-20 退役**。原用途：回填 **checks 派生列**（`cluster_test` / `concentrated_weight` / `sub_universe_sharpe`）；★ 2026-09-19 修复配套：`harvest_multisim._pick_checks` 此前找的 4 条路径全落空（真实位置是**顶层 `is.checks`**）→ `cluster_test` 一度 0/4,926。**退役判据**：五种引用形态全 0（`docs/governance/branch_policy.md` §5.4）+ 无 `__main__`（纯库模块，非 CLI）⇒ 功能已被 `harvest_multisim._pick_checks` 取代。内容留 git 历史，取看 `git show <退役前主干>:tools/backfill_check_columns.py`；已登记 `retired_paths` 由 S12 拦复活 | 逐条手查详情 |
 
 | `data-repair/backfill_alpha_metrics_from_platform.py` | **从平台补 `alphas` / `submit_ready` 缺失的 IS 指标**（2026-10-06 下沉）：`two_year_sharpe` / `sub_universe_sharpe` / `is_ladder_sharpe`，以及体检卡三层所需的 `margin` 与约束变体指标。★ 全库实测 **1798/11002 行 2Y 为 NULL**（两条成因：`sync_platform_alphas` 曾显式传 `None`；非 harvest 路径从不抽 2Y/sub）。**只补空**（`--overwrite` 才覆盖）、每颗落盘断点续跑、默认 dry-run。★ 其 `extract_is_metrics()` 被 `sync_platform_alphas.py` 复用（跨目录导入，改动路径须同步）；**不改 ingest 逻辑、不改回测** | 手工逐条查平台补库 |
+| `data-repair/backfill_bt_two_year_from_ladder.py [--region R] [--wave N] [--infer-dataset] [--apply]` | **从已存 payload 的 `is_ladder_sharpe` 补 `backtest_results.two_year_sharpe`**（2026-10-23 新增）：平台按 alpha 代际只发 `LOW_2Y_SHARPE` 或 `IS_LADDER_SHARPE` 之一（`wqb.config.RA_2Y_NAMES` 两者都算 2Y），采集层修复前只认前者 ⇒ 2Y 整列落空（IND/wave232 实测 23/48 行）。只补空、合并式写入 `CampaignStore.upsert_backtest_rows`；`--infer-dataset` 按字段反查归属，且**只补与波自身数据集一致的行**（传 dataset 会 `UPDATE waves.dataset_id`，给跨数据集探针补归属等于把整波改指）；默认 dry-run | 手写 UPDATE SQL |
 
 ## Cluster Alpha（低门槛区刻意版；依据帖 43562853669655）
 
@@ -307,6 +328,84 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `success_formula_engine.py` | 成功配方推广引擎。 | 需参数 |
 | `three_dataset_probe.py` | 3 数据集组合边界探索计划生成（P2-3，2026-08-31）。 | 需参数 |
 | `validate_fields_batch.py` | 批量字段可用性验证器（区域无关）。 | 需参数 |
+| `continue_submit_leM88RN5.py` | leM88RN5 提交落地核验：查 status / 未提交则补 POST /alphas/{id}/submit / 240s 轮询等 status flip。 | 无参直跑 |
+| `find_leM88RN5_collision.py` | 定位 leM88RN5 的 self-corr 冲突对象（拉 get_self_correlation 并按 corr 降序排列 OS 库内候选）。 | 无参直跑 |
+| `full_template_campaign.py` | EUR 全数据集 × 全模板族流水线（8 模板族 × 8 频率窗 × VECTOR 自动聚合，带断点续跑）。 | 需参数 |
+| `harvest_campaign_top.py` | 收割 full_template_campaign checkpoint 的 top 候选：拉平台指标+表达式落到 `results/campaign_top_alphas.json`。 | 需参数 |
+| `campaign_watchdog.py` | **战役心跳看门狗**（2026-10-23 缺陷6）：盯 `full_template_campaign_checkpoint*.json` 的 `done/sims` 推进，久无推进即判 stall 并报警；是根目录 `_ckpt_snap.json` / `_tp_samples.json` 两份心跳快照的写入方（运行期产物，已在 `.gitignore` 忽略）。 | 无参直跑 |
+| `export_fields_for_tagging.py` | **导出待 LLM 打标的字段清单**（2026-10-23）：按覆盖率/类别筛出待打标签的字段，喂给打标流程。 | `--datasets` / `--min-cov` / `--priority-cats` / `--limit` / `--hide-done` / `--all` |
+| `gen_llm_field_tags.py` | 用「语义族」生成字段打标 JSON（LLM 判断的固化产物，2026-10-23）。 | 无参直跑 |
+| `poll_single_sims.py` | 轮询 `batch_create_simulations` 的单条仿真直到终态，打印指标表。 | 需参数 |
+| `targeted_dev.py` | **定向开发**：对一个基础构造做「设置轴 + 表达式轴」扫描，找能把 S 顶过闸的变体。 | `--alpha` / `--alt-field` / `--corr` / `--corr-smin` / `--stage` / `--poll` |
+| `vwap_histogram.py` | 从 WQ Brain 拉 vwap alpha 的 PnL 序列并画直方图。 | 无参直跑 |
+| `vwap_field_dist.py` | 拉 vwap 的**字段分布**（非 PnL）并出直方图。 | 无参直跑 |
+| `vwap_pnl_fetch.py` | 取指定 vwap raw alpha 的 PnL 并出直方图（一次性探针）。 | 无参直跑 |
+| `gen_eur_field_profiles.py` | 生成 EUR 字段画像 markdown（analyst/insiders/fnd 等分族批量）。 | 需参数 |
+| `load_field_profiles_to_db.py` | 把字段画像灌进 `wqb.db`（`dataset_profile` / `field_profile_full`）。`--region <R>` 选区域；`--no-catalog` 禁用 EUR catalog（**非 EUR 区域必加**，否则同名集被 EUR 覆盖指标）；`--catalog <path>` 指定其它 catalog。 | 需参数 |
+| `query_profile.py` | 字段/数据集画像查询器（本地库优先，兜底查平台）。 | 需参数 |
+| `verify_platform_fields.py` | 平台字段校验：对比本地库 vs 平台真实字段，找出「本地有、平台无」的幽灵字段。 | 需参数 |
+| `_ab_adopt.py` | 把「手动补派」的 A/B 批次收割进断点，避免重复派发。 | 无参直跑 |
+| `_ab_template.py` | P3 验证：新模板（删 5 族 + pp 统一）vs 旧模板 —— 同字段同设置的真 A/B。 | `--dry-run` / `--fresh` |
+| `_anl45_probe.py` | analyst45 三门修复探针：S 1.28 / F 0.63 / robust 0.41。 | `--dry-run` |
+| `_detach_probe.py` | 脱离 Job object 的存活探针：每 5 秒写一行心跳，共 120 秒。 | 无参直跑 |
+| `_e1_probe_pp.py` | E1：同字段 A/B —— pp 是否真的优于 lvl_rk。 | `--dry-run` / `--only` |
+| `_grp_rank_probe.py` | 模板实验：`group_rank(<base>, market)` 是否真的「抬地板」。 | `--dry-run` |
+| `_modelfam_probe.py` | 未点亮塔：模型型集的字段探针（为三腿混合选主腿/辅腿）。 | `--dry-run` |
+| `_oth335_reading.py` | 定向波 5：other335 —— 改「读数方式」降 prod（最后一轮）。 | `--dry-run` |
+| `_prodbreak.py` | 破 prod 墙 · 归因 + 对照实验（2026-10-27）。 | `--dry-run` / `--dump` |
+| `_pv_preclose_sweep.py` | 定向波：intraday_pv_feats 的 *_pre_close_2 子族扫描。 | `--dry-run` / `--fresh` |
+| `_pvpc_gen_preflight.py` | 生成 *_pre_close_2 子族的待校验表达式清单（供 preflight 用）。 | 无参直跑 |
+| `_repair_dataset.py` | 从已完成的仿真把某个集的结果补写进 results / checkpoint（进程卡死后的修复）。 | 无参直跑 |
+| `_snt26_probe.py` | sentiment26 补 S 探针：只要 +0.04。 | `--dry-run` |
+| `_snt27_sweep.py` | sentiment27 定向波：验证 sentiment26 的配方能否移植（兄弟集）。 | `--dry-run` |
+| `_sub_fix_probe.py` | sub_universe 修复探针：model25 / model31 只差 sub 一门。 | `--dry-run` |
+| `_unlit_sweep.py` | 未点亮塔攻坚：跨集单腿探针 → 同集辅腿组合。 | `--stage` / `--dry-run` |
+| `_wide_probe.py` | 绕过 select_fields 的预算，直接对全集取字段做探针。 | `--dry-run` |
+| `_yp_for_2y_leaders.py` | 对「S 弱 / 2Y 强」的集，按其 max-2Y 那颗算年度画像，判断 2Y 是否为样本假象。 | 无参直跑 |
+| `attribution_scan.py` | 回溯归因：把 `results/full_template_campaign_results.json` 里已有的变体矩阵一次性算成归因台账，并输出跨集轴效应汇总。 | `--dry-run` / `--min-s` |
+| `backfill_year_profile.py` | 回填 `year_profile`：修 fail-open 的历史遗留。 | `--dry-run` / `--min-s` |
+| `corr_check.py` | 通用相关性检查：给定 alpha id 列表，取 self + production 的最大相关性。⚠ prod 必须走 MCP `check_correlation` 同一后端，**不要并发起多个**。 | `--ids` / `--types` / `--out` / `--wait` / `--threshold` |
+| `kor_form_probe.py` | 数据集「信号潜力」形态探针 v2（2026-10-26）：七形态电池（L/S/C/A/R/Z/T）回答不同信号问题，同时记录 CW 防持仓坍缩误判。 | `--category` / `--dataset` / `--stage` / `--forms` / `--pace` |
+| `sreq_precheck.py` | S_req 前置筛选：进设置轴扫描之前，先判「F 轴是否可达」。 | `--region` / `--results` / `--dataset` / `--verify` / `--json` |
+| `webdata_scan.py` | 离线扫描 WebData 包的字段年鉴，筛「有信号苗子」的字段。 | `--pkg` / `--region` / `--delay` / `--out` / `--class` |
+| `wqb_tools_shim.py` | wqb_tools 兼容 shim —— 只实现 campaign transport 用到的 `dispatch` 子命令。 | `path` / `--label` / `--region` / `--universe` / `--decay` |
+
+## 子目录 CLI 登记（2026-10-20 归类补全）
+
+`audit_structure` **S11 只校 `tools/` 顶层**的主题归属，子目录里的 .py 无任何机械归属检查
+⇒ 此前有一片归类盲区（实测 21 件无归属）。2026-10-20 已把全树 223 个 .py 的归属补进
+[`tools/THEMES.json`](THEMES.json)（含新建 `legacy` 主题，语义 = 归档终态位，不做下沉），
+本节登记**子目录**里的 CLI，使「文件在哪、归哪主题」在文档层可查。
+
+> ⚠ **子目录件同样受 S14 登记义务约束**（新增即 FAIL）。本节与顶层各节并列，不豁免。
+> 包实现模块（`wave_gate_pkg/*.py`、`lib/*.py`）**不在登记义务内**：它们不是 CLI，
+> 登记入口在它们的顶层 shim。
+
+| 工具 | 用途 | 主题 |
+|---|---|---|
+| `backtest/parse_simresult.py` | multisim 原始结果解析 | backtest |
+| `code-audit/audit_write_targets.py` | 写盘出口审计（哪些工具写哪、写到哪） | code-audit |
+| `code-audit/fix_intentional_refs.py` | 修复「有意为之」的死指针标注 | code-audit |
+| `code-audit/snapshot_adjudicate.py` | 抢救点独有文件的三态裁决台账 | code-audit |
+| `code-audit/verify.py` | 结构审计 / 治理检查的汇总验证入口 | code-audit |
+| `data-repair/check_corr.py` | 相关性批量核查（数据修复向） | data-repair |
+| `data-repair/collect_alpha.py` | 只读采集单 alpha 现状（表达式/设置/is.checks/prod/self） | data-repair |
+| `data-repair/diag_os_coverage.py` | 诊断 OS 实盘数据覆盖 + 校验 `osISSharpeRatio`（只读） | data-repair |
+| `data-repair/os_scan_all.py` | 全量 OS 实盘扫描（断点续跑，产 `results/os_scan.json`） | data-repair |
+| `data-repair/osmosis_allocate.py` | Osmosis 候选分配规划器（`--source platform` 走平台池） | data-repair |
+| `data-repair/osmosis_best_return.py` | Osmosis「收益最高」分配规划（复用 allocate 的 quality/build_plan） | data-repair |
+| `data-repair/submit_and_verify.py` | 提交后复核真实 status（不据报错补发） | data-repair |
+| `fields/dataset_profile_doc.py` | 数据集画像文档生成 | fields |
+| `fields/field_semantic_type.py` | 字段语义类型标注 | fields |
+| `fields/skeleton_panel.py` | 骨架面板（按骨架维度看候选分布） | fields |
+| `ledger/check_ledger_sync.py` | 台账与平台状态同步核查 | ledger |
+| `verdict/daily_select.py` | 每日候选挑选 | verdict |
+| `legacy/gate.py` | **遗留通用闸门**（代码零引用，权威实现是 skill toolkit 的 `gate.py`）；按「不得连坐删」保留 | legacy |
+| `legacy/backfill_backtest_dataset.py` | 一次性回填已跑完（`backtest_results.dataset` 只填空），按「不得连坐删」保留 | legacy |
+
+> ⚠ **2026-10-20 逐件退役 3 件**（五种引用形态全 0，判据 `docs/governance/branch_policy.md` §5.4）：
+> `legacy/fix_stale_fk_20260928.py`、`legacy/opswap_driver.py`、`backfill_check_columns.py`。
+> 取回方式见 `tools/legacy/README.md` 与 git 历史。
 
 ## 全量 CLI 索引（机器生成，2026-10-05）
 
@@ -343,6 +442,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `field_profile_from_labs.py` | field_profile_from_labs.py - 把 BRAIN Labs 批量画像 JSON 入库 field_profile 表。 | `docs/ledger_keys.json` |
 | `field_quality_scorer.py` | field_quality_scorer.py - 字段质量预筛器. | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py` |
 | `field_semantic_classify.py` | field_semantic_classify.py — 数据集字段的经济含义归类（S1 补做环节）。 | `Claude/skills/CHANGELOG.md` |
+| `fields/dataset_profile_doc.py` | **按数据集生成字段画像文档**（只读 `data/wqb.db`；每集一份 `<dataset>_field_profile.md` + 索引 `README.md`，机器段可刷新、人工 `## 人工机制复盘` 保留）。缺省 dry-run，`--apply` 落盘；`--dataset` 指定单集，`--active-only` 只覆盖有本区活动痕迹的集，`--limit` 控字段表行数，`--db` 指到沙箱库（测试 / 隔离用）。S6 入口 = `workflow_campaign(stage="S6", subcommand="field-profile")`（toolkit 转发，缺省落盘）。 | `docs/reference/EUR/datasets/README.md` |
 | `fields/field_semantic_type.py` | **基于 description 的字段语义类型分类**（19 类量型 + 骨架建议；名字只作对照并报冲突）。产物表 `field_semantic_type`。`--build` / `--report`。 | `Claude/skills/wq-brain-ra-gbr/references/_field-profile-playbook.md` |
 | `fields/skeleton_panel.py` | **骨架多样性面板**（10 族骨架 × 语义→优选族映射）。`audit`（发批多样性闸，R2）/ `gen`（按字段画像配骨架生成初筛波，R1）/ `list`。 | `Claude/skills/wq-brain-ra-gbr/references/_field-profile-playbook.md §11` |
 | `forum_cache_builder.py` | Forum post cache builder for brain-alpha-robustness Phase A. | `Claude/skills/CHANGELOG.md` |
@@ -377,6 +477,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `step9_audit.py` | step9_audit.py — 步 9（S6）完成定义只读校验器（2026-10-02 新增）。 | `Claude/skills/wq-brain-ra-pipeline/SKILL.md` |
 | `step_funnel.py` | step_funnel.py — 步级漏斗（S2→S6）只读推导，单一事实源（2026-09-17 新增）。 | `Claude/skills/CHANGELOG.md` |
 | `structural_reconstruct_cli.py` | structural_reconstruct_cli.py - 结构重构命令行工具. | `docs/design/structural_reconstruction.md` |
+| `targeted_dev.py` | **定向开发（2026-10-23 新增，2026-10-24 登记）**：对一个基础构造做「**设置轴 × 表达式轴**」双轴扫描，找能把 S 顶过闸的变体。用法 `python tools/targeted_dev.py --tag <tag> --alpha <alpha_id> [--stage ABCDE]`；与 `wq-brain-alpha-optimization-v1` 的 Mode A（8 候选严格批调 decay/窗口/中性化/truncation）同源，但面向「单一基础构造的定向扫参数」而非整波。归属主题 `research`（见 `tools/THEMES.json`） | 手写变体清单逐个试参数 |
 | `test_field_catalog_cache.py` | test_field_catalog_cache.py - S1 字段扫描缓存功能**手动校验脚本**。 | `docs/reference/s1_field_catalog_cache_guide.md` |
 | `update_operator_stats.py` | 工具：统计区域算子使用频率并写入 region_kb（供 assemble_priors 注入 GEM）。 | `docs/experience/field_operator_pattern.md` |
 | `waiver.py` | waiver.py — 闸「放行 / 豁免」台账协议的命令行（实现见 src/wqb/waiver.py）。 | `Claude/skills/GLOSSARY.md` |

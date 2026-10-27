@@ -687,6 +687,123 @@ def _normalize_numbers(s):
     return _INT_TOKEN_RE.sub("N", re.sub(r"\s+", "", s or ""))
 
 
+#: 函数式除法 `divide(`（分母位判定的第二个来源）
+_DIV_OPEN_RE = re.compile(r"\bdivide\s*\(")
+_IDENT_LEAD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_NUM_LEAD_RE = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
+
+
+def _paren_close(expr, i):
+    """`expr[i] == '('`：返回配对 `)` **之后**的下标；不平衡返回 None。"""
+    depth = 0
+    for j in range(i, len(expr)):
+        if expr[j] == "(":
+            depth += 1
+        elif expr[j] == ")":
+            depth -= 1
+            if depth == 0:
+                return j + 1
+    return None
+
+
+def _operand_span(expr, i):
+    """从 i 起跳空白，取一个右操作数的 (start, end)：括号组 / 函数调用 / 标识符 / 数值。"""
+    n = len(expr)
+    while i < n and expr[i].isspace():
+        i += 1
+    if i >= n:
+        return None
+    start = i
+    if expr[i] == "(":
+        end = _paren_close(expr, i)
+        return (start, end) if end else None
+    m = _IDENT_LEAD_RE.match(expr, i)
+    if m:
+        j = m.end()
+        k = j
+        while k < n and expr[k].isspace():
+            k += 1
+        if k < n and expr[k] == "(":                 # 函数调用：吃掉整对括号
+            end = _paren_close(expr, k)
+            return (start, end) if end else (start, j)
+        return (start, j)
+    m = _NUM_LEAD_RE.match(expr, i)
+    if m:
+        return (start, m.end())
+    return None
+
+
+def _top_level_arg_spans(expr, start):
+    """同 `_top_level_args`，但返回每个顶层实参的 `(start, end)` 位置；不平衡返回 None。"""
+    spans, depth, cur_start = [], 1, start
+    i, n = start, len(expr)
+    while i < n and depth > 0:
+        ch = expr[i]
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth == 0:
+                break
+        elif ch == "," and depth == 1:
+            spans.append((cur_start, i))
+            cur_start = i + 1
+        i += 1
+    if depth != 0:
+        return None
+    spans.append((cur_start, i))
+    return spans
+
+
+def _denominator_spans(expr):
+    """分母位区间（2026-10-27 新增）：中缀 `/` 的右操作数 + `divide(` 的第二实参。
+
+    背景（`reports/codebase_governance_review_20261027.md` §4 P0-P4）：`(X−Y)/(X+Y)` 与
+    `divide(subtract(a,b), add(a,b))` 是**净额/总额归一化**的标准单信号写法，但等权腿判定
+    曾在分母位照样拦下，且与分子位 `divide(add(rank(a),rank(b)), 2)`（该拦）判据混同。
+    引号内（`range="0,1,0.1"` 之类）的 `/` 不参与。
+    """
+    spans = []
+    quoted = [m.span() for m in _QUOTED_RE.finditer(expr)]
+    for i, ch in enumerate(expr):
+        if ch != "/" or any(s <= i < e for s, e in quoted):
+            continue
+        sp = _operand_span(expr, i + 1)
+        if sp:
+            spans.append(sp)
+    for m in _DIV_OPEN_RE.finditer(expr):
+        arg_spans = _top_level_arg_spans(expr, m.end())
+        if arg_spans and len(arg_spans) == 2:
+            spans.append(arg_spans[1])
+    return spans
+
+
+def _mask_denominators(expr):
+    """把分母位内容整体替换成常量 `0`，供「加和/等权腿」判定扫描用。
+
+    替换而非删除：留住占位才能维持 `divide(a, b)` 的二元形状与「1 腿 + 标量」语义
+    （`0` 被 `_is_signal_leg` 判为纯常数，不是信号腿）。分母位内部的嵌套加和一并屏蔽 ——
+    「除数整体是归一化分量」时它的内部结构不构成「两条独立信号腿相加」。
+    """
+    spans = _denominator_spans(expr)
+    if not spans:
+        return expr
+    mask = [False] * len(expr)
+    for s, e in spans:
+        for k in range(max(0, s), min(e, len(expr))):
+            mask[k] = True
+    out, i, n = [], 0, len(expr)
+    while i < n:
+        if mask[i]:
+            out.append("0")
+            while i < n and mask[i]:
+                i += 1
+        else:
+            out.append(expr[i])
+            i += 1
+    return "".join(out)
+
+
 def _detect_equal_weight_leg_add(expr, non_field):
     """闸5 结构判定（2026-09-28 新增）：「等权」加两条**独立信号腿**同样违规。
 
@@ -700,8 +817,11 @@ def _detect_equal_weight_leg_add(expr, non_field):
     （归一化数字后仍不相等 —— 仅窗口不同的同形态叠加视为单信号多窗平滑，放行）。
     `add(abs(x), 0.01)`（1 条腿 + 标量）、`add(ts_mean(x,22), ts_mean(x,66))`
     （同形态不同窗）均放行。
+
+    **分母位跳过（2026-10-27，P0-P4）**：`divide(x, add(A,B))` / `x/(A+B)` 里的 `add` 是
+    归一化的除数，不是「两条独立信号腿相加」⇒ `_mask_denominators` 先屏蔽分母位再扫描。
     """
-    for m in _ADD_OPEN_RE.finditer(expr):
+    for m in _ADD_OPEN_RE.finditer(_mask_denominators(expr)):
         args, _ = _top_level_args(expr, m.end())
         if not args or len(args) < 2:
             continue
@@ -817,10 +937,12 @@ def _detect_infix_leg_sum(expr, non_field):
     **不是**「恰好一正一负」的价差，且腿形态（归一化数字后）不全相同 → 违规。
     放行：``abs(x)+0.01``（1 腿+标量）、``ts_mean(x,22)+ts_mean(x,66)``（同形态仅窗口差，与 add 一致）、
     一正一负价差（交给 spread 规则：同源 + 经济含义，用户 2026-09-28 裁定）。
+    **分母位跳过（2026-10-27，P0-P4）**：``(A−B)/(A+B)`` 的 ``+`` 在除号右侧 ⇒ 违规判定
+    走 `_mask_denominators` 后的表达式；**价差收集仍走原式**（分母里的真价差照旧交 spread 规则）。
     返回 ``(violates, spreads)``，spreads = 中缀价差 ``[(legA, legB)]``。
     """
     violates, spreads = False, []
-    for seg in _iter_segments(expr):
+    for seg in _iter_segments(_mask_denominators(expr)):
         terms = _split_signed_terms(seg)
         if not terms or len(terms) < 2:
             continue
@@ -830,10 +952,18 @@ def _detect_infix_leg_sum(expr, non_field):
         pos = [t for sg, t in legs if sg == "+"]
         neg = [t for sg, t in legs if sg == "-"]
         if len(legs) == 2 and len(pos) == 1 and len(neg) == 1:
-            spreads.append((pos[0], neg[0]))
             continue
         if len({_normalize_numbers(t) for _, t in legs}) >= 2:
             violates = True
+    for seg in _iter_segments(expr):
+        terms = _split_signed_terms(seg)
+        if not terms or len(terms) < 2:
+            continue
+        legs = [(sg, t) for sg, t in terms if _is_signal_leg(t, non_field)]
+        if len(legs) == 2 and len({sg for sg, _ in legs}) == 2:
+            pos = [t for sg, t in legs if sg == "+"]
+            neg = [t for sg, t in legs if sg == "-"]
+            spreads.append((pos[0], neg[0]))
     return violates, spreads
 
 
@@ -966,7 +1096,7 @@ def render_gate_table():
 
 
 #: 判定器代码版本：闸 1-5 的判定代码（非配置）变更时递增，让逐条缓存失效（配置变更已由 poison/pc 入签名）。
-GATE_CODE_VERSION = "2026-10-03.1"   # 中缀 + 结构判定 / 价差规则 / 闸1b-2 算子调用点数<10
+GATE_CODE_VERSION = "2026-10-27.1"   # 2026-10-27 分母位跳过（P0-P4）令旧缓存结论失效
 
 
 def gate_signature(ds_all, wl, poison, pc):

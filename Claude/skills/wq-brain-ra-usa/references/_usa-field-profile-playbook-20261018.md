@@ -21,6 +21,27 @@
 > ★★ **新铁律（本轮实测）**：IS 指标 S/F/2Y 全过 ≠ 能交付。**必先看 `risk_neutralized_sharpe`**——
 > NEMO 网络动量 S 0.75–0.90 但 risk-neut 仅 0.07–0.23（纯 beta），Wikipedia 注意力 S 1.35 但 risk-neut 1.40（真 alpha）。
 
+### 1.1 预注册判据（每份画像 / 每个新数据集开波前必填）
+
+> 2026-10-24 落地 P1-1（裸强度探针）+ P0-1（prod 探针）。**先写判据再回测**，禁止事后挑选口径。
+
+| 项 | 预注册内容 | 判据 |
+|---|---|---|
+| 裸强度探针 | 最朴素形态 1 条（字段 → 单一 `rank` / `zscore`，不叠复合骨架） | **\|S\| < 0.5 ⇒ kill 该数据集/字段对**，不铺开整波（USA 实测 `pv106` 0.00 / `shortinterest29` 0.79 / `other596` 0.91 / `multi_horizon_alpha` 1.16） |
+| prod 探针 | `campaign_intel.py prod-probe --region USA --dataset <ds>`（开波前，每族 1 条，不占回测槽） | `prod ≥ 0.75` ⇒ **封族、不开整波**；`[0.70, 0.75)` 按决策表 D0-P 处置 |
+| 机制归属 | 本集要测的机制名 + 它为何是**经典异象**（不是「数据冷门」） | 说不出经济机制 / 不是经典异象 ⇒ 只留笔记，不投槽（报告 §5 判据 A：RA 全过率与可交付性反向） |
+| 证伪条件 | 什么读数会推翻本机制（方向 / 强度 / 时间尺度） | 回测后按此写归因，不事后改口径 |
+
+**记录位置**：画像文档 §3 之前，以及本波 `wave_results.key_findings`（探针读数 + 是否 kill）。
+
+**S0 前置（2026-10-24 P0-4 / P1-6）**：机制归属与判死结论不再只写在画像里——分别登记到
+`tracking/USA/reference/usa_dataset_mechanisms.md`（`classic_anomaly`: true / false + evidence）与
+`usa_dead_datasets.md`（verdict / reason / evidence / `as_of`）。`campaign_intel.py s0-select` 会自动读这两份：
+判死集默认剔除、机制层决定「先试谁」。
+⚠ **画像与本册里的旧结论不永久作证**（用户 2026-10-23 定案：过期画像不能当证据）：
+超过文件声明的 `review_after_days`（判死 120 天 / 机制 180 天）即降级——判死条只 advisory、机制条回到「未标注」。
+要么补新证据刷新 `as_of`，要么按「未测 / 未标注」重新排队。
+
 ---
 
 ## 2. 字段画像（按数据集）

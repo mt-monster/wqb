@@ -45,12 +45,14 @@ class ApiCacheMixin:
         """读一条缓存；不存在或**已过期**返回 ``None``（过期行视同不存在）。"""
         if not cache_key:
             return None
-        cur = self.connection.cursor()
-        cur.execute(
-            f"SELECT payload, expires_at FROM api_cache WHERE cache_key=?",
-            (str(cache_key),),
-        )
-        row = cur.fetchone()
+        # ★ 2026-10-27 P0：跨线程共用连接，cursor/execute/fetch 在同一把锁内完成。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            cur.execute(
+                f"SELECT payload, expires_at FROM api_cache WHERE cache_key=?",
+                (str(cache_key),),
+            )
+            row = cur.fetchone()
         if not row:
             return None
         exp = row[1]
@@ -85,24 +87,28 @@ class ApiCacheMixin:
             return {"skipped": f"unserializable:{type(e).__name__}"}
         exp = None if (ttl is None or int(ttl) <= 0) else time.time() + int(ttl)
         now = _now()
-        cur = self.connection.cursor()
-        cur.execute(
-            "INSERT INTO api_cache (cache_key, payload, expires_at, created_at, updated_at) "
-            "VALUES (?,?,?,?,?) "
-            "ON CONFLICT(cache_key) DO UPDATE SET "
-            "  payload=excluded.payload,"
-            "  expires_at=excluded.expires_at,"
-            "  updated_at=excluded.updated_at",
-            (str(cache_key), body, exp, now, now),
-        )
-        self.connection.commit()
+        # ★ 2026-10-27 P0：跨线程共用连接，INSERT+commit 在同一把锁内完成。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            cur.execute(
+                "INSERT INTO api_cache (cache_key, payload, expires_at, created_at, updated_at) "
+                "VALUES (?,?,?,?,?) "
+                "ON CONFLICT(cache_key) DO UPDATE SET "
+                "  payload=excluded.payload,"
+                "  expires_at=excluded.expires_at,"
+                "  updated_at=excluded.updated_at",
+                (str(cache_key), body, exp, now, now),
+            )
+            self.connection.commit()
         return {"action": "upserted", "cache_key": str(cache_key), "expires_at": exp}
 
     def prune_api_cache(self) -> Dict[str, Any]:
-        """删除已过期行（运维用）。返回 ``{"deleted": n}``。"""
-        cur = self.connection.cursor()
-        cur.execute("DELETE FROM api_cache WHERE expires_at IS NOT NULL AND expires_at <= ?",
-                    (time.time(),))
-        n = cur.rowcount if cur.rowcount and cur.rowcount > 0 else 0
-        self.connection.commit()
+        """删除已过期行（运维用）。返回 ``{"deleted": n}``."""
+        # ★ 2026-10-27 P0：同 set_api_cache——DELETE+commit 锁内完成。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            cur.execute("DELETE FROM api_cache WHERE expires_at IS NOT NULL AND expires_at <= ?",
+                        (time.time(),))
+            n = cur.rowcount if cur.rowcount and cur.rowcount > 0 else 0
+            self.connection.commit()
         return {"deleted": n}

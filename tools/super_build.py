@@ -76,29 +76,53 @@ async def _probe_prod_max(brain, alpha_id, timeout_s=900.0, interval_s=15.0,
     - 端点**始终秒回 200**；**空体 = 平台仍在算**（SUPER 未提交时可能 >30min）。
     - 非空返回 `{records, max, min}`，`max` 即判定值（2026-09-22 实测法）。
     - 超时未出数返回 (None, attempts) —— 调用方按 fail-closed 处理。
+
+    ⚠ **账号级单并发槽**（2026-10-22）：平台 prod 接口**每账号仅 1 个在飞**。
+    本函数**绕过** MCP 客户端的锁直接轮询 ⇒ 会与 MCP 服务 / 其它脚本抢同一个槽，
+    把对方堵到轮询上限（实测事故：一方卡住，另一方空转 800s+ 拿不到数）。
+    故此处**显式申请同一个跨进程槽**（``wqb.correlation_slot``，token 文件与 MCP 侧
+    同名 ⇒ 跨进程真互斥）；拿不到就**立即**返回 (None, 0) —— 调用方 fail-closed，
+    稍后重跑即可（不排队等别人算完）。
     """
     import time
-    deadline = time.monotonic() + float(timeout_s)
-    attempts = 0
-    while True:
-        attempts += 1
-        r = await brain._request(
-            "GET", f"{brain.base_url}/alphas/{alpha_id}/correlations/prod")
-        try:
-            j = r.json()
-        except Exception:
-            j = None
-        if j and (j.get("max") is not None or j.get("records")):
+    # 跨进程槽：与 MCP 客户端同一个 token 文件 ⇒ 跨进程真互斥
+    try:
+        from wqb.correlation_slot import slot as _corr_slot
+    except Exception:  # pragma: no cover - 依赖缺失时退回无锁（仅降级，不改变判定）
+        _corr_slot = None
+
+    async def _probe_unlocked():
+        deadline = time.monotonic() + float(timeout_s)
+        attempts = 0
+        while True:
+            attempts += 1
+            r = await brain._request(
+                "GET", f"{brain.base_url}/alphas/{alpha_id}/correlations/prod")
             try:
-                return float(j.get("max")), attempts
-            except (TypeError, ValueError):
-                pass
-        if time.monotonic() >= deadline:
-            return None, attempts
-        if attempts == 1:
-            log(f"[prod-gate] 平台计算中（空体），每 {interval_s:g}s 轮询一次，"
-                f"窗口 {timeout_s:g}s ...")
-        await asyncio.sleep(interval_s)
+                j = r.json()
+            except Exception:
+                j = None
+            if j and (j.get("max") is not None or j.get("records")):
+                try:
+                    return float(j.get("max")), attempts
+                except (TypeError, ValueError):
+                    pass
+            if time.monotonic() >= deadline:
+                return None, attempts
+            if attempts == 1:
+                log(f"[prod-gate] 平台计算中（空体），每 {interval_s:g}s 轮询一次，"
+                    f"窗口 {timeout_s:g}s ...")
+            await asyncio.sleep(interval_s)
+
+    if _corr_slot is None:
+        return await _probe_unlocked()
+
+    with _corr_slot(f"super_build.prod_gate({alpha_id})", ttl_sec=float(timeout_s) + 300.0) as s:
+        if not s.get("acquired"):
+            log("[prod-gate] 账号级相关性槽被其它进程占用 → 不排队、fail-closed，"
+                "稍后重跑（平台每账号仅 1 个 prod 计算在飞）。")
+            return None, 0
+        return await _probe_unlocked()
 
 
 def _prod_gate_verdict(prod_max, threshold=0.7):

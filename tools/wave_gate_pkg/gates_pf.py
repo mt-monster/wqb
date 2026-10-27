@@ -11,6 +11,13 @@ SOP "任何新信号族在投入第二波之前必须先 prod-first 探针" 此�
   - 同表达式字段族 = 已知 prod 干净（prod<0.7）  → PASS（家族已探明，可扩批）
   - 新信号族（无任何 prod 记录）                  → WARN（建议先 prod-first 探针再扩批）
 判据是"表达式中字段集精确匹配"，独立于闸 2.6 的字段热度 / 数据集占比判据。
+
+2026-10-24 P0-1 增补：开波前探针封族。`campaign_intel.py prod-probe` 在**开波前**对本集
+全部历史行每族探 1 条，命中 prod ≥ `PROBE_SEAL_THRESHOLD`（0.75）的族在 ledger 指纹里
+带 `probe: true`。本闸对这类族**免 min_confidence_n 直接 enforced**（有意探针 ≥0.75 是
+判定性证据，不该等攒满 3 条才拦）——USA 实测 13/110 波（11.8%）投在事后才发现的撞墙族，
+封族拦截点前移到开波前的目标：撞墙族波次占比 < 5%。封族仍尊重「全族皆墙」纪律：
+只要族内还有一条 < 0.7 的干净记录（min < 0.7），不算封族死路，走既有 MIXED 加深路径。
 """
 import json
 import os
@@ -19,6 +26,11 @@ import re
 from . import _compat
 
 _OPS_PATTERN = re.compile(r"\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(")
+
+# 2026-10-24 P0-1：开波前探针封族线。`campaign_intel.py prod-probe` 的 --prod-max 缺省
+# 必须与这里一致（守护测试 tests/unit/08_forum_recon/test_campaign_intel_prod_probe.py
+# 比对 CLI 缺省与本常量）。有意探针 ≥ 此线 ⇒ 封族（免 min_confidence_n 直接 enforced）。
+PROBE_SEAL_THRESHOLD = 0.75
 
 
 def _extract_ops(expr):
@@ -68,7 +80,7 @@ def _load_prod_wall_families(region, n_ops=2):
             continue
         pc = float(pc)
         cur = fams.setdefault(fam, {"prod_corr": pc, "prod_max": pc, "n": 0, "n_wall": 0,
-                                    "examples": []})
+                                    "n_probe": 0, "examples": []})
         cur["n"] += 1
         # 2026-09-28 max/min 双记（此前只留 min=最干净，把"族里出现过 ≥0.7 撞墙"误标成干净，
         # 注释却写"取最严格"）。死路判据看 min（全族皆墙才 enforced），混合证据看 max（WARN+加深）。
@@ -103,12 +115,18 @@ def _load_prod_wall_families(region, n_ops=2):
                     continue
                 _pc = float(_pc)
                 _cur = fams.setdefault(_fam, {"prod_corr": _pc, "prod_max": _pc, "n": 0,
-                                             "n_wall": 0, "examples": []})
+                                             "n_wall": 0, "n_probe": 0, "examples": []})
                 _cur["n"] += 1
                 _cur["prod_corr"] = min(_cur["prod_corr"], _pc)
                 _cur["prod_max"] = max(_cur.get("prod_max", _pc), _pc)
                 if _pc >= 0.7:
                     _cur["n_wall"] += 1
+                # 2026-10-24 P0-1：开波前探针封族标记（prod-probe 写入 probe=true；
+                # prod-first 的指纹不带该键 ⇒ 行为不变）。probe_at 供闸报因里带出探测时间点。
+                if _v.get("probe"):
+                    _cur["n_probe"] = _cur.get("n_probe", 0) + 1
+                    if _v.get("at"):
+                        _cur["probe_at"] = _v["at"]
                 if _v.get("alpha_id") and len(_cur["examples"]) < 3:
                     _cur["examples"].append(_v["alpha_id"])
             except Exception:
@@ -117,6 +135,18 @@ def _load_prod_wall_families(region, n_ops=2):
     except Exception:
         pass
     return fams
+
+
+def _probe_sealed(v):
+    """是否被开波前探针封族（P0-1，2026-10-24）。
+
+    判据 = ① 族内有 ≥1 条 `probe: true` 指纹（`campaign_intel.py prod-probe` 写入）;
+           ② 探针族 max ≥ PROBE_SEAL_THRESHOLD（有意探针本身 ≥ 0.75）；
+           ③ 全族 min ≥ 0.7（「全族皆墙」纪律：还有干净反例就不算封族，走 MIXED 加深）。
+    满足 ⇒ 免 min_confidence_n 直接 enforced（有意探针是判定性证据，不等攒满 3 条）。
+    """
+    return (v.get("n_probe", 0) >= 1 and v.get("prod_max", 0) >= PROBE_SEAL_THRESHOLD
+            and v["prod_corr"] >= 0.7)
 
 
 def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
@@ -134,6 +164,10 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
         避免小样本误伤（如 n=1 的 rank→group_zscore 在 KOR prod=0.763）。
       - 粒度自适应：若某骨架前缀在本区有混合记录（干净 + 死路），自动加深到前 3 算子。
 
+    2026-10-24 P0-1 增强（开波前探针封族）：带 `probe: true` 的指纹且族 max ≥
+      PROBE_SEAL_THRESHOLD（0.75）且 min ≥ 0.7 ⇒ 免 min_confidence_n 直接 enforced
+      （见 `_probe_sealed`）。封族与低置信度死路互斥计数（不算进 low_conf）。
+
     Returns report dict（供落 gate_results 与打印）：
       status   = pass / warn / enforced(有家族死路)
       violations = 命中已死路家族的表达式明细
@@ -143,10 +177,12 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
     fams = _load_prod_wall_families(region)
 
     # 2026-09-25 P5：低置信度（n < min_confidence_n）只 WARN 不 enforced
+    # 2026-10-24 P0-1：探针封族不进低置信度档（它已被 _probe_sealed 判死，避免双计数/双报）
     dead_fams = {f: v for f, v in fams.items()
-                 if v["prod_corr"] >= 0.7 and v["n"] >= min_confidence_n}
+                 if (v["prod_corr"] >= 0.7 and v["n"] >= min_confidence_n) or _probe_sealed(v)}
     dead_fams_low_conf = {f: v for f, v in fams.items()
-                          if v["prod_corr"] >= 0.7 and v["n"] < min_confidence_n}
+                          if v["prod_corr"] >= 0.7 and v["n"] < min_confidence_n
+                          and not _probe_sealed(v)}
     # 2026-09-28：mixed = 同骨架既有 ≥0.7 撞墙记录又有干净记录（2 算子粒度过粗）。
     # 此前这类族被 min() 归进 ok（GLB 实测 group_zscore→ts_decay_linear 37 条、
     # max 0.9929 仍判"干净"），死路证据被吞。现单列 MIXED：不 enforced（避免误伤
@@ -171,9 +207,18 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
         fam = _pf_family(expr)
         if fam in dead_fams:
             prod_v = fams[fam]["prod_corr"]
+            v = fams[fam]
+            if _probe_sealed(v) and not (v["prod_corr"] >= 0.7 and v["n"] >= min_confidence_n):
+                # P0-1：开波前探针封族（免 n≥min_confidence_n 的直接 enforced 档）
+                reason = (f"骨架指纹 '{fam}' 已被开波前 prod 探针封族：probe prod={v['prod_max']:.3f} "
+                          f"≥ {PROBE_SEAL_THRESHOLD}"
+                          + (f"@probe_at={v['probe_at']}" if v.get("probe_at") else "")
+                          + "（P0-1：勿开整波，换正交概念/换族/换集）")
+            else:
+                reason = (f"骨架指纹 '{fam}' 已确认 prod_corr={prod_v:.3f} ≥ 0.7 死路"
+                          f"（族级 STOP，先换正交概念或新骨架）")
             violations.append({"index": i, "family": fam, "prod_corr": prod_v,
-                               "reason": f"骨架指纹 '{fam}' 已确认 prod_corr={prod_v:.3f} ≥ 0.7 死路"
-                                         f"（族级 STOP，先换正交概念或新骨架）",
+                               "reason": reason,
                                "expr": expr[:100]})
             expr_status.append({"index": i, "verdict": "DEAD", "family": fam})
         elif fam in dead_fams_low_conf:
@@ -213,13 +258,16 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
             expr_status.append({"index": i, "verdict": "UNKNOWN", "family": fam})
 
     status = "enforced" if violations else ("warn" if unknown_fams else "pass")
+    probe_sealed = {f: v for f, v in dead_fams.items() if _probe_sealed(v)}
     report = {"status": status, "n_checked": len(exprs),
               "n_history_families": len(fams),
               "n_dead_families": len(dead_fams), "n_ok_families": len(ok_fams),
               "n_mixed_families": len(mixed_fams),
               "n_low_conf_dead_families": len(dead_fams_low_conf),
               "n_unknown_families": len(unknown_fams),
+              "n_probe_sealed_families": len(probe_sealed),
               "dead_families_sample": sorted(dead_fams)[:15],
+              "probe_sealed_families_sample": sorted(probe_sealed)[:15],
               "mixed_families_sample": sorted(mixed_fams)[:15],
               "ok_families_sample": sorted(ok_fams)[:15],
               "unknown_families_sample": sorted(unknown_fams)[:15],
@@ -227,7 +275,9 @@ def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
               "passed": not violations}
     if violations:
         report["message"] = (f"{len(violations)}/{len(exprs)} 条表达式命中已死路骨架指纹"
-                             f"（{len(dead_fams)} 个骨架已确认死路，n≥{min_confidence_n}）—— 闸 PF 拦截")
+                             f"（{len(dead_fams)} 个骨架已确认死路，n≥{min_confidence_n}"
+                             + (f"；其中 {len(probe_sealed)} 个为开波前探针封族" if probe_sealed else "")
+                             + "）—— 闸 PF 拦截")
     elif unknown_fams:
         report["message"] = (f"PASS；{len(unknown_fams)}/{len(exprs)}"
                              f" 条表达式骨架指纹未探明或低置信度或证据混合，建议先 prod-first 探针"
@@ -242,6 +292,10 @@ def format_prod_family_report(report):
     if report.get("dead_families_sample"):
         lines.append(f"[prod-family] 已死路骨架样本: {report['dead_families_sample'][:5]}"
                      + (f" 等 {report.get('n_dead_families', 0)} 个" if report.get("n_dead_families", 0) > 5 else ""))
+    if report.get("probe_sealed_families_sample"):
+        lines.append(f"[prod-family] 开波前探针封族样本: {report['probe_sealed_families_sample'][:5]}"
+                     + (f" 等 {report.get('n_probe_sealed_families', 0)} 个"
+                        if report.get("n_probe_sealed_families", 0) > 5 else ""))
     for v in report.get("violations", [])[:5]:
         lines.append(f"[prod-family]   命中 #{v['index']}: prod={v['prod_corr']:.3f} {v['family']} | {v['expr']}")
     return "\n".join(lines)

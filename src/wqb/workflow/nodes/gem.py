@@ -133,15 +133,20 @@ _ledger_ts = local_ts
 
 
 def _priors_snapshot_freshness(region: str) -> Dict[str, Any]:
-    """GEM 读的 priors 快照是否落后于它的 KB 源（2026-09-27 P0-2）。
+    """GEM 读的 priors 快照是否落后于它的 KB 源（2026-09-27 P0-2；2026-10-20 P1-5 升级）。
 
     GEM 默认 `--priors-from-db`，只读 ledger `priors_snapshot_<region>`；快照只由
     `campaign.py assemble-priors --snapshot-ledger` 写。S6 回写 / pipeline 波后刷新
-    region_kb / 判死封存（registry dead_end）/ 登记 win 之后若没重组，GEM 会静默沿用旧先验
-    ——这里把它变成可见告警。时间戳口径见 `_ledger_ts`。只读、零配额，不阻断
-    （缺快照时 GEM 自身会 fail-closed）。
+    region_kb / 判死封存（registry dead_end）/ 登记 win 之后若没重组，GEM 会静默沿用旧先验。
+
+    2026-10-20 P1-5：此前只告警不阻断 → 「S6 回写后没重组」在自动化链里完全隐形。
+    现在本函数仍在 step 上标 `stale`（True = 快照落后于 KB 源），由 run() 决定拦截：
+    **实跑** stale 即 `success=False`（除非显式 `allow_stale_priors=True`），
+    **干跑**仍只告警（干跑回答"这条链能不能跑通"，不回答"先验新不新"）。
+    缺快照（无 key）不是 stale——GEM 子进程自身 fail-closed，保持告警即可。
+    时间戳口径见 `_ledger_ts`。只读、零配额。
     """
-    step: Dict[str, Any] = {"step": "priors_snapshot_check", "success": True}
+    step: Dict[str, Any] = {"step": "priors_snapshot_check", "success": True, "stale": False}
     r = str(region or "").strip().upper()
     key = f"priors_snapshot_{r.lower()}"
     step["snapshot_key"] = key
@@ -187,6 +192,7 @@ def _priors_snapshot_freshness(region: str) -> Dict[str, Any]:
     step["snapshot_updated_at"] = snap_ts
     stale = [f"{name}@{ts}" for name, ts in sources if ts > snap_ts]
     if stale:
+        step["stale"] = True
         step["stale_sources"] = stale
         step["warning"] = (f"priors 快照 {key}（{snap_ts}）早于其 KB 源 {', '.join(stale)}："
                            f"S6 回写后没重组 priors，本次 GEM 会用旧先验。{fix}")
@@ -407,6 +413,7 @@ def run(
     require_count: int = 2,
     prod_first: bool = False,
     prod_first_top_k: int = 2,
+    allow_stale_priors: bool = False,  # 2026-10-20 P1-5：显式放行过期 priors（默认 False=实跑拦截）
     dataset_ids: Optional[str] = None,  # 2026-10-01 P0：多数据集 ID（逗号分隔，如 "analyst4,fundamental6"）
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
@@ -451,6 +458,9 @@ def run(
             prod ≥0.7 的族整族不再生成变体（当前是回测后才发现，已烧 8-24 条/族）。
             默认 False（灰度，不阻断主流程）。
         prod_first_top_k: 每族预筛条数（默认 2）。
+        allow_stale_priors: 2026-10-20 P1-5：priors 快照落后于 KB 源（S6 回写后未重组）
+            时，**实跑**默认拦截（success=False + 修复指令）；显式置 True 才用旧先验继续
+            （仍记 warning）。干跑不受影响（只告警）。
 
     Returns:
         执行结果字典
@@ -489,12 +499,27 @@ def run(
         store, region, dataset_id, s1_ledger, dry_run, result, data_type=data_type,
     )
 
-    # Step 1.5：priors 快照新鲜度（零成本只读，干跑也走；只告警不阻断）
+    # Step 1.5：priors 快照新鲜度（零成本只读，干跑也走）
+    # 2026-10-20 P1-5：stale（快照落后于 KB 源 = S6 回写后没重组）从"只告警"升级为
+    # **实跑拦截** —— 此前自动化链会在无人察觉的情况下整波沿用旧先验。干跑只告警
+    # （统一 dry-run 语义：干跑回答"链能不能跑通"，不回答"先验新不新"）。
+    # 显式 allow_stale_priors=True 可放行（仍记 warning + 在结果上留痕）。
     if priors_from_db and not priors_file:
         snap_step = _priors_snapshot_freshness(region)
         result["steps"].append(snap_step)
         if snap_step.get("warning"):
             result.setdefault("warnings", []).append(snap_step["warning"])
+        if snap_step.get("stale"):
+            result["priors_stale"] = True
+            if not dry_run and not allow_stale_priors:
+                result["success"] = False
+                result["error"] = (
+                    f"{snap_step['warning']}；确需用旧先验继续：重跑并显式传 "
+                    f"allow_stale_priors=True（2026-10-20 P1-5 起的实跑拦截）"
+                )
+                return result
+            if allow_stale_priors:
+                result["priors_stale_overridden"] = True
 
     # Step 2: 定位 GEM runner
     gem_root = resolve_skill_dir("brain-make-some-gem")

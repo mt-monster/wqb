@@ -36,7 +36,133 @@ from .ledger import SqliteLedgerStore  # 复用 db 路径单一来源
 STATUS_OK = ("open", "closed")
 #: 评审自动生成的 key_findings 行。重跑评审时整组替换；其它来源的行（步 9 的 [pyramid] 点塔进度、
 #: 人工备注、写入契约的归一说明）保留在后面。[harvest] 是收批级联的暂定摘要，评审结论出来后一并替换。
-REVIEW_FINDING_PREFIXES = ("GREEN:", "YELLOW:", "RED:", "best sharpe=", "best 2y sharpe=", "主墙:", "[harvest]")
+#: 2026-10-24 P1-2：复盘固定四列（强度上限 / 机制方向与证伪条件 / prod 读数 / 闸缺口排序）。
+#: 旧的 best sharpe= / 主墙: 前缀保留在替换组里，用于重跑时清掉历史行。
+REVIEW_FINDING_PREFIXES = (
+    "GREEN:", "YELLOW:", "RED:",
+    "① 强度上限:", "② 机制方向与证伪条件:", "③ prod 读数:", "④ 闸缺口排序:",
+    "best sharpe=", "best 2y sharpe=", "主墙:", "[harvest]",
+)
+
+#: 换手保留区间（P1-5，2026-10-24；与 `docs/experience/01_platform_gates.md` 同源）。
+#: 收批后只标注不删行：越界行不值得再进 prod/self 等昂贵队列。
+TO_BAND_LO, TO_BAND_HI = 0.03, 0.70
+
+
+def annotate_turnover_band(rows, lo=TO_BAND_LO, hi=TO_BAND_HI):
+    """给每行标注 `to_band`（in / low / high / unknown），返回越界行清单。
+
+    单位：`turnover_pct` 是百分数（`metrics_cache.row_from_alpha` 已 ×100）；
+    也接受 `turnover` 比例（≤1）自动换算。区间按比例口径 [lo, hi]。
+    """
+    bad = []
+    for r in rows or []:
+        tv = r.get("turnover_pct")
+        if not isinstance(tv, (int, float)):
+            raw = r.get("turnover")
+            tv = raw * 100 if isinstance(raw, (int, float)) else None
+        if not isinstance(tv, (int, float)):
+            r["to_band"] = "unknown"
+            continue
+        frac = float(tv) / 100.0
+        if frac < lo:
+            r["to_band"] = "low"
+            bad.append(r)
+        elif frac > hi:
+            r["to_band"] = "high"
+            bad.append(r)
+        else:
+            r["to_band"] = "in"
+    return bad
+
+
+def _fnum(v):
+    """数值转 float；bool / None / 字符串一律 None（不做隐式转换）。"""
+    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+
+
+def _first_num(r, *keys):
+    for k in keys:
+        v = _fnum((r or {}).get(k))
+        if v is not None:
+            return v
+    return None
+
+
+def _rid(r):
+    """行/候选的 alpha id（评审行用 `id`，收批行有时用 `alpha_id`）。"""
+    return (r or {}).get("id") or (r or {}).get("alpha_id")
+
+
+#: 墙名 -> (阈值键, 行字段, 阈值缩放)；SUB / ROBUST 用行内 limit（平台给的单条门槛）。
+_WALL_METRIC = {
+    "SHARPE": ("sharpe_min", "sharpe", 1.0),
+    "FITNESS": ("fitness_min", "fitness", 1.0),
+    "2Y": ("two_year_sharpe_min", "two_year_sharpe", 1.0),
+    "LOW_2Y_SHARPE": ("two_year_sharpe_min", "two_year_sharpe", 1.0),
+    "IS_LADDER_SHARPE": ("two_year_sharpe_min", "two_year_sharpe", 1.0),
+    "MARGIN": ("margin_min", "margin_bp", 10000.0),
+    "SUB": ("__sub_limit__", "sub_universe_sharpe", 1.0),
+    "LOW_SUB_UNIVERSE_SHARPE": ("__sub_limit__", "sub_universe_sharpe", 1.0),
+    "LOW_ROBUST_UNIVERSE_SHARPE": ("__robust_limit__", "robust_sharpe", 1.0),
+}
+
+
+def wall_gap(r, wall, thresholds):
+    """单行单墙「还差多少」= (门槛 − 实测)/|门槛|；正数 = 没到。算不出返回 None。
+
+    复盘 P1-2 要求按差值排序（而不是按「是否 FAIL」计数）——同一堵墙差 5% 和差 60%
+    是两种结论，后者基本可判死。
+    """
+    t = thresholds if isinstance(thresholds, dict) else {}
+    if wall == "TVR":
+        tv = _fnum(r.get("turnover_pct"))
+        lo, hi = _fnum(t.get("turnover_min")), _fnum(t.get("turnover_max"))
+        if tv is None or lo is None or hi is None:
+            return None
+        lo, hi = lo * 100, hi * 100
+        if tv < lo:
+            return (lo - tv) / max(abs(lo), 1e-9)
+        if tv > hi:
+            return (tv - hi) / max(abs(hi), 1e-9)
+        return None
+    spec = _WALL_METRIC.get(wall)
+    if not spec:
+        return None
+    tkey, rkey, scale = spec
+    have = _fnum(r.get(rkey))
+    if have is None:
+        return None
+    if tkey == "__sub_limit__":
+        need = _fnum(r.get("sub_universe_limit"))
+    elif tkey == "__robust_limit__":
+        need = _fnum(r.get("robust_limit"))
+    else:
+        need = _fnum(t.get(tkey))
+        need = need * scale if need is not None else None
+    if need is None or need == 0:
+        return None
+    return (need - have) / abs(need)
+
+
+def wall_gap_ranking(rows, thresholds):
+    """按「最坏缺口」给本波各墙排序 → [(wall, n_rows)], {wall: (gap, alpha_id)}。"""
+    counts, worst = {}, {}
+    for r in rows or []:
+        for w in (r.get("walls") or []):
+            if w == "NO_DATA":
+                continue
+            counts[w] = counts.get(w, 0) + 1
+            g = wall_gap(r, w, thresholds)
+            if g is not None and (w not in worst or g > worst[w][0]):
+                worst[w] = (g, r.get("id"))
+    ranked = sorted(
+        counts.items(),
+        key=lambda kv: (1 if kv[0] in worst else 0,
+                        worst.get(kv[0], (0.0,))[0],
+                        kv[1]),
+        reverse=True)
+    return ranked, worst
 
 
 def today():
@@ -213,17 +339,51 @@ class WaveResultsStore:
         conn.close()
         return [dict(r) for r in rows]
 
+    def _prod_from_db(self, ids):
+        """从本地 alphas 表取 prod_correlation（零平台请求）→ ({id: value}, 可读?)。
+
+        评审行本身不带 prod（IS 指标缓存只存平台 IS 块）；prod 由
+        `check_correlation(refresh=True)` 实测后经收批/同步落 `alphas.prod_correlation`。
+        表/列缺失或库不可读时返回可读性 False，调用方把它写成「未测判定不可靠」而非空。
+        """
+        ids = [x for x in (ids or []) if x]
+        if not ids:
+            return {}, True
+        try:
+            conn = self._conn()
+            try:
+                q = ",".join("?" * len(ids))
+                got = {r["alpha_id"]: r["prod_correlation"]
+                       for r in conn.execute(
+                           f"SELECT alpha_id, prod_correlation FROM alphas "
+                           f"WHERE alpha_id IN ({q})", ids)}
+            finally:
+                conn.close()
+            return got, True
+        except Exception:  # noqa: BLE001 — 只读降级，不阻断评审
+            return {}, False
+
     def auto_upsert_from_review(self, wave_str, rows, candidates, near,
-                                settings=None, multisim_ids=None, dry_run=False):
+                                settings=None, multisim_ids=None, dry_run=False,
+                                thresholds=None, mechanism=None, falsifier=None):
         """pipeline stage_review 自动入库：从评审 rows 生成 wave_results 记录。
 
         自动生成 focus/verdict/key_findings/candidates/batches，无需手写 wave<N>_results.json。
         幂等：以原波号字符串为键合并写入（2026-09-27 N30；此前取波号里第一个数字、冲突顺延 max+1、
         INSERT OR REPLACE 整行重建）。评审是结论的权威来源，会覆盖收批级联写的暂定 verdict。
+
+        2026-10-24 P1-2：key_findings 固定四列——
+          ① 强度上限（max|S| 及其来源 + 正负向极值 + 2Y）
+          ② 机制方向与证伪条件（settings.mechanism / .falsifier 或显式入参；缺则标未登记）
+          ③ prod 读数（行内 prod_correlation → 本地 alphas 表；无值显式标「未测」）
+          ④ 闸缺口排序（按 (门槛−实测)/|门槛| 排序，不是按 FAIL 行数）+ TO 越界标注（P1-5）
+        复盘旧格式（best sharpe= / best 2y sharpe= / 主墙:）保留在替换组里，重跑时清掉。
         """
         wave_id = "" if wave_str is None else str(wave_str).strip()
         if not wave_id:
             return {"skipped": True, "reason": f"wave 为空: {wave_str!r}"}
+        rows = list(rows or [])
+        near = list(near or [])
 
         # ---- focus: 从 settings 提取数据集信息 ----
         ds = (settings or {}).get("dataset", "")
@@ -242,33 +402,114 @@ class WaveResultsStore:
         cand_list = []
         for c in (candidates or []):
             cand_list.append({
-                "alpha": c.get("id"),
+                "alpha": _rid(c),
                 "sharpe": c.get("sharpe"),
                 "fitness": c.get("fitness"),
                 "two_year": c.get("two_year_sharpe"),
                 "submitted": False,
             })
 
-        # ---- key_findings: 从 rows 自动提取 ----
+        # ---- key_findings: 复盘固定四列（P1-2）----
         findings = []
-        sharpes = [r.get("sharpe") for r in (rows or []) if isinstance(r.get("sharpe"), (int, float))]
-        if sharpes:
-            best = max(sharpes)
-            findings.append(f"best sharpe={best:.2f} ({len(cand_list)}/{len(rows)} 达标)")
-        two_years = [r.get("two_year_sharpe") for r in (rows or [])
-                     if isinstance(r.get("two_year_sharpe"), (int, float))]
-        if two_years:
-            best_2y = max(two_years)
-            findings.append(f"best 2y sharpe={best_2y:.2f}")
-        # near 池 walls 聚合
-        wall_count = {}
-        for n in (near or []):
-            for w in (n.get("walls") or []):
-                if not w.endswith("_UNKNOWN") and w not in ("NO_DATA", "RA_OTHER"):
-                    wall_count[w] = wall_count.get(w, 0) + 1
-        if wall_count:
-            dom = max(wall_count, key=wall_count.get)
-            findings.append(f"主墙: {dom} ({wall_count[dom]}/{len(near or [])} near)")
+
+        scored = [(abs(s), r) for r in rows
+                  for s in [_fnum(r.get("sharpe"))] if s is not None]
+        best_abs, best_row = (max(scored, key=lambda t: t[0]) if scored else (None, None))
+        best_sign = ""
+        if best_row is not None:
+            best_sign = "负向" if (_fnum(best_row.get("sharpe")) or 0) < 0 else "正向"
+        # ① 强度上限：看 |S| 而不是最高正 S——反向臂同样是候选（reverse 必须成对发批）
+        if scored:
+            bits = [f"max|S|={best_abs:.2f}（#{_rid(best_row)}，{best_sign}）"]
+            pos = [_fnum(r.get("sharpe")) for r in rows if (_fnum(r.get("sharpe")) or 0) > 0]
+            neg = [_fnum(r.get("sharpe")) for r in rows if (_fnum(r.get("sharpe")) or 0) < 0]
+            if pos:
+                bits.append(f"正向最高 {max(pos):.2f}")
+            if neg:
+                bits.append(f"负向最强 {min(neg):.2f}")
+            y2 = [_fnum(r.get("two_year_sharpe")) for r in rows
+                  if _fnum(r.get("two_year_sharpe")) is not None]
+            if y2:
+                bits.append(f"2Y 最高 {max(y2):.2f}")
+            findings.append("① 强度上限: " + "; ".join(bits))
+        else:
+            findings.append("① 强度上限: 无可用 sharpe（本批无读数）")
+
+        # ② 机制方向与证伪条件：机制本身无法从读数反推，缺登记就显式标未登记（不编）
+        mech = (mechanism or (settings or {}).get("mechanism")
+                or (settings or {}).get("hypothesis"))
+        fals = (falsifier or (settings or {}).get("falsifier")
+                or (settings or {}).get("falsify_if"))
+        direction = (best_sign if best_row is not None else "未定（无读数）")
+        src = f"（best|S| 臂 #{_rid(best_row)}）" if best_row is not None else ""
+        findings.append(
+            f"② 机制方向与证伪条件: 方向={direction}{src}; "
+            f"机制={mech or '未登记'}; "
+            f"证伪={fals or '未登记（回测后必须补：什么读数会推翻本机制）'}")
+
+        # ③ prod 读数：行内值 → 本地 alphas 表（零平台请求）；无值就是「未测」，不许留空
+        # 注意用原始 candidates（cand_list 的键是 `alpha`，_rid 认 `id`/`alpha_id`，
+        # 若遍历 cand_list 会把全部候选漏出 prod 统计范围）。
+        scope_ids = []
+        for c in list(candidates or []) + near:
+            aid = _rid(c)
+            if aid and aid not in scope_ids:
+                scope_ids.append(aid)
+        if not scope_ids:
+            findings.append("③ prod 读数: 无候选 / 无 near ⇒ prod 无对象（未测）")
+        else:
+            by_id = {_rid(r): r for r in rows if _rid(r)}
+            got = {}
+            for aid in scope_ids:
+                v = _first_num(by_id.get(aid), "prod_correlation", "prod_corr")
+                if v is not None:
+                    got[aid] = v
+            missing = [x for x in scope_ids if x not in got]
+            db_readable = True
+            if missing:
+                dbvals, db_readable = self._prod_from_db(missing)
+                for aid, v in dbvals.items():
+                    fv = _fnum(v)
+                    if fv is not None:
+                        got[aid] = fv
+                missing = [x for x in scope_ids if x not in got]
+            if got:
+                top_aid = max(got, key=lambda k: got[k])
+                head = (f"已测 {len(got)}/{len(scope_ids)}，"
+                        f"max {got[top_aid]:.3f}（#{top_aid}）")
+            else:
+                head = f"已测 0/{len(scope_ids)}"
+            if missing:
+                head += (f"; **未测 {len(missing)} 条**"
+                         f" [{', '.join('#' + m for m in missing[:4])}"
+                         f"{'…' if len(missing) > 4 else ''}]"
+                         f"（提交前必须 check_correlation(refresh=True)）")
+            if not db_readable:
+                head += "；本地 alphas 表不可读（未测判定不可靠）"
+            findings.append("③ prod 读数: " + head)
+
+        # ④ 闸缺口排序：按差值排序（同一堵墙差 5% / 差 60% 是两种结论）
+        ranking, worst = wall_gap_ranking(rows, thresholds)
+        to_bad = annotate_turnover_band(rows)
+        to_note = ""
+        if to_bad:
+            n_low = sum(1 for r in to_bad if r.get("to_band") == "low")
+            n_high = sum(1 for r in to_bad if r.get("to_band") == "high")
+            parts = ([f"low {n_low} 条"] if n_low else []) + ([f"high {n_high} 条"] if n_high else [])
+            to_note = (f" ｜ TO 越界 {'/'.join(parts)}"
+                       f"（区间 [{TO_BAND_LO:.2f}, {TO_BAND_HI:.2f}]，只标注不删行；"
+                       f"越界行不进 prod/self 队列）")
+        if ranking:
+            bits = []
+            for w, n in ranking[:5]:
+                g = worst.get(w)
+                if g is not None:
+                    bits.append(f"{w} 差 {g[0] * 100:.0f}%×{n}行（#{g[1]}）")
+                else:
+                    bits.append(f"{w} ×{n}行（差值不可算）")
+            findings.append("④ 闸缺口排序: " + " > ".join(bits) + to_note)
+        else:
+            findings.append("④ 闸缺口排序: 无墙（全过或本波未做 walls 诊断）" + to_note)
 
         # ---- verdict: 自动生成（严格三态枚举，同 upsert 的 VERDICT_OK）----
         # 2026-09-08 修复：此前这里生成 "GREEN: N 候选达标" 式描述性文字，被 upsert
@@ -278,8 +519,8 @@ class WaveResultsStore:
         # 现改为写枚举值，原描述性文字降为 key_findings 首条——这正是 upsert 报错
         # 信息自己给的建议。
         n_cand = len(cand_list)
-        n_near = len(near or [])
-        n_total = len(rows or [])
+        n_near = len(near)
+        n_total = len(rows)
         if n_cand > 0:
             verdict, verdict_note = "PASS", f"GREEN: {n_cand} 候选达标"
         elif n_near > 0:
@@ -293,7 +534,7 @@ class WaveResultsStore:
         for msid in (multisim_ids or []):
             batch_list.append({"id": msid, "n": n_total})
 
-        return self.upsert(
+        out = self.upsert(
             wave_id, focus=focus, context=context,
             key_findings=findings, candidates=cand_list,
             batches=batch_list, verdict=verdict,
@@ -309,6 +550,8 @@ class WaveResultsStore:
             dry_run=dry_run,
             replace_findings_prefixes=REVIEW_FINDING_PREFIXES,
         )
+        out["findings"] = findings     # 首屏打印用；不改变 upsert 的返回契约
+        return out
 
 
 def parse_results_json(path):

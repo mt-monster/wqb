@@ -53,3 +53,31 @@ def test_ppa_detection_by_type_or_tag():
     assert judge._is_ppa({"type": "PPA"}) is True
     assert judge._is_ppa({"tags": ["CH_PPA", "PowerPoolSelected"]}) is True
     assert judge._is_ppa({"type": "REGULAR", "tags": ["CH_REG"]}) is False
+
+
+def test_two_year_accepts_both_platform_carriers():
+    """2Y 在平台上按 alpha 代际只发 `LOW_2Y_SHARPE` 或 `IS_LADDER_SHARPE` 之一。
+
+    `wqb.config.RA_2Y_NAMES` 早已按“两者同义”定义；judge 此前只认前者，
+    只发 ladder 的颗会静默跳过 2Y 内部硬闸（2026-10-23 IND 实测）。
+    """
+    from wqb.config import RA_2Y_NAMES
+
+    assert {"LOW_2Y_SHARPE", "IS_LADDER_SHARPE"} <= set(RA_2Y_NAMES)
+    judge = _judge()
+
+    def _d(*checks):
+        return {"type": "REGULAR", "is": {"sharpe": 2.0, "fitness": 2.0, "checks": list(checks)}}
+
+    ladder_fail = _d({"name": "IS_LADDER_SHARPE", "result": "PASS", "value": 1.40})
+    assert [(f["name"], f["value"]) for f in judge.internal_hard_gate_failures(ladder_fail)] == [
+        ("IS_LADDER_SHARPE", 1.40)]
+
+    ladder_ok = _d({"name": "IS_LADDER_SHARPE", "result": "PASS", "value": 2.10})
+    assert judge.internal_hard_gate_failures(ladder_ok) == []
+
+    # 两个载体同时存在时 LOW_2Y_SHARPE 优先（更直接的 2Y 读数）
+    both = _d({"name": "IS_LADDER_SHARPE", "result": "PASS", "value": 2.50},
+              {"name": "LOW_2Y_SHARPE", "result": "PASS", "value": 1.20})
+    assert [f["name"] for f in judge.internal_hard_gate_failures(both)] == ["LOW_2Y_SHARPE"]
+    assert [f["value"] for f in judge.internal_hard_gate_failures(both)] == [1.20]

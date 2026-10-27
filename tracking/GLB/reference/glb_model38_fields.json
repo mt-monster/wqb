@@ -1,0 +1,3226 @@
+{
+ "dataset": "model38",
+ "region": "GLB",
+ "universe": "TOPDIV3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 200
+ },
+ "field_type_distribution": {
+  "signal": 200
+ },
+ "field_count": 200,
+ "platform_count": 200,
+ "complete": true,
+ "truncated_reason": null,
+ "fetched_at": "2026-10-27T16:29:11",
+ "fields": [
+  {
+   "id": "backfill_earnings_measure_type_float",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Floating-point representation of the earnings measure type (e.g., EPS or FFO)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_forward_10yr_eps_growth",
+   "type": "MATRIX",
+   "coverage": 0.7524,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Compound annual growth rate between the last reported EPS and the Fiscal Year 10 EPS projected by the StarMine SmartGrow",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_industry_relative_valuation_rank",
+   "type": "MATRIX",
+   "coverage": 0.9345,
+   "userCount": 164,
+   "alphaCount": 207,
+   "description": "Industry 1–100 percentile rank in the overall Relative Valuation model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_justified_forward_pe_ratio",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Price-to-earnings multiple using intrinsic value as price and SmartGrowth forward 12-month EPS as earnings; implied warr",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_model_discount_rate",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Discount rate used by the StarMine Intrinsic Valuation model to discount dividends to the end of the FY0 period",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_pcf_ratio_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.78,
+   "userCount": 26,
+   "alphaCount": 32,
+   "description": "Float percentile rank (1–100) for the Price/Cash Flow component of the Relative Valuation model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_projected_dividends_fy14",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Fiscal Year 14 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_projected_dividends_fy3",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Fiscal Year 3 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_projected_earnings_fy11",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Fiscal Year 11 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_projected_earnings_fy14",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 17,
+   "alphaCount": 18,
+   "description": "Fiscal Year 14 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_projected_earnings_fy2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Fiscal Year 2 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_projected_earnings_fy3",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Fiscal Year 3 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_projected_earnings_fy7",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Fiscal Year 7 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_region_rank_price_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 39,
+   "alphaCount": 45,
+   "description": "Regional 1–100 rank of the P/IV (Price to Intrinsic Value) ratio, where lower P/IV scores higher",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "backfill_region_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 116,
+   "alphaCount": 156,
+   "description": "Regional 1–100 percentile rank in the overall Relative Valuation model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "buyback_yield_component_rank",
+   "type": "MATRIX",
+   "coverage": 0.9169,
+   "userCount": 20,
+   "alphaCount": 23,
+   "description": "Global 1–100 percentile rank for the Buyback Yield component of the Relative Valuation Model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "buyback_yield_component_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.9169,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Float percentile rank for the Buyback Yield component of the Relative Valuation model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "buyback_yield_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.9169,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Percentile rank (1-100) of the stock’s valuation attractiveness based solely on its buyback yield",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "buyback_yield_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9169,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Percentile rank (floating-point) of buyback yield’s contribution to relative valuation within peer group",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "dividend_yield_component_rank",
+   "type": "MATRIX",
+   "coverage": 0.6798,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Current global 1-100 percentile rank of the security in the Dividend Yield component of the StarMine Relative Valuation ",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "dividend_yield_component_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.6798,
+   "userCount": 15,
+   "alphaCount": 19,
+   "description": "Floating-point percentile score for the Dividend Yield component of the Relative Valuation Model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "dividend_yield_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.6798,
+   "userCount": 17,
+   "alphaCount": 24,
+   "description": "Global percentile rank (integer 1-100) of the stock for Dividend Yield component of the Relative Valuation model — highe",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "dividend_yield_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.6798,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Percentile rank (floating-point) for dividend yield’s contribution to relative valuation within peer group",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "earnings_measure_type_float",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator (floating-point) specifying the type of earnings measure used (e.g., EPS, FFO) in the intrinsic valuation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_ebitda_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.8387,
+   "userCount": 15,
+   "alphaCount": 19,
+   "description": "Floating-point normalized score showing the contribution of the EV/EBITDA ratio to the relative valuation component",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_ebitda_relative_score_main",
+   "type": "MATRIX",
+   "coverage": 0.8387,
+   "userCount": 20,
+   "alphaCount": 21,
+   "description": "Global percentile rank (integer 1-100) of the stock for the EV/EBITDA component in the Relative Valuation model — higher",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_sales_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.7785,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Percentile rank (1-100) of the stock’s valuation attractiveness based solely on its EV/Sales ratio",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_sales_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.7785,
+   "userCount": 16,
+   "alphaCount": 16,
+   "description": "Percentile rank (floating-point, global) for valuation based on EV/Sales component in the Relative Valuation Model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_to_ebitda_component_rank",
+   "type": "MATRIX",
+   "coverage": 0.8387,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Global 1–100 percentile rank for the EV/EBITDA component of the Relative Valuation Model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_to_ebitda_component_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.8387,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Floating-point percentile score for the EV/EBITDA component of the Relative Valuation Model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_to_sales_component_rank",
+   "type": "MATRIX",
+   "coverage": 0.7785,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Global 1–100 percentile rank in the EV/Sales component of the Relative Valuation model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "ev_to_sales_component_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.7785,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Floating-point percentile score for the EV/Sales component of the Relative Valuation Model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "forward_10yr_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.7524,
+   "userCount": 15,
+   "alphaCount": 17,
+   "description": "Compound annual growth rate of EPS from last reported EPS to fiscal year 10, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "forward_5yr_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.7524,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Compound annual growth rate from last reported EPS to projected FY5 EPS from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "forward_5yr_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.7524,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Compound annual growth rate of EPS from last reported EPS to fiscal year 5, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_relative_valuation_rank_main",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 44,
+   "alphaCount": 50,
+   "description": "Current global 1–100 percentile rank of the security’s valuation attractiveness in the Relative Valuation Model, combini",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 68,
+   "alphaCount": 85,
+   "description": "Current global percentile rank (floating-point) in the StarMine Relative Valuation Model, reflecting overall valuation a",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_relative_valuation_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 42,
+   "alphaCount": 51,
+   "description": "Current global 1-100 percentile rank in the overall StarMine Relative Valuation model; higher indicates better value",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_relative_valuation_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 30,
+   "alphaCount": 33,
+   "description": "Float-form global percentile rank (1-100) in the overall StarMine Relative Valuation model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_price_to_intrinsic_value_rank",
+   "type": "MATRIX",
+   "coverage": 0.6165,
+   "userCount": 19,
+   "alphaCount": 21,
+   "description": "Industry percentile rank (1-100) of the P/IV ratio within the security’s region-industry, where 100 indicates the lowest",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_price_to_intrinsic_value_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.6165,
+   "userCount": 22,
+   "alphaCount": 24,
+   "description": "Float percentile rank of P/IV within the security’s industry",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_rank_price_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.6165,
+   "userCount": 19,
+   "alphaCount": 22,
+   "description": "A 1-100 percentile score ranking the stock’s price/intrinsic value ratio among stocks in its industry within the same re",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_rank_price_to_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.6165,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Percentile rank (floating-point) of a stock’s price-to-intrinsic value ratio within its industry; higher scores suggest ",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_relative_valuation_rank_main",
+   "type": "MATRIX",
+   "coverage": 0.9345,
+   "userCount": 53,
+   "alphaCount": 56,
+   "description": "Industry percentile rank (1-100) of the stock's valuation attractiveness within its industry, higher is better",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.9345,
+   "userCount": 102,
+   "alphaCount": 120,
+   "description": "Floating-point percentile rank of the stock in the relative valuation model within its industry; higher scores signal mo",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_relative_valuation_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9345,
+   "userCount": 80,
+   "alphaCount": 99,
+   "description": "Float percentile rank for the industry Relative Valuation score",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "intrinsic_equity_value_projection_currency",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Intrinsic value of the security calculated by the StarMine valuation model, expressed in the projection currency",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "intrinsic_value_in_currency",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Intrinsic value of the security (fair value estimate) calculated by StarMine, expressed in the chosen projection currenc",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "justified_forward_pe_ratio_2",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Forward 12-month P/E ratio warranted by the intrinsic valuation model, calculated as intrinsic value divided by year-ahe",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "long_term_assumed_annual_dividends",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Year in which the company is projected to reach steady state dividend payout",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "long_term_assumed_annual_earnings_main",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Year in which the company is projected to reach steady state earnings growth",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "long_term_dividend_payout_ratio_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Dividend payout rate the company is projected to maintain at steady state in future years",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "long_term_dividend_payout_ratio_3",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Dividend payout rate at and after the Steady State Dividends year in the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "long_term_earnings_growth_rate_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Earnings growth rate the company is projected to maintain at steady state in future years",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "long_term_earnings_growth_rate_3",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Earnings growth rate at and after the Steady State Earnings year in the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "market_implied_10yr_eps_growth",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Market-implied compound annual growth rate of earnings per share over the next 10 years based on current market price",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "market_implied_10yr_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Forward 10-year EPS CAGR implied by adjusting FY1-FY5 EPS so that intrinsic value equals the previous day's close price",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "market_implied_5yr_eps_growth",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Forward 5-year compound annual growth rate (CAGR) of EPS implied by the market price (adjusted EPS over FY1-FY5 so the c",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "market_implied_5yr_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.7504,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Forward 5-year EPS CAGR that makes Intrinsic Value equal to the prior day’s close by proportionally scaling FY1–FY5 EPS",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_iv_cagr_base_year",
+   "type": "MATRIX",
+   "coverage": 0.8808,
+   "userCount": 70,
+   "alphaCount": 92,
+   "description": "Compound Annual Growth Rate of the base years",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_iv_discount_rate",
+   "type": "MATRIX",
+   "coverage": 0.9601,
+   "userCount": 45,
+   "alphaCount": 61,
+   "description": "Discount rate",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_iv_div_payout_rate",
+   "type": "MATRIX",
+   "coverage": 0.9601,
+   "userCount": 34,
+   "alphaCount": 38,
+   "description": "Steady-state dividend payout rate",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_iv_growth_ear",
+   "type": "MATRIX",
+   "coverage": 0.9601,
+   "userCount": 34,
+   "alphaCount": 41,
+   "description": "Steady-state earnings growth rate",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_iv_warranted_f12m_p_e",
+   "type": "MATRIX",
+   "coverage": 0.9593,
+   "userCount": 60,
+   "alphaCount": 93,
+   "description": "Warranted forward 12 months P/E",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_iv_year_div",
+   "type": "MATRIX",
+   "coverage": 0.9601,
+   "userCount": 45,
+   "alphaCount": 83,
+   "description": "Steady-state dividends",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_iv_year_ear",
+   "type": "MATRIX",
+   "coverage": 0.9601,
+   "userCount": 39,
+   "alphaCount": 46,
+   "description": "Steady-state earnings",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_rel_val_ev_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.869,
+   "userCount": 264,
+   "alphaCount": 528,
+   "description": "Global-relative (1-100) EV/EBITDA Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl38_rel_val_global_rk",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 540,
+   "alphaCount": 1344,
+   "description": "Global-relative (1-100) Relative Valuation Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "model_discount_rate",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Discount rate used by the StarMine Intrinsic Valuation model when discounting future cash flows (primarily dividends)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pb_ratio_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.9507,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Contribution of price-to-book ratio to the overall relative valuation attractiveness score",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pb_ratio_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9507,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "Floating-point percentile rank for the Price/Book ratio component in the relative valuation model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pcf_ratio_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.78,
+   "userCount": 12,
+   "alphaCount": 17,
+   "description": "Percentile rank (1-100) of the stock’s valuation attractiveness based solely on its price-to-cash-flow (P/CF) ratio",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pcf_ratio_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.78,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Percentile score (floating-point) for Price/Cash Flow ratio, measuring valuation attractiveness globally in StarMine’s m",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pe_ratio_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9528,
+   "userCount": 29,
+   "alphaCount": 31,
+   "description": "Percentile score (floating-point) for Price/Earnings ratio, measuring valuation attractiveness globally in StarMine’s mo",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "pe_ratio_relative_score_main",
+   "type": "MATRIX",
+   "coverage": 0.9528,
+   "userCount": 21,
+   "alphaCount": 22,
+   "description": "Percentile rank (1-100) of the stock’s valuation attractiveness based solely on its price-to-earnings (P/E) ratio",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "price_to_book_component_rank",
+   "type": "MATRIX",
+   "coverage": 0.9507,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Global 1–100 percentile rank in the P/Book component of the Relative Valuation model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "price_to_book_component_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.9507,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Float percentile rank for the P/Book component of the Relative Valuation model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "price_to_cashflow_component_rank",
+   "type": "MATRIX",
+   "coverage": 0.78,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Global 1–100 percentile rank for the Price/Cash Flow component of the Relative Valuation Model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "price_to_earnings_component_rank",
+   "type": "MATRIX",
+   "coverage": 0.9528,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Global 1–100 percentile rank for the P/E component of the Relative Valuation Model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "price_to_earnings_component_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.9528,
+   "userCount": 24,
+   "alphaCount": 26,
+   "description": "Float-form global percentile rank (1-100) for the P/E component of the StarMine Relative Valuation model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "price_to_intrinsic_equity_value_ratio",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 24,
+   "alphaCount": 28,
+   "description": "Ratio of the previous day's close price to the StarMine Intrinsic Value (P/IV)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "price_to_intrinsic_value_ratio",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 39,
+   "alphaCount": 47,
+   "description": "Ratio of current market price to model-estimated intrinsic value; values below 1 indicate possible undervaluation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year1",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Fiscal Year 1 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year10",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Fiscal Year 10 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year11",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Fiscal Year 11 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year12",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Fiscal Year 12 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year13",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Fiscal Year 13 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year15",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Fiscal Year 15 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Fiscal Year 2 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year4",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Fiscal Year 4 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year5",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Fiscal Year 5 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year6",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Fiscal Year 6 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year7",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 17,
+   "alphaCount": 17,
+   "description": "Fiscal Year 7 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year8",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Fiscal Year 8 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividend_per_share_year9",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Fiscal Year 9 dividends per share (DPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy10_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 10, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy11_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Estimated dividends per share (DPS) for fiscal year 11 according to the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy12_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Dividend per share estimate for fiscal year 12 from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy13_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Dividend per share estimate for fiscal year 13 from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy14_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 14, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy15_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Estimated dividends per share (DPS) for fiscal year 15 projected by the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy1_2",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 1, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy2_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 2, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy3_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 3, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy4_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartGrowth model’s estimated dividends per share (DPS) for fiscal year 4 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy5_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 5, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy6_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Estimated dividends per share for fiscal year 6 based on the intrinsic valuation model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy7_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Dividend per share estimate for fiscal year 7 from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy8_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 8, projected by StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_dividends_fy9_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Dividend per share estimate for fiscal year 9 from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy10_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 10 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy11_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Projected EPS estimate for fiscal year 11 for the company, based on the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy12_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Fiscal year 12 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy13_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 13 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy14_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Projected earnings per share (EPS) for fiscal year 14 from StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy15_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 15 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy1_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 1 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy2_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 2 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy3_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 3 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy4_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Projected earnings per share (EPS) for fiscal year 4 from StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy5_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 5 for the security",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy6_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Projected EPS estimate for fiscal year 6 for the company, based on the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy7_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated EPS for fiscal year 7 projected by the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy8_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Projected adjusted earnings for fiscal year 8, based on analyst estimates and StarMine modeling",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_fy9_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Estimated EPS for fiscal year 9 projected by the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year1",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Fiscal Year 1 earnings per share (EPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year10",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Fiscal Year 10 earnings per share (EPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year12",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Fiscal Year 12 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year13",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Fiscal Year 13 earnings per share (EPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year15",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Fiscal Year 15 earnings per share (EPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year4",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Fiscal Year 4 earnings per share (EPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year5",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Fiscal Year 5 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year6",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Fiscal Year 6 EPS estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year8",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Fiscal Year 8 earnings per share (EPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "projected_earnings_per_share_year9",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Fiscal Year 9 earnings per share (EPS) estimate from the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "region_rank_price_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 18,
+   "alphaCount": 19,
+   "description": "A 1-100 percentile score ranking the stock’s price/intrinsic value ratio relative to all stocks in its region, where a l",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "region_rank_price_to_intrinsic_value_float",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 15,
+   "alphaCount": 16,
+   "description": "Floating-point percentile rank of price/intrinsic value within the region",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "region_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 38,
+   "alphaCount": 43,
+   "description": "Percentile rank (1-100) for valuation attractiveness within the given region, reflecting how the stock compares to peers",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "region_relative_valuation_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 102,
+   "alphaCount": 200,
+   "description": "Floating-point regional percentile rank of the stock in the Relative Valuation Model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_price_to_intrinsic_value_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 19,
+   "alphaCount": 19,
+   "description": "Float-form region percentile rank (1-100) of the Price-to-Intrinsic Value (P/IV) ratio within the security’s region",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_relative_valuation_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9503,
+   "userCount": 23,
+   "alphaCount": 30,
+   "description": "Float percentile rank for the regional Relative Valuation score",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_rank_price_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.7498,
+   "userCount": 25,
+   "alphaCount": 28,
+   "description": "A 1-100 percentile score ranking the stock’s price/intrinsic value ratio relative to all stocks in its sector within the",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_rank_price_to_intrinsic_value_float",
+   "type": "MATRIX",
+   "coverage": 0.7498,
+   "userCount": 41,
+   "alphaCount": 47,
+   "description": "Floating-point version of the sector-relative percentile ranking for price/intrinsic value",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_relative_valuation_rank_main",
+   "type": "MATRIX",
+   "coverage": 0.9483,
+   "userCount": 30,
+   "alphaCount": 39,
+   "description": "Current 1–100 percentile rank of the stock in its sector within the overall Relative Valuation Model; higher scores mean",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.9483,
+   "userCount": 25,
+   "alphaCount": 27,
+   "description": "Sector 1–100 percentile rank in the overall Relative Valuation model (higher = better value)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_relative_valuation_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9483,
+   "userCount": 27,
+   "alphaCount": 35,
+   "description": "Floating-point version of the sector-relative percentile rank for valuation attractiveness",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_relative_valuation_score_float_2",
+   "type": "MATRIX",
+   "coverage": 0.9483,
+   "userCount": 23,
+   "alphaCount": 27,
+   "description": "Float percentile rank for the sector Relative Valuation score",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sectoral_price_to_intrinsic_value_rank",
+   "type": "MATRIX",
+   "coverage": 0.7498,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Sector-relative 1–100 rank of the security’s Price-to-Intrinsic Value ratio (lowest P/IV = 100) within its region-sector",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sectoral_price_to_intrinsic_value_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.7498,
+   "userCount": 18,
+   "alphaCount": 19,
+   "description": "Float percentile rank of P/IV within the security’s sector",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_buyback_yield",
+   "type": "MATRIX",
+   "coverage": 0.9623,
+   "userCount": 190,
+   "alphaCount": 354,
+   "description": "Global-relative (1-100) Share-buyback Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7833,
+   "userCount": 96,
+   "alphaCount": 126,
+   "description": "DPS projection for FY1",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy10",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 49,
+   "alphaCount": 67,
+   "description": "DPS projection for FY10",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy11",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 32,
+   "alphaCount": 35,
+   "description": "DPS projection for FY11",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy12",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 30,
+   "alphaCount": 37,
+   "description": "DPS projection for FY12",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy13",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 34,
+   "alphaCount": 36,
+   "description": "DPS projection for FY13",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy14",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 21,
+   "alphaCount": 30,
+   "description": "DPS projection for FY14",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy15",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 45,
+   "alphaCount": 56,
+   "description": "DPS projection for FY15",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy2",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 33,
+   "alphaCount": 35,
+   "description": "DPS projection for FY2",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy3",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 20,
+   "alphaCount": 26,
+   "description": "DPS projection for FY3",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy4",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 21,
+   "alphaCount": 25,
+   "description": "DPS projection for FY4",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy5",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 20,
+   "alphaCount": 25,
+   "description": "DPS projection for FY5",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy6",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 32,
+   "alphaCount": 40,
+   "description": "DPS projection for FY6",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy7",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 17,
+   "alphaCount": 19,
+   "description": "DPS projection for FY7",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy8",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 16,
+   "alphaCount": 19,
+   "description": "DPS projection for FY8",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_projection_fy9",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 31,
+   "alphaCount": 32,
+   "description": "DPS projection for FY9",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_dividend_yield",
+   "type": "MATRIX",
+   "coverage": 0.8895,
+   "userCount": 213,
+   "alphaCount": 714,
+   "description": "Global-relative (1-100) P/DPS Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy1",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 29,
+   "alphaCount": 36,
+   "description": "Adjusted Earnings projection for FY1",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy10",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Adjusted Earnings projection for FY10",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy11",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Adjusted Earnings projection for FY11",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy12",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 18,
+   "alphaCount": 19,
+   "description": "Adjusted Earnings projection for FY12",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy13",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Adjusted Earnings projection for FY13",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy14",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Adjusted Earnings projection for FY14",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy15",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 19,
+   "alphaCount": 19,
+   "description": "Adjusted Earnings projection for FY15",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy2",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Adjusted Earnings projection for FY2",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy3",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Adjusted Earnings projection for FY3",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy4",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 34,
+   "alphaCount": 39,
+   "description": "Adjusted Earnings projection for FY4",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy5",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 23,
+   "alphaCount": 23,
+   "description": "Adjusted Earnings projection for FY5",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy6",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 19,
+   "alphaCount": 19,
+   "description": "Adjusted Earnings projection for FY6",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy7",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 22,
+   "alphaCount": 32,
+   "description": "Adjusted Earnings projection for FY7",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy8",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "Adjusted Earnings projection for FY8",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_earnings_projection_fy9",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "Adjusted Earnings projection for FY9",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_ev_sales",
+   "type": "MATRIX",
+   "coverage": 0.8784,
+   "userCount": 100,
+   "alphaCount": 159,
+   "description": "Global-relative (1-100) EV/Sales Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_fwd10_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.8807,
+   "userCount": 33,
+   "alphaCount": 36,
+   "description": "Compound Annual Growth Rate from first 10 years of adjusted EPS projections",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_fwd5_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.8807,
+   "userCount": 24,
+   "alphaCount": 30,
+   "description": "Compound Annual Growth Rate from first 5 years of adjusted EPS projections",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_implied10_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.879,
+   "userCount": 37,
+   "alphaCount": 49,
+   "description": "10-year Compound Annual Growth Rate derived from current market price",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_implied5_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.879,
+   "userCount": 18,
+   "alphaCount": 20,
+   "description": "5-year Compound Annual Growth Rate derived from current market price",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.9601,
+   "userCount": 689,
+   "alphaCount": 1452,
+   "description": "Industry-relative (1-100) Relative Valuation Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_iv_projection",
+   "type": "MATRIX",
+   "coverage": 0.8811,
+   "userCount": 36,
+   "alphaCount": 42,
+   "description": "Output of the Intrinsic Value Model; Sum of discounted future dividends",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_pb",
+   "type": "MATRIX",
+   "coverage": 0.9704,
+   "userCount": 120,
+   "alphaCount": 255,
+   "description": "Global-relative (1-100) P/Book Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_pcf",
+   "type": "MATRIX",
+   "coverage": 0.8799,
+   "userCount": 194,
+   "alphaCount": 388,
+   "description": "Global-relative (1-100) P/CF Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_pe",
+   "type": "MATRIX",
+   "coverage": 0.9627,
+   "userCount": 237,
+   "alphaCount": 660,
+   "description": "Global-relative (1-100) P/E Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_piv_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.7222,
+   "userCount": 222,
+   "alphaCount": 525,
+   "description": "Industry-relative (1-100) rank of Price / Intrinsic Value",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_piv_ratio",
+   "type": "MATRIX",
+   "coverage": 0.8889,
+   "userCount": 111,
+   "alphaCount": 240,
+   "description": "Ratio of current price to calculated intrinsic value",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_piv_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.8889,
+   "userCount": 269,
+   "alphaCount": 633,
+   "description": "Region-relative (1-100) rank of Price/Intrinsic Value",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_piv_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.8848,
+   "userCount": 232,
+   "alphaCount": 570,
+   "description": "Sector-relative (1-100) rank of Price / Intrinsic Value",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.9778,
+   "userCount": 603,
+   "alphaCount": 1491,
+   "description": "Region-relative (1-100) Relative Valuation Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "star_val_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.9777,
+   "userCount": 363,
+   "alphaCount": 805,
+   "description": "Sector-relative (1-100) Relative Valuation Rank",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "steady_state_backfill_yearly_dividend_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year in which the company reaches Steady State Dividend Payout in the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "steady_state_yearly_dividend_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Assumed dividend value in the steady-state period.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "steady_state_yearly_earnings_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7527,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Year in which the company reaches Steady State Earnings Growth in the StarMine SmartGrowth model",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  }
+ ],
+ "cache_metadata": {
+  "cached_at": "2026-10-27T16:29:11",
+  "ttl_seconds": 86400,
+  "source": "platform_api"
+ },
+ "exported_from_db_at": "2026-10-27T16:38:08"
+}

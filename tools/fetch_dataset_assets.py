@@ -12,7 +12,7 @@ import time
 from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
-from api_client import Api, load_creds
+from api_client import Api, load_creds, paginate_all
 
 # 全 Region 配置（来自 get_platform_setting_options）
 # 2026-08-26 用户调整：先仅拉 USA，其他 Region 暂缓
@@ -47,19 +47,13 @@ def fetch_datasets(api, region, universe, delay):
 
 
 def fetch_fields(api, region, universe, delay, dataset_id, limit=None):
-    """分页拉取指定 dataset 的全部字段。"""
+    """分页拉取指定 dataset 的全部字段（all-or-error）。
+
+    短于平台 count 即抛 PaginationError，避免把截断的字段集当成完整目录入库。
+    """
     base = (f"/data-fields?instrumentType=EQUITY&region={region}"
-            f"&delay={delay}&universe={universe}&dataset.id={dataset_id}&limit={PAGE}")
-    out, offset = [], 0
-    while True:
-        j = json.load(api.get(f"{base}&offset={offset}"))
-        results = j.get("results", [])
-        out.extend(results)
-        if limit and len(out) >= limit:
-            return out[:limit]
-        offset += len(results)
-        if not results or offset >= j.get("count", 0):
-            return out
+            f"&delay={delay}&universe={universe}&dataset.id={dataset_id}")
+    return paginate_all(api, base, limit=PAGE, max_items=limit)["items"]
 
 
 def ppa_prefilter(ds):

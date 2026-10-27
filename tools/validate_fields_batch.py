@@ -41,7 +41,7 @@ import time
 from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
-from api_client import Api, load_creds
+from api_client import Api, load_creds, paginate_all
 
 PAGE = 50
 DB = "data/wqb.db"
@@ -53,20 +53,14 @@ def _now():
 
 
 def fetch_fields(api, dataset, region, universe, delay, limit=None):
-    """分页拉取指定 dataset 在某区域上下文的全部字段。"""
+    """分页拉取指定 dataset 在某区域上下文的全部字段（all-or-error）。
+
+    短于平台 count 即抛 PaginationError，不返回静默截断的字段集。
+    """
     base = ("/data-fields?instrumentType=EQUITY&region={region}"
-            "&delay={delay}&universe={universe}&dataset.id={ds}&limit={pg}").format(
-                region=region, delay=delay, universe=universe, ds=dataset, pg=PAGE)
-    out, offset = [], 0
-    while True:
-        j = json.load(api.get(f"{base}&offset={offset}"))
-        results = j.get("results", [])
-        out.extend(results)
-        if limit and len(out) >= limit:
-            return out[:limit]
-        offset += len(results)
-        if not results or offset >= j.get("count", 0):
-            return out
+            "&delay={delay}&universe={universe}&dataset.id={ds}").format(
+                region=region, delay=delay, universe=universe, ds=dataset)
+    return paginate_all(api, base, limit=PAGE, max_items=limit)["items"]
 
 
 def get_region_config(cur, region):

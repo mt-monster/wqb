@@ -56,15 +56,28 @@ import _pyenv  # noqa: E402  跨平台 MCP 目录解析（tools/_pyenv.py）
 
 MCP_DIR = str(_pyenv.mcp_dir())
 
+# 平台并发上限约 10（2026-10-23 实测：campaign 4 + 单条 8 时，第 9~10 条起报
+# CONCURRENT_SIMULATION_LIMIT_EXCEEDED）。战役把在飞上限提到 7 后 429 必然出现，
+# 这里按 Retry-After 退避重试；重试耗尽才算该批失败。
+RETRY_429 = 6
+
 BASE = {
     "instrumentType": "EQUITY", "region": "USA", "universe": "TOP3000",
     "delay": 1, "truncation": 0.0, "pasteurization": "ON",
     # ⚠ 2026-10-03：maxTrade 由 ON 改 OFF。
-    #   原值 ON 有两重问题——① 与战役权威 `tracking/<R>/config/settings.json`
-    #   直接矛盾（各区 settings.json 均为 OFF）；② 实测它是**强度闸**而非中性
-    #   档：.workbuddy/memory/2026-10-02.md 记 IND behavioral_signals 族
-    #   同表达式 decay8 下 `maxTrade=ON ⇒ sharpe 2.19 → 0.46`。
-    #   即「一个可有可无的开关」实际能把信号打掉 4 倍，而本工具此前默认打开它。
+    #   原值 ON 的两重问题——① 本工具是**无区上下文的裸工具**，不应擅自替某个区
+    #   决定档位；② 实测它是**强度闸**而非中性档：.workbuddy/memory/2026-10-02.md
+    #   记 IND behavioral_signals 族同表达式 decay8 下 `maxTrade=ON ⇒ sharpe 2.19 → 0.46`，
+    #   即一个「可有可无的开关」实际能把信号打掉 4 倍，而本工具此前默认打开它。
+    #
+    # ⚠ 2026-10-24 更正（原注「与 settings.json 直接矛盾（各区均为 OFF）」有误）：
+    #   `tracking/<R>/config/settings.json` 是**按区策略**，13 区中 5 区 ON
+    #   （ASI / EUR / GBR / HKG / MEA）、8 区 OFF（AMR / CHN / DEU / GLB / IND / JPN / KOR / USA；
+    #   USA 为 maxTrade OFF + nanHandling ON 的混合档）。
+    #   EUR 战役（full_template_campaign.py）硬编码 ON 与 EUR 区档**一致，与本工具不矛盾**——
+    #   二者场景不同：战役跑该区权威档，本工具是无区缺省取最强信号档。
+    #   ⇒ 带区上下文的派发请显式传 `--max-trade`，或走 campaign_intel._xr_region_settings
+    #     读 settings.json；不要依赖本工具缺省。缺省 OFF 是「无区时的最强信号档」，不是错误。
     "unitHandling": "VERIFY",
     # ⚠ nanHandling 维持 OFF —— 与 settings.json 一致，**但**实测同族
     #   `nanHandling=OFF ⇒ 2.19 → 0.46`（同上一来源）。战役口径与实测在此冲突，
@@ -143,6 +156,10 @@ SETTINGS_PASSTHROUGH = {
     "truncation", "pasteurization", "unitHandling", "nanHandling",
     "maxTrade", "maxPosition", "language", "visualization",
     "startDate", "endDate",
+    # 2026-10-22：QUICK 模式（平台 2026-09-21 新增）。返回 PnL/Sub-universe PnL/
+    # WC/Fitness/IS Ladder/Sharpe/Returns/Turnover，跳过可视化与 Theme/Competition/
+    # Correlation 检查、不能直接提交。⚠ QUICK 按纯 RA 标准判 Fail，边界比 FULL 严。
+    "simulationMode",
 }
 
 
@@ -153,6 +170,7 @@ def batches_from_args(args):
         ("region", args.region), ("universe", args.universe), ("delay", args.delay),
         ("startDate", args.start), ("endDate", args.end), ("truncation", args.truncation),
         ("nanHandling", args.nan_handling), ("maxTrade", args.max_trade),
+        ("simulationMode", args.simulation_mode),
         ("type", args.type if args.type else None),
     ]:
         if v is not None:
@@ -168,6 +186,16 @@ async def run(batches, sleep, dry_run):
     # 解：开跑前把全部 path 固化为绝对路径。
     batches = [(tag, os.path.abspath(path), decay, neut, ov)
                for tag, path, decay, neut, ov in batches]
+    # 2026-10-24 修（本波实测）：旧实现无论成败都打印 "ALL SUBMITTED"。
+    #   insd_trx_w1 首派 ILLIQUID_MINVOL1M 时 10/10 被平台 400 拒（universe 不可用），
+    #   脚本仍打印 ALL SUBMITTED —— 调用方（人/Agent/上游节点）会把它当成已发批，
+    #   下游"收批"永远等不到结果。改为：失败计数 + 非零退出码 + 末行不撒谎。
+    submitted = []
+    failed = []
+    # 2026-10-24 修（本轮实测）：旧实现在**每批**都 new 一个 BrainApiClient() 并
+    # ensure_authenticated() —— 10 批 = 10 次登录，第 8 批起平台返 429（登录限流），
+    # 整批在鉴权处抛异常，08/09/10 未派出。改为惰性创建一次、全批复用同一会话。
+    client = None
     for tag, path, decay, neut, overrides in batches:
         exprs = load(path)
         payload = build_payload(exprs, decay, neut, overrides.get("type", "REGULAR"), overrides)
@@ -184,19 +212,46 @@ async def run(batches, sleep, dry_run):
         if MCP_DIR not in sys.path:
             sys.path.insert(0, MCP_DIR)
         from brain_api import BrainApiClient  # noqa: E402
-        client = BrainApiClient()
-        await client.ensure_authenticated()
+        if client is None:
+            client = BrainApiClient()
+            await client.ensure_authenticated()
         # 2026-10-08：n=1 时平台拒收包裹数组（"Multi-simulations require multiple
         # simulations…Single simulations are required to be submitted without the
         # wrapping array"）⇒ 单条发裸 dict，多条才用数组。
         body = payload[0] if len(payload) == 1 else payload
         resp = await client._request("POST", f"{client.base_url}/simulations", json=body)
+        # 2026-10-23 修：并发上限提到 7 后必然遇到 429 CONCURRENT_SIMULATION_LIMIT_EXCEEDED。
+        # 旧代码 `!= 201` 只打印 BODY 就进入下一批 ⇒ 提高并发反而成批丢作业。
+        # 退避时长复用 BrainApiClient._retry_wait_seconds（与 _request_json_with_retries
+        # 同一套算法，含 Retry-After 解析），不自己实现第二套；之所以没直接用那个方法，
+        # 是它只回 JSON 会丢掉 Location 头，而派发必须靠它取 multisim id。
+        attempt = 0
+        while resp.status_code == 429 and attempt < RETRY_429:
+            wait = client._retry_wait_seconds(resp, attempt)
+            print(f"  429 并发已满，等 {wait:.0f}s 重试（{attempt + 1}/{RETRY_429}）")
+            await asyncio.sleep(wait)
+            resp = await client._request("POST", f"{client.base_url}/simulations", json=body)
+            attempt += 1
         loc = resp.headers.get("Location", "")
         print(f"  status={resp.status_code} -> {loc}")
         if resp.status_code != 201:
             print("  BODY:", resp.text[:500])
+            failed.append({"tag": tag, "status": resp.status_code,
+                           "body": resp.text[:300]})
+        else:
+            submitted.append({"tag": tag, "n": len(payload), "location": loc})
         time.sleep(sleep)
-    print("ALL SUBMITTED" if not dry_run else "DRY-RUN DONE")
+    if dry_run:
+        print("DRY-RUN DONE")
+        return
+    if failed:
+        print(f"PARTIAL/FAILED: 成功 {len(submitted)}/{len(batches)} 批，失败 {len(failed)} 批")
+        for f in failed:
+            print(f"  FAILED {f['tag']}: status={f['status']} {f['body']}")
+        raise SystemExit(1)
+    print(f"ALL SUBMITTED ({len(submitted)} 批)")
+    for s in submitted:
+        print(f"  {s['tag']}: n={s['n']} -> {s['location'] or '(无 Location 头)'}")
 
 
 def main():
@@ -213,6 +268,8 @@ def main():
     ap.add_argument("--start")
     ap.add_argument("--end")
     ap.add_argument("--truncation", type=float)
+    ap.add_argument("--simulation-mode", choices=["QUICK", "FULL"],
+                    help="QUICK=快速初筛（跳过可视化/Theme/Correlation，不能提交）；FULL=完整（终审/提交前用）")
     # ⚠ 强度闸档位（2026-10-03 新增）：nanHandling / maxTrade 实测会改变信号强度
     # （不是风格开关）。BASE 有缺省，但**跨工具缺省互不相同**，故开放显式覆盖，
     # 避免「用哪个入口跑」静默改变结论。
@@ -232,10 +289,15 @@ def main():
         #   region='USA' + truncation=0.0（BASE 硬编码）⇒ 整批跑错区域/档位。
         #   与 `--path` 分支（batches_from_args）对齐：CLI 显式值作为**默认值**，
         #   spec 条目里的同名键再覆盖它（条目优先）。
+        # 2026-10-26 修（本波实测）：`--neutralization` / `--simulation-mode` 在 --spec 分支
+        #   被静默丢弃 —— 跑到平台上实际是 SUBINDUSTRY + 平台缺省模式（打印行里能看见），
+        #   与 `--path` 分支口径不一致。同 2026-10-09 那次漏 region/档位的形态。
         cli_defaults = {k: v for k, v in (
             ("region", args.region), ("universe", args.universe), ("delay", args.delay),
             ("startDate", args.start), ("endDate", args.end), ("truncation", args.truncation),
             ("nanHandling", args.nan_handling), ("maxTrade", args.max_trade),
+            ("simulationMode", args.simulation_mode),
+            ("neutralization", args.neutralization),
         ) if v is not None}
         for b in spec:
             ov = dict(cli_defaults)
@@ -247,7 +309,8 @@ def main():
             if b.get("type") is not None:
                 ov["type"] = b["type"]
             batches.append((os.path.basename(b["path"]), b["path"],
-                            b.get("decay", args.decay), b.get("neutralization", "SUBINDUSTRY"), ov))
+                            b.get("decay", args.decay),
+                            b.get("neutralization", args.neutralization or "SUBINDUSTRY"), ov))
     elif args.path and args.decay is not None:
         batches = batches_from_args(args)
     else:

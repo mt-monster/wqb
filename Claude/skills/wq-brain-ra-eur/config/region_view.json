@@ -1,6 +1,6 @@
 {
   "region": "EUR",
-  "as_of": "2026-10-18",
+  "as_of": "2026-10-20",
   "_note": "配置视图（非事实源）。真身=tracking/<R>/config/*.json；改配置只改真身后 render --apply。",
   "source_of_truth": {
     "settings": "tracking/EUR/config/settings.json",

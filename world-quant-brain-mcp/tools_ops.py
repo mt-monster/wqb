@@ -3,6 +3,7 @@
 
 将 tools/ 下的 CLI 工具包装为 MCP 工具，消除 PowerShell 手写命令。
 """
+import json
 import logging
 import os
 import sys
@@ -17,6 +18,31 @@ _REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 _SRC_PATH = os.path.join(_REPO_ROOT, "src")
 if _SRC_PATH not in sys.path:
     sys.path.insert(0, _SRC_PATH)
+
+# 区域档案里只取「构造类开关」；universe/neutralization/decay/truncation 仍由调用参数决定，
+# 避免「传了 universe 却被配置文件覆盖」。
+_REGION_PROFILE_KEYS = (
+    "instrumentType", "pasteurization", "unitHandling", "nanHandling",
+    "maxTrade", "maxPosition", "language", "visualization",
+    "startDate", "endDate",
+)
+
+
+def _region_sim_settings(region: str) -> Dict[str, Any]:
+    """读 `tracking/<REGION>/config/settings.json` 的构造类开关（唯一真源）。
+
+    不存在该文件时返回 {}，由调用方回落到平台安全缺省值。
+    """
+    path = os.path.join(_REPO_ROOT, "tracking", str(region).upper(), "config", "settings.json")
+    if not os.path.isfile(path):
+        return {}
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            raw = json.load(fh)
+    except Exception as exc:  # 档案损坏不应阻断发批，仅告警
+        logger.warning("region settings unreadable for %s: %s", region, exc)
+        return {}
+    return {k: raw[k] for k in _REGION_PROFILE_KEYS if k in raw}
 
 
 # ── operator_audit ──
@@ -342,6 +368,13 @@ async def submit_batch(
     neutralization: str = "SUBINDUSTRY",
     alpha_type: str = "REGULAR",
     truncation: float = 0.0,
+    nan_handling: Optional[str] = None,
+    max_trade: Optional[str] = None,
+    max_position: Optional[str] = None,
+    pasteurization: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    settings_profile: bool = True,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """批量**派发** alpha 表达式去回测（REST 直连 `POST /simulations`）.
@@ -349,6 +382,11 @@ async def submit_batch(
     ⚠ 这里的「提交」是派发仿真，**不是**把 alpha 提交上平台（那是不可逆的 `workflow_submit_alpha(confirm_submit=True)`）。
 
     等价于 tools/submit_batch.py。将表达式列表组装为 payload 并 POST /simulations。
+
+    **2026-10-27 行为变更**：`nanHandling` / `maxTrade` / `maxPosition` / `pasteurization` /
+    `startDate` / `endDate` 不再硬编码，改为按 `tracking/<REGION>/config/settings.json`
+    的区域档案取值（此前 `maxTrade` 恒为 `ON`，对 AMR/CHN/DEU/GLB/IND/JPN/KOR/USA
+    这 8 个权威值为 OFF 的区域是错的）。显式传参优先于档案。
 
     Args:
         expressions: alpha 表达式列表
@@ -359,30 +397,54 @@ async def submit_batch(
         neutralization: 中性化方式
         alpha_type: alpha 类型（REGULAR/SUPER）
         truncation: 截断
+        nan_handling: nanHandling（ON/OFF）；None = 用区域档案
+        max_trade: maxTrade（ON/OFF）；None = 用区域档案
+        max_position: maxPosition（ON/OFF）；None = 用区域档案
+        pasteurization: pasteurization（ON/OFF）；None = 用区域档案
+        start_date: IS 起始日；None = 用区域档案
+        end_date: IS 结束日；None = 用区域档案
+        settings_profile: 是否读区域档案（False 则退回平台安全缺省）
         dry_run: 是否干跑（不实际提交）
 
     Returns:
-        {success: bool, submitted: int, locations: [str], errors: [str]}
+        {success, submitted, status_code, location, settings_used, settings_source}
     """
     try:
+        base = _region_sim_settings(region) if settings_profile else {}
+
+        # 三层优先级：显式参数 > 区域档案 > 平台安全缺省
+        def _pick(explicit: Optional[str], key: str, fallback: str) -> str:
+            if explicit is not None:
+                return explicit
+            return str(base.get(key, fallback))
+
         settings = {
-            "instrumentType": "EQUITY",
+            "instrumentType": str(base.get("instrumentType", "EQUITY")),
             "region": region,
             "universe": universe,
             "delay": delay,
             "truncation": truncation,
-            "pasteurization": "ON",
-            "unitHandling": "VERIFY",
-            "nanHandling": "OFF",
-            "maxTrade": "ON",
-            "maxPosition": "OFF",
-            "language": "FASTEXPR",
-            "visualization": False,
-            "startDate": "2014-01-01",
-            "endDate": "2023-12-31",
             "decay": decay,
             "neutralization": neutralization,
+            "pasteurization": _pick(pasteurization, "pasteurization", "ON"),
+            "unitHandling": str(base.get("unitHandling", "VERIFY")),
+            "nanHandling": _pick(nan_handling, "nanHandling", "OFF"),
+            "maxTrade": _pick(max_trade, "maxTrade", "OFF"),
+            "maxPosition": _pick(max_position, "maxPosition", "OFF"),
+            "language": str(base.get("language", "FASTEXPR")),
+            "visualization": bool(base.get("visualization", False)),
+            "startDate": _pick(start_date, "startDate", "2014-01-01"),
+            "endDate": _pick(end_date, "endDate", "2023-12-31"),
         }
+
+        # 来源标注，便于发批前核验
+        explicit_keys = [k for k, v in {
+            "nanHandling": nan_handling, "maxTrade": max_trade,
+            "maxPosition": max_position, "pasteurization": pasteurization,
+            "startDate": start_date, "endDate": end_date,
+        }.items() if v is not None]
+        settings_source = "explicit" if explicit_keys else (
+            "region_profile" if base else "default")
 
         payload = [{"type": alpha_type, "settings": settings, "regular": e} for e in expressions]
 
@@ -391,6 +453,9 @@ async def submit_batch(
                 "success": True,
                 "dry_run": True,
                 "would_submit": len(payload),
+                "settings_source": settings_source,
+                "explicit_overrides": explicit_keys,
+                "settings_used": settings,
                 "sample_payload": payload[0] if payload else None,
             }
 
@@ -404,6 +469,8 @@ async def submit_batch(
             "submitted": len(payload),
             "status_code": resp.status_code,
             "location": loc,
+            "settings_source": settings_source,
+            "settings_used": settings,
             "response_preview": resp.text[:500] if resp.status_code != 201 else None,
         }
 

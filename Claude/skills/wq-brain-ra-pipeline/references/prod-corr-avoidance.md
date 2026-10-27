@@ -10,7 +10,8 @@
 
 | 事实 | 出处 |
 |---|---|
-| `check_correlation` 内置阻塞轮询（间隔 `prod_corr_poll_s` = 30 s，最长 `prod_corr_timeout_s` = 3600 s）；账号级单并发，忙时**立即**返回 `correlation_busy`（fail-fast） | `wqb.config.WAIT_THRESHOLDS` |
+| `check_correlation` 内置阻塞轮询（间隔 `prod_corr_poll_s` = 30 s，最长 `prod_corr_timeout_s` = 900 s）；账号级单并发，忙时**立即**返回 `correlation_busy`（fail-fast） | `wqb.config.WAIT_THRESHOLDS` |
+| **跨进程槽**：账号级单并发由文件 token `logs/_dblock/correlation.lock.json` 守护（`wqb.correlation_slot`，TTL 3700 s，环境变量 `BRAIN_CORRELATION_LOCK_TTL_SECONDS`）。**任何进程**（MCP 服务 / `super_build` / `prod_bucket_scan` / `prod_watch` / 一次性脚本）都必须经它取数；拿不到就 fail-fast，**不排队、不降级放行**。放行等于让第二个进程也去打这个单并发接口——2026-10-22 实测事故就是这样让一方空转 1499 s | `src/wqb/correlation_slot.py` · `brain_mixin_transport.py` |
 | 同一 alpha 的已决结果缓存 **48 小时**（2026-10-06 改：后端由 Redis 换成 SQLite 权威表 `data/wqb.db::alpha_corr_cache`，**不再依赖 Redis**）。过期即回源平台——生产池会漂移，陈值比没值更危险。`pending` / `correlation_busy` / `data_unavailable` **不缓存**；命中缓存的响应带 `from_cache: true` | `brain_mixin_correlation.py::_prod_corr_cached`（TTL 与 `wqb.store._corr_cache.CORR_FRESH_HOURS=48` 同口径） |
 | `correlation_busy` 带 `retry_after`（缺省 180 s，环境变量 `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS`） | `brain_mixin_transport.py` |
 | **提交前终验必须 `refresh=True`** 强制回源——本地 / 缓存的 prod 值会随平台 prod 池变动快速漂移（0.6997 → 1.0000 一小时内发生过） | `incidents.md` I-2 |
@@ -20,7 +21,7 @@
 | 返回 | 含义 | 动作 |
 |---|---|---|
 | 命中缓存（`from_cache: true`） | **48 小时**内的已决结果（SQLite 权威表，无需 Redis） | 直接用；**提交前终验**仍须 `refresh=True` 回源 |
-| `pending` | 轮询超时（≥ 1 h）仍无数据 | 视为**未决**：不据此放行、不据此判死；隔一段时间再查一次，再空则向用户报错，**不得编造数字** |
+| `pending` | 轮询超时（≥ 15 min）仍无数据 | 视为**未决**：不据此放行、不据此判死；隔一段时间再查一次，再空则向用户报错，**不得编造数字** |
 | `correlation_busy` | 账号级单并发已被占用（fail-fast，立即返回） | 按 `retry_after` 等待后**串行**重试；不要另起并行进程去抢 |
 
 **`refresh=True` 的量化**（防止拉长平台队列）：每个 alpha 的每个决策点**至多 1 次**——用于提交前终验；同一 alpha 两次 refresh 至少间隔 **5 分钟**（经验值：平台 prod 计算通常 1–5 分钟，间隔内的重复请求只会撞上在飞的那一个）。

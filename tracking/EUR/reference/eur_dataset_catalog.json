@@ -1,0 +1,2251 @@
+{
+ "analyst10": {
+  "name": "Performance-Weighted Analyst Estimates",
+  "description": "This dataset applies an enhanced version of the StarMine SmartEstimate model to a broad universe of stocks and financial metrics, leveraging analyst estimate data from IBES. It calculates a performance score for each analyst based on their historical forecasting accuracy and incorporates the recency of their estimates. By combining these two factors, the model generates \"smart estimates\" that are more predictive than simple consensus means. The dataset includes modules for analyst innovation, outlier handling, and time-series feature generation, making it a robust tool for identifying which analyst forecasts are likely to be most accurate. This can help investors and researchers anticipate earnings surprises and price movements, as changes in smart estimates often precede market reactions.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.7695,
+  "fieldCount": 961,
+  "alphaCount": 1433,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst11": {
+  "name": "ESG scores",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RICs) and Bloomberg Identifiers (BBIDs), facilitating cross-platform security identification and data integration. By linking these two widely used financial identifiers, the dataset enables seamless aggregation and comparison of market data from Bloomberg and Refinitiv sources. This mapping is essential for portfolio managers, researchers, and trading systems that require accurate and efficient reconciliation of securities across different data vendors. While not directly predictive of price movements, the dataset is crucial for ensuring data integrity and consistency in multi-source financial analysis, which underpins robust quantitative research and trading strategies.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.8489,
+  "fieldCount": 445,
+  "alphaCount": 150,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst14": {
+  "name": "Estimations of Key Fundamentals",
+  "description": "This dataset provides daily, regionally split files containing detailed and consensus analyst estimates for key financial metrics such as revenue, EBITDA, EPS, dividends, and price targets for publicly traded companies worldwide. It includes individual analyst and broker forecasts, consensus calculations (mean, median, high, low, standard deviation), and actuals, along with metadata on fiscal periods, reporting currencies, and company identifiers. The dataset is highly granular, supporting point-in-time analysis and backtesting, and is essential for identifying earnings surprises, revisions, and trends in analyst sentiment. By tracking changes in consensus and individual estimates, users can anticipate price movements driven by earnings releases, analyst upgrades/downgrades, and shifts in ",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.5,
+  "fieldCount": 121,
+  "alphaCount": 270,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst15": {
+  "name": "Earnings forecasts",
+  "description": "This dataset provides bottom-up aggregated earnings forecasts and related financial metrics at the country, sector, industry, and index levels, covering 56 countries and major international indices with history back to 1985. It includes consensus analyst estimates for key measures such as EPS, revenue, book value, cash flow, dividends, P/E ratios, and long-term growth, all calendarized and available in local and common currencies. The data is structured to support global asset allocation, cross-border valuation, sector and industry analysis, and derivatives research. By tracking changes in consensus, estimate revisions, and aggregated sentiment, the dataset enables investors to identify under- or overvalued markets, monitor macro and sector trends, and anticipate shifts in market sentiment",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.511,
+  "fieldCount": 1744,
+  "alphaCount": 911,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst39": {
+  "name": "Analyst estimates & financial ratios",
+  "description": "This dataset contains detailed point-in-time company financials, standardized ratios, earnings estimates, consensus recommendations, and business intelligence for global equities. It includes annual and interim financial statements, key ratios (such as ROE, ROA, debt-to-equity, margins), analyst estimates, and consensus ratings, as well as company reference data and officer information. The breadth and depth of financial metrics, combined with historical and restated data, allow for robust factor modeling, backtesting, and cross-sectional analysis. Researchers can use this dataset to identify value, growth, quality, and momentum signals, assess earnings surprises, and construct predictive models for price movements based on fundamental drivers and analyst sentiment.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.8755,
+  "fieldCount": 24,
+  "alphaCount": 546,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst4": {
+  "name": "Analyst Estimate Data for Equity",
+  "description": "This dataset provides intraday updates of consensus financial estimates, actuals, and company guidance for over 16,000 global companies, sourced from more than 800 contributing brokers. It includes multiple daily delta files per region, allowing users to track real-time changes in analyst expectations for key financial metrics such as EPS, sales, dividends, cash flow, and industry-specific items. The dataset also offers daily historical consensus timelines, enabling analysis of estimate revisions, surprises, and trends. By capturing the latest market sentiment and analyst forecasts, this data is highly valuable for predicting price movements, identifying earnings momentum, and responding to market-moving events as they unfold.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.6638,
+  "fieldCount": 776,
+  "alphaCount": 3083,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst40": {
+  "name": "Information on board of director",
+  "description": "This dataset aggregates and harmonizes board and executive data from multiple leading sources, providing a comprehensive view of board composition, director profiles, and inter-company board connections across global public companies. It includes detailed information on board structure, director demographics (such as gender, age, and nationality), independence, tenure, and movements, as well as the network of interlocking directorships. By capturing both point-in-time and historical changes, the dataset enables analysis of boardroom dynamics, governance quality, and the flow of information or influence between companies. Such insights are valuable for predicting price movements, as changes in board composition, director turnover, and network centrality have been empirically linked to firm ",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.301,
+  "fieldCount": 22,
+  "alphaCount": 13,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst45": {
+  "name": "Analyst Trade Ideas",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBIDs) and Refinitiv Instrument Codes (RICs), facilitating cross-platform identification of securities. It is sourced from both Bloomberg and Refinitiv, ensuring high coverage and accuracy. While not intended for general research or direct price prediction, this mapping is essential for data integration, enabling analysts and portfolio managers to link and synchronize datasets from different vendors. By ensuring consistent instrument identification, it supports robust multi-source analytics, backtesting, and the construction of unified trading universes, which are foundational for any quantitative or fundamental price movement analysis.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 1.0,
+  "fieldCount": 61,
+  "alphaCount": 244,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst69": {
+  "name": "Fundamental Analyst Estimates",
+  "description": "The FactSet Fundamental dataset provides comprehensive annual and interim financial statement data, ratios, and per-share metrics for global companies, with coverage starting from 1980 for developed markets and the 1990s for developing markets. The dataset includes restatements, detailed line items, and standardized fields, enabling robust cross-company and cross-market comparisons. Key fields include balance sheet, income statement, and cash flow items, as well as derived ratios such as return on equity, margins, and growth rates. This dataset is valuable for quantitative and fundamental analysis, backtesting, and predictive modeling, as it allows users to track historical financial performance, identify trends, and build factor models that can help forecast future price movements based o",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.648,
+  "fieldCount": 813,
+  "alphaCount": 14196,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst7": {
+  "name": "Broker Estimates",
+  "description": "This dataset provides concise, real-time summaries of major company news events that are likely to move markets. Each event is tagged by topic (such as M&A, earnings guidance, product launches, regulatory actions, and more) and assigned a significance level, allowing users to filter for the most impactful developments. The data includes detailed headlines, descriptions, event categorization, and metadata such as company identifiers, event timing, and industry classification. By focusing on material news and filtering out less relevant information, this dataset enables quantitative analysts and traders to integrate event-driven signals into their models, backtest the impact of specific news types, and react quickly to market-moving corporate actions, thereby improving the prediction of shor",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.5,
+  "fieldCount": 1111,
+  "alphaCount": 3101,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst81": {
+  "name": "Creditworthiness model",
+  "description": "This dataset provides comprehensive global credit ratings and default probabilities for industrial companies, derived from financial statement data using a multi-objective rating evaluation model. It includes risk classes (from AAA to D), probability of default, credit limits, and a wide range of financial ratios such as solvency, liquidity, profitability, and leverage metrics. The dataset also features transition matrices, rating migration and stability statistics, and sector/country breakdowns. By quantifying creditworthiness and default risk, this dataset is highly valuable for predicting price movements, as changes in credit ratings and financial health often precede significant shifts in equity and bond prices. It enables risk assessment, early warning of distress, and the development",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.2402,
+  "fieldCount": 5,
+  "alphaCount": 5,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst9": {
+  "name": "Analyst Estimate Daily Data",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg Identifiers (BBID), facilitating cross-platform security identification. It is sourced from both Bloomberg and Refinitiv, ensuring broad coverage and accuracy. The mapping enables users to link securities across different data providers and trading systems, which is essential for portfolio management, trade reconciliation, and data integration tasks. While not directly predictive of price movements, the dataset is crucial for ensuring data consistency and enabling the use of multiple datasets in quantitative research and trading strategies.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.6166,
+  "fieldCount": 111,
+  "alphaCount": 78,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst_base_ref": {
+  "name": "Analyst Estimates Base Reference",
+  "description": "This dataset serves as a placeholder or reference point for the foundational data underlying analyst estimates and key performance indicators, without containing any actual financial or market data itself. Its primary function is to facilitate access to industry classifications and essential metadata required for quantitative research, while avoiding penalization for using common base modules in research workflows. Although it does not provide direct content, it enables seamless integration of industry and company classification information, which is crucial for constructing and interpreting analyst-driven signals and for ensuring consistency in backtesting and model development. By supporting the structural backbone for more detailed analyst and KPI datasets, it indirectly aids in the acc",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.5523,
+  "fieldCount": 17,
+  "alphaCount": 7,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst_consensus": {
+  "name": "Standardized Analyst Consensus Forecasts",
+  "description": "This dataset provides standardized, cleaned, and event-aligned analyst consensus forecasts and actuals for global equities, enabling direct comparison across companies and time. It aggregates and harmonizes consensus data from multiple leading sources, including I/B/E/S, Capital IQ, and FactSet, and applies rigorous data cleaning to remove expired or irrelevant forecasts. The dataset supports flexible configuration for different forecast horizons (quarterly, annual, rolling) and includes both forecast and actual values, as well as surprise calculations. By offering time-series event data with consistent methodology, it allows users to track revisions, analyze forecast accuracy, and construct robust quantitative models. This makes it a valuable resource for predicting price movements, backt",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.7027,
+  "fieldCount": 1929,
+  "alphaCount": 95,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst_factor_signals": {
+  "name": "Global Analyst Factor Signals",
+  "description": "This dataset provides a comprehensive suite of analyst-derived quantitative factors and indicators for global equities, constructed using standardized methodologies. It leverages consensus estimates, actuals, and revision data from multiple sources to generate a wide range of predictive signals, such as estimate momentum, earnings surprise, and analyst recommendation trends. The dataset is designed to be comparable across regions and time, with rigorous data cleaning and normalization. By offering both raw and composite factors—similar to those used in established quantitative models—this resource enables users to systematically test and implement alpha strategies, enhance risk models, and improve the forecasting of price movements based on analyst behavior and expectations.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.5458,
+  "fieldCount": 108,
+  "alphaCount": 69,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model52": {
+  "name": "Creditworthiness model",
+  "description": "This dataset holds a score based on companies' creditworthiness and default probability.",
+  "category": {
+   "id": "analyst",
+   "name": "Analyst"
+  },
+  "coverage": 0.1986,
+  "fieldCount": 3,
+  "alphaCount": 2,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.3
+ },
+ "earnings6": {
+  "name": "International Findings Data",
+  "description": "This dataset offers daily snapshots of international corporate events, including earnings announcements, conference calls, dividend declarations, shareholder meetings, and other key financial events. It provides detailed metadata such as event status, timing, fiscal period, and confirmation level, along with links to press releases and filings. By tracking the timing and revisions of earnings dates, dividend actions, and other corporate events, the dataset enables researchers and traders to anticipate market-moving disclosures, identify signals of management intent, and exploit calendar-based trading strategies. Its forward-looking coverage and granular event data are valuable for predicting price movements, volatility spikes, and abnormal returns around scheduled corporate actions.",
+  "category": {
+   "id": "earnings",
+   "name": "Earnings"
+  },
+  "coverage": 0.8203,
+  "fieldCount": 66,
+  "alphaCount": 1622,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.2
+ },
+ "earnings_sent_matrix": {
+  "name": "Global Earnings Call Sentiment Matrix",
+  "description": "This dataset provides a structured, matrix-format aggregation of global company earnings call transcripts, focusing on sentiment and topic analytics. It leverages advanced natural language processing to extract and quantify positive, neutral, and negative sentiment probabilities from management presentations and Q&A sessions, across over 200 thematic topics. The data is filtered and enhanced with smart aggregation techniques, including rolling and daily sentiment measures, confidence scores, and relevance indicators. By capturing nuanced shifts in management tone and analyst reactions, the dataset enables researchers and investors to identify patterns and signals that may precede price movements, offering valuable insights for predictive modeling and alpha generation in equity markets.",
+  "category": {
+   "id": "earnings",
+   "name": "Earnings"
+  },
+  "coverage": 0.5062,
+  "fieldCount": 7,
+  "alphaCount": 61,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.2
+ },
+ "digital_ad_spend": {
+  "name": "Digital Advertising Spend Intelligence",
+  "description": "This dataset provides comprehensive estimates of digital advertising spend and related metadata across a wide range of websites and social media platforms, including details on brands, categories, channels, creatives, and purchase paths. It tracks ad impressions, spend, creative types, and the route each ad takes from advertiser to publisher, offering granular insights into advertising strategies and market presence. By analyzing trends in ad spend, creative deployment, and targeting strategies, researchers can gauge shifts in marketing intensity, brand competition, and consumer engagement, which may serve as leading indicators for price movements in related equities or sectors. The dataset is particularly valuable for identifying changes in digital marketing activity that could signal upc",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.1725,
+  "fieldCount": 6,
+  "alphaCount": 1,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental1": {
+  "name": "Management and Executive Data",
+  "description": "This dataset provides comprehensive biographical and professional information on board members and senior executives from companies worldwide. It includes details such as employment history, education, achievements, compensation, board roles, committee memberships, and network connections across organizations. By analyzing board composition, director expertise, compensation structures, and interlocking directorates, investors and researchers can assess governance quality, leadership stability, and potential strategic shifts. These insights are valuable for predicting price movements, as changes in executive leadership, board structure, or director networks often precede significant corporate actions, impact investor sentiment, and influence firm performance.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.5096,
+  "fieldCount": 183,
+  "alphaCount": 180,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental17": {
+  "name": "Direct Fundamental Data",
+  "description": "The FactSet Fundamental dataset provides comprehensive annual and interim financial statement data, ratios, and per-share metrics for global equities, with coverage starting from 1980 for developed markets and the 1990s for emerging markets. The dataset includes restated data from 2004 onward, ensuring historical accuracy and comparability. Key fields cover balance sheet, income statement, and cash flow items, as well as detailed breakdowns of assets, liabilities, equity, revenues, expenses, and key performance indicators. FactSet’s symbology enables robust cross-referencing with other datasets. This dataset is valuable for quantitative and fundamental analysis, backtesting, and model development, as it allows researchers to track company financial health, valuation, and performance over t",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.7054,
+  "fieldCount": 523,
+  "alphaCount": 3513,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental22": {
+  "name": "Environmental and Social Governance Data",
+  "description": "This dataset provides a comprehensive mapping between two major financial security identifiers: RIC (Reuters Instrument Code) and Bloomberg ID. By linking these identifiers, the dataset enables seamless integration and reconciliation of securities data across platforms, supporting accurate instrument identification in multi-vendor environments. While not directly containing price or fundamental data, this mapping is essential for analysts and quantitative models that aggregate, compare, or merge datasets from different sources. Reliable cross-referencing improves data quality and enables more robust research, trading, and risk management workflows, indirectly supporting price prediction by ensuring correct instrument alignment.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.6866,
+  "fieldCount": 1,
+  "alphaCount": 3,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental23": {
+  "name": "Fundamental Point in Time Data",
+  "description": "This dataset provides point-in-time, globally standardized fundamental financial data for over 60,000 companies, including both active and inactive firms, with daily granularity. It includes original and restated values for income statements, balance sheets, and cash flow statements, as well as business and geographic segment data, ratios, and company metadata. The point-in-time structure eliminates forward-looking and survivorship biases, enabling accurate historical backtesting and model development. With coverage dating back to 1989 for US companies and 1997 for non-US, this dataset is essential for constructing robust factor models, event studies, and alpha signals based on true historical financials, supporting reliable prediction of price movements and risk assessment.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.6641,
+  "fieldCount": 2332,
+  "alphaCount": 1585,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental25": {
+  "name": "Company Operating Metrics",
+  "description": "This dataset provides comprehensive, standardized financial statement data and key operating metrics for companies covering 96% of global market capitalization. It includes annual and quarterly financials, per share data, calculated ratios, pricing, and textual information, enabling deep peer comparability across industries and regions. The dataset features over 1,500 data items such as income statement, balance sheet, cash flow, segment data, and supplemental metrics, with point-in-time history, restatements, and amendments. Analysts can use this rich dataset to assess company performance, financial health, and valuation, making it highly valuable for predicting price movements, screening for investment opportunities, and building quantitative models.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.2596,
+  "fieldCount": 8,
+  "alphaCount": 13,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental28": {
+  "name": "Global Fundamental Data",
+  "description": "This dataset provides comprehensive, standardized fundamental financial data for public companies worldwide, covering over 96% of global market capitalization. It includes annual and interim/quarterly financial statements, per share data, calculated ratios, pricing, and descriptive company information. With over 1,500 data items, the dataset enables deep peer comparability and historical analysis across regions and industries. It is highly valuable for quantitative research and price prediction, as it allows for the construction of fundamental factors (such as value, quality, profitability, and growth), backtesting of investment strategies, and robust cross-sectional and time-series analysis of company performance and valuation drivers.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.5,
+  "fieldCount": 1605,
+  "alphaCount": 665,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental6": {
+  "name": "Company Fundamental Data for Equity",
+  "description": "This dataset provides comprehensive, point-in-time global company fundamental data, capturing daily snapshots of financial statements, balance sheets, cash flows, and key ratios as they were known to the market at each historical date. It includes restatements, amendments, and all changes, ensuring accurate backtesting and minimizing look-ahead bias. The dataset covers a wide range of standardized and normalized financial metrics across regions and industries, making it a critical resource for quantitative research, factor modeling, and alpha generation. By reflecting the true information set available to investors at any given time, it enables robust prediction of price movements and supports the development of systematic investment strategies.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.5,
+  "fieldCount": 279,
+  "alphaCount": 513,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental72": {
+  "name": "Comprehensive Fundamental Data",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RICs) and Bloomberg IDs for global securities. It enables users to cross-reference and link securities across two major financial data platforms, facilitating seamless integration of datasets from different sources. The mapping covers a wide range of asset classes and regions, supporting data normalization and consolidation for research, analytics, and operational workflows. By ensuring accurate identifier matching, this dataset is essential for portfolio management, risk analysis, and multi-source data aggregation, ultimately improving the reliability of price movement predictions and historical backtesting.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.4976,
+  "fieldCount": 876,
+  "alphaCount": 2202,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental90": {
+  "name": "Governance, Accounting, Management, and Equality",
+  "description": "This dataset provides quantitative model outputs for global equities, leveraging a model ensemble meta-algorithm that combines robust linear regression and a modified xgBoost classification approach. It includes a wide array of fundamental, accounting, governance, and management quality signals, as well as risk and event indicators such as bankruptcy, fraud, and executive turnover. The model is designed to predict three-month ahead stock returns and the likelihood of negative corporate events, offering daily cross-sectional scores and risk metrics. By integrating these diverse factors, the dataset enables users to identify stocks with superior governance, accounting quality, and management efficiency, as well as to anticipate adverse events, making it a powerful tool for forecasting price ",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.4825,
+  "fieldCount": 66,
+  "alphaCount": 81,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fundamental93": {
+  "name": "Earnings Tax Data",
+  "description": "This dataset provides comprehensive, point-in-time fundamental financial data for public companies worldwide, with annual history dating back to 1980 for developed markets and the 1990s for developing markets. It includes detailed financial statement items, ratios, per-share data, and key performance indicators, all mapped to unique company and security identifiers. The data covers balance sheets, income statements, cash flows, segment information, and restatements, enabling robust analysis of company performance, valuation, and risk. By offering granular, timely, and historically consistent financial metrics, this dataset is essential for building and backtesting quantitative models, screening for investment opportunities, and forecasting price movements based on fundamental drivers.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.3285,
+  "fieldCount": 46,
+  "alphaCount": 1,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.1
+ },
+ "other401": {
+  "name": "Governance, Accounting, Management, and Equality",
+  "description": "Dataset relating to governance, accounting quality, management, and equality. The factors are chosen by a machine learning model which is trained to predict returns. The model is completely out-of-sample, trained at the end of each month, with only data prior to the date.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.707,
+  "fieldCount": 65,
+  "alphaCount": 244,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "other452": {
+  "name": "Earnings Tax Data",
+  "description": "This dataset comprehensively studies a wide range of tax-related ratios that are useful for earnings management or financial fraud detection because tax-related accounts in financial statements and footnotes reveal significant information about earnings quality.",
+  "category": {
+   "id": "fundamental",
+   "name": "Fundamental"
+  },
+  "coverage": 0.3727,
+  "fieldCount": 29,
+  "alphaCount": 1,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.1
+ },
+ "imbalance5": {
+  "name": "Oil Price Resilience Scores",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg Identifiers (BBID), facilitating seamless integration and cross-referencing of securities across two major financial data platforms. By enabling accurate identification and linkage of securities, the dataset supports portfolio managers, analysts, and researchers in consolidating data from multiple sources, improving data quality, and reducing operational risk. While not directly predictive of price movements, it is essential for ensuring data integrity in multi-source quantitative models and for efficient trade execution and compliance reporting.",
+  "category": {
+   "id": "imbalance",
+   "name": "Imbalance"
+  },
+  "coverage": 0.5545,
+  "fieldCount": 2,
+  "alphaCount": 2853,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.0
+ },
+ "insider_agg_matrix": {
+  "name": "Smart Insider Transaction Aggregates",
+  "description": "This dataset provides a structured, matrix-format view of insider trading activity, where individual transactions by company insiders are aggregated and filtered using advanced methodologies. By summarizing key metrics such as average shares bought or sold, and applying smart filters to highlight the most relevant transactions, the dataset enables researchers and investors to efficiently identify patterns of insider behavior across companies and regions. Such aggregated insider activity is a valuable signal for predicting future price movements, as it can reveal informed trading ahead of significant corporate events or shifts in company fundamentals. The matrix structure makes it easier to incorporate these insights into quantitative models and backtesting frameworks, supporting the develo",
+  "category": {
+   "id": "insiders",
+   "name": "Insiders"
+  },
+  "coverage": 0.6116,
+  "fieldCount": 34,
+  "alphaCount": 156,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "insiders1": {
+  "name": "Global Insider Trading Data",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg Identifiers (BBID), serving as a cross-reference for security identifiers across two major financial data platforms. It is essential for researchers, portfolio managers, and quantitative analysts who need to integrate or reconcile data from both Refinitiv and Bloomberg sources. By enabling accurate and efficient linkage of securities across systems, this mapping facilitates robust multi-source data analysis, backtesting, and model development, ultimately supporting more reliable and timely investment decision-making and price prediction workflows.",
+  "category": {
+   "id": "insiders",
+   "name": "Insiders"
+  },
+  "coverage": 0.5512,
+  "fieldCount": 9,
+  "alphaCount": 393,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "insiders12": {
+  "name": "UK Insider Transaction Data",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBID) and Reuters Instrument Codes (RIC), enabling seamless cross-referencing of securities across two major financial data platforms. By linking these identifiers, the dataset facilitates data integration, aggregation, and validation for quantitative research, portfolio management, and trading systems. Accurate mapping ensures that price, volume, and corporate action data from different sources can be reliably combined, reducing errors and improving the quality of analytics. While not directly predictive, this dataset is essential for constructing robust multi-source datasets that underpin price movement prediction models.",
+  "category": {
+   "id": "insiders",
+   "name": "Insiders"
+  },
+  "coverage": 0.2008,
+  "fieldCount": 8,
+  "alphaCount": 201,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "fund_holdings_panel": {
+  "name": "Global Institutional Fund Holdings",
+  "description": "This dataset provides daily, account-level insights into the holdings and transactions of major institutional investors, including mutual funds, ETFs, asset managers, pension funds, and insurance companies. It features detailed tables on daily trades, holdings, and the size of the investment account panel, with metrics such as conviction holdings, boundary trades, significant transactions, and concentration measures. By tracking changes in institutional ownership, trade activity, and portfolio concentration, the dataset enables users to identify shifts in market sentiment, detect accumulation or liquidation trends, and assess the impact of large fund movements on individual securities. These insights are valuable for predicting price movements, understanding liquidity dynamics, and generat",
+  "category": {
+   "id": "institutions",
+   "name": "Institutions"
+  },
+  "coverage": 0.8805,
+  "fieldCount": 30,
+  "alphaCount": 35,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "institutions6": {
+  "name": "Institutions and Beneficial Stake Ownership",
+  "description": "This dataset provides comprehensive information on global equity ownership by institutions, mutual funds, and beneficial stakeholders. It includes current and historical holdings data from over 50,000 portfolios and companies across 70 countries, with more than 10 years of history. Key fields cover shares held, percent of shares outstanding, report dates, aggregated statistics, and investor profiles. The dataset enables analysis of institutional buying and selling activity, ownership concentration, and changes in major holders, which are critical for understanding market sentiment, liquidity, and potential price movements. By tracking shifts in institutional positions and identifying new or reduced stakes, investors and researchers can anticipate trends, detect accumulation or distribution",
+  "category": {
+   "id": "institutions",
+   "name": "Institutions"
+  },
+  "coverage": 0.9915,
+  "fieldCount": 11,
+  "alphaCount": 94,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "macro10": {
+  "name": "Macroeconomic Research data",
+  "description": "This dataset offers a rich collection of daily financial statistics, including interest rates, Treasury yields, exchange rates, commodity prices, bond spreads, and stock market indexes from both domestic and international sources. It covers a wide array of macroeconomic and market variables such as mortgage rates, credit spreads, open market operations, and option market activity. By providing high-frequency, multi-asset class data, the dataset enables researchers and investors to monitor market conditions, assess risk, and identify macroeconomic trends. Its breadth and granularity make it highly valuable for forecasting price movements, constructing systematic trading strategies, and evaluating the impact of economic events on asset prices.",
+  "category": {
+   "id": "macro",
+   "name": "Macro"
+  },
+  "coverage": 1.0,
+  "fieldCount": 1,
+  "alphaCount": 121,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.2
+ },
+ "macro27": {
+  "name": "Job records from job posting",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg Identifiers (BBID) and Reuters Instrument Codes (RIC), sourced from both Bloomberg and Refinitiv. It serves as a cross-reference tool for linking securities across two major financial data platforms, enabling seamless integration of market data, analytics, and research workflows. While not directly predictive of price movements, the dataset is essential for accurate data alignment, security identification, and multi-source analysis, which are foundational for quantitative research, portfolio management, and trading systems that rely on consistent and reliable security identifiers.",
+  "category": {
+   "id": "macro",
+   "name": "Macro"
+  },
+  "coverage": 0.3273,
+  "fieldCount": 33,
+  "alphaCount": 472,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.2
+ },
+ "ai_equity_alpha": {
+  "name": "AI Equity Alpha Forecasts",
+  "description": "This dataset provides machine learning-driven forecasts of total return alpha for a broad universe of listed equities, with prediction horizons ranging from 1 to 12 months. It includes a comprehensive set of 291 explainability factors per stock, spanning areas such as accounting forensics, sentiment analysis, business model clarity, technical indicators, credit risk, valuation models, and more. The dataset delivers both daily and weekly updates, offering granular insights into the drivers of predicted returns. By combining forward-looking alpha scores with detailed factor breakdowns, this resource enables researchers and quantitative analysts to identify potential outperformers, understand the underlying reasons for forecasts, and enhance equity selection and risk management strategies. It",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8601,
+  "fieldCount": 582,
+  "alphaCount": 66,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "ai_factor_transfer": {
+  "name": "AI Enhanced Equity Factor Transfer",
+  "description": "This dataset leverages advanced AI techniques to extract and transfer high-level equity factor features from a sophisticated quantitative research framework to other datasets. It includes a rich set of features such as price momentum, money flow strength, volume anomalies, liquidity alignment, and technical indicators like Bollinger Bands and Williams %R. Each feature is semantically defined and generated through AI-driven processes, ensuring clarity and consistency. By capturing nuanced interactions between price, volume, and liquidity, the dataset provides actionable signals for predicting price movements and constructing robust quantitative models. Its transfer learning approach enables the application of proven factor knowledge across diverse datasets, enhancing the predictive power an",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 1.0,
+  "fieldCount": 20,
+  "alphaCount": 27,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst_earnings_ibes": {
+  "name": "Global Analyst Earnings Forecasts",
+  "description": "This dataset provides comprehensive global analyst earnings forecasts, consensus estimates, and actuals for over 60,000 companies, sourced from broker and sell-side analyst submissions. It includes detailed and summary-level data on key financial metrics such as earnings per share (EPS), revenue, cash flow, and segment-level results, as well as analyst recommendations and price targets. The dataset tracks both current and historical estimates, revisions, and company-issued guidance, with extensive metadata on contributors, accounting standards, and industry classifications. By aggregating and updating analyst expectations in near real-time, this dataset enables users to monitor market sentiment, identify earnings momentum, and anticipate potential surprises—making it a valuable tool for pr",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.9976,
+  "fieldCount": 42,
+  "alphaCount": 22,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "analyst_revision_horizons": {
+  "name": "Multi Horizon Analyst Revision Signals",
+  "description": "This dataset provides decomposed analyst revision signals across short, medium, and long time horizons, derived from a comprehensive analyst revision-based stock ranking model. By applying advanced signal processing techniques, it extracts horizon-specific components from a wide array of analyst-driven metrics, such as earnings estimate changes, recommendation shifts, and predicted surprises. The resulting fields enable researchers and investors to isolate and analyze the impact of analyst sentiment and estimate revisions over different time frames, enhancing the ability to identify timely alpha opportunities and anticipate price movements driven by changes in analyst outlook. This multi-horizon approach is particularly valuable for constructing and testing trading strategies that are sens",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.6885,
+  "fieldCount": 1089,
+  "alphaCount": 81,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "behavioral_signals": {
+  "name": "Behavioral Finance Signal Factors",
+  "description": "This dataset provides a suite of behavioral finance-based signals designed to capture investor extrapolation bias in equity markets. It includes six key factors: three that analyze the shape and curvature of price paths, and three that identify salient patterns such as streaks in returns, extreme daily movements, and visually prominent trends. By quantifying how investors may irrationally project recent performance into the future, these signals serve as contrarian indicators and can help forecast short-term reversals and momentum effects. The dataset is valuable for predictive modeling, risk assessment, and portfolio construction, offering insights into market inefficiencies driven by psychological biases and aiding in the identification of potential mispricings and alpha opportunities.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.557,
+  "fieldCount": 7,
+  "alphaCount": 1,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "chart_cnn_alpha": {
+  "name": "Deep Learning Chart-Based Alpha",
+  "description": "This dataset leverages deep learning to predict future stock returns by mimicking the decision-making process of retail traders who analyze price charts. It transforms time series financial data into images (such as OHLC or other chart types) and applies pre-trained convolutional neural networks (CNNs) to these images to generate return forecasts. The output includes both raw return predictions and quantile-based relative return rankings, along with associated probabilities. By capturing complex visual patterns and technical signals that may be overlooked by traditional quantitative models, this approach can identify non-linear relationships and subtle chart features that are predictive of price movements. The dataset is particularly useful for developing and testing alpha models that seek",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.6916,
+  "fieldCount": 122,
+  "alphaCount": 27,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "event_stock_model": {
+  "name": "Corporate Event Driven Stock Model",
+  "description": "This dataset provides a systematic stock-selection model that leverages corporate event data and machine learning techniques to predict future stock returns. It incorporates a wide range of event types, such as earnings announcements, executive changes, product launches, and structural corporate actions, and processes them using advanced feature engineering and algorithms like elastic net and xgBoost. The model outputs normalized scores and ranks for stocks based on the predictive impact of these events, enabling users to identify potential alpha opportunities and construct long/short portfolios. By capturing both fundamental and behavioral signals from event-driven market reactions, the dataset is valuable for forecasting price movements, managing risk, and enhancing quantitative investme",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5463,
+  "fieldCount": 3,
+  "alphaCount": 1,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "global_seasonal_model": {
+  "name": "Global Seasonal Regime Return Signals",
+  "description": "This dataset provides predictive return signals for global equities by modeling the impact of calendar seasonality, corporate event timing, market regime context, and key data sources such as price-volume, analyst forecasts, options, and fundamentals. Each module isolates a specific data aspect—like price-volume trends, analyst revisions, or option-implied signals—and overlays contextual features such as month/quarter effects, proximity to earnings or guidance events, and prevailing market regimes (e.g., risk-on/off, expansion/contraction). The dataset is strictly point-in-time and D1-lagged to avoid lookahead bias, making it robust for research and production use. By enabling detailed analysis of how individual features and market contexts drive return predictions, it supports advanced qu",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.9886,
+  "fieldCount": 449,
+  "alphaCount": 52,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "london_sentiment": {
+  "name": "London Stock Sentiment Signals",
+  "description": "This dataset provides daily sentiment scores for stocks listed on the London Stock Exchange, derived from the analysis of financial-relevant Twitter posts. Each stock's sentiment is quantified using normalized, weighted scores based on tweet content, volume, and changes over 1-day and 5-day periods. The dataset includes metrics such as sentiment volume, standard deviation, and z-scores, offering a comprehensive view of market sentiment trends. By tracking shifts in social media sentiment, analysts and traders can identify potential price movements, gauge investor mood, and enhance trading strategies with timely, alternative data signals.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.1634,
+  "fieldCount": 7,
+  "alphaCount": 0,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model110": {
+  "name": "Big data and machine learning based model",
+  "description": "This dataset provides a comprehensive, daily-updated global stock selection model that combines fundamental, alternative, and machine learning-based factors to generate predictive signals for over 11,000 stocks across approximately 45 countries. It includes style factors such as value, growth, quality, price momentum and reversal, analyst sentiment, and alternative data, as well as composite and tree-based model scores. The model is industry-neutralized and regularly refitted to adapt to changing market conditions. By aggregating diverse quantitative signals and leveraging advanced machine learning techniques, this dataset enables systematic investors to identify stocks with high expected returns, manage risk, and time factor exposures, making it a powerful tool for predicting price moveme",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8525,
+  "fieldCount": 8,
+  "alphaCount": 462,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model135": {
+  "name": "Alternative technical factor models",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBID) and Refinitiv Instrument Codes (RIC), enabling seamless integration and cross-referencing of securities across major financial data platforms. By facilitating accurate instrument identification, it supports data normalization and aggregation from multiple sources, which is essential for building robust multi-source trading models, conducting security-level research, and ensuring consistency in price and volume analytics. While not directly predictive, this mapping is a foundational resource for linking datasets that can be used to forecast price movements and enhance quantitative research workflows.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5525,
+  "fieldCount": 137,
+  "alphaCount": 179,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model138": {
+  "name": "Stock Selection from Accounting-based Factors",
+  "description": "This dataset contains a comprehensive suite of Performance Deviation Index (PDI) factors derived from 14 key accounting variables, designed to measure the deviation of a company's latest financial metrics from its historical averages. The dataset includes composite models, quality-focused variants, and sector-neutralized signals, all constructed using advanced techniques such as risk parity weighting, deseasonalization, and clustering. By capturing anomalies and behavioral biases in financial statement data, these factors have demonstrated superior risk-adjusted returns compared to traditional accounting ratios and growth metrics. The dataset is valuable for quantitative investors seeking to enhance stock selection, improve portfolio diversification, and boost predictive power for price mo",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5537,
+  "fieldCount": 120,
+  "alphaCount": 1260,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model140": {
+  "name": "Sensitivity to the Inflation Change",
+  "description": "This dataset provides stock-level sensitivity estimates to expected inflation, using changes in breakeven rates and advanced machine learning techniques such as elastic net regression. It covers a wide range of global equities and includes sector, country, and performance metrics, allowing users to analyze how individual stocks and sectors respond to inflationary pressures. By quantifying inflation beta and related exposures, the dataset is valuable for portfolio managers and analysts seeking to forecast price movements, manage risk, and implement tactical asset allocation strategies in environments with changing inflation expectations.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5077,
+  "fieldCount": 3,
+  "alphaCount": 3,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model144": {
+  "name": "Stock Selection DL model",
+  "description": "This dataset provides the outputs of a next-generation deep learning model designed for global stock selection with a focus on statistical arbitrage and mean reversion alpha. It includes both raw and processed model scores, updated daily and with monthly historical data, covering a broad universe of equities across multiple regions. The model leverages advanced neural network architectures such as CNNs, RNNs, LSTMs, transformers, and conformers, and is engineered to be interpretable and relatively uncorrelated with common equity style factors. The dataset is particularly valuable for systematic and high-frequency trading strategies, as it offers timely, actionable signals that can be used to enhance portfolio construction, manage risk, and exploit short-term price inefficiencies. By provid",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5511,
+  "fieldCount": 2,
+  "alphaCount": 94,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model16": {
+  "name": "Fundamental Scores",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBID) and Reuters Instrument Codes (RIC), facilitating cross-referencing of securities across two major financial data platforms. By enabling seamless integration of data from Bloomberg and Refinitiv, it helps analysts and portfolio managers ensure accurate security identification, streamline data aggregation, and reduce errors in multi-source research workflows. While not directly predictive of price movements, this mapping is essential for robust data management, enabling more reliable analysis and backtesting when combining datasets that use different security identifiers.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.635,
+  "fieldCount": 24,
+  "alphaCount": 36,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model182": {
+  "name": "Geographic network based model",
+  "description": "This dataset contains daily momentum signals derived from networks of economically and fundamentally linked companies, spanning multiple regions and market segments. It combines seven distinct network-based momentum factors—such as business segment, geographic, analyst coverage, executive/board membership, innovation, supply chain, and shipping relationships—into a composite model using risk parity optimization. The resulting signals are designed to deliver stronger performance and lower downside risk than traditional price momentum, with demonstrated diversification benefits and high risk-adjusted returns. By capturing information spillovers and lead-lag effects across related firms, this dataset provides powerful predictive insights for systematic equity strategies, helping investors ide",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.4381,
+  "fieldCount": 7,
+  "alphaCount": 1,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model238": {
+  "name": "SmartHoldings Model",
+  "description": "This dataset provides a comprehensive global ranking of stocks based on predicted future changes in institutional ownership, leveraging a quantitative model that reverse engineers fund manager purchasing profiles using fundamental and technical factors. It includes detailed ranks at global, regional, country, sector, and industry levels, as well as components measuring screening attractiveness and changes in sentiment. By identifying stocks likely to experience increased or decreased institutional buying, the dataset offers valuable signals for long/short strategies, portfolio construction, and risk management. Its predictive power is supported by backtesting, showing positive returns and high Sharpe Ratios, making it a robust tool for forecasting price movements driven by institutional fl",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8702,
+  "fieldCount": 44,
+  "alphaCount": 26,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model243": {
+  "name": "Combined Alpha Model",
+  "description": "This dataset provides quantitative scores and ranks for equities based on a static, region-optimized combination of multiple alpha models, including analyst revisions, price momentum, relative and intrinsic valuation, earnings quality, institutional holdings, insider activity, and short interest. Each security is ranked within its region, country, sector, and industry, enabling cross-sectional analysis and factor diversification. The dataset includes historical scores, mapping files for identifier cross-referencing, and supports backtesting and portfolio construction. By aggregating diverse predictive signals, it helps investors identify bullish and bearish opportunities, optimize long-short strategies, and improve the robustness of price movement forecasts across global markets.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.7494,
+  "fieldCount": 4,
+  "alphaCount": 202,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model25": {
+  "name": "Earnings Quality",
+  "description": "This dataset provides a comprehensive stock ranking model that integrates both valuation and momentum factors. It combines intrinsic and relative valuation metrics with analyst estimate revisions and price momentum signals, offering percentile ranks at global, regional, sector, and industry levels. The model leverages historical performance data, including decile spread returns, to identify stocks with attractive value and strong momentum characteristics. By blending these factors, the dataset helps investors and quantitative researchers predict future price movements and construct portfolios that are more likely to outperform market benchmarks. Its multi-factor approach is particularly useful for screening, backtesting, and systematic investment strategies.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5954,
+  "fieldCount": 417,
+  "alphaCount": 1318,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model257": {
+  "name": "International sentiment analysis NLP model",
+  "description": "This dataset leverages advanced natural language processing and machine learning techniques to extract sentiment and behavioral signals from global corporate filings, including annual and interim reports, management discussions, and risk disclosures. By analyzing textual data across multiple regions and languages, it generates predictive scores and similarity metrics that can be used to identify potential stock selection opportunities. The dataset’s breadth and depth enable investors to detect shifts in management tone, risk outlook, and strategic direction, which are often precursors to price movements. Its integration of deep learning models and multilingual sentiment dictionaries makes it a powerful tool for forecasting returns and enhancing portfolio diversification.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.323,
+  "fieldCount": 8,
+  "alphaCount": 5,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model26": {
+  "name": "Analyst Revisions",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBIDs) and Reuters Instrument Codes (RICs), facilitating cross-platform security identification and integration. It is essential for linking and harmonizing data from Bloomberg and Reuters sources, enabling seamless data aggregation, analysis, and reconciliation across different financial systems. While not directly predictive of price movements, accurate identifier mapping is crucial for ensuring data integrity in multi-source quantitative research, portfolio management, and trading operations.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.7478,
+  "fieldCount": 671,
+  "alphaCount": 2613,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model264": {
+  "name": "Predictive data using Deep Learning models",
+  "description": "The Wolfe Research Equity Factor Model is a comprehensive quantitative dataset offering over 270 numerical factors for global equities, with history dating back to 1986. It includes a wide array of factor categories such as value, growth, quality, momentum, volatility, analyst sentiment, technical indicators, and alternative data signals. The dataset provides both raw and sector/region-neutralized versions of factors, as well as point-in-time and forward-looking metrics, making it suitable for robust backtesting and live signal generation. With detailed coverage of analyst revisions, earnings surprises, price momentum, liquidity, and risk metrics, this factor library enables systematic investors to construct, test, and optimize multi-factor stock selection models, perform risk attribution,",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 1.0,
+  "fieldCount": 1393,
+  "alphaCount": 68,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model27": {
+  "name": "Credit Risk Model",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg Identifiers (BBID) and Reuters Instrument Codes (RIC), facilitating cross-platform security identification and integration. It is essential for data normalization, enabling users to link and reconcile securities across Bloomberg and Reuters data sources. While not directly predictive of price movements, the dataset is crucial for ensuring accurate data alignment in multi-source quantitative research, portfolio management, and trading systems, thereby supporting robust analytics and operational efficiency.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8931,
+  "fieldCount": 14,
+  "alphaCount": 20,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model28": {
+  "name": "Structural Credit Risk Model",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBID) and Refinitiv Identification Codes (RIC) for financial securities. It enables users to cross-reference and integrate data from Bloomberg and Refinitiv platforms, facilitating seamless data aggregation, reconciliation, and analysis across systems. While not directly predictive of price movements, accurate identifier mapping is essential for linking datasets, ensuring data integrity, and supporting multi-source quantitative research, portfolio management, and risk analysis workflows.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8708,
+  "fieldCount": 83,
+  "alphaCount": 104,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model30": {
+  "name": "EPS Estimate Model",
+  "description": "This dataset provides detailed metrics on analyst earnings estimate revisions, including proprietary weighted forecasts, predicted surprises, and consensus estimates. It captures the frequency, direction, and magnitude of analyst revisions, as well as the accuracy of individual analysts. By tracking changes in earnings expectations and identifying clusters of fresh versus stale revisions, the dataset offers valuable insights into market sentiment and potential price movements. Investors and quantitative researchers can leverage these signals to anticipate earnings surprises and identify stocks likely to outperform or underperform, making it a powerful tool for forecasting short-term and medium-term price trends.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.713,
+  "fieldCount": 77,
+  "alphaCount": 257,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model307": {
+  "name": "Global Sales Allocation Model Data",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg Identifiers (BBID), enabling seamless cross-referencing of securities across two major financial data platforms. By linking these unique identifiers, the dataset facilitates accurate integration of market data, trading information, and analytics from both Bloomberg and Refinitiv sources. This is particularly useful for portfolio managers, analysts, and trading systems that require consistent security identification for aggregation, reconciliation, and analysis. While not directly predictive of price movements, the dataset is essential for ensuring data integrity and enabling robust multi-source financial research and modeling.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.625,
+  "fieldCount": 15,
+  "alphaCount": 3,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model31": {
+  "name": "Earnings Quality Model",
+  "description": "This dataset offers a global, quantitative model that evaluates the sustainability and quality of company earnings by decomposing past earnings into sustainable and non-sustainable components. It includes a wide range of financial metrics such as accruals, cash flow, asset turnover, debt-to-equity, and various profitability ratios, along with percentile ranks and region-based comparisons. The model is designed to identify companies likely to experience high or low earnings sustainability over the next twelve months, making it a valuable tool for predicting future price movements. By highlighting firms with strong or weak earnings quality, the dataset supports the development of alpha-generating strategies and risk management frameworks.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.6672,
+  "fieldCount": 74,
+  "alphaCount": 712,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model313": {
+  "name": "Intangible Asset Factors",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBID) and Refinitiv Instrument Codes (RIC), enabling seamless cross-referencing of securities across two major financial data platforms. By facilitating the integration and reconciliation of data from Bloomberg and Refinitiv, it supports accurate security identification, data aggregation, and portfolio management. While not directly predictive of price movements, this mapping is essential for researchers and analysts who require reliable linkage of market data, corporate actions, and analytics from multiple sources, thereby improving the quality and consistency of downstream quantitative models and trading strategies.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.6624,
+  "fieldCount": 8,
+  "alphaCount": 6,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model354": {
+  "name": "Comprehensive Factor Analytics Data",
+  "description": "This dataset provides a mapping between Refinitiv Instrument Codes (RICs) and Bloomberg IDs, enabling seamless cross-referencing of securities between the two major financial data platforms. The mapping is maintained and updated by the security master team, with historical and current files available to support legacy and new systems. While not intended for general research or alpha generation, this mapping is crucial for data integration, ensuring consistency and accuracy when combining datasets from different vendors or when aligning security identifiers across research, trading, and risk management systems.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 1.0,
+  "fieldCount": 236,
+  "alphaCount": 77,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model36": {
+  "name": "SmartRatios Model",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RICs) and Bloomberg IDs for securities across global markets. By linking these two widely used security identifiers, the dataset enables seamless integration and cross-referencing of data from different financial data providers. This mapping is essential for portfolio managers, analysts, and quantitative researchers who need to consolidate, validate, or enrich datasets from multiple sources. While not directly predictive of price movements, accurate identifier mapping is a foundational tool for building robust multi-source analytics, backtesting strategies, and ensuring data consistency in quantitative models.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8509,
+  "fieldCount": 43,
+  "alphaCount": 118,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model37": {
+  "name": "Text Mining Data",
+  "description": "This dataset delivers a quantitative assessment of corporate credit risk by systematically analyzing the language used in news articles, conference call transcripts, corporate filings, and broker research reports. By leveraging advanced natural language processing and proprietary scoring algorithms, it generates default probabilities, implied credit ratings, and percentile risk ranks for publicly traded companies. The model captures early warning signals of financial distress and credit deterioration that may not be immediately evident in traditional financial ratios, making it a powerful tool for predicting adverse price movements, managing credit exposure, and enhancing multi-factor investment strategies. Its ability to anticipate defaults and downgrades ahead of market consensus provide",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.6978,
+  "fieldCount": 87,
+  "alphaCount": 769,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model38": {
+  "name": "Growth Valuation Model",
+  "description": "This dataset provides comprehensive stock valuation rankings by integrating multiple fundamental ratios and advanced earnings projections. It combines six key valuation metrics—such as earnings/price, cash flow/price, EBITDA/EV, sales/EV, book/price, and dividends/price—along with share buyback activity, to generate a single, robust relative valuation score for each company. The model leverages both reported financials and refined analyst estimates to address systematic biases and improve forecast accuracy. Additionally, it includes intrinsic value calculations using discounted future profitability measures, such as dividends and earnings, and offers detailed projections for earnings and dividends over multiple years. These features make the dataset highly valuable for identifying underval",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.7774,
+  "fieldCount": 145,
+  "alphaCount": 4959,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model39": {
+  "name": "Valuation Momentum Data",
+  "description": "This dataset integrates two advanced quantitative models: an earnings quality model that ranks stocks based on the sustainability and reliability of their reported earnings, and an analyst revisions model that tracks changes in analyst sentiment and estimate revisions. The earnings quality component uses a multi-factor approach, considering accruals, cash flow, operating efficiency, and exclusions to assess the likelihood that a company's earnings will persist. The analyst revisions component evaluates the direction and magnitude of recent analyst estimate changes, which have historically been strong predictors of future price movements. By combining these perspectives, the dataset provides percentile rankings (1-100) for stocks globally, enabling investors to identify companies with both ",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8044,
+  "fieldCount": 24,
+  "alphaCount": 472,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model50": {
+  "name": "International Scorings Data",
+  "description": "This dataset provides comprehensive downside risk assessments for international equities, offering weekly scores that estimate the probability of a stock underperforming market averages over a 3 to 24 month horizon. It includes a wide array of quantitative metrics such as earnings valuation, free cash flow yield, shareholder yield, profitability, growth, leverage, analyst forecast revisions, price momentum, and volatility, both at the global and country levels. The data is organized by company, sector, and country, with decile rankings to facilitate relative comparisons. By aggregating these factors into a composite risk score, the dataset enables investors and quantitative researchers to identify stocks with elevated downside risk, making it a valuable tool for portfolio risk management, ",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.8551,
+  "fieldCount": 168,
+  "alphaCount": 249,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model68": {
+  "name": "Risk-Alleviated Momentum Scores",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg IDs for financial securities. It is sourced from both Bloomberg and Refinitiv, ensuring broad coverage and accuracy. The dataset is essential for cross-referencing securities across different data platforms, facilitating seamless integration of market data, analytics, and trading systems. While not directly predictive of price movements, it is a foundational resource for analysts and portfolio managers who require reliable security identification for multi-source data aggregation, backtesting, and research workflows.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5515,
+  "fieldCount": 4,
+  "alphaCount": 15,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "model77": {
+  "name": "Analysts' Factor Model",
+  "description": "This dataset is a comprehensive library of quantitative alpha factors and multi-factor models designed to predict equity price movements across global markets. It includes over 350 stock selection signals spanning value, momentum, quality, growth, risk, liquidity, sentiment, and industry-specific factors, with coverage across developed, emerging, and frontier markets. The dataset provides factor definitions, cross-sectional rankings, and performance analytics, enabling users to identify key drivers of returns and construct robust, diversified investment models. By systematically evaluating fundamental, technical, and specialty signals, the dataset helps investors uncover persistent sources of excess return and improve portfolio performance through data-driven stock selection and risk manag",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.7826,
+  "fieldCount": 150,
+  "alphaCount": 294,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "multi_source_model": {
+  "name": "Multi-Source Market Return Prediction",
+  "description": "This dataset provides predictive signals for global financial markets by integrating a diverse set of data sources, including price-volume trends, fundamental financial indicators, analyst forecasts, options market data, event-driven information, and contextual factors such as market regimes and calendar effects. The model generates both short-term and long-term return forecasts, as well as specialized hedge signals designed to be uncorrelated with the main predictions for enhanced risk management. By combining these varied inputs and applying contextual adjustments, the dataset aims to deliver robust, risk-aware return predictions that can be used to inform trading strategies, asset allocation, and portfolio risk control. Its comprehensive, multi-factor approach makes it a valuable tool f",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5785,
+  "fieldCount": 60,
+  "alphaCount": 1,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.3
+ },
+ "multifactor_return_pred": {
+  "name": "Multi Factor Market Return Predictions",
+  "description": "This dataset provides predictive signals for global financial market returns by integrating a diverse set of data sources, including price-volume trends, fundamental financial indicators, analyst forecasts, options market data, event-driven information, and contextual factors such as market regimes and seasonal effects. The dataset delivers both short-term and long-term return forecasts, as well as specialized hedge signals designed to be uncorrelated with the main predictions, supporting risk management and portfolio diversification. By combining multiple data modalities and applying contextual adjustments, the dataset aims to enhance the accuracy and robustness of return predictions, making it a valuable tool for quantitative strategies, asset allocation, and risk-controlled investment d",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.568,
+  "fieldCount": 648,
+  "alphaCount": 18,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.3
+ },
+ "option_chart_model": {
+  "name": "Option Chart Image Return Prediction",
+  "description": "This dataset consists of 2D financial chart images generated from historical option market data, including implied volatility curves and OHLC price charts, for individual stocks. Using these images, a convolutional neural network (CNN) model is trained to predict future single-stock returns, both as raw values and as quantile rankings relative to peers. The dataset provides model outputs such as predicted returns, quantile labels, and associated confidence probabilities for multiple forecast horizons. By leveraging visual patterns in option data, the dataset enables systematic, cross-sectional return predictions and can help identify stocks with favorable risk-reward profiles, making it a valuable tool for quantitative trading and investment strategies focused on price movement forecasting",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.4352,
+  "fieldCount": 39,
+  "alphaCount": 0,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.3
+ },
+ "other351": {
+  "name": "International sentiment analysis NLP model",
+  "description": "NLP driven predictive model dataset",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.3262,
+  "fieldCount": 3,
+  "alphaCount": 0,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "other460": {
+  "name": "Predictive data using Deep Learning models",
+  "description": "Time series data prediction using deep learning techniques",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 1.0,
+  "fieldCount": 1393,
+  "alphaCount": 122,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "predictive_starmine": {
+  "name": "Predictive Analyst-Company Signal Set",
+  "description": "This dataset provides predictive signals specifically designed for advanced analyst and company relationship modeling, leveraging deep learning on company relations and analyst estimate data. It enhances traditional analyst revision and valuation models by integrating both company-to-company (Revere) and analyst-to-company (IBES) information, resulting in higher quality and broader coverage signals, especially for global equities. The dataset includes modules that generate forward-looking signals based on changes in analyst sentiment, earnings revisions, and valuation metrics, all informed by the underlying network of business relationships. These predictive signals can be used to anticipate future price movements by capturing both direct analyst actions and the economic linkages between c",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.798,
+  "fieldCount": 638,
+  "alphaCount": 100,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "price_signal_dl": {
+  "name": "Deep Learning Price Signal Dataset",
+  "description": "This dataset provides stock-level trading signals generated by optimizing traditional price and volume indicators using deep learning techniques. By rescaling and refining these indicators based on the unique properties of each instrument, the dataset aims to deliver uncorrelated alpha signals that enhance returns and Sharpe ratios. The data includes processed price, volume, and derived metrics, with robust handling of outliers and missing values. This resource is valuable for quantitative analysts and traders seeking to improve predictive accuracy and risk-adjusted performance in equity markets.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.9729,
+  "fieldCount": 28,
+  "alphaCount": 4,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.3
+ },
+ "quant_factor_lib": {
+  "name": "Multi-Domain Quantitative Factor Library",
+  "description": "This dataset is a comprehensive library of quantitative factors designed for stock selection and risk modeling across global equities. It integrates hundreds of signals derived from regulatory filings, institutional ownership, sector-specific metrics, technical indicators, sentiment analysis, patent data, and alternative sources. The factors span multiple domains, including banking, technology, real estate, health care, and energy, and leverage both numerical and textual data using advanced techniques such as natural language processing and network analysis. By providing diverse, uncorrelated signals and sector-specific insights, the dataset enables investors and researchers to enhance alpha generation, improve risk management, and develop robust predictive models for price movements in va",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5117,
+  "fieldCount": 126,
+  "alphaCount": 4,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.3
+ },
+ "shortinterest6": {
+  "name": "SmartHoldings Model",
+  "description": "This dataset is a global stock selection model that ranks stocks based on the predicted future change in institutional ownership. It looks into various funds and creates their purchasing profile based on the underlying fundamental or technical factors of the companies it buys. Aggregation over different funds help predict future probable changes in institutional ownership of the stocks.",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 1.0,
+  "fieldCount": 11,
+  "alphaCount": 27,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "stock_alpha_model": {
+  "name": "Global Stock Selection Alpha Model",
+  "description": "This dataset provides daily scores and factor exposures for a comprehensive global stock-selection model, leveraging advanced machine learning techniques such as elastic net regression and proprietary boosting algorithms. It incorporates a wide array of quantitative signals, including value, growth, quality, momentum, analyst sentiment, and alternative data, while dynamically adjusting for crowding risks and market conditions. The model is fitted on large-cap stocks across major regions and is designed to maximize risk-adjusted returns and minimize drawdowns. Investors and analysts can use these predictive scores and factor insights to enhance portfolio construction, identify outperforming stocks, and improve timing of investment decisions, making it a valuable tool for forecasting price m",
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "coverage": 0.5545,
+  "fieldCount": 9,
+  "alphaCount": 56,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news17": {
+  "name": "PR Edition Data",
+  "description": "This dataset analyzes and structures news, press releases, and regulatory disclosures from over 22 global newswires and distribution networks, processing more than 100,000 items daily. It provides granular sentiment scores, event relevance, novelty metrics, and impact projections for entities such as companies, currencies, and commodities. The data includes detailed event taxonomy, entity mapping, and various sentiment indicators, enabling users to track market-moving news, measure the impact and novelty of events, and assess the relevance of information to specific securities. By quantifying news sentiment and event characteristics, the dataset helps investors and analysts anticipate price movements, identify alpha opportunities, and enhance risk management through timely, data-driven ins",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.7824,
+  "fieldCount": 88,
+  "alphaCount": 94,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news18": {
+  "name": "Ravenpack News Data",
+  "description": "This dataset provides structured analytics derived from global news sources, focusing on sentiment, event detection, and entity relevance for financial markets. It includes granular sentiment scores for specific events and entities, measures of event novelty and relevance, and a comprehensive taxonomy for classifying news events. The data covers a wide range of entities such as companies, products, people, and macroeconomic factors, and is enriched with metadata like event timing, fact level, and source trustworthiness. By quantifying the tone and impact of news stories, this dataset enables investors and researchers to systematically monitor market sentiment, identify significant events, and generate predictive signals for price movements, making it a valuable tool for quantitative tradin",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.61,
+  "fieldCount": 124,
+  "alphaCount": 636,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news20": {
+  "name": "Web Sources News Sentiment Data",
+  "description": "This dataset provides a comprehensive mapping and reference framework for entities and events detected in financial news and analytics. It includes unique identifiers for entities (such as companies, currencies, commodities, places, and people), their relationships, roles, and associated metadata like country codes and security identifiers. The dataset also covers event taxonomy, sentiment scores, relevance, novelty, and aggregation functions, enabling users to link news events to specific entities and analyze their impact. By offering granular mapping and classification, this dataset is essential for integrating news analytics with other financial datasets, supporting event-driven research, and enhancing predictive models for price movements through improved entity resolution and event ca",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.8079,
+  "fieldCount": 68,
+  "alphaCount": 55,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news21": {
+  "name": "Macro Economic Event Data",
+  "description": "This dataset provides concise, real-time summaries of major company news events, focusing on developments that are likely to move markets. Each event is tagged by topic (such as M&A, earnings guidance, product launches, regulatory actions, and more) and assigned a significance level, allowing users to filter for the most impactful news. The data includes detailed headlines, descriptions, event categorization, and metadata such as timing, company identifiers, and industry classification. By offering structured, noise-filtered news with intelligent tagging, this dataset enables quantitative models and event-driven strategies to quickly identify and react to market-moving information, making it a valuable resource for predicting short-term price movements and volatility.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.5266,
+  "fieldCount": 47,
+  "alphaCount": 1282,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news23": {
+  "name": "MnA Deals Data",
+  "description": "This dataset offers detailed information on mergers and acquisitions (M&A), new equity issues, and debt offerings, including deal structure, participants, financial terms, and status. It covers transaction attributes such as deal value, premiums, payment methods, industry classifications, and advisor involvement. By tracking deal flow, market trends, and competitive dynamics, the dataset enables users to analyze market share, identify comparable transactions, and assess the impact of corporate actions on stock prices. It is highly valuable for predicting price movements around deal announcements, understanding industry consolidation, and constructing event-driven trading strategies.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.4462,
+  "fieldCount": 136,
+  "alphaCount": 104,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news29": {
+  "name": "Significant Developments Data",
+  "description": "This dataset provides concise, real-time summaries of major company news and market-moving events, systematically tagged by topic and significance. Covering a wide range of event types—such as mergers, acquisitions, product launches, regulatory actions, earnings guidance, and management changes—it enables users to filter out noise and focus on impactful developments. Each event is categorized by importance and topic, allowing for integration into quantitative models and historical trend analysis. By tracking and analyzing these significant corporate events, researchers and investors can better anticipate price movements, identify event-driven trading opportunities, and enhance alpha generation strategies.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.6888,
+  "fieldCount": 12,
+  "alphaCount": 68,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news31": {
+  "name": "News Analytics on Equities",
+  "description": "This dataset provides comprehensive analytics on news items related to equities, including sentiment, relevance, novelty, and volume scores for each asset mentioned in a news article. It covers over 80 fields, such as headline classification, asset identifiers, sentiment probabilities, and volume counts, enabling granular analysis of how news impacts individual companies and commodities. By quantifying the tone and relevance of news, as well as tracking the frequency and uniqueness of coverage, the dataset allows researchers and portfolio managers to assess the potential influence of news flow on price movements, identify momentum or reversal signals, and enhance predictive models for asset returns.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.7991,
+  "fieldCount": 53,
+  "alphaCount": 105,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news36": {
+  "name": "News Analytics Data",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg IDs, facilitating the cross-referencing of securities across two major financial data platforms. The mapping is essential for integrating and reconciling data from Bloomberg and Refinitiv sources, enabling seamless data aggregation, analysis, and reporting. While not directly predictive of price movements, this dataset is crucial for ensuring data consistency and accuracy in multi-source quantitative research, portfolio management, and trading systems that rely on identifiers from both platforms.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.7713,
+  "fieldCount": 15,
+  "alphaCount": 20,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news38": {
+  "name": "News Analytic Model Data",
+  "description": "This dataset delivers real-time and historical financial news, blogs, and sentiment analytics sourced from thousands of global websites and media outlets. It includes structured metadata such as headlines, story content, assigned and derived tickers/topics, market-moving potential indicators, sentiment scores, readership metrics, and corporate event details. Advanced natural language processing and machine learning models generate analytics like market-moving news probability, sentiment, and novelty scores for each story. By quantifying news impact and sentiment, this dataset enables users to identify market-moving events, gauge investor sentiment, and detect abnormal price movement risks, making it highly valuable for predicting short-term price reactions and supporting event-driven tradi",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.6821,
+  "fieldCount": 30,
+  "alphaCount": 79,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news46": {
+  "name": "Relevant News Analytics Data",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg Identifiers (BBID) and Refinitiv Instrument Codes (RIC), enabling seamless cross-referencing of securities across Bloomberg and Refinitiv platforms. It is essential for integrating and reconciling data from multiple financial data vendors, supporting accurate security identification in research, trading, and portfolio management systems. While not directly predictive of price movements, this mapping is crucial for ensuring data integrity and consistency when combining datasets for quantitative analysis, backtesting, or multi-source signal generation.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.9382,
+  "fieldCount": 30,
+  "alphaCount": 256,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news48": {
+  "name": "Global Media News Data",
+  "description": "This dataset analyzes over 100,000 daily press releases and regulatory disclosures from major global newswires and distribution networks. It provides structured event and sentiment scores, novelty and impact metrics, and detailed entity mapping for companies, sectors, and geographies. By quantifying the sentiment, novelty, and relevance of news events, the dataset enables investors and researchers to identify market-moving information, anticipate volatility, and generate alpha through event-driven and sentiment-based trading strategies. Its comprehensive coverage and real-time updates make it a valuable resource for predicting price movements based on the latest corporate and regulatory news.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.6326,
+  "fieldCount": 22,
+  "alphaCount": 28,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news50": {
+  "name": "Web News Analytics Data",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBID) and Reuters Instrument Codes (RIC), facilitating cross-referencing of securities across Bloomberg and Refinitiv platforms. It is primarily used for data integration, enabling seamless linkage of market data, pricing, and analytics from different vendors. While not directly predictive of price movements, accurate identifier mapping is essential for consolidating datasets, ensuring data quality, and supporting multi-source quantitative research and trading strategies. This mapping is particularly valuable for portfolio managers, analysts, and data engineers who require reliable security identification for backtesting, risk analysis, and operational workflows.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.8227,
+  "fieldCount": 37,
+  "alphaCount": 145,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news52": {
+  "name": "Conference call data",
+  "description": "This dataset provides a mapping between Bloomberg IDs (BBID) and Reuters Instrument Codes (RIC), facilitating cross-referencing of securities across major financial data platforms. It is essential for data integration, enabling seamless linking of market data, corporate actions, and analytics from Bloomberg and Refinitiv sources. While not directly predictive of price movements, it is a foundational resource for researchers and portfolio managers who require accurate and consistent security identifiers for multi-source data analysis, backtesting, and operational workflows.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.4698,
+  "fieldCount": 24,
+  "alphaCount": 34,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news54": {
+  "name": "Key Developments Data",
+  "description": "This dataset provides concise, real-time summaries of significant, market-moving company news events, intelligently tagged by topic and significance. Covering a wide range of event types—such as mergers, acquisitions, earnings guidance, regulatory actions, product launches, and executive changes—it enables users to filter out noise and focus on impactful developments. Each event is classified by importance and topic, with detailed metadata for integration into quantitative models. By offering both current and historical trend analysis, this dataset is valuable for predicting price movements, supporting event-driven trading strategies, and enhancing alpha generation through timely identification of key corporate actions and news.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.9002,
+  "fieldCount": 40,
+  "alphaCount": 3,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news59": {
+  "name": "Corporate Events Data",
+  "description": "This dataset provides concise, near real-time summaries of significant, market-moving company news events, intelligently tagged by topic and significance. Covering a wide range of event types—such as M&A, product launches, regulatory actions, earnings guidance, officer changes, and more—it filters out noise to focus on developments most likely to impact market prices. Each event is categorized by importance and topic, enabling integration into quantitative models and event-driven strategies. The dataset’s structured, timely, and comprehensive coverage of major corporate events makes it a valuable resource for predicting price movements and conducting event studies.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.9505,
+  "fieldCount": 2,
+  "alphaCount": 62,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news7": {
+  "name": "Real Time News Feed Data",
+  "description": "This dataset provides comprehensive, point-in-time financial statement data for a global universe of public companies, including both active and inactive firms. It offers daily historical snapshots of income statements, balance sheets, and cash flow statements, capturing both originally reported and restated values as they were known on each reporting date. The data is standardized for cross-company comparability and includes detailed metadata such as auditor opinions, industry classifications, and currency conversions. By eliminating forward-looking and survivorship biases, this dataset enables accurate backtesting and robust factor research, making it highly valuable for predicting price movements based on fundamental signals and historical financial trends.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.715,
+  "fieldCount": 118,
+  "alphaCount": 300,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news73": {
+  "name": "Story by Story Sentiment",
+  "description": "This dataset provides sentiment analysis at the individual news story level, offering granular sentiment scores such as positivity, negativity, fear, financial up/down, hype, volatility, certainty, and uncertainty for each news article. The data is available intraday, daily, and hourly, and covers thousands of securities across major global regions. By tracking sentiment shifts in real time and at high frequency, this dataset enables users to detect market-moving news, gauge investor mood, and anticipate price movements based on the tone and content of news coverage. The detailed entity-level sentiment and volume metrics further enhance predictive modeling for short-term and event-driven trading strategies.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.813,
+  "fieldCount": 22,
+  "alphaCount": 32,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news76": {
+  "name": "Textual News Feed Data",
+  "description": "This dataset provides a comprehensive mapping between Refinitiv Instrument Codes (RICs) and Bloomberg identifiers for equity securities. It enables users to cross-reference securities across two major financial data platforms, facilitating data integration, validation, and aggregation from multiple sources. While not directly predictive of price movements, this mapping is essential for researchers and analysts who need to merge datasets, ensure data consistency, and perform multi-source analytics, which can indirectly enhance the accuracy and breadth of quantitative models and trading strategies.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.7245,
+  "fieldCount": 8,
+  "alphaCount": 105,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news84": {
+  "name": "Headline Sentiment Analysis using DNN",
+  "description": "This dataset leverages advanced machine learning techniques to transfer sentiment signals from one news analytics dataset to another, specifically mapping sentiment derived from one set of financial news headlines onto a different set of press release headlines. By using neural network models to learn how sentiment is constructed in the source dataset and applying this understanding to the target dataset, it generates a new, alternative sentiment score for each press release. This approach enables the creation of a unique sentiment signal that may capture market-relevant nuances missed by traditional sentiment models. Such a dataset can be valuable for predicting price movements, as it provides a differentiated view of market sentiment that can be used to enhance alpha generation, inform t",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.7811,
+  "fieldCount": 23,
+  "alphaCount": 63,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "news85": {
+  "name": "News Sentiment Analysis using DNN",
+  "description": "This dataset applies neural network techniques to transfer sentiment analytics from one news dataset to another, specifically mapping sentiment from tr_trna_eq headlines to ravenpack_web_v2 headlines. By leveraging machine learning to align sentiment scoring methodologies across datasets, it generates new sentiment signals for the target dataset, potentially enhancing alpha generation and predictive power. This approach allows for the creation of unified sentiment indicators, improving the consistency and robustness of trading models that rely on news-driven sentiment for forecasting price movements.",
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "coverage": 0.823,
+  "fieldCount": 23,
+  "alphaCount": 54,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.3
+ },
+ "acquisition_model": {
+  "name": "Corporate Acquisition Likelihood Model",
+  "description": "This dataset provides predictive rankings of publicly traded companies most likely to be acquired within the next year. It leverages both advanced natural language processing of global news articles and analysis of structured financial and corporate data, including M&A activity, proxy fights, credit risk, and valuation metrics. By combining text-based signals with fundamental indicators, the model offers percentile scores across global, regional, sector, and industry levels, as well as flags for recent corporate actions. Investors and analysts can use these insights to identify potential takeover targets, anticipate price movements driven by acquisition speculation, and inform event-driven trading strategies.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.7484,
+  "fieldCount": 15,
+  "alphaCount": 14,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "ai_news_scores": {
+  "name": "AI News Sentiment Scores",
+  "description": "This dataset provides daily sentiment scores for global equities by analyzing news articles, press releases, and regulatory disclosures using a proprietary transformer-based natural language processing model. Covering thousands of companies across major regions, it quantifies the tone and relevance of news events, offering granular sentiment metrics at both the entity and event level. By systematically capturing shifts in market sentiment and event novelty, the dataset enables researchers and investors to identify potential price-moving signals, enhance alpha generation, and improve risk management. Its comprehensive coverage and advanced scoring methodology make it a valuable resource for predicting short-term and medium-term asset returns based on news-driven market dynamics.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.7924,
+  "fieldCount": 105,
+  "alphaCount": 12,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "dl_riskfree_returns": {
+  "name": "Deep Learning Risk Free Returns",
+  "description": "This dataset leverages deep learning techniques to predict risk-free returns by transforming time series price and volume data into 2D chart images, which are then analyzed using pre-trained convolutional neural networks (CNNs). The dataset includes predictions for multiple time horizons (such as 5, 10, 20, and 50 days) and provides both raw and relative return forecasts, along with quantile rankings and associated probabilities. By simulating a retail trader’s perspective through chart-based analysis, this dataset offers a unique, high-dimensional approach to forecasting future returns with minimal risk. It is particularly useful for identifying low-risk trading opportunities and enhancing portfolio construction by providing robust, model-driven signals that can help anticipate price move",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.9429,
+  "fieldCount": 133,
+  "alphaCount": 177,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.5
+ },
+ "earningscall_sentiment": {
+  "name": "Multi Aspect Earnings Call Sentiment",
+  "description": "This dataset provides advanced, multi-aspect sentiment analysis of earnings call transcripts for thousands of public companies across the US and Europe. Using state-of-the-art natural language processing and knowledge distillation from large language models, it evaluates sentiment across key financial dimensions such as asset utilization, profitability, leverage, valuation, and cash flow. The transcripts are segmented into presentation, question, and answer sections, with chunk-wise and summary sentiment scores available for each. Binary indicators and relevance scores help filter for the most impactful segments. By quantifying positive, negative, and neutral sentiment at granular and summary levels, the dataset enables investors and researchers to detect shifts in management tone, analyst",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5061,
+  "fieldCount": 167,
+  "alphaCount": 4800,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.5
+ },
+ "equity_conc_metrics": {
+  "name": "Equity Market Concentration Metrics",
+  "description": "This dataset provides detailed metrics on equity market concentration for Nordic and Baltic exchanges, utilizing the Herfindahl–Hirschman Index (HHI) methodology. It includes measures of overall market concentration, as well as breakdowns by trade type (aggressive, passive, buy, sell) and participant category (financial intermediaries, non-financial entities). By tracking the dominance of key entities and shifts in trading activity, the dataset helps identify periods of reduced competition or increased market control. These insights can be valuable for predicting price movements, as changes in concentration often precede volatility, liquidity shifts, or directional trends in equity prices.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.1965,
+  "fieldCount": 18,
+  "alphaCount": 1,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "equity_forum_data": {
+  "name": "International Equity Forum Activity",
+  "description": "This dataset compiles user engagement and sentiment metrics from a wide range of online forums dedicated to equity discussions across multiple countries and languages. It includes aggregated statistics such as active user counts, comment volumes, buy and sell ratings, and unique user participation for various financial instruments. By analyzing trends in forum activity and sentiment, the dataset provides valuable insights into retail investor behavior and crowd sentiment, which can serve as leading indicators for price movements. The inclusion of risk-adjusted performance metrics and benchmark correlations further enhances its utility for developing predictive models and alpha strategies based on social media-driven market signals.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.406,
+  "fieldCount": 8,
+  "alphaCount": 0,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.5
+ },
+ "euro_equity_imbalance": {
+  "name": "European Equity Trading Imbalance Indicators",
+  "description": "This dataset provides a comprehensive suite of daily trading imbalance indicators for stocks and ETFs listed on major European exchanges. It includes metrics such as buying and selling turnover, net turnover, participant counts, and aggressive trading activity, all segmented by participant type and order aggressiveness. By capturing the flow of buy and sell orders, as well as the concentration and behavior of different market participants, the dataset enables analysts and quantitative researchers to identify shifts in supply and demand, detect short-term market sentiment, and anticipate potential price movements. The granularity and breadth of these indicators make the dataset particularly valuable for developing and backtesting trading strategies that seek to exploit order flow imbalances",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.3089,
+  "fieldCount": 31,
+  "alphaCount": 133,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "event_relation": {
+  "name": "Text-Based Event Relationship Analysis",
+  "description": "This dataset leverages advanced language models to extract and classify relationships between companies, events, and entities from unstructured text sources such as news articles, press releases, and corporate communications. By identifying the types and directions of these relationships, the dataset provides structured insights into how companies interact, form alliances, or respond to market developments. This information is valuable for predicting price movements, as changes in company relationships—such as mergers, partnerships, or competitive actions—often precede significant market reactions. The dataset enhances traditional event-driven strategies by offering a deeper, more nuanced understanding of the connections and influences within the market ecosystem.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5769,
+  "fieldCount": 12,
+  "alphaCount": 3,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "event_sentiment_signals": {
+  "name": "Corporate Event Sentiment Signals",
+  "description": "This dataset provides structured sentiment analysis and key driver metrics derived from corporate event transcripts, including earnings calls, company presentations, analyst/investor days, and guidance calls. It covers a global universe of public companies, with detailed metadata such as industry classification, identifiers, event timestamps, and document sections. The dataset quantifies sentiment at multiple granularities—overall, by section, and by key topic—using scores based on positive and negative event counts, polarity, and word counts. By capturing management and analyst tone, margin and pricing power sentiment, and deception signals, it enables investors and researchers to assess market expectations, information asymmetry, and the impact of qualitative disclosures on price movemen",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.3567,
+  "fieldCount": 26,
+  "alphaCount": 22,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "insider_feats": {
+  "name": "Global Insider Transaction Features",
+  "description": "This dataset provides comprehensive, structured features derived from global insider transactions, including purchases, sales, awards, and option exercises by company executives, directors, and major shareholders. It covers multiple regions and asset classes, with detailed metadata such as transaction type, insider role, ownership connection, trade significance, and post-transaction holdings. By aggregating and analyzing these transactions, the dataset enables the identification of potentially informative trades, such as opportunistic buying or selling, which can signal future price movements due to information asymmetry. Quantitative models and event studies built on this data can help forecast abnormal returns, enhance alpha generation, and improve risk-adjusted portfolio performance by ",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5447,
+  "fieldCount": 118,
+  "alphaCount": 52,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "insider_matrix": {
+  "name": "Aggregated Insider Transaction Matrix",
+  "description": "This dataset provides a structured matrix of insider transaction data, organized by company, region, and time delay. It aggregates and filters insider buying and selling activities, capturing key metrics such as average buy and sell values, transaction counts, and ratios over configurable time windows. By summarizing insider trades from individuals with privileged access to non-public information, the dataset enables analysts to identify patterns of opportunistic or routine trading, cluster buying, and other signals that may precede significant price movements. The smart aggregation and filtering enhance signal quality, making it a valuable resource for predicting future stock performance, detecting market anomalies, and constructing alpha-generating investment strategies.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.6107,
+  "fieldCount": 33,
+  "alphaCount": 82,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "insider_trx_matrix": {
+  "name": "Global Insider Transaction Aggregates",
+  "description": "This dataset provides a structured matrix of aggregated insider transaction data across global markets, utilizing advanced filtering and smart aggregation techniques. It captures detailed information on insider trades, including buy and sell activity, transaction types, insider roles, and trade significance, organized by region and time delay. By consolidating and summarizing insider trading patterns, the dataset enables researchers and investors to identify potential signals of future price movements, such as cluster buying or selling by key executives. The aggregation and enhancement of raw insider data into a matrix format make it easier to analyze trends, detect anomalies, and generate predictive signals for alpha generation, supporting both event-driven and quantitative investment str",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.6109,
+  "fieldCount": 33,
+  "alphaCount": 42,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "news_sentiment_dl": {
+  "name": "Deep Learning News Sentiment Signals",
+  "description": "This dataset provides enhanced sentiment signals derived from financial news and social media text using advanced deep learning techniques. By leveraging a large corpus of news articles and social media posts, the dataset applies multiple language embeddings and a deep neural network trained on millions of samples to classify sentiment related to companies and market events. The output includes sentiment scores and other text-based features, offering a refined view of market mood and reactions. These signals can be used to anticipate price movements by capturing shifts in investor sentiment and market perception, making the dataset valuable for quantitative trading strategies and risk assessment.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.7558,
+  "fieldCount": 66,
+  "alphaCount": 2,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.5
+ },
+ "news_sentiment_nlp": {
+  "name": "News Sentiment Signal Features",
+  "description": "This dataset provides granular sentiment and NLP-derived features extracted from individual news stories and financial articles. It includes metrics such as polarity, readability, subjectivity, and various sentiment scores (positive, negative, fear, certainty, uncertainty, financial up/down, hype, volatility) at both story and entity levels. The data is available at intraday, daily, and hourly intervals, covering thousands of securities across major regions. By quantifying the emotional and informational tone of news in real time, these features can help analysts and models anticipate market reactions, identify sentiment-driven price movements, and enhance alpha generation strategies.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.9134,
+  "fieldCount": 23,
+  "alphaCount": 5,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "order_book_imbalance": {
+  "name": "Order Book Liquidity and Imbalance Analytics",
+  "description": "This dataset offers comprehensive analytics derived from Level 1 to Level 3 order books for US and EU equities, focusing on liquidity, order flow, and trade imbalances. It includes metrics such as auction dislocation, order imbalance, liquidity around best bid and offer, trade aggressiveness, and spread measurements. The data also covers order placement, modification, execution behaviors, and venue price quality, providing insights into market microstructure and trading dynamics. By analyzing these metrics, users can identify periods of liquidity stress, anticipate price movements driven by order imbalances, and assess the impact of aggressive trading activity. This information is valuable for predicting short-term price changes, optimizing execution strategies, and understanding the drive",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.2122,
+  "fieldCount": 256,
+  "alphaCount": 2,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other128": {
+  "name": "Global Executive Performance Factors",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg Global Identifiers (BBGID) and Reuters Instrument Codes (RIC), two widely used security identifiers in financial markets. By linking these identifiers, the dataset enables seamless cross-referencing of securities across Bloomberg and Refinitiv platforms, facilitating data integration, portfolio management, and research workflows. While not directly predictive of price movements, accurate identifier mapping is essential for consolidating data from multiple sources, ensuring data integrity, and supporting robust quantitative analysis and trading strategies.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.4607,
+  "fieldCount": 18,
+  "alphaCount": 20,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other250": {
+  "name": "details data",
+  "description": "This dataset provides a comprehensive mapping between Bloomberg IDs (BBID) and Refinitiv Instrument Codes (RIC), facilitating the cross-referencing of securities across two major financial data platforms. By enabling seamless integration and reconciliation of security identifiers, it supports accurate data aggregation, portfolio management, and multi-source analytics. While not directly predictive of price movements, this mapping is essential for researchers and analysts who need to merge datasets, track instruments across systems, and ensure consistency in security-level analysis, which can indirectly enhance the quality and reliability of quantitative models and trading strategies.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.4899,
+  "fieldCount": 12,
+  "alphaCount": 22,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other296": {
+  "name": "Corporate Earnings Call Sentiment Data",
+  "description": "This dataset provides a comprehensive mapping between Refinitiv Instrument Codes (RIC) and Bloomberg IDs, enabling users to cross-reference securities across two major financial data platforms. The mapping is essential for integrating, reconciling, and aggregating data from Bloomberg and Refinitiv sources, facilitating seamless data analysis and portfolio management. While not directly predictive of price movements, the dataset is crucial for ensuring data consistency and accuracy in multi-source financial research, allowing analysts and quants to link disparate datasets and enhance the reliability of their models and analytics.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5649,
+  "fieldCount": 19,
+  "alphaCount": 56,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other315": {
+  "name": "Equity Swap Data",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RICs) and Bloomberg Identifiers (BBIDs), facilitating cross-platform security identification. By enabling seamless translation between two major financial data vendor codes, it supports data integration, reconciliation, and aggregation across trading, risk, and research systems. While not directly predictive of price movements, accurate identifier mapping is essential for merging datasets, tracking instruments across sources, and ensuring consistency in multi-vendor analytics, which indirectly enhances the reliability of price prediction models and market analysis.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5191,
+  "fieldCount": 32,
+  "alphaCount": 109,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other327": {
+  "name": "Sensitivity to Interest Rates Model",
+  "description": "This dataset provides a machine learning-based model that quantifies the sensitivity of individual stocks to changes in interest rates, using elastic net regression. It includes metrics such as sensitivity to parallel shifts (level) and twists (slope) of the yield curve, derived from principal component analysis of global interest rate data. Covering over 11,000 stocks across 45 countries, the dataset enables investors to assess how monetary policy changes and yield curve movements may impact stock returns. By incorporating these sensitivity measures into portfolio construction and risk management, users can better predict price movements during periods of interest rate volatility and optimize exposure to macroeconomic factors.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5158,
+  "fieldCount": 3,
+  "alphaCount": 28,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other335": {
+  "name": "Multi-Region Dividend Alpha Model Dataset",
+  "description": "This dataset contains the outputs and components of a machine learning-based global stock selection model focused on dividend-paying equities. Leveraging a large factor library and advanced algorithms, it generates composite scores that reflect the expected performance and risk profile of stocks, with specialized sub-models for linear, hedge, and defensive scenarios. The model incorporates contextual information, risk management, and signal persistence metrics, making it highly effective for constructing portfolios that seek stable income and downside protection. By providing predictive signals and risk-adjusted rankings, this dataset is valuable for forecasting price movements, optimizing portfolio returns, and managing risk in dividend-oriented investment strategies.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5589,
+  "fieldCount": 10,
+  "alphaCount": 2211,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other384": {
+  "name": "NLP on conference conversation",
+  "description": "This dataset applies natural language processing to corporate event transcripts, primarily from earnings calls and other financial conferences, to extract and quantify sentiment. It includes detailed breakdowns by section (presentation, Q&A), speaker, and sentence, providing sentiment scores using dictionary-based matching. The data is cleaned and segmented for ease of use, with meta data and simple sentiment indicators for each event. By analyzing the tone and sentiment of management and analyst interactions, investors can gauge market expectations, management confidence, and potential red flags, making this dataset valuable for predicting short-term price movements and identifying alpha opportunities around key corporate events.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.2803,
+  "fieldCount": 66,
+  "alphaCount": 42,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other424": {
+  "name": "Dividend prediction model",
+  "description": "This dataset provides a mapping between Bloomberg IDs (BBID) and Reuters Instrument Codes (RIC), serving as a cross-reference for security identifiers across two major financial data vendors. The data is sourced from both Bloomberg and Refinitiv, ensuring comprehensive coverage and accuracy. While primarily intended for operational and data management purposes rather than direct research or trading signal generation, this mapping is essential for integrating datasets, reconciling positions, and ensuring consistency in multi-vendor environments. Accurate identifier mapping can indirectly support price prediction by enabling seamless merging of disparate datasets, thus improving the quality and breadth of input data for quantitative models and research workflows.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.6935,
+  "fieldCount": 3,
+  "alphaCount": 176,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other436": {
+  "name": "Dividend model",
+  "description": "This dataset identifies and predicts companies most likely to reduce, suspend, or terminate their dividend payments, focusing on so-called \"dividend laggards.\" Leveraging a global factor library and machine learning algorithms, the model analyzes historical and real-time data to flag firms at risk of dividend cuts, which often precede significant share price declines and continued underperformance. By providing early warning signals on potential dividend reductions, the dataset is valuable for investors seeking to avoid downside risk, implement short strategies, or optimize portfolio yield, especially during periods of economic stress when dividend suspensions become more prevalent.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.4461,
+  "fieldCount": 3,
+  "alphaCount": 72,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other455": {
+  "name": "Relationship enhanced with AI/ML",
+  "description": "This dataset provides a comprehensive mapping between Refinitiv Instrument Codes (RICs) and Bloomberg Identifiers (BBIDs), enabling seamless cross-referencing of securities across two major financial data platforms. By linking these identifiers, the dataset facilitates integration of market data, analytics, and research from both Bloomberg and Refinitiv sources. This mapping is essential for portfolio managers, analysts, and data engineers who need to reconcile, aggregate, or compare security-level information across systems. While not directly predictive of price movements, accurate identifier mapping is foundational for multi-source data analysis, backtesting, and the construction of robust trading signals and risk models.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.9599,
+  "fieldCount": 1500,
+  "alphaCount": 295,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other545": {
+  "name": "Linked Firms Momentum Data",
+  "description": "This dataset provides a comprehensive set of network-based momentum signals for global equities, combining traditional price momentum with advanced network analytics derived from business segments, geographic regions, analyst coverage, executive connections, innovation linkages, supply chain, and shipping data. The model leverages natural language processing on regulatory filings to identify economic linkages between companies, enhancing the predictive power and diversification of momentum strategies. By integrating multiple uncorrelated momentum factors and optimizing risk allocation, the dataset offers robust signals with higher risk-adjusted returns and lower drawdowns than conventional momentum approaches. Investors and analysts can use these insights to construct diversified portfolio",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5424,
+  "fieldCount": 4,
+  "alphaCount": 14,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other546": {
+  "name": "Institutional Network Analysis Dataset",
+  "description": "This dataset provides a comprehensive set of network-based momentum signals, constructed from multiple economic and textual networks such as business segments, geographic exposure, analyst coverage, executive links, patent innovation, supply chain, and shipping networks. Enhanced with natural language processing of company filings and EDGAR log-based relationships, the composite model aggregates these diverse factors using a risk parity approach. The resulting signals are designed to be less correlated with traditional momentum, offering improved risk-adjusted returns and lower drawdowns. This dataset is valuable for quantitative investors seeking to predict price movements by capturing complex inter-company relationships and alternative sources of momentum beyond price trends.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.381,
+  "fieldCount": 13,
+  "alphaCount": 13,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other567": {
+  "name": "Employee Review Data",
+  "description": "This dataset provides a comprehensive mapping between two major financial security identifiers: RIC (Reuters Instrument Code) and Bloomberg ID. By linking these identifiers, the dataset enables seamless integration and cross-referencing of securities data from different financial data providers. This is particularly useful for analysts and portfolio managers who need to reconcile, aggregate, or validate security-level information across platforms. While not directly predictive of price movements, accurate identifier mapping is essential for ensuring data integrity in multi-source quantitative models, risk management systems, and trading operations.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.4665,
+  "fieldCount": 224,
+  "alphaCount": 83,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other571": {
+  "name": "Wikipedia Viewing Data",
+  "description": "This dataset tracks daily Wikipedia pageviews for companies across a global universe, capturing user interest and information-seeking behavior. By aggregating and transforming raw pageview data into structured fields, it enables researchers to analyze trends in public attention, which can serve as a proxy for retail investor sentiment or information demand. The use of natural days (including weekends and holidays) ensures comprehensive coverage and more robust time series analysis. Spikes or sustained increases in pageviews may precede or coincide with significant price movements, making this dataset valuable for predicting market activity, especially around news events or periods of heightened public interest.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.7585,
+  "fieldCount": 30,
+  "alphaCount": 61,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other635": {
+  "name": "Thomson Reuters News Analytics Equities",
+  "description": "This dataset provides comprehensive news analytics for equities, including over 80 fields across five key categories: relevance, sentiment, novelty, volume, and headline classification. Each news item is scored for every asset it materially mentions, with separate linguistic processing for each asset, such as companies or commodities. The dataset includes granular metadata like timestamps, source, headline tags, and asset identifiers (RIC, PermID), enabling detailed analysis of how news impacts specific securities. By quantifying sentiment, relevance, and novelty, and tracking news volume, this dataset is highly valuable for predicting price movements, identifying market-moving events, and generating alpha signals through systematic news-based strategies.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.6216,
+  "fieldCount": 6,
+  "alphaCount": 15,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.5
+ },
+ "other699": {
+  "name": "Individual Investor Transactions Data",
+  "description": "This dataset captures detailed transaction-level activity from over 81,000 individual retail users, including actions such as opening, closing, and adjusting positions, as well as watchlist modifications. It includes granular information on trade execution, portfolio types, user engagement metrics, and asset identifiers, updated frequently to reflect real-time investor behavior. By analyzing patterns in retail trading flows, sector allocations, and geographic distributions, this dataset offers valuable insights into sentiment shifts and crowd-driven market dynamics, which can be leveraged to anticipate short-term price movements and identify emerging trends in equity markets.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.2732,
+  "fieldCount": 7,
+  "alphaCount": 246,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "search_interest": {
+  "name": "Rapid Search Interest Signals",
+  "description": "This dataset captures real-time search interest data for specific companies and regions, using a standardized algorithm to transform hourly search trends into a continuous, unbounded metric. By estimating daily search activity from high-frequency data and providing a confidence score for each estimate, it enables timely detection of shifts in public attention or sentiment. Such rapid changes in search volume can serve as early indicators of market-moving events, news, or shifts in investor sentiment, making the dataset valuable for predicting short-term price movements and generating alpha signals.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.7815,
+  "fieldCount": 5,
+  "alphaCount": 7,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.5
+ },
+ "stock_cluster_dl": {
+  "name": "Deep Learning Stock Clusters",
+  "description": "This dataset groups stocks into clusters using deep learning models that analyze 2D images generated from time series financial charts. By mimicking the perspective of retail traders, the dataset leverages convolutional neural networks to extract learned representations from price and fundamental chart images, then applies advanced clustering techniques such as k-means++ and dimension reduction. The resulting clusters reflect similarities in stock behavior, sector, and other financial characteristics, providing a high-dimensional, feature-rich grouping beyond traditional sector classifications. These clusters can be used to identify homogenous groups of stocks, improve portfolio diversification, and enhance risk modeling. By understanding how stocks are grouped based on complex chart patte",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.4563,
+  "fieldCount": 5,
+  "alphaCount": 1,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.5
+ },
+ "stock_search_trends": {
+  "name": "US Stock Search Trend Matrix",
+  "description": "This dataset transforms web search trend data for the top 3000 US stocks into structured fields suitable for financial analysis. By leveraging daily and hourly search popularity scores for company names and ticker symbols, it provides a time series of public interest in individual stocks, including coverage on weekends and holidays. The data is normalized and decomposed to facilitate robust comparisons and feature generation, making it easier for researchers to extract meaningful signals. Increased search activity can reflect shifts in investor attention or sentiment, which may precede price movements, making this dataset valuable for predicting short-term and long-term stock returns.",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.5401,
+  "fieldCount": 6,
+  "alphaCount": 2,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.5
+ },
+ "techindi_model": {
+  "name": "Deep Learning Technical Indicator Returns",
+  "description": "This dataset leverages deep learning techniques to analyze images of technical indicator charts, mimicking the decision-making process of retail traders. By converting time series financial data into 2D images, pre-trained convolutional neural networks (CNNs) are used to predict future stock returns and their relative rankings across multiple time horizons. The dataset provides quantile-based return predictions, confidence scores, and cross-sectional rankings for a diversified universe of global equities. Its image-based approach captures complex market patterns and technical signals that may be missed by traditional time series analysis. This can be highly valuable for forecasting price movements, generating alpha signals, and constructing systematic trading strategies with improved predi",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.9999,
+  "fieldCount": 798,
+  "alphaCount": 2263,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.5
+ },
+ "workforce_flow_skills": {
+  "name": "Global Workforce Flow and Skills Analytics",
+  "description": "This dataset provides comprehensive, monthly-tracked information on workforce dynamics, including headcount, inflows, outflows, seniority, roles, skills, salaries, and prestige across thousands of companies and regions. It aggregates data from online professional profiles and job postings, standardizing job titles and skill clusters for robust cross-company and cross-industry analysis. The dataset includes detailed metrics on employee transitions, skill acquisition, layoffs, and sentiment from employee reviews, offering granular insights into talent flow, workforce optimization, and organizational health. By monitoring changes in hiring, attrition, and skill trends, investors and analysts can identify early signals of operational strength or weakness, anticipate company performance shifts,",
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "coverage": 0.2456,
+  "fieldCount": 33,
+  "alphaCount": 0,
+  "valueScore": 6.0,
+  "pyramidMultiplier": 1.5
+ },
+ "continuation_score": {
+  "name": "Price Chart Continuation Pattern Similarity",
+  "description": "This dataset provides daily, per-stock similarity scores that measure how closely a stock’s price chart matches well-known continuation-style technical patterns, such as flags, pennants, rectangles, channels, scallops, staircases, cup-and-handle, and gap formations. The scores are derived by comparing chart-image embeddings to a curated library of canonical continuation patterns using advanced machine learning techniques. Multiple summary statistics (mean, median, max, dynamic, etc.) are available across different time horizons and regions, enabling flexible analysis. These similarity scores can be used to identify stocks likely to resume their current trend after consolidation, support trend-following strategies, and enhance alpha generation by confirming or filtering trading signals. The",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.9924,
+  "fieldCount": 560,
+  "alphaCount": 35,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.1
+ },
+ "intraday_pv_feats": {
+  "name": "Daily Intraday Price Volume Features",
+  "description": "This dataset provides daily aggregated features derived from intraday price and volume data across global equity markets. By processing interval-level trading statistics—such as bid-ask spreads, order book depth, trade counts, volatility, and volume—into daily summaries, it enables consistent cross-regional analysis despite differences in exchange hours and data structures. These features are valuable for quantitative researchers and portfolio managers seeking to generate alpha signals, as they capture nuanced intraday market dynamics that can precede price movements. The dataset’s unified format and broad coverage make it a powerful tool for predicting short-term price changes and enhancing trading strategies.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.9548,
+  "fieldCount": 585,
+  "alphaCount": 62,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "investor_activity": {
+  "name": "Nordic Baltic Investor Activity Trends",
+  "description": "This dataset provides detailed indicators and statistics on the trading behavior of retail and professional investors across Nordic and Baltic equity markets. It includes metrics such as trading volume, turnover, net buying/selling, and confidence/activity scores at the security level, segmented by investor type. By analyzing the split between retail and professional investor activity, as well as their net positions and order flows, users can gain insights into market sentiment, liquidity, and potential price movements. The dataset is particularly useful for identifying shifts in market dynamics, understanding the impact of different investor groups, and predicting short-term price trends based on changes in investor confidence and activity.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.1644,
+  "fieldCount": 47,
+  "alphaCount": 9,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pattern_scores": {
+  "name": "Chart Pattern Similarity Scores",
+  "description": "This dataset provides daily similarity scores that quantify how closely a stock’s recent price chart matches a range of canonical bilateral technical patterns, such as triangles, wedges, V-formations, and gap structures. By leveraging advanced image-based embeddings of OHLC (Open, High, Low, Close) data, the dataset compares current price action to a curated library of reference patterns, producing scores for each pattern and aggregation method (mean, max, quantile, etc.) across multiple time horizons and global regions. These similarity scores help researchers and traders identify when a stock is exhibiting chart formations that historically precede significant price moves, either as continuations or reversals. The dataset is particularly valuable for developing and validating quantitativ",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.9924,
+  "fieldCount": 504,
+  "alphaCount": 27,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv1": {
+  "name": "Price Volume Data for Equity",
+  "description": "The dataset contains financial data related to equities, including metrics such as prices (open, high, low, close), trading volumes, market capitalization, returns, dividends, splits, and other key indicators that provide insights into stock performance and market activity.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 1.0,
+  "fieldCount": 24,
+  "alphaCount": 44048,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv103": {
+  "name": "Interval and MOO&MOC statistics",
+  "description": "This dataset provides comprehensive intraday market data at interval levels, including order imbalance events, quote and trade ticks, and detailed auction data for Market-On-Open (MOO) and Market-On-Close (MOC) sessions. It covers multiple global exchanges and includes fields such as bid/ask prices and sizes, trade prices and volumes, auction prices and volumes, and various qualifiers for trade and quote conditions. The dataset also tracks session-level statistics, volatility, VWAP, and order book dynamics. By analyzing order imbalances, auction outcomes, and interval-based price and volume movements, users can identify periods of heightened buying or selling pressure, anticipate price swings around auction events, and detect liquidity shifts. This information is highly valuable for predic",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.9831,
+  "fieldCount": 9,
+  "alphaCount": 64,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv106": {
+  "name": "Microstructure Spread Data",
+  "description": "This dataset provides comprehensive spread pricing data for securities traded across the US, Canada, and Asia. It includes key fields such as the ticker symbol, the spread (difference between bid and ask prices), and spread values calculated over the last 30 minutes, both in absolute terms and in basis points. By analyzing the spread and its recent changes, traders and analysts can gauge market liquidity, trading costs, and potential price volatility. Narrowing or widening spreads can signal shifts in supply-demand dynamics, making this dataset valuable for predicting short-term price movements and identifying periods of heightened market activity.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 1.0,
+  "fieldCount": 15,
+  "alphaCount": 78,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv109": {
+  "name": "Bond Yield Data",
+  "description": "This dataset provides comprehensive reference and pricing information for global corporate bonds, including historical data since 2006. It covers a wide range of attributes such as unique identifiers (ISIN, CUSIP, SEDOL), issuer details, bond characteristics (coupon, maturity, callable/putable status), industry classifications, and extensive pricing fields (open, high, low, last, bid, ask, mid, volume, yields). The inclusion of corporate actions, structured note features, and regulatory indicators (such as IRS 871(m) compliance) makes it a robust resource for fixed income analysis. By leveraging this dataset, analysts can track bond performance, assess credit risk, monitor liquidity, and identify market trends, all of which are critical for predicting price movements and making informed in",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.4397,
+  "fieldCount": 25,
+  "alphaCount": 20,
+  "valueScore": 4.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv13": {
+  "name": "Relationship Data for Equity",
+  "description": "This dataset provides a mapping between Bloomberg IDs (BBID) and Refinitiv Instrument Codes (RIC), enabling users to link securities across Bloomberg and Refinitiv platforms. The data is sourced from both Bloomberg and Refinitiv, and maintained for integration and operational purposes rather than general research. While not directly predictive of price movements, this mapping is essential for harmonizing datasets, ensuring accurate cross-platform security identification, and supporting multi-source data analysis in quantitative research and portfolio management workflows.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.6607,
+  "fieldCount": 73,
+  "alphaCount": 332,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv141": {
+  "name": "VWAP Tick Data",
+  "description": "The dataset is computed end of day VWAP using tick data.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.5,
+  "fieldCount": 2,
+  "alphaCount": 5,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv149": {
+  "name": "Holidays and Trading Hours Calendar",
+  "description": "The Data Explorers dataset provides comprehensive short interest and securities lending data, sourced from the lending desks of major sell-side institutions and large buy-side players globally. It covers metrics such as lendable inventory, utilization rates, borrow demand, loan values, borrow costs, and proprietary sentiment indicators (e.g., DNS, DIPS, DIMV, DSS) at the security, group, and market level. The dataset includes both end-of-day and intraday feeds, with detailed breakdowns by region, asset class, and contributor type. By tracking the supply and demand dynamics of securities lending, as well as short positioning and borrow costs, this dataset offers valuable insights into market sentiment, short squeeze risk, and crowding. These signals are widely used in quantitative strategie",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 1.0,
+  "fieldCount": 1,
+  "alphaCount": 0,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv173": {
+  "name": "Corporate Bond Pricing Data",
+  "description": "This dataset provides a comprehensive suite of equity signals derived from corporate bond pricing data, including z-spread curves, term spreads, and principal component analysis factors such as shift, tilt, and twist. By linking bond market indicators—such as credit risk, yield curve dynamics, and bond-equity return divergences—to related equities, the dataset offers 19 base factors and several variants to predict future stock returns. These factors capture changes in credit conditions, market sentiment, and cross-asset relationships, making the dataset valuable for quantitative models, risk assessment, and alpha generation. Investors and analysts can use these signals to enhance equity selection, construct long-short strategies, and anticipate price movements based on underlying credit ma",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.3348,
+  "fieldCount": 105,
+  "alphaCount": 25,
+  "valueScore": 3.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv20": {
+  "name": "Daily Spot and Cross Rate Data",
+  "description": "This dataset provides comprehensive, standardized global company fundamental data, covering 96% of global market capitalization. It includes annual and interim/quarterly financial statements, per share data, calculated ratios, pricing, and textual information for over 1500 data items. The data is point-in-time, capturing values as they were known historically, and supports peer comparability across regions and industries. With detailed income statements, balance sheets, cash flows, and supplemental metrics, this dataset enables robust analysis of company financial health, valuation, profitability, and risk. It is highly valuable for quantitative research, backtesting, and building predictive models to forecast price movements based on changes in fundamentals, financial ratios, and corporat",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.6915,
+  "fieldCount": 1475,
+  "alphaCount": 595,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv29": {
+  "name": "Derived Industry Classification",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg IDs, two of the most widely used security identifiers in the financial industry. By linking these identifiers, the dataset enables seamless integration and cross-referencing of data from different sources, facilitating more accurate and efficient data analysis. This mapping is particularly useful for analysts and portfolio managers who work with multi-vendor data feeds, as it ensures consistency in security identification across platforms. While not directly predictive of price movements, the dataset is essential for data normalization, aggregation, and the construction of robust multi-source trading and risk models.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.5633,
+  "fieldCount": 80,
+  "alphaCount": 165,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv30": {
+  "name": "Alternate Industry Classification",
+  "description": "This dataset provides an alternative industry classification for global equities, derived from historical stock returns using principal component analysis (PCA) and robust resampling methods. By extracting significant risk factors and grouping securities into clusters of varying sizes, it offers a data-driven approach to industry segmentation across multiple regions and sectors. The dataset includes detailed mappings for top securities and supports flexible cluster sizes, enabling users to analyze market structure, sector rotation, and cross-sectional risk. This classification can enhance factor modeling, portfolio construction, and alpha generation by capturing dynamic relationships between stocks, potentially improving predictions of price movements and risk exposures.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.8222,
+  "fieldCount": 558,
+  "alphaCount": 286,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv37": {
+  "name": "Equity Interval Data",
+  "description": "This dataset provides standardized, point-in-time operating metrics for companies worldwide, with deep industry-specific coverage (e.g., retail, airlines, oil & gas, healthcare, REITs). Metrics include key performance indicators such as same store sales, occupancy rates, production volumes, and other operational statistics, enabling detailed peer and cross-industry comparisons. The data is updated weekly and includes both annual and quarterly frequencies, with comprehensive historical coverage. By capturing granular, comparable operational data, this dataset is valuable for quantitative research and can enhance price prediction models by linking company performance drivers to future returns, especially when combined with financial statement and market data.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 1.0,
+  "fieldCount": 251,
+  "alphaCount": 254,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv47": {
+  "name": "Specific Return Dataset",
+  "description": "This dataset provides daily specific returns for global equities, calculated using a proprietary risk model that extends the Barra framework with additional style and industry factors. The data includes returns orthogonal to risk model factors, representing the idiosyncratic or residual component of asset performance. Coverage spans multiple regions and universes, with fields such as Bloomberg ID and specific return percentage. By decomposing total returns into factor-driven and residual parts, this dataset enables researchers and portfolio managers to isolate stock-specific movements, assess alpha generation, and improve risk-adjusted forecasting of price changes.",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 1.0,
+  "fieldCount": 2,
+  "alphaCount": 81,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "pv87": {
+  "name": "Aggregated dataset",
+  "description": "This dataset provides proprietary, quantitative ratings that measure non-financial statement factors—such as management quality, environmental impact, employee well-being, diversity, and trust—across 4,500 global securities. The ratings are structured around six pillars: management, health, wealth, earth, equality, and trust, and are designed to capture intangible drivers of cash flow, risk, and valuation. By quantifying ESG and sustainability factors into a 0-100 score, the dataset enables investors to assess companies’ human impact and profit potential, identify leaders and laggards in sustainability, and integrate these insights into investment models. The data can be used to predict price movements by identifying companies with strong or improving ESG profiles, which are increasingly l",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.5,
+  "fieldCount": 1649,
+  "alphaCount": 893,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "univ1": {
+  "name": "Universe Dataset",
+  "description": "No dataset description",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 1.0,
+  "fieldCount": 6,
+  "alphaCount": 6,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.1
+ },
+ "univ2": {
+  "name": "Universe Dataset",
+  "description": "No dataset description",
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "coverage": 0.67,
+  "fieldCount": 1,
+  "alphaCount": 0,
+  "valueScore": 5.0,
+  "pyramidMultiplier": 1.1
+ },
+ "risk60": {
+  "name": "Securities Lending Insight Data",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg Identifiers (BBID) for global securities. It enables seamless integration and reconciliation of security data across different financial platforms and data sources. By facilitating accurate cross-referencing, the dataset supports portfolio management, trade processing, and data aggregation tasks. While not directly predictive of price movements, it is essential for ensuring data integrity and consistency when combining datasets for quantitative research, risk analysis, and multi-source analytics.",
+  "category": {
+   "id": "risk",
+   "name": "Risk"
+  },
+  "coverage": 0.8168,
+  "fieldCount": 5,
+  "alphaCount": 662,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.0
+ },
+ "risk62": {
+  "name": "Beta Risk Factors",
+  "description": "This dataset provides a comprehensive mapping between Reuters Instrument Codes (RIC) and Bloomberg Identifiers (BBID) for securities. It consolidates data from multiple sources and tracks changes in data generation over time, ensuring accurate cross-referencing between major financial data vendors. This mapping is essential for analysts and portfolio managers who need to integrate, reconcile, or compare datasets from different platforms, enabling seamless data aggregation and analysis. While not directly predictive of price movements, it is a critical foundational resource for building robust multi-source financial models and ensuring data integrity in quantitative research.",
+  "category": {
+   "id": "risk",
+   "name": "Risk"
+  },
+  "coverage": 0.9974,
+  "fieldCount": 233,
+  "alphaCount": 488,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.0
+ },
+ "risk68": {
+  "name": "Forecast Data",
+  "description": "This dataset delivers full order book and top of book tick-level statistics for global markets, including bid and ask levels, sizes, order updates, trade prices, volumes, and interval-based metrics. It aggregates and computes advanced measures such as average distances from mid, size distributions, and volatility at various intervals. By analyzing these detailed order book dynamics and trade flows, users can detect liquidity imbalances, order flow trends, and microstructure effects, which are instrumental in forecasting short-term price movements and understanding market behavior at a granular level.",
+  "category": {
+   "id": "risk",
+   "name": "Risk"
+  },
+  "coverage": 1.0,
+  "fieldCount": 5,
+  "alphaCount": 193,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.0
+ },
+ "risk70": {
+  "name": "Multi-Factor Model",
+  "description": "This dataset provides comprehensive global equity ownership data, tracking holdings by institutions, mutual funds, insiders, and stakeholders. It aggregates information from regulatory filings such as SEC Form 13F, UK share registers, and other international sources, offering detailed position-level data including shares held, percentage ownership, and changes over time. The dataset enables analysis of institutional trading patterns, herding behavior, and the impact of ownership changes on stock returns. By monitoring shifts in institutional ownership and identifying high-conviction positions, researchers can gain insights into market sentiment, potential price movements, and the effectiveness of copycat or contrarian investment strategies. This data is valuable for constructing factors re",
+  "category": {
+   "id": "risk",
+   "name": "Risk"
+  },
+  "coverage": 0.9817,
+  "fieldCount": 87,
+  "alphaCount": 6112,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.0
+ },
+ "risk72": {
+  "name": "Specific return of extended factors",
+  "description": "This dataset provides comprehensive global coverage of analyst earnings estimates, company-issued guidance, and actual reported financials for over 60,000 companies. It includes both detailed and consensus forecasts for key financial metrics such as EPS, revenue, cash flow, and dividends, as well as analyst recommendations and price targets. The data is updated daily and includes historical records, point-in-time snapshots, and restated values to avoid look-ahead and survivorship bias. Industry classification is available via TRBC, and the dataset supports granular analysis by region, sector, and fiscal period. By tracking estimate revisions, consensus trends, and the relationship between guidance and market expectations, this dataset is highly valuable for predicting price movements aroun",
+  "category": {
+   "id": "risk",
+   "name": "Risk"
+  },
+  "coverage": 0.6023,
+  "fieldCount": 40,
+  "alphaCount": 39,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.0
+ },
+ "other553": {
+  "name": "Financial Opinion Mining",
+  "description": "This dataset focuses on financial opinion mining from various text-based sources such as earnings calls, news, and social media. It aims to extract potential signals by performing deep analysis, considering financial characteristics and correlations among different data sources. The methodology involves advanced feature extraction, sentiment scoring using word embeddings, semi-supervised/transfer learning for adapting sentiment across data, and time-series value prediction through multi-source embedding. The dataset is designed to cover opinion mining tasks including sentiment analysis, company grouping, and value prediction, ultimately seeking to uncover valuable insights from the complete event timeline across diverse text data.",
+  "category": {
+   "id": "sentiment",
+   "name": "Sentiment"
+  },
+  "coverage": 0.5458,
+  "fieldCount": 73,
+  "alphaCount": 326,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.4
+ },
+ "sentiment21": {
+  "name": "AI Sentiment Score Data",
+  "description": "This dataset provides comprehensive analytics on news items related to equities, including over 80 fields across five key categories: relevance, sentiment, novelty, volume, and headline classification. Each news item is processed to generate asset-specific scores, such as sentiment (positive, neutral, negative), relevance to the asset, and measures of news novelty and volume over various time windows. The dataset also includes metadata like headline tags, company identifiers, and timestamps. By quantifying the tone, frequency, and uniqueness of news coverage for each company, this dataset enables researchers and quantitative investors to systematically incorporate real-time and historical news sentiment into trading strategies. It is particularly useful for predicting short-term price move",
+  "category": {
+   "id": "sentiment",
+   "name": "Sentiment"
+  },
+  "coverage": 0.9659,
+  "fieldCount": 210,
+  "alphaCount": 687,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.4
+ },
+ "sentiment26": {
+  "name": "Website Popularity Ranking Dataset",
+  "description": "This dataset provides a comprehensive ranking of internet domains based on passive DNS traffic, capturing the relative activity of websites across a global network. Unlike traditional site ranking models that focus on browser-based traffic, this dataset measures the number of unique client IPs interacting with each domain, offering a protocol-agnostic view of internet engagement. Aggregated metrics such as top percentile rankings, skewness, and kurtosis help identify domains with unusual or concentrated activity. By tracking changes in domain activity and popularity, analysts can detect emerging trends, shifts in user behavior, and potential catalysts that may influence the price movements of companies associated with these domains.",
+  "category": {
+   "id": "sentiment",
+   "name": "Sentiment"
+  },
+  "coverage": 0.7528,
+  "fieldCount": 19,
+  "alphaCount": 462,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.4
+ },
+ "sentiment27": {
+  "name": "Website Popularity Rankings",
+  "description": "This dataset provides a robust, research-oriented ranking of the most popular websites worldwide, designed to be resistant to manipulation and volatility. It aggregates and harmonizes data from multiple sources, including DNS traffic, browser extensions, and web crawls, to produce a stable and reproducible list of top domains. The dataset includes detailed metrics such as relative popularity, ranking intervals, domain counts, and statistical measures like skewness and kurtosis. By mapping domains to standardized identifiers, it enables aggregation and analysis at various levels. This dataset is valuable for predicting price movements by identifying trends in web traffic, shifts in user behavior, and the emergence of influential domains, which can signal changes in market sentiment, consume",
+  "category": {
+   "id": "sentiment",
+   "name": "Sentiment"
+  },
+  "coverage": 0.9427,
+  "fieldCount": 30,
+  "alphaCount": 1154,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.4
+ },
+ "sentiment7": {
+  "name": "Webpage Views  Data",
+  "description": "This dataset tracks daily Wikipedia page views for a global universe of companies, including both parent entities and their subsidiaries. By aggregating user interest across multiple languages and linking subsidiary activity to parent companies, it provides a unique measure of public attention and sentiment. Spikes or changes in page views can signal increased market interest, news events, or shifts in company visibility, which may precede trading activity or price movements. The dataset is especially useful for generating alternative sentiment signals and for event-driven trading strategies, as it captures real-time shifts in public focus that are not reflected in traditional financial data.",
+  "category": {
+   "id": "sentiment",
+   "name": "Sentiment"
+  },
+  "coverage": 0.0625,
+  "fieldCount": 24,
+  "alphaCount": 65,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.4
+ },
+ "socialmedia12": {
+  "name": "Sentiment Data for Equity",
+  "description": "This dataset aggregates and analyzes social media posts and news articles related to financial markets, covering thousands of sources and several years of historical data. It quantifies market sentiment and buzz for individual assets, sectors, and indices using advanced natural language processing and machine learning techniques. The data includes sentiment scores, buzz indicators, and trading signals, which are statistically validated and can be used to identify shifts in market mood, anticipate volatility, and generate actionable buy/sell signals. By monitoring real-time and historical sentiment, traders and analysts can enhance their price movement predictions and improve portfolio performance through timely, data-driven decisions.",
+  "category": {
+   "id": "socialmedia",
+   "name": "Social Media"
+  },
+  "coverage": 0.7836,
+  "fieldCount": 6,
+  "alphaCount": 1079,
+  "valueScore": 1.0,
+  "pyramidMultiplier": 1.1
+ },
+ "socialmedia15": {
+  "name": "Sentiment Indicators",
+  "description": "This dataset provides real-time sentiment indicators for a wide range of financial assets, including individual companies, company groups, currencies, commodities, and countries. It leverages advanced natural language processing to analyze news and social media content, generating minutely and daily scores for various behavioral and thematic factors such as sentiment, optimism, fear, trust, volatility, and more. The dataset includes both the volume of media coverage (\"buzz\") and a rich set of sentiment and event-based metrics, enabling users to track shifts in market mood and behavioral signals. These indicators can be used to enhance quantitative models, inform trading strategies, and anticipate price movements by capturing the collective psychology and reactions of market participants in",
+  "category": {
+   "id": "socialmedia",
+   "name": "Social Media"
+  },
+  "coverage": 0.3424,
+  "fieldCount": 45,
+  "alphaCount": 125,
+  "valueScore": 2.0,
+  "pyramidMultiplier": 1.1
+ }
+}

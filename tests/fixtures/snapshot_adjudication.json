@@ -211,6 +211,14 @@
       "verdict": "DROPPED",
       "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_build_plan.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_build_plan.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_build_plan.py`。"
     },
+    "reports/opswap_driver.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_driver.py`，2026-10-20 随逐件退役 `git rm`）。判据与依据同 `tools/legacy/opswap_driver.py` 那条：五种引用形态实测全为 0，见 docs/governance/branch_policy.md §5.4。⚠ 本条同时**修正机械初判**：2026-10-20 退役前，该路径的机械判定是「同名件在 main 是 `tools/legacy/opswap_driver.py` 但内容不同（分叉或版本差）——需人工比对」；退役后 main 已无该件，blob 不再可比，机械初判会误落 PENDING。此条以人工裁决固定为 DROPPED。取看：`git show HEAD:tools/legacy/opswap_driver.py`。"
+    },
+    "tools/fix_stale_fk_20260928.py": {
+      "verdict": "DROPPED",
+      "basis": "同一件在快照里的**旧顶层路径**（2026-09-28 时它位于 `tools/` 顶层，后迁入 `tools/legacy/fix_stale_fk_20260928.py`，2026-10-20 随逐件退役 `git rm`）。判据与依据同 `tools/legacy/fix_stale_fk_20260928.py` 那条：五种引用形态实测全为 0，见 docs/governance/branch_policy.md §5.4；本件是 2026-09-28 一次性 P0 悬空外键修复，已跑完。取看：`git show HEAD:tools/legacy/fix_stale_fk_20260928.py`。"
+    },
     "tools/_db_fk_fix.py": {
       "verdict": "DROPPED",
       "basis": "同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/_db_fk_fix.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/_db_fk_fix.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/_db_fk_fix.py`。"

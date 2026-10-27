@@ -100,3 +100,75 @@ def test_small_region_below_min_expressions_not_judged(tmp_path, monkeypatch):
     out = C._run_backlog_gate("TESTREG", None, cdir)
     assert out["success"] is True
     assert "min" in str(out.get("skipped"))
+
+
+# ---------------- 2026-10-20 P1-3：conversion 消费口径单源（wqb.store.consumption） ----------------
+
+def _setup_with_bt(tmp_path, monkeypatch, rows):
+    """rows: [(status, via_expr_id, via_alpha)]。via_expr_id=回测行挂 e.id；via_alpha=挂 e.alpha_id。"""
+    cdir = tmp_path / "tracking" / "TESTREG"
+    (cdir / "config").mkdir(parents=True)
+    (cdir / "config" / "thresholds.json").write_text(
+        json.dumps({"diversity": {}}), encoding="utf-8")
+    db = tmp_path / "wqb_test.db"
+    conn = sqlite3.connect(str(db))
+    conn.execute("CREATE TABLE expressions "
+                 "(id INTEGER PRIMARY KEY, region TEXT, status TEXT, alpha_id TEXT)")
+    conn.execute("CREATE TABLE backtest_results "
+                 "(id INTEGER PRIMARY KEY, expression_id INTEGER, alpha_id TEXT)")
+    conn.execute("CREATE TABLE ledger_kv (region TEXT, key TEXT, value TEXT)")
+    for i, (status, via_expr_id, via_alpha) in enumerate(rows, start=1):
+        alpha = f"A{i}" if via_alpha else None
+        conn.execute(
+            "INSERT INTO expressions (id, region, status, alpha_id) VALUES (?, 'TESTREG', ?, ?)",
+            (i, status, alpha))
+        if via_expr_id:
+            conn.execute("INSERT INTO backtest_results (expression_id, alpha_id) VALUES (?, NULL)", (i,))
+        if via_alpha:
+            conn.execute("INSERT INTO backtest_results (expression_id, alpha_id) VALUES (NULL, ?)", (alpha,))
+    conn.commit()
+    conn.close()
+    monkeypatch.setenv("WQB_DB_PATH", str(db))
+    return str(cdir)
+
+
+def test_conversion_counts_consumed_union_p1p3(tmp_path, monkeypatch):
+    """EUR 实测形态：dropped/gem 但挂在回测行上 → 算已消费（2026-10-20 前这些被漏掉）。
+
+    consumed = status ∪ expr_id ∪ alpha_id；conversion 用 consumed，status-only 在
+    evidence.conversion_status_only 另存对照。
+    """
+    rows = [("backtested", False, False)] * 96          # 状态口径命中
+    rows += [("dropped", True, False)] * 80             # 回测过、状态被覆盖（expr_id 键）
+    rows += [("gem", False, True)] * 24                 # 回测过、状态被覆盖（alpha_id 键）
+    rows += [("gem", False, False)] * 200               # 真未消费
+    cdir = _setup_with_bt(tmp_path, monkeypatch, rows)
+    out = C._run_backlog_gate("TESTREG", None, cdir)
+    ev = out["evidence"]
+    assert ev["total"] == 400
+    assert ev["consumed"] == 200                        # 96 + 80 + 24
+    assert ev["conversion"] == 0.5
+    assert ev["conversion_status_only"] == round(96 / 400, 4)
+    # conversion=50% ≥ 10%：不因 conversion 拦截（未消费灰度告警不算 hits）
+    assert not any("conversion" in h for h in out.get("hits") or [])
+
+
+def test_conversion_falls_back_to_status_when_no_backtest_table(tmp_path, monkeypatch):
+    """旧库/夹具无 backtest_results 表：退化纯状态口径（consumed=backtested），不崩。"""
+    cdir = _setup(tmp_path, monkeypatch, _DEU_LIKE)
+    out = C._run_backlog_gate("TESTREG", None, cdir)
+    ev = out["evidence"]
+    assert ev["consumed"] == ev["backtested"] == 171
+    assert ev["conversion"] == ev["conversion_status_only"]
+
+
+def test_consumption_module_single_source():
+    """口径模块自身：无表返回 False（PRAGMA 空集而非报错）；退化谓词只含状态集。"""
+    from wqb.store import consumption as cons
+    conn = sqlite3.connect(":memory:")
+    try:
+        assert cons.has_backtest_link(conn) is False
+        sql = cons.consumed_sql("e", with_backtest=False)
+        assert "'backtested'" in sql and "backtest_results" not in sql
+    finally:
+        conn.close()

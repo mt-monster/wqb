@@ -1,0 +1,92 @@
+# gates.yml — 仓库结构 / 文档 / skill 守卫的 CI 兜底。
+#
+# 为什么必须有它
+# --------------
+# 本地 pre-commit（`tools/git-hooks/pre-commit`）跑的是同一批检查，但它的挂载方式是
+# `git config core.hooksPath tools/git-hooks` —— **本机 git config，不入库**。
+# 于是干净克隆、换机器、以及任何 CI/托管环境里钩子都不生效，结构违规一路攒到没人看。
+# 2026-10-24 全库审计实测：audit_structure FAIL=14 / WARN=4、skills 测试 13 failed、
+# skill 安装位 33 项漂移，全部靠本地钩才暴露，而钩可以被 `--no-verify` 整体绕过。
+# 本 workflow 是 **fail-closed 的第二道**：钩没挂、钩被绕，这里照样拦。
+#
+# 与本地钩的关系：跑的是同一批命令（不另发明一套判据），只补「一定会跑」这一件事。
+# 新克隆请先跑 `sh tools/git-hooks/install.sh`（或 Windows 的 install.ps1）把本地钩挂上。
+#
+# ⚠ 未验证项（2026-10-27 代码治理评审 §4 P0-P3 登记）：`runs-on: ubuntu-latest` 与「本仓
+# Windows 优先」（盘符、PowerShell、`.venv/Scripts/python.exe`、schtasks 启动器）**尚未对齐**。
+# 本文件从未真正跑过（无 CI 运行记录），因此首次 `workflow_dispatch` 只作**取证**：
+# 看它停在哪个 step、留下什么日志，再决定是换 `windows-latest` 还是给平台相关用例加 skip 标记。
+# 在那之前**不要**给任何 step 加 `continue-on-error` —— 那会把「永远不绿」换成「永远绿」，
+# 两种都等于没有这道闸。
+
+name: gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: gates-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  structure:
+    name: 结构 / 文档 / skill 守卫
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            world-quant-brain-mcp/requirements.txt
+
+      - name: 装依赖
+        # requirements.txt 已 `-r world-quant-brain-mcp/requirements.txt`，装一份即可。
+        # 缺任一依赖的后果不是「少跑几个测试」，而是带 importorskip 的守卫测试被**静默 skip**
+        # 而 pytest 对 skip 返回 0 ⇒ 假绿（本机 2026-10-06 已实测过一次）。
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: 钩脚本可用性自检
+        # ⚠ 本步**不是**「检查本机有没有挂钩」——那件事 CI 结构上做不到：`core.hooksPath`
+        # 是每台机器的本地 git config（不入库），干净 runner 上必然为空。
+        # 2026-10-27 前的写法正是这个错位：`install.sh --check` 在干净 runner 上必然 exit 1，
+        # 于是后面的 S1–S21 / doc_path_refs / pytest **一步都不会跑** —— CI 永远不绿，
+        # 等于没有 CI（2026-10-27 代码治理评审 §4 P0-P3）。
+        # 现在验的是「安装器与钩脚本本身能用」：语法（`sh -n`）+ 装→查往返（此前零测试覆盖）。
+        # 至于某台开发机有没有挂钩，只能由开发者在自己的机器上跑同一条 `--check` 确认。
+        run: |
+          sh -n tools/git-hooks/pre-commit
+          sh -n tools/git-hooks/commit-msg
+          sh tools/git-hooks/install.sh
+          sh tools/git-hooks/install.sh --check
+
+      - name: S1–S21 结构守护（tools/audit_structure.py）
+        run: python tools/audit_structure.py
+
+      - name: 文档路径引用 / 破坏性默认值
+        run: |
+          python tools/code-audit/doc_path_refs.py
+          python tools/code-audit/audit_destructive_default.py
+
+      - name: skill 文档棘轮（tools/skill_lint.py）
+        run: python tools/skill_lint.py
+
+      - name: pytest 验证路由
+        run: python -m pytest tests/ -q --no-header
+
+      - name: skill 安装位漂移
+        # 安装位在宿主 Home 下（~/.claude/skills 等），CI 环境不存在 ⇒ 无漂移可报，
+        # 这里只保证「有安装位时不漂移」。本机改完 skill 必须自己跑
+        # `python tools/sync_skills.py --apply` 再 `--check`。
+        continue-on-error: true
+        run: python tools/sync_skills.py --check

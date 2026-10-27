@@ -118,12 +118,16 @@ def cmd_retag(a):
 
 
 def cmd_dedup(a):
-    """对现有队列按骨架去重（同骨架只留优先级最高的 N 条）。"""
+    """对现有队列按**族签名**（主体骨架 + 分组轴 + 全部设置档）去重（同族只留优先级最高的 N 条）。
+
+    2026-10-23（P1-3）：不再只按表达式主体形状去重 —— 不同分组轴/不同设置档的
+    不同信号族曾被当成同族（USA `d5KzLo7v` 事故）。
+    """
     sq = _sq()
     d = sq.dedup_siblings(region=a.region, max_per_skeleton=a.max_per_skeleton,
                           dry_run=a.dry_run)
     tag = "dry-run 未写入" if a.dry_run else "已写入"
-    print(f"[dedup] 骨架 {d['skeletons']} 个 | 保留 {d['kept']} | "
+    print(f"[dedup] 族签名 {d['skeletons']} 个 | 保留 {d['kept']} | "
           f"标 SUPERSEDED {d['superseded']}（{tag}）")
     return 0
 
@@ -145,10 +149,17 @@ def cmd_list(a):
                 tw = ",".join(f"{t.get('name')}x{t.get('multiplier')}" for t in tl)
         except Exception:
             pass
+        # 2026-10-20 P1-4：相关性新鲜度（与 MCP get_alpha_corr_metrics 同词表）。
+        # READY 行普遍 IS_ONLY（prod 旧读数/self 未测），提交前必须 refresh 当场终验。
+        fresh = ""
+        if r.get("corr_stale"):
+            age = r.get("corr_age_hours")
+            fresh = (f" | corr-STALE({r.get('corr_stale_reason')}"
+                     + (f", {age}h" if age is not None else "") + ")")
         print(f"  {i:2d}. {str(r.get('alpha_id')):12s} {str(r.get('region')):5s} "
               f"sh={r.get('sharpe')} fit={r.get('fitness')} 2y={r.get('two_year')} "
               f"turn={r.get('turnover')} | prod={r.get('prod')} self={r.get('self')} "
-              f"| {r.get('gate')} | prio={sq.priority(r)} | {tw}")
+              f"| {r.get('gate')} | prio={sq.priority(r)} | {tw}{fresh}")
     return 0
 
 
@@ -244,6 +255,10 @@ async def _fetch(brain, aid):
         "alpha_id": aid, "region": s.get("region"), "universe": s.get("universe"),
         "delay": s.get("delay"), "decay": s.get("decay"),
         "neutralization": s.get("neutralization"),
+        # 2026-10-23（P1-3）：族签名要含**全部设置档** —— truncation / nanHandling /
+        # maxTrade 一并落库（平台 settings 的 camelCase 键 → 本地 snake_case 列）。
+        "truncation": s.get("truncation"), "nan_handling": s.get("nanHandling"),
+        "max_trade": s.get("maxTrade"),
         "expr": expr,
         "family": sq_family_of(expr),
         "sharpe": isv.get("sharpe"), "fitness": isv.get("fitness"),

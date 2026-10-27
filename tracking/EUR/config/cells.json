@@ -22,6 +22,23 @@
         "analyst81",
         "model52"
       ],
+      "dataset_overrides": {
+        "analyst7": {
+          "backtest": {
+            "overrides": {
+              "universe": "TOP2500",
+              "neutralization": "FAST",
+              "decay": 40
+            },
+            "_evidence": {
+              "universe": "analyst7 四件套修订族 14 颗 RA 全过全在 TOP2500（区域缺省 TOPCS1600 对该族不适用），见 Claude/skills/wq-brain-ra-eur/references/_atom-revision-playbook.md §2；代表 alpha LL5dmv9a failed_ra_count=0（2026-10-20 get_alpha_details 实测）",
+              "neutralization": "同上 §2 + LL5dmv9a 平台设置实测 neutralization=FAST（区域缺省 SUBINDUSTRY）",
+              "decay": "同上 §2：幅度族 decay 40（广度/门控/gps 族 80 用 per-item settings 覆盖）；区域缺省 decay 4 会改信号"
+            }
+          },
+          "note": "analyst7 四件套修订族已验证配方（2026-10-20 定稿，14 颗 RA 全过 / 6 metric 族）；取证见 reports/robustness_20261020.md 与 _atom-revision-playbook.md"
+        }
+      },
       "evidence": {
         "synced_at": "2026-10-04",
         "backtests": 74,
@@ -116,7 +133,24 @@
         "wins": []
       },
       "generation": {
+        "skeletons": [
+          {
+            "text": "group_neutralize(signed_power(group_zscore(divide(subtract(<metric>_mean, <metric>_mean_4wks_ago), <metric>_std), subindustry), p), market)",
+            "evidence": "analyst7 四件套修订幅度骨架：14 颗 RA 全过中的 9 颗（dps/ebt/ebi/gps/pre），p 1.0–1.4、decay 40（gps/pre 80）、TOP2500/FAST。见 eur_analyst_field_profile_20261018 §55.5 与 _atom-revision-playbook §3–§4"
+          },
+          {
+            "text": "group_neutralize(signed_power(group_zscore(divide(subtract(<m>_raisednum_4wks, <m>_lowerednum_4wks), add(<m>_raisednum_4wks, <m>_lowerednum_4wks)), subindustry), p), market)",
+            "evidence": "analyst7 修订广度骨架：ebt 4 周 `P0MOK7wx` S2.13/F1.38/2Y1.65/sub1.36；与幅度形态互相关仅 0.62–0.68（独立席位）。1 周版 `MP0L2Ogo` 亦全过（TO 7.32%）",
+            "lint_exempt": "分母 add 是同一指标上调/下调计数之和（广度归一化），不是两条独立信号腿"
+          },
+          {
+            "text": "trade_when(abs(ts_zscore(<单字段水平值或原信号>, 66)) > 1.0, <CORE>, 0)",
+            "evidence": "2Y/CV 制度门控（REP）：`3qjeJGle` → `Grge2lN3` S1.79/F1.15/2Y2.02/sub0.94、2022 Sharpe 1.39→2.09、CV .436→.366；pre 版 `6XAe27eL` 2Y1.62 全过。计数门控反向（2Y 0.51–0.66）。注意算子数：CORE 写两遍会到 10 → 闸 1b-2，门控单字段可压到 8",
+            "window_note": "ts_zscore 窗 66 = 标准季窗；门控阈值 1.0/1.5 为实测档（1.5 → 2Y1.20，1.0 → 1.62），非窗口参数"
+          }
+        ],
         "notes": [
+          "★★★★★★ 【2026-10-20 收口：analyst7 修订族 14 颗全闸通过 —— 本条更新以下旧结论】① **`analyst7` 不是 0.10 死集**：真实 1111 字段（旧记 299 是 `/data-fields` 分页截断），32 个指标具备四件套 = `mean` + `mean_3mth_ago` + `mean_4wks_ago` + `std`；`group_neutralize(signed_power(group_zscore(divide(subtract(mean, mean_4wks_ago), std), subindustry), p), market)` 在 **TOP2500 / FAST / decay 40–80 / nanHandling ON / maxTrade ON** 下出 **14 颗 RA 全过、6 个 metric 族（dps/ebt/ebi/gps/pre/cps）**。② 因而「Analyst 类别只能出 1 颗」「要凑 RA 腿必须离开 analyst 原语族」**作废**（那是 `analyst_factor_signals` 单结构的结论，不是 `analyst7` 的）。③「TOP2500 使 S 崩 1.34–1.40」只适用于旧结构，**不适用于 analyst7**（本族必须 TOP2500）。④ 满仓上限不是 14：同族 p 变体互相关 0.97–0.99，**最大互不相关团 = 7**；一次最多同时提交 7 颗。⑤ 完整配方 / 2Y 修复 / 否证清单见 [references/_atom-revision-playbook.md](_atom-revision-playbook.md)，prod 实测见字段画像 §56。",
           "★★★ 【MATRIX ⇒ TO 崩」的适用边界修正】此前基于 f72/f17（年度/季度财报）得出「MATRIX ⇒ TO 崩 0.017–0.029」；但 **analyst_factor_signals（108 字段全 MATRIX，日频分析师修正）实测 TO 可达 0.087**（`eps_q1_estimate_change_1mo` S0.71/TO0.087）。⇒ ★ **规则应表述为：TO 崩的是「低频更新字段」（年度/季度财报），而非所有 MATRIX**；**日频事件型 MATRIX（分析师修正/预估值）TO 正常** ⇒ 选集时看**更新频率**而非仅看 type。⚠ 但仍需逐字段实测：同数据集内 `eps_estimate_volatility_adj_3yr` TO 仅 0.0272（慢变量）、`eps_actual_q1_yoy_growth` TO 0.0253 ⇒ **快变量（change/revision/surprise）TO 合格，慢变量（level/volatility/CAGR）TO 崩**。",
           "★★★★ 【EUR Analyst 首个全闸门通过配方】（2026-10-13，wave472–485，13 波 104 条实证）：\n**数据集 = `analyst_factor_signals`**（108 字段全 MATRIX、104 个 user≤3；**日频分析师修正 ⇒ TO 正常**，推翻「MATRIX ⇒ TO 崩」的过度泛化）。\n**达标表达式**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 1.8), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha `ZYAJZL93`：**S1.67 / F1.04 / TO0.1047 / 2Y1.81 / margin9.27bp / PROD0.6617 / SELF0.2278，FAIL 0 WARNING 1（仅信息性），all_passed=True**。\n**四层杠杆（按增益排序）**：\n① ★★★**「修正幅度 ÷ 分歧度」原语**（`revision_magnitude / coeff_var`）= 0.71→**1.32**（S +0.61）—— 对应 S2 类别原语的 revision surprise ÷ dispersion；\n② ★★**分组轴 `industry`**（vs sector 1.32 / market 1.29 / c5 0.96）；\n③ ★★**`target_tvr` = S 与 2Y 的同步杠杆**（0.06→0.10 使 S1.43→1.58、2Y1.34→1.53；0.12 后饱和）；\n④ ★★★**分母 `ts_mean` 平滑（窗 55）= 三重杠杆**：提 2Y（1.55→**1.81**）、降 prod（0.7064→**0.6617**）、保 S —— 机制：平滑分歧度 ⇒ 分母稳定 ⇒ 持仓集中 ⇒ 小宇宙改善 + 与存量 alpha 相似度下降。\n**幂次**：`signed_power` 1.6–1.8 最优（1.8 给 F≥1.0，1.45–1.55 给 2Y 更高）。\n⚠ **失效项**：`revenue_*` / `netprofit_*` 版本（同结构下 S 仅 1.13/1.07）；跨指标 multiply；`eps_y2_estimate_coeff_var` 分母（S1.45）；horizon gap（y2−y1 consensus，S −0.75 需翻转）；TOP2500（S 崩到 1.34–1.40）；decay=4（S 1.47）⇒ **TOPCS1600+SUBINDUSTRY+decay1+maxTradeOFF 是必要条件**。",
           "★★★★★ 【EUR Analyst 战役终局定论】（2026-10-13，wave472–492，**21 波 168 条实证**）：\n**结论：Analyst 类别可提交 regular alpha = 1 颗**（不是 10 颗）。\n**唯一达标形态**：`ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 3.0), lambda_min=0, lambda_max=1, target_tvr=0.18)`\n⇒ alpha **`O083qZQp`**：S1.71 / F1.09 / TO0.1123 / 2Y1.78 / margin9.02bp / **PROD 0.6170** / verdict FAIL 0。\n**为何只能是 1 颗（互相关实测）**：同族 4 颗达标候选 `get_mutual_correlation` = **0.9757–0.9993**，`max_mutually_below_subset_size=1` ⇒ 提交 1 颗后其余全部触发 self-corr ⇒ **一条腿只出 1 颗**。\n**六层杠杆（增益排序，全部实证）**：\n① ★★★`eps_revision_magnitude ÷ 分歧度` 原语（0.71→1.32）；\n② ★★轴 = `industry`（industry 1.38 > sector 1.32 > market 1.29 > c5 0.96）；\n③ ★★★`target_tvr` = S 与 2Y 同步杠杆（0.06→0.18；0.22 后饱和）；\n④ ★★★分母 `ts_mean` 平滑（窗 **55**；窗88 亦达标，窗44/33 使 2Y 崩）；\n⑤ ★★★**`signed_power` 幂次 = S/F 提升器 + prod 降低器**（1.8→3.0：S1.67→1.71、F1.04→1.09、**prod0.6617→0.6170**）；\n⑥ 窗 55 是 prod 的关键（窗44 prod 0.7064 > 0.7 ⇒ 失败）。\n⚠ **判死清单**：`revenue_*`/`netprofit_*` 版本（S≤1.49）；`eps_y2_coeff_var` 分母（1.45）；`change_3mo` 分子（0.91）；`consensus_value` 分子（负）；期限差（−0.97）；`cagr_*` 分子（≤0.51）；`asymmetry`/`volatility` 分母（≤0.42）；跨指标 multiply（0.11）；`analyst_consensus` breadth（≤0.21）；`analyst45`（0.36）；`analyst9/10` 共识水平（≤0.76）；sector/market/subindustry 轴（2Y ≤1.50）。\n→ **要凑够 10 颗须离开 Analyst 类别**（Analyst 内唯一有效结构已穷尽）。",
@@ -130,6 +164,66 @@
           "★★★★★ 【EUR 已有 1 颗完全合规的 RA ATOM：`N1VnJjXg`（2026-10-06 ACTIVE，tags 无 PowerPoolSelected，failed_ra=0，单塔 MODEL）】表达式 `hump(rank(ts_delta(vec_avg(qfl_cassie_convention_ocf_currliab), 22)), hump=0.001)`，设置 **TOPCS1600 / INDUSTRY / decay 40 / maxTrade ON** ⇒ S1.75 / F1.17 / TO0.041 / returns 5.57% / 2Y1.76 / sub1.63 / robust1.44 / **prod 0.5378** / self 0.1954，九闸全 CLEAN。**对照 `WjegEmQO`**（同字段同 `hump`，但外层 `group_zscore(...,subindustry)` + decay 1 + SUBINDUSTRY）prod **0.7188 FAIL**。⇒ ★★★★★ **prod 卡 0.7 且结构里有外层 `group_*` 归一化时，先试「拆掉外层 group_* + decay 提到 40 + 中性化换 INDUSTRY」，比换字段/换轴有效得多（本证降 prod 0.18）。**",
           "★★★ 【quant_factor_lib 只有 `ocf_currliab` 单腿能过闸】`N1VnJjXg` 形态套用到 current_ratio/quick_ratio/debt_equity/cassie_score/altman_zscore/ohlson_oscore/merton/longdebt_equity/debt_weighted_interest_rate/shortterm_debt_ratio（wave595，10 条，decay40+INDUSTRY）**全部 2Y_DEAD，最高仅 S1.24**（融资成本）。该集 126 字段全 VECTOR cov 0.56–0.785，另含 `cassie_impliedalpha`（隐含超额收益）与破产压力族待测。",
           "★★★ 【算子静默下线（本月第 2 例）】`vector_neut` 已不在平台算子清单，`dispatch --op-lint` 直接拒绝整批 ⇒ 依赖它的 `78NoOeVx`（fundamental23, S1.67/F1.06/2Y2.42/prod0.7432）与 `XgJYWLg1`（risk70, S1.68/prod0.6831）**均无法复现**。前例：`multi_horizon_alpha` 杠杆族全族下线。⇒ 复现任何老 alpha 前必须先过 `op-lint` + `preflight`。"
+        ]
+      },
+      "s4": {
+        "levers": [
+          {
+            "id": "atom_regime_gate",
+            "what": "2Y / CV 修复首选制度门控：trade_when(abs(ts_zscore(<单字段水平值或原信号>, 66)) > 1.0, CORE, 0)。门控『这次修正有多异常』，不是『有多少家改』；CORE 只写一遍以控算子数（≤9）",
+            "evidence": "`3qjeJGle` → `Grge2lN3`：S1.79/F1.15/2Y2.02/sub0.94，2022 Sharpe 1.39→2.09，Recent-3yr CV .436→.366（reports/robustness_20261020.md）；`6XAe27eL` 2Y1.62 全过；计数门控反向（2Y 0.51–0.66）",
+            "no_extrapolate": "阈值档 1.0/1.5 已实测；换数据集需重扫"
+          },
+          {
+            "id": "atom_decay_expand",
+            "what": "广度 / 门控 / gps 形态的 decay 40→80：2Y 的主导杠杆（+0.60），同时 S+0.24 / F+0.08",
+            "evidence": "cps 广度：d40 1.52/0.90/1.34 → d80 1.76/0.98/1.94 → d80+ts_mean5 1.80/1.01/2.00（`wp9EvMmv`）",
+            "no_extrapolate": "幅度族主档仍是 d40；d80 只对广度/门控/gps 验证过"
+          },
+          {
+            "id": "atom_smooth_breadth",
+            "what": "广度形态外包 ts_mean(·, 5)：F +0.03 越过线、2Y +0.06、换手反而 −0.28pt（临门一脚）",
+            "evidence": "AU1 `e76xWop6` F0.98 → AU2 `wp9EvMmv` F1.01 / 2Y1.94→2.00",
+            "no_extrapolate": "只对广度形态成立；对幅度形态是毒药"
+          },
+          {
+            "id": "atom_metric_expand",
+            "what": "同一数据集内换 metric 族（dps/ebt/ebi/gps/pre/cps/prr）产出独立席位，而不是换数据集或换分组轴",
+            "evidence": "14 颗全过 / 6 族；gps 与所有族 0.37–0.63、cps 广度 0.30–0.57；ebt 广度 vs 幅度 0.62–0.68",
+            "no_extrapolate": "同族 p 变体 0.97–0.99 = 同一席"
+          },
+          {
+            "id": "atom_p_axis",
+            "what": "signed_power p 轴 1.0–1.4 为甜点（幅度 1.4；广度/median 1.2）；p 越高越会同时抬 sub 比率线",
+            "evidence": "p1.6 `Grge7PG0` S1.94/F1.40/2Y1.60 但 sub 0.97 < 线 1.01；dps 三档 p 全过（1.71–1.78）",
+            "no_extrapolate": "p 与 sub 线联动，换族需重测"
+          }
+        ],
+        "avoid": [
+          {
+            "what": "计数门控（raisednum > n）修 2Y",
+            "evidence": "绝对计数随近两年波动率萎缩：2Y 0.51–0.66，反向杠杆"
+          },
+          {
+            "what": "对幅度形态做 ts_mean(ratio, 5) 平滑",
+            "evidence": "S 1.72→1.42–1.43（信号被平滑杀掉）"
+          },
+          {
+            "what": "用 winsorize(2.5) / decay 120 降 Recent-3yr CV",
+            "evidence": "CV .520 / .444–.489，全部更差（不修 CV 反而更稳）"
+          },
+          {
+            "what": "industry / sector / country 分组（组内或外层）",
+            "evidence": "industry 全族最高 S/F（2.18/1.80）但 2Y 1.39；sector 外层 sub 0.95 < 线 1.03"
+          },
+          {
+            "what": "下侧修订（low）与 std / num 形态",
+            "evidence": "low 修订 sub 0.76（−0.18）；离散度变化 S0.11、家数变化 S0.09"
+          },
+          {
+            "what": "把同族 p 变体当多条腿提交",
+            "evidence": "dps 0.9704–0.9925、ebt 0.9728–0.9933 ⇒ 平台 self 闸每族只放 1 颗；最大互不相关团 = 7"
+          }
         ]
       }
     },
@@ -175,7 +269,10 @@
         "fundamental17",
         "fundamental23",
         "fundamental93",
-        "other401"
+        "other401",
+        "fundamental72",
+        "fundamental90",
+        "fundamental1"
       ],
       "evidence": {
         "synced_at": "2026-10-04",
@@ -251,22 +348,41 @@
         ],
         "wins": []
       },
-      "note": "EUR 破 prod 墙的残差化路径：★ vector_neut 已于 2026-10-10 实测被平台移除（op-lint 拦截：平台算子清单外）⇒ 改用 ts_regression / group_neutralize / subtract(rank,rank) 三种可用残差化；残差轴的选择仍决定成败",
+      "note": "EUR 破 prod 墙的残差化路径：★ `vector_neut` **平台可用**（2026-10-20 平台二次核实：wave291 整批 8 条含 vector_neut×3 被 create_multi_simulation 接受；JjQmx9nm 已 ACTIVE 交付）⇒ 2026-10-10「op-lint 判定平台已移除」是**本地算子清单假阳性**（research-data/operators_platform_*.json 不含该算子），该结论作废。残差化四选一：vector_neut（首选，prod 最优）/ ts_regression / group_neutralize / subtract(rank,rank)；残差轴的选择仍决定成败\n★ 当前主力：fundamental72 VECTOR CFO/TA 冠军族（7 颗已验证，prod 0.6585–0.6747 / self ≈0.50）；MATRIX 载荷与 sector / market 轴是 prod 墙。",
       "generation": {
         "use": [
-          "嵌套残差化：先削自由现金流，再削投资（CAPEX）或经营现金流维度（WorkBuddy MEMORY §1.7）"
+          "嵌套残差化：先削自由现金流，再削投资（CAPEX）或经营现金流维度（WorkBuddy MEMORY §1.7）",
+          "★ 冠军配方（EUR fnd72，7 颗已验证：rKd5lAo8 / leM88RN5 / KPmOOwZx / vROkA5nw / P0MZ5nrp / pwvPanJx / akVLzLV1）：`ts_target_tvr_decay(trade_when(greater(vec_avg(<盈利质量A>), vec_avg(<盈利质量B>)), group_zscore(divide(vec_avg(fnd72_pit_or_cf_a_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_a_bs_tot_asset)), industry), -1), lambda_min=0, lambda_max=1, target_tvr=0.06~0.24)` —— S 1.58–1.64 / F 1.07–1.14 / 2Y 1.68–1.83 / prod 0.6585–0.6747 / self ≈0.50。**恰好 9 个调用点（闸1b-2 上限 9，无余量）**：只能换算子 / 换轴 / 换 tvr 档 / 换载荷，不能加算子"
         ],
         "skeletons": [
           {
             "text": "vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets))), rank(divide(free_cash_flow, assets))), rank(divide(operating_cashflow, assets)))",
-            "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；当前最佳 JjQmx9nm（fcf→capex→ocf，12 算子）S 1.73 / F 1.17 / prod 0.6695 / self 0.3397；⚠ 2026-10-10 实测：vector_neut 已被平台移除（op-lint 拦截），此骨架不可再执行，仅存历史证据"
+            "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；★ 2026-10-20 更正：12 次算子调用**过不了闸 1b-2**（gate.py MAX_OP_CALLS=10 ⇒ 合法 ≤9），且其 fam3 `vector_neut→vector_neut→reverse` 实测 n=4、prod 0.9789 / 0.9859 / 0.9998 / 0.9998 = **DEAD** ⇒ 只作历史证据，不再作首选"
+          },
+          {
+            "text": "vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)),rank(D))  # A/B/C/D = 平台原生 scale-free 字段（mpns/ppgs/ppos/kcqs/rucs/sebv/sedv/iabs/iads/fbbs/fbds/pbts/rtes/mtps/1spdd）",
+            "evidence": "★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = `vector_neut→vector_neut→vector_neut`，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg `rank` 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌"
+          },
+          {
+            "text": "ts_target_tvr_decay(trade_when(greater(vec_avg(fnd72_pit_or_is_a_ebit), vec_avg(fnd72_pit_or_is_a_net_income)), group_zscore(divide(vec_avg(fnd72_pit_or_cf_a_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_a_bs_tot_asset)), industry), -1), lambda_min=0, lambda_max=1, target_tvr=0.06)",
+            "evidence": "9 调用点。EBIT>NI 闸是该闸族最优；tvr 0.06 → vROkA5nw（S1.58/F1.08/2Y1.68/prod0.6663/self0.5270）。同骨架 tvr 0.09 ⇒ P0MZ5nrp(0.6653)、0.12 ⇒ pwvPanJx(0.6595)、0.15 ⇒ akVLzLV1(0.6585/2Y1.83)。闸替换：EBITDA>CFNI（rKd5lAo8 0.6747）、EBIT>CFNI（leM88RN5 0.6701）、EBITDA>NI（wave307 新探）。CFO>NI / OPINC>NI 闸摧毁信号（S→0，不得用）"
           }
         ],
         "notes": [
           "ts_backfill 在 EUR / TOPCS1600 / nanHandling=ON 下是 no-op：写 EUR 表达式先删它；但 /assets 归一化是真信号，残差轴也要归一化",
           "hump 必须写命名参数（hump=k）；hump(vec_avg(x), …) 会 FAIL",
-          "★★ vector_neut 已被平台移除（2026-10-10 op-lint 实测「平台算子清单外的名字」）⇒ 本 cell 旧记「唯一有效杠杆：vector_neut 残差化」作废。残差化可用替代（本轮验证）：ts_regression(y,x,d,rettype=0) / group_neutralize(x,group)（内层须细于 setting 的 SUBINDUSTRY）/ subtract(rank(A),rank(B))（合规放行形态）",
-          "★★★ 【三层闸门口径差异·实测样本】EUR fnd72 `mL617YPx`（2026-10-11）：**平台 review 闸全过**（S1.82/F1.25/TO0.0675/**2年 ladder 2.23**/margin17.6bp/Failed RA=0/prod0.5421/self0.3999），但 **skill Phase C 判 REJECT**（近 **3年** CV_Sharpe 0.661 / max-min 5.26）。★ 差异点：**平台看 2 年窗口，skill 看近 3 年波动性** —— 该腿 2021 年异常高（3.63）拉大 CV。★ repair 2 轮实证（16 条变体）：`target_tvr` 0.06→0.30 仅改善 CV 0.020（饱和于 0.641）；max/min 可从 5.26 修复至 **4.63**（tvr=0.10）；**CV 属结构性，参数层不可弥合**。⇒ **选腿先验：若某腿单年 Sharpre 异常突出（如 2021），它会被 skill Phase C 拦，应优先找年度分布均匀的腿**。"
+          "★★ `vector_neut` **平台可用**（2026-10-20 复核：本地 `research-data/operators_platform_*.json` 不含该算子 = 本地清单假阳性；平台侧 wave291 整批 8 条含 vector_neut×3 被 create_multi_simulation 接受，JjQmx9nm 已 ACTIVE 交付）⇒ 2026-10-10「op-lint 判定平台已移除」的结论作废，残差化首选仍是 vector_neut。其它可用残差化：ts_regression(y,x,d,rettype=0) / group_neutralize(x,group)（内层须细于 setting 的 SUBINDUSTRY）/ subtract(rank(A),rank(B))（合规放行形态）",
+          "★★★ 【三层闸门口径差异·实测样本】EUR fnd72 `mL617YPx`（2026-10-11）：**平台 review 闸全过**（S1.82/F1.25/TO0.0675/**2年 ladder 2.23**/margin17.6bp/Failed RA=0/prod0.5421/self0.3999），但 **skill Phase C 判 REJECT**（近 **3年** CV_Sharpe 0.661 / max-min 5.26）。★ 差异点：**平台看 2 年窗口，skill 看近 3 年波动性** —— 该腿 2021 年异常高（3.63）拉大 CV。★ repair 2 轮实证（16 条变体）：`target_tvr` 0.06→0.30 仅改善 CV 0.020（饱和于 0.641）；max/min 可从 5.26 修复至 **4.63**（tvr=0.10）；**CV 属结构性，参数层不可弥合**。⇒ **选腿先验：若某腿单年 Sharpre 异常突出（如 2021），它会被 skill Phase C 拦，应优先找年度分布均匀的腿**。",
+          "★★ prod 墙是「表达式 × 设置档 × 轴」**三维**，不是表达式单独决定：同族在 maxTrade ON / decay 4 下 tvr 0.017、prod 0.79–0.81；在 decay 1 / maxTrade OFF 下 tvr 0.068–0.089、prod 0.66 ⇒ **turnover 是判别指纹**。任何结构上强的表达式必须先在冠军设置档重跑再判 prod（wave304 vs 301/305/306 同族对照）。",
+          "★ MATRIX 载荷族（`fnd72_s_*`，+ `bs_a` MATRIX 口径）**双轴皆 prod 墙**：industry 0.7968（6XArAz1E）、subindustry **0.7870**（bl8RalWK，S2.00/2Y1.67/F1.57 全闸过、tvr 仅 0.0154）⇒ 该族是慢信号席位，指标再漂亮也不可交付；不要再在 MATRIX 载荷上换轴。",
+          "★ EUR group_zscore 合法轴只有 industry / sector / subindustry / market / country；**sector（prod 0.7553–0.7571）与 market（0.7805）是 prod 密墙**，industry 是唯一破墙轴（0.6585–0.6747）；subindustry 对 VECTOR 载荷抬 prod、country 轴 failRA=1。",
+          "★ 闸1b-2 调用点 <10（合法 ≤9）。`target_tvr` 是命名参数、decay / maxTrade / 中性化 / truncation 是设置，二者都不占调用点预算 ⇒ 补丁只能落在「换轴 / 换 tvr 档 / 换算子 / 换载荷」四类上。",
+          "★ prod-sat 闸按（字段集 + 轴 + 归一化）**三元组**匹配且不可豁免：VECTOR + industry + group_zscore 未饱和；VECTOR + sector 与 MATRIX + industry 已饱和。换 tvr / 换闸字段不会命中三元组。",
+          "★ `quantile` 归一化首次实测即本族最强单点（wave306 P0MZzZMW：S 1.82 / F 1.43 vs group_zscore 1.64/1.14），但 2Y 1.52 差线 0.06 ⇒ **quantile + 更高 target_tvr 是既定 2Y 杠杆**（wave307 已开）。",
+          "★ 归一化毒药三件：group_neutralize（CFO/TA 上 CONCENTRATED_WEIGHT）、group_rank（S 1.27–1.5）、normalize（CW 0.2477）；FCF 率 subtract 形态（(CFO−CAPEX)/TA）tvr 1.28、S −0.01 全崩。",
+          "★ 本族 decay 必须 1（decay 4 使 2Y 1.77→1.18）；maxTrade 必须 OFF（ON 同时压 S 与 tvr ⇒ 抬 prod）。已在 dataset_overrides.fundamental72 钉住。",
+          "★ CFO/TA 同族互相关 0.948–0.991 ⇒ **整个 tvr 阶梯只算一个席位**；组合分散必须换经济概念（EBITDA/TA 毛利资产比、CAPEX/TA 投资异象）或换数据集。",
+          "★ 处女地（从未开波）：**fundamental28（1605 字段）/ fundamental6（279 字段）**；fundamental72 仍有 876 字段中约 870 未覆盖。"
         ]
       },
       "s4": {
@@ -287,6 +403,24 @@
             "id": "eur-fund-hump",
             "what": "hump 档位降 prod 最强（0.0012→0.01：0.686→0.568），可用窗口约 0.0012–0.0035；只能在该族尚无提交时用，否则 self 爆",
             "evidence": "wave273 / wave274（WorkBuddy MEMORY §1.7）",
+            "no_extrapolate": true
+          },
+          {
+            "id": "eur-fund-tvr-ladder",
+            "what": "prod 与 2Y 的**双免费杠杆** = `target_tvr`（命名参数）：同族 tvr 0.06→0.09→0.12→0.15 使 prod 0.6747→0.6624→0.6595→**0.6585**、2Y 1.78→1.80→1.80→**1.83**、S 稳在 1.58–1.64 ⇒ 提 tvr 同时改善两端，是本族唯一不需要换算子的免费升级；已外推 0.18/0.21/0.24（wave307）",
+            "evidence": "wave301/302/305/306（rKd5lAo8 → KPmOOwZx → pwvPanJx → akVLzLV1）",
+            "no_extrapolate": true
+          },
+          {
+            "id": "eur-fund-settings-recheck-before-prod",
+            "what": "结构性强的表达式先在**冠军设置档**（decay 1 / maxTrade OFF）重跑再判 prod：maxTrade ON ⇒ tvr 0.017 / prod 0.79–0.81；OFF ⇒ tvr 0.068 / prod 0.66。turnover 是判别指纹 —— 看到 tvr < 0.03 就别按 prod 判死，换档重测",
+            "evidence": "wave304（maxTrade ON）vs wave301/305/306（OFF）同族对照",
+            "no_extrapolate": true
+          },
+          {
+            "id": "eur-fund-normalizer-swap",
+            "what": "归一化算子是本族最强的单点换算子：`quantile` 替 `group_zscore` 使 S 1.64→1.82、F 1.14→1.43（2Y 1.78→1.52 需配更高 tvr 补回）；反之 group_rank / normalize / group_neutralize 全部劣化或触发 CW",
+            "evidence": "wave306 P0MZzZMW（quantile）/ leM8G8M2（normalize, CW 0.2477）",
             "no_extrapolate": true
           }
         ],
@@ -310,8 +444,47 @@
           {
             "what": "中性化切到 MARKET：IS 最高但 prod 涨到 0.7254",
             "evidence": "WorkBuddy MEMORY §1.7"
+          },
+          {
+            "what": "MATRIX 载荷族 `fnd72_s_*`（双轴皆 prod 墙）：industry 0.7968 / subindustry 0.7870",
+            "evidence": "wave303 6XArAz1E；wave305 bl8RalWK（S2.00/F1.57 全闸过仍 prod 0.7870）"
+          },
+          {
+            "what": "sector 轴（prod 0.7553–0.7571）与 market 轴（0.7805）",
+            "evidence": "wave305 E5VvwZer / gJWQMx9v / 1Yjxxn2m"
+          },
+          {
+            "what": "group_neutralize（CFO/TA 上 CONCENTRATED_WEIGHT）与 group_rank（S 1.27–1.5）",
+            "evidence": "wave301 / wave302"
+          },
+          {
+            "what": "normalize() 归一化（CONCENTRATED_WEIGHT 0.24771，S 1.41 差线）",
+            "evidence": "wave306 leM8G8M2"
+          },
+          {
+            "what": "FCF 率 subtract 形态 (CFO−CAPEX)/TA：tvr 1.2816、S −0.01、failRA 6 全崩",
+            "evidence": "wave306 RRAVzVAz"
+          },
+          {
+            "what": "fundamental1 董事会流失率族（director_attrition_ratio_2 / fnd1_filtered_attrition3yr）：longCount 4 / shortCount 4，数据集不可用",
+            "evidence": "wave306 1YjxKlMK / N1eQzJYo"
           }
         ]
+      },
+      "dataset_overrides": {
+        "fundamental72": {
+          "backtest": {
+            "overrides": {
+              "decay": 1,
+              "maxTrade": "OFF"
+            },
+            "_evidence": {
+              "decay": "wave301/302/305/306 冠军族全部 decay=1，prod 0.6585–0.6747；wave304 decay=4 同族 prod 0.79–0.81 且 2Y 1.77→1.18",
+              "maxTrade": "wave301/302/305/306 maxTrade=OFF ⇒ tvr 0.068–0.089 / prod 0.66；wave304 maxTrade=ON ⇒ tvr 0.017 / prod 0.79–0.81（同时压 S 与 tvr ⇒ 抬 prod）"
+            }
+          },
+          "note": "本数据集冠军族只在 decay 1 / maxTrade OFF 下过 prod；region settings.json 缺省 decay 4 / maxTrade ON 属慢信号档，对本族会直接撞 prod 墙。"
+        }
       }
     },
     "insiders": {

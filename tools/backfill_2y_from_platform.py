@@ -44,6 +44,10 @@ async def main():
                     two_y = val
                 elif name == "IS_LADDER_SHARPE":
                     ladder = val
+            # 2Y 的两个载体（`wqb.config.RA_2Y_NAMES`）：平台按 alpha 代际只发其一。
+            # 只发 IS_LADDER_SHARPE 时它就是 2Y（2026-10-23 IND 实测两者同值）。
+            if two_y is None and ladder is not None:
+                two_y = ladder
             results[aid] = {"two_year_sharpe": two_y, "is_ladder_sharpe": ladder}
             if two_y is not None:
                 ok2y += 1

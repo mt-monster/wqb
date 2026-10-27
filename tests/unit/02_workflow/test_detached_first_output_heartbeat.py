@@ -68,6 +68,47 @@ def test_heartbeat_disabled_keeps_old_behaviour(tmp_path):
             proc.kill()
 
 
+def test_live_child_with_benign_stderr_info_line_passes(tmp_path):
+    """2026-10-24 实证：toolkit gate.py 把 `[gate] 闸1 verifier = …` 写进 stderr，
+    进程仍在跑、gate 已过、表达式已读 —— 不能因这一行判「启动失败」。"""
+    code = (
+        "import sys,time\n"
+        "sys.stderr.write('[gate] 闸1 verifier = D:/x/scripts\\n'); sys.stderr.flush()\n"
+        "print('running'); sys.stdout.flush()\n"
+        "time.sleep(5)\n"
+    )
+    proc, out, err, fo, fe = _spawn(code, tmp_path)
+    try:
+        reason = detached_launch_failed(proc, err, grace_sec=0.5, stdout_log=out, first_output_sec=3)
+        assert reason is None, reason
+        assert proc.poll() is None  # 仍在跑，未被误杀
+    finally:
+        fo.close()
+        fe.close()
+        if proc.poll() is None:
+            proc.kill()
+
+
+def test_live_child_with_traceback_stderr_still_failed(tmp_path):
+    """反向：进程存活但 stderr 里是 traceback ⇒ 仍判启动失败（不许把真故障放过）。"""
+    code = (
+        "import sys,time\n"
+        "sys.stderr.write('Traceback (most recent call last):\\n  File \"x.py\"\\nKeyboardInterrupt\\n')\n"
+        "sys.stderr.flush()\n"
+        "print('running'); sys.stdout.flush()\n"
+        "time.sleep(5)\n"
+    )
+    proc, out, err, fo, fe = _spawn(code, tmp_path)
+    try:
+        reason = detached_launch_failed(proc, err, grace_sec=0.5, stdout_log=out, first_output_sec=3)
+        assert reason and "stderr 非空" in reason, reason
+    finally:
+        fo.close()
+        fe.close()
+        if proc.poll() is None:
+            proc.kill()
+
+
 def test_batch_track_launch_flags_match_campaign_node():
     """batch_track 不得再带无控制台创建标志，且必须 stdin=DEVNULL（与 campaign 节点一致）。"""
     src = (REPO_ROOT / "src" / "wqb" / "workflow" / "nodes" / "batch_track.py").read_text(encoding="utf-8")

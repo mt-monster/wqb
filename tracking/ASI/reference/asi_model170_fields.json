@@ -1,0 +1,220 @@
+{
+ "dataset": "model170",
+ "region": "ASI",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 22
+ },
+ "field_count": 22,
+ "platform_count": 22,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 456,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.9131,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-22T23:46:45",
+ "fields": [
+  {
+   "id": "annual_price_peak",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "The highest share price of the stock in the past 52 weeks as of the given date"
+  },
+  {
+   "id": "annual_price_trough",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "The lowest share price of the stock in the past 52 weeks as of the given date"
+  },
+  {
+   "id": "composite_fundamental_score",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Composite score evaluating company’s fundamental quality relative to peers, across valuation, operations, and diagnostic"
+  },
+  {
+   "id": "dividend_quality_composite_score",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Overall numerical score (not relative) evaluating the company’s current dividend quality, historical trend, and dividend"
+  },
+  {
+   "id": "implied_price_range_maximum",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Implied maximum share price threshold estimated by CapitalCube analytical models"
+  },
+  {
+   "id": "implied_price_range_minimum",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 453,
+   "description": "CapitalCube model's implied minimum price range for the company's stock"
+  },
+  {
+   "id": "latest_implied_valuation_price",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "CapitalCube's model-derived implied price for the company's stock as of the most recent date"
+  },
+  {
+   "id": "mdl170_ccp_latest",
+   "type": "VECTOR",
+   "coverage": 0.9554,
+   "userCount": 1,
+   "alphaCount": 4,
+   "longCount": 477,
+   "description": "Implied Price"
+  },
+  {
+   "id": "mdl170_ccpmax",
+   "type": "VECTOR",
+   "coverage": 0.9554,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 477,
+   "description": "Implied Price Max"
+  },
+  {
+   "id": "mdl170_ccpmin",
+   "type": "VECTOR",
+   "coverage": 0.9372,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 468,
+   "description": "Implied Price Min"
+  },
+  {
+   "id": "mdl170_currentpricelevelannual",
+   "type": "VECTOR",
+   "coverage": 0.9312,
+   "userCount": 1,
+   "alphaCount": 4,
+   "longCount": 465,
+   "description": "Earnings Momentum Score"
+  },
+  {
+   "id": "mdl170_dividendqualityscore",
+   "type": "VECTOR",
+   "coverage": 0.8044,
+   "userCount": 2,
+   "alphaCount": 5,
+   "longCount": 402,
+   "description": "Overall Dividend Score The Dividend Quality score is calculated based on the quality of the company?s current dividend t"
+  },
+  {
+   "id": "mdl170_dividendyield_latest",
+   "type": "VECTOR",
+   "coverage": 0.7688,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 384,
+   "description": "Price relative to 52 week range"
+  },
+  {
+   "id": "mdl170_fiftytwoweekhigh",
+   "type": "VECTOR",
+   "coverage": 0.9562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 478,
+   "description": "Fifty Two week High as of the date"
+  },
+  {
+   "id": "mdl170_fiftytwoweeklow",
+   "type": "VECTOR",
+   "coverage": 0.9325,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 466,
+   "description": "Fifty Two week Low as of the date"
+  },
+  {
+   "id": "mdl170_fundamentalanalysisscore",
+   "type": "VECTOR",
+   "coverage": 0.953,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 476,
+   "description": "Overall Fundamental Score The Fundamental Analysis score is calculated by comparing the company?s performance relative t"
+  },
+  {
+   "id": "mdl170_previousdayclosingprice_latest",
+   "type": "VECTOR",
+   "coverage": 0.9561,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 478,
+   "description": "Closing Price on the date"
+  },
+  {
+   "id": "mdl170_scaledearningsscoreaverage_latest",
+   "type": "VECTOR",
+   "coverage": 0.9555,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 477,
+   "description": "Earnings Momentum Score"
+  },
+  {
+   "id": "price_position_within_annual_range",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Current share price’s position relative to the 52-week price range (e.g., high, median, low)"
+  },
+  {
+   "id": "prior_close_price",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "The most recent closing price of the company's stock prior to the current date"
+  },
+  {
+   "id": "recent_dividend_yield_pct",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Most recent dividend yield percentage for the company’s stock"
+  },
+  {
+   "id": "recent_earnings_momentum_score",
+   "type": "VECTOR",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 453,
+   "description": "Recent average score of earnings quality or momentum, scaled 0-100"
+  }
+ ]
+}

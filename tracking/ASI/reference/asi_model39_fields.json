@@ -1,0 +1,238 @@
+{
+ "dataset": "model39",
+ "region": "ASI",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 24
+ },
+ "field_count": 24,
+ "platform_count": 24,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 470,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.9408,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-22T23:46:49",
+ "fields": [
+  {
+   "id": "global_price_momentum_percentile_2",
+   "type": "MATRIX",
+   "coverage": 0.9284,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 464,
+   "description": "The current global 1-100 percentile rank of the security based on the Price Momentum Model"
+  },
+  {
+   "id": "global_value_momentum_rank",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 471,
+   "description": "The current global 1-100 percentile rank of the security based on the Value-Momentum Model"
+  },
+  {
+   "id": "global_value_momentum_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 471,
+   "description": "Float (non-integer) value of the global 1-100 percentile rank for the Value-Momentum Model"
+  },
+  {
+   "id": "industry_price_momentum_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9551,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 477,
+   "description": "A percentile rank reflecting only the industry aspect of the Price Momentum Model; scores of 100 indicate the highest ra"
+  },
+  {
+   "id": "industry_value_momentum_rank",
+   "type": "MATRIX",
+   "coverage": 0.9137,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 456,
+   "description": "The current industry 1-100 percentile rank of the security based on the Value-Momentum Model"
+  },
+  {
+   "id": "industry_value_momentum_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.9137,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 456,
+   "description": "Float (non-integer) value of the industry 1-100 percentile rank for the Value-Momentum Model"
+  },
+  {
+   "id": "long_term_price_momentum_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9289,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 464,
+   "description": "A percentile rank reflecting only the long term aspect of the Price Momentum Model; scores of 100 indicate the highest r"
+  },
+  {
+   "id": "mdl39_d1_price_mo_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.8805,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 440,
+   "description": "Global-relative 1-100 ranking of the Price Mo model"
+  },
+  {
+   "id": "mdl39_d1_price_mo_industry_component",
+   "type": "MATRIX",
+   "coverage": 0.9978,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 498,
+   "description": "Global 1-100 ranking of the Industry Price Momentum Component of the Price Mo model"
+  },
+  {
+   "id": "mdl39_d1_price_mo_long_term_component",
+   "type": "MATRIX",
+   "coverage": 0.8834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 441,
+   "description": "Global 1-100 ranking of the Long-Term Price Momentum Component of the Price Mo model"
+  },
+  {
+   "id": "mdl39_d1_price_mo_mid_term_component",
+   "type": "MATRIX",
+   "coverage": 0.9505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 475,
+   "description": "Global 1-100 ranking of the Mid-Term Price Momentum Component of the Price Mo model"
+  },
+  {
+   "id": "mdl39_d1_price_mo_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.8805,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 440,
+   "description": "Region-relative 1-100 ranking of the Price Mo model"
+  },
+  {
+   "id": "mdl39_d1_price_mo_short_term_component",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 1,
+   "alphaCount": 3,
+   "longCount": 491,
+   "description": "Global 1-100 ranking of the Short-Term Price Momentum Component of the Price Mo model"
+  },
+  {
+   "id": "mdl39_d1_val_mo_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.9708,
+   "userCount": 3,
+   "alphaCount": 7,
+   "longCount": 485,
+   "description": "Global-relative 1-100 ranking of the Val-Mo model"
+  },
+  {
+   "id": "mdl39_d1_val_mo_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.9587,
+   "userCount": 4,
+   "alphaCount": 6,
+   "longCount": 479,
+   "description": "Industry-relative 1-100 ranking of the Val-Mo model"
+  },
+  {
+   "id": "mdl39_d1_val_mo_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.9708,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 485,
+   "description": "Region-relative 1-100 ranking of the Val-Mo model"
+  },
+  {
+   "id": "mdl39_d1_val_mo_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.9708,
+   "userCount": 3,
+   "alphaCount": 8,
+   "longCount": 485,
+   "description": "Sector-relative 1-100 ranking of the Val-Mo model"
+  },
+  {
+   "id": "mid_term_price_momentum_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9548,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 477,
+   "description": "A percentile rank reflecting only the mid term aspect of the Price Momentum Model; scores of 100 indicate the highest ra"
+  },
+  {
+   "id": "region_value_momentum_rank",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 471,
+   "description": "The current regional 1-100 percentile rank of the security based on the Value-Momentum Model"
+  },
+  {
+   "id": "region_value_momentum_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 471,
+   "description": "Float (non-integer) value of the regional 1-100 percentile rank for the Value-Momentum Model"
+  },
+  {
+   "id": "regional_price_momentum_percentile_2",
+   "type": "MATRIX",
+   "coverage": 0.9284,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 464,
+   "description": "The current regional 1-100 percentile rank of the security based on the Price Momentum Model"
+  },
+  {
+   "id": "sector_value_momentum_rank",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 2,
+   "alphaCount": 5,
+   "longCount": 471,
+   "description": "The current sector 1-100 percentile rank of the security based on the Value-Momentum Model"
+  },
+  {
+   "id": "sector_value_momentum_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 471,
+   "description": "Float (non-integer) value of the sector 1-100 percentile rank for the Value-Momentum Model"
+  },
+  {
+   "id": "short_term_price_momentum_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9554,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 477,
+   "description": "A percentile rank reflecting only the short term aspect of the Price Momentum Model; scores of 100 indicate the highest "
+  }
+ ]
+}

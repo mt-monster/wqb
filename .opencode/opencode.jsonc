@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      // 与 .mcp.json（wq-brain-http / wqb-db）同名同 URL，服务为常驻 HTTP（tools/start_wq_mcp.py --all）。
+      // 放 .opencode/ 而非仓库根：S7 根目录白名单只允许入口/配置/三份文档，opencode.json 会判红。
+      "wq-brain-http": {
+        "type": "remote",
+        "url": "http://127.0.0.1:8000/mcp"
+      },
+      "wqb-db": {
+        "type": "remote",
+        "url": "http://127.0.0.1:8001/mcp"
+      }
+    }
+  }
+}

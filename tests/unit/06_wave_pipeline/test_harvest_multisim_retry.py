@@ -131,3 +131,37 @@ def test_salvage_accepts_string_wave():
     assert "int(a.wave)" not in code, "salvage 不得对波号强转 int（SOP 波号是字符串）"
     assert "_salvage_to_pool(a.region, a.wave, all_alphas)" in code, (
         "应以字符串波号直传 _salvage_to_pool")
+
+
+def test_warning_children_count_as_done():
+    """`WARNING` 是**已终结且已出 alpha** 的状态，必须入库（2026-10-24 实证）。
+
+    缺口：`TERMINAL` / `SUCCESS_STATUS` 只认 DONE / COMPLETE。insd_agg_w1 的 10 个
+    child 里有 6 个回 `WARNING`（带 UNITS / CLUSTER_TEST 告警），于是
+    `--auto-upsert` 只写进 4 行，另 6 条静默不入库——而同一个 multisim 走
+    `harvest_multisim_alphas` 是 10/10 全拿到，两边口径不一致。
+    """
+    hm = _load_tool()
+    assert "WARNING" in hm.TERMINAL, "WARNING 是终结态"
+    assert "WARNING" in hm.SUCCESS_STATUS, "WARNING 的 child 已产出 alpha，必须拉详情入库"
+
+    import unittest.mock as mock
+
+    async def fake_child_status(_brain, loc):
+        status = "WARNING" if loc.endswith("child_warn") else "COMPLETE"
+        return {"status": status, "alpha_id": loc.rsplit("/", 1)[-1], "location": loc}
+
+    class _ParentBrain:
+        base_url = "https://api.worldquantbrain.com"
+
+        async def _request(self, method, url, **kw):
+            return _Resp(200, {"children": ["/simulations/child_ok", "/simulations/child_warn"]})
+
+    with mock.patch.object(hm, "fetch_child_status", fake_child_status), \
+         mock.patch("asyncio.sleep", new=_no_sleep):
+        res = asyncio.run(hm.harvest_one_multisim(_ParentBrain(), "MS_W", ids_only=True))
+
+    assert res.get("child_count") == 2
+    assert res.get("terminal_count") == 2, f"WARNING 应计入终结：{res.get('terminal_count')}"
+    assert res.get("done_count") == 2, f"WARNING 应计入已完成：{res.get('done_count')}"
+

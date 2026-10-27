@@ -11,8 +11,16 @@
 > `tools/THEMES.json` 的 `_retired_20261006`。下面 A/C 两节列的就是其中 17 件，
 > 保留作「当时凭什么归档」的判断记录，**不要再当作「文件还在本目录」的清单读**。
 >
-> **本目录仍存的 4 个 .py（经复核不得退役）**：`gate.py`（被文档与历史调用链引用）、
-> `fix_stale_fk_20260928.py`、`opswap_driver.py`（均被 import）、`backfill_backtest_dataset.py`（被活 SOP 叫）。
+> **本目录仍存的 2 个 .py（经复核不得退役）**：`gate.py`（被文档与历史调用链引用）、
+> `backfill_backtest_dataset.py`（被活 SOP 叫）。
+> ⚠ **2026-10-20：本目录原另 2 件已逐件退役** —— `fix_stale_fk_20260928.py`（2026-09-28
+> 一次性 P0 悬空外键修复，已跑完）与 `opswap_driver.py`（配套的 `opswap_analyze` /
+> `opswap_build_plan` 已于 2026-10-06 同批退役、引用链解耦）。判据 = §5.4 五种引用形态全 0
+> （并跑正对照 `wave_gate` 命中 392 证明 grep 形式有效），内容留 git 历史，取看
+> `git show <退役前主干>:tools/legacy/<file>.py`；已登记 `retired_paths` 由 S12 拦复活。
+> ⚠ **本条同时更正上文「均被 import」的过时说法**：那在 2026-09-25 成立（当时两件在顶层、
+> 被 `tracking/` 脚本 import），迁入 `tools/legacy/` 后引用方已随之退役 —— 引用面必须**实测**，
+> 不能凭旧记录推断（§5.4 标题句的由来）。
 > 这条止住的是「按目录连坐删」——上一批就差点这么干。
 
 ## 归档判据（二选一，2026-09-25 扩展）

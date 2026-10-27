@@ -1,0 +1,283 @@
+{
+ "dataset": "other452",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 29
+ },
+ "field_count": 29,
+ "platform_count": 29,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 372,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.3727,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-20T14:49:55",
+ "fields": [
+  {
+   "id": "oth452_accrualsratio_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.4061,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 406,
+   "description": "Accruals ratio d1 asset change"
+  },
+  {
+   "id": "oth452_deferred_tax_expense_11",
+   "type": "MATRIX",
+   "coverage": 0.5383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 538,
+   "description": "Deferred tax expense"
+  },
+  {
+   "id": "oth452_deferred_tax_expense_12",
+   "type": "MATRIX",
+   "coverage": 0.5374,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 537,
+   "description": "Deferred tax expense"
+  },
+  {
+   "id": "oth452_deferred_tax_expense_21",
+   "type": "MATRIX",
+   "coverage": 0.4478,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 447,
+   "description": "Deferred tax expense"
+  },
+  {
+   "id": "oth452_deferred_tax_expense_22",
+   "type": "MATRIX",
+   "coverage": 0.4463,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 446,
+   "description": "Deferred tax expense"
+  },
+  {
+   "id": "oth452_deferred_tax_expense_31",
+   "type": "MATRIX",
+   "coverage": 0.5375,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 537,
+   "description": "Deferred tax expense"
+  },
+  {
+   "id": "oth452_deferred_tax_expense_41",
+   "type": "MATRIX",
+   "coverage": 0.5062,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 506,
+   "description": "Deferred tax expense"
+  },
+  {
+   "id": "oth452_deferred_tax_expense_51",
+   "type": "MATRIX",
+   "coverage": 0.5128,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 512,
+   "description": "Deferred tax expense"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_11",
+   "type": "MATRIX",
+   "coverage": 0.3543,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 354,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_12",
+   "type": "MATRIX",
+   "coverage": 0.3543,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 354,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_13",
+   "type": "MATRIX",
+   "coverage": 0.3128,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 312,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_21",
+   "type": "MATRIX",
+   "coverage": 0.2935,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 293,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_22",
+   "type": "MATRIX",
+   "coverage": 0.2921,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 292,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_31",
+   "type": "MATRIX",
+   "coverage": 0.3651,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 365,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_41",
+   "type": "MATRIX",
+   "coverage": 0.3383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 338,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_deferred_tax_liability_51",
+   "type": "MATRIX",
+   "coverage": 0.3367,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 336,
+   "description": "Deferred tax liability"
+  },
+  {
+   "id": "oth452_expense_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.4328,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 432,
+   "description": "Expense d1 asset change"
+  },
+  {
+   "id": "oth452_expense_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.2542,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 254,
+   "description": "Expense d1 dts"
+  },
+  {
+   "id": "oth452_expense_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.2802,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 280,
+   "description": "Expense d1 length"
+  },
+  {
+   "id": "oth452_expense_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.273,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 273,
+   "description": "Expense d1 max"
+  },
+  {
+   "id": "oth452_expense_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.2749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 274,
+   "description": "Expense d1 mean"
+  },
+  {
+   "id": "oth452_expense_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.2722,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 272,
+   "description": "Expense d1 min"
+  },
+  {
+   "id": "oth452_liability_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.4054,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 405,
+   "description": "Liability d1 asset change"
+  },
+  {
+   "id": "oth452_liability_d1_current_t",
+   "type": "MATRIX",
+   "coverage": 0.2642,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 264,
+   "description": "Liability d1 current t"
+  },
+  {
+   "id": "oth452_liability_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.3421,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 342,
+   "description": "Liability d1 distributions"
+  },
+  {
+   "id": "oth452_liability_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.3633,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 363,
+   "description": "Liability d1 length"
+  },
+  {
+   "id": "oth452_liability_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.355,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 355,
+   "description": "Liability d1 max"
+  },
+  {
+   "id": "oth452_liability_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.3576,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 357,
+   "description": "Liability d1 mean"
+  },
+  {
+   "id": "oth452_liability_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.3548,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 354,
+   "description": "Liability d1 min"
+  }
+ ]
+}

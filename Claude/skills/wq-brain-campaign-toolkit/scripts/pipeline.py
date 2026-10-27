@@ -1134,9 +1134,11 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
             from _lib.wave_results import WaveResultsStore
             wr = WaveResultsStore(ctx.region, ctx=ctx)
             ms_ids = [b.get("multisim") for b in ck.get("batches", []) if b.get("multisim")]
-            wr.auto_upsert_from_review(
+            _out_wr = wr.auto_upsert_from_review(
                 ck["wave"], rows, [], [],
-                settings=ctx.settings, multisim_ids=ms_ids)
+                settings=ctx.settings, multisim_ids=ms_ids, thresholds=t)
+            for _f in (_out_wr or {}).get("findings") or []:   # 复盘四列（P1-2），首屏可见
+                print(f"  {_f}")
         except (Exception, SystemExit) as e:
             print(f"[wave_results] 自动入库异常（不阻断）: {e}")
         try:
@@ -1188,6 +1190,16 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
                 continue
             near.append(r)
     review_mod.report_near_exclusions(excluded, t, t_near)
+    # ---- P1-5 换手区间标注（2026-10-24，只标注不删行；越界行不进 prod/self 队列）----
+    try:
+        from _lib.wave_results import TO_BAND_HI, TO_BAND_LO, annotate_turnover_band
+        _to_bad = annotate_turnover_band(rows)
+        if _to_bad:
+            print(f"[to_band] 换手越界 {len(_to_bad)}/{len(rows)} 行"
+                  f"（保留区间 [{TO_BAND_LO:.2f}, {TO_BAND_HI:.2f}]，只标注不删行；"
+                  f"越界行不进 prod/self 队列）")
+    except (Exception, SystemExit) as e:
+        print(f"[to_band] 标注异常（不阻断）: {e}")
     # ---- wave_results 自动入库（波次结论 + near 池，替代 review JSON 文件）----
     try:
         from _lib.wave_results import WaveResultsStore
@@ -1195,12 +1207,14 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         ms_ids = [b.get("multisim") for b in ck.get("batches", []) if b.get("multisim")]
         out_wr = wr.auto_upsert_from_review(
             ck["wave"], rows, candidates, near,
-            settings=ctx.settings, multisim_ids=ms_ids)
+            settings=ctx.settings, multisim_ids=ms_ids, thresholds=t)
         if out_wr.get("skipped"):
             print(f"[wave_results] 跳过: {out_wr.get('reason')}")
         else:
             print(f"[wave_results] wave={out_wr['wave_number']} -> {out_wr['status']} "
                   f"(findings={out_wr['key_findings_n']} candidates={out_wr['candidates_n']})")
+            for _f in out_wr.get("findings") or []:            # 复盘四列（P1-2），首屏可见
+                print(f"  {_f}")
     except (Exception, SystemExit) as e:
         # SystemExit 不继承 Exception，而 _lib/wave_results.upsert 的契约校验
         # （wave_number / status / verdict 三态）用的正是 raise SystemExit。只写

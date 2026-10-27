@@ -8,11 +8,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 
+#: `ast.FunctionDef` 只覆盖同步函数；`async def` 是 `ast.AsyncFunctionDef`。
+#: 2026-10-27：`workflow_submit_alpha` 为了不阻塞 MCP 事件循环改成 `async def`，
+#: 只认 FunctionDef 的探针当场「找不到函数」⇒ 本文件 4 条提交安全断言全部停摆。
+#: 两种形态都要认，否则一次 sync→async 改造就能把不可逆动作的静态保险打瞎。
+_FUNC_DEFS = (ast.FunctionDef, ast.AsyncFunctionDef)
+
 
 def _defaults(path, func):
     tree = ast.parse((ROOT / path).read_text(encoding="utf-8"))
     for n in ast.walk(tree):
-        if isinstance(n, ast.FunctionDef) and n.name == func:
+        if isinstance(n, _FUNC_DEFS) and n.name == func:
             a = n.args
             names = [x.arg for x in a.args]
             vals = [None] * (len(names) - len(a.defaults)) + list(a.defaults)
@@ -25,6 +31,22 @@ def _defaults(path, func):
                     return ast.unparse(v)
             return {k: _val(v) for k, v in zip(names, vals)}
     raise AssertionError(f"{path}: 找不到 {func}")
+
+
+def _tool_names(path):
+    """该模块里所有 `@mcp.tool()` 装饰的函数名（同步 + 异步）。
+
+    ⚠ 这里**故意不复用** `_FUNC_DEFS`：探针自己写死两种形态，才能在被测的
+    `_defaults()` 收窄成只看 `FunctionDef` 时仍然枚举出异步工具并让它红。
+    """
+    tree = ast.parse((ROOT / path).read_text(encoding="utf-8"))
+    out = []
+    for n in ast.walk(tree):
+        if not isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        if any("mcp.tool" in ast.unparse(d) for d in n.decorator_list):
+            out.append(n.name)
+    return out
 
 
 def test_workflow_submit_alpha_defaults_are_safe():
@@ -55,3 +77,19 @@ def test_verify_timeout_default_matches_wait_thresholds():
     from wqb.config import WAIT_THRESHOLDS
     d = _defaults("world-quant-brain-mcp/tools_workflow.py", "workflow_submit_alpha")
     assert d["verify_timeout"] == WAIT_THRESHOLDS["submit_flip_wait_s"]
+
+
+def test_probe_sees_every_mcp_tool_in_tools_workflow():
+    """不变量：本文件的 AST 探针对 `tools_workflow.py` 里**每个** MCP 工具都取得到。
+
+    防的是「判据按代码形态写死」这一类静默失守：2026-10-27 `workflow_submit_alpha`
+    改成 `async def` 后，只认 `ast.FunctionDef` 的探针当场看不到它，
+    于是 4 条提交安全断言一条都不跑、只留下一条「找不到函数」的红。
+    这里对全部工具逐个过一遍探针，任何形态漏认都会在这条用例上暴露。
+    """
+    path = "world-quant-brain-mcp/tools_workflow.py"
+    names = _tool_names(path)
+    assert names, f"{path}: 一个 @mcp.tool() 都没解析到（装饰器形态变了？）"
+    unreachable = [n for n in names if not isinstance(_defaults(path, n), dict)]
+    assert not unreachable, f"{path}: 探针取不到这些工具：{unreachable}"
+

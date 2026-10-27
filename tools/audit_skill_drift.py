@@ -99,8 +99,25 @@ DIVERGED_ALLOWLIST: dict[str, str] = {
 }
 
 
+# 区域战役引擎副本（2026-10-26 登记）：ind / usa 各带一套 wqb_campaign 流水线
+# （用户 2026-10-25 明确要求「复制一套 campaign 流水线到 usa」）。字段模板、区域常量、
+# 设置与阈值按区域各自演化，属设计内分叉。**按路径形态收窄**：仅当组内每份副本都在
+# `scripts/{ind,usa}_campaign/` 下才豁免——不用 DIVERGED_ALLOWLIST 的按名匹配，
+# 免得 config.py / generate.py 这类通用名在别处被静默豁免（S13/S11 同坑）。
+REGION_CAMPAIGN_DIRS = ("scripts/ind_campaign/", "scripts/usa_campaign/")
+REGION_CAMPAIGN_REASON = (
+    "区域战役引擎：ind_campaign / usa_campaign 各持一套（用户 2026-10-25 要求 USA 独立复制），"
+    "字段模板与区域设置按设计各自演化；比对面 = 同区域内副本，不跨区域逐字一致。"
+)
+
+
 def _is_embedded(p: Path) -> bool:
     return EMBEDDED_ROOT in p.parts
+
+
+def _is_region_campaign_copy(p: Path) -> bool:
+    posix = p.as_posix()
+    return any(d in posix for d in REGION_CAMPAIGN_DIRS)
 
 
 def _skill_of(p: Path) -> str:
@@ -187,20 +204,30 @@ def collect_diverged() -> tuple[list[dict], list[dict]]:
             entry["kind"] = "分叉副本(设计内·已登记)"
             entry["allowlist_reason"] = DIVERGED_ALLOWLIST[name]
             allowed.append(entry)
+        elif all(_is_region_campaign_copy(p) for p in paths):
+            # 区域战役引擎副本：按路径形态收窄豁免，不进 DIVERGED_ALLOWLIST 的按名匹配
+            entry["kind"] = "分叉副本(区域战役引擎·设计内)"
+            entry["allowlist_reason"] = REGION_CAMPAIGN_REASON
+            allowed.append(entry)
         else:
             out.append(entry)
     return out, allowed
 
 
-def classify(groups: dict[str, list[Path]]) -> tuple[list[dict], list[dict]]:
-    """把副本组分成 A（内嵌快照，设计内）与 B（跨 skill 复制，真风险）。
+def classify(
+    groups: dict[str, list[Path]],
+) -> tuple[list[dict], list[dict], list[dict]]:
+    """把副本组分成 A（内嵌快照，设计内）、C（区域战役引擎，设计内）与 B（跨 skill 复制，真风险）。
 
     判据：设该组涉及的所有 skill（含内嵌快照背后的 owner skill）。若这些
     skill 名字去重后**只剩一个**，说明是「同一 skill 的顶层版 + 其 GEM 内嵌
-    快照」——设计内的单一来源复制，不报。否则涉及 ≥2 个平级 skill，属真漂移。
+    快照」——设计内的单一来源复制，不报。若全部副本都在
+    `scripts/{ind,usa}_campaign/` 下，属区域战役引擎的跨区复制（用户要求
+    各区域独立一套、按区域演化），也不报。否则涉及 ≥2 个平级 skill，属真漂移。
     """
     embedded: list[dict] = []
     cross: list[dict] = []
+    region_campaign: list[dict] = []
     for h, paths in groups.items():
         owners = sorted({_skill_of(p) for p in paths})
         entry = {
@@ -214,10 +241,15 @@ def classify(groups: dict[str, list[Path]]) -> tuple[list[dict], list[dict]]:
             # 全部副本都在内嵌里 → A 类
             entry["kind"] = "A:内嵌快照(设计内)"
             embedded.append(entry)
+        elif all(_is_region_campaign_copy(p) for p in paths):
+            # 区域战役引擎副本（内容仍相同）→ C 类，设计内
+            entry["kind"] = "C:区域战役引擎副本(设计内)"
+            entry["allowlist_reason"] = REGION_CAMPAIGN_REASON
+            region_campaign.append(entry)
         else:
             entry["kind"] = "B:跨skill复制"
             cross.append(entry)
-    return embedded, cross
+    return embedded, cross, region_campaign
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -235,17 +267,18 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         # 静默模式：只返回退出码，供 audit_structure S6 转调（不刷屏）
         groups = collect()
-        _embedded, cross = classify(groups)
+        _embedded, cross, _rc = classify(groups)
         diverged, _allowed = collect_diverged()
         return 1 if (cross or diverged) else 0
 
     groups = collect()
-    embedded, cross = classify(groups)
+    embedded, cross, region_campaign = classify(groups)
     diverged, diverged_allowed = collect_diverged()
 
     if args.json:
         print(json.dumps(
-            {"embedded": embedded, "cross_skill": cross, "diverged": diverged,
+            {"embedded": embedded, "cross_skill": cross,
+             "region_campaign": region_campaign, "diverged": diverged,
              "diverged_allowed": diverged_allowed},
             ensure_ascii=False, indent=2))
         return 1 if (cross or diverged) else 0
@@ -275,6 +308,13 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"      · {p}")
         print()
 
+    if region_campaign:
+        print("C 类 · 区域战役引擎副本（ind_campaign / usa_campaign 各持一套，设计内）：")
+        for e in region_campaign:
+            print(f"  - {e['name']}  ({e['bytes']} bytes, {len(e['paths'])} 份)")
+        print(f"    理由：{REGION_CAMPAIGN_REASON}")
+        print()
+
     if diverged_allowed:
         print("○ 设计内分叉（已登记 DIVERGED_ALLOWLIST，不算漂移）：")
         for e in diverged_allowed:
@@ -291,6 +331,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"[audit_skill_drift] B={len(cross)}  分叉={len(diverged)}"
           f"  设计内分叉={len(diverged_allowed)}  A={len(embedded)}"
+          f"  C(区域战役引擎)={len(region_campaign)}"
           f"  → B 类与未登记分叉是待治理项。")
     return 1 if (cross or diverged) else 0
 

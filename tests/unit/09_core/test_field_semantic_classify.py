@@ -98,6 +98,19 @@ def test_two_cues_required_for_flag_description():
     assert cat2 is not None, "裸 flag 名词不应触发标志位判定"
 
 
+def test_platform_declared_non_signal_indicator_blocked():
+    """平台描述文明示「不是交易信号」的记账/时序指示器必须被拦（2026-10-23 insider_matrix 战例）。"""
+    fsc = _load()
+    cat, label = fsc.classify(
+        "Dataset-specific timing/bookkeeping indicator used for internal sequence logging; "
+        "not a trading signal",
+        "director_intensity_score",
+    )
+    assert cat is None, f"应被拦为 {label}，实际判为信号字段 {cat}"
+    cat2, _ = fsc.classify("A price momentum indicator used for timing", "mdl109_mom")
+    assert cat2 is not None, "未出现显式非信号措辞的 indicator 仍应判为信号"
+
+
 # ---- ③ 时间朝向提示：已实现（事后）vs 预测（前瞻）——只提示，不改 signal / blocked 判定（2026-10-04）----
 
 def test_time_orientation_name_tokens():

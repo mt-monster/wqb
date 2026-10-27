@@ -78,6 +78,9 @@ ROTATION_WEIGHTS: Dict[str, float] = {
 #: entry_verdict → 轮转目标可用性乘数（frozen 区不可挖，直接排除）。
 _VERDICT_MULT: Dict[str, float] = {
     "active": 1.0,
+    # full-coverage 改的是派发口径（禁止探针、数据集做尽），不是区域可用性；
+    # 与 probe-only 同分，避免一次口径切换把轮转排序整体推高。
+    "full-coverage": 0.55,
     "probe-only": 0.55,
     "frozen": 0.0,
     "unknown": 0.35,
@@ -103,7 +106,7 @@ def gather_region_metrics(conn: Any, region: str,
         conn: DB-API 连接（``sqlite3.Connection`` 或等价，支持 ``execute(sql, params)``）。
         region: 区域码（大小写不敏感，内部按原样匹配 regions.name）。
         gates: 覆写 GATES_PLATFORM（sharpe_min/prod_corr_max/self_corr_max）。
-        entry_verdict: 区域 profile 的 entry_verdict（active/probe-only/frozen）；
+        entry_verdict: 区域 profile 的 entry_verdict（active/full-coverage/probe-only/frozen）；
             来自 ``references/regions/<R>.md``，DB 无此列，由调用方注入。None→"unknown"。
 
     Returns:

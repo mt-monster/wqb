@@ -13,8 +13,11 @@
         "expr_lint.py",
         "forum_recon.py",
         "forum_recon_wave.py",
+        "full_coverage_gate.py",
         "gate_attribution.py",
         "gem_validator.py",
+        "l1_backfill_validate.py",
+        "l1_ladder.py",
         "mode_b_qualify.py",
         "nemesis_prescreen.py",
         "operator_coverage_audit.py",
@@ -24,7 +27,9 @@
         "prod_saturation_gate.py",
         "quality_predict.py",
         "shape_quota_check.py",
-        "wave_gate.py"
+        "wave_gate.py",
+        "hook_selftest.py",
+        "sreq_precheck.py"
       ],
       "status": "frozen-pending"
     },
@@ -40,8 +45,12 @@
         "mcp_7slot_batch.py",
         "mcp_batch_writer.py",
         "neut_cache.py",
+        "parse_simresult.py",
         "pipeline_integration.py",
-        "submit_batch.py"
+        "poll_single_sims.py",
+        "reset_low_cov_skips.py",
+        "submit_batch.py",
+        "corr_check.py"
       ],
       "status": "moved-partial"
     },
@@ -57,7 +66,32 @@
         "category_probe.py",
         "category_sweep.py",
         "probe_sa_candidates.py",
-        "probe_sa_unsubmitted.py"
+        "probe_sa_unsubmitted.py",
+        "full_template_campaign.py",
+        "harvest_campaign_top.py",
+        "_r22_run.py",
+        "_r22_seq.py",
+        "_r22_wave.py",
+        "_r23_exp.py",
+        "_r24_sweep.py",
+        "_r24b_sweep.py",
+        "kor_near_gate_watch.py",
+        "kor_year_probe.py",
+        "kor_year_sweep.py",
+        "_anl45_probe.py",
+        "_detach_probe.py",
+        "_e1_probe_pp.py",
+        "_grp_rank_probe.py",
+        "_lowcov_status.py",
+        "_modelfam_probe.py",
+        "_oth335_reading.py",
+        "_pv_preclose_sweep.py",
+        "_pvpc_gen_preflight.py",
+        "_snt26_probe.py",
+        "_snt27_sweep.py",
+        "_wide_probe.py",
+        "_yp_for_2y_leaders.py",
+        "kor_form_probe.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -92,6 +126,7 @@
         "ppa_handoff.py",
         "prod_blocked_recheck.py",
         "prod_first_screen.py",
+        "prod_wait.py",
         "query_alpha_metrics.py",
         "quota_status.py",
         "restore_alpha_props.py",
@@ -100,7 +135,15 @@
         "triage_prodcorr_batch.py",
         "candidate_health_card.py",
         "submit_inventory.py",
-        "verify_region_op.py"
+        "verify_region_op.py",
+        "daily_select.py",
+        "continue_submit_leM88RN5.py",
+        "find_leM88RN5_collision.py",
+        "submit_rravgrn0.py",
+        "_ab_adopt.py",
+        "_ab_template.py",
+        "_prodbreak.py",
+        "_sub_fix_probe.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -154,7 +197,6 @@
         "_backfill_reference_once.py",
         "_kor_d33_writeback.py",
         "backfill_2y_from_platform.py",
-        "backfill_check_columns.py",
         "backfill_expression_dataset.py",
         "backfill_longcount.py",
         "backfill_prod_corr.py",
@@ -167,7 +209,17 @@
         "normalize_wave_ids.py",
         "populate_external_fields.py",
         "seed_region_priors.py",
-        "backfill_alpha_metrics_from_platform.py"
+        "backfill_alpha_metrics_from_platform.py",
+        "check_corr.py",
+        "collect_alpha.py",
+        "diag_os_coverage.py",
+        "os_scan_all.py",
+        "osmosis_allocate.py",
+        "osmosis_best_return.py",
+        "submit_and_verify.py",
+        "_repair_dataset.py",
+        "_test_carrier_upgrade.py",
+        "backfill_year_profile.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -188,13 +240,19 @@
         "dynamic_recipe_weighter.py",
         "economic_mechanism_kb.py",
         "economic_mechanism_templates.py",
+        "gem_pilot_sample.py",
         "kb_templates.py",
         "operator_diversity_analyzer.py",
         "quality_control_engine.py",
         "role_cluster.py",
         "skeleton_origin_report.py",
         "skeleton_tags.py",
-        "success_formula_engine.py"
+        "success_formula_engine.py",
+        "targeted_dev.py",
+        "vwap_field_dist.py",
+        "vwap_histogram.py",
+        "vwap_pnl_fetch.py",
+        "attribution_scan.py"
       ],
       "status": "frozen-pending"
     },
@@ -219,7 +277,11 @@
         "run_grouped_tests.py",
         "scan_test_groups.py",
         "start_wq_mcp.py",
-        "sync_gem_embedded_skill.py"
+        "sync_gem_embedded_skill.py",
+        "audit_write_targets.py",
+        "fix_intentional_refs.py",
+        "snapshot_adjudicate.py",
+        "verify.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -241,7 +303,9 @@
         "waiver.py",
         "enqueue_propose.py",
         "scan_backup_ra.py",
-        "mining_ledger.py"
+        "mining_ledger.py",
+        "check_ledger_sync.py",
+        "wqb_tools_shim.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -268,10 +332,14 @@
       "dir": "tools/reporting",
       "title": "reporting",
       "files": [
+        "campaign_report.py",
         "export_wave_ledger_md.py",
         "gen_field_inspect_packs.py",
         "gen_inspect_from_db.py",
-        "step9_audit.py"
+        "os_inventory_scan.py",
+        "step9_audit.py",
+        "_dataset_report.py",
+        "webdata_scan.py"
       ],
       "status": "frozen-pending"
     },
@@ -280,7 +348,10 @@
       "title": "fields",
       "files": [
         "build_field_index.py",
+        "campaign_semantics.py",
         "category_field_triage.py",
+        "dataset_profile_doc.py",
+        "export_fields_for_tagging.py",
         "field_axis.py",
         "field_catalog_cache_manager.py",
         "field_inspect_gate.py",
@@ -290,11 +361,19 @@
         "field_quality_scorer.py",
         "field_quality_scorer_v2.py",
         "field_semantic_classify.py",
+        "field_semantic_type.py",
         "field_signal_mine.py",
+        "gen_eur_field_profiles.py",
+        "gen_llm_field_tags.py",
         "ingest_dataset_assets.py",
+        "load_field_profiles_to_db.py",
+        "query_profile.py",
         "s2_field_validator.py",
         "scan_fields.py",
-        "validate_fields_batch.py"
+        "skeleton_panel.py",
+        "validate_fields_batch.py",
+        "verify_platform_fields.py",
+        "_unlit_sweep.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -306,6 +385,8 @@
       "dir": "tools/wave",
       "title": "wave",
       "files": [
+        "campaign_watchdog.py",
+        "detach_launch.ps1",
         "fix_wave_backfill.py",
         "fix_wave_vectors.py",
         "preflight_wave.py",
@@ -347,6 +428,16 @@
         "sync_skills.py"
       ],
       "status": "frozen-pending"
+    },
+    "legacy": {
+      "dir": "tools/legacy",
+      "title": "legacy",
+      "files": [
+        "gate.py",
+        "backfill_backtest_dataset.py"
+      ],
+      "status": "archived-hold",
+      "_doc": "归档区语义与「下沉目录」不同：本目录的件**已完成使命但仍被引用**（`gate.py` 被文档与历史调用链引用、`backfill_backtest_dataset.py` 被活 SOP 叫），按 tools/legacy/README.md 的「不得连坐删」纪律保留。2026-10-20 已逐件退役本目录另两件（`fix_stale_fk_20260928.py` / `opswap_driver.py`），登记进 audit_structure_baseline.json 的 retired_paths（S12 拦复活）。本目录件**不做主题下沉**——它就是终态位置。"
     }
   },
   "relocate_out_of_tools": {
@@ -357,28 +448,28 @@
   },
   "_unassigned": [],
   "counts": {
-    "backtest": 10,
+    "backtest": 12,
     "catalog": 5,
     "code-audit": 17,
     "data-repair": 17,
     "datasets": 5,
     "db": 3,
-    "fields": 16,
+    "fields": 26,
     "forum": 3,
     "gates": 18,
     "ledger": 5,
     "pool-hygiene": 5,
     "probe": 7,
     "reporting": 4,
-    "research": 17,
+    "research": 20,
     "rotation": 7,
     "skills": 3,
     "super": 2,
     "verdict": 18,
-    "wave": 6
+    "wave": 7
   },
   "unassigned_n": 0,
-  "top_n": 167,
+  "top_n": 196,
   "_moved_20261004": {
     "note": "首轮下沉（2026-10-04）：仅迁移「零 import 依赖 + 零文档按路径引用 + 内部无 sys.path.insert/parents[N]/dirname(dirname())」的脚本。其余顶层脚本的阻塞点见 _blocked_by_import。",
     "moved": {
@@ -437,6 +528,54 @@
       "src/wqb 散模块收纳": "contracts / metrics / db 三个子包的收纳**未执行**，已评估并记为待办。按 §8.4 第 9 条那一问做了机械清点（取面 = git 跟踪件 3817 个，排除 src/wqb/ 包内自引用与 attic/）：**属性式模块 patch = 0**（正则命中的 2 处是 `tools/campaign_intel.py` SQL 里的 `e.wave_id=w.id` 列赋值，人工核过，不是 `monkeypatch.setattr(mod, …)` 形态）⇒ 静默失效这一最坏风险**不存在**。因此暂缓的理由不是那一问，而是外部引用面实测 **87 个文件 / 121 处 `from wqb.<模块> import`**，其中 `db_conn` 单件 66 个文件 71 处（它还持有 `DIRECT_CONNECT_WHITELIST`，被裸连接守护测试当单源读），且 `wq-brain-http` / `wqb-db` 两个 MCP 服务**正在运行**、改包路径要重启才生效。数字与判据见报告 §9。"
     }
   },
+  "_adopted_20261026": {
+    "reason": "2026-10-26 清理会话：S11「主题归属棘轮」查出 15 个顶层脚本无归属（此前 `_unassigned` 长期为空的假象，实测闸跑出来才现形）。本轮**只补登记、不搬家**——归属按脚本功能人工裁定，目录下沉仍按「一次一个主题」的批次纪律另开议题。",
+    "assigned": {
+      "probe": [
+        "_r22_run.py",
+        "_r22_seq.py",
+        "_r22_wave.py",
+        "_r23_exp.py",
+        "_r24_sweep.py",
+        "kor_near_gate_watch.py",
+        "kor_year_probe.py",
+        "kor_year_sweep.py"
+      ],
+      "reporting": [
+        "campaign_report.py",
+        "os_inventory_scan.py"
+      ],
+      "gates": [
+        "l1_backfill_validate.py",
+        "l1_ladder.py"
+      ],
+      "research": [
+        "gem_pilot_sample.py"
+      ],
+      "backtest": [
+        "reset_low_cov_skips.py"
+      ],
+      "verdict": [
+        "submit_rravgrn0.py"
+      ]
+    },
+    "note": "其中 `_r22_run/_r22_seq/_r22_wave/_r23_exp/_r24_sweep` 与 `submit_rravgrn0.py` 是一次性任务脚本（`_r23_exp.py` 在本轮登记时仍在运行），**不宜归档删除**，故按功能归主题保留在顶层；它们的真正归宿是跑完后移进 `tools/legacy/` 并登记 `retired_paths`，属需用户确认的删减动作，不在本批机械登记范围。"
+  },
+  "_adopted_20261027": {
+    "reason": "2026-10-27 治理评审（`reports/codebase_governance_review_20261027.md` §4-P6）：S11 归属棘轮报 2 个已暂存的新顶层脚本无归属；另有 1 个未跟踪的启动器被**误判成数据件**（S11 取面按 `.py` 划脚本 ⇒ `.ps1` 落到「非脚本件」那条判据上）。本批只补登记 + 修正分类，**不搬家**。",
+    "assigned": {
+      "probe": [
+        "_r24b_sweep.py"
+      ],
+      "verdict": [
+        "prod_wait.py"
+      ],
+      "wave": [
+        "detach_launch.ps1"
+      ]
+    },
+    "note": "`detach_launch.ps1` 是**脚本**（`.ps1` / `.sh` 自本日起并入 `audit_structure.TOOLS_TOP_SCRIPT_SUFFIXES`），受「顶层只减不增 + 主题归属」约束，但不再走数据件白名单。它是全仓长跑任务的标准启动器（脱离 Agent Job，会话结束不被回收），已在 `output_report/eur_other_pv_campaign_20261026.md` 与本文件 `wave` 主题登记；此前**只以未跟踪文件存在**，按 AGENTS.md §7 属「git clean 一次即永久丢失」的高危形态，故纳入版本控制。"
+  },
   "_retired_20261006": {
     "_doc": "本表列出的脚本已于 2026-10-06 规范退役（git rm）。判据是**引用面实测**：活代码 import / 子进程路径 / 活 SOP 命令 / 真实测试断言全为 0，只剩 THEMES 与本基线的登记痕迹。取看：`git show <退役前的主干 commit>:<路径>`。",
     "count": 35,
@@ -478,5 +617,58 @@
       "tools/rotation/region_whitelist.py"
     ]
   },
-  "_counts_note": "`counts` / `top_n` 是 2026-10-04 那次顶层普查的**历史快照**，不随退役回填；现役顶层脚本数一律现跑 `python tools/audit_structure.py --only s11` 取数（AGENTS.md §4「文档不复制会漂移的计数」同一口径）。"
+  "_counts_note": "`counts` / `top_n` 是 2026-10-04 那次顶层普查的**历史快照**，不随退役回填；现役顶层脚本数一律现跑 `python tools/audit_structure.py --only s11` 取数（AGENTS.md §4「文档不复制会漂移的计数」同一口径）。",
+  "_adopted_20261027b": {
+    "reason": "2026-10-27 提交前治理：S11 归属棘轮报 29 个已暂存顶层脚本无归属（其中 23 个零引用已归档至 attic/unregistered_tools_20261027/，本批登记剩余 29 个）。按功能人工裁定归属，**只补登记、不搬家**——S11 顶层冻结的合规路径是 THEMES.json 登记，目录下沉按「一次一个主题」的批次纪律另开议题。",
+    "assigned": {
+      "probe": [
+        "_anl45_probe.py",
+        "_detach_probe.py",
+        "_e1_probe_pp.py",
+        "_grp_rank_probe.py",
+        "_lowcov_status.py",
+        "_modelfam_probe.py",
+        "_oth335_reading.py",
+        "_pv_preclose_sweep.py",
+        "_pvpc_gen_preflight.py",
+        "_snt26_probe.py",
+        "_snt27_sweep.py",
+        "_wide_probe.py",
+        "_yp_for_2y_leaders.py",
+        "kor_form_probe.py"
+      ],
+      "data-repair": [
+        "_repair_dataset.py",
+        "_test_carrier_upgrade.py",
+        "backfill_year_profile.py"
+      ],
+      "research": [
+        "attribution_scan.py"
+      ],
+      "backtest": [
+        "corr_check.py"
+      ],
+      "reporting": [
+        "_dataset_report.py",
+        "webdata_scan.py"
+      ],
+      "verdict": [
+        "_ab_adopt.py",
+        "_ab_template.py",
+        "_prodbreak.py",
+        "_sub_fix_probe.py"
+      ],
+      "gates": [
+        "hook_selftest.py",
+        "sreq_precheck.py"
+      ],
+      "fields": [
+        "_unlit_sweep.py"
+      ],
+      "ledger": [
+        "wqb_tools_shim.py"
+      ]
+    },
+    "note": "23 个零引用脚本（_fix_lit_quarter / _mdl25_sweep / _oth335_pow / _oth335_variants / _patch_carrier_upgrade / _pp_variant_probe / _pvpc_probe2 / _pvpc_probe3_other335 / _r25_struct / _r26_sup / _r27_win / _r28_settings / _r29_fix2y / _r30_final / _r31_decay / _r31b_decay / _unlit2_blend / anl10_backfill_curve / anl10_struct_experiment / anl10_turnover_experiment / kor_dispersion_test / kor_dispersion_universe / kor_scan_dispersion_fields）已归档。全批硬编码路径（D:\\\\… 与 C:\\\\Users\\\\MENGTAO\\\\…）已改为可移植写法（os.path.dirname + os.path.expanduser）。"
+  }
 }

@@ -85,7 +85,7 @@ python tools/campaign_intel.py s0-select --region $REGION --delay $DELAY --unive
 
 | 比率 | 定义 | 低意味着 | 动作 |
 |---|---|---|---|
-| `conversion` | 已回测 / 已生成 | **流水线**问题（S2→S3 断链，生成远超回测吞吐） | 修管道、先清积压（`conversion < 10%` 的区先清积压再开新波），别换区 |
+| `conversion` | **被回测消费** / 已生成（2026-10-20 起；消费 = status ∪ 回测行 id/alpha_id join，单源 `src/wqb/store/consumption.py`，backlog 闸同口径） | **流水线**问题（S2→S3 断链，生成远超回测吞吐） | 修管道、先清积压（`conversion < 10%` 的区先清积压再开新波），别换区 |
 | `yield_rate` | 达标 / 已回测 | **标的**问题（该区/集本身不出货） | 换区 / 换集，别加生成量 |
 
 - **严格口径**（默认 `strict=true`）：达标 = sharpe / fitness 过线 **且 `ra_failed_checks` 为空**（= `ra_clean`，词义见 GLOSSARY）；另给 `prod_clean` / `prod_blocked` / `prod_wall_ratio`。`yield_rate_loose` 是旧口径对照（IND 旧口径 34% 而严格口径 12.6%，其中已测 prod 的 86% 撞墙——选区先验曾被系统性高估）。

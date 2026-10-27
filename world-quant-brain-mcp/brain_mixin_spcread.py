@@ -935,10 +935,54 @@ class SpcDataMixin:
         
         return {}
 
-    async def get_production_correlation(self, alpha_id: str) -> Dict[str, Any]:
+    async def _read_existing_prod_correlation(self, alpha_id: str) -> Optional[Dict[str, Any]]:
+        """**只读**：从 alpha 详情取平台已算好的 prod 相关（不占锁、不触发计算）。
+
+        2026-10-26 新增。动机：平台的账号级 correlation 单槽经常被"对早已算完的 alpha
+        反复触发计算"占满。先读 ``is.prodCorrelation`` 能直接拿到已算结果，
+        完全绕开锁与平台队列。
+
+        返回 ``None`` 表示平台尚未算出（调用方应回退到"触发计算"路径）。
+        """
+        try:
+            r = self.session.get(
+                f"{self.base_url.rstrip('/')}/alphas/{alpha_id}", timeout=15
+            )
+        except requests.RequestException:
+            return None
+        if getattr(r, "status_code", 0) != 200:
+            return None
+        try:
+            j = r.json()
+        except Exception:
+            return None
+        if not isinstance(j, dict):
+            return None
+        is_ = j.get("is")
+        if not isinstance(is_, dict):
+            return None
+        mx = is_.get("prodCorrelation")
+        if mx is None:
+            return None
+        try:
+            mx = float(mx)
+        except (TypeError, ValueError):
+            return None
+        self.log(f"[prod-corr] {alpha_id} 命中平台已算值 prod={mx}（未占锁、未触发计算）", "INFO")
+        return {
+            "status": "ok",
+            "alpha_id": alpha_id,
+            "max": mx,
+            "records": [],
+            "source": "alpha_detail_cached",
+            "message": "从 alpha 详情读取平台已算好的 prod 相关（未触发新计算）",
+        }
+
+    async def get_production_correlation(self, alpha_id: str,
+                                         max_wait_seconds: float = None) -> Dict[str, Any]:
         """Get production correlation data for an alpha.
 
-        Polls every 30 seconds for up to 1 hour to handle platform rate-limiting.
+        Polls every 30 seconds for up to 1 hour by default to handle platform rate-limiting.
         For super alphas, the platform may return an empty body (HTTP 200) for a few
         minutes after simulation completes while it computes the correlation data.
         The polling loop handles this by retrying until data is available.
@@ -947,8 +991,29 @@ class SpcDataMixin:
         BRAIN allows only one in-flight correlation computation per account. If
         another request is already polling, this returns ``correlation_busy``
         immediately instead of queueing behind it.
+
+        ⚠ **账号级单并发 + 跨进程互斥**（2026-10-22 修 bug）：平台相关性计算是
+        **每账号仅 1 个在飞**；本仓的相关性查询散落在多个进程（MCP 服务 + 各 CLI 工具
+        + 一次性脚本），进程内 asyncio 锁互不相识 ⇒ 多进程同时轮询同一单槽，
+        平台对后来者只返空体（= 仍在算），于是每个进程都空转到轮询上限
+        ⇒ **一个卡住的 alpha 能把整账号的相关性查询堵死一小时**。
+        故槽位由**跨进程文件锁**（``logs/_dblock/correlation.lock.json``）守护，
+        拿不到就**立即返回 busy**（fail-fast），不排队、不降级放行。
         """
         await self.ensure_authenticated()
+
+        # ── 2026-10-26 新增：「先读后算」────────────────────────────────────
+        # 平台把算好的 prod 相关存进 alpha 详情的 ``is.prodCorrelation``。
+        # 先读一次（**不占锁、不触发计算**）：已有值就直接返回。
+        # 这是消除"重复触发把账号单槽反复占满"的最高性价比手段——
+        # 实测大量调用是在对**平台早已算完**的 alpha 反复触发。
+        try:
+            _pre = await self._read_existing_prod_correlation(alpha_id)
+            if _pre is not None:
+                return _pre
+        except Exception as _e:  # 预读失败不影响主流程（可能是 alpha 尚在仿真）
+            self.log(f"[prod-corr] 预读 is.prodCorrelation 失败({type(_e).__name__})，"
+                     "回退到触发计算", "INFO")
 
         op_name = f"get_production_correlation({alpha_id})"
         lock_info = await self._try_acquire_brain_correlation_lock(op_name)
@@ -968,12 +1033,25 @@ class SpcDataMixin:
             }
 
         try:
-            return await self._poll_production_correlation(alpha_id)
+            return await self._poll_production_correlation(alpha_id, max_wait_seconds)
         finally:
             await self._release_brain_correlation_lock(lock_info, op_name)
 
-    async def _poll_production_correlation(self, alpha_id: str) -> Dict[str, Any]:
-        max_wait_seconds = 3600  # 1 hour total
+    async def _poll_production_correlation(self, alpha_id: str,
+                                           max_wait_seconds: float = None) -> Dict[str, Any]:
+        # 2026-10-22：**3600 → 900**。理由：账号级单并发下，一个卡住的 alpha 若按 60 分钟
+        # 占槽，会把整账号的相关性查询堵死一小时（实测：另一会话的 prod 队列脚本卡住时，
+        # 本会话的查询空转 800s+ 才出数）。900 s ≈ 平台典型耗时（1–5 min，实测 94s/条）的
+        # 10 倍余量，仍覆盖排队等待；超时按 ``pending`` 返回（不缓存、不判死），
+        # 调用方按既有纪律隔段时间重查即可。窗口值与 ``wqb.config.WAIT_THRESHOLDS``
+        # 同源（守护测试比对）。
+        # 2026-10-26：900 → 120。**锁覆盖整个轮询窗口**，所以窗口长度 = 单次持锁时长。
+        # 900s ⇒ 一次调用堵死整账号 15 分钟（IND 战役 + 手工查询互撞的直接原因）。
+        # 平台实测 94s/条 ⇒ 120s 覆盖多数；超时返回 pending，调用方隔 180s 重试即可，
+        # 单次持锁从 900s 降到 120s（7.5×）。
+        if max_wait_seconds is None:
+            max_wait_seconds = 120  # = WAIT_THRESHOLDS["prod_corr_timeout_s"]
+        max_wait_seconds = float(max_wait_seconds)
         # 2026-10-06 实测调优：平台单槽串行，实测单条 94s 出结果（4 次轮询）。
         # 原 30s 固定间隔 ⇒ 结果落在第 92s 时仍要等到第 120s，**平均白等约 15s/条**
         # （≈ 平台耗时的 16%）。改成 10s 起、前 12 次 10s、之后 30s 的阶梯：
@@ -1026,11 +1104,18 @@ class SpcDataMixin:
                 consecutive_empty = 0
                 try:
                     corr_data = response.json()
-                    if corr_data and corr_data.get('max') is not None:
+                    if isinstance(corr_data, list):
+                        # 平台偶尔返回数组形态（samples 数组 / 空数组）。
+                        # 空数组 = 仍在算（未就绪）；非空则取首个 dict 元素。
+                        corr_data = corr_data[0] if (corr_data and isinstance(corr_data[0], dict)) else None
+                    if isinstance(corr_data, dict) and corr_data.get('max') is not None:
                         self.log(f"[PC成功] Alpha {alpha_id} PC={corr_data['max']} (第 {attempt} 次查询, 耗时 {int(elapsed)}s)", "INFO")
                         return corr_data
-                except json.JSONDecodeError:
+                except (json.JSONDecodeError, ValueError):
                     logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
+                except AttributeError as e:
+                    # 防御：任何非预期的响应形态都不应让整条 prod 查询崩掉
+                    self.log(f"[PC异常] Alpha {alpha_id} 响应解析失败: {type(e).__name__}: {e}", "WARNING")
                     
             except (requests.RequestException, ConnectionError, TimeoutError) as e:
                 consecutive_network_failures += 1

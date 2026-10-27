@@ -148,6 +148,37 @@ def test_slim_alpha_os_start_date_only():
     assert "os" not in _slim_alpha({"id": "y", "is": {"sharpe": 1.0}})
 
 
+def test_slim_datafields_keeps_completeness_metadata():
+    """2026-10-20：完整度元数据必须穿透瘦身层，否则截断目录与全量目录无法区分
+    （analyst7 299/1111 静默截断事故的可见性修复）。"""
+    slim = mcp_core._slim_datafields({
+        "results": [{"id": "f1", "type": "MATRIX", "description": "d" * 400}],
+        "count": 1111,
+        "platform_count": 1111,
+        "complete": True,
+        "pages_fetched": 23,
+    })
+    assert slim["count"] == 1111
+    assert slim["platform_count"] == 1111
+    assert slim["complete"] is True
+    assert slim["pages_fetched"] == 23
+    assert "truncated_reason" not in slim
+    assert len(slim["results"][0]["description"]) <= 161
+
+
+def test_slim_datafields_keeps_truncation_reason():
+    slim = mcp_core._slim_datafields({
+        "results": [{"id": "f1"}], "count": 1,
+        "platform_count": 4757, "complete": False,
+        "pages_fetched": 2, "pagination_truncated": True,
+        "truncated_reason": "search_window_capped",
+    })
+    assert slim["complete"] is False
+    assert slim["pagination_truncated"] is True
+    assert slim["truncated_reason"] == "search_window_capped"
+    assert slim["platform_count"] == 4757
+
+
 # ---------------------------------------------------------------------------
 # _extract_field_candidates (tools_data)
 # ---------------------------------------------------------------------------
@@ -163,6 +194,38 @@ def test_extract_fields_excludes_operator_keywords():
         ["ts_delta(ts_backfill(ep_yield_pct_smest_fy1_3, 66), 22)"])
     # ts_delta/ts_backfill 是算子关键字; ep_yield_pct_smest_fy1_3 是字段
     assert fields == ["ep_yield_pct_smest_fy1_3"]
+
+
+# ★ 2026-10-22 新增：比较算子误杀回归守护。
+# 不加 needs_operators_verified —— 必须**始终运行**，因为出事的正是
+# "上游快照/catalog 不可用 → 降级为纯手写清单" 这条路径（快照缺失时
+# 上面那些测试全被 skip，手写清单漏算子就没人抓）。
+_COMPARISON_OPS = ("greater", "less", "greater_equal", "less_equal", "equal", "not_equal")
+
+
+def test_comparison_operators_in_fallback_keywords():
+    """兜底手写清单必须含平台 Logical 类全部 6 个比较算子。
+
+    背景（2026-10-22 实测事故）：清单漏了这 6 个 ⇒ `greater(...)` 被当字段查，
+    preflight 报 unknown_fields=["greater"]，误判算子不可用（实际仿真完全正常）。
+    """
+    ops = tools_data._OPERATOR_KEYWORDS
+    missing = [op for op in _COMPARISON_OPS if op not in ops]
+    assert not missing, f"手写兜底清单漏比较算子: {missing}"
+
+
+def test_extract_fields_comparison_operators_not_misjudged():
+    """降级路径（extra_operators 为空）下，比较算子仍不得被当成未知字段。"""
+    exprs = [
+        "if_else(greater(group_count(1, industry), 5), rank(close), 0)",
+        "if_else(less(volume, ts_mean(volume, 22)), rank(close), 0)",
+        "greater_equal(close, 5) + less_equal(volume, 10) + equal(close, 1) + not_equal(volume, 2)",
+    ]
+    fields = tools_data._extract_field_candidates(exprs)  # 不传平台算子表 = 模拟降级
+    # 只应剩真字段；任何算子泄漏都会造成 unknown_fields 误报
+    leaked = [f for f in fields if f in _COMPARISON_OPS]
+    assert not leaked, f"比较算子被误判为字段: {leaked}"
+    assert set(fields) == {"close", "volume"}, f"字段提取异常: {fields}"
 
 
 @pytest.mark.needs_operators_verified
@@ -208,6 +271,55 @@ def test_extract_fields_group_dimensions_excluded():
     fields = tools_data._extract_field_candidates(
         ["group_rank(ts_rank(fnd6_pe, 60), industry)"])
     assert fields == ["fnd6_pe"]  # group_rank/ts_rank/industry 均非字段
+
+
+# ★ 2026-10-23 新增：命名参数误判回归守护。
+# 事故：字段抽取用裸标识符正则，`名字=` 形态的命名参数被当字段去查存在性，
+# 必然查不到 ⇒ preflight 报 unknown_fields，把完全合法的表达式判成不可用。
+# `hump(x, hump=0.01)` 当时"看起来没坏"只因 hump 恰好也在算子名表里（侥幸掩盖）。
+def test_extract_fields_named_params_not_misjudged():
+    """命名参数（range= / target_tvr= / lambda_min= …）不得被当成字段。"""
+    exprs = [
+        'bucket(rank(close), range="0,1,0.5")',
+        "ts_target_tvr_hump(rank(close), target_tvr=0.25)",
+        "ts_target_tvr_hump(rank(close), lambda_min=0.5, lambda_max=2.5)",
+        "hump(rank(close), hump=0.01)",
+        "trade_when(greater(rank(close), 0.5), rank(volume), -1)",
+    ]
+    fields = tools_data._extract_field_candidates(exprs)
+    assert fields == ["close", "volume"], f"命名参数泄漏为字段: {fields}"
+
+
+def test_extract_fields_operator_survives_named_params():
+    """剔除命名参数时不得把函数名一起吃掉（`ts_target_tvr_hump(` 后紧跟 `)`）。"""
+    fields = tools_data._extract_field_candidates(
+        ["ts_target_tvr_hump(rank(a_field), target_tvr=0.2)"])
+    assert fields == ["a_field"]
+
+
+def test_platform_operator_names_accepts_bare_list_payload(monkeypatch):
+    """平台 `GET /operators` 返回**裸 JSON 数组**，兜底拉取必须能吃下。
+
+    事故（2026-10-23 实测）：`_platform_operator_names` 里写的是
+    `(payload or {}).get("results")` ⇒ list 没有 .get ⇒ AttributeError ⇒ 静默
+    返回空集 ⇒ "运行时拉算子表"这条兜底自上线起从未生效，手写清单缺的算子
+    仍被当字段误报（实测日志：'list' object has no attribute 'get'）。
+    """
+    class _OpsStub:
+        async def get_operators(self):
+            # 平台真实形态：裸数组，元素是 dict
+            return [{"name": "ts_target_tvr_hump"}, {"name": "rank"}, {"foo": 1}]
+
+    monkeypatch.setattr(tools_data, "brain_client", _OpsStub())
+    monkeypatch.setitem(tools_data._PLATFORM_OPS_CACHE, "names", None)
+    monkeypatch.setitem(tools_data._PLATFORM_OPS_CACHE, "ts", 0.0)
+
+    names = asyncio.run(tools_data._platform_operator_names(force=True))
+    assert names == {"ts_target_tvr_hump", "rank"}
+    # 拉取结果必须真正参与过滤（此前 names 恒为空集，这一行会红）
+    fields = tools_data._extract_field_candidates(
+        ["ts_target_tvr_hump(rank(close), target_tvr=0.2)"], names)
+    assert fields == ["close"]
 
 
 # ---------------------------------------------------------------------------

@@ -94,7 +94,7 @@ $WQ_PY tools/fields/field_profile.py --list          # 一眼看全部 13 区
 $WQ_PY tools/fields/field_profile.py --query --region <R> --verdict UNTESTED --limit 40
 
 # ① preflight_expressions（MCP）：校验字段名/类型（含 VECTOR 提示）
-# ② op_arity.ensure_safe_for_dispatch(exprs)：校验算子元数
+# ② op_arity.ensure_safe_for_dispatch(exprs)：校验算子存在性（fail-closed）+ 元数 + 命名参数
 ```
 
 **★ 本会话实战价值**：

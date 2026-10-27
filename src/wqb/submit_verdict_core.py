@@ -27,7 +27,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from .config import compute_webdata_failed_counts
+from .config import compute_webdata_failed_counts, merge_failed_items
 from .robustness_record import normalize_record as _normalize_robustness
 
 VERDICTS = ("SUBMITTABLE", "UNVERIFIABLE", "BLOCKED", "ALREADY_SUBMITTED")
@@ -41,7 +41,10 @@ EXIT_CODES: Dict[str, int] = {
 }
 
 #: 模拟层显示 WARNING、提交层（POST）重新评估为 FAIL 的检查名（KOR PPA 2026-08-22 实锤）
-SUBMIT_HARD_GATE_WARNINGS = frozenset({"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"})
+#: 2Y 有两个载体（`RA_2Y_NAMES`）：平台按 alpha 代际只发 `LOW_2Y_SHARPE` 或 `IS_LADDER_SHARPE`
+#: 之一，两者在提交层同义 ⇒ 两个名字都要认（2026-10-23 IND 实测）。
+SUBMIT_HARD_GATE_WARNINGS = frozenset(
+    {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE", "IS_LADDER_SHARPE"})
 
 _ALREADY_STATUSES = ("ACTIVE", "SUBMITTED")
 
@@ -119,6 +122,8 @@ def decide(
     }
 
     if is_already_submitted(detail):
+        _ppa_ch = str(detail.get("type") or "").strip().upper() == "PPA"
+        _ppa = is_ppa_alpha(detail)
         base.update({
             "verdict": "ALREADY_SUBMITTED",
             "exit_code": EXIT_CODES["ALREADY_SUBMITTED"],
@@ -126,23 +131,38 @@ def decide(
             "verdict_note": (f"alpha 已提交/已落地（status={status}），不构成可提交判定对象；"
                              "请勿重复 POST submit（幂等但浪费配额/产生混乱）。"),
             "next_step": "不要再 POST submit；如需回写台账走 S6（wave_results upsert）。",
-            "is_ppa": is_ppa_alpha(detail),
+            "is_ppa": _ppa,
+            "ppa_channel": _ppa_ch,
+            "ppa_tag_only": _ppa and not _ppa_ch,
             "hard_gate_warnings": [], "submit_status": None, "submit_checks": [],
             "submit_layer_view": "not_queried", "prepost_unverifiable": False,
-            "failed_ra": 0, "failed_ppa": 0, "failed_ra_items": [], "failed_ppa_items": [],
+            "failed_ra": 0, "failed_ppa": 0, "failed_any": 0,
+            "failed_ra_items": [], "failed_ppa_items": [], "failed_any_items": [],
         })
         return base
 
-    # WebDataScope Failed-count 资格门（唯一实现 = wqb.config；REGULAR 看 RA、PPA 看 PPA）
+    # WebDataScope Failed-count 资格门（唯一实现 = wqb.config）
+    # ⚠ 2026-10-27 P0：此前按 is_ppa 二选一取数（PPA 看 PPA、REGULAR 看 RA）。平台会给
+    # **REGULAR 提交成功**的 alpha 自动打 PowerPoolSelected 标签 ⇒ is_ppa 被误判为 True
+    # ⇒ 去看更小的 PPA 子集，LOW_FITNESS / LOW_2Y_SHARPE / IS_LADDER_SHARPE 等纯 RA 项的
+    # 失败被整片漏掉，判定层可能对 Failed RA>0 的候选报 SUBMITTABLE。改为 RA 为下界
+    # ∪ 真 PPA 的额外项（merge_failed_items），is_ppa 仅保留「通道」语义。
     is_ppa = is_ppa_alpha(detail)
     counts = compute_webdata_failed_counts(sim_checks)
     failed_ra, failed_ppa = counts["failed_ra"], counts["failed_ppa"]
     failed_ra_items, failed_ppa_items = counts["ra_items"], counts["ppa_items"]
-    kind = "PPA" if is_ppa else "RA"
-    failed_gate_items = failed_ppa_items if is_ppa else failed_ra_items
-    failed_gate_ok = not failed_gate_items
+    merged = merge_failed_items(counts, ppa_bonus=is_ppa)
+    # 报告标签按**失败项的真实来源**给，而非按标签：失败项全部落在 RA 名单时，
+    # 即使带 PowerPoolSelected（平台自动标签）也报 RA（2026-10-27 P0）。
+    # 只有 PPA 专有规则命中的项（LOW_SHARPE 结果 PASS 但 value<1）才报 PPA。
+    _ra_names = {str(it.get("name")) for it in failed_ra_items}
+    _ppa_only = [it for it in merged["items"] if str(it.get("name")) not in _ra_names]
+    kind = "PPA" if (is_ppa and _ppa_only) else "RA"
+    failed_gate_items = merged["items"]
+    failed_gate_ok = merged["count"] == 0
     # 名单内检查仍 PENDING：Failed==0 只表示「暂无失败」，不是「已通过」（skills 审查 RF-03）
-    pending_names = counts["ppa_pending_names"] if is_ppa else counts["ra_pending_names"]
+    pending_names = list(dict.fromkeys(
+        list(counts["ra_pending_names"]) + list(counts["ppa_pending_names"])))
 
     hard_gate_warns = [c for c in warns if c.get("name") in SUBMIT_HARD_GATE_WARNINGS]
     prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
@@ -201,9 +221,15 @@ def decide(
         "verdict_note": note,
         "next_step": next_step,
         "is_ppa": is_ppa,
+        # 通道 vs 仅标签（2026-10-27）：平台给 REGULAR 提交成功的 alpha 也打
+        # PowerPoolSelected，据此区分「真 PPA 通道」与「自动标签」。
+        "ppa_channel": str(detail.get("type") or "").strip().upper() == "PPA",
+        "ppa_tag_only": bool(is_ppa) and str(detail.get("type") or "").strip().upper() != "PPA",
         "hard_gate_warnings": hard_gate_warns,
         "failed_ra": failed_ra, "failed_ppa": failed_ppa,
+        "failed_any": merged["count"],
         "failed_ra_items": failed_ra_items, "failed_ppa_items": failed_ppa_items,
+        "failed_any_items": failed_gate_items,
         "pending_gate_names": pending_names,
         "submit_status": submit_status,
         "submit_checks": submit_checks,

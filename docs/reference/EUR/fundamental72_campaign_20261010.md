@@ -151,7 +151,9 @@ PYTHONPATH=src python -m wqb.profiles check --region EUR      # 校验
 PYTHONPATH=src python -m wqb.profiles render --region EUR --apply   # 重渲 11 文件
 PYTHONPATH=src python tools/sync_skills.py --apply             # 同步 66 文件/6 安装位
 ```
-备份：`tracking/EUR/config/cells.json.bak_before_vectorn_neut_fix_20261010`
+修订前备份已出库（备份件本身不入库），本地存档：
+`attic/reports_pre202610_20261027/tracking/EUR/config/cells.json.bak_before_vectorn_neut_fix_20261010`。
+当前生效件：`tracking/EUR/config/cells.json`。
 
 ### 5.3 本轮新增的可复用经验
 

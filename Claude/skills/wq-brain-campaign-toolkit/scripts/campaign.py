@@ -13,6 +13,7 @@
   pipeline      -> pipeline.py      （端到端编排 + quota）
   review        -> review_wave.py   （walls 诊断）
   dataset-experience -> dataset_experience.py （数据集/字段经验 Markdown，保留人工复盘）
+  field-profile -> dataset_profile_doc.py （按数据集生成字段画像文档，缺省落盘）
   metrics       -> metrics_cache.py （指标读穿缓存）
   diversity     -> diversity_audit.py（多样性审计）
   diversity-extract -> diversity_extract.py（单数据集多样性榨取）
@@ -38,6 +39,7 @@ SUBCOMMANDS = {
     "pipeline": "pipeline",
     "review": "review_wave",
     "dataset-experience": "dataset_experience",
+    "field-profile": "dataset_profile_doc",
     "metrics": "metrics_cache",
     "diversity": "diversity_audit",
     "diversity-extract": "diversity_extract",

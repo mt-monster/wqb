@@ -732,6 +732,10 @@ def test_gem_ideas_format_invalid_blocked_before_popen(monkeypatch, tmp_path):
     """
     from wqb.workflow.nodes import gem as gm
 
+    # 2026-10-20 P1-5：实跑路径先查 priors 快照新鲜度（resolve_db_path → WQB_DB_PATH 优先）。
+    # 不隔离则读生产库，IND 快照状态会改变首步结果、断言错位；临时库无快照 → 仅告警不拦截。
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "camp.db"))
+
     bad_md = tmp_path / "bad_ideas.md"
     bad_md.write_text("Dataset: analyst45\n1. some idea without concept blocks\n",
                       encoding="utf-8")

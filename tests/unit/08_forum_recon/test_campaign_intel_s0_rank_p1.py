@@ -12,6 +12,9 @@
   1. 默认：跨区弱不影响排序（只与 total_score 比较）
   2. --xr-penalize 可复现旧行为
   3. 真正有结构含义的两层（判死沉底 / 字段数不足次沉）不受影响
+
+2026-10-24 P0-4 追加：排序键从三层变四层，第三层 = 机制层
+  （0 经典异象 / 1 未标注 / 2 明示非经典）；P1-6 追加 region_dead 并入判死沉底。
 """
 import importlib.util
 import os
@@ -32,6 +35,7 @@ def _load():
 def _cand(**kw):
     base = {"ledger_dead": False, "proven_dead_by_yield": False,
             "conditioning_only": False, "xr_penalized": False,
+            "region_dead": False, "mechanism_tier": 1,
             "total_score": 50.0}
     base.update(kw)
     return base
@@ -84,4 +88,38 @@ def test_zero_and_none_score_do_not_raise():
     ci = _load()
     for s in (None, 0, 0.0):
         k = ci._s0_rank_key(_cand(total_score=s))
-        assert isinstance(k, tuple) and len(k) == 3
+        assert isinstance(k, tuple) and len(k) == 4
+
+
+def test_region_dead_joins_first_layer():
+    """P1-6：区域判死清单命中 ⇒ 与 ledger_dead 同层沉底，即使平台分最高。"""
+    ci = _load()
+    rd = _cand(region_dead=True, total_score=99.0)
+    clean = _cand(total_score=10.0)
+    assert ci._s0_rank_key(rd)[0] is True
+    assert ci._s0_rank_key(clean) < ci._s0_rank_key(rd)
+
+
+def test_mechanism_tier_orders_classic_first_and_nonclassic_last():
+    """P0-4：机制层在判死/次沉之后、total_score 之前。
+
+    经典异象（0）> 未标注（1）> 明示非经典（2）；同层内仍按平台分降序。
+    """
+    ci = _load()
+    classic = _cand(mechanism_tier=0, total_score=10.0)
+    unknown = _cand(mechanism_tier=1, total_score=99.0)
+    nonclassic = _cand(mechanism_tier=2, total_score=99.0)
+    assert ci._s0_rank_key(classic) < ci._s0_rank_key(unknown)
+    assert ci._s0_rank_key(unknown) < ci._s0_rank_key(nonclassic)
+    # 同层内总分仍生效
+    assert ci._s0_rank_key(_cand(mechanism_tier=1, total_score=90.0)) < \
+        ci._s0_rank_key(_cand(mechanism_tier=1, total_score=10.0))
+
+
+def test_missing_mechanism_tier_defaults_to_unknown():
+    """未登记机制 (键缺失) 等价 tier 1，不清洗原有次序。"""
+    ci = _load()
+    x = _cand()
+    x.pop("mechanism_tier")
+    assert ci._s0_rank_key(x) == ci._s0_rank_key(_cand(mechanism_tier=1))
+

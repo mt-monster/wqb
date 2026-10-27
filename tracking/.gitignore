@@ -2,6 +2,12 @@
 cache/
 logs/
 results/
+# 区域跑批的断点目录（USA 独有，2026-10-24 布局审计发现）：
+# 349 件里 107 件是历史遗留的**已跟踪**件、242 件未跟踪且持续新增（usa_*_w<N>.txt / *_spec.json），
+# 全是可重跑的派发断点，不是结论。整目录忽略先止住增量；已跟踪的 107 件按既有先例
+# 「保盘不删」继续留在索引里，等确认无结论价值后再 `git rm --cached`。
+# ⚠ 别用 `results/` 那条覆盖它：`runs/` 不在五件套骨架内（骨架 = cache/candidates/config/priors/reference/results）。
+runs/
 *.bak
 # 根目录临时/一次性脚本归档（可恢复，不进版本控制）
 _scratch/

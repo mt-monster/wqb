@@ -1283,7 +1283,15 @@ def test_fe_ledger_readers_and_gate_claims_hold():
                 # 产出反斜杠分隔，与硬编码的 "/" 期望值不匹配（该断言一直只在
                 # POSIX 绿）。语义没变，只是路径分隔符归一。
                 readers.append(f.relative_to(REPO).as_posix())
-    assert readers == ["src/wqb/workflow/nodes/feature_engineering.py"], readers        # 只有节点自己回显
+    # 2026-10-26：战役引擎（`campaign_semantics.py`）也要读 S1 台账里的 `preprocessing`
+    # 才能真正套字段预处理——它不是「回显」，是开工前的必需输入。EUR 版在 tools/，
+    # IND / USA 各自 skill 内一套（区域复制，见 audit_skill_drift 的 C 类）。
+    assert sorted(readers) == [
+        "Claude/skills/wq-brain-ra-ind/scripts/ind_campaign/campaign_semantics.py",
+        "Claude/skills/wq-brain-ra-usa/scripts/usa_campaign/campaign_semantics.py",
+        "src/wqb/workflow/nodes/feature_engineering.py",
+        "tools/campaign_semantics.py",
+    ], readers
     assert "`preprocessing` **只作记录**" in t
     assert "campaign.py" in t and "ledger" in _read(SKILLS / "wq-brain-campaign-toolkit" / "scripts" / "campaign.py")
 

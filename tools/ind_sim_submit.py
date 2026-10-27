@@ -154,7 +154,7 @@ def _check_field_types_by_region(exprs: List[str], region: str) -> List[str]:
 
 
 def build_settings(a: argparse.Namespace) -> dict:
-    return {
+    st = {
         "instrumentType": "EQUITY",
         "region": a.region,
         "universe": a.universe,
@@ -172,6 +172,12 @@ def build_settings(a: argparse.Namespace) -> dict:
         "startDate": "2014-01-01",
         "endDate": "2023-12-31",
     }
+    # 仿真模式（平台 2026-09-21 起支持 simulationMode: QUICK / FULL）。
+    # QUICK 产物不可提交（无 visualization/correlation/theme 检查），仅作探针快筛；
+    # 缺省不发该键（= 平台缺省 FULL），保持既有行为零漂移。
+    if getattr(a, "simulation_mode", "FULL") == "QUICK":
+        st["simulationMode"] = "QUICK"
+    return st
 
 
 async def main_async(a: argparse.Namespace) -> int:
@@ -272,6 +278,8 @@ def main() -> int:
     ap.add_argument("--truncation", type=float, default=0.08)
     ap.add_argument("--nan-handling", default="ON")
     ap.add_argument("--max-trade", default="OFF")
+    ap.add_argument("--simulation-mode", choices=["FULL", "QUICK"], default="FULL",
+                    help="QUICK=平台快筛模式，产物不可提交（仅探针，须 FULL 复测）")
     ap.add_argument("--preflight-catalog", default="",
                     help="本地字段 catalog JSON；提供则提交前校验字段存在性")
     ap.add_argument("--dry-run", action="store_true")

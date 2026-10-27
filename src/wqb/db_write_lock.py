@@ -12,6 +12,11 @@ WAL 单写者被长事务占据，其余写者各自 ``busy_timeout`` 超时报�
   - 重入：同 (pid, tag) 再 acquire 视为续约（重写 token 延长 mtime）
   - 降级：任何异常 → 打印 warn 并放行（绝不阻断主流程）；``WQB_DBLOCK_DISABLE=1`` 关闭
   - **不能用 DB ledger 实现 mutex**：抢 mutex 本身也是写库（自举悖论），故用文件锁
+  - **通用单文件锁**：``name=`` 可换 token 文件名（2026-10-22 恢复，见 ``acquire`` 的
+    Args）；``fail_fast=True`` 时他人持锁即立即返回 ``busy``（不等待、不降级放行）——
+    用于「宁可不排队、也不要并发放行」的账号级单并发场景（MCP 相关性槽）。
+  - ⚠ **同目录多种锁互不相干**：``_prune_expired`` 只回收本锁自己的 token，不扫目录
+    （否则短 TTL 的写锁会回收长 TTL 的相关性锁 token ⇒ 两个进程同时自认持有）。
 
 环境变量：``WQB_DBLOCK_DIR``（目录）、``WQB_DBLOCK_DISABLE=1``（关闭）、
 ``WQB_ROOT``（仓库根探测，同 slots.py）。
@@ -57,22 +62,23 @@ def _retire(path: str) -> None:
         pass  # 已被其他竞争者回收
 
 
-def _prune_expired(d: str, ttl_sec: float) -> None:
-    """回收过期 token（持有者崩溃/TTL 超时）。_retire 幂等，竞争安全。"""
+def _prune_expired(d: str, ttl_sec: float, name: str = "dbwrite.lock.json") -> None:
+    """回收过期 token（持有者崩溃/TTL 超时）。_retire 幂等，竞争安全。
+
+    ⚠ **只回收本锁自己的 token**（2026-10-22 补）。本目录同时存放多种锁
+    （``dbwrite.lock.json`` 与 ``correlation.lock.json``），且**各自 TTL 不同**
+    （写锁 900s vs 相关性槽 900s+）。若按目录扫全部 ``*.json``，短 TTL 的
+    写锁会把**另一个仍被合法持有的长 TTL token** 当过期回收 ⇒ 两个进程
+    同时以为自己持有同一个槽（相关性槽被占死 / 写锁互斥失效）。
+    故按 token 文件名精确定位，不扫目录。
+    """
     now = time.time()
+    p = os.path.join(d, name)
     try:
-        names = os.listdir(d)
+        if now - os.path.getmtime(p) > ttl_sec:
+            _retire(p)
     except OSError:
-        return
-    for name in names:
-        if not name.endswith(".json"):
-            continue
-        p = os.path.join(d, name)
-        try:
-            if now - os.path.getmtime(p) > ttl_sec:
-                _retire(p)
-        except OSError:
-            pass  # 已被其他竞争者回收
+        pass  # 不存在 / 已被其他竞争者回收
 
 
 
@@ -130,23 +136,34 @@ def _reclaim_dead_holder(tok: str) -> bool:
     return False
 
 def acquire(tag: str = "generic", ttl_sec: float = 900.0,
-            wait_timeout: float = 90.0, owner: str = None) -> dict:
+            wait_timeout: float = 90.0, owner: str = None,
+            name: str = "dbwrite.lock.json", fail_fast: bool = False) -> dict:
     """抢写锁 token；失败退避轮询至 wait_timeout；异常降级放行。
 
-    互斥语义：单文件锁 ``dbwrite.lock.json``，``O_CREAT|O_EXCL`` 原子创建；
+    互斥语义：单文件锁（默认 ``dbwrite.lock.json``），``O_CREAT|O_EXCL`` 原子创建；
     持有者 = 文件内容中的 pid；同 pid 重入视为续约（utime 延长 TTL）。
 
+    Args:
+        name: token 文件名。默认 ``dbwrite.lock.json``（写库互斥）；调用方可传
+            其它名字，把本模块当**通用跨进程单文件锁**使用（2026-10-22 恢复：
+            MCP 相关性槽在无 Redis 时做跨进程兜底，此前该参数被重构删掉，
+            导致相关性锁退化为「进程内 asyncio 锁」——见 brain_mixin_transport）。
+        fail_fast: ``True`` 时不做退避等待——token 已被他人持有就**立即**返回
+            ``{"ok": False, "busy": True}``，既不等待也不降级放行。用于「宁可不
+            排队、也不要并发放行」的场景（平台单并发相关性接口）。
+            默认 ``False`` 保持原有「等待 + 超时降级放行」语义，向后兼容。
     Returns:
-        {"ok": bool, "token": path|None, "waited": float, "degraded": bool}
+        {"ok": bool, "token": path|None, "waited": float, "degraded": bool,
+         "busy": bool}   # busy 仅在 fail_fast=True 且他人持锁时为 True
     """
-    info = {"ok": True, "token": None, "waited": 0.0, "degraded": False}
+    info = {"ok": True, "token": None, "waited": 0.0, "degraded": False, "busy": False}
     if os.environ.get("WQB_DBLOCK_DISABLE") == "1":
         return info
     pid = os.getpid()
     owner = owner or f"{pid}@{os.uname().nodename if hasattr(os, 'uname') else 'win'}"
     deadline = time.time() + max(wait_timeout, 0.0)
     d = lock_dir()
-    tok = os.path.join(d, "dbwrite.lock.json")
+    tok = os.path.join(d, name)
     try:
         os.makedirs(d, exist_ok=True)
     except OSError as e:
@@ -156,7 +173,7 @@ def acquire(tag: str = "generic", ttl_sec: float = 900.0,
 
     while True:
         try:
-            _prune_expired(d, ttl_sec)
+            _prune_expired(d, ttl_sec, name=name)
             _reclaim_dead_holder(tok)
             # 重入：文件存在且持有者是自己 → 续约
             try:
@@ -175,7 +192,11 @@ def acquire(tag: str = "generic", ttl_sec: float = 900.0,
             info["token"] = tok
             return info
         except FileExistsError:
-            pass  # 他人持有 → 轮询等待
+            if fail_fast:
+                # 他人持有 → 立即返回忙，不等待、不降级放行
+                info["ok"] = False
+                info["busy"] = True
+                return info
         except OSError as e:
             print(f"[dblock][WARN] token 写入失败，降级放行: {e}")
             info["degraded"] = True
@@ -205,9 +226,11 @@ def release(token: str, pid: int = None) -> None:
 
 @contextmanager
 def write_lock(tag: str = "generic", ttl_sec: float = 900.0,
-               wait_timeout: float = 90.0, owner: str = None):
+               wait_timeout: float = 90.0, owner: str = None,
+               name: str = "dbwrite.lock.json", fail_fast: bool = False):
     """写库流程互斥上下文。降级时照常放行（不阻断）。"""
-    info = acquire(tag=tag, ttl_sec=ttl_sec, wait_timeout=wait_timeout, owner=owner)
+    info = acquire(tag=tag, ttl_sec=ttl_sec, wait_timeout=wait_timeout, owner=owner,
+                   name=name, fail_fast=fail_fast)
     try:
         yield info
     finally:

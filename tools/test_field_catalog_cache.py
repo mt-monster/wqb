@@ -62,11 +62,17 @@ def test_cache_miss(ctx, dataset):
     e, pw = load_creds()
     api = Api()
     api.login(e, pw)
-    raw = fetch_fields(api, ctx.settings, dataset, limit=10)  # 限制字段数加快测试
-    catalog = build_catalog(ctx.settings, dataset, raw)
-    
+    # 必须全量：--limit 产出的冒烟目录不完整，缓存/入库都会拒收（2026-10-20）
+    pagination = fetch_fields(api, ctx.settings, dataset)
+    catalog = build_catalog(ctx.settings, dataset, pagination["items"], pagination=pagination)
+    if not pagination.get("complete"):
+        raise RuntimeError(
+            f"拉取不完整：{len(pagination['items'])}/{pagination.get('platform_count')} "
+            f"({pagination.get('truncated_reason')})")
+
     scan_time = time.time() - start_time
-    print(f"✓ 平台扫描完成，耗时 {scan_time:.2f}s，{catalog['field_count']} 个字段")
+    print(f"✓ 平台扫描完成，耗时 {scan_time:.2f}s，{catalog['field_count']} 个字段"
+          f"（platform_count={catalog['platform_count']}, complete={catalog['complete']}）")
     
     # 保存到缓存
     cache_manager.save_catalog_cache(dataset, catalog)

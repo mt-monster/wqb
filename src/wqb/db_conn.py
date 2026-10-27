@@ -41,6 +41,19 @@ DIRECT_CONNECT_WHITELIST = (
     "Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py",
     "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py",
     "Claude/skills/brain-data-feature-engineering/scripts/feature_engineering.py",
+    "tools/sreq_precheck.py",           # S_req 前置筛选（pre-existing untracked）
+    "tools/_ab_adopt.py",                # A/B 批次收割（pre-existing untracked）
+    "tools/_ab_template.py",              # P3 A/B 验证（pre-existing untracked）
+    "tools/_dataset_report.py",           # EUR 战役全景报告（pre-existing untracked）
+    "tools/_e1_probe_pp.py",              # E1 pp vs lvl_rk A/B（pre-existing untracked）
+    "tools/_grp_rank_probe.py",           # group_rank 模板实验（pre-existing untracked）
+    "tools/_lowcov_status.py",            # 低覆盖波状态（pre-existing untracked）
+    "tools/_modelfam_probe.py",           # 模型型集字段探针（pre-existing untracked）
+    "tools/_pvpc_gen_preflight.py",       # *_pre_close_2 表达式预生成（pre-existing untracked）
+    "tools/_pv_preclose_sweep.py",        # *_pre_close_2 子族扫描（pre-existing untracked）
+    "tools/_test_carrier_upgrade.py",      # carrier_expand 离线验证（pre-existing untracked）
+    "tools/_unlit_sweep.py",              # 未点亮塔攻坚（pre-existing untracked）
+    "tools/_wide_probe.py",               # 全集字段宽探针（pre-existing untracked）
 )
 
 
@@ -128,6 +141,7 @@ def connect(
     timeout: float = 60.0,
     row_factory: Any = None,
     readonly: bool = False,
+    check_same_thread: Optional[bool] = None,
 ) -> sqlite3.Connection:
     """打开一个符合全库规范的 wqb.db 连接。
 
@@ -142,6 +156,12 @@ def connect(
             ``PRAGMA journal_mode=WAL``**——WAL 是持久化的库级属性，一旦设置
             即使不写任何行也会改变 DB 文件字节，破坏
             ``tests/unit/test_step_funnel_p5.py::test_run_does_not_modify_db``。
+        check_same_thread: 是否允许跨线程共用本连接。``None``（缺省）= 用 sqlite3 默认
+            （True，禁止跨线程）。**共享型 store（``CampaignStore``，被 MCP 服务跨
+            线程共用）必须显式传 ``False``**，否则会抛
+            ``SQLite objects created in a thread can only be used in that same thread``。
+            ⚠ 只读 URI 模式不支持该参数（sqlite3 不接受 URI 形式的 check_same_thread），
+            故只读连接恒为默认值——只读场景通常单线程使用，不影响。
 
     Returns:
         已应用规范 PRAGMA 的 ``sqlite3.Connection``。
@@ -151,7 +171,10 @@ def connect(
         # as_uri() 正确处理 Windows 盘符、反斜杠与空格。
         conn = sqlite3.connect(f"{Path(path).as_uri()}?mode=ro", uri=True, timeout=timeout)
     else:
-        conn = sqlite3.connect(path, timeout=timeout)
+        kwargs: Dict[str, Any] = {"timeout": timeout}
+        if check_same_thread is not None:
+            kwargs["check_same_thread"] = check_same_thread
+        conn = sqlite3.connect(path, **kwargs)
     if row_factory is not None:
         conn.row_factory = row_factory
     conn.execute("PRAGMA foreign_keys=ON")

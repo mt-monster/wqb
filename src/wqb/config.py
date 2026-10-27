@@ -340,6 +340,13 @@ KNOWN_GHOST_SEED: Set[str] = {
     "ts_partial_corr",
     "ts_percentage",
     "ts_skewness",
+    # 2026-10-22 平台实测新增：论坛骨架 `to_nan(x, value=0, reverse=true)` 在 REGULAR
+    # FASTEXPR 上被平台拒为 "Attempted to use inaccessible or unknown operator"。
+    # 平台只有 is_nan / if_else，没有 to_nan。归档时它不在 catalog 里，当时
+    # op_arity 对未知算子一律放行（arity 通过 ≠ 平台可用），只能靠 gate.py 的幽灵闸拦。
+    # 2026-10-23 起 op_arity 本身 fail-closed（目录外的算子直接报 [UNKNOWN_OP]），
+    # 本集合的作用变成：给已知幽灵一个**带替代建议**的 [GHOST] 专属报错。
+    "to_nan",
 }
 
 # 2026-09-01 兼容：operators_verified.json 的幽灵键存在两代 schema
@@ -456,6 +463,36 @@ def compute_webdata_failed_counts(checks: Optional[Iterable[Any]]) -> Dict[str, 
             "ra_pending_names": ra_pending, "ppa_pending_names": ppa_pending}
 
 
+def merge_failed_items(counts: Dict[str, Any], *, ppa_bonus: bool = False) -> Dict[str, Any]:
+    """RA ∪ PPA 失败项并集（fail-closed 判定用；2026-10-27 P0）。
+
+    **为什么不能只按某一通道计数**：``PPA_CHECK_NAMES ⊂ RA_CHECK_NAMES``，且 PPA 额外把
+    ``LOW_SHARPE < 1`` 记为失败 ⇒ 两个集合**只有 PPA 独有项，没有 RA 独有项**。因此
+    「按 PPA 计数」等于只数了一个更小的子集：``LOW_FITNESS`` / ``LOW_2Y_SHARPE`` /
+    ``IS_LADDER_SHARPE`` / ``LOW_GLB_*_SHARPE`` 等**只在 RA 名单里**的失败会被整片漏掉。
+
+    平台会给 **REGULAR 提交成功**的 alpha 自动打 ``PowerPoolSelected`` 标签
+    （2026-10-27 JjeMlmXA 实证），``is_ppa_alpha`` 据此判 PPA ⇒ 提交闸/判定层会去看
+    ``failed_ppa``，从而放过 ``Failed RA>0`` 的候选。故一律以 RA 项为**下界**：
+
+    - 基础集 = ``ra_items``（RA 名单内的真实失败，任何通道都必须拦）；
+    - ``ppa_bonus=True``（确属 PPA 通道）时并入 ``ppa_items`` 的额外项
+      （即 ``LOW_SHARPE`` 结果 PASS 但 value<1 这类 PPA 专有规则）。
+
+    返回 ``{"count", "names", "items"}``，``items`` 按 checks 原顺序且按 name 去重。
+    """
+    merged: Dict[str, dict] = {}
+    for it in counts.get("ra_items") or []:
+        if isinstance(it, dict) and it.get("name") is not None:
+            merged.setdefault(str(it["name"]), it)
+    if ppa_bonus:
+        for it in counts.get("ppa_items") or []:
+            if isinstance(it, dict) and it.get("name") is not None:
+                merged.setdefault(str(it["name"]), it)
+    items = list(merged.values())
+    return {"count": len(items), "names": list(merged), "items": items}
+
+
 # ---------------------------------------------------------------------------
 # Search constants
 # ---------------------------------------------------------------------------
@@ -533,7 +570,17 @@ WAIT_THRESHOLDS: Dict[str, object] = {
     "submit_repost_max": 1,            # 窗口内未翻转时 re-POST 的最大次数
     # check_correlation（prod/self 相关性）阻塞轮询：账号级单并发，忙时立即返回 correlation_busy
     "prod_corr_poll_s": 30,
-    "prod_corr_timeout_s": 3600,
+    # 2026-10-22：**3600 → 900**（P0-1：60 分钟轮询把平台单并发槽堵死一小时）。
+    # 账号级单并发下，一个卡住的 alpha 按 60 min 占槽 ⇒ 整账号的相关性查询全部空转
+    # （实测：另一会话的 prod 队列脚本卡住时，本会话空转 800s+ 才出数；杀掉后同一条
+    # 1499s 才拿到值）。900 s ≈ 平台典型耗时（1–5 min，实测 94s/条）的 10 倍余量，
+    # 仍覆盖排队等待；超时按 `pending` 返回（不缓存、不判死），调用方隔段时间重查。
+    # 跨进程互斥（logs/_dblock/correlation.lock.json）见 brain_mixin_transport。
+    # 2026-10-26：900 → 120。理由：本地跨进程锁**覆盖整个轮询窗口**，
+    # 900s 意味着单次调用把账号级单槽占满 15 分钟，其他会话/战役全部 busy。
+    # 平台实测 94s/条 ⇒ 120s 覆盖绝大多数；长尾返回 pending，调用方隔期重试
+    # （每次重试只占 120s 锁，而非 900s）。
+    "prod_corr_timeout_s": 120,
     # 在飞回测的卡住判定（toolkit poller）：progress 连续 stall_min 无变化判 STALLED；总时长超 timeout_min 判超时
     "sim_stall_min": 60,
     "sim_timeout_min": 360,

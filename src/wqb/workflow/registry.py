@@ -188,7 +188,7 @@ class WorkflowRegistry:
                                      "priors_file", "priors_from_db", "ideas_file", "detached",
                                      "launch_only", "console", "pipeline_mode", "batch_size",
                                      "require_operators", "require_count",
-                                     "prod_first", "prod_first_top_k"],
+                                     "prod_first", "prod_first_top_k", "allow_stale_priors"],
                 )
             )
         except ImportError as e:

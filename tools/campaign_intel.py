@@ -17,9 +17,16 @@
                 跑平台 PROD_CORRELATION（单并发排队，串行），把"先烧回测、最后才知道撞 prod"
                 前移到扩批之前；结果写 alphas.prod_correlation（已有行）+ ledger prod_first_<wave>，
                 并给出族级 EXPAND / STOP 建议（≥0.7 的族不再扩变体，换族）
+  prod-probe    开波前族级 prod 探针（P0-1，2026-10-24）：对**待开波数据集**的全部历史回测行
+                （跨所有波次）每信号族选最强 1 条探 prod（0 回测槽，只占 prod 队列），
+                prod ≥--prod-max（缺省 0.75）⇒ 封族：写 probe=true 死路指纹（闸 PF 开波时
+                enforced 拦截，不再花整波回测）+ ledger prod_probe_<region>_<dataset> 封族记录；
+                退出码 2 = 有族被封（勿开该族整波）。区别于 prod-first：后者收批后探本波行。
   mark-saturated S6→S0 反馈（2026-09-29）：把被 prod 墙卡死的数据集写入 ledger saturated_datasets，
                 S0 打分（score_datasets P2/P5）读取并降级；缺省 dry-run，--write-ledger 落库
   backlog-drop  积压波清理（缺省 dry-run，--apply 写库）
+  atom-first    ATOM 优先候选单（2026-10-26）：读 backtest_results × expressions.atom_flag，
+                单数据集排在前面、跨数据集只进备选区，绝不混排；零平台调用
 
 用法:
   python tools/campaign_intel.py s0-select --region EUR --delay 1 --universe TOP2500
@@ -27,7 +34,9 @@
   python tools/campaign_intel.py s4-prescreen --alpha-ids id1 id2 id3
   python tools/campaign_intel.py ghost-audit --region EUR --exprs-file candidates.txt
   python tools/campaign_intel.py prod-first --region IND --wave 172 --top-k 3 --write-ledger
+  python tools/campaign_intel.py prod-probe --region USA --dataset insider_matrix
   python tools/campaign_intel.py mark-saturated --region EUR --dataset model26 --reason "prod 墙 ≥0.9" --wave 12 --write-ledger
+  python tools/campaign_intel.py atom-first --region IND --top 12
 
 退出码: 0=成功，1=失败/有 BLOCK 项。
 运行环境: 使用 MCP venv（$WQ_PY 或 world-quant-brain-mcp/.venv），依赖 brain_api。
@@ -36,6 +45,7 @@ import argparse
 import asyncio
 import json
 import os
+import re
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import _pyenv  # noqa: E402  跨平台解释器/MCP 目录解析（tools/_pyenv.py；2026-09-29 替换各脚本抄写的 Windows 盘符兜底）
@@ -293,19 +303,155 @@ def _expr_counts_by_dataset(cur, region):
 
 
 def _s0_rank_key(x, xr_penalize=False):
-    """s0-select 排序键（P1，2026-09-30）：(判死沉底, 次沉, -total_score)。
+    """s0-select 排序键（P1 2026-09-30 / P0-4 2026-10-24）：(判死沉底, 次沉, 机制层, -score)。
 
     实测（公平对照 ≥2 区共有数据集 n=154）：跨区弱先验 lift +1pp 在噪声内，
     无预测力；但作为 soft 第二键会把 17%（8/48）候选整体压到存活队尾被 top-n
     截断 ⇒ 纯系统性偏置。故**默认把 xr_penalized 移出排序键**；
-    `--xr-penalize` 可复现旧行为（降权）。两层结构含义不变：
-      key[0] = ledger_dead 或 proven_dead_by_yield（判死沉底）
+    `--xr-penalize` 可复现旧行为（降权）。四层结构含义：
+      key[0] = ledger_dead / proven_dead_by_yield / region_dead（判死沉底）
       key[1] = conditioning_only（字段数不足次沉；xr 仅在 flag 下并入）
+      key[2] = 机制层（P0-4）：0=经典异象 / 1=未标注 / 2=明示非经典
+               （来源 tracking/<REGION>/reference/<r>_dataset_mechanisms.md；
+                未登记或过期一律 1，不清洗总分的原有次序）
+      key[3] = -total_score（同层内按平台分降序）
     契约守护：tests/unit/08_forum_recon/test_campaign_intel_s0_rank_p1.py。
     """
-    penalized = bool(x["ledger_dead"] or x["proven_dead_by_yield"])
+    penalized = bool(x["ledger_dead"] or x["proven_dead_by_yield"]
+                     or x.get("region_dead"))
     soft = bool(x["conditioning_only"] or (xr_penalize and x.get("xr_penalized")))
-    return (penalized, soft, -(x.get("total_score") or 0))
+    mech = int(x.get("mechanism_tier", 1) or 0)
+    return (penalized, soft, mech, -(x.get("total_score") or 0))
+
+
+# ---------------------------------------------------------------------------
+# P1-6 / P0-4（2026-10-24）：区域层选集规则文件
+#   ① <region_lower>_dead_datasets.md  —— 已判死清单（S0 自动剔除，过期降 advisory）
+#   ② <region_lower>_dataset_mechanisms.md —— 机制标注（排序键第三层）
+# 为什么不用 ledger `*_dead` 键：那条写入路径受 seal_dead_end 的论坛取证闸管辖
+# （AGENTS.md §8.11，故障/无证据不得判死），而区域文件允许人工复核、过期自降级。
+# ---------------------------------------------------------------------------
+
+_FENCED_JSON_RE = re.compile(r"```json\s*\n(.*?)```", re.IGNORECASE | re.DOTALL)
+
+
+def _read_fenced_json(path):
+    """读 Markdown 里首个合法的 ```json 代码块 → (dict|None, error|None)。"""
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except OSError as e:
+        return None, f"{type(e).__name__}: {e}"
+    last_err = "未找到合法的 ```json 代码块"
+    for m in _FENCED_JSON_RE.finditer(text):
+        try:
+            obj = json.loads(m.group(1))
+        except Exception as e:  # 坏块跳过，继续找下一块
+            last_err = f"{type(e).__name__}: {e}"
+            continue
+        if isinstance(obj, dict):
+            return obj, None
+    return None, last_err
+
+
+def _entry_stale(entry, review_after_days, today=None):
+    """条目是否过期：as_of 缺失 / 不可解析 / 早于 review_after_days ⇒ 过期。
+
+    用户 2026-10-23 纪律：过期证据不能作证。故过期条目只作 advisory，不参与剔除/排序。
+    """
+    raw = (entry or {}).get("as_of")
+    if not raw:
+        return True
+    try:
+        d = datetime.date.fromisoformat(str(raw))
+    except ValueError:
+        return True
+    today = today or datetime.date.today()
+    try:
+        limit = int(review_after_days)
+    except (TypeError, ValueError):
+        limit = 120
+    return (today - d).days > limit
+
+
+def _load_region_rules(region, filename, root=None, today=None, default_review_days=120):
+    """通用加载器：tracking/<REGION>/reference/<filename> 的 ```json 块 → dict。
+
+    返回 {path, entries, live, stale, as_of, review_after_days, warning}。
+    live = 未过期条目；stale = 过期条目（只打印不生效）。文件缺失不算告警。
+    """
+    repo = root or _REPO_ROOT
+    path = os.path.join(repo, "tracking", region.upper(), "reference", filename)
+    res = {"path": path, "entries": {}, "live": {}, "stale": {},
+           "as_of": None, "review_after_days": default_review_days, "warning": None}
+    if not os.path.exists(path):
+        return res
+    obj, err = _read_fenced_json(path)
+    if obj is None:
+        res["warning"] = f"区域规则文件无法解析（{err}）：{path}"
+        print(f"[s0-select] ★{res['warning']}", file=sys.stderr)
+        return res
+    res["as_of"] = obj.get("as_of")
+    try:
+        res["review_after_days"] = int(obj.get("review_after_days") or default_review_days)
+    except (TypeError, ValueError):
+        res["review_after_days"] = default_review_days
+    for e in (obj.get("datasets") or []):
+        if not isinstance(e, dict):
+            continue
+        ds = str(e.get("dataset") or "").strip()
+        if not ds:
+            continue
+        rec = dict(e)
+        res["entries"][ds] = rec
+        (res["stale"] if _entry_stale(rec, res["review_after_days"], today=today)
+         else res["live"])[ds] = rec
+    return res
+
+
+def _load_region_dead_list(region, root=None, today=None):
+    """P1-6：已判死数据集清单（tracking/<REGION>/reference/<r>_dead_datasets.md）。
+
+    命中 live → 标 region_dead 并沉底剔除；命中 stale → 只打印告警、不剔除。
+    """
+    res = _load_region_rules(region, f"{region.lower()}_dead_datasets.md",
+                             root=root, today=today, default_review_days=120)
+    if res["stale"]:
+        sample = ", ".join(sorted(res["stale"])[:8])
+        more = " …" if len(res["stale"]) > 8 else ""
+        print(f"[s0-select] ⚠区域判死清单 {len(res['stale'])} 条已过期"
+              f"（>{res['review_after_days']} 天；as_of 缺失按过期处理）⇒ 只作 advisory、不剔除："
+              f"{sample}{more}", file=sys.stderr)
+    return res
+
+
+def _load_region_mechanisms(region, root=None, today=None):
+    """P0-4：数据集机制标注（tracking/<REGION>/reference/<r>_dataset_mechanisms.md）。
+
+    过期条目不生效 ⇒ 该集回到「未标注」（tier 1），不清洗总分的原有次序。
+    """
+    res = _load_region_rules(region, f"{region.lower()}_dataset_mechanisms.md",
+                             root=root, today=today, default_review_days=180)
+    if res["stale"]:
+        sample = ", ".join(sorted(res["stale"])[:8])
+        more = " …" if len(res["stale"]) > 8 else ""
+        print(f"[s0-select] ⚠机制标注 {len(res['stale'])} 条已过期"
+              f"（>{res['review_after_days']} 天）⇒ 降为未标注（tier 1）：{sample}{more}",
+              file=sys.stderr)
+    return res
+
+
+def _mechanism_tier(rec):
+    """classic_anomaly=True → 0（优先）；未登记 → 1；False → 2（明示非经典，沉底）。"""
+    if not rec:
+        return 1
+    v = rec.get("classic_anomaly")
+    if v is True:
+        return 0
+    if v is False:
+        return 2
+    return 1
+
 
 
 async def _cmd_s0_select(a):
@@ -321,6 +467,43 @@ async def _cmd_s0_select(a):
         return 1
     recommendations = rec.get("recommendations") or []
     pyramid_status = rec.get("pyramid_status") or {}
+
+    # 2026-10-24 P1-4：塔位快照并入 S0 产物（每波必带）。
+    # 平台 recommend_datasets 已返回 pyramid_summary；这里整形为可直接引用的快照，
+    # 不额外打平台请求（零配额）。
+    _pyr = rec.get("pyramid_summary") or {}
+    snapshot_rows = []
+    for cat_id, item in (_pyr.items() if isinstance(_pyr, dict) else []):
+        if not isinstance(item, dict):
+            continue
+        snapshot_rows.append({
+            "category": cat_id,
+            "category_name": item.get("category_name"),
+            "alpha_count": item.get("alpha_count"),
+            "need_to_light": item.get("need_to_light"),
+            "lit": bool(item.get("lit")),
+            "multiplier": item.get("multiplier"),
+        })
+    snapshot_rows.sort(key=lambda r: (r["lit"], -(r.get("need_to_light") or 0),
+                                      -(r.get("multiplier") or 0)))
+    pyramid_snapshot = {
+        "region": a.region, "delay": a.delay,
+        "as_of": datetime.datetime.now().isoformat(timespec="seconds"),
+        "source": "recommend_datasets.pyramid_summary",
+        "lit": [r["category"] for r in snapshot_rows if r["lit"]],
+        "unlit": [r["category"] for r in snapshot_rows if not r["lit"]],
+        "lit_count": sum(1 for r in snapshot_rows if r["lit"]),
+        "total": len(snapshot_rows),
+        "rows": snapshot_rows,
+    }
+    if not snapshot_rows:
+        print("[s0-select] ⚠平台未返回 pyramid_summary —— 塔位快照只有 lit/unlit 计数，"
+              "不足以逐类核对（下次选集重试或直接跑 pyramid 子命令）", file=sys.stderr)
+
+    # 2026-10-24 P1-6 / P0-4：区域层规则（判死清单 + 机制标注）。
+    region_dead = _load_region_dead_list(a.region)
+    region_mech = _load_region_mechanisms(a.region)
+    include_region_dead = bool(getattr(a, "include_region_dead", False))
 
     # ② 本地台账：历史产出率（mining_yield）+ 判死清单（dead_datasets）
     #    + 白名单/自动排名/座位模型（P1 可达性 & P4 覆盖审计）—— 走本地 sqlite
@@ -483,6 +666,11 @@ async def _cmd_s0_select(a):
         xr_weak = bool(xr.get("weak")) and not xr.get("strong")
         fc = field_counts.get(ds_id)
         conditioning_only = fc is not None and fc < a.min_fields
+        # 2026-10-24 P1-6：区域判死清单（live 才剔除；stale 只告警，见 _load_region_dead_list）
+        rd = region_dead["live"].get(ds_id)
+        rd_stale = region_dead["stale"].get(ds_id)
+        # 2026-10-24 P0-4：机制标注（tier 0 经典 / 1 未标注 / 2 明示非经典）
+        mech = region_mech["live"].get(ds_id) or {}
         out.append({
             "dataset_id": ds_id,
             "dataset_name": r.get("dataset_name"),
@@ -508,9 +696,21 @@ async def _cmd_s0_select(a):
             "xr_strong": xr.get("strong") or [],
             "xr_penalized": xr_weak,
             "est_seats": int(seat_model.get(ds_id, seats_default) or 0),  # P1：独立座位估计
+            # 2026-10-24 P1-6 / P0-4
+            "region_dead": bool(rd) and not include_region_dead,
+            "region_dead_verdict": (rd or {}).get("verdict"),
+            "region_dead_reason": (rd or {}).get("reason"),
+            "region_dead_stale": bool(rd_stale),
+            "region_dead_stale_reason": (rd_stale or {}).get("reason"),
+            "mechanism": mech.get("mechanism"),
+            "classic_anomaly": mech.get("classic_anomaly"),
+            "mechanism_tier": _mechanism_tier(mech),
+            "mechanism_evidence": mech.get("evidence"),
         })
 
-    # 排序：判死（ledger 或产出率证伪）沉底；字段<min_fields 次沉；其余按 total_score 降序
+
+    # 排序：判死（ledger / 产出率证伪 / 区域清单）沉底；字段<min_fields 次沉；
+    #       机制层（P0-4：经典异象 > 未标注 > 明示非经典）；同层按 total_score 降序
     # （2026-09-19：此前只按未点亮塔分排序，把 earnings3/insiders1/macro63/shortinterest5 这类
     #   结构性弱集推到前排，7 集 197 条回测 0 候选）
     # （2026-09-30 P1：跨区弱移出排序键（无预测力且压尾截断），--xr-penalize 复现旧行为）
@@ -522,14 +722,28 @@ async def _cmd_s0_select(a):
     if not getattr(a, "include_lit", False):
         lit_excluded = [x for x in out if x.get("category_lit")]
         out = [x for x in out if not x.get("category_lit")]
-    alive = [x for x in out if not (x["ledger_dead"] or x["proven_dead_by_yield"])]
-    dead = [x for x in out if x["ledger_dead"] or x["proven_dead_by_yield"]]
+    alive = [x for x in out if not (x["ledger_dead"] or x["proven_dead_by_yield"]
+                                    or x.get("region_dead"))]
+    dead = [x for x in out if (x["ledger_dead"] or x["proven_dead_by_yield"]
+                               or x.get("region_dead"))]
 
     print(f"=== S0 选集增强 {a.region}/D{a.delay}/{a.universe} ===")
     print(f"点塔状态: {pyramid_status.get('lit_categories')}/{pyramid_status.get('total_categories')} "
           f"已点亮；未点亮塔: {', '.join(pyramid_status.get('unlit_category_ids') or [])}")
+    print(f"[塔位快照 P1-4] {pyramid_snapshot['lit_count']}/{pyramid_snapshot['total']} 已点亮"
+          f"（as_of {pyramid_snapshot['as_of']}；逐类明细写入 --json 产物）")
     print(f"候选: 平台推荐 {len(recommendations)} → 剔除已点亮塔 {len(lit_excluded)}（用户规则，--include-lit 可保留）"
           f" → 剔除判死 {len(dead)} → 存活 {len(alive)}")
+    if region_dead["entries"]:
+        print(f"[区域判死清单 P1-6] {len(region_dead['live'])} 条生效 / "
+              f"{len(region_dead['stale'])} 条过期（只 advisory）"
+              f"（{os.path.relpath(region_dead['path'], _REPO_ROOT)}）"
+              + ("；--include-region-dead 已开（不剔除）" if include_region_dead else ""))
+    if region_mech["entries"]:
+        print(f"[机制标注 P0-4] {len(region_mech['live'])} 条生效 / "
+              f"{len(region_mech['stale'])} 条过期；排序层 = 经典异象 > 未标注 > 明示非经典"
+              f"（{os.path.relpath(region_mech['path'], _REPO_ROOT)}）")
+
     print(f"\n{'rank':>4} {'score':>7} {'yield':>7} {'bt':>4} {'maxS':>5} {'fld':>4} {'ac':>6} {'usr':>5} {'cat':13s} {'lit':>3}  dataset  [先验]")
     for i, x in enumerate(alive[:a.top_n], 1):
         yr_s = f"{x['hist_yield_rate']:.3f}" if x["hist_yield_rate"] is not None else "  -  "
@@ -554,11 +768,19 @@ async def _cmd_s0_select(a):
             tags.append("跨区弱:" + ",".join(x["xr_weak"][:3]))
         if x["xr_strong"]:
             tags.append("跨区RA-clean:" + ",".join(x["xr_strong"][:3]))
+        if x.get("mechanism_tier") == 0:
+            tags.append("机制:经典异象")
+        elif x.get("mechanism_tier") == 2:
+            tags.append("机制:非经典(慎)")
+        if x.get("region_dead_stale"):
+            tags.append("区域判死(过期,advisory)")
         print(f"{i:>4} {x['total_score']:>7.2f} {yr_s:>7} {x['hist_backtested']:>4} {ms:>5} {fc_s:>4} "
               f"{ac_s:>6} {usr_s:>5} {str(x['category']):13s} {'Y' if x['category_lit'] else 'N':>3}  "
               f"{x['dataset_id']} ({x['dataset_name']})" + (f"  [{'; '.join(tags)}]" if tags else ""))
     print("[强度×竞争度双查 P5] 开波准入 = 强度证据（maxS≥1.25 或 yield>0）× 竞争度（ac 列；"
           "≤50 低竞争 / >1000 拥挤→prod 墙风险）；缺强度证据不开波（零竞争≠有信号）。")
+    print("[机制优先 P0-4] 排序第三层 = 机制是否经典异象（0 经典 > 1 未标注 > 2 明示非经典）；"
+          "机制层只决定先试谁，开波前仍须 prod-probe（P0-1）。")
     if dead:
         print(f"\n[判死沉底 {len(dead)} 个]")
         for x in dead[:10]:
@@ -567,7 +789,11 @@ async def _cmd_s0_select(a):
                 reason.append("ledger_dead")
             if x["proven_dead_by_yield"]:
                 reason.append(f"yield=0@{x['hist_backtested']}bt")
-            print(f"  {x['dataset_id']:28s} cat={x['category']} ({'+'.join(reason)})")
+            if x.get("region_dead"):
+                reason.append(f"region_dead:{(x.get('region_dead_verdict') or 'dead')}")
+            print(f"  {x['dataset_id']:28s} cat={x['category']} ({'+'.join(reason)})"
+                  + (f"  {x['region_dead_reason']}" if x.get("region_dead_reason") else ""))
+
 
     # P1（2026-09-14）：座位可达性预警。同族候选互相关高 → 一族只算 1 独立座位；
     #     Σest_seats（存活 top-n）< target 即「结构性不可达」，提示扩集/换区而非继续打磨。
@@ -613,12 +839,34 @@ async def _cmd_s0_select(a):
         os.makedirs(os.path.dirname(a.json_out) or ".", exist_ok=True)
         json.dump({
             "region": a.region, "delay": a.delay, "universe": a.universe,
+            "generated_at": datetime.datetime.now().isoformat(timespec="seconds"),
             "pyramid_status": pyramid_status,
+            "pyramid_snapshot": pyramid_snapshot,   # P1-4：每波 S0 产物必带塔位快照
             "candidates": out, "alive_count": len(alive), "dead_count": len(dead),
+            # build_wave --max-size-auto 读这个键（Σest_seats × 2）；此前缺失导致该开关静默无效
+            "est_seats": [int(x.get("est_seats") or 0) for x in alive[:a.top_n]],
             "seat_reachability": {  # P1
                 "target": a.target, "total_est_seats": total_seats,
                 "top_n_alive": len(top_alive), "seat_model_source": seat_src,
                 "reachable": (total_seats >= a.target) if a.target else None,
+            },
+            "region_dead_list": {   # P1-6
+                "path": os.path.relpath(region_dead["path"], _REPO_ROOT).replace("\\", "/"),
+                "as_of": region_dead["as_of"],
+                "review_after_days": region_dead["review_after_days"],
+                "live": sorted(region_dead["live"]),
+                "stale": sorted(region_dead["stale"]),
+                "applied": not include_region_dead,
+                "warning": region_dead["warning"],
+            },
+            "mechanism_map": {      # P0-4
+                "path": os.path.relpath(region_mech["path"], _REPO_ROOT).replace("\\", "/"),
+                "as_of": region_mech["as_of"],
+                "review_after_days": region_mech["review_after_days"],
+                "annotated": sorted(region_mech["live"]),
+                "stale": sorted(region_mech["stale"]),
+                "tiers": {x["dataset_id"]: x.get("mechanism_tier") for x in out},
+                "warning": region_mech["warning"],
             },
             "override_gaps": [  # P4
                 {"dataset": ds_id, "auto_tier": rt.get("tier"),
@@ -847,6 +1095,42 @@ def _pf_verdict(prod, status, prod_max):
     return ("STOP(prod>=%.2f)" % prod_max) if prod >= prod_max else "EXPAND"
 
 
+async def _pf_probe_one(brain, aid, a):
+    """单条 alpha 的 prod 探测循环（pending/busy 重试 + 单条硬超时）。返回 (prod, status)。
+
+    prod-first / prod-probe 共用（2026-10-24 P0-1 抽自 `_cmd_prod_first`，行为逐字不变）。
+    走 `brain.check_correlation` ⇒ 自动继承账号级 correlation 泳道锁与 48h 已决缓存。
+    """
+    prod, status, tries = None, None, 0
+    while tries < a.max_tries:
+        tries += 1
+        try:
+            res = await asyncio.wait_for(
+                brain.check_correlation(aid, correlation_type="production",
+                                        threshold=a.prod_max, refresh=a.refresh),
+                timeout=a.probe_timeout)
+        except asyncio.TimeoutError:
+            status = f"timeout({a.probe_timeout}s)"
+            print(f"  {aid}: 平台 PC 数据 {a.probe_timeout}s 未就绪，跳过（下次 --refresh 重查）")
+            break
+        except Exception as e:
+            status = f"error: {str(e)[:120]}"
+            break
+        chk = (res.get("checks") or {}).get("production") or {}
+        status = res.get("status") or chk.get("status") or (
+            "ok" if chk.get("max_correlation") is not None else "unknown")
+        if chk.get("max_correlation") is not None:
+            prod = float(chk["max_correlation"])
+            break
+        if status in ("pending", "correlation_busy"):
+            wait = int(chk.get("retry_after") or a.poll_sec)
+            print(f"  {aid}: {status}，{wait}s 后重试（{tries}/{a.max_tries}）")
+            time.sleep(wait)
+            continue
+        break
+    return prod, status
+
+
 async def _cmd_prod_first(a):
     import sqlite3
     import time
@@ -883,33 +1167,7 @@ async def _cmd_prod_first(a):
     print(f"=== prod-first {a.region} wave={a.wave}：{len(probes)} 个信号族各探 1 条（平台单并发，串行）===")
     for r in probes:
         aid = r["alpha_id"]
-        prod, status, tries = None, None, 0
-        while tries < a.max_tries:
-            tries += 1
-            try:
-                res = await asyncio.wait_for(
-                    brain.check_correlation(aid, correlation_type="production",
-                                            threshold=a.prod_max, refresh=a.refresh),
-                    timeout=a.probe_timeout)
-            except asyncio.TimeoutError:
-                status = f"timeout({a.probe_timeout}s)"
-                print(f"  {aid}: 平台 PC 数据 {a.probe_timeout}s 未就绪，跳过（下次 --refresh 重查）")
-                break
-            except Exception as e:
-                status = f"error: {str(e)[:120]}"
-                break
-            chk = (res.get("checks") or {}).get("production") or {}
-            status = res.get("status") or chk.get("status") or (
-                "ok" if chk.get("max_correlation") is not None else "unknown")
-            if chk.get("max_correlation") is not None:
-                prod = float(chk["max_correlation"])
-                break
-            if status in ("pending", "correlation_busy"):
-                wait = int(chk.get("retry_after") or a.poll_sec)
-                print(f"  {aid}: {status}，{wait}s 后重试（{tries}/{a.max_tries}）")
-                time.sleep(wait)
-                continue
-            break
+        prod, status = await _pf_probe_one(brain, aid, a)
         verdict = _pf_verdict(prod, status, a.prod_max)
         results.append({"alpha_id": aid, "family": r["family"], "dataset": r.get("dataset"),
                         "sharpe": r.get("sharpe"), "fitness": r.get("fitness"),
@@ -1031,6 +1289,155 @@ def _pf_release_lock(lock):
             os.remove(lock)
         except OSError:
             pass
+
+
+async def _cmd_prod_probe(a):
+    """开波前族级 prod 探针（P0-1，2026-10-24；报告 reports/usa_mining_history_review_20261023.md §10）。
+
+    与 prod-first 的差别在**时机与探针源**：
+      prod-first = 收批后对本波行探（`WHERE region=? AND wave=?`），产出「本波族级 STOP/EXPAND」；
+      prod-probe = 开波前对本集**全部历史**行探（跨所有波次），产出「封族清单」——
+                   命中 prod ≥ --prod-max（缺省 0.75，= 闸 PF 的 `PROBE_SEAL_THRESHOLD`）的
+                   信号族写带 `probe: true` 的死路指纹，闸 PF 下次跑即 enforced 拦截，
+                   不再花整波回测槽才发现撞墙（USA 实测 13/110 波投在事后撞墙族）。
+    取证口径：每族只花 1 颗探针的 prod 额度（只占平台 prod 队列，不占回测槽）；
+    走 `BrainApiClient.check_correlation`（继承 correlation 泳道锁 + 48h 已决缓存）。
+
+    新集无历史时无从取材 → 打印提示并 exit 0（该场景走 P1-1 首波裸探针）。
+    退出码：0=探针完成且无族被封 / 2=有族被封（勿开该族整波）/ 3=锁被占。
+    """
+    import sqlite3
+
+    db = db_connect(os.path.join(_REPO_ROOT, "data", "wqb.db"))
+    db.row_factory = sqlite3.Row
+    cur = db.cursor()
+    cur.execute(
+        "SELECT alpha_id, sharpe, fitness, turnover, two_year_sharpe, ra_failed_checks, code, wave "
+        "FROM backtest_results WHERE region=? AND dataset=? AND alpha_id IS NOT NULL AND alpha_id<>''",
+        (a.region, a.dataset))
+    rows = [dict(r) for r in cur.fetchall()]
+    if not rows:
+        print(f"[prod-probe] {a.region}/{a.dataset} 无历史回测行（新集）：prod 探针无从取材；"
+              f"按 P1-1 先发 1 条裸探针验强度，首波收批后由 prod-first 补指纹", file=sys.stderr)
+        db.close()
+        return 0
+
+    probes = _pf_pick_probes(rows, a.top_k, a.min_sharpe, a.sharpe_min, a.fitness_min)
+    if not probes:
+        print(f"[prod-probe] {a.region}/{a.dataset} 历史 {len(rows)} 行但无 |S|≥{a.min_sharpe} 候选："
+              f"整族无强度证据，先发裸探针（P1-1）再谈 prod", file=sys.stderr)
+        db.close()
+        return 0
+
+    if a.dry_run:
+        print(f"[prod-probe] dry-run：拟探 {len(probes)} 个族（不联网、不写库）")
+        for r in probes:
+            print(f"  {r['alpha_id']:10s} S={r.get('sharpe') or 0:5.2f} wave={r.get('wave')}  "
+                  f"[{r['family'][:70]}]")
+        db.close()
+        return 0
+
+    # 与 prod-first 共用同一把进程锁（平台 prod 单并发；并跑只会互相排队，IND w178 实证）
+    lock = _pf_acquire_lock()
+    if lock is None and not getattr(a, "no_lock", False):
+        print("[prod-probe] 另一个 prod 探针进程（prod-first / prod-probe）正在跑"
+              "（锁文件 data/.prod_first.lock），本次退出；--no-lock 可强行并跑", file=sys.stderr)
+        db.close()
+        return 3
+    # 延迟到真正要联网才导入 MCP 栈：早退路径（新集 / 无强度 / --dry-run / 锁被占）
+    # 因此完全不依赖 world-quant-brain-mcp 环境（与仓内 dry-run 契约一致）。
+    from brain_api import BrainApiClient  # noqa: F402
+
+    brain = BrainApiClient()
+    await brain.ensure_authenticated()
+    results = []
+    started_at = time.strftime("%Y-%m-%dT%H:%M:%S")
+    print(f"=== prod-probe {a.region}/{a.dataset}（开波前）：{len(probes)} 个信号族各探 1 条"
+          f"（历史全波次最强，平台单并发串行）===")
+    for r in probes:
+        aid = r["alpha_id"]
+        prod, status = await _pf_probe_one(brain, aid, a)
+        sealed = prod is not None and prod >= a.prod_max
+        verdict = "SEAL" if sealed else _pf_verdict(prod, status, a.prod_max)
+        results.append({"alpha_id": aid, "family": r["family"], "wave": r.get("wave"),
+                        "sharpe": r.get("sharpe"), "fitness": r.get("fitness"),
+                        "ra_clean": _pf_ra_clean(r), "prod_correlation": prod, "status": status,
+                        "sealed": sealed, "verdict": verdict, "code": r.get("code")})
+        prod_s = f"{prod:.4f}" if prod is not None else "-"
+        print(f"  {aid:10s} S={r.get('sharpe') or 0:5.2f} F={r.get('fitness') or 0:5.2f} "
+              f"ra_clean={str(_pf_ra_clean(r)):5s} prod={prod_s:>7} -> {verdict}  [{r['family'][:70]}]")
+        # 已有 alphas 行则回写（不新建行：alphas 需要 region_id/dataset_id 外键）
+        if prod is not None:
+            cur.execute("UPDATE alphas SET prod_correlation=?, prod_corr_source='prod_probe', "
+                        "corr_checked_at=CURRENT_TIMESTAMP WHERE alpha_id=?", (prod, aid))
+    db.commit()
+
+    # 骨架指纹自学习（带 probe 标记）：闸 PF（wave_gate_pkg.gates_pf._load_prod_wall_families）
+    # 读到 probe=true 且 prod_max ≥ PROBE_SEAL_THRESHOLD 的族即 enforced 拦截——这是「封族」的
+    # 代码级落点，与 prod-first 的指纹同一存储面（prod_family_<region>_<骨架>）。
+    n_fp, n_sealed_fp = 0, 0
+    probe_at = time.strftime("%Y-%m-%dT%H:%M:%S")
+    try:
+        import sys as _sys_pf, os as _os_pf
+        _tools_dir = _os_pf.path.dirname(_os_pf.path.abspath(__file__))
+        if _tools_dir not in _sys_pf.path:
+            _sys_pf.path.insert(0, _tools_dir)
+        from wave_gate import _pf_family as _skel_fp
+        for x in results:
+            if x.get("prod_correlation") is None:
+                continue
+            fam = _skel_fp(x.get("code") or x.get("expression") or "")
+            if not fam or fam == "?":
+                continue
+            key = f"prod_family_{a.region}_{fam}"
+            cur.execute("INSERT INTO ledger_kv(region, key, value) VALUES(?,?,?) "
+                        "ON CONFLICT(region, key) DO UPDATE SET value=excluded.value, "
+                        "updated_at=CURRENT_TIMESTAMP",
+                        (a.region, key, json.dumps(
+                            {"prod_corr": x["prod_correlation"], "at": probe_at,
+                             "alpha_id": x["alpha_id"], "n": 1, "probe": True,
+                             "sealed": x["sealed"], "dataset": a.dataset},
+                            ensure_ascii=False)))
+            n_fp += 1
+            if x["sealed"]:
+                n_sealed_fp += 1
+        db.commit()
+        print(f"[ledger] 骨架指纹自学习：{n_fp} 个 prod_family_* 键已写（其中封族 {n_sealed_fp}）")
+    except Exception as _e_fp:
+        print(f"[ledger] 骨架指纹回写失败（不阻断）: {_e_fp}", file=sys.stderr)
+
+    sealed_rows = [x for x in results if x["sealed"]]
+    clean_rows = [x for x in results if x["prod_correlation"] is not None and not x["sealed"]]
+    summary = {"region": a.region, "dataset": a.dataset, "probed": len(results),
+               "sealed": len(sealed_rows), "clean": len(clean_rows),
+               "unknown": len(results) - len(sealed_rows) - len(clean_rows),
+               "prod_max": a.prod_max, "started_at": started_at, "at": probe_at,
+               "sealed_families": [{"family": x["family"], "alpha_id": x["alpha_id"],
+                                    "prod_corr": x["prod_correlation"]} for x in sealed_rows],
+               "results": results}
+    print(f"\n[prod-probe] 族级结论：SEAL={len(sealed_rows)} CLEAN={len(clean_rows)} "
+          f"UNKNOWN={summary['unknown']}（探测→封族耗时 {started_at} → {probe_at}）")
+    if sealed_rows:
+        print("[prod-probe] 封族清单（勿开整波；换正交概念/换族/换集）：")
+        for x in sealed_rows:
+            print(f"  · {x['family'][:80]}  probe={x['prod_correlation']:.4f}")
+    try:
+        key = f"prod_probe_{a.region}_{a.dataset}"
+        cur.execute("INSERT INTO ledger_kv(region, key, value) VALUES(?,?,?) "
+                    "ON CONFLICT(region, key) DO UPDATE SET value=excluded.value, "
+                    "updated_at=CURRENT_TIMESTAMP",
+                    (a.region, key, json.dumps(summary, ensure_ascii=False)))
+        db.commit()
+        print(f"[ledger] {a.region}/{key} 已写")
+    except Exception as e:
+        print(f"[ledger] 写入失败（不阻断）: {e}")
+    db.close()
+    _pf_release_lock(lock)
+    if a.json_out:
+        os.makedirs(os.path.dirname(a.json_out) or ".", exist_ok=True)
+        json.dump(summary, open(a.json_out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        print(f"[out] {a.json_out}")
+    return 2 if sealed_rows else 0
 
 
 
@@ -1269,10 +1676,239 @@ async def _cmd_ghost_audit(a):
 
 
 # ---------------------------------------------------------------------------
+# atom-first：ATOM 优先候选单（2026-10-26 用户指令「ATOM 优先，其他只作备选」）
+# ---------------------------------------------------------------------------
+
+#: 判据单一口径源是 `wqb.expression.atom.classify_atom`；这里只消费落库的 atom_flag。
+ATOM_RULE_TEXT = (
+    "ATOM = 单数据集（平台文档 single-dataset-alphas）：非豁免字段的 dataset id 必须唯一；"
+    "基础行情属 pv1；inst_pnl()/convert() 视为引用 pv1；豁免分组键恰好 6 个"
+    "（country/exchange/market/sector/industry/subindustry）。"
+)
+
+
+#: 平台 `failed_checks` 名 → 本工具五闸维度。用于把「平台已经判 FAIL」的行拉回真实状态：
+#: 只按 config 的宽线（TO≤0.70）筛会把 IND 这类区域**平台线更严**（HIGH_TURNOVER 0.40）的行
+#: 误报成「全过」——实测 `A1NJVm3e` TO 0.4722、本地「全过」，平台 checks 里是 HIGH_TURNOVER FAIL。
+PLAT_FAIL_TO_DIM = {
+    "LOW_SHARPE": "S",
+    "LOW_FITNESS": "F",
+    "LOW_2Y_SHARPE": "2Y",
+    "IS_LADDER_SHARPE": "2Y",
+    "LOW_SUB_UNIVERSE_SHARPE": "sub",
+    "LOW_TURNOVER": "TO",
+    "HIGH_TURNOVER": "TO",
+}
+
+
+def _atom_gate_flags(sharpe, fitness, two_year, sub, turnover, delay=1, turnover_max=None):
+    """返回 (未过闸名单, 过闸数)。线全部来自 config，避免本工具自创阈值。
+
+    ``turnover_max`` 可覆盖上限（如 IND/D1 平台 HIGH_TURNOVER 实际线是 0.40，
+    config 的 0.70 只是全局宽线）。
+    """
+    from wqb.config import PLATFORM_CHECK_LINES
+
+    ls = PLATFORM_CHECK_LINES["low_sharpe_min"]
+    lf = PLATFORM_CHECK_LINES["low_fitness_min"]
+    sharpe_line = float(ls["delay0"] if delay == 0 else ls["delay1"])
+    fit_line = float(lf["delay0"] if delay == 0 else lf["delay1"])
+    y2_line = float(PLATFORM_CHECK_LINES["low_2y_sharpe_min"])
+    to_lo, to_hi = PLATFORM_CHECK_LINES["turnover_range"]
+    if turnover_max is not None:
+        to_hi = float(turnover_max)
+
+    failed = []
+    if sharpe is None or sharpe < sharpe_line:
+        failed.append("S")
+    if fitness is None or fitness < fit_line:
+        failed.append("F")
+    if two_year is None or two_year < y2_line:
+        failed.append("2Y")
+    if sub is None or sub < 1.0:
+        failed.append("sub")
+    if turnover is None or not (to_lo <= turnover <= to_hi):
+        failed.append("TO")
+    return failed, 5 - len(failed)
+
+
+def _merge_platform_failures(failed, names):
+    """把平台 failed_checks 并入五闸名单；认不出的名字进 extras（如 CONCENTRATED_WEIGHT）。"""
+    extras = []
+    for name in names or []:
+        dim = PLAT_FAIL_TO_DIM.get(name)
+        if dim:
+            if dim not in failed:
+                failed.append(dim)
+        elif name not in extras:
+            extras.append(name)
+    return failed, extras
+
+
+def _payload_failed_checks(raw):
+    """从回测行 payload 里取平台自己的失败名单（三种存放形态都认）。"""
+    if not raw:
+        return []
+    try:
+        d = json.loads(raw) if isinstance(raw, str) else raw
+    except Exception:
+        return []
+    if not isinstance(d, dict):
+        return []
+    names = d.get("failed_checks")
+    if isinstance(names, list):
+        return [str(x) for x in names if x]
+    # 精简结构：{"is": {"checks": [...]}} / {"checks": {"fail": [...]}}
+    checks = d.get("checks")
+    if isinstance(checks, dict):
+        out = []
+        for bucket in ("fail", "failed", "FAIL"):
+            for c in checks.get(bucket) or []:
+                if isinstance(c, dict) and c.get("name"):
+                    out.append(str(c["name"]))
+        return out
+    is_ = d.get("is")
+    if isinstance(is_, dict):
+        return [str(c.get("name")) for c in (is_.get("checks") or [])
+                if isinstance(c, dict) and c.get("result") == "FAIL" and c.get("name")]
+    return []
+
+
+async def _cmd_atom_first(a):
+    """零平台调用：从 backtest_results × expressions.atom_flag 出 ATOM 优先候选单。
+
+    排序 = 过闸数降序 → Sharpe 降序；ATOM 区在前，非 ATOM 备选区在后，绝不混排。
+    平台侧最终确认仍需 `get_alpha_details` 的 checks（出现 `LOW_2Y_SHARPE` 且无
+    `IS_LADDER_SHARPE`）——本命令只作本地初筛，不替代那一步。
+    """
+    from wqb.config import PLATFORM_CHECK_LINES
+
+    conn = db_connect()
+    try:
+        where = ["b.region = ?", "e.atom_flag IS NOT NULL", "b.sharpe IS NOT NULL",
+                 "ABS(b.sharpe) >= ?"]
+        params = [a.region, a.min_sharpe]
+        if a.wave:
+            where.append("b.wave = ?")
+            params.append(a.wave)
+        if a.dataset:
+            where.append("b.dataset IN (%s)" % ",".join("?" * len(a.dataset)))
+            params.extend(a.dataset)
+        if not a.include_submitted:
+            where.append("(al.status IS NULL OR al.status NOT IN "
+                         "('ACTIVE','SUBMITTED','DECOMMISSIONED'))")
+        sql = """
+            SELECT b.alpha_id, COALESCE(b.dataset,''), COALESCE(b.wave,''),
+                   e.atom_flag, e.atom_n_datasets,
+                   b.sharpe, b.fitness, b.two_year_sharpe,
+                   b.sub_universe_sharpe, b.turnover,
+                   COALESCE(al.status,''), al.prod_correlation, b.payload_json
+            FROM backtest_results b
+            JOIN expressions e ON e.id = b.expression_id
+            LEFT JOIN alphas al ON al.alpha_id = b.alpha_id
+            WHERE %s
+            ORDER BY b.sharpe DESC
+        """ % " AND ".join(where)
+        rows = conn.execute(sql, params).fetchall()
+    finally:
+        conn.close()
+
+    best = {}
+    for (aid, ds, wave, flag, nds, s, f, y2, sub, tov, st, pc, payload) in rows:
+        failed, npass = _atom_gate_flags(s, f, y2, sub, tov, a.delay,
+                                         turnover_max=a.turnover_max)
+        # 平台自己的失败名单优先：补进五闸维度，认不出的（如 CONCENTRATED_WEIGHT）单列 extras
+        failed, extras = _merge_platform_failures(failed, _payload_failed_checks(payload))
+        npass = 5 - len(failed)
+        warns = []
+        if pc is not None and pc >= 0.7:
+            warns.append("prod %.2f" % pc)
+        item = {"alpha_id": aid, "dataset": ds, "wave": wave, "atom_flag": flag,
+                "n_datasets": nds, "sharpe": s, "fitness": f, "two_year": y2,
+                "sub_universe": sub, "turnover": tov, "status": st,
+                "prod_correlation": pc,
+                "failed": failed, "platform_extra": extras,
+                "warns": warns, "n_pass": npass}
+        prev = best.get(aid)
+        if prev is None or (npass, s or -9) > (prev["n_pass"], prev["sharpe"] or -9):
+            best[aid] = item
+
+    def _order(it):
+        # 平台额外 FAIL（如 CONCENTRATED_WEIGHT）直接压到同组末尾
+        return (-it["n_pass"], 1 if it["platform_extra"] else 0, -(it["sharpe"] or -9))
+
+    atom = sorted((v for v in best.values() if v["atom_flag"] == "atom"), key=_order)
+    other = sorted((v for v in best.values() if v["atom_flag"] != "atom"), key=_order)
+    atom, other = atom[:a.top], other[:a.top]
+
+    print("=== ATOM 优先候选单｜%s｜delay=%d｜ATOM %d 颗 / 非 ATOM %d 颗（各取前 %d）==="
+          % (a.region, a.delay, len(atom), len(other), a.top))
+    print(ATOM_RULE_TEXT)
+    to_hi = a.turnover_max if a.turnover_max is not None else \
+        PLATFORM_CHECK_LINES["turnover_range"][1]
+    print("闸线取自 config：S≥%.2f、F≥%.2f、2Y≥%.2f、sub≥1.0、TO∈[%.2f,%.2f]"
+          "（平台 failed_checks 一并并入）"
+          % (PLATFORM_CHECK_LINES["low_sharpe_min"]["delay0" if a.delay == 0 else "delay1"],
+             PLATFORM_CHECK_LINES["low_fitness_min"]["delay0" if a.delay == 0 else "delay1"],
+             PLATFORM_CHECK_LINES["low_2y_sharpe_min"],
+             PLATFORM_CHECK_LINES["turnover_range"][0], to_hi))
+
+    def _print_block(title, items):
+        print("\n[%s]" % title)
+        if not items:
+            print("  （无）")
+            return
+        print("  #  alpha        dataset        wave   S     F     2Y    sub    TO     未过 / 状态")
+        for i, it in enumerate(items, 1):
+            flags = ",".join(it["failed"]) or "全过"
+            if it["platform_extra"]:
+                flags += " ⛔ " + ",".join(it["platform_extra"])
+            if it["warns"]:
+                flags += " ⚠ " + ", ".join(it["warns"])
+            print("  %-2d %-12s %-14s %-5s %5.2f %5.2f %5.2f %6.2f %6.3f  %s%s"
+                  % (i, it["alpha_id"], it["dataset"] or "-", it["wave"] or "-",
+                     it["sharpe"] or 0, it["fitness"] or 0, it["two_year"] or 0,
+                     it["sub_universe"] or 0, it["turnover"] or 0,
+                     flags,
+                     ("  [%s]" % it["status"]) if it["status"] else ""))
+
+    _print_block("ATOM（单数据集，优先交付）", atom)
+    _print_block("非 ATOM 备选（跨数据集/含 pv1 引用，不得与上区混排）", other)
+
+    best_by_ds = {}
+    for it in atom:
+        ds = it["dataset"] or "-"
+        cur = best_by_ds.get(ds)
+        if cur is None or it["n_pass"] > cur["n_pass"] or (
+                it["n_pass"] == cur["n_pass"] and (it["sharpe"] or 0) > (cur["sharpe"] or 0)):
+            best_by_ds[ds] = it
+    if best_by_ds:
+        print("\n[ds] 各数据集最佳 ATOM：")
+        for ds, it in sorted(best_by_ds.items(), key=lambda kv: -kv[1]["n_pass"]):
+            print("  %-14s %s  S%.2f/F%.2f/2Y%.2f 过%d/5"
+                  % (ds, it["alpha_id"], it["sharpe"] or 0, it["fitness"] or 0,
+                     it["two_year"] or 0, it["n_pass"]))
+
+    if a.json_out:
+        payload = {"region": a.region, "delay": a.delay, "rule": ATOM_RULE_TEXT,
+                   "atom": atom, "non_atom": other}
+        os.makedirs(os.path.dirname(a.json_out) or ".", exist_ok=True)
+        with open(a.json_out, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+        print("\n[out] %s" % a.json_out)
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------
 
-def main():
+def build_parser():
+    """构建 CLI（供 main 与单测读取参数缺省）。
+
+    ⚠ prod-probe 的 `--prod-max` 缺省（0.75）必须与 `wave_gate_pkg.gates_pf.PROBE_SEAL_THRESHOLD`
+    一致——守护测试 `tests/unit/08_forum_recon/test_campaign_intel_prod_probe.py` 比对两者。
+    """
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -1296,6 +1932,9 @@ def main():
                     help="跨区负先验的最小样本量（默认 16）")
     p0.add_argument("--include-lit", action="store_true",
                     help="保留已点亮塔的数据集（默认剔除：用户规则 2026-09-19，已点亮塔只作组腿不开战役）")
+    p0.add_argument("--include-region-dead", action="store_true",
+                    help="保留区域判死清单（tracking/<REGION>/reference/<r>_dead_datasets.md）命中的数据集；"
+                         "默认剔除。只用于复核清单，不用于长期绕过")
     p0.add_argument("--xr-penalize", action="store_true",
                     help="把「跨区弱」重新计入降权（旧行为复现；默认不降权——P1 实测该先验无预测力）")
     p0.add_argument("--json", dest="json_out")
@@ -1341,6 +1980,26 @@ def main():
     pf.add_argument("--no-lock", action="store_true", help="忽略进程锁强行并跑（不推荐：平台 prod 单并发）")
     pf.add_argument("--json", dest="json_out", help="结果 JSON 输出路径（需要文件路径）")
 
+    # 2026-10-24 P0-1：开波前族级 prod 探针。--prod-max 缺省 0.75 必须与
+    # wave_gate_pkg.gates_pf.PROBE_SEAL_THRESHOLD 一致（守护测试比对两者，见 build_parser docstring）。
+    ppb = sub.add_parser("prod-probe", help="开波前族级 prod 探针（P0-1）：每族 1 条，≥--prod-max 封族（exit 2）")
+    ppb.add_argument("--region", required=True)
+    ppb.add_argument("--dataset", required=True, help="待开波数据集（历史回测行跨全部波次取材）")
+    ppb.add_argument("--top-k", type=int, default=3, help="最多探几个信号族（每族最强 1 条，默认 3）")
+    ppb.add_argument("--min-sharpe", type=float, default=1.0, help="进入探针池的 |sharpe| 下限（默认 1.0）")
+    ppb.add_argument("--sharpe-min", type=float, default=1.58)
+    ppb.add_argument("--fitness-min", type=float, default=1.0)
+    ppb.add_argument("--prod-max", type=float, default=0.75,
+                     help="封族线（默认 0.75，与闸 PF 的 PROBE_SEAL_THRESHOLD 一致；≥ 即封族）")
+    ppb.add_argument("--max-tries", type=int, default=8, help="pending/busy 重试次数（默认 8）")
+    ppb.add_argument("--poll-sec", type=int, default=45, help="pending/busy 重试间隔秒（默认 45）")
+    ppb.add_argument("--refresh", action="store_true", help="强制回源平台（跳过 48h 已决缓存）")
+    ppb.add_argument("--probe-timeout", type=int, default=600,
+                     help="单条 check_correlation 硬超时秒（默认 600；平台 PC 排队超时即跳过）")
+    ppb.add_argument("--no-lock", action="store_true", help="忽略进程锁强行并跑（不推荐：平台 prod 单并发）")
+    ppb.add_argument("--dry-run", action="store_true", help="只列拟探探针，不联网、不写库")
+    ppb.add_argument("--json", dest="json_out", help="结果 JSON 输出路径（需要文件路径）")
+
     pb = sub.add_parser("backlog-drop", help="积压波清理：超 N 天未动且无回测的 pending/gated 波标 dropped（默认 dry-run）")
     pb.add_argument("--region", default=None, help="逗号分隔区域过滤（缺省全部）")
     pb.add_argument("--older-than-days", type=int, default=7)
@@ -1374,14 +2033,38 @@ def main():
     pg.add_argument("--exprs-file", help="每行一条表达式的文件")
     pg.add_argument("--json", dest="json_out")
 
+    # 2026-10-26 用户指令：「因子挖出来后优先给 ATOM，其他只作备选」。
+    # 零平台调用，只读本地库的 atom_flag（判据源 wqb.expression.atom）。
+    pa = sub.add_parser("atom-first",
+                        help="ATOM 优先候选单：单数据集在前、跨数据集备选在后（零平台调用）")
+    pa.add_argument("--region", required=True)
+    pa.add_argument("--delay", type=int, default=1, choices=[0, 1])
+    pa.add_argument("--wave", default=None, help="只看某一波（缺省跨全部波次）")
+    pa.add_argument("--dataset", action="append", default=[], help="数据集 id，可重复")
+    pa.add_argument("--min-sharpe", type=float, default=0.8,
+                    help="入库候选的 |sharpe| 下限（默认 0.8，近闸池放宽用）")
+    pa.add_argument("--top", type=int, default=20, help="每个区最多展示几颗（默认 20）")
+    pa.add_argument("--turnover-max", type=float, default=None,
+                    help="覆盖换手上限（缺省取 config 的 0.70 宽线；IND/D1 平台 HIGH_TURNOVER "
+                         "实际线是 0.40，建议显式传 0.4）")
+    pa.add_argument("--include-submitted", action="store_true",
+                    help="把已 ACTIVE/SUBMITTED/DECOMMISSIONED 的 alpha 也算进来（缺省排除）")
+    pa.add_argument("--json", dest="json_out", help="结果 JSON 输出路径")
+    return ap
+
+
+def main():
+    ap = build_parser()
     a = ap.parse_args()
     _bootstrap()
 
     coro = {"s0-select": _cmd_s0_select, "pyramid": _cmd_pyramid,
             "s4-prescreen": _cmd_s4_prescreen, "ghost-audit": _cmd_ghost_audit,
-            "prod-first": _cmd_prod_first, "xr-probe": _cmd_xr_probe,
+            "prod-first": _cmd_prod_first, "prod-probe": _cmd_prod_probe,
+            "xr-probe": _cmd_xr_probe,
             "backlog-drop": _cmd_backlog_drop,
-            "mark-saturated": _cmd_mark_saturated}[a.cmd](a)
+            "mark-saturated": _cmd_mark_saturated,
+            "atom-first": _cmd_atom_first}[a.cmd](a)
     sys.exit(asyncio.run(coro))
 
 

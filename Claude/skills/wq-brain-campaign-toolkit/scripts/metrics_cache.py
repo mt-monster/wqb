@@ -60,7 +60,18 @@ def row_from_alpha(aid, a, campaign_dir=None):
     i = a.get("is") or {}
     rn = i.get("riskNeutralized") or {}
     checks = i.get("checks") or []
-    two_y = next((c.get("value") for c in checks if c.get("name") == "LOW_2Y_SHARPE"), None)
+
+    def _check_value(*names):
+        for name in names:
+            v = next((c.get("value") for c in checks if c.get("name") == name), None)
+            if v is not None:
+                return v
+        return None
+
+    # 2Y 有两个载体：LOW_2Y_SHARPE / IS_LADDER_SHARPE（`wqb.config.RA_2Y_NAMES` 同义）。
+    # 平台按 alpha 代际只发其一；只认前者会让只发 ladder 的颗落成 None
+    # （2026-10-23 IND/wave232 实测 10/29 颗），评审随即标 2Y_UNKNOWN 并跳过 2Y 墙。
+    two_y = _check_value("LOW_2Y_SHARPE", "IS_LADDER_SHARPE")
     # BUG-1 修复（规则 metrics_cache_2y_fallback_bug）：跨 dataset 复合表达式的 checks
     # 不含 LOW_2Y_SHARPE 项（wave6/6b/6c 24 行全 None），fallback 到 is 顶层字段。
     if two_y is None:
@@ -69,6 +80,15 @@ def row_from_alpha(aid, a, campaign_dir=None):
     if isinstance(two_y, dict):  # 平台偶发返回 {value:..} 嵌套
         two_y = two_y.get("value")
     failed = [c["name"] for c in checks if c.get("result") == "FAIL"]
+    # 2026-10-23（P0-2，USA 复盘 §9.1）：平台原始 checks 数组此前在此被丢掉，
+    # payload_json 里只剩 failed_checks / ra_failed_checks 两个「名字列表」——
+    # limit/value（差多少）无法重建、RA 项的 WARNING / ERROR 看不见、也无法事后重算。
+    # 保留压缩后的完整 checks（name/result/value/limit）：入库后 payload_json.checks
+    # 可直接重算 RA 名单，也留得住「差多少」。
+    raw_checks = [
+        {k: c.get(k) for k in ("name", "result", "value", "limit") if c.get(k) is not None}
+        for c in checks if isinstance(c, dict) and c.get("name")
+    ]
     # 2026-09-19：robust / sub-universe 维度入行（IND w170-175 实证：8 条 near 全死在
     # LOW_ROBUST_UNIVERSE_SHARPE（limit 1.0，实测 0.24），而 near 池只看 sharpe，导致
     # "结构性死信号"被当成 near、停止规则 B 永不触发）。value/limit 取自 checks，
@@ -103,6 +123,7 @@ def row_from_alpha(aid, a, campaign_dir=None):
         "sub_universe_sharpe": sub_v,
         "sub_universe_limit": sub_lim,
         "failed_checks": failed,
+        "checks": raw_checks,
         "cached_at": datetime.datetime.now().isoformat(timespec="seconds"),
     }
     ra_failed = _ra_failed_names(checks, campaign_dir)

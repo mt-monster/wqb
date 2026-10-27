@@ -22,10 +22,10 @@
    "source": "region_kb"
   },
   {
-   "id": "GLB-AINEWS-TS-DELTA-DECORRELATION-WIN",
-   "what": "情绪**水平**信号（positive-negative average/max-median）是 RavenPack 经典拥挤区（prod 0.70-0.76 撞墙）；转为情绪**变化率**（ts_delta(净情绪, 5)）后 prod 降至 0.56-0.57 正交。变化率剥离了被反复套利的情绪水平暴露，只保留边际信息增量。",
-   "key": "3 候选（vRkGN8Nd/xAYGj9Gl/Vk6z7q5J）prod 0.559-0.568/self 0.0/2Y 2.29-2.49/turnover 0.60/无CW/PPA全过。",
-   "evidence": "3 候选（vRkGN8Nd/xAYGj9Gl/Vk6z7q5J）prod 0.559-0.568/self 0.0/2Y 2.29-2.49/turnover 0.60/无CW/PPA全过。",
+   "id": "O0NoPARJ",
+   "what": "GLB/MINVOL1M SUBINDUSTRY decay10：trade_when 门控（低 EP yield + 高市值入场）× 单桶 20 日收益估计的组内排名偏离，signed_power(0.5) 收尾。IS S2.31/F1.35，prod 0.6193 首验通过，2026-09-23 提交 ACTIVE",
+   "key": "skeleton=trade_when(rank(ep_yield)<0.4 & rank(cap)>0.2, signed_power(subtract(group_rank(single_bucket_20day_return_estimate_ohlcv_img_2, country),0.5),0.5), exit); evidence=P0-1 库存收割 19 颗中唯一过 prod 墙（其余 18 颗 prod 0.77-1.00 全撞）；source_region=GLB",
+   "evidence": "",
    "source": "registry_win"
   },
   {
@@ -75,52 +75,50 @@
    "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_news_scores 情绪变化率族（ts_delta 净情绪）",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GLB-AINEWS-TS-DELTA-STRENGTH-WALL"
-  },
-  {
-   "family": "analyst_consensus targetprice 族（水平/变化率/分歧）+ estimate_count",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GLB-ANALYST-CONSENSUS-TARGETPRICE-FASTKILL"
-  },
-  {
-   "family": "analyst10 预测惊喜 pred_surps（smart_ests vs consensus 偏离）",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GLB-ANL10-PREDSURPS-NOSIGNAL"
-  },
-  {
-   "family": "analyst_revision_horizons（评级上下调计数/ARM 百分位/修正广度/SmartEstimate bold/F12M 估值修正）",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GLB-ARH-STARMINE-REVISION-FASTKILL"
-  },
-  {
-   "family": "dl_riskfree_returns OHLCV 图像 CNN 市场中性收益预测（single_bucket_{5,20,60}day 回归估计 + 分位概率）",
+   "family": "model264 会计科目趋势下行概率（毛利率/净利率/税前利润率/EBITDA/税后净利/营业利润/总债务 的 1l 概率）+ model138 质量调整业绩偏离指数 PDI",
    "reason": "",
    "salvage": [
-    "1YXJ77nM",
-    "wpZLxjWp",
-    "KPNnMWG8",
-    "Wjb9dZ1j",
-    "d5bdmM5K"
+    "wpZvnK22",
+    "3qX2aQP6",
+    "JjN2gM12"
    ],
    "source": "registry_dead_end",
-   "_entry_id": "GLB-DLRF-CNN-ESTIMATE-PROD-WALL"
+   "_entry_id": "GLB-MDL264-TRENDPROB-CEILING-14-20260927"
   },
   {
-   "family": "dl_riskfree_returns 全族新 GEM 139 条回测（single_bucket/probability_label/60day × 门控/未门控）",
-   "reason": "GLB dl_riskfree 新 GEM 路线封死；不再投任何同族变体",
+   "family": "other315 OTC 权益互换报备（互换成交价 vs 现价基差、名义额存量与增速、成交笔数、合成杠杆强度、名义额/流动性、价格离散度、名义额集中度）",
+   "reason": "",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "GLB-DLRF-NEWGEM-139-PROD-WALL-20260925"
+   "_entry_id": "GLB-OTH315-EQUITY-SWAP-NOISE-20260927"
+  },
+  {
+   "family": "risk68 特定收益反转族（rsk68_residual_return 原始/波动缩放/流动性缩放/22d 窗 + 5 种子域门控）",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-RISK68-RESIDUAL-REVERSAL-WEAK-20260927"
+  },
+  {
+   "family": "news17 PR 事件信号（nip×event_relevance / count−index 价差，24 VECTOR 字段）",
+   "reason": "GLB news 塔判死（news23/17/31/52/73/ai_news 六集全灭或封顶）；不再投 news 类数据集；稀疏事件高换手族（tvr>1.0 且 2Y 过线）判为同型风险族，新集先看 tvr 分布",
+   "salvage": "6XjG6XEG/58zGK8v5 入 salvage_pool（2Y 1.76/1.49，可作组合腿参考）",
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-NEWS17-PR-EVENT-TURNOVER-WALL"
+  },
+  {
+   "family": "fundamental28 全球基本面（929 MATRIX 字段，ratio/group 骨架）",
+   "reason": "GLB fundamental 塔判死（f17 天花板 0.82 + f28 全灭 0.26）；不再投 GLB 基本面类数据集",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-F28-GLOBALFUND-DEAD"
+  },
+  {
+   "family": "news23 M&A 事件信号（deal_value/investment_round/premium/conversion 等 129 VECTOR 字段）",
+   "reason": "GLB news 塔判死（news23/31/52/73/ai_news 五集全灭）：事件计数/注意力/语调/交易事件均无信号，不再投 news 类数据集",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-NEWS23-MNA-EVENT-DEAD"
   }
  ],
  "region_context": {
@@ -145,7 +143,52 @@
    "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
    "profile_fallback (仅 DB KB 空时)",
    "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
-  ]
+  ],
+  "truncated": {
+   "wins": [
+    "GLB-IPV-PVCORR-REVERSAL-WIN",
+    "GLB-AINEWS-TS-DELTA-DECORRELATION-WIN",
+    "T-KB-08 量价背离（101 最强主题）",
+    "9qpQ0VQ2",
+    "le3E3nM7"
+   ],
+   "dead_ends": [
+    "GLB-F17-DELTA-RATIO-CEILING-082",
+    "GLB-DLRF-NEWGEM-139-PROD-WALL-20260925",
+    "GLB-NEWS52-CONF-CALL-STRUCT-FASTKILL-20260925",
+    "GLB-IPV-THIRDMECH-BACKLOG-RETEST-DEAD-20260925",
+    "GLB-SNT26-WEBTRAFFIC-FASTKILL",
+    "GLB-DLRF-CNN-ESTIMATE-PROD-WALL",
+    "GLB-RISK70-STYLE-HF-MINVOL1M-FASTKILL",
+    "GLB-RISK60-BORROWFEE-PROD-WALL",
+    "GLB-FND44-ACCOUNTING-QUALITY-MINVOL1M-FASTKILL",
+    "GLB-MODELTOWER-DLCHART-COLDVARIANTS-FASTKILL",
+    "GLB-IPV-CLOSEINT-MICRO-FASTKILL",
+    "GLB-SLOW-FACTOR-PROD-WALL-AND-WEAK-SENTIMENT-20260921",
+    "GLB-IPV-PRECLOSE-LASTTRADE-FAST-EMEA-WALL",
+    "GLB-NEWSETS-MINVOL1M-SECONDLOOK-FASTKILL",
+    "GLB-MODEL-TOWER-TOPDIV3000-PROBES-FASTKILL",
+    "GLB-MACROEQ-REGRESSION-SIGNALS-WEAK",
+    "GLB-ARH-STARMINE-REVISION-FASTKILL",
+    "GLB-MODEL32-STARMINE-MOMENTUM-FASTKILL",
+    "GLB-IPV-PRECLOSE-60M-2Y-WALL",
+    "GLB-NEWS31-ATTENTION-NOVELTY-WEAK",
+    "GLB-OTH699-RETAIL-FLOW-FASTKILL",
+    "GLB-IPV-NONPRECLOSE-SUBFAMILIES-WEAK",
+    "GLB-INSIDER-NETBUY-SPARSE-WEAK",
+    "GLB-PV106-LIQ-PREMIUM-TURNOVER-WALL",
+    "GLB-ERN3-CALENDAR-CW-NOSIGNAL",
+    "GLB-INST6-SMARTMONEY-TURNOVER-WALL",
+    "GLB-ANL10-PREDSURPS-NOSIGNAL",
+    "GLB-SENT22-DTS-RESOURCE-WALL",
+    "GLB-FUND23-QUARTERLY-SLOW-DELTA-NOSIGNAL",
+    "GLB-ANALYST-CONSENSUS-TARGETPRICE-FASTKILL",
+    "GLB-AINEWS-TS-DELTA-STRENGTH-WALL",
+    "GLB-PV98-INTRADAY-REVERSAL-TURNOVER-WALL",
+    "GLB-W03-OTHER455-NO-SIGNAL",
+    "GLB-W02-INTRADAY-PV-TURNOVER-WALL"
+   ]
+  }
  },
  "gate_priors": {
   "sample_size": 998,

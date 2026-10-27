@@ -12,7 +12,7 @@
   - registry_empirical（layer=campaign）：untried / in_progress / exhausted 分布
   - waves            ：波次投入
   - region profile   ：Claude/skills/wq-brain-ra-pipeline/references/regions/<R>.md 的
-                       entry_verdict（active/probe-only/frozen）
+                       entry_verdict（active/full-coverage/probe-only/frozen）
 
 退出码：0=成功。默认只读；--rotate --write-ledger 会写 region_rotation 台账（幂等 upsert）。
 

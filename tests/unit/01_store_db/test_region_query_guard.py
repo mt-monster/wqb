@@ -33,15 +33,22 @@ REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 GUARD_BASELINE = {
     "tools/atom_labeler.py:70",
     "tools/ingest_dataset_assets.py:152",
-    "tools/validate_fields_batch.py:129",
-    "tools/wave_gate.py:1463",
+    # 2026-10-20 行号跟随（债务仍在，只随行号重钉）：
+    #   validate_fields_batch.py 分页重构（129→123）；wave_gate.py 接入全量覆盖闸（1463→1641）
+    # 2026-10-27 再次行号跟随（1641→1411）：wave_gate.py 包化收尾 / 逻辑下沉后该段前移。
+    #   该处 SQL 本身**有作用域**（`WHERE d.name=?`，dataset 名在单区战役内唯一），是本闸
+    #   启发式的假阳性 —— 按报告 §4 P0-P7 的口径「重钉行号，不删基线条目」（删了就等于
+    #   宣称已修好，下次真出现未加约束的查询就失去对照）。
+    "tools/validate_fields_batch.py:123",
+    "tools/wave_gate.py:1411",
     "tools/wave_gate_pkg/gates_quality.py:120",
     "src/wqb/alpha_properties.py:345",
     "src/wqb/step_eval.py:200",
     "src/wqb/step_eval.py:213",
     "src/wqb/step_eval.py:221",
     "src/wqb/step_eval.py:222",
-    "src/wqb/store/_backtest.py:380",
+    # 2026-10-23 行号跟随（P0-3 载荷保真：ra_failed_names 重写，行号 380→408；债务仍在）
+    "src/wqb/store/_backtest.py:408",
     "src/wqb/store/_expressions.py:95",
     "src/wqb/store/_field_catalog.py:380",
 }

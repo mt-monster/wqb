@@ -147,6 +147,8 @@ class CampaignContext:
         """绑定数据集所属的「区域 × 类别」组合（config/cells.json），把组合覆盖并进本轮配置。
 
         - backtest.overrides → self.settings（`pinned` 里的维度不动：CLI 显式 --set 优先于组合）；
+        - dataset_overrides[<dataset>].backtest.overrides → self.settings（只在该数据集被点名时生效，
+          且压过组合级；同样让位 `pinned`，2026-10-20 P0-2）；
         - thresholds.overrides → self.thresholds（点分键；mode_b.* 交给 mode_b_config，不在这里并）；
         - 被组合覆盖的设置记进 self.cell_pinned，设置先验（region_kb.apply_settings_prior）不再改它们。
         组合文件不存在 / 没有该类别 / wqb 包不可用时什么都不做。返回实际生效的设置覆盖 dict。
@@ -172,6 +174,18 @@ class CampaignContext:
                 continue
             if self.settings.get(k) != v:
                 log(f"[cell] {self.region}×{category}：settings.{k} {self.settings.get(k)!r} → {v!r}（cells.json）")
+            self.settings[k] = v
+            self.cell_pinned.add(k)
+            applied[k] = v
+        # 数据集级覆盖（dataset_overrides，2026-10-20 P0-2）：只在该数据集被点名时生效，压过组合级
+        ds_bt = ((cell.get("dataset_overrides") or {}).get(dataset) or {}).get("backtest") or {}
+        for k, v in (ds_bt.get("overrides") or {}).items():
+            if k in set(pinned):
+                log(f"[cell] {self.region}×{category}/{dataset}：{k} 已被显式钉住，不用数据集覆盖 {v!r}")
+                continue
+            if self.settings.get(k) != v:
+                log(f"[cell] {self.region}×{category}/{dataset}：settings.{k} {self.settings.get(k)!r} → {v!r}"
+                    f"（cells.json dataset_overrides）")
             self.settings[k] = v
             self.cell_pinned.add(k)
             applied[k] = v

@@ -3,7 +3,7 @@
 > 回到 [EUR 区域流程](../SKILL.md) · [EUR profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/EUR.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region EUR --category news`
 
 <!-- profiles:cell-panel:start -->
-**状态**：probe（跟区域入场 probe-only）　**分组**：News-Sentiment　**类别卡**：news
+**状态**：active（跟区域入场 full-coverage）　**分组**：News-Sentiment　**类别卡**：news
 
 **涉及数据集**：news17、news20、news21、news29、news31、news36、news38、news46、news48、news50、news54、news73、news84、news85、predictive_starmine × news73、{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}
 
@@ -61,7 +61,7 @@
 - **跨区结论**（GLB/KOR/HKG/AMR；negative）：emotion 系（含 sentiment / mood 命名的变体）跨区死路（证据：GLB 铁律（registry cross_region 层）；KOR / HKG / AMR profile 排除） <!-- lint:const-ok 证据原文 -->
 - **禁止**（类别卡）：禁止使用 ts_entropy / ts_skewness / ts_percentage / ts_decay_exp_window（幽灵算子，整批 CANCELLED 连坐）
 - **禁止**（类别卡）：禁止使用裸 rank(sentiment_score)（必须 group_neutralize 或 ts_delta）
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize / vector_neut）入场（★ 2026-10-20 更正：'vector_neut' **平台可用**——本地算子清单缺它是假阳性，EUR 平台已用它交付 JjQmx9nm；'regression_neut' 仍非平台算子名）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

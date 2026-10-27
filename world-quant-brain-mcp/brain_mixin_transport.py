@@ -49,6 +49,32 @@ class TransportMixin:
 
         self.base_url = "https://api.worldquantbrain.com"
         self.session = requests.Session()
+        # ---- 连接池修复 (2026-10-26) ----
+        # 背景：MCP server 长时间运行后堆积 CloseWait 连接（本地 FIN 已发但 socket 未回收）。
+        # 原因：默认 HTTPAdapter 的 pool_connections=10/pool_maxsize=10 与 _request_semaphore(8)
+        # + _create_simulation_semaphore(6) 的 14 并发上限不匹配，且 asyncio.wait_for 超时后
+        # asyncio.to_thread 里的 requests 线程不被强制中断，socket 持续占用连接池槽位。
+        # 修复：显式挂载更大 pool 的 adapter；启动 daemon sweeper 定期清空 idle socket；
+        # 进程退出时 close session。
+        try:
+            _pool_size = int(os.environ.get("BRAIN_POOL_MAXSIZE", "24"))
+        except Exception:
+            _pool_size = 24
+        try:
+            _idle_sweep_sec = max(30, int(os.environ.get("BRAIN_POOL_IDLE_SWEEP_SEC", "90")))
+        except Exception:
+            _idle_sweep_sec = 90
+        try:
+            _adapter = requests.adapters.HTTPAdapter(
+                pool_connections=_pool_size,
+                pool_maxsize=_pool_size,
+                max_retries=0,  # retry 由 _request_json_with_retries 手动实现，避免双重
+                pool_block=False,
+            )
+            self.session.mount("https://", _adapter)
+            self.session.mount("http://", _adapter)
+        except Exception as _e:
+            logging.getLogger(__name__).warning("HTTPAdapter mount failed, using default: %s", _e)
         self.auth_credentials = None
         self.is_authenticating = False
         self._request_semaphore = asyncio.Semaphore(int(os.environ.get("BRAIN_MAX_CONCURRENCY", "8")))
@@ -81,6 +107,20 @@ class TransportMixin:
             )
         except Exception:
             self._brain_correlation_busy_retry_after_seconds = 180
+        # 跨进程相关性槽（logs/_dblock/correlation.lock.json）的 TTL。
+        # 2026-10-22 起该锁是**账号级真互斥**（平台相关性接口单并发），
+        # TTL 必须 ≥ 单次轮询窗口，否则长轮询期间 token 被 TTL 自愈回收 ⇒
+        # 第二个进程以为拿到槽、实际并发打平台（正是本次要修的 bug 的反面）。
+        #
+        # 2026-10-26：3700 → 600。配套轮询窗口 900 → 120。
+        # 旧值 3700 让崩溃残留锁占用 62 分钟；现 600 = 5×120，覆盖余量充足。
+        try:
+            self._brain_correlation_lock_ttl_seconds = max(
+                60,
+                int(os.environ.get("BRAIN_CORRELATION_LOCK_TTL_SECONDS", "600")),
+            )
+        except Exception:
+            self._brain_correlation_lock_ttl_seconds = 600
         # Allow timeout override via env (e.g., API_SETTINGS_TIMEOUT)
         try:
             self._default_timeout_seconds = int(os.environ.get("API_SETTINGS_TIMEOUT", "30"))
@@ -95,10 +135,37 @@ class TransportMixin:
         self._forum_rate_limit_until = 0.0
         
         # Configure session
-        self.session.timeout = self._default_timeout_seconds
+        # 注意：requests.Session 没有 .timeout 属性，旧代码 self.session.timeout=... 是死代码。
+        # 真正的 timeout 靠每次 self.session.request(..., timeout=timeout) 显式传（见 _request）。
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         })
+
+        # ---- Idle socket sweeper + atexit close (2026-10-26) ----
+        # 见文件顶部 Fix 1 注释。此处启动 daemon 线程，每 _idle_sweep_sec 秒清一次
+        # urllib3 PoolManager 的空闲 socket，避免 asyncio.wait_for 超时后遗留的僵尸 socket
+        # 一直挂在池里（这是 CloseWait 堆积的直接机制）。
+        import threading
+        import atexit
+        def _pool_idle_sweeper():
+            while True:
+                try:
+                    time.sleep(_idle_sweep_sec)
+                except Exception:
+                    return
+                try:
+                    for _k in ("https://", "http://"):
+                        _ad = self.session.get_adapter(_k)
+                        if getattr(_ad, "poolmanager", None) is not None:
+                            try:
+                                _ad.poolmanager.clear()
+                            except Exception:
+                                pass
+                except Exception:
+                    logging.getLogger(__name__).debug("pool sweeper tick failed", exc_info=True)
+        _sweeper = threading.Thread(target=_pool_idle_sweeper, daemon=True, name="brain-pool-sweeper")
+        _sweeper.start()
+        atexit.register(self.session.close)
         
         # Load OS/IS Sharpe ratio data for datafield quality filtering
         self._isos_data = {}
@@ -248,13 +315,34 @@ class TransportMixin:
     async def _try_acquire_brain_correlation_lock(self, op_name: str) -> Dict[str, Any]:
         """Try once to acquire the per-account platform correlation slot.
 
-        2026-10-06：原实现优先用 Redis 分布式锁、失败才回退本地 asyncio 锁。Redis 移除后
-        只保留本地锁——语义不变（都是 fail-fast：拿不到就回 busy 而不是排队），
-        代价只是**跨进程**不再互斥（本机 MCP 服务是单进程，无影响）。
+        **两级，顺序不可换**（2026-10-22 修 bug：60 分钟轮询把平台单并发槽占死）：
+
+          1) **进程内 asyncio.Lock**——同进程内的并发（MCP 服务同时来两个请求）。
+             必须**先**拿：``wqb.db_write_lock`` 把「同 pid 再 acquire」当**重入续约**，
+             若文件锁先拿，同进程的两个协程会**同时**自认持有（都续约同一 token）⇒ 互斥失效。
+          2) **跨进程文件锁**（``logs/_dblock/correlation.lock.json``）——真正的账号级互斥。
+             平台 ``GET /alphas/{id}/correlations/prod`` 是**账号级单并发**接口：同一账号
+             任何时刻只允许一个相关性计算在飞。而本仓的相关性查询散落在**多个进程**
+             （MCP 常驻服务 + ``tools/campaign_intel.py prod-first`` + ``tools/probe/prod_bucket_scan.py``
+             + 各类一次性脚本），它们**各自**新建 ``BrainApiClient`` ⇒ 只剩进程内锁时
+             进程间互不相识 ⇒ 多进程同时轮询同一账号级单槽。
+             平台侧表现为：后到者拿到**空体**（= 仍在算），于是它一直轮询到
+             ``max_wait_seconds`` 才放弃 ⇒ **一个卡住的 alpha 能把整账号的
+             相关性查询堵死一小时**（2026-10-22 实测：另一个会话的 prod 队列脚本卡在
+             第 4 个目标上，本会话的查询空转 800s+ 拿不到数；杀掉它之后本会话
+             同一 alpha 1499s 才出数）。
+
+        第 2 级用 ``wqb.db_write_lock``（O_CREAT|O_EXCL + TTL 自愈 + 死持有者按 pid 回收），
+        token 文件名与写库锁不同 ⇒ 两个锁互不干扰（且 ``_prune_expired`` 按名精确定位，
+        不会用短 TTL 回收对方仍持有的 token）。**fail_fast=True**：槽被占就立即返回 busy，
+        **不排队、不降级放行**——放行等于让第二个进程也去打这个单并发接口。
+
+        2026-10-06 注（Redis 移除后）：曾一度只剩进程内锁，注释写「本机 MCP 服务是单进程，
+        无影响」。**该假设已被实测证伪**：相关性查询不止 MCP 服务一个进程在跑。
         """
         lock_key = self._brain_correlation_lock_key()
-        lock_token = uuid.uuid4().hex
 
+        # 1) 进程内互斥（先拿：同 pid 的文件锁是「重入续约」，不能承担进程内互斥）
         if self._brain_correlation_local_lock.locked():
             self.log(f"[corr-lock] Busy local correlation lock for {op_name}", "INFO")
             return {
@@ -263,20 +351,110 @@ class TransportMixin:
                 'lock_key': lock_key,
                 'retry_after': None,
             }
-
         await self._brain_correlation_local_lock.acquire()
-        self.log(f"[corr-lock] Acquired local correlation lock for {op_name}", "INFO")
+
+        # 2) 跨进程文件锁（账号级真互斥）；拿不到 → 释放进程内锁并立即报忙
+        file_lock = self._try_acquire_cross_process_corr_lock(op_name)
+        if file_lock is None:
+            # 本模块不可用 / degraded → 只剩进程内互斥（跨进程无保证，但可用）
+            self.log(f"[corr-lock] Acquired local correlation lock for {op_name} "
+                     "(跨进程锁不可用，仅进程内互斥)", "WARNING")
+            return {
+                'acquired': True,
+                'backend': 'local',
+                'lock_key': lock_key,
+                'lock_token': None,
+            }
+        if not file_lock.get('acquired'):
+            # 槽被别的进程占着 → 释放进程内锁，立即报忙（不排队、不降级放行）
+            if self._brain_correlation_local_lock.locked():
+                self._brain_correlation_local_lock.release()
+            return file_lock
+
+        # 两级都拿到 → 释放时两级都要还
+        file_lock['local_lock_held'] = True
+        return file_lock
+
+    def _try_acquire_cross_process_corr_lock(self, op_name: str) -> Optional[Dict[str, Any]]:
+        """第 2 级：跨进程文件锁。返 ``None`` 表示本模块不可用 → 只剩进程内互斥。
+
+        复用 ``wqb.correlation_slot``（``wqb.db_write_lock`` 的通用单文件锁：
+        O_CREAT|O_EXCL + TTL 自愈 + 死持有者按 pid 回收 + ``.stale`` 退役），
+        ``fail_fast=True`` 保持「立即返回忙、不排队」的语义。
+        """
+        try:
+            from wqb.correlation_slot import acquire as _slot_acquire
+            from wqb.correlation_slot import release as _slot_release
+        except Exception as e:  # pragma: no cover - 依赖缺失时才走到
+            self.log(
+                f"[corr-lock] 跨进程文件锁不可用（{type(e).__name__}），"
+                "降级为进程内锁——多进程并存时可能并发打平台相关性接口",
+                "WARNING",
+            )
+            return None
+
+        try:
+            info = _slot_acquire(op_name, ttl_sec=float(self._brain_correlation_lock_ttl_seconds))
+        except Exception as e:  # pragma: no cover - 锁实现异常时降级
+            self.log(f"[corr-lock] 跨进程文件锁异常（{type(e).__name__}: {e}），降级为进程内锁",
+                     "WARNING")
+            return None
+
+        if info.get("busy"):
+            self.log(
+                f"[corr-lock] Busy cross-process file lock for {op_name} "
+                "(另一进程正在查平台相关性——账号级单并发，不能并发打)",
+                "INFO",
+            )
+            return {
+                'acquired': False,
+                'backend': 'file',
+                'lock_key': "correlation.lock.json",
+                'retry_after': self._brain_correlation_busy_retry_after_seconds,
+            }
+        if not info.get("token"):
+            # 写锁目录不可写 → degraded，无法承担跨进程互斥 → 退回进程内锁
+            self.log(
+                f"[corr-lock] 跨进程文件锁 degraded（{op_name}），降级为进程内锁",
+                "WARNING",
+            )
+            return None
+
+        self.log(
+            f"[corr-lock] Acquired cross-process file lock for {op_name} "
+            f"(ttl={self._brain_correlation_lock_ttl_seconds}s)",
+            "INFO",
+        )
         return {
             'acquired': True,
-            'backend': 'local',
-            'lock_key': lock_key,
-            'lock_token': lock_token,
+            'backend': 'file',
+            'lock_key': info["token"],
+            'lock_token': info["token"],
+            '_flock_release': _slot_release,
         }
 
     async def _release_brain_correlation_lock(self, lock_info: Dict[str, Any], op_name: str):
         if not lock_info or not lock_info.get('acquired'):
             return
         backend = lock_info.get('backend')
+
+        if backend == 'file':
+            try:
+                release_fn = lock_info.get('_flock_release')
+                if release_fn is None:  # 兜底：重新导入
+                    from wqb.db_write_lock import release as release_fn  # noqa: WPS440
+                release_fn(lock_info['lock_key'])
+                self.log(
+                    f"[corr-lock] Released cross-process file lock for {op_name}", "INFO"
+                )
+            except Exception as e:  # noqa: BLE001
+                self.log(f"[corr-lock] File lock release failed for {op_name}: {e}", "WARNING")
+            # 两级都拿到时，进程内锁也要还（否则本进程后续查询永远 busy）
+            if lock_info.get('local_lock_held') and self._brain_correlation_local_lock.locked():
+                self._brain_correlation_local_lock.release()
+                self.log(f"[corr-lock] Released local correlation lock for {op_name}", "INFO")
+            return
+
         if backend == 'local' and self._brain_correlation_local_lock.locked():
             self._brain_correlation_local_lock.release()
             self.log(f"[corr-lock] Released local correlation lock for {op_name}", "INFO")

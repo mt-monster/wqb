@@ -108,6 +108,11 @@ docs/
 **内容**：一句话启动指令、7 条硬纪律（禁 PV×model 混/禁同信号加权调参/skill 链/Mode B 资格线/产物入 wqb.db 等）、九步流水线（S-PRE→S6 每步 MCP 调用+产物+失败分支）、循环与停止条件、区域 Profile 路由、反模式、Artifact 契约、字段画像与模板族（形状分流）集成点。
 **适用场景**：开新区域/新数据集战役时，把 `$REGION`/`$DATASET` 填入复用；与 `wq-brain-ra-pipeline` 九步 SOP 对齐。
 
+#### 3d. EUR 按数据集的字段画像 `reference/EUR/datasets/`
+**定位**：EUR 每个有字段目录的数据集一份字段画像（含未进 cells / 快照 / 本地回测的待评估集），机器段由 `tools/fields/dataset_profile_doc.py` 只读 `data/wqb.db` + `tracking/EUR` 配置生成；人工段 `## 人工机制复盘` 在刷新时保留。
+**内容**：数据集定位（类别 / 战役 cell / tier / 覆盖率 / 平台 alpha 数）、字段结构与命名族、实测信号（ALIVE/WEAK 与近闸字段）、字段清单、本地回测证据、判死记录（标注归属）、机制→骨架映射、可用性边界、关联档案；总索引见 `reference/EUR/datasets/README.md`。
+**适用场景**：开 EUR 某数据集战役前查字段画像与历史失败边界。S6 入口 `workflow_campaign(stage="S6", subcommand="field-profile")`（toolkit `campaign.py field-profile` 转发本工具，缺省落盘）；手工刷新 `python tools/fields/dataset_profile_doc.py --region EUR --apply`（缺省 dry-run）。
+
 ### 三、教程课件（tutorials/）
 
 #### 4. Skill 实操课件 `tutorials/课件.md`

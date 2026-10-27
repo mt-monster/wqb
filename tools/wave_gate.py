@@ -619,15 +619,17 @@ def resolve_inspect_mode(cli_value=None, env=None):
     return mode if mode in INSPECT_MODES else DEFAULT_INSPECT_MODE
 
 
-def _waiver_phase(a, campaign, region, inspect_mode, rg):
+def _waiver_phase(a, campaign, region, inspect_mode, rg, fcov_meta=None):
     """逃生口 → waiver 检查（2026-09-29，skills 审查 X-8）。
 
     开了哪个逃生口（`--skip-diversity-gate` / `--skip-semantic-gate` / `--semantic-gate off` /
-    `--inspect-mode off` / `--no-prod-family-gate` / 区域闸显式降级），就查台账里有没有对应闸的
-    有效 waiver（键 `waiver_<gate>_<region>_<wave|all>`，协议与校验在 `wqb.waiver`）。
-    缺省 warn：无 waiver 只在**首屏**打醒目告警并进报告 `waivers`；`--waiver-mode enforce`
-    （或 `WQB_WAIVER_MODE=enforce`）下无 waiver 即 exit 2。逃生口本身不变，只是不再能静默使用。
-    返回 SkipDecision 列表（供写进报告）。
+    `--inspect-mode off` / `--no-prod-family-gate` / 区域闸显式降级 / 全量覆盖闸显式降级），
+    就查台账里有没有对应闸的有效 waiver（键 `waiver_<gate>_<region>_<wave|all>`，协议与
+    校验在 `wqb.waiver`）。缺省 warn：无 waiver 只在**首屏**打醒目告警并进报告 `waivers`；
+    `--waiver-mode enforce`（或 `WQB_WAIVER_MODE=enforce`）下无 waiver 即 exit 2。逃生口
+    本身不变，只是不再能静默使用。返回 SkipDecision 列表（供写进报告）。
+    `fcov_meta` = 全量覆盖闸的激活/模式元数据（见 `_fcov_activation`）；闸未激活或无
+    显式降级时不构成逃生口。
     """
     for root in (_wqb_root(campaign), _REPO_ROOT):
         src = os.path.join(root, "src")
@@ -663,6 +665,9 @@ def _waiver_phase(a, campaign, region, inspect_mode, rg):
     # 区域闸：显式 off，或灰度期结束后显式回退 warn 才算逃生口（灰度期缺省 warn 不是逃生）
     if rg_mode == "off" or (rg_mode == "warn" and rg_default == "enforce"):
         esc.append(("region_gates", f"--gate-mode {rg_mode}"))
+    # 全量覆盖闸：仅「已激活 + 显式降级到缺省之下」才算逃生口（未激活谈不上降级）
+    if fcov_meta and fcov_meta.get("active") and fcov_meta.get("downgraded"):
+        esc.append(("full_coverage", fcov_meta.get("escape_flag") or "--fcov-mode off"))
     if not esc:
         return []
 
@@ -718,255 +723,165 @@ def _load_region_gates():
     return None
 
 
-# ---- 闸 PF：信号族死路预检闸（2026-09-25 P2 落地，gate.py 闸9 已占用窗口白名单）----
-# 背景：F2 闸门凭证断档（2055 UNSUBMITTED 中 90.5% 的 prod_corr 未测）；
-# IND intraday_pv_feats 连投 3 波 24 条（S 4.4-6.5 全 IS 过）后才查 prod=0.79-0.92 整族报废。
-# SOP "任何新信号族在投入第二波之前必须先 prod-first 探针" 此前无代码级把关。
-# 本闸把 prod-first 从「S4 收批后必调」前移到「七槽开批前硬门」，判据：
-#   - 同表达式字段族 = 已确认 prod 撞墙死路（基于 DB 中同字段集的实测 prod_corr）→ FAIL 拦截
-#   - 同表达式字段族 = 已知 prod 干净（prod<0.7）  → PASS（家族已探明，可扩批）
-#   - 新信号族（无任何 prod 记录）                  → WARN（建议先 prod-first 探针再扩批）
-# 判据是"表达式中字段集精确匹配"，独立于闸 2.6 的字段热度 / 数据集占比判据。
-
-_PF_OPS_GATE = set("""
-rank add multiply subtract divide group_rank group_zscore group_neutralize group_mean group_sum
-group_count group_scale group_std_dev group_backfill ts_mean ts_delta ts_zscore ts_rank ts_backfill
-ts_decay_linear ts_std_dev ts_sum ts_max ts_min ts_corr ts_covariance ts_regression ts_av_diff
-ts_arg_max ts_arg_min ts_product ts_quantile ts_count_nans ts_scale ts_step ts_returns ts_ir
-ts_delay ts_kurtosis ts_max_diff vec_avg vec_sum vec_max vec_min vec_stddev vec_count vec_range
-winsorize scale normalize signed_power quantile power reverse zscore abs log sign sqrt inverse
-densify pasteurize hump kth_element trade_when if_else bucket greater less equal and or not is_nan
-not_equal less_equal greater_equal max min days_from_last_change last_diff_value vector_neut tail
-industry sector subindustry market country exchange std range rettype driver buckets
-true false nan cap close open high low volume vwap returns adv20 sharesout free_float split dividend
-""".split())
+# ---- 闸 FCV：全量覆盖闸（2026-10-20 P0-1 接线：数据驱动激活，无区域字面量分支）----
+# 背景：EUR 2026-10-20 转 full-coverage 模式（四件套 + boundary_ops_eur.json），
+# 但 tools/full_coverage_gate.py 此前在 wave_gate / pipeline 整条可执行路径上零调用点
+# ——"覆盖前置闸"只存在于文档。本接线：战役目录存在 reference/boundary_ops_<region>.json
+# 即启用（只有声明了该文件的区域受影响，其余区域零行为变化）。
+# 模式 = --fcov-mode > WQB_FCOV_MODE > 随 region_gates 按日缺省（灰度 warn / 2026-10-12
+# 起 enforce）> 兜底 warn；显式降级计入 waiver 检查（waiver_full_coverage_<region>_<wave>）。
+FCOV_MODES = ("off", "warn", "enforce")
+FCOV_DEFAULT_MODE = "warn"
 
 
-_OPS_PATTERN = re.compile(r"\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(")
+def resolve_fcov_mode(cli_value=None, env=None, default=None):
+    """解析全量覆盖闸模式：CLI > 环境变量 WQB_FCOV_MODE > default（随区域闸按日缺省）> warn。
 
-
-def _extract_ops(expr):
-    """提取表达式里所有函数调用名（小写）。"""
-    return [m.group(1).lower() for m in _OPS_PATTERN.finditer((expr or "").lower())]
-
-
-def _pf_family(expr, n_ops=2):
-    """信号族指纹 = 前 n_ops 个函数调用名 join（保留算子结构）。
-
-    判据：对 mdl135_d01_icc 的实证 —— 同字段在「+ vec_avg」骨架下 prod=0.76-0.82（死路），
-    在「+ vec_avg × ts_zscore」骨架下 prod=0.46-0.57（干净）。所以**骨架比字段更准**。
-    取前 n_ops=2 个算子做族指纹，平衡宽（易匹配）与窄（精准）的粒度。
+    非法取值落回 default（拼错的 mode 不能静默关掉把关）；default 也非法时落 warn。
     """
-    ops = _extract_ops(expr)
-    return "→".join(ops[:n_ops]) if ops else "?"
+    env = os.environ if env is None else env
+    raw = cli_value or env.get("WQB_FCOV_MODE") or default
+    mode = str(raw or "").strip().lower()
+    if mode in FCOV_MODES:
+        return mode
+    return default if default in FCOV_MODES else FCOV_DEFAULT_MODE
 
 
-def _load_prod_wall_families(region, n_ops=2):
-    """读 alphas 表 + ledger_kv，按信号族指纹（骨架前缀）分组。
+def _fcov_activation(campaign, region):
+    """数据驱动激活判定：战役目录存在 reference/boundary_ops_<region>.json 即启用。
 
-    2026-09-25 P1 增强：除 alphas 表（全库 prod 覆盖率仅 4.4%）外，还读 ledger_kv
-    里 `prod_family_<region>_<skeleton>` 键（由 campaign_intel.py prod-first 探针
-    自动回写），让闸 PF 下次跑时能直接消费最新证据，不再只依赖 alphas 表的稀疏记录。
-
-    墙家族 = 同骨架至少有 1 条 prod_corr >= 0.7 的实测记录；
-    干净家族 = 有 >=1 条 prod_corr < 0.7 的记录。
+    配置可解析且 "enabled" 显式为 false → 不启用（显式关）；JSON 不可解析 → 仍启用
+    （让闸内 load_boundary_config 报错 fail-closed，配置坏了不能静默变"不存在"）。
     """
+    cfg = os.path.join(campaign, "reference", "boundary_ops_%s.json" % str(region or "").lower())
+    out = {"active": False, "config_path": cfg}
+    if not os.path.isfile(cfg):
+        return out
+    out["active"] = True
     try:
-        # 2026-09-27：勿硬编码本机路径（P1 R19 守护 test_wave_gate_db_path_never_hardcoded）；
-        # 复用统一解析：src 注入走 _campaign_store_cls（工作区 src 优先），库路径走 _wqb_db_path。
-        CampaignStore = _campaign_store_cls()
-        st = CampaignStore(_wqb_db_path())
-        try:
-            rows = st.list_alphas_by_region(region)  # 字段含 alpha_id/expression/prod_correlation/corr_checked_at
-        finally:
-            st.close()
-    except Exception:
-        return {}
-    fams = {}
-    for r in rows:
-        fam = _pf_family(r.get("expression") or "", n_ops)
-        if not fam or fam == "?":
-            continue
-        pc = r.get("prod_correlation")
-        if pc is None:
-            continue
-        pc = float(pc)
-        cur = fams.setdefault(fam, {"prod_corr": pc, "prod_max": pc, "n": 0, "n_wall": 0,
-                                    "examples": []})
-        cur["n"] += 1
-        # 2026-09-28 max/min 双记（此前只留 min=最干净，把"族里出现过 ≥0.7 撞墙"误标成干净，
-        # 注释却写"取最严格"）。死路判据看 min（全族皆墙才 enforced），混合证据看 max（WARN+加深）。
-        cur["prod_corr"] = min(cur["prod_corr"], pc)
-        cur["prod_max"] = max(cur.get("prod_max", pc), pc)
-        if pc >= 0.7:
-            cur["n_wall"] += 1
-        if len(cur["examples"]) < 3:
-            cur["examples"].append(r.get("expression", "")[:60])
-
-    if n_ops != 2:
-        # 3 算子粒度只用 alphas 行（ledger 键固定是 2 算子骨架名，无法反推）
-        return fams
-
-    # 2026-09-25 P1：合并 ledger_kv 里 prod-first 探针回写的骨架指纹（覆盖率补偿）
-    try:
-        import sqlite3 as _sq
-        _db = os.path.join(wqb_root, "data", "wqb.db")
-        _c = _sq.connect(_db)
-        _c.row_factory = _sq.Row
-        _prefix = f"prod_family_{region}_"
-        for _r in _c.execute(
-                "SELECT key, value FROM ledger_kv WHERE region=? AND key LIKE ?",
-                (region, _prefix + "%")):
-            try:
-                _fam = _r["key"][len(_prefix):]
-                _v = json.loads(_r["value"] or "{}")
-                _pc = _v.get("prod_corr")
-                if _pc is None or not _fam:
-                    continue
-                _pc = float(_pc)
-                _cur = fams.setdefault(_fam, {"prod_corr": _pc, "prod_max": _pc, "n": 0,
-                                             "n_wall": 0, "examples": []})
-                _cur["n"] += 1
-                _cur["prod_corr"] = min(_cur["prod_corr"], _pc)
-                _cur["prod_max"] = max(_cur.get("prod_max", _pc), _pc)
-                if _pc >= 0.7:
-                    _cur["n_wall"] += 1
-                if _v.get("alpha_id") and len(_cur["examples"]) < 3:
-                    _cur["examples"].append(_v["alpha_id"])
-            except Exception:
-                continue
-        _c.close()
+        with open(cfg, encoding="utf-8") as f:
+            if (json.load(f) or {}).get("enabled") is False:
+                out["active"] = False
+                out["disabled_by_config"] = True
     except Exception:
         pass
-    return fams
+    return out
 
 
-def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
-    """闸 PF：骨架级死路预检（prod-first 前置）。
+def _run_full_coverage_gate(a, campaign, items, region, meta):
+    """跑 full_coverage_gate 三道闸（字段覆盖 / 模板族 / 边界算子），返回报告 dict。
 
-    判据（基于 mdl135_d01_icc 实证：骨架比字段更准）：
-      同骨架前缀（前 2 个算子）= 已确认 prod>=0.7 死路  → 拦截（fail-closed）
-      同骨架前缀 = 已探明 prod<0.7 干净                    → 通过（该骨架已探明）
-      新骨架前缀（无任何 prod 记录）                        → WARN（建议先 prod-first 探针）
-
-    2026-09-25 P5 增强（粒度自适应 + 置信度）：
-      - 区隔离：骨架指纹按 region 分库存储（ledger_kv `prod_family_<region>_*`），
-        避免跨区误判（rank→ts_backfill 在 KOR 干净 prod=0.54、在 IND 死路 prod=0.725）。
-      - 低置信度：骨架指纹 n < min_confidence_n（缺省 3）只 WARN 不 enforced，
-        避免小样本误伤（如 n=1 的 rank→group_zscore 在 KOR prod=0.763）。
-      - 粒度自适应：若某骨架前缀在本区有混合记录（干净 + 死路），自动加深到前 3 算子。
-
-    Returns report dict（供落 gate_results 与打印）：
-      status   = pass / warn / enforced(有家族死路)
-      violations = 命中已死路家族的表达式明细
-      unknown_families = 未探明的骨架指纹列表（建议 prod-first）
-      passed = not violations
+    非激活（无 boundary_ops 配置）→ None（不进报告、不影响 all_pass）。
+    off 档 → 打印跳过行并返回 {"status": "off", ...}。
+    enforce 档下字段全集/配置不可得 → exit 2（无门禁结论，与区域闸同义，含义是
+    "本波没有门禁结论"而不是"表达式不合格"）；warn 档 → 降级放行（报告记原因）。
+    三闸 FAIL（enforce）→ ok=False，由 main 末尾折叠进 all_pass（exit 1）。
+    字段覆盖口径默认 1.0=全字段（按批：该数据集字段全集内每个字段至少出现在一条
+    候选里）；可用 boundary_ops 配置的 `field_coverage` 键按区域放宽——政策杠杆，
+    不写代码分支。
     """
-    fams = _load_prod_wall_families(region)
+    if not meta.get("active"):
+        return None
+    mode = meta.get("mode") or FCOV_DEFAULT_MODE
+    if mode == "off":
+        print("[fcov ] 全量覆盖闸已按 --fcov-mode=off / WQB_FCOV_MODE=off 显式跳过（无把关）")
+        return {"status": "off", "mode": "off", "config_path": meta.get("config_path")}
+    exprs = [e for _, e in items]
+    if not exprs:
+        print("[fcov ] 无候选表达式，跳过全量覆盖闸")
+        return {"status": "skip", "mode": mode, "reason": "no-candidates"}
 
-    # 2026-09-25 P5：低置信度（n < min_confidence_n）只 WARN 不 enforced
-    dead_fams = {f: v for f, v in fams.items()
-                 if v["prod_corr"] >= 0.7 and v["n"] >= min_confidence_n}
-    dead_fams_low_conf = {f: v for f, v in fams.items()
-                          if v["prod_corr"] >= 0.7 and v["n"] < min_confidence_n}
-    # 2026-09-28：mixed = 同骨架既有 ≥0.7 撞墙记录又有干净记录（2 算子粒度过粗）。
-    # 此前这类族被 min() 归进 ok（GLB 实测 group_zscore→ts_decay_linear 37 条、
-    # max 0.9929 仍判"干净"），死路证据被吞。现单列 MIXED：不 enforced（避免误伤
-    # 干净变体），但也不算干净——走 3 算子加深判定，加深后仍混合 → WARN + 建议探针。
-    mixed_fams = {f: v for f, v in fams.items()
-                  if v.get("prod_max", v["prod_corr"]) >= 0.7 > v["prod_corr"]}
-    ok_fams = {f: v for f, v in fams.items()
-               if v.get("prod_max", v["prod_corr"]) < 0.7}
-    unknown_fams = set()
+    def _block_or_degrade(msg, reason):
+        if mode == "enforce":
+            print("[fcov ] ★★ %s → 整波拦截（exit 2，无门禁结论）" % msg, file=sys.stderr)
+            sys.exit(2)
+        print("[fcov ] warn: %s；降级放行" % msg)
+        return {"status": "unavailable", "mode": mode, "reason": reason}
 
-    fams3 = None  # 懒加载：仅遇 MIXED 族才建 3 算子粒度索引
-
-    def _fams3_index():
-        nonlocal fams3
-        if fams3 is None:
-            fams3 = _load_prod_wall_families(region, n_ops=3)
-        return fams3
-
-    violations = []
-    expr_status = []  # per-expr for diagnostics
-    for i, expr in enumerate(exprs):
-        fam = _pf_family(expr)
-        if fam in dead_fams:
-            prod_v = fams[fam]["prod_corr"]
-            violations.append({"index": i, "family": fam, "prod_corr": prod_v,
-                               "reason": f"骨架指纹 '{fam}' 已确认 prod_corr={prod_v:.3f} ≥ 0.7 死路"
-                                         f"（族级 STOP，先换正交概念或新骨架）",
-                               "expr": expr[:100]})
-            expr_status.append({"index": i, "verdict": "DEAD", "family": fam})
-        elif fam in dead_fams_low_conf:
-            # 低置信度死路：只 WARN 不 enforced（避免小样本误伤）
-            prod_v = dead_fams_low_conf[fam]["prod_corr"]
-            expr_status.append({"index": i, "verdict": "WARN_LOW_CONF",
-                                "family": fam, "prod_corr": prod_v,
-                                "n": dead_fams_low_conf[fam]["n"]})
-            unknown_fams.add(fam)
-        elif fam in mixed_fams:
-            # MIXED：3 算子粒度加深再判一次（ledger 只存 2 算子键，加深索引只用 alphas 行）
-            fam3 = _pf_family(expr, 3)
-            f3 = _fams3_index().get(fam3)
-            if f3 and f3["prod_corr"] >= 0.7 and f3["n"] >= min_confidence_n:
-                violations.append({"index": i, "family": fam3, "granularity": 3,
-                                   "prod_corr": f3["prod_corr"],
-                                   "reason": f"骨架指纹 '{fam}' 证据混合，加深到 '{fam3}' 后确认 "
-                                             f"prod_corr={f3['prod_corr']:.3f} ≥ 0.7 死路",
-                                   "expr": expr[:100]})
-                expr_status.append({"index": i, "verdict": "DEAD", "family": fam3,
-                                    "granularity": 3})
-            elif f3 and f3.get("prod_max", f3["prod_corr"]) < 0.7:
-                expr_status.append({"index": i, "verdict": "OK_DEEP", "family": fam3,
-                                    "granularity": 3, "prod_corr": f3["prod_corr"]})
+    try:
+        tools_dir = os.path.dirname(os.path.abspath(__file__))
+        if tools_dir not in sys.path:
+            sys.path.insert(0, tools_dir)
+        import full_coverage_gate as fcg
+        ns = argparse.Namespace(
+            fields_list=None, all_fields=None, region=region, dataset=a.dataset,
+            campaign_dir=campaign, boundary_config=meta.get("config_path"),
+            db_path=_wqb_db_path(campaign),
+        )
+        try:
+            known_fields, fields_src = fcg.resolve_field_source(ns)
+        except SystemExit:
+            known_fields, fields_src = None, "字段全集解析失败（SystemExit）"
+        if not known_fields:
+            return _block_or_degrade("全量覆盖闸无法取得字段全集：%s" % fields_src, fields_src)
+        try:
+            boundary_cfg = fcg.load_boundary_config(ns)
+        except Exception as e:
+            return _block_or_degrade(
+                "边界算子配置不可读（%s）: %s" % (meta.get("config_path"), e),
+                "%s: %s" % (type(e).__name__, e))
+        coverage = 1.0
+        try:
+            if boundary_cfg.get("field_coverage") is not None:
+                coverage = float(boundary_cfg["field_coverage"])
+        except Exception:
+            coverage = 1.0
+        db_families = fcg.load_db_families(region, a.dataset, db_path=ns.db_path)
+        gates = [
+            fcg.apply_field_gate(exprs, known_fields, coverage, mode),
+            fcg.apply_family_gate(campaign, a.dataset, 3, exprs, mode,
+                                  db_families=db_families),
+            fcg.apply_boundary_gate(exprs, boundary_cfg, False, mode),
+        ]
+        ok = not any(g.get("verdict") == "FAIL" for g in gates)
+        for g in gates:
+            line = "[fcov ] %-18s %-4s" % (g.get("gate", "?"), g.get("verdict", "?"))
+            if g.get("gate") == "field_coverage":
+                line += "  %d/%d = %.2f%%（缺 %d）" % (
+                    g.get("covered", 0), g.get("total_fields", 0),
+                    100.0 * float(g.get("coverage") or 0.0), g.get("missing_count", 0))
+            elif g.get("gate") == "template_family":
+                line += "  %d/%d（DB %d 族）" % (
+                    g.get("total", 0), g.get("min_families", 0),
+                    len(g.get("db_families") or []))
             else:
-                unknown_fams.add(fam3 or fam)
-                expr_status.append({"index": i, "verdict": "WARN_MIXED", "family": fam,
-                                    "deep_family": fam3,
-                                    "prod_min": mixed_fams[fam]["prod_corr"],
-                                    "prod_max": mixed_fams[fam].get("prod_max"),
-                                    "n_wall": mixed_fams[fam].get("n_wall", 0)})
-        elif fam in ok_fams:
-            expr_status.append({"index": i, "verdict": "OK", "family": fam,
-                                "prod_corr": ok_fams[fam]["prod_corr"]})
-        else:
-            unknown_fams.add(fam)
-            expr_status.append({"index": i, "verdict": "UNKNOWN", "family": fam})
-
-    status = "enforced" if violations else ("warn" if unknown_fams else "pass")
-    report = {"status": status, "n_checked": len(exprs),
-              "n_history_families": len(fams),
-              "n_dead_families": len(dead_fams), "n_ok_families": len(ok_fams),
-              "n_mixed_families": len(mixed_fams),
-              "n_low_conf_dead_families": len(dead_fams_low_conf),
-              "n_unknown_families": len(unknown_fams),
-              "dead_families_sample": sorted(dead_fams)[:15],
-              "mixed_families_sample": sorted(mixed_fams)[:15],
-              "ok_families_sample": sorted(ok_fams)[:15],
-              "unknown_families_sample": sorted(unknown_fams)[:15],
-              "violations": violations, "expr_status": expr_status,
-              "passed": not violations}
-    if violations:
-        report["message"] = (f"{len(violations)}/{len(exprs)} 条表达式命中已死路骨架指纹"
-                             f"（{len(dead_fams)} 个骨架已确认死路，n≥{min_confidence_n}）—— 闸 PF 拦截")
-    elif unknown_fams:
-        report["message"] = (f"PASS；{len(unknown_fams)}/{len(exprs)}"
-                             f" 条表达式骨架指纹未探明或低置信度或证据混合，建议先 prod-first 探针"
-                             + (f"（mixed 族 {len(mixed_fams)} 个）" if mixed_fams else ""))
-    else:
-        report["message"] = f"PASS（{len(exprs)} 条全部命中已探明干净骨架）"
-    return report
+                line += "  illegal=%d incomplete=%d unknown_ops=%d" % (
+                    g.get("illegal_count", 0), g.get("incomplete_count", 0),
+                    len(g.get("unknown_ops") or []))
+            print(line)
+        return {
+            "status": "ok" if ok else "fail", "ok": ok, "mode": mode,
+            "region": region, "dataset": a.dataset,
+            "config_path": meta.get("config_path"),
+            "fields_source": fields_src, "coverage_required": coverage,
+            "db_families": db_families, "gates": gates,
+        }
+    except SystemExit:
+        raise
+    except Exception as e:
+        return _block_or_degrade("全量覆盖闸执行异常: %s: %s" % (type(e).__name__, e),
+                                 "%s: %s" % (type(e).__name__, e))
 
 
-def format_prod_family_report(report):
-    lines = [f"[prod-family] 状态={report['status']} {report['message']}"]
-    if report.get("dead_families_sample"):
-        lines.append(f"[prod-family] 已死路骨架样本: {report['dead_families_sample'][:5]}"
-                     + (f" 等 {report.get('n_dead_families', 0)} 个" if report.get("n_dead_families", 0) > 5 else ""))
-    for v in report.get("violations", [])[:5]:
-        lines.append(f"[prod-family]   命中 #{v['index']}: prod={v['prod_corr']:.3f} {v['family']} | {v['expr']}")
-    return "\n".join(lines)
+# ---- 闸 PF：信号族死路预检闸 ----
+# 2026-10-24 P0-1：实现唯一权威在 `tools/wave_gate_pkg/gates_pf.py`（2026-09-30 包化）。
+# 此前本文件还留着一份旧拷贝，且其 `_load_prod_wall_families` 引用了未定义的全局
+# `wqb_root`（NameError 被 `except Exception: pass` 静默吞掉）⇒ `campaign_intel.py`
+# prod-first / prod-probe 回写的 ledger 骨架指纹从未被本 CLI 读到过（闸 PF 只看
+# alphas 表，prod 覆盖率仅 4.4%，等于长期半失明）。改为绑定包内实现：
+#   ① 单一权威（包内已含 2026-09-28 MIXED 加深 + 2026-10-24 开波前探针封族）；
+#   ② 指纹读取路径恢复；
+#   ③ 测试契约不变 —— `monkeypatch.setattr(wave_gate, "_campaign_store_cls" /
+#      "_wqb_root" / "_wqb_db_path", ...)` 仍生效：gates_pf 经 `wave_gate_pkg._compat`
+#      晚绑定 `sys.modules["wave_gate"]` 取这几个名字。
+from wave_gate_pkg.gates_pf import (  # noqa: E402,F401
+    PROBE_SEAL_THRESHOLD,
+    _extract_ops,
+    _load_prod_wall_families,
+    _pf_family,
+    check_prod_family_gate,
+    format_prod_family_report,
+)
 
 
 def main():
@@ -986,6 +901,13 @@ def main():
                     help="开波前区域闸模式（2026-09-17 P0-1）：off / warn(只告警) / "
                          "enforce(命中即退出码 2）。缺省先看 WQB_GATE_MODE，再按日期："
                          "灰度期（至 toolkit _lib/region_gates.WARN_SUNSET）warn，之后 enforce")
+    ap.add_argument("--fcov-mode", default=None, choices=("off", "warn", "enforce"),
+                    help="全量覆盖闸模式（2026-10-20 P0-1；数据驱动：战役 reference/"
+                         "boundary_ops_<region>.json 存在即启用，无区域字面量分支）。"
+                         "缺省先看 WQB_FCOV_MODE，再随区域闸按日缺省（当前 enforce）："
+                         "off=跳过 / warn=只告警 / enforce=字段·模板族·边界算子三闸 FAIL "
+                         "计入 all_pass（exit 1）。显式降级需要 waiver"
+                         "（waiver_full_coverage_<region>_<wave>）")
     ap.add_argument("--candidates", help="兼容：候选 JSON")
     ap.add_argument("--exprs-file", help="每行一条表达式的 txt")
     ap.add_argument("--expr", help="单条表达式")
@@ -1045,7 +967,28 @@ def main():
     # 逃生口 → waiver 检查（首屏；见 _waiver_phase）
     _rg = _load_region_gates()
     _wv_region = a.region or _settings_region(campaign) or os.path.basename(campaign).upper()
-    _wv_decisions = _waiver_phase(a, campaign, _wv_region, _inspect_mode, _rg)
+    # 全量覆盖闸元数据（2026-10-20 P0-1）：数据驱动激活 —— 战役 reference/boundary_ops_
+    # <region>.json 存在即启用（无区域字面量分支）；模式随 region_gates 按日缺省。
+    _fcov_meta = _fcov_activation(campaign, _wv_region)
+    _fcov_default = None
+    if _fcov_meta["active"] and _rg is not None and getattr(_rg, "resolve_mode", None):
+        try:
+            _fcov_default = _rg.resolve_mode(None)[0]
+        except Exception:
+            _fcov_default = None
+    _fcov_meta["mode"] = resolve_fcov_mode(a.fcov_mode, default=_fcov_default)
+    _fcov_meta["default_mode"] = _fcov_default or FCOV_DEFAULT_MODE
+    _fcov_meta["downgraded"] = bool(
+        _fcov_meta["active"]
+        and FCOV_MODES.index(_fcov_meta["mode"]) < FCOV_MODES.index(_fcov_meta["default_mode"]))
+    _raw_fcov_env = (os.environ.get("WQB_FCOV_MODE") or "").strip().lower()
+    if a.fcov_mode:
+        _fcov_meta["escape_flag"] = f"--fcov-mode {a.fcov_mode}"
+    elif _raw_fcov_env:
+        _fcov_meta["escape_flag"] = f"WQB_FCOV_MODE={_raw_fcov_env}"
+    else:
+        _fcov_meta["escape_flag"] = None
+    _wv_decisions = _waiver_phase(a, campaign, _wv_region, _inspect_mode, _rg, _fcov_meta)
 
     # ---- 开波前区域闸（2026-09-17 P0-1 下沉）----
     # signal_floor / stop_rules / backlog 三道闸原先只在 workflow 的 S2/S3 节点生效；
@@ -1080,6 +1023,9 @@ def main():
             print(f"[wave_gate] ★★ 开波被阻断（gate-mode=enforce，命中 "
                   f"{'、'.join(_rep.get('hits') or [])}）", file=sys.stderr)
             sys.exit(2)
+
+    # ---- 闸 FCV：全量覆盖闸（2026-10-20 P0-1 接线；激活/模式见上方 _fcov_meta）----
+    fcov_report = _run_full_coverage_gate(a, campaign, items, _wv_region, _fcov_meta)
 
     # ---- 0) GEM 候选池校验（可选）----
     gem_report = None
@@ -1259,6 +1205,8 @@ def main():
         report["waivers"] = [d.to_dict() for d in _wv_decisions]
     if s2_field_report:
         report["s2_field_validation"] = s2_field_report
+    if fcov_report:
+        report["full_coverage"] = fcov_report
 
     # ---- 2.5) 体检→表达式硬门（2026-09-06 接线；2026-09-17 补 fail-closed 档）----
     # ra-pipeline 步 5 把它写成"回测前必过"，但此前整条可执行路径上零调用方。
@@ -1685,6 +1633,13 @@ def main():
         all_pass = False
         n_v = len(pf_report.get("violations") or [])
         print(f"[done ] 闸 PF 拦截：{n_v} 条命中已死路信号族（prod_corr ≥0.7 已实测死路）")
+    # 全量覆盖闸硬阻断（2026-10-20 P0-1，enforce 档）：字段/模板族/边界算子任一 FAIL → 整波拦截
+    if fcov_report and fcov_report.get("mode") == "enforce" and fcov_report.get("ok") is False:
+        all_pass = False
+        _bad_gates = [g.get("gate") for g in (fcov_report.get("gates") or [])
+                      if g.get("verdict") == "FAIL"]
+        print(f"[done ] 全量覆盖闸拦截：{'、'.join(_bad_gates) or 'unknown'} 未过"
+              "（fcov-mode=enforce；补覆盖/补族/修边界档后重跑，或按 waiver 协议降级）")
     g = gate_json  # ERROR 已在调用处退出，此处 all_pass 必为 bool（不再有 None 终态）
     qp = report.get("quality_predict") or {}
     qp_note = ""
@@ -1699,9 +1654,14 @@ def main():
         cov = s2_field_report.get("coverage", 0)
         s2fld_note = f" S1字段={cov:.0%}" + ("(BLOCK)" if not s2_field_report["pass"] and a.s2_field_block else "")
     probe_note = f" Probe={probe_report['status']}" if probe_report else ""
+    fcov_note = ""
+    if fcov_report and fcov_report.get("status") in ("ok", "fail"):
+        fcov_note = f" FCov={'PASS' if fcov_report.get('ok') else 'FAIL'}(mode={fcov_report.get('mode')})"
+    elif fcov_report and fcov_report.get("status") in ("unavailable", "error"):
+        fcov_note = f" FCov={fcov_report.get('status')}(mode={fcov_report.get('mode')})"
     print(f"[done ] 语法 {report['syntax']['passed']}/{report['syntax']['total']}, "
           f"gate all_pass={str(g['all_pass']).lower()} passed={g.get('passed')}/{g.get('total')}"
-          f"{qp_note}{gem_note}{s2fld_note}{probe_note} => {'PASS' if all_pass else 'FAIL'}")
+          f"{qp_note}{gem_note}{s2fld_note}{probe_note}{fcov_note} => {'PASS' if all_pass else 'FAIL'}")
     # 用**最终 verdict** 覆盖写一次（首次落库时 all_pass 尚未算出，见 _persist_gate_report 注释）
     _persist_gate_report(final_all_pass=all_pass)
     sys.exit(0 if all_pass else 1)

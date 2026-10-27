@@ -1145,22 +1145,37 @@
   {
    "key": "prod_family_<region>_<family>",
    "status": "active",
-   "purpose": "骨架指纹的 prod 实测（闸 PF 覆盖率补偿）",
+   "purpose": "骨架指纹的 prod 实测（闸 PF 覆盖率补偿）；带 `probe: true` 者为开波前探针封族标记（2026-10-24 P0-1：免 min_confidence_n 直接 enforced）",
    "writers": [
     {
      "kind": "code",
      "ref": "tools/campaign_intel.py",
-     "via": "prod-first"
+     "via": "prod-first / prod-probe"
     }
    ],
    "readers": [
     {
      "kind": "code",
-     "ref": "tools/wave_gate.py"
+     "ref": "tools/wave_gate_pkg/gates_pf.py"
     }
    ],
-   "missing": "闸 PF 只用 alphas 表（覆盖率低）",
-   "refresh": "prod-first 探针回写"
+   "missing": "闸 PF 只用 alphas 表（prod 覆盖率仅 4.4%），撞墙族可能漏拦",
+   "refresh": "prod-first / prod-probe 探针回写（每族一条）"
+  },
+  {
+   "key": "prod_probe_<region>_<dataset>",
+   "status": "active",
+   "purpose": "开波前 prod 探针汇总（P0-1）：每族 1 条探针读数、封族清单与「探测→封族」耗时",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/campaign_intel.py",
+     "via": "`prod-probe`"
+    }
+   ],
+   "readers": [],
+   "missing": "无代码消费方（agent 按 sealed_families / prod_max 读；闸 PF 只读 prod_family_* 指纹）",
+   "refresh": "每数据集开波前一条（同键覆盖写）"
   },
   {
    "key": "xr_probe_<tag>",

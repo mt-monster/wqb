@@ -16,7 +16,7 @@ import sys
 
 # 添加 tools/lib 到路径
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
-from api_client import Api, load_creds
+from api_client import Api, load_creds, paginate_all
 
 PAGE = 50
 
@@ -30,23 +30,19 @@ def load_settings(campaign_dir):
 
 
 def fetch_fields(api, dataset, settings, limit=None):
-    """分页拉取指定 dataset 的全部字段。"""
+    """分页拉取指定 dataset 的全部字段（all-or-error，见 paginate_all）。
+
+    返回 paginate_all 的结果 dict；``items`` 是字段行。数据集域拉取不停在
+    任意页数，短于平台 count 即抛 PaginationError（旧实现无完整性校验，
+    2026-10-18 analyst7 画像因此只记到 299/1111）。
+    """
     base = ("/data-fields?instrumentType={instrumentType}&region={region}"
-            "&delay={delay}&universe={universe}&dataset.id={ds}&limit={pg}").format(
-                pg=PAGE, ds=dataset, **settings)
-    out, offset = [], 0
-    while True:
-        j = json.load(api.get(f"{base}&offset={offset}"))
-        results = j.get("results", [])
-        out.extend(results)
-        if limit and len(out) >= limit:
-            return out[:limit]
-        offset += len(results)
-        if not results or offset >= j.get("count", 0):
-            return out
+            "&delay={delay}&universe={universe}&dataset.id={ds}").format(
+                ds=dataset, **settings)
+    return paginate_all(api, base, limit=PAGE, max_items=limit)
 
 
-def build_catalog(dataset, settings, raw, sample_stock_count=None):
+def build_catalog(dataset, settings, raw, sample_stock_count=None, pagination=None):
     types = collections.Counter((f.get("type") or "UNKNOWN") for f in raw)
     data_type = types.most_common(1)[0][0] if types else "UNKNOWN"
     universe_size = _get_universe_size(settings.get("universe", "TOP3000"))
@@ -87,6 +83,9 @@ def build_catalog(dataset, settings, raw, sample_stock_count=None):
         "data_type": data_type,
         "type_distribution": dict(types),
         "field_count": len(fields),
+        "platform_count": (pagination or {}).get("platform_count"),
+        "complete": (pagination or {}).get("complete"),
+        "truncated_reason": (pagination or {}).get("truncated_reason"),
         "estimated_stock_count": estimated_stock_count,
         "low_stock_coverage": low_stock_coverage,
         "avg_coverage": round(avg_coverage, 4),
@@ -130,7 +129,8 @@ def main():
     e, pw = load_creds()
     api = Api()
     api.login(e, pw)
-    raw = fetch_fields(api, a.dataset, settings, limit=a.limit)
+    pagination = fetch_fields(api, a.dataset, settings, limit=a.limit)
+    raw = pagination["items"]
     if a.zero_comp:
         raw = [f for f in raw if (f.get("userCount") or 0) == 0]
     
@@ -152,13 +152,24 @@ def main():
         except Exception as ex:
             print(f"[sample] 实测失败: {ex}", file=sys.stderr)
     
-    cat = build_catalog(a.dataset, settings, raw, sample_stock_count=sample_stock_count)
-    print(f"dataset={a.dataset} fields={cat['field_count']} data_type={cat['data_type']} "
-          f"types={cat['type_distribution']}", file=sys.stderr)
+    cat = build_catalog(a.dataset, settings, raw, sample_stock_count=sample_stock_count,
+                        pagination=pagination)
+    print(f"dataset={a.dataset} fields={cat['field_count']} "
+          f"platform_count={cat['platform_count']} complete={cat['complete']} "
+          f"data_type={cat['data_type']} types={cat['type_distribution']}",
+          file=sys.stderr)
     if cat.get('low_stock_coverage'):
         print(f"[WARN] 横截面股票覆盖不足: {cat['estimated_stock_count']} < 100", file=sys.stderr)
     if a.stdout:
         print(json.dumps(cat, ensure_ascii=False, indent=1))
+        return
+    # 不完整目录不得落盘成 reference/<region>_<ds>_fields.json：
+    # 该文件是下游 S1 画像 / 选字段的权威字段源，写入 --limit 冒烟结果
+    # 等于让 299/1111 这类截断目录继续误导（2026-10-20）。
+    if not pagination.get("complete"):
+        print(f"[warn] 拉取不完整（platform_count={pagination.get('platform_count')}, "
+              f"truncated_reason={pagination.get('truncated_reason')}），已跳过落盘；"
+              f"去掉 --limit 后重跑可得到完整目录。", file=sys.stderr)
         return
     out_dir = os.path.join(a.campaign_dir, "reference")
     os.makedirs(out_dir, exist_ok=True)

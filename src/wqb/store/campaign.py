@@ -29,6 +29,7 @@ live in _common.py and are re-exported here for backward compatibility.
 from __future__ import annotations
 
 import sqlite3
+import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -242,7 +243,17 @@ class CampaignStore(
         # 结果层硬闸（2026-10-14，AGENTS.md §8.4 第 9 项）：门面的同名闸管不到这条直写路径。
         reject_production_db_under_tests(self.path, entry="CampaignStore")
         Path(self.path).parent.mkdir(parents=True, exist_ok=True)
-        self.connection = db_connect(self.path)
+        # ★ 2026-10-27 P0：MCP 服务（wq-brain-http）**跨线程共用**同一个 CampaignStore
+        # 实例（``brain_mixin_transport._cache_backend`` 缓存到 ``self._cache_store``），
+        # 而 sqlite3 连接默认 ``check_same_thread=True`` ⇒ 在 A 线程创建、B 线程用
+        # → ``SQLite objects created in a thread can only be used in that same thread``。
+        # 该异常在 prod corr 缓存读写处**被 try/except 兜住只告警**，后果是缓存静默失效、
+        # 每次 check_correlation 都重打平台单并发队列（每颗 1-5 分钟）。
+        # 故：连接放开跨线程 + **所有访问同一把 RLock 串行化**（sqlite3 即便
+        # check_same_thread=False，多线程并发访问也是未定义行为、可能 C 级 segfault，
+        # 必须加锁）。RLock 允许嵌套（set_corr_cache → persist_correlation 都会取锁）。
+        self.connection = db_connect(self.path, check_same_thread=False)
+        self._conn_lock = threading.RLock()
         self.connection.row_factory = sqlite3.Row
         self.connection.execute("PRAGMA foreign_keys=ON")
         self.connection.execute("PRAGMA journal_mode=WAL")

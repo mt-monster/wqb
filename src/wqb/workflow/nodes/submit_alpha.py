@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import re
 import time
 from datetime import datetime
@@ -24,7 +25,7 @@ from .._common import (
     persist_workflow_record,
     run_async as _run_async,
 )
-from ...config import compute_webdata_failed_counts
+from ...config import compute_webdata_failed_counts, merge_failed_items
 from ...quota import REGULAR_DAILY_LIMIT, probe_today
 
 logger = logging.getLogger(__name__)
@@ -36,7 +37,7 @@ _POLL_INTERVAL_SEC = int(WAIT_THRESHOLDS["submit_flip_poll_s"])
 
 # 提交层硬闸项：模拟层 WARNING 但提交层 FAIL 的检查名（与 tools/submit_verdict.py 同口径）。
 # 2026-09-29 P0：这些 WARNING 在 POST submit 时平台会重新评估为 FAIL，必须在本地 fail-closed 拦截。
-_SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"}
+_SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE", "IS_LADDER_SHARPE"}
 
 #: REGULAR 提交前 prod 闸阈值（用户铁律：prod ≥ 0.7 不得提交）。与 super_build.py 的
 #: `--prod-gate` 默认值同口径；本节点不允许把阈值放宽到 ≥0.7 之外。
@@ -250,7 +251,7 @@ def run(
                     + ([
                         "robustness_audited 声明（confirm_submit 时 fail-closed 必过；台账已有记录则降为辅助）",
                         "quota 闸：list stage=OS 数 ET 今日提交数，满 4/日 → blocked（fail-open）",
-                        "prod 闸：check_correlation(production, refresh=True)，max≥0.7 或未出数 → blocked"
+                        "prod 闸：check_correlation(production, refresh=False 缓存优先)，max≥0.7 或未出数 → blocked"
                         "（合规红线，2026-10-18 起无豁免入口）",
                         "set_alpha_properties(alpha_id, name/color/tags/descriptions)",
                         "POST /alphas/{id}/submit",
@@ -308,6 +309,37 @@ def run(
     # 2026-10-02 P0（F7）：闸内新增读 ``robustness_<alpha_id>`` 台账——REJECT → blocked，
     # 消除「判定层否决、动作层却放行」的两个入口口径分裂。
     precheck = _run_async(client.get_alpha_details(alpha_id))
+
+    # Step 0: 已提交短路（P0，2026-10-27）——平台 status 非 UNSUBMITTED 时立即返回，
+    # 不再走 submit_gate / quota_gate / prod_gate，更不 POST。
+    # 实证：JjeMlmXA / 6Xdm3pXL 的 POST 实际已打穿平台（dateSubmitted 已写入），
+    # 但 HTTP 响应在回程丢失，调用方看到 submitted=false 便重试；重试时 prod_gate
+    # 撞上 correlation_busy 返回 blocked，把「已成功」误报成「被拒」，并白耗配额。
+    # 平台口径：GET /alphas/{id}/submit 恒返 404，只能靠 status + dateSubmitted 复核。
+    # 本次短路把该复核前移到第一个网络调用之后，彻底消除该类假阴性。
+    _status = str((precheck or {}).get("status") or "").upper()
+    if confirm_submit and _status and _status != "UNSUBMITTED":
+        _dsub = (precheck or {}).get("dateSubmitted")
+        result["steps"].append({
+            "step": "already_submitted",
+            "status": _status,
+            "stage": (precheck or {}).get("stage"),
+            "dateSubmitted": _dsub,
+            "note": "平台已受理，跳过 submit_gate/quota_gate/prod_gate 与 POST（幂等短路）",
+        })
+        result["success"] = True
+        result["already_submitted"] = True
+        result["submitted"] = True      # 目标态已达成
+        result["posted"] = False        # 但本次调用没有发 POST（区分重复计数）
+        result["blocked"] = False
+        result["final_status"] = _status
+        result["dateSubmitted"] = _dsub
+        result["reason"] = (
+            f"already_submitted: status={_status}, stage={(precheck or {}).get('stage')}, "
+            f"dateSubmitted={_dsub} → 未重复 POST（幂等）。若需补 name/color/tags，"
+            "请单独调 set_alpha_properties。")
+        return _finalize(result, store, alpha_id)
+
     gate = _submit_gate(precheck, alpha_id=alpha_id)
     result["steps"].append(gate)
 
@@ -446,15 +478,33 @@ def run(
     if confirm_submit:
         submit = _run_async(client.submit_alpha(alpha_id))
         submit_state = _classify_submit_response(submit)
+        # transport_error（fetch failed）= 结果未知，**不得**记成已提交（2026-10-27 P0）
+        _accepted = submit_state in ("async_accepted", "unknown_accept")
         result["steps"].append({
             "step": "submit",
-            "success": bool(isinstance(submit, dict) and submit.get("success"))
-                       or submit_state in ("async_accepted", "unknown_accept"),
-            "response_state": submit_state,   # ①confirmed / ②async_accepted / ③unknown_accept / ④rejected
+            "success": bool(isinstance(submit, dict) and submit.get("success")) or _accepted,
+            "response_state": submit_state,   # ①confirmed / ②async_accepted / ③unknown_accept / ④rejected / ⑤transport_error
             "result": submit,
         })
         result["submitted"] = (bool(isinstance(submit, dict) and submit.get("success"))
-                               or submit_state in ("async_accepted", "unknown_accept"))
+                               or _accepted)
+
+        # Step 3.5: 传输层错误 → 先回查平台再决定补发（铁律「报错≠动作未发生」）
+        if submit_state == "transport_error":
+            recheck = _post_outcome_recheck(client, alpha_id)
+            result["steps"].append({
+                "step": "post_transport_recheck",
+                "success": bool(recheck.get("landed")),
+                "landed": bool(recheck.get("landed")),
+                "status": recheck.get("status"),
+                "date_submitted": recheck.get("date_submitted"),
+                "detail": recheck.get("detail"),
+                "note": ("POST 响应为传输层错误（无响应体）：按「报错≠动作未发生」回查"
+                         "status/dateSubmitted。已落地即视为提交成功、不再补发。"),
+            })
+            if recheck.get("landed"):
+                result["submitted"] = True
+                result["submitted_via"] = "transport_error_recheck"
     else:
         result["steps"].append({
             "step": "submit",
@@ -480,7 +530,7 @@ def run(
     })
     resubmitted = False
     if final_status not in ("ACTIVE", "SUBMITTED") and submit_state in (
-            "async_accepted", "unknown_accept"):
+            "async_accepted", "unknown_accept", "transport_error"):
         resub = _run_async(client.submit_alpha(alpha_id))
         resubmitted = True
         result["steps"].append({
@@ -488,7 +538,8 @@ def run(
             "success": True,
             "response_state": _classify_submit_response(resub),
             "result": resub,
-            "note": "响应形态②/③=异步受理且轮询未翻 ACTIVE，按 SOP re-POST 补发一次（幂等）",
+            "note": ("响应形态②/③/⑤（异步受理或传输错误）且轮询未翻 ACTIVE，"
+                     "按 SOP re-POST 补发一次（幂等）"),
         })
         final_status = _poll_status(client, alpha_id, verify_timeout)
         result["steps"].append({
@@ -533,16 +584,25 @@ def _is_ppa_alpha(details: Any) -> bool:
 
 
 def _classify_submit_response(submit: Any) -> str:
-    """把 POST /alphas/{id}/submit 的响应归入四态（worldquant-submit-alpha「关键坑①」）.
+    """把 POST /alphas/{id}/submit 的响应归入五态（worldquant-submit-alpha「关键坑①」）.
 
     ① confirmed：success + 「IS checks passed」（明确通过）；
     ② async_accepted：201/202「Accepted (async); IS checks still computing」（异步受理）；
     ③ unknown_accept：「Non-JSON submit response」/空体（异步受理、结果未知）；
     ④ rejected：403 + failing IS checks（明确失败，零成本带回真因）。
+    ⑤ transport_error：``{"__error__": ...}``——**请求根本没拿到响应**（fetch failed /
+    超时 / 连接重置）。2026-10-27 P0 补：此前该形态落到 unknown_accept，被当成
+    「异步受理、已提交」→ 先谎报 submitted=True，再空轮询 240s，最后才补发。
+    语义上它是「结果未知，须回查平台」，与异步受理的处置完全不同。
+
     对客户端返回形态做宽松识别（status_code / http_status / reason / detail 文本）。
     """
     if not isinstance(submit, dict):
         return "unknown_accept"
+    # ⚠ 必须放在最前：run_async 把异常包成 {"__error__": "fetch failed"}，没有
+    # status_code / success / detail，会一路落到最后的 unknown_accept。
+    if submit.get("__error__"):
+        return "transport_error"
     code = submit.get("status_code") or submit.get("http_status") or submit.get("code")
     text = " ".join(str(submit.get(k) or "") for k in ("reason", "detail", "message", "error"))
     checks = submit.get("checks") or (submit.get("is") or {}).get("checks") or []
@@ -618,9 +678,14 @@ def _submit_gate(details: Any, *, alpha_id: Optional[str] = None,
                   and c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
     counts = compute_webdata_failed_counts(checks)
     # 2026-10-02 P1（F10b）：与 submit_verdict_core.is_ppa_alpha 统一口径——
-    # type==PPA **或** 带 PowerPoolSelected 标签都算 PPA（此前只认 type，
-    # 会把 {type:REGULAR, tags:[PowerPoolSelected]} 误判成 REGULAR 而看错计数组）。
+    # type==PPA **或** 带 PowerPoolSelected 标签都算 PPA。
+    # ⚠ 2026-10-27 P0 修正：该口径会被平台**给 REGULAR 提交成功的 alpha 自动打的**
+    # PowerPoolSelected 标签误导（JjeMlmXA 实证），而 PPA 名单是 RA 名单的子集 ⇒
+    # 只看 failed_ppa 会漏掉 LOW_FITNESS / LOW_2Y_SHARPE / IS_LADDER_SHARPE 等纯 RA 项。
+    # 判定改用 merge_failed_items（RA 为下界 ∪ 真 PPA 的额外项），is_ppa 仅保留
+    # 「通道」语义供报告，不再决定是否拦截。
     is_ppa = _is_ppa_alpha(details)
+    merged = merge_failed_items(counts, ppa_bonus=is_ppa)
 
     # 2026-10-02 P0（F7）：读 robustness 台账（显式传入优先，否则按 alpha_id 读库）。
     rob: Optional[Dict[str, Any]] = robustness
@@ -646,11 +711,9 @@ def _submit_gate(details: Any, *, alpha_id: Optional[str] = None,
         reasons.append("robustness 台账判定 REJECT（brain-alpha-robustness 否决）："
                        f"{', '.join(str(x) for x in failed_checks) or '(未列明细)'}")
 
-    failed = counts["failed_ppa"] if is_ppa else counts["failed_ra"]
-    if failed:
-        names = counts["ppa_failed_names"] if is_ppa else counts["ra_failed_names"]
-        reasons.append(f"WebDataScope Failed {'PPA' if is_ppa else 'RA'} = {failed}"
-                       f"（Phase B.0 硬门非零）：{names}")
+    if merged["count"]:
+        reasons.append(f"WebDataScope Failed RA={counts['failed_ra']} / PPA={counts['failed_ppa']}"
+                       f"（Phase B.0 硬门非零，任一通道失败即拦）：{merged['names']}")
 
     blocked = bool(reasons)
     return {
@@ -660,9 +723,14 @@ def _submit_gate(details: Any, *, alpha_id: Optional[str] = None,
         "blocked_reasons": reasons,
         "failed_ra": counts["failed_ra"],
         "failed_ppa": counts["failed_ppa"],
+        "failed_any": merged["count"],
         "fails": fails,
         "hard_gate_warns": hard_warns,
         "is_ppa": is_ppa,
+        # 通道 vs 仅标签（2026-10-27）：平台给 REGULAR 提交成功的 alpha 也打
+        # PowerPoolSelected，事后盘点据此区分「真 PPA」与「自动标签」。
+        "ppa_channel": _alpha_type(details) == "PPA",
+        "ppa_tag_only": bool(is_ppa) and _alpha_type(details) != "PPA",
         "robustness": ({"recorded": True, "verdict": str(rob.get("verdict")).upper(),
                         "failed_checks": list(rob.get("failed_checks") or [])}
                        if isinstance(rob, dict) else {"recorded": False, "verdict": None}),
@@ -727,19 +795,36 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
     用户铁律「prod ≥ 0.7 不得提交」在 REGULAR 侧无代码承载。
 
     实现：调用 MCP 侧 `check_correlation(alpha_id, correlation_type="production",
-    refresh=True)`（refresh=True 强制走平台、不吃 7 天缓存），读
+    refresh=False)`（★ 2026-10-27 起缓存优先：48h 内有效缓存直接命中，
+    过期/缺失才回源平台；`WQB_PROD_GATE_REFRESH=1` 可强制回源），读
     ``checks.production.max_correlation``：
       - max < threshold（默认 0.7）→ allowed；
       - max ≥ threshold → blocked；
       - 未出数（pending / busy / data_unavailable / 异常）→ blocked（fail-closed），
         等价 super_build `_probe_prod_max` 超时语义。
 
-    返回 {allowed, prod_max, threshold, status, reason}。**纯判定，不做 POST**。
+    返回 {allowed, prod_max, threshold, status, from_cache, cached_at, reason}。
+    **纯判定，不做 POST**。
     """
     thr = _PROD_THRESHOLD if threshold is None else float(threshold)
+
+    # ★ 2026-10-27（用户要求「有值的话就不实时重算了」）：改为**缓存优先**。
+    # 旧实现硬编码 refresh=True ⇒ 每次提交都绕过 ``wqb.db::alpha_corr_cache``
+    # 的 48h 保鲜缓存，直接打平台单并发相关性队列；队列一忙就
+    # correlation_busy / data_unavailable → fail-closed，即使库里已有完全
+    # 有效的 prod 值也提不出去（10-27 JjeMlmXA 实测：非刷新查询立刻返回
+    # 缓存 0.6658 通过，提交却因强制刷新被卡死）。
+    # 现改为 refresh=False：MCP check_correlation 先读权威缓存
+    # （``_prod_corr_cached``，>48h 或 stale 自动视为无缓存回源平台），
+    # 有值直接用，无值才打平台。需要强制回源时设 WQB_PROD_GATE_REFRESH=1。
+    # **合规语义完全不变**：prod ≥ 0.7 一律 blocked；拿不到值一律 fail-closed。
+    force_refresh = (os.environ.get("WQB_PROD_GATE_REFRESH") or "").strip().lower() in (
+        "1", "true", "yes", "on")
+
     try:
         r = _run_async(client.check_correlation(
-            alpha_id, correlation_type="production", threshold=thr, refresh=True))
+            alpha_id, correlation_type="production", threshold=thr,
+            refresh=force_refresh))
     except Exception as e:  # noqa: BLE001
         return {"allowed": False, "prod_max": None, "threshold": thr,
                 "status": "error", "reason": f"check_correlation 异常：{e}"}
@@ -755,23 +840,30 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
     prod = ((r.get("checks") or {}).get("production") or {})
     raw_max = prod.get("max_correlation")
     status = str(prod.get("status") or r.get("status") or "ok")
+    from_cache = bool(prod.get("from_cache") or r.get("from_cache"))
+    cached_at = prod.get("cached_at") or r.get("cached_at")
 
     if raw_max is None:
         return {"allowed": False, "prod_max": None, "threshold": thr, "status": status,
-                "reason": (f"prod 未出数（status={status}，平台仍在算或单并发忙碌）→ fail-closed 拒绝提交；"
-                           "稍后重跑 check_correlation(refresh=True)")}
+                "from_cache": from_cache, "cached_at": cached_at,
+                "reason": (f"prod 未出数（status={status}，48h 内无缓存且平台单并发忙碌）"
+                           "→ fail-closed 拒绝提交；稍后重跑或设 WQB_PROD_GATE_REFRESH=1 强制回源")}
     try:
         prod_max = float(raw_max)
     except (TypeError, ValueError):
         return {"allowed": False, "prod_max": None, "threshold": thr, "status": status,
+                "from_cache": from_cache, "cached_at": cached_at,
                 "reason": f"prod max 非数值：{raw_max!r} → fail-closed"}
 
+    src = f"缓存@{cached_at}" if from_cache else "平台实时"
     if prod_max >= thr:
         return {"allowed": False, "prod_max": prod_max, "threshold": thr, "status": status,
+                "from_cache": from_cache, "cached_at": cached_at,
                 "reason": (f"prod max={prod_max} ≥ {thr} → 用户铁律 prod≥0.7 不得提交"
-                           "（即使平台提交层可能判 PASS）")}
+                           f"（{src}；即使平台提交层可能判 PASS）")}
     return {"allowed": True, "prod_max": prod_max, "threshold": thr, "status": status,
-            "reason": f"prod max={prod_max} < {thr} → 过闸"}
+            "from_cache": from_cache, "cached_at": cached_at,
+            "reason": f"prod max={prod_max} < {thr} → 过闸（{src}）"}
 
 
 def _current_status(client, alpha_id: str) -> Optional[str]:
@@ -780,6 +872,30 @@ def _current_status(client, alpha_id: str) -> Optional[str]:
     if isinstance(details, dict) and not details.get("__error__"):
         return details.get("status")
     return None
+
+
+def _post_outcome_recheck(client, alpha_id: str) -> Dict[str, Any]:
+    """POST 之后**回查平台**判定动作是否真的落地（2026-10-27 P0）。
+
+    项目铁律「提交类报错 ≠ 动作未发生」：``fetch failed`` / 连接重置时，POST 可能已经
+    打穿平台，只是响应在回程丢了（2026-10-27 三颗 α 全中：当次都报 submitted=false，
+    事后 ``status=ACTIVE`` + ``dateSubmitted`` 齐全）。所以传输层错误之后**必须先回查
+    再决定是否补发**，否则重复 POST 只污染 attempt 记录、徒增混乱。
+
+    返回 ``{"landed": bool, "status": str|None, "date_submitted": str|None, "detail": ...}``。
+    """
+    try:
+        d = _run_async(client.get_alpha_details(alpha_id))
+    except Exception as e:  # noqa: BLE001 —— 回查失败不能中断提交流程
+        return {"landed": False, "status": None, "date_submitted": None,
+                "detail": f"回查异常：{e}"}
+    if not isinstance(d, dict) or d.get("__error__"):
+        return {"landed": False, "status": None, "date_submitted": None,
+                "detail": f"回查失败：{(d or {}).get('__error__') if isinstance(d, dict) else d!r}"}
+    status = str(d.get("status") or "").upper() or None
+    date_submitted = d.get("dateSubmitted") or d.get("date_submitted")
+    landed = bool(date_submitted) or status in ("ACTIVE", "SUBMITTED")
+    return {"landed": landed, "status": status, "date_submitted": date_submitted, "detail": None}
 
 
 def _poll_status(client, alpha_id: str, timeout: int) -> Optional[str]:

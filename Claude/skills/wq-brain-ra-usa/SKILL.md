@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-20
+last_verified: 2026-10-24
 ---
 
 # USA 区域挖掘流程（RA 区域分支）
@@ -126,10 +126,15 @@ last_verified: 2026-10-20
 
 <!-- profiles:manual:start -->
 - **S0 / S2**：最深最饱和的市场——经典 value / quality / book 及其线性变体必死（book/value 单族 145 颗同族 ACTIVE）；priors 硬排除饱和族，生成后命中饱和族的在选波阶段剔除。
-- **S3 回测**：扩批之前先按族查 prod-first；delay 0 探针单独成批，不与 delay 1 混批。
+- **S0 选集（EV 流程）**：`$WQ_PY tools/query_profile.py datasets --region USA --sort ev`；EV = value_score × 平均覆盖 × 未测占比 ÷ (1+alphaCount/1000)，**只回答先探谁、不回答能否出活**（USA EV 榜首落在已饱和情绪域）。前置：一次性 `$WQ_PY tools/load_field_profiles_to_db.py --region USA` 建画像（294 集 / 85,184 字段；`sem_type` 全 NULL）。
+- **S0 选集纪律（2026-10-24 P0-4 / P1-4 / P1-6，本区文件是必备输入）**：`$WQ_PY tools/campaign_intel.py s0-select --region USA --json <out>` 自动读两份本区文件——`tracking/USA/reference/usa_dead_datasets.md`（47 条：`dead_end` / `prod_sealed` / `signal_short` / `structural`，`as_of` 超 120 天降级 advisory）默认剔除命中集；`usa_dataset_mechanisms.md`（`classic_anomaly`）进排序第三层（经典异象 > 未标注 > 明示非经典），**选机制经典而不是选数据集冷门**。改判死 / 机制结论先改文件再跑 S0，画像文档里的旧结论不具排除力。`--json` 产物含 `pyramid_snapshot`（塔位快照，零额外请求）与顶层 `est_seats`（`build_wave --max-size-auto` 消费）。
+- **S3 回测**：扩批之前先按族查 prod-first；delay 0 探针单独成批，不与 delay 1 混批。派发前过三维三闸（维度覆盖 / 8 统计族 / 边界算子），但 USA 现状闸 1 未建画像即 `SKIP`、闸 2 因 `expressions.family` 全 NULL 恒 WARN、闸 3 缺 `boundary_ops_usa.json` 恒 PASS ⇒ **`exit 0` ≠ 过闸**。
+- **开波前探针（P0-1 / P1-1，2026-10-24）**：新数据集 / 新信号族**第一波之前**先做两件事——① 裸强度探针 1 条（字段 → 单一 `rank`/`zscore`），`|S| < 0.5` ⇒ kill 该集，不铺开整波；② `$WQ_PY tools/campaign_intel.py prod-probe --region USA --dataset <ds>`（每族 1 条，不占回测槽；`prod ≥ 0.75` 封族，**exit 2 = 有族被封**）。预注册判据表见 [references/_usa-field-profile-playbook-20261018.md](references/_usa-field-profile-playbook-20261018.md) §1.1。
+- **S2 模板词表**：8 个**统计模板族**（cs/rk/d1/d2/dw/tr/ed/va，是维度覆盖单位）≠ 9 个 **GEM 机制族**（`template_families.json` 的 family_id）；经济机制模板**不限 8 个**，按字段机制充分匹配。窗口只能取 `config.STANDARD_WINDOWS`（1/5/22/66/252/504/1008/1260），EUR 标定的 21/63/126 被 `locked.nonstandard_windows` 拦。
 - **S4 改进**：同族出现 prod 达 0.6 → 只按决策表 D0-P 处置（0.60–0.70 当天进步 8；达 0.75 或踩线尝试失败判 dead_end 并换正交概念），禁止同族磨参数。修复保持 TOP3000；换 universe 要在 key_findings 写清 TOP3000 下失败的原因与要回答的诊断问题。
+- **S6 判死升级**：数据集级 `dead_end` 需 **8 统计族全试 + 全波最强 |S| 低于判死线**；D15 的 fast_kill（8 探针无 |S|≥0.5）只到字段 / 探针级，不得据此封集。
 - **Mode B**：原来的 1.0 / 0.6 降门已被下限锁作废；单腿偏弱的组腿起点候选走旁路 A–E。
-（来源：USA profile）
+（来源：USA profile；EV / 三闸 / 判死口径详见 [rules/signal-mining-workflow.md](rules/signal-mining-workflow.md)）
 <!-- profiles:manual:end -->
 
 ## 改控制
@@ -151,10 +156,21 @@ last_verified: 2026-10-20
 **[references/_usa-field-profile-playbook-20261018.md](references/_usa-field-profile-playbook-20261018.md)**
 （含 `risk_neutralized_sharpe` 判死口径：<0.3 = 纯风格 beta，别花仿真）。
 
+**analyst_factor_signals 单集档案（2026-10-19/20）**：全字段底表（平台实测 **922 字段**，
+cov/uc/ac/描述；旧版 300 条是 MCP `max_fields=300` 截断，已更正）→
+[`references/_usa-analyst-factor-signals-field-inventory-20261020.md`](references/_usa-analyst-factor-signals-field-inventory-20261020.md)；
+字段画像 × 两套骨架（growth / skew）× 逐批指标 × 判死与 SUB 比率指纹 →
+[`references/_usa-analyst-factor-signals-field-profile-20261019.md`](references/_usa-analyst-factor-signals-field-profile-20261019.md)
+（已交付 `omoK1A5m` / `akVnvzX5`；营收 3 月修正 `xA1d6Lnn` RA 全闸但 prod 0.7565、
+CROWDING 修复后 0.8164 ⇒ 判死）。
+
 **Fundamental 战役档案（2026-10-19）**：类别级扫描 →
 [`references/_usa-fundamental-dataset-scan-20261019.md`](references/_usa-fundamental-dataset-scan-20261019.md)；
 单集档案按**字段八问**组织（命名 = `_usa-<字段前缀>-field-profile-<asOf>.md`）：
-[`fnd67`](references/_usa-fnd67-field-profile-20261019.md)、[`fnd93`](references/_usa-fnd93-field-profile-20261019.md)。
+[`fnd67`](references/_usa-fnd67-field-profile-20261019.md)、[`fnd93`](references/_usa-fnd93-field-profile-20261019.md)、
+[`fnd21`](references/_usa-fnd21-field-profile-20261021.md)（ESG 新闻分，3 波 18 条 0 过闸 ⇒ 封存）、
+[`fnd91`](references/_usa-fnd91-field-profile-20261021.md)（8-K 文本解析：46 基础字段 + 341 分节；3 波 26 条 0 过闸 ⇒ **封存**；附「覆盖率混淆律 + `ts_backfill` 解药」与交换所分组实证）、
+[`fnd1`](references/_usa-fnd1-field-profile-20261021.md)（董事/高管履历 205 字段全 VECTOR；附 2020 治理风格轴同年翻号实证：attrition 1.12 / succession 0.67（RN 仅 0.09 ⇒ 风格 beta）/ tenure 反号 0.61）。
 
 **ShortInterest 类别扫描（2026-10-19）** →
 [`references/_usa-shortinterest-dataset-scan-20261019.md`](references/_usa-shortinterest-dataset-scan-20261019.md)

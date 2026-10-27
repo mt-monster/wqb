@@ -149,6 +149,31 @@ def test_b2_not_triggered_with_pass_in_window(tmp_path, monkeypatch):
     assert out["success"] is True, out.get("hits")
 
 
+def test_b2_ignores_unattributed_axis(tmp_path, monkeypatch):
+    """B2：axis=None 的波不进轴组 —— 3 个真实轴 + 1 条台账-only FAIL 不应凑成 4 轴。
+
+    回归 2026-10-24：B2 原用 groups.setdefault(w["axis"], ...) 把 None 当独立轴，
+    与 B0 注释「axis=None 的波 … 也不满 B2（无轴组）」矛盾；USA orev_w1 门禁因此
+    被幻影第 4 轴拦下（真实轴 3 < D=4）。
+    """
+    out = _run(tmp_path, monkeypatch, None,
+               waves=[("216", "FAIL"), ("215", "FAIL"), ("214", "FAIL"), ("213", "FAIL")],
+               # 213 无回测 / 无 gate / 无表达式 → axis=None 且仍可计数（非零配额）
+               backtests=[("216", "dsA", 0.3), ("215", "dsB", 0.3), ("214", "dsC", 0.3)])
+    assert out["success"] is True, out.get("hits")
+    details = {w["wave"]: w for w in out["evidence"]["wave_details"]}
+    assert details["213"]["axis"] is None
+    assert details["213"]["countable_fail"] is True
+
+
+def test_b0_unattributed_streak_still_blocks(tmp_path, monkeypatch):
+    """B0 兜底不被 B2 的修正架空：连续 3 波未定轴可计数 FAIL 仍拦下。"""
+    out = _run(tmp_path, monkeypatch, None,
+               waves=[("216", "FAIL"), ("215", "FAIL"), ("214", "FAIL")])
+    assert out["success"] is False
+    assert any("未定轴" in h for h in out["hits"])
+
+
 # --------------------------------------------------------------------------- 4
 def test_dead_end_exemption_payload_mention(tmp_path, monkeypatch):
     """dead_end 豁免：3 连 FAIL 中一波的 registry_empirical payload 提及该波号 → 放行。"""

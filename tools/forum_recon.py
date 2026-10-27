@@ -272,6 +272,27 @@ def _live_session():
     return s, fr
 
 
+def _resolve_post_id(session, fr, click_href: str) -> Optional[str]:
+    """把搜索结果的 click 链接解析成**字符串** post_id（取不到返回 None）。
+
+    `forum_research.resolve_id()` 的返回值是 `(post_id, is_comment, url)` 三元组——旧版直接把它
+    当 id 传给 `read_post`，拼出来的 URL 形如 `/community/posts/('123', True, 'https://…').json`，
+    平台一律非 200 ⇒ 表现为「搜到 N 条、读帖 0 条」的 `read_failed`（2026-10-26 实测 37/37）。
+    这里统一收敛成 str | None，供 live_search_round 使用。
+    """
+    if not click_href:
+        return None
+    try:
+        res = fr.resolve_id(session, click_href)
+    except Exception:
+        return None
+    if isinstance(res, (tuple, list)):
+        res = res[0] if res else None
+    if not res:
+        return None
+    return str(res)
+
+
 def live_search_round(session, fr, query: str, max_pages: int, read_top: int,
                       seen: set, stats: Optional[Dict[str, int]] = None) -> List[Dict[str, Any]]:
     """一轮：搜 → 解析候选 → 读帖 → 返回新读到的结构化文章（跳过已读）。
@@ -295,10 +316,7 @@ def live_search_round(session, fr, query: str, max_pages: int, read_top: int,
     for hit in candidates:
         pid = hit.get("post_id") or hit.get("id")
         if not pid and hit.get("click_href"):
-            try:
-                pid = fr.resolve_id(session, hit["click_href"])
-            except Exception:
-                pid = None
+            pid = _resolve_post_id(session, fr, hit["click_href"])
         if not pid or pid in seen:
             continue
         seen.add(pid)

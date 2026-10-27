@@ -83,9 +83,9 @@ def test_real_repo_top_non_script_files_are_all_registered(az):
     """
     if not (REPO / "tools").is_dir():
         pytest.skip("无 tools/")
-    on_disk = sorted(p.name for p in (REPO / "tools").iterdir()
-                     if p.is_file() and p.suffix and not p.name.startswith(".")
-                     and p.suffix != ".py")
+    # 取面共用闸里那份实现：口径只能是「不是脚本」，不能各自复制一遍 `suffix != ".py"`
+    # （2026-10-27 起脚本 = `.py` / `.ps1` / `.sh`，`detach_launch.ps1` 属脚本不属数据件）。
+    on_disk = sorted(az._tools_top_non_scripts())
     undeclared = sorted(set(on_disk) - set(az.TOOLS_TOP_DATA_ALLOWLIST))
     assert not undeclared, (
         f"tools/ 顶层有未登记的非脚本件 {undeclared}：按 §8.13 迁到归属位"
@@ -119,6 +119,23 @@ def test_stray_data_file_fails(az, tmp_path, monkeypatch):
     assert any("foo.json" in r[2] for r in fails), rep.rows
     assert any("tracking/" in r[2] and "reference" in r[2] for r in fails), (
         f"FAIL 文案必须给出归属位，否则下一个人只会把它挪回顶层：{fails}")
+
+
+def test_powershell_launcher_counts_as_script_not_data_file(az, tmp_path, monkeypatch):
+    """`.ps1` / `.sh` 是**脚本**：新增要走「新增脚本」判据，不得被当数据件要求迁走。
+
+    2026-10-27 战例：`tools/detach_launch.ps1`（脱离 Agent Job 的长任务启动器）被判成
+    「未登记的非脚本件」。这不是命名洁癖问题 —— 按扩展名分类会把整类启动器判到错的归属位，
+    而它本该与 `.py` 一样受「顶层只减不增 + THEMES 归属」约束。
+    """
+    _sandbox(tmp_path, monkeypatch, az, top=("foo.ps1",))
+    rep = _run(az)
+    fails = rep.by("FAIL")
+    assert fails, f"顶层新增 .ps1 未被拦下（说明它仍不在「脚本」面里）：{rep.rows}"
+    assert any("新增 1 个脚本" in r[2] and "foo.ps1" in r[2] for r in fails), (
+        f".ps1 必须按「新增脚本」判（要进基线 + THEMES），而不是按数据件判：{fails}")
+    assert not any("非脚本件" in r[2] for r in fails), (
+        f".ps1 不该被当成数据件（会被要求迁出 CLI 层，启动器本就该在这一层）：{fails}")
 
 
 def test_registered_data_files_pass(az, tmp_path, monkeypatch):

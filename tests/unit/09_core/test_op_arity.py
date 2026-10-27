@@ -32,6 +32,7 @@ from wqb.expression.op_arity import (  # noqa: E402
     check_expressions,
     ensure_safe_for_dispatch,
     iter_call_sites,
+    load_catalog_names,
     load_signatures,
     parse_definition,
 )
@@ -165,11 +166,54 @@ def test_no_false_positives_on_accepted_alpha_corpus():
     sigs = load_signatures()
     # 已知 3 条脏数据：截断/串行的历史行（signed_power(0.5)M.40+e3.60 之流），
     # 任何语法检查都会拒，不算本闸误杀。
+    # 本用例只量元数误杀率，故显式 strict_unknown=False——存在性由下面
+    # test_accepted_corpus_has_no_real_unknown_operators 单独守。
     flagged = [e for e in corpus
-               if check_expression(e, sigs) and "(" in e and e.count("(") == e.count(")")]
+               if check_expression(e, sigs, strict_unknown=False)
+               and "(" in e and e.count("(") == e.count(")")]
     corrupt = [e for e in flagged if not e.rstrip().endswith(")")]
     real = [e for e in flagged if e not in corrupt]
     assert not real, f"对已被平台接受的表达式产生误杀: {real[:5]}"
+
+
+#: 历史截断/串行脏行里被误当算子名的 5 个 token（全部来自入库前的采集缺陷：
+#: 运算符被吃掉后 ``M216 gr_M22(industry)`` 这种形状）。平台从未接受过它们。
+_TRUNCATED_CORPUS_OPS = {"gr_M22", "NM", "gr_D90", "ern_next_delta21", "RM"}
+
+
+def test_accepted_corpus_has_no_real_unknown_operators():
+    """fail-closed 的未知面实测：17427 条已接受表达式里只允许那 5 个截断脏名。
+
+    这是"未知算子一律拦"不会误杀真实alpha 的证据——若未来平台新增算子而本仓
+    catalog 未刷新，这里会先红，提示跑 ``tools/refresh_operator_catalog.py``。
+    """
+    import sqlite3
+
+    db = REPO_ROOT / "data" / "wqb.db"
+    if not db.is_file():
+        pytest.skip("data/wqb.db 不存在（干净 checkout）")
+    conn = sqlite3.connect(str(db))
+    try:
+        corpus = {
+            e for (e,) in conn.execute(
+                "select expression from alphas "
+                "where expression is not null and trim(expression) <> ''")
+        }
+        corpus |= {
+            e for (e,) in conn.execute(
+                "select code from backtest_results where alpha_id is not null "
+                "and code is not null and trim(code) <> ''")
+        }
+    finally:
+        conn.close()
+    if not corpus:
+        pytest.skip("语料为空")
+    known = set(load_signatures()) | set(load_catalog_names())
+    unknown = {s.name for e in corpus for s in iter_call_sites(e)
+               if s.name not in known}
+    assert unknown <= _TRUNCATED_CORPUS_OPS, (
+        f"已接受语料里出现非截断形态的未知算子: {sorted(unknown - _TRUNCATED_CORPUS_OPS)}"
+        f"；若平台已上线，先跑 python tools/refresh_operator_catalog.py")
 
 
 # ---------------------------------------------------------------------------
@@ -242,11 +286,53 @@ def test_comparison_operators_are_not_named_args():
 
 
 # ---------------------------------------------------------------------------
-# 6. 未知算子放行（幽灵算子归 operator_audit 管，本闸不双重误报）
+# 6. 未知算子 fail-closed（2026-10-22 波 84 事故：ts_max 烧掉整批 8 槽）
+#
+# 事故还原：旧版 check_expression 对 catalog 里没有的算子 `continue` 放行，
+# ensure_safe_for_dispatch 因此对含 ts_max 的一批报 8/8 PASS；平台回
+# `Attempted to use inaccessible or unknown operator "ts_max"`，1 ERROR + 7 CANCELLED，
+# 整批零信息。"我没有签名" 曾被当成 "该算子合法" —— 存在性必须由 catalog 正面证明。
 # ---------------------------------------------------------------------------
 
-def test_unknown_operator_is_skipped():
-    assert check_expression("ts_median(close, 22, 3, 4)") == []
+def test_unknown_operator_is_rejected():
+    """登记幽灵给 [GHOST]（带替代提示），不再静默放行。"""
+    (msg,) = check_expression("ts_median(close, 22, 3, 4)")
+    assert msg.startswith("[GHOST]") and "ts_median" in msg
+
+
+def test_ts_max_is_rejected_as_unknown():
+    """事故复现：ts_max 不在 catalog，必须 [UNKNOWN_OP]。"""
+    errors = check_expression("ts_max(close, 22)")
+    assert errors and errors[0].startswith("[UNKNOWN_OP]")
+    assert "ts_max" in errors[0]
+    assert 'inaccessible or unknown operator "ts_max"' in errors[0]
+
+
+def test_unknown_operator_blocks_dispatch_batch():
+    """事故批形状：7 条正常 + 1 条 ts_max —— 发批前必须整批抛异常。"""
+    batch = ["ts_mean(close, 22)"] * 7 + ["ts_max(close, 22)"]
+    with pytest.raises(ArityError):
+        ensure_safe_for_dispatch(batch)
+
+
+def test_strict_unknown_false_is_lenient_escape_hatch():
+    """宽松扫描放行目录外算子；登记幽灵照样报（宽松只对 unknown 生效）。"""
+    assert check_expression("ts_max(close, 22)", strict_unknown=False) == []
+    assert check_expression("ts_median(close, 22)", strict_unknown=False)
+
+
+def test_check_expressions_forwards_strict_unknown():
+    report = check_expressions(["ts_max(close, 22)"], strict_unknown=False)
+    assert report["ok"] and report["passed"] == 1
+    report = check_expressions(["ts_max(close, 22)"])
+    assert not report["ok"] and report["passed"] == 0
+
+
+def test_catalog_only_names_are_not_unknown():
+    """in / universe_size 在 catalog 但推不出签名 —— 不能误报未知。"""
+    names = load_catalog_names()
+    assert {"in", "universe_size"} <= names
+    assert check_expression("in(universe_size)") == []
 
 
 # ---------------------------------------------------------------------------

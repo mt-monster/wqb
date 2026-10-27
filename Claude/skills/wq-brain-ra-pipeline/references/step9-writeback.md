@@ -15,6 +15,7 @@
 | ⑥ | **饱和反馈**（本波候选**全部**被 prod 墙卡死时） | `python tools/campaign_intel.py mark-saturated --region $REGION --dataset $DS --reason "<原因>" --wave $W --prod-corr <值> --write-ledger` | ledger `saturated_datasets`（S0 打分读取，把该集降 `excluded`；不加 `--write-ledger` 只预览）。**旧做法**（往 `submit_ready_blocked` 追加饱和记录）已废止——S0 从未读过那个键，只有 `step_funnel` 计数 |
 | ⑦ | **逐数据集经验沉淀** | 对本波**每个实际回测的数据集**：`workflow_campaign(stage="S6", subcommand="dataset-experience", dataset=$DS, extra_args=["--delay", str($DELAY)])`，收取后台任务终态，再补充块外的中文字段 / 机制复盘 | `reports/dataset_experience/<region>_<dataset>_campain.md`（只读 DB 生成，保留人工复盘块；默认累计该数据集历史，专门总结本次战役才传 `--waves`） |
 | ⑧ | **刷新先验快照** | `mcp__wq-brain-http__workflow_campaign(region=$REGION, stage="S2", subcommand="assemble-priors")`（默认带 `--snapshot-ledger`） | `priors_snapshot_<region>` |
+| ⑨ | **刷新区域字段画像**（区域级，不按波过滤） | `mcp__wq-brain-http__workflow_campaign(region=$REGION, stage="S6", subcommand="field-profile")`：缺省刷新本区**全部**有字段目录的集并落盘；单集传 `dataset=$DS`，只预览传 `extra_args=["--dry-run"]`，只刷有本区战役痕迹的集传 `extra_args=["--active-only"]` | `docs/reference/<REGION>/datasets/<dataset>_field_profile.md` + `README.md`（机器段在 `BEGIN/END` 标记内可刷；`## 人工机制复盘` 在标记外，刷新时保留）。工具 = `tools/fields/dataset_profile_doc.py`，纯本地只读 DB |
 
 未回测、诊断中、待出相关性的不能记成已验证成果（步 7 → 步 8 的候选不是 win）。
 
@@ -104,6 +105,7 @@ mcp__wqb-db__upsert_registry_empirical  region=$REGION  layer="win"  entry_id=<I
 - [ ] 有判死 → `dead_end` 已封存（含 salvage 回填）；有胜绩 → `win` 已写
 - [ ] 本波候选全被 prod 墙卡死 → 已 `mark-saturated`
 - [ ] 每个实际回测的数据集都已 `dataset-experience`
+- [ ] 本区字段画像已按本波回测结果刷新（`docs/reference/<REGION>/datasets/`；S6 `subcommand="field-profile"`，本波回测过的数据集页应含本次证据）
 - [ ] **assemble-priors 已再跑**：`priors_snapshot_<region>` 不早于本次回写（GBR 实测：快照停在 09-19，而 `region_kb` 已 09-25、`registry_empirical` 已 09-26 → 落后 8 天，本波结论不回流）
 
 产物归属见 [CONTRACT §4 共享产物归属](../../CONTRACT.md)。

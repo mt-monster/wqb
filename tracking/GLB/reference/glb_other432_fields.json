@@ -1,0 +1,5498 @@
+{
+ "dataset": "other432",
+ "region": "GLB",
+ "universe": "TOPDIV3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 345
+ },
+ "field_type_distribution": {
+  "signal": 324,
+  "scale": 19,
+  "date": 2
+ },
+ "field_count": 345,
+ "platform_count": 345,
+ "complete": true,
+ "truncated_reason": null,
+ "fetched_at": "2026-10-27T16:29:08",
+ "fields": [
+  {
+   "id": "oth432_acae_mae",
+   "type": "MATRIX",
+   "coverage": 0.3907,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Average Error of the model of Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_acae_predict",
+   "type": "MATRIX",
+   "coverage": 0.8754,
+   "userCount": 10,
+   "alphaCount": 27,
+   "description": "Predict value of Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_aint_mae",
+   "type": "MATRIX",
+   "coverage": 0.3273,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Mean Average Error of the model of Intangibles, Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_aint_predict",
+   "type": "MATRIX",
+   "coverage": 0.8712,
+   "userCount": 4,
+   "alphaCount": 19,
+   "description": "Predicted value of Intangibles, Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_appn_mae",
+   "type": "MATRIX",
+   "coverage": 0.3273,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Property/Plant/Equipment, Total - Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_appn_predict",
+   "type": "MATRIX",
+   "coverage": 0.8833,
+   "userCount": 3,
+   "alphaCount": 21,
+   "description": "Predict value of Property/Plant/Equipment, Total - Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_apq_mae",
+   "type": "MATRIX",
+   "coverage": 0.527,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of account payable/creditors - trade",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_apq_predict",
+   "type": "MATRIX",
+   "coverage": 0.8855,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted Value of Account Payable/Creditors - Trade",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_assets_otlo_mae",
+   "type": "MATRIX",
+   "coverage": 0.3273,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_assets_otlo_predict",
+   "type": "MATRIX",
+   "coverage": 0.8864,
+   "userCount": 16,
+   "alphaCount": 28,
+   "description": "Predict value of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_atca_mae",
+   "type": "MATRIX",
+   "coverage": 0.3217,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of Total Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_atca_predict",
+   "type": "MATRIX",
+   "coverage": 0.8841,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Predict value of Total Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_atot_mae",
+   "type": "MATRIX",
+   "coverage": 0.3273,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_atot_predict",
+   "type": "MATRIX",
+   "coverage": 0.8865,
+   "userCount": 6,
+   "alphaCount": 13,
+   "description": "Predicted value of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_atrc_mae",
+   "type": "MATRIX",
+   "coverage": 0.3217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Receivables, Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_atrc_predict",
+   "type": "MATRIX",
+   "coverage": 0.8788,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Predicted Value of Total Receivables, Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_capital_otlo_predict",
+   "type": "MATRIX",
+   "coverage": 0.9105,
+   "userCount": 5,
+   "alphaCount": 10,
+   "description": "Predict value of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cash_otlo_mae",
+   "type": "MATRIX",
+   "coverage": 0.3907,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean Average Error of the model of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cash_otlo_predict",
+   "type": "MATRIX",
+   "coverage": 0.8863,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Predicted value of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cash_rtlr_mae",
+   "type": "MATRIX",
+   "coverage": 0.3907,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cash_rtlr_predict",
+   "type": "MATRIX",
+   "coverage": 0.8854,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Predicted value of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cashflows_otlo_mae",
+   "type": "MATRIX",
+   "coverage": 0.4346,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cashflows_otlo_predict",
+   "type": "MATRIX",
+   "coverage": 0.886,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Predicted value of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cashflows_rtlr_mae",
+   "type": "MATRIX",
+   "coverage": 0.4346,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cashflows_rtlr_predict",
+   "type": "MATRIX",
+   "coverage": 0.8851,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Predict value of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cheq_mae",
+   "type": "MATRIX",
+   "coverage": 0.5452,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash and Short-Term Investments of Cash and Short-Term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_cheq_predict",
+   "type": "MATRIX",
+   "coverage": 0.8854,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Predicted value of Cash and Short-Term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ciac_mae",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean average error of the model of income available to com excl extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ciac_predict",
+   "type": "MATRIX",
+   "coverage": 0.886,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Predict value of Income Available to Com Excl ExtraOrd",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveacoq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8705,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Mean Absolute Deviation of scaled actual value of Other Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveacoq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8705,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Other Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveacoq_mae",
+   "type": "MATRIX",
+   "coverage": 0.8705,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of Other Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveacoq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8916,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted Value of Other Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveancq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8541,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Non-current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveancq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8541,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Non-current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveancq_mae",
+   "type": "MATRIX",
+   "coverage": 0.8541,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Non-current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveancq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8635,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Non-current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveapq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9282,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Accounts Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveapq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9282,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Accounts Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveapq_mae",
+   "type": "MATRIX",
+   "coverage": 0.9282,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of Accounts Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveapq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Accounts Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveatq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9505,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveatq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9505,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveatq_mae",
+   "type": "MATRIX",
+   "coverage": 0.9505,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveatq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9596,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecheq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9493,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Cash and Short-term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecheq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9493,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Cash and Short-term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecheq_mae",
+   "type": "MATRIX",
+   "coverage": 0.9493,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean Average Error of the model of Cash and Short-term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecheq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9579,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Cash and Short-term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecogsq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.7251,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of scaled actual value of Quarterly Cost of Goods Sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecogsq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.7251,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Quarterly Cost of Goods Sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecogsq_mae",
+   "type": "MATRIX",
+   "coverage": 0.7251,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Quarterly Cost of Goods Sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivecogsq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.7302,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Quarterly Cost of Goods Sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivedlttq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.888,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Long-term Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivedlttq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.888,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Long-term Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivedlttq_mae",
+   "type": "MATRIX",
+   "coverage": 0.888,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Mean Average Error of the model of Long-term Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivedlttq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8974,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Long-term Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfiq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.5042,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Earnings per Share (Diluted), including extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfiq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.5042,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of earnings per share (diluted), including extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfiq_mae",
+   "type": "MATRIX",
+   "coverage": 0.5042,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of earnings per share (diluted), including extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfiq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.5081,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Earnings per Share (Diluted), including extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfxq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.5039,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of scaled actual value of Earnings per Share (Diluted), excluding extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfxq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.5039,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of predicted value of Earnings per Share (Diluted), excluding extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfxq_mae",
+   "type": "MATRIX",
+   "coverage": 0.5039,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings Per Share (Diluted), excluding extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsfxq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.5081,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Earnings per Share (Diluted), excluding extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepspiq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.5044,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Earnings per Share (Basic), including extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepspiq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.5044,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Predicted Value of Earnings Per Share (Basic), Including Extraordinary Items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepspiq_mae",
+   "type": "MATRIX",
+   "coverage": 0.5044,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings per Share (Basic), including extraordinary items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepspiq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.5081,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict Value of Earnings Per Share (Basic), Including Extraordinary Items",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsx12_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.504,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Earnings per Share (Basic), excluding extraordinary items, 12 months m",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsx12_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.504,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of earnings per share (basic), excluding extraordinary items, 12 months movin",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsx12_mae",
+   "type": "MATRIX",
+   "coverage": 0.504,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean average error of the model of earnings per share (basic), excluding extraordinary items, 12 months moving",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveepsx12_prediction",
+   "type": "MATRIX",
+   "coverage": 0.5071,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Earnings per Share (Basic), excluding extraordinary items, 12 months moving",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivegdwlq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.6877,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Goodwill",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivegdwlq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.6877,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Goodwill",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivegdwlq_mae",
+   "type": "MATRIX",
+   "coverage": 0.6877,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of Goodwill",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivegdwlq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.7419,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Goodwill",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveintanoq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.3585,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Mean Absolute Deviation of scaled actual value of Other Intangibles",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveintanoq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.3585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Other Intangibles",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveintanoq_mae",
+   "type": "MATRIX",
+   "coverage": 0.3585,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Mean Average Error of the model of Other Intangibles",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveintanoq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.3973,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Other Intangibles",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveinvtq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8044,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveinvtq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8044,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveinvtq_mae",
+   "type": "MATRIX",
+   "coverage": 0.8044,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveinvtq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8191,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivelctq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8689,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivelctq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8689,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Total Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivelctq_mae",
+   "type": "MATRIX",
+   "coverage": 0.8689,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivelctq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8787,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Total Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveltq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveltq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Total Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveltq_mae",
+   "type": "MATRIX",
+   "coverage": 0.8654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveltq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8831,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Predicted Value of Total Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveniq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.5042,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveniq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.5042,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveniq_mae",
+   "type": "MATRIX",
+   "coverage": 0.5042,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveniq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.5085,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoeps12_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.5046,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Mean Absolute Deviation of scaled actual value of Earnings per Share from Operations, 12 months moving",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoeps12_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.5046,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Earnings per Share from Operations, 12 months moving",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoeps12_mae",
+   "type": "MATRIX",
+   "coverage": 0.5046,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Earnings per Share from Operations, 12 months moving",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoeps12_prediction",
+   "type": "MATRIX",
+   "coverage": 0.507,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Earnings per Share from Operations, 12 months moving",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoiadpq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.7235,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Operating income after Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoiadpq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.7235,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Operating income after Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoiadpq_mae",
+   "type": "MATRIX",
+   "coverage": 0.7235,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Operating income after Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveoiadpq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.7305,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of operating income after depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivepiq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.7319,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Pretax Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivepiq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.7319,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Pretax Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivepiq_mae",
+   "type": "MATRIX",
+   "coverage": 0.7319,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Pretax Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivepiq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.7355,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Pretax Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveppentq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9178,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Property, Plant, and Equipment - Total (Net)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveppentq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9178,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean Absolute Deviation of predicted value of Property Plant and Equipment - Total (Net)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveppentq_mae",
+   "type": "MATRIX",
+   "coverage": 0.9178,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Property Plant and Equipment - Total (Net)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiveppentq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9342,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Property Plant and Equipment - Total (Net)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverectq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9324,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Receivables - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverectq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9324,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Receivables - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverectq_mae",
+   "type": "MATRIX",
+   "coverage": 0.9324,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Receivables - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverectq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9507,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predict value of Receivables - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverevtq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.7093,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverevtq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.7093,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverevtq_mae",
+   "type": "MATRIX",
+   "coverage": 0.7093,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictiverevtq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.7122,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivetxtq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Income Taxes - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivetxtq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Income Taxes - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivetxtq_mae",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Income Taxes - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivetxtq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.7217,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Income Taxes - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivexintq_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.6639,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Interest and Related Expense - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivexintq_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.6639,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Interest and Related Expense - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivexintq_mae",
+   "type": "MATRIX",
+   "coverage": 0.6639,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean Average Error of the model of Interest and Related Expense - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_compustatpredictivexintq_prediction",
+   "type": "MATRIX",
+   "coverage": 0.6768,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Interest and Related Expense - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_currents_otlo_mae",
+   "type": "MATRIX",
+   "coverage": 0.3217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_currents_otlo_predict",
+   "type": "MATRIX",
+   "coverage": 0.8863,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ddps1_predict",
+   "type": "MATRIX",
+   "coverage": 0.7885,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of DPS - Common Stock Primary Issue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_debt_rtlr_mae",
+   "type": "MATRIX",
+   "coverage": 0.2869,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_debt_rtlr_predict",
+   "type": "MATRIX",
+   "coverage": 0.8856,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Predicted value of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebit_a_mae",
+   "type": "MATRIX",
+   "coverage": 0.2635,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebit_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Predicted value of Earnings Before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebit_q_mae",
+   "type": "MATRIX",
+   "coverage": 0.2635,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebit_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebit_ttm_mae",
+   "type": "MATRIX",
+   "coverage": 0.2635,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebit_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebitd_a_mae",
+   "type": "MATRIX",
+   "coverage": 0.2684,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the Model of Earnings Before Interest, Tax, and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebitd_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Earnings before Interest, Tax and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebitd_q_mae",
+   "type": "MATRIX",
+   "coverage": 0.2684,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings Before Interest, Tax, and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebitd_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Earnings before Interest, Tax and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebitd_ttm_mae",
+   "type": "MATRIX",
+   "coverage": 0.2684,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings before Interest, Tax and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebitd_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Predicted value of Earnings before Interest, Tax, and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebt_a_mae",
+   "type": "MATRIX",
+   "coverage": 0.251,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings before tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebt_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Earnings Before Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebt_q_mae",
+   "type": "MATRIX",
+   "coverage": 0.251,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Earnings before tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebt_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Predicted Value of Earnings Before Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebt_ttm_mae",
+   "type": "MATRIX",
+   "coverage": 0.251,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Earnings before tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictebt_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Earnings Before Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictev_cur_mae",
+   "type": "MATRIX",
+   "coverage": 0.8773,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Enterprise Value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictev_cur_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Predict value of Enterprise Value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictfcf_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Free Cash Flow",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictfcf_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Free Cash Flow",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictfcf_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Predicted value of Free Cash Flow",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictni_a_mae",
+   "type": "MATRIX",
+   "coverage": 0.2526,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictni_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictni_q_mae",
+   "type": "MATRIX",
+   "coverage": 0.2526,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictni_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Predicted value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictni_ttm_mae",
+   "type": "MATRIX",
+   "coverage": 0.2526,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictni_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictrev_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictrev_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredictrev_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredicttotd_a_mae",
+   "type": "MATRIX",
+   "coverage": 0.2575,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredicttotd_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredicttotd_q_mae",
+   "type": "MATRIX",
+   "coverage": 0.2575,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_deltapredicttotd_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_dlttq_mae",
+   "type": "MATRIX",
+   "coverage": 0.4963,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the Model of Long-Term Debt - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_dlttq_predict",
+   "type": "MATRIX",
+   "coverage": 0.8725,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Predicted value of Long-Term Debt - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_fldn_mae",
+   "type": "MATRIX",
+   "coverage": 0.2869,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of long-term debt, net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_fldn_predict",
+   "type": "MATRIX",
+   "coverage": 0.8455,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Long Term Debt, Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_flows_acae_mae",
+   "type": "MATRIX",
+   "coverage": 0.4346,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_flows_acae_predict",
+   "type": "MATRIX",
+   "coverage": 0.8751,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Predicted value of Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_fprd_mae",
+   "type": "MATRIX",
+   "coverage": 0.2869,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Issuance (Retirement) of Debt, Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_fprd_predict",
+   "type": "MATRIX",
+   "coverage": 0.8625,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Issuance (Retirement) of Debt, Net",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ftlf_mae",
+   "type": "MATRIX",
+   "coverage": 0.4346,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash from Financing Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ftlf_predict",
+   "type": "MATRIX",
+   "coverage": 0.886,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Cash from Financing Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_income_otlo_mae",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_income_otlo_predict",
+   "type": "MATRIX",
+   "coverage": 0.8861,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Cash from Operating Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_itli_mae",
+   "type": "MATRIX",
+   "coverage": 0.4346,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash from Investing Activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_itli_predict",
+   "type": "MATRIX",
+   "coverage": 0.8859,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of cash from investing activities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_lapb_mae",
+   "type": "MATRIX",
+   "coverage": 0.3217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Accounts Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_lapb_predict",
+   "type": "MATRIX",
+   "coverage": 0.8621,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Accounts Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_lctq_mae",
+   "type": "MATRIX",
+   "coverage": 0.4873,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Current Liabilities - Total of Current Liabilities - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_lctq_predict",
+   "type": "MATRIX",
+   "coverage": 0.8872,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Current Liabilities - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ltcl_mae",
+   "type": "MATRIX",
+   "coverage": 0.3217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ltcl_predict",
+   "type": "MATRIX",
+   "coverage": 0.8842,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Total Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ltq_mae",
+   "type": "MATRIX",
+   "coverage": 0.4608,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Liabilities - Total of Liabilities - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ltq_predict",
+   "type": "MATRIX",
+   "coverage": 0.8872,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Liabilities - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ninc_mae",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Income (Loss) - Nonconsolidated",
+   "field_type": "date",
+   "recommended_operators": []
+  },
+  {
+   "id": "oth432_ninc_predict",
+   "type": "MATRIX",
+   "coverage": 0.8861,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Net Income (Loss) - Nonconsolidated",
+   "field_type": "date",
+   "recommended_operators": []
+  },
+  {
+   "id": "oth432_ppentq_mae",
+   "type": "MATRIX",
+   "coverage": 0.5179,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Property, Plant and Equipment - Total (Net)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_ppentq_predict",
+   "type": "MATRIX",
+   "coverage": 0.8823,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Predict value of Property, Plant, and Equipment - Total (Net)",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebit_a_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Earnings Before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebit_q_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebit_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Earnings Before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebitd_a_predict",
+   "type": "MATRIX",
+   "coverage": 0.9011,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Earnings before Interest, Tax and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebitd_q_predict",
+   "type": "MATRIX",
+   "coverage": 0.9011,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Earnings Before Interest, Tax, and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebitd_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 0.9011,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Earnings before Interest, Tax and Depreciation",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebt_a_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Earnings before tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebt_q_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Earnings before Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveebt_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Earnings before Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveev_cur_mae",
+   "type": "MATRIX",
+   "coverage": 0.7361,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Enterprise Value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_predictiveev_cur_predict",
+   "type": "MATRIX",
+   "coverage": 0.9006,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Enterprise Value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_predictivefcf_a_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Free Cash Flow",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictivefcf_q_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Free Cash Flow",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictivefcf_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Free Cash Flow",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveni_a_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveni_q_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiveni_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 0.901,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiverev_a_predict",
+   "type": "MATRIX",
+   "coverage": 0.9008,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiverev_q_predict",
+   "type": "MATRIX",
+   "coverage": 0.9008,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictiverev_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 0.9008,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predict value of Revenue - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictivetotd_a_predict",
+   "type": "MATRIX",
+   "coverage": 0.8792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_predictivetotd_q_predict",
+   "type": "MATRIX",
+   "coverage": 0.8808,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_qtll_predict",
+   "type": "MATRIX",
+   "coverage": 0.9104,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predict value of Total Equity & Minority Interest",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_rectq_mae",
+   "type": "MATRIX",
+   "coverage": 0.5327,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the Model of Receivables - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_rectq_predict",
+   "type": "MATRIX",
+   "coverage": 0.8829,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Predict value of Receivables - Total of Receivables - Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sbda_mae",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Average Error of the model of Normalized EBITDA",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sbda_predict",
+   "type": "MATRIX",
+   "coverage": 0.8827,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Normalized EBITDA",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_scex_predict",
+   "type": "MATRIX",
+   "coverage": 0.9048,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Capital Expenditures",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_scor_mae",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cost of Revenue, Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_scor_predict",
+   "type": "MATRIX",
+   "coverage": 0.8662,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Cost of Revenue, Total",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_scsi_mae",
+   "type": "MATRIX",
+   "coverage": 0.3907,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the Model of Cash and Short-Term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_scsi_predict",
+   "type": "MATRIX",
+   "coverage": 0.8849,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Cash and Short Term Investments",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_scui_mae",
+   "type": "MATRIX",
+   "coverage": 0.3217,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Current Assets less Inventory",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_scui_predict",
+   "type": "MATRIX",
+   "coverage": 0.8841,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Total Current Assets less Inventory",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sgrp_mae",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Gross Profit",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sgrp_predict",
+   "type": "MATRIX",
+   "coverage": 0.8735,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Gross Profit",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sncc_mae",
+   "type": "MATRIX",
+   "coverage": 0.3907,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Change in Cash",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sncc_predict",
+   "type": "MATRIX",
+   "coverage": 0.8852,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Net Change in Cash",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_snce_mae",
+   "type": "MATRIX",
+   "coverage": 0.3907,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Cash - Ending Balance",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_snce_predict",
+   "type": "MATRIX",
+   "coverage": 0.8851,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Net Cash - Ending Balance",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sntd_mae",
+   "type": "MATRIX",
+   "coverage": 0.2869,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Debt Incl. Pref. Stock & Min. Interest",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_sntd_predict",
+   "type": "MATRIX",
+   "coverage": 0.8858,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Predicted value of Net Debt Incl. Pref. Stock & Min. Interest",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_socf_predict",
+   "type": "MATRIX",
+   "coverage": 0.9089,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Changes in Working Capital",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_srev_mae",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_srev_predict",
+   "type": "MATRIX",
+   "coverage": 0.8843,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_stbp_mae",
+   "type": "MATRIX",
+   "coverage": 0.3273,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the Model of Tangible Book Value per Share, Common Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_stbp_predict",
+   "type": "MATRIX",
+   "coverage": 0.8865,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Predict value of Tangible Book Value per Share, Common Eq",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_stld_mae",
+   "type": "MATRIX",
+   "coverage": 0.2869,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_stld_predict",
+   "type": "MATRIX",
+   "coverage": 0.8609,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Total Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveaccpayable_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8869,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Account Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveaccpayable_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8869,
+   "userCount": 28,
+   "alphaCount": 30,
+   "description": "Mean Absolute Deviation of predicted value of Account Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveaccpayable_mae",
+   "type": "MATRIX",
+   "coverage": 0.8869,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the Model of Accounts Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveaccpayable_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9077,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Account Payable",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecapex_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9709,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Capital Expenditure",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecapex_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9709,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Mean Absolute Deviation of predicted value of Capital Expenditure",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecapex_mae",
+   "type": "MATRIX",
+   "coverage": 0.9709,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of Capital Expenditure",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecapex_prediction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Capital Expenditure",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecfo_mad_act",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of scaled actual value of CFO",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecfo_mad_pred",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Mean Absolute Deviation of predicted value of CFO",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecfo_mae",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of CFO",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecfo_prediction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predict value of CFO",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecogs_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8009,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Cost of Goods sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecogs_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8009,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Cost of Goods sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecogs_mae",
+   "type": "MATRIX",
+   "coverage": 0.8009,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cost of Goods sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecogs_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8238,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Cost of Goods Sold",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrassets_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8946,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrassets_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8946,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrassets_mae",
+   "type": "MATRIX",
+   "coverage": 0.8946,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrassets_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9245,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Current Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrliabilities_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8944,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Mean Absolute Deviation of scaled actual value of Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrliabilities_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8944,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of predicted value of Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrliabilities_mae",
+   "type": "MATRIX",
+   "coverage": 0.8944,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivecurrliabilities_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9242,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Current Liabilities",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedebtissuance_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9377,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Debt Issuance",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedebtissuance_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9377,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Debt Issuance",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedebtissuance_mae",
+   "type": "MATRIX",
+   "coverage": 0.9377,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Debt Issuance",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedebtissuance_prediction",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Debt Issuance",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedps_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8273,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Dividend per share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedps_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8273,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Dividend per share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedps_mae",
+   "type": "MATRIX",
+   "coverage": 0.8273,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Dividend per share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivedps_prediction",
+   "type": "MATRIX",
+   "coverage": 0.836,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted Value of Dividend Per Share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebit_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9303,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebit_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9303,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebit_mae",
+   "type": "MATRIX",
+   "coverage": 0.9303,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean Average Error of the model of Earnings before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebit_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9603,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Earnings Before Interest and Tax",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebitda_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9307,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Earnings Before Interest",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebitda_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9307,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Earnings Before Interest",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebitda_mae",
+   "type": "MATRIX",
+   "coverage": 0.9307,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Earnings Before Interest",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveebitda_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9597,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Earnings Before Interest",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveev_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9616,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Enterprise Value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveev_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9616,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Enterprise Value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveev_mae",
+   "type": "MATRIX",
+   "coverage": 0.9616,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Enterprise Value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveev_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9622,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of enterprise value",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcfe_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9182,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "Mean Absolute Deviation of scaled actual value of Free Cash Flow Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcfe_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9182,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Free Cash Flow Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcfe_mae",
+   "type": "MATRIX",
+   "coverage": 0.9182,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Free Cash Flow Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcfe_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9373,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Free Cash Flow Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcff_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.936,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Mean Absolute Deviation of scaled actual value of Free Cash Flow Firm",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcff_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.936,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Free Cash Flow Firm",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcff_mae",
+   "type": "MATRIX",
+   "coverage": 0.936,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Free Cash Flow Firm",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivefcff_prediction",
+   "type": "MATRIX",
+   "coverage": 0.966,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Free Cash Flow Firm",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltcashnequivalents_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.8713,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of scaled actual value of Long-term Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltcashnequivalents_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.8713,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Long-term Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltcashnequivalents_mae",
+   "type": "MATRIX",
+   "coverage": 0.8713,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Long-term Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltcashnequivalents_prediction",
+   "type": "MATRIX",
+   "coverage": 0.8927,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Predicted value of Long-term Cash & Equivalents",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltdebt_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9529,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Mean Absolute Deviation of scaled actual value of Long-term debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltdebt_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9529,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Long-term debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltdebt_mae",
+   "type": "MATRIX",
+   "coverage": 0.9529,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Mean Average Error of the model of Long-term debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveltdebt_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9716,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of long-term debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetdebt_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9313,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Net Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetdebt_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9313,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Net Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetdebt_mae",
+   "type": "MATRIX",
+   "coverage": 0.9313,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Mean Average Error of the model of Net Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetdebt_prediction",
+   "type": "MATRIX",
+   "coverage": 0.962,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predict value of Net Debt",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetincome_mad_act",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of scaled actual value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetincome_mad_pred",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Mean Absolute Deviation of predicted value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetincome_mae",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetincome_prediction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Predicted value of Net Income",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetreceivables_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9415,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Net Receivables",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetreceivables_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9415,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Mean Absolute Deviation of predicted value of Net Receivables",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetreceivables_mae",
+   "type": "MATRIX",
+   "coverage": 0.9415,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Receivables",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivenetreceivables_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9708,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Net Receivables",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiverndexpense_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.3104,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Research & Development Expense",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiverndexpense_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.3104,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Research & Development Expense",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiverndexpense_mae",
+   "type": "MATRIX",
+   "coverage": 0.3104,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Research & Development Expense",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiverndexpense_prediction",
+   "type": "MATRIX",
+   "coverage": 0.317,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Research & Development Expense",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroa_mad_act",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Return on Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroa_mad_pred",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of predicted value of Return on Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroa_mae",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Return on Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroa_prediction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Return on Assets",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroe_mad_act",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Return on Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroe_mad_pred",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Mean Absolute Deviation of predicted value of Return on Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroe_mae",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Return on Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictiveroe_prediction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predict value of Return on Equity",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetangiblebvps_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.9332,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean Absolute Deviation of scaled actual value of Tangible book value per share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetangiblebvps_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.9332,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Mean Absolute Deviation of predicted value of Tangible book value per share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetangiblebvps_mae",
+   "type": "MATRIX",
+   "coverage": 0.9332,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Mean Average Error of the model of Tangible book value per share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetangiblebvps_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9715,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predict value of Tangible book value per share",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotassets_mad_act",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotassets_mad_pred",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotassets_mae",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean Average Error of the model of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotassets_prediction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Total Assets",
+   "field_type": "scale",
+   "recommended_operators": [
+    "rank",
+    "ts_mean",
+    "group_scale"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotinventory_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.953,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotinventory_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.953,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotinventory_mae",
+   "type": "MATRIX",
+   "coverage": 0.953,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotinventory_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9856,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Predicted value of Total Inventories",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotrevenue_mad_act",
+   "type": "MATRIX",
+   "coverage": 0.963,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotrevenue_mad_pred",
+   "type": "MATRIX",
+   "coverage": 0.963,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Mean Absolute Deviation of predicted value of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotrevenue_mae",
+   "type": "MATRIX",
+   "coverage": 0.963,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth432_trkdpitpredictivetotrevenue_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9937,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Total Revenue",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  }
+ ],
+ "cache_metadata": {
+  "cached_at": "2026-10-27T16:29:09",
+  "ttl_seconds": 86400,
+  "source": "platform_api"
+ },
+ "exported_from_db_at": "2026-10-27T16:38:07"
+}

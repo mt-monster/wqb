@@ -63,7 +63,7 @@
 - **`PENDING`**：结果未出（如 SELF / PROD 相关性未算完）。**不挡提交，但也不能据此放行**——放行须 prod 实测 <0.7。
 - **`WARNING`** 分两类：
   - **硬闸类**：检查名 ∈ `config.RA_CHECK_NAMES`（RA 18 项）或 `PPA_CHECK_NAMES`（7 项）→ 资格门里**计入失败**（`check_counts_as_failed`：非 PASS 且非 PENDING）；
-    其中 `LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE` 在提交层被平台重新评估为 FAIL（`SUBMIT_HARD_GATE_WARNINGS`，KOR PPA 2026-08-22 实锤）。
+    其中 `LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE`（=`IS_LADDER_SHARPE`，`RA_2Y_NAMES` 两个载体）在提交层被平台重新评估为 FAIL（`SUBMIT_HARD_GATE_WARNINGS`，KOR PPA 2026-08-22 实锤；2Y 双载体见 2026-10-23 IND 实证）。
   - **提示类**：其余（描述长度 / 格式 / 主题…）不挡。
 - 名单以代码为准：`wqb.config.RA_CHECK_NAMES` / `PPA_CHECK_NAMES`、`wqb.submit_verdict_core.SUBMIT_HARD_GATE_WARNINGS`。
 

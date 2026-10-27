@@ -525,24 +525,45 @@ def main():
     # 2026-09-25 P2：生成上限公式化（--max-size-auto）。size = min(--size, Σest_seats × 2)。
     # est_seats 读 campaign_intel s0-select 的座位可达性估计；无估计时回落 --size。
     if a.max_size_auto:
+        # ⚠ 2026-10-24：此前这里传裸 `--json`（argparse 需要取值）⇒ 子进程 exit 2 被
+        # `if returncode == 0` 静默吞掉，`--max-size-auto` 从来没生效过。改为写临时文件再读；
+        # campaign_intel s0-select 现在也在 `--json` 产物里输出顶层 `est_seats` 列表。
         try:
             import subprocess as _sp
+            import tempfile as _tf
             _tools_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                       "..", "..", "..", "tools")
-            _out = _sp.run(
-                [sys.executable, os.path.join(_tools_dir, "campaign_intel.py"),
-                 "s0-select", "--region", ctx.region, "--json"],
-                capture_output=True, text=True, timeout=30)
-            if _out.returncode == 0:
-                _sel = json.loads(_out.stdout or "{}")
-                _seats = _sel.get("est_seats") or []
-                _total_seats = sum(int(s) for s in _seats if s) if _seats else None
-                if _total_seats:
-                    _auto_size = min(a.size, _total_seats * 2)
-                    if _auto_size < a.size:
-                        print(f"[build_wave] 生成上限公式化：size {a.size} → {_auto_size} "
-                              f"（Σest_seats={_total_seats} × 2）", file=sys.stderr)
-                        a.size = _auto_size
+            _fd, _json_path = _tf.mkstemp(prefix="s0_select_", suffix=".json")
+            os.close(_fd)
+            try:
+                _out = _sp.run(
+                    [sys.executable, os.path.join(_tools_dir, "campaign_intel.py"),
+                     "s0-select", "--region", ctx.region, "--json", _json_path],
+                    capture_output=True, text=True, timeout=180)
+                if _out.returncode != 0:
+                    print(f"[build_wave] 生成上限公式化：s0-select 失败（exit {_out.returncode}）"
+                          f"→ 回落 --size={a.size}；stderr 尾部："
+                          f"{(_out.stderr or '').strip().splitlines()[-1:] or ''}",
+                          file=sys.stderr)
+                else:
+                    with open(_json_path, "r", encoding="utf-8") as _f:
+                        _sel = json.load(_f)
+                    _seats = _sel.get("est_seats") or []
+                    _total_seats = sum(int(s) for s in _seats if s) if _seats else None
+                    if _total_seats:
+                        _auto_size = min(a.size, _total_seats * 2)
+                        if _auto_size < a.size:
+                            print(f"[build_wave] 生成上限公式化：size {a.size} → {_auto_size} "
+                                  f"（Σest_seats={_total_seats} × 2）", file=sys.stderr)
+                            a.size = _auto_size
+                    else:
+                        print("[build_wave] 生成上限公式化：s0-select 产物无 est_seats"
+                              "（存活候选为空？）→ 回落 --size", file=sys.stderr)
+            finally:
+                try:
+                    os.unlink(_json_path)
+                except OSError:
+                    pass
         except Exception as _e:
             print(f"[build_wave] 生成上限公式化异常（回落 --size）: {_e}", file=sys.stderr)
 

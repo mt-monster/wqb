@@ -1,0 +1,144 @@
+[
+ {
+  "id": "kqjWYxOg",
+  "ds": [
+   "fnd86_earnings_score",
+   "fnd86_fundamental_score",
+   "fnd86_price_momentum_score"
+  ],
+  "code": "add(add(group_neutralize(quantile(subtract(ts_backfill(fnd86_earnings_score,66),ts_backfill(fnd86_price_momentum_score,66))),industry),multiply(0.3,group_rank(ts_mean(ts_backfill(divide(subtract(vec_avg(anl9_daily_numup),vec_avg(anl9_daily_numdn)),add(add(vec_avg(anl9_daily_numup),vec_avg(anl9_daily_numdn)),vec_avg(anl9_daily_numnochg))),66),126),industry))),multiply(0.2,group_neutralize(quantile(ts_backfill(fnd86_fundamental_score,66)),industry)))",
+  "s": 2.82,
+  "f": 2.75,
+  "to": 0.1242,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.1193,
+  "margin": 0.001922
+ },
+ {
+  "id": "QP5kZY1K",
+  "ds": [
+   "fnd17_3_ev2ebitda_cur"
+  ],
+  "code": "-rank(ts_zscore(ts_backfill(fnd17_3_ev2ebitda_cur, 120), 66))",
+  "s": 2.79,
+  "f": 1.46,
+  "to": 0.2271,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.062,
+  "margin": 0.000546
+ },
+ {
+  "id": "vROde0ar",
+  "ds": [
+   "fnd86_earnings_score",
+   "fnd86_relative_valuation_score"
+  ],
+  "code": "rank(ts_zscore(add(ts_delta(ts_backfill(fnd86_relative_valuation_score, 22), 66), ts_mean(ts_backfill(fnd86_earnings_score, 22), 5)), 504))",
+  "s": 2.24,
+  "f": 1.81,
+  "to": 0.1117,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.0818,
+  "margin": 0.001464
+ },
+ {
+  "id": "78jvYor5",
+  "ds": [
+   "fnd86_earnings_score",
+   "fnd86_price_momentum_score"
+  ],
+  "code": "group_neutralize(quantile(subtract(ts_backfill(fnd86_earnings_score,66),ts_backfill(fnd86_price_momentum_score,66))),sector)",
+  "s": 1.98,
+  "f": 1.63,
+  "to": 0.1253,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.0849,
+  "margin": 0.001356
+ },
+ {
+  "id": "2rjpV1LJ",
+  "ds": [
+   "fnd86_earnings_score"
+  ],
+  "code": "rank(ts_decay_linear(multiply(fnd86_earnings_score, ts_std_dev(fnd86_earnings_score, 65)), 22))",
+  "s": 1.71,
+  "f": 0.44,
+  "to": 0.399,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.0269,
+  "margin": 0.000135
+ },
+ {
+  "id": "xAmqPJqN",
+  "ds": [
+   "fnd17_10_rhsfcfq"
+  ],
+  "code": "signed_power(group_zscore(ts_zscore(multiply(ts_backfill(fnd17_10_rhsfcfq, 120), ts_rank(volume, 126)), 66), subindustry), 1.5)",
+  "s": 1.66,
+  "f": 0.53,
+  "to": 0.3935,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.0399,
+  "margin": 0.000203
+ },
+ {
+  "id": "3qlGbd3z",
+  "ds": [
+   "fnd86_earnings_score",
+   "fnd86_fundamental_score"
+  ],
+  "code": "add(signed_power(ts_zscore(ts_backfill(fnd86_earnings_score, 66), 350), 0.5), multiply(0.2, ts_zscore(ts_backfill(fnd86_fundamental_score, 66), 350)))",
+  "s": 1.6,
+  "f": 1.08,
+  "to": 0.1066,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.0573,
+  "margin": 0.001075
+ },
+ {
+  "id": "QP70dGGW",
+  "ds": [
+   "fnd94_q_q_qpdaio",
+   "fnd94_q_saleq_q"
+  ],
+  "code": "add(ts_zscore(divide(ts_backfill(fnd94_q_q_qpdaio, 66), ts_backfill(fnd94_q_saleq_q, 66)), 252), multiply(0.4, reverse(ts_zscore(mdl28_sm_structural_credit_structural_asset_volatility_pct, 126))))",
+  "s": 1.46,
+  "f": 1.06,
+  "to": 0.1199,
+  "inv": null,
+  "invf": null,
+  "t2y": null,
+  "rob": null,
+  "sub": null,
+  "ret": 0.0658,
+  "margin": 0.001097
+ }
+]

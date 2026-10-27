@@ -26,7 +26,6 @@ import datetime
 import json
 import os
 import sys
-import time
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DB = os.path.join(REPO_ROOT, "data", "wqb.db")
@@ -36,32 +35,15 @@ sys.path.insert(0, os.path.join(REPO_ROOT, "tools", "lib"))
 sys.path.insert(0, os.path.join(REPO_ROOT, "src"))
 
 
-def _get(api, path, retries=5):
-    """GET + 退避重试（平台会 429 限流）。"""
-    from urllib.error import HTTPError
-    for i in range(retries):
-        try:
-            return json.load(api.get(path))
-        except HTTPError as ex:
-            if ex.code in (429, 500, 502, 503, 504):
-                time.sleep(2.0 * (2 ** i))
-                continue
-            raise
-    raise RuntimeError(f"retries exhausted: {path}")
-
-
 def _paginate(api, base, limit_page=50, max_items=None, sleep=0.15):
-    out, offset = [], 0
-    while True:
-        j = _get(api, f"{base}&limit={limit_page}&offset={offset}")
-        res = j.get("results", [])
-        out.extend(res)
-        if max_items and len(out) >= max_items:
-            return out[:max_items]
-        offset += len(res)
-        if not res or offset >= j.get("count", 0):
-            return out
-        time.sleep(sleep)
+    """全量分页（all-or-error）：短于平台 count 即抛 PaginationError。
+
+    契约与重试统一在 tools/lib/api_client.paginate_all，避免各脚本各写一份
+    无完整性校验的循环（2026-10-18 analyst7 画像 299/1111 的根因）。
+    """
+    from api_client import paginate_all
+    return paginate_all(api, base, limit=limit_page, max_items=max_items,
+                        sleep=sleep, retries=5)["items"]
 
 
 def region_settings(region):

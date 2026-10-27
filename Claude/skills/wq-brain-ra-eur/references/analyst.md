@@ -3,7 +3,7 @@
 > 回到 [EUR 区域流程](../SKILL.md) · [EUR profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/EUR.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region EUR --category analyst`
 
 <!-- profiles:cell-panel:start -->
-**状态**：probe（跟区域入场 probe-only）　**分组**：Analyst　**类别卡**：analyst
+**状态**：active（跟区域入场 full-coverage）　**分组**：Analyst　**类别卡**：analyst
 
 **涉及数据集**：analyst_consensus、analyst15、analyst7、analyst10、analyst69、analyst4、analyst11、analyst14、analyst9、analyst_factor_signals、analyst45、analyst39、analyst40、analyst_base_ref、analyst81、model52
 
@@ -48,6 +48,7 @@
 
 ### S2 生成
 
+- **说明**：★★★★★★ 【2026-10-20 收口：analyst7 修订族 14 颗全闸通过 —— 本条更新以下旧结论】① **'analyst7' 不是 0.10 死集**：真实 1111 字段（旧记 299 是 '/data-fields' 分页截断），32 个指标具备四件套 = 'mean' + 'mean_3mth_ago' + 'mean_4wks_ago' + 'std'；'group_neutralize(signed_power(group_zscore(divide(subtract(mean, mean_4wks_ago), std), subindustry), p), market)' 在 **TOP2500 / FAST / decay 40–80 / nanHandling ON / maxTrade ON** 下出 **14 颗 RA 全过、6 个 metric 族（dps/ebt/ebi/gps/pre/cps）**。② 因而「Analyst 类别只能出 1 颗」「要凑 RA 腿必须离开 analyst 原语族」**作废**（那是 'analyst_factor_signals' 单结构的结论，不是 'analyst7' 的）。③「TOP2500 使 S 崩 1.34–1.40」只适用于旧结构，**不适用于 analyst7**（本族必须 TOP2500）。④ 满仓上限不是 14：同族 p 变体互相关 0.97–0.99，**最大互不相关团 = 7**；一次最多同时提交 7 颗。⑤ 完整配方 / 2Y 修复 / 否证清单见 [references/_atom-revision-playbook.md](_atom-revision-playbook.md)，prod 实测见字段画像 §56。
 - **说明**：★★★ 【MATRIX ⇒ TO 崩」的适用边界修正】此前基于 f72/f17（年度/季度财报）得出「MATRIX ⇒ TO 崩 0.017–0.029」；但 **analyst_factor_signals（108 字段全 MATRIX，日频分析师修正）实测 TO 可达 0.087**（'eps_q1_estimate_change_1mo' S0.71/TO0.087）。⇒ ★ **规则应表述为：TO 崩的是「低频更新字段」（年度/季度财报），而非所有 MATRIX**；**日频事件型 MATRIX（分析师修正/预估值）TO 正常** ⇒ 选集时看**更新频率**而非仅看 type。⚠ 但仍需逐字段实测：同数据集内 'eps_estimate_volatility_adj_3yr' TO 仅 0.0272（慢变量）、'eps_actual_q1_yoy_growth' TO 0.0253 ⇒ **快变量（change/revision/surprise）TO 合格，慢变量（level/volatility/CAGR）TO 崩**。
 - **说明**：★★★★ 【EUR Analyst 首个全闸门通过配方】（2026-10-13，wave472–485，13 波 104 条实证）： **数据集 = 'analyst_factor_signals'**（108 字段全 MATRIX、104 个 user≤3；**日频分析师修正 ⇒ TO 正常**，推翻「MATRIX ⇒ TO 崩」的过度泛化）。 **达标表达式**：'ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 1.8), lambda_min=0, lambda_max=1, target_tvr=0.18)' ⇒ alpha 'ZYAJZL93'：**S1.67 / F1.04 / TO0.1047 / 2Y1.81 / margin9.27bp / PROD0.6617 / SELF0.2278，FAIL 0 WARNING 1（仅信息性），all_passed=True**。 **四层杠杆（按增益排序）**： ① ★★★**「修正幅度 ÷ 分歧度」原语**（'revision_magnitude / coeff_var'）= 0.71→**1.32**（S +0.61）—— 对应 S2 类别原语的 revision surprise ÷ dispersion； ② ★★**分组轴 'industry'**（vs sector 1.32 / market 1.29 / c5 0.96）； ③ ★★**'target_tvr' = S 与 2Y 的同步杠杆**（0.06→0.10 使 S1.43→1.58、2Y1.34→1.53；0.12 后饱和）； ④ ★★★**分母 'ts_mean' 平滑（窗 55）= 三重杠杆**：提 2Y（1.55→**1.81**）、降 prod（0.7064→**0.6617**）、保 S —— 机制：平滑分歧度 ⇒ 分母稳定 ⇒ 持仓集中 ⇒ 小宇宙改善 + 与存量 alpha 相似度下降。 **幂次**：'signed_power' 1.6–1.8 最优（1.8 给 F≥1.0，1.45–1.55 给 2Y 更高）。 ⚠ **失效项**：'revenue_*' / 'netprofit_*' 版本（同结构下 S 仅 1.13/1.07）；跨指标 multiply；'eps_y2_estimate_coeff_var' 分母（S1.45）；horizon gap（y2−y1 consensus，S −0.75 需翻转）；TOP2500（S 崩到 1.34–1.40）；decay=4（S 1.47）⇒ **TOPCS1600+SUBINDUSTRY+decay1+maxTradeOFF 是必要条件**。
 - **说明**：★★★★★ 【EUR Analyst 战役终局定论】（2026-10-13，wave472–492，**21 波 168 条实证**）： **结论：Analyst 类别可提交 regular alpha = 1 颗**（不是 10 颗）。 **唯一达标形态**：'ts_target_tvr_decay(signed_power(group_rank(divide(eps_revision_magnitude, ts_mean(eps_y1_estimate_coeff_var, 55)), industry), 3.0), lambda_min=0, lambda_max=1, target_tvr=0.18)' ⇒ alpha **'O083qZQp'**：S1.71 / F1.09 / TO0.1123 / 2Y1.78 / margin9.02bp / **PROD 0.6170** / verdict FAIL 0。 **为何只能是 1 颗（互相关实测）**：同族 4 颗达标候选 'get_mutual_correlation' = **0.9757–0.9993**，'max_mutually_below_subset_size=1' ⇒ 提交 1 颗后其余全部触发 self-corr ⇒ **一条腿只出 1 颗**。 **六层杠杆（增益排序，全部实证）**： ① ★★★'eps_revision_magnitude ÷ 分歧度' 原语（0.71→1.32）； ② ★★轴 = 'industry'（industry 1.38 > sector 1.32 > market 1.29 > c5 0.96）； ③ ★★★'target_tvr' = S 与 2Y 同步杠杆（0.06→0.18；0.22 后饱和）； ④ ★★★分母 'ts_mean' 平滑（窗 **55**；窗88 亦达标，窗44/33 使 2Y 崩）； ⑤ ★★★**'signed_power' 幂次 = S/F 提升器 + prod 降低器**（1.8→3.0：S1.67→1.71、F1.04→1.09、**prod0.6617→0.6170**）； ⑥ 窗 55 是 prod 的关键（窗44 prod 0.7064 > 0.7 ⇒ 失败）。 ⚠ **判死清单**：'revenue_*'/'netprofit_*' 版本（S≤1.49）；'eps_y2_coeff_var' 分母（1.45）；'change_3mo' 分子（0.91）；'consensus_value' 分子（负）；期限差（−0.97）；'cagr_*' 分子（≤0.51）；'asymmetry'/'volatility' 分母（≤0.42）；跨指标 multiply（0.11）；'analyst_consensus' breadth（≤0.21）；'analyst45'（0.36）；'analyst9/10' 共识水平（≤0.76）；sector/market/subindustry 轴（2Y ≤1.50）。 → **要凑够 10 颗须离开 Analyst 类别**（Analyst 内唯一有效结构已穷尽）。
@@ -61,6 +62,17 @@
 - **说明**：★★★★★ 【EUR 已有 1 颗完全合规的 RA ATOM：'N1VnJjXg'（2026-10-06 ACTIVE，tags 无 PowerPoolSelected，failed_ra=0，单塔 MODEL）】表达式 'hump(rank(ts_delta(vec_avg(qfl_cassie_convention_ocf_currliab), 22)), hump=0.001)'，设置 **TOPCS1600 / INDUSTRY / decay 40 / maxTrade ON** ⇒ S1.75 / F1.17 / TO0.041 / returns 5.57% / 2Y1.76 / sub1.63 / robust1.44 / **prod 0.5378** / self 0.1954，九闸全 CLEAN。**对照 'WjegEmQO'**（同字段同 'hump'，但外层 'group_zscore(...,subindustry)' + decay 1 + SUBINDUSTRY）prod **0.7188 FAIL**。⇒ ★★★★★ **prod 卡 0.7 且结构里有外层 'group_*' 归一化时，先试「拆掉外层 group_* + decay 提到 40 + 中性化换 INDUSTRY」，比换字段/换轴有效得多（本证降 prod 0.18）。**
 - **说明**：★★★ 【quant_factor_lib 只有 'ocf_currliab' 单腿能过闸】'N1VnJjXg' 形态套用到 current_ratio/quick_ratio/debt_equity/cassie_score/altman_zscore/ohlson_oscore/merton/longdebt_equity/debt_weighted_interest_rate/shortterm_debt_ratio（wave595，10 条，decay40+INDUSTRY）**全部 2Y_DEAD，最高仅 S1.24**（融资成本）。该集 126 字段全 VECTOR cov 0.56–0.785，另含 'cassie_impliedalpha'（隐含超额收益）与破产压力族待测。
 - **说明**：★★★ 【算子静默下线（本月第 2 例）】'vector_neut' 已不在平台算子清单，'dispatch --op-lint' 直接拒绝整批 ⇒ 依赖它的 '78NoOeVx'（fundamental23, S1.67/F1.06/2Y2.42/prod0.7432）与 'XgJYWLg1'（risk70, S1.68/prod0.6831）**均无法复现**。前例：'multi_horizon_alpha' 杠杆族全族下线。⇒ 复现任何老 alpha 前必须先过 'op-lint' + 'preflight'。
+- **已验证骨架**（证据见每行注释；照抄前先按本组合当前 prod 复核）：<!-- lint:counterexample -->
+
+  ```text
+  group_neutralize(signed_power(group_zscore(divide(subtract(<metric>_mean, <metric>_mean_4wks_ago), <metric>_std), subindustry), p), market)
+  group_neutralize(signed_power(group_zscore(divide(subtract(<m>_raisednum_4wks, <m>_lowerednum_4wks), add(<m>_raisednum_4wks, <m>_lowerednum_4wks)), subindustry), p), market)
+  trade_when(abs(ts_zscore(<单字段水平值或原信号>, 66)) > 1.0, <CORE>, 0)
+  ```
+
+  - group_neutralize(signed_power(group_zscore(divide(subtract(<… ← analyst7 四件套修订幅度骨架：14 颗 RA 全过中的 9 颗（dps/ebt/ebi/gps/pre），p 1.0–1.4、decay 40（gps/pre 80）、TOP2500/FAST。见 eur_analyst_field_profile_20261018 §55.5 与 _atom-revision-playbook §3–§4
+  - group_neutralize(signed_power(group_zscore(divide(subtract(<… ← analyst7 修订广度骨架：ebt 4 周 'P0MOK7wx' S2.13/F1.38/2Y1.65/sub1.36；与幅度形态互相关仅 0.62–0.68（独立席位）。1 周版 'MP0L2Ogo' 亦全过（TO 7.32%）
+  - trade_when(abs(ts_zscore(<单字段水平值或原信号>, 66)) > 1.0, <CORE>, 0… ← 2Y/CV 制度门控（REP）：'3qjeJGle' → 'Grge2lN3' S1.79/F1.15/2Y2.02/sub0.94、2022 Sharpe 1.39→2.09、CV .436→.366；pre 版 '6XAe27eL' 2Y1.62 全过。计数门控反向（2Y 0.51–0.66）。注意算子数：CORE 写两遍会到 10 → 闸 1b-2，门控单字段可压到 8；窗口说明：ts_zscore 窗 66 = 标准季窗；门控阈值 1.0/1.5 为实测档（1.5 → 2Y1.20，1.0 → 1.62），非窗口参数
 - **类别通用原语**（类别卡，跨区）：
   - revision surprise: change in FY1/FY2 vs the stale level
   - dispersion: disagreement across estimates, not the consensus mean
@@ -72,15 +84,26 @@
 - **跨区结论**（USA/GLB/HKG/KOR/EUR/DEU/GBR；negative）：flash / pretax 一致预期动量族只在 IND 有效，别的区 ／S／ 都在 1.07 以下（证据：waves probe_flash_eps_20260919 / probe_pretax_20260919：USA ≤0.09、GLB ≤0.08、HKG 0.64、KOR ≤1.07、EUR ≤0.96、DEU ≤0.72、GBR ≤0.54） <!-- lint:const-ok 证据原文 -->
 - **跨区结论**（KOR/USA/DEU；negative）：分析师主信号族普遍撞 prod 墙（证据：KOR analyst10/16/44/consensus（RULES §G）；USA-ANALYST44-BREADTH-DEAD-EP-PRODWALL（E/P z prod 0.93）；DEU analyst93 prod 饱和） <!-- lint:const-ok 证据原文 -->
 - **禁止**（类别卡）：禁止使用裸 rank(estimate)（必须 ts_delta 或 group_zscore）
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize / vector_neut）入场（★ 2026-10-20 更正：'vector_neut' **平台可用**——本地算子清单缺它是假阳性，EUR 平台已用它交付 JjQmx9nm；'regression_neut' 仍非平台算子名）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）
 
-1. [全局] 判「无解 / 天花板」前先扫等价算子替换：signed_power → quantile、ts_scale → quantile / normalize。数值路径不同，一次动多个闸（含 prod，要读全部闸）（KOR/GLB 复现：KOR other466 signed_power→quantile：2Y 1.51→1.56、prod 0.6544→0.6397；GLB quantile 替 ts_scale：S +0.20、F +0.06、prod 0.475→0.565（DEC-72）） <!-- lint:const-ok 证据原文 -->
+1. [组合] 2Y / CV 修复首选制度门控：trade_when(abs(ts_zscore(<单字段水平值或原信号>, 66)) > 1.0, CORE, 0)。门控『这次修正有多异常』，不是『有多少家改』；CORE 只写一遍以控算子数（≤9）（证据：'3qjeJGle' → 'Grge2lN3'：S1.79/F1.15/2Y2.02/sub0.94，2022 Sharpe 1.39→2.09，Recent-3yr CV .436→.366（reports/robustness_20261020.md）；'6XAe27eL' 2Y1.62 全过；计数门控反向（2Y 0.51–0.66）；禁外推（只在本区用）） <!-- lint:const-ok 证据原文 -->
+2. [组合] 广度 / 门控 / gps 形态的 decay 40→80：2Y 的主导杠杆（+0.60），同时 S+0.24 / F+0.08（证据：cps 广度：d40 1.52/0.90/1.34 → d80 1.76/0.98/1.94 → d80+ts_mean5 1.80/1.01/2.00（'wp9EvMmv'）；禁外推（只在本区用）） <!-- lint:const-ok 证据原文 -->
+3. [组合] 广度形态外包 ts_mean(·, 5)：F +0.03 越过线、2Y +0.06、换手反而 −0.28pt（临门一脚）（证据：AU1 'e76xWop6' F0.98 → AU2 'wp9EvMmv' F1.01 / 2Y1.94→2.00；禁外推（只在本区用）） <!-- lint:const-ok 证据原文 -->
+4. [组合] 同一数据集内换 metric 族（dps/ebt/ebi/gps/pre/cps/prr）产出独立席位，而不是换数据集或换分组轴（证据：14 颗全过 / 6 族；gps 与所有族 0.37–0.63、cps 广度 0.30–0.57；ebt 广度 vs 幅度 0.62–0.68；禁外推（只在本区用）） <!-- lint:const-ok 证据原文 -->
+5. [组合] signed_power p 轴 1.0–1.4 为甜点（幅度 1.4；广度/median 1.2）；p 越高越会同时抬 sub 比率线（证据：p1.6 'Grge7PG0' S1.94/F1.40/2Y1.60 但 sub 0.97 < 线 1.01；dps 三档 p 全过（1.71–1.78）；禁外推（只在本区用）） <!-- lint:const-ok 证据原文 -->
+6. [全局] 判「无解 / 天花板」前先扫等价算子替换：signed_power → quantile、ts_scale → quantile / normalize。数值路径不同，一次动多个闸（含 prod，要读全部闸）（KOR/GLB 复现：KOR other466 signed_power→quantile：2Y 1.51→1.56、prod 0.6544→0.6397；GLB quantile 替 ts_scale：S +0.20、F +0.06、prod 0.475→0.565（DEC-72）） <!-- lint:const-ok 证据原文 -->
    - 注意：效应量逐区实测，禁外推；quantile 只收 1 个参数
-2. [全局] 强但撞 prod 墙的快信号：用一个经济子集门控（trade_when 进 >0.5 出 <0.4 的慢变量，或 rank(cap)>0.2 ∩ 子集）只在子集里持仓（GLB/ASI/IND 复现：GLB-DL20D-SUBSET-GATE-FAMILY-20260921（prod 0.82→0.60–0.67）；ASI LLNgdpw2 / 88jaV5lv；IND ZYbqREW1 / levk5JYN（prod 0.54–0.55）） <!-- lint:const-ok 证据原文 -->
+7. [全局] 强但撞 prod 墙的快信号：用一个经济子集门控（trade_when 进 >0.5 出 <0.4 的慢变量，或 rank(cap)>0.2 ∩ 子集）只在子集里持仓（GLB/ASI/IND 复现：GLB-DL20D-SUBSET-GATE-FAMILY-20260921（prod 0.82→0.60–0.67）；ASI LLNgdpw2 / 88jaV5lv；IND ZYbqREW1 / levk5JYN（prod 0.54–0.55）） <!-- lint:const-ok 证据原文 -->
    - 前提：未门控的基础信号 IS sharpe 不低于 2.5、fitness 不低于 1.5（GLB 2026-09-27 铁律：门控只修 prod / robust，不造强度）；慢信号门控后换手会升，只用于快信号
+- **不要用**：计数门控（raisednum > n）修 2Y（绝对计数随近两年波动率萎缩：2Y 0.51–0.66，反向杠杆） <!-- lint:const-ok 证据原文 -->
+- **不要用**：对幅度形态做 ts_mean(ratio, 5) 平滑（S 1.72→1.42–1.43（信号被平滑杀掉）） <!-- lint:const-ok 证据原文 -->
+- **不要用**：用 winsorize(2.5) / decay 120 降 Recent-3yr CV（CV .520 / .444–.489，全部更差（不修 CV 反而更稳）） <!-- lint:const-ok 证据原文 -->
+- **不要用**：industry / sector / country 分组（组内或外层）（industry 全族最高 S/F（2.18/1.80）但 2Y 1.39；sector 外层 sub 0.95 < 线 1.03） <!-- lint:const-ok 证据原文 -->
+- **不要用**：下侧修订（low）与 std / num 形态（low 修订 sub 0.76（−0.18）；离散度变化 S0.11、家数变化 S0.09） <!-- lint:const-ok 证据原文 -->
+- **不要用**：把同族 p 变体当多条腿提交（dps 0.9704–0.9925、ebt 0.9728–0.9933 ⇒ 平台 self 闸每族只放 1 颗；最大互不相关团 = 7） <!-- lint:const-ok 证据原文 -->
 - 提醒：prod 与 self 两个端点都取 max、都过线才可提；不改持仓的降 prod 杠杆（hump、加大 decay）会把 self 推爆（EUR wave274） <!-- lint:const-ok 证据原文 -->
 - 提醒：设置是强度闸：nanHandling / maxTrade / decay / 中性化换档等于换信号，跨档结果不可比（IND 行为族 S 2.19→0.46） <!-- lint:const-ok 证据原文 -->
 - 提醒：decay 匹配信号速度：快信号上 decay 越大越差；decay 0 与 1 逐位相同，只留一个 <!-- lint:const-ok 证据原文 -->
@@ -108,4 +131,10 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+**⚠ 2026-10-20 覆盖说明（上方面板的旧结论按此读）**
+
+- `analyst7` 在 2026-10-18 起被重新画像：真实 **1111** 字段（旧记 299 是 `/data-fields` 分页截断）。上方面板「analyst7 | 299 | 0.10 | ❌」**作废**。
+- 以四件套（`mean + mean_3mth_ago + mean_4wks_ago + std`）做的修订族，在 **TOP2500 / FAST / decay 40–80** 下出 **14 颗 RA 全过 / 6 metric 族**（dps/ebt/ebi/gps/pre/cps），全部 ATOM。
+- 「Analyst 类别只能出 1 颗」「要凑 RA 腿必须离开 analyst 原语族」只对 `analyst_factor_signals` 旧结构成立，**不适用于 analyst7**。
+- 配方、2Y/CV 制度门控、否证清单、席位上限（最大互不相关团 = 7）见 [`_atom-revision-playbook.md`](_atom-revision-playbook.md)。
 <!-- profiles:manual:end -->

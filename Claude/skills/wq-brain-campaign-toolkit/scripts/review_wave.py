@@ -24,6 +24,7 @@ from _lib.common import CampaignContext, add_campaign_arg, atomic_write
 from _lib.ledger import make_ledger_store, today
 from _lib import rules as rules_mod
 from _lib.wqb_store import get_store
+from _lib.wave_results import TO_BAND_HI, TO_BAND_LO, annotate_turnover_band
 import metrics_cache
 
 
@@ -70,7 +71,7 @@ def walls(r, t):
     elif r["fitness"] <= t["fitness_min"]:
         w.append("FITNESS")
     if r.get("two_year_sharpe") is None:
-        w.append("2Y_UNKNOWN")  # 平台未返回 LOW_2Y_SHARPE，不能算 2Y 败
+        w.append("2Y_UNKNOWN")  # 平台未返回任一 2Y 载体（LOW_2Y_SHARPE / IS_LADDER_SHARPE），不能算 2Y 败
     elif r["two_year_sharpe"] <= t["two_year_sharpe_min"]:
         w.append("2Y")
     if r.get("margin_bp") is None:
@@ -251,6 +252,10 @@ def main():
     ap.add_argument("--write-ledger", action="store_true")
     ap.add_argument("--refresh", action="store_true", help="绕过缓存强制回源")
     ap.add_argument("--out", default=None, help="输出文件重定向（默认 reviews/<region>_review_<tag>.json）")
+    ap.add_argument("--mechanism", default=None,
+                    help="本波机制（一句话经济机制）；缺省读 campaign settings.mechanism / hypothesis")
+    ap.add_argument("--falsifier", default=None,
+                    help="证伪条件（什么读数会推翻本机制）；缺省读 settings.falsifier / falsify_if")
     ap.add_argument("--coverage-writeback", default="auto", choices=["auto", "never"],
                     help="L4 算子回写：auto=评审后自动回写每算子最佳 sharpe 到覆盖台账（默认）；never=禁用")
     a = ap.parse_args()
@@ -288,6 +293,17 @@ def main():
         if is_near(r, t_near):
             near.append(r)
     report_near_exclusions(excluded, t, t_near)
+
+    # ---- P1-5 换手区间标注（2026-10-24）：只标注不删行；越界行不进 prod/self 队列 ----
+    to_bad = annotate_turnover_band(rows)
+    if to_bad:
+        print(f"\n[to_band] 换手越界 {len(to_bad)}/{len(rows)} 行"
+              f"（保留区间 [{TO_BAND_LO:.2f}, {TO_BAND_HI:.2f}]，只标注不删行；"
+              f"越界行不进 prod/self 队列）")
+        for r in to_bad:
+            tv = r.get("turnover_pct")
+            print(f"  {r['id']:10s} tvr={(f'{tv:.2f}%' if isinstance(tv, (int, float)) else '-')}"
+                  f" -> {r.get('to_band')}")
 
     # ---- OS 衰减校准（2026-09-20 接线）：给每行追加预期 OS 水位 + 存活率提示 ----
     os_base = _os_baseline(ctx)
@@ -354,12 +370,15 @@ def main():
         ms_ids = [a.multisim] if a.multisim else []
         out_wr = wr.auto_upsert_from_review(
             tag, rows, candidates, near,
-            settings=ctx.settings, multisim_ids=ms_ids)
+            settings=ctx.settings, multisim_ids=ms_ids,
+            thresholds=t, mechanism=a.mechanism, falsifier=a.falsifier)
         if out_wr.get("skipped"):
             print(f"[wave_results] 跳过: {out_wr.get('reason')}")
         else:
             print(f"[wave_results] wave={out_wr['wave_number']} -> {out_wr['status']} "
                   f"(findings={out_wr['key_findings_n']} candidates={out_wr['candidates_n']})")
+            for _f in out_wr.get("findings") or []:      # 复盘四列（P1-2），首屏可见
+                print(f"  {_f}")
     except (Exception, SystemExit) as e:  # SystemExit 不继承 Exception，同 pipeline.py 处注释
         print(f"[wave_results] 入库异常（不阻断）: {e}")
 

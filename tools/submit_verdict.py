@@ -95,10 +95,13 @@ async def main():
     result = decide(a.alpha_id, detail, resp.status_code, normalize_submit_layer(resp.status_code, body),
                     robustness=read_robustness(a.alpha_id, region))
 
-    print("\n--- WebDataScope Failed-count 资格门（REGULAR 看 RA / PPA 看 PPA）---")
+    print("\n--- WebDataScope Failed-count 资格门（RA 为下界 ∪ 真 PPA 专有项）---")
     print(f"  Failed RA = {result['failed_ra']}；Failed PPA = {result['failed_ppa']}"
-          + f"（本候选按 {'PPA' if result['is_ppa'] else 'REGULAR'} 判定）")
-    for it in (result["failed_ppa_items"] if result["is_ppa"] else result["failed_ra_items"]):
+          f"；合并拦截项 = {result.get('failed_any', 0)}"
+          f"（通道：{'PPA' if result.get('ppa_channel') else 'REGULAR'}"
+          + ("，带 PowerPoolSelected 自动标签" if result.get("ppa_tag_only") else "") + "）")
+    for it in (result.get("failed_any_items")
+               or (result["failed_ppa_items"] if result["is_ppa"] else result["failed_ra_items"])):
         print(f"    [{it['name']}] {it['result']} value={it['value']} limit={it['limit']}")
 
     ss = result["submit_status"]

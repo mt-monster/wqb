@@ -135,7 +135,11 @@ SKIP_DIRS = {"__pycache__", ".venv", "venv", "node_modules", ".git", "attic",
 #: 硬编码本机盘符路径。注意不能写成 r"[A-Za-z]:[\\/]"——那会把 URL scheme
 #: 里的 "s://" 误判成盘符（https://、http:// 全部中招）。要求盘符前不是
 #: 单词字符（排除 URL 与命名空间），且斜杠后不是 "/"（排除 scheme）。
-ABS_PATH_RE = re.compile(r"(?<![A-Za-z0-9_])[A-Za-z]:[\\/](?!/)")
+#: 盘符路径检测。反例说明：`(?<!\\)` 必须把反斜杠也排除在「盘符前字符」之外 ——
+#: `campaign_report.py` 的时间格式正则 `r"\d\d:\d\d"` 里 `d:\d` 曾被误判成盘符路径
+#: （S4 假阳，2026-10-26 修）。真实盘符路径的盘字母前必是 `" ' = ( , [ 空格` 之类，
+#: 绝不会是 `\`。
+ABS_PATH_RE = re.compile(r"(?<![A-Za-z0-9_\\])[A-Za-z]:[\\/](?!/)")
 
 
 def py_files(root: Path) -> list[Path]:
@@ -798,9 +802,32 @@ TOOLS_TOP_DATA_ALLOWLIST = {
     "audit_structure_baseline.json": "S6/S11/S14/S16 的存量基线，本闸自己读",
 }
 
+#: `tools/` 顶层的**脚本**扩展名（2026-10-27 补 `.ps1` / `.sh`）。
+#:
+#: 起因：`detach_launch.ps1`（脱离 Agent Job 的长任务启动器，会话结束不被回收）被判成
+#: 「未登记的非脚本件」。可它是**脚本**，只是不叫 `.py` —— 这与 `mcp_py`（无扩展名）
+#: 是同一族错误的两个面子：**按扩展名分类，会把「是脚本但不是 `.py`」的件误判成数据件**，
+#: 于是它既躲过「新增脚本」冻结（不在 `*.py` 面里），又被要求进数据件白名单（不该进）。
+#: 改判为脚本后照旧受冻结约束：新 `.ps1` / `.sh` 一样要进基线 + THEMES 归属，
+#: 只是不再走「数据件必须迁走」那条判据（启动器本来就该在 CLI 层）。
+TOOLS_TOP_SCRIPT_SUFFIXES = (".py", ".ps1", ".sh")
+
+
+def _tools_top_scripts() -> set:
+    """`tools/` 顶层的脚本文件名集合（按 `TOOLS_TOP_SCRIPT_SUFFIXES` 判，不只看 `.py`）。"""
+    return {p.name for p in TOOLS.iterdir()
+            if p.is_file() and p.suffix in TOOLS_TOP_SCRIPT_SUFFIXES}
+
+
+def _tools_top_non_scripts() -> set:
+    """`tools/` 顶层「带扩展名且不是脚本」的件（数据 / 文档件，须进 `TOOLS_TOP_DATA_ALLOWLIST`）。"""
+    return {p.name for p in TOOLS.iterdir()
+            if p.is_file() and p.suffix and not p.name.startswith(".")
+            and p.suffix not in TOOLS_TOP_SCRIPT_SUFFIXES}
+
 
 def _s11_baseline() -> set:
-    """S11 存量基线：tools/ 顶层允许存在的 .py 文件名集合。
+    """S11 存量基线：tools/ 顶层允许存在的脚本文件名集合（`.py` / `.ps1` / `.sh`）。
 
     文件缺失 = 基线过时（提示移出）；新增 = FAIL。基线文件缺失 = 空集→顶层任何脚本都算新增。
     """
@@ -857,7 +884,7 @@ def _themes_moved_verified() -> tuple[int, list]:
         data = json.loads(p.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
         return 0, []
-    top = {q.name for q in TOOLS.glob("*.py")}
+    top = _tools_top_scripts()
     ok, bogus = 0, []
     for key, th in (data.get("themes") or {}).items():
         thdir = TOOLS / Path(str(th.get("dir") or "")).name
@@ -889,7 +916,7 @@ def check_s11_tools_top_frozen(rep: Report) -> None:
       2. 「冻结」只防新增，不防「永不迁移」。新增必须同时在 THEMES.json 登记归属，
          存量也必须逐条有归属 —— 未归属数就是可度量的迁移债，不得靠默认塞进已有目录。
     """
-    now = {p.name for p in TOOLS.glob("*.py")}
+    now = _tools_top_scripts()
     baseline = _s11_baseline()
     # ⚠ 基线缺失**不得**整闸早退（2026-10-14 批次F 改掉）。旧写法 `if not baseline: warn; return`
     # 让「.py 存量清单读不到」连带关掉同闸其余各条 —— 无扩展名件、顶层数据件、主题归属棘轮、
@@ -909,13 +936,13 @@ def check_s11_tools_top_frozen(rep: Report) -> None:
                  "一切 `*.py` 取面的闸都看不见它），文档必须带 `.md`；"
                  "活样本 `tools/mcp_py` 已于 2026-10-14 更名为 `mcp_http_caller.py`")
 
-    # 取面扩展的另一半（2026-10-14 批次F）：**带扩展名但不是 `.py`** 的顶层件。
+    # 取面扩展的另一半（2026-10-14 批次F）：**带扩展名但不是脚本**的顶层件。
     # 活样本是 `tools/skeleton_quota.json` —— 数据配置在 CLI 层顶层躺了一个多月，
     # THEMES.json 没它、README 没它、S4/S14/S16 也都不看它（报告 §2.C-3 靠人读目录才发现）。
     # `TOOLS_TOP_DATA_ALLOWLIST` 的注释写明判据（看「谁读它」，不看名字像不像配置）。
-    others = sorted(p.name for p in TOOLS.iterdir()
-                    if p.is_file() and p.suffix and not p.name.startswith(".")
-                    and p.suffix != ".py")
+    # ⚠ 2026-10-27：「脚本」按 `TOOLS_TOP_SCRIPT_SUFFIXES` 判（`.py` / `.ps1` / `.sh`），
+    # 不只看 `.py` —— 否则 `detach_launch.ps1` 这类启动器会被当数据件要求迁走。
+    others = sorted(_tools_top_non_scripts())
     stray = [n for n in others if n not in TOOLS_TOP_DATA_ALLOWLIST]
     for name in stray:
         rep.fail("S11 tools 顶层冻结",
@@ -1740,6 +1767,12 @@ S17_TOP_DIR_ALLOWLIST = {
     "docs", "reports", "output_report", "attic",
     # 运行期（gitignore）
     "cache", "logs", "results",
+    # 运行期（skill 兜底落点，2026-10-24 布局审计登记）：
+    # `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` 在前两个落点都不可用时写
+    # `Path.cwd()/"selfcorr_quick_out"`。它既不是源码也不是结论，只是 pickle/xlsx 缓存，
+    # 已登记于 docs/governance/untracked_allowlist.md 并加入根 .gitignore。
+    # 目录名写死在 skill.py 与 doc_path_refs baseline 里，所以选「登记 + ignore」而非迁走。
+    "selfcorr_quick_out",
 }
 #: 点开头的目录一律放行：宿主配置（.claude/.clinerules/.qoder-cn/.workbuddy/.mcp 等）
 #: 与各客户端自管，逐个登记会随宿主增减反复误红；VCS/解释器缓存也在这一类。
@@ -2122,7 +2155,7 @@ def main(argv: list[str] | None = None) -> int:
 
         p = REPO_ROOT / "tools" / "audit_structure_baseline.json"
         data = json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
-        names = sorted(x.name for x in TOOLS.glob("*.py"))
+        names = sorted(_tools_top_scripts())
         data["s11_tools_top_level"] = names
         p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
                      encoding="utf-8")

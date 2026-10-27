@@ -1,0 +1,554 @@
+{
+ "dataset": "other551",
+ "region": "GLB",
+ "universe": "TOPDIV3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 33
+ },
+ "field_type_distribution": {
+  "signal": 33
+ },
+ "field_count": 33,
+ "platform_count": 33,
+ "complete": true,
+ "truncated_reason": null,
+ "fetched_at": "2026-10-27T16:30:43",
+ "fields": [
+  {
+   "id": "oth551_aev_2r",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 111,
+   "alphaCount": 148,
+   "description": "Daily R-squared value of VEA returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_iwm",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 70,
+   "alphaCount": 85,
+   "description": "Daily beta of IWM relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_mtum",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 56,
+   "alphaCount": 77,
+   "description": "Daily beta of MTUM relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_qqq",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 50,
+   "alphaCount": 63,
+   "description": "Daily beta of QQQ relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_qual",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 50,
+   "alphaCount": 62,
+   "description": "Daily beta of QUAL relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_size",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 257,
+   "alphaCount": 385,
+   "description": "Daily beta of SIZE relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_spy",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 52,
+   "alphaCount": 67,
+   "description": "Daily beta of SPY relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_usmv",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 60,
+   "alphaCount": 78,
+   "description": "Daily beta of USMV relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_vea",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 43,
+   "alphaCount": 49,
+   "description": "Daily beta of VEA relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_vlue",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 62,
+   "alphaCount": 76,
+   "description": "Daily beta of VLUE relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_vt",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 26,
+   "alphaCount": 27,
+   "description": "Daily beta of VT relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_beta_vwo",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 47,
+   "alphaCount": 51,
+   "description": "Daily beta of VWO relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_mwi_2r",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 48,
+   "alphaCount": 56,
+   "description": "Daily R-squared value of IWM returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_owv_2r",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 53,
+   "alphaCount": 60,
+   "description": "Daily R-squared value of VWO returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_qqq_2r",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 43,
+   "alphaCount": 47,
+   "description": "Daily R-squared value of QQQ returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_r2_mtum",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 33,
+   "alphaCount": 41,
+   "description": "Daily R-squared value of MTUM returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_r2_qual",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 58,
+   "alphaCount": 67,
+   "description": "Daily R-squared value of QUAL returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_r2_size",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 222,
+   "alphaCount": 320,
+   "description": "Daily R-squared value of SIZE returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_r2_spy",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 55,
+   "alphaCount": 66,
+   "description": "Daily R-squared value of SPY returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_r2_vlue",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 77,
+   "alphaCount": 90,
+   "description": "Daily R-squared value of VLUE returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_iwm",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 90,
+   "alphaCount": 105,
+   "description": "Daily residual return of IWM relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_mtum",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 124,
+   "alphaCount": 161,
+   "description": "Daily residual return of MTUM relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_qqq",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 121,
+   "alphaCount": 142,
+   "description": "Daily residual return of QQQ relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_qual",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 87,
+   "alphaCount": 103,
+   "description": "Daily residual return of QUAL relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_size",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 215,
+   "alphaCount": 346,
+   "description": "Daily residual return of SIZE relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_spy",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 160,
+   "alphaCount": 219,
+   "description": "Daily residual return of SPY relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_usmv",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 93,
+   "alphaCount": 112,
+   "description": "Daily residual return of USMV relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_vea",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 117,
+   "alphaCount": 141,
+   "description": "Daily residual return of VEA relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_vlue",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 142,
+   "alphaCount": 179,
+   "description": "Daily residual return of VLUE relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_vt",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 84,
+   "alphaCount": 94,
+   "description": "Daily residual return of VT relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_resret_vwo",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 149,
+   "alphaCount": 193,
+   "description": "Daily residual return of VWO relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_tv_2r",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 35,
+   "alphaCount": 38,
+   "description": "Daily R-squared value of VT returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "oth551_vmsu_2r",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 44,
+   "alphaCount": 46,
+   "description": "Daily R-squared value of USMV returns relative to its benchmark index.",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  }
+ ],
+ "cache_metadata": {
+  "cached_at": "2026-10-27T16:30:43",
+  "ttl_seconds": 86400,
+  "source": "platform_api"
+ },
+ "exported_from_db_at": "2026-10-27T16:37:52"
+}

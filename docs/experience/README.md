@@ -46,6 +46,7 @@
 | [../reference/DEU/mining_experience_by_category.md](../reference/DEU/mining_experience_by_category.md) | DEU | ≈375 次测试 | 四 category（MODEL/ANALYST/FUNDAMENTAL/PV）；11 机制总表；**只 M1 变化率水平有效** |
 | [../reference/DEU/mechanism_field_pairing.md](../reference/DEU/mechanism_field_pairing.md) | DEU | 同上 | 机制 × 字段搭配手册（机制按"时间结构"分类 + 字段类型→机制搭配表） |
 | [../reference/GBR/mining_experience_by_category.md](../reference/GBR/mining_experience_by_category.md) | **GBR** | **≈250 次测试 + 跨区历史库审计** | 七 category（ANALYST 为唯一产出塔）；**14 机制台账**；★ 卡点类型学三型（prod 墙 / 2Y 塌 / 低于闸线）；**造独立腿三路径**；骨架 × 量类型匹配；区域强度对照 |
+| [../../tracking/USA/reference/usa_mining_conclusions_20261023.md](../../tracking/USA/reference/usa_mining_conclusions_20261023.md) | **USA** | **1698 回测行 / 110 波** | 回测史复盘的区域层结论（上游 `reports/usa_mining_history_review_20261023.md`）：RA 全过 11.6% → prod 实测 14.7% → 双闸可提交 **15.4%**；闸频次；**选集判据 A/B/C**（RA 全过率与可交付性反向）；机读伴生 `usa_dead_datasets.md` / `usa_dataset_mechanisms.md`（120 天过期） |
 
 
 

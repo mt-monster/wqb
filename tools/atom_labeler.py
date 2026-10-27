@@ -187,8 +187,8 @@ def _selftest() -> int:
 
     class FakeResolver(AtomResolver):
         _FAKE = {
-            "returns": ("base", "BASE_MARKET"), "volume": ("base", "BASE_MARKET"),
-            "close": ("base", "BASE_MARKET"), "industry": ("grouping", None),
+            "returns": ("base", "pv1"), "volume": ("base", "pv1"),
+            "close": ("base", "pv1"), "industry": ("grouping", None),
             "anl14_actvalue_bvps_fp0": ("dataset", "analyst14"),
             "anl14_fieldA": ("dataset", "analyst14"), "anl14_fieldB": ("dataset", "analyst14"),
             "anl14_x": ("dataset", "analyst14"),

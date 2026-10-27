@@ -314,19 +314,39 @@ class SimulationMixin:
                             delay: int = 1, universe: str = "TOP3000", theme: str = "false",
                             dataset_id: Optional[str] = None, data_type: str = "",
                             search: Optional[str] = None,
-                            filter_sharpe: bool = True) -> Dict[str, Any]:
-        """Get available data fields with Redis caching (1 day TTL) and fetch all data at once.
-        
+                            filter_sharpe: bool = True,
+                            max_fields: Optional[int] = None) -> Dict[str, Any]:
+        """Get available data fields with Redis caching (1 day TTL) and fetch ALL fields.
+
+        Pagination contract (verified live 2026-10-20 against EUR/D1/TOP2500):
+        - page size is hard-capped at ``limit=50`` (``limit=100`` -> HTTP 400);
+        - ``dataset.id=`` queries paginate to any depth: analyst7 returned all
+          1111 fields across 23 pages, so a dataset pull is fetched to the
+          platform-declared ``count`` and is all-or-error (never a silent
+          partial catalog — the 2026-10-18 analyst7 profile recorded 299/1111
+          because the client capped dataset dumps at 300 fields);
+        - ``search`` is capped by the platform at ``offset+limit <= 100``
+          (deeper pages return HTTP 400) and the returned ``count`` is the
+          *unfiltered* total, so search can only expose the first 100
+          platform-side matches. For a full catalog use ``dataset_id`` without
+          ``search``.
+
+        ``max_fields`` optionally caps the number of returned fields (default:
+        unlimited for dataset-scoped pulls, 300 for unscoped dumps to protect
+        the MCP response size). The payload reports ``complete`` /
+        ``platform_count`` / ``truncated_reason`` so callers can tell a full
+        pull from a capped or window-limited one.
+
         Search supports fuzzy matching across multiple fields:
         - Searches in: name, description, dataset.name, dataset.vendor, id
         - Multiple keywords (space-separated) use AND logic
         - Case-insensitive matching
-        
+
         OS/IS Sharpe filtering (filter_sharpe=True by default):
         - Filters out datafields whose OS/IS Sharpe ratio < 0 to improve field quality
         - Uses pre-aggregated statistics from WebDataScope info_data.bin
         - Matching is done at datafield level first, then dataset level as fallback
-        
+
         Examples:
         - search="price" -> matches any field containing "price"
         - search="stock volume" -> matches fields containing both "stock" AND "volume"
@@ -401,7 +421,9 @@ class SimulationMixin:
                 # Check if ALL keywords match (AND logic)
                 return all(keyword in combined_text for keyword in keywords)
             
-            # Generate cache key from parameters (excluding search for cache key)
+            # Generate cache key from parameters (excluding search for cache key).
+            # cache_version invalidates legacy entries that may hold silently
+            # truncated dumps produced by the pre-2026-10-20 300-field cap.
             cache_params = {
                 'instrumentType': instrument_type,
                 'region': region,
@@ -409,7 +431,9 @@ class SimulationMixin:
                 'universe': universe,
                 'theme': theme,
                 'dataset_id': dataset_id,
-                'data_type': data_type
+                'data_type': data_type,
+                'cache_version': 2,
+                'max_fields': max_fields,
             }
             cache_key = self._generate_cache_key('datafields', cache_params)
             
@@ -457,26 +481,38 @@ class SimulationMixin:
                 result['count'] = len(results)
                 return result
             
-            # Fetch all data from API (pagination loop)
-            all_results = []
-            offset = 0
-            # The platform's /data-fields endpoint caps page size at limit=50
-            # for ALL queries (verified 2026-08-17: limit=100 returns HTTP 400
-            # "Invalid query: pagination limit too high", regardless of offset
-            # or search). A larger page size is NOT permitted, so use limit=50
-            # uniformly and stop gracefully on client errors, returning
-            # whatever pages were already fetched instead of failing the
-            # whole call.
+            # Fetch all fields from the platform (pagination loop).
+            #
+            # Contract (verified live 2026-10-20, EUR/D1/TOP2500):
+            # - page size is hard-capped at 50 (limit=100 -> HTTP 400);
+            # - dataset.id= queries paginate to any depth, so a scoped pull is
+            #   fetched to the platform-declared `count` and is all-or-error —
+            #   a silent partial is exactly what produced the 2026-10-18
+            #   analyst7 profile with 299/1111 fields;
+            # - search is window-limited at offset+limit <= 100 and its
+            #   `count` is the *unfiltered* total, so it can only expose the
+            #   first 100 platform-side matches.
             limit = 50
-            # Cap unscoped dumps: a full listing (1500+ fields) is useless as
-            # a catalog to the model and blows up the MCP response size/time.
-            # Stop early and tell the caller to narrow with search /
-            # dataset_id / data_type instead.
-            max_fields = 300
+            scoped = bool(dataset_id)
+            offset = 0
             total_count = None
+            pages_fetched = 0
+            reached_end = False
             truncated = False
-            capped = False
-            
+            truncated_reason = None
+            seen_ids = set()
+            all_results: List[Dict[str, Any]] = []
+
+            # Unscoped dumps stay capped at 300 (a 1500+ field listing is
+            # useless as a catalog and blows up the MCP response). A
+            # dataset-scoped pull is never capped unless the caller asks.
+            if max_fields is not None:
+                effective_cap = max(1, int(max_fields))
+            elif scoped:
+                effective_cap = None
+            else:
+                effective_cap = 300
+
             while True:
                 params = {
                     'instrumentType': instrument_type,
@@ -505,57 +541,131 @@ class SimulationMixin:
                     )
                 except requests.HTTPError as e:
                     status = getattr(getattr(e, 'response', None), 'status_code', None)
-                    if status is not None and 400 <= status < 500 and all_results:
-                        # Server rejected a deeper page (e.g. search + deep offset).
-                        # Keep the pages already fetched instead of failing the whole call.
+                    if targeted_search and status == 400:
+                        # The platform rejects search pages beyond the first
+                        # 100 results; stop at the window instead of failing.
                         self.log(
-                            f"get_datafields: pagination stopped at offset={offset} "
-                            f"(HTTP {status}), returning {len(all_results)} partial results",
+                            f"get_datafields: search window exhausted at "
+                            f"offset={offset} (HTTP 400), "
+                            f"{len(all_results)} matches collected",
                             "WARNING",
                         )
                         truncated = True
+                        truncated_reason = 'search_window_capped'
                         break
+                    # Scoped/unscoped failures are fatal: never return a
+                    # silently truncated catalog.
                     raise
-                
-                results = data.get('results', [])
-                all_results.extend(results)
-                
+
+                page = data.get('results', []) or []
+                pages_fetched += 1
+
                 if total_count is None:
-                    total_count = data.get('count', 0)
-                
-                # Stop early once the unscoped size cap is reached
-                if not targeted_search and len(all_results) >= max_fields:
-                    capped = True
+                    total_count = data.get('count')
+
+                # Dedupe by field id (offset pagination can repeat a row if
+                # the underlying result set shifts between pages).
+                new_items = 0
+                for idx, item in enumerate(page):
+                    key = item.get('id') if isinstance(item, dict) else None
+                    if not key:
+                        key = f"_anon_{offset}_{idx}"
+                    if key in seen_ids:
+                        continue
+                    seen_ids.add(key)
+                    all_results.append(item)
+                    new_items += 1
+
+                if len(page) < limit:
+                    # Platform returned a short page: this is the last one.
+                    reached_end = True
+
+                if effective_cap is not None and len(all_results) >= effective_cap:
+                    if len(all_results) > effective_cap:
+                        all_results = all_results[:effective_cap]
+                    if total_count is None or len(all_results) < total_count:
+                        truncated = True
+                        truncated_reason = 'max_fields_cap'
                     break
-                
-                # Break if we've fetched all data
-                if len(results) < limit or len(all_results) >= total_count:
+
+                if reached_end:
                     break
-                
+
+                if not targeted_search and total_count is not None \
+                        and len(all_results) >= total_count:
+                    break
+
+                if targeted_search and len(all_results) >= 100:
+                    # Hard platform window: offset+limit <= 100.
+                    truncated = True
+                    truncated_reason = 'search_window_capped'
+                    break
+
+                if new_items == 0 and not targeted_search:
+                    raise RuntimeError(
+                        f"get_datafields: pagination made no progress at "
+                        f"offset={offset} ({len(all_results)}/{total_count} "
+                        f"fields for dataset_id={dataset_id!r}); refusing to "
+                        f"return a partial catalog"
+                    )
+
                 offset += limit
                 # Brief pause between pages; rate-limit backoff is already
                 # handled by _request_json_with_retries (429/5xx retries).
-                await asyncio.sleep(0.5)
-            
+                await asyncio.sleep(0.3)
+
+            # All-or-error: a scoped/unscoped pull that ends short of the
+            # platform-declared count is a failed catalog, not a smaller one.
+            if not targeted_search and not truncated \
+                    and total_count is not None \
+                    and len(all_results) < total_count:
+                raise RuntimeError(
+                    f"get_datafields: incomplete pull for dataset_id="
+                    f"{dataset_id!r} region={region} delay={delay} "
+                    f"universe={universe}: got {len(all_results)}/"
+                    f"{total_count} fields across {pages_fetched} pages"
+                )
+
             # Prepare complete response
+            if targeted_search:
+                # `count` under search is the unfiltered total, so completeness
+                # means the match list was exhausted inside the 100 window.
+                complete = reached_end
+            elif total_count is None:
+                # No declared count to compare against: trust the short-page
+                # terminator (the platform always sends `count` today).
+                complete = reached_end and not truncated
+            else:
+                complete = len(all_results) >= total_count
+
             complete_data = {
                 'results': all_results,
                 'count': len(all_results),
+                'platform_count': total_count,
+                'complete': complete,
+                'pages_fetched': pages_fetched,
                 'extraNote': "if your returned result is 0, you may want to check your parameter by using get_platform_setting_options tool to got correct parameter. Search supports fuzzy matching with multiple keywords (space-separated, AND logic).",
                 'from_cache': False
             }
-            if truncated or capped:
+            if truncated:
                 complete_data['pagination_truncated'] = True
-                if capped:
-                    complete_data['extraNote'] += (f" NOTE: unscoped listing capped at {max_fields} fields; "
-                                                   "use search / dataset_id / data_type to narrow.")
-                else:
-                    complete_data['extraNote'] += (" NOTE: server rejected a deeper page (HTTP 4xx), "
-                                                   "results may be partial; narrow the search term or "
-                                                   "dataset filter to see more.")
-            
-            # Cache the complete unscoped dump only (never poison it with search pages)
-            if not targeted_search:
+                complete_data['truncated_reason'] = truncated_reason
+                if truncated_reason == 'search_window_capped':
+                    complete_data['extraNote'] += (
+                        " NOTE: the platform caps search at the first 100 "
+                        "matches; use dataset_id without search to pull a "
+                        "full catalog."
+                    )
+                elif truncated_reason == 'max_fields_cap':
+                    complete_data['extraNote'] += (
+                        f" NOTE: results capped at {effective_cap} fields "
+                        "(max_fields); raise max_fields or narrow with "
+                        "dataset_id / data_type for a full catalog."
+                    )
+
+            # Cache only self-consistent dumps: a complete pull, or the
+            # intentional capped listing. Never cache a partial or a search.
+            if not targeted_search and (complete or truncated_reason == 'max_fields_cap'):
                 self._set_cached_data(cache_key, complete_data, ttl=604800)
             
             # Extra client-side narrowing for targeted search (id/name/description)

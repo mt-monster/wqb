@@ -185,12 +185,15 @@ class CorrCacheMixin:
         """
         if not alpha_id:
             return None
-        cur = self.connection.cursor()
-        cur.execute(
-            f"SELECT {_CACHE_COLUMNS} FROM alpha_corr_cache WHERE alpha_id=?",
-            (str(alpha_id),),
-        )
-        row = cur.fetchone()
+        # ★ 2026-10-27 P0：MCP 服务跨线程共用同一连接，所有 cursor/execute/fetch
+        # 必须在同一把锁内完成（sqlite3 并发访问为未定义行为），否则可能 C 级 segfault。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            cur.execute(
+                f"SELECT {_CACHE_COLUMNS} FROM alpha_corr_cache WHERE alpha_id=?",
+                (str(alpha_id),),
+            )
+            row = cur.fetchone()
         if not row:
             return None
         return self._row_to_corr(row)
@@ -210,13 +213,16 @@ class CorrCacheMixin:
                     or row.get("self_correlation") is not None):
             return row
         try:
-            cur = self.connection.cursor()
-            cur.execute(
-                "SELECT prod_correlation, self_correlation, corr_checked_at, "
-                "prod_corr_source FROM alphas WHERE alpha_id=? LIMIT 1",
-                (str(alpha_id),),
-            )
-            r = cur.fetchone()
+            # ★ 2026-10-27 P0：同 get_corr_cache——跨线程共用连接，cursor/execute/fetch
+            # 必须在同一把锁内完成。
+            with self._conn_lock:
+                cur = self.connection.cursor()
+                cur.execute(
+                    "SELECT prod_correlation, self_correlation, corr_checked_at, "
+                    "prod_corr_source FROM alphas WHERE alpha_id=? LIMIT 1",
+                    (str(alpha_id),),
+                )
+                r = cur.fetchone()
         except Exception:  # noqa: BLE001 - alphas 表可能不存在（纯缓存库）
             return row
         if not r:
@@ -275,45 +281,49 @@ class CorrCacheMixin:
         # 一律标成「刚测过」，保鲜期判据彻底失真（实测 fresh=848/stale=0）。
         # 搬运场景传原始测量时间戳；正常测量场景留 None 用当前时间。
         now = checked_at or _now()
-        cur = self.connection.cursor()
-        cur.execute(
-            "INSERT INTO alpha_corr_cache "
-            "(alpha_id, prod_correlation, self_correlation, prod_records, "
-            " source, checked_at, created_at, updated_at) "
-            "VALUES (?,?,?,?,?,?,?,?) "
-            "ON CONFLICT(alpha_id) DO UPDATE SET "
-            "  prod_correlation=COALESCE(excluded.prod_correlation, prod_correlation),"
-            "  self_correlation=COALESCE(excluded.self_correlation, self_correlation),"
-            "  prod_records=COALESCE(excluded.prod_records, prod_records),"
-            "  source=excluded.source,"
-            "  checked_at=excluded.checked_at,"
-            "  updated_at=excluded.updated_at",
-            (str(alpha_id), p, s, recs_json, src, now, now, now),
-        )
-        self.connection.commit()
-        out = {
-            "action": "upserted",
-            "alpha_id": str(alpha_id),
-            "prod_correlation": p,
-            "self_correlation": s,
-            "source": src,
-            "checked_at": now,
-        }
-        if norm["detail"]:
-            out["source_detail"] = norm["detail"]
-        if mirror_to_alphas:
-            # ⚠ overwrite=True 是 2026-10-06 修复：本方法语义就是「全库 prod 唯一写入口」，
-            # 权威表已拿到新的平台实测值，镜像也必须一起覆盖，否则 alphas 里
-            # 会留着旧值 —— 消费者走 alphas 表（select_ra_basket / prod_saturation_gate /
-            # submit_queue / prod_first_screen）会读到过期数据、把新测过的 alpha 又当成
-            # 「未测」重新排队（2026-10-06 实测 3 行 >0.01 冲突：E5pbM7Nm / VkaZYdbG /
-            # wpZ3RP96）。persist_correlation 的 overwrite 默认值是 False（NULL-only），
-            # 那是为本地 triage 单独写 alphas 时保留平台权威值设计的；此处不适用。
-            try:
-                out["mirror"] = self.persist_correlation(
-                    str(alpha_id), prod=p, self_=s, source=src, overwrite=True)
-            except Exception as e:  # noqa: BLE001 - 联动失败不阻断权威表写入
-                out["mirror"] = {"error": f"{type(e).__name__}: {e}"}
+        # ★ 2026-10-27 P0：与 get_corr_cache 同——所有 DB 写入在同一把锁内完成；
+        # persist_correlation（mirror）也在此锁内取 RLock（可重入），保证「权威表+alphas」
+        # 的写入对其他线程原子可见，避免半写状态被并发读到。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            cur.execute(
+                "INSERT INTO alpha_corr_cache "
+                "(alpha_id, prod_correlation, self_correlation, prod_records, "
+                " source, checked_at, created_at, updated_at) "
+                "VALUES (?,?,?,?,?,?,?,?) "
+                "ON CONFLICT(alpha_id) DO UPDATE SET "
+                "  prod_correlation=COALESCE(excluded.prod_correlation, prod_correlation),"
+                "  self_correlation=COALESCE(excluded.self_correlation, self_correlation),"
+                "  prod_records=COALESCE(excluded.prod_records, prod_records),"
+                "  source=excluded.source,"
+                "  checked_at=excluded.checked_at,"
+                "  updated_at=excluded.updated_at",
+                (str(alpha_id), p, s, recs_json, src, now, now, now),
+            )
+            self.connection.commit()
+            out = {
+                "action": "upserted",
+                "alpha_id": str(alpha_id),
+                "prod_correlation": p,
+                "self_correlation": s,
+                "source": src,
+                "checked_at": now,
+            }
+            if norm["detail"]:
+                out["source_detail"] = norm["detail"]
+            if mirror_to_alphas:
+                # ⚠ overwrite=True 是 2026-10-06 修复：本方法语义就是「全库 prod 唯一写入口」，
+                # 权威表已拿到新的平台实测值，镜像也必须一起覆盖，否则 alphas 里
+                # 会留着旧值 —— 消费者走 alphas 表（select_ra_basket / prod_saturation_gate /
+                # submit_queue / prod_first_screen）会读到过期数据、把新测过的 alpha 又当成
+                # 「未测」重新排队（2026-10-06 实测 3 行 >0.01 冲突：E5pbM7Nm / VkaZYdbG /
+                # wpZ3RP96）。persist_correlation 的 overwrite 默认值是 False（NULL-only），
+                # 那是为本地 triage 单独写 alphas 时保留平台权威值设计的；此处不适用。
+                try:
+                    out["mirror"] = self.persist_correlation(
+                        str(alpha_id), prod=p, self_=s, source=src, overwrite=True)
+                except Exception as e:  # noqa: BLE001 - 联动失败不阻断权威表写入
+                    out["mirror"] = {"error": f"{type(e).__name__}: {e}"}
         return out
 
     def normalize_legacy_sources(self) -> Dict[str, Any]:
@@ -330,29 +340,31 @@ class CorrCacheMixin:
 
         幂等：已收敛的行不重复改写。返回 ``{"scanned", "changed", "map"}``。
         """
-        cur = self.connection.cursor()
-        rows = cur.execute(
-            "SELECT c.alpha_id, c.source, c.checked_at, a.corr_checked_at "
-            "FROM alpha_corr_cache c LEFT JOIN alphas a ON a.alpha_id = c.alpha_id"
-        ).fetchall()
-        changed, amap = 0, {}
-        for r in rows:
-            cur_src = r["source"]
-            if cur_src == "manual":
-                if not r["checked_at"]:
-                    new_src = "legacy"              # 来源+时间都缺 → 无法归类
+        # ★ 2026-10-27 P0：一次性治理方法也使用共享连接，锁内完成读+改+提交。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            rows = cur.execute(
+                "SELECT c.alpha_id, c.source, c.checked_at, a.corr_checked_at "
+                "FROM alpha_corr_cache c LEFT JOIN alphas a ON a.alpha_id = c.alpha_id"
+            ).fetchall()
+            changed, amap = 0, {}
+            for r in rows:
+                cur_src = r["source"]
+                if cur_src == "manual":
+                    if not r["checked_at"]:
+                        new_src = "legacy"              # 来源+时间都缺 → 无法归类
+                    else:
+                        new_src = "alphas_backfill"      # 有测量时间但来源空 → 历史搬运
                 else:
-                    new_src = "alphas_backfill"      # 有测量时间但来源空 → 历史搬运
-            else:
-                new_src = normalize_corr_source(cur_src)["source"]
-            if new_src == cur_src:
-                continue
-            cur.execute(
-                "UPDATE alpha_corr_cache SET source=? WHERE alpha_id=?",
-                (new_src, r["alpha_id"]))
-            amap[f"{cur_src} -> {new_src}"] = amap.get(f"{cur_src} -> {new_src}", 0) + 1
-            changed += 1
-        self.connection.commit()
+                    new_src = normalize_corr_source(cur_src)["source"]
+                if new_src == cur_src:
+                    continue
+                cur.execute(
+                    "UPDATE alpha_corr_cache SET source=? WHERE alpha_id=?",
+                    (new_src, r["alpha_id"]))
+                amap[f"{cur_src} -> {new_src}"] = amap.get(f"{cur_src} -> {new_src}", 0) + 1
+                changed += 1
+            self.connection.commit()
         return {"scanned": len(rows), "changed": changed, "map": amap}
 
     def backfill_from_alphas(self, limit: int = 0) -> Dict[str, Any]:
@@ -361,17 +373,19 @@ class CorrCacheMixin:
         2026-10-05 单源化的一次性消化动作，可重复跑。**不覆盖**权威表已有条目
         （权威值优先）。返回 ``{scanned, migrated, skipped_invalid, rows}``。
         """
-        cur = self.connection.cursor()
-        sql = (
-            "SELECT a.alpha_id, a.prod_correlation, a.self_correlation, "
-            "       a.corr_checked_at, a.prod_corr_source "
-            "FROM alphas a LEFT JOIN alpha_corr_cache c ON c.alpha_id = a.alpha_id "
-            "WHERE c.alpha_id IS NULL "
-            "  AND (a.prod_correlation IS NOT NULL OR a.self_correlation IS NOT NULL)"
-        )
-        if limit:
-            sql += f" LIMIT {int(limit)}"
-        rows = cur.execute(sql).fetchall()
+        # ★ 2026-10-27 P0：一次性治理方法也使用共享连接，SELECT 在锁内完成。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            sql = (
+                "SELECT a.alpha_id, a.prod_correlation, a.self_correlation, "
+                "       a.corr_checked_at, a.prod_corr_source "
+                "FROM alphas a LEFT JOIN alpha_corr_cache c ON c.alpha_id = a.alpha_id "
+                "WHERE c.alpha_id IS NULL "
+                "  AND (a.prod_correlation IS NOT NULL OR a.self_correlation IS NOT NULL)"
+            )
+            if limit:
+                sql += f" LIMIT {int(limit)}"
+            rows = cur.execute(sql).fetchall()
         migrated, skipped = [], []
         for r in rows:
             # ★ 搬运行的 source 标 ``alphas_backfill``（**值来自 alphas**，不是人工录入）。
@@ -403,18 +417,20 @@ class CorrCacheMixin:
         if not ids:
             return {}
         out: Dict[str, Dict[str, Any]] = {}
-        cur = self.connection.cursor()
-        # 分块避免 SQLite 变量上限（默认 999）
-        for i in range(0, len(ids), 500):
-            chunk = ids[i:i + 500]
-            marks = ",".join("?" * len(chunk))
-            cur.execute(
-                f"SELECT {_CACHE_COLUMNS} FROM alpha_corr_cache WHERE alpha_id IN ({marks})",
-                chunk,
-            )
-            for row in cur.fetchall():
-                rec = self._row_to_corr(row)
-                out[row[0]] = rec
+        # ★ 2026-10-27 P0：跨线程共用连接，cursor/execute/fetchall 在同一把锁内完成。
+        with self._conn_lock:
+            cur = self.connection.cursor()
+            # 分块避免 SQLite 变量上限（默认 999）
+            for i in range(0, len(ids), 500):
+                chunk = ids[i:i + 500]
+                marks = ",".join("?" * len(chunk))
+                cur.execute(
+                    f"SELECT {_CACHE_COLUMNS} FROM alpha_corr_cache WHERE alpha_id IN ({marks})",
+                    chunk,
+                )
+                for row in cur.fetchall():
+                    rec = self._row_to_corr(row)
+                    out[row[0]] = rec
         return out
 
     def get_corr_authoritative_batch(
@@ -445,26 +461,28 @@ class CorrCacheMixin:
         if not missing:
             return out
         try:
-            cur = self.connection.cursor()
-            for i in range(0, len(missing), 500):
-                chunk = missing[i:i + 500]
-                marks = ",".join("?" * len(chunk))
-                cur.execute(
-                    f"SELECT alpha_id, prod_correlation, self_correlation, "
-                    f"corr_checked_at, prod_corr_source FROM alphas "
-                    f"WHERE alpha_id IN ({marks})",
-                    chunk,
-                )
-                for r in cur.fetchall():
-                    aid, prod, self_corr, checked_at, src = r
-                    prod_v = _corr_value(prod)
-                    self_v = _corr_value(self_corr)
-                    if prod_v is None and self_v is None:
-                        continue
-                    rec = self._row_to_corr((str(aid), prod_v, self_v, None,
-                                             normalize_corr_source(src)["source"], checked_at))
-                    rec["from_alphas"] = True
-                    out[aid] = rec
+            # ★ 2026-10-27 P0：同 list_corr_cache——跨线程共用连接，锁内完成。
+            with self._conn_lock:
+                cur = self.connection.cursor()
+                for i in range(0, len(missing), 500):
+                    chunk = missing[i:i + 500]
+                    marks = ",".join("?" * len(chunk))
+                    cur.execute(
+                        f"SELECT alpha_id, prod_correlation, self_correlation, "
+                        f"corr_checked_at, prod_corr_source FROM alphas "
+                        f"WHERE alpha_id IN ({marks})",
+                        chunk,
+                    )
+                    for r in cur.fetchall():
+                        aid, prod, self_corr, checked_at, src = r
+                        prod_v = _corr_value(prod)
+                        self_v = _corr_value(self_corr)
+                        if prod_v is None and self_v is None:
+                            continue
+                        rec = self._row_to_corr((str(aid), prod_v, self_v, None,
+                                                 normalize_corr_source(src)["source"], checked_at))
+                        rec["from_alphas"] = True
+                        out[aid] = rec
         except Exception:  # noqa: BLE001 - alphas 表可能不存在（纯缓存库）
             return out
         return out

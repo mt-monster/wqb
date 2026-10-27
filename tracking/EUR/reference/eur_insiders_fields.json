@@ -1,0 +1,320 @@
+{
+ "insider_agg_matrix": {
+  "fields": [
+   {
+    "name": "directional_significant_value_3",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Third highest value among directional significant insider transactions."
+   },
+   {
+    "name": "total_secondary_top_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares bought directly by executives"
+   },
+   {
+    "name": "total_top_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares bought by all executives"
+   },
+   {
+    "name": "total_top_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares sold by all executives"
+   },
+   {
+    "name": "avg_secondary_top_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares bought directly by executives"
+   },
+   {
+    "name": "top_directional_significant_value_4",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Fourth highest value among top directional significant insider transactions."
+   },
+   {
+    "name": "top_significant_value_3",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Third highest value among top significant insider transactions."
+   },
+   {
+    "name": "significant_value_2",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Value of the second most significant insider transaction."
+   },
+   {
+    "name": "significant_value_3",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Value of the third most significant insider transaction."
+   },
+   {
+    "name": "avg_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares bought by all directors"
+   },
+   {
+    "name": "directional_significant_value_1",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Highest value among directional significant insider transactions."
+   },
+   {
+    "name": "top_significant_value_1",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Highest value among top significant insider transactions."
+   },
+   {
+    "name": "total_secondary_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares bought directly by directors"
+   },
+   {
+    "name": "total_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares bought by all directors"
+   },
+   {
+    "name": "avg_top_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares bought by all executives"
+   },
+   {
+    "name": "directional_indicator_2",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "A metric indicating the overall direction or bias of enhanced insider activity."
+   },
+   {
+    "name": "total_secondary_top_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares sold directly by executives"
+   },
+   {
+    "name": "total_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares sold by all directors"
+   },
+   {
+    "name": "directional_significant_value_4",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Fourth highest value among directional significant insider transactions."
+   },
+   {
+    "name": "top_significant_value_4",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Fourth highest value among top significant insider transactions."
+   },
+   {
+    "name": "avg_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares sold by all directors"
+   },
+   {
+    "name": "top_significant_value_2",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Second highest value among top significant insider transactions."
+   },
+   {
+    "name": "top_directional_significant_value_1",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Highest value among top directional significant insider transactions."
+   },
+   {
+    "name": "directional_significant_value_2",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Second highest value among directional significant insider transactions."
+   },
+   {
+    "name": "avg_secondary_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares sold directly by directors"
+   },
+   {
+    "name": "avg_top_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares sold by all executives"
+   },
+   {
+    "name": "directional_indicator",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "A metric indicating the overall direction or bias of insider activity."
+   },
+   {
+    "name": "significant_value_4",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Value of the fourth most significant insider transaction."
+   },
+   {
+    "name": "top_directional_significant_value_3",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Third highest value among top directional significant insider transactions."
+   },
+   {
+    "name": "avg_secondary_top_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares sold directly by executives"
+   },
+   {
+    "name": "total_secondary_sell_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Sum shares sold directly by directors"
+   },
+   {
+    "name": "avg_secondary_buy_shares",
+    "type": "MATRIX",
+    "cov": 0.6083,
+    "desc": "Mean shares bought directly by directors"
+   },
+   {
+    "name": "significant_value_1",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Value of the most significant insider transaction."
+   },
+   {
+    "name": "top_directional_significant_value_2",
+    "type": "MATRIX",
+    "cov": 0.6149,
+    "desc": "Second highest value among top directional significant insider transactions."
+   }
+  ]
+ },
+ "insiders1": {
+  "fields": [
+   {
+    "name": "max_trade_price",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Maximum transaction price per share when a price range was reported"
+   },
+   {
+    "name": "insd1_valueeur",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Total value of the transaction in Euro"
+   },
+   {
+    "name": "insd1_tradesignificance",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Significance score of the trade (1 = low significance, 3 = high significance)"
+   },
+   {
+    "name": "insd1_holdings",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Total equity share holdings of the insider after the transaction"
+   },
+   {
+    "name": "insd1_gvkey",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Compustat Global Company Identifier (Global Value Key) for the issuer"
+   },
+   {
+    "name": "insd1_shares",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Number of shares (or units) traded in the transaction"
+   },
+   {
+    "name": "insd1_value",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Total value of the transaction in original currency"
+   },
+   {
+    "name": "transaction_currency_code",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Three-letter ISO currency code of the transaction’s currency"
+   },
+   {
+    "name": "insd1_price",
+    "type": "VECTOR",
+    "cov": 0.5512,
+    "desc": "Transaction price per share; if a range was reported, this is the minimum price"
+   }
+  ]
+ },
+ "insiders12": {
+  "fields": [
+   {
+    "name": "insd12_positionchangetransactionamount",
+    "type": "VECTOR",
+    "cov": 0.1925,
+    "desc": "Number of shares bought (+) or sold (-) in the transaction"
+   },
+   {
+    "name": "insd12_mktprice",
+    "type": "VECTOR",
+    "cov": 0.1925,
+    "desc": "Market price per share/security at the transaction date, as reported, unadjusted for corporate actions"
+   },
+   {
+    "name": "option_exercise_price_reported",
+    "type": "VECTOR",
+    "cov": 0.1925,
+    "desc": "Price at which the option/derivative was exercised at the time of the trade; currency varies by context"
+   },
+   {
+    "name": "insd12_transactioncode",
+    "type": "VECTOR",
+    "cov": 0.2592,
+    "desc": "A code representing the type or nature of the transaction."
+   },
+   {
+    "name": "option_exercise_price_eur",
+    "type": "VECTOR",
+    "cov": 0.1925,
+    "desc": "Exercise price for derivatives or options in EUR, as disclosed in the transaction"
+   },
+   {
+    "name": "insd12_percent",
+    "type": "VECTOR",
+    "cov": 0.1925,
+    "desc": "Post-event insider ownership percentage, as directly reported; may be a bound depending on GLTPercent"
+   },
+   {
+    "name": "option_exercise_price_gbp",
+    "type": "VECTOR",
+    "cov": 0.1925,
+    "desc": "Exercise price of derivatives or options in GBP, as disclosed in the transaction"
+   },
+   {
+    "name": "insd12_sharesheld",
+    "type": "VECTOR",
+    "cov": 0.1925,
+    "desc": "Number of shares held by the insider after the transaction as officially reported"
+   }
+  ]
+ }
+}

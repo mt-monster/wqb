@@ -206,7 +206,7 @@ def _skeleton(region: str) -> str:
 
 ## 怎么用
 
-1. **入场**：看下面「区域控制面板」的入场状态。`frozen` 只走 profile 写明的后门；`probe-only` 只许探针批。
+1. **入场**：看下面「区域控制面板」的入场状态。`frozen` 只走 profile 写明的后门；`probe-only` 只许探针批；`full-coverage` 数据集必须做尽（见「全量覆盖操作纪律」）。
 2. **每次回测前**按数据集取生效画像（回测设置、阈值、Mode B 主闸、生成与改进要点，每项带来源）：
 
    ```bash
@@ -510,7 +510,9 @@ def _region_panel(region: str) -> str:
     go = raw.get("gate_overrides") or {}
     if lp or go:
         L.append("**循环与闸门（profile front-matter）**")
-        if lp.get("max_probes_per_wave") is not None:
+        if prof["entry_verdict"] == "full-coverage":
+            L.append("- ⛔ 每波派发走**全量覆盖**：字段覆盖率 ≥ 100%、模板族 ≥ 3、边界算子档穷举（详见「全量覆盖操作纪律」）。")
+        elif lp.get("max_probes_per_wave") is not None:
             L.append(f"- 每波探针位上限：{_clean(lp.get('max_probes_per_wave'))}")
         if lp.get("fast_kill"):
             L.append(f"- 快判死：{_clean(lp.get('fast_kill'))}")
@@ -651,7 +653,12 @@ def _cell_panel(region: str, category: str) -> str:
         L.append(f"- **说明**：{_clean(x)}")
     sks = gen.get("skeletons") or []
     if sks:
-        L.append("- **已验证骨架**（证据见每行注释；照抄前先按本组合当前 prod 复核）：")
+        # 骨架块里有「分母是同一指标上下调计数之和」这类合法 add，会被 skill_lint 的结构判定
+        # 误认成两条独立信号腿相加。条目声明 lint_exempt（写清为什么合法）时，在引导行挂豁免标记；
+        # 没声明的骨架照常过闸，避免整块静默失去检查。
+        exempt = any(s.get("lint_exempt") for s in sks)
+        L.append("- **已验证骨架**（证据见每行注释；照抄前先按本组合当前 prod 复核）："
+                 + ("<!-- lint:counterexample -->" if exempt else ""))
         L.append("")
         L.append("  ```text")
         for s in sks:

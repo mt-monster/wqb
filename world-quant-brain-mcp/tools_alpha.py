@@ -10,8 +10,14 @@ async def batch_get_alpha_metrics(alpha_ids: List[str]) -> Dict[str, Any]:
     """
     批量获取 alpha 指标（S4 预筛用）.
     
-    单次调用批量拉取多个 alpha 的核心指标，用于 S4 评审链预筛分层。
-    比逐条调用 get_alpha_details 效率高 8 倍。
+    单次调用批量返回多个 alpha 的核心指标，用于 S4 评审链预筛分层。
+    底层逐颗 GET /alphas/{id}，省去多次工具往返；结果先经 `_slim_alpha_response`
+    归一化，2Y 同时认 `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` 两个载体。
+    注意：`prod_correlation` / `self_correlation` 只取平台 is 段已有值；
+    未做过相关性检查时为 null，需 `check_correlation` 另行实测。
+    `investability_sharpe` / `investability_ratio`（invest_S / S）是风险监控字段，
+    不并入 READY 硬闸：IND 的提交层 `/check` 当前未下发
+    `LOW_INVESTABILITY_CONSTRAINED_SHARPE`，不能把平台不拦的项误判成 REJECT。
     
     Args:
         alpha_ids: alpha ID 列表（最多 20 个）
@@ -30,6 +36,9 @@ async def batch_get_alpha_metrics(alpha_ids: List[str]) -> Dict[str, Any]:
                     "two_year_sharpe": float,
                     "robust_universe_sharpe": float,
                     "sub_universe_sharpe": float,
+                    "investability_sharpe": float,
+                    "investability_fitness": float,
+                    "investability_ratio": float,
                     "margin": float,
                     "returns": float,
                     "drawdown": float,
@@ -60,9 +69,13 @@ async def batch_get_alpha_metrics(alpha_ids: List[str]) -> Dict[str, Any]:
     
     for aid in alpha_ids:
         try:
-            d = await brain_client.get_alpha_details(aid)
-            metrics = d.get("metrics", {})
-            ra = d.get("ra", {})
+            # `brain_client.get_alpha_details` 返回平台原始结构（`is` / `regular`），
+            # 而本工具按 `_slim_alpha` 的归一形态（`metrics` / `ra` / `checks`）取值。
+            # 不先归一化 ⇒ 每个指标都取不到、全为 None，并让 prescreen 误判 REJECT
+            # （2026-10-23 实测 10/10 颗全 null）。归一化同时覆盖 2Y 双载体。
+            d = _slim_alpha_response(await brain_client.get_alpha_details(aid))
+            metrics = d.get("metrics") or {}
+            ra = d.get("ra") or {}
             
             item = {
                 "alpha_id": aid,
@@ -72,6 +85,8 @@ async def batch_get_alpha_metrics(alpha_ids: List[str]) -> Dict[str, Any]:
                 "two_year_sharpe": metrics.get("two_year_sharpe"),
                 "robust_universe_sharpe": metrics.get("robust_universe_sharpe"),
                 "sub_universe_sharpe": metrics.get("sub_universe_sharpe"),
+                "investability_sharpe": metrics.get("investability_sharpe"),
+                "investability_fitness": metrics.get("investability_fitness"),
                 "margin": metrics.get("margin"),
                 "returns": metrics.get("returns"),
                 "drawdown": metrics.get("drawdown"),
@@ -81,6 +96,15 @@ async def batch_get_alpha_metrics(alpha_ids: List[str]) -> Dict[str, Any]:
                 "status": d.get("status"),
                 "error": None
             }
+            # invest_S / S：平台 is.investabilityConstrained.sharpe 与主 Sharpe 的比值。
+            # 注意：IND 的提交层 /check 当前未下发 LOW_INVESTABILITY_CONSTRAINED_SHARPE；
+            # 该比值是风险监控，不并入 READY 硬闸（避免把平台不拦的项误判成 REJECT）。
+            inv_s = item["investability_sharpe"]
+            item["investability_ratio"] = (
+                round(inv_s / item["sharpe"], 4)
+                if inv_s is not None and item["sharpe"] not in (None, 0)
+                else None
+            )
             results.append(item)
             
             # 预筛分层
@@ -89,8 +113,10 @@ async def batch_get_alpha_metrics(alpha_ids: List[str]) -> Dict[str, Any]:
             two_year = item["two_year_sharpe"] or 0
             robust = item["robust_universe_sharpe"] or 0
             prod_corr = item["prod_correlation"] or 1.0
+            failed_ra = item["failed_ra_count"] or 0
             
-            if (sharpe >= 1.58 and fitness >= 1.0 and 
+            # READY = 全部硬闸通过：RA 失败数必须为 0（不能只看 headline 指标）。
+            if (failed_ra == 0 and sharpe >= 1.58 and fitness >= 1.0 and
                 two_year >= 1.58 and robust >= 1.0 and prod_corr < 0.7):
                 ready.append(aid)
             elif sharpe >= 1.0:

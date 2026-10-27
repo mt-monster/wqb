@@ -1,0 +1,2533 @@
+{
+ "dataset": "fundamental6",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 279
+ },
+ "field_count": 279,
+ "platform_count": 279,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 500,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.5,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-20T14:48:32",
+ "fields": [
+  {
+   "id": "fnd6_accli",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Accrued Liabilities - Increase/(Decrease)"
+  },
+  {
+   "id": "fnd6_acox",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Current Assets - Other - Sundry"
+  },
+  {
+   "id": "fnd6_adesinda_curcd",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "ISO Currency Code - Company Annual Market"
+  },
+  {
+   "id": "fnd6_am",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Amortization of Intangibles"
+  },
+  {
+   "id": "fnd6_amsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Amortization of Intangibles"
+  },
+  {
+   "id": "fnd6_amy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Amortization of Intangibles"
+  },
+  {
+   "id": "fnd6_aoloch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Assets and Liabilities - Other - Net Change"
+  },
+  {
+   "id": "fnd6_aolochy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Assets and Liabilities - Other (Net Change)"
+  },
+  {
+   "id": "fnd6_aox",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Assets - Other - Sundry"
+  },
+  {
+   "id": "fnd6_apch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 6,
+   "longCount": 500,
+   "description": "Accounts Payable - Increase (Decrease)"
+  },
+  {
+   "id": "fnd6_apchy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Accounts Payable/Creditors - Increase (Decrease)"
+  },
+  {
+   "id": "fnd6_apo",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Accounts Payable - Other"
+  },
+  {
+   "id": "fnd6_aqc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Acquisitions"
+  },
+  {
+   "id": "fnd6_aqcy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Acquisitions"
+  },
+  {
+   "id": "fnd6_capxy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 23,
+   "alphaCount": 49,
+   "longCount": 500,
+   "description": "Capital Expenditures"
+  },
+  {
+   "id": "fnd6_ch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cash"
+  },
+  {
+   "id": "fnd6_cheb",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cash and Cash Equivalents at Beginning of Year"
+  },
+  {
+   "id": "fnd6_chech",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cash and Cash Equivalents - Increase/(Decrease)"
+  },
+  {
+   "id": "fnd6_chechy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cash and Cash Equivalents - Increase (Decrease)"
+  },
+  {
+   "id": "fnd6_chee",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cash and Cash Equivalents at End of Year"
+  },
+  {
+   "id": "fnd6_cogssa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 44,
+   "alphaCount": 46,
+   "longCount": 500,
+   "description": "Cost of Goods Sold"
+  },
+  {
+   "id": "fnd6_cogsy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Cost of Goods Sold"
+  },
+  {
+   "id": "fnd6_cptnewq_actq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Current Assets - Total"
+  },
+  {
+   "id": "fnd6_cptnewq_atq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 31,
+   "alphaCount": 53,
+   "longCount": 500,
+   "description": "Assets - Total"
+  },
+  {
+   "id": "fnd6_cptnewq_ceqq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 500,
+   "description": "Common/Ordinary Equity - Total"
+  },
+  {
+   "id": "fnd6_cptnewq_dlttq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Long-Term Debt - Total"
+  },
+  {
+   "id": "fnd6_cptnewq_ibq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 32,
+   "alphaCount": 56,
+   "longCount": 500,
+   "description": "Income Before Extraordinary Items"
+  },
+  {
+   "id": "fnd6_cptnewq_ltq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Liabilities - Total"
+  },
+  {
+   "id": "fnd6_cptnewq_revtq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 66,
+   "alphaCount": 78,
+   "longCount": 500,
+   "description": "Revenue - Total"
+  },
+  {
+   "id": "fnd6_dc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Deferred Charges"
+  },
+  {
+   "id": "fnd6_dd1",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Long-Term Debt Due in 1 Year"
+  },
+  {
+   "id": "fnd6_dfxa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Depreciation of Tangible Fixed Assets"
+  },
+  {
+   "id": "fnd6_dfxasa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation of Fixed Assets (Tangible)"
+  },
+  {
+   "id": "fnd6_dfxay",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Depreciation of Fixed Assets (Tangible)"
+  },
+  {
+   "id": "fnd6_dlcch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Current Debt - Changes"
+  },
+  {
+   "id": "fnd6_dpcy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation and Amortization - Statement of Cash Flows"
+  },
+  {
+   "id": "fnd6_dpsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation and Amortization - Total"
+  },
+  {
+   "id": "fnd6_dpy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation and Amortization - Total"
+  },
+  {
+   "id": "fnd6_dvc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Dividends Common/Ordinary"
+  },
+  {
+   "id": "fnd6_dvt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Dividends - Total"
+  },
+  {
+   "id": "fnd6_dvty",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Dividends - Total"
+  },
+  {
+   "id": "fnd6_dvy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cash Dividends"
+  },
+  {
+   "id": "fnd6_eieac",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Equity Interest in Earnings of Associated Companies"
+  },
+  {
+   "id": "fnd6_eieacy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Equity Interest in Earnings of Associated Companies"
+  },
+  {
+   "id": "fnd6_ero",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Equity Reserves - Other"
+  },
+  {
+   "id": "fnd6_ewq_accdq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Accrued Expenses & Deferred Income"
+  },
+  {
+   "id": "fnd6_ewq_amq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Amortization of Intangibles"
+  },
+  {
+   "id": "fnd6_ewq_dfxaq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation of Fixed Assets (Tangible)"
+  },
+  {
+   "id": "fnd6_ewq_dvtq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Dividends - Total"
+  },
+  {
+   "id": "fnd6_ewq_eqrtq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 18,
+   "alphaCount": 20,
+   "longCount": 500,
+   "description": "Equity Reserves - Total"
+  },
+  {
+   "id": "fnd6_ewq_eroq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Equity Reserves - Other"
+  },
+  {
+   "id": "fnd6_ewq_gpq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 12,
+   "longCount": 500,
+   "description": "Gross Profit (Loss)"
+  },
+  {
+   "id": "fnd6_ewq_ibmiiq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Income before Extraordinary Items and Noncontrolling Interests"
+  },
+  {
+   "id": "fnd6_ewq_iditq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest Income - Total"
+  },
+  {
+   "id": "fnd6_ewq_intanq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Intangible Assets - Total"
+  },
+  {
+   "id": "fnd6_ewq_ivaeqq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Investment and Advances - Equity"
+  },
+  {
+   "id": "fnd6_ewq_ivaoq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Investment and Advances - Other"
+  },
+  {
+   "id": "fnd6_ewq_lltq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Long-Term Liabilities (Total)"
+  },
+  {
+   "id": "fnd6_ewq_mibnq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Non-Redeemable Noncontrolling Interest (Balance Sheet) - Quarterly"
+  },
+  {
+   "id": "fnd6_ewq_mibtq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Noncontrolling Interests - Total - Balance Sheet - Quarterly"
+  },
+  {
+   "id": "fnd6_ewq_nopioq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Other Non-Operating Inc/Expense"
+  },
+  {
+   "id": "fnd6_ewq_oproq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Revenues - Other"
+  },
+  {
+   "id": "fnd6_ewq_rectoq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Receivables - Current Other incl. Tax Refunds"
+  },
+  {
+   "id": "fnd6_ewq_teqq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Stockholders' Equity - Total - Quarterly"
+  },
+  {
+   "id": "fnd6_ewq_txdbq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Deferred Taxes - Balance Sheet"
+  },
+  {
+   "id": "fnd6_ewq_xoproq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Expense - Other"
+  },
+  {
+   "id": "fnd6_ewq_xppq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Prepaid Expenses & Accrued Income"
+  },
+  {
+   "id": "fnd6_ewq_xstq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Staff Expense - Wages/Salaries"
+  },
+  {
+   "id": "fnd6_exre",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Exchange Rate Effect"
+  },
+  {
+   "id": "fnd6_exrey",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Exchange Rate Effect"
+  },
+  {
+   "id": "fnd6_fiao",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Financing Activities - Other"
+  },
+  {
+   "id": "fnd6_fiaoy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Financing Activities - Other"
+  },
+  {
+   "id": "fnd6_fincfy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 20,
+   "alphaCount": 29,
+   "longCount": 500,
+   "description": "Financing Activities - Net Cash Flow"
+  },
+  {
+   "id": "fnd6_fopo",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Funds from Operations - Other"
+  },
+  {
+   "id": "fnd6_fopoy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Funds from Operations - Other"
+  },
+  {
+   "id": "fnd6_gpsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Gross Profit (Loss)"
+  },
+  {
+   "id": "fnd6_gpy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 5,
+   "longCount": 500,
+   "description": "Gross Profit (Loss)"
+  },
+  {
+   "id": "fnd6_ibcy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Income Before Extraordinary Items - Statement of Cash Flows"
+  },
+  {
+   "id": "fnd6_ibmiisa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Income before Extraordinary Items and Noncontrolling Interests"
+  },
+  {
+   "id": "fnd6_ibmiiy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Income before Extraordinary Items and Noncontrolling Interests"
+  },
+  {
+   "id": "fnd6_ibsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 17,
+   "alphaCount": 18,
+   "longCount": 500,
+   "description": "Income Before Extraordinary Items"
+  },
+  {
+   "id": "fnd6_iby",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Income Before Extraordinary Items"
+  },
+  {
+   "id": "fnd6_idesindq_curcd",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "ISO Currency Code - Company Annual Market"
+  },
+  {
+   "id": "fnd6_idit",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest and Related Income - Total"
+  },
+  {
+   "id": "fnd6_iditsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest Income - Total"
+  },
+  {
+   "id": "fnd6_idity",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Interest Income - Total"
+  },
+  {
+   "id": "fnd6_intan",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Intangible Assets - Total"
+  },
+  {
+   "id": "fnd6_intanp",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Intangible Assets - Purchase"
+  },
+  {
+   "id": "fnd6_intanpy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Intangible Assets - Purchase"
+  },
+  {
+   "id": "fnd6_intfact",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Interest and Dividend Adjustments - Financing Activities"
+  },
+  {
+   "id": "fnd6_intiact",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest and Dividend Adjustments - Investing Activities"
+  },
+  {
+   "id": "fnd6_intiacty",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest and Dividend Adjustments - Investing Activities"
+  },
+  {
+   "id": "fnd6_intoact",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Interest and Dividend Adjustments - Operating Activities"
+  },
+  {
+   "id": "fnd6_intoacty",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest and Dividend Adjustments - Operating Activities"
+  },
+  {
+   "id": "fnd6_intpn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Interest Paid - Net"
+  },
+  {
+   "id": "fnd6_invch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Mortgages - Decrease (Increase)"
+  },
+  {
+   "id": "fnd6_invchy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Inventory - Decrease (Increase)"
+  },
+  {
+   "id": "fnd6_invfg",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Inventories - Finished Goods"
+  },
+  {
+   "id": "fnd6_invo",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Inventories - Other"
+  },
+  {
+   "id": "fnd6_invrm",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Inventories - Raw Materials"
+  },
+  {
+   "id": "fnd6_invwip",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Inventories - Work In Process"
+  },
+  {
+   "id": "fnd6_ivaco",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Investing Activities - Other"
+  },
+  {
+   "id": "fnd6_ivacoy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Investing Activities - Other"
+  },
+  {
+   "id": "fnd6_ivaeq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Investment and Advances - Equity"
+  },
+  {
+   "id": "fnd6_ivao",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Investment and Advances - Other"
+  },
+  {
+   "id": "fnd6_ivch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Increase in Investments"
+  },
+  {
+   "id": "fnd6_ivchy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Increase in Investments"
+  },
+  {
+   "id": "fnd6_ivncfy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Investing Activities - Net Cash Flow"
+  },
+  {
+   "id": "fnd6_ivst",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Short-Term Investments - Total"
+  },
+  {
+   "id": "fnd6_lcox",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Current Liabilities - Other - Sundry"
+  },
+  {
+   "id": "fnd6_ltdch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Long-Term Debt - Change"
+  },
+  {
+   "id": "fnd6_ltdchy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Long-Term Debt - Change"
+  },
+  {
+   "id": "fnd6_mibn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Noncontrolling Interests - Nonredeemable - Balance Sheet"
+  },
+  {
+   "id": "fnd6_mibt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Noncontrolling Interests - Total - Balance Sheet"
+  },
+  {
+   "id": "fnd6_miisa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Noncontrolling Interest - Income Account"
+  },
+  {
+   "id": "fnd6_miiy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Noncontrolling Interest - Income Account"
+  },
+  {
+   "id": "fnd6_newa1_aco",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Current Assets - Other - Total"
+  },
+  {
+   "id": "fnd6_newa1_act",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Current Assets - Total"
+  },
+  {
+   "id": "fnd6_newa1_ao",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Assets - Other"
+  },
+  {
+   "id": "fnd6_newa1_ap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Accounts Payable - Trade"
+  },
+  {
+   "id": "fnd6_newa1_at",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 19,
+   "alphaCount": 33,
+   "longCount": 500,
+   "description": "Assets - Total"
+  },
+  {
+   "id": "fnd6_newa1_caps",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Capital Surplus/Share Premium Reserve"
+  },
+  {
+   "id": "fnd6_newa1_capx",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 9,
+   "alphaCount": 12,
+   "longCount": 500,
+   "description": "Capital Expenditures"
+  },
+  {
+   "id": "fnd6_newa1_ceq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Common/Ordinary Equity - Total"
+  },
+  {
+   "id": "fnd6_newa1_che",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cash and Short-Term Investments"
+  },
+  {
+   "id": "fnd6_newa1_cogs",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cost of Goods Sold"
+  },
+  {
+   "id": "fnd6_newa1_cstk",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Common/Ordinary Stock (Capital)"
+  },
+  {
+   "id": "fnd6_newa1_dlc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Debt in Current Liabilities - Total"
+  },
+  {
+   "id": "fnd6_newa1_dltt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Long-Term Debt - Total"
+  },
+  {
+   "id": "fnd6_newa1_do",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Discontinued Operations"
+  },
+  {
+   "id": "fnd6_newa1_dp",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation and Amortization"
+  },
+  {
+   "id": "fnd6_newa1_dpact",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation, Depletion and Amortization (Accumulated)"
+  },
+  {
+   "id": "fnd6_newa1_dpc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Depreciation and Amortization (Cash Flow)"
+  },
+  {
+   "id": "fnd6_newa1_dv",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Cash Dividends (Cash Flow)"
+  },
+  {
+   "id": "fnd6_newa1_ebit",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Earnings Before Interest and Taxes"
+  },
+  {
+   "id": "fnd6_newa1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Earnings Before Interest"
+  },
+  {
+   "id": "fnd6_newa1_emp",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Employees"
+  },
+  {
+   "id": "fnd6_newa1_fca",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Foreign Exchange Income (Loss)"
+  },
+  {
+   "id": "fnd6_newa1_fincf",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Financing Activities - Net Cash Flow"
+  },
+  {
+   "id": "fnd6_newa1_gdwl",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Goodwill"
+  },
+  {
+   "id": "fnd6_newa1_ib",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 6,
+   "alphaCount": 7,
+   "longCount": 500,
+   "description": "Income Before Extraordinary Items"
+  },
+  {
+   "id": "fnd6_newa1_ibc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Income Before Extraordinary Items (Cash Flow)"
+  },
+  {
+   "id": "fnd6_newa1_icapt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Invested Capital - Total"
+  },
+  {
+   "id": "fnd6_newa1_invt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Inventories - Total"
+  },
+  {
+   "id": "fnd6_newa1_ivncf",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Investing Activities - Net Cash Flow"
+  },
+  {
+   "id": "fnd6_newa1_lco",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Current Liabilities - Other - Total"
+  },
+  {
+   "id": "fnd6_newa1_lct",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Current Liabilities - Total"
+  },
+  {
+   "id": "fnd6_newa1_lo",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Liabilities - Other - Total"
+  },
+  {
+   "id": "fnd6_newa1_lse",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Liabilities and Stockholders Equity - Total"
+  },
+  {
+   "id": "fnd6_newa1_lt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Liabilities - Total"
+  },
+  {
+   "id": "fnd6_newa2_mii",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Noncontrolling Interest (Income Account)"
+  },
+  {
+   "id": "fnd6_newa2_oancf",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 26,
+   "alphaCount": 31,
+   "longCount": 500,
+   "description": "Operating Activities - Net Cash Flow"
+  },
+  {
+   "id": "fnd6_newa2_oiadp",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Operating Income After Depreciation"
+  },
+  {
+   "id": "fnd6_newa2_oibdp",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Operating Income Before Depreciation"
+  },
+  {
+   "id": "fnd6_newa2_pi",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Pretax Income"
+  },
+  {
+   "id": "fnd6_newa2_ppegt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Property, Plant and Equipment - Total (Gross)"
+  },
+  {
+   "id": "fnd6_newa2_ppent",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Property, Plant and Equipment - Total (Net)"
+  },
+  {
+   "id": "fnd6_newa2_pstk",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Preferred/Preference Stock (Capital) - Total"
+  },
+  {
+   "id": "fnd6_newa2_pstkn",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Preferred/Preference Stock - Nonredeemable"
+  },
+  {
+   "id": "fnd6_newa2_pstkr",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Preferred/Preference Stock - Redeemable"
+  },
+  {
+   "id": "fnd6_newa2_re",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Retained Earnings"
+  },
+  {
+   "id": "fnd6_newa2_rect",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Receivables - Total"
+  },
+  {
+   "id": "fnd6_newa2_revt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Revenue - Total"
+  },
+  {
+   "id": "fnd6_newa2_sale",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 9,
+   "longCount": 500,
+   "description": "Sales/Turnover (Net)"
+  },
+  {
+   "id": "fnd6_newa2_seq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Stockholders' Equity - Parent"
+  },
+  {
+   "id": "fnd6_newa2_spi",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Special Items"
+  },
+  {
+   "id": "fnd6_newa2_tstk",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Treasury Stock - Total (All Capital)"
+  },
+  {
+   "id": "fnd6_newa2_txditc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Deferred Taxes and Investment Tax Credit"
+  },
+  {
+   "id": "fnd6_newa2_txp",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Income Taxes Payable"
+  },
+  {
+   "id": "fnd6_newa2_txt",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Income Taxes - Total"
+  },
+  {
+   "id": "fnd6_newa2_wcap",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Working Capital (Balance Sheet)"
+  },
+  {
+   "id": "fnd6_newa2_xido",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Extraordinary Items and Discontinued Operations"
+  },
+  {
+   "id": "fnd6_newa2_xint",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Interest and Related Expense - Total"
+  },
+  {
+   "id": "fnd6_newa2_xrd",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Research and Development Expense"
+  },
+  {
+   "id": "fnd6_newa2_xsga",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Selling, General and Administrative Expense"
+  },
+  {
+   "id": "fnd6_newq_acoq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Current Assets - Other - Total"
+  },
+  {
+   "id": "fnd6_newq_acoxq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Other Current Assets - Sundry"
+  },
+  {
+   "id": "fnd6_newq_ancq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Non-Current Assets - Total"
+  },
+  {
+   "id": "fnd6_newq_aoq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Assets - Other - Total"
+  },
+  {
+   "id": "fnd6_newq_apq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Account Payable/Creditors - Trade"
+  },
+  {
+   "id": "fnd6_newq_capsq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Capital Surplus/Share Premium Reserve"
+  },
+  {
+   "id": "fnd6_newq_cheq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Cash and Short-Term Investments"
+  },
+  {
+   "id": "fnd6_newq_cogsq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Cost of Goods Sold"
+  },
+  {
+   "id": "fnd6_newq_cstkq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Common/Ordinary Stock (Capital)"
+  },
+  {
+   "id": "fnd6_newq_dlcq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Debt in Current Liabilities"
+  },
+  {
+   "id": "fnd6_newq_dpactq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Depreciation, Depletion and Amortization (Accumulated)"
+  },
+  {
+   "id": "fnd6_newq_dpq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Depreciation and Amortization - Total"
+  },
+  {
+   "id": "fnd6_newq_gdwlq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Goodwill (net)"
+  },
+  {
+   "id": "fnd6_newq_invtq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Inventories - Total"
+  },
+  {
+   "id": "fnd6_newq_lcoq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Current Liabilities - Other - Total"
+  },
+  {
+   "id": "fnd6_newq_lcoxq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Current Liabilities - Other (Sundry)"
+  },
+  {
+   "id": "fnd6_newq_lctq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Current Liabilities - Total"
+  },
+  {
+   "id": "fnd6_newq_loq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Liabilities - Other"
+  },
+  {
+   "id": "fnd6_newq_lseq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Liabilities and Stockholders' Equity - Total"
+  },
+  {
+   "id": "fnd6_newq_ltmibq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Liabilities - Total and Non-controlling Interest"
+  },
+  {
+   "id": "fnd6_newq_miiq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Noncontrolling Interest - Income Account"
+  },
+  {
+   "id": "fnd6_newq_nopiq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Non-Operating Income (Expense) - Total"
+  },
+  {
+   "id": "fnd6_newq_oiadpq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 24,
+   "alphaCount": 31,
+   "longCount": 500,
+   "description": "Operating Income After Depreciation - Quarterly"
+  },
+  {
+   "id": "fnd6_newq_oibdpq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 12,
+   "longCount": 500,
+   "description": "Operating Income Before Depreciation - Quarterly"
+  },
+  {
+   "id": "fnd6_newq_piq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 10,
+   "alphaCount": 11,
+   "longCount": 500,
+   "description": "Pretax Income"
+  },
+  {
+   "id": "fnd6_newq_ppentq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Property, Plant and Equipment - Total (Net)"
+  },
+  {
+   "id": "fnd6_newq_reccoq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Receivables - Current - Other"
+  },
+  {
+   "id": "fnd6_newq_rectq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Receivables - Total"
+  },
+  {
+   "id": "fnd6_newq_rectrq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Receivables - Trade"
+  },
+  {
+   "id": "fnd6_newq_req",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 500,
+   "description": "Retained Earnings"
+  },
+  {
+   "id": "fnd6_newq_saleq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 10,
+   "longCount": 500,
+   "description": "Sales/Turnover (Net)"
+  },
+  {
+   "id": "fnd6_newq_sctq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Total Share Capital"
+  },
+  {
+   "id": "fnd6_newq_seqq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 6,
+   "longCount": 500,
+   "description": "Stockholders' Equity - Total - Quarterly"
+  },
+  {
+   "id": "fnd6_newq_spiq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Special Items"
+  },
+  {
+   "id": "fnd6_newq_tstkq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Treasury Stock - Total (All Capital)"
+  },
+  {
+   "id": "fnd6_newq_txtq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 5,
+   "longCount": 500,
+   "description": "Income Taxes - Total"
+  },
+  {
+   "id": "fnd6_newq_xintq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Interest and Related Expense - Total"
+  },
+  {
+   "id": "fnd6_newq_xoprq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Operating Expense - Total"
+  },
+  {
+   "id": "fnd6_newq_xsgaq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Selling, General and Administrative Expenses"
+  },
+  {
+   "id": "fnd6_nopi",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Nonoperating Income (Expense)"
+  },
+  {
+   "id": "fnd6_nopiosa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Other Non-Operating Inc/Expense"
+  },
+  {
+   "id": "fnd6_nopioy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Other Non-Operating Inc/Expense"
+  },
+  {
+   "id": "fnd6_nopisa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Non-Operating Income (Expense) - Total"
+  },
+  {
+   "id": "fnd6_nopiy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Non-Operating Income (Expense) - Total"
+  },
+  {
+   "id": "fnd6_np",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Notes Payable - Short-Term Borrowings"
+  },
+  {
+   "id": "fnd6_oancfy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 41,
+   "alphaCount": 100,
+   "longCount": 500,
+   "description": "Operating Activities - Net Cash Flow"
+  },
+  {
+   "id": "fnd6_oiadpsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 11,
+   "alphaCount": 12,
+   "longCount": 500,
+   "description": "Operating Income After Depreciation - Semiannual"
+  },
+  {
+   "id": "fnd6_oibdpsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 7,
+   "alphaCount": 7,
+   "longCount": 500,
+   "description": "Operating Income Before Depreciation - Semiannual"
+  },
+  {
+   "id": "fnd6_oibdpy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Income Before Depreciation"
+  },
+  {
+   "id": "fnd6_oproy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Revenues - Other"
+  },
+  {
+   "id": "fnd6_pisa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Pretax Income"
+  },
+  {
+   "id": "fnd6_piy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Pretax Income"
+  },
+  {
+   "id": "fnd6_prstkc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Purchase of Common and Preferred Stock"
+  },
+  {
+   "id": "fnd6_psfix",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Proceeds From Sale of Fixed Assets"
+  },
+  {
+   "id": "fnd6_psfixy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Proceeds - Sale of Fixed Assets"
+  },
+  {
+   "id": "fnd6_purtshr",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Purchase of Treasury Shares"
+  },
+  {
+   "id": "fnd6_purtshry",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Purchase of Treasury Shares"
+  },
+  {
+   "id": "fnd6_recch",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 4,
+   "alphaCount": 7,
+   "longCount": 500,
+   "description": "Accounts Receivable - Decrease (Increase)"
+  },
+  {
+   "id": "fnd6_recchy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Accounts Receivable - Decrease (Increase)"
+  },
+  {
+   "id": "fnd6_recco",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 500,
+   "description": "Receivables - Current - Other"
+  },
+  {
+   "id": "fnd6_rectr",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Receivables - Trade"
+  },
+  {
+   "id": "fnd6_revtsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Revenue - Total"
+  },
+  {
+   "id": "fnd6_revty",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Revenue - Total"
+  },
+  {
+   "id": "fnd6_salesa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Sales/Turnover (Net)"
+  },
+  {
+   "id": "fnd6_saley",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Sales/Turnover (Net)"
+  },
+  {
+   "id": "fnd6_siv",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Sale of Investments"
+  },
+  {
+   "id": "fnd6_sivy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Sale of Investments"
+  },
+  {
+   "id": "fnd6_spisa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Special Items"
+  },
+  {
+   "id": "fnd6_spiy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Special Items"
+  },
+  {
+   "id": "fnd6_sppiv",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Sale of Property, Plant and Equipment and Investments - Gain (Loss)"
+  },
+  {
+   "id": "fnd6_sppivy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Sale of PP&E and Investments - (Gain) Loss"
+  },
+  {
+   "id": "fnd6_sstk",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Sale of Common and Preferred Stock"
+  },
+  {
+   "id": "fnd6_sstky",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Sale of Common and Preferred Stock"
+  },
+  {
+   "id": "fnd6_teq",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Stockholders' Equity - Total"
+  },
+  {
+   "id": "fnd6_txc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Income Taxes - Current"
+  },
+  {
+   "id": "fnd6_txdb",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Deferred Taxes - Balance Sheet"
+  },
+  {
+   "id": "fnd6_txdc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Deferred Taxes (Cash Flow)"
+  },
+  {
+   "id": "fnd6_txdi",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Income Taxes - Deferred"
+  },
+  {
+   "id": "fnd6_txo",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Income Taxes - Other"
+  },
+  {
+   "id": "fnd6_txop",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Taxation - Operating Activities"
+  },
+  {
+   "id": "fnd6_txopy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Taxation - Operating Activities"
+  },
+  {
+   "id": "fnd6_txpd",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Income Taxes Paid"
+  },
+  {
+   "id": "fnd6_txtsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Income Taxes - Total"
+  },
+  {
+   "id": "fnd6_txty",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 500,
+   "description": "Income Taxes - Total"
+  },
+  {
+   "id": "fnd6_txw",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Excise Taxes"
+  },
+  {
+   "id": "fnd6_wcapopc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 5,
+   "alphaCount": 6,
+   "longCount": 500,
+   "description": "Working Capital/Net Operating Assets - Change"
+  },
+  {
+   "id": "fnd6_wcapopcy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Working Capital/Net Operating Assets - Change"
+  },
+  {
+   "id": "fnd6_xacc",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Accrued Expenses"
+  },
+  {
+   "id": "fnd6_xintsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest and Related Expense - Total"
+  },
+  {
+   "id": "fnd6_xinty",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Interest and Related Expense - Total"
+  },
+  {
+   "id": "fnd6_xlr",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Staff Expense - Total"
+  },
+  {
+   "id": "fnd6_xopr",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Operating Expenses - Total"
+  },
+  {
+   "id": "fnd6_xopro",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Expense - Other"
+  },
+  {
+   "id": "fnd6_xoprosa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Expense - Other"
+  },
+  {
+   "id": "fnd6_xoproy",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Expense - Other"
+  },
+  {
+   "id": "fnd6_xoprsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Operating Expense - Total"
+  },
+  {
+   "id": "fnd6_xopry",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 500,
+   "description": "Operating Expense - Total"
+  },
+  {
+   "id": "fnd6_xpp",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Prepaid Expenses"
+  },
+  {
+   "id": "fnd6_xrent",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Rental Expense"
+  },
+  {
+   "id": "fnd6_xsgasa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Selling, General and Administrative Expenses"
+  },
+  {
+   "id": "fnd6_xsgay",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 500,
+   "description": "Selling, General and Administrative Expenses"
+  },
+  {
+   "id": "fnd6_xstfws",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Staff Expense - Wages and Salaries"
+  },
+  {
+   "id": "fnd6_xstsa",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Staff Expense - Wages/Salaries"
+  },
+  {
+   "id": "fnd6_xsty",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 500,
+   "description": "Staff Expense - Wages/Salaries"
+  }
+ ]
+}

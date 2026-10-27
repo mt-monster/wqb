@@ -117,11 +117,22 @@ world-quant-brain-mcp/.venv/Scripts/python.exe -m pytest tests/ -x          # �
 world-quant-brain-mcp/.venv/Scripts/python.exe -m pytest world-quant-brain-mcp/tests   # MCP 包 84 个
 ```
 
-建议激活 pre-commit 钩子（提交前自动跑测试，失败即阻断提交）：
+### 挂载 git 钩子（**新克隆第一步，必做**）
 
 ```bash
-git config core.hooksPath tools/git-hooks
+sh tools/git-hooks/install.sh          # macOS / Linux / Git Bash
+powershell -ExecutionPolicy Bypass -File tools\git-hooks\install.ps1   # Windows PowerShell
+sh tools/git-hooks/install.sh --check  # 自检：exit 0 = 已挂好（CI 也跑这条）
 ```
+
+> ⚠️ **为什么不能只写 `git config core.hooksPath tools/git-hooks`**：`core.hooksPath` 是
+> **本机 git config，不入库** ⇒ 干净克隆、换机器、任何新环境里钩子都**不生效**，
+> `pre-commit`（`audit_structure` / `doc_path_refs` / `destructive_default` / `pytest`）
+> 与 `commit-msg` 会静默不跑。2026-10-24 全库审计实测的 27 项违规（结构 FAIL 14 + skills 测试 13）
+> 就是这么攒出来的。CI 侧由 `.github/workflows/gates.yml` 兜底，但本地仍需先挂钩。
+>
+> 钩子的完整检查清单见 `tools/git-hooks/pre-commit` 头部注释；`--no-verify` 会**整体绕开**五道检查，
+> 只在明确的紧急情况下用，事后补跑一次 `python tools/audit_structure.py`。
 
 ### 启动 MCP 服务
 

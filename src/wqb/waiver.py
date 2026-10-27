@@ -99,6 +99,10 @@ GATE_POLICIES: Dict[str, GatePolicy] = {p.gate: p for p in (
     GatePolicy("semantic", "闸 SEM 字段语义归类", ("user", "agent"), 7, None,
                ("--skip-semantic-gate", "--semantic-gate off|warn", "WQB_SEM_MODE"),
                layer="wave_gate 内置", default="enforce（缺台账 exit 2）"),
+    GatePolicy("full_coverage", "全量覆盖闸（字段 / 模板族 / 边界算子三闸）", ("user", "agent"), 7, None,
+               ("--fcov-mode off|warn", "WQB_FCOV_MODE=off|warn"),
+               layer="wave_gate 内置（数据驱动：战役 reference/ 声明 boundary_ops_<region>.json 即启用）",
+               default="随 region_gates 按日缺省（enforce，2026-10-12 起）"),
     GatePolicy("diversity", "gate.py 闸 6 多样性契约", ("user", "agent"), 3, None,
                ("--skip-diversity-gate",),
                layer="gate.py 闸 6", default="常开（repair / probe 批豁免）"),
@@ -114,6 +118,8 @@ FLAG_TO_GATE: Dict[str, str] = {
     "--semantic-gate off": "semantic",
     "--inspect-mode off": "inspect",
     "--no-prod-family-gate": "prod_family",
+    "--fcov-mode warn": "full_coverage",
+    "--fcov-mode off": "full_coverage",
 }
 
 MODES = ("off", "warn", "enforce")

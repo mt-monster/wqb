@@ -679,6 +679,21 @@ def validate_argv(cmd: Sequence[str]) -> Tuple[bool, Optional[str]]:
     return True, None
 
 
+#: stderr 里「真故障」的签名。只用于**进程仍存活**时的判定：先前的口径是
+#: 「stderr 非空即失败」，2026-10-24 实测被 toolkit 的信息行打穿 ——
+#: gate.py 会把 `[gate] 闸1 verifier = …` 写进 stderr（wave_gate 明确记为
+#: 「不阻断」），于是 USA/macro27_w1 的 batch_track 进程活得好好的、已过 gate
+#: 并读完 6 条表达式，节点却回报 success=False / failed_at_launch。
+#: 进程已退出（rc 非 None）时仍保持「stderr 非空即失败」不变。
+_FATAL_STDERR_RE = re.compile(
+    r"Traceback \(most recent call last\)"
+    r"|(?:^|\n)\s*(?:[A-Za-z_][\w.]*(?:Error|Exception)|SystemExit)\b"
+    r"|(?:^|\n)\s*usage:\s"
+    r"|unrecognized arguments"
+    r"|No module named"
+)
+
+
 def detached_launch_failed(
     proc,
     stderr_log: str,
@@ -686,7 +701,10 @@ def detached_launch_failed(
     stdout_log: Optional[str] = None,
     first_output_sec: float = 0.0,
 ) -> Optional[str]:
-    """detached 启动后的存活握手：进程秒退或 stderr 有内容即判失败。
+    """detached 启动后的存活握手：进程秒退或 stderr 有**故障内容**即判失败。
+
+    进程仍存活时，stderr 只有信息行（无 `_FATAL_STDERR_RE` 命中）⇒ 放行，
+    见该常量上方的 2026-10-24 实证。
 
     2026-09-06 新增。detached 的价值是不阻塞 MCP 调用方，代价是退出码没人
     看 —— argparse 拒绝、ImportError、路径不存在这类"启动即死"全被吞成
@@ -760,6 +778,10 @@ def detached_launch_failed(
         # 正常任务不会在 1.5s 内干净退出；但也可能是极小批次，放行并交给调用方轮询
         return None
     if tail:
+        # 进程仍在跑、且 stderr 里没有任何故障签名 ⇒ 只是信息行（如 gate 的
+        # verifier 路径），不能判失败：那会把「已经派出去了」误报成「没启动」。
+        if rc is None and not _FATAL_STDERR_RE.search(tail):
+            return None
         return f"子进程 stderr 非空（疑似启动失败）：{tail}"
     return None
 

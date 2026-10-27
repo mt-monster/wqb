@@ -200,7 +200,7 @@ def test_index_has_region_table_section():
 
 PROFILE_KEYS = ["region", "entry_verdict", "one_liner", "static", "datasets",
                 "priors", "gate_overrides", "loop_policy", "empirical_anchor"]
-VALID_VERDICTS = {"active", "probe-only", "frozen"}
+VALID_VERDICTS = {"active", "full-coverage", "probe-only", "frozen"}
 
 
 @pytest.mark.parametrize("path", sorted(PROFILES_DIR.glob("*.md")), ids=lambda p: p.stem)

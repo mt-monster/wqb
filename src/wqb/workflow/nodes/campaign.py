@@ -36,11 +36,13 @@ from .._common import (
 )
 
 from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
+from wqb.store import consumption as _consumption  # 「被回测消费」唯一口径（2026-10-20 P1-3）
 #: 走 campaign.py 子命令路由的 subcommand——**subcommand 优先于 stage**（见 run() 内
 #: `if subcommand and subcommand in subcommand_script_map`）。因此传什么 stage 都能路由到
 #: campaign.py，stage 只决定超时预算。约定：assemble-priors 属 S2（priors 是 S2 上游产物）、
-#: diversity-extract 属 S2、ledger/registry/wave 属 S6；不要因 stage 分支再 append 一次。
-_SUBCOMMAND_ROUTED = ("assemble-priors", "diversity-extract", "dataset-experience")
+#: diversity-extract 属 S2、ledger/registry/wave 与 dataset-experience / field-profile 属 S6；
+#: 不要因 stage 分支再 append 一次。
+_SUBCOMMAND_ROUTED = ("assemble-priors", "diversity-extract", "dataset-experience", "field-profile")
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +53,7 @@ _STAGE_TIMEOUTS = {
     "S0": 900,    # 评分走平台分页（EUR 实测 49s）；--calibrate 纯本地
     "S1": 1800,   # scan_fields 全字段扫描（字段多的区域偏慢）
     "S2": 900,    # build_wave 组波
-    "S3": 3600,   # pipeline 回测编排（七槽填槽，最长的一档）
+    "S3": 3600,   # pipeline 回测编排（填槽，槽位 = wqb.config.CONCURRENCY["slots"]，最长的一档）
     "S4": 900,    # review_wave
     "S5": 600,    # quota
     "S6": 600,    # ledger/registry/wave 回写
@@ -122,7 +124,8 @@ def run(
         stage: 阶段（S0/S1/S2/S3/S4/S5/S6）
         dataset: 数据集 ID（如需要）
         wave: 波次号（如需要）
-        subcommand: 子命令（如 ledger/registry/wave/assemble-priors/diversity-extract）
+        subcommand: 子命令（如 ledger/registry/wave/assemble-priors/diversity-extract/
+            dataset-experience/field-profile）
         extra_args: 额外参数列表
         calibrate: S0 专用——是否运行 calibrate 交互审批
         _context: 执行上下文
@@ -205,6 +208,7 @@ def run(
         "assemble-priors": "campaign.py",
         "diversity-extract": "campaign.py",
         "dataset-experience": "campaign.py",
+        "field-profile": "campaign.py",
     }
 
     # ── 缓存检查：calibrate / assemble-priors 结果缓存到 ledger（Dry-Run 2.0 优化） ──
@@ -464,7 +468,9 @@ def run(
         else:
             if dataset:
                 cmd.extend(["--dataset", dataset])
-            if wave:
+            # field-profile 是区域级产物（不按波过滤），目标脚本也不认 --wave；
+            # 其余 routed 子命令保持原样透传。
+            if wave and subcommand != "field-profile":
                 cmd.extend(["--wave", wave])
 
     # 添加额外参数
@@ -1040,7 +1046,7 @@ STOP_RULES_DEFAULTS = {
 #: 积压闸默认参数（区域 thresholds.json `diversity.backlog_gate` 可覆盖；enabled=false 关闭）
 BACKLOG_GATE_DEFAULTS = {
     "enabled": True,
-    "conversion_min": 0.10,       # 区级 conversion（已回测/已生成）低于此值 → 拦截
+    "conversion_min": 0.10,       # 区级 conversion（被回测消费/已生成）低于此值 → 拦截
     "pending_gated_ratio_max": 0.30,  # pending+gated 占比超此值 → 拦截
     "min_expressions": 200,       # 表达式总量低于此值的新区不判（样本不足）
     # ---- 2026-09-17 P0-2：补齐"未消费"口径 ----
@@ -1063,8 +1069,13 @@ def _run_backlog_gate(
     再开新波）此前只是 prose，DB 实证 7 区违反仍在开新波（GLB 0%、EUR 1%、
     GBR/ASI 3%、CHN/KOR 7%、USA 9%）。本闸把它变成 S2/S3 开波前置硬判定：
 
-      - conversion（status 含 backtested/submitted/completed ÷ 总数）< conversion_min
-        且总量 ≥ min_expressions → 拦截（提示先消化近闸积压）
+      - conversion（**被回测消费** ÷ 总数）< conversion_min 且总量 ≥ min_expressions
+        → 拦截（提示先消化近闸积压）。消费口径单源 = `wqb.store.consumption`：
+        status ∈ {backtested,submitted,completed} ∪ id ∈ 回测行 expression_id
+        ∪ alpha_id ∈ 回测行。★ 2026-10-20 P1-3 前只算 status —— EUR 实测 3.5%，
+        真值 6.6%（311 条 status='dropped' 的行实为已回测）；同期 mining_yield 数
+        回测**行**（7.1%）又重复计数，三处各说各话，现并为一套（行数视角仍在
+        evidence.backtested 与 conversion_status_only 里可读）
       - pending+gated 占比 > pending_gated_ratio_max 且总量 ≥ min_expressions
         → 拦截（S2→S3 断链，堆库不消化）
 
@@ -1096,13 +1107,18 @@ def _run_backlog_gate(
             # 放行读取单源 = wqb.waiver（waiver_backlog_<region>_all → 旧键 backlog_gate_override）
             result.update(_waiver.gate_report_fields(_waiver.load(conn, "backlog", region)))
 
-            total, bt, pending_gated, gem_n, selected_n = conn.execute(
+            # 消费口径单源 = wqb.store.consumption（状态集 ∪ 回测行两把规范键）；
+            # 旧库/夹具无 backtest_results 表时退化为纯状态口径（has_backtest_link=False）
+            has_bt = _consumption.has_backtest_link(conn)
+            consumed_pred = _consumption.consumed_sql("e", with_backtest=has_bt)
+            total, bt, pending_gated, gem_n, selected_n, consumed_n = conn.execute(
                 "SELECT COUNT(*), "
-                "SUM(CASE WHEN status IN ('backtested','submitted','completed') THEN 1 ELSE 0 END), "
-                "SUM(CASE WHEN status IN ('pending','gated') THEN 1 ELSE 0 END), "
-                "SUM(CASE WHEN status='gem' THEN 1 ELSE 0 END), "
-                "SUM(CASE WHEN status='selected' THEN 1 ELSE 0 END) "
-                "FROM expressions WHERE region=?",
+                "SUM(CASE WHEN e.status IN ('backtested','submitted','completed') THEN 1 ELSE 0 END), "
+                "SUM(CASE WHEN e.status IN ('pending','gated') THEN 1 ELSE 0 END), "
+                "SUM(CASE WHEN e.status='gem' THEN 1 ELSE 0 END), "
+                "SUM(CASE WHEN e.status='selected' THEN 1 ELSE 0 END), "
+                f"SUM(CASE WHEN {consumed_pred} THEN 1 ELSE 0 END) "
+                "FROM expressions e WHERE e.region=?",
                 (region,),
             ).fetchone()
         finally:
@@ -1116,7 +1132,10 @@ def _run_backlog_gate(
     pending_gated = int(pending_gated or 0)
     gem_n = int(gem_n or 0)
     selected_n = int(selected_n or 0)
-    conversion = bt / total if total else 1.0
+    consumed_n = int(consumed_n or 0)
+    # 2026-10-20 P1-3：conversion 分子 = 被回测消费（含状态被覆盖的已回测行），分子不再只看 status
+    conversion = consumed_n / total if total else 1.0
+    conversion_status_only = bt / total if total else 1.0
     pg_ratio = pending_gated / total if total else 0.0
     # 2026-09-17 P0-2：未消费 = gem + selected + pending + gated（回测之后才叫"已消费"）
     unconsumed = gem_n + selected_n + pending_gated
@@ -1124,7 +1143,10 @@ def _run_backlog_gate(
     result["evidence"] = {
         "total": total, "backtested": bt, "pending_gated": pending_gated,
         "gem": gem_n, "selected": selected_n, "unconsumed": unconsumed,
-        "conversion": round(conversion, 4), "pending_gated_ratio": round(pg_ratio, 4),
+        "consumed": consumed_n,
+        "conversion": round(conversion, 4),
+        "conversion_status_only": round(conversion_status_only, 4),
+        "pending_gated_ratio": round(pg_ratio, 4),
         "unconsumed_ratio": round(uc_ratio, 4),
         "unconsumed_enforced": bool(cfg.get("unconsumed_enforce")),
     }
@@ -1137,7 +1159,8 @@ def _run_backlog_gate(
     hits = []
     if conversion < float(cfg["conversion_min"]):
         hits.append(
-            f"conversion={conversion:.1%}（{bt}/{total}）< {float(cfg['conversion_min']):.0%}："
+            f"conversion={conversion:.1%}（consumed={consumed_n}/{total}，status-only={bt}/{total}）"
+            f"< {float(cfg['conversion_min']):.0%}："
             f"生成远超回测吞吐（S2→S3 断链），先消化近闸积压再开新波"
         )
     if pg_ratio > float(cfg["pending_gated_ratio_max"]):
@@ -1457,9 +1480,15 @@ def _evaluate_stop_rules_axis(
             if hint:
                 hits.append(hint)
     # B2 区级多轴停：窗口内无任何 PASS 且 ≥D 个不同轴全部 FAIL（多轴探索已证伪）
+    # 2026-10-24 修正：axis=None（无回测/无表达式、推不出数据集）**不构成轴组**。
+    # 此前 groups.setdefault(None, ...) 会把一条台账-only 的 FAIL 波当成"第 4 个轴"，
+    # 与下方 B0 注释「axis=None 的波 … 也不满 B2（无轴组）」直接矛盾——实测 USA
+    # orev_w1 门禁即被这个幻影轴拦下（真实轴 3 < D=4）。该类波由 B0 连续未定轴兜底。
     if not any(w["verdict"] == "PASS" for w in waves):
         groups: Dict[Any, List[Dict[str, Any]]] = {}
         for w in waves:
+            if w["axis"] is None:
+                continue
             groups.setdefault(w["axis"], []).append(w)
         qualifying = []
         for axis, members in groups.items():
@@ -1524,6 +1553,7 @@ def _run_stop_rules_gate(
         ≥ consecutive_fail_waves(K) → 拦截（换数据集/换轴）；
       B2 区级多轴停——最近 axis_window 个 closed 波窗口内无任何 PASS，且全部成员
         为 FAIL 的不同轴数 ≥ distinct_fail_axes(D) → 停区（多轴探索已证伪）。
+        axis=None 的波不计入轴数（推不出数据集 ≠ 试过一个新轴），由 B0 兜底。
     可计数 FAIL = verdict==FAIL 且非 UNKNOWN 且非零配额 FAIL（gate_results 有记录
     但 backtest_results 无记录，开关 exempt_zero_cost_waves）且非有信息产出的 FAIL
     （registry_empirical 新增 dead_end 提及该波，开关 exempt_dead_end_waves）。

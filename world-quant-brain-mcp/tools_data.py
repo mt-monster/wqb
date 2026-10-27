@@ -47,6 +47,7 @@ async def get_datafields(
     data_type: str = "",
     search: Optional[str] = None,
     filter_sharpe: bool = True,
+    max_fields: Optional[int] = None,
 ) -> Dict[str, Any]:
     """
     Get available data fields for alpha construction.
@@ -54,14 +55,21 @@ async def get_datafields(
     Use this to find specific data fields you can use in your alpha formulas.
     By default, fields with OS/IS Sharpe ratio < 0 are filtered out to improve quality.
     
+    Full catalog: pass dataset_id and no search — the pull is paginated to the
+    platform-declared count and is all-or-error (payload reports `complete` /
+    `platform_count` / `truncated_reason`). Search is capped by the platform
+    at the first 100 matches and must not be used to build a catalog.
+    
     Args:
         region: Market region (e.g., "USA"、"GLB"、"IND"、"ASI"、"CHN")
         delay: Data delay (0 or 1)
         universe: Universe of stocks (e.g., USA和GLB默认"TOP3000"、IND默认"TOP500"、ASI默认"MINVOL1M"、CHN默认"TOP2000U")
         dataset_id: Specific dataset ID to filter by
         data_type: Type of data (e.g., "MATRIX",'VECTOR','GROUP')
-        search: Search term to filter fields
+        search: Search term to filter fields (first 100 platform matches only)
         filter_sharpe: Filter out fields with OS/IS Sharpe < 0 (default: True)
+        max_fields: Optional cap on returned fields. Default: unlimited for
+            dataset-scoped pulls, 300 for unscoped listings.
     
     Returns:
         Available data fields
@@ -69,7 +77,9 @@ async def get_datafields(
     instrument_type = "EQUITY"
     theme = "false"
     try:
-        return _slim_datafields(await brain_client.get_datafields(instrument_type, region, delay, universe, theme, dataset_id, data_type, search, filter_sharpe))
+        return _slim_datafields(await brain_client.get_datafields(
+            instrument_type, region, delay, universe, theme, dataset_id,
+            data_type, search, filter_sharpe, max_fields))
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
 
@@ -215,6 +225,16 @@ async def get_documentation_page(page_id: str) -> Dict[str, Any]:
 
 _FIELD_RE = re.compile(r"[a-zA-Z_][a-zA-Z0-9_]*")
 
+# 命名参数（keyword argument）识别 —— 2026-10-23 修复。
+# 背景：`_FIELD_RE` 是"裸标识符"正则，没有参数概念，于是 FASTEXPR 里所有
+# `名字=` 形态的命名参数都会被当成字段候选去平台查存在性 ⇒ 必然查不到 ⇒
+# `unknown_fields` 误报（把合法表达式判成字段不存在）。
+# 实测误报：`bucket(rank(close), range="0,1,0.5")` → unknown=["range"]；
+# `ts_target_tvr_hump(x, target_tvr=0.25)` → unknown=["target_tvr"]。
+# `hump(x, hump=0.01)` 之所以没报，只因为 `hump` 恰好也在算子名表里 —— 属侥幸掩盖。
+# FASTEXPR 没有赋值语句，`=` 只出现在命名参数位置，故整段剔除是安全的。
+_PARAM_RE = re.compile(r"(?<![=!<>])\b[a-zA-Z_][a-zA-Z0-9_]*\s*=(?!=)")
+
 
 def _verified_operator_names() -> set:
     """从工作区 data/operators_verified.json 派生实时算子名（S-PRE 算子审计刷新）。
@@ -268,6 +288,10 @@ _OPERATOR_KEYWORDS = _catalog_operator_names() | {
     "add", "subtract", "multiply", "divide", "power", "abs", "log", "sign", "exp",
     "sqrt", "min", "max", "signed_power", "inverse", "purify", "round", "mod",
     "and", "or", "not", "if_else", "is_nan", "true", "false", "null", "nan",
+    # ★ 比较/关系算子（2026-10-22 修复）：平台 Logical 类 6 个，此前**全部漏掉**，
+    #   导致 `greater(...)`/`less(...)` 等被当字段查 → unknown_fields 误报
+    #   （误判算子不可用）。平台实测这 6 个均可正常仿真。
+    "greater", "less", "greater_equal", "less_equal", "equal", "not_equal",
     # cross-sectional
     "rank", "scale", "zscore", "winsorize", "pasteurize", "hump", "reverse",
     "bucket", "quantile", "fill", "trade_when",
@@ -275,7 +299,7 @@ _OPERATOR_KEYWORDS = _catalog_operator_names() | {
     "ts_rank", "ts_zscore", "ts_mean", "ts_std_dev", "ts_delta", "ts_decay_linear",
     "ts_backfill", "ts_regression", "ts_corr", "ts_covariance", "ts_sum",
     "ts_product", "ts_delay", "ts_argmax", "ts_argmin", "ts_scale", "ts_min",
-    "ts_max", "ts_count", "ts_target_tvr_decay", "ts_trend", "ts_stdev",
+    "ts_max", "ts_count", "ts_target_tvr_decay", "ts_target_tvr_hump", "ts_trend", "ts_stdev",
     "ts_average", "ts_median", "ts_momentum", "ts_skewness", "ts_kurtosis",
     "ts_entropy", "ts_kurtosis1", "ts_av_diff",
     # group
@@ -288,6 +312,18 @@ _OPERATOR_KEYWORDS = _catalog_operator_names() | {
     # GROUP dimensions (always available)
     "sector", "industry", "subindustry", "country", "market", "exchange",
     "currency", "ticker", "cusip", "sedol", "isin",
+    # ★ 平台实测补全（2026-10-23）：`GET /operators` 返回的 103 个算子中，下列 35 个
+    #   此前不在手写清单里。live 拉取（`_platform_operator_names`）修好之前，它们
+    #   全部会被误判成"不存在的字段"；即便修好，这份兜底也仍是 `tools_sim.py`
+    #   字段预检的唯一依据（该调用点不传 live 算子表），故按平台实测补齐。
+    "combo_a", "days_from_last_change", "densify", "generate_stats", "in",
+    "kth_element", "last_diff_value", "normalize", "self_corr", "tail",
+    "universe_size", "vec_range", "vector_neut",
+    "ts_arg_max", "ts_arg_min", "ts_count_nans", "ts_ir", "ts_max_diff",
+    "ts_quantile", "ts_returns", "ts_step",
+    "reduce_avg", "reduce_choose", "reduce_count", "reduce_ir", "reduce_kurtosis",
+    "reduce_max", "reduce_min", "reduce_norm", "reduce_percentage", "reduce_powersum",
+    "reduce_range", "reduce_skewness", "reduce_stddev", "reduce_sum",
 }
 
 # 平台内置字段（非 dataset 字段，search 可能查不到但表达式合法）
@@ -300,11 +336,66 @@ _BUILTIN_FIELDS = {
 }
 
 
-def _extract_field_candidates(alpha_expressions) -> List[str]:
+# ── 平台算子全集（运行时动态拉取，2026-10-22 新增）───────────────────────────
+# 背景：_OPERATOR_KEYWORDS 是手写清单，历史上已两次因遗漏造成「校验误杀」——
+#   2026-08-13 漏 ts_returns/ts_ir；2026-10-22 漏 greater/less 等 6 个比较算子。
+# 上游快照 data/operators_verified.json 与 ~/.zcode 的 operators_catalog 又常不可用
+# （实测两者都缺失 → 静默降级为纯手写清单）。⇒ 改为**运行时从平台 /operators 拉取**，
+# 手写清单仅作网络失败时的兜底，从根本上杜绝「手写清单漏算子 → 误判不可用」。
+_PLATFORM_OPS_CACHE: Dict[str, Any] = {"names": None, "ts": 0.0}
+_PLATFORM_OPS_TTL = 3600.0  # 算子表极少变动，缓存 1 小时
+
+
+async def _platform_operator_names(force: bool = False) -> set:
+    """从平台 `GET /operators` 拉取算子名全集（带 TTL 缓存 + 失败静默降级）。
+
+    返回空集表示拉取失败（调用方应回退到 `_OPERATOR_KEYWORDS` 手写清单），
+    **绝不因拉取失败而把算子误当成未知字段**。
+    """
+    now = time.time()
+    if not force and _PLATFORM_OPS_CACHE["names"] is not None:
+        if now - _PLATFORM_OPS_CACHE["ts"] < _PLATFORM_OPS_TTL:
+            return _PLATFORM_OPS_CACHE["names"]
+    try:
+        payload = await brain_client.get_operators()
+        # 2026-10-23 修复：平台 `GET /operators` 返回的是**裸 JSON 数组**，
+        # 只有 `tools_data.get_operators`（MCP 工具）才把它包成
+        # {"results": [...], "count": N}。此前这里写成 `(payload or {}).get("results")`
+        # ⇒ list 没有 .get ⇒ AttributeError ⇒ 静默回退手写清单 ⇒
+        # "运行时拉算子表"这条兜底**从未生效**，手写清单缺的算子仍被当字段误报。
+        # 实测日志：`平台算子表拉取失败（回退手写清单）：'list' object has no attribute 'get'`。
+        if isinstance(payload, dict):
+            results = payload.get("results") or []
+        elif isinstance(payload, list):
+            results = payload
+        else:
+            results = []
+        names = {str(o.get("name")) for o in results
+                 if isinstance(o, dict) and o.get("name")}
+        if names:
+            _PLATFORM_OPS_CACHE["names"] = names
+            _PLATFORM_OPS_CACHE["ts"] = now
+            return names
+    except Exception as exc:  # 网络/鉴权失败 → 降级，不阻塞预检
+        logger.warning(f"平台算子表拉取失败（回退手写清单）：{exc}")
+    return set()
+
+
+def _extract_field_candidates(alpha_expressions,
+                              extra_operators: Optional[set] = None) -> List[str]:
+    """提取表达式中的字段候选，排除算子名。
+
+    Args:
+        extra_operators: 额外算子名集合（传平台实时算子全集），与手写清单取并集。
+    """
     candidates: set = set()
     for expr in alpha_expressions:
-        candidates.update(_FIELD_RE.findall(expr or ""))
-    return sorted(candidates - _OPERATOR_KEYWORDS)
+        # 先剔除命名参数（`range=` / `target_tvr=` / `hump=` …），否则它们会被
+        # 当成字段去查存在性并恒判"不存在"。见 `_PARAM_RE` 注释。
+        body = _PARAM_RE.sub(" ", expr or "")
+        candidates.update(_FIELD_RE.findall(body))
+    ops = _OPERATOR_KEYWORDS | (extra_operators or set())
+    return sorted(candidates - ops)
 
 
 def _ids_from_datafields_payload(payload) -> set:
@@ -472,7 +563,9 @@ async def validate_expressions(
         valid / unknown_fields / fields_checked / platform_field_count
     """
     try:
-        candidates = _extract_field_candidates(alpha_expressions)
+        # 2026-10-22：优先用平台实时算子全集过滤，避免手写清单漏算子造成误杀
+        platform_ops = await _platform_operator_names()
+        candidates = _extract_field_candidates(alpha_expressions, platform_ops)
         if not candidates:
             return {
                 "valid": True,
@@ -561,7 +654,9 @@ async def preflight_expressions(
     """
     try:
         # Step 1: 字段校验
-        candidates = _extract_field_candidates(alpha_expressions)
+        # 2026-10-22：优先用平台实时算子全集过滤，避免手写清单漏算子造成误杀
+        platform_ops = await _platform_operator_names()
+        candidates = _extract_field_candidates(alpha_expressions, platform_ops)
         builtin = [f for f in candidates if f in _BUILTIN_FIELDS]
         to_verify = [f for f in candidates if f not in _BUILTIN_FIELDS]
 

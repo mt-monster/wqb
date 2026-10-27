@@ -20,18 +20,40 @@ sys.path.insert(0, "world-quant-brain-mcp")
 
 
 async def fetch_prod(brain, aid, retries=4):
-    for _ in range(retries):
-        try:
-            r = await brain._request("GET", f"{brain.base_url}/alphas/{aid}/correlations/prod")
-            t = (r.text or "").strip()
-            if t:
-                d = r.json()
-                if d:
-                    return d
-        except Exception:
-            pass
-        await asyncio.sleep(12)
-    return {}
+    """轮询平台 prod 端点取直方图。
+
+    ⚠ **账号级单并发槽**（2026-10-22）：平台 prod 接口每账号仅 1 个在飞。本脚本
+    绕过 MCP 客户端的锁直接轮询 ⇒ 会与 MCP 服务 / 其它脚本抢同一个槽，把对方堵到
+    轮询上限（实测事故：一方卡住，另一方空转 800s+ 拿不到数）。故显式申请同一个
+    跨进程槽（``wqb.correlation_slot``，token 文件与 MCP 侧同名 ⇒ 跨进程真互斥）；
+    拿不到就返回空 dict（调用方按「无数据」处置，不编造）。
+    """
+    try:
+        from wqb.correlation_slot import slot as _corr_slot
+    except Exception:  # pragma: no cover - 依赖缺失时退回无锁
+        _corr_slot = None
+
+    async def _poll():
+        for _ in range(retries):
+            try:
+                r = await brain._request("GET", f"{brain.base_url}/alphas/{aid}/correlations/prod")
+                t = (r.text or "").strip()
+                if t:
+                    d = r.json()
+                    if d:
+                        return d
+            except Exception:
+                pass
+            await asyncio.sleep(12)
+        return {}
+
+    if _corr_slot is None:
+        return await _poll()
+    with _corr_slot(f"prod_bucket_scan({aid})", ttl_sec=retries * 12 + 300.0) as s:
+        if not s.get("acquired"):
+            print(f"[warn] {aid} 账号级相关性槽被其它进程占用 → 跳过（不排队）")
+            return {}
+        return await _poll()
 
 
 def bucket_n(d, lo=0.7, hi=0.8):

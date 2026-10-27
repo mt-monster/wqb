@@ -1,6 +1,7 @@
 # 03 · 区域与数据集特性
 
-> 来源：2026-09-05 ~ 09-29 工作日志实证提炼 ｜ 更新：2026-09-29（§2 的区域口径有 2026-10-04 增补，以各区 `regions/<R>.md` 的 `entry_verdict` 为准）
+> 来源：2026-09-05 ~ 09-29 工作日志实证提炼 ｜ 更新：2026-10-24（§4 增 USA 清单指针，新增 §9 USA 复盘读数）
+> §2 的区域口径有 2026-10-04 增补，以各区 `regions/<R>.md` 的 `entry_verdict` 为准。
 > 所有结论限定实测时的设置与时间范围，跨区迁移前须重新验证。
 
 ---
@@ -154,6 +155,7 @@ KOR 10.5% / GBR 7.1% / HKG 6.7% / USA 5.2% / EUR 2.0% / JPN 1.6%
 | 跨区 | fundamental17 | 六区死（含 `IND-FND17-ANNUAL-DEAD`） |
 | 跨区 | fundamental6 / risk68 / insiders1 | 多区死 |
 | — | `shortinterest3`（KOR） | 死路（`KOR-SHORTINTEREST3-DEAD`） |
+| **USA** | **47 个集**（fundamental 全线 / `risk60` / `other143` / `other635` / `pv106` / `chart_return_model` / `chart_model_alpha` …） | **不在此重复列举**：机读清单 [`tracking/USA/reference/usa_dead_datasets.md`](../../tracking/USA/reference/usa_dead_datasets.md)（每条带 `verdict` / `reason` / `evidence` / `as_of`，120 天过期；`campaign_intel s0-select` 自动剔除） |
 
 ### ★ 跨区死路检查（必做，已固化进 ra-pipeline 步 1）
 
@@ -187,6 +189,14 @@ KOR 10.5% / GBR 7.1% / HKG 6.7% / USA 5.2% / EUR 2.0% / JPN 1.6%
 - ⚠ **`--inspect-mode enforce` 绝不能全局开**：它是 **fail-closed（缺体检包即整波拦截）**，"5 区直接开 enforce" = 把那些区每一波全拦死。
   零写入验证：IND/sentiment21、GBR/pv29、GLB/model264 全 `status=unavailable` → enforce 下拦截。
   **正解：逐波/逐集手动档**，顺序 = 先补包 → 再对新波显式 enforce；当前仅 IND/GBR 有降级包可安全用。
+- ⚠ **宇宙可用性是账号级的，论坛帖里的宇宙名不能照抄**（2026-10-24 USA/D1 实证）：
+  `ILLIQUID_MINVOL1M` 对本账号 **不可用** —— 派发 10/10 条全部
+  `400 {"settings":{"universe":["Universe ILLIQUID_MINVOL1M is not available."]}}`。
+  同一帖作者（USA/D1 同区同 delay）却能用它把 SubU 从 0.7 抬到 2.14–2.28。
+  两个预检口都不可靠：`/options/universes` 返回 **404**（无此端点），
+  `get_datafields(universe="ILLIQUID_MINVOL1M")` 返回 **0 字段**（连 `pv1` 也是 0，所以 0 不代表宇宙非法）
+  ⇒ **唯一判据是派发一次**。已知可用：USA/D1 的 TOP3000 / TOP2000 / TOP1000 / TOP500 / TOP200。
+  推论：抄论坛的「宇宙杠杆」前先花 1 条仿真验证宇宙存在，别把整波压在未验证宇宙上。
 
 ---
 
@@ -198,3 +208,91 @@ KOR 10.5% / GBR 7.1% / HKG 6.7% / USA 5.2% / EUR 2.0% / JPN 1.6%
 - **VFT 诊断**：`S_P`（金字塔覆盖广度）是**唯一结构性瓶颈**（35/212 = 0.165；`S_H` 已饱和 0.91）。
   S_A 拉满到 1.0 总分也只到 0.152，而 P 由 35→70 可使分数近翻倍
   → **提 VFT 最大杠杆是扩覆盖面，不是提 Atom 占比**。
+
+---
+
+## 8. 数据集选池：看「开采度」，不看 category（2026-10-23）
+
+> 来源：2026-10-23 EUR 全池战役（169 集 / ~1700 条仿真）+ DEU 平台实扫。
+> 全文与脚本：`Claude/skills/wq-brain-ra-deu/references/_dataset-scan-method.md`、
+> `Claude/skills/wq-brain-ra-deu/scripts/dataset_scan.py`（区域通用，`--region` 可换）。
+>
+> ⚠ 2026-10-24：这两个文件此前**只存在于宿主安装位**（`~/.workbuddy/skills/...`），仓库没有 ——
+> 违反「不允许源码/结论只存在于工作区」（AGENTS.md §7）。已回灌到 `Claude/skills/`。
+> **写 skill 一律改仓库 `Claude/skills/`**，改完 `python tools/sync_skills.py` 推送到安装位，别反过来。
+
+### 8.1 category 不等于开采进度（EUR 反例）
+
+EUR 画像池 178 集（可挖 169）。按 `INSTITUTIONS / EARNINGS / INSIDERS / MACRO` 四类轮转，
+实际池内只有 **9 个集，且全部已跑完** ⇒ 一整轮 category 轮转 **0 产出**。
+每个 category 在 `dataset_profile` 里往往只有 1–3 个集，**按类目轮转必然空转**。
+
+### 8.2 选池四档
+
+```
+X  不可挖   n_fields < 3 ／ platform_empty ／ coverage 恰为 0
+V  处女地   alpha_count <= 10 且 value_score >= 5
+U  未点亮   我方该 category 已提交 <= 3
+L  已点亮   我方该 category 已提交 > 3
+```
+
+平台 `alpha_count` = 全站该数据集产出的 alpha 数（所有人），2026-10-23 EUR 逐集核对 13/13 与本地一致。
+
+### 8.3 两条最容易踩的语义
+
+1. **`coverage == 0` ≠「覆盖低」**，而是**该 region×universe 没有任何数据**。DEU/TOP500 平台 92 个集里 **63 个是 0**（68%），可挖只剩 29 个。不区分会把废集当处女地。
+2. **覆盖率闸必须分两级**：集级 0.8（处女地放宽 **0.35**）决定「开不开这个集」；字段级 0.6（DEU 实证值）决定「用哪些字段」。**用字段级门槛筛数据集 = 整批误杀处女地**（EUR 21 个集被 0.8 一刀切掉）。
+
+### 8.4 处女地的共性
+
+EUR 实测：`alpha_count ≈ 0` 且 `value_score ≥ 5` 的集**覆盖率普遍低**。
+它们空着不是没信号，是**没人愿意处理脏数据** —— 典型 `equity_forum_data`（VS 6.0／全站 0 alpha／cov 0.41）、
+`workforce_flow_skills`（VS 6.0／0 alpha／cov 0.25）、`news_sentiment_dl`（VS 6.0／2 alpha／cov 0.76）。
+
+### 8.5 本地表不可直接用于选池
+
+本地 `datasets` 表的 `coverage` / `value_score` 大面积缺失或写死占位：
+DEU 193 行里 **121 行 coverage 为空/0**、`value_score` 大量写死为 10。
+离线选池会把 104 个集标成处女地（平台真值 = 5 个）。
+⇒ **选池必须走平台实时画像**（`get_datasets(region, universe, delay)`）。
+
+### 8.6 区域入场状态以各区 skill 面板为准
+
+本表 §1 的 DEU 行写「停投（2026-09-29）」，但 2026-10-08 DEU 战役已产出 2 颗**合规单信号** alpha
+（`58gkLAkk` MODEL S1.75/2Y2.07 已提交 ACTIVE；`9qWX78vX` ANALYST S1.65/F1.47 0 失败），
+skill 面板据此改为 **probe-only**（真瓶颈是「合规字段稀缺」，22494 字段里单信号过线仅 1 个）。
+**判区状态以 skill 生成面板的 `entry_verdict` 为准，本表用于横向对照。**
+
+---
+
+## 9. USA 复盘读数（2026-10-23，1698 回测行 / 110 波）
+
+> 来源与复现：`reports/usa_mining_history_review_20261023.md`（附录 A 为只读复现命令）；
+> 区域层归档：`tracking/USA/reference/usa_mining_conclusions_20261023.md`。
+
+### 9.1 规模与转化
+
+| 指标 | 值 |
+|---|---|
+| RA 硬闸全过 | **177 / 1525（11.6%）**（`payload_json.failed_checks ∩ RA_CHECK_NAMES` 口径） |
+| 走到 prod 实测 | 26（14.7%） |
+| prod<0.7 **且** self<0.7 | **4 颗 ⇒ IS→可提交转化 15.4%** |
+| prod 分布（n=92） | `≥0.8` **44.6%** / `[0.7,0.8)` 12.0% / `<0.7` 43.5% |
+
+### 9.2 闸频次（行级 n=1525）
+
+`LOW_FITNESS` 84.2% > `LOW_SHARPE` 82.4% > `LOW_2Y_SHARPE` 76.5% > `LOW_SUB_UNIVERSE_SHARPE` 42.1%
+> `CONCENTRATED_WEIGHT` 14.6% > `HIGH_TURNOVER` 4.8% > `LOW_TURNOVER` 3.5% > `IS_LADDER_SHARPE` 1.3%。
+前 3 项高度共现 ⇒ **一次修好一个闸没意义，必须换机制或换字段族**；
+SUB 是比值闸（USA 系数 ≈0.433），**抬 S 会同步抬它的要求**。
+
+### 9.3 三条选集判据（本轮新增）
+
+- **判据 A（最重要）**：**「RA 全过率」不能用作选集指标**。它衡量信号强度，交付卡口是「机制在生产池里拥不拥挤」，
+  两者在 USA **反向**（RA 全过率 80%/59.6%/30.4% 的三个集 prod 分别 0.9908/0.9206/0.9636）。
+  ⇒ 选集问**机制是否经典异象**，不是数据集是否冷门。
+- **判据 B**：**max S < 1.58 的数据集直接出局**（`pv106` 0.00 / `shortinterest29` 0.79 / `other596` 0.91 /
+  `multi_horizon_alpha` 1.16 / `fundamental14` 0.84 / `chart_return_model` 1.46）。
+  ⇒ 开波前用 1 条裸探针验强度（`|S|<0.5` kill，0.5–1.0 需改机制）。
+- **判据 C**：**prod 探针前移到第 1 波**（每族 1 颗探针的 prod 额度，不占回测槽，`prod ≥0.75` 即封族）。
+  历史代价：`other143` 用 8 波、`risk60` 用 3 波才测出撞墙 ⇒ **13/110 波（11.8%）白投**。

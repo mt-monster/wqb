@@ -326,7 +326,11 @@ def _slim_datafields(obj):
                        "userCount": f.get("userCount"), "alphaCount": f.get("alphaCount"),
                        "description": _truncate(f.get("description"), 160)})
     out = {"results": fields, "count": payload.get("count")}
-    for k in ("sharpe_filter_applied", "sharpe_filter_removed"):
+    # Completeness metadata must survive slimming, otherwise a capped/partial
+    # pull is indistinguishable from a full catalog on the MCP surface.
+    for k in ("sharpe_filter_applied", "sharpe_filter_removed",
+              "platform_count", "complete", "pages_fetched",
+              "pagination_truncated", "truncated_reason"):
         if k in payload:
             out[k] = payload[k]
     return _rewrap(out, w)

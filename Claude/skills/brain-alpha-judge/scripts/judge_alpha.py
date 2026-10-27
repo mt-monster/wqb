@@ -609,12 +609,20 @@ def internal_hard_gate_failures(alpha_details: Dict[str, Any]) -> List[Dict[str,
         failures.append({"name": "LOW_SHARPE", "value": sharpe, "limit": INTERNAL_HARD_GATES["sharpe_min"]})
     if isinstance(fitness, (int, float)) and fitness < INTERNAL_HARD_GATES["fitness_min"]:
         failures.append({"name": "LOW_FITNESS", "value": fitness, "limit": INTERNAL_HARD_GATES["fitness_min"]})
+    # 2Y 有两个载体：`LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`（`wqb.config.RA_2Y_NAMES` 同义）。
+    # 平台按 alpha 代际只发其一；只认前者会漏判只发 ladder 的颗（2026-10-23 IND 实测）。
+    carriers = {}
     for check in is_block.get("checks") or []:
-        if str(check.get("name", "")).upper() == "LOW_2Y_SHARPE":
-            value = check.get("value")
-            if isinstance(value, (int, float)) and value < INTERNAL_HARD_GATES["two_year_min"]:
-                failures.append({"name": "LOW_2Y_SHARPE", "value": value, "limit": INTERNAL_HARD_GATES["two_year_min"]})
-            break
+        name = str(check.get("name", "")).upper()
+        if name in ("LOW_2Y_SHARPE", "IS_LADDER_SHARPE"):
+            carriers[name] = check.get("value")
+    two_year = carriers.get("LOW_2Y_SHARPE")
+    two_year_name = "LOW_2Y_SHARPE"
+    if not isinstance(two_year, (int, float)):
+        two_year = carriers.get("IS_LADDER_SHARPE")
+        two_year_name = "IS_LADDER_SHARPE"
+    if isinstance(two_year, (int, float)) and two_year < INTERNAL_HARD_GATES["two_year_min"]:
+        failures.append({"name": two_year_name, "value": two_year, "limit": INTERNAL_HARD_GATES["two_year_min"]})
     return failures
 
 

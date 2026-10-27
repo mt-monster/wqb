@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 4 项（2026-09-28）：backtest_results.ra_failed_checks 按 RA 唯一定义写（wqb.config，R3）。
+"""backtest_results.ra_failed_checks 按 RA 唯一定义写（wqb.config，R3）。
 
 这一列唯一的写入方是 CampaignStore.upsert_backtest_rows，此前存 `failed_checks or ra_failed_checks`：
 toolkit 评审（metrics_cache.row_from_alpha）、wqb-db 收批（_flatten_platform_alpha）、campaign_intel
@@ -8,9 +8,20 @@ campaign_intel 的严格产出率、prod-first 选探针、toolkit region_kb 的
 提交队列）都把这一列为空当作"平台 RA 硬闸全过"。两种定义在两种情形下分叉：非 RA 项 FAIL（相关性
 检查跑完后再取数）被记成 RA 不干净；RA 项 WARNING / ERROR 被记成干净。
 
+**2026-10-23（P0-3，USA 复盘 §9.1）两处口径调整**：
+
+  ① **优先级倒过来**：完整未分桶的 `checks`（每项带 result）成为**权威档**——按定义现算。
+     此前「行里给了 ra_failed_checks 就用它」排在这条前面，于是调用方预算好的空名单（RA 全过）
+     盖住了行里 checks 里的 RA-WARNING ⇒ 那一列非空不了。
+     分桶（平台精简结构）形态的 checks 走 `checks_bucketed` 标记，**不重算**（桶摊平会把 ERROR
+     并进 pass 桶），改信调用方预算好的 `ra` 名单。
+  ② **NULL 二义消除**：写库时「RA 全过」落 `'[]'`（已知），NULL 只剩一个含义「这一行的 RA 状态
+     未知」。此前空列表也落 NULL ⇒ 「全过」与「无信息」在列上不可区分，该列不可统计。
+
 夹具是真实载荷裁剪件 tests/fixtures/alpha_detail_cluster_sample.json（13 项 checks，RA 全过），
 在它上面各造一种情形。本文件断言：每条写入路径最终落进这一列的，都等于 wqb.config 从完整 checks
-算出的 RA 失败项；failed_checks（全部 FAIL）照旧留在行里 / payload_json 里。
+算出的 RA 失败项；failed_checks（全部 FAIL）照旧留在行里 / payload_json 里；平台原始 checks 的
+name/result/value/limit 也留在 payload_json.checks（此前全丢 ⇒ 「差多少」不可重建）。
 """
 import asyncio
 import importlib
@@ -107,7 +118,9 @@ def _column(path, wave=WAVE):
 
 
 def _stored(names):
-    return json.dumps(names, ensure_ascii=False) if names else None
+    """写库后的列值：**空列表 = 已知全过 → '[]'**（2026-10-23 P0-3：不再是 NULL）；
+    None = 未知 → NULL。"""
+    return json.dumps(names, ensure_ascii=False) if names is not None else None
 
 
 # ---------------------------------------------------------------- 定义本身
@@ -126,8 +139,21 @@ def test_cases_are_what_they_claim(case):
 def test_store_resolver_precedence_and_shapes():
     ra_warn = [{"name": "LOW_SUB_UNIVERSE_SHARPE", "result": "WARNING"},
                {"name": "SELF_CORRELATION", "result": "FAIL"}, {"name": "LOW_FITNESS", "result": "PENDING"}]
-    # 1. 给了 ra_failed_checks 就用它（空列表 = RA 全过，不再回落到 failed_checks），只留 RA 项名
-    assert ra_failed_names({"ra_failed_checks": [], "failed_checks": ["LOW_SHARPE"], "checks": ra_warn}) == []
+    # 1. 完整未分桶的 checks 是权威档：按定义现算（RA 项 WARNING 算，非 RA 项 FAIL 不算，PENDING 不算）。
+    #    调用方给的名单**盖不住**它 —— 此前正是这个顺序让 RA-WARNING 被空名单盖成"全过"。
+    assert ra_failed_names({"ra_failed_checks": [], "failed_checks": ["LOW_SHARPE"], "checks": ra_warn}) == \
+        ["LOW_SUB_UNIVERSE_SHARPE"]
+    assert ra_failed_names({"ra_failed_checks": ["LOW_SHARPE"], "checks": ra_warn}) == \
+        ["LOW_SUB_UNIVERSE_SHARPE"]
+    assert ra_failed_names({"checks": ra_warn, "failed_checks": ["SELF_CORRELATION"]}) == \
+        ["LOW_SUB_UNIVERSE_SHARPE"]
+    # 2. 分桶（平台精简结构）形态的 checks 不重算 —— 桶摊平会把 ERROR 并进 pass 桶；
+    #    改信调用方预算好的 ra 名单（打 checks_bucketed 标记）。
+    bucketed = {"checks": [{"name": "LOW_FITNESS", "result": "PASS"},
+                           {"name": "LOW_2Y_SHARPE", "result": "PASS"}],
+                "checks_bucketed": True, "ra_failed_checks": ["LOW_2Y_SHARPE"]}
+    assert ra_failed_names(bucketed) == ["LOW_2Y_SHARPE"]
+    # 3. 没有 checks → 用调用方预算好的 ra_failed_checks（只留 RA 项名；空列表 = RA 全过）
     assert ra_failed_names({"ra_failed_checks": ["SELF_CORRELATION", "LOW_2Y_SHARPE", "LOW_2Y_SHARPE"]}) == \
         ["LOW_2Y_SHARPE"]
     assert ra_failed_names({"ra_failed_checks": [{"name": "LOW_SHARPE", "value": 1.2}]}) == ["LOW_SHARPE"]
@@ -136,14 +162,12 @@ def test_store_resolver_precedence_and_shapes():
     assert ra_failed_names({"ra_failed_checks": json.dumps(json.dumps(["LOW_FITNESS"]))}) == ["LOW_FITNESS"]
     assert ra_failed_names({"ra_failed_checks": "LOW_SHARPE, SELF_CORRELATION"}) == ["LOW_SHARPE"]  # 逗号分隔
     assert ra_failed_names({"ra_failed_checks": "", "failed_checks": ["LOW_SHARPE"]}) == []
-    # 2. 没给 → 从完整 checks 按定义现算（RA 项 WARNING 算，非 RA 项 FAIL 不算，PENDING 不算）
-    assert ra_failed_names({"checks": ra_warn, "failed_checks": ["SELF_CORRELATION"]}) == \
-        ["LOW_SUB_UNIVERSE_SHARPE"]
-    # 3. 只有 failed_checks（旧指标缓存行）→ 只留 RA 项名
+    # 4. 只有 failed_checks（旧指标缓存行）→ 只留 RA 项名；**空 ⇒ 未知**（不能认证「全过」）
     assert ra_failed_names({"failed_checks": ["SELF_CORRELATION", "LOW_ROBUST_UNIVERSE_SHARPE"]}) == \
         ["LOW_ROBUST_UNIVERSE_SHARPE"]
-    assert ra_failed_names({"failed_checks": ["SELF_CORRELATION"]}) == []
-    # 什么都没有 → None（入库 NULL）
+    assert ra_failed_names({"failed_checks": ["SELF_CORRELATION"]}) is None
+    assert ra_failed_names({"failed_checks": []}) is None
+    # 什么都没有 → None（未知，入库 NULL）
     assert ra_failed_names({"sharpe": 1.7}) is None
     assert ra_failed_names({"ra_failed_checks": None, "checks": [], "failed_checks": None}) is None
 
@@ -159,22 +183,74 @@ def test_store_writes_the_column_by_definition_and_keeps_failed_checks_in_payloa
             # 完整 checks：RA 项 WARNING 此前被记成干净
             {"alpha_id": "s_warn", "code": "rank(c)", "sharpe": 2.0, "fitness": 1.4,
              "checks": _raw("ra_warning")["is"]["checks"], "failed_checks": []},
-            # 两个键都给：优先 ra_failed_checks（此前优先 failed_checks）
+            # 两个键都给：checks 是权威档（此前优先 ra_failed_checks）
             {"alpha_id": "s_both", "code": "rank(d)", "sharpe": 2.0, "fitness": 1.4,
              "failed_checks": ["SELF_CORRELATION"], "ra_failed_checks": []},
+            # 只有 ra_failed_checks（无 checks）：按它来
+            {"alpha_id": "s_ra_only", "code": "rank(e)", "sharpe": 2.0, "fitness": 1.4,
+             "ra_failed_checks": ["LOW_2Y_SHARPE"]},
+            # 什么 RA 信息都没有：未知 ⇒ NULL（与"全过"区分开）
+            {"alpha_id": "s_unknown", "code": "rank(f)", "sharpe": 2.0, "fitness": 1.4},
         ])
-        assert n == 4
+        assert n == 6
     finally:
         st.close()
-    assert _column(path) == {"s_corr": None, "s_legacy": '["LOW_2Y_SHARPE"]',
-                             "s_warn": '["LOW_SUB_UNIVERSE_SHARPE"]', "s_both": None}
+    assert _column(path) == {"s_corr": None,                    # 只知"没有 RA 项 FAIL"⇒ 未知（不是全过）
+                             "s_legacy": '["LOW_2Y_SHARPE"]',
+                             "s_warn": '["LOW_SUB_UNIVERSE_SHARPE"]',
+                             "s_both": "[]",                     # 调用方给的名单 = 已知全过
+                             "s_ra_only": '["LOW_2Y_SHARPE"]',
+                             "s_unknown": None}                  # 未知 ⇒ NULL
     conn = sqlite3.connect(str(path))
     try:
         payload = conn.execute("SELECT json_extract(payload_json, '$.failed_checks') FROM backtest_results "
                                "WHERE alpha_id='s_corr'").fetchone()[0]
+        # 2026-10-23（P0-2）：平台原始 checks 落 payload_json.checks —— name/result/value/limit 齐
+        # （此前整段丢失 ⇒ "差多少"不可重建、RA 项的 WARNING/ERROR 不可见）
+        checks_json = conn.execute("SELECT json_extract(payload_json, '$.checks') FROM backtest_results "
+                                   "WHERE alpha_id='s_warn'").fetchone()[0]
     finally:
         conn.close()
     assert json.loads(payload) == ["SELF_CORRELATION"]                      # 全部 FAIL 照旧在 payload 里
+    kept = json.loads(checks_json)
+    assert [c["name"] for c in kept] == [c["name"] for c in _raw("ra_warning")["is"]["checks"]]
+    warn = next(c for c in kept if c["name"] == "LOW_SUB_UNIVERSE_SHARPE")
+    assert warn["result"] == "WARNING"
+    assert "value" in warn and "limit" in warn                              # 差多少留得住
+
+
+def test_ra_warning_row_must_never_land_as_all_pass(tmp_path):
+    """报告 P0-3 的验收口径：故意构造含 RA-WARNING 的行，写库后该列**非空**。
+
+    此前该行要么被记成"RA 全过"（空名单盖住 WARNING），要么落 NULL（空列表当 falsy）——
+    两种都让"这一列可统计"落空。
+    """
+    path = tmp_path / "wqb.db"
+    st = CampaignStore(str(path))
+    try:
+        st.upsert_backtest_rows("IND", WAVE, [
+            {"alpha_id": "w1", "code": "rank(x)", "sharpe": 2.0, "fitness": 1.4,
+             "checks": _raw("ra_warning")["is"]["checks"]},
+        ])
+    finally:
+        st.close()
+    assert _column(path)["w1"] == '["LOW_SUB_UNIVERSE_SHARPE"]'
+
+
+def test_all_pass_row_is_known_empty_not_null(tmp_path):
+    """「RA 全过」写 '[]'（已知），不写 NULL（未知）—— 该列要能统计就得分得开这两种。"""
+    path = tmp_path / "wqb.db"
+    st = CampaignStore(str(path))
+    try:
+        st.upsert_backtest_rows("IND", WAVE, [
+            {"alpha_id": "p1", "code": "rank(x)", "sharpe": 2.0, "fitness": 1.4,
+             "checks": _raw("clean")["is"]["checks"]},
+        ])
+    finally:
+        st.close()
+    col = _column(path)["p1"]
+    assert col == "[]"
+    assert col is not None
 
 
 # ---------------------------------------------------------------- 每条写入路径
@@ -233,13 +309,42 @@ def test_slim_harvest_shape_uses_the_precomputed_ra_block(case, db_mcp):
 
 
 def test_row_from_alpha_without_wqb_falls_back_through_the_store(monkeypatch):
-    """toolkit 装在仓库外、找不到 wqb 包：行里不带 ra_failed_checks，入库时按 failed_checks 只留 RA 项名。"""
+    """toolkit 装在仓库外、找不到 wqb 包：行里不带 ra_failed_checks（调用方没预算）。
+
+    但 P0-2 之后这一行**带完整 checks**（name/result/value/limit）⇒ 存储层走权威档现算 ⇒
+    仍能判出 RA 状态；这是「载荷保真」带来的直接收益。
+    """
     sys.modules.pop("metrics_cache", None)
     mc = importlib.import_module("metrics_cache")
     monkeypatch.setitem(sys.modules, "wqb.config", None)                     # import wqb.config → ImportError
     row = mc.row_from_alpha("t4_corr_fail", _raw("corr_fail"))
     assert "ra_failed_checks" not in row and row["failed_checks"] == ["SELF_CORRELATION"]
-    assert ra_failed_names(row) == []
+    assert row["checks"], "P0-2：平台原始 checks 必须随行透传"
+    assert ra_failed_names(row) == []                                        # 非 RA 项 FAIL 不算 RA 失败
+    # 只剩 failed_checks 一档（无 checks、无调用方名单）⇒ 未知，不能认证「全过」
+    assert ra_failed_names({"failed_checks": ["SELF_CORRELATION"]}) is None
+
+
+def test_row_from_alpha_reads_two_year_from_either_platform_carrier():
+    """2Y 按 alpha 代际只发 LOW_2Y_SHARPE 或 IS_LADDER_SHARPE 之一（`wqb.config.RA_2Y_NAMES`）。
+
+    toolkit 评审此前只认前者 ⇒ 只发 ladder 的颗 `two_year_sharpe=None`，
+    `review_wave.walls` 标 2Y_UNKNOWN 并跳过 2Y 墙（2026-10-23 IND/wave232 实测 10/29 颗）。
+    """
+    sys.modules.pop("metrics_cache", None)
+    mc = importlib.import_module("metrics_cache")
+
+    raw = _raw("clean")
+    low = next(c for c in raw["is"]["checks"] if c["name"] == "LOW_2Y_SHARPE")
+    low["name"] = "IS_LADDER_SHARPE"
+    assert mc.row_from_alpha("t4_ladder", raw)["two_year_sharpe"] == low["value"]
+
+    # 两个载体同时存在：LOW_2Y_SHARPE 优先（更直接的 2Y 读数）
+    both = _raw("clean")
+    low2 = next(c for c in both["is"]["checks"] if c["name"] == "LOW_2Y_SHARPE")
+    both["is"]["checks"].append({"name": "IS_LADDER_SHARPE", "result": "PASS",
+                                 "value": low2["value"] + 1.0})
+    assert mc.row_from_alpha("t4_both", both)["two_year_sharpe"] == low2["value"]
 
 
 # ---------------------------------------------------------------- 端到端：收批入库 → 严格产出率

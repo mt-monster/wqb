@@ -9,6 +9,7 @@ import logging
 import re
 import sys
 import time
+import weakref
 from datetime import datetime
 from typing import Dict, Any, List
 
@@ -267,7 +268,15 @@ class ForumClient:
             self.max_concurrency = max(1, int(os.getenv("FORUM_MAX_CONCURRENCY", "1")))
         except Exception:
             self.max_concurrency = 1
-        self._forum_operation_semaphore = asyncio.Semaphore(self.max_concurrency)
+        # 并发闸门**不能**在这里建：asyncio.Semaphore 会绑定到「首次使用时正在运行的事件循环」。
+        # 本类的协程在 Windows 上通常由 _run_in_proactor() 放到**新线程的新 ProactorEventLoop**
+        # 里执行（主循环是 SelectorEventLoop，无法 spawn 子进程），与主循环不是同一个 loop，
+        # 共享同一个 Semaphore 会在 `async with` 里抛
+        #   RuntimeError('<asyncio.locks.Semaphore ...> is bound to a different event loop')
+        # 且首次异常后 _value 已被扣到 0 却不归还，闸门永久卡死（表现 locked, waiters:1），
+        # 必须重启进程才能复位。故改为按事件循环惰性建，用 WeakKeyDictionary 缓存，
+        # 循环 close()+gc 后自动释放，无泄漏（2026-10-26 实测修复）。
+        self._forum_sem_by_loop: "weakref.WeakKeyDictionary" = weakref.WeakKeyDictionary()
         # The session is mainly used for the initial authentication via brain_client
         self.session = requests.Session()
         self.session.headers.update({
@@ -289,6 +298,20 @@ class ForumClient:
         if not proxy_url:
             return None
         return {"http": proxy_url, "https": proxy_url}
+
+    def _forum_sem(self) -> "asyncio.Semaphore":
+        """取「当前事件循环」对应的并发闸门（不存在则新建）。
+
+        每个事件循环各持一把 Semaphore，从根上避免跨循环绑定报错。
+        用 WeakKeyDictionary 缓存：_run_in_proactor() 每次调用都新建线程+循环，
+        循环关闭并 GC 后条目自动消失，不会随调用次数累积。
+        """
+        loop = asyncio.get_running_loop()
+        sem = self._forum_sem_by_loop.get(loop)
+        if sem is None:
+            sem = asyncio.Semaphore(self.max_concurrency)
+            self._forum_sem_by_loop[loop] = sem
+        return sem
 
     async def _ensure_support_session(self, email: str, password: str, locale: str = "zh-cn", timeout_seconds: int = 30):
         """Establish a Zendesk support session using the authenticated BRAIN session."""
@@ -486,7 +509,7 @@ class ForumClient:
     async def _get_glossary_terms_impl(self, email: str, password: str) -> List[Dict[str, str]]:
         """Glossary implementation (assumes ProactorEventLoop-compatible context)."""
 
-        async with self._forum_operation_semaphore:
+        async with self._forum_sem():
             async with async_playwright() as p:
                 browser = None
                 try:
@@ -540,7 +563,7 @@ class ForumClient:
         
         async def _do_search():
             nonlocal browser
-            async with self._forum_operation_semaphore:
+            async with self._forum_sem():
                 async with async_playwright() as p:
                     try:
                         log(f"Starting forum search for '{search_query}'", "INFO")
@@ -720,7 +743,7 @@ class ForumClient:
     async def read_full_forum_post(self, email: str, password: str, post_url_or_id: str, include_comments: bool = True) -> Dict[str, Any]:
         """Read a complete forum post and its comments via Zendesk JSON API."""
         try:
-            async with self._forum_operation_semaphore:
+            async with self._forum_sem():
                 log("Starting forum post reading process via Zendesk API", "INFO")
 
                 post_id = _extract_post_id(post_url_or_id)

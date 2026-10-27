@@ -28,8 +28,16 @@
   ``ts_backfill(x, 120)`` 这种位置写法有 2800+ 处历史实证，绝不能误杀）
 * ``...`` / ``..``         → 变参，位置参数无上限，如 ``max(x, y, ..)``
 
-**未知算子一律放行**：幽灵算子由 :mod:`wqb.expression.operator_audit` 负责，
-本闸只管它在 catalog 里认得的算子，避免双重误报。
+**未知算子 fail-closed**（2026-10-23 修正）：不在平台算子目录里的算子直接报
+``[UNKNOWN_OP]``，``wqb.config.GHOST_OPERATORS`` 里的报 ``[GHOST]``。
+
+此前这里写的是"未知算子一律放行、交给 operator_audit"，结果是
+``ensure_safe_for_dispatch`` 对 ``ts_max`` 报了 8/8 PASS，而平台回
+``Attempted to use inaccessible or unknown operator "ts_max"`` 并 CANCELLED
+整批（2026-10-22 波 84，8 个槽位零信息）。元数闸报 PASS 却被平台判 unknown，
+等于把"我没有这个算子的签名"当成"这个算子合法"—— 存在性必须由 catalog 正面证明。
+
+宽松扫描（含截断脏数据 / 自定义算子）显式传 ``strict_unknown=False``。
 
 数据源优先级：
 
@@ -53,13 +61,16 @@ import os
 import re
 from dataclasses import dataclass, field
 from functools import lru_cache
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, FrozenSet, Iterable, List, Optional, Sequence, Tuple
+
+from wqb.config import GHOST_OPERATORS
 
 __all__ = [
     "OpSignature",
     "ArityError",
     "parse_definition",
     "load_signatures",
+    "load_catalog_names",
     "iter_call_sites",
     "check_expression",
     "check_expressions",
@@ -370,6 +381,30 @@ def load_signatures(path: Optional[str] = None) -> Dict[str, OpSignature]:
     return _apply_overrides({})
 
 
+@lru_cache(maxsize=4)
+def load_catalog_names(path: Optional[str] = None) -> FrozenSet[str]:
+    """平台算子目录里的全部算子名（**含推不出签名的**）。
+
+    ``load_signatures()`` 只保留能解析出 ``name(...)`` 形态的条目；目录里
+    ``in`` / ``universe_size`` 是中缀/无参形态，解析后没有签名。存在性判定
+    必须用本函数，否则这两个会被误报成"未知算子"。
+    """
+    paths = [path] if path else _catalog_candidates()
+    for p in paths:
+        if p and os.path.isfile(p):
+            try:
+                with open(p, encoding="utf-8") as f:
+                    payload = json.load(f)
+            except (OSError, json.JSONDecodeError):
+                continue
+            names = {str(entry.get("name") or "").strip()
+                     for entry in _iter_catalog_entries(payload)}
+            names.discard("")
+            if names:
+                return frozenset(names)
+    return frozenset()
+
+
 # ---------------------------------------------------------------------------
 # 表达式扫描
 # ---------------------------------------------------------------------------
@@ -413,18 +448,35 @@ def iter_call_sites(expr: str) -> List[CallSite]:
 
 
 def check_expression(expr: str,
-                     signatures: Optional[Dict[str, OpSignature]] = None
+                     signatures: Optional[Dict[str, OpSignature]] = None,
+                     *,
+                     strict_unknown: bool = True,
                      ) -> List[str]:
-    """校验单条表达式的算子元数 + 命名参数；返回错误列表（空 = PASS）。
+    """校验单条表达式的算子存在性 + 元数 + 命名参数；返回错误列表（空 = PASS）。
 
-    catalog 里没有的算子一律跳过（幽灵算子归 operator_audit 管），本闸不
-    制造双重误报。
+    **存在性 fail-closed**（2026-10-23 ``ts_max`` 事故）：不在平台算子目录里的
+    算子报 ``[UNKNOWN_OP]``；``wqb.config.GHOST_OPERATORS`` 里的报 ``[GHOST]``。
+    目录里存在但推不出签名的（``in`` / ``universe_size``）只跳过元数、不报未知。
+
+    ``strict_unknown=False`` 仅用于扫描已归档 / 截断的宽松语料，**发批路径不得用**。
     """
     sigs = signatures if signatures is not None else load_signatures()
+    known = set(sigs) | set(load_catalog_names())
     errors: List[str] = []
     for site in iter_call_sites(expr):
         sig = sigs.get(site.name)
         if sig is None:
+            if site.name in GHOST_OPERATORS:
+                errors.append(
+                    f"[GHOST] {site.name} 是已登记幽灵算子（平台不存在），"
+                    f"发批必然 ERROR 并连坐 CANCELLED 整批；"
+                    f"替代算子查 operator_audit / community_tpl_library")
+            elif strict_unknown and site.name not in known:
+                errors.append(
+                    f'[UNKNOWN_OP] {site.name} 不在平台算子目录（{len(known)} 个）里；'
+                    f'平台会回 Attempted to use inaccessible or unknown operator '
+                    f'"{site.name}" 并连坐 CANCELLED 整批。'
+                    f'若平台确已上线该算子，先跑 python tools/refresh_operator_catalog.py')
             continue
         n_pos = len(site.positional)
 
@@ -474,11 +526,14 @@ def check_expression(expr: str,
 
 
 def check_expressions(expressions: Sequence,
-                      signatures: Optional[Dict[str, OpSignature]] = None
+                      signatures: Optional[Dict[str, OpSignature]] = None,
+                      *,
+                      strict_unknown: bool = True,
                       ) -> Dict:
     """批量校验；返回 ``{ok, total, passed, items:[{id, expression, errors}]}``。
 
     ``expressions`` 元素可以是字符串，也可以是 ``(id, expr)`` 二元组。
+    ``strict_unknown`` 语义同 :func:`check_expression`——发批路径保持缺省 True。
     """
     sigs = signatures if signatures is not None else load_signatures()
     items: List[Dict] = []
@@ -487,7 +542,7 @@ def check_expressions(expressions: Sequence,
             cid, expr = item
         else:
             cid, expr = i, item
-        errs = check_expression(str(expr), sigs)
+        errs = check_expression(str(expr), sigs, strict_unknown=strict_unknown)
         items.append({"id": cid, "expression": expr,
                       "valid": not errs, "errors": errs})
     passed = sum(1 for it in items if it["valid"])
@@ -508,12 +563,16 @@ def format_report(report: Dict) -> str:
 
 
 def ensure_safe_for_dispatch(expressions: Sequence[str]) -> None:
-    """发批前硬闸：任一表达式元数违规即抛 :class:`ArityError`。"""
+    """发批前硬闸：任一表达式**算子不存在 / 元数违规 / 命名参数违规**即抛。
+
+    存在性判定是 fail-closed 的——平台目录里查不到的算子（如 2026-10-22 事故的
+    ``ts_max``）与已登记幽灵算子一样，在本地就挡住，不让它烧掉整批槽位。
+    """
     report = check_expressions(expressions)
     if not report["ok"]:
         bad = [it for it in report["items"] if not it["valid"]]
         detail = "; ".join(f"{it['expression']} -> {it['errors']}" for it in bad)
-        raise ArityError(f"{len(bad)} 条表达式元数违规: {detail}")
+        raise ArityError(f"{len(bad)} 条表达式未过算子闸: {detail}")
 
 
 def _main(argv: List[str]) -> int:

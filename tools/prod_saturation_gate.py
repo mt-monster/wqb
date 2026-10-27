@@ -19,8 +19,17 @@ workflow_gem 调用。
   unavailable—— DB 无该区域 alpha 记录：不阻断，报告"本闸未生效"
 
 饱和判定（两维度取 OR）：
-  1. 字段级：字段 F 出现在 ≥ field_hit_max 条 S≥min_sharpe 的
-     历史 alpha 表达式中 → F 视为饱和字段
+  1. 配方级（2026-10-21 修正；原为字段级）：**（字段集 × 分组轴 × 归一化算子）**
+     这个配方在 S≥min_sharpe 的历史 alpha 中出现，且这些 alpha **已知 prod_corr** 的 ≥50%
+     撞墙（且撞墙 ≥ min_prod_hits 条）→ 该配方饱和，同配方的候选被拦截。
+     **为什么按轴分层**：分组轴 = 持仓组合的骨架，同一组字段换轴就是换组合 ⇒
+     prod 相关性不同。EUR 实证（2026-10-21，fundamental72）：sector 轴 CFO/TA×
+     EBITDA>NI → prod 0.7571 / 0.7553 撞墙；同一字段集的 industry 轴 →
+     prod 0.6747 破墙。按字段聚合会把「已探明能破墙的配方」一起误杀
+     （自我指涉误报：自家高 Sharpe alpha 把自家字段染成饱和）。
+     **为什么归一化算子也分层**：同轴同载荷换归一化位（group_zscore / group_rank /
+     group_neutralize）仍是不同持仓组合（EUR 实测 zscore 四个闸门同时优于 rank）
+     ⇒ 撞墙证据不跨归一化位外推。
   2. 数据集级：当前 wave 的 dataset 在 S≥min_sharpe 历史 alpha 中
      占比 ≥ dataset_share_max 且这些 alpha 的 prod_corr 全 ≥0.7 →
      该 dataset 视为饱和数据集
@@ -60,10 +69,105 @@ _CALL_RE = re.compile(r"\b([a-z_][a-z0-9_]*)\s*\(")
 _KWARG_RE = re.compile(r"\b([a-z_][a-z0-9_]*)\s*=")
 _RESERVED = {
     "true", "false", "nan", "industry", "subindustry", "sector", "market",
-    "country", "exchange", "and", "or", "not", "cap", "close", "open",
+    "country", "exchange", "sta1_allc5", "and", "or", "not", "cap", "close", "open",
     "high", "low", "volume", "vwap", "returns", "adv20", "sharesout",
     "free_float", "split", "dividend",
 }
+
+#: 平台分组轴白名单（platform_constraints.json 的 group_identifiers）——
+#: 分组轴决定持仓组合 ⇒ prod 相关性必须按轴分层，不能按字段聚合。
+_GROUP_AXES = {
+    "sector", "subindustry", "industry", "market", "country", "exchange",
+    "sta1_allc5",
+}
+
+#: 带分组参数的算子（第二个顶层参数 = 分组轴）
+_GROUP_OPS = (
+    "group_rank", "group_zscore", "group_neutralize", "group_scale",
+    "group_percentage", "group_backfill", "group_mean", "group_max",
+    "group_min", "group_sum", "group_std", "group_median", "group_vector_neut",
+)
+
+
+def _split_top_args(inner: str) -> List[str]:
+    """按顶层逗号切分实参（括号内逗号不算）。"""
+    args: List[str] = []
+    depth = 0
+    cur: List[str] = []
+    for ch in inner:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        if ch == "," and depth == 0:
+            args.append("".join(cur))
+            cur = []
+            continue
+        cur.append(ch)
+    args.append("".join(cur))
+    return args
+
+
+def extract_group_axes(expr: str) -> List[str]:
+    """提取表达式里的分组轴（``group_*`` 算子的分组实参）。
+
+    **为什么按轴分层（EUR 实证 2026-10-21）**：同一组字段在**不同分组轴**上
+    是**不同持仓组合** ⇒ prod 相关性不同。实测 EUR fundamental72：
+    sector 轴 CFO/TA×EBITDA>NI → prod 0.7571 / 0.7553（撞墙），
+    industry 轴同一字段集 → prod 0.6747（破墙）。把两者聚合成「字段级饱和」
+    会把**已探明能破墙的配方**一起拦掉（自我指涉误报）。
+    """
+    out: List[str] = []
+    low = expr.lower()
+    for op in _GROUP_OPS:
+        for m in re.finditer(r"\b%s\s*\(" % op, low):
+            i = m.end()
+            depth = 1
+            buf: List[str] = []
+            while i < len(low):
+                ch = low[i]
+                if ch == "(":
+                    depth += 1
+                elif ch == ")":
+                    depth -= 1
+                    if depth == 0:
+                        break
+                buf.append(ch)
+                i += 1
+            args = _split_top_args("".join(buf))
+            for a in args[1:]:
+                a = a.strip()
+                if a and "(" not in a and a in _GROUP_AXES:
+                    out.append(a)
+                    break
+    return sorted(set(out))
+
+
+def extract_group_ops(expr: str) -> List[str]:
+    """提取表达式里用到的归一化 / 分组算子名（``group_*``）。
+
+    **为什么归一化位也要进配方键（EUR 实证 2026-10-21）**：同一字段集 + 同一分组轴，
+    换归一化位仍是**不同持仓组合**（实测 group_zscore 与 group_rank 同轴同载荷
+    ⇒ S/F/2Y/sub 四个闸门同时上台阶）⇒ 撞墙证据不能跨归一化位外推。
+    """
+    low = expr.lower()
+    out: List[str] = []
+    for op in _GROUP_OPS:
+        if re.search(r"\b%s\s*\(" % op, low):
+            out.append(op)
+    return sorted(set(out))
+
+
+def recipe_key(expr: str) -> tuple:
+    """配方键 = (字段集, 分组轴元组, 归一化算子集)。
+
+    prod 撞墙是**配方级**事实：同字段集换轴 / 换归一化位即换持仓组合 ⇒
+    撞墙证据只在该键上成立（EUR：sector×CFO/TA×zscore 0.7571 撞墙，
+    industry×CFO/TA×zscore 0.6747 破墙；group_rank 变体不因 zscore 撞墙被连坐）。
+    """
+    return (frozenset(extract_fields(expr)),
+            tuple(extract_group_axes(expr)),
+            frozenset(extract_group_ops(expr)))
 
 
 def extract_fields(expr: str) -> List[str]:
@@ -141,34 +245,48 @@ def check_wave(
 
     report["status"] = "enforced"
 
-    # ---- 字段级饱和统计 ----
+    # ---- 配方级饱和统计（字段集 × 分组轴）----
+    # 2026-10-21 修正（EUR 实证）：原实现按**字段**聚合撞墙证据 ⇒ 同一组字段在不同
+    # 分组轴上的读数被混在一起，于是「sector 轴撞墙（0.7571/0.7553）」会把
+    # 「industry 轴已探明破墙（0.6747）」的同字段配方一起误判饱和 —— 自我指涉误报，
+    # 直接拦住后续整族挖掘。prod 相关性是**持仓组合**的性质，分组轴就是组合的骨架，
+    # 故证据必须按（字段集 × 轴）分层。
     field_hits: Counter = Counter()
     field_prod_hits: Counter = Counter()   # 该字段 alpha 中 prod_corr >= prod_wall 的条数
     field_prod_known: Counter = Counter()  # 该字段 alpha 中 prod_corr 已知的条数
+    recipe_known: Counter = Counter()      # 每个配方上 prod 已知的 alpha 条数
+    recipe_walls: Counter = Counter()      # 每个配方上 prod 撞墙的 alpha 条数
     for r in rows:
         expr = r.get("expression") or ""
         pc = r.get("prod_correlation")
-        for f in set(extract_fields(expr)):
+        fields = set(extract_fields(expr))
+        for f in fields:
             field_hits[f] += 1
             if pc is not None:
                 field_prod_known[f] += 1
                 if float(pc) >= cfg["prod_wall"]:
                     field_prod_hits[f] += 1
+        key = recipe_key(expr)
+        if pc is not None:
+            recipe_known[key] += 1
+            if float(pc) >= cfg["prod_wall"]:
+                recipe_walls[key] += 1
     # 2026-09-19 修正：只数"本账户 IS 过闸 alpha 出现次数"会把修复循环里的同字段变体误判饱和
     # （IND mean_flash_estimate_eps prod 0.58 却被判饱和拦下 w179）。饱和必须有 prod 撞墙证据：
-    # 出现 >= field_hit_max 且 (已知 prod 的条数中 >= 50% 撞墙，且撞墙 >= min_prod_hits)；
-    # 完全没有 prod 信息的字段只记 candidate（报告里列出，不判 FAIL）。
+    # 该**配方**出现 >= field_hit_max 且 (已知 prod 的条数中 >= 50% 撞墙，且撞墙 >= min_prod_hits)；
+    # 完全没有 prod 信息的配方只记 candidate（报告里列出，不判 FAIL）。
     min_prod_hits = int(cfg.get("min_prod_hits", 2))
-    saturated_fields = set()
+    saturated_recipes = set()
     saturation_candidates = set()
+    for key, known in recipe_known.items():
+        walls = recipe_walls[key]
+        if known and walls >= min_prod_hits and walls / known >= 0.5:
+            saturated_recipes.add(key)
     for f, n in field_hits.items():
-        if n < cfg["field_hit_max"]:
-            continue
-        known, walls = field_prod_known[f], field_prod_hits[f]
-        if known == 0:
+        if n >= cfg["field_hit_max"] and field_prod_known[f] == 0:
             saturation_candidates.add(f)
-        elif walls >= min_prod_hits and walls / known >= 0.5:
-            saturated_fields.add(f)
+    # 报告口径：饱和字段 = 出现在已撞墙配方里的字段（向后兼容旧字段名）
+    saturated_fields = sorted({f for key in saturated_recipes for f in key[0]})
 
     # ---- 数据集级饱和统计 ----
     ds_counter: Counter = Counter()
@@ -207,7 +325,7 @@ def check_wave(
         except Exception:
             pass
 
-    # ---- 逐表达式校验 ----
+    # ---- 逐表达式校验（按配方 = 字段集 × 分组轴）----
     violations = []
     n_checked = 0
     for i, expr in enumerate(exprs):
@@ -215,20 +333,31 @@ def check_wave(
         if not fields:
             continue
         n_checked += 1
-        hit = sorted(set(fields) & saturated_fields)
-        if hit:
+        key = recipe_key(expr)
+        if key in saturated_recipes:
             violations.append({
                 "index": i,
-                "fields": hit,
-                "reason": f"饱和字段 {hit}（各出现在 ≥{cfg['field_hit_max']} 条"
-                          f" S≥{cfg['min_sharpe']} 历史 alpha）",
+                "fields": sorted(key[0]),
+                "axes": list(key[1]),
+                "norm_ops": sorted(key[2]),
+                "reason": "配方已确认撞 prod 墙（字段集 %s / 分组轴 %s / 归一化 %s；"
+                          "≥%d 条 S≥%s 历史 alpha 中 ≥50%% 撞墙）"
+                          % (sorted(key[0]), list(key[1]) or ["无分组轴"],
+                             sorted(key[2]) or ["无分组算子"],
+                             cfg["field_hit_max"], cfg["min_sharpe"]),
                 "expr": expr[:100],
             })
 
     report.update({
         "n_history": len(rows),
         "n_checked": n_checked,
-        "saturated_fields": sorted(saturated_fields),
+        "saturated_fields": saturated_fields,
+        "saturated_recipes": [
+            {"fields": sorted(k[0]), "axes": list(k[1]), "norm_ops": sorted(k[2]),
+             "known": recipe_known[k], "walls": recipe_walls[k]}
+            for k in sorted(saturated_recipes,
+                            key=lambda k: (sorted(k[0]), k[1], sorted(k[2])))
+        ],
         "saturation_candidates_no_prod": sorted(saturation_candidates),
         "saturated_dataset_ids": sorted(saturated_dataset_ids),
         "current_dataset_saturated": cur_ds_saturated,
@@ -237,8 +366,9 @@ def check_wave(
     })
     if violations:
         report["message"] = (
-            f"{len(violations)} 条表达式命中饱和字段，"
-            f"{len(saturated_fields)} 个字段已饱和 —— 换字段族/数据集再生成。"
+            f"{len(violations)} 条表达式命中已撞 prod 墙的配方，"
+            f"{len(saturated_fields)} 个字段涉及 {len(saturated_recipes)} 个饱和配方 —— "
+            f"换字段族/分组轴/数据集再生成。"
         )
     elif cur_ds_saturated:
         report["message"] = (
@@ -256,12 +386,18 @@ def check_wave(
 
 def format_report(report: Dict[str, Any]) -> str:
     lines = [f"[prod-sat] 状态={report['status']} {report['message']}"]
+    for r in (report.get("saturated_recipes") or [])[:6]:
+        lines.append("[prod-sat] 饱和配方: 字段 %s / 轴 %s / 归一化 %s（已知 prod %s 条，撞墙 %s 条）"
+                     % (r["fields"], r["axes"] or "无分组轴",
+                        r.get("norm_ops") or "无分组算子", r["known"], r["walls"]))
     if report.get("saturated_fields"):
         sf = report["saturated_fields"][:10]
         lines.append(f"[prod-sat] 历史饱和字段: {sf}"
                      + (f" 等 {len(report['saturated_fields'])} 个" if len(report['saturated_fields']) > 10 else ""))
     for v in report.get("violations", [])[:5]:
-        lines.append(f"[prod-sat]   命中 #{v['index']}: {v['fields']} | {v['expr']}")
+        lines.append("[prod-sat]   命中 #%s: %s / 轴 %s / 归一化 %s | %s"
+                     % (v["index"], v.get("fields"), v.get("axes"),
+                        v.get("norm_ops") or "-", v["expr"]))
     return "\n".join(lines)
 
 

@@ -40,6 +40,7 @@ if str(SRC) not in sys.path:
 DB_PATH = ROOT / "data" / "wqb.db"
 
 from wqb.store import CampaignStore  # noqa: E402
+from wqb.store import consumption as _consumption  # noqa: E402  「被回测消费」唯一口径（2026-10-20 P1-3）
 from wqb.db_conn import reject_production_db_under_tests as _db_conn_guard  # noqa: E402  测试期禁连生产库的唯一判定本体
 from wqb import wave_results_contract as _wave_contract  # noqa: E402
 from wqb import registry_contract as _registry_contract  # noqa: E402  registry 写入校验唯一实现（DEC-34）
@@ -232,31 +233,76 @@ def list_wave_results(
 
 
 @mcp.tool()
-def get_latest_wave(region: str, status: Optional[str] = None) -> Dict[str, Any]:
+def get_latest_wave(region: str, status: Optional[str] = None,
+                    has_backtests: bool = False) -> Dict[str, Any]:
     """获取某区域最新 wave。
 
     Args:
         region: 区域
         status: 状态过滤（可选，如 "closed"）
+        has_backtests: 只认回测表里有行的最近波（2026-10-20 P2-7）。prod 扫荡 / 设置探针
+            类波次（如 EUR 269）在 wave_results 有记录但 backtest_results 零行，S4 诊断
+            读它会拿不到任何证据；置 True 时先在 backtest_results 里按波号（CAST 数值序，
+            同值以最近回测写入时间兜底）找最近波，再按该波号回读 wave_results——
+            精确波号优先，找不到且波号为数值型时回退 CAST 相等匹配。返回附
+            backtest_count / backtest_last_at 供新鲜度判断；该波在 wave_results 无记录时
+            回 error（不回退到别的波，避免把「无台账」伪装成「有证据」）。
 
     Returns:
         最新 wave 结果 dict
     """
     conn = _conn()
     c = conn.cursor()
-    sql = "SELECT * FROM wave_results WHERE region=?"
-    params = [region]
-    if status:
-        sql += " AND status=?"
-        params.append(status)
-    sql += " ORDER BY CAST(wave_number AS INTEGER) DESC LIMIT 1"
-    c.execute(sql, params)
-    row = c.fetchone()
+    bt_wave = None
+    bt_count = None
+    bt_last_at = None
+    if has_backtests:
+        c.execute(
+            "SELECT wave, COUNT(*) AS n, MAX(created_at) AS last_at "
+            "FROM backtest_results WHERE region=? AND wave IS NOT NULL "
+            "GROUP BY wave ORDER BY CAST(wave AS INTEGER) DESC, last_at DESC LIMIT 1",
+            (region,))
+        bt = c.fetchone()
+        if not bt:
+            conn.close()
+            return {"error": f"no wave with backtests found for region={region}"}
+        bt_wave, bt_count, bt_last_at = bt[0], bt[1], bt[2]
+        c.execute("SELECT * FROM wave_results WHERE region=? AND wave_number=?",
+                  (region, str(bt_wave)))
+        row = c.fetchone()
+        if not row and str(bt_wave).lstrip("-").isdigit():   # 波号整数序回退（'91c' 与 '91' 之类）
+            c.execute(
+                "SELECT * FROM wave_results WHERE region=? AND CAST(wave_number AS INTEGER)=? "
+                "ORDER BY CAST(wave_number AS INTEGER) DESC LIMIT 1",
+                (region, int(bt_wave)))
+            row = c.fetchone()
+        if not row:
+            conn.close()
+            return {"error": f"latest backtest wave {bt_wave} has no wave_results row "
+                             f"(region={region}); 台账未回写", "wave_number": str(bt_wave),
+                    "backtest_count": bt_count, "backtest_last_at": bt_last_at}
+        if status and row["status"] != status:
+            conn.close()
+            return {"error": f"latest backtest wave {bt_wave} status={row['status']!r} "
+                             f"!= {status!r} (region={region})", "wave_number": str(bt_wave)}
+    else:
+        sql = "SELECT * FROM wave_results WHERE region=?"
+        params = [region]
+        if status:
+            sql += " AND status=?"
+            params.append(status)
+        sql += " ORDER BY CAST(wave_number AS INTEGER) DESC LIMIT 1"
+        c.execute(sql, params)
+        row = c.fetchone()
     conn.close()
     if not row:
         return {"error": f"no wave found for region={region}"}
     result = dict(row)
-    return _parse_json_fields(result, ["key_findings", "candidates", "batches", "full_payload"])
+    result = _parse_json_fields(result, ["key_findings", "candidates", "batches", "full_payload"])
+    if has_backtests:
+        result["backtest_count"] = bt_count
+        result["backtest_last_at"] = bt_last_at
+    return result
 
 
 # ---------------- registry 查询 ----------------
@@ -433,6 +479,9 @@ def get_submit_ready(region: str, status: str = "READY", limit: int = 50) -> Lis
 
     Returns:
         队列行列表（alpha_id / expr / sharpe / fitness / turnover / prod / self / gate / status / note …）；
+        每行附相关性新鲜度 `corr_age_hours` / `corr_stale` / `corr_stale_reason`
+        （2026-10-20 P1-4；`missing`=prod/self 未测全、`no_timestamp`=无检测时刻、`aged`=超 48h
+        —— stale 值只可作排序参考，提交前必须 check_correlation(refresh=True) 当场终验）；
         status 非法时返回 [{"error": ...}]
     """
     from wqb.store import submit_queue as _sq
@@ -648,10 +697,16 @@ def get_mining_yield(
     是 IND 的 3 倍。选区靠 S0 评分与人工判断，"这个区历史上到底出不出货"
     这个最硬的先验此前在库里躺着没人查。
 
-    口径：
+    口径（2026-10-20 P1-3 统一；消费口径单源 = `src/wqb/store/consumption.py`）：
       - expressions：该 region（可选 dataset）下的表达式总数
-      - backtested：backtest_results 行数
-      - conversion：backtested / expressions —— 低说明 S2→S3 断链（生成远超回测吞吐）
+      - consumed：**被回测消费**的表达式数（去重）= status ∈ {backtested,submitted,completed}
+        ∪ id ∈ 回测行 expression_id ∪ alpha_id ∈ 回测行 alpha_id；backlog 闸用同一口径
+      - backtested：backtest_results **行数**（吞吐视角；同一表达式重复回测会重复计数，
+        故与 consumed 不同源，两者可差数个百分点 —— EUR 实测 rows=934 vs consumed=866）
+      - conversion：consumed / expressions —— 低说明 S2→S3 断链（生成远超回测吞吐）
+        ★ 2026-10-20 前此值为「行数 / expressions」（EUR 7.1%），而同口径 backlog 闸只看
+        status（3.5%），两处各说各话；现统一为 consumed（EUR 6.6%），行数视角仍可从
+        backtested 字段与 yield_rate 分母读到
       - passed：|sharpe| >= sharpe_min 且 fitness >= fitness_min
       - yield_rate：passed / backtested —— 低说明这个区/集本身不出货
 
@@ -666,7 +721,9 @@ def get_mining_yield(
       - prod_blocked：ra_clean 且 prod_correlation 已测且 >= prod_max
       - yield_rate = ra_clean / backtested（选区/选集用这个）；yield_rate_loose 保留旧口径对照
       - prod_wall_ratio = prod_blocked / (prod_clean + prod_blocked)，已测 prod 的撞墙占比
-      - 注意：ra_failed_checks 为 NULL 的旧行按"无失败"计（2026-09 前入库的行无该字段）
+      - 注意：ra_failed_checks 为 NULL 的旧行按"无失败"计（2026-09 前入库的行无该字段）。
+        2026-10-23（P0-3）写入侧已消歧：新行只可能是 '[]'（已知全过）、RA 失败名单（有失败）
+        或 NULL（未知）；读数新增 **ra_unknown** 把"其实没读过"的部分数出来，不再藏在 ra_clean 里。
     strict=False 回到旧口径（yield_rate = passed / backtested）。
 
     Args:
@@ -689,12 +746,18 @@ def get_mining_yield(
         where += " AND region=?"
         params.append(region)
 
+    # 消费口径单源（状态集 ∪ 回测行两把规范键）；旧库无 backtest_results 表时退化为纯状态口径
+    has_bt = _consumption.has_backtest_link(conn)
+    consumed_pred = _consumption.consumed_sql("e", with_backtest=has_bt)
+    e_cols = ", ".join("e." + g for g in group_cols.split(", "))
     c.execute(
-        f"SELECT {group_cols}, COUNT(*) n FROM expressions "
-        f"WHERE {where} GROUP BY {group_cols}",
+        f"SELECT {e_cols}, COUNT(*) n, "
+        f"SUM(CASE WHEN {consumed_pred} THEN 1 ELSE 0 END) consumed "
+        f"FROM expressions e WHERE {where.replace('region', 'e.region')} "
+        f"GROUP BY {e_cols}",
         params,
     )
-    expr_counts = {tuple(r)[:-1]: r[-1] for r in c.fetchall()}
+    expr_counts = {tuple(r)[:-2]: (r[-2], r[-1] or 0) for r in c.fetchall()}
 
     prod_max = 0.7
     # ra_failed_checks 为空 = NULL / '' / '[]'；prod 取 alphas 表最新一行（LEFT JOIN，可能未测）
@@ -708,7 +771,12 @@ def get_mining_yield(
         f"SUM(CASE WHEN {ra_clean_sql} AND a.prod_correlation IS NOT NULL "
         f"AND a.prod_correlation < ? THEN 1 ELSE 0 END) prod_clean, "
         f"SUM(CASE WHEN {ra_clean_sql} AND a.prod_correlation IS NOT NULL "
-        f"AND a.prod_correlation >= ? THEN 1 ELSE 0 END) prod_blocked "
+        f"AND a.prod_correlation >= ? THEN 1 ELSE 0 END) prod_blocked, "
+        # 2026-10-23（P0-3）：ra_failed_checks = NULL 的行 = **RA 状态未知**。
+        # 写入侧已消歧（新行：'[]' = 已知全过 / 名单 = 有失败 / NULL = 未知），
+        # 但存量旧行仍是 NULL；ra_clean 沿用「NULL 宽容」口径（历史连续性），
+        # 这一列把"其中有多少其实没读过"显式数出来，不再藏在 ra_clean 里。
+        f"SUM(CASE WHEN b.ra_failed_checks IS NULL THEN 1 ELSE 0 END) ra_unknown "
         f"FROM backtest_results b LEFT JOIN alphas a ON a.alpha_id=b.alpha_id "
         f"WHERE {where.replace('region', 'b.region')} "
         f"GROUP BY {', '.join('b.' + g for g in group_cols.split(', '))}",
@@ -717,7 +785,7 @@ def get_mining_yield(
          sharpe_min, fitness_min, prod_max,
          sharpe_min, fitness_min, prod_max] + params,
     )
-    bt_counts = {tuple(r)[:-5]: (r[-5], r[-4] or 0, r[-3] or 0, r[-2] or 0, r[-1] or 0)
+    bt_counts = {tuple(r)[:-6]: (r[-6], r[-5] or 0, r[-4] or 0, r[-3] or 0, r[-2] or 0, r[-1] or 0)
                  for r in c.fetchall()}
     conn.close()
 
@@ -729,20 +797,24 @@ def get_mining_yield(
     def _sort_key(k):
         return tuple("" if part is None else str(part) for part in k)
     for key in sorted(set(expr_counts) | set(bt_counts), key=_sort_key):
-        n_expr = expr_counts.get(key, 0)
-        n_bt, n_pass, n_ra, n_pc, n_pb = bt_counts.get(key, (0, 0, 0, 0, 0))
+        n_expr, n_consumed = expr_counts.get(key, (0, 0))
+        n_bt, n_pass, n_ra, n_pc, n_pb, n_unknown = bt_counts.get(key, (0, 0, 0, 0, 0, 0))
         row: Dict[str, Any] = {"region": key[0]}
         if by_dataset:
             row["dataset"] = key[1] if len(key) > 1 else None
         n_yield = n_ra if strict else n_pass
         row.update({
             "expressions": n_expr,
+            "consumed": n_consumed,
             "backtested": n_bt,
-            "conversion": round(n_bt / n_expr, 4) if n_expr else None,
+            "conversion": round(n_consumed / n_expr, 4) if n_expr else None,
             "passed": n_pass,
             "ra_clean": n_ra,
             "prod_clean": n_pc,
             "prod_blocked": n_pb,
+            # RA 状态未知的行数（存量旧行：入库时没有这一列的信息）——不混进 ra_clean，
+            # 但要看得见，否则"全过"里掺着"没读过"。
+            "ra_unknown": n_unknown,
             "yield_rate": round(n_yield / n_bt, 4) if n_bt else None,
             "yield_rate_loose": round(n_pass / n_bt, 4) if n_bt else None,
             # 已测 prod 的 ra_clean 里撞墙占比（None=没有一条测过 prod）
@@ -753,29 +825,38 @@ def get_mining_yield(
     rows.sort(key=lambda r: (r["yield_rate"] is None, -(r["yield_rate"] or 0)))
 
     tot_expr = sum(r["expressions"] for r in rows)
+    tot_consumed = sum(r["consumed"] for r in rows)
     tot_bt = sum(r["backtested"] for r in rows)
     tot_pass = sum(r["passed"] for r in rows)
     tot_ra = sum(r["ra_clean"] for r in rows)
     tot_pc = sum(r["prod_clean"] for r in rows)
     tot_pb = sum(r["prod_blocked"] for r in rows)
+    tot_unknown = sum(r["ra_unknown"] for r in rows)
     tot_yield = tot_ra if strict else tot_pass
     return {
         "rows": rows,
         "totals": {
             "expressions": tot_expr,
+            "consumed": tot_consumed,
             "backtested": tot_bt,
-            "conversion": round(tot_bt / tot_expr, 4) if tot_expr else None,
+            "conversion": round(tot_consumed / tot_expr, 4) if tot_expr else None,
             "passed": tot_pass,
             "ra_clean": tot_ra,
             "prod_clean": tot_pc,
             "prod_blocked": tot_pb,
+            "ra_unknown": tot_unknown,
             "yield_rate": round(tot_yield / tot_bt, 4) if tot_bt else None,
             "yield_rate_loose": round(tot_pass / tot_bt, 4) if tot_bt else None,
         },
         "criteria": {"sharpe_min": sharpe_min, "fitness_min": fitness_min,
                      "strict": strict, "prod_max": prod_max,
+                     "conversion_def": "consumed/expressions（status ∪ 回测行 join，单源 wqb.store.consumption）",
                      "yield_rate_def": ("ra_clean/backtested（sharpe/fitness 达标且 ra_failed_checks 为空）"
-                                        if strict else "passed/backtested（仅 sharpe/fitness）")},
+                                        if strict else "passed/backtested（仅 sharpe/fitness）"),
+                     "ra_unknown_def": ("ra_failed_checks 为 NULL 的行数 = RA 状态未知（存量旧行）。"
+                                        "写入侧自 2026-10-23 起消歧：'[]' = 已知全过、名单 = 有失败、"
+                                        "NULL = 未知；ra_clean 仍按「NULL 宽容」计（历史连续性），"
+                                        "这一列把未知的部分显式数出来")},
     }
 
 
@@ -1237,6 +1318,114 @@ def get_field_catalog(region: str, dataset: str) -> Dict[str, Any]:
         store.close()
 
 
+# ---------------------------------------------------------------- 字段画像查询
+# 数据来源：dataset_profile / field_profile_full（由 tools/load_field_profiles_to_db.py 生成）
+@mcp.tool()
+def query_dataset_profile(
+    region: str = "EUR",
+    category: Optional[str] = None,
+    min_cov: Optional[float] = None,
+    has_alive: bool = False,
+    max_untested_ratio: Optional[float] = None,
+    sort: str = "avg_field_coverage",
+    limit: int = 30,
+) -> Dict[str, Any]:
+    """数据集级字段画像查询。
+
+    Args:
+        category: 类别过滤（ANALYST/PV/MODEL/FUNDAMENTAL/RISK/...）
+        min_cov: 平均字段覆盖率下限（0~1）
+        has_alive: 只要历史有 ALIVE 字段的数据集
+        max_untested_ratio: 未测占比上限（0.9 = 至少 10% 已测）
+        sort: n_alive / avg_field_coverage / alpha_count / value_score / n_fields /
+              best_s_in_dataset / best_2y_in_dataset / n_backtests
+    """
+    q = ["SELECT * FROM dataset_profile WHERE region=?"]
+    p: List[Any] = [region]
+    if category:
+        q.append("AND UPPER(category)=UPPER(?)"); p.append(category)
+    if min_cov is not None:
+        q.append("AND avg_field_coverage>=?"); p.append(min_cov)
+    if has_alive:
+        q.append("AND n_alive>0")
+    if max_untested_ratio is not None:
+        q.append("AND (CAST(n_untested AS REAL)/NULLIF(n_fields,0))<=?"); p.append(max_untested_ratio)
+    allowed = {"n_alive", "avg_field_coverage", "alpha_count", "value_score",
+               "n_fields", "best_s_in_dataset", "best_2y_in_dataset", "n_backtests"}
+    col = sort if sort in allowed else "avg_field_coverage"
+    q.append(f"ORDER BY {col} DESC NULLS LAST LIMIT ?"); p.append(int(limit))
+    con = sqlite3.connect(get_db_path()); con.row_factory = sqlite3.Row
+    try:
+        rows = [dict(r) for r in con.execute(" ".join(q), p)]
+        return {"count": len(rows), "rows": rows}
+    finally:
+        con.close()
+
+
+@mcp.tool()
+def query_field_profile(
+    region: str = "EUR",
+    dataset: Optional[str] = None,
+    family: Optional[str] = None,
+    verdict: Optional[str] = None,
+    min_cov: Optional[float] = None,
+    max_cov: Optional[float] = None,
+    min_best_s: Optional[float] = None,
+    min_best_2y: Optional[float] = None,
+    keyword: Optional[str] = None,
+    tested: bool = False,
+    untested: bool = False,
+    alive_only: bool = False,
+    sort: str = "best_s",
+    limit: int = 50,
+) -> Dict[str, Any]:
+    """字段级画像查询（组合条件）。
+
+    Args:
+        family: 语义族（修正与预期 / 盈利与财务 / 价量与波动 / 情绪与新闻 /
+                持仓与资金流 / 宏观与行业 / 风险与质量 / 交易与微观结构 /
+                搜索与替代数据 / 元数据与非信号 / 其他）
+        verdict: ALIVE / UNTESTED / UNUSABLE / DEAD / AXIS_ONLY ...
+        keyword: 字段名或描述的关键词（不区分大小写）
+        tested/untested: 只看已测 / 未测
+        sort: best_s / best_2y / best_sub / coverage / n_tests / field_name
+    """
+    q = ["SELECT * FROM field_profile_full WHERE region=?"]
+    p: List[Any] = [region]
+    if dataset:
+        q.append("AND dataset=?"); p.append(dataset)
+    if family:
+        q.append("AND semantic_family=?"); p.append(family)
+    if verdict:
+        q.append("AND UPPER(verdict)=UPPER(?)"); p.append(verdict)
+    if min_cov is not None:
+        q.append("AND coverage>=?"); p.append(min_cov)
+    if max_cov is not None:
+        q.append("AND coverage<=?"); p.append(max_cov)
+    if min_best_s is not None:
+        q.append("AND best_s>=?"); p.append(min_best_s)
+    if min_best_2y is not None:
+        q.append("AND best_2y>=?"); p.append(min_best_2y)
+    if keyword:
+        q.append("AND (LOWER(field_name) LIKE ? OR LOWER(description) LIKE ?)")
+        kw = f"%{keyword.lower()}%"; p += [kw, kw]
+    if tested:
+        q.append("AND n_tests>0")
+    if untested:
+        q.append("AND is_untested=1")
+    if alive_only:
+        q.append("AND is_alive=1")
+    allowed = {"best_s", "best_2y", "best_sub", "coverage", "n_tests", "field_name"}
+    col = sort if sort in allowed else "best_s"
+    q.append(f"ORDER BY {col} DESC NULLS LAST LIMIT ?"); p.append(int(limit))
+    con = sqlite3.connect(get_db_path()); con.row_factory = sqlite3.Row
+    try:
+        rows = [dict(r) for r in con.execute(" ".join(q), p)]
+        return {"count": len(rows), "rows": rows}
+    finally:
+        con.close()
+
+
 @mcp.tool()
 def build_field_prefix_clusters(
     region: str,
@@ -1473,6 +1662,11 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
             nm, val = c.get("name"), c.get("value")
             if nm in _name_map and val is not None and m.get(_name_map[nm]) is None:
                 m[_name_map[nm]] = val
+        # 2Y 的另一个载体是 IS_LADDER_SHARPE（`wqb.config.RA_2Y_NAMES` 两者都算 2Y）：
+        # 平台按 alpha 代际只发其中一项，只发 ladder 时 two_year_sharpe 会整列落空
+        # （2026-10-23 IND 实测 10/29 颗，如 JjP0Ja5l 的 ladder 2.82 = 平台 2Y 2.82）。
+        if m.get("two_year_sharpe") is None and m.get("is_ladder_sharpe") is not None:
+            m["two_year_sharpe"] = m["is_ladder_sharpe"]
         if a.get("checks") is None:
             out["checks"] = [c for c in (isb.get("checks") or []) if isinstance(c, dict)]
         if out.get("ra_failed_checks") is None:
@@ -1490,7 +1684,8 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
         out.setdefault("universe", stg.get("universe")); out.setdefault("delay", stg.get("delay"))
     for k in ("sharpe", "fitness", "turnover", "margin", "returns", "drawdown", "two_year_sharpe",
               "sub_universe_sharpe", "robust_universe_sharpe", "investability_sharpe",
-              "risk_neutralized_sharpe", "long_count", "short_count", "pnl", "book_size"):
+              "is_ladder_sharpe", "risk_neutralized_sharpe", "long_count", "short_count",
+              "pnl", "book_size"):
         if out.get(k) is None and m.get(k) is not None:
             out[k] = m.get(k)
     for src, dst in (("longCount", "long_count"), ("shortCount", "short_count"),
@@ -1517,6 +1712,9 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
                 elif isinstance(c, str):
                     flat.append({"name": c, "result": k.upper()})
         out["checks"] = flat
+        # 2026-10-23（P0-3）：分桶形态的 checks 摊平后**不能**拿来重算 RA 名单
+        # （ERROR 被并进 pass 桶）——打标记，让存储层改信调用方预算好的 ra 名单。
+        out["checks_bucketed"] = True
     if out.get("ra_failed_checks") is None and isinstance(out.get("checks"), list) and out["checks"]:
         out["ra_failed_checks"] = compute_webdata_failed_counts(out["checks"])["ra_failed_names"]
     # failed_checks = 全部 FAIL 项名（评审 / 诊断用，进回测行 payload_json）；ra_failed_checks 只含 RA 项
@@ -1650,6 +1848,10 @@ def harvest_multisim_results(
                         or check_map.get("IS_LADDER_SHARPE"),
                     "failed_checks": a.get("failed_checks"),
                     "ra_failed_checks": a.get("ra_failed_checks"),
+                    # 2026-10-23（P0-2）：平台原始 checks 一并透传，落进 payload_json.checks。
+                    # 此前拍平层算出的 checks 没进这一行 ⇒ limit/value 与 RA 项的 WARNING/ERROR 全丢。
+                    "checks": a.get("checks"),
+                    "checks_bucketed": a.get("checks_bucketed"),
                     "robust_sharpe": a.get("robust_universe_sharpe"),
                     "investability_sharpe": a.get("investability_sharpe"),
                     "universe": settings.get("universe"),

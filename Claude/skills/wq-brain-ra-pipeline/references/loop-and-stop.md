@@ -11,7 +11,7 @@
 | 0 | **catalog 前置闸** | 数据集是否有 typed catalog | 缺目录即拒（失败从「gate 时崩」提前到「开波前拒」） | JPN 白名单 12 集缺 10 | 回步 3 跑 S1 补 catalog，或把该集移出白名单 |
 | 1 | **signal_floor（信号天花板）** | region（带 `dataset` 时为 region × dataset） | 最近 `min_batches`（缺省 2）个**波**的 max\|sharpe\| < `max_sharpe_floor`（缺省 0.5；区域覆盖：IND 1.2 / USA 0.9 / MEA 1.2，均取各区 max\|sharpe\| 的 p25、样本 ≥ 8 波、只上调不下调）。证据不足 `min_batches` 个波不判；整节缺失 → **fail-closed 回落缺省**并 `warning`，仅 `enabled:false` 才放行 | GBR 跑满 180 条回测、max\|sharpe\| = 1.04、达标 0，按自己的配置本该在第 2 批停 | 换 universe / 数据集 / 区域，不要绕过 |
 | 2 | **stop_rules（停止规则）** | 见 L.2 | 见 L.2 | 见 L.2 | 见 L.2 |
-| 3 | **backlog（积压）** | region | `conversion`（已回测 ÷ 已生成）< 0.10 **且**总量 ≥ 200 → 拦；`pending+gated` 占比 > 0.30 且总量 ≥ 200 → 拦；**未消费**占比（`gem+selected+pending+gated`）> 0.30 **默认只报不拦**（`unconsumed_enforce=false`，灰度） | GLB 0%、EUR 1%、GBR / ASI 3%、CHN / KOR 7%、USA 9% 都曾在违反时继续开新波 | 先消化近闸积压，再开新波；清理走 `python tools/campaign_intel.py backlog-drop --region $REGION`（缺省 dry-run，`--apply` 写库）；**判据只有这一套**（旧文另有 `conversion<10%` 与步 6 的 `2 倍` 两套说法，已并入此表）；禁止无脑新建表达式堆库 |
+| 3 | **backlog（积压）** | region | `conversion`（**被回测消费** ÷ 已生成）< 0.10 **且**总量 ≥ 200 → 拦；`pending+gated` 占比 > 0.30 且总量 ≥ 200 → 拦；**未消费**占比（`gem+selected+pending+gated`）> 0.30 **默认只报不拦**（`unconsumed_enforce=false`，灰度）。消费口径（2026-10-20 起）= status ∈ {backtested,submitted,completed} ∪ 回测行 id/alpha_id join，单源 `src/wqb/store/consumption.py`，与 `get_mining_yield.conversion` 同口径（EUR 实测：旧 status 口径 3.5% vs 真值 6.6%，311 条 `dropped` 实为已回测） | GLB 0%、EUR 1%、GBR / ASI 3%、CHN / KOR 7%、USA 9% 都曾在违反时继续开新波（上述为旧 status 口径读数） | 先消化近闸积压，再开新波；清理走 `python tools/campaign_intel.py backlog-drop --region $REGION`（缺省 dry-run，`--apply` 写库）；**判据只有这一套**（旧文另有 `conversion<10%` 与步 6 的 `2 倍` 两套说法，已并入此表）；禁止无脑新建表达式堆库 |
 
 > **signal_floor 参数的权威位置** = `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（**不在** `references/regions/*.md` 的 profile 里——profile 只写区域画像）。实测 13/13 区域均已配该节（AMR / ASI / CHN / DEU / EUR / GBR / GLB / HKG / IND / JPN / KOR / MEA / USA；TWN 有 profile 但没有 `tracking/TWN/` 目录，不在此列）。注意：`_evidence` 里「样本 0 波」指的是回填需 ≥ 8 波的样本门槛未达（故不上调 floor），**不是**该区闸失效。 <!-- lint:counterexample: 同上：以 TWN 为例说明「profile 有但目录缺」不计入 13/13 实测样本 -->
 >
@@ -25,7 +25,7 @@
 |---|---|---|---|---|
 | **A 区级产出** | region | `backtest_results` 中 sharpe 非空的行 ≥ `yield_min_backtests`（100）**且** sharpe>1.58 且 fitness>1.0 的行数 = 0（`meets_internal_line`，见 GLOSSARY） | GBR 0/327 | 该区停：换区（`wq-brain-campaign-matrix`），或用户显式指令放行 |
 | **B1 同轴熔断** | 开波时带的那个 dataset 轴 | 该轴最近 `consecutive_fail_waves`（3）个 closed 波**连续**可计数 FAIL → 拒开该轴；**换数据集 / 换轴计数清零** | 同一 `fundamental17` 连续 3 波 FAIL → 拒；改开 `analyst44` 照常 | 换数据集 / 换轴；或 `brain-next-move-analysis` 复盘该轴 |
-| **B2 区级多轴停** | region | 最近 `axis_window`（8）个 closed 波内**无任何 PASS**，且**全部**为 FAIL 的不同轴数 ≥ `distinct_fail_axes`（4） → 停区（多轴探索已证伪） | 8 波里 4 个不同数据集全 FAIL、0 PASS → 停区 | 换区，或用户显式指令放行 |
+| **B2 区级多轴停** | region | 最近 `axis_window`（8）个 closed 波内**无任何 PASS**，且**全部**为 FAIL 的不同轴数 ≥ `distinct_fail_axes`（4） → 停区（多轴探索已证伪）。**`axis=None` 的波不计入轴数**（推不出数据集 ≠ 试过新轴），该类波另按未定轴兜底判（连续 `consecutive_fail_waves`（3）波未定轴可计数 FAIL → 停区） | 8 波里 4 个不同数据集全 FAIL、0 PASS → 停区 | 换区，或用户显式指令放行 |
 
 - **撞墙型 FAIL**（波内 max\|sharpe\| ≥ signal_floor 的 floor）**照样计数**，但输出会附路由提示：优先 prod-first 探针 / 换 universe / 换池，而不是停区。
 - **窗口按波的开始时刻取**（该波首次入库表达式的时间），补记旧波结论不会把旧波顶进窗口。`evidence.recent_closed_waves` 列出窗口内的波号。

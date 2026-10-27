@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-18
+last_verified: 2026-10-24
 name: wq-brain-campaign-toolkit
 description: "战役目录内执行引擎（gate / pipeline / build_wave / score_datasets / review_wave / campaign.py 的 ledger·registry·wave）的用法与契约。要跑战役脚本、查子命令与台账键、处理超时或重发时使用；何时用、怎么判由 wq-brain-ra-pipeline 定。"
 layer: L-TOOL
@@ -35,11 +35,11 @@ allowed-tools:
 | S0 选集 | `score_datasets.py`（评分 / 探针计划 / 三灯） | `campaign_intel.py s0-select`（默认剔已点亮塔）、`region_status.py`、`field_inspect_gate.py`（体检硬门） |
 | S1 字段 | `scan_fields.py`（typed catalog） | `field_semantic_classify.py`（语义归类） |
 | S2 选波 | `build_wave.py`（去重 / 分桶 / 配给，**不生成**表达式）、`assemble_priors.py`、`diversity_extract.py` | — |
-| S2→S3 门禁 | `gate.py`（闸 0–9） | **`wave_gate.py`**（= `gate.py` + 体检硬门 + 闸 SEM / PF / 2b / 2.6 + 区域闸；**每波必走它**，也是 MCP 节点 `workflow_execute node="wave_gate"`） |
+| S2→S3 门禁 | `gate.py`（闸 0–9） | **`wave_gate.py`**（= `gate.py` + 体检硬门 + 闸 SEM / PF / 2b / 2.6 + 区域闸；**每波必走它**，也是 MCP 节点 `workflow_execute node="wave_gate"`）、`campaign_intel.py prod-probe`（开波前每族 1 条 prod 探针 → 封族） |
 | S3 发批 / 收批 | `pipeline.py`（填槽）、`metrics_cache.py` | `submit_batch.py`（批量**派发仿真**，不是提交 alpha）、`batch_status.py`（状态轮询）、`harvest_multisim.py`（收批入库） |
 | S4 评审 | `review_wave.py` | `campaign_intel.py prod-first`、`step_funnel.py`、`forum_recon.py`（收批时 `pipeline.py --forum-recon` 自动跑 `forum_recon_wave.py`） |
 | S5 提交判定 | — | `submit_verdict.py`（唯一权威）；SUPER 只走 `super_build.py` |
-| S6 回写 | `campaign.py ledger` / `registry` / `wave`、`diversity_audit.py`、`dataset_experience`（`campaign.py dataset-experience`） | `campaign_intel.py mark-saturated`、`export_wave_ledger_md.py`、`step_funnel.py` |
+| S6 回写 | `campaign.py ledger` / `registry` / `wave`、`diversity_audit.py`、`dataset_experience`（`campaign.py dataset-experience`）、`dataset_profile_doc`（`campaign.py field-profile`） | `campaign_intel.py mark-saturated`、`export_wave_ledger_md.py`、`step_funnel.py` |
 
 工具索引与参数见 `tools/README.md`；缺参数就改工具（保持 `--help` 自文档），反复新建一次性脚本说明工具化不彻底（AGENTS.md §6）。
 
@@ -112,8 +112,9 @@ $CD = "tracking/<REGION>"
 | `build-wave` | `build_wave.py` | 选波后处理（去重 / 分桶 / 骨架配给 / near 加权 / 选波权威化）；数量与身份契约见 [`selection-plan.md`](references/selection-plan.md) |
 | `assemble-priors` | `assemble_priors.py` | 从 DB 确定性组装 GEM priors（内部映射见 RA `assemble-priors-internals.md`）；**回写后必须再跑** |
 | `pipeline` | `pipeline.py` | 端到端编排（填槽）与 `quota`，细则 [`poll-and-quota.md`](references/poll-and-quota.md) |
-| `review` | `review_wave.py` | walls 诊断 + 台账回写 |
+| `review` | `review_wave.py` | walls 诊断 + 台账回写；`wave_results.key_findings` 固定四列（① 强度上限 max\|S\| / ② 机制方向与证伪条件 / ③ prod 读数，未测显式标注 / ④ 闸缺口按差值排序）+ TO 越界标注（`[0.03, 0.70]`，只标注不删行）；`--mechanism` / `--falsifier` 补 ② 的登记 |
 | `dataset-experience` | `dataset_experience.py` | 数据集 / 字段经验 Markdown（保留人工复盘段），方法见 `brain-dataset-mining-experience` |
+| `field-profile` | `dataset_profile_doc.py` | 按数据集生成字段画像 Markdown（`docs/reference/<REGION>/datasets/`；保留 `## 人工机制复盘`；**缺省落盘**，`--dry-run` 预览，`--active-only` 只刷有本区战役痕迹的集）。转发仓库 `tools/fields/dataset_profile_doc.py`；S6 入口 = `workflow_campaign(stage="S6", subcommand="field-profile")` |
 | `metrics` | `metrics_cache.py` | alpha IS 指标读穿缓存（`--multisim=<id>` / `--refresh`） |
 | `diversity` | `diversity_audit.py` | 多样性审计（累积进台账 `diversity_history`） |
 | `diversity-extract` | `diversity_extract.py` | 单数据集多样性榨取，见 [`diversity-extract.md`](references/diversity-extract.md) |
@@ -139,6 +140,7 @@ $CD = "tracking/<REGION>"
 | `pipeline.py` | `backtest_results` 表、ledger `ckpt_w<W>`（checkpoint）、`wave_results`（`--review` 时）、`region_kb` 的波后刷新 |
 | `review_wave.py --write-ledger` | ledger `review_<tag>` / `near_pool` / `salvage_pool`（另在 `submit_ready` 键留 legacy 审计副本）；`workflow_campaign` S4 **节点**路径另写 `s4_walls_<region>_<wave>`（审计） |
 | `diversity_audit.py` | ledger `diversity_audit_latest` / `diversity_history` |
+| `dataset_experience.py` / `dataset_profile_doc.py` | **文件产物（不进 DB）**：`reports/dataset_experience/<region>_<ds>_campain.md`（逐数据集经验）/ `docs/reference/<REGION>/datasets/<ds>_field_profile.md`（逐数据集字段画像 + 索引 `README.md`）。两者都只读 DB 生成，机器段可刷新、人工复盘段保留；`field-profile` 缺省落盘（`--dry-run` 预览、`--active-only` 只刷有本区活动痕迹的集） |
 | `methodology_rules` 区域计数 | ledger_kv（全局规则仍用 toolkit `config/methodology_rules.json`） |
 
 ## 7. 重发安全与异步恢复（最容易被略过的规则）
@@ -198,6 +200,7 @@ multisim 是**连坐**语义：批内任一子模拟 ERROR，其余全部 CANCEL
 | `pipeline.py run … --batch-type probe` | 探针批：与 `repair` 同样豁免闸 6 多样性契约与 qp 预估标注 | 单集 8 条首探 |
 | `campaign_intel.py xr-probe --exprs-file f --regions USA,GLB,HKG --tag t --write-ledger` | 跨区探针：按各区 settings 发 multisim → 收批入库（wave = `probe_<tag>`）→ 写 `GLOBAL/xr_probe_<tag>` | 判「机制能不能搬」，≤ 10 条 / 区 |
 | `campaign_intel.py prod-first … --probe-timeout 600` | 单条 PC 硬超时 + 进程锁 `data/.prod_first.lock` | 平台 PC 单并发；并跑第二个被拒（退出码 3） |
+| `campaign_intel.py prod-probe --region R --dataset DS [--dry-run]` | **开波前 prod 探针（P0-1）**：对本集全部历史行每族探 1 条（不占回测槽，串行，共用 `.prod_first.lock`）→ `prod ≥ 0.75` 封族（ledger `prod_family_<region>_<family>` 带 `probe: true` + `prod_probe_<region>_<dataset>` 汇总），闸 PF 免 `min_confidence_n` 直接拦；**exit 2 = 有族被封** | 新数据集 / 新信号族第一波开波前（步 5b-1）；`--dry-run` 零网络零写库 |
 | `campaign_intel.py backlog-drop [--include-gated] [--close-backtested] --apply` | 积压清理：> N 天未动且无回测的波标 dropped；已回测却仍 pending / gated 的波标 closed | `wave-ttl-check` WARN 时；缺省 dry-run |
 | `campaign_intel.py s0-select`（缺省剔已点亮塔，`--include-lit` 保留） | 用户规则（2026-09-19）：已点亮塔不开战役 | 每次 S0 |
 | `wave_gate.py --batch-type repair\|probe` | 跳过 qp 质量预估标注（修复批实测 S2.1 却被预估 0.65 BLOCK） | 修复 / 探针批 |

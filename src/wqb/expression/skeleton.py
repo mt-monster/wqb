@@ -45,6 +45,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 __all__ = [
     "structural_signature",
     "extract_fields",
+    "group_axes",
     "dedup_by_skeleton",
     "skeleton_distribution",
     "DEFAULT_MAX_PER_SKELETON",
@@ -154,6 +155,134 @@ def _expr_of(item: Any, expr_key: str) -> str:
         v = item.get(expr_key) or item.get("expression") or item.get("expr") or ""
         return str(v)
     return ""
+
+
+# ---------------------------------------------------------------------------
+# 分组轴（group axis）—— 骨架签名必须补回来的那一维
+# ---------------------------------------------------------------------------
+#: 分组算子清单。单一事实源 = `wqb.config.OP_FAMILIES["GROUP"]`；下表只补**平台确有
+#: 而本仓目录漏收**的算子（漏收会让该算子的分组轴取不到 ⇒ 不同族被误判同族，
+#: 所以这里只做加法不做减法）。
+_GROUP_OPS_EXTRA = frozenset({"group_backfill"})
+
+#: 分组键（传给 group_* 的字面量）。事实源 = `wqb.expression.atom.GROUPING_KEYS`。
+_GROUPING_KEYS_FALLBACK = frozenset("""
+industry sector subindustry supersector subsector industrygroup sectorgroup
+market exchange country group asset region
+""".split())
+
+_KWARG_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*\s*=")
+_NUMBER_RE = re.compile(r"^-?\d+(?:\.\d+)?$")
+_CALL_HEAD_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)\s*\(")
+
+
+def _group_ops() -> frozenset:
+    """分组算子集合（config 优先，config 不可用时退回本模块兜底表）。"""
+    try:
+        from ..config import OP_FAMILIES
+        ops = OP_FAMILIES.get("GROUP")
+        if ops:
+            return frozenset(ops) | _GROUP_OPS_EXTRA
+    except Exception:  # pragma: no cover - config 缺失时退化
+        pass
+    return _GROUP_OPS_EXTRA | frozenset((
+        "group_neutralize", "group_rank", "group_zscore", "group_mean", "group_sum",
+        "group_max", "group_min", "group_scale", "group_median", "group_count",
+        "group_first", "group_last", "group_percentage", "group_std_dev",
+        "group_kurtosis", "group_skewness", "group_regression", "group_arg_max",
+        "group_arg_min"))
+
+
+def _grouping_keys() -> frozenset:
+    try:
+        from .atom import GROUPING_KEYS
+        return frozenset(GROUPING_KEYS)
+    except Exception:  # pragma: no cover
+        return _GROUPING_KEYS_FALLBACK
+
+
+def _call_args(expr: str, open_paren: int) -> List[str]:
+    """`(` 之后的顶层实参（括号平衡切分；不平衡时返回已切出的部分）。"""
+    depth, i, n = 1, open_paren + 1, len(expr)
+    args: List[str] = []
+    cur: List[str] = []
+    while i < n and depth > 0:
+        ch = expr[i]
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth == 0:
+                break
+        elif ch == "," and depth == 1:
+            args.append("".join(cur))
+            cur = []
+            i += 1
+            continue
+        cur.append(ch)
+        i += 1
+    args.append("".join(cur))
+    return args
+
+
+def _pick_axis(args: List[str]) -> str:
+    """从 group_* 的实参里挑出**分组参数**。
+
+    规则（按优先级）：
+      1. 位置实参里命中分组键词表（industry / sector / subindustry / market …）→ 取它；
+      2. 否则取**最后一个非数字、非字符串**的位置实参（group_backfill(x, group, d) 的
+         数字窗口 d 会被跳过 ⇒ 落到 group）；实参本身是调用时取调用文本
+         （`densify(pv13)` 这类自定义分组）；
+      3. 实参是**嵌套分组算子**时返回空串（轴由内层调用决定，内层会被单独扫描）。
+    """
+    positional = []
+    for a in args:
+        s = (a or "").strip()
+        if not s or _KWARG_RE.match(s):
+            continue
+        positional.append(s)
+    keys = _grouping_keys()
+    for s in positional:
+        if s.lower() in keys:
+            return s.lower()
+    group_ops = _group_ops()
+    for s in reversed(positional):
+        if _NUMBER_RE.match(s) or s[:1] in ("'", '"'):
+            continue
+        m = _CALL_HEAD_RE.match(s)
+        if m and m.group(1) in group_ops:
+            return ""          # 嵌套分组算子 → 轴归内层
+        return re.sub(r"\s+", "", s)
+    return ""
+
+
+def group_axes(expr: str) -> Tuple[str, ...]:
+    """表达式的**分组轴** → 排序后的 ``("算子:轴", ...)`` 元组。
+
+    为什么必须单独抽（2026-10-23 USA 事故）：
+    :func:`structural_signature` 把字段/分组变量一律替换成 ``F``，于是
+    ``group_rank(ts_zscore(x, 252), subindustry)`` 与 ``group_rank(ts_zscore(x, 252),
+    industry)`` 的主体形状**完全一样** —— 只按主体去重会把两个不同信号族当成同族
+    （USA ``d5KzLo7v`` / ``zqrGqVXo`` 即如此被误判 PROD_SIBLING 判死）。
+
+    >>> group_axes("group_rank(x, industry)")
+    ('group_rank:industry',)
+    >>> group_axes("group_rank(x, industry)") == group_axes("group_rank(x, sector)")
+    False
+    >>> group_axes("rank(ts_mean(x, 22))")
+    ()
+    """
+    if not expr:
+        return ()
+    ops = _group_ops()
+    out = set()
+    for m in re.finditer(r"([A-Za-z_][A-Za-z0-9_]*)\s*\(", expr):
+        op = m.group(1)
+        if op not in ops:
+            continue
+        axis = _pick_axis(_call_args(expr, m.end() - 1))
+        out.add("%s:%s" % (op, axis) if axis else "%s:?" % op)
+    return tuple(sorted(out))
 
 
 def dedup_by_skeleton(

@@ -75,7 +75,7 @@
 | ASI | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | CHN | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | DEU | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
-| EUR | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
+| EUR | ✓ | ✓ | `full-coverage` | 数据集必须做尽（字段全量 / 模板族 ≥3 / 边界算子档穷举），三闸全过才许判死 |
 | GBR | ✓ | ✓ | `active` | — |
 | GLB | ✓ | ✓ | `active` | — |
 | HKG | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
@@ -158,7 +158,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | S3 | `pipeline.py`（四重门禁后按槽位并发提交，`--max-rounds` 多轮） |
 | S4 | review_wave.py（walls 诊断）/ score_datasets.py --probe-score（三灯） |
 | S5 | `pipeline.py quota`（ET 日历日配额闸；配额模型见下「提交配额口径」） |
-| S6 | diversity_audit.py / campaign.py ledger / campaign.py dataset-experience（逐数据集中文经验） |
+| S6 | diversity_audit.py / campaign.py ledger / campaign.py dataset-experience（逐数据集中文经验）/ campaign.py field-profile（逐数据集字段画像） |
 
 > **健康检查判据分层（设计意图，勿混用）**：S0 体检 = 开战役**前置硬门槛**（不过不挖）；S1 评分线 = 数据集 **tier 分层与白名单筛选**（不过仅降级处理）；**回填带**是 S0 未过但可救的窄带（tier2 保底，生成必须 `ts_backfill` 包裹；覆盖率低于硬地板则 `excluded`）。三层**数字**只在 `config.DATASET_HEALTH_SCORING`、各区 `thresholds.json` 与 ra-pipeline 决策表 D4 / toolkit `probe-scoring-v2.md`，本文不复写。
 
@@ -227,6 +227,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | `region_gates` | wave_gate / build_wave CLI | 开波区域闸整体降级（catalog / signal_floor / stop_rules / backlog） | `--gate-mode warn\|off`、`WQB_GATE_MODE=warn\|off` | warn 至 2026-10-11，之后 enforce | **2026-10-12**（TB-02） | user / 7 天 |
 | `inspect` | wave_gate 内置 | 字段体检硬门（缺体检包） | `--inspect-mode off\|warn`、`WQB_INSPECT_MODE` | warn；新数据集首波自适应 enforce | — | user/agent / 7 天 |
 | `semantic` | wave_gate 内置 | 闸 SEM 字段语义归类 | `--skip-semantic-gate`、`--semantic-gate off\|warn`、`WQB_SEM_MODE` | enforce（缺台账 exit 2） | — | user/agent / 7 天 |
+| `full_coverage` | wave_gate 内置（数据驱动：战役 reference/ 声明 boundary_ops_<region>.json 即启用） | 全量覆盖闸（字段 / 模板族 / 边界算子三闸） | `--fcov-mode off\|warn`、`WQB_FCOV_MODE=off\|warn` | 随 region_gates 按日缺省（enforce，2026-10-12 起） | — | user/agent / 7 天 |
 | `diversity` | gate.py 闸 6 | gate.py 闸 6 多样性契约 | `--skip-diversity-gate` | 常开（repair / probe 批豁免） | — | user/agent / 3 天 |
 | `prod_family` | wave_gate 内置 | 闸 PF 信号族死路预检 | `--no-prod-family-gate` | 开 | — | user/agent / 3 天 |
 <!-- switch-table:end -->
@@ -246,7 +247,7 @@ L7  元技能       pull-brain-skills · planning-with-files
   由 `tests/unit/07_docs_skills/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护。
   **`tools_submit` 0 是有意的**：原生 `submit_alpha` 工具已于 2026-09-02 删除，提交统一走 workflow 节点 `workflow_submit_alpha`；
   所以「MCP 里没有 `submit_alpha` 工具」成立，而 `submit_batch` 是**仿真派发**（`POST /simulations`），不是提交。
-- `wqb-db` 服务器：**47 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由 `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/07_docs_skills/test_skill_integrity.py` 校验守护）。2026-09-30 方案 B 新增 3 个步级评估工具（`record_step_event` / `get_step_events` / `get_step_eval_report`，客观事件台账 + 九步矩阵，与已下线的 6 个旧工具不同名不同契约）。
+- `wqb-db` 服务器：**49 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由 `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/07_docs_skills/test_skill_integrity.py` 校验守护）。2026-09-30 方案 B 新增 3 个步级评估工具（`record_step_event` / `get_step_events` / `get_step_eval_report`，客观事件台账 + 九步矩阵，与已下线的 6 个旧工具不同名不同契约）。
 - workflow 节点：**20 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
   `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `forum_recon_wave` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
   `tests/unit/02_workflow/test_workflow.py::test_registry_lists_all_nodes` 守护。

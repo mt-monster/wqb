@@ -3,7 +3,7 @@
 > 回到 [EUR 区域流程](../SKILL.md) · [EUR profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/EUR.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region EUR --category risk`
 
 <!-- profiles:cell-panel:start -->
-**状态**：probe（跟区域入场 probe-only）　**分组**：Risk　**类别卡**：risk
+**状态**：active（跟区域入场 full-coverage）　**分组**：Risk　**类别卡**：risk
 
 **涉及数据集**：risk60、risk62、risk72
 
@@ -56,7 +56,7 @@
 - **跨区结论**（KOR/ASI；negative）：risk70 族判死（族连坐 risk88）（证据：KOR RULES §G；ASI 死名单（2026-09-21）） <!-- lint:const-ok 证据原文 -->
 - **跨区结论**（KOR/GBR/GLB/IND；conflict）：风险模型残差反转：KOR / GBR / GLB 上 2Y 翻号、因子暴露或偏弱，IND other532 特质收益反转却是 S 3.66——只作提醒，按组合取用（证据：KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD；GBR-PV47-RESIDUAL-REVERSAL-PRODSAT（rn 0.20）；GLB-RISK68-RESIDUAL-REVERSAL-WEAK-20260927；IND gJZwVXVm（WorkBuddy MEMORY §1.6）） <!-- lint:const-ok 证据原文 -->
 - **跨区结论**（GLB/EUR；lever）：借券费率 / 做空利用率作门控腿有效；作主信号 prod 高（证据：GLB 门控 rsk60_offer、mdl239_combo_utilisation（2026-09-21）；EUR risk60 借券费主信号 prod 0.905（2026-09-19）） <!-- lint:const-ok 证据原文 -->
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize）入场（原举例 regression_neut / vector_neut 均已被平台移除，2026-10-10 op-lint 实测）
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize / vector_neut）入场（★ 2026-10-20 更正：'vector_neut' **平台可用**——本地算子清单缺它是假阳性，EUR 平台已用它交付 JjQmx9nm；'regression_neut' 仍非平台算子名）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）

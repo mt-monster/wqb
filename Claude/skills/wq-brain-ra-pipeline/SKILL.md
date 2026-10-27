@@ -9,9 +9,8 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.3"
-last_verified: 2026-10-18
+last_verified: 2026-10-24
 ---
-
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
 
 ## 职责边界
@@ -31,8 +30,9 @@ last_verified: 2026-10-18
 
 **编号**：正文只用「步 N」；`S` 编号只出现在 MCP 参数处（`stage="S0"`）。
 
-| 步 | 1 | 2 | 3 | 4 | 5 | 5b | 6 | 7 | 8 | 9 |
-|---|---|---|---|---|---|---|---|---|---|---|
+
+| 步   | 1     | 2  | 3  | 4  | 5      | 5b        | 6  | 7  | 8      | 9  |
+| ---- | ----- | -- | -- | -- | ------ | --------- | -- | -- | ------ | -- |
 | 阶段 | S-PRE | S0 | S1 | S2 | S2→S3 | S3 收批后 | S3 | S4 | S4→S5 | S6 |
 
 **★ 入口选择**：要「遍历某个 region 的所有 category、发现苗子再深挖」→ **先走下面的「类别普查（步 1 与步 2 之间）」**（`category_sweep` + `category_probe`）；已知目标数据集、只想补货 → 直接走步 2。类别普查的输出是步 2 白名单的**主要来源**，两者不是二选一。
@@ -41,14 +41,15 @@ last_verified: 2026-10-18
 
 **变量**（前置块列全；缺则回问，不猜）：
 
-| 变量 | 来源 | 说明 |
-|---|---|---|
-| `$REGION` | 用户 | 必填 |
-| `$DELAY` / `$UNIVERSE` | `tracking/$REGION/config/settings.json` | 开新区先补 |
-| `$DS` | 步 2 白名单（ledger `s0_whitelist`） | 数据集 id |
-| `$W` | 步 4 选波产出的波号 | **字符串**（`97` 与 `s2_<ds>_d1` 都可） |
-| `$DTYPE` | catalog 的 `data_type` | VECTOR 比例先用 `get_datafields` 确认；**混合集（`type_distribution` 同时含 VECTOR 与 MATRIX）不得直接吃汇总值**，须人工裁决为本波字段池主类型，字段类型以 typed catalog 为准（步 3 细则铁律 ③） |
-| `$TARGET_SEATS` | 用户 / 战役目标 | 独立座位数，缺省建议 ≈ 3 × 目标塔数 |
+
+| 变量                   | 来源                                    | 说明                                                                                                                                                                                             |
+| ---------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `$REGION`              | 用户                                    | 必填                                                                                                                                                                                             |
+| `$DELAY` / `$UNIVERSE` | `tracking/$REGION/config/settings.json` | 开新区先补                                                                                                                                                                                       |
+| `$DS`                  | 步 2 白名单（ledger`s0_whitelist`）     | 数据集 id                                                                                                                                                                                        |
+| `$W`                   | 步 4 选波产出的波号                     | **字符串**（`97` 与 `s2_<ds>_d1` 都可）                                                                                                                                                          |
+| `$DTYPE`               | catalog 的`data_type`                   | VECTOR 比例先用`get_datafields` 确认；**混合集（`type_distribution` 同时含 VECTOR 与 MATRIX）不得直接吃汇总值**，须人工裁决为本波字段池主类型，字段类型以 typed catalog 为准（步 3 细则铁律 ③） |
+| `$TARGET_SEATS`        | 用户 / 战役目标                         | 独立座位数，缺省建议 ≈ 3 × 目标塔数                                                                                                                                                            |
 
 **分工**：本 skill = when / what；[`wq-brain-campaign-matrix`](../wq-brain-campaign-matrix/SKILL.md) = where（用户没给 REGION / 数据集时先调，多区并列 → 回问用户）；[`wq-brain-campaign-toolkit`](../wq-brain-campaign-toolkit/SKILL.md) = how（战役目录内执行引擎）；单条表达式修复 → `wq-brain-alpha-optimization-v1`；SUPER 组套 → `wq-brain-superalpha`；提交 → `worldquant-submit-alpha`；PPA 主题核查 → `wq-brain-ppa-mining`（不作编排器）。
 
@@ -62,13 +63,14 @@ last_verified: 2026-10-18
 
 仓库 [`docs/experience/`](docs/experience/README.md)（2026-09-29 建立）沉淀已付学费的实证结论——**走到某一步先读对应篇**，不读等于重复踩坑：
 
-| 当前在做的步 | 读 | 关键收益 |
-|---|---|---|
-| 步 1 选区选集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md) | 12 区过闸率排序 + MEA / IND / DEU 停投结论：profile 管「这个区怎么配」，03 管「这个区值不值得挖」 |
-| 步 3–4 设计信号 | [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md) | 组合形态铁律（含等权 `add(rank(A),rank(B))` 同属违规）、破闸合规旋钮 |
-| 步 7 诊断改进 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md)；卡闸 / 准备判「无解」前再读 [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md) §12（等价算子替换）、§13（同族 prod 墙先查分母）、§14（CW 破局） | 已证伪路径清单，避免在死路上继续烧模拟次数；判「天花板」前必须先扫等价算子替换（决策表 D15 前置） |
-| 步 8 提交判定 | [`01_platform_gates.md`](docs/experience/01_platform_gates.md) | 提交层四闸 + SUB 比值律 + 配额 / 相关性取数口径 |
-| 改链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) | skill 单点写入、DB 写锁、节点五处同步 |
+
+| 当前在做的步        | 读                                                                                                                                                                                                                           | 关键收益                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 步 1 选区选集       | [`03_region_dataset.md`](docs/experience/03_region_dataset.md)                                                                                                                                                               | 12 区过闸率排序 + MEA / IND / DEU 停投结论：profile 管「这个区怎么配」，03 管「这个区值不值得挖」 |
+| 步 3–4 设计信号    | [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md)                                                                                                                                                             | 组合形态铁律（含等权`add(rank(A),rank(B))` 同属违规）、破闸合规旋钮                               |
+| 步 7 诊断改进       | [`05_antipatterns.md`](docs/experience/05_antipatterns.md)；卡闸 / 准备判「无解」前再读 [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md) §12（等价算子替换）、§13（同族 prod 墙先查分母）、§14（CW 破局） | 已证伪路径清单，避免在死路上继续烧模拟次数；判「天花板」前必须先扫等价算子替换（决策表 D15 前置） |
+| 步 8 提交判定       | [`01_platform_gates.md`](docs/experience/01_platform_gates.md)                                                                                                                                                               | 提交层四闸 + SUB 比值律 + 配额 / 相关性取数口径                                                   |
+| 改链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md)                                                                                                                                                                     | skill 单点写入、DB 写锁、节点五处同步                                                             |
 
 这些 md 是给人 / Agent 读的**软层**，**不进**上面「冲突裁决」链：与代码闸 / 决策表冲突时以后者为准，并回写经验库。**机器强制层另有其物**：`wq-brain-campaign-toolkit/config/methodology_rules.json`（全局）+ `tracking/<REGION>/reference/`（区域），由 `RuleStore.query()` 在 `build_wave` / `pipeline` / `gate` / `review_wave` 注入；两轨同源，**改一边要同步另一边**（`tests/unit/07_docs_skills/test_experience_kb_refs.py` 守引用锚点）。
 
@@ -76,13 +78,14 @@ last_verified: 2026-10-18
 
 `references/regions/<REGION>.md`，每区一份（YAML front-matter + 正文；区域清单与 profile / 战役目录的对齐表见 [INDEX §区域清单](../INDEX.md)，权威是 `config.REGIONS`）。**开新区前必须先补 profile + `tracking/<R>/config/`**；无 profile 的区域走通用处女地模板（参照 ASI profile）。
 
-| 注入点 | profile 字段 | 影响步骤 | 谁读 | 缺失回落 |
-|---|---|---|---|---|
-| 入口裁决 | `entry_verdict`：`active` / `probe-only` / `frozen` | 步 1 | **代码**（`region_rotation` / `region_status`） | `unknown`（区域轮转降权） |
-| 生成先验 | `priors` | 步 4 | **代码**（`assemble-priors` 在 DB KB 空时兜底；GEM 读 priors 段） | 无先验 |
-| 闸门特化 | `gate_overrides` | 步 5 / 7 / 8 | **文档**（agent 读了照办；代码不消费） | 全局默认 |
-| 循环策略 | `loop_policy` | 步 2 / 6 / 循环 | **文档** | 全局默认 |
-| 组合覆盖 | `tracking/<R>/config/cells.json` 的 `backtest.overrides` / `thresholds.overrides`（每条带 `_evidence`） | 步 6 / 7 / 8 | **代码**（`workflow_batch_track` 以 `--set` 钉住；toolkit `pipeline.py` 经 `CampaignContext.bind_cell`；`mode_b_config` 读 `mode_b.*`） | 区域值 |
+
+| 注入点   | profile 字段                                                                                            | 影响步骤        | 谁读                                                                                                                                    | 缺失回落                  |
+| -------- | ------------------------------------------------------------------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| 入口裁决 | `entry_verdict`：`active` / `probe-only` / `frozen`                                                     | 步 1            | **代码**（`region_rotation` / `region_status`）                                                                                         | `unknown`（区域轮转降权） |
+| 生成先验 | `priors`                                                                                                | 步 4            | **代码**（`assemble-priors` 在 DB KB 空时兜底；GEM 读 priors 段）                                                                       | 无先验                    |
+| 闸门特化 | `gate_overrides`                                                                                        | 步 5 / 7 / 8    | **文档**（agent 读了照办；代码不消费）                                                                                                  | 全局默认                  |
+| 循环策略 | `loop_policy`                                                                                           | 步 2 / 6 / 循环 | **文档**                                                                                                                                | 全局默认                  |
+| 组合覆盖 | `tracking/<R>/config/cells.json` 的 `backtest.overrides` / `thresholds.overrides`（每条带 `_evidence`） | 步 6 / 7 / 8    | **代码**（`workflow_batch_track` 以 `--set` 钉住；toolkit `pipeline.py` 经 `CampaignContext.bind_cell`；`mode_b_config` 读 `mode_b.*`） | 区域值                    |
 
 **区域 skill（2026-10-04 起）**：每区一个 `wq-brain-ra-<区域小写>`（layer `L-RA-R`，清单见 [INDEX](../INDEX.md)），装三样东西：区域控制面板（回测设置 / 阈值 / Mode B 主闸，每个值带来源）、本区的流程差异、「区域 × 类别」组合分支文件 `references/<类别>.md`。面板与组合文件由 `tracking/<R>/config/cells.json` + profile **生成**（`$WQ_PY -m wqb.profiles render --apply`）——改控制值改 cells.json，不手改生成块。**步 1 定区后进入该区域 skill；步 3 / 4 / 7 / 8 先读本波数据集所在组合的分支文件**，或直接取生效画像：`$WQ_PY -m wqb.profiles explain --region $REGION --dataset $DS`。
 
@@ -120,8 +123,7 @@ last_verified: 2026-10-18
 - **★ 深挖配额按产出率分配，不均分**：各类产出率相差 25 倍（MEA 19.9% vs ASI 1.6%），均分会把配额压在无产出类上。`--quota-mode yield`（默认）权重 = 历史达标数（0 产出给保底权重 1）+ `0.5 × 有历史强信号字段`；`equal` 仅作对照。DEU 实测（预算 64）：`MODEL=28 / SHORTINTEREST=11 / OTHER=9 / … / FUNDAMENTAL=1`；均分时每类 5.8 条，MODEL 少拿 22 条。L1 用 `--use-quota` 逐类消费。
 - **L2 收尾**：L1 `--classify` 判「已枯」的类别必须写 `registry_empirical` 的 `dead_end` 层（`seal_dead_end`，**必填 `rule`**）⇒ 下轮 L0 自动排除。**这就是 `rule` 必须写的原因**：没有它的条目下轮只会降级为提示，等于白写。
 - **★ 探针条数不是首要变量，机制多样性才是**：DEU 164 条达标只来自 73 个独立表达式（去重比 2.2x），`grtransform` 10 条来自 **1 个**表达式。8 条探针里若掺设置变体，独立机制样本可能只剩 3 个 ⇒ L1 硬约束「一条探针 = 一个新机制」，`--min-mechanism-diversity` 默认 0.6。
-- **★ L1/L2 判据分离**：L1 宽召回（`sharpe>=1.58` **或** `2Y>=1.58` **或** `sharpe>=1.30`，后者为「次强」；阈值见 `config.PLATFORM_CHECK_LINES`）；**RA 全清留给 L2 深挖再筛**。实测放宽后各区命中率提升 1.4~2.2 倍（DEU 10.4%→19.8%、KOR 6.8%→17.5%、USA 2.2%→7.8%）。全库 S1.3~1.58 有 851 条，严格口径会全扔。
-- **分区配额**：命中率 ≥10% 的区（DEU/GLB/IND/MEA/HKG）`--n 8` 够；<5% 的区（USA/EUR/GBR/ASI，历史中位 1.6~3.7%）**必须 `--n 20~24` 或先做本地三闸预筛**，否则 8 条的检出率仅 12~22%。
+- **★ L1/L2 判据分离**：L1 宽召回（`sharpe>=1.58` **或** `2Y>=1.58` **或** `sharpe>=1.30`，后者为「次强」；阈值见 `config.PLATFORM_CHECK_LINES`）；**RA 全清留给 L2 深挖再筛**。
 - **失败分支**：某类探针全灭 → 不阻塞其他类（逐类独立判）；L0 报`category_sweep 某类 0 候选字段` → 该类本轮跳过并记 ledger；探针表达式报幽灵算子 → 跑 `operator_audit` 后改模板（`PROBE_SKELETONS`）。
 - **不做**：不把 L0/L1 产物当 **ideas** 注入 GEM（那是「字段池决策」，机制仍须 L4 五步法）；不用 `category_field_triage` 的判级替代本步（其甜点/族连坐判据与真实产出矛盾，见细则）；不在本步派发 FULL 仿真；**不探「已点亮塔」的类**（塔计数规则同步 2）。
 - **细则**：[`references/category-sweep.md`](references/category-sweep.md)（含与 `category_field_triage` / `score_datasets` 的分工、三铁律的实测数据、探针骨架清单）。
@@ -131,6 +133,10 @@ last_verified: 2026-10-18
 - **目的**：选出本战役的数据集白名单（点塔均匀、跨区死路已排除）。
 - **前置**：步 1 分流为「进步 2」；**已跑「类别普查」则白名单以苗头类别内的集为主**（`★苗头` 类优先，`待探` 类次之），普查判出的「贫瘠 / 已枯 / 已枯(归他类)」三类**不进白名单**；未跑普查时沿用纯 S0 排名。`settings.json` 已有 universe / delay。
 - **调用**（**有序**，不要先锁白名单再读约束）：① `campaign_intel.py s0-select` ② `workflow_campaign(stage="S0", calibrate=true)`（写 `thresholds.json`，**不产出排名**）③ `workflow_campaign(stage="S0")`（产出 `s0_ranking`）④ 按白名单硬约束筛 ⑤ 锁 `s0_whitelist`（`upsert_ledger_key(..., mode="merge")`，禁整值覆盖共享键）⑥ 体检包核对。
+- **选集纪律（2026-10-24 P0-4 / P1-4 / P1-6 落地）**：
+  - **区域判死清单**默认剔除：`tracking/<REGION>/reference/<region小写>_dead_datasets.md` 的 ```json 块（一行 verdict / reason / evidence / as_of）。`as_of` 超过 `review_after_days` ⇒ 该条降级为 advisory（**不剔除**）并在 stderr 催补证——过期证据不能作证；`--include-region-dead` 只用于复核清单。
+  - **机制标注**进排序第三层：`<region小写>_dataset_mechanisms.md` 的 `classic_anomaly`，**经典异象 > 未标注 > 明示非经典**。选「机制经典」而不是「数据集冷门」；选未标注/明示非经典的集，必须在选波记录里写明「机制 ≠ 经典异象」的理由，并在开波前用 prod 探针（步 3 前置 P0-1）验证——排序只决定先试谁，不替代探针。
+  - **塔位快照**：`--json` 产物自带 `pyramid_snapshot`（来自 `recommend_datasets.pyramid_summary`，零额外平台请求），供本波回写时对账；同产物顶层 `est_seats` 供 `build_wave --max-size-auto` 消费。
 - **产物**：ledger `s0_ranking` / `s0_whitelist` / `s0_calibrate_<region>`。
 - **完成定义**：`s0_whitelist` 已写，且每个白名单数据集有 `field_inspect` 体检包（缺包 → 缺省 `warn` 告警放行；`--inspect-mode off` 才要 `inspect` waiver）。
 - **失败分支**：配额筛后仍无非 MODEL → 写 findings，**不要退回纯 MODEL**；全部被硬排除 → 回步 1 换区。
@@ -171,7 +177,15 @@ last_verified: 2026-10-18
 - **不做**：不新建 `_gate_waveNN.py`、不写 `cache/gate_wave*.json`（用 `wave_gate.py`，结果落 `gate_results`）；不以为 `validate_expressions` / `preflight_expressions` 查了幽灵算子（**不查**）；不把「干跑绿」当「LLM 可达」。
 - **细则**：[`step5-gates.md`](references/step5-gates.md)；情景卡 RA-05（体检包缺失）。适用决策表：D1 / D2。
 
-### 步 5b：prod-first 探针（S3 收批后必调；定义只在这里）
+### 步 5b：探针（开波前 prod-probe + 收批后 prod-first；定义只在这里）
+
+**5b-1 开波前（新数据集 / 新信号族的第一波必做）**：
+
+- **裸强度探针（P1-1）**：先用最朴素形态（字段 → 单一 `rank`/`zscore`，不叠复合骨架）跑 1 条，看信号有没有量级；**|S| < 0.5 ⇒ 直接 kill 该数据集/字段对，不铺开整波**（USA 实测：`pv106` 0.00 / `shortinterest29` 0.79 / `other596` 0.91 / `multi_horizon_alpha` 1.16 —— 这三类整波投下去都是零产出）。
+- **prod 探针（P0-1）**：`python tools/campaign_intel.py prod-probe --region $REGION --dataset $DS` —— 对本集**全部历史行**每族探 1 条 prod（**不占回测槽**，串行）；`prod ≥ 0.75` ⇒ 封族，ledger `prod_family_<region>_<family>` 写入 `probe: true`，闸 PF 对该族**免 `min_confidence_n` 直接拦整波**；退出码 2 = 本集有族被封（换正交概念/换族/换集，别开整波）。`--dry-run` 只列拟探族、零网络零写库。
+- **产物**：`prod_probe_<region>_<dataset>`（每族读数 + 封族清单 + 「探测→封族」耗时）+ 波计划里的探针读数与 kill 决定。目标：撞墙族波次占比 < 5%（USA 历史 13/110 波 = 11.8%）。
+
+**5b-2 收批后（同族扩第二波前）**：
 
 - **目的**：在同一信号族投入第二波之前，先知道它撞不撞 prod 墙（IND intraday_pv_feats 连投 3 波 24 条后才查 prod = 0.79–0.92，整族报废）。
 - **调用**：`python tools/campaign_intel.py prod-first --region $REGION --wave $W --write-ledger`（族内最强 1 条，平台实测，**串行**；`--top-k` 缺省 3）。闸 PF 是它的代码级固化（骨架级：已知死骨架 → 拦整波，新骨架 → WARN）。
@@ -201,16 +215,17 @@ last_verified: 2026-10-18
 - **前置**：步 6 完成定义满足；prod-first（步 5b）已跑；已读本组合分支文件的 S4 段（组合杠杆、不要用的杠杆——Mode B 的 B3 先取它们）。
 - **调用**：`s4-prescreen`（全灭直接判死）→ `workflow_campaign(stage="S4", dataset=$DS, wave=$W)`（评审；解析不到 alpha_id 即 FAIL，用其列出的字符串波号重试）→ **对 `failed_ra_count` 只剩 1–2 闸的候选插「闸失败归因」**（`tools/gate_attribution.py --alpha-id <id> --correlation`，零仿真；细则见 [`references/gate-attribution.md`](references/gate-attribution.md)）→ 逐候选链（selfcorr-quick → `check_self_correlation` → `compute_mutual_correlation` → `check_correlation` → `brain-alpha-robustness` → judge）。
 - **★ 闸失败归因（只差一两闸时必做，先归因再推闸）**：`failed_ra_count ∈ {1,2}` 的候选**不得直接开始刷参数**。先跑 `tools/gate_attribution.py` 拿 `verdict` + 逐闸 `levers` + `stop_rule`：
-  | 退出码 | verdict | 本步动作 |
-  |---|---|---|
-  | 0 | `READY` | RA + prod + self 全过 ⇒ **停手**，不得再做结构性改动（会重掷骰子，prod 余量可低至 0.0009）；提交权归用户 |
-  | 0 | `PUSH_TARGETED` | 按 `diagnoses[].levers` 的 rank 逐条推，**每条只动一个变量**（改完回本步重跑归因，不重发盲扫批）。⚠ **若相关性未实测，此裁决不等于可推**——先跑 `check_correlation` + `check_self_correlation` |
-  | 0 | `PUSH_CORRELATION_CORNER` | **RA 全过、仅相关性差 ≤0.01**（刀锋区）⇒ 不改结构，在 `(门控窗口 × winsorize std)` 二维找角点（KOR 实测 gate6×std0.22 命中 prod 0.6991 / S 1.60） |
-  | 3 | `SWITCH_AXIS` | 本腿到机制层天花板 ⇒ 换字段/数据集，**不得**再在本腿发批 |
-  | 4 | `BLOCKED_BY_CORRELATION` | prod 余量 < 0.01 ⇒ 任何抬 S 杠杆都先验撞线；先找 prod 中性杠杆，否则所有仿真白跑 |
-  | 5 | 两闸以上 | 不属本机制，回常规多轮诊断 / `s4-prescreen` |
-  两条**零成本前置判据**（归因报告自带，别重算）：① **F 闸 `F = S×√(returns/max(TO,0.125))`** ⇒ `to_target = returns×(S/F_target)²`；`to_target ≤ 0.125` 说明**减速路线数学上不可达**，别再刷 `decay`/`backfill`/`hump`。② **prod 余量先测再决定推不推 S**（抬 S 的杠杆多半同时抬 prod）。**收敛即天花板**：同一闸在 ≥3 个互不相关杠杆上收敛到同一档 ⇒ 停手换轴（细则 §8 停手线四条）。
-- **产物**：ledger `s4_walls_<region>_<wave>`、`salvage_pool`；每条候选有去向。
+
+  | 退出码                                                                                                                                                                                                                                                                                                                                                                                           | verdict                   | 本步动作                                                                                                                                                                                        |
+  | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | 0                                                                                                                                                                                                                                                                                                                                                                                                | `READY`                   | RA + prod + self 全过 ⇒**停手**，不得再做结构性改动（会重掷骰子，prod 余量可低至 0.0009）；提交权归用户                                                                                        |
+  | 0                                                                                                                                                                                                                                                                                                                                                                                                | `PUSH_TARGETED`           | 按`diagnoses[].levers` 的 rank 逐条推，**每条只动一个变量**（改完回本步重跑归因，不重发盲扫批）。⚠ **若相关性未实测，此裁决不等于可推**——先跑 `check_correlation` + `check_self_correlation` |
+  | 0                                                                                                                                                                                                                                                                                                                                                                                                | `PUSH_CORRELATION_CORNER` | **RA 全过、仅相关性差 ≤0.01**（刀锋区）⇒ 不改结构，在 `(门控窗口 × winsorize std)` 二维找角点（KOR 实测 gate6×std0.22 命中 prod 0.6991 / S 1.60）                                           |
+  | 3                                                                                                                                                                                                                                                                                                                                                                                                | `SWITCH_AXIS`             | 本腿到机制层天花板 ⇒ 换字段/数据集，**不得**再在本腿发批                                                                                                                                       |
+  | 4                                                                                                                                                                                                                                                                                                                                                                                                | `BLOCKED_BY_CORRELATION`  | prod 余量 < 0.01 ⇒ 任何抬 S 杠杆都先验撞线；先找 prod 中性杠杆，否则所有仿真白跑                                                                                                               |
+  | 5                                                                                                                                                                                                                                                                                                                                                                                                | 两闸以上                  | 不属本机制，回常规多轮诊断 /`s4-prescreen`                                                                                                                                                      |
+  | 两条**零成本前置判据**（归因报告自带，别重算）：① **F 闸 `F = S×√(returns/max(TO,0.125))`** ⇒ `to_target = returns×(S/F_target)²`；`to_target ≤ 0.125` 说明**减速路线数学上不可达**，别再刷 `decay`/`backfill`/`hump`。② **prod 余量先测再决定推不推 S**（抬 S 的杠杆多半同时抬 prod）。**收敛即天花板**：同一闸在 ≥3 个互不相关杠杆上收敛到同一档 ⇒ 停手换轴（细则 §8 停手线四条）。 |                           |                                                                                                                                                                                                 |
+- **产物**：ledger `s4_walls_<region>_<wave>`、`salvage_pool`；`wave_results.key_findings` 固定四列——① 强度上限（max|S| + 正负向极值 + 2Y；反向臂同样是候选）/ ② 机制方向与证伪条件（缺登记显式「未登记」，回测后必须补）/ ③ prod 读数（「未测」是显式结论，不等于低相关）/ ④ 闸缺口按 (门槛−实测)/|门槛| 排序（不是 FAIL 行数）+ TO 越界标注（`[0.03, 0.70]`，只标注不删行；越界行不进 prod/self 队列）。下波设计先读这四列，别只看 GREEN/RED。每条候选有去向。
 - **完成定义**：本波每条候选都有去向——进步 8 / 留 near / salvage（带墙名）/ 判死（进步 9）。
 - **失败分支**：卡闸 → `get_salvage_pool(boost_dim=…)` 找辅助腿；Mode B 2–3 轮仍卡墙 → 找武器（`forum_recon` 触发表 #4，每波 ≤ 1 次）；同一想法 > 10 种结构仍不过 → 步 9 记 `dead_end`；**判「无解 / 天花板」或记 `dead_end` 之前，IS 强但被某闸卡住的族必须先扫等价算子替换**（`signed_power`→`quantile`、`ts_scale`→`quantile` / `normalize` 等：换数值路径、一次动多个闸，几何调整一次只动一个；决策表 D15 前置、步 9 细则 §9.5 1b），prod 墙先做 D0-P 的诊断前置。
 - **不做**：**任何两条独立信号腿相加（加权 / 等权 / `add` / 中缀 `+`）一律违规**；辅助腿只能以**条件 / 分组 / 残差**三式入场；`risk_neutralized_sharpe ≤ 0` 且 raw ≥ 1.58 → 停止调参；**门禁通过 ≠ 合规**。IS→OS 衰减折算**不抬高 IS 阈值**。**闸失败归因不是「免推闸」**：拿到杠杆表后照样要一条条推仿真——它替代的是无差别盲扫，不是推闸本身；归因判 `SWITCH_AXIS` 后也不得在同一结构族继续发批。
@@ -232,8 +247,8 @@ last_verified: 2026-10-18
 
 - **目的**：把这一波的结论写回库，让下一波的先验自动变新。
 - **前置**：步 7 / 8 已有去向；先跑 `tools/step_funnel.py` 定位掉得最狠的一跳。
-- **调用**（**有序**，全流程见 [`step9-writeback.md`](references/step9-writeback.md) §9.1）：① `step_funnel` ② 判 verdict（`PASS` ≥ 1 条过全部评审闸 / `PARTIAL` 0 达标但 ≥ 1 条 near / `FAIL` 0 达标 0 near）③ `campaign_intel.py pyramid` ④ `upsert_wave_result`（key_findings 一次带齐）⑤ 判死 `seal_dead_end`（先取证——收批时 `forum_recon_wave` 已默认问过一次；把 `question_key` 传给它，取证闸 fail-closed，规则见 §9.5）/ 胜绩 `upsert_registry_empirical(layer="win")` ⑥ 全波撞 prod 墙 → `campaign_intel.py mark-saturated` ⑦ 逐数据集 `dataset-experience` ⑧ 再跑一次 `assemble-priors`。
-- **产物**：`wave_results.verdict`（**唯一结论源**）、`registry_empirical`、`priors_snapshot_<region>`、`reports/dataset_experience/*_campain.md`。
+- **调用**（**有序**，全流程见 [`step9-writeback.md`](references/step9-writeback.md) §9.1）：① `step_funnel` ② 判 verdict（`PASS` ≥ 1 条过全部评审闸 / `PARTIAL` 0 达标但 ≥ 1 条 near / `FAIL` 0 达标 0 near）③ `campaign_intel.py pyramid` ④ `upsert_wave_result`（key_findings 一次带齐）⑤ 判死 `seal_dead_end`（先取证——收批时 `forum_recon_wave` 已默认问过一次；把 `question_key` 传给它，取证闸 fail-closed，规则见 §9.5）/ 胜绩 `upsert_registry_empirical(layer="win")` ⑥ 全波撞 prod 墙 → `campaign_intel.py mark-saturated` ⑦ 逐数据集 `dataset-experience` ⑧ 再跑一次 `assemble-priors` ⑨ 刷新本区字段画像 `field-profile`（区域级、纯本地只读 DB，缺省落盘全部有字段目录的集）。
+- **产物**：`wave_results.verdict`（**唯一结论源**）、`registry_empirical`、`priors_snapshot_<region>`、`reports/dataset_experience/*_campain.md`、`docs/reference/<REGION>/datasets/*_field_profile.md`。
 - **完成定义**：`step9-writeback.md` §9.7 的清单全勾；**缺任何一项 = 本波未完成**（GEM 对 stale 先验快照只 WARN 不阻断，只能由本步兜底）。**勾完用 `python tools/step9_audit.py --region $REGION` 机器复核**（只读，逐项 `[OK]/[FAIL]/[?]`；`--enforce strict` 可作开下一波前自检）。
 - **失败分支**：`upsert_wave_result` 被拒（verdict 不可辨认）→ 用返回的 `suggestion` 核对后显式传枚举，原文进 `key_findings`。
 - **不做**：不写 `s6_verdict_<wave>` / `wave<N>_verdict`（已废止，双写会分叉）；不往五张 `step_*` 表写（恒 0 行）；**未选、未回测不能写成 dead_end**；不在 win 里记混合比例。
@@ -256,15 +271,16 @@ last_verified: 2026-10-18
 
 **战役产物（事实源）只入 `data/wqb.db`，禁止 Write 战役 json / csv。** 一次性中间文件（`cache/candidates.json`、`cache/basket.json`、`--exprs-file <txt>`、`--json <out>`）可写但**可丢弃、不作事实源**。ledger 键的用途 / 写入方 / 读取方 / 缺失行为 → `docs/ledger_keys.json`（测试守）。
 
-| 阶段 | 入库 | 唯一写入方 |
-|---|---|---|
-| S0 | ledger `s0_ranking` / `s0_whitelist` / `s0_calibrate_<region>` / `*_dead` | `score_datasets.py`（toolkit）；手工锁白名单 `upsert_ledger_key(mode="merge")` |
-| S1 | ledger `catalog_<ds>` / `s1_prefix_<ds>` / `s1_semantic_<ds>`；`fields` 表 | `workflow_campaign(S1)`；`field_semantic_classify.py`；字段目录 `upsert_field_catalog` |
-| S2 | `expressions`（status `gem` / `enhanced` / `selected`）；ledger idea；`priors_snapshot_<region>` | `workflow_gem` 落库 + `assemble-priors`；直写 `upsert_expressions` |
-| S2→S3 | `gate_results`（`all_pass` / `fail_reasons`） | `wave_gate` / `gate.py`；直写 `upsert_gate_result` |
-| S3 | `backtest_results` / `wave_results` / checkpoint；ledger `prod_first_<wave>` | `pipeline.py`（toolkit）；收割 `harvest_multisim_alphas` + `harvest_multisim_results` |
-| S4 | ledger `s4_walls_<region>_<wave>`（`workflow_campaign` S4 节点写）或 `review_<tag>`（`review_wave.py --write-ledger` CLI 写）；`salvage_pool` | `review_wave.py`；补池 `backfill_salvage_pool` |
-| S6 | `wave_results.verdict`（唯一结论源）+ `registry_empirical` + ledger `saturated_datasets`；`reports/dataset_experience/*_campain.md`（每个回测过的数据集一份；本波涉及的由步 9 ⑦ 逐个刷新，**不是只对判死 / win 集生成**） | `upsert_wave_result` / `seal_dead_end` / `upsert_registry_empirical` / `mark-saturated` / `dataset-experience` |
+
+| 阶段   | 入库                                                                                                                                                                                                                       | 唯一写入方                                                                                                     |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| S0     | ledger`s0_ranking` / `s0_whitelist` / `s0_calibrate_<region>` / `*_dead`                                                                                                                                                   | `score_datasets.py`（toolkit）；手工锁白名单 `upsert_ledger_key(mode="merge")`                                 |
+| S1     | ledger`catalog_<ds>` / `s1_prefix_<ds>` / `s1_semantic_<ds>`；`fields` 表                                                                                                                                                  | `workflow_campaign(S1)`；`field_semantic_classify.py`；字段目录 `upsert_field_catalog`                         |
+| S2     | `expressions`（status `gem` / `enhanced` / `selected`）；ledger idea；`priors_snapshot_<region>`                                                                                                                           | `workflow_gem` 落库 + `assemble-priors`；直写 `upsert_expressions`                                             |
+| S2→S3 | `gate_results`（`all_pass` / `fail_reasons`）                                                                                                                                                                              | `wave_gate` / `gate.py`；直写 `upsert_gate_result`                                                             |
+| S3     | `backtest_results` / `wave_results` / checkpoint；ledger `prod_first_<wave>`                                                                                                                                               | `pipeline.py`（toolkit）；收割 `harvest_multisim_alphas` + `harvest_multisim_results`                          |
+| S4     | ledger`s4_walls_<region>_<wave>`（`workflow_campaign` S4 节点写）或 `review_<tag>`（`review_wave.py --write-ledger` CLI 写）；`salvage_pool`                                                                               | `review_wave.py`；补池 `backfill_salvage_pool`                                                                 |
+| S6     | `wave_results.verdict`（唯一结论源）+ `registry_empirical` + ledger `saturated_datasets`；`reports/dataset_experience/*_campain.md`（每个回测过的数据集一份；本波涉及的由步 9 ⑦ 逐个刷新，**不是只对判死 / win 集生成**）；`docs/reference/<REGION>/datasets/*_field_profile.md`（步 9 ⑨ 区域级刷新，不是只限本波集） | `upsert_wave_result` / `seal_dead_end` / `upsert_registry_empirical` / `mark-saturated` / `dataset-experience` / `field-profile` |
 
 ## 反模式（每条：因 X 发生过 Y → 改用 Z）
 

@@ -89,6 +89,108 @@ class Api:
         _open_with_retry(lambda: self.op.open(req, timeout=60))
 
 
+class PaginationError(RuntimeError):
+    """A paginated pull could not be proven complete (all-or-error)."""
+
+
+def paginate_all(api, base, *, limit=50, max_items=None, sleep=0.3, strict=True):
+    """Fetch every row of a paginated BRAIN list endpoint.
+
+    Pagination contract (verified live 2026-10-20, ``/data-fields``):
+    - page size is hard-capped at ``limit=50`` (``limit=100`` -> HTTP 400);
+    - ``dataset.id=`` queries paginate to any depth, so the pull is
+      all-or-error: ending short of the platform-declared ``count`` raises
+      :class:`PaginationError` instead of returning a silent partial catalog;
+    - ``search=`` is window-limited at ``offset+limit <= 100`` with an
+      *unfiltered* ``count``, so it can only expose the first 100 matches.
+
+    ``base`` is the full path + query string *without* ``limit`` / ``offset``.
+    ``max_items`` is an explicit caller-owned cap, never a silent default.
+    """
+    sep = "" if base.endswith(("?", "&")) else ("&" if "?" in base else "?")
+    has_search = "search=" in base
+    window = 100 if has_search else None
+    cap = max(1, int(max_items)) if max_items else None
+
+    out = []
+    seen = set()
+    platform_count = None
+    pages = 0
+    offset = 0
+    reached_end = False
+    truncated_reason = None
+
+    while True:
+        if window is not None and offset >= window:
+            truncated_reason = "search_window_capped"
+            break
+        path = "%s%slimit=%d&offset=%d" % (base, sep, limit, offset)
+        try:
+            data = json.load(api.get(path))
+        except urllib.error.HTTPError as e:
+            if has_search and e.code == 400 and offset > 0:
+                truncated_reason = "search_window_capped"
+                break
+            raise
+        page = data.get("results") or []
+        pages += 1
+        if platform_count is None:
+            platform_count = data.get("count")
+
+        new_items = 0
+        for idx, item in enumerate(page):
+            key = item.get("id") if isinstance(item, dict) else None
+            key = key or "_anon_%d_%d" % (offset, idx)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(item)
+            new_items += 1
+
+        if len(page) < limit:
+            reached_end = True
+        if cap is not None and len(out) >= cap:
+            if len(out) > cap:
+                del out[cap:]
+            if platform_count is None or len(out) < platform_count:
+                truncated_reason = "max_items_cap"
+            break
+        if reached_end:
+            break
+        if window is None and platform_count is not None \
+                and len(out) >= platform_count:
+            break
+        if window is not None and len(out) >= window:
+            truncated_reason = "search_window_capped"
+            break
+        if new_items == 0 and window is None:
+            raise PaginationError(
+                "pagination made no progress at offset=%d (%d/%s rows) for %r"
+                % (offset, len(out), platform_count, base)
+            )
+        offset += limit
+        time.sleep(sleep)
+
+    if window is not None or platform_count is None:
+        complete = reached_end and not truncated_reason
+    else:
+        complete = len(out) >= platform_count
+
+    if strict and not truncated_reason and not complete:
+        raise PaginationError(
+            "incomplete pull for %r: got %d/%s rows across %d pages"
+            % (base, len(out), platform_count, pages)
+        )
+
+    return {
+        "items": out,
+        "platform_count": platform_count,
+        "complete": complete,
+        "pages": pages,
+        "truncated_reason": truncated_reason,
+    }
+
+
 def api_call(api, method, path, payload=None, retries=5, base_delay=5):
     """429 指数退避包装：429 时 base_delay 起 ×2 倍增重试；非 429 直接抛。"""
     delay = base_delay

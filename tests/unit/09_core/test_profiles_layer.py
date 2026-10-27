@@ -125,6 +125,25 @@ def test_cell_validator_requires_evidence_and_legal_settings():
     assert any("平台线" in e for e in errs)
 
 
+def test_dataset_overrides_validator_rules():
+    """2026-10-20 P0-2：dataset_overrides 结构同组合级（只允许 backtest/note，逐键证据 + 合法档）。"""
+    ok = _cells(dataset_overrides={"ds1": {"backtest": {"overrides": {"decay": 8},
+                                                        "_evidence": {"decay": "w9 实测"}},
+                                             "note": "该数据集已验证配方"}})
+    assert CE.validate_cells("KOR", ok) == []
+    errs = CE.validate_cells("KOR", _cells(dataset_overrides={
+        "ds1": {"backtest": {"overrides": {"decay": 8}}}}))
+    assert any("_evidence" in e for e in errs)                          # 覆盖没有证据
+    errs = CE.validate_cells("KOR", _cells(dataset_overrides={
+        "ds1": {"backtest": {"overrides": {"universe": "TOP3000"}, "_evidence": {"universe": "x"}}}}))
+    assert any("合法档" in e for e in errs)                              # KOR 只有 TOP600
+    errs = CE.validate_cells("KOR", _cells(dataset_overrides={"ds1": {"foo": 1}}))
+    assert any("未知键" in e for e in errs)                              # 数据集块只允许 backtest/note
+    errs = CE.validate_cells("KOR", _cells(dataset_overrides={
+        "ds1": {"backtest": {"overrides": {"badkey": 1}, "_evidence": {"badkey": "x"}}}}))
+    assert any("不可覆盖" in e for e in errs)                            # 设置名不在 BACKTEST_KEYS
+
+
 def test_real_cells_files_are_valid():
     bad = []
     for p in sorted((ROOT / "tracking").glob("*/config/cells.json")):
@@ -183,6 +202,36 @@ def test_backtest_pins_only_carry_cell_overrides(campaign, monkeypatch):
     monkeypatch.setattr(T, "dataset_category", lambda region, ds, db=None: "fundamental")
     monkeypatch.setattr(RS, "dataset_category", lambda region, ds, db=None: "fundamental")
     assert RS.backtest_pins("KOR", dataset="other466", config_dir=campaign) == ["decay=6"]
+
+
+def test_dataset_overrides_pin_and_resolve(campaign, monkeypatch):
+    """2026-10-20 P0-2：dataset_overrides 只在该数据集被点名时生效，压过组合级；不点名时零影响。"""
+    data = CE.load_cells("KOR", campaign)
+    data["cells"]["fundamental"]["dataset_overrides"] = {
+        "other466": {"backtest": {"overrides": {"decay": 8, "universe": "TOP600"},
+                                  "_evidence": {"decay": "w9 实测", "universe": "w9 实测"}},
+                     "note": "该数据集已验证配方"}}
+    CE.save_cells("KOR", data, campaign)
+    # 夹具的 thresholds 故意带一条违规（见 test_resolver_layers_sources_and_locks）；只断 dataset_overrides 无错
+    assert not [e for e in CE.validate_cells("KOR", data) if "dataset_overrides" in e]
+    monkeypatch.setattr(T, "dataset_category", lambda region, ds, db=None: "fundamental")
+    monkeypatch.setattr(RS, "dataset_category", lambda region, ds, db=None: "fundamental")
+    # 点名该数据集：数据集级压过组合级（decay 6→8），并带上新键 universe
+    pins = RS.backtest_pins("KOR", dataset="other466", config_dir=campaign)
+    assert "decay=8" in pins and "universe=TOP600" in pins and "decay=6" not in pins
+    # 不点名的类别级钉住不受影响；别的数据集仍走组合级
+    assert RS.backtest_pins("KOR", category="fundamental", config_dir=campaign) == ["decay=6"]
+    assert RS.backtest_pins("KOR", dataset="pv106", config_dir=campaign) == ["decay=6"]
+    # resolve 层：source 标到数据集级，且记录被压过的组合级值；explain 打印它
+    p = RS.resolve("KOR", dataset="other466", config_dir=campaign)
+    assert p["category"] == "fundamental"
+    assert p["backtest"]["decay"] == {"value": 8, "source": "cells.json:fundamental:other466",
+                                      "evidence": "w9 实测", "region_value": 4, "cell_value": 6}
+    assert p["backtest"]["universe"]["source"] == "cells.json:fundamental:other466"
+    assert "被数据集级压过" in RS.explain_text(p)
+    # 不点名数据集时与旧行为逐字一致
+    p2 = RS.resolve("KOR", category="fundamental", config_dir=campaign)
+    assert p2["backtest"]["decay"]["value"] == 6 and "cell_value" not in p2["backtest"]["decay"]
 
 
 def test_batch_track_pins_cell_overrides_with_set(campaign, monkeypatch):
@@ -245,11 +294,15 @@ def test_evidence_stats_binding_and_sync(tmp_path):
     cfg = tmp_path / "KOR" / "config"
     cfg.mkdir(parents=True)
     CE.save_cells("KOR", {"region": "KOR", "cells": {"fundamental": {
-        "status": "auto", "s4": {"levers": [{"id": "x", "what": "人写的杠杆", "evidence": "e"}]}}}}, cfg)
+        "status": "auto", "s4": {"levers": [{"id": "x", "what": "人写的杠杆", "evidence": "e"}]},
+        "dataset_overrides": {"other466": {"backtest": {"overrides": {"decay": 8},
+                                                        "_evidence": {"decay": "w9"}}}}}}}, cfg)
     s = EV.sync_cells("KOR", db=str(db), config_dir=cfg, apply=True, min_backtests=20, today="2026-10-04")
     data = CE.load_cells("KOR", cfg)
     assert set(s["cells"]) == {"fundamental", "pv", "news"} and "unknown" not in data["cells"]
     assert data["cells"]["fundamental"]["s4"]["levers"][0]["what"] == "人写的杠杆"   # 人写字段不被覆盖
+    # 2026-10-20 P0-2：dataset_overrides 也是人写字段，sync 只写 datasets/evidence 两个键，不得碰它
+    assert data["cells"]["fundamental"]["dataset_overrides"]["other466"]["backtest"]["overrides"]["decay"] == 8
     assert data["cells"]["fundamental"]["evidence"]["wins"][0]["id"] == "KOR-OTHER466-WIN"
     assert data["unbound_registry_entries"] == 1 and data["unattributed_backtests"] == 4
     assert CE.validate_cells("KOR", data) == []

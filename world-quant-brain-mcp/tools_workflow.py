@@ -4,6 +4,8 @@
 将 wqb.workflow 的 6 个节点暴露为 MCP 工具，供 Agent 直接调用。
 """
 
+import asyncio
+import concurrent.futures
 import json
 import logging
 import os
@@ -13,6 +15,25 @@ from typing import Any, Dict, List, Optional
 from mcp_core import mcp
 
 logger = logging.getLogger("tools_workflow")
+
+# ★ 2026-10-27 P0：submit 类节点的**专用单线程执行器**。
+#
+# 背景：submit_alpha 节点内部 `run_async()`（workflow/_common.py）在「已有运行中事件循环」
+# 时用 `ThreadPoolExecutor(max_workers=1).result()` 跑 brain_client 的异步方法、
+# `_poll_status()` 又用 `time.sleep()` 轮询——二者都**阻塞调用线程**。而 mcp 1.30.0 的
+# FastMCP **不会**把 sync 工具卸载到线程（全包只有资源读取用 to_thread），
+# 于是 `workflow_submit_alpha` 这个 sync 工具**直接跑在事件循环线程上**，
+# 整段提交（含 240s×2 轮询）把事件循环锁死：
+#   - 期间 MCP 无法响应 watchdog 的 JSON-RPC `initialize` 握手 → 被判「TCP 监听但握手失败（假死）」
+#     → 强制重启（每次真实提交都杀服务进程）；
+#   - 客户端因此拿到 `fetch failed`，而 POST 其实早已 201 落地（LLMWkXp6 即此案例）。
+#
+# 解法：把同步节点执行整体丢到**独立单线程**，事件循环保持响应；同时单线程口径保证
+# `brain_client` 的 `requests.Session` 始终单线程使用（requests.Session 非线程安全）。
+# 不复用 `run_async` 内置的 max_workers=1 池：那个池的 .result() 是**阻塞调用方**设计的，
+# 只有把调用方本身挪出事件循环，它才不会阻塞循环。
+_SUBMIT_NODE_EXEC = concurrent.futures.ThreadPoolExecutor(
+    max_workers=1, thread_name_prefix="wqb-submit-node")
 
 
 def _get_workflow_executor():
@@ -142,7 +163,7 @@ def workflow_batch_track(
 
 
 @mcp.tool()
-def workflow_submit_alpha(
+async def workflow_submit_alpha(
     alpha_id: str,
     name: Optional[str] = None,
     color: Optional[str] = None,
@@ -180,18 +201,27 @@ def workflow_submit_alpha(
     Returns:
         提交结果
     """
-    execute, _ = _get_workflow_executor()
-    result = execute("submit_alpha", {
-        "alpha_id": alpha_id,
-        "name": name,
-        "color": color,
-        "tags": tags,
-        "descriptions": descriptions,
-        "force": force,
-        "confirm_submit": confirm_submit,
-        "robustness_audited": robustness_audited,
-        "verify_timeout": verify_timeout,
-    }, dry_run=dry_run)
+    # ★ 2026-10-27 P0：submit 节点是**长耗时同步链路**（预检 → set_properties → POST →
+    # 240s×2 轮询），节点内部 `run_async` 的 `.result()` 与 `_poll_status` 的 `time.sleep`
+    # 都会阻塞调用线程。mcp 1.30.0 不卸载 sync 工具 ⇒ 原本整段跑在事件循环上 → 假死重启。
+    # 故本工具改为 **async**，把同步节点执行丢到专用单线程（见 _SUBMIT_NODE_EXEC），
+    # 事件循环保持响应，watchdog 握手不再被阻塞。
+    def _run_submit():
+        execute, _ = _get_workflow_executor()
+        return execute("submit_alpha", {
+            "alpha_id": alpha_id,
+            "name": name,
+            "color": color,
+            "tags": tags,
+            "descriptions": descriptions,
+            "force": force,
+            "confirm_submit": confirm_submit,
+            "robustness_audited": robustness_audited,
+            "verify_timeout": verify_timeout,
+        }, dry_run=dry_run)
+
+    loop = asyncio.get_running_loop()
+    result = await loop.run_in_executor(_SUBMIT_NODE_EXEC, _run_submit)
     return result.to_dict()
 
 

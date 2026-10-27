@@ -26,8 +26,13 @@ from .._common import (
     wq_py,
 )
 from .campaign import run_open_wave_gates
+from ...config import CONCURRENCY
 
 logger = logging.getLogger(__name__)
+
+#: 并发缺省 = 唯一事实源 wqb.config.CONCURRENCY["slots"]（2026-09-30 定案 7→2：账户级实测）；
+#: 本节点的 concurrency 形参只是计划元数据，实际并发由 pipeline.py 内部按此值执行。
+_DEFAULT_CONCURRENCY = int(CONCURRENCY.get("slots", 2))
 
 
 def _cell_backtest_pins(region: str, dataset: str, campaign_dir: str):
@@ -46,7 +51,7 @@ def run(
     region: str,
     wave: str,
     dataset: str,
-    concurrency: int = 7,
+    concurrency: int = _DEFAULT_CONCURRENCY,
     max_rounds: int = 3,
     dry_run: bool = False,
     output_csv: Optional[str] = None,
@@ -66,13 +71,14 @@ def run(
         region: 区域代码（如 KOR）
         wave: 波次号（如 36A）
         dataset: 数据集 ID
-        concurrency: 并发数（默认 7，七槽填槽）
+        concurrency: 并发数（缺省读 `wqb.config.CONCURRENCY["slots"]`，当前 2；本形参只作
+                计划元数据 —— 实际并发由 pipeline.py 内部 `n_slots=min(slots, 批数)` 执行）
         max_rounds: 最大轮次
         dry_run: 是否干跑
         output_csv: 输出 CSV 路径（默认自动生成）
         campaign_dir: 战役目录（可选，默认自动解析）
         detached: 是否后台执行（默认 True，避免 MCP 客户端超时；False 为旧同步模式）
-        submit: 是否真正提交回测（默认 True）。False 只跑 gate + 计划，不发 simulation。
+        submit: 是否真正提交回测（默认 False）。False 只跑 gate + 计划，不发 simulation。
                 注意：这里的"提交"是提交 **回测**（simulation），不是提交 alpha ——
                 提交 alpha 走 submit_alpha 节点且需用户确认（ra-pipeline 步 8）。
         forum_recon: 收批评审后自动跑波级默认取证（`pipeline.py --forum-recon` → tools/forum_recon_wave.py：
@@ -170,8 +176,9 @@ def run(
     # 2026-09-06 修复：删除 `--concurrency` —— pipeline.py run 从未声明该参数，
     # argparse 直接 exit=2（"unrecognized arguments: --concurrency 7"），而
     # detached 分支不看退出码，于是 S3 每次都"启动成功"却从未真正跑过。
-    # 槽位数由 pipeline.py 内部锁定为 n_slots=min(7, n_total)，与 wqb-concurrency
-    # §8 七槽填槽一致，无需也无法从外部传入；concurrency 形参保留为计划元数据。
+    # 槽位数由 pipeline.py 内部按 n_slots=min(CONCURRENCY["slots"], n_total) 锁定
+    # （2026-09-30 定案 7→2，账户级实测；见 wqb.config.CONCURRENCY 与 wqb-concurrency），
+    # 无需也无法从外部传入；concurrency 形参保留为计划元数据。
     #
     # 2026-09-08 修复（本节点第二次"启动成功但什么都没干"）：
     #   ① 补 `--submit`。缺它时 pipeline.py 走 `if not a.submit` 分支，打一行
@@ -232,10 +239,11 @@ def run(
             "dataset": dataset,
         }
 
-    if concurrency != 7:
+    if concurrency != _DEFAULT_CONCURRENCY:
         warnings.append(
-            f"concurrency={concurrency} 仅记录于计划；pipeline.py 内部锁定 "
-            "n_slots=min(7, 批数)，不接受外部覆盖（wqb-concurrency §8）"
+            f"concurrency={concurrency} 仅记录于计划；实际并发由 pipeline.py 按 "
+            f"n_slots=min({_DEFAULT_CONCURRENCY}, 批数) 执行"
+            f"（wqb.config.CONCURRENCY['slots']，实际值以此为准）"
         )
 
     # 三道开波闸（2026-09-27 R5，审计 N5）：SOP 步 6 指定的 S3 入口此前一道都不跑——KOR 真实

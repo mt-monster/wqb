@@ -1,6 +1,6 @@
 # 01 · 平台规则与硬门槛
 
-> 来源：2026-09-05 ~ 09-29 工作日志实证提炼 ｜ 更新：2026-09-29
+> 来源：2026-09-05 ~ 09-29 工作日志实证提炼 ｜ 更新：2026-10-24（§4 增补 USA 2026-10-23 复盘的 prod 分布）
 >
 > **现行政策提示（2026-09-30 合并时补）**：本文里「403 零成本 → 直接 POST 就是预检」的说法只对**被拒**的那一半成立——事先无从知道它会 403 还是通过，而通过的 POST 就是一次真实、不可撤销的提交。所以 `POST /alphas/{id}/submit` **只作用户确认后的真提交**（`workflow_submit_alpha(confirm_submit=True)`），**不作预检 / 探针**；提交前的检查用 `submit_verdict`（模拟层 checks）、`check_correlation`（只读 `GET correlations/prod`）与 `confirm_submit=False` 预检。全链与不可逆动作块见 [`submit-chain.md`](../../Claude/skills/worldquant-submit-alpha/references/submit-chain.md)。
 
@@ -12,14 +12,27 @@
 |---|---|---|
 | `LOW_SHARPE` | ≥ **1.58** | 严格不等式 |
 | `LOW_FITNESS` | ≥ **1.0** | 严格不等式 |
-| `LOW_2Y_SHARPE` | ≥ **1.58** | |
+| `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | ≥ **1.58** | 同一事实的两个载体，平台按 alpha 代际只发其一 |
 | `LOW_SUB_UNIVERSE_SHARPE` | 比值闸（见 §2） | |
 
 **四者必须同时成立**。另有区域专属闸：
 - `LOW_ROBUST_UNIVERSE_SHARPE`（IND，limit **1.0**）
 - `CONCENTRATED_WEIGHT` ≤ 0.1
 - `HIGH_TURNOVER` — ⚠ **上限区域特异**：本文旧记 0.4，**GBR/D1 实测 = 0.7**（2026-10-07，`checks.HIGH_TURNOVER limit 0.7`）。取阈值前**以本区平台返回的 limit 为准**，勿套用他区。
-- `IS_LADDER_SHARPE`
+
+> **2Y 读数有两个载体（2026-10-23 实测）**：平台按 alpha 代际只发 `LOW_2Y_SHARPE` 或
+> `IS_LADDER_SHARPE` **之一**，二者是**同一事实的两个读数位**（`wqb.config.RA_2Y_NAMES`
+> 与 `brain-how-to-pass-alpha-test` 的检查表都这么定义）。IND/wave232 有 10/29 颗只发
+> `IS_LADDER_SHARPE`（`JjP0Ja5l` ladder 2.82 = `get_alpha_details` 的 2Y 2.82）。
+> ⚠ 采集层曾只认 `LOW_2Y_SHARPE` ⇒ `backtest_results` / `alphas` 的 `two_year_sharpe`
+> 整列落空，字段画像 `best_2y`、提交队列、Mode B 判死规则一起失真（数据表现：
+> `count_institutional_sellers_security` 的 best 2Y 被记成 **−0.15**，真值 2.87）。
+> 修复（全部按“两载体同义”收口）：
+> ① **采集**：`tools/harvest_multisim.py::_extract_two_year_sharpe`、`wqb_db_mcp._flatten_platform_alpha`（并透传 `is_ladder_sharpe`）；
+> ② **评审**：`Claude/skills/wq-brain-campaign-toolkit/scripts/metrics_cache.py`（此前 ladder-only 的行判 `2Y_UNKNOWN`、跳过 2Y 墙）、`Claude/skills/brain-alpha-judge/scripts/judge_alpha.py`（内部 2Y 硬闸）；
+> ③ **提交层**：`wqb.submit_verdict_core.SUBMIT_HARD_GATE_WARNINGS` 与 `workflow/nodes/submit_alpha.py`（ladder 的 WARNING 同属提交层硬闸）；
+> ④ **修数**：`tools/data-repair/backfill_bt_two_year_from_ladder.py`（存量 `backtest_results`，默认 dry-run）、`tools/data-repair/backfill_alpha_metrics_from_platform.py`、`tools/backfill_2y_from_platform.py`。
+> 回归：`test_harvest_two_year_from_ladder.py` / `test_judge_gates_match_config.py` / `test_ra_failed_checks_single_definition.py`（三处都含“只发 ladder”用例）。
 
 ### ★ 换手前置判据（SOP 标准步骤，2026-10-07 定）
 
@@ -112,6 +125,21 @@
 **prod 端点机制**：只返回"已算好"的值，**请求不触发计算**；单账号单并发 + 异步排队 → **高频 refresh 是反效果，等的收益为零**。
 → prod 取数走只读 `GET correlations/prod`（`check_correlation`）；被拒的 POST 也会回带真实 prod 值，但**不能为此去 POST**（通过即真提交）。
 
+### 账号级单并发槽：跨进程互斥（2026-10-22 事故与修复）
+
+平台这个接口**每账号只有 1 个在飞**，而本仓的 prod 查询散在多个进程（MCP 常驻服务、`campaign_intel prod-first`、`super_build`、`prod_bucket_scan`、`prod_watch`、一次性脚本）。Redis 退出后跨进程互斥曾一度丢失，只剩 MCP 进程内的 `asyncio.Lock` ⇒ 进程间互不相识。
+
+事故形态（实测，不是推演）：另一会话的 prod 队列脚本卡在 `58jgRYWX` ⇒ 账号槽被占 ⇒ 本会话查询全部拿到空体、空转到 800 s+（`vROYv3EA` 实测 1499 s 才出数、`d5K9RAMx` 593 s）⇒ **杀掉那个作业后同一条立刻出数**。另一面：`check_correlation` 原本轮询上限 3600 s，一个卡死的 alpha 能把整账号堵一小时。
+
+| 修复点 | 做法 | 位置 |
+|---|---|---|
+| 跨进程互斥 | 文件 token `logs/_dblock/correlation.lock.json`（`O_CREAT\|O_EXCL` + TTL 自愈 + 按 pid 回收死持有者）。拿不到就 **fail-fast 返回 `correlation_busy`**，不排队、**不降级放行** | `src/wqb/correlation_slot.py`（`LOCK_NAME` / `DEFAULT_TTL_SEC`=3700） |
+| 两级锁顺序 | **先**进程内 `asyncio.Lock`，**后**跨进程文件锁——顺序不可换（`db_write_lock` 把同 pid 再 acquire 当**续约**，不是互斥） | `brain_mixin_transport._try_acquire_brain_correlation_lock` |
+| 缩短占槽窗口 | 轮询上限 **3600 → 900 s**（≈ 实测 94 s/条的 10 倍余量）；超时按 `pending` 返回（不缓存、不判死） | `WAIT_THRESHOLDS["prod_corr_timeout_s"]` = 900，守护测试比对源码字面量 |
+| 两种锁分文件 | 写库锁 `dbwrite.lock.json` 与相关性锁 `correlation.lock.json` **必须分开**：TTL 不同，共用一个文件会让短 TTL 的写锁回收长 TTL 的相关性锁 token（两个进程同时自认持有）。`_prune_expired` 已改为**按文件名精确回收**，不再扫全目录 | `src/wqb/db_write_lock.py` |
+
+**纪律**：任何要打 prod 端点的**新工具**都必须 `with wqb.correlation_slot.slot(...)`；拿不到槽就 fail-closed 立即返回并提示稍后重跑。**不要自建第二把锁、也不要因为"我只是查一次"而不拿锁**——那正是本次事故的成因。
+
 ### 阈值与判定
 
 - 平台**名义阈值 0.7**，但 **SUPER 判定只看 `result` 不看 `value`**：0.8094 / 0.8571 判 PASS，0.8938 / 0.9729 判 FAIL → 实际分界在 **0.86 ~ 0.89**。
@@ -121,12 +149,19 @@
 ### 两个必知的失效场景
 
 1. **prod 值会腐烂，必须当日实测**：实测 0.6678→0.981、同族顶高 0.5836→0.9805、`le8Y68K2` 0.6929→0.9932、`3qX6wLJQ` 库内 0.5171→实测 0.9895。
-   → 筛查产出的是**排序队列**而非终局清单，提交当日须 `refresh=True` 复测。
+   2026-10-21 再添两例（**14 天尺度**）：`58gp1wdz` 库内 0.6738（`verified_at` 10-17）→ 实测 **0.9868**；`pw5RbrYX` 库内 0.5857 → 实测 **0.9000**。
+   → 筛查产出的是**排序队列**而非终局清单，提交当日须 `refresh=True` 复测；`get_submit_ready` 的 `READY` 只代表「**曾经**过闸」，`corr_stale=true` 的行一律当作未验证。
 2. **本地 SELF 两个失效场景**：① 系统性低估（`N1QMJ10q` 本地 0.3972 → 平台 0.5463；`6XrJ5OvE` 本地 0.6732 vs 平台 prod 0.996）；② 对"新提交孪生体"**结构性假阴性**（`vRkAO9Xd` 本地 0.229 vs 平台 0.8392，根因是 OS PnL 池不含刚提交 alpha）。
    → **同族候选不要用本地 SELF 判活**，改用 403 视图逐颗实测。
 
 - **SELF 极低 ≠ PROD 低**：`A1loLl2e` SELF 0.034 但 PROD 0.7671。两闸衡量对象不同（SELF = 与账号既有 ACTIVE 相关；PROD = 与全平台生产池相关）。
 - **小区 PROD ≈ SELF**：IND 两值几乎相等（0.7619/0.7622、0.7558/0.7557）→ 压一个必然带动另一个。USA 则是 **PROD 独立卡死 0.86**（SELF 降 PROD 不动）。
+
+**USA 侧分布实测（2026-10-23，n=92 已测 prod）**：`[0.8,1]` **44.6%**、`[0.7,0.8)` 12.0%、`<0.7` 仅 43.5%（其中 `<0.5` 只有 1 颗）
+⇒ **分布中心在闸门外，是整体问题不是尾部**。且 **「数据集冷门 / alphaCount 低」不能预测 prod**：
+`web_traffic_engage`（RA 全过率 80%）prod **0.9908**、`other143`（59.6%）0.9206、`institutions18`（30.4%）0.9636
+⇒ 选集要问「机制是否经典异象」并先跑 prod 探针（详见 `03_region_dataset.md` §9）。
+来源：`reports/usa_mining_history_review_20261023.md` §1/§4/§5。
 
 ---
 

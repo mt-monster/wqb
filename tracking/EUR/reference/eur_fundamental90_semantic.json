@@ -1,0 +1,208 @@
+{
+  "region": "EUR",
+  "dataset": "fundamental90",
+  "total_fields": 66,
+  "signal_field_count": 66,
+  "blocked_field_count": 0,
+  "signal_fields": [
+    "fnd90_game_cash_flow_coverage",
+    "fnd90_qes_gamef_icfroe_5y",
+    "fnd90_qes_gamef_icfroe_1y",
+    "fnd90_qes_gamef_score",
+    "fnd90_qes_gamef_icfroe_3y",
+    "fnd90_game_deferred_sal_chg",
+    "fnd90_game_sg_a_cost_ratio",
+    "fnd90_qes_gamef_pscore",
+    "fnd90_game_equity_dilution",
+    "fnd90_qes_gamef_mohanram",
+    "fnd90_game_capex_sale",
+    "fnd90_game_total_debt_chg",
+    "fnd90_qes_gamef_ohlson",
+    "fnd90_game_accruals_vol",
+    "fnd90_game_pension_ev",
+    "fnd90_game_capex_dep",
+    "fnd90_game_deferred_tax_liab_chg",
+    "fnd90_game_inc_cash_tax",
+    "fnd90_game_sg_a_inefficiency",
+    "fnd90_game_other_asset_gr",
+    "fnd90_qes_gamef_chs_default",
+    "fnd90_game_optimism_sale",
+    "fnd90_game_gross_margin_vol",
+    "fnd90_game_gma_chg",
+    "fnd90_qes_gamef_cscore",
+    "fnd90_game_pension_expense",
+    "fnd90_qes_gamef_grossprofit_asset",
+    "fnd90_game_relative_rtn_vol",
+    "fnd90_game_an_cov_chng",
+    "fnd90_qes_gamef_earnigs_timeliness",
+    "fnd90_game_short_term_debt",
+    "fnd90_game_non_oper_inc",
+    "fnd90_game_payble_days",
+    "fnd90_game_amortization_rate",
+    "fnd90_game_contingent_liab",
+    "fnd90_game_tax_rate",
+    "fnd90_game_esop_grant",
+    "fnd90_game_inventory_days",
+    "fnd90_game_prepaid_expense",
+    "fnd90_game_noa",
+    "fnd90_game_optimism_gma",
+    "fnd90_game_eps_vol",
+    "fnd90_game_deferred_tax_asset_chg",
+    "fnd90_game_earning_smooth",
+    "fnd90_game_non_production_asset",
+    "fnd90_game_serial_special",
+    "fnd90_qes_gamef_negative_earnings",
+    "fnd90_game_sg_a_vol",
+    "fnd90_game_minority_interest",
+    "fnd90_game_pension_interest",
+    "fnd90_game_depreciation_chg",
+    "fnd90_game_interest_investment_inc",
+    "fnd90_game_pension_debt_equi_pbo",
+    "fnd90_qes_gamef_earn_var",
+    "fnd90_game_inventory_chg",
+    "fnd90_game_receivable_days",
+    "fnd90_game_eff_interest_rate",
+    "fnd90_game_finished_goods",
+    "fnd90_game_eps_sur_vol",
+    "fnd90_game_pension_discount_rate",
+    "fnd90_game_pension_pbo",
+    "fnd90_game_receivable_chg",
+    "nonliquid_asset_ratio",
+    "fnd90_game_asset_turnover_chg",
+    "fnd90_game_labor_efficiency_chg",
+    "fnd90_qes_gamef_cashflow_var"
+  ],
+  "blocked_fields": [],
+  "by_category": {
+    "cash_quality": [
+      "fnd90_game_cash_flow_coverage",
+      "fnd90_game_accruals_vol",
+      "fnd90_game_payble_days",
+      "fnd90_game_deferred_tax_asset_chg"
+    ],
+    "profitability": [
+      "fnd90_qes_gamef_icfroe_5y",
+      "fnd90_qes_gamef_icfroe_1y",
+      "fnd90_qes_gamef_icfroe_3y",
+      "fnd90_game_optimism_sale",
+      "fnd90_game_gross_margin_vol",
+      "fnd90_game_gma_chg",
+      "fnd90_game_pension_expense",
+      "fnd90_qes_gamef_grossprofit_asset",
+      "fnd90_game_non_oper_inc",
+      "fnd90_game_optimism_gma",
+      "fnd90_game_eps_vol",
+      "fnd90_game_earning_smooth",
+      "fnd90_game_interest_investment_inc",
+      "fnd90_game_eps_sur_vol",
+      "fnd90_game_labor_efficiency_chg"
+    ],
+    "other": [
+      "fnd90_qes_gamef_score",
+      "fnd90_qes_gamef_pscore",
+      "fnd90_qes_gamef_ohlson",
+      "fnd90_game_capex_dep",
+      "fnd90_game_deferred_tax_liab_chg",
+      "fnd90_game_inc_cash_tax",
+      "fnd90_game_sg_a_inefficiency",
+      "fnd90_qes_gamef_chs_default",
+      "fnd90_qes_gamef_cscore",
+      "fnd90_game_an_cov_chng",
+      "fnd90_qes_gamef_earnigs_timeliness",
+      "fnd90_game_amortization_rate",
+      "fnd90_game_tax_rate",
+      "fnd90_game_esop_grant",
+      "fnd90_game_noa",
+      "fnd90_game_non_production_asset",
+      "fnd90_qes_gamef_negative_earnings",
+      "fnd90_game_pension_interest",
+      "fnd90_game_depreciation_chg",
+      "fnd90_game_pension_discount_rate"
+    ],
+    "size_level": [
+      "fnd90_game_deferred_sal_chg",
+      "fnd90_game_sg_a_cost_ratio",
+      "fnd90_game_equity_dilution",
+      "fnd90_game_capex_sale",
+      "fnd90_game_contingent_liab",
+      "fnd90_game_prepaid_expense",
+      "fnd90_game_serial_special",
+      "fnd90_game_minority_interest"
+    ],
+    "growth": [
+      "fnd90_qes_gamef_mohanram",
+      "fnd90_game_other_asset_gr",
+      "fnd90_game_inventory_chg",
+      "fnd90_game_receivable_chg"
+    ],
+    "leverage_solvency": [
+      "fnd90_game_total_debt_chg",
+      "fnd90_game_short_term_debt",
+      "fnd90_game_pension_debt_equi_pbo",
+      "fnd90_game_eff_interest_rate"
+    ],
+    "valuation": [
+      "fnd90_game_pension_ev",
+      "fnd90_game_pension_pbo"
+    ],
+    "liquidity_risk": [
+      "fnd90_game_relative_rtn_vol",
+      "fnd90_game_sg_a_vol",
+      "fnd90_qes_gamef_earn_var",
+      "nonliquid_asset_ratio",
+      "fnd90_qes_gamef_cashflow_var"
+    ],
+    "efficiency": [
+      "fnd90_game_inventory_days",
+      "fnd90_game_receivable_days",
+      "fnd90_game_finished_goods",
+      "fnd90_game_asset_turnover_chg"
+    ]
+  },
+  "category_stats": {
+    "cash_quality": {
+      "n": 4,
+      "cold_users_le_9": 3
+    },
+    "profitability": {
+      "n": 15,
+      "cold_users_le_9": 15
+    },
+    "other": {
+      "n": 20,
+      "cold_users_le_9": 20
+    },
+    "size_level": {
+      "n": 8,
+      "cold_users_le_9": 8
+    },
+    "growth": {
+      "n": 4,
+      "cold_users_le_9": 4
+    },
+    "leverage_solvency": {
+      "n": 4,
+      "cold_users_le_9": 4
+    },
+    "valuation": {
+      "n": 2,
+      "cold_users_le_9": 2
+    },
+    "liquidity_risk": {
+      "n": 5,
+      "cold_users_le_9": 5
+    },
+    "efficiency": {
+      "n": 4,
+      "cold_users_le_9": 4
+    }
+  },
+  "orientation_stats": {
+    "realized": 0,
+    "forecast": 0,
+    "mixed": 0,
+    "unlabeled": 66
+  },
+  "orientation_samples": {},
+  "note": "产出是字段池（field pool），不是 ideas —— 禁止当 ideas.md 注入 GEM（SOP 2026-09-17 P3-11）"
+}

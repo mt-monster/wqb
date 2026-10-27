@@ -139,3 +139,91 @@
 - 30+ 变体、7 条车道全部闭合，2Y×sub 交点不存在
 - 机理：CROWDING 剥掉拥挤成分救活 2Y 的同时，恰好剥掉了 sub 宇宙（低流动性段）的信号强度——两个修复互斥
 - **最近候选 `GrgL5qm5`（z252+p0.52，sub 差 0.015）与 `npA2rXQl`（z504，2Y 差 0.10）留档**；若未来赛季 sub 宇宙定义或闸线调整，可立即复检
+
+---
+
+## 七、算子使用全景分析（2026-10-20，804 条表达式 / ~130 批实证）
+
+### 7.1 使用中的算子（按场景分类，附实测效果）
+
+**A. 信号构建核心（每颗 alpha 的骨架）**
+| 算子 | 使用场景 | 实证结论 |
+|---|---|---|
+| `vec_avg` | VECTOR 字段（ai_equity_alpha 全部字段）聚合为截面序列 | 唯一可用的向量聚合（stddev 反效） |
+| `ts_backfill` | 处理 NaN/低频更新，拉长历史覆盖 | **三赢**：覆盖↑、S↑、TO 可控；窗口须匹配字段更新频率（504 给慢字段 / 22 给快字段） |
+| `ts_delta` | 提取「变化量」（载荷迁移、修正增量） | 事件/迁移机制必备；单独用 S 弱 |
+| `subtract` | 同指标 up−down 价差（净修正广度）、规模倾斜 | **净修正价差 = PV 类最强信号**（S 2.0–2.7） |
+| `multiply` | 规模倾斜、双通道 blend | 硬倾斜伤 robust；blend 稀释 sub |
+| `divide` | 日内价格比（收盘/开盘）、归一化广度比 | 比率形态可保序 |
+
+**B. 截面归一化 / 整形（决定持仓位置）**
+| 算子 | 场景 | 结论 |
+|---|---|---|
+| `rank` | 一切信号的截面归一化基座 | 与量化/分位同族，最稳 |
+| `quantile` | F 提升器（0.65→0.74）；cauchy 变体反效 | 默认 driver 可用 |
+| `winsorize` | 极端值压缩（std 3/4） | 弱正向；std≥3 饱和 |
+| `tail` | 尾部截断 | 反效 |
+| `signed_power` | **2Y 连续旋钮**（0.5→+0.21；1.4–1.7 区间可调 2Y） | 本轮最有效的单一杠杆 |
+| `abs` | 幅度型信号（不用方向的场景） | 偶用 |
+| `normalize` | limit 2 最优；limit 1 杀 S；useStd=false 对照 | 仅调 limit 有效 |
+
+**C. 时序标准化（2Y 与 sub 的分水岭）**
+| 算子 | 场景 | 结论 |
+|---|---|---|
+| `ts_zscore` | 时间标准化（robust 提升器 + 2Y 修复） | **杀 sub**（任何窗口 22–504） |
+| `ts_scale` | ts_zscore 的替代品 | 与 ts_zscore 表现逐位一致 |
+| `ts_mean` | 平滑 | 保 sub 比率但不救 2Y；在部分字段杀 S |
+
+**D. 分组轴（中性化与分组）**
+| 算子 | 场景 | 结论 |
+|---|---|---|
+| `group_rank(x, sector)` | 分组截面排序 | sector 轴最优 |
+| `group_neutralize` | 表达式内中性化 | robust 0.85–0.86；但可被 group_rank 等价替代 |
+| `group_zscore` / `group_scale` / `group_mean` / `group_std_dev` / `group_count` / `group_cartesian_product` / `group_backfill` / `rank_by_side` | 分组族穷尽测试 | 除 rank/neutralize 外全部弱或退化（group_mean → S 0） |
+
+**E. 正交 / 统计（残差化与相关性）**
+| 算子 | 场景 | 结论 |
+|---|---|---|
+| `vector_neut(x, size)` | 对规模正交（替代硬倾斜） | **robust 0.86**，不伤 2Y |
+| `vector_neut(x, risk70)` | 论坛点塔模板 | 2Y −0.1~0.18，对 2Y 余量薄的候选是毒药 |
+| `ts_regression` / `ts_covariance` / `ts_corr` / `ts_ir` / `ts_kurtosis` / `ts_product` / `ts_sum` / `ts_std_dev` / `ts_av_diff` / `ts_quantile` / `vec_stddev` | 统计族穷尽 | 全部弱或反效（协方差非信号、kurtosis S 0.16） |
+
+**F. 事件 / 条件**
+| 算子 | 场景 | 结论 |
+|---|---|---|
+| `trade_when` | 条件门控 | 伤 F（S 1.49/F 0.97） |
+| `if_else` / `less` / `greater` | 门控条件构造 | 同 trade_when |
+| `kth_element(k=1)` | 取最近有效值（滞后） | **2Y 最强单项提升器（1.46→1.92）** 但 S/robust 低 |
+| `last_diff_value` / `days_from_last_change` / `ts_arg_max` | 事件时点族 | 全灭（时点是反信号） |
+
+**G. 换手控制**
+| 算子 | 场景 | 结论 |
+|---|---|---|
+| `ts_decay_linear` / `hump` / `ts_target_tvr_decay` / `ts_target_tvr_hump` | TO 控制族穷尽 | decay_linear 3/10 弱；hump 0.001 可用（S 1.46）；tvr_hump 是限速族里 2Y 最优（1.69） |
+
+### 7.2 未使用的算子及原因
+
+| 算子族 | 算子 | 未用原因 |
+|---|---|---|
+| 保序逐点变换 | `log` / `exp` / `sqrt` / `sign` / `sigmoid` / `tanh` / `signed_log1p` / `log_diff` / `power` | **保序形变在 rank/quantile 外层逐位同效**（项目铁律实证）；只有 signed_power 因改变持仓位置（非线性压缩）而有效 |
+| 幽灵算子 | `ts_entropy` / `ts_skewness` | 平台不存在（类别卡明令禁止，op-lint 拦截） |
+| 数据工程 | `ts_fillna` / `ts_count_nans` / `ts_shift` / `ts_delay` | ts_backfill 已覆盖 NaN 与滞后需求（且 kth_element 已测滞后） |
+| 现成字段替代 | `ts_returns` / `ts_percentage` | pv1 数据集直接提供 returns 字段，无需从价格构造 |
+| 时间索引 | `ts_step` | 单调递增计数器，乘入信号产生无界值 |
+| 极值类 | `ts_min` / `ts_max` / `ts_min_max` / `ts_max_diff` / `ts_min_diff` / `ts_arg_min` | 慢变字段的极值被 backfill 平滑掉；收益率字段的极值引入噪声。⚠ **ts_max_diff/ts_min_diff（论坛 mm 结构）未测，是唯一缺口** |
+| 冷门 group 变体 | `group_rank_ratio` / `group_neutralize_rank` 等 | 单信号 ATOM 下，group 聚合产生组内常数、无截面离散度（group_mean 实测 S=0 证） |
+| 自定义分组 | `bucket` | 需 rank 内层（单位闸），且分组轴已被 sector/pca 覆盖 |
+| 反转 | `reverse` | 一元取负与 `-x` 等价，仅偶用 3 次 |
+| 暴露控制 | `scale` | 目标暴露控制由 settings 层（truncation）承担，且实测 truncation 零杠杆 |
+
+### 7.3 缺口结论
+55 个算子已实测覆盖；未用的 20+ 个中，**只有 `ts_max_diff`/`ts_min_diff`（论坛 mm 结构）值得补测**，其余均有机理或实证依据跳过。
+
+### 7.4 缺口补测结果（wave732，2026-10-20）
+| 算子 | 语义（平台权威） | 机制假设 | 实测 | 判定 |
+|---|---|---|---|---|
+| `ts_max_diff(x,d)` | **x − ts_max(x,d)**（距窗口峰值距离，峰值相对） | 同时含「水平+衰减」信息，或可穿过 2Y×sub 互斥 | S 0.11–0.83（@CROWDING）/ 1.28（@SECTOR），2Y −1.61~1.71 但强度近零 | **DEAD**：修正计数的「峰值」无预测力 |
+| `ts_arg_min(x,d)` | 距窗口最小值的天数 | 时点信号 | S 0.26，2Y 1.71 但无截面强度 | **DEAD** |
+| `ts_min_diff` | **平台不存在**（103 算子清单无此项） | — | — | 不可用（非未用） |
+
+⇒ **算子覆盖至此完整**：57 个已实测，未用的每个都有机理或实证依据；ts_max_diff/ts_arg_min 缺口已闭合。

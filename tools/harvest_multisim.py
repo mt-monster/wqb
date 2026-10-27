@@ -56,8 +56,11 @@ def _bootstrap():
     return str(_pyenv.mcp_dir())
 
 
-TERMINAL = {"DONE", "COMPLETE", "ERROR", "CANCELLED", "FAILED"}
-SUCCESS_STATUS = {"DONE", "COMPLETE"}
+# WARNING = 仿真已完成但带平台告警（典型：UNITS / CLUSTER_TEST），alpha 已产出且详情可取。
+# 2026-10-24 实测：insd_agg_w1 的 10 个 child 里有 6 个是 WARNING，旧口径把它们当"未终结"
+# 直接跳过，一个 10 条的多批只入库 4 条（harvest_multisim_alphas 那边 10/10 全部拿到）。
+TERMINAL = {"DONE", "COMPLETE", "WARNING", "ERROR", "CANCELLED", "FAILED"}
+SUCCESS_STATUS = {"DONE", "COMPLETE", "WARNING"}
 
 
 def _shape_url(base, loc):
@@ -163,10 +166,20 @@ def _extract_two_year_sharpe(is_data: Dict[str, Any], checks: List[Dict[str, Any
     与 tools/parse_simresult.py._extract_two_year_sharpe 逻辑保持一致。
 
     增强 (2026-09-02): 优先从 checks 里读 LOW_2Y_SHARPE 的 value（平台口径最可靠）。
+    修正 (2026-10-23): 平台**只发 IS_LADDER_SHARPE、不发 LOW_2Y_SHARPE** 时也要取到 2Y。
+      证据：IND/wave232 有 10/29 颗（如 JjP0Ja5l）checks 里只有 IS_LADDER_SHARPE(2.82)，
+      而 `get_alpha_details` 的 metrics.two_year_sharpe 就是 2.82 —— 两项是同一个 2Y 读数
+      的两个载体（`wqb.config.RA_2Y_NAMES` 同时收录）。此前只认 LOW_2Y_SHARPE ⇒ 这些行
+      `backtest_results.two_year_sharpe` / `alphas.two_year_sharpe` 整列落空，
+      字段画像 best_2y 与提交队列因此低报。
     """
     # 0) checks 里 LOW_2Y_SHARPE（平台已算好的值，最可靠）
     if checks:
         v = _extract_check_value(checks, "LOW_2Y_SHARPE")
+        if v is not None:
+            return v
+        # 0b) 2Y 的另一个载体（部分区域/alpha 代际只发这一项）
+        v = _extract_check_value(checks, "IS_LADDER_SHARPE")
         if v is not None:
             return v
     # 1) is.twoYearSharpe 直读
@@ -443,6 +456,10 @@ def _to_backtest_rows(alphas: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "sub_universe_sharpe": a.get("sub_universe_sharpe"),
             "failed_checks": a.get("failed_checks"),
             "ra_failed_checks": a.get("ra_failed_checks"),
+            # 2026-10-23（P0-2）：平台原始 checks 一并透传，落进 payload_json.checks
+            #（limit/value 与 RA 项的 WARNING/ERROR 此前全丢，见 USA 复盘报告 §9.1）
+            "checks": a.get("checks"),
+            "checks_bucketed": a.get("checks_bucketed"),
             # 透传 PROD/SELF 相关性 → campaign.upsert_backtest_rows 写入 alphas
             "prod_correlation": a.get("prod_correlation"),
             "self_correlation": a.get("self_correlation"),
@@ -476,6 +493,8 @@ async def main():
     ap.add_argument("--multisim-ids", nargs="+", help="多个 multisim id")
     ap.add_argument("--wave", help="wave 编号（用于关联 expressions 与自动发现）")
     ap.add_argument("--region", help="区域（用于关联 expressions 与 upsert）")
+    ap.add_argument("--dataset", help="数据集 id（写库时落到 backtest_results.dataset / waves.dataset；"
+                                     "缺省 NULL 会退化成 _unknown，AO.14 的 N.6-3 缺口即由此产生）")
     ap.add_argument("--ids-only", action="store_true", help="只拉 alpha IDs，不拉详情")
     ap.add_argument("--auto-upsert", action="store_true", help="自动写回 backtest_rows")
     ap.add_argument("--no-queue", action="store_true",
@@ -543,8 +562,9 @@ async def main():
                     r["alphas"] = _link_expressions(store, a.region, a.wave, r["alphas"])
                     # 转换为 backtest_rows 并 upsert
                     rows = _to_backtest_rows(r["alphas"])
-                    n = store.upsert_backtest_rows(a.region, str(a.wave), rows)
-                    print(f"  [upsert] {n} rows → backtest_results (region={a.region} wave={a.wave})")
+                    n = store.upsert_backtest_rows(a.region, str(a.wave), rows, dataset=a.dataset)
+                    print(f"  [upsert] {n} rows → backtest_results "
+                          f"(region={a.region} wave={a.wave} dataset={a.dataset or '_unknown'})")
 
                     # --- 自动入队：把本轮过闸候选写入 submit_ready（2026-09-20）---
                     # 解决"回测找到可提交项但不当天提交就遗忘"。阈值用提交层口径，

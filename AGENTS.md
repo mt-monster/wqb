@@ -761,20 +761,42 @@ pre-commit 钩子已绕过第 2 条（见下一节：唯一 basetemp + TMPDIR �
 - **verdict 归一只有一张表**：`wave_results_contract.normalize_verdict`；停止闸的 `_normalize_verdict` 委托它，
   不另写规则。
 
-### 8.7 backtest_results.ra_failed_checks 口径（2026-09-28 第 4 项固化）
+### 8.7 backtest_results.ra_failed_checks 口径（2026-09-28 第 4 项固化；2026-10-23 P0-3 调整）
 
 严格产出率（`get_mining_yield` / `campaign_intel`）、prod-first 选探针、toolkit `region_kb` 的本地闸门先验、
 提交队列的 RA 闸都读这一列，都把"空"当作"平台 RA 硬闸全过"。
 
 - **这一列只装 RA 资格门失败项**，定义只有一份：`wqb.config.compute_webdata_failed_counts`（R3）——18 项 RA check
-  里 result 既不是 PASS 也不是 PENDING 的（WARNING / ERROR 也算）。空 / NULL = RA 全过。
-- **唯一写入方** `CampaignStore.upsert_backtest_rows` 经 `wqb.store._backtest.ra_failed_names(row)` 取值：行里给了
-  `ra_failed_checks` 就用它（只留 RA 项名；空列表 = 全过）→ 否则从完整 `checks` 现算 → 否则 `failed_checks ∩ RA`
-  （旧缓存行，看不到 RA 项的 WARNING / ERROR）。
+  里 result 既不是 PASS 也不是 PENDING 的（WARNING / ERROR 也算）。
+- **唯一写入方** `CampaignStore.upsert_backtest_rows` 经 `wqb.store._backtest.ra_failed_names(row)` 取值，
+  **优先级（2026-10-23 调整）**：
+  1. **完整未分桶的 `checks`（每项带 result）→ 按定义现算**（权威档）。此前「行里给了 `ra_failed_checks`
+     就用它」排在这条前面，于是调用方预算好的空名单（RA 全过）盖住了行里 checks 里的 RA-WARNING ⇒
+     那一列非空不了。
+  2. 调用方按同一定义预算好的 `ra_failed_checks`（拍平层 / 平台精简结构 `ra` 块；空列表 = RA 全过），只留 RA 项名。
+     **分桶（精简结构）形态的 checks 走这一档**——桶摊平会把 ERROR 并进 pass 桶，不能重算；
+     拍平层因此给这类行打 `checks_bucketed` 标记。
+  3. 只有 `failed_checks`（旧指标缓存行）→ 只留 RA 项名（看不到 RA 项的 WARNING / ERROR）。
+     **这一档不得判「RA 全过」**：failed_checks 只含 FAIL 名，「FAIL 名单里没有 RA 项」≠「RA 全过」
+     ⇒ 过滤后为空时落 None（未知），不是空列表。旧路径的 payload 兜底档就此废止
+     （它既不能枚举全部 RA 失败，也不能认证全过）。
+  4. 都没有 → **未知**。
+- **NULL 二义已消除（2026-10-23）**：写库时「RA 全过」落 `'[]'`（**已知**），`NULL` 只剩一个含义
+  「这一行的 RA 状态未知」。此前空列表也落 NULL ⇒ 「全过」与「无信息」在列上不可区分，**该列不可统计**。
+  ⚠ **读方仍按「NULL 宽容」计 ra_clean**（历史连续性：存量旧行入库时根本没这一列的信息），
+  所以 `get_mining_yield` 新增 **`ra_unknown`** 计数把「其实没读过」的部分显式数出来——
+  看 ra_clean 时一并看它，别把两者混成"平台 RA 硬闸全过"。
 - **写入方手里有完整 checks，就按定义给 `ra_failed_checks`**：`compute_webdata_failed_counts(checks)["ra_failed_names"]`，
   或平台精简结构 `ra` 块里预算好的名单（RA 全过时不带名单键，按空列表处理）。不要自己数 FAIL。
+- **平台原始 checks 也要带进行里**（2026-10-23 P0-2）：`checks` 字段透传 `name/result/value/limit`，
+  落进 `payload_json.checks` ⇒ 入库后可重算 RA 名单、可看「差多少」。此前三条收批路径
+  （toolkit `metrics_cache.row_from_alpha` / wqb-db `_flatten_platform_alpha` / `tools/harvest_multisim.py`）
+  都在这里把原始 checks 丢了，只剩两个「名字列表」——`limit/value` 不可重建、RA 项的 WARNING/ERROR 不可见。
+  这一项同时让第 3 档几乎不再被触发：行里带着完整 checks 时，存储层能自己判出 RA 状态。
 - **`failed_checks` = 全部 FAIL 项名**（评审 / 诊断用），照旧留在行里与 `payload_json`。相关性等非 RA 失败读它，
   或读 `alphas.prod_correlation` / `self_correlation` 的数值（提交队列的相关性闸就看数值），不要从这一列推断。
+- 守护：`tests/unit/05_submit_quota/test_ra_failed_checks_single_definition.py`（含「RA-WARNING 行必须非空」
+  「全过行必须 `'[]'` 而非 NULL」「payload_json 保留 checks」三条验收口径）。
 
 ### 8.8 alphas / backtest_results 写入是合并式（2026-09-28 N35 固化）
 
@@ -838,7 +860,13 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 - **波级默认取证**：`tools/forum_recon_wave.py` = 节点 `forum_recon_wave` = `pipeline.py --forum-recon`（`batch_track` 缺省带上，`forum_recon=False` 关）。问题由本波回测行机械派生（`src/wqb/recon_wave.py`），每波 ≤ 1 次，
   可靠结局占额度、故障不占。**墙词表必须与 `config.RA_CHECK_NAMES` 一一对应**（`tests/unit/08_forum_recon/test_recon_wave.py` 守）——config 新增一项 RA 闸而这里没给它墙，测试即红。
 - **形状配额**：`tools/shape_quota_check.py`（分类规则 `src/wqb/shape_quota.py`，启发式；阈值 ≥ 3 个形状族、`trade_when` ≤ 40% 来自步 4 §4.5.1 准则）只读、不入闸链，闸 6 才是批级多样性的权威。
-- **live 论坛路径没有端到端实测过**（无凭据 / 无出口）：测试覆盖到假 session / 假检索轮；首次真跑先 `--dry-run`。此前该路径**从未跑通过**（`load_creds(None)` 永远 TypeError），所有真实调用都落进了「鉴权失败 → 记成无解」。
+- **live 论坛路径已端到端跑通（2026-10-26）**：此前**从未跑通过**——先是 `load_creds(None)` 永远 TypeError（所有真实调用落进「鉴权失败 → 记成无解」）；
+  2026-10-26 又逮到第二处：`forum_research.resolve_id()` 返回 `(post_id, is_comment, url)` 三元组，被整个当 pid 拼进
+  `/community/posts/{pid}.json` ⇒ 平台一律非 200，表现为「搜到 N 条 / 读 0 条」的 `read_failed`（实测 48 命中 / 37 读全灭 / 0 正文）。
+  修法 = 新增 `forum_recon._resolve_post_id()` 收敛成 `str | None`（None / 异常 / 空 href 四条退路），`live_search_round` 改走它；
+  实测 `tools/diag_forum_read.py --probe-n 3` 读帖 **3/3**，同一问题 `forum_recon.py` 返回 `found=true`（3 篇）。
+  回归用例 `test_click_href_resolution_unwraps_resolve_id_tuple` / `test_resolve_post_id_returns_none_on_failure`。
+
 
 ### 8.12 仓库结构守护与可安装包（2026-09-30 落地）
 

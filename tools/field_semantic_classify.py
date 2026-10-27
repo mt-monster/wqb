@@ -74,6 +74,13 @@ NON_SIGNAL_DESC_PATTERNS = [
     (r"three[- ]letter\s+iso\s+(?:currency|country)\s+code|\biso\s+(?:currency|country)\s+code\b|"
      r"compustat\s+global\s+company\s+identifier|\bcompany\s+identifier\b",
      "分类码/标识符（描述文判定）"),
+    # 2026-10-23 补：平台自己写明「不是交易信号」的记账/时序指示器。
+    # 战例 insider_matrix.director_intensity_score = "Dataset-specific timing/bookkeeping
+    # indicator used for internal sequence logging; not a trading signal"，旧规则判成信号字段。
+    # 两个分支都要求**显式措辞**，避免再把合法字段误杀（同 2026-09-28 的 indicator/flag 教训）。
+    (r"not\s+a\s+(?:trading|trade)\s+signal|"
+     r"(?:timing|bookkeeping)\s+indicator[^.]{0,80}?(?:internal|logging)",
+     "记账/内部序列指示器（描述文明示非交易信号）"),
 ]
 
 # 经济大类（按描述关键词命中，顺序 = 优先级）
