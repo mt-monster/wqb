@@ -98,12 +98,15 @@ def _save(d: Dict[str, Any]) -> None:
     os.replace(tmp, p)
 
 
-def push(alpha_id: str, note: str = "") -> Dict[str, Any]:
-    """登记一个待查 prod 的 alpha（幂等：已存在且未完成则只刷新时间戳）。"""
+def push(alpha_id: str, note: str = "", force: bool = False) -> Dict[str, Any]:
+    """登记一个待查 prod 的 alpha（幂等：已存在且未完成则只刷新时间戳）。
+
+    ``force=True``：已完成的条目也重新置回 ``pending``（重查用，2026-10-28）。
+    """
     d = _load()
     items = d["items"]
     cur = items.get(alpha_id) or {}
-    if cur.get("status") == "done":
+    if cur.get("status") == "done" and not force:
         return cur
     cur.update({
         "status": "pending",
@@ -114,6 +117,16 @@ def push(alpha_id: str, note: str = "") -> Dict[str, Any]:
     items[alpha_id] = cur
     _save(d)
     return cur
+
+
+def get(alpha_id: str) -> Dict[str, Any]:
+    """读单个条目（不存在 → ``{}``）。只读，不取租约。"""
+    return dict((_load().get("items") or {}).get(alpha_id) or {})
+
+
+def items() -> Dict[str, Dict[str, Any]]:
+    """队列全部条目的快照（只读）。"""
+    return {k: dict(v or {}) for k, v in (_load().get("items") or {}).items()}
 
 
 def push_many(alpha_ids: Iterable[str], note: str = "") -> int:

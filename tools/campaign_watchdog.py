@@ -27,6 +27,12 @@ CAMPAIGN = os.path.join(ROOT, "tools", "full_template_campaign.py")
 STALE_SEC = 900          # 15 分钟无心跳 = 可疑
 INTERVAL = 120
 
+# 2026-10-28：Windows 下所有子进程必须隐藏窗口。
+# 计划任务设为 Hidden=True 只能隐藏"任务本体"的窗口，脚本内部再 spawn 的
+# powershell / python 子进程仍会各自弹一个控制台窗口 —— 实测每 10 分钟闪一次。
+CREATE_NO_WINDOW = 0x08000000
+_NO_WINDOW = CREATE_NO_WINDOW if os.name == "nt" else 0
+
 
 def _log(msg):
     line = f"[{datetime.now():%Y-%m-%d %H:%M:%S}] {msg}"
@@ -64,7 +70,8 @@ def campaign_running():
              "(Get-CimInstance Win32_Process -Filter \"Name='python.exe'\" | "
              "Where-Object { $_.CommandLine -like '*full_template_campaign*' } | "
              "Measure-Object).Count"],
-            capture_output=True, text=True, timeout=60).stdout.strip()
+            capture_output=True, text=True, timeout=60,
+            creationflags=_NO_WINDOW).stdout.strip()
         return out.isdigit() and int(out) > 0
     except Exception:
         return False
@@ -85,7 +92,8 @@ def restart(argv):
     if os.name == "nt":
         DETACHED_PROCESS = 0x00000008
         CREATE_NEW_PROCESS_GROUP = 0x00000200
-        flags = DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+        # 2026-10-28：补 CREATE_NO_WINDOW，否则重启流水线时也会弹一个控制台窗口
+        flags = DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW
     with open(LOG, "a", encoding="utf-8") as out:
         subprocess.Popen(cmd, cwd=ROOT, stdout=out, stderr=subprocess.STDOUT,
                          creationflags=flags)

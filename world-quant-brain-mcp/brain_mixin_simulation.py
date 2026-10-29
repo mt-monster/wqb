@@ -939,7 +939,15 @@ class SimulationMixin:
             
             # Cache complete pages longer. Partial client-filtered pages are
             # fast-path snapshots, so keep their TTL short.
-            cache_ttl = 300 if data.get('partial_count') else 604800
+            #
+            # 2026-10-28: 完整页 TTL 由 604800（1 周）降到 600（10 分钟）。
+            # **原因**：这份列表是「已提交 alpha 池」的输入，而**新提交必须可见**。
+            # 1 周 TTL 会让刚提交的 alpha 在列表里消失一周 —— 实测（e75pvoNz 于
+            # 13:28 提交）`tools/sync_platform_alphas.py` 拉 4 页全部 Cache hit，
+            # 漏记该 alpha，本地 alphas 表连行都没有 ⇒ 面板一直显示「未提交」。
+            # 10 分钟 = 每 10 分钟最多重拉 4 页，成本可忽略；静态元数据
+            # （datasets / datafields，本文件另两处 604800）不受影响。
+            cache_ttl = 300 if data.get('partial_count') else 600
             self._set_cached_data(cache_key, data, ttl=cache_ttl)
             
             return data

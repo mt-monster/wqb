@@ -81,7 +81,7 @@ def test_prod_cache_hit_skips_platform(tmp_db):
     c = make_shell()
     calls = []
 
-    async def fake_platform(aid):
+    async def fake_platform(aid, **kwargs):   # 2026-10-28：check_correlation 会传 use_pre_read=not refresh
         calls.append(aid)
         return _platform_payload()
 
@@ -106,7 +106,7 @@ def test_prod_cache_stale_refetches(tmp_db):
     c = make_shell()
     calls = []
 
-    async def fake_platform(aid):
+    async def fake_platform(aid, **kwargs):   # 2026-10-28：check_correlation 会传 use_pre_read=not refresh
         calls.append(aid)
         return _platform_payload(0.91)
 
@@ -128,7 +128,7 @@ def test_prod_result_persisted_to_authoritative_table(tmp_db):
     """平台实测结果写入 alpha_corr_cache，source 标 check_correlation。"""
     c = make_shell()
 
-    async def fake_platform(aid):
+    async def fake_platform(aid, **kwargs):   # 2026-10-28：check_correlation 会传 use_pre_read=not refresh
         return _platform_payload(0.63)
 
     async def noop_auth():
@@ -153,7 +153,7 @@ def test_refresh_bypasses_cache(tmp_db):
     c = make_shell()
     calls = []
 
-    async def fake_platform(aid):
+    async def fake_platform(aid, **kwargs):   # 2026-10-28：check_correlation 会传 use_pre_read=not refresh
         calls.append(aid)
         return _platform_payload(0.80)
 
@@ -173,7 +173,7 @@ def test_cache_backend_unavailable_degrades(tmp_db):
     c = make_shell()
     calls = []
 
-    async def fake_platform(aid):
+    async def fake_platform(aid, **kwargs):   # 2026-10-28：check_correlation 会传 use_pre_read=not refresh
         calls.append(aid)
         return _platform_payload(0.31)
 

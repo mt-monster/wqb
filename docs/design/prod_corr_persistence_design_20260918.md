@@ -273,8 +273,8 @@ MCP 服务须重启（或起新会话）才会加载新代码；已运行中的�
 | 9 | `world-quant-brain-mcp/tests/test_corr_db_cache_unit.py`（新） | 5 个用例锁定上述契约 |
 
 **保鲜期口径（唯一事实源）**：`src/wqb/store/_corr_cache.py::CORR_FRESH_HOURS = 48`。
-MCP 侧 `brain_mixin_correlation._PROD_CORR_TTL_SECONDS`（48×3600 秒）与之同口径，
-**改一处必须改另一处**——这正是当初 Redis 7 天 TTL 漂移的教训。
+MCP 侧**不另存同义常量**（历史 `brain_mixin_correlation._PROD_CORR_TTL_SECONDS` 从未被读取，
+已于 2026-10-28 删除）——两份 48h 并存正是当初 Redis 7 天 TTL 漂移的教训。
 
 **验证（2026-10-06 实测）**：MCP 包 `94 passed / 4 skipped`；新增缓存用例 5 passed。
 

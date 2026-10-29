@@ -5,14 +5,38 @@ from typing import Dict, List, Any
 from mcp_core import mcp, brain_client, _slim_check_correlation
 
 @mcp.tool()
+async def check_correlation(
+    alpha_id: str,
+    correlation_type: str = "both",
+    refresh: bool = False,
+) -> Dict[str, Any]:
+    """Check alpha correlation against the production pool and/or self pool.
 
-async def check_correlation(alpha_id: str, refresh: bool = False) -> Dict[str, Any]:
-    """Check alpha correlation against production alphas, self alphas, or both.
+    correlation_type（2026-10-28 起可传，缺省 both 保持旧行为）：
+      * 'production' —— 只查 prod。只需要 prod 判定时用这个，省去 self 侧的
+        OS 池全量列举与 PnL 增量下载。
+      * 'self'       —— 只查 self（本地 OS 池计算，不占平台相关性槽）。
+      * 'both'       —— 先 prod 后 self；prod fail 时早退，不计算 self。
+    threshold 固定 0.7（合规红线，严格不等式：max < 0.7 才 PASS）。
 
-    平台 prod 计算为异步排队（单并发，1-5 分钟）；同一 alpha 的已决结果缓存 7 天，
-    重查直接命中不占队列。提交前终验或怀疑缓存过期时用 refresh=True 强制回源平台。
+    缓存与回源：平台 prod 计算为异步排队（单并发，1-5 分钟）；同一 alpha 的已决
+    prod 结果写入权威表 alpha_corr_cache，**保鲜 48h**（生产池会漂移），命中直接
+    返回不占队列；缺失/过期自动回源。平台详情里已算好的值（is.prodCorrelation）
+    经预读直接采纳——返回里 source=alpha_detail_cached、无直方图、不写缓存。
+    correlation_busy（另一进程/调用正占平台单并发槽）与 pending 不缓存，按
+    retry_after 稍后重查。
+
+    并发语义（2026-10-28）：busy/pending 的返回体会带 ``retry_after``（秒）与
+    ``inflight``（该 alpha 正在平台计算中）——按 retry_after 隔时重查即可，
+    **inflight=true 时不要重新触发**（重复触发只会把自己顶成 busy）。
+    同 alpha 的其它调用方会被 join 到这次计算上（``joined=true``），预热值
+    带 ``provisional=true``（平台存储值、测量时间不可知，终验须 refresh=True）。
+
+    refresh=True：跳过本地缓存**并跳过预读**，强制走平台重测——交付前终验用
+    （prod 漂移猛，台账 5 天作废）。
     """
-    correlation_type = "both"
+    if correlation_type not in ("production", "self", "both"):
+        return {"error": f"correlation_type 必须是 production|self|both，收到 {correlation_type!r}"}
     threshold = 0.7
     try:
         return _slim_check_correlation(await brain_client.check_correlation(alpha_id, correlation_type, threshold, refresh=refresh))

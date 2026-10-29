@@ -88,6 +88,8 @@ async def _prod_corr(brain, alpha_id: str, attempts: int = 10, base_wait: float 
                 except Exception:  # noqa: BLE001
                     return None
                 val = (body or {}).get("max")
+                if val is not None and i == 0:
+                    state["immediate"] = True
                 return float(val) if val is not None else None
             if r.status_code in (202, 429):
                 wait = base_wait
@@ -102,6 +104,7 @@ async def _prod_corr(brain, alpha_id: str, attempts: int = 10, base_wait: float 
         print(f"[warn] {alpha_id} 轮询 {attempts} 次仍未就绪", file=sys.stderr)
         return None
 
+    state = {"immediate": False}
     if _corr_slot is None:
         return await _poll()
     with _corr_slot(f"prod_watch({alpha_id})", ttl_sec=attempts * base_wait + 300.0) as s:
@@ -109,7 +112,11 @@ async def _prod_corr(brain, alpha_id: str, attempts: int = 10, base_wait: float 
             print(f"[warn] {alpha_id} 账号级相关性槽被其它进程占用 → 跳过（不排队）",
                   file=sys.stderr)
             return None
-        return await _poll()
+        val = await _poll()
+        if state["immediate"] and val is not None:
+            # P0-1：首个请求就拿到既有值 ⇒ 不写 195s 冷却
+            s["write_cooldown"] = False
+        return val
 
 
 def _status(v: float | None) -> str:

@@ -162,7 +162,8 @@ class TestTimeoutGuard:
     def test_prod_corr_timeout_does_not_exceed_15_minutes(self):
         """**回归守卫**：轮询窗口不得回涨到 3600（占槽一小时 → 堵死整账号）。
 
-        900 s ≈ 平台典型耗时（1–5 min，实测 94s/条）的 10 倍余量。
+        2026-10-28：窗口 120 → 240 —— 一次正常计算 180–200 s，120 会让每条真实查询
+        都收在 pending。900 上界保留：别以"多给点余量"的名义回到 15 分钟堵死整账号。
         """
         assert W["prod_corr_timeout_s"] <= 900
 
@@ -171,7 +172,7 @@ class TestTimeoutGuard:
         import re
         src = (REPO / "world-quant-brain-mcp" / "brain_mixin_spcread.py").read_text(
             encoding="utf-8")
-        assert int(re.search(r"max_wait_seconds\s*=\s*(\d+)", src).group(1)) == \
+        assert int(re.search(r"_PROD_CORR_WAIT_S\s*=\s*(\d+)", src).group(1)) == \
             W["prod_corr_timeout_s"]
 
 

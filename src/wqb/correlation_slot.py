@@ -22,9 +22,19 @@
    拿不到就**立即返回 busy**（fail-fast），不排队、不降级放行——降级放行等于让第二个
    进程也去打这个单并发接口，正是事故形态。token 用 ``O_CREAT|O_EXCL`` 原子创建，
    带 TTL 自愈 + 死持有者按 pid 回收 + ``.stale`` 退役（复用 ``wqb.db_write_lock``）。
-2. **缩短占槽窗口**：单次轮询窗口从 3600 s 降到 900 s（``WAIT_THRESHOLDS``
-   ``prod_corr_timeout_s``）——一个卡住的 alpha 占槽 60 分钟会把整账号的相关性查询
-   堵死一小时。超时按 ``pending`` 返回（不缓存、不判死），调用方隔段时间重查。
+2. **缩短占槽窗口**：单次轮询窗口 3600 → 900 → 120 → **240 s**（``WAIT_THRESHOLDS``
+   ``prod_corr_timeout_s``）——窗口长度 = 单次持锁时长，一个卡住的 alpha 会把整账号的
+   相关性查询堵住这么久。2026-10-28 从 120 回调到 240：一次**正常**的平台计算
+   180–200 s，120s 窗口比它还短 ⇒ 每条真实查询都必然 pending 再叠一轮冷却。
+   超时按 ``pending`` 返回（不缓存、不判死），调用方隔段时间重查。
+
+2026-10-28 追加（P0-1 / P0-2）
+-----------------------------
+3. **冷却按结果分流**：``release(..., cooldown=, seconds=)`` —— 只有「真触发了一次
+   计算」才写满 195s；算成功只留 5s 收尾；立即拿到既有值 / 4xx 终态 / 异常不写。
+   旧的单参 ``release(token)`` 行为不变（仍 195s）。
+4. **在飞 sidecar**：``inflight_mark/get/clear/all`` 记录「某 alpha 正在算」，
+   TTL 内同 alpha 的新调用只预读轮询、不二次触发。它不是互斥锁（互斥仍是 token）。
 
 ⚠ **同 pid 重入的语义**：``db_write_lock`` 把「同 pid 再 acquire」当**续约**。
 所以**同一进程内的并发互斥不能靠本模块**——那要用进程内 ``asyncio.Lock``
@@ -58,10 +68,15 @@ LOCK_NAME = "correlation.lock.json"
 #: 默认 TTL（秒）。必须 ≥ 单次平台轮询窗口，否则长轮询期间 token 被 TTL 自愈回收
 #: ⇒ 第二个进程以为拿到槽、实际并发打平台（本次要修的 bug 的反面）。
 #:
-#: 2026-10-26：3700 → 600。配套把轮询窗口 900 → 120（见 ``WAIT_THRESHOLDS``）。
-#: 旧值 3700 的问题：进程崩溃/卡住时锁残留 62 分钟才自愈，期间全账号 correlation 不可用。
-#: 现 600s = 5×轮询窗口（120s），足够覆盖单次轮询 + 平台收尾，崩溃残留降到 10 分钟。
-#: ⚠ 调整时**必须同步** ``WAIT_THRESHOLDS["prod_corr_timeout_s"]``，保持 TTL ≥ 5×窗口。
+#: 2026-10-26：3700 → 600。旧值 3700 的问题：进程崩溃/卡住时锁残留 62 分钟才自愈，
+#: 期间全账号 correlation 不可用。
+#: **硬要求只有一条：TTL > 单次最长持锁**（换进程后不会自愈回收一个仍在轮询的持有者）。
+#: 最长持锁 ≈ 轮询窗口（``prod_corr_timeout_s``）+ 一个慢轮询台阶 30s + 抖动，
+#: 2026-10-28 起窗口 240 ⇒ ≈ 270s，600 留 330s 绝对余量（2.2×）。
+#: ⚠ 旧注释写的「TTL ≥ 5×窗口」是窗口 120 时凑出 600 的经验式，不是约束本身——
+#: 照它办就得把 TTL 抬到 1200（崩溃残留 20 分钟），代价大于收益。
+#: 调整窗口时**必须**复核：``DEFAULT_TTL_SEC >= 窗口 + 120``（守护测试
+#: ``test_default_ttl_covers_max_single_hold``）。
 DEFAULT_TTL_SEC = 600.0
 
 
@@ -80,8 +95,22 @@ def slot_path() -> str:
 #
 # ⇒ 在 release 时留下一个冷却标记，acquire 先检查它。
 #   冷却时长默认 195s（略大于平台 retry_after=180），可用环境变量覆盖。
+#
+# ★ 2026-10-28 P0-1：冷却改为**按结果分流**。旧实现 `release()` 无条件写满 195s，
+#   把「平台已算好、一个 GET 就拿到值」与「真触发了一次计算」同等对待——实测 14h
+#   日志里 117 次拿槽成功、其中只有部分是真实计算，其余立即返回；冷却却每次都写，
+#   吞吐被硬压到 ~4 alpha/小时（195s × 4）。分流规则（证据见
+#   ``reports/prod_corr_timing_20261028.md``）：
+#     - 真触发计算 → 冷却 = 平台 Retry-After 或 195s；
+#     - 计算成功后 → 只留 ``COOLDOWN_SETTLE_SEC``（5s）给平台收尾；
+#     - 立即拿到既有值 / 4xx 终态 / 异常 → **不写冷却**（没有占槽理由）。
+#   直接 ``release(token)`` 的默认仍是写 195s（向后兼容），MCP 侧显式传结果。
 COOLDOWN_SEC_DEFAULT = 195.0
 COOLDOWN_NAME = "correlation.cooldown.json"
+
+#: 「算完了」之后留给平台释放账号槽的收尾时间（秒）。实测成功响应后平台仍会
+#: 短暂报 busy，5s 足够；可用 ``WQB_CORR_SETTLE_SEC`` 覆盖。
+COOLDOWN_SETTLE_SEC = 5.0
 
 
 def cooldown_path() -> str:
@@ -93,6 +122,14 @@ def _cooldown_sec() -> float:
         return float(os.environ.get("WQB_CORR_COOLDOWN_SEC", COOLDOWN_SEC_DEFAULT))
     except (TypeError, ValueError):
         return COOLDOWN_SEC_DEFAULT
+
+
+def settle_seconds() -> float:
+    """计算成功后留给平台释放账号槽的收尾冷却（``WQB_CORR_SETTLE_SEC``）。"""
+    try:
+        return float(os.environ.get("WQB_CORR_SETTLE_SEC", COOLDOWN_SETTLE_SEC))
+    except (TypeError, ValueError):
+        return COOLDOWN_SETTLE_SEC
 
 
 def cooldown_remaining() -> float:
@@ -108,20 +145,38 @@ def cooldown_remaining() -> float:
     return max(0.0, until - time.time())
 
 
-def _write_cooldown() -> None:
+def write_cooldown(seconds=None) -> None:
+    """写冷却标记。``seconds=None`` 走缺省 195s；``<=0`` 等于清除。"""
     import json
     import time
+    sec = _cooldown_sec() if seconds is None else float(seconds)
+    if sec <= 0:
+        clear_cooldown()
+        return
     p = cooldown_path()
     try:
         os.makedirs(os.path.dirname(p), exist_ok=True)
         tmp = p + ".tmp"
         with open(tmp, "w", encoding="utf-8") as f:
-            json.dump({"until": time.time() + _cooldown_sec(),
+            json.dump({"until": time.time() + sec,
+                       "sec": round(sec, 1),
                        "pid": os.getpid(),
                        "at": time.strftime("%F %T")}, f)
         os.replace(tmp, p)
     except Exception:
         pass
+
+
+def clear_cooldown() -> None:
+    """清掉冷却标记（幂等）。"""
+    try:
+        os.remove(cooldown_path())
+    except OSError:
+        pass
+
+
+def _write_cooldown() -> None:  # 历史私有名，保留给既有调用点
+    write_cooldown()
 
 
 def acquire(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Dict[str, object]:
@@ -160,26 +215,169 @@ def acquire(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Dict[str, object]
     }
 
 
-def release(token) -> None:
+def release(token, cooldown: bool = True, seconds=None) -> None:
     """释放槽（幂等；仅当持有者是本进程时才退役，防误删他人 token）。
 
     ★ 2026-10-26：释放后**写冷却标记**——平台在该次计算结束后仍会占槽 ~180s，
     本地若立刻放行下一个调用者，它必然撞 ``correlation_busy``。
+
+    ★ 2026-10-28 P0-1：冷却**按结果分流**。调用方能判断结果时显式传：
+      - ``cooldown=False`` ⇒ 不写冷却（立即拿到既有值 / 4xx 终态 / 异常路径）；
+      - ``seconds=x`` ⇒ 写 x 秒（触发计算后按平台 Retry-After 或 195s；
+        计算成功后用 ``COOLDOWN_SETTLE_SEC``）。
+    不传参的旧调用点保持 195s 语义不变。
     """
     if token:
         _flock_release(token)
-    _write_cooldown()
+    if cooldown:
+        write_cooldown(seconds)
 
 
 @contextmanager
-def slot(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Iterator[Dict[str, object]]:
+def slot(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC,
+         cooldown: bool = True, seconds=None) -> Iterator[Dict[str, object]]:
     """账号级相关性槽上下文管理器。
 
     ``with slot(...) as s:`` —— ``s["acquired"]`` 为 ``False`` 表示槽被他人占用，
     **调用方必须自己处理**（不要继续打平台）。
+
+    调用方可在块内覆写 ``s["write_cooldown"] = False`` / ``s["cooldown_seconds"] = x``
+    来按本次结果调整冷却（P0-1 分流）；不覆写则用入参缺省值。
     """
     info = acquire(op_name, ttl_sec=ttl_sec)
     try:
         yield info
     finally:
-        release(info.get("token"))
+        # ⚠ 没抢到槽就**不得改写冷却**：旧实现无条件 ``release(None)`` →
+        # 每次 busy 轮询都顺手把冷却续期 195s，越查越堵（与 P0-1 同族）。
+        # 注意不要写成 ``return`` —— contextmanager 的 finally 里 return 会吞异常。
+        if info.get("acquired"):
+            use_cd = info.get("write_cooldown", cooldown)
+            sec = info.get("cooldown_seconds", seconds)
+            release(info.get("token"), cooldown=bool(use_cd), seconds=sec)
+
+
+# ---------------------------------------------------------------------------
+# 在飞标记（2026-10-28 P0-2）
+# ---------------------------------------------------------------------------
+# 实测缺口：轮询窗口超时后返回 ``pending``（旧窗口 120s 时几乎每条真实计算都会超时），
+# 同一 alpha 往往**立刻**被再次触发（21/48 次超时在下一分钟就重新抢锁）。
+# 平台侧那一次其实还在算，重触发只是
+# 把账号槽继续占住。⇒ 用一个 sidecar 记录「这个 alpha 正在算」，TTL 内同 alpha
+# 的新调用**只做预读轮询**，不再二次触发（``get_production_correlation`` 消费）。
+#
+# 形态：``{"items": {alpha_id: {started_at, expires_at, pid, base_max, n}}}``。
+# 单文件、原子替换；过期条目读取时顺手清。**只是提示，不是互斥**——互斥仍由
+# 上面的 lock token 承担，侧车丢失不会造成并发打平台。
+INFLIGHT_NAME = "correlation.inflight.json"
+INFLIGHT_TTL_SEC_DEFAULT = 300.0
+
+
+def inflight_path() -> str:
+    return os.path.join(_flock_dir(), INFLIGHT_NAME)
+
+
+def _inflight_ttl_sec() -> float:
+    try:
+        return float(os.environ.get("WQB_CORR_INFLIGHT_TTL_SEC", INFLIGHT_TTL_SEC_DEFAULT))
+    except (TypeError, ValueError):
+        return INFLIGHT_TTL_SEC_DEFAULT
+
+
+def _inflight_read() -> Dict[str, dict]:
+    import json
+    try:
+        with open(inflight_path(), encoding="utf-8") as f:
+            items = json.load(f).get("items") or {}
+    except Exception:
+        return {}
+    return items if isinstance(items, dict) else {}
+
+
+def _inflight_write(items: Dict[str, dict]) -> None:
+    import json
+    p = inflight_path()
+    try:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        tmp = p + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump({"items": items}, f)
+        os.replace(tmp, p)
+    except Exception:
+        pass
+
+
+def _inflight_prune(items: Dict[str, dict]) -> Dict[str, dict]:
+    import time
+    now = time.time()
+    out = {}
+    for aid, rec in items.items():
+        try:
+            if float((rec or {}).get("expires_at") or 0) > now:
+                out[aid] = rec
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def inflight_all() -> Dict[str, dict]:
+    """当前未过期的在飞记录（顺手清理过期项）。"""
+    items = _inflight_read()
+    alive = _inflight_prune(items)
+    if len(alive) != len(items):
+        _inflight_write(alive)
+    return alive
+
+
+def inflight_get(alpha_id: str) -> dict:
+    """该 alpha 的在飞记录；不存在/已过期 → ``{}``。"""
+    return inflight_all().get(str(alpha_id)) or {}
+
+
+def inflight_mark(alpha_id: str, base_max=None, ttl_sec=None) -> dict:
+    """标记该 alpha 正在计算。已存在则只续期并 ``n+1``（保留首次 started_at）。"""
+    import time
+    aid = str(alpha_id)
+    items = _inflight_prune(_inflight_read())
+    now = time.time()
+    ttl = _inflight_ttl_sec() if ttl_sec is None else float(ttl_sec)
+    prev = items.get(aid) or {}
+    rec = {
+        "started_at": float(prev.get("started_at") or now),
+        "expires_at": now + ttl,
+        "pid": os.getpid(),
+        "base_max": prev.get("base_max") if prev else base_max,
+        "n": int(prev.get("n") or 0) + 1,
+    }
+    items[aid] = rec
+    _inflight_write(items)
+    return rec
+
+
+def inflight_clear(alpha_id: str) -> bool:
+    """清除该 alpha 的在飞标记；返回是否真的清掉了。"""
+    aid = str(alpha_id)
+    items = _inflight_read()
+    if aid not in items:
+        return False
+    items.pop(aid, None)
+    _inflight_write(items)
+    return True
+
+
+# ---------------------------------------------------------------------------
+# 持有者识别（2026-10-28 P1-1 用）
+# ---------------------------------------------------------------------------
+def holder_tag():
+    """读当前 lock token 的 tag（形如 ``corr:get_production_correlation(<aid>)``）。
+
+    无持有者 / 读不到 → ``None``。**只读、不做任何判定**——同一 alpha 的判定
+    在调用侧（比对 op_name）。token 可能在他进程手上，读到的是即时快照。
+    """
+    import json
+    try:
+        with open(slot_path(), encoding="utf-8") as f:
+            tag = json.load(f).get("tag")
+    except Exception:
+        return None
+    return tag if isinstance(tag, str) else None

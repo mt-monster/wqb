@@ -802,8 +802,13 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
       - max ≥ threshold → blocked；
       - 未出数（pending / busy / data_unavailable / 异常）→ blocked（fail-closed），
         等价 super_build `_probe_prod_max` 超时语义。
+    ★ 2026-10-28 补：缓存未命中时 MCP 会先预读 alpha 详情里的 ``is.prodCorrelation``
+    （``source=alpha_detail_cached``，``provisional=True``，测量时间不可知）。
+    **预读值只许证伪、不许放行**：它 ≥ 阈值时直接 blocked；< 阈值时本函数补一次
+    ``refresh=True`` 真重测再决定（一次提交只多花一个平台单并发槽），
+    重测拿不到数仍 fail-closed。
 
-    返回 {allowed, prod_max, threshold, status, from_cache, cached_at, reason}。
+    返回 {allowed, prod_max, threshold, status, from_cache, cached_at, provisional, reason}。
     **纯判定，不做 POST**。
     """
     thr = _PROD_THRESHOLD if threshold is None else float(threshold)
@@ -821,10 +826,13 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
     force_refresh = (os.environ.get("WQB_PROD_GATE_REFRESH") or "").strip().lower() in (
         "1", "true", "yes", "on")
 
-    try:
-        r = _run_async(client.check_correlation(
+    def _call(refresh_flag: bool) -> Any:
+        return _run_async(client.check_correlation(
             alpha_id, correlation_type="production", threshold=thr,
-            refresh=force_refresh))
+            refresh=refresh_flag))
+
+    try:
+        r = _call(force_refresh)
     except Exception as e:  # noqa: BLE001
         return {"allowed": False, "prod_max": None, "threshold": thr,
                 "status": "error", "reason": f"check_correlation 异常：{e}"}
@@ -838,6 +846,36 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
                 "status": "error", "reason": f"check_correlation 调用失败：{r.get('__error__')}"}
 
     prod = ((r.get("checks") or {}).get("production") or {})
+
+    # ★ 2026-10-28：**预读值只许证伪，不许放行**。
+    # `source=alpha_detail_cached`（alpha 详情里的 is.prodCorrelation）是平台存储值，
+    # 测量时间不可知 → check_correlation 会打 ``provisional=True``。它足以拒绝
+    # （≥0.7 就是 ≥0.7，旧值也说明这颗与生产池高度重合），但不足以批准：拿「不知道
+    # 多久以前算的」值过用户铁律的 0.7 闸，等于把闸变成摆设。
+    # 因此仅在**即将放行**时补一次 refresh=True 真重测（只花一次账号级单并发槽，
+    # 且一次提交只发生一次）；重测拿不到数仍 fail-closed。
+    provisional = bool(prod.get("provisional")
+                       or prod.get("source") == "alpha_detail_cached"
+                       or r.get("provisional"))
+    if (not force_refresh and provisional
+            and prod.get("max_correlation") is not None):
+        try:
+            r2 = _call(True)
+        except Exception as e:  # noqa: BLE001
+            return {"allowed": False, "prod_max": None, "threshold": thr,
+                    "status": "error", "provisional": True,
+                    "reason": (f"prod 只有预读值（alpha_detail_cached），强制重测异常：{e}"
+                               " → fail-closed")}
+        if not isinstance(r2, dict) or r2.get("__error__"):
+            return {"allowed": False, "prod_max": None, "threshold": thr,
+                    "status": "error", "provisional": True,
+                    "reason": ("prod 只有预读值（alpha_detail_cached），强制重测调用失败"
+                               f"：{(r2 or {}).get('__error__') if isinstance(r2, dict) else r2!r}"
+                               " → fail-closed")}
+        r = r2
+        prod = ((r.get("checks") or {}).get("production") or {})
+        provisional = bool(prod.get("provisional"))
+
     raw_max = prod.get("max_correlation")
     status = str(prod.get("status") or r.get("status") or "ok")
     from_cache = bool(prod.get("from_cache") or r.get("from_cache"))
@@ -846,6 +884,7 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
     if raw_max is None:
         return {"allowed": False, "prod_max": None, "threshold": thr, "status": status,
                 "from_cache": from_cache, "cached_at": cached_at,
+                "provisional": provisional,
                 "reason": (f"prod 未出数（status={status}，48h 内无缓存且平台单并发忙碌）"
                            "→ fail-closed 拒绝提交；稍后重跑或设 WQB_PROD_GATE_REFRESH=1 强制回源")}
     try:
@@ -853,16 +892,19 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
     except (TypeError, ValueError):
         return {"allowed": False, "prod_max": None, "threshold": thr, "status": status,
                 "from_cache": from_cache, "cached_at": cached_at,
+                "provisional": provisional,
                 "reason": f"prod max 非数值：{raw_max!r} → fail-closed"}
 
     src = f"缓存@{cached_at}" if from_cache else "平台实时"
     if prod_max >= thr:
         return {"allowed": False, "prod_max": prod_max, "threshold": thr, "status": status,
                 "from_cache": from_cache, "cached_at": cached_at,
+                "provisional": provisional,
                 "reason": (f"prod max={prod_max} ≥ {thr} → 用户铁律 prod≥0.7 不得提交"
                            f"（{src}；即使平台提交层可能判 PASS）")}
     return {"allowed": True, "prod_max": prod_max, "threshold": thr, "status": status,
             "from_cache": from_cache, "cached_at": cached_at,
+            "provisional": provisional,
             "reason": f"prod max={prod_max} < {thr} → 过闸（{src}）"}
 
 

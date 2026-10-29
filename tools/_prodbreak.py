@@ -138,7 +138,74 @@ def _cp2(pw, w_vb, rng="0,1,0.1"):
     return "group_neutralize(%s, bucket(rank(cap), range=\"%s\"))" % (core, rng)
 
 
+IABS_ = "fnd23_intfvalld1_iabs"
+IADS_ = "fnd23_intfvalld1_iads"
+FBDS_ = "fnd23_intfvalld1_fbds"
+SEBV_ = "fnd23_intfvalld1_sebv"
+SEDV_ = "fnd23_intfvalld1_sedv"
+
+
+def _cap20(core):
+    return 'group_neutralize(%s, bucket(rank(cap), range="0,1,0.05"))' % core
+
+
+RISK68 = "risk68"
+
 PLAN += [
+    # ===== Z_risk：RISK 塔（差 1 颗点亮）—— risk68 独有 `rsk68_residual_return`（**现成残差收益**）
+    #   ⇒ 天然对应 Blitz/Huij/Martens (2011) 残差动量，不需要把风险暴露当 alpha 用。
+    #   ⚠ 铁律：RISK 不能与 PV（returns/close/volume/cap/adv20）组腿 ⇒ 以下 6 条全部单数据集。
+    ("Z1_risk_cs1600", RISK68, dict(universe="TOPCS1600", decay="4", neutralization="FAST"),
+     [("rk_direct", sig("rsk68_residual_return")),
+      ("rk_z63", "signed_power(rank(ts_zscore(ts_backfill(rsk68_residual_return, 22), 63)), 0.5)"),
+      ("rk_m63", "signed_power(rank(ts_mean(ts_backfill(rsk68_residual_return, 5), 63)), 0.5)"),
+      ("rk_m126", "signed_power(rank(ts_mean(ts_backfill(rsk68_residual_return, 5), 126)), 0.5)"),
+      ("rk_volw", sig("rsk68_weight_volatility_short")),
+      ("rk_lowbeta", "signed_power(rank(multiply(-1, ts_backfill(rsk68_beta, 22))), 0.5)")]),
+    ("Z2_risk_top2500", RISK68, dict(universe="TOP2500", decay="4", neutralization="FAST"),
+     [("rk2_direct", sig("rsk68_residual_return")),
+      ("rk2_z63", "signed_power(rank(ts_zscore(ts_backfill(rsk68_residual_return, 22), 63)), 0.5)"),
+      ("rk2_m63", "signed_power(rank(ts_mean(ts_backfill(rsk68_residual_return, 5), 63)), 0.5)"),
+      ("rk2_lowbeta", "signed_power(rank(multiply(-1, ts_backfill(rsk68_beta, 22))), 0.5)")]),
+    # ===== U2：把「分组中性化」用在 fund23 ⇒ **不同结构**（无 cap 桶），保 ATOM（分组字段豁免）
+    # 现有 `1YNerr2X` 的结构是 cap 桶；本批去掉 cap、改用分组字段 ⇒ AST 不同 ⇒ 可能是第二席。
+    # fund23 的 2Y 闸很强（2.42），保 ATOM 时走 2Y 而非 ladder。
+    ("U2_fund_grp", "fundamental23", dict(universe="TOP2500", decay="4", neutralization="FAST"),
+     [("uu_f_sector", "group_neutralize(%s, sector)" % two_leg(F23_MAIN, "0.7", F23_VBTS, "2.1")),
+      ("uu_f_industry", "group_neutralize(%s, industry)" % two_leg(F23_MAIN, "0.7", F23_VBTS, "2.1")),
+      ("uu_f_subind", "group_neutralize(%s, subindustry)" % two_leg(F23_MAIN, "0.7", F23_VBTS, "2.1")),
+      ("uu_f_p15sub", "group_neutralize(%s, subindustry)" % two_leg(F23_MAIN, "0.7", F23_VBTS, "1.5"))]),
+    # ===== U：分组字段中性化（保 ATOM —— memory §5 的 6 个豁免字段：
+    #   country/exchange/market/sector/industry/subindustry ⇒ 不破 Single Dataset、不触发 IS_LADDER）
+    # 依据：techindi 的幂次杠杆已被否证（pow1.5 0.7276 → pow2.1 0.7336，prod 反升），
+    #   且 cap 桶会破 ATOM + ladder FAIL ⇒ 唯一剩下的结构轴 = 分组字段去均值。
+    ("U1_tech_grp", "techindi_model", dict(universe="TOPCS1600", decay="4", neutralization="FAST"),
+     [("uu_sector", "group_neutralize(%s, sector)" % two_leg(TI_MAIN, "0.7", TI_15, "1.5")),
+      ("uu_industry", "group_neutralize(%s, industry)" % two_leg(TI_MAIN, "0.7", TI_15, "1.5")),
+      ("uu_subind", "group_neutralize(%s, subindustry)" % two_leg(TI_MAIN, "0.7", TI_15, "1.5"))]),
+    # ===== T：techindi 走**纯幂次轴**（保 ATOM，不加 cap —— cap 会破 ATOM 且 ladder FAIL）
+    # 实测 S 对幂次极不敏感：pow1.0 → 1.95、pow1.5 → 1.90（仅 −0.05）⇒ 可推很高。
+    # prod：pow1.5 → **0.7276**（0.7-0.8 仅 1 颗、0.6-0.7 10 颗）⇒ 需再降 0.028。
+    # 论坛 YL61874 实测 `signed_power(·,3)` 外芯 PC 0.9→0.64 且 S 基本不变 —— 与此特性吻合。
+    ("T_tech_pow", "techindi_model", dict(universe="TOPCS1600", decay="4", neutralization="FAST"),
+     [("tt_p18", two_leg(TI_MAIN, "0.7", TI_15, "1.8")),
+      ("tt_p21", two_leg(TI_MAIN, "0.7", TI_15, "2.1")),
+      ("tt_p26", two_leg(TI_MAIN, "0.7", TI_15, "2.6")),
+      ("tt_p30", two_leg(TI_MAIN, "0.7", TI_15, "3.0")),
+      ("tt_p40", two_leg(TI_MAIN, "0.7", TI_15, "4.0"))]),
+    # ===== R1：把 `1YNerr2X` 的破墙公式复制到**其它数据集**（用户要 10 颗，需要多塔）=====
+    # 公式 = group_neutralize(add(sig(F_main, pow2.1), 0.7×sig(F_aux, pow2.1)), bucket(rank(cap),0,1,0.05))
+    # ① OTHER 塔（差 2 颗）：techindi_model，主腿 tm_16，辅腿 ten_day_15，universe CS1600
+    ("R1_tech", "techindi_model", dict(universe="TOPCS1600", decay="4", neutralization="FAST"),
+     [("rr_tech_p21", _cap20(two_leg(TI_MAIN, "0.7", TI_15, "2.1"))),
+      ("rr_tech_p18", _cap20(two_leg(TI_MAIN, "0.7", TI_15, "1.8"))),
+      ("rr_tech_p15", _cap20(two_leg(TI_MAIN, "0.7", TI_15, "1.5")))]),
+    # ② FUND 塔第 2/3 颗：换主腿字段（不同主腿 ⇒ 不同 prod 源），同公式
+    ("R2_fund_multi", "fundamental23", dict(universe="TOP2500", decay="4", neutralization="FAST"),
+     [("rr_iabs_p21", _cap20(two_leg(IABS_, "0.7", F23_VBTS, "2.1"))),
+      ("rr_iads_p21", _cap20(two_leg(IADS_, "0.7", F23_VBTS, "2.1"))),
+      ("rr_fbds_p21", _cap20(two_leg(FBDS_, "0.7", F23_VBTS, "2.1"))),
+      ("rr_sebv_p21", _cap20(two_leg(SEBV_, "0.7", F23_VBTS, "2.1")))]),
     # ===== Q：pow2.1 × cap 桶粒度（两条已证有效的轴组合，之前未试）=====
     # 依据：直方图显示 >=0.7 的对手自 pow1.0 起恒为 1 颗，prod 下降全来自 0.5-0.7 区间收缩
     #   （pow0.5: 8210+556 → pow1.0: 444+9 → pow1.5: 101+5 → pow1.8: 43+2）。

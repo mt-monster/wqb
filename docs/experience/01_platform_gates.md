@@ -117,7 +117,7 @@
 
 | 项 | 方法 |
 |---|---|
-| **prod** | 直轮询 `GET /alphas/{id}/correlations/prod`（15s 长窗口，恒 200，**空体 = 平台在算**），`max` 即判定值；耗时 45s ~ 12min |
+| **prod** | 直轮询 `GET /alphas/{id}/correlations/prod`（恒 200，**空体 = 平台在算**），`max` 即判定值；**单次计算 180–200 s**（2026-10-28 用户口径；旧记「45s ~ 12min」把排队与旧 900s 窗口混在一起了） |
 | **self（本地）** | 累计 PnL **必须 diff 成日收益**再 Pearson，窗口 **4×252**（误差 < 0.001） |
 | 列表 self-corr | 在 `records[i][5]` |
 | **缓存（2026-10-06 改）** | 已决 prod 落 SQLite 权威表 `data/wqb.db::alpha_corr_cache`，**保鲜期 48h**，过期自动回源；**不再依赖 Redis**（旧版 Redis 未启动 ⇒ 缓存静默失效，且 TTL 7 天与 48h 纪律冲突）。命中响应带 `from_cache: true` |
@@ -133,12 +133,44 @@
 
 | 修复点 | 做法 | 位置 |
 |---|---|---|
-| 跨进程互斥 | 文件 token `logs/_dblock/correlation.lock.json`（`O_CREAT\|O_EXCL` + TTL 自愈 + 按 pid 回收死持有者）。拿不到就 **fail-fast 返回 `correlation_busy`**，不排队、**不降级放行** | `src/wqb/correlation_slot.py`（`LOCK_NAME` / `DEFAULT_TTL_SEC`=3700） |
+| 跨进程互斥 | 文件 token `logs/_dblock/correlation.lock.json`（`O_CREAT\|O_EXCL` + TTL 自愈 + 按 pid 回收死持有者）。拿不到就 **fail-fast 返回 `correlation_busy`**，不排队、**不降级放行** | `src/wqb/correlation_slot.py`（`LOCK_NAME` / `DEFAULT_TTL_SEC`=**600**，须 > 单次最长持锁 ≈ 窗口 240 + 台阶 30 + 抖动） |
 | 两级锁顺序 | **先**进程内 `asyncio.Lock`，**后**跨进程文件锁——顺序不可换（`db_write_lock` 把同 pid 再 acquire 当**续约**，不是互斥） | `brain_mixin_transport._try_acquire_brain_correlation_lock` |
-| 缩短占槽窗口 | 轮询上限 **3600 → 900 s**（≈ 实测 94 s/条的 10 倍余量）；超时按 `pending` 返回（不缓存、不判死） | `WAIT_THRESHOLDS["prod_corr_timeout_s"]` = 900，守护测试比对源码字面量 |
+| 缩短占槽窗口 | 轮询上限 **3600 → 900 → 120 → 240 s**（锁覆盖整个窗口：窗口多长，单次调用就占账号级单槽多久）。**2026-10-28 从 120 回调 240**：一次正常计算 180–200 s，120 比它还短 ⇒ 每条真实查询都必然 `pending`、再叠 195 s 冷却才算拿到值。超时仍按 `pending` 返回（不缓存、不判死） | `WAIT_THRESHOLDS["prod_corr_timeout_s"]` = 240，守护测试比对源码常量 `_PROD_CORR_WAIT_S` |
 | 两种锁分文件 | 写库锁 `dbwrite.lock.json` 与相关性锁 `correlation.lock.json` **必须分开**：TTL 不同，共用一个文件会让短 TTL 的写锁回收长 TTL 的相关性锁 token（两个进程同时自认持有）。`_prune_expired` 已改为**按文件名精确回收**，不再扫全目录 | `src/wqb/db_write_lock.py` |
 
 **纪律**：任何要打 prod 端点的**新工具**都必须 `with wqb.correlation_slot.slot(...)`；拿不到槽就 fail-closed 立即返回并提示稍后重跑。**不要自建第二把锁、也不要因为"我只是查一次"而不拿锁**——那正是本次事故的成因。
+
+### 2026-10-28：把「14 小时只出 56 个数」拆成四件可修的事
+
+实测（14 h、1,020 次 busy 拒绝、117 次真正拿到槽）：槽位占用 6,988 s，其中**成功计算只有 ~16.6 min**，
+其余是 195 s 冷却与超时空转；中位 10 s / p90 45 s / 最大 117 s，**成功率 48%**。
+
+⚠ **2026-10-28 更正这组数的读法**：它是**被 120 s 窗口截断**的幸存样本——超过窗口的计算
+一律记 `pending`、从不进入"成功耗时"，所以「最大 117 s」只证明窗口是 120 s，**不能**证明平台
+够快。一次正常的平台计算实为 **180–200 s**（用户口径）；「中位 10 s」那半是"一个 GET 就拿到
+既有值"的预读命中，而**真实计算那一半在旧窗口下几乎全部失败**。窗口已据此改 240 s
+（守护：`test_prod_corr_window_covers_normal_platform_compute_time`）。
+
+根因不是"平台慢"，而是四件事叠在一起（逐条可用 `python tools/probe/corr_timing_report.py` 复盘——
+本次数字取自 2026-10-28 对 MCP 服务日志 + `alpha_corr_cache` / `correlation.cooldown.json` 时序的取证，
+该日志随后已被轮转清理，**原始行不可再调**，故此处只留结论；新打点落盘后按报告工具自行复算）：
+
+| 层 | 旧行为 | 现行为 | 开关 |
+|---|---|---|---|
+| **冷却按结果分流** | 无条件写 195 s（连"一个 GET 就拿到既有值"也罚 3 分钟） | `success` 只留 `settle`（5 s）；`pending` 写平台 `Retry-After`（≤195）或 195；4xx 终态 / 异常**不写** | `WQB_CORR_SETTLE_SEC` / `WQB_CORR_COOLDOWN_SEC` |
+| **inflight 侧车** | 同 alpha 的第二个调用照样去抢锁、照样触发 | 开轮询即标记 `correlation.inflight.json`；同 alpha 非 refresh 调用**只预读等待**（缺省 25 s），等不到返回 `busy + inflight=true`，**不二次触发**；`pending` 保留标记、其余清除 | `WQB_CORR_INFLIGHT_TTL_SEC`（300） |
+| **同 alpha 等待** | 锁被同 alpha 占着也立即 busy | holder 恰为同 alpha ⇒ 等 `WQB_CORR_JOIN_WAIT_SEC`（25 s）内的预读值（`same_alpha_join`）；refresh 保持 fail-fast | `WQB_CORR_JOIN_WAIT_SEC` |
+| **打点与报告** | 只有人读的一句话 | `[corr-t] {json}` 结构化打点 + `tools/probe/corr_timing_report.py` 汇总「时间花在哪 / 拿到值 vs 空手 / 谁在反复触发」 | 零平台请求 |
+
+配套的**消费方默认值**也改了：`check_correlation(refresh=False)` 是缺省（48 h 权威缓存 → 预读
+`is.prodCorrelation`，命中即返回、**零平台计算**），只有**终验**（`submit_inventory --refresh-all`、
+`corr_check --refresh`、`check_corr.py --refresh`）才强制重测。预读值带 `provisional=true`
+——平台存储值**测量时间不可知**，不得记成「刚测过」（会污染 48 h 保鲜判据）。
+
+⚠ **刻意没做**：触发后立即释放锁、让轮询在锁外跑。锁覆盖轮询窗口正是当前正确性的来源
+（同 alpha 等待靠 holder tag 识别、跨进程不重复触发靠同一把锁）；先放锁再轮询等于把
+"账号级单并发"交还给平台去挡。要改这块需要先把 inflight 侧车升级为**权威的在飞登记**
+（跨进程可见、含 pid 存活判定），再谈合并触发与等待——现在只做保守分流。
 
 ### 阈值与判定
 
@@ -277,3 +309,164 @@ ts_median, ts_min, ts_min_max_cps, ts_percentage, ts_skewness
 - **PPA 决定性闸 = `MATCHES_THEMES`**（WARNING = 未命中即不能走 PPA，重试无效，只随主题轮换翻转）。`PURE_POWER_POOL_THEME` 命中条件是"区域组"不是 dataset category。
 - **`CLUSTER_TEST` 门槛**：默认 ≥ 1.58；**KOR / JPS / TWN / HKG / IND / GBR / DEU ≥ 1.0**。判定用 check 自带 `limit` 而非按区域名硬编码。
 - **OS 数据可得性**：**只有 USA 有 `os.sharpe`**（其余 9 区 73 颗全 null）。OS 全量指标只在详情 `GET /alphas/{id}` 的 `os` 块，列表接口只带 `osISSharpeRatio`。
+
+---
+
+## 11. investability 是第 2 号门槛（仅次于 fRA=0），不是事后参考项
+
+**这条闸不在平台 RA check 里，平台不拦，但它是「Sharpe 真不真」的分水岭。**
+
+`investability_sharpe`（`invest_S`）只统计**落在可投资权重上限内的那部分 PnL**。若信号集中在
+流动性差/权重受限的尾部股票上，S 可以很高而 invest_S 接近 0 ⇒ **Sharpe 是构造出来的，不是可交易的**。
+
+**判据（人工闸）：`invest_S / S ≥ 0.70`。**
+
+**USA 实测（2026-10-28，9 颗全部 fRA=0 的候选）**：
+
+| 族 | 代表 alpha | S | invest_S | 比值 | 判定 |
+|---|---|---:|---:|---:|---|
+| `insider_trx_matrix` / `insider_matrix` | d5KPPrxx | 3.13 | 0.25 | **0.080** | 否 |
+| 同上 | 88v2XRm7 | 2.73 | 0.34 | **0.125** | 否 |
+| 同上 | E56XEpV9 | 2.21 | 0.07 | **0.032** | 否 |
+| `analyst_consensus` | wpbagVMY | 2.03 | 2.20 | **1.084** | **可通过** |
+| `ai_equity_alpha` | zqrgna91 | 2.67 | 2.70 | 1.011 | 可通过 |
+
+⇒ **8/9 颗被这条闸砍掉**，其中包括全库 Sharpe 最高的 3.13。**insider 族（`insider_trx_matrix`、
+`insider_matrix`）是 invest 重灾区（0.03–0.12），它的高 Sharpe 一律不可信**。
+⇒ 相反 `analyst_consensus` / `ai_equity_alpha` 天然 0.95–1.08，是「可投资性」安全族。
+
+**作业纪律**：
+1. 候选排序固定为 ① `failed_ra_count == 0` ② `invest_S / S ≥ 0.70` ③ 塔位合规 ④ 互相关/prod。
+   **指标（Sharpe/fitness）只排第 5** —— 先按 Sharpe 挑会稳定地选中 invest 已死的 insider 族。
+2. `batch_get_alpha_metrics` 是唯一直接返回 `investability_ratio` 的入口，一次 ≤20 颗。
+3. 判死要落库：`python tools/submit_queue.py retire --region USA --status DEAD --alpha-id <id> --note "INVEST_DEAD: ratio=..."`（**单颗一次，`--alpha-id` 不是 nargs**）。
+
+### 11b. investability 是「数据集族属性」，不是单颗运气 —— 可用它做选集先验
+
+**2026-10-28 新增实测（`earnings_chart_dl` 8 颗，EARNINGS 塔，同一骨架）**：
+
+| alpha | 字段 | S | invest_S | 比值 |
+|---|---|---:|---:|---:|
+| QPvLvee5 | close_return_quantile_1_1day | 1.61 | 1.39 | **0.863** |
+| 2rAbAEPP | open_return_quantile_1_1day | −2.11 | −1.82 | **0.863** |
+| YP1G1Zdl | (A 组门控变体) | 1.51 | 1.19 | **0.788** |
+| gJeEevvg | prob_quantile_2_bucket_1_5day | 0.34 | 0.26 | 0.765 |
+| akKqKJ35 | prob_quantile_2_bucket_1_20day | 0.23 | 0.21 | 0.913 |
+| LLMAMeee | (A 组门控变体) | 0.28 | −0.04 | −0.143 |
+| xAr0rMMN | (A 组门控变体) | 0.39 | −0.12 | −0.308 |
+| YP1G1ZZR | prob_quantile_2_bucket_1_50day | −0.26 | −0.27 | 1.039 |
+
+**同族内 5/8 颗比值 ≥ 0.76**（含最强的两颗 0.863）⇒ **该族整体可投资性健康**，瓶颈不在 invest 而在 fitness。
+对比 insider 族 9 颗里 8 颗 0.03–0.12 ⇒ **invest 比值在族内高度一致，是数据集/机制层面的属性**。
+
+**推论（可直接用于选集）**：
+- 某族一旦实测出 `invest_S/S < 0.3`，**该族后续候选不必逐颗复测，整族视为 invest 死**；
+- 某族实测 ≥ 0.75 ⇒ 后续候选可按常规口径（fitness/2Y/相关性）继续推，不必反复回测 invest；
+- 只有**跨族新机制**才需要重新实测（`batch_get_alpha_metrics` 一次 ≤20 颗，成本低）。
+- **异常值要看符号**：比值落在 [−1, 0] 说明 invest_S 与 S 反号（信号主要集中在不可投资部分且方向相反），
+  比「接近 0」更糟（实测 LLMAMeee −0.143 / xAr0rMMN −0.308，都是门控稀释后的弱信号）。
+
+## 12. `LOW_FITNESS` 的直接反解式：`turnover ≤ returns × Sharpe²`
+
+`fitness = Sharpe × sqrt(|returns| / max(turnover, 0.125))`，令 `F ≥ 1` 反解 ⇒
+
+> **`turnover ≤ returns × Sharpe²`**（当反解值 < 0.125 时改用 0.125 作为分母下限）
+
+**这是判断「这颗候选还能不能救」最快的一步**：把已有的 S / ret / tvr 代进去，看 tvr 需要降到多少。
+若需要的 tvr 已经低于信号自身的换手下限（信号更新频率决定），**判死，不要浪费仿真槽**。
+
+**USA 实测校准（2026-10-28，`earnings_chart_dl` 族）**：
+
+| alpha | S | ret | tvr 现状 | F 现状 | F≥1 需 tvr ≤ | 结论 |
+|---|---:|---:|---:|---:|---:|---|
+| 2rAbAEPP 取反 | 2.11 | 9.81% | 0.7194 | 0.78 | **0.4368** | 可救（只差换手）|
+| QPvLvee5 | 1.61 | 5.34% | 0.6292 | 0.47 | **0.1384** | 不可救（需压到 0.14，信号是日频）|
+
+**关键推论**：**高换手 alpha 很难过 fitness 闸**。turnover 0.6+ 在 S=1.6 时要求 returns ≥ 15.4%
+（0.6×1.6²），S=2.1 时要求 ≥ 26.5%。⇒ **turnover > 0.45 的候选，只有 returns ≥ 11%（S=1.6）或
+≥ 20%（S=2.1）时才有机会，否则在 fitness 这一项上基本已判死，不必等回测就能预筛**。
+反过来，`hump`/长平滑/deep decay 把 turnover 压到 0.05–0.2 之后，fitness 会突然变得容易达标
+（这也是结论 20 里 `hump=0.0001` 使 fitness 完全由 returns 驱动的原因）。
+
+**排查顺序**：看到 `LOW_FITNESS` 先算 `ret × S²`：
+1. `ret×S² ≥ 0.45` ⇒ 换手偏高，但**先看 margin**（见 §12b）：margin < 5 bps 就直接判死，
+   否则走**横截面筛选**（只留强信号名）而非 decay/hump/平滑；
+2. `0.2 ≤ ret×S² < 0.45` ⇒ 需同时抬 Sharpe 或抬 returns，要先换结构（分组轴/中性化）；
+3. `ret×S² < 0.2` ⇒ **结构性判死**，换字段/换数据集，不要再调参。
+
+### 12b. ★ 降换手有两类杠杆，只有一类能救 fitness（Wave 119 实证修正）
+
+上表的反解式只说明「tvr 出现在分母」，**并不说明压低 tvr 就能抬 fitness**。要看压 tvr 的代价：
+
+| 杠杆 | 算子类别 | 对 turnover | 对 returns | 对 margin (ret/tvr) | 对 Sharpe | 对 fitness |
+|---|---|---|---|---|---|---|
+| `decay`（设置层） | 时间衰减 | ↓ | ↓（等比） | **≈不变** | 略↓ | **救不了** |
+| `hump` | **Time Series**：限制输入的**变化量级** | ↓ | ↓（等比） | **≈不变** | 略↓ | **救不了** |
+| `ts_mean` / `ts_decay_linear` 平滑 | 时间平滑 | ↓↓ | ↓↓ | ≈不变 | **↓↓** | **反而更差** |
+| **横截面筛选**（`trade_when(rank(...)>阈值, α, -1)`、`bucket` 只留极端档） | **改变组合构成** | ↓ | ↓（只砍掉非极端名） | **↑（真提升）** | 视信号质量 | **唯一可能救** |
+
+⚠ **`hump` 不是「置零弱势股」，别把它当 margin 杠杆**。官方定义
+（`docs/reference/operators_catalog.json`）：`hump(x, hump=0.01)` category = **Time Series**，
+description = *"Limits amount and magnitude of changes in input (thus reducing turnover)"* ——
+它限制的是**同一条持仓的时间变化量**，与 `decay` 同类，**买的还是同一批股票，只是换手慢一点**。
+
+**实测证据（`earnings_chart_dl` / `open_return_quantile_1_1day` 取反，USA TOP3000 D1）**：
+
+| 配置 | S | ret | tvr | F |
+|---|---:|---:|---:|---:|
+| decay 5（原始） | 2.11 | 9.81% | 0.7194 | 0.78 |
+| decay 10 | 1.86 | 9.28% | 0.5276 | 0.78 |
+| decay 20 | 1.60 | 8.20% | 0.3834 | 0.74 |
+| ts_mean(5) @decay20 | — | — | 0.2611 | 0.48 |
+| ts_mean(22) @decay20 | 0.85 | — | 0.1116 | 0.47 |
+| ts_mean(66) @decay20 | 0.54 | — | 0.0642 | 0.23 |
+
+turnover 降了 47%（decay5→20）而 **fitness 纹丝不动**；换成平滑后 turnover 降 85%，fitness 反而从 0.78 跌到 0.23。
+
+**根本原因**：`fitness = S × sqrt(ret/tvr)`，而 `ret/tvr` 就是 **margin（每单位交易额赚多少）**，是**信号本身的属性**。
+decay / hump / 平滑只是把同一条持仓序列按比例缩小（交易和收益同比例降），持仓股票没变 ⇒ margin 不变；
+平滑还额外引入滞后 ⇒ Sharpe 降。
+⇒ **`fitness ≈ Sharpe × sqrt(margin)`。fitness 低只有两个真因：① margin 太低 ② Sharpe 太低。
+任何「只是让同一批股票换手慢一点」的杠杆（decay / hump / 平滑）都不改这两个量，永远是无效动作。**
+
+**正确动作**：fitness 卡住时先看 `margin`（`get_alpha_details` 的 `metrics.margin` 直接给，
+过闸 alpha 常规 5–15 bps）：
+- margin < 5 bps ⇒ 信号本身赚不动交易成本 ⇒ **判死换字段**，不要调 decay/hump/平滑；
+- margin ≥ 5 bps 但 fitness 低 ⇒ 问题在 Sharpe，走换分组轴/中性化/换结构；
+- 想提 margin 只能**改变组合构成**：横截面只留强信号名（`trade_when` 阈值 / `bucket` 极端档），
+  持仓数变少但每仓更值钱 —— 这是唯一「少交易但每次更值钱」的路线。
+  代价：持仓集中度上升 ⇒ 需同时盯 `CONCENTRATED_WEIGHT` 与 `LOW_SHARPE`。
+
+## 13. VECTOR 事件型字段：裸 `vec_avg` 会同时撑爆换手与集中度
+
+`earnings6`（EARNINGS，52 字段 **100% VECTOR**，"daily snapshots of international corporate events"）
+在 USA TOP3000 D1 实测 8 条（EPS surprise = `ern6_actual_eps` − `ern6_estimated_eps`）：
+
+| 表达式骨架 | S | turnover | CONCENTRATED_WEIGHT | fRA |
+|---|---:|---:|---:|---:|
+| `rank(subtract(vec_avg(actual), vec_avg(est)))` | −0.82 | **1.1100** | **0.4406** | 6 |
+| `ts_zscore(同上, 252)` | −1.06 | 1.1094 | 0.4425 | 6 |
+| `ts_rank(同上, 252)` | −0.56 | 1.1290 | 0.4220 | 6 |
+| `ts_rank(同上, 504)` | −0.77 | 1.1157 | 0.4220 | 6 |
+
+三处同时爆表：`HIGH_TURNOVER` 1.11–1.13（上限 0.7）、`CONCENTRATED_WEIGHT` 0.42–0.44（上限 0.10，超 **4.4 倍**）、`LOW_SHARPE`。
+
+**根因**（不是权重写法问题）：`vec_avg(F)` 对事件型 VECTOR 的聚合 =
+「当前事件窗口内所有事件的均值」。窗口内容逐日变化（新事件进入、旧事件滚出）
+⇒ 聚合值**每天整体重算**，不是静态快照 ⇒
+① turnover ≈ 1.1（等于每天把仓位换一遍）；
+② 只有近期有事件的名字存活 ⇒ 横截面过薄 ⇒ 单名权重爆表。
+
+**修法**：`ts_backfill(vec_avg(F), 126)` 把事件值结转成慢变可持有序列
+（与 02_platform_gates 结论 27 的冠军栈同款）。
+**判据**：任何 VECTOR 字段进入 `ts_*` / `rank` / `group_*` 之前，
+必须「先 `vec_avg`、再 `ts_backfill`」——**只做 `vec_avg` 不够**。
+
+**连带纪律**：`CONCENTRATED_WEIGHT` 首次出现在诊断里时，先查**覆盖率与每日存活名数**，
+不要先怀疑权重写法。稀疏面板（事件集 / 低覆盖集）的集中度问题靠调算子救不回来，得换数据集。
+
+**数据集级附注**：`earnings6` 的 52 个字段里只有 4 个是数值信号
+（`ern6_actual_eps` / `ern6_estimated_eps` / `eps_change_percentage_value` / `eps_change_absolute_value`，
+后两者 alphaCount 仅 2/3，拥挤度近乎为零），其余 48 个是 URL / 口令 / 电话 / 时区 / 交易所等元数据。
+`earnings7` 同类（38 字段全 VECTOR，同样以元数据为主）。
+⇒ 「低 alphaCount + 低拥挤」不等于「可挖」，**先剔除元数据字段再评估字段池厚度**。

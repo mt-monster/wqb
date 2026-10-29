@@ -122,7 +122,11 @@ async def _probe_prod_max(brain, alpha_id, timeout_s=900.0, interval_s=15.0,
             log("[prod-gate] 账号级相关性槽被其它进程占用 → 不排队、fail-closed，"
                 "稍后重跑（平台每账号仅 1 个 prod 计算在飞）。")
             return None, 0
-        return await _probe_unlocked()
+        max_v, attempts = await _probe_unlocked()
+        if attempts == 1 and max_v is not None:
+            # P0-1：首个请求就拿到既有值 ⇒ 不写 195s 冷却
+            s["write_cooldown"] = False
+        return max_v, attempts
 
 
 def _prod_gate_verdict(prod_max, threshold=0.7):

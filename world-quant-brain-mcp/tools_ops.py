@@ -3,6 +3,7 @@
 
 将 tools/ 下的 CLI 工具包装为 MCP 工具，消除 PowerShell 手写命令。
 """
+import asyncio
 import json
 import logging
 import os
@@ -189,12 +190,10 @@ async def batch_status(
                     "parent_status": parent.get("status"),
                     "error": parent.get("error") or (f"parent {st} but children empty" if done else ""),
                 }
-            out_children = []
-            for c in children:
-                cloc = _shape_url(c if isinstance(c, str) else c.get("location", ""))
-                child = await _fetch_one(cloc)
-                child["location"] = cloc.rsplit("/", 1)[-1]
-                out_children.append(child)
+            out_children = list(await _children_concurrent([
+                _shape_url(c if isinstance(c, str) else c.get("location", ""))
+                for c in children
+            ]))
             term = [c for c in out_children if (c.get("status") or "").upper() in TERMINAL]
             errs = [c for c in out_children if c.get("error") and c["error"] != "HTTP 404"]
             return {
@@ -207,14 +206,38 @@ async def batch_status(
                 "children": out_children,
             }
 
+        # 2026-10-28：**批次与子任务都并发取**。旧实现「批次串行 × 子任务串行」，
+        # 8 槽批（1 父 + 8 子 = 9 个 GET）× 多个批次，一次工具调用可能几十个 RTT 串着走。
+        # 传输层已有 _request_semaphore(8) 与 429 退避，这里再加 5 / 8 两道闸，
+        # 避免一次查询把整条请求通道占满。单批/单子任务失败不连坐（同旧语义）。
+        _batch_sem = asyncio.Semaphore(5)
+        _child_sem = asyncio.Semaphore(8)
+
+        async def _children_concurrent(child_locs):
+            async def _one(cloc):
+                async with _child_sem:
+                    try:
+                        child = await _fetch_one(cloc)
+                    except Exception as e:  # noqa: BLE001 —— 单子任务失败不连坐整批
+                        child = {"error": f"{type(e).__name__}: {e}"}
+                child["location"] = cloc.rsplit("/", 1)[-1]
+                return child
+
+            return await asyncio.gather(*[_one(c) for c in child_locs])
+
+        async def _safe_fetch_batch(batch_id):
+            async with _batch_sem:
+                try:
+                    return await _fetch_batch(batch_id)
+                except Exception as e:  # noqa: BLE001
+                    return {"batch_id": batch_id, "error": f"{type(e).__name__}: {e}"}
+
         # 清理 ID（去掉 URL 前缀）
         clean_ids = []
         for sid in simulation_ids:
             clean_ids.append(sid.replace(f"{brain_client.base_url}/simulations/", "").strip("/"))
 
-        batches = []
-        for bid in clean_ids:
-            batches.append(await _fetch_batch(bid))
+        batches = list(await asyncio.gather(*[_safe_fetch_batch(bid) for bid in clean_ids]))
 
         bad = [b for b in batches if b.get("error") or (b.get("kind") == "multisim" and not b.get("all_terminal"))]
         return {"batches": batches, "all_ok": len(bad) == 0, "total": len(batches)}
@@ -232,7 +255,8 @@ async def submit_verdict(alpha_id: str) -> Dict[str, Any]:
     判定逻辑的唯一实现在 ``wqb.submit_verdict_core``（与 tools/submit_verdict.py、
     tools/batch_submit_verdict.py 共用）。口径（2026-09-29 X-2 整改）：
     - BLOCKED 即不提交；不 BLOCKED 时仍需「平台 prod<0.7 + 用户明确确认」——prod/自相关不在本工具内查，
-      另跑 check_correlation(alpha_id, refresh=True)。
+      另跑 check_correlation(alpha_id)（**缓存优先**：48h 内权威缓存直接命中、无缓存才回源平台；
+      别习惯性加 refresh=True —— 那会绕过缓存、白占账号级单并发槽）。
     - 模拟层：get_alpha_details 的 checks fail/warning + WebDataScope Failed RA/PPA 计数
       （规则见 wq-brain-ra-pipeline/references/webdatascope-failed-gates.md；唯一实现在 wqb.config）。
     - 提交层：GET /alphas/{id}/submit **平台恒返 404**（2026-09-26 实测，ACTIVE 者也 404）——

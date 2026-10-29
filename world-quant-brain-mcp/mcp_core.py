@@ -30,7 +30,10 @@ def save_config(config: Dict[str, Any]):
         logger.error(f"Error saving config file to {config_file}: {e}")
 
 
-_MCP_HOST = os.getenv("MCP_HOST", "0.0.0.0")
+# 2026-10-28：缺省改回环。本服务**持有平台凭据且 HTTP 模式无认证**，
+# 绑 0.0.0.0 等于把 BRAIN 账号借给整个局域网（AGENTS.md §3.5「HTTP 模式无认证，
+# 只绑回环」）。容器部署确需对外时显式设 MCP_HOST=0.0.0.0（Dockerfile 已显式指定）。
+_MCP_HOST = os.getenv("MCP_HOST", "127.0.0.1")
 try:
     _MCP_PORT = int(os.getenv("MCP_PORT", "8000"))
 except Exception:
@@ -394,7 +397,15 @@ def _slim_correlation_block(b):
     if not isinstance(b, dict):
         return b
     out = {}
-    for k in ("max_correlation", "passes_check", "from_cache", "cached_at"):
+    # 2026-10-28：补 status/message/retry_after/source 透传——旧版只留
+    # max/passes/from_cache/cached_at，busy/pending/data_unavailable 三态到
+    # 工具层只剩一串 null，Agent 无法据 retry_after 决定重查节奏、也无法区分
+    # 「缓存命中」与「预读命中（alpha_detail_cached，无直方图）」。
+    # 同批补 joined（同 alpha 等待命中）/ attempts·elapsed_ms·computed（P2-8 计时）。
+    for k in ("max_correlation", "passes_check", "from_cache", "cached_at",
+              "status", "message", "retry_after", "source", "provisional",
+              "http_status", "last_known", "joined", "inflight", "holder",
+              "attempts", "elapsed_ms", "computed"):
         if k in b:
             out[k] = b[k]
     cd = b.get("correlation_data") or {}
@@ -421,12 +432,19 @@ def _slim_check_correlation(obj):
         return obj
     # check_self_correlation top-level shape: {alpha_id, threshold, max_correlation, passes_check, correlation_data, ...}
     if "max_correlation" in payload and "checks" not in payload:
-        out = {k: payload.get(k) for k in ("alpha_id", "threshold", "correlation_type", "passes_check", "local_calculation")
+        out = {k: payload.get(k) for k in ("alpha_id", "threshold", "correlation_type", "passes_check", "local_calculation",
+                                           "status", "message")
                if k in payload}
         out.update(_slim_correlation_block(payload))
         return _rewrap(out, w)
     # check_correlation shape: {alpha_id, threshold, correlation_type, checks: {production:{...}, self:{...}}, all_passed}
-    out = {k: payload.get(k) for k in ("alpha_id", "threshold", "correlation_type") if k in payload}
+    # 2026-10-28：补 http_status（4xx 终态）/ last_known（busy·pending 时的最近已知值）
+    # / provisional（预读命中=未重测）——旧版吞掉后，三态在工具层只剩 status 一个词。
+    # 同批补 inflight（同 alpha 在算·别再触发）：Agent 看到它应当等，而不是立刻重查。
+    out = {k: payload.get(k) for k in ("alpha_id", "threshold", "correlation_type",
+                                       "status", "message", "retry_after",
+                                       "http_status", "last_known", "provisional",
+                                       "inflight") if k in payload}
     checks = payload.get("checks")
     if isinstance(checks, dict):
         out["checks"] = {k: _slim_correlation_block(v) for k, v in checks.items()}

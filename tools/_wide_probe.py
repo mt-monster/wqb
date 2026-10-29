@@ -73,6 +73,9 @@ SPEC = {
     "G": ("pv87", "TOPCS1600", 10),
     "H": ("pv20", "TOPCS1600", 10),
     "I": ("pv87", "TOP2500", 8),
+    # ★ fundamental28：1605 个原始科目，从未跑过 campaign（0 alpha）。按不同前缀族取 10 个。
+    "J": ("fundamental28", "TOP2500", 10),
+    "K": ("fundamental28", "TOPCS1600", 10),
 }
 
 

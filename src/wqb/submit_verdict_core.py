@@ -16,7 +16,8 @@ Failed-count 资格门；退出码 0 同时代表 SUBMITTABLE / UNVERIFIABLE / A
   SUBMITTABLE        模拟层干净 且 GET /submit=200。平台现状恒 404，仅作防御分支保留      0
   BLOCKED            模拟层 FAIL / 硬闸类 WARNING / Failed-count 非零 / 提交层 403 / 未知响应   1
   UNVERIFIABLE       模拟层干净，但 GET /submit 处女提交 404 ⇒ 提交层无信息；须另跑
-                     check_correlation(refresh=True) 确认 prod<0.7                    10
+                     check_correlation 确认 prod<0.7（缓存优先：48h 内有效缓存直接命中，
+                     无缓存才回源平台）                                                  10
   ALREADY_SUBMITTED  已 ACTIVE/SUBMITTED（或有 dateSubmitted）；不做可提交判定；勿再 POST   11
 
 退出码 2 = argparse 参数错误（Python 缺省）；未捕获异常 = 1（与 BLOCKED 同向：fail closed）。
@@ -49,7 +50,8 @@ SUBMIT_HARD_GATE_WARNINGS = frozenset(
 _ALREADY_STATUSES = ("ACTIVE", "SUBMITTED")
 
 _NEXT_STEP_RELEASE = (
-    "另跑 check_correlation(alpha_id, refresh=True) 确认 all_passed 且 prod<0.7；"
+    "另跑 check_correlation(alpha_id) 确认 all_passed 且 prod<0.7（2026-10-27 起缓存优先："
+    "48h 内有效缓存直接命中，无缓存才回源平台；只有预读值时不构成放行依据）；"
     "用户明确确认后才可 workflow_submit_alpha(confirm_submit=True)（不可逆）。"
 )
 
@@ -57,7 +59,8 @@ _UNVERIFIABLE_NOTE = (
     "提交层返回 404（GET /alphas/{id}/submit 平台恒 404，该视图已定性为死端点），"
     "无法验证。模拟层无 FAIL/硬闸 WARNING/Failed-count，但 PROD_CORRELATION / "
     "SELF_CORRELATION 未经平台确认——放行条件 = 平台 prod<0.7 + 用户确认；"
-    "提交前必须另跑 check_correlation(alpha_id, refresh=True) 并确认 all_passed。"
+    "提交前必须另跑 check_correlation(alpha_id) 并确认 all_passed"
+    "（缓存优先，命中 48h 内权威缓存即算实测；无缓存才回源打平台单并发队列）。"
 )
 
 

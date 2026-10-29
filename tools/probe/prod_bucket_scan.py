@@ -34,26 +34,33 @@ async def fetch_prod(brain, aid, retries=4):
         _corr_slot = None
 
     async def _poll():
-        for _ in range(retries):
+        for i in range(retries):
             try:
                 r = await brain._request("GET", f"{brain.base_url}/alphas/{aid}/correlations/prod")
                 t = (r.text or "").strip()
                 if t:
                     d = r.json()
                     if d:
+                        if i == 0:
+                            state["immediate"] = True
                         return d
             except Exception:
                 pass
             await asyncio.sleep(12)
         return {}
 
+    state = {"immediate": False}
     if _corr_slot is None:
         return await _poll()
     with _corr_slot(f"prod_bucket_scan({aid})", ttl_sec=retries * 12 + 300.0) as s:
         if not s.get("acquired"):
             print(f"[warn] {aid} 账号级相关性槽被其它进程占用 → 跳过（不排队）")
             return {}
-        return await _poll()
+        d = await _poll()
+        if state["immediate"] and d and d.get("max") is not None:
+            # P0-1：首个请求就拿到既有值 ⇒ 没有占槽理由，不写 195s 冷却
+            s["write_cooldown"] = False
+        return d
 
 
 def bucket_n(d, lo=0.7, hi=0.8):

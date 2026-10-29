@@ -10,7 +10,9 @@
   2) 资格门  WebDataScope Failed-count（REGULAR 看 RA / PPA 看 PPA）——唯一权威；
              本地 submit_ready.gate 字段不可信（实测 A1vOb5pE/ZYAWx9J3 本地记 PASS
              而平台 LOW_INVESTABILITY_CONSTRAINED_SHARPE FAIL）
-  3) 相关性  check_correlation(refresh=True)。**>48h 的 prod 视为过期必须重测**
+  3) 相关性  check_correlation（默认 refresh=False：48h 内的平台实测值直接复用，
+             只在过期/缺失时回源；`--refresh-all` 强制 refresh=True 重测）。
+             **>48h 的 prod 视为过期必须重测**
              （实证：.68→.98 漂移；E5pbM7Nm 静态 0.6678 → 刷新 0.981 FAIL）
 
 输出七分类（优先级从上到下）：
@@ -362,7 +364,13 @@ async def judge(brain, alpha_id):
 async def fetch_corr(brain, alpha_id, refresh, max_wait, retries=1):
     """拉 prod + self 相关性。busy 时按 retry_after 退避重试一次。
 
-    返回 {'prod','self','from_cache','checked_at','status','source'}；失败 {'status': str(err)}。
+    返回 {'prod','self','from_cache','cached_at','provisional','prod_source',
+    'all_passed','status','source'}；失败 {'status': str(err)}。
+
+    2026-10-28（P0-3）：默认 ``refresh=False`` ⇒ 本地 48h 缓存优先，未命中时读平台
+    预读值（``is.prodCorrelation``）。预读命中带 ``provisional=True``——那是**平台存储值、
+    测量时间不可知**，调用方不得把它记成「刚测过」（会污染 48h 保鲜判据）。
+    ``refresh=True``（``--refresh-all``）才强制回源重测。
     """
     try:
         pc = await brain.check_correlation(alpha_id, "both", 0.7, refresh=refresh)
@@ -375,7 +383,8 @@ async def fetch_corr(brain, alpha_id, refresh, max_wait, retries=1):
             return await fetch_corr(brain, alpha_id, refresh, 0, retries - 1)
         return {"status": pc.get("status")}
     chk = pc.get("checks") or {}
-    prod = (chk.get("production") or {}).get("max_correlation")
+    prod_blk = chk.get("production") or {}
+    prod = prod_blk.get("max_correlation")
     selfc = (chk.get("self") or {}).get("max_correlation")
     # ★ self 回退（2026-10-05 修）：组合端点 check_correlation(...,"both") 对
     #   **未提交（UNSUBMITTED）** 的 alpha，self 腿恒返回空 —— 实测 `WjegEmQO`
@@ -393,7 +402,10 @@ async def fetch_corr(brain, alpha_id, refresh, max_wait, retries=1):
         except Exception:  # noqa: BLE001 - 回退失败不阻断，保持原 None
             pass
     return {"prod": prod, "self": selfc,
-            "from_cache": bool((chk.get("production") or {}).get("from_cache")),
+            "from_cache": bool(prod_blk.get("from_cache")),
+            "cached_at": prod_blk.get("cached_at"),
+            "provisional": bool(prod_blk.get("provisional")),
+            "prod_source": prod_blk.get("source") or "",
             "all_passed": pc.get("all_passed"), "status": "ok", "source": src}
 
 
@@ -767,16 +779,33 @@ async def run(args):
             else:
                 n_corr_called += 1
                 base["corr_source"] = "live"
-                r = await fetch_corr(brain, aid, refresh=True, max_wait=args.busy_wait)
+                r = await fetch_corr(brain, aid, refresh=bool(args.refresh_all),
+                                     max_wait=args.busy_wait)
                 if r.get("status") == "ok":
                     prod, selfc = r.get("prod"), r.get("self")
-                    checked_at = _now_iso()
-                    ckpt["corr"][aid] = {"prod": prod, "self": selfc,
-                                         "checked_at": checked_at,
-                                         "all_passed": r.get("all_passed")}
-                    save_ckpt(ckpt)
-                    if not r.get("from_cache"):
-                        persist_live_corr(aid, prod, selfc, args.db)
+                    if r.get("provisional"):
+                        # 平台预读值（is.prodCorrelation）：**测量时间不可知**。
+                        # 只作展示/参考，不写 checkpoint、不回填 alphas——
+                        # 否则「未知时间」被记成「刚测过」，会污染 48h 保鲜判据
+                        # （与 .68→.98 漂移同一个坑：拿旧值当新鲜值过闸）。
+                        base["corr_source"] = "platform_pre_read"
+                        base["corr_provisional"] = True
+                        base["note"] = (
+                            f"平台预读值 prod={prod}（provisional：测量时间不可知，"
+                            "不计入 48h 新鲜窗口；终验须 --refresh-all 复测）")
+                    else:
+                        checked_at = ((r.get("cached_at") if r.get("from_cache") else None)
+                                      or (_now_iso() if not r.get("from_cache") else None))
+                        base["corr_source"] = (
+                            f"cache:{r.get('prod_source') or 'corr_cache'}"
+                            if r.get("from_cache") else "live")
+                        if checked_at:
+                            ckpt["corr"][aid] = {"prod": prod, "self": selfc,
+                                                 "checked_at": checked_at,
+                                                 "all_passed": r.get("all_passed")}
+                            save_ckpt(ckpt)
+                        if not r.get("from_cache"):
+                            persist_live_corr(aid, prod, selfc, args.db)
                 else:
                     base["note"] = f"相关性未取得：平台 {r.get('status')}"
                 if args.sleep_sec > 0:
@@ -835,7 +864,8 @@ def build_parser():
     ap.add_argument("--snapshot-only", action="store_true",
                     help="纯快照模式：不调平台相关性、不查缓存，直接用台账值分类（最快；过期值视为可用）")
     ap.add_argument("--refresh-all", action="store_true",
-                    help="忽略 checkpoint，全部强制 refresh=True 回源")
+                    help="忽略 checkpoint 与本地缓存，全部强制 refresh=True 回源重测"
+                         "（缺省缓存优先；终验或怀疑漂移时才用）")
     ap.add_argument("--no-ckpt", action="store_true", help="忽略 checkpoint 缓存")
     ap.add_argument("--skip-tower", action="store_true",
                     help="不解析塔位（不调用 get_pyramid_multipliers；报告塔位列留空）")
@@ -853,8 +883,11 @@ def build_parser():
     ap.add_argument("--max-corr", type=int, default=0,
                     help="本轮最多调用几次 check_correlation（0=不限；该端点单并发，较慢）")
     ap.add_argument("--sleep-sec", type=float, default=2.0, help="两次相关性调用间隔（默认 2s）")
-    ap.add_argument("--busy-wait", type=int, default=90,
-                    help="correlation_busy 时最多等待多少秒后重试一次（默认 90）")
+    # 缺省 240：busy 的 retry_after 现在可能给到「冷却 195s」或「整窗口忙提示 240s」，
+    # 旧缺省 90 会让 `ra <= max_wait` 判假 ⇒ 一次都不重试（2026-10-28 修正）。
+    ap.add_argument("--busy-wait", type=int, default=240,
+                    help="correlation_busy 时最多等待多少秒后重试一次（默认 240，"
+                         "须 ≥ 冷却 195 / 忙提示 240，否则直接放弃重试）")
     ap.add_argument("--limit", type=int, default=0, help="只盘点前 N 条（调试用）")
     ap.add_argument("--db", help="指定 sqlite 路径（默认走 wqb 默认库）")
     ap.add_argument("--no-csv", dest="no_csv", action="store_true",

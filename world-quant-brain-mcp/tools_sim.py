@@ -5,6 +5,20 @@ from pathlib import Path
 
 from mcp_core import mcp, brain_client, logger, _slim_alpha, _slim_alpha_response, _slim_multisim, _slim_text_lookup
 
+# 落库（2026-10-28）：MCP 直跑的 alpha 原先「平台有、本地无」。延迟导入 + 兜底占位，
+# 保证即使 mcp_alpha_persist 本身坏掉也起得来、工具照常返回（落库是旁路能力）。
+try:
+    from mcp_alpha_persist import persist_alpha as _persist_alpha
+    from mcp_alpha_persist import persist_many as _persist_many
+except Exception as _persist_exc:  # pragma: no cover
+    print("[WARN] mcp_alpha_persist 不可用，alpha 落库关闭：%s" % _persist_exc)
+
+    def _persist_alpha(obj, source="mcp"):
+        return {"ok": False, "action": "skipped", "reason": "module unavailable"}
+
+    def _persist_many(objs, source="mcp"):
+        return {"inserted": 0, "exists": 0, "skipped": 0}
+
 from brain_api import SimulationSettings, SimulationData
 
 # ── region→universe 合法性校验表（与 src/wqb/config.py REGIONS 同步） ──
@@ -25,6 +39,34 @@ _REGION_UNIVERSE_MAP: Dict[str, List[str]] = {
     "MEA": ["TOP400", "TOP200"],
     "HKG": ["TOP800", "TOP500"],
 }
+
+def _seed_region_map_from_config(mapping: Dict[str, List[str]]) -> None:
+    """把 ``wqb.config.REGIONS`` 的 universes 并进静态表（只并集、不覆盖）。
+
+    2026-10-28：本文件原先把 region→universe 硬编码成了一份副本，而 ``src/wqb/config.py``
+    才是域常量唯一来源（AGENTS.md §3.x）——两份各自演化时会「config 加了档位、MCP
+    还按老表拦」。这里只做**并集**：静态表里的既有项是平台实测修正（JPN 仅两档、
+    AMR/KOR 仅 TOP600），不可被 config 覆盖掉；config 多出来的档位（如 USA TOPSP500）
+    则补进来。本函数只服务「合法性预检」：多认一档的代价是让平台回 400，
+    少认一档的代价是拦死合法请求。
+
+    装在仓库外 / 未 ``pip install -e .`` 时导入失败，静默跳过（静态表仍可用，
+    平台合并 ``refresh_region_map_from_platform`` 是第一道兜底）。
+    """
+    try:
+        from wqb.config import REGIONS  # noqa: WPS433 — 延迟导入，MCP 包不强依赖 src
+    except Exception:
+        return
+    for region, prof in (REGIONS or {}).items():
+        universes = (prof or {}).get("universes") or []
+        cur = mapping.setdefault(region, [])
+        for u in universes:
+            if u and u not in cur:
+                cur.append(u)
+
+
+_seed_region_map_from_config(_REGION_UNIVERSE_MAP)
+
 
 _VALID_NEUTRALIZATIONS: List[str] = [
     "STATISTICAL", "SUBINDUSTRY", "INDUSTRY", "FAST", "SLOW",
@@ -96,34 +138,101 @@ def _validate_region_settings(region: str, universe: str, neutralization: str) -
 # 复用 toolkit 权威源：platform_constraints.json（毒模式/不可访问算子/known_ops）
 # + alpha-expression-verifier（语法）。与 tools_sim 已有的 vector_wrap 复用同一模式：
 # 从工作区/技能库单一权威源导入，不复制规则。
-_TOOLKIT_CANDIDATES = [
-    # 环境变量优先
-    os.environ.get("WQ_TOOLKIT_DIR"),
-    # 常规安装位
-    str(Path.home() / ".qoder-cn" / "skills" / "wq-brain-campaign-toolkit"),
-    str(Path.home() / ".workbuddy" / "skills" / "wq-brain-campaign-toolkit"),
-]
+#
+# ⚠ 2026-10-28 修（MCP 审查 #14）：候选位此前硬编码 `~/.qoder-cn` + `~/.workbuddy`
+# 两个历史 Agent 安装位，而 `main.py` 设的 `WQ_TOOLKIT_DIR` 指向 `<skill>/scripts`
+# 却在 `<base>/config/platform_constraints.json` 取值 ⇒ env 路径**永远命中不了**，
+# 只有恰好装了旧副本的机器"碰巧能用"。现改走 `_skill_roots()`（单源，见 AGENTS §3.5），
+# 且 `<skill>` 与 `<skill>/scripts` 两种形态都试。找不到 ⇒ 闸 fail-closed（见 _toolkit_gate_check）。
+_SKILL_ROOT_CACHE: Optional[List[Path]] = None
+
+
+def _skill_roots_cached() -> List[Path]:
+    """skill 根目录候选（`wqb.workflow._common._skill_roots()` 单源；不可导入时按同序兜底）。"""
+    global _SKILL_ROOT_CACHE
+    if _SKILL_ROOT_CACHE is not None:
+        return _SKILL_ROOT_CACHE
+    try:
+        from wqb.workflow._common import _skill_roots  # 延迟导入：MCP 包不强依赖 src
+        roots = [Path(p) for p in _skill_roots() if p]
+    except Exception:
+        home = Path.home()
+        roots = [home / h / "skills" for h in
+                 (".claude", ".codex", ".cline", ".agents", ".qoder-cn", ".cursor", ".workbuddy")]
+        roots.append(Path(__file__).resolve().parents[1] / "Claude" / "skills")
+    # 去重保持顺序
+    seen, uniq = set(), []
+    for r in roots:
+        key = str(r)
+        if key not in seen:
+            seen.add(key)
+            uniq.append(r)
+    _SKILL_ROOT_CACHE = uniq
+    return uniq
+
+
+def _skill_dirs(skill: str, env_value: Optional[str]) -> List[Path]:
+    """某 skill 的候选目录（有序去重）：env 显式值两种形态 > 全部 skill 根。
+
+    env 形态两种都保留：`main.py` 给的是 `<skill>/scripts`，而 CLI 老用户可能给 `<skill>` 根。
+    环境变量名在调用点（``_toolkit_dirs`` / ``_validator_dirs``）**字面写出**，
+    不在这里按参数名取——`docs/env_and_switches.md` 的读取点表由静态扫描生成，
+    间接 `os.environ.get(env_var)` 会让 ``mcp/tools_sim.py`` 从表里消失（实际仍在读）。
+    """
+    out: List[Path] = []
+    env = env_value
+    if env:
+        out.append(Path(env))
+        out.append(Path(env).parent)
+    for root in _skill_roots_cached():
+        out.append(root / skill)
+        out.append(root / skill / "scripts")
+    seen, uniq = set(), []
+    for d in out:
+        key = str(d)
+        if key not in seen:
+            seen.add(key)
+            uniq.append(d)
+    return uniq
+
+
+def _toolkit_dirs() -> List[Path]:
+    """toolkit skill 目录候选（``WQ_TOOLKIT_DIR`` 在此单点读取）。"""
+    return _skill_dirs("wq-brain-campaign-toolkit", os.environ.get("WQ_TOOLKIT_DIR"))
+
+
+def _validator_dirs() -> List[Path]:
+    """alpha-expression-verifier 目录候选（``WQ_VALIDATOR_DIR`` 在此单点读取）。"""
+    return _skill_dirs("alpha-expression-verifier", os.environ.get("WQ_VALIDATOR_DIR"))
+
 
 _toolkit_pc_cache: Optional[Dict[str, Any]] = None
+_toolkit_pc_loaded = False
+_toolkit_pc_source: Optional[str] = None
 _toolkit_validator = None
 _toolkit_validator_loaded = False
 
 
 def _load_toolkit_pc() -> Optional[Dict[str, Any]]:
     """加载 toolkit platform_constraints.json（毒模式/不可访问算子等平台级约束）。"""
-    global _toolkit_pc_cache
-    if _toolkit_pc_cache is not None:
+    global _toolkit_pc_cache, _toolkit_pc_loaded, _toolkit_pc_source
+    if _toolkit_pc_loaded:
         return _toolkit_pc_cache
-    for base in _TOOLKIT_CANDIDATES:
-        if not base:
-            continue
-        p = Path(base) / "config" / "platform_constraints.json"
+    _toolkit_pc_loaded = True
+    for base in _toolkit_dirs():
+        p = base / "config" / "platform_constraints.json"
         if p.is_file():
             try:
                 _toolkit_pc_cache = json.loads(p.read_text(encoding="utf-8"))
+                _toolkit_pc_source = str(p)
                 return _toolkit_pc_cache
-            except Exception:
+            except Exception as e:
+                logger.warning(f"[toolkit-gate] 解析 {p} 失败（继续找下一个候选位）：{e}")
                 continue
+    logger.warning(
+        "[toolkit-gate] platform_constraints.json 在所有候选位均未找到；"
+        f"已搜：{', '.join(str(d) for d in _toolkit_dirs())}"
+    )
     return None
 
 
@@ -133,19 +242,16 @@ def _load_toolkit_validator():
     if _toolkit_validator_loaded:
         return _toolkit_validator
     _toolkit_validator_loaded = True
-    vdir = os.environ.get("WQ_VALIDATOR_DIR")
-    cands = [vdir] if vdir else []
-    for root in (".qoder-cn", ".workbuddy", ".cursor"):
-        cands.append(str(Path.home() / root / "skills" / "alpha-expression-verifier" / "scripts"))
-    for d in cands:
-        if d and Path(d, "validator.py").is_file():
+    for d in _validator_dirs():
+        if (d / "validator.py").is_file():
             try:
-                if d not in sys.path:
-                    sys.path.insert(0, d)
+                if str(d) not in sys.path:
+                    sys.path.insert(0, str(d))
                 from validator import ExpressionValidator
                 _toolkit_validator = ExpressionValidator()
                 return _toolkit_validator
-            except Exception:
+            except Exception as e:
+                logger.warning(f"[toolkit-gate] 导入 {d / 'validator.py'} 失败：{e}")
                 continue
     return None
 
@@ -157,13 +263,27 @@ def _toolkit_gate_check(expressions: List[str]) -> Optional[Dict[str, Any]]:
       1. 语法（verifier 权威）
       2. 不可访问算子（ts_min/ts_max 等 platform_constraints.inaccessible_ops）
       3. 毒模式正则（platform_constraints.poison_patterns）
-    环境缺 toolkit/verifier 时降级跳过（不阻断业务），但首次会打 WARNING。
     返回 None=通过，dict=整批拒绝（含逐条 issues 与修复提示）。
+
+    失效方向（2026-10-28 审查 #14 改）：`platform_constraints.json` 找不到时**fail-closed**
+    —— 返回拒绝 dict 并给出修复指令。此前是"降级跳过 + 返回 None"，而 pre-commit 只拦 FAIL
+    的思路在这里同样成立：静默放行的闸等于没有闸（直发 multisim 本就是绕过 toolkit 全链的
+    旁路，旁路必须过静态闸）。verifier 缺失仍降级（只丢语法一项），但会打 WARNING。
     """
     pc = _load_toolkit_pc()
     if pc is None:
-        logger.warning("[toolkit-gate] platform_constraints.json 未找到（WQ_TOOLKIT_DIR 未设且候选位缺失），静态门禁降级跳过")
-        return None
+        return {
+            "error": "toolkit gate 无法执行：platform_constraints.json 未找到（fail-closed，整批拒绝提交）",
+            "gate": "toolkit_static",
+            "config_error": True,
+            "failed_expressions": {},
+            "passed": 0,
+            "total": len(expressions),
+            "searched": [str(d) for d in _toolkit_dirs()],
+            "hint": "安装/同步 skill（python tools/sync_skills.py）或设 WQ_TOOLKIT_DIR 指向 "
+                    "wq-brain-campaign-toolkit 的 scripts/ 或 skill 根；"
+                    "或改走正规链 wave_gate.py / pipeline.py run（不依赖本静态闸）。",
+        }
     inaccessible = set(pc.get("inaccessible_ops", []))
     poison_patterns = []
     for pat in pc.get("poison_patterns", []):
@@ -219,47 +339,68 @@ def _toolkit_gate_check(expressions: List[str]) -> Optional[Dict[str, Any]]:
     }
 
 
+def _resolve_audit_db() -> Optional[str]:
+    """定位 gate 审计库：WQB_DB_PATH > WQB_ROOT/data/wqb.db > 仓库根 data/wqb.db。
+
+    只认**已存在**的文件——不为一颗审计行新建库（data/ 是 gitignore 的运行期目录）。
+    """
+    env = os.environ.get("WQB_DB_PATH")
+    if env and Path(env).is_file():
+        return env
+    roots: List[Path] = []
+    if os.environ.get("WQB_ROOT"):
+        roots.append(Path(os.environ["WQB_ROOT"]))
+    roots.append(Path(__file__).resolve().parents[1])
+    for r in roots:
+        p = r / "data" / "wqb.db"
+        if p.is_file():
+            return str(p)
+    return None
+
+
 def _record_gate_pass(region: str, expressions: List[str], failure: Optional[Dict[str, Any]]) -> None:
     """MCP 门禁结果落库（2026-09-01 #5）：通过/拒绝都写 gate_results，与 toolkit 闸同一审计视图。
 
-    失败不阻断提交流程本身（调用方已 return）；落库异常静默（审计是尽力而为）。
+    失败不阻断提交流程本身（调用方已 return）；但落库失败**不再静默**（2026-10-28 审查 #14）：
+    - 此前 `except Exception: pass` 让「审计没写成」与「写成了」成为同一个观测值；
+    - 且裸 `INSERT` 撞 `UNIQUE(region, wave, dataset)` —— 同一批表达式重发时第二行必抛
+      IntegrityError 被吞 ⇒ **审计行静默丢失**（wave 键就是表达式指纹，重发即同键）。
+      现改 `ON CONFLICT(region, wave, dataset) DO UPDATE`（同批重发只刷新 updated_at）；
+    - 连接改走 `wqb.db_conn.connect` 规范工厂（自带测试期禁写生产库的硬闸）。
     """
     try:
-        # 复用 toolkit store 定位 data/wqb.db（与 vector_wrap 同一工作区解析模式）
-        roots = []
-        env = os.environ.get("WQB_ROOT")
-        if env:
-            roots.append(env)
-        roots.append(str(Path(__file__).resolve().parents[1]))
-        db = None
-        for r in roots:
-            p = Path(r) / "data" / "wqb.db"
-            if p.is_file():
-                db = str(p)
-                break
-        if not db:
-            return
-        import sqlite3
         import hashlib
         from datetime import datetime
-        con = sqlite3.connect(db, timeout=5)
+        fp = hashlib.sha1("\n".join(expressions).encode("utf-8")).hexdigest()[:16]
+        wave_key = f"mcp_direct_{fp[:8]}"
+        all_pass = failure is None
+        report = failure or {"gate": "toolkit_static", "passed": len(expressions), "total": len(expressions)}
+
+        db = _resolve_audit_db()
+        if not db:
+            logger.info("[gate-audit] 未找到 data/wqb.db（WQB_ROOT/WQB_DB_PATH 均未指向），本次门禁结果不落库")
+            return
         try:
-            fp = hashlib.sha1("\n".join(expressions).encode("utf-8")).hexdigest()[:16]
-            all_pass = failure is None
-            report = failure or {"gate": "toolkit_static", "passed": len(expressions), "total": len(expressions)}
+            from wqb.db_conn import connect as _wqb_connect
+            con = _wqb_connect(db, timeout=5)
+        except ImportError:  # MCP 包不强依赖 src：退回 sqlite3（测试期禁写生产库的闸随之失效）
+            import sqlite3
+            con = sqlite3.connect(db, timeout=5)
+        try:
+            now = datetime.now().isoformat(timespec="seconds")
             con.execute(
                 "INSERT INTO gate_results (region, wave, dataset, all_pass, report_json, created_at, updated_at) "
-                "VALUES (?,?,?,?,?,?,?)",
-                (region, f"mcp_direct_{fp[:8]}", "mcp_direct", 1 if all_pass else 0,
-                 json.dumps(report, ensure_ascii=False),
-                 datetime.now().isoformat(timespec="seconds"),
-                 datetime.now().isoformat(timespec="seconds")),
+                "VALUES (?,?,?,?,?,?,?) "
+                "ON CONFLICT(region, wave, dataset) DO UPDATE SET "
+                "all_pass=excluded.all_pass, report_json=excluded.report_json, updated_at=excluded.updated_at",
+                (region, wave_key, "mcp_direct", 1 if all_pass else 0,
+                 json.dumps(report, ensure_ascii=False), now, now),
             )
             con.commit()
         finally:
             con.close()
-    except Exception:
-        pass  # 审计落库失败不影响主流程
+    except Exception as e:
+        logger.warning(f"[gate-audit] 门禁结果落库失败（region={region}；不阻断提交，但审计缺行）：{e}")
 
 
 # 复用工作区 tools/lib 下的 vector_wrap（单一权威源，避免副本 drift）
@@ -374,7 +515,17 @@ async def create_simulation(
             selection=selection
         )
         
-        return _slim_alpha_response(await brain_client.create_simulation(sim_data))
+        # 治本（2026-10-28）：``brain_client.create_simulation`` **阻塞到仿真出结果**并
+        # 返回平台原始 alpha 响应，这里顺手落库。此前只有 campaign pipeline 落库，于是
+        # 通过 MCP 单条跑的 alpha「平台有、本地无」——面板与产率统计都看不见。
+        # ``_persist_alpha`` 内部全 try/except（且平台失败时 obj 里没有 id，会被跳过），
+        # 绝不影响本工具的返回值。
+        _raw = await brain_client.create_simulation(sim_data)
+        try:
+            _persist_alpha(_raw, source="create_simulation")
+        except Exception:  # noqa: BLE001 — 双保险：落库绝不能让仿真结果丢失
+            pass
+        return _slim_alpha_response(_raw)
     except Exception as e:
         extra_info = ""
         error_msg = str(e)
@@ -792,6 +943,13 @@ async def harvest_multisim_alphas(multisimulation_location: str) -> Dict[str, An
                         "error": str(r) if r else "no response",
                     }
                 detail = r.json()
+                # 落库（2026-10-28）：收批路径同样落库，且用**平台原始 detail** ——
+                # `is.checks` 是完整未分桶数组，`ra_failed_names` 才能走「现算」的
+                # 权威档（slim 的 checks 已分桶，只能退到用 ra 预算名单）。
+                try:
+                    _persist_alpha(detail, source="harvest_multisim_alphas")
+                except Exception:  # noqa: BLE001
+                    pass
                 slim = _slim_alpha(detail)
                 slim["alpha_id"] = alpha_id
                 slim["expression"] = sim_info.get("expression", "")

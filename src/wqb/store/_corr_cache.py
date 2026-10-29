@@ -34,8 +34,11 @@ BRAIN 的相关性接口是**单账号单并发**，每颗 alpha 首次计算要
 - :meth:`set_corr_cache` 幂等：同值重复写不改变结果；
 - **保鲜期 48h**（:data:`CORR_FRESH_HOURS`）：生产池会漂移（实证 EUR ``le8Y68K2``
   0.6929 → 0.9932；``E5pbM7Nm`` 0.6678 → 0.981），超过保鲜期的值只能用于排序参考，
-  提交前必须 ``check_correlation(refresh=True)`` 当场终验。**过期不等于作废**，
-  故本表不做物理清理，只在读取侧标 ``stale``。
+  提交闸（``workflow_submit_alpha._prod_gate``）**缓存优先**：48h 内有效值直接放行/拦截，
+  过期或缺失才回源平台；alpha 详情里的 ``is.prodCorrelation`` 预读值只标 ``provisional``，
+  **只许证伪、不许放行**（放行前会补一次 ``refresh=True`` 真重测）。
+  需要"当场重测"时显式 ``check_correlation(refresh=True)``——那是绕过缓存的例外，不是默认动作。
+  **过期不等于作废**，故本表不做物理清理，只在读取侧标 ``stale``。
 """
 from __future__ import annotations
 

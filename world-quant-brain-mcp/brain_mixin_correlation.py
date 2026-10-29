@@ -3,7 +3,7 @@ import json
 import time
 import asyncio
 import logging
-from typing import Dict, List, Optional, Any, Union
+from typing import Dict, List, Optional, Any, Union, Tuple
 import re
 from datetime import datetime
 import os
@@ -137,15 +137,56 @@ class CorrelationMixin:
         universe: str,
         delay: Union[int, str],
     ) -> List[str]:
+        """兼容包装：只返回 ID 列表（旧签名）。完整性判断见 :meth:`_list_matching_os_alpha_ids_ex`。
+
+        ⚠ **不要在需要完整性结论的路径上用它**（例如 prune 池子 / 写 sidecar）：
+        它丢掉了 ``complete=False`` 这个信息，空列表既可能是"确实没有 OS alpha"
+        也可能是"列举中途失败"。
+        """
+        ids, _complete = await self._list_matching_os_alpha_ids_ex(
+            instrument_type, region, universe, delay)
+        return ids
+
+    async def _list_matching_os_alpha_ids_ex(
+        self,
+        instrument_type: str,
+        region: str,
+        universe: str,
+        delay: Union[int, str],
+    ) -> Tuple[List[str], bool]:
         """Fetch OS alpha IDs that match the target alpha's market configuration.
 
         BRAIN self-correlation semantics compare against the user's self alpha
         pool for the same instrument/region/universe/delay, and can include
         both REGULAR and SUPER alphas. Filtering locally on the same
         configuration keeps the local calculation aligned with those semantics.
+
+        2026-10-28：ID 列表加进程内 TTL 缓存（``BRAIN_SC_IDLIST_TTL_SECONDS``，
+        缺省 900s，0=关闭）。OS 名单变化低频，而旧实现每次调用（超出 1s 防抖后）
+        都全量分页列举（300+ 颗 ≈ 4 个 GET）并重写 ppac sidecar；PnL 本体的增量
+        下载已由池 pickle 承担，这里省的是纯重复列举。新提交的 alpha 最迟在
+        TTL 过期后的下一次 self 相关性计算进入池子。
+
+        Returns:
+            ``(ids, complete)``。``complete=False`` 表示分页中途失败（网络/HTTP），
+            此时列表是**前缀**而不是全集。2026-10-28 新增完整性返回值的原因：
+            旧版把半截列表当全集，下游会拿它**裁掉**池子里"服务端看似已删除"的列
+            （实际只是没翻到），列一旦被裁就得重下；更糟的是列举**全失败**时
+            列表为空 ⇒ 空池 ⇒ self 相关算出 ``max=0.0`` 并在页面上显示"通过"。
+            因此：不完整时**不写 sidecar、不写 TTL 缓存、不裁池**。
         """
+        cache = getattr(self, "_os_idlist_cache", None)
+        if cache is None:
+            cache = self._os_idlist_cache = {}
+        ttl = float(getattr(self, "_os_idlist_ttl_seconds", 900.0) or 0.0)
+        cache_key = f"{instrument_type}|{region}|{universe}|{delay}"
+        cached = cache.get(cache_key)
+        if cached and (time.time() - cached[0]) <= ttl:
+            return cached[1], True
+
         all_ids: List[str] = []
         ppac_ids: List[str] = []
+        complete = True
         offset = 0
         page_size = 100
         while True:
@@ -164,6 +205,7 @@ class CorrelationMixin:
                 )
             except Exception as e:
                 self.log(f"Failed to page OS alpha list at offset={offset}: {e}", "WARNING")
+                complete = False
                 break
             results = data.get('results') or []
             if not results:
@@ -200,6 +242,14 @@ class CorrelationMixin:
                 break
             offset += page_size
 
+        if not complete:
+            # 半截名单一不能缓存（会把"前缀"钉死 15 分钟）、二不能写 sidecar
+            # （PPA 名单残缺 ⇒ self 相关性不排除 PPA ⇒ 数值不可比）。
+            self.log(
+                f"[SC cache] OS alpha 列表分页中断（已收集 {len(all_ids)} 个），"
+                "本次不缓存、不写 ppac sidecar", "WARNING")
+            return all_ids, False
+
         # Persist the Power-Pool-Alpha id set so get_self_correlation can
         # exclude/select them without re-listing (survives the sync debounce
         # cache and process restarts).
@@ -209,7 +259,8 @@ class CorrelationMixin:
         except Exception as e:
             self.log(f"[SC cache] Failed to persist ppac ids sidecar: {e}", "WARNING")
 
-        return all_ids
+        cache[cache_key] = (time.time(), all_ids)
+        return all_ids, True
 
     async def sync_os_pnl_pool(
         self,
@@ -258,21 +309,45 @@ class CorrelationMixin:
         universe: str,
         delay: Union[int, str],
     ) -> pd.DataFrame:
-        server_ids = await self._list_matching_os_alpha_ids(
+        server_ids, complete = await self._list_matching_os_alpha_ids_ex(
             instrument_type, region, universe, delay
         )
 
         # Load existing cache and drop removed alphas (closed-loop cleanup)
         local_pool = pd.DataFrame()
+        memo = getattr(self, "_os_pnl_pool_memo", None)
+        if memo is None:
+            memo = self._os_pnl_pool_memo = {}
+        memo_key = str(pool_path)
         if pool_path.exists():
             try:
-                local_pool = await asyncio.to_thread(pd.read_pickle, pool_path)
+                # 2026-10-28：**按文件指纹复用已解析的 DataFrame**。
+                # 旧实现每次调用都 ``pd.read_pickle`` 整个池（300+ 列 × 数千行，
+                # 一次 self 相关性就要重读几十 MB）；而同一进程里池子只在
+                # 增量下载后才变。指纹取 (st_mtime_ns, st_size)：写盘换了内容必变，
+                # 同内容重写也不会把命中判错（最多多读一次）。
+                st = pool_path.stat()
+                stamp = (st.st_mtime_ns, st.st_size)
+                hit = memo.get(memo_key)
+                if hit is not None and hit[0] == stamp:
+                    local_pool = hit[1]
+                else:
+                    local_pool = await asyncio.to_thread(pd.read_pickle, pool_path)
                 if isinstance(local_pool, pd.DataFrame) and not local_pool.empty:
-                    keep_cols = [c for c in local_pool.columns if c in set(server_ids)]
-                    dropped = local_pool.shape[1] - len(keep_cols)
-                    if dropped > 0:
-                        self.log(f"[SC cache] Dropping {dropped} alpha(s) removed from OS list", "INFO")
-                    local_pool = local_pool[keep_cols]
+                    if complete:
+                        keep_cols = [c for c in local_pool.columns if c in set(server_ids)]
+                        dropped = local_pool.shape[1] - len(keep_cols)
+                        if dropped > 0:
+                            self.log(f"[SC cache] Dropping {dropped} alpha(s) removed from OS list", "INFO")
+                        local_pool = local_pool[keep_cols]
+                    else:
+                        # 分页中断时名单只是前缀，按它裁列会把"没翻到"误判成"已删除"，
+                        # 白扔已下载的 PnL 列。保留整池，等下一次完整列举再收口。
+                        self.log(
+                            "[SC cache] OS 名单不完整，本次跳过池子裁剪（保留 "
+                            f"{local_pool.shape[1]} 列）", "WARNING")
+                    if not local_pool.empty:
+                        memo[memo_key] = (stamp, local_pool)
                 else:
                     local_pool = pd.DataFrame()
             except Exception as e:
@@ -282,6 +357,13 @@ class CorrelationMixin:
         need_download = [aid for aid in server_ids if aid not in local_pool.columns]
 
         if not need_download:
+            if not complete and local_pool.empty:
+                # 2026-10-28：**fail-closed**。列举全失败（server_ids 为空）+ 本地无池
+                # ⇒ 旧实现返回空池，get_self_correlation 据空池算出 ``max=0.0`` 并显示
+                # "通过"——把"查不到"伪装成"最安全"。宁可报错让调用方重试。
+                raise RuntimeError(
+                    "OS alpha 列表获取失败且本地无 PnL 池缓存：无法计算 self 相关性。"
+                    "请稍后重试（不要用 0.0 当结果——那是把未知当通过）。")
             self.log(f"[SC cache] Pool up-to-date: {local_pool.shape[1]} OS alphas", "INFO")
             return local_pool
 
@@ -307,6 +389,12 @@ class CorrelationMixin:
             full_pool = full_pool.sort_index()
             try:
                 await asyncio.to_thread(full_pool.to_pickle, pool_path)
+                # 落盘后同步指纹备忘：下一次调用可直接复用这份已解析的帧。
+                try:
+                    st = pool_path.stat()
+                    memo[memo_key] = ((st.st_mtime_ns, st.st_size), full_pool)
+                except Exception:  # noqa: BLE001 — 记账失败不影响结果
+                    memo.pop(memo_key, None)
             except Exception as e:
                 self.log(f"[SC cache] Failed to persist pool pickle: {e}", "WARNING")
             local_pool = full_pool
@@ -379,7 +467,20 @@ class CorrelationMixin:
             # Use a synthetic target column so any stale cached column with the
             # same alpha id cannot create duplicate labels.
             target_col = f"__target__{alpha_id}"
-            combined = pd.concat([os_pool, target_series.rename(target_col).to_frame()], axis=1).ffill()
+            combined = pd.concat([os_pool, target_series.rename(target_col).to_frame()], axis=1)
+            # 2026-10-28：先裁剪到 4 年窗口（多留 1 行作窗口边界 diff 的前驱），
+            # 再 ffill+diff——旧实现先对全历史 ffill+diff、随后把窗口外整段丢弃，
+            # 池子大时是对会被扔掉的数据做纯浪费功。裁剪前 sort_index 保证
+            # searchsorted/diff 的时序假设成立。
+            # 语义注：若某列恰在裁剪点之前断更，旧实现会用更老的数据 ffill 过来，
+            # 新实现留 NaN（corrwith 逐列跳过）——日频 PnL 稠密，实际等价。
+            _window = pd.DateOffset(years=4)
+            combined = combined.sort_index()
+            _cutoff = combined.index.max() - _window
+            _pos = int(combined.index.searchsorted(_cutoff))
+            if _pos > 0:
+                combined = combined.iloc[max(0, _pos - 1):]
+            combined = combined.ffill()
             rets = combined.diff()
             if rets.empty:
                 return {'max': 0.0, 'records': [], 'local_calculation': True, 'pool_size': os_pool.shape[1]}
@@ -453,21 +554,11 @@ class CorrelationMixin:
             self.log(f"Failed to calculate self-correlation locally: {str(e)}", "ERROR")
             raise
 
-    # --- P1: pairwise mutual-correlation Redis cache helpers ---
-    def _mutual_pair_key(self, a: str, b: str) -> str:
-        """Order-independent cache key fragment for an alpha pair."""
-        return "|".join(sorted([a, b]))
-
-    def _mutual_pair_cache_key(self, years: int) -> str:
-        return f"mutual_corr_pairs:y{years}"
-
-    def _mutual_pair_cache_load(self, years: int) -> Dict[str, float]:
-        data = self._get_cached_data(self._mutual_pair_cache_key(years))
-        return data if isinstance(data, dict) else {}
-
-    def _mutual_pair_cache_save(self, years: int, cache: Dict[str, float]) -> None:
-        # TTL 1 week; pairs are recomputed/refreshed on every call anyway.
-        self._set_cached_data(self._mutual_pair_cache_key(years), cache, ttl=604800)
+    # ⚠ 2026-10-28 删除：曾有一组 ``_mutual_pair_*`` 缓存辅助（把 N×N 到的
+    # 每一对写进 ``api_cache`` 的 ``mutual_corr_pairs:y{N}`` 大 JSON）。**只写不读**
+    # ——``cval`` 从头到尾直接查 ``corr.loc[a,b]``，所谓"避免跨调用重算"从未发生，
+    # 而每次调用都要把 N²/2 个键整表序列化写一遍（24 颗 = 276 对）。相关性矩阵本来
+    # 就是一次 ``rets.corr()`` 的结果，查表比算它更贵，故整套删除。
 
     async def get_mutual_correlation(
         self,
@@ -531,24 +622,12 @@ class CorrelationMixin:
         corr = rets.corr()
         cols = [c for c in present if c in corr.columns]
 
-        # --- P1: Redis pairwise cache (avoid recomputing known pairs across calls) ---
-        cache = self._mutual_pair_cache_load(years)
-
         def cval(a: str, b: str) -> float:
             try:
                 v = float(corr.loc[a, b])
                 return v if v == v else 0.0  # NaN -> 0
             except Exception:
                 return 0.0
-
-        # persist this call's pairs into cache
-        try:
-            for i in range(len(cols)):
-                for j in range(i + 1, len(cols)):
-                    cache[self._mutual_pair_key(cols[i], cols[j])] = round(cval(cols[i], cols[j]), 6)
-            self._mutual_pair_cache_save(years, cache)
-        except Exception:
-            pass
 
         pairs = []
         for i in range(len(cols)):
@@ -704,17 +783,18 @@ class CorrelationMixin:
             'correlation_data': correlation_data,
         }
 
-    #: prod 缓存保鲜期（秒）——**⚠ 本属性未在任何代码路径中被读取**（2026-10-06 审计）：
-    #: 实际生效的唯一事实源是 ``wqb.store._corr_cache.CORR_FRESH_HOURS``
-    #: （由 ``_prod_corr_cached`` / ``get_corr_cache._row_to_corr`` 使用）。
-    #: 本属性保留只是让「48h 口径」在文档里能被引用，**改保鲜期请改 store 侧**，
-    #: 这里同步改只是让注释一致，不会改变实际行为。历史上 Redis 7 天 TTL 与 48h 单源化
-    #: 正面冲突（见 docs/design/prod_corr_persistence_design_20260918.md §6.6），
-    #: 本处保留常量只是给读者一个搜索锚点，别再当它是权威。
-    _PROD_CORR_TTL_SECONDS = 48 * 3600  # noqa: SLF001  见上方 note，未真正消费
+    # ⚠ 历史注记：本类曾有 ``_PROD_CORR_TTL_SECONDS = 48 * 3600``，**从未被任何代码读取**
+    # （2026-10-06 审计发现、2026-10-28 删除）。prod 保鲜期只有一处生效事实源：
+    # ``wqb.store._corr_cache.CORR_FRESH_HOURS``。别再在 MCP 侧重建同义常量——
+    # 两份"48h"并存正是当初 Redis 7 天 TTL 漂移的成因。
 
     def _prod_corr_cached(self, alpha_id: str) -> Optional[Dict[str, Any]]:
-        """读权威表 ``alpha_corr_cache``；**命中且未过期**才返回，否则 ``None``（回源平台）。
+        """读 prod 相关的**单源缓存**（权威表 → ``alphas`` 回落），**未过期**才返回。
+
+        2026-10-28：改走 ``get_corr_authoritative``（旧版只查 ``alpha_corr_cache``）。
+        单源化前 ``alphas`` 有 561 行历史 prod 而权威表只有 196 行、两者无同步契约，
+        只查权威表会把「``alphas`` 里明明有新鲜值」判成未测 ⇒ 白占一次账号级单并发槽。
+        回落命中带 ``from_alphas=True``，调用方据此知道这是搬运值而非本链路刚测。
 
         过期（>48h）或无时间戳一律按"没有"处理——把陈值当缓存命中，是拿漂移过的
         生产池数据去过 0.7 的闸，比不缓存更危险。
@@ -723,16 +803,62 @@ class CorrelationMixin:
         if store is None:
             return None
         try:
-            rec = store.get_corr_cache(alpha_id)
+            authoritative = getattr(store, "get_corr_authoritative", None)
+            if callable(authoritative):
+                rec = authoritative(alpha_id)
+            else:  # 极简后端（测试替身）只有单表读
+                rec = store.get_corr_cache(alpha_id)
         except Exception as e:
             self.log(f"prod corr cache read failed for {alpha_id}: {e}", "WARNING")
             return None
-        if not rec or rec.get("prod_correlation") is None or rec.get("stale"):
+        # 显式取值：`a or b` 会把**合法的 0.0 相关**当缺值（0.0 是最安全的取值，
+        # 却最容易被"或链"吞成 None 而白排一轮平台队列）。
+        _pv = rec.get("prod_correlation") if rec else None
+        _mx = rec.get("max") if rec else None
+        _val = _mx if _mx is not None else _pv
+        if _val is None or rec.get("stale"):
             return None
         return {
-            "max": rec["prod_correlation"],
+            "max": _val,
             "records": rec.get("records") or [],
             "cached_at": rec.get("checked_at"),
+            "source": rec.get("source") or "corr_cache",
+            "from_alphas": bool(rec.get("from_alphas")),
+        }
+
+    def _prod_corr_last_known(self, alpha_id: str) -> Optional[Dict[str, Any]]:
+        """取「最后一次已知 prod 值」，**不做保鲜判断**——只供 pending/busy 回传参考。
+
+        与 :meth:`_prod_corr_cached` 的分工必须分清：
+        缓存命中 = **可用来判闸**（48h 内）；本函数 = **只作参考**（可能早已漂移）。
+
+        为什么需要它：平台单并发下最常见的结果是 ``correlation_busy`` / ``pending``，
+        调用方拿不到任何数值只能盲等。把最近一次已知值连同 ``stale`` / ``age_hours``
+        附在返回体里，人至少能判断「这颗上次是 0.72，本来就过不了」，不必再排一轮。
+        **绝不可用它判闸**（判闸只认 ``_prod_corr_cached`` 与平台实测）。
+        """
+        store = self._cache_backend()
+        if store is None:
+            return None
+        try:
+            authoritative = getattr(store, "get_corr_authoritative", None)
+            rec = authoritative(alpha_id) if callable(authoritative) else store.get_corr_cache(alpha_id)
+        except Exception:  # noqa: BLE001 — 参考值取不到不影响主流程
+            return None
+        if not rec:
+            return None
+        _mx = rec.get("max")
+        mx = _mx if _mx is not None else rec.get("prod_correlation")
+        if mx is None:
+            return None
+        return {
+            "max": mx,
+            "checked_at": rec.get("checked_at"),
+            "age_hours": rec.get("age_hours"),
+            "stale": bool(rec.get("stale", True)),
+            "source": rec.get("source") or "corr_cache",
+            "from_alphas": bool(rec.get("from_alphas")),
+            "note": "参考值，未做 48h 保鲜判断；判闸不得使用",
         }
 
     def _prod_corr_store(self, alpha_id: str, correlation_data: Dict[str, Any]) -> None:
@@ -767,11 +893,25 @@ class CorrelationMixin:
         ``pending``/``correlation_busy``/``data_unavailable`` 不缓存；
         ``refresh=True`` 强制重新走平台并覆盖缓存。
 
-        ⚠ 2026-10-06 修正：此前缓存唯一后端是 Redis，而 Redis 常未启动
-        （``redis_client=None`` → 读写静默 no-op）⇒ 每次调用都重打平台队列；
-        且那版 TTL 是 7 天，与 48h 保鲜纪律冲突。现统一走 SQLite。
+        预读命中（2026-10-28 修复）：平台已算好的值（alpha 详情 ``is.prodCorrelation``，
+        ``source='alpha_detail_cached'``、无直方图）**直接采纳**——旧版成功判据要求
+        records 非空，把该形态拒成 ``data_unavailable``，值被丢弃且不落缓存 ⇒ 重查永远
+        卡死。预读结果**不写权威表**：``is.prodCorrelation`` 的测量时间不可知，写
+        ``checked_at=now`` 会把 48h 保鲜判据污染成「刚测过」（与 ``set_corr_cache``
+        处回填历史值同一教训）；预读本身无锁无队列，重复读取代价可忽略。
+
+        ``refresh=True`` 现在同时跳过本地缓存**与预读**（``use_pre_read=False``），
+        强制走平台重测——旧版预读短路使终验拿到的是平台旧存储值。
+
+        并发与重试（2026-10-28 P0-2 / P1-1）：
+          - 同 alpha 正在算（本机 inflight 标记）且非 refresh → **只预读等待**
+            （``WQB_CORR_JOIN_WAIT_SEC``，缺省 25s），等不到就返回 ``correlation_busy``
+            并带 ``inflight=True``；**不会二次触发计算**。
+          - 锁被他进程占着但 holder 恰是同一 alpha → 同样等待窗口内的预读结果
+            （``same_alpha_join``）；refresh 保持 fail-fast。
         """
         await self.ensure_authenticated()
+        t0 = time.time()
 
         try:
             results = {
@@ -780,29 +920,34 @@ class CorrelationMixin:
                 'correlation_type': correlation_type,
                 'checks': {}
             }
-            
+
             # Determine which correlations to check
             check_types = []
             if correlation_type == "both":
                 check_types = ["production", "self"]
             else:
                 check_types = [correlation_type]
-            
+
             all_passed = True
-            
+
             for check_type in check_types:
                 if check_type == "production":
-                    # 结果缓存：读权威表 alpha_corr_cache，48h 内直接命中，
-                    # 不占平台单并发队列；refresh=True / 缺失 / 已过期则回源平台。
+                    # 结果缓存：单源读（权威表 alpha_corr_cache → alphas 回落），
+                    # 48h 内直接命中，不占平台单并发队列；refresh=True / 缺失 / 已过期则回源。
                     cached = None if refresh else self._prod_corr_cached(alpha_id)
                     if cached and cached.get('max') is not None:
                         max_correlation = cached['max']
                         passes_check = max_correlation < threshold
+                        self._corr_log_timing("cache_hit", alpha_id, t0,
+                                              status="ok", max=max_correlation,
+                                              source=cached.get('source'))
                         results['checks'][check_type] = {
                             'max_correlation': max_correlation,
                             'passes_check': passes_check,
                             'from_cache': True,
                             'cached_at': cached.get('cached_at'),
+                            'source': cached.get('source'),
+                            'from_alphas': bool(cached.get('from_alphas')),
                             'correlation_data': cached,
                         }
                         if not passes_check:
@@ -811,43 +956,89 @@ class CorrelationMixin:
                             return results
                         continue
 
-                    correlation_data = await self.get_production_correlation(alpha_id)
+                    correlation_data = await self.get_production_correlation(
+                        alpha_id, use_pre_read=not refresh)
                     
                     # Handle pending/data-not-yet-available case (super alphas, fresh simulations)
                     if correlation_data and correlation_data.get('status') == 'pending':
+                        # 2026-10-28：附「最近已知值」——pending 时调用方拿不到任何数只能盲等，
+                        # 至少让它看到上次是多少（带 stale/age_hours，**不可用于判闸**）。
+                        # 2026-10-28 P0-1：同时透传本次真正写入的冷却秒数（retry_after）与
+                        # inflight 标记——调用方据此**隔到点后再来**，而不是立刻重触发。
+                        _last_known = self._prod_corr_last_known(alpha_id)
                         results['checks'][check_type] = {
                             'max_correlation': None,
                             'passes_check': None,
                             'status': 'pending',
                             'message': correlation_data.get('message', ''),
+                            'retry_after': correlation_data.get('retry_after'),
+                            'inflight': bool(correlation_data.get('inflight')),
+                            'attempts': correlation_data.get('attempts'),
+                            'elapsed_ms': correlation_data.get('elapsed_ms'),
+                            'last_known': _last_known,
                             'correlation_data': correlation_data,
                         }
                         results['all_passed'] = None
                         results['status'] = 'pending'
                         results['message'] = correlation_data.get('message', '')
+                        results['retry_after'] = correlation_data.get('retry_after')
+                        results['inflight'] = bool(correlation_data.get('inflight'))
+                        results['last_known'] = _last_known
                         return results
 
                     if correlation_data and correlation_data.get('status') == 'correlation_busy':
+                        _last_known = self._prod_corr_last_known(alpha_id)
                         results['checks'][check_type] = {
                             'max_correlation': None,
                             'passes_check': None,
                             'status': 'correlation_busy',
                             'message': correlation_data.get('message', ''),
                             'retry_after': correlation_data.get('retry_after'),
+                            'inflight': bool(correlation_data.get('inflight')),
+                            'holder': correlation_data.get('holder'),
+                            'last_known': _last_known,
                             'correlation_data': correlation_data,
                         }
                         results['all_passed'] = None
                         results['status'] = 'correlation_busy'
                         results['message'] = correlation_data.get('message', '')
                         results['retry_after'] = correlation_data.get('retry_after')
+                        results['inflight'] = bool(correlation_data.get('inflight'))
+                        results['last_known'] = _last_known
                         return results
 
-                    if (
-                        correlation_data
-                        and isinstance(correlation_data.get('records'), list)
-                        and len(correlation_data['records']) > 0
-                        and correlation_data.get('max') is not None
-                    ):
+                    # ── 预读命中（2026-10-28 修复 P0）：平台已算值直接采纳 ──
+                    # 该形态 records=[]（无直方图），不能进下面要求 records 非空的
+                    # 平台实测分支；max 已在手，判闸与早退语义与实测分支完全一致。
+                    # ``provisional=True``：这是**平台存储值、测量时间不可知**，
+                    # 不等于刚才重测。终验（_prod_gate）看到它会补一次 refresh=True 重测，
+                    # 避免「拿旧值过闸」。同 alpha 等待（joined）拿到的也是存储值，同理。
+                    if (correlation_data
+                            and correlation_data.get('source') == 'alpha_detail_cached'
+                            and correlation_data.get('max') is not None):
+                        max_correlation = correlation_data['max']
+                        passes_check = max_correlation < threshold
+                        results['checks'][check_type] = {
+                            'max_correlation': max_correlation,
+                            'passes_check': passes_check,
+                            'source': 'alpha_detail_cached',
+                            'provisional': bool(correlation_data.get('provisional', True)),
+                            'joined': bool(correlation_data.get('joined')),
+                            'correlation_data': correlation_data,
+                        }
+                        results['provisional'] = bool(correlation_data.get('provisional', True))
+                        if not passes_check:
+                            all_passed = False
+                            results["all_passed"] = all_passed
+                            return results
+                        continue
+
+                    # 2026-10-28：**判据只要求 max 非空**（旧版还要求 records 非空）。
+                    # 平台契约里 ``max`` 是判闸唯一必需项，直方图 ``records`` 是附带信息；
+                    # 要求 records 会把「平台给了 max 但没给直方图」的合法响应拒成
+                    # data_unavailable，而该结果又因不满足成功判据而不落缓存 ⇒ 重查永远拿不到。
+                    # 已知的值、未知的直方图，按已知处理（与预读分支同一口径）。
+                    if correlation_data and correlation_data.get('max') is not None:
                         max_correlation = correlation_data['max']
                         passes_check = max_correlation < threshold
                         # 仅已决结果入缓存（pending/busy 分支已提前 return，不会走到这里）。
@@ -857,6 +1048,9 @@ class CorrelationMixin:
                         results['checks'][check_type] = {
                             'max_correlation': max_correlation,
                             'passes_check': passes_check,
+                            'attempts': correlation_data.get('attempts'),
+                            'elapsed_ms': correlation_data.get('elapsed_ms'),
+                            'computed': correlation_data.get('computed'),
                             'correlation_data': correlation_data
                         }
                         if not passes_check:
@@ -864,21 +1058,29 @@ class CorrelationMixin:
                             results["all_passed"] = all_passed
                             return results
                     else:
-                        # Data returned but has no usable records/max (empty or malformed).
+                        # Data returned but has no usable max (empty or malformed).
                         # Return None to signal "data unavailable" rather than faking max=0.
+                        _http_status = (correlation_data or {}).get('http_status')
+                        _last_known = self._prod_corr_last_known(alpha_id)
                         results['checks'][check_type] = {
                             'max_correlation': None,
                             'passes_check': None,
                             'status': 'data_unavailable',
+                            'http_status': _http_status,
+                            'last_known': _last_known,
                             'message': (
-                                'Production correlation data is unavailable for this alpha. '
-                                'This may be a newly-created super alpha where the platform '
-                                'has not yet computed the correlation. Please retry in a few minutes.'
+                                (correlation_data or {}).get('message')
+                                or 'Production correlation data is unavailable for this alpha. '
+                                   'This may be a newly-created super alpha where the platform '
+                                   'has not yet computed the correlation. Please retry in a few minutes.'
                             ),
                             'correlation_data': correlation_data,
                         }
                         results['all_passed'] = None
                         results['status'] = 'data_unavailable'
+                        results['last_known'] = _last_known
+                        if _http_status is not None:
+                            results['http_status'] = _http_status
                         return results
                 elif check_type == "self":
                     correlation_data = await self.get_self_correlation(alpha_id)
@@ -911,17 +1113,26 @@ class CorrelationMixin:
             raise
 
     async def get_submission_check(self, alpha_id: str) -> Dict[str, Any]:
-        """Comprehensive pre-submission check."""
+        """Comprehensive pre-submission check.
+
+        2026-10-28：PnL 与年度统计**并行**取（两者互不依赖、各是一个 GET）；
+        相关性放最后单独等——它可能占平台单并发槽到一轮轮询窗口（
+        ``WAIT_THRESHOLDS["prod_corr_timeout_s"]``，2026-10-28 起 240s），与上面两个
+        请求并行没有收益（账号级相关性子并发=1，且它自己会重试）。
+        旧实现三连串行，最坏把「两个轻请求 + 一次相关性慢等」叠成同一段墙钟时间。
+        """
         await self.ensure_authenticated()
-        
+
         try:
             # This endpoint might not exist, so we simulate it by calling other functions
             # In a real scenario, this would be a single API call
-            
-            pnl_data = await self.get_alpha_pnl(alpha_id)
-            yearly_stats = await self.get_alpha_yearly_stats(alpha_id)
+
+            pnl_data, yearly_stats = await asyncio.gather(
+                self.get_alpha_pnl(alpha_id),
+                self.get_alpha_yearly_stats(alpha_id),
+            )
             correlation = await self.check_correlation(alpha_id)
-            
+
             return {
                 "pnl_summary": pnl_data.get("pnlSummary", {}),
                 "yearly_stats": yearly_stats,
@@ -1120,7 +1331,7 @@ class CorrelationMixin:
             raise
 
     async def get_platform_setting_options(self) -> Dict[str, Any]:
-        """Get available instrument types, regions, delays, and universes with Redis caching (1 day TTL)."""
+        """Get available instrument types, regions, delays, and universes (cached 1 day in SQLite)."""
         await self.ensure_authenticated()
         
         try:
@@ -1192,8 +1403,10 @@ class CorrelationMixin:
                 'from_cache': False
             }
             
-            # Cache the data (1 day TTL)
-            self._set_cached_data(cache_key, result, ttl=604800)
+            # Cache the data (1 day TTL)——2026-10-28：旧代码注释写 1 day、实际传 604800（7 天），
+            # 二者不一致。平台设置项属于低频变化，但"注释说一天、代码存一周"会让排障时误判
+            # 数据新鲜度，故按注释口径收成 86400。
+            self._set_cached_data(cache_key, result, ttl=86400)
             
             return result
             

@@ -21,6 +21,7 @@ submit_alpha / superalpha 两个节点上的敏感决策开关（默认 False = 
 `wqb.workflow.execute` 绑定，因此打桩必须落在 `wqb.workflow.executor.get_executor`
 （`execute` 便捷函数的运行时依赖），而不是替换 module 上的 `execute` 属性。
 """
+import asyncio
 import inspect
 import os
 import sys
@@ -74,6 +75,17 @@ def _install_recorder(monkeypatch):
     # 重置默认 executor 单例，避免复用真实执行器
     wf_executor._default_executor = None
     return recorder
+
+
+def _submit(**kwargs):
+    """调用 `workflow_submit_alpha` 并驱动事件循环。
+
+    ★ 2026-10-28：该工具自 2026-10-27 P0 起是 ``async def``（提交链路含 240s×2 轮询，
+    必须把同步节点执行移出事件循环线程，见 tools_workflow.py 顶部说明），而本文件其余
+    ``workflow_*`` 工具仍是 sync。此前所有用例直接同步调用 ⇒ 拿到一个从未 await 的协程
+    （``assert 0 == 1`` + ``coroutine was never awaited``），7 个用例长期红着。 
+    """
+    return asyncio.run(tools_workflow.workflow_submit_alpha(**kwargs))
 
 
 # ---------------------------------------------------------------------------
@@ -137,7 +149,7 @@ def test_confirm_submit_declared_in_registry_optional_params():
 
 def test_submit_alpha_confirm_submit_true_passthrough(monkeypatch):
     rec = _install_recorder(monkeypatch)
-    tools_workflow.workflow_submit_alpha(alpha_id="a1", confirm_submit=True)
+    _submit(alpha_id="a1", confirm_submit=True)
 
     assert len(rec.calls) == 1
     node, params, kwargs = rec.calls[0]
@@ -154,7 +166,7 @@ def test_submit_alpha_confirm_submit_false_default_still_sent(monkeypatch):
     但显式写入可让 execute 的返回值/日志/台账里看到实际确认态。
     """
     rec = _install_recorder(monkeypatch)
-    out = tools_workflow.workflow_submit_alpha(alpha_id="a1")
+    out = _submit(alpha_id="a1")
 
     node, params, kwargs = rec.calls[0]
     assert node == "submit_alpha"
@@ -164,7 +176,7 @@ def test_submit_alpha_confirm_submit_false_default_still_sent(monkeypatch):
 
 def test_submit_alpha_all_fields_passthrough(monkeypatch):
     rec = _install_recorder(monkeypatch)
-    tools_workflow.workflow_submit_alpha(
+    _submit(
         alpha_id="a9",
         name="prod-9",
         color="BLUE",
@@ -201,11 +213,11 @@ def test_submit_alpha_robustness_audited_defaults_false_and_passes_through(monke
     import inspect
 
     rec = _install_recorder(monkeypatch)
-    tools_workflow.workflow_submit_alpha(alpha_id="a1")
+    _submit(alpha_id="a1")
     _, params, _ = rec.calls[0]
     assert params["robustness_audited"] is False
 
-    tools_workflow.workflow_submit_alpha(alpha_id="a1", confirm_submit=False, robustness_audited=True)
+    _submit(alpha_id="a1", confirm_submit=False, robustness_audited=True)
     _, params, _ = rec.calls[1]
     assert params["robustness_audited"] is True
 
@@ -221,7 +233,7 @@ def test_submit_alpha_none_tags_stay_none(monkeypatch):
     现改为 None 原样透传，兜底职责归还节点单一事实源。
     """
     rec = _install_recorder(monkeypatch)
-    tools_workflow.workflow_submit_alpha(alpha_id="a1")
+    _submit(alpha_id="a1")
     assert rec.calls[0][1]["tags"] is None
 
 
@@ -298,7 +310,7 @@ def test_judge_defaults(monkeypatch):
 def test_confirm_submit_bool_type_not_coerced(monkeypatch):
     """显式传入的 bool 必须保持 bool 身份，不被转成 int/str。"""
     rec = _install_recorder(monkeypatch)
-    tools_workflow.workflow_submit_alpha(alpha_id="a1", confirm_submit=True)
+    _submit(alpha_id="a1", confirm_submit=True)
     val = rec.calls[0][1]["confirm_submit"]
     assert type(val) is bool and val is True
 
@@ -471,7 +483,7 @@ def test_workflow_list_nodes_shape(monkeypatch):
 def test_workflow_result_to_dict_carries_confirm_submit(monkeypatch):
     """返回给 MCP 调用方的 payload 里能看到 confirm_submit（审计/台账依赖）。"""
     rec = _install_recorder(monkeypatch)
-    out = tools_workflow.workflow_submit_alpha(alpha_id="a1", confirm_submit=True)
+    out = _submit(alpha_id="a1", confirm_submit=True)
 
     assert out["success"] is True
     assert out["node"] == "submit_alpha"

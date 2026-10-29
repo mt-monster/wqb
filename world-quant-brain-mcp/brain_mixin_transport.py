@@ -93,6 +93,9 @@ class TransportMixin:
         self._os_pnl_pool_locks: Dict[str, asyncio.Lock] = {}
         self._os_pnl_pool_locks_guard = asyncio.Lock()
         self._os_pnl_pool_last_sync: Dict[str, Any] = {}
+        # pickle 指纹备忘：{(mtime_ns, size) → DataFrame}，避免每次 self 相关性
+        # 都重新 read_pickle 整个 OS 池（2026-10-28）。
+        self._os_pnl_pool_memo: Dict[str, Any] = {}
         try:
             self._os_pnl_pool_sync_debounce_seconds = max(
                 0.0,
@@ -100,20 +103,34 @@ class TransportMixin:
             )
         except Exception:
             self._os_pnl_pool_sync_debounce_seconds = 1.0
+        # OS ID 列表的进程内 TTL（秒）。OS 名单低频变化，TTL 内复用列举结果，
+        # 省掉每次 self 相关性计算的 3-4 个分页 GET（2026-10-28）。0=关闭缓存。
+        try:
+            self._os_idlist_ttl_seconds = max(
+                0.0,
+                float(os.environ.get("BRAIN_SC_IDLIST_TTL_SECONDS", "900")),
+            )
+        except Exception:
+            self._os_idlist_ttl_seconds = 900.0
+        # 槽被**另一进程持着且没有冷却信息**时给调用方的重试提示。
+        # 2026-10-28：180 → 240。持锁时长就是一轮轮询窗口（现 240s + 收尾），
+        # 提示 180s 会让调用方早 60s 回来再撞一次 busy（每次 busy 只是本地文件锁检查，
+        # 但仍是一次空转）；240 = "按一轮完整查询的时长后再来"。
         try:
             self._brain_correlation_busy_retry_after_seconds = max(
                 1,
-                int(os.environ.get("BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS", "180")),
+                int(os.environ.get("BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS", "240")),
             )
         except Exception:
-            self._brain_correlation_busy_retry_after_seconds = 180
+            self._brain_correlation_busy_retry_after_seconds = 240
         # 跨进程相关性槽（logs/_dblock/correlation.lock.json）的 TTL。
         # 2026-10-22 起该锁是**账号级真互斥**（平台相关性接口单并发），
         # TTL 必须 ≥ 单次轮询窗口，否则长轮询期间 token 被 TTL 自愈回收 ⇒
         # 第二个进程以为拿到槽、实际并发打平台（正是本次要修的 bug 的反面）。
         #
-        # 2026-10-26：3700 → 600。配套轮询窗口 900 → 120。
-        # 旧值 3700 让崩溃残留锁占用 62 分钟；现 600 = 5×120，覆盖余量充足。
+        # 2026-10-26：3700 → 600。旧值 3700 让崩溃残留锁占用 62 分钟。
+        # 2026-10-28：窗口 120 → 240，600 仍是（窗口 + 30s 台阶 + 抖动）的 2.2 倍，
+        # 覆盖一次完整长轮询绰绰有余；**不要**按「5× 窗口」抬到 1200（崩溃残留翻倍）。
         try:
             self._brain_correlation_lock_ttl_seconds = max(
                 60,
@@ -288,10 +305,10 @@ class TransportMixin:
     def _set_cached_data(self, cache_key: str, data: Dict[str, Any], ttl: int = 604800):
         """写缓存（SQLite ``api_cache`` 表），TTL 单位为秒。
 
-        ⚠ 默认 TTL 保留 604800（1 周）只为兼容既有调用点（datafields / mutual 等），
-        但 **prod 相关性不走这个默认值**——它在 ``check_correlation`` 里按 48h 保鲜
-        期显式传 TTL（见 ``brain_mixin_correlation._PROD_CORR_TTL_SECONDS``）。
-        生产池会漂移，7 天陈值用于提交判定会出事。
+        ⚠ 默认 TTL 保留 604800（1 周）只为兼容既有调用点（datafields / mutual / 平台设置等）。
+        **prod 相关性不走 ``api_cache``**：它是异步算出来的、昂贵的权威值，落
+        ``alpha_corr_cache``（``wqb.store._corr_cache``），保鲜 48h 由
+        ``CORR_FRESH_HOURS`` 一处判。生产池会漂移，7 天陈值用于提交判定会出事。
         """
         store = self._cache_backend()
         if store is None:
@@ -344,14 +361,17 @@ class TransportMixin:
 
         # 1) 进程内互斥（先拿：同 pid 的文件锁是「重入续约」，不能承担进程内互斥）
         if self._brain_correlation_local_lock.locked():
-            self.log(f"[corr-lock] Busy local correlation lock for {op_name}", "INFO")
+            self._log_corr_busy(f"[corr-lock] Busy local correlation lock for {op_name}")
             return {
                 'acquired': False,
                 'backend': 'local',
                 'lock_key': lock_key,
                 'retry_after': None,
+                # P1-1：同进程并发时也能判断「占着的是不是同一个 alpha」
+                'holder': f"corr:{getattr(self, '_corr_local_holder_op', '') or ''}",
             }
         await self._brain_correlation_local_lock.acquire()
+        self._corr_local_holder_op = op_name
 
         # 2) 跨进程文件锁（账号级真互斥）；拿不到 → 释放进程内锁并立即报忙
         file_lock = self._try_acquire_cross_process_corr_lock(op_name)
@@ -369,6 +389,7 @@ class TransportMixin:
             # 槽被别的进程占着 → 释放进程内锁，立即报忙（不排队、不降级放行）
             if self._brain_correlation_local_lock.locked():
                 self._brain_correlation_local_lock.release()
+                self._corr_local_holder_op = None
             return file_lock
 
         # 两级都拿到 → 释放时两级都要还
@@ -401,16 +422,30 @@ class TransportMixin:
             return None
 
         if info.get("busy"):
-            self.log(
+            self._log_corr_busy(
                 f"[corr-lock] Busy cross-process file lock for {op_name} "
-                "(另一进程正在查平台相关性——账号级单并发，不能并发打)",
-                "INFO",
+                "(另一进程正在查平台相关性——账号级单并发，不能并发打)"
             )
+            # 2026-10-28：**透传 correlation_slot 给出的剩余冷却时间**。
+            # 旧版一律用 busy 缺省值（180s），而冷却档（上一轮刚算完、COOLDOWN_SEC=195s）
+            # 实际有精确的 ``retry_after``；吞掉它会让调用方在冷却快结束时仍盲等三分钟。
+            # 锁被真占（另一进程在轮询）时没有剩余时间估计，退回缺省值。
+            #
+            # 2026-10-28 P1-1：附带 ``holder``（当前 token 的 tag）。调用侧据此
+            # 判断「占着槽的是不是同一个 alpha」——同 alpha 可以等待而不是立即放弃。
+            try:
+                from wqb.correlation_slot import holder_tag as _holder_tag
+                holder = _holder_tag()
+            except Exception:
+                holder = None
             return {
                 'acquired': False,
                 'backend': 'file',
                 'lock_key': "correlation.lock.json",
-                'retry_after': self._brain_correlation_busy_retry_after_seconds,
+                'retry_after': info.get("retry_after")
+                               or self._brain_correlation_busy_retry_after_seconds,
+                'cooldown': bool(info.get("cooldown")),
+                'holder': holder,
             }
         if not info.get("token"):
             # 写锁目录不可写 → degraded，无法承担跨进程互斥 → 退回进程内锁
@@ -433,7 +468,18 @@ class TransportMixin:
             '_flock_release': _slot_release,
         }
 
-    async def _release_brain_correlation_lock(self, lock_info: Dict[str, Any], op_name: str):
+    async def _release_brain_correlation_lock(self, lock_info: Dict[str, Any], op_name: str,
+                                              *, cooldown: bool = True, seconds=None):
+        """释放两级锁。**冷却按结果分流（2026-10-28 P0-1）**：
+
+        - ``cooldown=False``：本次没有触发计算（立即拿到既有值 / 4xx 终态 / 异常）
+          ⇒ 不写冷却，下一个调用可直接拿槽；
+        - ``seconds=x``：真触发了一次计算 ⇒ 写平台 ``Retry-After`` 或 195s；
+        - ``cooldown=True, seconds=None``：旧语义（195s），保留给未分类路径。
+
+        注意：冷却只在 **file backend** 释放时写（本地 backend 没有跨进程互斥，
+        写冷却会让本进程自己也白等；且它本来就只是降级形态）。
+        """
         if not lock_info or not lock_info.get('acquired'):
             return
         backend = lock_info.get('backend')
@@ -441,23 +487,47 @@ class TransportMixin:
         if backend == 'file':
             try:
                 release_fn = lock_info.get('_flock_release')
-                if release_fn is None:  # 兜底：重新导入
-                    from wqb.db_write_lock import release as release_fn  # noqa: WPS440
-                release_fn(lock_info['lock_key'])
+                if release_fn is None:  # 兜底：重新导入（走 correlation_slot 才有冷却语义）
+                    from wqb.correlation_slot import release as release_fn  # noqa: WPS440
+                release_fn(lock_info['lock_key'], cooldown=cooldown, seconds=seconds)
                 self.log(
-                    f"[corr-lock] Released cross-process file lock for {op_name}", "INFO"
+                    f"[corr-lock] Released cross-process file lock for {op_name} "
+                    f"(cooldown={'%.0fs' % seconds if (cooldown and seconds) else ('on' if cooldown else 'off')})",
+                    "INFO",
                 )
             except Exception as e:  # noqa: BLE001
                 self.log(f"[corr-lock] File lock release failed for {op_name}: {e}", "WARNING")
             # 两级都拿到时，进程内锁也要还（否则本进程后续查询永远 busy）
             if lock_info.get('local_lock_held') and self._brain_correlation_local_lock.locked():
                 self._brain_correlation_local_lock.release()
+                self._corr_local_holder_op = None
                 self.log(f"[corr-lock] Released local correlation lock for {op_name}", "INFO")
             return
 
         if backend == 'local' and self._brain_correlation_local_lock.locked():
             self._brain_correlation_local_lock.release()
+            self._corr_local_holder_op = None
             self.log(f"[corr-lock] Released local correlation lock for {op_name}", "INFO")
+
+    def _log_corr_busy(self, message: str, every_seconds: float = 60.0) -> None:
+        """打「相关性槽被占」日志，但**按时间节流**（2026-10-28 P2-7）。
+
+        实测 14h 日志里有 1,020 条 busy 行——调用方（Agent 循环）每几秒重试一次，
+        每次打一行 INFO，日志被刷穿、真正的取数结论被埋掉。节流后每
+        ``every_seconds`` 才打一行，并在行尾带上期间被吞掉的条数。
+        """
+        now = time.time()
+        last = float(getattr(self, '_corr_busy_log_at', 0.0) or 0.0)
+        suppressed = int(getattr(self, '_corr_busy_log_suppressed', 0) or 0)
+        if now - last < every_seconds:
+            self._corr_busy_log_suppressed = suppressed + 1
+            return
+        self._corr_busy_log_at = now
+        self._corr_busy_log_suppressed = 0
+        if suppressed:
+            message = f"{message}（期间另有 {suppressed} 次 busy 未打日志）"
+        self.log(message, "INFO")
+
 
     async def _rate_limit_forum_op(self, op_name: str) -> Optional[Dict[str, Any]]:
         if self._forum_rate_limit_seconds <= 0:

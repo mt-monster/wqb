@@ -1,8 +1,23 @@
 """Alpha 查询与属性工具 — MCP 工具层 (2026-08-13 自 main.py 按域拆分)。"""
+import asyncio
 import os, re
 from typing import Dict, List, Optional, Any
 
 from mcp_core import mcp, brain_client, _slim_alpha_response, _slim_alpha_list, _slim_yearly, _slim_pnl
+
+# 落库（2026-10-28）：拿到平台 alpha 详情的地方都顺手写库，覆盖 create_simulation
+# 之外的查看/收批路径（MCP 直跑与网页手跑的 alpha 原先「平台有、本地无」）。
+try:
+    from mcp_alpha_persist import persist_alpha as _persist_alpha
+    from mcp_alpha_persist import persist_many as _persist_many
+except Exception as _persist_exc:  # pragma: no cover
+    print("[WARN] mcp_alpha_persist 不可用，alpha 落库关闭：%s" % _persist_exc)
+
+    def _persist_alpha(obj, source="mcp"):
+        return {"ok": False, "action": "skipped", "reason": "module unavailable"}
+
+    def _persist_many(objs, source="mcp"):
+        return {"inserted": 0, "exists": 0, "skipped": 0}
 
 @mcp.tool()
 
@@ -66,14 +81,43 @@ async def batch_get_alpha_metrics(alpha_ids: List[str]) -> Dict[str, Any]:
     ready = []
     review = []
     reject = []
-    
-    for aid in alpha_ids:
+
+    # 2026-10-28：**并发取详情**（旧版 for 循环串行，20 颗最坏要 20×RTT；
+    # 传输层自带 ``_request_semaphore(8)`` 与 429 退避，这里再加一道 6 的闸，
+    # 只是为了不让一次工具调用把整条请求通道占满）。
+    # ``return_exceptions=True``：单颗失败不得连坐整批（与旧版逐颗 try 同语义），
+    # 顺序由 ``gather`` 保证与入参一致，下游 prescreen 的归属不变。
+    _sem = asyncio.Semaphore(6)
+
+    async def _fetch_one(aid: str):
+        async with _sem:
+            return _slim_alpha_response(await brain_client.get_alpha_details(aid))
+
+    fetched = await asyncio.gather(
+        *[_fetch_one(aid) for aid in alpha_ids], return_exceptions=True)
+
+    # 落库（2026-10-28）：覆盖「跑完只调本工具看指标、没逐颗 get_alpha_details」的路径。
+    # 这里是 slim 形态（checks 已分桶）⇒ persist 退到用 ``ra.failed_ra_count`` 判
+    # RA 全过，落 ``'[]'`` 而不是 NULL（NULL 只表示"未知"）。
+    try:
+        _persist_many([d for d in fetched if isinstance(d, dict)],
+                      source="batch_get_alpha_metrics")
+    except Exception:  # noqa: BLE001
+        pass
+
+    for aid, d in zip(alpha_ids, fetched):
+        if isinstance(d, BaseException):
+            results.append({
+                "alpha_id": aid,
+                "error": str(d)
+            })
+            reject.append(aid)
+            continue
         try:
             # `brain_client.get_alpha_details` 返回平台原始结构（`is` / `regular`），
             # 而本工具按 `_slim_alpha` 的归一形态（`metrics` / `ra` / `checks`）取值。
             # 不先归一化 ⇒ 每个指标都取不到、全为 None，并让 prescreen 误判 REJECT
             # （2026-10-23 实测 10/10 颗全 null）。归一化同时覆盖 2Y 双载体。
-            d = _slim_alpha_response(await brain_client.get_alpha_details(aid))
             metrics = d.get("metrics") or {}
             ra = d.get("ra") or {}
             
@@ -157,7 +201,15 @@ async def get_alpha_details(alpha_id: str) -> Dict[str, Any]:
         Detailed alpha information
     """
     try:
-        return _slim_alpha_response(await brain_client.get_alpha_details(alpha_id))
+        _raw = await brain_client.get_alpha_details(alpha_id)
+        # 落库（2026-10-28）：这是「查看某颗 alpha」的必经路径，也是把 MCP 直跑的
+        # alpha 补进本地库的兜底入口。persist 内部幂等（已存在即跳过），不会覆盖
+        # campaign 落下的 wave/region。
+        try:
+            _persist_alpha(_raw, source="get_alpha_details")
+        except Exception:  # noqa: BLE001
+            pass
+        return _slim_alpha_response(_raw)
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
 

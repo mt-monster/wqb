@@ -6,12 +6,12 @@
 
 ## 1. 怎么测：排队纪律（强制）
 
-平台 prod 计算是**异步排队**（候选 vs 全平台生产池 4 年日收益的相关，通常 1–5 分钟；前几次查询返回空 body 属正常），且**每账户仅允许 1 个在飞**——多候选串行等待是 S4 链的主要时间黑洞。
+平台 prod 计算是**异步排队**（候选 vs 全平台生产池 4 年日收益的相关，**一次正常计算 180–200 s**；前几次查询返回空 body 属正常），且**每账户仅允许 1 个在飞**——多候选串行等待是 S4 链的主要时间黑洞。
 
 | 事实 | 出处 |
 |---|---|
-| `check_correlation` 内置阻塞轮询（间隔 `prod_corr_poll_s` = 30 s，最长 `prod_corr_timeout_s` = 900 s）；账号级单并发，忙时**立即**返回 `correlation_busy`（fail-fast） | `wqb.config.WAIT_THRESHOLDS` |
-| **跨进程槽**：账号级单并发由文件 token `logs/_dblock/correlation.lock.json` 守护（`wqb.correlation_slot`，TTL 3700 s，环境变量 `BRAIN_CORRELATION_LOCK_TTL_SECONDS`）。**任何进程**（MCP 服务 / `super_build` / `prod_bucket_scan` / `prod_watch` / 一次性脚本）都必须经它取数；拿不到就 fail-fast，**不排队、不降级放行**。放行等于让第二个进程也去打这个单并发接口——2026-10-22 实测事故就是这样让一方空转 1499 s | `src/wqb/correlation_slot.py` · `brain_mixin_transport.py` |
+| `check_correlation` 内置阻塞轮询（前 12 次 10 s 快轮询、之后 `prod_corr_poll_s` = 30 s；**最长 `prod_corr_timeout_s` = 240 s**，2026-10-28 从 120 回调——120 短于正常计算，会让每条真实查询都 pending 再叠一轮冷却）；账号级单并发，忙时**立即**返回 `correlation_busy`（fail-fast） | `wqb.config.WAIT_THRESHOLDS` |
+| **跨进程槽**：账号级单并发由文件 token `logs/_dblock/correlation.lock.json` 守护（`wqb.correlation_slot`，TTL 600 s，环境变量 `BRAIN_CORRELATION_LOCK_TTL_SECONDS`）。**任何进程**（MCP 服务 / `super_build` / `prod_bucket_scan` / `prod_watch` / 一次性脚本）都必须经它取数；拿不到就 fail-fast，**不排队、不降级放行**。放行等于让第二个进程也去打这个单并发接口——2026-10-22 实测事故就是这样让一方空转 1499 s | `src/wqb/correlation_slot.py` · `brain_mixin_transport.py` |
 | 同一 alpha 的已决结果缓存 **48 小时**（2026-10-06 改：后端由 Redis 换成 SQLite 权威表 `data/wqb.db::alpha_corr_cache`，**不再依赖 Redis**）。过期即回源平台——生产池会漂移，陈值比没值更危险。`pending` / `correlation_busy` / `data_unavailable` **不缓存**；命中缓存的响应带 `from_cache: true` | `brain_mixin_correlation.py::_prod_corr_cached`（TTL 与 `wqb.store._corr_cache.CORR_FRESH_HOURS=48` 同口径） |
 | `correlation_busy` 带 `retry_after`（缺省 180 s，环境变量 `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS`） | `brain_mixin_transport.py` |
 | **提交前终验必须 `refresh=True`** 强制回源——本地 / 缓存的 prod 值会随平台 prod 池变动快速漂移（0.6997 → 1.0000 一小时内发生过） | `incidents.md` I-2 |
@@ -21,7 +21,7 @@
 | 返回 | 含义 | 动作 |
 |---|---|---|
 | 命中缓存（`from_cache: true`） | **48 小时**内的已决结果（SQLite 权威表，无需 Redis） | 直接用；**提交前终验**仍须 `refresh=True` 回源 |
-| `pending` | 轮询超时（≥ 15 min）仍无数据 | 视为**未决**：不据此放行、不据此判死；隔一段时间再查一次，再空则向用户报错，**不得编造数字** |
+| `pending` | 轮询超时（**≥ 4 min**，一轮窗口）仍无数据 | 视为**未决**：不据此放行、不据此判死；按响应里的 `retry_after`（= 写入的冷却）再查一次，再空则向用户报错，**不得编造数字** |
 | `correlation_busy` | 账号级单并发已被占用（fail-fast，立即返回） | 按 `retry_after` 等待后**串行**重试；不要另起并行进程去抢 |
 
 **`refresh=True` 的量化**（防止拉长平台队列）：每个 alpha 的每个决策点**至多 1 次**——用于提交前终验；同一 alpha 两次 refresh 至少间隔 **5 分钟**（经验值：平台 prod 计算通常 1–5 分钟，间隔内的重复请求只会撞上在飞的那一个）。
@@ -76,3 +76,18 @@
 
 - **结论**：GLB pred 系信号族在 prod_corr < 0.7 约束下**无候选来源**；10 个 PPA 达标目标在 GLB 当前不可达；批次 b10–b19 已存档。**算力方向**：新 PPA 主题窗口（非 pred 系）/ 新数据包的冷门数据集 / 其他区域（KOR / ASI）的 PPA 主题匹配。
 - **「GLB 黄金配方」仅作历史**：`group_rank(ts_rank(ts_backfill(winsorize(F, std=5), 60), W), country)` @ FAST / trunc0.04，W=300 + decay15 → margin 5.0–5.1 bp 全 PASS（qMNZX1o1）。**该族已判死；且 margin 5.0–5.1 bp 低于内部严线 `GATES_INTERNAL.margin_bp_min`（= 10）**——不得作为新字段的「直接套用配方」。
+
+## 5. 取数通路：四条故障模式 + 三段式（2026-10-29 实测）
+
+**四条故障模式（取数前必读）**
+
+| # | 故障 | 现象 | 对策 |
+|---:|---|---|---|
+| 1 | `is.prodCorrelation` **只对已提交 alpha 存在** | 未提交候选在 `get_alpha_details` / `batch_get_alpha_metrics` 里一律 `null` | 别拿 `batch_get_alpha_metrics` 当 prod 来源；它只可靠地给 `investability_ratio` |
+| 2 | `check_correlation` 真实计算 **> 120s**（MCP 客户端上限） | 报 `timed out after 120000ms`；**超时不落缓存**，再调仍阻塞 120s 而不是秒回 | `refresh=True` 不是默认动作；回源**一次只一颗**，超时后等队列窗口再试 |
+| 3 | 平台 prod 是**账号级单并发** | `status=correlation_busy` + `retry_after` + `holder=corr:get_production_correlation(<别的 id>)`；实测 holder 是**别的区域、别的会话**在跑 | 按 `retry_after` 隔时重查；`inflight=true` 时**绝不重新触发**（重复触发只会把自己顶成 busy） |
+| 4 | 本地锁状态 ≠ 平台状态 | `logs/_dblock/correlation.lock.json` 显示 `free`，MCP 仍报 busy | 两套锁不互通；以平台返回的 `holder` 为准，本地锁只防本机并发 |
+
+**取数三段式（顺序不可倒）**：① `check_correlation(alpha_id)`（缺省 `refresh=False`，命中 `alpha_corr_cache` 48h 权威缓存即秒回）→ ② 未命中读无锁端点 `GET /alphas/{id}/correlations/prod`（**空体 = 排队中，不是 0**）→ ③ 两者都无才 `refresh=True` 回源，且一批只回源一颗。
+
+`refresh=True` 只用于**交付前终验**（prod 漂移猛，台账 5 天作废）；拿它当批量读接口会同时触发故障 2 与故障 3。

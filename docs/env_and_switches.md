@@ -76,12 +76,12 @@
 | `WQB_CAMPAIGN_REGION` | `EUR` | 战役区域代码（`wq_campaign.config` / `campaign_semantics` 缺省 EUR；`ind_runner.py` / `usa_runner.py` 在 import 前硬钉 IND / USA 防止与 EUR 共用断点与 universe） | `wq-brain-ra-ind/scripts/ind_campaign/campaign_semantics.py` · `wq-brain-ra-ind/scripts/ind_campaign/ind_main.py` · +7 | — |
 | `WQB_CAMPAIGN_STATE_DIR` | — | 战役断点 / 结果 / digest 目录覆盖（缺省 `<仓库根>/results`；ind/usa runner 与 `wq_campaign.config` 同一口径，区域隔离靠文件名的 `_<REGION>` 后缀而非目录） | `wq-brain-ra-ind/scripts/ind_campaign/ind_runner.py` · `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/config.py` · +2 | — |
 | `WQB_DB` | — | `tools/full_coverage_gate.py` 的库路径覆盖（缺省 `<仓库根>/data/wqb.db`；与 `WQB_DB_PATH` 是两个独立读取点，后者管 `wqb.db_conn`） | `tools/full_coverage_gate.py` | — |
-| `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` · +5 | — |
-| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +50 | — |
+| `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` · +7 | — |
+| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +51 | — |
 | `WQB_GEM_DATA_ROOT` | — | GEM 产物根（缺省 `data/gem_runs`；`final_expressions.json` 与 `output_report/` 都在其下） | `brain-feature-implementation/scripts/fetch_dataset.py` · `brain-feature-implementation/scripts/implement_idea.py` · +9 | — |
 | `WQB_JUDGE_DATA_ROOT` | — | `brain-alpha-judge` 评审报告根：单测 / 部署显式注入，缺省落 `output_report/brain-alpha-judge/`，脱离仓库时退 `SKILL_DIR/outputs/` | `brain-alpha-judge/scripts/judge_alpha.py` | — |
 | `WQB_OUT_DIR` | — | `tools/vwap_histogram.py` 输出根覆盖（缺省 `<仓库根>/output_report`） | `tools/vwap_histogram.py` | — |
-| `WQB_PROD_QUEUE_PATH` | — | `wqb.prod_queue` 的队列文件覆盖（缺省 `<仓库根>/cache/prod_queue.json`） | `src/wqb/prod_queue.py` | — |
+| `WQB_PROD_QUEUE_PATH` | — | `wqb.prod_queue` 的队列文件覆盖（缺省 `<仓库根>/cache/prod_queue.json`） | `src/wqb/prod_queue.py` · `tests/unit/09_core/test_prod_queue.py` | — |
 | `WQB_REPO_ROOT` | — | 显式仓库根（`wq_campaign.config` / `ind_runner.py` / `usa_runner.py` 的首选，最可靠；缺省从文件位置上溯找 `pyproject.toml` + `src/wqb`） | `wq-brain-ra-ind/scripts/ind_campaign/ind_runner.py` · `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/config.py` · +16 | — |
 | `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +22 | — |
 | `WQB_SLOTS_DIR` | — | 账户级槽位 token 目录（缺省 `logs/_slots`） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` · `tests/unit/10_toolkit_scripts/test_slots_arbitration.py` | — |
@@ -158,13 +158,14 @@
 |---|---|---|---|---|
 | `API_SETTINGS_TIMEOUT` | `30` | MCP 传输层默认 API 超时（秒，缺省 30） | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_AUTH_CHECK_TTL_SECONDS` | `300` | MCP 认证有效性检查的缓存秒数（缺省 300） | `mcp/brain_mixin_transport.py` | — |
-| `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS` | `180` | 相关性槽位忙时返回的建议重试秒数（缺省 180） | `mcp/brain_mixin_transport.py` | — |
-| `BRAIN_CORRELATION_LOCK_TTL_SECONDS` | `600` | 相关性跨进程槽 token 的 TTL（秒，缺省 3700）——须 ≥ 单次轮询窗口（900s），否则长轮询期间 token 被 TTL 自愈回收、第二个进程会并发打同一个单并发接口 | `mcp/brain_mixin_transport.py` | — |
+| `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS` | `240` | 相关性槽位忙时返回的建议重试秒数（缺省 240 = 一轮轮询窗口；低于它会在持锁方结束前回来再撞一次 busy）。槽位刚算完的**冷却**档另有精确剩余秒数，不走本缺省 | `mcp/brain_mixin_transport.py` | — |
+| `BRAIN_CORRELATION_LOCK_TTL_SECONDS` | `600` | 相关性跨进程槽 token 的 TTL（秒，缺省 600）——须 **> 单次最长持锁**（轮询窗口 `prod_corr_timeout_s=240` + 慢轮询台阶 30s + 抖动 ≈ 270s），否则长轮询期间 token 被 TTL 自愈回收、第二个进程会并发打同一个单并发接口；余量给到 2.2× 即可，勿按「5×」抬到 1200（崩溃残留翻倍）。⚠ 调它必须同步 `wqb.config.WAIT_THRESHOLDS` | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_CREATE_SIMULATION_MAX_CONCURRENCY` | `6` | MCP `create_simulation` 的并发上限（缺省 6） | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_MAX_CONCURRENCY` | `8` | MCP 层 HTTP 请求并发上限（缺省 8）——**与模拟并发令牌 `slots=2` 不是同一个量** | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_POOL_IDLE_SWEEP_SEC` | `90` | MCP 客户端连接池的空闲 socket 清扫周期（秒，缺省 90，下限 30）。长驻 MCP 服务堆积 CloseWait 的修复件之一，见 `brain_mixin_transport` 连接池修复注释 | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_POOL_MAXSIZE` | `24` | MCP 客户端 `HTTPAdapter` 的连接池大小（`pool_connections`/`pool_maxsize`，缺省 24）。缺省 HTTPAdapter 是 10，与 `_request_semaphore(8)` + `_create_simulation_semaphore(6)` 的 14 并发上限不匹配 | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_PYRAMID_ALPHAS_TIMEOUT_SECONDS` | `15` | 金字塔 alphas 查询超时（缺省 15） | `mcp/brain_mixin_correlation.py` | — |
+| `BRAIN_SC_IDLIST_TTL_SECONDS` | `900` | SELF 相关性 OS ID 列表的进程内 TTL 秒数（缺省 900，0=关闭缓存；TTL 内复用分页列举结果） | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_SC_POOL_SYNC_DEBOUNCE_SECONDS` | `1` | SELF 相关性池同步的去抖秒数（缺省 1） | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_USER_ALPHAS_CLIENT_FILTER_MAX_SCAN` | `1000` | `get_user_alphas` 客户端过滤的最大扫描条数（缺省 1000） | `mcp/brain_mixin_simulation.py` | — |
 | `FE_API_TIMEOUT` | `120` | feature_engineering 拉字段的平台 API 超时（秒，缺省 120） | `brain-data-feature-engineering/scripts/feature_engineering.py` | — |
@@ -172,7 +173,10 @@
 | `SA_PROBE_CACHE_TTL_HOURS` | `6` | SA 盘点缓存新鲜度窗口（小时，默认 6）——tools/probe/probe_sa_candidates.py 的 results/sa_probe_cache.json TTL；--cache-ttl-hours 优先 | `tools/probe/probe_sa_candidates.py` | — |
 | `WQB_CALIBRATE_TIMEOUT` | — | score_datasets 校准阶段的软超时（秒；超预算后周期性打线程栈） | `wq-brain-campaign-toolkit/scripts/score_datasets.py` | — |
 | `WQB_CAMPAIGN_TIMEOUT` | — | campaign 节点子进程超时（秒） | `src/wqb/workflow/nodes/campaign.py` · `tests/unit/02_workflow/test_workflow_nodes.py` | — |
-| `WQB_CORR_COOLDOWN_SEC` | — | 相关性槽位 release 后的本地冷却秒数（缺省 195，略大于平台 `retry_after=180s`；`wqb.correlation_slot._cooldown_sec` 读取）。本地锁只管跨进程互斥，平台槽位在算完后仍占一段时间，不冷却就会出现「加了锁还撞 correlation_busy」 | `src/wqb/correlation_slot.py` | — |
+| `WQB_CORR_COOLDOWN_SEC` | — | 相关性槽位 release 后的本地冷却秒数（缺省 195，略大于平台 `retry_after=180s`；`wqb.correlation_slot._cooldown_sec` 读取）。2026-10-28 起冷却**按结果分流**：只有「真触发了一次平台计算且超时」才写满这个值，算成功只留 `WQB_CORR_SETTLE_SEC`，立即拿到既有值 / 4xx 终态不写。本地锁只管跨进程互斥，平台槽位在算完后仍占一段时间，不冷却就会出现「加了锁还撞 correlation_busy」 | `src/wqb/correlation_slot.py` · `tests/unit/09_core/test_corr_slot_outcome_inflight_20261028.py` | — |
+| `WQB_CORR_INFLIGHT_TTL_SEC` | — | 同一 alpha 的「在飞」标记有效期（秒，缺省 300；`wqb.correlation_slot.inflight_mark` 读取）。TTL 内对同一 alpha 的新调用只做预读轮询、不再二次触发平台计算，避免超时后立刻重触发把账号槽继续占住 | `src/wqb/correlation_slot.py` · `tests/unit/09_core/test_corr_slot_outcome_inflight_20261028.py` | — |
+| `WQB_CORR_JOIN_WAIT_SEC` | `25` | 发现账号槽正被**同一 alpha** 的计算持有时，最多等多久去拿它的结果（秒，缺省取 min(60, 剩余窗口)；`brain_mixin_spcread._await_same_alpha_value` 读取）。超时按 busy 返回，不改写冷却 | `tests/unit/05_submit_quota/test_prod_corr_flow_20261028.py` · `mcp/brain_mixin_spcread.py` | — |
+| `WQB_CORR_SETTLE_SEC` | — | 平台计算成功后留给它释放账号槽的收尾时间（秒，缺省 5；`wqb.correlation_slot.settle_seconds` 读取）。成功路径的冷却只写这么久，替代旧的「无条件 195s」 | `src/wqb/correlation_slot.py` · `tests/unit/05_submit_quota/test_prod_corr_flow_20261028.py` · +1 | — |
 | `WQB_DETACHED_FIRST_OUTPUT_SEC` | `20` | detached 后台任务的首次输出心跳窗口（秒；超时判启动即死） | `src/wqb/workflow/nodes/batch_track.py` | — |
 | `WQB_DISPATCH_DELAY` | — | `tools/wqb_tools_shim.py` 转调 `tools/submit_batch.py` 时两批之间的 sleep 秒数（缺省 1；EUR/KOR/GLB 均按 1 调） | `tools/wqb_tools_shim.py` | — |
 | `WQB_FORUM_RECON_TIMEOUT_SEC` | — | forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900） | `wq-brain-campaign-toolkit/scripts/pipeline.py` · `src/wqb/workflow/nodes/forum_recon.py` · +1 | — |

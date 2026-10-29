@@ -29,11 +29,11 @@
   },
   "BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS": {
    "cat": "wait",
-   "what": "相关性槽位忙时返回的建议重试秒数（缺省 180）"
+   "what": "相关性槽位忙时返回的建议重试秒数（缺省 240 = 一轮轮询窗口；低于它会在持锁方结束前回来再撞一次 busy）。槽位刚算完的**冷却**档另有精确剩余秒数，不走本缺省"
   },
   "BRAIN_CORRELATION_LOCK_TTL_SECONDS": {
    "cat": "wait",
-   "what": "相关性跨进程槽 token 的 TTL（秒，缺省 3700）——须 ≥ 单次轮询窗口（900s），否则长轮询期间 token 被 TTL 自愈回收、第二个进程会并发打同一个单并发接口"
+   "what": "相关性跨进程槽 token 的 TTL（秒，缺省 600）——须 **> 单次最长持锁**（轮询窗口 `prod_corr_timeout_s=240` + 慢轮询台阶 30s + 抖动 ≈ 270s），否则长轮询期间 token 被 TTL 自愈回收、第二个进程会并发打同一个单并发接口；余量给到 2.2× 即可，勿按「5×」抬到 1200（崩溃残留翻倍）。⚠ 调它必须同步 `wqb.config.WAIT_THRESHOLDS`"
   },
   "BRAIN_CREATE_SIMULATION_MAX_CONCURRENCY": {
    "cat": "wait",
@@ -78,6 +78,10 @@
   "BRAIN_PYRAMID_ALPHAS_TIMEOUT_SECONDS": {
    "cat": "wait",
    "what": "金字塔 alphas 查询超时（缺省 15）"
+  },
+  "BRAIN_SC_IDLIST_TTL_SECONDS": {
+   "cat": "wait",
+   "what": "SELF 相关性 OS ID 列表的进程内 TTL 秒数（缺省 900，0=关闭缓存；TTL 内复用分页列举结果）"
   },
   "BRAIN_SC_POOL_SYNC_DEBOUNCE_SECONDS": {
    "cat": "wait",
@@ -289,7 +293,19 @@
   },
   "WQB_CORR_COOLDOWN_SEC": {
    "cat": "wait",
-   "what": "相关性槽位 release 后的本地冷却秒数（缺省 195，略大于平台 `retry_after=180s`；`wqb.correlation_slot._cooldown_sec` 读取）。本地锁只管跨进程互斥，平台槽位在算完后仍占一段时间，不冷却就会出现「加了锁还撞 correlation_busy」"
+   "what": "相关性槽位 release 后的本地冷却秒数（缺省 195，略大于平台 `retry_after=180s`；`wqb.correlation_slot._cooldown_sec` 读取）。2026-10-28 起冷却**按结果分流**：只有「真触发了一次平台计算且超时」才写满这个值，算成功只留 `WQB_CORR_SETTLE_SEC`，立即拿到既有值 / 4xx 终态不写。本地锁只管跨进程互斥，平台槽位在算完后仍占一段时间，不冷却就会出现「加了锁还撞 correlation_busy」"
+  },
+  "WQB_CORR_INFLIGHT_TTL_SEC": {
+   "cat": "wait",
+   "what": "同一 alpha 的「在飞」标记有效期（秒，缺省 300；`wqb.correlation_slot.inflight_mark` 读取）。TTL 内对同一 alpha 的新调用只做预读轮询、不再二次触发平台计算，避免超时后立刻重触发把账号槽继续占住"
+  },
+  "WQB_CORR_JOIN_WAIT_SEC": {
+   "cat": "wait",
+   "what": "发现账号槽正被**同一 alpha** 的计算持有时，最多等多久去拿它的结果（秒，缺省取 min(60, 剩余窗口)；`brain_mixin_spcread._await_same_alpha_value` 读取）。超时按 busy 返回，不改写冷却"
+  },
+  "WQB_CORR_SETTLE_SEC": {
+   "cat": "wait",
+   "what": "平台计算成功后留给它释放账号槽的收尾时间（秒，缺省 5；`wqb.correlation_slot.settle_seconds` 读取）。成功路径的冷却只写这么久，替代旧的「无条件 195s」"
   },
   "WQB_DB": {
    "cat": "path",
