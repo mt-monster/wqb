@@ -28,6 +28,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from wqb.expression.op_arity import (  # noqa: E402
     ArityError,
+    _iter_catalog_entries,  # 与生产同源解析 catalog 形态（results/result/裸 list）
     check_expression,
     check_expressions,
     ensure_safe_for_dispatch,
@@ -136,17 +137,47 @@ def test_valid_expressions_not_flagged(expr):
     assert check_expression(expr) == [], f"{expr} 是平台合法写法，误杀会拖停流水线"
 
 
-def test_no_false_positives_on_accepted_alpha_corpus():
-    """把闸跑过"平台已接受"的历史表达式，误杀率必须为 0。
+def _non_regular_scope_ops() -> set:
+    """catalog 里**不含 REGULAR 域**的算子名（COMBO-only / SELECTION-only）。
 
-    语料取 data/wqb.db 里拿到 alpha_id 的表达式——平台真跑通过，不可能是元数
-    错误。DB 不在（CI 干净 checkout）则跳过。
+    为什么语料要按这个过滤（2026-10-28）：``op_arity`` 是 FASTEXPR（REGULAR）
+    域的元数闸，而 ``data/wqb.db`` 里同时住着 SUPER alpha——它们的 **combo 表达式
+    是另一种语言**（``tools/super_build.py`` 的模板
+    ``stats = generate_stats(alpha); …; self_corr(stats.returns, 500); …``，
+    combo 版 ``self_corr`` 收 2 个位置参数，REGULAR 目录里根本没有这个算子）。
+    一次 ``wave=mcp-backfill-*`` 的回填把 6 条 SUPER 表达式写进了
+    ``alphas.expression`` / ``backtest_results.code``（``alpha_type`` 留空），
+    于是 combo 语法被本用例判成"元数误杀"——**是语料域被污染，不是闸有洞**。
+    catalog 缺 ``scope`` 字段时返回空集（不过滤，行为退回旧口径）。
+    """
+    path = REPO_ROOT / "docs" / "reference" / "operators_catalog.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return set()
+    out = set()
+    for entry in _iter_catalog_entries(payload):
+        scope = entry.get("scope") or []
+        if isinstance(scope, str):
+            scope = [scope]
+        if "REGULAR" in {str(s).strip().upper() for s in scope}:
+            continue
+        name = str(entry.get("name") or "").strip()
+        if name:
+            out.add(name)
+    return out
+
+
+def _accepted_fastexpr_corpus() -> set:
+    """``data/wqb.db`` 里平台已接受的 **FASTEXPR（REGULAR 域）**表达式语料。
+
+    DB 不在（CI 干净 checkout）返回空集，调用方自行 skip。
     """
     import sqlite3
 
     db = REPO_ROOT / "data" / "wqb.db"
     if not db.is_file():
-        pytest.skip("data/wqb.db 不存在（干净 checkout）")
+        return set()
     conn = sqlite3.connect(str(db))
     try:
         corpus = {
@@ -161,8 +192,40 @@ def test_no_false_positives_on_accepted_alpha_corpus():
         }
     finally:
         conn.close()
+    super_ops = _non_regular_scope_ops()
+    if not super_ops:
+        return corpus
+    return {e for e in corpus
+            if not ({s.name for s in iter_call_sites(e)} & super_ops)}
+
+
+def test_super_combo_syntax_is_excluded_from_fastexpr_corpus():
+    """SUPER combo 模板必须被语料过滤器识别（否则误杀会以"闸有洞"的名义被修坏）。
+
+    同时钉住两点：① 模板里的算子在 catalog 里确实非 REGULAR 域；
+    ② 本闸对该模板报的错是 ARITY（combo 语言差异），而不是未知算子。
+    """
+    combo = ("stats = generate_stats(alpha); "
+             "innerCorr = self_corr(stats.returns, 500); "
+             "ic = if_else(innerCorr == 1.0, nan, innerCorr); "
+             "maxCorr = reduce_max(ic); w = 1 - maxCorr; rank(w)")
+    names = {s.name for s in iter_call_sites(combo)}
+    assert {"generate_stats", "self_corr"} <= names & _non_regular_scope_ops()
+    assert names & _non_regular_scope_ops()
+    errors = check_expression(combo, strict_unknown=False)
+    assert errors and all("[ARITY]" in e for e in errors)
+
+
+def test_no_false_positives_on_accepted_alpha_corpus():
+    """把闸跑过"平台已接受"的历史表达式，误杀率必须为 0。
+
+    语料取 data/wqb.db 里拿到 alpha_id 的表达式——平台真跑通过，不可能是元数
+    错误。DB 不在（CI 干净 checkout）则跳过。SUPER combo 表达式不是 FASTEXPR，
+    由 ``_accepted_fastexpr_corpus`` 排除（见 ``_non_regular_scope_ops``）。
+    """
+    corpus = _accepted_fastexpr_corpus()
     if not corpus:
-        pytest.skip("语料为空")
+        pytest.skip("语料为空或 data/wqb.db 不存在（干净 checkout）")
     sigs = load_signatures()
     # 已知 3 条脏数据：截断/串行的历史行（signed_power(0.5)M.40+e3.60 之流），
     # 任何语法检查都会拒，不算本闸误杀。
@@ -186,28 +249,11 @@ def test_accepted_corpus_has_no_real_unknown_operators():
 
     这是"未知算子一律拦"不会误杀真实alpha 的证据——若未来平台新增算子而本仓
     catalog 未刷新，这里会先红，提示跑 ``tools/refresh_operator_catalog.py``。
+    语料同 ``test_no_false_positives_on_accepted_alpha_corpus``：只用 FASTEXPR。
     """
-    import sqlite3
-
-    db = REPO_ROOT / "data" / "wqb.db"
-    if not db.is_file():
-        pytest.skip("data/wqb.db 不存在（干净 checkout）")
-    conn = sqlite3.connect(str(db))
-    try:
-        corpus = {
-            e for (e,) in conn.execute(
-                "select expression from alphas "
-                "where expression is not null and trim(expression) <> ''")
-        }
-        corpus |= {
-            e for (e,) in conn.execute(
-                "select code from backtest_results where alpha_id is not null "
-                "and code is not null and trim(code) <> ''")
-        }
-    finally:
-        conn.close()
+    corpus = _accepted_fastexpr_corpus()
     if not corpus:
-        pytest.skip("语料为空")
+        pytest.skip("语料为空或 data/wqb.db 不存在（干净 checkout）")
     known = set(load_signatures()) | set(load_catalog_names())
     unknown = {s.name for e in corpus for s in iter_call_sites(e)
                if s.name not in known}
