@@ -51,7 +51,11 @@
 ### S2 生成
 
 - **用**：intraday_pv_feats 尾盘 30 分钟反转：只在 MINVOL1M、只用 ts_decay_linear(x, 5)；high-price 路径能过 EMEA 子宇宙，last-trade 路径在 9 种中性化下都不行（0.58–0.93）
+- **用**：★ 纯 PV 单塔（2026-10-28 实证）：塔位=pv 不含 OTHER ⇒ 提 1 颗即点亮 PV 塔；共 29 颗 fRA=0 候选（mean_high 族 20 / corr_ltpv 族 8 / corr_hpv 族 1）—— kqNrmA9g S3.00/2Y2.65（decay 3）· mLmxKN12 S2.99/2Y2.92（decay 5，prod 0.694）· LLMaXwv6 S2.78/2Y2.99（decay 8）· WjOQX8rj S2.83（decay5+负号，prod 0.8885 ✗）。设置 MINVOL1M / FAST / decay 6
+- **用**：★ 换 FAST 中性化可解区域闸 LOW_GLB_EMEA_SHARPE（2026-10-28 第三次独立验证，首次在 PV 域）：submit_ready 里 8 颗 PV 候选 prod 0.477–0.5624 干净、self 干净、2Y 全过，但用 INDUSTRY 中性化时平台权威统一 fRA=1 且失败项全是 LOW_GLB_EMEA_SHARPE（0.58–0.59 vs limit 1.0）⇒ 换 FAST 后 fRA=0、12 硬闸全 PASS
 - **避**：已被 prod 饱和闸拦的获胜字段：mean_high_price_return_30m_pre_close_2、corr_last_trade_price_with_volume
+- **避**：★ mean_last_trade_price_return_30m_pre_close_2 路径整体不要碰（2026-10-28 用 FAST 复现：mLoRxww1 S2.25 仍卡 LOW_GLB_EMEA_SHARPE，与本卡既有结论「9 种中性化都不行」一致）
+- **避**：⚠ 上条「避」只针对「拿 mean_high_price_return_30m_pre_close_2 / corr_last_trade_price_with_volume 当 dl_riskfree 同族的信号腿」；上面「纯 PV 单塔」（group_zscore + country + 取负）是不同持仓形态，prod 反而干净（0.694）⇒ 两条路不冲突，PV 单塔路值得继续
 - **类别通用原语**（类别卡，跨区）：
   - continuation vs reversal: short-horizon pattern vs longer mean
   - intraday vs overnight: session-specific pressure

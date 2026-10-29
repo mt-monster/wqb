@@ -50,8 +50,10 @@
 ### S2 生成
 
 - **用**：dl_riskfree_returns 20 日 CNN（single_bucket_20day_return_estimate_ohlcv_img_2）× 一个经济子集门控：未门控 prod 0.77–0.84（38 个变体），门控后 0.60–0.67
+- **用**：★ 零塔门控腿 × dl_riskfree 信号腿（2026-10-28 实证，本区当前最强出货机制）：7 个零塔域全部有效，共 40+ 颗 fRA=0 候选 —— institutions6 处置额→e75pvoNz 4.81/4.19/5.56 · npvJaGa3 4.75/4.10/5.49；earn3 pre_interval→JjewWlvx 3.07/1.58/4.00；fnd44 应计→YP1rzw2J 2.95/1.77/2.17；snt21 负向信心→xAr6WLLp 2.77；scl12 情绪→qML1wg3Z 2.31/1.16/3.38；nws73 头条数→VkaXa9dA 2.24；risk60 crowding→QPvJ6KVw 3.19/1.59/3.43。强度来自跨集门控（门控腿给经济子集、信号腿给截面基座）⇒ 零塔字段自身不需要有 alpha。设置 MINVOL1M / FAST / decay 6（勿套区域默认档）
 - **避**：techindi_model predicted_first_quantile 系：热门字段 prod 必超上限（qMNZX1o1 0.7686），已判穷尽
 - **避**：single_bucket_20day_return_estimate_ohlcv_img_2 / single_bucket_60day 已被 prod 饱和闸拦
+- **避**：★ 零塔字段不得作信号腿（2026-10-28 结构性判死）：ANALYST 16 条 / INSIDERS 4 条 / MACRO 4 条全灭（零塔×零塔形态在 GLB 整体不成立）；RISK 域三个数据集 prod 全在 0.80–0.94（category 级饱和）⇒ RISK 只能当门控腿
 - **说明**：门控模板只修 prod / robust、不造强度：未门控基础信号 IS sharpe 不低于 2.5、fitness 不低于 1.5 才值得花槽位（GLB 2026-09-27 铁律）
 - **类别通用原语**（类别卡，跨区）：
   - name the priced risk first; the operator is secondary

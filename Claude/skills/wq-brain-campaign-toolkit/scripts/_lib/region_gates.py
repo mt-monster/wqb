@@ -84,8 +84,78 @@ def resolve_mode(cli_mode=None, env=None, today=None):
     return default_mode(today), note
 
 
-#: 闸清单（顺序即执行顺序：catalog 前置 → 天花板 → 停止规则 → 积压）
-GATE_NAMES = ("catalog", "signal_floor", "stop_rules", "backlog")
+#: 闸清单（顺序即执行顺序：catalog 前置 → 天花板 → 停止规则 → 积压 → 禁碰清单）
+GATE_NAMES = ("catalog", "signal_floor", "stop_rules", "backlog", "dead_fields")
+
+
+def _dead_fields_path(campaign_dir, region):
+    """定位区域的**禁碰清单**（机器可判的「已死轴」）：<campaign>/reference/<region>_dead_fields.json。"""
+    base = os.path.join(str(campaign_dir), "reference")
+    cand = os.path.join(base, f"{str(region).lower()}_dead_fields.json")
+    if os.path.isfile(cand):
+        return cand
+    return None
+
+
+def _iter_expr_fields(expr):
+    """从表达式里粗提字段 token（去算子名与数字参数）。"""
+    import re as _re
+    tokens = set()
+    for m in _re.finditer(r"vec_(?:avg|sum|max|min|count|norm|range|stddev)\(([A-Za-z_][\w]*)\)", expr or ""):
+        tokens.add(m.group(1))
+    for m in _re.finditer(r"([A-Za-z_][A-Za-z0-9_]*)\s*\(", expr or ""):
+        tokens.discard(m.group(1))
+    for m in _re.finditer(r"\b([a-z][a-z0-9_]{2,})\b", expr or ""):
+        tokens.add(m.group(1))
+    return tokens
+
+
+def _run_dead_fields_gate(region, dataset, campaign_dir):
+    """禁碰清单闸（2026-10-28 新增）：命中的字段/形态 ⇒ 不得作**信号腿**开波。
+
+    背景（GLB 战役实证）：「避判死」若只查 registry 死路表，就会漏掉写在
+    组合分支卡「避」段里的死轴 —— 2026-10-28 有 ~44/75 条派发是重复劳动。
+    把禁碰字段落成机器可判的 JSON（<region>_dead_fields.json）后，本闸在开波前拦截。
+
+    口径（刻意保守，fail-open 于「查不到」）：
+      · 只查**明确列出**的字段/数据集，不做语义推断；
+      · 「作信号腿」才命中；同一字段作**门控腿**是允许的（那正是本区的主力形态）；
+      · 清单文件不存在 / 解析失败 ⇒ success=True（缺检不阻断，但打印告警）。
+    """
+    out = {"step": "dead_fields", "success": True, "hits": [], "checked": 0,
+           "path": None, "warning": None}
+    path = _dead_fields_path(campaign_dir, region)
+    if not path:
+        out["warning"] = f"未找到 {str(region).lower()}_dead_fields.json（跳过本闸）"
+        return out
+    out["path"] = path
+    try:
+        with open(path, encoding="utf-8-sig") as f:
+            spec = json.load(f)
+    except Exception as e:
+        out["warning"] = f"读取失败：{type(e).__name__}: {e}"
+        return out
+
+    rules = spec.get("rules") or []
+    out["checked"] = len(rules)
+    ds = str(dataset or "").strip()
+    for rule in rules:
+        rid = rule.get("id") or "?"
+        applies_ds = rule.get("applies_to_datasets") or []
+        # ★ 规则只在「本波数据集 ∈ applies_to_datasets」时适用。
+        #   （field_family 型规则的 applies_to_datasets 列出的是**所属数据集**，
+        #     不是「适用于所有数据集」—— 否则会对每个数据集都误命中。）
+        if not ds or ds not in applies_ds:
+            continue
+        out["hits"].append({"id": rid, "kind": rule.get("kind"),
+                            "dataset": ds, "reason": rule.get("reason"),
+                            "scope": rule.get("kind") or "rule",
+                            "fields": rule.get("forbid_fields") or [],
+                            "severity": rule.get("severity")})
+    if out["hits"]:
+        out["success"] = False
+    return out
+
 
 
 def resolve_workspace_root(campaign_dir):
@@ -170,6 +240,19 @@ def run_region_gates(campaign_dir, region, mode=None, dataset=None, out=None, mo
     _print_one("catalog", r, stream)
     if not r.get("success", True):
         hits.append("catalog")
+
+    # —— 第 4 道：禁碰清单（机器可判的「已死轴」；不依赖 workflow 模块，toolkit 自足）——
+    try:
+        r = _run_dead_fields_gate(region, dataset, str(campaign_dir))
+    except Exception as e:
+        r = {"step": "dead_fields", "success": True,
+             "warning": f"dead_fields gate raised {type(e).__name__}: {e}"}
+        print(f"[region-gates] dead_fields ★异常降级（未拦截）：{type(e).__name__}: {e}",
+              file=stream)
+    report["results"]["dead_fields"] = r
+    _print_one("dead_fields", r, stream)
+    if not r.get("success", True):
+        hits.append("dead_fields")
 
     C, err = load_gates(campaign_dir)
     if C is None:

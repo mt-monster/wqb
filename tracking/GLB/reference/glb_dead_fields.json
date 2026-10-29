@@ -1,0 +1,78 @@
+{
+  "region": "GLB",
+  "delay": 1,
+  "universe": "MINVOL1M",
+  "as_of": "2026-10-28",
+  "note": "GLB 禁碰清单（发批前自动闸用）：命中的字段 / 形态 ⇒ 不得作为**信号腿**开波（可作门控腿）。证据见 wq-brain-ra-glb/references/_glb-zero-tower-gate-20261028.md 与各组合分支卡的「避」段。schema 与 KOR 的 *_field_whitelist.json 对齐但语义相反：本文件是**黑名单**。",
+  "rules": [
+    {
+      "id": "GLB-ZERO-TOWER-AS-SIGNAL",
+      "kind": "role",
+      "applies_to_datasets": [
+        "insider_agg_matrix",
+        "macro10",
+        "macro27",
+        "analyst15",
+        "analyst69",
+        "analyst_factor_signals",
+        "analyst_revision_horizons"
+      ],
+      "forbid_role": "signal_leg",
+      "allow_role": "gate_leg",
+      "reason": "零塔字段作信号腿在 GLB 三域全灭（ANALYST 16 条 / INSIDERS 4 条 / MACRO 4 条）；强度来自跨集门控，不是零塔字段自身的预测力。",
+      "evidence": "GLB 2026-10-28 w142-w150 实测",
+      "severity": "structural"
+    },
+    {
+      "id": "GLB-RISK-AS-SIGNAL-PRODSAT",
+      "kind": "dataset",
+      "applies_to_datasets": ["risk60", "risk68", "risk70"],
+      "forbid_role": "signal_leg",
+      "allow_role": "gate_leg",
+      "reason": "RISK 域 category 级 prod 饱和：三个数据集六种形态 prod 全部落在 0.8028-0.9423。",
+      "evidence": "88R9ARkm 0.9026 / YPvJ6KVw 0.9423 / O0APedMJ 0.8886 / P0oaeG9L 0.8028 / 3qX23qk0 0.8617 / 78N208vQ 0.8821 / LLN2qLm1 0.8634 / gJeO7PKK 0.8856",
+      "severity": "structural"
+    },
+    {
+      "id": "GLB-PV-LASTTRADE-PATH-DEAD",
+      "kind": "field_family",
+      "applies_to_datasets": ["intraday_pv_feats", "pv1", "pv37", "pv98", "pv106"],
+      "forbid_fields": [
+        "mean_last_trade_price_return_30m_pre_close_2"
+      ],
+      "reason": "last-trade 路径在 9 种中性化下都不行（既有结论）；2026-10-28 用 FAST 中性化复现仍卡 LOW_GLB_EMEA_SHARPE（mLoRxww1 S2.25）。只走 high-price 路径。",
+      "evidence": "mLoRxww1 fRA=1 LOW_GLB_EMEA_SHARPE；pv.md 既有结论 0.58-0.93",
+      "severity": "structural"
+    },
+    {
+      "id": "GLB-PV-RSK60-VECTOR-CW",
+      "kind": "field_family",
+      "applies_to_datasets": ["risk60"],
+      "forbid_fields": [
+        "rsk60_offer",
+        "rsk60_last",
+        "rsk60_crowding",
+        "lending_fee_bid_rate"
+      ],
+      "reason": "40 颗候选全部卡 CONCENTRATED_WEIGHT；六种改法（group_rank 外层 / 幂律压尾 / 换轴族 / 换字段组合 / 换中性化+截断 / 换 VECTOR 字段）全败 ⇒ 换信号腿类型（VECTOR→MATRIX）才有效。",
+      "evidence": "3qXzWLKe fRA=4 / rKObq6Qo / 88jO0kA7 / rKObq6mm / 88R9ARkm / 9qj9OJdo",
+      "severity": "structural"
+    },
+    {
+      "id": "GLB-TECHINDI-FIRSTQUANTILE-PRODSAT",
+      "kind": "field_family",
+      "applies_to_datasets": ["techindi_model", "tech_chart_model"],
+      "forbid_fields": [
+        "predicted_first_quantile_ten_day_return",
+        "predicted_first_quantile"
+      ],
+      "reason": "热门字段 prod 必超上限，已判穷尽（other.md 既有结论，2026-10-28 复核一致）。",
+      "evidence": "qMNZX1o1 0.7686；tech_chart_model first_quantile 系 prod 0.9989 墙",
+      "severity": "structural"
+    }
+  ],
+  "reuse_pool_hint": {
+    "note": "「prod 已确认低于上限」的现成候选应**优先复用**而不是重挖。GLB 组合分支索引表（render 生成）的「prod 已测（低于上限）」列即此池：pv 43(11) / other 48(9) / model 1(0) / risk 10(0) —— 括号第二个数是低于上限的个数。",
+    "as_of": "2026-10-04"
+  }
+}

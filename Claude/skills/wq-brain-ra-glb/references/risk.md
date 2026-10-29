@@ -48,6 +48,8 @@
 ### S2 生成
 
 - **用**：借券费率 rsk60_offer 作门控腿有效（子集门控模板），但它本身已被 prod 饱和闸拦作主信号
+- **避**：★ RISK 域不得作信号腿（2026-10-28，category 级结构性判死）：三个数据集六种形态 prod 全部撞穿 —— risk60 88R9ARkm 0.9026 / YPvJ6KVw 0.9423 / O0APedMJ 0.8886 / P0oaeG9L 0.8028；risk68 3qX23qk0 0.8617 / 78N208vQ 0.8821 / LLN2qLm1 0.8634；risk70 gJeO7PKK 0.8856 ⇒ category 层面拥挤，非字段问题
+- **避**：★ rsk60_offer（VECTOR）作信号腿必卡 CONCENTRATED_WEIGHT（2026-10-28：40 颗候选全卡，六种改法——换外层 group_rank / 幂律压尾 / 换轴族 sector / 换字段组合 / 换中性化+截断 / 换 VECTOR 字段——逐一证伪；唯一有效解是换信号腿类型 VECTOR→MATRIX）。⚠ CW 记在 ra.ra_failed_checks 且计入 failed_ra_count ⇒ CW 未过 = 不可提交
 - **类别通用原语**（类别卡，跨区）：
   - tail risk: skewness or kurtosis of return distribution
   - drawdown risk: maximum drawdown vs historical average

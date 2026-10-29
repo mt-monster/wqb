@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-18
+last_verified: 2026-10-27
 ---
 
 # GLB 区域挖掘流程（RA 区域分支）
@@ -110,6 +110,7 @@ last_verified: 2026-10-18
 | earnings | Earnings | active | — | — | 8 / 0 | 0（0） | 1 / 0 | [references/earnings.md](references/earnings.md) |
 | institutions | Institutions | active | — | — | 8 / 0 | 0（0） | 1 / 0 | [references/institutions.md](references/institutions.md) |
 | insiders | Insider | active | — | — | 7 / 0 | 0（0） | 1 / 0 | [references/insiders.md](references/insiders.md) |
+| macro | Other | active | — | — | 4 / 0 | 0（0） | 1 / 0 | [references/macro.md](references/macro.md) |
 
 说明：另有 74 条回测行没写数据集，无法归到组合；1 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
 <!-- profiles:cells-index:end -->

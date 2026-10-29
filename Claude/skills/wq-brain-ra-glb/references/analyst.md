@@ -48,6 +48,7 @@
 
 ### S2 生成
 
+- **避**：★ GLB 的分析师预期修正族不得作信号腿（2026-10-28，negative，结构性）：w142–w145 共 16 条全灭（S 最高 1.04，多为负）—— anl15 预期修正 / anl69 建议评级 / eps·revenue 修正幅度（正向 S0.64、反向 S−1.03 ⇒ 不是符号问题，是字段本身无信息量）/ analyst_count_decreasing_* / eps·revenue 趋势斜率（S0.08–0.46）⇒ ANALYST 只能当门控腿
 - **类别通用原语**（类别卡，跨区）：
   - revision surprise: change in FY1/FY2 vs the stale level
   - dispersion: disagreement across estimates, not the consensus mean

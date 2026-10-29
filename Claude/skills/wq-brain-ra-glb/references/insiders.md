@@ -47,6 +47,7 @@
 
 ### S2 生成
 
+- **避**：★ GLB 的 insiders 不得作信号腿（2026-10-28，negative，结构性）：insider_agg_matrix（17 字段全 MATRIX，cov 0.4904）三种形态全灭 —— pwdrEbwj 净买卖股数 S−1.0/换手 2.1562/fRA=9；omE5z0K2 净买卖组内 rank S−1.55/换手 1.9558/fRA=8；A1VZbmkY directional_indicator S−0.18/fRA=9。根因：内部人买卖是随公司规模变化的原始计数 ⇒ 量纲不可跨股票比较；directional_indicator 覆盖率仅 0.49 ⇒ INSIDERS 只能当门控腿
 - **类别通用原语**（类别卡，跨区）：
   - 交易方向与规模：净买入 / 净卖出，取负放在 rank 之后并保持零均值（决策表 D6）
   - 持续性：内部人连续同向交易的次数，而不是单次交易
