@@ -930,6 +930,1138 @@
     "Claude/skills/wq-brain-alpha-optimization-v1/scripts/.arxiv_cache.json": {
       "verdict": "ARTIFACT",
       "basis": "arXiv 检索缓存（脚本运行期产物，可按脚本重跑），不是资产。"
+    },
+    "Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md": {
+      "verdict": "DROPPED",
+      "basis": "主题归入独立 skill：`git grep -F 'webdatascope-data-quality' main -- Claude/skills` 命中 `brain-alpha-research-field-quality/SKILL.md`（该 skill 专管字段质量先验与 WebDataScope 数据包预筛，内容不丢）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-explain-alphas/scripts/arxiv_api.py": {
+      "verdict": "DROPPED",
+      "basis": "分叉旧副本：唯一在役实现为 `Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py`（`git ls-tree main` 实测，配套 `arXiv_API_Tool_Manual.md`）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/contribution-and-diversity.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/contribution-and-diversity.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/evidence-and-review.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/evidence-and-review.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/mcp-by-phase.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/mcp-by-phase.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/mcp-tools-and-search.md": {
+      "verdict": "DROPPED",
+      "basis": "并入 `Claude/skills/brain-forum-browse/references/tools-and-troubleshooting.md`：该件 L1 标题即「论坛 MCP 工具与搜索（tools & troubleshooting）」，`git ls-tree main:Claude/skills/brain-forum-browse/references/` 只剩该件与 write-path/（10-29 实测）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/modes-and-contract.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/quotas-and-cooldown.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/quotas-and-cooldown.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/recon-and-gap.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/recon-and-gap.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/workspace-and-memory.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/workspace-and-memory.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/references/write-style-zh.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/write-style-zh.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/templates/forum_findings.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/templates/write-path/forum_findings.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/brain-forum-browse/templates/run_contract.md": {
+      "verdict": "DROPPED",
+      "basis": "路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/templates/write-path/run_contract.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/wq-brain-campaign-toolkit/references/rules-declarative-injection.md": {
+      "verdict": "DROPPED",
+      "basis": "改版未回迁且无承接件：`git grep -i declarative main -- Claude/skills/wq-brain-campaign-toolkit` = 0 命中，同 skill `tests/` 目录也已整目录移除（`git ls-tree main:…/tests` 为空）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/wq-brain-campaign-toolkit/tests/test_enhance_v2.py": {
+      "verdict": "DROPPED",
+      "basis": "被测线整体未回迁：`git ls-tree main:Claude/skills/wq-brain-campaign-toolkit/tests` 为空（整目录不存在），`git grep -i declarative … = 0`。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py": {
+      "verdict": "DROPPED",
+      "basis": "已归档、非丢失：`Claude/skills/wq-brain-ppa-mining/SKILL.md:32` 明写「已归档到 `attic/ppa_mining_20260929/`，零调用方，已被 S0 打分取代」，归档件 `attic/ppa_mining_20260929/dataset_health_check.py` 存在（`git cat-file -e` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "Claude/skills/wq-brain-superalpha/references/selection-playbook.md": {
+      "verdict": "DROPPED",
+      "basis": "口径并入 `Claude/skills/wq-brain-superalpha/SKILL.md`（selection 相关 17 处）与 `references/levers-and-evidence.md`：改版后 references 只剩 cases / levers-and-evidence / scenarios 三件（`git ls-tree main:…/references` 实测）。2026-10-29 复核维持 DROPPED。"
+    },
+    "docs/design_s1_family_deadend.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/dryrun-audit-20260925.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/modeb_operator_optimization_plan.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/prod_corr_persistence_design_20260918.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/reference/CODE_QUALITY_SUMMARY.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/reference/INTEGRATION_COMPLETE.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/reference/brain-labs-data-analysis-agent.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/region_universe_update_report.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/skills-optimization-roadmap.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/skills_review_decisions.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/structural_reconstruction.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/structural_reconstruction_integration.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/submit_queue_design.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "docs/submittable_alpha_optimization.md": {
+      "verdict": "DROPPED",
+      "basis": "历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代"
+    },
+    "output_report/EUR_delay1_news84_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/EUR_wave269_campaign_report.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_MEA_field_analysis_20260831.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model144_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model144_ideas_v2.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model16_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model16_ideas_v2.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model16_model32_model36_model144_model252_risk70_other323_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model252_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model252_ideas_v2.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model32_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model32_ideas_v2.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model36_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_model36_ideas_v2.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_d1_risk70_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_delay1_batch1_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/IND_wave131_feature_engineering.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/KOR_d1_wave96_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/MEA_D1_fundamental6_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/MEA_d1_analyst7_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/MEA_d1_earnings3_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/MEA_d1_fundamental72_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/MEA_d1_whitelist_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/USA_1_analyst_earnings_ibes_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/USA_1_finnews_nlp_scores_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/USA_1_forum_sentiment_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/USA_1_nlp_news_scores_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/USA_1_pattern_scores_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/USA_1_price_signal_dl_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/USA_1_pv_tech_indicators_ideas.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/_field_angle_analysis_20260831.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/db_quality_assessment_20260928.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/eur_2y_sharpe_raise_methodology_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/eur_new_category_progress_20261005.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/eur_risk70_metric_tuning_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/factor_optimization_potential_20260928.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/gbr_analyst47_tvr_decay_verdict_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/gbr_campaign_progress_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/gbr_forum_literature_recon_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/gbr_model_category_mining_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/gbr_trackA_verdict_trackB_wave1_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/ind_other532_reversal_campaign_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/l4_eur_other460_hypotheses_20261001.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/org_audit_20261001.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/py_file_audit_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/pyramid_tower_report.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/skills_fix_plan_20261003.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/skills_review_20261003.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/skills_stage_review_20261001.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/step9_s6_evaluation_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/ts_max_usage_audit.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/usa_analyst_breakthrough_20261004_s2.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/usa_analyst_category_report_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/usa_campaign_report_20261003.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/wq_forum_posting_analysis.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/wq_full_test_report_20261001_1115.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "output_report/wq_full_test_report_20261001_1116.md": {
+      "verdict": "DROPPED",
+      "basis": "战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛）"
+    },
+    "reports/README.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/d9_status_backfill_rollback_20260928_batch2.json": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "reports/d9_status_backfill_rollback_20261005.json": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "reports/dataset_experience/asi_continuation_score_campain.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/dataset_experience/asi_model28_campain.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/dataset_experience/asi_pattern_scores_campain.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/dataset_experience/asi_pv13_campain.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/dryrun_chain_result_v2_20260927.json": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "reports/eur_d1_20260924_financing_mode_b1_remainder.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_20260924_financing_mode_b2.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_20260924_fundamental17_controls.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_20260924_fundamental17_quality_probe.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_20260924_fundamental23_mechanisms.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_20260924_other455_network_probe.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_20260925_earnings6_event_probe.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_efficiency_implementation_20260924.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_selection_optimization_20260924.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/eur_d1_session_efficiency_review_20260924.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/field_inventory_analysis_20260929.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/forum_alpha_inspiration_taxonomy_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/forum_to_skills_integration_plan_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/inventory_submittable_20260909.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/kor_zero_tower_sweep_20261006.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh": {
+      "verdict": "DROPPED",
+      "basis": "所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.sh": {
+      "verdict": "DROPPED",
+      "basis": "所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh": {
+      "verdict": "DROPPED",
+      "basis": "所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n31.sh": {
+      "verdict": "DROPPED",
+      "basis": "所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n35.sh": {
+      "verdict": "DROPPED",
+      "basis": "所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py": {
+      "verdict": "DROPPED",
+      "basis": "所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/ra_pipeline_stage_review_20260927/reproduce.sh": {
+      "verdict": "DROPPED",
+      "basis": "所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/ra_pipeline_stage_review_v3_20260928.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/ra_pipeline_stage_review_v4_20260928.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/rescue_campaign_20260915.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/skills_full_review_20260929.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/skills_review_20260929/check_skills.py": {
+      "verdict": "DROPPED",
+      "basis": "职责由仓库工具承接：`git grep -F 'check_skills' main -- tools` 命中 `tools/audit_structure.py` 与 `tools/audit_structure_baseline.json`，技能静态检查现行入口为 `tools/skill_lint.py`；`git ls-tree main:reports/skills_review_20260929` 已不存在。2026-10-29 复核维持 DROPPED。"
+    },
+    "reports/structure_review_20261004.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "reports/usa_superalpha_feasibility_20260914.md": {
+      "verdict": "DROPPED",
+      "basis": "历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告）"
+    },
+    "tests/unit/01_store_db/test_build_wave_family_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/01_store_db/test_dataset_meta.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/01_store_db/test_region_catalog.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/01_store_db/test_select_ra_basket_exclude_dead.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/01_store_db/test_semantic_field_pool_filter.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/01_store_db/test_submit_queue_mark_blocked.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/01_store_db/test_towers.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/01_store_db/test_whitelist_write_guard.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/02_workflow/test_pipeline_submit_retry_completeness.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/02_workflow/test_s1_semantic_autoclassify.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/04_gates/test_s0_viability_p7.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/05_submit_quota/test_quota_typing_unit.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/06_wave_pipeline/test_recent_closed_waves_window.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/06_wave_pipeline/test_s4_walls_prescreen_20261002.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/06_wave_pipeline/test_s6_events_instrumentation_20261002.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/07_docs_skills/test_methodology_rules_connectivity.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/07_docs_skills/test_no_dilution_rules.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/09_core/test_semantic_ledger.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/10_toolkit_scripts/test_probe_batch_exempts_diversity.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/10_toolkit_scripts/test_semantic_classify_all.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/10_toolkit_scripts/test_slots_is_full_refill.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/10_toolkit_scripts/test_step9_audit.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/10_toolkit_scripts/test_submit_inventory_classify.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/test_backlog_gate_unconsumed_p0p2.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/test_config.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/test_handoff.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/test_mcp_config_portable.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/test_p1_fixes_20260927.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/test_skill_boundaries.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tests/unit/test_stop_rules_axis_scope.py": {
+      "verdict": "DROPPED",
+      "basis": "历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed）"
+    },
+    "tools/_check_op_submitted.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/_fix_queue_20261005.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/_kor_harvest_wave.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/_kor_s6_writeback2.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/backfill_alpha_metrics_from_platform.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/backfill_check_columns.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/candidate_health_card.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/db_lock_audit.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/db_maintenance.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/enqueue_propose.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/gbr_pre_submit_check.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/gen_gbr_candidates_report.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/kor_opportunity_scan.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/legacy/fix_stale_fk_20260928.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/legacy/opswap_driver.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/probe_sa_candidates.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/probe_sa_unsubmitted.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/probe_towers_sa.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/research/build_cluster_variants.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/scan_backup_ra.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/skeleton_quota.json": {
+      "verdict": "DROPPED",
+      "basis": "全局台账未回迁：`git ls-tree -r main` 实测现存唯一为 `tracking/KOR/reference/skeleton_quota.json`，骨架配额口径并入 `Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json`。2026-10-29 复核维持 DROPPED。"
+    },
+    "tools/submit_inventory.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/test_gbr_batch_isolation.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/tmp_a16_axes.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/validate_gbr_fields.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/verdict/os_decay_benchmark.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tools/verify_region_op.py": {
+      "verdict": "DROPPED",
+      "basis": "历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代"
+    },
+    "tracking/2026-10-02_analyst_mining.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/2026-10-02_robustness.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/2026-10-02_sentiment_research.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/2026-10-02_usa_tower_scan.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/2026-10-03_robustness.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/2026-10-05_robustness.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/ASI/ideas/ideas_continuation_score_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/ASI/ideas/ideas_model28_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/ASI/ideas/ideas_pattern_scores_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/ASI/ideas/ideas_pv13_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/ASI/ideas/ideas_pv13_post_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/EUR/ACCUMULATED_CANDIDATES.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/EUR/scripts/EUR_poll_eur_sims.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/check_wave_fields.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/direct_submit.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/fetch_prod.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave10_starhold_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave11_starhold_neut.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave12_starhold_sub.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave13_fcfenhance.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave14_fcf15_fix.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave15_fcf_deep.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave16_oth571.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave17_cnn.py": {
+      "verdict": "DROPPED",
+      "basis": "一次性波次实验脚本：`git grep -F 'run_wave17_cnn' main` = 0 命中，非可复用资产。2026-10-29 复核维持 DROPPED。"
+    },
+    "tracking/EUR/scripts/run_wave18_aft.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave19_aea.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave1_nsd_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave20_gsm.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave20_m36low.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave21_starmine.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave22_arh.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave23_ac.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave24_ipv.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave25_fhp.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave269_fincf_residual.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave26_m238.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave27_acq.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave28_inst6.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave29_m354.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave2_cca_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave2_cca_tail.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave30_news54.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave3_mha_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave3b_mirror_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave3c_fcf_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave3d_fcfws_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave4_uni_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave5_pspat_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave6_fcfmix_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave6_nlp_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave6b_fcfmix_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave6c_fcfmix_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave7_ains_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave8_m193_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave9_mlfp_probe.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/EUR/scripts/run_wave_single_fanout.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/GBR/scripts/check_corr.py": {
+      "verdict": "DROPPED",
+      "basis": "单区一次性外壳，职责已由 MCP `check_correlation` + `tools/triage_prodcorr_batch.py` 承接（`git cat-file -e main:tools/triage_prodcorr_batch.py` 返回 0）。2026-10-29 复核维持 DROPPED。"
+    },
+    "tracking/GBR/scripts/dispatch_batch.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/GBR/scripts/gen_candidates_report.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/GBR/scripts/harvest_expr.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/GLB/reports/glb_10tower_matrix_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/GLB/reports/l4_other432_20261003.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/GLB/scripts/_serial_runner.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/GLOBAL/templates/s2_candidate_pool_template.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/HKG/priors/ideas_analyst39_wave1.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/IND/scripts/_alpha_checks.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/IND/scripts/_harvest.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/IND/scripts/_metrics.py": {
+      "verdict": "DROPPED",
+      "basis": "指标读取职责已由 `tools/query_alpha_metrics.py` 承接（`git ls-tree main:tools` 实测存在）；IND 现有 scripts 目录只余 `run_wave*.py` / `batch_validate_kor.py`。2026-10-29 复核维持 DROPPED。"
+    },
+    "tracking/IND/scripts/_probe_is.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/IND/scripts/_probe_model29.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/IND/scripts/_prod_batch.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/KOR/ideas/ideas_risk60_wave185_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/KOR/ideas/ideas_xfam_wave186_20261002.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/KOR/scripts/harvest_batch.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/KOR/scripts/self_batch.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/USA/reference/usa_earn_wave01_findings.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/_archive/findings.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/_archive/progress.md": {
+      "verdict": "DROPPED",
+      "basis": "历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代"
+    },
+    "tracking/reference/fetch_alpha_metrics_batch.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w1.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w10.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w11.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w12.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w14.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w15.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w2.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w3.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w4.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w5.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w6.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w7.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_asi_w8.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_w12.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_w13.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_w14.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "tracking/reference/gen_w15.py": {
+      "verdict": "DROPPED",
+      "basis": "2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁"
+    },
+    "world-quant-brain-mcp/docs/QUICK_START.md": {
+      "verdict": "DROPPED",
+      "basis": "MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干"
+    },
+    "world-quant-brain-mcp/probe_direct_auth.py": {
+      "verdict": "DROPPED",
+      "basis": "MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干"
+    },
+    "world-quant-brain-mcp/probe_labs_live.py": {
+      "verdict": "DROPPED",
+      "basis": "MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干"
+    },
+    "world-quant-brain-mcp/start_mcp_http_servers.py": {
+      "verdict": "DROPPED",
+      "basis": "MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干"
+    },
+    "world-quant-brain-mcp/stop_mcp_http_servers.py": {
+      "verdict": "DROPPED",
+      "basis": "MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干"
     }
   },
   "_restored_history": {

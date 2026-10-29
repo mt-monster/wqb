@@ -144,3 +144,61 @@
 - **若全部失败**：结论为「15 ops + eff=2 ⇒ prod 地板 = 0.6995（压线）」，
   此时按用户抉择 A（接受压线）/ B（eff=0 安全）/ C（换信号源）
 - **预算**：本批 ≤ 12 次模拟（论坛建议每战役 ~50 次止损，本战役累计已用约 30 次）
+
+---
+
+# 附录 B：hump / trade_when / mm 结构三轮对照实验（2026-10-28 补测）
+
+## B.1 实验设计
+
+固定基底（11 ops）：`group_rank(ts_zscore(ts_backfill(vec_avg(assetutilization_sentiment_polarity),126),504), industry)`
+`→ group_neutralize(·, bucket(rank(cap),"0,1,0.1"))`
+`→ group_neutralize(·, bucket(rank(ts_mean(returns,63)),"0,1,0.1"))`
+设置：USA/TOP3000/D1/decay5/CROWDING/trunc0.08/nanHandling ON/maxTrade OFF/2014–2023。
+每次只改一个变量，其余逐字相同（nanHandling 已在每条 settings 内显式锁定，避免顶层参数丢失）。
+
+## B.2 hump 平滑强度曲线（论坛杠杆 5）
+
+| hump | alpha | ops | S | F | 2Y | sub | TO | margin | failed |
+|---|---|---|---|---|---|---|---|---|---|
+| 无 | `1YNeYa3R` | 11 | 1.92 | 1.34 | 2.54 | 1.09 | 0.0449 | 0.00271 | 0 |
+| **1e-4** | **`pwdmdxEx`** | **12** | **1.87** | **1.29** | 2.46 | **1.05** | **0.0318** | **0.00382** | **0** |
+| 2e-4 | `A1VZeEoE` | 12 | 1.80 | 1.23 | 2.38 | 0.99 | 0.0270 | 0.00435 | 0 |
+| 5e-4 | `kqNrvNM6` | 12 | 1.53 | 1.04 | 2.15 | 0.93 | 0.0214 | 0.00537 | 1 |
+| 1e-3 | `3qow0AQX` | 12 | 1.18 | 0.86 | 2.14 | 0.56 | 0.0180 | 0.00720 | 2 |
+
+**单调性**：hump↑ ⇒ TO 单调↓、margin 单调↑、S 单调↓。**甜点 = 1e-4**（margin +41%、TO −29%、S −0.05）。
+**判据修正**：旧记「TO<0.05 加 hump 会冻死」需限定强度——TO 0.045 的信号在 1e-4~2e-4 安全，5e-4 起破 S 闸。
+
+## B.3 mm 结构（论坛黄金模板）—— 不适用事件型情绪
+
+`ts_max_diff(ts_backfill(X,126),252)` 替换 `ts_zscore(...,504)`：
+`kqNdaKx8` 15 ops → S 1.49 / F 0.85 / **2Y 1.22** / sub 0.65 / 3 fail。
+⇒ 论坛该模板是为**低频水平量**（股息率/基本面比率）设计；季度事件情绪上滚动极值差会毁 2Y。
+
+## B.4 trade_when 动量门控（论坛杠杆 3）
+
+`trade_when(ts_zscore(returns,63) > 0, <11ops 基底>, -1)` = 13 ops：
+`6Xd7A5V7` → S 1.77 / F 1.01 / 2Y 2.54 / sub 0.91 / **DD 5.63%→2.68%（−52%）** / failed 0。
+⇒ **门控显著压尾部风险**（DD 减半），代价是 F 掉 0.28。
+
+## B.5 hump + 第三条桶轴（15 ops 满预算）
+
+| alpha | 第三条轴 | ops | S | F | 2Y | sub | inv | eff |
+|---|---|---|---|---|---|---|---|---|
+| **`78Lb33W2`** | `ts_delta(returns,5)` | **15** | **1.88** | **1.28** | **2.47** | **1.03** | **1.75** | **2 ✅** |
+| `78Lb3aoQ` | `price_momentum_factor_score`（RISK） | 15 | 1.82 | 1.21 | 2.31 | 1.06 | 1.68 | 0 ❌ |
+
+⇒ 目前 **IS 最优的 eff=2 全过候选 = `78Lb33W2`**（15 ops 卡线）。
+
+## B.6 三条轴的有效性总排序（跨 12 次实测，prod 维度）
+
+| 轴 | Δprod | ops | 备注 |
+|---|---|---|---|
+| PV `ts_mean(returns,63)`（第 2 轴） | −0.069 | 4 | 最强；触发 REVERSION_COMPONENT |
+| **RISK `price_momentum_factor_score`** | **−0.061** | **3** | 唯一能把 2 轴 0.7349 → <0.70 的第三轴 |
+| `ts_std_dev(returns,252)` | −0.035 | 4 | eff=2 唯一可行第三轴（0.6995 压线） |
+| RISK `residual_volatility_factor` | −0.028 | 3 | — |
+| `ts_mean(volume,63)` | −0.013 | 4 | — |
+| `returns` / `ts_delta(returns,5)` | −0.004 | 2–3 | 近无效 |
+| 任意 `vector_neut` 投影 | ≈0 或 **+0.047** | 2 | volume/adv20 投影为**反向轴** |

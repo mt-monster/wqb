@@ -1,0 +1,26 @@
+[
+  {
+    "id": "Xg9qjVOz",
+    "code": "reverse(ts_decay_linear(group_zscore(ts_covariance(subtract(vec_max(min_loan_rate), vec_min(max_loan_rate)), subtract(vec_max(min_loan_rate), vec_min(max_loan_rate)), 22), industry), 66))",
+    "region": "USA",
+    "sharpe": 2.35,
+    "fitness": 2.59,
+    "two_year_sharpe": 3.34,
+    "turnover": 0.1132,
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SLOW"
+  },
+  {
+    "id": "gJezNxjg",
+    "code": "ts_decay_linear(reverse(group_zscore(ts_covariance(vec_avg(mean_loan_rate_main), vec_avg(mean_loan_rate_main), 22), industry)), 22)",
+    "region": "USA",
+    "sharpe": 1.90,
+    "fitness": 1.80,
+    "two_year_sharpe": 2.92,
+    "turnover": 0.1158,
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SLOW"
+  }
+]

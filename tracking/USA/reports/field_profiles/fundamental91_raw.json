@@ -1,0 +1,3264 @@
+﻿{
+  "results": [
+    {
+      "id": "cat10_primary_sentiment_score2",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #1 for section CAT10 of the filing"
+    },
+    {
+      "id": "cat10_primary_sentiment_score5",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #2 for section CAT10 of the filing"
+    },
+    {
+      "id": "cat10_primary_sentiment_score8",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #3 for the CAT10 section (sentiment family 1)"
+    },
+    {
+      "id": "cat10_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 positive score for the CAT10 section text of the filing"
+    },
+    {
+      "id": "cat10_secondary_sentiment_score1",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 negative score for the CAT10 section text of the filing"
+    },
+    {
+      "id": "cat10_section_metric1_0_value",
+      "type": "VECTOR",
+      "coverage": 0.3201,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Section-level textual similarity score for CAT10 comparing the current filing’s CAT10 text to the same quarter last year’s CAT10 text (index 0 of 3 models)"
+    },
+    {
+      "id": "cat10_section_metric1_1_value",
+      "type": "VECTOR",
+      "coverage": 0.3201,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT10 comparing the current filing’s CAT10 text to the same quarter last year’s CAT10 text (index 1 of 3 models)"
+    },
+    {
+      "id": "cat10_section_metric1_2_value",
+      "type": "VECTOR",
+      "coverage": 0.3201,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT10 comparing the current filing’s CAT10 text to the same quarter last year’s CAT10 text (index 2 of 3 models)"
+    },
+    {
+      "id": "cat11_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 positive score for the CAT11 section text of the filing"
+    },
+    {
+      "id": "cat11_secondary_sentiment_score1",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 negative score for the CAT11 section text of the filing"
+    },
+    {
+      "id": "cat11_section_feature_count1",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 1 in the CAT11 section text"
+    },
+    {
+      "id": "cat13_secondary_sentiment_score1",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment type 2 negative score for the CAT13 section text of the filing"
+    },
+    {
+      "id": "cat13_section_feature_count3",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 3) in the CAT13 section text"
+    },
+    {
+      "id": "cat1_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "CAT1 section: sentiment2 positive score"
+    },
+    {
+      "id": "cat4_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score (alternate sentiment model) for the CAT4 section text of the filing"
+    },
+    {
+      "id": "cat5_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score (alternate sentiment model) for the CAT5 section text of the filing"
+    },
+    {
+      "id": "cat5_secondary_sentiment_score1",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score (alternate sentiment model) for the CAT5 section text of the filing"
+    },
+    {
+      "id": "cat6_primary_sentiment_score1",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #1 for section CAT6"
+    },
+    {
+      "id": "cat6_primary_sentiment_score4",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #2 for section CAT6"
+    },
+    {
+      "id": "cat6_primary_sentiment_score7",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Positive sentiment score from sentiment model #3 for section CAT6"
+    },
+    {
+      "id": "cat6_primary_sentiment_score8",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #3 for section CAT6"
+    },
+    {
+      "id": "cat6_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score (alternate sentiment model) for the CAT6 section text of the filing"
+    },
+    {
+      "id": "cat6_secondary_sentiment_score1",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score (alternate sentiment model) for the CAT6 section text of the filing"
+    },
+    {
+      "id": "cat6_section_metric1_0_value",
+      "type": "VECTOR",
+      "coverage": 0.3054,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT6 similarity score (variant 0) comparing the current filing’s CAT6 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "cat6_section_metric1_1_value",
+      "type": "VECTOR",
+      "coverage": 0.3054,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT6 similarity score (variant 1) comparing the current filing’s CAT6 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "cat6_section_metric1_2_value",
+      "type": "VECTOR",
+      "coverage": 0.3054,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT6 similarity score (variant 2) comparing the current filing’s CAT6 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "cat7_primary_sentiment_score7",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #3 for section CAT7 of the filing"
+    },
+    {
+      "id": "cat7_primary_sentiment_score8",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #3 for section CAT7 of the filing"
+    },
+    {
+      "id": "cat7_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score (alternate sentiment model) for the CAT7 section text of the filing"
+    },
+    {
+      "id": "cat7_secondary_sentiment_score1",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score (alternate sentiment model) for the CAT7 section text of the filing"
+    },
+    {
+      "id": "cat7_section_feature_count0",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 0 in section CAT7 of the filing text"
+    },
+    {
+      "id": "cat7_section_feature_count1",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 1 in section CAT7 of the filing text"
+    },
+    {
+      "id": "cat7_section_feature_count3",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 3 in section CAT7 of the filing text"
+    },
+    {
+      "id": "cat8_secondary_sentiment_score0",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score (alternate sentiment model) for the CAT8 section text of the filing"
+    },
+    {
+      "id": "cat8_section_feature_count3",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 3 in the CAT8 section text"
+    },
+    {
+      "id": "filing_availability_lag_days",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 14,
+      "alphaCount": 14,
+      "description": "Days from fiscal quarter end to the file-as-of date (faod)"
+    },
+    {
+      "id": "fnd91_8k_kic",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 13,
+      "alphaCount": 16,
+      "description": "SEC Central Index Key identifying the company"
+    },
+    {
+      "id": "fnd91_cat0_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat0_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 1,
+      "alphaCount": 4,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat0_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat0_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat0_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat0_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat0_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6455,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Similarity score (metric0, model 1) comparing the current quarter’s CAT0 section text to the previous quarter’s text; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat0_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6455,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Textual similarity score (metric0, model index 1) for section CAT0: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat0_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6455,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Textual similarity score (metric0, model index 2) for section CAT0: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat0_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5864,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 0) for section CAT0: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat0_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5864,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Textual similarity score (metric1, model index 1) for section CAT0: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat0_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5864,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 2) for section CAT0: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in the CAT0 section after filtering by the sentiment measurement method"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model 1 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Negative sentiment score from model 1 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective or neutral sentiment score from model 1 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Positive sentiment score from model 2 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "Negative sentiment score from model 2 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective or neutral sentiment score from model 2 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model 3 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "Negative sentiment score from model 3 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.6541,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective or neutral sentiment score from model 3 for the CAT0 section"
+    },
+    {
+      "id": "fnd91_cat0_sentiment2_0",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT0 section: sentiment2 positive score"
+    },
+    {
+      "id": "fnd91_cat0_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "CAT0 section: sentiment2 negative score"
+    },
+    {
+      "id": "fnd91_cat0_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6555,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT0 section: sentiment2 word count"
+    },
+    {
+      "id": "fnd91_cat0_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.6542,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat0_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.6542,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat10_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 0 in the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat10_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 1 in the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat10_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 2 in the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat10_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 3 in the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat10_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 4 in the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat10_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Number of words of part-of-speech type 5 in the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat10_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.3593,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT10 similarity score (variant 0) comparing the current filing’s CAT10 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat10_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.3593,
+      "userCount": 5,
+      "alphaCount": 7,
+      "description": "Section-level textual similarity score for CAT10 comparing the current filing’s CAT10 text to the previous quarter’s CAT10 text (index 1 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat10_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.3593,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT10 comparing the current filing’s CAT10 text to the previous quarter’s CAT10 text (index 2 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat10_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Word count in section CAT10 after filtering by the sentiment measurement method"
+    },
+    {
+      "id": "fnd91_cat10_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #1 for section CAT10 of the filing"
+    },
+    {
+      "id": "fnd91_cat10_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective sentiment score from model #1 for section CAT10 of the filing"
+    },
+    {
+      "id": "fnd91_cat10_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "Positive sentiment score from model #2 for section CAT10 of the filing"
+    },
+    {
+      "id": "fnd91_cat10_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Objective (neutral) sentiment score from model #2 for the CAT10 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat10_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #3 for the CAT10 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat10_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from model #3 for the CAT10 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat10_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.3701,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment type 2 word count for the CAT10 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat10_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Sentiment type 2 readability: Flesch-Kincaid score for the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat10_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.3589,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 readability: Gunning Fog Index for the CAT10 section text"
+    },
+    {
+      "id": "fnd91_cat11_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of words of part-of-speech type 0 in the CAT11 section text"
+    },
+    {
+      "id": "fnd91_cat11_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 2 in the CAT11 section text"
+    },
+    {
+      "id": "fnd91_cat11_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 3 in the CAT11 section text"
+    },
+    {
+      "id": "fnd91_cat11_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Number of words of part-of-speech type 4 in the CAT11 section text"
+    },
+    {
+      "id": "fnd91_cat11_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of words of part-of-speech type 5 in the CAT11 section text"
+    },
+    {
+      "id": "fnd91_cat11_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6343,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT11 comparing the current filing’s CAT11 text to the previous quarter’s CAT11 text (index 0 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat11_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6343,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT11 comparing the current filing’s CAT11 text to the previous quarter’s CAT11 text (index 1 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat11_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6343,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT11 comparing the current filing’s CAT11 text to the previous quarter’s CAT11 text (index 2 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat11_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5757,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Section-level textual similarity score for CAT11 comparing the current filing’s CAT11 text to the same quarter last year’s CAT11 text (index 0 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat11_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5757,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Section-level textual similarity score for CAT11 comparing the current filing’s CAT11 text to the same quarter last year’s CAT11 text (index 1 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat11_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5757,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT11 comparing the current filing’s CAT11 text to the same quarter last year’s CAT11 text (index 2 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count after sentiment-method filtering for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #1 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #1 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from model #1 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #2 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #2 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from model #2 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #3 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #3 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.642,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from model #3 for the CAT11 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat11_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6446,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 word count for the CAT11 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat11_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.6421,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 readability: Flesch-Kincaid score for the CAT11 section text"
+    },
+    {
+      "id": "fnd91_cat11_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.6421,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 readability: Gunning Fog Index for the CAT11 section text"
+    },
+    {
+      "id": "fnd91_cat12_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 0 in the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat12_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of words of part-of-speech type 1 in the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat12_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 2 in the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat12_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 3 in the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat12_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 4) in the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat12_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of a specific part-of-speech type (index 5) in the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat12_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.5637,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Section-level textual similarity score for CAT12 comparing the current filing’s CAT12 text to the previous quarter’s CAT12 text (index 0 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat12_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.5637,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT12 comparing the current filing’s CAT12 text to the previous quarter’s CAT12 text (index 1 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat12_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.5637,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT12 comparing the current filing’s CAT12 text to the previous quarter’s CAT12 text (index 2 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat12_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT12 comparing the current filing’s CAT12 text to the same quarter last year’s CAT12 text (index 0 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat12_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5082,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Section-level textual similarity score for CAT12 comparing the current filing’s CAT12 text to the same quarter last year’s CAT12 text (index 1 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat12_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT12 comparing the current filing’s CAT12 text to the same quarter last year’s CAT12 text (index 2 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Word count after sentiment-method filtering for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Positive sentiment score from model #1 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #1 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from model #1 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #2 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #2 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from model #2 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #3 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #3 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.5661,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Objective (neutral) sentiment score from model #3 for the CAT12 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat12_sentiment2_0",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 positive score for the CAT12 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat12_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment type 2 negative score for the CAT12 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat12_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.576,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 word count for the CAT12 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat12_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.5663,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 readability: Flesch-Kincaid score for the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat12_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.5663,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 readability: Gunning Fog Index for the CAT12 section text"
+    },
+    {
+      "id": "fnd91_cat13_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of a specific part-of-speech type (index 0) in the CAT13 section text"
+    },
+    {
+      "id": "fnd91_cat13_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of a specific part-of-speech type (index 1) in the CAT13 section text"
+    },
+    {
+      "id": "fnd91_cat13_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of a specific part-of-speech type (index 2) in the CAT13 section text"
+    },
+    {
+      "id": "fnd91_cat13_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Count of words of a specific part-of-speech type (index 4) in the CAT13 section text"
+    },
+    {
+      "id": "fnd91_cat13_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 5) in the CAT13 section text"
+    },
+    {
+      "id": "fnd91_cat13_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6483,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT13 comparing the current filing’s CAT13 text to the previous quarter’s CAT13 text (index 0 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat13_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6483,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Section-level textual similarity score for CAT13 comparing the current filing’s CAT13 text to the previous quarter’s CAT13 text (index 1 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat13_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6483,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT13 comparing the current filing’s CAT13 text to the previous quarter’s CAT13 text (index 2 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat13_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5893,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Section-level textual similarity score for CAT13 comparing the current filing’s CAT13 text to the same quarter last year’s CAT13 text (index 0 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat13_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5893,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Section-level textual similarity score for CAT13 comparing the current filing’s CAT13 text to the same quarter last year’s CAT13 text (index 1 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat13_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5893,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section-level textual similarity score for CAT13 comparing the current filing’s CAT13 text to the same quarter last year’s CAT13 text (index 2 of 3 models)"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count after sentiment-method filtering for the CAT13 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #1 for the CAT13 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #1 for the CAT13 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from model #1 for the CAT13 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Positive sentiment score from model #2 for the CAT13 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #2 for the CAT13 section (sentiment family 1)"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "CAT13 section: sentiment1 model #2 objective/neutral score"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT13 section: sentiment1 model #3 positive score"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 1,
+      "alphaCount": 4,
+      "description": "CAT13 section: sentiment1 model #3 negative score"
+    },
+    {
+      "id": "fnd91_cat13_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.6573,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT13 section: sentiment1 model #3 objective/neutral score"
+    },
+    {
+      "id": "fnd91_cat13_sentiment2_0",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 positive score for the CAT13 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat13_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 word count for the CAT13 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat13_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 readability: Flesch-Kincaid score for the CAT13 section text"
+    },
+    {
+      "id": "fnd91_cat13_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment type 2 readability: Gunning Fog Index for the CAT13 section text"
+    },
+    {
+      "id": "fnd91_cat14_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 0) in the CAT14 section text"
+    },
+    {
+      "id": "fnd91_cat14_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 1) in the CAT14 section text"
+    },
+    {
+      "id": "fnd91_cat14_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 2) in the CAT14 section text"
+    },
+    {
+      "id": "fnd91_cat14_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 3) in the CAT14 section text"
+    },
+    {
+      "id": "fnd91_cat14_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of a specific part-of-speech type (index 4) in the CAT14 section text"
+    },
+    {
+      "id": "fnd91_cat14_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Count of words of a specific part-of-speech type (index 5) in the CAT14 section text"
+    },
+    {
+      "id": "fnd91_cat1_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat1_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat1_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat1_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat1_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat1_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 2,
+      "alphaCount": 4,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat1_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6015,
+      "userCount": 4,
+      "alphaCount": 15,
+      "description": "Textual similarity score (metric0, model index 0) for section CAT1: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat1_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6015,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 1) for section CAT1: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat1_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6015,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 2) for section CAT1: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat1_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5409,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Textual similarity score (metric1, model index 0) for section CAT1: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat1_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5409,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Textual similarity score (metric1, model index 1) for section CAT1: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat1_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5409,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 2) for section CAT1: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in the CAT1 section after filtering by the sentiment measurement method"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model 1 for the CAT1 section"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model 1 for the CAT1 section"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective or neutral sentiment score from model 1 for the CAT1 section"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Positive sentiment score from model 2 for the CAT1 section"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model 2 for the CAT1 section"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #2 for section CAT1"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #3 for section CAT1"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #3 for section CAT1"
+    },
+    {
+      "id": "fnd91_cat1_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.6082,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #3 for section CAT1"
+    },
+    {
+      "id": "fnd91_cat1_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT1 section: sentiment2 negative score"
+    },
+    {
+      "id": "fnd91_cat1_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6161,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT1 section: sentiment2 word count"
+    },
+    {
+      "id": "fnd91_cat1_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.6084,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat1_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.6084,
+      "userCount": 4,
+      "alphaCount": 11,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat2_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat2_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat2_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat2_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_cnt <0-5> : counts of different  POS types of words in the text"
+    },
+    {
+      "id": "fnd91_cat2_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Count of words of part-of-speech type index 4 in section CAT2 of the filing text"
+    },
+    {
+      "id": "fnd91_cat2_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of part-of-speech type index 5 in section CAT2 of the filing text"
+    },
+    {
+      "id": "fnd91_cat2_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6382,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 0) for section CAT2: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat2_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6382,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 1) for section CAT2: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat2_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6382,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 2) for section CAT2: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat2_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5788,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 0) for section CAT2: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat2_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5788,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 1) for section CAT2: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat2_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5788,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 2) for section CAT2: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in section CAT2 after sentiment preprocessing/filtering"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #1 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Negative sentiment score from sentiment model #1 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #1 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #2 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #2 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #2 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #3 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #3 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.6447,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #3 for section CAT2"
+    },
+    {
+      "id": "fnd91_cat2_sentiment2_0",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT2 section: sentiment2 positive score"
+    },
+    {
+      "id": "fnd91_cat2_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT2 section: sentiment2 negative score"
+    },
+    {
+      "id": "fnd91_cat2_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6487,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT2 section: sentiment2 word count"
+    },
+    {
+      "id": "fnd91_cat2_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.645,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat2_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.645,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat3_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 0 in section CAT3 of the filing text"
+    },
+    {
+      "id": "fnd91_cat3_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 1 in section CAT3 of the filing text"
+    },
+    {
+      "id": "fnd91_cat3_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 2 in section CAT3 of the filing text"
+    },
+    {
+      "id": "fnd91_cat3_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of part-of-speech type index 3 in section CAT3 of the filing text"
+    },
+    {
+      "id": "fnd91_cat3_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 4 in section CAT3 of the filing text"
+    },
+    {
+      "id": "fnd91_cat3_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 5 in section CAT3 of the filing text"
+    },
+    {
+      "id": "fnd91_cat3_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6463,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Textual similarity score (metric0, model index 0) for section CAT3: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat3_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6463,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 1) for section CAT3: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat3_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6463,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 2) for section CAT3: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat3_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5871,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Textual similarity score (metric1, model index 0) for section CAT3: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat3_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5871,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 1) for section CAT3: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat3_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5871,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Textual similarity score (metric1, model index 2) for section CAT3: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in section CAT3 after sentiment preprocessing/filtering"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #1 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Negative sentiment score from sentiment model #1 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Objective/neutral sentiment score from sentiment model #1 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #2 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 1,
+      "alphaCount": 5,
+      "description": "Negative sentiment score from sentiment model #2 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #2 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #3 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #3 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #3 for section CAT3"
+    },
+    {
+      "id": "fnd91_cat3_sentiment2_0",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CAT3 section: sentiment2 positive score"
+    },
+    {
+      "id": "fnd91_cat3_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score (alternate sentiment model) for the CAT3 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat3_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6562,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Word count for the CAT3 section text of the filing (alternate sentiment2 family)"
+    },
+    {
+      "id": "fnd91_cat3_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat3_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.6505,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat4_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of part-of-speech type index 0 in section CAT4 of the filing text"
+    },
+    {
+      "id": "fnd91_cat4_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 1 in section CAT4 of the filing text"
+    },
+    {
+      "id": "fnd91_cat4_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 2 in section CAT4 of the filing text"
+    },
+    {
+      "id": "fnd91_cat4_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 3 in section CAT4 of the filing text"
+    },
+    {
+      "id": "fnd91_cat4_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 4 in section CAT4 of the filing text"
+    },
+    {
+      "id": "fnd91_cat4_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 5 in section CAT4 of the filing text"
+    },
+    {
+      "id": "fnd91_cat4_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6005,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 0) for section CAT4: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat4_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6005,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 1) for section CAT4: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat4_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6005,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 2) for section CAT4: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat4_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5414,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 0) for section CAT4: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat4_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5414,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric1, model index 1) for section CAT4: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat4_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5414,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Textual similarity score (metric1, model index 2) for section CAT4: current filing vs same quarter last year's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in section CAT4 after sentiment preprocessing/filtering"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #1 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #1 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective/neutral sentiment score from sentiment model #1 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #2 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #2 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #2 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #3 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #3 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.6067,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #3 for section CAT4"
+    },
+    {
+      "id": "fnd91_cat4_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score (alternate sentiment model) for the CAT4 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat4_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6131,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Word count for the CAT4 section text of the filing (alternate sentiment2 family)"
+    },
+    {
+      "id": "fnd91_cat4_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.6069,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat4_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.6069,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat5_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 0 in section CAT5 of the filing text"
+    },
+    {
+      "id": "fnd91_cat5_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of part-of-speech type index 1 in section CAT5 of the filing text"
+    },
+    {
+      "id": "fnd91_cat5_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 2 in section CAT5 of the filing text"
+    },
+    {
+      "id": "fnd91_cat5_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 3 in section CAT5 of the filing text"
+    },
+    {
+      "id": "fnd91_cat5_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of part-of-speech type index 4 in section CAT5 of the filing text"
+    },
+    {
+      "id": "fnd91_cat5_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 5 in section CAT5 of the filing text"
+    },
+    {
+      "id": "fnd91_cat5_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.551,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Textual similarity score (metric0, model index 0) for section CAT5: current filing vs last quarter's filing; higher = more similar"
+    },
+    {
+      "id": "fnd91_cat5_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.551,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Section CAT5 similarity score (variant 1) comparing the current filing’s CAT5 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat5_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.551,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT5 similarity score (variant 2) comparing the current filing’s CAT5 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat5_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.4924,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT5 similarity score (variant 0) comparing the current filing’s CAT5 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat5_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.4924,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Section CAT5 similarity score (variant 1) comparing the current filing’s CAT5 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat5_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.4924,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT5 similarity score (variant 2) comparing the current filing’s CAT5 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Word count in section CAT5 after filtering by the sentiment measurement method"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #1 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #1 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #1 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #2 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #2 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Objective (neutral) sentiment score from sentiment model #2 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #3 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #3 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #3 for section CAT5"
+    },
+    {
+      "id": "fnd91_cat5_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.5718,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count for the CAT5 section text of the filing (alternate sentiment2 family)"
+    },
+    {
+      "id": "fnd91_cat5_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat5_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.5672,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat6_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 0 in section CAT6 of the filing text"
+    },
+    {
+      "id": "fnd91_cat6_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 1 in section CAT6 of the filing text"
+    },
+    {
+      "id": "fnd91_cat6_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of part-of-speech type index 2 in section CAT6 of the filing text"
+    },
+    {
+      "id": "fnd91_cat6_cnt3",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Count of words of part-of-speech type index 3 in section CAT6 of the filing text"
+    },
+    {
+      "id": "fnd91_cat6_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 4 in section CAT6 of the filing text"
+    },
+    {
+      "id": "fnd91_cat6_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 5 in section CAT6 of the filing text"
+    },
+    {
+      "id": "fnd91_cat6_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.3432,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT6 similarity score (variant 0) comparing the current filing’s CAT6 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat6_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.3432,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT6 similarity score (variant 1) comparing the current filing’s CAT6 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat6_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.3432,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Section CAT6 similarity score (variant 2) comparing the current filing’s CAT6 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat6_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in section CAT6 after filtering by the sentiment measurement method"
+    },
+    {
+      "id": "fnd91_cat6_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #1 for section CAT6"
+    },
+    {
+      "id": "fnd91_cat6_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #1 for section CAT6"
+    },
+    {
+      "id": "fnd91_cat6_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #2 for section CAT6"
+    },
+    {
+      "id": "fnd91_cat6_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #2 for section CAT6"
+    },
+    {
+      "id": "fnd91_cat6_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #3 for section CAT6"
+    },
+    {
+      "id": "fnd91_cat6_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.3538,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Word count for the CAT6 section text of the filing (alternate sentiment2 family)"
+    },
+    {
+      "id": "fnd91_cat6_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat6_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.3429,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat7_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Count of words of part-of-speech type index 2 in section CAT7 of the filing text"
+    },
+    {
+      "id": "fnd91_cat7_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 4 in the CAT7 section text"
+    },
+    {
+      "id": "fnd91_cat7_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 5 in the CAT7 section text"
+    },
+    {
+      "id": "fnd91_cat7_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6414,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT7 similarity score (variant 0) comparing the current filing’s CAT7 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat7_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6414,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT7 similarity score (variant 1) comparing the current filing’s CAT7 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat7_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6414,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT7 similarity score (variant 2) comparing the current filing’s CAT7 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat7_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5821,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT7 similarity score (variant 0) comparing the current filing’s CAT7 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat7_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5821,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT7 similarity score (variant 1) comparing the current filing’s CAT7 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat7_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5821,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT7 similarity score (variant 2) comparing the current filing’s CAT7 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in section CAT7 after filtering by the sentiment measurement method"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #1 for section CAT7"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #1 for section CAT7"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective (neutral) sentiment score from sentiment model #1 for section CAT7"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from sentiment model #2 for section CAT7"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from sentiment model #2 for section CAT7"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Objective sentiment score from model #2 for section CAT7 of the filing"
+    },
+    {
+      "id": "fnd91_cat7_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective sentiment score from model #3 for section CAT7 of the filing"
+    },
+    {
+      "id": "fnd91_cat7_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.652,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Word count for the CAT7 section text of the filing (alternate sentiment2 family)"
+    },
+    {
+      "id": "fnd91_cat7_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat7_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.5814,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat8_cnt0",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 0 in the CAT8 section text"
+    },
+    {
+      "id": "fnd91_cat8_cnt1",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 1 in the CAT8 section text"
+    },
+    {
+      "id": "fnd91_cat8_cnt2",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 2 in the CAT8 section text"
+    },
+    {
+      "id": "fnd91_cat8_cnt4",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 4 in the CAT8 section text"
+    },
+    {
+      "id": "fnd91_cat8_cnt5",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words of part-of-speech type 5 in the CAT8 section text"
+    },
+    {
+      "id": "fnd91_cat8_metric0_0",
+      "type": "VECTOR",
+      "coverage": 0.6454,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT8 similarity score (variant 0) comparing the current filing’s CAT8 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat8_metric0_1",
+      "type": "VECTOR",
+      "coverage": 0.6454,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT8 similarity score (variant 1) comparing the current filing’s CAT8 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat8_metric0_2",
+      "type": "VECTOR",
+      "coverage": 0.6454,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT8 similarity score (variant 2) comparing the current filing’s CAT8 text to the previous quarter’s; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat8_metric1_0",
+      "type": "VECTOR",
+      "coverage": 0.5863,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT8 similarity score (variant 0) comparing the current filing’s CAT8 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat8_metric1_1",
+      "type": "VECTOR",
+      "coverage": 0.5863,
+      "userCount": 10,
+      "alphaCount": 13,
+      "description": "Section CAT8 similarity score (variant 1) comparing the current filing’s CAT8 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat8_metric1_2",
+      "type": "VECTOR",
+      "coverage": 0.5863,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Section CAT8 similarity score (variant 2) comparing the current filing’s CAT8 text to the same quarter last year; higher means more similar"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count in section CAT8 after filtering by the sentiment measurement method"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #1 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Negative sentiment score from model #1 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Objective sentiment score from model #1 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #2 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score from model #2 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Objective sentiment score from model #2 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive sentiment score from model #3 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Negative sentiment score from model #3 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Objective sentiment score from model #3 for section CAT8 of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative sentiment score (alternate sentiment model) for the CAT8 section text of the filing"
+    },
+    {
+      "id": "fnd91_cat8_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Word count for the CAT8 section text of the filing (alternate sentiment2 family)"
+    },
+    {
+      "id": "fnd91_cat8_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_cat8_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.6554,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "<CAT_id>_sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_doccount",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of attached documents in this filing"
+    },
+    {
+      "id": "fnd91_kic",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "SEC Central Index Key identifying the filer"
+    },
+    {
+      "id": "fnd91_measure_0",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Count of sentences in the 8-K item text"
+    },
+    {
+      "id": "fnd91_measure_1",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "Count of syllables in the 8-K item text"
+    },
+    {
+      "id": "fnd91_measure_2",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 3,
+      "alphaCount": 6,
+      "description": "Count of complex words in the item text"
+    },
+    {
+      "id": "fnd91_measure_3",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 19,
+      "alphaCount": 23,
+      "description": "Count of long words in the 8-K item text"
+    },
+    {
+      "id": "fnd91_measure_4",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 4,
+      "alphaCount": 7,
+      "description": "Total word count in the item text"
+    },
+    {
+      "id": "fnd91_numeric_count",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Count of numeric figures in the item text"
+    },
+    {
+      "id": "fnd91_period",
+      "type": "VECTOR",
+      "coverage": 0.6578,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Fiscal quarter (period end date) the filing covers"
+    },
+    {
+      "id": "fnd91_readability_0",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 14,
+      "alphaCount": 15,
+      "description": "readability_<0,1,2> : readability measures of text"
+    },
+    {
+      "id": "fnd91_readability_1",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "readability_<0,1,2> : readability measures of text"
+    },
+    {
+      "id": "fnd91_readability_2",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 11,
+      "alphaCount": 15,
+      "description": "readability_<0,1,2> : readability measures of text"
+    },
+    {
+      "id": "fnd91_sentiment1_0",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Word count after filtering by the sentiment1 method"
+    },
+    {
+      "id": "fnd91_sentiment1_1",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Positive sentiment score from sentiment model #1"
+    },
+    {
+      "id": "fnd91_sentiment1_2",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Negative sentiment score from sentiment model #1"
+    },
+    {
+      "id": "fnd91_sentiment1_3",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Objective/neutral sentiment score from sentiment model #1"
+    },
+    {
+      "id": "fnd91_sentiment1_4",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Positive sentiment score from sentiment model #2"
+    },
+    {
+      "id": "fnd91_sentiment1_5",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Negative sentiment score from sentiment model #2"
+    },
+    {
+      "id": "fnd91_sentiment1_6",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 8,
+      "alphaCount": 13,
+      "description": "Objective or neutral sentiment score from sentiment model #2"
+    },
+    {
+      "id": "fnd91_sentiment1_7",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 1,
+      "alphaCount": 3,
+      "description": "Positive sentiment score from sentiment model #3"
+    },
+    {
+      "id": "fnd91_sentiment1_8",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Negative sentiment score from sentiment model #3"
+    },
+    {
+      "id": "fnd91_sentiment1_9",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 4,
+      "alphaCount": 7,
+      "description": "Objective or neutral sentiment score from sentiment model #3"
+    },
+    {
+      "id": "fnd91_sentiment2_0",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 20,
+      "alphaCount": 23,
+      "description": "Positive sentiment score from sentiment family 2"
+    },
+    {
+      "id": "fnd91_sentiment2_1",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Negative sentiment score from the alternate sentiment family (sentiment2)"
+    },
+    {
+      "id": "fnd91_sentiment2_2",
+      "type": "VECTOR",
+      "coverage": 0.8664,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Word count from sentiment family 2"
+    },
+    {
+      "id": "fnd91_sentiment2_3",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_sentiment2_4",
+      "type": "VECTOR",
+      "coverage": 0.8658,
+      "userCount": 8,
+      "alphaCount": 10,
+      "description": "sentiment2_<3,4> : 2 complexity measures of text"
+    },
+    {
+      "id": "fnd91_topic_0",
+      "type": "VECTOR",
+      "coverage": 0.6402,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_1",
+      "type": "VECTOR",
+      "coverage": 0.5741,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_10",
+      "type": "VECTOR",
+      "coverage": 0.8007,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_11",
+      "type": "VECTOR",
+      "coverage": 0.7238,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_12",
+      "type": "VECTOR",
+      "coverage": 0.8487,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Exposure score of the 8-K item to predefined Topic 12 (Business Strategy)"
+    },
+    {
+      "id": "fnd91_topic_13",
+      "type": "VECTOR",
+      "coverage": 0.8327,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "Exposure score of the 8-K item to predefined Topic 13 (Securities Lending)"
+    },
+    {
+      "id": "fnd91_topic_14",
+      "type": "VECTOR",
+      "coverage": 0.7458,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Exposure score of the 8-K item to predefined Topic 14 (Management Change)"
+    },
+    {
+      "id": "fnd91_topic_15",
+      "type": "VECTOR",
+      "coverage": 0.6967,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Exposure score of the 8-K item to predefined Topic 15 (Healthcare Sector)"
+    },
+    {
+      "id": "fnd91_topic_16",
+      "type": "VECTOR",
+      "coverage": 0.7247,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_17",
+      "type": "VECTOR",
+      "coverage": 0.7199,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Exposure score of the 8-K item to predefined Topic 17 (Stock Dilution)"
+    },
+    {
+      "id": "fnd91_topic_18",
+      "type": "VECTOR",
+      "coverage": 0.668,
+      "userCount": 34,
+      "alphaCount": 43,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_19",
+      "type": "VECTOR",
+      "coverage": 0.8597,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_2",
+      "type": "VECTOR",
+      "coverage": 0.8358,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_3",
+      "type": "VECTOR",
+      "coverage": 0.7505,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Exposure score of the 8-K item to predefined Topic 3 (Real Estate)"
+    },
+    {
+      "id": "fnd91_topic_4",
+      "type": "VECTOR",
+      "coverage": 0.7101,
+      "userCount": 35,
+      "alphaCount": 67,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_5",
+      "type": "VECTOR",
+      "coverage": 0.6646,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_6",
+      "type": "VECTOR",
+      "coverage": 0.7078,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Exposure score of the 8-K item to predefined Topic 6 (Amendment of shareholder rights)"
+    },
+    {
+      "id": "fnd91_topic_7",
+      "type": "VECTOR",
+      "coverage": 0.8597,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Exposure score of the 8-K item to predefined Topic 7 (Earnings Results)"
+    },
+    {
+      "id": "fnd91_topic_8",
+      "type": "VECTOR",
+      "coverage": 0.786,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_topic_9",
+      "type": "VECTOR",
+      "coverage": 0.6916,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "topic_<0-20> : exposure of current items to 20 pre-defined topics"
+    },
+    {
+      "id": "fnd91_valid_mapping",
+      "type": "VECTOR",
+      "coverage": 0.643,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Indicator that the entity-to-ticker mapping is correct (1) or unreliable and should be ignored (0)"
+    }
+  ],
+  "count": 407,
+  "platform_count": 407,
+  "complete": true,
+  "pages_fetched": 9
+}

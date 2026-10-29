@@ -1,10 +1,45 @@
 {
  "wins": [
   {
-   "id": "DEU-AEI-STARMINE-HYBRID-WIN",
-   "what": "主辅机制显式：starmine E14/PS12E/D14 三腿（S/F 载体）+ aei group_rank 位置（2y 载体）+ zscore 反转腿（ts_zscore 归一化短反转，同时抬 S/2y；窗口 5 或 group 化最稳）",
-   "key": "hybrid 配方（starmine 修订/惊喜腿 × aei 位置/反转腿）：883Y3bAW 2.17/1.24/2y2.09 ra_failed=0；883Y3bqW 1.93/1.18/2y2.03 ra_failed=0；prod 0.4666/0.4723；与旗舰 883Yzbqo corr 0.6929(<0.7 可共存)",
-   "evidence": "hybrid 配方（starmine 修订/惊喜腿 × aei 位置/反转腿）：883Y3bAW 2.17/1.24/2y2.09 ra_failed=0；883Y3bqW 1.93/1.18/2y2.03 ra_failed=0；prod 0.4666/0.4723；与旗舰 883Yzbqo corr 0.6929(<0.7 可共存)",
+   "id": "DEU-LOANRATE-TV-IND-AXIS-20261029",
+   "what": "DEU 借券费率时序方差 W22 + industry 分组轴（论坛模板的区域适配）",
+   "key": "论坛 ASI 模板（借券费率时序方差 W22）在 DEU 可复现，但分组轴必须换成 industry：① DEU 单交易所 ⇒ exchange 轴退化（group_zscore(·,exchange) ≈ 全局 zscore），尾部权重吃满 truncation，CW 0.473/DD 58%；换 industry 后同一式子 CW 过、DD 20.6%、2Y 0.25→1.10、S 0.95。论坛『必须用 exchange、industry 会 FAIL』在 DEU 正好相反——分组轴有效性取决于该轴在本区是否退化。② W22 是机制半衰期：W66 把 margin 抬到 54bp 但 2Y 塌到 0.37、CW 0.378 挂。③ 方差 vs 标准差在 DEU 反转（std 0.88 > variance 0.67），universe 只有 500 票时方差版的尾部集中度不可承受；与 ASI(2000+ 票) 相反。④ nanHandling=ON 把 margin 从 6bp 抬到 24.5bp 但 DD 从 13.7% 抬到 40-58%。",
+   "evidence": {
+    "alphas": {
+     "wpQg5xZp": "variance@industry W22 S0.95/F0.75/2Y1.10/DD20.6%/CW pass",
+     "3qoLa02O": "std@exchange W22 S0.88/F0.81/2Y0.64/DD40.8%/CW0.156 fail",
+     "78L9aY2O": "variance@exchange W22 S0.67/F0.69/2Y0.25/DD58.2%/CW0.473 fail",
+     "akKvNZbv": "variance@exchange W66 margin54bp/2Y0.37/CW0.378 fail"
+    },
+    "literature": [
+     "Engelberg-Reed-Ringgenberg 2018 JF (short-selling risk)",
+     "D'Avolio 2002 JFE (loan fee supply)"
+    ],
+    "settings": "nanHandling=ON, DEU/TOP500/D1"
+   },
+   "source": "registry_win"
+  },
+  {
+   "id": "DEU-SI3-LEVEL-2Y-CARRIER-20261029",
+   "what": "DEU 借券费率水平式（横截面 rank + ts_backfill 252）是未点亮塔唯一 2Y 载体",
+   "key": "借券费率的 alpha 在横截面水平里，不在自身历史偏离里：ts_rank/ts_zscore 自身历史归一把 2Y 从 1.65 打到 0.24-0.30 且 turnover +50%。最优形态 `-rank(ts_backfill(vec_avg(mean_loan_rate_main), 252))`（252 优于 22：S 0.82/2Y1.65 vs 0.76/1.25；长窗只是平滑输入，不改变横截面水平度量）。覆盖率不是约束：高覆盖 _p5_d1 口径(0.783 vs 0.687) 全维度更弱。CW 已证不是结构墙：水平式三条全部 CW pass、DD≤13.8%（旧条 DEU-SI3-CW-STRUCTURAL 的『CW 不可修复』应读作『旧几何不可修复』）。单信号 S/F 天花板 0.82/0.45，必须配 ANALYST 强腿才可能过 1.58/1.0。",
+   "evidence": {
+    "alphas": {
+     "JjeK5YPO": "backfill252 S0.82/F0.45/2Y1.65/subU0.85/TO0.194/DD13.7%/CW pass",
+     "9qx09por": "backfill22 S0.76/F0.39/2Y1.25/subU0.74/CW pass",
+     "1YNEopE6": "p5_d1 backfill22 S0.68/F0.31/2Y1.26/subU0.50/CW pass",
+     "A1VKOpMw": "ts_rank250 S0.67/2Y0.30/CW fail",
+     "rKRXrqv9": "ts_zscore250 S0.74/2Y0.24/CW fail"
+    },
+    "wave": "s2_unlit_tower_20261029"
+   },
+   "source": "registry_win"
+  },
+  {
+   "id": "DEU-SI3-REVIVAL-WIN",
+   "what": "DEU-SI3-REVIVAL-WIN",
+   "key": "",
+   "evidence": "",
    "source": "registry_win"
   },
   {
@@ -27,99 +62,74 @@
    "key": "",
    "evidence": "",
    "source": "registry_win"
-  },
-  {
-   "id": "DEU-M264-STARMINE-HYBRID-WIN",
-   "what": "ML 方向预测腿（mdl264_amihud_class 三档趋势）× 分析师修订腿；关键配方件：D90 修订腿（ebitda_90d_3）ts_mean 5→22 平滑——2y 1.57→2.11",
-   "key": "model264(amihud_class 流动性方向) × starmine(修订%×E14/D14/PS12E) hybrid：0mR6PRo6 1.94/1.45/2y2.11 ra_failed=0 全闸；prod 0.6075；与 883Y3bAW corr 0.5997 独立可共存",
-   "evidence": "model264(amihud_class 流动性方向) × starmine(修订%×E14/D14/PS12E) hybrid：0mR6PRo6 1.94/1.45/2y2.11 ra_failed=0 全闸；prod 0.6075；与 883Y3bAW corr 0.5997 独立可共存",
-   "source": "registry_win"
-  },
-  {
-   "id": "DEU-SI3-REVIVAL-WIN",
-   "what": "DEU-SI3-REVIVAL-WIN",
-   "key": "",
-   "evidence": "",
-   "source": "registry_win"
   }
  ],
  "dead_ends": [
   {
-   "family": "field_level_fail",
-   "reason": "这 4 个 insider 交易字段在 DEU 暂不投入（可能为平台侧字段数据问题）；如需复用先单独探针验证。",
-   "salvage": null,
+   "family": "sentiment7 维基关注度脉冲（合规单信号）",
+   "reason": "6 waves / 48 probes, all compliant single-signal (no add legs). Ceiling S=0.71 (e7QnjwKJ trade_when gate) vs ladder 1.58 = 2.2x gap. Gain chain measured: raw delta22 S0.24/tvr0.64 -> ts_mean5 pre-smooth S0.44/tvr0.29 -> +group_rank(subindustry) S0.58 -> +ts_backfill(66) S0.67 with CW PASS. Equivalent-operator scan (D15 prerequisite) found no breakthrough: ts_zscore 0.33 / ts_scale 0.25 / signed_power 0.55 (bit-identical no-op) / group_zscore 0.27 / axes market 0.45 < industry 0.60 < subindustry 0.67. S vs 2Y is a monotonic seesaw: all S>=0.67 have 2Y<=0, all 2Y>=0.50 have S<=0.60; trade_when raised S to 0.71 but left 2Y at -0.07 (gating drops NaN days, does not inject persistence). ts_target_tvr_decay/_hump are NEGATIVE levers in DEU (-0.37/-0.10). snt7_all_languages_views dead (0.25/0.01/0.03/0.03 across 4 tests). CW wall solved by ts_backfill (8/8 PASS) so this is NOT a CW problem.",
+   "salvage": {
+    "item": [
+     {
+      "alpha_id": "e7QnjwKJ",
+      "note": "S0.71 family ceiling"
+     },
+     {
+      "alpha_id": "2rmJrQl6",
+      "note": "S0.60 / 2Y0.63 most balanced"
+     },
+     {
+      "alpha_id": "omWVmAL2",
+      "note": "2Y1.06 ceiling, 2Y carrier candidate"
+     },
+     {
+      "alpha_id": "3qVEK6RZ",
+      "note": "canonical S0.67 form"
+     }
+    ]
+   },
    "source": "registry_dead_end",
-   "_entry_id": "DEU-A2-SPARSE-INTRADAY-FIELDS-FAIL"
+   "_entry_id": "DEU-SENTIMENT7-PULSE-CEILING-20261005"
   },
   {
-   "family": "analyst_earnings_ibes 反转/低波/量价/换手方向",
-   "reason": "",
-   "salvage": null,
+   "family": "pv30 统计聚类分组标签（GROUP 类，非信号本体）",
+   "reason": "catalog_pv30 实测 data_type=GROUP，285/285 字段全为统计聚类分类标签（Zura PCA/FACT1-4、TOP300-1200 多宇宙、sta2_top*_fact*_c*），无价格/量价/基本面信号语义。s2_pv30_d1 生成 165 条过门禁后 132 条 status=fail（gate_exit=1），GEME 产 ideas 全为 days_from_last_change(sign(<pca组件>)) 这类『分组变更』伪信号。ledger pv30_verdict 已有结论 probed_grouping_only。注意：S1 语义分类把它误标为 signal_field_count=285 / blocked_field_count=0（classify 对 GROUP 类字段的盲区，L3.5 结构族未拦截）。",
+   "salvage": {
+    "alpha_ids": [],
+    "count": 0,
+    "source_waves": [],
+    "sealed_at": "2026-10-02T15:13:21",
+    "note": "seal_dead_end 沉降：供 Mode B 组合腿救援消费（get_salvage_pool）；动用仍守 mode_b_qualification 资格线"
+   },
    "source": "registry_dead_end",
-   "_entry_id": "DEU-AEI-NONMOMENTUM-DEAD"
+   "_entry_id": "DEU-PV30-GROUP-ONLY-NOT-SIGNAL-20261002"
   },
   {
-   "family": "analyst_earnings_ibes 纯位置线（52周位置+zscore 反转）",
-   "reason": "",
-   "salvage": null,
+   "family": "pattern_scores 图表形态相似度",
+   "reason": "两波实测全灭。波1 s2_pattern_scores_probe_r55_d1（2026-09-13）8 探针全 COMPLETE：S=-0.23/-0.55/-0.16/-0.14/+0.09/+0.24/-0.24/-0.35，best |S|=0.24 且 7 条为负，距 fast_kill 门槛 |S|>=0.5 差 2 倍。波2 s2_pattern_scores_d1：GEM 产 193 条，门禁+diversity 剪至仅 2 条 gated（gate_exit=1），gate_cache 大量 [POISON:equal_weight_leg_add] 命中。cov 0.989 / 504 MATRIX 字段 / u<=6 零竞争均不救——形态相似度在 DEU TOP500 D1 无截面信号。",
+   "salvage": {
+    "alpha_ids": [],
+    "count": 0,
+    "source_waves": [],
+    "sealed_at": "2026-10-02T15:13:14",
+    "note": "seal_dead_end 沉降：供 Mode B 组合腿救援消费（get_salvage_pool）；动用仍守 mode_b_qualification 资格线"
+   },
    "source": "registry_dead_end",
-   "_entry_id": "DEU-AEI-PUREPOSITION-F-CEIL"
+   "_entry_id": "DEU-PATTERN_SCORES-PROBE-DEAD-20261002"
   },
   {
-   "family": "analyst93 跨字段/跨集复合结构（ts_corr / trade_when / multiply / divide / bucket / group / subtract）",
-   "reason": ">24 种复合结构全数弱化或否定：ts_corr 0.46 / trade_when 1.06（CW 恶化）/ multiply ≤0.08 / divide 0.79 / bucket 分桶中性化 1.24（低于主腿 1.28）/ group_rank×bucket 0.80 / group_zscore×bucket 0.76 / subtract 价差 0.47（新增于 wave108）。单字段平滑（ts_mean/ts_decay_linear）与 group_rank 组内（1.24-1.28）为唯一有效形态。",
+   "family": "fundamental6 (Company Fundamental Data for Equity)",
+   "reason": "DEU 不再投 fundamental6 单/双字段基本面比率方向；低频年度基本面在 DEU TOP500 D1 无截面信号",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "DEU-AN93-CROSS-COMPOSITE-DEAD"
+   "_entry_id": "DEU-FUNDAMENTAL6-EMPTY-COVERAGE-20260923"
   },
   {
-   "family": "anl93 recprofitabilityprev_{analyst,estimator}_profitability2 平滑系（1.24-1.30 亲代与全部变体）",
-   "reason": "prod_corr 实测三强全部 ≥0.7：gJQdpNoK=0.8038 / 9qVmQjKq=0.7598 / xAYWX9An=0.7576（2026-09-13）。族级生产饱和（其他区顾问已大量提交该族），即使 sharpe 达 1.58 也无法提交。",
+   "family": "other455 pure composite (non-spine)",
+   "reason": "other455 无脊柱纯复合路线关闭（不调参、不加腿——墙是覆盖性的）；若平台扩大 other455 DEU 覆盖或 sub_universe 口径变化可复活 O0NxWZMR",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "DEU-AN93-PROD-SATURATED"
-  },
-  {
-   "family": "analyst93 relative_profitability 系列（recprofitabilityprev × analyst/estimator × relative_profitability1-4）",
-   "reason": "wave108 实测 7 形态全弱：smooth rp2 0.44 / est rp2 0.26 / rp2 0.19 / zscore rp2 0.19 / rp1 0.18 / rp3 -0.01 / rp4 -0.16（全部远低于主腿 1.28）。relative 后缀无独立信号价值。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "DEU-AN93-RELATIVE-DEAD"
-  },
-  {
-   "family": "analyst93 × fund_holdings_panel 跨集结构交互（salvage 救援）",
-   "reason": "救援批 2 条全 FAIL：ts_corr 协同 0.46（CW fail）；trade_when 门控 1.06（较主腿 1.28 弱化，且引入 CW 警告 0.25>0.1）。跨集辅助腿无增益且引入 CW 结构问题。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "DEU-CROSSSET-RESCUE-DEAD"
-  },
-  {
-   "family": "residual_cov_under_05",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "DEU-D-RESIDUAL-SETS-DEAD-20260916"
-  },
-  {
-   "family": "delay0",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "DEU-DELAY0-BLOCKED"
-  },
-  {
-   "family": "coverage_empty_in_region",
-   "reason": "DEU 下 option1/pv20/fundamental17 不再进白名单，除非平台侧字段供给恢复（先 get_datafields 看 coverage>0）",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "DEU-EMPTY-COVERAGE-S0-PICKS-20260919"
-  },
-  {
-   "family": "fund_holdings_panel",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "DEU-FHP-ALLGATE-CLOSED"
+   "_entry_id": "DEU-OTH455-PURECOMP-SUBUNIVERSE-WALL-20260923"
   },
   {
    "family": "fundamental6 (accrual/growth/leverage/margin composites)",
@@ -127,6 +137,48 @@
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "DEU-FUNDAMENTAL6-PROBE-DEAD-20260923"
+  },
+  {
+   "family": "institutions1 (Insider Trading for Europe)",
+   "reason": "DEU 不再投 institutions1（欧洲内部人交易事件流在 TOP500/D1 无信号，方向亦为负）；qp 预估 0.32-0.44 与实测一致",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-INSTITUTIONS1-PROBE-DEAD-20260923"
+  },
+  {
+   "family": "coverage_empty_in_region",
+   "reason": "DEU 下这些集不再进白名单，除非平台侧字段供给恢复（先 get_datafields 看 coverage>0）",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-EMPTY-COVERAGE-S0-PICKS-20260923"
+  },
+  {
+   "family": "insider_trx_matrix net insider conviction",
+   "reason": "DEU 不投 insider_trx_matrix；内部人净交易方向单腿天花板 ~0.33。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-INSIDER-TRX-MATRIX-CEILING-20260922"
+  },
+  {
+   "family": "other545 network momentum (NEMO 2.0)",
+   "reason": "DEU 不再投 other545（网络动量方向不成立）；零竞争≠有信号。OTHER 塔白空间已穷尽（other545/insider_trx_matrix 为本区最后两个未测 OTHER 集）。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-OTHER545-NETMOMO-CEILING-20260922"
+  },
+  {
+   "family": "other699 TipRanks retail-investor transaction events",
+   "reason": "DEU 不再投 other699（散户交易流方向不成立）；零竞争≠有信号——『无人用』本身是弱信号先验而非机会。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-OTHER699-RETAIL-FLOW-DEAD-20260920"
+  },
+  {
+   "family": "risk60 securities-lending fee/crowding",
+   "reason": "RISK 塔（DEU 0/3）不再投 risk60 的费率/crowding 几何；RISK 钥匙终结（DEFINITIVE，第二次确认）。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-RISK60-FEE-CROWDING-DEAD-20260919"
   }
  ],
  "region_context": {},
@@ -140,7 +192,45 @@
    "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
    "profile_fallback (仅 DB KB 空时)",
    "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
-  ]
+  ],
+  "truncated": {
+   "wins": [
+    "DEU-M264-STARMINE-HYBRID-WIN",
+    "DEU-AEI-STARMINE-HYBRID-WIN",
+    "DEU-STARMINE-REVISION-SURPRISE-COMPOSITE"
+   ],
+   "dead_ends": [
+    "DEU-TAIL-DATASETS-DEAD-20260916",
+    "DEU-OTH47-FAMILY-PROD-WALL-20260916",
+    "DEU-MIXRESID-S158-FIRST-20260916",
+    "DEU-D-RESIDUAL-SETS-DEAD-20260916",
+    "DEU-INSIDER-SELL-2Y-WALL",
+    "DEU-OTHER47-PROD-WALL",
+    "DEU-WHITELIST-EXHAUSTED-20260915",
+    "DEU-NEWS-news18-SINGLEATOM-WEAK",
+    "DEU-INSTITUTIONS-fundholdings-SINGLEATOM-WEAK",
+    "DEU-A2-SPARSE-INTRADAY-FIELDS-FAIL",
+    "DEU-DELAY0-BLOCKED",
+    "DEU-FHP-SCEILING-DEAD",
+    "DEU-OTHER250-DEAD",
+    "DEU-MODEL250-CLOSED",
+    "DEU-INSTITUTIONS6-DEAD",
+    "DEU-NEWS-SENTIMENT-DEAD",
+    "DEU-INSIDER-LADDER-BASKET-CONFLICT",
+    "DEU-MODEL53-CREDIT-DEAD",
+    "DEU-SETTING-VARIANT-CORR1",
+    "DEU-SI3-CW-STRUCTURAL",
+    "DEU-MODEL216-COVERAGE-WEAK-2Y",
+    "DEU-AEI-PUREPOSITION-F-CEIL",
+    "DEU-AEI-NONMOMENTUM-DEAD",
+    "DEU-AN93-RELATIVE-DEAD",
+    "DEU-AN93-PROD-SATURATED",
+    "DEU-NEWS18-ALLDEAD",
+    "DEU-AN93-CROSS-COMPOSITE-DEAD",
+    "DEU-CROSSSET-RESCUE-DEAD",
+    "DEU-W104-D0-DATASET-EMPTY-DEAD"
+   ]
+  }
  },
  "gate_priors": {
   "sample_size": 1000,

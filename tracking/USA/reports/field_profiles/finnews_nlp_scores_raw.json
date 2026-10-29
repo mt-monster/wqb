@@ -1,0 +1,848 @@
+﻿{
+  "results": [
+    {
+      "id": "average_negative_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 4,
+      "description": "Average (mean) negative sentiment score across all mapped Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "average_negative_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average (mean) negative sentiment polarity score across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "average_negative_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 10,
+      "alphaCount": 13,
+      "description": "Mean negative polarity score across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "average_negative_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Mean negative sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "average_negative_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average negative sentiment score (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "average_neutral_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average (mean) neutral sentiment score across all mapped Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "average_neutral_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average (mean) neutral sentiment polarity score across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "average_neutral_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Mean neutral polarity score across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "average_neutral_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Mean neutral sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "average_neutral_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average neutral sentiment score (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "average_positive_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Average (mean) positive sentiment score across all mapped Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "average_positive_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average (mean) positive sentiment polarity score across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "average_positive_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Mean positive polarity score across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "average_positive_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Mean positive sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "average_positive_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average positive sentiment score (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "lower_confidence_negative_sentiment_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower 95% confidence bound for the daily mean negative sentiment score (polarity in [0,1]) across Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "lower_confidence_negative_sentiment_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower 95% confidence bound for the mean negative sentiment polarity score for the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "lower_confidence_negative_sentiment_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower 95% confidence bound for the mean negative polarity score for the stock that day"
+    },
+    {
+      "id": "lower_confidence_negative_sentiment_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower bound of the 95% confidence interval for the mean negative sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "lower_confidence_negative_sentiment_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower 95% confidence bound for the mean negative sentiment score (0–1) for a given stock and day, computed from Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "lower_confidence_neutral_sentiment_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower 95% confidence bound for the daily mean neutral sentiment score (polarity in [0,1]) across Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "lower_confidence_neutral_sentiment_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower 95% confidence bound for the mean neutral sentiment polarity score for the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "lower_confidence_neutral_sentiment_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower 95% confidence bound for the mean neutral polarity score for the stock that day"
+    },
+    {
+      "id": "lower_confidence_neutral_sentiment_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower bound of the 95% confidence interval for the mean neutral sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "lower_confidence_neutral_sentiment_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower 95% confidence bound for the mean neutral sentiment score (0–1) for a given stock and day, computed from Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "lower_confidence_positive_sentiment_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower 95% confidence bound for the daily mean positive sentiment score (polarity in [0,1]) across Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "lower_confidence_positive_sentiment_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Lower 95% confidence bound for the mean positive sentiment polarity score for the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "lower_confidence_positive_sentiment_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower 95% confidence bound for the mean positive polarity score for the stock that day"
+    },
+    {
+      "id": "lower_confidence_positive_sentiment_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower bound of the 95% confidence interval for the mean positive sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "lower_confidence_positive_sentiment_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower 95% confidence bound for the mean positive sentiment score (0–1) for a given stock and day, computed from Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "maximum_negative_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum negative sentiment polarity score among Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "maximum_negative_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum negative polarity score among those stories for the stock that day"
+    },
+    {
+      "id": "maximum_negative_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum negative sentiment (polarity) score among stories mapped to the stock on that day"
+    },
+    {
+      "id": "maximum_negative_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum negative sentiment score (0–1) observed among Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "maximum_negative_sentiment_score_6",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 8,
+      "description": "Maximum negative sentiment score observed among Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "maximum_neutral_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum neutral sentiment score observed among Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "maximum_neutral_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum neutral sentiment polarity score among Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "maximum_neutral_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum neutral polarity score among those stories for the stock that day"
+    },
+    {
+      "id": "maximum_neutral_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum neutral sentiment (polarity) score among stories mapped to the stock on that day"
+    },
+    {
+      "id": "maximum_neutral_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum neutral sentiment score (0–1) observed among Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "maximum_positive_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum positive sentiment polarity score among Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "maximum_positive_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum positive polarity score among those stories for the stock that day"
+    },
+    {
+      "id": "maximum_positive_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Maximum positive sentiment (polarity) score among stories mapped to the stock on that day"
+    },
+    {
+      "id": "maximum_positive_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum positive sentiment score (0–1) observed among Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "maximum_positive_sentiment_score_6",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum positive sentiment score observed among Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "median_negative_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Median of negative sentiment scores across all mapped Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "median_negative_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Median negative sentiment polarity score across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "median_negative_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median of negative polarity scores across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "median_negative_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Median of negative sentiment (polarity) scores across stories mapped to the stock on that day"
+    },
+    {
+      "id": "median_negative_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median negative sentiment score (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "median_neutral_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Median of neutral sentiment scores across all mapped Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "median_neutral_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median neutral sentiment polarity score across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "median_neutral_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median of neutral polarity scores across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "median_neutral_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median of neutral sentiment (polarity) scores across stories mapped to the stock on that day"
+    },
+    {
+      "id": "median_neutral_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median neutral sentiment score (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "median_positive_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Median of positive sentiment scores across all mapped Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "median_positive_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Median positive sentiment polarity score across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "median_positive_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median of positive polarity scores across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "median_positive_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median of positive sentiment (polarity) scores across stories mapped to the stock on that day"
+    },
+    {
+      "id": "median_positive_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Median positive sentiment score (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "minimum_negative_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum negative sentiment score observed among Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "minimum_negative_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum negative sentiment polarity score among Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "minimum_negative_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum negative polarity score among those stories for the stock that day"
+    },
+    {
+      "id": "minimum_negative_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum negative sentiment (polarity) score among stories mapped to the stock on that day"
+    },
+    {
+      "id": "minimum_negative_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum negative sentiment score (0–1) observed among Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "minimum_neutral_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Minimum neutral sentiment score observed among Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "minimum_neutral_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum neutral sentiment polarity score among Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "minimum_neutral_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Minimum neutral polarity score among those stories for the stock that day"
+    },
+    {
+      "id": "minimum_neutral_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum neutral sentiment (polarity) score among stories mapped to the stock on that day"
+    },
+    {
+      "id": "minimum_neutral_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum neutral sentiment score (0–1) observed among Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "minimum_positive_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum positive sentiment polarity score among Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "minimum_positive_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Minimum positive polarity score among those stories for the stock that day"
+    },
+    {
+      "id": "minimum_positive_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Minimum positive sentiment (polarity) score among stories mapped to the stock on that day"
+    },
+    {
+      "id": "minimum_positive_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum positive sentiment score (0–1) observed among Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "minimum_positive_sentiment_score_6",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Minimum positive sentiment score observed among Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "stddev_negative_sentiment_score_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of negative sentiment scores across Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "stddev_negative_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Standard deviation of negative sentiment polarity scores across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "stddev_negative_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of negative polarity scores across those stories for the stock that day"
+    },
+    {
+      "id": "stddev_negative_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of negative sentiment (polarity) scores across stories mapped to the stock on that day"
+    },
+    {
+      "id": "stddev_negative_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of negative sentiment scores (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "stddev_neutral_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of neutral sentiment polarity scores across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "stddev_neutral_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of neutral polarity scores across those stories for the stock that day"
+    },
+    {
+      "id": "stddev_neutral_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Standard deviation of neutral sentiment (polarity) scores across stories mapped to the stock on that day"
+    },
+    {
+      "id": "stddev_neutral_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of neutral sentiment scores (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "stddev_neutral_sentiment_score_6",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of neutral sentiment scores across Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "stddev_positive_sentiment_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of positive sentiment polarity scores across Dow Jones Newswires stories linked to the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "stddev_positive_sentiment_score_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of positive polarity scores across those stories for the stock that day"
+    },
+    {
+      "id": "stddev_positive_sentiment_score_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of positive sentiment (polarity) scores across stories mapped to the stock on that day"
+    },
+    {
+      "id": "stddev_positive_sentiment_score_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Standard deviation of positive sentiment scores (0–1) across Dow Jones Newswires stories linked to the stock on that day"
+    },
+    {
+      "id": "stddev_positive_sentiment_score_6",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of positive sentiment scores across Dow Jones Newswires stories for the stock on that day"
+    },
+    {
+      "id": "upper_confidence_negative_sentiment_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper 95% confidence bound for the daily mean negative sentiment score (polarity in [0,1]) across Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "upper_confidence_negative_sentiment_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper 95% confidence bound for the mean negative sentiment polarity score for the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "upper_confidence_negative_sentiment_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper 95% confidence bound for the mean negative polarity score for the stock that day"
+    },
+    {
+      "id": "upper_confidence_negative_sentiment_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Upper bound of the 95% confidence interval for the mean negative sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "upper_confidence_negative_sentiment_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper 95% confidence bound for the mean negative sentiment score (0–1) for a given stock and day, computed from Dow Jones Newswires stories"
+    },
+    {
+      "id": "upper_confidence_neutral_sentiment_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper 95% confidence bound for the daily mean neutral sentiment score (polarity in [0,1]) across Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "upper_confidence_neutral_sentiment_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper 95% confidence bound for the mean neutral sentiment polarity score for the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "upper_confidence_neutral_sentiment_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper 95% confidence bound for the mean neutral polarity score for the stock that day"
+    },
+    {
+      "id": "upper_confidence_neutral_sentiment_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper bound of the 95% confidence interval for the mean neutral sentiment (polarity) score across Dow Jones Newswires stories mapped to the stock on that day"
+    },
+    {
+      "id": "upper_confidence_neutral_sentiment_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper 95% confidence bound for the mean neutral sentiment score (0–1) for a given stock and day, computed from Dow Jones Newswires stories"
+    },
+    {
+      "id": "upper_confidence_positive_sentiment_1",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper 95% confidence bound for the daily mean positive sentiment score (polarity in [0,1]) across Dow Jones Newswires stories linked to the stock"
+    },
+    {
+      "id": "upper_confidence_positive_sentiment_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper 95% confidence bound for the mean positive sentiment polarity score for the stock on that day (GLOBAL, variant 2, D1)"
+    },
+    {
+      "id": "upper_confidence_positive_sentiment_3",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper 95% confidence bound for the mean positive polarity score for the stock that day"
+    },
+    {
+      "id": "upper_confidence_positive_sentiment_4",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper bound of the 95% confidence interval for the mean positive sentiment (polarity) score across stories mapped to the stock on that day"
+    },
+    {
+      "id": "upper_confidence_positive_sentiment_5",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper 95% confidence bound for the mean positive sentiment score (0–1) for a given stock and day, computed from Dow Jones Newswires stories"
+    }
+  ],
+  "count": 105,
+  "platform_count": 105,
+  "complete": true,
+  "pages_fetched": 3
+}

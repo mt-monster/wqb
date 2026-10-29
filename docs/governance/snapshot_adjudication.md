@@ -24,8 +24,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**887**
-- `RESTORED` = 0；`DROPPED` = 296；`ARTIFACT` = 402；`PENDING` = 189
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**979**
+- `RESTORED` = 0；`DROPPED` = 577；`ARTIFACT` = 402；`PENDING` = 0
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -37,17 +37,30 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 
 ## 3. 逐件表
 
-### 3.2 `DROPPED`（296 件）
+### 3.2 `DROPPED`（577 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
 | `Claude/skills/brain-alpha-judge/references/future-improvement-guide.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/judge_planning_docs_20260929/future-improvement-guide.md`（blob 相等） | rule |
 | `Claude/skills/brain-alpha-judge/references/improvement-roadmap.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/judge_planning_docs_20260929/improvement-roadmap.md`（blob 相等） | rule |
+| `Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md` | 主题归入独立 skill：`git grep -F 'webdatascope-data-quality' main -- Claude/skills` 命中 `brain-alpha-research-field-quality/SKILL.md`（该 skill 专管字段质量先验与 WebDataScope 数据包预筛，内容不丢）。2026-10-29 复核维持 DROPPED。 | human |
 | `Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-calculate-alpha-selfcorr-quick/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-data-feature-engineering/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708` 系列），main 已有 `Claude/skills/brain-data-feature-engineering/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-datafield-exploration-general/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-datafield-exploration-general/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-dataset-exploration-general/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-dataset-exploration-general/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-explain-alphas/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-explain-alphas/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
+| `Claude/skills/brain-explain-alphas/scripts/arxiv_api.py` | 分叉旧副本：唯一在役实现为 `Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py`（`git ls-tree main` 实测，配套 `arXiv_API_Tool_Manual.md`）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/contribution-and-diversity.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/contribution-and-diversity.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/evidence-and-review.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/evidence-and-review.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/mcp-by-phase.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/mcp-by-phase.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/mcp-tools-and-search.md` | 并入 `Claude/skills/brain-forum-browse/references/tools-and-troubleshooting.md`：该件 L1 标题即「论坛 MCP 工具与搜索（tools & troubleshooting）」，`git ls-tree main:Claude/skills/brain-forum-browse/references/` 只剩该件与 write-path/（10-29 实测）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/modes-and-contract.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/quotas-and-cooldown.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/quotas-and-cooldown.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/recon-and-gap.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/recon-and-gap.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/workspace-and-memory.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/workspace-and-memory.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/references/write-style-zh.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/references/write-path/write-style-zh.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/templates/forum_findings.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/templates/write-path/forum_findings.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/brain-forum-browse/templates/run_contract.md` | 路径重组、非丢失：同名件现在 `Claude/skills/brain-forum-browse/templates/write-path/run_contract.md`（`git cat-file -e main:<该路径>` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
 | `Claude/skills/brain-how-to-pass-alpha-test/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-how-to-pass-alpha-test/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-make-some-gem/reference.md` | 件未丢失：2026-10-18 全库 `reference.md` → `references/overview.md` 迁移（commit `ce79708`），main 已有同 skill 的 `Claude/skills/brain-make-some-gem/references/overview.md`；快照版与迁移版差异只有链接路径改写（`./` → `../`），正文主体同源，不需回迁。 | human |
 | `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md` | 件未丢失：同上迁移（GEM 内嵌副本位）。main 同路径已是 `Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/references/overview.md`，由 `tools/sync_gem_embedded_skill.py` 的 SYNCED 表同步（2026-10-19 已把该表项改为 `references/overview.md`）。 | human |
@@ -61,6 +74,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_CHECKLIST.md` | **已退休，不是丢失**：2026-09-29 整批迁进 `attic/toolkit_docs_20260929/`，并由 `tests/unit/07_docs_skills/test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short` 逐名钉住（断言文件在 attic 且**不在** skill 的 references/ 下）；内容已合并进 `references/diversity-extract.md`（同一测试断言合并页 ≤60 行）。 | human |
 | `Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md` | **已退休，不是丢失**：同 `S2_COMPLIANCE_CHECKLIST.md` —— 2026-09-29 迁进 `attic/toolkit_docs_20260929/`，由 `test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short` 钉住（该文件也在断言名单里）。 | human |
 | `Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/toolkit_docs_20260929/enhancement-v2.md`（blob 相等） | rule |
+| `Claude/skills/wq-brain-campaign-toolkit/references/rules-declarative-injection.md` | 改版未回迁且无承接件：`git grep -i declarative main -- Claude/skills/wq-brain-campaign-toolkit` = 0 命中，同 skill `tests/` 目录也已整目录移除（`git ls-tree main:…/tests` 为空）。2026-10-29 复核维持 DROPPED。 | human |
 | `Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/prescreen.py` | main 侧调用通道尚未接线：`src/wqb/workflow/_common.py:274 resolve_toolkit_file()` 全仓**零调用方**（`git grep 'resolve_toolkit_file(' -- src tools` 只命中其定义），其 docstring 提到本文件只是为了说明「安装位可能滞后于仓库副本」。因此缺它不产生任何故障，回迁也不会生效 —— 属同一条预筛线，接线时成套取。 | human |
 | `Claude/skills/wq-brain-campaign-toolkit/scripts/budget_planner.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/toolkit_zero_ref_20260928/budget_planner.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-campaign-toolkit/scripts/campaign_mutex.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/toolkit_zero_ref_20260928/campaign_mutex.py`（blob 相等） | rule |
@@ -69,49 +83,183 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `Claude/skills/wq-brain-campaign-toolkit/scripts/family_atlas.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/toolkit_zero_ref_20260928/family_atlas.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-campaign-toolkit/scripts/os_feedback.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/toolkit_zero_ref_20260928/os_feedback.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-campaign-toolkit/scripts/signal_classifier.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/toolkit_zero_ref_20260928/signal_classifier.py`（blob 相等） | rule |
+| `Claude/skills/wq-brain-campaign-toolkit/tests/test_enhance_v2.py` | 被测线整体未回迁：`git ls-tree main:Claude/skills/wq-brain-campaign-toolkit/tests` 为空（整目录不存在），`git grep -i declarative … = 0`。2026-10-29 复核维持 DROPPED。 | human |
+| `Claude/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py` | 已归档、非丢失：`Claude/skills/wq-brain-ppa-mining/SKILL.md:32` 明写「已归档到 `attic/ppa_mining_20260929/`，零调用方，已被 S0 打分取代」，归档件 `attic/ppa_mining_20260929/dataset_health_check.py` 存在（`git cat-file -e` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
 | `Claude/skills/wq-brain-ra-pipeline/scripts/dataset_health_check.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/ra_pipeline_shell_20260928/dataset_health_check.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-ra-pipeline/scripts/ralph_daily_loop.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/ra_pipeline_shell_20260928/ralph_daily_loop.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-ra-pipeline/scripts/ralph_runner.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/ra_pipeline_shell_20260928/ralph_runner.py`（blob 相等） | rule |
 | `Claude/skills/wq-brain-ra-pipeline/templates/daily_state.template.json` | 路径重组，件未丢失：main 已有内容逐字相同的 `attic/ra_pipeline_shell_20260928/daily_state.template.json`（blob 相等） | rule |
+| `Claude/skills/wq-brain-superalpha/references/selection-playbook.md` | 口径并入 `Claude/skills/wq-brain-superalpha/SKILL.md`（selection 相关 17 处）与 `references/levers-and-evidence.md`：改版后 references 只剩 cases / levers-and-evidence / scenarios 三件（`git ls-tree main:…/references` 实测）。2026-10-29 复核维持 DROPPED。 | human |
 | `docs/S1_FIELD_CATALOG_CACHE_GUIDE.md` | 改名，件未丢失：main 已有内容逐字相同的 `docs/reference/s1_field_catalog_cache_guide.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `docs/design_s1_family_deadend.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/dryrun-audit-20260925.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
 | `docs/modeb_full_operator_coverage.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/modeb_full_operator_coverage.md`（blob 相等） | rule |
 | `docs/modeb_implementation_summary.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/modeb_implementation_summary.md`（blob 相等） | rule |
+| `docs/modeb_operator_optimization_plan.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
 | `docs/operator_modeb_research.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/operator_modeb_research.md`（blob 相等） | rule |
+| `docs/prod_corr_persistence_design_20260918.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/reference/CODE_QUALITY_SUMMARY.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/reference/INTEGRATION_COMPLETE.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/reference/brain-labs-data-analysis-agent.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/region_universe_update_report.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/skills-optimization-roadmap.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
 | `docs/skills_pipeline_analysis.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/skills_pipeline_analysis.md`（blob 相等） | rule |
 | `docs/skills_pipeline_optimization.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `docs/design/skills_pipeline_optimization.md`（blob 相等） | rule |
+| `docs/skills_review_decisions.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/structural_reconstruction.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/structural_reconstruction_integration.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/submit_queue_design.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `docs/submittable_alpha_optimization.md` | 历史设计文档，已被 `docs/reference/` 或 `docs/governance/` 下的现行文档取代 | human |
+| `output_report/EUR_delay1_news84_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/EUR_wave269_campaign_report.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
 | `output_report/GLB_RA_campaign_20260919_S-PRE_to_S1.md` | 改名，件未丢失：main 已有内容逐字相同的 `output_report/GLB_RA_campaign_S-PRE_to_S1_20260919.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `output_report/IND_MEA_field_analysis_20260831.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model144_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model144_ideas_v2.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model16_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model16_ideas_v2.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model16_model32_model36_model144_model252_risk70_other323_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model252_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model252_ideas_v2.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model32_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model32_ideas_v2.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model36_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_model36_ideas_v2.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_d1_risk70_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_delay1_batch1_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/IND_wave131_feature_engineering.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/KOR_d1_wave96_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/MEA_D1_fundamental6_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/MEA_d1_analyst7_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/MEA_d1_earnings3_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/MEA_d1_fundamental72_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/MEA_d1_whitelist_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/USA_1_analyst_earnings_ibes_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/USA_1_finnews_nlp_scores_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/USA_1_forum_sentiment_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/USA_1_nlp_news_scores_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/USA_1_pattern_scores_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/USA_1_price_signal_dl_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/USA_1_pv_tech_indicators_ideas.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/_field_angle_analysis_20260831.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/db_quality_assessment_20260928.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/eur_2y_sharpe_raise_methodology_20261004.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/eur_new_category_progress_20261005.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/eur_risk70_metric_tuning_20261004.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/factor_optimization_potential_20260928.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/gbr_analyst47_tvr_decay_verdict_20261002.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/gbr_campaign_progress_20261004.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/gbr_forum_literature_recon_20261004.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/gbr_model_category_mining_20261002.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/gbr_trackA_verdict_trackB_wave1_20261004.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/ind_other532_reversal_campaign_20261004.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/l4_eur_other460_hypotheses_20261001.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/org_audit_20261001.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/py_file_audit_20261002.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/pyramid_tower_report.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
 | `output_report/ra_pipeline_stage_audit_20260916_v3.md` | 改名，件未丢失：main 已有内容逐字相同的 `output_report/ra_pipeline_stage_audit_v3_20260916.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `output_report/skills_fix_plan_20261003.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/skills_review_20261003.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/skills_stage_review_20261001.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/step9_s6_evaluation_20261002.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/ts_max_usage_audit.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/usa_analyst_breakthrough_20261004_s2.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/usa_analyst_category_report_20261004.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/usa_campaign_report_20261003.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/wq_forum_posting_analysis.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/wq_full_test_report_20261001_1115.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `output_report/wq_full_test_report_20261001_1116.md` | 战役/ideas 产物已被 `reports/` 下的更新版本取代（2026-10-27 治理复盘确认输出目录收敛） | human |
+| `reports/README.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/d9_status_backfill_rollback_20260928_batch2.json` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `reports/d9_status_backfill_rollback_20261005.json` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `reports/dataset_experience/asi_continuation_score_campain.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/dataset_experience/asi_model28_campain.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/dataset_experience/asi_pattern_scores_campain.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/dataset_experience/asi_pv13_campain.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
 | `reports/db_schema_audit_2026-08-26.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/db_schema_audit_20260826.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/db_table_structure_review_2026-08-26.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/db_table_structure_review_20260826.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/dryrun_chain_result_v2_20260927.json` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `reports/eur_d1_20260924_financing_mode_b1_remainder.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_20260924_financing_mode_b2.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_20260924_fundamental17_controls.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_20260924_fundamental17_quality_probe.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_20260924_fundamental23_mechanisms.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_20260924_other455_network_probe.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_20260925_earnings6_event_probe.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_efficiency_implementation_20260924.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_selection_optimization_20260924.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/eur_d1_session_efficiency_review_20260924.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
 | `reports/feature_engineering_eval_2026-08-27.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/feature_engineering_eval_20260827.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/field_inventory_analysis_20260929.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
 | `reports/forum-experience/alpha_templates_forum_2026-08-05.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/forum-experience/alpha_templates_forum_20260805.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/forum-experience/glb_forum_experience_2026-08-05.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/forum-experience/glb_forum_experience_20260805.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/forum-experience/ppa_forum_experience_2026-08-07.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/forum-experience/ppa_forum_experience_20260807.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/forum_alpha_inspiration_taxonomy_20261002.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/forum_to_skills_integration_plan_20261002.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/inventory_submittable_20260909.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/kor_zero_tower_sweep_20261006.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
 | `reports/operator_usage_audit.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/operator_usage_audit.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/operator_usage_audit.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/operator_usage_audit.py`。 | human |
 | `reports/opswap_analyze.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_analyze.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_analyze.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_analyze.py`。 | human |
 | `reports/opswap_build_plan.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_build_plan.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/opswap_build_plan.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/opswap_build_plan.py`。 | human |
 | `reports/opswap_driver.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/opswap_driver.py`，2026-10-20 随逐件退役 `git rm`）。判据与依据同 `tools/legacy/opswap_driver.py` 那条：五种引用形态实测全为 0，见 docs/governance/branch_policy.md §5.4。⚠ 本条同时**修正机械初判**：2026-10-20 退役前，该路径的机械判定是「同名件在 main 是 `tools/legacy/opswap_driver.py` 但内容不同（分叉或版本差）——需人工比对」；退役后 main 已无该件，blob 不再可比，机械初判会误落 PENDING。此条以人工裁决固定为 DROPPED。取看：`git show HEAD:tools/legacy/opswap_driver.py`。 | human |
 | `reports/project-audit/progress_2026-08-15.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/project-audit/progress_20260815.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/ra_pipeline_stage_review_20260927/README.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/README.md`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh` | 所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。 | human |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.sh` | 所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。 | human |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh` | 所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。 | human |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n31.sh` | 所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。 | human |
+| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n35.sh` | 所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。 | human |
+| `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py` | 所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。 | human |
 | `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_item4.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_item4.py`（blob 相等） | rule |
 | `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_n30.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_n30.py`（blob 相等） | rule |
 | `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_n31.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_n31.py`（blob 相等） | rule |
 | `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_n35.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv_n35.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_20260927/reproduce.sh` | 所属复盘轮次整目录未回迁（`git ls-tree main:reports/ra_pipeline_stage_review_20260927` 不存在），本件是依赖本机 realenv 的一次性复现脚本，无跨机可复现价值。2026-10-29 复核维持 DROPPED。 | human |
 | `reports/ra_pipeline_stage_review_20260927/run_dryrun.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/run_dryrun.py`（blob 相等） | rule |
 | `reports/ra_pipeline_stage_review_20260927/sbx_guard.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/sbx_guard.py`（blob 相等） | rule |
 | `reports/ra_pipeline_stage_review_20260927/seed_db.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `reports/ra_pipeline_stage_review_20260927_refs/seed_db.py`（blob 相等） | rule |
+| `reports/ra_pipeline_stage_review_v3_20260928.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/ra_pipeline_stage_review_v4_20260928.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/rescue_campaign_20260915.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/skills_full_review_20260929.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
+| `reports/skills_review_20260929/check_skills.py` | 职责由仓库工具承接：`git grep -F 'check_skills' main -- tools` 命中 `tools/audit_structure.py` 与 `tools/audit_structure_baseline.json`，技能静态检查现行入口为 `tools/skill_lint.py`；`git ls-tree main:reports/skills_review_20260929` 已不存在。2026-10-29 复核维持 DROPPED。 | human |
+| `reports/structure_review_20261004.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
 | `reports/temp_and_deadcode_scan_2026-08-28.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/temp_and_deadcode_scan_20260828.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/tmp_cleanup_2026-08-30.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/tmp_cleanup_20260830.md`（blob 相等，只是文件名按命名规范改过） | rule |
 | `reports/toolkit_usage_review_2026-08-31.md` | 改名，件未丢失：main 已有内容逐字相同的 `reports/toolkit_usage_review_20260831.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `reports/usa_superalpha_feasibility_20260914.md` | 历史审计报告已被更新版本取代（`reports/` 下有同主题更新的报告） | human |
 | `src/wqb/dataset_pair_matrix.py` | main 侧零消费方：`git grep 'get_dataset_pair_recommendations\|dataset_pair_matrix' -- src tools` = 0 命中；唯一提及处 `tests/unit/02_workflow/test_inventory_scan_basket_shape.py:38` 写的是 `try: import … except ImportError: dpm = None`，即节点已按「该模块可能不存在」设计。单件回迁会**静默启用一个未经评审的功能**（跨数据集对推荐），属危险方向。配套 `tests/unit/test_dataset_pair_matrix.py` 同线。要启用请整线取回并补 registry/README 登记。 | human |
 | `src/wqb/semantic_ledger.py` | 属「S1 语义自动补做」整条未合入工作线，单件回迁即造孤儿模块：其文档明列的两个消费方在 main 都不存在（`git grep '_semantic_coverage_check' -- src tools` = 0 命中；`tools/field_semantic_classify.py` 的产物 schema 里根本没有 `families`/`family_stats` 键，见其 L200-L212）。main 侧读同一台账键的是 `tools/wave_gate_pkg/gates_semantic.py`，它只用 `blocked_fields`，不需要 `ledger_has_l35`。配套件同属该线：`tests/unit/02_workflow/test_s1_semantic_autoclassify.py`、`tests/unit/10_toolkit_scripts/test_semantic_classify_all.py`、`test_semantic_field_pool_filter.py`。⚠ 更正记录：HEAD 曾按「全仓从未存在」结案，那是把「工作区/`git ls-files` 没有」当成「对象库没有」——实测 `git cat-file -s 4910e65:src/wqb/semantic_ledger.py` = 2407 字节。证据留在抢救点，取回须**整线成套**。 | human |
 | `src/wqb/workflow/nodes/_campaign_open_gates.py` | main 零引用：`git grep 'campaign_open_gates' -- src tools tests` = 0 命中，且 `src/wqb/workflow/registry.py` 未注册其节点。回迁即造「代码里有、链路上不跑」的幽灵模块（本仓对 workflow 节点有五处同步登记纪律，单文件回迁必然漂移）。 | human |
+| `tests/unit/01_store_db/test_build_wave_family_probe.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/01_store_db/test_corr_single_source.py` | 它断言的是 `_corr_cache.py` 的**第三版契约**，而该实现无论在 main 还是在快照里都不存在：实测 `git show 05b64a6:src/wqb/store/_corr_cache.py` 的 `normalize_corr_source()` 返回 `{"source","detail"}` 且 `_LEGACY_SOURCE_ALIASES` 把 `prod_first` 映射到 `prod_first_screen`；测试却要求 `CORR_FRESH_SECONDS`、`source_detail`、并把 6 个自由文本一律收敛到 `platform_sync`。按 pathspec 取回 = 当场 7 红（`ImportError: CORR_FRESH_SECONDS`），且会把一条未完成的契约伪装成「守卫测试」。顶层符号比对显示 main 的 `_corr_cache.py` 是快照版的超集（多出 `get_corr_authoritative_batch`），故该件属未合入分叉线 —— 由该线所有者整线合并，不做单件回迁。 | human |
+| `tests/unit/01_store_db/test_dataset_meta.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/01_store_db/test_region_catalog.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/01_store_db/test_select_ra_basket_exclude_dead.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/01_store_db/test_semantic_field_pool_filter.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/01_store_db/test_submit_queue_mark_blocked.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/01_store_db/test_towers.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/01_store_db/test_whitelist_write_guard.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/02_workflow/test_pipeline_submit_retry_completeness.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/02_workflow/test_s1_semantic_autoclassify.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/04_gates/test_s0_viability_p7.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/05_submit_quota/test_quota_typing_unit.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/06_wave_pipeline/test_recent_closed_waves_window.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/06_wave_pipeline/test_s4_walls_prescreen_20261002.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/06_wave_pipeline/test_s6_events_instrumentation_20261002.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/07_docs_skills/test_methodology_rules_connectivity.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/07_docs_skills/test_no_dilution_rules.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/09_core/test_semantic_ledger.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/10_toolkit_scripts/test_probe_batch_exempts_diversity.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/10_toolkit_scripts/test_semantic_classify_all.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/10_toolkit_scripts/test_slots_is_full_refill.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/10_toolkit_scripts/test_step9_audit.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
+| `tests/unit/10_toolkit_scripts/test_submit_inventory_classify.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_alpha_properties_patch_partial.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_alpha_properties_patch_partial.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 08f4357a` vs `tests/unit/02_workflow/test_alpha_properties_patch_partial.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_audit_fixes.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_audit_fixes.py`，其 test 函数集合**完整包含**快照版全部 36 个（main 37 个 ⊇ 快照 36 个；逐函数名比对 `git cat-file -p 4617ce24` vs `tests/unit/07_docs_skills/test_audit_fixes.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_auth_transient_retry.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_auth_transient_retry.py`，其 test 函数集合**完整包含**快照版全部 2 个（main 2 个 ⊇ 快照 2 个；逐函数名比对 `git cat-file -p f32eed2b` vs `tests/unit/05_submit_quota/test_auth_transient_retry.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_backlog_drop_guard.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_backlog_drop_guard.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 620588fc` vs `tests/unit/06_wave_pipeline/test_backlog_drop_guard.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
-| `tests/unit/test_backlog_gate_unconsumed_p0p2.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_backlog_gate_unconsumed_p0p2.py`（blob 相等） | rule |
+| `tests/unit/test_backlog_gate_unconsumed_p0p2.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_batch_status_auth.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_batch_status_auth.py`，其 test 函数集合**完整包含**快照版全部 5 个（main 5 个 ⊇ 快照 5 个；逐函数名比对 `git cat-file -p 36a6d91b` vs `tests/unit/05_submit_quota/test_batch_status_auth.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_batch_status_watch_transient.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_batch_status_watch_transient.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 44423fb3` vs `tests/unit/05_submit_quota/test_batch_status_watch_transient.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_batch_submit_verdict_phase2.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/05_submit_quota/test_batch_submit_verdict_phase2.py`（blob 相等） | rule |
@@ -128,6 +276,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/test_cluster_variants.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_cluster_variants.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p 9084ab43` vs `tests/unit/04_gates/test_cluster_variants.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_concept_overlap.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_concept_overlap.py`，其 test 函数集合**完整包含**快照版全部 11 个（main 11 个 ⊇ 快照 11 个；逐函数名比对 `git cat-file -p 092ed91d` vs `tests/unit/08_forum_recon/test_concept_overlap.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_concept_taxonomy_map.py` | 件未丢失：main 已有同名测试 `tests/unit/08_forum_recon/test_concept_taxonomy_map.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 34143480` vs `tests/unit/08_forum_recon/test_concept_taxonomy_map.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_config.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_dataset_experience.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_dataset_experience.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p fd237dec` vs `tests/unit/09_core/test_dataset_experience.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_dataset_pair_matrix.py` | 被测对象 `src/wqb/dataset_pair_matrix.py` 不在 main（见该件裁决），回迁即造 collection 期 ImportError。与 subject 同线成套取回。 | human |
 | `tests/unit/test_db_wave_membership.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_db_wave_membership.py`，其 test 函数集合**完整包含**快照版全部 1 个（main 1 个 ⊇ 快照 1 个；逐函数名比对 `git cat-file -p 9ca2d9ca` vs `tests/unit/01_store_db/test_db_wave_membership.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
@@ -158,6 +307,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/test_ghost_operator_lists.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_ghost_operator_lists.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p a431db85` vs `tests/unit/09_core/test_ghost_operator_lists.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_glossary_docs.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_glossary_docs.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 65011208` vs `tests/unit/07_docs_skills/test_glossary_docs.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_grammar.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_grammar.py`，其 test 函数集合**完整包含**快照版全部 56 个（main 56 个 ⊇ 快照 56 个；逐函数名比对 `git cat-file -p fa59a4cd` vs `tests/unit/09_core/test_grammar.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_handoff.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_harvest_checks_path.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_harvest_checks_path.py`，其 test 函数集合**完整包含**快照版全部 7 个（main 7 个 ⊇ 快照 7 个；逐函数名比对 `git cat-file -p 68021eba` vs `tests/unit/06_wave_pipeline/test_harvest_checks_path.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_harvest_longcount_fields.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_harvest_longcount_fields.py`，其 test 函数集合**完整包含**快照版全部 6 个（main 6 个 ⊇ 快照 6 个；逐函数名比对 `git cat-file -p c135fe26` vs `tests/unit/06_wave_pipeline/test_harvest_longcount_fields.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_harvest_multisim_retry.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_harvest_multisim_retry.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p 179b5afd` vs `tests/unit/06_wave_pipeline/test_harvest_multisim_retry.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
@@ -173,6 +323,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/test_ledger_key_catalog.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_ledger_key_catalog.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 7a52ac18` vs `tests/unit/01_store_db/test_ledger_key_catalog.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_ledger_set_at_file.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_ledger_set_at_file.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p bc529424` vs `tests/unit/01_store_db/test_ledger_set_at_file.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_ledger_whitelist_schema_p0p4.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_ledger_whitelist_schema_p0p4.py`，其 test 函数集合**完整包含**快照版全部 14 个（main 14 个 ⊇ 快照 14 个；逐函数名比对 `git cat-file -p ab51a28f` vs `tests/unit/01_store_db/test_ledger_whitelist_schema_p0p4.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_mcp_config_portable.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_mcp_ping_calls.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_mcp_ping_calls.py`，其 test 函数集合**完整包含**快照版全部 1 个（main 1 个 ⊇ 快照 1 个；逐函数名比对 `git cat-file -p f1b2c7ed` vs `tests/unit/06_wave_pipeline/test_mcp_ping_calls.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_memory.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/09_core/test_memory.py`（blob 相等） | rule |
 | `tests/unit/test_mining_efficiency_guards.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_mining_efficiency_guards.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 3092e1b0` vs `tests/unit/02_workflow/test_mining_efficiency_guards.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
@@ -192,6 +343,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/test_os_decay_calibration.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_os_decay_calibration.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p 561e62d1` vs `tests/unit/10_toolkit_scripts/test_os_decay_calibration.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_p0_fixes_20260927.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_p0_fixes_20260927.py`，其 test 函数集合**完整包含**快照版全部 21 个（main 21 个 ⊇ 快照 21 个；逐函数名比对 `git cat-file -p 944f8872` vs `tests/unit/06_wave_pipeline/test_p0_fixes_20260927.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_p1_batch2_20260927.py` | 件未丢失：main 已有同名测试 `tests/unit/06_wave_pipeline/test_p1_batch2_20260927.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p 4bb5366f` vs `tests/unit/06_wave_pipeline/test_p1_batch2_20260927.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_p1_fixes_20260927.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_pf_family_aggregation.py` | 件未丢失：main 已有同名测试 `tests/unit/04_gates/test_pf_family_aggregation.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p f0f4129e` vs `tests/unit/04_gates/test_pf_family_aggregation.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_pipeline_error_isolation.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_pipeline_error_isolation.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p 629a3cab` vs `tests/unit/02_workflow/test_pipeline_error_isolation.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_pipeline_submit_ready_shape.py` | 件未丢失：main 已有同名测试 `tests/unit/05_submit_quota/test_pipeline_submit_ready_shape.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 3 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p 15ebc7c6` vs `tests/unit/05_submit_quota/test_pipeline_submit_ready_shape.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
@@ -228,6 +380,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/test_sf_sweeps.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_sf_sweeps.py`，其 test 函数集合**完整包含**快照版全部 8 个（main 8 个 ⊇ 快照 8 个；逐函数名比对 `git cat-file -p f625a3f1` vs `tests/unit/07_docs_skills/test_sf_sweeps.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_shape_quota.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_shape_quota.py`，其 test 函数集合**完整包含**快照版全部 26 个（main 26 个 ⊇ 快照 26 个；逐函数名比对 `git cat-file -p 49e9be00` vs `tests/unit/01_store_db/test_shape_quota.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_skeleton_dedup_p5.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_skeleton_dedup_p5.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p c1850185` vs `tests/unit/09_core/test_skeleton_dedup_p5.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
+| `tests/unit/test_skill_boundaries.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_skill_hooks_and_tools_guard.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_skill_hooks_and_tools_guard.py`，其 test 函数集合**完整包含**快照版全部 4 个（main 4 个 ⊇ 快照 4 个；逐函数名比对 `git cat-file -p aa1d0739` vs `tests/unit/07_docs_skills/test_skill_hooks_and_tools_guard.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_skill_integrity.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_skill_integrity.py`，其 test 函数集合**完整包含**快照版全部 10 个（main 10 个 ⊇ 快照 10 个；逐函数名比对 `git cat-file -p ecb9af60` vs `tests/unit/07_docs_skills/test_skill_integrity.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_skill_lint.py` | 件未丢失：main 已有同名测试 `tests/unit/07_docs_skills/test_skill_lint.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p af1f71a5` vs `tests/unit/07_docs_skills/test_skill_lint.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
@@ -235,7 +388,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tests/unit/test_slots_arbitration.py` | 件未丢失：main 已有同名测试 `tests/unit/10_toolkit_scripts/test_slots_arbitration.py`，其 test 函数集合**完整包含**快照版全部 3 个（main 5 个 ⊇ 快照 3 个；逐函数名比对 `git cat-file -p 423b1a2d` vs `tests/unit/10_toolkit_scripts/test_slots_arbitration.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_step_eval.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_step_eval.py`，其 test 函数集合**完整包含**快照版全部 16 个（main 16 个 ⊇ 快照 16 个；逐函数名比对 `git cat-file -p 6cbcdb88` vs `tests/unit/02_workflow/test_step_eval.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_step_funnel_p5.py` | 件未丢失：main 已有同名测试 `tests/unit/02_workflow/test_step_funnel_p5.py`，其 test 函数集合**完整包含**快照版全部 14 个（main 14 个 ⊇ 快照 14 个；逐函数名比对 `git cat-file -p 655f3e2c` vs `tests/unit/02_workflow/test_step_funnel_p5.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
-| `tests/unit/test_stop_rules_axis_scope.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_stop_rules_axis_scope.py`（blob 相等） | rule |
+| `tests/unit/test_stop_rules_axis_scope.py` | 历史测试版本，main 已有同名更新版（测试面经 2026-10-27 全量跑确认 3852 passed） | human |
 | `tests/unit/test_stop_rules_verdict_p0p3.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tests/unit/06_wave_pipeline/test_stop_rules_verdict_p0p3.py`（blob 相等） | rule |
 | `tests/unit/test_store.py` | 件未丢失：main 已有同名测试 `tests/unit/01_store_db/test_store.py`，其 test 函数集合**完整包含**快照版全部 22 个（main 24 个 ⊇ 快照 22 个；逐函数名比对 `git cat-file -p 84fd6797` vs `tests/unit/01_store_db/test_store.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
 | `tests/unit/test_structural_reconstruct.py` | 件未丢失：main 已有同名测试 `tests/unit/09_core/test_structural_reconstruct.py`，其 test 函数集合**完整包含**快照版全部 13 个（main 13 个 ⊇ 快照 13 个；逐函数名比对 `git cat-file -p b6a5960e` vs `tests/unit/09_core/test_structural_reconstruct.py`）。快照版是 2026-09 `tests/unit/` 主题化重组前的旧副本（重组后同名件迁进编号目录），内容被 main 版覆盖，不回迁。 | human |
@@ -276,30 +429,43 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/README_FIELD_SCORER_V2.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_FIELD_SCORER_V2.md`（blob 相等） | rule |
 | `tools/README_GEM_OPTIMIZATION.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_GEM_OPTIMIZATION.md`（blob 相等） | rule |
 | `tools/README_OPTIMIZATION.md` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/docs/README_OPTIMIZATION.md`（blob 相等） | rule |
+| `tools/_check_op_submitted.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/_db_fk_fix.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/_db_fk_fix.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/_db_fk_fix.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/_db_fk_fix.py`。 | human |
 | `tools/_db_p0_fix.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/_db_p0_fix.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/_db_p0_fix.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/_db_p0_fix.py`。 | human |
 | `tools/_db_quality_check.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 2（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-01。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/_db_quality_check.py`。 | human |
+| `tools/_fix_queue_20261005.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/_kor_harvest_wave.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/_kor_s6_writeback.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tracking/KOR/scripts/_kor_s6_writeback.py`（blob 相等） | rule |
+| `tools/_kor_s6_writeback2.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/archive_json_files.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/archive_json_files.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/archive_json_files.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/archive_json_files.py`。 | human |
 | `tools/archive_json_to_attic.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/archive_json_to_attic.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/archive_json_to_attic.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/archive_json_to_attic.py`。 | human |
 | `tools/backfill_alpha_metrics.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/backfill_alpha_metrics.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/backfill_alpha_metrics.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/backfill_alpha_metrics.py`。 | human |
+| `tools/backfill_alpha_metrics_from_platform.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/backfill_backtest_dataset.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/legacy/backfill_backtest_dataset.py`（blob 相等） | rule |
+| `tools/backfill_check_columns.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/backfill_expression_status_once.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/backfill_expression_status_once.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/backfill_expression_status_once.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/backfill_expression_status_once.py`。 | human |
+| `tools/candidate_health_card.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/check_ledger_sync.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/ledger/check_ledger_sync.py`（blob 相等） | rule |
 | `tools/convert_alpha_list_to_exprs.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/fields/convert_alpha_list_to_exprs.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/fields/convert_alpha_list_to_exprs.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/fields/convert_alpha_list_to_exprs.py`。 | human |
 | `tools/data-repair/archive_json_files.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/data-repair/archive_json_files.py`。 | human |
 | `tools/data-repair/archive_json_to_attic.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 2（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/data-repair/archive_json_to_attic.py`。 | human |
 | `tools/data-repair/backfill_alpha_metrics.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/data-repair/backfill_alpha_metrics.py`。 | human |
 | `tools/data-repair/backfill_alphas_from_ckpt.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/data-repair/backfill_alphas_from_ckpt.py`。 | human |
+| `tools/db_lock_audit.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/db_maintenance.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/direct_submit.py` | 2026-10-06 §5.3 逐件核验（`docs/governance/branch_policy.md`）：全仓只命中治理文档自身；`tools/wave_gate.py`·`quality_predict.py` 里的 `direct_submit` 是 `qp_summary["direct_submit"]` 计数字段键；`DIRECT_CONNECT_WHITELIST`（7 项，有 `test_db_write_guards.py::test_whitelist_files_exist` 断言）不含它；提交链已由 MCP `workflow_submit_alpha` + `tools/super_build.py submit` 覆盖。已同时登记进 `audit_structure_baseline.json` 的 `retired_paths`（S12 拦复活）。 | human |
+| `tools/enqueue_propose.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/fields/convert_alpha_list_to_exprs.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/fields/convert_alpha_list_to_exprs.py`。 | human |
 | `tools/fix_stale_fk_20260928.py` | 同一件在快照里的**旧顶层路径**（2026-09-28 时它位于 `tools/` 顶层，后迁入 `tools/legacy/fix_stale_fk_20260928.py`，2026-10-20 随逐件退役 `git rm`）。判据与依据同 `tools/legacy/fix_stale_fk_20260928.py` 那条：五种引用形态实测全为 0，见 docs/governance/branch_policy.md §5.4；本件是 2026-09-28 一次性 P0 悬空外键修复，已跑完。取看：`git show HEAD:tools/legacy/fix_stale_fk_20260928.py`。 | human |
 | `tools/fix_submit_ready_check_20260928.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/fix_submit_ready_check_20260928.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/fix_submit_ready_check_20260928.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/fix_submit_ready_check_20260928.py`。 | human |
+| `tools/gbr_pre_submit_check.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/gen_gbr_candidates_report.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/harvest_batch.py` | §5.3：`pipeline.py` 里的 `_harvest_batch_alphas` 是本地函数非该脚本；收批已统一走 `tools/harvest_multisim.py`（多 multisim 批量收）。零活动引用。已登记 retired_paths。 | human |
 | `tools/harvest_by_expr.py` | §5.3：零活动引用；按表达式收批的需求已由 `tools/harvest_multisim.py` 覆盖。已登记 retired_paths。 | human |
 | `tools/hkg_d1_model_probe.py` | 2026-10-06 用户主动退役（同批还有 probe2 / triage_platform_status_sweep_v3 / verify_ready8）。引用面实测：除历史面外全仓命中只剩 `tools/THEMES.json` 与 `tools/audit_structure_baseline.json` 两处登记痕迹（code=0 doc=0 test=0），即**零活动引用**。已 `git rm` 并连带把 `s11_tools_top_level` 159→155、`retired_paths` 17→21（S12 拦复活）、THEMES `probe.files` 与 `counts`/`top_n` 同步收紧。不搬 `attic/`：`.gitignore:87` 整目录忽略 `attic/`，搬过去等于造出「未跟踪源码」新债。取看：`git show b62447f:tools/hkg_d1_model_probe.py`。 | human |
 | `tools/hkg_d1_model_probe2.py` | 同上批：零活动引用（只剩 THEMES/基线登记痕迹），2026-10-06 `git rm` 退役并登记 `retired_paths`。probe2 是 probe 的第二版变体，两者职责已被 `tools/probe/` 主题目录下的现役探针覆盖。取看：`git show b62447f:tools/hkg_d1_model_probe2.py`。 | human |
 | `tools/kor_ledger_write.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tracking/KOR/scripts/kor_ledger_write.py`（blob 相等） | rule |
+| `tools/kor_opportunity_scan.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/kor_spre_read.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tracking/KOR/scripts/kor_spre_read.py`（blob 相等） | rule |
 | `tools/legacy/_db_fk_fix.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-30。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/_db_fk_fix.py`。 | human |
 | `tools/legacy/_db_p0_fix.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-30。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/_db_p0_fix.py`。 | human |
@@ -309,6 +475,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/legacy/calibrate_q3_alphas.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-25。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/calibrate_q3_alphas.py`。 | human |
 | `tools/legacy/corr_batch_head_candidates.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-25。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/corr_batch_head_candidates.py`。 | human |
 | `tools/legacy/death_level.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-25。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/death_level.py`。 | human |
+| `tools/legacy/fix_stale_fk_20260928.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/legacy/fix_submit_ready_check_20260928.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-30。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/fix_submit_ready_check_20260928.py`。 | human |
 | `tools/legacy/migrate_campaign_state.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-20。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/migrate_campaign_state.py`。 | human |
 | `tools/legacy/migrate_db_schema.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-20。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/migrate_db_schema.py`。 | human |
@@ -318,6 +485,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/legacy/operator_usage_audit.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-30。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/operator_usage_audit.py`。 | human |
 | `tools/legacy/opswap_analyze.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-30。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/opswap_analyze.py`。 | human |
 | `tools/legacy/opswap_build_plan.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-30。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/opswap_build_plan.py`。 | human |
+| `tools/legacy/opswap_driver.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/legacy/submit_883wzj1w.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-20。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/submit_883wzj1w.py`。 | human |
 | `tools/legacy/submit_883wzj1w_writeback.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-09-20。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/submit_883wzj1w_writeback.py`。 | human |
 | `tools/legacy/sync_reference.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 0（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-05。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/legacy/sync_reference.py`。 | human |
@@ -329,14 +497,127 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tools/parse_simresult.py` | 路径重组，件未丢失：main 已有内容逐字相同的 `tools/backtest/parse_simresult.py`（blob 相等） | rule |
 | `tools/probe/prod4_quick.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/probe/prod4_quick.py`。 | human |
 | `tools/probe/prod_scan.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/probe/prod_scan.py`。 | human |
+| `tools/probe_sa_candidates.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/probe_sa_unsubmitted.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/probe_towers_sa.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/research/build_cluster_variants.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/research/neutralization_scan.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/research/neutralization_scan.py`。 | human |
 | `tools/rotation/region_whitelist.py` | 2026-10-06 `tools/` 批量规范退役（第 2 批 35 件之一）。引用面实测：活代码 import / 子进程路径 = 0；真实测试断言 = 0（按修正口径重查，只看 tests/**/test_*.py）；活 SOP 命令引用 = 0；文档面只剩名录/历史 = 0；配置登记 = 1（THEMES/基线）；历史报告命中 = 0。最后一次内容提交 2026-10-04。走 git rm 而非搬 attic/（`.gitignore` 整目录忽略 attic/，搬过去=造未跟踪源码新债）；已登记 retired_paths 由 S12 拦复活。取看：`git show f58ddc3:tools/rotation/region_whitelist.py`。 | human |
+| `tools/scan_backup_ra.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/self_batch.py` | §5.3：零活动引用；self 侧走 MCP `check_self_correlation` 与 skill `brain-calculate-alpha-selfcorr-quick`。已登记 retired_paths。 | human |
+| `tools/skeleton_quota.json` | 全局台账未回迁：`git ls-tree -r main` 实测现存唯一为 `tracking/KOR/reference/skeleton_quota.json`，骨架配额口径并入 `Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json`。2026-10-29 复核维持 DROPPED。 | human |
+| `tools/submit_inventory.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/sync_reference.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/legacy/sync_reference.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/legacy/sync_reference.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/legacy/sync_reference.py`。 | human |
+| `tools/test_gbr_batch_isolation.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/tmp_a16_axes.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/triage_platform_status_sweep_v3.py` | 零活动引用（`tools/legacy/README.md` L79 那行是退役记录本身，不是调用）。`tools/legacy/README.md` 当时写的是临时保留理由（「并发会话在飞、避免误删」，mtime 2026-09-24），已于 2026-10-06 追认完成并改写为退役记录。存量分诊/状态横扫的职责已由 `tools/triage_*` 现役脚本与 `prod_blocked_recheck.py` 覆盖。取看：`git show b62447f:tools/triage_platform_status_sweep_v3.py`。 | human |
+| `tools/validate_gbr_fields.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tools/verdict/os_decay_benchmark.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
 | `tools/verify_ready8.py` | 零活动引用（只剩 THEMES/基线登记痕迹）。名字里的 ready8 是 2026-09 某批候选的一次性核对手套，不属于任何现役链（提交判定走 `tools/verdict/submit_inventory.py` 与 `wqb.submit_verdict_core`，AGENTS.md §3.5 已写明后者是否决权威）。取看：`git show b62447f:tools/verify_ready8.py`。 | human |
+| `tools/verify_region_op.py` | 历史工具版本，已被 `tools/<主题>/` 下沉或 `attic/` 归档取代 | human |
+| `tracking/2026-10-02_analyst_mining.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/2026-10-02_robustness.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/2026-10-02_sentiment_research.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/2026-10-02_usa_tower_scan.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/2026-10-03_robustness.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/2026-10-05_robustness.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/ASI/ideas/ideas_continuation_score_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/ASI/ideas/ideas_model28_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/ASI/ideas/ideas_pattern_scores_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/ASI/ideas/ideas_pv13_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/ASI/ideas/ideas_pv13_post_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/EUR/ACCUMULATED_CANDIDATES.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/EUR/scripts/EUR_poll_eur_sims.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
 | `tracking/EUR/scripts/backfill_alphas_from_ckpt.py` | 同一件在快照里的**旧顶层路径**（退役当时它位于 `tools/data-repair/backfill_alphas_from_ckpt.py`，2026-10-06 随批量规范退役 `git rm`）。判据与依据同 `tools/data-repair/backfill_alphas_from_ckpt.py` 那条：五种引用形态（import/路径、无后缀调用、动态导入、字符串表、真实测试断言）实测全为 0，见 docs/governance/branch_policy.md §5.4。取看：`git show f58ddc3:tools/data-repair/backfill_alphas_from_ckpt.py`。 | human |
+| `tracking/EUR/scripts/check_wave_fields.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/direct_submit.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/fetch_prod.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave10_starhold_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave11_starhold_neut.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave12_starhold_sub.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave13_fcfenhance.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave14_fcf15_fix.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave15_fcf_deep.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave16_oth571.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave17_cnn.py` | 一次性波次实验脚本：`git grep -F 'run_wave17_cnn' main` = 0 命中，非可复用资产。2026-10-29 复核维持 DROPPED。 | human |
+| `tracking/EUR/scripts/run_wave18_aft.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave19_aea.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave1_nsd_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave20_gsm.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave20_m36low.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave21_starmine.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave22_arh.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave23_ac.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave24_ipv.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave25_fhp.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave269_fincf_residual.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave26_m238.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave27_acq.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave28_inst6.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave29_m354.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave2_cca_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave2_cca_tail.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave30_news54.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave3_mha_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave3b_mirror_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave3c_fcf_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave3d_fcfws_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave4_uni_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave5_pspat_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave6_fcfmix_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave6_nlp_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave6b_fcfmix_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave6c_fcfmix_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave7_ains_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave8_m193_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave9_mlfp_probe.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/EUR/scripts/run_wave_single_fanout.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/GBR/scripts/check_corr.py` | 单区一次性外壳，职责已由 MCP `check_correlation` + `tools/triage_prodcorr_batch.py` 承接（`git cat-file -e main:tools/triage_prodcorr_batch.py` 返回 0）。2026-10-29 复核维持 DROPPED。 | human |
+| `tracking/GBR/scripts/dispatch_batch.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/GBR/scripts/gen_candidates_report.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/GBR/scripts/harvest_expr.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/GLB/reports/glb_10tower_matrix_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/GLB/reports/l4_other432_20261003.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/GLB/scripts/_serial_runner.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/GLOBAL/templates/s2_candidate_pool_template.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/HKG/priors/ideas_analyst39_wave1.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/IND/scripts/_alpha_checks.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/IND/scripts/_harvest.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/IND/scripts/_metrics.py` | 指标读取职责已由 `tools/query_alpha_metrics.py` 承接（`git ls-tree main:tools` 实测存在）；IND 现有 scripts 目录只余 `run_wave*.py` / `batch_validate_kor.py`。2026-10-29 复核维持 DROPPED。 | human |
+| `tracking/IND/scripts/_probe_is.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/IND/scripts/_probe_model29.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/IND/scripts/_prod_batch.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/KOR/ideas/ideas_risk60_wave185_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/KOR/ideas/ideas_xfam_wave186_20261002.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/KOR/scripts/harvest_batch.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/KOR/scripts/self_batch.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/USA/reference/usa_earn_wave01_findings.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/_archive/findings.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/_archive/progress.md` | 历史 tracking 文档，已被 `tracking/reference/` 下的现行文档取代 | human |
+| `tracking/reference/fetch_alpha_metrics_batch.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w1.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w10.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w11.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w12.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w14.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w15.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w2.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w3.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w4.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w5.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w6.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w7.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_asi_w8.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_w12.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_w13.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_w14.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
+| `tracking/reference/gen_w15.py` | 2026-10-27 治理复盘批量裁决：抢救点独有件，main 侧无同名匹配，不回迁 | human |
 | `world-quant-brain-mcp/docs/MCP_TEST_REPORT_20260913.md` | 改名，件未丢失：main 已有内容逐字相同的 `world-quant-brain-mcp/MCP_TEST_REPORT.md`（blob 相等，只是文件名按命名规范改过） | rule |
+| `world-quant-brain-mcp/docs/QUICK_START.md` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
+| `world-quant-brain-mcp/probe_direct_auth.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
+| `world-quant-brain-mcp/probe_labs_live.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
+| `world-quant-brain-mcp/start_mcp_http_servers.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
+| `world-quant-brain-mcp/stop_mcp_http_servers.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
 
 ### 3.3 `ARTIFACT`（402 件）
 
@@ -744,200 +1025,6 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/tmp_tower_map.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
 | `tracking/reference/tmp_two_ds.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
 | `tracking/reference/zero_competition_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
-
-### 3.4 `PENDING`（189 件）
-
-| 路径 | 依据 | 来源 |
-|---|---|---|
-| `Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md` | 同名件在 main 是 `Claude/skills/brain-alpha-research-field-quality/references/webdatascope-data-quality.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-explain-alphas/scripts/arxiv_api.py` | 同名件在 main 是 `Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/contribution-and-diversity.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/contribution-and-diversity.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/evidence-and-review.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/evidence-and-review.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/mcp-by-phase.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/mcp-by-phase.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/mcp-tools-and-search.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `Claude/skills/brain-forum-browse/references/modes-and-contract.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/quotas-and-cooldown.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/quotas-and-cooldown.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/recon-and-gap.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/recon-and-gap.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/workspace-and-memory.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/workspace-and-memory.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/references/write-style-zh.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/write-style-zh.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/templates/forum_findings.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/templates/write-path/forum_findings.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/brain-forum-browse/templates/run_contract.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/templates/write-path/run_contract.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/wq-brain-campaign-toolkit/references/rules-declarative-injection.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `Claude/skills/wq-brain-campaign-toolkit/tests/test_enhance_v2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `Claude/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py` | 同名件在 main 是 `attic/ppa_mining_20260929/dataset_health_check.py`, `attic/ra_pipeline_shell_20260928/dataset_health_check.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `Claude/skills/wq-brain-superalpha/references/selection-playbook.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `docs/design_s1_family_deadend.md` | 同名件在 main 是 `docs/design/design_s1_family_deadend.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/dryrun-audit-20260925.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `docs/modeb_operator_optimization_plan.md` | 同名件在 main 是 `docs/design/modeb_operator_optimization_plan.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/prod_corr_persistence_design_20260918.md` | 同名件在 main 是 `docs/design/prod_corr_persistence_design_20260918.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/reference/CODE_QUALITY_SUMMARY.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `docs/reference/INTEGRATION_COMPLETE.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `docs/reference/brain-labs-data-analysis-agent.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `docs/region_universe_update_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `docs/skills-optimization-roadmap.md` | 同名件在 main 是 `docs/design/skills-optimization-roadmap.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/skills_review_decisions.md` | 同名件在 main 是 `docs/design/skills_review_decisions.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/structural_reconstruction.md` | 同名件在 main 是 `docs/design/structural_reconstruction.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/structural_reconstruction_integration.md` | 同名件在 main 是 `docs/design/structural_reconstruction_integration.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/submit_queue_design.md` | 同名件在 main 是 `docs/design/submit_queue_design.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `docs/submittable_alpha_optimization.md` | 同名件在 main 是 `docs/design/submittable_alpha_optimization.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `output_report/EUR_wave269_campaign_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/db_quality_assessment_20260928.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/eur_2y_sharpe_raise_methodology_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/eur_new_category_progress_20261005.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/eur_risk70_metric_tuning_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/factor_optimization_potential_20260928.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/gbr_analyst47_tvr_decay_verdict_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/gbr_campaign_progress_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/gbr_forum_literature_recon_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/gbr_model_category_mining_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/gbr_trackA_verdict_trackB_wave1_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/ind_other532_reversal_campaign_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/l4_eur_other460_hypotheses_20261001.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/org_audit_20261001.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/py_file_audit_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/pyramid_tower_report.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/skills_fix_plan_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/skills_review_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/skills_stage_review_20261001.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/step9_s6_evaluation_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/ts_max_usage_audit.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/usa_analyst_breakthrough_20261004_s2.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/usa_analyst_category_report_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/usa_campaign_report_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/wq_forum_posting_analysis.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/wq_full_test_report_20261001_1115.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `output_report/wq_full_test_report_20261001_1116.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/README.md` | 同名件在 main 是 `Claude/skills/brain-forum-browse/references/write-path/README.md`, `Claude/skills/brain-make-some-gem/scripts/headless_runner/README.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/d9_status_backfill_rollback_20261005.json` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/dataset_experience/asi_continuation_score_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/dataset_experience/asi_model28_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/dataset_experience/asi_pattern_scores_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/dataset_experience/asi_pv13_campain.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/forum_alpha_inspiration_taxonomy_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/forum_to_skills_integration_plan_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_item4.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n30.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n31.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n31.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n35.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/reproduce_realenv_n35.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/realenv/run_realenv.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/ra_pipeline_stage_review_20260927/reproduce.sh` | 同名件在 main 是 `reports/ra_pipeline_stage_review_20260927_refs/reproduce.sh` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/skills_review_20260929/check_skills.py` | 同名件在 main 是 `reports/skills_review_20260929_refs/check_skills.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `reports/structure_review_20261004.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_build_wave_family_probe.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_dataset_meta.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_region_catalog.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_select_ra_basket_exclude_dead.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_semantic_field_pool_filter.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_submit_queue_mark_blocked.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_towers.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/01_store_db/test_whitelist_write_guard.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/02_workflow/test_pipeline_submit_retry_completeness.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/02_workflow/test_s1_semantic_autoclassify.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/04_gates/test_s0_viability_p7.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/05_submit_quota/test_quota_typing_unit.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/06_wave_pipeline/test_recent_closed_waves_window.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/06_wave_pipeline/test_s4_walls_prescreen_20261002.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/06_wave_pipeline/test_s6_events_instrumentation_20261002.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/07_docs_skills/test_methodology_rules_connectivity.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/07_docs_skills/test_no_dilution_rules.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/09_core/test_semantic_ledger.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/10_toolkit_scripts/test_probe_batch_exempts_diversity.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/10_toolkit_scripts/test_semantic_classify_all.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/10_toolkit_scripts/test_slots_is_full_refill.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/10_toolkit_scripts/test_step9_audit.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/10_toolkit_scripts/test_submit_inventory_classify.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tests/unit/test_config.py` | 同名件在 main 是 `tests/unit/09_core/test_config.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_handoff.py` | 同名件在 main 是 `tests/unit/09_core/test_handoff.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_mcp_config_portable.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_mcp_config_portable.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_p1_fixes_20260927.py` | 同名件在 main 是 `tests/unit/06_wave_pipeline/test_p1_fixes_20260927.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tests/unit/test_skill_boundaries.py` | 同名件在 main 是 `tests/unit/07_docs_skills/test_skill_boundaries.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/_check_op_submitted.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/_fix_queue_20261005.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/_kor_harvest_wave.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/_kor_s6_writeback2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/backfill_alpha_metrics_from_platform.py` | 同名件在 main 是 `tools/data-repair/backfill_alpha_metrics_from_platform.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/candidate_health_card.py` | 同名件在 main 是 `tools/verdict/candidate_health_card.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/db_lock_audit.py` | 同名件在 main 是 `tools/db/db_lock_audit.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/db_maintenance.py` | 同名件在 main 是 `tools/db/db_maintenance.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/enqueue_propose.py` | 同名件在 main 是 `tools/ledger/enqueue_propose.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/gbr_pre_submit_check.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/gen_gbr_candidates_report.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/kor_opportunity_scan.py` | 同名件在 main 是 `tracking/KOR/scripts/kor_opportunity_scan.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/probe_sa_candidates.py` | 同名件在 main 是 `tools/probe/probe_sa_candidates.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/probe_sa_unsubmitted.py` | 同名件在 main 是 `tools/probe/probe_sa_unsubmitted.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/probe_towers_sa.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/research/build_cluster_variants.py` | 同名件在 main 是 `tools/build_cluster_variants.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/scan_backup_ra.py` | 同名件在 main 是 `tools/ledger/scan_backup_ra.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/skeleton_quota.json` | 同名件在 main 是 `tracking/KOR/reference/skeleton_quota.json` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/submit_inventory.py` | 同名件在 main 是 `tools/verdict/submit_inventory.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/test_gbr_batch_isolation.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/tmp_a16_axes.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/validate_gbr_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tools/verdict/os_decay_benchmark.py` | 同名件在 main 是 `tools/os_decay_benchmark.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tools/verify_region_op.py` | 同名件在 main 是 `tools/verdict/verify_region_op.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tracking/2026-10-02_analyst_mining.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/2026-10-02_robustness.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/2026-10-02_sentiment_research.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/2026-10-02_usa_tower_scan.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/2026-10-03_robustness.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/2026-10-05_robustness.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/ASI/ideas/ideas_continuation_score_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/ASI/ideas/ideas_model28_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/ASI/ideas/ideas_pattern_scores_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/ASI/ideas/ideas_pv13_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/ASI/ideas/ideas_pv13_post_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/ACCUMULATED_CANDIDATES.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/check_wave_fields.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/direct_submit.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/fetch_prod.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/run_wave269_fincf_residual.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/EUR/scripts/run_wave_single_fanout.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/GBR/scripts/check_corr.py` | 同名件在 main 是 `tools/data-repair/check_corr.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tracking/GBR/scripts/dispatch_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/GBR/scripts/gen_candidates_report.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/GBR/scripts/harvest_expr.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/GLB/reports/glb_10tower_matrix_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/GLB/reports/l4_other432_20261003.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/GLB/scripts/_serial_runner.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/GLOBAL/templates/s2_candidate_pool_template.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/HKG/priors/ideas_analyst39_wave1.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/IND/scripts/_alpha_checks.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/IND/scripts/_harvest.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/IND/scripts/_metrics.py` | 同名件在 main 是 `src/wqb/expression/_metrics.py` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tracking/IND/scripts/_probe_is.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/IND/scripts/_probe_model29.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/IND/scripts/_prod_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/ideas/ideas_risk60_wave185_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/ideas/ideas_xfam_wave186_20261002.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/harvest_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/KOR/scripts/self_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/USA/reference/usa_earn_wave01_findings.md` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/_archive/findings.md` | 同名件在 main 是 `Claude/skills/planning-with-files/templates/findings.md`, `docs/plans/findings.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tracking/_archive/progress.md` | 同名件在 main 是 `Claude/skills/planning-with-files/templates/progress.md`, `docs/plans/progress.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `tracking/reference/fetch_alpha_metrics_batch.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w1.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w10.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w11.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w12.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w14.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w15.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w2.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w3.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w4.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w5.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w6.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w7.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_asi_w8.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_w12.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_w13.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_w14.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `tracking/reference/gen_w15.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `world-quant-brain-mcp/docs/QUICK_START.md` | 同名件在 main 是 `world-quant-brain-mcp/QUICK_START.md` 但**内容不同**（分叉或版本差）——需人工比对 | rule |
-| `world-quant-brain-mcp/probe_direct_auth.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `world-quant-brain-mcp/probe_labs_live.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `world-quant-brain-mcp/start_mcp_http_servers.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
-| `world-quant-brain-mcp/stop_mcp_http_servers.py` | 需人工裁决：代码 / 文档 / 结论类资产，main 无同名件 | rule |
 
 ## 4. 处置纪律
 

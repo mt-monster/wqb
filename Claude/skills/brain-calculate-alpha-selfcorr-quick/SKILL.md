@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-18
+last_verified: 2026-10-29
 name: brain-calculate-alpha-selfcorr-quick
 description: "本地批量快筛：把自己 UNSUBMITTED 的候选与已提交（OS）alpha 池比对 SELF / PPAC（Power Pool Alpha Correlation）相关性，输出 Excel 汇总；不占平台相关性槽位，不替代平台实测。用户要批量核对一批候选的 self-corr / PPAC、或要 Excel 汇总时使用；单个 alpha 的即时 SELF 用 MCP `check_self_correlation`。"
 layer: L4

@@ -2,7 +2,7 @@
 name: brain-data-feature-engineering
 layer: L1
 description: "对已锁定的数据集做人工字段理解：分档、字段画像、按 8 问产出机制概念，写成 GEM 可摄入的 ideas（含 Implementation Example 模板）与 S1 台账（source=manual）。要为黑盒 / 半透明数据集做 S1 决策、或想让 GEM 用你写的概念时使用；workflow_feature_engineering 节点产的是确定性模板，不会被 GEM 注入。"
-last_verified: 2026-10-18
+last_verified: 2026-10-29
 allowed-tools:
   - Read
   - Grep

@@ -100,9 +100,37 @@ cd <仓库根>
 | LOW_SUB_UNIVERSE_SHARPE | 0.53×S | 绝对 1.0 | **0.435×S（比率闸）** |
 | TO | 0.05–0.3 | 0.01–0.7 | **0.01–0.7**（⚠ 原记 0.4 已订正，见下） |
 | prod / self | <0.7 | <0.7 | **<0.7（死线）** |
-| investability | N/A | N/A | **N/A**（不测） |
+| investability | N/A | N/A | **invest_S ≥ 0.70×S（人工闸，2026-10-28 用户新增）** |
 
 **USA 0.435×S 的实测校准**（三点）：S1.43→限 0.62／S1.99→限 0.87／S2.01→限 0.87 ⇒ 比值恒 0.433–0.435。
+
+### ★ 2026-10-28 investability 从「不测」改为「必看」（用户指令）
+
+原记 **`investability = N/A（不测）`** 作废。USA 的提交层 `checks` 确实**不下发**
+`LOW_INVESTABILITY_CONSTRAINED_SHARPE`（所以它不进 `failed_ra_count`，也不影响 `submit_verdict`），
+但**该指标值仍在 alpha 详情里**，且它是「这份 Sharpe 到底能不能吃到」的唯一量度。
+
+**门槛用 0.70×S**：这是该闸在启用区域的平台公式（见 `reports/attribution_to_gatebreak_20261015.md`
+「inv 限 = 0.70×S」）。即 **`investability_ratio = invest_S / S ≥ 0.70`** 才算可提交档。
+
+**实证：这个指标能把「看起来一样好」的候选劈成两类**（USA，2026-10-28 实测 12 颗）：
+
+| 档 | 代表 | S | invest_S | ratio | 含义 |
+|---|---|---:|---:|---:|---|
+| 优 | `zqrgna91` | 2.67 | 2.70 | **1.01** | 可投资子集上更强 |
+| 优 | `1YZpv1bK` | 1.79 | 1.94 | **1.08** | 同上 |
+| 优 | `N1eLE1de` | 2.63 | 2.50 | **0.95** | 同上 |
+| 优 | `npvMg7Yq` | 2.50 | 2.15 | **0.86** | 同上 |
+| 差 | `88v2XRm7` | 2.73 | 0.34 | 0.12 | Sharpe 主要在**难交易**的名字上 |
+| 差 | `0mjaa2Ev` | 3.24 | 0.29 | **0.090** | 同上，且 S 越高越可疑 |
+| 差 | `vROPEJ8w` | 2.08 | 0.17 | 0.082 | 同上 |
+
+⇒ **判据：S 高而 invest_S 低 = 分数挣在做不了的票上**。`0mjaa2Ev` S3.24 但 ratio 0.09
+（91% 的 Sharpe 不可投资）**不建议提交**；同理 `MPYoQ1E6` 0.085、`d5KPPrxx` 0.080、
+`E56XEpV9` 0.032 全部降级。
+⇒ **筛选顺序改为**：① `failed_ra_count == 0` ② **`investability_ratio ≥ 0.70`** ③ prod/self < 0.7 ④ 互相关。
+investability 必须在算互相关**之前**过，否则会把一堆不可投资的高 Sharpe 候选当成"最优解"去配篮子。
+
 
 ### ★ 2026-10-26 两处实测订正
 1. **TO 上限不是 0.4**：`QPY81NKQ` TO=**0.6227**，`HIGH_TURNOVER` 判 **pass**（fail 串里只有 `LOW_FITNESS`）。

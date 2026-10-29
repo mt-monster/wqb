@@ -1,0 +1,3008 @@
+﻿{
+  "results": [
+    {
+      "id": "abs_avg_pct_move_announcements_12",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 130,
+      "alphaCount": 203,
+      "description": "Absolute average percent earnings move across the last 12 earnings announcements, measured at the time of the announcement"
+    },
+    {
+      "id": "absolute_average_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 61,
+      "alphaCount": 94,
+      "description": "Absolute average percentage earnings-day price move over the last 12 announcements"
+    },
+    {
+      "id": "aggregate_option_open_interest",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 189,
+      "alphaCount": 365,
+      "description": "Total open interest"
+    },
+    {
+      "id": "aggregate_option_open_interest_2",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 34,
+      "alphaCount": 61,
+      "description": "Total options open interest"
+    },
+    {
+      "id": "announcement_effect_10",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 44,
+      "alphaCount": 57,
+      "description": "The earn effect for earnings date number 10"
+    },
+    {
+      "id": "announcement_effect_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 63,
+      "alphaCount": 99,
+      "description": "The earn effect for earnings date number 2"
+    },
+    {
+      "id": "announcement_effect_3",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 30,
+      "alphaCount": 35,
+      "description": "The earnings effect for earnings date number 3"
+    },
+    {
+      "id": "announcement_effect_7",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 28,
+      "alphaCount": 40,
+      "description": "The earn effect for earnings date number7."
+    },
+    {
+      "id": "announcement_effect_8",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 28,
+      "alphaCount": 31,
+      "description": "The earn effect for earnings date number8."
+    },
+    {
+      "id": "announcement_effect_9",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 27,
+      "alphaCount": 32,
+      "description": "The earn effect for earnings date number9."
+    },
+    {
+      "id": "atm_volatility_month1",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 47,
+      "alphaCount": 59,
+      "description": "At-the-money implied volatility for month 1"
+    },
+    {
+      "id": "atm_volatility_month2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 78,
+      "alphaCount": 95,
+      "description": "At-the-money implied volatility for month 2"
+    },
+    {
+      "id": "atm_volatility_month3",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 25,
+      "alphaCount": 31,
+      "description": "At-the-money implied volatility for month 3"
+    },
+    {
+      "id": "avg_option_volume_20d",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 289,
+      "alphaCount": 489,
+      "description": "Average option volume for all strikes over the last 20 days"
+    },
+    {
+      "id": "best_fit_implied_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 63,
+      "alphaCount": 93,
+      "description": "The implied earnings effect needed to best fit the term structure of monthly implied volatilities (earnings-specific volatility add-on)"
+    },
+    {
+      "id": "days_to_expiry_month2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 17,
+      "alphaCount": 20,
+      "description": "Days to expiration for month 2"
+    },
+    {
+      "id": "days_to_expiry_month3",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 21,
+      "alphaCount": 23,
+      "description": "Days to expiration for month 3 options"
+    },
+    {
+      "id": "eighth_event_option_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 23,
+      "alphaCount": 27,
+      "description": "The earn effect for earnings date number8."
+    },
+    {
+      "id": "eighth_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 72,
+      "alphaCount": 93,
+      "description": "Straddle or strangle price as a percent of stock price for earnings date number 8"
+    },
+    {
+      "id": "eighth_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 141,
+      "alphaCount": 198,
+      "description": "Percentage stock price move on the 8th prior earnings announcement (back 8)"
+    },
+    {
+      "id": "eighth_historical_straddle_price_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 80,
+      "alphaCount": 92,
+      "description": "Earnings straddle/strangle price as a percentage of stock price for the 8th prior earnings date"
+    },
+    {
+      "id": "eleventh_event_option_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 12,
+      "alphaCount": 13,
+      "description": "The earn effect for earnings date number11."
+    },
+    {
+      "id": "eleventh_event_option_effect_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "The earn effect for earnings date number11."
+    },
+    {
+      "id": "eleventh_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 191,
+      "alphaCount": 250,
+      "description": "Cost of the earnings straddle/strangle as a percent of stock price for earnings event number 11"
+    },
+    {
+      "id": "eleventh_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 55,
+      "alphaCount": 65,
+      "description": "The percentage move for earnings date number back11."
+    },
+    {
+      "id": "ern4_1000dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 212,
+      "alphaCount": 546,
+      "description": "1000-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_1000dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 75,
+      "alphaCount": 111,
+      "description": "1000-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_1000dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 100,
+      "alphaCount": 178,
+      "description": "1000-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_1000dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 83,
+      "alphaCount": 157,
+      "description": "1000-day open-range (intraday) historical volatility with earnings days excluded, annualized percent"
+    },
+    {
+      "id": "ern4_10dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 58,
+      "alphaCount": 140,
+      "description": "10-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_10dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 40,
+      "description": "10-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_10dexerniv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 30,
+      "alphaCount": 46,
+      "description": "10-day constant-maturity implied volatility with earnings effect removed"
+    },
+    {
+      "id": "ern4_10div",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 49,
+      "alphaCount": 90,
+      "description": "10-day constant-maturity implied volatility (annualized)"
+    },
+    {
+      "id": "ern4_10dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 33,
+      "alphaCount": 50,
+      "description": "10-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_10dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 49,
+      "description": "10-day ORATS open-range historical tick volatility (annualized), excluding the earnings day"
+    },
+    {
+      "id": "ern4_120dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 48,
+      "alphaCount": 84,
+      "description": "120-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_120dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 40,
+      "alphaCount": 63,
+      "description": "120-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_120dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 44,
+      "alphaCount": 73,
+      "description": "120-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_120dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 36,
+      "alphaCount": 75,
+      "description": "120-day ORATS open-range historical tick volatility (annualized), excluding the earnings day"
+    },
+    {
+      "id": "ern4_20dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 28,
+      "alphaCount": 61,
+      "description": "20-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_20dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 44,
+      "description": "20-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_20dexerniv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 22,
+      "alphaCount": 34,
+      "description": "20-day constant-maturity implied volatility with earnings effect removed"
+    },
+    {
+      "id": "ern4_20div",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 45,
+      "alphaCount": 58,
+      "description": "Interpolated implied volatility over 20 calendar days, annualized percent"
+    },
+    {
+      "id": "ern4_20dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 28,
+      "alphaCount": 61,
+      "description": "20-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_20dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 34,
+      "alphaCount": 50,
+      "description": "20-day ORATS open-range historical tick volatility (annualized), excluding the earnings day"
+    },
+    {
+      "id": "ern4_252dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 29,
+      "alphaCount": 57,
+      "description": "252-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_252dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 28,
+      "alphaCount": 57,
+      "description": "252-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_252dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 27,
+      "alphaCount": 54,
+      "description": "252-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_252dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 38,
+      "alphaCount": 53,
+      "description": "252-day ORATS open-range historical tick volatility (annualized), excluding the earnings day"
+    },
+    {
+      "id": "ern4_30dexerniv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 45,
+      "alphaCount": 92,
+      "description": "30-day constant-maturity implied volatility with earnings effect removed"
+    },
+    {
+      "id": "ern4_30div",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 75,
+      "alphaCount": 171,
+      "description": "Interpolated implied volatility over 30 calendar days, annualized percent"
+    },
+    {
+      "id": "ern4_500dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 46,
+      "alphaCount": 58,
+      "description": "500-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_500dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 53,
+      "alphaCount": 101,
+      "description": "500-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_500dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 37,
+      "alphaCount": 59,
+      "description": "500-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_500dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 35,
+      "alphaCount": 46,
+      "description": "500-day open-range (intraday) historical volatility with earnings days excluded, annualized percent"
+    },
+    {
+      "id": "ern4_5dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 14,
+      "alphaCount": 20,
+      "description": "5-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_5dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 16,
+      "alphaCount": 25,
+      "description": "5-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_5dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 23,
+      "alphaCount": 37,
+      "description": "5-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_5dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 23,
+      "alphaCount": 46,
+      "description": "5-day ORATS open-range historical tick volatility (annualized), excluding the earnings day"
+    },
+    {
+      "id": "ern4_60dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 29,
+      "alphaCount": 45,
+      "description": "60-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_60dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 20,
+      "alphaCount": 39,
+      "description": "60-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_60dexerniv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 16,
+      "alphaCount": 26,
+      "description": "60-day constant-maturity implied volatility with earnings effect removed"
+    },
+    {
+      "id": "ern4_60div",
+      "type": "VECTOR",
+      "coverage": 0.9696,
+      "userCount": 98,
+      "alphaCount": 159,
+      "description": "60-day constant-maturity implied volatility (annualized)"
+    },
+    {
+      "id": "ern4_60dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 22,
+      "alphaCount": 54,
+      "description": "60-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_60dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 41,
+      "description": "60-day ORATS open-range historical tick volatility (annualized), excluding the earnings day"
+    },
+    {
+      "id": "ern4_6mexerniv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 14,
+      "description": "6-month constant-maturity implied volatility with earnings effect removed"
+    },
+    {
+      "id": "ern4_6miv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 40,
+      "alphaCount": 54,
+      "description": "Interpolated implied volatility over 6 months, annualized percent"
+    },
+    {
+      "id": "ern4_90dclshv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 42,
+      "alphaCount": 84,
+      "description": "90-day close-to-close historical volatility, annualized percent"
+    },
+    {
+      "id": "ern4_90dclshvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 30,
+      "alphaCount": 45,
+      "description": "90-day close-to-close historical volatility excluding earnings-day effects, annualized percent"
+    },
+    {
+      "id": "ern4_90dexerniv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 31,
+      "alphaCount": 42,
+      "description": "90-day constant-maturity implied volatility with earnings effect removed"
+    },
+    {
+      "id": "ern4_90div",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 113,
+      "alphaCount": 171,
+      "description": "Interpolated implied volatility over 90 calendar days, annualized percent"
+    },
+    {
+      "id": "ern4_90dorhv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 31,
+      "alphaCount": 51,
+      "description": "90-day ORATS open-range historical tick volatility (annualized), including earnings days"
+    },
+    {
+      "id": "ern4_90dorhvxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 26,
+      "alphaCount": 52,
+      "description": "90-day ORATS open-range historical tick volatility (annualized), excluding the earnings day"
+    },
+    {
+      "id": "ern4_absavgernmv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 81,
+      "alphaCount": 142,
+      "description": "Absolute average earnings-day stock move percentage across the last 12 events"
+    },
+    {
+      "id": "ern4_avg20doptvolu",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 169,
+      "alphaCount": 305,
+      "description": "20-day average total options trading volume"
+    },
+    {
+      "id": "ern4_erneffct1",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 383,
+      "alphaCount": 501,
+      "description": "The earn effect for earnings date number1."
+    },
+    {
+      "id": "ern4_erneffct10",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 17,
+      "alphaCount": 21,
+      "description": "The earn effect for earnings date number10."
+    },
+    {
+      "id": "ern4_erneffct11",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 29,
+      "description": "The earn effect for earnings date number11."
+    },
+    {
+      "id": "ern4_erneffct12",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 20,
+      "alphaCount": 31,
+      "description": "The earn effect for earnings date number12."
+    },
+    {
+      "id": "ern4_erneffct2",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 26,
+      "alphaCount": 28,
+      "description": "The earn effect for earnings date number2."
+    },
+    {
+      "id": "ern4_erneffct3",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 41,
+      "alphaCount": 54,
+      "description": "The earn effect for earnings date number3."
+    },
+    {
+      "id": "ern4_erneffct4",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 31,
+      "alphaCount": 41,
+      "description": "The earn effect for earnings date number4."
+    },
+    {
+      "id": "ern4_erneffct5",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 18,
+      "alphaCount": 19,
+      "description": "The earn effect for earnings date number5."
+    },
+    {
+      "id": "ern4_erneffct6",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 36,
+      "description": "The earn effect for earnings date number6."
+    },
+    {
+      "id": "ern4_erneffct7",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 20,
+      "alphaCount": 28,
+      "description": "The earn effect for earnings date number7."
+    },
+    {
+      "id": "ern4_erneffct8",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 12,
+      "alphaCount": 16,
+      "description": "The earn effect for earnings date number8."
+    },
+    {
+      "id": "ern4_erneffct9",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 18,
+      "alphaCount": 24,
+      "description": "The earn effect for earnings date number9."
+    },
+    {
+      "id": "ern4_ernmnth",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 93,
+      "alphaCount": 213,
+      "description": "The next expiration month number directly after earnings date."
+    },
+    {
+      "id": "ern4_ernmv1",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 436,
+      "alphaCount": 1402,
+      "description": "Stock price move on the most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv10",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 36,
+      "alphaCount": 48,
+      "description": "Stock price move on the tenth most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv11",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 80,
+      "alphaCount": 197,
+      "description": "Stock price move on the eleventh most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv12",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 70,
+      "alphaCount": 85,
+      "description": "Stock price move on the twelfth most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv2",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 116,
+      "alphaCount": 301,
+      "description": "Stock price move on the second most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv3",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 39,
+      "alphaCount": 62,
+      "description": "Stock price move on the third most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv4",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 48,
+      "alphaCount": 65,
+      "description": "Stock price move on the fourth most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv5",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 40,
+      "alphaCount": 69,
+      "description": "Stock price move on the fifth most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv6",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 71,
+      "alphaCount": 83,
+      "description": "Stock price move on the sixth most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv7",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 48,
+      "alphaCount": 57,
+      "description": "Stock price move on the seventh most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv8",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 68,
+      "alphaCount": 77,
+      "description": "Stock price move on the eighth most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmv9",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 32,
+      "alphaCount": 77,
+      "description": "Stock price move on the ninth most recent past earnings date, expressed as a percentage change (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernmvstdev",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 61,
+      "alphaCount": 129,
+      "description": "The standard deviation of the 12 earnings move absolute values."
+    },
+    {
+      "id": "ern4_ernstrapct1",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 101,
+      "alphaCount": 156,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct10",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 75,
+      "alphaCount": 91,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the tenth most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct11",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 76,
+      "alphaCount": 91,
+      "description": "Straddle price as a percentage of the stock price for the 11th past earnings date"
+    },
+    {
+      "id": "ern4_ernstrapct12",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 107,
+      "alphaCount": 137,
+      "description": "Straddle price as a percentage of the stock price for the 12th past earnings date"
+    },
+    {
+      "id": "ern4_ernstrapct2",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 41,
+      "alphaCount": 65,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the second most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct3",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 82,
+      "alphaCount": 128,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the third most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct4",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 27,
+      "alphaCount": 31,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the fourth most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct5",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 22,
+      "alphaCount": 29,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the fifth most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct6",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 74,
+      "alphaCount": 95,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the sixth most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct7",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 32,
+      "alphaCount": 47,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the seventh most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct8",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 33,
+      "alphaCount": 40,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the eighth most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_ernstrapct9",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 14,
+      "alphaCount": 17,
+      "description": "At-the-money straddle/strangle price as a percent of stock price for the ninth most recent past earnings date (float, decimal fraction)"
+    },
+    {
+      "id": "ern4_fairmth2xieevol90d",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 34,
+      "alphaCount": 61,
+      "description": "The 90 day IV minus the implied earnings effect plus the average earnings percent move applied to the second earnings month."
+    },
+    {
+      "id": "ern4_fairvol90d",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 40,
+      "alphaCount": 73,
+      "description": "The 90 day IV plus the average earnings percent move applied to the first earnings month."
+    },
+    {
+      "id": "ern4_fairxieevol90d",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 52,
+      "alphaCount": 106,
+      "description": "The 90 day IV minus the implied earnings effect plus the average earnings percent move applied to the first earnings month."
+    },
+    {
+      "id": "ern4_fcsterneffct",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 441,
+      "alphaCount": 535,
+      "description": "Forecasted earnings effect on implied volatility (percent)"
+    },
+    {
+      "id": "ern4_fcstslope",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 23,
+      "alphaCount": 27,
+      "description": "ORATS forecasted 28 calendar day put/call slope."
+    },
+    {
+      "id": "ern4_impernmv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 19,
+      "alphaCount": 23,
+      "description": "Implied Earnings Move in the market over the fitXearnings implied volatility for the first earnings month."
+    },
+    {
+      "id": "ern4_impernmv90d",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 58,
+      "alphaCount": 106,
+      "description": "The percent move on earnings needed to make the FairXieeVol90d equal to 1st earn month implied."
+    },
+    {
+      "id": "ern4_impernmvmth290d",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 20,
+      "alphaCount": 27,
+      "description": "The percent move on earnings needed to make the FairXieeVol90d equal to 2nd earn month implied."
+    },
+    {
+      "id": "ern4_impliedee",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 21,
+      "alphaCount": 32,
+      "description": "The implied earnings effect to make the best fit term structure of the month implied volatilities."
+    },
+    {
+      "id": "ern4_impmth2ernmv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 15,
+      "alphaCount": 30,
+      "description": "Implied Earnings Move in the market over the fit implied volatility for the second earnings month."
+    },
+    {
+      "id": "ern4_m1atmiv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 20,
+      "alphaCount": 27,
+      "description": "At-the-money implied volatility for month 1 (front-month) options, annualized (decimal)"
+    },
+    {
+      "id": "ern4_m1dtex",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 34,
+      "alphaCount": 107,
+      "description": "Days to expiration for month 1 (front-month) options"
+    },
+    {
+      "id": "ern4_m1fcaststrapx",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 27,
+      "alphaCount": 65,
+      "description": "Forecasted near-ATM straddle price for month 1 (USD)"
+    },
+    {
+      "id": "ern4_m1histrike",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 43,
+      "description": "The high strike of the straddle or strangle for month 1."
+    },
+    {
+      "id": "ern4_m1lostrike",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 37,
+      "alphaCount": 83,
+      "description": "The low strike of the straddle or strangle for month 1."
+    },
+    {
+      "id": "ern4_m1smoothstrapx",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 33,
+      "alphaCount": 45,
+      "description": "Smoothed estimate of the month 1 near-ATM straddle price (USD)"
+    },
+    {
+      "id": "ern4_m1strapx",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 31,
+      "alphaCount": 65,
+      "description": "Near-ATM straddle price for month 1 maturity (USD)"
+    },
+    {
+      "id": "ern4_m2atmiv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 87,
+      "alphaCount": 272,
+      "description": "At-the-money implied volatility for month 2 options, annualized (decimal)"
+    },
+    {
+      "id": "ern4_m2dtex",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 23,
+      "alphaCount": 40,
+      "description": "Days to expiration for month 2 options"
+    },
+    {
+      "id": "ern4_m2fcaststrapx",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 26,
+      "alphaCount": 63,
+      "description": "Forecasted near-ATM straddle price for month 2 (USD)"
+    },
+    {
+      "id": "ern4_m2histrike",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 46,
+      "alphaCount": 88,
+      "description": "The high strike of the straddle or strangle for month 2."
+    },
+    {
+      "id": "ern4_m2lostrike",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 43,
+      "alphaCount": 65,
+      "description": "The low strike of the straddle or strangle for month 2."
+    },
+    {
+      "id": "ern4_m2smoothstrpx",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 29,
+      "alphaCount": 33,
+      "description": "Smoothed estimate of the month 2 near-ATM straddle price (USD)"
+    },
+    {
+      "id": "ern4_m2strapx",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 68,
+      "description": "Near-ATM straddle price for month 2 maturity (USD)"
+    },
+    {
+      "id": "ern4_m3atmiv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 77,
+      "alphaCount": 207,
+      "description": "At-the-money implied volatility for month 3 options, annualized (decimal)"
+    },
+    {
+      "id": "ern4_m3dtex",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 22,
+      "alphaCount": 35,
+      "description": "Days to expiration for month 3 options"
+    },
+    {
+      "id": "ern4_m4atmiv",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 93,
+      "alphaCount": 177,
+      "description": "At-the-money implied volatility for month 4 options, annualized (decimal)"
+    },
+    {
+      "id": "ern4_m4dtex",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 23,
+      "alphaCount": 42,
+      "description": "Days to expiration for month 4 options"
+    },
+    {
+      "id": "ern4_nexterntod",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 119,
+      "alphaCount": 244,
+      "description": "Time-of-day code for the next earnings release (0900=BMO, 1200=During, 1630=AMC, 2359=Unknown)"
+    },
+    {
+      "id": "ern4_or20divxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 27,
+      "alphaCount": 54,
+      "description": "The 28 calendar day interpolated implied volatility with earnings out."
+    },
+    {
+      "id": "ern4_orinfivxern",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 35,
+      "alphaCount": 87,
+      "description": "The infinite implied volatility with earnings out."
+    },
+    {
+      "id": "ern4_px",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 34,
+      "alphaCount": 100,
+      "description": "Underlying stock/ETF reference price (typically close or snapshot)"
+    },
+    {
+      "id": "ern4_slope",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 36,
+      "alphaCount": 62,
+      "description": "The put call slope at the interpolated 28 calendar day."
+    },
+    {
+      "id": "event_move_standard_deviation_twelve_periods",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 14,
+      "alphaCount": 18,
+      "description": "Standard deviation of the absolute values of the last 12 earnings-day moves"
+    },
+    {
+      "id": "fair_vol_month2_xiee_90d",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 13,
+      "description": "Adjusted 90-day implied volatility for the second earnings month: 90d IV minus the implied earnings effect, then plus the average earnings percent move"
+    },
+    {
+      "id": "fair_vol_xiee_90d",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 29,
+      "alphaCount": 29,
+      "description": "The 90 day IV minus the implied earnings effect plus the average earnings percent move applied to the first earnings month."
+    },
+    {
+      "id": "fifth_event_option_effect",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 10,
+      "alphaCount": 12,
+      "description": "The earnings effect for earnings date number 5"
+    },
+    {
+      "id": "fifth_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "The earn effect for earnings date number5."
+    },
+    {
+      "id": "fifth_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 50,
+      "alphaCount": 60,
+      "description": "Percentage move for earnings date number back 5"
+    },
+    {
+      "id": "fifth_historical_straddle_price_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 36,
+      "alphaCount": 41,
+      "description": "Earnings straddle or strangle price as a percent of stock price for earnings date number 5"
+    },
+    {
+      "id": "first_event_option_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 43,
+      "alphaCount": 49,
+      "description": "The earn effect for earnings date number1."
+    },
+    {
+      "id": "first_event_option_effect_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 30,
+      "alphaCount": 34,
+      "description": "The earnings effect for earnings date number 1"
+    },
+    {
+      "id": "first_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 107,
+      "alphaCount": 154,
+      "description": "Cost of the earnings straddle/strangle as a percent of stock price for earnings event number 1"
+    },
+    {
+      "id": "first_event_straddle_price_percent_of_equity_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 105,
+      "alphaCount": 141,
+      "description": "Straddle or strangle price as a percent of stock price for earnings date number 1"
+    },
+    {
+      "id": "first_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 23,
+      "alphaCount": 27,
+      "description": "Percentage move for earnings date number back 1"
+    },
+    {
+      "id": "first_month_days_to_expiry",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 13,
+      "alphaCount": 13,
+      "description": "Days to expiration for month 1"
+    },
+    {
+      "id": "five_day_close_to_close_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "5-day historical close-to-close volatility."
+    },
+    {
+      "id": "five_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "5-day close-to-close historical volatility."
+    },
+    {
+      "id": "five_day_close_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "5-day historical close-to-close volatility excluding announcement days."
+    },
+    {
+      "id": "five_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "5-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "five_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "5-day intraday historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "five_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "5-day intraday historical volatility."
+    },
+    {
+      "id": "five_day_intraday_historical_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "5-day open-range historical tick volatility (percent, annualized)"
+    },
+    {
+      "id": "five_day_intraday_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 7,
+      "description": "5-day historical intraday volatility excluding announcement days."
+    },
+    {
+      "id": "five_hundred_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 18,
+      "alphaCount": 23,
+      "description": "Historical close-to-close volatility measured over 500 days."
+    },
+    {
+      "id": "five_hundred_day_ex_announcement_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 26,
+      "alphaCount": 27,
+      "description": "500-day historical close-to-close volatility excluding event days."
+    },
+    {
+      "id": "five_hundred_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 20,
+      "alphaCount": 20,
+      "description": "500-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "five_hundred_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 18,
+      "alphaCount": 35,
+      "description": "500-day intraday historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "five_hundred_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 20,
+      "alphaCount": 20,
+      "description": "500-day open-range historical tick volatility (percent)"
+    },
+    {
+      "id": "fivehundred_day_close_to_close_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 22,
+      "alphaCount": 27,
+      "description": "500-day close-to-close historical volatility"
+    },
+    {
+      "id": "fivehundred_day_intraday_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 12,
+      "alphaCount": 12,
+      "description": "500-day open-range historical tick volatility (percent)"
+    },
+    {
+      "id": "fivehundred_day_intraday_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 24,
+      "alphaCount": 30,
+      "description": "500-day historical intraday volatility excluding announcement days."
+    },
+    {
+      "id": "forecasted_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 137,
+      "alphaCount": 190,
+      "description": "ORATS forecasted earnings effect incorporating day-of/day-after behavior, seasonality, recency, and move vs expected move"
+    },
+    {
+      "id": "forecasted_announcement_effect_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 73,
+      "alphaCount": 105,
+      "description": "ORATS forecasted earnings effect considers day of and day after earnings, seasonality, recency, median and average of move divided by expected move."
+    },
+    {
+      "id": "forecasted_put_call_slope",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "ORATS forecasted 28-calendar-day put/call skew slope"
+    },
+    {
+      "id": "forecasted_put_call_slope_28d",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "ORATS forecasted 28 calendar day put/call slope"
+    },
+    {
+      "id": "forecasted_straddle_price_month1",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 6,
+      "alphaCount": 10,
+      "description": "ORATS forecast theoretical straddle/strangle price for month 1"
+    },
+    {
+      "id": "fourth_event_option_effect",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 11,
+      "alphaCount": 14,
+      "description": "The earn effect for earnings date number 4"
+    },
+    {
+      "id": "fourth_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "The earn straddle or strangle price as a percent of stock price for earnings date number4."
+    },
+    {
+      "id": "fourth_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 9,
+      "alphaCount": 10,
+      "description": "The earn effect for earnings date number4."
+    },
+    {
+      "id": "fourth_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "The percentage move for earnings date number back4."
+    },
+    {
+      "id": "fourth_month_at_the_money_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "At-the-money implied volatility for month 4"
+    },
+    {
+      "id": "fourth_month_days_to_expiry",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Days to expiration for month 4"
+    },
+    {
+      "id": "high_strike_month1",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "The higher strike used for the month 1 straddle or strangle"
+    },
+    {
+      "id": "high_strike_month2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 10,
+      "alphaCount": 11,
+      "description": "The high strike of the straddle or strangle for month 2"
+    },
+    {
+      "id": "implied_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 13,
+      "alphaCount": 19,
+      "description": "The implied earnings effect that best fits the term structure of monthly implied volatilities"
+    },
+    {
+      "id": "implied_move_month2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 7,
+      "alphaCount": 9,
+      "description": "Implied Earnings Move in the market over the fit implied volatility for the second earnings month."
+    },
+    {
+      "id": "infinite_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Infinite (long-run) implied volatility with earnings effects excluded"
+    },
+    {
+      "id": "infinite_maturity_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "The infinite implied volatility with earnings out."
+    },
+    {
+      "id": "low_strike_month1",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "The low strike of the straddle or strangle for month 1"
+    },
+    {
+      "id": "market_implied_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 10,
+      "description": "Implied Earnings Move in the market over the fitXearnings implied volatility for the first earnings month."
+    },
+    {
+      "id": "market_implied_event_move_percent",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 14,
+      "alphaCount": 22,
+      "description": "Market-implied earnings move for the first earnings month derived from the fit×earnings implied volatility"
+    },
+    {
+      "id": "market_implied_second_month_announcement_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Implied earnings-day percent move inferred from the fitted implied volatility for the second earnings month"
+    },
+    {
+      "id": "month_four_at_the_money_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "At-the-money implied volatility for option month 4"
+    },
+    {
+      "id": "month_four_days_to_expiration",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Days to expiration for the month-4 option series"
+    },
+    {
+      "id": "month_one_at_the_money_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 7,
+      "description": "At-the-money implied volatility for option month 1"
+    },
+    {
+      "id": "month_one_days_to_expiration",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 12,
+      "alphaCount": 15,
+      "description": "Number of days until expiration for the front-month (month 1) option"
+    },
+    {
+      "id": "month_one_forecasted_straddle_strategy_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 10,
+      "description": "The strangle or straddle ORATS Forecast theo for month 1."
+    },
+    {
+      "id": "month_one_smoothed_straddle_strategy_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "The strangle or straddle ORATS smooth theo for month 1."
+    },
+    {
+      "id": "month_one_straddle_high_strike",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "High strike of the straddle or strangle for month 1"
+    },
+    {
+      "id": "month_one_straddle_low_strike",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Lower strike used for the month-1 straddle/strangle"
+    },
+    {
+      "id": "month_one_straddle_strategy_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "Price of the month-1 straddle or strangle"
+    },
+    {
+      "id": "month_three_at_the_money_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 14,
+      "alphaCount": 15,
+      "description": "At-the-money implied volatility for options with month 3 maturity"
+    },
+    {
+      "id": "month_three_days_to_expiration",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Days to expiration for the month-3 option series"
+    },
+    {
+      "id": "month_two_at_the_money_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 38,
+      "alphaCount": 41,
+      "description": "At-the-money implied volatility for the second-month option expiration"
+    },
+    {
+      "id": "month_two_straddle_low_strike",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Lower strike used for the month-2 straddle/strangle"
+    },
+    {
+      "id": "month_two_straddle_strategy_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Strangle or straddle price for month 2"
+    },
+    {
+      "id": "next_announcement_time_of_day",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 14,
+      "alphaCount": 16,
+      "description": "Time of day earnings are released: Before=900, After=1630, During=1200, Unknown=2359"
+    },
+    {
+      "id": "ninety_day_adjusted_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "90-day IV plus the average earnings percent move applied to the first earnings month (a “fair” volatility measure)"
+    },
+    {
+      "id": "ninety_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 9,
+      "alphaCount": 9,
+      "description": "90-day close-to-close historical volatility."
+    },
+    {
+      "id": "ninety_day_close_to_close_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "90-day close-to-close historical volatility"
+    },
+    {
+      "id": "ninety_day_close_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "90-day historical close-to-close volatility excluding announcement days."
+    },
+    {
+      "id": "ninety_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 12,
+      "alphaCount": 12,
+      "description": "90-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "ninety_day_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 15,
+      "alphaCount": 15,
+      "description": "Implied volatility for ninety days with earnings effect removed."
+    },
+    {
+      "id": "ninety_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "90-day intraday historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "ninety_day_fair_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 9,
+      "alphaCount": 14,
+      "description": "The 90 day IV minus the implied earnings effect plus the average earnings percent move applied to the first earnings month."
+    },
+    {
+      "id": "ninety_day_fair_implied_volatility_with_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "The 90 day IV plus the average earnings percent move applied to the first earnings month."
+    },
+    {
+      "id": "ninety_day_interpolated_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 51,
+      "alphaCount": 61,
+      "description": "Implied volatility estimated for a ninety calendar day maturity."
+    },
+    {
+      "id": "ninety_day_interpolated_iv",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 20,
+      "alphaCount": 25,
+      "description": "90 calendar day interpolated implied volatility."
+    },
+    {
+      "id": "ninety_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Historical volatility measured over 90 days using intraday price ticks."
+    },
+    {
+      "id": "ninety_day_intraday_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "90-day historical intraday volatility."
+    },
+    {
+      "id": "ninety_day_intraday_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "90-day historical intraday volatility excluding announcement days."
+    },
+    {
+      "id": "ninety_day_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 7,
+      "alphaCount": 9,
+      "description": "90-day interpolated implied volatility with announcement effect removed."
+    },
+    {
+      "id": "ninety_day_required_event_move_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 10,
+      "alphaCount": 12,
+      "description": "The percent move on earnings needed to make the FairXieeVol90d equal to 1st earn month implied."
+    },
+    {
+      "id": "ninety_day_required_event_move_percent_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Percent earnings move required so FairXieeVol90d equals the first earnings-month implied volatility"
+    },
+    {
+      "id": "ninety_day_required_move_for_second_month",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "The percent move on earnings needed to make the FairXieeVol90d equal to 2nd earn month implied."
+    },
+    {
+      "id": "ninth_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "The earn effect for earnings date number9."
+    },
+    {
+      "id": "ninth_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Percentage stock price move on the 9th prior earnings announcement (back 9)"
+    },
+    {
+      "id": "ninth_historical_event_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 9,
+      "alphaCount": 9,
+      "description": "The percentage price move at the 9th prior earnings announcement (earnings date number back 9)"
+    },
+    {
+      "id": "ninth_historical_straddle_price_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Earnings straddle or strangle price as a percent of stock price for earnings date number 9"
+    },
+    {
+      "id": "one_hundred_twenty_day_ex_announcement_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "120-day historical close-to-close volatility excluding event days."
+    },
+    {
+      "id": "one_hundred_twenty_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "120-day historical intraday volatility excluding event days."
+    },
+    {
+      "id": "one_thousand_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Historical close-to-close volatility measured over 1000 days."
+    },
+    {
+      "id": "one_thousand_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 11,
+      "alphaCount": 16,
+      "description": "1000-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "one_thousand_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 18,
+      "alphaCount": 19,
+      "description": "1000-day historical intraday volatility excluding event days."
+    },
+    {
+      "id": "one_thousand_day_ex_announcement_intraday_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 18,
+      "alphaCount": 19,
+      "description": "1000-day open-range volatility excluding earnings effects (percent)"
+    },
+    {
+      "id": "one_thousand_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 16,
+      "alphaCount": 20,
+      "description": "1000-day intraday historical volatility."
+    },
+    {
+      "id": "one_twenty_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "120-day close-to-close historical volatility."
+    },
+    {
+      "id": "one_twenty_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "120-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "one_twenty_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "120-day intraday historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "one_twenty_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "120-day intraday historical volatility."
+    },
+    {
+      "id": "one_year_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Implied volatility for one year maturity with earnings effect removed."
+    },
+    {
+      "id": "one_year_ex_announcement_implied_volatility_2",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "1-year constant-maturity implied volatility with earnings effect removed"
+    },
+    {
+      "id": "one_year_interpolated_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 11,
+      "alphaCount": 17,
+      "description": "Implied volatility estimated for a one year maturity."
+    },
+    {
+      "id": "one_year_interpolated_implied_volatility_2",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "1-year constant-maturity implied volatility (annualized)"
+    },
+    {
+      "id": "one_year_interpolated_implied_volatility_mean_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 10,
+      "alphaCount": 11,
+      "description": "Implied volatility interpolated for a one-year maturity."
+    },
+    {
+      "id": "one_year_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "One-year interpolated implied volatility with announcement effect removed."
+    },
+    {
+      "id": "onehundredtwenty_day_close_to_close_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "120-day historical close-to-close volatility."
+    },
+    {
+      "id": "onehundredtwenty_day_intraday_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "120-day open-range historical tick volatility (percent)"
+    },
+    {
+      "id": "onethousand_day_close_to_close_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "1000-day historical close-to-close volatility."
+    },
+    {
+      "id": "onethousand_day_close_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 10,
+      "alphaCount": 10,
+      "description": "1000-day historical close-to-close volatility excluding announcement days."
+    },
+    {
+      "id": "onethousand_day_intraday_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 21,
+      "alphaCount": 27,
+      "description": "1000-day historical intraday volatility."
+    },
+    {
+      "id": "pct_move_announcement_1",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 10,
+      "alphaCount": 11,
+      "description": "The percentage price move at the most recent prior earnings announcement (earnings date number back 1)"
+    },
+    {
+      "id": "pct_move_announcement_10",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 12,
+      "alphaCount": 12,
+      "description": "The percentage price move at the 10th prior earnings announcement (earnings date number back 10)"
+    },
+    {
+      "id": "pct_move_announcement_11",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Percentage move for earnings date number back 11"
+    },
+    {
+      "id": "pct_move_announcement_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "The percentage price move at the second most recent prior earnings announcement (earnings date number back 2)"
+    },
+    {
+      "id": "pct_move_announcement_4",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 8,
+      "description": "Percentage move for earnings date number back 4"
+    },
+    {
+      "id": "pct_move_announcement_5",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 14,
+      "alphaCount": 17,
+      "description": "The percentage price move at the 5th prior earnings announcement (earnings date number back 5)"
+    },
+    {
+      "id": "pct_move_announcement_8",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 30,
+      "alphaCount": 36,
+      "description": "The percentage move for earnings date number back 8"
+    },
+    {
+      "id": "post_announcement_expiration_month",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Next expiration month number directly after the earnings date"
+    },
+    {
+      "id": "post_announcement_expiry_month",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "The next options expiration month number directly after the earnings date"
+    },
+    {
+      "id": "put_call_slope_28d",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "The put-call slope at the interpolated 28 calendar day"
+    },
+    {
+      "id": "put_call_volatility_slope_twenty_eight_day",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Put–call skew slope at an interpolated 28 calendar-day maturity"
+    },
+    {
+      "id": "required_announcement_move_month2_90d",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "The percent move on earnings needed to make the FairXieeVol90d equal to 2nd earn month implied."
+    },
+    {
+      "id": "second_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 14,
+      "alphaCount": 15,
+      "description": "The earn straddle or strangle price as a percent of stock price for earnings date number2."
+    },
+    {
+      "id": "second_event_straddle_price_percent_of_equity_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 10,
+      "alphaCount": 12,
+      "description": "Earnings straddle or strangle price expressed as a percent of the stock price for earnings date number 2"
+    },
+    {
+      "id": "second_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "The earn effect for earnings date number2."
+    },
+    {
+      "id": "second_historical_event_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "The percentage move for earnings date number back2."
+    },
+    {
+      "id": "second_month_adjusted_ninety_day_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "The 90 day IV minus the implied earnings effect plus the average earnings percent move applied to the second earnings month."
+    },
+    {
+      "id": "second_month_days_to_expiry",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 6,
+      "alphaCount": 13,
+      "description": "Days to option expiration for month 2"
+    },
+    {
+      "id": "second_month_forecasted_straddle_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "The strangle or straddle ORATS Forecast theo for month 2."
+    },
+    {
+      "id": "second_month_forecasted_straddle_price_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Strangle or straddle ORATS forecast theoretical price for month 2"
+    },
+    {
+      "id": "second_month_highest_strike_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "The high strike of the straddle or strangle for month 2."
+    },
+    {
+      "id": "second_month_lowest_strike_price",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Low strike of the straddle or strangle for month 2"
+    },
+    {
+      "id": "second_month_smoothed_straddle_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "ORATS smoothed theoretical straddle/strangle price for month 2"
+    },
+    {
+      "id": "seventh_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "Earnings effect for earnings date number 7"
+    },
+    {
+      "id": "seventh_historical_event_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 21,
+      "alphaCount": 25,
+      "description": "Percentage price move for earnings date number back 7"
+    },
+    {
+      "id": "seventh_historical_event_percent_move_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 27,
+      "alphaCount": 33,
+      "description": "The percentage move for earnings date number back 7"
+    },
+    {
+      "id": "seventh_historical_straddle_price_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 11,
+      "alphaCount": 13,
+      "description": "Earnings straddle/strangle price as a percentage of stock price for the 7th prior earnings date"
+    },
+    {
+      "id": "six_month_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Implied volatility for a six-month period with event effects excluded."
+    },
+    {
+      "id": "six_month_interpolated_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "Implied volatility interpolated for a six-month maturity."
+    },
+    {
+      "id": "six_month_interpolated_iv",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "6-month interpolated implied volatility."
+    },
+    {
+      "id": "six_month_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 6,
+      "alphaCount": 9,
+      "description": "6-month interpolated implied volatility with announcement effect removed."
+    },
+    {
+      "id": "sixth_event_option_effect",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "The earnings effect for earnings date number 6"
+    },
+    {
+      "id": "sixth_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 39,
+      "alphaCount": 44,
+      "description": "Earnings straddle or strangle price expressed as a percent of the stock price for earnings date number 6"
+    },
+    {
+      "id": "sixth_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "The earn effect for earnings date number6."
+    },
+    {
+      "id": "sixth_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 36,
+      "alphaCount": 38,
+      "description": "The percentage move for earnings date number back6."
+    },
+    {
+      "id": "sixth_historical_event_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 36,
+      "alphaCount": 39,
+      "description": "The percentage price move at the 6th prior earnings announcement (earnings date number back 6)"
+    },
+    {
+      "id": "sixth_historical_straddle_price_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 37,
+      "alphaCount": 41,
+      "description": "Earnings straddle or strangle price as a percent of stock price for earnings date number 6"
+    },
+    {
+      "id": "sixty_day_close_to_close_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "60-day historical close-to-close volatility."
+    },
+    {
+      "id": "sixty_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Historical close-to-close volatility measured over 60 days."
+    },
+    {
+      "id": "sixty_day_close_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 4,
+      "description": "60-day historical close-to-close volatility excluding announcement days."
+    },
+    {
+      "id": "sixty_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "60-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "sixty_day_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Implied volatility for sixty days with earnings effect removed."
+    },
+    {
+      "id": "sixty_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 10,
+      "alphaCount": 10,
+      "description": "60-day open-range tick volatility excluding earnings events (percent)"
+    },
+    {
+      "id": "sixty_day_interpolated_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9696,
+      "userCount": 34,
+      "alphaCount": 49,
+      "description": "Implied volatility estimated for a sixty calendar day maturity."
+    },
+    {
+      "id": "sixty_day_interpolated_iv",
+      "type": "MATRIX",
+      "coverage": 0.9696,
+      "userCount": 18,
+      "alphaCount": 29,
+      "description": "60 calendar day interpolated implied volatility."
+    },
+    {
+      "id": "sixty_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 13,
+      "description": "60-day open-range historical tick volatility (percent)"
+    },
+    {
+      "id": "sixty_day_intraday_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "60-day historical intraday volatility."
+    },
+    {
+      "id": "sixty_day_intraday_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "60-day historical intraday volatility excluding announcement days."
+    },
+    {
+      "id": "sixty_day_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 6,
+      "alphaCount": 8,
+      "description": "60-day interpolated implied volatility with announcement effect removed."
+    },
+    {
+      "id": "smoothed_straddle_price_month1",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "ORATS smoothed theoretical price of the month 1 straddle or strangle"
+    },
+    {
+      "id": "smoothed_straddle_price_month2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Strangle or straddle ORATS smoothed theoretical price for month 2"
+    },
+    {
+      "id": "stddev_pct_move_announcements_12",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 14,
+      "alphaCount": 22,
+      "description": "Standard deviation of the absolute earnings moves across the last 12 earnings announcements"
+    },
+    {
+      "id": "straddle_price_month1",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 7,
+      "description": "The strangle or straddle price for month 1"
+    },
+    {
+      "id": "straddle_price_month2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Strangle or straddle price for month 2"
+    },
+    {
+      "id": "straddle_price_pct_move_11",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 42,
+      "alphaCount": 48,
+      "description": "Straddle/strangle price for earnings date number 11 as a percent of the stock price"
+    },
+    {
+      "id": "straddle_price_pct_move_4",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Earnings straddle or strangle price expressed as a percent of the stock price for earnings date number 4"
+    },
+    {
+      "id": "straddle_price_pct_move_5",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "Straddle/strangle price for earnings date number 5 as a percent of the stock price"
+    },
+    {
+      "id": "straddle_price_pct_move_7",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 11,
+      "alphaCount": 13,
+      "description": "Earnings straddle or strangle price expressed as a percent of the stock price for earnings date number 7"
+    },
+    {
+      "id": "straddle_price_pct_move_9",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Straddle or strangle price as a percent of stock price for earnings date number 9"
+    },
+    {
+      "id": "ten_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 11,
+      "alphaCount": 19,
+      "description": "10-day close-to-close historical volatility."
+    },
+    {
+      "id": "ten_day_close_to_close_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Historical close-to-close volatility measured over 10 days."
+    },
+    {
+      "id": "ten_day_close_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 7,
+      "description": "10-day historical close-to-close volatility excluding announcement days."
+    },
+    {
+      "id": "ten_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "10-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "ten_day_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Implied volatility for a 10-day period with event effects excluded."
+    },
+    {
+      "id": "ten_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "10-day open-range tick volatility excluding earnings events (percent)"
+    },
+    {
+      "id": "ten_day_ex_announcement_intraday_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 4,
+      "description": "10-day historical intraday volatility excluding event days."
+    },
+    {
+      "id": "ten_day_interpolated_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Implied volatility interpolated for a 10-day maturity."
+    },
+    {
+      "id": "ten_day_interpolated_implied_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Implied volatility interpolated for a 10-day maturity."
+    },
+    {
+      "id": "ten_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "10-day intraday historical volatility."
+    },
+    {
+      "id": "ten_day_intraday_historical_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "10-day open-range historical tick volatility (percent)"
+    },
+    {
+      "id": "ten_day_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "10-day interpolated implied volatility with announcement effect removed."
+    },
+    {
+      "id": "tenth_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 68,
+      "alphaCount": 134,
+      "description": "Earnings straddle or strangle price expressed as a percent of the stock price for earnings date number 10"
+    },
+    {
+      "id": "tenth_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "The earn effect for earnings date number10."
+    },
+    {
+      "id": "tenth_historical_event_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Percentage price move on the 10th most recent earnings announcement date"
+    },
+    {
+      "id": "tenth_historical_straddle_price_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 39,
+      "alphaCount": 40,
+      "description": "Earnings straddle or strangle price as a percent of stock price for earnings date number 10"
+    },
+    {
+      "id": "third_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 13,
+      "alphaCount": 16,
+      "description": "Earnings straddle or strangle price expressed as a percent of the stock price for earnings date number 3"
+    },
+    {
+      "id": "third_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "The earn effect for earnings date number3."
+    },
+    {
+      "id": "third_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 13,
+      "alphaCount": 24,
+      "description": "The percentage move for earnings date number back3."
+    },
+    {
+      "id": "third_historical_event_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "Percentage stock move for earnings date number back 3"
+    },
+    {
+      "id": "third_historical_straddle_price_percent",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 9,
+      "alphaCount": 9,
+      "description": "Earnings straddle or strangle price as a percent of stock price for earnings date number 3"
+    },
+    {
+      "id": "thirty_day_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Implied volatility for a 30-day period with earnings effects removed."
+    },
+    {
+      "id": "thirty_day_ex_announcement_implied_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Implied volatility for a 30-day period with earnings effects removed."
+    },
+    {
+      "id": "thirty_day_interpolated_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 7,
+      "alphaCount": 13,
+      "description": "Implied volatility estimated for a thirty calendar day maturity."
+    },
+    {
+      "id": "thirty_day_interpolated_iv",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "30 calendar day interpolated implied volatility."
+    },
+    {
+      "id": "total_option_open_interest",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 14,
+      "alphaCount": 16,
+      "description": "Total open interest"
+    },
+    {
+      "id": "twelfth_event_option_effect",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "The earn effect for earnings date number 12"
+    },
+    {
+      "id": "twelfth_event_straddle_price_percent_of_equity",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 78,
+      "alphaCount": 96,
+      "description": "Cost of the earnings straddle/strangle as a percent of stock price for earnings event number 12"
+    },
+    {
+      "id": "twelfth_event_straddle_price_percent_of_equity_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 65,
+      "alphaCount": 73,
+      "description": "The earnings straddle/strangle price as a percent of stock price for earnings date number 12"
+    },
+    {
+      "id": "twelfth_historical_announcement_effect",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "The earn effect for earnings date number12."
+    },
+    {
+      "id": "twelfth_historical_announcement_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 34,
+      "alphaCount": 37,
+      "description": "Percentage move for earnings date number back 12"
+    },
+    {
+      "id": "twelfth_historical_event_percent_move",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 38,
+      "alphaCount": 41,
+      "description": "Percentage stock move for earnings date number back 12"
+    },
+    {
+      "id": "twenty_day_average_option_volume",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 55,
+      "alphaCount": 71,
+      "description": "Average daily options trading volume across all strikes over the last 20 trading days"
+    },
+    {
+      "id": "twenty_day_close_to_close_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "20-day historical close-to-close volatility."
+    },
+    {
+      "id": "twenty_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "20-day close-to-close historical volatility."
+    },
+    {
+      "id": "twenty_day_ex_announcement_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "20-day historical close-to-close volatility excluding event days."
+    },
+    {
+      "id": "twenty_day_ex_announcement_close_to_close_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "20-day historical close-to-close volatility excluding event days."
+    },
+    {
+      "id": "twenty_day_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Implied volatility for a 20-day period with earnings announcement effects excluded."
+    },
+    {
+      "id": "twenty_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "20-day historical intraday volatility excluding event days."
+    },
+    {
+      "id": "twenty_day_interpolated_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 7,
+      "alphaCount": 9,
+      "description": "Implied volatility estimated for a twenty calendar day maturity."
+    },
+    {
+      "id": "twenty_day_interpolated_iv",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "20 calendar day interpolated implied volatility."
+    },
+    {
+      "id": "twenty_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "20-day intraday historical volatility."
+    },
+    {
+      "id": "twenty_day_intraday_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 10,
+      "description": "20-day historical intraday volatility."
+    },
+    {
+      "id": "twenty_day_intraday_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "20-day historical intraday volatility excluding announcement days."
+    },
+    {
+      "id": "twenty_day_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 5,
+      "alphaCount": 18,
+      "description": "20-day interpolated implied volatility with announcement effect removed."
+    },
+    {
+      "id": "twenty_eight_day_ex_announcement_implied_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "The 28 calendar day interpolated implied volatility with earnings out."
+    },
+    {
+      "id": "twenty_eight_day_iv_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "28 calendar day (approximately 20 trading days) interpolated implied volatility with earnings effect removed"
+    },
+    {
+      "id": "two_fifty_two_day_ex_announcement_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "252-day close-to-close historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "two_fifty_two_day_ex_announcement_intraday_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "252-day intraday historical volatility excluding earnings announcement days."
+    },
+    {
+      "id": "two_fifty_two_day_intraday_historical_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 5,
+      "alphaCount": 13,
+      "description": "252-day intraday historical volatility."
+    },
+    {
+      "id": "two_hundred_fifty_two_day_close_to_close_volatility",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 7,
+      "alphaCount": 9,
+      "description": "Historical close-to-close volatility measured over 252 days."
+    },
+    {
+      "id": "two_hundred_fifty_two_day_close_to_close_volatility_2",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 6,
+      "description": "Historical close-to-close volatility measured over 252 days."
+    },
+    {
+      "id": "twofiftytwo_day_close_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "252-day historical close-to-close volatility excluding announcement days."
+    },
+    {
+      "id": "twofiftytwo_day_intraday_vol",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "252-day historical intraday volatility."
+    },
+    {
+      "id": "twofiftytwo_day_intraday_vol_ex_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 4,
+      "alphaCount": 8,
+      "description": "252-day historical intraday volatility excluding announcement days."
+    },
+    {
+      "id": "underlying_asset_market_price",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "Market price of the underlying asset at the time of data calculation."
+    },
+    {
+      "id": "underlying_asset_price",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 3,
+      "alphaCount": 7,
+      "description": "Price of the underlying asset at the time of calculation."
+    },
+    {
+      "id": "upcoming_announcement_time_of_day",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 19,
+      "alphaCount": 20,
+      "description": "Time of day earnings released: Before=900, After=1630, During=1200, Unknown=2359"
+    },
+    {
+      "id": "weeks_until_next_announcement",
+      "type": "MATRIX",
+      "coverage": 0.9692,
+      "userCount": 28,
+      "alphaCount": 36,
+      "description": "Weeks to the next earnings; 1 indicates this week"
+    },
+    {
+      "id": "weeks_until_next_event",
+      "type": "MATRIX",
+      "coverage": 0.9693,
+      "userCount": 33,
+      "alphaCount": 45,
+      "description": "Number of weeks until the next earnings date; 1 indicates this week"
+    },
+    {
+      "id": "weeks_until_next_event_2",
+      "type": "VECTOR",
+      "coverage": 0.9692,
+      "userCount": 32,
+      "alphaCount": 33,
+      "description": "Number of weeks from Date until the next earnings announcement"
+    }
+  ],
+  "count": 375,
+  "platform_count": 375,
+  "complete": true,
+  "pages_fetched": 8
+}
