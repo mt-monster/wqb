@@ -1,0 +1,27 @@
+{
+  "_doc": "两塔组合配额台账（用户 2026-10-27/28 定案）。键 = 塔名小写排序后 '/' 连接；上限 = limit；超配封盘但既有候选仍可提交。塔位来源只认平台 ra.pyramid_short，不用本地 backtest_results.dataset 推断。as_of 2026-10-28（RISK 篮凑齐时的实测盘点）。",
+  "limit": 3,
+  "pairs": {
+    "analyst/risk": 1,
+    "model/risk": 6,
+    "other/risk": 3
+  },
+  "alphas": {
+    "analyst/risk": [
+      "O0AEjnv7"
+    ],
+    "model/risk": [
+      "9qxLOPxr",
+      "88RdZ61v",
+      "6XdvLPd5",
+      "akKq92aO",
+      "zq31EopX",
+      "WjO62wLo"
+    ],
+    "other/risk": [
+      "E56XvX90",
+      "pwdAPALb",
+      "akKqLq56"
+    ]
+  }
+}

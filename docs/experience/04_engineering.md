@@ -95,6 +95,13 @@
 
 ## 6. 回测 / 批跑
 
+- **★ MCP `create_multi_simulation` 会静默丢弃 `max_trade="ON"`**（2026-10-28 实测）：平台子 alpha 的实际 `settings.maxTrade` 仍为 `"OFF"`，工具参数不生效。
+  → **派发后必须读回子 alpha 的 `settings.maxTrade` 复核**，不能用工具参数当已生效。
+  → 代价实证（同一表达式 `reverse(ts_zscore(ts_backfill(vec_avg(F),22),252))`）：OFF 档 S0.73 / 2Y0.67 / TO0.236 ⇒ ON 档 S0.99 / 2Y1.18 / TO0.147，**差 +0.26 S / +0.51 2Y**。
+  → 同理适用于任何「设置是强度闸」的参数（decay / neutralization / truncation / nanHandling）：**跨档结果不可比**，判死前必须核对回读。
+- **★ 平台 prod 相关性是账号级单并发槽，被外部会话占用时我方无法抢占**：`check_correlation` 返回 `correlation_busy` 且 `holder` 是**别的会话**的 alpha id（实测轮换过 zq31lQNK / RREn5xAj / QPvXPJ0p）⇒ 只能等 `retry_after`（240s）重试。
+  → **不要因为 busy 就改用直连**：`brain_client._request` 走 MCP 包外调用返回 **401**（客户端无会话凭据），prod 只能走 MCP 工具。
+  → 也不要反复并发触发（会把自己的检查顶成 busy）。
 - **脚本必带 checkpoint**（断点续跑）；异常数据集不进 checkpoint 需可重跑补回；**ckpt 缓存旧失败结果会卡住**（清 `ckpt_w*` 后重跑即过）。
 - **`CONCURRENT_SIMULATION_LIMIT_EXCEEDED`**：批量建仿真互相挤兑，前序大实验未清干净时后续全被拒
   → **重跑前必须先清掉 checkpoint 的 `error` 条目**（否则脚本判定"已完成"直接跳过）；pipeline 首次失败会留 `ckpt_w<wave>`，重跑必须加 `--fresh`。

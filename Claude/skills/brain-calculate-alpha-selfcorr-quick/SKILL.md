@@ -45,6 +45,39 @@ allowed-tools:
 2. 本地值**低** ≠ 平台会低。候选的同族 / 孪生体**近期提交过** → 本地值不可信，只能当下界。
 3. **同族连测不要依赖本地 SELF 判活。** 平台 SELF 值目前只在**提交响应**里（`POST /submit`，通过即真提交）——**没有零成本的只读途径**：`workflow_submit_alpha(confirm_submit=False)` 只做**本地放宽预检**（不含平台 SELF / PROD 值），`GET /alphas/{id}/submit` 恒 404。所以：先按本地 SELF + `compute_mutual_correlation` + prod 读数给同族排序，**只在用户明确授权提交时**由平台给出 SELF——对 `submit_verdict == SUBMITTABLE` 的候选按优劣序逐个提交，最先通过的那颗就是真提交（这是提交，不是探测）。提交侧的 API 行为（POST 三态 / PENDING ≠ FAIL / 配额 403 与候选 403 的区分）见 [`worldquant-submit-alpha`](../worldquant-submit-alpha/SKILL.md) 与 [`submit-chain.md`](../worldquant-submit-alpha/references/submit-chain.md)，本页不复写。
 
+## ★★★★ 第二盲区：候选**之间**根本不该比 SELF（2026-10-29 EUR 实证，最容易白烧 prod 槽）
+
+**SELF 的对象是「已提交池」，不是「同批候选」。** 一批候选还没提交时，它们对已提交池可以全都很干净，
+但它们**彼此**可能几乎是同一颗 alpha。用 SELF 判断"这批有几颗能交"会严重高估。
+
+实证（EUR analyst7 修正广度族，同基底只换 1.2 权重倾斜腿）：
+
+| 候选 | 本地 self（对已提交池） | 与其他 4 颗的互测 |
+|---|---|---|
+| `RREnAplg` | 0.5459 ✅ | **0.9480–0.9698** |
+| `58EoGQ6M` | 0.506 ✅ | 0.9512–0.9607 |
+| `LLMA89lL` | 0.536 ✅ | 0.9614–0.9684 |
+| `e75o19KO` | 0.518 ✅ | 0.9581–0.9684 |
+| `vR13Yk9Q` | 0.512 ✅ | 0.9480–0.9614 |
+
+⇒ 5 颗「SELF 全部通过」的候选，实际**只出 1 席**。若按 SELF 判断，会为 4 颗白跑 prod（每颗 300s inflight + 平台算力）。
+
+**强制前置**：一批候选在花 prod 槽 / 花提交机会之前，先跑 MCP `compute_mutual_correlation`（**纯本地计算、不占平台队列、零仿真**），
+只用返回的 `max_mutually_below_subset`（两两 <0.70 的最大子集）。**不在该子集里的候选直接弃，不必测 prod。**
+
+**「换腿」不是换机制的量级（实测）**：
+
+| 改动 | 互测 |
+|---|---|
+| 只改 `decay`（80↔40） | 0.9629 |
+| 换科目（ebt→dps），同结构同读数 | 0.9583 |
+| 加 1.2 权重倾斜腿（权重扫到 2.0 也一样） | 0.948–0.970 |
+| **换读数**（幅度 → 广度 `/num_4wks_ago`） | **0.6078** ✅ |
+| **换科目 + 换读数**（ebt 幅度 → gps 幅度） | 0.5392 ✅ |
+| **换模型身份**（techindi tm_15 ↔ tm_16） | **0.5659** ✅ |
+
+⇒ 新席位只有四个来源：**换科目 / 换读数 / 换模型 / 换数据集**。窗口、分组、中性化、幂次、倾斜腿、decay 全部是同一席。
+
 **自动提示**：脚本会在输出里给出 OS PnL 池的最后刷新时间与池内 alpha 数（Excel `Meta` sheet + 终端），并在本批本地 SELF 最大值 < 0.7 时**自动打印盲区警告**——低值最需要提醒。
 > 未验证（needs-platform）：平台是否提供只读的 `GET /alphas/{id}/correlations/self` 可直接拿平台 SELF；本项目的 MCP 工具从未调用它。确认前不要把它写进任何流程。
 

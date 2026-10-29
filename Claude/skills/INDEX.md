@@ -24,7 +24,7 @@
 | 「检查一条表达式语法」 | `alpha-expression-verifier` | 只看语法；字段 / 类型 / 毒化的战役级预检走 toolkit `gate.py` |
 | 「批量回测 / 盯回测进度」 | 正式波次 `workflow_batch_track`（RA 步 6）；盯任务与复盘 `wq-backtest-monitor`；手写列表 `brain-sim-alphas-in-batch-and-track` | 回测被 429 / 并发卡住 → `wqb-concurrency` |
 | 「这个 alpha 为什么没过 / 怎么改进」 | 查原因 `brain-how-to-pass-alpha-test`（只读）；动手改 `wq-brain-alpha-optimization-v1` | `brain-alpha-repair` 只是被引用的配方索引；解释收益来源用 `brain-explain-alphas` |
-| 「相关性怎么办」 | 单个 SELF → MCP `check_self_correlation`；批量 SELF / PPAC → `brain-calculate-alpha-selfcorr-quick`；PROD 墙 → RA 决策表 D0-P；过拟合 / 稳健性 → `brain-alpha-robustness` | 不要为「探 prod」去 `POST /submit`（通过即提交） |
+| 「相关性怎么办」 | 单个 SELF → MCP `check_self_correlation`；批量 SELF / PPAC → `brain-calculate-alpha-selfcorr-quick`；**prod 读不出来 / `correlation_busy` / 超时 → `wq-prod-corr-read`**；PROD 墙 → RA 决策表 D0-P；过拟合 / 稳健性 → `brain-alpha-robustness` | 不要为「探 prod」去 `POST /submit`（通过即提交） |
 | 「提交 alpha」 | REGULAR → `worldquant-submit-alpha`（先 `submit_verdict`，用户明确确认后）；SUPER → `wq-brain-superalpha`；PPA → 人工交接（`worldquant-submit-alpha/references/ppa-handoff.md`） | `brain-alpha-judge` 只是参考评审：不判可提交、不提交 |
 | 「复盘 / 哪些 alpha 可提交 / 提交状态盘点」 | `wq-backtest-monitor`（回写 SOP 只在 RA 步 9） | 它触发并核验回写，不自己定 SOP |
 | 「开 PPA 战役 / 这个数据集能不能打 PPA」 | `wq-brain-ppa-mining` | RA 常规战役的白名单排序走决策表 D4，不走它 |
@@ -112,6 +112,8 @@
 
 ```
 L-RA 编排        wq-brain-ra-pipeline（唯一挖掘编排：region→RA 九步 + 日循环/一键战役/PPA 分支）
+                 · wq-prod-corr-read（prod 取数四条故障 + 三段式顺序；读不出 prod 时先看它）
+                 · wq-wave-preflight-dispatch（发批前自查：横向扫全史 / 笛卡尔积 / 设置档盲区）
 L-RA-R 区域分支  wq-brain-ra-<区域小写> × 14（区域控制面板 + 区域 × 类别组合分支文件；由 wqb.profiles render 从 cells.json 生成）
 L-PRE 战役查表   wq-brain-campaign-matrix（区域×数据集矩阵：输入 region → 预解析配置包；registry=data/wqb.db 单轨 SQLite，registry_empirical 表；战役后强制回写台账）
 L-TOOL 战役引擎 wq-brain-campaign-toolkit（region 无关执行引擎：gate/pipeline/wave/probe/ledger/scan/review/diversity，输入=战役目录+子命令；服务 S1–S6 多阶段，为战役脚本唯一权威实现）
@@ -131,9 +133,12 @@ L4  诊断优化     brain-how-to-pass-alpha-test
                  · brain-explain-alphas
                  · brain-alpha-robustness（S4→S5 必经闸：结论落台账 `robustness_<alpha_id>`，`submit_verdict` 读取）
                  · brain-alpha-repair（弱候选修复的配方索引；非改进入口，改进入口仍为 optimization-v1）
+                 · wq-prod-lever-self-lock-guard（降 prod 杠杆选择 + self 自锁防护）
+                 · wq-window-valley-break-prod-wall（窗口微调破 prod 墙：0.70–0.72 刀锋区专用）
+                 · wq-alpha-gate-push-op-min（把候选推到全闸通过 + 算子压到最少）
 L5  过闸提交     brain-alpha-judge（仅参考评审） · worldquant-submit-alpha · wq-brain-superalpha
 L6  监控复盘     wq-backtest-monitor · brain-dataset-mining-experience（字段/机制经验沉淀与复用）
-L7  元技能       pull-brain-skills · planning-with-files
+L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure-triage（pytest 失败分簇诊断）
 ```
 
 ## 挖掘流水线阶段（S-PRE→S6；编排步骤为九步，见 `wq-brain-ra-pipeline`）

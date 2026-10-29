@@ -4,6 +4,22 @@
 > 约定：新条目加在最上面；一条一行：`日期 · skill · 改了什么（为什么） → 证据 / 落点`。事故与起因写进对应 skill 的 `references/incidents.md`，这里只留指针。
 > 决策与证据登记：[`docs/design/skills_review_decisions.md`](../../docs/design/skills_review_decisions.md)；逐条处置：`reports/skills_review_20260929_closure.md`。
 
+## 2026-10-29 · USA 零塔实战复盘落地（prod 取数 / invest 闸 / 两塔配额）
+
+用户「落地所有改动项」；依据 = USA RISK 塔一轮实战（3 颗凑齐、prod 卡死两天）的实测复盘。
+
+- **新增 `wq-prod-corr-read`**（L-RA）：prod 取数四条故障（`is.prodCorrelation` 仅已提交可见 / 计算 >120s 且**超时不落缓存** / 账号级单并发被跨会话抢占 / 本地锁 ≠ 平台锁）+ 三段式取数顺序。INDEX 路由表与层表同步
+- **`wq-brain-ra-pipeline` 步 8**：提交清单插入 **invest 闸 `invest_S/S ≥ 0.70`** 作第 2 号（实证 `0mjaa2Ev` S3.24 / F2.60 / 2Y4.30 / prod 0.646 但 invest 比 **0.0895**）；prod 从 `refresh=True` 硬编码改为**缺省 `refresh=False` 缓存优先、一批只回源一颗**
+- **`wq-brain-ra-pipeline` 步 5b**：新增 5b-3 四条故障表 + 取数三段式
+- **`wq-brain-ra-pipeline` 步 4**：新增「点塔席位算术」——同族变体互相关 0.927–0.973 ⇒ 3 颗 = **3 个正交经济概念**
+- **`wq-brain-ra-usa`**：区域面板**块外**新增 invest 闸小节（不手改生成块，避免被 render 覆盖）；锁定项补「invest 闸 / 两塔配额 / 点亮口径」；未点亮塔速查补 RISK 定案配方
+- **`wq-brain-ra-usa/rules/gate-and-submit-discipline.md`**：§十 标题由「只认 `refresh=True`」改为「终验回源但 `refresh=True` 不是默认动作」；新增 §10.1 三段式 / §10.2 四条故障 / §十一 invest 闸 / §十二 两塔配额
+- **`src/wqb/profiles/locked.py`**：新增 `tower_pair_quota` / `investability_ratio_min` 两条锁定项 + `TOWER_TRIO` / `TOWER_PAIR_QUOTA` / `TOWER_TRIO_CROSS_QUOTA` / `check_tower_mix()` / `check_tower_pair_quota()`
+- **新增 `tools/gates/tower_quota.py`**（配额派发前闸：exit 1 = 封盘 / exit 2 = 塔混违规）+ `tracking/USA/config/tower_pair_quota.json` 初始台账（model/risk 6 封盘、other/risk 3 封盘、analyst/risk 1）
+- **`_six-step-core.md`** 发波闭环新增 §5 席位判定（同族变体先本地算互相关再占仿真槽）
+- **收养 5 个运行期 skill 进仓库**（此前只存在于 `~/.claude/skills`，导致「只改仓库副本再 sync」纪律物理上做不到）：`wq-prod-lever-self-lock-guard` / `wq-wave-preflight-dispatch` / `wq-window-valley-break-prod-wall` / `wq-alpha-gate-push-op-min` / `wqb-test-failure-triage`；INDEX 层表登记
+- **`docs/experience/03_region_dataset.md` §9.6 重写**：更正「点亮某塔要求信号腿来自该塔数据集」这一错误口径 —— 平台按表达式引用的**所有**数据集字段登记塔位，RISK 塔正解是「外部信号腿 + RISK 分组锚」
+
 ## 2026-10-05 · RA 按「区域 × 信号类别」拆分（DEC-79…84）
 
 用户 2026-10-04：「还是给区域 / 组合拆分实现，我希望后面能更细粒度的对每个 region 下的回测把控」。方案与落地记录：`docs/plans/2026-10-04-ra-region-category-split.md`。

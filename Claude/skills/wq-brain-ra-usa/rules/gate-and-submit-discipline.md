@@ -156,7 +156,7 @@ P2 = `[0.7,0.8)` **n=286**、P3 = rns 1.12/1.56 = **72% 保留** ⇒ 三问全�
 3. **`LOW_SUB_UNIVERSE_SHARPE` 的 limit 随主闸等比走**：D0 下 SUB 线 ≈ 2.69 × 0.4367 ≈ 1.17，实测 SUB 1.21–1.39 全过；
    所以 D0 的瓶颈**只在前两项**，不要误判成「SUB 也过不去」。
 
-## 十、prod 存量读数一律作废，只认 `refresh=True`
+## 十、prod 读数：存量作废、终验回源——但 `refresh=True` 不是默认动作（2026-10-29 修正）
 
 **铁律**：任何历史台账里的 `prod_correlation` / `self_correlation` 数字**只能用于排序，不能用于放行**；
 提交前必须对**这条 alpha 本人**跑一次 `check_correlation(<id>, refresh=True)`。`READY` 状态与 `verified_at`
@@ -176,3 +176,49 @@ P2 = `[0.7,0.8)` **n=286**、P3 = rns 1.12/1.56 = **72% 保留** ⇒ 三问全�
 2. 同族已有 ≤ 0.7 的读数、但直方图 `[0.7,0.8)` 桶 n ≥ 1 时，按 D0-P 仍判死；
 3. 反过来，`refresh=True` 的读数若**低于**旧值，要怀疑是不是换了 universe / delay / neutralization
    导致对象不可比（PC 不因算子调整而下降，只会因「换了一整套交易」而下降）。
+
+### 10.1 取数三段式（2026-10-29 实测；顺序不可倒）
+
+| 段 | 动作 | 成本 | 判读 |
+|---:|---|---|---|
+| ① | `check_correlation(<id>)`（缺省 `refresh=False`） | 零平台成本，命中 `alpha_corr_cache` 48h 权威缓存即秒回 | 有值且未 `corr_stale` ⇒ 可作**排序**依据 |
+| ② | 无锁端点 `GET /alphas/{id}/correlations/prod` | 零队列，读平台已算好的值 | **空体 = 排队中，不是 0**；连续空体说明槽被别人占着 |
+| ③ | 才 `refresh=True` 回源 | 占账号级单并发槽 | **一批只回源一颗**；只用于交付前终验 |
+
+### 10.2 四条故障模式（2026-10-29 实测，全部踩过）
+
+1. **`is.prodCorrelation` 只对已提交 alpha 存在** —— 未提交候选在 `get_alpha_details` / `batch_get_alpha_metrics` 里一律 `null`。别把 `batch_get_alpha_metrics` 当 prod 来源，它只可靠地给 `investability_ratio`。
+2. **`check_correlation` 真实计算 > 120s（MCP 客户端上限）** —— 报 `timed out after 120000ms`；**超时不落缓存**，下一次调用仍是完整 120s 阻塞而不是秒回。把超时当「暂时没值」然后反复重试 = 反复烧满 120s。
+3. **平台 prod 是账号级单并发，会被跨会话 / 跨区域抢占** —— 实测返回 `status=correlation_busy`、`retry_after=240`、`holder=corr:get_production_correlation(N1NvGm5q)`，而 `N1NvGm5q` 是**另一个区域的 alpha**。按 `retry_after` 隔时重查；`inflight=true` 时**绝不重新触发**。
+4. **本地锁状态 ≠ 平台状态** —— `logs/_dblock/correlation.lock.json` 显示 `free`，MCP 仍报 busy。两套锁不互通，以平台返回的 `holder` 为准。
+
+**推论**：三颗以上候选要终验时，**排成一个串行队列逐个回源**，不要并发；并发不会更快，只会互相排队并把整轮审计打断（429 之后依赖 prod 的一切读数都不可信）。
+
+## 十一、可投资性闸：`invest_S / S ≥ 0.70`（2026-10-29 用户定案）
+
+**铁律**：USA 的候选在进 prod 队列**之前**必须过这一闸，位置排在 `Failed RA == 0` 之后、`submit_verdict` 之前，**且在 Sharpe / fitness 排序之前**。平台不把 `LOW_INVESTABILITY_CONSTRAINED_SHARPE` 下放到提交层，所以**它不会被 RA 闸替你拦**。
+
+- 取值：`batch_get_alpha_metrics` 的 **`investability_ratio`**（= invest_S / S）。本地 `alphas` 表只有 `investability_constrained_sharpe`，比值要自己算。
+- **S 越高越要查**：S 3+ 的候选常见 invest 比 0.09–0.30 —— 那不是强，那是「只在不可交易标的上成立」。
+- **阈值只在 USA 标定**（单区样本），跨区用前重新标定。
+
+| 实证 | S | F | 2Y | prod | invest 比 | 判决 |
+|---|---:|---:|---:|---:|---:|---|
+| `0mjaa2Ev` | 3.24 | 2.60 | 4.30 | 0.646 | **0.0895** | ⛔ 不可提交（`total_*_transaction_count` 族） |
+| `9qxLOPxr` | 2.69 | 1.67 | 2.24 | 未测 | **1.0112** | ✅ 过 |
+| `E56XvX90` | 1.75 | 1.13 | 2.39 | 未测 | **0.9314** | ✅ 过 |
+
+**已知反相关**：prod 低与 invest 高常常互斥（结论 37）。两者都要过时，先按 invest 砍，再按 prod 砍——反过来会把「不可投资但低相关」的伪候选留到最后。
+
+## 十二、两塔组合配额（≤ 3 / 组合，超配封盘）
+
+**塔位唯一权威** = 平台 `get_alpha_details` 的 `ra.pyramid_short`（形如 `"risk/model"`）与 `pyramids.list`。**不得**用数据集名、`get_datasets` 的 category、或本地 `backtest_results.dataset` 推断（后者是本地分组标签，有跨区污染）。
+
+判据与配额：
+
+1. **禁止**：`{PV, MODEL, OTHER}` 三者间两两组腿（`PV+MODEL` / `PV+OTHER` / `MODEL+OTHER` / **`PV+PV`** / 三塔同现）。判法：把 `pyramid_short` 按 `/` 拆成集合，与 `{pv, model, other}` 的交集 **size ≥ 2 ⇒ 违规**。
+2. **允许但限量**：trio 塔 × 其它 category（如 `risk/other`、`pv/news`），**这类组合总量 ≤ 5 个**。
+3. **每对两塔组合的候选数 ≤ 3**，超配即**封盘**：不再从该组合挖新候选；**既有候选仍可提交**。三塔 alpha 同时占其含的每个两塔组合配额。
+4. 想换组合就**换数据集 / 换塔**，不要在封盘组合里换腿——换腿只是同组合的同源变体。
+
+**派发前动作**：先查该组合已用几个（`tools/gates/tower_quota.py`，或 `get_alpha_details` 逐条读 `pyramid_short`），**≥3 的组合本条不派**。实测教训：本区 `risk/model` 累积到 6 颗、`risk/other` 到 3 颗，都是**挖完才数出来**的——配额是派发前闸，不是事后盘点。

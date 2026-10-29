@@ -296,3 +296,96 @@ SUB 是比值闸（USA 系数 ≈0.433），**抬 S 会同步抬它的要求**�
   ⇒ 开波前用 1 条裸探针验强度（`|S|<0.5` kill，0.5–1.0 需改机制）。
 - **判据 C**：**prod 探针前移到第 1 波**（每族 1 颗探针的 prod 额度，不占回测槽，`prod ≥0.75` 即封族）。
   历史代价：`other143` 用 8 波、`risk60` 用 3 波才测出撞墙 ⇒ **13/110 波（11.8%）白投**。
+
+### 9.4 未点亮塔的 category × 数据集实测产出（2026-10-28，16 条 ATOM 探针）
+
+平台实扫 USA/D1 塔位（`get_pyramid_alphas`）：**只点亮 model 4 / analyst 6 / earnings 1**，
+其余 **13 座塔全为 0** —— 这是本轮"未点亮塔优先"的出发点。
+
+| 数据集 | 平台 category | 探针数 | 最好 S | 最好 2Y | 判定 |
+|---|---|---:|---:|---:|---|
+| **`risk65`** | **RISK** | 3 | **1.98** | **2.18** | ✅ **唯一过结构性双墙**（sub 1.75），参数层可修 |
+| `option3` | OPTION | 2 | 1.61 | 1.34 | ⚠ 有信号但 4 项 FAIL（含 sub 0.61） |
+| `short_interest_pred` | SHORTINTEREST | 2 | 0.89 | 1.87 | ⚠ 2Y 强、S 不足 |
+| `institutions6` | INSTITUTIONS | 3 | 0.07 | −0.15 | ❌ 持股计数族全灭 |
+| `news46` | NEWS | 3 | 0.51 | 0.33 | ❌ RavenPack 情绪型评分全灭 |
+| `sentiment22` | SENTIMENT | 2 | −0.04 | 1.52 | ❌ |
+| `fundamental93` | FUNDAMENTAL | 1 | −0.53 | −0.96 | ❌ 且卡 CW |
+| `mfm_model_output` | RISK | 1 | −0.92 | −0.81 | ❌（符号反，取正 0.92，仍不足） |
+
+**跨轮合成判据（与 §9.3 判据 A/B/C 并用）**：
+
+- **判据 B 的补充**：`max S < 1.58` 的数据集出局 —— 本轮 `institutions6` / `news46` /
+  `sentiment22` / `fundamental93` 四集**一轮即出局**，与历史判死清单一致。**一条 ATOM 探针就能
+  给一个数据集定生死**，这是 ATOM 形态最大的流程价值（比模板批便宜 8–10 倍）。
+- **RISK 塔此前从未被当作 USA 候选**（`risk60` 已在死路清单、`risk70` 是三区死族），
+  但 `risk65` 的**特异性收益（dsrt）中间期限分量**是全新机制。
+  ⇒ **「riskXX 死过」不等于「RISK 塔死过」** —— 死路清单的粒度是数据集，不是 category。
+- **排除清单（零成本预筛，勿再投入）**：`fundamental110` / `fund_holdings_panel` /
+  `news29` / `shortinterest3` 全 VECTOR；`macro4` country 级 ⇒ 横截面零离散。
+- **数据集名不可作塔位与语义依据**：`other416/452/466/551/553` 实际落在
+  fundamental / macro / sentiment（详见 `05_antipatterns.md`）。
+
+### 9.5 「近十年有数据」的验证口径
+
+`submit_batch` 按区域档案派发的 `startDate` 为 **2013-01-01**，但回测结果的 alpha 详情
+`metrics.startDate` 实测为 **2014-01-01** ⇒ 差额说明**该数据集自身首行数据从 2014 起**，
+可作为"近十年有数据"的**间接**证据。
+要**直接**验证须用 `get_alpha_yearly_stats` 逐年核（本轮未做，勿把间接证据当直接结论）。
+
+### 9.6 RISK 塔（USA D1）的可用供给地图与定案配方（2026-10-28 实查 / 2026-10-29 定案）
+
+**点亮口径**：同塔**本季度累计 3 颗**，且三颗之间**两两互相关 < 0.5**（塔计数每季度首日清零）。
+
+**★ 关键机制更正（2026-10-29）**：点亮某塔**不要求信号腿来自该塔的数据集**。平台按「表达式引用到的所有数据集字段」登记塔位，因此只要把 RISK 字段放进**分组轴**（`group_neutralize` / `bucket(rank(...))`），`ra.pyramid_short` 就会出现 `risk`。
+⇒ RISK 塔的正解是**「外部信号腿 + RISK 分组锚」**，不是在 risk* 数据集里硬找信号。定案三颗的信号腿全部来自 `ai_equity` 与 `earningscall_sentiment`。
+
+（`risk*` 数据集自身的信号供给仍然值得知道，但下表要按「能不能当信号腿」读）
+
+| 数据集 | 字段 | 类型 | 覆盖 | alphaCount | 判定 |
+|---|---|---|---|---|---|
+| `risk70` | 约 20 个真因子字段：`financial_leverage_factor`(aC 10) / `systematic_risk_beta_factor`(3) / `residual_volatility_factor`(14) / `market_capitalization_factor`(4) / `price_momentum_factor_score`(9) / `trading_liquidity_factor` / `earnings_yield_factor`(110) / `news_sentiment_factor`(35) / `downside_risk_factor`(6) / `short_interest_factor_2`(10) / `earnings_quality_factor`(15) / `relative_valuation_factor`(100) / `growth_characteristic_factor`(29) | MATRIX | 1.0 | — | ★**本轮主力用途 = 分组锚**（bucket 原料）；当信号腿未见强读数 |
+| `risk70` | 110+ 个 `*_sector_score` / `*_industry_score` | MATRIX | 1.0 | 114789（整集） | ⛔ 近静态横截面暴露表，只配当分组原料；当信号腿 S −0.92 |
+| `risk65` | `rsk65_mfm_etfm4_dsrt_intermediate` | MATRIX | 0.9743 | 538 | 历史最强单点（S 2.94 / F 1.09 / invest 比 0.867，只卡换手 0.7559）；**`dsrt` 族后续判死** |
+| `risk72` | `rsk72_top3000_dsrt` | MATRIX | **1.0** | 1649 | 与 `risk65` 同属特异性收益概念 ⇒ 同族；**按结论 35 特异性收益族永久跳过** |
+| `risk59` | 16 字段（`shortinterestpct` / `s3utilization` / `squeeze_risk` / `offer_rate` / `daystocover*`） | 全 VECTOR | 0.9303 | 5319 | ⛔ 证券借贷族**已判死** |
+| `risk60` | 5 字段（`rsk60_offer` / `rsk60_last` / `rsk60_crowding` / `lending_fee_bid_rate` / `rsk60_datatime`） | 全 VECTOR | 1.0 | 5693 | ⛔ 同上；`rsk60_datatime` 是元数据（时间戳），不可作信号 |
+| `risk62` | 636 字段 | — | — | 24130 | ⛔ 拥挤度极高，已判死 |
+
+`risk72` 三个 `_dsrt` 变体按宇宙切分：`top3000`（覆盖 1.0）/ `top2000`（0.7194）/ `top1000`（0.3674）⇒ **只有 `top3000` 覆盖达标**，另两个在 TOP3000 宇宙下覆盖率不足。
+
+**定案三颗（3/3，两两互相关 0.0596–0.389，全部 < 0.5）**
+
+| alpha | 信号腿（数据集） | 塔位 | S | F | tvr | 2Y | sub | invest 比 | fRA | self |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `9qxLOPxr` | `buzz_intensity_score_2 − 11`（`ai_equity`） | `risk/model` | 2.69 | 1.67 | 0.159 | 2.24 | 1.44 | **1.0112** | 0 | 0.2866 |
+| `88RdZ61v` | `credit_risk_model_score_5 − 7`（`ai_equity`） | `risk/model` | 2.65 | 1.46 | 0.159 | 2.07 | 1.64 | **0.9434** | 0 | 0.2612 |
+| `E56XvX90` | `assetutilization_sentiment_polarity`（`earningscall_sentiment`） | `risk/other` | 1.75 | 1.13 | 0.033 | 2.39 | 1.05 | **0.9314** | 0 | 0.5457 |
+
+**正解形态（第 3 颗用的慢速 hump + 三重风险 bucket）**
+
+```text
+hump(
+  group_neutralize(
+    group_neutralize(
+      group_neutralize(
+        group_rank(ts_zscore(ts_backfill(vec_avg(<信号>), 126), 504), subindustry),
+        bucket(rank(market_capitalization_factor), range="0,1,0.1")),
+      bucket(rank(trading_liquidity_factor), range="0,1,0.1")),
+    bucket(rank(price_momentum_factor_score), range="0,1,0.1")),
+  hump=0.0001)
+```
+
+设置：TOP3000 / delay 1 / decay 5 / **CROWDING** / trunc 0.08 / nan ON / 2014-01-01~2023-12-31。三层分组分别对应 **tvr / 2Y / invest** 三闸。
+
+**配方中四条实证**
+
+1. **锚字段选择 > bucket 粒度**：`financial_leverage_factor` / `systematic_risk_beta_factor` 能把 2Y 抬到 2.13–2.24；`residual_volatility_factor` 只保基线 1.52。
+2. **族内取哪一颗按 `sub_universe_sharpe` 排，不按 fitness 排**（fitness 高的那颗 sub 常更差）。
+3. **同族变体互相关 0.927–0.973**（四变体实测）⇒ 一个经济概念只出得起 1 颗；「3 颗」= 3 个正交经济概念。
+4. **挂靠只允许外挂**：把 RISK 字段放进 `group_neutralize` 的分组轴即可，**不要用零权重乘法**（`add(signal, multiply(rank(f), 0))` 会被判套利规则）。反过来，想只登记单塔 ⇒ 表达式里不能有别的数据集字段（内置 `returns` / `close` 会顺带登记 PV 塔）。
+
+**两塔组合配额（派发前闸）**：`python tools/gates/tower_quota.py --region USA`。截至 2026-10-28 实测：`model/risk` 已 **6 颗**（超配封盘）、`other/risk` 占满 **3 颗**（封盘）、`analyst/risk` 1 颗。**配额是派发前闸，不是事后盘点**——这一轮两个组合都是挖完才数出来的。
+
+**`mfm_model_output` 不适合当信号源（重要排雷）**：117 个字段里约 **110 个是行业/板块因子暴露 score**（`*_sector_score` / `*_industry_score`），是**近静态横截面暴露表**，做 alpha 信号没有预测力、彼此高度共线（只适合当分组的原料，不是信号腿）；真因子只有 `hedge_fund_ownership_factor0`（users 210）、`systemic_risk_factor_score` 等少数。该集**已用冠军骨架探针过，S −0.92**，与上述结构判断一致。
+另：字段描述错位再次确认 —— `discount_store_retail_score` 的描述写成「Daily specific (idiosyncratic) returns for stocks」，与该字段名毫无关系。

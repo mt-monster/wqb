@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-18
+last_verified: 2026-10-27
 name: worldquant-submit-alpha
 description: "把用户已确认的 REGULAR alpha 真实提交到 WorldQuant Brain 平台（POST /alphas/{id}/submit，不可逆）：workflow_submit_alpha 预检 → 用户确认后提交 → 四态响应处置（补发 / ASYNC_STUCK）。用户说“提交 alpha / submit / 上平台 / 落地”时用。不作提交判定（→ submit_verdict）、不处理 SUPER（→ wq-brain-superalpha）；PPA 人工通道与配额、点塔优选见 references/。"
 layer: L5
@@ -27,7 +27,12 @@ allowed-tools:
 
 ## 提交流程
 
-**前置**（缺一不得进入步骤 2）：`submit_verdict` 退出码 ≠ 1；prod 实测 < 0.7；用户明确确认；当日 REGULAR 配额未满（`python tools/quota_status.py`）。
+**前置**（缺一不得进入步骤 2）：`submit_verdict` 退出码 ≠ 1；prod 实测 < 0.7（见 `config.GATES_PLATFORM.prod_corr_max`）；用户明确确认；当日 REGULAR 配额未满（`python tools/quota_status.py`）。
+
+> ★ **prod 必须是「提交当刻」的 `refresh=True` 重测值**（2026-10-28 GLB 实测）：prod 池会漂移，缓存值只作参考。
+> 某候选 48h 缓存 prod = **0.694**（只差 0.006 就要越线）——若按缓存判定就提交，可能在平台侧已越线而被 `REGULAR_SUBMISSION` 拦下、
+> 白占一个配额位。正确顺序：**提交当刻逐颗 `check_correlation(refresh=True)`**（一次只回源一颗，别批量并发 —— 见 `wqb-concurrency` §9），
+> 越线则当场换备选，**不要先提交再等平台报错**。
 
 **步骤 1 · 预检（默认形态，不 POST）**
 
@@ -42,7 +47,12 @@ mcp__wq-brain-http__workflow_submit_alpha(
 ```
 
 **步骤 2 · 提交（仅在用户明确确认后；不可逆）**：同参数把 `confirm_submit` 置 `True`，再按下面的「响应处置」分支。`verify_timeout` 缺省 = `WAIT_THRESHOLDS.submit_flip_wait_s`（240 s），不要自己改小。
-**稳健性声明（2026-10-04 起 MCP 入口可直接传）**：`confirm_submit=True` 时，台账 `robustness_<alpha_id>` 无记录就**必须**显式 `robustness_audited=True`（缺省 False，fail-closed）才放行；台账已有记录则该声明降为辅助（`REJECT` 由节点直接拦下）。顺序：先跑 `brain-alpha-robustness` 并把结论落台账，再提交——不要只靠声明过关。**prod 红线（≥0.7）无任何豁免入口**：显式豁免参数已于 2026-10-18 按用户判定「不合规」彻底移除——任何路径（含 `workflow_execute`）传该参数都会直接报错，不存在留痕放行的通道。
+**稳健性声明（2026-10-04 起 MCP 入口可直接传）**：`confirm_submit=True` 时，台账 `robustness_<alpha_id>` 无记录就**必须**显式 `robustness_audited=True`（缺省 False，fail-closed）才放行；台账已有记录则该声明降为辅助（`REJECT` 由节点直接拦下）。顺序：先跑 `brain-alpha-robustness` 并把结论落台账，再提交——不要只靠声明过关。
+
+> ★ **声明必须「读台账」得出，不得硬编码 `True`**（2026-10-28 GLB 实测）：提交器里若把 `robustness_audited` 写死 True，
+> 等于替**未经审计**的候选背书、直接绕过节点的稳健性闸。当时台账里该篮 4 颗**一颗记录都没有** —— 硬编码会静默放行。
+> 正确做法：**提交前逐颗查台账有记录且 `overall` 非 REJECT 才传 True；无记录 ⇒ 拒绝提交该颗**（fail-closed）。
+> 台账本身要按主键 **merge** 写入、**失败结果不写入**（见 `brain-alpha-robustness`）。**prod 红线（≥0.7）无任何豁免入口**：显式豁免参数已于 2026-10-18 按用户判定「不合规」彻底移除——任何路径（含 `workflow_execute`）传该参数都会直接报错，不存在留痕放行的通道。
 `force=True` 只跳过**本地预检**（内容与允许场景见 `references/ppa-handoff.md` §1），**不放行任何平台检查**；REGULAR 一般不用。
 
 **步骤 3 · 核验**：`mcp__wq-brain-http__get_alpha_details(alpha_id=…)` → `status == ACTIVE`（或 `SUBMITTED` 后转 `ACTIVE`）且 `dateSubmitted` 非空。

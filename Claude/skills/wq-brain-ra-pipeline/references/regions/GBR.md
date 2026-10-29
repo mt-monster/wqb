@@ -10,10 +10,10 @@ static:
   neutralization_default: SUBINDUSTRY
   notes: "TOP700/delay1/SUBINDUSTRY 为 region_kb settings_proven 实测；delay0 可探"
 datasets:
-  red: [predictive_starmine, analyst_earnings_ibes, pattern_scores, other455, model264, news104, model53, fund_holdings_panel, news17, analyst9, news20]
-  red_reason: "s0_whitelist_2026-08-26 excluded：PROD 饱和 4 族 + 简单结构判死 3 + dead 标记 5（registry dead_end 层 10 条实证）"
+  red: [predictive_starmine, analyst_earnings_ibes, pattern_scores, other455, model264, news104, model53, fund_holdings_panel, news17, analyst9, news20, earnings6, shortinterest3]
+  red_reason: "s0_whitelist_2026-08-26 excluded：PROD 饱和 4 族 + 简单结构判死 3 + dead 标记 5（registry dead_end 层 10 条实证）。**2026-10-28 追加 2 条**：earnings6（平台 meta coverage=0.0 是 meta 造假，字段真实可回测，但 get_alpha_yearly_stats 实测 2014-2018 五年 pnl=0/持仓 0、2019 仅 24 多头 ⇒ 数据自 2019-12 起，**不满足『近十年都有数据』**；其 SUB 闸全灭根因是样本期短导致子宇宙统计退化，不是轴粒度）；shortinterest3（wave12 补测 6 条关闭死路留的口子，最好 S0.80，距硬闸 49%）"
   yellow: []
-  green: [model238, model106, dl_riskfree_returns, institutions6, news18, sentiment27, shortinterest3, model28, model36, pv29]
+  green: [model238, model106, dl_riskfree_returns, institutions6, news18, sentiment27, model28, model36, pv29, news50]
 priors:
   signal_families_include: [model, institutions, news, sentiment, shortinterest, pv]
   signal_families_exclude: [starmine, analyst_estimate, pattern_scores, other455, model264, dl_riskfree_label, model238_rank]
@@ -37,6 +37,22 @@ empirical_anchor:
 # GBR — 达成区扩挖（4 ACTIVE → 目标累计 10）
 
 ## 定位与实证依据
+
+### 2026-10-28 · 未点亮塔开波结论（s2_news50_d1 / s2_shortinterest3_d1，74 颗全 ATOM）
+
+**塔位现状（当前季度 D1）**：model=5、analyst=3（已点亮）；pv=1、other=1（未满 3）；**NEWS=0、SHORTINTEREST=0、EARNINGS=0**（本轮主攻对象）。
+
+**本轮实测**：74 颗 regular alpha 全部落在 NEWS（62）与 SHORTINTEREST（6）两座未点亮塔，**全部单数据集 ATOM**、零 PV/MODEL/OTHER 腿、窗口全在白名单、十年数据覆盖已用 `get_alpha_yearly_stats` 逐���核验。
+
+**两条可复用的结论**：
+1. **`news50` 的 `mws50_vea`（Aggregate Event Volume 91 日）均值回复是 GBR 未点亮塔唯一存活的横截面信号**，最佳 `1YNEqJbQ` S1.26 / F0.80 / 2Y1.79 / SUB0.89 / TO0.088（`failed_ra_count=2`，只差 LOW_SHARPE 与 LOW_FITNESS）。**等价算子替换（`ts_decay_linear(·,22)`）是决定性杠杆**：+0.21 S / +0.26 F / +0.62 2Y / −0.07 TO，且让 LOW_2Y_SHARPE 由 FAIL 转 PASS。详见 `references/news.md` 与 registry `GBR-NEWS50-VEA-MEANREV-WIN` / `GBR-NEWS50-VEA-S-CEILING-20261028`。
+2. **本区信号含行业层面成分 ⇒ 用 `group_neutralize` 不用 `group_rank`**：vea 的 group_rank 版 S 从 1.03 腰斩到 0.52，group_neutralize 版 1.04/2Y1.20；ess 极性族同样（裸 0.67 → group_rank 后 −0.22）。
+
+**★ 选集铁律（本区新增）**：带时间跨度要求时，**唯一权威是 `get_alpha_yearly_stats` 的逐年持仓数/pnl，不是平台 `coverage`**——`coverage=0` 可能是 meta 造假（earnings6 / news48 / option1 / analyst45 / macro27 同款）也可能是真空集。
+
+**★ 塔位铁律**：本地 `backtest_results.dataset` 是**本地分组标签、不是平台塔位**。`KPrmWlwN`（S1.62 / 2Y1.89 / failed_ra_count=0）虽挂在 `shortinterest3` 分组下，表达式实际只用 `pv47_spret` 单字段、平台 `pyramid_short=pv` ⇒ **属 PV 塔**，别记成 SHORTINTEREST 产出。塔位判定唯一权威 = alpha 详情的 `ra.pyramid_short` / `pyramids.list`。
+
+**★ 待办**：`KPrmWlwN` 是本区现成的 REGULAR 全闸通过候选（单字段 ATOM / 塔位 pv / PV 塔 1/3 未满），prod 实测受平台账号级单并发槽占用而未完成（inflight），prod<0.7 后走 `submit_verdict` → 用户确认 → `workflow_submit_alpha(confirm_submit=True)`。 <!-- from config.prod_corr_max -->
 
 GBR 已从"半空白探针态"升级为**达成区**：region_kb 4 ACTIVE（GrlqxwKx/vRNk56mz 全闸过，A1G7o1EE/WjAV89jG rn 偏弱但仍 OS ACTIVE）+ 3 条 win_recipes（全部 PROD 饱和，仅机制换腿复用）+ registry dead_end 10 条（8-26 回写）+ s0_whitelist 10 数据集（8-26 建）。市场结构与 EUR 相近，EUR 的「慢 MODEL × 快 PV」跨周期结构可作换腿先验（其原配方是 0.4 / 0.6 加权相加，**已被 2026-09-13 起的路线 A 与闸 5 禁止**，只能改写成条件 / 分组 / 残差形态，见 optimization-v1 `structural-interaction-forms.md`），但**借用≠验证**：本地回测确认后才能回写 win 层。
 

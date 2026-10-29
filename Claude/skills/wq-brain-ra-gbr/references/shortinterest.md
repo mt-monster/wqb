@@ -84,4 +84,22 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 2026-10-28 · wave12 补测：把 `GBR-SI3-MIRROR-CEILING` 的「留口子」也关掉
+
+上一条死路留了口子：「**复合双腿混合未验证，留口子**」。本轮 6 条补测结论：
+
+| 表达式 | S | F | 2Y | SUB | TO |
+|---|---|---|---|---|---|
+| `reverse(group_rank(divide(vec_sum(loan_rate_volatility_p5_d1), add(vec_avg(max_loan_rate_p5_d1), 0.0001)), sector))`（比值族原式） | **0.80** | 0.40 | 1.52 | 0.90 | 0.150 |
+| `reverse(ts_decay_linear(ts_zscore(ts_backfill(divide(vec_avg(loan_rate_volatility_p5_d1), add(vec_avg(mean_loan_rate_p5_d1), 0.0001)), 22), 252), 22))`（比值族套平滑） | 0.46 | 0.18 | 0.55 | 0.39 | 0.108 |
+| `reverse(ts_decay_linear(ts_zscore(ts_backfill(vec_avg(transaction_count_p5_d1), 22), 252), 22))` | 0.53 | 0.20 | 1.14 | 0.77 | 0.064 |
+| `reverse(ts_decay_linear(ts_zscore(ts_backfill(vec_avg(shrt3_bar), 22), 252), 22))`（借券需求评级） | 0.25 | 0.07 | −0.28 | 0.37 | 0.089 |
+| `reverse(ts_decay_linear(ts_zscore(ts_backfill(vec_avg(average_loan_duration_days_p5_d1), 22), 252), 22))` | 0.10 | 0.02 | 0.26 | 0.29 | 0.072 |
+| `reverse(group_neutralize(ts_decay_linear(ts_zscore(ts_backfill(vec_avg(shrt3_bar), 22), 252), 22), subindustry))` | 0.25 | 0.07 | −0.29 | 0.37 | 0.088 |
+
+**结论**：
+- **比值族套 `ts_decay_linear` 后 S 从 0.80 掉到 0.46** ⇒ news50 上那个「决定性杠杆」在 shortinterest3 **不成立**（等价算子替换的效果**族特异**，不可跨集外推）。
+- 6 条最好 S0.80，距 REGULAR 硬闸 1.58 差 49% ⇒ **SHORTINTEREST 塔（GBR D1 0/3 未点亮）本轮无可提交空间，不再投该集探针**。
+- ⚠ **别把历史最强当成本集战绩**：本域 `KPrmWlwN`（S1.62 / 2Y1.89 / `failed_ra_count=0`）表达式只用 **`pv47_spret` 单字段、`pyramid_short=pv`** ⇒ 属 **PV 塔**，不是 shortinterest3 字段。
+
 <!-- profiles:manual:end -->

@@ -33,14 +33,28 @@
 
 ## 二、已测数据集（≈25 个）与判死速查
 
-### 2.1 产出可提交 alpha 的数据集（**唯二**）
+### 2.1 产出可提交 alpha 的数据集（含「已占位、无剩余席位」的标注）
 
 | 数据集 | 类别 | 机制 | 产出 | 状态 |
 |---|---|---|---|---|
+| **`analyst7`** | analyst | ★ 修正**广度/扩散**读数（`est_12m_<科目>_raisednum/lowerednum`），非幅度 | `E56Jea7P`(SENTIMENT 塔) / `leAXvaLn`(INSTITUTIONS 塔) / `e76xGOQO` / `LL5dmv9a` / `Grge2lN3` / `786pLKnb` | ★ **EUR 主力产源（≥6 颗）**。科目按 2Y 分层：ebt/dps/gps/pre 高（1.6–2.6），ebi/eps/sal 封顶 1.57。读数按 prod 分层：广度 0.65 / 扩散 0.78。详见 `analyst.md` |
 | `analyst_factor_signals` | analyst | 分析师修正幅度 ÷ 分歧度 | `786pLKnb` | ⚠ **PPA 通道**（不算 RA），且 prod 0.9994 ⇒ **腿已死** |
-| `techindi_model` | other | ML 预测收益率（分位 × horizon）× **双窗秩乘积** | `LL5VwgO1` | ★ **CH_REG (RA), ACTIVE** |
+| `techindi_model` | other | ML 预测收益率（分位 × horizon） | `LL5VwgO1`(CH_REG) / `e76kv2xE`(EUR, UNSUBMITTED) | ⚠ **EUR 侧已无剩余席位**（不是"无信号"）：唯一 prod 过线的结构是**双窗秩乘积** `multiply(rank(ts_mean(F,2)), rank(ts_mean(F,252)))`（`e76kv2xE` prod **0.6916** / S2.60 / 2Y1.94 / sub1.67），但它已被优化版 `LL5VwgO1` 占位——`e76kv2xE` 实测 **self 0.9980** ⇒ 锁死。其余路径（`tm_N` 模型族 + `group_scale` 幂次）4 次 prod 实测 **0.7454/0.7794/0.7819/0.8163**，幂次 0.8–2.1 全扫 S 恒 2.65–2.74（`group_scale` 把幂次影响归零）⇒ 子路径判死 |
+| `predictive_starmine` | other | ARM 分析师修正模型（`arm_*`） | `RRAvGrn0`（prod **0.5437**，ACTIVE，pyramid INSIDERS+MODEL） | ⚠ **死的是「rank 水平读数」，不是数据集**：`rank(ts_backfill(arm_score_5pt_scale_2,22))` 等 6 条水平读数 S 0.10–0.49 ⇒ 死；活的是**二阶差分/极值差读数** `subtract(rank(ts_max_diff(rank(arm_secondary_earnings_component_score_3),149)), ts_rank(ts_delta(ts_delta(arm_preferred_earnings_component_score,22),22),500))` ⇒ S1.99 / prod 0.5437（已占位）|
+| `fundamental23` | fundamental | 投资复合因子（`bank_assets_investment` + `intfvalld1_vbts`） | `1YNerr2X` / `e75pkq7E` | ✅ 可提交（prod 0.6896）。⚠ 换字段无用：iabs/iads/fbds/sebv 任意组合互测 **0.75–1.00**（`e75pkq7E` 与 `1YNerr2X` 相关 **1.0000**）⇒ 只 1 席 |
+| `fundamental72` | fundamental | PIT 财报比率（CFO/Assets） | `rKd5lAo8`（prod 0.6747） | ✅ 可提交。其它比率（EBITDA/负债/库存/折旧）S 0.06–1.26 ⇒ 只 CFO/Assets 有效 |
 
 ### 2.2 判死数据集（按死因归类，**同族免测**）
+
+> ⛔ **判死必须写明「死的是哪个读数 / 结构」，不许写「该数据集死」**（2026-10-29 三次同型错误换来的）：
+> | 数据集 | 我判死的读数 | 实际有效的读数 | 后果 |
+> |---|---|---|---|
+> | `news46` | 情绪极性分（77 条全 S<0.6） | **新闻条数=关注度** `sum_story_count` | 白跑 77 条 |
+> | `techindi_model` | `tm_N` + `group_scale`（prod 0.745–0.816） | **双窗秩乘积**（prod 0.6916） | 白跑 12 条；且该结构已被 `LL5VwgO1` 占位 |
+> | `predictive_starmine` | ARM rank 水平读数（S 0.10–0.49） | **二阶差分/极值差**（S1.99 / prod 0.5437，已占位） | 白跑 6 条 |
+>
+> 判死前必做两件事：① 读 `references/<类别>.md` 里该数据集的**全部历史结论**（里面常有已过线的 prod 实测值）；
+> ② `get_alpha_details` 读该数据集已 ACTIVE alpha 的 `regular.code`，看它用的是哪种**读数形态**（水平 / 变化 / 极值差 / 双窗）。
 
 | 死因 | 判据 | 命中数据集 |
 |---|---|---|
@@ -49,19 +63,25 @@
 | **S 不足** | 双结构最好 S < 0.5 | `analyst45`(0.36)｜`analyst9`(0.45)｜`sentiment7`(0.43)｜`other553`(≈0)｜`analyst11`(≤0.1)｜`other571`(≤0.44)｜`other545`(≤0.63)｜`other315`(≤0.16) |
 | **近静态** | 探针 TO < 0.02 | `pv106`（价差水平，且符号为负）｜`pv13` 图特征(0.012–0.086)｜`other455` node2vec-PCA(**0.010–0.012**) |
 | **噪声型（平滑即杀）** | 不平滑有 S、平滑即崩 | `continuation_score`(+0.56 → −0.79)｜`analyst69`｜`ai_news_scores` |
-| **元数据 / 无信号字段** | cov≥0.5 字段全为标识类 | `other567`(地址/编码)｜`other128`(sector/ticker)｜`pv109`(无 cov≥0.5)｜`pv173`(`*_unit_name`)｜`other384`(cov 全 <0.5)｜`investor_activity`(cov 全 <0.5) |
+| **元数据 / 无信号字段** | cov≥0.5 字段全为标识类 | `other567`(地址/编码)｜`other128`(sector/ticker)｜`pv109`(无 cov≥0.5)｜`pv173`(`*_unit_name`)｜`other384`(cov 全 <0.5)｜`investor_activity`(cov 全 <0.5)｜**`news54`**(40 字段=时间戳/标志位/原始文本，仅 1 数值字段)｜**`earnings6`**(4 个数字字段 cov 仅 0.5258) |
 | **数据伪影** | S 异常高 + TO 打满 | `pv106.transaction_cost_estimate`(S 11.18 / TO 1.0 / 2Y 0) |
-| **机制存在但近期断档**（2026-10-18 新增） | 2Y Sharpe < 0 | `institutions6`（广度版 S 0.86 但 **2Y −0.30**；数量/金额版 S 为负。见 `_probe-sop.md` §9⑥）|
-| **prod 池永久锁定**（2026-10-18 新增） | 同族三次结构改动 prod 变化 <0.04 | `analyst_factor_signals`「修正幅度÷分歧度」全族（prod 0.9231 / 0.8907 / 0.9260，最近邻=自家 PPA `786pLKnb`）。见 `_probe-sop.md` §9⑤ |
+| **机制存在但近期断档**（2026-10-18） | 2Y Sharpe < 0 | `institutions6`（广度版 S 0.86 但 **2Y −0.30**；数量/金额版 S 为负）|
+| **prod 池永久锁定**（2026-10-18） | 同族三次结构改动 prod 变化 <0.04 | `analyst_factor_signals`「修正幅度÷分歧度」全族（prod 0.9231 / 0.8907 / 0.9260，最近邻=自家 PPA `786pLKnb`）|
+| **覆盖率结构性不足**（2026-10-29 新增） | cov < 0.85 ⇒ sub 闸不可达（不必跑三闸） | `fundamental28`（1605 字段但 **cov 恒 0.50** → sub 0.52 vs 限 0.82）｜`earnings_sent_matrix`(0.51)｜`macro27`(0.33)｜`imbalance5`(0.55)｜`socialmedia15`(0.34) |
+| **信号层判死**（2026-10-29 新增，已排除覆盖率因素） | 多结构 × 多中性化实测 \|S\| 天花板 < 1.0 | **news**：`news73`(16 条 0.58) / `news17`(8 条 0.44) / `news_sentiment_nlp`(6 条 0.17)｜**sentiment**：`sentiment21`(14 条 × subind/country 两轴 0.36) / `sentiment27`(11 条 0.39)｜**institutions**：`institutions6`(22 条 × FAST/SUBIND 两档 0.56) / `fund_holdings_panel`(6 条 0.52)｜**pv**：`intraday_pv_feats`(订单流/买卖价差 11 条 0.44) / `pattern_scores`(形态相似度 6 条 0.72) / `pv37`(涨跌量拆分 6 条 −0.49)｜**other**：`analyst45`(众包观点含目标价隐含涨幅 6 条 0.40) / `dl_riskfree_returns`(分位概率 6 条 0.46) / `global_seasonal_model`(6 条全负) / `ai_equity_alpha`(prod 0.8052) |
+| **杠杆不适用**（2026-10-29 新增） | 结构本身可过但某杠杆破坏性 | `risk70` 风格暴露：TO 0.009–0.021 ⇒ vol 过低 ⇒ F 卡 0.83–0.95，结构性不可达（除 `anlystsn`）｜`fundamental23` + `group_scale`：sub 崩到 0.63–0.76（水平量读数禁用 group_scale）|
 
 ### 2.3 已测但**非判死**（信号带 / 未穷尽）
 
 | 数据集 | 最好读数 | 缺口 | 备注 |
 |---|---|---|---|
 | `sentiment27` | S 1.33 / returns **5.68%** | S 缺 0.25 | **天花板第 5 次确认**（结构/轴/幂次/平滑/L2 级联/vec 聚合/16 包装算子全试） |
-| `dl_riskfree_returns` | S 1.40 / F 0.71 / returns 3.8% | 需 S ≥ **1.81** | 单分位 ≠ 更好（与 techindi 相反）；已测 11 条 |
 | `stock_search_trends` | S 0.76 / TO 0.92 | returns 2.7% | Google Trends 注意力 |
-| `pattern_scores` | ≤0.52 | — | 形态相似度 |
+| `other460` | 历史最好 S 0.77 | 未挖 | 1393 字段「未来趋势下跌概率」，OTHER ×1.5，全未开采 |
+| `analyst7`（幅度读数 × ebi/eps/sal） | S 1.63–1.97 | 2Y 顶 1.46–1.57 | 三路（幅度/广度/双读数）+ 倾斜 W0.3–2.0 + 时序窗 20/35/60 + decay 10–80 全扫 ⇒ **科目天花板**，非结构问题 |
+
+> ⚠ 已从本表移除：`dl_riskfree_returns`（已归入 2.2 信号层判死）、`pattern_scores`（已判死）。
+> 旧表两处自相矛盾（同一集既在 2.2 又在 2.3），以 2.2 为准。
 
 ---
 

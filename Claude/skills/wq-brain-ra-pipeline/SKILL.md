@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.3"
-last_verified: 2026-10-24
+last_verified: 2026-10-29
 ---
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
 
@@ -106,27 +106,23 @@ last_verified: 2026-10-24
 
 ## 类别普查（步 1 与步 2 之间）—— 「遍历所有 category」的规范入口
 
-- **目的**：把挖掘面从「S0 排名后的少量数据集」扩成「该 region 的**全部** category」，产出每类的候选字段池；只在**有苗头的类**上花深挖配额。
-- **前置**：步 1 分流为「进步 2」；`settings.json` 已有 universe / delay（探针用权威档位，见步 6⚠设置档）。
-- **调用**（零回测、零 API，可 dry-run）：
-  1. `python tools/probe/category_sweep.py --region $REGION --seed-fields --json results/cat_sweep_$REGION.json` —— L0 类别普查
-  2. `python tools/probe/category_probe.py --region $REGION --sweep results/cat_sweep_$REGION.json --n 8 --out-exprs results/probe_$REGION.txt` —— L1 苗子探针生成
-  3. 派发仿真（QUICK）→ 收割 → `category_probe.py --classify` 判苗头
+> **⛔ 组腿禁区（2026-10-29 用户裁定，先读这条再设计多腿）**
+> 禁区三类 = `PV` / `MODEL` / `OTHER`：
+> - ❌ 内部两两禁（PV+PV / MODEL+MODEL / OTHER+OTHER）｜❌ 彼此之间两两禁（PV+MODEL / PV+OTHER / MODEL+OTHER）
+> - ✅ 可与**其它 category**跨类组腿（PV+NEWS / MODEL+FUNDAMENTAL / OTHER+ANALYST …）
+> - ⚠ **含禁区类的跨类组合全账号仅限 5 个**（用前先 `get_user_alphas` 盘点 `pyramids.list` 里含 pv/model/other 且段数 ≥2 的）
+> - 等价：一条腿序列里 `PV/MODEL/OTHER` 合计最多出现 1 次；跨类配额是最紧的预算。
+
+- **目的**：把挖掘面从「S0 排名后的少量数据集」扩成「该 region 的**全部** category」，只在**有苗头的类**上花深挖配额；**不探已点亮塔的类**。
+- **前置**：步 1 分流为「进步 2」；`settings.json` 已有 universe / delay。
+- **调用**（零回测、零 API，可 dry-run）：① `python tools/probe/category_sweep.py --region $REGION --seed-fields --json results/cat_sweep_$REGION.json` ② `python tools/probe/category_probe.py --region $REGION --sweep results/cat_sweep_$REGION.json --n 8 --out-exprs results/probe_$REGION.txt` ③ 派发 QUICK 仿真 → 收割 → `category_probe.py --classify`。
 - **产物**：`results/cat_sweep_<R>.json`（每类字段池 + 判定）、`results/probe_<R>.txt`（逐行探针表达式）。
-- **完成定义**：L0 报告已出且**含未分类桶**（`coverage.n_null_bucket` 已打印）；L1 探针每类 `diversity >= 0.6`；收割后 `classify` 给出每类 `★苗头 / 待探 / 已枯`。
-- **判定四态**：`★苗头`（有历史达标且有候选字段）/ `待探`（有候选字段无历史）/ `贫瘠`（候选字段 < 5）/ `已枯`（历史有产出但当前无候选字段）/ `已枯(归他类)`（本地组合集桶，字段归属别的类）。
-- **★ 四条铁律**（违反即失效，均为 2026-10-06 DEU 193 集实测得出，细则见 [`references/category-sweep.md`](references/category-sweep.md)）：
-  1. **`alpha_count` 不做入选判据**，只做拥挤排除闸（默认 >1000 排末位）。它是拥挤度（prod 墙）指标、不是信号强度指标——实测 DEU `model28` 甜点=0 却出 12 条 RA-clean。
-  2. **必须有 NULL 兜底桶**。`datasets` 表全库 184 行 `category IS NULL`；本地组合集（`mix_2leg`/`grtransform`/`lean_le89`）字段本就归属别的类，判「已枯(归他类)」不占探针位。
-  3. **族连坐只降权不判死**。假阳性代价（封掉 `predictive_starmine` 的 27 条产出）远高于漏检代价。
-  4. **★ L2 闭环：registry 已判死的数据集不进候选，且只有带 `rule` 的才算数**。实测初版不读 registry ⇒ DEU/KOR 共 **11 个**已死集被重推（含 `sentiment7`，其 dead_end 写明「6 波 48 探针/ 天花板 0.71」仍被标 ★苗头）。修后 DEU 强排除 49 个数据集、剔除 3746 个字段。但 **`DEU-SI3-CW-STRUCTURAL`（`shortinterest3`）的 `rule` 是空的**——按registry 契约 dead_end 必须带「下次怎么办」，无 `rule` 的**只降级为提示、不强排除**（否则会把 DEU 产出最好的集之一、25 条 RA-clean 判死）。复查用 `--keep-dead`。
-- **★ 深挖配额按产出率分配，不均分**：各类产出率相差 25 倍（MEA 19.9% vs ASI 1.6%），均分会把配额压在无产出类上。`--quota-mode yield`（默认）权重 = 历史达标数（0 产出给保底权重 1）+ `0.5 × 有历史强信号字段`；`equal` 仅作对照。DEU 实测（预算 64）：`MODEL=28 / SHORTINTEREST=11 / OTHER=9 / … / FUNDAMENTAL=1`；均分时每类 5.8 条，MODEL 少拿 22 条。L1 用 `--use-quota` 逐类消费。
-- **L2 收尾**：L1 `--classify` 判「已枯」的类别必须写 `registry_empirical` 的 `dead_end` 层（`seal_dead_end`，**必填 `rule`**）⇒ 下轮 L0 自动排除。**这就是 `rule` 必须写的原因**：没有它的条目下轮只会降级为提示，等于白写。
-- **★ 探针条数不是首要变量，机制多样性才是**：DEU 164 条达标只来自 73 个独立表达式（去重比 2.2x），`grtransform` 10 条来自 **1 个**表达式。8 条探针里若掺设置变体，独立机制样本可能只剩 3 个 ⇒ L1 硬约束「一条探针 = 一个新机制」，`--min-mechanism-diversity` 默认 0.6。
-- **★ L1/L2 判据分离**：L1 宽召回（`sharpe>=1.58` **或** `2Y>=1.58` **或** `sharpe>=1.30`，后者为「次强」；阈值见 `config.PLATFORM_CHECK_LINES`）；**RA 全清留给 L2 深挖再筛**。
-- **失败分支**：某类探针全灭 → 不阻塞其他类（逐类独立判）；L0 报`category_sweep 某类 0 候选字段` → 该类本轮跳过并记 ledger；探针表达式报幽灵算子 → 跑 `operator_audit` 后改模板（`PROBE_SKELETONS`）。
-- **不做**：不把 L0/L1 产物当 **ideas** 注入 GEM（那是「字段池决策」，机制仍须 L4 五步法）；不用 `category_field_triage` 的判级替代本步（其甜点/族连坐判据与真实产出矛盾，见细则）；不在本步派发 FULL 仿真；**不探「已点亮塔」的类**（塔计数规则同步 2）。
-- **细则**：[`references/category-sweep.md`](references/category-sweep.md)（含与 `category_field_triage` / `score_datasets` 的分工、三铁律的实测数据、探针骨架清单）。
+- **完成定义**：L0 报告已出且**含未分类桶**（打印 `coverage.n_null_bucket`）；L1 探针每类 `diversity >= 0.6`；`classify` 给出 `★苗头 / 待探 / 贫瘠 / 已枯 / 已枯(归他类)` 四态。
+- **★ 四条铁律**（细则与实测数据见 [`references/category-sweep.md`](references/category-sweep.md)）：① `alpha_count` 只做拥挤排除闸、**不做入选判据**；② 必须有 NULL 兜底桶；③ 族连坐**只降权不判死**；④ **registry 已判死的集不进候选，且只有带 `rule` 的才强排除**（无 `rule` 只降级为提示）。深挖配额按产出率分配（`--quota-mode yield`，默认），不均分。
+- **L1 / L2 判据分离**：L1 宽召回（`sharpe>=1.58` 或 `2Y>=1.58` 或 `sharpe>=1.30`；阈值见 `config.PLATFORM_CHECK_LINES`），RA 全清留给 L2 深挖；L2 判「已枯」的类必须 `seal_dead_end`（**必填 `rule`**），否则下轮 L0 只会降级为提示、等于白写。
+- **失败分支**：某类探针全灭 → 逐类独立判、不阻塞其他类；幽灵算子 → 跑 `operator_audit` 后改模板（`PROBE_SKELETONS`）。
+- **不做**：不把 L0/L1 产物当 **ideas** 注入 GEM（那是字段池决策，机制仍须 L4 五步法）；不用 `category_field_triage` 的判级替代本步；本步不派发 FULL 仿真。
+- **细则**：[`references/category-sweep.md`](references/category-sweep.md)（与 `category_field_triage` / `score_datasets` 的分工、三铁律实测数据、探针骨架清单）。
 
 ### 步 2（S0）数据集体检 + 金字塔配置
 
@@ -158,6 +154,7 @@ last_verified: 2026-10-24
 
 - **目的**：为白名单数据集产出候选表达式并选成一波（GEM 强制；`build-wave` 只去重 / 分桶 / 骨架配给，**不产表达式**）。
 - **前置**：步 3 完成（含 L3.5 `families`）；**先完成 L4 形态构建五步法**（本步细则 §2）——族 → 经济量 → 形态枚举 → 避判死 → 三源验证 → 探针配给；有胜绩则本波**至少 2 个波内配额位按机制换腿**；时间窗口只用 1 / 5 / 22 / 66 / 252 / 504 / 1008 / 1260（其它窗口须给解释或实测证据）。
+- **★ 点塔场景的席位算术（2026-10-29 实测）**：点亮一座塔 = 同塔**本季度累计 3 颗且三对互相关 < 0.5**（口径见 [`worldquant-submit-alpha/references/quota-and-tower.md`](../worldquant-submit-alpha/references/quota-and-tower.md)）。同族变体互相关实测 **0.927–0.973**（USA `earningscall_sentiment` 一族四变体）⇒ **一个经济概念只出得起 1 颗**。「3 颗」等于**3 个正交经济概念**，不是 1 个概念的 3 个变体 —— 先按概念数排队，再谈变体数；概念不足时不要把变体当席位去占仿真槽。
 - **调用**：L4 形态构建（[`signal-hypothesis-construction.md`](references/signal-hypothesis-construction.md) §2，**零配额阶段**：避判死 + 三源验证）→ `workflow_campaign(stage="S2", subcommand="assemble-priors")` → `workflow_gem`（`pipeline_mode` 缺省 `phased`）→ `workflow_campaign(stage="S2", dataset=$DS, wave=$W)`（选波）。**取骨架前必查 `KB/community_tpl_kb` 的 `ghost_operator_advisory`**。
 - **产物**：`expressions`（status `gem` / `enhanced` / `selected`）、ledger idea、`priors_snapshot_<region>`。
 - **完成定义**：`list_expressions` 查到本波条目——**未验证 DB 有表达式，不得声称步 4 成功**；且本波形态**从族出发**（非按字段平铺）、**探针先于扩批**。
@@ -193,6 +190,8 @@ last_verified: 2026-10-24
 - **处置**：**只有一张表——决策表 [D0-P](references/decision-table.md)**（< 0.60 扩变体；0.60–0.70 不扩变体、当天进步 8；0.70–0.75 只许 1 次结构性尝试；≥ 0.75 或尝试失败 → dead_end；**判 dead_end / 做那 1 次尝试之前先做表里的「诊断前置」**：看直方图分单颗钉子 / 密墙 / 可破三型，同族同分母先换分母，再比设置档与分组轴）；数值例见情景卡 RA-04。
 - **不做**：**禁止用 `POST /submit` 探测 prod**（通过即提交，无撤回）；prod 一律 `check_correlation`（只读）。总纲见 [`prod-corr-avoidance.md`](references/prod-corr-avoidance.md)。
 
+**5b-3 prod 取数**：四条故障模式（`is.prodCorrelation` 只对已提交存在 / 回源 **>120s 且超时不落缓存** / 账号级单并发且 holder 可能是别的会话 / 本地锁 ≠ 平台锁）+ **取数三段式**（48h 缓存 → 无锁端点 `GET /alphas/{id}/correlations/prod` → 回源，一批只一颗）见 [`prod-corr-avoidance.md`](references/prod-corr-avoidance.md) §5。
+
 ### 步 6（S3）并发回测
 
 - **目的**：把本波表达式跑成回测行。
@@ -214,17 +213,8 @@ last_verified: 2026-10-24
 - **目的**：这一波的候选下一步去哪——提交链 / 改进 / 判死。
 - **前置**：步 6 完成定义满足；prod-first（步 5b）已跑；已读本组合分支文件的 S4 段（组合杠杆、不要用的杠杆——Mode B 的 B3 先取它们）。
 - **调用**：`s4-prescreen`（全灭直接判死）→ `workflow_campaign(stage="S4", dataset=$DS, wave=$W)`（评审；解析不到 alpha_id 即 FAIL，用其列出的字符串波号重试）→ **对 `failed_ra_count` 只剩 1–2 闸的候选插「闸失败归因」**（`tools/gate_attribution.py --alpha-id <id> --correlation`，零仿真；细则见 [`references/gate-attribution.md`](references/gate-attribution.md)）→ 逐候选链（selfcorr-quick → `check_self_correlation` → `compute_mutual_correlation` → `check_correlation` → `brain-alpha-robustness` → judge）。
-- **★ 闸失败归因（只差一两闸时必做，先归因再推闸）**：`failed_ra_count ∈ {1,2}` 的候选**不得直接开始刷参数**。先跑 `tools/gate_attribution.py` 拿 `verdict` + 逐闸 `levers` + `stop_rule`：
-
-  | 退出码                                                                                                                                                                                                                                                                                                                                                                                           | verdict                   | 本步动作                                                                                                                                                                                        |
-  | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | 0                                                                                                                                                                                                                                                                                                                                                                                                | `READY`                   | RA + prod + self 全过 ⇒**停手**，不得再做结构性改动（会重掷骰子，prod 余量可低至 0.0009）；提交权归用户                                                                                        |
-  | 0                                                                                                                                                                                                                                                                                                                                                                                                | `PUSH_TARGETED`           | 按`diagnoses[].levers` 的 rank 逐条推，**每条只动一个变量**（改完回本步重跑归因，不重发盲扫批）。⚠ **若相关性未实测，此裁决不等于可推**——先跑 `check_correlation` + `check_self_correlation` |
-  | 0                                                                                                                                                                                                                                                                                                                                                                                                | `PUSH_CORRELATION_CORNER` | **RA 全过、仅相关性差 ≤0.01**（刀锋区）⇒ 不改结构，在 `(门控窗口 × winsorize std)` 二维找角点（KOR 实测 gate6×std0.22 命中 prod 0.6991 / S 1.60）                                           |
-  | 3                                                                                                                                                                                                                                                                                                                                                                                                | `SWITCH_AXIS`             | 本腿到机制层天花板 ⇒ 换字段/数据集，**不得**再在本腿发批                                                                                                                                       |
-  | 4                                                                                                                                                                                                                                                                                                                                                                                                | `BLOCKED_BY_CORRELATION`  | prod 余量 < 0.01 ⇒ 任何抬 S 杠杆都先验撞线；先找 prod 中性杠杆，否则所有仿真白跑                                                                                                               |
-  | 5                                                                                                                                                                                                                                                                                                                                                                                                | 两闸以上                  | 不属本机制，回常规多轮诊断 /`s4-prescreen`                                                                                                                                                      |
-  | 两条**零成本前置判据**（归因报告自带，别重算）：① **F 闸 `F = S×√(returns/max(TO,0.125))`** ⇒ `to_target = returns×(S/F_target)²`；`to_target ≤ 0.125` 说明**减速路线数学上不可达**，别再刷 `decay`/`backfill`/`hump`。② **prod 余量先测再决定推不推 S**（抬 S 的杠杆多半同时抬 prod）。**收敛即天花板**：同一闸在 ≥3 个互不相关杠杆上收敛到同一档 ⇒ 停手换轴（细则 §8 停手线四条）。 |                           |                                                                                                                                                                                                 |
+- **★ 闸失败归因（只差一两闸时必做）**：`failed_ra_count ∈ {1,2}` 的候选**不得直接开始刷参数**——先跑 `tools/gate_attribution.py` 拿 `verdict` + 逐闸 `levers` + `stop_rule`，再按裁决逐条推。
+  裁判表（码 0/3/4/5 × `READY` / `PUSH_TARGETED` / `PUSH_CORRELATION_CORNER` / `SWITCH_AXIS` / `BLOCKED_BY_CORRELATION` / 两闸以上）、两条零成本前置判据（F 闸闭式 `to_target = returns×(S/F_target)²`：`to_target ≤ 0.125` ⇒ 减速数学上不可达，别再刷 `decay`/`backfill`/`hump`；prod 余量先测再决定推不推 S）、停手线四条见 [`gate-attribution.md`](references/gate-attribution.md) §7 / §8。
 - **产物**：ledger `s4_walls_<region>_<wave>`、`salvage_pool`；`wave_results.key_findings` 固定四列——① 强度上限（max|S| + 正负向极值 + 2Y；反向臂同样是候选）/ ② 机制方向与证伪条件（缺登记显式「未登记」，回测后必须补）/ ③ prod 读数（「未测」是显式结论，不等于低相关）/ ④ 闸缺口按 (门槛−实测)/|门槛| 排序（不是 FAIL 行数）+ TO 越界标注（`[0.03, 0.70]`，只标注不删行；越界行不进 prod/self 队列）。下波设计先读这四列，别只看 GREEN/RED。每条候选有去向。
 - **完成定义**：本波每条候选都有去向——进步 8 / 留 near / salvage（带墙名）/ 判死（进步 9）。
 - **失败分支**：卡闸 → `get_salvage_pool(boost_dim=…)` 找辅助腿；Mode B 2–3 轮仍卡墙 → 找武器（`forum_recon` 触发表 #4，每波 ≤ 1 次）；同一想法 > 10 种结构仍不过 → 步 9 记 `dead_end`；**判「无解 / 天花板」或记 `dead_end` 之前，IS 强但被某闸卡住的族必须先扫等价算子替换**（`signed_power`→`quantile`、`ts_scale`→`quantile` / `normalize` 等：换数值路径、一次动多个闸，几何调整一次只动一个；决策表 D15 前置、步 9 细则 §9.5 1b），prod 墙先做 D0-P 的诊断前置。
@@ -235,7 +225,8 @@ last_verified: 2026-10-24
 
 - **目的**：决定哪些候选值得请用户确认提交。**本步不执行提交。**
 - **前置**：步 7 的候选已过稳健性（[`brain-alpha-robustness`](../brain-alpha-robustness/SKILL.md)，S4→S5 必经；结论写台账 `robustness_<alpha_id>`，`submit_verdict` 读取——`REJECT` → `BLOCKED`，无记录只提示）。
-- **调用**（有序检查清单，任一步说「不」就停）：① **资格门** `Failed RA == 0`（`compute_webdata_failed_counts`；名单内仍有 `PENDING` 时 `Failed=0` 只表示「暂无失败」，待其算完再判）② `submit_verdict`（**否决权威**，退出码 `1` BLOCKED / `10` UNVERIFIABLE / `11` ALREADY_SUBMITTED）③ prod 实测 `check_correlation(alpha_id, refresh=True)` < 0.7 ④ **用户明确确认** ⑤ 才可 `workflow_submit_alpha(confirm_submit=True)`（**不可逆**，单独调用；台账无 `robustness_<alpha_id>` 记录时须同时传 `robustness_audited=True`，缺省 False 即 fail-closed；执行与四态响应处置见 [`worldquant-submit-alpha`](../worldquant-submit-alpha/SKILL.md)，SUPER 走 `wq-brain-superalpha`，PPA 走 web UI 交接）。
+- **⛔ 候选批次互测前置（2026-10-29）**：花 prod 槽前先跑 `compute_mutual_correlation`（纯本地、零仿真），只留 `max_mutually_below_subset`（两两 <0.70 的最大子集），不在其中的直接弃；根因是 `check_correlation(type=self)` 比的是「已提交池」而非同批候选（EUR 实测 5 颗 self 各 0.51 而彼此 0.948–0.970）。新席位只有**换科目 / 换读数 / 换模型 / 换数据集**四个来源。
+- **调用**（有序检查清单，任一步说「不」就停）：① **资格门** `Failed RA == 0`（`compute_webdata_failed_counts`；名单内仍有 `PENDING` 时 `Failed=0` 只表示「暂无失败」，待其算完再判）② **可投资性闸 `invest_S / S ≥ 0.70`**（2026-10-29 新增，第 2 号：唯一直接入口是 `batch_get_alpha_metrics` 的 `investability_ratio`；**S 越高越要查**——实测 `0mjaa2Ev` S 3.24 / F 2.60 / 2Y 4.30 / prod 0.646 却 invest 比 **0.0895**，IS 面全是不可投资权重，属伪最优）③ `submit_verdict`（**否决权威**，退出码 `1` BLOCKED / `10` UNVERIFIABLE / `11` ALREADY_SUBMITTED）④ prod **三段式取数**（见步 5b-3）：`check_correlation(alpha_id)` 缺省 `refresh=False` 读 48h 权威缓存 → 未命中才回源、一批只一颗；值必须 `< 0.70`（**严格不等，无任何豁免入口**，`allow_prod_above_07` 已按用户判定移除）⑤ **用户明确确认** ⑥ 才可 `workflow_submit_alpha(confirm_submit=True)`（**不可逆**，单独调用；台账无 `robustness_<alpha_id>` 记录时须同时传 `robustness_audited=True`，缺省 False 即 fail-closed；执行与四态响应处置见 [`worldquant-submit-alpha`](../worldquant-submit-alpha/SKILL.md)，SUPER 走 `wq-brain-superalpha`，PPA 走 web UI 交接）。
 - **产物**：候选清单 + 每条的证据（资格门 / verdict 退出码 / prod 值）交用户；阈值与 Mode B 主闸以 `explain` 的生效值为准（已按下限钳制）。
 - **完成定义**：清单已交用户；**用户确认后**提交，`get_alpha_details` → `status == ACTIVE` 且 `dateSubmitted` 非空。
 - **失败分支**：PROD / SELF 不过 → 回步 7；配额耗尽（按 **ET 日历日**）→ 挂起提交，继续步 2 → 9。
@@ -292,5 +283,8 @@ last_verified: 2026-10-24
 - **`--skip-semantic-gate` 无留痕**：整波退化为货币 / 汇率叉乘（KOR fundamental17 首波 49.4%）→ 先跑 classify；确需跳过写 `semantic` waiver。
 - **双写已废止的 `s6_verdict_<wave>`**：结论分叉、停止规则 B 失灵 → 只写 `wave_results.verdict`。
 - **把 LLM 402 下的干跑绿当可运行**：GEM 报「no meta.json」→ 先查 LLM 通道。
+- **一批候选直接排队抢 prod，不做本地互测**（2026-10-29 EUR）：5 颗 self 全报 0.51 的候选彼此 0.948–0.970，只有 1 颗能交 → 先 `compute_mutual_correlation` 取 `max_mutually_below_subset`，再花 prod 槽。
+- **按数据集名推断语义就去判死一个类别**（2026-10-29 EUR）：news 类成功样本用的是**新闻条数=关注度**，而按名字去测情绪极性分 77 条全 S<0.6 → 判死类别前先 `get_alpha_details` 读该类别 ACTIVE alpha 的 `regular.code`，用它的信号类型作起点。
+- **派同一信号的等价写法**（`ts_delta(x,n)` ≡ `subtract(x,ts_delay(x,n))`；`(up−down)/(up+down)` ≡ `up/(up+down)`；`rank(r)−rank(l)` ≡ `(r−l)/(r+l)`）：实测逐位相同，白烧仿真 → 派批前先做代数等价检查。
 - `submit_verdict` 通过后自动 `workflow_submit_alpha`；调用已废弃的 `glb_pipeline` / `gbr_pipeline` / `glb_alpha_machine`；把 `brain-feature-implementation` 当主链入口（它在 GEM 内部）；手写 PowerShell 替代 MCP 调用；手写 requests；跳过步 9；`combination(alpha(...))`。
 - 更多事故与起因：[`references/incidents.md`](references/incidents.md)。

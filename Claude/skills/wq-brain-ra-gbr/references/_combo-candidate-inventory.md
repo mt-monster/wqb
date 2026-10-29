@@ -142,9 +142,27 @@
 ### B 类 · 机制白但字段不可信号（不值得投探针）
 
 `news3` / `news29` / `news51` / `news76` / `news23` / `socialmedia39`（字段是 ticker ID 不是数值）
-/ `news21` / `news52` / `news54` / `news31` / `news73` / `news7` / `news17` / `news50` / `socialmedia12` / `socialmedia5`(0 字段)
+/ `news21` / `news52` / `news54` / `news31` / `news73` / `news7` / `news17` / **`news50`** / `socialmedia12` / `socialmedia5`(0 字段)
 
 ⇒ **全部因规律一被跳。**
+
+> ### ★★ 2026-10-28 修正：`news50` 从 B 类升级为「活矿」（实测推翻）
+>
+> 本文件 2026-10-14 把 `news50` 列入 B 类（字段不可信号）。**2026-10-28 实测推翻**：
+> `news50` 的 36 个信号字段里，**`mws50_vea`（Aggregate Event Volume，91 日事件量）是 GBR 未点亮塔唯一存活的横截面信号**：
+>
+> ```
+> reverse(group_neutralize(ts_decay_linear(ts_zscore(ts_backfill(vec_avg(mws50_vea), 5), 252), 22), subindustry))
+> → S 1.26 / F 0.80 / 2Y 1.79 / SUB 0.89 / TO 0.088（NEWS 塔 0/3，未点亮；全 ATOM 单数据集）
+> ```
+>
+> ⇒ **规律一（情绪/关注度类不可信号）需要加限定：判据不是「数据集名属情绪类」，而是「有没有一个字段是归一化的连续量」。**
+> `news50` 的 `mws50_vea` 是 91 日窗口的事件量计数（归一化连续量）⇒ 符合；`mws51_bbgnews_frequency_length`（文章长度）是元数据 ⇒ 不符合。
+>
+> **⇒ 本区「未点亮塔 + 全 ATOM + 天然 TO < 0.30 + 字段语义可信号 + 十年全覆盖」的集合**，
+> 2026-10-28 复核后**至少含 `news50` 一条**（此前结论「已耗尽」需相应放宽）。
+> **仍缺的是「S 过 1.58 REGULAR 硬闸」**：`mws50_vea` 族在 >40 个结构上 S 收敛到 1.24-1.26 ⇒ 参数与字段维度双双穷尽，
+> 要过闸必须换机制或换数据集。
 
 ### C 类 · 明确出局
 

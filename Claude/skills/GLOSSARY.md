@@ -23,7 +23,7 @@
 | **meets_internal_line** | Sharpe>1.58 且 Fitness>1.0（停止规则 A 的「达标」） | 裸写「达标」 | `config.GATES_PLATFORM` |
 | **ra_clean** | `is.checks` 里 RA 18 项没有任何非 PASS/PENDING（Failed RA = 0） | 裸写「达标」「零硬闸失败」 | `config.compute_webdata_failed_counts` |
 | **review_passed** | 评审闸全过，波结论 `PASS` | 「GREEN 波」 | `wave_results.verdict` |
-| **ATOM alpha** | 只用**单一数据集**字段的 alpha（允许的分组字段除外），享受放宽的提交口径（以近 2 年 Sharpe 为准） | 把「ATOM 提交口径」与 judge 的 `SINGLE_DATA_SET` 标签当两件事 | brain-how-to-pass-alpha-test `reference.md`；放宽的具体阈值**只引用官方表**，不在别处写数字 |
+| **ATOM alpha** | 只用**单一数据集**字段的 alpha（允许的分组字段除外），享受放宽的提交口径（以近 2 年 Sharpe 为准）。**★ 放宽的确切边界（官方 Single Dataset Alphas 页 + Consultant Submission Tests 页）**：① 判据 = 非豁免字段的 dataset id 唯一 + 无 `inst_pnl()` / `convert()`（这两个算子按 pv1 计）；② **只豁免 IS Ladder Sharpe Test**（改用 Last-2Y Avg IS Sharpe 判，官方表见平台文档；TO<30% 时该 PASS 阈值 ×0.85）；③ **`LOW_SHARPE`（全期）与 `LOW_FITNESS` 仍在 RA 名单内、不豁免**，平台会把它们从 fail 降级为 warning，但资格门仍按 WARNING 计失败 ⇒ **ATOM 候选仍须全期 S 与 F 过常规线**；④ IS Testing Status 会显示「2 year Sharpe of X is below cutoff of Y」代替 ladder 的 Pass/Fail。**⇒ ATOM 省掉的是 ladder 那一步，不是「全期 S 1.58」** | 把「ATOM 提交口径」与 judge 的 `SINGLE_DATA_SET` 标签当两件事；把 ATOM 当成「只要 2Y 过就行」 | brain-how-to-pass-alpha-test `reference.md`；放宽的具体阈值**只引用官方表**，不在别处写数字 |
 | **FAIL / PENDING / WARNING** | `FAIL` 挡；`PENDING` = 结果未出，**不据此判死也不据此放行**；`WARNING` 见 §2.4 | 一个词三种范围 | §2.4 |
 | **判死（按粒度）** | 候选=淘汰；字段搭配=禁配；**家族=`dead_end`（范围 = region × 信号族名）**；数据集=`<ds>_dead` 台账键；波=`FAIL` | 「判死」不带粒度 | registry / ledger-keys |
 | **否决权威 / 放行权威** | 否决权威**只能拦不能放**（`submit_verdict`、Failed-count 门、prod 实测）；放行权威 = **用户明确确认 + `confirm_submit=True` 的 POST**（不可逆） | 「唯一权威」 | submit-chain.md §1 |

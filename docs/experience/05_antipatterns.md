@@ -179,3 +179,11 @@
 | **新闻语气 / 极性方向**（`news_transformer_scores`） | 波 88/89 全灭（max \|S\| 0.50）：两种极性强度都预测负收益 ⇒ 该族机制是**关注度/热度**，不是语气方向 |
 | **D1 上 1-bar 期限的预测字段**（`chart_return_model` `_t100`） | S 1.22 / F 0.37 / 2Y **−0.01** / TO 57%：预测在最早可交易时点前已衰减，只剩高换手 + 近零 2Y |
 | **「冷门数据集 + 经典异象」= 低相关** | `risk60` prod 0.9917；`pv106` maxS 0.00（字段是空列）⇒ 冷门不提供相关性优势 |
+| **USA NEWS 塔的 RavenPack 情绪/新颖度/影响度评分**（2026-10-28） | 4 条 ATOM 全灭：`mws46_ravenpack_mean_ess` S0.51、`mws46_ravenpack_mean_nip` S−0.90、`mws46_mean_ens` S−0.57（另 `snt22_*` 情绪族 ≤0.41）⇒ **NEWS 塔不能再走"情绪型评分"**，改走 `event_return_model` 的**直接收益预测**字段（`prob_rank_bin1_{5,10,20}d_img_news`，连续回归输出） |
+| **USA INSTITUTIONS 塔的 `inst6_*` 持股计数族**（2026-10-28） | 4 条 ATOM 全灭（买家/持有家数比 −0.31、家数 66 日变化 0.07、买入股数占比 −0.72）⇒ 与「`institutions6` alphaCount 高但零产出」的历史一致；改走 `institutions18`（历史 bestS 1.82） |
+| **USA FUNDAMENTAL 的 `fnd93_accrualsratio_d1_asset_change`**（2026-10-28） | S−0.53 且另卡 `CONCENTRATED_WEIGHT` ⇒ 与「FUNDAMENTAL 未进 USA bestS 前 20」一致，USA 基本面路线暂无产出 |
+| **全 VECTOR 数据集的 ATOM 形态**（2026-10-28 USA） | `fundamental110`(26 字段) / `fund_holdings_panel`(30) / `news29`(12) / `shortinterest3`(MATRIX 查询返 0 条) 全为 VECTOR ⇒ **单字段 ATOM 不可行**，不要为它们排波（改走 `vec_*` 聚合的复合形态或直接放弃） |
+| **country 级宏观指标做横截面 alpha**（`macro4`） | 国家级指标映射到全美股票 ⇒ **横截面零离散**，结构上不可能出 alpha。判据：字段的取值粒度 ≥ universe 粒度即无效 |
+| **用数据集名推断塔位**（2026-10-28） | `other416/452/466/551/553` 名字带 other，平台 category 实为 fundamental / macro / sentiment ⇒ 塔位一律以 `ra.pyramid_short` 为准（详见 `04_engineering.md` 的塔位判定条） |
+| **`get_datasets` 的 description 当语义依据**（2026-10-28） | 实测 description 与数据集内容**错位**（同一段描述挂在多个集上）⇒ 字段语义只能读 `get_datafields` 的字段名与字段级 description |
+| **数据集级"整个 category 无望"的结论**（2026-10-28） | 同轮里 RISK 塔 `risk65` 一次过 2Y+sub 两墙，而 INSTITUTIONS `inst6_*` 全灭 ⇒ **category 级判死不可靠，必须下探到数据集 × 字段 × 期限** |

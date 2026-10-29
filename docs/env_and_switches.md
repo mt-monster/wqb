@@ -77,7 +77,7 @@
 | `WQB_CAMPAIGN_STATE_DIR` | — | 战役断点 / 结果 / digest 目录覆盖（缺省 `<仓库根>/results`；ind/usa runner 与 `wq_campaign.config` 同一口径，区域隔离靠文件名的 `_<REGION>` 后缀而非目录） | `wq-brain-ra-ind/scripts/ind_campaign/ind_runner.py` · `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/config.py` · +2 | — |
 | `WQB_DB` | — | `tools/full_coverage_gate.py` 的库路径覆盖（缺省 `<仓库根>/data/wqb.db`；与 `WQB_DB_PATH` 是两个独立读取点，后者管 `wqb.db_conn`） | `tools/full_coverage_gate.py` | — |
 | `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` · +7 | — |
-| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +51 | — |
+| `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +52 | — |
 | `WQB_GEM_DATA_ROOT` | — | GEM 产物根（缺省 `data/gem_runs`；`final_expressions.json` 与 `output_report/` 都在其下） | `brain-feature-implementation/scripts/fetch_dataset.py` · `brain-feature-implementation/scripts/implement_idea.py` · +9 | — |
 | `WQB_JUDGE_DATA_ROOT` | — | `brain-alpha-judge` 评审报告根：单测 / 部署显式注入，缺省落 `output_report/brain-alpha-judge/`，脱离仓库时退 `SKILL_DIR/outputs/` | `brain-alpha-judge/scripts/judge_alpha.py` | — |
 | `WQB_OUT_DIR` | — | `tools/vwap_histogram.py` 输出根覆盖（缺省 `<仓库根>/output_report`） | `tools/vwap_histogram.py` | — |

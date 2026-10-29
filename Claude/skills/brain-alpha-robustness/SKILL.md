@@ -117,6 +117,17 @@ mcp__wqb-db__upsert_ledger_key(region=<alpha 的区域>, key="robustness_<alpha_
    报告确实没写出来时，宁可把 `report_path` 留空并写 `report_status: "MISSING"` + `report_note`（人读的说明），不要留一个指向不存在文件的路径。
 3. PASS 带 CONDITIONAL 软标记：把存活的软标记写进台账 `soft_flags`，并在用户确认提交前的三段式 description 里如实带上一行（`worldquant-submit-alpha` 设属性时），用户一年后复盘 OS 表现时有可读审计痕迹。
 4. 旧版还要求发 `alpha.robustness_audit` 事件（`wqb.memory.events.emit`）、REJECT 时调 `wqb.search.failure_memory.record(...)`（需要写 Python，且要私有函数 `validator._shape_signature`）。**这两条已移出必做项**：两个模块全仓库**没有任何消费方**（只写 `data/events/*.jsonl` 与 `tracking/mining/failure_memory.jsonl`，后者按需生成、**当前不存在**），DB 单轨里没有落点；需要时的入口在 `src/wqb/memory/events.py` / `src/wqb/search/failure_memory.py`。
+5. ★ **本地审计 JSON 台账要按主键 merge 写入，且失败结果不许写入**（2026-10-28 GLB 事故）：审计脚本若整表覆盖写
+   （`write_text(json.dumps(results))`），一次平台 429 让全部候选返回 `{"_error": "no yearly records"}`，
+   脚本照写不误 ⇒ **把已有的有效审计记录冲成错误记录，且失败被静默**（只有返回码 0）。
+   正确做法：① 按 `alpha_id` **merge**（增量审计不冲掉别的候选）；② **带 `_error` 的结果不写入**，宁可台账缺一条，
+   也不把有效记录换成错误记录；③ 写盘前自检每条的 `overall` / `n_years` 非空。
+   排查口诀：**台账里出现 `_error` 或 `n_years=0` ⇒ 先看写入路径有没有把失败当成功**。
+6. ★ **「近十年都有数据」用 `get_alpha_yearly_stats` 逐年验，不信平台 `coverage`**：平台 `coverage=0` 可能是
+   **meta 造假**（实测：earnings6 / news48 / option1 / analyst45 / macro27 的 meta 都写 0，但字段真实存在、可回测），
+   也可能是真空集；两种情况 `coverage` 长得一样，只能靠逐年记录判别。
+   判法：逐年看 `longCount`/`shortCount` 是否 > 0，并确认覆盖「近 10 个完整自然年」。
+   反例：某 earnings6 数据集 meta `coverage=0`，但逐年读数显示 2014–2018 五年 `longCount=0`、`pnl=0`，数据实际自 2019-12 起 ⇒ **不满足近十年**。
 
 ### Phase E — PPA 提交规则
 

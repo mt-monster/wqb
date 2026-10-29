@@ -1,5 +1,5 @@
 {
- "_doc": "skill frontmatter allowed-tools 能力基线（棘轮）：任何 skill 新增工具必须先改本文件并写明理由（供人审查）。hooks 白名单见测试 ALLOWED_HOOK_SKILLS。2026-09-29 建立。 变更记录（整改执行者评审，**待用户复核**）：① 2026-09-29 brain-alpha-robustness +mcp__wqb-db__*（稳健性结论写台账 robustness_<alpha_id> 需要 upsert_ledger_key；只写该键，读取方 submit_verdict；wqb-db 是本地库，无外发面，RA 等 skill 同样持有）。② 2026-09-29 wq-backtest-monitor +5 个**只读** wqb-db 工具（get_wave_result / list_wave_results / get_latest_wave / get_ledger_key / list_alphas_by_wave）：复盘要读 checkpoint（ledger ckpt_w<wave>）与 wave_results 核验 verdict；不含任何 upsert_*，回写仍走 RA 步 9 的调用链。 ③ 2026-09-29 wq-brain-campaign-matrix +4 个**只读** wqb-db 工具（get_region_config / get_dead_ends / get_campaigns / get_cross_region_lessons）、wq-brain-campaign-toolkit +6 个**只读** wqb-db 工具（get_wave_result / list_wave_results / get_latest_wave / get_ledger_key / list_ledger_keys / get_submit_ready）：两份正文都规定「读走 mcp__wqb-db__*」而 allowed-tools 里没有它们（审查 CM-01 / TK-01：正文与工具清单不一致）；不含任何 upsert_* / seal_*，写入仍走各自文档里的 CLI（Bash）或 RA 步 9 的调用链。 ⑨ 2026-10-04 新增 14 个区域分支 skill（wq-brain-ra-<区>，layer L-RA-R）：工具与 wq-brain-ra-pipeline 同源减去 Write（只读画像、改控制走 cells.json + 渲染命令），待用户复核。 ⑩ 2026-10-15 **撤回**：曾新增 wq-brain-gatebreak-kor，但用户裁定改由 KOR 区域 skill（wq-brain-ra-kor，profiles 生成物）承载该工作流 ⇒ 该 skill 已删除，不再登记。KOR 的 frontmatter（layer L4 / agent_created / allowed-tools）由 render.py 的 KOR 特化分支生成。",
+ "_doc": "skill frontmatter allowed-tools 能力基线（棘轮）：任何 skill 新增工具必须先改本文件并写明理由（供人审查）。hooks 白名单见测试 ALLOWED_HOOK_SKILLS。2026-09-29 建立。 变更记录（整改执行者评审，**待用户复核**）：① 2026-09-29 brain-alpha-robustness +mcp__wqb-db__*（稳健性结论写台账 robustness_<alpha_id> 需要 upsert_ledger_key；只写该键，读取方 submit_verdict；wqb-db 是本地库，无外发面，RA 等 skill 同样持有）。② 2026-09-29 wq-backtest-monitor +5 个**只读** wqb-db 工具（get_wave_result / list_wave_results / get_latest_wave / get_ledger_key / list_alphas_by_wave）：复盘要读 checkpoint（ledger ckpt_w<wave>）与 wave_results 核验 verdict；不含任何 upsert_*，回写仍走 RA 步 9 的调用链。 ③ 2026-09-29 wq-brain-campaign-matrix +4 个**只读** wqb-db 工具（get_region_config / get_dead_ends / get_campaigns / get_cross_region_lessons）、wq-brain-campaign-toolkit +6 个**只读** wqb-db 工具（get_wave_result / list_wave_results / get_latest_wave / get_ledger_key / list_ledger_keys / get_submit_ready）：两份正文都规定「读走 mcp__wqb-db__*」而 allowed-tools 里没有它们（审查 CM-01 / TK-01：正文与工具清单不一致）；不含任何 upsert_* / seal_*，写入仍走各自文档里的 CLI（Bash）或 RA 步 9 的调用链。 ⑨ 2026-10-04 新增 14 个区域分支 skill（wq-brain-ra-<区>，layer L-RA-R）：工具与 wq-brain-ra-pipeline 同源减去 Write（只读画像、改控制走 cells.json + 渲染命令），待用户复核。 ⑩ 2026-10-15 **撤回**：曾新增 wq-brain-gatebreak-kor，但用户裁定改由 KOR 区域 skill（wq-brain-ra-kor，profiles 生成物）承载该工作流 ⇒ 该 skill 已删除，不再登记。KOR 的 frontmatter（layer L4 / agent_created / allowed-tools）由 render.py 的 KOR 特化分支生成。 ⑪ 2026-10-29 **收养 6 个只存在于安装位的 skill 进仓库**（wq-alpha-gate-push-op-min / wq-prod-corr-read / wq-prod-lever-self-lock-guard / wq-wave-preflight-dispatch / wq-window-valley-break-prod-wall / wqb-test-failure-triage）。登记口径：前两个自带 allowed-tools，按原文照录（未新增任何工具）；后四个无 allowed-tools 段 ⇒ 登记为空列表（空 = 继承宿主默认权限）。收养理由：它们此前只在 ~/.claude/skills 存在，既无法走「改仓库副本再 sync_skills」纪律，也过不了本仓契约测试（frontmatter / 职责边界 / description ≤300）。 ⑫ 2026-10-29 同⑪收养波**补登 wq-operator-playbook-by-gate**（第 7 个）：无 allowed-tools 段 ⇒ 登记为空列表（空 = 继承宿主默认权限）；frontmatter 已补 layer L4 / last_verified 2026-10-29 与职责边界段后过契约测试，幻影链接 references/gate-breaking-recipe.md（目录从未存在）改写为指向正文 §R–§4 自包含说明。",
  "allowed_tools": {
   "alpha-expression-verifier": [
    "Bash"
@@ -133,6 +133,17 @@
    "Bash",
    "Read",
    "mcp__wq-brain-http__*"
+  ],
+  "wq-alpha-gate-push-op-min": [
+   "Bash",
+   "Edit",
+   "Read",
+   "Write",
+   "mcp__wq-brain-http__check_correlation",
+   "mcp__wq-brain-http__check_self_correlation",
+   "mcp__wq-brain-http__get_alpha_details",
+   "mcp__wq-brain-http__preflight_expressions",
+   "mcp__wq-brain-http__submit_batch"
   ],
   "wq-backtest-monitor": [
    "Bash",
@@ -275,10 +286,22 @@
    "Write",
    "mcp__wq-brain-http__*"
   ],
+  "wq-operator-playbook-by-gate": [],
+  "wq-prod-corr-read": [],
+  "wq-prod-lever-self-lock-guard": [],
+  "wq-wave-preflight-dispatch": [],
+  "wq-window-valley-break-prod-wall": [],
   "wqb-concurrency": [
    "Bash",
    "Read",
    "mcp__wq-brain-http__*"
+  ],
+  "wqb-test-failure-triage": [
+   "Bash",
+   "Edit",
+   "Glob",
+   "Grep",
+   "Read"
   ]
  }
 }

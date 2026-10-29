@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-24
+last_verified: 2026-10-27
 ---
 
 # USA 区域挖掘流程（RA 区域分支）
@@ -95,6 +95,16 @@ last_verified: 2026-10-24
 - 宇宙是单一国家（config.REGION_COUNTRY_SCOPE）：country 轴中性化 / 分组等于全市场，别用
 <!-- profiles:region-panel:end -->
 
+### ★ 可投资性闸 `invest_S / S ≥ 0.70`（2026-10-29 用户定案，本区独有）
+
+**USA 的 alpha 必须查 `investability_sharpe`**：平台虽不把 `LOW_INVESTABILITY_CONSTRAINED_SHARPE` 下放进提交层（IND 实测不下发），但 IS 面 Sharpe 再高也可能是**不可投资权重**堆出来的。判据：
+
+- **`invest_S / S ≥ 0.70`**，排在 `Failed RA == 0` 之后、`submit_verdict` 之前（第 2 号），**在 Sharpe / fitness 排序之前**用它筛。
+- 唯一直接入口是 `batch_get_alpha_metrics` 的 **`investability_ratio`**（= invest_S / S），本地库无此列。
+- **S 越高越要查**：S 3+ 的候选常见 invest 比 0.09–0.30 —— 那是「只在不可交易标的上成立」的形状，不是强候选。
+- 当前阈值 **0.70 只在 USA 标定**（单区单会话样本），跨区使用前需重新标定，不要照搬。
+- 实证：`0mjaa2Ev` S 3.24 / F 2.60 / 2Y 4.30 / prod 0.646 但 invest 比 **0.0895**（`total_*_transaction_count` 族）⇒ 不可提交；RISK 篮三颗 invest 比 0.93–1.01 ⇒ 全过。
+
 ## 组合分支（区域 × 类别）
 
 <!-- profiles:cells-index:start -->
@@ -145,12 +155,25 @@ last_verified: 2026-10-24
 - 三表分工与**本区覆盖落差（cells 零覆盖 ⇒ explain 与实测不一致）** → [config/README.md](config/README.md)；
   纪律细则 → [rules/six-step-usa-override.md](rules/six-step-usa-override.md)「改控制纪律」。
 - 锁定项（任何层都不能放宽）：禁混信号、Mode B 主闸下限、决策表 D0-P、平台线、窗口白名单、点塔按平台类别、
-  提交前用户确认、truncation 不作扫描维度——全文见 `$WQ_PY -m wqb.profiles explain` 末尾。
+  提交前用户确认、truncation 不作扫描维度、**可投资性闸 `invest_S/S ≥ 0.70`**、**两塔组合配额 ≤ 3（超配封盘）**、
+  **点亮口径 = 同塔本季度累计 3 颗且三对互相关 < 0.5**——全文见 `$WQ_PY -m wqb.profiles explain` 末尾
+  （机器可读来源 `src/wqb/profiles/locked.py`：`tower_pair_quota` / `investability_ratio_min`）。
 - 证据与历史：[USA profile](../wq-brain-ra-pipeline/references/regions/USA.md)（入场裁决、红绿榜、证据附录）。
 ## ★ 未点亮塔实证速查（指针）
 
 2026-10-14 起 16 波 / 64 条的未点亮塔横跨 6 数据集实证（字段画像 / 纪律表 / 判死清单 / 最优候选 `N1ewm5Jw`）
 已全部下沉 → **[references/_unlit-tower-campaign-20261014.md](references/_unlit-tower-campaign-20261014.md)**。
+
+**RISK 塔定案配方（2026-10-28/29，3/3 凑齐）**：完整证据见 [`docs/experience/02_signal_patterns.md`](docs/experience/02_signal_patterns.md) 结论 38 与 [`docs/experience/03_region_dataset.md`](docs/experience/03_region_dataset.md) §9.6。要点——
+
+1. **供给**：`risk70` 真因子字段约 20 个（`financial_leverage_factor` / `systematic_risk_beta_factor` / `residual_volatility_factor` / `market_capitalization_factor` / `price_momentum_factor_score` / `trading_liquidity_factor` / `earnings_yield_factor` …）；110+ 个行业/板块暴露 score **只能当分组原料，不能当信号腿**。`risk62` / `risk70` 整集、`risk59` / `risk60` 证券借贷族、`rsk65 dsrt` 族、`ml_factor_proj`、特异性收益族**已判死**。
+2. **三个正交经济概念才能点亮 3 颗**（同族变体互相关 0.927–0.973，只出得起 1 颗）。
+3. **正解形态 = 慢速 hump + 三重风险 bucket**：
+   `hump(group_neutralize(group_neutralize(group_neutralize(group_rank(ts_zscore(ts_backfill(vec_avg(<信号>),126),504), subindustry), bucket(rank(market_capitalization_factor), range="0,1,0.1")), bucket(rank(trading_liquidity_factor), range="0,1,0.1")), bucket(rank(price_momentum_factor_score), range="0,1,0.1")), hump=0.0001)`，
+   **CROWDING 中性化 + decay 5** —— 三层分组分别对应 tvr / 2Y / invest 三闸。
+4. **锚字段选择 > bucket 粒度**：`financial_leverage_factor`(aC 10) / `systematic_risk_beta_factor`(3) 能把 2Y 抬到 2.13–2.24，`residual_volatility_factor`(14) 只保基线 1.52。
+5. **族内取哪一颗按 `sub_universe_sharpe` 排，不按 fitness 排**（fitness 高的那颗 sub 常常更差）。
+6. **挂靠只允许外挂**：目标塔字段放进 `group_neutralize` 的分组轴（`bucket(rank(...))`）即可登记该塔，**不要用零权重乘法**（`add(signal, multiply(rank(f),0))` 会被判套利规则）；想只登记单塔，就得确认表达式里没有别的数据集字段（内置 `returns` / `close` 会顺带把 PV 塔登记上）。
 
 **逐字段档案**（挖过的每个字段族的类型/覆盖/αC/机制/读数/判死）→
 **[references/_usa-field-profile-playbook-20261018.md](references/_usa-field-profile-playbook-20261018.md)**

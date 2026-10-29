@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-20
+last_verified: 2026-10-27
 ---
 
 # EUR 区域挖掘流程（RA 区域分支）
@@ -125,7 +125,10 @@ last_verified: 2026-10-20
 ### ① 六法体检 · 本区覆盖
 
 - **回测设置以 `settings.json` 为准**：`TOPCS1600` / `SUBINDUSTRY` / `decay 4` / `maxTrade ON` / `nanHandling ON`。
-  ⚠ 历史台账里还有 `TOP2500` / `COUNTRY` / `decay 6` 的记录，**别混用**（换档否证：TOP2500 2.19 → TO…）。
+  ⚠ 这是**区域缺省**，不是全部。`analyst7` 修正族与 `techindi_model` 都必须 **TOP2500 / FAST / decay 40**（详见下方 S3 例外与 ④）。
+- **universe 不是禁区，是 prod–S 前沿上的平移旋钮**（2026-10-29 修订）：同一公式 TOPCS1600 → TOP2500 实测
+  S 1.99→**2.57**、sub 1.37→**1.80**、2Y 2.06→2.34（并把两条 rob FAIL 修成 0 fail），但 prod 也从 0.7454 抬到 0.7794（**+0.034**）
+  ⇒ **换 universe = 决定把余量花在哪个闸上**。S/sub 不足时可换，prod 已贴闸时不要换。
 - **待实测**：离线体检包退化范围、不可用算子。
 
 ### ② 组装 · 本区覆盖
@@ -141,9 +144,51 @@ last_verified: 2026-10-20
 
 ### ④ 破闸杠杆 · 本区覆盖
 
-- **未点亮塔路径数学上封闭**：`Fitness 上限 ≈ Sharpe × sqrt(returns / 0.125)`，而 **EUR 数据集 returns 普遍 < 0.03** ⇒ 不要只在同一金字塔里换字段。
-- **★ 闸线（本区实测）**：`LOW_SHARPE` 1.58｜`LOW_FITNESS` 1.0｜`LOW_TURNOVER` 0.01｜`HIGH_TURNOVER` 0.7｜`LOW_2Y_SHARPE` 1.58｜`LOW_SUB_UNIVERSE_SHARPE` = **0.53×S（比率闸）**｜`LOW_ROBUST_UNIVERSE_SHARPE` 0.7。
-- **★ 高 S 是双刃剑**：sub 是比率闸 ⇒ `sub/S < 0.53` 时任何 S 都过不了 ⇒ **选「刚好过主闸」的 S，不追最高 S**。
+- **★ 闸线（本区实测）**：`LOW_SHARPE` 1.58｜`LOW_FITNESS` 1.0｜`LOW_TURNOVER` 0.01｜`HIGH_TURNOVER` 0.7｜`LOW_2Y_SHARPE` 1.58｜`LOW_SUB_UNIVERSE_SHARPE` = **0.52×S（比率闸）**｜`LOW_ROBUST_UNIVERSE_SHARPE` 0.7。
+- **★ 高 S 是双刃剑**：sub 是比率闸 ⇒ `sub/S < 0.52` 时任何 S 都过不了 ⇒ **选「刚好过主闸」的 S，不追最高 S**。
+- **★ F 的实操门槛（2026-10-29 量化）**：闭式 `F = S^1.5 × sqrt(vol/0.125)` 在 EUR 低波动族上等价于 **S ≥ 1.75 才过 F ≥ 1.0**（S 1.62 ⇒ F 0.87；S 1.71 ⇒ F 0.97）。
+  ⇒ 卡 F 不等于结构错，先看 S 够不够；`returns` 提不动（EUR 普遍 <0.03），只能提 S。
+
+**★ 未点亮塔：不是「数学上封闭」，是「必须换形态」**（2026-10-28/29 修订，旧记「路径数学上封闭」已作废）
+
+旧记的闭式 `Fitness 上限 ≈ Sharpe × sqrt(returns/0.125)` **只对单腿成立**。未点亮类别单数据集硬挖确实死（97 条实证，最好 S 0.56 = 闸线 1/3），但**唯一可行形态是：
+
+```
+已点亮强腿（高 2Y，占主体） ＋ 1.2 权重的未点亮小腿（只带塔位）
+```
+
+实证：`group_neutralize(group_scale(add(<ebt 广度 2.1>, multiply(1.2, <未点亮腿>))), industry), market)`
+→ 2Y 2.10–2.62、sub 1.11–1.20、`failed_ra_count=0`，pyramid 变成 `[ANALYST, <未点亮类>]`。
+已用它点亮 **SENTIMENT(×1.4)** 与 **INSTITUTIONS(×1.1)**。
+
+- **倾斜腿选塔按倍率**：sentiment **1.4** > news 1.3 ≈ analyst/model 1.3 > institutions **1.1**。
+- **倾斜腿贡献**：2Y **+0.78**、sub +0.09、prod **−0.004**（≈无效）。
+  ⇒ **它不增加席位数**（同基底换倾斜腿互测 0.948–0.970），只决定点亮哪个塔 + 过 2Y/sub 闸。
+- **组腿规则（2026-10-29 用户新规，取代旧「跨集全禁」）**：
+  - 禁区三类 = `PV` / `MODEL` / `OTHER`。**内部两两禁**（PV+PV / MODEL+MODEL / OTHER+OTHER）＋**彼此之间两两禁**（PV+MODEL / PV+OTHER / MODEL+OTHER）。
+  - **可与其它 category 跨类组腿**（PV+NEWS / MODEL+FUNDAMENTAL / OTHER+ANALYST / OTHER+INSTITUTIONS …）✅
+  - ⚠ **但含禁区类的跨类组合全账号仅限 5 个** ⇒ 用前先盘点已占用几个（`get_user_alphas` 读 `pyramids.list`，凡含 pv/model/other 且段数 ≥2 的计入）。
+  - 等价：一条腿序列里 `PV/MODEL/OTHER` 合计最多出现 1 次。**这是本区点未点亮塔时最紧的预算**。
+- ⚠ **开波前先扫库存里的成功样本**：`get_user_alphas(region=EUR, stage=OS)` 里凡是 `pyramids.list` 有两段的，都是这个形态的现成模板
+  （如 `Xgojww1X` = `[RISK, NEWS]`，NEWS 腿是**新闻条数=关注度**，不是情绪极性分）。
+
+**★ prod 杠杆实测排序**（EUR，逐项单加，同一族基准 0.7973）
+
+| 杠杆 | Δprod | 备注 |
+|---|---|---|
+| **`group_scale(·, industry)`** | **−0.057** | 唯一四项同得（S/2Y/sub 全↑）；⭐ 首选 |
+| 换读数（`/num` → `/num_4wks_ago`） | −0.051 | 同字段语义变体，换的是"分母" |
+| 幂次 +0.4 | −0.027 | 上限 2.1（2.4 ⇒ F 0.96 FAIL） |
+| cap 20 桶中性化 | −0.025 | 前置 `IS_LADDER ≥ 2.02` |
+| 加 1.2 权重倾斜腿 | **+0.013** | **反效果**（别用它降 prod） |
+
+- **`group_scale` 有读数依赖**：输入必须是「截面可比分数」（广度 / 多腿 rank 合成 / 模型预测分）⇒ 可用；
+  输入是「单股时序标准化幅度」或水平量 ⇒ **破坏性**（analyst7 ebi 幅度 S 1.97→1.14；fundamental23 sub 崩到 0.63–0.76）。
+- **prod 由「读数」决定，2Y 由「科目」决定**（两个独立旋钮，别混）：
+  - 同读数换科目：prod 只差 0.025（扩散 ebt 0.7801 vs ebi 0.7549）。
+  - 同科目换读数：prod 差 **0.10–0.13**（广度 `/num_4wks_ago` 0.653–0.675 vs 扩散指数 0.755–0.780）。
+  - 2Y 同理：ebt 2.12–2.62 / dps 2.41 / gps 2.02 ≫ **ebi·eps·sal 天花板 1.46–1.57**（幅度/广度/双读数三路全撞）。
+  ⇒ **2Y 不足时第一步换科目，不调结构**；**prod 不足时第一步换读数，不换科目**。
 
 ### ⑤ 算子穷举 · 本区覆盖
 
@@ -154,16 +199,27 @@ last_verified: 2026-10-20
 
 ### ⑥ 终验 · 本区覆盖
 
+- **⛔ 批量派 prod 前必做本地互测（2026-10-29 新增，血的教训）**：`check_correlation(type=self)` **只跟已提交池比**，
+  同基底换倾斜腿的候选 self 可各报 0.51（全"通过"）而**彼此 0.948–0.970**。
+  一批候选在花 prod 槽之前，必须先跑 `compute_mutual_correlation`（**纯本地/不占队列/零成本**），
+  只看 `max_mutually_below_subset`；不在该集合里的候选，即使 IS 全过也不测 prod。
 - **数据集级判死唯一合法路径**：三道覆盖闸全过 + 全波次 |S|<0.5 ⇒ 该数据集可入 dead_end。任一闸未过 = 未做尽、**不允许**判死。
+  ⚠ **例外（覆盖率闸）**：数据集 cov < 0.85 时 sub 闸结构性不可达（`fundamental28` 1605 字段 cov 恒 0.50 → sub 0.52 vs 限 0.82），
+  此类"覆盖不足"可凭 cov 直接判死，不必跑三闸。
 - **判死前必查**：`tools/full_coverage_gate.py --candidates <last_wave>.json --gate-mode enforce --campaign-dir tracking/EUR --json` 输出 `ok=true` 才允许提交 `seal_dead_end`。
+- **判死一个「类别」前，先读该类别已出货 alpha 的 code**：`get_user_alphas` 取该类别 ACTIVE 的 id → `get_alpha_details` 读 `regular.code`。
+  用它的**信号类型**（关注度 vs 极性、广度 vs 幅度）作起点。反例：news 类的成功样本用的是"新闻条数=关注度"（`mws46_ravenpack_sum_story_count`），
+  而按数据集名去测情绪极性分 77 条全部 S<0.6 —— 方向本身就错。
 - **升档条件**：出现 returns 达 0.05 且 prod 直方图不是密墙的新信号源，**或**三闸全过但候选 |S| 全 <0.5。
 
 ## 本区流程差异（相对九步骨架）
 
 <!-- profiles:manual:start -->
 - **入场**：2026-10-20 起 **full-coverage**（废止探针式派发）——数据集必须做尽：字段 100% 覆盖、模板族 ≥3、边界算子档穷举。历史 2026-10-02 判定的"结构性穷尽"（47/47 族 prod 都不低于上限、7 个战役全 exhausted）**只在探针式派发口径下成立**，本区升 active 须重跑全量覆盖闸。
-- **S0 选集**：未点亮塔路径数学上封闭（Fitness 上限约为 Sharpe × sqrt(returns / 0.125)，EUR 数据集 returns 普遍低于 0.03）；不要只在同一金字塔里换字段。
-- **S3 回测**：设置以 settings.json 为准（TOPCS1600 / SUBINDUSTRY / decay 4 / maxTrade ON / nanHandling ON）；历史台账里还有 TOP2500 / COUNTRY / decay 6 的记录，别混用。换档否证：TOP2500 2.19 → TOP1200 0.33 → TOP400 0.50。
+- **S0 选集**：未点亮塔不是"数学封闭"，是"必须换形态"——单数据集硬挖死（97 条实证最好 S 0.56），
+  但「已点亮强腿 + 1.2 权重未点亮小腿」能点亮（已实证 SENTIMENT / INSTITUTIONS）。详见 ④。
+- **S3 回测**：区域缺省 TOPCS1600 / SUBINDUSTRY / decay 4 / maxTrade ON / nanHandling ON；
+  ⚠ universe 是 prod–S 平移旋钮（TOP2500 抬 S/sub 也抬 prod +0.034），analyst7 与 techindi 需用 TOP2500 / FAST / decay 40。详见 ①。
 - **S3 例外（已验证配方自带设置）**：`analyst7` 修订族 ATOM 必须 **TOP2500 / FAST / decay 40–80 / nanHandling ON / maxTrade ON**（与区域缺省不同）。`explain` 只回区域缺省，直发 MCP 要逐项显式传，否则跑的是另一条信号。一个 `create_multi_simulation` 只带一个 settings 块，参数名只认 snake_case——派发后读回一个子项断言 `nanHandling` / `maxTrade` 为 ON。完整配方见 [references/_atom-revision-playbook.md](references/_atom-revision-playbook.md)。
 - **S4 改进**：prod 墙不是单一路径。① **残差化**（见 [EUR × fundamental](references/fundamental.md)：换维度、替换优于叠加、hump 档位；换分母在 EUR 是毒药）；② **同数据集换 metric 族**（analyst7 用 6 族出 14 颗，是最快的席位扩张）；③ **2Y/CV 修复用制度门控** `trade_when(abs(ts_zscore(<单字段水平值>, 66)) > 1.0, CORE, 0)`（`Grge2lN3` Recent-3yr CV 由 .436 降到 .366；计数门控反向）；④ decay / 平滑按形态分档（幅度 d40、广度 d80 + `ts_mean(·,5)`）。
 - **S5 提交**：prod 与 self 双端点都取 max；**同族 p 变体互相关 0.97–0.99 ⇒ 每族只 1 席**，hump / decay 这类只改时序的变体全部作废（self 会爆）；「14 颗全过 ≠ 14 颗可同时提交」，analyst7 的最大互不相关团 = 7。

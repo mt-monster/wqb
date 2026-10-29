@@ -398,7 +398,15 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `fields/dataset_profile_doc.py` | 数据集画像文档生成 | fields |
 | `fields/field_semantic_type.py` | 字段语义类型标注 | fields |
 | `fields/skeleton_panel.py` | 骨架面板（按骨架维度看候选分布） | fields |
+| `fields/skeleton_position_stats.py` | 骨架结构 × fitness 效率观察统计（eff=F/S，H1 层位置 / H2 稳定层分组；**观察性**证据，只回答「值不值得再做受控实验」）。只读 `wqb.db_conn` ro 连接，零回测 | fields |
 | `ledger/check_ledger_sync.py` | 台账与平台状态同步核查 | ledger |
+| `probe/corr_timing_report.py` | **prod 相关性耗时归因**（2026-10-28）：只读本地日志 `logs/wq-brain-http.log`，把 `[corr-t]` 打点按事件汇总成「时间花在哪 / 拿到值 vs 空手 / 哪些 alpha 被重复触发」。零平台请求、零配额；用来判「该加锁、该缩窗口、还是该排队」 | probe |
+| `gates/check_arity.py` | 批量校验 alpha 表达式的算子元数 / 参数区间（零仿真成本；`wqb.expression.op_arity` 的批量 CLI）。`--file exprs.txt` 或逐条传参，`--json` 供程序读 | gates |
+| `gates/tower_quota.py` | **两塔组合配额闸**（派发前必查；2026-10-27/28 用户定案）：读 `tracking/<R>/config/tower_pair_quota.json`，超配 exit 1 封盘、塔混（`{PV,MODEL,OTHER}` 互组）exit 2；规则 实现 `src/wqb/profiles/locked.py` | gates |
+| `datasets/query_tower_by_dataset.py` | 按金字塔塔位反查数据集（2026-10-28）：扫 `tracking/mining/result_*.json` 读 `ra.pyramid_short`，回答「哪个数据集实际产出过哪些塔」，供配塔选位；塔位不能由数据集名/category 推断 | datasets |
+| `fields/profile_dataset_fields.py` | 数据集字段画像（S1 离线部分，零配额）：把 `get_datafields` 原始 JSON 压成规模/覆盖/拥挤度/语义结构/候选短名单四块 | fields |
+| `fields/field_name_families.py` | 按字段族聚类（剥统计后缀 / 尾部哈希序号）：补 `profile_dataset_fields` 前缀聚类缺的语义档，零平台配额 | fields |
+| `code-audit/read_tool_artifact.py` | 读取 MCP 工具输出被外部化后的 chunked JSONL 产物：按 index 顺序拼回原始 JSON（支持一文件多段；同段背靠背多 JSON 文档），`--keys` 结构探测 / `--json <点号路径>` 取值（多段用 `--json 1` 选段）/ `--table id,name,...` 投影小表 / `--dump` 导出还原 JSON | code-audit |
 | `verdict/daily_select.py` | 每日候选挑选 | verdict |
 | `legacy/gate.py` | **遗留通用闸门**（代码零引用，权威实现是 skill toolkit 的 `gate.py`）；按「不得连坐删」保留 | legacy |
 | `legacy/backfill_backtest_dataset.py` | 一次性回填已跑完（`backtest_results.dataset` 只填空），按「不得连坐删」保留 | legacy |
