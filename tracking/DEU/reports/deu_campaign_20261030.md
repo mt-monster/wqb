@@ -3072,6 +3072,90 @@ DEU 已确认可用/待验证的配对：
 
 ---
 
+## §49 存量库翻查：找到 2 颗「IS 全闸通过 / prod<0.7」的旧候选，其中 1 颗是活的
+
+**本节是本轮方向性转折。** 此前 258 条新仿真 0 可提交，结论是「机制都在 prod 拥挤池」。翻本地 `alphas` 表（`get_alpha_corr_metrics` + `search_alphas_by_sharpe`）后发现：**存量未提交池里躺着 IS 全闸通过且 prod<0.7 的候选，此前从未被提交**。教训——**每轮开波前应先翻存量池，而不是只跑新仿真**。
+
+### 49.1 `58gGQmlN` —— IS 全闸通过，但 self 0.9408 判死
+
+| 项 | 值 |
+|---|---|
+| S / F / TO | **1.62** / **1.26** / 13.11% |
+| 2Y / sub / investS | **2.58** / **1.15** / 1.84 |
+| checks | **fail=[]**，pass 9 项（含 LOW_SHARPE / IS_LADDER_SHARPE / LOW_SUB_UNIVERSE_SHARPE） |
+| failed_ra / failed_ppa | **0 / 0** |
+| prod（20 天前） | 0.683 |
+| **self（本次实测）** | **0.9408 FAIL** —— 撞 `2rmGAPqN`（已提交，S 1.81/F 1.48/prod 0.6292） |
+
+表达式（INSTITUTIONS + OTHER 两塔，neutralization=**FAST**）：
+```text
+tail(winsorize(group_rank(
+  multiply(ts_sum(divide(vec_sum(inst1_valueeur), add(vec_sum(inst1_holdings), 0.0001)), 66),
+           if_else(and(greater(ts_sum(divide(vec_sum(inst1_valueeur),add(vec_sum(inst1_holdings),0.0001)),66),0),
+                       greater(ts_sum(vec_avg(inst1_tradesignificance),66),2.0)), 1, 0)),
+  oth455_partner_n2v_p50_q200_w1_pca_fact2_cluster_20), std=2),
+  lower=0.25, upper=0.75, newval=0.5)
+```
+**判死理由：self 0.94，无豁免入口。且同机制已由 `2rmGAPqN` 入库贡献塔位，无增量。**
+**可复用点**：`neutralization=FAST` 在 DEU 可用且能出全闸通过的 alpha；`oth455_partner_*_pca_fact2_cluster_20` 是数据驱动的 20 类相似公司分组，比 sector(11 类) 细得多。
+
+### 49.2 `j2Ym1PL9` —— 活的，唯一真机会
+
+| 项 | 值 |
+|---|---|
+| S / F / TO | **1.57** / **1.33** / **3.33%**（极低） |
+| returns / margin | 8.96% / **53.76 bp**（极高） |
+| 2Y / sub / investS | 1.13 / 0.95 / 1.41 |
+| **risk_neutralized_sharpe** | **0.25**（低 ⇒ 本质是风格暴露的 repackaging） |
+| **prod（19h 前）** | **0.5971 PASS** |
+| **self（本次实测）** | **0.4213 PASS**（最高对手 2rjrMZ25） |
+| fails | LOW_SHARPE(1.57/1.58)、IS_LADDER_SHARPE(1.13/1.58) |
+| 塔位 | SHORTINTEREST(1.3x) + ANALYST(1.8x) —— **两塔同时增量** |
+
+表达式（**门控型**：低借券费门控 × 分析师上修）：
+```text
+trade_when(rank(ts_backfill(vec_avg(mean_loan_rate_main), 252)) < 0.7,
+           rank(ts_mean(eps_y1_estimate_change_3mo, 22)), -1)
+```
+**机制**：只有借券费率处于低分位（无拥挤空头、易借）的股票，分析师上修才不被空头压制 ⇒ 干净的上修收益。
+
+**年度分布（诊断核心）**：
+
+| 年 | S | TO | margin |
+|---|---|---|---|
+| 2014 | **2.94** | 4.21% | 7.70bp |
+| 2015 | **2.75** | 3.77% | 8.34bp |
+| 2016 | 1.41 | 3.71% | 4.16bp |
+| 2017 | 1.59 | 2.98% | 4.83bp |
+| 2018 | 1.99 | 3.12% | 7.43bp |
+| 2019 | 1.78 | 3.17% | 5.30bp |
+| **2020** | **−0.46** | 3.42% | **−1.81bp** |
+| 2021 | 2.03 | 3.41% | 5.77bp |
+| 2022 | **1.70** | 2.97% | 8.48bp |
+| **2023** | **0.43** | 2.57% | 1.93bp |
+
+⇒ 11 年 8 年 S>1.4，**2Y 窗口恰好压在 2022(1.70 好) + 2023(0.43 差)** 上。2020/2023 两个坏年是同一类行情（空头 squeeze / 成长股主导），不是机制失效。
+
+### 49.3 门控阈值扫描（12 条实测，第 6 条起为本轮新派）
+
+| tag | alpha | 结构 | S | F | TO | 2Y | sub | fails |
+|---|---|---|---|---|---|---|---|---|
+| 基线 | `j2Ym1PL9` | K=0.70 | 1.57 | 1.33 | 3.33% | 1.13 | 0.95 | 2 |
+| **K075** | **`GrWVN8dG`** | **K=0.75** | **1.59** ✅ | **1.36** | 3.36% | 1.14 | 0.93 | **1** |
+| TW0 | `vR10b5jz` | 第三参 0 | 1.57 | 1.33 | 3.33% | 1.13 | 0.95 | 2 |
+| TQ | `9qxo39Wq` | 信号换 `ts_quantile` | 0.91 | 0.55 | 4.91% | 0.61 | 0.41 | 4 |
+| W66 | `E56JKbg0` | 信号窗 66 | 1.39 | 1.10 | 2.55% | 1.04 | 0.77 | 2 |
+| W126 | `vR10bJqv` | 信号窗 126 | 1.36 | 1.07 | 2.07% | 0.93 | 0.81 | 2 |
+
+**三条定论**：
+1. **`trade_when` 第三参 `-1` 与 `0` 在全部指标上逐位相同**（S/F/TO/2Y/sub/margin 无一位不同）⇒ 该维度是死轴，别再扫。
+2. **信号必须用截面 `rank()`，不能换 `ts_quantile`**：S 1.59→0.91（−43%），TO 反升。这与 W 波的 `ts_quantile` 成功相反——**门控型 alpha 的截面可比性比时序分位重要**。
+3. **信号窗口 22 是最优**：66 降 0.20、126 降 0.23。**长窗口在门控结构里是纯损失**（与 RISK 案例一致）。
+
+**当前唯一活口 `GrWVN8dG`**：S 1.59 过闸、F 1.36 过闸、TO 3.36% 过闸、sub 0.93 过闸，**仅剩 IS_LADDER_SHARPE（2Y 1.14 vs 1.58）**。待测 K=0.80/0.90 与无门控对照，判断门控是增益还是负担。
+
+---
+
 ---
 
 
