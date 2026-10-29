@@ -48,7 +48,11 @@ GUARD_BASELINE = {
     "src/wqb/step_eval.py:221",
     "src/wqb/step_eval.py:222",
     # 2026-10-23 行号跟随（P0-3 载荷保真：ra_failed_names 重写，行号 380→408；债务仍在）
-    "src/wqb/store/_backtest.py:408",
+    # 2026-10-29 行号跟随（408→424）：upsert_backtest_rows 新增「按 expr_id 回填
+    #   alpha_id/status」段（16 行注释+SQL 插在其前），同一查询整体后移；
+    #   按上两条注释同一口径「重钉行号，不删条目」。债务仍在（字段投票本质上是
+    #   跨库反查，fields 无 region 列；归属只补 _unknown 行是既有设计）。
+    "src/wqb/store/_backtest.py:424",
     "src/wqb/store/_expressions.py:95",
     "src/wqb/store/_field_catalog.py:380",
 }

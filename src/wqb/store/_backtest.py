@@ -264,12 +264,28 @@ class BacktestMixin:
                         corr_source=r.get("prod_corr_source") or "platform_sync",
                         now=now,
                     )
-                if alpha_id and r.get("sharpe") is not None:
+                # 2026-10-29：按 expr_id 回填 alpha_id / status，再用 expr_id 写指标。
+                # 此前这两件事都写成 `WHERE alpha_id=?`，而本函数只在「表达式行不存在」时
+                # 才顺手写入 alpha_id —— 走 upsert_expressions 预登记 + MCP 收批的主链路里
+                # 该列一直是 NULL，UPDATE 匹配 0 行 ⇒ expressions.alpha_id/status 永久停在
+                # null/pending（实测 DEU 194 行 harvested-but-unlinked）。
+                # status 只从「运行前态」推进到 backtested，dropped/superseded/submitted 不回落。
+                if alpha_id and expr_id is not None:
+                    cur.execute(
+                        """UPDATE expressions SET
+                             alpha_id=COALESCE(alpha_id, ?),
+                             status=CASE WHEN status IN ('pending','gem','enhanced',
+                                                         'selected','gated','deferred')
+                                         THEN 'backtested' ELSE status END,
+                             updated_at=? WHERE id=?""",
+                        (alpha_id, now, expr_id),
+                    )
+                if r.get("sharpe") is not None and expr_id is not None:
                     cur.execute(
                         """UPDATE expressions SET sharpe=?, fitness=COALESCE(?, fitness),
                            margin=COALESCE(?, margin), turnover=COALESCE(?, turnover),
-                           updated_at=? WHERE alpha_id=?""",
-                        (r.get("sharpe"), r.get("fitness"), margin, turnover, now, alpha_id),
+                           updated_at=? WHERE id=?""",
+                        (r.get("sharpe"), r.get("fitness"), margin, turnover, now, expr_id),
                     )
                 n += 1
             if skipped:
