@@ -1,8 +1,8 @@
 ---
 name: wq-wave-preflight-dispatch
 layer: L-RA
-description: WQ BRAIN 批量仿真发批前自查 SOP。判「这个族扫完了吗」之前的三件事：横向扫全史最优、字段笛卡尔积清点、设置档盲区清点；发批时还要过候选实测 / 覆盖率闸 / 字段存在性硬闸 / 禁混信号自检，断点续跑去重键须含全部设置档，扩设置维度时运行器三处同步。另含 SuperAlpha 发批与提交前自查（区域资格 ≥10 组件、SA 相关闸单独实测、同源自锁、余量=1−prod）。触发词：发批 / 跑一波 / 扫数据集 / 批量仿真 / items.json / 续跑 / 换数据集 / 判死 / 扫完了吗 / 查论坛 / SuperAlpha / SA / 组件池。
-last_verified: 2026-10-29
+description: WQ BRAIN 批量仿真发批前自查 SOP。判「族扫完了吗」前先做三件事：横向扫全史最优、字段笛卡尔积清点、设置档盲区清点；发批时过候选实测/覆盖率闸/字段存在性硬闸/禁混信号自检，断点续跑去重键须含全部设置档，扩设置维度时运行器三处同步。本地库不可判全闸通过与所属区（alphas.region_id/universe 混区）。含 SuperAlpha 发批与提交前自查（区域资格≥10 组件、SA 相关闸单独实测、同源自锁、余量=1−prod）。触发词：发批/跑一波/扫数据集/批量仿真/items.json/续跑/换数据集/判死/扫完了吗/查论坛/SuperAlpha/SA/组件池。
+last_verified: 2026-10-30
 agent_created: true
 ---
 
@@ -147,11 +147,13 @@ ok    = [r for r in near if cache.get(r['alpha_id'], 1.0) < 0.7]
 print(f"近候选 {len(near)} → 真正可积攒 {len(ok)}")   # 110 → 5
 ```
 
-⚠★★ **两个会让核算脚本崩/错的坑（今天连踩）**：
+⚠★★ **四个会让核算脚本崩/错/多算的坑（连踩）**：
 1. **`alpha_corr_cache.prod_correlation` 混有非数值**（源标签字符串）⇒
    `isinstance(p,(int,float))` 过滤，否则 `p[0] < 0.7` 抛 `TypeError: must be real number`。
 2. **逐条 `cur.execute(... WHERE alpha_id=?)` 循环会中断**（同一次连接上的游标状态）⇒
    **先把整表读进 dict** 再在内存里筛。
+3. **`alphas.region_id` 会混区** ⇒ 上面模板里的 `JOIN regions r ON r.id=a.region_id` 给出的「区域」是**不可靠**的（详见 §0.0.6b）。
+4. **`alphas` 表没有 pyramid / decay / truncation 列** ⇒ 想核「点了几座塔」「当时用的什么设置档」必须回平台，本地永远查不到。
 
 ⇒★★★ **最重要的一层：prod 未测的候选，期望极低。**
 85 颗未测里挑了 3 个「指标最漂亮」的不同机制代表实测：
@@ -167,6 +169,32 @@ print(f"近候选 {len(near)} → 真正可积攒 {len(ok)}")   # 110 → 5
 ⇒ ★ 报"存量"时若第三层实测比例很低，**必须说明"未测的那批不要当成机会"**。
 
 **积攒口径建议**：`status='UNSUBMITTED' AND date_submitted IS NULL AND COALESCE(soft_deleted,0)=0 AND prod_correlation<0.7`。 <!-- from config.prod_corr_max -->
+
+### 0.0.6b★★★★★ `alphas.region_id` 会混区 ⇒ **本地库不可判「全闸通过」与「属于哪个区」**（2026-10-30 GBR 实测）
+
+**这是本 SOP 里最容易让人把 EUR 的候选当成 GBR 候选提交上去的一条。** 本地 `wqb.db` 的 `alphas` 表有三个字段**全都不可靠**：
+
+| 字段 | 问题 | 反例（实测） |
+|---|---|---|
+| `region_id` | **同一个 id 下混装多个区域** | `region_id=7` 同时装 GBR 与 **EUR** |
+| `universe` | 不可靠 | 同一 `region_id` 下出现 `TOP700` 与 `TOPCS1600` |
+| `long_count` / `short_count` | **不能反推区域** | `P0gvv5gE` 是 GBR/TOP700 但持仓 `909`；而 `YPxLWdpv` 持仓 `1400` 实为 EUR |
+
+**决定性反例**：`YPxLWdpv` 在本地看是完美候选 —— S **3.36** / F **1.49** / TO **64.66%** / 2Y **1.89**，四项全过、`prod` 也不高。实读平台后：
+
+- `settings.region = "EUR"` / `universe = "TOPCS1600"`；
+- `longCount 575 + shortCount 825 = 1400`；
+- **`failed_ra_count = 1`**，失败项 `LOW_SUB_UNIVERSE_SHARPE`：严格 limit 是 **1.78**（绝对下限），本颗只有 **1.63**。
+
+⇒ ★ **本地"四闸全过"完全可能在平台上 fRA=1。** 本地没有 `ra` 字段，也没有 `checks` 结构。
+
+**⇒ 本地近似闸口径作废。三条硬规矩**：
+
+1. **全闸判据只认平台** `ra.failed_ra_count == 0` / `checks[].fail` 为空。本地 `sharpe/fitness/turnover/two_year_sharpe/sub_universe_sharpe` 只能当**粗筛**。
+2. **区域只认平台 `settings.region`**（`get_alpha_details`）。`batch_get_alpha_metrics` 给 `failed_ra_count` 但**不给 region** ⇒ 两个工具都要：先批量过 `failed_ra_count`，再对活下来的逐条 `get_alpha_details` 核 region。
+3. **`get_user_alphas(region="GBR", ...)` 不可用** —— 服务端不接受 `region` 参数，实测直接 `400 Bad Request`。别指望用它批量核区。
+
+⇒ 配套纪律：**`submit_ready` 队列里的行，提交前必须逐条回平台核 `settings.region` + `ra.failed_ra_count`**，不能凭本地库直接提。跨区污染在 `submit_ready` 上尤其危险——它会让你把别区的 alpha 提交到本区的点塔目标上（塔位归属由平台按 `settings.region` 判，但你会算错自己的塔位进度）。
 
 ### 0.0.7★★★★★ catalog 覆盖体检（**做任何字段清点之前**，2026-10-06 事故后新增）
 
@@ -1076,6 +1104,7 @@ $WQ_PY tracking/<R>/scripts/check_wave_fields.py tracking/<R>/candidates/eur_<ta
   `fields JOIN datasets ON dataset_id JOIN regions ON region_id WHERE regions.name=?`。
   字段名在 **`fields.field_name`**（不是 `id`）；`region_id` 是**数字外键**。
   猜错任一处 ⇒ **闸报假警报**（实测曾把真实存在的字段全报"不存在"，16 条全红）。
+  ⚠ **可信度分层**：`fields` / `datasets` 的 `region_id` **可信**（一个数据集归属一个区域，同名数据集在各区是不同行）；**不可信的是 `alphas.region_id`**（同一 id 下混装多区，见 §0.0.6b）。两处都叫 `region_id`，行为完全不同，别混为一谈。
 - ★ **并集为 0 时必须返回非 0 拒绝放行**（防"假绿灯"）。
   **永远绿灯的闸比没有闸更危险；永远红灯的闸会让人直接绕过它——两种一样坏。**
 - 回归验证：故意写错字段（如 `..._ocf_currlib`）必须被抓出，且正确字段不误报。
@@ -1209,6 +1238,24 @@ print('add 两腿违规:', bad if bad else '无 ✅')
 
 **⚠ 报告「判死」时必须附证据链**：扫过哪些轴、每轴的最优值、与阈值的差距。
 **证据链不完整时不要宣称"无计可施"**——那会让真正有价值的族被误杀。
+
+### 7.0.1 ★★★★★ 判死前的**三个数字自检**（2026-10-31 GBR 事故后新增，最易犯）
+
+「换 ≥5 种结构」管的是**结构轴广度**，但**样本量与字段覆盖**是另一条独立的门。缺了它，就会把「没测够」当成「测过了」，**永久封掉一片搜索空间**。
+
+写判死结论前，必须报出这三个数字：
+
+| # | 数字 | 门槛 | 不达标时的正确表述 |
+|---|---|---|---|
+| ① | **探针数** | **≥8** | `PROBE-KILLED`（不可信，进待补课清单）|
+| ② | **字段覆盖率** | **≥50%** 或「已覆盖全部机制族」 | 「仅在 N/M 字段上无信号」——**不得称「数据集判死」** |
+| ③ | **结构数** | **≥2**（双结构是保底，≥5 是判死门槛）| 「单结构未出信号」——未测结构 B 就没资格判死 |
+
+**★★ 「批宽度」≠「样本量」**：用户级并发限制（如「每批 ≤2 条」）只约束**单批宽度**。正确适配是**多批串接**（2 条 × 4 批 = 8 探针），**不是缩批后照样下结论**。本区事故：`other250` 12 字段只看 2 个（17%）就记「判死」，同轮另有 5 个数据集同样 2 探针即封盘 ⇒ 一起汇总成「OTHER 塔 13 数据集全灭」这个**多数不可信的结论**。
+
+**★★★ 栖息地缺失是第四种死法（独立于前面三条）**：同一表达式在 USA `ILLIQUID_MINVOL1M` **S 2.89** / GBR `TOP700` **S 0.95**（差 3.0×），根因是「信号住非流动小票」。**`get_platform_setting_options()` 查一次 universe 全集就能在 0 仿真成本下判死**——这类判死要单独打 `STRUCTURAL-DEAD` 标签并注明「仅本区限定，不外推」。
+
+**台账写法**：「判死」三个字单独成行 = 无效台账。每行必须带 `探针数 / 字段覆盖率 / 结构数 / 最好读数 / 标签`。
 
 ---
 

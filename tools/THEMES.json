@@ -91,7 +91,8 @@
         "_snt27_sweep.py",
         "_wide_probe.py",
         "_yp_for_2y_leaders.py",
-        "kor_form_probe.py"
+        "kor_form_probe.py",
+        "prod_peek_batch.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -219,7 +220,8 @@
         "submit_and_verify.py",
         "_repair_dataset.py",
         "_test_carrier_upgrade.py",
-        "backfill_year_profile.py"
+        "backfill_year_profile.py",
+        "backfill_alpha_pyramids.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -670,5 +672,16 @@
       ]
     },
     "note": "23 个零引用脚本（_fix_lit_quarter / _mdl25_sweep / _oth335_pow / _oth335_variants / _patch_carrier_upgrade / _pp_variant_probe / _pvpc_probe2 / _pvpc_probe3_other335 / _r25_struct / _r26_sup / _r27_win / _r28_settings / _r29_fix2y / _r30_final / _r31_decay / _r31b_decay / _unlit2_blend / anl10_backfill_curve / anl10_struct_experiment / anl10_turnover_experiment / kor_dispersion_test / kor_dispersion_universe / kor_scan_dispersion_fields）已归档。全批硬编码路径（D:\\\\… 与 C:\\\\Users\\\\MENGTAO\\\\…）已改为可移植写法（os.path.dirname + os.path.expanduser）。"
+  },
+  "_adopted_20261031": {
+    "reason": "2026-10-31 S11 治理：2 个新顶层脚本补登记。按功能裁定归属（data-repair / probe），只登记不搬家。",
+    "assigned": {
+      "data-repair": [
+        "backfill_alpha_pyramids.py"
+      ],
+      "probe": [
+        "prod_peek_batch.py"
+      ]
+    }
   }
 }

@@ -1,7 +1,7 @@
 ---
 name: wq-alpha-gate-push-op-min
-description: "候选 alpha 的『指标推到闸 + 算子压到最少』双目标优化器。挖掘出候选（有 id 或表达式）后，要把它系统性推到平台全闸通过（LOW_SHARPE / LOW_FITNESS / 2Y / self / prod / CW / sub），并同时把算子调用点数压到最小、删冗余算子时使用。含经验杠杆阶梯、算子压缩等价改写规则、逐算子消融协议与 op_count/compress/plan 三个本地脚本。触发词：优化指标 / 把指标做到极致 / 压缩算子 / 简化表达式 / 算子太多 / operatorCount 太高 / 推到能提交。"
-last_verified: 2026-10-29
+description: "候选 alpha 双目标优化器：推到全闸通过（LOW_SHARPE/FITNESS/2Y/self/prod/CW/sub）+ 压算子到最少。含杠杆阶梯、压缩等价改写、逐算子消融、金融含义分层、等效替换与参数扫描，及 op_count/compress/plan/scan 四脚本。触发：优化指标/压缩算子/简化表达式/算子太多/operatorCount太高/推到能提交/等效替换/同等算子/金融含义/逐算子扫描/删除算子/替换算子/扫描参数/删除后压缩/替换更精简。"
+last_verified: 2026-10-30
 layer: L4
 agent_created: true
 allowed-tools:
@@ -178,6 +178,82 @@ $WQ_PY "$SKILL_DIR/scripts/compress.py" --expr "<表达式>" [--metrics '{"sharp
 
 ---
 
+## ④b 等效替换（金融含义保留）—— 用户指令 2026-10-30
+
+**与 ④ 消融的区别**：消融是**删**算子（破坏信号，崩了就回滚）；等效替换是**换**算子
+（保留金融含义，换实现）。当消融确认某算子「删除会崩」时，不代表它不可**替换**——
+删除崩可能是「该层必需」，替换成金融含义等价的另一算子仍可能保留大部分信号。
+
+**步骤（在消融确认无算子可删之后跑）**：
+
+1. **金融含义分层**——把表达式按四层拆开，每层写明经济/金融含义：
+   - **L1 提取**（字段→比率/水平量，如 `divide`/`multiply`/`subtract` 构造的价值比率）
+   - **L2 归一**（截面，`rank`/`zscore`/`group_rank`）
+   - **L3 时序**（`ts_*`：动量/均值/分位/差分）
+   - **L4 截面**（终算子，`rank`/`group_neutralize`/`vector_neut`）
+2. **遍历平台算子**——`get_operators`（约 103 个），对每个时序/截面层找**金融含义等价**的替换候选。
+   判据：替换后**保留该层原经济含义**（如「相对均值的偏离」仍是「相对均值的偏离」），
+   只是实现不同（如 `ts_av_diff` 未归一化 → `ts_zscore` 加了波动归一化，仍测同一偏离方向）。
+3. **等价先判后测**——两层判断：
+   - **数学等价**（外层单调算子会吸收内层变换）：如 `rank(ts_quantile(x,d,gaussian)) ≡ rank(ts_rank(x,d))`
+     ——因外层 `rank` 保序、gaussian 逆 CDF 单调，逐位相同。**无损但不省算子**，无增益，无需实测。
+   - **语义等价但实现不同**：可能改善指标/prod ⇒ **必须实测**（派发新 alpha id，检查 IS + prod）。
+4. **采纳判据**（替换变体全闸 PASS 时）：
+   - **prod 更低** ⇒ 优先采纳（**prod 贴线时尤其**：余量 <0.05 的候选，低 prod 变体比 S 最优变体更值得交付——prod 漂移猛，48h 作废，S 差距小但 prod 安全边际大）。
+   - 或 **指标更好**（S/2Y/sub 更高）；或 **算子更少**。
+   - 否则回滚，保留原式。
+5. **关键权衡**（2026-10-30 GBR 实测案例 `j2YNnKOQ`）：
+   - `ts_av_diff(x,504)` → `ts_zscore(x,504)`：同为「相对 1 年均值偏离」，z-score 波动归一化更标准。
+     实测：S 2.15→2.00（略降）、**prod 0.67→0.6191**（安全边际 0.03→0.081，放大 2.7 倍）、IS 全闸仍 PASS。
+     ⇒ **等效替换可行**；prod 贴线时「低 prod 更稳」优先（铁律：prod 漂移猛）。
+   - `ts_quantile(·,22,gaussian)` → `ts_rank(·,22)`：数学等价（rank 吸收单调变换），无增益。
+   - 反向教训：**删除** `ts_quantile`（而非替换）→ S 2.15→**0.55** 全崩 ⇒ 删除与替换是两回事，删除崩≠替换不可行。
+
+**铁律**：等效替换同样产生新 alpha id，最终只保留最优 1 颗，其余标 `SUPERSEDED`；
+判定只走平台（IS 闸 + `check_correlation` self/prod 实测）；**替换变体必须复检 prod**（refresh=True，占平台单并发槽）。
+
+---
+
+## ④c 逐算子双通道扫描（删除 + 替换 + 参数）—— 用户指令 2026-10-31
+
+**目标**：对表达式里**每个算子节点**（按 L1/L2/L3/L4 逐层遍历）都做两类实验，把因子指标推至最好——
+- **① 删除通道**：删掉该算子后有没有压缩的变化（算子数减）且指标不坍塌？
+- **② 替换通道**：换成金融含义等价的另一算子后，指标是否更精简且不坍塌？
+- **③ 参数扫描**：每个数值参数展开成档位，把指标推至最好。
+
+**执行入口**（纯本地、零平台、零队列成本，只生成候选不做仿真）：
+```bash
+$WQ_PY scripts/scan.py --expr "<表达式>" --json > scan_report.json   # 三通道候选矩阵
+$WQ_PY scripts/scan.py --expr "<表达式>" --delete --json ...          # 只删除通道
+$WQ_PY scripts/scan.py --expr "<表达式>" --replace --json ...         # 只替换通道
+$WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参数变体直接喂 submit_batch
+```
+
+**这是 ④ / ④b 的自动化执行层**：
+- `scan.py --delete` 补齐 `compress.py` 缺失的**逐算子删除候选**（`rank(x)→x` 单参包裹、恒等元素、重复腿）——
+  现有 `compress.py` 只匹配 C1/C3/C4… 既定模式，不做「每个算子节点」遍历。
+- `scan.py --replace` 内置 **14 组金融含义等价对**（时序层 `ts_av_diff↔ts_zscore`/`ts_rank↔ts_quantile(gaussian)`/`ts_mean↔ts_sum`；
+  截面层 `rank↔zscore`/`group_rank↔group_zscore`/`group_neutralize↔vector_neut`），自动标注**数学等价 vs 语义等价**。
+- `scan.py --params` 把每个数值参数展开 0.5/0.75/1.25/1.5 倍。
+
+完整协议（含判定规则、陷阱、端到端模板）见 [`references/scan-protocol.md`](references/scan-protocol.md)。
+
+**判定要点**：
+- **删除**：全闸仍 PASS ⇒ 采纳（算子 −1，首选）；PASS→FAIL ⇒ 回滚（该算子承重）；更差仍 PASS ⇒ 采纳（余量换算子数）。
+  ⚠ 删最外层 `rank` 常 S 变好但 sub/2Y 崩；删 `ts_backfill` 常省算子但 sub_universe 崩——**必看全部闸，不能只看 S**。
+- **替换**：**数学等价**（`ts_rank↔ts_quantile(gaussian)` 等）无需实测——外层单调算子吸收内层变换，逐位相同；
+  **语义等价**（`ts_av_diff↔ts_zscore` 等）必实测，采纳判据 = **prod 更低**（prod 贴线时尤其）或指标更好或算子更少。
+  ⚠ 替换变体必须复检 prod（refresh=True）。
+  ⚠ **单位闸**：`vector_neut↔group_neutralize` 第 2 参单位不同（向量轴 vs `Unit[Group:1]`），直接替换会
+  `Incompatible unit ...` ⇒ **整批 CANCELLED（连坐）**——`scan.py` 已标 `need_unit` 占位不自动生成；派发前必须过
+  单位闸（`bucket`/`group_*` 第 2 参内层首个参数必须是 `rank(...)`，见 op-compression.md §四 闸④）。
+- **参数**：0.5/0.75/1.25/1.5 粗扫 → 最优档附近细扫（步长 ≤ 窗口 5%）；窗口参数是尖峰（±15 就掉）。
+- **终止**：三通道全部候选实测完毕，或达 operatorCount 目标（REGULAR 复杂度闸 <10；PPA ≤8），或再动任何算子会掉闸。
+- **记账**：每次采纳（删除/替换/参数）都产生**新 alpha id**，只保留指标最好且算子最少的那 1 个，其余标 `SUPERSEDED`；
+  全部候选入 `tools/ledger/mining_ledger.py`。
+
+---
+
 ## ⑤ 设置收敛（表达式冻结后）
 
 只动不占算子的旋钮：`decay`（2/3/4/6/8）、`truncation`（本战役零杠杆，可不动）、
@@ -200,4 +276,5 @@ $WQ_PY "$SKILL_DIR/scripts/compress.py" --expr "<表达式>" [--metrics '{"sharp
 - 杠杆阶梯（完整实测数据、适用条件、反例）：[`references/lever-ladder.md`](references/lever-ladder.md)
 - 算子压缩改写规则（无损/有损分类、语义等价表）：[`references/op-compression.md`](references/op-compression.md)
 - 指标 ↔ 杠杆映射（每个闸由哪些旋钮驱动）：[`references/metric-map.md`](references/metric-map.md)
-- 脚本：`scripts/op_count.py`（算子审计）｜`scripts/compress.py`（压缩候选）｜`scripts/plan.py`（杠杆计划）
+- 逐算子双通道扫描协议（删除/替换/参数，用户指令 2026-10-31）：[`references/scan-protocol.md`](references/scan-protocol.md)
+- 脚本：`scripts/op_count.py`（算子审计）｜`scripts/compress.py`（压缩候选）｜`scripts/plan.py`（杠杆计划）｜`scripts/scan.py`（逐算子删除/替换/参数扫描候选，纯本地）

@@ -103,3 +103,4 @@
 | 提交链默认值（不可逆动作默认不执行、颜色缺省不是 GREEN） | `world-quant-brain-mcp/tools_workflow.py`、`src/wqb/workflow/nodes/submit_alpha.py` | `tests/unit/05_submit_quota/test_submit_chain_defaults.py` |
 | alpha 属性（name / color / tags） | `src/wqb/alpha_properties.py` | `tests/unit/02_workflow/test_alpha_properties_patch_partial.py` |
 | **S0 选集评分（硬地板 / tier / 拥挤罚 / 白名单）** | `Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py`（`workflow_campaign(stage="S0")` 调用它，产物写 ledger `s0_ranking` / `s0_whitelist`） | `tests/unit/04_gates/test_score_datasets_whitelist_p0p6.py`、`tests/unit/01_store_db/test_ledger_whitelist_schema_p0p4.py` |
+| 塔位盘点（GBR 区域宣称） | `get_pyramid_alphas(start_date, end_date)` + `get_pyramid_multipliers()` —— 两者合起来是塔位计数与乘数的唯一事实源（区域 skill `wq-brain-ra-gbr/SKILL.md` 引用） | `tests/unit/07_docs_skills/test_glossary_docs.py`（`test_authority_claims_only_decrease`） |

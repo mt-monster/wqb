@@ -1,8 +1,8 @@
 ---
 name: wq-operator-playbook-by-gate
-description: 破闸算子处方、语法手册与破闸配方。候选卡在平台闸（LOW_SHARPE / LOW_FITNESS / 换手 / CONCENTRATED_WEIGHT / LOW_SUB_UNIVERSE_SHARPE / IS_LADDER_SHARPE / PROD_CORRELATION / SELF_CORRELATION / CLUSTER_TEST）要挑算子时使用；要按六步 SOP 一步步破闸时使用；发批前判「方向是否试完」、整批 CANCELLED / ERROR 定位算子语法时使用。含按闸算子优先级、103 算子语法与命名参规则、三条正交轴族与硬约束、算子预算账、发批前对账 SOP。
+description: 破闸算子处方与语法手册。候选卡平台闸（LOW_SHARPE/FITNESS/换手/CONCENTRATED_WEIGHT/LOW_SUB_UNIVERSE_SHARPE/IS_LADDER_SHARPE/PROD_CORRELATION/SELF_CORRELATION/CLUSTER_TEST）要挑算子时用；按六步 SOP 破闸时用；发批前判方向是否试完、整批 CANCELLED/ERROR 定位算子语法时用。含按闸算子优先级、103 算子语法与命名参规则、unit_handling=VERIFY 量纲规则、三条正交轴族与硬约束、算子预算账、发批前对账 SOP。
 layer: L4
-last_verified: 2026-10-29
+last_verified: 2026-10-30
 agent_created: true
 ---
 
@@ -141,6 +141,37 @@ ts_min, ts_min_max_cps, ts_percentage, ts_skewness
 - 分组字段区域禁用：**JPN 不支持 `sector` / `industry` / `subindustry`**（硬拒绝）。
 - 窗长白名单：`[1, 5, 22, 66, 252, 504, 1008, 1260]`（非白名单窗**大多是告警不拦截**，但 SOP 要求给出理由或实测证据）。
 - `level: genius` 的算子（如 `ts_target_tvr_hump` / `ts_av_diff` / `ts_ir` / `tail` / `group_cartesian_product`）**本账号实测可直接跑**，不是拦路虎。
+
+### 2.7 ★★★ 量纲（unit）规则：`unit_handling=VERIFY` 下带单位字段不能与无量纲常数直接运算
+
+**报错原文（2026-10-30 DEU 一次连挂 3 条同批）**：
+
+```
+Incompatible unit for input of "vector_neut" at index 1,
+expected "Unit[]", found "Unit[TSShare:1]"
+```
+
+**根因**：`unit_handling=VERIFY` 会让平台做量纲推导。带 `Unit[...]` 的字段（股数 `Unit[TSShare:1]`、金额、成交量、计数）**不能与无量纲常数直接相加/比较/开方**，也不能填进要求 `Unit[]` 的参数位。
+
+**两类触发点，按出现频率排**：
+
+| # | 写法 | 报错 | 合规修法 |
+|---:|---|---|---|
+| **1** | `vector_neut(主体, <股数/金额/成交量字段>)` | `Incompatible unit ... at index 1, expected "Unit[]", found "Unit[TSShare:1]"` | 正交腿外先 `rank()`：`vector_neut(主体, rank(ts_backfill(<字段>, 22)))`（`rank` 输出 [0,1]，天然无量纲） |
+| **2** | `add(<带单位字段>, 1e-4)` / `add(F, 0.0001)` | 同款 `Incompatible unit` | **同单位相除**收口，**不要用 ε 兜零** |
+| **3** | `greater(<带单位计数>, 常数)` | 同上 | 门控一律 `greater(rank(x), 0.5)` |
+| **4** | `divide(F, cap)` 后**直接**与常数比较 | 同上 | 外层再包 `rank()` 或 `ts_zscore(·, W)` 才比较 |
+| **5** | `power(<带单位字段>, 2)` | 同上 | 先 `rank(F)` / `ts_zscore(F, 66)` 归一，再 `power` |
+
+**实测正面对照（能过，因为正交腿天然无量纲）**：`P0oe6wpJ` 的 `vector_neut(主体, vec_avg(snl27_relpopularity08))` —— `relpopularity` 是**比率**，`Unit[]`，直接可用。
+
+**排查顺序（别乱猜）**：
+1. `vector_neut` 报 units 错 ⇒ **先看 index 1（第二参 / 正交腿）**，再看主体；
+2. 非 `vector_neut` 的 units 错 ⇒ 找那一行里**唯一带单位的字段**与**唯一的裸常数**，把它们分离；
+3. 修完再看**外层比较**（`greater` / `trade_when` 条件位）是否也在拿带单位值比常数。
+
+**一句话记法**：**带单位的量只能与同单位的量相除/相比；要跟常数打交道，先 `rank()` / `ts_zscore()` 收口到无量纲。**
+这和 `cap`（`CSPrice·CSShare`）的处理是同一条规则 —— 比值/比较前先收口。
 
 ---
 

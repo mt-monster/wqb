@@ -134,6 +134,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `kor_year_sweep.py` | **KOR 十年覆盖批量探针（断点续跑）**：复用 `kor_year_probe.py` 的 `probe/pick_field/build_expr`，改为**单客户端 + 信号量并发 + 逐条落盘** `results/kor_year_probe.jsonl`，重启跳过已完成（`kor_year_probe.py` 逐集认证 ≈5s/次，164 集纯握手 14 分钟）。`--from-db` 从 `dataset_profile` 取池子、`--datasets` 指定、`--conc` 并发、`--fresh` 忽略续跑 | 循环调单集探针 |
 | `kor_near_gate_watch.py` | **十年探针哨兵（近闸即时告警）**：tail `results/kor_year_probe.jsonl`，每条新记录按 KOR 闸线判 `ALERT`（`sharpe ≥ --s-min` 默认 1.25 = Mode B 主闸；或十年全 + `≥ --near-min` 1.0）/ `WATCH`（仅存档）；命中即**追加** `logs/kor_near_gate_alerts.log` 并打印，不缓冲不等扫完。上游文件静默超 `--idle-sec` 即退出并打汇总 | 扫完才回头看谁近闸 |
 | `probe/category_probe.py` | **L1 苗子探针生成**（2026-10-06 下沉）：为 L0 筛出的类别生成**机制多样**的探针表达式（上游 `probe/category_sweep.py --seed-fields --json <out>`），产物逐行喂 `submit_batch.py --path` 跑 QUICK，收割后 `--classify` 判苗头。★ 铁律：**条数不是首要变量、机制多样性才是**（历史命中率中位 7%；DEU 164 条达标只来自 73 个独立表达式，去重比 2.2x）。**本工具自己不派发仿真**（零配额、可 dry-run） | 手写探针表达式 |
+| `prod_peek_batch.py [--alpha-id ...] [--interval SEC] [--max-cycles N]` | **多 alpha prod 无锁批量探测**（2026-10-30 新增）：`prod_wait.py` 一次只测一颗，而 prod 端点是**账号级单并发**——兄弟会话长期占槽时本机有锁路径一直 `correlation_busy`；端点故障时返回 200+空体。两种情况都不能判「这颗 alpha 不行」，只能等窗口。本工具用**无锁只读 peek**（不申请 correlation_slot、不写 inflight、不触发平台重算），每个周期对每颗各打一次，谁先到就先落盘；接收多个 alpha、循环轮询、已取到自动跳过、结束打印「已取到/仍缺」清单。复用 `prod_wait.py` 的 `parse()` 与输出格式（`results/prod_peek_<alpha>.json`） | `prod_wait.py` 串行逐颗等 |
 
 > `wave_gate.py --probe-mode` 只做门禁阶段探针分配标记（结构预判），真实回测判死走 `probe_batch_mode.py` / `tiered_probe.py`。
 
@@ -215,6 +216,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 
 | `data-repair/backfill_alpha_metrics_from_platform.py` | **从平台补 `alphas` / `submit_ready` 缺失的 IS 指标**（2026-10-06 下沉）：`two_year_sharpe` / `sub_universe_sharpe` / `is_ladder_sharpe`，以及体检卡三层所需的 `margin` 与约束变体指标。★ 全库实测 **1798/11002 行 2Y 为 NULL**（两条成因：`sync_platform_alphas` 曾显式传 `None`；非 harvest 路径从不抽 2Y/sub）。**只补空**（`--overwrite` 才覆盖）、每颗落盘断点续跑、默认 dry-run。★ 其 `extract_is_metrics()` 被 `sync_platform_alphas.py` 复用（跨目录导入，改动路径须同步）；**不改 ingest 逻辑、不改回测** | 手工逐条查平台补库 |
 | `data-repair/backfill_bt_two_year_from_ladder.py [--region R] [--wave N] [--infer-dataset] [--apply]` | **从已存 payload 的 `is_ladder_sharpe` 补 `backtest_results.two_year_sharpe`**（2026-10-23 新增）：平台按 alpha 代际只发 `LOW_2Y_SHARPE` 或 `IS_LADDER_SHARPE` 之一（`wqb.config.RA_2Y_NAMES` 两者都算 2Y），采集层修复前只认前者 ⇒ 2Y 整列落空（IND/wave232 实测 23/48 行）。只补空、合并式写入 `CampaignStore.upsert_backtest_rows`；`--infer-dataset` 按字段反查归属，且**只补与波自身数据集一致的行**（传 dataset 会 `UPDATE waves.dataset_id`，给跨数据集探针补归属等于把整波改指）；默认 dry-run | 手写 UPDATE SQL |
+| `backfill_alpha_pyramids.py [--region R] [--apply]` | **把平台塔位指纹回填进 `alpha_pyramids`**（2026-10-30 新增）：`alphas` 表无 pyramid 列、无 decay/truncation 列、`region_id` 混区 ⇒ 每轮审计被迫逐条回平台 `get_alpha_details`。★ 平台对 `UNSUBMITTED` alpha 也返回塔位（在 `is.checks[]` 的 `MATCHES_PYRAMID` 项里，不在顶层 `pyramids`）⇒ 不必等提交后才回填。解析逻辑在 `wqb/store/_pyramids.py`，本工具只负责取数；`GET /alphas/{id}` 不占 prod 相关性单并发槽 | 逐条手查平台 |
 
 ## Cluster Alpha（低门槛区刻意版；依据帖 43562853669655）
 
