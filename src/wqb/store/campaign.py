@@ -21,7 +21,8 @@ CampaignStore inherits all mixins; public API is unchanged.
       ├── AlphasMixin          (_alphas.py)         get/list/search alphas
       ├── SubmissionsMixin     (_submissions.py)    upsert/get/list_submissions, quota_status
       ├── CorrCacheMixin       (_corr_cache.py)     prod/self 权威读写（2026-10-06 才真正挂上）
-      └── ApiCacheMixin        (_api_cache.py)      通用 KV 缓存，替代 Redis（2026-10-06）
+      ├── ApiCacheMixin        (_api_cache.py)      通用 KV 缓存，替代 Redis（2026-10-06）
+      └── PyramidsMixin        (_pyramids.py)       塔位指纹（一鱼两塔、设置档），2026-10-30
 
 Shared utilities (ExprItem, default_db_path, _now, _dumps, _loads, _as_expr)
 live in _common.py and are re-exported here for backward compatibility.
@@ -73,6 +74,7 @@ from ._submissions import SubmissionsMixin
 # 不写。此处补挂载，prod 单源化才真正成立。
 from ._corr_cache import CorrCacheMixin
 from ._api_cache import ApiCacheMixin
+from ._pyramids import PyramidsMixin
 
 
 class CampaignStore(
@@ -88,6 +90,7 @@ class CampaignStore(
     SubmissionsMixin,
     CorrCacheMixin,
     ApiCacheMixin,
+    PyramidsMixin,
 ):
     """SQLite campaign artifact store.
 

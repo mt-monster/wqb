@@ -32,6 +32,10 @@ from _lib.skill_roots import candidate_paths_under_skill
 
 MAX_WINS = 6
 MAX_DEADENDS = 12
+# 全量死名单上限（只供 gate 命中检测，不注入 GEM prompt）。
+# 与 MAX_DEADENDS 分离：后者是 prompt 预算，前者是**闸的可见面**——两者混用会让
+# 「死名单超过 12 条」直接等于「闸对 88% 的死路失明」（2026-10-30 KOR 实测 99 条）。
+MAX_DEADENDS_ALL = 400
 
 # profile 探测路径（顺序由 _lib/skill_roots.py 单源维护；2026-09-11 收敛，此前只探历史位）
 def _profile_path(region):
@@ -280,6 +284,17 @@ def assemble_priors_dict(ctx):
             continue
         dseen.add(fam)
         de.append({"family": fam, "reason": f, "source": "template_kb_failed"})
+    # 2026-10-30 修复（KOR wave187/200 两次打已判死数据集的根因）：
+    # `dead_ends` 是**注入 GEM prompt 的**名单，受 MAX_DEADENDS=12 名额限制；而 gate 的
+    # PRIORS-DEADEND-HIT 也读同一个键 ⇒ 死名单超 12 条后闸就只看得见 12/99。
+    # 实测 KOR 有 99 条死条目，`fund_holdings_panel` / `news_sentiment_transfer` 全被截掉，
+    # 于是两道闸都放行。这里把**全量**名单另存 `_dead_ends_all`（不占 GEM prompt 名额），
+    # gate 命中检测取并集用。
+    de_all = [{"family": d.get("family") or "",
+               "reason": (d.get("reason") or "")[:200],
+               "rule": (d.get("rule") or "")[:200],
+               "entry_id": d.get("_entry_id")}
+              for d in de if d.get("family")][:MAX_DEADENDS_ALL]
     if len(de) > MAX_DEADENDS:
         truncated["dead_ends"] = [d.get("_entry_id") or d.get("family") for d in de[MAX_DEADENDS:]]
     de = de[:MAX_DEADENDS]
@@ -301,6 +316,7 @@ def assemble_priors_dict(ctx):
     payload = {
         "wins": wins,
         "dead_ends": de,
+        "_dead_ends_all": de_all,
         "region_context": _build_region_context(kb),
         "_meta": {
             "region": ctx.region,

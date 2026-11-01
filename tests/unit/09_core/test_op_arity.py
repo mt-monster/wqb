@@ -105,6 +105,29 @@ def test_named_forms_pass(expr):
 
 
 # ---------------------------------------------------------------------------
+# 2.x 平台要求「必须命名传参」的 bare 参数（2026-10-31 kth_element 事故）
+#
+# catalog 的 definition 是 ``kth_element(x, d, k, ignore=“NaN”)``：k 没有 ``=``，
+# 解析器把它当位置参数，于是 kth_element(x, 22, 5) 元数看起来完全合法。但平台实回
+# ``Required attribute "k" must have a value``，且**连坐 CANCELLED 整批**（IND wave
+# 297/298 各 8 条全灭，两次）。规则只能钉在 _MUST_BE_NAMED 这一张表上。
+# ---------------------------------------------------------------------------
+
+def test_kth_element_positional_k_is_rejected():
+    errors = check_expression("kth_element(close, 22, 5)")
+    assert errors and any("k" in e and "命名传参" in e for e in errors), errors
+
+
+def test_kth_element_named_k_passes():
+    assert check_expression("kth_element(close, 22, k=5)") == []
+
+
+def test_kth_element_without_k_still_flagged_as_arity():
+    # 只传 2 个位置参数：仍按「参数过少」拦，而不是漏过
+    assert check_expression("kth_element(close, 22)")
+
+
+# ---------------------------------------------------------------------------
 # 3. 反向守护：合法的位置写法绝不能误杀
 # ---------------------------------------------------------------------------
 
@@ -119,7 +142,7 @@ def test_named_forms_pass(expr):
     "group_rank(close, sector)",
     "group_backfill(close, sector, 66, std=4.0)",
     "trade_when(volume > 0, rank(close), -1)",
-    "kth_element(close, 66, 2, ignore=\"NaN\")",
+    "kth_element(close, 66, k=2, ignore=\"NaN\")",
     "ts_quantile(close, 22, driver=\"uniform\")",
     # 变参算子：add/subtract/multiply/max/min 位置参数无上限
     "add(a, b, c, d)",

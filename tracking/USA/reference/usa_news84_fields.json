@@ -1,0 +1,230 @@
+{
+ "dataset": "news84",
+ "region": "USA",
+ "universe": "TOP3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 20,
+  "VECTOR": 3
+ },
+ "field_count": 23,
+ "platform_count": 23,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 3000,
+ "low_stock_coverage": false,
+ "avg_coverage": 1.0,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-29T23:26:19",
+ "fields": [
+  {
+   "id": "max_primary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 3000,
+   "description": "Daily maximum of variant-1 sentiment scores for the stock-day"
+  },
+  {
+   "id": "max_secondary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "longCount": 3000,
+   "description": "Daily maximum of variant 2 sentiment across PR events; scale [-1, 1]"
+  },
+  {
+   "id": "max_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 3000,
+   "description": "Daily maximum of base sentiment scores across PR events mapped to the stock"
+  },
+  {
+   "id": "mean_primary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 11,
+   "longCount": 3000,
+   "description": "Daily mean of sentiment1 scores across PR events (may be weighted by article importance)"
+  },
+  {
+   "id": "mean_secondary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "longCount": 3000,
+   "description": "Daily mean of sentiment2 scores across PR events (may be weighted by article importance)"
+  },
+  {
+   "id": "mean_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 11,
+   "longCount": 3000,
+   "description": "Daily mean of base sentiment scores across PR events (often weighted by article importance)"
+  },
+  {
+   "id": "median_primary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "longCount": 3000,
+   "description": "Daily median of sentiment1 scores across PR events"
+  },
+  {
+   "id": "median_secondary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 3000,
+   "description": "Median of the TRNA-style sentiment2 scores from all RavenPack press-release events linked to the stock on that day (USA "
+  },
+  {
+   "id": "median_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 6,
+   "longCount": 3000,
+   "description": "Daily median of event-level sentiment scores for the stock-day"
+  },
+  {
+   "id": "min_primary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 3000,
+   "description": "Daily minimum of sentiment1 scores across PR events mapped to the stock; range [-1, 1]"
+  },
+  {
+   "id": "min_secondary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 3000,
+   "description": "Daily minimum of variant 2 sentiment across PR events; scale [-1, 1]"
+  },
+  {
+   "id": "min_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 3000,
+   "description": "Daily minimum of main sentiment across PR events; scale [-1, 1]"
+  },
+  {
+   "id": "mws84_sentiment",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 24,
+   "alphaCount": 61,
+   "longCount": 3000,
+   "description": "Per-event main sentiment score for mapped PR headlines; TRNA-style scale [-1, 1]; D1 horizon"
+  },
+  {
+   "id": "news_item_count_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "longCount": 3000,
+   "description": "Total number of PR headlines mapped to the stock on that day (USA, D1)"
+  },
+  {
+   "id": "normalized_news_item_count_transfer_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 3000,
+   "description": "Normalized daily news article count (unitless), scaled by 90-day rolling mean for cross-sectional comparability"
+  },
+  {
+   "id": "primary_sentiment_score_transfer",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 3000,
+   "description": "Variant 1 sentiment score per PR headline at D1; range [-1, 1]"
+  },
+  {
+   "id": "secondary_sentiment_score_transfer",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 3000,
+   "description": "Variant 2 sentiment score per PR headline at D1; range [-1, 1]"
+  },
+  {
+   "id": "skew_primary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 3000,
+   "description": "The skewness of the primary transferred sentiment score distribution for the period."
+  },
+  {
+   "id": "skew_secondary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 3000,
+   "description": "Skewness of the distribution of TRNA-style sentiment2 scores across all RavenPack press-release events linked to the sto"
+  },
+  {
+   "id": "skew_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "longCount": 3000,
+   "description": "Skewness of the distribution of event-level sentiment scores for the stock-day"
+  },
+  {
+   "id": "sum_primary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 3000,
+   "description": "The sum of all primary transferred sentiment scores for the period."
+  },
+  {
+   "id": "sum_secondary_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 3000,
+   "description": "Daily sum of variant-2 sentiment scores across all PR events for the stock-day"
+  },
+  {
+   "id": "sum_sentiment_score_transfer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "longCount": 3000,
+   "description": "Sum of the main TRNA-style sentiment scores across all RavenPack press-release events linked to the stock on that day (U"
+  }
+ ]
+}

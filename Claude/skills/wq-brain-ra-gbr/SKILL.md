@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.1"
-last_verified: 2026-10-29
+last_verified: 2026-11-01
 ---
 
 # GBR 区域挖掘流程（RA 区域分支）
@@ -237,7 +237,10 @@ last_verified: 2026-10-29
   - **生成方式**：每波开场按 `get_datasets(region=GBR, delay=1, universe=TOP700)` 实读 + S1 体检（`get_datafields` 逐集字段画像）产出 `s0_whitelist`；**体检全部跑完再一次性锁**，不要边跑边改共享键。
   - **失效条件（命中任一即重扫）**：距上次建表 > 60 天 ／ 平台重算过指标 ／ 本区连续 3 波 0 达标 ／ 已判死集数 > 候选集数。
   - **本波至少 2 槽按 win 机制换腿**。
-  - ⚠ **塔位判定不要用数据集的 `category` 猜**：`techindi_model` 的 category 是 `other`，但塔位只能读 alpha 详情 `is.checks` 的 `MATCHES_PYRAMID`（或 `pyramids.list`）。
+  - ⚠ **塔位判定三条铁律（2026-10-30 扩写，原只有第 1 条）**：
+    1. **不要用数据集的 `category` 猜**：`techindi_model` 的 category 是 `other`，但塔位只能读 alpha 详情（`ra.pyramid_short` / `pyramids.list`）。
+    2. **不要用 `dataset_id` 推断**：`dataset_id=291` 一个槽位同时装两种塔位 —— `rKRkL9QE`（`divide(fnd6_capxy, cap)`）与 `WjOkLGWx`（`divide(fnd6_newq_cheq, cap)`）都是 **PV+FUNDAMENTAL（effective 2）**，而 `9qxQamje`（`ts_backfill(tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q1, 126)`）是 **OTHER（effective 1）**。同一 `dataset_id` 的两个候选可以点亮不同塔。
+    3. **盘塔位有零成本权威入口，别靠仿真实测**：`get_pyramid_alphas(start_date, end_date)` 给本季度逐区逐 delay 的塔位计数，`get_pyramid_multipliers()` 给各塔乘数 —— 两者合起来是**塔位盘点的唯一事实源**（GBR D1 实测 model 5 / analyst 3 / pv 1 / other 1 / 其余 0，D0 全塔为 0）。单条候选核塔位读 `get_alpha_details(alpha_id)` 的 `ra.pyramid_short` 与 `pyramids.list`（含 multiplier 与 effective 数）。
 - **PROD 饱和族**（starmine 四向、delta66、other455×model264）**不生成新变体**；`model238` 只作复合从腿。
 - **判定口径（GBR 版）**见上文「第 6 层 · 判定口径（GBR 版）」。
 
@@ -278,7 +281,9 @@ last_verified: 2026-10-29
 > **推翻证据（2026-10-29）**：
 > 1. **「未点亮塔无空间」建立在过时口径上** —— 平台已重算指标，2026-08~10 的判死记录大量失真；本轮按平台实时数据重扫，`get_datasets` 实读 **177 个数据集**，未点亮塔的候选池远大于本表所记。
 > 2. **本表的字段数是事实错误** —— 见下表「OTHER」行：`techindi_model` 实为 **399 字段 / 25667 alpha / 1818 users**，被误记成「三字段同一条腿」。**一条事实错误足以翻掉整张表。**
-> 3. **「塔位已被占」≠「该塔无可挖」** —— 塔位被同腿自锁只说明「这条腿用完了」，不说明「这个塔没有别的腿」。tm_17 与已提交的 tm_16 self 相关仅 **0.0238**，是干净新枝，2026-10-29 已推到 `failed_ra_count=0`。
+> 3. **「塔位已被占」≠「该塔无可挖」** —— 塔位被同腿自锁只说明「这条腿用完了」，不说明「这个塔没有别的腿」。~~tm_17 与已提交的 tm_16 self 相关仅 **0.0238**，是干净新枝，2026-10-29 已推到 `failed_ra_count=0`。~~
+>    ⛔⛔ **2026-10-30 推翻后半句：「self 干净」≠「prod 干净」。** tm_17 族（`ds=291`）19+ 条全闸通过，**prod 落 0.7343–1.0**：`N1NogQ87` 0.8439 ／ `O0Av1nZd` 0.8333 ／ `kqNlzEAK` 0.8719 ／ `88R1XNo7` 0.7736 ／ `3qoLJb16` 0.7945 ／ `rKRX8Jd1` 0.7919 ／ `YP1qR9wA` 0.7716 ／ `npvVQ8WE` 0.7343 ／ `XgJzLbl1` 0.8413 / 0.8891 / 1.0 ⇒ **OTHER 塔在 techindi 上仍无第 2 条腿**。
+>    **根因（方法论级，跨区通用）**：`self` 与 `prod` 回答的是**两个不同问题**。self 0.0238 只说明「不撞自家已提交池」，**不说明「不撞整个生产池」**。判「干净新枝」必须两个端点都实测；只测 self 就下结论是本轮踩过的坑。
 >
 > **正确用法**：把本表当「哪些机制试过」的**索引**，不当「结论」；进场前按 `get_datasets` + `get_datafields` 重新体检。
 
@@ -287,7 +292,7 @@ last_verified: 2026-10-29
 | 未点亮塔 | ALIVE 字段 | 终局 |
 |---|---|---|
 | **ANALYST**（塔 2） | 20 | 五数据集全判死：analyst7（breadth 族拥挤 + 182 未测字段全属该族且「换字段不造腿」）／analyst47（**F 墙**）／analyst9（处女池无信号）／analyst_factor_signals（IS 弱）／analyst93（类型 D，S 0.80）|
-| **OTHER**（塔 1） | **399** ⚠（旧记「3」为误） | ⛔ **旧结论已更正**：`techindi_model` 平台实读 **399 字段 / 25667 alphaCount / 1818 users / valueScore 2.0 / category=`other` / multiplier 1.6**（2026-10-29 由 `get_datasets(search="techn")` + `get_datafields(dataset_id="techindi_model")` 实取）。tm_16 / tm_17 各有多组变体（`r5`/`r10` × `q1`/`q2` × `p1`/`ph1`…），**不是「三字段同一条腿」**。真实死因分两层：**tm_16 族被自家 `3qVP6pNO` 占位**（self 0.87–1.0，见 `wq-prod-lever-self-lock-guard` 陷阱 2），而 **tm_17 与它 self 仅 0.0238、是干净的新枝**，2026-10-29 已推到 `failed_ra_count=0`（台账 `gbr_tm17_level_vs_diff_20261029`）。`dl_riskfree_returns` 的 `probability_label*` / `quantile_label*` 属标签类，仍按不可用作信号处理 |
+| **OTHER**（塔 1） | **399** ⚠（旧记「3」为误） | ⛔ **旧结论已更正**：`techindi_model` 平台实读 **399 字段 / 25667 alphaCount / 1818 users / valueScore 2.0 / category=`other` / multiplier 1.6**（2026-10-29 由 `get_datasets(search="techn")` + `get_datafields(dataset_id="techindi_model")` 实取）。tm_16 / tm_17 各有多组变体（`r5`/`r10` × `q1`/`q2` × `p1`/`ph1`…），**不是「三字段同一条腿」**。真实死因分两层：**tm_16 族被自家 `3qVP6pNO` 占位**（self 0.87–1.0，见 `wq-prod-lever-self-lock-guard` 陷阱 2），而 ~~tm_17 与它 self 仅 0.0238、是干净的新枝，2026-10-29 已推到 `failed_ra_count=0`（台账 `gbr_tm17_level_vs_diff_20261029`）~~ ⇒ ⛔⛔ **2026-10-30 推翻：`self` 干净不等于 `prod` 干净。tm_17 全族（19+ 条，ds=291）prod 实测 0.7343–1.0，OTHER 塔在 techindi 上仍无第 2 条腿。** self 0.0238 只证明它不撞自家 tm_16，不证明它不撞生产池。`dl_riskfree_returns` 的 `probability_label*` / `quantile_label*` 属标签类，仍按不可用作信号处理 |
 | **PV**（塔 1） | 3 | `pv47_spret`/`pv47_for_statssimple_only_spret` 撞既有硬 dead_end（PROD-SAT）；`pattern_scores` 唯一 ALIVE 字段已被 `A1G7o1EE` 占；未测 37 字段（`pv29`）= `industry_grouping_*` **聚类标签（AXIS_ONLY，非信号）** |
 | 其余 11 类 | **0** | 无 ALIVE |
 

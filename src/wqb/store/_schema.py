@@ -280,6 +280,34 @@ class SchemaMixin:
             );
             CREATE INDEX IF NOT EXISTS idx_api_cache_expires
                 ON api_cache(expires_at);
+            -- 2026-10-30 新：塔位指纹表（A1）。动机见 reports/gbr_session_retro_20261030.md。
+            -- ★ 关键事实（2026-10-30 GBR `rKRkL9QE` 实测）：平台对 **UNSUBMITTED** alpha
+            --   已返回 `pyramids.list` / `ra.pyramid_short` / `checks.fail`，
+            --   故塔位**不必再靠表达式反推**（`wqb/towers.py` 的 infer_tower 降为兜底）。
+            -- ★ 一条 alpha 可同时点亮多塔（`rKRkL9QE` = PV×1.4 + FUNDAMENTAL×1.6，effective=2），
+            --   反推只能选一条腿 ⇒ 倍率会少算，塔数会少数。
+            CREATE TABLE IF NOT EXISTS alpha_pyramids (
+                alpha_id TEXT PRIMARY KEY,
+                region TEXT,
+                delay INTEGER,
+                universe TEXT,
+                pyramid_short TEXT,          -- ra.pyramid_short，如 "pv/fundamental"
+                towers TEXT,                 -- JSON 列表，如 [{"name":"GBR/D1/PV","multiplier":1.4}, ...]
+                n_towers INTEGER,            -- len(towers)，= pyramids.effective 的平台口径
+                multiplier_sum REAL,         -- 各塔倍率之和（一鱼两塔 = 两座塔都计分）
+                failed_ra_count INTEGER,
+                checks_fail TEXT,            -- JSON 列表，平台 checks.fail
+                neutralization TEXT,
+                decay INTEGER,
+                truncation REAL,
+                max_trade TEXT,
+                nan_handling TEXT,
+                alpha_status TEXT,           -- 平台 status（UNSUBMITTED / ACTIVE / ...）
+                fetched_at TEXT,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS idx_alpha_pyramids_region
+                ON alpha_pyramids(region, delay);
             """
         )
         for col, ddl in (

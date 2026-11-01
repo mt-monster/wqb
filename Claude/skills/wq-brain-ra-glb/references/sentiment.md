@@ -84,4 +84,33 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 实测补录（2026-11-01，GLB/MINVOL1M/D1/decay10/FAST/trunc0.08，2014-01-01→2023-12-31）
+
+**★ 教训先行：本轮 w155 犯了重复测 —— 先查本表再设计模板。**
+
+`sentiment26` 的 `totaldomains_31`（顶级域数）与 `skewness_39`（排名偏度）**正是** `GLB-SNT26-WEBTRAFFIC-FASTKILL` 已判死族的字段。4 条回测属重复测，白烧配额。
+⇒ **新数据集第一步不是设计模板，是读本文件末尾的判死表 + 跑 1 条探针查覆盖。**
+
+**sentiment26 覆盖实测（补充死因，原条目只记了信号弱）**
+
+`get_alpha_yearly_stats` 逐年核对：**2014 / 2015 / 2016 三年 longCount=0 且 pnl=0（彻底空窗），数据 2017 才起**。两条独立件一致（`N1NAXjK7` totaldomains 版、`58EMZ6GM` skewness 版）。
+⇒ 按「近十年都要有数据」判据，sentiment26 **机制级判死**，与信号弱无关，剩余 8 模板不再派。
+引用条目时请补记：`GLB-SNT26-WEBTRAFFIC-FASTKILL` = 信号弱 **+** 2014-2016 连续空窗 3 年（双重死因）。
+
+**sentiment21 覆盖已实证（可放心用）**
+
+`Xg9rMdvl`（用 `snt21_2neg_conf_low_394` 作门控腿）的 yearly stats：**2014-2023 逐年 longCount 1039–1658 全部 > 0，逐年 sharpe 全正**（3.84 / 3.74 / 4.02 / 3.16 / 1.25 / 0.87 / 0.75 / 1.72 / 3.08 / 2.22）。
+⇒ snt21 不会重演 snt26 空窗。snt21 与 snt22 字段**完全同构**（2neg/2neut/2pos × conf_low/conf_up/max/mean/median/min/std + 2dts/3dts），全 MATRIX、cov 1.0、alphaCount 仅 8–544（低拥挤）。sentiment22 的覆盖**尚未实测**，用前必跑 yearly stats。
+
+**★ 首个通过 AMER 区域子闸的单塔件**
+
+`N1NAXjK7` = `group_rank(ts_zscore(vec_avg(snt26_totaldomains_31), 252), country)`
+→ S 1.30 / F 0.30 / TO 38.94% / returns 2.08% / 2Y 0.74 / sub 0.87 / invest_S 1.12
+→ **`LOW_GLB_AMER_SHARPE` 落在 checks.pass**（GLB 三区子闸里 AMER 首次过），EMEA 0.56 / APAC 0.38 仍挂
+→ 年度路径 2018 +1.74 / 2019 +2.55 / 2020 +1.82 / 2021 +1.85 / 2022 −0.04 / 2023 +1.83，仅 2017（首年 −0.90）与 2022 为负
+⇒ 信号本体成立，是被 3 年空窗 + 2 个坏年份拖死的。**把 startDate 缩到 2018-01-01 会大幅超闸，但那属缩窗口换指标，违反覆盖要求，不采用。**
+⇒ **country 分组在 AMER 区确实有效**，分组轴铁律（GLB 单塔只用 country/market，禁 subindustry）首获定量支持。对照：`xArRKzlq` 用 subindustry，TO 爆到 77.02% + CW 0.22。
+
+**同批负面确认**：`58EMZ6GM`（skewness + market 分组）S −0.31、`VkxOvlMw`（论坛 143 赞 F1c 矢量中性骨架 `vector_neut + ts_arg_min + ts_backfill`）S −0.25。
+⇒ 论坛跨区配方在 GLB 的失效清单再 +1 条（该骨架已是第 4 条实证失效）。
 <!-- profiles:manual:end -->

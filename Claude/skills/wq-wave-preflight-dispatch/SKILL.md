@@ -2,7 +2,7 @@
 name: wq-wave-preflight-dispatch
 layer: L-RA
 description: WQ BRAIN 批量仿真发批前自查 SOP。判「族扫完了吗」前先做三件事：横向扫全史最优、字段笛卡尔积清点、设置档盲区清点；发批时过候选实测/覆盖率闸/字段存在性硬闸/禁混信号自检，断点续跑去重键须含全部设置档，扩设置维度时运行器三处同步。本地库不可判全闸通过与所属区（alphas.region_id/universe 混区）。含 SuperAlpha 发批与提交前自查（区域资格≥10 组件、SA 相关闸单独实测、同源自锁、余量=1−prod）。触发词：发批/跑一波/扫数据集/批量仿真/items.json/续跑/换数据集/判死/扫完了吗/查论坛/SuperAlpha/SA/组件池。
-last_verified: 2026-10-30
+last_verified: 2026-11-01
 agent_created: true
 ---
 

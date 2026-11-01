@@ -44,7 +44,7 @@
   | 选区 / 选数据集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md)（含停投结论） |
   | 改工程链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) |
   | 复盘 / 准备放弃某方向 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) |
-  ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局。**实际消费点**：`build_wave.py` 的 `apply_rules("dead_end")` 拦截 + 打印 strategy 提示；`pipeline.py` 的 L1 采集 / L4 证伪 + strategy 提示；`review_wave.py` → `recommend_next_wave` → 通用 `inject_rules`（声明了 `when` / `emit` 的规则条件化命中，其余 active 规则作常驻提示兜底）；`gate.py` **只**消费 `explore_contract` 契约规则，不消费 strategy / diagnosis 规则。旧文写「四处 `RuleStore.query()` 强制注入」不符合实际，2026-10-04 更正）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/07_docs_skills/test_experience_kb_refs.py`。
+  ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局。**实际消费点**：`build_wave.py` 的 `apply_rules("dead_end")` 拦截 + 打印 strategy 提示；`pipeline.py` 的 L1 采集 / L4 证伪 + strategy 提示；`review_wave.py` → `recommend_next_wave` **只认四个硬编码 `action.op` 分支**（`gradient_dilute` / `warn_rnf_drop` / `dead_universe` / `classify_failure_nature`·`fail_fast_stop`），**没有通用注入器**；`gate.py` **只**消费 `explore_contract` 契约规则，不消费 strategy / diagnosis 规则。旧文写「四处 `RuleStore.query()` 强制注入」不符合实际，2026-10-04 更正；旧文写「通用 `inject_rules` + `when`/`emit` 条件化命中 + 其余 active 规则常驻兜底」同样不成立，**2026-10-31 机器级核验更正**（全仓 `def inject_rules` 零命中、`emit`/`when` 无任何消费方；**只有 `strategy` 型会被 `build_wave.py:789` / `pipeline.py:1499` 无条件打印 `action.message`**，新造 op 名的 diagnosis 规则永不生效）。消费点全表与「写规则前先确认谁读它」见 `docs/experience/04_engineering.md` §15）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/07_docs_skills/test_experience_kb_refs.py`。
 - 凭据位于 `world-quant-brain-mcp/.env`：禁止读取、打印或提交到 git。
 
 ## 3.5 Skills 回测标准路径（2026-09-05 单源化）
@@ -336,7 +336,7 @@ git config core.hooksPath tools/git-hooks
 
 环境为 Windows PowerShell（无 `&&`，用 `;`）。引号经“工具传参→PowerShell→解释器”三层嵌套必出事故，按优先级分层规避：
 
-0. **结构化数据读写首选 wqb-db MCP 工具**（根治层）：MCP 调用传 JSON 参数，不经过 shell，引号问题不存在。读：`get_wave_result`/`get_ledger_key`/`list_expressions`/`get_field_catalog`/`list_*`；写：`upsert_wave_result`/`upsert_ledger_key`/`upsert_registry_empirical`/`upsert_expressions`/`upsert_field_catalog`/`upsert_gate_result`/`upsert_backtest_rows`（幂等）。仅当需要执行逻辑（如批量入库带自动派生）才走 `campaign.py` CLI。**战役产物（expressions/gate/ranking/checkpoint/review/batches）只入库，禁止 Agent `Write`/`Copy-Item` 落 `tracking/*/candidates|cache|results|reviews/*.json|*.csv`。** CLI 临时 `@file.json`（AGENTS.md 引号规避）用完可删，不算战役持久化。
+0. **结构化数据读写首选 wqb-db MCP 工具**（根治层）：MCP 调用传 JSON 参数，不经过 shell，引号问题不存在。读：`get_wave_result`/`get_ledger_key`/`list_expressions`/`get_field_catalog`/`list_*`；写：`upsert_wave_result`/`upsert_ledger_key`/`upsert_registry_empirical`/`upsert_expressions`/`upsert_field_catalog`/`upsert_gate_result`/`upsert_backtest_rows`（幂等）。仅当需要执行逻辑（如批量入库带自动派生）才走 `campaign.py` CLI。⚠ **`upsert_ledger_key` 的 `merge` 不保护 list，且整值手转录会静默改坏数据（2026-10-31 KOR 实测）**：merge 只对 dict 递归、遇 list **整列覆盖** ⇒ 往 `methodology_rules` 这类 `{rules:[...]}` 键增量加一条必须传**完整列表**，只传新条目会抹掉既有的；同一次整值写入实测 **8 条里 7 条被改坏**（40 字符批次哈希截断成 30、`confidence:1.0` 变 `1`），而回执照样 `action=updated` ⇒ **回执成功 ≠ 数据正确**。长 payload 的 read-modify-write 交给脚本（`logs/_tmp_*.py`，走 `store.upsert_*` 既定写入方），**写后必须按 canonical JSON（`sort_keys=True`）逐条 diff 写前快照**。另：区域 `methodology_rules` 的运行期真相源是 **DB `ledger_kv`**，`tracking/<R>/reference/methodology_rules.json` 只是镜像 / DB 为空时的迁移源（`RuleStore._use_db()`：路径含 `tracking` 即读 DB；全局规则相反，始终读 toolkit config 文件）⇒ **只改区域文件等于白改，且守护测试照样全绿**。详见 `docs/experience/04_engineering.md` §16。**战役产物（expressions/gate/ranking/checkpoint/review/batches）只入库，禁止 Agent `Write`/`Copy-Item` 落 `tracking/*/candidates|cache|results|reviews/*.json|*.csv`。** CLI 临时 `@file.json`（AGENTS.md 引号规避）用完可删，不算战役持久化。
 1. **执行逻辑禁止 `python -c "..."` 内联带引号嵌套/中文/JSON 的代码**：一律先写临时脚本 `logs/_tmp_*.py`（UTF-8），执行 `python logs/_tmp_xxx.py`，用完可删。历史惯例 `logs/_*.py` 下划线前缀即临时脚本。
 2. **CLI 传中文/JSON/多行参数走 `@file` 文件通道**：先写临时 JSON 再以 `--extra @path.json` / `--candidates @path.json` 形式传入（`campaign.py` 系列已支持）；不要用引号包裹中文直接传参。
 3. **路径/含 `$` 的字符串用单引号**：PowerShell 双引号会展开 `$变量` 与反引号转义，路径参数一律 `'...'`。
@@ -405,6 +405,27 @@ git config core.hooksPath tools/git-hooks
 
 **归档而非删除**：一次性脚本、旧版本、废弃 skill 一律移入 `attic/<主题>_<YYYYMMDD>/`，
 保留可回溯性；安装位孤儿用 `python tools/sync_skills.py --prune-orphans [--apply]`。
+
+### 7.5 alpha 候选提交前的五道闸（2026-10-31 GBR 实证固化；与 §7 的 git 纪律无关）
+
+**任何区**在把 alpha 送上平台前，按**固定顺序**跑完五道闸
+（细则与逐条实证见 `Claude/skills/wq-brain-ra-gbr/rules/gate-and-submit-discipline.md`）：
+
+1. **台账排除** — `grep -r "<dataset_id>" docs reports Claude/skills`，把已测骨架当**排除表**用。
+2. **RA 闸 + 塔位** — `batch_get_alpha_metrics` + `get_alpha_details` 读 `checks.fail` 与 `pyramids.list`。
+   ⚠ 本地 `alphas.failed_ra_count` 是**旧快照**（实测本地记 0、平台实读 3 闸），不得当准。
+3. **近十年** — `get_alpha_yearly_stats` 逐年核 `longCount>0 && shortCount>0 && pnl>0`；
+   只看全期指标会把「数据不满十年」的 alpha 误当优质候选（实测 3 条 S 1.66–2.45、prod<0.55 却零持仓多年）。
+4. **self-corr** — `check_self_correlation`（对**本区** OS 池，池按区隔离）。
+   **阈值见 `config.PRODCORR_CEILING`（提交红线）**；0.99 只是「重跑 vs 同族变体」的分类阈值，不是能不能提交。
+5. **篮内互相关 + 塔位配额** — `compute_mutual_correlation` + 两塔组合计数
+   （单两塔组合 ≤3、trio×非trio ≤5、**trio 内部禁混**）。
+
+**★ 收割优先于重挖**：先查本地 `alphas` 的 prod-clean 池（`prod_correlation` 低于 `config.PRODCORR_CEILING`
+且 `stage='IS'` 且未提交），**零仿真配额**就能把候选池扩 2–3 倍；
+「prod 未知」多半是**检索盲区**而非平台阻塞。
+**★ 判死标记（台账 `dead` / registry `family_dead_datasets`）一律不得单独作为依据** ——
+实测仍在出货全闸候选的集（`fundamental17` / `news17` / `news18`）也被列为死集。
 
 ## 8. 结构维护约定（2026-09-20 结构审计固化）
 

@@ -1,0 +1,130 @@
+{
+ "dataset": "news29",
+ "region": "USA",
+ "universe": "TOP3000",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 12
+ },
+ "field_count": 12,
+ "platform_count": 12,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 2426,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.8088,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-29T23:26:16",
+ "fields": [
+  {
+   "id": "company_event_description_text_full",
+   "type": "VECTOR",
+   "coverage": 0.8608,
+   "userCount": 6,
+   "alphaCount": 12,
+   "longCount": 2582,
+   "description": "The full narrative or detailed description of a company event or news story."
+  },
+  {
+   "id": "company_event_headline_text_full",
+   "type": "VECTOR",
+   "coverage": 0.8608,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 2582,
+   "description": "The complete headline or summary text for a company event or news item."
+  },
+  {
+   "id": "company_event_structured_fields_full",
+   "type": "VECTOR",
+   "coverage": 0.2619,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 785,
+   "description": "All structured data fields and tags associated with a company event, including topics, codes, and attributes."
+  },
+  {
+   "id": "event_secondary_topic_code",
+   "type": "VECTOR",
+   "coverage": 0.9776,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2932,
+   "description": "Code representing the second-tier subcategory of the event; must be decoded via overlay"
+  },
+  {
+   "id": "event_tertiary_topic_code",
+   "type": "VECTOR",
+   "coverage": 0.9776,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2932,
+   "description": "Third-level event topic/category code (integer), for further sub-classification, must decode"
+  },
+  {
+   "id": "nws29_frontpage",
+   "type": "VECTOR",
+   "coverage": 0.8608,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 2582,
+   "description": "Flag indicating if the news item was featured on a Reuters front-page story (1 = yes, 0 = no)"
+  },
+  {
+   "id": "nws29_full_frontpage",
+   "type": "VECTOR",
+   "coverage": 0.9776,
+   "userCount": 11,
+   "alphaCount": 11,
+   "longCount": 2932,
+   "description": "Binary indicator (1/0) for whether the event/news was featured on Reuters front page"
+  },
+  {
+   "id": "nws29_full_significance",
+   "type": "VECTOR",
+   "coverage": 0.9776,
+   "userCount": 14,
+   "alphaCount": 17,
+   "longCount": 2932,
+   "description": "Event importance level code: High, Medium, Low relevance to market (must decode)"
+  },
+  {
+   "id": "nws29_full_topic1",
+   "type": "VECTOR",
+   "coverage": 0.9776,
+   "userCount": 8,
+   "alphaCount": 8,
+   "longCount": 2932,
+   "description": "Code representing the main category of the event; must be decoded via overlay (e.g. M&A, regulatory, etc.)"
+  },
+  {
+   "id": "nws29_significance",
+   "type": "VECTOR",
+   "coverage": 0.8608,
+   "userCount": 7,
+   "alphaCount": 11,
+   "longCount": 2582,
+   "description": "Level of importance for the development (1 = High, 2 = Medium, 3 = Low)"
+  },
+  {
+   "id": "nws29_topic1",
+   "type": "VECTOR",
+   "coverage": 0.8608,
+   "userCount": 4,
+   "alphaCount": 6,
+   "longCount": 2582,
+   "description": "Main topic code or parent category of the development"
+  },
+  {
+   "id": "nws29_topic2",
+   "type": "VECTOR",
+   "coverage": 0.252,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 756,
+   "description": "Second-tier topic code linked (mapped) to the parent topic"
+  }
+ ]
+}

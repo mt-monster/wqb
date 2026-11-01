@@ -92,4 +92,41 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 实测补录（2026-11-01，GLB/MINVOL1M/D1/decay10/FAST/trunc0.08，2014-01-01→2023-12-31）
+
+**FUNDAMENTAL 单塔第三次判死：18 条实测（w154b3 6 + batch3 6 + batch4 6），天花板稳定在 S 1.32 / F 0.43。**
+
+判死表两条被实测**确认有效**（不是误判，别去翻案）：
+
+| 判死条目 | 本轮实测（同设置、同国家分组） | 结论 |
+|---|---|---|
+| GLB-FND44-ACCOUNTING-QUALITY-MINVOL1M-FASTKILL | `yoon_wc_accruals` S **0.19** / `fnd44_cashflow_accruals` S **−0.11** / `fnd44_perc_accruals` S **−0.27**，三颗 F≈0、2Y 全负（−0.29~−0.44） | 会计质量族在 GLB 无方向，确认封盘 |
+| GLB-FUND23-QUARTERLY-SLOW-DELTA-NOSIGNAL | 真应计 `(NI−CF)/assets` 差分：正号 S **−0.31**、负号 S **+0.31** | 符号对称且都弱 ⇒ 无稳定方向，确认封盘 |
+
+**唯一存活构造**：`group_rank(ts_delta(ts_zscore(divide(annual_statement_of_cash_flows, assets_total_2), 252), 252), country)`
+→ S 1.32 / F 0.43 / TO 4.89% / returns 1.31% / 2Y 0.87 / sub 1.00 / invest_S 1.24 / margin 5.34bp，`checks.fail=[]`（全部落在 `warning`）。
+仍差 6 闸：S 1.32/1.58、F 0.43/1.0、**AMER 0.97/1.0（差 0.03）**、EMEA 0.59、APAC 0.67、2Y 0.87。缺口太大，不修。
+
+**★ 跨区可迁移：低换手件的 F 闸是惩罚性的，不是奖励性的。**
+
+G14 平台 fitness 在 turnover < 12.5% 时按 `F = S × sqrt(returns / 0.125)` 计算（分母被抬到 0.125）。
+实测校验：1.32 × sqrt(0.0131 / 0.125) = **0.427** ≈ 平台值 0.43，公式吻合。
+
+⇒ 反推「TO < 12.5% 的件要 F ≥ 1.0」的隐式 returns 门槛：
+
+| 目标 S | 所需 returns |
+|---|---|
+| 1.6 | ≥ 4.88% |
+| 2.0 | ≥ 3.13% |
+| 2.5 | ≥ 2.00% |
+
+⇒ **低换手路线的真实瓶颈是 returns 绝对水平，不是换手率**。看到 TO 只有 4–6% 的件时，先算一遍它要达标所需的 returns，再决定要不要继续投模板 —— 若当前 returns 距门槛 5 倍以上，任何算子微调都到不了。
+
+**★ 三次确认的定因（w154b3 → batch3 → batch4）**：GLB fundamental 的信息在**经营现金流绝对额**，不在利润质量（应计）维度。
+- 现金流 `cash_flows/assets` 差分 S 1.32 vs 真应计 `(NI−CF)/assets` 最高 |S| 0.31 ⇒ **差 4.3 倍**
+- 现金流水平版 S 1.27（w154b3 `cash_flows` 版） vs 净利润水平版 S 0.18（同骨架）⇒ **差 7 倍**
+- ⇒ 后续若再碰 GLB 基本面，只围绕现金流/自由现金流展开，不再投净利润、应计、M-score、F-score 任一变体。
+
+**★ 读 checks 必须同时看 `fail` 与 `warning` 两张表。**
+`KPJklGgE` 的 6 个缺口全在 `warning` 里、`fail` 是空列表 —— 只看 `fail` 会把「差 0.03 到差 0.71 的六项缺口」误判成「全闸通过」。判定「可提交」的唯一依据仍是 `failed_ra_count == 0`。
 <!-- profiles:manual:end -->

@@ -281,6 +281,43 @@ def ckpt_save(ctx, ck, checkpoint_dir=None):
 
 # ---------------- 各阶段 ----------------
 
+def dead_dataset_guard(ctx, dataset, datasets_extra=None, allow=False):
+    """硬闸：波数据集命中 `ledger_kv` 的 `<ds>_dead` 判死表 ⇒ 中止本波（返回 False）。
+
+    2026-10-30 落地（wave 205 institutions6 第三次误发之后，前两次是 wave 187/200
+    fund_holdings_panel）。根因不是数据不全，而是**链路从不检查死表**：
+    gate 的 `PRIORS-DEADEND-HIT` 只在 `--require-priors` 时升 FAIL，而 pipeline
+    从不传该 flag ⇒ 死集一路 WARN 到派发。这里直接读 ledger_kv（与
+    `wqb_db_mcp.get_dead_datasets` 同口径：`key LIKE '%_dead'`），不依赖 GEM priors 注入。
+
+    fail-open 仅限「判死表本身读不到」（只读查询异常），并打 WARN；死集命中一律 fail-closed。
+    """
+    if allow:
+        print("[dead-guard] ⚠ --allow-dead-dataset 已启用：跳过死集硬闸（须在台账写明复验理由）")
+        return True
+    ds_all = [dataset] + [x.strip() for x in (datasets_extra or "").split(",") if x.strip()]
+    try:
+        from _lib.db import connect
+        conn = connect()
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT key FROM ledger_kv WHERE region=? AND key LIKE '%_dead'",
+                        (ctx.region,))
+            dead = {str(r[0])[:-5] for r in cur.fetchall()}
+        finally:
+            conn.close()
+    except Exception as e:  # pragma: no cover - 只读异常
+        print(f"[dead-guard] WARN: 判死表读取失败({e})，本轮放行（只读查询异常，非死集判定）")
+        return True
+    hit = [d for d in ds_all if d in dead]
+    if hit:
+        print(f"[dead-guard] ⛔ 死集命中: {hit}（{ctx.region} 死表 {len(dead)} 个）")
+        print("[dead-guard] 中止：死集不得再投配额。换活集；确需复验请显式 --allow-dead-dataset 并在台账记因")
+        return False
+    print(f"[dead-guard] OK: {ds_all} 均不在死表（{ctx.region} 共 {len(dead)} 个）")
+    return True
+
+
 def stage_gate(ctx, ck, exprs, dataset, checkpoint_dir=None, datasets_extra=None):
     if ck["stages"].get("gate", {}).get("done"):
         print(f"[gate] 已完成（checkpoint），跳过。passed={len(ck['stages']['gate']['passed'])}")
@@ -1310,6 +1347,9 @@ def main():
     p.add_argument("--no-from-db", action="store_true", default=argparse.SUPPRESS,
                    help="禁用数据库模式，改用 --file（同顶层全局参数）")
     p.add_argument("--dataset", required=True)
+    p.add_argument("--allow-dead-dataset", action="store_true",
+                   help="跳过死集硬闸（2026-10-30 起默认 fail-closed：命中 ledger_kv `<ds>_dead` 即中止；"
+                        "确需复验必须在台账写明理由）")
     p.add_argument("--datasets", default="",
                    help="逗号分隔额外数据集，与 --dataset 合并白名单（跨金字塔 mix，与 gate.py --datasets 同语义）")
     p.add_argument("--wave", required=True)
@@ -1518,8 +1558,10 @@ def _cmd_main(a, ctx):
     if n_ov:
         print(f"[items] 检测到 {n_ov}/{len(exprs)} 条带 per-item settings（场景3：各自设置覆盖基础设置）")
     
-    passed = stage_gate(ctx, ck, exprs, a.dataset, a.checkpoint_dir, a.datasets)
-    # ---- 批级闸（闸6 多样性契约 + 可选闸7/8 sanity）：自动批量防退化 ----
+    if not dead_dataset_guard(ctx, a.dataset, a.datasets,
+                              allow=getattr(a, "allow_dead_dataset", False)):
+        return 2
+    passed = stage_gate(ctx, ck, exprs, a.dataset, a.checkpoint_dir, a.datasets)    # ---- 批级闸（闸6 多样性契约 + 可选闸7/8 sanity）：自动批量防退化 ----
     # 仅真实提交（--submit 且非 dry-run）时消费契约（幂等）；dry-run/plan 只检查不消费
     # 探针批（batch_type=probe）语义即豁免闸6：单骨架裸测用于归因，骨架多样性会污染归因。
     # 依据 diversity_gate_is_portfolio_level_not_per_wave_v1（2026-10-04 KOR 818 波次实证）。

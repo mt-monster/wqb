@@ -1,0 +1,2857 @@
+{
+ "dataset": "news_transformer_scores",
+ "region": "USA",
+ "universe": "TOP3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 315
+ },
+ "field_count": 315,
+ "platform_count": 315,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 2331,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.7773,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-29T23:03:24",
+ "fields": [
+  {
+   "id": "negative_sentiment_average_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 19,
+   "alphaCount": 20,
+   "longCount": 2275,
+   "description": "Average negative sentiment score across all applicable news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "negative_sentiment_average_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 8,
+   "alphaCount": 9,
+   "longCount": 2076,
+   "description": "Mean negative sentiment score across items for the stock during the post-market session that day (scores 0-1)"
+  },
+  {
+   "id": "negative_sentiment_average_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 18,
+   "alphaCount": 43,
+   "longCount": 2643,
+   "description": "Average negative sentiment score across all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "negative_sentiment_average_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 2275,
+   "description": "Mean value of negative sentiment scores in main session."
+  },
+  {
+   "id": "negative_sentiment_average_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Average negative sentiment score for the stock during the pre-market session on the day (variant 4), aggregated over Ben"
+  },
+  {
+   "id": "negative_sentiment_average_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 6,
+   "alphaCount": 6,
+   "longCount": 2275,
+   "description": "Average negative sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on t"
+  },
+  {
+   "id": "negative_sentiment_average_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 5,
+   "alphaCount": 7,
+   "longCount": 2076,
+   "description": "Average negative sentiment score for the stock during the post-market session on that day, aggregated across relevant ne"
+  },
+  {
+   "id": "negative_sentiment_average_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Average (mean) negative sentiment score across Benzinga NewsQuantified items for the stock during the post-market sessio"
+  },
+  {
+   "id": "negative_sentiment_average_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 9,
+   "alphaCount": 10,
+   "longCount": 2643,
+   "description": "Average negative sentiment score across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "negative_sentiment_confidence_base",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 5,
+   "alphaCount": 6,
+   "longCount": 2275,
+   "description": "Lower bound of the approximately 95% confidence interval for the negative sentiment mean during the main session (mean m"
+  },
+  {
+   "id": "negative_sentiment_confidence_base_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Lower bound of confidence interval for negative sentiment in post-market."
+  },
+  {
+   "id": "negative_sentiment_confidence_base_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 4,
+   "longCount": 2643,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean negative sentiment across pre-market news items for "
+  },
+  {
+   "id": "negative_sentiment_confidence_base_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean negative sentiment score for the stock’s post-mar"
+  },
+  {
+   "id": "negative_sentiment_confidence_base_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Approximate 95% confidence interval lower bound for the mean negative sentiment score for the stock during the pre-marke"
+  },
+  {
+   "id": "negative_sentiment_confidence_ceiling",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Upper endpoint of the approx. 95% confidence interval for the mean negative sentiment in the pre-market session (normal "
+  },
+  {
+   "id": "negative_sentiment_confidence_ceiling_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 2275,
+   "description": "Upper bound of the approximately 95% confidence interval for the negative sentiment mean during the main session (mean p"
+  },
+  {
+   "id": "negative_sentiment_confidence_ceiling_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Upper bound of confidence interval for negative sentiment in post-market."
+  },
+  {
+   "id": "negative_sentiment_confidence_ceiling_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 2643,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean negative sentiment across pre-market news items for "
+  },
+  {
+   "id": "negative_sentiment_confidence_ceiling_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean negative sentiment score for the stock’s post-mar"
+  },
+  {
+   "id": "negative_sentiment_confidence_floor",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 2643,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean negative sentiment score for the stock in the pre-ma"
+  },
+  {
+   "id": "negative_sentiment_confidence_floor_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean negative sentiment score across items for the stock "
+  },
+  {
+   "id": "negative_sentiment_confidence_floor_11",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 2643,
+   "description": "Lower endpoint of the approximate 95 percent confidence interval for the mean negative sentiment across pre-market news "
+  },
+  {
+   "id": "negative_sentiment_confidence_floor_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean negative sentiment score during the main session "
+  },
+  {
+   "id": "negative_sentiment_confidence_floor_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean of negative sentiment scores across Benzinga News"
+  },
+  {
+   "id": "negative_sentiment_confidence_floor_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean negative sentiment score for the stock-day in the"
+  },
+  {
+   "id": "negative_sentiment_confidence_floor_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean negative sentiment during the main (regular-hours"
+  },
+  {
+   "id": "negative_sentiment_confidence_lower_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Lower bound of confidence interval for negative sentiment in main session."
+  },
+  {
+   "id": "negative_sentiment_confidence_lower_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean negative sentiment score for the stock during the"
+  },
+  {
+   "id": "negative_sentiment_confidence_lower_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Lower endpoint of the approx. 95% confidence interval for the mean negative sentiment in the pre-market session (normal "
+  },
+  {
+   "id": "negative_sentiment_confidence_top",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean negative sentiment score for the stock in the pre-ma"
+  },
+  {
+   "id": "negative_sentiment_confidence_top_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean negative sentiment score during the main session "
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean negative sentiment during the main (regular-hours"
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean negative sentiment score across items for the stock "
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Upper endpoint of the approximate 95 percent confidence interval for the mean negative sentiment across pre-market news "
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper bound of confidence interval for negative sentiment in main session."
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Approximate 95% confidence interval upper bound for the mean negative sentiment score for the stock during the pre-marke"
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean of negative sentiment scores across Benzinga News"
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean negative sentiment score for the stock-day in the"
+  },
+  {
+   "id": "negative_sentiment_confidence_upper_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean negative sentiment score for the stock during the"
+  },
+  {
+   "id": "negative_sentiment_dispersion_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Standard deviation of negative sentiment scores across items for the stock during the post-market session that day (scor"
+  },
+  {
+   "id": "negative_sentiment_dispersion_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 4,
+   "longCount": 2643,
+   "description": "Standard deviation of negative sentiment scores across all pre-market news items for the stock on that day (0 to 1 scale"
+  },
+  {
+   "id": "negative_sentiment_dispersion_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Standard deviation of negative sentiment scores across Benzinga NewsQuantified items for the stock during the main tradi"
+  },
+  {
+   "id": "negative_sentiment_dispersion_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 2076,
+   "description": "Standard deviation of negative sentiment scores across post-market session news items for the stock-day"
+  },
+  {
+   "id": "negative_sentiment_dispersion_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Standard deviation of negative sentiment scores across news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "negative_sentiment_least_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum negative sentiment score observed across news items for the stock during the main session on that day; scores no"
+  },
+  {
+   "id": "negative_sentiment_least_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Minimum negative sentiment score among all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "negative_sentiment_least_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum of negative sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuant"
+  },
+  {
+   "id": "negative_sentiment_least_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum negative sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "negative_sentiment_least_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Minimum negative sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that da"
+  },
+  {
+   "id": "negative_sentiment_least_score_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum negative sentiment score observed for the stock during the pre-market session on the day (variant 4); scores nor"
+  },
+  {
+   "id": "negative_sentiment_least_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Minimum negative sentiment score observed for the stock in the pre-market session on that day across Benzinga NewsQuanti"
+  },
+  {
+   "id": "negative_sentiment_least_value_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum negative sentiment score observed across items for the stock during the post-market session that day (scores 0-1"
+  },
+  {
+   "id": "negative_sentiment_least_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Minimum negative sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that "
+  },
+  {
+   "id": "negative_sentiment_least_value_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum negative sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on t"
+  },
+  {
+   "id": "negative_sentiment_least_value_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Minimum negative sentiment score observed across post-market session news items for the stock-day; scores normalized to "
+  },
+  {
+   "id": "negative_sentiment_least_value_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Minimum negative sentiment score across all applicable news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "negative_sentiment_maximum_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum negative sentiment score across Benzinga NewsQuantified items for the stock during the main session that day; sc"
+  },
+  {
+   "id": "negative_sentiment_maximum_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Maximum negative sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on th"
+  },
+  {
+   "id": "negative_sentiment_maximum_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Maximum negative sentiment score among that stock’s pre-market news items for the day (scores normalized 0–1)"
+  },
+  {
+   "id": "negative_sentiment_mean_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Average negative sentiment score across news items for the stock during the main trading session on that day; scores nor"
+  },
+  {
+   "id": "negative_sentiment_mean_value_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Average (mean) of negative sentiment scores for the stock on the post-market session day (variant 4), across Benzinga Ne"
+  },
+  {
+   "id": "negative_sentiment_mean_value_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Average negative sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "negative_sentiment_mean_value_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Average negative sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that da"
+  },
+  {
+   "id": "negative_sentiment_median_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Median value of negative sentiment scores in main session."
+  },
+  {
+   "id": "negative_sentiment_median_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Median negative sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on the"
+  },
+  {
+   "id": "negative_sentiment_median_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Median negative sentiment score across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "negative_sentiment_middle_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 2275,
+   "description": "Median of negative sentiment scores across news items for the stock during the main trading session on that day; scores "
+  },
+  {
+   "id": "negative_sentiment_middle_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Median negative sentiment score across all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "negative_sentiment_middle_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median of negative sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuanti"
+  },
+  {
+   "id": "negative_sentiment_middle_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Median negative sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "negative_sentiment_middle_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median negative sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that day"
+  },
+  {
+   "id": "negative_sentiment_middle_score_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Median of negative sentiment scores for the stock during the pre-market session on the day (variant 4), aggregated over "
+  },
+  {
+   "id": "negative_sentiment_middle_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Median negative sentiment score for the stock in the pre-market session on that day across Benzinga NewsQuantified items"
+  },
+  {
+   "id": "negative_sentiment_middle_value_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median of negative sentiment scores across items for the stock during the post-market session that day (scores 0-1)"
+  },
+  {
+   "id": "negative_sentiment_middle_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median of negative sentiment scores across all Benzinga NewsQuantified items for the stock during the main session on th"
+  },
+  {
+   "id": "negative_sentiment_middle_value_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Median negative sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on th"
+  },
+  {
+   "id": "negative_sentiment_middle_value_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 3,
+   "longCount": 2076,
+   "description": "Median negative sentiment score across post-market session news items for the stock-day; scores normalized to [0,1]"
+  },
+  {
+   "id": "negative_sentiment_middle_value_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median of negative sentiment scores across all Benzinga NewsQuantified items for the stock during the main (regular-hour"
+  },
+  {
+   "id": "negative_sentiment_minimum_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum negative sentiment score across Benzinga NewsQuantified items for the stock during the main session that day; sc"
+  },
+  {
+   "id": "negative_sentiment_minimum_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum negative sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on th"
+  },
+  {
+   "id": "negative_sentiment_minimum_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum negative sentiment score among the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "negative_sentiment_peak_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Maximum negative sentiment score observed across news items for the stock during the main session on that day; scores no"
+  },
+  {
+   "id": "negative_sentiment_peak_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Maximum negative sentiment score among all pre-market news items for the stock on that day (WorldQuant model on Benzinga"
+  },
+  {
+   "id": "negative_sentiment_peak_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum of negative sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuant"
+  },
+  {
+   "id": "negative_sentiment_peak_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Maximum negative sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "negative_sentiment_peak_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum negative sentiment score among the stock’s Benzinga NewsQuantified items during the post-market session for that"
+  },
+  {
+   "id": "negative_sentiment_peak_score_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Maximum negative sentiment score observed for the stock during the pre-market session on the day (variant 4); scores nor"
+  },
+  {
+   "id": "negative_sentiment_peak_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Maximum negative sentiment score observed for the stock in the pre-market session on that day across Benzinga NewsQuanti"
+  },
+  {
+   "id": "negative_sentiment_peak_value_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum negative sentiment score observed across items for the stock during the post-market session that day (scores 0-1"
+  },
+  {
+   "id": "negative_sentiment_peak_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum negative sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that "
+  },
+  {
+   "id": "negative_sentiment_peak_value_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Maximum negative sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on t"
+  },
+  {
+   "id": "negative_sentiment_peak_value_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum negative sentiment score observed across post-market session news items for the stock-day; scores normalized to "
+  },
+  {
+   "id": "negative_sentiment_peak_value_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum negative sentiment score across all applicable news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "negative_sentiment_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Standard deviation of negative sentiment scores for the stock in the pre-market session on that day across Benzinga News"
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of negative sentiment scores across news items for the stock during the main session on that day; NA "
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_25",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of negative sentiment scores in main session."
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Standard deviation of negative sentiment scores for the stock on the post-market session day (variant 4), across Benzing"
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_33",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of negative sentiment scores across all Benzinga NewsQuantified items for the stock during the main s"
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Standard deviation of negative sentiment scores across pre-market news items for the stock on the day"
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Standard deviation of negative sentiment scores across the stock’s Benzinga NewsQuantified items in the post-market sess"
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_6",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Standard deviation of negative sentiment scores for the stock during the pre-market session on the day (variant 4); scor"
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Standard deviation of negative sentiment scores across Benzinga NewsQuantified items for the stock during the post-marke"
+  },
+  {
+   "id": "negative_sentiment_standard_deviation_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 5,
+   "alphaCount": 7,
+   "longCount": 2643,
+   "description": "Standard deviation of negative sentiment scores across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "negative_sentiment_typical_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Mean negative sentiment score for the stock in the pre-market session on that day across Benzinga NewsQuantified items"
+  },
+  {
+   "id": "negative_sentiment_typical_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Average negative sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that "
+  },
+  {
+   "id": "neutral_sentiment_average_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Average neutral sentiment score across all applicable news items for the stock during the main (regular-hours) session t"
+  },
+  {
+   "id": "neutral_sentiment_average_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Mean neutral sentiment score across items for the stock during the post-market session that day (scores 0-1)"
+  },
+  {
+   "id": "neutral_sentiment_average_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Mean value of neutral sentiment scores in main session."
+  },
+  {
+   "id": "neutral_sentiment_average_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Average neutral sentiment score for the stock during the pre-market session on the day (variant 4), aggregated over Benz"
+  },
+  {
+   "id": "neutral_sentiment_average_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Average neutral sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on th"
+  },
+  {
+   "id": "neutral_sentiment_average_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Average neutral sentiment score for the stock during the post-market session on that day, aggregated across Benzinga New"
+  },
+  {
+   "id": "neutral_sentiment_average_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Average (mean) neutral sentiment score across Benzinga NewsQuantified items for the stock during the post-market session"
+  },
+  {
+   "id": "neutral_sentiment_confidence_base",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Lower endpoint of the approx. 95% confidence interval for the mean neutral sentiment in the pre-market session (normal a"
+  },
+  {
+   "id": "neutral_sentiment_confidence_base_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Lower bound of the approximately 95% confidence interval for the neutral sentiment mean during the main session (mean mi"
+  },
+  {
+   "id": "neutral_sentiment_confidence_base_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower bound of confidence interval for neutral sentiment in post-market."
+  },
+  {
+   "id": "neutral_sentiment_confidence_base_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean neutral sentiment across pre-market news items for t"
+  },
+  {
+   "id": "neutral_sentiment_confidence_base_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean neutral sentiment score for the stock’s post-mark"
+  },
+  {
+   "id": "neutral_sentiment_confidence_base_6",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Approximate 95% confidence interval lower bound for the mean neutral sentiment score for the stock during the pre-market"
+  },
+  {
+   "id": "neutral_sentiment_confidence_ceiling",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper bound of the approximately 95% confidence interval for the neutral sentiment mean during the main session (mean pl"
+  },
+  {
+   "id": "neutral_sentiment_confidence_ceiling_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Upper bound of confidence interval for neutral sentiment in post-market."
+  },
+  {
+   "id": "neutral_sentiment_confidence_ceiling_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean neutral sentiment across pre-market news items for t"
+  },
+  {
+   "id": "neutral_sentiment_confidence_ceiling_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean neutral sentiment score for the stock’s post-mark"
+  },
+  {
+   "id": "neutral_sentiment_confidence_floor",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean neutral sentiment score for the stock in the pre-mar"
+  },
+  {
+   "id": "neutral_sentiment_confidence_floor_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean neutral sentiment score across Benzinga NewsQuantifi"
+  },
+  {
+   "id": "neutral_sentiment_confidence_floor_11",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Lower endpoint of the approximate 95 percent confidence interval for the mean neutral sentiment across pre-market news i"
+  },
+  {
+   "id": "neutral_sentiment_confidence_floor_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean neutral sentiment score during the main session o"
+  },
+  {
+   "id": "neutral_sentiment_confidence_floor_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean of neutral sentiment scores across Benzinga NewsQ"
+  },
+  {
+   "id": "neutral_sentiment_confidence_floor_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean neutral sentiment score for the stock-day in the "
+  },
+  {
+   "id": "neutral_sentiment_confidence_floor_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean neutral sentiment during the main (regular-hours)"
+  },
+  {
+   "id": "neutral_sentiment_confidence_lower_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Lower bound of confidence interval for neutral sentiment in main session."
+  },
+  {
+   "id": "neutral_sentiment_confidence_lower_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean neutral sentiment score for the stock during the "
+  },
+  {
+   "id": "neutral_sentiment_confidence_top",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean neutral sentiment score for the stock in the pre-mar"
+  },
+  {
+   "id": "neutral_sentiment_confidence_top_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean neutral sentiment score during the main session o"
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean neutral sentiment during the main (regular-hours)"
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean neutral sentiment score across items for the stock d"
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Upper endpoint of the approximate 95 percent confidence interval for the mean neutral sentiment across pre-market news i"
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Upper bound of confidence interval for neutral sentiment in main session."
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Approximate 95% confidence interval upper bound for the mean neutral sentiment score for the stock during the pre-market"
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean of neutral sentiment scores across Benzinga NewsQ"
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean neutral sentiment score for the stock-day in the "
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean neutral sentiment score for the stock during the "
+  },
+  {
+   "id": "neutral_sentiment_confidence_upper_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Upper endpoint of the approx. 95% confidence interval for the mean neutral sentiment in the pre-market session (normal a"
+  },
+  {
+   "id": "neutral_sentiment_dispersion_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Standard deviation of neutral sentiment scores across news items for the stock during the main (regular-hours) session t"
+  },
+  {
+   "id": "neutral_sentiment_dispersion_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Standard deviation of neutral sentiment scores across items for the stock during the post-market session that day (score"
+  },
+  {
+   "id": "neutral_sentiment_dispersion_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Standard deviation of neutral sentiment scores across all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_dispersion_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Standard deviation of neutral sentiment scores for the stock during the pre-market session on the day (variant 4); score"
+  },
+  {
+   "id": "neutral_sentiment_dispersion_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of neutral sentiment scores across Benzinga NewsQuantified items for the stock during the main tradin"
+  },
+  {
+   "id": "neutral_sentiment_dispersion_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Standard deviation of neutral sentiment scores across post-market session news items for the stock-day"
+  },
+  {
+   "id": "neutral_sentiment_least_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum neutral sentiment score observed across news items for the stock during the main session on that day; scores nor"
+  },
+  {
+   "id": "neutral_sentiment_least_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum neutral sentiment score among all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_least_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum of neutral sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuanti"
+  },
+  {
+   "id": "neutral_sentiment_least_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum neutral sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "neutral_sentiment_least_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum neutral sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that day"
+  },
+  {
+   "id": "neutral_sentiment_least_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum neutral sentiment score observed for the stock in the pre-market session on that day across Benzinga NewsQuantif"
+  },
+  {
+   "id": "neutral_sentiment_least_value_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Minimum neutral sentiment score across all applicable news items for the stock during the main (regular-hours) session t"
+  },
+  {
+   "id": "neutral_sentiment_least_value_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Minimum neutral sentiment score observed across items for the stock during the post-market session that day (scores 0-1)"
+  },
+  {
+   "id": "neutral_sentiment_least_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum neutral sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that d"
+  },
+  {
+   "id": "neutral_sentiment_least_value_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum neutral sentiment score observed for the stock during the pre-market session on the day (variant 4); scores norm"
+  },
+  {
+   "id": "neutral_sentiment_least_value_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum neutral sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on th"
+  },
+  {
+   "id": "neutral_sentiment_least_value_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum neutral sentiment score observed across post-market session news items for the stock-day; scores normalized to ["
+  },
+  {
+   "id": "neutral_sentiment_maximum_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Maximum neutral sentiment score across Benzinga NewsQuantified items for the stock during the main session that day; sco"
+  },
+  {
+   "id": "neutral_sentiment_maximum_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum neutral sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on the"
+  },
+  {
+   "id": "neutral_sentiment_maximum_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Maximum neutral sentiment score among the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_mean_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Average neutral sentiment score across all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_mean_value_2",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Average neutral sentiment score across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_mean_value_4",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Average neutral sentiment score across news items for the stock during the main trading session on that day; scores norm"
+  },
+  {
+   "id": "neutral_sentiment_mean_value_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Average (mean) of neutral sentiment scores for the stock on the post-market session day (variant 4), across Benzinga New"
+  },
+  {
+   "id": "neutral_sentiment_mean_value_6",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Average neutral sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "neutral_sentiment_mean_value_7",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Average neutral sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that day"
+  },
+  {
+   "id": "neutral_sentiment_median_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median value of neutral sentiment scores in main session."
+  },
+  {
+   "id": "neutral_sentiment_median_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median neutral sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on the "
+  },
+  {
+   "id": "neutral_sentiment_median_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Median neutral sentiment score across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_middle_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median of neutral sentiment scores across news items for the stock during the main trading session on that day; scores n"
+  },
+  {
+   "id": "neutral_sentiment_middle_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Median neutral sentiment score across all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_middle_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median of neutral sentiment scores for the stock on the post-market session day (variant 4), aggregated across Benzinga "
+  },
+  {
+   "id": "neutral_sentiment_middle_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Median neutral sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "neutral_sentiment_middle_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median neutral sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that day"
+  },
+  {
+   "id": "neutral_sentiment_middle_score_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Median of neutral sentiment scores for the stock during the pre-market session on the day (variant 4), aggregated over B"
+  },
+  {
+   "id": "neutral_sentiment_middle_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Median neutral sentiment score for the stock in the pre-market session on that day across Benzinga NewsQuantified items"
+  },
+  {
+   "id": "neutral_sentiment_middle_value_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median of neutral sentiment scores across items for the stock during the post-market session that day (scores 0-1)"
+  },
+  {
+   "id": "neutral_sentiment_middle_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median of neutral sentiment scores across all Benzinga NewsQuantified items for the stock during the main session on tha"
+  },
+  {
+   "id": "neutral_sentiment_middle_value_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median neutral sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on tha"
+  },
+  {
+   "id": "neutral_sentiment_middle_value_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Median neutral sentiment score across post-market session news items for the stock-day; scores normalized to [0,1]"
+  },
+  {
+   "id": "neutral_sentiment_middle_value_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Median of neutral sentiment scores across all Benzinga NewsQuantified items for the stock during the main (regular-hours"
+  },
+  {
+   "id": "neutral_sentiment_minimum_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum neutral sentiment score across Benzinga NewsQuantified items for the stock during the main session that day; sco"
+  },
+  {
+   "id": "neutral_sentiment_minimum_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum neutral sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on the"
+  },
+  {
+   "id": "neutral_sentiment_minimum_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum neutral sentiment score among the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_peak_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum neutral sentiment score observed across news items for the stock during the main session on that day; scores nor"
+  },
+  {
+   "id": "neutral_sentiment_peak_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum of neutral sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuanti"
+  },
+  {
+   "id": "neutral_sentiment_peak_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Maximum neutral sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "neutral_sentiment_peak_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum neutral sentiment score among the stock’s Benzinga NewsQuantified items during the post-market session for that "
+  },
+  {
+   "id": "neutral_sentiment_peak_score_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Maximum neutral sentiment score observed for the stock during the pre-market session on the day (variant 4); scores norm"
+  },
+  {
+   "id": "neutral_sentiment_peak_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Maximum neutral sentiment score observed for the stock in the pre-market session on that day across Benzinga NewsQuantif"
+  },
+  {
+   "id": "neutral_sentiment_peak_value_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Maximum neutral sentiment score across all applicable news items for the stock during the main (regular-hours) session t"
+  },
+  {
+   "id": "neutral_sentiment_peak_value_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum neutral sentiment score observed across items for the stock during the post-market session that day (scores 0-1)"
+  },
+  {
+   "id": "neutral_sentiment_peak_value_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Maximum neutral sentiment score among all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_peak_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Maximum neutral sentiment score across all Benzinga NewsQuantified items for the stock during the main (regular) session"
+  },
+  {
+   "id": "neutral_sentiment_peak_value_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum neutral sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on th"
+  },
+  {
+   "id": "neutral_sentiment_peak_value_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum neutral sentiment score observed across post-market session news items for the stock-day; scores normalized to ["
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Standard deviation of neutral sentiment scores for the stock in the pre-market session on that day across Benzinga NewsQ"
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of neutral sentiment scores across news items for the stock during the main session on that day; NA i"
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_25",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 5,
+   "alphaCount": 8,
+   "longCount": 2275,
+   "description": "Standard deviation of neutral sentiment scores in main session."
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 2076,
+   "description": "Standard deviation of neutral sentiment scores for the stock on the post-market session day (variant 4), across Benzinga"
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_33",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of neutral sentiment scores across all Benzinga NewsQuantified items for the stock during the main se"
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Standard deviation of neutral sentiment scores across pre-market news items for the stock on the day"
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Standard deviation of neutral sentiment scores across the stock’s Benzinga NewsQuantified items in the post-market sessi"
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Standard deviation of neutral sentiment scores across Benzinga NewsQuantified items for the stock during the post-market"
+  },
+  {
+   "id": "neutral_sentiment_standard_deviation_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 4,
+   "alphaCount": 6,
+   "longCount": 2643,
+   "description": "Standard deviation of neutral sentiment scores across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "neutral_sentiment_typical_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Mean neutral sentiment score for the stock in the pre-market session on that day across Benzinga NewsQuantified items"
+  },
+  {
+   "id": "neutral_sentiment_typical_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Average neutral sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that d"
+  },
+  {
+   "id": "positive_sentiment_average_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Mean positive sentiment score across items for the stock during the post-market session that day (scores 0-1)"
+  },
+  {
+   "id": "positive_sentiment_average_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 3,
+   "longCount": 2275,
+   "description": "Mean value of positive sentiment scores in main session."
+  },
+  {
+   "id": "positive_sentiment_average_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Average positive sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on t"
+  },
+  {
+   "id": "positive_sentiment_average_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Average positive sentiment score for the stock during the post-market session on that day, aggregated across relevant ne"
+  },
+  {
+   "id": "positive_sentiment_average_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Average positive sentiment score across all applicable news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "positive_sentiment_average_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Average (mean) positive sentiment score across Benzinga NewsQuantified items for the stock during the post-market sessio"
+  },
+  {
+   "id": "positive_sentiment_average_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 6,
+   "alphaCount": 8,
+   "longCount": 2643,
+   "description": "Average positive sentiment score across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "positive_sentiment_confidence_base",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Lower bound of the approximately 95% confidence interval for the positive sentiment mean during the main session (mean m"
+  },
+  {
+   "id": "positive_sentiment_confidence_base_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Lower bound of confidence interval for positive sentiment in post-market."
+  },
+  {
+   "id": "positive_sentiment_confidence_base_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean positive sentiment across pre-market news items for "
+  },
+  {
+   "id": "positive_sentiment_confidence_base_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean positive sentiment score for the stock’s post-mar"
+  },
+  {
+   "id": "positive_sentiment_confidence_base_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Approximate 95% confidence interval lower bound for the mean positive sentiment score for the stock during the pre-marke"
+  },
+  {
+   "id": "positive_sentiment_confidence_ceiling_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 2643,
+   "description": "Upper endpoint of the approximate 95 percent confidence interval for the mean positive sentiment across pre-market news "
+  },
+  {
+   "id": "positive_sentiment_confidence_ceiling_2",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Upper endpoint of the approx. 95% confidence interval for the mean positive sentiment in the pre-market session (normal "
+  },
+  {
+   "id": "positive_sentiment_confidence_ceiling_3",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper bound of the approximately 95% confidence interval for the positive sentiment mean during the main session (comput"
+  },
+  {
+   "id": "positive_sentiment_confidence_ceiling_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper bound of confidence interval for positive sentiment in post-market."
+  },
+  {
+   "id": "positive_sentiment_confidence_ceiling_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean positive sentiment across pre-market news items for "
+  },
+  {
+   "id": "positive_sentiment_confidence_ceiling_6",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean positive sentiment score for the stock’s post-mar"
+  },
+  {
+   "id": "positive_sentiment_confidence_floor",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean positive sentiment score for the stock in the pre-ma"
+  },
+  {
+   "id": "positive_sentiment_confidence_floor_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean positive sentiment during the main (regular-hours"
+  },
+  {
+   "id": "positive_sentiment_confidence_floor_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower bound of the approximate 95% confidence interval for the mean positive sentiment score across items for the stock "
+  },
+  {
+   "id": "positive_sentiment_confidence_floor_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Lower endpoint of the approximate 95 percent confidence interval for the mean positive sentiment across pre-market news "
+  },
+  {
+   "id": "positive_sentiment_confidence_floor_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean positive sentiment score during the main session "
+  },
+  {
+   "id": "positive_sentiment_confidence_floor_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean of positive sentiment scores across Benzinga News"
+  },
+  {
+   "id": "positive_sentiment_confidence_floor_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean positive sentiment score for the stock-day in the"
+  },
+  {
+   "id": "positive_sentiment_confidence_lower_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Lower bound of confidence interval for positive sentiment in main session."
+  },
+  {
+   "id": "positive_sentiment_confidence_lower_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Lower endpoint of the approximate 95% confidence interval for the mean positive sentiment score for the stock during the"
+  },
+  {
+   "id": "positive_sentiment_confidence_lower_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Lower endpoint of the approx. 95% confidence interval for the mean positive sentiment in the pre-market session (normal "
+  },
+  {
+   "id": "positive_sentiment_confidence_top",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean positive sentiment score for the stock in the pre-ma"
+  },
+  {
+   "id": "positive_sentiment_confidence_top_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean positive sentiment score during the main session "
+  },
+  {
+   "id": "positive_sentiment_confidence_upper_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean positive sentiment during the main (regular-hours"
+  },
+  {
+   "id": "positive_sentiment_confidence_upper_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper bound of the approximate 95% confidence interval for the mean positive sentiment score across items for the stock "
+  },
+  {
+   "id": "positive_sentiment_confidence_upper_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Upper bound of confidence interval for positive sentiment in main session."
+  },
+  {
+   "id": "positive_sentiment_confidence_upper_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Approximate 95% confidence interval upper bound for the mean positive sentiment score for the stock during the pre-marke"
+  },
+  {
+   "id": "positive_sentiment_confidence_upper_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean of positive sentiment scores across Benzinga News"
+  },
+  {
+   "id": "positive_sentiment_confidence_upper_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean positive sentiment score for the stock-day in the"
+  },
+  {
+   "id": "positive_sentiment_confidence_upper_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Upper endpoint of the approximate 95% confidence interval for the mean positive sentiment score for the stock during the"
+  },
+  {
+   "id": "positive_sentiment_dispersion_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Standard deviation of positive sentiment scores across items for the stock during the post-market session that day (scor"
+  },
+  {
+   "id": "positive_sentiment_dispersion_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 2643,
+   "description": "Standard deviation of positive sentiment scores across all pre-market news items for the stock on that day (0 to 1 scale"
+  },
+  {
+   "id": "positive_sentiment_dispersion_6",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Standard deviation of positive sentiment scores for the stock during the pre-market session on the day (variant 4); scor"
+  },
+  {
+   "id": "positive_sentiment_dispersion_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Standard deviation of positive sentiment scores across Benzinga NewsQuantified items for the stock during the main tradi"
+  },
+  {
+   "id": "positive_sentiment_dispersion_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Standard deviation of positive sentiment scores across post-market session news items for the stock-day"
+  },
+  {
+   "id": "positive_sentiment_dispersion_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Standard deviation of positive sentiment scores across news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "positive_sentiment_least_score",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 2643,
+   "description": "Minimum positive sentiment score among the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "positive_sentiment_least_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 5,
+   "alphaCount": 8,
+   "longCount": 2643,
+   "description": "Minimum positive sentiment score among all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "positive_sentiment_least_score_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Minimum positive sentiment score observed across news items for the stock during the main session on that day; scores no"
+  },
+  {
+   "id": "positive_sentiment_least_score_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum of positive sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuant"
+  },
+  {
+   "id": "positive_sentiment_least_score_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum positive sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "positive_sentiment_least_score_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum positive sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that da"
+  },
+  {
+   "id": "positive_sentiment_least_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum positive sentiment score observed for the stock in the pre-market session on that day across Benzinga NewsQuanti"
+  },
+  {
+   "id": "positive_sentiment_least_value_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum positive sentiment score across all applicable news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "positive_sentiment_least_value_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum positive sentiment score observed across items for the stock during the post-market session that day (scores 0-1"
+  },
+  {
+   "id": "positive_sentiment_least_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum positive sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that "
+  },
+  {
+   "id": "positive_sentiment_least_value_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Minimum positive sentiment score observed for the stock during the pre-market session on the day (variant 4); scores nor"
+  },
+  {
+   "id": "positive_sentiment_least_value_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Minimum positive sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on t"
+  },
+  {
+   "id": "positive_sentiment_least_value_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Minimum positive sentiment score observed across post-market session news items for the stock-day; scores normalized to "
+  },
+  {
+   "id": "positive_sentiment_maximum_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Maximum positive sentiment score across Benzinga NewsQuantified items linked to the stock during the main (regular-hours"
+  },
+  {
+   "id": "positive_sentiment_maximum_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum positive sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on th"
+  },
+  {
+   "id": "positive_sentiment_maximum_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Maximum positive sentiment score among the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "positive_sentiment_mean_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Average positive sentiment score across all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "positive_sentiment_mean_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Average positive sentiment score across Benzinga NewsQuantified news items for the stock during the main (regular) tradi"
+  },
+  {
+   "id": "positive_sentiment_mean_value_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Average (mean) of positive sentiment scores for the stock on the post-market session day (variant 4), across Benzinga Ne"
+  },
+  {
+   "id": "positive_sentiment_mean_value_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Average positive sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "positive_sentiment_mean_value_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Average positive sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that da"
+  },
+  {
+   "id": "positive_sentiment_mean_value_6",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Average positive sentiment score for the stock during the pre-market session on the day (variant 4), aggregated over Ben"
+  },
+  {
+   "id": "positive_sentiment_median_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median value of positive sentiment scores in main session."
+  },
+  {
+   "id": "positive_sentiment_median_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median positive sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on the"
+  },
+  {
+   "id": "positive_sentiment_median_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 3,
+   "alphaCount": 5,
+   "longCount": 2643,
+   "description": "Median positive sentiment score across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "positive_sentiment_middle_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median of positive sentiment scores across news items for the stock during the main trading session on that day; scores "
+  },
+  {
+   "id": "positive_sentiment_middle_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Median positive sentiment score across all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "positive_sentiment_middle_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median of positive sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuanti"
+  },
+  {
+   "id": "positive_sentiment_middle_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Median positive sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "positive_sentiment_middle_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median positive sentiment score across the stock’s Benzinga NewsQuantified items in the post-market session for that day"
+  },
+  {
+   "id": "positive_sentiment_middle_score_5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Median of positive sentiment scores for the stock during the pre-market session on the day (variant 4), aggregated over "
+  },
+  {
+   "id": "positive_sentiment_middle_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Median positive sentiment score for the stock in the pre-market session on that day across Benzinga NewsQuantified items"
+  },
+  {
+   "id": "positive_sentiment_middle_value_10",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Median of positive sentiment scores across Benzinga NewsQuantified items for the stock during the post-market session th"
+  },
+  {
+   "id": "positive_sentiment_middle_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median of positive sentiment scores across all Benzinga NewsQuantified items for the stock during the main session on th"
+  },
+  {
+   "id": "positive_sentiment_middle_value_7",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Median positive sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on th"
+  },
+  {
+   "id": "positive_sentiment_middle_value_8",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Median positive sentiment score across post-market session news items for the stock-day; scores normalized to [0,1]"
+  },
+  {
+   "id": "positive_sentiment_middle_value_9",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Median of positive sentiment scores across all Benzinga NewsQuantified items for the stock during the main (regular-hour"
+  },
+  {
+   "id": "positive_sentiment_minimum_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Minimum positive sentiment score across Benzinga NewsQuantified items for the stock during the main session that day; sc"
+  },
+  {
+   "id": "positive_sentiment_minimum_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Minimum positive sentiment score across Benzinga NewsQuantified items for the stock during the post-market session on th"
+  },
+  {
+   "id": "positive_sentiment_peak_score",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum positive sentiment score observed across news items for the stock during the main session on that day; scores no"
+  },
+  {
+   "id": "positive_sentiment_peak_score_12",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Maximum positive sentiment score among all pre-market news items for the stock on that day (0 to 1 scale)"
+  },
+  {
+   "id": "positive_sentiment_peak_score_2",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Maximum of positive sentiment scores for the stock on the post-market session day (variant 4), across Benzinga NewsQuant"
+  },
+  {
+   "id": "positive_sentiment_peak_score_3",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Maximum positive sentiment score across pre-market news items for the stock on the day; scores normalized to [0,1]"
+  },
+  {
+   "id": "positive_sentiment_peak_score_4",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Maximum positive sentiment score among the stock’s Benzinga NewsQuantified items during the post-market session for that"
+  },
+  {
+   "id": "positive_sentiment_peak_value_10",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum positive sentiment score across all applicable news items for the stock during the main (regular-hours) session "
+  },
+  {
+   "id": "positive_sentiment_peak_value_11",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2076,
+   "description": "Maximum positive sentiment score observed across items for the stock during the post-market session that day (scores 0-1"
+  },
+  {
+   "id": "positive_sentiment_peak_value_2",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Maximum positive sentiment score observed for the stock in the pre-market session on that day across Benzinga NewsQuanti"
+  },
+  {
+   "id": "positive_sentiment_peak_value_3",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2275,
+   "description": "Maximum positive sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that "
+  },
+  {
+   "id": "positive_sentiment_peak_value_7",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Maximum positive sentiment score observed for the stock during the pre-market session on the day (variant 4); scores nor"
+  },
+  {
+   "id": "positive_sentiment_peak_value_8",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2275,
+   "description": "Maximum positive sentiment score across Benzinga NewsQuantified items for the stock during the main trading session on t"
+  },
+  {
+   "id": "positive_sentiment_peak_value_9",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2076,
+   "description": "Maximum positive sentiment score observed across post-market session news items for the stock-day; scores normalized to "
+  },
+  {
+   "id": "positive_sentiment_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 2643,
+   "description": "Standard deviation of positive sentiment scores for the stock in the pre-market session on that day across Benzinga News"
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_2",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of positive sentiment scores across news items for the stock during the main session on that day; NA "
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_25",
+   "type": "MATRIX",
+   "coverage": 0.7586,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of positive sentiment scores in main session."
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_3",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2076,
+   "description": "Standard deviation of positive sentiment scores for the stock on the post-market session day (variant 4), across Benzing"
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_33",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2275,
+   "description": "Standard deviation of positive sentiment scores across all Benzinga NewsQuantified items for the stock during the main s"
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_4",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Standard deviation of positive sentiment scores across pre-market news items for the stock on the day"
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_5",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 2076,
+   "description": "Standard deviation of positive sentiment scores across the stock’s Benzinga NewsQuantified items in the post-market sess"
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_post",
+   "type": "MATRIX",
+   "coverage": 0.6923,
+   "userCount": 6,
+   "alphaCount": 7,
+   "longCount": 2076,
+   "description": "Standard deviation of positive sentiment scores across Benzinga NewsQuantified items for the stock during the post-marke"
+  },
+  {
+   "id": "positive_sentiment_standard_deviation_pre5",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "longCount": 2643,
+   "description": "Standard deviation of positive sentiment scores across the stock’s pre-market news items for the day (0–1 scale)"
+  },
+  {
+   "id": "positive_sentiment_typical_value",
+   "type": "MATRIX",
+   "coverage": 0.881,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 2643,
+   "description": "Mean positive sentiment score for the stock in the pre-market session on that day across Benzinga NewsQuantified items"
+  },
+  {
+   "id": "positive_sentiment_typical_value_2",
+   "type": "MATRIX",
+   "coverage": 0.7585,
+   "userCount": 3,
+   "alphaCount": 5,
+   "longCount": 2275,
+   "description": "Average positive sentiment score across all Benzinga NewsQuantified items for the stock during the main session on that "
+  }
+ ]
+}

@@ -92,6 +92,23 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 2026-10-31 · ★ 台账修正：`analyst7` 的 **est_breadth 形式存活**，衰减的只是 pre/revision 形式
+
+本文件记 `GBR-ANALYST7-REVISION-DECAYED`（`:85`），但平台实读显示 **`analyst7` 的「上修/下修家数广度差」形式并未衰减**：
+
+| alpha | 表达式 | 状态 | S | F | 2Y | prod | self |
+|---|---|---|---:|---:|---:|---:|---:|
+| `gJZQZkZe` | `ts_mean(group_neutralize(last_diff_value(subtract(rank(est_12m_pre_raisednum_4wks), rank(est_12m_pre_lowerednum_4wks)),100), sector), 100)` | **ACTIVE**（2026-10-08 提交） | 1.97 | 1.30 | 1.71 | 0.6793 | 0.263 |
+| `rKe5L9q3` | 同族（少一层 `last_diff_value`） | UNSUBMITTED | 1.95 | 1.28 | 1.71 | 0.6737（台账记） | **0.9933** ❌ |
+| `zqbYwOmV` | 同上但平滑窗 100→120 | UNSUBMITTED | 1.91 | 1.24 | 1.62 | 0.6956（台账记） | **0.9411** ❌ |
+
+⇒ **判死条目的措辞要改**：「`analyst7` 的 pre/revision **幅度**形式衰减」成立，但**广度差（`est_12m_pre_raisednum/lowerednum` 的家数差）形式是活的**，`gJZQZkZe` 已提交即证据。
+⇒ **但该族最多只能提 1 条**：`gJZQZkZe` 已在 OS 池，另两条 self-corr 0.9933 / 0.9411 **都超 0.7 红线** ⇒ 不可提交。
+
+★ **两条通用教训**：
+1. **台账记的 prod 值 ≠ 可提交**：`rKe5L9q3` 台账记 prod 0.6737（低于 prod-corr  ceiling，见 config.PRODCORR_CEILING），实际 self-corr 0.9933 ⇒ 不可提交。**台账的「全闸·待授权」只代表平台 RA 闸全过，不代表 self-corr 合规。**
+2. **self-corr 判据分层**：**0.7 是提交红线**；**0.99 只是「重跑 vs 同族变体」的分类阈值**。`zqbYwOmV` 只差平滑窗 100→120（0.9411）不是重跑，但照样不可提交。
+⇒ 提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)。
 
 ### ★ 2026-10-13 · GBR 类别选择实证（「未点亮塔 × ALIVE 密度」双条件）
 

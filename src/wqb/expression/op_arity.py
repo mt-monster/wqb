@@ -110,6 +110,12 @@ _INFIX_BINARY_OPS = {
     "less", "greater", "equal", "not_equal", "less_equal", "greater_equal",
 }
 
+#: 平台**只认命名传参**的 bare 参数：definition 里没写 ``=``（故被解析成位置参数），
+#: 但写成位置形式平台会报 ``Required attribute "<param>" must have a value`` 并连坐
+#: CANCELLED 整批。2026-10-31 实测：``kth_element(x, d, 5)`` → ERROR（整批 8 条全灭），
+#: ``kth_element(x, d, k=5)`` 正常。新增条目必须先有平台实测原文。
+_MUST_BE_NAMED = {"kth_element": ("k",)}
+
 
 class ArityError(ValueError):
     """算子元数 / 命名参数违规。"""
@@ -510,6 +516,17 @@ def check_expression(expr: str,
         #    bare 位置参数（definition 里无 `=`）也可作为 keyword 传参，
         #    如 kth_element(x, d, k, ignore="NaN") 允许 kth_element(x, 5, k=1)。
         #    只有 named-only 参数（`name = <字面量>`）和占位符参数才算合法命名参数。
+        for param in _MUST_BE_NAMED.get(site.name, ()):
+            if param not in sig.positional:
+                continue
+            idx = sig.positional.index(param)
+            supplied_by_name = any(key == param for key, _ in site.named)
+            if n_pos > idx and not supplied_by_name:
+                errors.append(
+                    f"[KWARG] {site.name} 的 {param} 必须命名传参"
+                    f"（写成位置形式平台会回 Required attribute \"{param}\" "
+                    f"must have a value，并连坐 CANCELLED 整批）；"
+                    f"应写作 {param}=...　签名: {sig.definition}")
         seen = set()
         for key, _value in site.named:
             if key not in sig.named_set:

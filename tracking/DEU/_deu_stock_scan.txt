@@ -1,0 +1,246 @@
+RAW gate-passing rows (S>=1.58 F>=1.0 2Y>=1.58): 169
+UNIQUE alphas: 169
+
+========================================================================================================================
+PER-DATASET: count of gate-passing alphas, split by prod status
+========================================================================================================================
+dataset                              tot   pOK   pNL   pWL   best (prod-clean)
+<NULL>                                60     7    33    20   1YNv6Ymk S2.28 F1.25 2Y1.60 prod=NULL
+shortinterest3                        24     3     8    13   blRnKEk6 S2.02 F1.70 2Y2.74 prod=0.577
+other455                              10     1     7     2   E5vxZ7bK S2.11 F2.03 2Y2.21 prod=NULL
+predictive_starmine                   10     0     5     5   O0AwxRwb S1.98 F1.74 2Y1.75 prod=NULL
+grtransform                            9     0     8     1   2rOW3j6b S2.17 F1.82 2Y2.25 prod=NULL
+dl_riskfree_returns                    7     0     1     6   mLg11W6W S2.15 F1.63 2Y2.04 prod=NULL
+sentiment7                             7     0     5     2   ZYQw5RNQ S1.73 F1.49 2Y2.11 prod=NULL
+model216                               5     0     5     0   ZY0MOMGj S1.90 F1.95 2Y2.44 prod=NULL
+insider_agg_matrix                     5     1     4     0   2rOW9xA6 S1.82 F1.65 2Y1.58 prod=NULL
+model28                                5     0     3     2   blRneE5K S1.78 F1.89 2Y2.28 prod=NULL
+lean_le89                              4     0     3     1   E5vLLPV0 S2.15 F1.63 2Y2.02 prod=NULL
+model264                               4     0     1     3   qMW35xnV S1.93 F1.53 2Y1.79 prod=NULL
+risk60                                 4     0     3     1   1Yx01KgW S1.76 F1.38 2Y1.89 prod=NULL
+analyst_earnings_ibes                  3     1     1     1   883Y3bAW S2.17 F1.24 2Y2.09 prod=0.543
+model25_model216                       3     0     1     2   E5vLjbM1 S1.81 F1.94 2Y1.58 prod=NULL
+sentiment27                            3     0     1     2   78Zl8gPZ S1.59 F1.35 2Y2.11 prod=NULL
+model238                               2     0     0     2   
+institutions1                          2     0     2     0   d5WwzRMY S1.73 F1.40 2Y2.64 prod=NULL
+model25                                1     0     0     1   
+tower_sprint_r104                      1     0     0     1   
+
+========================================================================================================================
+FULL DETAIL: prod-clean (<0.7) or prod-NULL, sorted by S
+========================================================================================================================
+alpha       dataset                       S      F     2Y    TO%    margin      DD% prod      stage  wave
+1YNv6Ymk                               2.28   1.25   1.60  37.92     5.98bp     5.53 NULL      IS     mcp-20261029
+883Y3bAW    analyst_earnings_ibes      2.17   1.24   2.09  34.22     6.58bp     0.00 0.543     OS     s2_aei_starmine_hybrid_r26_d1
+2rOW3j6b    grtransform                2.17   1.82   2.25  16.62    14.02bp     0.00 NULL      IS     s2_grtransform_r83_d1
+rK5VZdGj    grtransform                2.17   1.81   2.13  16.92    13.92bp     0.00 NULL      IS     s2_grtransform_r83_d1
+mLg11W6W    dl_riskfree_returns        2.15   1.63   2.04  19.98    11.54bp     0.00 NULL      IS     s2_dlriskfree_hybrid_r66_d1
+E5vLLPV0    lean_le89                  2.15   1.63   2.02  19.84    11.53bp     0.00 NULL      IS     s2_lean_le89_r89_d1
+kqV9EEZk    lean_le89                  2.13   1.62   2.18  19.13    11.62bp     0.00 NULL      IS     s2_lean_le89_r89_d1
+RRVPjj1e    lean_le89                  2.13   1.58   2.02  20.47    10.94bp     0.00 NULL      IS     s2_lean_le89_r89_d1
+E5vxZ7bK    other455                   2.11   2.03   2.21  10.93    21.16bp     0.00 NULL      IS     s2_other455_formula_r85_d1
+2rOe10qY    other455                   2.10   1.98   2.19  12.72    17.80bp     0.00 0.639     OS     s2_other455_formula_r85_d1
+e79vX6GE    grtransform                2.09   1.71   2.12  16.87    13.45bp     0.00 NULL      IS     s2_grtransform_r83_d1
+58QYZb7z    other455                   2.09   2.02   2.38  11.70    19.89bp     0.00 NULL      IS     s2_other455_formula_r85_d1
+GrWVx2aO                               2.07   1.89   2.55  10.35    20.17bp     4.36 NULL      IS     mcp-20261029
+kqNRX1ZP                               2.06   1.86   2.37  10.99    18.61bp     4.23 NULL      IS     mcp-20261029
+3qod35v6                               2.04   1.84   2.36  11.00    18.45bp     4.15 NULL      IS     mcp-20261029
+qMLbdPAA                               2.04   1.84   2.38  11.00    18.50bp     4.16 NULL      IS     mcp-20261029
+QPveY7Kg                               2.03   1.61   2.54  16.10    12.60bp     6.00 0.667     IS     mcp-20261029
+blRnKEk6    shortinterest3             2.02   1.70   2.74  16.15    14.13bp     0.00 0.577     OS     s2_si3_cwfix2_r70_d1
+E5vxZ7YJ    other455                   2.01   1.86   2.38  10.71    19.89bp     0.00 NULL      IS     s2_other455_formula_r85_d1
+O0AwxRwb    predictive_starmine        1.98   1.74   1.75  15.36    15.37bp     9.39 NULL      IS     114
+KPJexqql                               1.96   1.55   1.73  16.35    12.52bp     5.34 NULL      IS     mcp-20261029
+d5WqmExJ                               1.96   1.76   2.35  11.00    18.25bp     4.94 NULL      IS     mcp-20261029
+vR109elb                               1.94   1.70   2.27  10.91    17.60bp     3.33 NULL      IS     mcp-20261029
+9qxgMvOV                               1.94   1.78   2.21   8.87    23.68bp     6.67 NULL      IS     mcp-20261030
+akLwV67v    analyst_earnings_ibes      1.93   1.18   2.03  26.69     7.44bp     0.00 NULL      IS     s2_hybrid_setvar_r37_d1
+qMW35xnV    model264                   1.93   1.53   1.79  18.00    12.62bp     0.00 NULL      IS     s2_model264_news_hybrid_r45_d1
+xAYWJ1Wn    grtransform                1.92   1.44   2.23  20.04    11.32bp     0.00 NULL      IS     s2_grtransform_r83_d1
+WjP0x8Md    shortinterest3             1.92   1.48   2.55  18.26    11.90bp     0.00 NULL      IS     s2_si3_cwfix2_r70_d1
+RRVKGAKe    grtransform                1.91   1.41   2.19  20.69    10.85bp     0.00 NULL      IS     s2_grtransform_r83_d1
+le81ZVo5    other455                   1.91   1.69   1.85  11.22    17.46bp     0.00 NULL      IS     s2_tower_sprint_r93_d1
+ZY0MOMGj    model216                   1.90   1.95   2.44  12.19    21.56bp     0.00 NULL      IS     s2_m216_grtransform_r84_d1
+xArMQPdJ                               1.88   1.64   2.02  11.00    17.38bp     5.25 NULL      IS     mcp-20261029
+KPOQWmQ1    grtransform                1.88   1.40   2.21  19.93    11.11bp     0.00 NULL      IS     s2_grtransform_r83_d1
+RRVPLpG0    other455                   1.88   1.66   1.78  12.96    15.68bp     0.00 NULL      IS     s2_tower_sprint_r93_d1
+6XrJ5Jbp    model216                   1.86   1.90   2.38  12.16    21.35bp     0.00 NULL      IS     s2_m216_grtransform_r84_d1
+Vkxnb8QG                               1.83   1.64   2.09   9.06    22.27bp     5.58 0.638     IS     mcp-20261029
+GrdxZxJ5    model216                   1.83   1.85   2.38  12.27    20.72bp     0.00 NULL      IS     s2_m216_grtransform_r84_d1
+E5vx03Q0    shortinterest3             1.83   1.49   2.10  19.60    13.26bp     0.00 NULL      IS     s2_tower_sprint_r95_d1
+2rOW9xA6    insider_agg_matrix         1.82   1.65   1.58  14.11    16.42bp     0.00 NULL      IS     s2_insider_starmine_r47_d1
+E5vLjbM1    model25_model216           1.81   1.94   1.58  12.51    22.87bp     0.00 NULL      IS     s2_boundary_push_r76_d1
+vRk6og8b    shortinterest3             1.80   1.47   2.10  19.03    13.40bp     0.00 0.688     OS     s2_si3_cwfix2_r70_d1
+ZYmY6l93                               1.79   1.64   1.64  11.90    17.69bp     6.00 NULL      IS     WANL11
+Vk65zLzG    insider_agg_matrix         1.79   1.69   2.07  12.03    18.46bp     0.00 0.640     OS     s2_insider_starmine_r59_d1
+bl62jGgM    predictive_starmine        1.78   1.50   1.75  13.96    14.25bp     6.51 NULL      IS     116
+kqJqQL08                               1.78   1.62   1.64  10.39    19.97bp     7.98 NULL      IS     WANL25
+kqVOzO5O    model216                   1.78   1.77   2.39  12.44    19.80bp     0.00 NULL      IS     s2_m216_grtransform_r84_d1
+blRneE5K    model28                    1.78   1.89   2.28  12.16    23.06bp     0.00 NULL      IS     s2_model28_drift66_r82_d1
+Jjxrl0dx    shortinterest3             1.78   1.37   2.04  19.76    11.84bp     0.00 NULL      IS     s2_tower_sprint_r94_d1
+6XdPlm2L    predictive_starmine        1.77   1.42   1.79  15.41    12.79bp     6.27 NULL      IS     116
+2rjrMZ25                               1.77   1.61   1.83  11.99    17.18bp     7.19 0.651     OS     WANL11
+RREXxW6z                               1.77   1.61   1.83  11.99    17.18bp     7.19 NULL      IS     mcp-20261029
+YP5JRxYq    grtransform                1.77   1.71   2.15  13.64    18.65bp     0.00 NULL      IS     s2_grtransform_r83_d1
+1YNv8qaK                               1.76   1.35   1.61  17.19    11.71bp     7.06 NULL      IS     mcp-20261029
+1YxPrj0K    grtransform                1.76   1.64   2.13  14.48    17.36bp     0.00 NULL      IS     s2_grtransform_r83_d1
+O0rgvJgR    other455                   1.76   1.65   1.64  12.15    18.19bp     0.00 NULL      IS     s2_tower_sprint_r93_d1
+1Yx01KgW    risk60                     1.76   1.38   1.89  19.18    12.32bp     0.00 NULL      IS     s2_tower_sprint_r96_d1
+58gkLAkk                               1.75   1.42   2.07  14.57    13.16bp     7.81 0.538     OS     mcp-20261030
+YP1w7LO6    predictive_starmine        1.74   1.39   1.95  15.22    12.74bp     7.51 NULL      IS     116
+ZYQw5RNQ    sentiment7                 1.73   1.49   2.11  11.01    16.94bp     7.29 NULL      IS     95
+e758plEM    sentiment7                 1.73   1.49   2.08  12.25    15.09bp     6.62 NULL      IS     95
+6Xdx65eK                               1.73   1.38   1.71  15.53    12.74bp     6.89 NULL      IS     mcp-20261029
+Wje5K71x                               1.73   1.37   1.87  12.69    12.58bp     6.08 0.430     OS     mcp-20261030
+om6rxOOm    model28                    1.73   1.82   2.21  12.11    22.84bp     0.00 NULL      IS     s2_model28_drift66_r82_d1
+RRVK6ELb    shortinterest3             1.73   1.28   2.13  22.85    11.00bp     0.00 NULL      IS     s2_si3_cwfix_r36_d1
+d5WwzRMY    institutions1              1.73   1.40   2.64  12.85    13.12bp     5.42 NULL      IS     s4_inst1_selflock_probe_d1
+1YxPZN5J    shortinterest3             1.71   1.20   2.04  24.79     9.77bp     0.00 NULL      IS     s2_si3_cwfix_r36_d1
+j23x8YLW    shortinterest3             1.71   1.20   2.04  24.79     9.77bp     0.00 NULL      IS     s2_si3_cwfix_r36_d1
+E56AzejK    institutions1              1.71   1.36   2.79  13.28    12.66bp     5.95 NULL      IS     s4_inst1_selflock_probe_d1
+QPvex1Q5                               1.70   1.43   1.72  13.78    14.15bp     7.54 NULL      IS     mcp-20261029
+P0Z8g18q    insider_agg_matrix         1.70   1.19   2.03  24.91     9.73bp     0.00 NULL      IS     s2_insider_si3_r35_d1
+zqY0bW0G    insider_agg_matrix         1.70   1.25   2.03  22.98    10.85bp     0.00 NULL      IS     s2_insider_si3_r35_d1
+1Yx01KgJ    risk60                     1.70   1.33   1.75  18.56    12.23bp     0.00 NULL      IS     s2_tower_sprint_r96_d1
+leA6qLNe    sentiment7                 1.69   1.43   2.03  12.75    14.26bp     7.52 NULL      IS     95
+zqY0OLEX    predictive_starmine        1.69   1.14   1.58  20.02     9.05bp     0.00 NULL      IS     s2_starmine_r11_d1
+883X7Jnl    risk60                     1.69   1.32   1.73  18.53    12.20bp     0.00 NULL      IS     s2_tower_sprint_r96_d1
+xArX5prW                               1.68   1.36   2.34   6.59    24.88bp     4.69 NULL      IS     mcp-20261030
+JjxrYjre    shortinterest3             1.68   1.47   1.69  12.31    15.58bp     0.00 0.645     OS     s2_tower_sprint_r95_d1
+le81keYe    shortinterest3             1.68   1.48   1.75  12.39    15.60bp     0.00 NULL      IS     s2_tower_sprint_r95_d1
+58QePWW5    model28                    1.67   1.71   1.58  12.50    21.00bp     0.00 NULL      IS     s2_model28_drift66_r82_d1
+P0g73GYq                               1.66   1.43   2.14  12.92    14.79bp     5.55 NULL      -      backfill_platform
+qMW3GgVV    insider_agg_matrix         1.66   1.49   1.58   8.57    23.56bp     0.00 NULL      IS     s2_insider_starmine_r58_d1
+JjQ7vaAx                               1.65   1.42   1.69  13.37    14.89bp     5.17 NULL      -      backfill_platform
+gJZZOa6g                               1.65   1.47   1.58   7.17    27.52bp     8.19 NULL      -      backfill_platform
+d511povg                               1.65   1.46   1.58   7.10    27.71bp     8.17 NULL      -      backfill_platform
+O0rVlVe7    model216                   1.65   1.56   2.16  12.88    17.76bp     0.00 NULL      IS     s2_m216_grtransform_r84_d1
+j288RaEQ                               1.64   1.46   1.58   7.11    27.70bp     8.71 NULL      -      backfill_platform
+A1vv9mmX                               1.64   1.46   1.59   7.11    27.72bp     8.71 NULL      -      backfill_platform
+P0orWJKK    sentiment7                 1.63   1.34   2.02  12.94    13.61bp     7.54 NULL      IS     95
+E5Rlend1                               1.63   1.38   1.76  13.58    14.40bp     5.13 NULL      -      backfill_platform
+vR1aoON3                               1.63   1.30   2.19   6.07    26.34bp     4.84 NULL      IS     mcp-20261030
+Vk6eodeb    other455                   1.63   1.41   1.66  12.43    14.98bp     0.00 NULL      IS     s2_tower_sprint_r93_d1
+E5607ZxK    sentiment7                 1.62   1.24   2.27  14.86    11.77bp     7.68 NULL      IS     95
+GrOleXAJ                               1.61   1.42   1.75  12.00    16.19bp     5.09 NULL      -      backfill_platform
+zqbkmN2G                               1.61   1.38   2.06  12.42    14.78bp     5.03 NULL      -      backfill_platform
+786j1zG1                               1.60   1.37   2.04  11.95    15.29bp     4.99 NULL      -      backfill_platform
+d51jRJMX                               1.59   1.39   1.76  12.57    15.24bp     4.63 NULL      -      backfill_platform
+YPM7g33W                               1.59   1.39   1.76  11.91    16.01bp     4.66 NULL      -      backfill_platform
+npP78m9l                               1.59   1.39   1.75  11.28    16.93bp     4.62 NULL      -      backfill_platform
+MPY9VNY9                               1.59   1.26   2.36   3.64    43.39bp     5.33 0.599     IS     mcp-20261030
+npvwXA8l                               1.59   1.25   2.27   5.44    28.62bp     4.49 0.609     IS     mcp-20261030
+qMLewENK                               1.59   1.25   2.15   5.74    27.07bp     4.46 NULL      IS     mcp-20261030
+78Zl8gPZ    sentiment27                1.59   1.35   2.11  13.88    14.47bp     0.00 NULL      IS     s2_sentiment27_formula_r87_d1
+Jjx1Qelj    shortinterest3             1.59   1.12   2.12  22.93     9.90bp     0.00 NULL      IS     s2_si3_cwfix_r36_d1
+58glOpJn                               1.58   1.38   1.73  10.75    17.72bp     4.64 NULL      -      backfill_platform
+
+TOTAL usable (prod<0.7 or NULL): 104
+
+========================================================================================================================
+CODE FINGERPRINTS (first 90 chars) for the usable set
+========================================================================================================================
+1YNv6Ymk    group_rank(tm_15_r1_r5_r10_rh_glb_d1_r10_q1, sector)
+883Y3bAW    add(add(add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5)), rank(ts_me
+2rOW3j6b    R83
+rK5VZdGj    R83
+mLg11W6W    add(add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5)), rank(ts_mean(p
+E5vLLPV0    R89
+kqV9EEZk    R89
+RRVPjj1e    R89
+E5vxZ7bK    R84/R85
+2rOe10qY    R84/R85
+e79vX6GE    R83
+58QYZb7z    R84/R85
+GrWVx2aO    vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22
+kqNRX1ZP    vector_neut(vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languag
+3qod35v6    vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22
+qMLbdPAA    vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22
+QPveY7Kg    vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22
+blRnKEk6    add(add(add(if_else(is_nan(-rank(vec_avg(mean_loan_rate_main))), 0, -rank(vec_avg(mean_loa
+E5vxZ7YJ    R84/R85
+O0AwxRwb    divide(add(add(add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5)), ran
+KPJexqql    group_rank(tm_15_r1_r5_r10_rh_glb_d1_r10_q1, sector)
+d5WqmExJ    vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22
+vR109elb    vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22
+9qxgMvOV    vector_neut(quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views), 22),
+akLwV67v    add(add(add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5)), rank(ts_me
+qMW35xnV    add(add(add(rank(mdl264_news_abno_vol_1d_class), rank(ts_mean(mean_estimate_change_pct_f12
+xAYWJ1Wn    R83
+WjP0x8Md    add(add(add(add(if_else(is_nan(-rank(vec_avg(mean_loan_rate_main))), 0, -rank(vec_avg(mean
+RRVKGAKe    R83
+le81ZVo5    R93
+ZY0MOMGj    R84/R85
+xArMQPdJ    vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22
+KPOQWmQ1    R83
+RRVPLpG0    R93
+6XrJ5Jbp    R84/R85
+Vkxnb8QG    trade_when(rank(ts_backfill(vec_avg(mean_loan_rate_main), 252)) < 0.75, group_neutralize(g
+GrdxZxJ5    R84/R85
+E5vx03Q0    R95
+2rOW9xA6    add(add(add(add(add(rank(ts_sum(ts_backfill(directional_indicator, 66), 252)), rank(ts_mea
+E5vLjbM1    M25 gr_M22(industry)
+vRk6og8b    add(add(add(add(-rank(ts_backfill(vec_avg(mean_loan_rate_main), 252)), rank(ts_mean(mean_e
+ZYmY6l93    group_neutralize(group_rank(add(eps_y1_estimate_change_3mo, ts_mean(eps_y1_estimate_change
+Vk65zLzG    add(add(add(add(rank(ts_sum(ts_backfill(directional_indicator, 66), 252)), rank(ts_mean(pr
+bl62jGgM    divide(add(add(add(add(rank(ts_mean(predicted_surprise_pct_f12m_ebitda_5, 5)), rank(ts_mea
+kqJqQL08    group_neutralize(group_rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 1),
+kqVOzO5O    R84/R85
+blRneE5K    R82
+Jjxrl0dx    R94
+6XdPlm2L    divide(add(add(add(rank(ts_mean(predicted_surprise_pct_f12m_ebitda_5, 5)), rank(ts_mean(pr
+2rjrMZ25    group_neutralize(group_rank(add(ts_backfill(eps_y1_estimate_change_3mo, 1008), ts_mean(ts_
+RREXxW6z    group_neutralize(group_rank(add(ts_backfill(eps_y1_estimate_change_3mo, 1008), ts_mean(ts_
+YP5JRxYq    R83
+1YNv8qaK    group_neutralize(group_rank(add(ts_backfill(eps_y1_estimate_change_3mo, 1008), ts_mean(ts_
+1YxPrj0K    R83
+O0rgvJgR    R93
+1Yx01KgW    R96
+58gkLAkk    group_neutralize(group_neutralize(group_neutralize(group_neutralize(quantile(add(ts_mean(t
+YP1w7LO6    divide(add(add(add(rank(ts_mean(predicted_surprise_pct_f12m_ebitda_5, 5)), rank(ts_mean(pr
+ZYQw5RNQ    vector_neut(quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22), 
+e758plEM    vector_neut(quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22), 
+6Xdx65eK    group_neutralize(group_rank(add(ts_backfill(eps_y1_estimate_change_3mo, 1008), ts_mean(ts_
+Wje5K71x    group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(fnd6_newq_oiadpq,240)),rank(ts_delta
+om6rxOOm    R82
+RRVK6ELb    add(add(add(add(-group_rank(vec_avg(mean_loan_rate_main), subindustry), rank(ts_mean(mean_
+d5WwzRMY    tail(winsorize(group_rank(multiply(ts_sum(divide(vec_sum(inst1_valueeur),add(vec_sum(inst1
+1YxPZN5J    add(add(add(-group_rank(vec_avg(mean_loan_rate_main), subindustry), rank(ts_mean(mean_esti
+j23x8YLW    add(add(add(winsorize(-group_rank(vec_avg(mean_loan_rate_main), subindustry), std=4), rank
+E56AzejK    tail(winsorize(group_rank(multiply(ts_sum(divide(vec_sum(inst1_valueeur),add(vec_sum(inst1
+QPvex1Q5    group_neutralize(group_rank(add(ts_backfill(eps_y1_estimate_change_3mo, 1008), ts_mean(ts_
+P0Z8g18q    add(add(add(-group_rank(vec_avg(mean_loan_rate_main), subindustry), rank(ts_mean(mean_esti
+zqY0bW0G    add(add(add(add(-group_rank(vec_avg(mean_loan_rate_main), subindustry), rank(ts_mean(mean_
+1Yx01KgJ    R96
+leA6qLNe    vector_neut(quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22), 
+zqY0OLEX    add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 6)), rank(ts_mean(mean_
+883X7Jnl    R96
+xArX5prW    -group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(ts_backfill(vec_avg(shrt3_bar),22),
+JjxrYjre    R95
+le81keYe    R95
+58QePWW5    R82
+P0g73GYq    group_neutralize(group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo,
+qMW3GgVV    add(add(add(add(rank(ts_sum(ts_backfill(directional_indicator, 66), 252)), rank(ts_mean(pr
+JjQ7vaAx    group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 1), ts_me
+gJZZOa6g    group_neutralize(ts_decay_linear(subtract(rank(add(ts_mean(ts_backfill(netprofit_y1_estima
+d511povg    group_neutralize(ts_decay_linear(subtract(rank(add(ts_mean(ts_backfill(netprofit_y1_estima
+O0rVlVe7    R84/R85
+j288RaEQ    group_neutralize(ts_decay_linear(subtract(rank(add(ts_mean(ts_backfill(netprofit_y1_estima
+A1vv9mmX    group_neutralize(ts_decay_linear(subtract(rank(add(ts_mean(ts_backfill(netprofit_y1_estima
+P0orWJKK    vector_neut(quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22), 
+E5Rlend1    group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 1), ts_me
+vR1aoON3    -group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(ts_backfill(vec_avg(shrt3_bar),22),
+Vk6eodeb    R93
+E5607ZxK    vector_neut(quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22), 
+GrOleXAJ    group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 1), ts_me
+zqbkmN2G    group_neutralize(group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo,
+786j1zG1    group_neutralize(group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo,
+d51jRJMX    group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 3), ts_me
+YPM7g33W    group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 5), ts_me
+npP78m9l    group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 3), ts_me
+MPY9VNY9    -group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(ts_backfill(vec_avg(shrt3_bar),22),
+npvwXA8l    -group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(ts_backfill(vec_avg(shrt3_bar),22),
+qMLewENK    -group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(ts_backfill(vec_avg(shrt3_bar),22),
+78Zl8gPZ    R87
+Jjx1Qelj    add(add(add(-group_rank(vec_avg(mean_loan_rate_main), subindustry), rank(ts_mean(predicted
+58glOpJn    group_neutralize(rank(add(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 5), ts_me

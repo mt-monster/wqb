@@ -146,3 +146,29 @@
 
 - `0mYoANkv` riskNeut 保留率 54% 是全批最薄的一环，且生产相关性对 IS 候选**不可测量**（端点全局返空）⇒ 提交时存在撞 0.70 墙的现实风险，撞墙由平台直接拒绝、不消耗配额。
 - `9qxoa3mx` 的 `LOW_SHARPE` 余量 0.6%，不建议作为点塔腿（任何设置微调都可能翻闸）。
+
+## E56oYEkL（USA / TOP3000 / D1 / decay5 / REVERSION_AND_MOMENTUM / trunc0.08）
+
+**表达式**：`ts_zscore(ts_sum(total_top_secondary_buy_transaction_count, 126), 252)`（2 ops）
+**来源**：LL522ZRe 压缩赢家（去 group_neutralize，由平台 REVERSION_AND_MOMENTUM 中性化覆盖）。
+**指标**：S 2.47 / fit 2.37 / sub 1.20 / 2Y 3.44 / TO 0.116 / self 0.1360 / prod 0.6611 / `fail=[]`。
+
+**逐年 Sharpe（2014–2023，10 年全）**：1.88 / 3.60 / 0.96 / 3.31 / 4.18 / 3.21 / 1.24 / 0.92 / 3.43 / 3.50。
+
+**Phase C 判定（近 3 个 IS 年 2021/2022/2023）**：
+
+| 检查项 | 值 | 判定 |
+|---|---|---|
+| Recent-3yr Sharpe | 0.92 / 3.43 / 3.50（均正，合计≥1.58） | PASS |
+| 衰减比 | 3.50/2.47 = 1.42（≥0.50） | PASS（近端增强） |
+| CV_Sharpe | 0.562 | **CONDITIONAL** |
+| max/min Sharpe 比 | 3.80 | **CONDITIONAL** |
+| 平年 | 0 | PASS |
+| Sub-universe | 1.20 PASS | PASS |
+| 算子数 | 2 | 软标记（无过拟合） |
+| Margin @ TVR | ~3bp @ 10% | 软标记（低换手，非噪声拟合） |
+| Top-5 集中度 | 逐股数据不可得 | 跳过 |
+| 经济可解释性 | 机构二级市场主动买入次数累积上升 = 资金流入动量，市场反应不足 | PASS |
+
+**总体判定：CONDITIONAL**（软标记：2021 弱年 0.92 致 CV 略高 / max-min 比 3.8）。**非 REJECT**。
+**结论**：可提交（用户已点名确认；prod 实测 0.6611<0.7；全闸 PASS；self 0.136）。无 failed_checks。

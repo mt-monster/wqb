@@ -91,6 +91,31 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 2026-10-31 · fundamental17 打开第二条通道 + ★「塔位杠杆」：`current_enterprise_value` 是集内市场量
+
+本区此前认为 FUNDAMENTAL 只有 `fundamental6` 一个通道。本轮实测 **`fundamental17`（135 字段）是更干净的第二通道**：
+
+**★ 塔位杠杆（最重要）**：`current_enterprise_value`（描述 "Current enterprise value (market capitalization plus net debt)"）
+虽然**含市值**，但**数据集归属在 fundamental** ⇒
+**`divide(<科目>, current_enterprise_value)` = 纯 FUNDAMENTAL 单塔**，完全不碰 PV 的 `cap`、**不吃任何 trio 配额**；
+而分母用 `cap`（PV 集内）⇒ 变 PV+FUND 双塔，吃「单组合 ≤3 / trio×非trio ≤5」。
+⇒ **要单塔就选集内市场量当分母。**
+
+| 表达式核心 | S | F | 2Y | SUB | 塔位 | prod |
+|---|---:|---:|---:|---:|---|---:|
+| `rank(ts_quantile(ts_av_diff(divide(annual_ebitda_value, current_enterprise_value), 252), 22, gaussian))` | **2.48** | **2.22** | **2.69** | 1.68 | **FUND 单塔** | 0.5086 |
+| `rank(ts_quantile(ts_zscore(divide(quarterly_ebit_value, current_enterprise_value), 504), 22, gaussian))` | 2.00 | 1.64 | 1.92 | 1.35 | FUND 单塔 | 0.6191 |
+| `rank(ts_quantile(ts_av_diff(divide(quarterly_net_income_3, current_enterprise_value), 504), 22, gaussian))` | 1.99 | 1.57 | 2.10 | 1.50 | FUND 单塔 | 0.6460 |
+
+⚠ **同族互相关**：前两条 0.9573、第二↔第三条 0.7203 ⇒ **三条最多取 1–2 条**。
+
+★ **水平毛利率已被证伪（别再踩）**：`divide(fnd6_gpy, fnd6_revty)` = 水平毛利率，
+本文件 §6 已记「`fnd6_M2_gross_profitability` 设计即被水平版证伪」；本轮补量波 **10 模板全灭的直接原因就是踩了它**
+（F 主导 5 条 S 0.02–0.70，N 主导 3 条被它当权重稀释到 S 1.43–1.51 < 纯 N 腿 2.10）。
+**⇒ `fnd6 ÷ cap` 族必须用「位移 + 自历史分位」形态**：`rank(ts_quantile(ts_av_diff(divide(fnd6_capxy, cap), 252), 84, gaussian))` S 2.21 / F 2.05 / 2Y 2.51。
+
+★ **该族引擎 = 分母上价格的位移**（§9.1b）：纯会计增长安慰剂（不碰价格）S −0.12 判死 ⇒ **要出信号必须带价格腿**。
+（提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)。）
 
 ### ★ 2026-10-13 · GBR × Fundamental 全量清点与封闭（用户问「都试了吗」）
 
@@ -120,5 +145,49 @@
 | `gbr_fnd89_f3` | `1peZQA6lZ4E79oc13gD5nCi2` | fnd89（资产波动指示器）+ fnd93 换量纲复核 | S −0.55~0.36（全弱）|
 
 **★ 工程纪律（再次验证）**：本地 `fields` 表含 `fundamental1`(124) / `alpha_factor_lib`(82) / `digital_ad_spend`(6)，但 **GBR 平台 `get_datafields` 返回 0** ⇒ **开波前必须逐数据集用平台验存**；「本地有」≠「平台可用」。
+
+### ★★★★★ 2026-10-30 · `fnd6_<科目> / cap` 是 GBR 唯一量产线（收窄上一节的「全机制封闭」）
+
+**上一节「Fundamental 域封闭」的成立前提是「报表科目 ÷ 报表科目」同量纲比率** —— 全部证据都是 `atq/revt`、`oancf-oiadp/atq`、`ts_zscore(atq/revt,66)` 这类形式。
+**分母换成 `cap`（市值）是另一条机制**：它给的是收益率形式（E/P、CF/P 类），带明确价值因子经济含义，不是纯会计比率。`GBR-FUNDAMENTAL6-CEILING` 的 payload 已按此收窄禁用范围（见该条 `scope_correction_20261030`）。
+
+**骨架**：
+
+```
+rank/group_rank( ts_quantile( ts_av_diff( divide(fnd6_<科目>, cap), W ), Q, driver=gaussian ) )
+W ∈ {168, 252} ／ Q ∈ {56, 84}
+```
+
+**★ 设置档是这条线的第二个必要条件**（与上一节的 SUBINDUSTRY/decay4 不同）：
+`INDUSTRY` ／ decay **10** ／ truncation **0.05** ／ nanHandling **OFF** ／ maxTrade **OFF** ／ unitHandling VERIFY。
+
+**10 条 `failed_ra_count=0`（`batch_get_alpha_metrics` 权威核出）**：
+
+| alpha | 字段 / 骨架差异 | S | F | TO | 2Y | SUB | inv_ratio | margin(bp) | prod |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---|
+| `rKRkL9QE` | `fnd6_capxy / cap` 基准 | **2.21** | **2.05** | 8.33% | 2.51 | 1.77 | 0.8733 | 25.94 | **0.6783 ✅** |
+| `QPveQvOg` | 二阶差分 `av_diff(av_diff(capxy/cap,252),252)` | 2.06 | 1.78 | 7.49% | 2.47 | 1.68 | 0.8786 | 24.86 | 未测 ★首选 |
+| `N1NM5WK8` | `capxy/cap` + `group_rank(·, industry)` | 2.05 | 1.80 | 8.98% | 2.26 | 1.68 | 0.8927 | 21.40 | 未测 ⚠ |
+| `P0oerpjp` | `capxy/cap`，W/Q 换成 168/56 | 1.98 | 1.70 | 8.26% | 2.10 | 1.70 | 0.9495 | 22.31 | 未测 ⚠ |
+| `0mYoANkv` | `cap / fnd6_newa2_re`（反向） | 1.89 | 1.54 | 11.66% | 2.08 | 1.12 | 0.7831 | 14.22 | **0.6932 ✅** |
+| `6XdxzNb5` | `fnd6_newa2_re / cap` | 1.75 | 1.40 | 11.67% | 2.22 | 1.27 | 0.8114 | 13.64 | 未测 |
+| `WjOkLGWx` | `fnd6_newq_cheq / cap` | 1.72 | 1.26 | 9.31% | 2.09 | 0.94 | 0.8488 | 14.53 | **0.6577 ✅** |
+| `kqNRXm5k` | `capxy/cap` + `ts_zscore(·,168)` | 1.70 | 1.33 | 7.98% | 2.02 | 1.52 | 0.9647 | 19.05 | 未测 |
+| `88RAnmAX` | `cap / fnd6_ewq_teqq` | 1.67 | 1.40 | 12.26% | 1.89 | 1.06 | 0.8982 | 14.39 | 未测 |
+| `9qxoa3mx` | `cap / fnd6_cptnewq_ceqq` | 1.59 | 1.35 | 12.25% | 1.89 | 1.00 | 0.8679 | 14.78 | 未测 |
+
+**★ 一鱼两塔（本族最有价值的属性）**：`divide(基本面科目, cap)` 同时具备 PV（价值）与 FUNDAMENTAL（基本面科目）属性，`pyramids.effective=2`，multiplier 1.4 + 1.6。
+这不是平台巧合 —— `rKRkL9QE` / `0mYoANkv` / `WjOkLGWx` 三条提交后 **pv 1→4（点亮）+ fundamental 0→3（点亮）**，一次点两塔。**该骨架是可复用的双塔模式，值得在别区复用。**
+
+**⚠ 薄余量族，扩招纪律**：三条已测 prod **0.6577–0.6932**，余量仅 **0.007–0.042**。第 4 条起撞墙概率不低：
+
+1. **必须换财务科目，不许换窗口** —— 同科目换 W/Q 是伪多样性。`P0oerpjp` 与 `rKRkL9QE` 只差 168/56 vs 252/84，属**同一条腿**，别当两个候选数。
+2. **以下两条不投 prod 时隙**（已有实测判据）：
+   - `N1NM5WK8`：同骨架换 `group_rank(·, industry)` 在 INDUSTRY 中性化下已实测 **prod 0.9651**，本条目大概率同一死法。
+   - `kqNRXm5k`：与 `rKRkL9QE` 同字段同窗口、只换外层（`ts_zscore` vs `ts_quantile`），大概率高相关；先 `compute_mutual_correlation` 再决定。
+3. **扩招方向（真换科目）**：`fnd6_ewq_*` / `fnd6_cptnewq_*` / `fnd6_newa2_*` / `fnd6_newq_*`。
+4. **先测族代表再量产**：本族已属「薄余量」状态，新科目首条就该测 prod，不要攒到 5 条再一起测（见 [`wq-prod-corr-read`](../../wq-prod-corr-read/SKILL.md) 族代表预判段）。
+
+**字段池余量**：本地 `fields` 表 `fnd6_` 前缀共 **2233 个**（ds=368 → 838 / ds=1481 → 279 / ds=658 → 266 / ds=1189 → 258 / ds=172 → 197 / ds=858 → 197 / ds=1006 → 196），GBR 侧已用不到 10 个 ⇒ **放大器是换科目，不是换骨架**。
 
 <!-- profiles:manual:end -->

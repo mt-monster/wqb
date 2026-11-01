@@ -336,3 +336,108 @@ AGENTS.md 三处写 S11 基线 `171`（基线文件是 `159`，与 `branch_polic
 > 共同形状与 §14.2 一致：**把「不知道」输出成「通过」**。写收批/复盘/去重代码时先问
 > 「这个字段缺失时，下游会读成什么」。守护：`test_ra_failed_checks_single_definition.py`、
 > `test_review_four_columns_p12.py`、`test_submit_queue_gates.py`。
+
+---
+
+## 15. ★ 规则库的真实消费点：写规则前先确认它会被谁读（2026-10-31 机器级核验）
+
+往 `methodology_rules.json` 加规则时，**`type` 决定它是否真的生效**，不是随便填的标签。
+本次为 KOR 会话经验做双轨同步时逐点核验（grep + 读源码，不是照文档抄）：
+
+| type | 真实消费点 | 效果 |
+|---|---|---|
+| `strategy` | `build_wave.py:789-791`、`pipeline.py:1499-1501` 的常驻循环 | **无条件打印 `action.message`**（按 region/universe 过滤后）⇒ 咨询性判据走这条 |
+| `dead_end` | `build_wave.py:773-787` | 按 `action.block_pattern` **正则排除表达式**（真拦截） |
+| `explore_contract` | `gate.py`（`get_active_contract`） | 多样性契约 |
+| `universe_lever` | `check_universe_lever`（`pipeline.py:1478`） | `action.dead_universe` 命中即拦 |
+| `diagnosis` | **只有** `recommend_next_wave` 里四个特定 `action.op` 分支：`gradient_dilute` / `warn_rnf_drop` / `dead_universe` / `classify_failure_nature`·`fail_fast_stop` | 其它 op 的 diagnosis 规则**不被任何代码读取** |
+
+**两条被证伪的旧说法（AGENTS.md §3.5 已按此更正）**：
+
+1. **`inject_rules` 这个函数不存在**：全仓 `grep "def inject_rules"` **零命中**。
+   旧文写「`review_wave.py → recommend_next_wave → 通用 inject_rules`」，实际 `recommend_next_wave`
+   只调 `store.query(...)` 然后走上面那几个硬编码分支，**没有通用注入器**。
+2. **`when` / `emit` 字段无人消费**：全仓 grep `get("emit")` / `get("when")` / `"emit"` 在
+   `toolkit/scripts/`、`src/wqb/`、`tools/` **零命中**。库里若干规则（如
+   `equivalent_operator_substitution_v1`）写了 `emit.priority` / `emit.direction`，
+   这些字段**不影响任何行为**——它们之所以能被看见，是因为 `type=strategy` 触发了常驻打印。
+
+⇒ **可执行结论**：
+- 想让判据**被看见** ⇒ `type=strategy` + 写清 `action.message`（会被打印）。
+- 想让判据**真拦截** ⇒ 必须复用已被消费的 op / 字段（`block_pattern`、`dead_universe`），
+  或先改消费代码再加规则；**新造一个 op 名 = 写了一条永不生效的规则**。
+- 咨询性规则请在 `action.params.consumption` 里显式写 `advisory_only`，
+  避免后来者误以为它会拦批（本次新增 5 条都这么标）。
+- 这与 §11「死代码判定三原则」同源：**`refs=0` 不等于没用，但「声明了却无人读」等于没写**。
+  守护现状：`test_methodology_rules_consistency.py` 只守 JSON 合法 / id 唯一 / 区域覆盖语义，
+  **不守连通性**（其 docstring 提到的 `test_methodology_rules_connectivity.py` 实测不存在）
+  ⇒ 「规则写了但永不生效」目前**没有机械闸**，只能靠本节的消费点表人工对照。
+
+---
+
+## 16. ★ 规则库的存储真相源在 DB；整值覆盖写入会静默改坏数据（2026-10-31 KOR 实测）
+
+§15 回答「规则会被谁读」，本节回答「规则写到哪里才算写了」——两个问题都答对，经验才真的回流。
+
+### 16.1 区域规则：文件只是镜像，DB 才是运行期真相源
+
+`RuleStore._use_db()`（`toolkit/scripts/_lib/rules.py`）：**战役目录路径含 `tracking` ⇒ 区域规则读
+`ledger_kv` 的 `<REGION>/methodology_rules`**；文件 `tracking/<R>/reference/methodology_rules.json`
+只在「DB 为空」时作**一次性迁移源**（`_load_region_db()` 末尾）。`WQB_RULES_FILE_ONLY=1` 才强制走文件，
+那是测试隔离开关，不是生产路径。**全局规则相反：始终读 toolkit `config/methodology_rules.json` 文件。**
+
+⇒ **只改区域文件 = 白改**（不报错、守护测试也全绿，因为测试读的就是文件）。
+`AGENTS.md` §3.5 早已写明「区域，存 DB」——这是**操作没跟上文档**，不是文档缺失。
+
+实测分叉规模（KOR，2026-10-31）：DB **8 条** vs 文件 **1 条**，且同一条 `explore_contract`
+在 DB 里已 `status=deprecated` / `consumed_batches` 10 / `times_applied` 10，
+文件里还标 `active` / 8 / 8 ⇒ **分叉方向是文件落后**，文件不能当权威读。
+又因 `data/` 整体 gitignore，**DB 里的区域规则不受版本控制** ⇒ 文件镜像是唯一的可回溯记录，
+应定期回填成 DB 全量（本次已回填 9 条）。
+
+`load()` 的合并语义：**全局 + 区域，同 `rule_id` 区域覆盖全局**。所以区域可以覆写全局判据，
+但覆写只发生在 DB 里的那份上。
+
+### 16.2 MCP 没有规则专用工具，`merge` 也不保护列表
+
+`mcp_list(keyword="rules")` 只返回 `get_competition_agreement`；`wqb_db_mcp.py` 里 `methodology` 零命中
+⇒ 唯一通道是 `get_ledger_key` / `upsert_ledger_key`（store 侧对应
+`get_methodology_rules` / `upsert_methodology_rules`，见 `src/wqb/store/_diversity.py`）。
+
+⚠ **`mode="merge"` 只对 dict 递归，遇 list 整列覆盖**。往 `{rules:[...]}` 这种键「增量加一条」时
+只传 `{"rules":[新规则]}` 会把既有条目**全部抹掉**。必须传完整列表（或改走脚本 read-modify-write）。
+
+### 16.3 整值手转录 = 静默数据损坏（实测 8 条里 7 条被改坏）
+
+把 ~6KB payload 重新打一遍传进 `upsert_ledger_key` 后，逐条 canonical-JSON 比对写前快照：
+
+| 损坏类型 | 实例 | 命中 | 危害 |
+|---|---|---|---|
+| **长十六进制串截断** | `e1bf6fb2764de70ffb69182a043b380633c1d739`（40 字符）→ `…6918e4b7b739`（30 字符） | 1 处 | 批次指纹失配，`expires_after_batches` 的去重计数失效 |
+| **float 写成 int** | `confidence: 1.0` → `1`；`max_sharpe: 2.0` → `2` | 6 条 + 1 处 | JSON 类型漂移，类型敏感 / `== 1.0` 的读方行为改变 |
+
+**两类都不报错，回执照常 `{"action":"updated","merged_keys":3}`** ⇒ **回执成功 ≠ 数据正确**。
+这与 §11「`refs=0` 不等于死代码」是同一类认知错误：**把「调用成功」当成「语义正确」**。
+
+### 16.4 正确修法（已执行并验证）
+
+1. **不要第二次手转录**。从**会话 transcript 的写前工具结果**取回原始 payload 作权威基线
+   （逐行 `json.loads` → 递归取 str → 命中特征哈希 → 再 `json.loads` 还原 dict）。
+2. 新规则从文件镜像读，拼成完整列表，经**既定写入方** `store.upsert_methodology_rules(region, data)`
+   写回（= `RuleStore._save_region_db` 同一条路径，不是手写 SQL）。
+3. **read-back 三条断言**：① 既有条目 canonical JSON（`sort_keys=True`）**逐字节等于写前**；
+   ② 所有批次哈希**长度 40**；③ 坏值消失、好值恢复。本次全部通过（9 条 / 59 个哈希）。
+4. 回填文件镜像 = DB 全量，复跑守护（`test_experience_kb_refs` + `test_methodology_rules_consistency`
+   = **18 passed**）。
+5. **功能级验证**（§15 的要求）：`apply_rules(ctx,"strategy",{region,universe})` 实测返回 18 条，
+   本次新增 5 条全部命中 ⇒ 确认会被 `build_wave.py:789` / `pipeline.py:1499` 打印，不是死规则。
+
+### 16.5 可复用判据
+
+- 改**区域**规则 → 先 `get_ledger_key` 看 DB 有没有值；有 ⇒ **必须写 DB**，文件只作镜像。
+- 任何**整值覆盖**型写入（`replace`，或 `merge` 带 list）→ **写后必须逐条 diff 写前快照**。
+- 长 payload 的 read-modify-write **交给脚本**（`logs/_tmp_*.py`），不要让模型重打一遍长 JSON；
+  长哈希与浮点常量是手转录的两个高危面，**肉眼比对看不出来，必须 canonical JSON**。
+- 本节**刻意不新增机器规则**：它是「写规则时的操作纪律」，消费者是正在改规则库的 agent
+  （读 `AGENTS.md` §5），不是开波流程；写成 `strategy` 只会在每波多打一条无关提示。
+  双轨义务在此以「人读层 + `AGENTS.md` §5 写入口径」履行，已同步。

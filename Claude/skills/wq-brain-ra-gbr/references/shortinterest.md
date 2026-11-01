@@ -84,6 +84,19 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 2026-10-31 · SHORTINTEREST 塔唯一活字段：`transaction_count_main`（⇒ 塔位 0→1，需 3 条才点亮）
+
+| alpha | 表达式核心 | S | F | 2Y | SUB | TO | prod | self |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| `akK2vpWW` | `if_else(greater(rank(ts_mean(vec_avg(transaction_count_main),5)),0.9), nan, multiply(group_rank(vec_avg(transaction_count_main), subindustry), -1))` | **1.95** | 1.33 | 1.96 | **1.62** | 11.79% | −0.0424 | 0.0270 |
+
+**机制**：**计数族有信号、金额族无信号**（与 USA `insider_trx_matrix` 的同型结论一致）。
+**几何**：行业内排序 + 取负（交易越频繁 ⇒ 后续越弱）+ **极端笔数区掩码**（top 10% 剔除，避免异常值主导）。
+
+⚠ **`shortinterest3` 只有 1 个活字段、无兄弟数据集可换** ⇒ **该塔最多产 1 条独立轴**（`shortinterest3` 其余 24 字段已证伪，见上文）。
+⇒ **SHORTINTEREST 塔要 3 条才点亮，但本区只能给 1 条 ⇒ 需跨区补**（ASI 侧 `shortinterest3` 的 `MINVOL1M + SLOW + decay 0` 配方见 memory）。
+
+（提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)。）
 ### 2026-10-28 · wave12 补测：把 `GBR-SI3-MIRROR-CEILING` 的「留口子」也关掉
 
 上一条死路留了口子：「**复合双腿混合未验证，留口子**」。本轮 6 条补测结论：

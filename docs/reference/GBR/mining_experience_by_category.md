@@ -18,6 +18,33 @@
 | **SENTIMENT** | 仅 `sentiment27`（18 字段，mult 最高 1.7） | 1 | 未测 | — |
 
 **⇒ 七个 category 里只有 ANALYST 能出；"能出"的共性是：字段本身是"分析师预期的**修正量**"。**
+
+> ### ★★★ 2026-10-31 修正（本节总览已过时，勿再引用）
+>
+> 上表写于 2026-10-30 之前，**三条结论已被后续实测推翻**：
+>
+> | Category | 当时的结论 | 2026-10-31 实测 |
+> |---|---|---|
+> | **PV** | ❌ 最高 S1.01 | **✅ `MPY96E7o` S1.70 / F1.24 / 2Y1.94 全闸**（`pattern_scores` 形态相似度差，SUBIND/decay16/trunc0.06）；但 self-corr 0.7622 vs `A1G7o1EE` ⇒ **不可提交** |
+> | **NEWS** | ❌ 最高 S0.63 | **✅ 5 条全闸（`leA6jmoe` S2.18 / `wpQwjWn6` S2.10 / `6XdPedNJ` S1.97 / `9qxPX77V` S1.86 / `58E7jkaN` S1.85）**，全部走 `ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(x,60),252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)` 强几何 + FAST/decay15/trunc0.05 |
+> | **FUNDAMENTAL** | 「仅 fundamental6 / 1 机制 / 未试」 | **✅ 两个数据集 5 通道**：fundamental6（`fnd6 ÷ cap` 位移族，3 条）+ **fundamental17（`divide(<科目>, current_enterprise_value)` 估值位移族，4 条）**。★ **`current_enterprise_value` 是 fundamental17 集内市场量字段 ⇒ 该族是纯 FUNDAMENTAL 单塔，不碰 PV 的 `cap`、不吃 trio 配额** |
+>
+> **⇒ 新增两条通用结论**：
+> 1. **「能出」的共性不是「分析师预期修正量」，而是「**字段本身是相对自身历史的偏离（位移 / 分位 / 比率）**」**：
+>    NEWS 用「事件到达率 / 强度」，FUNDAMENTAL 用「估值偏离」，PV 用「形态相似度差」——三者机制完全不同，但都在读「某量相对自身基线的变化」。
+> 2. **★ 弱几何全灭 ≠ 机制不可行**：NEWS 族在 `group_rank(ts_mean(x,22), subindustry)` 上上限 S0.91，
+>    搬到 `ts_target_tvr_decay` 强几何后产出 5 条全闸（见 `template_library_gbr_news_strong_geometry.md`）。
+>    **判「某 category 死了」之前，必须确认那些模板是否都跑在同一条弱几何上。**
+>
+> **⚠ 三条 category 已在本轮被**结构性命死**（附台账出处）**：
+> | Category | 判死依据 |
+> |---|---|
+> | **INSTITUTIONS** | 5 个数据集全排除：`fund_holdings_panel` 24 探针（真 F 墙）· `institutions6` 天花板 \|S\|0.56 · `institutions4` 是 FSYM_ID/CUSID/ISIN **标识符映射非信号** · `institutions25` cov 0 · `institutions1` 本轮 4 探针全灭（论坛帖 `43212475386007` 的 DEU S1.53–1.59 在 GBR **完全不可复现**，且 `inst1_holdings` 实为 insider 持仓 ⇒ `institutions1` 与 `insiders1` 同主体） |
+> | **EARNINGS** | `earnings6` / `earnings_sent_matrix` 两个数据集 **coverage 全 0** ⇒ 结构性不可达 |
+> | **SENTIMENT** | `sentiment7` 覆盖不足致 SUB 结构性失败（`78LOlldQ` SUB 0.12 vs 要求 0.593）· `sentiment33` / `sentiment27` / `sentiment21` 均已判死 |
+>
+> **⇒ GBR 可点亮的塔 = 5 个**：`NEWS` ✅ · `FUNDAMENTAL` ✅ · `PV` ✅ · `SHORTINTEREST` ⚠仅 1 条 ·
+> `MODEL`/`ANALYST`/`OTHER` 已亮但可加固。**`INSTITUTIONS` / `INSIDERS` / `EARNINGS` / `SENTIMENT` / `RISK` / `OPTION` / `SOCIALMEDIA` / `MACRO` / `IMBALANCE` 全灭。**
 **两条腿各用一种处理：M1 用「量纲取 `ts_delta`（变化）」；M2 用「残差化（去掉行业共同成分）× 平滑」——后者顺序不可颠倒。**
 
 **★ 历史库审计（重要）**：本区历史 best 在修复 `alphas.dataset_id` 归属污染后才可见 ——

@@ -1,7 +1,7 @@
 ---
 name: wq-alpha-gate-push-op-min
 description: "候选 alpha 双目标优化器：推到全闸通过（LOW_SHARPE/FITNESS/2Y/self/prod/CW/sub）+ 压算子到最少。含杠杆阶梯、压缩等价改写、逐算子消融、金融含义分层、等效替换与参数扫描，及 op_count/compress/plan/scan 四脚本。触发：优化指标/压缩算子/简化表达式/算子太多/operatorCount太高/推到能提交/等效替换/同等算子/金融含义/逐算子扫描/删除算子/替换算子/扫描参数/删除后压缩/替换更精简。"
-last_verified: 2026-10-30
+last_verified: 2026-11-01
 layer: L4
 agent_created: true
 allowed-tools:
@@ -247,6 +247,9 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参�
   ⚠ **单位闸**：`vector_neut↔group_neutralize` 第 2 参单位不同（向量轴 vs `Unit[Group:1]`），直接替换会
   `Incompatible unit ...` ⇒ **整批 CANCELLED（连坐）**——`scan.py` 已标 `need_unit` 占位不自动生成；派发前必须过
   单位闸（`bucket`/`group_*` 第 2 参内层首个参数必须是 `rank(...)`，见 op-compression.md §四 闸④）。
+  ⚠ **单位闸第二族**：`ts_zscore→ts_av_diff` 也会连坐——`ts_av_diff` 输出 `Unit[TSShare:1]`，与 `ts_zscore` 的 `Unit[]`
+  不兼容作外层 `subtract` 入参 ⇒ `Incompatible unit for input of "subtract" ... expected "Unit[TSShare:1]", found "Unit[]"`。
+  `scan.py` **未**拦截该对（EQUIV 只按金融含义配对，不查输出单位族）⇒ **派发前必须人工逐条查输出单位与父算子是否同族**。
 - **参数**：0.5/0.75/1.25/1.5 粗扫 → 最优档附近细扫（步长 ≤ 窗口 5%）；窗口参数是尖峰（±15 就掉）。
 - **终止**：三通道全部候选实测完毕，或达 operatorCount 目标（REGULAR 复杂度闸 <10；PPA ≤8），或再动任何算子会掉闸。
 - **记账**：每次采纳（删除/替换/参数）都产生**新 alpha id**，只保留指标最好且算子最少的那 1 个，其余标 `SUPERSEDED`；

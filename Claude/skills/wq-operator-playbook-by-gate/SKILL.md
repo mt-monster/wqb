@@ -2,7 +2,7 @@
 name: wq-operator-playbook-by-gate
 description: 破闸算子处方与语法手册。候选卡平台闸（LOW_SHARPE/FITNESS/换手/CONCENTRATED_WEIGHT/LOW_SUB_UNIVERSE_SHARPE/IS_LADDER_SHARPE/PROD_CORRELATION/SELF_CORRELATION/CLUSTER_TEST）要挑算子时用；按六步 SOP 破闸时用；发批前判方向是否试完、整批 CANCELLED/ERROR 定位算子语法时用。含按闸算子优先级、103 算子语法与命名参规则、unit_handling=VERIFY 量纲规则、三条正交轴族与硬约束、算子预算账、发批前对账 SOP。
 layer: L4
-last_verified: 2026-10-30
+last_verified: 2026-11-01
 agent_created: true
 ---
 
@@ -68,7 +68,7 @@ agent_created: true
 | `LOW_FITNESS` | ≥ 1.0 | `ts_mean` 平滑；`ts_decay_linear`；`hump`（降换手抬 F）；`quantile` 压尾 | — |
 | `IS_LADDER_SHARPE` / `LOW_2Y_SHARPE` | ≥ 1.58 严格（**实为分档**：2Y<1.58 显示 1.58 / 2Y≥1.58 显示 **2.02** ⇒ 实际常需 2Y≥2.02，见 `wq-brain-ra-gbr` 闸线地图） | ① **换分组轴**（增益最大）② **platform `decay`**（有单峰，须扫）③ **双窗平滑 `add(ts_mean(短), ts_mean(长))`**（同字段不同窗 = 合规"单信号多窗平滑"，唯一零代价杠杆）④ **异族第三层分组轴**（图聚类轴 + 行业族轴可叠加）⑤ `ts_target_tvr_hump`（降换手顺带升 ladder，但过峰会反噬）⑥ **★噪声瓶颈诊断矩阵**：在同一位置**逐个**替换 `ts_rank` / `ts_decay_linear` / `ts_scale` / `quantile` / `signed_power` / `winsorize`（各 1 条）—— **只有 `ts_decay_linear` 有效 ⇒ 瓶颈在噪声/换手，不在形状**（GBR news50 单层 `ts_decay_linear(·,22)` 实测 **S+0.21 / F+0.26 / 2Y+0.62 / TO−0.07**，ladder 由 FAIL 转 PASS；同位置其余替换全弱）⑦ **★无界字段先按文档 `winsorize`**：字段文档写「无界 / 使用前须 winsorize」的（如 `tm_17_*_r10_q1`）必须先 `winsorize(std=2)` 再做任何时序变换，否则等于用未标准化输入硬算 | ❌ **叠两层及以上**的 `hump`/`ts_decay_linear` 再平滑（单层有效、叠加反噬）；`ts_quantile`；`driver=cauchy`；同族轴第三层叠加（−0.11） |
 | `LOW_SUB_UNIVERSE_SHARPE` | **比值闸** = `0.75×sqrt(子宇宙/本宇宙)×本alpha sharpe`（系数逐区实测，别套用） | **分组轴换到 `market`（决定性）/ `exchange`**；`signed_power` 压尾（⚠ 先看多空对称性）；长窗 `ts_rank`/`ts_decay_linear` 平滑 | ⚠ 分组轴不是通用旋钮，逐区实测；⚠ **把 S 压到刚过 1.58 会同步抬高 SUB 绝对要求** |
-| `CONCENTRATED_WEIGHT` | ≤ 0.1 | **数据品质问题**：补时间维覆盖率 / 换字段类型 / 缩小 `ts_backfill` 最小窗；结构性拒绝时只剩 `trade_when` 门控 | `truncation` / `decay` / 中性化 / 平滑**修不了 CW**；⚠ **CW 是 RA 层失败项（计入 `failed_ra_count`），不是 WARN**（GLB 实测 40 颗 `rsk60_offer` 候选全卡此闸，`ra_failed_checks=["CONCENTRATED_WEIGHT"]`）；⚠ 换外层算子（`group_rank`）**会把 S 一起拖塌**（GLB：S2.75→1.46、fRA 1→4 ⇒ 反向恶化） |
+| `CONCENTRATED_WEIGHT` | ≤ 0.1 | **数据品质问题**：补时间维覆盖率 / 换字段类型 / 缩小 `ts_backfill` 最小窗；结构性拒绝时只剩 `trade_when` 门控 | `truncation` / `decay` / 中性化 / 平滑**修不了 CW**；⚠ **CW 是 RA 层失败项（计入 `failed_ra_count`），不是 WARN**（GLB 实测 40 颗 `rsk60_offer` 候选全卡此闸，`ra_failed_checks=["CONCENTRATED_WEIGHT"]`）；⚠ 换外层算子（`group_rank`）**会把 S 一起拖塌**（GLB：S2.75→1.46、fRA 1→4 ⇒ 反向恶化）；⚠ **`maxPosition` 也修不了**（EUR 实测：CW 纹丝不动、失败项 1→4、S 1.74→1.32、TO 2.46%→17.78%、`invest_sharpe` 回 null；另注 EUR 接受 `maxPosition=ON`，KOR 直接拒绝） |
 | `HIGH_TURNOVER` | **≤ 0.7**（平台线，非 0.4） | `ts_decay_linear` / `hump` / `ts_target_tvr_hump` / `ts_target_tvr_decay` / `trade_when` / 换骨架 | `ts_decay_exp_window` **是幽灵算子** |
 | `LOW_TURNOVER` | ≥ 0.01 | 缩短平滑窗 / 降 decay / `ts_delta` / 提高信号更新频率 | — |
 | `PROD_CORRELATION` | < 0.7（我方铁律） | **① 改设置档案（最便宜，先做）**：换中性化 / 换 `decay` / 换 `truncation` / 换 `maxTrade` / 换 `nanHandling` —— 严格单变量、可复现、零额外成本；**② 改持仓类改信号**：换字段 / 换概念 / `vector_neut(主体, rank(异源轴))` 残差化 / 换分组轴 / `trade_when` 分层 | ⚠ **只改时序类**（`hump`/`decay`/`ts_mean` 慢化）降 prod 会把 **self 反向推爆**（EUR 实证 self 0.90+）；★ **prod 是「持仓形态」的属性，不是「信号」的属性**（GLB：同一表达式族仅换中性化 ⇒ prod 0.694 vs 0.8885；GBR 单变量实测 0.6506→0.7736→0.8333→0.8719）；⚠ **降换手会把 prod 推高**（TO 0.78→prod 0.76、TO 0.55→prod 0.84）⇒ 换手维度上 prod 与 2Y 是剪刀差，别指望靠 `decay` 同时降两者 |
@@ -83,6 +83,33 @@ agent_created: true
 > 同理 §1 表里所有「换 X 类算子」类手段，**全部都要重测 prod 与 self**。
 | `SELF_CORRELATION` | < 0.7 | 拉开 `(neutralization, decay)` 组合；同族只出一颗代表 | 同腿近亲提交后 self 冲 0.99+，**换腿不足以去同族化** |
 | `CLUSTER_TEST` | DEU/KOR/HKG/IND/GBR/TWN ≥ 1.0，默认 ≥1.58 | `group_*` 换个不一样的分组轴；降低信号与大盘的相关 | 判定用 check 自带的 `limit`，别按区域名硬编码 |
+
+### 1.1 ★★★★★ CW 的第五条证伪 + 真正机理：**数据冷启动**
+
+EUR 2026-11-01 单变量实测（同一表达式，只切 `maxTrade` ON↔OFF）：
+
+| 设置 | S | F | TO | long/short | `invest_S` | fRA | CW |
+|---|---|---|---|---|---|---|---|
+| `maxTrade=ON`（`A1QZYa1l`） | 1.81 | 1.43 | 3.79% | — | — | **0** | **PASS** |
+| `maxTrade=OFF`（同表达式） | 1.83 | 1.45 | 6.63% | — | 有值 | **1** | **FAIL** |
+
+⇒ 表达式完全相同、只有 `maxTrade` 不同就决定 CW ⇒ CW 是**持仓形态**问题，但随后五条修法全灭：
+
+| # | 修法 | 实测 |
+|---|---|---|
+| 1 | `truncation` 0.08→0.04 | **指标逐位相同**（零影响） |
+| 2 | 外层包 `rank()` | CW 照挂；S 1.83→1.66、1.64→1.48（跌破 1.58，反多挂 LOW_SHARPE） |
+| 3 | `hump` 降换手（6.63%→2.46%，−63%） | CW 照挂 |
+| 4 | 持仓数量（858 只，427 long/431 short） | CW 照挂 |
+| 5 | **`maxPosition=ON`** | CW 照挂；且 fRA 1→4、S 1.74→1.32、TO ×7.2、`invest_sharpe` 回 null |
+
+**⇒ 唯一自洽机理：CW 触发在「数据冷启动首日」**——字段晚起始（本族 2020 年才有值）⇒ 回测首日可用股票极少 ⇒ 权重归一化把资金压进少数几只；`maxTrade=ON` 恰好限制了首日建仓速度，所以 ON 版天然不挂。
+
+**由此得到选字段阶段的硬筛（这是 CW 唯一能防住的地方）：**
+
+1. 派发前用 `get_datafields` 的 coverage + 一次 `get_alpha_yearly_stats` 逐年核 `longCount`，**确认字段起始年 = 回测起始年**；晚起始字段一律不用作主信号。
+2. **`add(腿A, 腿B)` 的 NaN 会毒化整条表达式**（`add(NaN, 有限)=NaN` ⇒ 全股票 NaN ⇒ `longCount=0`），**不是「该腿失效、另一腿照跑」**。⇒ 混两腿前必须确认两腿起始年一致；这也是 `add(A,B)` 模式除过拟合之外的第二个坑。
+3. 早年起、晚起始字段 = **CW 与多年空窗双杀**，且**设置层与结构层都修不了**（本文上表五条已证伪）。
 
 ---
 

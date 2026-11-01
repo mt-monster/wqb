@@ -1,12 +1,34 @@
 """towers.py — 塔位（``region/D{delay}/{category}``）解析与从表达式反推。
 
-背景（2026-10-05）
-------------------
-盘点报告需要标出每颗候选「点在哪个塔上」，但平台
-``get_alpha_details()`` 对 **UNSUBMITTED** alpha 返回 ``pyramids=None``、
-``category=None``、``themes=None``（实测 N1VnJjXg / O08EjLVp / LLZ6wZO2 三颗
-READY 候选全部为 null）——塔位信息**只有提交后平台才会标注**。故塔位只能从
-表达式用到的数据字段反推：
+背景（2026-10-05，2026-10-30 重大修正）
+-------------------------------------
+盘点报告需要标出每颗候选「点在哪个塔上」。原文写的是「平台对 UNSUBMITTED
+alpha 返回 ``pyramids=None`` ⇒ 塔位只有提交后才会标注」——**这个结论只对了一半：
+位置找错了，不是平台没给**。
+
+★★★ 塔位的真实位置：``is.checks[]`` 里的 ``MATCHES_PYRAMID``
+
+原始 REST ``GET /alphas/{id}``（2026-10-30 实测 ``rKRkL9QE``，``status=UNSUBMITTED``）::
+
+    j["pyramids"]      -> None       # 恒为 null，REST 从不填 ← 当初看的就是这里
+    j["ra"]            -> KeyError   # 这个键根本不存在
+    j["is"]["checks"]  -> [ ...17 项... ]   # ★ 塔位在这里
+        {"result": "PASS", "name": "MATCHES_PYRAMID", "effective": 2, "multiplier": 1.4,
+         "pyramids": [{"name": "GBR/D1/PV",          "multiplier": 1.4},
+                      {"name": "GBR/D1/FUNDAMENTAL", "multiplier": 1.6}]}
+
+MCP 工具 ``get_alpha_details`` 的 ``ra`` / ``pyramids`` 是 MCP 侧从 ``is.checks``
+归一化出来的（``world-quant-brain-mcp/mcp_core.py:187-223``）。
+⇒ **不必等提交**：回填走 ``wqb/store/_pyramids.py`` + ``tools/backfill_alpha_pyramids.py``。
+
+★★ ``infer_tower()`` 现在只是**兜底**，不要再当主力：
+一条 alpha 可同时点亮多座塔（``divide(fnd6_<科目>, cap)`` 天生 PV+FUNDAMENTAL，
+``effective=2``、倍率 1.4+1.6），而本函数按 category **投票取最多者**只返回一条腿
+⇒ 塔数少数、倍率少算（本例 1.4 vs 实际 3.0，少算 2.14 倍）。
+塔位也**不可**从 ``dataset_id`` 推断：``dataset_id=291`` 一个槽位同时装
+``rKRkL9QE``（PV+FUNDAMENTAL）与 ``9qxQamje``（OTHER）。
+
+兜底路径（仅当平台 payload 拿不到时）：
 
     表达式 → extract_fields() → fields.field_name → fields.dataset_id
            → datasets.category（平台口径，勿按语义猜）
@@ -176,6 +198,14 @@ def infer_tower(expr: str, region: str,
                 field_idx: Optional[Dict[str, Dict[str, Any]]] = None,
                 db_path: Optional[str] = None) -> Optional[Dict[str, Any]]:
     """从表达式反推塔位：取表达式命中的字段、按 category 投票取最多者。
+
+    ⚠ **兜底专用（2026-10-30）**。主力应读平台 ``is.checks[MATCHES_PYRAMID]``
+    （见 ``wqb/store/_pyramids.py``）。本函数的两个已知系统性偏差：
+
+    1. **只返回一条腿** —— 而一条 alpha 可同时点亮多座塔。实例 ``divide(fnd6_capxy, cap)``
+       实为 PV+FUNDAMENTAL（``effective=2``，倍率 1.4+1.6=3.0），本函数只给 PV ×1.4。
+    2. **倍率用 ``datasets.pyramid_multiplier``（数据集级）**，与平台塔表不完全一致
+       （实测 EUR/D1/MODEL dataset=1.6 vs 塔表=1.3）。真正结算以平台塔表为准。
 
     Returns: ``{"tower", "category", "delay", "dataset", "dataset_multiplier"}``；
     无法反推（无字段 / 库里查不到 / 无 category）返回 ``None``。

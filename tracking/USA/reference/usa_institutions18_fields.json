@@ -1,0 +1,176 @@
+{
+ "dataset": "institutions18",
+ "region": "USA",
+ "universe": "TOP3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "VECTOR": 2,
+  "MATRIX": 15
+ },
+ "field_count": 17,
+ "platform_count": 17,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 2416,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.8055,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-30T00:40:39",
+ "fields": [
+  {
+   "id": "equity_fund_reported_shares_count",
+   "type": "VECTOR",
+   "coverage": 0.7493,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 2247,
+   "description": "Amount of holdings (e.g., shares or units) shown in a specific stock fund report"
+  },
+  {
+   "id": "fund_equity_reported_shares_held",
+   "type": "VECTOR",
+   "coverage": 0.2846,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 853,
+   "description": "Holdings (share or unit amount) in the fund stock report"
+  },
+  {
+   "id": "fund_report_date_association",
+   "type": "MATRIX",
+   "coverage": 0.2873,
+   "userCount": 8,
+   "alphaCount": 8,
+   "longCount": 861,
+   "description": "Mapping or association between funds and their respective report dates."
+  },
+  {
+   "id": "inst18_fundownershipv2_cur_holding",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 241,
+   "alphaCount": 472,
+   "longCount": 3000,
+   "description": "Current number of shares held by the fund"
+  },
+  {
+   "id": "inst18_fundownershipv2_cur_mv",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 231,
+   "alphaCount": 479,
+   "longCount": 3000,
+   "description": "Current market value of shares held by the fund"
+  },
+  {
+   "id": "inst18_fundownershipv2_num_held",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 149,
+   "alphaCount": 295,
+   "longCount": 3000,
+   "description": "Number of shareholding positions (distinct funds or entities) reported for the security"
+  },
+  {
+   "id": "inst18_fundownershipv2_pct_held",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 237,
+   "alphaCount": 461,
+   "longCount": 3000,
+   "description": "Current percentage of outstanding shares held by the fund"
+  },
+  {
+   "id": "inst18_fundownershipv2_pre_holding",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 160,
+   "alphaCount": 390,
+   "longCount": 3000,
+   "description": "Previous number of shares held by the fund"
+  },
+  {
+   "id": "inst18_fundownershipv2_vm_erp",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 136,
+   "alphaCount": 276,
+   "longCount": 3000,
+   "description": "Previous market value of shares held by the fund"
+  },
+  {
+   "id": "inst18_instownership_cur_holding",
+   "type": "MATRIX",
+   "coverage": 0.7879,
+   "userCount": 79,
+   "alphaCount": 115,
+   "longCount": 2363,
+   "description": "Number of shares currently held by the entity at the current reported time"
+  },
+  {
+   "id": "inst18_instownership_cur_mv",
+   "type": "MATRIX",
+   "coverage": 0.7879,
+   "userCount": 54,
+   "alphaCount": 77,
+   "longCount": 2363,
+   "description": "Total market value of shares currently held by the entity at the reported time"
+  },
+  {
+   "id": "inst18_instownership_num_held",
+   "type": "MATRIX",
+   "coverage": 0.7879,
+   "userCount": 92,
+   "alphaCount": 210,
+   "longCount": 2363,
+   "description": "Total number of entities (holders) that own the security at the reported time"
+  },
+  {
+   "id": "inst18_instownership_pct_held",
+   "type": "MATRIX",
+   "coverage": 0.7879,
+   "userCount": 82,
+   "alphaCount": 143,
+   "longCount": 2363,
+   "description": "Percentage of total shares outstanding held by all filing entities in aggregate"
+  },
+  {
+   "id": "inst18_instownership_pre_holding",
+   "type": "MATRIX",
+   "coverage": 0.7879,
+   "userCount": 42,
+   "alphaCount": 64,
+   "longCount": 2363,
+   "description": "Number of shares held by the entity at the previous (last reported) time"
+  },
+  {
+   "id": "inst18_instownership_vm_erp",
+   "type": "MATRIX",
+   "coverage": 0.7879,
+   "userCount": 36,
+   "alphaCount": 49,
+   "longCount": 2363,
+   "description": "Total market value of shares held by the entity at the previous (last reported) time"
+  },
+  {
+   "id": "inst18_lionshares_insider",
+   "type": "MATRIX",
+   "coverage": 0.6448,
+   "userCount": 35,
+   "alphaCount": 43,
+   "longCount": 1934,
+   "description": "Identifier for an insider transaction involving equity ownership (such as purchase or sale by executives or major shareh"
+  },
+  {
+   "id": "inst18_lionshares_insider_num",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 45,
+   "alphaCount": 80,
+   "longCount": 3000,
+   "description": "Number of shares held or transacted by the insider in a given transaction"
+  }
+ ]
+}

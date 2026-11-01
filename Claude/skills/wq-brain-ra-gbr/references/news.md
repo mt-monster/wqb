@@ -93,6 +93,40 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 2026-10-31 · NEWS 塔从 0 → 5（点亮了）：五轴分解 + **强几何基底**（本区最大突破）
+
+**★ 关键结论：NEWS 族在弱几何 `group_rank(ts_mean(x,22), subindustry)` 上上限只有 S 0.91 ⇒ 此前「全灭」结论无效；
+搬到强几何后产出 5 条全闸 alpha。**
+
+**统一基底（强几何）**：
+```
+ts_target_tvr_decay(
+  group_neutralize(-ts_rank(ts_mean(SIG, 60), 252), densify(market)),
+  target_tvr=0.05, lambda_max=5, lambda_min=0)
+```
+**设置档**：`GBR / TOP700 / D1 / FAST / decay 15 / trunc 0.05 / nanHandling ON / maxTrade OFF / pasteurization ON / VERIFY`
+（`FAST` 是本区最优中性化；`SLOW` / `CROWDING` / `SECTOR` / `SUBINDUSTRY` / `STATISTICAL` 已证伪）
+
+| 轴 | 字段与载体 | alpha | S | F | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|
+| **C 事件强度** | `vec_sum(nws17_multiple_comp_event_relevance)` | `leA6jmoe` | **2.18** | 1.45 | **2.86** | 1.65 |
+| **A 到达率** | `vec_count(nws17_multiple_comp_relevance)` | `wpQwjWn6` | 2.10 | 1.38 | 2.33 | 1.44 |
+| **B sse level** | `vec_count(nws18_multiple_comp_sse)` | `6XdPedNJ` | 1.97 | 1.27 | 2.20 | 1.08 |
+| **D 情绪到达率** | `vec_count(nws17_multiple_comp_event_sentiment_score)` | `9qxPX77V` | 1.86 | 1.14 | 2.00 | 1.33 |
+| **E 合成置信** | `vec_count(nws17_multiple_comp_ssc)` × `rank(vec_avg(event_similarity_days))` | `58E7jkaN` | 1.85 | 1.14 | 1.91 | 1.50 |
+
+⇒ **NEWS 塔最大可提交 5 条**（`max_mutually_below_subset = 5` / `exact = true`）。
+备选 `j2Yle6q5`（`ts_av_diff(vec_count(relevance),252)` S 1.93 / 2Y 2.66）与 W3 二选一（篮内 0.8468）。
+
+★ **三个字段级硬事实**：
+1. **`vec_count` 在单实体族（`nws18_*`）上是恒等变换**（每条记录所有字段都填充 ⇒ 数的是同一个记录条数）⇒ 换字段 = 换名字，**news18 上唯一有意义的计数字段是 `nws18_multiple_comp_sse`**。
+2. **`nws17_multiple_comp_nip` 与 `relevance` 相关 1.0000**（逐位相同）⇒ 别把它当新轴。
+3. **`event_similarity_days` 只能进乘子位 / 门控位**：作信号本体 S **−0.33**（连符号都反）；作乘子（S1）S **+1.85**。
+
+★ **几何级边界**：`winsorize` / `tail` / `rank` 接在 `ts_rank` 之前 = **数学恒等**；
+`if_else` 掩码（置 nan）TO 被推高 + 广度砍半 ⇒ **双杀 F**（S2 F 0.78）；
+`ts_corr(x, delay(x,5),66)` 二阶矩 S 0.11。
+（完整归因见 `docs/reference/template_library_gbr_news_strong_geometry.md`；提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)。）
 ### 2026-10-28 · news50 首次开波（NEWS 塔 0/3 未点亮）
 
 **选集依据**：`news50` 是 S0 排名（177 集）里**唯一**既通过硬闸（cov 0.691 ≥ 0.3、37 字段 ≥ 5）又属未点亮塔的集。news 域其余集（17/18/20/38/48/104）全部已判死。

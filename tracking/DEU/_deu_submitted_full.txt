@@ -1,0 +1,60 @@
+====================================================================================================
+mLYLEm99 | COMPLETE | S=2.27 F=1.67 2Y=None margin=None TO=0.1667 prod=0.6108
+(EMPTY)
+
+====================================================================================================
+883Y3bAW | COMPLETE | S=2.17 F=1.24 2Y=None margin=0.0006580000000000001 TO=0.3422 prod=0.5434
+add(add(add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5)), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_14d_4, 5))), group_rank(ts_rank(ts_decay_linear(closing_price_dlr2, 5), 252), subindustry)), group_rank(-ts_zscore(one_day_total_return_dlr2, 22), subindustry))
+
+====================================================================================================
+2rOe10qY | COMPLETE | S=2.1 F=1.98 2Y=None margin=0.0017800000000000001 TO=0.1272 prod=0.6388
+add(add(add(-group_rank(ts_mean(oth455_relation_n2v_p50_q50_w5_pca_fact3_value, 66), industry), rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5))), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 22)))
+
+====================================================================================================
+blRnKEk6 | ACTIVE | S=2.02 F=1.7 2Y=2.74 margin=0.001413 TO=0.1615 prod=0.5766
+add(add(add(if_else(is_nan(-rank(vec_avg(mean_loan_rate_main))), 0, -rank(vec_avg(mean_loan_rate_main))), rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5))), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 22)))
+
+====================================================================================================
+2rmGAPqN | COMPLETE | S=1.81 F=1.48 2Y=None margin=0.001339 TO=0.1296 prod=0.6292
+tail(winsorize(group_rank(multiply(ts_sum(divide(vec_sum(inst1_valueeur),add(vec_sum(inst1_holdings),0.0001)),220),if_else(and(greater(ts_sum(divide(vec_sum(inst1_valueeur),add(vec_sum(inst1_holdings),0.0001)),220),0),greater(ts_sum(vec_avg(inst1_tradesignificance),66),2.0)),1,0)),oth455_partner_n2v_p50_q200_w1_pca_fact2_cluster_20),std=2),lower=0.25,upper=0.75,newval=0.5)
+
+====================================================================================================
+vRk6og8b | COMPLETE | S=1.8 F=1.47 2Y=None margin=0.00134 TO=0.1903 prod=0.6877
+add(add(add(add(-rank(ts_backfill(vec_avg(mean_loan_rate_main), 252)), rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5))), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_14d_4, 5))), rank(ts_mean(predicted_surprise_pct_fy2_earnings_4, 5)))
+
+====================================================================================================
+Vk65zLzG | COMPLETE | S=1.79 F=1.69 2Y=None margin=0.001846 TO=0.1203 prod=0.64
+add(add(add(add(rank(ts_sum(ts_backfill(directional_indicator, 66), 252)), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(predicted_surprise_pct_fy2_earnings_4, 22))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_14d_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 22)))
+
+====================================================================================================
+2rjrMZ25 | ACTIVE | S=1.77 F=1.61 2Y=1.83 margin=0.001718 TO=0.1199 prod=0.651
+group_neutralize(group_rank(add(ts_backfill(eps_y1_estimate_change_3mo, 1008), ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 210)), sector), bucket(rank(ts_mean(ts_backfill(eps_y1_estimate_change_3mo, 1008), 252)), range="0,1,0.05"))
+
+====================================================================================================
+58gkLAkk | ACTIVE | S=1.75 F=1.42 2Y=2.07 margin=0.001316 TO=0.1457 prod=0.5381
+group_neutralize(group_neutralize(group_neutralize(group_neutralize(quantile(add(ts_mean(ts_backfill(mean_estimate_change_pct_f12m_earnings_14d_4, 1008), 8), ts_mean(ts_backfill(mean_estimate_change_pct_f12m_earnings_14d_4, 1008), 252))), oth455_relation_n2v_p10_q50_w1_pca_fact1_cluster_20), oth455_relation_n2v_p10_q200_w1_pca_fact3_cluster_20), subindustry), bucket(rank(ts_mean(ts_backfill(mean_estimate_change_pct_f12m_earnings_14d_4, 1008), 252)), range="0,1,0.1"))
+
+====================================================================================================
+Wje5K71x | ACTIVE | S=1.73 F=1.37 2Y=1.87 margin=0.001258 TO=0.1269 prod=0.4305
+group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(fnd6_newq_oiadpq,240)),rank(ts_delta(fnd6_newq_oiadpq,176))),target_tvr=0.03),sector)
+
+====================================================================================================
+JjxrYjre | COMPLETE | S=1.68 F=1.47 2Y=None margin=0.001558 TO=0.1231 prod=0.6453
+add(add(add(add(rank(ts_sum(ts_backfill(mean_buy_transaction_count, 66), 252)), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(predicted_surprise_pct_fy2_earnings_4, 22))), rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 22)))
+
+====================================================================================================
+=== 字段前缀频次（Top 40，仅统计长度>3 的非算子 token） ===
+  mean                     19
+  predicted                9
+  inst1                    5
+  oth455                   4
+  eps                      3
+  range                    2
+  fnd6                     2
+  closing                  1
+  one                      1
+  lower                    1
+  upper                    1
+  newval                   1
+  directional              1
+  target                   1

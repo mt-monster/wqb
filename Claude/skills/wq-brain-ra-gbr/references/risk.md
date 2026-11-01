@@ -2,6 +2,23 @@
 
 > 回到 [GBR 区域流程](../SKILL.md) · [GBR profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/GBR.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region GBR --category risk`
 
+## ⛔⛔ 铁律：GBR 的 RISK 塔事实上不存在（2026-10-30 实证）
+
+**信用 / 违约类字段被平台 `MATCHES_PYRAMID` 统一并入 MODEL，不是 RISK。**
+
+| alpha | 字段 | `ra.pyramid_short` | `pyramids.list` | 状态 |
+|---|---|---|---|---|
+| `3qVa2Lze` | `annualized_pd_2_year_jc7`（2 年期年化违约概率） | `model` | `[GBR/D1/MODEL, 1.5]` | 已 ACTIVE（2026-10-05 提交） |
+| `npPWX19w` | `mdl28_sm_structural_multiple_credit_structural_leverage`（信用结构杠杆） | `model` | `[GBR/D1/MODEL]` | IS |
+
+**推论（直接改变开波动作）**：
+
+1. **不要为「点 RISK 塔（GBR D1 为 0/3）」去找 RISK category 数据集** —— 该塔在 GBR 实际由 MODEL 通道吸收；而 MODEL 塔已是 5/3（已点亮），点它不增收益。
+2. **`annualized_pd` 族（`ds=111`）对点塔零价值，且是强 prod 饱和族**：7 条全闸通过里 4 条 prod **0.9893–0.9985**（`QPK2oXEX` 0.9927 / `A1vg2KnX` 0.9985 / `QPK26lQX` 0.9985 / `j289xaxO` 0.9893）。**不再开波。**
+3. **判「某塔有没有路」必须先读 `get_pyramid_alphas`**，不能从 category、数据集名或 `dataset_id` 推断 —— 同类事故还有 `dataset_id=291` 一个槽位同时装 PV+FUNDAMENTAL 与 OTHER 两种塔位（见 [SKILL.md](../SKILL.md) 塔位判定条）。
+
+**判据（唯一可信）**：`get_alpha_details(alpha_id).ra.pyramid_short` 与 `.pyramids.list`。category / `dataset_id` / 数据集 description **都不能**推塔位。
+
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 active）　**分组**：Risk　**类别卡**：risk
 

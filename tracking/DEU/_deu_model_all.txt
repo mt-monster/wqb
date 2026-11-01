@@ -1,0 +1,42 @@
+TOTAL |S|>=1.5 rows: 176
+UNIQUE alpha ids: 176
+
+==============================================================================================================
+LOCAL-GATE-PASSING candidates (S>=1.58 F>=1.0 2Y>=1.58): 30
+==============================================================================================================
+alpha      dataset                         S      F     2Y    TO%   margin stage      tags
+O0AwxRwb   predictive_starmine          1.98   1.74   1.75  15.36    15.37bp IS         prod_NULL
+0mR6PRo6   model264                     1.94   1.45   2.11  20.94    11.25bp IS         PROD_WALL_0.793
+om6rPL3E   model264                     1.93   1.53   1.79  18.00    12.62bp IS         PROD_WALL_0.777
+qMW35xnV   model264                     1.93   1.53   1.79  18.00    12.62bp IS         prod_NULL
+ZY0MOMGj   model216                     1.90   1.95   2.44  12.19    21.56bp IS         AUDITED prod_NULL
+P0Z8P2nw   model264                     1.90   1.43   1.75  21.28    11.27bp IS         PROD_WALL_0.732
+6XrJ5Jbp   model216                     1.86   1.90   2.38  12.16    21.35bp IS         AUDITED prod_NULL
+N1Q3d6le   model25_model216             1.85   1.89   2.28  12.27    21.25bp IS         PROD_WALL_0.875
+78ZM5QR5   model25_model216             1.83   1.85   2.29  12.34    20.63bp IS         PROD_WALL_0.871
+GrdxZxJ5   model216                     1.83   1.85   2.38  12.27    20.72bp IS         AUDITED prod_NULL
+E5vLjbM1   model25_model216             1.81   1.94   1.58  12.51    22.87bp IS         prod_NULL
+6XrJ5OvE   model28                      1.80   1.93   2.27  12.21    23.46bp IS         PROD_WALL_0.996
+78ZMplOb   model25                      1.80   1.91   2.02  12.46    22.70bp IS         PROD_WALL_0.898
+883Yzbqo   predictive_starmine          1.80   1.32   1.78  18.37    10.84bp IS         PROD_WALL_0.753
+le89GpXl   model238                     1.79   1.74   2.10  13.80    18.89bp IS         AUDITED PROD_WALL_0.830
+blRneE5K   model28                      1.78   1.89   2.28  12.16    23.06bp IS         AUDITED prod_NULL
+gJQdGkzM   model238                     1.78   1.83   2.11  12.52    21.06bp IS         PROD_WALL_0.903
+kqVOzO5O   model216                     1.78   1.77   2.39  12.44    19.80bp IS         AUDITED prod_NULL
+bl62jGgM   predictive_starmine          1.78   1.50   1.75  13.96    14.25bp IS         prod_NULL
+6XdPlm2L   predictive_starmine          1.77   1.42   1.79  15.41    12.79bp IS         prod_NULL
+Jjx19GRm   model28                      1.76   1.88   2.19  12.20    23.31bp IS         PROD_WALL_1.000
+YP1w7LO6   predictive_starmine          1.74   1.39   1.95  15.22    12.74bp IS         prod_NULL
+om6rxOOm   model28                      1.73   1.82   2.21  12.11    22.84bp IS         AUDITED prod_NULL
+9qVmJ2Qe   predictive_starmine          1.70   1.15   1.67  19.93     9.17bp IS         PROD_WALL_0.756
+vRk6mpKw   predictive_starmine          1.70   1.15   1.67  19.93     9.17bp IS         PROD_WALL_0.756
+zqY0OLEX   predictive_starmine          1.69   1.14   1.58  20.02     9.05bp IS         prod_NULL
+ZY0Mr190   predictive_starmine          1.68   1.14   1.59  19.60     9.21bp IS         PROD_WALL_0.728
+58QePWW5   model28                      1.67   1.71   1.58  12.50    21.00bp IS         prod_NULL
+O0rVlVe7   model216                     1.65   1.56   2.16  12.88    17.76bp IS         AUDITED prod_NULL
+e79vLWPE   predictive_starmine          1.63   1.11   1.74  18.30     9.35bp IS         PROD_WALL_0.715
+
+==============================================================================================================
+NOT-YET-AUDITED + prod NULL  => worth batch_get_alpha_metrics: 8
+==============================================================================================================
+CHUNK 1: "O0AwxRwb","qMW35xnV","E5vLjbM1","bl62jGgM","6XdPlm2L","YP1w7LO6","zqY0OLEX","58QePWW5"

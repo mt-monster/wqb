@@ -1,0 +1,526 @@
+{
+ "dataset": "macro38",
+ "region": "USA",
+ "universe": "TOP3000",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 56
+ },
+ "field_count": 56,
+ "platform_count": 56,
+ "complete": true,
+ "truncated_reason": null,
+ "estimated_stock_count": 2981,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.9938,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-10-30T00:40:35",
+ "fields": [
+  {
+   "id": "mcr38_adx_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 255,
+   "alphaCount": 805,
+   "longCount": 3000,
+   "description": "Indicates if the ADX signal is strengthening (5), weakening (1), or for Hold signals, whether trending bullish (5) or be"
+  },
+  {
+   "id": "mcr38_adx_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 309,
+   "alphaCount": 993,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for average directional index (ADX) indicator"
+  },
+  {
+   "id": "mcr38_adx_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 226,
+   "alphaCount": 872,
+   "longCount": 3000,
+   "description": "Strength rating (1-5) of the Average Directional Index (ADX) signal compared to historical performance"
+  },
+  {
+   "id": "mcr38_bb_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 428,
+   "alphaCount": 1518,
+   "longCount": 3000,
+   "description": "Indicates if the Bollinger Band signal is strengthening (5), weakening (1), or for Hold signals, whether trending bullis"
+  },
+  {
+   "id": "mcr38_bb_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 235,
+   "alphaCount": 811,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for bollinger band (BB) indicator"
+  },
+  {
+   "id": "mcr38_bb_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 114,
+   "alphaCount": 330,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 to 5, for the Bollinger Band indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_cci_40_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 172,
+   "alphaCount": 643,
+   "longCount": 3000,
+   "description": "Direction and strength of the 40-period Commodity Channel Index (CCI) signal: for Buy/Sell, indicates strengthening (5) "
+  },
+  {
+   "id": "mcr38_cci_40_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 125,
+   "alphaCount": 269,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for commodity channel index (cci) 40 days indicator"
+  },
+  {
+   "id": "mcr38_cci_40_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 116,
+   "alphaCount": 383,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 to 5, for the Commodity Channel Index (CCI) 40 days indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_cci_60_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 132,
+   "alphaCount": 487,
+   "longCount": 3000,
+   "description": "Direction and strength of the 60-period Commodity Channel Index (CCI) signal: for Buy/Sell, indicates strengthening (5) "
+  },
+  {
+   "id": "mcr38_cci_60_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 108,
+   "alphaCount": 447,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for commodity channel index (cci) 60 days indicator"
+  },
+  {
+   "id": "mcr38_cci_60_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 195,
+   "alphaCount": 943,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 to 5, for the Commodity Channel Index (CCI) 60 days indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 429,
+   "alphaCount": 1542,
+   "longCount": 3000,
+   "description": "Difference between the current price and yesterday's settlement"
+  },
+  {
+   "id": "mcr38_direction_rating",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 162,
+   "alphaCount": 569,
+   "longCount": 3000,
+   "description": "Average of all individual direction ratings across indicators"
+  },
+  {
+   "id": "mcr38_high",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 119,
+   "alphaCount": 320,
+   "longCount": 3000,
+   "description": "The highest price traded during the session"
+  },
+  {
+   "id": "mcr38_last",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 274,
+   "alphaCount": 2048,
+   "longCount": 3000,
+   "description": "Last traded price of the instrument"
+  },
+  {
+   "id": "mcr38_longterm_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 154,
+   "alphaCount": 457,
+   "longCount": 3000,
+   "description": "The percentage / weight of the average signal."
+  },
+  {
+   "id": "mcr38_longterm_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 94,
+   "alphaCount": 352,
+   "longCount": 2938,
+   "description": "Buy(B)/Sell(S)/Hold(H) average across all long-term indicators"
+  },
+  {
+   "id": "mcr38_low",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 98,
+   "alphaCount": 218,
+   "longCount": 3000,
+   "description": "Lowest traded price for the session"
+  },
+  {
+   "id": "mcr38_ma_100_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 110,
+   "alphaCount": 407,
+   "longCount": 3000,
+   "description": "Direction/strength for MA 100: for Buy/Sell, shows if the signal is strengthening (5) or weakening (1); for Hold, indica"
+  },
+  {
+   "id": "mcr38_ma_100_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 117,
+   "alphaCount": 447,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for moving average (ma) 100 days indicator"
+  },
+  {
+   "id": "mcr38_ma_100_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 159,
+   "alphaCount": 528,
+   "longCount": 3000,
+   "description": "Strength rating (1-5) for the 100-day Moving Average indicator signal compared to historical performance"
+  },
+  {
+   "id": "mcr38_ma_20_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 70,
+   "alphaCount": 178,
+   "longCount": 3000,
+   "description": "Indicates if the 20-day Moving Average signal is strengthening (5), weakening (1), or for Hold signals, if heading towar"
+  },
+  {
+   "id": "mcr38_ma_20_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 89,
+   "alphaCount": 261,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for moving average (ma) 20 days indicator"
+  },
+  {
+   "id": "mcr38_ma_20_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 72,
+   "alphaCount": 218,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 to 5, for the 20-day Moving Average indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_ma_50_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 75,
+   "alphaCount": 300,
+   "longCount": 3000,
+   "description": "Direction/strength for MA 50: for Buy/Sell, shows if the signal is strengthening (5) or weakening (1); for Hold, indicat"
+  },
+  {
+   "id": "mcr38_ma_50_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 88,
+   "alphaCount": 358,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for moving average (ma) 50 days indicator"
+  },
+  {
+   "id": "mcr38_ma_50_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 74,
+   "alphaCount": 232,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 to 5, for the 50-day Moving Average indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_macd_20_100_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 69,
+   "alphaCount": 377,
+   "longCount": 3000,
+   "description": "Indicates if the MACD 20/100 signal is strengthening (5), weakening (1), or for Hold signals, whether trending bullish ("
+  },
+  {
+   "id": "mcr38_macd_20_100_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 72,
+   "alphaCount": 215,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for moving average convergence divergence (macd) 20/100 days indicator"
+  },
+  {
+   "id": "mcr38_macd_20_100_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 85,
+   "alphaCount": 205,
+   "longCount": 3000,
+   "description": "Strength rating (1-5) of the MACD 20/100 signal compared to its historical performance"
+  },
+  {
+   "id": "mcr38_macd_20_50_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 91,
+   "alphaCount": 259,
+   "longCount": 3000,
+   "description": "Signal direction for MACD 20/50: for Buy/Sell, shows if the signal is strengthening (5) or weakening (1); for Hold, indi"
+  },
+  {
+   "id": "mcr38_macd_20_50_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 80,
+   "alphaCount": 213,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for moving average convergence divergence (macd) 20/50 days indicator"
+  },
+  {
+   "id": "mcr38_macd_20_50_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 64,
+   "alphaCount": 137,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 (weakest) to 5 (strongest), for the MACD 20/50 day indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_macd_50_100_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 75,
+   "alphaCount": 151,
+   "longCount": 3000,
+   "description": "Indicates if the MACD 50/100 signal is strengthening (5), weakening (1), or for Hold signals, whether trending bullish ("
+  },
+  {
+   "id": "mcr38_macd_50_100_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 76,
+   "alphaCount": 207,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for moving average convergence divergence (macd) 50/100 days indicator"
+  },
+  {
+   "id": "mcr38_macd_50_100_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 101,
+   "alphaCount": 385,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 (weakest) to 5 (strongest), for the MACD 50/100 day indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_mahilo_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 85,
+   "alphaCount": 290,
+   "longCount": 3000,
+   "description": "Indicates if the MAHILO signal is strengthening (5), weakening (1), or for Hold signals, whether trending bullish (5) or"
+  },
+  {
+   "id": "mcr38_mahilo_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 196,
+   "alphaCount": 721,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for moving average using high and low prices (mahilo) indicator"
+  },
+  {
+   "id": "mcr38_mahilo_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 81,
+   "alphaCount": 322,
+   "longCount": 3000,
+   "description": "Signal strength, from 1 to 5, for the MAHILO indicator compared to historical performance"
+  },
+  {
+   "id": "mcr38_mediumterm_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 76,
+   "alphaCount": 238,
+   "longCount": 3000,
+   "description": "The percentage / weight of the average signal."
+  },
+  {
+   "id": "mcr38_mediumterm_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 74,
+   "alphaCount": 202,
+   "longCount": 2938,
+   "description": "Buy(B)/Sell(S)/Hold(H) average across all medium-term indicators"
+  },
+  {
+   "id": "mcr38_open",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 92,
+   "alphaCount": 357,
+   "longCount": 3000,
+   "description": "The opening (first) price for the trading session"
+  },
+  {
+   "id": "mcr38_overall_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 104,
+   "alphaCount": 340,
+   "longCount": 3000,
+   "description": "Overall percentile or rank/weight of the composite average signal, showing its position among the universe"
+  },
+  {
+   "id": "mcr38_overall_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 67,
+   "alphaCount": 239,
+   "longCount": 2938,
+   "description": "Buy(B)/Sell(S)/Hold(H) average across all indicators"
+  },
+  {
+   "id": "mcr38_para_50_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 87,
+   "alphaCount": 339,
+   "longCount": 3000,
+   "description": "Indicates if the PARA_50 indicator's signal is strengthening (5), weakening (1), or for Hold signals, whether trending b"
+  },
+  {
+   "id": "mcr38_para_50_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 102,
+   "alphaCount": 362,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for 50 days PARA indicator"
+  },
+  {
+   "id": "mcr38_para_50_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 99,
+   "alphaCount": 471,
+   "longCount": 3000,
+   "description": "Strength rating (1-5) for the 50-day Parabolic indicator signal compared to its historical performance"
+  },
+  {
+   "id": "mcr38_percent_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 187,
+   "alphaCount": 824,
+   "longCount": 3000,
+   "description": "Percent change between previous close and last price"
+  },
+  {
+   "id": "mcr38_shorttermpercent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 89,
+   "alphaCount": 253,
+   "longCount": 3000,
+   "description": "Average percentile rank of all short-term indicator signals for the instrument"
+  },
+  {
+   "id": "mcr38_shorttermsignal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 93,
+   "alphaCount": 233,
+   "longCount": 2938,
+   "description": "Buy(B)/Sell(S)/Hold(H) average across all short-term indicators"
+  },
+  {
+   "id": "mcr38_strength_rating",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 122,
+   "alphaCount": 405,
+   "longCount": 3000,
+   "description": "Average of all individual strength ratings across indicators"
+  },
+  {
+   "id": "mcr38_trendspotter_direction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 62,
+   "alphaCount": 338,
+   "longCount": 3000,
+   "description": "Direction indicating whether the Trendspotter Buy or Sell signal is strengthening or weakening"
+  },
+  {
+   "id": "mcr38_trendspotter_signal",
+   "type": "MATRIX",
+   "coverage": 0.9796,
+   "userCount": 92,
+   "alphaCount": 300,
+   "longCount": 2938,
+   "description": "S(sell)/B(buy)/H(hold) for proprietary composite indicator"
+  },
+  {
+   "id": "mcr38_trendspotter_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 84,
+   "alphaCount": 304,
+   "longCount": 3000,
+   "description": "Signal strength of the Trendspotter indicator compared to historical performance, rated from Minimum (1) to Maximum (5)"
+  },
+  {
+   "id": "mcr38_volume",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 255,
+   "alphaCount": 1321,
+   "longCount": 3000,
+   "description": "The trading volume for the period/session for the instrument"
+  }
+ ]
+}

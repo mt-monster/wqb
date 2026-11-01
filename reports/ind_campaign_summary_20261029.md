@@ -194,7 +194,7 @@ multisim `2gDOIf9ba4QubWt19AXvFrxO`，8 臂，全部不含 `returns` ⇒ 纯 ATO
 
 | 塔 | 累计臂数 | 最好 S | 判定 | 根因 |
 |---|---:|---:|---|---|
-| SENTIMENT | 12 | 0.23（水平）/ −0.30（dev 反向最好 −0.30→已用旧族） | 判死 | 水平项无信息，只有 dev 反向老族有效且已被占用 |
+| SENTIMENT | **20** | 0.49（sentiment23 neut_median） | 判死（2026-10-31 最终封存） | 4 个数据集全灭：21 水平项无信息、26 网页注意力弱、news_sentiment_transfer 已用旧族、**23 的 8 臂两骨架双向全灭（最高 S0.49 / rob≤0.26）** |
 | OPTION | 14 | 0.54 | 判死 | 覆盖 0.3629，`ts_backfill(…,22)` 补不满 |
 | INSIDERS | 24 | 0.57 | 判死 | 事件稀疏 + 长窗抹平 + 2Y 方向反转 |
 | SHORTINTEREST | — | 0.22 | 判死（更早） | S 与 2Y 双低（0.22 / 0.21） |
@@ -211,13 +211,50 @@ multisim `2gDOIf9ba4QubWt19AXvFrxO`，8 臂，全部不含 `returns` ⇒ 纯 ATO
 | 276b | risk70（RISK） | 4 | 0 | 0 | zscore 结构全灭：`broad_market_exposure_factor` 是**常量字段**（longCount=0/TO=0）；两个持仓类字段 S≈0 |
 | 277 | other532（OTHER） | 8 | 4 | **1** | 日频特异收益率 5/10 日反转成立（`akKJ3qn2` S3.51 全闸 + self 0.6426）；**同族只能折 1 颗**（次好 `9qxoQLrV` self 0.7007 差 0.0007）；**月频轴判死**（S0.06 / S0.02） |
 | 278 | model39（MODEL） | 8 | 3 | **2** | `value_momentum_rank_float` 的 **22 日变化（升级）= 强正向**：`88RAAmZa` S2.96（self **0.2119**）、`9qxoozer` S3.06（self **0.2697**）；`JjellVJ2` S3.83 但 self **0.7008**（差 0.0008） |
-| 279 | model39 扩展 | 8 | 在飞 | — | region/sector(10,44)/industry(66)/global(22) 五档窗口 + long_term 动量双向 + short_term 平滑抢救臂 |
+| 279 | model39 扩展 | 8 | **5** | **4**（3 可交付） | region/sector(10,44)/industry(66)/global(22) 窗口×分组网格：`9qxogZnr`(sector,44) S2.72/rob1.06/self0.2237、`rKRkQpx8`(industry,66) S2.80/rob1.28/self0.2765、`e75AekXp`(global,22) S2.97/rob1.01/self0.1896 三颗全闸；`KPJexlW1`(short_term 平滑) 全闸但 self **0.7568** 淘汰；long_term 动量强弱双向精确对称（±1.25）证实方向无歧义但强度不足 |
 
 **三条可复用机制**（都已写进 DB `wave_results`）：
 
-1. **`rank(ts_delta(ts_backfill(<百分位字段>, 22), W))` = 升级型信号**。value-momentum 百分位的"改善"比绝对水平干净得多：TO 只有 0.15–0.21，robust 1.06 / 1.30，且与现有 OS 池近乎正交（self 0.21 / 0.27）。分组越细稳健越差（industry 0.86、sector 1.06）——这是与直觉相反的实测。
+1. **`rank(ts_delta(ts_backfill(<百分位字段>, 22), W))` = 升级型信号**。value-momentum 百分位的"改善"比绝对水平干净得多：TO 只有 0.15–0.30，且与现有 OS 池近乎正交（self 0.19–0.28）。**主导变量是窗口 W，不是分组粒度**：wave 279 的 2×W 网格实测 W=22 → robust 0.86(region)/1.01(global)、W=44 → 1.06(sector)、W=66 → 1.28(industry)；wave 278 的 industry W=22 也是 0.86。⇒ **稳健闸要过必须 W ≥ 44**（W=22 只有 global 勉强 1.01，余量 0.01 不可靠）。此前的"分组越细稳健越差"是 W 与分组混杂造成的误读，2026-10-31 已按 wave 279 的网格证据更正。
 2. **同数据集同信号族只能折 1 颗**。other532 四颗全闸过、彼此相关 0.64–0.70，交一颗就饱和。**扩面必须换数据集或换机制，换窗口无效**（277 的 4 个窗口 = 1 颗）。
 3. **IND 的换手硬线是 0.40 不是 0.70**（平台 `HIGH_TURNOVER.limit` 实测）：`6Xdxbvp7` TO 0.4077 FAIL、`E563AXeK` TO 0.729 FAIL。反转族必须把 TO 钉在 0.39 以下。
+
+### 4.7 wave 280–282：强负向 P V 族与「镜像 + 平滑」修复路径（2026-10-31）
+
+**wave 280（intraday_pv_feats，PV，8 臂，全灭但信息量最大）**。`corr_*_with_volume`（日内各价格口径与成交量的相关性）在 IND 上**方向为负且极强**：
+
+| 臂 | 表达式骨架 | S | F | TO | robust |
+|---|---|---:|---:|---:|---:|
+| `YP1mkVQM` | ts_zscore(vwap_corr,252) | −7.28 | −4.76 | 0.7319 | −2.30 |
+| `KPJ68oLg` | ts_zscore(last_trade_price_corr,252) | −6.87 | −4.35 | 0.7336 | −2.29 |
+| `vR19zEmz` | ts_zscore(twap_corr,252) | −7.00 | −4.46 | 0.7376 | −2.23 |
+| `d5Wm7MQX` | **ts_mean(vwap_corr,5)** | −4.77 | −3.63 | **0.3444** | −1.52 |
+
+三条判读：① 8/8 全负，说明不是个别字段噪声，而是族级方向；② `ts_zscore`/`ts_delta` 骨架的 TO 0.73–0.78 全部撞 0.40 的换手线，**唯一把 TO 压到线内的是 `ts_mean(...,5)`（0.3444）**；③ 秩变换下的镜像组合是精确取反（`-rank(x)` 与 `rank(x)` 权重逐股相反），故上述数字可直接读成「取反后的期望值」。
+
+**wave 281（`2BEJVx5174gx8IufUV5FaBY`，8 臂，6/8 全闸）**：镜像+平滑两条同时下手，6 臂用 `-rank(ts_mean(ts_backfill(field,22),5))`、2 臂用 W=22 档位。
+
+| 臂 | 字段（`corr_*_with_volume`） | S | F | TO | rob | 2Y | sub | self |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| `xArQm1Kb` | vwap | **4.77** | 3.63 | 0.3444 | 1.52 | 2.43 | 1.75 | 0.7920 ❌ |
+| `QPvj5Y1w` | last_trade_price | 4.52 | 3.36 | 0.3459 | 1.53 | 2.46 | 1.77 | 0.8045 ❌ |
+| `Jjem5Pjm` | twap | 4.64 | 3.46 | 0.3482 | 1.50 | 2.53 | 1.76 | 0.7871 ❌ |
+| `akKlWVkx` | ask_price | 4.55 | 3.35 | 0.3487 | 1.48 | 2.65 | 1.68 | 0.7723 ❌ |
+| `VkxEYd1V` | bid_price | 4.35 | 3.14 | 0.3480 | 1.49 | 2.31 | 1.76 | 0.7893 ❌ |
+| `qMLdmE9E` | **last_vwap** | 3.62 | 2.25 | 0.3654 | **1.17** | 1.70 | 1.37 | **0.5464 ✅** |
+| `9qxKAEZe` | vwap（W=22 平滑） | 2.43 | 2.00 | 0.1534 | 0.66 | 0.75 | 0.81 | — |
+| `ZYQxWm6x` | last_trade（W=22 平滑） | 2.31 | 1.85 | 0.1549 | 0.65 | 0.78 | 0.82 | — |
+
+**镜像预测精确命中**：`xArQm1Kb` 就是 wave 280 `d5Wm7MQX` 的镜像（S −4.77→**+4.77**、F −3.63→**+3.63**、TO 0.3444 **不变**、rob −1.52→**+1.52**、2Y 1.70→**2.43**，与预测 S4.77/F3.63/TO0.3444/rob1.52/2Y2.43/sub1.75 逐项吻合）。**但 6 颗里只有 1 颗过 self-corr** —— 其余 5 颗 0.772–0.805 全撞 OS 池里的 `wpZ1vYzY`，说明该族在 OS 已有近似持仓，**wave 280 的"全灭"其实是被 OS 占位而非信号无效**。
+
+**平滑窗口的反向规律**：这里 W=5 全闸、W=22 的 rob 只有 0.65–0.66。与 §4.6 机制 #1（delta 型要 W≥44）**方向相反** —— `ts_delta` 的 W 是「变化幅度窗」，越长越稳；`ts_mean` 的 W 是「平滑窗」，过长会把反转信号抹平。两者不可套用同一条窗口经验。
+
+**wave 282（`lTrVqe7C4IB8CVAwq8pB3j`，8 臂，0/8）**：sentiment23 全灭，最高 S 仅 0.49（`Xg9LYamm` neut_median），rob −0.38~0.26、2Y 全部 <1.58。两骨架双向都不成立：`ts_delta(5)` 的 TO 0.505–0.512 越线且 S 全负，`ts_zscore(66)` 的 TO 0.276–0.278 合规但 S −0.32/−0.26。⇒ **sentiment23 判死并封存**，§4.5「SENTIMENT 判死」结论维持（累计 20 臂）。
+
+**wave 283（`4DjGLJ4Fm4CxbcmGZxuBKZJ`，在飞）**：`mmp_nlp_sentiment`（**OTHER 塔**，521 字段、cov 0.9593、alphaCount 3256）8 臂方向探测，统一 `rank(ts_mean(ts_backfill(f,22),5))`，字段取 bullish/bearish/downgrade/earnings/raise·lower price-target/analyst_reference/advertisement 八个主题分。用 wave 281 的甜点骨架先定方向，全负则镜像重发。
+
+**方法论沉淀**：一批全负不等于该族无效，先看**是否整族同号**。整族同号时，正确的下一步不是换字段，而是「镜像 + 换平滑算子」——镜像修方向，平滑修换手，两刀必须同时下（只镜像不改骨架，TO 0.73 仍然 FAIL）。
+
 
 ---
 
@@ -353,7 +390,7 @@ multisim `2gDOIf9ba4QubWt19AXvFrxO`，8 臂，全部不含 `returns` ⇒ 纯 ATO
 | 4 | `RRE3g7Ne` prod 0.7058 | 直方图 `[0.7,0.8)` n=2 ⇒ 按族级判据**必死**，不扫窗口 |
 | 5 | wave 275（INSIDERS 长周期 8 臂） | **已收：8/8 全灭，最高 S=0.57** ⇒ INSIDERS 判死（§4.4） |
 | 6 | 20 颗终池定稿 | **已定稿**：Tier A 8 ATOM + Tier B 5 PV+X + Tier C 7 同族备选（§5.4）。严格额度下可提交上限 13 颗 |
-| 7 | INSIDERS / OPTION / SENTIMENT / SHORTINTEREST 四塔 | **四塔全部实证判死**（24/14/12 臂），IND 可产 ATOM 的只剩已点亮 6 个 category |
+| 7 | INSIDERS / OPTION / SENTIMENT / SHORTINTEREST 四塔 | **四塔全部实证判死**（累计 24/14/24/早前 7 臂）。2026-10-31 补：sentiment23 8 臂全灭，SENTIMENT 终判封存。**未点亮塔路线彻底关闭**——后续 ATOM 只能从已点亮 6 个 category 的新数据集上挖（`mmp_nlp_sentiment` 属 OTHER 塔） |
 | 8 | `MPalYZxM`（S4.37）/ `mLoMnqPE`（S1.87） | **prod 撞墙**（0.824 / 0.7818），已从池内剔除 |
 | 9 | `wpZwnrpd` / `88RoVq6V` / `78odJop1` / `58EbwZeN` prod | peek 连续空体，平台队列未出结果；**提交前逐颗 `refresh=True` 终验** |
 | 10 | `e72L9vq6` | 非 IND 标准设置（MARKET/decay5/nanON）+ `CLUSTER_TEST:ERROR`，要进池须按 TOP500/STATISTICAL/decay4/nanOFF 重跑 |

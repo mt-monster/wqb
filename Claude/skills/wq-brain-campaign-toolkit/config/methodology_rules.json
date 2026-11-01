@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated_at": "2026-10-06T00:00:00",
+ "updated_at": "2026-10-31T16:00:00",
  "_note": "全局方法论规则库（L2 结构化层）：跨 region 共享，所有战役通用。trigger.region=\"*\" 或不设 region 的规则放这里；区域专属规则放 tracking/<REGION>/reference/methodology_rules.json。rules.json 给机器消费（build_wave/gate/pipeline 强制注入），docs/experience/*.md 给人看，两者同源。种子来自 2026-08-18 EUR 战役复盘（通用部分）。",
  "rules": [
   {
@@ -981,6 +981,174 @@
    "created_at": "2026-10-04T02:50:00",
    "validated_at": "2026-10-04T02:50:00",
    "source": "manual_retro"
+  },
+  {
+   "rule_id": "prod_fresh_before_constraint_relaxation_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "about_to_relax_user_constraint OR prod_read_taken_from_cache",
+    "region": "*",
+    "dataset_type": "*"
+   },
+   "action": {
+    "op": "refresh_prod_before_relaxation",
+    "params": {
+     "doc": "docs/experience/01_platform_gates.md",
+     "doc_section": "14",
+     "region_evidence": "tracking/KOR/reference/kor_session_lessons_20261031.md",
+     "tool": "check_correlation(refresh=True)",
+     "stale_hours_max": 48,
+     "family_histogram_bucket": [0.7, 0.8],
+     "family_dead_if_n_ge": 1,
+     "consumption": "advisory_only：strategy 型由 build_wave.py / pipeline.py 的常驻提示循环打印 action.message；本 op 无自动拦截分支（recommend_next_wave 只认 gradient_dilute / warn_rnf_drop / dead_universe / classify_failure_nature）"
+    },
+    "message": "★ 向用户请求「放宽覆盖率 / 放宽自设约束 / 判死某族」之前，先把新鲜 prod 取到手（check_correlation refresh=True）。prod 读数分五级可信度：A=refresh 且 stale=false 且 <48h 且有来源；B=缓存 <48h 有来源（只够族级预判）；C=stale>48h 不可用；D=prod_corr_source/corr_checked_at 为 NULL 的无来源遗留值不可用；E=手写文档里的数值可被平台证伪。本地缓存 prod<0.70 不等于干净（KOR 19 行缓存 .57-.70，重测 .81-.935）；族级直方图 [0.7,0.8) 桶 n>=1 即整族判死，n=0 才有窗口谷可救。prod 是账号级单并发槽、跨会话抢占，与仿真槽独立。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "waves": ["259-271"],
+    "three_cases_refreshed": {
+     "leA22za2": 0.8377,
+     "d5WmEarw": 0.8395,
+     "leAk66xx": 0.8711
+    },
+    "local_cache_range": [0.57, 0.70],
+    "fresh_range": [0.81, 0.935],
+    "knife_edge_survivors": [0.6886, 0.6958],
+    "campaign_prod_wall_ratio": 0.5172,
+    "note": "三例本地/文档读数均 <0.70，refresh 后全部 >0.83；据此撤回了一次「请用户放宽约束」的请求。leAk66xx 表达式 hump(group_rank(ts_sum(ts_backfill(vec_avg(oth695_import_value_4),66),20),sector),hump=0.0025)"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-10-31T16:00:00",
+   "validated_at": "2026-10-31T16:00:00",
+   "source": "KOR 2026-10-30/31 未点亮塔战役复盘（会话经验蒸馏）"
+  },
+  {
+   "rule_id": "submit_ready_status_is_local_queue_state_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "reading_submit_ready_queue OR high_sharpe_cluster_in_local_alphas",
+    "region": "*",
+    "dataset_type": "*"
+   },
+   "action": {
+    "op": "treat_submit_ready_as_local_queue",
+    "params": {
+     "doc": "docs/experience/01_platform_gates.md",
+     "doc_section": "15",
+     "region_evidence": "tracking/KOR/reference/kor_session_lessons_20261031.md",
+     "closure_method": "抽样 + turnover 签名聚类（同族只测代表）",
+     "platform_verdict_keys": ["get_alpha_details().regular.code", "is.checks"],
+     "consumption": "advisory_only：同 prod_fresh_before_constraint_relaxation_v1，由常驻提示循环打印，无自动拦截"
+    },
+    "message": "★ submit_ready.status 是本地队列态，不是平台裁决：EXPIRED + gate=IS_ONLY + towers=[] 只意味着「从未做过提交层核验、从未做过塔位归属」，既不是候选也不是判死，不得据此声称库存已清。收口用抽样 + TO 签名聚类（KOR 4 次读数判掉 19 行）。标签不等于数值：status=SELF_BLOCKED 的两条实测 self 仅 .1967/.1970。本地高分簇（S 3.6-5.0）可能是 COMBO/SELECTION/SUPER 而非 REGULAR（alpha_type=NULL 时看 combo_a(alpha)/generate_stats/selectionHandling=POSITIVE），不可当 REGULAR 库存计数。判定只走平台：is.sharpe/is.checks 直读，不是 is.metrics.*。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "queue_rows": 163,
+    "prod_clean_rows": 25,
+    "prod_clean_breakdown": {
+     "shortinterest38_family": 19,
+     "ra_investability_dead": ["A1vOb5pE", "ZYAWx9J3"],
+     "self_blocked_label_wrong": ["wpb1GXEd", "9qWK21rd"],
+     "superseded": ["A1NXddRw"],
+     "ready": 1
+    },
+    "high_score_cluster_ds_count": 1150,
+    "super_example": "3qoWQKJg",
+    "note": "19 行 shrt38 由 4 次平台读数 + TO 签名聚类判定，未逐条烧 prod 槽"
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-10-31T16:00:00",
+   "validated_at": "2026-10-31T16:00:00",
+   "source": "KOR 2026-10-31 库存收口（会话经验蒸馏）"
+  },
+  {
+   "rule_id": "rank_shell_aggregator_swap_is_not_new_probe_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "designing_probe_variants OR ablating_operators",
+    "region": "*",
+    "dataset_type": "*"
+   },
+   "action": {
+    "op": "dedup_probe_by_rank_invariance",
+    "params": {
+     "doc": "docs/experience/02_signal_patterns.md",
+     "region_evidence": "tracking/KOR/reference/kor_session_lessons_20261031.md",
+     "no_op_swaps_inside_rank": ["ts_sum->ts_mean", "ts_sum->ts_av_diff", "winsorize(rank(x))"],
+     "not_interchangeable": ["hump vs ts_decay_linear", "reverse(x) vs -x"],
+     "consumption": "advisory_only：由常驻提示循环打印；发波前据此去重探针，不新增拦截"
+    },
+    "message": "★ 探针等价性三条，发波前先去重再烧配额：① rank/group_rank 吸收严格单调变换 ⇒ 在 rank 壳内换 ts_sum/ts_mean/ts_av_diff 不是新探针（KOR wave214#5 与 wave270 E1 逐位相同 S=-0.64/TO=.2104）；winsorize(rank(x)) 是 no-op。② hump ≠ ts_decay：hump 作用于换仓成本而非信号均值，risk59 去掉 hump=0.003 后 S 1.02→0.90、F .67→.53、2Y 1.80→1.60 ⇒ 值 +0.12 S，不可当冗余算子压掉。③ reverse() 与正向不精确反号（差 2×成本），且翻正不改变 turnover（TO 由形态决定不由符号决定）⇒ 反向变体不能当「降换手」杠杆。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "bit_identical_pair": {
+     "wave214_probe5_vs_wave270_E1": {"sharpe": -0.64, "turnover": 0.2104}
+    },
+    "hump_ablation_risk59": {
+     "with_hump": {"sharpe": 1.02, "fitness": 0.67, "two_year": 1.80},
+     "without_hump": {"sharpe": 0.90, "fitness": 0.53, "two_year": 1.60},
+     "alpha_ids": ["QPvr1vPM", "akKAY1g6"]
+    },
+    "reverse_turnover_case": {
+     "dataset": "other496",
+     "wave": "271",
+     "turnover_both_directions": 0.0648
+    },
+    "note": "与 equivalent_operator_substitution_v1 互补：那条说「判死前必须扫等价替换」，本条说「哪些替换根本不构成新实验」，避免把 no-op 当探针烧配额"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-10-31T16:00:00",
+   "validated_at": "2026-10-31T16:00:00",
+   "source": "KOR 2026-10-30/31 战役复盘（会话经验蒸馏）"
+  },
+  {
+   "rule_id": "ten_year_data_judged_by_yearly_longcount_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "ten_year_data_requirement OR judging_dataset_coverage",
+    "region": "*",
+    "dataset_type": "*"
+   },
+   "action": {
+    "op": "judge_ten_year_by_yearly_longcount",
+    "params": {
+     "doc": "docs/experience/01_platform_gates.md",
+     "doc_section": "16.2",
+     "region_evidence": "tracking/KOR/reference/kor_session_lessons_20261031.md",
+     "tool": "get_alpha_yearly_stats",
+     "criterion": "逐年 longCount>0 && shortCount>0（需要收益的再加 pnl>0）",
+     "not_a_criterion": "coverage（截面口径，与时间跨度无关）",
+     "consumption": "advisory_only：由常驻提示循环打印，无自动拦截"
+    },
+    "message": "★ 用户约束「近十年都要有数据」不能用 coverage 判：coverage 是截面覆盖（当日多少标的有值），与时间跨度无关。KOR 反例两枚——sentiment26 cov .356 但只有 7/10 年有持仓；macro63 cov 1.0 却 10/10 年 longCount=0（满覆盖零持仓）。判据只有一条：get_alpha_yearly_stats 逐年核 longCount>0 && shortCount>0。coverage 决定要不要 backfill，逐年 longCount 决定够不够十年；混用会同时放走「满覆盖零持仓」的集、错杀「低覆盖但逐年连续」的集。另：IS 窗被平台硬定的区域（KOR 实测 2014-2023）不得用窗口平移补年，见区域规则 kor_is_window_hard_pinned_v1。"
+   },
+   "evidence": {
+    "campaign": "KOR",
+    "counterexamples": {
+     "sentiment26": {"coverage": 0.356, "years_with_positions": 7},
+     "macro63": {"coverage": 1.0, "years_with_positions": 0}
+    },
+    "note": "macro63 因此成为 KOR 第 8 条已死轴；判死依据是逐年 longCount 而非 coverage"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-10-31T16:00:00",
+   "validated_at": "2026-10-31T16:00:00",
+   "source": "KOR 2026-10-31 未点亮塔战役复盘（会话经验蒸馏）"
   }
  ]
 }

@@ -1,0 +1,63 @@
+{
+  "region": "USA",
+  "tower": "OTHER",
+  "multiplier": 1.4,
+  "prepared_at": "2026-10-29",
+  "color_policy": "BLUE（待观察）；GREEN 须由 OS 结果挣得，不得作默认值",
+  "mutual_corr": {
+    "LL522ZRe__O0Jgd7Y7": 0.3424,
+    "LL522ZRe__LL53QVvn": 0.4977,
+    "O0Jgd7Y7__LL53QVvn": 0.5531
+  },
+  "items": [
+    {
+      "alpha_id": "LL522ZRe",
+      "name": "USA_R_insbuyz_01",
+      "tags": [
+        "CH_REG",
+        "SRC_insider_trx_matrix",
+        "EXPRFAM_insbuyz"
+      ],
+      "tag_warnings": [],
+      "descriptions": "Idea: Senior-insider open-market purchases are the strongest revealed-positive signal, since insiders trade on private information. Aggregating buy transaction counts over six months and standardizing against two years captures an unusual surge in insider conviction, not a persistent level.\n\nRationale for data used: insider_trx_matrix aggregates insider filings to firm-day. Transaction counts avoid the fat right tail of reported dollar amounts and option-exercise distortion; top-secondary buys isolate informed conviction.\n\nRationale for operators used: ts_sum over 126 days accumulates conviction while suppressing single-filing noise. ts_zscore over 252 days gives a comparable surprise measure. group_neutralize by industry removes sector-wide buying cycles.",
+      "desc_word_count": 97,
+      "desc_ok": true,
+      "expr": "group_neutralize(ts_zscore(ts_sum(total_top_secondary_buy_transaction_count, 126), 252), industry)",
+      "prod": 0.6377,
+      "self_": 0.111
+    },
+    {
+      "alpha_id": "O0Jgd7Y7",
+      "name": "USA_R_insbuyq_02",
+      "tags": [
+        "CH_REG",
+        "SRC_insider_trx_matrix",
+        "EXPRFAM_insbuyq"
+      ],
+      "tag_warnings": [],
+      "descriptions": "Idea: Insider buying breadth, not dollar size, reveals conviction. A quarter of unusually frequent open-market purchases across all insiders indicates broad-based informed optimism that is hard to fake and rarely reversed quickly.\n\nRationale for data used: total_buy_transaction_count from insider_trx_matrix counts distinct open-market purchase filings per firm-day. Counts are robust to the extreme skew of reported values and to zero-value filings that distort dollar-based measures.\n\nRationale for operators used: ts_sum over 42 days captures a two-month accumulation rhythm. ts_zscore over 252 days measures the burst against its own annual norm. No cross-sectional operator is applied, preserving native scale.",
+      "desc_word_count": 97,
+      "desc_ok": true,
+      "expr": "ts_zscore(ts_sum(total_buy_transaction_count, 42), 252)",
+      "prod": 0.5655,
+      "self_": 0.0
+    },
+    {
+      "alpha_id": "LL53QVvn",
+      "name": "USA_R_insbuymean_03",
+      "tags": [
+        "CH_REG",
+        "SRC_insider_trx_matrix",
+        "EXPRFAM_insbuymean",
+        "CORR_MID"
+      ],
+      "tag_warnings": [],
+      "descriptions": "Idea: Average insider buy size proxies conviction intensity per filer. A quarter-long rise means insiders are not merely trading more often but committing more capital each time, a sharper signal of information asymmetry.\n\nRationale for data used: mean_buy_transaction_count from insider_trx_matrix summarizes per-filer purchase intensity at firm level. Using the mean rather than the total separates conviction per insider from headcount effects, so one large buyer cannot dominate the reading.\n\nRationale for operators used: ts_sum over 63 days accumulates per-filer intensity. ts_zscore over 252 days normalizes against the firm's own annual history, making structurally different activity comparable without cross-sectional rank.",
+      "desc_word_count": 99,
+      "desc_ok": true,
+      "expr": "ts_zscore(ts_sum(mean_buy_transaction_count, 63), 252)",
+      "prod": 0.6163,
+      "self_": null
+    }
+  ]
+}

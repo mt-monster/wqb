@@ -7,7 +7,7 @@
   "neutralization": "SUBINDUSTRY",
   "decay": 4,
   "truncation": 0.08,
-  "maxTrade": "ON",
+  "maxTrade": "OFF",
   "pasteurization": "ON",
   "unitHandling": "VERIFY",
   "nanHandling": "ON",

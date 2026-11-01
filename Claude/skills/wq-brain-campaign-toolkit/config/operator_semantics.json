@@ -288,9 +288,9 @@
     "scalar"
    ],
    "meaning": "第 k 大元素：分位点取值",
-   "template": "kth_element({signal_any}, {window}, {scalar})",
+   "template": "kth_element({signal_any}, {window}, k={scalar})",
    "min_fields": 1,
-   "_sig_note": "平台签名 kth_element(x, d, k, ignore) 3参；d 用 {window}，k 用 {scalar}"
+   "_sig_note": "平台签名 kth_element(x, d, k, ignore) 3参；d 用 {window}，k 用 {scalar}。⚠ k 必须命名传参：2026-10-31 实测位置形式 kth_element(x,d,5) 报 Required attribute \"k\" must have a value 并连坐 CANCELLED 整批"
   },
   "last_diff_value": {
    "category": "meta",

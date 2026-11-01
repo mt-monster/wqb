@@ -84,4 +84,27 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 2026-10-31 · institutions1 判死 ⇒ INSTITUTIONS 塔在 GBR 结构性不可达（5 个数据集全排除）
+
+论坛帖 `43212475386007`（DEU `institutions1`「流量/存量比 + `ts_sum(·,66)` + `group_rank`」报 **S 1.53–1.59**）在 GBR 从未被实测过 —— 此前被「cov 0.3118 必崩」的先验跳过，而那其实是 `insiders1`（另一数据集）的失败结论。本轮用 4 条**单自由度探针**（弱几何 vs 强几何）复测：
+
+| 探针 | 表达式核心 | S | 2Y | 备注 |
+|---|---|---:|---:|---|
+| P1 | `group_rank(ts_sum(divide(vec_sum(inst1_shares), vec_sum(inst1_holdings)), 66), industry)` | **−0.27** | −1.14 | 帖原版裸骨架 |
+| P2 | 同 SIG + 强几何基底 | 0.28 | **2.22** | 强几何**救不回不存在的信号** |
+| P3 | `group_rank(vec_count(inst1_valueeur), industry)` | −0.14 | −0.23 | **TO 27.07%**（稀疏事件裸计数爆换手） |
+| P4 | 同 P3 强几何 | 0.32 | 0.69 | |
+
+⇒ **4/4 全灭 ⇒ `institutions1` 判死**。注意 `inst1_shares` / `inst1_valueeur` 是**股数 / 欧元金额**，
+与存量 `inst1_holdings`（股数）同单位相除才过 `unit_handling=VERIFY`；帖里的 `valueeur/holdings`（EUR/股）**量纲不一致**，未采用。
+
+★ **归因修正**：此前记「`institutions1` 是机构持股、`insiders1` 是内部人交易 ⇒ 主体性质不同」—— **错**。
+`inst1_holdings` 的平台描述明写 *"held by the **insider** after the reported transaction"* ⇒ **两者都是内部人申报交易**，
+真正的差异是 GBR 的披露制度 ≠ DEU。
+
+⇒ **GBR `institutions` 类目 5 个数据集全排除**：`fund_holdings_panel`（cov 0.9099，24 探针，真 F 墙）·
+`institutions6`（cov 1.0，天花板 |S| 0.56）· `institutions4`（cov 0.39，平台描述是 FSYM_ID/CUSID/ISIN **标识符映射 ⇒ 非信号数据**）·
+`institutions25`（cov 0）· `institutions1`（本轮判死）。
+**⇒ 跨区补量请走 IND 的 `institutions6` 卖压回归族（`E5VNe67L` S 3.20 / F 2.52 / 2Y 3.00，INSTITUTIONS+PV 双塔），不要在本区继续派发。**
+（提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)；字段通道地图见 `docs/reference/GBR/field_mechanism_map_20261031.md`。）
 <!-- profiles:manual:end -->

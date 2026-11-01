@@ -6,8 +6,8 @@
 
 | 文件 | 内容 |
 |---|---|
-| （待填）`six-step-gbr-override.md` | 六步纵深骨架的 GBR 覆盖项 + 改控制纪律（从 SKILL.md 手写区下沉） |
-| （待填）`gate-and-submit-discipline.md` | 本区闸门纪律（prod / self / 提交链路 / base payment 选型，若本区有实证） |
+| `six-step-gbr-override.md` | 六步纵深骨架的 GBR 覆盖项 + 改控制纪律（从 SKILL.md 手写区下沉） |
+| **[`gate-and-submit-discipline.md`](gate-and-submit-discipline.md)** | **提交前五道闸的执行顺序与细则（as_of 2026-10-31）**：① 台账排除 ② RA+塔位 ③ 近十年 ④ self-corr ⑤ 互相关+配额；含 `LOW_ROBUST_UNIVERSE_SHARPE` 的分区下发差异、self-corr 判据分层、prod 收割 SQL、塔位杠杆（集内市场量 ⇒ 单塔）、本区已知数据面边界表 |
 
 ## 填充纪律
 

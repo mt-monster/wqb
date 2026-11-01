@@ -1623,7 +1623,14 @@ def check_priors(ctx, exprs, dataset, require_priors=False):
             sha = None
 
     # 2) dead_end 命中检测（波数据集 + 表达式字段 vs dead_end family）
+    # 2026-10-30：取 `dead_ends`（注入 prompt 的 12 条名额）∪ `_dead_ends_all`（全量）。
+    # 只读前者会让闸对名额外的死路失明——KOR 实有 99 条，wave187/200 两次打已判死的
+    # fund_holdings_panel 都是这么漏的（死条目被 MAX_DEADENDS 截断，闸根本没看见）。
     dead = [d for d in (priors.get("dead_ends") or []) if isinstance(d, dict)]
+    _extra = [d for d in (priors.get("_dead_ends_all") or []) if isinstance(d, dict)]
+    if _extra:
+        _seen = {(d.get("family") or "").lower() for d in dead}
+        dead += [d for d in _extra if (d.get("family") or "").lower() not in _seen]
     if dead and dataset:
         known_ops = set()
         try:

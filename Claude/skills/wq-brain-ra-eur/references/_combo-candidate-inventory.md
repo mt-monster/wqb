@@ -46,6 +46,26 @@ hump(rank(ts_delta(vec_avg(qfl_cassie_convention_ocf_currliab), 22)), hump=0.001
 S 1.75 / F 1.17 / TO 0.0411 / 2Y 1.76 / prod 0.5378  ← prod 全 EUR 最低的强腿
 ```
 
+### ★★★★★ 铁律 0（2026-11-01 补正，优先于本条以下全部内容）：**qfl 这根柱子没有 2020 年前的数据**
+
+上表那组漂亮读数（S 1.75 / 2Y 1.76）**只由 2020–2023 四年算出**。`get_alpha_yearly_stats` 逐年实测（`longCount=0 / shortCount=0 / pnl=0` 即彻底空窗）：
+
+| alpha | 表达式特征 | 2014–2019 | 2020 | 2021 | 2022 | 2023 |
+|---|---|---|---|---|---|---|
+| `N1VnJjXg`（**已 ACTIVE**，单 qfl 腿） | `hump(rank(ts_delta(vec_avg(qfl_...ocf_currliab),22)))` | **六年全 0** | 0.99 | 2.13 | 2.48 | 0.88 |
+| `88Rnke9m`（qfl + `rsk60_offer`） | `add(qfl腿, 0.5×rank(rsk60_offer))` | **六年全 0** | −0.41 | 0.05 | 2.58 | 3.52 |
+| `npv3k8ba`（qfl + `total_financing/assets`） | `add(qfl腿, 0.5×rank(fundamental腿))` | **六年全 0** | −1.23 | 0.51 | 2.99 | 2.76 |
+
+三段独立证据（单腿 / 两种完全不同的第二腿）同为空窗 ⇒ **`qfl_cassie_convention_ocf_currliab` 本身 2020 年才有值**。
+
+**两条由此定死的规则：**
+
+1. **`add(腿A, 腿B)` 的 NaN 会毒化整条表达式，不是「该腿失效、另一腿照跑」。** `add(NaN, 有限值) = NaN` ⇒ 该段全股票 NaN ⇒ `longCount=0`。这就是 `88Rnke9m` / `npv3k8ba` 明明第二腿（risk60 cov 0.8168 / fundamental23 cov 0.7913）有全历史数据、却六年零持仓的原因。⇒ **用 `add` 混两腿前，必须先确认两腿数据起始年一致。**
+2. **本族 4 条候选（`A1QZYa1l` / `VkdjqlVJ` / `88Rnke9m` / `npv3k8ba`）皆是 `add(A,B)` 双信号相加**，正是 `CLAUDE.md`「警惕 `add(A,B)` 模式」所指形态；叠加六年空窗 ⇒ **全部不满足「近十年都有数据」口径**。若要用 qfl，只能做**单腿 ATOM**并接受它只有 4 年数据（`N1VnJjXg` 即此形态，平台层不拦覆盖，是本方自设口径才拦）。
+
+> ⚠ 因此下文「`quant_factor_lib` = EUR 的干净骨架富矿」这句**只在 prod 相关性维度成立**（qfl 的 prod 确实最低）；
+> 在**覆盖维度它是最差的**。选它做骨架 = 用 4 年数据换低 prod，代价必须显式认下。
+
 ### ★★★★ 铁律 A：`qfl` 是高 decay 机制 —— **复现必须拉平台原设置**
 
 | 设置 | decay | neutralization | maxTrade | **S** |

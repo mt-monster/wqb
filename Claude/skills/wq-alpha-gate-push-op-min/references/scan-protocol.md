@@ -92,6 +92,13 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt         # 
   `vector_neut` 第 2 参是任意**向量轴**（如 `ts_backfill(...)` 结果为 `Unit[]`），`group_neutralize` 第 2 参必须是 **`Unit[Group:1]`**（`bucket`/`group_rank` 等）。直接替换会触发平台
   `Incompatible unit for input of "group_neutralize" at index 1, expected "Unit[Group:1]", found "Unit[]"` ⇒ **整批 CANCELLED（连坐）**。
   `scan.py` 已标 `need_unit` 占位不自动生成；若手工替换，**必须先把第 2 参换成 Group 单位**（如 `bucket(rank(...),range=...)`），且内层第一个参数必须是 `rank(...)`（见 op-compression.md §四 闸④）。
+- **★★ `ts_zscore→ts_av_diff`（2026-10-31 实测连坐教训，单位族不同但同属单位闸）**：`ts_av_diff` 输出 **`Unit[TSShare:1]`**，
+  而 `ts_zscore` 输出 `Unit[]`——两者不能作为外层 `subtract(A,B)` 的 A/B 入参（`subtract` 要求两侧同单位族）。
+  直接触发 `Incompatible unit for input of "subtract" at index 1, expected "Unit[TSShare:1]", found "Unit[]"` ⇒ **整批 CANCELLED（连坐）**。
+  **根因**：EQUIV 表只按「金融含义等价」配对（ts_av_diff↔ts_zscore 是语义等价对），**未校验输出单位族与上下文算子是否兼容**。
+  `scan.py` 目前**未**拦截该对（仍会生成候选）⇒ **派发前必须人工过一遍单位闸**：
+  凡进 EQUIV 的算子，先查它**输出单位**（`ts_av_diff`→TSShare、`ts_quantile`→同输入、`ts_zscore`→Unit[]、`ts_mean`/`ts_sum`→同输入…），
+  再查**被替换位置的父算子**要求的输入单位；两者不同族 ⇒ 该候选标记为不合法，不派发。
 
 ---
 
@@ -103,6 +110,10 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt         # 
 2. **逐档实测**：同 settings 派发，记录 S/F/2Y/sub/TO/prod。
 3. **取指标最优档**：通常 S 或 2Y 在某个窗口处单峰（见 rKRkL9QE 案例：ts_zscore 窗口 126→252→504，252 最优；126 崩溃）。
 4. **⚠ 窗口参数是尖峰**：±15 就掉（lever-ladder L2 的「窗为尖峰」），细扫步长宜 ≤窗口的 5%。
+5. **★★ 窗口参数必须正整数（2026-10-31 实测全批 ERROR 教训）**：`ts_*` 算子的位置参数（idx≥1）是 `lookback`，
+   平台要求**正整数**——`repr(33.0)` 的 `.0` 后缀、`×0.75/×1.25` 的非整数档（49.5、94.5…）都会触发
+   `Got invalid value "33.0" for attribute "lookback", should be a positive integer` ⇒ **整批 ERROR**。
+   `scan.py --params` 已自动对 `ts_*` 窗口参数 round 取整并输出无 `.0` 字符串；标量参数（权重/幂）保留小数。
 5. **与删除/替换解耦**：参数扫描在表达式冻结后做（不占算子，属 ⑤ 设置层收敛的延伸）。
 
 ---

@@ -1,0 +1,38 @@
+{
+  "purpose": "OTHER 塔点亮前的提交前互相关自查（平台 self-corr 会把后提交者与已提交者对比，故候选之间的互相关才是真正的闸）",
+  "method": "mcp wq-brain-http.compute_mutual_correlation（纯本地，零平台配额、零相关性槽）",
+  "checked_at": "2026-10-29T23:45+08:00",
+  "threshold": 0.7,
+  "years": 4,
+  "num_points": 986,
+  "universe_of_candidates": [
+    "LL522ZRe", "O0Jgd7Y7", "vROPEJ8w", "d5KPPrxx", "88v2XRm7",
+    "d5KzLo7v", "1Yj08nb6", "XgRM3Yra", "LL53QVvn", "88vXxaqv"
+  ],
+  "max_pair": {"a": "LL522ZRe", "b": "d5KPPrxx", "correlation": 0.93},
+  "pairs_over_threshold": [
+    {"a": "LL522ZRe", "b": "d5KPPrxx", "corr": 0.93,    "note": "同表达式，仅中性化不同（REVERSION_AND_MOMENTUM vs SLOW_AND_FAST）"},
+    {"a": "LL522ZRe", "b": "88v2XRm7", "corr": 0.9106,  "note": "同表达式，industry vs subindustry"},
+    {"a": "vROPEJ8w", "b": "1Yj08nb6", "corr": 0.8744},
+    {"a": "O0Jgd7Y7", "b": "vROPEJ8w", "corr": 0.8706},
+    {"a": "d5KPPrxx", "b": "88v2XRm7", "corr": 0.8587},
+    {"a": "1Yj08nb6", "b": "XgRM3Yra", "corr": 0.8573},
+    {"a": "vROPEJ8w", "b": "XgRM3Yra", "corr": 0.8493},
+    {"a": "1Yj08nb6", "b": "88vXxaqv", "corr": 0.7799},
+    {"a": "O0Jgd7Y7", "b": "1Yj08nb6", "corr": 0.769},
+    {"a": "O0Jgd7Y7", "b": "XgRM3Yra", "corr": 0.7642}
+  ],
+  "max_mutually_below_subset": ["LL522ZRe", "O0Jgd7Y7", "d5KzLo7v", "LL53QVvn", "88vXxaqv"],
+  "max_mutually_below_subset_size": 5,
+  "recommended_triplet": {
+    "members": ["LL522ZRe", "O0Jgd7Y7", "LL53QVvn"],
+    "pairwise": {"LL522ZRe__O0Jgd7Y7": 0.3424, "LL522ZRe__LL53QVvn": 0.4977, "O0Jgd7Y7__LL53QVvn": 0.5531},
+    "rationale": "三颗两两互相关最大 0.5531（距 0.70 线余量 0.147）；prod 分别 0.6377(fresh 2h) / 0.5655(fresh 2h) / 0.6163(stale 88h)"
+  },
+  "key_lessons": [
+    "★「同一表达式的多套中性化」在互相关上是伪多样性：LL522ZRe/d5KPPrxx/88v2XRm7 三条实则同一颗，互相关 0.86-0.93。选提交组时必须先跑互相关，不能只看指标表。",
+    "★ 原「3 颗首推」名单（LL522ZRe + O0Jgd7Y7 + vROPEJ8w）错在 vROPEJ8w 与 O0Jgd7Y7 相关 0.8706 ⇒ 第 2 颗就会被平台 SELF_CORRELATION 卡住。",
+    "★ d5KzLo7v 来自 insider_matrix（非 insider_trx_matrix），与其余 9 颗相关仅 0.09-0.14，是真正的正交轴；可惜 prod 0.6964 余量 0.0036 且陈旧 120h，暂不用。",
+    "★ compute_mutual_correlation 纯本地、零成本、不动平台相关性单并发槽 ⇒ 任何提交组在提交前都应先跑这一步，成本为零而避免浪费提交配额。"
+  ]
+}

@@ -20,7 +20,7 @@
 | neutralization | SUBINDUSTRY | 区域 settings.json |
 | decay | 4 | 区域 settings.json |
 | truncation | 0.08 | 区域 settings.json |
-| maxTrade | ON | 区域 settings.json |
+| maxTrade | OFF | 区域 settings.json |
 | pasteurization | ON | 区域 settings.json |
 | unitHandling | VERIFY | 区域 settings.json |
 | nanHandling | ON | 区域 settings.json |
@@ -75,7 +75,7 @@
   ```
 
   - vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets)… ← 2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；★ 2026-10-20 更正：12 次算子调用**过不了闸 1b-2**（gate.py MAX_OP_CALLS=10 ⇒ 合法 ≤9），且其 fam3 'vector_neut→vector_neut→reverse' 实测 n=4、prod 0.9789 / 0.9859 / 0.9998 / 0.9998 = **DEAD** ⇒ 只作历史证据，不再作首选
-  - vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)… ← ★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = 'vector_neut→vector_neut→vector_neut'，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）<!-- from config.prod_corr_max -->。★ per-leg 'rank' 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌
+  - vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)… ← ★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = 'vector_neut→vector_neut→vector_neut'，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg 'rank' 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌 <!-- from config.prod_corr_max -->
   - ts_target_tvr_decay(trade_when(greater(vec_avg(fnd72_pit_or_… ← 9 调用点。EBIT>NI 闸是该闸族最优；tvr 0.06 → vROkA5nw（S1.58/F1.08/2Y1.68/prod0.6663/self0.5270）。同骨架 tvr 0.09 ⇒ P0MZ5nrp(0.6653)、0.12 ⇒ pwvPanJx(0.6595)、0.15 ⇒ akVLzLV1(0.6585/2Y1.83)。闸替换：EBITDA>CFNI（rKd5lAo8 0.6747）、EBIT>CFNI（leM88RN5 0.6701）、EBITDA>NI（wave307 新探）。CFO>NI / OPINC>NI 闸摧毁信号（S→0，不得用）
 - **类别通用原语**（类别卡，跨区）：
   - accrual / cash gap: earnings quality, not the earnings level

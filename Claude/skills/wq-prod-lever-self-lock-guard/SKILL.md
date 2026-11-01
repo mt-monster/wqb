@@ -1,8 +1,8 @@
 ---
 name: wq-prod-lever-self-lock-guard
 layer: L4
-description: 降 prod 相关性的杠杆选择与 self-corr 自锁防护。当候选 prod 卡墙、或准备上 hump/decay 等"不改持仓"的平滑杠杆、或同族已有 alpha 提交时使用。含 hump 正确用法（keyword-only）、hump 档位甜区、prod 与 self 双端点复测纪律、幽灵算子误诊排查三序、quota_gate 保守拦截绕行。
-last_verified: 2026-10-29
+description: 降 prod 相关性的杠杆选择与 self-corr 自锁防护。当候选 prod 卡墙、或准备上 hump/decay 等"不改持仓"的平滑杠杆、或同族已有 alpha 提交时使用。含 hump 正确用法（keyword-only）、hump 档位甜区、**self 干净 ≠ prod 干净**的机理与三组实测、prod 与 self 双端点复测纪律、幽灵算子误诊排查三序、quota_gate 保守拦截绕行。
+last_verified: 2026-10-30
 agent_created: true
 ---
 
@@ -52,6 +52,17 @@ agent_created: true
 - ⚠ 换档会**同时改 2Y 与换手**（上表 2Y 1.64–1.85、TO 0.25–0.83 都在动）⇒ **换档后必须重判 2Y 分档**（见 `wq-brain-ra-gbr` 闸线地图）。
 
 **★ 顺序修正**：先扫设置档（零成本、单变量），再换字段 / 换概念（贵）。**别再习惯性地先换字段。**
+
+**⚠⚠ 但「换中性化 ⇒ prod 降」不是普适方向 —— 它是族属性，会反向**（2026-10-31 GBR 实测）：
+
+| 骨架 | 中性化 | prod |
+|---|---|---:|
+| `rank(ts_quantile(ts_av_diff(divide(annual_revenue_value, current_enterprise_value), 252), 22, driver=gaussian))` | `INDUSTRY` | **0.7699** |
+| 同一条表达式 | `SUBINDUSTRY`（更细） | **0.7934 ↑ 更差** |
+
+⇒ **「细分中性化更干净」的直觉在 prod 维度不成立**。上面 2026-10-29 那张表里 `SUBINDUSTRY` 恰好是最好档（0.7736 vs `INDUSTRY` 0.7919），但换一个骨架就反过来。
+
+**操作**：设置档扫描**必须逐个骨架重扫，不可从同区其他骨架外推方向**。每个候选至少扫 3 档（当前档 / 更细档 / 因子模型档），只采信本骨架的实测值。
 
 **实证（2026-10-04 EUR）**：`hump` 细档 4 颗中 **2 颗 prod 过闸（0.6891 / 0.6809）但 self 爆到 0.8996 / 0.9467**，另 2 颗双爆。
 
@@ -112,6 +123,29 @@ prod_max = d['max']          # ✅ 正确
 ```
 
 `[0.7,0.8)` 与 `[0.8,0.9)` 桶均为 0 ⇒ 该颗在 prod book 里没有近邻，是干净的。
+
+### ★★★ self 干净 ≠ prod 干净：两个端点回答两个不同的问题
+
+**结论先行**：`self` 低于 self-corr ceiling（见 config.PRODCORR_CEILING / config.GATES_PLATFORM）只证明「不撞**自己的**已提交池」，**完全不能**证明「不撞**整个生产池**」。判「干净新枝」必须两端都测，**任一端卡墙即不可提交**。
+
+| 端点 | 池子 | 回答什么问题 | 什么时候会「假干净」 |
+|---|---|---|---|
+| **`self`**（`/correlations/self`，或本地 `check_self_correlation`） | **只有你自己**已提交的 OS alpha（按 `classifications` 排除 Power Pool） | 「我是不是在跟自己重复提交」 | **你在这个机制上还没提交过** ⇒ 即便全市场都做这个，self 也接近 0 |
+| **`prod`**（`/correlations/prod`） | **平台整个生产池**（所有用户、所有已投产 alpha） | 「这个信号是不是已经被市场做烂了」 | 基本不会假干净；空体 = 排队中，**不是**低相关 |
+
+**三组实测（全部是 self 过、prod 死）**：
+
+| 证据 | 候选 | self | prod | 结局 |
+|---|---|---|---:|---|
+| 2026-10-30 USA `shortinterest3` | `kqNRbvJP`（卖空费率 main 方差 · W22 · sector · d252） | **0.6012**（组内全过） | **0.8463** | BLOCKED |
+| 2026-10-30 GBR `techindi_model` | `tm_16` + `tm_17` 族 19+ 条 | 同族自家仅 **0.0238** | **0.7343–1.0** | 整族判死 |
+| 2026-10-30 GBR `techindi_model` | `N1NM5WK8`（同骨架换 `group_rank(·, industry)` + INDUSTRY 中性化） | 通过 | **0.9651** | 不投 prod 时隙 |
+
+**根因**：self 是「**内部**去重」，prod 是「**外部**拥挤度」。一个全新的个人方向可以 self = 0.02 而 prod = 0.95 —— **因为你没做过 ≠ 市场没做**。这也解释了为什么「同族第一颗」总是 self 最干净而 prod 最危险：越是没人做过的方向，越可能是自己没提交过但市场做烂的方向。
+
+**⇒ 两条纪律**：
+1. **判「新枝」不能只看 self**。成本允许时**先测 prod 再谈量产**（族代表预判，见 [`wq-prod-corr-read`](../wq-prod-corr-read/SKILL.md) §四·1）。
+2. **self 爆了必死，self 干净不代表活**。self 是**必要条件**而非充分条件 —— 它便宜（纯本地、零平台成本），所以**先**跑；但它只能用来**排除**，不能用来**放行**。
 
 ### ⚠⚠ 但先做这一步：**"机制层 vs 结构层"拥挤诊断（2026-10-04 EUR 实证，必做）**
 
@@ -257,3 +291,4 @@ asyncio.run(main())
 | 某算子无 alpha_id | 查签名参数形式（keyword-only）→ 类型 → 区域 |
 | `quota_gate` 拦截 | 判断是保守预检；用户要求时可直连 API |
 | prod 过闸但 self ≥ 0.7 | **不可提交**，该族已自锁 |
+| self 过闸就想提交 | **不够**。self 只是必要条件，必须再测 prod（§一「self 干净 ≠ prod 干净」） |

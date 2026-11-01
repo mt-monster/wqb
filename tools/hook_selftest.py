@@ -5,9 +5,11 @@
 而是由脚本内部构造 payload，避免钩子按命令行误杀（2026-10-26 踩过）。
 """
 import json
+import os
 import subprocess
 import sys
 
+ROOT = os.environ.get("WQB_REPO_ROOT") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = os.path.join(ROOT, "world-quant-brain-mcp", ".venv", "Scripts", "python.exe")
 GUARD = os.path.join(ROOT, ".workbuddy", "hooks", "campaign_guard.py")
 SECRET_NAME = "." + "env"        # 拆开拼，避免本文件被 Grep 时命中又触发拦截

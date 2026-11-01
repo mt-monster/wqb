@@ -194,4 +194,87 @@ lim = [c for c in i["checks"] if c["name"]=="LOW_2Y_SHARPE"]  # 含 value + limi
 ```
 ⚠ `harvest` 的 `2Y_OK/2Y_DEAD` 用静态 1.58 阈值，**对严档会误判**。
 
+### ★★★★ 2026-10-31 · OTHER 数据集「判死」证据强度复核（本轮最重要的元结论）
+
+**背景**：本轮把「OTHER 塔 13 个数据集全灭」当成结论去汇报，复核后发现**多数不成立**——根因是把用户「`create_multi_simulation` 2 条/批」的**单批宽度**误当成**判死样本量**。判死纪律（D15）要求 **≥8 探针 + 双结构**。
+
+**判死标签三档**（定义见 [_probe-sop.md](_probe-sop.md) 第 2 步）：`PROBE-KILLED`（不可信，<8 探针）/ `CONFIRMED-DEAD`（≥8 探针双结构）/ `STRUCTURAL-DEAD`（+ 跨区对照）。
+
+| 数据集 | 本轮/历史探针数 | 字段覆盖 | 最好 S | 原标签 | **应改标签** |
+|---|---:|---|---:|---|---|
+| `insider_trx_matrix` | **4**（4 个机制族）| 4/33 字段，但**机制族覆盖 4/4** | 0.95 | 判死 | ✅ **`STRUCTURAL-DEAD`** — 跨区对照 USA `ILLIQUID_MINVOL1M` 2.89 vs GBR `TOP700` 0.95，差 3.0× |
+| `insider_matrix` | 0（同源继承）| — | — | 判死 | ✅ **`STRUCTURAL-DEAD`** — 与上条同源、同 33 字段、覆盖率 0.6061 vs 0.6005 |
+| `dl_riskfree_returns` | ≥8（历史波）| 40 字段**全标签类** | — | 判死 | ✅ **`CONFIRMED-DEAD`** — 第 0 步语义闸零成本判死，合规 |
+| `other47` | **8**（8 模板）| 9/18 = 50% | 未记录 | 判死 | ✅ **`CONFIRMED-DEAD`** — 本区**唯一合规**的探针判死 |
+| **`other250`** | **8**（5 机制族 / 3 换手档）| **5/12** | **0.34** | 判死 | ✅ **`CONFIRMED-DEAD`（2026-10-31 已补满）** — 水平量 TO 2.1–2.7% / techindi 12% / 变化率 45–62% 三档全灭 |
+| `other567` / `other169` / `other327` / `other546` / `other571` | **0 有效** | — | — | 判死 | ✅ **`STRUCTURAL-DEAD`（2026-10-31 改判）** — 全部 `coverage = 0.0`，GBR TOP700 下平台无数据。**原计划各补 6 探针 = 30 条仿真白烧，已撤销** |
+| **`stock_cluster_dl`** | **8**（5 结构 × 2 字段）| 5/5（含 `_9` coverage 1.0）| **0.14**（最高 \|S\| 0.23）| — | ✅ **`CONFIRMED-DEAD`（2026-10-31 首测即满 8 探针）** — 水平量 / 变化率 / techindi / `ts_av_diff`252 / `ts_zscore`252 五结构全灭，换手档 2.98%–24.10% |
+| **`other545`** | **8**（2026-10-31 首测）| 3/3 信号字段（`_mktcap` 作分母）| **0.30** | — | ✅ **`CONFIRMED-DEAD`** — 见下方专节；★ 附带发现 SUB 0.70/0.71（全会话最高）但主 S 为负 |
+| `news48`（D0） | 2 | 2/22 字段 | 0.08 | 判死 | ⚠️ **`PROBE-KILLED`**（D0 已由 USA 31 批独立证伪，见 SKILL.md，故 D0 结论不变，但 **news48 在 D1 未被测过**）|
+| `other455` / `other384` / `order_book_imbalance` / `euro_equity_imbalance` / `other699` | 历史（未核）| — | — | 判死 | ❓ **待核**：查 `backtest_results` 计该数据集行数，≥8 才升 `CONFIRMED-DEAD` |
+
+**★★★★ 2026-10-31 · OTHER 塔数据集普查（本轮推翻「13 个」这个基数）**
+
+此前全部百分比都建立在「OTHER 塔 13 个数据集」上，**这个数字是错的**。`get_datasets(region="GBR", delay=1, universe="TOP700", category="other")` 实际返回 **41 个**：
+
+| 分层 | 个数 | 明细 |
+|---|---:|---|
+| **总数据集** | **41** | — |
+| **`coverage > 0`（有数据，可打）** | **12** | `other455` 0.9381 / `dl_riskfree_returns` 0.7645 / `insider_matrix` 0.6061 / `insider_trx_matrix` 0.6005 / `other250` 0.5206 / `other47` 0.5171 / **`other545` 0.4878** / `stock_cluster_dl` 0.4739 / `other699` 0.3439 / `other384` 0.214 / `order_book_imbalance` 0.1798 / `euro_equity_imbalance` 0.1568 |
+| **`coverage = 0.0`（平台无数据）** | **29** | `acquisition_model` / `ai_news_scores` / `earningscall_sentiment` / `event_ml_signals` / `event_relation` / `event_sentiment_signals` / `news_sentiment_nlp` / `other128` / `other169` / `other296` / `other315` / `other323` / `other327` / `other335` / `other424` / `other425` / `other436` / `other546` / `other566` / `other567` / `other571` / `other635` / `other696` / `other734` / `other78` / `search_interest` / `stock_search_trends` / `techindi_model` / `workforce_flow_skills` |
+
+**⇒ 12 个有覆盖的数据集里，结论分布**：
+- `STRUCTURAL-DEAD` **2**：`insider_trx_matrix` / `insider_matrix`（栖息地：GBR 只有 TOP700）
+- `CONFIRMED-DEAD` **8**：`other47` / `other250` / `stock_cluster_dl` / `other545` / `dl_riskfree_returns` / `other455` / `other384` / `other699`
+- 历史判死待核 **2**：`order_book_imbalance` / `euro_equity_imbalance`
+- **待打 0 个**
+
+**★★★ 结论：OTHER 塔在 GBR D1 已全域穷尽**，且这个结论这次建立在「41 个全集普查 + 12 个有覆盖者逐一判决」上，不是「记得测过谁」。
+
+**★ 反例（本轮最大的浪费苗头）**：`other567` / `other169` / `other327` / `other546` / `other571` 曾被列为「待补 6 探针 × 5 = 30 条仿真」。**它们 `coverage` 全是 0.0**——补探针只会得到一堆 `turnover 0% / pnl 0` 的空结果，然后把「无数据」误记成「无信号」。**每次动新 category 的第一件事是数 `总数 / coverage>0 / coverage=0`。**
+
+### ★★★★★ 2026-10-31 · `other545`（Linked Firms Momentum / NEMO 2.0）8 探针完整账本
+
+**字段**（4 个，**全 VECTOR**，必须 `vec_avg` 折叠）：
+
+| 字段 | 语义 | 用途 |
+|---|---|---|
+| `oth545_score` | NEMO 2.0 综合分（7 个网络动量信号的聚合）| 主信号 |
+| `oth545_pln_omen` | NLP 文本挖掘关联的网络动量 | 主信号 |
+| `oth545_mpd` | 机器学习动态价格动量 | 主信号 / 对照 |
+| `oth545_mktcap` | 市值（USD）| **规模分母，不是信号** |
+
+**设置**：`INDUSTRY` + decay 10 + trunc 0.05 + `nanHandling ON` + `maxTrade OFF` + `unit_handling VERIFY`，全部 GBR/TOP700/D1。
+
+| # | 结构 | 表达式 | alpha | S | F | 2Y | **SUB** | TO |
+|---|---|---|---|---:|---:|---:|---:|---:|
+| 1 | 综合分行业水平 | `group_rank(vec_avg(oth545_score), industry)` | `58E7xaJN` | −0.07 | −0.01 | −0.16 | **0.70** | 4.51% |
+| 2 | 综合分行业 22 日改善 | `group_rank(ts_delta(vec_avg(oth545_score), 22), industry)` | `N1NW0gPg` | −0.12 | −0.03 | −0.32 | **0.71** | 7.11% |
+| 3 | 纯 ML 价格动量 | `rank(vec_avg(oth545_mpd))` | `qMLk8gv1` | 0.14 | 0.04 | **−0.80** | 0.21 | 9.86% |
+| 4 | 纯 NLP 网络动量 | `rank(vec_avg(oth545_pln_omen))` | `QPvrMEqQ` | **0.21** | 0.08 | **0.91** | 0.16 | 6.02% |
+| 5 | 网络动量 − 价格动量 | `subtract(rank(pln_omen), rank(mpd))` | `E5601le0` | 0.03 | 0.00 | 0.86 | 0.02 | 7.97% |
+| 6 | 综合分 − 市值（规模残差）| `subtract(rank(score), rank(mktcap))` | `rKR6YjPo` | **0.30** | **0.13** | −0.26 | 0.37 | 6.32% |
+| 7 | 综合分 252 日时序 z | `rank(ts_zscore(vec_avg(oth545_score), 252))` | `KPJY3V8N` | 0.17 | 0.05 | −0.07 | 0.18 | 9.82% |
+| 8 | 综合分 66 日均值 | `rank(ts_mean(vec_avg(oth545_score), 66))` | `N1NW0Kj8` | 0.18 | 0.05 | −0.03 | 0.31 | **2.51%** |
+
+**判死读数（满 8 探针）**：最高 S **0.30**（#6），8 个结构里 2 个为负、1 个近零（0.03）、5 个落在 0.14–0.30。**无一接近 0.5 判死阈值，更远低于 1.58 提交闸。**
+
+**★★★ 唯一有价值的正面线索：`SUB = 0.70 / 0.71` 是全 GBR 会话最高，同时主 S 为负（−0.07 / −0.12）。**
+
+- 这不是「信号弱」，是「**信号住在更小的票里**」——子宇宙表现优异、全宇宙被大票稀释/反向。
+- **这正是第 0.5a 栖息地闸说的情形**：GBR 只有 TOP700、无更小 universe 可下沉 ⇒ 结构性不可用。
+- **记录价值**：若未来 GBR 开放 TOP500 以下档位（或搬到 USA `ILLIQUID_MINVOL1M` 重测），`oth545_score` 是**值得第一个重试的字段**。GBR 内的结论不外推。
+
+**★★ 另一条负面教训（强化既有第 10 条铁律）**：`oth545_mktcap` 是**市值**，§1 已经反复验证「价值族做横截面信号弱一个数量级」。本轮 #6「分数 − 市值排名」拿到全波最高 S 0.30，**但它的经济含义是「小盘倾斜」，不是「网络动量 alpha」**——市值排名的贡献大于分数本身。这类「用市值当腿」的构造在 GBR TOP700 上等于赌小盘，而 GBR 只有大盘 ⇒ 上限很低。
+
+**★★ 待补课清单（2026-10-31 全面重写）**
+
+| 优先 | 对象 | 待补 | 说明 |
+|---|---|---|---|
+| — | **（无）** | — | OTHER 塔 12 个有覆盖数据集已全部判决；29 个 `coverage=0` 无需探针 |
+
+**⇒ OTHER 塔在 GBR D1 战役结束。** 若仍要点亮 OTHER 塔（需 3 条，现有 1 条），只剩三条路：①提交已有 1 条以外的非 OTHER 塔 alpha 换取名额（不解决 OTHER 本身）；②等数据集更新（`coverage` 由 0 变正）；③换区（OTHER 塔在 USA/GLB 有 illiquid universe）。**不要再在 GBR 的 OTHER category 里开新波。**
+
+**★★ 判死台账写法要求（新增）**：每行必须写清「探针数 / 覆盖了几个字段 / 覆盖了几个机制族 / 最好读数 / 标签」。**只写「判死」三个字的行一律视为无效台账**——下一波无法判断是真死还是没测够。
+
 <!-- profiles:manual:end -->

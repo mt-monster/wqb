@@ -1,0 +1,149 @@
+==============================================================================================================
+[A] DEU dead_end entries mentioning 'other' category / datasets
+==============================================================================================================
+DEU-INST1-OTH455-CLUSTER-DUP-DEAD                    2026-10-30   ds=None
+DEU-OTH455-PURECOMP-SUBUNIVERSE-WALL-20260923        2026-09-23   ds=None
+DEU-OTHER545-NETMOMO-CEILING-20260922                2026-09-22   ds=other545
+DEU-OTHER699-RETAIL-FLOW-DEAD-20260920               2026-09-20   ds=other699
+DEU-OTH47-FAMILY-PROD-WALL-20260916                  2026-09-16   ds=other47 (SEMrush)
+DEU-OTHER47-PROD-WALL                                2026-09-15   ds=None
+DEU-OTHER250-DEAD                                    None         ds=None
+
+==============================================================================================================
+[B] ledger_kv keys matching *_dead with 'other'
+==============================================================================================================
+other546_dead                            {"dataset": "other546", "dead_at": "2026-09-15", "evidence": "关系网络强度系（shared_*/similarity，全 VECTOR）；best |S|=0.35 (shared_executive_count)；CW 全 FAIL；2y 最高 1.1 仍差线", "longCount": "2-4", "max_abs_sharpe
+other128_dead                            {"dataset": "other128", "dead_at": "2026-09-15", "evidence": "管理层质量 z-score 系（全 VECTOR）；best |S|=0.50 (chief_exec_investor_sentiment_score) 但 longCount<=1、CW 0.5/limit0.1 FAIL、2Y 0.86 FAIL；与 model16 同
+other532_dead                            {"dataset": "other532", "dead_at": "2026-09-15", "evidence": "日度 TO 超闸(0.91-0.94)，月度 CW 超闸(longCount 5-7)，平滑后信号变负", "max_sharpe": 0.22, "probed": 8, "reason": "P0.3 batch3 探针转化率 0", "source": "p0_3_re
+other699_dead                            {"dataset": "other699", "dead_at": "2026-09-20", "evidence": "s2_other699_d1 31 探针 best|S|=0.48 < 0.5 fast-kill 线；12 机制全弱", "max_sharpe": 0.48, "probed": 31, "source": "s2_other699_d1", "tower": "OTHE
+other545_dead                            {"reason": "信号天花板 best|S|0.69 << ladder1.58（合规单腿/结构均不达标）", "verdict": "DEAD", "wave": "s2_other545_d1"}
+
+==============================================================================================================
+[C] DEU backtest_results by dataset label (n / bestS / best2Y / bestF / bestMargin)
+==============================================================================================================
+dataset                              n  bestS best2Y  bestF bestMargin
+<NULL>                            2813   2.70   2.81   1.99   270.40bp
+grtransform                         10   2.17   2.25   1.82    18.65bp
+analyst_earnings_ibes              115   2.17   2.09   1.40    17.82bp
+dl_riskfree_returns                 68   2.16   2.29   1.72    13.56bp
+lean_le89                            8   2.15   2.62   1.91    21.06bp
+other455                           227   2.12   2.54   2.05    60.47bp
+sentiment7                          21   2.04   2.32   1.91    24.71bp
+shortinterest3                     237   2.02   2.78   1.83   555.63bp
+predictive_starmine                194   1.98   2.09   1.74    28.08bp
+model216                            49   1.95   2.44   1.95    43.38bp
+model264                            73   1.94   2.11   1.53    17.11bp
+model25                             32   1.86   2.02   2.02    55.09bp
+model238                            32   1.86   2.11   1.89    21.62bp
+insider_agg_matrix                  69   1.86   2.07   1.79    37.62bp
+model25_model216                    10   1.85   2.29   1.94    23.67bp
+model28                             25   1.80   2.28   1.95    73.17bp
+risk60                              34   1.76   2.09   1.65    30.18bp
+institutions1                        3   1.73   2.79   1.40    13.12bp
+fundamental22                       11   1.72   1.51   1.07     9.19bp
+tower_sprint_r104                    4   1.70   1.58   1.29    11.52bp
+tower_sprint_r103                    5   1.68   1.55   1.38    13.45bp
+sentiment27                         34   1.64   2.27   1.44    60.08bp
+analyst93                          131   1.57   1.65   1.33    87.38bp
+analyst47                            8   1.46   1.18   0.88     8.55bp
+fund_holdings_panel                 94   1.41   2.15   1.32    27.82bp
+pv106                               20   1.38   0.94   1.04    26.14bp
+model250                            24   1.37   1.16   1.37    30.33bp
+analyst44                           42   1.37   2.05   1.18    42.35bp
+analyst7                            61   1.30   1.90   1.01    39.86bp
+analyst_factor_signals              94   1.23   1.49   0.83     0.47bp
+fundamental6                        21   1.07   1.00   1.07    32.32bp
+techindi_model                      10   1.03   1.56   0.61     7.12bp
+fundamental89                       20   0.98   1.91   0.80    56.49bp
+mix_unlit_tower_b                   29   0.97   1.47   0.74    46.42bp
+fundamental89+fundamental90+fund    10   0.90   1.86   0.60    56.37bp
+order_book_imbalance                 8   0.77   0.88   0.09     0.00bp
+news38                              10   0.76   1.16   0.28     2.62bp
+other47                             10   0.75   1.73   0.39    13.38bp
+shortinterest                        2   0.74   0.30   0.32     3.67bp
+news104                              6   0.74   0.62   0.28     2.90bp
+model36                              8   0.73   0.08   0.47    35.80bp
+analyst9                             8   0.73   0.88   0.49    36.99bp
+analyst_consensus                    3   0.72  -0.48   0.45     0.00bp
+institutions6                       18   0.71   1.79   0.40    41.36bp
+other545                            22   0.69   0.46   0.82    71.62bp
+other384                            30   0.67   0.61   0.43    80.77bp
+fundamental86                       10   0.63   0.63   0.40    17.42bp
+model106_probe_r54                   8   0.58   1.04   0.11     0.81bp
+pattern_scores                      25   0.55   1.06   0.14     2.22bp
+model53                             18   0.55   0.89   0.29    11.01bp
+news18                              16   0.53   1.46   0.28     0.97bp
+intraday_pv_feats                    9   0.51   0.67   0.13     1.36bp
+other699                            31   0.48   1.21   0.27     9.28bp
+news20                               8   0.48   0.76   0.10     1.03bp
+fundamental72                       10   0.46   0.93   0.13     3.33bp
+other250                             8   0.45   0.81   0.12     7.33bp
+news50                              10   0.42   0.20   0.05     4.80bp
+news17                               8   0.41   0.70   0.11     1.74bp
+insider_trx_matrix                  10   0.38   0.74   0.13     4.93bp
+insiders                             2   0.34   0.49   0.15     6.98bp
+fundamental17                       10   0.34   0.60   0.13     7.62bp
+sentiment                            1   0.07  -0.61  -0.01    -1.03bp
+
+==============================================================================================================
+[D] local datasets table: DEU category='other'
+==============================================================================================================
+acquisition_model                  f=15    cov=0        aCnt=0      vs=6   None
+ai_news_scores                     f=105   cov=0        aCnt=0      vs=7   None
+event_sentiment_signals            f=52    cov=0        aCnt=0      vs=7   None
+insider_matrix                     f=33    cov=0.5488   aCnt=0      vs=6   None
+insider_trx_matrix                 f=33    cov=0.5423   aCnt=0      vs=6   scanned
+news_sentiment_nlp                 f=23    cov=0        aCnt=0      vs=9   None
+order_book_imbalance               f=256   cov=0.2271   aCnt=0      vs=6   None
+other128                           f=14    cov=0        aCnt=0      vs=10  None
+other296                           f=10    cov=0        aCnt=0      vs=10  None
+other323                           f=7     cov=0        aCnt=0      vs=10  None
+other327                           f=3     cov=0        aCnt=0      vs=9   None
+other384                           f=33    cov=0.2125   aCnt=0      vs=7   None
+other425                           f=12    cov=0        aCnt=0      vs=9   None
+other532                           f=1     cov=0.5232   aCnt=0      vs=6   None
+other546                           f=22    cov=0        aCnt=0      vs=10  None
+other635                           f=3     cov=0        aCnt=0      vs=8   None
+other696                           f=220   cov=0        aCnt=0      vs=6   None
+other699                           f=7     cov=0.5062   aCnt=0      vs=9   scanned
+other78                            f=104   cov=0        aCnt=0      vs=7   None
+search_interest                    f=3     cov=0        aCnt=0      vs=7   None
+workforce_flow_skills              f=10    cov=0        aCnt=0      vs=8   None
+mmp_nlp_sentiment                  f=0     cov=0        aCnt=0      vs=9   platform_empty
+event_relation                     f=12    cov=0        aCnt=1      vs=7   None
+other250                           f=12    cov=0.6126   aCnt=1      vs=8   None
+other545                           f=4     cov=0.5269   aCnt=1      vs=7   scanned
+other567                           f=48    cov=0        aCnt=1      vs=7   None
+other571                           f=23    cov=0        aCnt=1      vs=7   None
+stock_search_trends                f=6     cov=0        aCnt=1      vs=7   None
+event_ml_signals                   f=104   cov=0        aCnt=2      vs=7   None
+stock_cluster_dl                   f=5     cov=0.4526   aCnt=2      vs=6   None
+other436                           f=3     cov=0        aCnt=4      vs=6   None
+other315                           f=22    cov=0        aCnt=6      vs=7   None
+other566                           f=112   cov=0        aCnt=6      vs=7   None
+other169                           f=22    cov=0        aCnt=7      vs=7   None
+ml_factor_proj                     f=333   cov=0        aCnt=8      vs=7   None
+other734                           f=4     cov=0        aCnt=12     vs=6   None
+other424                           f=3     cov=0        aCnt=14     vs=6   None
+other47                            f=18    cov=0.577    aCnt=15     vs=5   None
+earningscall_sentiment             f=167   cov=0        aCnt=17     vs=6   None
+other455                           f=1500  cov=0.9535   aCnt=22     vs=6   scanned
+other335                           f=10    cov=0        aCnt=26     vs=5   None
+dl_riskfree_returns                f=133   cov=0.7147   aCnt=246    vs=5   scanned
+techindi_model                     f=399   cov=0        aCnt=1061   vs=4   None
+
+==============================================================================================================
+[E] DEU submitted alphas (status/stage)
+==============================================================================================================
+count=11
+mLYLEm99     S=2.27   F=1.67   2Y=None   prod=0.6108   COMPLETE
+883Y3bAW     S=2.17   F=1.24   2Y=None   prod=0.5434   COMPLETE
+2rOe10qY     S=2.1    F=1.98   2Y=None   prod=0.6388   COMPLETE
+blRnKEk6     S=2.02   F=1.7    2Y=2.74   prod=0.5766   ACTIVE
+2rmGAPqN     S=1.81   F=1.48   2Y=None   prod=0.6292   COMPLETE
+vRk6og8b     S=1.8    F=1.47   2Y=None   prod=0.6877   COMPLETE
+Vk65zLzG     S=1.79   F=1.69   2Y=None   prod=0.64     COMPLETE
+2rjrMZ25     S=1.77   F=1.61   2Y=1.83   prod=0.651    ACTIVE
+58gkLAkk     S=1.75   F=1.42   2Y=2.07   prod=0.5381   ACTIVE
+Wje5K71x     S=1.73   F=1.37   2Y=1.87   prod=0.4305   ACTIVE
+JjxrYjre     S=1.68   F=1.47   2Y=None   prod=0.6453   COMPLETE

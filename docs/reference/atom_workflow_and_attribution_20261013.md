@@ -381,6 +381,14 @@ universe 按市值分 5/10 等分，算每分位收益贡献。
 
 ⇒ **KOR 的低 prod 家族已定位：`shrt38_stk_invactsell_amt / shrt38_stk_invactbuy_amt`（S 1.71–2.57 / F 1.19–2.09 / 2Y 1.89–2.37 / prod 0.4365–0.6002）**，来自反向检索本地库 53 条 KOR prod 记录（min 0.4365 / median 0.6873）。
 
+> ⛔ **2026-10-31 更正：本节的「低 prod 家族已定位」结论已被平台实测推翻，勿再据此加腿。**
+> 本地 53 条 prod 记录是**未经 `check_correlation(refresh=True)` 的缓存值**。实战复测：
+> `mLmGQEq9` prod **0.935**（2026-10-30T19:45:14）、`E5pjx9q0` **0.8105**（2026-10-31T13:34:49），
+> 两颗都硬破 0.70；族内 prod 直方图 `[0.7,0.8) n=5` / `[0.8,0.9) n=2`
+> ⇒ 按 `wq-window-valley-break-prod-wall` 的族代表规则**整族判死**。
+> 教训：**本地 `alphas.prod_correlation` 只有在 `prod_corr_source` 为平台实测档时才可用**；
+> 「最小 prod」不能靠本地排序挑，必须当场实测。
+
 ### 8.11 ★ 首个「非加权加腿」全闸通过样本（2026-10-25，KOR）
 
 **成品 `leMPe8vA`（`failed_ra_count=0` / `all_passed=true`）：**

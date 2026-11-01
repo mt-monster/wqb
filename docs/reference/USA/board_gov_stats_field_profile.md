@@ -224,3 +224,54 @@ multisim `3nRYbmgZu4VhcmIyCfCb7xY`｜设置同波 191｜**差异维度标注**�
 3. **别用常规「压换手」思路** —— 本数据集 TO 已低至 1.1%，矛盾在 S 与 margin，不在 TO。
 4. **`group_rank` / `group_zscore` 会吃掉其内部的一切单调变换**（`signed_power` / `log` / `sqrt` / 内层 `rank`）⇒ rank 内部只允许非单调变换。
 5. **覆盖率无陷阱**：46 字段里唯一低于 0.87 的是 `surname_concentration_management`（0.5948），其余全在 0.8775–0.9482 ⇒ 本数据集可放心做全字段笛卡尔积扫描。
+
+---
+
+## 7. 补：wave280–281 实测补充（2026-10-31）
+
+### 7.1 ★ 治理族在 USA 的 prod 已饱和（最关键的复用警示）
+
+| alpha | 表达式要点 | 塔位 | S | F | 2Y | SUB | fRA | **prod** |
+|---|---|---|---|---|---|---|---|---|
+| `pwdQlr2V`（波 196） | 任期 × 网络 × **bucket(rank(cap))** | **[PV, INSIDERS]** | 1.64 | 1.12 | 2.29 | 0.89 | 0 | 0.6997（142h stale） |
+| `KPJeor68`（波 196） | 任期 × 网络 × bucket(cap) | [PV, INSIDERS] | 1.53 | 0.97 | 2.00 | 0.71 | 2 | **0.7146** |
+| **`ZYQkoman`（波 280）** | 任期 × 网络 × **bucket(board_member_count_2)** | **[INSIDERS] 单塔** | 1.72 | 1.09 | 1.98 | 0.74 | **0** | **0.8046 ❌** |
+| `qMLvlqJ1`（波 281） | **CEO 任期** × 网络 × 董事会规模 | INSIDERS 单塔 | 1.73 | 1.09 | 2.18 | 0.77 | **0** | 未测 |
+| `KPJq9aMN`（波 281） | **最长任期** × 网络 × 董事会规模 | INSIDERS 单塔 | 1.72 | 1.12 | 1.97 | 0.80 | **0** | 未测 |
+| `zq3Qmp71`（波 281） | 任期 × 网络 × 规模（**504 窗**） | INSIDERS 单塔 | 1.72 | 1.09 | 1.99 | 0.74 | **0** | 未测 |
+| `qMLvP0qv`（波 279） | insider 差值腿 主导 + 治理腿残差 | **[INSIDERS, OTHER]** | 1.68 | 1.10 | 2.17 | 0.83 | **0** | 未测（inv_S 0.86） |
+| `kqNb1g5d`（波 279） | insider 短窗腿 主导 + 治理腿残差 | [INSIDERS, OTHER] | 3.32 | 3.29 | 3.65 | 1.76 | **0** | 未测 |
+
+⇒ **纯治理骨架的 prod 普遍 > 0.7**（0.6997 / 0.7146 / 0.8046）⇒ **INSIDERS 塔不能用纯治理骨架点亮**，必须用机制正交的组合（insider 腿主导 + 治理腿残差）。
+⇒ **治理族候选彼此互相关 0.93–0.9999**（`ZYQkoman` ↔ `zq3Qmp71` = 0.9999）⇒ 纯治理族**同篮最多 1 颗**。
+⇒ **INSIDERS 塔最优 4 颗篮子**（两两 0.06–0.69）：`ZYQkoman` + `qMLvP0qv` + `kqNb1g5d` + `pwdQlr2V`。
+
+### 7.2 ★ 换 bucket 的分母字段 = 切换塔归属（通用手法）
+
+波 196 用 `bucket(rank(cap), ...)` ⇒ 塔位 **[PV, INSIDERS]**（含 PV 塔，触 trio 禁混边界）；
+波 280 用 `bucket(rank(board_member_count_2), ...)` ⇒ 塔位 **[INSIDERS] 单塔**（纯净）。
+⇒ **同一家族结构，仅替换 bucket 的分母字段即可切换塔归属。** 想要纯净单塔时，优先用**目标数据集自己的字段**做 bucket 分母；`rank(cap)` 是最常见的 PV 污染源。
+
+### 7.3 flag 族 / 人口学族 / 规模比值族（wave280 实测，全部判死）
+
+| 族 | 模板 | 实测 | 结论 |
+|---|---|---|---|
+| 治理 flag | CEO/董事长合一（ts_mean 连续化） | S 0.18 / TO 0.66% | **无 alpha**，且连 LOW_TURNOVER（0.01）都不过 |
+| 治理 flag | 任一高管兼董事长 | S 0.15 / TO 0.66% | 同上 |
+| 治理 flag | 多 CEO 并存 | S −0.05 / TO 0.77% | 同上（长尾仅 119 只多头） |
+| 人口学 | 高管男性比例 | S **−0.73** | **强负向风格暴露**（男性高管多 = 大盘/成长股） |
+| 人口学 | 全体博士占比 | S −0.05 | 无信号 |
+| 规模比值 | 董事人数 / 中位任期 | S **−1.05** / DD 38.8% | 方向为负，不要做 |
+| 规模比值 | 管理团队 / 董事人数 | S 0.23 | 无信号 |
+| 任期离散度 | max − min 任期 | S 0.46 / margin 7.02bp | margin 高但信号弱 ⇒ 只作调节腿 |
+
+### 7.4 bucket 分母字段的排序（wave281）
+
+S 值：total_personnel_count 1.77 > board_member_count_2 1.72 > management_team_size 1.59 > independent_director_ratio 1.56 > doctorate_share_board 1.47 > surname_concentration_board 1.45
+⇒ **董事会/人员规模是最好的分组轴**；治理质量与人力资本做分母都弱一档（与主腿共线）。
+
+### 7.5 窗口与网络腿（wave281）
+
+- **窗口几乎无影响**：504 窗 `zq3Qmp71` 与 120 窗 `ZYQkoman` 互相关 0.9999、S/2Y/SUB 逐位相同 ⇒ 治理数据更新频率低，**不必再扫窗口**（与 insider 族的「窗口敏感」完全相反）。
+- **网络腿用董事层不用高管层**：`board_external_connection_count`（S1.72/SUB0.74）≫ `management_external_connection_count`（S1.44/SUB0.41）。
+- **主腿 CEO 任期 > 董事长任期**：董事长与 CEO 常为同一人（`LLMq1JY6` S1.66 vs `qMLvlqJ1` S1.73），董事长腿与主腿共线。

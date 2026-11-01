@@ -107,4 +107,17 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
-<!-- profiles:manual:end -->
+### 2026-10-31 · MODEL 塔可加固的三条通道（全部单塔、不吃 trio 配额）
+
+| 数据集 / 字段 | 几何 | S | F | 2Y | 塔位 | prod |
+|---|---|---:|---:|---:|---|---:|
+| `predictive_starmine` · `ep_yield_pct_smest_fy1_3` | `group_rank(ts_target_tvr_decay(rank(ts_delta(ts_backfill(·,500),20)), lambda_min=0,lambda_max=1,target_tvr=0.13), industry)` | 1.72 | 1.03 | 1.84 | **MODEL 单塔** | 0.6905 |
+| `model28` · `mdl28_sm_structural_credit_structural_asset_drift_pct` | `group_zscore(ts_target_tvr_decay(-rank(ts_delta(ts_backfill(·,250),8)), lambda_min=0,lambda_max=1,target_tvr=0.15), industry)` | 1.67 | 1.09 | 2.21 | MODEL 单塔 | 0.6890 |
+| `model109` · `expected_dividend_yield` | `group_zscore(ts_target_tvr_decay(rank(ts_delta(ts_backfill(·,500),11)), lambda_min=0,lambda_max=1,target_tvr=0.15), industry)` | 1.62 | 1.04 | 2.19 | MODEL 单塔 | 0.5956 |
+
+★ **同族互相关高**：`ep_yield_pct_smest_fy1_3` 族在 GBR 有 4 条（`P0gvv5gE` / `d51ddaWX` / `RR6NOlma` / `58gMMJEk`），彼此 **0.99+** ⇒ **最多取 1 条**；
+`expected_dividend_yield` 族另有 3 条几何 prod **1.0000**（撞墙）⇒ **只认上表这一条**。
+
+⚠ **`predictive_starmine` 的另一批几何是退化件**（TO 0.00% / margin 0.00 ⇒ 不可提交，见 `_field-profile-playbook.md`）⇒ 本区**只走 `ep_yield_pct_smest_fy1_3` 的 ts_delta 形态**。
+
+（提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)。）
