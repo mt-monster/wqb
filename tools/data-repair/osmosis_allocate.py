@@ -89,6 +89,12 @@ DB = os.path.join(_REPO_ROOT, "data", "wqb.db")
 RESULTS = os.path.join(_REPO_ROOT, "results")
 PLAN_PATH = os.path.join(RESULTS, "osmosis_plan.json")
 CKPT_PATH = os.path.join(RESULTS, "osmosis_applied.json")
+# investability 覆盖映射（2026-11-02）：maxTrade=ON 的 alpha 平台不下发
+# is.investabilityConstrained（约束已内嵌进 is.*），分配时用同表达式 + OFF 的
+# 孪生 IS 模拟实测 inv 补齐。文件存在即自动加载，避免每晚定时任务漏传参。
+INV_OVERRIDE_PATH = os.path.join(RESULTS, "osmosis_inv_override.json")
+# main() 按 --inv-override 注入；None = 用缺省路径（文件存在即自动加载）。
+INV_OVERRIDE_SRC: Optional[str] = None
 
 TOTAL_BUDGET = 100_000
 SCOPE_FLOOR = 0.08            # 每范围保底占比（确保 ≥3 范围都有意义暴露）
@@ -137,6 +143,39 @@ except Exception:
 
 
 # --------------------------------------------------------------------------- #
+# investability 覆盖映射（maxTrade=ON 的 alpha 用孪生实测 inv 补齐）
+# --------------------------------------------------------------------------- #
+def load_inv_override(path: Optional[str] = None) -> Dict[str, float]:
+    """读取 `{alpha_id: investability_sharpe}` 覆盖映射（键 `_` 开头视为元数据跳过）。
+
+    支持两种值写法：裸数值，或 `{"investability_sharpe": value, ...}` 子对象。
+    文件不存在/读取失败一律返回空 dict（静默降级，不阻断分配）。
+    """
+    p = path or INV_OVERRIDE_SRC or INV_OVERRIDE_PATH
+    if not p or not os.path.exists(p):
+        return {}
+    try:
+        with open(p, encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:  # noqa: BLE001
+        print(f"[inv-override] 读取失败({p}): {e}", file=sys.stderr)
+        return {}
+    out: Dict[str, float] = {}
+    for k, v in (data or {}).items():
+        if not isinstance(k, str) or k.startswith("_"):
+            continue
+        if isinstance(v, dict):
+            v = v.get("investability_sharpe")
+        if v is None:
+            continue
+        try:
+            out[k] = float(v)
+        except (TypeError, ValueError):
+            print(f"[inv-override] 跳过非法值 {k}={v!r}", file=sys.stderr)
+    return out
+
+
+# --------------------------------------------------------------------------- #
 # DB 读：范围覆盖（只读；必须走 `wqb.db_conn` 规范工厂，禁裸 sqlite3.connect）
 # --------------------------------------------------------------------------- #
 def load_candidates(region: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -170,9 +209,29 @@ def load_candidates(region: Optional[str] = None) -> List[Dict[str, Any]]:
         # DB alphas 表无 investability 列 ⇒ 恒定 None，quality() 走 INVEST_FALLBACK 回退。
         # 想用真实 investability 请走 --source platform。
         d["investability_sharpe"] = None
+        # DB 源无 maxTrade 列，置 None ⇒ quality() 对 DB 源仍按 INVEST_FALLBACK 打折。
+        d["max_trade"] = None
         rows.append(d)
     con.close()
+    _apply_inv_override(rows)
     return rows
+
+
+def _apply_inv_override(rows: List[Dict[str, Any]],
+                        path: Optional[str] = None) -> int:
+    """把覆盖映射写入行的 investability_sharpe（仅覆盖非 None 的映射值）。返回命中数。"""
+    ov = load_inv_override(path)
+    if not ov:
+        return 0
+    n = 0
+    for r in rows:
+        v = ov.get(str(r.get("alpha_id")))
+        if v is not None:
+            r["investability_sharpe"] = v
+            n += 1
+    if n:
+        print(f"[inv-override] 命中 {n} 颗 (来源 {path or INV_OVERRIDE_PATH})", file=sys.stderr)
+    return n
 
 
 def load_candidates_platform() -> List[Dict[str, Any]]:
@@ -231,6 +290,9 @@ def load_candidates_platform() -> List[Dict[str, Any]]:
             "platform_status": a.get("status"),
             "alpha_type": a.get("type"),
             "prod": prod,
+            # maxTrade：ON 时 is.sharpe 已内嵌换手帽约束（RULES.md §N），
+            # quality() 据此决定缺失 inv 时是否还需乘 INVEST_FALLBACK。
+            "max_trade": st.get("maxTrade"),
         })
     # 合并 DB 的 os_sharpe（sync 已落库，比平台列表 os 段更完整）：平台无则用 DB。
     # 这样 prod/status/存在性 走平台权威，实盘业绩权重走最完整的 OS sharpe。
@@ -250,6 +312,7 @@ def load_candidates_platform() -> List[Dict[str, Any]]:
                   file=sys.stderr)
     except Exception as e:  # noqa: BLE001
         print(f"  [platform] DB os_sharpe 合并失败(忽略，退 IS): {e}", file=sys.stderr)
+    _apply_inv_override(out)
     return out
 
 
@@ -292,7 +355,12 @@ def quality(a: Dict[str, Any]) -> float:
         base = a.get("os_sharpe") if a.get("os_sharpe") is not None else a.get("sharpe")
         if base is None:
             return 0.0
-        v = float(base) * INVEST_FALLBACK
+        # ★ maxTrade=ON 的 alpha，其 IS sharpe 已内嵌换手帽约束（RULES.md §N）
+        #   ⇒ 不应再乘 INVEST_FALLBACK，否则是重复打折（实测 15 颗 ON 的 S 与
+        #   同表达式 OFF 孪生的 inv 多数相等，如 2.28=2.28 / 2.68=2.68）。
+        #   OFF 且无 inv 者仍按 INVEST_FALLBACK 保守折算。
+        fb = 1.0 if a.get("max_trade") == "ON" else INVEST_FALLBACK
+        v = float(base) * fb
     to = a.get("turnover") or 0
     pen = 0.6 if to < 0.05 else 1.0
     q = max(v, 0.0) * pen
@@ -768,6 +836,13 @@ def print_review(rows: List[Dict[str, Any]], scopes: Dict[Tuple[str, int], List[
     print(f"\n达标范围 (≥{MIN_PER_SCOPE}): {eligible}  "
           f"eligibility(≥{MIN_SCOPES}范围): {'YES' if met else 'NO（将退化取前 3 范围）'}")
 
+    # 审计：inv 覆盖与 maxTrade 分布（用于判断 fallback 口径影响面）
+    n_on = sum(1 for r in rows if r.get("max_trade") == "ON")
+    n_off = sum(1 for r in rows if r.get("max_trade") == "OFF")
+    n_inv = sum(1 for r in rows if r.get("investability_sharpe") is not None)
+    print(f"[audit] maxTrade: ON={n_on} OFF={n_off} 未知={len(rows)-n_on-n_off} | "
+          f"inv 覆盖: {n_inv}/{len(rows)}")
+
     print(f"\n=== 计划: {len(plan)} 颗, 总点数 {sum(e['points'] for e in plan)} (预算 {TOTAL_BUDGET}) ===")
     for (k, n, pts) in plan_scope_summary(plan):
         print(f"  {k[0]:<5} D{k[1]!s:<3} n={n:>3} 点数={pts:>7}")
@@ -831,6 +906,11 @@ def main() -> int:
                         "避免 SUPER 的组合层面高数值碾压单 alpha。"
                         "实际生效 = min(SHARE, 1-REGULAR_MIN_SHARE)，即 SA 硬上限 35%%；"
                         "某类型为空时预算整体流转给对方。不给此参数 = 不分池（旧行为）。")
+    ap.add_argument("--inv-override", default=None, metavar="PATH",
+                   help="★ investability 覆盖映射 JSON（{alpha_id: investability_sharpe}）。"
+                        "用于 maxTrade=ON 的 alpha——平台不下发 is.investabilityConstrained"
+                        "（约束已内嵌），用同表达式 + OFF 的孪生实测 inv 补齐分配权重。"
+                        f"缺省 {INV_OVERRIDE_PATH}（存在即自动加载，定时任务无需传参）。")
     a = ap.parse_args()
 
     if a.super_budget_share is not None:
@@ -842,9 +922,10 @@ def main() -> int:
             print(f"[warn] --super-budget-share={a.super_budget_share} 超过 RA 保底允许的上限，"
                   f"实际生效值将被压到 {1 - REGULAR_MIN_SHARE:.2f}", file=sys.stderr)
 
-    global PROD_POLICY, PROD_MAX
+    global PROD_POLICY, PROD_MAX, INV_OVERRIDE_SRC
     PROD_POLICY = a.prod_policy
     PROD_MAX = a.prod_max
+    INV_OVERRIDE_SRC = a.inv_override
 
     try:
         if a.source == "platform":

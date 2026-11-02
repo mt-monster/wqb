@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import json
 import os
 import sqlite3
 import sys
@@ -58,16 +59,69 @@ async def fetch() -> list:
     return rows
 
 
+def verify_plan(pool: list, path: str) -> int:
+    """逐颗比对方案点数与平台侧 osmosisPoints（只读，不改写）。
+
+    用于分配落库后的独立复核：确认 plan 里每一颗的实际点数确实写进去了，
+    而不只是各 scope 总额恰好等于 100,000（总额对≠逐颗对）。
+    """
+    with open(path, encoding="utf-8") as f:
+        plan = json.load(f)
+    if isinstance(plan, dict):
+        plan = plan.get("plan") or plan.get("items") or [
+            {"alpha_id": k, "points": v} for k, v in plan.items()
+            if not str(k).startswith("_")
+        ]
+    actual = {x["id"]: (x.get("osmosisPoints") or 0) for x in pool}
+    ok, diff, miss = 0, [], []
+    for e in plan:
+        aid = str(e.get("alpha_id") or e.get("id") or "")
+        exp = e.get("points")
+        if not aid or exp is None:
+            continue
+        act = actual.get(aid)
+        if act is None:
+            miss.append((aid, exp))
+        elif int(act) != int(exp):
+            diff.append((aid, exp, act))
+        else:
+            ok += 1
+    print(f"\n[verify-plan] {path}")
+    print(f"  方案 {len(plan)} 颗 | 一致 {ok} | 不一致 {len(diff)} | 不在 OS 池 {len(miss)}")
+    for aid, exp, act in diff[:60]:
+        print(f"    x {aid}  方案 {exp:,}  实际 {act:,}  差 {act - exp:+,}")
+    for aid, exp in miss[:60]:
+        print(f"    ? {aid}  方案 {exp:,}  平台无此 alpha")
+    if not diff and not miss:
+        print("  OK 全部一致")
+    return 0 if not diff and not miss else 1
+
+
 async def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--no-purge", action="store_true")
+    ap.add_argument("--verify-plan", default=None, metavar="PATH",
+                    help="核验分配方案是否已在平台侧生效：逐颗比对 osmosisPoints 与方案值，"
+                         "只打印不一致项与汇总（只读，不改写）")
+    ap.add_argument("--ids", default=None, metavar="ID[,ID...]",
+                    help="只打印指定 alpha_id 的平台侧 osmosisPoints（逗号分隔，只读）")
     a = ap.parse_args()
 
     if not a.no_purge:
         print(f"[cache] purged {purge()} 条")
 
     pool = await fetch()
+
+    if a.verify_plan:
+        return verify_plan(pool, a.verify_plan)
+    if a.ids:
+        idx = {x["id"]: (x.get("osmosisPoints") or 0) for x in pool}
+        print()
+        for aid in [i.strip() for i in a.ids.split(",") if i.strip()]:
+            print(f"  {aid}  {idx.get(aid, '（不在 OS 池）')}")
+        return 0
+
     by: dict = defaultdict(list)
     for x in pool:
         st = x.get("settings") or {}

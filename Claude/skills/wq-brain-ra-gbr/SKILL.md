@@ -64,7 +64,7 @@ last_verified: 2026-11-01
 | neutralization | SUBINDUSTRY | settings.json |
 | decay | 4 | settings.json |
 | truncation | 0.08 | settings.json |
-| maxTrade | ON | settings.json |
+| maxTrade | OFF | settings.json |
 | pasteurization | ON | settings.json |
 | unitHandling | VERIFY | settings.json |
 | nanHandling | ON | settings.json |

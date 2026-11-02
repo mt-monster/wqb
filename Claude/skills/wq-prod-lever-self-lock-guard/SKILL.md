@@ -2,7 +2,7 @@
 name: wq-prod-lever-self-lock-guard
 layer: L4
 description: 降 prod 相关性的杠杆选择与 self-corr 自锁防护。当候选 prod 卡墙、或准备上 hump/decay 等"不改持仓"的平滑杠杆、或同族已有 alpha 提交时使用。含 hump 正确用法（keyword-only）、hump 档位甜区、**self 干净 ≠ prod 干净**的机理与三组实测、prod 与 self 双端点复测纪律、幽灵算子误诊排查三序、quota_gate 保守拦截绕行。
-last_verified: 2026-10-30
+last_verified: 2026-11-02
 agent_created: true
 ---
 

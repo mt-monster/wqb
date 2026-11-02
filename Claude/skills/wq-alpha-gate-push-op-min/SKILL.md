@@ -191,18 +191,31 @@ $WQ_PY "$SKILL_DIR/scripts/compress.py" --expr "<表达式>" [--metrics '{"sharp
    - **L2 归一**（截面，`rank`/`zscore`/`group_rank`）
    - **L3 时序**（`ts_*`：动量/均值/分位/差分）
    - **L4 截面**（终算子，`rank`/`group_neutralize`/`vector_neut`）
-2. **遍历平台算子**——`get_operators`（约 103 个），对每个时序/截面层找**金融含义等价**的替换候选。
+2. **遍历平台算子（★ 强制，不得跳过）**——先跑
+   `python tools/gates/operator_coverage_audit.py --checklist`
+   （读 `docs/reference/operators_catalog.json`，列出全部 REGULAR 可用算子并按类别给出「何时用」提示），
+   **逐类过一遍**：对每个类别问一句「这个类别在本信号上有没有可能出东西」，再决定试哪几个。
+   ⚠ **`scan.py --replace` 内置的 14 组等价对只是子集，不能替代这次全量遍历**
+   （2026-11-02 复犯：跳过了 `vec_*`/`ts_quantile(gaussian)`/`ts_target_tvr_hump` 等未用算子，
+   被用户质问「平台里未使用过的算子都试着优化了吗」）。
    判据：替换后**保留该层原经济含义**（如「相对均值的偏离」仍是「相对均值的偏离」），
    只是实现不同（如 `ts_av_diff` 未归一化 → `ts_zscore` 加了波动归一化，仍测同一偏离方向）。
-3. **等价先判后测**——两层判断：
+3. **派发前覆盖签核（★ 闸，无签核不得派发）**——把本批表达式写入文件，跑
+   `python tools/gates/operator_coverage_audit.py --expr-file <batch.txt> --min-coverage <阈值>`
+   审计覆盖率；然后把结论写入 `results/op_coverage_signoff.jsonl`，一行：
+   `{"ts", "session_id", "exprs": [<本批全部表达式>], "ops_used": [...], "coverage": 0.xx,
+   "categories_reviewed": [...], "note": "④b checklist 过审结论"}`。
+   **钩子 `campaign_guard.py` G6 会拦**：批内任何一条表达式没有签核记录 ⇒ `submit_batch` 直接被拒
+   （fail-closed）。签核是「签字」不是「保证」——但强制你把全量遍历这一步**做出来并留痕**。
+4. **等价先判后测**——两层判断：
    - **数学等价**（外层单调算子会吸收内层变换）：如 `rank(ts_quantile(x,d,gaussian)) ≡ rank(ts_rank(x,d))`
      ——因外层 `rank` 保序、gaussian 逆 CDF 单调，逐位相同。**无损但不省算子**，无增益，无需实测。
    - **语义等价但实现不同**：可能改善指标/prod ⇒ **必须实测**（派发新 alpha id，检查 IS + prod）。
-4. **采纳判据**（替换变体全闸 PASS 时）：
+5. **采纳判据**（替换变体全闸 PASS 时）：
    - **prod 更低** ⇒ 优先采纳（**prod 贴线时尤其**：余量 <0.05 的候选，低 prod 变体比 S 最优变体更值得交付——prod 漂移猛，48h 作废，S 差距小但 prod 安全边际大）。
    - 或 **指标更好**（S/2Y/sub 更高）；或 **算子更少**。
    - 否则回滚，保留原式。
-5. **关键权衡**（2026-10-30 GBR 实测案例 `j2YNnKOQ`）：
+6. **关键权衡**（2026-10-30 GBR 实测案例 `j2YNnKOQ`）：
    - `ts_av_diff(x,504)` → `ts_zscore(x,504)`：同为「相对 1 年均值偏离」，z-score 波动归一化更标准。
      实测：S 2.15→2.00（略降）、**prod 0.67→0.6191**（安全边际 0.03→0.081，放大 2.7 倍）、IS 全闸仍 PASS。
      ⇒ **等效替换可行**；prod 贴线时「低 prod 更稳」优先（铁律：prod 漂移猛）。
@@ -234,6 +247,9 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参�
   现有 `compress.py` 只匹配 C1/C3/C4… 既定模式，不做「每个算子节点」遍历。
 - `scan.py --replace` 内置 **14 组金融含义等价对**（时序层 `ts_av_diff↔ts_zscore`/`ts_rank↔ts_quantile(gaussian)`/`ts_mean↔ts_sum`；
   截面层 `rank↔zscore`/`group_rank↔group_zscore`/`group_neutralize↔vector_neut`），自动标注**数学等价 vs 语义等价**。
+  ⚠ **这 14 组只是 ④b 全量遍历的子集**：④b 步骤 2 要求用 `operator_coverage_audit.py --checklist`
+  逐类过审**全部 REGULAR 算子**（含 `vec_*`/`ts_target_tvr_hump`/`ts_scale`/`ts_ir` 等未用算子），
+  不能拿这 14 组当「已遍历」。
 - `scan.py --params` 把每个数值参数展开 0.5/0.75/1.25/1.5 倍。
 
 完整协议（含判定规则、陷阱、端到端模板）见 [`references/scan-protocol.md`](references/scan-protocol.md)。
@@ -250,6 +266,10 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参�
   ⚠ **单位闸第二族**：`ts_zscore→ts_av_diff` 也会连坐——`ts_av_diff` 输出 `Unit[TSShare:1]`，与 `ts_zscore` 的 `Unit[]`
   不兼容作外层 `subtract` 入参 ⇒ `Incompatible unit for input of "subtract" ... expected "Unit[TSShare:1]", found "Unit[]"`。
   `scan.py` **未**拦截该对（EQUIV 只按金融含义配对，不查输出单位族）⇒ **派发前必须人工逐条查输出单位与父算子是否同族**。
+  ⚠ **单位闸第三族**：`rank(densify(<group>))` 无效——`densify(market)` 输出 `Unit[Group:1]`，`rank` 要求 `Unit[]`
+  ⇒ `Incompatible unit for input of "rank" at index 0, expected "Unit[]", found "Unit[Group:1]"`。
+  **把 `group_neutralize(x, densify(market))` 换成 `vector_neut(x, rank(densify(market)))` 是错的**（rank 不能转单位）；
+  `vector_neut` 第 2 参必须是**真向量字段的 rank**（如 `rank(ts_mean(...))`），不能沿用 group 轴。
 - **参数**：0.5/0.75/1.25/1.5 粗扫 → 最优档附近细扫（步长 ≤ 窗口 5%）；窗口参数是尖峰（±15 就掉）。
 - **终止**：三通道全部候选实测完毕，或达 operatorCount 目标（REGULAR 复杂度闸 <10；PPA ≤8），或再动任何算子会掉闸。
 - **记账**：每次采纳（删除/替换/参数）都产生**新 alpha id**，只保留指标最好且算子最少的那 1 个，其余标 `SUPERSEDED`；

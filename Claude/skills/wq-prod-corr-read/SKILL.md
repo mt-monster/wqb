@@ -2,7 +2,7 @@
 name: wq-prod-corr-read
 layer: L-RA
 description: 读候选 alpha 的生产池相关性（prod / PC）时使用：平台 prod 计算 >120s 超时、超时不落缓存、超时后本机 inflight 标记残留 300s、账号级单并发槽被跨会话抢占、is.prodCorrelation 只对已提交 alpha 存在——这五类故障的处置顺序与判据；含「族代表预判」（量产前先只测一颗决定整族去留）与从免费到昂贵的 prod 时隙排队顺序。不负责降 prod 杠杆（走 wq-prod-lever-self-lock-guard），不做提交动作（走 worldquant-submit-alpha）。
-last_verified: 2026-10-30
+last_verified: 2026-11-02
 ---
 
 # prod 取数：五条故障与三段式顺序

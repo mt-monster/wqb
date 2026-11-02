@@ -17,7 +17,7 @@
 | 节 | 覆盖 | 本协议补充 |
 |---|---|---|
 | ④ 压缩算子 | 消融**协议** + 规则化候选（`compress.py`，只匹配 C1/C3/C4… 既定模式） | **逐算子节点遍历**：`scan.py --delete` 对**每个**算子节点生成删除候选，包括 `compress.py` 没有的 `f(x)→x` 单参包裹删除 |
-| ④b 等效替换 | 人工遍历平台算子找金融含义等价（不脚本化） | **自动等价表**：`scan.py --replace` 内置 14 组等价对，逐节点生成替换候选 + 数学等价标记 |
+| ④b 等效替换 | **强制全量遍历**：`operator_coverage_audit.py --checklist` 逐类过审全部 REGULAR 算子 + 派发前先写 `results/op_coverage_signoff.jsonl`（钩子 G6 会拦） | **自动等价表（子集）**：`scan.py --replace` 内置 14 组等价对，逐节点生成替换候选 + 数学等价标记。⚠ 14 组 ≠ 全量，不能替代|
 | ③ / ⑤ 杠杆与设置 | 杠杆阶梯 + decay/trunc 收敛 | **参数级扫描**：`scan.py --params` 对每个数值参数展开 0.5/0.75/1.25/1.5 档 |
 
 **⇒ 本协议是 ④/④b 的「自动化执行层」**：先跑 `scan.py` 拿候选矩阵，再按下面的判定规则逐条实测、逐条取舍。
@@ -99,6 +99,14 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt         # 
   `scan.py` 目前**未**拦截该对（仍会生成候选）⇒ **派发前必须人工过一遍单位闸**：
   凡进 EQUIV 的算子，先查它**输出单位**（`ts_av_diff`→TSShare、`ts_quantile`→同输入、`ts_zscore`→Unit[]、`ts_mean`/`ts_sum`→同输入…），
   再查**被替换位置的父算子**要求的输入单位；两者不同族 ⇒ 该候选标记为不合法，不派发。
+- **★★ `rank(densify(<group>))`（2026-11-02 实测连坐教训）**：`densify(market)` 输出 **`Unit[Group:1]`**（分组轴），
+  而 `rank` 要求入参 `Unit[]` ⇒ `rank(densify(market))` 直接报
+  `Incompatible unit for input of "rank" at index 0, expected "Unit[]", found "Unit[Group:1]"` ⇒ **整批 CANCELLED（连坐）**。
+  **根因**：想把 `group_neutralize(x, densify(market))` 换成 `vector_neut(x, rank(densify(market)))`（以为 rank 能转单位），
+  但 **`rank()` 不能把 Group 单位转成普通向量单位**。`vector_neut` 第 2 参必须是 `Unit[]` 的**普通向量**
+  （如 `rank(ts_mean(...))`、`rank(volume)`），**不能**是 `densify(...)`/`bucket(...)` 等分组轴。
+  `scan.py` **未**拦截此族 ⇒ 手工替换 `group_neutralize→vector_neut` 时，第 2 参必须换成**真向量字段**的 rank，
+  不能沿用原 group 轴。
 
 ---
 

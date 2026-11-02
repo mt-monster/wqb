@@ -18,7 +18,7 @@
 | neutralization | SUBINDUSTRY | 区域 settings.json |
 | decay | 4 | 区域 settings.json |
 | truncation | 0.08 | 区域 settings.json |
-| maxTrade | ON | 区域 settings.json |
+| maxTrade | OFF | 区域 settings.json |
 | pasteurization | ON | 区域 settings.json |
 | unitHandling | VERIFY | 区域 settings.json |
 | nanHandling | ON | 区域 settings.json |
@@ -56,7 +56,7 @@
   - earnings momentum: year-over-year growth acceleration
   - earnings call sentiment: tone analysis of earnings call transcripts
 - **跨区结论**（IND/MEA；negative）：earnings3 的日历 / 计时字段作主信号判死，只能作条件（计时）腿（证据：IND-EARNINGS3-TIMING-DEAD；MEA-EARNINGS3-CALENDAR-DEAD） <!-- lint:const-ok 证据原文 -->
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize / vector_neut）入场（★ 2026-10-20 更正：'vector_neut' **平台可用**——本地算子清单缺它是假阳性，EUR 平台已用它交付 JjQmx9nm；'regression_neut' 仍非平台算子名）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）
@@ -80,7 +80,6 @@
 | 条目 | 族 | 下次怎么办 / 说明 | 数据集 | 归属 |
 |---|---|---|---|---|
 | GBR-EARNINGS-SENT-DEAD | earnings_call_tone | earnings_sent_matrix tone structures (level/change/event-gated/group/spillover) not to be generated in GBR. | earnings_sent_matrix | payload | <!-- lint:const-ok 证据原文 -->
-| GBR-EARNINGS6-SPAN-2019-ONLY（2026-10-28 新增） | pead_surprise_div | **earnings6 不得作主数据集**：平台 meta coverage=0.0 是 meta 造假（字段真实存在且可回测），但 `get_alpha_yearly_stats` 实测 2014-2018 五年 pnl=0 / longCount=0、2019 仅 24 多头、2020 起才满仓 ⇒ 实际数据自 2019-12 起，**违反「近十年(2014-2023)都要有数据」硬要求**。其历史 SUB 闸全灭（0.22-0.51 vs limit 0.84）根因即样本期短导致 SUB 统计退化，**不是分组轴粒度问题** ⇒ 归因工具给的「换粗轴抬 SUB」杠杆在此失效。跨区参照：EUR `EUR-W255-EARNINGS6-EPS-EVENT-PAIRS` 是 `scope=exact_structures / whole_dataset_dead=false`（只封 4 条 subtract 差值型表达式，不封本域 ts_delta+divide 结构）；DEU `DEU-D-RESIDUAL-SETS-DEAD-20260916` 的 earnings6 条目为「CW 0.5 fail」，机制不同。 | earnings6 | manual |
 <!-- profiles:cell-panel:end -->
 
 ## 补充说明（手写）

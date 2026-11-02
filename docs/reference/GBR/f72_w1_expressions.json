@@ -1,0 +1,24 @@
+{
+  "region": "GBR",
+  "wave": "routeB_f72_w1",
+  "dataset": "fundamental72",
+  "settings": {
+    "universe": "TOP700", "delay": 1, "neutralization": "FAST", "decay": 15,
+    "truncation": 0.05, "nanHandling": "ON", "maxTrade": "OFF",
+    "pasteurization": "ON", "unitHandling": "VERIFY", "language": "FASTEXPR",
+    "test_period": "P0Y0M"
+  },
+  "templates": ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10"],
+  "expressions": [
+    {"template": "T1", "expr": "subtract(0, rank(ts_mean(divide(subtract(fnd72_s_pit_or_cf_a_cf_net_inc, fnd72_s_pit_or_cf_a_cf_cash_from_oper), fnd72_s_pit_or_is_a_sales_rev_turn), 252)))"},
+    {"template": "T2", "expr": "subtract(0, rank(ts_delta(divide(subtract(fnd72_s_pit_or_cf_a_cf_net_inc, fnd72_s_pit_or_cf_a_cf_cash_from_oper), fnd72_s_pit_or_is_a_sales_rev_turn), 252)))"},
+    {"template": "T3", "expr": "subtract(0, rank(ts_std_dev(divide(fnd72_s_pit_or_cf_a_cf_chng_non_cash_work_cap, fnd72_s_pit_or_is_a_sales_rev_turn), 252)))"},
+    {"template": "T4", "expr": "subtract(0, rank(ts_quantile(ts_av_diff(divide(fnd72_s_pit_or_cf_a_cf_cap_expend_prpty_add, fnd72_s_pit_or_cf_a_cf_depr_amort), 252), 22, driver=gaussian)))"},
+    {"template": "T5", "expr": "subtract(0, rank(divide(subtract(fnd72_s_pit_or_cf_a_cf_net_inc, fnd72_s_pit_or_cf_a_cf_cash_from_oper), add(abs(fnd72_s_pit_or_cf_a_cf_net_inc), abs(fnd72_s_pit_or_cf_a_cf_cash_from_oper)))))"},
+    {"template": "T6", "expr": "subtract(0, rank(ts_mean(log(add(divide(other_intangible_assets_value, fnd72_s_pit_or_is_a_sales_rev_turn), 0.01)), 252)))"},
+    {"template": "T7", "expr": "group_rank(subtract(0, divide(fnd72_s_pit_or_cf_a_cf_cash_paid_for_tax, fnd72_s_pit_or_is_a_ebitda)), sector)"},
+    {"template": "T8", "expr": "subtract(0, rank(ts_mean(subtract(fnd72_s_pit_or_cf_a_announcement_dt, fnd72_s_pit_or_cf_a_latest_period_end_dt_full_record), 252)))"},
+    {"template": "T9", "expr": "rank(ts_decay_linear(divide(fnd72_s_pit_or_is_a_ebitda, fnd72_s_pit_or_cf_a_cf_act_cash_paid_for_int_debt), 252))"},
+    {"template": "T10", "expr": "subtract(0, rank(ts_arg_max(divide(fnd72_s_pit_or_cf_a_cf_cap_expend_prpty_add, fnd72_s_pit_or_cf_a_cf_depr_amort), 252)))"}
+  ]
+}

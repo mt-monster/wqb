@@ -1,0 +1,16 @@
+{
+  "_doc": "GBR news_light3_4: news18 未测字段轴 × 相关性矩几何。壳与 news_light3_1/2/3 逐字一致（group_neutralize(densify(market)) + ts_target_tvr_decay 0.05）。W12 用 group_zscore 分组轴几何（点塔帖原壳）。",
+  "settings": {"region": "GBR", "universe": "TOP700", "delay": 1, "neutralization": "FAST", "decay": 15, "truncation": 0.05, "maxTrade": "OFF", "nanHandling": "ON", "pasteurization": "ON", "unitHandling": "VERIFY", "language": "FASTEXPR"},
+  "W1": "ts_target_tvr_decay(group_neutralize(ts_corr(vec_avg(sentiment_news_impact_projection_d1), returns, 22), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W2": "ts_target_tvr_decay(group_neutralize(ts_covariance(vec_avg(sentiment_news_impact_projection_d1), returns, 22), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W3": "ts_target_tvr_decay(group_neutralize(ts_regression(returns, vec_avg(sentiment_news_impact_projection_d1), 60, lag=0, rettype=2), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W4": "ts_target_tvr_decay(group_neutralize(ts_corr(vec_sum(sentiment_earnings_classifier_d1), returns, 22), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W5": "ts_target_tvr_decay(group_neutralize(ts_corr(vec_sum(sentiment_m_and_a_classifier), returns, 60), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W6": "ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(vec_sum(sentiment_earnings_release_classifier), 60), 252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W7": "ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(vec_avg(story_entity_record_count_d1), 22), 252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W8": "ts_target_tvr_decay(group_neutralize(-ts_rank(ts_delta(ts_mean(vec_avg(multi_entity_story_event_count), 22), 60), 252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W9": "ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(vec_min(sentiment_composite_score_d1), 22), 252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W10": "ts_target_tvr_decay(group_neutralize(subtract(rank(ts_mean(vec_avg(sentiment_commentary_classifier), 60)), rank(ts_mean(vec_stddev(sentiment_commentary_classifier), 60))), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W11": "ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(subtract(rank(vec_avg(sentiment_news_impact_projection_d1)), rank(vec_avg(sentiment_composite_score_d1))), 60), 252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)",
+  "W12": "ts_target_tvr_decay(group_zscore(-ts_corr(vec_avg(nws18_nip), vec_avg(sentiment_composite_score_d1), 22), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)"
+}

@@ -1,0 +1,950 @@
+{
+ "news17": [
+  {
+   "id": "analyst_recommendation_change_score",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "A score representing changes in analyst recommendations, such as upgrade or downgrade."
+  },
+  {
+   "id": "nws17_acb",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Earnings-focused sentiment classifier score: -1 negative, 0 neutral, 1 positive"
+  },
+  {
+   "id": "nws17_bam",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "BCA classifier sentiment score for corporate action reports: -1 negative, 0 neutral, 1 positive"
+  },
+  {
+   "id": "nws17_bee",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Sentiment score from the earnings evaluations classifier, values -1 (negative), 0 (neutral), or 1 (positive)"
+  },
+  {
+   "id": "nws17_ber",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Analyst recommendation change score for the company mention when an ANL-CHG event is detected: -1 downgrade, 0 neutral, 1 upgrade"
+  },
+  {
+   "id": "nws17_country_code",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Two-letter ISO-3166 country code associated with the entity (XX for global entities)"
+  },
+  {
+   "id": "nws17_event_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "UTC time when the event ends"
+  },
+  {
+   "id": "nws17_event_relevance",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Integer 0–100 indicating how relevant the event is within the story"
+  },
+  {
+   "id": "nws17_event_sentiment_score",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 23,
+   "alphaCount": 28,
+   "description": "-1.00 to +1.00 sentiment score for the entity based on news analytics"
+  },
+  {
+   "id": "nws17_event_similarity_days",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 15,
+   "alphaCount": 23,
+   "description": "Days since a similar event occurred within the last 365 days (0 to 365, up to 5 decimals)"
+  },
+  {
+   "id": "nws17_event_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time when the event starts, in UTC"
+  },
+  {
+   "id": "nws17_event_text",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Short text summary of the event captured in the document"
+  },
+  {
+   "id": "nws17_ghc_lna",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "A sentiment score based on tone for the most relevant entities, derived from BMQ, BEE, BCA, and ANL-CHG classifiers"
+  },
+  {
+   "id": "nws17_headline",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Headline or summary text of the document"
+  },
+  {
+   "id": "nws17_multiple_comp_acb",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Sentiment score for earnings release stories: -1 negative, 0 neutral, 1 positive"
+  },
+  {
+   "id": "nws17_multiple_comp_bam",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "A score that represents the news sentiment of the given news story according to the BCA classifier, which specializes in reports on corporate action announcemen…"
+  },
+  {
+   "id": "nws17_multiple_comp_bee",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Sentiment score for earnings evaluation stories: -1 negative, 0 neutral, 1 positive"
+  },
+  {
+   "id": "nws17_multiple_comp_ber",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Score for analyst recommendation change: -1 downgrade, 0 no change, 1 upgrade"
+  },
+  {
+   "id": "nws17_multiple_comp_country_code",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Two-character ISO-3166 country code associated with the entity; ‘XX’ for global entities not tied to a specific country"
+  },
+  {
+   "id": "nws17_multiple_comp_event_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time when the event ends in UTC"
+  },
+  {
+   "id": "nws17_multiple_comp_event_relevance",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "Integer 0–100 indicating how relevant the event is within the story"
+  },
+  {
+   "id": "nws17_multiple_comp_event_sentiment_score",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Sentiment polarity score between -1.00 and +1.00 measuring news sentiment for the entity"
+  },
+  {
+   "id": "nws17_multiple_comp_event_similarity_days",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Number of days (0 to 365, with decimals) since a similar event was last detected"
+  },
+  {
+   "id": "nws17_multiple_comp_event_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The time when the event starts in Coordinated Universal Time (UTC)"
+  },
+  {
+   "id": "nws17_multiple_comp_event_text",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "A short text summary of an event captured in a document"
+  },
+  {
+   "id": "nws17_multiple_comp_headline",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The headline or summary text for the document"
+  },
+  {
+   "id": "nws17_multiple_comp_nip",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Granular impact score from -1.00 to 1.00 estimating how the news affects the market over the next two hours"
+  },
+  {
+   "id": "nws17_multiple_comp_qcm",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Tone-based sentiment score applicable to the most relevant entities, derived from BMQ, BEE, BCA, and ANL-CHG analytics"
+  },
+  {
+   "id": "nws17_multiple_comp_qep",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Sentiment score based on positive and negative words or phrases in global equities articles"
+  },
+  {
+   "id": "nws17_multiple_comp_qmb",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "A score that represents the news sentiment of the given story according to the BAM classifier, which specializes in news stories about mergers, acquisitions, an…"
+  },
+  {
+   "id": "nws17_multiple_comp_relevance",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Integer score from 0 to 100 indicating how prominent the entity is in the story (higher means more relevant)"
+  },
+  {
+   "id": "nws17_multiple_comp_reporting_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "End time of the reporting period associated with the event in UTC"
+  },
+  {
+   "id": "nws17_multiple_comp_reporting_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "UTC start time of the reporting period associated with the event"
+  },
+  {
+   "id": "nws17_multiple_comp_rp_story_event_count",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Total number of entity records published by the vendor for the news story"
+  },
+  {
+   "id": "nws17_multiple_comp_rp_story_event_index",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Order index of this entity record within the vendor’s set of events for the story"
+  },
+  {
+   "id": "nws17_multiple_comp_ssc",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Continuous sentiment score from -1.00 to +1.00 (two decimals) summarizing story sentiment"
+  },
+  {
+   "id": "nws17_multiple_comp_timestamp_utc_time",
+   "type": "VECTOR",
+   "coverage": 0.9669,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Time of news arrival as received by WorldQuant (UTC)"
+  },
+  {
+   "id": "nws17_nip",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 22,
+   "alphaCount": 26,
+   "description": "-1.00 to 1.00 score estimating market impact over the next two hours after the news flash"
+  },
+  {
+   "id": "nws17_qcm",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Composite tone-based sentiment score for the most relevant entities, derived from BMQ, BEE, BCA, and ANL-CHG"
+  },
+  {
+   "id": "nws17_qep",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Sentiment score from the PEQ classifier focused on equities-related positive/negative language"
+  },
+  {
+   "id": "nws17_qmb",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "M&A/takeover sentiment score: -1 negative, 0 neutral, 1 positive"
+  },
+  {
+   "id": "nws17_relevance",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "0–100 score indicating how central the entity is to the story; higher means more relevant"
+  },
+  {
+   "id": "nws17_reporting_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "UTC time marking the end of the reporting period referenced by the event"
+  },
+  {
+   "id": "nws17_reporting_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "UTC start time of the reporting period associated with the event"
+  },
+  {
+   "id": "nws17_rp_story_event_count",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 12,
+   "alphaCount": 16,
+   "description": "Total number of entity records published by RavenPack for the news story"
+  },
+  {
+   "id": "nws17_rp_story_event_index",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Order index of the entity record within the vendor’s sequence for a news story"
+  },
+  {
+   "id": "nws17_ssc",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 22,
+   "alphaCount": 23,
+   "description": "Continuous sentiment score from -1.00 to +1.00 (two decimals) combining multiple techniques"
+  },
+  {
+   "id": "nws17_timestamp_utc_time",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "UTC time the news arrived as received by WorldQuant"
+  }
+ ],
+ "news18": [
+  {
+   "id": "analyst_recommendation_change",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 13,
+   "alphaCount": 21,
+   "description": "A ternary score (-1, 0, 1) representing an analyst recommendation change (downgrade, neutral, upgrade). This is an alias for ANL_CHG."
+  },
+  {
+   "id": "company_event_summary",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 39,
+   "alphaCount": 48,
+   "description": "A brief summary of the event as it pertains to the company."
+  },
+  {
+   "id": "company_story_headline",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 22,
+   "alphaCount": 26,
+   "description": "The headline text of the news story related to the company."
+  },
+  {
+   "id": "days_since_similar_event",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "The number of days (0-365) since a semantically similar event was detected, used as a novelty metric. This is an alias for EVENT_SIMILARITY_DAYS."
+  },
+  {
+   "id": "entity_country_iso_code_4",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "The two-letter ISO code representing the country associated with the entity."
+  },
+  {
+   "id": "event_end_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The UTC date when the event concludes."
+  },
+  {
+   "id": "event_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The UTC timestamp when the event concludes."
+  },
+  {
+   "id": "event_relevance_score",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "An integer score (0-100) indicating the relevance of a specific event within a news story. This is an alias for EVENT_RELEVANCE."
+  },
+  {
+   "id": "event_sentiment_score",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 12,
+   "alphaCount": 17,
+   "description": "An entity-specific sentiment score on a continuous scale from -1.00 (very negative) to +1.00 (very positive)."
+  },
+  {
+   "id": "event_sequence_number_in_story",
+   "type": "SYMBOL",
+   "coverage": 0.7149,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The order in which the event record appears within a news story."
+  },
+  {
+   "id": "event_start_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The UTC date when the event begins."
+  },
+  {
+   "id": "event_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "The UTC timestamp when the event begins."
+  },
+  {
+   "id": "multi_entity_country_iso_code",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "The ISO country code for each entity in a multi-entity event."
+  },
+  {
+   "id": "multi_entity_event_end_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The UTC date when a multi-entity event concludes."
+  },
+  {
+   "id": "multi_entity_event_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The UTC timestamp when a multi-entity event concludes."
+  },
+  {
+   "id": "multi_entity_event_sequence_number",
+   "type": "SYMBOL",
+   "coverage": 0.9714,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The order in which the event record appears for multiple entities in a story."
+  },
+  {
+   "id": "multi_entity_event_start_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The UTC date when an event involving multiple entities begins."
+  },
+  {
+   "id": "multi_entity_event_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The UTC timestamp when a multi-entity event begins."
+  },
+  {
+   "id": "multi_entity_record_date_utc",
+   "type": "SYMBOL",
+   "coverage": 0.9714,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The UTC date when the record for multiple entities was created."
+  },
+  {
+   "id": "multi_entity_record_time_utc",
+   "type": "SYMBOL",
+   "coverage": 0.9714,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The UTC time when the record for multiple entities was created."
+  },
+  {
+   "id": "multi_entity_reporting_end_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 36,
+   "alphaCount": 47,
+   "description": "The UTC date marking the end of the reporting period for multiple entities."
+  },
+  {
+   "id": "multi_entity_reporting_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "The UTC timestamp marking the end of the reporting period for multiple entities."
+  },
+  {
+   "id": "multi_entity_reporting_start_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "The UTC date marking the start of the reporting period for multiple entities."
+  },
+  {
+   "id": "multi_entity_reporting_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "The UTC timestamp marking the start of the reporting period for multiple entities."
+  },
+  {
+   "id": "multi_entity_story_event_count",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 35,
+   "alphaCount": 41,
+   "description": "The total number of event records for a news story involving multiple entities."
+  },
+  {
+   "id": "nws18_acb",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "News sentiment specializing in corporate action announcements"
+  },
+  {
+   "id": "nws18_bam",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mergers and acquisitions sentiment indicator (e.g., -1 negative, 0 neutral, +1 positive)"
+  },
+  {
+   "id": "nws18_bee",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Earnings evaluation score indicating positive, neutral, or negative assessment (-1, 0, +1)"
+  },
+  {
+   "id": "nws18_ber",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 11,
+   "alphaCount": 22,
+   "description": "Earnings Release Indicator flag for earnings release events"
+  },
+  {
+   "id": "nws18_event_relevance",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 21,
+   "alphaCount": 25,
+   "description": "Integer from 0 to 100 indicating the event’s relevance within the story"
+  },
+  {
+   "id": "nws18_event_similarity_days",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 18,
+   "alphaCount": 21,
+   "description": "Number of days since a similar event was last detected within the past 365 days, up to 5 decimals"
+  },
+  {
+   "id": "nws18_ghc_lna",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Change in analyst recommendation"
+  },
+  {
+   "id": "nws18_mltpl_cmp_event_relevance",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Overall event relevance score (e.g., 0–100) measuring importance of the event"
+  },
+  {
+   "id": "nws18_mltpl_cmp_event_simildays",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Days since a similar event was detected"
+  },
+  {
+   "id": "nws18_multiple_comp_acb",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "News sentiment specializing in corporate action announcements"
+  },
+  {
+   "id": "nws18_multiple_comp_bam",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "News sentiment specializing in mergers and acquisitions"
+  },
+  {
+   "id": "nws18_multiple_comp_bee",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Earnings evaluations score with values -1, 0, or +1"
+  },
+  {
+   "id": "nws18_multiple_comp_ber",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "News sentiment specializing in earnings result"
+  },
+  {
+   "id": "nws18_multiple_comp_ghc_lna",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Change in analyst recommendation"
+  },
+  {
+   "id": "nws18_multiple_comp_nip",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 29,
+   "alphaCount": 36,
+   "description": "Degree of impact of the news"
+  },
+  {
+   "id": "nws18_multiple_comp_qcm",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 34,
+   "alphaCount": 42,
+   "description": "News sentiment of relevant news with high confidence"
+  },
+  {
+   "id": "nws18_multiple_comp_qep",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Global equities sentiment score taking values -1, 0, or +1"
+  },
+  {
+   "id": "nws18_multiple_comp_qmb",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 78,
+   "alphaCount": 104,
+   "description": "News sentiment specializing in editorials on global markets"
+  },
+  {
+   "id": "nws18_multiple_comp_relevance",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 29,
+   "alphaCount": 40,
+   "description": "Relevance score indicating the significance of the entity in the story (typically 0–100)"
+  },
+  {
+   "id": "nws18_multiple_comp_ssc",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 66,
+   "alphaCount": 81,
+   "description": "Sentiment of the news calculated using multiple techniques"
+  },
+  {
+   "id": "nws18_multiple_comp_sse",
+   "type": "VECTOR",
+   "coverage": 0.9714,
+   "userCount": 44,
+   "alphaCount": 51,
+   "description": "Sentiment polarity score of the event, typically from -1 (negative) to +1 (positive)"
+  },
+  {
+   "id": "nws18_nip",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 72,
+   "alphaCount": 106,
+   "description": "Narrative impact score in [-1, 1] estimating the news item’s short-term market impact (e.g., next two hours)"
+  },
+  {
+   "id": "nws18_qcm",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 16,
+   "alphaCount": 16,
+   "description": "News sentiment of relevant news with high confidence"
+  },
+  {
+   "id": "nws18_qep",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Equities sentiment polarity score derived from positive/negative words in news (typically -1, 0, +1)"
+  },
+  {
+   "id": "nws18_qmb",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 142,
+   "alphaCount": 202,
+   "description": "Editorials and commentary score indicating stance or sentiment (-1, 0, +1)"
+  },
+  {
+   "id": "nws18_relevance",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 17,
+   "alphaCount": 23,
+   "description": "Score from 0 to 100 indicating how strongly the entity is related to the story higher is more relevant"
+  },
+  {
+   "id": "nws18_ssc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 39,
+   "alphaCount": 58,
+   "description": "Granular sentiment score from -1.00 to +1.00 for the story, combining multiple sentiment analysis techniques"
+  },
+  {
+   "id": "nws18_sse",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 26,
+   "alphaCount": 28,
+   "description": "Continuous sentiment score between -1.00 and +1.00 for the entity-event"
+  },
+  {
+   "id": "record_timestamp_utc_date",
+   "type": "SYMBOL",
+   "coverage": 0.7149,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The UTC date when the record was created or updated."
+  },
+  {
+   "id": "record_timestamp_utc_time",
+   "type": "SYMBOL",
+   "coverage": 0.7149,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The UTC time when the record was created or updated."
+  },
+  {
+   "id": "reporting_period_end_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 23,
+   "alphaCount": 26,
+   "description": "The UTC date marking the end of the reporting period for the event."
+  },
+  {
+   "id": "reporting_period_end_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "The UTC timestamp marking the end of the reporting period for the event."
+  },
+  {
+   "id": "reporting_period_start_date_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "The UTC date marking the beginning of the reporting period for the event."
+  },
+  {
+   "id": "reporting_period_start_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "The UTC timestamp marking the beginning of the reporting period for the event."
+  },
+  {
+   "id": "sentiment_commentary_classifier",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A ternary classifier score (-1, 0, 1) indicating sentiment from market commentary and editorials. This is an alias for BMQ."
+  },
+  {
+   "id": "sentiment_composite_score_d1",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "A story-level composite sentiment score (-1.00 to +1.00) based on multiple analytics, from the D1 (one-day delayed) feed. This is an alias for CSS."
+  },
+  {
+   "id": "sentiment_corporate_action_bca",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A ternary classifier score (-1, 0, 1) indicating sentiment for news about corporate actions. This is an alias for BCA."
+  },
+  {
+   "id": "sentiment_earnings_classifier_d1",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A ternary classifier score (-1, 0, 1) indicating sentiment for news about earnings evaluations, from the D1 (one-day delayed) feed. This is an alias for BEE."
+  },
+  {
+   "id": "sentiment_earnings_release_classifier",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A ternary classifier score (-1, 0, 1) indicating sentiment for news about earnings releases. This is an alias for BER."
+  },
+  {
+   "id": "sentiment_m_and_a_classifier",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A ternary classifier score (-1, 0, 1) indicating sentiment for news about mergers and acquisitions. This is an alias for BAM."
+  },
+  {
+   "id": "sentiment_news_impact_projection_d1",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A score (-1.00 to +1.00) predicting the news item's impact on market volatility over the next two hours, from the D1 (one-day delayed) feed. This is an alias fo…"
+  },
+  {
+   "id": "sentiment_peq_score_d1",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "A ternary classifier score (-1, 0, 1) for sentiment in articles about global equities, from the D1 (one-day delayed) feed. This is an alias for PEQ."
+  },
+  {
+   "id": "sentiment_relevance_score",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "An integer score (0-100) indicating how central an entity is to a news story. This is an alias for RELEVANCE."
+  },
+  {
+   "id": "story_entity_record_count_d1",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The total count of entity-specific records published for a single news story, from the D1 (one-day delayed) feed. This is an alias for RP_STORY_EVENT_COUNT."
+  },
+  {
+   "id": "story_event_record_count",
+   "type": "VECTOR",
+   "coverage": 0.7149,
+   "userCount": 51,
+   "alphaCount": 62,
+   "description": "The total number of event records published for a news story."
+  }
+ ]
+}

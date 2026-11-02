@@ -73,10 +73,27 @@ nanHandling = ON   maxTrade = OFF   pasteurization = ON   unitHandling = VERIFY
 
 ---
 
-## §3 收批账本（待填）
+## §3 收批账本（2026-11-02 收齐，0/12 过闸）
+
+批 1 = `2kTp0mezr59B9wVk7KRcrTB`（U1–U5）；批 2 = `H8nnm9fl4ssb1Lq7jJmAHT`（U6–U12，U8 语法修正后重发）。
+failed_ra 缩写：SHARPE=`LOW_SHARPE` / FITNESS=`LOW_FITNESS` / SUB=`LOW_SUB_UNIVERSE_SHARPE` / 2Y=`LOW_2Y_SHARPE` / LADDER=`IS_LADDER_SHARPE`；×4 = SHARPE+FITNESS+SUB+2Y。
 
 | # | alpha | S | F | 2Y | SUB | TO | failed_ra | 结论 |
 |---|---|---|---|---|---|---|---|---|
+| U1 | rKRJzlwo | 0.47 | 0.16 | 0.82 | 0.38 | 8.9% | SHARPE/FITNESS/2Y | REJECT |
+| U2 | leAQzlYN | 0.52 | 0.19 | 0.70 | 0.23 | 8.6% | SHARPE/FITNESS/SUB/2Y | REJECT |
+| U3 | mLorzbW9 | −0.25 | −0.06 | −0.69 | −0.15 | 8.6% | ×4 | REJECT |
+| U4 | O0AbmZXb | **0.91** | 0.44 | 0.34 | 0.67 | 8.7% | SHARPE/FITNESS/2Y | REJECT（全波 S 最高） |
+| U5 | 6Xdaq9LK | 0.59 | 0.23 | 0.92 | 0.33 | 8.6% | SHARPE/FITNESS/2Y | REJECT |
+| U6 | 1YNaaEaz | 0.26 | 0.06 | 0.18 | 0.36 | 8.4% | SHARPE/FITNESS/LADDER | REJECT |
+| U7 | 2rAaadvb | −0.09 | −0.01 | −0.10 | −0.07 | 7.6% | ×4 | REJECT |
+| U8 | rKRJJXbj | −0.53 | −0.20 | 0.09 | −0.80 | 9.8% | ×4 | REJECT（首派整批被语法闸拒后重发） |
+| U9 | 0mYeevA6 | −0.14 | −0.02 | 0.24 | −0.37 | 7.6% | ×4 | REJECT |
+| U10 | npvZZV3x | −0.30 | −0.08 | −0.36 | −0.36 | 8.3% | ×4 | REJECT（vs T5 +0.29 方向翻转，见 §5.2） |
+| U11 | vR1eegdz | 0.65 | 0.27 | **1.02** | 0.56 | 8.9% | SHARPE/FITNESS/LADDER | REJECT（全波 2Y 最高） |
+| U12 | LLMggJkM | 0.23 | 0.05 | 0.87 | −0.55 | 7.2% | ×4 | REJECT |
+
+TO 全部落在 7.2–9.8%（健康区下沿）；无 `longCount==0` 空字段条目。
 
 ---
 
@@ -85,4 +102,46 @@ nanHandling = ON   maxTrade = OFF   pasteurization = ON   unitHandling = VERIFY
 1. 判「字段效应」：U1/U2/U5 对照 news50 到达率/强度轴；U3/U9 对照情绪 vs 浅新闻偏离。
 2. 出信号条目（S≥1.2）立即查 `SUB/S`（GBR 线 ≈ 0.478×S）与 prod 预筛（本地筛选器，终验须 refresh=True）。
 3. 任何 `longCount==0` 单列（空字段 ≠ 信号弱）。
-4. **全灭的判读**：若强几何壳 × news50/104/20 仍全灭，则「骨架修正」假设被证伪，NEWS 点塔改走 news17/news18 未测字段族或判死该方向。
+4. **全灭的判读**：若强几何壳 × news50/104/20 仍全灭，则「骨架修正」假设被证伪，NEWS 点塔改走 news17/news18 未测字段族或判死该方向。→ **已兑现（0/12），执行转产分支，见 §5.5。**
+
+---
+
+## §5 全波归因（2026-11-02 定稿）
+
+### 5.1 冷字段固有信号弱，强壳救不动
+强几何壳把弱壳的信号上限从 0.40 抬到 0.91（U4 vs T3 同机制），**放大器本身有效**；但对比热字段 nws17 强壳实测 1.85–2.18（`template_library_gbr_news_strong_geometry.md`），news50/news104/news20 冷字段的天花板 ~0.9，缺口在**字段**不在壳。
+
+### 5.2 强壳不是万能放大器：慢矩信号被双层平滑破坏
+U10 vs T5 同字段对照（`mws50_ssc` 协方差结构）：弱壳 +0.29 → 强壳 **−0.30 方向翻转**。
+`ts_mean(SIG,60) + ts_rank(…,252)` 两层平滑会破坏协方差/自相关类**慢矩**信号的时序结构；对水平/一阶差分类信号则是纯放大（U4/U11/U5 均正向受益）。
+⇒ **后续设计纪律：慢矩信号（ts_covariance / ts_corr 族）不套两层平滑壳。**
+
+### 5.3 交互项 > 单腿，且 2Y 更好
+U4（VEA×新颖度）0.91 / U11（到达率×相关度）0.65 且 2Y 1.02 全波最高，均优于同集单腿（U1 0.47 / U2 0.52 / U5 0.59）。
+元变量进乘子位的结构继续保留；但冷字段下天花板仍 <1.0，不足以过闸。
+
+### 5.4 news104 三字段全灭，判死该字段族方向
+U7 −0.09 / U8 −0.53 / U9 −0.14（`marketimpactscore` / `automessage` / `headlineonly`）——强壳下无一正向出信号，news104 整族在 GBR 强壳路径判死。
+
+### 5.5 转产决策（已定）
+按 §4.4 预设分支执行：**放弃 news50/news104/news20 冷字段线，转挖 nws17 热字段的 prod 降相关变体**（`news_light3_3`）。
+输入：强库 5 条全闸候选的 prod 现状——`leA6jmoe` 0.7077（唯一可救）、`9qxPX77V` 0.94 / `wpQwjWn6` 1.0 / `6XdPedNJ` 1.0（生产池克隆，无救援价值）、`58E7jkaN` 已提交。
+路径决策树：先看 `leA6jmoe` 的 prod 直方图定「窗口谷底法」生死 → 不行则换算子几何（CLAUDE.md：降 prod 试替换操作符）+ 持仓稀疏化（memory 实证：唯一有效降 prod 路径）。
+
+---
+
+## §6 K 系探针（2026-11-02 20:40 派发，vea 机制平移到强壳·真空白）
+
+**机制依据**：§5 证明 vea 的有效信息在**稀疏更新的水平延续**（弱几何 `backfill+zscore+decay` 实测 S 1.26 = 该机制已验证上限），但 `ts_backfill` 从未上过强壳——U 系 12 条 REJECT 全是冷字段裸 level / 交互项，不含 backfill 几何。本波测此真空白。
+
+**模板（骨架 = 强壳 G(·)，SIG = ts_backfill(vec_avg(mws50_vea), N)）**：
+| 编号 | 变体 | 表达式核心 | sim id |
+|---|---|---|---|
+| K1 | backfill=5（周） | `ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(ts_backfill(vec_avg(mws50_vea),5),60),252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)` | `3CybTHdBN5k0beo1agY9WLgl` |
+| K2 | backfill=22（月） | 同 K1，backfill=22 | `3CWFYj2pX4obbyXCndMi3HM` |
+
+设置档 = 强壳基底（GBR/TOP700/D1/FAST/decay 15/trunc 0.05/nan ON/maxTrade OFF/VERIFY）。方向核对：vea 反向（高量能做空）= 壳内 `-ts_rank`，一致。
+
+**论坛模板先验（search_forum_posts，2026-09 顾问帖 18 赞）**：「绝不要用 ts_backfill 造出长达几十天的僵尸持仓；**状态延续型数据（财报/股本）才用 ts_backfill**，事件/流量型应使用 `to_nan(x, value=0, reverse=true)` 或 group_backfill」。⇒ 收批判据：K2（22 日）若出现持仓冻结/TO 异常低/CONCENTRATED，按「僵尸持仓」归因；K1（5 日）为安全档。若 K1/K2 全灭，下一步试 `to_nan` 对照几何而非继续加长 backfill。
+
+**探针位**：本波 2/2（K1/K2），D/E/L 修复探针豁免的模板数约束以强库 S1-S11/N1-N2/X1（≥10 互异）为底。

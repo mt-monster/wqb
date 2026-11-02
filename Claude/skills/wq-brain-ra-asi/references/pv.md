@@ -18,7 +18,7 @@
 | neutralization | SUBINDUSTRY | 区域 settings.json |
 | decay | 6 | 区域 settings.json |
 | truncation | 0.08 | 区域 settings.json |
-| maxTrade | ON | 区域 settings.json |
+| maxTrade | OFF | 区域 settings.json |
 | pasteurization | ON | 区域 settings.json |
 | unitHandling | VERIFY | 区域 settings.json |
 | nanHandling | ON | 区域 settings.json |

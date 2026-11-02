@@ -799,3 +799,55 @@ self-corr 实测（对 OS 池）：
 | `mLjnnzKE` | IND | 2.90 | 0.5322 | — | ❌ 但挂 **robust 闸**（见 §13.4） |
 
 **⇒ 没有 self-corr，这些里有 5 条（S 4.73 / 4.64 / 2.90 / 2.00 / 1.92）会被误当成高质量候选提交并全部撞墙。**
+
+---
+
+## §14 ★★★ C 轴窗口谷判决 + 第 10 席读数（2026-11-02 21:14 实测）
+
+### §14.1 C 轴（`nws17_multiple_comp_event_relevance` 事件强度求和族）prod 三读数
+
+骨架：`ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(vec_sum(nws17_multiple_comp_event_relevance), 60), W), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)`
+
+| 变体 | W | S | F | 2Y | self | **prod（实测）** | 判定 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 基线 `leA6jmoe` | 252 | 2.18 | 1.45 | 2.86 | 0.634* | **0.7077** | 压线不过 |
+| **L1 `mLob5Yj5`** | **504** | **2.21** | **1.49** | **2.75** | **0.634** | **0.676 ✓** | **全闸过，可提交** |
+| L2 `ZYQnEpwZ` | 126 | 1.87 | 1.14 | — | 0.606 | **0.6535 ✓** | 全闸过，同腿备援（一腿只提 1 颗，取 L1） |
+| 壳变体 `88R7j2Nz`（-ts_zscore） | 252 | — | — | — | — | 0.7212 | 否 |
+
+（*基线 self 读数与 L1 相近；以逐条实读为准。）
+
+**谷向判决 = 拉长（252→504）**：prod 0.7077→0.676 过线，且 S/F/2Y 全部不降反稳（S 2.18→2.21）。
+⇒ **GBR NEWS 塔 3/3 点亮**：`58E7jkaN`（已提交，prod 0.5611）+ `MPYq0819`（篮内）+ **`mLob5Yj5`**（L1，全闸过）。
+
+### §14.2 第 10 席 E3（GLB `d5W0RQZv`）prod = 0.7023
+
+`trade_when(rank(ts_mean(ern3_pre_reptime, 22)) > 0.7, signed_power(subtract(group_rank(single_bucket_5day_return_estimate_ohlcv_img, country), 0.5), 0.5), 0)`
+（GLB/MINVOL1M/D1/FAST/decay 10/trunc 0.08/nan OFF/maxTrade OFF）
+
+- prod **0.7023** ≥ 0.70 ⇒ 红线不过；但 **n[0.7,0.8)=1 浅钉（max<0.75）⇒ 按 2026-11-02 纪律不判死**，进归因破墙队列。
+- 破墙动作已备：**窗口谷探针 gate 窗 22→5 / 22→60（一长一短定谷向）**，已过 validate_expressions 预检；
+  派发连续被 429 CONCURRENT_SIMULATION_LIMIT_EXCEEDED 挡（sim 槽被兄弟会话占满），**待槽释放后派发**。
+
+### §14.3 prod 读数方法备忘（实测耗时）
+
+| alpha | prod | 平台计算耗时 |
+|---|---:|---:|
+| `d5W0RQZv` | 0.7023 | 414.8s |
+| `ZYQnEpwZ` | 0.6535 | 608.0s |
+
+### §14.4 ★ w180 干净档补测（21:25）⇒ 第 10 席就位
+
+| alpha | 区/塔 | S | F | prod | self | checks.fail | 判定 |
+|---|---|---:|---:|---:|---:|---|---|
+| **`bl6qldJ6`** | GLB/D1/OTHER+SENTIMENT | **2.59** | 1.02 | **0.5421** | **0.277** | **[]** | **第 10 席，全闸过** |
+| `omWAZWME` | GLB | 2.13 | 1.07 | 0.7618 | 0.327 | [] | prod 灰区浅钉 n=1 → 破墙队列 |
+| `vR1qGlaz` | GLB | 2.60 | 1.25 | 0.7554 | 0.310 | [] | prod 灰区浅钉 n=2 → 破墙队列 |
+
+`bl6qldJ6` 表达式：`trade_when(rank(ts_mean(snt21_2neg_conf_low_394, 22)) > 0.7, signed_power(subtract(group_rank(predicted_third_quantile_one_day_return_4, exchange), 0.5), 0.5), rank(ts_mean(snt21_2neg_conf_low_394, 22)) < 0.6)`
+（snt21 情绪门控 + predicted_third_quantile 信号腿，与 E3 的 ern3 门控不同机制面）
+
+**⇒ 10 regular 清点（不依赖 op-min 计数口径）**：篮内 8 + `mLob5Yj5` + `bl6qldJ6` = **10 条全闸过候选**。
+| `mLob5Yj5` | 0.676 | 581.8s |
+
+⇒ 账号级 prod 槽单并发 + 竞争者滚动占队时，单条读数 400–600s 是常态；轮询预算按 1500s/条设。

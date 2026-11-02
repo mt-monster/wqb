@@ -1263,3 +1263,96 @@ GEM `eur-w64-news38` **402 Insufficient Balance**；改 agent 概念化（纯新
 | 7 | trailing growth-flow-to-price invert | `4iCjxoe0B4Vqc7F8cuIz6SM` |
 
 
+
+---
+
+## [insider_feats 深度族线 · 2026-11-02 · OTHER 塔] 波次 3083–3085
+
+> 主线：`insider_feats`（category=other）深度族 = `top5_buy_to_sell_volume_ratio_lookback_5_filled` 系列。
+> 详情见 `tracking/EUR/runs/eur_other_tower_insider_feats_20261102.md` §7–§10。
+
+| wave | multisim | 内容 | 最佳 S | verdict |
+|---|---|---|---|---|
+| 3083 | `3zUXxP8Ky4It9AUpGUVwpKT` | I8 广度−深度 / **I13 纯深度** | **0.77**（`omElqVLv`） | FAIL |
+| 3084 | `afujadV54rIb2ONHlq7qzj` | D7 平滑22 / D8 乘积共识 | 0.61 | FAIL |
+| 3085 | `gYG44gKP4uzb5KLdCtIWoc` | TOP2500 宇宙 ×[冠军, top20_vol_10] | 0.45 | FAIL |
+
+**三条硬结论**：
+1. **「广度 > 深度」先验在 insider_feats 上反转**（institutions6 成立、此处不成立）⇒ 字段族先验不可跨数据集搬运。
+2. **几何加工全部负向**：平滑 −0.28 S、乘积 −0.16 S、减法 −0.70 S；**margin 稳定在 55–73bp 不降** ⇒ 是信息新鲜度被稀释，不是信号变差。
+3. **宇宙扩宽是稀释源**：TOPCS1600 → TOP2500 使 S 0.77→0.40、margin 70.7→31.0bp。TOP800 在飞待验（方向：应收窄）。
+
+**闸门明细（`omElqVLv` 实测）**：LOW_SHARPE 0.77/1.58、LOW_2Y_SHARPE 1.35/1.58、LOW_FITNESS 0.35/1.0；
+**TO 双边 / CW / SUB_UNIVERSE / ROBUST / MATCHES_PYRAMID 全 PASS**，`pyramid_short="other"` ⇒ 结构干净、只差幅度。
+
+### 续（waves 3086–3090）
+
+| wave | multisim | 内容 | 最佳 S |
+|---|---|---|---|
+| 3086 | `38febsaVh595cA21aX2MSeS4` | TOP800 宇宙收窄 ×[冠军, txn10] | 0.42 |
+| 3087 | `2T7OwH3yC5b398Yp23LgPN` | search_interest 论文负号 vs 正号 | **0.91**（`omElLL32`） |
+| 3088 | `1UFXcUcrb4so8Kmas0NtRex` | 正号：信号平滑 vs tvr 目标化 | 0.85 |
+| 3089 | `4eamvobmO4svavj3zsU2HiD` | 库存外壳 × insider / search_interest | 0.90（`kqN0gNa8`） |
+| 3090 | `2liSp5ds24oCaXsZriL5s99` | FAST + decay15（论坛配置） | 0.90（2Y 塌） |
+
+**收束结论**：单腿 EUR OTHER 上限 S ≈ 0.9（闸 1.58）；两条异质机制线收敛到同一量级 ⇒ 结构性天花板。
+库存三条可提交 alpha（S 1.78–2.23）全部靠**双腿**达成 ⇒ 单腿路线到顶，继续需用户裁定能否用双腿。
+详见 `tracking/EUR/runs/eur_other_tower_search_interest_20261102.md` §10–§13。
+
+---
+
+## [other571 注意力线 + insider 放大阶梯 · 2026-11-02 · OTHER 塔] 波次 3091–3099
+
+### 续（wave 3091 补记 + waves 3092–3096：other571 Wikipedia 页面浏览）
+
+| wave | multisim | 内容 | 最佳 S | 关键判据 |
+|---|---|---|---|---|
+| 3091 | `1eevaMbQb4TXaBD9XNYUY4V` | search_interest 腿部补测 | 0.88 | 双腿无效（六项全降） |
+| 3092 | `2BbwlWdtU4xbbbDUxENSbBp` | other571 W1 水平 / W3 短长比 | 0.42 | TO 46–59%（未平滑致命） |
+| 3093 | `3bhBf88H65gSaddIOwFV0Le` | W4 一阶差分 / W5 移动端占比 | 0.43 | W5 恒等退化 S=0 TO=0 |
+| 3094 | `xGleogi74jS8P7ATskVGGv` | S1 平滑水平 / S2 平滑期限比 | -0.07 | TO 修好但方向转负 |
+| 3095 | `120KJ2fKY4YF98GWBeGMGp1` | S3 移动端 / S4 夜间占比 | 0 | viewstoday* 全族退化 |
+| 3096 | `qh6Ea6UR4tSbQs10EzQORqE` | S5 注意力波动 / S6 期限结构差 | **0.73** | 84.7bp margin，但 rob/S=0.29 |
+
+**other571 收束**：水平族 / 期限比族 / 差分族 / 构成比族 8 条 max |S| 0.43（含 3 条恒等退化）；
+只有二阶矩族（注意力波动，`j2Y0ovmQ` S 0.73 / TO 5.26% / margin 84.7bp / 2Y 1.47）有真信号，
+但 rob 0.21 距闸 0.70 需 S≈2.43 ⇒ **结构性不可提交**。wave 119 历史 9 条（S -0.19~-0.25）同号同量级佐证。
+
+### 续（waves 3097–3099：insider_feats 幅度放大阶梯）
+
+| wave | multisim | 内容 | 最佳 S | 六项指标 |
+|---|---|---|---|---|
+| 3097 | `1G1QfK7aW58E9ihIHb9HESV` | 有界秩尾部放大 exp2 / 无界 zscore 版 | 0.81 | exp2 全项变好；zscore 版 S 0.04 TO 45% 自毁 |
+| 3098 | `3UVx6Afjp5acc8BxzKWKuAp` | 加 market 中性化层 / 只持极端 40% | 0.77 | market 层空操作；极端集中跌到 0.36 |
+| 3099 | `322oiZ9M4GT9sbmOi7Yc7E` | exp3 / exp2+ts_decay_linear10 | **0.83** | F 0.39 / 2Y 1.43 / rob 1.12 / 88bp / fra 3 |
+
+**放大阶梯收束**：exp1 0.77 → exp2 0.81 → exp3 0.83（边际 +0.04 → +0.02，天花板 ≈0.85），
+距闸门 1.58 仍需 1.86 倍 ⇒ **单靠几何放大无法救活**。这是「insider 单腿到顶」的第二份独立定量证据。
+
+### 本轮新增可复用判据（两条）
+
+**① rob/S 比值是「值不值得继续投」的一阶判据**：rob/S ≥ 1.0 ⇒ 结构健康只差幅度，值得投放大杠杆；
+rob/S < 0.5 ⇒ 即使 S 打到 1.58 也过不了 rob 0.70（需 S≈2.43），**1 条 sim 即可否掉整族**。
+
+**② 尾部放大壳的前置条件是输入有界**：signed_power(subtract(group_rank(x, g), 0.5), p) 有效（六项同向好、TO 反降、fra 不变）；
+换成 group_zscore 无界版立刻自毁（S 0.04 / TO 45%）。TO 突涨 5 倍以上是最快的自毁指纹。
+
+详见 `tracking/EUR/runs/eur_other_tower_other571_20261102.md` 与 `..._insider_feats_20261102.md` §12。
+
+### 续（waves 3100–3105：放大壳迁移 + 相邻宇宙 + 参数曲面）
+
+| wave | multisim | 内容 | 最佳 S | 备注 |
+|---|---|---|---|---|
+| 3100 | `1tNi6z2Zg57I9jO14G6snxPF` | insider 放大式 @TOP2500（相邻宇宙） | 0.43 | 从 0.83 塌半，rob 变 null |
+| 3101 | `3POe8ieRl4E7987unXYP5LW` | **search_interest 放大壳 exp3 / 注意力波动平移** | **1.32** | 首个 PARTIAL；S+47% / margin 133bp / rob 0.79 过 |
+| 3102 | `2EoRV9gft4qucd9pvacGSUu` | SI 放大 exp2 / insider 跨字段放大 | 1.31 | exp2≈exp3 已饱和；跨字段 0.70 但 rob 1.16 / fra 3 |
+| 3103 | `1KauYptG4oW9dS6lUmQz5s` | 平滑窗 22 / 66 | 1.25 | 60 与 66 差 6 天，S 差 5% ⇒ 参数敏感 |
+| 3104 | `tJHLHcVu4E4bxtY9bQmX8N` | 终层换 market / 库存几何+有界主腿 | 1.26 | 两条都未救回 2Y（0.68–0.71） |
+| 3105 | `20paeLgmK4pB8FdO6Lmm5xf` | 平滑窗 126 / 252 | 1.10 | 252 的 2Y 1.02 最高但 rob 0.45 塌 |
+
+**本轮收束**：放大壳把 search_interest 从 S 0.90 抬到 **1.32**（F 0.78 / margin 132.9bp / inv 1.20 / rob 0.79 过 / fra 4），
+为整轮唯一 PARTIAL 级候选。但 (a) 窗口曲线非单调（22/60/66/126/252 → S 1.07/1.32/1.25/1.10/1.08，2Y 0.50/0.76/0.71/0.60/1.02），
+(b) TOP2500 相邻宇宙塌到 0.43 且 rob=null，(c) 2Y 0.76 距闸 2.08 倍 ⇒ **判不可提交，S 1.32 只能当单点峰值报告**。
+
+**新增可复用事实**：放大壳的增益依「输入是否本身已是秩」而异 —— 已是 ts_rank 输出的 search_interest 得 +47%（0.90→1.32），
+原始比值的 insider 只得 +8%（0.77→0.83）。**先看输入形态，再决定投不投放大**。
