@@ -1356,3 +1356,61 @@ rob/S < 0.5 ⇒ 即使 S 打到 1.58 也过不了 rob 0.70（需 S≈2.43），*
 
 **新增可复用事实**：放大壳的增益依「输入是否本身已是秩」而异 —— 已是 ts_rank 输出的 search_interest 得 +47%（0.90→1.32），
 原始比值的 insider 只得 +8%（0.77→0.83）。**先看输入形态，再决定投不投放大**。
+
+### 续（waves 3106–3114：平台设置轴突破 —— FAST 中性化 + 内部分组轴）
+
+| wave | multisim | 内容 | 最佳 S | 备注 |
+|---|---|---|---|---|
+| 3106 | `1EBcyiyy4k79Og2W4qvkz7` | **SI + FAST**（w60 / w66） | **1.90** | S 1.32→1.90（+44%），fra 4→2，rob 0.72 过 |
+| 3107 | `1Y994X9Zy57x8T46EycYEar` | SI + INDUSTRY（w60 / w66） | 1.32 | 与 SUBINDUSTRY 逐项相同 ⇒ 增益非「中性化粒度」 |
+| 3108 | `2r7VDt1Gg4QJ9Ej18ux4p3Mg` | SI + SLOW_AND_FAST（w60 / w66） | 1.71 | rob 0.47 反而变差 |
+| 3109 | `4ApqtY1NL50saIp1b0UH1Fra` | **SI + FAST + 分组轴 industry / market** | **2.09** | 首个 PASS（1/2 过硬闸），fra 1，只差 sub |
+| 3110 | `3rTTV6b474tobXie6iZ0LhN` | SI + FAST + market @TOP400 | -0.07 | rob=null / sub=null ⇒ 大盘股零 alpha |
+| 3111 | `Z5hne8vh57lbsc8ixatD9c` | insider + FAST + market / subindustry | 0.93 | subindustry 最优（2Y 2.13），只差 S+F |
+| 3112 | `48Tmwb1KT4VT8KoaL4vDJWF` | insider + FAST + country / sector | 0.76 | 分组轴最优档依数据集而异 |
+| 3113 | `235ABT2Sv4U09E411WF4TLnv` | insider + FAST + decay0（top5 / top20txn） | **1.02** | `rKRP1jKa` rob 1.22 / sub 0.69 / fra 3 |
+| 3114 | `1tANVf2Wd4DRa4bRJ5RHDiP` | **SI + FAST + market @TOP2500（验 sub 闸）** | 2.13 | sub 0.40 反更差 + 新增 2Y 失败 ⇒ 假设否 |
+
+**设置轴收束（三条硬判据）**：
+
+**① 平台中性化轴是整轮最大的单一杠杆**：SUBINDUSTRY → FAST 使 search_interest S 1.32→1.90（+44%）、insider 0.83→0.93。
+INDUSTRY 与 SUBINDUSTRY 完全等价（1.32/1.32）证明增益不是「中性化粒度」；SLOW_AND_FAST 反而更差（1.71 / rob 0.47）。
+
+**② 内部分组轴的最优档依数据集而异、不可跨数据集搬**：search_interest → market（2.09 vs subindustry 1.32）；
+insider_feats → subindustry（0.93，而 market/sector/country 全在 0.75–0.76）。
+
+**③ `LOW_SUB_UNIVERSE_SHARPE` 对该信号族是恒定不可达闸**：limit = 0.75·√(sub/univ)·S，
+由三个宇宙反推 sub/univ = 50.1% / 48.3% / 47.9% ⇒ **sub 宇宙恒为 alpha 宇宙约一半、不随 universe 档切换**，
+「换大宇宙让 sub 覆盖更多股票」在数学上无效。`bl6qw2Qr` 实测 sub/S = 0.215，要求 ≥ 0.53，差 2.5 倍；
+TOP400 实测 S −0.07 证明信号在大盘股不存在，筛股也修不了；提高 S 因 limit 同步上升同样无效。
+
+**⇒ search_interest 作为信号腿判死（数据集 `search_interest` + sign 正 + OTHER 塔），只能作门控腿。**
+**insider_feats 无 sub 结构问题**（`rKRP1jKa` sub/S = 0.676 > 0.53），唯一缺口是纯幅度：
+需 S ≈ 1.77–1.80（因 F ∝ S^1.5，LOW_SHARPE 与 LOW_FITNESS 可合并成单一目标），当前 1.02。
+
+### 续（waves 3115–3116：OTHER 塔数据集全集勘察 + 新矿脉首测）
+
+**★★★★★ 战略级发现**：`get_datasets(EUR)` 的 category 分布显示 **other 有 36 个数据集**，
+而此前 EUR-OTHER 线的全部 sim 只投在 3 个（other571 / search_interest / insider_feats）。
+「OTHER 塔结构性不可达」的判断建立在 3/36 取样上，**不成立**。
+筛出 cov ≥0.74 且 ac ≤15 的未挖数据集恰好 3 个：`news_sentiment_nlp`(23 字段 cov 0.9134 ac 7)、
+`ai_news_scores`(105 字段 cov 0.7924 ac 13)、`news_sentiment_dl`(66 字段 cov 0.7443 ac 2)。
+
+| wave | multisim | 内容 | 最佳 S | 备注 |
+|---|---|---|---|---|
+| 3115 | `1tgmElfBG4UcbyxQIC8kh7A` | nlp 歧义方差（负号）/ 可读性，未平滑 | 0.51 | TO 41–47%，margin 仅 0.54–0.66bp |
+| 3116 | `12THL8bMq4yCcqCpSRInBsK` | 同上两机制，`ts_rank(ts_mean(·,22),252)` | 0.11 | 平滑把 S 洗掉并**翻号** |
+
+**三条新增可复用判据**：
+
+**① 新闻标题级细粒度特征是「事件型」，平滑即毁**（比「计数流量变化族禁用平滑」更强）：
+可读性 TO 46.6%→15.0% 的同时 S **+0.51→−0.39 翻号**。水平位也不可平滑。
+
+**② 新闻类 VECTOR 在 EUR 的致命项是 margin 而非 Sharpe**：实测 0.54–0.66bp，EUR 线约 8bp，**差 15 倍**；
+平滑可抬到 0.39bp 但 S 塌到 0.11 ⇒ 两条路都到不了。与 search_interest（sub 比值闸）、
+insider（纯幅度不足但 margin 92bp）是**三种完全不同的死法**。
+
+**③ `sub limit ≈ 0.53·S` 已 5 次独立复现**（TOPCS1600 / TOP2500 / nlp 的 S 0.51 得 limit 0.27），可作定式。
+
+**歧义溢价方向获实证**：句级情绪方差越大 → 后续收益越高（负号版 S −0.51 ⇒ 正号 0.51），
+与论坛「机构情绪分歧因子」及 Merton 模糊厌恶同向。

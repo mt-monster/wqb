@@ -67,7 +67,7 @@ last_verified: 2026-10-18
 | testPeriod | P0Y0M0D | settings.json |
 | unitHandling | VERIFY | settings.json |
 | nanHandling | OFF | settings.json |
-| maxTrade | OFF | settings.json |
+| maxTrade | OFF | settings.json（强制 OFF） |
 | language | FASTEXPR | settings.json |
 | visualization | false | settings.json |
 

@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-10-18
+last_verified: 2026-11-02
 ---
 
 # MEA 区域挖掘流程（RA 区域分支）
@@ -63,7 +63,7 @@ last_verified: 2026-10-18
 | neutralization | SECTOR | settings.json |
 | decay | 4 | settings.json |
 | truncation | 0.08 | settings.json |
-| maxTrade | OFF | settings.json |
+| maxTrade | OFF | settings.json（强制 OFF） |
 | pasteurization | ON | settings.json |
 | unitHandling | VERIFY | settings.json |
 | nanHandling | ON | settings.json |

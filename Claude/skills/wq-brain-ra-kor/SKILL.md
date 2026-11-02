@@ -508,7 +508,7 @@ $WQ_PY -m wqb.profiles sync-cells --region KOR --apply  # 刷新判死 / 胜绩
 | pasteurization | ON | settings.json |
 | unitHandling | VERIFY | settings.json |
 | nanHandling | OFF | settings.json |
-| maxTrade | OFF | settings.json |
+| maxTrade | OFF | settings.json（强制 OFF） |
 | language | FASTEXPR | settings.json |
 | visualization | false | settings.json |
 | startDate | 2013-01-01 | settings.json |

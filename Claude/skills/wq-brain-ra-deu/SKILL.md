@@ -66,7 +66,7 @@ last_verified: 2026-10-29
 | pasteurization | ON | settings.json |
 | unitHandling | VERIFY | settings.json |
 | nanHandling | OFF | settings.json |
-| maxTrade | OFF | settings.json |
+| maxTrade | OFF | settings.json（强制 OFF） |
 | language | FASTEXPR | settings.json |
 | visualization | false | settings.json |
 | startDate | 2013-01-01 | settings.json |

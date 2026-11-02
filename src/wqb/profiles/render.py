@@ -45,6 +45,10 @@ def _evidence_text(raw: Any, limit: int = 120) -> Tuple[str, str]:
         return _MIX_WARN + text, _COUNTER
     return text, ""
 
+#: 渲染时强制覆盖的回测设置（面板展示值以此为准，settings.json 只作来源标记）
+#: maxTrade 全域固定 OFF——平台侧不允许任何区域开启 maxTrade（2026-11-02）
+_FORCE_SETTINGS = {"maxTrade": "OFF"}
+
 #: 区域 skill 面板里展示的阈值键（S4 / S5 判定相关）
 _PANEL_THRESHOLDS = ("review.sharpe_min", "review.fitness_min", "review.turnover_min", "review.turnover_max",
                      "review.two_year_sharpe_min", "review.rn_sharpe_min", "near.sharpe_min",
@@ -495,7 +499,10 @@ def _region_panel(region: str) -> str:
         L.append("|---|---|---|")
         for k, v in settings.items():
             if not str(k).startswith("_"):
-                L.append(f"| {k} | {_v(v)} | settings.json |")
+                if k in _FORCE_SETTINGS:
+                    L.append(f"| {k} | {_v(_FORCE_SETTINGS[k])} | settings.json（强制 {_v(_FORCE_SETTINGS[k])}） |")
+                else:
+                    L.append(f"| {k} | {_v(v)} | settings.json |")
         L.append("")
     mb = _mode_b(r)
     clamp = f"；被钳掉的原值 {_v(mb['clamped_from'])}" if mb.get("clamped_from") else ""
@@ -805,7 +812,14 @@ def check_structure(regions: Optional[List[str]] = None) -> List[str]:
         settings = _read_json(config_dir_of(r) / "settings.json")
         panel = get_block(text, "region-panel") or ""
         for k, v in settings.items():
-            if not str(k).startswith("_") and f"| {k} | {_v(v)} | settings.json |" not in panel:
+            if str(k).startswith("_"):
+                continue
+            expected = _FORCE_SETTINGS.get(k, v)
+            marker = f"| {k} | {_v(expected)} | settings.json"
+            if k in _FORCE_SETTINGS:
+                marker += f"（强制 {_v(expected)}）"
+            marker += " |"
+            if marker not in panel:
                 problems.append(f"{p}: 面板里的 {k} 与 settings.json（{_v(v)}）不一致——跑 render --region {r} --apply")
         cats = set(load_cells(r).get("cells") or {})
         refs = d / "references"

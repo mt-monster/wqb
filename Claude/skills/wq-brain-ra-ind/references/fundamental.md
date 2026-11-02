@@ -57,7 +57,7 @@
 - **跨区结论**（USA/KOR；negative）：慢变的经典基本面单因子（value / quality / book 及其线性变体）判死或 prod 饱和（证据：USA seed basics 全族死、book/value 145 颗同族 ACTIVE；KOR 慢变基本面族 fnd86/89/93/f21 四连死） <!-- lint:const-ok 证据原文 -->
 - **禁止**（类别卡）：禁止使用裸 rank(fundamental_score)（必须 group_neutralize 或 group_zscore）
 - **禁止**（类别卡）：禁止使用加权混合（0.4*rank(A) + 0.6*rank(B)）
-- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（regression_neut / vector_neut）入场
+- **禁止**（全局锁定）：禁止两条独立信号腿相加：加权（0.4×A + 0.6×B）、等权 add(rank(A), rank(B))、中缀 + 都算；第二个数据集只以条件（trade_when / if_else）、分组（group_rank / bucket）或残差（ts_regression / group_neutralize / vector_neut）入场（★ 2026-10-20 更正：'vector_neut' **平台可用**——本地算子清单缺它是假阳性，EUR 平台已用它交付 JjQmx9nm；'regression_neut' 仍非平台算子名）
 - **禁止**（全局锁定）：禁止 ts_event_* 系列（平台没有）与幽灵算子；字段名逐一经 get_datafields 验证
 
 ### S4 改进（按顺序试：组合 → 类别卡 → 全局）
@@ -89,12 +89,6 @@
 | IND-FND94-THIRD-LEG-DEAD | fundamental94 内部第三腿 | IND 区域 fnd94 数据集内部字段组合已穷尽，勿再尝试三腿组合 | fnd94 | inferred | <!-- lint:const-ok 证据原文 -->
 | IND-FUNDAMENTAL1-GOVERNANCE-SPARSE | fundamental1 governance | coverage 0.56 的治理/董事会字段在 IND TOP500 有效覆盖不足：先验验证字段实际持仓数（longCount 明显 <50 即无挖掘价值），勿再试 fundamental1 | fundamental1 | inferred | <!-- lint:const-ok 证据原文 -->
 | IND-OPMARGIN-PROD-SATURATED | Operating-Margin (fnd94_q_qpdaio / fnd94_q_saleq) | Do not submit Operating-Margin variants in IND. PROD pool saturated. | fnd94 | inferred | <!-- lint:const-ok 证据原文 -->
-| IND-FND93-TAX-DEAD | fundamental93 递延税比率 | IND 区域不再挖 fundamental93（Earnings Tax Data，32 字段 / alphaCount 14–173 白空间）：10 探针最高 \|S\|=0.63（F 0.33）、2Y 全部 ≤0.53。递延税比率族在 IND 无信号。 | fundamental93 | payload | <!-- lint:const-ok 证据原文 -->
-| IND-FND89-ACCRUAL-DEAD | fundamental89 accrual / Jones model | IND 区域不再挖 fundamental89（195 字段）：10 探针最高 \|S\|=0.72（ts_delta）、水平型全部负值（−0.59~−0.06）。与已判死的 fundamental44/90「会计质量」同族，第三证。⚠ 另：`fnd89_other_d1_asset_change` / `major_d1_asset_change` / `asset_d1_asset_change` 三字段回测结果**逐位相同**，在 IND 是同一值的别名，勿当三个独立字段用。 | fundamental89 | payload | <!-- lint:const-ok 证据原文 -->
-| IND-FND86-ROBUST-CEILING | fundamental86 综合评分（fnd86_earnings_score / average_score） | **fundamental86 是 IND fundamental 唯一活矿**（最强 S 2.70/F 2.62），但 `LOW_ROBUST_UNIVERSE_SHARPE`（limit 1.0）**天花板 0.80，已证明不可破**——单一字段/结构上不存在同时满足 S≥1.58 与 robust≥1.0 的点。后续 IND 战役若要再碰 fnd86，必须先有新的破 robust 维度（换 universe 不可，IND 只有 TOP500）。 | fundamental86 | payload | <!-- lint:const-ok 证据原文 -->
-| IND-FND22-ESG-MICRO-DEAD | fundamental22 ESG KPI（2 个 VECTOR 字段，cov 0.395） | IND 区域不再挖 fundamental22：水平（vec_avg）与变化量（ts_delta 66）4 探针 |S|≤0.09、2Y ≤0.28。ESG 近静态第四证。 | fundamental22 | payload | <!-- lint:const-ok 证据原文 -->
-| IND-FND25-METADATA-DEAD | fundamental25 operating metric（6 字段，5 个元数据码） | IND 区域不再挖 fundamental25：唯一真信号字段 fnd25_metricvalue cov 0.2984（<0.35 跳过线），探针 S 0.09。其余字段是 fiscalyear/periodcode 类毒药码。 | fundamental25 | payload | <!-- lint:const-ok 证据原文 -->
-| IND-FND4-IDMAP-DEAD | fundamental4 内部 ID 映射 | IND fundamental4 唯一字段 fnd4_chinascope_secmap 是内部证券 ID（码类毒药字段，无语义）⇒ 按字段语义直接判死，勿烧波。 | fundamental4 | inferred | <!-- lint:const-ok 证据原文 -->
 
 ### 胜绩
 
