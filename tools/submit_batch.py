@@ -240,6 +240,16 @@ async def run(batches, sleep, dry_run):
                            "body": resp.text[:300]})
         else:
             submitted.append({"tag": tag, "n": len(payload), "location": loc})
+            # 登记派发时刻（2026-11-04 #112）：与 MCP 侧共用 wave_timing，
+            # 独立 CLI 进程也能被 harvest_multisim_alphas 读到（JSON 文件跨进程）。
+            try:
+                if loc and payload:
+                    import wave_timing  # MCP_DIR 已在 sys.path（见上）
+                    wave_timing.mark(
+                        loc, n=len(payload),
+                        region=str((payload[0].get("settings") or {}).get("region", "")))
+            except Exception:
+                pass  # 旁路能力：登记失败不影响派发
         time.sleep(sleep)
     if dry_run:
         print("DRY-RUN DONE")

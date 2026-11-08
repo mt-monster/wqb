@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.3"
-last_verified: 2026-10-29
+last_verified: 2026-11-08
 ---
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
 

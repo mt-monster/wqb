@@ -29,6 +29,7 @@ import _pyenv  # noqa: E402  跨平台解释器 / MCP 目录解析
 PPA_DOC_RULES = {"sharpe_min": 1.0, "operators_max": 8, "fields_max": 3, "ppac_max": 0.5}
 
 _CALL = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)\s*\(")
+_LOCAL_ASSIGN = re.compile(r"(?:^|;)\s*([A-Za-z_][A-Za-z0-9_]*)\s*=(?!=)")
 
 
 def count_operators(expression):
@@ -37,11 +38,33 @@ def count_operators(expression):
     return len(names), len(set(names))
 
 
+def _field_statements(expression):
+    """把多语句 / 具名参数 / 字符串字面量抹平，返回可单独解析的语句列表。
+
+    平台的 PPA 表达式允许 ``a = ...; b = ...; f(a, b)`` 这种局部变量写法，也允许
+    ``quantile(x, driver="uniform")``、``ts_target_tvr_decay(x, target_tvr=0.03)`` 这类具名参数。
+    原实现把这三种 token 直接喂给 grammar.extract_identifiers，遇到 ``;`` / ``=`` / ``"`` 会抛
+    ParseError；即使不抛，局部变量名与参数名也会被误算成字段，把 2 字段的件数成 6 个。
+    """
+    s = re.sub(r'"[^"]*"', " ", expression or "")          # 去掉字符串字面量（如 driver="uniform"）
+    s = re.sub(r"\b[a-z][a-z0-9_]*\s*=(?!=)", " ", s)        # 去掉赋值目标与小写具名参数
+    return [part.strip() for part in s.split(";") if part.strip()]
+
+
+def _local_names(expression):
+    """表达式里 ``x = ...`` 定义的局部变量名——它们不是数据字段，计数时必须剔除。"""
+    return set(_LOCAL_ASSIGN.findall(expression or ""))
+
+
 def count_fields(expression):
-    """引用的字段标识符个数（去重）。走 wqb.expression 的标识符抽取，排除算子名。"""
+    """引用的**数据字段**个数（去重）。走 wqb.expression 的标识符抽取，排除算子名与局部变量名。"""
     from wqb.expression.grammar import extract_identifiers
     ops = set(_CALL.findall(expression or ""))
-    return len({t for t in extract_identifiers(expression or "") if t not in ops and not t.replace(".", "").isdigit()})
+    locals_ = _local_names(expression)
+    found = set()
+    for stmt in _field_statements(expression):
+        found |= {t for t in extract_identifiers(stmt) if t not in ops and not t.replace(".", "").isdigit()}
+    return len(found - locals_)
 
 
 def build_sheet(detail, ppac=None):

@@ -167,10 +167,27 @@ def ra_fail_of(ra_failed_checks) -> Optional[str]:
     return None
 
 
-#: 2026-09-20 坑 2：口径**对齐 toolkit gate.py 闸5**（用户 2026-09-13「路线 A」定案）——
-#: 判「加权混腿」：任一 add( 的顶层实参中 ≥2 个是「系数腿」（`0.4*x` 星号中缀 / `multiply(0.4, x)` /
-#: `multiply(x, 0.4)` 函数式，含嵌套与镜像腿）。等权 add(rank(a),rank(b))、单腿缩放、
-#: subtract(rank(A),rank(B))（闸5 列为合规替代）**不拦**，避免队列比流水线更严造成两套口径。
+# ---------------- 混腿判定（2026-11-08 依官方口径重写） ----------------
+#
+# 沿革：2026-09-13「路线 A」定案时，本模块只拦「≥2 条系数腿」的**加权**混腿，等权
+# `add(rank(a),rank(b))` 明文放行（旧注释理由：避免队列比流水线更严造成两套口径）。
+# 但 toolkit gate.py 的闸5 在 2026-09-28 补了 `_detect_equal_weight_leg_add` 后把等权两腿
+# 也拦下 ⇒ 两边口径**反而分裂**，而队列（宽的那侧）才是提交路径实际经过的一侧：
+# 2026-11-08 审计实测 6/6 放行、禁令（2026-09-13）后泄漏率 15%（26/173）。
+#
+# 2026-11-08 依据官方文档把口径统一到「经济含义」而非「语法」：
+#   · Consultant Dos and Don'ts（2026-09-18）唯一相关条款：
+#     "DO NOT add an existing Alpha from one data source to enhance the signal from another
+#      data source **without any strong economic sense**"
+#     ⇒ 官方禁的是「无经济含义的拼接」；**有强经济含义的跨源组合是允许的**。
+#   · 官方 9 项提交测试（Fitness/Sharpe/Turnover/Weight/SubUniverse/Self/Prod/IS-Ladder/Bias）
+#     **无一项检查表达式结构** ⇒ add(A,B) 不会被平台机械拒绝。
+#   · 官方真正禁止的是「incorporate noise to reduce production correlation」与
+#     「靠增删/拟合 parameters、factors」。
+#
+# 故判定改两级：
+#   硬拦（结构，三问也救不了）：① 顶层 ≥2 条系数腿 = 权重网格；② 展平 ≥4 条信号腿 = 同源堆叠。
+#   需三问（三问齐 ⇒ 放行）：  ③ 2–3 条信号腿（含等权、含单系数腿）= 真·多源组合。
 _ADD_OPEN_RE = re.compile(r"\badd\s*\(")
 _COEF_PREFIX_RE = re.compile(r"^\s*-?\d*\.?\d+\s*\*")
 _MUL_PREFIX_RE = re.compile(r"^\s*multiply\s*\(\s*-?\d*\.?\d+\s*,")
@@ -227,27 +244,176 @@ _MIX_REGEXES = (
 )
 
 
-def is_add_mix(expr: Optional[str]) -> bool:
-    """加权混腿判定 = 闸5 全口径（结构判定 ∪ 三条正则），见 gate.py::check_one 闸5 段。"""
-    if not expr:
-        return False
+_CONST_RE = re.compile(r"^-?\d*\.?\d+$")
+
+#: 「三问」——把官方那句 "strong economic sense" 变成可填、可审计的三个字段。
+#: 键名即 API 参数名（`mix_narrative` 的 key），值即要回答的问题本身。
+MIX_NARRATIVE_QUESTIONS: Dict[str, str] = {
+    "holders": "两腿的信息持有者分别是谁（一句话说清身份，例：「卖方分析师修正」×「借券方」）",
+    "polarity": "两腿极性是否已对齐（同号=同向看多；反向须说明为何互补而非互相对冲掉）",
+    "prior": "组合方向与权重是否在**回测前**由逻辑/文献钉死（不是从回测网格里试出来的）",
+}
+
+#: 单条回答的最短有效长度。用于挡掉 "ok" / "yes" / "n/a" / "同上" 这类占位符——
+#: 三问的价值在于**内容**，一个字的敷衍答案等于没答。
+MIX_ANSWER_MIN_LEN = 8
+
+
+def _is_constant_arg(arg: str) -> bool:
+    """纯数字实参（`add(multiply(-1,x), 1)` 里的 `1`）不算信号腿。"""
+    return bool(_CONST_RE.match((arg or "").strip()))
+
+
+def _leg_leaves(arg: str) -> int:
+    """把嵌套 add 展平成叶子数：`add(a, add(b, c))` 计 3 条腿，非 add 实参一律算 1 条。"""
+    a = (arg or "").strip()
+    m = _ADD_OPEN_RE.match(a)          # 只认**恰好以 add( 开头**的实参
+    if m:
+        subs = [s for s in _top_level_args(a, m.end()) if s.strip()]
+        if len(subs) >= 2:
+            return sum(_leg_leaves(s) for s in subs if not _is_constant_arg(s))
+    return 1
+
+
+def _scan_add_nodes(expr: str):
+    """遍历表达式里所有 add(...) 结点，产出 (args, 展平腿数, 系数腿数)。"""
     for m in _ADD_OPEN_RE.finditer(expr):
-        args = _top_level_args(expr, m.end())
-        if not args or len(args) < 2:
+        args = [a for a in _top_level_args(expr, m.end()) if a.strip()]
+        if len(args) < 2:
             continue
-        if sum(1 for a in args if _is_coef_leg(a)) >= 2:
-            return True
-    return any(rx.search(expr) for rx in _MIX_REGEXES)
+        legs = sum(_leg_leaves(a) for a in args if not _is_constant_arg(a))
+        coef = sum(1 for a in args if _is_coef_leg(a))
+        yield args, legs, coef
 
 
-def is_pass(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks=None, expr=None):
+def _coerce_narrative(narrative: Any) -> Dict[str, Any]:
+    """接受 dict，也接受 JSON 字符串（`workflow_execute(params=...)` 会原样透传字符串）。"""
+    if isinstance(narrative, str):
+        try:
+            v = json.loads(narrative)
+        except Exception:  # noqa: BLE001
+            return {}
+        return v if isinstance(v, dict) else {}
+    return dict(narrative) if isinstance(narrative, Mapping) else {}
+
+
+def missing_mix_narrative(narrative: Optional[Any]) -> List[str]:
+    """返回三问里**未答/答得敷衍**的键；空列表 = 三问齐备。"""
+    d = _coerce_narrative(narrative)
+    missing: List[str] = []
+    for k in MIX_NARRATIVE_QUESTIONS:
+        v = d.get(k)
+        if not isinstance(v, str) or len(v.strip()) < MIX_ANSWER_MIN_LEN:
+            missing.append(k)
+    return missing
+
+
+def mix_review(expr: Optional[str], narrative: Optional[Any] = None) -> Dict[str, Any]:
+    """混腿分级审查（2026-11-08 官方口径）——**唯一的分类事实源**。
+
+    返回 ``kind`` 五档 + 是否硬拦 + 三问状态：
+
+    ============  ==========================================  ==========================
+    kind          触发条件                                    blocked
+    ============  ==========================================  ==========================
+    ``none``      无 add / 无法解析                            False
+    ``single_leg``单条信号腿（含 `subtract(0.5, rank(x))`）     False
+    ``two_leg``   add 展平 2 条腿（等权 / 单系数腿都算）        False（但需三问）
+    ``three_leg`` add 展平 3 条腿                              False（但需三问）
+    ``weight_grid``顶层 ≥2 条系数腿（0.4x+0.6x = 权重网格）    **True**
+    ``stack``     add 展平 ≥4 条腿（同源堆叠）                 **True**
+    ============  ==========================================  ==========================
+
+    ★ 硬拦只针对**结构上无法与经济含义区分**的形态：权重网格（数字本身是自由度）
+      与 ≥4 腿堆叠。2–3 腿属官方允许的「有经济含义的跨源组合」，靠三问把关。
+    ★ 正则兜底（`_MIX_REGEXES`）只在结构扫描漏检时生效：`alphas.expression` 有 516 条被
+      上游截断到 110 字符，截断式括号必不平衡，结构扫描看不到 add 结点。
+    """
+    out: Dict[str, Any] = {
+        "expr_present": bool(expr),
+        "kind": "none",
+        "legs": 0,
+        "coef_legs": 0,
+        "blocked": False,
+        "block_reason": None,
+        "narrative_required": False,
+        "narrative_missing": [],
+        "narrative_ok": None,
+    }
+    if not expr:
+        return out
+
+    best_legs = best_coef = 0
+    for _args, legs, coef in _scan_add_nodes(expr):
+        if (coef, legs) > (best_coef, best_legs):
+            best_legs, best_coef = legs, coef
+    regex_hit = any(rx.search(expr) for rx in _MIX_REGEXES)
+
+    out["legs"], out["coef_legs"] = best_legs, best_coef
+
+    if best_coef >= 2:
+        out.update(kind="weight_grid", blocked=True, block_reason=(
+            "单次 add 顶层 %d 条系数腿（权重网格）。官方 Do Not：靠增删/拟合 "
+            "parameters、factors 提信号；权重数字本身就是自由度，无法用经济含义固定。"
+            % best_coef))
+    elif regex_hit:
+        out.update(kind="weight_grid", blocked=True, block_reason=(
+            "命中闸5 加权混腿毒模式（结构扫描未命中，表达式可能被上游截断）"))
+    elif best_legs >= 4:
+        out.update(kind="stack", blocked=True, block_reason=(
+            "单次 add 展平后 %d 条信号腿（同源堆叠，上限 3 条）" % best_legs))
+    elif best_legs >= 2:
+        out["kind"] = "three_leg" if best_legs == 3 else "two_leg"
+        out["narrative_required"] = True
+        missing = missing_mix_narrative(narrative)
+        out["narrative_missing"] = missing
+        out["narrative_ok"] = not missing
+    elif best_legs == 1:
+        # 单腿：`add(multiply(-1, x), 1)` 这类「单腿 + 常数」仍属单信号
+        out["kind"] = "single_leg"
+    return out
+
+
+def is_add_mix(expr: Optional[str], narrative: Optional[Any] = None,
+               *, require_narrative: bool = False) -> bool:
+    """混腿是否**不得提交**（2026-11-08 官方口径，取代 2026-09-13 的纯语法判定）。
+
+    返回 True 的两种情形：
+      ① **结构硬拦**：系数腿 ≥2（权重网格）/ 展平 ≥4 腿（同源堆叠）—— 给不给三问都拦；
+      ② ``require_narrative=True`` 且为 2–3 腿**三问未给齐**。
+
+    ★ 默认 ``require_narrative=False`` 是刻意的分层：本函数同时是**存量池入队**的判定
+      （``enqueue_from_alphas`` 一次扫几百颗），默认开启会把「还没写三问」的历史候选
+      一次性判 DEAD —— 而 DEAD 是粘性状态、不可申诉。三问的强制点放在**提交节点**
+      （``submit_alpha`` Step 1.8，传 ``require_narrative=True``）：池子宽、提交严。
+      与 prod 闸的分层一致（池内可有 prod 未测项，提交时必须实测）。
+    """
+    mr = mix_review(expr, narrative)
+    if mr["blocked"]:
+        return True
+    if require_narrative and mr["narrative_required"] and not mr["narrative_ok"]:
+        return True
+    return False
+
+
+def is_pass(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks=None, expr=None,
+            *, mix_narrative=None, require_mix_narrative: bool = False):
     """提交层达标判定。prod/self 为 None 时该维度跳过（视为待测）。
-    ra_failed_checks（平台 checks 的 FAIL 名单）与 expr（add 混腿）为 2026-09-20 新增硬闸。"""
+    ra_failed_checks（平台 checks 的 FAIL 名单）与 expr（混腿审查）为 2026-09-20 新增硬闸。
+
+    2026-11-08：混腿判定改走 `mix_review`（结构硬拦：权重网格 / ≥4 腿堆叠）。
+    ``require_mix_narrative=True`` 时，2–3 腿的**多源组合**必须给齐三问，否则 ``MIX_NARRATIVE``
+    —— 该开关默认关闭，只有提交节点会打开（见 `is_add_mix` docstring 的分层说明）。
+    """
     rf = ra_fail_of(ra_failed_checks)
     if rf:
         return False, "RA:" + rf
-    if is_add_mix(expr):
-        return False, "ADD_MIX"
+    mr = mix_review(expr, mix_narrative)
+    if mr["blocked"]:
+        # 保留 `ADD_MIX` 前缀：`tools/submit_queue.py` 用 `gate.startswith("FAIL:ADD_MIX")` 分类
+        return False, ("ADD_MIX:STACK" if mr["kind"] == "stack" else "ADD_MIX")
+    if require_mix_narrative and mr["narrative_required"] and not mr["narrative_ok"]:
+        return False, "MIX_NARRATIVE:" + ",".join(mr["narrative_missing"])
     if sharpe is None or sharpe < LIM["sharpe"]:
         return False, "LOW_SHARPE"
     if fitness is None or fitness < LIM["fitness"]:
@@ -263,9 +429,12 @@ def is_pass(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks=N
     return True, ""
 
 
-def gate_of(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks=None, expr=None):
+def gate_of(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks=None, expr=None,
+            *, mix_narrative=None, require_mix_narrative: bool = False):
     """返回 (gate, status)。未过闸者一律不进 READY。"""
-    ok, why = is_pass(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks, expr)
+    ok, why = is_pass(sharpe, fitness, two_year, turnover, prod, selfc, ra_failed_checks, expr,
+                      mix_narrative=mix_narrative,
+                      require_mix_narrative=require_mix_narrative)
     if not ok:
         return "FAIL:" + why, STATUS_DEAD
     if prod is None or selfc is None:

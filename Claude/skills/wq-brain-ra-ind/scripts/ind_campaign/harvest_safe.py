@@ -45,7 +45,22 @@ from pathlib import Path
 
 
 def _add_tools_path() -> Path:
-    """把仓库 ``tools/`` 放上 sys.path（向上探测 pyproject.toml + src/wqb，与层数无关）。"""
+    """把仓库 ``tools/`` 放上 sys.path。
+
+    2026-11-04 修复：脚本搬到 skill 安装位后，单靠「从 __file__ 向上探测」永远够不到
+    仓库根（skill 在 ~/.workbuddy/skills/，仓库在 D:/coding/...），本脚本启动即抛
+    RuntimeError；而 transport.harvest() 只收 stdout、吞掉 stderr ⇒ 表现为每批
+    「error（已收 0/None）」+ 900s 超时、整场战役零产出且看门狗看不出停滞。
+    故优先用启动器已设置的 WQB_REPO_ROOT，向上探测只作仓库内运行时的兜底。
+    """
+    env = os.environ.get("WQB_REPO_ROOT")
+    if env:
+        parent = Path(env).resolve()
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            tools = str(parent / "tools")
+            if tools not in sys.path:
+                sys.path.insert(0, tools)
+            return parent
     here = Path(__file__).resolve()
     for parent in here.parents:
         if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
@@ -53,7 +68,8 @@ def _add_tools_path() -> Path:
             if tools not in sys.path:
                 sys.path.insert(0, tools)
             return parent
-    raise RuntimeError("repo root not found (needs pyproject.toml + src/wqb)")
+    raise RuntimeError("repo root not found (needs pyproject.toml + src/wqb); "
+                       "set WQB_REPO_ROOT=<repo> when running from a skill install")
 
 
 REPO_ROOT = _add_tools_path()

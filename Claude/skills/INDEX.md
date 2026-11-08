@@ -246,9 +246,9 @@ L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure
 
 其他 skill 一律**引用本段**，禁止裸写计数数字（`test_docs_consistency.py` 守护；历史变更见 CHANGELOG）：
 
-- `wq-brain-http` 服务器：**69 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
+- `wq-brain-http` 服务器：**71 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
   `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 4 /
-  `tools_labs` 3 / `tools_ops` 5 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 69）。
+  `tools_labs` 3 / `tools_ops` 7 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 71）。
   由 `tests/unit/07_docs_skills/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护。
   **`tools_submit` 0 是有意的**：原生 `submit_alpha` 工具已于 2026-09-02 删除，提交统一走 workflow 节点 `workflow_submit_alpha`；
   所以「MCP 里没有 `submit_alpha` 工具」成立，而 `submit_batch` 是**仿真派发**（`POST /simulations`），不是提交。

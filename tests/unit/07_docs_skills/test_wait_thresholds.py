@@ -42,6 +42,12 @@ def test_prod_corr_poll_constants_match_the_mcp_implementation():
         "窗口不得再写字面量：一律引用 _PROD_CORR_WAIT_S"
     assert src.count("_PROD_CORR_WAIT_S") >= 3, "常量应有 1 个定义 + 2 个使用点"
     assert int(re.search(r"poll_interval\s*=\s*(\d+)", src).group(1)) == W["prod_corr_poll_s"]
+    # 2026-11-04：尾段加密——150s 起回 10s 步长（正常计算 180–200s，30s 台阶会在
+    # 完成与下一查询点之间白等 ~15s）。步长决策收在唯一函数 ``_step``，两个 sleep 位共用。
+    assert int(re.search(r"poll_tail\s*=\s*(\d+)", src).group(1)) == 10
+    assert float(re.search(r"poll_tail_from_s\s*=\s*([\d.]+)", src).group(1)) == 150.0
+    assert len(re.findall(r"poll_fast if attempt", src)) == 0, \
+        "步长决策必须走 _step()，不得在 sleep 位再写内联三元"
 
 
 def test_prod_corr_window_covers_normal_platform_compute_time():

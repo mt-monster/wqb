@@ -881,6 +881,11 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 - **波级默认取证**：`tools/forum_recon_wave.py` = 节点 `forum_recon_wave` = `pipeline.py --forum-recon`（`batch_track` 缺省带上，`forum_recon=False` 关）。问题由本波回测行机械派生（`src/wqb/recon_wave.py`），每波 ≤ 1 次，
   可靠结局占额度、故障不占。**墙词表必须与 `config.RA_CHECK_NAMES` 一一对应**（`tests/unit/08_forum_recon/test_recon_wave.py` 守）——config 新增一项 RA 闸而这里没给它墙，测试即红。
 - **形状配额**：`tools/shape_quota_check.py`（分类规则 `src/wqb/shape_quota.py`，启发式；阈值 ≥ 3 个形状族、`trade_when` ≤ 40% 来自步 4 §4.5.1 准则）只读、不入闸链，闸 6 才是批级多样性的权威。
+- **数据集层穷尽性闸（2026-11-06 事故固化，实现在 `tools/gates/category_coverage_audit.py`）**：任何「某 category 已穷尽 / 该面已封盘」的表述，**分母只能是按 (region, universe, delay) 实取的平台 `/data-sets` 全表**。
+  `tracking/mining/field_coverage_*.json` 只登记**曾经查询过**的数据集——实取平台全表后 EUR/OTHER 由「7 个」变成 **36** 个、USA/OTHER 由「4 个」变成 **56** 个、GLB 25、ASI 27，此前「某面已穷尽」的判断因此系统性失真；
+  `data/wqb.db` 的 `datasets` 表**同样不是分母**：不分 universe/delay（实测 EUR 225 > 平台 173、USA 354 > 286）且混有由表达式串生成的伪数据集行，而 CHN 21 行 / JPN 19 行的 `category` 整列为空。
+  判死 / 封盘前必须跑 `python tools/gates/category_coverage_audit.py --region <R> --universe <U> --delay 1 --category <CAT>`：`EXHAUSTED`(exit 0) 才可宣称穷尽；`NOT_EXHAUSTED` 的正确表述是「已测 M/N」，剩余差集须先入场。
+  三层分工：本闸「该面下的数据集是否都进过场」→ `full_coverage_gate.py`「单个数据集内部字段/模板族/算子是否扫完」→ `wave_gate.py`「单条表达式是否合法」。
 - **live 论坛路径已端到端跑通（2026-10-26）**：此前**从未跑通过**——先是 `load_creds(None)` 永远 TypeError（所有真实调用落进「鉴权失败 → 记成无解」）；
   2026-10-26 又逮到第二处：`forum_research.resolve_id()` 返回 `(post_id, is_comment, url)` 三元组，被整个当 pid 拼进
   `/community/posts/{pid}.json` ⇒ 平台一律非 200，表现为「搜到 N 条 / 读 0 条」的 `read_failed`（实测 48 命中 / 37 读全灭 / 0 正文）。
@@ -1184,3 +1189,25 @@ import 解析与路径层数，且都在运行期才爆。因此采用 S11 冻�
   `$WQ_PY -m wqb.profiles render --apply` 写，手写内容只放 `profiles:manual` 块（重渲原样保留）。改了 `cells.json` /
   profile / 类别卡之后：`render --apply` → `tools/sync_skills.py --apply` → `$WQ_PY -m wqb.profiles check`（测试守面板与 settings.json 一致、无孤儿文件）。
   判死 / 胜绩刷新用 `sync-cells --region <R> --apply`（只写文件、不写库，保留人写字段）。
+
+### 8.15 `datasets` 表的名称形状守卫（2026-11-06 落地）
+
+- **事故**：`CampaignStore._ensure_dataset(region, name)` 按传入的**任意字符串**现建 `datasets` 行，而
+  `_ensure_wave` / `_backtest` 把**塔位组合标签**（`pv/model/other`）、**表达式描述**
+  （`fundamental44|institutions6`）、**region 名**（`KOR`）原样透传 ⇒ 实测 2164 行里 96 行非 id 形
+  （14 个 `_unknown` 哨兵**合法** + **82 行真脏**），脏行挂着 `alphas` 261 / `waves` 79 / `field_profile` 4
+  条外键引用。任何「按 datasets 表统计」的结论（集数排名、category 分布、覆盖度分母）都被污染。
+- **判据单源** = `wqb.config.is_phantom_dataset_name`（形状 `^[a-z][a-z0-9_]*$`，`_unknown` 白名单，
+  空 / None 视为伪名）。**禁**在他处复写这份正则。
+- **写入口**：`_ensure_dataset` 不合形即**回落本区 `_unknown` 哨兵** 并记
+  `logs/datasets_phantom_names.jsonl`。刻意**不抛异常** —— 会打断在飞的 MCP / 回测流水线；语义上
+  「未知」比假名诚实（同 `tools/backfill_expression_dataset.py`）。审计写失败一律吞掉，
+  不得因磁盘满 / 只读挂载阻断写库。
+- **历史清理**：`tools/db/datasets_phantom_repair.py`（缺省 dry-run；`--apply` = 写锁 + 备份 + 归档
+  `datasets_phantom_archive` + 外键重指向 `_unknown` + 删活表行 + 洗白 `expressions.dataset`）。
+  外键列必须用 `PRAGMA foreign_key_list` **动态发现**，别硬编码 `alphas`/`waves`/`field_profile`/`fields`
+  四张表 —— 漏一张就会在 `PRAGMA foreign_keys` 默认 OFF 时静默留下悬挂引用。
+- **本守卫只认形状**：id 形的假名（例：region 名写成小写）要平台目录才识破 ——
+  `tools/gates/category_coverage_audit.py --show-extra-local` 的 `extra_local` 就是「本地有、平台无」。
+- **测试**：`tests/unit/01_store_db/test_dataset_name_guard.py`（形状口径 / 回落哨兵 / 审计行 / 审计故障不阻断）、
+  `tests/unit/01_store_db/test_datasets_phantom_repair.py`（dry-run 不改库 / 归档重指向删除 / 幂等 / 生产库禁 `--no-backup`）。

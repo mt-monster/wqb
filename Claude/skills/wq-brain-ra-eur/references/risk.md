@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：Risk　**类别卡**：risk
 
-**涉及数据集**：risk60、risk62、risk72
+**涉及数据集**：risk60、risk60 × fnd72 质量、risk60 价差/时序分位换面、risk60 证券借贷/做空拥挤度、risk60×risk72 COUNTRY中性化、risk60×risk72 STATISTICAL decay22、risk60×risk72 STATISTICAL中性化、risk60×risk72 TOP1200、risk60×risk72 TOP2500、risk60×risk72 decay10、risk60×risk72 互补合成、risk60×risk72 残差字段换面、risk62、risk62+other455、risk68、risk70 新闻情绪/盈利质量载荷正交化 (RISK单塔 effective1, 载荷类8条全灭)、risk70 特异收益 动量/反转 (RISK单塔 effective1, 信号无效)、risk70 风格暴露 T1杠杆/T7正交化 (证实 risk70 单字段= RISK单塔 effective1)、risk72、risk72 条件化反转 …
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 40 | 0 | 2 | 0 | 3 | 1 |
+| 94 | 5 | 22 | 3 | 8 | 1 |
 
-主要数据集（回测数）：risk72（16）、risk60（16）、risk62（8）
+主要数据集（回测数）：risk62（24）、risk72（16）、risk60（16）、risk62+other455（2）、risk68（2）、risk70 风格暴露 T1杠杆/T7正交化 (证实 risk70 单字段= RISK单塔 effective1)（2）、risk70 特异收益 动量/反转 (RISK单塔 effective1, 信号无效)（2）、risk70 新闻情绪/盈利质量载荷正交化 (RISK单塔 effective1, 载荷类8条全灭)（2）
 
 ### S1 字段理解
 
@@ -80,6 +80,11 @@
 | 条目 | 族 | 下次怎么办 / 说明 | 数据集 | 归属 |
 |---|---|---|---|---|
 | EUR-RISK60-BORROW-FEE-PROD-WALL | risk60 securities lending borrow fee level (rsk60_offer / rs | EUR risk tower: borrow-fee level is closed; only fee-change / crowding mechanisms remain and they have no signal. | risk60 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-RISK60-CROWDING-FIELD-DEAD-20261102 | risk60_crowding_short_activity | risk60 内只允许用 rsk60_offer 做信号腿；rsk60_crowding 不得再作为主信号（含 vec_avg / vec_sum / vec_max / 峰值年龄 / 任何时序矩）。若要复用只能作辅助分组或门控，且必须先有 | risk60 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-RISK60-OWNHIST-PCTILE-DEAD-20261102 | risk60_offer_own_history_percentile | risk60 费率类字段禁止做逐股时序分位 / z-score / group_rank 归一化（与已入库铁律「水平型比值因子禁止逐股时序归一化」同源）。降噪只许用 ts_mean / ts_decay_linear 这类保水平的平滑。 | risk60 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-RISK60-TS-MOMENT-DEAD-20261102 | risk60_offer_time_series_moment | risk60 不再消耗回测槽在时序矩上（ts_rank / ts_zscore / ts_delta / ts_std_dev 作为主信号）。信号腿只走跨截面构造：group_zscore / group_rank / rank 直接作用于 | risk60 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-RISK68-LOWVOL-BAB-DEAD-20261102 | RISK68 低波族 + BAB beta 族 | 不要在 risk68（或 EUR 大盘股池）上再试低波 / 波动率变化 / BAB beta 作为主信号。BAB 的 margin=38.4bp 是全场最高且 TO 仅 1.6%，是典型「便宜的噪声」—— 低换手高单笔收益但方向性收益为零， | risk68 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-RISK68-RESIDUAL-REVERSAL-DEAD-20261102 | RISK68 残差反转族（rev22 / 波动率归一 / t-stat / 分组轴 / 门控） | 不要在 risk68 上再试残差反转的任何精细化加工（波动率归一 / t-stat / 分组轴 / 门控都是在损毁信号，梯度已严格单调）。唯一存活的是 ts_rank 几何：rsk68_residual_return 的 ts_rank(2 | risk68 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-RISK72-RESIDUAL-RETURN-WEAK | risk72 equity_residualized_return 残差族（cfg2/ecs/ats × top1200 | wave230 8 探针全灭：best sharpe 0.91 / fitness 0.48，2Y 1.65 但 LOW_ROBUST_UNIVERSE_SHARPE；未达 Mode B 资格线 1.25（D4）→ 判死。2 条 group | risk72 | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-risk72-wave104-all-fail | risk72 residualized return family | Leave risk72 residualized-return family in EUR. Do not retry ts_delta/slow-momentum/mix wrappers. Next unused whitelist: | risk72 | payload | <!-- lint:const-ok 证据原文 -->
 

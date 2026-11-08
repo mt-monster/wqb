@@ -64,6 +64,7 @@ async def peek(alpha_id, tries, interval):
                         out = os.path.join(ROOT, "results", f"prod_peek_{alpha_id}.json")
                         os.makedirs(os.path.dirname(out), exist_ok=True)
                         json.dump({"alpha_id": alpha_id, "prod": v,
+                                   "histogram": j.get("records"), "min": j.get("min"),
                                    "at": time.strftime("%F %T"), "source": "no-lock peek"},
                                   open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
                         print(f"已写 {out}", flush=True)

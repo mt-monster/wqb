@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：Other　**类别卡**：other
 
-**涉及数据集**：acquisition_model、ai_news_scores、dl_riskfree_returns、event_relation、insider_feats、insider_matrix、insider_trx_matrix、ml_factor_proj、news_sentiment_dl、news_sentiment_nlp、other128、other455、other567、other571、predictive_starmine,pattern_scores
+**涉及数据集**：acquisition_model、ai_news_scores、dl_riskfree_returns、event_relation、insider_feats、insider_matrix、insider_trx_matrix、mixed、mixed_off_baseline_recheck、ml_factor_proj、news_sentiment_dl、news_sentiment_nlp、other128、other455、other567、other571、predictive_starmine,pattern_scores、search_interest、stock_search_trends、techindi_model …
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 119 | 0 | 19 | 1 | 20 | 0 |
+| 345 | 3 | 116 | 44 | 21 | 2 |
 
-主要数据集（回测数）：other128（22）、insider_trx_matrix（15）、news_sentiment_nlp（12）、insider_feats（10）、news_sentiment_dl（9）、other571（9）、ai_news_scores（8）、insider_matrix（8）
+主要数据集（回测数）：workforce_flow_skills（81）、insider_feats（36）、ai_news_scores（34）、search_interest（30）、other128（22）、news_sentiment_nlp（21）、other455（20）、other571（19）
 
 ### S1 字段理解
 
@@ -91,6 +91,7 @@
 | EUR-MLFP-0ALPHA-OPS-WEAK | ml_factor_proj 0-alpha coverage/rating/CCC/capex | Leave this ml_factor_proj ops/coverage family. Do not replay Wave9 EPS/price/FCF ranks. Next: predictive_starmine high-c | ml_factor_proj | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-NSNLP-SPARSE-TWO-WALLS |  | Leave news_sentiment_nlp 全部字段族在 EUR。稀疏事件流的 CW+turnover 双墙是结构性问题，不是信号问题。 | news_sentiment_nlp | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-O567-COVERAGE-STRUCTURAL |  | Leave other567 在 EUR。员工评价数据在 EUR 市场覆盖率不足，无法形成有效横截面分散。 | other567 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-OTHER571-LEVEL-FAMILY-DEAD-20261102 | other571 Wikipedia 页面浏览：水平 / 期限比 / 一阶差分 / 构成比族 | other571 只允许走二阶矩（注意力波动）方向，水平/期限比/构成比方向全部判死。判「恒等退化」的指纹是 TO=0 且 margin=0 且失败闸含 LOW_TURNOVER，与弱信号(TO 正常、S 小)必须分开归因，否则会在死字段上 | other571 | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-STAR-ARM-LEFTOVER-WEAK | starmine ARM preferred/revenue/score-change/region-global as | weaker than surprise x common_gap_up | predictive_starmine,pattern_scores | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-STAR-GAP-FACTOR-NEUT-WEAK | predictive_starmine surprise x common_gap_up factor neutrali | factor neutralization kills F vs SUBINDUSTRY, does not produce RN>1 | predictive_starmine,pattern_scores | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS | other455 customer network monthly returns seed1 k5 |  | other455 | payload | <!-- lint:const-ok 证据原文 -->
@@ -99,6 +100,13 @@
 | EUR-news_sentiment_dl-SENTIMENT-WEAK | news_sentiment_dl sentiment word stats | Leave news_sentiment_dl sentiment word stats and text complexity in EUR. Do not retry ts_mean/ts_std_dev/ts_delta on pos | news_sentiment_dl | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-news_sentiment_nlp-STRUCTURE-DEAD | news_sentiment_structure |  | news_sentiment_nlp | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-other571-WIKI-WEAK | other571 Wikipedia page views | Leave other571 Wikipedia page views in EUR. Do not retry ts_mean/ts_delta/ts_decay_linear/zscore on oth571_views* fields | other571 | payload | <!-- lint:const-ok 证据原文 -->
+
+### 胜绩
+
+| 条目 | 机制 | 设置与骨架 | 数据集 | 归属 |
+|---|---|---|---|---|
+| EUR-INSIDER-FEATS-AMPLIFY-LEVER-WIN-20261102 | 有界秩重心化 + 尾部放大（信号后置 signed_power 几何放大） | 在 insider_feats 冠军 group_rank(top5_buy_to_sell_volume_ratio_lookback_5_filled, subindustry) 上实测波次 3097-3099。signed_power | insider_feats | inferred | <!-- lint:const-ok 证据原文 -->
+| EUR-SEARCH-INTEREST-AMPLIFY-SHELL-WIN-20261102 | 有界秩重心化 + 尾部放大壳（信号后置 signed_power）在注意力水平信号上的幅度增益 | 同一核心信号 ts_rank(ts_mean(vec_avg(relative_interest_score_7),60),252) 只换外壳：库存壳 S0.90/F0.42/2Y1.22/margin63.9bp/fra5；有界秩放大壳（ | search_interest | inferred | <!-- lint:const-ok 证据原文 -->
 <!-- profiles:cell-panel:end -->
 
 ## 补充说明（手写）

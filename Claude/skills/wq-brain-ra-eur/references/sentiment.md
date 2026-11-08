@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：News-Sentiment　**类别卡**：sentiment
 
-**涉及数据集**：sentiment21、sentiment26、sentiment7
+**涉及数据集**：sentiment21、sentiment26、sentiment27、sentiment7
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 11 | 0 | 0 | 0 | 3 | 0 |
+| 49 | 6 | 3 | 3 | 4 | 0 |
 
-主要数据集（回测数）：sentiment21（7）、sentiment7（4）
+主要数据集（回测数）：sentiment27（23）、sentiment21（20）、sentiment7（4）、sentiment26（2）
 
 ### S1 字段理解
 
@@ -79,6 +79,7 @@
 | 条目 | 族 | 下次怎么办 / 说明 | 数据集 | 归属 |
 |---|---|---|---|---|
 | EUR-SENTIMENT21-WEAK | sentiment21 情绪评分族（snt21_* 210 字段） | wave237 11 探针全灭 best ／sharpe／=0.49 < 0.5 → 达 fast_kill 判死线。cov 0.97 高覆盖但 IS 无强度；SENTIMENT 塔差 3 但此路无供给。 | sentiment21 | inferred | <!-- lint:const-ok 证据原文 -->
+| EUR-SENTIMENT27-ATTENTION-LEVEL-DEAD-20261102 | 域名热度/注意力水平（Tranco ranking, snl27_* / snt27_*） | EUR 区域不再把 sentiment27 当主信号轴（ATOM）使用。若未来要用，只允许作为已存活主信号的分组秩辅助腿（历史 19 条回测即此用法），且必须先在未判死的 earnings/insider 等轴上拿到主信号。论坛独立证据：注 | sentiment27 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-SENTIMENT7-WIKI-ATTENTION-DEAD | sentiment7 Wikipedia page-view attention (shock reversal / r | EUR: wiki attention closed | sentiment7 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-SNT26-ATTENTION-FITNESS-CEILING | sentiment26 网站流行度/投资者注意力族 | Leave sentiment26 在 EUR。sentiment 塔（1.4x）在 EUR D1 无可用数据集：sentiment26 信号弱（Fitness 上限 0.455）、sentiment21/27 被 crowd_veto e | sentiment26 | payload | <!-- lint:const-ok 证据原文 -->
 <!-- profiles:cell-panel:end -->

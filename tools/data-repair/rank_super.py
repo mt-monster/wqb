@@ -7,7 +7,7 @@
      论坛两套分配方案均无 prod 筛选；分配的真实硬门槛是 `COMPENSATED_ALPHA`）。
      旧版写死 `prod<0.70`，导致它报的 TOP10 与分配器实际选择不一致（88vKp8Va/wpjrMnz5
      被它当作入榜，实际分配器选的是 A1NQ57NW/rKOPg9gd）。
-  ② **排名口径改为「每 scope topN」**，与 `osmosis_allocate.py --super-top-n N` 一致。
+  ② **排名口径改为「每 scope topN」**，与 `osmosis_plan_v2.py --sa-top-n N` 一致。
      旧的「全局 top10」会让小池 scope 被大池 scope 挤空（IND 的 11 颗 inv 集中在
      2.15~3.98 窄带，全局门槛线 3.12 正切在带子中间 ⇒ IND 只剩 2 颗）。
 """

@@ -135,6 +135,10 @@ class _Parser:
     def parse_factor(self) -> Node:
         t = self.next()
         kind, val = t
+        if kind == "op" and val == "-":
+            # 一元负号：-x ≡ reverse(x)（平台语义等价，operatorCount 均计 1）
+            operand = self.parse_factor()
+            return Node("call", name="reverse", args=[operand], kwargs={})
         if kind == "num":
             return Node("num", text=val)
         if kind == "str":

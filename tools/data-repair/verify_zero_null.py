@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """验证平台 PATCH `osmosisPoints: null` 是否能把点数真正清零（而非回退到 1）。
 
-背景（2026-10-21）：本仓库 `osmosis_allocate.py::zero_others` 发 `{"osmosisPoints": 0}`
+背景（2026-10-21）：本仓库 `osmosis_core.py::zero_others` 发 `{"osmosisPoints": 0}`
 被平台 400 拒（"greater than or equal to 1"），只能回退到最小值 1 ⇒ 每个 scope 的
 实际点数和 = 100,000 + 计划外颗数（实测 IND/KOR 各 +12、GBR +3、GLB +2、DEU +1）。
 

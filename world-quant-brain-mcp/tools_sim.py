@@ -19,6 +19,17 @@ except Exception as _persist_exc:  # pragma: no cover
     def _persist_many(objs, source="mcp"):
         return {"inserted": 0, "exists": 0, "skipped": 0}
 
+# 批次派发时刻登记（2026-11-04 #112）：零依赖，登记失败绝不阻断仿真。
+try:
+    import wave_timing as _wave_timing
+except Exception:
+    class _WaveTimingStub:
+        @staticmethod
+        def mark(*a, **k): pass
+        @staticmethod
+        def elapsed(*a, **k): return None
+    _wave_timing = _WaveTimingStub()
+
 from brain_api import SimulationSettings, SimulationData
 
 # ── region→universe 合法性校验表（与 src/wqb/config.py REGIONS 同步） ──
@@ -705,7 +716,11 @@ async def create_multi_simulation(
         location = response.headers.get('Location', '')
         if not location:
             return {"error": "No location header in multisimulation response"}
-        
+
+        # 登记派发时刻（2026-11-04 #112）：批量路径平台不暴露单颗计算耗时，
+        # 唯一可观测的是「派发→收批」端到端周转。异步/同步两条分支都要登记。
+        _wave_timing.mark(location, n=len(alpha_expressions), region=region)
+
         # Async mode (default): submit and immediately return locations for polling.
         if not wait_for_completion:
             print(f"Multisimulation submitted (async mode): {location}", file=sys.stderr)
@@ -852,6 +867,10 @@ async def harvest_multisim_alphas(multisimulation_location: str) -> Dict[str, An
     try:
         await brain_client.ensure_authenticated()
 
+        # 本批「派发→收批」端到端周转（秒）。无派发记录（老批次 / 未登记入口）
+        # → None，保持 duration_s 为 NULL，绝不臆造数字。同批全部行共享同一个值。
+        _batch_turnaround = _wave_timing.elapsed(multisimulation_location)
+
         async def _get_with_retry(url: str, attempts: int = 3):
             """GET 带瞬断重试（2026-09-21 根治：收批阶段 8 路并行 GET 遇 SSL EOF/连接瞬断时，
             单条失败被吞成 error 行、code 为空 → 入库时静默跳过（ASI aea2 波 8 条只落 1 条）。
@@ -943,6 +962,14 @@ async def harvest_multisim_alphas(multisimulation_location: str) -> Dict[str, An
                         "error": str(r) if r else "no response",
                     }
                 detail = r.json()
+                # 批次端到端周转（2026-11-04 #112）：平台 detail 无任何时间字段，
+                # 附加到 duration_s 由 _build_row → upsert_backtest_rows 落库。
+                # ★ 口径 = 整批周转，非单颗计算耗时；无派发记录时不写（保持 NULL）。
+                # duration_src='batch' 与单条路径的 'single' 物理隔离，面板按 src
+                # 分组统计，不再靠「同批同值」启发式猜来源。
+                if _batch_turnaround is not None and isinstance(detail, dict):
+                    detail["duration_s"] = _batch_turnaround
+                    detail["duration_src"] = "batch"
                 # 落库（2026-10-28）：收批路径同样落库，且用**平台原始 detail** ——
                 # `is.checks` 是完整未分桶数组，`ra_failed_names` 才能走「现算」的
                 # 权威档（slim 的 checks 已分桶，只能退到用 ra 预算名单）。

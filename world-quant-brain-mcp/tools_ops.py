@@ -12,6 +12,15 @@ from typing import Any, Dict, List, Optional
 
 from mcp_core import mcp, brain_client
 
+# 批次派发时刻登记（2026-11-04 #112）：零依赖，失败静默。
+try:
+    import wave_timing as _wave_timing
+except Exception:
+    class _WaveTimingStub:
+        @staticmethod
+        def mark(*a, **k): pass
+    _wave_timing = _WaveTimingStub()
+
 logger = logging.getLogger("tools_ops")
 
 # ── 路径引导 ──
@@ -488,6 +497,10 @@ async def submit_batch(
             "POST", f"{brain_client.base_url}/simulations", json=payload)
         loc = resp.headers.get("Location", "")
 
+        # 登记派发时刻（#112）：收批侧据此算「派发→落库」端到端周转。
+        if resp.status_code == 201 and loc:
+            _wave_timing.mark(loc, n=len(payload), region=region)
+
         return {
             "success": resp.status_code == 201,
             "submitted": len(payload),
@@ -500,3 +513,54 @@ async def submit_batch(
 
     except Exception as e:
         return {"error": f"submit_batch failed: {str(e)}"}
+
+
+# ── 代理模式开关（2026-11-07）──
+
+@mcp.tool()
+async def get_proxy_mode(probe: bool = False) -> Dict[str, Any]:
+    """查看当前代理模式（可选联网体检）。
+
+    两个通道分开管：
+      - 平台 API：永远 NO_PROXY 直连（实测可直连且更稳），本开关不动它；
+      - 论坛/浏览器：mode=on 走 proxy_url；mode=off 直连；mode=auto 不干预。
+
+    Args:
+        probe: True 时额外探测代理端口 / 平台直连 / 论坛直连（联网，约 5-20s）
+    """
+    try:
+        import proxy_mode as _pm
+    except Exception as e:  # noqa: BLE001
+        return {"error": f"proxy_mode 模块不可用: {e}"}
+    return _pm.status(do_probe=probe)
+
+
+@mcp.tool()
+async def set_proxy_mode(mode: str, proxy_url: str = "", verify: bool = True) -> Dict[str, Any]:
+    """一键切换代理模式（本进程内热生效，无需重启服务）。
+
+    Args:
+        mode: on=论坛走代理 / off=论坛直连 / auto=不干预（保持继承环境）
+        proxy_url: mode=on 的代理地址（如 http://127.0.0.1:7897）；空=沿用配置或现有环境变量
+        verify: 切换后立即联网体检（代理端口 / 平台直连 / 论坛直连）
+
+    ★ 平台 API 在任何模式下都保持 NO_PROXY 直连 —— 2026-11-06 实测平台可直连，
+      走代理只会多一层故障点（失效节点会把平台拖成 ConnectionReset）。
+    """
+    try:
+        import proxy_mode as _pm
+    except Exception as e:  # noqa: BLE001
+        return {"error": f"proxy_mode 模块不可用: {e}"}
+    try:
+        cfg = _pm.write_config(mode, proxy_url or None)
+    except ValueError as exc:
+        return {"error": str(exc)}
+    applied = _pm.apply(cfg)
+    out: Dict[str, Any] = {
+        "config": cfg,
+        "applied": applied,
+        "note": "已持久化，本进程内立即生效；服务重启后自动沿用",
+    }
+    if verify:
+        out["verify"] = _pm.status(do_probe=True)
+    return out

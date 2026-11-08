@@ -172,6 +172,7 @@ async def workflow_submit_alpha(
     force: bool = False,
     confirm_submit: bool = False,
     robustness_audited: bool = False,
+    mix_narrative: Optional[Dict[str, str]] = None,
     verify_timeout: int = 240,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
@@ -197,6 +198,14 @@ async def workflow_submit_alpha(
             按用户判定「不合规」彻底移除，任何路径传它都会报错
         verify_timeout: 状态确认超时（秒）
         dry_run: 是否干跑
+        mix_narrative: 混腿「三问」答案（2026-11-08）。仅当表达式是 **2–3 条信号腿的多源组合**
+            时才需要，键固定三个（每条 ≥8 字符）：
+              ``holders``  两腿的信息持有者分别是谁；
+              ``polarity`` 两腿极性是否已对齐；
+              ``prior``    组合方向与权重是否在**回测前**由逻辑/文献钉死。
+            缺答时 `confirm_submit=True` 会被 Step 1.2 拦下（`force=True` 可豁免留痕）。
+            **结构硬拦无需填**：单次 add 顶层 ≥2 条系数腿（权重网格）或展平 ≥4 条腿（同源堆叠）
+            一律阻断，给不给三问都一样、force 也不豁免。
 
     Returns:
         提交结果
@@ -217,6 +226,7 @@ async def workflow_submit_alpha(
             "force": force,
             "confirm_submit": confirm_submit,
             "robustness_audited": robustness_audited,
+            "mix_narrative": mix_narrative,
             "verify_timeout": verify_timeout,
         }, dry_run=dry_run)
 

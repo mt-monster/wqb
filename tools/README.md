@@ -394,17 +394,19 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `data-repair/collect_alpha.py` | 只读采集单 alpha 现状（表达式/设置/is.checks/prod/self） | data-repair |
 | `data-repair/diag_os_coverage.py` | 诊断 OS 实盘数据覆盖 + 校验 `osISSharpeRatio`（只读） | data-repair |
 | `data-repair/os_scan_all.py` | 全量 OS 实盘扫描（断点续跑，产 `results/os_scan.json`） | data-repair |
-| `data-repair/osmosis_allocate.py` | Osmosis 候选分配规划器（`--source platform` 走平台池） | data-repair |
-| `data-repair/osmosis_best_return.py` | Osmosis「收益最高」分配规划（复用 allocate 的 quality/build_plan） | data-repair |
+| `data-repair/osmosis_plan_v2.py` | **Osmosis 分配器 v2**（相关性剪枝 + inv 衰减闸 + 每 scope ≤20 颗 + SA/RA 分池 + 单颗封顶；`--apply` 写平台，`--no-zero` 供分区重排） | data-repair |
+| `data-repair/osmosis_core.py` | Osmosis 共享层（平台 OS 池加载 / inv 覆盖映射 / `quality` / `apply_plan` / `zero_others` / 断点续跑）；**不含分配算法** | data-repair |
 | `data-repair/submit_and_verify.py` | 提交后复核真实 status（不据报错补发） | data-repair |
 | `fields/dataset_profile_doc.py` | 数据集画像文档生成 | fields |
 | `fields/field_semantic_type.py` | 字段语义类型标注 | fields |
 | `fields/skeleton_panel.py` | 骨架面板（按骨架维度看候选分布） | fields |
+| `infra/proxy_mode.py` | **代理一键切换**（2026-11-07）：写 `cache/proxy_mode.json` + 调 MCP 工具 `set_proxy_mode` 热切换 → 论坛通道走代理/直连一次搞定；平台 API 永远 NO_PROXY 直连（实测可直连）。子命令 `status/on/off/auto`，`--url/--no-hot/--restart/--json`。代理关掉后 `HTTP(S)_PROXY` 仍指向死端口是论坛工具打空的根因 | infra |
 | `fields/skeleton_position_stats.py` | 骨架结构 × fitness 效率观察统计（eff=F/S，H1 层位置 / H2 稳定层分组；**观察性**证据，只回答「值不值得再做受控实验」）。只读 `wqb.db_conn` ro 连接，零回测 | fields |
 | `ledger/check_ledger_sync.py` | 台账与平台状态同步核查 | ledger |
 | `probe/corr_timing_report.py` | **prod 相关性耗时归因**（2026-10-28）：只读本地日志 `logs/wq-brain-http.log`，把 `[corr-t]` 打点按事件汇总成「时间花在哪 / 拿到值 vs 空手 / 哪些 alpha 被重复触发」。零平台请求、零配额；用来判「该加锁、该缩窗口、还是该排队」 | probe |
 | `gates/check_arity.py` | 批量校验 alpha 表达式的算子元数 / 参数区间（零仿真成本；`wqb.expression.op_arity` 的批量 CLI）。`--file exprs.txt` 或逐条传参，`--json` 供程序读 | gates |
 | `gates/tower_quota.py` | **两塔组合配额闸**（派发前必查；2026-10-27/28 用户定案）：读 `tracking/<R>/config/tower_pair_quota.json`，超配 exit 1 封盘、塔混（`{PV,MODEL,OTHER}` 互组）exit 2；规则 实现 `src/wqb/profiles/locked.py` | gates |
+| `gates/category_coverage_audit.py` | **数据集层穷尽性闸**（2026-11-06 事故后新增）：判「某 category 已穷尽/封盘」前必跑。分母 = 平台 `/data-sets` 真分页全表（`paginate_all(strict=True)`，拉不全即 exit 2，绝不降级成穷尽）；分子 = DB `expressions` 回测记录 ∪ `--tested` 显式判死清单；差集非空即 exit 1。**禁用** `field_coverage_*.json`（只含查过的集）与 `datasets` 表（不分 universe/delay）当分母。`--all-categories` 出全类别分布，`--save-snapshot`/`--snapshot` 落权威快照供离线复核 | gates |
 | `datasets/query_tower_by_dataset.py` | 按金字塔塔位反查数据集（2026-10-28）：扫 `tracking/mining/result_*.json` 读 `ra.pyramid_short`，回答「哪个数据集实际产出过哪些塔」，供配塔选位；塔位不能由数据集名/category 推断 | datasets |
 | `fields/profile_dataset_fields.py` | 数据集字段画像（S1 离线部分，零配额）：把 `get_datafields` 原始 JSON 压成规模/覆盖/拥挤度/语义结构/候选短名单四块 | fields |
 | `fields/field_name_families.py` | 按字段族聚类（剥统计后缀 / 尾部哈希序号）：补 `profile_dataset_fields` 前缀聚类缺的语义档，零平台配额 | fields |
@@ -437,6 +439,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `closure_ledger.py` | closure_ledger.py — skills 审查（reports/skills_review_20260929.md）条目的「处置登记」（评审 → | `docs/skills_review_closure.json` |
 | `concept_overlap.py` | concept_overlap.py — 概念重叠检查（skills 审查 EX-01 / EX-10）。 | `Claude/skills/CHANGELOG.md` |
 | `db/db_lock_audit.py` | db_lock_audit.py - wqb.db 写锁探针（2026-09-20 L2；2026-10-14 主题下沉进 `db/`）。 | `tests/unit/01_store_db/test_db_write_guards.py` |
+| `db/datasets_phantom_repair.py` | **datasets 表伪数据集行修复器**（2026-11-06）：`_ensure_dataset` 曾按任意字符串现建行 ⇒ 82 行塔位组合标签 / 表达式描述 / region 名混进表里，污染任何按 `datasets` 表的统计。缺省 dry-run 出报告（exit 1 = 有脏行）；`--apply` = 写锁 + SQLite backup API 一致性备份（不用 `copy2`，会撕 WAL）→ 归档到 `datasets_phantom_archive` → 外键（`PRAGMA foreign_key_list` 动态发现）重指向本区 `_unknown` 哨兵 → 删活表行 → 洗白 `expressions.dataset`（`--keep-expression-dataset` 关）。**只认形状**，id 形假名走 `gates/category_coverage_audit.py --show-extra-local` | `tests/unit/01_store_db/test_datasets_phantom_repair.py` |
 | `diag_forum_read.py` | forum_recon 读帖链路最小诊断（只读、零回测配额）。 | `Claude/skills/brain-alpha-research/SKILL.md` |
 | `discover_datasets.py` | discover_datasets.py - 数据集发现（灌 datasets 表）。 | `Claude/skills/INDEX.md` |
 | `dryrun_multidim.py` | dryrun_multidim.py — 多维骨架标签 dry-run 验证脚本 | `docs/reference/multidim_production_deployment.md` |

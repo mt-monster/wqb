@@ -110,6 +110,19 @@ def get_browser_path():
         _BROWSER_PATH_CACHE = None
         return None
 
+def _resolve_proxy_url():
+    """论坛通道的代理地址；WQB_FORUM_BYPASS_PROXY=1 时强制直连（返回 None）。
+
+    2026-11-07：代理关掉后 HTTP(S)_PROXY 仍指向死端口（127.0.0.1:7897），
+    这里是一条 or 链，用「设空字符串」绕不过去 —— 必须先判 bypass 开关。
+    由 world-quant-brain-mcp/proxy_mode.py 的 mode=off 置位。
+    """
+    if (os.getenv("WQB_FORUM_BYPASS_PROXY") or "").strip().lower() in ("1", "true", "yes", "on"):
+        return None
+    return (os.getenv("FORUM_SETTINGS_PROXY") or os.getenv("HTTPS_PROXY")
+            or os.getenv("https_proxy") or os.getenv("HTTP_PROXY")
+            or os.getenv("http_proxy")) or None
+
 # --- Parsing Helper Functions (from playwright_forum_test.py) ---
 
 def _is_navigation_or_metadata(line: str) -> bool:
@@ -292,9 +305,7 @@ class ForumClient:
     @staticmethod
     def _forum_proxies():
         """代理映射：仅用于论坛（Zendesk）流量，BRAIN API 调用保持直连。"""
-        proxy_url = (os.getenv("FORUM_SETTINGS_PROXY") or os.getenv("HTTPS_PROXY")
-                     or os.getenv("https_proxy") or os.getenv("HTTP_PROXY")
-                     or os.getenv("http_proxy"))
+        proxy_url = _resolve_proxy_url()
         if not proxy_url:
             return None
         return {"http": proxy_url, "https": proxy_url}
@@ -439,9 +450,7 @@ class ForumClient:
         # Playwright 启动的 Chromium 不会自动走系统代理，故显式支持：
         #   FORUM_SETTINGS_PROXY=http://127.0.0.1:7897
         # 未设置任何代理变量时行为不变。
-        proxy_url = (os.getenv("FORUM_SETTINGS_PROXY") or os.getenv("HTTPS_PROXY")
-                     or os.getenv("https_proxy") or os.getenv("HTTP_PROXY")
-                     or os.getenv("http_proxy"))
+        proxy_url = _resolve_proxy_url()
         launch_kwargs = {}
         if proxy_url:
             launch_kwargs["proxy"] = {"server": proxy_url}

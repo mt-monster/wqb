@@ -262,3 +262,16 @@ Claude/skills/**/config.json
 **/skills/**/config.json
 **/skills/**/credentials.json
 
+# ===== 一次性探针与运行期缓存（2026-11-08 整理新增）=====
+# 归档包 attic/root_clutter_20261108/ 内含 MANIFEST.txt，可按原路径移回。
+# 规则只挡新增；实测当前已跟踪文件中 0 个匹配 _tmp_/_poll_/_prod_queue_ 前缀。
+**/_tmp_*.py
+**/_poll_*.py
+**/_prod_queue_*.py
+tracking/KOR/_*.py
+tracking/KOR/_all_used_identifiers.json
+reports/tmp_*.json
+# MCP 服务运行期 SQLite 与 DEU 读数快照：可能正被进程持有句柄，保盘不移动、不入库
+world-quant-brain-mcp/cache.db
+tracking/*/_mcp_reads/
+

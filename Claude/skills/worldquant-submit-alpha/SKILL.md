@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-29
+last_verified: 2026-11-08
 name: worldquant-submit-alpha
 description: "把用户已确认的 REGULAR alpha 真实提交到 WorldQuant Brain 平台（POST /alphas/{id}/submit，不可逆）：workflow_submit_alpha 预检 → 用户确认后提交 → 四态响应处置（补发 / ASYNC_STUCK）。用户说“提交 alpha / submit / 上平台 / 落地”时用。不作提交判定（→ submit_verdict）、不处理 SUPER（→ wq-brain-superalpha）；PPA 人工通道与配额、点塔优选见 references/。"
 layer: L5
@@ -53,7 +53,8 @@ mcp__wq-brain-http__workflow_submit_alpha(
 > 等于替**未经审计**的候选背书、直接绕过节点的稳健性闸。当时台账里该篮 4 颗**一颗记录都没有** —— 硬编码会静默放行。
 > 正确做法：**提交前逐颗查台账有记录且 `overall` 非 REJECT 才传 True；无记录 ⇒ 拒绝提交该颗**（fail-closed）。
 > 台账本身要按主键 **merge** 写入、**失败结果不写入**（见 `brain-alpha-robustness`）。**prod 红线（≥0.7）无任何豁免入口**：显式豁免参数已于 2026-10-18 按用户判定「不合规」彻底移除——任何路径（含 `workflow_execute`）传该参数都会直接报错，不存在留痕放行的通道。
-`force=True` 只跳过**本地预检**（内容与允许场景见 `references/ppa-handoff.md` §1），**不放行任何平台检查**；REGULAR 一般不用。
+**混腿三问（2026-11-08 起 MCP 入口可直接传 `mix_narrative`）**：表达式是 **2–3 条信号腿**的多源组合时，节点 **Step 1.2** 要求先答三问——`holders`（两腿的信息持有者分别是谁）/ `polarity`（极性是否对齐）/ `prior`（组合方向与权重是否**回测前**钉死），每条 ≥8 字符（"ok"/"n/a" 视为未答）。缺答 ⇒ `confirm_submit=True` 被拦。**结构硬拦无需填**：单次 `add` 顶层 ≥2 条系数腿（权重网格）或展平 ≥4 条腿（同源堆叠）一律阻断，`force` 也不豁免。口径依据：官方只禁「**without any strong economic sense**」的跨源相加，不是禁 `add` 本身（见 `references/submit-chain.md` 步 4c/4d）。
+`force=True` 只跳过**本地预检**（内容与允许场景见 `references/ppa-handoff.md` §1），外加豁免**三问缺失**这一条自设纪律（留痕告警）；**不放行任何平台检查，也不豁免结构硬拦**。REGULAR 一般不用。
 
 **步骤 3 · 核验**：`mcp__wq-brain-http__get_alpha_details(alpha_id=…)` → `status == ACTIVE`（或 `SUBMITTED` 后转 `ACTIVE`）且 `dateSubmitted` 非空。
 

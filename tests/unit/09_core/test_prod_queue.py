@@ -176,6 +176,92 @@ class TestMark:
         assert pq.get("NEW")["status"] == "done"
 
 
+# ---------------------------------------------------------------- 族代表串行与优先级
+class TestFamilyOrdering:
+    """2026-11-04 族代表串行：同族只放行代表，兄弟被持有；跨族按 priority。"""
+
+    def test_rep_returned_while_siblings_held(self, queue_file):
+        pq.push_many(["A1", "A2", "A3"], family="F1")
+        assert pq.next_pending() == "A1"   # 代表 = 最久先入队者
+        assert pq.next_pending() is None   # A2/A3 被持有，不许取
+        assert pq.family_holds() == {"A1": ["A2", "A3"]}
+
+    def test_rep_done_then_sibling_takes_over(self, queue_file):
+        pq.push_many(["A1", "A2"], family="F1")
+        assert pq.next_pending() == "A1"
+        pq.mark("A1", max_corr=0.42, status="done")
+        # 代表 done 后自愈：A2 接任，无需干预
+        assert pq.next_pending() == "A2"
+        assert pq.family_holds() == {}
+
+    def test_rep_error_also_unblocks(self, queue_file):
+        pq.push_many(["A1", "A2"], family="F1")
+        pq.mark("A1", status="error", error="boom")
+        assert pq.next_pending() == "A2"
+
+    def test_priority_orders_across_families(self, queue_file):
+        pq.push_many(["P1", "P2"], family="LOW")
+        pq.push_many(["ATOM1"], family="HI", priority=1.0)
+        # HI priority 高，虽后入队也先取
+        assert pq.next_pending() == "ATOM1"
+        assert pq.next_pending() == "P1"
+        # P1 在租约内时整族被持有；消费方 mark done 后 P2 才放行（真实消费流）
+        assert pq.next_pending() is None
+        pq.mark("P1", max_corr=0.1, status="done")
+        assert pq.next_pending() == "P2"
+
+    def test_same_priority_still_oldest_first(self, queue_file):
+        pq.push_many(["X1"], family="FA", priority=1.0)
+        pq.push_many(["Y1"], family="FB", priority=1.0)
+        assert pq.next_pending() == "X1"
+        assert pq.next_pending() == "Y1"
+
+    def test_push_preserves_family_and_priority_on_repush(self, queue_file):
+        pq.push("A1", family="F1", priority=2.0)
+        pq.push("A1", note="再登记")       # 不带 family/priority 重登记不清空
+        rec = pq.get("A1")
+        assert rec["family"] == "F1" and rec["priority"] == 2.0
+        assert rec["note"] == "再登记"
+
+    def test_no_family_items_behave_as_before(self, queue_file):
+        pq.push("B")
+        pq.push("A")
+        assert pq.family_holds() == {}
+        assert pq.next_pending() == "B"    # 无 family：最久先入队者优先，语义不变
+        assert pq.next_pending() == "A"
+
+    def test_family_with_unrelated_stray_does_not_leak_grouping(self, queue_file):
+        # family 只在 push 时写入；不同族名互不串组
+        pq.push("A1", family="F1")
+        pq.push("B1", family="F2")
+        assert pq.next_pending() == "A1"
+        assert pq.next_pending() == "B1"
+
+    def test_rep_lease_blocks_whole_family(self, queue_file):
+        now = time.time()
+        _write(queue_file, {
+            "A1": {"status": "pending", "ts": now - 100, "family": "F1",
+                   "lease_ts": now - 10},
+            "A2": {"status": "pending", "ts": now - 50, "family": "F1"},
+        })
+        # 代表 A1 在租约内 ⇒ 整组跳过（不是把 A2 顶上来），防同族两头并发
+        assert pq.next_pending() is None
+
+    def test_expired_rep_lease_allows_retake_of_rep_not_sibling(self, queue_file):
+        now = time.time()
+        _write(queue_file, {
+            "A1": {"status": "pending", "ts": now - 100, "family": "F1",
+                   "lease_ts": now - pq.LEASE_SEC - 1},
+            "A2": {"status": "pending", "ts": now - 50, "family": "F1"},
+        })
+        assert pq.next_pending() == "A1"   # 租约过期重取的仍是代表，不是兄弟
+
+    def test_stats_reports_held(self, queue_file):
+        pq.push_many(["A1", "A2"], family="F1")
+        s = pq.stats()
+        assert s["held"] == {"A1": ["A2"]}
+
+
 # ---------------------------------------------------------------- 概况与清理
 class TestStatsAndClear:
     def test_stats_counts_and_pending_list(self, queue_file):

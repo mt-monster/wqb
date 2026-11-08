@@ -235,6 +235,10 @@
    "cat": "cred",
    "what": "GEM LLM 重试的退避秒数"
   },
+  "NO_PROXY": {
+   "cat": "mcp",
+   "what": "标准 NO_PROXY 环境变量；MCP 入口（world-quant-brain-mcp/main.py）会在其值后追加 worldquantbrain.com 等平台域名，让平台请求直连、绕开失效的系统代理（见 WQB_PLATFORM_BYPASS_PROXY）。requests 传入的显式 proxies 不受它影响"
+  },
   "OPENAI_API_KEY": {
    "cat": "cred",
    "what": "optimization-v1 `concept_extract.py`（arXiv 概念抽取）的 LLM 密钥；也读 `scripts/.arxiv_llm.env` / `.env`（gitignore、不参与 sync）。会外发论文文本，**不**外发候选表达式"
@@ -429,13 +433,29 @@
    "cat": "path",
    "what": "`tools/vwap_histogram.py` 输出根覆盖（缺省 `<仓库根>/output_report`）"
   },
+  "WQB_FORUM_BYPASS_PROXY": {
+   "cat": "forum",
+   "what": "`=1` 强制论坛/浏览器通道直连（不看 FORUM_SETTINGS_PROXY / HTTPS_PROXY）。由 `world-quant-brain-mcp/proxy_mode.py` 的 mode=off 置位：代理关掉后 HTTP(S)_PROXY 仍指向死端口，而论坛的 proxy 选择是一条 or 链，设空字符串绕不过去（2026-11-07 实测）"
+  },
   "WQB_PBR_BOOTSTRAPPED": {
    "cat": "internal",
    "what": "`tools/prod_blocked_recheck.py` 的防递归重入标记（勿手设）"
   },
+  "WQB_PLATFORM_BYPASS_PROXY": {
+   "cat": "mcp",
+   "what": "`=0` 关闭 MCP 服务入口对平台域名的 NO_PROXY 绕行。缺省开：代理节点故障时继承来的 HTTP(S)_PROXY 会把 api.worldquantbrain.com 拖成 SSL UNEXPECTED_EOF / ConnectionReset(10054)，而平台本身可直连；论坛通道走 FORUM_SETTINGS_PROXY 的显式 proxies 不受影响（2026-11-06 实测）"
+  },
   "WQB_PROD_QUEUE_PATH": {
    "cat": "path",
    "what": "`wqb.prod_queue` 的队列文件覆盖（缺省 `<仓库根>/cache/prod_queue.json`）"
+  },
+  "WQB_PROXY_MODE_FILE": {
+   "cat": "path",
+   "what": "`world-quant-brain-mcp/proxy_mode.py` 的代理模式配置覆盖（缺省 `<仓库根>/cache/proxy_mode.json`，cache/ 已 gitignore，属本机运行期状态）。内容：`{mode: on|off|auto, proxy_url}`"
+  },
+  "WQB_PROXY_URL": {
+   "cat": "forum",
+   "what": "代理地址覆盖（缺省取 FORUM_SETTINGS_PROXY / HTTPS_PROXY / HTTP_PROXY，都没有则 http://127.0.0.1:7897）；`proxy_mode.py` 在配置缺省时用它"
   },
   "WQB_PYENV_REEXEC": {
    "cat": "internal",

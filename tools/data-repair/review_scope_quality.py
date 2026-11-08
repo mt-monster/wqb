@@ -11,7 +11,7 @@ import sys
 from collections import defaultdict
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "world-quant-brain-mcp"))
-import osmosis_allocate as OA  # noqa: E402
+import osmosis_core as OA  # noqa: E402
 
 EXCL = {"USA", "MEA"}
 

@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 156 | 3 | 4 | 4 | 67 | 3 |
+| 211 | 3 | 15 | 2 | 67 | 3 |
 
-主要数据集（回测数）：predictive_starmine（38）、shortinterest6（28）、model50（23）、global_seasonal_model（21）、model264（14）、other460（13）、chart_cnn_alpha（9）、price_signal_dl（5）
+主要数据集（回测数）：predictive_starmine（38）、shortinterest6（28）、model50（23）、ai_equity_alpha（23）、global_seasonal_model（21）、model354（20）、model264（14）、other460（13）
 
 ### S1 字段理解
 

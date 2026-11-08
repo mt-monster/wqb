@@ -21,6 +21,32 @@ os.environ.setdefault("WQ_VALIDATOR_DIR", os.path.join(_REPO_ROOT, "Claude", "sk
 # ⚠ 这是「允许提交」的开关，不是「自动提交」—— 真正提交仍需
 # confirm_submit=True + 用户明确确认（AGENTS.md §7 提交纪律）。
 os.environ.setdefault("WQB_ALLOW_ALPHA_SUBMIT", "1")
+# --- 平台域名绕开系统代理（2026-11-06 实测）--------------------------------
+# 症状：本机 HTTP(S)_PROXY=127.0.0.1:7897 在代理节点故障时被本服务继承，
+#       平台请求全报 SSL UNEXPECTED_EOF / ConnectionReset(10054)；
+#       而同一时刻 `curl --noproxy "*" https://api.worldquantbrain.com` 返回 401
+#       —— 即**平台本来可直连**，是被失效代理拖死的。
+# 处置：只给平台域名加 NO_PROXY；论坛仍走 FORUM_SETTINGS_PROXY 的**显式** proxies，
+#       requests 里显式 proxies 优先于 NO_PROXY，论坛通道不受影响。
+# 开关：WQB_PLATFORM_BYPASS_PROXY=0 关闭。显式已有的 NO_PROXY 一律保留（本块只追加）。
+if os.environ.get("WQB_PLATFORM_BYPASS_PROXY", "1") != "0":
+    _BYPASS_HOSTS = "worldquantbrain.com,localhost,127.0.0.1,::1"
+    _cur_np = (os.environ.get("NO_PROXY") or os.environ.get("no_proxy") or "").strip()
+    if "worldquantbrain.com" not in _cur_np:
+        _merged_np = f"{_cur_np},{_BYPASS_HOSTS}".strip(",")
+        os.environ["NO_PROXY"] = _merged_np
+        os.environ["no_proxy"] = _merged_np
+# --- 代理模式开关（cache/proxy_mode.json，2026-11-07）-------------------------
+# 一键切换「论坛走代理 / 直连」：代理关掉后 HTTP(S)_PROXY 仍指向死端口，
+# forum_functions 回落读它会打空；而平台域名靠上面的 NO_PROXY 早已直连。
+# 配置缺失时 mode=auto（不干预进程 env），保持历史行为。
+# 开关入口：MCP 工具 set_proxy_mode / tools/infra/proxy_mode.py
+try:
+    from proxy_mode import bootstrap as _proxy_mode_bootstrap
+    _proxy_mode_bootstrap()
+except Exception as _proxy_exc:  # noqa: BLE001 — 开关坏了不能拖死服务
+    print(f"[proxy_mode] bootstrap skipped: {_proxy_exc}", file=sys.stderr)
+# ---------------------------------------------------------------------------
 # -----------------------------------------------------------------------
 
 from brain_api import brain_client, load_config

@@ -2,7 +2,8 @@
  "review": {
   "sharpe_min": 1.58,
   "fitness_min": 1.0,
-  "two_year_sharpe_min": 1.0,
+  "two_year_sharpe_min": 1.58,
+  "_two_year_note": "2026-11-05 平台实测更正：DEU 的 LOW_2Y_SHARPE 闸 limit = 1.58（不是 1.0）。证据：RREALzx0 checks.fail 显示 {name:LOW_2Y_SHARPE, value:1.43, limit:1.58}；KPJmRpGN 2Y=1.58 恰好通过不报闸。旧值 1.0 导致整轮把 2Y 1.0-1.57 的候选误当达标。",
   "margin_min": 0.0005,
   "turnover_max": 0.7,
   "turnover_min": 0.01

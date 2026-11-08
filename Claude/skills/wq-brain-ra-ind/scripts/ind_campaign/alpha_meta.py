@@ -31,7 +31,20 @@ from pathlib import Path
 
 
 def _add_tools_path() -> Path:
-    """把仓库 ``tools/`` 放上 sys.path（向上探测 pyproject.toml + src/wqb，与层数无关）。"""
+    """把仓库 ``tools/`` 放上 sys.path。
+
+    2026-11-04 修复：与同目录 harvest_safe.py 同因 —— 搬到 skill 安装位后向上探测
+    够不到仓库根，子进程启动即 RuntimeError 且 stderr 被吞。优先读 WQB_REPO_ROOT
+    （看门狗/启动器已设），仓库内运行时仍可向上探测兜底。
+    """
+    env = os.environ.get("WQB_REPO_ROOT")
+    if env:
+        parent = Path(env).resolve()
+        if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
+            tools = str(parent / "tools")
+            if tools not in sys.path:
+                sys.path.insert(0, tools)
+            return parent
     here = Path(__file__).resolve()
     for parent in here.parents:
         if (parent / "pyproject.toml").exists() and (parent / "src" / "wqb").is_dir():
@@ -39,7 +52,8 @@ def _add_tools_path() -> Path:
             if tools not in sys.path:
                 sys.path.insert(0, tools)
             return parent
-    raise RuntimeError("repo root not found (needs pyproject.toml + src/wqb)")
+    raise RuntimeError("repo root not found (needs pyproject.toml + src/wqb); "
+                       "set WQB_REPO_ROOT=<repo> when running from a skill install")
 
 
 REPO_ROOT = _add_tools_path()

@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：Insider　**类别卡**：insiders
 
-**涉及数据集**：insider_agg_matrix
+**涉及数据集**：insider_agg_matrix、insiders1、search_interest+insider_feats
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 9 | 0 | 0 | 0 | 1 | 2 |
+| 65 | 6 | 3 | 0 | 2 | 2 |
 
-主要数据集（回测数）：insider_agg_matrix（9）
+主要数据集（回测数）：insider_agg_matrix（61）、search_interest+insider_feats（2）、insiders1（2）
 
 ### S1 字段理解
 
@@ -78,6 +78,7 @@
 | 条目 | 族 | 下次怎么办 / 说明 | 数据集 | 归属 |
 |---|---|---|---|---|
 | EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD | 内部人买入股数比例与二级买入广度 | 命中 EUR profile fast_kill（新集 8 探针无 ／S／>=0.5）；INSIDERS 塔另一集 insider_matrix / insider_trx_matrix 已分标 yield=0@8bt / SATURATE | insider_agg_matrix | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-INSIDERS1-TRADE-LEVEL-DEAD-20261102 | insiders1 交易级 VECTOR（活跃度 + 方向） | 暂停 insiders 塔挖掘。insiders 塔在 EUR 的两个数据集（insider_agg_matrix 季度聚合 wave3061 + insiders1 交易级 wave3063）S 天花板均 0.9-0.95，不可达 1.5 | insiders1 | payload | <!-- lint:const-ok 证据原文 -->
 
 ### 胜绩
 

@@ -7,7 +7,7 @@
 
 **备注**：EUR 破 prod 墙的残差化路径：★ 'vector_neut' **平台可用**（2026-10-20 平台二次核实：wave291 整批 8 条含 vector_neut×3 被 create_multi_simulation 接受；JjQmx9nm 已 ACTIVE 交付）⇒ 2026-10-10「op-lint 判定平台已移除」是**本地算子清单假阳性**（research-data/operators_platform_*.json 不含该算子），该结论作废。残差化四选一：vector_neut（首选，prod 最优）/ ts_regression / group_neutralize / subtract(rank,rank)；残差轴的选择仍决定成败 ★ 当前主力：fundamental72 VECTOR CFO/TA 冠军族（7 颗已验证，prod 0.6585–0.6747 / self ≈0.50）；MATRIX 载荷与 sector / market 轴是 prod 墙。
 
-**涉及数据集**：fundamental17、fundamental23、fundamental93、other401、fundamental72、fundamental90、fundamental1
+**涉及数据集**：fundamental 融资质量核(JjQmx9nm几何)+risk70 leverage/resvol门控 (RISK+FUNDAMENTAL effective2 全过闸, prod0.9129判死)、fundamental1、fundamental17、fundamental23、fundamental6、fundamental72、fundamental72+pv106+statistical、fundamental72+risk68/imb5 (门控替换实验, 三塔effective0; 证实 sta1_allc5 属PV塔)、fundamental90、fundamental93、imbalance5+fundamental72、other401、sentiment21+fundamental72、sentiment21+fundamental72+statistical
 
 ### 回测设置（进仿真的值）
 
@@ -34,13 +34,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 41 | 2 | 6 | 0 | 7 | 0 |
+| 557 | 41 | 54 | 22 | 7 | 0 |
 
-主要数据集（回测数）：fundamental23（18）、fundamental17（14）、other401（9）
+主要数据集（回测数）：fundamental90（180）、fundamental72（140）、fundamental23（122）、other401（27）、fundamental93（26）、fundamental6（16）、fundamental17（14）、fundamental1（8）
 
 ### S1 字段理解
 
@@ -75,7 +75,7 @@
   ```
 
   - vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets)… ← 2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；★ 2026-10-20 更正：12 次算子调用**过不了闸 1b-2**（gate.py MAX_OP_CALLS=10 ⇒ 合法 ≤9），且其 fam3 'vector_neut→vector_neut→reverse' 实测 n=4、prod 0.9789 / 0.9859 / 0.9998 / 0.9998 = **DEAD** ⇒ 只作历史证据，不再作首选
-  - vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)… ← ★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = 'vector_neut→vector_neut→vector_neut'，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg 'rank' 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌 <!-- from config.prod_corr_max -->
+  - vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)… ← ★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = 'vector_neut→vector_neut→vector_neut'，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg 'rank' 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌 <!-- from config.PRODCORR_CEILING -->
   - ts_target_tvr_decay(trade_when(greater(vec_avg(fnd72_pit_or_… ← 9 调用点。EBIT>NI 闸是该闸族最优；tvr 0.06 → vROkA5nw（S1.58/F1.08/2Y1.68/prod0.6663/self0.5270）。同骨架 tvr 0.09 ⇒ P0MZ5nrp(0.6653)、0.12 ⇒ pwvPanJx(0.6595)、0.15 ⇒ akVLzLV1(0.6585/2Y1.83)。闸替换：EBITDA>CFNI（rKd5lAo8 0.6747）、EBIT>CFNI（leM88RN5 0.6701）、EBITDA>NI（wave307 新探）。CFO>NI / OPINC>NI 闸摧毁信号（S→0，不得用）
 - **类别通用原语**（类别卡，跨区）：
   - accrual / cash gap: earnings quality, not the earnings level

@@ -9,9 +9,11 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from ._common import _now
+from ._common import _dumps, _now
 from . import submit_queue as _sq
+from ..config import DATASET_SENTINEL, is_phantom_dataset_name
 from ..db_conn import connect as db_connect
+from ..paths import find_repo_root
 
 
 class SchemaMixin:
@@ -349,6 +351,15 @@ class SchemaMixin:
             # 2026-09-08：风险中性化后的 sharpe。它是 Expected Exposure 声明的验证器——
             # 若它 <= 0 而 raw sharpe 达标，说明这条 alpha 就是那个因子暴露本身。
             ("risk_neutralized_sharpe", "DECIMAL(8,4)"),
+            # 2026-11-03：单颗回测耗时（平台计算墙钟，秒）。仅在 MCP/采集侧测得时落库，
+            # 历史行与未测路径为 NULL。只读、可空，不破坏既有数据；面板可据此出
+            # 真实 per-alpha 明细（详见 Claw/tools_backtest_time_report.py 口径说明）。
+            ("duration_s", "REAL"),
+            # 2026-11-04 #113：duration_s 的**来源标签** —— 'single'=单条
+            # create_simulation 的单颗阻塞墙钟；'batch'=harvest_multisim_alphas
+            # 的整批「派发→收批」端到端周转（同批同值）。两者口径不同、不可混算，
+            # 物理隔离后面板不必再靠「同批同值」启发式猜来源。NULL=历史行未标记。
+            ("duration_src", "TEXT"),
         ):
             self._add_column("backtest_results", col, ddl)
         # ---- 2026-09-18：回测指标全量落库（prod/self 相关性等）----
@@ -605,6 +616,17 @@ class SchemaMixin:
         return int(cur.lastrowid)
 
     def _ensure_dataset(self, region: str, name: str, extra: Optional[Dict] = None) -> int:
+        # 名称形状守卫（2026-11-06，事故见 tools/db/datasets_phantom_repair.py）。
+        # 调用方 `_ensure_wave` / `_backtest` 会把**塔位组合标签**（`pv/model/other`）、
+        # **表达式描述**（`fundamental44|institutions6`）、**region 名**（`KOR`）原样当
+        # dataset 透传进来，历史上因此落了 82 行从来不是数据集的行，污染任何按
+        # `datasets` 表的统计。这里刻意**不抛异常**（会打断在飞的 MCP / 回测流水线），
+        # 也不新建污染行，而是回落到本区 `_unknown` 哨兵 —— 「未知」比假名诚实
+        # （同 tools/data-repair/backfill_expression_dataset.py 的既有哲学）。
+        # 被拒的名字记一行审计，便于回头修真正透传脏名的调用点。
+        if is_phantom_dataset_name(name):
+            self._note_phantom_dataset_name(region, name)
+            name = DATASET_SENTINEL
         rid = self._ensure_region(region)
         extra = extra or {}
         cur = self.connection.cursor()
@@ -651,6 +673,22 @@ class SchemaMixin:
         )
         self.connection.commit()
         return int(cur.lastrowid)
+
+    def _note_phantom_dataset_name(self, region: str, name: str) -> None:
+        """记一行「伪数据集名被拒」审计（``logs/datasets_phantom_names.jsonl``）。
+
+        只写日志、不写库、**绝不抛异常**：守卫的职责是「不新建污染行」，不是把
+        调用方打挂 —— 在飞的 MCP 回测 / 收割流水线不该被磁盘满、只读挂载这类
+        日志问题中断。日志目录走 ``wqb.paths`` 的向上探测，故与本节所在层数无关。
+        """
+        try:
+            log_dir = find_repo_root(__file__) / "logs"
+            log_dir.mkdir(parents=True, exist_ok=True)
+            rec = {"ts": _now(), "region": str(region), "rejected_name": str(name)}
+            with open(log_dir / "datasets_phantom_names.jsonl", "a", encoding="utf-8") as fh:
+                fh.write(_dumps(rec) + "\n")
+        except Exception:  # noqa: BLE001 - 审计失败不得阻断写库（见 docstring）
+            pass
 
     def _ensure_wave(self, region: str, wave: str, dataset: Optional[str] = None) -> int:
         rid = self._ensure_region(region)

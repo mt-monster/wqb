@@ -66,7 +66,7 @@ def _submitted(store, aid="A1", region="USA", **extra):
 # ---------------------------------------------------------------- 复现（报告 §14.12.3 N35）
 
 def test_rereview_keeps_submission_state_correlation_and_dataset(store):
-    store.upsert_backtest_rows("USA", "w1", [HARVEST_ROW], dataset="dsA")
+    store.upsert_backtest_rows("USA", "w1", [HARVEST_ROW], dataset="dsa")
     _submitted(store)
     before = _alpha(store)
     assert (before["status"], before["platform_status"], before["prod_corr_source"]) == ("ACTIVE", "ACTIVE",
@@ -76,13 +76,13 @@ def test_rereview_keeps_submission_state_correlation_and_dataset(store):
     for col in ("status", "platform_status", "date_submitted", "stage", "prod_correlation", "self_correlation",
                 "prod_corr_source", "corr_checked_at", "returns", "drawdown", "long_count", "short_count"):
         assert a[col] == before[col], col                                 # 此前：UNSUBMITTED / 全部 NULL
-    assert a["dataset"] == "dsA"                                          # 此前：_unknown
+    assert a["dataset"] == "dsa"                                          # 此前：_unknown
     assert (a["sharpe"], a["fitness"], a["two_year_sharpe"]) == (2.01, 1.31, 1.9)   # 行里带了的照常更新
     assert a["margin"] == pytest.approx(0.00123) and a["turnover"] == pytest.approx(0.11)
 
 
 def test_rereview_does_not_put_a_submitted_alpha_back_in_the_queue(store, tmp_path):
-    store.upsert_backtest_rows("USA", "w1", [HARVEST_ROW], dataset="dsA")
+    store.upsert_backtest_rows("USA", "w1", [HARVEST_ROW], dataset="dsa")
     _submitted(store)
     store.upsert_backtest_rows("USA", "w1", [REVIEW_ROW])
     # 提交队列的入队查询要 soft_deleted / disposition（N33 起 CampaignStore 建表已自带两列；
@@ -119,23 +119,23 @@ def test_lifecycle_moves_forward_but_never_back(store):
 
 
 def test_dataset_attribution_changes_only_when_named(store):
-    store.upsert_backtest_rows("USA", "w1", [HARVEST_ROW], dataset="dsA")
+    store.upsert_backtest_rows("USA", "w1", [HARVEST_ROW], dataset="dsa")
     store.upsert_backtest_rows("USA", "w1", [REVIEW_ROW])                 # 没点名
-    assert _alpha(store)["dataset"] == "dsA" and _bt(store)["dataset"] == "dsA"
+    assert _alpha(store)["dataset"] == "dsa" and _bt(store)["dataset"] == "dsa"
     store.upsert_backtest_rows("USA", "w2", [REVIEW_ROW], dataset="_unknown")
-    assert _alpha(store)["dataset"] == "dsA"
-    store.upsert_backtest_rows("USA", "w3", [REVIEW_ROW], dataset="dsB")  # 点名了就改
-    assert _alpha(store)["dataset"] == "dsB" and _bt(store)["dataset"] == "dsB"
+    assert _alpha(store)["dataset"] == "dsa"
+    store.upsert_backtest_rows("USA", "w3", [REVIEW_ROW], dataset="dsb")  # 点名了就改
+    assert _alpha(store)["dataset"] == "dsb" and _bt(store)["dataset"] == "dsb"
     # 平台同步按字段投票推断数据集：推断只补 _unknown，不改已有归属
-    ds_c = store._ensure_dataset("USA", "dsC")
+    ds_c = store._ensure_dataset("USA", "dsc")
     store.connection.execute("INSERT INTO fields (dataset_id, field_name) VALUES (?, 'close_ratio_x')", (ds_c,))
     store.connection.commit()
     store.upsert_alpha_from_platform({"alpha_id": "A1", "region": "USA", "expression": "rank(close_ratio_x)"})
-    assert _alpha(store)["dataset"] == "dsB"
+    assert _alpha(store)["dataset"] == "dsb"
     store.upsert_alpha_from_platform({"alpha_id": "B1", "region": "USA", "expression": "rank(ts_mean(y, 22))"})
     assert _alpha(store, "B1")["dataset"] == "_unknown"                   # 新行：推断不出归 _unknown（同此前）
     store.upsert_alpha_from_platform({"alpha_id": "B1", "region": "USA", "expression": "rank(close_ratio_x)"})
-    assert _alpha(store, "B1")["dataset"] == "dsC"                        # 原来没有归属：推断补上
+    assert _alpha(store, "B1")["dataset"] == "dsc"                        # 原来没有归属：推断补上
 
 
 def test_correlation_is_written_with_provenance_and_never_wiped(store):
@@ -174,10 +174,10 @@ def test_platform_sync_payload_keeps_local_backtest_values(store):
     assert payload["sub_universe_sharpe"] == 1.88 and payload["is_ladder_sharpe"] is None
     aid, region = payload["alpha_id"], payload["region"]
     store.upsert_backtest_rows(region, "w1", [{**HARVEST_ROW, "alpha_id": aid, "two_year_sharpe": 3.59}],
-                               dataset="dsA")
+                               dataset="dsa")
     store.upsert_alpha_from_platform(payload)
     a = _alpha(store, aid)
-    assert a["two_year_sharpe"] == 3.59 and a["dataset"] == "dsA"         # 此前：NULL、_unknown
+    assert a["two_year_sharpe"] == 3.59 and a["dataset"] == "dsa"         # 此前：NULL、_unknown
     assert (a["platform_status"], a["stage"], a["date_submitted"]) == ("ACTIVE", "OS", SUBMITTED["date_submitted"])
     assert (a["prod_correlation"], a["self_correlation"], a["prod_corr_source"]) == (0.48, 0.22, "platform_sync")
     assert (a["sharpe"], a["fitness"]) == (3.67, 2.96)                    # 平台给了的照常写
@@ -185,7 +185,7 @@ def test_platform_sync_payload_keeps_local_backtest_values(store):
 
 
 def test_backtest_row_keeps_known_metrics_and_updates_ra_only_when_known(store):
-    store.upsert_backtest_rows("USA", "w1", [{**HARVEST_ROW, "ra_failed_checks": ["LOW_2Y_SHARPE"]}], dataset="dsA")
+    store.upsert_backtest_rows("USA", "w1", [{**HARVEST_ROW, "ra_failed_checks": ["LOW_2Y_SHARPE"]}], dataset="dsa")
     store.upsert_backtest_rows("USA", "w1", [REVIEW_ROW])                 # failed_checks=[] → 这一行**说不清** RA
     b = _bt(store)
     assert (b["returns"], b["drawdown"], b["long_count"], b["short_count"], b["pnl"], b["book_size"],
@@ -233,7 +233,7 @@ def test_mcp_reharvest_of_a_submitted_alpha_keeps_it_submitted(tmp_path, monkeyp
     raw.update(id="S1", status="ACTIVE", regular={"code": "rank(ts_delta(x, 5))"})
     st = CampaignStore(str(path))
     try:
-        st.upsert_backtest_rows("IND", "w1", [{**HARVEST_ROW, "alpha_id": "S1"}], dataset="dsA")
+        st.upsert_backtest_rows("IND", "w1", [{**HARVEST_ROW, "alpha_id": "S1"}], dataset="dsa")
         _submitted(st, "S1", region="IND")
     finally:
         st.close()
@@ -246,4 +246,4 @@ def test_mcp_reharvest_of_a_submitted_alpha_keeps_it_submitted(tmp_path, monkeyp
                            "FROM alphas a JOIN datasets d ON d.id=a.dataset_id WHERE a.alpha_id='S1'").fetchone()
     finally:
         conn.close()
-    assert got == ("ACTIVE", "ACTIVE", SUBMITTED["date_submitted"], 0.55, "dsA")
+    assert got == ("ACTIVE", "ACTIVE", SUBMITTED["date_submitted"], 0.55, "dsa")

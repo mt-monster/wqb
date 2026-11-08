@@ -47,7 +47,7 @@ def test_each_tool_module_registers_at_least_one_tool():
     expected = {
         "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 6,
         "tools_alpha": 8, "tools_data": 10, "tools_submit": 0, "tools_corr": 3,
-        "tools_forum": 4, "tools_spc": 4, "tools_ops": 5,
+        "tools_forum": 4, "tools_spc": 4, "tools_ops": 7,
     }
     for mod, n in expected.items():
         m = importlib.import_module(mod)

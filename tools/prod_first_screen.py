@@ -8,7 +8,8 @@
 
 行为：
   - 枚举区域内 IS 合格 & 未提交的 alpha（口径：sharpe≥1.58 & fitness≥1.0 & 2Y≥1.58 & margin 非空 & 未 ACTIVE）
-  - 逐条测 **prod（走 `get_production_correlation`：内置锁 + 30s 轮询 + 1h 超时；2026-10-06 修正）**
+  - 逐条测 **prod（走 `get_production_correlation`：内置两级锁 + 10s×12→30s 轮询，
+    单次窗口 `prod_corr_timeout_s` = 240s；2026-10-28 口径）**
     与 **self（本地计算）**
   - **断点续跑**：state 文件记录已测 alpha；网络失败不入 state（下次重试）
   - 测得的值**回写 alphas 表**（persist_correlation），并经 mirror 联动 alpha_corr_cache

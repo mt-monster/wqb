@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-11-02
+last_verified: 2026-11-08
 ---
 
 # EUR 区域挖掘流程（RA 区域分支）
@@ -100,20 +100,21 @@ last_verified: 2026-11-02
 <!-- profiles:cells-index:start -->
 | 类别 | 分组 | 状态 | 回测覆盖 | 阈值覆盖 | 回测 / RA 全过 | prod 已测（低于上限） | 判死 / 胜绩 | 分支文件 |
 |---|---|---|---|---|---|---|---|---|
-| model | MODEL | active | — | — | 156 / 3 | 4（4） | 67 / 3 | [references/model.md](references/model.md) |
-| other | Other | active | — | — | 119 / 0 | 19（1） | 20 / 0 | [references/other.md](references/other.md) |
-| pv | PV | active | — | — | 108 / 10 | 0（0） | 12 / 0 | [references/pv.md](references/pv.md) |
-| analyst | Analyst | active | — | — | 74 / 0 | 0（0） | 8 / 0 | [references/analyst.md](references/analyst.md) |
-| news | News-Sentiment | active | — | — | 46 / 0 | 0（0） | 16 / 0 | [references/news.md](references/news.md) |
-| fundamental | Fundamental | active | — | — | 41 / 2 | 6（0） | 7 / 0 | [references/fundamental.md](references/fundamental.md) |
-| risk | Risk | active | — | — | 40 / 0 | 2（0） | 3 / 1 | [references/risk.md](references/risk.md) |
-| institutions | Institutions | active | — | — | 22 / 0 | 0（0） | 3 / 0 | [references/institutions.md](references/institutions.md) |
-| sentiment | News-Sentiment | active | — | — | 11 / 0 | 0（0） | 3 / 0 | [references/sentiment.md](references/sentiment.md) |
-| insiders | Insider | active | — | — | 9 / 0 | 0（0） | 1 / 2 | [references/insiders.md](references/insiders.md) |
-| earnings | Earnings | active | — | — | 4 / 0 | 0（0） | 1 / 0 | [references/earnings.md](references/earnings.md) |
-| macro | Other | active | — | — | 0 / 0 | 0（0） | 0 / 0 | [references/macro.md](references/macro.md) |
+| fundamental | Fundamental | active | — | — | 557 / 41 | 54（22） | 7 / 0 | [references/fundamental.md](references/fundamental.md) |
+| other | Other | active | — | — | 345 / 3 | 116（44） | 21 / 2 | [references/other.md](references/other.md) |
+| analyst | Analyst | active | — | — | 311 / 22 | 20（6） | 14 / 6 | [references/analyst.md](references/analyst.md) |
+| model | MODEL | active | — | — | 211 / 3 | 15（2） | 67 / 3 | [references/model.md](references/model.md) |
+| pv | PV | active | — | — | 140 / 10 | 12（1） | 12 / 0 | [references/pv.md](references/pv.md) |
+| risk | Risk | active | — | — | 94 / 5 | 22（3） | 8 / 1 | [references/risk.md](references/risk.md) |
+| insiders | Insider | active | — | — | 65 / 6 | 3（0） | 2 / 2 | [references/insiders.md](references/insiders.md) |
+| news | News-Sentiment | active | — | — | 60 / 0 | 0（0） | 17 / 0 | [references/news.md](references/news.md) |
+| sentiment | News-Sentiment | active | — | — | 49 / 6 | 3（3） | 4 / 0 | [references/sentiment.md](references/sentiment.md) |
+| institutions | Institutions | active | — | — | 48 / 0 | 0（0） | 4 / 0 | [references/institutions.md](references/institutions.md) |
+| earnings | Earnings | active | — | — | 39 / 0 | 0（0） | 4 / 0 | [references/earnings.md](references/earnings.md) |
+| socialmedia | News-Sentiment | active | — | — | 10 / 0 | 0（0） | 2 / 0 | [references/socialmedia.md](references/socialmedia.md) |
+| macro | Other | active | — | — | 9 / 0 | 0（0） | 0 / 0 | [references/macro.md](references/macro.md) |
 
-说明：另有 20 条回测行没写数据集，无法归到组合；3 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
+说明：另有 2060 条回测行没写数据集，无法归到组合；5 条判死 / 胜绩连类别也推断不出；证据于 2026-11-07 只读汇总。
 <!-- profiles:cells-index:end -->
 
 ## 六步纵深骨架（本区覆盖）

@@ -199,6 +199,7 @@ def test_submit_alpha_all_fields_passthrough(monkeypatch):
         "confirm_submit": False,
         "robustness_audited": False,
         "verify_timeout": 60,
+        "mix_narrative": None,
     }
     assert kwargs == {"dry_run": True}
 

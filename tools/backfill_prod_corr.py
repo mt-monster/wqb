@@ -6,9 +6,11 @@
       BrainApiClient.check_correlation(alpha_id, "production") 把"未知"变"已知"。
 
 平台约束:
-  * prod 相关性计算为异步排队, 1-5 分钟/条, 单并发/账号;
-  * check_correlation 内部 30s 轮询最长 1 小时, 已决结果缓存 7 天;
-  * busy = 账号已有计算在跑 → sleep 后重试; pending = 1 小时超时 → 下轮重查。
+  * prod 相关性计算为异步排队, 单次计算 180–200 s（2026-10-28 用户口径）, 单并发/账号;
+  * check_correlation 内部快轮询 10s×12 → 30s，单次窗口最长 240s（WAIT_THRESHOLDS
+    ``prod_corr_timeout_s``）, 已决结果缓存 48h（`wqb.store._corr_cache.CORR_FRESH_HOURS`）;
+  * busy = 账号已有计算在跑 / 冷却未走完 → 按 retry_after 隔时重试;
+    pending = 一轮窗口超时（大概率平台仍在算）→ 稍后重查，**不要立刻重触发**。
 
 断点续跑 (必须):
   * checkpoint: results/backfill_prod_corr_<REGION>_checkpoint.json

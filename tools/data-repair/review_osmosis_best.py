@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-"""只读诊断：当前 Osmosis 分配 vs 理论最优（per-scope 100k + prod<0.7）。
+"""只读诊断：当前 Osmosis 分配 vs v2 应有方案（per-scope 100k）。
 
 输出：
   1. 各 scope 的 ACTIVE REGULAR 颗数 / 当前已分配(>1)颗数 / 当前点数和
-  2. 理论最优方案（可指定排除区）每 scope 应分配颗数与点数和
-  3. 差异清单：该分未分、分多了、scope 未启用
+  2. v2 应有方案（相关性剪枝 + 衰减闸 + ≤20 颗 + 单颗封顶；可指定排除区）
+  3. 差异清单：该分未分、分多了、scope 未启用（差异只作参考，不代表该手工改）
 
 不写平台。用法：
   WQ_PY=... python tools/data-repair/review_osmosis_best.py [--purge-cache] [--exclude USA,MEA]
@@ -20,7 +20,9 @@ from collections import defaultdict
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "world-quant-brain-mcp"))
 
-import osmosis_allocate as OA  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import osmosis_core as OA  # noqa: E402
+from osmosis_plan_v2 import build_arg_parser, load_blacklist, make_plan  # noqa: E402
 
 TOTAL = OA.TOTAL_BUDGET
 
@@ -113,17 +115,20 @@ def main() -> int:
         print(f"{k[0]}D{k[1]:<8}{n:>7}{len(got):>8}{tot:>12}{ok:>8}   {'; '.join(note)}")
     print("=" * 96)
 
-    # ---- 理论最优 ----
+    # ---- 应有方案（v2 分配器，含相关性剪枝 / 衰减闸 / 数量收敛 / 单颗封顶）----
     rows = OA.load_candidates_platform()
     rows = [r for r in rows if (r.get("region") or "").upper() not in excl]
-    scopes = OA.build_scopes(rows)
-    plan = OA.build_plan(scopes, per_scope_budget=True)
+    want = sorted({(r.get("region") or "").upper() for r in rows if r.get("region")})
+    v2args = build_arg_parser().parse_args([])
+    v2args._blacklist = load_blacklist()
+    plan, _logs, _mats = make_plan(rows, want, v2args)
 
     agg: dict = defaultdict(list)
     for e in plan:
         agg[(e["region"], e["delay"])].append(e["points"])
 
-    print("\n【理论最优】per-scope 各 100k / prod-policy=exclude / 排除 " + ",".join(sorted(excl)))
+    print("\n【v2 应有方案】per-scope 各 100k / v2 口径（相关性剪枝+衰减闸+≤20颗+封顶）/ 排除 "
+          + ",".join(sorted(excl)))
     print("-" * 96)
     print(f"{'scope':<10}{'颗数':>6}{'点数和':>10}{'启用?':>8}")
     print("-" * 96)

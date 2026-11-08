@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：Institutions　**类别卡**：institutions
 
-**涉及数据集**：fund_holdings_panel、institutions6
+**涉及数据集**：fund_holdings_panel、institutions6、institutions6 (广度平滑/金额净买入率; 发现广度正-深度负)、institutions6 (换分母广度0.86/金额深度取负0.75 收敛)、institutions6 @TOP2500 (归因: TOPCS1600 优于 TOP2500)、institutions6 ATOM 首批 (INSTITUTIONS单塔 effective1; 买卖广度失衡 S0.84)、institutions6 去壳对照、institutions6 股数口径
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 22 | 0 | 0 | 0 | 3 | 0 |
+| 48 | 0 | 0 | 0 | 4 | 0 |
 
-主要数据集（回测数）：fund_holdings_panel（14）、institutions6（8）
+主要数据集（回测数）：fund_holdings_panel（19）、institutions6（17）、institutions6 ATOM 首批 (INSTITUTIONS单塔 effective1; 买卖广度失衡 S0.84)（2）、institutions6 (广度平滑/金额净买入率; 发现广度正-深度负)（2）、institutions6 (换分母广度0.86/金额深度取负0.75 收敛)（2）、institutions6 @TOP2500 (归因: TOPCS1600 优于 TOP2500)（2）、institutions6 股数口径（2）、institutions6 去壳对照（2）
 
 ### S1 字段理解
 
@@ -81,6 +81,7 @@
 | EUR-FHP-INSTITUTIONS-WEAK |  | Leave fund_holdings_panel 在 EUR。institutions 塔在 EUR D1 无可挖数据集。 | fund_holdings_panel | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-INST6-INSTITUTIONS-TOWER-EXHAUSTED | institutions6 机构持股聚合（净流向/存量/动量三机制） | Leave institutions6 在 EUR。institutions 塔（1.1x）完全 exhausted：fund_holdings_panel（S-0.39~0.40）+ institutions6（S0.09~0.30）双判 | institutions6 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-INSTITUTIONS6-COLD-ZERO-YIELD | 机构持有人广度比例 / 机构权益占比 / 买入-卖出股数差 | INSTITUTIONS 塔仅 11 字段且机构持股类字段本质是慢变存量，不具备日频预测力；本区不再投槽 | institutions6 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-INSTITUTIONS6-LL-CHANNEL-DEAD-20261102 | institutions6 机构买卖家数净额 LL 通道 | LL 通道已穷尽，若继续 institutions 塔必须换数据集而非换算子。注意 A3 的 country 轴 2Y 1.89 是真实两年双强（2022 2.06 + 2023 1.75）——若将来找到能同时把 S 提到 1.58 且 r | institutions6 | payload | <!-- lint:const-ok 证据原文 -->
 <!-- profiles:cell-panel:end -->
 
 ## 补充说明（手写）

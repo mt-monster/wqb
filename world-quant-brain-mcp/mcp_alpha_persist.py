@@ -251,6 +251,20 @@ def _build_row(obj: Dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], str, Opti
             row["ra_failed_checks"] = (list(ra.get("ra_failed_checks") or [])
                                        if ra.get("failed_ra_count")
                                        else [])
+    # 耗时（秒）。两种来源口径不同，由 duration_src 物理隔离（2026-11-04 #113）：
+    #   · 'single' = 单条 create_simulation 的单颗阻塞墙钟；
+    #   · 'batch'  = harvest_multisim_alphas 的整批「派发→收批」周转（同批同值，
+    #                平台不暴露单颗计算耗时，见 wave_timing.py）。
+    # 缺省/异常不写（保持 NULL，不污染历史行）；src 只接受两值，脏值不落库。
+    _dur = obj.get("duration_s")
+    if _dur is not None:
+        try:
+            row["duration_s"] = float(_dur)
+        except (TypeError, ValueError):
+            pass
+    _src = obj.get("duration_src")
+    if _src in ("single", "batch"):
+        row["duration_src"] = _src
     return row, region, alpha_id, None, slim
 
 
@@ -291,12 +305,13 @@ def _alpha_payload(slim: Dict[str, Any], region: str, code: str,
         "date_submitted": slim.get("dateSubmitted"),
         "prod_correlation": m.get("prodCorrelation"),
         "self_correlation": m.get("selfCorrelation"),
+        "alpha_type": slim.get("type"),   # REGULAR / SUPER（2026-11-03 补全 SA/RA 标识）
     }
 
 
 def _sync_alpha_row(store, slim: Dict[str, Any], region: str, code: str,
                     alpha_id: str, ladder: Optional[float] = None) -> bool:
-    """把平台**状态/阶段/提交时间**同步进 ``alphas`` 表（不碰 ``backtest_results``）。
+    """把平台**状态/阶段/提交时间/SA-RA 类型**同步进 ``alphas`` 表（不碰 ``backtest_results``）。
 
     ## 为什么 exists 分支还需要写
 
@@ -305,6 +320,15 @@ def _sync_alpha_row(store, slim: Dict[str, Any], region: str, code: str,
     DECOMMISSIONED``（下架）。面板「已提交」列读的正是 ``alphas.platform_status``。
     整体跳过 ⇒ 状态永远停在落库那一刻的旧值。2026-10-28 实测：``e75pvoNz`` 在平台
     已 ACTIVE（dateSubmitted 13:28），本地 ``alphas`` 表却连行都没有，面板显示「未提交」。
+
+    ## ★ alpha_type 必须纳入差异判定（2026-11-04 #117）
+
+    改前 ``same`` 只比 platform_status / stage / date_submitted。历史行的这三列
+    与平台一致（多为 UNSUBMITTED / 未提交），于是 ``exists`` 分支**直接 return False**，
+    ``upsert_alpha_from_platform`` 根本不会被调用 —— 平台详情里明明带着
+    ``type=REGULAR/SUPER``，本地 ``alphas.alpha_type`` 却永久留 NULL
+    （实测 8160 行，①b 候选表 SA/RA 列全显示「—」）。现把类型一并比较：
+    类型缺失/不一致就触发一次合并写（``_merge_alpha_columns`` 保证 None 不覆盖好值）。
 
     ## 只走 alphas 表
 
@@ -317,12 +341,13 @@ def _sync_alpha_row(store, slim: Dict[str, Any], region: str, code: str,
     status = slim.get("status")
     stage = slim.get("stage")
     submitted = slim.get("dateSubmitted")
+    alpha_type = slim.get("type")
     lock = getattr(store, "_conn_lock", None)
 
     def _do() -> bool:
         cur = store.connection.cursor()
         try:
-            cur.execute("SELECT platform_status, stage, date_submitted FROM alphas"
+            cur.execute("SELECT platform_status, stage, date_submitted, alpha_type FROM alphas"
                         " WHERE alpha_id=?", (alpha_id,))
             row = cur.fetchone()
         finally:
@@ -330,7 +355,8 @@ def _sync_alpha_row(store, slim: Dict[str, Any], region: str, code: str,
         if row is not None:
             same = ((row[0] or None) == (status or None)
                     and (row[1] or None) == (stage or None)
-                    and (row[2] or None) == (submitted or None))
+                    and (row[2] or None) == (submitted or None)
+                    and (row[3] or None) == (alpha_type or None))
             if same:
                 return False
         store.upsert_alpha_from_platform(

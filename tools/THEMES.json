@@ -3,11 +3,20 @@
   "_source": "tools/README.md 主题节（表格首列）优先，其余按前缀规则兜底；都命不中的进 _unassigned 等人工裁定，不允许默认塞进已有目录。",
   "_why_not_moved": "2026-10-04 实测：全仓 80 处 `sys.path.insert(... 'tools')`，且 index_tables / migrate_wave_verdict_enum 等被当模块 import；仓库根推导写法同主题内就有 5 种（dirname(dirname()) / parents[1] / parent.parent / '..','src' 拼接）。下沉一层会同时改变 import 解析与路径层数，逐文件迁改需跟验收流程（见 tools/README.md 「迁移配方」）；本表先把目标结构与存量基线定下来，由 S11 保证顶层只减不增。",
   "themes": {
+  "infra": {
+   "dir": "tools/infra",
+   "title": "infra",
+   "files": [
+    "proxy_mode.py"
+   ],
+   "status": "moved"
+  },
     "gates": {
       "dir": "tools/gates",
       "title": "gates",
       "files": [
         "authority_claims.py",
+        "category_coverage_audit.py",
         "combo_precheck.py",
         "corr_precheck.py",
         "expr_lint.py",
@@ -322,7 +331,8 @@
       "title": "db",
       "files": [
         "db_lock_audit.py",
-        "db_maintenance.py"
+        "db_maintenance.py",
+        "datasets_phantom_repair.py"
       ],
       "status": "moved",
       "moved_files": [

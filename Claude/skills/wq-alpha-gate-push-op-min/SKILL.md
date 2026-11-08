@@ -1,7 +1,7 @@
 ---
 name: wq-alpha-gate-push-op-min
 description: "候选 alpha 双目标优化器：推到全闸通过（LOW_SHARPE/FITNESS/2Y/self/prod/CW/sub）+ 压算子到最少。含杠杆阶梯、压缩等价改写、逐算子消融、金融含义分层、等效替换与参数扫描，及 op_count/compress/plan/scan 四脚本。触发：优化指标/压缩算子/简化表达式/算子太多/operatorCount太高/推到能提交/等效替换/同等算子/金融含义/逐算子扫描/删除算子/替换算子/扫描参数/删除后压缩/替换更精简。"
-last_verified: 2026-11-02
+last_verified: 2026-11-08
 layer: L4
 agent_created: true
 allowed-tools:
@@ -42,8 +42,23 @@ user-invocable: true
 先把指标推到**有余量**（S 超过门槛 ≥0.02、fit ≥1.02），再压缩时就有预算承受个别算子的损失；
 反过来先压缩、后推指标，会白扔掉本来能救命的算子。
 
-**例外**：若候选**已接近平台 `operatorCount` 硬上限**（PPA 上限 8）或复杂度闸（调用点 ≥10）被拦，
+**例外**：若候选**已接近平台 `operatorCount` 硬上限**（**只有 PPA 有上限 8**；REGULAR 无单条上限——
+平台 `is.checks` 里没有复杂度项，12 算子照样全 PASS，见 `docs/skills_review_closure.json` OP-07），
 则**先做压缩**拿到预算，再推指标。
+
+**★ 但「REGULAR 无闸」≠「压缩无价值」**——`operatorCount` 是 **Genius 六维软指标**的输入项，
+分两个**方向相反**的口径，别混为一谈：
+
+| 六维口径 | 含义 | 方向 | 谁能改 |
+|---|---|---|---|
+| **Operators per Alpha**（ops per） | 单条 alpha 的平均算子数 | **越低越好** | 本 skill 的压缩 |
+| **Operator Count**（op count） | **全账号用过的不同算子种类数** | **越高越好**（刷满；GOLD 上限 ~80，MASTER ~130，GM ~160+） | 靠跨算子族铺量，**压缩反而 −1** |
+
+⇒ 压缩换的是 `Operators per Alpha`，代价是 `Operator Count` 少一个（若删掉的算子本账号再无别处使用）。
+两条都是**全账号/季度平均**，单条 alpha ±1 个算子的边际量 ≈ `1/N`（N=本季提交数），所以：
+- **有 PASS 余量时**（删了仍全闸 PASS）⇒ 采纳，边际正收益；
+- **删了会掉闸**（如 S 2.03→1.90）⇒ **不换**，闸门是硬约束、六维是软指标，不可倒置。
+- 想同时抬 `Operator Count` 的正解是**换用冷门算子族**（见 §压缩三通道里的「替换」），不是留着冗余算子。
 
 ---
 
@@ -127,6 +142,8 @@ $WQ_PY "$SKILL_DIR/scripts/plan.py" --sharpe 1.56 --fitness 1.15 --two-year 1.91
 | `trade_when` 门控 | 稀疏事件型数据上样本骤减，S 全差于无门控 |
 | 腿方向混合 `multiply(rank(A), reverse(rank(B)))` | **数学无效**：平台 `reverse` = 整体取负，不产生混合信号 |
 | 扫 `truncation` | 零杠杆（0.04 与 0.12 指标逐位相同） |
+| **`ts_max(x,W)` 替代峰化块** | **该算子不存在于平台目录（103 个里没有）**，`op_arity` 直接 `UNKNOWN_OP`；目录里只有 `ts_arg_max`/`ts_max_diff` |
+| **把 `ts_mean(max(x,ts_delay(x,5)),w)` 整块换任一单算子** | DEU `QPveY7Kg` 实测：`ts_mean(6)`→S1.17 / `ts_sum(6)`→1.26 / `ts_decay_linear(6)`→1.18 / `ts_mean(10)`→1.32 / `vec_max`→1.32 / `vec_count`→0.85 / `ts_zscore`→0.88（基线 2.03）⇒ 峰化块承重，整块替代无解 |
 
 **发批前三闸**（一条语法错 ⇒ 整批 CANCELLED）：
 ```bash
@@ -161,8 +178,30 @@ $WQ_PY "$SKILL_DIR/scripts/compress.py" --expr "<表达式>" [--metrics '{"sharp
 
 输出**压缩候选清单**（每个候选标注：省几个算子、是否无损、需不需要重测）。
 
+### ★★★ 第 0 步（必做，先于一切消融）：重复子式变量合并
+
+六维 #1 `Operators per Alpha` 的口径是**不去重**——同一算子调用两次算两个。
+⇒ 表达式里**每一处重复的相同子式都是白送的算子数**。用 FASTEXPR 的变量赋值合并，
+**信号逐位不变、指标逐位不变，算子数直接下降**：
+
+```text
+# 改前：vec_avg(X) 与其 ts_backfill 各出现 2 次 ⇒ 4 个调用里有 2 个是重复计数
+vector_neut(ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(X), 22),
+    ts_delay(ts_backfill(vec_avg(X), 22), 5)), 5), 22), 252, driver="gaussian"), ts_backfill(vec_avg(G), 22))
+
+# 改后：12 -> 10 算子，S/F/2Y/sub 逐位相同（DEU 实测 QPveY7Kg -> bl6OWZ2M，2026-11-04）
+a = ts_backfill(vec_avg(X), 22);
+vector_neut(ts_quantile(ts_ir(ts_mean(max(a, ts_delay(a, 5)), 5), 22), 252, driver="gaussian"), ts_backfill(vec_avg(G), 22))
+```
+
+- 语法：`name = <expr>;` 多行 + 分号，最后一行表达式即 alpha 输出；平台 201 接受。
+- **赋值本身不计数**（对照实验 `b = vec_avg(G); ts_backfill(b,22)` 仍是 10，与不赋值同）。
+- 判定：`get_alpha_details().regular.operatorCount` 直接读，不用看指标是否变化（必然不变）。
+- 局限：只能消灭**完全相同的重复子式**；不同窗口/不同参数的同族调用不算重复。
+
 **消融协议（必须按此顺序）**：
 
+0. **变量合并先做**（见上，零损失）——不清完重复子式就去做有损消融，等于白扔算子数。
 1. **无损改写先做**（C3 类）——理论上指标逐位相同，但仍需 1 条仿真确认。
 2. **有损改写逐个测**——一次只删/换一个算子，其余冻结。规则：
    - 删掉后 **全闸仍 PASS** ⇒ 采纳（这是最理想的压缩）。
@@ -171,7 +210,7 @@ $WQ_PY "$SKILL_DIR/scripts/compress.py" --expr "<表达式>" [--metrics '{"sharp
 3. **批量验证**——把采纳的改写合并成 1 个表达式，跑 1 条仿真确认合并后仍达标。
 4. **设置层最后收敛**——decay / truncation 在表达式冻结后微调（它们不占算子）。
 
-**压缩终止条件**：① 已无「删除后仍 PASS」的算子；或 ② 再删会掉闸；或 ③ 达到 operatorCount 目标（REGULAR 无硬上限，PPA 上限 8）。
+**压缩终止条件**：① 已无「删除后仍 PASS」的算子；或 ② 再删会掉闸；或 ③ 达到 operatorCount 目标（**PPA ≤8 是硬上限；REGULAR 无单条上限，只有六维 `Operators per Alpha` 的软偏好**）。
 
 **⚠ 压缩的代价必须记账**：每次采纳一个压缩都有**新的 alpha id**；同一骨架的多个变体互相关会 >0.99，
 ⇒ **最终只应保留指标最好且算子最少的那 1 个**，其余标 `SUPERSEDED`。
@@ -251,6 +290,11 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参�
   逐类过审**全部 REGULAR 算子**（含 `vec_*`/`ts_target_tvr_hump`/`ts_scale`/`ts_ir` 等未用算子），
   不能拿这 14 组当「已遍历」。
 - `scan.py --params` 把每个数值参数展开 0.5/0.75/1.25/1.5 倍。
+  ⚠ **倍数扫描不够——时序窗口必须加「绝对值阶梯」扫描**：`ts_*` 窗口常在跨量级处有质变甜点，
+  倍数扫描会漏。**强制规则**：对 `ts_*` 的 `lookback` 参数，除倍数扫描外必须补扫**标准交易日阶梯**
+  `21 | 63 | 126 | 252 | 504 | 756`（1月/1季/半年/1年/2年/3年）。
+  实例（2026-11-03）：`ts_rank(·,120)` 的 0.5×–1.5×（60–180）全在 S 1.48–1.84，
+  但 `ts_rank(·,504)` = S **2.21**（+0.33），4.2× 完全在倍数扫描外 ⇒ 漏掉更强候选。
 
 完整协议（含判定规则、陷阱、端到端模板）见 [`references/scan-protocol.md`](references/scan-protocol.md)。
 
@@ -270,8 +314,9 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参�
   ⇒ `Incompatible unit for input of "rank" at index 0, expected "Unit[]", found "Unit[Group:1]"`。
   **把 `group_neutralize(x, densify(market))` 换成 `vector_neut(x, rank(densify(market)))` 是错的**（rank 不能转单位）；
   `vector_neut` 第 2 参必须是**真向量字段的 rank**（如 `rank(ts_mean(...))`），不能沿用 group 轴。
-- **参数**：0.5/0.75/1.25/1.5 粗扫 → 最优档附近细扫（步长 ≤ 窗口 5%）；窗口参数是尖峰（±15 就掉）。
-- **终止**：三通道全部候选实测完毕，或达 operatorCount 目标（REGULAR 复杂度闸 <10；PPA ≤8），或再动任何算子会掉闸。
+- **参数**：0.5/0.75/1.25/1.5 粗扫 + **`ts_*` 窗口绝对值阶梯** `21|63|126|252|504|756`（倍数扫描漏跨量级甜点）→ 最优档附近细扫（步长 ≤ 窗口 5%）；窗口参数是尖峰（±15 就掉）。
+- **终止**：三通道全部候选实测完毕，或达 operatorCount 目标（**PPA ≤8 硬上限；REGULAR 无单条上限**，
+  只有六维 `Operators per Alpha` 软偏好——**不得为了压它而牺牲 S 到掉闸**），或再动任何算子会掉闸。
 - **记账**：每次采纳（删除/替换/参数）都产生**新 alpha id**，只保留指标最好且算子最少的那 1 个，其余标 `SUPERSEDED`；
   全部候选入 `tools/ledger/mining_ledger.py`。
 

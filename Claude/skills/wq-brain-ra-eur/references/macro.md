@@ -5,6 +5,8 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：Other　**类别卡**：other
 
+**涉及数据集**：macro27
+
 ### 回测设置（进仿真的值）
 
 | 设置 | 值 | 来源 |
@@ -29,6 +31,14 @@
 
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
+
+### 证据（2026-11-07 只读汇总）
+
+| 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
+|---|---|---|---|---|---|
+| 9 | 0 | 0 | 0 | 0 | 0 |
+
+主要数据集（回测数）：macro27（9）
 
 ### S1 字段理解
 

@@ -16,6 +16,7 @@
     python tools/corr_check.py --ids zq3Kk39K --types production
     python tools/corr_check.py --ids a,b --out results/_p.json --wait 40
     python tools/corr_check.py --ids a,b,c --enqueue          # 只登记队列，不查
+    python tools/corr_check.py --ids a,b --family KOR_2y --priority 1 --enqueue
     python tools/corr_check.py --run-queue --max-tries 2      # 串行消费队列
     python tools/corr_check.py --queue-stats                  # 队列概况
 
@@ -25,10 +26,18 @@
    ``is.prodCorrelation`` 命中即返回，**不触发平台计算**。``--refresh`` 才强制
    重测（终验语义：终验前必须拿到刚算的值）。
 2. **按 retry_after 退避**：返回 busy/pending 时按其 ``retry_after`` 睡
-   （封顶 ``--sleep-cap``，缺省 60s），不再固定 45s；``inflight=True`` 表示
+   （封顶 ``--sleep-cap``，缺省 260s = 盖住冷却 195s 与忙提示 240s；2026-10-28 前是 60s，
+   一轮 pending 要空转 4 次），不再固定 45s；``inflight=True`` 表示
    平台还在算同一条，等一个 join 窗口后重查即可（**不会二次触发**）。
 3. **队列模式**：``--enqueue`` 登记 → ``--run-queue`` 串行消费；每条按自己的
    轮询结果写回 ``done / pending_timeout / error``，``--max-tries`` 封顶。
+4. **族代表串行（2026-11-04）**：``--enqueue --family TAG`` 给同族候选打同一
+   标签后，队列只放行族内**代表**（最久先入队的活跃成员），兄弟被持有——
+   同族相关性同源，代表没定论前查兄弟大概率白烧一个 240s 窗口；代表
+   done/error 后兄弟自动接任，无需干预。``--priority N``（大者先）跨族排序。
+   ``--family-cull``（缺省 OFF）在代表 prod ≥ 阈值时自动把兄弟判死——窗口谷
+   方法论里直方图 [0.7,0.8) 桶 n≥1 ⇒ 整族必死，但误判代价是埋掉可救候选，
+   故默认只提示不代杀。
 """
 import argparse
 import asyncio
@@ -121,6 +130,11 @@ async def _run_queue(brain, types, args, got):
         if not aid:
             break
         rec = q.get(aid)
+        fam = str(rec.get("family") or "")
+        held = (q.family_holds().get(aid) or []) if fam else []
+        if held:
+            print("=== 族[%s] 代表 %s 先行，%d 个兄弟被持有：%s ==="
+                  % (fam, aid, len(held), ",".join(held)), flush=True)
         tries = int(rec.get("tries") or 0)
         if tries >= args.max_tries:
             q.mark(aid, status="error", error="max tries (%d) reached" % args.max_tries)
@@ -138,6 +152,16 @@ async def _run_queue(brain, types, args, got):
             prod_mx = (got.get(aid) or {}).get("production", {}).get("max")
             self_mx = (got.get(aid) or {}).get("self", {}).get("max")
             q.mark(aid, max_corr=prod_mx if prod_mx is not None else self_mx, status="done")
+            # 族代表出了数值：达到阈值 ⇒ 整族同源同命运（族级判死方法论）。
+            # --family-cull 才动兄弟（缺省 OFF，防误埋可救候选）；手动处置用
+            # q.mark 兄弟 error 即可，队列自身不做不可逆推断。
+            if (args.family_cull and fam and prod_mx is not None
+                    and prod_mx >= args.threshold):
+                for sib in held:
+                    q.mark(sib, status="error",
+                           error="family-cull: rep %s prod=%.4f >= %s" % (aid, prod_mx, args.threshold))
+                print("族[%s] 代表 %s prod=%.4f ≥ %s，已按 --family-cull 判死兄弟：%s"
+                      % (fam, aid, prod_mx, args.threshold, ",".join(held)), flush=True)
         elif "data_unavailable" in statuses.values():
             q.mark(aid, status="error", error="data_unavailable（4xx 终态，重试无益）")
         else:
@@ -160,6 +184,12 @@ async def main():
     ap.add_argument("--sleep-cap", type=float, default=260.0,
                     help="重查间隔上限（秒；缺省 260 ≥ 冷却 195 / 忙提示 240）")
     ap.add_argument("--enqueue", action="store_true", help="只把 --ids 登记进 prod_queue")
+    ap.add_argument("--family", default="", metavar="TAG",
+                    help="入队族标签：同族串行（代表=最久先入队者），代表没定论前兄弟不查")
+    ap.add_argument("--priority", type=float, default=None, metavar="N",
+                    help="入队优先级（大者先，如 ATOM 候选插队；跨族排序）")
+    ap.add_argument("--family-cull", action="store_true",
+                    help="族代表 prod ≥ 阈值时自动判死兄弟（缺省 OFF，防误埋可救候选）")
     ap.add_argument("--run-queue", action="store_true", help="串行消费 prod_queue")
     ap.add_argument("--queue-stats", action="store_true", help="打印队列概况后退出")
     ap.add_argument("--max-tries", type=int, default=2, help="队列条目最多尝试次数")
@@ -176,7 +206,7 @@ async def main():
     if a.enqueue:
         if not ids:
             ap.error("--enqueue 需要 --ids")
-        n = q.push_many(ids, note=a.note)
+        n = q.push_many(ids, note=a.note, family=a.family or None, priority=a.priority)
         print("已登记 %d 条 → %s" % (n, q.queue_path()))
         return
 

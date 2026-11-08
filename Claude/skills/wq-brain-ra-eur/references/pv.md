@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：PV　**类别卡**：pv
 
-**涉及数据集**：continuation_score、intraday_pv_feats、pattern_scores、pv106、pv37
+**涉及数据集**：continuation_score、intraday_pv_feats、pattern_scores、pv1、pv103、pv106、pv37
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 108 | 10 | 0 | 0 | 12 | 0 |
+| 140 | 10 | 12 | 1 | 12 | 0 |
 
-主要数据集（回测数）：continuation_score（81）、pv106（11）、pattern_scores（8）、pv37（8）
+主要数据集（回测数）：continuation_score（81）、intraday_pv_feats（22）、pv106（13）、pattern_scores（12）、pv37（8）、pv103（2）、pv1（2）
 
 ### S1 字段理解
 

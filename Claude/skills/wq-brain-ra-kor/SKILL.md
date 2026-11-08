@@ -8,7 +8,7 @@ allowed-tools:
 - Bash
 - mcp__wq-brain-http__*
 - mcp__wqb-db__*
-last_verified: 2026-11-02
+last_verified: 2026-11-08
 ---
 
 # KOR 字段体检 → 组装 → 归因 → 破闸

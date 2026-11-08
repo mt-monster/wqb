@@ -10,7 +10,7 @@
 ② ★ 后续修正：`0` 确实被 400 拒，但 **`null` 可以真正清零**。
    - PATCH {"osmosisPoints": 0}    -> HTTP 400 "greater than or equal to 1"
    - PATCH {"osmosisPoints": null} -> HTTP 200，回读 osmosisPoints=None
-   `osmosis_allocate.py::zero_others` 已改为优先发 null ⇒ 正常情况下**不再产生残留**，
+   `osmosis_core.py::zero_others` 已改为优先发 null ⇒ 正常情况下**不再产生残留**，
    本脚本退化为「复核/兜底」角色（校验每 scope 是否精确 100,000，差则从最大项扣补）。
 
 用法：
@@ -30,7 +30,25 @@ from collections import defaultdict
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "world-quant-brain-mcp"))
 
 TARGET = 100_000
-SCOPES_KEEP = {("IND", 1), ("KOR", 1), ("GBR", 1), ("GLB", 1), ("DEU", 1)}
+# 兜底：读不到 plan 时用（2026-11-05 起 plan 含 6 个 scope，含 USA）
+SCOPES_FALLBACK = {("IND", 1), ("KOR", 1), ("GBR", 1), ("GLB", 1), ("DEU", 1),
+                   ("USA", 1)}
+_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+DEFAULT_PLAN = os.path.join(_ROOT, "results", "osmosis_plan.json")
+
+
+def plan_scopes(path: str | None = None) -> set:
+    """从 plan 文件推导「应保持 100k」的 scope 集合。
+
+    ★ 2026-11-05 修正：原实现硬编码 5 个 scope，USA 加入后会被判为「非计划 scope，不动」，
+    导致 USA 的 100k 不再被校验（漏检）。改为以 plan 为准，scope 集合变化自动跟随。
+    """
+    try:
+        plan = json.load(open(path or DEFAULT_PLAN, encoding="utf-8"))
+        got = {(r["region"], r.get("delay") or 1) for r in plan if r.get("region")}
+        return got or SCOPES_FALLBACK
+    except Exception:
+        return SCOPES_FALLBACK
 
 
 def purge() -> int:
@@ -111,6 +129,9 @@ async def main() -> int:
     if not a.no_purge:
         print(f"[cache] purged {purge()} 条")
 
+    keep = plan_scopes(a.verify_plan)
+    print(f"[scopes] 以 plan 为准：{sorted(f'{r}D{d}' for r, d in keep)}")
+
     pool = await fetch()
 
     if a.verify_plan:
@@ -135,7 +156,7 @@ async def main() -> int:
     for k in sorted(by, key=lambda k: -(sum(x["pts"] for x in by[k]))):
         al = [x for x in by[k] if x["pts"] > 0]
         tot = sum(x["pts"] for x in al)
-        if k not in SCOPES_KEEP:
+        if k not in keep:
             if tot > 0:
                 print(f"{k[0]}D{k[1]:<7}{len(al):>6}{tot:>10,}{'—':>9}{'（非计划scope，不动）':>8}")
             continue

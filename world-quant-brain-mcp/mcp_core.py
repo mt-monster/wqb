@@ -263,6 +263,7 @@ def _slim_alpha(a):
     out = {
         "id": a.get("id"),
         "code": code,
+        "type": a.get("type"),   # REGULAR / SUPER（2026-11-03 补全 SA/RA 标识）
         "status": a.get("status"),
         "stage": a.get("stage"),
         "dateSubmitted": a.get("dateSubmitted"),

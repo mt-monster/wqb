@@ -82,8 +82,9 @@
 | `WQB_JUDGE_DATA_ROOT` | — | `brain-alpha-judge` 评审报告根：单测 / 部署显式注入，缺省落 `output_report/brain-alpha-judge/`，脱离仓库时退 `SKILL_DIR/outputs/` | `brain-alpha-judge/scripts/judge_alpha.py` | — |
 | `WQB_OUT_DIR` | — | `tools/vwap_histogram.py` 输出根覆盖（缺省 `<仓库根>/output_report`） | `tools/vwap_histogram.py` | — |
 | `WQB_PROD_QUEUE_PATH` | — | `wqb.prod_queue` 的队列文件覆盖（缺省 `<仓库根>/cache/prod_queue.json`） | `src/wqb/prod_queue.py` · `tests/unit/09_core/test_prod_queue.py` | — |
-| `WQB_REPO_ROOT` | — | 显式仓库根（`wq_campaign.config` / `ind_runner.py` / `usa_runner.py` 的首选，最可靠；缺省从文件位置上溯找 `pyproject.toml` + `src/wqb`） | `wq-brain-ra-ind/scripts/ind_campaign/ind_runner.py` · `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/config.py` · +17 | — |
-| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +22 | — |
+| `WQB_PROXY_MODE_FILE` | — | `world-quant-brain-mcp/proxy_mode.py` 的代理模式配置覆盖（缺省 `<仓库根>/cache/proxy_mode.json`，cache/ 已 gitignore，属本机运行期状态）。内容：`{mode: on|off|auto, proxy_url}` | `mcp/proxy_mode.py` | — |
+| `WQB_REPO_ROOT` | — | 显式仓库根（`wq_campaign.config` / `ind_runner.py` / `usa_runner.py` 的首选，最可靠；缺省从文件位置上溯找 `pyproject.toml` + `src/wqb`） | `wq-brain-ra-ind/scripts/ind_campaign/alpha_meta.py` · `wq-brain-ra-ind/scripts/ind_campaign/harvest_safe.py` · +19 | — |
+| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +24 | — |
 | `WQB_SLOTS_DIR` | — | 账户级槽位 token 目录（缺省 `logs/_slots`） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` · `tests/unit/10_toolkit_scripts/test_slots_arbitration.py` | — |
 | `WQB_TASK_ROOT` | — | 后台任务目录（缺省 `logs/_async_tasks`；`workflow_task_status` 读它） | `src/wqb/workflow/_common.py` · `tests/unit/02_workflow/test_mining_efficiency_guards.py` · +4 | — |
 | `WQB_WORKSPACE` | — | 工作区根覆盖（同 `WQB_ROOT`，wave_gate / GEM 等按各自的解析顺序取用） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/headless_runner/run.py` · +9 | — |
@@ -192,8 +193,10 @@
 | `MCP_PORT` | `8000` | streamable-http 监听端口 | `mcp/main.py` · `mcp/mcp_core.py` · +1 | — |
 | `MCP_STREAMABLE_HTTP_PATH` | `/mcp` | streamable-http 路径 | `mcp/mcp_core.py` | — |
 | `MCP_TRANSPORT` | `streamable-http` | MCP 服务传输方式（缺省 `streamable-http`；2026-10-05 起两个 server 常驻 HTTP，客户端只连 URL 不再起进程） | `mcp/main.py` · `wqb_db_mcp.py` | — |
+| `NO_PROXY` | — | 标准 NO_PROXY 环境变量；MCP 入口（world-quant-brain-mcp/main.py）会在其值后追加 worldquantbrain.com 等平台域名，让平台请求直连、绕开失效的系统代理（见 WQB_PLATFORM_BYPASS_PROXY）。requests 传入的显式 proxies 不受它影响 | `mcp/main.py` | — |
 | `WQB_MCP_SESSION_FILE` | — | `tools/mcp_http_caller.py`：MCP session id 落盘位覆盖（缺省 `cache/_mcp_http_caller_session`，gitignore 运行期区） | `tools/mcp_http_caller.py` | — |
 | `WQB_MCP_URI` | — | `tools/mcp_http_caller.py` 的端点覆盖，优先级高于 `--service`（缺省从仓库根 `.mcp.json` 解析 `wq-brain-http` / `wqb-db` 的 url） | `tools/mcp_http_caller.py` | — |
+| `WQB_PLATFORM_BYPASS_PROXY` | `1` | `=0` 关闭 MCP 服务入口对平台域名的 NO_PROXY 绕行。缺省开：代理节点故障时继承来的 HTTP(S)_PROXY 会把 api.worldquantbrain.com 拖成 SSL UNEXPECTED_EOF / ConnectionReset(10054)，而平台本身可直连；论坛通道走 FORUM_SETTINGS_PROXY 的显式 proxies 不受影响（2026-11-06 实测） | `mcp/main.py` · `mcp/proxy_mode.py` | — |
 
 #### 论坛 / Labs 浏览器通道
 
@@ -203,15 +206,17 @@
 | `FORUM_SETTINGS_BASE_URL` | `https://support.worldquantbrain.com` | 论坛站点根（缺省官方支持站；测试环境可改指别处） | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_HEADLESS` | `true` | 论坛浏览器是否无头（缺省 true） | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_NAV_TIMEOUT` | `40` | 论坛浏览器导航超时（秒，默认 40） | `mcp/forum_functions.py` | — |
-| `FORUM_SETTINGS_PROXY` | — | 论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY | `mcp/forum_functions.py` | — |
+| `FORUM_SETTINGS_PROXY` | — | 论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY | `mcp/forum_functions.py` · `mcp/proxy_mode.py` | — |
 | `FORUM_SETTINGS_TIMEOUT` | `15` | 论坛选择器等待超时（秒） | `mcp/forum_functions.py` | — |
-| `HTTPS_PROXY` | — | 标准 HTTPS 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY 缺省时回落读取 | `mcp/forum_functions.py` | — |
-| `HTTP_PROXY` | — | 标准 HTTP 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY/HTTPS_PROXY 缺省时回落读取 | `mcp/forum_functions.py` | — |
+| `HTTPS_PROXY` | — | 标准 HTTPS 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY 缺省时回落读取 | `mcp/forum_functions.py` · `mcp/proxy_mode.py` | — |
+| `HTTP_PROXY` | — | 标准 HTTP 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY/HTTPS_PROXY 缺省时回落读取 | `mcp/forum_functions.py` · `mcp/proxy_mode.py` | — |
 | `LABS_AGENT_SCRIPT` | — | Labs 分析引擎脚本路径覆盖 | `mcp/labs_functions.py` | — |
 | `LABS_MAX_CONCURRENCY` | `1` | Labs 浏览器会话并发（缺省 1） | `mcp/labs_functions.py` | — |
 | `LABS_PLATFORM_URL` | `https://platform.worldquantbrain.com` | Labs 所在的平台站点根 | `mcp/labs_functions.py` | — |
 | `LABS_SETTINGS_HEADLESS` | — | Labs 浏览器是否无头（缺省跟随 `FORUM_SETTINGS_HEADLESS`） | `mcp/labs_functions.py` | — |
 | `LABS_SETTINGS_TIMEOUT` | `30` | Labs 选择器等待超时（秒） | `mcp/labs_functions.py` | — |
+| `WQB_FORUM_BYPASS_PROXY` | — | `=1` 强制论坛/浏览器通道直连（不看 FORUM_SETTINGS_PROXY / HTTPS_PROXY）。由 `world-quant-brain-mcp/proxy_mode.py` 的 mode=off 置位：代理关掉后 HTTP(S)_PROXY 仍指向死端口，而论坛的 proxy 选择是一条 or 链，设空字符串绕不过去（2026-11-07 实测） | `mcp/forum_functions.py` · `mcp/proxy_mode.py` | — |
+| `WQB_PROXY_URL` | — | 代理地址覆盖（缺省取 FORUM_SETTINGS_PROXY / HTTPS_PROXY / HTTP_PROXY，都没有则 http://127.0.0.1:7897）；`proxy_mode.py` 在配置缺省时用它 | `mcp/proxy_mode.py` | — |
 
 #### 内部标记（勿手设）
 

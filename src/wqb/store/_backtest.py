@@ -185,8 +185,9 @@ class BacktestMixin:
                         margin, returns, drawdown, two_year_sharpe, sub_universe_sharpe,
                         risk_neutralized_sharpe,
                         long_count, short_count, pnl, book_size, ra_failed_checks,
-                        region, wave, dataset, code, payload_json, created_at)
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        region, wave, dataset, code, payload_json, created_at,
+                        duration_s, duration_src)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                        ON CONFLICT(alpha_id) DO UPDATE SET
                         expression_id=excluded.expression_id, status=excluded.status,
                         sharpe=COALESCE(excluded.sharpe, sharpe),
@@ -205,6 +206,8 @@ class BacktestMixin:
                         book_size=COALESCE(excluded.book_size, book_size),
                         ra_failed_checks=CASE WHEN ? THEN excluded.ra_failed_checks
                                               ELSE ra_failed_checks END,
+                        duration_s=CASE WHEN ? THEN excluded.duration_s ELSE duration_s END,
+                        duration_src=CASE WHEN ? THEN excluded.duration_src ELSE duration_src END,
                         region=excluded.region, wave=excluded.wave,
                         dataset=COALESCE(excluded.dataset, dataset),
                         code=excluded.code, payload_json=excluded.payload_json,
@@ -222,7 +225,10 @@ class BacktestMixin:
                         # 于是「RA 全过」与「这一行没有 RA 信息」在列上不可区分 ⇒ 该列不可统计。
                         _dumps(failed) if failed is not None else None,
                         region, str(wave), dataset, code, payload, now,
+                        r.get("duration_s"), r.get("duration_src"),
                         failed is not None,
+                        r.get("duration_s") is not None,
+                        r.get("duration_src") is not None,
                     ),
                 )
                 if alpha_id:

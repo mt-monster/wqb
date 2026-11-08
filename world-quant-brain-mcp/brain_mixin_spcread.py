@@ -1289,12 +1289,16 @@ class SpcDataMixin:
             max_wait_seconds = _PROD_CORR_WAIT_S
         max_wait_seconds = float(max_wait_seconds)
         # 2026-10-06 实测调优：原 30s 固定间隔让结果落在两个查询点之间时白等。
-        # 改成 10s 起、前 12 次 10s、之后 30s 的阶梯：短任务更快收敛，
-        # 长尾任务仍不会被请求数放大。与 240s 窗口的配合：10s×12 覆盖前 120s，
-        # 之后 30s 一档 ⇒ 查询点约在 0/10/…/120/150/180/210s，200s 内的正常计算
-        # 最迟在 210s 那一次拿到（抖动后仍落在窗口内）。
-        poll_interval = 30       # 长尾阶段的稳态间隔
+        # 改成 10s 起、前 12 次 10s、120–150s 一档 30s、150s 起回 10s 的阶梯：
+        # 短任务更快收敛，长尾任务不被请求数放大，且**尾段加密**——正常计算
+        # 180–200s 完成，若 150s 后仍是 30s 一档，完成到下一查询点平均白等 ~15s
+        # （最坏 30s）；150s 起保持 10s 步长后尾差 ≤10s，代价只是 160–240s 带内
+        # 多 ~9 个 GET（无配额代价）。与 240s 窗口的配合：查询点约在
+        # 0/10/…/120/150/160/…/240s，200s 内的正常计算在完成后 ≤10s 内拿到。
+        poll_interval = 30       # 120–150s 的过渡台阶
         poll_fast = 10           # 前 12 次的快轮询间隔
+        poll_tail = 10           # 150s 起尾段回到 10s（加密等计算收尾）
+        poll_tail_from_s = 150.0  # 尾段加密的起始时刻（秒）
         start_time = time.time()
         attempt = 0
         consecutive_empty = 0    # track consecutive empty-body responses
@@ -1318,6 +1322,15 @@ class SpcDataMixin:
         def _sleep_s(seconds: float) -> float:
             """P2-7：加 ±15% 抖动，避免多进程在同一秒集体醒来（thundering herd）。"""
             return max(0.0, float(seconds) * random.uniform(0.85, 1.15))
+
+        def _step(attempt_no: int, elapsed_s: float) -> float:
+            """轮询步长（唯一决策点，两个 sleep 位共用，防止改一处漏一处）。
+
+            前 12 次 10s（覆盖 0–120s）→ 120–150s 一档 30s → 150s 起回 10s。
+            """
+            if attempt_no <= 12:
+                return poll_fast
+            return poll_tail if elapsed_s >= poll_tail_from_s else poll_interval
 
         while True:
             elapsed = time.time() - start_time
@@ -1380,7 +1393,7 @@ class SpcDataMixin:
                             "平台正在计算中，通常需要 1-5 分钟，请耐心等待...",
                             "INFO"
                         )
-                    _wait = poll_fast if attempt <= 12 else poll_interval
+                    _wait = _step(attempt, elapsed)
                     if platform_retry_after:
                         _wait = min(_wait, platform_retry_after)
                     await asyncio.sleep(_sleep_s(_wait))
@@ -1453,7 +1466,7 @@ class SpcDataMixin:
 
             consecutive_network_failures = 0
 
-            _wait = poll_fast if attempt <= 12 else poll_interval
+            _wait = _step(attempt, elapsed)
             if platform_retry_after:
                 _wait = min(_wait, platform_retry_after)
             await asyncio.sleep(_sleep_s(_wait))

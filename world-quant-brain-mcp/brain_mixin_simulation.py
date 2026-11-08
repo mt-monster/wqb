@@ -96,6 +96,11 @@ class SimulationMixin:
             # Filter out None values from entire payload
             payload = {k: v for k, v in payload.items() if v is not None}
             
+            # 2026-11-03：单颗回测耗时埋点。t0 取「提交瞬间」（平台开始算），
+            # 到下方拿到 alpha 详情返回时算差，即为该 alpha 的平台计算墙钟。
+            # 仅成功路径回写（失败路径不落库，无需计时）；duration_s 作为附加键带出，
+            # 由 mcp_alpha_persist._build_row 透传、upsert_backtest_rows 落库。
+            _t0 = time.time()
             response = await self._request('POST', f"{self.base_url}/simulations", json=payload)
             if response.status_code >= 400:
                 return {
@@ -195,7 +200,16 @@ class SimulationMixin:
                         self.log(f"❌ Failed to fetch alpha details after {max_poll_retries} attempts: {str(e)}", "ERROR")
                         raise
             
-            return alpha_response.json()
+            data = alpha_response.json()
+            # 回写单颗回测耗时（秒，1 位小数）+ 来源标签。失败路径在上方已提前 return。
+            # duration_src='single' 表示单条阻塞墙钟；批量收批路径写 'batch'
+            # （整批「派发→收批」周转），两者不可混算中位数，见 wave_timing.py。
+            try:
+                data["duration_s"] = round(time.time() - _t0, 1)
+                data["duration_src"] = "single"
+            except Exception:  # noqa: BLE001 — 计时绝不影响结果返回
+                pass
+            return data
             
         except Exception as e:
             self.log(f"❌ Failed to create simulation: {str(e)}", "ERROR")

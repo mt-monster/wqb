@@ -10,7 +10,7 @@
 
 | 事实 | 出处 |
 |---|---|
-| `check_correlation` 内置阻塞轮询（前 12 次 10 s 快轮询、之后 `prod_corr_poll_s` = 30 s；**最长 `prod_corr_timeout_s` = 240 s**，2026-10-28 从 120 回调——120 短于正常计算，会让每条真实查询都 pending 再叠一轮冷却）；账号级单并发，忙时**立即**返回 `correlation_busy`（fail-fast） | `wqb.config.WAIT_THRESHOLDS` |
+| `check_correlation` 内置阻塞轮询（前 12 次 10 s 快轮询、120–150 s 一档 30 s、**150 s 起回 10 s**——正常计算 180–200 s，尾段加密把「完成→下一查询点」的白等压到 ≤10 s；**最长 `prod_corr_timeout_s` = 240 s**，2026-10-28 从 120 回调——120 短于正常计算，会让每条真实查询都 pending 再叠一轮冷却）；账号级单并发，忙时**立即**返回 `correlation_busy`（fail-fast） | `wqb.config.WAIT_THRESHOLDS` |
 | **跨进程槽**：账号级单并发由文件 token `logs/_dblock/correlation.lock.json` 守护（`wqb.correlation_slot`，TTL 600 s，环境变量 `BRAIN_CORRELATION_LOCK_TTL_SECONDS`）。**任何进程**（MCP 服务 / `super_build` / `prod_bucket_scan` / `prod_watch` / 一次性脚本）都必须经它取数；拿不到就 fail-fast，**不排队、不降级放行**。放行等于让第二个进程也去打这个单并发接口——2026-10-22 实测事故就是这样让一方空转 1499 s | `src/wqb/correlation_slot.py` · `brain_mixin_transport.py` |
 | 同一 alpha 的已决结果缓存 **48 小时**（2026-10-06 改：后端由 Redis 换成 SQLite 权威表 `data/wqb.db::alpha_corr_cache`，**不再依赖 Redis**）。过期即回源平台——生产池会漂移，陈值比没值更危险。`pending` / `correlation_busy` / `data_unavailable` **不缓存**；命中缓存的响应带 `from_cache: true` | `brain_mixin_correlation.py::_prod_corr_cached`（TTL 与 `wqb.store._corr_cache.CORR_FRESH_HOURS=48` 同口径） |
 | `correlation_busy` 带 `retry_after`（缺省 180 s，环境变量 `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS`） | `brain_mixin_transport.py` |

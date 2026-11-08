@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：News-Sentiment　**类别卡**：news
 
-**涉及数据集**：news17、news20、news21、news29、news31、news36、news38、news46、news48、news50、news54、news73、news84、news85、predictive_starmine × news73、{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}
+**涉及数据集**：news17、news20、news21、news29、news31、news36、news38、news46、news48、news50、news52、news54、news54 事件密度 (NEWS单塔 effective1, 密度无效=已知失败模式复现)、news73、news84、news85、predictive_starmine × news73、{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 46 | 0 | 0 | 0 | 16 | 0 |
+| 60 | 0 | 0 | 0 | 17 | 0 |
 
-主要数据集（回测数）：news46（15）、news21（8）、news50（8）、news54（7）、news73（4）、news29（4）
+主要数据集（回测数）：news46（15）、news29（10）、news21（8）、news50（8）、news54（7）、news73（4）、news48（4）、news54 事件密度 (NEWS单塔 effective1, 密度无效=已知失败模式复现)（2）
 
 ### S1 字段理解
 
@@ -93,6 +93,7 @@
 | EUR-NEWS38-CONCEPT-WEAK | news38 densified tone/polarity/relevance concepts | Leave news38 standalone densify concepts. Do not mix v_rev/wedge. Skip news54 timestamps/headline-text. Next NEWS=news36 | news38 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-NEWS46-ZERO-IS-SIGNAL | mws46_* ravenpack news sentiment/impact MATRIX | 两轮实测均无 IS 信号：wave245 基础探针(单字段 rank/ts_delta/rank差) best／S／=0.46 n=5；wave257 复合结构第二轮(group_rank 新中性化几何 + trade_when 事件门控跨 | news46 | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-NEWS48-INSPECT-GATE-WALL | news48 ENS 情绪分族 | news48 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pre | news48 | inferred | <!-- lint:const-ok 证据原文 -->
+| EUR-NEWS73-TONE-LEVEL-DEAD-20261102 | news73 story 级语调水平 (POS-NEG 慢速平滑 → 截面/分组排序) | news73 在 EUR D1 REGULAR 通道，【做多高语调方向】（sign=+，即 rank(POS-NEG) 正向）已达天花板，不再派发同族变体；NEWS 塔仍活，但只能换数据集（news7/news18/news23/news5 | news73 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-NEWS84-SENTIMENT-MATRIX-WEAK | news84 migration sentiment MATRIX probe | Leave news84/news85. Do not occupy another slot with EUR news sentiment MATRIX probes. | news84 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-NEWS85-SENTIMENT-MATRIX-WEAK | news85 DNN sentiment MATRIX probe | Leave news85. Do not second-round probe. | news85 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-NONMODEL-TOWER-CEILING | non_model_tower_sparse_event_sentiment_analyst |  | {'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'} | payload | <!-- lint:const-ok 证据原文 -->

@@ -15,6 +15,7 @@ from __future__ import annotations
 import logging
 import os
 import re
+import sqlite3
 import time
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -176,6 +177,7 @@ def run(
     wave: Optional[str] = None,
     expr_family: Optional[str] = None,
     channel: Optional[str] = None,
+    mix_narrative: Optional[Dict[str, str]] = None,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行 alpha 提交流程.
@@ -190,6 +192,9 @@ def run(
         descriptions: 描述文本（三段式，≥100 英文词）
         force: 是否跳过本地预检（仅当 confirm_submit=True 时有意义）。
             **不豁免 prod 闸**——prod 是用户合规红线，与预检分离，且无任何豁免入口。
+            **也不豁免** Step 1.2 的 `weight_grid`/`stack` 结构硬拦、Step 1.7 的 ΔSharpe<0 硬闸。
+            **可豁免**（留痕）Step 1.2 的三问、Step 1.5 的 robustness 声明、Step 1.8 的分散度软闸
+            ——这三项是自设纪律，不是平台规则。
         robustness_audited: 是否已通过 brain-alpha-robustness 审计（Phase B/C 逐年归因）。
             **fail-closed（2026-09-29 P0）**：confirm_submit=True 时必须为 True，
             否则拒绝提交（除非 force）。robustness 的 Phase B.0 硬门（Failed RA/PPA==0）
@@ -202,6 +207,11 @@ def run(
         wave: 波次 → 自动生成 `W<wave>` 标签
         expr_family: 表达式族 → 自动生成 `EXPRFAM_<family>` 标签（防同族自相残杀）
         channel: 通道标签覆盖（默认按 type 推断 `CH_REG`/`CH_SUPER`）
+        mix_narrative: 混腿「三问」答案（2026-11-08）。键固定三个：
+            ``holders``（两腿的信息持有者分别是谁）/ ``polarity``（极性是否对齐）/
+            ``prior``（组合方向与权重是否在**回测前**钉死）。仅当表达式是 2–3 条信号腿的
+            多源组合时才需要；`weight_grid`（≥2 系数腿）与 `stack`（≥4 腿）**给不给都拦**。
+            缺答时 `confirm_submit=True` 会被 Step 1.2 拦下（`force=True` 可豁免留痕）。
         _context: 执行上下文
 
     Returns:
@@ -247,12 +257,22 @@ def run(
                 "verify_timeout": verify_timeout,
                 "calls": (
                     ["get_alpha_details(alpha_id)",
-                     "submit_gate(FAIL/硬闸WARNING/Failed RA·PPA/robustness台账REJECT，fail-closed)"]
+                     "submit_gate(FAIL/硬闸WARNING/Failed RA·PPA/robustness台账REJECT，fail-closed)",
+                     "mix_audit：混腿审查（≥2 系数腿 / ≥4 腿堆叠 ⇒ 结构硬拦；2–3 腿 ⇒ 必答三问）"
+                     "＋按 checks 名判 ATOM(Last-2Y) 还是 LADDER，仅提示不阻断"]
                     + ([
                         "robustness_audited 声明（confirm_submit 时 fail-closed 必过；台账已有记录则降为辅助）",
                         "quota 闸：list stage=OS 数 ET 今日提交数，满 4/日 → blocked（fail-open）",
                         "prod 闸：check_correlation(production, refresh=False 缓存优先)，max≥0.7 或未出数 → blocked"
                         "（合规红线，2026-10-18 起无豁免入口）",
+                    ] if confirm_submit else [])
+                    + [
+                        "边际贡献：performance_comparison(before-and-after 分区组合) → "
+                        "ΔSharpe<0 硬闸阻断（2026-11-08 用户明令，force 不豁免；取数失败才 fail-open）",
+                        "分散度：self≥0.55 且 ΔSharpe<+0.02 → 软闸阻断（force 可豁免）"
+                        "—— 读 is.selfCorrelation，为空回落本地库缓存（不现算，避免拖长节点）",
+                    ]
+                    + ([
                         "set_alpha_properties(alpha_id, name/color/tags/descriptions)",
                         "POST /alphas/{id}/submit",
                         f"poll get_alpha_details until OS/ACTIVE (<= {verify_timeout}s)",
@@ -348,6 +368,53 @@ def run(
         result["blocked"] = True
         return _finalize(result, store, alpha_id)
 
+    # Step 1.2: 混腿审查（2026-11-08，官方口径）——结构硬拦 + 三问 + ATOM/Ladder 路径提示。
+    # 位置刻意放在所有**额外网络调用之前**：结构不合格的候选不该消耗 prod 探针槽与配额查询
+    # （prod 端点并发有限，busy 时会白等）。纯函数，只读 precheck。
+    # 阻断分两级：
+    #   · weight_grid / stack ⇒ **force 不豁免**（结构上答不出经济含义，官方明确禁止）；
+    #   · 2–3 腿缺三问 ⇒ 拦，但 `force=True` 可豁免并留痕（这是自设纪律，非平台规则）。
+    # 预检（confirm_submit=False）只产出判定与预告，不阻断。
+    mix = _mix_audit(precheck, narrative=mix_narrative)
+    result["steps"].append(mix)
+    if mix.get("available"):
+        logger.info("[submit_alpha] 混腿审查 %s kind=%s legs=%d coef=%d path=%s%s",
+                    alpha_id, mix.get("kind"), mix.get("legs") or 0,
+                    mix.get("coef_legs") or 0, mix.get("path"),
+                    "（结构硬拦）" if mix.get("blocked") else "")
+        if mix.get("blocked"):
+            if confirm_submit:
+                result["reason"] = "mix_audit blocked: " + str(mix.get("block_reason") or "")
+                result["blocked"] = True
+                result["blocked_reason"] = (
+                    "混腿结构硬拦（weight_grid/stack）：官方 Do Not「靠增删/拟合 parameters、"
+                    "factors 提信号」，force 不豁免。出路：拆成单腿重挖，或改成 ≤3 腿且权重"
+                    "由先验固定后重跑。")
+                return _finalize(result, store, alpha_id)
+            result["mix_warning"] = {
+                "kind": mix.get("kind"), "reason": mix.get("block_reason"),
+                "note": "预检已判定：confirm_submit=True 时将被 Step 1.2 拦下（force 不豁免）",
+            }
+        elif mix.get("narrative_required") and not mix.get("narrative_ok"):
+            _miss = ",".join(mix.get("narrative_missing") or [])
+            if confirm_submit and not force:
+                result["reason"] = "mix_narrative missing: " + _miss
+                result["blocked"] = True
+                result["blocked_reason"] = (
+                    "本颗是 %d 条信号腿的多源组合，须先答「三问」再提交（官方口径："
+                    "跨源相加必须有 strong economic sense）。缺答：%s。请在 mix_narrative "
+                    "里补齐（键：holders / polarity / prior，每条 ≥%d 字符）；"
+                    "确已人工判定且要跳过时传 force=True（留痕）。"
+                    % (mix.get("legs") or 0, _miss, mix.get("answer_min_len") or 8))
+                return _finalize(result, store, alpha_id)
+            if confirm_submit:
+                logger.warning("[submit_alpha] %s 缺三问但 force=True 放行（缺：%s）",
+                               alpha_id, _miss)
+            result["mix_warning"] = {
+                "kind": mix.get("kind"), "missing": mix.get("narrative_missing"),
+                "note": ("预检已判定：缺三问，confirm_submit=True 时将被拦下（force 可豁免）"),
+            }
+
     # Step 1.5: robustness 审计声明闸（confirm_submit=True 时 fail-closed）。
     # 2026-10-02：台账已有记录时本闸降为辅助——REJECT 已由 Step 1 拦下；PASS/CONDITIONAL
     # 的台账记录本身就是「审计已跑过」的更强证据，不再强制调用方重复声明。
@@ -408,6 +475,87 @@ def run(
                 "合规红线 prod ≥ 0.7 不得提交；或 prod 未出数（fail-closed）。"
                 "无豁免入口，须更换候选或稍后重跑等平台算完。")
             return _finalize(result, store, alpha_id)
+
+    # Step 1.7: 边际贡献闸（**2026-11-08 用户明令：ΔSharpe < 0 一律阻断，不准提交**）。
+    # 沿革：2026-11-04 引入时为「信息项 / fail-open / 永不阻断」（理由见 _marginal_contribution
+    # docstring 的四条）；2026-11-08 用户看过 bl6AvMkN 的 ΔS=−0.04 后明确指令
+    # 「如果边际贡献为负你就阻断不准提交」⇒ 本步升为**否决闸**，与 prod 闸同级，
+    # `force=True` 不豁免。
+    # 唯一保留的 fail-open 面：`available=False`（取数失败 / 无分区归属）**不阻断** ——
+    # 「ΔS 为负」与「ΔS 不可得」是两件事，端点故障不该把所有候选闷死。
+    # 位置仍在 prod 闸之后、set_properties 之前：阻断发生在任何平台副作用之前。
+    marginal = _marginal_contribution(client, alpha_id)
+    result["steps"].append(marginal)
+    if marginal.get("available"):
+        _d_s = (marginal.get("delta") or {}).get("sharpe")
+        logger.info(
+            "[submit_alpha] 边际贡献 %s partition=%s ΔSharpe=%s%s",
+            alpha_id, marginal.get("partition"), _d_s,
+            "（稀释，阻断）" if marginal.get("dilutive") else "",
+        )
+        if marginal.get("dilutive"):
+            result["marginal_warning"] = {
+                "partition": marginal.get("partition"),
+                "delta_sharpe": _d_s,
+                "delta_drawdown": (marginal.get("delta") or {}).get("drawdown"),
+                "note": (
+                    "组合边际贡献为负（ΔSharpe < 0）⇒ **硬闸阻断**（用户 2026-11-08 明令）。"
+                    "无豁免入口，force 不豁免。出路：换候选，或改结构使 ΔSharpe ≥ 0 后重跑。"
+                ),
+            }
+            if confirm_submit:
+                result["reason"] = (
+                    "marginal_contribution blocked: ΔSharpe=%+.4f < 0 (partition=%s)"
+                    % (_d_s if _d_s is not None else 0.0, marginal.get("partition")))
+                result["blocked"] = True
+                result["blocked_reason"] = (
+                    "组合边际贡献为负（稀释）不得提交（用户 2026-11-08 铁律：ΔSharpe < 0 一律阻断）；"
+                    "force 不豁免。换候选或改结构使 ΔSharpe ≥ 0 后重跑。")
+                return _finalize(result, store, alpha_id)
+            # 预检（confirm_submit=False）不阻断，但必须预告真提交会被拦
+            logger.warning(
+                "[submit_alpha] %s 边际贡献为负（ΔSharpe=%+.4f，partition=%s）——"
+                "预检已判定：confirm_submit=True 时将被阻断",
+                alpha_id, _d_s, marginal.get("partition"),
+            )
+    else:
+        logger.info("[submit_alpha] 边际贡献不可用：%s（可用性缺失不阻断）",
+                    marginal.get("note") or "unknown")
+
+    # Step 1.8: 分散度审查（2026-11-08，自设纪律）——self 软线 0.55 + ΔS 补偿。
+    # 依据：124 颗已提交 USA alpha 的真实 OS 实测显示**所有 IS 指标都不预测 OS**
+    # （Sharpe ρ=+0.007 / Fitness +0.003 / margin +0.068 / two_year **−0.146**），
+    # 唯一可动的是组合有效宽度 N/(1+(N-1)ρ̄)，它饱和于 1/ρ̄ ⇒ 降 ρ 远比增 N 有效。
+    # 复用 Step 1.7 的 ΔS；self 复用 precheck 的 is.selfCorrelation，
+    # **为空时回落本地库缓存**（未提交 alpha 该字段常为空；不现算，见函数 docstring）。
+    # blocked 时 `force=True` 可豁免（自设纪律，非平台红线，与 Step 1.2 的三问同级）。
+    diversity = _diversity_audit(client, alpha_id, precheck, marginal)
+    result["steps"].append(diversity)
+    if diversity.get("blocked"):
+        logger.warning("[submit_alpha] 分散度 %s self=%s ΔS=%s（%s）——软闸",
+                       alpha_id, diversity.get("self_corr"),
+                       diversity.get("delta_sharpe"), diversity.get("block_reason"))
+        result["diversity_warning"] = {
+            "level": diversity.get("level"),
+            "self_corr": diversity.get("self_corr"),
+            "delta_sharpe": diversity.get("delta_sharpe"),
+            "note": ("与池内已有 alpha 高度重复且边际贡献落在噪声带 ⇒ 预检已判定："
+                     "confirm_submit=True 时将被 Step 1.8 拦下（force=True 可豁免留痕）。"
+                     "换一颗更独立的候选，或证明 ΔS 更高。"),
+        }
+        if confirm_submit and not force:
+            result["reason"] = "diversity_gate blocked: " + str(diversity.get("block_reason") or "")
+            result["blocked"] = True
+            result["blocked_reason"] = (
+                "分散度软闸：与池内已有 alpha 的 self 相关 ≥ %.2f，而 ΔSharpe < %.2f"
+                "（边际贡献落在估计噪声内）。CAP 的有效宽度饱和于 1/ρ̄，重复候选不抬组合。"
+                "出路：换更独立的候选／降低相关结构／或确已人工判定时传 force=True（留痕）。"
+                % (_DENSITY_SELF_SOFT, _DENSITY_DELTA_MIN))
+            return _finalize(result, store, alpha_id)
+    elif diversity.get("available"):
+        logger.info("[submit_alpha] 分散度 %s level=%s self=%s ΔS=%s",
+                    alpha_id, diversity.get("level"),
+                    diversity.get("self_corr"), diversity.get("delta_sharpe"))
 
     # Step 2: 设置属性（仅在实际提交前做，避免空改）
     if confirm_submit:
@@ -516,7 +664,7 @@ def run(
         status = _current_status(client, alpha_id)
         result["final_status"] = status
         result["success"] = True
-        return _finalize(result, store, alpha_id)
+        return _finalize(result, store, alpha_id, client=client)
 
     # Step 4: 提交后状态确认（四态处置，worldquant-submit-alpha「关键坑①」）：
     # ② 201/202「Accepted (async)」与 ③ 空体「Non-JSON submit response」都是**异步受理、
@@ -554,7 +702,27 @@ def run(
     if not result["success"] and resubmitted:
         result["async_stuck"] = True
 
-    return _finalize(result, store, alpha_id)
+    # Step 5: prod 快照恒等式（信息项，不阻断）——闸门读的数 == 平台冻结的数？
+    # 只在真提交成功时做：预检路径没有 POST，冻结值尚未产生，比对无意义。
+    if result["success"]:
+        snap = _prod_snapshot_check(client, alpha_id, result["steps"])
+        result["steps"].append(snap)
+        if snap.get("available") and not snap.get("matches"):
+            result["prod_snapshot_warning"] = {
+                "gate_value": snap.get("gate_value"),
+                "recorded_value": snap.get("recorded_value"),
+                "delta": snap.get("delta"),
+                "note": ("闸门读数与平台冻结值不一致。提交已 ACTIVE 无法回退，"
+                         "须排查是否缓存过期或并发槽混淆；该颗的 prod 判定应以 "
+                         "recorded_value 为准并补记账。"),
+            }
+            logger.warning(
+                "[submit_alpha] prod 快照不一致 %s：闸门 %.4f vs 平台 %.4f（Δ%+.4f）",
+                alpha_id, snap.get("gate_value") or 0.0,
+                snap.get("recorded_value") or 0.0, snap.get("delta") or 0.0,
+            )
+
+    return _finalize(result, store, alpha_id, client=client)
 
 
 def _alpha_type(details: Any) -> str:
@@ -737,6 +905,269 @@ def _submit_gate(details: Any, *, alpha_id: Optional[str] = None,
     }
 
 
+#: 平台 9 项提交测试里唯一区分「单数据集 / 多数据集」的两项，**互斥出现**：
+#:   ``LOW_2Y_SHARPE``    ⇒ 单数据集（ATOM）：不走 IS Ladder，只查 Last-2Y IS Sharpe ≥ 2.38
+#:   ``IS_LADDER_SHARPE`` ⇒ 多数据集：走 Ladder，2Y 同样要 2.38，但可逐级退到 7Y 2.06 / 10Y 1.59
+#: 依据：官方 Single Dataset Alphas 页 + 论坛 WH23488（266 条实测，37/37 对应，无同时出现者）
+#: ＋本地抽样 5 颗逐颗吻合（RRE9NkVj/GrW9OxmG=LOW_2Y，zq3eb7No 等 5 颗=IS_LADDER）。
+_ATOM_MARK = "LOW_2Y_SHARPE"
+_LADDER_MARK = "IS_LADDER_SHARPE"
+
+_MIX_LADDER_HINT = (
+    "多数据集 ⇒ 走 **IS Ladder**：2Y 不足时可逐级降线到 7Y / 10Y 窗（官方示例线 2.38 → 7Y 2.06 → "
+    "10Y 1.59，D1 换手<30% 再 ×0.85）⇒ 近 2 年偏弱不必然死。"
+    "⚠ 实际线随 region/universe/delay 变（实测 DEU 侧 7Y 1.751 / FAIL 线 1.59），以该颗 "
+    "IS_LADDER_SHARPE 的实判为准。")
+_MIX_ATOM_HINT = (
+    "单数据集（ATOM）⇒ **不走 Ladder**：只查 Last-2Y IS Sharpe，2Y 不足直接 FAIL、无退路。"
+    "⚠ 线随 region/universe/delay 变（实测 GBR/TOP700/D1 的 2Y=1.98 可过；官方示例 2.38），"
+    "以该颗 LOW_2Y_SHARPE 的实判为准。")
+
+#: Step 1.8 分散度软线。平台硬线是 self<0.7（官方提交测试之一），但 0.7 只防「几乎同一颗」，
+#: 不防「同类」。CAP ≈ (μ̄/σ̄)·sqrt(N/(1+(N-1)ρ̄))，有效宽度饱和于 1/ρ̄ ⇒ 降 ρ 比增 N 有效。
+#: 取 0.55：READY 队列 183 颗的 self 分位 p50=0.394 / p75=0.505 / p90=0.656，
+#: 0.55 命中 top 15–25%（真正重复的那批），不碰主体。
+_DENSITY_SELF_SOFT = 0.55
+#: 高相关候选须达到的最小 ΔSharpe。N≈266 时 ΔS 的估计噪声约 0.005–0.01，取 0.02 = 2–4 倍噪声。
+_DENSITY_DELTA_MIN = 0.02
+
+
+def _local_self_corr(alpha_id: str) -> Optional[float]:
+    """读本地库里的既有 self 相关读数（零网络、毫秒级）。
+
+    ★ 为什么读缓存而不是现算：`check_correlation(correlation_type="self")` 是**本地 OS 池
+      计算**（要列全池 + 下载 PnL），实测拖长 12s 以上 —— 2026-11-08 端到端验证时直接把
+      MCP 进程拖到被守护误判重启（日志：`marginal_contribution` 之后进程即被替换）。
+
+    ★ 为什么缓存值可以用于判定：self 相关是「与池内单颗的**最大**相关」，
+      而池只增不减 ⇒ **缓存值是保守下界**（真实值只会更高）。用它判定不会误伤，
+      最坏情况是漏拦。
+    """
+    try:
+        from ... import db_conn
+        from ...store._common import default_db_path
+        db = default_db_path()
+    except Exception:  # pragma: no cover - 包路径退化
+        return None
+    try:
+        conn = db_conn.connect(db, timeout=3, readonly=True)
+    except Exception:  # pragma: no cover
+        return None
+    try:
+        for sql in ("SELECT self_correlation FROM alphas WHERE alpha_id=?",
+                    "SELECT self FROM submit_ready WHERE alpha_id=?"):
+            try:
+                row = conn.execute(sql, (alpha_id,)).fetchone()
+            except sqlite3.Error:
+                continue
+            if row and row[0] is not None:
+                return float(row[0])
+    except Exception:  # pragma: no cover
+        return None
+    finally:
+        conn.close()
+    return None
+
+
+def _diversity_audit(client, alpha_id: str, details: Any,
+                     marginal: Dict[str, Any]) -> Dict[str, Any]:
+    """Step 1.8 分散度审查（2026-11-08，**自设纪律，非平台规则**）。
+
+    为什么加这一步。CAP = 等权组合的费后 Sharpe，数学上
+
+        CAP ≈ (μ̄/σ̄) · sqrt( N / (1 + (N-1)·ρ̄) )
+
+    起点是 2026-11-08 用 **124 颗已提交 USA alpha 的真实 OS 数据**做的实测，结论全部反直觉：
+
+      · **所有 IS 读数对 OS 的秩相关都接近 0**：
+        Sharpe +0.007｜Fitness +0.003｜margin +0.068｜sub_universe −0.057｜
+        **two_year −0.146（反向）**
+      · **只有 OS 能预测 OS**：ρ(os60, os125)=+0.564、ρ(os125, os全期)=+0.639
+      · margin 对 −Turnover 的 ρ = **+0.922** ⇒ 它只是「低换手」的代理，不是独立信息
+      · margin ≈ Returns/(504×Turnover)（逐颗验证误差 <1%）⇒ 定义上就是 Returns/TO 的函数
+      · 数据集层面组间 R² = 0.010 ⇒ 「选对数据集」也没有可继承性
+
+    ⇒ **换任何 IS 指标去筛选候选，都不会改善 CAP**。唯一能动的是有效宽度
+      `N/(1+(N-1)ρ̄)`，而它在 N 大时饱和于 1/ρ̄：ρ̄=0.05、N=374 时有效宽度只有 19，
+      再交 100 颗也只到 19.3。所以**降 ρ 比增 N 有效得多**。
+      官方侧同一结论：Consultant FAQ「build diversity in your personal Alpha pool」；
+      Brain Genius「formulating more pyramids can potentially improve both the Value
+      Factor and Combined Alpha Performance through diversification」。
+
+    为什么**不**用 margin 闸（同批实证的副产品）：READY 队列 183 颗里 margin<8bp 占 62%、
+    <5bp 占 35%，设闸等于大面积误伤；而 margin 对 os125 的 ρ 仅 +0.068、不预测 OS。
+    两边都不支持，故不设 —— 记在这里防止以后又「凭直觉补一道闸」。
+
+    判定三级（`force=True` **可豁免**，因为这是自设纪律、不是平台红线）：
+      · `self < 0.55`                     ⇒ `light`，放行
+      · `self >= 0.55` 且 `ΔS >= +0.02`   ⇒ `dense_justified`，放行（用边际贡献补偿相关预算）
+      · `self >= 0.55` 且 `ΔS <  +0.02`   ⇒ `blocked`
+      · self 或 ΔS 读不到                  ⇒ `unknown`，**fail-open**
+        （「无法判定」≠「判定不合格」，与 Step 1.7 的可用性口径一致）
+
+    ★ 读数来源（2026-11-08 端到端验证后定案）：未提交 alpha 的 `is.selfCorrelation`
+      **通常为空**（平台只在提交或主动检查后回填；实测 IND `786wl6b8` 预检时就是 null）。
+      若直接 fail-open，本步对绝大多数候选等于不存在 ⇒ 为空时回落**本地库缓存**
+      （`alphas.self_correlation` → `submit_ready.self`，见 `_local_self_corr`）。
+      **不现算**：`check_correlation(self)` 是本地全池计算（列池 + 下载 PnL），
+      实测拖长 12s+，直接把 MCP 进程拖到被守护误判重启。
+      缓存值可用的理由：self 是「与池内单颗的**最大**相关」，池只增不减 ⇒
+      **缓存值是保守下界**，用它判定不会误伤，最坏只是漏拦。
+      `self_source` 标明来源（`platform` / `local_cache`）。
+
+    ★ 已知局限：`is.selfCorrelation` 是「与池内单颗的最大相关」，不是组合平均两两相关 ρ̄。
+      它偏保守（max ≥ 平均），所以用它当阈值只会**少拦**、不会多拦。
+    """
+    out: Dict[str, Any] = {"step": "diversity_audit", "available": False}
+    self_corr = None
+    self_source = None
+    if isinstance(details, dict):
+        raw = ((details.get("is") or {}).get("selfCorrelation"))
+        try:
+            self_corr = None if raw is None else float(raw)
+            self_source = None if self_corr is None else "platform"
+        except (TypeError, ValueError):
+            self_corr = None
+    # 未提交 alpha 的 `is.selfCorrelation` 常为空（平台只在提交/主动检查后回填）。
+    # 若就此 fail-open，本步对绝大多数候选等于不存在 ⇒ 回落本地库缓存（零网络）。
+    # **不主动现算**：self 检查要列全池 + 下载 PnL，实测拖长 12s+，会拖垮 MCP 进程。
+    if self_corr is None:
+        v = _local_self_corr(alpha_id)
+        if v is not None:
+            self_corr = v
+            self_source = "local_cache"
+    d_s = None
+    if isinstance(marginal, dict) and marginal.get("available"):
+        try:
+            v = (marginal.get("delta") or {}).get("sharpe")
+            d_s = None if v is None else float(v)
+        except (TypeError, ValueError):
+            d_s = None
+
+    out.update({
+        "self_corr": self_corr,
+        "self_source": self_source,
+        "delta_sharpe": d_s,
+        "soft_line": _DENSITY_SELF_SOFT,
+        "delta_min": _DENSITY_DELTA_MIN,
+        "platform_line": 0.7,
+    })
+
+    if self_corr is None:
+        out["level"] = "unknown"
+        out["note"] = ("平台未回填 is.selfCorrelation，本地库也无缓存读数 ⇒ 分散度不可判，"
+                       "fail-open。提交前跑一次 check_self_correlation 可让下次命中缓存。")
+        return out
+    if self_corr < _DENSITY_SELF_SOFT:
+        out.update({
+            "available": True, "level": "light",
+            # 与池内单颗最大相关为 ρ 时，该颗的有效宽度贡献约为 ρ=0 候选的 (1-ρ)。
+            "width_share": round(1 - self_corr, 3),
+            "note": (f"self={self_corr:.4f} < 软线 {_DENSITY_SELF_SOFT} ⇒ 分散度充足，"
+                     f"有效宽度贡献约为全新候选的 {1 - self_corr:.0%}。"),
+        })
+        return out
+
+    if d_s is None:
+        out.update({
+            "available": True, "level": "unknown",
+            "width_share": round(1 - self_corr, 3),
+            "note": (f"self={self_corr:.4f} ≥ 软线 {_DENSITY_SELF_SOFT}，但 ΔSharpe 不可得 ⇒ "
+                     "无法判定是否有足够边际贡献补偿相关预算，fail-open。建议先查 prod/self 终验。"),
+        })
+        return out
+
+    if d_s >= _DENSITY_DELTA_MIN:
+        out.update({
+            "available": True, "level": "dense_justified",
+            "width_share": round(1 - self_corr, 3),
+            "note": (f"self={self_corr:.4f} ≥ 软线，但 ΔSharpe={d_s:+.4f} ≥ {_DENSITY_DELTA_MIN} "
+                     "⇒ 边际贡献足以补偿相关预算，放行。"),
+        })
+        return out
+
+    out.update({
+        "available": True, "level": "blocked", "blocked": True,
+        "width_share": round(1 - self_corr, 3),
+        "block_reason": (f"self={self_corr:.4f} ≥ {_DENSITY_SELF_SOFT} 且 ΔSharpe={d_s:+.4f} < "
+                         f"{_DENSITY_DELTA_MIN}"),
+        "note": (f"与池内已有 alpha 高度重复（self={self_corr:.4f}），而边际贡献 ΔSharpe="
+                 f"{d_s:+.4f} 落在噪声带（<{_DENSITY_DELTA_MIN}）⇒ 它占用相关预算却证明不了"
+                 "正贡献。CAP 的有效宽度饱和于 1/ρ̄，这类候选再多交也不抬组合。"),
+    })
+    return out
+
+
+def _mix_audit(details: Any, *, narrative: Any = None) -> Dict[str, Any]:
+    """Step 1.2：混腿审查 + ATOM/Ladder 路径判决（2026-11-08，依官方口径重写）。
+
+    为什么必须有这一步：2026-11-08 审计发现**四层闸里只有一层查混信号，而那一层被绕过**——
+      ① 发批预检 `preflight_expressions` 只查「字段是否存在 + VECTOR 包裹」；
+      ② 波次装配 `gate.py` 闸5 严格，但直走 batch/multisim 派发就绕过；
+      ③ 队列 `submit_queue.is_add_mix` 旧口径明文放行等权 add；
+      ④ `submit_alpha` **从不检查**。
+    结果：禁令（2026-09-13 路线 A）后提交 173 颗、违规 26 颗 = **15%**。
+    本步把结构审查接到**提交路径**上，成为最后一道、也是唯一有强制力的关口。
+
+    两级语义（依据官方 Consultant Dos and Don'ts 的 "without any strong economic sense"）：
+      · **硬拦**（`weight_grid` / `stack`）：`force` **不豁免**。权重网格里的数字本身就是
+        搜索自由度（0.4/0.6 与 0.5/0.5 回测可分辨），≥4 腿堆叠无法逐个说清信息持有者——
+        两者都答不出「经济含义」，正是官方禁止的那类。
+      · **需三问**（`two_leg` / `three_leg`）：官方**允许**有经济含义的跨源组合，
+        但必须答出 holders / polarity / prior；缺答则拦（`force=True` 可豁免，留下显式痕迹）。
+
+    ★ 附带产出 `path`（`ATOM:LAST_2Y` / `LADDER`）：平台 checks 名单里两项互斥，直接暴露
+      平台把本颗归为哪一类 —— 这是**免费**的路径判决，用于提示「这颗近 2 年弱也没关系」
+      还是「这颗 2Y 不足就真死」。信息项，不参与阻断判定。
+    ★ fail-open 边界：读不到表达式 / submit_queue 不可导入 ⇒ `available=False` 且不拦。
+      「无法审查」与「审查不通过」是两件事，导入故障不该把所有候选闷死（与 Step 1.7 同哲学）。
+    """
+    checks: List[Any] = []
+    code = ""
+    if isinstance(details, dict):
+        code = str(((details.get("regular") or {}).get("code")) or "")
+        checks = ((details.get("is") or {}).get("checks") or []) or []
+    names = {str(c.get("name")) for c in checks if isinstance(c, dict)}
+    if _LADDER_MARK in names:
+        usage, path, hint = "MULTI_DATA_SET", "LADDER", _MIX_LADDER_HINT
+    elif _ATOM_MARK in names:
+        usage, path, hint = "SINGLE_DATA_SET", "ATOM:LAST_2Y", _MIX_ATOM_HINT
+    else:
+        usage, path = "UNKNOWN", "UNKNOWN"
+        hint = "平台 checks 里既无 LOW_2Y_SHARPE 也无 IS_LADDER_SHARPE ⇒ 路径不可判（回测未完成？）"
+
+    base = {"step": "mix_audit", "data_usage": usage, "path": path, "hint": hint}
+    if not code:
+        return {**base, "available": False,
+                "note": "读不到 regular.code（非 REGULAR 通道或平台未回填），结构审查跳过"}
+
+    try:
+        from ...store import submit_queue as _sq
+    except Exception:  # pragma: no cover - 包路径退化
+        try:
+            from wqb.store import submit_queue as _sq  # type: ignore
+        except Exception:
+            return {**base, "available": False,
+                    "note": "submit_queue 不可导入，混腿审查跳过（fail-open）"}
+
+    mr = _sq.mix_review(code, narrative)
+    return {
+        **base,
+        "available": True,
+        "expr": code[:160],
+        "kind": mr["kind"],
+        "legs": mr["legs"],
+        "coef_legs": mr["coef_legs"],
+        "blocked": mr["blocked"],
+        "block_reason": mr["block_reason"],
+        "narrative_required": mr["narrative_required"],
+        "narrative_ok": mr["narrative_ok"],
+        "narrative_missing": mr["narrative_missing"],
+        "answer_min_len": _sq.MIX_ANSWER_MIN_LEN,
+        "questions": dict(_sq.MIX_NARRATIVE_QUESTIONS),
+    }
+
+
 def _quota_gate(client, alpha_id: str, *, limit: int = None) -> Dict[str, Any]:
     """REGULAR 提交前配额闸（P0，2026-10-02，F9 修复）。
 
@@ -908,6 +1339,141 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
             "reason": f"prod max={prod_max} < {thr} → 过闸（{src}）"}
 
 
+def _prod_snapshot_check(client, alpha_id: str, steps: List[Dict[str, Any]],
+                         *, tol: float = 0.005) -> Dict[str, Any]:
+    """Step 5：prod 快照恒等式 —— **闸门读到的数，是否等于平台记下的数**。
+
+    2026-11-08 新增。依据一条实测事实：``is.prodCorrelation`` 是**提交瞬间的冻结值**，
+    永不随池变动（三颗逐位核对：kqN92KpK 0.6196 / bl6AvMkN 0.6470 / zq3eb7No 0.6171
+    与各自提交时闸门读数完全相同）。因此提交后读它与 Step 1.6 的 ``prod_max`` 比对，
+    是一次近乎免费的恒等式检查：
+
+    - 相等 ⇒ 闸门没有被「缓存过期 / 并发槽返回他人结果 / 池在读与写之间变动」骗过；
+    - 不等 ⇒ **闸门判定的数与平台实际记录的数不同源**。这是唯一能在当时发现该类事故的
+      时机；否则要等到日后跑账户级审计才暴露，而那时已 ACTIVE 无从回退。
+
+    ★ 信息项，**不阻断、不改 success**：提交已完成，此处只能告警留痕。
+    与 ``tools/gates/prod_gate_audit.py`` 的分工必须分清——
+    那个是**账户级事后审计**（400+ 请求、算历史泄漏率与口径校准）；
+    本函数是**单颗在线恒等式**（1 请求、查这一次闸门是否诚实）。两者不可互替，
+    也都不构成新的准入条件。
+    """
+    gate = next((s for s in steps if s.get("step") == "prod_gate"), None)
+    if not gate or gate.get("prod_max") is None:
+        return {"step": "prod_snapshot", "available": False,
+                "note": "无 prod_gate 读数（SUPER/PPA 走 super_build，或闸门未取到数）"}
+    gate_v = gate.get("prod_max")
+    try:
+        details = _run_async(client.get_alpha_details(alpha_id))
+    except Exception as e:  # noqa: BLE001
+        return {"step": "prod_snapshot", "available": False, "gate_value": gate_v,
+                "note": f"读取失败：{type(e).__name__}: {e}"}
+    # `run_async` 吞异常后返回 {"__error__": ...}，必须显式识别，否则会被误当成
+    # 「平台尚未回填」——两者含义不同，混起来会掩盖接口故障。
+    if isinstance(details, dict) and details.get("__error__"):
+        return {"step": "prod_snapshot", "available": False, "gate_value": gate_v,
+                "note": f"读取失败：{details['__error__']}"}
+    recorded = ((details or {}).get("is") or {}).get("prodCorrelation") if isinstance(details, dict) else None
+    if not isinstance(recorded, (int, float)):
+        return {"step": "prod_snapshot", "available": False, "gate_value": gate_v,
+                "note": "平台尚未回填 is.prodCorrelation（异步检查未落库）"}
+    delta = float(recorded) - float(gate_v)
+    return {"step": "prod_snapshot", "available": True,
+            "gate_value": float(gate_v), "recorded_value": float(recorded),
+            "delta": round(delta, 4), "tolerance": tol,
+            "matches": abs(delta) <= tol,
+            "note": ("闸门读数与平台冻结值一致，prod 闸诚实"
+                     if abs(delta) <= tol else
+                     "★ 闸门读数与平台冻结值不一致 ⇒ 闸门可能被缓存/池变动骗过，须查同源")}
+
+
+def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
+    """Step 1.7 边际贡献（``performance_comparison``）：候选叠加到所属**分区组合**前后的对比。
+
+    平台端点 ``GET /users/self/alphas/{id}/before-and-after-performance``：
+    ``before`` = 该分区已提交池的组合指标，``after`` = 把本候选**等权叠加**之后的组合指标。
+    提交前即可调用（平台按 IS 期模拟），返回空体时带 ``Retry-After``（异步计算中，
+    MCP 侧 ``_request_json_with_retries`` 自动重试；实测正常 0.8–1.0s，重试路径约 5s）。
+
+    ★★ **2026-11-08 起为否决闸**：用户明令「如果边际贡献为负你就阻断不准提交」。
+      `dilutive=True` 且 `confirm_submit=True` ⇒ `blocked=True` 并在 set_properties/POST
+      之前 return（`force=True` 不豁免）。`confirm_submit=False` 的预检仍只产出数值 + 预告。
+
+    以下是 2026-11-04 定案「纯信息项、永不阻断」时的四条理由，**现降级为遗留风险说明**
+    （不再作为放行依据，但复议会用到，故原样保留）：
+      ① **不在官方提交测试内**：`Consultant Submission Tests` 只有 9 项
+         （fitness / sharpe / turnover / weight / sub-universe / self / prod / IS-ladder / bias），
+         做成硬闸会拦掉本来能过的候选；
+      ② **ΔS 的分母是「池子」不是「候选」**：before = 该分区已提交池的组合 Sharpe。
+         同一颗合格候选，进强池（before S 3.04）易得低 ΔS、进弱池（1.73）易得高 ΔS
+         ⇒ 用它做闸等于「池子越烂越容易过闸」，判定权错位；
+         极端情形：S=1.6 的合格候选（过 1.58 闸线）进 S=3.0 的池子必为负 ΔS，
+         但它是分散化来源 —— 硬闸会**系统性拒绝所有「合格但不突出」的新机制**；
+      ③ **基准池随分区漂移**：实测同批两颗 DEU/D1 候选分属不同分区 ——
+         `A1Vvqded`→`EQUITY:DEU:1`（before Sharpe 3.04）、
+         `bl6OWZ2M`→`EQUITY:DEU:1:POWER_POOL`（before 1.73）
+         ⇒ **跨 alpha 的 ΔS 不可直接比较**，不能拿来横向排序或设统一阈值；
+      ④ **平台自己不当它是考核**：已提交（OS）alpha 调本端点**恒 400 Bad Request**
+         （2026-11-04 实测 20/20 已提交跨 9 区全 400；未提交 3/3 全 200）
+         ⇒ 端点的定位是「提交前预览」，提交后即不可查。若它是准入测试，平台不会把它删掉。
+      ⚠ 触发升闸的实例：`bl6AvMkN`（DEU/TOP500）ΔSharpe=−0.04 于 2026-11-08 13:00 提交成功，
+      用户随即裁定该口径不合用 ⇒ 改判硬闸。
+
+    本账本口径：`dilutive = Δsharpe < 0` ⇒ **提交阻断**（`run()` Step 1.7）；
+    空体 / 超时 / 异常一律 `available=False`（**可用性缺失不阻断** —— 与「为负」区分）。
+    """
+    out: Dict[str, Any] = {"step": "marginal_contribution", "success": True, "available": False}
+    try:
+        d = _run_async(client.performance_comparison(alpha_id))
+    except Exception as e:  # noqa: BLE001 —— 信息项，任何异常都不影响提交
+        out["note"] = f"调用异常（fail-open，不影响提交）：{e}"
+        return out
+    if not isinstance(d, dict):
+        out["note"] = f"返回非 dict（{type(d).__name__}），fail-open"
+        return out
+    if d.get("__error__"):
+        out["note"] = f"调用失败（fail-open）：{d.get('__error__')}"
+        return out
+    stats = d.get("stats") or {}
+    b = stats.get("before") or {}
+    a = stats.get("after") or {}
+    if not b or not a:
+        # 平台仍在算（空体已由 MCP 重试耗尽）或该 alpha 尚无分区归属
+        out["note"] = "平台未返回 before/after（异步计算中或无分区归属），fail-open"
+        return out
+
+    def _num(x):
+        try:
+            return float(x)
+        except (TypeError, ValueError):
+            return None
+
+    keys = ("sharpe", "fitness", "turnover", "returns", "drawdown")
+    before = {k: _num(b.get(k)) for k in keys}
+    after = {k: _num(a.get(k)) for k in keys}
+    delta = {
+        k: (None if before[k] is None or after[k] is None else round(after[k] - before[k], 6))
+        for k in keys
+    }
+    d_s = delta.get("sharpe")
+    out.update({
+        "available": True,
+        "partition": d.get("partitionName"),
+        "before": before,
+        "after": after,
+        "delta": delta,
+        "dilutive": bool(d_s is not None and d_s < 0),
+        "risk_note": (
+            None if d_s is None else
+            (f"ΔSharpe={d_s:+.4f} ⇒ 组合稀释（**硬闸：提交阻断**，用户 2026-11-08 铁律）"
+             if d_s < 0 else
+             f"ΔSharpe={d_s:+.4f} ⇒ 组合分散（正向边际贡献）")
+        ),
+        "note": "ΔSharpe < 0 ⇒ 阻断提交（force 不豁免）；ΔS 仅在**同一分区**内可比",
+    })
+    return out
+
+
 def _current_status(client, alpha_id: str) -> Optional[str]:
     """查询当前 alpha 状态（不轮询）。"""
     details = _run_async(client.get_alpha_details(alpha_id))
@@ -968,7 +1534,74 @@ def _retire_queue(alpha_id: str, status: str = "SUBMITTED") -> int:
         return 0
 
 
-def _finalize(result: Dict[str, Any], store, alpha_id: str) -> Dict[str, Any]:
+def _persist_submission_to_local(client, store, alpha_id: str, result: Dict[str, Any]) -> None:
+    """提交成功后把平台真值落到本地：submission_ledger + alphas 表。
+
+    ★ 修复（2026-11-03）：此前 _finalize 只写 WORKFLOW 台账 + 退役队列，从没调
+      store.record_submission / store.upsert_alpha_from_platform —— 这俩正是「提交后落库」
+      的唯一写法（upsert_alpha_from_platform 文档原话：提交脚本在 ACTIVE 后调用本方法）。
+      结果：MCP 提交成功后，submission_ledger 没记录、alphas.date_submitted/stage/
+      platform_status 全不更新 ⇒ 面板「今日提交 Alpha 明细」恒空（本地无感知）。
+
+    做法：回查平台 get_alpha_details 拿权威真值（真 dateSubmitted/status/stage/region/
+    type/expression），只填**非空键**交给 store（_write_alpha_row 是合并语义：d 里 None 的
+    键不动本地已有好值，故缺字段安全）。全程容错——落库失败只告警，绝不影响提交已成功的事实。
+    """
+    if not store:
+        return
+    try:
+        d = _run_async(client.get_alpha_details(alpha_id))
+    except Exception as e:  # noqa: BLE001
+        logger.warning("[submit_alpha] 提交后落库：回查平台失败（不影响提交成功）: %s", e)
+        return
+    if not isinstance(d, dict) or d.get("__error__"):
+        logger.warning("[submit_alpha] 提交后落库：平台未返回有效详情（不影响提交成功）")
+        return
+
+    status = str(d.get("status") or "").upper() or None
+    date_submitted = d.get("dateSubmitted") or d.get("date_submitted")
+    settings = d.get("settings") or {}
+    region = settings.get("region") or d.get("region")
+
+    # ① submission_ledger（审计/配额口径来源之一）。submitted_at 用平台真值 dateSubmitted，
+    #    与「今日提交」按平台 ET 日历日切齐；平台没给才退 now()（upsert_submission 兜底）。
+    #    ★ 走 upsert_submission 而非 record_submission——后者不透传 submitted_at，会丢平台真值。
+    try:
+        store.upsert_submission(
+            alpha_id=alpha_id,
+            region=region,
+            submission_type="REGULAR",
+            status=status or "ACTIVE",
+            submitted_at=date_submitted,
+        )
+    except Exception as e:  # noqa: BLE001
+        logger.warning("[submit_alpha] 写 submission_ledger 失败（不影响提交成功）: %s", e)
+
+    # ② alphas 表（面板①「今日提交」靠 alphas.date_submitted 判窗口）。只填非空键。
+    payload = {"alpha_id": alpha_id}
+    if region:
+        payload["region"] = region
+    if d.get("stage"):
+        payload["stage"] = d.get("stage")
+    if status:
+        payload["platform_status"] = status
+    if date_submitted:
+        payload["date_submitted"] = date_submitted
+    atype = d.get("type") or d.get("alpha_type")
+    if atype:
+        payload["alpha_type"] = atype
+    reg = d.get("regular")
+    expr = reg.get("code") if isinstance(reg, dict) else d.get("expression")
+    if expr:
+        payload["expression"] = expr
+    try:
+        store.upsert_alpha_from_platform(payload)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("[submit_alpha] 回写 alphas 表失败（不影响提交成功）: %s", e)
+
+
+def _finalize(result: Dict[str, Any], store, alpha_id: str,
+              client: Any = None) -> Dict[str, Any]:
     """保存提交记录到台账并返回（容错与告警由 persist_workflow_record 承担）。"""
     persist_workflow_record(store, "submit", alpha_id, {
         "submitted_at": datetime.now().isoformat(),
@@ -976,7 +1609,10 @@ def _finalize(result: Dict[str, Any], store, alpha_id: str) -> Dict[str, Any]:
         "final_status": result.get("final_status"),
         "steps": result.get("steps"),
     })
-    # 提交成功 → 退役出队（否则已提交项会永久滞留在待提交队列）
+    # 提交成功 → 落库到 submission_ledger + alphas 表（修复「本地无感知」，见 _persist_submission_to_local）
     if result.get("submitted") and result.get("success"):
+        if client is not None:
+            _persist_submission_to_local(client, store, alpha_id, result)
+        # 退役出队（否则已提交项会永久滞留在待提交队列）
         _retire_queue(alpha_id, "SUBMITTED")
     return result

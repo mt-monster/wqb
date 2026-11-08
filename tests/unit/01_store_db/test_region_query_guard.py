@@ -52,7 +52,9 @@ GUARD_BASELINE = {
     #   alpha_id/status」段（16 行注释+SQL 插在其前），同一查询整体后移；
     #   按上两条注释同一口径「重钉行号，不删条目」。债务仍在（字段投票本质上是
     #   跨库反查，fields 无 region 列；归属只补 _unknown 行是既有设计）。
-    "src/wqb/store/_backtest.py:424",
+    # 2026-11-08 行号跟随（424→430）：upsert_backtest_rows 新增 duration_s / duration_src
+    # 两列写入，同一查询整体后移；债务仍在，按既有口径「重钉行号，不删条目」。
+    "src/wqb/store/_backtest.py:430",
     "src/wqb/store/_expressions.py:95",
     "src/wqb/store/_field_catalog.py:380",
 }

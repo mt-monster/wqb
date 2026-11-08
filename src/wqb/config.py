@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Set
 
@@ -678,6 +679,49 @@ def is_pseudo_alpha(name: str) -> bool:
     low = str(name).lower()
     return any(p in low for p in PSEUDO_ALPHA_PATTERNS)
 
+
+
+# ---------------------------------------------------------------------------
+# 数据集名形状（2026-11-06 落地，防 `datasets` 表伪数据集行复发）
+#
+# 背景：`CampaignStore._ensure_dataset(region, name)` 会按传入的**任意字符串**
+# 现建 `datasets` 行，而 `_ensure_wave` / `_backtest` 把**塔位组合标签**
+# （`risk/model`、`pv/model/other`）、**表达式描述**（`fundamental44|institutions6`）、
+# **region 名**（`KOR`）原样透传进去 ⇒ 实测 82 行从来不是数据集的行落进表里，
+# 污染任何以该表为基础的统计（按集数排名、按 category 分组、覆盖度分母…）。
+#
+# 历史清理 = `tools/db/datasets_phantom_repair.py`；写入口守卫 = `_ensure_dataset`。
+# 两侧共用本函数（单源，勿在他处复写）。
+# ---------------------------------------------------------------------------
+
+#: 平台 `/data-sets` 的 dataset id 形状：小写字母开头，仅小写字母/数字/下划线。
+DATASET_NAME_RE = re.compile(r"^[a-z][a-z0-9_]*$")
+
+#: store 刻意使用的「未知数据集」哨兵名（`_backtest` / `_alphas` 硬编码）。
+#: 它不是平台数据集，但形状上被本函数放行 —— 语义是「不知道」，不是假名。
+DATASET_SENTINEL: str = "_unknown"
+
+
+def is_phantom_dataset_name(name: Optional[str]) -> bool:
+    """`datasets.name` 是否是伪数据集名（不可能是平台 dataset id）。
+
+    口径 = **形状**：平台 dataset id 形如 `fnd6` / `anl4` / `other455`，恒为
+    小写字母开头 + `[a-z0-9_]`。塔位组合标签（`pv/model/other`）、表达式描述、
+    region 名（`KOR`）、带空格/中文/斜杠/竖线/逗号的串一律不合形。
+
+    `DATASET_SENTINEL`（`_unknown`）放行；**空 / None 视为伪名**（调用方无法
+    表达「无名数据集」，历史脏行里确有 region 名被当成空串透传的情形）。
+
+    注意：本函数只判**形状**。id 形的假名（例：把 region 名写成小写）需要平台
+    目录才能识破，走 `tools/gates/category_coverage_audit.py --show-extra-local`
+    （其 `extra_local` = 「本地有、平台无」的差集）。
+    """
+    n = (name or "").strip()
+    if not n:
+        return True
+    if n == DATASET_SENTINEL:
+        return False
+    return DATASET_NAME_RE.match(n) is None
 
 
 def gate_thresholds(stage: str = "internal") -> Dict[str, object]:

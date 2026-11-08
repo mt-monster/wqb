@@ -36,7 +36,8 @@ def test_glb_uses_region_profile_off():
 def test_asi_uses_region_profile_on():
     r = _dry(region="ASI")
     s = r["settings_used"]
-    assert s["maxTrade"] == "ON"
+    # acd4452：render 强制 maxTrade=OFF，全域固定不可开启（区域 profile 也不再放行）
+    assert s["maxTrade"] == "OFF"
     assert s["nanHandling"] == "ON", "ASI 权威值 nanHandling=ON"
 
 

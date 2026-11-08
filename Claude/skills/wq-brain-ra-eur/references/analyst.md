@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：Analyst　**类别卡**：analyst
 
-**涉及数据集**：analyst_consensus、analyst15、analyst7、analyst10、analyst69、analyst4、analyst11、analyst14、analyst9、analyst_factor_signals、analyst45、analyst39、analyst40、analyst_base_ref、analyst81、model52
+**涉及数据集**：analyst+imbalance5 (dps上修CORE), TOP2500档对照 TOPCS1600、analyst+imbalance5+risk68 (CORE+风险尾部门控, 三塔effective0)、analyst+sentiment21、analyst+sentiment21+risk62、analyst10、analyst11、analyst14、analyst39、analyst4、analyst45、analyst69、analyst7、analyst81、analyst9、analyst_consensus、analyst_factor_signals、analyst单腿+risk68_beta/imb5_score门控 (双塔effective2)、analyst单腿+risk68_dadv(0.9)/imb5_score(0.95)、fundamental72+analyst
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 74 | 0 | 0 | 0 | 8 | 0 |
+| 311 | 22 | 20 | 6 | 14 | 6 |
 
-主要数据集（回测数）：analyst9（27）、analyst45（14）、analyst_factor_signals（9）、analyst_consensus（8）、analyst11（8）、analyst10（8）
+主要数据集（回测数）：analyst4（101）、analyst7（95）、analyst9（27）、analyst69（20）、analyst45（14）、analyst_factor_signals（14）、analyst_consensus（8）、analyst11（8）
 
 ### S1 字段理解
 
@@ -118,14 +118,31 @@
 
 | 条目 | 族 | 下次怎么办 / 说明 | 数据集 | 归属 |
 |---|---|---|---|---|
+| EUR-ANALYST-CONSENSUS-TARGETPRICE-DEAD | analyst_consensus | EUR 区 analyst_consensus 的 targetprice 族（mean/stddev/median/max/min/estimate_count 及其 fxadj 版）免测；同族的 estimate_*_eps_longt | analyst_consensus | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-ANALYST-FACTOR-SIGNALS-WEAK | analyst_factor_signals 分析师因子信号族（EPS/revenue revision magnitu | wave243 9 探针全灭 best ／sharpe／=0.31 → 达 fast_kill 判死线。ANALYST 塔候选出局。今日 7 集回测探针全灭（max／S／ 0.16-0.91），与 2026-09-22 零竞争轴证伪结论互证 | analyst_factor_signals | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-ANALYST10-PREDICTED-SURPRISE-DEAD | analyst10 performance-weighted estimates (predicted surprise | EUR analyst tower: predicted-surprise family closed | analyst10 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-ANALYST14-F-GATE-CEILING | analyst14 | Screen a never-tested EUR dataset for the F-gate ceiling BEFORE spending slots. returns ~= turnover * margin, and F = S* | analyst14 | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-ANALYST39-FAST-RECIPE-DEAD | analyst39 | 不要再用裸 group_zscore + signed_power 的 FAST 配方扫 analyst39 的 EPS/毛利率/账面/杠杆字段——它已实测过一轮，最好 S 1.21，差主闸 0.37，且 sub 比结构性不足。也不要在 E | analyst39 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-ANALYST9-COLD-ZERO-YIELD | 一致预期修正标准化劾量 / 预期陈旧度 / 修正广度 | 本区该集不再投槽位；同机制（一致预期修正）在其他 analyst 集要进先跑 1-2 条 prod-first + 强度探针 | analyst9 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-ANL11-ESG-SLOWVAR-LONGCOUNT | analyst11 ESG 评分体系（三支柱 + 行业排名 + 改善动量） | Leave analyst11（ESG）在 EUR。analyst 塔（1.3x）完全 exhausted：analyst_consensus（CW=0.5 全灭）+ analyst45 + analyst11（longCount 3-52 | analyst11 | payload | <!-- lint:const-ok 证据原文 -->
 | EUR-ANL39-EPS-GM-BOOK-WEAK | analyst39 EPS/margin/book residual x v_rev/wedge | Do not reuse analyst39 EPS/margin/book residuals as 0.30 slow legs with v_rev/falling_wedge. | analyst39 | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-ANL45-TRADE-IDEAS-WEAK | analyst45 VECTOR trade-idea residual x v_rev/wedge | Do not reuse analyst45 trade-idea vec_avg residuals as 0.30 slow legs with v_rev/falling_wedge. | analyst45 | inferred | <!-- lint:const-ok 证据原文 -->
+| EUR-BUCKET-AXIS-NOT-A-DECORRELATOR | analyst_factor_signals | Before applying the forum double-bucket recipe, read the carrier's starting prod. If prod < 0.70 already, or if the carr | analyst_factor_signals | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-CONSENSUS-SURPRISE-TP-WEAK | analyst_consensus surprise/estimate/target x v_rev/wedge | Do not reuse analyst_consensus surprise/target residuals as 0.30 slow legs with v_rev/falling_wedge. Prefer GEM concept  | analyst_consensus | inferred | <!-- lint:const-ok 证据原文 -->
+| EUR-COUNTRY-EXCHANGE-SECTOR-GROUPING-DEAD | analyst_revision | For EUR analyst_revision fields, group ONLY at subindustry (or industry if chasing returns/F, accepting the sub gate fai | analyst_factor_signals | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-CREDIT-DEFAULT-ANALYST81-MODEL52 | credit_default | ★ 可迁移的覆盖率地板：EUR/D1/TOP2500 下数据集覆盖率 < 约 0.30 时，只有 ~575/2500 只票带信号，CONCENTRATED_WEIGHT 必然约 0.50 撞 0.1 上限、TO 必然爆，任何算子选择都救不了 | analyst81 | inferred | <!-- lint:const-ok 证据原文 -->
 | EUR-analyst45-RET-WEAK | analyst45 return/benchmark fields | Leave analyst45 return/benchmark fields in EUR. Do not retry ts_mean/ts_delta/ts_decay_linear on anl45_*_ret fields or i | analyst45 | payload | <!-- lint:const-ok 证据原文 -->
+
+### 胜绩
+
+| 条目 | 机制 | 设置与骨架 | 数据集 | 归属 |
+|---|---|---|---|---|
+| EUR-CROWDING-NEUT-BREAKS-PROD-WALL | analyst_revision | prod 墙的正确解法是换中性化（改信号结构），不是扫窗口。按 wq-window-valley-break-prod-wall 的判据，[0.7,0.8) 桶 n>=1 时窗口微调路线本就该判死；本轮实测印证该方法论。CROWDING 此 | analyst_factor_signals | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-DECORRELATION-AXIS-HIERARCHY | correlation_discipline | ★ 凑 N 颗的配方 = N 组「字段 × 分组」笛卡尔组合，不是 N 个设置档。设置档轴（decay/中性化/p）去相关能力为零（0.72–0.99）；分组轴有效（0.6392/0.6888）；字段轴有效（0.4713–0.6032）；字 | analyst_factor_signals | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-FAST-NEUT-LOW-DECAY-BREAKS-PROD-WALL | analyst_factor_signals | 中性化决定 prod，p / decay / 分组粒度决定 S 与 sub —— 两组杠杆近乎正交，可分开调。且 decay 是 prod 的反向杠杆（越平滑越像 prod 池），与 wq-window-valley-break-prod- | analyst_factor_signals | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-INDUSTRY-GROUPING-RETURNS-LEVER | analyst_revision | group_zscore 的分组粒度在 EUR 修正族上是一组「returns ↔ sub/S」对价，不是单一 sub/S 旋钮：industry 组更粗 ⇒ returns 5.04%→7.06% ⇒ F = S×sqrt(returns | analyst_factor_signals | payload | <!-- lint:const-ok 证据原文 -->
+| EUR-REVISION-FS-STRENGTH-CRITERION | analyst_revision | 先用 F/S 比判定缺口性质，再决定扫哪个轴 —— 这一步能在烧配额前排除掉一整类无效扫描。比率已达标 ⇒ 只扫『提纯/降噪』轴（ts_backfill / group_neutralize / decay / universe），禁扫『只 | — | keyword | <!-- lint:const-ok 证据原文 -->
+| EUR-SUBINDUSTRY-GROUPING-ONLY-SUB-PASS | analyst_revision | sub/S ordering == grouping-granularity ordering: subindustry (0.46-0.57) > industry (0.436, p-invariant) > country (0.32 | analyst_factor_signals | payload | <!-- lint:const-ok 证据原文 -->
 <!-- profiles:cell-panel:end -->
 
 ## 补充说明（手写）

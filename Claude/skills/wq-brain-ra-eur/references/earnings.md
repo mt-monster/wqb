@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：active（跟区域入场 full-coverage）　**分组**：Earnings　**类别卡**：earnings
 
-**涉及数据集**：earnings6
+**涉及数据集**：earnings6、earnings_sent_matrix
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-07 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 4 | 0 | 0 | 0 | 1 | 0 |
+| 39 | 0 | 0 | 0 | 4 | 0 |
 
-主要数据集（回测数）：earnings6（4）
+主要数据集（回测数）：earnings_sent_matrix（25）、earnings6（14）
 
 ### S1 字段理解
 
@@ -81,6 +81,9 @@
 
 | 条目 | 族 | 下次怎么办 / 说明 | 数据集 | 归属 |
 |---|---|---|---|---|
+| EUR-EARNINGS-AVDIFF-GEOMETRY-DEAD-20261102 | 窄区间概率字段差值几何（ts_av_diff 类） | 对 [0,1] 窄区间概率/比率字段，禁用 ts_av_diff / ts_delta / subtract(x, ts_mean(x,W)) 这类『减去自身时序水平』的差值几何——它会塌缩持仓并撞 CONCENTRATED_WEIGHT。 | — | keyword | <!-- lint:const-ok 证据原文 -->
+| EUR-EARNINGS-GROUPRANK-COUNTRY-LEVER-DEAD-20261102 | 用分组轴切除共同成分来修 2Y 的杠杆（group_rank/group_neutralize 类） | 当 2Y Sharpe 不足时，不要用分组轴（group_rank/group_neutralize）去剔除共同成分——它会把组间水平差异一并抹掉，而组间差异往往是主收益源。2Y 需要 2022 与 2023 两个年度都达到闸线附近，任何单 | — | keyword | <!-- lint:const-ok 证据原文 -->
+| EUR-EARNINGS-TSSTDDEV-GEOMETRY-DEAD-20261102 | earnings 语调字段的二阶波动代数（ts_std_dev） | earnings 情绪字段（sentiment_weighting_method1/2, positive/negative_sentiment_probability_3, likelihood_of_neutral_tone）只允许用  | — | keyword | <!-- lint:const-ok 证据原文 -->
 | EUR-W255-EARNINGS6-EPS-EVENT-PAIRS | earnings6 normalized EPS surprise and preliminary range SUBI |  | earnings6 | payload | <!-- lint:const-ok 证据原文 -->
 <!-- profiles:cell-panel:end -->
 
