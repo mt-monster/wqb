@@ -71,3 +71,19 @@
 4. **归集候选不要用 `alphas.dataset_id`**：会混区（`region_id` 同病）且会把多数据集族记成
    单一假 id（`fnd6_/cap` 族被记成 `dataset_id=291`，真实为 368）。
    用 `backtest_results.dataset` 或表达式里的字段名归集。
+
+---
+
+## GBR（D1 / TOP700）— 2026-11-08 增补 5 份
+
+背景：GBR 四塔（model/news/analyst/fundamental）经用户授权放开后挖尽；SHORTINTEREST 塔 11-08 由用户提交 RRE5Mwkn+bl6KwjwK 点亮。交付篮口径 = 互相关全对 <0.5（用户全局标准）。
+
+| 数据集 | 文件 | 结论类型 | 核心经验 |
+|---|---|---|---|
+| **predictive_starmine** | [gbr_predictive_starmine_campain.md](gbr_predictive_starmine_campain.md) | ★ **新量产线** | 108 个修订计数字段 aC 0-17 冷门；FY1 收入净广度 × COLD 出货（bl6KwjwK S1.89/prod 0.4582）；比率/EBITDA/earnings 面全低一档；冷门筛选器 `aC≤20 且 cov≥0.6` |
+| multifactor_return_pred / model109 | [gbr_multifactor_return_pred_model109_campain.md](gbr_multifactor_return_pred_model109_campain.md) | 判死（全量终审） | cov 是**数据源级平的**（0.4806/0.478 单值），无高覆盖冷门字段；LC 预计 ~330 |
+| news50 | [gbr_news50_campain.md](gbr_news50_campain.md) | 判死（双向弱） | mws50_* 4 字段双向 ±0.7 内；GBR NEWS 塔终局 = nws17 唯一出货 |
+| analyst48 | [gbr_analyst48_campain.md](gbr_analyst48_campain.md) | 判死（无机制） | 7 字段全为指数构造元数据 |
+| （跨区方法论） | [../tracking/CHN/chn_admission_probe_20261106.md](../../tracking/CHN/chn_admission_probe_20261106.md) | ★★★ 方法论 | CHN 闸 2.07 / 翻号不对称（必须实测反号）/ insider 族 prod 深钉 / 0.5 交付篮口径 / get_datafields offset 失效用 max_fields |
+
+另见：`tracking/GBR/session_assets_prodtable_multisim_20261108.md`（prod 表 v2 + multisim 注册表 + 跨区闸值速查）。

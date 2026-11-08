@@ -55,6 +55,41 @@
 - 机制：tone 超预期=管理层信心（正向）；负面语气激增=风险（负向）；可做事件门控（call 日附近 trade_when）。
 - 事件型数据**逐年覆盖必查**（财报电话数据 2014 年前后可能稀疏）。
 
+### other47 SEMrush 网站流量（ac 极低）—— ★ 下一矿脉首选（2026-11-03 02:1x 画像+取证）
+
+**18 字段全 VECTOR（须 vec_* 包裹），两簇**：base 簇 cov 0.6516（oth47_organic_traffic/keywords/cost、paid_search_*、PLA 族、oth47_rank）+ `_enriched` 簇 cov 0.5023（同机制富化版）。**拥挤度全场最低**：alphaCount 0–6（仅 oth47_organic_traffic 47），相对 analyst7 的 5823 是真空地带。
+
+**机制分箱（8 问初判）**：
+- **需求/增长代理**：`organic_search_traffic`（自然搜索访问量）+ `organic_search_terms`（关键词广度）——公司产品需求的高频数字足迹；水平型（横截面属性，禁 ts 自归一）+ **变化型**（ts_delta 增速=需求加速度，Berkeley「数字足迹预测营收」先验）。
+- **营销投入代理**：`paid_search_budget` / `paid_search_visitors` / `product_listing_ad_terms`——付费投放=获客努力；投放收缩=需求走弱（条件/事件腿）。
+- **注意力/知名度**：`oth47_rank` / `website_traffic_rank`（1=更流行，语义反号同 sentiment27 陷阱）。
+- **健康度比率（同机制净额合成合规）**：organic/paid 比=自然流量占比（对营销开支的依赖度）、terms/visitors=流量效率。
+- `_enriched` 与 base 同机制**双份投递**：先用 base 簇（cov 高 0.15），enriched 留作稳健性对照，不混计席位。
+
+**取证（2026-11-03）**：
+1. **论文锚①「Firm Websites and the Risk of Firm」**（[NTU Scholars](https://scholars.lib.ntu.edu.tw/entities/publication/eb2d206b-8010-46f3-b474-dd861a9d036a)，4122 家美股）：网站流量高→信息不对称低→**权益成本/波动/分析师分歧全降** ⇒ 水平型方向先验：**流量高→预期收益低（负向）**。
+2. **论文锚② Berkeley Haas × Stanford GSB「Digital Footprints」**（[Haas News](https://newsroom.haas.berkeley.edu/companies-website-traffic-proves-powerful-predictor-of-financial-performance-and-stock-returns)，The Accounting Review）：网站流量**变化**预测营收与股票收益 ⇒ 变化型方向先验：**流量加速→正向**。
+3. **论坛**：存在对口帖《【Alpha Idea】维基百科关注度的"突压"信号(sent)在德国DEU市场的因子化尝试》（DEU 注意力突压结构）+《德国市场的"报喜藏忧"效应 0.85→1.60 全记录》（DEU 事件结构参考）——开波设计模板时读全文（跳转链为 marshaled 参数，帖 ID 待解析）。
+4. **与 sentiment27 的关系**：同属「注意力」大类但载体不同（域名流量 vs 域名排名/人气）——**开波前必跑互相关防 self 撞**（QPveY7Kg 已占 sentiment 席）。
+
+**开波前置清单**：①逐年覆盖必查（SEMrush 面板 2015-16 前可能空窗，leading-gap 口径待裁）②模板 ≥10 互异 ③两道预检 ④方向先验：水平负向 / 变化正向，先探针后定。
+
 ## 策略注记
 - 低拥挤未挖集（ac<5）多为壳/小集：event_ml_signals 4 / event_relation 1 / other327 1 / other546 1 / model16 1 / other425 0——**逐个先拉字段验真再投**。
 - trio 塔集（pv/model/other）占大头；非目标塔 category（analyst/news/sentiment/earnings/institutions/insiders/macro/shortinterest/risk）是单塔 alpha 的优先矿（平台重算后旧判死结论失真）。
+
+## news 族覆盖补测（2026-11-03 get_datasets 实拉，覆盖口径参考）
+
+| 数据集 | cov | 字段数 | ac | 备注 |
+|---|---|---|---|---|
+| news104 Archive News | **0.963** | 11 | 100 | 覆盖全场最高，未挖 |
+| news18 Ravenpack | 0.805 | 70 | 137 | 未挖 |
+| news17 PR Edition | 0.791 | 48 | 87 | GBR ACTIVE 塔腿 vec_count×similarity 机制源 |
+| news20 Web Sources Sentiment | 0.773 | 46 | 33 | GBR W10 判死只限 GBR |
+| news50 Web News Analytics | 0.764 | 37 | 42 | DEU 已收口（情绪机制弱，最高 0.59） |
+| news38 News Analytic Model | 0.599 | 3 | 26 | 码表漂移，降级门控源 |
+| sentiment7 Webpage Views | 0.742 | 3 | 94 | 注意力型，EUR 同型先验 |
+| socialmedia39 Investor views | 0.275 | 1 | 137 | 低覆盖高拥挤 |
+
+注意：coverage=0.0 的集（news3/7/21/23/29/31/52/54/73/76 等）按覆盖口径**不能直接排除**——数据集级 cov=0 可能是平台未度量，排除前仍须逐年 longCount 核验（连续多年空窗才判死）。
+

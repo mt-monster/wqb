@@ -811,14 +811,15 @@ self-corr 实测（对 OS 池）：
 | 变体 | W | S | F | 2Y | self | **prod（实测）** | 判定 |
 |---|---:|---:|---:|---:|---:|---:|---|
 | 基线 `leA6jmoe` | 252 | 2.18 | 1.45 | 2.86 | 0.634* | **0.7077** | 压线不过 |
-| **L1 `mLob5Yj5`** | **504** | **2.21** | **1.49** | **2.75** | **0.634** | **0.676 ✓** | **全闸过，可提交** |
+| **L1 `mLob5Yj5`** | **504** | **2.21** | **1.49** | **2.75** | ~~0.634~~ **0.7975 ✗** | **0.676** | ~~全闸过，可提交~~ **self 超线判死（§14.5）** |
 | L2 `ZYQnEpwZ` | 126 | 1.87 | 1.14 | — | 0.606 | **0.6535 ✓** | 全闸过，同腿备援（一腿只提 1 颗，取 L1） |
 | 壳变体 `88R7j2Nz`（-ts_zscore） | 252 | — | — | — | — | 0.7212 | 否 |
 
 （*基线 self 读数与 L1 相近；以逐条实读为准。）
 
-**谷向判决 = 拉长（252→504）**：prod 0.7077→0.676 过线，且 S/F/2Y 全部不降反稳（S 2.18→2.21）。
-⇒ **GBR NEWS 塔 3/3 点亮**：`58E7jkaN`（已提交，prod 0.5611）+ `MPYq0819`（篮内）+ **`mLob5Yj5`**（L1，全闸过）。
+**谷向判决 = 拉长（252→504）**：prod 0.7077→0.676 过线，且 S/F/2Y 全部不降反稳（S 2.18→2.21）。**技术结论保留**。
+
+~~⇒ GBR NEWS 塔 3/3 点亮：58E7jkaN + MPYq0819 + mLob5Yj5~~ **★ 2026-11-03 修正：此塔位声明作废（§14.5）。**`MPYq0819` self=1.0000、`mLob5Yj5` self=0.7975、`ZYQnEpwZ` self=0.9983 三杀——**C 轴 `nws17_multiple_comp_event_relevance` 整腿判死**（MPYq0819 孪生体已进 OS 池）。NEWS 塔当前 **1/3**（仅 `58E7jkaN`）。
 
 ### §14.2 第 10 席 E3（GLB `d5W0RQZv`）prod = 0.7023
 
@@ -847,7 +848,467 @@ self-corr 实测（对 OS 池）：
 `bl6qldJ6` 表达式：`trade_when(rank(ts_mean(snt21_2neg_conf_low_394, 22)) > 0.7, signed_power(subtract(group_rank(predicted_third_quantile_one_day_return_4, exchange), 0.5), 0.5), rank(ts_mean(snt21_2neg_conf_low_394, 22)) < 0.6)`
 （snt21 情绪门控 + predicted_third_quantile 信号腿，与 E3 的 ern3 门控不同机制面）
 
-**⇒ 10 regular 清点（不依赖 op-min 计数口径）**：篮内 8 + `mLob5Yj5` + `bl6qldJ6` = **10 条全闸过候选**。
+~~⇒ 10 regular 清点：篮内 8 + mLob5Yj5 + bl6qldJ6 = 10 条全闸过候选~~ **★ 2026-11-03 修正（§14.5）**：`MPYq0819`（篮内）与 `mLob5Yj5` 双双 self 判死 ⇒ 清点改为 **篮内 6 + `bl6qldJ6` = 7 条 self 干净可提交**，塔修复候选 `wpQwjWn6`/`6XdPedNJ`/`9qxPX77V`（self 全干净）过 prod 后可补至 10。
 | `mLob5Yj5` | 0.676 | 581.8s |
 
 ⇒ 账号级 prod 槽单并发 + 竞争者滚动占队时，单条读数 400–600s 是常态；轮询预算按 1500s/条设。
+
+### §14.5 ★★★ 2026-11-03 修正：self 复测（OS 池 18→26 后翻转）与 NEWS 塔重判
+
+用户指出「三颗无法点亮，因 MPYq0819 与 mLob5Yj5 的 self 不过」——实测坐实。OS 池扩容后逐条重测（`corr_check.py --types self`，本地 PnL 分区实测）：
+
+| alpha | 塔/腿 | self（新） | 此前读数 | 判定 |
+|---|---|---:|---:|---|
+| `MPYq0819` | NEWS / C 轴 event_relevance | **1.0000 ✗** | 0.3398 | **判死：孪生体已进 OS 池** |
+| `mLob5Yj5` | NEWS / C 轴 W504 | **0.7975 ✗** | 0.634 | 判死（对 OS 中 MPYq0819 孪生体） |
+| `ZYQnEpwZ` | NEWS / C 轴 W126 | **0.9983 ✗** | 0.606 | 判死（同上） |
+| `wpQwjWn6` | NEWS / nws17_comp_relevance | 0.5614 ✓ | — | 干净，待 prod |
+| `6XdPedNJ` | NEWS / nws18_comp_sse | 0.3538 ✓ | — | 干净，待 prod |
+| `9qxPX77V` | NEWS / nws17_event_sentiment | 0.5720 ✓ | — | 干净，待 prod |
+| `vR1aEpa3`/`O0AKLMKq`/`0mYoANkv`/`P0gvv5gE`/`WjOkLGWx`/`9qWwZ3go` | 篮内 6 条 | 0.4229–0.6364 全 ✓ | — | 干净（`P0gvv5gE` 0.6364 贴线，提交前重测） |
+| `bl6qldJ6` | GLB/OTHER+SENT | 0.2775 ✓ | 0.277 | 干净 |
+
+**机理**：mLob5Yj5(0.7975) 与 ZYQnEpwZ(0.9983) 的新 self 值**恰好等于它们此前对 MPYq0819 的互相关**（0.7975 / 0.9983）⇒ OS 池新增的那条就是 MPYq0819 的孪生（MPYq0819 本身仍 UNSUBMITTED）。**整条 C 轴 `nws17_multiple_comp_event_relevance` 腿被占死，三变体全灭，不再做该腿任何窗口变体。**
+
+**NEWS 塔修复路径评估（2026-11-03 00:36 prod 实测，逐条更新）**：
+
+| 候选 | 字段腿 | self | **prod（实测）** | 判定 |
+|---|---|---:|---:|---|
+| `wpQwjWn6` | nws17_multiple_comp_relevance | 0.5614 ✓ | **1.0 ✗** | **判死（生产池克隆级）** |
+| `6XdPedNJ` | nws18_multiple_comp_sse | 0.3538 ✓ | **1.0 ✗** | **判死（生产池克隆级）** |
+| `9qxPX77V` | nws17_multiple_comp_event_sentiment_score | 0.5720 ✓ | **0.9399 ✗** | **判死**（00:43 收官） |
+
+（四条两两互相关此前已实测全 <0.7，max `wpQwjWn6`↔`9qxPX77V` 0.6583——但 prod 被杀。）
+
+★ 三条 prod 全灭（1.0 / 1.0 / 0.9399），且彼此互相关 <0.7 ⇒ **生产池里存在该家族多个不同字段变体的克隆**，与 §9「强壳变体 prod≈1.0」一致：**GBR NEWS 的 `ts_target_tvr_decay(vec_count(nws*),…)` 家族已被生产池全面占死，三条全部深度超线（非浅钉，不做破墙）**。C 轴（唯一曾 prod<0.7 的腿）又被 OS 孪生体占死 ⇒ **NEWS 塔修复在 nws17/18 家族内已无活腿，必须换纯新数据集/新机制腿**。NEWS 塔终局 = **1/3**（仅 `58E7jkaN`）。
+
+**教训**：**self 读数只在测量当刻有效**——OS 池是活的（本例 18→26），任何候选在提交动作前必须重测 self，历史 self 列不得直接引用放行。
+
+### §14.6 ★★ 2026-11-03 01:30 第三腿数据集轮换：news38 判死、news20 在途
+
+**塔位口径修正**：本节权威账 = 平台 `recommend_datasets.category_summary` —— NEWS **2/3 差 1**（`58E7jkaN` + `A1VPlR3l` 两颗 nws17 系 ACTIVE，后者 11-02 由兄弟会话提交、即 MPYq0819 的 C 轴孪生体）。§14.5 末「终局 1/3」是发现 `A1VPlR3l` 入池前的旧表述，以 2/3 为准。
+
+**news38（`story_analytics_*` 3 个 VECTOR 字段）两轮 12 模板全灭 ⇒ 数据集判死**：
+
+| 轮 | 模板（节选） | 实测 S | 说明 |
+|---|---|---:|---|
+| 一 | T1 `vec_count` 注意力 | −0.72 | 负号 = 注意力→高估→反转迹象，但幅度不够 |
+| 一 | T3/T4/T5/T7 | −0.33 / 0.00 / 0.24 / −0.46 | 全灭；T7 2Y 0.95 唯一弱迹象 |
+| 二 | T2r 比值 / T10 zscore / T11 稀疏 | 0.46 / 0.36 / 0.15 | 最高 0.46，距 S 闸 1.58 差 3 倍 |
+| 二 | T6 流量 / T8 衰减 / T9 尾部 / T12 价量 | 无 PnL / −0.12 / −0.05 / −0.37 | 全灭 |
+
+- T2（原始版）死于 event-vector `multiply` 算子禁区，T2r 改比值绕过后仍死。
+- **T1inv 不补派**：T1 = −0.72，取反数学上限 +0.72，离闸差一倍，省一个 sim 槽。
+- 归因：`story_analytics_*` 三字段是「故事级聚合注意力」，信噪比在 GBR TOP700 日频上不足以单腿过闸（对照 §6.8：NEWS 家族独立轴稀缺）。
+
+**news20（`nws20_*` 46 字段，论坛帖 42659817284375 六机制 × 12 模板）**：
+- 上次 MCP `batch_create_simulations` 超时实际只落 **2/12**：W1 `9qx7P09r`（relevance 门控，S 0.03）/ W2 `Jjev0KpE`（新颖度水平，S 0.22），均死且 `nanHandling=OFF`（非战役标准，但距闸太远不重跑）。
+- W3–W12 十模板 01:29 经 `batch_simulator.py` 补派（nan ON / decay15 / FAST / trunc0.05，预检 `valid:true` 8 字段全存在），两个批父 `1BBh1Wdv74tfcA5RosVs3MZ` / `xFdJeaiN4Qlc16UhfUvBbg` 在途。
+- 判据不变：**10 条全灭则 news20 判死**，NEWS 第三腿再转其他 news 数据集；有达标件（S≥1.58 / F≥1.0 / checks.fail=[]）即进 self+prod 四审争塔腿。
+
+**备胎侦察（01:32，S0 层全扫 + 论坛机制）**：GBR 共 18 个 news 数据集，**coverage>0 仅 6 个**——news17/18（家族判死）、news38（判死）、news20（在途）外，**活备胎只剩 news50（`mws50_*` 37 字段/361 alphas/覆盖 0.69）与 news104（11 字段/388 alphas/覆盖 0.97）**，其余 12 个覆盖为 0 直接出局。
+
+- **news50 字段结构 = news20 同族**（ssc/ens/ghc_lna/relevance/rp_story_event_* 全同名前缀换 mws50_），但多两套独有族：**新颖度家族**（`ens_elapsed` 时间链、`ens_similarity_gap` 相似故事间隔、`g_ens*` 全球级）与**分类器族**（`qcm/qep/qmb/vea`、`nip` 新闻影响预测 2h）。
+- **论坛机制源（启用前侦察已补）**：`Data Idea系列3：Global News Data_news48`（16 赞，WL13229）逐字段分析的正是同一数据包，4 个特征工程方案可迁移：① overall_news_sentiment=9 情绪场均值 ② sentiment_novelty_ratio=(ssc+ess)/(ens+g_ens) ③ action_earnings_sentiment_diff=(acb+bam)−(bee+ber) ④ relative_event_novelty=ens/…（新颖度相对化）。字段级 alphaCount 仅 3–65，拥挤度低。
+- 若 news20 判死：news50 模板池 = 论坛 4 方案 + W1–W12 移植（前缀替换）+ ens_similarity_gap/nip/qcm-qep-qmb 离散度等新骨架，凑满 10 互异模板再派发。
+
+**news50 十模板池（01:37 设计 + 预检 `valid:true`，15 字段全存在；草案存 `results/_n50_pool_draft.json`，news20 收批后按结果微调再派发）**：
+
+| # | 骨架 | 来源 | 常数取值理由 |
+|---|---|---|---|
+| N1 | 5 情绪分类器均值（ssc/ess/qcm/qep/qmb）→ ts_mean60 → group_rank(industry) | 论坛 news48 方案1（9→5 精简） | 5=分类器数；60=季窗 |
+| N2 | 情绪/新颖度比 (ssc+ess)/(ens+g_ens+1) → ts_mean22 | 论坛方案2 | +1 防零；22=月窗 |
+| N3 | 行动−盈利情绪差 (acb+bam)−(bee+ber) → ts_mean60 | 论坛方案3 | 主题分裂价差 |
+| N4 | 相对新颖度 ens/(g_ens+1) → ts_mean22 | 论坛方案4 | 实体独家度 vs 全网 |
+| N5 | `nip` 新闻影响预测（2h）水平 → ts_mean5 | 自建 | 5=日窗，抓影响预测快变量 |
+| N6 | 陈旧度反转 −rank(ens_similarity_gap/100 → ts_mean22) | 自建 | /100 归一 0–100 刻度；反转方向先验 |
+| N7 | 社论−市场情绪差 (qmb−qep) → ts_mean60 | 自建 | 知情评论 vs 背景新闻分裂 |
+| N8 | 积极事件占比动量 ts_delta(ts_mean(aes,22),22) | 自建 | 一阶差分=事件态势变化 |
+| N9 | nip>50 门控 × 情绪快线 ssc ts_mean5 | 自建 | 50=0–100 刻度中点=有实质影响才交易 |
+| N10 | ens_elapsed<86,400,000ms（24h 链内）门控 × 情绪变化 ts_delta5 | 自建 | 8640 万 ms=ens 的 24h 窗本体 |
+
+- 结构互异轴：多分类器均值 / 比值 / 主题价差 / 相对化 / 影响预测水平 / 陈旧度反转 / 评论-新闻价差 / 事件占比一阶差分 / 影响确认门控 / 事件链时效门控（几何、矩、门控轴均不同，非换窗变体）。
+- 全部避开 event-vector `multiply` 禁区与裸 `rank(sentiment)` 禁令（均为 ts 平滑 + group_rank 几何）；时间窗 5/22/60 全在白名单。
+
+### §14.8 ★★ 2026-11-03 01:45 news20 判死（12/12 全灭）⇒ news50 开火
+
+**news20（nws20_*）全 12 模板实测**（W1–W12，nan ON，01:29–01:44 两批收齐）：
+
+| 模板 | 骨架 | alpha | S |
+|---|---|---|---:|
+| W5 | 注意力稀释 ssc/故事数 | Vkx3E9n8 | **0.59**（最高） |
+| W8 | 慢平滑情绪（252） | ZYQKx5qQ | 0.57 |
+| W7 | 次日确认门控 | 9qx7KvbV | 0.35 |
+| W4 | ghc_lna 情绪动量 | xArdQ6aJ | 0.31 |
+| W2 | 新颖度水平 | Jjev0KpE | 0.22 |
+| W3 | 新颖度门控 | zq3RjMzG | 0.18 |
+| W11 | 偏离尾部壳 | qML6dLZO | 0.11 |
+| W6 | 实体-故事偏离 | E56eb7YK | 0.09 |
+| W9 | 新颖度差分 | O0AxkAv1 | 0.04 |
+| W1 | relevance 门控 | 9qx7P09r | 0.03 |
+| **W10** | **vec_count 故事广度** | WjOVdOmd | **−0.22** |
+| W12 | 情绪离散 | bl6dMaQr | −0.53 |
+
+- **判死**：两数据集（news38 12 模板 + news20 12 模板）同形态——原始情绪/新颖度水平族只有 S≈0.1–0.6 量级，距闸 1.58 差 3 倍。
+- **注意力密度路线在 news 族整体封死**：news38 T1 `vec_count(metric_value)` = −0.72、news20 W10 `vec_count(rp_story_event_index)` = −0.22，两处同向为负 ⇒ 注意力反转方向（T1inv/W10inv）数学上限仅 +0.72/+0.22，都够不到闸。两颗 ACTIVE 塔腿（nws17 `event_relevance` 求和族）的高 S 不可复制到其他 news 字段族。
+- **转产**：news50（N1–N10）已于 01:45 派发（`bg_e7c6c4c9`，批任务落 `results/_n50_status.csv`），差异化希望押在**未测过的机制面**：`nip` 影响预测（N5/N9）、新颖度交互比值（N2/N4）、陈旧度反转（N6）、事件占比动量（N8）。
+
+### §14.9 ★★★ 2026-11-03 01:48 news104 侦察 + 十模板池预检就绪（最后备胎）
+
+**news104（`nws104_*` 11 字段，覆盖 0.97，字段级 alphaCount 仅 10–21）= 全场最锐利的机制面**：
+- **`marketimpactscore`**：数据自带「风险调整后 1 分钟前瞻收益」预测值——唯一一个**直接表达预期收益**的 news 字段；
+- **`prob_pos/prob_neg/prob_ntr`** 完整情绪概率分布（比三元 `sentiment` 锐利）+ **`confidence`** 情绪置信度；
+- **数据质量轴**：`automessage` 机器人消息 / `headlineonly` 浅信息 / `novelty` 新旧故事 / `relevance` 公司聚焦度。
+- 论坛无 news104 专属模板帖（`search_forum_posts` 只返回 news54/news48 通用帖），骨架以文献机制 + 自建为主。
+
+**A1–A10 模板池（01:48 预检 `valid:true` 9 字段全存在，草案 `results/_n104_pool_draft.json`）**：A1 影响预测水平 / A2 影响预测修正（PEAD 漂移先验）/ A3 概率分布情绪差 / A4 置信度×情绪（衰减校正，文献先验）/ A5 新颖度反转 / A6 机器人消息门控×影响预测 / A7 中性概率水平（不确定性溢价先验）/ A8 高置信门控×分布情绪快线 / A9 影响×聚焦度（归因加权）/ A10 情绪意外（ts_zscore，surprise≠level 文献先验）。常数：5/22/60 窗在白名单；0.7=置信分类惯例阈值；0.5=automessage 标记占比中点。
+- **开火顺序**：news50 收批后若灭 → 立即派 A1–A10；若 news50 活 → news104 仍值得派（为 10 regular 目标补充候选量，机制面与 news50 正交）。
+
+### §14.10 ★★★★★ 2026-11-03 01:52 塔位计数机制实锤：双数据集 alpha 同时点亮两个塔
+
+平台 `get_alpha_details` 实读两个样本：
+
+| alpha | 引用数据集 | `pyramids.effective` | 塔节点 |
+|---|---|---:|---|
+| `bl6qldJ6` | snt21 + 预测分位（双） | **2** | `GLB/D1/OTHER` + `GLB/D1/SENTIMENT` |
+| `rKRkL9QE` | fnd6 + `cap`（本战役已提交） | **2** | `GBR/D1/PV` + `GBR/D1/FUNDAMENTAL` |
+
+**结论**：alpha 的塔归属 = 表达式引用到的**全部 category**（逐个挂节点、各带 multiplier），与权威账吻合（rKRkL9QE 正是 PV 2/3 与 FUND 2/3 各计一票）。
+
+**⇒ NEWS 塔备用路线（若 news50/104 单数据集全灭）**：构建「**news 字段作门控 + 强信号腿**」的双数据集 alpha——news 侧不需要 S≥1.58，只需进表达式挂上 NEWS 节点；S 由强腿扛。例形状：`trade_when(greater(ts_mean(vec_avg(nws104_confidence),22),0.5), <已验证强信号族>, 0)`。
+
+**设计红线**：① 强腿族不得与提交簿/待篮同族（否则 self 撞死）；② 只用 gate 形态不用 `add(A,B)` 混信号；③ 塔混配额：NEWS×FUND/ANALYST 等非 trio 组合各 ≤3，NEWS×PV/OTHER/MODEL 计 trio×非trio ≤5；④ 提交后必须回读 `category_summary` 验证 NEWS 计数真的 +1（计数归属是推定，pyramid 双节点是实锤）。**该路线产物非 ATOM**（双数据集），10 regular 计数可入但优先级低于单数据集件。
+
+**★ 2026-11-03 02:05 用户指示：该路线搁置**——「先不考虑门控 / 先不考虑用门控点 NEWS 塔」。NEWS 塔第三腿**只走单数据集 news 路线**（news50 → news104 → 继续轮换），门控挂塔不启用。§14.10 的塔位计数机制结论仍然有效（rKRkL9QE PV+FUND 双挂是实锤），仅「用门控挂 NEWS 塔」的应暂不执行。
+
+### §14.11 ★★★★ 2026-11-03 02:05 news50 判死（10/10 全灭）+ news104 波在途
+
+**news50 收批终表**（N10 补齐，全 10 条 COMPLETE）：
+
+| tag | alpha_id | S | 机制 |
+|---|---|---:|---|
+| N9 | `0mYMQEXr` | **0.74** | nip>50 门控 × ssc 情绪快线（全场三波最高） |
+| N1 | `2rANZLd6` | 0.58 | 分类器合成密度(qcm/qep/qmb/ssc/ess) |
+| N10 | `GrWe8xaP` | 0.45 | ens_elapsed<24h 新鲜度门控 × ssc 变化 |
+| N3 | `88Re6Qq7` | 0.02 | acb+bam−bee−ber 多空差 |
+| N7 | `bl6dPqRm` | 0.08 | qmb−qep 分类器分歧 |
+| N2 | `d5WR70w2` | −0.34 | (ssc+ess)/(ens+g_ens+1) 相对强度 |
+| N4 | `78LnXbKb` | −0.43 | ens/(g_ens+1) ensemble 一致性 |
+| N8 | `1YNzmdXm` | −0.21 | aes 情绪变化 |
+| N5 | `vR1vzMJv` | −0.49 | nip 影响预测水平 |
+| N6 | `gJe9POo0` | −0.93 | 相似度缺口反转 |
+
+**判死依据**：10 个结构互异模板（论坛迁移 4 机制 + ens 新颖度族 + 分类器族 + 影响预测族）全灭，max S 0.74 距闸 1.58 差 0.84；与 news38（12 模板）、news20（12 模板）合计 **34 模板全灭**。N9 确认「nip 影响预测字段信息在条件侧」（作信号 −0.49，作门控抬到 0.74）——但门控路线已搁置，该洞察留档备用。
+
+**news50→news104 轮换**：A1–A10（`results/_n104_pool_draft.json`）已派发（batch bg_2fb7e02a），机制与 news20/50 正交（impact 预测水平/修正、prob_pos−neg 概率差、置信加权、不确定性溢价、impact×relevance 交互），字段级 alphaCount 仅 10–21。判据同前：达标件（S≥1.58/F≥1.0/checks.fail=[]）进 self+prod 四审争塔腿。
+
+### §14.12 ★★★★ 2026-11-03 02:05 news17 备胎侦察（news104 全灭时的第二波战场）
+
+**两颗 ACTIVE 塔腿的精确表达式**（自遮蔽面 = 这两个机制不可再碰，self 必撞）：
+
+| alpha | 表达式 | S/F/TO |
+|---|---|---|
+| `A1VPlR3l` | `ts_target_tvr_decay(-ts_rank(ts_mean(vec_sum(nws17_multiple_comp_event_relevance),60),120), target_tvr=0.05, lambda_max=5, lambda_min=0)` | 1.88/1.15/0.079 |
+| `58E7jkaN` | `ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(multiply(vec_count(nws17_multiple_comp_ssc), rank(vec_avg(nws17_multiple_comp_event_similarity_days))),60),252), densify(market)), target_tvr=0.05, lambda_max=5, lambda_min=0)` | — |
+
+**★ 注**：58E7jkaN 用了 `vec_count(ssc)` 注意力密度×相似度交互——vec_count 族在 news38/news20 全灭，但在 news17 是出货机制。**「某机制族全灭」只在同一数据集内成立，跨数据集不迁移**（与 §14.x「子族粒度」判据同源）。
+
+**news17 字段库存**（get_datafields 实读 48 字段，平台 alphaCount 极低=未拥挤）：
+
+- **已占用（禁碰）**：`multiple_comp_event_relevance`（A1VPlR3l）、`multiple_comp_ssc`×`multiple_comp_event_similarity_days`（58E7jkaN）
+- **低拥挤候选（alphaCount≤7）**：`multiple_comp_bam`(4)、`multiple_comp_ber`(3)、`multiple_comp_qcm`(3)、`multiple_comp_qmb`(4)、`multiple_comp_headline`(3)、`multiple_comp_rp_story_event_index`(0)、`multiple_comp_event_end_time_utc`(0)、`ghc_lna`(7)、`qmb`(7)、`timestamp_utc_time`(7)、`bam`(6)、`qcm`(6)
+- **中拥挤**：`event_similarity_days`(23)、`nip`(30)、`event_sentiment_score`(34)、`ssc`(25)、`relevance`(22)
+
+**设计方向（若 news104 全灭再启用）**：① 只用低拥挤字段组机制，避开两条 ACTIVE 腿的字段×几何组合；② 几何可借鉴两腿已验证的外层 `ts_rank(·,60/120/252)` + 内层 `vec_sum`/`vec_count`×交互，但换字段族（如 bam−ber 多空差求和、qcm/qmb 分类器、rp_story_event_index 稀疏索引）；③ 必须过 self 0.7 对 OS 池（含两腿）；④ 波次模板池 ≥10 互异 + 论坛/论文来源标注后才派发。
+
+### §14.13 ★★★★ 2026-11-03 02:15 news104 判死（10/10 全灭）+ news17 波 M1–M10 在途
+
+**news104 收批终表**（全 10 条 COMPLETE，S 区间 −0.42 ~ 0.28）：
+
+| tag | alpha_id | S | 机制 |
+|---|---|---:|---|
+| A3_prob_spread | `3qoenRMP` | **0.28** | prob_pos−prob_neg 概率差 |
+| A6_auto_gate_impact | `3qoenR06` | **0.28** | automessage 门控 × impact |
+| A10_sent_surprise | `1YNznjp6` | 0.24* | （0.24/−0.04 区间内） |
+| A4_conf_weighted | `qML6mlLE` | 0.24 | 情绪×置信加权 |
+| A9_impact_relevance | `zq3RP6Xo` | 0.25 | impact×relevance |
+| A1_impact_level | `9qx7Arz9` | 0.19 | impact 水平 |
+| A5_novelty_reversal | `9qx7Arxe` | 0.21 | 新颖度反转 |
+| A8_hi_conf_spread | `YP1g2KZR` | 0.16 | 高置信门控 × 概率差 |
+| A2_impact_revision | `RRE1k8Jb` | −0.05 | impact 修正 |
+| A7_uncertainty | `QPv92keK` | −0.42 | 不确定性溢价 |
+
+**判死依据**：impact 预测机制（news104 数据自带「风险调整后 1 分钟前瞻收益」预测）**作信号、作门控双失败**——news50 N9 的「条件侧信息」洞察未能跨数据集迁移（gate×impact 仅 0.28，比 N9 的 0.74 差一个量级）。news 族累计 **44 模板全灭**（news38 12 + news20 12 + news50 10 + news104 10）。
+
+**⇒ 新结论：news 数据集在 GBR 的信号只在 news17 子族出现过**（两颗 ACTIVE 塔腿均为 nws17 字段）。其余集的「情绪水平/动量/新颖度/影响预测」机制全灭。
+
+### §14.14 ★★★★ 2026-11-03 02:15 news17 波 M1–M10 模板池（paper+forum+自建，0 门控）
+
+**模板池**（全单数据集 ATOM，0 个 trade_when，预检 10/10 valid + 字段全存在；表达式见 `results/_n17_pool_draft.json`，派发批 bg_26a2a6f4）：
+
+| # | 机制 | 结构 | 来源 |
+|---|---|---|---|
+| M1 | 情绪动量·子行业 | fast 5日均 × subindustry | **paper《The Momentum of News》**（Wang/Zhang/Zhu 2018，forum 18641983716503，实证年化 7.45%） |
+| M2 | 慢几何情绪求和 | vec_sum × ts_rank(·,252) | paper + 两腿慢几何 |
+| M3 | bam−ber 多空对比 | 对比差 × 慢秩 | forum《Data Idea 系列3 news48》多空方案迁移 |
+| M4 | qcm−qmb 分类器分歧 | 分类器差 × industry | forum news48 |
+| M5 | 稀疏索引首动者 | rp_story_event_index（alphaCount=0）| 自建 |
+| M6 | 新闻强度变化反转 | ts_delta 变化矩 | 自建 |
+| M7 | 事件新颖度水平 | similarity_days × 慢秩 | 自建 |
+| M8 | relevance 加权情绪 | 比值加权 × 慢秩 | forum《relevance 加权+新颖度过滤》 |
+| M9 | 多公司头条密度 | vec_count × 慢秩 | 自建（58E7jkaN 密度思想换字段族） |
+| M10 | 时戳新鲜度 | event_end_time 水平 × industry | 自建 |
+
+**设计红线执行**：避开两 ACTIVE 腿字段×几何（`multiple_comp_event_relevance` 求和、`ssc密度×similarity` 交互）；全用低拥挤字段（alphaCount 0–16）；窗口全白名单（5/22/60/252）；无 bucket 轴；无裸 rank(sentiment)（M1 带 5 日均+子行业中性）。
+
+**判据**：达标件（S≥1.58/F≥1.0/checks.fail=[]）进 self+prod 四审争塔腿；若 10 全灭则 news17 第二波换几何（极值选择 if_else / 窗口谷）再试，之后判 news 域整体封盘、回报用户裁定。
+
+### §14.15 ★★★★ 2026-11-03 02:30 news17 波 1 终局（10/10 原向全灭，两颗取反火种）+ 波 2 在途
+
+**波 1 终表**（M1–M10 全 COMPLETE）：
+
+| 模板 | alpha_id | S | 备注 |
+|---|---|---:|---|
+| M9 头条密度 | `N1NRnzkg` | **−1.79** | ★取反 **+1.79/F 1.08 双过闸线**——54 模板首个取反双过线机制 |
+| M2 慢几何情绪求和 | `mLoVqbw9` | −1.32 | ★取反 +1.32（与 A1VPlR3l 同构形状） |
+| M5 稀疏索引 | `rKRPblkE` | 0.43 | 最高正向，弱 |
+| M4 分类器分歧 | `akKENn39` | 0.35 | 弱 |
+| M3 多空对比 | `1YNzodkJ` | 0.25 | 弱 |
+| M7 新颖度 | `RRE1NzXo` | 0.16 | 弱 |
+| M8 relevance 加权 | `88ReOJgo` | 0.14 | 弱 |
+| M1 paper 情绪动量 | `MPYLbQPz` | −0.16 | 论文机制 GBR 反向 |
+| M10 时戳新鲜度 | `QPv9nRaw` | −0.41 | 死 |
+| M6 强度变化反转 | `MPYLbQwa` | −0.04 | 死 |
+
+**核心发现**：news17 的信号方向 = **慢新闻聚合的反向（contrarian）**——A1VPlR3l 出货形状本身是取反（relevance-sum），M2/M9 原向均为深负、取反即过线。波 2 十二模板（`results/_n17b_pool_draft.json`，已预检 12/12 valid，批 bg_2a2f19ca 在途）全部围绕「取反 + 强壳 + 窗口谷」展开：W1–W4 = M2 翻转 × 裸/强壳 × 外窗 66/120/252；W5–W8 = 裸族/变化矩/对比差/非线性尾部；W9/W10 = M5/M4 装强壳；**W11/W12 = M9 翻转裸/强壳（头号种子，上限 +1.79）**。
+
+**⚠ 四审预警**：W11/W12 的 `vec_count(nws17_multiple_comp_headline)` 撞 58E7jkaN 生产池克隆族（nws17/18 vec_count 家族 prod 1.0/1.0/0.9399 实测），**prod 大概率死、只当 S 确认器**；W2–W4 的 sentiment-sum 族需实测 self 对 A1VPlR3l（relevance-sum 同构）。真正可提交的塔腿最可能出自「取反机制 × 非克隆字段族」的组合。
+
+### §14.16 ★★★★★ 2026-11-03 02:44 news17 波 2 终盘：contrarian 论题实锤，3 颗候选四审 3/4 全过
+
+**波 2 终表**（12/12 COMPLETE）——**M2/M9 取反系列全部兑现理论值**：
+
+| alpha | 模板 | S | F | 2Y | sub | fRA | self | 判定 |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| `LLMdk8ne` | **W12 = M9 翻转+强壳** | **2.10** | **1.38** | 2.33 | 1.44 | **0** | 0.56 | ★ prod 待测（塔腿头号） |
+| `akKEoRA5` | W11 = M9 翻转裸 | 1.79 | 1.08 | 2.03 | 1.49 | **0** | 0.46 | ★ prod 待测 |
+| `rKRPAWv9` | W2 = M2 翻转+强壳 252 | 1.76 | 1.07 | 1.89 | 1.40 | **0** | 0.40 | ★ prod 测量中 |
+| `P0oOv1dL` | W3 = M2 翻转+强壳 120 | 1.65 | 0.96 | 1.74 | 1.41 | 1 | 0.46 | ✗ F 差 0.04 + fRA 1 |
+| `3qoezgmz` | W4 = M2 翻转+强壳 66 | 1.49 | 0.84 | 1.54 | 1.16 | 3 | 0.43 | ✗ fRA 3 |
+| `O0Axoo37` | W8 = 非线性尾部 | 1.17 | 0.58 | — | — | — | — | ✗ |
+| `LLMdkRA9` | W1 = M2 翻转裸 | 1.32 | 0.68 | 1.56 | 1.34 | 3 | 0.34 | ✗ fRA 3 |
+| `vR1vddQA` | W9 = M5 装强壳 | 0.32 | 0.08 | — | — | — | — | ✗ |
+| `58EkMGaz` | W10 = 分类器差强壳 | 0.12 | 0.02 | — | — | — | — | ✗ |
+| `e75xLeM6` | W6 = 变化矩翻转 | −0.56 | −0.15 | — | — | — | — | ✗ |
+| `P0oOvjL7` | W5 = 裸族翻转（W5 之前单独跑的） | 1.30* | 0.74* | — | — | — | — | ✗ |
+| `78LnJJpQ` | W7 = 温度计−关注差 | −1.91 | −1.18 | — | — | — | — | ✗（取反 +1.91 未测，候选库存） |
+
+**三条实证规律**：
+1. **窗口谷（M2 族）**：外窗 252→120→66 = S 1.76→1.65→1.49，252 最优；壳增益 ≈ +0.44（1.32→1.76）。
+2. **M9 头条密度翻转是全库最强 news 机制**：裸 1.79 → 强壳 **2.10**（M9 原向 −1.79 精确翻转验证）。
+3. **★ 克隆族预判修正**：`vec_count(multiple_comp_headline)` 对塔腿 58E7jkaN（`vec_count(multiple_comp_ssc)×similarity`）的 self 仅 0.46/0.56——**头条密度 ≠ 故事情绪密度，属不同 PnL 家族**；历史 prod 1.0/1.0/0.9399 的是 sse/ssc 近邻变体。判「vec_count 家族克隆」必须落到字段对，不能按算子一刀切。
+
+**待办**：prod 三连测（账号单并发排队：rKRPAWv9 → LLMdk8ne → akKEoRA5）；全过 0.7 红线者进提交待报用户授权；W7 取反（+1.91 理论）留作下波库存。
+
+### §14.17 ★★★★★ 2026-11-03 02:49 W7-neg 双探针新纪录 + self 判死线首次收割 + prod 排队
+
+**W7-neg 实测**（理论 +1.91 双双精确兑现）：`mLoVXokK`（+强壳）S **2.30/F 1.58/2Y 2.50/sub 1.59/fRA 0** = 强度之王，但 **self 0.735 超 0.7 红线判死**（撞 OS 池——对比差含 relevance-sum，与 A1VPlR3l 取反族近亲）；`kqNZKN5K`（裸）S 1.91/F 1.18/2Y 1.99/sub 1.51/fRA 0/**self 0.62 过线** = 活件。
+
+**当前 prod 待决四活件**（全部五闸+RA+self 已过）：`kqNZKN5K`(1.91) / `LLMdk8ne`(2.10) / `akKEoRA5`(1.79) / `rKRPAWv9`(1.76)。rKRPAWv9 prod 首刷 45 轮超时（平台未落缓存），串行刷新链已发（kqNZKN5K→LLMdk8ne→akKEoRA5→rKRPAWv9）。
+
+**★ 教训**：壳会放大与 OS 池的 PnL 相关性——同信号裸版 self 0.62、壳版 0.735。**self 临界件先测裸版**，壳版只在裸版 self 有余量时上。
+
+### §14.18 ★★★★★ 2026-11-03 03:05 11 颗互相关最大团：篮子精确 = 10 席闭合，唯一裁位 akKEoRA5
+
+**实测**（`compute_mutual_correlation`，11 颗 = 4 活件 + 待篮 7 条，threshold 0.7 / 4Y / 1023 点，本地 PnL 免费）：
+
+| 关键读数 | 值 | 含义 |
+|---|---:|---|
+| 唯一超线对 | **LLMdk8ne ↔ akKEoRA5 = 0.8902** | 同字段同窗（headline 密度 60/252）裸/壳对 = 同一腿 |
+| 次高对 | kqNZKN5K ↔ akKEoRA5 0.6757 / kqNZKN5K ↔ LLMdk8ne 0.5909 | 均 <0.7 过线 |
+| 壳变体对 | LLMdk8ne ↔ rKRPAWv9 = **0.2896** | headline vs 情绪求和 = 异字段，强壳下仍互异 |
+| 待篮内部最高 | vR1aEpa3 ↔ O0AKLMKq 0.6566 | 全 <0.7 |
+| news 四件 ↔ 待篮 7 条 | 全 ≤ 0.12 | 两篮完全正交 |
+
+**判决（一腿一票）**：`max_mutually_below_subset`（精确解）= **10 席** = LLMdk8ne + kqNZKN5K + rKRPAWv9 + 待篮 7 条（vR1aEpa3 / O0AKLMKq / 0mYoANkv / P0gvv5gE / WjOkLGWx / 9qWwZ3go / bl6qldJ6）。**裁掉 akKEoRA5**（同腿留强：LLMdk8ne S 2.10 > 1.79；akKEoRA5 转为 LLMdk8ne 的 prod 失败备胎）。
+
+⇒ **「10 个 regular」目标的篮子形状就此闭合**：若 10 席全过提交前终验（prod<0.7 + self 重测 + fRA=0），即达标；NEWS 塔第 3 腿由 LLMdk8ne（或任一 news17 活件）点亮 3/3。
+
+**prod 现况（03:05）**：串行链 bg_70e7ab4d 进行中——kqNZKN5K 45 轮耗尽 unknown（首刷超时、平台未落缓存，与 rKRPAWv9 同款），LLMdk8ne 在算（8/45），链尾 akKEoRA5 + rKRPAWv9。**耗尽者待 inflight 标记 300s 过期后补刷**；prod 是终验项，缺它不改篮子形状。
+
+**★ 教训**：裸/壳对（同字段同窗）互相关 0.89——**强壳不产生新腿**，只换形态；同机制想进篮必须换字段（LLMdk8ne↔rKRPAWv9 换字段后 0.29）。
+
+### §14.19 ★★★★★ 2026-11-03 03:10 prod peek 四读数破局：LLMdk8ne 族 prod 判死，篮子收缩为 9 席
+
+**工具路径**：`tools/prod_wait.py <id> --peek --tries 2`（§四2 第②段，无锁只读）在刷新链轮询全 unknown 的僵局下直接读回平台已算值——corr_check 的 45 轮轮询窗口（450s）盖不住平台首算，但值其实在平台上，peek 一次就到。
+
+| 候选 | 族 | prod | 判定 |
+|---|---|---:|---|
+| `LLMdk8ne` | 头条密度 contrarian（壳） | **1.0** | ✗ 深钉判死（≥0.8；生产池家族克隆） |
+| `akKEoRA5` | 同族（裸） | **0.8901** | ✗ 同族连坐（与 LLMdk8ne 互相关 0.89 实证同腿） |
+| `kqNZKN5K` | 温度计−关注对比差（裸） | **0.6227** | ★ 过线（<0.7 严格） |
+| `rKRPAWv9` | 情绪求和 contrarian（壳） | **0.3998** | ★ 过线（极干净） |
+
+**实证规律**：①「self 干净 ≠ prod 干净」——LLMdk8ne self 0.56 / prod 1.0，头条密度 contrarian 在**全账号生产池**里有克隆（58E7jkaN 的 ssc 族不是它，克隆来自外部提交者）；②**prod 判死半径 = 家族**——headline 族两颗全灭，逃无可逃；③peek 的 value 语义与放行线一致（<0.7 严格）。
+
+**篮子现状 = 9 席**（kqNZKN5K + rKRPAWv9 + 待篮 7 条，互相关全 <0.7，kqNZKN5K↔rKRPAWv9 = 0.35）；NEWS 塔 3/3 由任一 news17 活件点亮。**缺第 10 席** ⇒ news17 未触碰字段补席波（§14.20）。
+
+### §14.20 ★★★★ 2026-11-03 03:25 补席波 B1–B10 派发（news17 未触碰机制，10 互异模板）
+
+**目标**：篮子 9 席 → 补第 10 席。**纪律**：0 门控、单数据集 news17、窗口白名单、论坛先行（`search_forum_posts` 检出 RM49262「ts_covariance 情绪模板」与「新闻四维度」帖；web_search 402 仍停，论文先验取自分析师修正漂移 / 投资者注意力文献常识）。
+
+**字段语义**（get_datafields 实读）：`ber`=分析师升降级分（ANL-CHG，−1/0/1）、`bam`=公司行动情绪（BCA）、`acb`=盈利情绪、`ghc_lna`=多分类器综合语气、`rp_story_event_count`=每稿事件数（新闻广度）、`qep`=词典情绪、`qmb`=M&A 情绪。**全部未测机制**（news50 的 nip 判死不迁移到 news17，S 判死半径=单数据集）。
+
+| # | 模板 | 结构轴 | 来源 | 方向 |
+|---|---|---|---|---|
+| B1 | `ts_rank(ts_mean(vec_sum(nws17_ber),60),252)` | 分析师修正漂移（动量对照） | paper | +动量 |
+| B2 | B1 取反 + 全强壳 | 出货公式移植 | 自建 | contrarian |
+| B3 | `-ts_rank(ts_mean(vec_sum(nws17_bam),60),252)` | 公司行动情绪裸矩 | 自建 | contrarian |
+| B4 | `-ts_rank(ts_delta(ts_mean(vec_sum(nws17_acb),22),22),252)` | 一阶变化矩 | 自建 | contrarian |
+| B5 | `ghc_lna` 取反 + 全强壳 | 综合语气 + 出货公式 | 自建 | contrarian |
+| B6 | `-ts_rank(ts_delta(ts_mean(vec_sum(nws17_rp_story_event_count),5),22),252)` | 新闻流量加速度（注意力） | paper | contrarian |
+| B7 | `-ts_rank(ts_mean(multiply(vec_sum(nws17_qep), rank(vec_avg(nws17_event_similarity_days))),60),252)` | 情绪×新颖度交互 | 自建 | contrarian |
+| B8 | `ts_corr(ts_mean(vec_sum(nws17_qep),22), ts_mean(vec_count(nws17_qep),22), 60)` | 语气-覆盖对齐（corr 几何） | forum RM49262 | 自然 |
+| B9 | `-ts_rank(ts_mean(vec_avg(nws17_qmb),60),252)` | per-story 归一矩（vec_avg） | 自建 | contrarian |
+| B10 | `-group_rank(signed_power(ts_mean(vec_sum(nws17_ghc_lna),60),3), industry)` | 非线性尾部 × 分组轴 | 自建 | contrarian |
+
+**预检**：validate_expressions `valid:true`，8 字段全存在（qep 分页告警已由 get_datafields 实证豁免）。**派发**：`results/_n17c_list.json` → batch_simulator 批 3 并发 2，任务 `bg_f92225f6`，收批 `results/_n17c_status.csv`。
+
+**归因预案**：按模板编号归因；出线者先过四审（五闸+fRA+self），再跑互相关（对 9 席篮子 + 同波彼此）解最大团补位。B5/B10 同字段异几何预期互高，只留一；B1 为方向对照，深负则其取反版即 B2 族。
+
+### §14.21 ★★★★★ 2026-11-03 03:39 直方图归因判决 + pwdQb78v 破墙波 R1–R12（10 席救援线）
+
+**背景**：第 10 席锁定 `pwdQb78v` 破墙救援（NI/EV 收益率趋势，S 1.99/F 1.57/2Y 2.10，prod 0.7205 浅钉）。prod_wait.py peek 已扩展为存直方图（`records` 分箱 [low,high,n]；平台 prod 端点**不含对手 ID**，直方图即 11-02 判据的「钉数与深度」）。
+
+**直方图归因（03:39 实测）**：
+
+| 候选 | [0.7,0.8) | [0.6,0.7) | [0.5,0.6) | 形态 | 判决 |
+|---|---|---|---|---|---|
+| `pwdQb78v` | **n=1**（0.7205） | 4 | 11 | 主体集中 [-0.1,0.3]，稀疏尾 | **浅钉单点碰撞 → 救援主目标** |
+| `E56onL5r` | n=1（0.7033） | **43** | **638** | [0.3,0.7] 厚尾 1.1 万颗 | **主题拥挤（Rev/EV 生产池成片）→ 降级二备** |
+
+**修正**：`rKRkL9QE` 当日 prod **0.6783 ✓ 过线**（10-31 读数仍有效）——它死在 self（OS 池孪生翻死），此前「prod 漂死」认定有误。
+
+**方法论调和（skill vs 11-02 规则）**：`wq-window-valley-break-prod-wall` 实证（KOR 16/16 零例外）**n=1 单钉靠窗口位移永远过不了**（谷底卡 0.7019–0.7031，永差 0.002–0.003）；11-02 规则「n=1 不判死、归因后破墙」依然成立，但**破墙主杠杆 = 算子/几何换面**（改变 PnL 形状躲单点碰撞），窗口谷只留一个对照臂（R12）。两轴同看（prod 轴 + 2Y/换手轴，skill 跨区反例）。
+
+**12 臂设计**（基线 `rank(ts_quantile(ts_av_diff(divide(quarterly_net_income_3, current_enterprise_value), 504), 22, driver=gaussian))`；每臂一个独立杠杆面；来源=自建+pack 经济机制+skill）：
+
+| # | 杠杆面 | 结构 |
+|---|---|---|
+| R1 | 换分母 EV→cap | `rank(ts_quantile(ts_av_diff(divide(NI, cap), 504), 22, driver=gaussian))` |
+| R2 | 换矩 水平→22 日动量 | `rank(ts_delta(divide(NI, EV), 22))` |
+| R3 | 换矩 60 日动量平滑 | `rank(ts_mean(ts_delta(divide(NI, EV), 60), 22))` |
+| R4 | 残差化 EV 溢价 | `vector_neut(base, rank(divide(EV, cap)))` |
+| R5 | 算子替换 ts_rank 几何 | `rank(ts_rank(ts_av_diff(divide(NI, EV), 504), 22))` |
+| R6 | 算子替换 ts_zscore 几何 | `rank(ts_zscore(ts_av_diff(divide(NI, EV), 504), 22))` |
+| R7 | 分组轴 subindustry 组内秩 | `group_rank(base_quantile, subindustry)` |
+| R8 | 尾部放大壳（无外层 rank） | `signed_power(subtract(base, 0.5), 3)` |
+| R9 | 换分母+换矩 EP 季动量 | `rank(ts_delta(divide(NI, cap), 60))` |
+| R10 | 双窗差（趋势加速度） | `subtract(base, rank(ts_quantile(ts_av_diff(divide(NI, EV), 252), 22, driver=gaussian)))` |
+| R11 | subindustry 中性壳（改权重面） | `group_neutralize(base, subindustry)` |
+| R12 | 窗口谷对照（skill 判死臂，W 504→428） | `rank(ts_quantile(ts_av_diff(divide(NI, EV), 428), 22, driver=gaussian))` |
+
+**预检**：validate_expressions（GBR/TOP700/D1）**12/12 字段存在**（platform_field_count=3）；`gaussian` 为命名参数值误报（基线本体带 driver=gaussian 成功仿真 S 1.99 为实证）。**派发**：`results/_pwd_rescue_list.json`（三键契约）→ batch_simulator 批 3 并发 2，任务 `bg_e581fd16`，收批 `results/_pwd_rescue_status.csv`。臂↔表达式映射 `results/_pwd_rescue_arms_map.json`。
+
+**归因预案**：出线者过四审（五闸+fRA+self）→ prod<0.7 预锁（peek 收值）→ 互相关 vs 9 席篮解最大团。**同族只提 1 颗**（skill 陷阱 1：谷内变体 self 互撞）；R8/R11 是基线壳（与基线同腿 ~0.89），只用于验证「形状改变是否降 prod」，不计独立席位。
+
+**9 席篮当日 prod 快照（03:47–03:52 peek，`results/_basket9_prod_snapshot_20261103.json`）**：9/9 全 <0.7，但**贴线三件**——`0mYoANkv` 0.6932（厚尾 [0.5,0.7)=662）、`P0gvv5gE` 0.6905、`9qWwZ3go` 0.6890（中尾 208）；`WjOkLGWx` 0.6577 虽有余量但主题厚尾（[0.5,0.7)=886，与降级的 E56onL5r 同级）；`bl6qldJ6` 0.5421 / `rKRPAWv9` 0.3998 最干净。**含义**：①提交序=干净件先行，贴线件在其当轮 refresh 终验后立提；②破墙波 R1–R12 出线者兼任贴线件的**替补库**（不只补第 10 席）；③prod 快照只在测量当刻有效。
+
+### §14.22 ★★★★★ 2026-11-03 03:53 R6 四审全过 → 第 10 席锁定 `1YNzwl6k`，10 席篮子凑齐
+
+**R6（ts_zscore 几何换面）四审实测**：
+
+| 审 | 读数 | 线 | 判 |
+|---|---|---|---|
+| 五闸 | S **1.73** / F **1.06** / 2Y **2.30** / TO 15.4% / sub-univ 1.36 / returns 5.78% | S≥1.58, F≥1.0, 2Y 分档 | ✅ |
+| fRA | **failed_ra_count = 0** | WARNING 级也算失败 | ✅ |
+| prod | **0.5188**，直方图 **[0.7,0.8) n=0**、[0.5,0.7) 仅 3 颗 | <0.7 严格 | ✅ 余量 0.18 |
+| self | **0.1246** | <0.7 严格 | ✅ 余量 0.58 |
+
+**互相关**：R6 对 9 席全部 ≤0.0895（近乎正交）；`compute_mutual_correlation` 10 颗精确解 `max_mutually_below_subset_size=10`（max_pair 仍是 vR1aEpa3↔O0AKLMKq 0.6566）。**10 席一腿一票成立**。
+
+**破墙战役归因定稿**：基线 pwdQb78v（ts_quantile-gaussian 几何）prod 0.7205 n=1 单钉；12 臂里唯一活口 R6 = 同信号**几何换面 ts_quantile→ts_zscore**（S 1.99→1.73 仅损 0.26），prod 0.7205→**0.5188 且 n→0**——钉子挂在 quantile 几何的权重剖面上，zscore 尾部权重不同整个绕开。窗口谷对照臂 R12（1.47）证实窗口位移非活路（skill 16/16 一致）。**浅钉 n=1 破墙首选杠杆 = 同信号几何换面，而非窗口位移**。
+
+**10 席终表**：kqNZKN5K(0.62) / rKRPAWv9(0.40) / bl6qldJ6(0.54) / O0AKLMKq(0.60) / vR1aEpa3(0.66) / WjOkLGWx(0.66) / P0gvv5gE(0.69⚠) / 0mYoANkv(0.69⚠) / 9qWwZ3go(0.69⚠) / **1YNzwl6k(0.52)**。NEWS 塔 3/3 由 kqNZKN5K 或 rKRPAWv9 提交点亮（单数据集 news，无门控）。**待用户提交授权**（不可逆）：授权后按「干净件先行→贴线件当轮 refresh 立提」逐条终验提交。
+
+
+
+
+## §15 ★★★★★ 2026-11-03 13:0x 跨区迁移：GBR NEWS 模板总结 → 其它 region 挖 regular
+
+> 新目标（用户改写）：「GBR 的 NEWS 的模板可以总结一下，在其它 region 的 NEWS 的 category 下挖掘 regular alpha 吗」
+> 完整交付：`docs/reference/gbr_news_template_summary_and_cross_region_migration_20261103.md`（Part A 模板总结 / Part B 迁移地图 / Part C CHN 首波）。
+
+### §15.1 GBR NEWS 模板的可迁移提炼（8 条教训 + 5 轴）
+
+- **5 条独立轴**（NEWS 塔容量上限 = 5，不是 6）：A 新闻到达率 / B sse 强度 / C 事件强度求和 / D 情绪分到达率 / E 合成置信。
+- **换轴只有两条路**：换语义不同字段、换数据集。**换结构救不了相关性**（载体 = 字段信息轴）。
+- 8 条教训：L1 相关性载体=信息轴 / L2 强几何 vs 弱几何（同字段 S 0.91→1.86+）/ L3 vec_count 对满填充字段是恒等变换 / L4 winsorize∘ts_rank 与 ts_zscore 前置是恒等/冗余 / L5 二阶矩几何在到达率字段上无信息 / L6 同字段当乘子有效当本体无效（novelty：S1.85 vs −0.33）/ L7 掩码类双杀（TO↑+广度↓⇒F崩）/ L8 裸 rank(sentiment) 禁用。
+
+### §15.2 ★ 全平台 NEWS 数据集存量盘点（14 region 实拉）
+
+⚠ **universe 必须用各区 default_universe**（`src/wqb/config.py`）：给 EUR/ASI/CHN/IND/JPN/KOR/TWN/HKG/DEU/MEA/AMR/GBR 传 TOP3000 会**返回空**（不是没数据，是 universe 非法）。第一次普查只扫出 USA/GLB 就是这个坑。
+
+| region | universe | NEWS 集数 | 备注 |
+|---|---|---:|---|
+| USA | TOP3000 | 26 | news18 aC 60336 重饱和 |
+| GLB | TOP3000 | 15 | |
+| EUR | TOP2500 | 20 | |
+| ASI | MINVOL1M | 22 | |
+| IND | TOP500 | 22 | |
+| KOR | TOP600 | 24 | **news 塔已全清点 24 集，只剩 news20 一条缝** |
+| HKG | TOP800 | 24 | |
+| DEU | TOP500 | 17 | **news 6 集已做模板池+剖面** |
+| **CHN** | TOP2000U | 9 | **★★★★ 处女区：aC 3–7，valueScore 5–6，字段级 aC≈0** |
+| AMR | TOP600 | 28 | news29 aC=5 / news84 aC=25 / news85 aC=35 |
+| **JPN / TWN / MEA** | — | **0** | **平台无 NEWS 数据集**（迁移禁区，别再查） |
+
+### §15.3 ★ CHN 首波（news46，12 模板）设计要点
+
+- **选靶 CHN/news46**：cov **1.0**（全 CHN 最优）/ 数据集 aC=7 / 字段级 aC 0–4 / valueScore **6** / 37 字段全 VECTOR；CHN/D1 **全 14 塔 0/3**（含 news=0）。
+- **CHN 严闸 = LOW_SHARPE 2.07**（比 GBR 1.58 严；CHN 既往 S1.45 即判死）。
+- **CHN 三条死路警告（`tracking/CHN/config/cells.json`）**：① 禁「rank(x) 负 Sharpe 就取负镜像」⇒ 反向腿必须换结构；② **`ts_backfill` 会破坏事件条件性**（把信号换掉而非平滑）⇒ CHN 禁 backfill；③ 换手 <20% 硬要求。
+- **设置档**：CHN/TOP2000U/D1/SUBINDUSTRY/decay4/truncation0.08/VERIFY/nanHandling OFF/pasteurization ON/maxTrade OFF/FASTEXPR（`tracking/CHN/config/settings.json` 既有档，未沿用 GBR 的 FAST）。
+- **CHN 分组字段**：`industry` / `market` / `exchange` / `country` / `currency` + 大量 `china_*_pca_component*` / `method*_cluster*`；⚠ `country` 是单一国家（A 股）⇒ `group_neutralize(·, densify(country))` 无效，用 `densify(market)`。
+- **12 模板**：C1 密度反转 / C2 nip×returns 相关 / C3 nip×returns 协方差 / C4 双情绪通道协方差 / C5 新颖度×相关性乘性 / C6 注意力稀释比值 / C7 **时间链年龄 elapsed**（GBR 从未测）/ C8 **故事链位序 index**（GBR 从未测）/ C9 **实体-故事偏离** / C10 **全球vs本地新颖度差** / C11 **社论观点分 mce**（GBR 从未测）/ C12 **冲击-相关价差**。
+- **塔混核算**：纯 news46 单数据集单塔 ⇒ 不触 trio 禁混；仅 C2/C3 引入 `returns`（PV 腿）⇒ PV×NEWS 的 trio×非trio 组合**全波 ≤5**，此处占 2，且不得再引入 MODEL/OTHER 腿。
+- **preflight 全过**：`valid=true` / 12 表达式 / `unknown_fields=[]`（10 个 `mws46_*` + builtin `returns`）。
+
+### §15.4 ★ 第二/三靶位（下一波候选，已拉字段画像）
+
+- **HKG/news36**（cov 0.81，数据集 aC=50，**字段级 aC 0–14**）：43 字段。机制面最厚——① 正负情绪**置信**（`mws36_sentiment_positive_confidence` / `negative_confidence` / `phrase_*` / `words_*` 四组计数）② **novelty 三件套**（`mws36_novelty` / `novelty_newest_span` / `novelty_oldest_span` 毫秒时间链）③ **归一分母**（`mws36_total_words` / `token_count_total` / `negative_word_count`）④ 相关度（`mws36_relevance` / `entity_relevance_score`）⑤ 事件置信（`main_event_certainty` / `mws36_key_event_confidence`）⑥ 故事间隔四件套（earliest/newest/recent/oldest_story_time_gap）。⇒ **词数归一分母 + 正负置信比**是 GBR 完全没测过的结构。
+- **AMR/news73**（cov 0.79，数据集 aC=27，字段级 aC 0–5）：22 字段全是 Dow Jones 分情绪——① **per-entity 部分分**（`nws73_entitiessent_*partscr` 9 路：certainty/fear/findown/finhype/finup/finvolatile/negative/positive/uncertainty）② **story-level 全局分**（`nws73_globalsent_*score` 9 路对应）③ 实体识别表（`entitiescounter` / `djnindustry` / `djnsubject`）。⇒ **「实体分 vs 故事分」的双层结构天然承载 GBR C9 偏离模板**，且 **fear / uncertainty / finhype 三路是 GBR 五轴里完全没有的新轴**。
+- **AMR/news85**（cov 0.926，aC 35，字段级 aC 0–6）：情绪**分布形状**族（skewness / median / peak / sum + sentiment1/sentiment2 双通道），对应 forum 帖 43554159658647「情绪通道非对称：涨跌反应差」。
+- **AMR/news29**（cov 0.545，aC 5，字段级 aC 0–2）：`nws29_frontpage`（Reuters 头版标记）+ `nws29_significance`（1=高/2=中/3=低）⇒ **媒体重视度轴**，但只有 2 个可用数值字段，机制面薄 ⇒ 三备。
+- **排除**：DEU/news29（cov=0）、DEU/news38（仅 3 字段且 `story_analytics_*` 是 CHN news38 同名字段但 DEU 只有 3 个）、HKG/news23（是 VC/PE 交易数据集不是情绪，cov 0.33）。
+
+### §15.5 ★★★★★ CHN news46 首批 12 条实测（2026-11-03 13:12–13:19，全部 COMPLETE）
+
+设置：CHN/TOP2000U/D1/SUBINDUSTRY/decay4/trunc0.08/VERIFY/nanHandling OFF/pasteurization ON/maxTrade OFF/FASTEXPR；壳 `ts_target_tvr_decay(target_tvr=0.05)`。
+
+| tag | alpha | S | F | TO | 判读 |
+|---|---|---:|---:|---:|---|
+| C1 密度反转 `vec_count(story_count)` | `YP1vNmg6` | 0.18 | 0.05 | 5.6% | 弱（逐年 S 0.84/1.40/−0.85 有残响） |
+| C2 nip×returns 相关 | `LLMGn6d9` | −0.69 | −0.40 | 6.2% | 负（EUR 正向不跨区） |
+| C3 nip×returns 协方差 | `e753n2gp` | −0.51 | −0.25 | 5.7% | 负，与 C2 同机制面 |
+| C4 双情绪通道协方差 | `npvNnzYz` | −0.46 | −0.25 | **4.1%** | 负 + TO 低于 CHN 闸下限 5% |
+| C5 **GBR S1 全闸结构直移植** | `MPYGbpe9` | **0.03** | 0.00 | 6.8% | ★ 关键证据：几何/字段都没错 |
+| C6 注意力稀释比值 | `npvNnge3` | −0.30 | −0.11 | 5.8% | 弱负 |
+| C7 时间链年龄 `ens_elapsed` | `leAW7jb2` | −0.37 | −0.17 | 5.9% | 弱负 |
+| C8 故事链位序 `story_index` | `akK1N7q1` | **−0.76** | −0.45 | 5.3% | 本批最强负；CHN 禁取负镜像 ⇒ 需换结构 |
+| C9 实体-故事偏离 | `9qxp9W3r` | **0.00** | — | **0.0%** | ⛔ **退化**（long/short=0）⇒ `mws46_ess` 与 `mws46_storyid_ess` 逐位相同（GBR L5 重演） |
+| C10 全球vs本地新颖度差 | `P0oGngbx` | −0.35 | −0.17 | 9.1% | 弱负（TO 最高，差结构未换手） |
+| C11 社论观点分 `mce` | `d5WZnazJ` | 0.25 | 0.09 | 5.9% | 本批最正 |
+| C12 冲击-相关价差 | `KPJGngQx` | −0.84 | −0.55 | 5.9% | 本批最强负 |
+
+**逐年覆盖核验**（`get_alpha_yearly_stats` 实测 3 条）⇒ 全 10/10 年有 pnl + longCount 15–40 ⇒ **无 leading-gap / 无连续空窗**。
+
+**归因判决**：12 条无一过 CHN 严闸（S≥2.07）。但 **C5 = GBR 全闸结构直移植仅 0.03** 是决定性证据 ⇒ **几何与字段语义都没错，错在「设置档 + 壳」**（GBR 全闸件全在 FAST+decay15 出货、TO 8%；CHN 既有档 SUBINDUSTRY+decay4、TO 塌到 4–7%）。
+
+**⇒ 立即派 2×6 因子 A/B 波**（C1–C6 × {FAST15+壳, BASE+裸}）：一次跑出「档位贡献」与「壳贡献」的可分离归因。**单档低 S 不构成判死依据**（与「FAST/SLOW 档必须 A/B」同族铁律）。
+
+**字段语义核验（移植前必做，已验 2 例）**：
+- CHN/news46：`mws46_ess`（Event Sentiment Score）与 `mws46_storyid_ess`（同字段的 story 层）**是同一口径的两层** ⇒ C9 差值恒 0。⇒ **forum 双通道模板（96 赞）要求的是「正/负」两通道**，news46 并不具备。
+- CHN/news38：`mws38_positive_score` / `mws38_negative_score` / `mws38_positive_freq` / `mws38_negative_freq` **确为真·正负双通道** ⇒ 双通道模板在 news38 才成立，已派第三波（E1–E12）。
+
+**CHN news 塔既有死因核验（不传染）**：`tracking/CHN/config/cells.json` 三条死路全部锁在**结构层**——① `market_news_sent` 情绪-关注度价差（robust 子宇宙墙 + 严闸 2.07 双重卡死）② `news_sentiment_enriched` 语调族（`ts_backfill` 破坏事件条件性）③ **禁止「rank(x) 负 Sharpe 就取负镜像」**。⇒ 死因针对具体字段族，**news46/news38 全新字段族不受传染**；但「取负镜像」这条在 news38 反向腿上同样适用。

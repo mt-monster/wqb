@@ -171,3 +171,32 @@ wave 214 仍按风险轴探针（理由见 §3），但 **wave 215 必须补 `an
   低波异象在**流动性危机年**失效（教科书结论：低波溢价在 flight-to-liquidity 时反向）。这不是参数问题。
 
 （本文件在本集重新进入「载荷轴」前保持活跃；IVOL 轴已封闭）
+
+---
+
+## 7. ★ 2026-11-06 突破：`anlystsn` 轴产出 10 颗 RA 全过 ATOM（战役见 `tracking/KOR/campaign_20261106_risk_atom/`）
+
+**结论**：本集**唯一可交易的经济轴是 `rsk70_mfm2_asetrd_anlystsn`（分析师情绪风格载荷）**，不是 IVOL、不是价值、不是行业载荷。
+| 项 | 值 |
+|---|---|
+| 最优 alpha | **`E56Nk0wL`** — S **1.63** / F **1.25** / TO .1310 / 2Y **2.23** / subU 1.31 / inv 1.26 / DD 4.10% / margin 11.83bp |
+| 金字塔 | `KOR/D1/RISK` ×1.3（该塔由 0/3 → 可点亮） |
+| self | 0.426 PASS |
+
+**最优表达式**
+```text
+ts_target_tvr_decay(signed_power(group_rank(winsorize(vector_neut(rank(ts_backfill(rsk70_mfm2_asetrd_anlystsn, 40)), rank(ts_backfill(rsk70_mfm2_asetrd_momentum, 22))), std=0.36), sector), 2.0), target_tvr=0.22)
+```
+**设置**：KOR/TOP600/D1 · **REVERSION_AND_MOMENTUM** · decay 1 · trunc 0.04 · unit VERIFY · nanHandling ON · pasteurization ON · maxTrade OFF · 2014–2023。
+
+**四条新杠杆（逐条实测，可复用）**
+1. **中性化档排序（载荷族）**：`REVERSION_AND_MOMENTUM` **1.63** > `CROWDING` 1.30 > `INDUSTRY` 1.14 > `FAST` 1.07 > `SLOW` 1.04 > `STATISTICAL` 0.88
+   ⇒ 论坛帖 `36064174250519` 的「SLOW 下 RISK 出货率高」在 KOR **不成立**（0.93–1.04）。
+2. **`winsorize(std)` 是 S 主杠杆**，单峰甜区 **0.32–0.42**：0.24→1.49 / 0.32→1.59 / 0.36→**1.63** / 0.42→1.58 / 0.46→1.50。
+3. **`vector_neut` 的目标字段决定生死**：对 `momentum` 正交 +0.06~+0.30；对 `resvol` 中性；对 `size`/`beta`/`ltreversl` 正交**直接归零（0.10–0.15）**
+   ⇒ 该 alpha 内含规模/贝塔/长期反转暴露，剥掉即无。
+4. **pow 甜区随中性化档漂移**：CROWDING 档 3.5–5.0（1.29）；REVERSION_AND_MOMENTUM 档 **1.5–3.0**（1.58–1.63）⇒ 换档必须重扫幂次。
+
+**已死轴（勿再扫）**：`decay` 0/1 逐位相同、2 更差 · `ts_backfill` 22/40/55 逐位相同 · 内层轴细于 sector（industry/subindustry 均 1.11，sector 最优，第 3 次复现）· `ts_rank(anlystsn,252)` 0.74 · **`srtindcnt`（αC 1431）实为行业哑变量（−0.31 / TO .228）** · `season` 0.25 · `earnvar` 0.29 · 其余 19 支载荷 ≤0.82。
+
+**载荷全表复测结果（REVERSION_AND_MOMENTUM 或 CROWDING，最优几何）**：`anlystsn` **1.63** ｜ `btop` 0.82 ｜ `earnyild` 0.74 ｜ `growth` 0.69 ｜ `shortint` 0.55 ｜ `earnqlty` 0.37 ｜ `divyild` 0.37 ｜ `profit` 0.33 ｜ `midcap` 0.26 ｜ `invsqlty` 0.17 ｜ `size`/`beta`/`ltreversl` ≤0.15 ｜ `srtindcnt` −0.31 ｜ `newssent` 0.09 ｜ `season` 0.25 ｜ `earnvar` 0.29。

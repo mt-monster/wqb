@@ -67,4 +67,8 @@ $PY tools/query_profile.py fields --dataset <ds> --untested
 
 - **历史波不回溯**：v1 口径下的判死结论若只过了字段级闸，按 v2 需重判（静态口径虚高）
 - **今日起的新波**：一律走 `--coverage-mode dimension`（默认），字段级降级为 INFO 提示
-- **判死前必查**：`query_profile.py dims --min-dim-cov 1.0` 里必须有该数据集，否则不允许 seal_dead_end
+- **判死前必查（两层，2026-11-06 修订）**：
+  1. **数据集层**：`python tools/gates/category_coverage_audit.py --region EUR --universe <U> --delay 1 --category <CAT>` 必须返回 `EXHAUSTED`（exit 0）。
+     分母是平台 `/data-sets` 真分页全表，**不是** `field_coverage_*.json`（只含查过的集——EUR/OTHER 曾因此把 36 个误当 7 个），**也不是** `data/wqb.db` 的 `datasets` 表（不分 universe/delay）。
+     差集非空时正确表述是「已测 M/N」，「该面已穷尽」的表述不成立。
+  2. **数据集内部**：`query_profile.py dims --min-dim-cov 1.0` 里必须有该数据集，否则不允许 seal_dead_end
