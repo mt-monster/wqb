@@ -3,6 +3,13 @@
 > 回到 [EUR 区域流程](../SKILL.md) · [EUR profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/EUR.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region EUR --category other`
 
 <!-- profiles:cell-panel:start -->
+> ⭐ **2026-11-08 实测补充（eur10 战役）**：
+> - **techindi_model z-score 快读数**（`group_rank(ts_zscore(predicted_*_quantile_*, 252), market)`）：TOPCS1600/TOP2500 上 sub 比率 0.37-0.43 结构性不过（S 越高越难过）；TOP800 比率过但 TO 0.45-0.48 压死 F；decay/tvr-decay 平滑均杀 S——**三闸三角无解，z-score 族关闭**（6 波 12 仿真穷尽）。TOP700 非 EUR 合法宇宙（get_platform_setting_options 权威），历史 TOP700 批的 S3.8 不可复测。
+> - **socialmedia12**（scl12_sentiment/buzz）：S −0.5~−0.15，EUR 无信号。
+> - **insider_matrix**（董事买入聚合）：S 1.24-1.29 近闸（差 0.3），cov 0.61 有 sub 风险。
+> - **平台检查线 vs review 线分离**：LOW_SHARPE 平台线 <1.58（S 1.32 无 fail），判席必须以 review 1.58 为准。
+> - **winsorize(std=3) 对日均平缓信号是 no-op**（两臂指标逐位一致）。
+
 **状态**：active（跟区域入场 full-coverage）　**分组**：Other　**类别卡**：other
 
 **涉及数据集**：acquisition_model、ai_news_scores、dl_riskfree_returns、event_relation、insider_feats、insider_matrix、insider_trx_matrix、mixed、mixed_off_baseline_recheck、ml_factor_proj、news_sentiment_dl、news_sentiment_nlp、other128、other455、other567、other571、predictive_starmine,pattern_scores、search_interest、stock_search_trends、techindi_model …

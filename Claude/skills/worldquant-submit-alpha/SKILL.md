@@ -82,7 +82,7 @@ MCP 不可用时的 REST 兜底见 [`references/fallback-rest.md`](references/fa
 
 - `color`：平台**仅接受** `GREEN / BLUE / RED / YELLOW / PURPLE`（`validate_color` 拒其余）。**提交态默认 `BLUE`（待观察）；`GREEN` 须由 OS 结果挣得，禁当默认值**；`PURPLE` 仅 PPA。MCP 工具与节点的缺省都是 `None → BLUE`。
 - `name`：`<REGION>_<R|S>_<family>_<seq>`（`build_name`；PPA 是 REGULAR 型，也用 `R`）。**禁止放 PROD 数值**（提交时快照，会过期骗人）。手写 name 不被强制校验，须自觉遵守。
-- `tags`：`CH_<通道>` + `SRC_<数据集>` 必打，可选 `W<波次>` / `EXPRFAM_<族>` / `CORR_<档>`；**上限 5 个**（`MAX_TAGS`）。缺省由节点按规范自动生成，`check_tags` 只告警不强制。**`PowerPoolSelected` 仅真实 PPA 通道**（普通提交用 `CH_REG`）。平台已自带的（塔、类型、区域、作者、`stage`）不要重复打。
+- `tags`：`CH_<通道>` + `SRC_<数据集>` 必打，可选 `W<波次>` / `EXPRFAM_<族>` / `CORR_<档>`；**上限 5 个**（`MAX_TAGS`）。缺省由节点按规范自动生成，`check_tags` 只告警不强制。（2026-11-08 起 `PowerPoolSelected` **已撤出 `check_tags` 告警**，改走 `tag_notes` 信息项：它是**平台提交成功后自动追加**的，不是我们的必打标签；**提交前 PATCH 不得预置**——会触发 `PURE_POWER_POOL_THEME`，`_derive_tags` 已强制剔除；提交后清/留按 PPA 政策，由 Step 6 `tag_disposal` 留痕。）平台已自带的（塔、类型、区域、作者、`stage`）不要重复打。
 - `description`：`set_alpha_properties` 已封装嵌套写法 `{"regular":{"description":…}}`（扁平写法被 `400 Unexpected property.`）；三段式，各段 ≥ 100 词。SUPER 的 description 写法见 `wq-brain-superalpha`。
 
 ## 终态与验收

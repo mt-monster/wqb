@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(ts_mean(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), 5), sector), 0.5)",
+ "subtract(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 10), sector), 0.5)",
+ "subtract(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 22), sector), 0.5)",
+ "subtract(group_rank(ts_delta(probability_label1_2quantile_20day_ohlcv_2, 5), sector), 0.5)",
+ "subtract(group_rank(ts_delta(probability_label1_2quantile_60day_ohlcv, 5), sector), 0.5)",
+ "subtract(winsorize(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), sector), std=1.5), 0.5)",
+ "subtract(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), industry), 0.5)",
+ "multiply(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), sector), group_rank(ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22), sector))",
+ "subtract(group_rank(ts_mean(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), 22), sector), 0.5)",
+ "subtract(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), subindustry), 0.5)"
+]

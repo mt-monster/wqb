@@ -179,6 +179,127 @@ def _write_cooldown() -> None:  # 历史私有名，保留给既有调用点
     write_cooldown()
 
 
+#: sidecar 读改写锁（与互斥 token 分开，TTL 短）。2026-11-10 审查 P1-12。
+SIDECAR_LOCK_NAME = "correlation.sidecar.lock.json"
+
+
+@contextmanager
+def _sidecar_lock():
+    """保护 sidecar 的「读-改-写」原子性。
+
+    旧实现 ``inflight_mark`` / ``inflight_clear`` 直接 read→modify→write，多进程并发
+    会丢 ``n`` 或互相覆盖。本锁 TTL 15s、最多等 5s；拿不到也继续执行——sidecar 只是
+    提示，不承担互斥（互斥仍由 lock token 负责），故不能因它阻断主流程。
+    """
+    try:
+        info = _flock_acquire(tag="corr:sidecar", ttl_sec=15.0, wait_timeout=5.0,
+                              name=SIDECAR_LOCK_NAME, fail_fast=False) or {}
+    except Exception:  # noqa: BLE001
+        info = {}
+    try:
+        yield
+    finally:
+        tok = info.get("token")
+        if tok:
+            try:
+                _flock_release(tok)
+            except Exception:  # noqa: BLE001
+                pass
+
+
+# ---------------------------------------------------------------------------
+# 账号级熔断（2026-11-10 审查第三批）
+# ---------------------------------------------------------------------------
+# 实测事故（2026-11-09 夜 KOR）：平台 prod 服务停摆时，本地机制会**自我放大等待**——
+# 一次 240s 轮询 → pending → 写 195s 冷却 + 保留 inflight(300s) → 下一次调用 busy →
+# 再触发 240s。三颗 alpha 各空转 241s，holder 还在不同 alpha 间轮替，没有任何短路。
+#
+# ⇒ 连续 N 次 pending（默认 3）即认定「平台侧不可用」，写一个账号级熔断标记；
+#   期间所有调用**直接返回 platform_unavailable**，不抢锁、不发请求、不写冷却。
+#   拿到任何一次成功结果即清除。这是提示性熔断（sidecar），不承担互斥。
+UNAVAILABLE_NAME = "correlation.unavailable.json"
+UNAVAILABLE_STREAK_DEFAULT = 3
+UNAVAILABLE_SEC_DEFAULT = 600.0
+
+
+def unavailable_path() -> str:
+    return os.path.join(_flock_dir(), UNAVAILABLE_NAME)
+
+
+def _unavailable_streak_limit() -> int:
+    try:
+        return max(1, int(os.environ.get("WQB_CORR_UNAVAILABLE_STREAK",
+                                         UNAVAILABLE_STREAK_DEFAULT)))
+    except (TypeError, ValueError):
+        return UNAVAILABLE_STREAK_DEFAULT
+
+
+def _unavailable_sec() -> float:
+    try:
+        return max(0.0, float(os.environ.get("WQB_CORR_UNAVAILABLE_SEC",
+                                             UNAVAILABLE_SEC_DEFAULT)))
+    except (TypeError, ValueError):
+        return UNAVAILABLE_SEC_DEFAULT
+
+
+def _unavailable_read() -> dict:
+    import json
+    try:
+        with open(unavailable_path(), encoding="utf-8") as f:
+            d = json.load(f)
+    except Exception:
+        return {}
+    return d if isinstance(d, dict) else {}
+
+
+def unavailable_remaining() -> float:
+    """距熔断结束还剩多少秒；≤0 表示未熔断。"""
+    import time
+    try:
+        until = float(_unavailable_read().get("until") or 0)
+    except (TypeError, ValueError):
+        return 0.0
+    return max(0.0, until - time.time())
+
+
+def note_pending_streak(alpha_id: str = "") -> dict:
+    """记一次 pending；连续达到阈值即写熔断标记。返回当前状态（供日志/返回体）。"""
+    import json
+    import time
+    with _sidecar_lock():
+        d = _unavailable_read()
+        streak = int(d.get("streak") or 0) + 1
+        rec = {"streak": streak, "last_alpha": str(alpha_id or ""),
+               "at": time.strftime("%F %T"), "pid": os.getpid()}
+        limit = _unavailable_streak_limit()
+        if streak >= limit:
+            sec = _unavailable_sec()
+            rec["until"] = time.time() + sec
+            rec["sec"] = round(sec, 1)
+            rec["reason"] = f"连续 {streak} 次 pending（阈值 {limit}）⇒ 平台侧不可用"
+        else:
+            rec["until"] = float(d.get("until") or 0)
+        p = unavailable_path()
+        try:
+            os.makedirs(os.path.dirname(p), exist_ok=True)
+            tmp = p + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(rec, f)
+            os.replace(tmp, p)
+        except Exception:
+            pass
+    return rec
+
+
+def clear_unavailable() -> None:
+    """拿到成功结果 ⇒ 清除熔断与计数（幂等）。"""
+    with _sidecar_lock():
+        try:
+            os.remove(unavailable_path())
+        except OSError:
+            pass
+
+
 def acquire(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Dict[str, object]:
     """抢账号级相关性槽。**fail-fast**：被他人持有时立即返回 ``busy``。
 
@@ -188,6 +309,19 @@ def acquire(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Dict[str, object]
         - ``degraded=True`` ⇒ 锁目录不可写等异常 → 无法承担跨进程互斥，
           此时 ``acquired=True``（降级放行，与 ``db_write_lock`` 的既有降级语义一致）
     """
+    # 0) 账号级熔断（2026-11-10）：平台侧连续 pending ⇒ 直接短路，不抢锁不发请求。
+    # 避免「240s 轮询 → 195s 冷却 → inflight 残留 → busy → 再 240s」的自我放大等待。
+    _ua = unavailable_remaining()
+    if _ua > 0:
+        return {
+            "acquired": False,
+            "busy": True,
+            "unavailable": True,
+            "retry_after": round(_ua, 1),
+            "token": None,
+            "degraded": False,
+        }
+
     # 0) 冷却窗口：上一次调用刚结束，平台槽位还没释放 ⇒ 直接 busy，不去撞平台
     _cd = cooldown_remaining()
     if _cd > 0:
@@ -322,10 +456,11 @@ def _inflight_prune(items: Dict[str, dict]) -> Dict[str, dict]:
 
 def inflight_all() -> Dict[str, dict]:
     """当前未过期的在飞记录（顺手清理过期项）。"""
-    items = _inflight_read()
-    alive = _inflight_prune(items)
-    if len(alive) != len(items):
-        _inflight_write(alive)
+    with _sidecar_lock():
+        items = _inflight_read()
+        alive = _inflight_prune(items)
+        if len(alive) != len(items):
+            _inflight_write(alive)
     return alive
 
 
@@ -338,30 +473,32 @@ def inflight_mark(alpha_id: str, base_max=None, ttl_sec=None) -> dict:
     """标记该 alpha 正在计算。已存在则只续期并 ``n+1``（保留首次 started_at）。"""
     import time
     aid = str(alpha_id)
-    items = _inflight_prune(_inflight_read())
     now = time.time()
     ttl = _inflight_ttl_sec() if ttl_sec is None else float(ttl_sec)
-    prev = items.get(aid) or {}
-    rec = {
-        "started_at": float(prev.get("started_at") or now),
-        "expires_at": now + ttl,
-        "pid": os.getpid(),
-        "base_max": prev.get("base_max") if prev else base_max,
-        "n": int(prev.get("n") or 0) + 1,
-    }
-    items[aid] = rec
-    _inflight_write(items)
+    with _sidecar_lock():
+        items = _inflight_prune(_inflight_read())
+        prev = items.get(aid) or {}
+        rec = {
+            "started_at": float(prev.get("started_at") or now),
+            "expires_at": now + ttl,
+            "pid": os.getpid(),
+            "base_max": prev.get("base_max") if prev else base_max,
+            "n": int(prev.get("n") or 0) + 1,
+        }
+        items[aid] = rec
+        _inflight_write(items)
     return rec
 
 
 def inflight_clear(alpha_id: str) -> bool:
     """清除该 alpha 的在飞标记；返回是否真的清掉了。"""
     aid = str(alpha_id)
-    items = _inflight_read()
-    if aid not in items:
-        return False
-    items.pop(aid, None)
-    _inflight_write(items)
+    with _sidecar_lock():
+        items = _inflight_read()
+        if aid not in items:
+            return False
+        items.pop(aid, None)
+        _inflight_write(items)
     return True
 
 

@@ -1,0 +1,122 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(divide(subtract(vec_avg(anl44_2_eps_value),vec_avg(anl44_2_eps_prevalue)),add(abs(vec_avg(anl44_2_eps_value)),abs(vec_avg(anl44_2_eps_prevalue)))))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(divide(subtract(vec_avg(anl44_2_ebitda_value),vec_avg(anl44_2_ebitda_prevalue)),add(abs(vec_avg(anl44_2_ebitda_value)),abs(vec_avg(anl44_2_ebitda_prevalue)))))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(divide(subtract(vec_avg(anl44_2_roe_value),vec_avg(anl44_2_roe_prevalue)),add(abs(vec_avg(anl44_2_roe_value)),abs(vec_avg(anl44_2_roe_prevalue)))))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(divide(subtract(vec_avg(anl44_2_netprofit_value),vec_avg(anl44_2_netprofit_prevalue)),add(abs(vec_avg(anl44_2_netprofit_value)),abs(vec_avg(anl44_2_netprofit_prevalue)))))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(divide(subtract(vec_avg(anl44_2_sales_value),vec_avg(anl44_2_sales_prevalue)),add(abs(vec_avg(anl44_2_sales_value)),abs(vec_avg(anl44_2_sales_prevalue)))))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(divide(subtract(vec_avg(anl44_2_eps_value),vec_avg(anl44_2_eps_lastactvalue)),add(abs(vec_avg(anl44_2_eps_value)),abs(vec_avg(anl44_2_eps_lastactvalue)))))"
+  }
+]

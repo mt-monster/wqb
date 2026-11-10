@@ -1,0 +1,12 @@
+[
+  "-group_rank(herfindahl_index_holdings, sector)",
+  "group_rank(holder_account_total, sector)",
+  "group_rank(holding_value_distribution_score, sector)",
+  "-group_rank(ts_av_diff(herfindahl_index_holdings, 66), sector)",
+  "group_rank(ts_av_diff(holder_account_total, 66), sector)",
+  "group_rank(top_weighted_account_number, sector)",
+  "group_rank(divide(rank(herfindahl_index_holdings), rank(holder_account_total)), sector)",
+  "group_rank(ts_zscore(mean_security_weight, 250), sector)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(holder_account_total, 250), sector), group_rank(ts_av_diff(herfindahl_index_holdings, 66), sector)), industry)",
+  "-group_rank(ts_mean(herfindahl_index_holdings, 250), industry)"
+]

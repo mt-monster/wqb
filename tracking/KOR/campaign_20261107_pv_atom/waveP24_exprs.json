@@ -1,0 +1,12 @@
+[
+  "ts_mean(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)),industry), 22)",
+  "ts_mean(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)),industry), 11)",
+  "ts_decay_linear(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)),industry), 22)",
+  "signed_power(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)),industry), 2)",
+  "signed_power(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)),industry), 1.5)",
+  "group_neutralize(winsorize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)), std=0.5),industry)",
+  "ts_mean(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,189),exchange)),industry), 22)",
+  "signed_power(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,189),exchange)),industry), 2)",
+  "group_neutralize(multiply(group_zscore(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_zscore(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)),industry)",
+  "ts_mean(group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,250),sector)),subindustry), 22)"
+]

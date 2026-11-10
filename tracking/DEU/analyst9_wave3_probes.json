@@ -1,0 +1,42 @@
+[
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(divide(vec_sum(anl9_s_numup), add(add(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), multiply(0.01, vec_sum(anl9_s_numanalysts)))), sector)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "rank(divide(vec_sum(anl9_s_numup), add(add(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), multiply(0.01, vec_sum(anl9_s_numanalysts)))))"
+ }
+]

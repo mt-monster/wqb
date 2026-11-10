@@ -1,0 +1,818 @@
+﻿{
+ "results": [
+  {
+   "id": "mdl262_aacr_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5336,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Accounts Receivable"
+  },
+  {
+   "id": "mdl262_aacr_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Accounts Receivable"
+  },
+  {
+   "id": "mdl262_acae_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Quarterly Cash & Equivalents"
+  },
+  {
+   "id": "mdl262_acae_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5447,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the Model of Quarterly Cash & Equivalents"
+  },
+  {
+   "id": "mdl262_aitl_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.4867,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Inventories"
+  },
+  {
+   "id": "mdl262_aitl_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9619,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of Predicted Value of Total Inventories"
+  },
+  {
+   "id": "mdl262_aitl_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.4867,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Total Inventories"
+  },
+  {
+   "id": "mdl262_appn_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5429,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Property/Plant/Equipment"
+  },
+  {
+   "id": "mdl262_appn_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted Value of Property/Plant/Equipment"
+  },
+  {
+   "id": "mdl262_atca_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Total Current Assets"
+  },
+  {
+   "id": "mdl262_atca_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5051,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Current Assets"
+  },
+  {
+   "id": "mdl262_atot_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5417,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Scaled Actual Value of Total Assets"
+  },
+  {
+   "id": "mdl262_atot_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of total assets"
+  },
+  {
+   "id": "mdl262_atot_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5417,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Assets"
+  },
+  {
+   "id": "mdl262_cur_mae",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Mean absolute error of the Enterprise Value prediction/model"
+  },
+  {
+   "id": "mdl262_ebit_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 32,
+   "alphaCount": 37,
+   "description": "Predicted (market-implied) quarterly EBIT"
+  },
+  {
+   "id": "mdl262_ebit_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Predicted (market-implied) trailing-twelve-month EBIT"
+  },
+  {
+   "id": "mdl262_ebitd_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Market-implied annual Earnings before Interest, Tax, and Depreciation (EBITD) prediction, one-day delayed (D1)"
+  },
+  {
+   "id": "mdl262_ebitd_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 26,
+   "description": "Market-implied quarterly Earnings before Interest, Tax, and Depreciation (EBITD) prediction, one-day delayed (D1)"
+  },
+  {
+   "id": "mdl262_ebitd_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Market-implied trailing-twelve-month Earnings before Interest, Tax, and Depreciation (EBITD) prediction, one-day delayed (D1)"
+  },
+  {
+   "id": "mdl262_ebt_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Market-implied forecast of quarterly earnings before tax (EBT), with 1-day delay"
+  },
+  {
+   "id": "mdl262_ebt_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market-implied forecast of trailing-twelve-month earnings before tax (EBT), with 1-day delay"
+  },
+  {
+   "id": "mdl262_eibt_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5594,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean Absolute Deviation of scaled actual value of Net Income Before Taxes"
+  },
+  {
+   "id": "mdl262_eibt_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9616,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Net Income Before Taxes"
+  },
+  {
+   "id": "mdl262_eibt_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9616,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Predict value of net income before taxes"
+  },
+  {
+   "id": "mdl262_fcf_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Predict value of Free Cash Flow"
+  },
+  {
+   "id": "mdl262_fcf_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Predict value of Free Cash Flow"
+  },
+  {
+   "id": "mdl262_fcf_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Predict value of Free Cash Flow"
+  },
+  {
+   "id": "mdl262_ftlf_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5174,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Cash from Financing Activities"
+  },
+  {
+   "id": "mdl262_ftlf_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Predicted Value of Cash from Financing Activities"
+  },
+  {
+   "id": "mdl262_ftlf_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5174,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Cash from Financing Activities"
+  },
+  {
+   "id": "mdl262_ftlf_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Predict value of Cash from Financing Activities"
+  },
+  {
+   "id": "mdl262_itli_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5409,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Cash from Investing Activities"
+  },
+  {
+   "id": "mdl262_itli_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of Cash from Investing Activities"
+  },
+  {
+   "id": "mdl262_itli_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5409,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash from Investing Activities"
+  },
+  {
+   "id": "mdl262_itli_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Cash from Investing Activities"
+  },
+  {
+   "id": "mdl262_ni_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market-implied forecast of annual Net Income, as of D0"
+  },
+  {
+   "id": "mdl262_ni_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Market-implied forecast of quarterly Net Income, as of D0"
+  },
+  {
+   "id": "mdl262_ni_ttm_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Market-implied forecast of Net Income on a trailing-twelve-month (TTM) basis, as of D0"
+  },
+  {
+   "id": "mdl262_ninc_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5441,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Scaled Actual Value of Income Incl Extra Before Distributions"
+  },
+  {
+   "id": "mdl262_ninc_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9616,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Income Including Extra Before Distributions"
+  },
+  {
+   "id": "mdl262_ninc_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5441,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Income Including Extra Before Distributions"
+  },
+  {
+   "id": "mdl262_ninc_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9616,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Predicted value of Income Incl Extra Before Distributions"
+  },
+  {
+   "id": "mdl262_otlo_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5438,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of cash from operating activities"
+  },
+  {
+   "id": "mdl262_otlo_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of predicted value of cash from operating activities"
+  },
+  {
+   "id": "mdl262_otlo_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Cash from Operating Activities"
+  },
+  {
+   "id": "mdl262_qtle_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5421,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Equity"
+  },
+  {
+   "id": "mdl262_qtle_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Total Equity"
+  },
+  {
+   "id": "mdl262_qtle_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5421,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Average Error of the model of Total Equity"
+  },
+  {
+   "id": "mdl262_qtle_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted value of Total Equity"
+  },
+  {
+   "id": "mdl262_rev_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of Revenue - Total"
+  },
+  {
+   "id": "mdl262_rev_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 23,
+   "description": "Predict value of Revenue - Total"
+  },
+  {
+   "id": "mdl262_rnts_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5365,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Net Sales"
+  },
+  {
+   "id": "mdl262_rnts_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Predicted Value of Net Sales"
+  },
+  {
+   "id": "mdl262_rnts_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5365,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the Model of Net Sales"
+  },
+  {
+   "id": "mdl262_rnts_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 3,
+   "alphaCount": 10,
+   "description": "Predicted value of Net Sales"
+  },
+  {
+   "id": "mdl262_rtlr_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5495,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Revenue"
+  },
+  {
+   "id": "mdl262_rtlr_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Predicted Value of Total Revenue"
+  },
+  {
+   "id": "mdl262_rtlr_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5495,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of total revenue"
+  },
+  {
+   "id": "mdl262_sbda_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5254,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of scaled actual value of normalized EBITDA"
+  },
+  {
+   "id": "mdl262_sbda_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of predicted value of Normalized EBITDA"
+  },
+  {
+   "id": "mdl262_sbda_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5254,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the Model of Normalized EBITDA"
+  },
+  {
+   "id": "mdl262_sbda_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Predicted value of normalized EBITDA"
+  },
+  {
+   "id": "mdl262_scsi_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5398,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Cash and Short-Term Investments"
+  },
+  {
+   "id": "mdl262_scsi_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean absolute deviation of predicted value of cash and short-term investments"
+  },
+  {
+   "id": "mdl262_scsi_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5398,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Cash and Short Term Investments"
+  },
+  {
+   "id": "mdl262_scsi_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted Value of Cash and Short-Term Investments"
+  },
+  {
+   "id": "mdl262_sgpp_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5038,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Gross Margin"
+  },
+  {
+   "id": "mdl262_sgpp_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Gross Margin"
+  },
+  {
+   "id": "mdl262_sgpp_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5038,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Gross Margin"
+  },
+  {
+   "id": "mdl262_sgpp_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Predicted value of Gross Margin"
+  },
+  {
+   "id": "mdl262_sgrp_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5069,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Gross Margin"
+  },
+  {
+   "id": "mdl262_sgrp_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of Predicted Value of Gross Margin"
+  },
+  {
+   "id": "mdl262_sgrp_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5069,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Gross Margin"
+  },
+  {
+   "id": "mdl262_sgrp_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 8,
+   "alphaCount": 15,
+   "description": "Predict value of Gross Margin"
+  },
+  {
+   "id": "mdl262_sncc_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5446,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of net change in cash"
+  },
+  {
+   "id": "mdl262_sncc_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Net Change in Cash"
+  },
+  {
+   "id": "mdl262_sncc_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5446,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Net Change in Cash"
+  },
+  {
+   "id": "mdl262_sncc_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Net Change in Cash"
+  },
+  {
+   "id": "mdl262_snce_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Mean Absolute Deviation of predicted value of Net Cash - Ending Balance"
+  },
+  {
+   "id": "mdl262_snce_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5404,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Net Cash - Ending Balance"
+  },
+  {
+   "id": "mdl262_snce_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predict value of net cash - ending balance"
+  },
+  {
+   "id": "mdl262_sntd_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5326,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Absolute Deviation of scaled actual value of Net Debt Incl. Pref. Stock & Min. Interest"
+  },
+  {
+   "id": "mdl262_sntd_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of net debt incl. pref. stock & min. interest"
+  },
+  {
+   "id": "mdl262_sntd_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5326,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean average error of the model of net debt incl. pref. stock & min. interest"
+  },
+  {
+   "id": "mdl262_sntd_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted value of Net Debt Incl. Pref. Stock & Min. Interest"
+  },
+  {
+   "id": "mdl262_sopp_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5243,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Scaled Actual Value of Operating Margin"
+  },
+  {
+   "id": "mdl262_sopp_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Operating Margin"
+  },
+  {
+   "id": "mdl262_sopp_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5243,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the Model of Operating Margin"
+  },
+  {
+   "id": "mdl262_sopp_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Predicted value of Operating Margin"
+  },
+  {
+   "id": "mdl262_srev_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.5401,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean Absolute Deviation of Scaled Actual Value of Revenue"
+  },
+  {
+   "id": "mdl262_srev_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Predicted Value of Revenue"
+  },
+  {
+   "id": "mdl262_srev_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Predicted Value of Revenue"
+  },
+  {
+   "id": "mdl262_stbv_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of Predicted Value of Tangible Book Value, Common Equity"
+  },
+  {
+   "id": "mdl262_stbv_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.5419,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Average Error of the model of Tangible Book Value, Common Equity"
+  },
+  {
+   "id": "mdl262_stbv_trkdpitdeltapredict_funda_predict",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted value of Tangible Book Value, Common Equity"
+  },
+  {
+   "id": "mdl262_stld_trkdpitdeltapredict_funda_mada",
+   "type": "MATRIX",
+   "coverage": 0.506,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of scaled actual value of Total Debt"
+  },
+  {
+   "id": "mdl262_stld_trkdpitdeltapredict_funda_madp",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean Absolute Deviation of predicted value of Total Debt"
+  },
+  {
+   "id": "mdl262_stld_trkdpitdeltapredict_funda_mae",
+   "type": "MATRIX",
+   "coverage": 0.506,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean Average Error of the model of Total Debt"
+  },
+  {
+   "id": "mdl262_totd_a_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Market implied point in time prediction of annual Total Debt with a 1 trading day delay"
+  },
+  {
+   "id": "mdl262_totd_q_predict",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market implied point in time prediction of quarterly Total Debt with a 1 trading day delay"
+  }
+ ],
+ "count": 101,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 21,
+ "platform_count": 122,
+ "complete": true,
+ "pages_fetched": 3
+}

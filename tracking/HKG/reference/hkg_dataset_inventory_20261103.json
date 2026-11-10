@@ -1,0 +1,2032 @@
+[
+ {
+  "id": "acquisition_model",
+  "name": "Corporate Acquisition Likelihood Model",
+  "cat": "other",
+  "fields": 15,
+  "ac": 85,
+  "uc": 48,
+  "cov": 0.8264,
+  "vs": 5
+ },
+ {
+  "id": "ai_equity_alpha",
+  "name": "AI Equity Alpha Forecasts",
+  "cat": "model",
+  "fields": 582,
+  "ac": 205,
+  "uc": 94,
+  "cov": 0.8803,
+  "vs": 5
+ },
+ {
+  "id": "ai_factor_transfer",
+  "name": "AI Enhanced Equity Factor Transfer",
+  "cat": "model",
+  "fields": 19,
+  "ac": 108,
+  "uc": 64,
+  "cov": 1,
+  "vs": 4
+ },
+ {
+  "id": "ai_news_scores",
+  "name": "AI News Sentiment Scores",
+  "cat": "other",
+  "fields": 97,
+  "ac": 42,
+  "uc": 24,
+  "cov": 0.749,
+  "vs": 6
+ },
+ {
+  "id": "analyst10",
+  "name": "Performance-Weighted Analyst Estimates",
+  "cat": "analyst",
+  "fields": 528,
+  "ac": 514,
+  "uc": 169,
+  "cov": 0.7423,
+  "vs": 4
+ },
+ {
+  "id": "analyst11",
+  "name": "ESG scores",
+  "cat": "analyst",
+  "fields": 126,
+  "ac": 31,
+  "uc": 23,
+  "cov": 0.4756,
+  "vs": 6
+ },
+ {
+  "id": "analyst14",
+  "name": "Estimations of Key Fundamentals",
+  "cat": "analyst",
+  "fields": 125,
+  "ac": 1416,
+  "uc": 410,
+  "cov": 0.5,
+  "vs": 2
+ },
+ {
+  "id": "analyst15",
+  "name": "Earnings forecasts",
+  "cat": "analyst",
+  "fields": 307,
+  "ac": 4479,
+  "uc": 617,
+  "cov": 0.5221,
+  "vs": 2
+ },
+ {
+  "id": "analyst16",
+  "name": "Real Time Estimates",
+  "cat": "analyst",
+  "fields": 141,
+  "ac": 79,
+  "uc": 47,
+  "cov": 0.4972,
+  "vs": 6
+ },
+ {
+  "id": "analyst21",
+  "name": "Indicators of Interest Data",
+  "cat": "analyst",
+  "fields": 16,
+  "ac": 21,
+  "uc": 13,
+  "cov": 0.4509,
+  "vs": 6
+ },
+ {
+  "id": "analyst39",
+  "name": "Analyst estimates & financial ratios",
+  "cat": "analyst",
+  "fields": 49,
+  "ac": 1038,
+  "uc": 350,
+  "cov": 0.7804,
+  "vs": 3
+ },
+ {
+  "id": "analyst4",
+  "name": "Analyst Estimate Data for Equity",
+  "cat": "analyst",
+  "fields": 176,
+  "ac": 2624,
+  "uc": 565,
+  "cov": 0.6112,
+  "vs": 2
+ },
+ {
+  "id": "analyst44",
+  "name": "Integrated Broker Estimates",
+  "cat": "analyst",
+  "fields": 552,
+  "ac": 1350,
+  "uc": 351,
+  "cov": 0.7181,
+  "vs": 4
+ },
+ {
+  "id": "analyst45",
+  "name": "Analyst Trade Ideas",
+  "cat": "analyst",
+  "fields": 241,
+  "ac": 44,
+  "uc": 21,
+  "cov": 0.3326,
+  "vs": 5
+ },
+ {
+  "id": "analyst46",
+  "name": "Analyst Investment insight Data",
+  "cat": "analyst",
+  "fields": 6,
+  "ac": 51,
+  "uc": 28,
+  "cov": 0.4271,
+  "vs": 4
+ },
+ {
+  "id": "analyst47",
+  "name": "Alternative Analyst Investment Insight Data",
+  "cat": "analyst",
+  "fields": 17,
+  "ac": 89,
+  "uc": 38,
+  "cov": 0.397,
+  "vs": 5
+ },
+ {
+  "id": "analyst48",
+  "name": "Dividend estimation data",
+  "cat": "analyst",
+  "fields": 69,
+  "ac": 55,
+  "uc": 35,
+  "cov": 0.3539,
+  "vs": 5
+ },
+ {
+  "id": "analyst81",
+  "name": "Creditworthiness model",
+  "cat": "analyst",
+  "fields": 3,
+  "ac": 9,
+  "uc": 7,
+  "cov": 0.211,
+  "vs": 6
+ },
+ {
+  "id": "analyst9",
+  "name": "Analyst Estimate Daily Data",
+  "cat": "analyst",
+  "fields": 48,
+  "ac": 98,
+  "uc": 57,
+  "cov": 0.5011,
+  "vs": 4
+ },
+ {
+  "id": "analyst94",
+  "name": "Fundamental Income and Dividend Model",
+  "cat": "analyst",
+  "fields": 17,
+  "ac": 315,
+  "uc": 158,
+  "cov": 0.4271,
+  "vs": 3
+ },
+ {
+  "id": "analyst_base_ref",
+  "name": "Analyst Estimates Base Reference",
+  "cat": "analyst",
+  "fields": 13,
+  "ac": 25,
+  "uc": 17,
+  "cov": 0.4979,
+  "vs": 5
+ },
+ {
+  "id": "analyst_consensus",
+  "name": "Standardized Analyst Consensus Forecasts",
+  "cat": "analyst",
+  "fields": 1729,
+  "ac": 191,
+  "uc": 105,
+  "cov": 0.7045,
+  "vs": 5
+ },
+ {
+  "id": "analyst_earnings_ibes",
+  "name": "Global Analyst Earnings Forecasts",
+  "cat": "model",
+  "fields": 28,
+  "ac": 177,
+  "uc": 81,
+  "cov": 1,
+  "vs": 4
+ },
+ {
+  "id": "analyst_factor_signals",
+  "name": "Global Analyst Factor Signals",
+  "cat": "analyst",
+  "fields": 25,
+  "ac": 133,
+  "uc": 82,
+  "cov": 0.67,
+  "vs": 4
+ },
+ {
+  "id": "analyst_revision_horizons",
+  "name": "Multi Horizon Analyst Revision Signals",
+  "cat": "model",
+  "fields": 851,
+  "ac": 112,
+  "uc": 59,
+  "cov": 0.7108,
+  "vs": 6
+ },
+ {
+  "id": "behavioral_signals",
+  "name": "Behavioral Finance Signal Factors",
+  "cat": "model",
+  "fields": 7,
+  "ac": 6,
+  "uc": 4,
+  "cov": 0.768,
+  "vs": 7
+ },
+ {
+  "id": "chart_cnn_alpha",
+  "name": "Deep Learning Chart-Based Alpha",
+  "cat": "model",
+  "fields": 1010,
+  "ac": 132,
+  "uc": 72,
+  "cov": 0.6297,
+  "vs": 5
+ },
+ {
+  "id": "continuation_score",
+  "name": "Price Chart Continuation Pattern Similarity",
+  "cat": "pv",
+  "fields": 560,
+  "ac": 227,
+  "uc": 110,
+  "cov": 1,
+  "vs": 5
+ },
+ {
+  "id": "dl_riskfree_returns",
+  "name": "Deep Learning Risk Free Returns",
+  "cat": "other",
+  "fields": 57,
+  "ac": 1200,
+  "uc": 388,
+  "cov": 0.6514,
+  "vs": 3
+ },
+ {
+  "id": "earnings3",
+  "name": "Earnings Date Data",
+  "cat": "earnings",
+  "fields": 8,
+  "ac": 1734,
+  "uc": 392,
+  "cov": 0.5983,
+  "vs": 1
+ },
+ {
+  "id": "earnings6",
+  "name": "International Findings Data",
+  "cat": "earnings",
+  "fields": 40,
+  "ac": 232,
+  "uc": 92,
+  "cov": 0.328,
+  "vs": 4
+ },
+ {
+  "id": "event_relation",
+  "name": "Text-Based Event Relationship Analysis",
+  "cat": "other",
+  "fields": 6,
+  "ac": 2,
+  "uc": 2,
+  "cov": 0.4169,
+  "vs": 7
+ },
+ {
+  "id": "event_stock_model",
+  "name": "Corporate Event Driven Stock Model",
+  "cat": "model",
+  "fields": 3,
+  "ac": 11,
+  "uc": 8,
+  "cov": 0.7658,
+  "vs": 5
+ },
+ {
+  "id": "fund_holdings_panel",
+  "name": "Global Institutional Fund Holdings",
+  "cat": "institutions",
+  "fields": 30,
+  "ac": 119,
+  "uc": 63,
+  "cov": 0.8135,
+  "vs": 4
+ },
+ {
+  "id": "fundamental1",
+  "name": "Management and Executive Data",
+  "cat": "fundamental",
+  "fields": 118,
+  "ac": 12,
+  "uc": 10,
+  "cov": 0.4515,
+  "vs": 6
+ },
+ {
+  "id": "fundamental17",
+  "name": "Direct Fundamental Data",
+  "cat": "fundamental",
+  "fields": 369,
+  "ac": 3749,
+  "uc": 799,
+  "cov": 0.9216,
+  "vs": 2
+ },
+ {
+  "id": "fundamental21",
+  "name": "ESG Scores Data",
+  "cat": "fundamental",
+  "fields": 156,
+  "ac": 257,
+  "uc": 102,
+  "cov": 0.5864,
+  "vs": 5
+ },
+ {
+  "id": "fundamental22",
+  "name": "Environmental and Social Governance Data",
+  "cat": "fundamental",
+  "fields": 2,
+  "ac": 1,
+  "uc": 1,
+  "cov": 0.3112,
+  "vs": 6
+ },
+ {
+  "id": "fundamental23",
+  "name": "Fundamental Point in Time Data",
+  "cat": "fundamental",
+  "fields": 351,
+  "ac": 2998,
+  "uc": 611,
+  "cov": 0.6794,
+  "vs": 2
+ },
+ {
+  "id": "fundamental25",
+  "name": "Company Operating Metrics",
+  "cat": "fundamental",
+  "fields": 6,
+  "ac": 8,
+  "uc": 5,
+  "cov": 0.3141,
+  "vs": 5
+ },
+ {
+  "id": "fundamental28",
+  "name": "Global Fundamental Data",
+  "cat": "fundamental",
+  "fields": 193,
+  "ac": 1934,
+  "uc": 401,
+  "cov": 0.5,
+  "vs": 2
+ },
+ {
+  "id": "fundamental4",
+  "name": "Hong Kong Fundamental Data",
+  "cat": "fundamental",
+  "fields": 708,
+  "ac": 733,
+  "uc": 206,
+  "cov": 0.6073,
+  "vs": 4
+ },
+ {
+  "id": "fundamental44",
+  "name": "Accounting Quality Models",
+  "cat": "fundamental",
+  "fields": 12,
+  "ac": 312,
+  "uc": 106,
+  "cov": 0.7315,
+  "vs": 3
+ },
+ {
+  "id": "fundamental6",
+  "name": "Company Fundamental Data for Equity",
+  "cat": "fundamental",
+  "fields": 268,
+  "ac": 1509,
+  "uc": 358,
+  "cov": 0.5,
+  "vs": 3
+ },
+ {
+  "id": "fundamental86",
+  "name": "Stock Reports Plus",
+  "cat": "fundamental",
+  "fields": 10,
+  "ac": 204,
+  "uc": 109,
+  "cov": 0.7901,
+  "vs": 3
+ },
+ {
+  "id": "fundamental89",
+  "name": "Accrual based Earnings Model",
+  "cat": "fundamental",
+  "fields": 15,
+  "ac": 20,
+  "uc": 16,
+  "cov": 0.3244,
+  "vs": 5
+ },
+ {
+  "id": "fundamental90",
+  "name": "Governance, Accounting, Management, and Equality",
+  "cat": "fundamental",
+  "fields": 55,
+  "ac": 192,
+  "uc": 100,
+  "cov": 0.6696,
+  "vs": 5
+ },
+ {
+  "id": "fundamental93",
+  "name": "Earnings Tax Data",
+  "cat": "fundamental",
+  "fields": 7,
+  "ac": 15,
+  "uc": 7,
+  "cov": 0.297,
+  "vs": 5
+ },
+ {
+  "id": "fundamental94",
+  "name": "Aggregated Fundamental Data",
+  "cat": "fundamental",
+  "fields": 150,
+  "ac": 560,
+  "uc": 227,
+  "cov": 0.762,
+  "vs": 3
+ },
+ {
+  "id": "global_seasonal_model",
+  "name": "Global Seasonal Regime Return Signals",
+  "cat": "model",
+  "fields": 681,
+  "ac": 292,
+  "uc": 119,
+  "cov": 0.6982,
+  "vs": 5
+ },
+ {
+  "id": "imbalance5",
+  "name": "Oil Price Resilience Scores",
+  "cat": "imbalance",
+  "fields": 2,
+  "ac": 1360,
+  "uc": 374,
+  "cov": 0.7652,
+  "vs": 1
+ },
+ {
+  "id": "insider_feats",
+  "name": "Global Insider Transaction Features",
+  "cat": "other",
+  "fields": 29,
+  "ac": 73,
+  "uc": 33,
+  "cov": 0.7039,
+  "vs": 6
+ },
+ {
+  "id": "insiders1",
+  "name": "Global Insider Trading Data",
+  "cat": "insiders",
+  "fields": 9,
+  "ac": 912,
+  "uc": 219,
+  "cov": 0.4538,
+  "vs": 3
+ },
+ {
+  "id": "insiders5",
+  "name": "Corporate Insider Trading Activities Dataset",
+  "cat": "insiders",
+  "fields": 1,
+  "ac": 232,
+  "uc": 100,
+  "cov": 0.999,
+  "vs": 3
+ },
+ {
+  "id": "institutions6",
+  "name": "Institutions and Beneficial Stake Ownership",
+  "cat": "institutions",
+  "fields": 11,
+  "ac": 763,
+  "uc": 209,
+  "cov": 0.9989,
+  "vs": 2
+ },
+ {
+  "id": "intraday_pv_feats",
+  "name": "Daily Intraday Price Volume Features",
+  "cat": "pv",
+  "fields": 579,
+  "ac": 1216,
+  "uc": 271,
+  "cov": 0.9812,
+  "vs": 3
+ },
+ {
+  "id": "macro63",
+  "name": "Index Reconstitution Data",
+  "cat": "macro",
+  "fields": 1,
+  "ac": 93,
+  "uc": 38,
+  "cov": 1,
+  "vs": 4
+ },
+ {
+  "id": "mmp_nlp_sentiment",
+  "name": "Multilingual NLP News Sentiment Signals",
+  "cat": "other",
+  "fields": 521,
+  "ac": 61,
+  "uc": 40,
+  "cov": 0.9476,
+  "vs": 6
+ },
+ {
+  "id": "model106",
+  "name": "Analysts rating model",
+  "cat": "model",
+  "fields": 14,
+  "ac": 94,
+  "uc": 35,
+  "cov": 0.347,
+  "vs": 5
+ },
+ {
+  "id": "model109",
+  "name": "Fundamentals and Technical Indicators Model",
+  "cat": "model",
+  "fields": 542,
+  "ac": 989,
+  "uc": 255,
+  "cov": 0.6954,
+  "vs": 3
+ },
+ {
+  "id": "model110",
+  "name": "Big data and machine learning based model",
+  "cat": "model",
+  "fields": 8,
+  "ac": 4418,
+  "uc": 669,
+  "cov": 0.7669,
+  "vs": 2
+ },
+ {
+  "id": "model135",
+  "name": "Alternative technical factor models",
+  "cat": "model",
+  "fields": 137,
+  "ac": 80,
+  "uc": 51,
+  "cov": 0.7572,
+  "vs": 6
+ },
+ {
+  "id": "model138",
+  "name": "Stock Selection from Accounting-based Factors",
+  "cat": "model",
+  "fields": 120,
+  "ac": 70,
+  "uc": 42,
+  "cov": 0.7656,
+  "vs": 6
+ },
+ {
+  "id": "model139",
+  "name": "Inflation based stock selection model",
+  "cat": "model",
+  "fields": 2,
+  "ac": 160,
+  "uc": 82,
+  "cov": 0.7635,
+  "vs": 3
+ },
+ {
+  "id": "model140",
+  "name": "Sensitivity to the Inflation Change",
+  "cat": "model",
+  "fields": 3,
+  "ac": 4,
+  "uc": 3,
+  "cov": 0.6656,
+  "vs": 6
+ },
+ {
+  "id": "model141",
+  "name": "Interest Rate Sensitivity Measures",
+  "cat": "model",
+  "fields": 10,
+  "ac": 8,
+  "uc": 5,
+  "cov": 0.2497,
+  "vs": 6
+ },
+ {
+  "id": "model144",
+  "name": "Stock Selection DL model",
+  "cat": "model",
+  "fields": 2,
+  "ac": 203,
+  "uc": 84,
+  "cov": 0.7614,
+  "vs": 4
+ },
+ {
+  "id": "model16",
+  "name": "Fundamental Scores",
+  "cat": "model",
+  "fields": 24,
+  "ac": 32,
+  "uc": 27,
+  "cov": 0.7056,
+  "vs": 5
+ },
+ {
+  "id": "model170",
+  "name": "Asia Technical and Fundamental ranking model",
+  "cat": "model",
+  "fields": 11,
+  "ac": 65,
+  "uc": 34,
+  "cov": 0.9175,
+  "vs": 5
+ },
+ {
+  "id": "model176",
+  "name": "Non-Financial Metric Models",
+  "cat": "model",
+  "fields": 84,
+  "ac": 66,
+  "uc": 37,
+  "cov": 0.3187,
+  "vs": 6
+ },
+ {
+  "id": "model207",
+  "name": "Asian Insider Transaction Data",
+  "cat": "model",
+  "fields": 6,
+  "ac": 36,
+  "uc": 14,
+  "cov": 0.6354,
+  "vs": 5
+ },
+ {
+  "id": "model216",
+  "name": "Analyst Revisions Model Data",
+  "cat": "model",
+  "fields": 88,
+  "ac": 268,
+  "uc": 73,
+  "cov": 0.6838,
+  "vs": 5
+ },
+ {
+  "id": "model238",
+  "name": "SmartHoldings Model",
+  "cat": "model",
+  "fields": 44,
+  "ac": 552,
+  "uc": 234,
+  "cov": 0.9829,
+  "vs": 4
+ },
+ {
+  "id": "model242",
+  "name": "Global Quantitative Stock Selection Data",
+  "cat": "model",
+  "fields": 5,
+  "ac": 52,
+  "uc": 36,
+  "cov": 0.9689,
+  "vs": 5
+ },
+ {
+  "id": "model243",
+  "name": "Combined Alpha Model",
+  "cat": "model",
+  "fields": 4,
+  "ac": 254,
+  "uc": 110,
+  "cov": 0.9313,
+  "vs": 2
+ },
+ {
+  "id": "model244",
+  "name": "Insider Transaction Analytics",
+  "cat": "model",
+  "fields": 30,
+  "ac": 14,
+  "uc": 5,
+  "cov": 0.5262,
+  "vs": 6
+ },
+ {
+  "id": "model25",
+  "name": "Earnings Quality",
+  "cat": "model",
+  "fields": 365,
+  "ac": 5320,
+  "uc": 656,
+  "cov": 0.82,
+  "vs": 2
+ },
+ {
+  "id": "model250",
+  "name": "Nonlinear adaptive model",
+  "cat": "model",
+  "fields": 20,
+  "ac": 1398,
+  "uc": 329,
+  "cov": 0.7643,
+  "vs": 2
+ },
+ {
+  "id": "model252",
+  "name": "Systematic Hedging for Investors to Evade Large Drawdowns",
+  "cat": "model",
+  "fields": 3,
+  "ac": 26,
+  "uc": 19,
+  "cov": 0.7347,
+  "vs": 5
+ },
+ {
+  "id": "model26",
+  "name": "Analyst Revisions",
+  "cat": "model",
+  "fields": 529,
+  "ac": 1622,
+  "uc": 373,
+  "cov": 0.712,
+  "vs": 3
+ },
+ {
+  "id": "model262",
+  "name": "DNN prediction of fundamentals",
+  "cat": "model",
+  "fields": 140,
+  "ac": 249,
+  "uc": 95,
+  "cov": 0.7007,
+  "vs": 5
+ },
+ {
+  "id": "model28",
+  "name": "Structural Credit Risk Model",
+  "cat": "model",
+  "fields": 125,
+  "ac": 546,
+  "uc": 160,
+  "cov": 0.9692,
+  "vs": 4
+ },
+ {
+  "id": "model29",
+  "name": "EBITDA Estimate Model",
+  "cat": "model",
+  "fields": 71,
+  "ac": 112,
+  "uc": 55,
+  "cov": 0.6496,
+  "vs": 5
+ },
+ {
+  "id": "model30",
+  "name": "EPS Estimate Model",
+  "cat": "model",
+  "fields": 51,
+  "ac": 306,
+  "uc": 125,
+  "cov": 0.6378,
+  "vs": 4
+ },
+ {
+  "id": "model307",
+  "name": "Global Sales Allocation Model Data",
+  "cat": "model",
+  "fields": 15,
+  "ac": 1,
+  "uc": 1,
+  "cov": 0.4434,
+  "vs": 7
+ },
+ {
+  "id": "model31",
+  "name": "Earnings Quality Model",
+  "cat": "model",
+  "fields": 80,
+  "ac": 686,
+  "uc": 220,
+  "cov": 0.9663,
+  "vs": 3
+ },
+ {
+  "id": "model313",
+  "name": "Intangible Asset Factors",
+  "cat": "model",
+  "fields": 9,
+  "ac": 12,
+  "uc": 5,
+  "cov": 0.633,
+  "vs": 6
+ },
+ {
+  "id": "model32",
+  "name": "Price Momentum Model",
+  "cat": "model",
+  "fields": 36,
+  "ac": 504,
+  "uc": 161,
+  "cov": 0.9704,
+  "vs": 4
+ },
+ {
+  "id": "model33",
+  "name": "Revenue Estimate Model",
+  "cat": "model",
+  "fields": 28,
+  "ac": 166,
+  "uc": 71,
+  "cov": 0.6243,
+  "vs": 5
+ },
+ {
+  "id": "model36",
+  "name": "SmartRatios Model",
+  "cat": "model",
+  "fields": 43,
+  "ac": 719,
+  "uc": 148,
+  "cov": 0.9793,
+  "vs": 4
+ },
+ {
+  "id": "model37",
+  "name": "Text Mining Data",
+  "cat": "model",
+  "fields": 79,
+  "ac": 43,
+  "uc": 22,
+  "cov": 0.9407,
+  "vs": 6
+ },
+ {
+  "id": "model38",
+  "name": "Growth Valuation Model",
+  "cat": "model",
+  "fields": 120,
+  "ac": 1536,
+  "uc": 357,
+  "cov": 0.7085,
+  "vs": 2
+ },
+ {
+  "id": "model39",
+  "name": "Valuation Momentum Data",
+  "cat": "model",
+  "fields": 24,
+  "ac": 3312,
+  "uc": 494,
+  "cov": 0.8719,
+  "vs": 1
+ },
+ {
+  "id": "model50",
+  "name": "International Scorings Data",
+  "cat": "model",
+  "fields": 56,
+  "ac": 34,
+  "uc": 25,
+  "cov": 0.5692,
+  "vs": 6
+ },
+ {
+  "id": "model53",
+  "name": "Creditworthiness Risk Measure Model",
+  "cat": "model",
+  "fields": 52,
+  "ac": 89,
+  "uc": 54,
+  "cov": 0.8605,
+  "vs": 5
+ },
+ {
+  "id": "model56",
+  "name": "Stock Reports Plus",
+  "cat": "fundamental",
+  "fields": 9,
+  "ac": 183,
+  "uc": 79,
+  "cov": 0.7227,
+  "vs": 3
+ },
+ {
+  "id": "model68",
+  "name": "Risk-Alleviated Momentum Scores",
+  "cat": "model",
+  "fields": 4,
+  "ac": 22,
+  "uc": 15,
+  "cov": 0.7592,
+  "vs": 6
+ },
+ {
+  "id": "model77",
+  "name": "Analysts' Factor Model",
+  "cat": "model",
+  "fields": 23,
+  "ac": 1,
+  "uc": 1,
+  "cov": 0.5692,
+  "vs": 8
+ },
+ {
+  "id": "multi_source_model",
+  "name": "Multi-Source Market Return Prediction",
+  "cat": "model",
+  "fields": 60,
+  "ac": 67,
+  "uc": 37,
+  "cov": 0.7269,
+  "vs": 5
+ },
+ {
+  "id": "multifactor_return_pred",
+  "name": "Multi Factor Market Return Predictions",
+  "cat": "model",
+  "fields": 648,
+  "ac": 295,
+  "uc": 114,
+  "cov": 0.7247,
+  "vs": 5
+ },
+ {
+  "id": "news104",
+  "name": "Archive News Data",
+  "cat": "news",
+  "fields": 11,
+  "ac": 99,
+  "uc": 38,
+  "cov": 0.8694,
+  "vs": 4
+ },
+ {
+  "id": "news17",
+  "name": "PR Edition Data",
+  "cat": "news",
+  "fields": 24,
+  "ac": 167,
+  "uc": 66,
+  "cov": 0.6052,
+  "vs": 3
+ },
+ {
+  "id": "news18",
+  "name": "Ravenpack News Data",
+  "cat": "news",
+  "fields": 44,
+  "ac": 898,
+  "uc": 297,
+  "cov": 0.6236,
+  "vs": 2
+ },
+ {
+  "id": "news20",
+  "name": "Web Sources News Sentiment Data",
+  "cat": "news",
+  "fields": 24,
+  "ac": 88,
+  "uc": 49,
+  "cov": 0.6533,
+  "vs": 4
+ },
+ {
+  "id": "news21",
+  "name": "Macro Economic Event Data",
+  "cat": "news",
+  "fields": 15,
+  "ac": 76,
+  "uc": 43,
+  "cov": 0.6327,
+  "vs": 4
+ },
+ {
+  "id": "news23",
+  "name": "MnA Deals Data",
+  "cat": "news",
+  "fields": 53,
+  "ac": 10,
+  "uc": 5,
+  "cov": 0.3437,
+  "vs": 6
+ },
+ {
+  "id": "news29",
+  "name": "Significant Developments Data",
+  "cat": "news",
+  "fields": 12,
+  "ac": 23,
+  "uc": 13,
+  "cov": 0.6849,
+  "vs": 5
+ },
+ {
+  "id": "news3",
+  "name": "Dow Jones News Analytics Data",
+  "cat": "news",
+  "fields": 19,
+  "ac": 86,
+  "uc": 37,
+  "cov": 0.8122,
+  "vs": 4
+ },
+ {
+  "id": "news31",
+  "name": "News Analytics on Equities",
+  "cat": "news",
+  "fields": 25,
+  "ac": 58,
+  "uc": 33,
+  "cov": 1,
+  "vs": 4
+ },
+ {
+  "id": "news36",
+  "name": "News Analytics Data",
+  "cat": "news",
+  "fields": 43,
+  "ac": 50,
+  "uc": 26,
+  "cov": 0.7657,
+  "vs": 5
+ },
+ {
+  "id": "news38",
+  "name": "News Analytic Model Data",
+  "cat": "news",
+  "fields": 45,
+  "ac": 62,
+  "uc": 31,
+  "cov": 0.8302,
+  "vs": 5
+ },
+ {
+  "id": "news46",
+  "name": "Relevant News Analytics Data",
+  "cat": "news",
+  "fields": 44,
+  "ac": 86,
+  "uc": 36,
+  "cov": 0.6374,
+  "vs": 5
+ },
+ {
+  "id": "news48",
+  "name": "Global Media News Data",
+  "cat": "news",
+  "fields": 22,
+  "ac": 44,
+  "uc": 24,
+  "cov": 0.5534,
+  "vs": 4
+ },
+ {
+  "id": "news50",
+  "name": "Web News Analytics Data",
+  "cat": "news",
+  "fields": 81,
+  "ac": 83,
+  "uc": 44,
+  "cov": 0.7953,
+  "vs": 4
+ },
+ {
+  "id": "news54",
+  "name": "Key Developments Data",
+  "cat": "news",
+  "fields": 40,
+  "ac": 1245,
+  "uc": 231,
+  "cov": 0.7643,
+  "vs": 2
+ },
+ {
+  "id": "news59",
+  "name": "Corporate Events Data",
+  "cat": "news",
+  "fields": 2,
+  "ac": 29,
+  "uc": 15,
+  "cov": 0.8125,
+  "vs": 4
+ },
+ {
+  "id": "news66",
+  "name": "Webpage View Statistics",
+  "cat": "news",
+  "fields": 5,
+  "ac": 32,
+  "uc": 12,
+  "cov": 0.5,
+  "vs": 4
+ },
+ {
+  "id": "news7",
+  "name": "Real Time News Feed Data",
+  "cat": "news",
+  "fields": 63,
+  "ac": 424,
+  "uc": 166,
+  "cov": 0.8468,
+  "vs": 3
+ },
+ {
+  "id": "news73",
+  "name": "Story by Story Sentiment",
+  "cat": "news",
+  "fields": 22,
+  "ac": 18,
+  "uc": 12,
+  "cov": 0.8438,
+  "vs": 5
+ },
+ {
+  "id": "news76",
+  "name": "Textual News Feed Data",
+  "cat": "news",
+  "fields": 6,
+  "ac": 12,
+  "uc": 7,
+  "cov": 0.9013,
+  "vs": 5
+ },
+ {
+  "id": "news79",
+  "name": "Global Corporate News Analytics",
+  "cat": "news",
+  "fields": 85,
+  "ac": 319,
+  "uc": 123,
+  "cov": 0.9341,
+  "vs": 4
+ },
+ {
+  "id": "news84",
+  "name": "Headline Sentiment Analysis using DNN",
+  "cat": "news",
+  "fields": 23,
+  "ac": 53,
+  "uc": 31,
+  "cov": 0.7419,
+  "vs": 5
+ },
+ {
+  "id": "news85",
+  "name": "News Sentiment Analysis using DNN",
+  "cat": "news",
+  "fields": 23,
+  "ac": 53,
+  "uc": 33,
+  "cov": 0.7714,
+  "vs": 4
+ },
+ {
+  "id": "news_sentiment_dl",
+  "name": "Deep Learning News Sentiment Signals",
+  "cat": "other",
+  "fields": 17,
+  "ac": 22,
+  "uc": 8,
+  "cov": 0.8632,
+  "vs": 6
+ },
+ {
+  "id": "news_sentiment_nlp",
+  "name": "News Sentiment Signal Features",
+  "cat": "other",
+  "fields": 19,
+  "ac": 19,
+  "uc": 6,
+  "cov": 0.865,
+  "vs": 6
+ },
+ {
+  "id": "news_sentiment_transfer",
+  "name": "Transferred News Sentiment Analytics",
+  "cat": "sentiment",
+  "fields": 23,
+  "ac": 57,
+  "uc": 36,
+  "cov": 1,
+  "vs": 5
+ },
+ {
+  "id": "other100",
+  "name": "Investor views",
+  "cat": "socialmedia",
+  "fields": 1,
+  "ac": 173,
+  "uc": 77,
+  "cov": 1,
+  "vs": 2
+ },
+ {
+  "id": "other128",
+  "name": "Global Executive Performance Factors",
+  "cat": "other",
+  "fields": 18,
+  "ac": 285,
+  "uc": 77,
+  "cov": 0.373,
+  "vs": 5
+ },
+ {
+  "id": "other16",
+  "name": "Indications of Interest (IOI) insights dataset",
+  "cat": "other",
+  "fields": 6,
+  "ac": 46,
+  "uc": 21,
+  "cov": 0.3656,
+  "vs": 6
+ },
+ {
+  "id": "other165",
+  "name": "Hong Kong Exchange Announcement",
+  "cat": "other",
+  "fields": 1,
+  "ac": 32,
+  "uc": 13,
+  "cov": 1,
+  "vs": 5
+ },
+ {
+  "id": "other176",
+  "name": "Nonlinear adaptive model",
+  "cat": "model",
+  "fields": 20,
+  "ac": 3051,
+  "uc": 514,
+  "cov": 0.6374,
+  "vs": 2
+ },
+ {
+  "id": "other193",
+  "name": "Systematic Hedging for Investors to Evade Large Drawdowns",
+  "cat": "model",
+  "fields": 3,
+  "ac": 322,
+  "uc": 66,
+  "cov": 0.5858,
+  "vs": 3
+ },
+ {
+  "id": "other315",
+  "name": "Equity Swap Data",
+  "cat": "other",
+  "fields": 32,
+  "ac": 49,
+  "uc": 19,
+  "cov": 0.2353,
+  "vs": 6
+ },
+ {
+  "id": "other323",
+  "name": "Global Equity Premarket Data",
+  "cat": "other",
+  "fields": 11,
+  "ac": 230,
+  "uc": 94,
+  "cov": 1,
+  "vs": 4
+ },
+ {
+  "id": "other327",
+  "name": "Sensitivity to Interest Rates Model",
+  "cat": "other",
+  "fields": 3,
+  "ac": 34,
+  "uc": 17,
+  "cov": 0.6491,
+  "vs": 5
+ },
+ {
+  "id": "other335",
+  "name": "Multi-Region Dividend Alpha Model Dataset",
+  "cat": "other",
+  "fields": 10,
+  "ac": 2875,
+  "uc": 582,
+  "cov": 0.5839,
+  "vs": 2
+ },
+ {
+  "id": "other395",
+  "name": "Accrual based Earnings Model",
+  "cat": "fundamental",
+  "fields": 15,
+  "ac": 11,
+  "uc": 6,
+  "cov": 0.3244,
+  "vs": 5
+ },
+ {
+  "id": "other401",
+  "name": "Governance, Accounting, Management, and Equality",
+  "cat": "fundamental",
+  "fields": 53,
+  "ac": 236,
+  "uc": 89,
+  "cov": 0.5404,
+  "vs": 4
+ },
+ {
+  "id": "other423",
+  "name": "Fundamental Income and Dividend Model",
+  "cat": "analyst",
+  "fields": 17,
+  "ac": 453,
+  "uc": 159,
+  "cov": 0.3674,
+  "vs": 2
+ },
+ {
+  "id": "other424",
+  "name": "Dividend prediction model",
+  "cat": "other",
+  "fields": 3,
+  "ac": 42,
+  "uc": 26,
+  "cov": 0.5734,
+  "vs": 5
+ },
+ {
+  "id": "other432",
+  "name": "DNN prediction of fundamentals",
+  "cat": "model",
+  "fields": 140,
+  "ac": 8708,
+  "uc": 491,
+  "cov": 0.6669,
+  "vs": 2
+ },
+ {
+  "id": "other436",
+  "name": "Dividend model",
+  "cat": "other",
+  "fields": 3,
+  "ac": 40,
+  "uc": 26,
+  "cov": 0.5754,
+  "vs": 5
+ },
+ {
+  "id": "other452",
+  "name": "Earnings Tax Data",
+  "cat": "fundamental",
+  "fields": 7,
+  "ac": 13,
+  "uc": 8,
+  "cov": 0.297,
+  "vs": 5
+ },
+ {
+  "id": "other455",
+  "name": "Relationship enhanced with AI/ML",
+  "cat": "other",
+  "fields": 1500,
+  "ac": 297,
+  "uc": 115,
+  "cov": 0.7097,
+  "vs": 6
+ },
+ {
+  "id": "other466",
+  "name": "Aggregated Fundamental Data ",
+  "cat": "fundamental",
+  "fields": 114,
+  "ac": 3895,
+  "uc": 490,
+  "cov": 0.7114,
+  "vs": 2
+ },
+ {
+  "id": "other479",
+  "name": "China Classification data",
+  "cat": "other",
+  "fields": 1,
+  "ac": 38,
+  "uc": 18,
+  "cov": 1,
+  "vs": 4
+ },
+ {
+  "id": "other496",
+  "name": "Intraday FX rates",
+  "cat": "other",
+  "fields": 107,
+  "ac": 281,
+  "uc": 86,
+  "cov": 0.7318,
+  "vs": 5
+ },
+ {
+  "id": "other532",
+  "name": "Specific Returns",
+  "cat": "other",
+  "fields": 2,
+  "ac": 47,
+  "uc": 26,
+  "cov": 1,
+  "vs": 5
+ },
+ {
+  "id": "other534",
+  "name": "Short-Selling Dataset",
+  "cat": "shortinterest",
+  "fields": 5,
+  "ac": 495,
+  "uc": 145,
+  "cov": 0.8028,
+  "vs": 3
+ },
+ {
+  "id": "other54",
+  "name": "Global Quantitative Stock Selection Data",
+  "cat": "model",
+  "fields": 4,
+  "ac": 42,
+  "uc": 19,
+  "cov": 0.7424,
+  "vs": 5
+ },
+ {
+  "id": "other543",
+  "name": "Shareholdings, trade statistics data",
+  "cat": "other",
+  "fields": 4,
+  "ac": 496,
+  "uc": 138,
+  "cov": 0.8921,
+  "vs": 4
+ },
+ {
+  "id": "other545",
+  "name": "Linked Firms Momentum Data",
+  "cat": "other",
+  "fields": 4,
+  "ac": 24,
+  "uc": 17,
+  "cov": 0.7381,
+  "vs": 6
+ },
+ {
+  "id": "other546",
+  "name": "Institutional Network Analysis Dataset",
+  "cat": "other",
+  "fields": 8,
+  "ac": 4,
+  "uc": 4,
+  "cov": 0.4464,
+  "vs": 7
+ },
+ {
+  "id": "other553",
+  "name": "Financial Opinion Mining",
+  "cat": "sentiment",
+  "fields": 21,
+  "ac": 27,
+  "uc": 20,
+  "cov": 0.6228,
+  "vs": 6
+ },
+ {
+  "id": "other567",
+  "name": "Employee Review Data",
+  "cat": "other",
+  "fields": 2,
+  "ac": 7,
+  "uc": 5,
+  "cov": 0.2733,
+  "vs": 6
+ },
+ {
+  "id": "other571",
+  "name": "Wikipedia Viewing Data",
+  "cat": "other",
+  "fields": 30,
+  "ac": 16,
+  "uc": 8,
+  "cov": 0.3861,
+  "vs": 7
+ },
+ {
+  "id": "other58",
+  "name": "Hong Kong Secutiries Futures Data",
+  "cat": "shortinterest",
+  "fields": 2,
+  "ac": 57,
+  "uc": 24,
+  "cov": 0.4746,
+  "vs": 5
+ },
+ {
+  "id": "other635",
+  "name": "Thomson Reuters News Analytics Equities",
+  "cat": "other",
+  "fields": 6,
+  "ac": 13,
+  "uc": 8,
+  "cov": 0.6965,
+  "vs": 6
+ },
+ {
+  "id": "other7",
+  "name": "Archive News Data",
+  "cat": "news",
+  "fields": 11,
+  "ac": 22,
+  "uc": 13,
+  "cov": 0.7513,
+  "vs": 5
+ },
+ {
+  "id": "other72",
+  "name": "Combined Alpha Model",
+  "cat": "model",
+  "fields": 4,
+  "ac": 592,
+  "uc": 112,
+  "cov": 0.7421,
+  "vs": 2
+ },
+ {
+  "id": "other78",
+  "name": "Earnings and conference call data",
+  "cat": "other",
+  "fields": 12,
+  "ac": 116,
+  "uc": 35,
+  "cov": 0.8952,
+  "vs": 6
+ },
+ {
+  "id": "other83",
+  "name": "Insider Transaction Analytics",
+  "cat": "model",
+  "fields": 15,
+  "ac": 13,
+  "uc": 4,
+  "cov": 0.4042,
+  "vs": 5
+ },
+ {
+  "id": "other85",
+  "name": "China Flow Data",
+  "cat": "other",
+  "fields": 3,
+  "ac": 410,
+  "uc": 134,
+  "cov": 0.686,
+  "vs": 3
+ },
+ {
+  "id": "pattern_scores",
+  "name": "Chart Pattern Similarity Scores",
+  "cat": "pv",
+  "fields": 504,
+  "ac": 151,
+  "uc": 74,
+  "cov": 1,
+  "vs": 5
+ },
+ {
+  "id": "predictive_starmine",
+  "name": "Predictive Analyst-Company Signal Set",
+  "cat": "model",
+  "fields": 645,
+  "ac": 118,
+  "uc": 59,
+  "cov": 0.8486,
+  "vs": 6
+ },
+ {
+  "id": "price_signal_dl",
+  "name": "Deep Learning Price Signal Dataset",
+  "cat": "model",
+  "fields": 28,
+  "ac": 22,
+  "uc": 16,
+  "cov": 0.8154,
+  "vs": 6
+ },
+ {
+  "id": "pv1",
+  "name": "Price Volume Data for Equity",
+  "cat": "pv",
+  "fields": 24,
+  "ac": 38089,
+  "uc": 2009,
+  "cov": 1,
+  "vs": 1
+ },
+ {
+  "id": "pv103",
+  "name": "Interval and MOO&MOC statistics",
+  "cat": "pv",
+  "fields": 7,
+  "ac": 154,
+  "uc": 79,
+  "cov": 1,
+  "vs": 3
+ },
+ {
+  "id": "pv106",
+  "name": "Microstructure Spread Data",
+  "cat": "pv",
+  "fields": 29,
+  "ac": 425,
+  "uc": 127,
+  "cov": 0.973,
+  "vs": 3
+ },
+ {
+  "id": "pv109",
+  "name": "Bond Yield Data",
+  "cat": "pv",
+  "fields": 25,
+  "ac": 8,
+  "uc": 8,
+  "cov": 0.2357,
+  "vs": 5
+ },
+ {
+  "id": "pv13",
+  "name": "Relationship Data for Equity",
+  "cat": "pv",
+  "fields": 45,
+  "ac": 640,
+  "uc": 191,
+  "cov": 0.7022,
+  "vs": 3
+ },
+ {
+  "id": "pv14",
+  "name": "Futures Market Data",
+  "cat": "pv",
+  "fields": 2,
+  "ac": 94,
+  "uc": 40,
+  "cov": 0.8526,
+  "vs": 3
+ },
+ {
+  "id": "pv149",
+  "name": "Holidays and Trading Hours Calendar",
+  "cat": "pv",
+  "fields": 2,
+  "ac": 0,
+  "uc": 0,
+  "cov": 1,
+  "vs": 8
+ },
+ {
+  "id": "pv173",
+  "name": "Corporate Bond Pricing Data",
+  "cat": "pv",
+  "fields": 21,
+  "ac": 8,
+  "uc": 5,
+  "cov": 0.2472,
+  "vs": 5
+ },
+ {
+  "id": "pv20",
+  "name": "Daily Spot and Cross Rate Data",
+  "cat": "pv",
+  "fields": 6,
+  "ac": 78,
+  "uc": 55,
+  "cov": 0.7988,
+  "vs": 3
+ },
+ {
+  "id": "pv29",
+  "name": "Derived Industry Classification",
+  "cat": "pv",
+  "fields": 45,
+  "ac": 1723,
+  "uc": 286,
+  "cov": 0.5302,
+  "vs": 2
+ },
+ {
+  "id": "pv30",
+  "name": "Alternate Industry Classification",
+  "cat": "pv",
+  "fields": 690,
+  "ac": 2649,
+  "uc": 298,
+  "cov": 0.9329,
+  "vs": 3
+ },
+ {
+  "id": "pv37",
+  "name": "Equity Interval Data",
+  "cat": "pv",
+  "fields": 691,
+  "ac": 1487,
+  "uc": 348,
+  "cov": 0.6937,
+  "vs": 3
+ },
+ {
+  "id": "pv47",
+  "name": "Specific Return Dataset",
+  "cat": "pv",
+  "fields": 5,
+  "ac": 72,
+  "uc": 38,
+  "cov": 0.9545,
+  "vs": 3
+ },
+ {
+  "id": "pv70",
+  "name": "Relation Dataset",
+  "cat": "pv",
+  "fields": 33,
+  "ac": 24,
+  "uc": 14,
+  "cov": 0.2241,
+  "vs": 5
+ },
+ {
+  "id": "quant_factor_lib",
+  "name": "Multi-Domain Quantitative Factor Library",
+  "cat": "model",
+  "fields": 32,
+  "ac": 37,
+  "uc": 21,
+  "cov": 0.6649,
+  "vs": 6
+ },
+ {
+  "id": "risk59",
+  "name": "Securities Lending and Short Market Dynamics Dataset",
+  "cat": "risk",
+  "fields": 16,
+  "ac": 436,
+  "uc": 190,
+  "cov": 0.8843,
+  "vs": 3
+ },
+ {
+  "id": "risk60",
+  "name": "Securities Lending Insight Data",
+  "cat": "risk",
+  "fields": 5,
+  "ac": 120,
+  "uc": 69,
+  "cov": 0.8577,
+  "vs": 3
+ },
+ {
+  "id": "risk68",
+  "name": "Forecast Data",
+  "cat": "risk",
+  "fields": 5,
+  "ac": 866,
+  "uc": 175,
+  "cov": 0.9869,
+  "vs": 2
+ },
+ {
+  "id": "risk70",
+  "name": "Multi-Factor Model",
+  "cat": "risk",
+  "fields": 98,
+  "ac": 5069,
+  "uc": 810,
+  "cov": 0.9308,
+  "vs": 1
+ },
+ {
+  "id": "risk71",
+  "name": "Daily Specific Return Profiling Dataset",
+  "cat": "risk",
+  "fields": 9,
+  "ac": 172,
+  "uc": 83,
+  "cov": 0.5565,
+  "vs": 3
+ },
+ {
+  "id": "risk72",
+  "name": "Specific return of extended factors",
+  "cat": "risk",
+  "fields": 2,
+  "ac": 63,
+  "uc": 41,
+  "cov": 0.5463,
+  "vs": 3
+ },
+ {
+  "id": "risk88",
+  "name": "Other Multi-Factor Risk Models",
+  "cat": "risk",
+  "fields": 80,
+  "ac": 1031,
+  "uc": 338,
+  "cov": 0.9003,
+  "vs": 3
+ },
+ {
+  "id": "sentiment19",
+  "name": "HKEX MD&A Sentiment Classification Data",
+  "cat": "sentiment",
+  "fields": 14,
+  "ac": 651,
+  "uc": 156,
+  "cov": 0.562,
+  "vs": 3
+ },
+ {
+  "id": "sentiment21",
+  "name": "AI Sentiment Score Data",
+  "cat": "sentiment",
+  "fields": 138,
+  "ac": 187,
+  "uc": 90,
+  "cov": 0.9993,
+  "vs": 5
+ },
+ {
+  "id": "sentiment23",
+  "name": "Textual Sentiment Analysis Data",
+  "cat": "sentiment",
+  "fields": 156,
+  "ac": 124,
+  "uc": 59,
+  "cov": 0.8121,
+  "vs": 5
+ },
+ {
+  "id": "sentiment26",
+  "name": "Website Popularity Ranking Dataset",
+  "cat": "sentiment",
+  "fields": 19,
+  "ac": 76,
+  "uc": 42,
+  "cov": 0.3961,
+  "vs": 5
+ },
+ {
+  "id": "sentiment27",
+  "name": "Website Popularity Rankings",
+  "cat": "sentiment",
+  "fields": 31,
+  "ac": 1099,
+  "uc": 285,
+  "cov": 0.4598,
+  "vs": 3
+ },
+ {
+  "id": "sentiment7",
+  "name": "Webpage Views  Data",
+  "cat": "sentiment",
+  "fields": 4,
+  "ac": 3,
+  "uc": 1,
+  "cov": 0.3594,
+  "vs": 6
+ },
+ {
+  "id": "shortinterest3",
+  "name": "Securities Lending Files Data",
+  "cat": "shortinterest",
+  "fields": 56,
+  "ac": 1192,
+  "uc": 387,
+  "cov": 0.865,
+  "vs": 3
+ },
+ {
+  "id": "shortinterest44",
+  "name": "Short Sale Activity",
+  "cat": "shortinterest",
+  "fields": 2,
+  "ac": 129,
+  "uc": 64,
+  "cov": 0.815,
+  "vs": 4
+ },
+ {
+  "id": "shortinterest5",
+  "name": "Daily Price Limit Data",
+  "cat": "shortinterest",
+  "fields": 3,
+  "ac": 23,
+  "uc": 13,
+  "cov": 1,
+  "vs": 6
+ },
+ {
+  "id": "shortinterest52",
+  "name": "Hong Kong Securities Futures Data",
+  "cat": "shortinterest",
+  "fields": 2,
+  "ac": 183,
+  "uc": 45,
+  "cov": 0.6538,
+  "vs": 4
+ },
+ {
+  "id": "shortinterest55",
+  "name": "Short-Selling Dataset",
+  "cat": "shortinterest",
+  "fields": 5,
+  "ac": 367,
+  "uc": 132,
+  "cov": 0.7898,
+  "vs": 4
+ },
+ {
+  "id": "shortinterest6",
+  "name": "SmartHoldings Model",
+  "cat": "model",
+  "fields": 11,
+  "ac": 3153,
+  "uc": 385,
+  "cov": 0.82,
+  "vs": 2
+ },
+ {
+  "id": "socialmedia12",
+  "name": "Sentiment Data for Equity",
+  "cat": "socialmedia",
+  "fields": 6,
+  "ac": 726,
+  "uc": 206,
+  "cov": 0.5615,
+  "vs": 2
+ },
+ {
+  "id": "socialmedia39",
+  "name": "Investor views",
+  "cat": "socialmedia",
+  "fields": 1,
+  "ac": 255,
+  "uc": 91,
+  "cov": 1,
+  "vs": 2
+ },
+ {
+  "id": "univ1",
+  "name": "Universe Dataset",
+  "cat": "pv",
+  "fields": 2,
+  "ac": 4,
+  "uc": 2,
+  "cov": 1,
+  "vs": 5
+ }
+]

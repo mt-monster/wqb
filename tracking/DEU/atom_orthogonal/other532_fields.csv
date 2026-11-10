@@ -1,0 +1,9 @@
+id,type,cov,uc,ac,desc
+idiosyncratic_return_eue_daily,MATRIX,0.7484,5,10,Specfific return
+idiosyncratic_return_eue_monthly,MATRIX,0.7413,7,9,Realized idiosyncratic (stock-specific) return unexplained by Barra factors; expressed as a decimal fraction
+idiosyncratic_return_eult_daily,MATRIX,0.7484,1,1,Realized idiosyncratic (stock-specific) return for the security on that date; expressed as a decimal fraction and excluding systematic factor effects
+idiosyncratic_return_eult_monthly,MATRIX,0.7413,2,2,Specific return
+oth532_emerging_daily_specificreturn,MATRIX,0.9714,4,5,Realized idiosyncratic stock return (residual from Barra risk model) expressed as a decimal fraction
+oth532_emerging_monthly_specificreturn,MATRIX,0.9643,3,4,Stock-specific (idiosyncratic) return residual from the Barra risk model for the period; expressed as a decimal fraction (e.g.; 0.01 = 1%)
+oth532_global_daily_specificreturn,MATRIX,0.9714,18,25,Realized stock-specific return (idiosyncratic residual from the Barra risk model); expressed as a decimal fraction
+oth532_global_monthly_specificreturn,MATRIX,0.9636,9,11,Realized idiosyncratic (stock-specific) return for the security for the month; residual from the Barra factor model; expressed as a decimal fraction (e.g.; 0.01â¦

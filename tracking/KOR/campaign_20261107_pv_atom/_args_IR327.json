@@ -1,0 +1,29 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "group_rank(ts_backfill(oth327_sirc_lev, 10), sector)",
+  "reverse(group_rank(ts_backfill(oth327_sirc_lev, 10), sector))",
+  "group_rank(ts_backfill(oth327_sirc_sl, 10), sector)",
+  "reverse(group_rank(ts_backfill(oth327_sirc_sl, 10), sector))",
+  "group_rank(ts_delta(ts_backfill(oth327_sirc_lev, 10), 66), sector)",
+  "group_rank(ts_zscore(ts_backfill(oth327_sirc_lev, 10), 252), sector)",
+  "group_rank(ts_mean(ts_backfill(oth327_sirc_lev, 10), 66), sector)",
+  "group_rank(vector_neut(rank(ts_backfill(oth327_sirc_lev, 10)), rank(oth327_mktcap)), sector)",
+  "group_rank(ts_delta(ts_backfill(oth327_sirc_sl, 10), 66), sector)",
+  "signed_power(group_rank(ts_backfill(oth327_sirc_lev, 10), sector), 2)"
+ ],
+ "dataset": "other327",
+ "wave": "IR327 rate-sensitivity"
+}

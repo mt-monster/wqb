@@ -1,0 +1,8 @@
+id,type,cov,uc,ac,desc
+fnd86_average_score,MATRIX,0.0,23,48,Overall composite score aggregating all pillars; scaled as deciles 1â10 with higher being better
+fnd86_earnings_score,MATRIX,0.0,59,87,Earnings pillar score (1â10 decile; higher is better); reflecting earnings quality; revisions; and growth
+fnd86_fundamental_score,MATRIX,0.0,38,66,Fundamental score on a 1â10 decile scale; higher indicates stronger fundamental quality
+fnd86_insider_trading_score,MATRIX,0.0,0,0,Insider trading pillar score (decile 1â10); based on recent insider activity
+fnd86_price_momentum_score,MATRIX,0.0,4,4,Price momentum score on a 1â10 decile scale; higher indicates stronger recent price trend
+fnd86_relative_valuation_score,MATRIX,0.0,15,18,Relative valuation score on a 1â10 decile scale; higher indicates more attractive valuation versus peers in the region
+fnd86_risk_score,MATRIX,0.0,3,3,Risk pillar score; integer decile 1â10 where higher indicates a more favorable risk profile

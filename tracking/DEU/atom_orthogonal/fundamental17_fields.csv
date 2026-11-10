@@ -1,0 +1,136 @@
+id,type,cov,uc,ac,desc
+annual_avg_shares_outstanding,MATRIX,0.0,14,19,Average shares outstanding for the most recent fiscal year
+annual_basic_eps_excl_extraordinary,MATRIX,0.0,5,6,Basic earnings per share excluding extraordinary items for the most recent fiscal year
+annual_book_value_per_share,MATRIX,0.0,12,16,Book value (common equity) per share for the most recent fiscal year
+annual_common_equity_value,MATRIX,0.0,11,12,Common equity (book value) for the most recent fiscal year
+annual_current_assets_value,MATRIX,0.0,6,6,Current assets for the most recent fiscal year
+annual_current_liabilities,MATRIX,0.0,4,4,Current liabilities for the most recent fiscal year
+annual_debt_to_equity_ratio,MATRIX,0.0,12,22,Total debt to equity ratio for the most recent fiscal year
+annual_debt_to_total_capital,MATRIX,0.0,11,14,Total debt capital for the most recent fiscal year
+annual_earnings_before_tax,MATRIX,0.0,4,8,Earnings before taxes for the most recent fiscal year
+annual_ebit,MATRIX,0.0,6,10,Earnings before interest and taxes for the most recent fiscal year
+annual_ebitda_amount,MATRIX,0.0,5,6,EBITDA for the most recent fiscal year
+annual_ebitda_value,MATRIX,0.0,4,4,Earnings before interest; taxes; depreciation; and amortization for the year.
+annual_net_income_available_common,MATRIX,0.0,5,5,Net income available to common shareholders for the most recent fiscal year
+annual_net_income_change_percent,MATRIX,0.0,59,81,Net income change percentage from the quarter one year ago
+annual_net_income_excl_extraordinary,MATRIX,0.0,3,3,Net income excluding extraordinary items for the most recent fiscal year
+annual_net_income_incl_extraordinary,MATRIX,0.0,6,10,Net income including extraordinary items for the most recent fiscal year
+annual_net_income_to_common,MATRIX,0.0,6,6,Net income available to common for the most recent fiscal year
+annual_normalized_net_income_common,MATRIX,0.0,3,3,Normalized net income available to common shareholders for the most recent fiscal year (excludes unusual/one-time items)
+annual_normalized_net_income_to_common,MATRIX,0.0,4,4,Normalized net income available to common for the most recent fiscal year
+annual_price_to_sales_ratio,MATRIX,0.0,17,20,Price-to-sales ratio for the most recent fiscal year
+annual_revenue_change_percent,MATRIX,0.0,4,4,Year-over-year percent change in annual revenue
+annual_revenue_per_share,MATRIX,0.0,3,3,Annual revenue per share for the most recent fiscal year
+annual_revenue_value,MATRIX,0.0,4,4,Revenue (total sales) for the most recent fiscal year
+annual_total_assets_value,MATRIX,0.0,11,12,Total assets for the most recent fiscal year
+annual_total_liabilities_value,MATRIX,0.0,1,1,Total liabilities for the most recent fiscal year
+annual_total_revenue,MATRIX,0.0,1,1,Revenue for the most recent fiscal year
+annual_total_shareholder_equity,MATRIX,0.0,4,4,Total shareholdersâ equity for the most recent fiscal year
+annual_total_shareholders_equity,MATRIX,0.0,2,2,Shareholders' equity - most recent fiscal year
+capital_spending_per_share,MATRIX,0.0,3,3,Capital spending per share for the most recent fiscal year
+cash_per_share,MATRIX,0.0,53,81,Cash per share for the most recent fiscal year
+current_enterprise_value,MATRIX,0.0,36,60,Current enterprise value (market capitalization plus net debt)
+daily_volume_to_shares_outstanding,MATRIX,0.0,38,59,Daily trading volume as a percentage of shares outstanding
+enterprise_value_to_revenue,MATRIX,0.0,17,26,Current enterprise value to revenue ratio (EV/Revenue)
+fnd17_0_fcfq,MATRIX,0.0,102,156,Free Cash Flow - most recent quarter
+fnd17_10_2anrhsfcfq,MATRIX,0.0,13,14,Free Cash Flow per share - most recent quarter - 1 (not annualized)
+fnd17_10_2rhsfcfq,MATRIX,0.0,12,32,Free Cash Flow per share - most recent quarter; 1 year ago
+fnd17_10_anrhsfcfq,MATRIX,0.0,85,120,Free Cash Flow per share - most recent quarter (not annualized)
+fnd17_10_reptoprcexrate,MATRIX,0.0,3,5,Reporting Currency to base currency exchange rate
+fnd17_10_rhsfcfq,MATRIX,0.0,172,316,Free Cash Flow per share - most recent quarter (annualized)
+fnd17_10_usdtorepexrate,MATRIX,0.0,1,1,Reporting Currency to USD exchange rate
+interim_debt_to_capital_ratio,MATRIX,0.0,8,11,Total debt capital (LFI definition)
+interim_debt_to_total_capital,MATRIX,0.0,6,7,Ratio of total debt to total capital for the most recent interim period.
+interim_net_debt_value,MATRIX,0.0,11,13,Net debt (LFI definition)
+market_capitalization_value_5,MATRIX,0.0,66,112,Current market capitalization
+net_debt_interim,MATRIX,0.0,22,24,Net debt (total debt minus cash and equivalents) for the interim period.
+net_income_after_tax_2,MATRIX,0.0,12,22,Net income after taxes for the most recent fiscal year
+net_income_incl_extra_items,MATRIX,0.0,10,10,Net income including extraordinary items for the period.
+net_income_incl_extraordinary,MATRIX,0.0,3,3,Net income including extraordinary items for the most recent fiscal year
+normalized_ebt,MATRIX,0.0,2,2,Normalized earnings before taxes for the most recent fiscal year
+normalized_net_income,MATRIX,0.0,8,10,Normalized net income after taxes for the most recent fiscal year (excludes unusual/one-time items)
+one_day_avg_volume,MATRIX,0.0,7,8,Average daily trading volume over the last 91 days.
+one_fifty_day_avg_price,MATRIX,0.0,12,15,150 day average price
+pricing_currency_code_emi1,MATRIX,0.0,1,1,Code for the securityâs price currency (base currency for price fields)
+pricing_currency_code_ras10,MATRIX,0.0,2,2,base currency
+pricing_currency_code_rasv2ff,MATRIX,0.0,2,2,Base/pricing currency code
+prior_ttm_total_revenue,MATRIX,0.0,3,3,Total revenue for the prior trailing twelve months
+public_float_shares,MATRIX,0.0,7,8,Free float shares; in millions
+quarterly_accounts_receivable,MATRIX,0.0,2,2,Receivables (accounts receivable) for the most recent quarter
+quarterly_avg_shares_outstanding,MATRIX,0.0,6,7,Average shares outstanding for the most recent quarter
+quarterly_basic_eps_excl_extraordinary_2,MATRIX,0.0,5,5,Basic earnings per share excluding extraordinary items for the most recent quarter
+quarterly_book_value_per_share_4,MATRIX,0.0,5,5,Book value per share (common equity) for the most recent quarter
+quarterly_book_value_per_share_5,MATRIX,0.0,6,7,Book value per share for the most recent quarter
+quarterly_cash_and_equivalents_2,MATRIX,0.0,15,20,Cash and cash equivalents for the most recent quarter
+quarterly_cash_flow_per_share_4,MATRIX,0.0,26,61,Cash flow per share for the most recent quarter annualized
+quarterly_common_equity_1y_ago,MATRIX,0.0,1,1,Common equity (book value) as of the most recent quarter one year ago
+quarterly_common_equity_4,MATRIX,0.0,2,2,Common equity (book value) for the most recent quarter
+quarterly_common_equity_value,MATRIX,0.0,4,5,Common equity book value for the most recent quarter
+quarterly_current_assets_4,MATRIX,0.0,1,1,Current assets for the most recent quarter
+quarterly_current_liabilities_4,MATRIX,0.0,3,3,Current liabilities for the most recent quarter
+quarterly_debt_to_assets_ratio,MATRIX,0.0,16,30,Total Debt to Total Assets ratio for the most recent quarter
+quarterly_debt_to_equity_ratio,MATRIX,0.0,35,52,Total Debt to Total Equity ratio for the most recent quarter
+quarterly_debt_to_equity_ratio_1y_ago,MATRIX,0.0,3,3,Total Debt to Total Equity ratio as of the same quarter one year ago
+quarterly_debt_to_equity_ratio_2,MATRIX,0.0,10,10,Total Debt to Total Equity ratio for the most recent quarter
+quarterly_earnings_before_tax_4,MATRIX,0.0,2,2,Earnings before taxes for the most recent quarter
+quarterly_ebit_value,MATRIX,0.0,41,50,EBIT for the most recent quarter
+quarterly_ebitda_value,MATRIX,0.0,14,18,EBITDA for the most recent quarter
+quarterly_eps_excl_extraordinary_2,MATRIX,0.0,4,4,Earnings per share excluding extraordinary items for the most recent quarter
+quarterly_eps_incl_extraordinary_2,MATRIX,0.0,18,24,Earnings per share including extraordinary items for the most recent quarter
+quarterly_net_income_3,MATRIX,0.0,9,9,Net income (earnings after taxes) for the most recent quarter
+quarterly_net_income_available_common,MATRIX,0.0,3,4,Net income available to common shareholders for the most recent quarter (including adjustments); in reporting currency (millions)
+quarterly_net_income_per_employee_4,MATRIX,0.0,5,5,Net income per employee for the most recent quarter (annualized)
+quarterly_net_income_per_employee_value,MATRIX,0.0,1,1,Net income per employee for the most recent quarter annualized
+quarterly_net_income_to_common,MATRIX,0.0,3,3,Net income available to common for the most recent quarter
+quarterly_net_income_value,MATRIX,0.0,5,5,Earnings after taxes for the most recent quarter
+quarterly_operating_margin_percent_4,MATRIX,0.0,21,29,Operating margin for the most recent quarter (percent)
+quarterly_pretax_margin_percent_4,MATRIX,0.0,14,14,Pretax profit margin for the most recent quarter
+quarterly_price_to_sales_ratio_4,MATRIX,0.0,7,8,Ratio of share price to revenue per share for the most recent quarter.
+quarterly_return_on_equity_percent_3,MATRIX,0.0,115,194,Return on average equity for the most recent quarter (annualized; percent)
+quarterly_revenue_per_employee_4,MATRIX,0.0,6,7,Revenue per employee for the most recent quarter; annualized
+quarterly_revenue_per_share_4,MATRIX,0.0,4,6,Revenue per share for the most recent quarter
+quarterly_revenue_per_share_nonannualized_2,MATRIX,0.0,2,4,Revenue per share for the most recent quarter (not annualized)
+quarterly_revenue_value,MATRIX,0.0,8,9,Revenue for the most recent quarter
+quarterly_taxes_paid_3,MATRIX,0.0,1,1,Income taxes paid during the most recent quarter
+quarterly_total_assets_2,MATRIX,0.0,11,12,Total assets for the most recent quarter
+quarterly_total_assets_3,MATRIX,0.0,7,7,Total assets for the most recent quarter
+quarterly_total_debt_4,MATRIX,0.0,4,5,Total debt for the most recent quarter
+quarterly_total_liabilities_4,MATRIX,0.0,2,2,Total liabilities for the most recent quarter
+quarterly_total_liabilities_5,MATRIX,0.0,2,2,Total liabilities; most recent quarter
+quarterly_total_revenue_3,MATRIX,0.0,7,10,Total revenue for the most recent quarter
+quarterly_total_shareholder_equity_3,MATRIX,0.0,2,2,Total shareholders' equity for the most recent quarter
+quarterly_total_shareholders_equity,MATRIX,0.0,5,5,Shareholdersâ equity for the most recent quarter
+quarterly_working_capital_per_share_to_price_3,MATRIX,0.0,14,27,Working capital per share divided by current price (most recent quarter)
+rep_to_pricing_fx_rate_emi1,MATRIX,0.0,1,1,Exchange rate from reporting currency to base/pricing currency
+reporting_currency_code_ras10,MATRIX,0.0,5,5,Reporting currency
+reporting_currency_code_rasv2ff,MATRIX,0.0,2,2,Companyâs reporting currency code
+reporting_to_pricing_fx_rate,MATRIX,0.0,5,5,Exchange rate converting the companyâs reporting currency into the base/pricing currency
+reporting_to_pricing_fx_rate_2,MATRIX,0.0,2,2,Exchange rate from reporting currency to the base pricing currency
+revenue_change_prior_quarter,MATRIX,0.0,48,67,Revenue change percentage for the prior quarter
+revenue_change_year_ago_quarter,MATRIX,0.0,223,381,Percent change in revenue compared to the same quarter last year.
+revenue_five_year_cagr,MATRIX,0.0,2,2,Five-year revenue growth rate
+shares_outstanding_current,MATRIX,0.0,5,6,Shares outstanding â current; in millions
+shares_outstanding_emi1,MATRIX,0.0,3,3,Current total shares outstanding
+ten_day_avg_volume,MATRIX,0.0,50,76,Average trading volume over the last 10 days
+ttm_basic_eps_excl_extraordinary,MATRIX,0.0,15,18,Basic EPS excluding extraordinary items over the trailing 12 months
+ttm_earnings_before_tax,MATRIX,0.0,6,6,Earnings before taxes over the trailing twelve months
+ttm_earnings_before_tax_value,MATRIX,0.0,11,14,Earnings before taxes over the trailing 12 months
+ttm_ebitda_value,MATRIX,0.0,12,15,EBITDA over the trailing 12 months
+ttm_eps_excl_extraordinary,MATRIX,0.0,45,53,EPS excluding extraordinary items over the trailing 12 months
+ttm_net_income,MATRIX,0.0,24,27,Net income after taxes over the trailing twelve months
+ttm_net_income_available_to_common,MATRIX,0.0,25,30,Net income available to common over the trailing 12 months
+ttm_net_income_per_employee,MATRIX,0.0,3,3,Net income per employee over the trailing 12 months
+ttm_net_income_per_employee_value,MATRIX,0.0,1,1,Net income per employee over the trailing 12 months
+ttm_net_income_to_common,MATRIX,0.0,13,14,Net income available to common over the trailing 12 months
+ttm_net_income_value,MATRIX,0.0,6,6,Net income after taxes over the trailing 12 months
+ttm_revenue_change_percent,MATRIX,0.0,4,4,Revenue change percentage; TTM versus prior TTM
+ttm_revenue_per_employee,MATRIX,0.0,5,5,Revenue per employee over the trailing 12 months
+ttm_revenue_per_share,MATRIX,0.0,3,3,Revenue per share over the trailing 12 months
+ttm_total_assets_value,MATRIX,0.0,3,3,Total assets - trailing 12 months
+ttm_total_revenue,MATRIX,0.0,3,3,Total revenue over the trailing 12 months
+ttm_total_revenue_value,MATRIX,0.0,4,5,Total revenue over the trailing twelve months
+twelve_month_high_price,MATRIX,0.0,7,8,12 month high price
+two_hundred_day_avg_price,MATRIX,0.0,6,7,200 day average price
+usd_to_reporting_currency_fx,MATRIX,0.0,2,2,Exchange rate to convert USD into the companyâs reporting currency (USD to reporting)
+usd_to_reporting_fx_rate,MATRIX,0.0,1,1,USD to Reporting Currency exchange rate
+usd_to_reporting_fx_rate_emi1,MATRIX,0.0,4,17,Exchange rate used to convert USD to reporting currency for this module.

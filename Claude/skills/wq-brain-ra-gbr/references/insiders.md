@@ -81,4 +81,34 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### 2026-11-09 ★★ insider_agg_matrix 只有 3 个字段可用，其余会连坐整批
+
+字段实读（GBR TOP700 / D1）：`total_buy_shares` / `total_sell_shares` / `directional_indicator` 可用
+（`88RxLYXl`、`xArpnW5m` 已证明）。**以下字段虽然 `get_datafields` 返回 MATRIX 且 `validate_expressions` 通过，
+但仿真阶段会让整批 6 条全部失败**（harvest 返回 `error_count=6`、`"No alpha_id in sim response"`）：
+
+- `directional_significant_value_1..4` / `significant_value_1..4` / `top_directional_significant_value_1..4`
+- `directional_indicator_2`（描述 enhanced insider，cov 1）
+- `avg_top_buy_shares` / `avg_top_sell_shares`
+
+**两条硬规则**：
+
+1. **加 `ts_backfill(字段,120)` 会额外触发失败**——已成功的 `88RxLYXl`/`xArpnW5m` 都是**直接取字段**，
+   insider 事件字段不能 backfill。报错是整批泛化失败（`error_count=6`），不是单条。
+2. **`validate_expressions` 只查字段存在性，不查类型/事件性** ⇒ 派发前必须用「已成功表达式 + 1 个新字段」
+   的小批（2–3 条）隔离验证，否则一条坏字段烧掉整个 6 条批次。
+
+### `insd1_tradesignificance`（交易显著性 1–3 分）——2026-11-09 实测 · **判死**
+
+`insiders1` 上 1–3 分的离散显著性打分，曾被当作「比原始金额更干净的事件强度」。实测：
+
+| 字段 | 骨架 | S | 2Y |
+|---|---|---:|---:|
+| `insd1_tradesignificance` | `group_rank(ts_zscore(vec_avg(...), 252), sector)` | **0.06** | −0.32 |
+| `insd1_value` | `group_rank(ts_zscore(vec_sum(...), 126), sector)` | −0.21 | −0.53 |
+
+⇒ **显著性打分与原始金额都是零信号**。加上此前已测的 insider 方向/净买「只在挂借券短腿时才有 S」，
+`insiders` 族的真实结论是：**它自己不能当主腿**，任何纯 insider ATOM 都不成立。
+（可用字段仍仅限已知那 3 个；`*_significant_value_*` / `directional_indicator_2` / `avg_top_*_shares` 不可用，会整批拒收。）
+
 <!-- profiles:manual:end -->

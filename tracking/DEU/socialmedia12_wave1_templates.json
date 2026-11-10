@@ -1,0 +1,242 @@
+[
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(0, ts_decay_linear(scl12_buzz, 5)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(0, ts_delta(scl12_buzz, 5)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(ts_delta(scl12_buzz, 5), ts_delta(scl12_buzz, 66)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(0, power(ts_delta(scl12_buzz, 5), 2)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "if_else(rank(divide(ts_std_dev(scl12_buzz, 22), ts_mean(scl12_buzz, 22))) > 0.9, ts_delta(scl12_buzz, 5), subtract(0, ts_delta(scl12_buzz, 5)))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(0, ts_mean(ts_delta(scl12_buzz, 22), 66)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "trade_when(ts_delta(scl12_sentiment, 22) > 0, group_rank(subtract(0, ts_delta(scl12_buzz, 5)), subindustry), -1)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "trade_when(ts_quantile(scl12_sentiment, 22) > 0.5, group_rank(subtract(0, ts_decay_linear(scl12_buzz, 5)), subindustry), -1)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "trade_when(subtract(ts_delta(scl12_buzz, 22), ts_delta(scl12_sentiment, 22)) > 0, group_rank(subtract(0, ts_delta(scl12_buzz, 5)), subindustry), -1)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(rank(ts_delta(scl12_buzz, 22)), rank(ts_delta(scl12_sentiment, 22))), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(0, ts_delta(sentiment_score, 22)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "trade_when(multiply(ts_delta(scl12_buzz, 5), ts_delta(sentiment_score, 5)) < 0, group_rank(ts_delta(sentiment_score, 22), subindustry), -1)"
+ }
+]

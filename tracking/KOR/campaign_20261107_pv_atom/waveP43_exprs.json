@@ -1,0 +1,12 @@
+[
+ "signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector)), 1.5)",
+ "signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 22), sector)), 1.5)",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), subindustry))",
+ "subtract(0.5, group_rank(ts_mean(ts_backfill(vec_range(insd5_vol_chg), 22), 44), sector))",
+ "ts_target_tvr_decay(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector)), target_tvr=0.05)",
+ "multiply(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector)), group_rank(ts_mean(vec_avg(insd5_vol_bf), 66), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_vol_bf), 66), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_vol_af), 66), sector))",
+ "signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector)), 2.5)",
+ "group_neutralize(signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector)), 1.5), industry)"
+]

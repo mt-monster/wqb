@@ -85,4 +85,21 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+
+### 2026-11-09 ★★ 反转「EARNINGS 塔判死」：`earnings6` EPS surprise 全闸通过
+
+`earnings6`（18 字段 VECTOR）核心可比对：`ern6_actual_eps`（实际非 GAAP 稀释 EPS）与 `ern6_estimated_eps`（Estimize 加权预期 EPS）
+⇒ **同量纲直接相减 = 盈利公告意外（SUE 的干净实现）**，不需要 `add(X,1)` 兜底（那会触发单位不兼容整条 FAIL）。
+
+命中件（GBR / TOP700 / D1 / FAST / decay5 / tr0.1）： <!-- lint:counterexample: 历史命中件记录，非生成端推荐配方 -->
+
+````
+add(multiply(2, group_rank(ts_zscore(subtract(vec_avg(ern6_actual_eps), vec_avg(ern6_estimated_eps)), 252), sector)),
+    reverse(group_rank(ts_zscore(vec_sum(loaned_share_count_main), 504), sector)))
+````
+**`2rAo7mm8`：S 1.74 / F 1.10 / 2Y 2.78 / TO 0.108 / failed_ra_count = 0**（11 算子）。
+
+同批对照：`earnings_sent_matrix`（电话会议语气 `sentiment_weighting_method1/2`）S 0.16 / −1.08 全灭 ⇒
+**earnings 通道有效的是「意外幅度」，不是「管理层语气」**。
+
 <!-- profiles:manual:end -->

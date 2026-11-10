@@ -168,12 +168,18 @@ class TestTimeoutGuard:
         assert W["prod_corr_timeout_s"] <= 900
 
     def test_mcp_poll_window_matches_config(self):
-        """MCP 客户端的轮询窗口必须与 ``WAIT_THRESHOLDS`` 同源（守护测试既有约定）。"""
-        import re
-        src = (REPO / "world-quant-brain-mcp" / "brain_mixin_spcread.py").read_text(
-            encoding="utf-8")
-        assert int(re.search(r"_PROD_CORR_WAIT_S\s*=\s*(\d+)", src).group(1)) == \
-            W["prod_corr_timeout_s"]
+        """MCP 客户端的轮询窗口必须与 ``WAIT_THRESHOLDS`` 同源。
+
+        2026-11-10 审查 P1-5：由正则比对源码字面量升级为**运行时断言**——
+        MCP 侧现在真读 config（``wqb`` 不可导入时回落 fallback），正则已不适用。
+        """
+        import sys
+        mcp_dir = str(REPO / "world-quant-brain-mcp")
+        if mcp_dir not in sys.path:
+            sys.path.insert(0, mcp_dir)
+        import brain_mixin_spcread as _sr
+        assert float(_sr._PROD_CORR_WAIT_S) == W["prod_corr_timeout_s"]
+        assert float(_sr._PROD_CORR_WAIT_S_FALLBACK) == W["prod_corr_timeout_s"]
 
 
 class TestProdCorrResponseShapeGuard:

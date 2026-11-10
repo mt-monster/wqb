@@ -102,7 +102,18 @@ def targets(region, limit=0, skip_measured=True, allow_ra_failed=False):
     """本地 alphas 表窗口的待测行（默认只给平台 RA 全过的行测 prod）。"""
     conn = db_connect(DB)
     conn.row_factory = sqlite3.Row
-    extra = "AND a.prod_correlation IS NULL" if skip_measured else ""
+    # 2026-11-10 审查 P1-5：单源读——权威表 alpha_corr_cache 有值也算「已测」。
+    # 旧实现只查 a.prod_correlation IS NULL，于是「值只落在权威表」的候选被重复
+    # 排队测量，白占平台账号级单并发槽（与 docstring 声称的「值进权威表」自相矛盾）。
+    extra = ""
+    if skip_measured:
+        extra = "AND a.prod_correlation IS NULL"
+        has_cache = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='alpha_corr_cache'"
+        ).fetchone() is not None
+        if has_cache:
+            extra += (" AND NOT EXISTS (SELECT 1 FROM alpha_corr_cache c"
+                      " WHERE c.alpha_id = a.alpha_id AND c.prod_correlation IS NOT NULL)")
     if not allow_ra_failed:
         # 相关子查询而非 NOT IN(?,?..)：坏行可达上千，参数个数会顶到 SQLite 变量上限
         extra += (

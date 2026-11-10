@@ -1,0 +1,7 @@
+batch_idx,expression,multisim_id,child_location,status,alpha_id,code,dataset,sharpe,fitness,two_year_sharpe,margin_bp,turnover_pct,rn_sharpe,rn_fitness,ra_failed_count,failed_checks,error
+1,,https://api.worldquantbrain.com/simulations/JAffTc1z4Y9b7u51ukEU1a,https://api.worldquantbrain.com/simulations/JAffTc1z4Y9b7u51ukEU1a,COMPLETE,,,,,,,,,,,,,COMPLETE
+2,"group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,294),sector)),industry)",https://api.worldquantbrain.com/simulations/45hEr5bFz4kcawlCzGe1Otf,,TIMEOUT,,,,,,,,,,,,,poll timeout
+2,"group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,315),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,315),sector)),industry)",https://api.worldquantbrain.com/simulations/45hEr5bFz4kcawlCzGe1Otf,,TIMEOUT,,,,,,,,,,,,,poll timeout
+3,,https://api.worldquantbrain.com/simulations/1v9vEfaey4Bg9anP4AI1Y3l,https://api.worldquantbrain.com/simulations/1v9vEfaey4Bg9anP4AI1Y3l,COMPLETE,,,,,,,,,,,,,COMPLETE
+4,,https://api.worldquantbrain.com/simulations/3MskuyI15bSc4OTw0UGWxn,https://api.worldquantbrain.com/simulations/3MskuyI15bSc4OTw0UGWxn,COMPLETE,,,,,,,,,,,,,COMPLETE
+5,,https://api.worldquantbrain.com/simulations/p0sYleqp4MvbfPXIkcclfJ,https://api.worldquantbrain.com/simulations/p0sYleqp4MvbfPXIkcclfJ,COMPLETE,,,,,,,,,,,,,COMPLETE

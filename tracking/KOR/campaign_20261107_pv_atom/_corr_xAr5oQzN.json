@@ -1,0 +1,23 @@
+{
+ "alpha_id": "xAr5oQzN",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "status": "correlation_busy",
+ "message": "Another production correlation check is already running for this account. The BRAIN platform supports only one in-flight correlation computation. Please retry in 240 seconds.",
+ "retry_after": 240,
+ "last_known": null,
+ "inflight": false,
+ "checks": {
+  "production": {
+   "max_correlation": null,
+   "passes_check": null,
+   "status": "correlation_busy",
+   "message": "Another production correlation check is already running for this account. The BRAIN platform supports only one in-flight correlation computation. Please retry in 240 seconds.",
+   "retry_after": 240,
+   "last_known": null,
+   "inflight": false,
+   "holder": null
+  }
+ },
+ "all_passed": null
+}

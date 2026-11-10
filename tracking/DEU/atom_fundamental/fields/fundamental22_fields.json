@@ -1,0 +1,16 @@
+{
+ "results": [
+  {
+   "id": "fnd22_value",
+   "type": "VECTOR",
+   "coverage": 0.69,
+   "userCount": 10,
+   "alphaCount": 40,
+   "description": "Numerical value of the specific ESG KPI for the given entity and date"
+  }
+ ],
+ "count": 1,
+ "platform_count": 1,
+ "complete": true,
+ "pages_fetched": 1
+}

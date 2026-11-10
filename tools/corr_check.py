@@ -74,6 +74,34 @@ async def _query(brain, aid, types, args, got):
         mx = chk.get("max_correlation")
         if mx is None:
             mx = (r.get("correlation") or {}).get("max")
+        # 2026-11-10 审查 P0-4：production 的**预读 / 非实时来源**值不足以作终值。
+        # 旧实现只要 mx 非空就记入 got ⇒ _all_done 把它当已完成，与本文件 docstring
+        # 「终验前必须拿到刚算的值」矛盾。现统一走 wqb.prod_verdict：
+        #   usable（平台实测/可信缓存）或 passes=False（证伪有效，可直接判死）⇒ 记入；
+        #   否则只打印提示、不记入，继续按 retry_after 等真值。
+        usable, provenance = True, None
+        if ct == "production" and mx is not None:
+            try:
+                import sys as _sys
+                _src = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+                if _src not in _sys.path:
+                    _sys.path.insert(0, _src)
+                from wqb.prod_verdict import prod_verdict
+                _pv = prod_verdict(r, args.threshold)
+                provenance = _pv["provenance"]
+                usable = bool(_pv["usable"] or (_pv["passes"] is False))
+            except Exception:  # noqa: BLE001 - 判据模块不可用时退回旧行为
+                usable = True
+        if mx is not None and not usable:
+            print("%s %-10s = %s 仅%s（不足以作终值，继续等实测）" % (
+                aid, ct, mx, provenance or "预读/非实时值"), flush=True)
+            statuses[ct] = "provisional_only"
+            try:
+                ra = float(r.get("retry_after") or chk.get("retry_after") or 0.0)
+            except (TypeError, ValueError):
+                ra = 0.0
+            retry_after = max(retry_after, ra)
+            continue
         if mx is not None:
             got.setdefault(aid, {})[ct] = dict(
                 max=mx,

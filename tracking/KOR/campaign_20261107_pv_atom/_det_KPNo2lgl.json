@@ -1,0 +1,95 @@
+{
+ "id": "KPNo2lgl",
+ "code": "hump(group_rank(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), sector), hump=0.003)",
+ "type": "REGULAR",
+ "status": "ACTIVE",
+ "stage": "OS",
+ "dateSubmitted": "2026-09-28T16:17:37-04:00",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 30,
+  "neutralization": "SLOW_AND_FAST",
+  "truncation": 0.02,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "ON",
+  "maxTrade": "OFF",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "simulationMode": "FULL"
+ },
+ "metrics": {
+  "sharpe": 2.57,
+  "fitness": 2.09,
+  "turnover": 0.2083,
+  "returns": 0.1378,
+  "drawdown": 0.0617,
+  "margin": 0.001323,
+  "longCount": 314,
+  "shortCount": 321,
+  "pnl": 14250689,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "selfCorrelation": 0.3612,
+  "prodCorrelation": 0.5504,
+  "sub_universe_sharpe": 2.07,
+  "two_year_sharpe": 2.18,
+  "investability_sharpe": 2.61,
+  "investability_fitness": 2.46
+ },
+ "os": {
+  "startDate": "2024-01-01"
+ },
+ "ra": {
+  "failed_ra_count": 0,
+  "failed_ppa_count": 0,
+  "ra_failed": false,
+  "ppa_failed": false,
+  "pyramid_short": "shortinterest"
+ },
+ "checks": {
+  "fail": [],
+  "warning": [
+   {
+    "name": "MATCHES_COMPETITION"
+   },
+   {
+    "name": "MATCHES_THEMES"
+   }
+  ],
+  "pass": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+   "CLUSTER_TEST",
+   "LOW_2Y_SHARPE",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "POWER_POOL_CORRELATION",
+   "MATCHES_THEMES"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "KOR/D1/SHORTINTEREST",
+    "multiplier": 1.4
+   }
+  ]
+ },
+ "tags": [
+  "PowerPoolSelected"
+ ]
+}

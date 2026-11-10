@@ -18,14 +18,22 @@ from forum_functions import forum_client
 logger = logging.getLogger("brain_api")
 
 #: prod 相关性**单次阻塞轮询窗口**（秒）。唯一来源 = ``wqb.config.WAIT_THRESHOLDS``
-#: 的 ``prod_corr_timeout_s``；MCP 包在这里留字面量是为了在 ``wqb`` 不可导入的宿主下
-#: 仍能工作，两处一致性由 ``tests/unit/07_docs_skills/test_wait_thresholds.py`` 守护。
+#: 的 ``prod_corr_timeout_s``。
+#:
+#: 2026-11-10 审查 P1-5：旧实现把 240 写成**独立字面量**，与 config 零运行时关联，
+#: 只靠守护测试正则比对源码文本 ⇒ 改 config 不影响 MCP。现改为运行时真读 config，
+#: ``wqb`` 不可导入的宿主下回落到同值 fallback；守护测试升级为运行时断言同源。
 #:
 #: 2026-10-28：120 → 240。一次**正常**的平台计算 180–200 s，120s 窗口会让每条真实
 #: 查询都收在 ``pending``（锁白占满窗口、再叠 195s 冷却，端到端 ~300s 且多绕一轮）。
 #: 240 = 200 上限 + 一个 30s 慢轮询台阶 + 抖动余量。
 #: ⚠ 这个值只有一个定义：两处使用点都引用本常量（旧版另有独立的 ``120.0``，改窗口会漏改）。
-_PROD_CORR_WAIT_S = 240
+_PROD_CORR_WAIT_S_FALLBACK = 240
+try:  # pragma: no cover - 取决于宿主是否能导入 wqb
+    from wqb.config import WAIT_THRESHOLDS as _WQB_WAIT_THRESHOLDS
+    _PROD_CORR_WAIT_S = float(_WQB_WAIT_THRESHOLDS["prod_corr_timeout_s"])
+except Exception:  # noqa: BLE001
+    _PROD_CORR_WAIT_S = float(_PROD_CORR_WAIT_S_FALLBACK)
 
 
 class SpcDataMixin:
@@ -992,6 +1000,10 @@ class SpcDataMixin:
             "max": mx,
             "records": [],
             "source": "alpha_detail_cached",
+            # 2026-11-10 审查 P1-1：provisional 由**上游显式产出**，不再靠下游
+            # `.get('provisional', True)` 的缺省值拼出来（缺省值一旦上游显式带 False
+            # 就会静默反转判闸语义）。这是平台存储值、测量时间不可知。
+            "provisional": True,
             "message": "从 alpha 详情读取平台已算好的 prod 相关（未触发新计算）",
         }
 
@@ -1075,6 +1087,10 @@ class SpcDataMixin:
             return False, None
         status = result.get("status")
         if status == "pending":
+            # 2026-11-10 审查 P1-16：`computed=False` 表示本次**根本没触发计算**
+            # （零窗口 / 立即超时 / 一个 GET 都没发出去），没有占槽理由，不该罚满冷却。
+            if result.get("computed") is False:
+                return False, None
             try:
                 ra = float(result.get("platform_retry_after") or 0.0)
             except (TypeError, ValueError):
@@ -1103,7 +1119,11 @@ class SpcDataMixin:
                                          use_pre_read: bool = True) -> Dict[str, Any]:
         """Get production correlation data for an alpha.
 
-        Polls every 30 seconds for up to 1 hour by default to handle platform rate-limiting.
+        轮询窗口缺省 ``wqb.config.WAIT_THRESHOLDS['prod_corr_timeout_s']``（当前 240s），
+        步长为 10s（前 12 次）/ 30s（120–150s）/ 10s（≥150s 尾段加密）。
+        ⚠ 2026-11-10 校正：旧 docstring 写「every 30 seconds for up to 1 hour」与实现
+        严重不符（实现早在 2026-10-22 就从 3600 降到 900、再到 120/240），调用方据此
+        估计耗时必然错。
         For super alphas, the platform may return an empty body (HTTP 200) for a few
         minutes after simulation completes while it computes the correlation data.
         The polling loop handles this by retrying until data is available.
@@ -1161,6 +1181,29 @@ class SpcDataMixin:
         op_name = f"get_production_correlation({alpha_id})"
         wait_s = (float(max_wait_seconds) if max_wait_seconds is not None
                   else float(_PROD_CORR_WAIT_S))
+
+        # ── 2026-11-10 账号级熔断：平台侧连续 pending ⇒ 直接短路 ──────────────
+        # 不抢锁、不发请求、不写冷却。预读（只读、不占槽）已在上面给过机会；
+        # 走到这里说明必须真触发计算，而平台此刻被判定不可用。
+        try:
+            from wqb.correlation_slot import unavailable_remaining as _ua_remaining
+            _ua = _ua_remaining()
+        except Exception:  # noqa: BLE001
+            _ua = 0.0
+        if _ua > 0:
+            self._corr_log_timing("platform_unavailable", alpha_id, t0,
+                                  status="platform_unavailable", retry_after=_ua)
+            return {
+                'status': 'platform_unavailable',
+                'message': (
+                    f"平台 prod 相关性服务被判定暂时不可用（连续 pending 触发账号级熔断），"
+                    f"剩余 {_ua:.0f}s。期间不触发计算；到点后自动恢复，"
+                    "或拿到任一成功结果即提前清除。"
+                ),
+                'retry_after': round(_ua, 1),
+                'max': None,
+                'records': [],
+            }
 
         # ── P0-2：同 alpha 正在算（inflight）且非 refresh → 只等不触发 ──────
         _inflight = {}
@@ -1257,7 +1300,8 @@ class SpcDataMixin:
         finally:
             # P0-1：释放槽时按结果分流冷却
             cd, sec = self._corr_release_plan(result)
-            if isinstance(result, dict) and result.get('status') == 'pending':
+            _status = result.get("status") if isinstance(result, dict) else None
+            if _status == 'pending':
                 # 把本次**真正写入**的冷却秒数告诉调用方（它要隔到这个点再来）。
                 try:
                     from wqb.correlation_slot import COOLDOWN_SEC_DEFAULT as _CDD
@@ -1265,12 +1309,26 @@ class SpcDataMixin:
                     _CDD = 195.0
                 result['retry_after'] = sec if sec else _CDD
                 result['inflight'] = True
-            if inflight_clear is not None and isinstance(result, dict) \
-                    and result.get("status") != "pending":
+            # 2026-11-10 审查 P1-6：旧条件要求 `isinstance(result, dict)`，于是
+            # **异常 / 协程被取消**时 result 仍是 None ⇒ inflight 标记不清除，残留到
+            # TTL(300s)，期间同 alpha 的所有调用都返回 busy。现改为「只要不是 pending
+            # 就清」，异常路径同样清理（锁本身在下面无条件释放）。
+            if inflight_clear is not None and _status != "pending":
                 try:
                     inflight_clear(alpha_id)
                 except Exception:
                     pass
+            # 2026-11-10 账号级熔断计数：pending 累加（达阈值即短路后续调用），
+            # 成功拿到值即清除。异常路径不计数（说不清平台状态）。
+            try:
+                from wqb.correlation_slot import (clear_unavailable as _ua_clear,
+                                                  note_pending_streak as _ua_note)
+                if _status == "pending":
+                    _ua_note(alpha_id)
+                elif _status == "ok":
+                    _ua_clear()
+            except Exception:  # noqa: BLE001
+                pass
             await self._release_brain_correlation_lock(lock_info, op_name,
                                                        cooldown=cd, seconds=sec)
 
@@ -1305,6 +1363,10 @@ class SpcDataMixin:
         consecutive_network_failures = 0
         saw_empty = False        # 本次是否真见过「仍在算」的空体（= 我们确实触发了一次计算）
         platform_retry_after = None  # 平台 Retry-After（秒），用于 P0-1 的冷却与 P2-9 的间隔
+        # 2026-11-10 审查 P1-16：Retry-After 的**步长压制**只在「尚未确认平台开始计算」
+        # 时有效。一旦收到空体（= 平台已在算），限流语义失效，不再压步长；但变量本身
+        # 保留，供 _meta / 冷却透传（旧实现一旦设置就永久压住后续所有步长）。
+        retry_after_active = False
 
         def _meta(**extra) -> Dict[str, Any]:
             """P2-8：给返回体带上可统计的耗时/次数元数据。"""
@@ -1363,6 +1425,7 @@ class SpcDataMixin:
                 _ra = self._corr_retry_after_seconds(response)
                 if 0 < _ra <= 30:
                     platform_retry_after = _ra
+                    retry_after_active = True
                 if response.status_code == 401:
                     # 2026-10-28：会话过期不该烧掉整个轮询窗口（旧版 401 落进
                     # raise_for_status → HTTPError → 按"网络失败"重试到 pending）。
@@ -1385,6 +1448,12 @@ class SpcDataMixin:
                 if not text:
                     consecutive_empty += 1
                     saw_empty = True
+                    # 2026-11-10 审查 P1-16：空体 = 平台**已开始计算**，此前那次
+                    # Retry-After 的限流语义已失效。旧实现一旦设置就永不清除，
+                    # 下面两处 `min(_wait, platform_retry_after)` 会把后续所有步长
+                    # 永久压到该值（例如平台曾回 5s，则整窗口都按 5s 轰炸）。
+                    # 只解除「步长压制」，变量本身保留供 meta/冷却透传。
+                    retry_after_active = False
                     if consecutive_empty == 3:
                         # Platform is still computing — log once so users understand the wait
                         self.log(
@@ -1394,7 +1463,7 @@ class SpcDataMixin:
                             "INFO"
                         )
                     _wait = _step(attempt, elapsed)
-                    if platform_retry_after:
+                    if platform_retry_after and retry_after_active:
                         _wait = min(_wait, platform_retry_after)
                     await asyncio.sleep(_sleep_s(_wait))
                     continue
@@ -1467,7 +1536,7 @@ class SpcDataMixin:
             consecutive_network_failures = 0
 
             _wait = _step(attempt, elapsed)
-            if platform_retry_after:
+            if platform_retry_after and retry_after_active:
                 _wait = min(_wait, platform_retry_after)
             await asyncio.sleep(_sleep_s(_wait))
 

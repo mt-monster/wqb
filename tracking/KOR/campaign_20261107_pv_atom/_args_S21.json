@@ -1,0 +1,82 @@
+[
+  {
+    "field_id": "snt21pos_mean",
+    "expression": "hump(subtract(group_rank(subtract(snt21pos_mean,snt21neg_mean),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  },
+  {
+    "field_id": "snt21pos_mean",
+    "expression": "reverse(hump(subtract(group_rank(subtract(snt21pos_mean,snt21neg_mean),industry),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  },
+  {
+    "field_id": "snt21dts_gen",
+    "expression": "hump(subtract(group_rank(snt21dts_gen,sector),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  },
+  {
+    "field_id": "snt21neg_conf_up",
+    "expression": "hump(subtract(group_rank(subtract(snt21neg_conf_up,snt21neg_conf_low),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  },
+  {
+    "field_id": "snt21pos_mean",
+    "expression": "group_rank(ts_zscore(ts_backfill(snt21pos_mean,22),252),industry)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  },
+  {
+    "field_id": "snt21pos_mean",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(subtract(snt21pos_mean,snt21neg_mean),industry),0.5),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  },
+  {
+    "field_id": "snt21pos_mean",
+    "expression": "hump(subtract(group_rank(snt21pos_mean,industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  },
+  {
+    "field_id": "snt21dts_gen",
+    "expression": "reverse(hump(subtract(group_rank(snt21dts_gen,sector),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.475,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.47
+    }
+  }
+]

@@ -1,0 +1,26 @@
+id,type,cov,uc,ac,desc
+average_loan_duration_days,VECTOR,0.6683,9,9,Weighted average age of loans in this group; measured in days
+average_loan_duration_days_main,VECTOR,0.6872,11,11,The weighted average age of loans in this primary key group; measured in days
+average_loan_duration_days_p5_d1,VECTOR,0.7833,36,57,Weighted average age of loans in this group; in days
+loan_rate_volatility,VECTOR,0.6683,7,8,The standard deviation of loan rates for all transactions in this primary key group
+loan_rate_volatility_main,VECTOR,0.6872,31,40,Standard deviation of loan rates across transactions in this primary key group
+loan_rate_volatility_p5_d1,VECTOR,0.7833,94,143,Standard deviation of loan rates for transactions in this group
+loaned_market_value_usd,VECTOR,0.6683,12,13,US dollar market value of the units lent in the transactions in this group
+loaned_market_value_usd_main,VECTOR,0.6872,10,11,USD market value of the units lent in transactions in this primary key group
+loaned_market_value_usd_p5_d1,VECTOR,0.7833,24,31,Market value in US dollars of units lent in transactions in this group
+loaned_share_count,VECTOR,0.6683,10,11,Number of units (shares or par value) lent in the transactions in this group
+loaned_share_count_main,VECTOR,0.6872,13,16,Number of units (shares or par value) lent in transactions in this primary key group
+loaned_share_count_p5_d1,VECTOR,0.7833,26,36,Number of units (shares or par value) lent in transactions in this group
+max_loan_rate,VECTOR,0.6683,30,42,The maximum loan rate among all transactions in this primary key group
+max_loan_rate_main,VECTOR,0.6872,33,37,Maximum loan rate among transactions in this group
+max_loan_rate_p5_d1,VECTOR,0.7833,106,183,Maximum loan rate among transactions in this group
+mean_loan_rate,VECTOR,0.6683,39,48,The weighted average loan rate for all transactions in this primary key group
+mean_loan_rate_main,VECTOR,0.6872,42,60,Weighted average loan rate for transactions in this group
+mean_loan_rate_p5_d1,VECTOR,0.7833,77,115,Weighted average loan rate for all transactions in this group
+min_loan_rate,VECTOR,0.6683,9,9,The minimum loan rate among all transactions in this primary key group
+min_loan_rate_main,VECTOR,0.6872,11,17,Minimum loan rate among transactions in this group
+min_loan_rate_p5_d1,VECTOR,0.7833,33,43,Minimum loan rate among transactions in this group
+shrt3_bar,VECTOR,0.6528,192,361,Borrow demand rating on a 1â10 scale for a stock (1 = relatively low demand; 10 = relatively high)
+transaction_count,VECTOR,0.6683,4,4,Number of transactions included in this primary key group
+transaction_count_main,VECTOR,0.6872,16,21,Number of transactions in this primary key group
+transaction_count_p5_d1,VECTOR,0.7833,39,63,Number of transactions that fit this primary key group

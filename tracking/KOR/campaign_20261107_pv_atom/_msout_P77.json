@@ -1,0 +1,1078 @@
+﻿{
+ "success": true,
+ "multisimulation_id": "1sF20r8p54GLbwN10Fnbyu88",
+ "total": 10,
+ "complete": 10,
+ "error_count": 0,
+ "alphas": [
+  {
+   "id": "d5WvnrVY",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),44),sector),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.28,
+    "fitness": 0.95,
+    "turnover": 0.095,
+    "returns": 0.0687,
+    "drawdown": 0.0944,
+    "margin": 0.001445,
+    "longCount": 317,
+    "shortCount": 319,
+    "pnl": 7101591,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.3,
+    "two_year_sharpe": 1.95,
+    "investability_sharpe": 1.3,
+    "investability_fitness": 0.97
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.28,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.95,
+      "limit": 1.0
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.9,
+      "limit": 1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "d5WvnrVY",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),44),sector),0.5)"
+  },
+  {
+   "id": "ZYQNjveZ",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),66),sector),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.22,
+    "fitness": 0.89,
+    "turnover": 0.0793,
+    "returns": 0.0671,
+    "drawdown": 0.1126,
+    "margin": 0.001693,
+    "longCount": 317,
+    "shortCount": 318,
+    "pnl": 6944020,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.12,
+    "two_year_sharpe": 1.85,
+    "investability_sharpe": 1.21,
+    "investability_fitness": 0.89
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.22,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.89,
+      "limit": 1.0
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.76,
+      "limit": 1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "ZYQNjveZ",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),66),sector),0.5)"
+  },
+  {
+   "id": "MPYVbNoL",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),36),sector),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.25,
+    "fitness": 0.91,
+    "turnover": 0.1049,
+    "returns": 0.0666,
+    "drawdown": 0.0821,
+    "margin": 0.00127,
+    "longCount": 317,
+    "shortCount": 318,
+    "pnl": 6886772,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.28,
+    "two_year_sharpe": 1.64,
+    "investability_sharpe": 1.27,
+    "investability_fitness": 0.94
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.25,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.91,
+      "limit": 1.0
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.9,
+      "limit": 1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "MPYVbNoL",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),36),sector),0.5)"
+  },
+  {
+   "id": "zq3e5n1E",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),50),sector),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.3,
+    "fitness": 0.98,
+    "turnover": 0.0896,
+    "returns": 0.0705,
+    "drawdown": 0.107,
+    "margin": 0.001572,
+    "longCount": 317,
+    "shortCount": 318,
+    "pnl": 7290056,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.29,
+    "two_year_sharpe": 2.05,
+    "investability_sharpe": 1.31,
+    "investability_fitness": 0.99
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.3,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.98,
+      "limit": 1.0
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.9,
+      "limit": 1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "zq3e5n1E",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),50),sector),0.5)"
+  },
+  {
+   "id": "1YN0oAEQ",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),60),sector),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.25,
+    "fitness": 0.93,
+    "turnover": 0.0827,
+    "returns": 0.0688,
+    "drawdown": 0.115,
+    "margin": 0.001665,
+    "longCount": 317,
+    "shortCount": 318,
+    "pnl": 7116361,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.2,
+    "two_year_sharpe": 1.93,
+    "investability_sharpe": 1.25,
+    "investability_fitness": 0.93
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.25,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.93,
+      "limit": 1.0
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.79,
+      "limit": 1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "1YN0oAEQ",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),60),sector),0.5)"
+  },
+  {
+   "id": "P0oKnm9w",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),44),industry),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.37,
+    "fitness": 0.99,
+    "turnover": 0.0922,
+    "returns": 0.0656,
+    "drawdown": 0.0973,
+    "margin": 0.001422,
+    "longCount": 317,
+    "shortCount": 318,
+    "pnl": 6782037,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.27,
+    "two_year_sharpe": 2.06,
+    "investability_sharpe": 1.43,
+    "investability_fitness": 1.06
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.37,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.99,
+      "limit": 1.0
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "P0oKnm9w",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),44),industry),0.5)"
+  },
+  {
+   "id": "GrW9n5JQ",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),66),industry),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.2,
+    "fitness": 0.82,
+    "turnover": 0.0777,
+    "returns": 0.0588,
+    "drawdown": 0.1212,
+    "margin": 0.001513,
+    "longCount": 317,
+    "shortCount": 319,
+    "pnl": 6082584,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.06,
+    "two_year_sharpe": 2.04,
+    "investability_sharpe": 1.2,
+    "investability_fitness": 0.83
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.2,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.82,
+      "limit": 1.0
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.81,
+      "limit": 1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "GrW9n5JQ",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),66),industry),0.5)"
+  },
+  {
+   "id": "vR1P5XgQ",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),36),industry),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.42,
+    "fitness": 1.04,
+    "turnover": 0.1013,
+    "returns": 0.0676,
+    "drawdown": 0.0909,
+    "margin": 0.001335,
+    "longCount": 316,
+    "shortCount": 319,
+    "pnl": 6993303,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.34,
+    "two_year_sharpe": 1.81,
+    "investability_sharpe": 1.47,
+    "investability_fitness": 1.11
+   },
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.42,
+      "limit": 1.58
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "vR1P5XgQ",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),36),industry),0.5)"
+  },
+  {
+   "id": "9qxk9OQ1",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),52),industry),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.35,
+    "fitness": 0.98,
+    "turnover": 0.0858,
+    "returns": 0.0653,
+    "drawdown": 0.1152,
+    "margin": 0.001521,
+    "longCount": 317,
+    "shortCount": 318,
+    "pnl": 6751765,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.23,
+    "two_year_sharpe": 2.2,
+    "investability_sharpe": 1.35,
+    "investability_fitness": 0.98
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.35,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.98,
+      "limit": 1.0
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "9qxk9OQ1",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),52),industry),0.5)"
+  },
+  {
+   "id": "9qxk9OQ9",
+   "code": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),30),sector),0.5)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.29,
+    "fitness": 0.95,
+    "turnover": 0.1144,
+    "returns": 0.0684,
+    "drawdown": 0.0789,
+    "margin": 0.001195,
+    "longCount": 317,
+    "shortCount": 319,
+    "pnl": 7071637,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.32,
+    "two_year_sharpe": 1.47,
+    "investability_sharpe": 1.29,
+    "investability_fitness": 0.96
+   },
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.29,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.95,
+      "limit": 1.0
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.88,
+      "limit": 1
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 1.47,
+      "limit": 1.58
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/MODEL",
+      "multiplier": 1.6
+     }
+    ]
+   },
+   "alpha_id": "9qxk9OQ9",
+   "expression": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3),30),sector),0.5)"
+  }
+ ],
+ "errors": null
+}

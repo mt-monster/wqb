@@ -1,0 +1,242 @@
+[
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_mean(vec_avg(oth250_item_rating), 22), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_delta(ts_mean(vec_avg(oth250_item_rating), 66), 22), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_mean(vec_avg(average_star_score), 252), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_av_diff(vec_avg(total_review_number), 22), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "subtract(0, group_rank(ts_delta(ts_mean(vec_avg(oth250_rank), 5), 22), subindustry))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(vec_avg(average_star_score), vec_avg(oth250_item_rating)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(divide(subtract(vec_avg(oth250_price_range_max), vec_avg(oth250_price_range_min)), add(vec_avg(oth250_price_range_max), vec_avg(oth250_price_range_min))), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_corr(vec_avg(oth250_item_display_price), vec_avg(oth250_rank), 66), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(multiply(rank(vec_avg(oth250_item_rating)), rank(ts_av_diff(vec_avg(oth250_item_review_count), 22))), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "subtract(0, group_rank(ts_std_dev(vec_avg(oth250_item_rating), 22), subindustry))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "subtract(0, group_rank(ts_ir(vec_avg(oth250_rank), 22), subindustry))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_arg_max(vec_avg(oth250_item_rating), 66), subindustry)"
+ }
+]

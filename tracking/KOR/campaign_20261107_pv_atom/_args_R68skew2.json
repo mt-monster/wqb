@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "hump(subtract(group_rank(divide(ts_mean(power(subtract(rsk68_residual_return,ts_mean(rsk68_residual_return,66)),3),66),power(ts_std_dev(rsk68_residual_return,66),3)),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "reverse(hump(subtract(group_rank(divide(ts_mean(power(subtract(rsk68_residual_return,ts_mean(rsk68_residual_return,66)),3),66),power(ts_std_dev(rsk68_residual_return,66),3)),industry),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "hump(subtract(group_rank(divide(ts_mean(power(subtract(rsk68_weight_volatility_short,ts_mean(rsk68_weight_volatility_short,66)),3),66),power(ts_std_dev(rsk68_weight_volatility_short,66),3)),sector),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(divide(ts_mean(power(subtract(rsk68_residual_return,ts_mean(rsk68_residual_return,66)),3),66),power(ts_std_dev(rsk68_residual_return,66),3)),industry),0.5),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "hump(subtract(group_rank(divide(ts_mean(power(subtract(rsk68_residual_return,ts_mean(rsk68_residual_return,252)),3),252),power(ts_std_dev(rsk68_residual_return,252),3)),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "group_rank(ts_rank(divide(ts_mean(power(subtract(rsk68_residual_return,ts_mean(rsk68_residual_return,66)),3),66),power(ts_std_dev(rsk68_residual_return,66),3)),252),industry)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  }
+]

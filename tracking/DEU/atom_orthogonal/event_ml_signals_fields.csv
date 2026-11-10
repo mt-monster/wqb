@@ -1,0 +1,105 @@
+id,type,cov,uc,ac,desc
+activist_agreement_event,VECTOR,0.0,1,1,Announcement related to agreements involving activist investors.
+activist_communication_event,VECTOR,0.0,0,0,Indicator of activist investor communications (campaign launch; letters; filings; public statements) on this date
+activist_financing_option_event,VECTOR,0.0,0,0,Announcement of financing options provided by activist investors.
+activist_nomination_event,VECTOR,0.0,0,0,Indicator of activist actions related to director nominations or proxy contest nominations at the company
+activist_proxy_voting_event,VECTOR,0.0,1,1,Indicator of proxy-voting-related activism events (proxy contests; solicitations; or vote outcomes)
+activist_supporting_statement,VECTOR,0.0,0,0,Statement issued in support of activist investor actions.
+activist_target_communication_event,VECTOR,0.0,1,1,Communication from activist investors directed at a target company.
+analyst_investor_day_event,VECTOR,0.0,0,0,Indicator that the company held an analyst/investor day event on this date
+annual_general_meeting_event,VECTOR,0.0,0,0,Indicator that the annual general meeting (AGM) occurred or was formally held
+auditor_change_event,VECTOR,0.0,0,0,Indicator that the company changed its external auditor
+auditor_going_concern_doubt_event,VECTOR,0.0,1,1,Flag that the auditor expressed substantial doubt about the company's ability to continue as a going concern
+bankruptcy_event,VECTOR,0.0,0,0,Event flag for bankruptcy; insolvency; or court-administered restructuring filings
+board_meeting_event,VECTOR,0.0,0,0,Flag that a board of directors meeting occurred
+business_expansion_event,VECTOR,0.0,0,0,Notification of company expansion activities.
+business_reorganization_event,VECTOR,0.0,0,0,Notification of a business reorganization or restructuring.
+buyback_plan_term_change_event,VECTOR,0.0,0,0,Flag that the terms of an existing share buyback plan were changed
+buyback_tranche_update_event,VECTOR,0.0,0,0,Update regarding a tranche in a share buyback program.
+buyback_transaction_announcement,VECTOR,0.0,0,0,Flag that the company announced execution of share repurchase transactions or reported buyback activity
+buyback_transaction_cancellation_event,VECTOR,0.0,0,0,Announcement of the cancellation of a share buyback transaction.
+client_announcement_event,VECTOR,0.0,0,0,Notification of announcements related to company clients.
+company_address_change_event,VECTOR,0.0,0,0,Flag that the company changed its registered or headquarters address
+company_conference_presentation_event,VECTOR,0.0,0,0,Indicator that the company gave a presentation at a conference on this date
+company_name_change_event,VECTOR,0.0,0,0,Flag that the company changed its legal or trading name
+composite_unit_offering_event,VECTOR,0.0,0,0,Announcement of a new composite unit security offering.
+conference_event,VECTOR,0.0,0,0,Notification of company participation in conferences.
+corporate_bylaws_amendment_event,VECTOR,0.0,0,0,Event flag indicating the company adopted or amended its bylaws or corporate rules on this date
+corporate_guidance_lowered_event,VECTOR,0.0,0,0,D1-lagged flag that the company lowered its forward guidance such as revenue or EPS outlook versus prior guidance
+corporate_guidance_raised_event,VECTOR,0.0,0,0,Event flag that the company raised forward guidance
+corporate_guidance_unusual_event,VECTOR,0.0,0,0,Announcement of unusual events affecting company guidance.
+corporate_legal_structure_update,VECTOR,0.0,0,0,Records changes to a company's legal or organizational structure.
+debt_default_event,VECTOR,0.0,0,0,Indicator that the company defaulted on debt obligations or missed required payments on that date
+debt_financing_event,VECTOR,0.0,0,0,Notification of events related to company debt financing.
+delayed_earnings_announcement,VECTOR,0.0,1,1,Indicator that the company announced a delay in releasing earnings or filing associated reports
+delayed_sec_filing_event,VECTOR,0.0,1,1,Indicator of a delay or late-notice filing for required SEC reports (e.g.; NT 10-K/10-Q)
+delisting_event,VECTOR,0.0,0,0,Event flag indicating the companyâs shares were delisted from an exchange on this date
+derivative_instrument_offering_event,VECTOR,0.0,0,0,Announcement of a new derivative or other financial instrument offering.
+discontinued_operations_downsizing_event,VECTOR,0.0,0,0,Indicator that the company announced discontinued operations; closures; or workforce/footprint downsizing
+divestiture_intent_disclosure,VECTOR,0.0,0,0,Event flag indicating the company announced plans to seek a sale or divestiture of assets or business units on this date
+dividend_affirmation_event,VECTOR,0.0,0,0,Announcement affirming a previously declared dividend.
+dividend_cancellation_event,VECTOR,0.0,0,0,Indicator that the company canceled a previously declared dividend
+dividend_decrease_event,VECTOR,0.0,0,0,Flag that the company announced a dividend decrease or cut
+dividend_increase_event,VECTOR,0.0,0,0,Indicator flag that the company announced an increase in its dividend
+dividend_initiation_event,VECTOR,0.0,0,0,Indicator that the company initiated a regular dividend program by declaring its first dividend on this date
+earnings_announcement_event,VECTOR,0.0,0,0,Flag that the company announced its earnings results
+earnings_call_event,VECTOR,0.0,0,0,Indicator that an earnings conference call occurred
+exchange_change_event,VECTOR,0.0,0,0,Indicator that the company changed its primary listing exchange
+executive_change_event,VECTOR,0.0,0,0,Indicator of executive leadership changes such as appointments or departures (e.g.; CEO; CFO)
+extraordinary_shareholder_meeting,VECTOR,0.0,0,0,Flag for a special or extraordinary shareholders' meeting
+fiscal_year_end_change,VECTOR,0.0,0,0,Event flag indicating the company announced a change to its fiscal year-end on this date
+fixed_income_call_event,VECTOR,0.0,0,0,Scheduled call for fixed income investors.
+fixed_income_offering_event,VECTOR,0.0,0,0,Indicator of a debt securities offering (e.g.; bonds; notes)
+followon_equity_offering_event,VECTOR,0.0,0,0,Indicator of a follow-on/seasoned equity offering of shares after the IPO
+government_entity_privatization_event,VECTOR,0.0,0,0,Announcement of potential privatization of government-owned entities.
+guidance_update_call_event,VECTOR,0.0,0,0,Indicator that the company held a call specifically to update or change corporate guidance on this date
+halt_resume_operations_event,VECTOR,0.0,0,0,Announcement of a halt or resumption of company operations due to unusual events.
+impairment_writeoff_event,VECTOR,0.0,2,2,Indicator that the company announced or recorded asset impairments or write-offs
+index_constituent_add_event,VECTOR,0.0,0,0,Flag indicating the company was added as a constituent to a stock index
+index_constituent_drop_event,VECTOR,0.0,0,0,Indicator that the company was removed/dropped from a stock index
+initial_public_offering_event,VECTOR,0.0,0,0,Flag for an initial public offering event
+interim_management_statement_announcement,VECTOR,0.0,0,0,Notification of the announcement of an interim management statement.
+interim_statement_call_event,VECTOR,0.0,0,0,Indicator that the company held an interim management statement or trading update call on this date
+interim_statement_release_date_3,VECTOR,0.0,0,0,Scheduled date for the release of an interim management statement.
+labor_related_announcement,VECTOR,0.0,0,0,Notification of labor-related company events or changes.
+lawsuit_legal_issue_event,VECTOR,0.0,0,0,Announcement of legal proceedings or lawsuits involving the company.
+lead_underwriter_change_event,VECTOR,0.0,0,0,Announcement of a change in the lead underwriter for a public offering.
+lockup_period_end_event,VECTOR,0.0,0,0,Indicator that an insider/IPO lock-up period expired for the company on this date
+ma_call_event,VECTOR,0.0,0,0,Indicator of a conference call focused on a merger or acquisition transaction
+ma_rumor_discussion,VECTOR,0.0,0,0,Rumors or discussions related to mergers and acquisitions.
+ma_transaction_announcement_event,VECTOR,0.0,0,0,Indicator that the company announced an M&A transaction (merger; acquisition; sale) on that date
+ma_transaction_cancellation_event,VECTOR,0.0,0,0,Indicator that a merger or acquisition transaction involving the company was canceled or terminated
+ma_transaction_closing_event,VECTOR,0.0,0,0,Event flag indicating the closing/completion of a merger or acquisition transaction on this date
+multiple_strategic_alternatives_considered,VECTOR,0.0,0,0,D1-lagged flag that the company announced a review of multiple strategic alternatives such as sale merger spin-off or recapitalization
+new_corporate_guidance_confirmed,VECTOR,0.0,0,0,Announcement of newly confirmed company guidance or outlook.
+operating_results_announcement,VECTOR,0.0,0,0,Indicator that the company announced its operating or financial results (earnings release)
+operating_results_call_event,VECTOR,0.0,0,0,Flag for a conference call discussing operating results; typically an earnings call
+operating_results_release_date,VECTOR,0.0,0,0,Event flag indicating the company released its operating results/earnings report on this date
+operating_results_restated_event,VECTOR,0.0,1,1,Indicator that previously reported operating or financial results were restated
+other_event_type,VECTOR,0.0,0,0,Other event type not classified elsewhere.
+potential_buyback_event,VECTOR,0.0,0,0,Announcement of a possible future share buyback.
+preferred_dividend_event,VECTOR,0.0,0,0,Indicator of a preferred stock dividend event (e.g.; declaration; update; or payment announcement)
+preferred_stock_buyback_event,VECTOR,0.0,0,0,Indicator that the company announced or executed repurchases of preferred stock
+private_placement_event,VECTOR,0.0,0,0,Indicator that the company announced a private placement of securities
+product_related_announcement,VECTOR,0.0,0,0,Announcement related to new or updated company products.
+regular_exdividend_date,VECTOR,0.0,0,0,Event flag indicating the stock went ex-dividend for a regular dividend on this date
+regulatory_authority_event,VECTOR,0.0,0,0,Announcement involving a regulatory authority or agency.
+regulatory_inquiry_event,VECTOR,0.0,0,0,Indicator that a regulatory agency initiated or disclosed an inquiry or investigation involving the company
+sales_trading_statement_announcement,VECTOR,0.0,0,0,Notification of a sales or trading statement announcement.
+sales_trading_statement_call_event,VECTOR,0.0,0,0,Scheduled call to discuss sales or trading statements.
+sales_trading_statement_release_date,VECTOR,0.0,0,0,Scheduled date for the release of a sales or trading statement.
+seeking_acquisition_investment,VECTOR,0.0,0,0,Company announcement seeking acquisitions or investment opportunities.
+seeking_financing_partner,VECTOR,0.0,0,0,Company announcement seeking new financing partners.
+share_repurchase_completion,VECTOR,0.0,0,0,Indicates the completion of a company's share repurchase transaction.
+shareholder_activism_proposal_event,VECTOR,0.0,0,0,Represents events related to shareholder activism proposals.
+shareholder_analyst_call_event,VECTOR,0.0,0,0,Scheduled call to update shareholders or analysts on company matters.
+shelf_registration_filing_event,VECTOR,0.0,0,0,Indicator flag that a shelf registration statement was filed or became effective
+special_call_event,VECTOR,0.0,0,0,Conference call to discuss special or urgent company matters.
+special_dividend_announcement,VECTOR,0.0,0,0,Flag that a special or extraordinary cash dividend was announced
+special_exdividend_date,VECTOR,0.0,0,0,Indicator that a special dividend went ex-dividend on that date
+spinoff_splitoff_event,VECTOR,0.0,0,0,Indicator that the company announced or executed a spin-off or split-off transaction on this date
+stock_dividend_event,VECTOR,0.0,0,0,Indicator that the company declared or issued a stock dividend (shares distributed instead of cash) on that date
+stock_split_significant_dividend,VECTOR,0.0,0,0,Flag for stock split or a significant stock dividend corporate action
+strategic_alliance_event,VECTOR,0.0,0,0,Indicator that the company announced a strategic alliance or partnership agreement
+structured_product_offering_event,VECTOR,0.0,0,0,Notification of a new structured product offering.
+ticker_change_event,VECTOR,0.0,0,0,Indicator that the company changed its stock ticker/symbol

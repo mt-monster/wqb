@@ -1,0 +1,100 @@
+{
+ "id": "RRAG0WMb",
+ "code": "group_zscore(winsorize(ts_delta(ts_backfill(vec_avg(mdl138_4idpqc),5),126), std=1.5), sector)",
+ "type": "REGULAR",
+ "status": "ACTIVE",
+ "stage": "OS",
+ "dateSubmitted": "2026-10-26T00:29:09-04:00",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 1,
+  "neutralization": "REVERSION_AND_MOMENTUM",
+  "truncation": 0.15,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "simulationMode": "FULL"
+ },
+ "metrics": {
+  "sharpe": 1.76,
+  "fitness": 1.43,
+  "turnover": 0.0843,
+  "returns": 0.0822,
+  "drawdown": 0.0835,
+  "margin": 0.001951,
+  "longCount": 311,
+  "shortCount": 324,
+  "pnl": 8502400,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "selfCorrelation": 0.1733,
+  "prodCorrelation": 0.6962,
+  "sub_universe_sharpe": 1.66,
+  "two_year_sharpe": 1.68,
+  "investability_sharpe": 1.42,
+  "investability_fitness": 1.03
+ },
+ "os": {
+  "startDate": "2024-01-01"
+ },
+ "ra": {
+  "failed_ra_count": 0,
+  "failed_ppa_count": 0,
+  "ra_failed": false,
+  "ppa_failed": false,
+  "pyramid_short": "model"
+ },
+ "checks": {
+  "fail": [],
+  "warning": [
+   {
+    "name": "MATCHES_COMPETITION"
+   },
+   {
+    "name": "MATCHES_THEMES"
+   }
+  ],
+  "pass": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+   "CLUSTER_TEST",
+   "LOW_2Y_SHARPE",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "POWER_POOL_CORRELATION",
+   "MATCHES_THEMES"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "KOR/D1/MODEL",
+    "multiplier": 1.6
+   }
+  ]
+ },
+ "name": "KOR_ACC_QUALITY_PDI_CHG126_WS15",
+ "color": "GREEN",
+ "tags": [
+  "model138",
+  "quality",
+  "kor",
+  "model"
+ ]
+}

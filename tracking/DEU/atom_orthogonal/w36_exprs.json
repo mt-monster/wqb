@@ -1,0 +1,17 @@
+﻿{
+    "wave":  36,
+    "note":  "cold-field substitution to break prod wall on ebi x ebt skeleton",
+    "settings":  "DEU/TOP500/D1/FAST/decay0/trunc0.08",
+    "exprs":  [
+                  "group_rank(add(ts_zscore(est_12m_ebi_median, 240), ts_zscore(subtract(est_12m_ebt_median, est_12m_ebt_median_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_median, 240), ts_zscore(subtract(est_12m_ebt_low, est_12m_ebt_low_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_median, 240), ts_zscore(subtract(est_12m_ebt_mean, est_12m_ebt_mean_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_mean, 240), ts_zscore(subtract(est_12m_ebt_median, est_12m_ebt_median_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_median_4wks_ago, 240), ts_zscore(subtract(est_12m_ebt_median, est_12m_ebt_median_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_mean_3mth_ago, 240), ts_zscore(subtract(est_12m_ebt_median, est_12m_ebt_median_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_median, 240), ts_zscore(subtract(est_12m_ebt_median, est_12m_ebt_median_3mth_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_high, 240), ts_zscore(subtract(est_12m_ebt_high, est_12m_ebt_high_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_low, 240), ts_zscore(subtract(est_12m_ebt_low, est_12m_ebt_low_4wks_ago), 44)), sector)",
+                  "group_rank(add(ts_zscore(est_12m_ebi_median, 240), ts_zscore(subtract(est_12m_ebt_mean, est_12m_ebt_mean_3mth_ago), 44)), sector)"
+              ]
+}

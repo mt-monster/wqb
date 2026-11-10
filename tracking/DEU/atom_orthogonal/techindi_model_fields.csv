@@ -1,0 +1,400 @@
+id,type,cov,uc,ac,desc
+tm_15_r1_r5_r10_rh_glb_d1_r10_q1,MATRIX,0.0,273,571,Continuous regression output for 10-day forward market-neutral return prediction; winsorization recommended; in the EUR universe
+tm_15_r1_r5_r10_rh_glb_d1_r10_q2,MATRIX,0.0,37,55,Predicted ten-day return for stocks in the second quantile group.
+tm_15_r1_r5_r10_rh_glb_d1_r10_q2_p0,MATRIX,0.0,12,29,Log-probability (log-softmax) that the stock belongs to quantile bucket 0 (lowest bucket) out of 2 buckets (0 to 1) for the 10-day forward market-neutral returnâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r10_q2_p1,MATRIX,0.0,33,66,Log-probability (log-softmax) output for bucket 1 of 2 quantile buckets for 10-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q3,MATRIX,0.0,18,34,Quantile bucket assignment (0-based) for 10-day forward market-neutral return prediction using technical indicator chart images for the EUR universe
+tm_15_r1_r5_r10_rh_glb_d1_r10_q3_p0,MATRIX,0.0,3,3,Log-probability (log-softmax) that the stock belongs to quantile bucket 0 (lowest bucket) out of 3 buckets for the 10-day forward market-neutral return predictiâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r10_q3_p1,MATRIX,0.0,2,3,Log-probability (log-softmax) that the stock belongs to quantile bucket 1 out of 3 buckets (0 to 2) for the 10-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q3_p2,MATRIX,0.0,16,20,Log-probability that the stock belongs to quantile bucket 2 out of 3 buckets for the 10-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q4,MATRIX,0.0,17,26,Quantile bucket assignment (0-based over 4 buckets) for market-neutral cross-sectional 10-day forward stock return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q4_p0,MATRIX,0.0,3,3,Log-probability that the stock belongs to quantile bucket 0 (lowest bucket) out of 4 buckets for the 10-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q4_p1,MATRIX,0.0,3,3,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 (second-lowest; bucket index 1 of 4) for 10-day forward market-neutral return preâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r10_q4_p2,MATRIX,0.0,1,1,Log-probability that the stock belongs to quantile bucket 2 out of 4 buckets for the 10-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q4_p3,MATRIX,0.0,4,6,Log-probability (log-softmax) that the stock belongs to quantile bucket 3 out of 4 buckets (0 to 3) for the 10-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q5,MATRIX,0.0,21,38,Predicted ten-day return for stocks in the fifth quantile group.
+tm_15_r1_r5_r10_rh_glb_d1_r10_q5_p0,MATRIX,0.0,26,45,Log-probability (log-softmax) output that the stock belongs to the lowest bucket (bucket 0) among 5 quantile buckets for 10-day forward market-neutral return prâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r10_q5_p1,MATRIX,0.0,4,5,Log-probability that the stock belongs to quantile bucket 1 out of 5 buckets for the 10-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r10_q5_p2,MATRIX,0.0,3,4,Log-probability (log-softmax) from model predicting the stock belongs to quantile bucket 2 out of 5 buckets for 10-day forward market-neutral return in the EURâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r10_q5_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) from model predicting the stock belongs to quantile bucket 3 out of 5 buckets for 10-day forward market-neutral return in the EURâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r10_q5_p4,MATRIX,0.0,33,60,Log-probability (log-softmax) for bucket 4 out of 5 quantile buckets at 10-day forward market-neutral return
+tm_15_r1_r5_r10_rh_glb_d1_r1_q1,MATRIX,0.0,19,31,Continuous regression output for 1-day forward market-neutral return prediction; must be winsorized before use
+tm_15_r1_r5_r10_rh_glb_d1_r1_q2,MATRIX,0.0,4,4,Predicted one-day return for stocks in the second quantile group.
+tm_15_r1_r5_r10_rh_glb_d1_r1_q2_p0,MATRIX,0.0,4,4,Log-probability (log-softmax) that the stock-date belongs to the lowest quantile bucket (bucket 0 of 2) for 1-day forward market-neutral return prediction in EUâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r1_q2_p1,MATRIX,0.0,2,3,Log-probability (log-softmax) from model predicting the stock belongs to quantile bucket 1 out of 2 buckets for 1-day forward market-neutral return in the EUR uâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r1_q3,MATRIX,0.0,6,15,Quantile bucket assignment (0-based) for 1-day forward market-neutral return prediction using technical indicator chart images for the EUR universe
+tm_15_r1_r5_r10_rh_glb_d1_r1_q3_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) from model predicting the stock belongs to quantile bucket 0 (lowest bucket) out of 3 buckets for 1-day forward market-neutral retâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r1_q3_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) output for bucket 1 of 3 quantile buckets for 1-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r1_q3_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) for bucket 2 out of 3 quantile buckets at 1-day forward market-neutral return
+tm_15_r1_r5_r10_rh_glb_d1_r1_q4,MATRIX,0.0,2,2,Quantile bucket assignment (0-based) out of 4 buckets for 1-day forward market-neutral return prediction in the EUR universe
+tm_15_r1_r5_r10_rh_glb_d1_r1_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) output that the stock belongs to the lowest quantile bucket (bucket 0) among 4 quantile buckets for 1-day forward market-neutral râ¦
+tm_15_r1_r5_r10_rh_glb_d1_r1_q4_p1,MATRIX,0.0,1,1,Log-probability that the stock belongs to quantile bucket 1 out of 4 buckets for the 1-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r1_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) output for bucket 2 of 4 quantile buckets for 1-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r1_q4_p3,MATRIX,0.0,2,2,Log-probability (log-softmax) from the model that the stock belongs to quantile bucket 3 out of 4 buckets (0 to 3) for the 1-day forward market-neutral return pâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r1_q5,MATRIX,0.0,1,1,Quantile bucket assignment (0-based) into one of 5 buckets (0 to 4) for the 1-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r1_q5_p0,MATRIX,0.0,2,4,Log-probability (log-softmax) that the stock-date belongs to the lowest quantile bucket (bucket 0 of 5) for 1-day forward market-neutral return prediction in EUâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r1_q5_p1,MATRIX,0.0,3,3,Log-probability (log-softmax) that the stock belongs to quantile bucket 1 out of 5 buckets (0 to 4) for the 1-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r1_q5_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 2 (third quantile; bucket index 2 of 5) for 1-day forward market-neutral return preâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r1_q5_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) output for bucket 3 of 5 quantile buckets for 1-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r1_q5_p4,MATRIX,0.0,2,4,Log-probability (log-softmax) that the stock-date belongs to the highest quantile bucket (bucket 4 of 5) for 1-day forward market-neutral return prediction in Eâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r5_q1,MATRIX,0.0,114,195,Continuous regression output predicting market-neutral cross-sectional 5-day forward stock return; winsorized before use
+tm_15_r1_r5_r10_rh_glb_d1_r5_q2,MATRIX,0.0,13,19,Predicted five-day return for stocks in the second quantile group.
+tm_15_r1_r5_r10_rh_glb_d1_r5_q2_p0,MATRIX,0.0,8,8,Log-probability (log-softmax) that the stock-date belongs to the lowest quantile bucket (bucket 0 of 2) for 5-day forward market-neutral return prediction in EUâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r5_q2_p1,MATRIX,0.0,7,9,Log-probability (log-softmax) that the stock belongs to quantile bucket 1 out of 2 buckets (0 to 1) for the 5-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r5_q3,MATRIX,0.0,6,6,Quantile bucket assignment (0-based over 3 buckets) for market-neutral cross-sectional 5-day forward stock return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r5_q3_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) for bucket 0 out of 3 quantile buckets at 5-day forward market-neutral return
+tm_15_r1_r5_r10_rh_glb_d1_r5_q3_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) for bucket 1 out of 3 quantile buckets at 5-day forward market-neutral return
+tm_15_r1_r5_r10_rh_glb_d1_r5_q3_p2,MATRIX,0.0,8,9,Log-probability (log-softmax) from model predicting the stock belongs to quantile bucket 2 out of 3 buckets for 5-day forward market-neutral return in the EUR uâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r5_q4,MATRIX,0.0,11,14,Predicted five-day return for stocks in the fourth quantile group.
+tm_15_r1_r5_r10_rh_glb_d1_r5_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to the lowest quantile bucket (bucket 0 of 4) for 5-day forward market-neutral return prediction in EUâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r5_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) output for bucket 1 of 4 quantile buckets for 5-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r5_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock belongs to quantile bucket 2 out of 4 buckets (0 to 3) for the 5-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r5_q4_p3,MATRIX,0.0,1,1,Log-probability that the stock belongs to quantile bucket 3 out of 4 buckets for the 5-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r5_q5,MATRIX,0.0,15,21,Quantile bucket assignment (0-based) into one of 5 buckets (0 to 4) for the 5-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r5_q5_p0,MATRIX,0.0,6,7,Log-probability (log-softmax) for bucket 0 out of 5 quantile buckets at 5-day forward market-neutral return
+tm_15_r1_r5_r10_rh_glb_d1_r5_q5_p1,MATRIX,0.0,2,2,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 (second quantile; bucket index 1 of 5) for 5-day forward market-neutral return prâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r5_q5_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) that the stock belongs to quantile bucket 2 out of 5 buckets (0 to 4) for the 5-day forward market-neutral return prediction
+tm_15_r1_r5_r10_rh_glb_d1_r5_q5_p3,MATRIX,0.0,2,2,Log-probability (log-softmax) from model predicting the stock belongs to quantile bucket 3 out of 5 buckets for 5-day forward market-neutral return in the EUR uâ¦
+tm_15_r1_r5_r10_rh_glb_d1_r5_q5_p4,MATRIX,0.0,9,15,Log-probability (log-softmax) from model predicting the stock belongs to quantile bucket 4 (highest bucket) out of 5 buckets for 5-day forward market-neutral reâ¦
+tm_16_r1_r5_r10_rh_glb_d1_r10_q1,MATRIX,0.0,100,191,Continuous regression output for 10-day forward market-neutral return prediction in European universe using Techindi16 overlay
+tm_16_r1_r5_r10_rh_glb_d1_r10_q2,MATRIX,0.0,14,23,Quantile bucket assignment for 10-day forward market-neutral return prediction with 2 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r10_q2_p0,MATRIX,0.0,6,13,Probability that a stock is in the second quantile for ten-day return; bucket zero.
+tm_16_r1_r5_r10_rh_glb_d1_r10_q2_p1,MATRIX,0.0,11,20,Likelihood that a stock is in the second quantile for ten-day return; bucket one.
+tm_16_r1_r5_r10_rh_glb_d1_r10_q3,MATRIX,0.0,6,6,Quantile bucket assignment for 10-day forward market-neutral return with 3 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r10_q3_p0,MATRIX,0.0,2,2,Log-probability (log-softmax) model confidence that the stock-date belongs to the lowest quantile bucket (bucket index 0) out of 3 buckets for 10-day forward maâ¦
+tm_16_r1_r5_r10_rh_glb_d1_r10_q3_p1,MATRIX,0.0,2,2,Log-probability (log-softmax) model output for bucket 1 out of 3 quantile buckets (0 to 2) for 10-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r10_q3_p2,MATRIX,0.0,11,22,Log-probability (log-softmax output) that the 10-day forward market-neutral return prediction belongs to quantile bucket 2 out of 3 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r10_q4,MATRIX,0.0,12,21,Quantile bucket assignment for 10-day forward market-neutral return with 4 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r10_q4_p0,MATRIX,0.0,1,1,Probability that a stock falls into the fourth quantile for ten-day return; bucket zero.
+tm_16_r1_r5_r10_rh_glb_d1_r10_q4_p1,MATRIX,0.0,1,1,Probability that a stock is in the fourth quantile for ten-day return; bucket one.
+tm_16_r1_r5_r10_rh_glb_d1_r10_q4_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) model output for bucket 2 out of 4 quantile buckets (0 to 3) for 10-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r10_q4_p3,MATRIX,0.0,3,3,Log-probability (log-softmax) of belonging to quantile bucket 3 out of 4 buckets for 10-day forward return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r10_q5,MATRIX,0.0,13,23,Quantile bucket assignment for 10-day forward market-neutral return with 5 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r10_q5_p0,MATRIX,0.0,9,15,Probability that a stock is in the fifth quantile for ten-day return; bucket zero.
+tm_16_r1_r5_r10_rh_glb_d1_r10_q5_p1,MATRIX,0.0,1,1,Log-probability (log-softmax output) that the 10-day forward market-neutral return prediction belongs to quantile bucket 1 out of 5 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r10_q5_p2,MATRIX,0.0,3,4,Log-probability (log-softmax) model confidence that the stock-date belongs to quantile bucket 2 (third bucket out of 5) for 10-day forward market-neutral returnâ¦
+tm_16_r1_r5_r10_rh_glb_d1_r10_q5_p3,MATRIX,0.0,4,5,Log-probability (log-softmax) of belonging to quantile bucket 3 out of 5 buckets for 10-day forward return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r10_q5_p4,MATRIX,0.0,12,25,Probability that a stock is in the fifth quantile for ten-day return; bucket four.
+tm_16_r1_r5_r10_rh_glb_d1_r1_q1,MATRIX,0.0,7,13,Continuous regression output for 1-day forward market-neutral return prediction; represents cross-sectionally demeaned return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r1_q2,MATRIX,0.0,1,1,Quantile bucket assignment for 1-day forward market-neutral return prediction with 2 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r1_q2_p0,MATRIX,0.0,1,1,Probability that a stock is in the second quantile for one-day return; bucket zero.
+tm_16_r1_r5_r10_rh_glb_d1_r1_q2_p1,MATRIX,0.0,3,3,Log-probability (log-softmax output) that the 1-day forward market-neutral return prediction belongs to quantile bucket 1 out of 2 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r1_q3,MATRIX,0.0,2,2,Quantile bucket assignment for 1-day forward market-neutral return with 3 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r1_q3_p0,MATRIX,0.0,2,2,Probability that a stock is in the third quantile for one-day return; bucket zero.
+tm_16_r1_r5_r10_rh_glb_d1_r1_q3_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) model probability that stock-date belongs to quantile bucket 1 of 3 for 1-day forward market-neutral return
+tm_16_r1_r5_r10_rh_glb_d1_r1_q3_p2,MATRIX,0.0,1,1,Log-probability (log-softmax output) that the 1-day forward market-neutral return prediction belongs to quantile bucket 2 out of 3 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r1_q4,MATRIX,0.0,2,3,Quantile bucket assignment (0-based) out of 4 buckets for 1-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r1_q4_p0,MATRIX,0.0,2,2,Log-probability (log-softmax output) that the 1-day forward market-neutral return prediction belongs to quantile bucket 0 out of 4 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r1_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) of belonging to quantile bucket 1 out of 4 buckets for 1-day forward return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r1_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax output) that the 1-day forward market-neutral return prediction belongs to quantile bucket 2 out of 4 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r1_q4_p3,MATRIX,0.0,3,4,Log-probability (log-softmax output) that the 1-day forward market-neutral return prediction belongs to quantile bucket 3 out of 4 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r1_q5,MATRIX,0.0,2,2,Quantile bucket assignment (0-based) out of 5 buckets for 1-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r1_q5_p0,MATRIX,0.0,2,2,Log-probability (log-softmax) for bucket 0 of 5 quantile buckets in 1-day forward market-neutral return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r1_q5_p1,MATRIX,0.0,1,1,Log-probability (log-softmax output) that the 1-day forward market-neutral return prediction belongs to quantile bucket 1 out of 5 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r1_q5_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) of belonging to quantile bucket 2 out of 5 buckets for 1-day forward return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r1_q5_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) for bucket 3 of 5 quantile buckets in 1-day forward market-neutral return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r1_q5_p4,MATRIX,0.0,2,2,Log-probability (log-softmax) model output for bucket 4 out of 5 quantile buckets (0 to 4) for 1-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r5_q1,MATRIX,0.0,66,129,Continuous regression output for 5-day forward market-neutral return prediction; cross-sectionally demeaned return model estimate
+tm_16_r1_r5_r10_rh_glb_d1_r5_q2,MATRIX,0.0,7,7,Quantile bucket assignment (0-based) out of 2 buckets for 5-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r5_q2_p0,MATRIX,0.0,4,4,Log-probability (log-softmax) model confidence that the stock-date belongs to the lowest quantile bucket (bucket index 0) out of 2 buckets for 5-day forward marâ¦
+tm_16_r1_r5_r10_rh_glb_d1_r5_q2_p1,MATRIX,0.0,12,22,Log-probability (log-softmax) of belonging to quantile bucket 1 out of 2 buckets for 5-day forward return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r5_q3,MATRIX,0.0,5,5,Quantile bucket assignment for 5-day forward market-neutral return prediction with 3 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r5_q3_p0,MATRIX,0.0,0,0,Probability that a stock is in the third quantile for five-day return; bucket zero.
+tm_16_r1_r5_r10_rh_glb_d1_r5_q3_p1,MATRIX,0.0,2,6,Log-probability (log-softmax output) that the 5-day forward market-neutral return prediction belongs to quantile bucket 1 out of 3 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r5_q3_p2,MATRIX,0.0,10,13,Log-probability (log-softmax output) that the 5-day forward market-neutral return prediction belongs to quantile bucket 2 out of 3 buckets
+tm_16_r1_r5_r10_rh_glb_d1_r5_q4,MATRIX,0.0,16,22,Quantile bucket assignment for 5-day forward market-neutral return with 4 buckets (0-based indexing)
+tm_16_r1_r5_r10_rh_glb_d1_r5_q4_p0,MATRIX,0.0,1,3,Log-probability (log-softmax) model confidence that the stock-date belongs to the lowest quantile bucket (bucket index 0) out of 4 buckets for 5-day forward marâ¦
+tm_16_r1_r5_r10_rh_glb_d1_r5_q4_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) model output for bucket 1 out of 4 quantile buckets (0 to 3) for 5-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r5_q4_p2,MATRIX,0.0,0,0,Log-probability (log-softmax) model output for bucket 2 out of 4 quantile buckets (0 to 3) for 5-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r5_q4_p3,MATRIX,0.0,3,3,Log-probability (log-softmax) of belonging to quantile bucket 3 out of 4 buckets for 5-day forward return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r5_q5,MATRIX,0.0,8,8,Quantile bucket assignment into one of 5 buckets (0-based indices 0 to 4) for 5-day forward market-neutral return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r5_q5_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for bucket 0 out of 5 quantile buckets (0 to 4) for 5-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r5_q5_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) model output for bucket 1 out of 5 quantile buckets (0 to 4) for 5-day forward market-neutral return prediction in EUR universe
+tm_16_r1_r5_r10_rh_glb_d1_r5_q5_p2,MATRIX,0.0,1,6,Log-probability (log-softmax) for bucket 2 of 5 quantile buckets in 5-day forward market-neutral return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r5_q5_p3,MATRIX,0.0,0,0,Log-probability (log-softmax) of belonging to quantile bucket 3 out of 5 buckets for 5-day forward return prediction
+tm_16_r1_r5_r10_rh_glb_d1_r5_q5_p4,MATRIX,0.0,0,0,Probability that a stock is in the fifth quantile for five-day return; bucket four.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q1,MATRIX,0.0,146,243,Continuous regression output for 10-day forward market-neutral return prediction; unbounded float; strictly D1-lagged; to be winsorized before use
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q2,MATRIX,0.0,16,30,Quantile bucket assignment for 10-day forward market-neutral return prediction with 3 quantile buckets (value 0 to 2)
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q2_p0,MATRIX,0.0,8,32,Log-probability (log-softmax) that the stock belongs to quantile bucket 0 out of 2 buckets for 10-day forward market-neutral return prediction in EUR universe uâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q2_p1,MATRIX,0.0,21,52,Log-probability (log-softmax) that the stock belongs to quantile bucket 1 out of 2 buckets for 10-day forward market-neutral return prediction in EUR universe uâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q3,MATRIX,0.0,4,5,Quantile bucket assignment (0-based) into 3 buckets for the 10-day forward market-neutral return prediction in EUR region
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p0,MATRIX,0.0,0,0,Log-probability (log-softmax) output of the model that the stock-date belongs to quantile bucket 0 of 3 for the 10-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p1,MATRIX,0.0,1,2,Probability that a stock is in the third quantile for ten-day return; bucket one.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p2,MATRIX,0.0,39,88,Log-probability (log-softmax) assigned to quantile bucket 2 out of 3 for 10-day forward market-neutral return prediction; exp(value) gives model confidence
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q4,MATRIX,0.0,6,8,Quantile assignment (bucket index 0 to 3) for 10-day forward return prediction with 4 buckets
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock belongs to quantile bucket 0 out of 4 buckets for 10-day forward market-neutral return prediction in EUR universe uâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p1,MATRIX,0.0,0,0,Probability that a stock is in the fourth quantile for ten-day return; bucket one.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p2,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock belongs to quantile bucket 2 out of 4 buckets for 10-day forward market-neutral return prediction in EUR universe uâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p3,MATRIX,0.0,3,3,Log-probability (log-softmax) model confidence for the 4th quantile bucket (bucket index 3) in EUR region; 10-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q5,MATRIX,0.0,9,14,Quantile bucket assignment (0-based) for 10-day forward market-neutral return prediction into 5 buckets in EUR universe using technical indicator image variantâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p0,MATRIX,0.0,11,23,Log-probability (log-softmax) output of the model that the stock-date belongs to quantile bucket 0 of 5 for the 10-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) model confidence for the 2nd quantile bucket (bucket index 1) in EUR region; 10-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p2,MATRIX,0.0,1,4,Probability that a stock is in the fifth quantile for ten-day return; bucket two.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p3,MATRIX,0.0,1,1,Probability that a stock is in the fifth quantile for ten-day return; bucket three.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p4,MATRIX,0.0,26,54,Log-probability (log-softmax) assigned to highest quantile bucket 4 out of 5 for 10-day forward market-neutral return prediction; exp(value) gives model confideâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q1,MATRIX,0.0,14,25,Continuous regression output; 1-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q2,MATRIX,0.0,1,1,Quantile bucket assignment (0-based) into 2 buckets for the 1-day forward market-neutral return prediction in EUR region
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q2_p0,MATRIX,0.0,0,0,Probability that a stock is in the second quantile for one-day return; bucket zero.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q2_p1,MATRIX,0.0,4,5,Log-probability (log-softmax) that the stock belongs to quantile bucket 1 out of 2 buckets for 1-day forward market-neutral return prediction in EUR universe usâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q3,MATRIX,0.0,2,2,Quantile bucket assignment of the stock-date into one of 3 buckets (0 to 2) for the 1-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p0,MATRIX,0.0,1,1,Probability that a stock is in the third quantile for one-day return; bucket zero.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) model confidence for the 2nd quantile bucket (bucket index 1) in EUR region; 1-day forward market-neutral return prediction with 3â¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p2,MATRIX,0.0,3,4,Log-probability (log-softmax) that the stock belongs to quantile bucket 2 out of 3 buckets for 1-day forward market-neutral return prediction in EUR universe usâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q4,MATRIX,0.0,2,3,Quantile assignment (bucket index 0 to 3) for 1-day forward return prediction with 4 buckets
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned to lowest quantile bucket 0 out of 4 for 1-day forward market-neutral return prediction; exp(value) gives model confidencâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) model confidence for the 2nd quantile bucket (bucket index 1) in EUR region; 1-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p2,MATRIX,0.0,1,2,Log-probability (log-softmax) that the stock belongs to quantile bucket 2 out of 4 buckets for 1-day forward market-neutral return prediction in EUR universe usâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p3,MATRIX,0.0,0,0,Log-probability (log-softmax) assigned to quantile bucket 3 out of 4 for 1-day forward market-neutral return prediction; exp(value) gives model confidence
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q5,MATRIX,0.0,1,1,Quantile bucket assignment for 1-day forward market-neutral return prediction with 5 quantile buckets (value 0 to 4)
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p0,MATRIX,0.0,0,0,Probability that a stock is in the fifth quantile for one-day return; bucket zero.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) output of the model that the stock-date belongs to quantile bucket 1 of 5 for the 1-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p2,MATRIX,0.0,0,0,Log-probability (log-softmax) output of the model that the stock-date belongs to quantile bucket 2 of 5 for the 1-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p3,MATRIX,0.0,1,1,Probability that a stock is in the fifth quantile for one-day return; bucket three.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p4,MATRIX,0.0,1,1,Log-probability (log-softmax) output of the model that the stock-date belongs to quantile bucket 4 of 5 for the 1-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q1,MATRIX,0.0,69,124,Continuous regression output (market-neutral; winsorized) estimating the 5-day forward return for the stock-date
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q2,MATRIX,0.0,4,4,Quantile bucket assignment of the stock-date into one of 2 buckets (0 or 1) for the 5-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q2_p0,MATRIX,0.0,3,3,Probability that a stock is in the second quantile for five-day return; bucket zero.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q2_p1,MATRIX,0.0,11,11,Log-probability (log-softmax) output that the stock-date belongs to quantile bucket 1 of 2 for the 5-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q3,MATRIX,0.0,5,5,Quantile bucket assignment (0-based; 0 to 2) for 5-day forward market-neutral return prediction for stocks in the EUR universe; using Techindi17 image model varâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p0,MATRIX,0.0,3,3,Probability that a stock is in the third quantile for five-day return; bucket zero.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p1,MATRIX,0.0,1,1,Probability that a stock is in the third quantile for five-day return; bucket one.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p2,MATRIX,0.0,19,40,Log-probability (log-softmax) that the stock belongs to quantile bucket 2 out of 3 buckets for 5-day forward market-neutral return prediction in EUR universe usâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q4,MATRIX,0.0,3,3,Quantile bucket assignment (0-based) into 4 buckets for the 5-day forward market-neutral return prediction in EUR region
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) output of the model that the stock-date belongs to quantile bucket 0 of 4 for the 5-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock belongs to quantile bucket 1 out of 4 buckets for 5-day forward market-neutral return prediction in EUR universe usâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned to quantile bucket 2 out of 4 for 5-day forward market-neutral return prediction; exp(value) gives model confidence
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p3,MATRIX,0.0,13,32,Log-probability (log-softmax) model confidence for the 4th quantile bucket (bucket index 3) in EUR region; 5-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q5,MATRIX,0.0,6,7,Quantile bucket assignment (0-based; 0 to 4) for 5-day forward market-neutral return prediction for stocks in the EUR universe; using Techindi17 image model varâ¦
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p0,MATRIX,0.0,2,2,Log-probability (log-softmax) model confidence for the lowest quantile bucket (bucket index 0) in EUR region; 5-day forward market-neutral return prediction
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p1,MATRIX,0.0,1,1,Probability that a stock is in the fifth quantile for five-day return; bucket one.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p2,MATRIX,0.0,1,1,Probability that a stock is in the fifth quantile for five-day return; bucket two.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p3,MATRIX,0.0,2,2,Probability that a stock is in the fifth quantile for five-day return; bucket three.
+tm_17_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p4,MATRIX,0.0,4,4,Log-probability (log-softmax) model confidence for the highest quantile bucket (bucket index 4) in EUR region; 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q1,MATRIX,0.0,145,266,Continuous regression output (winsorized) estimating 10-day forward market-neutral return
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q2,MATRIX,0.0,16,25,Quantile bucket assignment (0-based) to one of 2 buckets (0 and 1) for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q2_p0,MATRIX,0.0,6,7,Log-probability (log-softmax) that the stock is in the lowest quantile bucket (index 0) out of 2 buckets for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q2_p1,MATRIX,0.0,33,66,Log-probability (log-softmax) model output for being in quantile bucket 1 out of 2 (buckets 0 and 1) for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q3,MATRIX,0.0,10,23,Quantile bucket assignment (0-based; 3 buckets) for 10-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p0,MATRIX,0.0,2,2,Log-probability (log-softmax) model output that the stock-date belongs to quantile bucket 0 out of 3 buckets for the 10-day forward market-neutral return predicâ¦
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for bucket 1 out of 3 quantile buckets for 10-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p2,MATRIX,0.0,4,5,Log-probability (log-softmax) model output for being in quantile bucket 2 out of 3 (buckets 0 to 2) for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q4,MATRIX,0.0,12,24,Quantile bucket assignment (0-based) among 4 buckets for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p0,MATRIX,0.0,2,2,Log-probability (log-softmax) model output for bucket 0 out of 4 quantile buckets for 10-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 out of 4 buckets for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock is in the 3rd quantile bucket (index 2) out of 4 buckets for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for bucket 3 out of 4 quantile buckets for 10-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q5,MATRIX,0.0,11,13,Quantile bucket assignment (0-based) among 5 buckets for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p0,MATRIX,0.0,17,34,Log-probability that the stock belongs to quantile bucket 0 (lowest bucket) out of 5 for 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 out of 5 buckets for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) that the stock is in the 3rd quantile bucket (index 2) out of 5 buckets for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for being in quantile bucket 3 out of 5 (buckets 0 to 4) for the 10-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p4,MATRIX,0.0,19,28,Log-probability (log-softmax) that the stock is in the highest quantile bucket (index 4) out of 5 buckets for the 10-day forward market-neutral return predictioâ¦
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q1,MATRIX,0.0,13,51,Continuous regression output predicting the 1-day forward market-neutral return; as a float value (not a quantile)
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q2,MATRIX,0.0,5,5,Quantile bucket assignment (0-based) among 2 buckets for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q2_p0,MATRIX,0.0,2,2,Log-probability (log-softmax) model output for bucket 0 (lowest quantile) out of 2 quantile buckets for 1-day forward market-neutral return prediction in Europeâ¦
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q2_p1,MATRIX,0.0,5,5,Log-probability that the stock belongs to quantile bucket 1 out of 2 for 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q3,MATRIX,0.0,1,1,Quantile bucket assignment (0-based; 3 buckets) for 1-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock is in the lowest quantile bucket (index 0) out of 3 buckets for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p1,MATRIX,0.0,3,3,Log-probability (log-softmax) model output for being in quantile bucket 1 out of 3 (buckets 0 to 2) for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) model output for being in quantile bucket 2 out of 3 (buckets 0 to 2) for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q4,MATRIX,0.0,6,8,Quantile bucket assignment (0-based) to one of 4 buckets (0 to 3) for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) model output that the stock-date belongs to quantile bucket 0 out of 4 buckets for the 1-day forward market-neutral return predictâ¦
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) model output that the stock-date belongs to quantile bucket 1 out of 4 buckets for the 1-day forward market-neutral return predictâ¦
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 2 out of 4 buckets for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock is in the 4th quantile bucket (index 3) out of 4 buckets for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q5,MATRIX,0.0,4,4,Quantile bucket assignment (0-based) of the stock into one of 5 buckets for 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for bucket 0 out of 5 quantile buckets for 1-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 out of 5 buckets for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock is in the 3rd quantile bucket (index 2) out of 5 buckets for the 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p3,MATRIX,0.0,1,1,Log-probability (log-softmax output) that the stock belongs to quantile bucket 3 out of 5 for 1-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p4,MATRIX,0.0,1,1,Log-probability (log-softmax) model output that the stock-date belongs to quantile bucket 4 out of 5 buckets for the 1-day forward market-neutral return predictâ¦
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q1,MATRIX,0.0,72,155,Continuous regression output for the 5-day forward market-neutral return prediction; must be winsorized before use
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q2,MATRIX,0.0,17,22,Quantile bucket assignment (0-based) of the stock into one of 2 buckets for 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q2_p0,MATRIX,0.0,5,5,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 0 out of 3 buckets for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q2_p1,MATRIX,0.0,6,6,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 out of 3 buckets for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q3,MATRIX,0.0,3,3,Quantile bucket assignment (0-based) to one of 3 buckets (0 to 2) for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) model output that the stock-date belongs to quantile bucket 0 out of 3 buckets for the 5-day forward market-neutral return predictâ¦
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for being in quantile bucket 1 out of 3 (buckets 0 to 2) for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p2,MATRIX,0.0,5,7,Log-probability (log-softmax) model output for bucket 2 out of 3 quantile buckets for 5-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q4,MATRIX,0.0,5,7,Quantile bucket assignment (0-based) of the stock into one of 4 buckets for 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p0,MATRIX,0.0,4,4,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 0 out of 4 buckets for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for bucket 1 out of 4 quantile buckets for 5-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock is in the 3rd quantile bucket (index 2) out of 4 buckets for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p3,MATRIX,0.0,5,5,Log-probability (log-softmax) that the stock is in the 4th quantile bucket (index 3) out of 4 buckets for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q5,MATRIX,0.0,6,8,Quantile bucket assignment (0-based) to one of 5 buckets (0 to 4) for the 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p0,MATRIX,0.0,4,8,Log-probability that the stock belongs to quantile bucket 0 out of 5 for 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p1,MATRIX,0.0,2,2,Log-probability (log-softmax) model output for bucket 1 out of 5 quantile buckets for 5-day forward market-neutral return prediction in European universe
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p2,MATRIX,0.0,1,1,Log-probability that the stock belongs to quantile bucket 2 out of 5 for 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p3,MATRIX,0.0,1,1,Log-probability that the stock belongs to quantile bucket 3 out of 5 for 5-day forward market-neutral return prediction
+tm_18_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p4,MATRIX,0.0,3,7,Log-probability (log-softmax) model output that the stock-date belongs to quantile bucket 4 out of 5 buckets for the 5-day forward market-neutral return predictâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q1,MATRIX,0.0,92,163,Continuous regression output predicting 10-day forward market-neutral (cross-sectionally demeaned) return; requires winsorization before use
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q2,MATRIX,0.0,20,43,Predicted ten-day return quantile; second group.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q2_p0,MATRIX,0.0,4,5,Log-probability (log-softmax) that the stock belongs to quantile bucket 0 out of 2 for 10-day forward market-neutral return prediction in EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q2_p1,MATRIX,0.0,13,35,Log-probability (log-softmax) assigned by the model to bucket 1 out of 2 quantile buckets for 10-day forward market-neutral return prediction in the EUR universâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q3,MATRIX,0.0,3,3,Quantile bucket assignment (0-based) of the stock-date into one of 3 buckets for 10-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p0,MATRIX,0.0,3,3,Probability that the ten-day return falls into the third quantile; label zero.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 out of 3 for 10-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q3_p2,MATRIX,0.0,11,22,Log-probability that the 10-day forward return prediction is in quantile bucket 2 out of 3 buckets; exp(value) gives actual probability
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q4,MATRIX,0.0,3,3,Quantile bucket assignment (0-based) of the stock-date into one of 4 buckets for 10-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p0,MATRIX,0.0,1,1,Probability that the ten-day return falls into the fourth quantile; label zero.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p1,MATRIX,0.0,1,12,Log-probability (log-softmax) that the stock belongs to quantile bucket 1 out of 4 for 10-day forward market-neutral return prediction in EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model to bucket 2 out of 4 quantile buckets for 10-day forward market-neutral return prediction in the EUR universâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q4_p3,MATRIX,0.0,1,1,Probability that the ten-day return falls into the fourth quantile; label three.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q5,MATRIX,0.0,2,2,Quantile bucket assignment (0-based; from 0 to 4) for 10-day forward market-neutral return prediction in EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p0,MATRIX,0.0,5,5,Log-probability (log-softmax) assigned by the model that the stock-date belongs to the lowest quantile bucket (bucket 0) out of 5 buckets for 10-day forward marâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p1,MATRIX,0.0,1,6,Probability that the ten-day return falls into the fifth quantile; label one.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 2 out of 5 for 10-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock belongs to quantile bucket 3 out of 5 for 10-day forward market-neutral return prediction in EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r10_q5_p4,MATRIX,0.0,9,15,Log-probability (log-softmax) that the stock-date belongs to highest quantile bucket 4 out of 5 for 10-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q1,MATRIX,0.0,13,22,Continuous regression output estimating 1-day forward market-neutral stock return; must be winsorized before use
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q2,MATRIX,0.0,2,2,Quantile bucket assignment (0-based) into 2 buckets for the 1-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q2_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) that the 1-day forward return prediction belongs to quantile bucket 0 out of 2 buckets; exp(value) gives the actual probability
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q2_p1,MATRIX,0.0,2,2,Probability that the one-day return falls into the second quantile; label one.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q3,MATRIX,0.0,4,4,Quantile bucket assignment (0-based) into 3 buckets for 1-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock belongs to quantile bucket 0 out of 3 for 1-day forward market-neutral return prediction in EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p1,MATRIX,0.0,2,3,Log-probability (log-softmax) assigned by the model to bucket 1 out of 3 quantile buckets for 1-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q3_p2,MATRIX,0.0,2,4,Log-probability that the 1-day forward return prediction is in quantile bucket 2 out of 3 buckets; exp(value) gives actual probability
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q4,MATRIX,0.0,3,3,Quantile bucket assignment (0-based) of the stock-date into one of 4 buckets for 1-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to lowest quantile bucket 0 out of 4 for 1-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model to bucket 1 out of 4 quantile buckets for 1-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model to bucket 2 out of 4 quantile buckets for 1-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q4_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 3 out of 4 for 1-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q5,MATRIX,0.0,2,2,Predicted one-day return quantile; fifth group.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p0,MATRIX,0.0,1,1,Probability that the one-day return falls into the fifth quantile; label zero.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p1,MATRIX,0.0,2,2,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 out of 5 for 1-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 2 out of 5 for 1-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model to bucket 3 out of 5 quantile buckets for 1-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r1_q5_p4,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to highest quantile bucket 4 out of 5 for 1-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q1,MATRIX,0.0,38,70,Continuous regression output for 5-day forward market-neutral return prediction in EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q2,MATRIX,0.0,3,3,Quantile bucket assignment (0-based; from 0 to 1) for 5-day forward market-neutral return prediction in EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q2_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model to bucket 0 out of 2 quantile buckets for 5-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q2_p1,MATRIX,0.0,6,11,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 1 out of 2 buckets for 5-day forward market-neutral return prâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q3,MATRIX,0.0,1,1,Quantile bucket assignment (0-based) into 3 buckets for the 5-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p0,MATRIX,0.0,2,3,Probability that the five-day return falls into the third quantile; label zero.
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p1,MATRIX,0.0,2,2,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 out of 3 for 5-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q3_p2,MATRIX,0.0,2,2,Log-probability that the 5-day forward return prediction is in quantile bucket 2 out of 3 buckets; exp(value) gives actual probability
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q4,MATRIX,0.0,1,3,Quantile bucket assignment (0-based) of the stock-date into one of 4 buckets for 5-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model to bucket 0 out of 4 quantile buckets for 5-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p1,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 1 out of 4 buckets for 5-day forward market-neutral return prâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p2,MATRIX,0.0,1,1,Log-probability that the 5-day forward return prediction is in quantile bucket 2 out of 4 buckets; exp(value) gives actual probability
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q4_p3,MATRIX,0.0,2,2,Log-probability (log-softmax) assigned by the model to bucket 3 out of 4 quantile buckets for 5-day forward market-neutral return prediction in the EUR universe
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q5,MATRIX,0.0,3,6,Quantile bucket assignment (0-based; 5 buckets) for 5-day forward market-neutral return prediction
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p0,MATRIX,0.0,0,0,Log-probability (log-softmax) assigned by the model that the stock-date belongs to the lowest quantile bucket (bucket 0) out of 5 buckets for 5-day forward markâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 1 out of 5 buckets for 5-day forward market-neutral return prâ¦
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p2,MATRIX,0.0,0,0,Log-probability that the 5-day forward return prediction is in quantile bucket 2 out of 5 buckets; exp(value) gives actual probability
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p3,MATRIX,0.0,1,1,Log-probability that the 5-day forward return prediction is in quantile bucket 3 out of 5 buckets; exp(value) gives actual probability
+tm_19_r1_r5_r10_rh_ah3_glb_d1_r5_q5_p4,MATRIX,0.0,2,2,Log-probability that the 5-day forward return prediction is in quantile bucket 4 out of 5 buckets; exp(value) gives actual probability
+tm_1_r1_r5_r10_rh_glb_d1_r10_q1,MATRIX,0.0,60,94,Continuous regression output predicting the 10-day forward market-neutral return; must be winsorized before use
+tm_1_r1_r5_r10_rh_glb_d1_r10_q2,MATRIX,0.0,6,7,Quantile bucket assignment (0-based) among 2 buckets for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q2_p0,MATRIX,0.0,3,11,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 0 among 2 quantile buckets for the 10-day forward market-neutâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r10_q2_p1,MATRIX,0.0,16,33,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 1 among 2 quantile buckets for the 10-day forward market-neutâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r10_q3,MATRIX,0.0,1,1,Quantile bucket assignment (0-based) among 3 buckets for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q3_p0,MATRIX,0.0,0,0,Log-probability (log-softmax) model output for the lowest quantile bucket (index 0) out of 3 for the 10-day forward market-neutral return prediction; strictly Dâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r10_q3_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) from the model that the stock-date belongs to quantile bucket 1 of 3 for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q3_p2,MATRIX,0.0,0,0,Log-probability that the stock belongs to quantile bucket 2 of 3 for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q4,MATRIX,0.0,5,7,Quantile bucket assignment (0-based; 4 buckets) of the stock-date for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q4_p0,MATRIX,0.0,2,2,Log-probability that the stock belongs to the lowest quantile bucket (bucket 0 of 4) for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q4_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock belongs to the second quantile bucket (bucket 1) for 10-day forward market-neutral return with 4 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r10_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock belongs to the third quantile bucket (bucket 2) for 10-day forward market-neutral return with 4 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r10_q4_p3,MATRIX,0.0,0,0,Probability that the ten-day return falls into the fourth quantile; bucket three.
+tm_1_r1_r5_r10_rh_glb_d1_r10_q5,MATRIX,0.0,3,4,Quantile bucket assignment (0-based) among 5 buckets for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q5_p0,MATRIX,0.0,8,12,Log-probability (log-softmax) that the stock belongs to the lowest quantile bucket (bucket 0) for 10-day forward market-neutral return with 5 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r10_q5_p1,MATRIX,0.0,0,0,Log-probability that the stock belongs to quantile bucket 1 of 5 for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q5_p2,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock belongs to the third quantile bucket (bucket 2) for 10-day forward market-neutral return with 5 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r10_q5_p3,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 3 of 5 for 10-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r10_q5_p4,MATRIX,0.0,6,8,Log-probability (log-softmax) that the stock belongs to the highest quantile bucket (bucket 4) for 10-day forward market-neutral return with 5 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r1_q1,MATRIX,0.0,6,6,Continuous regression output for 1-day forward market-neutral return prediction; needs winsorization before use
+tm_1_r1_r5_r10_rh_glb_d1_r1_q2,MATRIX,0.0,1,1,Quantile bucket assignment (0 or 1) indicating which of 2 quantile buckets the stock-date belongs to for the 1-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r1_q2_p0,MATRIX,0.0,2,2,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 0 among 2 quantile buckets for the 1-day forward market-neutrâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r1_q2_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 1 of 2 for 1-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r1_q3,MATRIX,0.0,1,1,Quantile assignment to one of 3 buckets (0 to 2) for the 1-day forward market-neutral return prediction; strictly D1-lagged
+tm_1_r1_r5_r10_rh_glb_d1_r1_q3_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 0 among 3 quantile buckets for the 1-day forward market-neutrâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r1_q3_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) model output for the 2nd quantile bucket (index 1) out of 3 for the 1-day forward market-neutral return prediction; strictly D1-laâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r1_q3_p2,MATRIX,0.0,0,0,Log-probability that the stock belongs to quantile bucket 2 of 3 for 1-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r1_q4,MATRIX,0.0,1,1,Quantile bucket assignment (0-based) for 1-day forward market-neutral return with 4 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r1_q4_p0,MATRIX,0.0,0,0,Probability that the one-day return falls into the fourth quantile; bucket zero.
+tm_1_r1_r5_r10_rh_glb_d1_r1_q4_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) model output for the 2nd quantile bucket (index 1) out of 4 for the 1-day forward market-neutral return prediction; strictly D1-laâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r1_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 2 of 4 for 1-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r1_q4_p3,MATRIX,0.0,0,0,Log-probability (log-softmax) model output for the 4th quantile bucket (index 3) out of 4 for the 1-day forward market-neutral return prediction; strictly D1-laâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r1_q5,MATRIX,0.0,1,1,Quantile bucket assignment (0-based) among 5 buckets for 1-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r1_q5_p0,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock belongs to the lowest quantile bucket (bucket 0) for 1-day forward market-neutral return with 5 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r1_q5_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock belongs to the second quantile bucket (bucket 1) for 1-day forward market-neutral return with 5 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r1_q5_p2,MATRIX,0.0,0,0,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 2 among 5 quantile buckets for the 1-day forward market-neutrâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r1_q5_p3,MATRIX,0.0,0,0,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 3 among 5 quantile buckets for the 1-day forward market-neutrâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r1_q5_p4,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock belongs to the highest quantile bucket (bucket 4 of 5) for 1-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q1,MATRIX,0.0,9,12,Continuous regression output (winsorize before usage) predicting 5-day forward market-neutral return
+tm_1_r1_r5_r10_rh_glb_d1_r5_q2,MATRIX,0.0,0,0,Quantile bucket assignment (0-based) among 2 buckets for 5-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q2_p0,MATRIX,0.0,0,0,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 0 (lowest bucket) among 2 quantile buckets for the 5-day forwâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r5_q2_p1,MATRIX,0.0,2,2,Probability that the five-day return falls into the second quantile; bucket one.
+tm_1_r1_r5_r10_rh_glb_d1_r5_q3,MATRIX,0.0,2,2,Quantile bucket assignment (0; 1; or 2) indicating which of 3 quantile buckets the stock-date belongs to for the 5-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q3_p0,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock belongs to the lowest quantile bucket (bucket 0) for 5-day forward market-neutral return with 3 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r5_q3_p1,MATRIX,0.0,0,0,Log-probability that the stock belongs to quantile bucket 1 of 3 for 5-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q3_p2,MATRIX,0.0,2,2,Log-probability (log-softmax) assigned by the model that the stock-date belongs to quantile bucket 2 among 3 quantile buckets for the 5-day forward market-neutrâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r5_q4,MATRIX,0.0,0,0,Quantile bucket assignment (0-based; 4 buckets) of the stock-date for 5-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q4_p0,MATRIX,0.0,1,2,Log-probability (log-softmax) that the stock-date belongs to the lowest quantile bucket (bucket 0) out of 4 buckets for 5-day forward return
+tm_1_r1_r5_r10_rh_glb_d1_r5_q4_p1,MATRIX,0.0,0,0,Log-probability that the stock belongs to quantile bucket 1 of 4 for 5-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q4_p2,MATRIX,0.0,0,0,Log-probability that the stock belongs to quantile bucket 2 of 4 for 5-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q4_p3,MATRIX,0.0,1,1,Log-probability (log-softmax) model output for the 4th quantile bucket (index 3) out of 4 for the 5-day forward market-neutral return prediction; strictly D1-laâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r5_q5,MATRIX,0.0,3,3,Quantile bucket assignment for 5-day forward market-neutral return prediction; with 5 buckets indexed 0 to 4
+tm_1_r1_r5_r10_rh_glb_d1_r5_q5_p0,MATRIX,0.0,1,0,Probability that the five-day return falls into the fifth quantile; bucket zero.
+tm_1_r1_r5_r10_rh_glb_d1_r5_q5_p1,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock belongs to the second quantile bucket (bucket 1) for 5-day forward market-neutral return with 5 quantile buckets
+tm_1_r1_r5_r10_rh_glb_d1_r5_q5_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 2 of 5 for 5-day forward market-neutral return prediction
+tm_1_r1_r5_r10_rh_glb_d1_r5_q5_p3,MATRIX,0.0,1,0,Log-probability (log-softmax) model output for the 4th quantile bucket (index 3) out of 5 for the 5-day forward market-neutral return prediction; strictly D1-laâ¦
+tm_1_r1_r5_r10_rh_glb_d1_r5_q5_p4,MATRIX,0.0,0,0,Log-probability (log-softmax) that the stock-date belongs to quantile bucket 4 of 5 for 5-day forward market-neutral return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q1,MATRIX,0.0,286,833,Continuous regression output of market-neutral 10-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q2,MATRIX,0.0,37,64,Predicted label for ten-day return in the second quantile.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q2_p0,MATRIX,0.0,11,36,Log-probability of the stock being in quantile bucket 0 out of 2 (buckets 0 and 1) for 10-day forward market-neutral returns predicted by the EUR region model uâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r10_q2_p1,MATRIX,0.0,32,74,Probability that the ten-day return falls into the second quantile; bucket one.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q3,MATRIX,0.0,10,13,Predicted label for ten-day return in the third quantile.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q3_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) of belonging to lowest quantile bucket (bucket 0) out of 3 buckets for 10-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q3_p1,MATRIX,0.0,1,1,Probability that the ten-day return falls into the third quantile; bucket one.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q3_p2,MATRIX,0.0,32,69,Log-probability (log-softmax) of belonging to quantile bucket 2 out of 3 buckets for 10-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q4,MATRIX,0.0,23,50,Predicted label for ten-day return in the fourth quantile.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q4_p0,MATRIX,0.0,3,4,Probability that the ten-day return falls into the fourth quantile; bucket zero.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q4_p1,MATRIX,0.0,1,1,Probability that the ten-day return falls into the fourth quantile; bucket one.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q4_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned to quantile bucket 2 of 4 buckets for the 10-day forward market-neutral return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q4_p3,MATRIX,0.0,3,4,Probability that a stock is in the fourth quantile for ten-day return; bucket three.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q5,MATRIX,0.0,39,83,Quantile bucket assignment (0-based; 5 buckets) for market-neutral 10-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q5_p0,MATRIX,0.0,16,27,Probability that a stock is in the fifth quantile for ten-day return; bucket zero.
+tm_8_r1_r5_r10_rh_glb_d1_r10_q5_p1,MATRIX,0.0,2,2,Log-probability (log-softmax) of belonging to quantile bucket 1 out of 5 buckets for 10-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q5_p2,MATRIX,0.0,1,1,Log-probability (log-softmax) of belonging to quantile bucket 2 out of 5 buckets for 10-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r10_q5_p3,MATRIX,0.0,3,3,Log-probability (log-softmax) model output for quantile bucket 3 out of 5 (buckets 0 to 4) for 10-day forward market-neutral return prediction in EUR global uniâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r10_q5_p4,MATRIX,0.0,22,52,Probability that a stock is in the fifth quantile for ten-day return; bucket four.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q1,MATRIX,0.0,14,16,Continuous regression output of 1-day forward market-neutral returns predicted by the EUR region model using tech indicator image variant 8; strictly D1-lagged;â¦
+tm_8_r1_r5_r10_rh_glb_d1_r1_q2,MATRIX,0.0,0,0,Predicted label for one-day return in the second quantile.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q2_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) assigned by the model that the stock belongs to quantile bucket 0 out of 2 buckets for the 1-day forward market-neutral return
+tm_8_r1_r5_r10_rh_glb_d1_r1_q2_p1,MATRIX,0.0,1,2,Log-probability of the stock being in quantile bucket 1 out of 2 (buckets 0 and 1) for 1-day forward market-neutral returns predicted by the EUR region model usâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r1_q3,MATRIX,0.0,1,1,Quantile bucket assignment (0-based) with 3 buckets (0;1;2) for 1-day forward market-neutral returns predicted by the EUR region model using tech indicator imagâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r1_q3_p0,MATRIX,0.0,0,0,Probability that a stock is in the third quantile for one-day return; bucket zero.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q3_p1,MATRIX,0.0,0,0,Probability that the one-day return falls into the third quantile; bucket one.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q3_p2,MATRIX,0.0,1,1,Probability that the one-day return falls into the third quantile; bucket two.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q4,MATRIX,0.0,0,0,Quantile bucket assignment (0-based) assigning each stock to one of 4 buckets (0 to 3) based on the model's prediction for 1-day forward market-neutral returns
+tm_8_r1_r5_r10_rh_glb_d1_r1_q4_p0,MATRIX,0.0,1,1,Probability that a stock is in the fourth quantile for one-day return; bucket zero.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q4_p1,MATRIX,0.0,1,2,Probability that the one-day return falls into the fourth quantile; bucket one.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q4_p2,MATRIX,0.0,0,0,Log-probability of the stock being in quantile bucket 2 out of 4 (buckets 0 to 3) for 1-day forward market-neutral returns predicted by the EUR region model usiâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r1_q4_p3,MATRIX,0.0,0,0,Log-probability (log-softmax) of belonging to quantile bucket 3 out of 4 buckets for 1-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r1_q5,MATRIX,0.0,2,2,Quantile bucket assignment (0 based; 0 to 4) for 1-day forward market-neutral return prediction in EUR global universe
+tm_8_r1_r5_r10_rh_glb_d1_r1_q5_p0,MATRIX,0.0,0,0,Probability that the one-day return falls into the fifth quantile; bucket zero.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q5_p1,MATRIX,0.0,0,0,Log-probability of the stock being in quantile bucket 1 out of 5 (buckets 0 to 4) for 1-day forward market-neutral returns predicted by the EUR region model usiâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r1_q5_p2,MATRIX,0.0,0,0,Probability that the one-day return falls into the fifth quantile; bucket two.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q5_p3,MATRIX,0.0,0,0,Probability that a stock is in the fifth quantile for one-day return; bucket three.
+tm_8_r1_r5_r10_rh_glb_d1_r1_q5_p4,MATRIX,0.0,0,0,Probability that the one-day return falls into the fifth quantile; bucket four.
+tm_8_r1_r5_r10_rh_glb_d1_r5_q1,MATRIX,0.0,181,666,Continuous regression output of 5-day forward market-neutral returns predicted by the EUR region model using tech indicator image variant 8; strictly D1-lagged;â¦
+tm_8_r1_r5_r10_rh_glb_d1_r5_q2,MATRIX,0.0,29,46,Predicted label for five-day return in the second quantile.
+tm_8_r1_r5_r10_rh_glb_d1_r5_q2_p0,MATRIX,0.0,17,36,Probability that the five-day return falls into the second quantile; bucket zero.
+tm_8_r1_r5_r10_rh_glb_d1_r5_q2_p1,MATRIX,0.0,15,35,Log-probability (log-softmax) of belonging to quantile bucket 1 out of 2 buckets for 5-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r5_q3,MATRIX,0.0,2,3,Quantile bucket assignment (0-based) assigning the stock to one of 3 buckets (indices 0;1;2) for the 5-day forward market-neutral return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r5_q3_p0,MATRIX,0.0,2,2,Probability that the five-day return falls into the third quantile; bucket zero.
+tm_8_r1_r5_r10_rh_glb_d1_r5_q3_p1,MATRIX,0.0,0,0,Probability that the five-day return falls into the third quantile; bucket one.
+tm_8_r1_r5_r10_rh_glb_d1_r5_q3_p2,MATRIX,0.0,23,49,Log-probability (log-softmax) of belonging to quantile bucket 2 out of 3 buckets for 5-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r5_q4,MATRIX,0.0,17,29,Quantile bucket assignment (0-based; 4 buckets) for market-neutral 5-day forward return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r5_q4_p0,MATRIX,0.0,1,1,Log-probability (log-softmax) of belonging to the lowest quantile bucket (bucket 0 of 4) for the 5-day forward market-neutral return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r5_q4_p1,MATRIX,0.0,1,1,Probability that the five-day return falls into the fourth quantile; bucket one.
+tm_8_r1_r5_r10_rh_glb_d1_r5_q4_p2,MATRIX,0.0,0,0,Probability that the five-day return falls into the fourth quantile; bucket two.
+tm_8_r1_r5_r10_rh_glb_d1_r5_q4_p3,MATRIX,0.0,7,7,Log-probability of the stock being in quantile bucket 3 out of 4 (buckets 0 to 3) for 5-day forward market-neutral returns predicted by the EUR region model usiâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r5_q5,MATRIX,0.0,35,82,Quantile bucket assignment (0-based) assigning each stock to one of 5 buckets (0 to 4) based on the model's prediction for 5-day forward market-neutral returns
+tm_8_r1_r5_r10_rh_glb_d1_r5_q5_p0,MATRIX,0.0,3,3,Log-probability (log-softmax) of belonging to the lowest quantile bucket (bucket 0 of 5) for the 5-day forward market-neutral return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r5_q5_p1,MATRIX,0.0,0,0,Log-probability of the stock being in quantile bucket 1 out of 5 (buckets 0 to 4) for 5-day forward market-neutral returns predicted by the EUR region model usiâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r5_q5_p2,MATRIX,0.0,0,0,Log-probability of the stock being in quantile bucket 2 out of 5 (buckets 0 to 4) for 5-day forward market-neutral returns predicted by the EUR region model usiâ¦
+tm_8_r1_r5_r10_rh_glb_d1_r5_q5_p3,MATRIX,0.0,0,0,Log-probability (log-softmax) of belonging to bucket 3 of 5 quantile buckets for the 5-day forward market-neutral return prediction
+tm_8_r1_r5_r10_rh_glb_d1_r5_q5_p4,MATRIX,0.0,4,4,Log-probability (log-softmax) of belonging to the highest quantile bucket (bucket 4 of 5) for the 5-day forward market-neutral return prediction

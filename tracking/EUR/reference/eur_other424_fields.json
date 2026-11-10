@@ -1,0 +1,32 @@
+{
+ "dataset": "other424",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 3
+ },
+ "field_count": 3,
+ "fetched_at": "2026-11-09T13:05:00",
+ "fields": [
+  {
+   "id": "dividend_growth_factor_score",
+   "type": "MATRIX",
+   "coverage": 0.7042,
+   "alphaCount": 49
+  },
+  {
+   "id": "oth424_divyld",
+   "type": "MATRIX",
+   "coverage": 0.6721,
+   "alphaCount": 95
+  },
+  {
+   "id": "oth424_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.7042,
+   "alphaCount": 36
+  }
+ ]
+}

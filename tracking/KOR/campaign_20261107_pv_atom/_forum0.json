@@ -1,0 +1,175 @@
+{
+ "success": true,
+ "results": [
+  {
+   "title": "【Alpha灵感】隔夜反转",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXduXZVB86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYlodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQ0NDkyOTM0MDc3NjctLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5QyVFNSU4RiU4RCVFOCVCRCVBQwY7CFQ6DnNlYXJjaF9pZEkiKWZmYzA3MjUxLTJkZWItNDAxMi04YzQ4LTQ1ZTA3N2I3ZjhhMAY7CEY6CXJhbmtpBjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEemalOWknOaUtuebigY7CFQ6EnJlc3VsdHNfY291bnRpAugD--92b925e82ca7593607c702f0cddac3d60b4a4a41",
+   "snippet": "概述：该篇论文作者在论文中提出了一种基于“隔夜-日内”收益分解的短期反转数学模型。通过将每日收益拆分为 close-to-open（隔夜）与 open-to-close（日内）两段，以隔夜收益作为排序信号、日内收益作为兑现窗口，构造出 CO-OC",
+   "votes": 1,
+   "comments": 0,
+   "author": "HC96989",
+   "date": "2025-08-26T10:49:42Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【直通通过】【Alpha灵感】成交量冲击与隔夜回报",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXYUYZfR86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQ2MjIxNTU0MTU4MzEtLSVFNyU5QiVCNCVFOSU4MCU5QSVFOSU4MCU5QSVFOCVCRiU4Ny1BbHBoYSVFNyU4MSVCNSVFNiU4NCU5Ri0lRTYlODglOTAlRTQlQkElQTQlRTklODclOEYlRTUlODYlQjIlRTUlODclQkIlRTQlQjglOEUlRTklOUElOTQlRTUlQTQlOUMlRTUlOUIlOUUlRTYlOEElQTUGOwhUOg5zZWFyY2hfaWRJIilmZmMwNzI1MS0yZGViLTQwMTItOGM0OC00NWUwNzdiN2Y4YTAGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHpmpTlpJzmlLbnm4oGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--b5e7e8b83aaa291243249fe2d87e7b4b0df35c4b",
+   "snippet": "概述：该篇论文研究了日内成交量冲击与股票隔夜收益之间的关系。作者首先定义了成交冲击量是当日成交量相对于过去成交量的指数移动均值的偏离。作者随后在美股市场对其进行了回测，研究发现，成交量冲击与当如后的隔夜收益呈显著正相关，而与次日盘中收益无关。 Alpha",
+   "votes": 0,
+   "comments": 0,
+   "author": "ZY54128",
+   "date": "2025-09-02T04:46:16Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】成交量冲击因子",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXVu233B86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUwMzI4MzkwNTA3NzUtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNiU4OCU5MCVFNCVCQSVBNCVFOSU4NyU4RiVFNSU4NiVCMiVFNSU4NyVCQiVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKWZmYzA3MjUxLTJkZWItNDAxMi04YzQ4LTQ1ZTA3N2I3ZjhhMAY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEemalOWknOaUtuebigY7CFQ6EnJlc3VsdHNfY291bnRpAugD--b6a63f89ea8ccdddd9f0b9af3863f2123c3ee238",
+   "snippet": "小等分为 5个组合，即Q1到Q5。 结果显示，当日的成交量冲击与接下来的隔夜收益呈明显的正相关，成交量冲击越大，隔夜收益越高。 成交量冲击与次日的日内收益没有明显关系。 Alpha构造：直接按照原文构建成交量冲击因子。分别构建了天和周的成交量冲击因子。",
+   "votes": 1,
+   "comments": 1,
+   "author": "XT84539",
+   "date": "2025-09-18T14:46:18Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】隔夜与日内拉锯战暗藏的信息",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXvdboKhQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjIxNzQ1Mjc1NjkzMDMtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5QyVFNCVCOCU4RSVFNiU5NyVBNSVFNSU4NiU4NSVFNiU4QiU4OSVFOSU5NCVBRiVFNiU4OCU5OCVFNiU5QSU5NyVFOCU5NyU4RiVFNyU5QSU4NCVFNCVCRiVBMSVFNiU4MSVBRgY7CFQ6DnNlYXJjaF9pZEkiKWZmYzA3MjUxLTJkZWItNDAxMi04YzQ4LTQ1ZTA3N2I3ZjhhMAY7CEY6CXJhbmtpCToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEemalOWknOaUtuebigY7CFQ6EnJlc3VsdHNfY291bnRpAugD--4610c6676ccf28fb48e3dcb50a58a70d9cb37863",
+   "snippet": "在一个交易者的拉锯战中，隔夜交易者与日内交易者会产生某种竞争，这种竞争会对未来收益产生一定的影响，同时给市场带来某种信息，日内交易者会根据隔夜回报的信息决定交易策略，而过度反应的日内交易会导致隔夜回报的扭曲，造成未来收益的下降，这部分信息带来的收益波动较大",
+   "votes": 13,
+   "comments": 2,
+   "author": "WH24469",
+   "date": "2024-03-19T05:25:08Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "【alpha灵感】反向日内逆转的频率",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXaXA%2B1R46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzM5MDEyMjQ0MjE3ODMtLWFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNSU4RiU4RCVFNSU5MCU5MSVFNiU5NyVBNSVFNSU4NiU4NSVFOSU4MCU4NiVFOCVCRCVBQyVFNyU5QSU4NCVFOSVBMiU5MSVFNyU4RSU4NwY7CFQ6DnNlYXJjaF9pZEkiKWZmYzA3MjUxLTJkZWItNDAxMi04YzQ4LTQ1ZTA3N2I3ZjhhMAY7CEY6CXJhbmtpCjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEemalOWknOaUtuebigY7CFQ6EnJlc3VsdHNfY291bnRpAugD--55482d1166a59635bf4c1f126a1f13271a68eb6d",
+   "snippet": "Chiah, Yimei Man 因子说明：当正的隔夜收益后伴随负的日内收益，即出现了反向日内逆转，通过统计月内出现逆转的频率，可以衡量隔夜交易者和盘中交易者间“拉锯战”的激烈程度；与未来收益正相关，反向日内逆转出现的频率越高，导致日内价格被过度修正拉低，未来有可能补涨。",
+   "votes": 0,
+   "comments": 0,
+   "author": "YZ45560",
+   "date": "2025-08-02T17:19:38Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "隔夜跳空因子 - BRAIN平台复现详解",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXLvNfzCQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAb9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDA0NjAyMDE3MDEwMTUtLSVFOSU5QSU5NCVFNSVBNCU5QyVFOCVCNyVCMyVFNyVBOSVCQSVFNSU5QiVBMCVFNSVBRCU5MC1CUkFJTiVFNSVCOSVCMyVFNSU4RiVCMCVFNSVBNCU4RCVFNyU4RSVCMCVFOCVBRiVBNiVFOCVBNyVBMwY7CFQ6DnNlYXJjaF9pZEkiKWZmYzA3MjUxLTJkZWItNDAxMi04YzQ4LTQ1ZTA3N2I3ZjhhMAY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEemalOWknOaUtuebigY7CFQ6EnJlc3VsdHNfY291bnRpAugD--fbc0edc94d94db0af8efb830e83b8ece72dcaba0",
+   "snippet": "-----------隔夜跳空因子通过捕捉过去20个交易日的累计隔夜跳空幅度，预测未来收益：隔夜跳空幅度 → 过度反应信号 → 均值回归预期 6.2 经济逻辑 -----------隔夜跳空情形 | 因子值 | 未来收益预期 -----",
+   "votes": 27,
+   "comments": 0,
+   "author": "MY21251",
+   "date": "2026-05-14T04:57:39Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】隔夜涨跌反转",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXz1CxYBE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZtodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTkxMDY5ODkzOTU4NjMtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5QyVFNiVCNiVBOCVFOCVCNyU4QyVFNSU4RiU4RCVFOCVCRCVBQwY7CFQ6DnNlYXJjaF9pZEkiKWZmYzA3MjUxLTJkZWItNDAxMi04YzQ4LTQ1ZTA3N2I3ZjhhMAY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEemalOWknOaUtuebigY7CFQ6EnJlc3VsdHNfY291bnRpAugD--cd4b368c55279a4b7b612114d2e64562455a7b2c",
+   "snippet": "Idea: 1.隔夜跳空因子 传统因子为对涨跌幅加绝对值，即不论跳空方向，只要开盘有大幅跳空，该因子就预判股票未来收益偏低。这在逻辑上往往解释为“隔夜跳空幅度较大的股票，可能存在短期交易过热的现象”。 结果和已有研究相同，效果不好。",
+   "votes": 26,
+   "comments": 2,
+   "author": "RB70881",
+   "date": "2023-11-16T04:55:19Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "隔夜动量修正因子",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXss3p%2Fx06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzI5ODQ5NzY0Mzc5MTEtJUU5JTlBJTk0JUU1JUE0JTlDJUU1JThBJUE4JUU5JTg3JThGJUU0JUJGJUFFJUU2JUFEJUEzJUU1JTlCJUEwJUU1JUFEJTkwBjsIVDoOc2VhcmNoX2lkSSIpZmZjMDcyNTEtMmRlYi00MDEyLThjNDgtNDVlMDc3YjdmOGEwBjsIRjoJcmFua2kNOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR6ZqU5aSc5pS255uKBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--c8e32c8c5c73e069a663b5b831109f88f61086f2",
+   "snippet": "以下是研报内容：隔夜动量修正因子，缺口回补强度因子每年IC绝对值都超过了0.08。 这个因子的计算还是由两部分组成。 第一部分叫做开盘缺口幅度，也就是常说的隔夜跳空（之前笔者介绍过一个隔夜跳空因子，效果也还是可以的）",
+   "votes": 29,
+   "comments": 2,
+   "author": "YK42677",
+   "date": "2025-06-23T10:19:59Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "[未按内容要求不通过速通]【Alpha灵感】隔夜因子的改进",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXy0dKJB86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAggBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzM0MjQwNzI1NTAyNzQzLS0lRTYlOUMlQUElRTYlOEMlODklRTUlODYlODUlRTUlQUUlQjklRTglQTYlODElRTYlQjElODIlRTQlQjglOEQlRTklODAlOUElRTglQkYlODclRTklODAlOUYlRTklODAlOUEtQWxwaGElRTclODElQjUlRTYlODQlOUYtJUU5JTlBJTk0JUU1JUE0JTlDJUU1JTlCJUEwJUU1JUFEJTkwJUU3JTlBJTg0JUU2JTk0JUI5JUU4JUJGJTlCBjsIVDoOc2VhcmNoX2lkSSIpZmZjMDcyNTEtMmRlYi00MDEyLThjNDgtNDVlMDc3YjdmOGEwBjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR6ZqU5aSc5pS255uKBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--1559586b255457cb38b251a2892dcde7214c71ce",
+   "snippet": "5*rank(-returns)+0.5*rank(AB_NR) 结果显示： 怎么进行改进呢？ 1首先隔夜收益和日内收益的计算可以进行简化 RET_OC = close/open - 1; RET_CO = open/ts_delay(close",
+   "votes": 1,
+   "comments": 0,
+   "author": "SS12488",
+   "date": "2025-08-17T04:30:35Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】日内交易对隔夜涨跌的过度反应",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXCVNKbxc6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjU3NjY3NTU3NjQ2MzEtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNiU5NyVBNSVFNSU4NiU4NSVFNCVCQSVBNCVFNiU5OCU5MyVFNSVBRiVCOSVFOSU5QSU5NCVFNSVBNCU5QyVFNiVCNiVBOCVFOCVCNyU4QyVFNyU5QSU4NCVFOCVCRiU4NyVFNSVCQSVBNiVFNSU4RiU4RCVFNSVCQSU5NAY7CFQ6DnNlYXJjaF9pZEkiKWZmYzA3MjUxLTJkZWItNDAxMi04YzQ4LTQ1ZTA3N2I3ZjhhMAY7CEY6CXJhbmtpDzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEemalOWknOaUtuebigY7CFQ6EnJlc3VsdHNfY291bnRpAugD--441f12b8bad87fcaed3f7d18ca1c92b9f058e3fa",
+   "snippet": "and Future Stock Returns 这个研报提到了如果隔夜拉锯战更加激烈，日间套利者可能过度修正价格，从而可能导致更高的未来收益，并用日内对隔夜的反转的次数作为因子。 本文将基于类似的底层思路，但用不同的方法构建因子，最终得到了可提交的因子（prod",
+   "votes": 8,
+   "comments": 5,
+   "author": "ZZ90023",
+   "date": "2024-08-20T03:29:41Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】隔夜“拉锯战”和渔利因子",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXkQ8gaxI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjAyNTEzMDg2OTE3MzUtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5Qy0lRTYlOEIlODklRTklOTQlQUYlRTYlODglOTgtJUU1JTkyJThDJUU2JUI4JTk0JUU1JTg4JUE5JUU1JTlCJUEwJUU1JUFEJTkwBjsIVDoOc2VhcmNoX2lkSSIpMmU1ZDJlYjgtNjA0Mi00YzhjLWI0ZmQtOGU3MDVhMThmZGJiBjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR6ZqU5aSc5pS255uKBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--c9da612683d87d8b39fc1f59ece4a201c1ed94d3",
+   "snippet": "广发证券 《隔夜“拉锯战”和渔利因子》 因子描述： 主导隔夜交易的投资者和主导盘中交易的投资者可能是存在显著差异的。 一般而言，相对专业的机构投资者和职业投资者倾向于在盘中进行交易；而隔夜交易者中，短线交易的投资者占比较高。隔夜交易和盘中交易的有效性也会存在显著的差异。",
+   "votes": 12,
+   "comments": 2,
+   "author": "HW97336",
+   "date": "2024-01-02T08:04:34Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "【Alpha idea改进】隔夜“拉锯战”和渔利因子",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXDptIAR86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQwOTAzNzM1NDk3MTktLUFscGhhLWlkZWElRTYlOTQlQjklRTglQkYlOUItJUU5JTlBJTk0JUU1JUE0JTlDLSVFNiU4QiU4OSVFOSU5NCVBRiVFNiU4OCU5OC0lRTUlOTIlOEMlRTYlQjglOTQlRTUlODglQTklRTUlOUIlQTAlRTUlQUQlOTAGOwhUOg5zZWFyY2hfaWRJIikyZTVkMmViOC02MDQyLTRjOGMtYjRmZC04ZTcwNWExOGZkYmIGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHpmpTlpJzmlLbnm4oGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--00f9019a4e6a71ee0162fd0499b42eb8547b4c9a",
+   "snippet": "com/p/566808433 因子概述： 个股前一夜的隔夜收益率为正，而当天的盘中收益率为负，称为一次“反向盘中逆转”。这种逆转的发生一定程度上表明，白天交易者与隔夜交易者发生“拉锯战”，前者对隔夜的价格变动进行了过度修正，而这种过度修正会在将来",
+   "votes": 4,
+   "comments": 1,
+   "author": "CW14070",
+   "date": "2025-08-11T11:43:12Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "顾问专属中文论坛"
+   ]
+  }
+ ],
+ "total_found": 12,
+ "navigation_failed": false
+}

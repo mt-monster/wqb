@@ -1,0 +1,20 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 8 alpha expressions",
+ "async": true,
+ "multisimulation_id": "2Z5Nhq7LT55gawkCOeOcpVO",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/2Z5Nhq7LT55gawkCOeOcpVO",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/2Z5Nhq7LT55gawkCOeOcpVO",
+ "submitted_expressions": [
+  "group_rank(ts_backfill(vec_stddev(mws76_score), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_stddev(mws76_score), 22), sector))",
+  "group_rank(ts_backfill(vec_max(mws76_score), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_min(mws76_score), 22), sector))",
+  "group_rank(ts_backfill(vec_sum(mws76_score), 22), sector)",
+  "group_rank(ts_delta(ts_backfill(vec_stddev(mws76_score), 22), 22), sector)",
+  "group_rank(ts_backfill(vec_stddev(mws76_confidence), 22), sector)",
+  "group_rank(ts_backfill(subtract(vec_max(mws76_score), vec_min(mws76_score)), 22), sector)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

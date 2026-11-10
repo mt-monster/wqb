@@ -1,0 +1,1202 @@
+{
+ "results": [
+  {
+   "id": "accrual_factor_score_change_1d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Change in Accruals component percentile rank over 1 day"
+  },
+  {
+   "id": "accrual_factor_score_change_1fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Change in Accruals component percentile rank over 1 fiscal year"
+  },
+  {
+   "id": "accrual_factor_score_change_1q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Change in Accruals component percentile rank over 1 quarter"
+  },
+  {
+   "id": "accrual_factor_score_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 44,
+   "alphaCount": 65,
+   "description": "Current percentile rank (1–100) for the Accruals component of the Earnings Quality model"
+  },
+  {
+   "id": "accrual_factor_score_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile rank for Accruals component in the prior year, reflecting earnings quality related to accruals (higher score is better)"
+  },
+  {
+   "id": "accrual_factor_score_previous_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Prior quarter percentile rank (1–100) for the Accruals component"
+  },
+  {
+   "id": "asset_utilization_ratio_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Amount of revenue generated per unit of assets during the last quarter; Net Revenue divided by Total Assets"
+  },
+  {
+   "id": "asset_utilization_ratio_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Amount of revenue generated per unit of assets during the last fiscal year; calculated as Net Revenue divided by Total Assets"
+  },
+  {
+   "id": "asset_utilization_ratio_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Amount of revenue generated per unit of assets during the prior fiscal quarter; Net Revenue divided by Total Assets"
+  },
+  {
+   "id": "asset_utilization_ratio_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Asset turnover ratio for the prior fiscal year, calculated as Net Revenue divided by Total Assets"
+  },
+  {
+   "id": "asset_utilization_ratio_trailing_4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Amount of revenue generated per unit of assets over the trailing four quarters; Net Revenue divided by Total Assets"
+  },
+  {
+   "id": "auditor_switch_indicator_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether the company changed its external auditor during the last fiscal year (1 = yes, 0 = no)"
+  },
+  {
+   "id": "auditor_switch_indicator_prev_year_backfill",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator (1/0) whether the company changed its auditing firm in the preceding year"
+  },
+  {
+   "id": "average_net_operating_assets_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Average net operating assets in millions for the last completed fiscal quarter"
+  },
+  {
+   "id": "book_value_per_share_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Book value per share at the end of the last completed quarter: total book value divided by shares outstanding"
+  },
+  {
+   "id": "book_value_per_share_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Book value per share at the end of the last completed fiscal year: total book value divided by shares outstanding"
+  },
+  {
+   "id": "book_value_per_share_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Book value per share at the end of the prior quarter: total book value divided by shares outstanding"
+  },
+  {
+   "id": "book_value_per_share_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Book value per share at the end of the prior fiscal year: total book value divided by shares outstanding"
+  },
+  {
+   "id": "cashflow_factor_score_change_1d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Cash Flow component percentile rank over 1 day"
+  },
+  {
+   "id": "cashflow_factor_score_change_1fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in Cash Flow component percentile rank over 1 fiscal year"
+  },
+  {
+   "id": "cashflow_factor_score_change_1q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in percentile rank for Cash Flow factors over one quarter (higher scores indicate stronger cash flow quality)"
+  },
+  {
+   "id": "cashflow_factor_score_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current percentile rank (1–100) for the Cash Flow component of the Earnings Quality model"
+  },
+  {
+   "id": "cashflow_factor_score_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prior quarter percentile rank (1–100) for the Cash Flow component"
+  },
+  {
+   "id": "cashflow_factor_score_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank for Cash Flow component in the prior year, assessing quality of reported cash flows (higher is better)"
+  },
+  {
+   "id": "dividend_yield_percent_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current dividend yield: dividends per share as a percentage of market price per share, representing annualized yield at the most recent period"
+  },
+  {
+   "id": "dividends_per_share_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total cash dividends declared per share for both common and preferred stock during the last completed quarter"
+  },
+  {
+   "id": "dividends_per_share_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total cash dividends declared per share for both common and preferred stock during the last completed fiscal year"
+  },
+  {
+   "id": "dividends_per_share_trailing_4q",
+   "type": "MATRIX",
+   "coverage": 0.9932,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total cash dividends declared per share for both common and preferred stock over the trailing four quarters"
+  },
+  {
+   "id": "earnings_quality_rank_change_1d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in Earnings Quality region percentile rank over 1 day"
+  },
+  {
+   "id": "earnings_quality_rank_change_1fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in Earnings Quality region percentile rank over 1 fiscal year"
+  },
+  {
+   "id": "earnings_quality_rank_change_1q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in Earnings Quality region percentile rank over 1 quarter"
+  },
+  {
+   "id": "earnings_quality_raw_score_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Current raw Earnings Quality Region Rank before beta neutralization; higher scores mean better earnings quality compared to other stocks in the country"
+  },
+  {
+   "id": "earnings_quality_raw_score_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted (raw) Earnings Quality Region Rank for the prior quarter, before statistical normalization"
+  },
+  {
+   "id": "earnings_quality_region_rank_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Current Earnings Quality percentile rank (1–100) within the region; higher is better"
+  },
+  {
+   "id": "earnings_quality_region_rank_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prior quarter Earnings Quality percentile rank (1–100) within the region"
+  },
+  {
+   "id": "earnings_quality_region_rank_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Percentile rank of Earnings Quality in the region for the prior year, where 100 is highest quality and 1 is lowest"
+  },
+  {
+   "id": "free_cash_flow_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Free Cash Flow generated in the last quarter (CFO minus Capital Expenditures), reported in millions of local currency"
+  },
+  {
+   "id": "free_cash_flow_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Free cash flow (in millions of local currency) for the last completed fiscal year: operating cash flow minus capital expenditures"
+  },
+  {
+   "id": "free_cash_flow_trailing_4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Free Cash Flow generated over the trailing four quarters (CFO minus Capital Expenditures), reported in millions of local currency"
+  },
+  {
+   "id": "free_cash_flow_year_to_date",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Year-to-date free cash flow (in millions of local currency): operating cash flow minus capital expenditures for the current fiscal year to date"
+  },
+  {
+   "id": "gross_profit_margin_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Gross margin percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "gross_profit_margin_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Gross margin percentage for the most recent fiscal year"
+  },
+  {
+   "id": "gross_profit_margin_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Gross margin percentage for the prior fiscal quarter"
+  },
+  {
+   "id": "gross_profit_margin_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Gross margin percentage for the previous fiscal year"
+  },
+  {
+   "id": "gross_profit_margin_trailing_4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Gross margin percentage over the trailing four quarters"
+  },
+  {
+   "id": "leverage_ratio_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Long-term Debt to Total Equity ratio for the last quarter; higher means more financial leverage"
+  },
+  {
+   "id": "leverage_ratio_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term Debt to Total Equity ratio for the last year; higher ratio indicates greater leverage"
+  },
+  {
+   "id": "leverage_ratio_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of long-term debt to total equity for the prior fiscal quarter, indicating financial leverage"
+  },
+  {
+   "id": "leverage_ratio_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of long-term debt to total equity for the prior fiscal year, indicating financial leverage"
+  },
+  {
+   "id": "market_to_book_ratio_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current price-to-book ratio: market price per share divided by book value per share for the most recent period"
+  },
+  {
+   "id": "market_to_book_ratio_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-book ratio at the end of the last completed quarter"
+  },
+  {
+   "id": "market_to_book_ratio_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-book ratio at the end of the last completed fiscal year"
+  },
+  {
+   "id": "market_to_book_ratio_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-book ratio as of the prior quarter: market price per share divided by book value per share at prior quarter end"
+  },
+  {
+   "id": "market_to_book_ratio_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-book ratio as of the prior fiscal year end"
+  },
+  {
+   "id": "market_to_sales_ratio_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current price-to-sales ratio: market price per share divided by sales per share for the most recent period"
+  },
+  {
+   "id": "market_to_sales_ratio_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-sales ratio at the end of the last completed fiscal year"
+  },
+  {
+   "id": "market_to_sales_ratio_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-sales ratio as of the prior quarter: market price per share divided by sales per share at prior quarter end"
+  },
+  {
+   "id": "market_to_sales_ratio_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-sales ratio as of the prior fiscal year end"
+  },
+  {
+   "id": "mdl31_acc_chg_1_day",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Change in accruals component percentile rank for the company compared to the prior day; 100 is largest positive change, 1 is largest negative change"
+  },
+  {
+   "id": "mdl31_acc_chg_1_fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 21,
+   "description": "1-year change in the Accruals component percentile rank (1–100; higher is better)"
+  },
+  {
+   "id": "mdl31_acc_chg_1_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in Accruals Component percentile rank over the past quarter (region-relative, 1=worst, 100=best)"
+  },
+  {
+   "id": "mdl31_acc_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Percentile score (1-100) for Accruals Component relative to region for prior quarter; higher is better earning quality"
+  },
+  {
+   "id": "mdl31_ass_tvr_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 18,
+   "description": "Revenue generated per unit of total assets (Asset Turnover = Net Revenue/Total Assets) for the last year"
+  },
+  {
+   "id": "mdl31_ass_tvr_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Revenue generated per unit of total assets (Asset Turnover = Net Revenue/Total Assets) for the prior quarter"
+  },
+  {
+   "id": "mdl31_ass_tvr_t4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Revenue generated per unit of total assets (Asset Turnover = Net Revenue/Total Assets) over the trailing 4 quarters"
+  },
+  {
+   "id": "mdl31_bv_share_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 21,
+   "description": "Book value per share for the last completed fiscal quarter, calculated as total shareholder equity divided by shares outstanding"
+  },
+  {
+   "id": "mdl31_bv_share_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 17,
+   "description": "Book value per share as of last completed fiscal year (book value divided by shares outstanding)"
+  },
+  {
+   "id": "mdl31_bv_share_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 13,
+   "alphaCount": 35,
+   "description": "Book value per share in the prior quarter, i.e., book value divided by total shares outstanding"
+  },
+  {
+   "id": "mdl31_bv_share_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Book value per share as reported for the previous fiscal year"
+  },
+  {
+   "id": "mdl31_cf_chg_1_day",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 21,
+   "description": "1-day change in percentile rank for Cash Flow component of the Earnings Quality Model"
+  },
+  {
+   "id": "mdl31_cf_chg_1_fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Change in percentile rank over prior fiscal year for cash flow factors in Earnings Quality Model"
+  },
+  {
+   "id": "mdl31_cf_chg_1_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 27,
+   "description": "Change in percentile rank over the last quarter for the cash flow factors of Earnings Quality Model"
+  },
+  {
+   "id": "mdl31_cf_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prior quarter percentile rank reflecting cash flow factors of the Earnings Quality Model for the company; 100 is best, 1 is worst"
+  },
+  {
+   "id": "mdl31_cf_wc_mm_last_qtr",
+   "type": "MATRIX",
+   "coverage": 0.7032,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Net change in cash from changes in working capital for the last quarter, in millions"
+  },
+  {
+   "id": "mdl31_cf_wc_mm_last_y",
+   "type": "MATRIX",
+   "coverage": 0.7689,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net cash change from working capital in the last fiscal year, expressed in millions of local currency"
+  },
+  {
+   "id": "mdl31_cf_wc_mm_t4q",
+   "type": "MATRIX",
+   "coverage": 0.6959,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Net change in cash resulting from changes in working capital over trailing four quarters, expressed in millions of currency units"
+  },
+  {
+   "id": "mdl31_cf_wc_mm_ytd",
+   "type": "MATRIX",
+   "coverage": 0.7498,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-to-date net change in cash from changes in working capital, measured in millions"
+  },
+  {
+   "id": "mdl31_dps_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Total cash dividends per share declared in the last fiscal year, including both common and preferred shares"
+  },
+  {
+   "id": "mdl31_dps_t4q",
+   "type": "MATRIX",
+   "coverage": 0.9935,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total cash dividends declared over the trailing four quarters, on both common and preferred stock, per share"
+  },
+  {
+   "id": "mdl31_dse_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 29,
+   "description": "Ratio of long-term debt to total equity for the last quarter; higher values indicate greater leverage"
+  },
+  {
+   "id": "mdl31_dse_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Ratio of long-term debt to total equity for the last fiscal year, measuring company leverage"
+  },
+  {
+   "id": "mdl31_dse_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of long-term debt to total equity for the prior quarter, measuring company leverage for that period"
+  },
+  {
+   "id": "mdl31_dse_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 8,
+   "description": "Ratio of long-term debt to total equity for the prior year; higher values indicate greater leverage"
+  },
+  {
+   "id": "mdl31_dty_mm_fcf",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Year-to-date free cash flow (operations minus capex), in millions"
+  },
+  {
+   "id": "mdl31_dy_pct_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Current dividend yield percentage, calculated as dividends per share divided by current share price"
+  },
+  {
+   "id": "mdl31_erq_raw_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Prior quarter Earnings Quality region rank before beta neutralization (1–100, higher = better)"
+  },
+  {
+   "id": "mdl31_erq_re_rk_chg_1_day",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 10,
+   "description": "1-day change in the regional percentile rank based on the Earnings Quality Model, comparing the security to all other securities in the same region"
+  },
+  {
+   "id": "mdl31_erq_re_rk_chg_1_fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 11,
+   "description": "Change in Earnings Quality Region Rank over the past fiscal year (1=worst, 100=best improvement)"
+  },
+  {
+   "id": "mdl31_erq_re_rk_chg_1_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 40,
+   "description": "Change in Earnings Quality Region Rank over the past quarter (1=worst, 100=best improvement)"
+  },
+  {
+   "id": "mdl31_erq_re_rk_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank of earnings quality for the prior quarter compared to peers in the same region, with higher scores signaling better earnings quality"
+  },
+  {
+   "id": "mdl31_fcf_mm_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Free Cash Flow in millions for the last completed fiscal quarter, calculated as cash from operations minus capital expenditures"
+  },
+  {
+   "id": "mdl31_fcf_mm_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Free Cash Flow in millions for the most recently completed fiscal year, calculated as cash from operations minus capital expenditures"
+  },
+  {
+   "id": "mdl31_gm_pct_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "Gross margin percentage for the last completed fiscal quarter"
+  },
+  {
+   "id": "mdl31_gm_pct_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Gross margin percentage for the last fiscal year"
+  },
+  {
+   "id": "mdl31_gm_pct_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Gross margin percentage for the prior (most recent previous) fiscal quarter"
+  },
+  {
+   "id": "mdl31_gm_pct_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 5,
+   "description": "Gross margin percentage for the prior year"
+  },
+  {
+   "id": "mdl31_gm_pct_t4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 14,
+   "description": "Gross margin percentage for the trailing four quarters"
+  },
+  {
+   "id": "mdl31_gva",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Average net operating assets in millions for the last quarter"
+  },
+  {
+   "id": "mdl31_oe_chg_1_day",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 27,
+   "description": "1-day change in the Operating Efficiency component percentile rank of the Earnings Quality model (1–100; higher is better)"
+  },
+  {
+   "id": "mdl31_oe_chg_1_fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "1-year change in the Operating Efficiency component percentile rank of the Earnings Quality model (1–100; higher is better)"
+  },
+  {
+   "id": "mdl31_oe_chg_1_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Change in the Operating Efficiency Component percentile rank compared to the prior quarter; indicates improvement or deterioration in operating efficiency"
+  },
+  {
+   "id": "mdl31_oe_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prior quarter percentile rank reflecting operating efficiency factors of the Earnings Quality Model for the company; 100 is best, 1 is worst"
+  },
+  {
+   "id": "mdl31_oe_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Prior year percentile rank reflecting operating efficiency factors of the Earnings Quality Model for the company; 100 is best, 1 is worst"
+  },
+  {
+   "id": "mdl31_om_pct_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 26,
+   "alphaCount": 60,
+   "description": "Operating margin percentage for the last quarter"
+  },
+  {
+   "id": "mdl31_om_pct_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 28,
+   "description": "Operating profit margin for the last completed fiscal year; operating income divided by revenue, as a percentage"
+  },
+  {
+   "id": "mdl31_om_pct_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Operating margin percentage for the prior quarter"
+  },
+  {
+   "id": "mdl31_om_pct_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Operating margin percentage for the prior year"
+  },
+  {
+   "id": "mdl31_om_pct_t4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 27,
+   "alphaCount": 55,
+   "description": "Operating margin percentage measured over the trailing four quarters"
+  },
+  {
+   "id": "mdl31_pb_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 30,
+   "description": "Current price to book ratio"
+  },
+  {
+   "id": "mdl31_pb_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Price-to-book ratio for the last fiscal quarter"
+  },
+  {
+   "id": "mdl31_pb_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Price-to-book ratio for the last fiscal year"
+  },
+  {
+   "id": "mdl31_pb_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Price-to-book ratio for the prior quarter"
+  },
+  {
+   "id": "mdl31_pb_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Prior year price-to-book ratio"
+  },
+  {
+   "id": "mdl31_pricesales_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 20,
+   "description": "Current price-to-sales ratio"
+  },
+  {
+   "id": "mdl31_pricesales_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 13,
+   "description": "Price-to-sales ratio for the last quarter"
+  },
+  {
+   "id": "mdl31_pricesales_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-sales ratio for the last fiscal year"
+  },
+  {
+   "id": "mdl31_pricesales_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Prior quarter price-to-sales ratio"
+  },
+  {
+   "id": "mdl31_pricesales_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-sales ratio for the prior year"
+  },
+  {
+   "id": "mdl31_q4t_mm_fcf",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 9,
+   "description": "Free cash flow from operations (CF from Ops minus capex) summed over the trailing four quarters, in millions of local currency"
+  },
+  {
+   "id": "mdl31_roe_pct_last_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 29,
+   "alphaCount": 60,
+   "description": "Return on equity percentage for the last fiscal quarter"
+  },
+  {
+   "id": "mdl31_roe_pct_last_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Return on equity percentage for the last completed fiscal year"
+  },
+  {
+   "id": "mdl31_roe_pct_prior_qtr",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Return on equity percentage for the prior quarter"
+  },
+  {
+   "id": "mdl31_roe_pct_prior_y",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Return on equity percentage for the prior year"
+  },
+  {
+   "id": "mdl31_roe_pct_t4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Return on equity over the trailing four quarters, as a percentage"
+  },
+  {
+   "id": "operating_profit_margin_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Operating margin percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "operating_profit_margin_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Operating margin percentage for the most recent fiscal year"
+  },
+  {
+   "id": "operating_profit_margin_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Operating margin percentage for the prior fiscal quarter"
+  },
+  {
+   "id": "operating_profit_margin_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating margin percentage for the previous fiscal year"
+  },
+  {
+   "id": "operating_profit_margin_trailing_4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 18,
+   "description": "Operating margin percentage over the trailing four quarters"
+  },
+  {
+   "id": "operational_efficiency_score_change_1d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "1 day change in percentile rank for Operating Efficiency factors in the Earnings Quality Model (higher is more operationally efficient vs. peers)"
+  },
+  {
+   "id": "operational_efficiency_score_change_1fy",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "1 year change in percentile rank for Operating Efficiency factors in the Earnings Quality Model"
+  },
+  {
+   "id": "operational_efficiency_score_change_1q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "1 quarter change in percentile rank for Operating Efficiency factors in the Earnings Quality Model"
+  },
+  {
+   "id": "operational_efficiency_score_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Current percentile rank (1–100) for the Operating Efficiency component of the Earnings Quality model"
+  },
+  {
+   "id": "operational_efficiency_score_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prior quarter percentile rank (1–100) for the Operating Efficiency component"
+  },
+  {
+   "id": "operational_efficiency_score_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prior year percentile rank (1–100) for the Operating Efficiency component"
+  },
+  {
+   "id": "return_on_equity_percent_last_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Return on equity percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "return_on_equity_percent_last_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return on equity percentage for the most recent fiscal year"
+  },
+  {
+   "id": "return_on_equity_percent_prev_quarter",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return on equity percentage for the prior fiscal quarter"
+  },
+  {
+   "id": "return_on_equity_percent_prev_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return on equity percentage for the previous fiscal year"
+  },
+  {
+   "id": "return_on_equity_percent_trailing_4q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Return on equity percentage over the trailing four quarters"
+  },
+  {
+   "id": "star_eq_accruals_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 29,
+   "description": "Current percentile rank for Accruals Component of Earnings Quality Model; higher scores indicate healthier accruals structure"
+  },
+  {
+   "id": "star_eq_cashflow_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Current percentile score (1-100) for Cash Flow factors, region-relative; higher is better earnings quality"
+  },
+  {
+   "id": "star_eq_ope_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 31,
+   "alphaCount": 61,
+   "description": "Current value of percentile rank reflecting Operating Efficiency factors in Earnings Quality; 100=highest rated stock"
+  },
+  {
+   "id": "star_eq_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 13,
+   "alphaCount": 18,
+   "description": "Earnings Quality region rank before beta neutralization (1–100, higher = better) for the current period"
+  },
+  {
+   "id": "star_eq_region_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 18,
+   "description": "Current percentile rank for earnings quality, comparing the security to all others in the same region, higher scores mean better earnings quality"
+  },
+  {
+   "id": "working_capital_cashflow_last_quarter",
+   "type": "MATRIX",
+   "coverage": 0.703,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net change in cash resulting from changes in working capital over the last completed quarter; measured in millions of local currency"
+  },
+  {
+   "id": "working_capital_cashflow_last_year",
+   "type": "MATRIX",
+   "coverage": 0.7689,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net change in cash due to changes in working capital for the last completed fiscal year, measured in millions of local currency"
+  },
+  {
+   "id": "working_capital_cashflow_trailing_4q",
+   "type": "MATRIX",
+   "coverage": 0.6956,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net change in cash from working capital over the trailing four quarters, reported in millions"
+  },
+  {
+   "id": "working_capital_cashflow_ytd",
+   "type": "MATRIX",
+   "coverage": 0.7498,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Year-to-date net change in cash from changes in working capital, reported in millions"
+  }
+ ],
+ "count": 149,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 7,
+ "platform_count": 156,
+ "complete": true,
+ "pages_fetched": 4
+}

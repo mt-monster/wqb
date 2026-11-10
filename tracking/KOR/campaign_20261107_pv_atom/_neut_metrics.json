@@ -1,0 +1,98 @@
+{
+ "total": 4,
+ "success": 4,
+ "failed": 0,
+ "results": [
+  {
+   "alpha_id": "d5WP3Ew2",
+   "sharpe": 1.08,
+   "fitness": 0.8,
+   "turnover": 0.1293,
+   "two_year_sharpe": 1.06,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.14,
+   "investability_sharpe": 1.1,
+   "investability_fitness": 0.84,
+   "margin": 0.001096,
+   "returns": 0.0708,
+   "drawdown": 0.1042,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 3,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 1.0185
+  },
+  {
+   "alpha_id": "gJe0gQ9m",
+   "sharpe": 0.94,
+   "fitness": 0.62,
+   "turnover": 0.137,
+   "two_year_sharpe": 1.17,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.01,
+   "investability_sharpe": 0.93,
+   "investability_fitness": 0.64,
+   "margin": 0.00086,
+   "returns": 0.0589,
+   "drawdown": 0.0954,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 3,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 0.9894
+  },
+  {
+   "alpha_id": "58E2AkpX",
+   "sharpe": 1.67,
+   "fitness": 1.05,
+   "turnover": 0.1831,
+   "two_year_sharpe": 2.12,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.42,
+   "investability_sharpe": 1.65,
+   "investability_fitness": 1.18,
+   "margin": 0.000797,
+   "returns": 0.0729,
+   "drawdown": 0.0529,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 0,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 0.988
+  },
+  {
+   "alpha_id": "pwdpMKR6",
+   "sharpe": 1.85,
+   "fitness": 1.24,
+   "turnover": 0.1715,
+   "two_year_sharpe": 1.94,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.54,
+   "investability_sharpe": 1.74,
+   "investability_fitness": 1.27,
+   "margin": 0.000893,
+   "returns": 0.0766,
+   "drawdown": 0.048,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 0,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 0.9405
+  }
+ ],
+ "prescreen": {
+  "READY": [],
+  "REVIEW": [
+   "d5WP3Ew2",
+   "58E2AkpX",
+   "pwdpMKR6"
+  ],
+  "REJECT": [
+   "gJe0gQ9m"
+  ]
+ }
+}

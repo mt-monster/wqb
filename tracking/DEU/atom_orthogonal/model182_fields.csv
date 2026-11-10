@@ -1,0 +1,8 @@
+id,type,cov,uc,ac,desc
+mdl182_ebmearningsrevision,VECTOR,0.1876,1,1,Momentum score based on key executive and board membership network; specifically related to earnings revision activity
+mdl182_geom_6m,VECTOR,0.1876,0,0,Geographic Momentum score; reflecting momentum linked to geographic exposures and co-movements over a 6-month lookback
+mdl182_industry,VECTOR,0.1876,0,0,Daily point-in-time sub-industry classification of the company; used for sector or industry groupings and neutralization purposes
+mdl182_m6_mna,VECTOR,0.1876,1,1,Sell-side Analyst Network Momentum score; indicating momentum effects propagated via analyst linkages over a 6-month lookback
+mdl182_m6_msb,VECTOR,0.1876,0,0,Business Segment Momentum score; measuring momentum based on business segment linkages over a 6-month lookback
+mdl182_mktcap,VECTOR,0.1876,1,2,Market capitalization of the company in USD
+mdl182_omen,VECTOR,0.1876,0,0,Composite network momentum score that combines multiple network-based momentum sub-factors for the company

@@ -1,0 +1,175 @@
+{
+ "success": true,
+ "results": [
+  {
+   "title": "【Alpha灵感】行业轮动的黄金律，日内动量与隔夜反转",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXuA2RfSA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAf9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzU3MjM2NzY1OTYyNDctLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOCVBMSU4QyVFNCVCOCU5QSVFOCVCRCVBRSVFNSU4QSVBOCVFNyU5QSU4NCVFOSVCQiU4NCVFOSU4NyU5MSVFNSVCRSU4Qi0lRTYlOTclQTUlRTUlODYlODUlRTUlOEElQTglRTklODclOEYlRTQlQjglOEUlRTklOUElOTQlRTUlQTQlOUMlRTUlOEYlOEQlRTglQkQlQUMGOwhUOg5zZWFyY2hfaWRJIilhOGVjM2U0OC02NTQ0LTQ5YTctYTgwNC03NzMxYWE0ZDhiZTcGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHml6XlhoXliqjph48GOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--049244cd094e4a72251971e9d10815e9c83d9c65",
+   "snippet": "行业轮动的黄金律：日内动量与隔夜反转 作者：魏建榕、高子剑 概述：该文章从不同时段的不同交易者行为模式会有差异出发，探索得到在行业层面将15个日内收益率相加得到的日内涨跌幅因子M0呈现动量效应，将15个隔夜收益率相加得到的日内涨跌幅因子M1呈现反转效应，将两个因子按权重在0",
+   "votes": 1,
+   "comments": 0,
+   "author": "YW84713",
+   "date": "2025-10-18T14:32:48Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "对当日收益率进行排序",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX%2Fuya2SI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzgzMTgwMDI0NzA1NTEtJUU1JUFGJUI5JUU1JUJEJTkzJUU2JTk3JUE1JUU2JTk0JUI2JUU3JTlCJThBJUU3JThFJTg3JUU4JUJGJTlCJUU4JUExJThDJUU2JThFJTkyJUU1JUJBJThGBjsIVDoOc2VhcmNoX2lkSSIpYThlYzNlNDgtNjU0NC00OWE3LWE4MDQtNzczMWFhNGQ4YmU3BjsIRjoJcmFua2kHOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5pel5YaF5Yqo6YePBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--5efbeb76ca314942764d9f663a980733e259cfcc",
+   "snippet": "1. 收益特征 短期反转效应 ：捕捉日内收益的横截面差异 排序稳定性 ：使用rank而非原始值，减少极端值影响日内动量/反转 ：取决于市场微观结构",
+   "votes": 34,
+   "comments": 0,
+   "author": "QP72475",
+   "date": "2026-02-11T02:55:15Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】行业维度动量因子优化",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX27FVvhE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAb9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTk1MDkxNzkxNzc4NzktLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOCVBMSU4QyVFNCVCOCU5QSVFNyVCQiVCNCVFNSVCQSVBNiVFNSU4QSVBOCVFOSU4NyU4RiVFNSU5QiVBMCVFNSVBRCU5MCVFNCVCQyU5OCVFNSU4QyU5NgY7CFQ6DnNlYXJjaF9pZEkiKWE4ZWMzZTQ4LTY1NDQtNDlhNy1hODA0LTc3MzFhYTRkOGJlNwY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeaXpeWGheWKqOmHjwY7CFQ6EnJlc3VsdHNfY291bnRpAugD--eae4d73388a849024a70e33e99a8a5888a9e1f81",
+   "snippet": "量日内交易情绪，加总窗口期内日度日内交易情绪，衡量窗口期内日内交易情绪特征，构造方式如下： 隔夜交易情绪动量因子OTSM，窗口期较长，多头效应显著；日内交易情绪动量因子 DTSM，窗口期较短，空头效应显著。聚合隔夜与日内交易情绪动量因子，构建交易情绪动",
+   "votes": 21,
+   "comments": 6,
+   "author": "JT89676",
+   "date": "2023-12-02T14:25:53Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "对收益率在全市场排序，将绝对收益转化为横截面相对排序",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXSW%2FzoyY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAi4BaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQyNDg1NjA1NjgxNDMxLSVFNSVBRiVCOSVFNiU5NCVCNiVFNyU5QiU4QSVFNyU4RSU4NyVFNSU5QyVBOCVFNSU4NSVBOCVFNSVCOCU4MiVFNSU5QyVCQSVFNiU4RSU5MiVFNSVCQSU4Ri0lRTUlQjAlODYlRTclQkIlOUQlRTUlQUYlQjklRTYlOTQlQjYlRTclOUIlOEElRTglQkQlQUMlRTUlOEMlOTYlRTQlQjglQkElRTYlQTglQUElRTYlODglQUElRTklOUQlQTIlRTclOUIlQjglRTUlQUYlQjklRTYlOEUlOTIlRTUlQkElOEYGOwhUOg5zZWFyY2hfaWRJIilhOGVjM2U0OC02NTQ0LTQ5YTctYTgwNC03NzMxYWE0ZDhiZTcGOwhGOglyYW5raQk6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHml6XlhoXliqjph48GOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--11c7cadbdb7cd002d88451630a7e38b06a639a11",
+   "snippet": "1. 收益特征 短期反转效应 ：捕捉日内收益的横截面差异 排序稳定性 ：使用rank而非原始值，减少极端值影响日内动量/反转 ：取决于市场微观结构",
+   "votes": 30,
+   "comments": 1,
+   "author": "QP72475",
+   "date": "2026-08-05T10:48:47Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  },
+  {
+   "title": "高收益股票排名靠后，低收益股票排名靠前",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXE%2FtCKic6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDMwNjI0NjU4NjAzNzUtJUU5JUFCJTk4JUU2JTk0JUI2JUU3JTlCJThBJUU4JTgyJUExJUU3JUE1JUE4JUU2JThFJTkyJUU1JTkwJThEJUU5JTlEJUEwJUU1JTkwJThFLSVFNCVCRCU4RSVFNiU5NCVCNiVFNyU5QiU4QSVFOCU4MiVBMSVFNyVBNSVBOCVFNiU4RSU5MiVFNSU5MCU4RCVFOSU5RCVBMCVFNSU4OSU4RAY7CFQ6DnNlYXJjaF9pZEkiKWE4ZWMzZTQ4LTY1NDQtNDlhNy1hODA0LTc3MzFhYTRkOGJlNwY7CEY6CXJhbmtpCjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeaXpeWGheWKqOmHjwY7CFQ6EnJlc3VsdHNfY291bnRpAugD--8f76ebdb6013fad65c93c343b2dffa9616de27b5",
+   "snippet": "1. 收益特征 短期反转效应 ：捕捉日内收益的横截面差异 排序稳定性 ：使用rank而非原始值，减少极端值影响日内动量/反转 ：取决于市场微观结构",
+   "votes": 31,
+   "comments": 0,
+   "author": "QP72475",
+   "date": "2026-08-28T10:13:20Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  },
+  {
+   "title": "突破Alpha瓶颈：4大核心指标的实战优化策略",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXWr3Glx46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzM2MzcyMjMxOTMyMzktJUU3JUFBJTgxJUU3JUEwJUI0QWxwaGElRTclOTMlQjYlRTklQTIlODgtNCVFNSVBNCVBNyVFNiVBMCVCOCVFNSVCRiU4MyVFNiU4QyU4NyVFNiVBMCU4NyVFNyU5QSU4NCVFNSVBRSU5RSVFNiU4OCU5OCVFNCVCQyU5OCVFNSU4QyU5NiVFNyVBRCU5NiVFNyU5NSVBNQY7CFQ6DnNlYXJjaF9pZEkiKWE4ZWMzZTQ4LTY1NDQtNDlhNy1hODA0LTc3MzFhYTRkOGJlNwY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeaXpeWGheWKqOmHjwY7CFQ6EnJlc3VsdHNfY291bnRpAugD--439b9b548767fcacbd79a9776280d2089febdb7d",
+   "snippet": "波动率锚定 ：将仓位上限与市场VIX指数绑定（VIX>25时仓位≤60%） 多周期复合 ：融合日内动量（持仓2h）与周均值回归（持仓5d），降低单策略波动 止损重构 ：采用“动态回撤止损”（单日回撤＞3%则当日不再开新仓）",
+   "votes": 2,
+   "comments": 0,
+   "author": "HJ88260",
+   "date": "2025-07-22T15:32:35Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】日内交易对隔夜涨跌的过度反应",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXCVNKbxc6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjU3NjY3NTU3NjQ2MzEtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNiU5NyVBNSVFNSU4NiU4NSVFNCVCQSVBNCVFNiU5OCU5MyVFNSVBRiVCOSVFOSU5QSU5NCVFNSVBNCU5QyVFNiVCNiVBOCVFOCVCNyU4QyVFNyU5QSU4NCVFOCVCRiU4NyVFNSVCQSVBNiVFNSU4RiU4RCVFNSVCQSU5NAY7CFQ6DnNlYXJjaF9pZEkiKWE4ZWMzZTQ4LTY1NDQtNDlhNy1hODA0LTc3MzFhYTRkOGJlNwY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeaXpeWGheWKqOmHjwY7CFQ6EnJlc3VsdHNfY291bnRpAugD--afd3a43d8794820cac2a4d50d879d32eb4ae28d0",
+   "snippet": "如果隔夜是涨，那么日内的跌可能表现了日内套利者的修正，用high/close - 1和low/open - 1来表示 反之如果隔夜跌，用low/close - 1和high/open - 1表示日内的涨日内的涨或者跌越大，反转就可能越猛，表达式如下：",
+   "votes": 8,
+   "comments": 5,
+   "author": "ZZ90023",
+   "date": "2024-08-20T03:29:41Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "Alpha 灵感分享：日内振幅与缩尾量能冲击",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXy3LjVSQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzk5NTEzMDY3NzEyMjMtQWxwaGEtJUU3JTgxJUI1JUU2JTg0JTlGJUU1JTg4JTg2JUU0JUJBJUFCLSVFNiU5NyVBNSVFNSU4NiU4NSVFNiU4QyVBRiVFNSVCOSU4NSVFNCVCOCU4RSVFNyVCQyVBOSVFNSVCMCVCRSVFOSU4NyU4RiVFOCU4MyVCRCVFNSU4NiVCMiVFNSU4NyVCQgY7CFQ6DnNlYXJjaF9pZEkiKWE4ZWMzZTQ4LTY1NDQtNDlhNy1hODA0LTc3MzFhYTRkOGJlNwY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeaXpeWGheWKqOmHjwY7CFQ6EnJlc3VsdHNfY291bnRpAugD--a012683db7316359818d64bab2aae566931c9603",
+   "snippet": "分享一个非常实用的纯量价高频底盘。 核心逻辑： 抛弃长周期的均线（斩断自相关性），直接去抓**“当日多空分歧极其剧烈（日内振幅大），且伴随主力资金异动（放量），但近期总体超跌”**的标的。 公式伪代码（蓝图架构）： Plaintext",
+   "votes": 11,
+   "comments": 14,
+   "author": "NX65977",
+   "date": "2026-04-23T08:18:44Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "[Alpha 灵感] 20日区间收益率动量/反转因子改进思路",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXHE1NlSA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAflodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzU4MjU2MTkxMTUwMzEtLUFscGhhLSVFNyU4MSVCNSVFNiU4NCU5Ri0yMCVFNiU5NyVBNSVFNSU4QyVCQSVFOSU5NyVCNCVFNiU5NCVCNiVFNyU5QiU4QSVFNyU4RSU4NyVFNSU4QSVBOCVFOSU4NyU4Ri0lRTUlOEYlOEQlRTglQkQlQUMlRTUlOUIlQTAlRTUlQUQlOTAlRTYlOTQlQjklRTglQkYlOUIlRTYlODAlOUQlRTglQjclQUYGOwhUOg5zZWFyY2hfaWRJIilhOGVjM2U0OC02NTQ0LTQ5YTctYTgwNC03NzMxYWE0ZDhiZTcGOwhGOglyYW5raQ46C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHml6XlhoXliqjph48GOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--c7fba6f932c6cb5b988a6918b356f4f304e6f769",
+   "snippet": "20天的收盘价格，在brain platform中可以通过ts_delay实现。20日区间收益率动量/反转因子>1时表明过去20日具备价格上涨趋势，反之是下行趋势。 通过brain platform复现该因子的表达式，可以得到:",
+   "votes": 0,
+   "comments": 0,
+   "author": "ZZ75777",
+   "date": "2025-10-23T07:55:54Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "量化金融考点：Parkinson 波动率，只用日内高低价",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXVKTWsCc6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAehodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDM2NDA0Njg4MjExNDMtJUU5JTg3JThGJUU1JThDJTk2JUU5JTg3JTkxJUU4JTlFJThEJUU4JTgwJTgzJUU3JTgyJUI5LVBhcmtpbnNvbi0lRTYlQjMlQTIlRTUlOEElQTglRTclOEUlODctJUU1JThGJUFBJUU3JTk0JUE4JUU2JTk3JUE1JUU1JTg2JTg1JUU5JUFCJTk4JUU0JUJEJThFJUU0JUJCJUI3BjsIVDoOc2VhcmNoX2lkSSIpYThlYzNlNDgtNjU0NC00OWE3LWE4MDQtNzczMWFhNGQ4YmU3BjsIRjoJcmFua2kPOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5pel5YaF5Yqo6YePBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--74b4f309b6eab6ad485eb9e889326b2624cb4656",
+   "snippet": "区间波动率 ，核心输入就是 当日最高价 high、当日最低价 low ，不需要开盘价、收盘价。它假设价格服从几何布朗运动，利用日内价格区间来估计波动率，比单纯依靠收盘价的波动率估计效率更高。 📌 容易混淆的点 Parkinson：仅",
+   "votes": 28,
+   "comments": 0,
+   "author": "MG88592",
+   "date": "2026-09-21T12:06:37Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】隔夜与日内拉锯战暗藏的信息",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXvdboKhQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjIxNzQ1Mjc1NjkzMDMtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5QyVFNCVCOCU4RSVFNiU5NyVBNSVFNSU4NiU4NSVFNiU4QiU4OSVFOSU5NCVBRiVFNiU4OCU5OCVFNiU5QSU5NyVFOCU5NyU4RiVFNyU5QSU4NCVFNCVCRiVBMSVFNiU4MSVBRgY7CFQ6DnNlYXJjaF9pZEkiKTRkOTkzY2Q4LTU5YmItNDNlMS1hNjdkLTkxZWMxODkzZGNlNgY7CEY6CXJhbmtpBjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeaXpeWGheWKqOmHjwY7CFQ6EnJlc3VsdHNfY291bnRpAugD--7e4b40bc873c5c50d373e3cb62a9c34be9c7adae",
+   "snippet": "Idea: 在一个交易者的拉锯战中，隔夜交易者与日内交易者会产生某种竞争，这种竞争会对未来收益产生一定的影响，同时给市场带来某种信息，日内交易者会根据隔夜回报的信息决定交易策略，而过度反应的日内交易会导致隔夜回报的扭曲，造成未来收益的下降，这",
+   "votes": 13,
+   "comments": 2,
+   "author": "WH24469",
+   "date": "2024-03-19T05:25:08Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】VWAP：日内交易的圣杯",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXT4%2BMYhE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAalodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTkxMTQ5NjI2NjkzMzUtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLVZXQVAtJUU2JTk3JUE1JUU1JTg2JTg1JUU0JUJBJUE0JUU2JTk4JTkzJUU3JTlBJTg0JUU1JTlDJUEzJUU2JTlEJUFGBjsIVDoOc2VhcmNoX2lkSSIpNGQ5OTNjZDgtNTliYi00M2UxLWE2N2QtOTFlYzE4OTNkY2U2BjsIRjoJcmFua2kHOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5pel5YaF5Yqo6YePBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--4f778c732751090cc9d0132ca021ce32ac926b82",
+   "snippet": "根据VWAP策略构建的方法，尝试使用第二日开盘价/vwap做D0，或者第一日收盘价/vwap做D1，比较了两者的效果。因为没有单日实时的数据，所以无法进行止盈/止损的操作。 并且尝试了两者在中美市场上的有效性： 1. 第二日开盘价/vwap做D0，CHN",
+   "votes": 29,
+   "comments": 6,
+   "author": "ZZ51944",
+   "date": "2023-11-16T14:47:43Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  }
+ ],
+ "total_found": 12,
+ "navigation_failed": false
+}

@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(holder_account_total, sector), 0.5)",
+ "group_rank(ts_delta(holder_account_total, 66), sector)",
+ "subtract(group_rank(herfindahl_index_holdings, sector), 0.5)",
+ "subtract(group_rank(divide(top_weighted_account_number, add(holder_account_total, 1)), sector), 0.5)",
+ "subtract(group_rank(mean_security_weight, sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_sum(boundary_transaction_total), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(stable_boundary_trade_count_21d), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(large_trade_count_50bps), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_stddev(security_transaction_usd_value), 22), sector), 0.5)",
+ "subtract(group_rank(ts_delta(security_holding_usd_value, 66), sector), 0.5)"
+]

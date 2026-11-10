@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+mdl140_qes_sinc_comp,MATRIX,0.327,2,2,Composite factor combining both pure inflation sensitivity and interest rate sensitivity into a holistic metric of a stock's macro inflation exposure; preferredâ¦
+mdl140_qes_sinc_neut,MATRIX,0.4902,1,1,"Stock-level sensitivity to expected inflation changes; ""neutralized"" or adjusted to remove the contemporaneous effect of benchmark interest rate changes; capturâ¦"
+mdl140_qes_sinc_sensitivity,MATRIX,0.327,1,1,Stock-level estimated âbetaâ sensitivity to expected inflation; specifically to changes in the 10-year breakeven inflation rate; derived from elastic net regresâ¦

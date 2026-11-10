@@ -23,12 +23,15 @@ from ..mode_b_config import load_mode_b_config as _load_mode_b_config
 
 logger = logging.getLogger(__name__)
 
-# 硬闸阈值（与战役口径一致）
+# 硬闸阈值（与战役口径一致）。2026-11-10 审查 P1-11：相关性上限改引唯一事实源
+# ``wqb.config.PRODCORR_CEILING`` / ``GATES_PLATFORM['self_corr_max']``，不再各写 0.7。
+from ...config import GATES_PLATFORM, PRODCORR_CEILING
+
 _SHARPE_MIN = 1.58
 _FITNESS_MIN = 1.0
 _2Y_MIN = 1.58
-_PROD_MAX = 0.7
-_SELF_MAX = 0.7
+_PROD_MAX = float(PRODCORR_CEILING)
+_SELF_MAX = float(GATES_PLATFORM["self_corr_max"])
 
 
 from .._common import (
@@ -375,23 +378,39 @@ def _eval_platform_check(details: Dict[str, Any], mode_b_qual: Optional[Dict[str
 
 
 def _eval_correlation(corr: Dict[str, Any]) -> Dict[str, Any]:
-    """评估相关性闸：prod/self 双双 < 阈值."""
-    if not isinstance(corr, dict) or corr.get("__error__"):
-        return {"gate": "correlation", "pass": True, "unavailable": True,
-                "reason": f"check_correlation unavailable: {corr.get('__error__', 'unknown')}"}
+    """评估相关性闸：prod/self 双双 < 阈值。
 
+    2026-11-10 审查 P0-4：旧实现**fail-open**——``__error__`` 直接 ``pass=True``，
+    ``prod_max is None`` 也不加 reason ⇒ 拿不到相关性数据时静默凑出 ``READY``。
+    现改为 fail-closed：缺值 / 预读值 / 非实时来源一律 ``pass=False``，
+    由 :func:`_compute_final_verdict` 计入 hard_fail → BLOCK。
+    解析统一走 :func:`wqb.prod_verdict.prod_verdict`（唯一判据实现）。
+    """
+    from ...prod_verdict import prod_verdict
+
+    if not isinstance(corr, dict) or corr.get("__error__"):
+        return {"gate": "correlation", "pass": False, "unavailable": True,
+                "reason": (f"check_correlation unavailable: "
+                           f"{corr.get('__error__', 'unknown') if isinstance(corr, dict) else 'non-dict'}"
+                           " → fail-closed")}
+
+    pv = prod_verdict(corr, _PROD_MAX)
     d = corr.get("result", corr)
     checks = d.get("checks", {}) if isinstance(d, dict) else {}
-    prod = checks.get("production", {}) if isinstance(checks, dict) else {}
     selfc = checks.get("self", {}) if isinstance(checks, dict) else {}
-
-    prod_max = prod.get("max_correlation") if isinstance(prod, dict) else None
     self_max = selfc.get("max_correlation") if isinstance(selfc, dict) else None
 
     reasons = []
-    if prod_max is not None and prod_max >= _PROD_MAX:
+    prod_max = pv["value"]
+    if prod_max is None:
+        reasons.append(f"prod 未出数（status={pv['status']}）→ 不可判闸")
+    elif not pv["usable"]:
+        reasons.append(f"prod 仅来自 {pv['provenance']}（{pv['reason']}），不足以放行")
+    elif prod_max >= _PROD_MAX:
         reasons.append(f"prod {prod_max:.3f} >= {_PROD_MAX}")
-    if self_max is not None and self_max >= _SELF_MAX:
+    if self_max is None:
+        reasons.append("self 未出数 → 不可判闸")
+    elif self_max >= _SELF_MAX:
         reasons.append(f"self {self_max:.3f} >= {_SELF_MAX}")
 
     return {
@@ -399,6 +418,7 @@ def _eval_correlation(corr: Dict[str, Any]) -> Dict[str, Any]:
         "pass": len(reasons) == 0,
         "prod_correlation": prod_max,
         "self_correlation": self_max,
+        "provenance": pv["provenance"],
         "reason": "; ".join(reasons) if reasons else None,
     }
 

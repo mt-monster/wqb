@@ -1,0 +1,194 @@
+[
+ {
+  "id": "anl39_aepsinclxo",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 9,
+  "alphaCount": 39,
+  "description": "EPS including extraordinary items - most recent fiscal year"
+ },
+ {
+  "id": "anl39_agrosmgn",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Gross Margin - 1st historical fiscal year"
+ },
+ {
+  "id": "anl39_agrosmgn2",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Gross Margin - 2nd historical fiscal year"
+ },
+ {
+  "id": "anl39_atanbvps",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 3,
+  "alphaCount": 6,
+  "description": "Book value (tangible) per share - most recent fiscal year"
+ },
+ {
+  "id": "anl39_epschngin",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "EPS Change % - prior quarter"
+ },
+ {
+  "id": "anl39_ghcspea",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 19,
+  "alphaCount": 21,
+  "description": "EPS Change % - year over year"
+ },
+ {
+  "id": "anl39_ghcspemtt",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Percent change in EPS, trailing 12 months versus the prior trailing 12 months"
+ },
+ {
+  "id": "anl39_grosmgn5yr",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Gross Margin 5-year average"
+ },
+ {
+  "id": "anl39_ptmepsincx",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Earnings per share including extraordinary items for the prior trailing 12-month period"
+ },
+ {
+  "id": "anl39_qepsinclxo",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 12,
+  "alphaCount": 13,
+  "description": "EPS including extraordinary items - most recent quarter"
+ },
+ {
+  "id": "anl39_qgrosmgn",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 12,
+  "alphaCount": 15,
+  "description": "Gross Margin - most recent quarter"
+ },
+ {
+  "id": "anl39_qtanbvps",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Book value (tangible) per share - most recent quarter"
+ },
+ {
+  "id": "anl39_qtotd2eq",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 22,
+  "alphaCount": 38,
+  "description": "Total debt to total equity ratio for the most recent quarter"
+ },
+ {
+  "id": "anl39_qtotd2eq2",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 11,
+  "alphaCount": 23,
+  "description": "Total debt/total equity - most recent quarter, 1 year ago"
+ },
+ {
+  "id": "anl39_rasv2_atotd2eq",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 7,
+  "alphaCount": 9,
+  "description": "Total debt to total equity ratio for the most recent fiscal year"
+ },
+ {
+  "id": "anl39_roxlcxspea",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "EPS excluding extraordinary items - most recent fiscal year"
+ },
+ {
+  "id": "anl39_roxlcxspeq",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "EPS excluding extraordinary items - most recent quarter"
+ },
+ {
+  "id": "anl39_rygnhcspe",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 9,
+  "alphaCount": 9,
+  "description": "EPS Change % - most recent quarter 1 year ago"
+ },
+ {
+  "id": "anl39_spvba",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Book value (Common Equity) per share - most recent fiscal year"
+ },
+ {
+  "id": "anl39_spvbq",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 6,
+  "alphaCount": 8,
+  "description": "Book value (Common Equity) per share - most recent quarter"
+ },
+ {
+  "id": "anl39_ttmepsincx",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 53,
+  "alphaCount": 94,
+  "description": "EPS including extraordinary items - trailing 12 month"
+ },
+ {
+  "id": "anl39_ttmgrosmgn",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Gross Margin - trailing 12 month"
+ },
+ {
+  "id": "anl39_xlcxspemtp",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Earnings per share excluding extraordinary items for the prior trailing 12-month period"
+ },
+ {
+  "id": "anl39_xlcxspemtt",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 22,
+  "alphaCount": 27,
+  "description": "EPS excluding extraordinary items - trailing 12 month"
+ }
+]

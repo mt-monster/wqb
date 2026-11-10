@@ -1,0 +1,51 @@
+{
+ "submitted": 4,
+ "total": 6,
+ "results": [
+  {
+   "index": 0,
+   "location": "https://api.worldquantbrain.com/simulations/1dO7AAm25eVboFUSqaAkDn",
+   "simulation_id": "1dO7AAm25eVboFUSqaAkDn",
+   "ok": true,
+   "tag": "DIV_SLOW_d2"
+  },
+  {
+   "index": 1,
+   "location": "https://api.worldquantbrain.com/simulations/x9E1zgZW4gRaUd27kJWDRo",
+   "simulation_id": "x9E1zgZW4gRaUd27kJWDRo",
+   "ok": true,
+   "tag": "DIV_SLOW_d4"
+  },
+  {
+   "index": 2,
+   "location": "https://api.worldquantbrain.com/simulations/4fSF4gdPC5gG8YrryT6nxfw",
+   "simulation_id": "4fSF4gdPC5gG8YrryT6nxfw",
+   "ok": true,
+   "tag": "DIV_SLOW_d8"
+  },
+  {
+   "index": 3,
+   "location": "https://api.worldquantbrain.com/simulations/4x844t2VC58v9K912Xn3mMkK",
+   "simulation_id": "4x844t2VC58v9K912Xn3mMkK",
+   "ok": true,
+   "tag": "DIV_FAST_d2"
+  },
+  {
+   "index": 4,
+   "ok": false,
+   "status_code": 429,
+   "error": "{'detail': 'CONCURRENT_SIMULATION_LIMIT_EXCEEDED'}",
+   "tag": "DIV_FAST_d4"
+  },
+  {
+   "index": 5,
+   "ok": false,
+   "status_code": 429,
+   "error": "{'detail': 'CONCURRENT_SIMULATION_LIMIT_EXCEEDED'}",
+   "tag": "DIV_SF_d4"
+  }
+ ],
+ "note": "Async submit: poll each location with lookINTO_SimError_message or GET /simulations/{id} until status is terminal.",
+ "async": true,
+ "polling_tool": "lookINTO_SimError_message"
+}

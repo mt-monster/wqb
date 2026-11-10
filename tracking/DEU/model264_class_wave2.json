@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(ts_mean(mdl264_amihud_class,22))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(ts_mean(mdl264_amihud_class,66))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(ts_mean(mdl264_amihud_class,22),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "add(rank(ts_mean(mdl264_amihud_class,22)),rank(ts_mean(mdl264_bookp_fy1_class,22)))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(ts_mean(mdl264_bookp_fy1_class,22))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "multiply(-1,rank(ts_mean(mdl264_es_eps_fy1_r1m_class,22)))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(ts_mean(mdl264_macd_class,22))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(ts_mean(mdl264_news_abno_sent_1d_class,22))"
+  }
+]

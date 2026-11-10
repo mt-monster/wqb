@@ -1,0 +1,12 @@
+{"alpha_expressions":[
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,250),sector),group_rank(ts_av_diff(anl10_smartest_ebt_fy1_pred_surps_v1,250),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_ebt_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebt_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_bps_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_opr_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_opr_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_pre_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_pre_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_dps_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_bps_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_nav_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_ndt_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_cpx_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_gps_fy1_pred_surps_v1,294),sector)),industry)",
+ "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebt_fy1_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_bps_fy2_pred_surps_v1,294),sector)),industry)"
+],"region":"KOR","universe":"TOP600","delay":1}

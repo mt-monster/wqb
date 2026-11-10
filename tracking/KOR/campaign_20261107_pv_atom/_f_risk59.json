@@ -1,0 +1,138 @@
+﻿{
+ "results": [
+  {
+   "id": "rsk59_bid_rate",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 30,
+   "alphaCount": 56,
+   "description": "Market composite lending fee earned by long holders for existing shares on loan, annualized percent"
+  },
+  {
+   "id": "rsk59_crowded_score",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 18,
+   "alphaCount": 18,
+   "description": "Proprietary score of short-side crowdedness based on short interest, float, and liquidity factors"
+  },
+  {
+   "id": "rsk59_daystocover10day",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 58,
+   "alphaCount": 104,
+   "description": "Estimated days to cover calculated as real-time short interest divided by 10-day average daily trading volume"
+  },
+  {
+   "id": "rsk59_daystocover30day",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 28,
+   "alphaCount": 49,
+   "description": "Estimated days to cover calculated as real-time short interest divided by 30-day average daily trading volume"
+  },
+  {
+   "id": "rsk59_daystocover90day",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 22,
+   "alphaCount": 35,
+   "description": "Estimated days to cover calculated as real-time short interest divided by 90-day average daily trading volume"
+  },
+  {
+   "id": "rsk59_dtcdailychg",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 24,
+   "alphaCount": 34,
+   "description": "Day-over-day percentage change in the number of days to cover all short positions"
+  },
+  {
+   "id": "rsk59_dtcweeklychg",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 22,
+   "alphaCount": 44,
+   "description": "Week-over-week percentage change in the number of days to cover all short positions"
+  },
+  {
+   "id": "rsk59_indicativeavailability",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 45,
+   "alphaCount": 122,
+   "description": "S3 projected available lendable quantity of the security"
+  },
+  {
+   "id": "rsk59_last_rate",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 10,
+   "alphaCount": 14,
+   "description": "Market composite lending fee for incremental shares loaned on that date (spot rate), percent"
+  },
+  {
+   "id": "rsk59_offer_rate",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 17,
+   "alphaCount": 28,
+   "description": "Market composite financing fee paid by shorts for existing positions, annualized percent"
+  },
+  {
+   "id": "rsk59_s3utilization",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 38,
+   "alphaCount": 67,
+   "description": "Ratio of real-time short interest to total lendable quantity (utilization of borrow supply)"
+  },
+  {
+   "id": "rsk59_short_interest",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 25,
+   "alphaCount": 40,
+   "description": "Real-time short interest expressed as number of shares"
+  },
+  {
+   "id": "rsk59_short_momentum",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Momentum indicator measuring daily shorting and covering activity relative to market float"
+  },
+  {
+   "id": "rsk59_shortinterestnotional",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 16,
+   "alphaCount": 33,
+   "description": "Real-time short interest multiplied by security price, in USD"
+  },
+  {
+   "id": "rsk59_shortinterestpct",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 16,
+   "alphaCount": 25,
+   "description": "Real-time short interest as a percent of equity float, stored as a decimal; multiply by 100 for percent"
+  },
+  {
+   "id": "rsk59_squeeze_risk",
+   "type": "VECTOR",
+   "coverage": 0.9806,
+   "userCount": 32,
+   "alphaCount": 58,
+   "description": "S3 proprietary multi-factor score ranking potential short squeezability based on short interest, float, stock loan liquidity, trading liquidity, and P&L; higher…"
+  }
+ ],
+ "count": 16,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 16,
+ "complete": true,
+ "pages_fetched": 1
+}

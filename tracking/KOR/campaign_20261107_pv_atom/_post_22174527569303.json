@@ -1,0 +1,26 @@
+{
+ "success": true,
+ "post": {
+  "title": "【Alpha灵感】隔夜与日内拉锯战暗藏的信息",
+  "author": "WH24469",
+  "body": "研报标题：Overnight returns, daytime reversals, and future stock returns\n作者：Ferhat Akbas a , Ekkehart Boehmer b , Chao Jiang c , Paul D. Koch d\n概述： 该篇研报分析了隔夜回报与日内回报的相关性对于预测未来收益的效果，同时得出如果隔夜回报与日内反转相关性越低，未来的横截面收益也就越高。同时两者的相关性越低预示着多空双方的拉锯战激烈程度越高，未来收益会随之下降。\nAlpha Idea: 在一个交易者的拉锯战中，隔夜交易者与日内交易者会产生某种竞争，这种竞争会对未来收益产生一定的影响，同时给市场带来某种信息，日内交易者会根据隔夜回报的信息决定交易策略，而过度反应的日内交易会导致隔夜回报的扭曲，造成未来收益的下降，这部分信息带来的收益波动较大，考虑将这些信息定义为市场情绪指标，并将收益中的这部分信息剔除掉，同时再对风险指标进行回归。\n数据：Price Volume Datasets，Sentiment Datasets，Risk Datasets\nUniverse：全股票市场（这里测试出ILLIQUID_MINVOL1M 和 TOP 3000都不错）\nNeutralization:  Market\nOperators:\nts_mean() , group_mean() , ts_regression() , rank()\n绩效：\nTOP3000\nILLIQUID_MINVOL1M\n研报中主要思想是隔夜正回报与第二天日内回报之间的种种联系，参考研报思路后，按照自己的思路复现，可能有很多问题，但最终alpha只差prod C就能提交，还请各位老师多多指教。",
+  "details": {
+   "votes": "13",
+   "date": "2024-03-19T05:25:08Z",
+   "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/22174527569303--Alpha%E7%81%B5%E6%84%9F-%E9%9A%94%E5%A4%9C%E4%B8%8E%E6%97%A5%E5%86%85%E6%8B%89%E9%94%AF%E6%88%98%E6%9A%97%E8%97%8F%E7%9A%84%E4%BF%A1%E6%81%AF"
+  }
+ },
+ "comments": [
+  {
+   "author": "TN63138",
+   "body": "您好，您能分享一下 alpha 表达式吗？ 非常感谢。",
+   "date": "2024-03-26T00:24:56Z"
+  },
+  {
+   "author": "WL13229",
+   "body": "可以使用trade when的方式，仅在某些情况，例如市场波动大的时候再交易，可以显著降低turnover。",
+   "date": "2024-03-19T06:10:35Z"
+  }
+ ],
+ "total_comments": 2
+}

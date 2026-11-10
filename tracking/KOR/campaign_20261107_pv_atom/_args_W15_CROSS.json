@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "anl10_smartest_ebi_fy1_smart_ests_v1",
+    "expression": "group_rank(add(ts_zscore(anl10_smartest_ebi_fy1_smart_ests_v1,240), ts_zscore(ts_delta(anl10_smartest_ebi_fy1_smart_ests_v1,44),44)), sector)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.9523,
+      "distribution_shape": "concentrated",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "anl10_smartest_ebi_fy1_smart_ests_v1",
+    "expression": "group_rank(add(ts_zscore(anl10_smartest_ebt_fy1_smart_ests_v1,240), ts_zscore(ts_delta(anl10_smartest_ebt_fy1_smart_ests_v1,44),44)), sector)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.9523,
+      "distribution_shape": "concentrated",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "anl10_smartest_ebi_fy1_smart_ests_v1",
+    "expression": "hump(multiply(group_rank(ts_zscore(anl10_smartest_ebi_fy1_smart_ests_v1,240), sector), group_rank(ts_zscore(ts_delta(anl10_smartest_ebt_fy1_smart_ests_v1,44),44), sector)), hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.9523,
+      "distribution_shape": "concentrated",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "anl10_smartest_ebi_fy1_smart_ests_v1",
+    "expression": "trade_when(rank(adv20) > 0.1, hump(multiply(group_rank(ts_zscore(anl10_smartest_ebi_fy1_smart_ests_v1,240), sector), group_rank(ts_zscore(ts_delta(anl10_smartest_ebt_fy1_smart_ests_v1,44),44), sector)), hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.9523,
+      "distribution_shape": "concentrated",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "anl10_smartest_ebi_fy1_smart_ests_v1",
+    "expression": "group_rank(ts_zscore(anl10_smartest_ebi_fy1_smart_ests_v1,240), sector)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.9523,
+      "distribution_shape": "concentrated",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "anl10_smartest_ebi_fy1_smart_ests_v1",
+    "expression": "group_rank(ts_zscore(ts_delta(anl10_smartest_ebt_fy1_smart_ests_v1,44),44), sector)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.9523,
+      "distribution_shape": "concentrated",
+      "non_zero_rate": 0.9
+    }
+  }
+]

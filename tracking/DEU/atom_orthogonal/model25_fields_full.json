@@ -1,0 +1,1738 @@
+[
+ {
+  "id": "accruals_component_raw_score",
+  "type": "MATRIX",
+  "cov": 0.6503,
+  "uc": 35,
+  "ac": 55,
+  "desc": "Raw percentile score for accruals component before normalization."
+ },
+ {
+  "id": "earnings_quality_raw_score",
+  "type": "MATRIX",
+  "cov": 0.627,
+  "uc": 103,
+  "ac": 171,
+  "desc": "Raw region-relative percentile ranking before normalization for earnings quality."
+ },
+ {
+  "id": "exclusions_component_percentile",
+  "type": "MATRIX",
+  "cov": 0.6513,
+  "uc": 77,
+  "ac": 129,
+  "desc": "Percentile score for exclusions-based factors in the earnings quality model."
+ },
+ {
+  "id": "global_momentum_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 13,
+  "ac": 25,
+  "desc": "Global percentile ranking for price momentum score."
+ },
+ {
+  "id": "industry_momentum_percentile_2",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 29,
+  "ac": 38,
+  "desc": "Percentile score for price momentum relative to industry peers."
+ },
+ {
+  "id": "long_term_momentum_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 16,
+  "ac": 16,
+  "desc": "Percentile score for long-term price momentum."
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.6233,
+  "uc": 1,
+  "ac": 8,
+  "desc": "Book value at the end of the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.5851,
+  "uc": 3,
+  "ac": 4,
+  "desc": "Book value per share at the end of the most recent fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.5498,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in book value per share (absolute)"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.5498,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Quarter-over-quarter percentage change in book value per share"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.204,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter percentage change in unearned revenue"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.6227,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Total assets at the end of the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.5874,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter percentage change in total assets"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.6244,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Average net operating assets in the last quarter"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.632,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Adjusted average net operating assets in the last quarter"
+ },
+ {
+  "id": "mdl25_eq_bs_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.6276,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Quarter-over-quarter percentage change in adjusted average net operating assets"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.6757,
+  "uc": 5,
+  "ac": 5,
+  "desc": "Average Traded Volume"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.6757,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Average Traded Volume (Local Currency)"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.6757,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Average Traded Volume (USD)"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v20",
+  "type": "MATRIX",
+  "cov": 0.6753,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Data-Through Date (Fundamental) Current"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v21",
+  "type": "MATRIX",
+  "cov": 0.6344,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Period End Date - Last Qtr"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v22",
+  "type": "MATRIX",
+  "cov": 0.6215,
+  "uc": 4,
+  "ac": 6,
+  "desc": "Company Filing Date - Last Qtr"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v23",
+  "type": "MATRIX",
+  "cov": 0.6344,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Date a new filing was received for the last quarter"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v30",
+  "type": "MATRIX",
+  "cov": 0.6234,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Indicator whether last quarter financials are consolidated"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.6757,
+  "uc": 7,
+  "ac": 8,
+  "desc": "Market Cap (Local Currency)"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.6757,
+  "uc": 14,
+  "ac": 17,
+  "desc": "Market Cap (USD)"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 4,
+  "ac": 4,
+  "desc": "52-week High Price"
+ },
+ {
+  "id": "mdl25_eq_cb_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 6,
+  "ac": 6,
+  "desc": "52-week Low Price"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.5461,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter percentage change in cash flow from investing activities"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.5509,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Cash flow from financing activities for the most recent fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.5381,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter percentage change in cash flow from financing activities"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.5564,
+  "uc": 4,
+  "ac": 10,
+  "desc": "Free cash flow (FCF) for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.5503,
+  "uc": 2,
+  "ac": 7,
+  "desc": "Quarter-over-quarter percent change in free cash flow (FCF)"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v15",
+  "type": "MATRIX",
+  "cov": 0.5018,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Capital expenditures for the most recent fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.4933,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter percent change in capital expenditures (Capex)"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.5479,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Excess cash margin percentage for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.5469,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Total cash flow for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.541,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Quarter-over-quarter change in total cash flow (absolute)"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.5564,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Cash flow from operations for the most recent fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.5502,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter percentage change in cash flow from operations"
+ },
+ {
+  "id": "mdl25_eq_cfs_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.5523,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Cash flow from investing activities for the most recent fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.5478,
+  "uc": 4,
+  "ac": 4,
+  "desc": "Quarter-over-quarter percent change in EBITDA"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.6007,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Average EBITDA growth over the past five years"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.6002,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Deviation from the 5-year average EBITDA growth"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.5476,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Percentage change in operating expenses from the prior quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.5793,
+  "uc": 3,
+  "ac": 3,
+  "desc": "EBIT for the most recently reported fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v15",
+  "type": "MATRIX",
+  "cov": 0.5477,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter percent change in EBIT"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.585,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Net income from continuing operations for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v17",
+  "type": "MATRIX",
+  "cov": 0.553,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter percent change in net income from continuing operations"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v18",
+  "type": "MATRIX",
+  "cov": 0.279,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Special items amount for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.2125,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Percentage change in special items from the prior quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v24",
+  "type": "MATRIX",
+  "cov": 0.5865,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Net income for the most recently reported fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v25",
+  "type": "MATRIX",
+  "cov": 0.5534,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Quarter-over-quarter percent change in net income"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v26",
+  "type": "MATRIX",
+  "cov": 0.5984,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Dividends per share for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v27",
+  "type": "MATRIX",
+  "cov": 0.5251,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Quarter-over-quarter change in dividends per share (absolute amount)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v28",
+  "type": "MATRIX",
+  "cov": 0.1861,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Quarter-over-quarter percent change in dividends per share"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v29",
+  "type": "MATRIX",
+  "cov": 0.5417,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Average EPS growth over the past five years"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v30",
+  "type": "MATRIX",
+  "cov": 0.5414,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Deviation from the 5-year average EPS growth"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v31",
+  "type": "MATRIX",
+  "cov": 0.5807,
+  "uc": 1,
+  "ac": 2,
+  "desc": "Basic EPS from continuing operations for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v32",
+  "type": "MATRIX",
+  "cov": 0.5468,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in basic EPS from continuing operations (absolute amount)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v33",
+  "type": "MATRIX",
+  "cov": 0.5468,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Quarter-over-quarter percent change in basic EPS from continuing operations"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v34",
+  "type": "MATRIX",
+  "cov": 0.58,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Basic EPS from discontinued operations and extraordinary items for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v35",
+  "type": "MATRIX",
+  "cov": 0.5467,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Basic EPS from discontinued operations and extraordinary items, quarter-over-quarter difference (absolute)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v37",
+  "type": "MATRIX",
+  "cov": 0.5908,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Basic EPS from total operations for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v38",
+  "type": "MATRIX",
+  "cov": 0.5538,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Basic EPS from total operations, quarter-over-quarter difference (absolute)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v39",
+  "type": "MATRIX",
+  "cov": 0.5538,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Basic EPS from total operations, quarter-over-quarter difference (percent)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v43",
+  "type": "MATRIX",
+  "cov": 0.5731,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Diluted EPS from continuing operations for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v44",
+  "type": "MATRIX",
+  "cov": 0.539,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Diluted EPS from continuing operations, quarter-over-quarter difference (absolute)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v45",
+  "type": "MATRIX",
+  "cov": 0.539,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Diluted EPS from continuing operations, quarter-over-quarter difference (percent)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v46",
+  "type": "MATRIX",
+  "cov": 0.5727,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Diluted EPS from discontinued operations and extraordinary items for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v47",
+  "type": "MATRIX",
+  "cov": 0.5389,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Diluted EPS from discontinued operations and extraordinary items, quarter-over-quarter difference (absolute)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v48",
+  "type": "MATRIX",
+  "cov": 0.5774,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Diluted EPS from total operations for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v49",
+  "type": "MATRIX",
+  "cov": 0.5409,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Diluted EPS from total operations, quarter-over-quarter difference (absolute)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.621,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Revenue for the most recently reported fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v50",
+  "type": "MATRIX",
+  "cov": 0.5409,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Diluted EPS from total operations, quarter-over-quarter difference (percent)"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v51",
+  "type": "MATRIX",
+  "cov": 0.4769,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Pension Expense - Last Year"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.5564,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Quarter-over-quarter percent change in revenue"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.6368,
+  "uc": 4,
+  "ac": 17,
+  "desc": "Average revenue growth over the past five years"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.6363,
+  "uc": 6,
+  "ac": 7,
+  "desc": "Deviation from the 5-year average revenue growth"
+ },
+ {
+  "id": "mdl25_eq_is_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.5792,
+  "uc": 1,
+  "ac": 1,
+  "desc": "EBITDA for the most recently reported fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.6757,
+  "uc": 2,
+  "ac": 4,
+  "desc": "Change Relative to Industry Benchmark (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.6757,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Change Relative to Country Benchmark (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to ASX 100 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Change Relative to ASX 200 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Change Relative to ASX 300 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v15",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to ASX All Ord (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Change Relative to CAC 40 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v17",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Change Relative to DJ STOXX 600 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v18",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to FTSE 100 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 3,
+  "ac": 5,
+  "desc": "Change Relative to Hang Seng (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v20",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to JSE All Share (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v21",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 1,
+  "ac": 1,
+  "desc": "Change Relative to MSCI EAFE (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v22",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to MSCI EMF (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v23",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to MSCI Europe (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v24",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to MSCI Pac ex JP (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v25",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to MSCI World (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v26",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to R1000 Growth (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v27",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to R1000 Value (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v28",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 0,
+  "ac": 0,
+  "desc": "Change Relative to Russell 1000 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v29",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Change Relative to Russell 2000 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v30",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Change Relative to Russell Midcap (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v31",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Change Relative to S&P 400 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v32",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Change Relative to S&P 500 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v33",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Change Relative to S&P 600 (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v34",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Change Relative to TOPIX (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v35",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 4,
+  "ac": 4,
+  "desc": "Change Relative to TSX Composite (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 3,
+  "ac": 4,
+  "desc": "Price Change (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 8,
+  "ac": 8,
+  "desc": "Change from 52-week High Price (ratio)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 10,
+  "ac": 11,
+  "desc": "Change from 52-week Low Price (ratio)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Diff from 50-day Moving Average (%)"
+ },
+ {
+  "id": "mdl25_eq_pc_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.6758,
+  "uc": 6,
+  "ac": 6,
+  "desc": "Diff from 200-day Moving Average (%)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.5478,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in Pretax ROA (%)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.622,
+  "uc": 2,
+  "ac": 0,
+  "desc": "Leverage ratio (Assets/Equity) for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.5853,
+  "uc": 6,
+  "ac": 7,
+  "desc": "Quarter-over-quarter change in Leverage (Assets/Equity)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.5876,
+  "uc": 3,
+  "ac": 5,
+  "desc": "Pretax Return on Equity (%) for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.5505,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in Pretax ROE (%)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v15",
+  "type": "MATRIX",
+  "cov": 0.5737,
+  "uc": 5,
+  "ac": 16,
+  "desc": "Return on Equity (%) for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.5469,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in ROE (%)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v17",
+  "type": "MATRIX",
+  "cov": 0.3793,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Earnings Retention for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v18",
+  "type": "MATRIX",
+  "cov": 0.2965,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in Earnings Retention"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.3751,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Reinvestment Rate (%) for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v20",
+  "type": "MATRIX",
+  "cov": 0.2941,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in Reinvestment Rate (%)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.5796,
+  "uc": 12,
+  "ac": 20,
+  "desc": "Asset Turnover for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.5483,
+  "uc": 4,
+  "ac": 4,
+  "desc": "Quarter-over-quarter change in Asset Turnover (last quarter vs prior quarter)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.5972,
+  "uc": 2,
+  "ac": 3,
+  "desc": "Pretax Margin (%) for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.5539,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter change in Pretax Margin (%)"
+ },
+ {
+  "id": "mdl25_eq_rd_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.5771,
+  "uc": 4,
+  "ac": 4,
+  "desc": "Pretax Return on Assets (%) for the last reported quarter"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.5768,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in Long-Term Debt to Total Capital percentage"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.5786,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Net Debt to EBITDA ratio for the most recent quarter ((Total Debt minus Cash) divided by EBITDA)"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.5477,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter change in Net Debt to EBITDA"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.622,
+  "uc": 2,
+  "ac": 0,
+  "desc": "Assets to Equity ratio for the most recent quarter (Total Assets divided by Shareholders' Equity)"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.5853,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in the Assets to Equity ratio"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.6199,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Debt to Equity ratio for the most recent quarter (Total Debt divided by Shareholders' Equity)"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.5766,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter change in the Debt to Equity ratio"
+ },
+ {
+  "id": "mdl25_eq_rlev_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.6199,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Long-Term Debt as a percentage of Total Capital for the most recent quarter"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.3116,
+  "uc": 4,
+  "ac": 4,
+  "desc": "Times Interest Earned - 1 Qtr Difference"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.5517,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Cash Cycle - Last Qtr"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.5283,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Cash Cycle - 1 Qtr Difference"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.519,
+  "uc": 3,
+  "ac": 10,
+  "desc": "Quick Ratio - Last Qtr"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.485,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quick Ratio - 1 Qtr Difference"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.5857,
+  "uc": 2,
+  "ac": 0,
+  "desc": "Current Ratio - Last Qtr"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.5472,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Current Ratio - 1 Qtr Difference"
+ },
+ {
+  "id": "mdl25_eq_rliq_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.3365,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Times Interest Earned - Last Qtr"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.4752,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Inventory turnover for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.4585,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter change in inventory turnover"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.4755,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Average inventory days (days inventory outstanding) for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.4588,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in average inventory days (DIO)"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.5421,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Working capital to sales ratio for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v15",
+  "type": "MATRIX",
+  "cov": 0.5203,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter change in working capital to sales ratio"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.5829,
+  "uc": 13,
+  "ac": 31,
+  "desc": "Net operating asset turnover for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v17",
+  "type": "MATRIX",
+  "cov": 0.6524,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Adjusted net operating asset turnover for the last fiscal year"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v18",
+  "type": "MATRIX",
+  "cov": 0.6512,
+  "uc": 5,
+  "ac": 5,
+  "desc": "Year-over-year change in adjusted net operating asset turnover"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.5732,
+  "uc": 5,
+  "ac": 12,
+  "desc": "Return on net operating assets (RNOA) percentage for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v20",
+  "type": "MATRIX",
+  "cov": 0.5401,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter change in return on net operating assets (RNOA) percentage"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v21",
+  "type": "MATRIX",
+  "cov": 0.6486,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Return on adjusted net operating assets percentage for the last fiscal year"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v22",
+  "type": "MATRIX",
+  "cov": 0.6465,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Year-over-year change in return on adjusted net operating assets percentage"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.5434,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Quarter-over-quarter change in net operating asset turnover"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.5482,
+  "uc": 16,
+  "ac": 18,
+  "desc": "Accounts receivable turnover for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.525,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Quarter-over-quarter change in accounts receivable turnover"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.5477,
+  "uc": 8,
+  "ac": 14,
+  "desc": "Average accounts receivable days (days sales outstanding) for the last fiscal quarter"
+ },
+ {
+  "id": "mdl25_eq_ro_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.5245,
+  "uc": 5,
+  "ac": 10,
+  "desc": "Quarter-over-quarter change in average accounts receivable days (DSO)"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.5471,
+  "uc": 1,
+  "ac": 0,
+  "desc": "EBITDA Margin (%) - 1 Quarter Difference"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.5783,
+  "uc": 4,
+  "ac": 6,
+  "desc": "Operating Margin (%) - Last Quarter"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.5469,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Operating Margin (%) - 1 Quarter Difference"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.6444,
+  "uc": 3,
+  "ac": 7,
+  "desc": "Average Historical Operating Margin 5-Year"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.6426,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Diff from Average Hist Operating Margin 5-Year"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v15",
+  "type": "MATRIX",
+  "cov": 0.5972,
+  "uc": 4,
+  "ac": 8,
+  "desc": "Pretax Margin (%) - Last Quarter"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.5539,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Pretax Margin (%) - 1 Quarter Difference"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v17",
+  "type": "MATRIX",
+  "cov": 0.5845,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Effective Tax Rate (%) - Last Quarter"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v18",
+  "type": "MATRIX",
+  "cov": 0.5514,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Effective Tax Rate (%) - 1 Quarter Difference"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.5841,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Net Margin (%) - Last Quarter"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v20",
+  "type": "MATRIX",
+  "cov": 0.5522,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Net Margin (%) - 1 Quarter Difference"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.5573,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Gross Margin (%) - Last Quarter"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.5294,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Gross Margin (%) - 1 Quarter Difference"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.615,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Average Historical Gross Margin - 5-Year"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.6137,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Diff from Average Hist Gross Margin - 5-Year"
+ },
+ {
+  "id": "mdl25_eq_rp_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.5781,
+  "uc": 1,
+  "ac": 0,
+  "desc": "EBITDA Margin (%) - Last Quarter"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.6515,
+  "uc": 6,
+  "ac": 9,
+  "desc": "Earnings Quality by Accruals - Period End Date"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.627,
+  "uc": 13,
+  "ac": 16,
+  "desc": "Earnings Quality by Cash Flow"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.6269,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Earnings Quality by Cash Flow - 1 Day Difference"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.6345,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Earnings Quality by Cash Flow - Period End Date"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.6503,
+  "uc": 6,
+  "ac": 7,
+  "desc": "Earnings Quality by Operating Efficiency"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v17",
+  "type": "MATRIX",
+  "cov": 0.6503,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Earnings Quality by Operating Efficiency - 1 Day Difference"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v18",
+  "type": "MATRIX",
+  "cov": 0.6508,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Earnings Quality by Operating Efficiency - Period End Date"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v22",
+  "type": "MATRIX",
+  "cov": 0.651,
+  "uc": 47,
+  "ac": 66,
+  "desc": "Raw Earnings Quality"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.651,
+  "uc": 52,
+  "ac": 97,
+  "desc": "Earnings Quality Region Rank"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.651,
+  "uc": 3,
+  "ac": 4,
+  "desc": "Earnings Quality Region Rank - 1 Day Difference"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.6513,
+  "uc": 44,
+  "ac": 56,
+  "desc": "Earnings Quality by Accruals"
+ },
+ {
+  "id": "mdl25_eq_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.6512,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Earnings Quality by Accruals - 1 Day Difference"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v10",
+  "type": "MATRIX",
+  "cov": 0.6231,
+  "uc": 1,
+  "ac": 0,
+  "desc": "Year-over-year percent change in price-to-sales ratio"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v11",
+  "type": "MATRIX",
+  "cov": 0.5866,
+  "uc": 5,
+  "ac": 9,
+  "desc": "Price-to-cash-from-operations ratio"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v12",
+  "type": "MATRIX",
+  "cov": 0.5252,
+  "uc": 4,
+  "ac": 4,
+  "desc": "Price-to-free-cash-flow ratio"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v13",
+  "type": "MATRIX",
+  "cov": 0.653,
+  "uc": 6,
+  "ac": 8,
+  "desc": "Enterprise Value (EV)"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v14",
+  "type": "MATRIX",
+  "cov": 0.6182,
+  "uc": 11,
+  "ac": 11,
+  "desc": "Enterprise value to EBITDA ratio (EV/EBITDA)"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v15",
+  "type": "MATRIX",
+  "cov": 0.5412,
+  "uc": 3,
+  "ac": 3,
+  "desc": "Quarter-over-quarter percent change in EV/EBITDA"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v16",
+  "type": "MATRIX",
+  "cov": 0.6515,
+  "uc": 7,
+  "ac": 7,
+  "desc": "Enterprise value to sales ratio (EV/Sales)"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v17",
+  "type": "MATRIX",
+  "cov": 0.644,
+  "uc": 17,
+  "ac": 20,
+  "desc": "Free cash flow yield (FCF divided by market cap), percent"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v18",
+  "type": "MATRIX",
+  "cov": 0.6353,
+  "uc": 11,
+  "ac": 12,
+  "desc": "Free cash flow to enterprise value (FCF/EV), percent"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v19",
+  "type": "MATRIX",
+  "cov": 0.6365,
+  "uc": 33,
+  "ac": 60,
+  "desc": "Cash from operations to enterprise value (CFO/EV), percent"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v5",
+  "type": "MATRIX",
+  "cov": 0.6506,
+  "uc": 7,
+  "ac": 11,
+  "desc": "Price-to-book ratio (market price per share divided by book value per share)"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v6",
+  "type": "MATRIX",
+  "cov": 0.6177,
+  "uc": 5,
+  "ac": 5,
+  "desc": "Quarter-over-quarter absolute change in price-to-book ratio"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v7",
+  "type": "MATRIX",
+  "cov": 0.6177,
+  "uc": 7,
+  "ac": 7,
+  "desc": "Quarter-over-quarter percent change in price-to-book ratio"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v8",
+  "type": "MATRIX",
+  "cov": 0.6516,
+  "uc": 5,
+  "ac": 9,
+  "desc": "Price-to-sales ratio"
+ },
+ {
+  "id": "mdl25_eq_vr_v4_2_1_v9",
+  "type": "MATRIX",
+  "cov": 0.6231,
+  "uc": 2,
+  "ac": 2,
+  "desc": "Year-over-year absolute change in price-to-sales ratio"
+ },
+ {
+  "id": "mid_term_momentum_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 25,
+  "ac": 29,
+  "desc": "Percentile score for mid-term price momentum."
+ },
+ {
+  "id": "operating_efficiency_component_percentile",
+  "type": "MATRIX",
+  "cov": 0.651,
+  "uc": 49,
+  "ac": 66,
+  "desc": "Percentile score for operating efficiency factors in the earnings quality model."
+ },
+ {
+  "id": "operating_efficiency_component_raw_score",
+  "type": "MATRIX",
+  "cov": 0.651,
+  "uc": 27,
+  "ac": 33,
+  "desc": "Raw percentile score for operating efficiency component before normalization."
+ },
+ {
+  "id": "regional_momentum_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 14,
+  "ac": 15,
+  "desc": "Percentile score for price momentum relative to region."
+ },
+ {
+  "id": "short_term_momentum_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 24,
+  "ac": 36,
+  "desc": "Percentile score for short-term price momentum."
+ },
+ {
+  "id": "value_momentum_global_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 92,
+  "ac": 140,
+  "desc": "Global percentile ranking for value-momentum score."
+ },
+ {
+  "id": "value_momentum_global_rank_float",
+  "type": "MATRIX",
+  "cov": 0.7085,
+  "uc": 34,
+  "ac": 46,
+  "desc": "Global value-momentum percentile score as a floating-point value."
+ },
+ {
+  "id": "value_momentum_industry_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 243,
+  "ac": 385,
+  "desc": "Industry-relative percentile ranking for value-momentum score."
+ },
+ {
+  "id": "value_momentum_industry_rank_float",
+  "type": "MATRIX",
+  "cov": 0.7028,
+  "uc": 93,
+  "ac": 187,
+  "desc": "Industry-relative value-momentum percentile score as a floating-point value."
+ },
+ {
+  "id": "value_momentum_region_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 100,
+  "ac": 144,
+  "desc": "Region-relative percentile ranking for value-momentum score."
+ },
+ {
+  "id": "value_momentum_region_rank_float",
+  "type": "MATRIX",
+  "cov": 0.7085,
+  "uc": 48,
+  "ac": 70,
+  "desc": "Region-relative value-momentum percentile score as a floating-point value."
+ },
+ {
+  "id": "value_momentum_sector_percentile",
+  "type": "MATRIX",
+  "cov": 1,
+  "uc": 204,
+  "ac": 415,
+  "desc": "Sector-relative percentile ranking for value-momentum score."
+ },
+ {
+  "id": "value_momentum_sector_rank_float",
+  "type": "MATRIX",
+  "cov": 0.7081,
+  "uc": 75,
+  "ac": 118,
+  "desc": "Sector-relative value-momentum percentile score as a floating-point value."
+ }
+]

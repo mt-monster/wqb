@@ -1,0 +1,12 @@
+[
+  "-group_rank(fnd44_perc_accruals, sector)",
+  "-group_rank(fnd44_cashflow_accruals, sector)",
+  "-group_rank(fnd44_working_capital_accruals, sector)",
+  "-group_rank(fnd44_modified_jones_cf_accruals, sector)",
+  "-group_rank(fnd44_mscore, sector)",
+  "-group_rank(fnd44_probability_restatement_global, sector)",
+  "group_rank(fnd44_fscore, sector)",
+  "-group_rank(ts_delta(fnd44_perc_accruals, 252), sector)",
+  "-group_rank(fnd44_factor_benford, sector)",
+  "-group_rank(fnd44_jones_cf_accruals, sector)"
+]

@@ -1,0 +1,42 @@
+﻿{
+ "results": [
+  {
+   "id": "mdl68_mktcap",
+   "type": "VECTOR",
+   "coverage": 0.8499,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Market capitalization of the company, measured in millions of USD"
+  },
+  {
+   "id": "mdl68_ram",
+   "type": "VECTOR",
+   "coverage": 0.8499,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Risk-adjusted momentum score for a China-listed equity, representing momentum alpha after adjusting for key risk factors such as beta, size, value, and rates"
+  },
+  {
+   "id": "mdl68_raw",
+   "type": "VECTOR",
+   "coverage": 0.8499,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Raw, unadjusted momentum score from the DREAM model, not risk-adjusted or standardized"
+  },
+  {
+   "id": "mdl68_score",
+   "type": "VECTOR",
+   "coverage": 0.8499,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Final, risk-adjusted, and standardized DREAM momentum score: the main recommended alpha signal"
+  }
+ ],
+ "count": 4,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 4,
+ "complete": true,
+ "pages_fetched": 1
+}

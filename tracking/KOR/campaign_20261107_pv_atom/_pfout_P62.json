@@ -1,0 +1,33 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "shrt38_accum_buy_amt",
+  "shrt38_accum_buy_qty",
+  "shrt38_accum_net_buy_amt",
+  "shrt38_accum_net_buy_qty",
+  "shrt38_accum_sell_amt",
+  "shrt38_accum_sell_qty"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 6,
+ "fixed_expressions": [
+  "group_rank(divide(vec_sum(shrt38_accum_sell_amt), vec_sum(shrt38_accum_buy_amt)), sector)",
+  "group_rank(divide(ts_sum(vec_sum(shrt38_accum_sell_amt), 22), ts_sum(vec_sum(shrt38_accum_buy_amt), 22)), sector)",
+  "group_rank(divide(ts_sum(vec_sum(shrt38_accum_sell_amt), 66), ts_sum(vec_sum(shrt38_accum_buy_amt), 66)), sector)",
+  "group_rank(ts_mean(divide(vec_sum(shrt38_accum_sell_amt), vec_sum(shrt38_accum_buy_amt)), 22), sector)",
+  "group_rank(divide(vec_sum(shrt38_accum_sell_qty), vec_sum(shrt38_accum_buy_qty)), sector)",
+  "multiply(group_rank(ts_mean(vec_sum(shrt38_accum_net_buy_qty), 22), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_sum(shrt38_accum_net_buy_amt), 22), sector), -1)",
+  "group_rank(divide(ts_sum(vec_sum(shrt38_accum_sell_amt), 22), ts_sum(vec_sum(shrt38_accum_buy_amt), 22)), industry)",
+  "group_rank(divide(ts_sum(vec_sum(shrt38_accum_sell_amt), 22), ts_sum(vec_sum(shrt38_accum_buy_amt), 22)), subindustry)",
+  "group_rank(divide(vec_sum(shrt38_accum_sell_amt), add(vec_sum(shrt38_accum_buy_amt), vec_sum(shrt38_accum_sell_amt))), sector)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}

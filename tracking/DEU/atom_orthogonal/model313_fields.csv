@@ -1,0 +1,5 @@
+id,type,cov,uc,ac,desc
+mdl313_iai,MATRIX,0.4757,1,1,Intangible Asset Intensity Score (composite of KCI and OCI); normalized [0;1]
+mdl313_ick,MATRIX,0.2016,0,0,Knowledge Capital Intensity Score; based on capitalized R&D spending; normalized [0;1]
+mdl313_ico,MATRIX,0.4757,2,2,Organizational Capital Intensity Score; calculated from capitalized SG&A; normalized [0;1]
+mdl313_mktcap_usd,MATRIX,0.4757,2,2,Market capitalization of the company in US dollars as of the observation date

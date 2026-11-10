@@ -1,0 +1,1 @@
+{"alpha_expressions":["subtract(0.5, group_rank(ts_mean(ts_backfill(normalized_volume_indicator_5,5),22),sector))","subtract(0.5, group_rank(ts_mean(ts_backfill(raw_trend_indicator_1,5),22),sector))","subtract(0.5, group_rank(ts_mean(ts_backfill(normalized_trend_indicator_0,5),22),sector))"],"region":"KOR","universe":"TOP600","delay":1}

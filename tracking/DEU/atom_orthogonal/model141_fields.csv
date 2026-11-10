@@ -1,0 +1,7 @@
+id,type,cov,uc,ac,desc
+mdl141_mktcap,MATRIX,0.0,0,0,The market capitalization of the company; typically float-adjusted; represents total equity market value
+mdl141_qes_fleir_escore,MATRIX,0.0,0,0,Modeled elasticity: percentage change in intrinsic stock value (return) per 1% change in the discount rate; using the FLEIR (forward-looking DCF-based) exposureâ¦
+mdl141_qes_fleir_irr,MATRIX,0.0,2,2,Implied cost of equity (required rate of return) for the stock; estimated using a discounted cash flow or dividend discount model within the FLEIR framework
+mdl141_qes_fleir_score,MATRIX,0.0,1,1,Modeled percentage change in intrinsic stock value (from DCF) when the discount rate is increased by 25 basis points; representing fundamental interest rate senâ¦
+mdl141_qes_macrobeta3_wti_tr,MATRIX,0.0,0,0,Beta of stock returns to oil price returns (specifically; West Texas Intermediate crude); representing sensitivity to oil as a macro factor
+mdl141_qes_sinc_neut,MATRIX,0.0,0,0,"Stock return sensitivity to ""purified"" changes in breakeven inflation rates; i.e. the portion of inflation risk orthogonal to changes in 10Y Treasury yields"

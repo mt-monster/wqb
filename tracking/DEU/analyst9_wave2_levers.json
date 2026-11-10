@@ -1,0 +1,162 @@
+[
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_mean(subtract(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), 22), industry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "rank(subtract(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "subtract(0, group_rank(subtract(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), industry))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(ts_mean(divide(vec_sum(anl9_s_numup), add(add(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), multiply(0.01, vec_sum(anl9_s_numanalysts)))), 22), industry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(divide(vec_sum(anl9_s_numup), add(add(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), multiply(0.01, vec_sum(anl9_s_numanalysts)))), subindustry)"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "subtract(0, group_rank(divide(vec_sum(anl9_s_numup), add(add(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), multiply(0.01, vec_sum(anl9_s_numanalysts)))), industry))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 5,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SLOW",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.01,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "group_rank(subtract(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn)), industry)"
+ }
+]

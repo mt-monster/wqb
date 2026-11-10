@@ -1,0 +1,96 @@
+﻿{
+ "alpha_id": "O0Azz37q",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "checks": {
+  "production": {
+   "max_correlation": 0.794,
+   "passes_check": false,
+   "from_cache": true,
+   "cached_at": "2026-11-07T13:31:52",
+   "source": "check_correlation",
+   "histogram_nonzero": [
+    {
+     "range": [
+      -0.3,
+      -0.2
+     ],
+     "n": 10
+    },
+    {
+     "range": [
+      -0.2,
+      -0.1
+     ],
+     "n": 596
+    },
+    {
+     "range": [
+      -0.1,
+      0.0
+     ],
+     "n": 15198
+    },
+    {
+     "range": [
+      0.0,
+      0.1
+     ],
+     "n": 49627
+    },
+    {
+     "range": [
+      0.1,
+      0.2
+     ],
+     "n": 33987
+    },
+    {
+     "range": [
+      0.2,
+      0.3
+     ],
+     "n": 10528
+    },
+    {
+     "range": [
+      0.3,
+      0.4
+     ],
+     "n": 3163
+    },
+    {
+     "range": [
+      0.4,
+      0.5
+     ],
+     "n": 1107
+    },
+    {
+     "range": [
+      0.5,
+      0.6
+     ],
+     "n": 238
+    },
+    {
+     "range": [
+      0.6,
+      0.7
+     ],
+     "n": 38
+    },
+    {
+     "range": [
+      0.7,
+      0.8
+     ],
+     "n": 7
+    }
+   ],
+   "max": 0.794
+  }
+ },
+ "all_passed": false
+}
+

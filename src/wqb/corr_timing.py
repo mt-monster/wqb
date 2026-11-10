@@ -50,7 +50,10 @@ GOT_VALUE_EVENTS = ("cache_hit", "pre_read_hit", "inflight_join",
 
 #: 没拿到数值的**终局**事件。``same_alpha_wait_timeout`` 不在内——
 #: 它是前导事件，同一次调用随后还会有一条 ``busy``。
-NO_VALUE_EVENTS = ("busy", "inflight_busy", "pending", "terminal")
+#: ``platform_unavailable``（2026-11-10）：账号级熔断短路，**不占平台槽**，
+#: 故不进 PLATFORM_EVENTS（否则会把「没发请求」算成「发了请求没拿到」）。
+NO_VALUE_EVENTS = ("busy", "inflight_busy", "pending", "terminal",
+                   "platform_unavailable")
 
 #: 一次调用的全部可能终局（结果率分母）。
 OUTCOME_EVENTS = GOT_VALUE_EVENTS + NO_VALUE_EVENTS

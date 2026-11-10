@@ -1,0 +1,24 @@
+id,type,cov,uc,ac,desc
+anl35_ce,MATRIX,0.0,3,4,Economic pillar: capacity to generate sustainable growth and high return on investment through efficient resource use
+anl35_dt_ow_os,MATRIX,0.0,0,0,Workforce Training and Development: management commitment and effectiveness in providing training and development for employees
+anl35_ep_am_ce,MATRIX,0.0,1,1,The Margins/Performance category measures a company's management commitment and effectiveness toward maintaining a stable cost base
+anl35_fb_db_gc,MATRIX,0.0,0,0,Board Functions: management commitment and effectiveness in following best-practice governance related to board activities and functions
+anl35_gc,MATRIX,0.0,0,0,Corporate Governance pillar: systems and processes ensuring board members and executives act in long-term shareholdersâ best interests
+anl35_ip_ne_ne,MATRIX,0.0,0,0,Product Innovation: management commitment and effectiveness supporting R&D of eco-efficient products or services
+anl35_lc_er_ce,MATRIX,0.0,2,2,Revenue/Client Loyalty: management commitment and effectiveness toward generating sustainable; long-term revenue growth
+anl35_ls_rp_ce,MATRIX,0.0,1,1,The profitability/shareholder loyalty category measures a company's management commitment and effectiveness toward generating a high return on investments
+anl35_ne,MATRIX,0.0,0,0,Environmental pillar: company impact on air; land; water and ecosystems
+anl35_oc_os_os,MATRIX,0.0,0,0,The society/community category measures a company's management commitment and effectiveness toward maintaining the company's reputation within the general commuâ¦
+anl35_od_ow_os,MATRIX,0.0,0,0,Workforce Diversity and Opportunity: management commitment and effectiveness in maintaining diversity and equal opportunity in the workforce
+anl35_os,MATRIX,0.0,0,0,The social pillar measures a company's capacity to generate trust and loyalty with its workforce; customers; and society through best management practices
+anl35_pc_db_gc,MATRIX,0.0,0,0,Board Compensation Policy: management commitment and effectiveness in following best-practice governance on competitive and proportionate management compensatioâ¦
+anl35_qe_ow_os,MATRIX,0.0,0,0,Employment Quality: management commitment and effectiveness in providing high-quality employment benefits and job conditions
+anl35_re_ne_ne,MATRIX,0.0,0,0,Emission Reduction: management commitment and effectiveness toward reducing environmental emissions in production and operations
+anl35_rh_os_os,MATRIX,0.0,0,0,Society/Human Rights: management commitment and effectiveness toward respecting fundamental human rights conventions
+anl35_ri,MATRIX,0.0,1,1,Overall ESG equal-weighted rating measuring a companyâs financial and extra-financial health across the economic; environmental; social and governance pillars
+anl35_rp_uc_os,MATRIX,0.0,1,2,Customer/Product Responsibility: management commitment and effectiveness to create value-added products and services while upholding customer security
+anl35_rr_ne_ne,MATRIX,0.0,0,0,Resource reduction: management commitment and effectiveness toward efficient use of natural resources in production
+anl35_rs_hs_gc,MATRIX,0.0,0,0,Shareholder Rights: management commitment and effectiveness in adhering to best-practice governance on shareholder policy and equal treatment
+anl35_sb_db_gc,MATRIX,0.0,0,0,Board Structure: management commitment and effectiveness in following best-practice governance related to a well-balanced board membership
+anl35_sh_ow_0s,MATRIX,0.0,1,1,Workforce Health and Safety: management commitment and effectiveness in providing a healthy and safe workplace
+anl35_sv_ni_gc,MATRIX,0.0,1,1,Integration; Vision and Strategy: management commitment and effectiveness toward creating an overarching strategy integrating financial and extra-financial aspeâ¦

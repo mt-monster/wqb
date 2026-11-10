@@ -1,0 +1,9 @@
+id,type,cov,uc,ac,desc
+mdl110_alternative,MATRIX,0.0,1,3,Composite alpha signal generated from non-traditional sources such as alternative data; big data; and unstructured information
+mdl110_analyst_sentiment,MATRIX,0.0,34,38,Aggregate sentiment score derived from analyst ratings; estimate revisions; and market sentiment factors
+mdl110_growth,MATRIX,0.0,3,3,Composite growth factor derived from forward-looking estimates and backward-looking financials; representing robust sales and earnings growth
+mdl110_price_momentum_reversal,MATRIX,0.0,3,3,A score indicating the influence of recent price momentum and mean-reversion effects on the stock price; capturing both trends and potential reversals in priceâ¦
+mdl110_quality,MATRIX,0.0,3,3,Composite score measuring company profitability; accounting robustness; earnings quality; and risk-related financial metrics
+mdl110_score,MATRIX,0.0,37,49,The overall alpha signal produced by a weighted combination of all underlying factor scores (sentiment; quality; value; growth; price momentum/reversion; alternâ¦
+mdl110_tree,MATRIX,0.0,5,7,A composite score generated from nonlinear tree-based machine learning models; synthesizing all available individual signals and factors to capture complex inteâ¦
+mdl110_value,MATRIX,0.0,7,8,Composite valuation factor blending multiple price-based and fundamental metrics such as P/E; P/B; and price-to-sales

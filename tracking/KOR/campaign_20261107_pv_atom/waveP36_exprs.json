@@ -1,0 +1,12 @@
+[
+  "group_rank(subtract(analyst_upgrade_count_60d_2,analyst_downgrade_count_60d_3), sector)",
+  "group_rank(subtract(analyst_upgrade_count_90d_3,analyst_downgrade_count_90d_3), sector)",
+  "group_neutralize(multiply(multiply(group_rank(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),sector),group_rank(subtract(analyst_upward_revision_count_fy1_revenue_14d_4,analyst_downward_revision_count_fy1_revenue_14d_7),sector)),group_rank(subtract(analyst_upward_revision_count_fy1_ebitda_14d_4,analyst_downward_revision_count_fy1_ebitda_14d_6),sector)),industry)",
+  "group_neutralize(multiply(group_rank(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),sector),group_rank(subtract(analyst_upgrade_count_60d_2,analyst_downgrade_count_60d_3),sector)),industry)",
+  "group_zscore(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4), sector)",
+  "group_rank(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4), industry)",
+  "group_rank(ts_decay_linear(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),22), sector)",
+  "group_rank(divide(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),add(ts_std_dev(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),66),1)), sector)",
+  "group_rank(add(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),subtract(analyst_upgrade_count_60d_2,analyst_downgrade_count_60d_3)), sector)",
+  "group_neutralize(multiply(group_rank(subtract(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),sector),group_rank(mean_estimate_change_pct_f12m_earnings_14d_4,sector)),industry)"
+]

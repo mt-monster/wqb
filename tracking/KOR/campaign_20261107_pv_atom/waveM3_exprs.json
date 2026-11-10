@@ -1,0 +1,10 @@
+[
+ "subtract(0.5, group_rank(ts_std_dev(oth532_emerging_daily_specificreturn, 66), sector))",
+ "subtract(0.5, group_rank(ts_std_dev(oth532_emerging_daily_specificreturn, 22), sector))",
+ "subtract(0.5, group_rank(ts_std_dev(oth532_emerging_daily_specificreturn, 126), sector))",
+ "multiply(group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector), subtract(0.5, group_rank(ts_std_dev(oth532_emerging_daily_specificreturn, 66), sector)))",
+ "subtract(1, add(group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector), group_rank(ts_sum(oth532_global_daily_specificreturn, 66), sector)))",
+ "subtract(1.5, add(add(group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector), group_rank(ts_sum(oth532_global_daily_specificreturn, 66), sector)), group_rank(ts_sum(oth532_asia_ase2_daily_specificreturn, 66), sector)))",
+ "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), subindustry))",
+ "subtract(0.5, group_rank(ts_av_diff(oth532_emerging_daily_specificreturn, 66), sector))"
+]

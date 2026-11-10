@@ -1,0 +1,12 @@
+[
+ "group_rank(ts_mean(vec_avg(earnings_financial_event_score_2),66), sector)",
+ "subtract(0.5, group_rank(ts_mean(vec_avg(earnings_financial_event_score_2),66), sector))",
+ "subtract(group_rank(ts_mean(vec_avg(earnings_financial_event_score_2),66),sector), group_rank(ts_mean(vec_avg(corporate_structure_event_score_2),66),sector))",
+ "group_rank(ts_mean(vec_stddev(earnings_financial_event_score_2),66), sector)",
+ "multiply(group_rank(ts_mean(vec_avg(earnings_financial_event_score_2),66),sector), group_rank(ts_mean(vec_avg(corporate_structure_event_score_2),66),sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_avg(corporate_structure_event_score_2),66), sector))",
+ "group_rank(ts_mean(vec_avg(mdl252_shield),66), sector)",
+ "subtract(0.5, group_rank(ts_mean(vec_avg(mdl252_shield),66), sector))",
+ "group_rank(ts_mean(vec_avg(mdl252_shield2),66), sector)",
+ "subtract(0.5, group_rank(ts_mean(vec_avg(company_total_market_value_3),66), sector))"
+]

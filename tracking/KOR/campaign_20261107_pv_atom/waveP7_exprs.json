@@ -1,0 +1,12 @@
+[
+  "group_rank(aggregate_share_count_institutions, sector)",
+  "group_rank(ts_av_diff(aggregate_share_count_institutions, 66), sector)",
+  "group_rank(ts_delta(quantity_institutional_shares_acquired, 66), sector)",
+  "-group_rank(count_institutional_sellers_security, sector)",
+  "group_rank(subtract(rank(quantity_institutional_shares_acquired), rank(market_value_institutional_shares_disposed)), sector)",
+  "group_rank(divide(ts_delta(aggregate_share_count_institutions, 250), aggregate_share_count_institutions), sector)",
+  "group_rank(ts_av_diff(market_value_institutional_shares_disposed, 66), sector)",
+  "group_zscore(ts_zscore(aggregate_share_count_institutions, 250), subindustry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(quantity_institutional_shares_acquired, 250), sector), group_rank(ts_av_diff(count_institutional_sellers_security, 250), sector)), industry)",
+  "-group_rank(ts_mean(count_institutional_sellers_security, 250), industry)"
+]

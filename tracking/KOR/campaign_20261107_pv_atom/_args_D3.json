@@ -1,0 +1,29 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector)",
+  "reverse(group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector))",
+  "group_rank(ts_mean(ts_backfill(oth335_combined_all_region_mind, 10), 66), sector)",
+  "group_rank(ts_backfill(oth335_combined_all_region_shield, 10), sector)",
+  "group_rank(ts_delta(ts_backfill(oth335_combined_all_region_mind, 10), 66), sector)",
+  "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+  "group_rank(ts_backfill(oth335_combined_all_region_linear, 10), sector)",
+  "group_rank(ts_backfill(oth335_combined_all_region_hedge, 10), sector)",
+  "subtract(group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector), group_rank(ts_backfill(oth335_combined_all_region_shield, 10), sector))",
+  "signed_power(group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector), 2)"
+ ],
+ "dataset": "other335",
+ "wave": "D3 Wolfe MIND dividend/income"
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "field_id": "mean_sentiment_score_transfer",
+    "expression": "hump(subtract(group_rank(mean_sentiment_score_transfer,industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.3702,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.37
+    }
+  },
+  {
+    "field_id": "mean_sentiment_score_transfer",
+    "expression": "reverse(hump(subtract(group_rank(mean_sentiment_score_transfer,industry),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.3702,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.37
+    }
+  },
+  {
+    "field_id": "mean_sentiment_score_transfer",
+    "expression": "group_rank(ts_zscore(ts_backfill(mean_sentiment_score_transfer,22),252),industry)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.3702,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.37
+    }
+  },
+  {
+    "field_id": "skew_sentiment_score_transfer",
+    "expression": "hump(subtract(group_rank(skew_sentiment_score_transfer,sector),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.3702,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.37
+    }
+  },
+  {
+    "field_id": "mean_sentiment_score_transfer",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(mean_sentiment_score_transfer,industry),0.5),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.3702,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.37
+    }
+  },
+  {
+    "field_id": "primary_sentiment_score_transfer",
+    "expression": "hump(subtract(group_rank(divide(vec_sum(primary_sentiment_score_transfer),vec_sum(secondary_sentiment_score_transfer)),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.3702,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.37
+    }
+  },
+  {
+    "field_id": "mws84_sentiment",
+    "expression": "group_rank(ts_backfill(vec_avg(mws84_sentiment),63),sector)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.3702,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.37
+    }
+  },
+  {
+    "field_id": "skew_sentiment_score_transfer",
+    "expression": "reverse(hump(subtract(group_rank(skew_sentiment_score_transfer,sector),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.3702,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.37
+    }
+  }
+]

@@ -1,0 +1,11 @@
+id,type,cov,uc,ac,desc
+alt_rec_analyst_mask_code,VECTOR,0.0,0,0,Encoded identifier for the individual analyst contributing the recommendation; used for anonymization
+alt_rec_standardized_code,VECTOR,0.0,1,1,Numeric code denoting the type of analyst recommendation (e.g.; Buy; Hold; Sell etc.); as defined by the IBES code table
+anl8_analyst_code,VECTOR,0.0,0,0,Unique identifier code for the analyst issuing the price target
+anl8_eur_ibessplit_rec_analyst_maskcode,VECTOR,0.0,0,0,Encoded identifier for the analyst providing the recommendation
+anl8_eur_ibessplit_rec_ibes_reccode,VECTOR,0.0,1,1,Numerical code representing the type of analyst recommendation (e.g. Buy; Sell; Hold) based on IBES lookup
+anl8_horizon,VECTOR,0.0,0,0,Time horizon in days for which the price target is forecasted
+anl8_irl_level,MATRIX,0.0,1,1,Indicates how frequently the recommendation data is updated or reported (e.g.; daily; weekly; monthly)
+anl8_value,VECTOR,0.0,6,7,Analyst-reported price target for the security
+rec_d0_analyst_mask_code,VECTOR,0.0,0,0,An encoded identifier for the analyst who made the recommendation
+rec_d0_standardized_code,VECTOR,0.0,0,0,The recommendation code given by the analyst; indicating buy/sell/hold status

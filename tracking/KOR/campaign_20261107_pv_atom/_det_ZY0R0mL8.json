@@ -1,0 +1,104 @@
+{
+ "id": "ZY0R0mL8",
+ "code": "add(multiply(0.6, signed_power(ts_rank(anl10_smartest_sal_fy1_pred_surps_v0, 66), 2.5)), multiply(0.4, group_rank(rank(ts_decay_linear(anl10_smartest_pre_fy1_pred_surps_v1, 5)), industry)))",
+ "type": "REGULAR",
+ "status": "ACTIVE",
+ "stage": "OS",
+ "dateSubmitted": "2026-09-02T06:36:36-04:00",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 2,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "ON",
+  "maxTrade": "ON",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "simulationMode": "FULL"
+ },
+ "metrics": {
+  "sharpe": 1.59,
+  "fitness": 1.25,
+  "turnover": 0.0959,
+  "returns": 0.0772,
+  "drawdown": 0.057,
+  "margin": 0.00161,
+  "longCount": 254,
+  "shortCount": 294,
+  "pnl": 7985243,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "selfCorrelation": 0.0967,
+  "prodCorrelation": 0.6003,
+  "sub_universe_sharpe": 1.49,
+  "two_year_sharpe": 1.17,
+  "risk_neutralized_sharpe": 1.19
+ },
+ "os": {
+  "startDate": "2024-01-01"
+ },
+ "ra": {
+  "failed_ra_count": 1,
+  "failed_ppa_count": 0,
+  "ra_failed": true,
+  "ppa_failed": false,
+  "ra_failed_checks": [
+   "LOW_2Y_SHARPE"
+  ],
+  "pyramid_short": "analyst"
+ },
+ "checks": {
+  "fail": [],
+  "warning": [
+   {
+    "name": "LOW_2Y_SHARPE",
+    "value": 1.17,
+    "limit": 1.58
+   },
+   {
+    "name": "MATCHES_COMPETITION"
+   },
+   {
+    "name": "MATCHES_THEMES"
+   }
+  ],
+  "pass": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "CLUSTER_TEST",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "POWER_POOL_CORRELATION",
+   "MATCHES_THEMES"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "KOR/D1/ANALYST",
+    "multiplier": 1.6
+   }
+  ]
+ },
+ "name": "0.6003",
+ "color": "GREEN",
+ "tags": [
+  "CH_PPA",
+  "SRC_analyst10",
+  "PowerPoolSelected"
+ ]
+}

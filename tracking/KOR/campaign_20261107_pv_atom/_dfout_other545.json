@@ -1,0 +1,42 @@
+{
+ "results": [
+  {
+   "id": "oth545_mktcap",
+   "type": "VECTOR",
+   "coverage": 0.8393,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Market capitalization of the company in US dollars"
+  },
+  {
+   "id": "oth545_mpd",
+   "type": "VECTOR",
+   "coverage": 0.8393,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Score based on dynamic price momentum, capturing advanced or machine-learned price momentum of the stock"
+  },
+  {
+   "id": "oth545_pln_omen",
+   "type": "VECTOR",
+   "coverage": 0.8393,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Score based on NLP-derived network momentum using text-mined linkages"
+  },
+  {
+   "id": "oth545_score",
+   "type": "VECTOR",
+   "coverage": 0.8393,
+   "userCount": 18,
+   "alphaCount": 23,
+   "description": "Final composite NEMO 2.0 model score aggregated from seven network momentum signals"
+  }
+ ],
+ "count": 4,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 4,
+ "complete": true,
+ "pages_fetched": 1
+}

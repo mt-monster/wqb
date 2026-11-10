@@ -1,0 +1,58 @@
+{
+ "results": [
+  {
+   "id": "aggregate_buy_opinion_score",
+   "type": "VECTOR",
+   "coverage": 0.8948,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Combined buy sentiment score from all sources for an instrument."
+  },
+  {
+   "id": "aggregate_comment_volume",
+   "type": "VECTOR",
+   "coverage": 0.8948,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total number of comments posted across all sources for an instrument."
+  },
+  {
+   "id": "aggregate_sell_opinion_score",
+   "type": "VECTOR",
+   "coverage": 0.8948,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Combined sell sentiment score from all sources for an instrument."
+  },
+  {
+   "id": "comment_volume_per_platform",
+   "type": "VECTOR",
+   "coverage": 0.8948,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total number of comments posted on the source platform for an instrument."
+  },
+  {
+   "id": "distinct_user_count_per_platform",
+   "type": "VECTOR",
+   "coverage": 0.8948,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of unique users participating on the source platform for an instrument."
+  },
+  {
+   "id": "total_distinct_participants_count",
+   "type": "VECTOR",
+   "coverage": 0.8948,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of unique users participating across all sources for an instrument."
+  }
+ ],
+ "count": 6,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 6,
+ "complete": true,
+ "pages_fetched": 1
+}

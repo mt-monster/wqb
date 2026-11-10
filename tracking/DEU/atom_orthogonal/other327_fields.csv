@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+oth327_mktcap,MATRIX,0.0,0,0,Market capitalization of the company; typically measured in US Dollars; represents the total market value of the companyâs outstanding shares
+oth327_sirc_lev,MATRIX,0.0,0,0,Numeric value quantifying the stock's sensitivity to parallel (level) shifts in the US Treasury yield curve
+oth327_sirc_sl,MATRIX,0.0,1,1,Numeric value quantifying the stock's sensitivity to slope (twist/steepening/flattening) changes in the US Treasury yield curve

@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-11-08
+last_verified: 2026-11-09
 ---
 
 # EUR 区域挖掘流程（RA 区域分支）
@@ -208,6 +208,7 @@ last_verified: 2026-11-08
   ⚠ **例外（覆盖率闸）**：数据集 cov < 0.85 时 sub 闸结构性不可达（`fundamental28` 1605 字段 cov 恒 0.50 → sub 0.52 vs 限 0.82），
   此类"覆盖不足"可凭 cov 直接判死，不必跑三闸。
 - **判死前必查**：`tools/full_coverage_gate.py --candidates <last_wave>.json --gate-mode enforce --campaign-dir tracking/EUR --json` 输出 `ok=true` 才允许提交 `seal_dead_end`。
+- **★★★ prod 拥挤预判（2026-11-09 eur15 FHP 实证）**：prod 池是**全球跨区提交**——EUR 本地字段 aC 冷 ≠ prod 干净；**论坛已公开记录的优质信号 = 生产池已占位**（FHP A1VXNQbe 全 IS 闸 fRA=0、self 0.17，prod 仍 0.8881 族级墙）。近闸候选**先测族代表 prod** 再投入全闸打磨；选题优先全球冷机制（论坛热度只作反向参考）。配套 `wq-prod-corr-read` 族代表判据（max>0.80 整族降级）。
 - **判死一个「类别」前，先读该类别已出货 alpha 的 code**：`get_user_alphas` 取该类别 ACTIVE 的 id → `get_alpha_details` 读 `regular.code`。
   用它的**信号类型**（关注度 vs 极性、广度 vs 幅度）作起点。反例：news 类的成功样本用的是"新闻条数=关注度"（`mws46_ravenpack_sum_story_count`），
   而按数据集名去测情绪极性分 77 条全部 S<0.6 —— 方向本身就错。
@@ -251,6 +252,7 @@ last_verified: 2026-11-08
 2. **拉字段清单**：`tracking/EUR/reference/eur_<dataset>_fields.json` 或 MCP `get_datafields`；**无字段目录不允许派批**。
 3. **画语义维度地图**：按经济机制（事件驱动 / 基本面 / 情绪 / 分析师 / 价量）分组，按 `alphaCount` 升序排。
 4. **过覆盖闸**：`python tools/full_coverage_gate.py --region EUR --dataset <ds> --candidates <cand>.json --gate-mode enforce --campaign-dir tracking/EUR`；三闸全过才允许送 `wave_gate.py` 走回测。
+   ⚠ **族闸文件名陷阱（2026-11-09 eur15 两次实测升级）**：族闸按候选文件名 stem 与首 token 两个键登记、按 **dataset 全名**查询——**候选文件 stem 必须与 dataset 全名完全一致**（`insider_matrix.json`）；含下划线数据集名的 `_wave1` 后缀变体（`insider_matrix_wave1.json`）两个登记键都不匹配（全 stem 带 `_wave1`、首 token 是 `insider`），新数据集无 DB 族历史时必然 FAIL 0/3。无下划线数据集可用 `<ds>_wave1.json`（首 token=ds 命中）。
 5. **回测近闸候选**（cheap gate 过但 RA 未全过）必须启用 `--near-gate`：边界算子需已试完 min_coverage 档，否则 FAIL。
 6. **判死条件**（**唯一合法**）：三闸全过 + 全波次 |S|<0.5 ⇒ 该数据集可入 dead_end；三闸任一未过 = 未做尽、不允许判死。
 
@@ -281,3 +283,71 @@ last_verified: 2026-11-08
 
 - **锁定项**（任何层都不能放宽）：禁混信号、Mode B 主闸下限、决策表 D0-P、平台线、窗口白名单、点塔按平台类别、提交前用户确认、truncation 不作扫描维度——全文见 `$WQ_PY -m wqb.profiles explain` 末尾。
 - **证据与历史**：[EUR profile](../wq-brain-ra-pipeline/references/regions/EUR.md)（入场裁决、红绿榜、证据附录）。
+
+## ★ 2026-11-09 实战 override（techindi_model 战役，覆盖上文同名结论）
+
+> 下文每条均为 EUR/TOP2500/D1 实测，覆盖本文件上方与之冲突的旧结论。
+
+### 1. 设置档实况（修正「TOPCS1600 最优 / SUBINDUSTRY 最优」）
+
+| 轴 | 旧结论 | 本轮实测 | 结论 |
+|---|---|---|---|
+| universe | TOPCS1600 最优 | TOP2500 全闸；**TOP1200 全灭（S1.61）**；**TOP800 更差（S1.42/2Y0.81）** | **大宇宙是必要条件**，TOP2500 ≥ TOPCS1600 |
+| neutralization | SUBINDUSTRY 最优 | **CROWDING**：7/8 全闸 + sub 1.70（全池最高）+ prod 0.7289（最低） | **prod 卡墙优先 CROWDING** |
+| neutralization（F 维） | — | **INDUSTRY / MARKET**：F +0.21、ret +1.04pp、S 持平 | **F 不足优先 IND/MKT**（唯一不牺牲 S 的 F 杠杆） |
+| decay | 4 | 8 为甜点；**16 过度平滑**（S 崩至 1.75–2.43） | decay 8 |
+| truncation | 0.08 | 0.05 / 0.08 / 0.15 **指标逐位相同** | **不是杠杆，勿再扫** |
+| maxTrade | ON（settings.json） | 本轮全程 **OFF**，全闸件正常产出 | 两种都可用，按数据集定 |
+
+### 2. ★ prod 与 S 是 U 形（不是单调）
+
+| S | 4.29 | 3.66 | 2.90 | 2.32 | 2.28 | **2.05** | 1.96 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| prod | 0.8175 | 0.8134 | 0.7289 | 0.7092 | 0.6881 | **0.6476** | 0.7240↑ |
+
+**极小值在 S ≈ 2.0–2.3。** 想破 prod 0.7 ⇒ **目标 S 锁 [2.0, 2.3]**；S 太高压不住拥挤，S 太低（<2.0）持仓过度平滑反与特定产品重合、prod 回升。
+
+### 3. ★ 两条有效杠杆（本役唯一两个真正动过闸的）
+
+1. **跨塔稀释**（禁混集合内 × 集合外，秩空间等权，配额 ≤5）：TO 25%→10%、ret 仅 −2.4pp、**prod −0.064**。
+   三腿配方（已交付 `P0oR7vYw` / `leAnKOEA`）：
+   `group_rank(add(add(group_rank(prob_P4_minus_P0,industry),group_rank(eps_revision_magnitude/ts_mean(eps_y1_estimate_coeff_var,55),industry)),group_rank(ts_backfill(eur_director_signal_value_1,66),industry)),industry)` <!-- lint:counterexample: 已交付三腿配方的历史记录，非生成端新配方 -->
+   前提三缺一不可：① 主腿 S 大余量；② 稀释腿与主腿低相关且自身 prod 干净；③ 主腿 ret 厚。
+2. **neutralization → CROWDING**：prod −0.0175、sub 抬到 1.70。
+
+### 4. ★ 容量定律：可出席位 ≈ 独立底层信号数（不是字段/切面数）
+
+- `techindi_model` 内 **2 个独立模型族**：`probability_*`（294 字段，分位概率）与 `tm_1..19_*`（399 字段，回归输出 + log-softmax），**跨族互相关仅 0.13–0.24**。
+- 89 个切面（分位 × horizon × 命名方案 × 模型变体）能把互相关从 0.95 降到 0.24，但 **17 件全闸件的 0.5 最大独立集仍是 3 席**（切面不增席）。
+- 加入 tm_ 族后 **3 席 → 4 席**（`MPYEEwj8` / `58EmKpkk` / `O0ALVWmJ` / `LLMvveP2`，精确解）。
+- ⇒ **凑席位先换「模型族」，再换切面，最后才换稀释腿。** 判据：看该数据集有几个独立模型族，每族值 ~2 席。
+
+### 5. ★ 选集排序修正：ret 量级先验 > aC > cov
+
+「aC 极低 + cov 极高」**不等于**有信号。本役三集（1649 字段，aC 0–8，cov 0.95–0.998）全部首波判死，死因同型：ret 0.12–3.24% ⇒ F 天花板 0.34–0.44。
+
+**只有两类信息能出 F≥1.0**：
+- ✅ **真预测型** = 模型输出**未来收益/概率的连续值**（techindi 的 probability bucket、dl_riskfree 的 label 概率）
+- ✅ **定价压力型** = 借券费率 / 拥挤度 / 资金流等直接反映供需失衡的量（risk60，ret 7.9–10.5%）
+
+**必须排除的「伪预测型」**：字段名含 `percentile` / `rank` / `score` / `similarity` / `grade` ⇒ 静态分位排名，**TO 会低于 5%、ret 极薄**，不值得开波。已判死：`pattern_scores` / `continuation_score` / `intraday_pv_feats` / `acquisition_model`。
+
+### 6. 族级判死优先于维度级
+
+同族换维度**不改变 F 天花板**：内部人交易族金额维度 F 0.54（`insider_matrix`）、笔数维度 F 0.52（`insider_trx_matrix`）。一个维度穷尽判死，同族其它维度大概率同命 ⇒ **先看族实证，再决定是否开波**。
+
+### 7. 工程铁律（本役实测踩过）
+
+1. **category 必须实查** `get_datasets` 返回值，不能按名字推断：`insider_matrix` / `insider_feats` / `insider_trx_matrix` / `earningscall_sentiment` **实际全是 other 类**。INSIDERS 塔在 EUR 真只有 3 个集（`insider_agg_matrix` / `insiders1` / `insiders12`），EARNINGS 塔真 0 个可用集。
+2. **发批必须二验** `batch_status`：曾出现返回 id 但平台 404。
+3. **发批前必须 preflight**：1 个字段不存在会导致**整批** `No alpha_id in sim response`（第三批 10/10 全废）。
+4. **`toolkit_static` 静态闸会拦两类写法**：① 显式加权腿混合（`0.7*A+0.3*B`，毒模式 `weighted_leg_mix_func_suffix`）整批拒绝；② `hump` 第二参数**必须命名** `hump(x,hump=0.01)`。
+5. **prod 读取的三类阻塞**：① `correlation_busy` = 账号级单并发槽被别处持有（retry 240s 不会因重试加快）；② MCP `check_correlation` 120s 硬上限 vs 平台 4–8 分钟 ⇒ **超时后计算被丢弃**，需重新触发；③ `--peek` 只读缓存**不触发计算**，新件首测必须先打一次 MCP 再 peek。判据：间隔 >10 分钟仍空体 = 计算已丢弃。
+
+### 8. 本役交付与容量实况（避免重复劳动）
+
+- **已 2 颗全闸+prod 验证**：`P0oR7vYw`（S2.28/F1.61/2Y2.42/TO9.24%/margin13.48bp/self0.5347/**prod0.6881**）、`leAnKOEA`（S2.05/F1.39/2Y2.48/TO7.15%/margin16.13bp/self0.4625/**prod0.6476**）。
+- ⚠ 二者互相关 **0.7837 > 0.7** ⇒ **只能提交其中一颗**（先提一颗，另一颗 self 必爆）。
+- **33 个数据集已实测判定，仅 `techindi_model` 出货**；4 个 0 塔位 category（macro/socialmedia/earnings/institutions）**物理不可达**。
+- EUR 可交付容量实测 **约 4 席** ⇒ 15 颗目标需换区或调整。
+

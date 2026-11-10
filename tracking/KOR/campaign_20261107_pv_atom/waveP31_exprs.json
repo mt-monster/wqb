@@ -1,0 +1,12 @@
+[
+  "group_rank(mdl242_1mt, sector)",
+  "group_rank(ts_av_diff(mdl242_1mt, 378), sector)",
+  "group_rank(mdl242_factor_momentum_component, sector)",
+  "-group_rank(mdl242_seasonality_component, sector)",
+  "group_neutralize(multiply(group_rank(mdl242_1mt,sector),group_rank(mdl242_factor_momentum_component,sector)),industry)",
+  "group_rank(vec_avg(mdl243_sector_rank), sector)",
+  "group_rank(vec_avg(mdl243_industry_rank), sector)",
+  "group_rank(subtract(vec_avg(mdl243_sector_rank), vec_avg(mdl243_industry_rank)), sector)",
+  "group_rank(ts_av_diff(vec_avg(mdl243_industry_rank), 336), sector)",
+  "group_rank(sudden_volume_spike_score, sector)"
+]

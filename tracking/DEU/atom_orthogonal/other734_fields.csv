@@ -1,0 +1,5 @@
+id,type,cov,uc,ac,desc
+oth734_standardized_company_value,VECTOR,0.0,2,10,Standardized search interest score (unbounded float) indicating the popularity of the search term
+search_popularity_score,VECTOR,0.0,5,7,Standardized (stitched) Google search interest score as a float; comparable across terms and time
+search_term_daily_score,VECTOR,0.0,1,1,Native Google interest score (0â100) indicating relative search popularity at capture time
+search_term_popularity_score,VECTOR,0.0,1,1,Google native search interest score on a 0â100 relative scale

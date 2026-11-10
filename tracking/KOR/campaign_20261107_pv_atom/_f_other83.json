@@ -1,0 +1,130 @@
+﻿{
+ "results": [
+  {
+   "id": "oth83_company_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.2536,
+   "userCount": 6,
+   "alphaCount": 25,
+   "description": "News sentiment of the company"
+  },
+  {
+   "id": "oth83_insider_holdings",
+   "type": "VECTOR",
+   "coverage": 0.4216,
+   "userCount": 7,
+   "alphaCount": 23,
+   "description": "Equity holdings of insider after the transaction"
+  },
+  {
+   "id": "oth83_insider_level",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 8,
+   "alphaCount": 19,
+   "description": "Ranking of the insider within the company"
+  },
+  {
+   "id": "oth83_market_cap",
+   "type": "VECTOR",
+   "coverage": 0.2813,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Total market value of a company's outstanding shares of stock in Local currency"
+  },
+  {
+   "id": "oth83_market_cap_eur",
+   "type": "VECTOR",
+   "coverage": 0.281,
+   "userCount": 6,
+   "alphaCount": 22,
+   "description": "Total market value of a company's outstanding shares of stock in EUR"
+  },
+  {
+   "id": "oth83_market_cap_usd",
+   "type": "VECTOR",
+   "coverage": 0.281,
+   "userCount": 7,
+   "alphaCount": 27,
+   "description": "Total market value of a company's outstanding shares of stock in USD"
+  },
+  {
+   "id": "oth83_revision",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 4,
+   "alphaCount": 10,
+   "description": "Revision 1\" is the first entry for the transaction, \"2\" is the first revision/update\""
+  },
+  {
+   "id": "oth83_share_count",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 16,
+   "alphaCount": 49,
+   "description": "Number of shares involved in the transaction"
+  },
+  {
+   "id": "oth83_shares_outstanding",
+   "type": "VECTOR",
+   "coverage": 0.2881,
+   "userCount": 6,
+   "alphaCount": 23,
+   "description": "Shares outstanding refer to a company's stock currently held by all its shareholders"
+  },
+  {
+   "id": "oth83_timestamp_utc",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Date/Time at which data was received by vendor"
+  },
+  {
+   "id": "oth83_transaction_significance",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Ranking of deal significance (3 being highest, 1 being lowest)"
+  },
+  {
+   "id": "oth83_transaction_unit_price",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 8,
+   "alphaCount": 21,
+   "description": "Price of transaction execution"
+  },
+  {
+   "id": "oth83_transaction_value",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 11,
+   "alphaCount": 39,
+   "description": "Value of the transaction in respective currency"
+  },
+  {
+   "id": "oth83_transaction_value_eur",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 12,
+   "alphaCount": 60,
+   "description": "Value of the transaction in EUR"
+  },
+  {
+   "id": "oth83_transaction_value_usd",
+   "type": "VECTOR",
+   "coverage": 0.4242,
+   "userCount": 11,
+   "alphaCount": 33,
+   "description": "Value of the transaction in USD"
+  }
+ ],
+ "count": 15,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 15,
+ "complete": true,
+ "pages_fetched": 1
+}

@@ -1,0 +1,12 @@
+[
+ "group_rank(mdl238_global_rank_d1, sector)",
+ "subtract(0.5, group_rank(mdl238_global_rank_d1, sector))",
+ "group_rank(mdl238_global_change_rank_d1, sector)",
+ "group_rank(mdl238_global_screening_rank_d1, sector)",
+ "subtract(0.5, group_rank(mdl238_global_owner_rank_d1, sector))",
+ "multiply(group_rank(mdl238_global_rank_d1, sector), group_rank(mdl238_global_change_rank_d1, sector))",
+ "group_rank(subtract(mdl238_global_rank_d1, mdl238_global_change_rank_d1), sector)",
+ "group_rank(subtract(mdl238_sector_rank_d1, mdl238_country_rank_d1), sector)",
+ "group_rank(ts_mean(mdl238_global_rank_d1, 66), sector)",
+ "group_rank(subtract(mdl238_global_screening_rank_d1, mdl238_global_owner_rank_d1), sector)"
+]

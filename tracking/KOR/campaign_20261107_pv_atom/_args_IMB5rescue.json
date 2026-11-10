@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "imb5_score",
+    "expression": "group_rank(ts_zscore(ts_backfill(imb5_score,22),504),industry)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "reverse(group_rank(ts_zscore(ts_backfill(imb5_score,22),504),industry))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "hump(subtract(group_rank(ts_zscore(ts_backfill(imb5_score,22),252),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "trade_when(rank(adv20)>0.1, group_rank(ts_zscore(ts_backfill(imb5_score,22),252),industry), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "group_rank(ts_rank(ts_backfill(imb5_score,22),504),industry)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "group_rank(ts_zscore(ts_backfill(imb5_score,66),252),sector)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  }
+]

@@ -1,0 +1,290 @@
+id,type,cov,uc,ac,desc
+qfl_cassie_convention_cng_longdebt_equity,VECTOR,0.0,2,2,Change in the ratio of long-term debt to equity over a period.
+qfl_cassie_convention_current_ratio,VECTOR,0.0,0,0,Current ratio measuring a company's ability to pay short-term liabilities.
+qfl_cassie_convention_debt_capital,VECTOR,0.0,3,3,Ratio of total debt to total capital for a company.
+qfl_cassie_convention_debt_equity,VECTOR,0.0,1,1,Ratio of total debt to total equity for a company.
+qfl_cassie_convention_debt_mktcapital,VECTOR,0.0,4,4,Ratio of total debt to market capitalization.
+qfl_cassie_convention_longdebt_capital,VECTOR,0.0,1,1,Ratio of long-term debt to total capital.
+qfl_cassie_convention_longdebt_equity,VECTOR,0.0,0,0,Ratio of long-term debt to equity for a company.
+qfl_cassie_convention_ocf_currliab,VECTOR,0.0,1,1,Ratio of operating cash flow to current liabilities.
+qfl_cassie_convention_quick_ratio,VECTOR,0.0,1,1,Quick ratio measuring a company's ability to meet short-term obligations.
+qfl_cassie_mktcap,VECTOR,0.0,0,0,Total market value of a company's outstanding shares.
+qfl_cassie_model_altman_zscore,VECTOR,0.0,8,11,Altman Z-Score indicating probability of bankruptcy.
+qfl_cassie_model_chs_default,VECTOR,0.0,0,0,Score from the CHS model predicting likelihood of default.
+qfl_cassie_model_merton,VECTOR,0.0,8,13,Distance to default as estimated by the Merton model.
+qfl_cassie_model_ohlson_oscore,VECTOR,0.0,0,0,Ohlson O-Score indicating probability of default or bankruptcy.
+qfl_cassie_qes_alter_debt_weighted_duration,VECTOR,0.0,1,1,Average maturity of debt; weighted by principal amounts.
+qfl_cassie_qes_alter_debt_weighted_interest_rate,VECTOR,0.0,0,0,Average interest rate on debt; weighted by principal amounts.
+qfl_cassie_qes_alter_distance_insolvency_1y,VECTOR,0.0,3,3,Distance to insolvency threshold projected one year ahead.
+qfl_cassie_qes_alter_extreme_insolvency_stress_1y,VECTOR,0.0,1,1,Score indicating extreme insolvency risk projected one year ahead.
+qfl_cassie_qes_alter_extreme_insolvency_stress_9m,VECTOR,0.0,0,0,Score indicating extreme insolvency risk projected nine months ahead.
+qfl_cassie_qes_alter_growth_shortterm_debt,VECTOR,0.0,0,0,Growth rate of short-term debt over a specified period.
+qfl_cassie_qes_alter_insolvency_stress_1y,VECTOR,0.0,1,1,Score indicating the level of insolvency risk projected one year ahead.
+qfl_cassie_qes_alter_insolvency_stress_2y,VECTOR,0.0,0,0,Score indicating the level of insolvency risk projected two years ahead.
+qfl_cassie_qes_alter_insolvency_stress_9m,VECTOR,0.0,1,2,Score indicating the level of insolvency risk projected nine months ahead.
+qfl_cassie_qes_alter_moderate_insolvency_stress_1y,VECTOR,0.0,0,0,Score indicating moderate insolvency risk projected one year ahead.
+qfl_cassie_qes_alter_moderate_insolvency_stress_2y,VECTOR,0.0,0,0,Score indicating moderate insolvency risk projected two years ahead.
+qfl_cassie_qes_alter_moderate_insolvency_stress_9m,VECTOR,0.0,0,0,Score indicating moderate insolvency risk projected nine months ahead.
+qfl_cassie_qes_alter_revolver_debt,VECTOR,0.0,0,0,Total amount of revolving debt outstanding.
+qfl_cassie_qes_alter_short_longterm_debt_ratio,VECTOR,0.0,0,0,Ratio of short-term debt to long-term debt.
+qfl_cassie_qes_alter_shortterm_debt_ratio,VECTOR,0.0,2,2,Ratio of short-term debt to total debt.
+qfl_cassie_qes_cassie_impliedalpha,VECTOR,0.0,1,1,Implied alpha or expected excess return derived from credit risk models.
+qfl_cassie_qes_cassie_prelimcomposite,VECTOR,0.0,0,0,Preliminary composite score from the credit risk model.
+qfl_cassie_qes_cassie_score,VECTOR,0.0,0,0,Composite credit risk score from the CASSIE model.
+qfl_gamef_game_accruals_vol,VECTOR,0.0,0,0,Volatility in accruals; indicating variability in non-cash accounting adjustments.
+qfl_gamef_game_amortization_rate,VECTOR,0.0,0,0,Rate at which intangible assets are amortized over time.
+qfl_gamef_game_analyst_coverage_chg,VECTOR,0.0,0,0,Change in the number of analysts covering the company.
+qfl_gamef_game_asset_turnover_chg,VECTOR,0.0,0,0,Change in asset turnover ratio compared to the previous period.
+qfl_gamef_game_capex_dep,VECTOR,0.0,1,1,Ratio of capital expenditures to depreciation expense.
+qfl_gamef_game_capex_sale,VECTOR,0.0,0,0,Ratio of capital expenditures to total sales; indicating investment intensity.
+qfl_gamef_game_cash_flow_coverage,VECTOR,0.0,0,0,Ratio of operating cash flow to debt obligations.
+qfl_gamef_game_contingent_liab,VECTOR,0.0,0,0,Total value of contingent liabilities reported by the company.
+qfl_gamef_game_debt_convertible,VECTOR,0.0,0,0,Total value of convertible debt outstanding.
+qfl_gamef_game_deferred_sal_chg,VECTOR,0.0,2,3,Change in deferred salary obligations over the period.
+qfl_gamef_game_deferred_tax_asset_chg,VECTOR,0.0,0,0,Change in the value of deferred tax assets over the period.
+qfl_gamef_game_deferred_tax_liab_chg,VECTOR,0.0,0,0,Change in deferred tax liabilities over the period.
+qfl_gamef_game_depreciation_chg,VECTOR,0.0,0,0,Change in depreciation expense compared to the previous period.
+qfl_gamef_game_earning_smooth,VECTOR,0.0,1,1,Score indicating the smoothness or consistency of reported earnings.
+qfl_gamef_game_eff_interest_rate,VECTOR,0.0,0,0,Average interest rate paid on outstanding debt obligations.
+qfl_gamef_game_eps_sur_vol,VECTOR,0.0,0,0,Volatility of earnings per share surprises over a given period.
+qfl_gamef_game_eps_vol,VECTOR,0.0,0,0,Volatility of earnings per share over a specified period.
+qfl_gamef_game_equity_dilution,VECTOR,0.0,0,0,Total value of equity dilution from new share issuance or conversion.
+qfl_gamef_game_esop_grant,VECTOR,0.0,0,0,Total value of employee stock option plan grants.
+qfl_gamef_game_finished_goods,VECTOR,0.0,0,0,Total value of finished goods held in inventory.
+qfl_gamef_game_gma_chg,VECTOR,0.0,0,0,Change in analyst expectations for gross margin.
+qfl_gamef_game_gross_margin_vol,VECTOR,0.0,0,0,Volatility in gross margin over a specified period.
+qfl_gamef_game_illiquid_asset,VECTOR,0.0,0,0,Total value of assets that are not easily convertible to cash.
+qfl_gamef_game_inc_cash_tax,VECTOR,0.0,0,0,Total cash paid for income taxes during the period.
+qfl_gamef_game_interest_investment_inc,VECTOR,0.0,0,0,Ratio of interest and investment income to total revenue.
+qfl_gamef_game_inventory_chg,VECTOR,0.0,0,0,Change in the value of inventory compared to the previous period.
+qfl_gamef_game_inventory_days,VECTOR,0.0,0,0,Average number of days inventory is held before sale.
+qfl_gamef_game_labor_efficiency_chg,VECTOR,0.0,0,0,Change in labor efficiency metrics over the period.
+qfl_gamef_game_minority_interest,VECTOR,0.0,0,0,Value of minority interests in consolidated subsidiaries.
+qfl_gamef_game_noa,VECTOR,0.0,0,0,Total net operating assets held by the company.
+qfl_gamef_game_non_oper_inc,VECTOR,0.0,0,0,Total value of non-operating income reported.
+qfl_gamef_game_non_production_asset,VECTOR,0.0,0,0,Value of assets not directly involved in core production activities.
+qfl_gamef_game_optimism_gma,VECTOR,0.0,0,0,Analyst optimism regarding gross margin performance.
+qfl_gamef_game_optimism_sale,VECTOR,0.0,0,0,Analyst optimism regarding future sales performance.
+qfl_gamef_game_other_asset_gr,VECTOR,0.0,0,0,Growth rate of other assets not classified elsewhere.
+qfl_gamef_game_payble_days,VECTOR,0.0,0,0,Average number of days to pay suppliers.
+qfl_gamef_game_pension_debt_equi_pbo,VECTOR,0.0,0,0,Ratio of pension-related debt to projected benefit obligation.
+qfl_gamef_game_pension_discount_rate,VECTOR,0.0,0,0,Discount rate used to calculate the present value of pension obligations.
+qfl_gamef_game_pension_ev,VECTOR,0.0,0,0,Enterprise value adjustment for pension obligations.
+qfl_gamef_game_pension_expense,VECTOR,0.0,0,0,Total pension expense recognized during the period.
+qfl_gamef_game_pension_interest,VECTOR,0.0,0,0,Interest cost component of pension expense.
+qfl_gamef_game_pension_pbo,VECTOR,0.0,0,0,Projected benefit obligation for pension plans.
+qfl_gamef_game_prepaid_expense,VECTOR,0.0,0,0,Total value of expenses paid in advance and not yet recognized.
+qfl_gamef_game_receivable_chg,VECTOR,0.0,0,0,Change in accounts receivable compared to the previous period.
+qfl_gamef_game_receivable_days,VECTOR,0.0,0,0,Average number of days to collect payment from customers.
+qfl_gamef_game_relative_rtn_vol,VECTOR,0.0,0,0,Volatility of returns relative to a benchmark or peer group.
+qfl_gamef_game_serial_special,VECTOR,0.0,0,0,Total value of serial special items reported in financial statements.
+qfl_gamef_game_sg_a_cost_ratio,VECTOR,0.0,0,0,Ratio of selling; general; and administrative costs to total revenue.
+qfl_gamef_game_sg_a_inefficiency,VECTOR,0.0,0,0,Score indicating inefficiency in selling; general; and administrative expenses.
+qfl_gamef_game_sg_a_vol,VECTOR,0.0,0,0,Volatility in selling; general; and administrative expenses.
+qfl_gamef_game_short_term_debt,VECTOR,0.0,0,0,Total value of short-term debt obligations.
+qfl_gamef_game_tax_rate,VECTOR,0.0,0,0,Effective tax rate paid by the company as a percentage of earnings.
+qfl_gamef_game_total_debt_chg,VECTOR,0.0,0,0,Change in total debt compared to the previous period.
+qfl_gamef_qes_gamef_cashflow_var,VECTOR,0.0,2,3,Score reflecting the variability of operating cash flows.
+qfl_gamef_qes_gamef_chs_default,VECTOR,0.0,0,0,Score estimating the probability of default using the CHS model.
+qfl_gamef_qes_gamef_cscore,VECTOR,0.0,1,1,C-Score; a measure of accounting quality and potential manipulation.
+qfl_gamef_qes_gamef_earn_var,VECTOR,0.0,1,1,Score reflecting the variability of reported earnings.
+qfl_gamef_qes_gamef_earnigs_timeliness,VECTOR,0.0,0,0,Score reflecting the speed at which earnings are reported after period end.
+qfl_gamef_qes_gamef_grossprofit_asset,VECTOR,0.0,0,0,Ratio of gross profit to total assets.
+qfl_gamef_qes_gamef_icfroe_1y,VECTOR,0.0,0,0,One-year implied cost of equity return on equity score.
+qfl_gamef_qes_gamef_icfroe_3y,VECTOR,0.0,0,0,Three-year implied cost of equity return on equity score.
+qfl_gamef_qes_gamef_icfroe_5y,VECTOR,0.0,0,0,Five-year implied cost of equity return on equity score.
+qfl_gamef_qes_gamef_mohanram,VECTOR,0.0,0,0,Score based on Mohanram's model for identifying growth stocks.
+qfl_gamef_qes_gamef_negative_earnings,VECTOR,0.0,0,0,Indicator variable showing if the company reported negative earnings.
+qfl_gamef_qes_gamef_ohlson,VECTOR,0.0,1,1,Ohlson O-Score; a statistical measure for predicting bankruptcy risk.
+qfl_gamef_qes_gamef_piotroski,VECTOR,0.0,1,1,Composite score assessing financial strength based on Piotroski's method.
+qfl_gamef_qes_gamef_score,VECTOR,0.0,1,1,Composite score summarizing multiple accounting quality metrics.
+qfl_nlp_calltranscript_global_all_avg_rating,VECTOR,0.0,0,0,Average rating given by all analysts present at the event.
+qfl_nlp_calltranscript_global_avg_rating,VECTOR,0.0,0,0,Mean rating assigned by analysts during the event.
+qfl_nlp_calltranscript_global_dist_cos_mgmt_qa,VECTOR,0.0,0,0,Cosine distance measuring similarity between management presentation and Q&A sections.
+qfl_nlp_calltranscript_global_enriched_all_avg_rating,VECTOR,0.0,0,0,The average rating score calculated across all speakers and sections of the entire call transcript.
+qfl_nlp_calltranscript_global_enriched_avg_rating,VECTOR,0.0,0,0,The average rating score associated with the call transcript; which could be from a proprietary model or analyst ratings.
+qfl_nlp_calltranscript_global_enriched_dist_cos_mgmt_qa,VECTOR,0.0,0,0,The cosine distance measuring the semantic difference between management's prepared presentation remarks and their answers during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_event_date,VECTOR,0.0,0,0,The date of the earnings call transcript event. Data is of type Date.
+qfl_nlp_calltranscript_global_enriched_num_exec_female,VECTOR,0.0,0,0,The number of female executives identified as speakers on the earnings call.
+qfl_nlp_calltranscript_global_enriched_num_exec_male,VECTOR,0.0,0,0,The total number of male executives participating in the earnings call.
+qfl_nlp_calltranscript_global_enriched_num_que_buyside,VECTOR,0.0,0,0,The total number of questions asked by buy-side analysts during the earnings call.
+qfl_nlp_calltranscript_global_enriched_num_que_sellside,VECTOR,0.0,0,0,The total number of questions asked by sell-side analysts during the earnings call.
+qfl_nlp_calltranscript_global_enriched_num_sellside_anlst,VECTOR,0.0,0,0,The total number of unique sell-side analysts who participated in the earnings call.
+qfl_nlp_calltranscript_global_enriched_pointdate,VECTOR,0.0,0,0,The point-in-time date of the earnings call transcript. Data type: Date.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_count_pos_adj,VECTOR,0.0,0,0,Adjusted count of positive words from the CEO during the prepared remarks section.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_count_pos_adv,VECTOR,0.0,0,0,The count of positive adverbs used by the CEO during the prepared presentation section.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_count_pos_prepo,VECTOR,0.0,0,0,The count of positive prepositions used by the CEO during the prepared presentation section.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_count_pos_pron,VECTOR,0.0,0,0,Count of positive pronouns used by the CEO during the prepared remarks section. Data is of type Integer.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_count_words,VECTOR,0.0,0,0,The total number of words spoken by the CEO during the prepared presentation section.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_hd_neg,VECTOR,0.0,0,0,Negative sentiment score from the CEO's prepared remarks; based on the Harvard (HD) dictionary.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for the CEO's speech during the prepared presentation section; based on the Harvard IV-4 dictionary.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_lm2_cum_neg,VECTOR,0.0,0,0,The cumulative count of negative words spoken by the CEO during the prepared presentation section; based on the Loughran-McDonald (2014) financial sentiment dicâ¦
+qfl_nlp_calltranscript_global_enriched_pre_ceo_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment score from the CEO's prepared remarks; based on the Loughran-McDonald (LM2) dictionary.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_read_cl,VECTOR,0.0,0,0,The Coleman-Liau readability index for the CEO's speech during the presentation (prepared remarks) section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_read_dc,VECTOR,0.0,0,0,The Dale-Chall readability score for the CEO's speech during the presentation (prepared remarks) section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_read_fog,VECTOR,0.0,0,0,The Gunning-Fog readability index for the CEO's speech during the presentation (prepared remarks) section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_vader_neg,VECTOR,0.0,0,0,Negative sentiment score from the VADER model for the CEO's speech during the presentation (prepared remarks) section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_ceo_vader_pos,VECTOR,0.0,0,0,Positive sentiment score from the VADER model for the CEO's speech during the presentation (prepared remarks) section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_oth_count_pos_adj,VECTOR,0.0,0,0,The count of adjectives in the speech of non-CEO executives during the presentation section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_oth_count_pos_adv,VECTOR,0.0,0,0,The count of positive adverbs used by other executives (non-CEO) during the prepared presentation section.
+qfl_nlp_calltranscript_global_enriched_pre_oth_count_pos_prepo,VECTOR,0.0,0,0,The count of prepositions in the speech of non-CEO executives during the presentation section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_oth_count_pos_pron,VECTOR,0.0,0,0,The count of positive pronouns used by other executives (non-CEO) during the prepared presentation section.
+qfl_nlp_calltranscript_global_enriched_pre_oth_count_words,VECTOR,0.0,0,0,Total word count from the speech of non-CEO executives during the presentation (prepared remarks) section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_oth_hd_neg,VECTOR,0.0,0,0,Negative sentiment score from non-CEO executives' prepared remarks; based on the Harvard (HD) dictionary.
+qfl_nlp_calltranscript_global_enriched_pre_oth_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for other executives' (non-CEO) speech during the prepared presentation section; based on the Harvard IV-4 dictionary.
+qfl_nlp_calltranscript_global_enriched_pre_oth_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment score from non-CEO executives' prepared remarks; based on the Loughran-McDonald (LM2) dictionary.
+qfl_nlp_calltranscript_global_enriched_pre_oth_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment score based on the Loughran-McDonald dictionary for non-CEO executives' speech during the presentation section.
+qfl_nlp_calltranscript_global_enriched_pre_oth_read_cl,VECTOR,0.0,0,0,The Coleman-Liau readability index for the speech of non-CEO executives during the presentation section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_oth_read_dc,VECTOR,0.0,0,0,Dale-Chall readability score for the prepared remarks of non-CEO executives.
+qfl_nlp_calltranscript_global_enriched_pre_oth_read_fog,VECTOR,0.0,0,0,Gunning-Fog readability score for the prepared remarks of non-CEO executives.
+qfl_nlp_calltranscript_global_enriched_pre_oth_vader_neg,VECTOR,0.0,0,0,Negative sentiment score from the VADER model for the speech of non-CEO executives during the presentation section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_pre_oth_vader_pos,VECTOR,0.0,0,0,The positive sentiment score for other executives' (non-CEO) speech during the prepared presentation section; calculated using the VADER sentiment analysis toolâ¦
+qfl_nlp_calltranscript_global_enriched_qa_ceo_count_pos_adj,VECTOR,0.0,0,0,The count of positive adjectives used by the CEO during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_count_pos_adv,VECTOR,0.0,0,0,The count of adverbs in the CEO's speech during the Q&A section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_count_pos_prepo,VECTOR,0.0,0,0,The count of positive prepositions used by the CEO during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_count_pos_pron,VECTOR,0.0,0,0,The count of positive pronouns used by the CEO during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_count_words,VECTOR,0.0,0,0,The total number of words spoken by the CEO during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_hd_neg,VECTOR,0.0,0,0,Negative sentiment score from the CEO's answers during the Q&A session; based on the Harvard (HD) dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for the CEO's speech during the Q&A section; based on the Harvard IV-4 dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment score based on the Loughran-McDonald dictionary for the CEO's speech during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_lm2_cum_pos,VECTOR,0.0,0,0,The cumulative count of positive words spoken by the CEO during the Q&A section; based on the Loughran-McDonald (2014) financial sentiment dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_read_cl,VECTOR,0.0,0,0,The Coleman-Liau readability index for the CEO's speech during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_read_dc,VECTOR,0.0,0,0,Dale-Chall readability score for the CEO's answers during the Q&A session.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_read_fog,VECTOR,0.0,0,0,The Gunning Fog readability index for the CEO's speech during the Q&A section; where a higher score indicates more complex language.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_vader_neg,VECTOR,0.0,0,0,The negative sentiment score for the CEO's speech during the Q&A section; calculated using the VADER sentiment analysis tool.
+qfl_nlp_calltranscript_global_enriched_qa_ceo_vader_pos,VECTOR,0.0,0,0,The positive sentiment score for the CEO's speech during the Q&A section; calculated using the VADER sentiment analysis tool.
+qfl_nlp_calltranscript_global_enriched_qa_oth_count_pos_adj,VECTOR,0.0,0,0,The count of adjectives in the speech of non-CEO executives during the Q&A section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_qa_oth_count_pos_adv,VECTOR,0.0,0,0,The count of positive adverbs used by other executives (non-CEO) during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_oth_count_pos_prepo,VECTOR,0.0,0,0,The count of positive prepositions used by other executives (non-CEO) during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_oth_count_pos_pron,VECTOR,0.0,0,0,The count of pronouns in the speech of non-CEO executives during the Q&A section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_qa_oth_count_words,VECTOR,0.0,0,0,The total number of words spoken by other executives (non-CEO) during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_oth_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for other executives' (non-CEO) speech during the Q&A section; based on the Harvard IV-4 dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_oth_hd_pos,VECTOR,0.0,0,0,Positive sentiment score from non-CEO executives' answers during the Q&A session; based on the Harvard (HD) dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_oth_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment score from non-CEO executives' answers during the Q&A session; based on the Loughran-McDonald (LM2) dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_oth_lm2_cum_pos,VECTOR,0.0,0,0,The cumulative count of positive words spoken by other executives (non-CEO) during the Q&A section; based on the Loughran-McDonald (2014) financial sentiment diâ¦
+qfl_nlp_calltranscript_global_enriched_qa_oth_read_cl,VECTOR,0.0,0,0,The Coleman-Liau readability index for other executives' (non-CEO) speech during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_oth_read_dc,VECTOR,0.0,0,0,Dale-Chall readability score for the answers from non-CEO executives during the Q&A session.
+qfl_nlp_calltranscript_global_enriched_qa_oth_read_fog,VECTOR,0.0,0,0,The Gunning Fog readability index for other executives' (non-CEO) speech during the Q&A section; where a higher score indicates more complex language.
+qfl_nlp_calltranscript_global_enriched_qa_oth_vader_neg,VECTOR,0.0,0,0,The negative sentiment score for speech from other executives (non-CEO) during the Q&A section; calculated using the VADER sentiment analysis tool.
+qfl_nlp_calltranscript_global_enriched_qa_oth_vader_pos,VECTOR,0.0,0,0,The positive sentiment score for speech from other executives (non-CEO) during the Q&A section; calculated using the VADER sentiment analysis tool.
+qfl_nlp_calltranscript_global_enriched_qa_rest_count_pos_adj,VECTOR,0.0,0,0,Adjusted count of positive words from non-CEO/analyst speakers during the Q&A session.
+qfl_nlp_calltranscript_global_enriched_qa_rest_count_pos_adv,VECTOR,0.0,0,0,The count of positive adverbs used by non-CEO and non-analyst speakers during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_rest_count_pos_prepo,VECTOR,0.0,0,0,Count of positive prepositions from non-CEO/analyst speakers during the Q&A session.
+qfl_nlp_calltranscript_global_enriched_qa_rest_count_pos_pron,VECTOR,0.0,0,0,Count of positive pronouns used by non-CEO/analyst speakers during the Q&A session. Data is of type Integer.
+qfl_nlp_calltranscript_global_enriched_qa_rest_count_words,VECTOR,0.0,0,0,Total word count from non-CEO/analyst speakers during the Q&A session. Data is of type Integer.
+qfl_nlp_calltranscript_global_enriched_qa_rest_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for all non-CEO and non-analyst speakers during the Q&A section; based on the Harvard IV-4 dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_rest_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for all non-CEO and non-analyst speakers during the Q&A section; based on the Harvard IV-4 dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_rest_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment score derived from the Loughran-McDonald dictionary for the Q&A section of the call transcript; excluding CEO and sell-side speakeâ¦
+qfl_nlp_calltranscript_global_enriched_qa_rest_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment score from non-CEO/analyst speakers during the Q&A session; based on the Loughran-McDonald (LM2) dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_rest_read_cl,VECTOR,0.0,0,0,Coleman-Liau readability score for the speech of non-CEO/analyst speakers during the Q&A session.
+qfl_nlp_calltranscript_global_enriched_qa_rest_read_dc,VECTOR,0.0,0,0,The Dale-Chall readability score for speech from non-CEO and non-analyst speakers during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_rest_read_fog,VECTOR,0.0,0,0,The Gunning-Fog readability index for the speech of participants (excluding CEO and sell-side analysts) during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_rest_vader_neg,VECTOR,0.0,0,0,Negative sentiment score derived from the VADER model for the Q&A section of the call transcript; excluding CEO and sell-side speakers.
+qfl_nlp_calltranscript_global_enriched_qa_rest_vader_pos,VECTOR,0.0,0,0,The positive sentiment score for non-CEO and non-analyst speakers during the Q&A section; calculated using the VADER sentiment analysis tool.
+qfl_nlp_calltranscript_global_enriched_qa_sell_count_pos_adj,VECTOR,0.0,0,0,The count of positive adjectives used by sell-side analysts during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_sell_count_pos_adv,VECTOR,0.0,0,0,The count of adverbs in the speech of sell-side analysts during the Q&A section of the call transcript.
+qfl_nlp_calltranscript_global_enriched_qa_sell_count_pos_prepo,VECTOR,0.0,0,0,The count of positive prepositions used by sell-side analysts during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_sell_count_pos_pron,VECTOR,0.0,0,0,The count of positive pronouns used by sell-side analysts during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_sell_count_words,VECTOR,0.0,0,0,The total number of words spoken by sell-side analysts during the Q&A section.
+qfl_nlp_calltranscript_global_enriched_qa_sell_hd_neg,VECTOR,0.0,0,0,Negative sentiment score from sell-side analysts' questions during the Q&A session; based on the Harvard (HD) dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_sell_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for sell-side analysts' speech during the Q&A section; based on the Harvard IV-4 dictionary.
+qfl_nlp_calltranscript_global_enriched_qa_sell_lm2_cum_neg,VECTOR,0.0,0,0,The cumulative count of negative words spoken by sell-side analysts during the Q&A section; based on the Loughran-McDonald (2014) financial sentiment dictionaryâ¦
+qfl_nlp_calltranscript_global_enriched_qa_sell_lm2_cum_pos,VECTOR,0.0,0,0,The cumulative count of positive words spoken by sell-side analysts during the Q&A section; based on the Loughran-McDonald (2014) financial sentiment dictionaryâ¦
+qfl_nlp_calltranscript_global_enriched_qa_sell_read_cl,VECTOR,0.0,0,0,The Coleman-Liau readability index for the speech of sell-side analysts during the Q&A section of the earnings call transcript.
+qfl_nlp_calltranscript_global_enriched_qa_sell_read_dc,VECTOR,0.0,0,0,Dale-Chall readability score for the questions from sell-side analysts during the Q&A session.
+qfl_nlp_calltranscript_global_enriched_qa_sell_read_fog,VECTOR,0.0,0,0,The Gunning Fog readability index for speech from sell-side analysts during the Q&A section; where a higher score indicates more complex language.
+qfl_nlp_calltranscript_global_enriched_qa_sell_vader_neg,VECTOR,0.0,0,0,Negative sentiment score from sell-side analysts' questions during the Q&A session; based on the VADER sentiment tool.
+qfl_nlp_calltranscript_global_enriched_qa_sell_vader_pos,VECTOR,0.0,0,0,The positive sentiment score for speech from sell-side analysts during the Q&A section; calculated using the VADER sentiment analysis tool.
+qfl_nlp_calltranscript_global_enriched_rating_diff,VECTOR,0.0,0,0,The difference between two rating scores associated with the earnings call; potentially comparing pre-call and post-call ratings or scores between different traâ¦
+qfl_nlp_calltranscript_global_enriched_total_anlst,VECTOR,0.0,0,0,Total number of participating analysts in the earnings call. Data is of type Integer.
+qfl_nlp_calltranscript_global_num_exec_female,VECTOR,0.0,0,0,Number of female executives present at the event.
+qfl_nlp_calltranscript_global_num_exec_male,VECTOR,0.0,0,0,Number of male executives present at the event.
+qfl_nlp_calltranscript_global_num_que_buyside,VECTOR,0.0,0,0,Number of questions asked by buy-side analysts during the event.
+qfl_nlp_calltranscript_global_num_que_sellside,VECTOR,0.0,0,0,Number of questions asked by sell-side analysts during the event.
+qfl_nlp_calltranscript_global_num_sellside_anlst,VECTOR,0.0,0,0,Number of sell-side analysts present at the event.
+qfl_nlp_calltranscript_global_pre_ceo_count_pos_adj,VECTOR,0.0,0,0,Count of positive adjectives used by CEO in presentations.
+qfl_nlp_calltranscript_global_pre_ceo_count_pos_adv,VECTOR,0.0,0,0,Count of positive adverbs used by CEO in presentations.
+qfl_nlp_calltranscript_global_pre_ceo_count_pos_prepo,VECTOR,0.0,0,0,Number of positive prepositions used by the CEO in the presentation section.
+qfl_nlp_calltranscript_global_pre_ceo_count_pos_pron,VECTOR,0.0,0,0,Count of positive pronouns used by CEO in presentations.
+qfl_nlp_calltranscript_global_pre_ceo_count_words,VECTOR,0.0,0,0,Total number of words spoken by CEO in presentations.
+qfl_nlp_calltranscript_global_pre_ceo_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for CEO presentations using the Harvard dictionary.
+qfl_nlp_calltranscript_global_pre_ceo_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for CEO presentations using the Harvard dictionary.
+qfl_nlp_calltranscript_global_pre_ceo_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment for CEO presentations using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_pre_ceo_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment score (LM2 dictionary) for the CEO in the presentation section.
+qfl_nlp_calltranscript_global_pre_ceo_read_cl,VECTOR,0.0,0,0,Readability score of CEO presentations using the Coleman-Liau index.
+qfl_nlp_calltranscript_global_pre_ceo_read_dc,VECTOR,0.0,0,0,Readability score of CEO presentations using the Dale-Chall formula.
+qfl_nlp_calltranscript_global_pre_ceo_read_fog,VECTOR,0.0,0,0,Readability score of CEO presentations based on the FOG index.
+qfl_nlp_calltranscript_global_pre_ceo_vader_neg,VECTOR,0.0,0,0,Negative sentiment score for CEO presentations using VADER.
+qfl_nlp_calltranscript_global_pre_ceo_vader_pos,VECTOR,0.0,0,0,Positive sentiment score for CEO presentations using VADER.
+qfl_nlp_calltranscript_global_pre_oth_count_pos_adj,VECTOR,0.0,0,0,Count of positive adjectives used by other executives in presentations.
+qfl_nlp_calltranscript_global_pre_oth_count_pos_adv,VECTOR,0.0,0,0,Count of positive adverbs used by other executives in presentations.
+qfl_nlp_calltranscript_global_pre_oth_count_pos_prepo,VECTOR,0.0,0,0,Count of positive prepositions used by other executives in presentations.
+qfl_nlp_calltranscript_global_pre_oth_count_pos_pron,VECTOR,0.0,0,0,Count of positive pronouns used by other executives in presentations.
+qfl_nlp_calltranscript_global_pre_oth_count_words,VECTOR,0.0,0,0,Total number of words spoken by other executives in presentations.
+qfl_nlp_calltranscript_global_pre_oth_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for other executives' presentations using the Harvard dictionary.
+qfl_nlp_calltranscript_global_pre_oth_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for other executives' presentations using the Harvard dictionary.
+qfl_nlp_calltranscript_global_pre_oth_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment score (LM2 dictionary) for other speakers in the presentation section.
+qfl_nlp_calltranscript_global_pre_oth_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment for other executives' presentations using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_pre_oth_read_cl,VECTOR,0.0,0,0,Readability score of other executives' presentations using the Coleman-Liau index.
+qfl_nlp_calltranscript_global_pre_oth_read_dc,VECTOR,0.0,0,0,Readability score of other executives' presentations using the Dale-Chall formula.
+qfl_nlp_calltranscript_global_pre_oth_read_fog,VECTOR,0.0,0,0,Readability score of other executives' presentations based on the FOG index.
+qfl_nlp_calltranscript_global_pre_oth_vader_neg,VECTOR,0.0,0,0,Negative sentiment score for other executives' presentations using VADER.
+qfl_nlp_calltranscript_global_pre_oth_vader_pos,VECTOR,0.0,0,0,Positive sentiment score for other executives' presentations using VADER.
+qfl_nlp_calltranscript_global_qa_ceo_count_pos_adj,VECTOR,0.0,0,0,Count of positive adjectives used by CEO in Q&A responses.
+qfl_nlp_calltranscript_global_qa_ceo_count_pos_adv,VECTOR,0.0,0,0,Count of positive adverbs used by CEO in Q&A responses.
+qfl_nlp_calltranscript_global_qa_ceo_count_pos_prepo,VECTOR,0.0,0,0,Count of positive prepositions used by CEO in Q&A responses.
+qfl_nlp_calltranscript_global_qa_ceo_count_pos_pron,VECTOR,0.0,0,0,Number of positive pronouns used by the CEO during Q&A sessions.
+qfl_nlp_calltranscript_global_qa_ceo_count_words,VECTOR,0.0,0,0,Total number of words spoken by CEO in Q&A responses.
+qfl_nlp_calltranscript_global_qa_ceo_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for CEO responses in Q&A using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_ceo_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for CEO Q&A responses using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_ceo_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment for CEO Q&A responses using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_qa_ceo_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment for CEO Q&A responses using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_qa_ceo_read_cl,VECTOR,0.0,0,0,Readability score of CEO Q&A responses using the Coleman-Liau index.
+qfl_nlp_calltranscript_global_qa_ceo_read_dc,VECTOR,0.0,0,0,Readability score of CEO Q&A responses using the Dale-Chall formula.
+qfl_nlp_calltranscript_global_qa_ceo_read_fog,VECTOR,0.0,0,0,Readability score of CEO responses in Q&A based on the FOG index.
+qfl_nlp_calltranscript_global_qa_ceo_vader_neg,VECTOR,0.0,0,0,Negative sentiment score for CEO Q&A responses using VADER.
+qfl_nlp_calltranscript_global_qa_ceo_vader_pos,VECTOR,0.0,0,0,Positive sentiment score for CEO Q&A responses using VADER.
+qfl_nlp_calltranscript_global_qa_oth_count_pos_adj,VECTOR,0.0,0,0,Number of positive adjectives used by non-executive speakers during the Q&A session of an earnings call.
+qfl_nlp_calltranscript_global_qa_oth_count_pos_adv,VECTOR,0.0,0,0,Count of positive adverbs used by other executives in Q&A.
+qfl_nlp_calltranscript_global_qa_oth_count_pos_prepo,VECTOR,0.0,0,0,Count of positive prepositions used by other executives in Q&A.
+qfl_nlp_calltranscript_global_qa_oth_count_pos_pron,VECTOR,0.0,0,0,Count of positive pronouns used by other executives in Q&A.
+qfl_nlp_calltranscript_global_qa_oth_count_words,VECTOR,0.0,0,0,Total number of words spoken by other executives in Q&A.
+qfl_nlp_calltranscript_global_qa_oth_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for other executives' Q&A responses using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_oth_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for other executives' Q&A responses using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_oth_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment for other executives' Q&A using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_qa_oth_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment for other executives' Q&A using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_qa_oth_read_cl,VECTOR,0.0,0,0,Readability score of other executives' Q&A using the Coleman-Liau index.
+qfl_nlp_calltranscript_global_qa_oth_read_dc,VECTOR,0.0,0,0,Readability score of other executives' Q&A using the Dale-Chall formula.
+qfl_nlp_calltranscript_global_qa_oth_read_fog,VECTOR,0.0,0,0,Readability score of other executives' Q&A using the FOG index.
+qfl_nlp_calltranscript_global_qa_oth_vader_neg,VECTOR,0.0,0,0,Negative sentiment score for other executives' Q&A responses using VADER.
+qfl_nlp_calltranscript_global_qa_oth_vader_pos,VECTOR,0.0,0,0,Positive sentiment score for other executives' Q&A responses using VADER.
+qfl_nlp_calltranscript_global_qa_rest_count_pos_adj,VECTOR,0.0,0,0,Count of positive adjectives used by remaining participants in Q&A.
+qfl_nlp_calltranscript_global_qa_rest_count_pos_adv,VECTOR,0.0,0,0,Count of positive adverbs used by other participants during Q&A sessions.
+qfl_nlp_calltranscript_global_qa_rest_count_pos_prepo,VECTOR,0.0,0,0,Count of positive prepositions used by remaining participants in Q&A.
+qfl_nlp_calltranscript_global_qa_rest_count_pos_pron,VECTOR,0.0,0,0,Count of positive pronouns used by remaining participants in Q&A.
+qfl_nlp_calltranscript_global_qa_rest_count_words,VECTOR,0.0,0,0,Total number of words spoken by remaining participants in Q&A.
+qfl_nlp_calltranscript_global_qa_rest_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for remaining participants in Q&A using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_rest_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for remaining participants in Q&A using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_rest_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment score (LM2 dictionary) for other participants during Q&A.
+qfl_nlp_calltranscript_global_qa_rest_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment for remaining participants in Q&A using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_qa_rest_read_cl,VECTOR,0.0,0,0,Readability score of remaining participants' Q&A using the Coleman-Liau index.
+qfl_nlp_calltranscript_global_qa_rest_read_dc,VECTOR,0.0,0,0,Readability score of remaining participants' Q&A using the Dale-Chall formula.
+qfl_nlp_calltranscript_global_qa_rest_read_fog,VECTOR,0.0,0,0,Readability score of remaining participants' Q&A using the FOG index.
+qfl_nlp_calltranscript_global_qa_rest_vader_neg,VECTOR,0.0,0,0,Negative sentiment score for remaining participants in Q&A using VADER.
+qfl_nlp_calltranscript_global_qa_rest_vader_pos,VECTOR,0.0,0,0,Positive sentiment score (VADER) for other participants during Q&A sessions.
+qfl_nlp_calltranscript_global_qa_sell_count_pos_adj,VECTOR,0.0,0,0,Count of positive adjectives used by sell-side analysts in Q&A.
+qfl_nlp_calltranscript_global_qa_sell_count_pos_adv,VECTOR,0.0,0,0,Count of positive adverbs used by sell-side analysts in Q&A.
+qfl_nlp_calltranscript_global_qa_sell_count_pos_prepo,VECTOR,0.0,0,0,Count of positive prepositions used by sell-side analysts in Q&A.
+qfl_nlp_calltranscript_global_qa_sell_count_pos_pron,VECTOR,0.0,0,0,Count of positive pronouns used by sell-side analysts in Q&A.
+qfl_nlp_calltranscript_global_qa_sell_count_words,VECTOR,0.0,0,0,Total number of words spoken by sell-side analysts during Q&A sessions.
+qfl_nlp_calltranscript_global_qa_sell_hd_neg,VECTOR,0.0,0,0,Negative sentiment score for sell-side analyst Q&A using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_sell_hd_pos,VECTOR,0.0,0,0,Positive sentiment score for sell-side analyst Q&A using the Harvard dictionary.
+qfl_nlp_calltranscript_global_qa_sell_lm2_cum_neg,VECTOR,0.0,0,0,Cumulative negative sentiment score (LM2 dictionary) for sell-side analysts during Q&A.
+qfl_nlp_calltranscript_global_qa_sell_lm2_cum_pos,VECTOR,0.0,0,0,Cumulative positive sentiment for sell-side analyst Q&A using Loughran-McDonald dictionary.
+qfl_nlp_calltranscript_global_qa_sell_read_cl,VECTOR,0.0,0,0,Readability score of sell-side analyst Q&A using the Coleman-Liau index.
+qfl_nlp_calltranscript_global_qa_sell_read_dc,VECTOR,0.0,0,0,Readability score of sell-side analyst Q&A using the Dale-Chall formula.
+qfl_nlp_calltranscript_global_qa_sell_read_fog,VECTOR,0.0,0,0,Readability score of sell-side analyst Q&A using the FOG index.
+qfl_nlp_calltranscript_global_qa_sell_vader_neg,VECTOR,0.0,0,0,Negative sentiment score for sell-side analyst Q&A using VADER.
+qfl_nlp_calltranscript_global_qa_sell_vader_pos,VECTOR,0.0,0,0,Positive sentiment score for sell-side analyst Q&A using VADER.
+qfl_nlp_calltranscript_global_rating_diff,VECTOR,0.0,0,0,Difference between the highest and lowest analyst ratings for the event.
+qfl_nlp_calltranscript_global_total_anlst,VECTOR,0.0,0,0,Total number of analysts present at the event.

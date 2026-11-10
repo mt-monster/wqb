@@ -1,0 +1,83 @@
+{
+ "dataset": "news29",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "MIXED",
+ "field_count": 12,
+ "fetched_at": "2026-11-09T14:24:00",
+ "fields": [
+  {
+   "id": "company_event_description_text_full",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "alphaCount": 5
+  },
+  {
+   "id": "company_event_headline_text_full",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "alphaCount": 2
+  },
+  {
+   "id": "company_event_structured_fields_full",
+   "type": "VECTOR",
+   "coverage": 0.2956,
+   "alphaCount": 1
+  },
+  {
+   "id": "event_secondary_topic_code",
+   "type": "VECTOR",
+   "coverage": 0.7559,
+   "alphaCount": 5
+  },
+  {
+   "id": "event_tertiary_topic_code",
+   "type": "VECTOR",
+   "coverage": 0.7559,
+   "alphaCount": 7
+  },
+  {
+   "id": "nws29_frontpage",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws29_full_frontpage",
+   "type": "VECTOR",
+   "coverage": 0.7559,
+   "alphaCount": 31
+  },
+  {
+   "id": "nws29_full_significance",
+   "type": "VECTOR",
+   "coverage": 0.7559,
+   "alphaCount": 10
+  },
+  {
+   "id": "nws29_full_topic1",
+   "type": "VECTOR",
+   "coverage": 0.7559,
+   "alphaCount": 11
+  },
+  {
+   "id": "nws29_significance",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws29_topic1",
+   "type": "VECTOR",
+   "coverage": 0.7733,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws29_topic2",
+   "type": "VECTOR",
+   "coverage": 0.371,
+   "alphaCount": 1
+  }
+ ]
+}

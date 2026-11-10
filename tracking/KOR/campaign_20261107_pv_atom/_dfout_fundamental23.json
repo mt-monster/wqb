@@ -1,0 +1,2906 @@
+{
+ "results": [
+  {
+   "id": "accounts_payable",
+   "type": "MATRIX",
+   "coverage": 0.6712,
+   "userCount": 48,
+   "alphaCount": 99,
+   "description": "Accrued interest expenses, interest payable in commercial banks."
+  },
+  {
+   "id": "accounts_receivable_current_assets",
+   "type": "MATRIX",
+   "coverage": 0.3778,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Accounts receivable included in current assets for the annual period."
+  },
+  {
+   "id": "accum_depre",
+   "type": "MATRIX",
+   "coverage": 0.67,
+   "userCount": 33,
+   "alphaCount": 55,
+   "description": "aggregate of accumulated depreciation for each fixed asset."
+  },
+  {
+   "id": "annual_fiscal_month_number",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "The fiscal month number corresponding to the end of the annual period."
+  },
+  {
+   "id": "annual_fiscal_year_number",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "The fiscal year associated with the annual reporting period."
+  },
+  {
+   "id": "annual_reporting_currency_code",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The currency code in which annual financial values are presented after conversion."
+  },
+  {
+   "id": "assets",
+   "type": "MATRIX",
+   "coverage": 0.7045,
+   "userCount": 259,
+   "alphaCount": 647,
+   "description": "total assets of the company."
+  },
+  {
+   "id": "assets_curr",
+   "type": "MATRIX",
+   "coverage": 0.6679,
+   "userCount": 47,
+   "alphaCount": 95,
+   "description": "Total current assets. Sum of cash and short-term investments, total receivables (net), total inventory, prepaid expenses, other current assets."
+  },
+  {
+   "id": "assets_curr_oth",
+   "type": "MATRIX",
+   "coverage": 0.6557,
+   "userCount": 19,
+   "alphaCount": 32,
+   "description": "Other Current Assets, Total."
+  },
+  {
+   "id": "bookvalue_ps",
+   "type": "MATRIX",
+   "coverage": 0.7033,
+   "userCount": 110,
+   "alphaCount": 223,
+   "description": "Tangible Book Value per Share, Common Equity."
+  },
+  {
+   "id": "capex",
+   "type": "MATRIX",
+   "coverage": 0.7023,
+   "userCount": 73,
+   "alphaCount": 175,
+   "description": "capital expenditures."
+  },
+  {
+   "id": "cash",
+   "type": "MATRIX",
+   "coverage": 0.6532,
+   "userCount": 60,
+   "alphaCount": 144,
+   "description": "Total current assets - total net receivables."
+  },
+  {
+   "id": "cash_st",
+   "type": "MATRIX",
+   "coverage": 0.6847,
+   "userCount": 30,
+   "alphaCount": 95,
+   "description": "cash and short-term investments."
+  },
+  {
+   "id": "cashflow_fin",
+   "type": "MATRIX",
+   "coverage": 0.7034,
+   "userCount": 34,
+   "alphaCount": 104,
+   "description": "cash from financing activities that is the sum of financing cash flow items, cash dividends paid, issuance of stock, net and issuance of debt, net."
+  },
+  {
+   "id": "cashflow_invst",
+   "type": "MATRIX",
+   "coverage": 0.7029,
+   "userCount": 41,
+   "alphaCount": 125,
+   "description": "Cash from Investing Activities."
+  },
+  {
+   "id": "cashflow_op",
+   "type": "MATRIX",
+   "coverage": 0.7041,
+   "userCount": 83,
+   "alphaCount": 207,
+   "description": "Includes diverse cash flows that are reported outside of the operating, investing, and financing sections of the cash flow statement."
+  },
+  {
+   "id": "cogs",
+   "type": "MATRIX",
+   "coverage": 0.676,
+   "userCount": 66,
+   "alphaCount": 191,
+   "description": "cost of revenue represents total costs that can be directly attributed to the goods and services produced/purchased and sold."
+  },
+  {
+   "id": "cost_of_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6754,
+   "userCount": 32,
+   "alphaCount": 85,
+   "description": "Cost of revenue including labor costs reported within cost of goods sold & that are not clearly labeled as cost of goods sold."
+  },
+  {
+   "id": "currency_of_converted_financials",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency in which the financial values have been converted for reporting."
+  },
+  {
+   "id": "current_ratio",
+   "type": "MATRIX",
+   "coverage": 0.6666,
+   "userCount": 34,
+   "alphaCount": 94,
+   "description": "Total current assets/total current liabilities."
+  },
+  {
+   "id": "debt",
+   "type": "MATRIX",
+   "coverage": 0.6938,
+   "userCount": 80,
+   "alphaCount": 185,
+   "description": "Total long-term plus short-term debt."
+  },
+  {
+   "id": "debt_lt",
+   "type": "MATRIX",
+   "coverage": 0.7033,
+   "userCount": 29,
+   "alphaCount": 80,
+   "description": "Represents interest-bearing debt with maturities beyond 1 year. Long-term debt may consist of long-term bank borrowings, bonds, convertible bonds, etc."
+  },
+  {
+   "id": "debt_lt_curr",
+   "type": "MATRIX",
+   "coverage": 0.5994,
+   "userCount": 17,
+   "alphaCount": 25,
+   "description": "Current Port. of LT Debt/Capital Leases."
+  },
+  {
+   "id": "debt_st",
+   "type": "MATRIX",
+   "coverage": 0.6948,
+   "userCount": 32,
+   "alphaCount": 75,
+   "description": "Notes payable/short-term debt"
+  },
+  {
+   "id": "depre",
+   "type": "MATRIX",
+   "coverage": 0.6587,
+   "userCount": 21,
+   "alphaCount": 25,
+   "description": "Depreciation of fixed assets reported outside of the cost of goods and services sold."
+  },
+  {
+   "id": "depre_amort",
+   "type": "MATRIX",
+   "coverage": 0.6998,
+   "userCount": 26,
+   "alphaCount": 73,
+   "description": "depreciation."
+  },
+  {
+   "id": "ebit",
+   "type": "MATRIX",
+   "coverage": 0.6836,
+   "userCount": 141,
+   "alphaCount": 304,
+   "description": "Normalized Earnings before Interest and Taxes."
+  },
+  {
+   "id": "ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6833,
+   "userCount": 181,
+   "alphaCount": 544,
+   "description": "Normalized Earnings before Interest, Taxes, Depreciation and Amortization"
+  },
+  {
+   "id": "eps",
+   "type": "MATRIX",
+   "coverage": 0.7044,
+   "userCount": 219,
+   "alphaCount": 824,
+   "description": "represents the bottom-line earnings per share available to common stockholders, including the effects of extraordinary items - adjusted by minority interest, eq…"
+  },
+  {
+   "id": "equity",
+   "type": "MATRIX",
+   "coverage": 0.7044,
+   "userCount": 96,
+   "alphaCount": 244,
+   "description": "total equity."
+  },
+  {
+   "id": "fnd23_1dls",
+   "type": "MATRIX",
+   "coverage": 0.6872,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Long-Term Debt Maturing within 1 Year"
+  },
+  {
+   "id": "fnd23_1los",
+   "type": "MATRIX",
+   "coverage": 0.321,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Operating Lease Payments Due in Year 1"
+  },
+  {
+   "id": "fnd23_1nstq",
+   "type": "MATRIX",
+   "coverage": 0.8263,
+   "userCount": 18,
+   "alphaCount": 44,
+   "description": "Treasury Shares - Common Stock Primary Issue"
+  },
+  {
+   "id": "fnd23_1oscq",
+   "type": "MATRIX",
+   "coverage": 0.8407,
+   "userCount": 18,
+   "alphaCount": 26,
+   "description": "Represents the number of common shares outstanding in a company. When a company has 2 or more different types of common shares outstanding, Shares Outstanding -…"
+  },
+  {
+   "id": "fnd23_1spdd",
+   "type": "MATRIX",
+   "coverage": 0.8396,
+   "userCount": 49,
+   "alphaCount": 67,
+   "description": "common dividends per share for common stock primary issues."
+  },
+  {
+   "id": "fnd23_2dls",
+   "type": "MATRIX",
+   "coverage": 0.6537,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Standardized Long-Term Debt Maturing in Year 5"
+  },
+  {
+   "id": "fnd23_2los",
+   "type": "MATRIX",
+   "coverage": 0.2973,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Operating Lease Payments Due in Year 2"
+  },
+  {
+   "id": "fnd23_32dls",
+   "type": "MATRIX",
+   "coverage": 0.6532,
+   "userCount": 10,
+   "alphaCount": 16,
+   "description": "Standardized Long-Term Debt Maturing in Years 2 and 3 represents the summation of Standardized Long-Term Debt Maturing in Year 2 and Standardized Long-Term Debt…"
+  },
+  {
+   "id": "fnd23_32los",
+   "type": "MATRIX",
+   "coverage": 0.2973,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Standardized Operating Lease Payments Due in Years 2 and 3 represents the summation of Standardized Operating Lease Payments Due in Year 2 and Standardized Oper…"
+  },
+  {
+   "id": "fnd23_3dls",
+   "type": "MATRIX",
+   "coverage": 0.6183,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Long Term Debt Maturing in Year 3"
+  },
+  {
+   "id": "fnd23_3los",
+   "type": "MATRIX",
+   "coverage": 0.2759,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standardized Operating Lease Payments Due in Year 3."
+  },
+  {
+   "id": "fnd23_4dls",
+   "type": "MATRIX",
+   "coverage": 0.5438,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Long Term Debt Maturing in Year 4"
+  },
+  {
+   "id": "fnd23_54dls",
+   "type": "MATRIX",
+   "coverage": 0.5438,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Standardized Long Term Debt Maturing in Years 4 and 5"
+  },
+  {
+   "id": "fnd23_5dls",
+   "type": "MATRIX",
+   "coverage": 0.3974,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Standardized long-term debt maturing in year 5"
+  },
+  {
+   "id": "fnd23_acoa",
+   "type": "MATRIX",
+   "coverage": 0.7246,
+   "userCount": 9,
+   "alphaCount": 14,
+   "description": "other current assets."
+  },
+  {
+   "id": "fnd23_acos",
+   "type": "MATRIX",
+   "coverage": 0.7854,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "Other Current Assets, Total."
+  },
+  {
+   "id": "fnd23_acta",
+   "type": "MATRIX",
+   "coverage": 0.8046,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Total current assets. Sum of cash and short-term investments, total receivables (net), total inventory, prepaid expenses, other current assets."
+  },
+  {
+   "id": "fnd23_adbs",
+   "type": "MATRIX",
+   "coverage": 0.8129,
+   "userCount": 16,
+   "alphaCount": 22,
+   "description": "Normalized Earnings before Interest, Taxes, Depreciation and Amortization"
+  },
+  {
+   "id": "fnd23_adpa",
+   "type": "MATRIX",
+   "coverage": 0.7834,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "represents provisions established for doubtful accounts receivable. Provision for doubtful accounts is usually established on the basis of maturities of receiva…"
+  },
+  {
+   "id": "fnd23_afsi",
+   "type": "MATRIX",
+   "coverage": 0.8247,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Sale of assets to be leased out under operating lease contracts."
+  },
+  {
+   "id": "fnd23_agav",
+   "type": "MATRIX",
+   "coverage": 0.3381,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated Goodwill Amortization, Supplemental"
+  },
+  {
+   "id": "fnd23_agss",
+   "type": "MATRIX",
+   "coverage": 0.8265,
+   "userCount": 15,
+   "alphaCount": 27,
+   "description": "Selling/General/Administrative Expenses, Total."
+  },
+  {
+   "id": "fnd23_aiav",
+   "type": "MATRIX",
+   "coverage": 0.5649,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Accumulated Intangible Amortization represents accumulated amortization against intangible fixed assets."
+  },
+  {
+   "id": "fnd23_aieo",
+   "type": "MATRIX",
+   "coverage": 0.6964,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date, symbol, and transaction type…"
+  },
+  {
+   "id": "fnd23_aiev",
+   "type": "MATRIX",
+   "coverage": 0.704,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Equity in Affiliates, Supplemental represents the total share of earnings/losses, net of taxes, that the company is entitled to from unconsolidated associated c…"
+  },
+  {
+   "id": "fnd23_alge",
+   "type": "MATRIX",
+   "coverage": 0.405,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "loss/gain on sale of assets listed in the operating section."
+  },
+  {
+   "id": "fnd23_algn",
+   "type": "MATRIX",
+   "coverage": 0.8149,
+   "userCount": 8,
+   "alphaCount": 15,
+   "description": "Gain (Loss) on Sale of Assets."
+  },
+  {
+   "id": "fnd23_alos",
+   "type": "MATRIX",
+   "coverage": 0.8359,
+   "userCount": 12,
+   "alphaCount": 22,
+   "description": "Other Long-Term Assets, Total."
+  },
+  {
+   "id": "fnd23_amav",
+   "type": "MATRIX",
+   "coverage": 0.3759,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Amortization of Acquisition Costs, Supplemental"
+  },
+  {
+   "id": "fnd23_annfv_value",
+   "type": "VECTOR",
+   "coverage": 0.6952,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "annual financial values."
+  },
+  {
+   "id": "fnd23_apts",
+   "type": "MATRIX",
+   "coverage": 0.8587,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total Plan Assets"
+  },
+  {
+   "id": "fnd23_atcq",
+   "type": "MATRIX",
+   "coverage": 0.5262,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "represents translation gains (losses) on financial statements of foreign subsidiaries. Such adjustments may be required when the currency of a subsidiary is dif…"
+  },
+  {
+   "id": "fnd23_atda",
+   "type": "MATRIX",
+   "coverage": 0.7331,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "deferred income taxes - long term. These are credits being applied to income taxes that will be paid in future years."
+  },
+  {
+   "id": "fnd23_b6dls",
+   "type": "MATRIX",
+   "coverage": 0.6895,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Standardized Long Term Debt Maturing in Year 6 & Beyond"
+  },
+  {
+   "id": "fnd23_b6los",
+   "type": "MATRIX",
+   "coverage": 0.3207,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standardized Operating Lease Payments Due in Year 6 and Beyond represents Total Operating Leases, Supplemental less Standardized Operating Lease Payments Due wi…"
+  },
+  {
+   "id": "fnd23_bcns",
+   "type": "MATRIX",
+   "coverage": 0.8401,
+   "userCount": 8,
+   "alphaCount": 17,
+   "description": "Net Cash - Beginning Balance represents the beginning balance of cash and cash equivalents, as defined by a company."
+  },
+  {
+   "id": "fnd23_bloo",
+   "type": "MATRIX",
+   "coverage": 0.8362,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "other liabilities"
+  },
+  {
+   "id": "fnd23_bosi",
+   "type": "MATRIX",
+   "coverage": 0.2569,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Deconsolidation of a subsidiary classified as Sale of Business."
+  },
+  {
+   "id": "fnd23_bpal",
+   "type": "MATRIX",
+   "coverage": 0.8164,
+   "userCount": 8,
+   "alphaCount": 19,
+   "description": "Accrued interest expenses, interest payable in commercial banks"
+  },
+  {
+   "id": "fnd23_bpao",
+   "type": "MATRIX",
+   "coverage": 0.8174,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Represents changes in accounts payable during the period. An increase in accounts payable has a positive impact on cash flow from operating activities, and vice…"
+  },
+  {
+   "id": "fnd23_bpdl",
+   "type": "MATRIX",
+   "coverage": 0.2582,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Dividends Payable"
+  },
+  {
+   "id": "fnd23_bpol",
+   "type": "MATRIX",
+   "coverage": 0.7909,
+   "userCount": 15,
+   "alphaCount": 24,
+   "description": "Other Payables"
+  },
+  {
+   "id": "fnd23_caic",
+   "type": "MATRIX",
+   "coverage": 0.8416,
+   "userCount": 13,
+   "alphaCount": 20,
+   "description": "Income Available to Common Excl. Extraordinary Items"
+  },
+  {
+   "id": "fnd23_caiv",
+   "type": "MATRIX",
+   "coverage": 0.8408,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Normalized Income Available to Common represents the bottom-line net income available to common shareholders, excluding the effects of all non-recurring/unusual…"
+  },
+  {
+   "id": "fnd23_cbpa",
+   "type": "MATRIX",
+   "coverage": 0.7913,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "represents the gross amount of buildings and their attachments, before being reduced by accumulated depreciation of the buildings."
+  },
+  {
+   "id": "fnd23_ccns",
+   "type": "MATRIX",
+   "coverage": 0.8401,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Net Change in Cash"
+  },
+  {
+   "id": "fnd23_cdav",
+   "type": "MATRIX",
+   "coverage": 0.8137,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Deferred Revenue - Current"
+  },
+  {
+   "id": "fnd23_cema",
+   "type": "MATRIX",
+   "coverage": 0.8149,
+   "userCount": 11,
+   "alphaCount": 22,
+   "description": "Represents the acquisition cost of machinery and other equipment (including delivery equipment, office equipment, machinery, furniture and fixtures, furnishings…"
+  },
+  {
+   "id": "fnd23_cets",
+   "type": "MATRIX",
+   "coverage": 0.8324,
+   "userCount": 11,
+   "alphaCount": 30,
+   "description": "Effect of Special Items on Income Taxes."
+  },
+  {
+   "id": "fnd23_cfda",
+   "type": "MATRIX",
+   "coverage": 0.2805,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Deferred costs when reported other than as a part of tangible or intangible assets"
+  },
+  {
+   "id": "fnd23_cila",
+   "type": "MATRIX",
+   "coverage": 0.7874,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "represents land and improvements on land at acquisition cost. Land is not depreciated, but land improvements are normally depreciated over time."
+  },
+  {
+   "id": "fnd23_cinx",
+   "type": "MATRIX",
+   "coverage": 0.842,
+   "userCount": 16,
+   "alphaCount": 29,
+   "description": "Income Available to Common Stocks Incl. Extraordinary Items represents the bottom-line net income available to common stockholders, including the effects of ext…"
+  },
+  {
+   "id": "fnd23_cipq",
+   "type": "MATRIX",
+   "coverage": 0.8335,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "represents capital contributed by shareholders in excess of par value of common stock in return for shares issued to them."
+  },
+  {
+   "id": "fnd23_cisf",
+   "type": "MATRIX",
+   "coverage": 0.6917,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "represents cash inflow from the issuance of common stock. It also includes cash inflow from the sale of treasury shares. However, issuance of additional shares…"
+  },
+  {
+   "id": "fnd23_cnin",
+   "type": "MATRIX",
+   "coverage": 0.8407,
+   "userCount": 19,
+   "alphaCount": 65,
+   "description": "Net income after taxes, adjusted by minority interest, equity in affiliates, the U.S. GAAP adjustment and extraordinary items, before preferred distributions an…"
+  },
+  {
+   "id": "fnd23_cpdf",
+   "type": "MATRIX",
+   "coverage": 0.4251,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "common cash dividends paid"
+  },
+  {
+   "id": "fnd23_cpoa",
+   "type": "MATRIX",
+   "coverage": 0.6859,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other Properties/Plant/Equipment - Gross"
+  },
+  {
+   "id": "fnd23_croa",
+   "type": "MATRIX",
+   "coverage": 0.8048,
+   "userCount": 8,
+   "alphaCount": 17,
+   "description": "other receivables."
+  },
+  {
+   "id": "fnd23_crrf",
+   "type": "MATRIX",
+   "coverage": 0.6096,
+   "userCount": 16,
+   "alphaCount": 21,
+   "description": "Treasury Stock, when reported in the financing section of the cash flow statement, is henceforth classified as Sale/Issuance of Common or Repurchase/Retirement…"
+  },
+  {
+   "id": "fnd23_cstq",
+   "type": "MATRIX",
+   "coverage": 0.6625,
+   "userCount": 9,
+   "alphaCount": 18,
+   "description": "represents the value of common stock owned by the issuing company or its consolidated subsidiaries. Treasury stock is recorded at purchase cost, which is inclus…"
+  },
+  {
+   "id": "fnd23_ctcv",
+   "type": "MATRIX",
+   "coverage": 0.5722,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current Tax - Total reflects the sum of Current Tax - Domestic, Current Tax - Foreign, Current Tax - Local, Current Tax - Other, and Current Tax - Total."
+  },
+  {
+   "id": "fnd23_ctda",
+   "type": "MATRIX",
+   "coverage": 0.5836,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Represents deferred tax assets with a current maturity. When there is a timing difference between financial reporting and tax preparation practices, a company m…"
+  },
+  {
+   "id": "fnd23_ctdl",
+   "type": "MATRIX",
+   "coverage": 0.3338,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Deferred Income Tax - Current Liability"
+  },
+  {
+   "id": "fnd23_ctdv",
+   "type": "MATRIX",
+   "coverage": 0.5719,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Deferred Tax - Total"
+  },
+  {
+   "id": "fnd23_ctpa",
+   "type": "MATRIX",
+   "coverage": 0.8309,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "gross property, plant & equipment."
+  },
+  {
+   "id": "fnd23_dapv",
+   "type": "MATRIX",
+   "coverage": 0.8587,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Plan Assets - Domestic"
+  },
+  {
+   "id": "fnd23_dare",
+   "type": "MATRIX",
+   "coverage": 0.6696,
+   "userCount": 57,
+   "alphaCount": 164,
+   "description": "Research and development costs expensed directly in the income statement."
+  },
+  {
+   "id": "fnd23_darv",
+   "type": "MATRIX",
+   "coverage": 0.7313,
+   "userCount": 72,
+   "alphaCount": 185,
+   "description": "Research and development costs expensed directly in the income statement classified as Research & Development Expense, Supplemental"
+  },
+  {
+   "id": "fnd23_dciv",
+   "type": "MATRIX",
+   "coverage": 0.4748,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Interest Cost - Domestic"
+  },
+  {
+   "id": "fnd23_dcrv",
+   "type": "MATRIX",
+   "coverage": 0.8289,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Compensation Rate - Domestic"
+  },
+  {
+   "id": "fnd23_dcsv",
+   "type": "MATRIX",
+   "coverage": 0.5406,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Service Cost - Domestic"
+  },
+  {
+   "id": "fnd23_deds",
+   "type": "MATRIX",
+   "coverage": 0.838,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Depreciation/Depletion represents the sum of Depreciation and Depletion."
+  },
+  {
+   "id": "fnd23_derq",
+   "type": "MATRIX",
+   "coverage": 0.8408,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "represents residual earnings from operations, not distributed to shareholders. It may represent accumulated deficit when a company incurs losses over time."
+  },
+  {
+   "id": "fnd23_dixv",
+   "type": "MATRIX",
+   "coverage": 0.6096,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other Investments % - Domestic"
+  },
+  {
+   "id": "fnd23_dlcl",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 5,
+   "alphaCount": 17,
+   "description": "Current Port. of LT Debt/Capital Leases."
+  },
+  {
+   "id": "fnd23_dlts",
+   "type": "MATRIX",
+   "coverage": 0.8418,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total Debt represents total interest-bearing debt outstanding."
+  },
+  {
+   "id": "fnd23_dltv",
+   "type": "MATRIX",
+   "coverage": 0.69,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Total Long Term Debt, Supplemental reflects the sum of Long Term Debt Maturing within 1 through 10 Years and Long Term Debt - Remaining Maturities."
+  },
+  {
+   "id": "fnd23_dpav",
+   "type": "MATRIX",
+   "coverage": 0.8611,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Pension Obligation - Domestic"
+  },
+  {
+   "id": "fnd23_dppv",
+   "type": "MATRIX",
+   "coverage": 0.8611,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Funded Status - Domestic"
+  },
+  {
+   "id": "fnd23_dpxv",
+   "type": "MATRIX",
+   "coverage": 0.3535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected Return on Plan Assets - Domestic"
+  },
+  {
+   "id": "fnd23_drev",
+   "type": "MATRIX",
+   "coverage": 0.2712,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Expected Rate of Return - Domestic"
+  },
+  {
+   "id": "fnd23_drpf",
+   "type": "MATRIX",
+   "coverage": 0.8093,
+   "userCount": 14,
+   "alphaCount": 60,
+   "description": "If debt issuances and reductions are not delineated separately, the total is classified as Issuance (Retirement) of Debt, Net"
+  },
+  {
+   "id": "fnd23_dtdv",
+   "type": "MATRIX",
+   "coverage": 0.3367,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Deferred Tax - Domestic"
+  },
+  {
+   "id": "fnd23_dtll",
+   "type": "MATRIX",
+   "coverage": 0.7474,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Represents interest-bearing debt with maturities beyond 1 year. Long-term debt may consist of long-term bank borrowings, bonds, convertible bonds, etc."
+  },
+  {
+   "id": "fnd23_dtns",
+   "type": "MATRIX",
+   "coverage": 0.8145,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Net Debt Including Preferred Stock & Minority Interest."
+  },
+  {
+   "id": "fnd23_dtsl",
+   "type": "MATRIX",
+   "coverage": 0.8266,
+   "userCount": 9,
+   "alphaCount": 24,
+   "description": "Notes payable/short-term debt."
+  },
+  {
+   "id": "fnd23_dttl",
+   "type": "MATRIX",
+   "coverage": 0.8406,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "represents interest-bearing debt with maturities beyond one year. Long-term debt may consist of long-term bank borrowings, bonds, convertible bonds, etc."
+  },
+  {
+   "id": "fnd23_eaca",
+   "type": "MATRIX",
+   "coverage": 0.8249,
+   "userCount": 13,
+   "alphaCount": 21,
+   "description": "cash & equivalents."
+  },
+  {
+   "id": "fnd23_ecns",
+   "type": "MATRIX",
+   "coverage": 0.8402,
+   "userCount": 1,
+   "alphaCount": 9,
+   "description": "Net Cash - Ending Balance represents the sum of Net Change in Cash and Net Cash - Beginning Balance."
+  },
+  {
+   "id": "fnd23_eefs",
+   "type": "MATRIX",
+   "coverage": 0.5993,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Foreign Exchange Effects represents the increase/decrease in cash and cash equivalents due to changes in exchange rates."
+  },
+  {
+   "id": "fnd23_eiue",
+   "type": "MATRIX",
+   "coverage": 0.2887,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Acquisition costs/expenses."
+  },
+  {
+   "id": "fnd23_eiuo",
+   "type": "MATRIX",
+   "coverage": 0.8313,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "is applicable only if Net Income/Starting Line [ONET] is income after gains/losses from unusual activities. Because the operating section of the cash flow pursu…"
+  },
+  {
+   "id": "fnd23_eius",
+   "type": "MATRIX",
+   "coverage": 0.5959,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Unusual Expense (Income)"
+  },
+  {
+   "id": "fnd23_eltq",
+   "type": "MATRIX",
+   "coverage": 0.8428,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "total equity."
+  },
+  {
+   "id": "fnd23_eooe",
+   "type": "MATRIX",
+   "coverage": 0.5053,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Depreciation of investment properties disclosed outside of the cost of goods sold, for companies reporting in the IFRS or in other standards that treat these as…"
+  },
+  {
+   "id": "fnd23_eote",
+   "type": "MATRIX",
+   "coverage": 0.8263,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "represents total expenses that are operating in nature, including variable costs directly related to the volume of sales, indirect operating costs, depreciation…"
+  },
+  {
+   "id": "fnd23_epts",
+   "type": "MATRIX",
+   "coverage": 0.3546,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Plan Expected Return"
+  },
+  {
+   "id": "fnd23_eptv",
+   "type": "MATRIX",
+   "coverage": 0.5685,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total Pension Expense"
+  },
+  {
+   "id": "fnd23_eror",
+   "type": "MATRIX",
+   "coverage": 0.3455,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "other revenue."
+  },
+  {
+   "id": "fnd23_eros",
+   "type": "MATRIX",
+   "coverage": 0.3678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other Revenue, Total."
+  },
+  {
+   "id": "fnd23_etoq",
+   "type": "MATRIX",
+   "coverage": 0.7051,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "represents any residual value of shareholders' equity that belongs to shareholders."
+  },
+  {
+   "id": "fnd23_fbbs",
+   "type": "MATRIX",
+   "coverage": 0.8415,
+   "userCount": 11,
+   "alphaCount": 16,
+   "description": "Represents the bottom-line earnings per share available to common stockholders, excluding the effects of extraordinary items - adjusted by minority interest, eq…"
+  },
+  {
+   "id": "fnd23_fbds",
+   "type": "MATRIX",
+   "coverage": 0.8406,
+   "userCount": 17,
+   "alphaCount": 86,
+   "description": "Diluted EPS Excluding Extraordinary Items represents the bottom-line earnings per share available to common stockholders, excluding extraordinary items, adjuste…"
+  },
+  {
+   "id": "fnd23_fcff",
+   "type": "MATRIX",
+   "coverage": 0.7758,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "other financing cash flow"
+  },
+  {
+   "id": "fnd23_fcfs",
+   "type": "MATRIX",
+   "coverage": 0.7758,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Financing cash flow items represent the sum of increase/decrease in deposits, increase/decrease in federal funds sold or REPOs and FHLB plus other financing cas…"
+  },
+  {
+   "id": "fnd23_fcii",
+   "type": "MATRIX",
+   "coverage": 0.8277,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Cash used for discontinued operations classified as Other Investing Cash Flow"
+  },
+  {
+   "id": "fnd23_fcis",
+   "type": "MATRIX",
+   "coverage": 0.839,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other Investing Cash Flow Items, Total represents all items reported within the investing activities in the cash flow statement, other than capital expenditures…"
+  },
+  {
+   "id": "fnd23_fcoo",
+   "type": "MATRIX",
+   "coverage": 0.7087,
+   "userCount": 3,
+   "alphaCount": 9,
+   "description": "represents the impact of other operating cash flow items that cannot be classified as an adjustment item to net income, or an asset/liability as part of changes…"
+  },
+  {
+   "id": "fnd23_fcos",
+   "type": "MATRIX",
+   "coverage": 0.8403,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Changes in Working Capital"
+  },
+  {
+   "id": "fnd23_fltf",
+   "type": "MATRIX",
+   "coverage": 0.8397,
+   "userCount": 7,
+   "alphaCount": 38,
+   "description": "cash from financing activities that is the sum of financing cash flow items, cash dividends paid, issuance of stock, net and issuance of debt, net."
+  },
+  {
+   "id": "fnd23_fttv",
+   "type": "MATRIX",
+   "coverage": 0.3284,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Tax Fees"
+  },
+  {
+   "id": "fnd23_gfia",
+   "type": "MATRIX",
+   "coverage": 0.7152,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "represents inventories of unsold finished goods on hand. These goods may have been produced internally or purchased for resale."
+  },
+  {
+   "id": "fnd23_gnia",
+   "type": "MATRIX",
+   "coverage": 0.4149,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Represents the gross purchase value of assets that lack physical existence, before being reduced by accumulated impairment and intangible amortization."
+  },
+  {
+   "id": "fnd23_graa",
+   "type": "MATRIX",
+   "coverage": 0.7868,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "gross accounts receivable from sales of trading assets such as inventories or from services provided."
+  },
+  {
+   "id": "fnd23_gwga",
+   "type": "MATRIX",
+   "coverage": 0.2577,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Goodwill, Gross"
+  },
+  {
+   "id": "fnd23_hsca",
+   "type": "MATRIX",
+   "coverage": 0.3715,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash represents cash on hand, balances on demand deposits, and near-term savings and time deposits. These should be readily available for use and must be free f…"
+  },
+  {
+   "id": "fnd23_iabs",
+   "type": "MATRIX",
+   "coverage": 0.8412,
+   "userCount": 16,
+   "alphaCount": 22,
+   "description": "represents the bottom-line earnings per share available to common stockholders, including the effects of extraordinary items - adjusted by minority interest, eq…"
+  },
+  {
+   "id": "fnd23_iads",
+   "type": "MATRIX",
+   "coverage": 0.8411,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Diluted EPS Including Extraordinary Items represents the bottom-line earnings per share available to common stockholders, including extraordinary items, adjuste…"
+  },
+  {
+   "id": "fnd23_icno",
+   "type": "MATRIX",
+   "coverage": 0.8379,
+   "userCount": 8,
+   "alphaCount": 14,
+   "description": "Other non-cash items."
+  },
+  {
+   "id": "fnd23_icns",
+   "type": "MATRIX",
+   "coverage": 0.8376,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "non-cash items."
+  },
+  {
+   "id": "fnd23_idlf",
+   "type": "MATRIX",
+   "coverage": 0.6898,
+   "userCount": 7,
+   "alphaCount": 27,
+   "description": "represents cash inflow on the issuance of long-term debt instruments in a company. Long-term debt may include long-term bank borrowings, corporate bonds, conver…"
+  },
+  {
+   "id": "fnd23_idsf",
+   "type": "MATRIX",
+   "coverage": 0.7142,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Represents cash inflow due to the issuance of short-term debt. If short-term debt issuances and reductions are not delineated separately, the total is classifie…"
+  },
+  {
+   "id": "fnd23_ilti",
+   "type": "MATRIX",
+   "coverage": 0.8386,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "Cash from Investing Activities."
+  },
+  {
+   "id": "fnd23_imae",
+   "type": "MATRIX",
+   "coverage": 0.7615,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "amortization of intangible assets reported outside the cost of goods and services sold"
+  },
+  {
+   "id": "fnd23_imao",
+   "type": "MATRIX",
+   "coverage": 0.8082,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "When the Indirect Method is utilized, and the company delineates amortization and depreciation separately, the amortization is classified as Amortization of Int…"
+  },
+  {
+   "id": "fnd23_imav",
+   "type": "MATRIX",
+   "coverage": 0.8254,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Amortization"
+  },
+  {
+   "id": "fnd23_inds",
+   "type": "MATRIX",
+   "coverage": 0.8405,
+   "userCount": 13,
+   "alphaCount": 37,
+   "description": "Diluted Net Income represents the bottom-line net income available to common shareholders, including extraordinary items, adjusted by the effects of dilution."
+  },
+  {
+   "id": "fnd23_indv",
+   "type": "MATRIX",
+   "coverage": 0.2989,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net Interest Cost - Domestic"
+  },
+  {
+   "id": "fnd23_iosi",
+   "type": "MATRIX",
+   "coverage": 0.584,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Sale of Intangible Assets"
+  },
+  {
+   "id": "fnd23_ipos",
+   "type": "MATRIX",
+   "coverage": 0.8264,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "Operating Income."
+  },
+  {
+   "id": "fnd23_ipts",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Plan Interest Cost"
+  },
+  {
+   "id": "fnd23_iqea",
+   "type": "MATRIX",
+   "coverage": 0.7078,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Represents long-term investment in securities (loans, bonds, and equity) of affiliate companies, where the affiliation may be defined as associated companies, j…"
+  },
+  {
+   "id": "fnd23_iscs",
+   "type": "MATRIX",
+   "coverage": 0.815,
+   "userCount": 57,
+   "alphaCount": 342,
+   "description": "cash and short-term investments."
+  },
+  {
+   "id": "fnd23_itla",
+   "type": "MATRIX",
+   "coverage": 0.8213,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Represents long-term investments with maturities of 1 year or longer."
+  },
+  {
+   "id": "fnd23_itpv",
+   "type": "MATRIX",
+   "coverage": 0.8407,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Normalized Income Before Taxes represents net income before taxes, excluding the effects of all non-recurring/unusual/one-off/extraordinary items."
+  },
+  {
+   "id": "fnd23_itsa",
+   "type": "MATRIX",
+   "coverage": 0.7962,
+   "userCount": 8,
+   "alphaCount": 19,
+   "description": "Short-Term Investments"
+  },
+  {
+   "id": "fnd23_iucs",
+   "type": "MATRIX",
+   "coverage": 0.8039,
+   "userCount": 15,
+   "alphaCount": 23,
+   "description": "Total Current Assets less Inventory represents Total Current Assets minus Total Inventory."
+  },
+  {
+   "id": "fnd23_iwga",
+   "type": "MATRIX",
+   "coverage": 0.5471,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "net goodwill."
+  },
+  {
+   "id": "fnd23_iwgv",
+   "type": "MATRIX",
+   "coverage": 0.402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Goodwill - Net"
+  },
+  {
+   "id": "fnd23_jads",
+   "type": "MATRIX",
+   "coverage": 0.7078,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Dilution Adjustment represents the adding back to reported net income the interest expense of debentures when assumed converted, and the adding back to the repo…"
+  },
+  {
+   "id": "fnd23_kcqs",
+   "type": "MATRIX",
+   "coverage": 0.804,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Quick Ratio represents Total Current Assets less Inventory divided by Total Current Liabilities."
+  },
+  {
+   "id": "fnd23_laoo",
+   "type": "MATRIX",
+   "coverage": 0.3879,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "represents the changes in the combined sum of assets and liabilities when a company reports these totals as a single line. If the value of the assets is greater…"
+  },
+  {
+   "id": "fnd23_lbpl",
+   "type": "MATRIX",
+   "coverage": 0.792,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Pension Benefits - Underfunded"
+  },
+  {
+   "id": "fnd23_lcol",
+   "type": "MATRIX",
+   "coverage": 0.8036,
+   "userCount": 9,
+   "alphaCount": 30,
+   "description": "other current liabilities."
+  },
+  {
+   "id": "fnd23_lcos",
+   "type": "MATRIX",
+   "coverage": 0.8412,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "Other Current Liabilities, Total."
+  },
+  {
+   "id": "fnd23_lctl",
+   "type": "MATRIX",
+   "coverage": 0.8032,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "represents current liabilities for industrial and utility companies. Current liabilities are liabilities that are incurred from operating activities and expecte…"
+  },
+  {
+   "id": "fnd23_lctv",
+   "type": "MATRIX",
+   "coverage": 0.2643,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total Capital Leases, Supplemental"
+  },
+  {
+   "id": "fnd23_letq",
+   "type": "MATRIX",
+   "coverage": 0.8414,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "sum of total liabilities and total equity."
+  },
+  {
+   "id": "fnd23_lgun",
+   "type": "MATRIX",
+   "coverage": 0.3749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unrealized Gains (Losses)"
+  },
+  {
+   "id": "fnd23_lguq",
+   "type": "MATRIX",
+   "coverage": 0.7396,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Unrealized Gain (Loss) represents all unrealized/revaluation gains (losses) reported in the equity section by a company."
+  },
+  {
+   "id": "fnd23_lltl",
+   "type": "MATRIX",
+   "coverage": 0.8434,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "total liabilities."
+  },
+  {
+   "id": "fnd23_lltq",
+   "type": "MATRIX",
+   "coverage": 0.7006,
+   "userCount": 15,
+   "alphaCount": 20,
+   "description": "represents the sum of Total Equity and Equity Non-Controlling Interests."
+  },
+  {
+   "id": "fnd23_lotv",
+   "type": "MATRIX",
+   "coverage": 0.3211,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total Operating Leases, Supplemental reflects the sum of Operating Leases Maturing within 1 through 10 years, Operating Leases - Remaining Maturities and Operat…"
+  },
+  {
+   "id": "fnd23_ltem",
+   "type": "MATRIX",
+   "coverage": 0.795,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Full-Time Employees"
+  },
+  {
+   "id": "fnd23_ltio",
+   "type": "MATRIX",
+   "coverage": 0.7799,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "represents changes in inventories during the period. An increase in inventories has a negative impact on cash flow from operating activities, and vice versa."
+  },
+  {
+   "id": "fnd23_ltll",
+   "type": "MATRIX",
+   "coverage": 0.7456,
+   "userCount": 7,
+   "alphaCount": 15,
+   "description": "Long-term obligations from right-of-use contracts related to operating leases."
+  },
+  {
+   "id": "fnd23_ltls",
+   "type": "MATRIX",
+   "coverage": 0.8384,
+   "userCount": 14,
+   "alphaCount": 39,
+   "description": "Other Liabilities, Total"
+  },
+  {
+   "id": "fnd23_lvdv",
+   "type": "MATRIX",
+   "coverage": 0.2704,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Non-Current Derivative Liabilities - Hedging, Supplemental"
+  },
+  {
+   "id": "fnd23_mocq",
+   "type": "MATRIX",
+   "coverage": 0.4238,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "other comprehensive income."
+  },
+  {
+   "id": "fnd23_mpns",
+   "type": "MATRIX",
+   "coverage": 0.8392,
+   "userCount": 10,
+   "alphaCount": 20,
+   "description": "Net Profit Margin represents Income Available to Common Excluding Extraordinary Items divided by Total Revenue."
+  },
+  {
+   "id": "fnd23_mria",
+   "type": "MATRIX",
+   "coverage": 0.6774,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "annual inventories - raw material."
+  },
+  {
+   "id": "fnd23_mtps",
+   "type": "MATRIX",
+   "coverage": 0.842,
+   "userCount": 20,
+   "alphaCount": 33,
+   "description": "Pretax Margin"
+  },
+  {
+   "id": "fnd23_ndlf",
+   "type": "MATRIX",
+   "coverage": 0.7543,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "If long-term debt issuances and reductions are not delineated separately, the total is classified as Long-Term Debt, Net"
+  },
+  {
+   "id": "fnd23_ndsf",
+   "type": "MATRIX",
+   "coverage": 0.7518,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "If short-term debt issuances and reductions are not delineated separately, the total is classified as Short Term Debt, Net"
+  },
+  {
+   "id": "fnd23_nein",
+   "type": "MATRIX",
+   "coverage": 0.7732,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "represents interest expense on debt of non-financial service companies, including insurance companies."
+  },
+  {
+   "id": "fnd23_neis",
+   "type": "MATRIX",
+   "coverage": 0.7732,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Interest Expense, Net Non-Operating represents Interest Expense, Non-Operating, reduced by Interest Capitalized, Non-Operating, and is usually a negative value."
+  },
+  {
+   "id": "fnd23_niin",
+   "type": "MATRIX",
+   "coverage": 0.788,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "represents non-operating interest income, which is generated from non-operating investment securities such as certificates of deposit or bonds for non-financial…"
+  },
+  {
+   "id": "fnd23_niis",
+   "type": "MATRIX",
+   "coverage": 0.8251,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Interest/Investment Income, Non-Operating"
+  },
+  {
+   "id": "fnd23_nimc",
+   "type": "MATRIX",
+   "coverage": 0.6243,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date, symbol, and transaction type…"
+  },
+  {
+   "id": "fnd23_niml",
+   "type": "MATRIX",
+   "coverage": 0.6256,
+   "userCount": 9,
+   "alphaCount": 18,
+   "description": "Represents accumulated interest for minority shareholders in subsidiaries that are less than 100 percent owned by the reporting parent company. The net worth of…"
+  },
+  {
+   "id": "fnd23_nimv",
+   "type": "MATRIX",
+   "coverage": 0.6223,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Minority Interest, Supplemental represents the share of earnings/losses in subsidiaries that belongs to shareholders other than the parent company when the pare…"
+  },
+  {
+   "id": "fnd23_nins",
+   "type": "MATRIX",
+   "coverage": 0.824,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Interest Expense (Income), Net-Non-Operating, Total"
+  },
+  {
+   "id": "fnd23_nnin",
+   "type": "MATRIX",
+   "coverage": 0.5278,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Interest expense that is reduced by interest income."
+  },
+  {
+   "id": "fnd23_nnis",
+   "type": "MATRIX",
+   "coverage": 0.3892,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Net - Net Operating, Total"
+  },
+  {
+   "id": "fnd23_nppa",
+   "type": "MATRIX",
+   "coverage": 0.8396,
+   "userCount": 17,
+   "alphaCount": 25,
+   "description": "net property, plant and equipment."
+  },
+  {
+   "id": "fnd23_nppv",
+   "type": "MATRIX",
+   "coverage": 0.5942,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Other Property/Plant/Equipment - Net"
+  },
+  {
+   "id": "fnd23_nscf",
+   "type": "MATRIX",
+   "coverage": 0.7715,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "If the sale, issuance or repurchase of common stock is not separately delineated, then the total is classified as Common Stock, Net"
+  },
+  {
+   "id": "fnd23_ntiv",
+   "type": "MATRIX",
+   "coverage": 0.8408,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Income Taxes Excluding Impact of Special Items represents total income taxes, adjusted by the tax impact of adding back non-recurring items, used in the computa…"
+  },
+  {
+   "id": "fnd23_nvii",
+   "type": "MATRIX",
+   "coverage": 0.4827,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "represents changes in investments in securities and other investments. Investment, Net is utilized when a company does not delineate the sale of investments and…"
+  },
+  {
+   "id": "fnd23_octq",
+   "type": "MATRIX",
+   "coverage": 0.8407,
+   "userCount": 11,
+   "alphaCount": 19,
+   "description": "represents the number of primary common shares equivalent outstanding."
+  },
+  {
+   "id": "fnd23_oiis",
+   "type": "MATRIX",
+   "coverage": 0.3747,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Interest/Investment Income - Operating"
+  },
+  {
+   "id": "fnd23_olto",
+   "type": "MATRIX",
+   "coverage": 0.8404,
+   "userCount": 20,
+   "alphaCount": 69,
+   "description": "Includes diverse cash flows that are reported outside of the operating, investing, and financing sections of the cash flow statement."
+  },
+  {
+   "id": "fnd23_opts",
+   "type": "MATRIX",
+   "coverage": 0.8649,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Plan Obligations"
+  },
+  {
+   "id": "fnd23_otov",
+   "type": "MATRIX",
+   "coverage": 0.562,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Other Tax"
+  },
+  {
+   "id": "fnd23_pamonper",
+   "type": "MATRIX",
+   "coverage": 0.2775,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "maps each rep identifier to an instrument on a given day."
+  },
+  {
+   "id": "fnd23_pbts",
+   "type": "MATRIX",
+   "coverage": 0.8419,
+   "userCount": 14,
+   "alphaCount": 18,
+   "description": "Tangible Book Value per Share, Common Equity."
+  },
+  {
+   "id": "fnd23_pcsv",
+   "type": "MATRIX",
+   "coverage": 0.3223,
+   "userCount": 6,
+   "alphaCount": 13,
+   "description": "Stock-Based Compensation, Supplemental"
+  },
+  {
+   "id": "fnd23_pdcf",
+   "type": "MATRIX",
+   "coverage": 0.6841,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Total Cash Dividends Paid."
+  },
+  {
+   "id": "fnd23_pdsl",
+   "type": "MATRIX",
+   "coverage": 0.4946,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Security Deposits"
+  },
+  {
+   "id": "fnd23_peda",
+   "type": "MATRIX",
+   "coverage": 0.8268,
+   "userCount": 18,
+   "alphaCount": 39,
+   "description": "aggregate of accumulated depreciation for each fixed asset."
+  },
+  {
+   "id": "fnd23_pede",
+   "type": "MATRIX",
+   "coverage": 0.8087,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Depreciation of fixed assets reported outside of the cost of goods and services sold."
+  },
+  {
+   "id": "fnd23_peds",
+   "type": "MATRIX",
+   "coverage": 0.838,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "depreciation."
+  },
+  {
+   "id": "fnd23_pedv",
+   "type": "MATRIX",
+   "coverage": 0.839,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Depreciation"
+  },
+  {
+   "id": "fnd23_pnii",
+   "type": "MATRIX",
+   "coverage": 0.8355,
+   "userCount": 10,
+   "alphaCount": 21,
+   "description": "Acquisition of investment securities of a company (rather than the whole business unit) classified as Purchase of Investments"
+  },
+  {
+   "id": "fnd23_ppdv",
+   "type": "MATRIX",
+   "coverage": 0.5444,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Domestic Pension Plan Expense"
+  },
+  {
+   "id": "fnd23_ppgs",
+   "type": "MATRIX",
+   "coverage": 0.7991,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "Gross Margin represents gross profit divided by revenue. Gross margin is not available if either gross profit or revenue is missing or if revenue is negative."
+  },
+  {
+   "id": "fnd23_ppos",
+   "type": "MATRIX",
+   "coverage": 0.812,
+   "userCount": 18,
+   "alphaCount": 20,
+   "description": "Operating Margin."
+  },
+  {
+   "id": "fnd23_prgs",
+   "type": "MATRIX",
+   "coverage": 0.7998,
+   "userCount": 11,
+   "alphaCount": 24,
+   "description": "Gross Profit represents a measure of a company's operating performance. Gross Profit states the profits earned from a company's revenues and direct costs."
+  },
+  {
+   "id": "fnd23_ptcs",
+   "type": "MATRIX",
+   "coverage": 0.6289,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "cash taxes paid represents taxes paid in cash, net of tax refunds received, as reported by the company."
+  },
+  {
+   "id": "fnd23_pwia",
+   "type": "MATRIX",
+   "coverage": 0.6281,
+   "userCount": 20,
+   "alphaCount": 24,
+   "description": "inventories that are WIP or work-in-progress."
+  },
+  {
+   "id": "fnd23_pxrv",
+   "type": "MATRIX",
+   "coverage": 0.7995,
+   "userCount": 8,
+   "alphaCount": 15,
+   "description": "Rental Expense, Supplemental represents the total value of rental expenses paid for offices, factories, machinery and equipment."
+  },
+  {
+   "id": "fnd23_pxtl",
+   "type": "MATRIX",
+   "coverage": 0.7912,
+   "userCount": 22,
+   "alphaCount": 70,
+   "description": "Income Taxes Payable represents income taxes payable to the government, where such tax liability is already confirmed in terms of amount and payable date."
+  },
+  {
+   "id": "fnd23_pxto",
+   "type": "MATRIX",
+   "coverage": 0.6869,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "represents changes in taxes payable during the period. An increase in income taxes payable has a positive impact on cash flow from operating activities, and vic…"
+  },
+  {
+   "id": "fnd23_qaii",
+   "type": "MATRIX",
+   "coverage": 0.8137,
+   "userCount": 23,
+   "alphaCount": 37,
+   "description": "Franchise acquired (classified as Purchase/Acquisition of Intangibles)."
+  },
+  {
+   "id": "fnd23_rale",
+   "type": "MATRIX",
+   "coverage": 0.8069,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Labor costs reported outside of the cost of goods sold, or not clearly labeled as part of the cost of goods sold, for businesses other than manufacturing and mi…"
+  },
+  {
+   "id": "fnd23_ralv",
+   "type": "MATRIX",
+   "coverage": 0.9481,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total labor costs: Labor & Related Expense, Supplemental"
+  },
+  {
+   "id": "fnd23_ratv",
+   "type": "MATRIX",
+   "coverage": 0.4219,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Audit-Related Fees"
+  },
+  {
+   "id": "fnd23_rcaa",
+   "type": "MATRIX",
+   "coverage": 0.8136,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "accounts receivable value."
+  },
+  {
+   "id": "fnd23_rcao",
+   "type": "MATRIX",
+   "coverage": 0.8197,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "represents changes in accounts receivable during the period. An increase in accounts receivable has a negative impact on cash flow from operating activities, an…"
+  },
+  {
+   "id": "fnd23_rdlf",
+   "type": "MATRIX",
+   "coverage": 0.7123,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "represents cash outflow on the repayment of long-term debt in a company. Long-term debt obligations may be repaid upon maturity or replaced with new debt."
+  },
+  {
+   "id": "fnd23_rdsf",
+   "type": "MATRIX",
+   "coverage": 0.7279,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "represents cash outflow due to the repayment of short-term debt. If short-term debt issuances and reductions are not delineated separately, the total is classif…"
+  },
+  {
+   "id": "fnd23_repnotickermap",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "maps each rep to a ticker on a given day."
+  },
+  {
+   "id": "fnd23_rltr",
+   "type": "MATRIX",
+   "coverage": 0.8305,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "total revenue represents all items clearly presented as revenues, before the cost of goods sold and the gross profit."
+  },
+  {
+   "id": "fnd23_rnmv",
+   "type": "MATRIX",
+   "coverage": 0.5242,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Minority Interest - Non-Redeemable"
+  },
+  {
+   "id": "fnd23_roce",
+   "type": "MATRIX",
+   "coverage": 0.8053,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Cost of revenue including labor costs reported within cost of goods sold & that are not clearly labeled as cost of goods sold."
+  },
+  {
+   "id": "fnd23_rocs",
+   "type": "MATRIX",
+   "coverage": 0.8059,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "cost of revenue represents total costs that can be directly attributed to the goods and services produced/purchased and sold."
+  },
+  {
+   "id": "fnd23_rpds",
+   "type": "MATRIX",
+   "coverage": 0.8099,
+   "userCount": 12,
+   "alphaCount": 17,
+   "description": "Depreciation/amortization represents the sum of depreciation, amortization of intangibles, and amortization of acquisition costs."
+  },
+  {
+   "id": "fnd23_rtcv",
+   "type": "MATRIX",
+   "coverage": 0.5729,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current Tax - Total"
+  },
+  {
+   "id": "fnd23_rtdv",
+   "type": "MATRIX",
+   "coverage": 0.571,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Deferred Tax - Total"
+  },
+  {
+   "id": "fnd23_rtes",
+   "type": "MATRIX",
+   "coverage": 0.8076,
+   "userCount": 14,
+   "alphaCount": 22,
+   "description": "Effective Tax Rate represents Provision for Income Taxes divided by Income Before Tax."
+  },
+  {
+   "id": "fnd23_rtla",
+   "type": "MATRIX",
+   "coverage": 0.7229,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "Represents long-term notes receivable, excluding the current portion of the long-term receivables. It also represents all other long-term receivables reported i…"
+  },
+  {
+   "id": "fnd23_rtsa",
+   "type": "MATRIX",
+   "coverage": 0.4639,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-Term Investments"
+  },
+  {
+   "id": "fnd23_rucs",
+   "type": "MATRIX",
+   "coverage": 0.8038,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Current Ratio represents Total Current Assets divided by Total Current Liabilities."
+  },
+  {
+   "id": "fnd23_sabs",
+   "type": "MATRIX",
+   "coverage": 0.8403,
+   "userCount": 6,
+   "alphaCount": 14,
+   "description": "represents the weighted average common shares outstanding less the dilution of stock options for a given period. These shares are used to calculate Basic EPS."
+  },
+  {
+   "id": "fnd23_saie",
+   "type": "MATRIX",
+   "coverage": 0.3726,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Impairment/write-down/write-off/revaluation of investment securities arising from an unusual event."
+  },
+  {
+   "id": "fnd23_saoa",
+   "type": "MATRIX",
+   "coverage": 0.789,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Non-operational fixed assets that are long term."
+  },
+  {
+   "id": "fnd23_saoo",
+   "type": "MATRIX",
+   "coverage": 0.693,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Accrued interest income for companies other than financial service companies"
+  },
+  {
+   "id": "fnd23_sedv",
+   "type": "MATRIX",
+   "coverage": 0.841,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Diluted Normalized EPS"
+  },
+  {
+   "id": "fnd23_smcq",
+   "type": "MATRIX",
+   "coverage": 0.8423,
+   "userCount": 11,
+   "alphaCount": 40,
+   "description": "Common Stock represents the value of the most frequently issued class of stock; usually it provides a voting right, but is secondary to preferred stock in divid…"
+  },
+  {
+   "id": "fnd23_smcs",
+   "type": "MATRIX",
+   "coverage": 0.8423,
+   "userCount": 15,
+   "alphaCount": 24,
+   "description": "Total common stock represents the combined value of common stock and limited partner."
+  },
+  {
+   "id": "fnd23_sonm",
+   "type": "MATRIX",
+   "coverage": 0.7345,
+   "userCount": 10,
+   "alphaCount": 14,
+   "description": "Number of Common Shareholders"
+  },
+  {
+   "id": "fnd23_spts",
+   "type": "MATRIX",
+   "coverage": 0.5406,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Plan Service Cost"
+  },
+  {
+   "id": "fnd23_ssfv",
+   "type": "MATRIX",
+   "coverage": 0.8649,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Total Funded Status"
+  },
+  {
+   "id": "fnd23_sspf",
+   "type": "MATRIX",
+   "coverage": 0.7825,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "If the sale, issuance, or repurchase of common and preferred stock is not separately delineated, then the total is classified as Issuance (Retirement) of Stock,…"
+  },
+  {
+   "id": "fnd23_stnr",
+   "type": "MATRIX",
+   "coverage": 0.806,
+   "userCount": 12,
+   "alphaCount": 34,
+   "description": "net sales."
+  },
+  {
+   "id": "fnd23_swds",
+   "type": "MATRIX",
+   "coverage": 0.8403,
+   "userCount": 16,
+   "alphaCount": 50,
+   "description": "Diluted Weighted Average Shares represents the number of shares for Diluted EPS computation."
+  },
+  {
+   "id": "fnd23_tait",
+   "type": "MATRIX",
+   "coverage": 0.8407,
+   "userCount": 10,
+   "alphaCount": 33,
+   "description": "Net Income After Taxes"
+  },
+  {
+   "id": "fnd23_taiv",
+   "type": "MATRIX",
+   "coverage": 0.8408,
+   "userCount": 9,
+   "alphaCount": 27,
+   "description": "Normalized Income After Taxes."
+  },
+  {
+   "id": "fnd23_tbie",
+   "type": "MATRIX",
+   "coverage": 0.8434,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "represents a company's total revenues reduced by total expenses, before taxes on net income and all after-tax adjustments."
+  },
+  {
+   "id": "fnd23_tdbl",
+   "type": "MATRIX",
+   "coverage": 0.6469,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Represents income taxes estimated and expected to be paid within 1 year or an operating cycle, whichever is longer."
+  },
+  {
+   "id": "fnd23_tdbo",
+   "type": "MATRIX",
+   "coverage": 0.6583,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Deferred Taxes for indirect Cash Flow"
+  },
+  {
+   "id": "fnd23_tdbs",
+   "type": "MATRIX",
+   "coverage": 0.6469,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Represents the sum of Deferred Income Tax - Long-Term Liability and Deferred Investment Tax Credit"
+  },
+  {
+   "id": "fnd23_teno",
+   "type": "MATRIX",
+   "coverage": 0.8371,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "is the first line of a cash flow statement when a company employs the Indirect Method in the operating cash flow section."
+  },
+  {
+   "id": "fnd23_tibs",
+   "type": "MATRIX",
+   "coverage": 0.8132,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "Normalized Earnings before Interest and Taxes."
+  },
+  {
+   "id": "fnd23_tmaa",
+   "type": "MATRIX",
+   "coverage": 0.4082,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "accumulated intangible amortization."
+  },
+  {
+   "id": "fnd23_tmas",
+   "type": "MATRIX",
+   "coverage": 0.8088,
+   "userCount": 10,
+   "alphaCount": 23,
+   "description": "Amortization represents sum of amortization of intangibles, amortization of acquisition costs, amortization of deferred policy costs."
+  },
+  {
+   "id": "fnd23_tnia",
+   "type": "MATRIX",
+   "coverage": 0.8311,
+   "userCount": 23,
+   "alphaCount": 57,
+   "description": "represents the net value of assets that lack physical existence, reduced by accumulated impairment and intangible amortization."
+  },
+  {
+   "id": "fnd23_tniv",
+   "type": "MATRIX",
+   "coverage": 0.6962,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Intangibles - Net"
+  },
+  {
+   "id": "fnd23_tnoe",
+   "type": "MATRIX",
+   "coverage": 0.4355,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Income from external grants received to cover research and development expenses."
+  },
+  {
+   "id": "fnd23_tnon",
+   "type": "MATRIX",
+   "coverage": 0.8246,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "represents any non-operating income or expense item that a company reports before income taxes"
+  },
+  {
+   "id": "fnd23_tnos",
+   "type": "MATRIX",
+   "coverage": 0.8246,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "other net income."
+  },
+  {
+   "id": "fnd23_toia",
+   "type": "MATRIX",
+   "coverage": 0.7805,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Provision/allowances for inventory reported as a negative value classified as Inventories - Other"
+  },
+  {
+   "id": "fnd23_tota",
+   "type": "MATRIX",
+   "coverage": 0.8431,
+   "userCount": 16,
+   "alphaCount": 19,
+   "description": "total assets of the company."
+  },
+  {
+   "id": "fnd23_ttiv",
+   "type": "MATRIX",
+   "coverage": 0.5841,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Income Tax - Total reflects the sum of Domestic Tax - Other, Foreign Tax - Other, Local Tax - Other, and Other Tax."
+  },
+  {
+   "id": "fnd23_uaie",
+   "type": "MATRIX",
+   "coverage": 0.4779,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Form of an unusual item related to the impairment of long-lived assets, certain identifiable intangibles, and goodwill related to those assets."
+  },
+  {
+   "id": "fnd23_vacl",
+   "type": "MATRIX",
+   "coverage": 0.8085,
+   "userCount": 5,
+   "alphaCount": 11,
+   "description": "Advances/deposits from customers for the products to be sold or services to be rendered classified as Customer Advances."
+  },
+  {
+   "id": "fnd23_vbts",
+   "type": "MATRIX",
+   "coverage": 0.841,
+   "userCount": 9,
+   "alphaCount": 17,
+   "description": "Tangible Book Value, Common Equity."
+  },
+  {
+   "id": "fnd23_vdae",
+   "type": "MATRIX",
+   "coverage": 0.7825,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "advertising expense reported outside the cost of goods and services sold"
+  },
+  {
+   "id": "fnd23_vdav",
+   "type": "MATRIX",
+   "coverage": 0.8013,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Advertising Expense - Supplemental represents the total cost of advertising incurred by the company."
+  },
+  {
+   "id": "fnd23_vdcv",
+   "type": "MATRIX",
+   "coverage": 0.3791,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Current Derivative Liabilities - Hedging, Supplemental"
+  },
+  {
+   "id": "fnd23_vnie",
+   "type": "MATRIX",
+   "coverage": 0.3747,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "investing income from operating section."
+  },
+  {
+   "id": "fnd23_vnin",
+   "type": "MATRIX",
+   "coverage": 0.8246,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "represents income or losses, other than interest, from investment securities. Such income may include dividend income, gain/loss on sale of investment securitie…"
+  },
+  {
+   "id": "fnd23_vsrl",
+   "type": "MATRIX",
+   "coverage": 0.4434,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Reserves"
+  },
+  {
+   "id": "fnd23_xatt",
+   "type": "MATRIX",
+   "coverage": 0.8409,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Provision for Income Taxes."
+  },
+  {
+   "id": "fnd23_xbin",
+   "type": "MATRIX",
+   "coverage": 0.8427,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "represents net income after taxes, adjusted by minority interest, equity in affiliates and the U.S. GAAP adjustment, before extraordinary items, preferred distr…"
+  },
+  {
+   "id": "fnd23_xeal",
+   "type": "MATRIX",
+   "coverage": 0.8266,
+   "userCount": 11,
+   "alphaCount": 16,
+   "description": "Represents operational expenses accrued, but not yet paid. As current liabilities, such expenses are expected to be paid within 1 year or 1 operating cycle, whi…"
+  },
+  {
+   "id": "fnd23_xeao",
+   "type": "MATRIX",
+   "coverage": 0.7296,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "represents changes in accrued expenses during the period. An increase in accrued expenses has a positive impact on cash flow from operating activities, and vice…"
+  },
+  {
+   "id": "fnd23_xeci",
+   "type": "MATRIX",
+   "coverage": 0.8376,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "purchase of fixed assets."
+  },
+  {
+   "id": "fnd23_xecs",
+   "type": "MATRIX",
+   "coverage": 0.8382,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "capital expenditures."
+  },
+  {
+   "id": "fnd23_xeiv",
+   "type": "MATRIX",
+   "coverage": 0.8219,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Interest Expense, Supplemental."
+  },
+  {
+   "id": "fnd23_yppa",
+   "type": "MATRIX",
+   "coverage": 0.8172,
+   "userCount": 3,
+   "alphaCount": 8,
+   "description": "prepaid expenses."
+  },
+  {
+   "id": "fnd23_yppo",
+   "type": "MATRIX",
+   "coverage": 0.7438,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "represents changes in prepaid expenses during the period. An increase in prepaid expenses has a negative impact on cash flow from operating activities, and vice…"
+  },
+  {
+   "id": "goodwill",
+   "type": "MATRIX",
+   "coverage": 0.4115,
+   "userCount": 13,
+   "alphaCount": 30,
+   "description": "net goodwill."
+  },
+  {
+   "id": "income",
+   "type": "MATRIX",
+   "coverage": 0.7049,
+   "userCount": 148,
+   "alphaCount": 472,
+   "description": "Net income after taxes, adjusted by minority interest, equity in affiliates, the U.S. GAAP adjustment and extraordinary items, before preferred distributions an…"
+  },
+  {
+   "id": "income_beforeextra",
+   "type": "MATRIX",
+   "coverage": 0.7041,
+   "userCount": 132,
+   "alphaCount": 349,
+   "description": "represents net income after taxes, adjusted by minority interest, equity in affiliates and the U.S. GAAP adjustment, before extraordinary items, preferred distr…"
+  },
+  {
+   "id": "income_tax",
+   "type": "MATRIX",
+   "coverage": 0.7039,
+   "userCount": 57,
+   "alphaCount": 166,
+   "description": "Provision for Income Taxes."
+  },
+  {
+   "id": "income_tax_payable",
+   "type": "MATRIX",
+   "coverage": 0.6593,
+   "userCount": 24,
+   "alphaCount": 58,
+   "description": "Income Taxes Payable represents income taxes payable to the government, where such tax liability is already confirmed in terms of amount and payable date."
+  },
+  {
+   "id": "interest_expense",
+   "type": "MATRIX",
+   "coverage": 0.3135,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Interest Expense, Net - Operating"
+  },
+  {
+   "id": "interim_fiscal_month",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The fiscal month corresponding to the interim reporting period."
+  },
+  {
+   "id": "interim_fiscal_year",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal year corresponding to the interim reporting period."
+  },
+  {
+   "id": "interim_period_sequence_number_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Sequence number of the interim period within the fiscal year."
+  },
+  {
+   "id": "inventory",
+   "type": "MATRIX",
+   "coverage": 0.6656,
+   "userCount": 32,
+   "alphaCount": 180,
+   "description": "total inventory."
+  },
+  {
+   "id": "inventory_turnover",
+   "type": "MATRIX",
+   "coverage": 0.6393,
+   "userCount": 34,
+   "alphaCount": 139,
+   "description": "Inventory Turnover"
+  },
+  {
+   "id": "liabilities",
+   "type": "MATRIX",
+   "coverage": 0.7045,
+   "userCount": 59,
+   "alphaCount": 152,
+   "description": "total liabilities."
+  },
+  {
+   "id": "liabilities_cur_oth",
+   "type": "MATRIX",
+   "coverage": 0.7043,
+   "userCount": 17,
+   "alphaCount": 35,
+   "description": "Other Current Liabilities, Total."
+  },
+  {
+   "id": "liabilities_curr",
+   "type": "MATRIX",
+   "coverage": 0.6679,
+   "userCount": 28,
+   "alphaCount": 95,
+   "description": "Represents current liabilities for industrial and utility companies. Current liabilities are liabilities that are incurred from operating activities and expecte…"
+  },
+  {
+   "id": "liabilities_oth",
+   "type": "MATRIX",
+   "coverage": 0.7001,
+   "userCount": 18,
+   "alphaCount": 39,
+   "description": "Other Liabilities, Total"
+  },
+  {
+   "id": "long_term_collateral_debt",
+   "type": "MATRIX",
+   "coverage": 0.869,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term collateralized debt reported for the annual period."
+  },
+  {
+   "id": "long_term_contract_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.8949,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term contract liabilities reported for the annual period."
+  },
+  {
+   "id": "long_term_debt_total",
+   "type": "MATRIX",
+   "coverage": 0.9183,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total long-term debt reported for the annual period."
+  },
+  {
+   "id": "long_term_loans_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9332,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Long-term loans and liabilities reported for the annual period."
+  },
+  {
+   "id": "long_term_trade_debt",
+   "type": "MATRIX",
+   "coverage": 0.931,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term trade debt reported for the annual period."
+  },
+  {
+   "id": "operating_expense",
+   "type": "MATRIX",
+   "coverage": 0.6941,
+   "userCount": 43,
+   "alphaCount": 119,
+   "description": "represents total expenses that are operating in nature, including variable costs directly related to the volume of sales, indirect operating costs, depreciation…"
+  },
+  {
+   "id": "operating_income",
+   "type": "MATRIX",
+   "coverage": 0.6941,
+   "userCount": 226,
+   "alphaCount": 565,
+   "description": "Operating Income."
+  },
+  {
+   "id": "operating_margin",
+   "type": "MATRIX",
+   "coverage": 0.682,
+   "userCount": 123,
+   "alphaCount": 260,
+   "description": "Operating Margin."
+  },
+  {
+   "id": "other_accumulated_reserves",
+   "type": "MATRIX",
+   "coverage": 0.9113,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other accumulated reserves reported for the annual period."
+  },
+  {
+   "id": "other_amortization_items",
+   "type": "MATRIX",
+   "coverage": 0.908,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other amortization items reported for the annual period."
+  },
+  {
+   "id": "other_appropriations_balance",
+   "type": "MATRIX",
+   "coverage": 0.9073,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other appropriations balance reported for the annual period."
+  },
+  {
+   "id": "other_borrowings_total",
+   "type": "MATRIX",
+   "coverage": 0.5902,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total other borrowings reported for the annual period."
+  },
+  {
+   "id": "other_interest_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.8673,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other interest-bearing liabilities reported for the annual period."
+  },
+  {
+   "id": "other_long_term_obligations",
+   "type": "MATRIX",
+   "coverage": 0.9315,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other long-term obligations reported for the annual period."
+  },
+  {
+   "id": "other_net_equity_total",
+   "type": "MATRIX",
+   "coverage": 0.9283,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Total of other net equity items for the annual period."
+  },
+  {
+   "id": "other_off_balance_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9283,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other off-balance sheet liabilities for the annual period."
+  },
+  {
+   "id": "other_operating_assets",
+   "type": "MATRIX",
+   "coverage": 0.8262,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other operating assets reported for the annual period."
+  },
+  {
+   "id": "ppent",
+   "type": "MATRIX",
+   "coverage": 0.6774,
+   "userCount": 40,
+   "alphaCount": 175,
+   "description": "gross property, plant & equipment."
+  },
+  {
+   "id": "ppent_net",
+   "type": "MATRIX",
+   "coverage": 0.7029,
+   "userCount": 25,
+   "alphaCount": 79,
+   "description": "net property, plant and equipment."
+  },
+  {
+   "id": "preferred_dividends",
+   "type": "MATRIX",
+   "coverage": 0.3505,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "represents the total amount of the current dividend requirement on issued preferred stock of a company (including its subsidiaries)."
+  },
+  {
+   "id": "pretax_income",
+   "type": "MATRIX",
+   "coverage": 0.706,
+   "userCount": 124,
+   "alphaCount": 351,
+   "description": "represents a company's total revenues reduced by total expenses, before taxes on net income and all after-tax adjustments."
+  },
+  {
+   "id": "quasi_equity_contracts",
+   "type": "MATRIX",
+   "coverage": 0.9315,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Quasi-equity contracts reported for the annual period."
+  },
+  {
+   "id": "quasi_equity_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9327,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Quasi-equity liabilities reported for the annual period."
+  },
+  {
+   "id": "quick_ratio",
+   "type": "MATRIX",
+   "coverage": 0.6667,
+   "userCount": 17,
+   "alphaCount": 74,
+   "description": "Quick Ratio represents Total Current Assets less Inventory divided by Total Current Liabilities."
+  },
+  {
+   "id": "rad",
+   "type": "MATRIX",
+   "coverage": 0.6654,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Research and Development"
+  },
+  {
+   "id": "receivable",
+   "type": "MATRIX",
+   "coverage": 0.6942,
+   "userCount": 26,
+   "alphaCount": 86,
+   "description": "total net receivables."
+  },
+  {
+   "id": "retained_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7044,
+   "userCount": 61,
+   "alphaCount": 134,
+   "description": "represents residual earnings from operations, not distributed to shareholders. It may represent accumulated deficit when a company incurs losses over time."
+  },
+  {
+   "id": "retained_earnings_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9225,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Retained earnings classified as liabilities for the annual period."
+  },
+  {
+   "id": "return_assets",
+   "type": "MATRIX",
+   "coverage": 0.7033,
+   "userCount": 164,
+   "alphaCount": 544,
+   "description": "Return on assets."
+  },
+  {
+   "id": "return_equity",
+   "type": "MATRIX",
+   "coverage": 0.7032,
+   "userCount": 110,
+   "alphaCount": 279,
+   "description": "Return on equity."
+  },
+  {
+   "id": "revenue",
+   "type": "MATRIX",
+   "coverage": 0.6964,
+   "userCount": 123,
+   "alphaCount": 314,
+   "description": "total revenue represents all items clearly presented as revenues, before the cost of goods sold and the gross profit."
+  },
+  {
+   "id": "sales",
+   "type": "MATRIX",
+   "coverage": 0.6801,
+   "userCount": 389,
+   "alphaCount": 1318,
+   "description": "net sales."
+  },
+  {
+   "id": "securities_deferred_net_income",
+   "type": "MATRIX",
+   "coverage": 0.931,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Deferred net income related to securities for the annual period."
+  },
+  {
+   "id": "sga_expense",
+   "type": "MATRIX",
+   "coverage": 0.6945,
+   "userCount": 31,
+   "alphaCount": 86,
+   "description": "Selling/General/Administrative Expense."
+  },
+  {
+   "id": "share_capital_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0.9294,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Extraordinary share capital reported for the annual period."
+  },
+  {
+   "id": "share_capital_ordinary",
+   "type": "MATRIX",
+   "coverage": 0.8907,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Ordinary share capital reported for the annual period."
+  },
+  {
+   "id": "share_capital_subscribed",
+   "type": "MATRIX",
+   "coverage": 0.908,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Share capital subscribed reported for the annual period."
+  },
+  {
+   "id": "share_deposit_equity",
+   "type": "MATRIX",
+   "coverage": 0.9291,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Share deposit equity reported for the annual period."
+  },
+  {
+   "id": "share_dividend_equity",
+   "type": "MATRIX",
+   "coverage": 0.9291,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Share dividend equity reported for the annual period."
+  },
+  {
+   "id": "statement_of_cash_flows",
+   "type": "MATRIX",
+   "coverage": 0.9319,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Statement of cash flows for the annual period."
+  },
+  {
+   "id": "total_assets_annual_atot",
+   "type": "MATRIX",
+   "coverage": 0.9329,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Total assets reported for the annual period."
+  },
+  {
+   "id": "total_current_assets_4",
+   "type": "MATRIX",
+   "coverage": 0.8968,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total current assets reported for the annual period."
+  },
+  {
+   "id": "valuation_market_adjustment_amount",
+   "type": "MATRIX",
+   "coverage": 0.3419,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Amount of market adjustment made to valuation."
+  },
+  {
+   "id": "voting_amortized_investments",
+   "type": "MATRIX",
+   "coverage": 0.9234,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Voting amortized investments reported for the annual period."
+  },
+  {
+   "id": "voting_beneficial_equity_shares",
+   "type": "MATRIX",
+   "coverage": 0.9314,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "Voting beneficial equity shares reported for the annual period."
+  }
+ ],
+ "count": 362,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 19,
+ "platform_count": 381,
+ "complete": true,
+ "pages_fetched": 8
+}

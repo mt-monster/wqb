@@ -1,0 +1,65 @@
+{
+ "submitted": 8,
+ "total": 8,
+ "results": [
+  {
+   "index": 0,
+   "location": "https://api.worldquantbrain.com/simulations/K2xKl38w54H9cbX2XZy2gM",
+   "simulation_id": "K2xKl38w54H9cbX2XZy2gM",
+   "ok": true,
+   "tag": "ON_d12_w22"
+  },
+  {
+   "index": 1,
+   "location": "https://api.worldquantbrain.com/simulations/2j9UVb8iY4KN8JKoHjqDWWt",
+   "simulation_id": "2j9UVb8iY4KN8JKoHjqDWWt",
+   "ok": true,
+   "tag": "ON_d20_w22"
+  },
+  {
+   "index": 2,
+   "location": "https://api.worldquantbrain.com/simulations/27CIPQcAf4KU8E3lxYJNUyo",
+   "simulation_id": "27CIPQcAf4KU8E3lxYJNUyo",
+   "ok": true,
+   "tag": "ON_d4_w10"
+  },
+  {
+   "index": 3,
+   "location": "https://api.worldquantbrain.com/simulations/1SXznh3yp4owb4bCfErpnZK",
+   "simulation_id": "1SXznh3yp4owb4bCfErpnZK",
+   "ok": true,
+   "tag": "ON_d4_w44"
+  },
+  {
+   "index": 4,
+   "location": "https://api.worldquantbrain.com/simulations/DdWgYbk657BaJrfv9Z2Pmo",
+   "simulation_id": "DdWgYbk657BaJrfv9Z2Pmo",
+   "ok": true,
+   "tag": "ON_subind_w22"
+  },
+  {
+   "index": 5,
+   "location": "https://api.worldquantbrain.com/simulations/1e7aD0dvv4VXaxshwAhz2f5",
+   "simulation_id": "1e7aD0dvv4VXaxshwAhz2f5",
+   "ok": true,
+   "tag": "GAP_w10"
+  },
+  {
+   "index": 6,
+   "location": "https://api.worldquantbrain.com/simulations/2g0wtv6yM4qIcbnOnSomSwF",
+   "simulation_id": "2g0wtv6yM4qIcbnOnSomSwF",
+   "ok": true,
+   "tag": "GAP_w44"
+  },
+  {
+   "index": 7,
+   "location": "https://api.worldquantbrain.com/simulations/C5gH35tv4Mx94d12slTrA70",
+   "simulation_id": "C5gH35tv4Mx94d12slTrA70",
+   "ok": true,
+   "tag": "GAP_w20_d12"
+  }
+ ],
+ "note": "Async submit: poll each location with lookINTO_SimError_message or GET /simulations/{id} until status is terminal.",
+ "async": true,
+ "polling_tool": "lookINTO_SimError_message"
+}

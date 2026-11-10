@@ -1,0 +1,111 @@
+{
+  "wave": 37,
+  "dataset_id": "model36",
+  "dataset_name": "SmartRatios Credit Risk Model (credit risk / 1y default probability)",
+  "category": "model",
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "settings": "SUBINDUSTRY / decay 4 / trunc 0.08 / nanHandling OFF / pasteurization ON / unitHandling VERIFY",
+  "sign_prior": "star_sr_* = credit QUALITY percentile (higher = lower default risk). Distress puzzle (Campbell-Hilscher-Szilagyi 2008) => long high quality => POSITIVE rank. Forum post 29155767547543 uses -rank on default-probability-oriented data, which is the same economic direction.",
+  "sources": [
+    "forum 29155767547543 Forecasting Default with the KMV-Merton Model (JL11546, 2025-01-12)",
+    "Merton 1974 / KMV-Merton structural default model",
+    "Campbell, Hilscher, Szilagyi 2008 In Search of Distress Risk (distress puzzle)",
+    "Asness, Frazzini, Pedersen 2019 Quality Minus Junk (QMJ)"
+  ],
+  "field_crowding": {
+    "star_sr_global_rank_d1": "cov 1.0 / uc 3 / ac 3",
+    "star_sr_profitability_d1": "cov 1.0 / uc 8 / ac 9",
+    "star_sr_leverage_d1": "cov 1.0 / uc 9 / ac 15",
+    "star_sr_liquidity_d1": "cov 1.0 / uc 7 / ac 7",
+    "star_sr_coverage_d1": "cov 1.0 / uc 6 / ac 7",
+    "star_sr_growth_d1": "cov 1.0 / uc 6 / ac 9",
+    "credit_risk_profitability_score_d1": "cov 0.6987 / uc 4 / ac 4",
+    "credit_risk_coverage_score_d1": "cov 0.696 / uc 3 / ac 4",
+    "default_risk_global_percentile_d1_2": "cov 0.6987 / uc 2 / ac 3",
+    "default_risk_sector_percentile_d1_2": "cov 0.6973 / uc 4 / ac 4"
+  },
+  "templates": [
+    {
+      "id": "T1",
+      "name": "KMV-Merton forum skeleton (compressed, conditional neutralize on leverage bucket)",
+      "source": "forum",
+      "mechanism": "time-series rank of credit quality + weighted decay + neutralize within leverage bucket",
+      "ops": 9,
+      "expr": "rank(group_neutralize(ts_weighted_decay(ts_rank(winsorize(ts_backfill(star_sr_global_rank_d1, 120), std=4), 60), k=0.5), bucket(rank(star_sr_leverage_d1), range=\"0.2,1,0.2\")))"
+    },
+    {
+      "id": "T2",
+      "name": "Pure quality level (QMJ baseline, cold raw score field)",
+      "source": "paper",
+      "mechanism": "cross-sectional profitability credit score, no time transform",
+      "ops": 2,
+      "expr": "group_rank(credit_risk_profitability_score_d1, sector)"
+    },
+    {
+      "id": "T3",
+      "name": "Credit-quality momentum (rating drift, one quarter)",
+      "source": "paper",
+      "mechanism": "Avramov et al. credit rating momentum: improving credit standing predicts positive drift",
+      "ops": 3,
+      "expr": "group_rank(ts_delta(default_risk_global_percentile_d1_2, 66), sector)"
+    },
+    {
+      "id": "T4",
+      "name": "Credit quality vs own one-year norm (z-score)",
+      "source": "self",
+      "mechanism": "deviation of raw coverage score from its own yearly distribution",
+      "ops": 3,
+      "expr": "group_rank(ts_zscore(credit_risk_coverage_score_d1, 252), sector)"
+    },
+    {
+      "id": "T5",
+      "name": "Idiosyncratic credit risk (sector-relative minus global-relative default percentile)",
+      "source": "self",
+      "mechanism": "safe vs sector peers but risky globally implies whole-sector distress; captures cross-domain mismatch",
+      "ops": 5,
+      "expr": "group_rank(subtract(rank(default_risk_sector_percentile_d1_2), rank(default_risk_global_percentile_d1_2)), sector)"
+    },
+    {
+      "id": "T6",
+      "name": "QMJ core spread (profitability minus leverage)",
+      "source": "paper",
+      "mechanism": "profitable and low-leverage joint quality, the two strongest QMJ pillars",
+      "ops": 5,
+      "expr": "group_rank(subtract(rank(star_sr_profitability_d1), rank(star_sr_leverage_d1)), sector)"
+    },
+    {
+      "id": "T7",
+      "name": "Growth per unit leverage (ratio geometry)",
+      "source": "paper",
+      "mechanism": "growth efficiency conditional on balance-sheet risk",
+      "ops": 5,
+      "expr": "group_rank(divide(rank(star_sr_growth_d1), add(0.001, rank(star_sr_leverage_d1))), sector)"
+    },
+    {
+      "id": "T8",
+      "name": "Credit-quality stability (prefer low volatility of the score)",
+      "source": "paper",
+      "mechanism": "unstable credit standing carries a penalty (uncertainty aversion)",
+      "ops": 4,
+      "expr": "group_rank(multiply(-1, ts_std_dev(star_sr_global_rank_d1, 66)), sector)"
+    },
+    {
+      "id": "T9",
+      "name": "Accelerating credit quality (second difference)",
+      "source": "self",
+      "mechanism": "second-order drift of credit standing, separates turning points from steady states",
+      "ops": 4,
+      "expr": "group_rank(ts_delta(ts_delta(star_sr_global_rank_d1, 22), 22), sector)"
+    },
+    {
+      "id": "T10",
+      "name": "Weakest-link credit quality (min across coverage/liquidity/leverage)",
+      "source": "self",
+      "mechanism": "default is driven by the weakest dimension, not the sum; nonlinear min geometry",
+      "ops": 6,
+      "expr": "group_rank(min(min(rank(star_sr_coverage_d1), rank(star_sr_liquidity_d1)), rank(star_sr_leverage_d1)), sector)"
+    }
+  ]
+}

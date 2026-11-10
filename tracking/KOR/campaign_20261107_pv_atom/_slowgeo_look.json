@@ -1,0 +1,88 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/38nL8tbU650obCm9AbtFoBY",
+   "location_url": "https://api.worldquantbrain.com/simulations/38nL8tbU650obCm9AbtFoBY",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "ZYQ1MNQ8",
+   "raw": {
+    "id": "38nL8tbU650obCm9AbtFoBY",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(0.5, group_rank(ts_mean(corr_bid_price_with_bid_size, 22), sector))",
+    "status": "COMPLETE",
+    "alpha": "ZYQ1MNQ8"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/38UmpIex44OkabDqUBLY1o",
+   "location_url": "https://api.worldquantbrain.com/simulations/38UmpIex44OkabDqUBLY1o",
+   "error": "Simulation did not get through; inspect raw/status for the platform response.",
+   "status": null,
+   "alpha": null,
+   "raw": {
+    "progress": 0.35
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/37Gu9rcwN5hKb251gD8ACjjM",
+   "location_url": "https://api.worldquantbrain.com/simulations/37Gu9rcwN5hKb251gD8ACjjM",
+   "error": "Simulation did not get through; inspect raw/status for the platform response.",
+   "status": null,
+   "alpha": null,
+   "raw": {
+    "progress": 0.35
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1Dav3r9UO4AgcalYLvMUusy",
+   "location_url": "https://api.worldquantbrain.com/simulations/1Dav3r9UO4AgcalYLvMUusy",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "3qo25VOX",
+   "raw": {
+    "id": "1Dav3r9UO4AgcalYLvMUusy",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(0.5, group_zscore(ts_mean(corr_bid_price_with_bid_size, 22), industry))",
+    "status": "COMPLETE",
+    "alpha": "3qo25VOX"
+   },
+   "extra_info": ""
+  }
+ ]
+}

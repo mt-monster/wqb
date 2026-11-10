@@ -1,0 +1,1088 @@
+{
+ "results": [
+  {
+   "id": "annual_avg_shares_outstanding",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 14,
+   "alphaCount": 19,
+   "description": "Average shares outstanding for the most recent fiscal year"
+  },
+  {
+   "id": "annual_basic_eps_excl_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Basic earnings per share excluding extraordinary items for the most recent fiscal year"
+  },
+  {
+   "id": "annual_book_value_per_share",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 12,
+   "alphaCount": 16,
+   "description": "Book value (common equity) per share for the most recent fiscal year"
+  },
+  {
+   "id": "annual_common_equity_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Common equity (book value) for the most recent fiscal year"
+  },
+  {
+   "id": "annual_current_assets_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Current assets for the most recent fiscal year"
+  },
+  {
+   "id": "annual_current_liabilities",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Current liabilities for the most recent fiscal year"
+  },
+  {
+   "id": "annual_debt_to_equity_ratio",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 12,
+   "alphaCount": 22,
+   "description": "Total debt to equity ratio for the most recent fiscal year"
+  },
+  {
+   "id": "annual_debt_to_total_capital",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Total debt capital for the most recent fiscal year"
+  },
+  {
+   "id": "annual_earnings_before_tax",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Earnings before taxes for the most recent fiscal year"
+  },
+  {
+   "id": "annual_ebit",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Earnings before interest and taxes for the most recent fiscal year"
+  },
+  {
+   "id": "annual_ebitda_amount",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "EBITDA for the most recent fiscal year"
+  },
+  {
+   "id": "annual_ebitda_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Earnings before interest, taxes, depreciation, and amortization for the year."
+  },
+  {
+   "id": "annual_net_income_available_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Net income available to common shareholders for the most recent fiscal year"
+  },
+  {
+   "id": "annual_net_income_change_percent",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 59,
+   "alphaCount": 81,
+   "description": "Net income change percentage from the quarter one year ago"
+  },
+  {
+   "id": "annual_net_income_excl_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Net income excluding extraordinary items for the most recent fiscal year"
+  },
+  {
+   "id": "annual_net_income_incl_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Net income including extraordinary items for the most recent fiscal year"
+  },
+  {
+   "id": "annual_net_income_to_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Net income available to common for the most recent fiscal year"
+  },
+  {
+   "id": "annual_normalized_net_income_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Normalized net income available to common shareholders for the most recent fiscal year (excludes unusual/one-time items)"
+  },
+  {
+   "id": "annual_normalized_net_income_to_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Normalized net income available to common for the most recent fiscal year"
+  },
+  {
+   "id": "annual_price_to_sales_ratio",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 17,
+   "alphaCount": 20,
+   "description": "Price-to-sales ratio for the most recent fiscal year"
+  },
+  {
+   "id": "annual_revenue_change_percent",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Year-over-year percent change in annual revenue"
+  },
+  {
+   "id": "annual_revenue_per_share",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Annual revenue per share for the most recent fiscal year"
+  },
+  {
+   "id": "annual_revenue_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Revenue (total sales) for the most recent fiscal year"
+  },
+  {
+   "id": "annual_total_assets_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Total assets for the most recent fiscal year"
+  },
+  {
+   "id": "annual_total_liabilities_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total liabilities for the most recent fiscal year"
+  },
+  {
+   "id": "annual_total_revenue",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revenue for the most recent fiscal year"
+  },
+  {
+   "id": "annual_total_shareholder_equity",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Total shareholders’ equity for the most recent fiscal year"
+  },
+  {
+   "id": "annual_total_shareholders_equity",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Shareholders' equity - most recent fiscal year"
+  },
+  {
+   "id": "capital_spending_per_share",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Capital spending per share for the most recent fiscal year"
+  },
+  {
+   "id": "cash_per_share",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 53,
+   "alphaCount": 81,
+   "description": "Cash per share for the most recent fiscal year"
+  },
+  {
+   "id": "current_enterprise_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 36,
+   "alphaCount": 60,
+   "description": "Current enterprise value (market capitalization plus net debt)"
+  },
+  {
+   "id": "daily_volume_to_shares_outstanding",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 38,
+   "alphaCount": 59,
+   "description": "Daily trading volume as a percentage of shares outstanding"
+  },
+  {
+   "id": "enterprise_value_to_revenue",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 17,
+   "alphaCount": 26,
+   "description": "Current enterprise value to revenue ratio (EV/Revenue)"
+  },
+  {
+   "id": "fnd17_0_fcfq",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 102,
+   "alphaCount": 156,
+   "description": "Free Cash Flow - most recent quarter"
+  },
+  {
+   "id": "fnd17_10_2anrhsfcfq",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Free Cash Flow per share - most recent quarter - 1 (not annualized)"
+  },
+  {
+   "id": "fnd17_10_2rhsfcfq",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 12,
+   "alphaCount": 32,
+   "description": "Free Cash Flow per share - most recent quarter, 1 year ago"
+  },
+  {
+   "id": "fnd17_10_anrhsfcfq",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 85,
+   "alphaCount": 120,
+   "description": "Free Cash Flow per share - most recent quarter (not annualized)"
+  },
+  {
+   "id": "fnd17_10_reptoprcexrate",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Reporting Currency to base currency exchange rate"
+  },
+  {
+   "id": "fnd17_10_rhsfcfq",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 172,
+   "alphaCount": 316,
+   "description": "Free Cash Flow per share - most recent quarter (annualized)"
+  },
+  {
+   "id": "fnd17_10_usdtorepexrate",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Reporting Currency to USD exchange rate"
+  },
+  {
+   "id": "interim_debt_to_capital_ratio",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Total debt capital (LFI definition)"
+  },
+  {
+   "id": "interim_debt_to_total_capital",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Ratio of total debt to total capital for the most recent interim period."
+  },
+  {
+   "id": "interim_net_debt_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Net debt (LFI definition)"
+  },
+  {
+   "id": "market_capitalization_value_5",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 66,
+   "alphaCount": 112,
+   "description": "Current market capitalization"
+  },
+  {
+   "id": "net_debt_interim",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 22,
+   "alphaCount": 24,
+   "description": "Net debt (total debt minus cash and equivalents) for the interim period."
+  },
+  {
+   "id": "net_income_after_tax_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 12,
+   "alphaCount": 22,
+   "description": "Net income after taxes for the most recent fiscal year"
+  },
+  {
+   "id": "net_income_incl_extra_items",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Net income including extraordinary items for the period."
+  },
+  {
+   "id": "net_income_incl_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Net income including extraordinary items for the most recent fiscal year"
+  },
+  {
+   "id": "normalized_ebt",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Normalized earnings before taxes for the most recent fiscal year"
+  },
+  {
+   "id": "normalized_net_income",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Normalized net income after taxes for the most recent fiscal year (excludes unusual/one-time items)"
+  },
+  {
+   "id": "one_day_avg_volume",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Average daily trading volume over the last 91 days."
+  },
+  {
+   "id": "one_fifty_day_avg_price",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "150 day average price"
+  },
+  {
+   "id": "pricing_currency_code_emi1",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Code for the security’s price currency (base currency for price fields)"
+  },
+  {
+   "id": "pricing_currency_code_ras10",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "base currency"
+  },
+  {
+   "id": "pricing_currency_code_rasv2ff",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Base/pricing currency code"
+  },
+  {
+   "id": "prior_ttm_total_revenue",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total revenue for the prior trailing twelve months"
+  },
+  {
+   "id": "public_float_shares",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Free float shares, in millions"
+  },
+  {
+   "id": "quarterly_accounts_receivable",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Receivables (accounts receivable) for the most recent quarter"
+  },
+  {
+   "id": "quarterly_avg_shares_outstanding",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Average shares outstanding for the most recent quarter"
+  },
+  {
+   "id": "quarterly_basic_eps_excl_extraordinary_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Basic earnings per share excluding extraordinary items for the most recent quarter"
+  },
+  {
+   "id": "quarterly_book_value_per_share_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Book value per share (common equity) for the most recent quarter"
+  },
+  {
+   "id": "quarterly_book_value_per_share_5",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Book value per share for the most recent quarter"
+  },
+  {
+   "id": "quarterly_cash_and_equivalents_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 15,
+   "alphaCount": 20,
+   "description": "Cash and cash equivalents for the most recent quarter"
+  },
+  {
+   "id": "quarterly_cash_flow_per_share_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 26,
+   "alphaCount": 61,
+   "description": "Cash flow per share for the most recent quarter annualized"
+  },
+  {
+   "id": "quarterly_common_equity_1y_ago",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Common equity (book value) as of the most recent quarter one year ago"
+  },
+  {
+   "id": "quarterly_common_equity_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Common equity (book value) for the most recent quarter"
+  },
+  {
+   "id": "quarterly_common_equity_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Common equity book value for the most recent quarter"
+  },
+  {
+   "id": "quarterly_current_assets_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current assets for the most recent quarter"
+  },
+  {
+   "id": "quarterly_current_liabilities_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current liabilities for the most recent quarter"
+  },
+  {
+   "id": "quarterly_debt_to_assets_ratio",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 16,
+   "alphaCount": 30,
+   "description": "Total Debt to Total Assets ratio for the most recent quarter"
+  },
+  {
+   "id": "quarterly_debt_to_equity_ratio",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 35,
+   "alphaCount": 52,
+   "description": "Total Debt to Total Equity ratio for the most recent quarter"
+  },
+  {
+   "id": "quarterly_debt_to_equity_ratio_1y_ago",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total Debt to Total Equity ratio as of the same quarter one year ago"
+  },
+  {
+   "id": "quarterly_debt_to_equity_ratio_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Total Debt to Total Equity ratio for the most recent quarter"
+  },
+  {
+   "id": "quarterly_earnings_before_tax_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Earnings before taxes for the most recent quarter"
+  },
+  {
+   "id": "quarterly_ebit_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 41,
+   "alphaCount": 50,
+   "description": "EBIT for the most recent quarter"
+  },
+  {
+   "id": "quarterly_ebitda_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 14,
+   "alphaCount": 18,
+   "description": "EBITDA for the most recent quarter"
+  },
+  {
+   "id": "quarterly_eps_excl_extraordinary_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Earnings per share excluding extraordinary items for the most recent quarter"
+  },
+  {
+   "id": "quarterly_eps_incl_extraordinary_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 18,
+   "alphaCount": 24,
+   "description": "Earnings per share including extraordinary items for the most recent quarter"
+  },
+  {
+   "id": "quarterly_net_income_3",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Net income (earnings after taxes) for the most recent quarter"
+  },
+  {
+   "id": "quarterly_net_income_available_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Net income available to common shareholders for the most recent quarter (including adjustments), in reporting currency (millions)"
+  },
+  {
+   "id": "quarterly_net_income_per_employee_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Net income per employee for the most recent quarter (annualized)"
+  },
+  {
+   "id": "quarterly_net_income_per_employee_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net income per employee for the most recent quarter annualized"
+  },
+  {
+   "id": "quarterly_net_income_to_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Net income available to common for the most recent quarter"
+  },
+  {
+   "id": "quarterly_net_income_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Earnings after taxes for the most recent quarter"
+  },
+  {
+   "id": "quarterly_operating_margin_percent_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 21,
+   "alphaCount": 29,
+   "description": "Operating margin for the most recent quarter (percent)"
+  },
+  {
+   "id": "quarterly_pretax_margin_percent_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "Pretax profit margin for the most recent quarter"
+  },
+  {
+   "id": "quarterly_price_to_sales_ratio_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Ratio of share price to revenue per share for the most recent quarter."
+  },
+  {
+   "id": "quarterly_return_on_equity_percent_3",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 115,
+   "alphaCount": 194,
+   "description": "Return on average equity for the most recent quarter (annualized, percent)"
+  },
+  {
+   "id": "quarterly_revenue_per_employee_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Revenue per employee for the most recent quarter, annualized"
+  },
+  {
+   "id": "quarterly_revenue_per_share_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Revenue per share for the most recent quarter"
+  },
+  {
+   "id": "quarterly_revenue_per_share_nonannualized_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Revenue per share for the most recent quarter (not annualized)"
+  },
+  {
+   "id": "quarterly_revenue_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Revenue for the most recent quarter"
+  },
+  {
+   "id": "quarterly_taxes_paid_3",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Income taxes paid during the most recent quarter"
+  },
+  {
+   "id": "quarterly_total_assets_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Total assets for the most recent quarter"
+  },
+  {
+   "id": "quarterly_total_assets_3",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Total assets for the most recent quarter"
+  },
+  {
+   "id": "quarterly_total_debt_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Total debt for the most recent quarter"
+  },
+  {
+   "id": "quarterly_total_liabilities_4",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total liabilities for the most recent quarter"
+  },
+  {
+   "id": "quarterly_total_liabilities_5",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total liabilities, most recent quarter"
+  },
+  {
+   "id": "quarterly_total_revenue_3",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Total revenue for the most recent quarter"
+  },
+  {
+   "id": "quarterly_total_shareholder_equity_3",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total shareholders' equity for the most recent quarter"
+  },
+  {
+   "id": "quarterly_total_shareholders_equity",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Shareholders’ equity for the most recent quarter"
+  },
+  {
+   "id": "quarterly_working_capital_per_share_to_price_3",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 14,
+   "alphaCount": 27,
+   "description": "Working capital per share divided by current price (most recent quarter)"
+  },
+  {
+   "id": "rep_to_pricing_fx_rate_emi1",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exchange rate from reporting currency to base/pricing currency"
+  },
+  {
+   "id": "reporting_currency_code_ras10",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Reporting currency"
+  },
+  {
+   "id": "reporting_currency_code_rasv2ff",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Company’s reporting currency code"
+  },
+  {
+   "id": "reporting_to_pricing_fx_rate",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Exchange rate converting the company’s reporting currency into the base/pricing currency"
+  },
+  {
+   "id": "reporting_to_pricing_fx_rate_2",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exchange rate from reporting currency to the base pricing currency"
+  },
+  {
+   "id": "revenue_change_prior_quarter",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 48,
+   "alphaCount": 67,
+   "description": "Revenue change percentage for the prior quarter"
+  },
+  {
+   "id": "revenue_change_year_ago_quarter",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 223,
+   "alphaCount": 381,
+   "description": "Percent change in revenue compared to the same quarter last year."
+  },
+  {
+   "id": "revenue_five_year_cagr",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Five-year revenue growth rate"
+  },
+  {
+   "id": "shares_outstanding_current",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Shares outstanding – current, in millions"
+  },
+  {
+   "id": "shares_outstanding_emi1",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current total shares outstanding"
+  },
+  {
+   "id": "ten_day_avg_volume",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 50,
+   "alphaCount": 76,
+   "description": "Average trading volume over the last 10 days"
+  },
+  {
+   "id": "ttm_basic_eps_excl_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Basic EPS excluding extraordinary items over the trailing 12 months"
+  },
+  {
+   "id": "ttm_earnings_before_tax",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Earnings before taxes over the trailing twelve months"
+  },
+  {
+   "id": "ttm_earnings_before_tax_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Earnings before taxes over the trailing 12 months"
+  },
+  {
+   "id": "ttm_ebitda_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "EBITDA over the trailing 12 months"
+  },
+  {
+   "id": "ttm_eps_excl_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 45,
+   "alphaCount": 53,
+   "description": "EPS excluding extraordinary items over the trailing 12 months"
+  },
+  {
+   "id": "ttm_net_income",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 24,
+   "alphaCount": 27,
+   "description": "Net income after taxes over the trailing twelve months"
+  },
+  {
+   "id": "ttm_net_income_available_to_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 25,
+   "alphaCount": 30,
+   "description": "Net income available to common over the trailing 12 months"
+  },
+  {
+   "id": "ttm_net_income_per_employee",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Net income per employee over the trailing 12 months"
+  },
+  {
+   "id": "ttm_net_income_per_employee_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net income per employee over the trailing 12 months"
+  },
+  {
+   "id": "ttm_net_income_to_common",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Net income available to common over the trailing 12 months"
+  },
+  {
+   "id": "ttm_net_income_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Net income after taxes over the trailing 12 months"
+  },
+  {
+   "id": "ttm_revenue_change_percent",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Revenue change percentage, TTM versus prior TTM"
+  },
+  {
+   "id": "ttm_revenue_per_employee",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Revenue per employee over the trailing 12 months"
+  },
+  {
+   "id": "ttm_revenue_per_share",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Revenue per share over the trailing 12 months"
+  },
+  {
+   "id": "ttm_total_assets_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total assets - trailing 12 months"
+  },
+  {
+   "id": "ttm_total_revenue",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total revenue over the trailing 12 months"
+  },
+  {
+   "id": "ttm_total_revenue_value",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Total revenue over the trailing twelve months"
+  },
+  {
+   "id": "twelve_month_high_price",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "12 month high price"
+  },
+  {
+   "id": "two_hundred_day_avg_price",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "200 day average price"
+  },
+  {
+   "id": "usd_to_reporting_currency_fx",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exchange rate to convert USD into the company’s reporting currency (USD to reporting)"
+  },
+  {
+   "id": "usd_to_reporting_fx_rate",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "USD to Reporting Currency exchange rate"
+  },
+  {
+   "id": "usd_to_reporting_fx_rate_emi1",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 17,
+   "description": "Exchange rate used to convert USD to reporting currency for this module."
+  }
+ ],
+ "count": 135,
+ "platform_count": 135,
+ "complete": true,
+ "pages_fetched": 3
+}

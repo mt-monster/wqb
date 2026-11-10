@@ -1,0 +1,276 @@
+{
+ "pyramids": {
+  "USA": {
+   "D0": {
+    "pv": 0,
+    "fundamental": 0,
+    "socialmedia": 0,
+    "news": 0,
+    "option": 0,
+    "analyst": 0,
+    "model": 0,
+    "macro": 0,
+    "insiders": 0,
+    "risk": 0,
+    "shortinterest": 0,
+    "other": 0,
+    "sentiment": 0,
+    "earnings": 0,
+    "institutions": 0
+   },
+   "D1": {
+    "pv": 0,
+    "fundamental": 0,
+    "socialmedia": 0,
+    "news": 0,
+    "option": 0,
+    "model": 4,
+    "analyst": 6,
+    "macro": 0,
+    "insiders": 0,
+    "other": 2,
+    "risk": 2,
+    "sentiment": 0,
+    "shortinterest": 0,
+    "institutions": 1,
+    "imbalance": 0,
+    "earnings": 1
+   }
+  },
+  "GLB": {
+   "D1": {
+    "pv": 2,
+    "news": 0,
+    "model": 3,
+    "macro": 0,
+    "fundamental": 0,
+    "earnings": 1,
+    "analyst": 0,
+    "other": 4,
+    "risk": 1,
+    "sentiment": 0,
+    "institutions": 1,
+    "socialmedia": 0,
+    "insiders": 0
+   }
+  },
+  "EUR": {
+   "D0": {
+    "socialmedia": 0,
+    "pv": 0,
+    "news": 0,
+    "model": 0,
+    "insiders": 0,
+    "fundamental": 0,
+    "analyst": 0,
+    "risk": 0,
+    "other": 0,
+    "sentiment": 0,
+    "imbalance": 0,
+    "earnings": 0,
+    "institutions": 0
+   },
+   "D1": {
+    "socialmedia": 0,
+    "pv": 2,
+    "news": 1,
+    "model": 3,
+    "macro": 0,
+    "insiders": 2,
+    "fundamental": 3,
+    "analyst": 10,
+    "other": 2,
+    "risk": 2,
+    "sentiment": 2,
+    "imbalance": 3,
+    "earnings": 0,
+    "institutions": 0
+   }
+  },
+  "ASI": {
+   "D1": {
+    "socialmedia": 0,
+    "pv": 0,
+    "news": 0,
+    "model": 0,
+    "insiders": 0,
+    "fundamental": 0,
+    "analyst": 0,
+    "other": 2,
+    "risk": 0,
+    "sentiment": 0,
+    "broker": 0,
+    "imbalance": 0,
+    "earnings": 0,
+    "macro": 0,
+    "institutions": 0,
+    "shortinterest": 0
+   }
+  },
+  "CHN": {
+   "D0": {
+    "sentiment": 0,
+    "pv": 0,
+    "fundamental": 0,
+    "model": 0,
+    "news": 0,
+    "other": 0,
+    "analyst": 0,
+    "shortinterest": 0
+   },
+   "D1": {
+    "risk": 0,
+    "sentiment": 0,
+    "pv": 0,
+    "analyst": 0,
+    "fundamental": 0,
+    "model": 0,
+    "news": 0,
+    "other": 0,
+    "macro": 0,
+    "shortinterest": 0,
+    "socialmedia": 0,
+    "institutions": 0
+   }
+  },
+  "KOR": {
+   "D1": {
+    "analyst": 3,
+    "earnings": 0,
+    "fundamental": 3,
+    "model": 3,
+    "imbalance": 0,
+    "insiders": 1,
+    "institutions": 0,
+    "macro": 0,
+    "news": 0,
+    "socialmedia": 0,
+    "other": 1,
+    "sentiment": 0,
+    "pv": 2,
+    "risk": 2,
+    "shortinterest": 4
+   }
+  },
+  "HKG": {
+   "D1": {
+    "sentiment": 0,
+    "analyst": 0,
+    "earnings": 0,
+    "fundamental": 0,
+    "model": 0,
+    "imbalance": 0,
+    "insiders": 0,
+    "institutions": 0,
+    "macro": 0,
+    "news": 0,
+    "socialmedia": 0,
+    "other": 0,
+    "shortinterest": 0,
+    "pv": 1,
+    "risk": 0
+   }
+  },
+  "AMR": {
+   "D0": {
+    "sentiment": 0,
+    "pv": 0
+   },
+   "D1": {
+    "sentiment": 0,
+    "pv": 0
+   }
+  },
+  "IND": {
+   "D1": {
+    "insiders": 1,
+    "news": 4,
+    "other": 4,
+    "pv": 11,
+    "analyst": 3,
+    "model": 3,
+    "macro": 2,
+    "imbalance": 0,
+    "fundamental": 3,
+    "option": 0,
+    "sentiment": 1,
+    "shortinterest": 0,
+    "earnings": 2,
+    "risk": 3,
+    "institutions": 1
+   }
+  },
+  "DEU": {
+   "D0": {
+    "institutions": 0,
+    "model": 0,
+    "news": 0,
+    "other": 0,
+    "pv": 0,
+    "earnings": 0,
+    "insiders": 0,
+    "analyst": 0,
+    "sentiment": 0,
+    "risk": 0,
+    "socialmedia": 0,
+    "shortinterest": 0,
+    "fundamental": 0,
+    "imbalance": 0
+   },
+   "D1": {
+    "institutions": 1,
+    "insiders": 0,
+    "model": 2,
+    "news": 0,
+    "other": 2,
+    "analyst": 5,
+    "pv": 0,
+    "earnings": 0,
+    "fundamental": 1,
+    "sentiment": 1,
+    "risk": 0,
+    "option": 0,
+    "macro": 0,
+    "socialmedia": 0,
+    "shortinterest": 2,
+    "imbalance": 0
+   }
+  },
+  "GBR": {
+   "D0": {
+    "institutions": 0,
+    "model": 0,
+    "news": 0,
+    "other": 0,
+    "pv": 0,
+    "earnings": 0,
+    "insiders": 0,
+    "analyst": 0,
+    "sentiment": 0,
+    "risk": 0,
+    "socialmedia": 0,
+    "shortinterest": 0,
+    "fundamental": 0,
+    "imbalance": 0
+   },
+   "D1": {
+    "institutions": 0,
+    "insiders": 0,
+    "model": 6,
+    "news": 3,
+    "other": 1,
+    "analyst": 3,
+    "pv": 4,
+    "earnings": 0,
+    "fundamental": 3,
+    "sentiment": 0,
+    "risk": 0,
+    "option": 0,
+    "socialmedia": 0,
+    "macro": 0,
+    "shortinterest": 3,
+    "imbalance": 0
+   }
+  }
+ }
+}

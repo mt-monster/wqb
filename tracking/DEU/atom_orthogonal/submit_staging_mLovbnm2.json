@@ -1,0 +1,27 @@
+{
+  "alpha_id": "mLovbnm2",
+  "STATUS": "WITHDRAWN_DO_NOT_SUBMIT",
+  "withdrawn_at": "2026-11-10",
+  "withdrawn_reason": "OS 池于 2026-11-09 新增 rKRx2Alj（DEU_R_anlrev3_01, ACTIVE），与本件骨架几乎同构（仅 ts_mean vs ts_sum），互相关 0.9966。本件当前 self = 0.9966，远超 0.7 阈值 ⇒ 平台 Self Correlation 闸必然拦截，无法提交。此前记录的 self 0.5620 是 rKRx2Alj 提交前的旧值，已失效。",
+  "current_self_correlation": 0.996620410729011,
+  "current_prod_correlation": 0.6572,
+  "self_checked_at": "2026-11-10T07:05+08:00",
+  "colliding_alpha": {
+    "id": "rKRx2Alj",
+    "name": "DEU_R_anlrev3_01",
+    "dateSubmitted": "2026-11-09T13:18:39-05:00",
+    "status": "ACTIVE",
+    "mutual_correlation": 0.9966
+  },
+  "historical_metrics": {
+    "sharpe": 1.94,
+    "fitness": 1.79,
+    "two_year_sharpe": 2.18,
+    "turnover": 0.1401,
+    "sub_universe_sharpe": 1.17,
+    "returns": 0.119,
+    "drawdown": 0.0709,
+    "margin": 0.001698
+  },
+  "expression": "multiply(multiply(group_rank(ts_mean(mean_estimate_change_pct_f12m_earnings_7d_4, 10), sector), group_rank(ts_mean(netprofit_y1_estimate_change_3mo, 50), industry)), group_rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 30), industry))"
+}

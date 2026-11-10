@@ -1,0 +1,1 @@
+["group_rank(ts_mean(subtract(vec_avg(oth553_est_estvalue), vec_avg(oth553_est_preestvalue)), 22), sector)","group_rank(ts_mean(subtract(vec_avg(oth553_ptgvalue), vec_avg(oth553_preptgvalue)), 22), sector)","group_rank(ts_mean(vec_avg(oth553_est_analyst), 22), sector)","group_rank(ts_delta(vec_avg(oth553_est_estvalue), 66), sector)"]

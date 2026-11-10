@@ -1,0 +1,2 @@
+id,type,cov,uc,ac,desc
+"alternative_market_cap_usd",MATRIX,1.0,42,70,"Market capitalization of each stock expressed in US dollars (stocksÃdates matrix used for weighting/normalization)"

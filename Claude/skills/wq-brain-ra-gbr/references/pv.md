@@ -94,4 +94,16 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+### `pv109` 固收字段族（债券到期收益率 / 票息，2026-11-09 实测 · **判死**）
+
+`pv109` 是 GBR 上的固收（债券）字段集，VECTOR 型（cov 0.3319）。骨架 `group_rank(ts_zscore(vec_avg(<field>), 252), sector)`（FAST / decay10 / tr0.08）：
+
+| 字段 | S | 2Y |
+|---|---:|---:|
+| `midpoint_yield_to_maturity` | −0.39 | 0.11 |
+| `bid_side_yield_to_maturity` | −0.32 | 0.49 |
+| `current_coupon_rate` | −0.20 | −0.35 |
+
+⇒ **三条全负，判死**。YTM / 票息是**债券**属性，与股票横截面收益无因果通道；
+cov 0.33 还意味着近 2/3 成分股为 NaN，进一步稀释。不要再从固收类字段找股票 alpha。
 <!-- profiles:manual:end -->

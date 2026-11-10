@@ -1,0 +1,31 @@
+{
+ "alpha_id": "RREwqrNa",
+ "workflow": "mcp__wq-brain-http__workflow_submit_alpha",
+ "role": "需用户明确豁免 CV 闸后启用（robustness 台账现值 REJECT，节点会机械拦截）",
+ "waiver_procedure": [
+  "1. 用户在对话中明确豁免 CV 闸（如「豁免 RREwqrNa 的 CV 闸」）",
+  "2. 按 skill 规则改写台账：upsert_ledger_key(robustness_RREwqrNa) → verdict PASS + soft_flags 追加「按用户指令豁免 CV 闸（2022 尖峰离散度，2026-11-08）」",
+  "3. 报告 reports/robustness_20261108.md 追加豁免留痕段",
+  "4. 之后 workflow_submit_alpha 节点不再拦 REJECT（台账已是 PASS）"
+ ],
+ "params": {
+  "alpha_id": "RREwqrNa",
+  "name": "DEU_R_secloan_01",
+  "tags": [
+   "CH_REG",
+   "SRC_shortinterest3",
+   "W65",
+   "EXPRFAM_secloan3"
+  ],
+  "descriptions": "Idea: Rising securities-lending activity, lengthening loan durations and widening lending-rate volatility mark stocks under accumulating short pressure; shorted stocks underperform subsequently. Three reverse-oriented lending-market legs are multiplied into a single composite so only stocks deteriorating on all three fronts score extreme negative scores, and the composite is shorted via reversal.\n\nRationale for data used: shortinterest3 vendor dataset (securities lending panel) for DEU TOP500 delay-1. transaction_count_main counts daily lending transactions; average_loan_duration_days_main tracks the average loan duration; loan_rate_volatility_main captures lending-rate volatility. The 176d-minus-66d rolling sums form a 110-day momentum of each lending dimension. All three fields carry ten-year coverage and are MATRIX via vec_avg aggregation of the lending vector panel.\n\nRationale for operators used: rank equalizes the three dimensions before the multiplicative interaction (only concurrent deterioration scores high); group_rank against GICS industry removes sector-level lending waves; reverse flips the pressure sign into a short-side factor; winsorize std=4 caps the event-driven tails. 8 operators, within policy. nanHandling=ON recovered from the original salvage settings (sparse lending panel).",
+  "confirm_submit": true,
+  "color": "BLUE",
+  "robustness_audited": true,
+  "robustness_note": "需先完成豁免流程（台账 REJECT→PASS + 报告留痕）后才可传 robustness_audited=true；豁免依据=用户明确指令（soft_flags 留痕）"
+ },
+ "precheck_notes": [
+  "CV 豁免未获批前不得执行（台账 REJECT 会被节点拦）",
+  "prod 0.6684（余量 0.032）/ self 0.2626 / vs 已提交两颗 <0.5 ✓",
+  "nanHandling=ON 是本族关键设定（Wave 64 教训：OFF 掉 0.9 个 Sharpe）"
+ ]
+}

@@ -1,0 +1,23 @@
+id,type,cov,uc,ac,desc
+annualized_pd_10_year_jc7,MATRIX,0.8734,1,3,Annualized probability of default over a 10-year horizon using JC7 model.
+annualized_pd_1_month_jc7,MATRIX,0.8734,1,1,Annualized probability of default over a 1-month horizon using JC7 model.
+annualized_pd_1_year_jc7,MATRIX,0.8734,2,2,Annualized probability of default over a 1-year horizon using JC7 model.
+annualized_pd_2_year_jc7,MATRIX,0.8734,1,1,Annualized probability of default over a 2-year horizon using JC7 model.
+annualized_pd_3_month_jc7,MATRIX,0.8734,1,1,Annualized probability of default over a 3-month horizon using JC7 model.
+annualized_pd_3_year_jc7,MATRIX,0.8734,1,1,Annualized probability of default over a 3-year horizon using JC7 model.
+annualized_pd_4_year_jc7,MATRIX,0.8734,1,1,Annualized probability of default over a 4-year horizon using JC7 model.
+annualized_pd_5_year_jc7,MATRIX,0.8734,0,0,Annualized probability of default over a 5-year horizon using JC7 model.
+annualized_pd_6_month_jc7,MATRIX,0.8734,1,1,Annualized probability of default over a 6-month horizon using JC7 model.
+annualized_pd_7_year_jc7,MATRIX,0.8734,1,1,Annualized probability of default over a 7-year horizon using JC7 model.
+data_observation_date_4,SYMBOL,1.0,0,0,Date when the data observation was recorded.
+mdl53_implied_spreads,MATRIX,0.916,3,3,Model-implied credit spread level for the issuer on the given date; typically expressed in basis points
+mdl53_ms5_10year,MATRIX,0.9259,1,1,Annualized default probability at the 10-year horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_1month,MATRIX,0.9259,0,0,Annualized default probability at the 1-month horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_1year,MATRIX,0.9259,2,2,Annualized default probability at the 1-year horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_2year,MATRIX,0.9259,0,0,Annualized default probability at the 2-year horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_3month,MATRIX,0.9259,0,0,Annualized default probability at the 3-month horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_3year,MATRIX,0.9259,0,0,Annualized default probability at the 3-year horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_4year,MATRIX,0.9259,0,0,Annualized default probability at the 4-year horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_5year,MATRIX,0.9259,0,0,Annualized default probability at the 5-year horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_6month,MATRIX,0.9259,0,0,Annualized default probability at the 6-month horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent
+mdl53_ms5_7year,MATRIX,0.9259,0,0,Annualized default probability at the 7-year horizon from Kamakuraâs Merton structural model v5 (MS5); reported in percent

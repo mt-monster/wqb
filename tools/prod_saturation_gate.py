@@ -295,13 +295,17 @@ def check_wave(
         did = r.get("dataset_id")
         ds_counter[did] += 1
         pc = r.get("prod_correlation")
-        ds_prod_walls.setdefault(did, []).append(
-            float(pc) if pc is not None else 0.0)
+        # 2026-11-10 审查 P0-4：缺值**不得**当 0.0 参与 wall_ratio——那会把
+        # 「没测过」稀释成「没撞墙」，方向是 fail-open。只统计已知值。
+        if pc is not None:
+            ds_prod_walls.setdefault(did, []).append(float(pc))
     total = sum(ds_counter.values())
     saturated_dataset_ids = set()
     for did, n in ds_counter.items():
         if n / total >= cfg["dataset_share_max"]:
-            prods = ds_prod_walls[did]
+            prods = ds_prod_walls.get(did) or []
+            if not prods:
+                continue  # 完全无 prod 信息 ⇒ 不判死（缺值 ≠ 低相关）
             wall_ratio = sum(1 for p in prods if p >= cfg["prod_wall"]) / len(prods)
             if wall_ratio >= 0.8:  # 80% 撞墙才判死（留 20% 突围空间）
                 saturated_dataset_ids.add(did)

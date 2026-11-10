@@ -1,0 +1,13 @@
+id,type,cov,uc,ac,desc
+entity_connection_type_financial,VECTOR,0.0,0,0,Integer code for the observed; directional financial relationship type from the current stock (A) to the counterparty (B) on the as-of date; decode via this modâ¦
+entity_connection_type_general,VECTOR,0.0,0,0,Signed integer code for the relationship type and direction between the focal stock and its counterparty within the All family union of MA; Partner; and Financiâ¦
+entity_connection_type_merger,VECTOR,0.0,0,0,Integer code encoding the specific MA-family relationship type and direction (e.g.; acquisition; merger; joint venture) for the AâB edge; requires module- and dâ¦
+entity_connection_type_partner,VECTOR,0.0,0,0,Integer code encoding the type and direction of the partnership/alliance/contractual relationship between the focal stock (A) and counterparty (B) on the as-ofâ¦
+relation_strength_rank_financial,VECTOR,0.0,0,0,Vendor/event-native categorical integer code indicating confidence; status; or classification of the financial relationship edge on that date; decode via PIT; mâ¦
+relation_strength_rank_general,VECTOR,0.0,1,1,Vendor-native integer code indicating the relationshipâs confidence; status; or classification for each edge on that date; to be decoded via module-; region-; aâ¦
+relation_strength_rank_merger,VECTOR,0.0,0,0,Vendor/event-native integer code indicating confidence/status/classification of the MA relationship edge on the as-of date; decoding is module-; region-; and daâ¦
+relation_strength_rank_partner,VECTOR,0.0,0,0,Integer vendor-native categorical code describing confidence/status/classification of the partner relationship on the as-of date; decoding requires PIT; module/â¦
+relation_strength_score_financial,VECTOR,0.0,0,0,Vendor-native quantitative impact or confidence score (typically 0â1) for the financial relationship edge on that date; used directly for weighting or propagatiâ¦
+relation_strength_score_general,VECTOR,0.0,0,0,Vendor-native quantitative impact or confidence score; typically between 0 and 1; used directly for weighting and propagation without local recalculation
+relation_strength_score_merger,VECTOR,0.0,0,0,Vendor-native quantitative impact or confidence score (typically 0â1) for the MA relationship edge; used directly for weighting/propagation and not recalculatedâ¦
+relation_strength_score_partner,VECTOR,0.0,0,0,Vendor-native quantitative impact or confidence score for the partnership edge on that as-of-date (typically 0â1); used directly for weighting/propagation and sâ¦

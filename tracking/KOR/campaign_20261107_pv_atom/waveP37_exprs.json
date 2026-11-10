@@ -1,0 +1,12 @@
+[
+  "-group_rank(ts_mean(pv47_spret,44), sector)",
+  "-group_rank(ts_mean(pv47_spret,88), sector)",
+  "-group_rank(ts_mean(pv47_spret,110), sector)",
+  "-group_rank(ts_mean(pv47_spret,132), sector)",
+  "-group_rank(ts_mean(pv47_spret,154), sector)",
+  "-group_rank(ts_mean(pv47_spret,66), industry)",
+  "-group_rank(ts_mean(pv47_spret,66), subindustry)",
+  "-group_rank(ts_std_dev(pv47_spret,132), sector)",
+  "-group_rank(ts_decay_linear(pv47_spret,88), sector)",
+  "group_neutralize(multiply(subtract(0.5,group_rank(ts_mean(pv47_spret,66),sector)),group_rank(ts_std_dev(pv47_spret,66),sector)),industry)"
+]

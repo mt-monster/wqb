@@ -1,0 +1,12 @@
+[
+  "group_rank(divide(subtract(vec_avg(latest_implied_valuation_price),vec_avg(prior_close_price)),vec_avg(prior_close_price)), sector)",
+  "-group_rank(vec_avg(price_position_within_annual_range), sector)",
+  "group_rank(divide(subtract(vec_avg(prior_close_price),vec_avg(annual_price_trough)),add(subtract(vec_avg(annual_price_peak),vec_avg(annual_price_trough)),0.0001)), sector)",
+  "group_rank(vec_avg(recent_earnings_momentum_score), sector)",
+  "group_rank(vec_avg(composite_fundamental_score), sector)",
+  "group_rank(divide(subtract(vec_avg(implied_price_range_maximum),vec_avg(implied_price_range_minimum)),vec_avg(prior_close_price)), sector)",
+  "group_neutralize(multiply(group_rank(divide(subtract(vec_avg(latest_implied_valuation_price),vec_avg(prior_close_price)),vec_avg(prior_close_price)),sector),group_rank(vec_avg(recent_earnings_momentum_score),sector)),industry)",
+  "group_rank(divide(vec_avg(latest_implied_valuation_price),add(vec_avg(implied_price_range_maximum),0.0001)), sector)",
+  "group_rank(divide(subtract(vec_avg(latest_implied_valuation_price),ts_mean(vec_avg(latest_implied_valuation_price),378)),ts_mean(vec_avg(latest_implied_valuation_price),378)), sector)",
+  "group_rank(vec_avg(recent_dividend_yield_pct), sector)"
+]

@@ -80,4 +80,19 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+
+### 2026-11-09 macro27 招聘流量：S1.45 / F0.66 是「差在 F 不是差在 S」
+
+`macro27`（13 字段）= **公司招聘岗位流量**：`mcr27_company_jobscreated` / `jobsremoved` / `jobsactive` /
+`num_jobs_created` / `num_jobs_removed` / `num_jobs_active` / `avg_days_job_posting_active` / `mean_days_job_closed` / `is_job_repost_flag`。
+
+实测（GBR / TOP700 / D1 / **FAST** / decay5 / tr0.1；旧记录是 SUBINDUSTRY 口径，不可比）：
+
+| 几何 | S | F | 2Y | fl |
+|---|---:|---:|---:|---:|
+| `group_rank(ts_zscore(subtract(vec_sum(mcr27_company_jobscreated), vec_sum(mcr27_company_jobsremoved)),252),sector)` + 短腿 | **1.45** | 0.66 | **3.62** | 2 |
+
+⇒ **不是全灭**：S 差 0.13、**F 差 0.34**、2Y 大幅富余（3.62）。修复方向应是**提 F**（降换手/提 margin），
+而不是换信号——抬 S 的常规杠杆会同时压 F，需专门验证。
+
 <!-- profiles:manual:end -->

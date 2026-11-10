@@ -1,0 +1,23 @@
+id,type,cov,uc,ac,desc
+analyst_coverage_count,VECTOR,0.0,0,0,The total number of sell-side analysts (integer) covering the peer company (QESID_2) in a pair. This is the TO_ANALYST field from the AnalystNet network.
+business_similarity_weight,VECTOR,0.0,0,0,A proprietary similarity weight (float) representing the business overlap between two companies. This is the STRENGTH field from the BusNet network.
+executive_from_frequency,VECTOR,0.0,0,0,An integer count quantifying the intensity of a directional executive tie; associated with the source company (FROM_QESID) in a relationship. This is the FROM_Fâ¦
+executive_to_frequency_count,VECTOR,0.0,0,0,An integer count quantifying the intensity of a directional executive tie; associated with the target company (TO_QESID) in a relationship. This is the TO_FREQâ¦
+geographic_similarity_weight,VECTOR,0.0,0,0,A proprietary similarity weight (float) representing the overlap in geographic exposure between two companies. This is the STRENGTH field from the GeoNet networâ¦
+mda_text_similarity_weight,VECTOR,0.0,0,0,Proprietary similarity weight (float) between two companies based on the text similarity of their 'Management's Discussion and Analysis' (MD&A) sections. This iâ¦
+model_risk_text_similarity_score,VECTOR,0.0,0,0,Proprietary similarity weight (float) between two companies based on the text similarity of their 'Risk Factors' sections in filings. This is the STRENGTH fieldâ¦
+oth546_analystnet_common,VECTOR,0.0,0,0,Number of analysts that cover both the primary and peer company (shared analyst coverage)
+oth546_executivenet_common,VECTOR,0.0,0,0,Number of executives and board members (current or former) shared between the primary and peer companies
+oth546_from_analyst,VECTOR,0.0,0,0,Number of analysts covering the primary company
+oth546_from_freq,VECTOR,0.0,0,0,Number of executives and board members associated with the primary company
+oth546_mdanet_strength,VECTOR,0.0,0,0,Similarity score based on Management Discussion & Analysis (MD&A) filing text; indicating business operation similarity between the two companies
+oth546_nlpbusnet_strength,VECTOR,0.0,0,0,Textual similarity score between the business section filings of the two companies; reflecting how closely related they are based on NLP analysis
+oth546_qerf_ot,VECTOR,0.0,1,1,Number of executives and board members associated with the peer company
+oth546_risknet_strength,VECTOR,0.0,0,0,Similarity score or correlation of Risk Factor section text between the primary and peer companies; indicating how similar their disclosed risk language/themesâ¦
+oth546_to_analyst,VECTOR,0.0,0,0,Number of analysts covering the peer (secondary) company
+shared_analyst_count,VECTOR,0.0,1,1,The number of sell-side analysts (integer) that cover both companies in a pair. This is the COMMON field from the AnalystNet network.
+shared_business_elements_count,VECTOR,0.0,0,0,The number of shared business elements (integer) between two companies; used to calculate business overlap. This is the COMMON field from the BusNet network.
+shared_executive_count,VECTOR,0.0,0,0,The count of shared executives or board members (integer) that form a directional tie between two companies. This is the COMMON field from the ExecutiveNet netwâ¦
+shared_geography_count,VECTOR,0.0,0,0,The number of shared geographic regions of operation (integer) between two companies. This is the COMMON field from the GeoNet network.
+source_analyst_coverage_count,VECTOR,0.0,0,0,The total number of sell-side analysts (integer) covering the source company (QESID_1) in a pair. This is the FROM_ANALYST field from the AnalystNet network.
+text_similarity_strength,VECTOR,0.0,0,0,A proprietary similarity weight (float) based on text analysis of company filings. This corresponds to the STRENGTH field in the NLPBusNet; MDANet; and RiskNetâ¦

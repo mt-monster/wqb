@@ -1,0 +1,1010 @@
+{
+ "success": true,
+ "multisimulation_id": "3jYIT2aSH4Eoa441gbOD2ehJ",
+ "total": 10,
+ "complete": 10,
+ "error_count": 0,
+ "alphas": [
+  {
+   "id": "d5Wvb6Yj",
+   "code": "subtract(0.5, group_rank(corr_ask_price_with_volume, industry))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 2.82,
+    "fitness": 1.6,
+    "turnover": 0.5513,
+    "returns": 0.1765,
+    "drawdown": 0.053,
+    "margin": 0.00064,
+    "longCount": 309,
+    "shortCount": 298,
+    "pnl": 18246907,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 2.28,
+    "two_year_sharpe": 2.11,
+    "investability_sharpe": 2.28,
+    "investability_fitness": 1.6
+   },
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "CONCENTRATED_WEIGHT"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "CONCENTRATED_WEIGHT",
+      "value": 1.0,
+      "limit": 0.1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "d5Wvb6Yj",
+   "expression": "subtract(0.5, group_rank(corr_ask_price_with_volume, industry))"
+  },
+  {
+   "id": "QPv6bAOw",
+   "code": "subtract(0.5, group_rank(ts_mean(corr_ask_price_with_volume, 22), industry))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.86,
+    "fitness": 1.84,
+    "turnover": 0.1309,
+    "returns": 0.1275,
+    "drawdown": 0.109,
+    "margin": 0.001948,
+    "longCount": 318,
+    "shortCount": 317,
+    "pnl": 13192634,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.47,
+    "two_year_sharpe": 2.85,
+    "investability_sharpe": 1.69,
+    "investability_fitness": 1.65
+   },
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "QPv6bAOw",
+   "expression": "subtract(0.5, group_rank(ts_mean(corr_ask_price_with_volume, 22), industry))"
+  },
+  {
+   "id": "MPYVane8",
+   "code": "subtract(0.5, group_rank(ts_mean(corr_ask_price_with_volume, 66), industry))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.35,
+    "fitness": 1.21,
+    "turnover": 0.0904,
+    "returns": 0.1003,
+    "drawdown": 0.1369,
+    "margin": 0.002218,
+    "longCount": 317,
+    "shortCount": 318,
+    "pnl": 10374178,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.03,
+    "two_year_sharpe": 1.81,
+    "investability_sharpe": 1.31,
+    "investability_fitness": 1.17
+   },
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.35,
+      "limit": 1.58
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "MPYVane8",
+   "expression": "subtract(0.5, group_rank(ts_mean(corr_ask_price_with_volume, 66), industry))"
+  },
+  {
+   "id": "omEZLXJJ",
+   "code": "ts_target_tvr_decay(subtract(0.5, group_rank(corr_ask_price_with_volume, industry)), target_tvr=0.30)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.97,
+    "fitness": 1.64,
+    "turnover": 0.2005,
+    "returns": 0.1385,
+    "drawdown": 0.078,
+    "margin": 0.001381,
+    "longCount": 313,
+    "shortCount": 295,
+    "pnl": 14315801,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.69,
+    "two_year_sharpe": 1.58,
+    "investability_sharpe": 1.68,
+    "investability_fitness": 1.4
+   },
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "CONCENTRATED_WEIGHT"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "CONCENTRATED_WEIGHT",
+      "value": 1.0,
+      "limit": 0.1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "omEZLXJJ",
+   "expression": "ts_target_tvr_decay(subtract(0.5, group_rank(corr_ask_price_with_volume, industry)), target_tvr=0.30)"
+  },
+  {
+   "id": "JjerNkzm",
+   "code": "subtract(0.5, group_rank(ts_rank(corr_high_price_with_volume, 22), country))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.51,
+    "fitness": 0.57,
+    "turnover": 0.6182,
+    "returns": 0.0887,
+    "drawdown": 0.081,
+    "margin": 0.000287,
+    "longCount": 305,
+    "shortCount": 303,
+    "pnl": 9169188,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.15,
+    "two_year_sharpe": 0.84,
+    "investability_sharpe": 1.14,
+    "investability_fitness": 0.5
+   },
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "CONCENTRATED_WEIGHT",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.51,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.57,
+      "limit": 1.0
+     },
+     {
+      "name": "CONCENTRATED_WEIGHT",
+      "value": 1.0,
+      "limit": 0.1
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 0.84,
+      "limit": 1.58
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "JjerNkzm",
+   "expression": "subtract(0.5, group_rank(ts_rank(corr_high_price_with_volume, 22), country))"
+  },
+  {
+   "id": "A1VEN5ze",
+   "code": "subtract(0.5, group_rank(ts_mean(corr_high_price_with_volume, 22), industry))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.93,
+    "fitness": 1.93,
+    "turnover": 0.1302,
+    "returns": 0.1301,
+    "drawdown": 0.0998,
+    "margin": 0.001998,
+    "longCount": 318,
+    "shortCount": 317,
+    "pnl": 13459128,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.52,
+    "two_year_sharpe": 2.89,
+    "investability_sharpe": 1.73,
+    "investability_fitness": 1.7
+   },
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "A1VEN5ze",
+   "expression": "subtract(0.5, group_rank(ts_mean(corr_high_price_with_volume, 22), industry))"
+  },
+  {
+   "id": "VkxeaL5Y",
+   "code": "subtract(0.5, group_rank(ts_mean(kurtosis_last_trade_price_interval, 22), industry))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 0.51,
+    "fitness": 0.23,
+    "turnover": 0.1246,
+    "returns": 0.0249,
+    "drawdown": 0.1594,
+    "margin": 0.0004,
+    "longCount": 315,
+    "shortCount": 320,
+    "pnl": 2574737,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.32,
+    "two_year_sharpe": 1.15,
+    "investability_sharpe": 0.25,
+    "investability_fitness": 0.08
+   },
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.51,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.23,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 1.15,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+      "value": 0.25,
+      "limit": 0.36
+     },
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.46,
+      "limit": 1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "VkxeaL5Y",
+   "expression": "subtract(0.5, group_rank(ts_mean(kurtosis_last_trade_price_interval, 22), industry))"
+  },
+  {
+   "id": "akKGb8w9",
+   "code": "subtract(0.5, multiply(group_rank(momentum1_vwap_first_half_volume, industry), group_rank(corr_ask_price_with_volume, industry)))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 2.23,
+    "fitness": 1.08,
+    "turnover": 0.6048,
+    "returns": 0.1421,
+    "drawdown": 0.0831,
+    "margin": 0.00047,
+    "longCount": 333,
+    "shortCount": 275,
+    "pnl": 14692314,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.76,
+    "two_year_sharpe": 1.71,
+    "investability_sharpe": 1.56,
+    "investability_fitness": 0.87
+   },
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "CONCENTRATED_WEIGHT"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "CONCENTRATED_WEIGHT",
+      "value": 1.0,
+      "limit": 0.1
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "akKGb8w9",
+   "expression": "subtract(0.5, multiply(group_rank(momentum1_vwap_first_half_volume, industry), group_rank(corr_ask_price_with_volume, industry)))"
+  },
+  {
+   "id": "O0AgNjgv",
+   "code": "subtract(0.5, group_rank(ts_mean(corr_bid_price_with_volume, 22), industry))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.99,
+    "fitness": 1.99,
+    "turnover": 0.1299,
+    "returns": 0.1304,
+    "drawdown": 0.0944,
+    "margin": 0.002009,
+    "longCount": 318,
+    "shortCount": 317,
+    "pnl": 13492393,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.53,
+    "two_year_sharpe": 2.72,
+    "investability_sharpe": 1.8,
+    "investability_fitness": 1.78
+   },
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "O0AgNjgv",
+   "expression": "subtract(0.5, group_rank(ts_mean(corr_bid_price_with_volume, 22), industry))"
+  },
+  {
+   "id": "YP1YbOYM",
+   "code": "subtract(0.5, group_rank(ts_mean(corr_last_trade_price_with_volume, 22), industry))",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 1.93,
+    "fitness": 1.87,
+    "turnover": 0.1309,
+    "returns": 0.1228,
+    "drawdown": 0.0916,
+    "margin": 0.001876,
+    "longCount": 319,
+    "shortCount": 316,
+    "pnl": 12697923,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.47,
+    "two_year_sharpe": 2.66,
+    "investability_sharpe": 1.79,
+    "investability_fitness": 1.74
+   },
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "CLUSTER_TEST",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION",
+     "MATCHES_THEMES"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "YP1YbOYM",
+   "expression": "subtract(0.5, group_rank(ts_mean(corr_last_trade_price_with_volume, 22), industry))"
+  }
+ ],
+ "errors": null
+}
+

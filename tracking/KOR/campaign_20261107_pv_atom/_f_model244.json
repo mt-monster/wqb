@@ -1,0 +1,242 @@
+﻿{
+ "results": [
+  {
+   "id": "company_market_value_eur_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total market value of a company's outstanding shares, expressed in euros"
+  },
+  {
+   "id": "company_market_value_local_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total market value of a company's outstanding shares, usually in local currency"
+  },
+  {
+   "id": "company_market_value_usd_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Company’s total market capitalization in US dollars at transaction time"
+  },
+  {
+   "id": "company_total_shares_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total shares of a company currently held by all shareholders, including institutional, officer, and insider holdings"
+  },
+  {
+   "id": "firm_sentiment_score_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average RavenPack news sentiment score for the company over the prior 91 days, ranging from -1 to 1"
+  },
+  {
+   "id": "highest_trade_unit_price",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum price paid per unit in transactions executed by tranches (multiple executions)"
+  },
+  {
+   "id": "highest_trade_unit_price_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum price paid for shares in a transaction with multiple price points"
+  },
+  {
+   "id": "insider_hierarchy_rank_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Rank or hierarchical level of the insider within the company"
+  },
+  {
+   "id": "insider_post_trade_holdings_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total equity holdings in the company possessed by the insider after the reported transaction"
+  },
+  {
+   "id": "mdl244_company_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average event sentiment score over the prior 91 days for the company, scaled between -1 and 1"
+  },
+  {
+   "id": "mdl244_insider_holdings",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The total equity holdings of the insider after the transaction is completed"
+  },
+  {
+   "id": "mdl244_insider_level",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ranking of the insider within the company"
+  },
+  {
+   "id": "mdl244_market_cap",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total market value of a company's outstanding shares of stock in the local currency"
+  },
+  {
+   "id": "mdl244_market_cap_usd",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total market value of a company's outstanding shares of stock denominated in USD"
+  },
+  {
+   "id": "mdl244_revision",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Sequential revision number tracking updates to the event record"
+  },
+  {
+   "id": "mdl244_share_count",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of shares involved in the insider transaction"
+  },
+  {
+   "id": "mdl244_shares_outstanding",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total shares of the company currently held by all shareholders"
+  },
+  {
+   "id": "mdl244_timestamp_utc",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Date and time when the data was received by the vendor in Coordinated Universal Time"
+  },
+  {
+   "id": "mdl244_transaction_significance",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The importance ranking of a deal, where 3 is highest and 1 is lowest significance"
+  },
+  {
+   "id": "mdl244_transaction_unit_price",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The price at which the transaction was executed, per unit of measurement"
+  },
+  {
+   "id": "mdl244_transaction_value",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total value of the transaction in the respective/local currency"
+  },
+  {
+   "id": "mdl244_transaction_value_eur",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Monetary value of the transaction in euros"
+  },
+  {
+   "id": "mdl244_transaction_value_usd",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Monetary value of the transaction in US dollars"
+  },
+  {
+   "id": "trade_importance_rank_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ranking of deal significance. This value is based on trade parameters such as INSIDER_TRANSACTION_TYPE and INSIDER_LEVEL."
+  },
+  {
+   "id": "trade_unit_price_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price per share/unit at which the transaction was executed"
+  },
+  {
+   "id": "trade_value_eur_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Monetary value of the transaction, converted to euros"
+  },
+  {
+   "id": "trade_value_local_currency_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Value of the transaction in the original/counterparty currency"
+  },
+  {
+   "id": "trade_value_usd_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Value of the transaction, converted to US Dollars"
+  },
+  {
+   "id": "transaction_share_quantity_tw",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of shares involved in the insider transaction"
+  }
+ ],
+ "count": 29,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 1,
+ "platform_count": 30,
+ "complete": true,
+ "pages_fetched": 1
+}

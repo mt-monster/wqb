@@ -1,0 +1,297 @@
+{
+ "dataset": "news21",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "MIXED",
+ "type_distribution": {
+  "MATRIX": 24,
+  "VECTOR": 23
+ },
+ "field_count": 47,
+ "fetched_at": "2026-11-09T12:30:00",
+ "fields": [
+  {
+   "id": "earning_broker_count",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 2
+  },
+  {
+   "id": "earning_calendar_quarter_end",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "earning_event_type_label",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "earning_fiscal_quarter_number",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "earning_fiscal_year",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 2
+  },
+  {
+   "id": "earning_fiscal_year_end",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 2
+  },
+  {
+   "id": "earning_number_value",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "earning_time_type",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "estimated_next_shareholder_meeting_date",
+   "type": "MATRIX",
+   "coverage": 0.7078,
+   "alphaCount": 10
+  },
+  {
+   "id": "event_category_label_1",
+   "type": "VECTOR",
+   "coverage": 0.4169,
+   "alphaCount": 5
+  },
+  {
+   "id": "event_end_date_is_estimated",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 2
+  },
+  {
+   "id": "event_end_date_type",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "event_end_time",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 2
+  },
+  {
+   "id": "event_fiscal_year",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "event_frequency_label",
+   "type": "MATRIX",
+   "coverage": 0.4146,
+   "alphaCount": 6
+  },
+  {
+   "id": "event_quarter_label",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "event_start_date_is_estimated",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "event_start_date_type",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 1
+  },
+  {
+   "id": "event_start_time_2",
+   "type": "VECTOR",
+   "coverage": 0.6194,
+   "alphaCount": 4
+  },
+  {
+   "id": "event_transcript_negative_score",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 5
+  },
+  {
+   "id": "event_transcript_negative_word_count",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 2
+  },
+  {
+   "id": "event_transcript_positive_score",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 8
+  },
+  {
+   "id": "event_transcript_positive_word_count",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 1
+  },
+  {
+   "id": "event_transcript_sentiment_score",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 6
+  },
+  {
+   "id": "event_transcript_total_word_count",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 1
+  },
+  {
+   "id": "negative_sentiment_score_1",
+   "type": "VECTOR",
+   "coverage": 0.4169,
+   "alphaCount": 2
+  },
+  {
+   "id": "negative_word_count_1",
+   "type": "VECTOR",
+   "coverage": 0.4169,
+   "alphaCount": 4
+  },
+  {
+   "id": "next_corporate_presentation_date",
+   "type": "MATRIX",
+   "coverage": 0.1616,
+   "alphaCount": 7
+  },
+  {
+   "id": "next_earnings_call_date",
+   "type": "MATRIX",
+   "coverage": 0.5413,
+   "alphaCount": 8
+  },
+  {
+   "id": "next_earnings_estimate_date",
+   "type": "MATRIX",
+   "coverage": 0.54,
+   "alphaCount": 5
+  },
+  {
+   "id": "next_ex_dividend_event_date",
+   "type": "MATRIX",
+   "coverage": 0.4228,
+   "alphaCount": 152
+  },
+  {
+   "id": "next_shareholder_meeting_date",
+   "type": "MATRIX",
+   "coverage": 0.4903,
+   "alphaCount": 54
+  },
+  {
+   "id": "nws21_event_freq",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 4
+  },
+  {
+   "id": "nws21_neg_sc",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 3
+  },
+  {
+   "id": "nws21_pos_sc",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 11
+  },
+  {
+   "id": "nws21_qerf_gen",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 6
+  },
+  {
+   "id": "nws21_qerf_sop",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 8
+  },
+  {
+   "id": "nws21_tone_tone_sc",
+   "type": "MATRIX",
+   "coverage": 0.5102,
+   "alphaCount": 8
+  },
+  {
+   "id": "overall_tone_score_1",
+   "type": "VECTOR",
+   "coverage": 0.4169,
+   "alphaCount": 7
+  },
+  {
+   "id": "positive_sentiment_score_1",
+   "type": "VECTOR",
+   "coverage": 0.4169,
+   "alphaCount": 5
+  },
+  {
+   "id": "positive_word_count_1",
+   "type": "VECTOR",
+   "coverage": 0.4169,
+   "alphaCount": 4
+  },
+  {
+   "id": "previous_corporate_presentation_date",
+   "type": "MATRIX",
+   "coverage": 0.3792,
+   "alphaCount": 3
+  },
+  {
+   "id": "previous_earnings_call_date",
+   "type": "MATRIX",
+   "coverage": 0.769,
+   "alphaCount": 28
+  },
+  {
+   "id": "previous_ex_dividend_event_date",
+   "type": "MATRIX",
+   "coverage": 0.5654,
+   "alphaCount": 353
+  },
+  {
+   "id": "previous_sales_statement_date",
+   "type": "MATRIX",
+   "coverage": 0.298,
+   "alphaCount": 7
+  },
+  {
+   "id": "previous_shareholder_meeting_date",
+   "type": "MATRIX",
+   "coverage": 0.5076,
+   "alphaCount": 763
+  },
+  {
+   "id": "transcript_version_label_1",
+   "type": "VECTOR",
+   "coverage": 0.4169,
+   "alphaCount": 2
+  }
+ ]
+}

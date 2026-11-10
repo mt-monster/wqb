@@ -1,0 +1,44 @@
+{
+ "submitted": 5,
+ "total": 5,
+ "results": [
+  {
+   "index": 0,
+   "location": "https://api.worldquantbrain.com/simulations/1MwdQvc834U6a2VbU1bJVRy",
+   "simulation_id": "1MwdQvc834U6a2VbU1bJVRy",
+   "ok": true,
+   "tag": "MALTA_SLOW_d8"
+  },
+  {
+   "index": 1,
+   "location": "https://api.worldquantbrain.com/simulations/5jXDkdMe4MlczRLl5W29m0",
+   "simulation_id": "5jXDkdMe4MlczRLl5W29m0",
+   "ok": true,
+   "tag": "MALTA_SLOW_d15"
+  },
+  {
+   "index": 2,
+   "location": "https://api.worldquantbrain.com/simulations/6L7MLc8H4gKb1agAKd3037",
+   "simulation_id": "6L7MLc8H4gKb1agAKd3037",
+   "ok": true,
+   "tag": "MALTA_SLOW_d22"
+  },
+  {
+   "index": 3,
+   "location": "https://api.worldquantbrain.com/simulations/1jroDqbR45dhaas16QmvYn1s",
+   "simulation_id": "1jroDqbR45dhaas16QmvYn1s",
+   "ok": true,
+   "tag": "MALTA_SLOW_d44"
+  },
+  {
+   "index": 4,
+   "location": "https://api.worldquantbrain.com/simulations/2ij9848Bc567bT2nUAXv8mi",
+   "simulation_id": "2ij9848Bc567bT2nUAXv8mi",
+   "ok": true,
+   "tag": "MALTA_RAM_d22"
+  }
+ ],
+ "note": "Async submit: poll each location with lookINTO_SimError_message or GET /simulations/{id} until status is terminal.",
+ "async": true,
+ "polling_tool": "lookINTO_SimError_message"
+}

@@ -1544,7 +1544,7 @@ def get_alpha_corr_metrics(
     max_self: Optional[float] = None,
     source: Optional[str] = None,
     limit: int = 50,
-    stale_after_hours: float = 48.0,
+    stale_after_hours: Optional[float] = None,
 ) -> List[Dict[str, Any]]:
     """本地查询相关性指标（免打平台）。用于提交前候选筛选。
 
@@ -1553,40 +1553,68 @@ def get_alpha_corr_metrics(
     （超 stale_after_hours 或缺 corr_checked_at 即为 stale）；**stale 值只可作排序参考，
     提交前必须 check_correlation(refresh=True) 当场终验**，不得据 stale 值下结论。
 
+    2026-11-10 审查 P1-3/P1-4：**单源读**——优先取权威表 ``alpha_corr_cache``
+    的值/来源/时间戳，缺条目才回落 ``alphas``（与 ``get_corr_authoritative`` 同口径）。
+    旧实现只读 ``alphas``，与「S3 为唯一权威」矛盾，会把权威表里的新鲜值判成 stale。
+    保鲜期缺省改引 ``wqb.store.CORR_FRESH_HOURS``（不再各写 48.0）；时龄计算统一走
+    ``corr_age_hours``（已修 aware/naive 混算）。
+
     Args:
         region: 区域过滤（可选）
         max_prod: prod_correlation 上界（如 0.7）
         max_self: self_correlation 上界（如 0.7）
-        source: prod_corr_source 过滤（platform_sync / manual / triage_local）
+        source: prod_corr_source 过滤（platform_sync / prod_peek / manual / triage_local）
         limit: 返回条数上限（默认 50）
-        stale_after_hours: 保鲜期小时数（默认 48）
+        stale_after_hours: 保鲜期小时数（缺省 = CORR_FRESH_HOURS = 48）
 
     Returns:
-        按 prod_correlation 升序的 alpha 指标列表（含 corr_age_hours / corr_stale），
-        本地库直接读，零配额
+        按 prod_correlation 升序的 alpha 指标列表（含 corr_age_hours / corr_stale /
+        from_alphas 标记），本地库直接读，零配额
     """
+    try:
+        from wqb.store import CORR_FRESH_HOURS, corr_age_hours
+    except Exception:  # noqa: BLE001 - wqb 包不可用时退回同口径内置实现
+        CORR_FRESH_HOURS, corr_age_hours = 48.0, None
+    fresh_h = float(stale_after_hours if stale_after_hours is not None else CORR_FRESH_HOURS)
+
     conn = _conn()
     try:
+        has_cache = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='alpha_corr_cache'"
+        ).fetchone() is not None
+        if has_cache:
+            prod_expr = "COALESCE(c.prod_correlation, a.prod_correlation)"
+            self_expr = "COALESCE(c.self_correlation, a.self_correlation)"
+            src_expr = "COALESCE(c.source, a.prod_corr_source)"
+            ts_expr = "COALESCE(c.checked_at, a.corr_checked_at)"
+            join = " LEFT JOIN alpha_corr_cache c ON c.alpha_id = a.alpha_id"
+            extra = ", CASE WHEN c.alpha_id IS NOT NULL THEN 0 ELSE 1 END AS from_alphas"
+        else:
+            prod_expr, self_expr = "a.prod_correlation", "a.self_correlation"
+            src_expr, ts_expr = "a.prod_corr_source", "a.corr_checked_at"
+            join, extra = "", ", 1 AS from_alphas"
         sql = (
             "SELECT a.alpha_id, r.name AS region, a.sharpe, a.fitness, a.turnover, "
-            "a.prod_correlation, a.self_correlation, a.prod_corr_source, "
-            "a.corr_checked_at, a.status, a.date_submitted "
-            "FROM alphas a LEFT JOIN regions r ON a.region_id = r.id WHERE 1=1"
+            f"{prod_expr} AS prod_correlation, {self_expr} AS self_correlation, "
+            f"{src_expr} AS prod_corr_source, {ts_expr} AS corr_checked_at, "
+            f"a.status, a.date_submitted{extra} "
+            "FROM alphas a LEFT JOIN regions r ON a.region_id = r.id"
+            f"{join} WHERE 1=1"
         )
         params: List[Any] = []
         if region:
             sql += " AND r.name = ?"
             params.append(region)
         if max_prod is not None:
-            sql += " AND a.prod_correlation IS NOT NULL AND a.prod_correlation <= ?"
+            sql += f" AND {prod_expr} IS NOT NULL AND {prod_expr} <= ?"
             params.append(float(max_prod))
         if max_self is not None:
-            sql += " AND a.self_correlation IS NOT NULL AND a.self_correlation <= ?"
+            sql += f" AND {self_expr} IS NOT NULL AND {self_expr} <= ?"
             params.append(float(max_self))
         if source:
-            sql += " AND a.prod_corr_source = ?"
+            sql += f" AND {src_expr} = ?"
             params.append(source)
-        sql += " ORDER BY (a.prod_correlation IS NULL), a.prod_correlation ASC LIMIT ?"
+        sql += f" ORDER BY ({prod_expr} IS NULL), {prod_expr} ASC LIMIT ?"
         params.append(int(limit))
         cur = conn.execute(sql, params)
         cols = [d[0] for d in cur.description]
@@ -1594,14 +1622,19 @@ def get_alpha_corr_metrics(
         rows: List[Dict[str, Any]] = []
         for row in cur.fetchall():
             d = dict(zip(cols, row))
-            checked = _parse_corr_checked_at(d.get("corr_checked_at"))
-            if checked is None:
-                d["corr_age_hours"] = None
-                d["corr_stale"] = True
+            if corr_age_hours is not None:
+                age = corr_age_hours(d.get("corr_checked_at"))
+                d["corr_age_hours"] = age
+                d["corr_stale"] = (age is None) or (age > fresh_h)
             else:
-                age_h = (now - checked).total_seconds() / 3600.0
-                d["corr_age_hours"] = round(age_h, 1)
-                d["corr_stale"] = age_h > float(stale_after_hours)
+                checked = _parse_corr_checked_at(d.get("corr_checked_at"))
+                if checked is None:
+                    d["corr_age_hours"] = None
+                    d["corr_stale"] = True
+                else:
+                    age_h = (now - checked).total_seconds() / 3600.0
+                    d["corr_age_hours"] = round(age_h, 1)
+                    d["corr_stale"] = age_h > fresh_h
             rows.append(d)
         return rows
     finally:

@@ -31,6 +31,38 @@ last_verified: 2026-11-08
 
    `workflow_batch_track` 会把该组合的回测覆盖以 `--set` 钉住；直接用 MCP 发仿真（`create_multi_simulation` / `create_simulation`）时，按 explain 输出逐项传设置，不要依赖工具缺省（各入口缺省不同，换档等于换信号）。
 3. **走九步**：按 `wq-brain-ra-pipeline` 执行；步 3 / 4 / 7 / 8 先读对应组合的分支文件（下表最后一列）。
+
+3b. **选数据集 / 判死 / 宣布收尾前，先跑覆盖审计门（2026-11-09 根因固化，勿跳）**：
+
+   ```bash
+   $WQ_PY tools/gates/audit_dataset_coverage.py --region GBR --universe TOP700 --delay 1 \
+       --cache data/dataset_assets/GBR_coverage_audit_d1.json \
+       --md reports/dataset_experience/gbr_coverage_audit_20261109.md
+   $WQ_PY tools/gates/category_coverage_audit.py --region GBR --universe TOP700 --delay 1 \
+       --category <CAT> --field-audit data/dataset_assets/GBR_coverage_audit_d1.json
+   ```
+
+   ★ **GBR 的数据集级 `coverage` 不能当存在性判据**：`techindi_model` 数据集级 `cov=0` 却有 399 个字段真实数据，是本区唯一量产线（10 席中的 2 席）。选集只认 **field 级实查**（`/data-fields` 真返回字段 + 字段 coverage）或一条 `longCount/shortCount` 探针。
+   ★ **判死清单必须过 `--field-audit`**：只有 `TESTED`（我的 alpha `code` 真引用该集字段）或 `NO_DATA`（field 级实查无数据）算已排除；否则「档案里写一句已判死」就能把整枝数据静默送进分子。
+   ★ **措辞门**：报告里写「穷尽 / 数学不可达 / 上限 N 席」必须在附近带 scope（样本来源 + 截断条件），否则 `--lint-report <md>` exit 1 —— 抽样被截断时结论必须跟着截断。
+   ★ **SOP 文本级措辞门（2026-11-09 新增，根因 C）**：工具和报告都修好了，只要 skill 里还留着「`cov<X` ⇒ 剔除/判死」这一句，下一个 agent 就会照着它再犯一次。此门扫 `Claude/skills/**/*.md`，命中「`cov/coverage < 阈值` + 剔除/判死/作废」即 exit 1；同行带 `cov-aux-ok` 或反例语境（已废止 / 反例 / 不得 / 误判 / 已修 / 不再）才豁免。本区三条已改（第 1 层 `UNUSABLE` 行已废止 / 第 0 步画像闸移出 cov / `references/_probe-sop.md` 第 0 步），其它区 6 条历史欠账在 `tools/gates/_covskill_allow.json`（只许缩小）：
+
+```bash
+   $WQ_PY tools/gates/audit_dataset_coverage.py --lint-skills
+   ```
+   ★ **「必须探针」有执行器，不是告示**（2026-11-09 补齐闭环）：门判出的 `UNTESTED_BLIND` 跑下面两条命令，状态才会落成 `TESTED` / `NO_DATA`，`closure` 门才有机会过：
+
+   ```bash
+   $WQ_PY tools/probe/dataset_data_probe.py --region GBR --universe TOP700 --delay 1 \
+       --plan data/dataset_assets/GBR_probe_plan_d1.json \
+       --out data/dataset_assets/GBR_probe_results_d1.json --jobs 4
+   $WQ_PY tools/gates/audit_dataset_coverage.py --region GBR --universe TOP700 --delay 1 \
+       --reuse-cache data/dataset_assets/GBR_coverage_audit_d1.json \
+       --probe-results data/dataset_assets/GBR_probe_results_d1.json --gate closure
+   ```
+
+   探针 = 每集一条最小仿真 `rank(ts_backfill(<字段>,250))`，**刻意 `neutralization=NONE`**（`rank` 恒正、不过中性化 ⇒ `longCount` 直接等于「本区有数据的股票数」；用 SUBINDUSTRY 会把常数型字段抹成 0 持仓、误判成没数据）。判据 `longCount+shortCount>0`；**读不到读数 = `PROBE_FAILED`，不是 `NO_DATA`**（GBR 实测这批集不是「没数据」，`other635` 持仓 634 只、`other571` 521 只）。
+   ★ 已知陷阱：`get_datasets` 的数据集级 `coverage` 是聚合值；本地 `field_profile.n_tests` 不含 MCP 直连仿真；`field_profile_full` 无 GBR 数据；自家 `reports/` 里「有记载」≠「挖过」。
 4. **步 9 回写之后**刷新组合证据并重渲本 skill：
 
    ```bash
@@ -134,12 +166,13 @@ last_verified: 2026-11-08
 | **7 闭环回填** | 画像复利 | 步 9 | `$WQ_PY tools/fields/field_profile.py --build --region GBR` |
 
 > 本区基线快照（ALIVE/WEAK 字段全表 + 各类 verdict 分布 + 战役目标）见 [`references/_field-profile-playbook.md`](references/_field-profile-playbook.md)。
+> **席位上限与设置档解耦（交几颗的硬数学）** 见 [`references/_seat-math-ceiling.md`](references/_seat-math-ceiling.md)。
 
 ### 第 1 层 · verdict 九类处置表
 
 | verdict | 判据 | 处置 | GBR 规模 |
 |---|---|---|---|
-| `UNUSABLE` | `coverage < 0.6` | **永久剔除** | ANALYST 1742 / MODEL 4071 / OTHER 1930 / PV 1412 |
+| ~~`UNUSABLE`~~ **已废止（2026-11-09）** | 旧判据 `coverage < 0.6` | **不得再据此判死**：coverage 三层都不可判存在性（`techindi_model` 数据集级 **0.0**、字段级也全 0，却有 399 字段、贡献本战役 10 席中的 2 席；GBR 177 集里 **109 集**全部字段 cov 全 0）。右列只是「cov 元数据为 0 的字段数」，**不是判死数**。判死只认 `python tools/gates/audit_dataset_coverage.py --gate closure` 的结论 | 历史值，仅供追溯 |
 | `AXIS_ONLY` | `ftype == GROUP` | **只能当分组轴**，不进信号白名单 | OTHER 1200 / PV 190 |
 | `UNTESTED` | 过前两关且 `n_tests == 0` | 可探（按机制族排优先级） | **2578**（MODEL 1160 / PV 537 / ANALYST 474 / OTHER 365 …） |
 | **`ALIVE`** | 单信号 `S ≥ 1.58` | **过闸线 ⇒ 直接可做** | **49**（MODEL 14 / ANALYST 16 / PV 3 …） |
@@ -319,6 +352,8 @@ last_verified: 2026-11-08
 3. **例外：高换手 alpha 的档位更低**——技术指标冠军 `O0J1A88J`（**TO 0.2068**，CROWDING + sector 轴）**以 2Y 1.90 通过**，说明其适用档位 ≤1.90 ≠ 2.02。本区低换手信号（TO 0.03~0.08）**无法进该档**。
 4. **表达式内分组轴影响 S 与 2Y**（sector 轴 S 1.53 / 2Y 1.53；subindustry 轴 S 1.72 / 2Y 1.73 @ CROWDING），但不改变上述分档规则。
 5. ⚠ **`harvest` 输出的 `2Y_OK / 2Y_DEAD` 用房子静态阈值 1.58，对严档会误判** ⇒ **判定必须逐条 `get_alpha_details` 读 `is.checks` 的 limit**。
+6. ⚠ **multisim 收割的 `multisimulation_location` 必须原样照抄工具返回的 URL** —— 真实格式是 `https://api.worldquantbrain.com/simulations/<id>`，**没有** `/multisimulation/` 路径段。自行拼成 `/simulations/multisimulation/<id>` 会 **HTTP 404**，看起来像「波次丢失」，实为 URL 拼错（2026-11-09 AA 波实证）。
+7. ⚠ **「404 + 最近 alpha 列表里没有对应字段的新件」= 该波整批未落件**（不是还没跑完）。判定法：`get_user_alphas(order="-dateCreated", limit=40)` 按表达式特征字段名反查；查不到就重发该波，不要干等。
 
 **★ 2026-10-14 晨 · 「窄带」精确化（30+ 条真值实证，决策级结论）**：
 平台比较**真值**（显示四舍五入）⇒ **唯一可过带 = 真值 2Y ∈ [1.580, 1.585)**（显示 1.58、limit 1.58、判 PASS；**带宽仅 0.005**）。
@@ -351,8 +386,13 @@ last_verified: 2026-11-08
 ### ★★★★ 探针派发 SOP（2026-10-14 定稿，全文见 [references/_probe-sop.md](references/_probe-sop.md)）
 
 **GBR 特有前提**：multi-sim **上限 8 条**（DEU 为 10）；**`LOW_2Y_SHARPE` 闸线按自身真值分档**（`<1.58` 显示 1.58 / `≥1.58` 显示 2.02 ⇒ 实际常需 2Y ≥ 2.02，唯一例外是高换手低档位）；单一 universe **TOP700**（D0 多数数据集无字段）。
+★ **2026-11-09 实读补正**：平台列出的合法 universe 是 `['TOP700','TOP350']`，但 **`TOP350` 对 `instrument_type=EQUITY` 不可用**
+（派发整批 400：`Universe TOP350 is not available for instrument type EQUITY and region GBR`）
+⇒ **GBR 的股票 alpha 只有 TOP700 一个 universe，「换 universe 开新机制面」这条扩席路在本区不存在**。
+同理，中性化档也已全测（FAST/SUBINDUSTRY/INDUSTRY/MARKET/SLOW/**CROWDING**/**SLOW_AND_FAST**），
+**同一条腿的档位容量恒为 2 席**（新增两档与原件相关 0.649–0.905）——详见 [`references/_seat-math-ceiling.md`](references/_seat-math-ceiling.md) §7。
 
-**第 0 步零成本筛选（按序）**：① **塔闸**（只挖未点亮塔 × ALIVE 密度；model 已点亮→排除）；② **语义闸**（字段级 description，剔标签/轴/元数据类）；③ **画像闸**（cov<0.6、to_med<0.03、count 族）；④ **★近静态闸**（状态量/评级/低频类 TO 0.016~0.041 ⇒ 直跳，本轮 16 机制中 8 个命中）；⑤ **历史闸**（禁自造结构、禁重测已判死族）；⑥ 概念族分组（同族免测）。
+**第 0 步零成本筛选（按序）**：① **塔闸**（只挖未点亮塔 × ALIVE 密度；model 已点亮→排除）；② **语义闸**（字段级 description，剔标签/轴/元数据类）；③ **画像闸**（`to_med<0.03` 近静态 / `to_med>0.70` 换手墙 / 名字 `count·num` 且 S≤0.7；**`coverage` 不进这一闸**——三层都不可判存在性，cov 全 0 只标「元数据盲区」⇒ 走探针，不判死，见第 1 层已废止行）；④ **★近静态闸**（状态量/评级/低频类 TO 0.016~0.041 ⇒ 直跳，本轮 16 机制中 8 个命中）；⑤ **历史闸**（禁自造结构、禁重测已判死族）；⑥ 概念族分组（同族免测）。
 
 **第 1 步探针批构造（8 槽 = 2 结构 × 3 跨族字段 + 2 机动）**：
 - 结构 A = house 底座 `group_rank(ts_mean(vec_avg(F),N), subindustry)`；结构 B = techindi 配方（双窗 + `group_neutralize` + `ts_target_tvr_decay` @ CROWDING/decay2）。

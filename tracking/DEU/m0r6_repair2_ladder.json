@@ -1,0 +1,42 @@
+[
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "add(add(rank(mdl264_amihud_class), rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 10))), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5)))"
+ },
+ {
+  "type": "REGULAR",
+  "settings": {
+   "decay": 4,
+   "delay": 1,
+   "instrumentType": "EQUITY",
+   "language": "FASTEXPR",
+   "maxTrade": "OFF",
+   "nanHandling": "OFF",
+   "neutralization": "SUBINDUSTRY",
+   "pasteurization": "ON",
+   "region": "DEU",
+   "testPeriod": "P0Y0M0D",
+   "truncation": 0.08,
+   "unitHandling": "VERIFY",
+   "universe": "TOP500",
+   "visualization": false
+  },
+  "regular": "add(add(add(rank(mdl264_amihud_class), rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 5))), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 66)))"
+ }
+]

@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "4gX3zx49z4jpbme1mt7retm",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/4gX3zx49z4jpbme1mt7retm",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/4gX3zx49z4jpbme1mt7retm",
+ "submitted_expressions": [
+  "group_rank(ts_backfill(dividend_growth_factor_score, 10), sector)",
+  "reverse(group_rank(ts_backfill(dividend_growth_factor_score, 10), sector))",
+  "group_rank(ts_delta(ts_backfill(dividend_growth_factor_score, 10), 22), sector)",
+  "group_rank(ts_delta(ts_backfill(dividend_growth_factor_score, 10), 66), sector)",
+  "group_rank(ts_zscore(ts_backfill(dividend_growth_factor_score, 10), 252), sector)",
+  "group_rank(ts_mean(ts_backfill(dividend_growth_factor_score, 10), 22), sector)",
+  "group_rank(ts_rank(ts_backfill(dividend_growth_factor_score, 10), 66), sector)",
+  "group_rank(vector_neut(rank(ts_backfill(dividend_growth_factor_score, 10)), rank(oth424_mktcap)), sector)",
+  "trade_when(greater(rank(oth424_divyld), 0.3), group_rank(ts_backfill(dividend_growth_factor_score, 10), sector), -1)",
+  "signed_power(group_rank(ts_backfill(dividend_growth_factor_score, 10), sector), 2)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

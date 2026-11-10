@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+story_analytics_category,VECTOR,0.5992,8,12,Integer code representing the analytics type or classification for the story/event; which must be dynamically label-mapped per module and date via NIO_IX overlaâ¦
+story_analytics_metric_value,VECTOR,0.5992,7,8,Numeric value of the analytics metric for the news story.
+story_analytics_relevance_score,VECTOR,0.5992,5,6,Composite or rolling analytics score (e.g.; sentiment; attention; or relevance) for the news story at the given time point

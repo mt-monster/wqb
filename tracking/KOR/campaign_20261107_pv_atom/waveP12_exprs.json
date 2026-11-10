@@ -1,0 +1,12 @@
+[
+  "-group_rank(vec_avg(rsk60_crowding), sector)",
+  "-group_rank(vec_avg(lending_fee_bid_rate), sector)",
+  "-group_rank(vec_avg(rsk60_last), sector)",
+  "-group_rank(vec_avg(rsk60_offer), sector)",
+  "-group_rank(ts_mean(vec_avg(rsk60_crowding), 66), sector)",
+  "-group_rank(ts_av_diff(vec_avg(rsk60_crowding), 66), sector)",
+  "-group_rank(ts_zscore(vec_avg(lending_fee_bid_rate), 250), sector)",
+  "-group_rank(divide(vec_avg(rsk60_offer), vec_avg(lending_fee_bid_rate)), sector)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(vec_avg(rsk60_crowding), 250), sector), group_rank(ts_av_diff(vec_avg(lending_fee_bid_rate), 66), sector)), industry)",
+  "subtract(0.5, group_rank(ts_mean(vec_stddev(lending_fee_bid_rate), 55), sector))"
+]

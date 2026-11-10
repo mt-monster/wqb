@@ -1,0 +1,18 @@
+{
+ "results": [
+  {
+   "id": "mdl135_d04_os",
+   "type": "VECTOR",
+   "coverage": 0.8464,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Stochastic Oscillator over 40 days; compares close to the 40-day high–low range, typically normalized 0–100"
+  }
+ ],
+ "count": 1,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 136,
+ "platform_count": 137,
+ "complete": true,
+ "pages_fetched": 3
+}

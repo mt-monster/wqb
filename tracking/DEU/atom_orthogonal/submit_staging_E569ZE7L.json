@@ -1,0 +1,96 @@
+{
+  "alpha_id": "E569ZE7L",
+  "STATUS": "READY_PENDING_USER_DECISION_ON_ROBUSTNESS_CONDITIONAL",
+  "name": "DEU 借券需求加速度反转 ATOM (3)",
+  "tags": [
+    "shortinterest",
+    "borrow_demand",
+    "DEU",
+    "ATOM"
+  ],
+  "descriptions": "借券需求评级变化加速度反转：借券需求评级的 264 日长窗变化 × 132 日短窗变化，取负（做多借券需求回落股、做空借券需求抬升股），target_tvr=0.03 约束换手，subindustry 截面排序。借券需求激增代表做空/对冲需求拥挤（Lou & Polk 2018 comomentum；short-interest skew 拥挤预警），后续反转。ts_backfill 将稀疏借券事件填稠密以消除 CONCENTRATED_WEIGHT。S1.68/F1.21/2Y2.27/prod0.5444/self0.5444。",
+  "expression": "-group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(ts_backfill(vec_avg(shrt3_bar), 132), 264)), rank(ts_delta(ts_backfill(vec_avg(shrt3_bar), 132), 132))), target_tvr=0.03), subindustry)",
+  "dataset": "shortinterest3",
+  "core_field": "shrt3_bar",
+  "operator_count": 10,
+  "settings": {
+    "region": "DEU",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "FAST",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "OFF"
+  },
+  "metrics": {
+    "sharpe": 1.68,
+    "fitness": 1.21,
+    "two_year_sharpe": 2.27,
+    "turnover": 0.1128,
+    "sub_universe_sharpe": 0.86,
+    "returns": 0.0647,
+    "drawdown": 0.0416,
+    "margin": 0.001147,
+    "longCount": 220,
+    "shortCount": 163,
+    "failed_ra_count": 0,
+    "checks_fail": [],
+    "pyramid": [
+      "DEU/D1/SHORTINTEREST"
+    ]
+  },
+  "correlations": {
+    "production": 0.5444,
+    "production_checked_at": "2026-11-10T10:15+08:00",
+    "production_histogram": "[0.4,0.5] n=1, [0.5,0.6] n=1, 无 [0.6,1] 桶 ⇒ 无深钉区",
+    "self": 0.5443736022501225,
+    "self_checked_at": "2026-11-10T10:10+08:00",
+    "self_method": "check_self_correlation local_calculation (excl. Power Pool), pool_size=16 / full_os_pool=19"
+  },
+  "orthogonality": {
+    "vs_1YNMAA8M": 0.1227,
+    "vs_xArzm3Mn": 0.5444,
+    "vs_Wje5K71x": 0.0411,
+    "vs_2rmGAPqN": 0.0436,
+    "vs_bl6OWZ2M": 0.0485,
+    "note": "与全部 17 件 OS REGULAR 构成 19/19 完整独立集（all_below_threshold=true）"
+  },
+  "coverage": {
+    "years": "2014-2023 每年均有数据",
+    "longCount_range": "158 → 299 单调上升，无空窗",
+    "negative_years": 0
+  },
+  "robustness": {
+    "verdict": "CONDITIONAL",
+    "ledger_key": "robustness_E569ZE7L",
+    "checks": {
+      "Recent-3yr Sharpe (main)": "PASS - 0.55/2.64/1.88, mean 1.690 >= 1.58, all > 0.3",
+      "Recent-3yr CV_Sharpe": "CONDITIONAL - 0.511 (population sd; band 0.40-0.60)",
+      "decay ratio": "PASS - 1.134",
+      "flat years": "PASS - 0",
+      "Recent-3yr max/min": "CONDITIONAL - 4.80 (band 3-5)",
+      "full-history weakness": "soft flag only (skill: never REJECT on this)",
+      "Sub-universe": "PASS - 0.86",
+      "operator count": "soft flag only - 10",
+      "Margin @ TO": "PASS - 13.80bp @ TO 10.67%",
+      "economic explainability": "PASS",
+      "WebDataScope failed": "PASS - Failed RA 0 / PPA 0"
+    },
+    "repair_round": 1,
+    "repair_outcome": "Wave X directed repair (10 variants: axis market/country, backfill 264/504/66, 2nd window 66/88, target_tvr 0.02/0.04) ALL REJECT - 2021 Sharpe worse (0.18-0.46 vs baseline 0.55), max/min degraded to 7.65-15.22. Root cause: 2021 borrow data has too little information; no structural repair space. Baseline 264/132 + subindustry is the only family structure with max/min < 5.",
+    "note": "CONDITIONAL does not block submission (submit_verdict: not blocking). Skill norm is repair-then-reaudit; round 1 done with no gain, so soft flags retained for user final decision."
+  },
+  "same_family_capacity": "借券族候选内部互相关 0.758~0.901 ⇒ 该族最多出 1 席。本件为族内 CV 最优 + 无负年 + 10y 均值最高 ⇒ 族代表。",
+  "risk_notes": [
+    "prod/self margin 0.156, healthy",
+    "vs OS pool xArzm3Mn corr 0.5444 (same shrt3_bar borrow family)",
+    "robustness = CONDITIONAL (CV 0.511 + max/min 4.80), NOT REJECT",
+    "submit_verdict recheck: UNVERIFIABLE + robustness notice does not block",
+    "submission is irreversible - needs explicit user text authorization",
+    "must refresh prod before submit (platform pool drifts)"
+  ],
+  "audited_at": "2026-11-10T09:50:00+08:00"
+}

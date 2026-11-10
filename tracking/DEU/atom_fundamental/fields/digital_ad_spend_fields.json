@@ -1,0 +1,80 @@
+{
+ "results": [
+  {
+   "id": "ad_content_format",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Format/type of the ad creative"
+  },
+  {
+   "id": "ad_display_count",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated number of ad exposures (impressions count)"
+  },
+  {
+   "id": "ad_purchase_channel",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Enumerated code indicating the channel through which media was purchased (e.g., direct, DSP, ad network)"
+  },
+  {
+   "id": "ad_sales_channel",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Enumerated code indicating the channel through which the ad inventory was sold or distributed (e.g., direct, SSP, exchange)"
+  },
+  {
+   "id": "advertising_spend_local_currency",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The estimated advertising expenditure in the local currency of the ad's geographic region, corresponding to the 'LocalSpend' field. This value is of type float."
+  },
+  {
+   "id": "advertising_spend_usd",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The estimated advertising expenditure in US Dollars (USD), corresponding to the 'Spend' field. This value is inferred by applying cost-per-mille (CPM) estimates…"
+  },
+  {
+   "id": "estimated_ad_impressions",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The estimated number of times a digital advertisement was served, corresponding to the 'Impressions' field. This value is modeled from sampled observations and…"
+  },
+  {
+   "id": "estimated_ad_spend",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total advertising spend for the record in USD (normalized amount)"
+  },
+  {
+   "id": "estimated_local_ad_spend",
+   "type": "VECTOR",
+   "coverage": 0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Advertising spend in original/local currency (pre-normalization; unconverted)"
+  }
+ ],
+ "count": 9,
+ "platform_count": 9,
+ "complete": true,
+ "pages_fetched": 1
+}

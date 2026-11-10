@@ -158,14 +158,42 @@
 | 层 | 旧行为 | 现行为 | 开关 |
 |---|---|---|---|
 | **冷却按结果分流** | 无条件写 195 s（连"一个 GET 就拿到既有值"也罚 3 分钟） | `success` 只留 `settle`（5 s）；`pending` 写平台 `Retry-After`（≤195）或 195；4xx 终态 / 异常**不写** | `WQB_CORR_SETTLE_SEC` / `WQB_CORR_COOLDOWN_SEC` |
-| **inflight 侧车** | 同 alpha 的第二个调用照样去抢锁、照样触发 | 开轮询即标记 `correlation.inflight.json`；同 alpha 非 refresh 调用**只预读等待**（缺省 25 s），等不到返回 `busy + inflight=true`，**不二次触发**；`pending` 保留标记、其余清除 | `WQB_CORR_INFLIGHT_TTL_SEC`（300） |
+| **inflight 侧车** | 同 alpha 的第二个调用照样去抢锁、照样触发 | 开轮询即标记 `correlation.inflight.json`；同 alpha 非 refresh 调用**只预读等待**（缺省 25 s），等不到返回 `busy + inflight=true`，**不二次触发**；`pending` 保留标记、其余（**含异常/取消路径**，2026-11-10 修）清除；读改写由 `correlation.sidecar.lock.json` 保护原子性 | `WQB_CORR_INFLIGHT_TTL_SEC`（300） |
 | **同 alpha 等待** | 锁被同 alpha 占着也立即 busy | holder 恰为同 alpha ⇒ 等 `WQB_CORR_JOIN_WAIT_SEC`（25 s）内的预读值（`same_alpha_join`）；refresh 保持 fail-fast | `WQB_CORR_JOIN_WAIT_SEC` |
+| **账号级熔断（2026-11-10 新增）** | 平台停摆时每次调用各自空转 240 s，再叠 195 s 冷却 + inflight 残留 ⇒ 自我放大等待 | 连续 N 次 `pending` 写 `correlation.unavailable.json`；期间 `acquire` 与 `get_production_correlation` **直接短路**返回 `platform_unavailable` + `retry_after`，不抢锁不发请求；任一成功结果即清除 | `WQB_CORR_UNAVAILABLE_STREAK`（3）/ `WQB_CORR_UNAVAILABLE_SEC`（600） |
 | **打点与报告** | 只有人读的一句话 | `[corr-t] {json}` 结构化打点 + `tools/probe/corr_timing_report.py` 汇总「时间花在哪 / 拿到值 vs 空手 / 谁在反复触发」 | 零平台请求 |
 
 配套的**消费方默认值**也改了：`check_correlation(refresh=False)` 是缺省（48 h 权威缓存 → 预读
 `is.prodCorrelation`，命中即返回、**零平台计算**），只有**终验**（`submit_inventory --refresh-all`、
 `corr_check --refresh`、`check_corr.py --refresh`）才强制重测。预读值带 `provisional=true`
 ——平台存储值**测量时间不可知**，不得记成「刚测过」（会污染 48 h 保鲜判据）。
+
+#### 2026-11-10 机制加固（审查报告 `reports/prod_corr_mechanism_review_20261110.md`）
+
+- **peek 值落库唯一入口 = `tools/probe/prod_peek_ingest.py`**：读 `results/prod_peek_<id>.json` /
+  `prod_wait_<id>.json`，以产物里的 `at`（**探测时刻**）作 `checked_at` 写 `set_corr_cache`，
+  `source=prod_peek`（已登记词表）。此前三者之间**没有任何代码连接**，靠一次手工 SQL；
+  正规写入口又用「写库时刻」⇒ 几天前的值今天写库就被当成 48 h 内新鲜实测。**禁止再手工 SQL 落库。**
+- **来源分层**：`wqb.store.NON_REALTIME_SOURCES` = `manual / legacy / alphas_backfill /
+  checkpoint_backfill / triage_local`。缓存命中若来自这些词**或根本没有 source**，
+  `check_correlation` 会带 `provisional=true`，`_prod_gate` 补一次 `refresh=True` 真重测，
+  重测后仍不可信则 fail-closed。`prod_peek` **不在**此列（它读的就是平台端点已算结果）。
+- **唯一判据解析 = `wqb.prod_verdict.prod_verdict()` / `gate_allowed()`**：统一处理
+  `provisional / from_cache / cached_at / stale / pending / busy / data_unavailable /
+  platform_unavailable`，替换原先 8 份各自为政的拷贝。**缺值时 `passes=None`，调用方不得放行。**
+- **fail-open 已堵**：`judge._eval_correlation` 缺值/异常改 `pass=False`（→ BLOCK）；
+  `batch_submit_verdict` 检查 provenance 且 `PENDING` 不再写 `phase2_done`（否则永不再验）；
+  `submit_inventory --snapshot-only` 不再强制 `fresh=True`，取数失败把 prod/self 置 None；
+  `prod_saturation_gate` 缺值不再当 0.0 稀释 wall_ratio。
+- **`set_corr_cache` 只在带来有效 prod/self 值时刷新 `checked_at`/`source`**：纯 records 更新
+  不得把旧值「洗新」。`corr_age_hours` 统一按本地时区解释 naive 值再转 UTC 相减（修 aware+naive 误判 stale）。
+- **`prod_wait.parse()` 不再扫直方图**：`max` 缺失即 None（旧实现会把 bin 上界/计数 n 当 prod）；
+  peek 与带锁模式都识别 4xx / `data_unavailable` 终态立即退出；带锁模式去掉嵌套轮询。
+- **单源读**：`get_alpha_corr_metrics`、`submit_queue._corr_checked_times`、
+  `prod_first_screen.targets` 均优先权威表 `alpha_corr_cache`，缺条目才回落 `alphas`。
+- **常量同源**：`0.7` → `config.PRODCORR_CEILING`；`48h` → `_corr_cache.CORR_FRESH_HOURS`；
+  `240s` → `config.WAIT_THRESHOLDS['prod_corr_timeout_s']`（MCP 侧运行时真读，守护测试改为运行时断言）。
+  `check_correlation` 新增 `timeout_s` 可覆盖单次窗口。
 
 ⚠ **刻意没做**：触发后立即释放锁、让轮询在锁外跑。锁覆盖轮询窗口正是当前正确性的来源
 （同 alpha 等待靠 holder tag 识别、跨进程不重复触发靠同一把锁）；先放锁再轮询等于把

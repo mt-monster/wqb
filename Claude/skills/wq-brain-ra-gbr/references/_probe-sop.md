@@ -15,7 +15,9 @@
    - 数据集级 description 会骗人。**开批前必查字段级描述**，剔除三类非信号：**标签类**（`*_label*` / `*_bucket*` / `probability_label*`）、**轴类**（`*_grouping_*` / `sector` / `rbics` 代码）、**元数据类**（时间戳 / 货币码 / SIC 码 / `*_id` / 交易笔数计数字段）。
    - GBR 实证：`dl_riskfree_returns`（40 字段全 `probability_label*`/`quantile_label*`）与 `pv29`（38 字段全 `industry_grouping_*`）**整块非信号**——查描述可零成本跳过。
 3. **画像闸**（`tools/fields/field_profile.py --query --region GBR`）
-   - coverage<0.6 剔除；`to_med<0.03` → DEAD_STATIC；名字含 `count/num` 且 S≤0.7 → DEAD_COUNT；`to_med>0.70` → DEAD_TURNOVER。
+   - **`coverage` 不参与剔除（2026-11-09 废止）**：cov 三层都不可判存在性（`techindi_model` 数据集级 0.0 却有 399 字段），cov 全 0 只标 `cov_metadata_blind` ⇒ **走探针，不判死**；
+   - `to_med<0.03` → DEAD_STATIC；名字含 `count/num` 且 S≤0.7 → DEAD_COUNT；`to_med>0.70` → DEAD_TURNOVER。
+   - **★ 选集闭合必须过门**：`python tools/gates/audit_dataset_coverage.py --region GBR --universe TOP700 --delay 1 --gate closure`（有字段、零证据的集不许写成「已探」或「没数据」）；写报告时同一道门还管措辞（`--lint-report`）。
    - ⚠ **GBR 与 DEU 的差异**：GBR 平台 **`LOW_TURNOVER` 实测不拦低换手**（TO 0.0257 通过），因此 `review.turnover_min=0.05` 只是**筛选启发式**、不是平台闸。但「近静态」仍是**机制无用的强信号**（见下条）。
 4. **★★★ 近静态闸（GBR 本轮新增判据，最高性价比）**
    - **状态量 / 评级 / 低频类数据（ESG 评级、分析师创新度、供应链占比、期权 IV 水平、网站流量排名）单字段水平信号 TO 落在 0.016~0.041 且 2Y 多负 ⇒ 任何骨架无用，直接跳过。**

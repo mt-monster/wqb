@@ -1,0 +1,5 @@
+id,type,cov,uc,ac,desc
+mdl162_vwap_126,MATRIX,0.1621,1,1,Predicted volume-weighted average price 126 trading days after the verified earnings conference call (D1-lagged; local currency; event-only rows)
+mdl162_vwap_22,MATRIX,0.1621,3,3,Predicted volume-weighted average price 22 trading days after the verified earnings conference call (D1-lagged; local currency; event-only rows)
+mdl162_vwap_5,MATRIX,0.1621,1,1,Predicted volume-weighted average price 5 trading days after the verified earnings conference call (D1-lagged; local currency; event-only rows)
+mdl162_vwap_66,MATRIX,0.1621,0,0,Predicted volume-weighted average price 66 trading days after the verified earnings conference call (D1-lagged; local currency; event-only rows)

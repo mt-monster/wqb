@@ -1,0 +1,332 @@
+{
+ "dataset": "news31",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 53
+ },
+ "field_count": 53,
+ "fetched_at": "2026-11-09T14:12:00",
+ "fields": [
+  {
+   "id": "explicit_company_mention_count",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "first_appearance_sentence_number",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "negative_sentiment_probability_2",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 13
+  },
+  {
+   "id": "neutral_sentiment_probability_2",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "news_relevance_score",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 2
+  },
+  {
+   "id": "news_urgency_level",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_amertimestamp_time",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 13
+  },
+  {
+   "id": "nws31_apactimestamp_time",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 13
+  },
+  {
+   "id": "nws31_audiences",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_bodysize",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_companycount",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_bodysize",
+   "type": "VECTOR",
+   "coverage": 0.9074,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_companycount",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 2
+  },
+  {
+   "id": "nws31_d1_feedtimestamp_time",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 4
+  },
+  {
+   "id": "nws31_d1_firstcreated_time",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 2
+  },
+  {
+   "id": "nws31_d1_firstmentionsentence",
+   "type": "VECTOR",
+   "coverage": 0.9019,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_noveltycounts",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_relevance",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_sentencecount",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_sentimentclass",
+   "type": "VECTOR",
+   "coverage": 0.8987,
+   "alphaCount": 6
+  },
+  {
+   "id": "nws31_d1_sentimentnegative",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 21
+  },
+  {
+   "id": "nws31_d1_sentimentneutral",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_sentimentpositive",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 5
+  },
+  {
+   "id": "nws31_d1_sentimentwordcount",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_sourcetimestamp_time",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 2
+  },
+  {
+   "id": "nws31_d1_urgency",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_volumecounts",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_d1_wordcount",
+   "type": "VECTOR",
+   "coverage": 0.9095,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_emeatimestamp_time",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 6
+  },
+  {
+   "id": "nws31_feedtimestamp_time",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_firstcreated_time",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_firstmentionsentence",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_linkedidpositions",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 2
+  },
+  {
+   "id": "nws31_linkedidvalues",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_noveltycounts",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_relevance",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 2
+  },
+  {
+   "id": "nws31_sentencecount",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_sentimentnegative",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 3
+  },
+  {
+   "id": "nws31_sentimentneutral",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 4
+  },
+  {
+   "id": "nws31_sentimentpositive",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 3
+  },
+  {
+   "id": "nws31_sentimentwordcount",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_sourcetimestamp_time",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 3
+  },
+  {
+   "id": "nws31_subjects",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 2
+  },
+  {
+   "id": "nws31_urgency",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_volumecounts",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_windows",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "nws31_wordcount",
+   "type": "VECTOR",
+   "coverage": 0.7504,
+   "alphaCount": 1
+  },
+  {
+   "id": "positive_sentiment_probability_2",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 3
+  },
+  {
+   "id": "predominant_sentiment_class",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "sentiment_analysis_word_count",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "story_body_character_count",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "total_sentence_count",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  },
+  {
+   "id": "total_word_token_count",
+   "type": "VECTOR",
+   "coverage": 0.7417,
+   "alphaCount": 1
+  }
+ ]
+}

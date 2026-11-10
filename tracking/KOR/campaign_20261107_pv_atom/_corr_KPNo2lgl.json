@@ -1,0 +1,46 @@
+{
+ "alpha_id": "KPNo2lgl",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "checks": {
+  "production": {
+   "max_correlation": 0.5504,
+   "passes_check": true,
+   "from_cache": true,
+   "cached_at": "2026-11-08T15:05:58",
+   "source": "platform_sync"
+  },
+  "self": {
+   "max_correlation": 0.5695511898345982,
+   "passes_check": true,
+   "top_correlated": [
+    {
+     "id": "vRrQ5Npr",
+     "correlation": 0.5695511898345982
+    },
+    {
+     "id": "rKdK2vLE",
+     "correlation": 0.3378991303066135
+    },
+    {
+     "id": "9qWJv1do",
+     "correlation": 0.32902193169458505
+    },
+    {
+     "id": "npPVP253",
+     "correlation": 0.30999118682231175
+    },
+    {
+     "id": "9qWbA1g9",
+     "correlation": 0.251002370581924
+    }
+   ],
+   "pool_size": 30,
+   "correlation_type": "self",
+   "full_os_pool_size": 46,
+   "excluded_power_pool_count": 16,
+   "ppac_ids_cached": 17
+  }
+ },
+ "all_passed": true
+}

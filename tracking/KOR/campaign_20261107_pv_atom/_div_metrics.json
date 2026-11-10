@@ -1,0 +1,77 @@
+{
+ "total": 3,
+ "success": 3,
+ "failed": 0,
+ "results": [
+  {
+   "alpha_id": "WjOx2jwG",
+   "sharpe": 0.85,
+   "fitness": 0.46,
+   "turnover": 0.1168,
+   "two_year_sharpe": 1.21,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 0.78,
+   "investability_sharpe": 0.89,
+   "investability_fitness": 0.5,
+   "margin": 0.000622,
+   "returns": 0.0363,
+   "drawdown": 0.1212,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 3,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 1.0471
+  },
+  {
+   "alpha_id": "RREvwRwd",
+   "sharpe": 0.87,
+   "fitness": 0.47,
+   "turnover": 0.0957,
+   "two_year_sharpe": 1.31,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 0.8,
+   "investability_sharpe": 0.93,
+   "investability_fitness": 0.53,
+   "margin": 0.000771,
+   "returns": 0.0369,
+   "drawdown": 0.1262,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 3,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 1.069
+  },
+  {
+   "alpha_id": "ZYQ1vPOx",
+   "sharpe": 1.22,
+   "fitness": 0.75,
+   "turnover": 0.1446,
+   "two_year_sharpe": 1.75,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.13,
+   "investability_sharpe": 1.22,
+   "investability_fitness": 0.81,
+   "margin": 0.000754,
+   "returns": 0.0545,
+   "drawdown": 0.1127,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 2,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 1.0
+  }
+ ],
+ "prescreen": {
+  "READY": [],
+  "REVIEW": [
+   "ZYQ1vPOx"
+  ],
+  "REJECT": [
+   "WjOx2jwG",
+   "RREvwRwd"
+  ]
+ }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "anl10_smartest_ebt_fy1_smart_ests_v1",
+    "expression": "hump(subtract(group_rank(ts_av_diff(anl10_smartest_ebt_fy1_smart_ests_v1,250),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8326,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.8
+    }
+  },
+  {
+    "field_id": "anl10_smartest_net_fy1_pred_surps_v1",
+    "expression": "hump(subtract(group_rank(ts_av_diff(anl10_smartest_net_fy1_pred_surps_v1,250),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8326,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.8
+    }
+  },
+  {
+    "field_id": "anl10_smartest_pre_fy1_pred_surps_v1",
+    "expression": "hump(subtract(group_rank(ts_av_diff(anl10_smartest_pre_fy1_pred_surps_v1,250),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8326,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.8
+    }
+  },
+  {
+    "field_id": "anl10_smartest_sal_fy2_pred_surps_v1",
+    "expression": "hump(subtract(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),120),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8326,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.8
+    }
+  },
+  {
+    "field_id": "anl10_smartest_sal_fy2_pred_surps_v1",
+    "expression": "hump(subtract(group_rank(ts_av_diff(anl10_smartest_sal_fy2_pred_surps_v1,250),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),22),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8326,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.8
+    }
+  },
+  {
+    "field_id": "anl10_smartest_ebt_fy1_smart_ests_v1",
+    "expression": "trade_when(rank(adv20) > 0.1, hump(subtract(group_rank(ts_av_diff(anl10_smartest_ebt_fy1_smart_ests_v1,250),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8326,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.8
+    }
+  }
+]

@@ -2,18 +2,20 @@
   "schema_version": "1.0",
   "region": "EUR",
   "doc": "EUR 边界算子合法档配置（full_coverage_gate 闸 3 的白名单来源）。人可读版在 Claude/skills/wq-brain-ra-eur/references/_boundary-ops-eur.md。任一算子参数不在 legal_values 即 FAIL。",
-  "last_verified": "2026-10-20",
+  "last_verified": "2026-11-09",
   "operators": {
     "ts_mean": {
       "kind": "window",
-      "legal_values": [1, 2, 3, 5, 12, 22, 66, 132, 252, 504],
+      "legal_values": [1, 2, 3, 5, 12, 20, 22, 66, 132, 252, 504],
       "min_coverage_for_near_gate": 2,
-      "must_include_long_window": 66
+      "must_include_long_window": 66,
+      "note": "20 档补录（2026-11-09）：论坛 41049370096663 ts_mean(group_zscore(vec_avg(stable_boundary_trade_count_21d),sector),20) S0.91/2Y2.27。"
     },
     "ts_decay_linear": {
       "kind": "window",
-      "legal_values": [1, 2, 3, 5, 12, 30, 66, 252],
-      "min_coverage_for_near_gate": 2
+      "legal_values": [1, 2, 3, 5, 12, 20, 30, 60, 66, 252],
+      "min_coverage_for_near_gate": 2,
+      "note": "20/60 档补录（2026-11-09）：论坛 41049370096663（SZ83096，EUR/TOP2500 FHP 实战）ts_decay_linear(group_zscore(vec_avg(stable_boundary_trade_count_21d),sector),20) S0.93/2Y2.28；decay60 版 S0.91/2Y2.44。W3 救援波本地区复核。"
     },
     "ts_regression": {
       "kind": "window",
@@ -57,8 +59,9 @@
     },
     "ts_backfill": {
       "kind": "window",
-      "legal_values": [5, 20, 66],
-      "min_coverage_for_near_gate": 2
+      "legal_values": [5, 20, 66, 120],
+      "min_coverage_for_near_gate": 2,
+      "note": "120 档补录（2026-11-08）：leAXvaLn(S1.78/2Y2.10/failed_ra=0) 与 E56Jea7P(ACTIVE) 两颗平台全过件均用 ts_backfill(...,120)，季度申报回填的标准档。"
     },
     "signed_power": {
       "kind": "exponent",
@@ -114,8 +117,30 @@
       "kind": "bins",
       "legal_values": [3, 5, 10, 20],
       "min_coverage_for_near_gate": 2
+    },
+    "ts_delay": {
+      "kind": "window",
+      "legal_values": [1, 5, 22],
+      "min_coverage_for_near_gate": 1,
+      "note": "2026-11-09 补录：risk62 IVOL 滞后对齐族实测（ts_delay(ksrs,1/5) 发出成功、平台接受，最强 S0.69；文献 IVOL 构造用「前一月」滞后对齐）。"
     }
   },
+  "inaccessible_operators": [
+    {
+      "name": "ts_skewness",
+      "kind": "ghost",
+      "verified": "2026-11-09 EUR risk62",
+      "evidence": "group_rank(multiply(ts_skewness(rsk62_1_100_ksrs,66),-1),industry) 单条发送即 mid=null（表达式发不出去），并导致同批 10 条全部 No alpha_id in sim response；去掉该条后同批 9 条立即成功。二次验证成立。",
+      "rule": "禁用。需要偏度语义时用 ts_std_dev / ts_rank 替代；排放批前先用单条验证可疑罕见算子。"
+    },
+    {
+      "name": "ts_max",
+      "kind": "inaccessible",
+      "verified": "2026-11-09 EUR risk62",
+      "evidence": "toolkit_static 门禁报 [INACCESSIBLE_OP] ts_max 平台不可访问，用已验证等价算子替换；ts_rank(66) 替换后批次成功发出。",
+      "rule": "禁用。极值语义用 ts_rank(x,66) 替代。"
+    }
+  ],
   "poison_structures": [
     {
       "name": "equal_weight_leg_add",

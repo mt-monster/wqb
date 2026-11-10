@@ -1,0 +1,1498 @@
+{
+ "results": [
+  {
+   "id": "fnd94_bs_accr_exp_xpayr_q",
+   "type": "MATRIX",
+   "coverage": 0.8044,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Other Accrued Expenses"
+  },
+  {
+   "id": "fnd94_bs_assets_curr_oth_q",
+   "type": "MATRIX",
+   "coverage": 0.8952,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Other Current Assets"
+  },
+  {
+   "id": "fnd94_bs_assets_curr_q",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Total Current Assets"
+  },
+  {
+   "id": "fnd94_bs_assets_oth_intang_q",
+   "type": "MATRIX",
+   "coverage": 0.9457,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other Assets (incl. Intangibles)"
+  },
+  {
+   "id": "fnd94_bs_assets_oth_q",
+   "type": "MATRIX",
+   "coverage": 0.9128,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Other Assets"
+  },
+  {
+   "id": "fnd94_bs_assets_oth_tot_q",
+   "type": "MATRIX",
+   "coverage": 0.6999,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other Long-term Assets, Total"
+  },
+  {
+   "id": "fnd94_bs_assets_tot_q",
+   "type": "MATRIX",
+   "coverage": 0.9469,
+   "userCount": 30,
+   "alphaCount": 50,
+   "description": "Total Assets"
+  },
+  {
+   "id": "fnd94_bs_bps_tang_q",
+   "type": "MATRIX",
+   "coverage": 0.9455,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Tangible Book Value Per Share"
+  },
+  {
+   "id": "fnd94_bs_cap_lease_q",
+   "type": "MATRIX",
+   "coverage": 0.9487,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Capitalized Lease Obligations"
+  },
+  {
+   "id": "fnd94_bs_cash_equiv_q",
+   "type": "MATRIX",
+   "coverage": 0.9505,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Cash and Equivalents"
+  },
+  {
+   "id": "fnd94_bs_cash_only_q",
+   "type": "MATRIX",
+   "coverage": 0.8925,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Net Cash"
+  },
+  {
+   "id": "fnd94_bs_cash_st_q",
+   "type": "MATRIX",
+   "coverage": 0.9452,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Cash & Short-Term Investments"
+  },
+  {
+   "id": "fnd94_bs_com_eq_apic_q",
+   "type": "MATRIX",
+   "coverage": 0.8692,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Additional Paid-In Capital"
+  },
+  {
+   "id": "fnd94_bs_com_eq_for_exch_q",
+   "type": "MATRIX",
+   "coverage": 0.8158,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Unrealized Foreign Exchange Gain/Loss"
+  },
+  {
+   "id": "fnd94_bs_com_eq_retain_earn_q",
+   "type": "MATRIX",
+   "coverage": 0.8192,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Retained earnings"
+  },
+  {
+   "id": "fnd94_bs_debt_lt_curr_q",
+   "type": "MATRIX",
+   "coverage": 0.9087,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Current Portion of Long-Term Debt"
+  },
+  {
+   "id": "fnd94_bs_debt_lt_q",
+   "type": "MATRIX",
+   "coverage": 0.9511,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Long-Term Debt"
+  },
+  {
+   "id": "fnd94_bs_debt_lt_xcap_q",
+   "type": "MATRIX",
+   "coverage": 0.9557,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "LT Debt excl Capital Lease Obligations"
+  },
+  {
+   "id": "fnd94_bs_debt_st_q",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Short-Term Debt"
+  },
+  {
+   "id": "fnd94_bs_debt_st_x_curr_port_q",
+   "type": "MATRIX",
+   "coverage": 0.9165,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Short-Term Debt"
+  },
+  {
+   "id": "fnd94_bs_dfd_revenue_q",
+   "type": "MATRIX",
+   "coverage": 0.6737,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Deferred Revenue - Current"
+  },
+  {
+   "id": "fnd94_bs_dfd_tax_as_q",
+   "type": "MATRIX",
+   "coverage": 0.6027,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Deferred Income Tax - Current Asset"
+  },
+  {
+   "id": "fnd94_bs_dfd_tax_db_q",
+   "type": "MATRIX",
+   "coverage": 0.8709,
+   "userCount": 8,
+   "alphaCount": 15,
+   "description": "Deferred Tax Assets"
+  },
+  {
+   "id": "fnd94_bs_dfd_tax_itc_q",
+   "type": "MATRIX",
+   "coverage": 0.9097,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Deferred taxes and investment tax credit"
+  },
+  {
+   "id": "fnd94_bs_dfd_tax_q",
+   "type": "MATRIX",
+   "coverage": 0.9437,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Deferred Taxes"
+  },
+  {
+   "id": "fnd94_bs_goodwill_q",
+   "type": "MATRIX",
+   "coverage": 0.8479,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Goodwill - Net"
+  },
+  {
+   "id": "fnd94_bs_gw_net_q",
+   "type": "MATRIX",
+   "coverage": 0.8051,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Net Goodwill"
+  },
+  {
+   "id": "fnd94_bs_intang_oth_amort_q",
+   "type": "MATRIX",
+   "coverage": 0.6843,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total Intangible Other Assets - Accumulated Amortization"
+  },
+  {
+   "id": "fnd94_bs_intang_oth_gross_q",
+   "type": "MATRIX",
+   "coverage": 0.6968,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Total Intangible Other Assets - Gross"
+  },
+  {
+   "id": "fnd94_bs_intang_oth_q",
+   "type": "MATRIX",
+   "coverage": 0.8447,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Net Other Intangibles"
+  },
+  {
+   "id": "fnd94_bs_intang_q",
+   "type": "MATRIX",
+   "coverage": 0.9614,
+   "userCount": 2,
+   "alphaCount": 9,
+   "description": "Total Intangible Other Assets - Net"
+  },
+  {
+   "id": "fnd94_bs_inv_total_q",
+   "type": "MATRIX",
+   "coverage": 0.9161,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Total Inventory"
+  },
+  {
+   "id": "fnd94_bs_invest_aff_q",
+   "type": "MATRIX",
+   "coverage": 0.9147,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "LT Investment - Affiliate Companies"
+  },
+  {
+   "id": "fnd94_bs_invest_cap_q",
+   "type": "MATRIX",
+   "coverage": 0.8776,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total Capital"
+  },
+  {
+   "id": "fnd94_bs_invest_lt_q",
+   "type": "MATRIX",
+   "coverage": 0.8558,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-Term Investments"
+  },
+  {
+   "id": "fnd94_bs_invest_st_q",
+   "type": "MATRIX",
+   "coverage": 0.6885,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Short-Term Investments"
+  },
+  {
+   "id": "fnd94_bs_liabs_curr_oth_q",
+   "type": "MATRIX",
+   "coverage": 0.9198,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Other Current Liabilities, Total"
+  },
+  {
+   "id": "fnd94_bs_liabs_curr_q",
+   "type": "MATRIX",
+   "coverage": 0.906,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total Current Liabilities"
+  },
+  {
+   "id": "fnd94_bs_liabs_oth_xdfd_rev_q",
+   "type": "MATRIX",
+   "coverage": 0.9089,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Other Liabilities"
+  },
+  {
+   "id": "fnd94_bs_liabs_tot_q",
+   "type": "MATRIX",
+   "coverage": 0.9577,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total Liabilities"
+  },
+  {
+   "id": "fnd94_bs_liabs_xmin_int_accum_q",
+   "type": "MATRIX",
+   "coverage": 0.8906,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Liabilities (Excl. Minority Interest)"
+  },
+  {
+   "id": "fnd94_bs_min_int_accum_q",
+   "type": "MATRIX",
+   "coverage": 0.952,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Accumulated Minority Interest - Total"
+  },
+  {
+   "id": "fnd94_bs_pay_acct_q",
+   "type": "MATRIX",
+   "coverage": 0.8813,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Accounts Payable"
+  },
+  {
+   "id": "fnd94_bs_pay_tax_q",
+   "type": "MATRIX",
+   "coverage": 0.8804,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Income Tax Payable"
+  },
+  {
+   "id": "fnd94_bs_ppe_gross_constr_q",
+   "type": "MATRIX",
+   "coverage": 0.7674,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Property, Plant, & Equipment - Construction in Progress"
+  },
+  {
+   "id": "fnd94_bs_ppe_gross_q",
+   "type": "MATRIX",
+   "coverage": 0.8995,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Property, Plant, & Equipment - Gross"
+  },
+  {
+   "id": "fnd94_bs_prep_exp_q",
+   "type": "MATRIX",
+   "coverage": 0.853,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prepaid Expenses"
+  },
+  {
+   "id": "fnd94_bs_receiv_gross_q",
+   "type": "MATRIX",
+   "coverage": 0.7418,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Accounts Receivables, Gross"
+  },
+  {
+   "id": "fnd94_bs_receiv_tot_q",
+   "type": "MATRIX",
+   "coverage": 0.9528,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Accounts Receivable"
+  },
+  {
+   "id": "fnd94_bs_resctricted_cash_q",
+   "type": "MATRIX",
+   "coverage": 0.4538,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Restricted cash - long term"
+  },
+  {
+   "id": "fnd94_bs_stock_com_q",
+   "type": "MATRIX",
+   "coverage": 0.8879,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Common Stock"
+  },
+  {
+   "id": "fnd94_cf_debt_lt_reduct_q",
+   "type": "MATRIX",
+   "coverage": 0.7804,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Reduction in Long Term Debt"
+  },
+  {
+   "id": "fnd94_cf_dep_amort_tot_q",
+   "type": "MATRIX",
+   "coverage": 0.7671,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Depreciation and Amortization - Total"
+  },
+  {
+   "id": "fnd94_cf_div_com_q",
+   "type": "MATRIX",
+   "coverage": 0.7785,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Common Dividends"
+  },
+  {
+   "id": "fnd94_cf_div_q",
+   "type": "MATRIX",
+   "coverage": 0.7861,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Cash Dividends Paid - Total"
+  },
+  {
+   "id": "fnd94_cf_dps_secs_q",
+   "type": "MATRIX",
+   "coverage": 0.9413,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Dividends Per Share"
+  },
+  {
+   "id": "fnd94_cf_fix_assets_sale_q",
+   "type": "MATRIX",
+   "coverage": 0.7685,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sale of Fixed Assets"
+  },
+  {
+   "id": "fnd94_cf_inc_tax_dfd_q",
+   "type": "MATRIX",
+   "coverage": 0.3653,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Income Taxes - Deferred"
+  },
+  {
+   "id": "fnd94_cf_net_inc_q",
+   "type": "MATRIX",
+   "coverage": 0.6728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Comp Inc - Beginning Net Income"
+  },
+  {
+   "id": "fnd94_cf_oper_q",
+   "type": "MATRIX",
+   "coverage": 0.8259,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Net Cash Flow - Operating Activities"
+  },
+  {
+   "id": "fnd94_des_com_shs_out_eps_basic_q",
+   "type": "MATRIX",
+   "coverage": 0.7982,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Common Shares Used to Calculate Earnings Per Share - Basic"
+  },
+  {
+   "id": "fnd94_des_com_shs_out_eps_dil_q",
+   "type": "MATRIX",
+   "coverage": 0.7894,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Common Shares Used to Calculate Fully Diluted Earnings Per Share"
+  },
+  {
+   "id": "fnd94_des_com_shs_out_secs_q",
+   "type": "MATRIX",
+   "coverage": 0.9576,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Common Shares Outstanding - Security"
+  },
+  {
+   "id": "fnd94_des_mkt_cap_q",
+   "type": "MATRIX",
+   "coverage": 0.9101,
+   "userCount": 21,
+   "alphaCount": 46,
+   "description": "Market Capitalization"
+  },
+  {
+   "id": "fnd94_des_net_debt_q",
+   "type": "MATRIX",
+   "coverage": 0.9428,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net Debt"
+  },
+  {
+   "id": "fnd94_des_par_ps_q",
+   "type": "MATRIX",
+   "coverage": 0.9595,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Par Value"
+  },
+  {
+   "id": "fnd94_des_price_close_fp_q",
+   "type": "MATRIX",
+   "coverage": 0.9454,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Market Price - Fiscal Period Close"
+  },
+  {
+   "id": "fnd94_des_treas_shs_q",
+   "type": "MATRIX",
+   "coverage": 0.8822,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Treasury Shares"
+  },
+  {
+   "id": "fnd94_des_wkcap_q",
+   "type": "MATRIX",
+   "coverage": 0.8712,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Working Capital"
+  },
+  {
+   "id": "fnd94_is_amort_intang_q",
+   "type": "MATRIX",
+   "coverage": 0.7583,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Amortization of Intangibles"
+  },
+  {
+   "id": "fnd94_is_basic_eps_cont_ops_q",
+   "type": "MATRIX",
+   "coverage": 0.9072,
+   "userCount": 35,
+   "alphaCount": 47,
+   "description": "Basic EPS Before Abnormal Items"
+  },
+  {
+   "id": "fnd94_is_cogs_q",
+   "type": "MATRIX",
+   "coverage": 0.7747,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cost of Goods Sold (COGS) incl D&A"
+  },
+  {
+   "id": "fnd94_is_cogs_xdep_q",
+   "type": "MATRIX",
+   "coverage": 0.8179,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "COGS Excluding D&A"
+  },
+  {
+   "id": "fnd94_is_consol_net_inc_q",
+   "type": "MATRIX",
+   "coverage": 0.8278,
+   "userCount": 65,
+   "alphaCount": 103,
+   "description": "Net Income - Consolidated"
+  },
+  {
+   "id": "fnd94_is_disc_oper_q",
+   "type": "MATRIX",
+   "coverage": 0.7702,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Discontinued Operations"
+  },
+  {
+   "id": "fnd94_is_div_pfd_q",
+   "type": "MATRIX",
+   "coverage": 0.846,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Preferred Dividend Requirements"
+  },
+  {
+   "id": "fnd94_is_ebit_oper_q",
+   "type": "MATRIX",
+   "coverage": 0.914,
+   "userCount": 35,
+   "alphaCount": 52,
+   "description": "EBIT (Operating Income)"
+  },
+  {
+   "id": "fnd94_is_ebitda_oper_q",
+   "type": "MATRIX",
+   "coverage": 0.9124,
+   "userCount": 35,
+   "alphaCount": 48,
+   "description": "EBITDA (Operating Income Plus Depreciation & Amortization Exp)"
+  },
+  {
+   "id": "fnd94_is_ebitda_q",
+   "type": "MATRIX",
+   "coverage": 0.8033,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Earnings Before Interest, Taxes, Depreciation & Amortization (EBITDA)"
+  },
+  {
+   "id": "fnd94_is_eps_basic_q",
+   "type": "MATRIX",
+   "coverage": 0.86,
+   "userCount": 34,
+   "alphaCount": 56,
+   "description": "EPS - Basic"
+  },
+  {
+   "id": "fnd94_is_eps_contin_oper_q",
+   "type": "MATRIX",
+   "coverage": 0.744,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Earnings Per Share from Continuing Operations - Fiscal"
+  },
+  {
+   "id": "fnd94_is_eps_dil_aft_xord_q",
+   "type": "MATRIX",
+   "coverage": 0.8137,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Diluted EPS Including Extraordinary"
+  },
+  {
+   "id": "fnd94_is_exc_tax_q",
+   "type": "MATRIX",
+   "coverage": 0.3343,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Excise Taxes Payments"
+  },
+  {
+   "id": "fnd94_is_gross_inc_q",
+   "type": "MATRIX",
+   "coverage": 0.7909,
+   "userCount": 17,
+   "alphaCount": 28,
+   "description": "Gross Profit"
+  },
+  {
+   "id": "fnd94_is_int_exp_debt_q",
+   "type": "MATRIX",
+   "coverage": 0.8411,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Interest Expense on Debt"
+  },
+  {
+   "id": "fnd94_is_int_exp_net_q",
+   "type": "MATRIX",
+   "coverage": 0.8029,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Interest Expense, Net of Interest Capitalized"
+  },
+  {
+   "id": "fnd94_is_labor_exp_q",
+   "type": "MATRIX",
+   "coverage": 0.5032,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Labor & Related Expense"
+  },
+  {
+   "id": "fnd94_is_min_int_exp_q",
+   "type": "MATRIX",
+   "coverage": 0.841,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minority Interest Expense"
+  },
+  {
+   "id": "fnd94_is_net_inc_basic_aft_xord_q",
+   "type": "MATRIX",
+   "coverage": 0.8059,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Net Income Available to Common - Basic - After Extraordinaries"
+  },
+  {
+   "id": "fnd94_is_net_inc_basic_beft_xord_q",
+   "type": "MATRIX",
+   "coverage": 0.8542,
+   "userCount": 24,
+   "alphaCount": 31,
+   "description": "Income Before Extraordinary Items"
+  },
+  {
+   "id": "fnd94_is_net_inc_basic_q",
+   "type": "MATRIX",
+   "coverage": 0.892,
+   "userCount": 53,
+   "alphaCount": 79,
+   "description": "Net Income Available to Common - Basic"
+  },
+  {
+   "id": "fnd94_is_net_inc_cm_q",
+   "type": "MATRIX",
+   "coverage": 0.7806,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Income Available to Common"
+  },
+  {
+   "id": "fnd94_is_net_inc_dil_q",
+   "type": "MATRIX",
+   "coverage": 0.8058,
+   "userCount": 8,
+   "alphaCount": 14,
+   "description": "Diluted Net Income"
+  },
+  {
+   "id": "fnd94_is_oper_exp_q",
+   "type": "MATRIX",
+   "coverage": 0.8056,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Total Operating Expense"
+  },
+  {
+   "id": "fnd94_is_oper_inc_bef_dep_q",
+   "type": "MATRIX",
+   "coverage": 0.7529,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Operating Income Before Depreciation"
+  },
+  {
+   "id": "fnd94_is_oper_inc_q",
+   "type": "MATRIX",
+   "coverage": 0.9288,
+   "userCount": 127,
+   "alphaCount": 192,
+   "description": "Operating Income"
+  },
+  {
+   "id": "fnd94_is_ppe_impair_q",
+   "type": "MATRIX",
+   "coverage": 0.3298,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Impairment of Property, Plant & Equipment"
+  },
+  {
+   "id": "fnd94_is_ptx_inc_norm_q",
+   "type": "MATRIX",
+   "coverage": 0.913,
+   "userCount": 52,
+   "alphaCount": 75,
+   "description": "Normalized Income Before Taxes"
+  },
+  {
+   "id": "fnd94_is_revenue_q",
+   "type": "MATRIX",
+   "coverage": 0.8292,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Total Revenue"
+  },
+  {
+   "id": "fnd94_is_sales_q",
+   "type": "MATRIX",
+   "coverage": 0.8038,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Total Sales"
+  },
+  {
+   "id": "fnd94_is_sga_tot_q",
+   "type": "MATRIX",
+   "coverage": 0.7832,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Selling/General/Admin. Expenses, Total"
+  },
+  {
+   "id": "fnd94_is_stock_comp_exp_q",
+   "type": "MATRIX",
+   "coverage": 0.4292,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Stock Compensation Expense"
+  },
+  {
+   "id": "fnd94_is_tax_non_inc_utl_q",
+   "type": "MATRIX",
+   "coverage": 0.7176,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Taxes Other Than Income Taxes (Utilities)"
+  },
+  {
+   "id": "fnd94_q_actq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Total Current Assets"
+  },
+  {
+   "id": "fnd94_q_aor_tr",
+   "type": "MATRIX",
+   "coverage": 0.8756,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Return on Assets"
+  },
+  {
+   "id": "fnd94_q_cni_ffa_qe_si",
+   "type": "MATRIX",
+   "coverage": 0.8396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Equity in Affiliates"
+  },
+  {
+   "id": "fnd94_q_cni_xtp_si",
+   "type": "MATRIX",
+   "coverage": 0.8587,
+   "userCount": 90,
+   "alphaCount": 148,
+   "description": "Pretax Income"
+  },
+  {
+   "id": "fnd94_q_cogsq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Cost of goods sold excluding depreciation and amortization, quarterly"
+  },
+  {
+   "id": "fnd94_q_crp_vni_sb",
+   "type": "MATRIX",
+   "coverage": 0.4856,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Inventories - Work in Progress"
+  },
+  {
+   "id": "fnd94_q_cshoq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Common shares outstanding, quarterly"
+  },
+  {
+   "id": "fnd94_q_dpactq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Accumulated Depreciation"
+  },
+  {
+   "id": "fnd94_q_drox_xe_lid_spe_si",
+   "type": "MATRIX",
+   "coverage": 0.8123,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Diluted EPS Excluding Extraordinary Items"
+  },
+  {
+   "id": "fnd94_q_fc_pxe_ped_si",
+   "type": "MATRIX",
+   "coverage": 0.8045,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Depreciation & Amortization (Cash Flow)"
+  },
+  {
+   "id": "fnd94_q_grhc_drox_xtp_si",
+   "type": "MATRIX",
+   "coverage": 0.7696,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Extraordinary Charge - Pretax"
+  },
+  {
+   "id": "fnd94_q_hto_jda_rpmoc_hto_qe_moc_si",
+   "type": "MATRIX",
+   "coverage": 0.5305,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Accum Other Comp Inc - Other Adjustments"
+  },
+  {
+   "id": "fnd94_q_hto_sbail_sb",
+   "type": "MATRIX",
+   "coverage": 0.9461,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other Liabilities, Total"
+  },
+  {
+   "id": "fnd94_q_jda_lid_si",
+   "type": "MATRIX",
+   "coverage": 0.7631,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Dilution Adjustment"
+  },
+  {
+   "id": "fnd94_q_lg_qe_moc_sb",
+   "type": "MATRIX",
+   "coverage": 0.938,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unrealized gain/loss on marketable securities"
+  },
+  {
+   "id": "fnd94_q_mr_vni_sb",
+   "type": "MATRIX",
+   "coverage": 0.5557,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Inventories - Raw Materials"
+  },
+  {
+   "id": "fnd94_q_nf_vni_sb",
+   "type": "MATRIX",
+   "coverage": 0.5936,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Inventories - Finished Goods"
+  },
+  {
+   "id": "fnd94_q_ngm_xtp_tr",
+   "type": "MATRIX",
+   "coverage": 0.8202,
+   "userCount": 54,
+   "alphaCount": 73,
+   "description": "Pre-tax Margin"
+  },
+  {
+   "id": "fnd94_q_ped_epp_sb",
+   "type": "MATRIX",
+   "coverage": 0.8763,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated Depreciation"
+  },
+  {
+   "id": "fnd94_q_ppegtq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Property, plant, and equipment, gross"
+  },
+  {
+   "id": "fnd94_q_ppentq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net property, plant and equipment"
+  },
+  {
+   "id": "fnd94_q_pxe_ags_si",
+   "type": "MATRIX",
+   "coverage": 0.7851,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Selling, General & Administrative Expense"
+  },
+  {
+   "id": "fnd94_q_pxe_dr_si",
+   "type": "MATRIX",
+   "coverage": 0.7422,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Research & Development"
+  },
+  {
+   "id": "fnd94_q_pxe_rcca_sb",
+   "type": "MATRIX",
+   "coverage": 0.7068,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Accrued Expenses"
+  },
+  {
+   "id": "fnd94_q_q_qbi",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 38,
+   "alphaCount": 51,
+   "description": "Income before extraordinary items (quarterly)"
+  },
+  {
+   "id": "fnd94_q_q_qcld",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term debt and current portion of long-term debt"
+  },
+  {
+   "id": "fnd94_q_q_qdrx",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 38,
+   "alphaCount": 48,
+   "description": "Research and development expense (quarterly)"
+  },
+  {
+   "id": "fnd94_q_q_qer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Retained earnings"
+  },
+  {
+   "id": "fnd94_q_q_qipspe",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Earnings Per Share incl. Extraordinary Items"
+  },
+  {
+   "id": "fnd94_q_q_qlwdg",
+   "type": "MATRIX",
+   "coverage": 0.9676,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net goodwill"
+  },
+  {
+   "id": "fnd94_q_q_qoca",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other current assets"
+  },
+  {
+   "id": "fnd94_q_q_qocl",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other Current Liabilities, Total"
+  },
+  {
+   "id": "fnd94_q_q_qol",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other liabilities, total"
+  },
+  {
+   "id": "fnd94_q_q_qpa",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Accounts Payable"
+  },
+  {
+   "id": "fnd94_q_q_qpd",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Depreciation and Amortization - Total"
+  },
+  {
+   "id": "fnd94_q_q_qpdaio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 24,
+   "description": "Operating income (operating profit, quarterly)"
+  },
+  {
+   "id": "fnd94_q_q_qpxt",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Income taxes payable (current liability)"
+  },
+  {
+   "id": "fnd94_q_q_qrphsc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Common shares used to calculate basic EPS (basic weighted-average shares)"
+  },
+  {
+   "id": "fnd94_q_q_qta",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 32,
+   "description": "Total Assets"
+  },
+  {
+   "id": "fnd94_q_q_qtcl",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total Current Liabilities"
+  },
+  {
+   "id": "fnd94_q_q_qtl",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total Liabilities"
+  },
+  {
+   "id": "fnd94_q_q_qtnix",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Interest Expense, Net of Interest Capitalized"
+  },
+  {
+   "id": "fnd94_q_q_qttld",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Long-term debt"
+  },
+  {
+   "id": "fnd94_q_q_qtvni",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Total inventories"
+  },
+  {
+   "id": "fnd94_q_q_qtxt",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Quarterly income tax expense"
+  },
+  {
+   "id": "fnd94_q_q_qxpspe",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Basic earnings per share (EPS), quarterly"
+  },
+  {
+   "id": "fnd94_q_qe_moc_dtl_tr",
+   "type": "MATRIX",
+   "coverage": 0.9373,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long Term Debt % Common Equity"
+  },
+  {
+   "id": "fnd94_q_qe_moc_sb",
+   "type": "MATRIX",
+   "coverage": 0.9529,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Common Equity"
+  },
+  {
+   "id": "fnd94_q_qe_srdlhs_sb",
+   "type": "MATRIX",
+   "coverage": 0.946,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total Shareholders' Equity"
+  },
+  {
+   "id": "fnd94_q_qe_srdlhs_sbail_sb",
+   "type": "MATRIX",
+   "coverage": 0.9469,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Liabilities & Stockholders' Equity - Total"
+  },
+  {
+   "id": "fnd94_q_rc_drox_xtp_si",
+   "type": "MATRIX",
+   "coverage": 0.7667,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Extraordinary Credit - Pretax"
+  },
+  {
+   "id": "fnd94_q_rectq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Total accounts receivable"
+  },
+  {
+   "id": "fnd94_q_rg_qe_moc_tr",
+   "type": "MATRIX",
+   "coverage": 0.9016,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Equity Growth"
+  },
+  {
+   "id": "fnd94_q_rg_spb_tr",
+   "type": "MATRIX",
+   "coverage": 0.8969,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Book Value Per Share Growth %"
+  },
+  {
+   "id": "fnd94_q_saleq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 41,
+   "alphaCount": 55,
+   "description": "Total Sales"
+  },
+  {
+   "id": "fnd94_q_spb_sb",
+   "type": "MATRIX",
+   "coverage": 0.885,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Book Value Per Share"
+  },
+  {
+   "id": "fnd94_q_ts_viecer_sb",
+   "type": "MATRIX",
+   "coverage": 0.8932,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Short-term Receivables"
+  },
+  {
+   "id": "fnd94_q_txditcq_q",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Deferred Taxes and Investment Tax Credit"
+  },
+  {
+   "id": "fnd94_q_xtp_cni_ffa_qe_si",
+   "type": "MATRIX",
+   "coverage": 0.8193,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pre-Tax Equity in Earnings"
+  },
+  {
+   "id": "fnd94_rt_assets_com_eq_q",
+   "type": "MATRIX",
+   "coverage": 0.9384,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Assets / Common Equity Ratio"
+  },
+  {
+   "id": "fnd94_rt_assets_gr_q",
+   "type": "MATRIX",
+   "coverage": 0.9058,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Assets Growth"
+  },
+  {
+   "id": "fnd94_rt_capex_assets_q",
+   "type": "MATRIX",
+   "coverage": 0.7613,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Capital Expenditures % Total Assets"
+  },
+  {
+   "id": "fnd94_rt_capex_sales_q",
+   "type": "MATRIX",
+   "coverage": 0.7872,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Capital Expenditures % Sales"
+  },
+  {
+   "id": "fnd94_rt_cash_curr_assets_q",
+   "type": "MATRIX",
+   "coverage": 0.8673,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash & Short-term Investments % Total Current Assets"
+  },
+  {
+   "id": "fnd94_rt_cf_sales_q",
+   "type": "MATRIX",
+   "coverage": 0.7895,
+   "userCount": 16,
+   "alphaCount": 25,
+   "description": "Cash Flow/Sales"
+  },
+  {
+   "id": "fnd94_rt_com_eq_assets_q",
+   "type": "MATRIX",
+   "coverage": 0.9386,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Common Equity % Total Assets"
+  },
+  {
+   "id": "fnd94_rt_curr_ratio_q",
+   "type": "MATRIX",
+   "coverage": 0.8887,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current Ratio"
+  },
+  {
+   "id": "fnd94_rt_debt_assets_q",
+   "type": "MATRIX",
+   "coverage": 0.9369,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Total Debt % Total Assets"
+  },
+  {
+   "id": "fnd94_rt_debt_com_eq_q",
+   "type": "MATRIX",
+   "coverage": 0.9367,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total Debt % Common Equity"
+  },
+  {
+   "id": "fnd94_rt_ebit_oper_fix_chrg_covg_q",
+   "type": "MATRIX",
+   "coverage": 0.7516,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Fixed Charge Coverage Ratio"
+  },
+  {
+   "id": "fnd94_rt_ebit_oper_mgn_q",
+   "type": "MATRIX",
+   "coverage": 0.8169,
+   "userCount": 39,
+   "alphaCount": 69,
+   "description": "Operating Margin"
+  },
+  {
+   "id": "fnd94_rt_fix_assets_com_eq_q",
+   "type": "MATRIX",
+   "coverage": 0.9376,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Fixed Assets % Common Equity"
+  },
+  {
+   "id": "fnd94_rt_gross_mgn_q",
+   "type": "MATRIX",
+   "coverage": 0.7986,
+   "userCount": 19,
+   "alphaCount": 26,
+   "description": "Gross Margin"
+  },
+  {
+   "id": "fnd94_rt_net_mgn_q",
+   "type": "MATRIX",
+   "coverage": 0.8197,
+   "userCount": 80,
+   "alphaCount": 117,
+   "description": "Net Profit Margin"
+  },
+  {
+   "id": "fnd94_rt_oper_cf_fix_chrg_q",
+   "type": "MATRIX",
+   "coverage": 0.7663,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Operating Cash/Fixed Charges"
+  },
+  {
+   "id": "fnd94_rt_psales_q",
+   "type": "MATRIX",
+   "coverage": 0.8713,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price to Sales"
+  },
+  {
+   "id": "fnd94_rt_reinvest_rate_q",
+   "type": "MATRIX",
+   "coverage": 0.8625,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Reinvestment Rate ? Per Share"
+  },
+  {
+   "id": "fnd94_rt_roce_q",
+   "type": "MATRIX",
+   "coverage": 0.8781,
+   "userCount": 17,
+   "alphaCount": 18,
+   "description": "Return on Equity - Per Share"
+  },
+  {
+   "id": "fnd94_rt_roe_q",
+   "type": "MATRIX",
+   "coverage": 0.8772,
+   "userCount": 49,
+   "alphaCount": 70,
+   "description": "Return on Equity - Total (%)"
+  },
+  {
+   "id": "fnd94_rt_tot_invest_ret_q",
+   "type": "MATRIX",
+   "coverage": 0.8704,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total Investment Return"
+  },
+  {
+   "id": "quarterly_preferred_dividends_paid",
+   "type": "MATRIX",
+   "coverage": 0.6724,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Preferred Dividend Requirements"
+  },
+  {
+   "id": "quarterly_preferred_equity_amount",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Preferred stock (preferred equity)"
+  },
+  {
+   "id": "quarterly_redeemable_preferred_equity_amount",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Preferred/Preference Stock - Redeemable"
+  }
+ ],
+ "count": 186,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 29,
+ "platform_count": 215,
+ "complete": true,
+ "pages_fetched": 5
+}

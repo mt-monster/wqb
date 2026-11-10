@@ -121,3 +121,34 @@
 ⚠ **`predictive_starmine` 的另一批几何是退化件**（TO 0.00% / margin 0.00 ⇒ 不可提交，见 `_field-profile-playbook.md`）⇒ 本区**只走 `ep_yield_pct_smest_fy1_3` 的 ts_delta 形态**。
 
 （提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)。）
+
+### 2026-11-09 ★ 三个未探 model 集的实测结论（6+3 探针）
+
+| 数据集 | 字段 | 机制 | 最好 S | 判定 |
+|---|---|---|---:|---|
+| `model313` | `mdl313_iai` / `mdl313_ico` | 无形资产强度 / 组织资本强度（cov 0.4192） | 0.44 / 0.03 | **判死**，无形资本溢价在 GBR TOP700 无独立信号 |
+| `model307` | `mdl307_sales_pct_us / emea / gb / unclassified` | 地理销售暴露（VECTOR，cov 0.6441） | 0.33 | **判死**，地区收入占比 252 日 z 无预测力 |
+| `analyst_earnings_ibes` | 42 字段 | ★ **名不副实** | —— | 实际全为**价格/收益/成交量**字段（`closing_price_dlr*`、`*_total_return_dlr*`、`trading_volume_dlr*`、`market_capitalization_dlr*`），**零盈利预测字段**；aC 1142 且属 PV 内容，不投 |
+
+**教训**：`get_datasets` 的 `name`/`description` **不可作为机制判断依据**（`analyst_earnings_ibes` 叫「Global Analyst Earnings Forecasts」
+但内容全是量价）。开波前必须 `get_datafields` 实读字段名与描述。
+
+### `model36` `star_sr_*` 信用风险六维（2026-11-09 实测 · **判死**）
+
+`model36` 给出一套信用风险因子分解（coverage 0.5972–1.0）。它是**纯单集 ATOM（不占组腿配额）**，
+本应是扩席首选形态。统一骨架 `group_rank(ts_zscore(<field>, 252), sector)`（FAST / decay5 / trunc0.1），6 条全实测：
+
+| 字段 | S | 2Y | 判定 |
+|---|---:|---:|---|
+| `star_sr_profitability_d1` | 0.26 | −0.03 | 判死 |
+| `star_sr_liquidity_d1` | **−0.61** | −1.15 | 判死 |
+| `star_sr_leverage_d1` | −0.29 | −0.72 | 判死 |
+| `star_sr_coverage_d1` | 0.03 | −0.40 | 判死 |
+| `star_sr_growth_d1` | 0.24 | 0.72 | 判死 |
+| `star_sr_global_rank_d1`（`ts_av_diff` 形态） | −0.47 | −1.02 | 判死 |
+
+⇒ **信用风险六维在 GBR TOP700 全无独立信号**（最好 S0.26，3 条 2Y 为负）。
+★★ **教训（本轮最贵的一条）**：「cov 高 + 纯 ATOM 免配额」只解决**合规性**，完全不解决**信号强度**。
+免配额形态值得优先试，但**不要因为形态合规就预期它出货**。
+
+

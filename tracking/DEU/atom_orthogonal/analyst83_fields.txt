@@ -1,0 +1,2770 @@
+﻿{
+  "results": [
+    {
+      "id": "analyst_ari_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of Sell Side Analysts in Presentation"
+    },
+    {
+      "id": "analyst_cli_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "The CLI score of Sell Side Analysts in Presentation"
+    },
+    {
+      "id": "analyst_dcs_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "The DCS score of Sell Side Analysts in Presentation"
+    },
+    {
+      "id": "analyst_fkgl_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of Sell Side Analysts in Presentation"
+    },
+    {
+      "id": "analyst_forward_looking_sentiment_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for sell-side analysts during the presentation section"
+    },
+    {
+      "id": "analyst_fre_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of Sell Side Analysts in Presentation"
+    },
+    {
+      "id": "analyst_gfi_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of Sell Side Analysts in Presentation"
+    },
+    {
+      "id": "analyst_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability score of sell-side analysts’ remarks during the presentation section"
+    },
+    {
+      "id": "analyst_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score of Sell Side analysts during the Q&A section"
+    },
+    {
+      "id": "analyst_negative_sentiment_logit_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Logistic model output (logit) for negative sentiment of sell-side analysts during the presentation section"
+    },
+    {
+      "id": "analyst_neutral_sentiment_logit_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for neutral sentiment of sell-side analysts during the presentation section"
+    },
+    {
+      "id": "analyst_positive_sentiment_logit_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for positive sentiment of sell-side analysts during the presentation section"
+    },
+    {
+      "id": "analyst_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by sell-side analysts during the presentation section"
+    },
+    {
+      "id": "analyst_sentiment_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment score for sell-side analysts during the presentation section"
+    },
+    {
+      "id": "analyst_smog_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score of Sell Side Analysts in Presentation"
+    },
+    {
+      "id": "analyst_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by sell-side analysts during the presentation section"
+    },
+    {
+      "id": "anl83_actinvoratioceopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of words spoken by the CEO to total words spoken by executives during the presentation"
+    },
+    {
+      "id": "anl83_actinvoratioceoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of CEO words to total executive words during the Q&A"
+    },
+    {
+      "id": "anl83_actinvoratiocfopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of CFO words to total executive words during the Presentation"
+    },
+    {
+      "id": "anl83_actinvoratiocfoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of CFO words to total executive words during the Q&A"
+    },
+    {
+      "id": "anl83_analyst_ari_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Automated Readability Index score for sell-side analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_cli_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Coleman-Liau Index score for sell-side analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_dcs_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score of Sell Side Analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_fkgl_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of Sell Side Analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_forw_sent_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Forward-looking sentiment score for sell-side analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_fre_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of Sell Side Analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_gfi_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of Sell Side Analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_neg_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative-sentiment logistic model score for sell-side analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_neu_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Neutral-sentiment logistic model score for sell-side analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_pos_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Logistic model output for positive sentiment of sell-side analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_sent_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment score for sell-side analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analyst_smog_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score of Sell Side Analysts during the Q&A section"
+    },
+    {
+      "id": "anl83_analystattendence",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sell-side analysts attending the conference"
+    },
+    {
+      "id": "anl83_aq_erf",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score in the Q&A section"
+    },
+    {
+      "id": "anl83_aq_erf_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of CEO in Q&A"
+    },
+    {
+      "id": "anl83_aq_erf_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch Reading Ease score for the CFO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_aq_ifg",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score in the Q&A section"
+    },
+    {
+      "id": "anl83_aq_ifg_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of CEO in Q&A"
+    },
+    {
+      "id": "anl83_aq_ifg_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gunning Fog Index score for the CFO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_aq_ilc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score in the Q&A section"
+    },
+    {
+      "id": "anl83_aq_ilc_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score of CEO in Q&A"
+    },
+    {
+      "id": "anl83_aq_ilc_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score of CFO in Q&A"
+    },
+    {
+      "id": "anl83_aq_ira",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score in the Q&A section"
+    },
+    {
+      "id": "anl83_aq_ira_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of CEO in Q&A"
+    },
+    {
+      "id": "anl83_aq_ira_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of CFO in Q&A"
+    },
+    {
+      "id": "anl83_aq_lgkf",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score in the Q&A section"
+    },
+    {
+      "id": "anl83_aq_lgkf_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of CEO in Q&A"
+    },
+    {
+      "id": "anl83_aq_lgkf_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of CFO in Q&A"
+    },
+    {
+      "id": "anl83_aq_scd",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score in the Q&A section"
+    },
+    {
+      "id": "anl83_aq_scd_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score of CEO in Q&A"
+    },
+    {
+      "id": "anl83_aq_scd_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score of CFO in Q&A"
+    },
+    {
+      "id": "anl83_ari_all",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score in the whole conference call"
+    },
+    {
+      "id": "anl83_ceo_forw_sent_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_ceo_forw_sent_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for the CEO during the Q&A section"
+    },
+    {
+      "id": "anl83_ceo_neg_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for negative sentiment of the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_ceo_neg_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for negative sentiment expressed by the CEO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_ceo_neu_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for neutral sentiment of the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_ceo_neu_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for neutral sentiment of the CEO during the Q&A section"
+    },
+    {
+      "id": "anl83_ceo_pos_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for positive sentiment of the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_ceo_pos_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for positive sentiment expressed by the CEO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_ceo_sent_score_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Classical sentiment score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_ceo_sent_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Classical sentiment score for the CEO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_ceo_smog_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "SMOG readability score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_ceo_smog_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score of CEO in Q&A"
+    },
+    {
+      "id": "anl83_ceoattendence",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Indicator whether the company’s CEO attends (1=yes, 0=no)"
+    },
+    {
+      "id": "anl83_cfo_forw_sent_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for the CFO during the Presentation section"
+    },
+    {
+      "id": "anl83_cfo_forw_sent_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for the CFO during the Q&A section"
+    },
+    {
+      "id": "anl83_cfo_neg_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for negative sentiment of the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_cfo_neg_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for negative sentiment expressed by the CFO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_cfo_neu_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for neutral sentiment of the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_cfo_neu_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for neutral sentiment expressed by the CFO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_cfo_pos_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output (logit) for positive sentiment of the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_cfo_pos_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for positive sentiment expressed by the CFO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_cfo_sent_score_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Aggregate mechanical sentiment score for the CFO during the Presentation section"
+    },
+    {
+      "id": "anl83_cfo_sent_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Classical sentiment score for the CFO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_cfo_smog_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "SMOG readability score for the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_cfo_smog_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "SMOG (Simple Measure of Gobbledygook) score for the CFO during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_cfoattendence",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Indicator whether the company’s CFO attends (1=yes, 0=no)"
+    },
+    {
+      "id": "anl83_cli_all",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score in the whole conference call"
+    },
+    {
+      "id": "anl83_confcallpart_ari_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of Conference call Participants in Presentation"
+    },
+    {
+      "id": "anl83_confcallpart_ari_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Automated Readability Index score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_cli_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score of Conference call Participants in Presentation"
+    },
+    {
+      "id": "anl83_confcallpart_cli_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Coleman-Liau Index score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_dcs_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score of Conference call Participants in Presentation"
+    },
+    {
+      "id": "anl83_confcallpart_dcs_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Dale–Chall Readability Score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_fkgl_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of Conference call Participants in Presentation"
+    },
+    {
+      "id": "anl83_confcallpart_fkgl_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch–Kincaid Grade Level score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_forw_sent_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_fre_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of Conference call Participants in Presentation"
+    },
+    {
+      "id": "anl83_confcallpart_fre_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Flesch Reading Ease score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_gfi_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of Conference call Participants in Presentation"
+    },
+    {
+      "id": "anl83_confcallpart_gfi_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gunning Fog Index score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_neg_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for negative sentiment of conference call participants during the presentation section"
+    },
+    {
+      "id": "anl83_confcallpart_neg_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for negative sentiment expressed by conference call participants collectively during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_neu_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model neutral sentiment score aggregating all conference call participants during the Presentation section"
+    },
+    {
+      "id": "anl83_confcallpart_neu_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for neutral sentiment of conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_pos_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for positive sentiment of conference call participants during the presentation section"
+    },
+    {
+      "id": "anl83_confcallpart_pos_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for positive sentiment expressed by conference call participants collectively during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_sent_score_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment score for conference call participants during the presentation section"
+    },
+    {
+      "id": "anl83_confcallpart_sent_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment score for conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_confcallpart_smog_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "The SMOG score of Conference call Participants in Presentation"
+    },
+    {
+      "id": "anl83_confcallpart_smog_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "SMOG (Simple Measure of Gobbledygook) score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_ari_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Automated Readability Index score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_ari_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Automated Readability Index score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_cli_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CLI score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_cli_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Coleman-Liau Index score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_dcs_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Discourse Complexity Score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_dcs_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Dale–Chall Readability Score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_fkgl_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch–Kincaid Grade Level score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_fkgl_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch–Kincaid Grade Level score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_forw_sent_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_forw_sent_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_fre_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Flesch Reading Ease score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_fre_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch Reading Ease score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_gfi_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gunning Fog Index score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_gfi_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gunning Fog Index score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_neg_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model negative sentiment score for corporate participants during the Presentation section"
+    },
+    {
+      "id": "anl83_corppart_neg_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for negative sentiment of corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_neu_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for neutral sentiment of corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_neu_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for neutral sentiment of corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_pos_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model positive sentiment score for corporate participants during the Presentation section"
+    },
+    {
+      "id": "anl83_corppart_pos_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for positive sentiment of corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppart_sent_score_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_sent_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Classical sentiment score for corporate participants during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_corppart_smog_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "SMOG readability score for corporate participants during the presentation section"
+    },
+    {
+      "id": "anl83_corppart_smog_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "SMOG (Simple Measure of Gobbledygook) score for corporate participants during the Q&A section"
+    },
+    {
+      "id": "anl83_corppartattendence",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of corporate participants attending the conference"
+    },
+    {
+      "id": "anl83_dcs_all",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score in the whole conference call"
+    },
+    {
+      "id": "anl83_fkgl_all",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score in the whole conference call"
+    },
+    {
+      "id": "anl83_fre_all",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score in the whole conference call"
+    },
+    {
+      "id": "anl83_gfi_all",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score in the whole conference call"
+    },
+    {
+      "id": "anl83_neg_logit_all",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for negative sentiment across the entire call (ALL sections)"
+    },
+    {
+      "id": "anl83_neg_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative-sentiment logistic model score during the presentation section"
+    },
+    {
+      "id": "anl83_neg_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative-sentiment logistic model score during the Q&A section"
+    },
+    {
+      "id": "anl83_neu_logit_all",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Neutral-sentiment logistic model score across the entire call (all sections)"
+    },
+    {
+      "id": "anl83_neu_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Neutral-sentiment logistic model score during the presentation section"
+    },
+    {
+      "id": "anl83_neu_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Neutral-sentiment logistic model score during the Q&A section"
+    },
+    {
+      "id": "anl83_numnongaappres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of occurrences of the term non-GAAP during the presentation section"
+    },
+    {
+      "id": "anl83_numqapair",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of question-answer pairs (one question followed by two answers counts as 2 QA pairs) (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numqueanalyst",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of questions from Sell Side Analysts during the Q&A segment (NA if no questions)"
+    },
+    {
+      "id": "anl83_numsentanalystqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by Sell Side Analysts during the Q&A segment"
+    },
+    {
+      "id": "anl83_numsentans",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences of all answers during Q&A (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numsentceopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_numsentceoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by the CEO during the Q&A section"
+    },
+    {
+      "id": "anl83_numsentcfopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_numsentcfoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by the CFO during the Q&A section"
+    },
+    {
+      "id": "anl83_numsentconfcallpartqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by conference call participants during the Q&A segment"
+    },
+    {
+      "id": "anl83_numsentexepres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by executives during the presentation"
+    },
+    {
+      "id": "anl83_numsentexeqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by executives during the Q&A section"
+    },
+    {
+      "id": "anl83_numsentoperpres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by the operator during the presentation section"
+    },
+    {
+      "id": "anl83_numsentoperqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by the operator during the Q&A segment (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numsentque",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences of all questions during Q&A (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numsentqueanalyst",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences in questions asked by Sell Side Analysts during the Q&A segment (NA if no questions)"
+    },
+    {
+      "id": "anl83_numsuppans",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of supplementary answers (one question followed by two answers counts as 1 supplementary answer) (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numvswordsratioceopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to total words spoken by the CEO during the Presentation (NA if CEO did not attend or did not speak)"
+    },
+    {
+      "id": "anl83_numvswordsratioceoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to total words spoken by the CEO in the Q&A (NA if CEO did not attend or did not speak)"
+    },
+    {
+      "id": "anl83_numvswordsratiocfopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical to total words spoken by the CFO during the presentation (NA if CFO did not attend or did not speak)"
+    },
+    {
+      "id": "anl83_numvswordsratiocfoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical to total words spoken by the CFO during Q&A (NA if CFO did not attend or did not speak in Q&A)"
+    },
+    {
+      "id": "anl83_numvswordsratioexepres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to total words spoken by executives during the Presentation"
+    },
+    {
+      "id": "anl83_numvswordsratioexeqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to total words spoken by executives in the Q&A (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numwordanalystqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by Sell Side Analysts during the Q&A segment"
+    },
+    {
+      "id": "anl83_numwordans",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Total number of words in all answers in the Q&A section (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numwordceopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_numwordceoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by the CEO during the Q&A section"
+    },
+    {
+      "id": "anl83_numwordcfopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_numwordcfoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by the CFO during the Q&A section"
+    },
+    {
+      "id": "anl83_numwordconfcallpartqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by conference call participants during the Q&A segment"
+    },
+    {
+      "id": "anl83_numwordexepres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by executives during the presentation"
+    },
+    {
+      "id": "anl83_numwordexeqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by executives during the Q&A section"
+    },
+    {
+      "id": "anl83_numwordoperpres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by the operator during the presentation section"
+    },
+    {
+      "id": "anl83_numwordoperqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by the operator during the Q&A segment (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_numwordque",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Total number of words in all questions during the Q&A segment (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_oper_ari_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of Operator in Presentation"
+    },
+    {
+      "id": "anl83_oper_ari_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Automated Readability Index score for the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_oper_cli_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score of Operator in Presentation"
+    },
+    {
+      "id": "anl83_oper_cli_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Coleman-Liau Index score for the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_oper_dcs_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score of Operator in Presentation"
+    },
+    {
+      "id": "anl83_oper_dcs_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Dale–Chall Readability Score for the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_oper_fkgl_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of Operator in Presentation"
+    },
+    {
+      "id": "anl83_oper_fkgl_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch–Kincaid Grade Level score for the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_oper_fre_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of Operator in Presentation"
+    },
+    {
+      "id": "anl83_oper_fre_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch Reading Ease score for the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_oper_gfi_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of Operator in Presentation"
+    },
+    {
+      "id": "anl83_oper_gfi_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gunning Fog Index score for the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_oper_neg_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model negative sentiment score for the Operator during the Presentation section"
+    },
+    {
+      "id": "anl83_oper_neg_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for negative sentiment expressed by the operator during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_oper_neu_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model neutral sentiment score for the Operator during the Presentation section"
+    },
+    {
+      "id": "anl83_oper_neu_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for neutral sentiment expressed by the operator during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_oper_pos_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for positive sentiment of the operator during the presentation section"
+    },
+    {
+      "id": "anl83_oper_pos_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for positive sentiment of the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_oper_sent_score_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment score for the Operator during the Presentation section"
+    },
+    {
+      "id": "anl83_oper_sent_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Classical sentiment score for the operator during the Q&A section of the conference call"
+    },
+    {
+      "id": "anl83_oper_smog_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score of Operator in Presentation"
+    },
+    {
+      "id": "anl83_oper_smog_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "SMOG (Simple Measure of Gobbledygook) score for the operator during the Q&A section"
+    },
+    {
+      "id": "anl83_pos_logit_all",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive-sentiment logistic model score across the entire call (all sections)"
+    },
+    {
+      "id": "anl83_pos_logit_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive-sentiment logistic model score during the presentation section"
+    },
+    {
+      "id": "anl83_pos_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive-sentiment logistic model score during the Q&A section"
+    },
+    {
+      "id": "anl83_qasentratio",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of total sentences in questions to total sentences in answers in the Q&A section (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_qawordratio",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of total words in questions to total words in answers in the Q&A section (NA if no Q&A)"
+    },
+    {
+      "id": "anl83_sent_score_all",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Overall sentiment score across the entire call (all sections)"
+    },
+    {
+      "id": "anl83_sent_score_pres",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment score during the presentation section"
+    },
+    {
+      "id": "anl83_sent_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment score during the Q&A section"
+    },
+    {
+      "id": "anl83_serp_erf",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score in the Presentation section"
+    },
+    {
+      "id": "anl83_serp_erf_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch Reading Ease score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_erf_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch Reading Ease score for the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_ifg",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score in the Presentation section"
+    },
+    {
+      "id": "anl83_serp_ifg_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gunning Fog Index score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_ifg_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gunning Fog Index score for the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_ilc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score in the Presentation section"
+    },
+    {
+      "id": "anl83_serp_ilc_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CLI score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_ilc_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "CLI score for the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_ira",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score in the Presentation section"
+    },
+    {
+      "id": "anl83_serp_ira_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Automated Readability Index score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_ira_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Automated Readability Index score for the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_lgkf",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score in the Presentation section"
+    },
+    {
+      "id": "anl83_serp_lgkf_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch–Kincaid Grade Level score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_lgkf_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Flesch–Kincaid Grade Level score for the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_scd",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score in the Presentation section"
+    },
+    {
+      "id": "anl83_serp_scd_oec",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Discourse Complexity Score for the CEO during the presentation section"
+    },
+    {
+      "id": "anl83_serp_scd_ofc",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Discourse Complexity Score for the CFO during the presentation section"
+    },
+    {
+      "id": "anl83_serppaagmun",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of occurrences of the term GAAP during the presentation section"
+    },
+    {
+      "id": "anl83_sinvsplurratioceopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Pronoun balance for the CEO in Presentation, computed as (count of I/my/me/mine − count of we/our/us/ours) divided by their sum (NA if no CEO speech)"
+    },
+    {
+      "id": "anl83_sinvsplurratioceoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Pronoun ratio for the CEO during Q&A defined as (count of I,my,me,mine minus count of we,our,us,ours) divided by their sum (NA if CEO did not attend or did not…"
+    },
+    {
+      "id": "anl83_sinvsplurratiocfopres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Pronoun balance for the CFO in Presentation, computed as (singular first-person pronouns − plural pronouns) divided by their sum (NA if no CFO speech)"
+    },
+    {
+      "id": "anl83_sinvsplurratiocfoqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Pronoun balance for the CFO in Q&A, computed as (singular first-person pronouns − plural pronouns) divided by their sum (NA if no CFO Q&A speech)"
+    },
+    {
+      "id": "anl83_sinvsplurratioexepres",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Pronoun balance for executives in Presentation, computed as (singular first-person pronouns − plural pronouns) divided by their sum"
+    },
+    {
+      "id": "anl83_sinvsplurratioexeqa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for executives during Q&A; NA if no Q&A"
+    },
+    {
+      "id": "anl83_smog_all",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score in the whole conference call"
+    },
+    {
+      "id": "anl83_smog_pres",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score in the Presentation section"
+    },
+    {
+      "id": "anl83_smog_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score in the Q&A section"
+    },
+    {
+      "id": "buyside_ari_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_attendance_count",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of buy-side investors attending the conference"
+    },
+    {
+      "id": "buyside_cli_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI (Comment Leniency) score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_dcs_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_fkgl_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_forward_looking_sentiment_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Forward-looking sentiment score for buy-side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_fre_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_gfi_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_negative_sentiment_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Negative-sentiment logistic model score for buy-side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_neutral_sentiment_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic model output for neutral sentiment of buy-side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_positive_sentiment_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive-sentiment logistic model score for buy-side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by buy-side investors during the presentation section"
+    },
+    {
+      "id": "buyside_sentence_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by Buy Side investors during the Q&A segment"
+    },
+    {
+      "id": "buyside_sentiment_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment score for buy-side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_smog_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score of Buy Side investors during the Q&A section"
+    },
+    {
+      "id": "buyside_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by buy-side investors during the presentation section"
+    },
+    {
+      "id": "buyside_word_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by buy-side investors during Q&A"
+    },
+    {
+      "id": "ceo_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability index score for the CEO during the presentation section"
+    },
+    {
+      "id": "ceo_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score of CEO in Q&A"
+    },
+    {
+      "id": "cfo_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability index score for the CFO during the presentation section"
+    },
+    {
+      "id": "cfo_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability score for the CFO during the Q&A section of the conference call (Europe, D0)"
+    },
+    {
+      "id": "corp_participant_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability index score for corporate participants during the presentation section"
+    },
+    {
+      "id": "corp_participant_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability score for corporate participants during the Q&A section of the conference call (Europe, D0)"
+    },
+    {
+      "id": "count_nongaap_mentions_qa_answers",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of occurrences of non-GAAP in all answers during the Q&A segment (NA if no Q&A)"
+    },
+    {
+      "id": "count_questions_buyside_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of questions from Buy Side investors during the Q&A segment (NA if no questions)"
+    },
+    {
+      "id": "count_questions_other_participants_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of questions from other participants during the Q&A segment (NA if no questions)"
+    },
+    {
+      "id": "count_questions_retail_investors_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of questions from Retail investors during the Q&A segment (NA if no questions)"
+    },
+    {
+      "id": "gaap_mention_count_qa_answers",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of occurrences of GAAP in all answers during the Q&A segment (NA if no Q&A)"
+    },
+    {
+      "id": "gaap_mention_count_qa_questions",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of occurrences of GAAP in all questions during the Q&A segment (NA if no Q&A)"
+    },
+    {
+      "id": "laughter_occurrence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of occurrences of laughter during the presentation section"
+    },
+    {
+      "id": "laughter_occurrence_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of occurrences of laughter during the Q&A segment (NA if no Q&A)"
+    },
+    {
+      "id": "non_gaap_mention_count_qa_questions",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of occurrences of non-GAAP in all questions during Q&A (NA if no Q&A)"
+    },
+    {
+      "id": "operator_forward_looking_sentiment_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for the operator during the presentation section of the conference call"
+    },
+    {
+      "id": "operator_forward_looking_sentiment_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for the Operator during the Q&A section"
+    },
+    {
+      "id": "operator_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score of Operator in Presentation"
+    },
+    {
+      "id": "operator_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability score for the operator during the Q&A section of the conference call (Europe, D0)"
+    },
+    {
+      "id": "other_ceo_attendance_count",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of CEOs from other companies attending the conference"
+    },
+    {
+      "id": "other_ceo_numeric_word_ratio_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to all words for other-company CEOs during the Presentation (NA if no other CEO attended or no speech in Presentation)"
+    },
+    {
+      "id": "other_ceo_numeric_word_ratio_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to total words for CEOs from other companies in Q&A; NA if no other CEO attended or no speech in Q&A"
+    },
+    {
+      "id": "other_ceo_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by other-company CEOs during the Presentation"
+    },
+    {
+      "id": "other_ceo_sentence_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by CEOs from other companies during Q&A"
+    },
+    {
+      "id": "other_ceo_singular_plural_pronoun_ratio_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Pronoun ratio for other-company CEOs during the presentation defined as (count of I,my,me,mine minus count of we,our,us,ours) divided by their sum (NA if other…"
+    },
+    {
+      "id": "other_ceo_singular_plural_pronoun_ratio_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for CEOs from other companies in Q&A; NA if…"
+    },
+    {
+      "id": "other_ceo_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by CEOs from other companies during the presentation"
+    },
+    {
+      "id": "other_ceo_word_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by CEOs from other companies during Q&A"
+    },
+    {
+      "id": "other_ceo_word_share_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of words spoken by other-company CEOs to total words spoken by executives from other companies during the presentation (NA if no other executives)"
+    },
+    {
+      "id": "other_ceo_word_share_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by other CEOs divided by the number of words spoken by executives from other companies in Q&A; NA if no other executives"
+    },
+    {
+      "id": "other_cfo_attendance_count",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of CFOs from other companies attending the conference"
+    },
+    {
+      "id": "other_cfo_numeric_word_ratio_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to total words spoken by CFOs from other companies during the Presentation section (NA if no such CFO attended or spoke in Presentation…"
+    },
+    {
+      "id": "other_cfo_numeric_word_ratio_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Ratio of numerical words to total words for CFOs from other companies in Q&A; NA if no other CFO attended or no speech in Q&A"
+    },
+    {
+      "id": "other_cfo_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of sentences spoken by other CFOs during the presentation"
+    },
+    {
+      "id": "other_cfo_sentence_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by CFOs from other companies during Q&A"
+    },
+    {
+      "id": "other_cfo_singular_plural_pronoun_ratio_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Pronoun ratio for other-company CFOs during the presentation defined as (count of I,my,me,mine minus count of we,our,us,ours) divided by their sum (NA if other…"
+    },
+    {
+      "id": "other_cfo_singular_plural_pronoun_ratio_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for CFOs from other companies in Q&A; NA if…"
+    },
+    {
+      "id": "other_cfo_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by CFOs from other companies during the Presentation section"
+    },
+    {
+      "id": "other_cfo_word_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by CFOs from other companies during Q&A"
+    },
+    {
+      "id": "other_cfo_word_share_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of words spoken by other-company CFOs to total words spoken by all other-company executives during the Presentation (NA if no other executives)"
+    },
+    {
+      "id": "other_cfo_word_share_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by other CFOs divided by the number of words spoken by executives from other companies in Q&A; NA if no other executives"
+    },
+    {
+      "id": "other_corporate_participant_count",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of corporate participants from other companies attending the conference"
+    },
+    {
+      "id": "other_executive_numeric_word_ratio_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Ratio of numerical to total words spoken by executives from other companies during the presentation (NA if no other executives)"
+    },
+    {
+      "id": "other_executive_numeric_word_ratio_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Ratio of numerical words to total words for executives from other companies in Q&A; NA if no other executives"
+    },
+    {
+      "id": "other_executive_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by other executives during the Presentation section"
+    },
+    {
+      "id": "other_executive_sentence_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by other executives in Q&A"
+    },
+    {
+      "id": "other_executive_singular_plural_pronoun_ratio_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Pronoun balance for executives from other companies during presentation: (count of I,my,me,mine − count of We,our,us,ours) divided by their sum"
+    },
+    {
+      "id": "other_executive_singular_plural_pronoun_ratio_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for executives from other companies in Q&A;…"
+    },
+    {
+      "id": "other_executive_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by other executives during the presentation"
+    },
+    {
+      "id": "other_executive_word_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by other executives in Q&A"
+    },
+    {
+      "id": "other_participant_ari_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_ari_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The ARI score of Other Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_attendance_count",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of other conference call participants attending the conference"
+    },
+    {
+      "id": "other_participant_cli_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_cli_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The CLI (Comment Leniency) score of Other Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_dcs_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The DCS score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_dcs_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "The DCS score of Other Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_fkgl_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FKGL score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_fkgl_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "The FKGL score of Other Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_forward_looking_sentiment_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for Other Conference Call Participants during the Presentation section"
+    },
+    {
+      "id": "other_participant_forward_looking_sentiment_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for other conference call participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_fre_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_fre_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The FRE score of Other Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_gfi_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_gfi_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The GFI score of Other Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score of Other conference call participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_negative_sentiment_logit_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Logistic-model output (logit score) for negative sentiment expressed by other conference call participants during the Presentation section"
+    },
+    {
+      "id": "other_participant_negative_sentiment_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logit score for negative sentiment of other conference call participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_neutral_sentiment_logit_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for neutral sentiment expressed by other conference call participants during the Presentation section"
+    },
+    {
+      "id": "other_participant_neutral_sentiment_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Neutral-sentiment logistic model score for other conference call participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_positive_sentiment_logit_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Logistic-model output (logit score) for positive sentiment expressed by other conference call participants during the Presentation section"
+    },
+    {
+      "id": "other_participant_positive_sentiment_logit_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Positive-sentiment logistic model score for other conference call participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of sentences spoken by other participants during the presentation section"
+    },
+    {
+      "id": "other_participant_sentence_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by other participants during Q&A (NA if no Q&A)"
+    },
+    {
+      "id": "other_participant_sentiment_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment score for other conference call participants during the presentation section"
+    },
+    {
+      "id": "other_participant_sentiment_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment score for other conference call participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_smog_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score of Other Conference Call Participants in Presentation"
+    },
+    {
+      "id": "other_participant_smog_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The SMOG score of Other Conference Call Participants during the Q&A section"
+    },
+    {
+      "id": "other_participant_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by other participants during the presentation section"
+    },
+    {
+      "id": "other_participant_word_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by other participants during Q&A (NA if no Q&A)"
+    },
+    {
+      "id": "overall_lix_score_full_call",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score in the whole conference call"
+    },
+    {
+      "id": "overall_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score in the Presentation section"
+    },
+    {
+      "id": "overall_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX score in the Q&A section"
+    },
+    {
+      "id": "participant_forward_looking_sentiment_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3422,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward-looking sentiment score for Conference Call Participants during the Presentation section"
+    },
+    {
+      "id": "participant_lix_score_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "LIX readability score of all conference call participants’ remarks during the presentation section"
+    },
+    {
+      "id": "participant_lix_score_qa",
+      "type": "VECTOR",
+      "coverage": 0.3434,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "The LIX readability score for all conference call participants during the Q&A section"
+    },
+    {
+      "id": "participant_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Number of sentences spoken by conference call participants during the presentation section"
+    },
+    {
+      "id": "participant_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by conference call participants during the presentation section"
+    },
+    {
+      "id": "retail_investor_attendance_count",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of retail investors attending the conference"
+    },
+    {
+      "id": "retail_sentence_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by retail investors during the presentation section"
+    },
+    {
+      "id": "retail_sentence_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences spoken by retail investors during Q&A"
+    },
+    {
+      "id": "retail_word_count_presentation",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by retail investors during the presentation section"
+    },
+    {
+      "id": "retail_word_count_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of words spoken by Retail investors during the Q&A segment"
+    },
+    {
+      "id": "sentence_count_buyside_questions_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences in questions asked by Buy Side investors during the Q&A segment (NA if no questions)"
+    },
+    {
+      "id": "sentence_count_other_participant_questions_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences in questions asked by other participants during the Q&A segment (NA if no questions)"
+    },
+    {
+      "id": "sentence_count_retail_investor_questions_qa",
+      "type": "VECTOR",
+      "coverage": 0.3307,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Number of sentences in questions asked by Retail investors during the Q&A segment (NA if no questions)"
+    }
+  ],
+  "count": 345,
+  "platform_count": 345,
+  "complete": true,
+  "pages_fetched": 7
+}
+[MCP structured content]
+{"result":{"results":[{"id":"analyst_ari_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of Sell Side Analysts in Presentation"},{"id":"analyst_cli_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":2,"alphaCount":2,"description":"The CLI score of Sell Side Analysts in Presentation"},{"id":"analyst_dcs_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"The DCS score of Sell Side Analysts in Presentation"},{"id":"analyst_fkgl_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of Sell Side Analysts in Presentation"},{"id":"analyst_forward_looking_sentiment_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for sell-side analysts during the presentation section"},{"id":"analyst_fre_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of Sell Side Analysts in Presentation"},{"id":"analyst_gfi_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of Sell Side Analysts in Presentation"},{"id":"analyst_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability score of sell-side analysts’ remarks during the presentation section"},{"id":"analyst_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score of Sell Side analysts during the Q&A section"},{"id":"analyst_negative_sentiment_logit_presentation","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Logistic model output (logit) for negative sentiment of sell-side analysts during the presentation section"},{"id":"analyst_neutral_sentiment_logit_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for neutral sentiment of sell-side analysts during the presentation section"},{"id":"analyst_positive_sentiment_logit_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for positive sentiment of sell-side analysts during the presentation section"},{"id":"analyst_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by sell-side analysts during the presentation section"},{"id":"analyst_sentiment_score_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Sentiment score for sell-side analysts during the presentation section"},{"id":"analyst_smog_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score of Sell Side Analysts in Presentation"},{"id":"analyst_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by sell-side analysts during the presentation section"},{"id":"anl83_actinvoratioceopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of words spoken by the CEO to total words spoken by executives during the presentation"},{"id":"anl83_actinvoratioceoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of CEO words to total executive words during the Q&A"},{"id":"anl83_actinvoratiocfopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of CFO words to total executive words during the Presentation"},{"id":"anl83_actinvoratiocfoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of CFO words to total executive words during the Q&A"},{"id":"anl83_analyst_ari_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Automated Readability Index score for sell-side analysts during the Q&A section"},{"id":"anl83_analyst_cli_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Coleman-Liau Index score for sell-side analysts during the Q&A section"},{"id":"anl83_analyst_dcs_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score of Sell Side Analysts during the Q&A section"},{"id":"anl83_analyst_fkgl_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of Sell Side Analysts during the Q&A section"},{"id":"anl83_analyst_forw_sent_qa","type":"VECTOR","coverage":0.3422,"userCount":2,"alphaCount":2,"description":"Forward-looking sentiment score for sell-side analysts during the Q&A section"},{"id":"anl83_analyst_fre_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of Sell Side Analysts during the Q&A section"},{"id":"anl83_analyst_gfi_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of Sell Side Analysts during the Q&A section"},{"id":"anl83_analyst_neg_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Negative-sentiment logistic model score for sell-side analysts during the Q&A section"},{"id":"anl83_analyst_neu_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Neutral-sentiment logistic model score for sell-side analysts during the Q&A section"},{"id":"anl83_analyst_pos_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Logistic model output for positive sentiment of sell-side analysts during the Q&A section"},{"id":"anl83_analyst_sent_score_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Sentiment score for sell-side analysts during the Q&A section"},{"id":"anl83_analyst_smog_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score of Sell Side Analysts during the Q&A section"},{"id":"anl83_analystattendence","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sell-side analysts attending the conference"},{"id":"anl83_aq_erf","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score in the Q&A section"},{"id":"anl83_aq_erf_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of CEO in Q&A"},{"id":"anl83_aq_erf_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch Reading Ease score for the CFO during the Q&A section of the conference call"},{"id":"anl83_aq_ifg","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score in the Q&A section"},{"id":"anl83_aq_ifg_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of CEO in Q&A"},{"id":"anl83_aq_ifg_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Gunning Fog Index score for the CFO during the Q&A section of the conference call"},{"id":"anl83_aq_ilc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score in the Q&A section"},{"id":"anl83_aq_ilc_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score of CEO in Q&A"},{"id":"anl83_aq_ilc_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score of CFO in Q&A"},{"id":"anl83_aq_ira","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score in the Q&A section"},{"id":"anl83_aq_ira_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of CEO in Q&A"},{"id":"anl83_aq_ira_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of CFO in Q&A"},{"id":"anl83_aq_lgkf","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score in the Q&A section"},{"id":"anl83_aq_lgkf_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of CEO in Q&A"},{"id":"anl83_aq_lgkf_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of CFO in Q&A"},{"id":"anl83_aq_scd","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score in the Q&A section"},{"id":"anl83_aq_scd_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score of CEO in Q&A"},{"id":"anl83_aq_scd_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score of CFO in Q&A"},{"id":"anl83_ari_all","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score in the whole conference call"},{"id":"anl83_ceo_forw_sent_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for the CEO during the presentation section"},{"id":"anl83_ceo_forw_sent_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for the CEO during the Q&A section"},{"id":"anl83_ceo_neg_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for negative sentiment of the CEO during the presentation section"},{"id":"anl83_ceo_neg_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for negative sentiment expressed by the CEO during the Q&A section of the conference call"},{"id":"anl83_ceo_neu_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for neutral sentiment of the CEO during the presentation section"},{"id":"anl83_ceo_neu_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for neutral sentiment of the CEO during the Q&A section"},{"id":"anl83_ceo_pos_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for positive sentiment of the CEO during the presentation section"},{"id":"anl83_ceo_pos_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for positive sentiment expressed by the CEO during the Q&A section of the conference call"},{"id":"anl83_ceo_sent_score_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Classical sentiment score for the CEO during the presentation section"},{"id":"anl83_ceo_sent_score_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Classical sentiment score for the CEO during the Q&A section of the conference call"},{"id":"anl83_ceo_smog_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"SMOG readability score for the CEO during the presentation section"},{"id":"anl83_ceo_smog_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score of CEO in Q&A"},{"id":"anl83_ceoattendence","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Indicator whether the company’s CEO attends (1=yes, 0=no)"},{"id":"anl83_cfo_forw_sent_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for the CFO during the Presentation section"},{"id":"anl83_cfo_forw_sent_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for the CFO during the Q&A section"},{"id":"anl83_cfo_neg_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for negative sentiment of the CFO during the presentation section"},{"id":"anl83_cfo_neg_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for negative sentiment expressed by the CFO during the Q&A section of the conference call"},{"id":"anl83_cfo_neu_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for neutral sentiment of the CFO during the presentation section"},{"id":"anl83_cfo_neu_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for neutral sentiment expressed by the CFO during the Q&A section of the conference call"},{"id":"anl83_cfo_pos_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output (logit) for positive sentiment of the CFO during the presentation section"},{"id":"anl83_cfo_pos_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for positive sentiment expressed by the CFO during the Q&A section of the conference call"},{"id":"anl83_cfo_sent_score_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Aggregate mechanical sentiment score for the CFO during the Presentation section"},{"id":"anl83_cfo_sent_score_qa","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Classical sentiment score for the CFO during the Q&A section of the conference call"},{"id":"anl83_cfo_smog_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"SMOG readability score for the CFO during the presentation section"},{"id":"anl83_cfo_smog_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"SMOG (Simple Measure of Gobbledygook) score for the CFO during the Q&A section of the conference call"},{"id":"anl83_cfoattendence","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Indicator whether the company’s CFO attends (1=yes, 0=no)"},{"id":"anl83_cli_all","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score in the whole conference call"},{"id":"anl83_confcallpart_ari_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of Conference call Participants in Presentation"},{"id":"anl83_confcallpart_ari_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Automated Readability Index score for all conference call participants during the Q&A section"},{"id":"anl83_confcallpart_cli_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score of Conference call Participants in Presentation"},{"id":"anl83_confcallpart_cli_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Coleman-Liau Index score for all conference call participants during the Q&A section"},{"id":"anl83_confcallpart_dcs_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score of Conference call Participants in Presentation"},{"id":"anl83_confcallpart_dcs_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Dale–Chall Readability Score for all conference call participants during the Q&A section"},{"id":"anl83_confcallpart_fkgl_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of Conference call Participants in Presentation"},{"id":"anl83_confcallpart_fkgl_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch–Kincaid Grade Level score for all conference call participants during the Q&A section"},{"id":"anl83_confcallpart_forw_sent_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for Conference Call Participants during the Q&A section"},{"id":"anl83_confcallpart_fre_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of Conference call Participants in Presentation"},{"id":"anl83_confcallpart_fre_qa","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"Flesch Reading Ease score for all conference call participants during the Q&A section"},{"id":"anl83_confcallpart_gfi_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of Conference call Participants in Presentation"},{"id":"anl83_confcallpart_gfi_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Gunning Fog Index score for all conference call participants during the Q&A section"},{"id":"anl83_confcallpart_neg_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for negative sentiment of conference call participants during the presentation section"},{"id":"anl83_confcallpart_neg_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for negative sentiment expressed by conference call participants collectively during the Q&A section"},{"id":"anl83_confcallpart_neu_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model neutral sentiment score aggregating all conference call participants during the Presentation section"},{"id":"anl83_confcallpart_neu_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for neutral sentiment of conference call participants during the Q&A section"},{"id":"anl83_confcallpart_pos_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for positive sentiment of conference call participants during the presentation section"},{"id":"anl83_confcallpart_pos_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for positive sentiment expressed by conference call participants collectively during the Q&A section"},{"id":"anl83_confcallpart_sent_score_pres","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Sentiment score for conference call participants during the presentation section"},{"id":"anl83_confcallpart_sent_score_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Sentiment score for conference call participants during the Q&A section"},{"id":"anl83_confcallpart_smog_pres","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"The SMOG score of Conference call Participants in Presentation"},{"id":"anl83_confcallpart_smog_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"SMOG (Simple Measure of Gobbledygook) score for all conference call participants during the Q&A section"},{"id":"anl83_corppart_ari_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Automated Readability Index score for corporate participants during the presentation section"},{"id":"anl83_corppart_ari_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Automated Readability Index score for corporate participants during the Q&A section"},{"id":"anl83_corppart_cli_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"CLI score for corporate participants during the presentation section"},{"id":"anl83_corppart_cli_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Coleman-Liau Index score for corporate participants during the Q&A section"},{"id":"anl83_corppart_dcs_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Discourse Complexity Score for corporate participants during the presentation section"},{"id":"anl83_corppart_dcs_qa","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"Dale–Chall Readability Score for corporate participants during the Q&A section"},{"id":"anl83_corppart_fkgl_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch–Kincaid Grade Level score for corporate participants during the presentation section"},{"id":"anl83_corppart_fkgl_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch–Kincaid Grade Level score for corporate participants during the Q&A section"},{"id":"anl83_corppart_forw_sent_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for corporate participants during the presentation section"},{"id":"anl83_corppart_forw_sent_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for corporate participants during the Q&A section"},{"id":"anl83_corppart_fre_pres","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"Flesch Reading Ease score for corporate participants during the presentation section"},{"id":"anl83_corppart_fre_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch Reading Ease score for corporate participants during the Q&A section"},{"id":"anl83_corppart_gfi_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Gunning Fog Index score for corporate participants during the presentation section"},{"id":"anl83_corppart_gfi_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Gunning Fog Index score for corporate participants during the Q&A section"},{"id":"anl83_corppart_neg_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model negative sentiment score for corporate participants during the Presentation section"},{"id":"anl83_corppart_neg_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for negative sentiment of corporate participants during the Q&A section"},{"id":"anl83_corppart_neu_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for neutral sentiment of corporate participants during the presentation section"},{"id":"anl83_corppart_neu_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for neutral sentiment of corporate participants during the Q&A section"},{"id":"anl83_corppart_pos_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model positive sentiment score for corporate participants during the Presentation section"},{"id":"anl83_corppart_pos_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for positive sentiment of corporate participants during the Q&A section"},{"id":"anl83_corppart_sent_score_pres","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Sentiment score for corporate participants during the presentation section"},{"id":"anl83_corppart_sent_score_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Classical sentiment score for corporate participants during the Q&A section of the conference call"},{"id":"anl83_corppart_smog_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"SMOG readability score for corporate participants during the presentation section"},{"id":"anl83_corppart_smog_qa","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"SMOG (Simple Measure of Gobbledygook) score for corporate participants during the Q&A section"},{"id":"anl83_corppartattendence","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of corporate participants attending the conference"},{"id":"anl83_dcs_all","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score in the whole conference call"},{"id":"anl83_fkgl_all","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score in the whole conference call"},{"id":"anl83_fre_all","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score in the whole conference call"},{"id":"anl83_gfi_all","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score in the whole conference call"},{"id":"anl83_neg_logit_all","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for negative sentiment across the entire call (ALL sections)"},{"id":"anl83_neg_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Negative-sentiment logistic model score during the presentation section"},{"id":"anl83_neg_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Negative-sentiment logistic model score during the Q&A section"},{"id":"anl83_neu_logit_all","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Neutral-sentiment logistic model score across the entire call (all sections)"},{"id":"anl83_neu_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Neutral-sentiment logistic model score during the presentation section"},{"id":"anl83_neu_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Neutral-sentiment logistic model score during the Q&A section"},{"id":"anl83_numnongaappres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of occurrences of the term non-GAAP during the presentation section"},{"id":"anl83_numqapair","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of question-answer pairs (one question followed by two answers counts as 2 QA pairs) (NA if no Q&A)"},{"id":"anl83_numqueanalyst","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of questions from Sell Side Analysts during the Q&A segment (NA if no questions)"},{"id":"anl83_numsentanalystqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by Sell Side Analysts during the Q&A segment"},{"id":"anl83_numsentans","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences of all answers during Q&A (NA if no Q&A)"},{"id":"anl83_numsentceopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by the CEO during the presentation section"},{"id":"anl83_numsentceoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by the CEO during the Q&A section"},{"id":"anl83_numsentcfopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by the CFO during the presentation section"},{"id":"anl83_numsentcfoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by the CFO during the Q&A section"},{"id":"anl83_numsentconfcallpartqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by conference call participants during the Q&A segment"},{"id":"anl83_numsentexepres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by executives during the presentation"},{"id":"anl83_numsentexeqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by executives during the Q&A section"},{"id":"anl83_numsentoperpres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by the operator during the presentation section"},{"id":"anl83_numsentoperqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by the operator during the Q&A segment (NA if no Q&A)"},{"id":"anl83_numsentque","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences of all questions during Q&A (NA if no Q&A)"},{"id":"anl83_numsentqueanalyst","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences in questions asked by Sell Side Analysts during the Q&A segment (NA if no questions)"},{"id":"anl83_numsuppans","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of supplementary answers (one question followed by two answers counts as 1 supplementary answer) (NA if no Q&A)"},{"id":"anl83_numvswordsratioceopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to total words spoken by the CEO during the Presentation (NA if CEO did not attend or did not speak)"},{"id":"anl83_numvswordsratioceoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to total words spoken by the CEO in the Q&A (NA if CEO did not attend or did not speak)"},{"id":"anl83_numvswordsratiocfopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical to total words spoken by the CFO during the presentation (NA if CFO did not attend or did not speak)"},{"id":"anl83_numvswordsratiocfoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical to total words spoken by the CFO during Q&A (NA if CFO did not attend or did not speak in Q&A)"},{"id":"anl83_numvswordsratioexepres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to total words spoken by executives during the Presentation"},{"id":"anl83_numvswordsratioexeqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to total words spoken by executives in the Q&A (NA if no Q&A)"},{"id":"anl83_numwordanalystqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by Sell Side Analysts during the Q&A segment"},{"id":"anl83_numwordans","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Total number of words in all answers in the Q&A section (NA if no Q&A)"},{"id":"anl83_numwordceopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by the CEO during the presentation section"},{"id":"anl83_numwordceoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by the CEO during the Q&A section"},{"id":"anl83_numwordcfopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by the CFO during the presentation section"},{"id":"anl83_numwordcfoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by the CFO during the Q&A section"},{"id":"anl83_numwordconfcallpartqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by conference call participants during the Q&A segment"},{"id":"anl83_numwordexepres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by executives during the presentation"},{"id":"anl83_numwordexeqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by executives during the Q&A section"},{"id":"anl83_numwordoperpres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by the operator during the presentation section"},{"id":"anl83_numwordoperqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by the operator during the Q&A segment (NA if no Q&A)"},{"id":"anl83_numwordque","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Total number of words in all questions during the Q&A segment (NA if no Q&A)"},{"id":"anl83_oper_ari_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of Operator in Presentation"},{"id":"anl83_oper_ari_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Automated Readability Index score for the operator during the Q&A section"},{"id":"anl83_oper_cli_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score of Operator in Presentation"},{"id":"anl83_oper_cli_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Coleman-Liau Index score for the operator during the Q&A section"},{"id":"anl83_oper_dcs_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score of Operator in Presentation"},{"id":"anl83_oper_dcs_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Dale–Chall Readability Score for the operator during the Q&A section"},{"id":"anl83_oper_fkgl_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of Operator in Presentation"},{"id":"anl83_oper_fkgl_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch–Kincaid Grade Level score for the operator during the Q&A section"},{"id":"anl83_oper_fre_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of Operator in Presentation"},{"id":"anl83_oper_fre_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch Reading Ease score for the operator during the Q&A section"},{"id":"anl83_oper_gfi_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of Operator in Presentation"},{"id":"anl83_oper_gfi_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Gunning Fog Index score for the operator during the Q&A section"},{"id":"anl83_oper_neg_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model negative sentiment score for the Operator during the Presentation section"},{"id":"anl83_oper_neg_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for negative sentiment expressed by the operator during the Q&A section of the conference call"},{"id":"anl83_oper_neu_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model neutral sentiment score for the Operator during the Presentation section"},{"id":"anl83_oper_neu_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for neutral sentiment expressed by the operator during the Q&A section of the conference call"},{"id":"anl83_oper_pos_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for positive sentiment of the operator during the presentation section"},{"id":"anl83_oper_pos_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for positive sentiment of the operator during the Q&A section"},{"id":"anl83_oper_sent_score_pres","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Sentiment score for the Operator during the Presentation section"},{"id":"anl83_oper_sent_score_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Classical sentiment score for the operator during the Q&A section of the conference call"},{"id":"anl83_oper_smog_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score of Operator in Presentation"},{"id":"anl83_oper_smog_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"SMOG (Simple Measure of Gobbledygook) score for the operator during the Q&A section"},{"id":"anl83_pos_logit_all","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Positive-sentiment logistic model score across the entire call (all sections)"},{"id":"anl83_pos_logit_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Positive-sentiment logistic model score during the presentation section"},{"id":"anl83_pos_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Positive-sentiment logistic model score during the Q&A section"},{"id":"anl83_qasentratio","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of total sentences in questions to total sentences in answers in the Q&A section (NA if no Q&A)"},{"id":"anl83_qawordratio","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of total words in questions to total words in answers in the Q&A section (NA if no Q&A)"},{"id":"anl83_sent_score_all","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Overall sentiment score across the entire call (all sections)"},{"id":"anl83_sent_score_pres","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Sentiment score during the presentation section"},{"id":"anl83_sent_score_qa","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Sentiment score during the Q&A section"},{"id":"anl83_serp_erf","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score in the Presentation section"},{"id":"anl83_serp_erf_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch Reading Ease score for the CEO during the presentation section"},{"id":"anl83_serp_erf_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch Reading Ease score for the CFO during the presentation section"},{"id":"anl83_serp_ifg","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score in the Presentation section"},{"id":"anl83_serp_ifg_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Gunning Fog Index score for the CEO during the presentation section"},{"id":"anl83_serp_ifg_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Gunning Fog Index score for the CFO during the presentation section"},{"id":"anl83_serp_ilc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score in the Presentation section"},{"id":"anl83_serp_ilc_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"CLI score for the CEO during the presentation section"},{"id":"anl83_serp_ilc_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"CLI score for the CFO during the presentation section"},{"id":"anl83_serp_ira","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score in the Presentation section"},{"id":"anl83_serp_ira_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Automated Readability Index score for the CEO during the presentation section"},{"id":"anl83_serp_ira_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Automated Readability Index score for the CFO during the presentation section"},{"id":"anl83_serp_lgkf","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score in the Presentation section"},{"id":"anl83_serp_lgkf_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch–Kincaid Grade Level score for the CEO during the presentation section"},{"id":"anl83_serp_lgkf_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Flesch–Kincaid Grade Level score for the CFO during the presentation section"},{"id":"anl83_serp_scd","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score in the Presentation section"},{"id":"anl83_serp_scd_oec","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Discourse Complexity Score for the CEO during the presentation section"},{"id":"anl83_serp_scd_ofc","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"Discourse Complexity Score for the CFO during the presentation section"},{"id":"anl83_serppaagmun","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of occurrences of the term GAAP during the presentation section"},{"id":"anl83_sinvsplurratioceopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Pronoun balance for the CEO in Presentation, computed as (count of I/my/me/mine − count of we/our/us/ours) divided by their sum (NA if no CEO speech)"},{"id":"anl83_sinvsplurratioceoqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Pronoun ratio for the CEO during Q&A defined as (count of I,my,me,mine minus count of we,our,us,ours) divided by their sum (NA if CEO did not attend or did not…"},{"id":"anl83_sinvsplurratiocfopres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Pronoun balance for the CFO in Presentation, computed as (singular first-person pronouns − plural pronouns) divided by their sum (NA if no CFO speech)"},{"id":"anl83_sinvsplurratiocfoqa","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Pronoun balance for the CFO in Q&A, computed as (singular first-person pronouns − plural pronouns) divided by their sum (NA if no CFO Q&A speech)"},{"id":"anl83_sinvsplurratioexepres","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Pronoun balance for executives in Presentation, computed as (singular first-person pronouns − plural pronouns) divided by their sum"},{"id":"anl83_sinvsplurratioexeqa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for executives during Q&A; NA if no Q&A"},{"id":"anl83_smog_all","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score in the whole conference call"},{"id":"anl83_smog_pres","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score in the Presentation section"},{"id":"anl83_smog_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score in the Q&A section"},{"id":"buyside_ari_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of Buy Side investors during the Q&A section"},{"id":"buyside_attendance_count","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of buy-side investors attending the conference"},{"id":"buyside_cli_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI (Comment Leniency) score of Buy Side investors during the Q&A section"},{"id":"buyside_dcs_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score of Buy Side investors during the Q&A section"},{"id":"buyside_fkgl_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of Buy Side investors during the Q&A section"},{"id":"buyside_forward_looking_sentiment_qa","type":"VECTOR","coverage":0.3422,"userCount":1,"alphaCount":1,"description":"Forward-looking sentiment score for buy-side investors during the Q&A section"},{"id":"buyside_fre_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of Buy Side investors during the Q&A section"},{"id":"buyside_gfi_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of Buy Side investors during the Q&A section"},{"id":"buyside_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score of Buy Side investors during the Q&A section"},{"id":"buyside_negative_sentiment_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Negative-sentiment logistic model score for buy-side investors during the Q&A section"},{"id":"buyside_neutral_sentiment_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic model output for neutral sentiment of buy-side investors during the Q&A section"},{"id":"buyside_positive_sentiment_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Positive-sentiment logistic model score for buy-side investors during the Q&A section"},{"id":"buyside_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by buy-side investors during the presentation section"},{"id":"buyside_sentence_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by Buy Side investors during the Q&A segment"},{"id":"buyside_sentiment_score_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Sentiment score for buy-side investors during the Q&A section"},{"id":"buyside_smog_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score of Buy Side investors during the Q&A section"},{"id":"buyside_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by buy-side investors during the presentation section"},{"id":"buyside_word_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by buy-side investors during Q&A"},{"id":"ceo_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability index score for the CEO during the presentation section"},{"id":"ceo_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score of CEO in Q&A"},{"id":"cfo_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability index score for the CFO during the presentation section"},{"id":"cfo_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability score for the CFO during the Q&A section of the conference call (Europe, D0)"},{"id":"corp_participant_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability index score for corporate participants during the presentation section"},{"id":"corp_participant_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability score for corporate participants during the Q&A section of the conference call (Europe, D0)"},{"id":"count_nongaap_mentions_qa_answers","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of occurrences of non-GAAP in all answers during the Q&A segment (NA if no Q&A)"},{"id":"count_questions_buyside_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of questions from Buy Side investors during the Q&A segment (NA if no questions)"},{"id":"count_questions_other_participants_qa","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Number of questions from other participants during the Q&A segment (NA if no questions)"},{"id":"count_questions_retail_investors_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of questions from Retail investors during the Q&A segment (NA if no questions)"},{"id":"gaap_mention_count_qa_answers","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of occurrences of GAAP in all answers during the Q&A segment (NA if no Q&A)"},{"id":"gaap_mention_count_qa_questions","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Number of occurrences of GAAP in all questions during the Q&A segment (NA if no Q&A)"},{"id":"laughter_occurrence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of occurrences of laughter during the presentation section"},{"id":"laughter_occurrence_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of occurrences of laughter during the Q&A segment (NA if no Q&A)"},{"id":"non_gaap_mention_count_qa_questions","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of occurrences of non-GAAP in all questions during Q&A (NA if no Q&A)"},{"id":"operator_forward_looking_sentiment_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for the operator during the presentation section of the conference call"},{"id":"operator_forward_looking_sentiment_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for the Operator during the Q&A section"},{"id":"operator_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score of Operator in Presentation"},{"id":"operator_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability score for the operator during the Q&A section of the conference call (Europe, D0)"},{"id":"other_ceo_attendance_count","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of CEOs from other companies attending the conference"},{"id":"other_ceo_numeric_word_ratio_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to all words for other-company CEOs during the Presentation (NA if no other CEO attended or no speech in Presentation)"},{"id":"other_ceo_numeric_word_ratio_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to total words for CEOs from other companies in Q&A; NA if no other CEO attended or no speech in Q&A"},{"id":"other_ceo_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by other-company CEOs during the Presentation"},{"id":"other_ceo_sentence_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by CEOs from other companies during Q&A"},{"id":"other_ceo_singular_plural_pronoun_ratio_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Pronoun ratio for other-company CEOs during the presentation defined as (count of I,my,me,mine minus count of we,our,us,ours) divided by their sum (NA if other…"},{"id":"other_ceo_singular_plural_pronoun_ratio_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for CEOs from other companies in Q&A; NA if…"},{"id":"other_ceo_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by CEOs from other companies during the presentation"},{"id":"other_ceo_word_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by CEOs from other companies during Q&A"},{"id":"other_ceo_word_share_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of words spoken by other-company CEOs to total words spoken by executives from other companies during the presentation (NA if no other executives)"},{"id":"other_ceo_word_share_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by other CEOs divided by the number of words spoken by executives from other companies in Q&A; NA if no other executives"},{"id":"other_cfo_attendance_count","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of CFOs from other companies attending the conference"},{"id":"other_cfo_numeric_word_ratio_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to total words spoken by CFOs from other companies during the Presentation section (NA if no such CFO attended or spoke in Presentation…"},{"id":"other_cfo_numeric_word_ratio_qa","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Ratio of numerical words to total words for CFOs from other companies in Q&A; NA if no other CFO attended or no speech in Q&A"},{"id":"other_cfo_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Number of sentences spoken by other CFOs during the presentation"},{"id":"other_cfo_sentence_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by CFOs from other companies during Q&A"},{"id":"other_cfo_singular_plural_pronoun_ratio_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Pronoun ratio for other-company CFOs during the presentation defined as (count of I,my,me,mine minus count of we,our,us,ours) divided by their sum (NA if other…"},{"id":"other_cfo_singular_plural_pronoun_ratio_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for CFOs from other companies in Q&A; NA if…"},{"id":"other_cfo_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by CFOs from other companies during the Presentation section"},{"id":"other_cfo_word_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by CFOs from other companies during Q&A"},{"id":"other_cfo_word_share_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of words spoken by other-company CFOs to total words spoken by all other-company executives during the Presentation (NA if no other executives)"},{"id":"other_cfo_word_share_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by other CFOs divided by the number of words spoken by executives from other companies in Q&A; NA if no other executives"},{"id":"other_corporate_participant_count","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of corporate participants from other companies attending the conference"},{"id":"other_executive_numeric_word_ratio_presentation","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Ratio of numerical to total words spoken by executives from other companies during the presentation (NA if no other executives)"},{"id":"other_executive_numeric_word_ratio_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Ratio of numerical words to total words for executives from other companies in Q&A; NA if no other executives"},{"id":"other_executive_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by other executives during the Presentation section"},{"id":"other_executive_sentence_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by other executives in Q&A"},{"id":"other_executive_singular_plural_pronoun_ratio_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Pronoun balance for executives from other companies during presentation: (count of I,my,me,mine − count of We,our,us,ours) divided by their sum"},{"id":"other_executive_singular_plural_pronoun_ratio_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"(count of I,my,me,mine − count of We, our, us, ours) divided by (count of I,my,me,mine + count of We, our, us, ours) for executives from other companies in Q&A;…"},{"id":"other_executive_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by other executives during the presentation"},{"id":"other_executive_word_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by other executives in Q&A"},{"id":"other_participant_ari_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of Other Conference Call Participants in Presentation"},{"id":"other_participant_ari_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The ARI score of Other Conference Call Participants during the Q&A section"},{"id":"other_participant_attendance_count","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of other conference call participants attending the conference"},{"id":"other_participant_cli_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI score of Other Conference Call Participants in Presentation"},{"id":"other_participant_cli_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The CLI (Comment Leniency) score of Other Conference Call Participants during the Q&A section"},{"id":"other_participant_dcs_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The DCS score of Other Conference Call Participants in Presentation"},{"id":"other_participant_dcs_score_qa","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"The DCS score of Other Conference Call Participants during the Q&A section"},{"id":"other_participant_fkgl_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FKGL score of Other Conference Call Participants in Presentation"},{"id":"other_participant_fkgl_score_qa","type":"VECTOR","coverage":0.3434,"userCount":1,"alphaCount":1,"description":"The FKGL score of Other Conference Call Participants during the Q&A section"},{"id":"other_participant_forward_looking_sentiment_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for Other Conference Call Participants during the Presentation section"},{"id":"other_participant_forward_looking_sentiment_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for other conference call participants during the Q&A section"},{"id":"other_participant_fre_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of Other Conference Call Participants in Presentation"},{"id":"other_participant_fre_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The FRE score of Other Conference Call Participants during the Q&A section"},{"id":"other_participant_gfi_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of Other Conference Call Participants in Presentation"},{"id":"other_participant_gfi_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The GFI score of Other Conference Call Participants during the Q&A section"},{"id":"other_participant_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score of Other Conference Call Participants in Presentation"},{"id":"other_participant_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score of Other conference call participants during the Q&A section"},{"id":"other_participant_negative_sentiment_logit_presentation","type":"VECTOR","coverage":0.3422,"userCount":2,"alphaCount":2,"description":"Logistic-model output (logit score) for negative sentiment expressed by other conference call participants during the Presentation section"},{"id":"other_participant_negative_sentiment_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logit score for negative sentiment of other conference call participants during the Q&A section"},{"id":"other_participant_neutral_sentiment_logit_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for neutral sentiment expressed by other conference call participants during the Presentation section"},{"id":"other_participant_neutral_sentiment_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Neutral-sentiment logistic model score for other conference call participants during the Q&A section"},{"id":"other_participant_positive_sentiment_logit_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Logistic-model output (logit score) for positive sentiment expressed by other conference call participants during the Presentation section"},{"id":"other_participant_positive_sentiment_logit_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Positive-sentiment logistic model score for other conference call participants during the Q&A section"},{"id":"other_participant_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Number of sentences spoken by other participants during the presentation section"},{"id":"other_participant_sentence_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by other participants during Q&A (NA if no Q&A)"},{"id":"other_participant_sentiment_score_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Sentiment score for other conference call participants during the presentation section"},{"id":"other_participant_sentiment_score_qa","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Sentiment score for other conference call participants during the Q&A section"},{"id":"other_participant_smog_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score of Other Conference Call Participants in Presentation"},{"id":"other_participant_smog_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The SMOG score of Other Conference Call Participants during the Q&A section"},{"id":"other_participant_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by other participants during the presentation section"},{"id":"other_participant_word_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by other participants during Q&A (NA if no Q&A)"},{"id":"overall_lix_score_full_call","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score in the whole conference call"},{"id":"overall_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score in the Presentation section"},{"id":"overall_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX score in the Q&A section"},{"id":"participant_forward_looking_sentiment_presentation","type":"VECTOR","coverage":0.3422,"userCount":0,"alphaCount":0,"description":"Forward-looking sentiment score for Conference Call Participants during the Presentation section"},{"id":"participant_lix_score_presentation","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"LIX readability score of all conference call participants’ remarks during the presentation section"},{"id":"participant_lix_score_qa","type":"VECTOR","coverage":0.3434,"userCount":0,"alphaCount":0,"description":"The LIX readability score for all conference call participants during the Q&A section"},{"id":"participant_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":1,"alphaCount":1,"description":"Number of sentences spoken by conference call participants during the presentation section"},{"id":"participant_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by conference call participants during the presentation section"},{"id":"retail_investor_attendance_count","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of retail investors attending the conference"},{"id":"retail_sentence_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by retail investors during the presentation section"},{"id":"retail_sentence_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences spoken by retail investors during Q&A"},{"id":"retail_word_count_presentation","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by retail investors during the presentation section"},{"id":"retail_word_count_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of words spoken by Retail investors during the Q&A segment"},{"id":"sentence_count_buyside_questions_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences in questions asked by Buy Side investors during the Q&A segment (NA if no questions)"},{"id":"sentence_count_other_participant_questions_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences in questions asked by other participants during the Q&A segment (NA if no questions)"},{"id":"sentence_count_retail_investor_questions_qa","type":"VECTOR","coverage":0.3307,"userCount":0,"alphaCount":0,"description":"Number of sentences in questions asked by Retail investors during the Q&A segment (NA if no questions)"}],"count":345,"platform_count":345,"complete":true,"pages_fetched":7}}

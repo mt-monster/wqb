@@ -1,0 +1,13 @@
+id,type,cov,uc,ac,desc
+annual_default_probability_percent,MATRIX,0.0,0,0,1-year probability of default from CCR expressed as a percentage (0â100)
+country_relative_default_percentile,MATRIX,0.0,0,0,Country-level 1â100 percentile rank of the 1-year default probability; higher is safer
+global_relative_default_percentile,MATRIX,0.0,0,0,Global percentile rank (1â100) of the 1-year PD; higher means safer or lower PD
+industry_relative_default_percentile,MATRIX,0.0,0,0,Industry-level 1â100 percentile rank of the 1-year default probability; higher is safer
+region_relative_default_percentile,MATRIX,0.0,0,0,Regional percentile rank (1â100) of the 1-year PD; higher means safer or lower PD
+sector_relative_default_percentile,MATRIX,0.0,1,1,Sector-level 1â100 percentile rank of the 1-year default probability; higher is safer
+star_ccr_combined_pd,MATRIX,0.0,0,0,Estimated 1-year probability of default (0â1) from the StarMine Combined Credit Risk model
+star_ccr_country_rank,MATRIX,0.0,1,1,Country-level percentile rank (1â100) of the 1-year default probability; higher = safer/lower PD
+star_ccr_global_rank,MATRIX,0.0,0,0,Global percentile rank (1â100) of the 1-year default probability; higher = safer/lower PD
+star_ccr_industry_rank,MATRIX,0.0,0,0,Industry-level percentile rank (1â100) of the 1-year default probability; higher = safer/lower PD
+star_ccr_region_rank,MATRIX,0.0,0,0,Regional percentile rank (1â100) of the 1-year default probability; higher = safer/lower PD
+star_ccr_sector_rank,MATRIX,0.0,0,0,Sector-level percentile rank (1â100) of the 1-year default probability; higher = safer/lower PD

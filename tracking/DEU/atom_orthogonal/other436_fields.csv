@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+oth436_disc,VECTOR,0.0,3,3,Model output: predicted probability (between 0 and 1) that the company will cut; suspend; or terminate its dividend
+oth436_divyld,VECTOR,0.0,6,7,Dividend yield for the company (likely annualized; may be trailing or forward; only available for updates)
+oth436_mktcap,VECTOR,0.0,0,0,Market capitalization of the company (likely in USD or local currency; not explicitly defined)

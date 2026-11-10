@@ -1,0 +1,30 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "max_price_decrease_ratio",
+  "max_price_increase_ratio",
+  "price_limit_condition"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 3,
+ "fixed_expressions": [
+  "group_rank(max_price_increase_ratio, sector)",
+  "group_rank(max_price_decrease_ratio, sector)",
+  "subtract(group_rank(max_price_increase_ratio, sector), group_rank(max_price_decrease_ratio, sector))",
+  "group_rank(price_limit_condition, sector)",
+  "group_rank(divide(max_price_increase_ratio, max_price_decrease_ratio), sector)",
+  "group_rank(ts_delta(max_price_increase_ratio, 22), sector)",
+  "group_rank(ts_mean(max_price_increase_ratio, 66), sector)",
+  "group_rank(ts_std_dev(max_price_increase_ratio, 22), sector)",
+  "multiply(group_rank(max_price_increase_ratio, subindustry), -1)",
+  "trade_when(equal(price_limit_condition, 0), group_rank(max_price_increase_ratio, sector), -1)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}

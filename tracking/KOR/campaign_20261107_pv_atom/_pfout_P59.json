@@ -1,0 +1,37 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "rsk70_mfm2_asetrd_btop",
+  "rsk70_mfm2_asetrd_cnt_kor",
+  "rsk70_mfm2_asetrd_divyild",
+  "rsk70_mfm2_asetrd_dsrt",
+  "rsk70_mfm2_asetrd_earnqlty",
+  "rsk70_mfm2_asetrd_earnvar",
+  "rsk70_mfm2_asetrd_earnyild",
+  "rsk70_mfm2_asetrd_invsqlty",
+  "rsk70_mfm2_asetrd_resvol",
+  "rsk70_mfm2_asetrd_strevrsl"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 10,
+ "fixed_expressions": [
+  "multiply(group_rank(ts_sum(rsk70_mfm2_asetrd_dsrt, 5), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk70_mfm2_asetrd_resvol, 22), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk70_mfm2_asetrd_earnyild, 22), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk70_mfm2_asetrd_btop, 22), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk70_mfm2_asetrd_divyild, 22), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk70_mfm2_asetrd_earnvar, 22), sector), -1)",
+  "group_rank(ts_mean(rsk70_mfm2_asetrd_cnt_kor, 22), sector)",
+  "multiply(group_rank(ts_sum(rsk70_mfm2_asetrd_strevrsl, 22), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk70_mfm2_asetrd_earnqlty, 22), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk70_mfm2_asetrd_invsqlty, 22), sector), -1)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}

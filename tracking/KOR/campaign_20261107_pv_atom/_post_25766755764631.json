@@ -1,0 +1,41 @@
+{
+ "success": true,
+ "post": {
+  "title": "【Alpha灵感】日内交易对隔夜涨跌的过度反应",
+  "author": "ZZ90023",
+  "body": "核心思路：\n灵感最初来源于 Research Paper 22: Overnight Returns, Daytime Reversals, and Future Stock Returns\n这个研报提到了如果隔夜拉锯战更加激烈，日间套利者可能过度修正价格，从而可能导致更高的未来收益，并用日内对隔夜的反转的次数作为因子。\n本文将基于类似的底层思路，但用不同的方法构建因子，最终得到了可提交的因子（prod corr约0.5）；以下是这篇文章使用的setting：\nVersion 1：\n研报中提到拉锯战中，日间套利者倾向于修正夜间的噪声交易者的影响，那么一个简单的思路是用日内涨跌对隔夜涨跌做中性化，得到日内涨跌的过度反应\nnight = open/ts_delay(close, 1) - 1;\ninday = close/open - 1;\n-regression_neut(inday, night)\n效果挺好的，但是prod corr巨高\nVersion 2：\n接着，想尝试用不同的思路构建因子以降低prod corr，并且试试能不能增强信号；除了close、open之外，我想引入high、low数据，close更多是一天的整体情况的体现，而high、low会体现这一天的过程中的信息\n我思路如下：\n如果隔夜是涨，那么日内的跌可能表现了日内套利者的修正，用high/close - 1和low/open - 1来表示\n反之如果隔夜跌，用low/close - 1和high/open - 1表示日内的涨\n日内的涨或者跌越大，反转就可能越猛，表达式如下：\nnight = open/ts_delay(close, 1) - 1;\ndrop_hc = high/close - 1;\nrise_lc = low/close - 1;\nrise_ho = high/open - 1;\ndrop_lo = low/open - 1;\nover_drop = abs(drop_hc) + abs(drop_lo);\nover_rise = abs(rise_lc) + abs(rise_ho);\nif_else(sign(night) > 0, over_drop, -over_rise)\n效果也还行，prod corr是降下来了，但通过不了测试\nVersion 3：\n继续这个思路，尝试增强信号，之前是直接将 abs(drop_hc) + abs(drop_lo)得到drop，以及abs(rise_lc) + abs(rise_ho)得到rise，这4个drop_hc、drop_lo、rise_lc、rise_ho里面可能有的信号好、有的信号差，考虑用2种drop和2种rise做组合，对4种组合测试，发现drop_lo和rise_lc的效果比较好（为啥用low算的都会好一些，欢迎大家一起讨论~）\nfitness有提高，Sub-universe Sharpe也有提高，但还是过不了测试\nVersion 4：\n测试了发现，打开Nan Handling就解决了（没搞懂这nan是从哪里出现的，难道是open、close里面有0导致分母为0了吗？欢迎大家一起讨论~）\n这时候已经得到可以提交的版本了\nVersion 5：\nprod corr还是有点高，继续思考怎么提高表现\n研报中也提到，日内套利者的行为是对夜间噪音交易者的修正，但是隔夜涨跌中也并不都是噪音，可能还包含了信息/新闻，有不少研报如《RPV 聪明版——聪明换手率是更好的配料 》、《如何将隔夜涨跌变为有效的选股因子？——基于对知情交易者信息优势的刻画》等研究过隔夜涨跌，发现其会体现出微弱的动量特征\n在拉锯战中，日内套利者可能低估隔夜的信息/新闻从而体现出过度反应，这个因子信号的本质可能是日内与信息相反时会有强的反转，目前是直接用隔夜涨跌来判断方向，考虑对隔夜涨跌进行提纯以增强信号；通过对前一日的换手率做中性化来增强信号，表达式为 sign(regression_neut(night, ts_delay(turnover, 1))) > 0\n依旧是可提交的结果，可以看到fitness提升了一点，并且prod corr也降低到约0.5，看来这个思路是OK的\nAlpha 模板：\n1. 通过对动量信号做中性化以提高反转因子表现（regression_neut ……）\n2. 根据动量信号方向，选择对应的反转信号（if_else ……）\n探索该Alpha遇到的困难与踩过的坑：\n最大的坑就是Nan Handling的问题，也是没想到用的都是覆盖率100%的量价数据，居然还能有nan的问题，我目前的理解是可能因为分母中的价格数据有为0的情况导致了nan，不知道我理解的是否正确",
+  "details": {
+   "votes": "8",
+   "date": "2024-08-20T03:29:41Z",
+   "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/25766755764631--Alpha%E7%81%B5%E6%84%9F-%E6%97%A5%E5%86%85%E4%BA%A4%E6%98%93%E5%AF%B9%E9%9A%94%E5%A4%9C%E6%B6%A8%E8%B7%8C%E7%9A%84%E8%BF%87%E5%BA%A6%E5%8F%8D%E5%BA%94"
+  }
+ },
+ "comments": [
+  {
+   "author": "FF65210",
+   "body": "日内交易对隔夜涨跌的过度反应这个idea很有洞察力！隔夜效应在行为金融里是经典异象。学到了要关注日内和隔夜的不同市场行为模式！",
+   "date": "2026-08-06T08:07:42Z"
+  },
+  {
+   "author": "ZZ90023",
+   "body": "关于20 decay，主要就是降turnover\n模板就参考我文章里面的代码做替换，比如if_else的\nnight = open/ts_delay(close, 1) - 1;\ndrop_hc = high/close - 1;\nrise_lc = low/close - 1;\nrise_ho = high/open - 1;\ndrop_lo = low/open - 1;\nover_drop = abs(drop_hc) + abs(drop_lo);\nover_rise = abs(rise_lc) + abs(rise_ho);\nif_else(sign(night) > 0, over_drop, -over_rise)\n可以把night或者over_drop、-over_rise替换成别的，可能有用，我还没有深入探索这个模板￣□￣｜｜",
+   "date": "2024-08-21T12:52:19Z"
+  },
+  {
+   "author": "ZZ90023",
+   "body": "感谢老师指点~",
+   "date": "2024-08-21T12:51:32Z"
+  },
+  {
+   "author": "WL13229",
+   "body": "评论区提的挺好。这个文章写得也挺好，能在corr这么高的idea中做出不一样的东西，是不容易的。我个人觉得，做研究的第一步，往往是跟着test来，没有通过，就想着怎么通过。但是到了一定阶段以后，能力越来越强，那么就不用被这个test束缚了，而是不断地寻求更多改进Alpha的方式，并仅把test当作一个辅助决策的指标。",
+   "date": "2024-08-20T14:37:23Z"
+  },
+  {
+   "author": "WL27875",
+   "body": "这个有个20的decay，可以分享一下思路吗？\n另外关于nan-handle的计算细节，可以看看这个链接👉\nhttps://platform.worldquantbrain.com/learn/documentation/create-alphas/simulation-settings\n如果能分享一下这个最后的模板细节，就更好了",
+   "date": "2024-08-20T14:33:26Z"
+  }
+ ],
+ "total_comments": 5
+}

@@ -1,0 +1,9 @@
+id,type,cov,uc,ac,desc
+"insd1_gvkey",VECTOR,0.5343,1,1,"Compustat Global Company Identifier (Global Value Key) for the issuer"
+"insd1_holdings",VECTOR,0.5343,9,9,"Total equity share holdings of the insider after the transaction"
+"insd1_price",VECTOR,0.5343,3,4,"Transaction price per share; if a range was reported; this is the minimum price"
+"insd1_shares",VECTOR,0.5343,4,5,"Number of shares (or units) traded in the transaction"
+"insd1_tradesignificance",VECTOR,0.5343,6,8,"Significance score of the trade (1 = low significance; 3 = high significance)"
+"insd1_value",VECTOR,0.5343,2,2,"Total value of the transaction in original currency"
+"insd1_valueeur",VECTOR,0.5343,9,11,"Total value of the transaction in Euro"
+"transaction_currency_code",VECTOR,0.5343,1,1,"Three-letter ISO currency code of the transactionâs currency"

@@ -35,6 +35,29 @@ data/wqb.db 的 datasets 表**同样不能当分母**：它不分 universe/delay
      本工具不替它背书，必须由调用方显式声明）。
 3. **verdict** = EXHAUSTED **当且仅当** 差集为空。差集非空一律 NOT_EXHAUSTED。
 
+## 2026-11-09 增补：分子必须有 field 级背书（`--field-audit`）
+
+事故：分母修好了，**分子没修**。`--tested` / `--tested-file` 传入的「已判死」清单
+没有任何 field 级验证，于是「数据集级 coverage=0 + 档案里写一句已判死」就能把整枝数据
+静默送进分子，gate 照样吐 EXHAUSTED。GBR 实证反例：`techindi_model` 数据集级
+`coverage=0`、真实字段 399 个、贡献该战役 10 席中的 2 席。
+
+修法：声明的已测集必须过 `tools/audit_dataset_coverage.py` 的审计 JSON 校验——
+`status=TESTED`（我的 alpha code 真引用该集字段）或 `status=NO_DATA`（field 级实查确实无数据）
+才算**已排除**；其余一律**剥出分子**、记为 `reversible_assumptions` 并让 verdict 转 NOT_EXHAUSTED。
+
+::
+
+    # 先跑 field 级审计（会花几分钟：每集一次 /data-fields）
+    python tools/audit_dataset_coverage.py --region GBR --universe TOP700 --delay 1 \
+        --cache data/dataset_assets/GBR_coverage_audit_d1.json \
+        --md reports/dataset_experience/gbr_coverage_audit_20261109.md
+
+    # 再判穷尽（判死清单必须过审计）
+    python tools/gates/category_coverage_audit.py --region GBR --universe TOP700 --delay 1 \
+        --category OTHER --tested-file tracking/GBR/dead_list.txt \
+        --field-audit data/dataset_assets/GBR_coverage_audit_d1.json
+
 用法
 ----
 ::
@@ -335,6 +358,73 @@ def build_report(items: Sequence[Dict[str, Any]], category: Optional[str],
     }
 
 
+# --------------------------------------------------- field 级背书（2026-11-09 根因治理）
+#
+# 事故复盘：本闸 2026-11-06 修好了**分母**（实取平台全表），但分子里的「已判死」清单
+# 由调用方显式传入，**没有任何 field 级背书**。于是「数据集级 coverage=0 + 档案里写一句
+# 已判死」就能把整枝数据静默送进分子，gate 照样吐 EXHAUSTED。GBR 2026-11-09 实测：
+# techindi_model 数据集级 coverage=0，却有 399 个字段真实数据，并贡献该战役 10 席中的 2 席。
+#
+# ⇒ 修法：**声明的已测集（--tested / --tested-file）必须过 field 级实查**，
+#    证据来自 tools/audit_dataset_coverage.py 的审计 JSON：
+#      status=TESTED   -> 我的 alpha code 真引用了该集字段（平台侧回测证据）
+#      status=NO_DATA  -> field 级实查确实无数据（这才是「判死」的合法证据）
+#    其余（UNTESTED_BLIND / UNTESTED_COV_OK / PROBE_FAILED / UNVERIFIED / 不在审计内）一律**剥出分子**并计入
+#    reversible_assumptions —— 它们是「可逆假设」，不是「已排除」。
+
+FIELD_EVIDENCE_OK = ("TESTED", "NO_DATA")
+
+
+def load_field_audit(path: str) -> Dict[str, Any]:
+    """读 tools/audit_dataset_coverage.py 产出的审计 JSON（唯一 field 级证据源）。"""
+    p = Path(path)
+    if not p.is_file():
+        raise SourceError("field 审计文件不存在: %s" % path)
+    try:
+        payload = json.loads(p.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        raise SourceError("field 审计文件不可解析（%s: %s）" % (type(exc).__name__, exc))
+    rows = {}
+    for row in payload.get("rows") or []:
+        ds = str(row.get("dataset") or "").strip().lower()
+        if ds:
+            rows[ds] = row
+    if not rows:
+        raise SourceError("field 审计文件 rows 为空：%s" % path)
+    return {"path": path, "generated_at": payload.get("generated_at"),
+            "scope": payload.get("scope") or {}, "rows": rows}
+
+
+def apply_field_audit(tested: Set[str], declared: Set[str],
+                      field_audit: Dict[str, Any]) -> Dict[str, Any]:
+    """把声明的已测集中「无 field 级背书」的集剥出分子。DB 机械证据不动。"""
+    rows = field_audit["rows"]
+    stripped, kept = [], []
+    for ds in sorted(declared, key=str.lower):
+        row = rows.get(ds.strip().lower())
+        status = (row or {}).get("status")
+        if row is not None and status in FIELD_EVIDENCE_OK:
+            kept.append(ds)
+        else:
+            stripped.append({
+                "dataset": ds,
+                "audit_status": status or "NOT_IN_AUDIT",
+                "has_data": (row or {}).get("has_data"),
+                "dataset_cov": (row or {}).get("dataset_cov"),
+                "fields_seen": (row or {}).get("fields_seen"),
+                "max_field_cov": (row or {}).get("max_field_cov"),
+                "alpha_hits": (row or {}).get("evidence_hit_n"),
+                "why": ("有真实字段数据但零回测证据" if status in ("UNTESTED_BLIND",
+                                                          "UNTESTED_COV_OK")
+                        else "field 级未验伪" if status == "UNVERIFIED"
+                        else "探针没跑成，仍是「不知道」" if status == "PROBE_FAILED"
+                        else "不在 field 审计内"),
+            })
+    strip_l = {s["dataset"].strip().lower() for s in stripped}
+    remaining = {t for t in tested if str(t).strip().lower() not in strip_l}
+    return {"tested": remaining, "kept": kept, "stripped": stripped}
+
+
 # --------------------------------------------------------------- CLI
 
 def _split_csv(value: Optional[str]) -> Set[str]:
@@ -358,6 +448,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--all-categories", action="store_true", help="打印全 category 计数分布")
     ap.add_argument("--tested", help="显式已测清单，逗号分隔")
     ap.add_argument("--tested-file", help="已测清单文件（JSON 列表 / 一行一个 / 逗号分隔）")
+    ap.add_argument("--field-audit",
+                    help="tools/audit_dataset_coverage.py 的审计 JSON：--tested/--tested-file "
+                         "声明的集必须在此文件里是 TESTED 或 NO_DATA，否则剥出分子")
     ap.add_argument("--no-db", action="store_true", help="不从数据库取已测集合（纯清单模式）")
     ap.add_argument("--db", help="本地库路径（缺省 data/wqb.db）")
     ap.add_argument("--snapshot", help="读已落盘的平台全表快照（零平台请求）")
@@ -424,20 +517,53 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     # ---- 分子
     tested: Set[str] = set()
+    declared: Set[str] = set()          # 调用方显式声明的已测/已判死集（需 field 级背书）
     tested_sources: List[str] = []
     try:
         if not args.no_db:
             tested |= load_tested_from_db(region, args.db)
             tested_sources.append("db:expressions(region=%s)" % region)
         if args.tested:
-            tested |= _split_csv(args.tested)
+            _t = _split_csv(args.tested)
+            tested |= _t
+            declared |= _t
             tested_sources.append("cli:--tested")
         if args.tested_file:
-            tested |= load_tested_file(args.tested_file)
+            _t = load_tested_file(args.tested_file)
+            tested |= _t
+            declared |= _t
             tested_sources.append("file:%s" % args.tested_file)
     except SourceError as exc:
         print("[cca] %s" % exc, file=sys.stderr)
         return EXIT_ERROR
+
+    # ---- field 级背书（2026-11-09）：声明的已测集不许只靠档案/数据集级 coverage
+    field_audit_meta: Dict[str, Any] = {"status": "absent"}
+    stripped: List[Dict[str, Any]] = []
+    if args.field_audit:
+        try:
+            fa = load_field_audit(args.field_audit)
+        except SourceError as exc:
+            print("[cca] %s" % exc, file=sys.stderr)
+            return EXIT_ERROR
+        applied = apply_field_audit(tested, declared, fa)
+        tested = applied["tested"]
+        stripped = applied["stripped"]
+        field_audit_meta = {
+            "status": "applied",
+            "path": fa["path"],
+            "generated_at": fa["generated_at"],
+            "audit_scope": fa["scope"],
+            "declared": len(declared),
+            "backed": len(applied["kept"]),
+            "stripped": len(stripped),
+        }
+    elif declared:
+        field_audit_meta = {
+            "status": "missing",
+            "note": ("给了 --tested/--tested-file 但没给 --field-audit：这些声明没有 field 级"
+                     "背书（2026-11-09 GBR 根因）⇒ 本次 verdict 仅供参考，不得作为穷尽证据"),
+        }
 
     try:
         category = resolve_category(items, args.category)
@@ -456,6 +582,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "fetched_at": payload.get("fetched_at"),
         "tested_sources": tested_sources,
         "tested_total": len(tested),
+        "field_audit": field_audit_meta,
+        "reversible_assumptions": stripped,
         "all_categories": category_histogram(items),
     })
     if not tested_sources:
@@ -497,6 +625,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             print("  本地 datasets 表比平台多 %d 个（不分 universe/delay，且混有由表达式串生成的"
                   "伪数据集行；仅提示，不参与判据）%s"
                   % (report["extra_local_count"], extra_note))
+        fa_meta = report.get("field_audit") or {}
+        if fa_meta.get("status") == "applied":
+            print("  field 级背书: %s" % fa_meta.get("path"))
+            print("    声明已测 %d / 有背书 %d / **剥出 %d**"
+                  % (fa_meta.get("declared", 0), fa_meta.get("backed", 0),
+                     fa_meta.get("stripped", 0)))
+            for s in report.get("reversible_assumptions") or []:
+                print("    ✗ %-22s %-16s fields=%s maxCov=%s hits=%s  <- %s"
+                      % (s["dataset"], s["audit_status"], s["fields_seen"],
+                         s["max_field_cov"], s["alpha_hits"], s["why"]))
+        elif fa_meta.get("status") == "missing":
+            print("  ⚠ %s" % fa_meta.get("note"))
         if report.get("warning"):
             print("  ⚠ %s" % report["warning"])
         if report.get("snapshot"):

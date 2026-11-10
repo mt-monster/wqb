@@ -1,0 +1,22 @@
+﻿{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "3EiLOy11256Sbb61at9Zff6W",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/3EiLOy11256Sbb61at9Zff6W",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/3EiLOy11256Sbb61at9Zff6W",
+ "submitted_expressions": [
+  "group_rank(ts_delta(rsk68_weight_volatility_short, 66), sector)",
+  "group_rank(ts_delta(rsk68_weight_dadv, 22), sector)",
+  "subtract(group_rank(ts_delta(rsk68_weight_volatility_short, 22), sector), group_rank(ts_delta(rsk68_weight_dadv, 22), sector))",
+  "multiply(group_rank(ts_mean(rsk88_mfm_ase1_srisk, 22), subindustry), -1)",
+  "multiply(group_rank(ts_delta(rsk88_mfm_ase1_srisk, 66), sector), -1)",
+  "multiply(group_rank(divide(ts_sum(rsk88_mfm_ase1_dsrt, 22), ts_mean(rsk88_mfm_ase1_srisk, 22)), sector), -1)",
+  "multiply(group_rank(ts_mean(ts_zscore(rsk72_asi_top2000_eqy_dsrt, 66), 4), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk71_eqy_asi_supported_minvol1m_dsrt, 22), sector), -1)",
+  "multiply(group_rank(rsk68_weight_dadv, industry), -1)",
+  "multiply(group_rank(ts_mean(rsk88_mfm_ase1_ri_volatility, 22), sector), -1)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

@@ -135,7 +135,7 @@ mcp__wqb-db__upsert_ledger_key(region=<alpha 的区域>, key="robustness_<alpha_
 
 1. **PPA 提交路径**：MCP `workflow_submit_alpha` 非 PPA 感知（内置 REGULAR 预检照拦合法但指标较低的 PPA，打标签重试无效）→ 合法 PPA（Sharpe ≥ 1.0 / 算子 ≤ 8 / 字段 ≤ 3 / PPAC < 0.5，文档记载、未复核平台）**只能走平台 web UI**，且仅在当期 Power Pool 主题窗口内；agent 停下交接（`ppa-handoff.md`）。
 2. **RA 常规提交**不受主题限制，但达标 alpha 可能无 RA 通道可选（平台强制走 PPA 通道）。
-3. **PPA 描述三段是硬性要求**（Idea / Rationale for data used / Rationale for operators used）。「`set_alpha_properties` 预置描述 + tags `PowerPoolSelected` + color」用于**记账与识别**；在 web UI 流程里标签是否仍被平台要求**未复核**。**颜色不是 GREEN**：PPA 通道专用色是 `PURPLE`（`alpha_properties.COLOR_PPA`），GREEN 须由 OS 结果挣得。
+3. **PPA 描述三段是硬性要求**（Idea / Rationale for data used / Rationale for operators used）。「`set_alpha_properties` 预置描述 + tags `PowerPoolSelected` + color」用于**记账与识别**，**仅限真走 PPA 通道**——常规 REGULAR 提交**不得预置**：提交前的 PATCH 带该标签会让平台按 `PURE_POWER_POOL_THEME` 检查本次提交，合法 REGULAR 可能被直接拒（规范见 `docs/alpha_properties_spec.md` §3.5；提交链路 `_derive_tags` 已强制剔除）；在 web UI 流程里标签是否仍被平台要求**未复核**。**颜色不是 GREEN**：PPA 通道专用色是 `PURPLE`（`alpha_properties.COLOR_PPA`），GREEN 须由 OS 结果挣得。
 4. **幽灵提交识别**：台账记 ACTIVE 但平台 `GET /alphas/{id}` 返回 404 → 从未真正落地（静默丢弃）。**不要**把 `alphas.status` 写成 `PHANTOM`（不是代码里的状态；且 2026-09-28 起 `alphas` 的合并写入对 `ACTIVE` / `SUBMITTED` / `DECOMMISSIONED` **不回退**，这样写会被静默忽略）——改为在核对报告 / `key_findings` 里留痕并知会用户（不新造台账键）；这属于提交后核对，归 `wq-backtest-monitor` / `worldquant-submit-alpha`，不属于稳健性闸。已实证案例：`pwKvRLqg`。
 5. **~~提交探测协议~~（已删除）**：旧版写「选 5 个最大化多样样本，逐个提交 + 轮询 `/check` 读 prodCorr，5 个全 FAIL 则整族不可提交」——**提交即真实动作**，通过就是 ACTIVE、不可撤销（与 RA 的「确认前禁止一切真提交」冲突；同源于 prod-corr-avoidance 旧版的 POST 探针，X-9 / T0-2）。prod 一律用 `check_correlation`（只读）+ 决策表 D0-P。
 

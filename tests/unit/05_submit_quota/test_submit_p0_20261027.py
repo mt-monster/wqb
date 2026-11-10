@@ -73,10 +73,13 @@ def test_gate_blocks_regular_alpha_with_auto_ppa_tag(gate):
     assert r["failed_any"] == 1
     assert any("Phase B.0" in s for s in r["blocked_reasons"])
     assert any("LOW_FITNESS" in s for s in r["blocked_reasons"])
-    # 通道 vs 标签：报告层要能区分，避免事后盘点把 REGULAR 记成 PPA
-    assert r["is_ppa"] is True
+    # 通道 vs 标签（2026-11-10 口径修正）：`PowerPoolSelected` 是 PP 池成分开关，
+    # 平台会自动给 REGULAR/RA 追加，**不是** PPA 通道证据。旧断言 `is_ppa is True`
+    # 会把 RA alpha 误记成 PPA（违反「只认 RA 全闸」政策）。本测试的核心守护
+    # （blocked / failed_ra / failed_ppa）保持不变。
+    assert r["is_ppa"] is False
     assert r["ppa_channel"] is False
-    assert r["ppa_tag_only"] is True
+    assert r["ppa_tag_only"] is False
 
 
 def test_gate_blocks_regular_alpha_on_only_ra_gate(gate):
@@ -139,7 +142,8 @@ def test_decide_blocks_regular_alpha_with_auto_ppa_tag():
     assert r["reason_code"] == "FAILED_COUNT_RA:LOW_GLB_AMER_SHARPE"
     assert r["failed_ra"] == 1 and r["failed_ppa"] == 0
     assert r["failed_any"] == 1
-    assert r["ppa_channel"] is False and r["ppa_tag_only"] is True
+    # 2026-11-10：带 PP 池标签的 REGULAR 不再被标成 ppa_tag_only（通道判定修正）
+    assert r["ppa_channel"] is False and r["ppa_tag_only"] is False
 
 
 def test_decide_hard_gate_fail_still_blocks_with_auto_ppa_tag():

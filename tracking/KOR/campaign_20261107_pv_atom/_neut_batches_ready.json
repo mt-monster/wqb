@@ -1,0 +1,119 @@
+{
+ "note": "中性化补扫即用批次：dividend_policy 缺4档优先，每批1中性化×4近线候选；槽位释放即派（并发2）。expr 均已 RAM 实测过，formal 批 validate_fields=false。",
+ "candidates": {
+  "dividend_policy": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+  "other532": "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+  "other335": "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+  "chart_cnn": "group_rank(multiply(imgpred_eqstar4_60dret_q5_prob4, imgpred_eqstar4_60dret_q5_confscore4), sector)"
+ },
+ "batches": [
+  {
+   "region": "KOR",
+   "universe": "TOP600",
+   "delay": 1,
+   "instrument_type": "EQUITY",
+   "decay": 4,
+   "truncation": 0.08,
+   "nan_handling": "ON",
+   "pasteurization": "ON",
+   "unit_handling": "VERIFY",
+   "language": "FASTEXPR",
+   "wait_for_completion": false,
+   "validate_fields": false,
+   "neutralization": "CROWDING",
+   "alpha_expressions": [
+    "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+    "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+    "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+    "group_rank(multiply(imgpred_eqstar4_60dret_q5_prob4, imgpred_eqstar4_60dret_q5_confscore4), sector)"
+   ],
+   "tags": [
+    "dividend_policy@CROWDING",
+    "other532@CROWDING",
+    "other335@CROWDING",
+    "chart_cnn@CROWDING"
+   ]
+  },
+  {
+   "region": "KOR",
+   "universe": "TOP600",
+   "delay": 1,
+   "instrument_type": "EQUITY",
+   "decay": 4,
+   "truncation": 0.08,
+   "nan_handling": "ON",
+   "pasteurization": "ON",
+   "unit_handling": "VERIFY",
+   "language": "FASTEXPR",
+   "wait_for_completion": false,
+   "validate_fields": false,
+   "neutralization": "NONE",
+   "alpha_expressions": [
+    "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+    "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+    "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+    "group_rank(multiply(imgpred_eqstar4_60dret_q5_prob4, imgpred_eqstar4_60dret_q5_confscore4), sector)"
+   ],
+   "tags": [
+    "dividend_policy@NONE",
+    "other532@NONE",
+    "other335@NONE",
+    "chart_cnn@NONE"
+   ]
+  },
+  {
+   "region": "KOR",
+   "universe": "TOP600",
+   "delay": 1,
+   "instrument_type": "EQUITY",
+   "decay": 4,
+   "truncation": 0.08,
+   "nan_handling": "ON",
+   "pasteurization": "ON",
+   "unit_handling": "VERIFY",
+   "language": "FASTEXPR",
+   "wait_for_completion": false,
+   "validate_fields": false,
+   "neutralization": "SECTOR",
+   "alpha_expressions": [
+    "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+    "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+    "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+    "group_rank(multiply(imgpred_eqstar4_60dret_q5_prob4, imgpred_eqstar4_60dret_q5_confscore4), sector)"
+   ],
+   "tags": [
+    "dividend_policy@SECTOR",
+    "other532@SECTOR",
+    "other335@SECTOR",
+    "chart_cnn@SECTOR"
+   ]
+  },
+  {
+   "region": "KOR",
+   "universe": "TOP600",
+   "delay": 1,
+   "instrument_type": "EQUITY",
+   "decay": 4,
+   "truncation": 0.08,
+   "nan_handling": "ON",
+   "pasteurization": "ON",
+   "unit_handling": "VERIFY",
+   "language": "FASTEXPR",
+   "wait_for_completion": false,
+   "validate_fields": false,
+   "neutralization": "INDUSTRY",
+   "alpha_expressions": [
+    "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+    "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+    "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+    "group_rank(multiply(imgpred_eqstar4_60dret_q5_prob4, imgpred_eqstar4_60dret_q5_confscore4), sector)"
+   ],
+   "tags": [
+    "dividend_policy@INDUSTRY",
+    "other532@INDUSTRY",
+    "other335@INDUSTRY",
+    "chart_cnn@INDUSTRY"
+   ]
+  }
+ ]
+}

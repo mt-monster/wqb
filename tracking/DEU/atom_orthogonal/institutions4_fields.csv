@@ -1,0 +1,7 @@
+id,type,cov,uc,ac,desc
+institutional_holding_current_market_value,VECTOR,0.3413,3,3,Market value of the holding in the current period for the institution.
+institutional_holding_current_shares,VECTOR,0.3413,1,1,Number of shares currently held by the institution for the security.
+institutional_holding_percent_of_portfolio,VECTOR,0.3413,10,13,Percentage of the institution's portfolio value represented by this holding.
+institutional_holding_percent_of_shares_outstanding,VECTOR,0.3413,5,5,Percentage of the security's outstanding shares held by the institution.
+institutional_holding_previous_market_value,VECTOR,0.3413,1,1,Market value of the holding in the previous period for the institution.
+institutional_holding_previous_shares,VECTOR,0.3413,2,2,Number of shares previously held by the institution for the security.

@@ -1,0 +1,58 @@
+{
+ "alpha_ids": [
+  "d5Wvpmbx",
+  "6XdNQ1qJ",
+  "xAr5oQzN"
+ ],
+ "threshold": 0.5,
+ "years": 4,
+ "num_points": 1023,
+ "matrix": {
+  "d5Wvpmbx": {
+   "d5Wvpmbx": 1.0,
+   "6XdNQ1qJ": 0.7111,
+   "xAr5oQzN": 0.9566
+  },
+  "6XdNQ1qJ": {
+   "d5Wvpmbx": 0.7111,
+   "6XdNQ1qJ": 1.0,
+   "xAr5oQzN": 0.6924
+  },
+  "xAr5oQzN": {
+   "d5Wvpmbx": 0.9566,
+   "6XdNQ1qJ": 0.6924,
+   "xAr5oQzN": 1.0
+  }
+ },
+ "max_pair": {
+  "a": "d5Wvpmbx",
+  "b": "xAr5oQzN",
+  "correlation": 0.9566
+ },
+ "pairs_over_threshold": [
+  {
+   "a": "d5Wvpmbx",
+   "b": "xAr5oQzN",
+   "correlation": 0.9566
+  },
+  {
+   "a": "d5Wvpmbx",
+   "b": "6XdNQ1qJ",
+   "correlation": 0.7111
+  },
+  {
+   "a": "6XdNQ1qJ",
+   "b": "xAr5oQzN",
+   "correlation": 0.6924
+  }
+ ],
+ "all_below_threshold": false,
+ "max_mutually_below_subset": [
+  "d5Wvpmbx"
+ ],
+ "max_mutually_below_subset_size": 1,
+ "max_subset_exact": true,
+ "max_subset_note": null,
+ "missing_pnl": [],
+ "local_calculation": true
+}

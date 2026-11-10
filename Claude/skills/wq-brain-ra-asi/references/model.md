@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：probe（跟区域入场 probe-only）　**分组**：MODEL　**类别卡**：model
 
-**涉及数据集**：acquisition_model+other545、ai_equity_alpha、chart_cnn_alpha、global_seasonal_model、model28、multi_source_model、multifactor_return_pred、predictive_starmine、price_signal_dl、quant_factor_lib
+**涉及数据集**：acquisition_model+other545、ai_equity_alpha、behavioral_signals、chart_cnn_alpha、global_seasonal_model、model170、model28、multi_source_model、multifactor_return_pred、predictive_starmine、price_signal_dl、quant_factor_lib
 
 ### 回测设置（进仿真的值）
 
@@ -32,11 +32,11 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-08 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 117 | 0 | 1 | 1 | 2 | 0 |
+| 129 | 0 | 0 | 0 | 2 | 0 |
 
 主要数据集（回测数）：predictive_starmine（40）、quant_factor_lib（20）、multi_source_model（16）、global_seasonal_model（8）、multifactor_return_pred（8）、ai_equity_alpha（8）、chart_cnn_alpha（8）、acquisition_model+other545（7）
 

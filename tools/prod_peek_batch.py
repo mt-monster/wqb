@@ -36,34 +36,38 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 sys.path.insert(0, os.path.join(ROOT, "world-quant-brain-mcp"))
 
-from prod_wait import parse  # noqa: E402
+from prod_wait import parse, _write_result  # noqa: E402
 from brain_api import BrainApiClient  # noqa: E402
 
 
 async def _one(client, alpha_id):
-    """单次无锁探测。返回 (value, note)。
+    """单次无锁探测。返回 (value, note, payload)。
 
     value is None 表示本次没拿到；note 说明原因，便于日志分辨
-    「空体（平台仍在算）/ 端点坏」与「有体但解析不出 max」。
+    「空体（平台仍在算）/ 端点坏」与「有体但解析不出 max」；payload 是原始 JSON
+    （供产物保留直方图）。note 以 ``TERMINAL`` 开头表示 4xx 终态
+    （alpha 不存在/无权限/已提交），调用方应停止对该颗重试（2026-11-10 审查 P1-7）。
     """
     try:
         r = await client._request("GET", f"/alphas/{alpha_id}/correlations/prod")
     except Exception as e:                                    # noqa: BLE001
-        return None, f"EXC {type(e).__name__}: {str(e)[:100]}"
+        return None, f"EXC {type(e).__name__}: {str(e)[:100]}", None
     code = getattr(r, "status_code", None)
     txt = (getattr(r, "text", "") or "").strip()
+    if isinstance(code, int) and 400 <= code < 500:
+        return None, f"TERMINAL HTTP {code} {txt[:100]}", None
     if code != 200:
-        return None, f"HTTP {code} {txt[:100]}"
+        return None, f"HTTP {code} {txt[:100]}", None
     if not txt:
-        return None, "空体"
+        return None, "空体", None
     try:
         j = json.loads(txt)
     except Exception:                                         # noqa: BLE001
-        return None, f"非JSON {txt[:100]}"
+        return None, f"非JSON {txt[:100]}", None
     v = parse(j)
     if v is None:
-        return None, f"有体无max {txt[:100]}"
-    return v, "ok"
+        return None, f"有体无max {txt[:100]}", j
+    return v, "ok", j
 
 
 async def main():
@@ -88,35 +92,38 @@ async def main():
     await client.ensure_authenticated()
 
     done = {}
+    terminal = {}
     deadline = time.time() + args.minutes * 60
     cycle = 0
-    while time.time() < deadline and len(done) < len(ids):
+    while time.time() < deadline and len(done) + len(terminal) < len(ids):
         cycle += 1
         left = int(deadline - time.time())
-        pending = [a for a in ids if a not in done]
+        pending = [a for a in ids if a not in done and a not in terminal]
         print(f"\n=== 第 {cycle} 轮 | 待取 {len(pending)} 颗 | 剩余 {left}s ===", flush=True)
         for alpha_id in pending:
-            v, note = await _one(client, alpha_id)
+            v, note, payload = await _one(client, alpha_id)
             if v is None:
                 print(f"  {alpha_id}: {note}", flush=True)
+                if note.startswith("TERMINAL"):
+                    terminal[alpha_id] = note
                 continue
             done[alpha_id] = v
             path = os.path.join(outdir, f"prod_peek_{alpha_id}.json")
-            with open(path, "w", encoding="utf-8") as fh:
-                json.dump({"alpha_id": alpha_id, "prod": v,
-                           "at": time.strftime("%F %T"), "source": "no-lock peek batch"},
-                          fh, ensure_ascii=False, indent=1)
+            _write_result(path, alpha_id, v, payload or {})
             print(f"  {alpha_id}: ★ prod = {v}  -> {os.path.basename(path)}", flush=True)
-        if len(done) >= len(ids):
+        if len(done) + len(terminal) >= len(ids):
+            break
+        if not pending:
             break
         await asyncio.sleep(max(10.0, args.interval))
 
     print("\n" + "=" * 60, flush=True)
     print(f"已取到 {len(done)}/{len(ids)}：", flush=True)
     for a in ids:
-        print(f"  {a}: {done.get(a, '缺')}", flush=True)
+        print(f"  {a}: {done.get(a, terminal.get(a, '缺'))}", flush=True)
     if len(done) < len(ids):
-        print("\n仍缺的说明 prod 端点/账号槽未恢复（不是这些 alpha 的问题）。", flush=True)
+        print("\n仍缺的说明 prod 端点/账号槽未恢复（不是这些 alpha 的问题）；"
+              "标 TERMINAL 的是 4xx 终态，重试无意义。", flush=True)
         return 2
     return 0
 

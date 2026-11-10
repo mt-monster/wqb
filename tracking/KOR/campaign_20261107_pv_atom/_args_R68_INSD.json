@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "hump(subtract(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "reverse(hump(subtract(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "hump(multiply(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "hump(vector_neut(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_dadv",
+    "expression": "hump(subtract(group_rank(ts_delta(rsk68_weight_dadv,22),sector),group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  }
+]

@@ -1,0 +1,19 @@
+id,type,cov,uc,ac,desc
+average_trading_volume,MATRIX,0.0,10,15,The average trading volume for the security; provided as a double. This field is sourced from the 'VolAvg' column in the PulsePick files.
+backtest_hit_ratio,MATRIX,0.0,9,11,The backtested hit ratio for the corresponding trading signal; provided as a double. This field is sourced from the 'Ratio' column in the PulsePick files.
+entity_employee_count,VECTOR,0.0,4,5,Number of employees in the entity (e.g.; company; index; person)
+entity_profile_summary,VECTOR,0.0,5,6,Description of the company from snapshot data
+entity_sector_name,VECTOR,0.0,8,8,Business sector or industry classification for the entity
+entity_total_revenue,VECTOR,0.0,5,7,Revenue of the company
+scl12_buzz,MATRIX,0.0,10,12,relative sentiment volume
+scl12_sentiment,MATRIX,0.0,8,10,sentiment
+sentiment_close_price,MATRIX,0.0,8,8,The daily close price of the stock; provided as a double. This field is sourced from the 'close' column in the PulsePickPerformance files.
+sentiment_expected_price_change,MATRIX,0.0,14,23,The mean of the anticipated stock price change based on the trading signal; provided as a double. This field is sourced from the 'Mean' column in the PulsePickâ¦
+sentiment_high_price,MATRIX,0.0,1,2,The daily high price of the stock; provided as a double. This field is sourced from the 'high' column in the PulsePickPerformance files.
+sentiment_intraday_return,MATRIX,0.0,11,16,The percentage stock price change from the daily open to the high (for a buy signal) or low (for a sell signal). This is a double calculated as 'value * 100'.
+sentiment_low_price,MATRIX,0.0,1,1,The daily low price of the stock; provided as a double. This field is sourced from the 'low' column in the PulsePickPerformance files.
+sentiment_open_price,MATRIX,0.0,0,0,The daily open price of the stock; provided as a double. This field is sourced from the 'open' column in the PulsePickPerformance files.
+sentiment_open_to_close_return_pct,MATRIX,0.0,8,11,The percentage stock price change from the daily open to the close price. This is a double calculated as 'value * 100' and sourced from the 'dayclose' field.
+sentiment_score,MATRIX,0.0,17,25,The aggregate sentiment score derived from social media and news. A value of 0 is neutral; positive values indicate positive opinion; and negative values indicaâ¦
+sentiment_significance,MATRIX,0.0,7,7,The statistical significance of the backtesting hit ratio; provided as a double. This field is sourced from the 'Significance' column in the PulsePick files.
+sentiment_stddev,MATRIX,0.0,12,16,The standard deviation of the anticipated stock price change based on the trading signal; provided as a double. This field is sourced from the 'StdDev' column iâ¦

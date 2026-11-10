@@ -1,0 +1,1 @@
+["subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))"]

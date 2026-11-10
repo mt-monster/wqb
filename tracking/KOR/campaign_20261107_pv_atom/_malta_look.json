@@ -1,0 +1,99 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1MwdQvc834U6a2VbU1bJVRy",
+   "location_url": "https://api.worldquantbrain.com/simulations/1MwdQvc834U6a2VbU1bJVRy",
+   "error": "Simulation did not get through; inspect raw/status for the platform response.",
+   "status": null,
+   "alpha": null,
+   "raw": {
+    "progress": 0.35
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/5jXDkdMe4MlczRLl5W29m0",
+   "location_url": "https://api.worldquantbrain.com/simulations/5jXDkdMe4MlczRLl5W29m0",
+   "error": "Simulation did not get through; inspect raw/status for the platform response.",
+   "status": null,
+   "alpha": null,
+   "raw": {
+    "progress": 0.35
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/6L7MLc8H4gKb1agAKd3037",
+   "location_url": "https://api.worldquantbrain.com/simulations/6L7MLc8H4gKb1agAKd3037",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "VkxRRbl0",
+   "raw": {
+    "id": "6L7MLc8H4gKb1agAKd3037",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 22,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(mdl250_lmt_close_eq_score, sector)",
+    "status": "COMPLETE",
+    "alpha": "VkxRRbl0"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1jroDqbR45dhaas16QmvYn1s",
+   "location_url": "https://api.worldquantbrain.com/simulations/1jroDqbR45dhaas16QmvYn1s",
+   "error": "Simulation did not get through; inspect raw/status for the platform response.",
+   "status": null,
+   "alpha": null,
+   "raw": {
+    "progress": 0.35
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2ij9848Bc567bT2nUAXv8mi",
+   "location_url": "https://api.worldquantbrain.com/simulations/2ij9848Bc567bT2nUAXv8mi",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "vR1ooX9w",
+   "raw": {
+    "id": "2ij9848Bc567bT2nUAXv8mi",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 22,
+     "neutralization": "REVERSION_AND_MOMENTUM",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(mdl250_lmt_close_eq_score, sector)",
+    "status": "COMPLETE",
+    "alpha": "vR1ooX9w"
+   },
+   "extra_info": ""
+  }
+ ]
+}

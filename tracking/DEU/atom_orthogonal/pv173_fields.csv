@@ -1,0 +1,82 @@
+id,type,cov,uc,ac,desc
+data_entry_date_10,SYMBOL,0.0,0,0,The date associated with the data point.
+observation_date_11,SYMBOL,0.0,0,0,The date on which the data was recorded or is applicable.
+pv173_ranks_bondreturn20deqwt,VECTOR,0.0,0,0,Cross-sectional rank across the USA Markit BLE universe (D0) of the issuerâs equally weighted 20-day bond return
+pv173_ranks_eqbddivrgbdrtn120d,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the 120-day divergence between equity and issuer bond returns
+pv173_ranks_eqbddivrgsprd5y120d,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the 120-day divergence between equity performance and the change in 5-year z-spread
+pv173_ranks_eqbddivrgsprd5y120dsbst,VECTOR,0.0,2,2,Cross-sectional rank (ASI; D0) of the substituted 120-day equityâbond divergence based on 5-year z-spread change
+pv173_ranks_mt5yzspread,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the issuerâs 5-year z-spread level from the bond curve
+pv173_ranks_mt5yzspreadchg60d,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the 60-day change in the 5-year z-spread
+pv173_ranks_mt5yzspreadchg60dsbst,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the substituted 60-day change in the 5-year z-spread
+pv173_ranks_mt5yzspreadchgstd20d,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the 20-day standard deviation of changes in the 5-year z-spread
+pv173_ranks_mt5yzspreadchgstd20dsbst,VECTOR,0.0,0,0,It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve
+pv173_ranks_mt5yzspreadindrel,VECTOR,0.0,0,0,It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve.
+pv173_ranks_mt5yzspreadindrelsbst,VECTOR,0.0,0,0,It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve
+pv173_ranks_mt5yzspreadsbst,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the substituted 5-year z-spread level (bond-level aggregation when curve nodes are missing)
+pv173_ranks_mt5yzspreadzscore60d,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the 60-day z-score of the issuerâs 5-year z-spread
+pv173_ranks_mt5yzspreadzscore60dsbst,VECTOR,0.0,0,0,Cross-sectional rank across the USA Markit BLE universe (D0) of the 60-day z-score of the issuer 5-year Z-spread; using substituted/imputed values when curve noâ¦
+pv173_ranks_reltermspreadtransfema120d,VECTOR,0.0,0,0,Cross-sectional rank of the 120-day EMA of the transformed relative term spread
+pv173_ranks_reltermspreadtransfema120dsbst,VECTOR,0.0,1,1,It is defined as the 120-day exponential average of transformed relative term spread
+pv173_ranks_shift60dchg60d,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the 60-day change in Shift (PCA level component)
+pv173_ranks_shift60dlast,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the last value of Shift (PCA level) over 60 days
+pv173_ranks_shift60dstd60d,VECTOR,0.0,0,0,Cross-sectional rank of the 60-day standard deviation of the Shift (PCA level) factor
+pv173_ranks_shift60dzscore60d,VECTOR,0.0,0,0,Cross-sectional rank (ASI; D0) of the 60-day z-score of Shift (PCA parallel level component)
+pv173_ranks_tilt5y1ydiff60dema60d,VECTOR,0.0,0,0,It is defined as the 60-day exponential average of the difference of factor loading of the second principal component for the 5-year z-spread and 1-year z-spreaâ¦
+pv173_ranks_tilt60dchg60d,VECTOR,0.0,0,0,Cross-sectional rank (China; D0) of the 60-day change in the Tilt (PCA slope factor)
+pv173_ranks_tilt60dema60d,VECTOR,0.0,0,0,Cross-sectional rank (China; D0) of the 60-day EMA of the Tilt (PCA slope factor)
+pv173_ranks_tilt6m1yavg60dlast,VECTOR,0.0,0,0,It is defined as the average factor loading of the second principal component for the 6-month and 1-year z-spread
+pv173_ranks_twist120dlast,VECTOR,0.0,0,0,It is defined as the average factor loading of the third principal component for the z-spread between 6 months and 40 years
+pv173_ranks_twist6m1yavg120dema120d,VECTOR,0.0,0,0,Cross-sectional rank of the 120-day EMA of the average Twist at 6M and 1Y curve nodes
+pv173_rawratios_bondreturn20deqwt,VECTOR,0.0,1,1,Equally weighted 20-day bond return for the issuerâs bond universe; reported as a raw value on D1
+pv173_rawratios_eqbddivrgbdrtn120d,VECTOR,0.0,0,0,Equityâbond divergence based on issuer bond returns over 120 trading days
+pv173_rawratios_eqbddivrgsprd5y120d,VECTOR,0.0,0,0,120-day divergence between equity performance and the issuerâs 5-year z-spread changes
+pv173_rawratios_eqbddivrgsprd5y120dsbst,VECTOR,0.0,0,0,Substituted/imputed equityâbond divergence at 5Y over 120 days
+pv173_rawratios_mt5yzspread,VECTOR,0.0,0,0,Issuer curve 5-year Z-spread level
+pv173_rawratios_mt5yzspreadchg60d,VECTOR,0.0,0,0,Change in the issuer 5-year Z-spread over the past 60 days
+pv173_rawratios_mt5yzspreadchg60dsbst,VECTOR,0.0,0,0,Smoothed/substituted 60-day change in the MT5Y Z-spread
+pv173_rawratios_mt5yzspreadchgstd20d,VECTOR,0.0,0,0,20-day standard deviation of changes in the issuer 5-year Z-spread
+pv173_rawratios_mt5yzspreadchgstd20dsbst,VECTOR,0.0,0,0,Smoothed/substituted standard deviation of MT5YZSpread change over 20 days
+pv173_rawratios_mt5yzspreadindrel,VECTOR,0.0,1,1,Industry-relative level of the issuer 5-year Z-spread
+pv173_rawratios_mt5yzspreadindrelsbst,VECTOR,0.0,0,0,Smoothed/substituted industry-relative MT 5Y Z-spread
+pv173_rawratios_mt5yzspreadsbst,VECTOR,0.0,0,0,Substituted composite version of the issuer 5-year Z-spread level
+pv173_rawratios_mt5yzspreadzscore60d,VECTOR,0.0,0,0,60-day z-score of the issuer 5-year Z-spread
+pv173_rawratios_mt5yzspreadzscore60dsbst,VECTOR,0.0,0,0,Smoothed/substituted 60-day z-score of the MT5Y Z-spread
+pv173_rawratios_reltermspreadtransfema120d,VECTOR,0.0,0,0,Transformed relative term spread; smoothed with a 120-day EMA
+pv173_rawratios_reltermspreadtransfema120dsbst,VECTOR,0.0,0,0,Substituted and smoothed version of the 120-day EMA of the transformed relative term spread
+pv173_rawratios_shift60dchg60d,VECTOR,0.0,1,1,60-day change in the shift (PCA level) factor
+pv173_rawratios_shift60dlast,VECTOR,0.0,0,0,Most recent value of the Shift (level) factor over a 60-day window
+pv173_rawratios_shift60dstd60d,VECTOR,0.0,0,0,Standard deviation over the last 60 days of the shift (PCA level) factor
+pv173_rawratios_shift60dzscore60d,VECTOR,0.0,0,0,60-day z-score of the shift (PCA level) factor
+pv173_rawratios_tilt5y1ydiff60dema60d,VECTOR,0.0,1,1,EMA(60D) of the difference in Tilt between 5-year and 1-year nodes
+pv173_rawratios_tilt60dchg60d,VECTOR,0.0,0,0,60-day change in the tilt (PCA slope) factor
+pv173_rawratios_tilt60dema60d,VECTOR,0.0,0,0,60-day EMA of the tilt (PCA slope) factor
+pv173_rawratios_tilt6m1yavg60dlast,VECTOR,0.0,0,0,Last value of the 60-day moving average of the tilt (PCA slope) across the 6M and 1Y curve nodes
+pv173_rawratios_twist120dlast,VECTOR,0.0,2,2,Most recent value of the Twist (curvature) factor over a 120-day window
+pv173_rawratios_twist6m1yavg120dema120d,VECTOR,0.0,0,0,120-day EMA of the average twist (PCA curvature) across the 6M and 1Y curve nodes
+pv173_zscores_bondreturn20deqwt,VECTOR,0.0,2,6,It is defined as the equally weighted single bond return over last 20 days with the filter of the bonds that mature between 3 years and 7 years.
+pv173_zscores_eqbddivrgbdrtn120d,VECTOR,0.0,0,0,120-day divergence between equity return and issuer bond return
+pv173_zscores_eqbddivrgsprd5y120d,VECTOR,0.0,0,0,Equityâbond divergence using changes in the 5-year Z-spread over the past 120 days
+pv173_zscores_eqbddivrgsprd5y120dsbst,VECTOR,0.0,0,0,Substituted/imputed 120-day equityâbond divergence versus 5Y spread change
+pv173_zscores_mt5yzspread,VECTOR,0.0,0,0,Level of the issuerâs 5-year Z-spread from the bond curve
+pv173_zscores_mt5yzspreadchg60d,VECTOR,0.0,1,1,60-day change in the 5-year z-spread
+pv173_zscores_mt5yzspreadchg60dsbst,VECTOR,0.0,0,0,Smoothed/substituted 60âday change in the 5âyear Zâspread
+pv173_zscores_mt5yzspreadchgstd20d,VECTOR,0.0,0,0,Standard deviation of 20-day changes in the 5-year z-spread
+pv173_zscores_mt5yzspreadchgstd20dsbst,VECTOR,0.0,0,0,Substituted/smoothed 20-day standard deviation of 5Y Z-spread changes
+pv173_zscores_mt5yzspreadindrel,VECTOR,0.0,0,0,Industryârelative level of the 5âyear Zâspread
+pv173_zscores_mt5yzspreadindrelsbst,VECTOR,0.0,0,0,Substituted/smoothed industry-relative 5Y Z-spread
+pv173_zscores_mt5yzspreadsbst,VECTOR,0.0,0,0,Substituted/composite 5-year z-spread level based on bond-level aggregation
+pv173_zscores_mt5yzspreadzscore60d,VECTOR,0.0,0,0,60âday zâscore of the 5âyear Zâspread
+pv173_zscores_mt5yzspreadzscore60dsbst,VECTOR,0.0,0,0,60âday zâscore of the substituted 5âyear Zâspread from the issuer curve (provider composite)
+pv173_zscores_reltermspreadtransfema120d,VECTOR,0.0,0,0,120-day EMA of the transformed relative term spread
+pv173_zscores_reltermspreadtransfema120dsbst,VECTOR,0.0,0,0,It is defined as the 120-day exponential average of transformed relative term spread
+pv173_zscores_shift60dchg60d,VECTOR,0.0,0,0,60-day change in the shift (level) component
+pv173_zscores_shift60dlast,VECTOR,0.0,0,0,Most recent value of the shift (level) component measured over 60 days
+pv173_zscores_shift60dstd60d,VECTOR,0.0,0,0,60âday rolling standard deviation of the âShiftâ (PCA level) component
+pv173_zscores_shift60dzscore60d,VECTOR,0.0,1,1,60âday zâscore of the âShiftâ (PCA level) component
+pv173_zscores_tilt5y1ydiff60dema60d,VECTOR,0.0,3,3,Difference between 5Y and 1Y tilt; smoothed with a 60-day exponential moving average
+pv173_zscores_tilt60dchg60d,VECTOR,0.0,0,0,60âday change in the âTiltâ (PCA slope) component
+pv173_zscores_tilt60dema60d,VECTOR,0.0,0,0,60âday EMA of the âTiltâ (PCA slope) component
+pv173_zscores_tilt6m1yavg60dlast,VECTOR,0.0,0,0,It is defined as the average factor loading of the second principal component for the 6-month and 1-year z-spread
+pv173_zscores_twist120dlast,VECTOR,0.0,0,0,Most recent value of the 120âday âTwistâ (PCA curvature) component
+pv173_zscores_twist6m1yavg120dema120d,VECTOR,0.0,0,0,120âday EMA of the average âTwistâ (PCA curvature) at 6âmonth and 1âyear nodes
+recorded_date_2,SYMBOL,0.0,0,0,The calendar date corresponding to the data entry.

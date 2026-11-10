@@ -1,0 +1,218 @@
+id,type,cov,uc,ac,desc
+accruals_component_raw_score,MATRIX,0.6503,35,55,Raw percentile score for accruals component before normalization.
+earnings_quality_raw_score,MATRIX,0.627,103,171,Raw region-relative percentile ranking before normalization for earnings quality.
+exclusions_component_percentile,MATRIX,0.6513,77,129,Percentile score for exclusions-based factors in the earnings quality model.
+global_momentum_percentile,MATRIX,1.0,13,25,Global percentile ranking for price momentum score.
+industry_momentum_percentile_2,MATRIX,1.0,29,38,Percentile score for price momentum relative to industry peers.
+long_term_momentum_percentile,MATRIX,1.0,16,16,Percentile score for long-term price momentum.
+mdl25_eq_bs_v4_2_1_v10,MATRIX,0.6233,1,8,Book value at the end of the last fiscal quarter
+mdl25_eq_bs_v4_2_1_v11,MATRIX,0.5851,3,4,Book value per share at the end of the most recent fiscal quarter
+mdl25_eq_bs_v4_2_1_v12,MATRIX,0.5498,1,0,Quarter-over-quarter change in book value per share (absolute)
+mdl25_eq_bs_v4_2_1_v13,MATRIX,0.5498,3,3,Quarter-over-quarter percentage change in book value per share
+mdl25_eq_bs_v4_2_1_v19,MATRIX,0.204,1,0,Quarter-over-quarter percentage change in unearned revenue
+mdl25_eq_bs_v4_2_1_v5,MATRIX,0.6227,3,3,Total assets at the end of the last fiscal quarter
+mdl25_eq_bs_v4_2_1_v6,MATRIX,0.5874,2,2,Quarter-over-quarter percentage change in total assets
+mdl25_eq_bs_v4_2_1_v7,MATRIX,0.6244,2,2,Average net operating assets in the last quarter
+mdl25_eq_bs_v4_2_1_v8,MATRIX,0.632,2,2,Adjusted average net operating assets in the last quarter
+mdl25_eq_bs_v4_2_1_v9,MATRIX,0.6276,3,3,Quarter-over-quarter percentage change in adjusted average net operating assets
+mdl25_eq_cb_v4_2_1_v10,MATRIX,0.6757,5,5,Average Traded Volume
+mdl25_eq_cb_v4_2_1_v11,MATRIX,0.6757,2,2,Average Traded Volume (Local Currency)
+mdl25_eq_cb_v4_2_1_v12,MATRIX,0.6757,1,0,Average Traded Volume (USD)
+mdl25_eq_cb_v4_2_1_v20,MATRIX,0.6753,3,3,Data-Through Date (Fundamental) Current
+mdl25_eq_cb_v4_2_1_v21,MATRIX,0.6344,3,3,Period End Date - Last Qtr
+mdl25_eq_cb_v4_2_1_v22,MATRIX,0.6215,4,6,Company Filing Date - Last Qtr
+mdl25_eq_cb_v4_2_1_v23,MATRIX,0.6344,1,0,Date a new filing was received for the last quarter
+mdl25_eq_cb_v4_2_1_v30,MATRIX,0.6234,2,2,Indicator whether last quarter financials are consolidated
+mdl25_eq_cb_v4_2_1_v6,MATRIX,0.6757,7,8,Market Cap (Local Currency)
+mdl25_eq_cb_v4_2_1_v7,MATRIX,0.6757,14,17,Market Cap (USD)
+mdl25_eq_cb_v4_2_1_v8,MATRIX,0.6758,4,4,52-week High Price
+mdl25_eq_cb_v4_2_1_v9,MATRIX,0.6758,6,6,52-week Low Price
+mdl25_eq_cfs_v4_2_1_v10,MATRIX,0.5461,1,0,Quarter-over-quarter percentage change in cash flow from investing activities
+mdl25_eq_cfs_v4_2_1_v11,MATRIX,0.5509,2,2,Cash flow from financing activities for the most recent fiscal quarter
+mdl25_eq_cfs_v4_2_1_v12,MATRIX,0.5381,2,2,Quarter-over-quarter percentage change in cash flow from financing activities
+mdl25_eq_cfs_v4_2_1_v13,MATRIX,0.5564,4,10,Free cash flow (FCF) for the last fiscal quarter
+mdl25_eq_cfs_v4_2_1_v14,MATRIX,0.5503,2,7,Quarter-over-quarter percent change in free cash flow (FCF)
+mdl25_eq_cfs_v4_2_1_v15,MATRIX,0.5018,1,0,Capital expenditures for the most recent fiscal quarter
+mdl25_eq_cfs_v4_2_1_v16,MATRIX,0.4933,1,0,Quarter-over-quarter percent change in capital expenditures (Capex)
+mdl25_eq_cfs_v4_2_1_v19,MATRIX,0.5479,1,0,Excess cash margin percentage for the last fiscal quarter
+mdl25_eq_cfs_v4_2_1_v5,MATRIX,0.5469,1,0,Total cash flow for the last fiscal quarter
+mdl25_eq_cfs_v4_2_1_v6,MATRIX,0.541,3,3,Quarter-over-quarter change in total cash flow (absolute)
+mdl25_eq_cfs_v4_2_1_v7,MATRIX,0.5564,3,3,Cash flow from operations for the most recent fiscal quarter
+mdl25_eq_cfs_v4_2_1_v8,MATRIX,0.5502,1,0,Quarter-over-quarter percentage change in cash flow from operations
+mdl25_eq_cfs_v4_2_1_v9,MATRIX,0.5523,1,0,Cash flow from investing activities for the most recent fiscal quarter
+mdl25_eq_is_v4_2_1_v10,MATRIX,0.5478,4,4,Quarter-over-quarter percent change in EBITDA
+mdl25_eq_is_v4_2_1_v11,MATRIX,0.6007,2,2,Average EBITDA growth over the past five years
+mdl25_eq_is_v4_2_1_v12,MATRIX,0.6002,2,2,Deviation from the 5-year average EBITDA growth
+mdl25_eq_is_v4_2_1_v13,MATRIX,0.5476,1,0,Percentage change in operating expenses from the prior quarter
+mdl25_eq_is_v4_2_1_v14,MATRIX,0.5793,3,3,EBIT for the most recently reported fiscal quarter
+mdl25_eq_is_v4_2_1_v15,MATRIX,0.5477,2,2,Quarter-over-quarter percent change in EBIT
+mdl25_eq_is_v4_2_1_v16,MATRIX,0.585,3,3,Net income from continuing operations for the most recent quarter
+mdl25_eq_is_v4_2_1_v17,MATRIX,0.553,1,0,Quarter-over-quarter percent change in net income from continuing operations
+mdl25_eq_is_v4_2_1_v18,MATRIX,0.279,1,0,Special items amount for the last fiscal quarter
+mdl25_eq_is_v4_2_1_v19,MATRIX,0.2125,0,0,Percentage change in special items from the prior quarter
+mdl25_eq_is_v4_2_1_v24,MATRIX,0.5865,1,1,Net income for the most recently reported fiscal quarter
+mdl25_eq_is_v4_2_1_v25,MATRIX,0.5534,0,0,Quarter-over-quarter percent change in net income
+mdl25_eq_is_v4_2_1_v26,MATRIX,0.5984,1,1,Dividends per share for the most recent quarter
+mdl25_eq_is_v4_2_1_v27,MATRIX,0.5251,1,1,Quarter-over-quarter change in dividends per share (absolute amount)
+mdl25_eq_is_v4_2_1_v28,MATRIX,0.1861,1,1,Quarter-over-quarter percent change in dividends per share
+mdl25_eq_is_v4_2_1_v29,MATRIX,0.5417,1,1,Average EPS growth over the past five years
+mdl25_eq_is_v4_2_1_v30,MATRIX,0.5414,0,0,Deviation from the 5-year average EPS growth
+mdl25_eq_is_v4_2_1_v31,MATRIX,0.5807,1,2,Basic EPS from continuing operations for the most recent quarter
+mdl25_eq_is_v4_2_1_v32,MATRIX,0.5468,0,0,Quarter-over-quarter change in basic EPS from continuing operations (absolute amount)
+mdl25_eq_is_v4_2_1_v33,MATRIX,0.5468,0,0,Quarter-over-quarter percent change in basic EPS from continuing operations
+mdl25_eq_is_v4_2_1_v34,MATRIX,0.58,0,0,Basic EPS from discontinued operations and extraordinary items for the last fiscal quarter
+mdl25_eq_is_v4_2_1_v35,MATRIX,0.5467,1,1,Basic EPS from discontinued operations and extraordinary items; quarter-over-quarter difference (absolute)
+mdl25_eq_is_v4_2_1_v37,MATRIX,0.5908,1,1,Basic EPS from total operations for the most recent quarter
+mdl25_eq_is_v4_2_1_v38,MATRIX,0.5538,1,1,Basic EPS from total operations; quarter-over-quarter difference (absolute)
+mdl25_eq_is_v4_2_1_v39,MATRIX,0.5538,0,0,Basic EPS from total operations; quarter-over-quarter difference (percent)
+mdl25_eq_is_v4_2_1_v43,MATRIX,0.5731,1,1,Diluted EPS from continuing operations for the most recent quarter
+mdl25_eq_is_v4_2_1_v44,MATRIX,0.539,0,0,Diluted EPS from continuing operations; quarter-over-quarter difference (absolute)
+mdl25_eq_is_v4_2_1_v45,MATRIX,0.539,0,0,Diluted EPS from continuing operations; quarter-over-quarter difference (percent)
+mdl25_eq_is_v4_2_1_v46,MATRIX,0.5727,1,1,Diluted EPS from discontinued operations and extraordinary items for the most recent quarter
+mdl25_eq_is_v4_2_1_v47,MATRIX,0.5389,0,0,Diluted EPS from discontinued operations and extraordinary items; quarter-over-quarter difference (absolute)
+mdl25_eq_is_v4_2_1_v48,MATRIX,0.5774,1,1,Diluted EPS from total operations for the most recent quarter
+mdl25_eq_is_v4_2_1_v49,MATRIX,0.5409,0,0,Diluted EPS from total operations; quarter-over-quarter difference (absolute)
+mdl25_eq_is_v4_2_1_v5,MATRIX,0.621,3,3,Revenue for the most recently reported fiscal quarter
+mdl25_eq_is_v4_2_1_v50,MATRIX,0.5409,0,0,Diluted EPS from total operations; quarter-over-quarter difference (percent)
+mdl25_eq_is_v4_2_1_v51,MATRIX,0.4769,0,0,Pension Expense - Last Year
+mdl25_eq_is_v4_2_1_v6,MATRIX,0.5564,3,3,Quarter-over-quarter percent change in revenue
+mdl25_eq_is_v4_2_1_v7,MATRIX,0.6368,4,17,Average revenue growth over the past five years
+mdl25_eq_is_v4_2_1_v8,MATRIX,0.6363,6,7,Deviation from the 5-year average revenue growth
+mdl25_eq_is_v4_2_1_v9,MATRIX,0.5792,1,1,EBITDA for the most recently reported fiscal quarter
+mdl25_eq_pc_v4_2_1_v10,MATRIX,0.6757,2,4,Change Relative to Industry Benchmark (%)
+mdl25_eq_pc_v4_2_1_v11,MATRIX,0.6757,1,1,Change Relative to Country Benchmark (%)
+mdl25_eq_pc_v4_2_1_v12,MATRIX,0.6758,0,0,Change Relative to ASX 100 (%)
+mdl25_eq_pc_v4_2_1_v13,MATRIX,0.6758,2,2,Change Relative to ASX 200 (%)
+mdl25_eq_pc_v4_2_1_v14,MATRIX,0.6758,1,1,Change Relative to ASX 300 (%)
+mdl25_eq_pc_v4_2_1_v15,MATRIX,0.6758,0,0,Change Relative to ASX All Ord (%)
+mdl25_eq_pc_v4_2_1_v16,MATRIX,0.6758,1,1,Change Relative to CAC 40 (%)
+mdl25_eq_pc_v4_2_1_v17,MATRIX,0.6758,1,1,Change Relative to DJ STOXX 600 (%)
+mdl25_eq_pc_v4_2_1_v18,MATRIX,0.6758,0,0,Change Relative to FTSE 100 (%)
+mdl25_eq_pc_v4_2_1_v19,MATRIX,0.6758,3,5,Change Relative to Hang Seng (%)
+mdl25_eq_pc_v4_2_1_v20,MATRIX,0.6758,0,0,Change Relative to JSE All Share (%)
+mdl25_eq_pc_v4_2_1_v21,MATRIX,0.6758,1,1,Change Relative to MSCI EAFE (%)
+mdl25_eq_pc_v4_2_1_v22,MATRIX,0.6758,0,0,Change Relative to MSCI EMF (%)
+mdl25_eq_pc_v4_2_1_v23,MATRIX,0.6758,0,0,Change Relative to MSCI Europe (%)
+mdl25_eq_pc_v4_2_1_v24,MATRIX,0.6758,0,0,Change Relative to MSCI Pac ex JP (%)
+mdl25_eq_pc_v4_2_1_v25,MATRIX,0.6758,0,0,Change Relative to MSCI World (%)
+mdl25_eq_pc_v4_2_1_v26,MATRIX,0.6758,0,0,Change Relative to R1000 Growth (%)
+mdl25_eq_pc_v4_2_1_v27,MATRIX,0.6758,0,0,Change Relative to R1000 Value (%)
+mdl25_eq_pc_v4_2_1_v28,MATRIX,0.6758,0,0,Change Relative to Russell 1000 (%)
+mdl25_eq_pc_v4_2_1_v29,MATRIX,0.6758,2,2,Change Relative to Russell 2000 (%)
+mdl25_eq_pc_v4_2_1_v30,MATRIX,0.6758,3,3,Change Relative to Russell Midcap (%)
+mdl25_eq_pc_v4_2_1_v31,MATRIX,0.6758,2,2,Change Relative to S&P 400 (%)
+mdl25_eq_pc_v4_2_1_v32,MATRIX,0.6758,2,2,Change Relative to S&P 500 (%)
+mdl25_eq_pc_v4_2_1_v33,MATRIX,0.6758,2,2,Change Relative to S&P 600 (%)
+mdl25_eq_pc_v4_2_1_v34,MATRIX,0.6758,1,0,Change Relative to TOPIX (%)
+mdl25_eq_pc_v4_2_1_v35,MATRIX,0.6758,4,4,Change Relative to TSX Composite (%)
+mdl25_eq_pc_v4_2_1_v5,MATRIX,0.6758,3,4,Price Change (%)
+mdl25_eq_pc_v4_2_1_v6,MATRIX,0.6758,8,8,Change from 52-week High Price (ratio)
+mdl25_eq_pc_v4_2_1_v7,MATRIX,0.6758,10,11,Change from 52-week Low Price (ratio)
+mdl25_eq_pc_v4_2_1_v8,MATRIX,0.6758,3,3,Diff from 50-day Moving Average (%)
+mdl25_eq_pc_v4_2_1_v9,MATRIX,0.6758,6,6,Diff from 200-day Moving Average (%)
+mdl25_eq_rd_v4_2_1_v10,MATRIX,0.5478,1,0,Quarter-over-quarter change in Pretax ROA (%)
+mdl25_eq_rd_v4_2_1_v11,MATRIX,0.622,2,0,Leverage ratio (Assets/Equity) for the last reported quarter
+mdl25_eq_rd_v4_2_1_v12,MATRIX,0.5853,6,7,Quarter-over-quarter change in Leverage (Assets/Equity)
+mdl25_eq_rd_v4_2_1_v13,MATRIX,0.5876,3,5,Pretax Return on Equity (%) for the last reported quarter
+mdl25_eq_rd_v4_2_1_v14,MATRIX,0.5505,1,0,Quarter-over-quarter change in Pretax ROE (%)
+mdl25_eq_rd_v4_2_1_v15,MATRIX,0.5737,5,16,Return on Equity (%) for the last reported quarter
+mdl25_eq_rd_v4_2_1_v16,MATRIX,0.5469,1,0,Quarter-over-quarter change in ROE (%)
+mdl25_eq_rd_v4_2_1_v17,MATRIX,0.3793,1,0,Earnings Retention for the last reported quarter
+mdl25_eq_rd_v4_2_1_v18,MATRIX,0.2965,1,0,Quarter-over-quarter change in Earnings Retention
+mdl25_eq_rd_v4_2_1_v19,MATRIX,0.3751,1,0,Reinvestment Rate (%) for the last reported quarter
+mdl25_eq_rd_v4_2_1_v20,MATRIX,0.2941,1,0,Quarter-over-quarter change in Reinvestment Rate (%)
+mdl25_eq_rd_v4_2_1_v5,MATRIX,0.5796,12,20,Asset Turnover for the last reported quarter
+mdl25_eq_rd_v4_2_1_v6,MATRIX,0.5483,4,4,Quarter-over-quarter change in Asset Turnover (last quarter vs prior quarter)
+mdl25_eq_rd_v4_2_1_v7,MATRIX,0.5972,2,3,Pretax Margin (%) for the last reported quarter
+mdl25_eq_rd_v4_2_1_v8,MATRIX,0.5539,2,2,Quarter-over-quarter change in Pretax Margin (%)
+mdl25_eq_rd_v4_2_1_v9,MATRIX,0.5771,4,4,Pretax Return on Assets (%) for the last reported quarter
+mdl25_eq_rlev_v4_2_1_v10,MATRIX,0.5768,1,0,Quarter-over-quarter change in Long-Term Debt to Total Capital percentage
+mdl25_eq_rlev_v4_2_1_v11,MATRIX,0.5786,2,2,Net Debt to EBITDA ratio for the most recent quarter ((Total Debt minus Cash) divided by EBITDA)
+mdl25_eq_rlev_v4_2_1_v12,MATRIX,0.5477,2,2,Quarter-over-quarter change in Net Debt to EBITDA
+mdl25_eq_rlev_v4_2_1_v5,MATRIX,0.622,2,0,Assets to Equity ratio for the most recent quarter (Total Assets divided by Shareholders' Equity)
+mdl25_eq_rlev_v4_2_1_v6,MATRIX,0.5853,1,0,Quarter-over-quarter change in the Assets to Equity ratio
+mdl25_eq_rlev_v4_2_1_v7,MATRIX,0.6199,2,2,Debt to Equity ratio for the most recent quarter (Total Debt divided by Shareholders' Equity)
+mdl25_eq_rlev_v4_2_1_v8,MATRIX,0.5766,2,2,Quarter-over-quarter change in the Debt to Equity ratio
+mdl25_eq_rlev_v4_2_1_v9,MATRIX,0.6199,1,0,Long-Term Debt as a percentage of Total Capital for the most recent quarter
+mdl25_eq_rliq_v4_2_1_v10,MATRIX,0.3116,4,4,Times Interest Earned - 1 Qtr Difference
+mdl25_eq_rliq_v4_2_1_v11,MATRIX,0.5517,2,2,Cash Cycle - Last Qtr
+mdl25_eq_rliq_v4_2_1_v12,MATRIX,0.5283,1,0,Cash Cycle - 1 Qtr Difference
+mdl25_eq_rliq_v4_2_1_v5,MATRIX,0.519,3,10,Quick Ratio - Last Qtr
+mdl25_eq_rliq_v4_2_1_v6,MATRIX,0.485,1,0,Quick Ratio - 1 Qtr Difference
+mdl25_eq_rliq_v4_2_1_v7,MATRIX,0.5857,2,0,Current Ratio - Last Qtr
+mdl25_eq_rliq_v4_2_1_v8,MATRIX,0.5472,1,0,Current Ratio - 1 Qtr Difference
+mdl25_eq_rliq_v4_2_1_v9,MATRIX,0.3365,1,0,Times Interest Earned - Last Qtr
+mdl25_eq_ro_v4_2_1_v10,MATRIX,0.4752,3,3,Inventory turnover for the last fiscal quarter
+mdl25_eq_ro_v4_2_1_v11,MATRIX,0.4585,2,2,Quarter-over-quarter change in inventory turnover
+mdl25_eq_ro_v4_2_1_v12,MATRIX,0.4755,2,2,Average inventory days (days inventory outstanding) for the last fiscal quarter
+mdl25_eq_ro_v4_2_1_v13,MATRIX,0.4588,1,0,Quarter-over-quarter change in average inventory days (DIO)
+mdl25_eq_ro_v4_2_1_v14,MATRIX,0.5421,2,2,Working capital to sales ratio for the last fiscal quarter
+mdl25_eq_ro_v4_2_1_v15,MATRIX,0.5203,2,2,Quarter-over-quarter change in working capital to sales ratio
+mdl25_eq_ro_v4_2_1_v16,MATRIX,0.5829,13,31,Net operating asset turnover for the last fiscal quarter
+mdl25_eq_ro_v4_2_1_v17,MATRIX,0.6524,3,3,Adjusted net operating asset turnover for the last fiscal year
+mdl25_eq_ro_v4_2_1_v18,MATRIX,0.6512,5,5,Year-over-year change in adjusted net operating asset turnover
+mdl25_eq_ro_v4_2_1_v19,MATRIX,0.5732,5,12,Return on net operating assets (RNOA) percentage for the last fiscal quarter
+mdl25_eq_ro_v4_2_1_v20,MATRIX,0.5401,2,2,Quarter-over-quarter change in return on net operating assets (RNOA) percentage
+mdl25_eq_ro_v4_2_1_v21,MATRIX,0.6486,2,2,Return on adjusted net operating assets percentage for the last fiscal year
+mdl25_eq_ro_v4_2_1_v22,MATRIX,0.6465,1,0,Year-over-year change in return on adjusted net operating assets percentage
+mdl25_eq_ro_v4_2_1_v5,MATRIX,0.5434,1,0,Quarter-over-quarter change in net operating asset turnover
+mdl25_eq_ro_v4_2_1_v6,MATRIX,0.5482,16,18,Accounts receivable turnover for the last fiscal quarter
+mdl25_eq_ro_v4_2_1_v7,MATRIX,0.525,2,2,Quarter-over-quarter change in accounts receivable turnover
+mdl25_eq_ro_v4_2_1_v8,MATRIX,0.5477,8,14,Average accounts receivable days (days sales outstanding) for the last fiscal quarter
+mdl25_eq_ro_v4_2_1_v9,MATRIX,0.5245,5,10,Quarter-over-quarter change in average accounts receivable days (DSO)
+mdl25_eq_rp_v4_2_1_v10,MATRIX,0.5471,1,0,EBITDA Margin (%) - 1 Quarter Difference
+mdl25_eq_rp_v4_2_1_v11,MATRIX,0.5783,4,6,Operating Margin (%) - Last Quarter
+mdl25_eq_rp_v4_2_1_v12,MATRIX,0.5469,1,0,Operating Margin (%) - 1 Quarter Difference
+mdl25_eq_rp_v4_2_1_v13,MATRIX,0.6444,3,7,Average Historical Operating Margin 5-Year
+mdl25_eq_rp_v4_2_1_v14,MATRIX,0.6426,3,3,Diff from Average Hist Operating Margin 5-Year
+mdl25_eq_rp_v4_2_1_v15,MATRIX,0.5972,4,8,Pretax Margin (%) - Last Quarter
+mdl25_eq_rp_v4_2_1_v16,MATRIX,0.5539,1,0,Pretax Margin (%) - 1 Quarter Difference
+mdl25_eq_rp_v4_2_1_v17,MATRIX,0.5845,2,2,Effective Tax Rate (%) - Last Quarter
+mdl25_eq_rp_v4_2_1_v18,MATRIX,0.5514,2,2,Effective Tax Rate (%) - 1 Quarter Difference
+mdl25_eq_rp_v4_2_1_v19,MATRIX,0.5841,3,3,Net Margin (%) - Last Quarter
+mdl25_eq_rp_v4_2_1_v20,MATRIX,0.5522,1,0,Net Margin (%) - 1 Quarter Difference
+mdl25_eq_rp_v4_2_1_v5,MATRIX,0.5573,3,3,Gross Margin (%) - Last Quarter
+mdl25_eq_rp_v4_2_1_v6,MATRIX,0.5294,2,2,Gross Margin (%) - 1 Quarter Difference
+mdl25_eq_rp_v4_2_1_v7,MATRIX,0.615,1,0,Average Historical Gross Margin - 5-Year
+mdl25_eq_rp_v4_2_1_v8,MATRIX,0.6137,2,2,Diff from Average Hist Gross Margin - 5-Year
+mdl25_eq_rp_v4_2_1_v9,MATRIX,0.5781,1,0,EBITDA Margin (%) - Last Quarter
+mdl25_eq_v4_2_1_v10,MATRIX,0.6515,6,9,Earnings Quality by Accruals - Period End Date
+mdl25_eq_v4_2_1_v12,MATRIX,0.627,13,16,Earnings Quality by Cash Flow
+mdl25_eq_v4_2_1_v13,MATRIX,0.6269,2,2,Earnings Quality by Cash Flow - 1 Day Difference
+mdl25_eq_v4_2_1_v14,MATRIX,0.6345,1,0,Earnings Quality by Cash Flow - Period End Date
+mdl25_eq_v4_2_1_v16,MATRIX,0.6503,6,7,Earnings Quality by Operating Efficiency
+mdl25_eq_v4_2_1_v17,MATRIX,0.6503,1,0,Earnings Quality by Operating Efficiency - 1 Day Difference
+mdl25_eq_v4_2_1_v18,MATRIX,0.6508,1,0,Earnings Quality by Operating Efficiency - Period End Date
+mdl25_eq_v4_2_1_v22,MATRIX,0.651,47,66,Raw Earnings Quality
+mdl25_eq_v4_2_1_v6,MATRIX,0.651,52,97,Earnings Quality Region Rank
+mdl25_eq_v4_2_1_v7,MATRIX,0.651,3,4,Earnings Quality Region Rank - 1 Day Difference
+mdl25_eq_v4_2_1_v8,MATRIX,0.6513,44,56,Earnings Quality by Accruals
+mdl25_eq_v4_2_1_v9,MATRIX,0.6512,2,2,Earnings Quality by Accruals - 1 Day Difference
+mdl25_eq_vr_v4_2_1_v10,MATRIX,0.6231,1,0,Year-over-year percent change in price-to-sales ratio
+mdl25_eq_vr_v4_2_1_v11,MATRIX,0.5866,5,9,Price-to-cash-from-operations ratio
+mdl25_eq_vr_v4_2_1_v12,MATRIX,0.5252,4,4,Price-to-free-cash-flow ratio
+mdl25_eq_vr_v4_2_1_v13,MATRIX,0.653,6,8,Enterprise Value (EV)
+mdl25_eq_vr_v4_2_1_v14,MATRIX,0.6182,11,11,Enterprise value to EBITDA ratio (EV/EBITDA)
+mdl25_eq_vr_v4_2_1_v15,MATRIX,0.5412,3,3,Quarter-over-quarter percent change in EV/EBITDA
+mdl25_eq_vr_v4_2_1_v16,MATRIX,0.6515,7,7,Enterprise value to sales ratio (EV/Sales)
+mdl25_eq_vr_v4_2_1_v17,MATRIX,0.644,17,20,Free cash flow yield (FCF divided by market cap); percent
+mdl25_eq_vr_v4_2_1_v18,MATRIX,0.6353,11,12,Free cash flow to enterprise value (FCF/EV); percent
+mdl25_eq_vr_v4_2_1_v19,MATRIX,0.6365,33,60,Cash from operations to enterprise value (CFO/EV); percent
+mdl25_eq_vr_v4_2_1_v5,MATRIX,0.6506,7,11,Price-to-book ratio (market price per share divided by book value per share)
+mdl25_eq_vr_v4_2_1_v6,MATRIX,0.6177,5,5,Quarter-over-quarter absolute change in price-to-book ratio
+mdl25_eq_vr_v4_2_1_v7,MATRIX,0.6177,7,7,Quarter-over-quarter percent change in price-to-book ratio
+mdl25_eq_vr_v4_2_1_v8,MATRIX,0.6516,5,9,Price-to-sales ratio
+mdl25_eq_vr_v4_2_1_v9,MATRIX,0.6231,2,2,Year-over-year absolute change in price-to-sales ratio
+mid_term_momentum_percentile,MATRIX,1.0,25,29,Percentile score for mid-term price momentum.
+operating_efficiency_component_percentile,MATRIX,0.651,49,66,Percentile score for operating efficiency factors in the earnings quality model.
+operating_efficiency_component_raw_score,MATRIX,0.651,27,33,Raw percentile score for operating efficiency component before normalization.
+regional_momentum_percentile,MATRIX,1.0,14,15,Percentile score for price momentum relative to region.
+short_term_momentum_percentile,MATRIX,1.0,24,36,Percentile score for short-term price momentum.
+value_momentum_global_percentile,MATRIX,1.0,92,140,Global percentile ranking for value-momentum score.
+value_momentum_global_rank_float,MATRIX,0.7085,34,46,Global value-momentum percentile score as a floating-point value.
+value_momentum_industry_percentile,MATRIX,1.0,243,385,Industry-relative percentile ranking for value-momentum score.
+value_momentum_industry_rank_float,MATRIX,0.7028,93,187,Industry-relative value-momentum percentile score as a floating-point value.
+value_momentum_region_percentile,MATRIX,1.0,100,144,Region-relative percentile ranking for value-momentum score.
+value_momentum_region_rank_float,MATRIX,0.7085,48,70,Region-relative value-momentum percentile score as a floating-point value.
+value_momentum_sector_percentile,MATRIX,1.0,204,415,Sector-relative percentile ranking for value-momentum score.
+value_momentum_sector_rank_float,MATRIX,0.7081,75,118,Sector-relative value-momentum percentile score as a floating-point value.

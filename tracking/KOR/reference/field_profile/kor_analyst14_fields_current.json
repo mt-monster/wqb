@@ -1,0 +1,3690 @@
+[
+ {
+  "id": "anl14_all_high_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 172,
+  "alphaCount": 530,
+  "description": "The highest estimation of earnings per share - upcoming year"
+ },
+ {
+  "id": "anl14_all_high_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 60,
+  "alphaCount": 106,
+  "description": "The highest estimation of earnings per share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_all_low_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 88,
+  "alphaCount": 312,
+  "description": "The lowest estimation of earnings per share - upcoming year"
+ },
+ {
+  "id": "anl14_all_low_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 35,
+  "alphaCount": 73,
+  "description": "The Lowest Estimation of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_all_mean_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 82,
+  "alphaCount": 266,
+  "description": "Mean of estimations of earnings per share - upcoming year"
+ },
+ {
+  "id": "anl14_all_mean_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 43,
+  "alphaCount": 87,
+  "description": "Mean of Estimations of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_all_median_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 44,
+  "alphaCount": 119,
+  "description": "Median of Estimations of Earnings Per Share - Upcoming Year"
+ },
+ {
+  "id": "anl14_all_median_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 33,
+  "alphaCount": 95,
+  "description": "Median of estimations of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_all_numofests_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 42,
+  "alphaCount": 120,
+  "description": "Num of Estimations of Earnings Per Share - Upcoming Year"
+ },
+ {
+  "id": "anl14_all_numofests_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 39,
+  "alphaCount": 110,
+  "description": "Num of estimations of earnings per share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_all_stddev_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 24,
+  "alphaCount": 57,
+  "description": "Standard Deviation of Estimations of Earnings Per Share - upcoming year"
+ },
+ {
+  "id": "anl14_all_stddev_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 41,
+  "description": "Standard Deviation of Estimations of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_curperiodtype",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 55,
+  "alphaCount": 194,
+  "description": "Type of Period -"
+ },
+ {
+  "id": "anl14_cursharesoutstanding",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 59,
+  "alphaCount": 213,
+  "description": "Current Share Outstanding -"
+ },
+ {
+  "id": "anl14_estq_broker",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 33,
+  "description": "Broker name -"
+ },
+ {
+  "id": "anl14_estvalue",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 19,
+  "alphaCount": 42,
+  "description": "Estimation Value -"
+ },
+ {
+  "id": "anl14_estvalue_fp3",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 22,
+  "description": "Estimation Value - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_estvalue_fp4",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 17,
+  "description": "Estimation value - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_estvalue_fp5",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 9,
+  "description": "Estimation value - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_bvps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 34,
+  "description": "The Highest Estimation of Book Value Per Share - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_high_bvps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 15,
+  "description": "The Highest Estimation of Book Value Per Share - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_high_bvps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "The Highest Estimation of Book Value Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_bvps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 16,
+  "description": "The highest estimation of book value per share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_bvps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The Highest Estimation of Book Value Per Share - Upcoming 5 Quarters"
+ },
+ {
+  "id": "anl14_high_bvps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 22,
+  "description": "The highest estimation of Book Value Per Share - upcoming year"
+ },
+ {
+  "id": "anl14_high_bvps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "description": "The highest estimation of Book Value Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_high_capex_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 47,
+  "alphaCount": 122,
+  "description": "The highest estimation of Capital Expenditures - upcoming year"
+ },
+ {
+  "id": "anl14_high_capex_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 24,
+  "alphaCount": 45,
+  "description": "The Highest Estimation of Capital Expenditures - upcoming 2 years"
+ },
+ {
+  "id": "anl14_high_ebit_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 24,
+  "alphaCount": 41,
+  "description": "The highest estimation of earnings before interest & taxes - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_ebit_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 13,
+  "description": "The Highest Estimation of Earnings Before Interest & Taxes - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_ebit_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "The Highest Estimation of Earnings Before Interest & Taxes - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_ebit_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 7,
+  "description": "The highest estimation of earnings before interest & taxes - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_ebit_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 5,
+  "description": "The Highest Estimation of Earnings Before Interest & Taxes - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_ebit_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 23,
+  "alphaCount": 30,
+  "description": "The Highest Estimation of Earnings Before Interest & Taxes - Upcoming Year"
+ },
+ {
+  "id": "anl14_high_ebit_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 33,
+  "alphaCount": 63,
+  "description": "The highest estimation of Earnings Before Interest & Taxes - upcoming 2 years"
+ },
+ {
+  "id": "anl14_high_ebitda_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 52,
+  "description": "The highest estimation of earnings before interest, taxes, depreciation & amortization - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_ebitda_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 40,
+  "description": "The Highest Estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_ebitda_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 38,
+  "description": "The highest estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_ebitda_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 65,
+  "description": "The highest estimation of earnings before interest, taxes, depreciation & amortization - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_ebitda_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 20,
+  "description": "The Highest Estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_ebitda_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 23,
+  "alphaCount": 29,
+  "description": "The Highest Estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming year"
+ },
+ {
+  "id": "anl14_high_ebitda_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 16,
+  "description": "The Highest Estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 2 years"
+ },
+ {
+  "id": "anl14_high_eps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 11,
+  "description": "The highest estimation of Earnings Per Share - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_eps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 7,
+  "description": "The highest estimation of Earnings Per Share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_eps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 8,
+  "description": "The Highest estimation of Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_eps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Highest Estimation of Earnings Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_eps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "The highest estimation of Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 8,
+  "description": "The Highest Estimation of Earnings Per Share - Upcoming Year"
+ },
+ {
+  "id": "anl14_high_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 15,
+  "description": "The Highest Estimation of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_high_epsrep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 10,
+  "description": "The highest estimation of reported earnings per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_epsrep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 11,
+  "description": "The Highest Estimation of Reported Earnings Per Share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_epsrep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "The Highest Estimation of Reported Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_epsrep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The highest estimation of reported earnings per share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_epsrep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The highest estimation of reported earnings per share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_ndebt_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Highest Estimation of Net Debt - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_ndebt_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "The Highest Estimation of Net Debt - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_high_ndebt_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 6,
+  "description": "The highest estimation of Net Debt - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_ndebt_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "The Highest Estimation of Net Debt - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_ndebt_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 17,
+  "description": "The Highest Estimation of Net Debt - upcoming year"
+ },
+ {
+  "id": "anl14_high_ndebt_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 22,
+  "description": "The highest estimation of Net Debt - upcoming 2 years"
+ },
+ {
+  "id": "anl14_high_ntp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 12,
+  "description": "The Highest Estimation of Net Profit - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_high_ntp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "description": "The highest estimation of Net Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_ntp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 8,
+  "description": "The Highest Estimation of Net Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_ntp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 10,
+  "description": "The Highest Estimation of Net Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_ntp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The highest estimation of Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_ntprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 35,
+  "description": "The Highest Estimation of Reported Net Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_ntprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 7,
+  "description": "The Highest Estimation of Reported Net Profit - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_high_ntprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The highest estimation of reported net profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_ntprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The Highest Estimation of Reported Net Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_ntprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The highest estimation of Reported Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_ptp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "The Highest Estimation of Pretax Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_ptp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The highest estimation of pretax profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_ptp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The Highest Estimation of Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_ptp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 6,
+  "description": "The highest estimation of pretax profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_ptp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The Highest Estimation of Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_ptprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "description": "The highest estimation of reported pretax profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_ptprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 7,
+  "description": "The Highest Estimation of Reported Pretax Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_ptprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "The Highest Estimation of Reported Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_ptprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Highest Estimation of Reported Pretax Profit - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_high_ptprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The highest estimation of reported pretax profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_revenue_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 14,
+  "description": "The highest estimation of Revenue - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_revenue_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "The highest estimation of revenue - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_revenue_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The highest estimation of Revenue - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_high_revenue_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 10,
+  "description": "The Highest Estimation of Revenue - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_high_revenue_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "The highest estimation of Revenue - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_high_roa_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 29,
+  "description": "The Highest Estimation of Returns on Assets - upcoming year"
+ },
+ {
+  "id": "anl14_high_roa_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "description": "The Highest Estimation of Returns on Assets - upcoming 2 years"
+ },
+ {
+  "id": "anl14_high_roe_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The highest estimation of Returns on Equity - upcoming quarter"
+ },
+ {
+  "id": "anl14_high_roe_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The highest estimation of returns on equity - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_high_roe_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 20,
+  "description": "The Highest Estimation of Returns on Equity - upcoming year"
+ },
+ {
+  "id": "anl14_high_roe_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 12,
+  "description": "The highest estimation of returns on equity - upcoming 2 years"
+ },
+ {
+  "id": "anl14_low_bvps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of book value per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_bvps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The lowest estimation of book value per share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_bvps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Lowest Estimation of Book Value Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_bvps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 4,
+  "description": "The lowest estimation of book value per share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_bvps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "The lowest estimation of Book Value Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_bvps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 16,
+  "description": "The Lowest Estimation of Book Value Per Share - Upcoming Year"
+ },
+ {
+  "id": "anl14_low_bvps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 20,
+  "description": "The Lowest estimation of Book Value Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_low_capex_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 27,
+  "description": "The lowest estimation of capital expenditures - upcoming year"
+ },
+ {
+  "id": "anl14_low_capex_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 27,
+  "description": "The Lowest Estimation of Capital Expenditures - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_low_ebit_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 10,
+  "description": "The lowest estimation of earnings before interest & taxes - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_ebit_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 16,
+  "description": "The Lowest estimation of Earnings Before Interest & Taxes - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_ebit_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Lowest Estimation of Earnings Before Interest & Taxes - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_low_ebit_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Earnings Before Interest & Taxes - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_low_ebit_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The Lowest estimation of Earnings Before Interest & Taxes - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_ebit_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 11,
+  "description": "The Lowest Estimation of Earnings Before Interest & Taxes - upcoming year"
+ },
+ {
+  "id": "anl14_low_ebit_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 12,
+  "description": "The lowest estimation of earnings before interest & taxes - upcoming 2 years"
+ },
+ {
+  "id": "anl14_low_ebitda_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "The lowest estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_ebitda_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_ebitda_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Lowest Estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_ebitda_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "The lowest estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_ebitda_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_ebitda_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 10,
+  "description": "The lowest estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming year"
+ },
+ {
+  "id": "anl14_low_ebitda_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "The Lowest Estimation of Earnings Before Interest, Taxes, Depreciation & Amortization - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_low_eps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The lowest estimation of earnings per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_eps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Earnings Per Share - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_low_eps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_eps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of earnings per share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_eps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The lowest estimation of Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 9,
+  "description": "The lowest estimation of earnings per share - upcoming year"
+ },
+ {
+  "id": "anl14_low_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of earnings per share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_low_epsrep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 4,
+  "description": "The Lowest Estimation of Reported Earnings Per Share - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_low_epsrep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The Lowest Estimation of Reported Earnings Per Share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_epsrep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The lowest estimation of reported earnings per share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_epsrep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Reported Earnings Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_epsrep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Reported Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_ndebt_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Lowest Estimation of Net Debt - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_ndebt_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The Lowest Estimation of Net Debt - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_low_ndebt_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The Lowest Estimation of Net Debt - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_low_ndebt_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The lowest estimation of net debt - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_ndebt_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 9,
+  "description": "The lowest estimation of net debt - upcoming year"
+ },
+ {
+  "id": "anl14_low_ndebt_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "The Lowest Estimation of Net Debt - upcoming 2 years"
+ },
+ {
+  "id": "anl14_low_ntp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The lowest estimation of net profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_ntp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The lowest estimation of net profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_ntp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of net profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_ntp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The lowest estimation of net profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_ntp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_ntprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The lowest estimation of reported net profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_ntprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Lowest Estimation of Reported Net Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_ntprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The lowest estimation of reported net profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_ntprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The lowest estimation of reported net profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_ntprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Lowest Estimation of Reported Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_ptp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 9,
+  "description": "The Lowest Estimation of Pretax Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_ptp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The lowest estimation of pretax profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_ptp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 4,
+  "description": "The lowest estimation of pretax profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_ptp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of Pretax Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_ptp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The Lowest Estimation of Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_ptprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 9,
+  "description": "The Lowest Estimation of Reported Pretax Profit - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_low_ptprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The Lowest Estimation of Reported Pretax Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_ptprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Reported Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_ptprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Reported Pretax Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_ptprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The Lowest Estimation of Reported Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_revenue_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "The lowest estimation of revenue - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_revenue_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of Revenue - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_revenue_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "The lowest estimation of revenue - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_low_revenue_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 7,
+  "description": "The Lowest Estimation of Revenue - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_low_revenue_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "The lowest estimation of revenue - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_low_roa_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "The Lowest estimation of Returns on Assets - upcoming year"
+ },
+ {
+  "id": "anl14_low_roa_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 22,
+  "description": "The lowest estimation of Returns on Assets - upcoming 2 years"
+ },
+ {
+  "id": "anl14_low_roe_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Returns on Equity - upcoming quarter"
+ },
+ {
+  "id": "anl14_low_roe_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The lowest estimation of returns on equity - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_low_roe_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "The Lowest Estimation of Returns on Equity - Upcoming Year"
+ },
+ {
+  "id": "anl14_low_roe_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The Lowest Estimation of Returns on Equity - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_mean_bvps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Mean of estimations of book value per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_bvps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Mean of Estimations of Book Value Per Share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_bvps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Mean of estimations of book value per share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_bvps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of estimations of book value per share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_bvps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of estimations of book value per share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_bvps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Mean of Estimations of Book Value Per Share - upcoming year"
+ },
+ {
+  "id": "anl14_mean_bvps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Mean of Estimations of Book Value Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_mean_capex_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Mean of Estimations of Capital Expenditures - upcoming year"
+ },
+ {
+  "id": "anl14_mean_capex_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 30,
+  "description": "Mean of Estimations of Capital Expenditures - upcoming 2 years"
+ },
+ {
+  "id": "anl14_mean_ebit_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "description": "Mean of estimations of Earnings Before Interest & Taxes - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_ebit_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Mean of estimations of earnings before interest & taxes - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_ebit_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Mean of Estimations of Earnings Before Interest & Taxes - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_mean_ebit_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 12,
+  "description": "Mean of estimations of earnings before interest & taxes - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_ebit_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of earnings before interest & taxes - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_ebit_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 21,
+  "alphaCount": 27,
+  "description": "Mean of Estimations of Earnings Before Interest & Taxes - upcoming year"
+ },
+ {
+  "id": "anl14_mean_ebit_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 9,
+  "description": "Mean of Estimations of Earnings Before Interest & Taxes - upcoming 2 years"
+ },
+ {
+  "id": "anl14_mean_ebitda_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_ebitda_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of earnings before interest, taxes, depreciation & amortization - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_ebitda_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_mean_ebitda_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of estimations of earnings before interest, taxes, depreciation & amortization - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_ebitda_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 6,
+  "description": "Mean of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_ebitda_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "description": "Mean of estimations of earnings before interest, taxes, depreciation & amortization - upcoming year"
+ },
+ {
+  "id": "anl14_mean_ebitda_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Mean of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 2 years"
+ },
+ {
+  "id": "anl14_mean_eps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Mean of estimations of earnings per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_eps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Earnings Per Share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_eps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_eps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Earnings Per Share - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_mean_eps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Mean of Estimations of Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 9,
+  "description": "Mean of Estimations of Earnings Per Share - upcoming year"
+ },
+ {
+  "id": "anl14_mean_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "description": "Mean of Estimations of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_mean_epsrep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of Estimations of Reported Earnings Per Share - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_epsrep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of reported earnings per share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_epsrep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Reported Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_epsrep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Reported Earnings Per Share - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_mean_epsrep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of Reported Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_ndebt_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Net Debt - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_ndebt_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of net debt - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_ndebt_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Net Debt - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_mean_ndebt_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Mean of Estimations of Net Debt - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_mean_ndebt_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 6,
+  "description": "Mean of estimations of Net Debt - upcoming year"
+ },
+ {
+  "id": "anl14_mean_ndebt_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 43,
+  "description": "Mean of Estimations of Net Debt - upcoming 2 years"
+ },
+ {
+  "id": "anl14_mean_ntp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Mean of Estimations of Net Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_ntp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of estimations of net profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_ntp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 8,
+  "description": "Mean of Estimations of Net Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_ntp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Mean of estimations of net profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_ntp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Mean of estimations of Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_ntprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 9,
+  "description": "Mean of estimations of reported net profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_ntprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Mean of Estimations of Reported Net Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_ntprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Reported Net Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_ntprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Mean of estimations of reported net profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_ntprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 4,
+  "description": "Mean of Estimations of Reported Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_ptp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 4,
+  "description": "Mean of estimations of pretax profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_ptp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of pretax profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_ptp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 5,
+  "description": "Mean of Estimations of Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_ptp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Pretax Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_ptp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of Estimations of Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_ptprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Mean of estimations of reported pretax profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_ptprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of Estimations of Reported Pretax Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_ptprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of reported pretax profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_ptprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of reported pretax profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_ptprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of Estimations of Reported Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_revenue_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 20,
+  "description": "Mean of Estimations of Revenue - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_mean_revenue_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Mean of Estimations of Revenue - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_revenue_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 6,
+  "description": "Mean of estimations of revenue - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_mean_revenue_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Mean of Estimations of Revenue - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_mean_revenue_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of estimations of revenue - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_mean_roa_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 15,
+  "description": "Mean of estimations of returns on assets - upcoming year"
+ },
+ {
+  "id": "anl14_mean_roa_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 16,
+  "description": "Mean of Estimations of Returns on Assets - upcoming 2 years"
+ },
+ {
+  "id": "anl14_mean_roe_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of estimations of returns on equity - upcoming quarter"
+ },
+ {
+  "id": "anl14_mean_roe_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of Estimations of Returns on Equity - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_mean_roe_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 23,
+  "description": "Mean of Estimations of Returns on Equity - upcoming year"
+ },
+ {
+  "id": "anl14_mean_roe_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 32,
+  "description": "Mean of Estimations of Returns on Equity - upcoming 2 years"
+ },
+ {
+  "id": "anl14_median_bvps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Median of Estimations of Book Value Per Share - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_bvps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 6,
+  "description": "Median of Estimations of Book Value Per Share - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_median_bvps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Book Value Per Share - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_median_bvps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Book Value Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_bvps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Book Value Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_bvps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Median of Estimations of Book Value Per Share - upcoming year"
+ },
+ {
+  "id": "anl14_median_bvps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Median of Estimations of Book Value Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_median_capex_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 18,
+  "description": "Median of estimations of Capital Expenditures - upcoming year"
+ },
+ {
+  "id": "anl14_median_capex_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "description": "Median of Estimations of Capital Expenditures - upcoming 2 years"
+ },
+ {
+  "id": "anl14_median_ebit_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 19,
+  "description": "Median of Estimations of Earnings Before Interest & Taxes - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_median_ebit_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Median of Estimations of Earnings Before Interest & Taxes - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_median_ebit_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 5,
+  "description": "Median of estimations of earnings before interest & taxes - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_ebit_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 19,
+  "description": "Median of estimations of earnings before interest & taxes - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_ebit_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of earnings before interest & taxes - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_ebit_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 23,
+  "description": "Median of estimations of earnings before interest & taxes - upcoming year"
+ },
+ {
+  "id": "anl14_median_ebit_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 11,
+  "description": "Median of estimations of earnings before interest & taxes - upcoming 2 years"
+ },
+ {
+  "id": "anl14_median_ebitda_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_ebitda_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of estimations of earnings before interest, taxes, depreciation & amortization - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_ebitda_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_ebitda_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_ebitda_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_ebitda_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 20,
+  "description": "Median of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - Upcoming Year"
+ },
+ {
+  "id": "anl14_median_ebitda_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 28,
+  "description": "Median of estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 2 years"
+ },
+ {
+  "id": "anl14_median_eps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Earnings Per Share - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_eps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of estimations of earnings per share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_eps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_eps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Earnings Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_eps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 7,
+  "description": "Median of estimations of earnings per share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of Estimations of Earnings Per Share - upcoming year"
+ },
+ {
+  "id": "anl14_median_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 12,
+  "description": "Median of Estimations of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_median_epsrep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Reported Earnings Per Share - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_epsrep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of estimations of reported earnings per share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_epsrep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of estimations of Reported Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_epsrep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Reported Earnings Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_epsrep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of estimations of reported earnings per share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_ndebt_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of Estimations of Net Debt - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_ndebt_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Net Debt - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_median_ndebt_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of estimations of net debt - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_ndebt_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of Estimations of Net Debt - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_ndebt_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 16,
+  "description": "Median of estimations of net debt - upcoming year"
+ },
+ {
+  "id": "anl14_median_ndebt_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Median of estimations of Net Debt - upcoming 2 years"
+ },
+ {
+  "id": "anl14_median_ntp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of net profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_ntp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Median of estimations of net profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_ntp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of estimations of net profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_ntp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of estimations of net profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_ntp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of net profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_ntprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Median of Estimations of Reported Net Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_ntprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of Estimations of Reported Net Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_ntprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of estimations of reported net profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_ntprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of Reported Net Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_ntprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of reported net profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_ptp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of pretax profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_ptp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Pretax Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_ptp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Median of Estimations of Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_ptp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Median of estimations of pretax profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_ptp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Median of Estimations of Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_ptprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Reported Pretax Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_ptprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Reported Pretax Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_ptprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Reported Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_ptprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Reported Pretax Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_ptprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Reported Pretax Profit - Upcoming 5 Quarters"
+ },
+ {
+  "id": "anl14_median_revenue_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of estimations of revenue - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_revenue_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Median of Estimations of Revenue - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_median_revenue_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Median of estimations of Revenue - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_median_revenue_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Median of estimations of revenue - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_median_revenue_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Revenue - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_median_roa_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "Median of Estimations of Returns on Assets - upcoming year"
+ },
+ {
+  "id": "anl14_median_roa_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Returns on Assets - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_median_roe_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Estimations of Returns on Equity - upcoming quarter"
+ },
+ {
+  "id": "anl14_median_roe_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Estimations of Returns on Equity - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_median_roe_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 9,
+  "description": "Median of Estimations of Returns on Equity - Upcoming Year"
+ },
+ {
+  "id": "anl14_median_roe_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "description": "Median of Estimations of Returns on Equity - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_numofests_bvps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of estimations of Book Value Per Share - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_bvps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Book Value Per Share - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_numofests_bvps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Book Value Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_bvps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Book Value Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_bvps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Num of Estimations of Book Value Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_bvps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Num of Estimations of Book Value Per Share - Upcoming Year"
+ },
+ {
+  "id": "anl14_numofests_bvps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of estimations of Book Value Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_numofests_capex_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 27,
+  "description": "Num of estimations of capital expenditures - upcoming year"
+ },
+ {
+  "id": "anl14_numofests_capex_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 79,
+  "description": "Num of Estimations of Capital Expenditures - upcoming 2 years"
+ },
+ {
+  "id": "anl14_numofests_ebit_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Num of Estimations of Earnings Before Interest & Taxes - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_ebit_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Num of Estimations of Earnings Before Interest & Taxes - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_ebit_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Earnings Before Interest & Taxes - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_ebit_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Num of Estimations of Earnings Before Interest & Taxes - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_ebit_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of estimations of earnings before interest & taxes - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_ebit_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Num of Estimations of Earnings Before Interest & Taxes - upcoming year"
+ },
+ {
+  "id": "anl14_numofests_ebit_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 10,
+  "description": "Num of estimations of earnings before interest & taxes - upcoming 2 years"
+ },
+ {
+  "id": "anl14_numofests_ebitda_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 4,
+  "description": "Num of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_ebitda_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_numofests_ebitda_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_ebitda_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_numofests_ebitda_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_ebitda_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Num of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming year"
+ },
+ {
+  "id": "anl14_numofests_ebitda_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 7,
+  "description": "Num of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_numofests_eps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Earnings Per Share - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_eps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of estimations of earnings per share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_eps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of estimations of earnings per share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_eps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of estimations of earnings per share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_eps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of Estimations of Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Num of estimations of earnings per share - upcoming year"
+ },
+ {
+  "id": "anl14_numofests_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Num of estimations of Earnings Per Share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_numofests_epsrep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Num of estimations of reported earnings per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_epsrep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Reported Earnings Per Share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_epsrep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Reported Earnings Per Share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_epsrep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Reported Earnings Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_epsrep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Reported Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_ndebt_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Net Debt - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_ndebt_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Net Debt - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_ndebt_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of Estimations of Net Debt - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_numofests_ndebt_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Net Debt - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_ndebt_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Number of estimations of net debt - upcoming year"
+ },
+ {
+  "id": "anl14_numofests_ndebt_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Num of Estimations of Net Debt - upcoming 2 years"
+ },
+ {
+  "id": "anl14_numofests_ntp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Net Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_ntp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Num of Estimations of Net Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_ntp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Net Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_ntp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Num of estimations of net profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_ntp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Num of estimations of Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_ntprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Reported Net Profit - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_numofests_ntprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Num of Estimations of Reported Net Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_ntprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Reported Net Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_ntprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of estimations of reported net profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_ntprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of Estimations of Reported Net Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_ptp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Number of estimations of Pretax Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_ptp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Pretax Profit - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_numofests_ptp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_numofests_ptp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of estimations of pretax profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_ptp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_ptprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 3,
+  "description": "Num of estimations of Reported Pretax Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_ptprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of estimations of Reported Pretax Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_ptprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Reported Pretax Profit - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_numofests_ptprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Reported Pretax Profit - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_numofests_ptprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Num of Estimations of Reported Pretax Profit - Upcoming 5 Quarters"
+ },
+ {
+  "id": "anl14_numofests_revenue_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 5,
+  "description": "Num of Estimations of Revenue - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_revenue_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 3,
+  "description": "Num of estimations of revenue - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_revenue_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 6,
+  "description": "Num of Estimations of Revenue - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_numofests_revenue_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Num of Estimations of Revenue - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_numofests_revenue_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of Estimations of Revenue - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_numofests_roa_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Num of Estimations of Returns on Assets - Upcoming Year"
+ },
+ {
+  "id": "anl14_numofests_roa_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Num of Estimations of Returns on Assets - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_numofests_roe_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Num of estimations of returns on equity - upcoming quarter"
+ },
+ {
+  "id": "anl14_numofests_roe_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "Num of Estimations of Returns on Equity - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_numofests_roe_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Num of Estimations of Returns on Equity - upcoming year"
+ },
+ {
+  "id": "anl14_numofests_roe_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 17,
+  "description": "Num of Estimations of Returns on Equity - Upcoming 2 Years"
+ },
+ {
+  "id": "anl14_ptg_broker",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 32,
+  "description": "Broker Name -"
+ },
+ {
+  "id": "anl14_q_estimatetype",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 21,
+  "description": "Type of estimation -"
+ },
+ {
+  "id": "anl14_q_estvalue_fp1",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 14,
+  "description": "Estimation value - upcoming quarter"
+ },
+ {
+  "id": "anl14_q_estvalue_fp2",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 23,
+  "description": "Estimation Value - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_stddev_bvps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of book value per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_bvps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Standard Deviation of Estimations of Book Value Per Share - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_bvps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Book Value Per Share - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_stddev_bvps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of Book Value Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_bvps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard Deviation of Estimations of Book Value Per Share - Upcoming 5 Quarters"
+ },
+ {
+  "id": "anl14_stddev_bvps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "description": "Standard deviation of estimations of book value per share - upcoming year"
+ },
+ {
+  "id": "anl14_stddev_bvps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 17,
+  "description": "Standard deviation of estimations of book value per share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_stddev_capex_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 20,
+  "description": "Standard deviation of estimations of capital expenditures - upcoming year"
+ },
+ {
+  "id": "anl14_stddev_capex_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Standard Deviation of Estimations of Capital Expenditures - upcoming 2 years"
+ },
+ {
+  "id": "anl14_stddev_ebit_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest & Taxes - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_ebit_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Standard deviation of estimations of Earnings Before Interest & Taxes - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebit_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 5,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest & Taxes - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebit_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of earnings before interest & taxes - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebit_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of earnings before interest & taxes - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebit_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest & Taxes - upcoming year"
+ },
+ {
+  "id": "anl14_stddev_ebit_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest & Taxes - upcoming 2 years"
+ },
+ {
+  "id": "anl14_stddev_ebitda_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_ebitda_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebitda_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebitda_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of earnings before interest, taxes, depreciation & amortization - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebitda_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_ebitda_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming year"
+ },
+ {
+  "id": "anl14_stddev_ebitda_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Standard Deviation of Estimations of Earnings Before Interest, Taxes, Depreciation & Amortization - upcoming 2 years"
+ },
+ {
+  "id": "anl14_stddev_eps_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of earnings per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_eps_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Earnings Per Share - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_stddev_eps_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of earnings per share - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_eps_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Earnings Per Share - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_eps_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_eps_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 7,
+  "description": "Standard deviation of estimations of earnings per share - upcoming year"
+ },
+ {
+  "id": "anl14_stddev_eps_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of earnings per share - upcoming 2 years"
+ },
+ {
+  "id": "anl14_stddev_epsrep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Standard deviation of estimations of reported earnings per share - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_epsrep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Reported Earnings Per Share - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_stddev_epsrep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Reported Earnings Per Share - Upcoming 3 Quarters"
+ },
+ {
+  "id": "anl14_stddev_epsrep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Reported Earnings Per Share - Upcoming 4 Quarters"
+ },
+ {
+  "id": "anl14_stddev_epsrep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Reported Earnings Per Share - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_ndebt_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of Net Debt - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_ndebt_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of net debt - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_ndebt_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Net Debt - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_ndebt_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of net debt - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_ndebt_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 14,
+  "description": "Standard deviation of estimations of net debt - upcoming year"
+ },
+ {
+  "id": "anl14_stddev_ndebt_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Standard deviation of estimations of Net Debt - upcoming 2 years"
+ },
+ {
+  "id": "anl14_stddev_ntp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 6,
+  "description": "Standard Deviation of Estimations of Net Profit - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_stddev_ntp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 5,
+  "description": "Standard deviation of estimations of net profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_ntp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "Standard Deviation of Estimations of Net Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_ntp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Standard Deviation of Estimations of Net Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_ntp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of net profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_ntprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Standard Deviation of Estimations of Reported Net Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_ntprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard Deviation of Estimations of Reported Net Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_ntprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of reported net profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_ntprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 7,
+  "description": "Standard Deviation of Estimations of Reported Net Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_ntprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of reported net profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptp_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of pretax profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_ptp_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of pretax profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptp_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 12,
+  "description": "Standard Deviation of Estimations of Pretax Profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptp_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of pretax profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptp_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptprep_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Standard Deviation of Estimations of Reported Pretax Profit - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_ptprep_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Standard Deviation of Estimations of Reported Pretax Profit - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptprep_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of estimations of reported pretax profit - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptprep_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard Deviation of Estimations of Reported Pretax Profit - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_ptprep_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard Deviation of Estimations of Reported Pretax Profit - upcoming 5 quarters"
+ },
+ {
+  "id": "anl14_stddev_revenue_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "description": "Standard Deviation of Estimations of Revenue - Upcoming Quarter"
+ },
+ {
+  "id": "anl14_stddev_revenue_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Standard deviation of estimations of revenue - upcoming 2 quarters"
+ },
+ {
+  "id": "anl14_stddev_revenue_fp3",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Standard Deviation of Estimations of Revenue - upcoming 3 quarters"
+ },
+ {
+  "id": "anl14_stddev_revenue_fp4",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard deviation of estimations of revenue - upcoming 4 quarters"
+ },
+ {
+  "id": "anl14_stddev_revenue_fp5",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard Deviation of Estimations of Revenue - Upcoming 5 Quarters"
+ },
+ {
+  "id": "anl14_stddev_roa_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "description": "Standard Deviation of Estimations of Returns on Assets - upcoming year"
+ },
+ {
+  "id": "anl14_stddev_roa_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 14,
+  "description": "Standard Deviation of Estimations of Returns on Assets - upcoming 2 years"
+ },
+ {
+  "id": "anl14_stddev_roe_fp1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Standard Deviation of Estimations of Returns on Equity - upcoming quarter"
+ },
+ {
+  "id": "anl14_stddev_roe_fp2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Standard Deviation of Estimations of Returns on Equity - Upcoming 2 Quarters"
+ },
+ {
+  "id": "anl14_stddev_roe_fy1",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Standard Deviation of Estimations of Returns on Equity - Upcoming Year"
+ },
+ {
+  "id": "anl14_stddev_roe_fy2",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 9,
+  "description": "Standard deviation of estimations of returns on equity - upcoming 2 years"
+ },
+ {
+  "id": "rtk_ptg_high",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 14,
+  "description": "The highest of Price Target -"
+ },
+ {
+  "id": "rtk_ptg_low",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 20,
+  "description": "The Lowest of Price Target"
+ },
+ {
+  "id": "rtk_ptg_mean",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Mean of Price Target -"
+ },
+ {
+  "id": "rtk_ptg_median",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 5,
+  "description": "Median of price target"
+ },
+ {
+  "id": "rtk_ptg_number",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 20,
+  "description": "Num of Price Target -"
+ },
+ {
+  "id": "rtk_ptg_stddev",
+  "type": "MATRIX",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 11,
+  "description": "Standard Deviation of Price Target"
+ }
+]

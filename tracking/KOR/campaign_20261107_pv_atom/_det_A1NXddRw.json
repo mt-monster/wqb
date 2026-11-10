@@ -1,0 +1,97 @@
+{
+ "id": "A1NXddRw",
+ "code": "signed_power(ts_rank(group_rank(divide(oth466_is_ptx_inc_norm_q, oth466_bs_assets_tot_q), market), 504), 0.5)",
+ "type": "REGULAR",
+ "status": "ACTIVE",
+ "stage": "OS",
+ "dateSubmitted": "2026-09-28T05:03:38-04:00",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "simulationMode": "FULL"
+ },
+ "metrics": {
+  "sharpe": 2.11,
+  "fitness": 1.81,
+  "turnover": 0.1285,
+  "returns": 0.0946,
+  "drawdown": 0.0512,
+  "margin": 0.001473,
+  "longCount": 350,
+  "shortCount": 288,
+  "pnl": 9789249,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "selfCorrelation": 0.6547,
+  "prodCorrelation": 0.6547,
+  "sub_universe_sharpe": 1.62,
+  "two_year_sharpe": 1.95,
+  "investability_sharpe": 1.54,
+  "investability_fitness": 1.15
+ },
+ "os": {
+  "startDate": "2024-01-01"
+ },
+ "ra": {
+  "failed_ra_count": 0,
+  "failed_ppa_count": 0,
+  "ra_failed": false,
+  "ppa_failed": false,
+  "pyramid_short": "fundamental"
+ },
+ "checks": {
+  "fail": [],
+  "warning": [
+   {
+    "name": "MATCHES_COMPETITION"
+   },
+   {
+    "name": "MATCHES_THEMES"
+   }
+  ],
+  "pass": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+   "CLUSTER_TEST",
+   "LOW_2Y_SHARPE",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "POWER_POOL_CORRELATION",
+   "MATCHES_THEMES"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "KOR/D1/FUNDAMENTAL",
+    "multiplier": 1.6
+   }
+  ]
+ },
+ "name": "KOR_PretaxROAmkt_0.6547",
+ "color": "GREEN",
+ "tags": [
+  "PowerPoolSelected"
+ ]
+}

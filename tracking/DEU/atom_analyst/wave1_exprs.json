@@ -1,0 +1,26 @@
+{
+ "A": [
+  "group_rank(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), industry)",
+  "group_rank(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), industry)",
+  "group_rank(ts_delta(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), 22), industry)",
+  "group_zscore(ts_sum(subtract(est_12m_ebi_raised_1wk, est_12m_ebi_lowered_1wk), 66), industry)",
+  "group_rank(subtract(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), subtract(est_12m_sal_raisednum_4wks, est_12m_sal_lowerednum_4wks)), industry)",
+  "group_rank(subtract(rec_raisednum_4wks, rec_lowerednum_4wks), industry)",
+  "-group_rank(divide(est_12m_ebi_std, abs(est_12m_ebi_mean)), industry)",
+  "group_rank(ts_backfill(act_q_ebi_surprisemean, 66), industry)",
+  "trade_when(greater(est_12m_ebi_num, 5), group_rank(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), subindustry), -1)",
+  "group_rank(ts_av_diff(est_12m_ebi_mean, 66), industry)"
+ ],
+ "B": [
+  "-group_rank(ts_backfill(eps_y1_estimate_coeff_var, 66), industry)",
+  "-group_rank(ts_backfill(eps_y1_estimate_skewness, 66), industry)",
+  "-group_rank(ts_backfill(eps_y2_estimate_coeff_var, 66), industry)",
+  "group_rank(-ts_delta(ts_backfill(eps_y1_estimate_coeff_var, 252), 66), industry)",
+  "-group_rank(ts_backfill(revenue_y1_estimate_skewness, 66), industry)",
+  "-group_rank(ts_backfill(netprofit_y1_estimate_volatility_adj_1yr, 66), industry)",
+  "group_rank(ts_backfill(netprofit_y1_estimate_asymmetry, 66), industry)",
+  "-group_rank(ts_rank(ts_backfill(eps_y1_estimate_coeff_var, 66), 252), industry)",
+  "group_rank(ts_backfill(eps_estimate_trend_slope_1yr, 66), industry)",
+  "-group_rank(winsorize(ts_backfill(eps_y1_estimate_coeff_var, 66), std=4), industry)"
+ ]
+}

@@ -1,0 +1,38 @@
+id,type,cov,uc,ac,desc
+mdl177_emm_chg3yepsp_alt,MATRIX,0.0,1,1,3-year change in price-adjusted TTM EPS: current TTM EPS minus EPS 12 quarters ago; divided by price
+mdl177_emm_chgepsp_alt,MATRIX,0.0,1,1,1-year change in price-adjusted TTM EPS: EPS difference over the last year; divided by price
+mdl177_emm_emm_eur_composite_alt,MATRIX,0.0,7,8,Earnings Momentum (EUR)
+mdl177_emm_fc_dypeg_alt,MATRIX,0.0,0,0,Reciprocal of the dividend yieldâadjusted PEG ratio
+mdl177_emm_fc_epsrm_alt,MATRIX,0.0,2,2,Street Revision Magnitude: 3-month change in the median FY1 consensus EPS estimate; scaled
+mdl177_emm_fc_numrevy1_alt,MATRIX,0.0,0,0,Net # of Revisions for Fiscal Year 1 : It is defined as the weighted average of the number of FY1 analyst earnings forecasts raised less the number lowered withâ¦
+mdl177_emm_fc_rev3y2_alt,MATRIX,0.0,0,0,3-month revision in FY2 EPS forecasts: change in FY2 consensus earnings since three months ago; scaled by price
+mdl177_emm_fc_stdevfy1epsp_alt,MATRIX,0.0,0,0,Std Dev of FY1 EPS Estimates-to-Price
+mdl177_eur_balshtrank_qvaeur_alt,MATRIX,0.0,0,0,Balance Sheet Strength Rank
+mdl177_eur_incstmtrank_qaveur_alt,MATRIX,0.0,0,0,Income Statement Rank
+mdl177_eur_mgteff_qvaeur_alt,MATRIX,0.0,0,0,Profitability &  Earnings Quality Rank
+mdl177_pmm_actrtn24m_alt,MATRIX,0.0,0,0,24-month active return with 1-month lag: percent change in stock price from month t-25 to t-1
+mdl177_pmm_actrtn6m_alt,MATRIX,0.0,0,0,6-Month Active Return with 1-Month Lag : It is defined the percent change in price for a stock from month t-7 to month t-1.
+mdl177_pmm_indrelrtn4w_alt,MATRIX,0.0,0,0,4-week Industry Relative Return: stock return over the last 4 weeks minus the industry average; scaled by the industry standard deviation
+mdl177_pmm_indrelrtn5d__alt,MATRIX,0.0,2,2,5-day Industry Relative Return: stock return over the last 5 trading days minus the industry average; scaled by the industry standard deviation
+mdl177_pmm_p50_200ratio_alt,MATRIX,0.0,2,2,50-200 Day Stock Price Ratio : It is defined as the moving average of a stock's prices in last 50 days divided by the moving average of its prices in last 200 dâ¦
+mdl177_pmm_pmm_eur_composite_alt,MATRIX,0.0,1,1,Price Momentum (EUR)
+mdl177_pmm_rationalalpha_alt,MATRIX,0.0,0,0,Rational Decay Alpha : It evaluates stocks based on their historical 12-month market (S&P 500) adjusted excess return (the Y intercept from an OLS regression eqâ¦
+mdl177_pmm_relpricestrength_alt,MATRIX,0.0,3,4,Industry-adjusted 12-month Relative Price Strength: stockâs 12-month price strength minus industry average; scaled by industry standard deviation
+mdl177_pmm_slope52wp_alt,MATRIX,0.0,3,3,Slope of 52 Week Price Trend Line : It is defined as the 4-week lagged slope coefficient of the least squares regression line of the last 52-week weekly stock'sâ¦
+mdl177_qva_balshtrank_qvaeur_alt,MATRIX,0.0,0,0,Balance Sheet Strength Rank
+mdl177_qva_dvm_qvaeur_alt,MATRIX,0.0,0,0,Cross-sectional valuation rank for European equities in the QVA model; measuring cheapness based on valuation metrics
+mdl177_qva_evrank_qvaeur_alt,MATRIX,0.0,0,0,Earnings Valuation Rank
+mdl177_qva_finstmtrank_qvaeur_alt,MATRIX,0.0,0,0,Financial Statement Rank
+mdl177_qva_incstmtrank_qvaeur_alt,MATRIX,0.0,0,0,Income Statement Rank
+mdl177_qva_mgteff_qvaeur_alt,MATRIX,0.0,0,0,Profitability &  Earnings Quality Rank
+mdl177_qva_mgtlev_qvaeur_alt,MATRIX,0.0,0,0,Cross-sectional liquidity and leverage rank for European equities in the QVA/VMM framework; with lower leverage and stronger liquidity ranking higher
+mdl177_qva_qva_eur_composite_alt,MATRIX,0.0,0,0,Overall composite score for the QSG QVA Europe model; aggregating its subranks into a single signal
+mdl177_qva_vmm_eur_composite_alt,MATRIX,0.0,0,0,Value Momentum Europe Model composite score
+mdl177_rvm_capacq_alt,MATRIX,0.0,0,0,Capital Acquisition Ratio
+mdl177_rvm_ebitdaev_alt,MATRIX,0.0,1,3,Trailing twelve months EBITDA-to-Enterprise Value ratio
+mdl177_rvm_roe_alt,MATRIX,0.0,2,2,Return on Equity
+mdl177_rvm_rvm_eur_composite_alt,MATRIX,0.0,9,11,Relative Value (EUR)
+mdl177_rvm_ttmfcfp_alt,MATRIX,0.0,5,6,Trailing twelve months Free Cash Flow-to-Price ratio
+mdl177_rvm_ttmgfp_alt,MATRIX,0.0,1,2,Trailing twelve months Growth Flow-to-Price ratio; defined as last four quarters GAAP earnings plus R&D scaled by market value
+mdl177_rvm_ttmsp_alt,MATRIX,0.0,0,0,Trailing twelve months Sales-to-Price ratio
+mdl177_rvm_tw_ep_alt,MATRIX,0.0,0,0,Time Weighted Earnings Yield : This factor uses a time-weighted combination of FY1 and FY2 earnings estimates to create a twelve-month forward earnings forecastâ¦

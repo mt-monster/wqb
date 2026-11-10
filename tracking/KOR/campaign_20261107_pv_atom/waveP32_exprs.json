@@ -1,0 +1,12 @@
+[
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,336),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,336),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,336),sector)),industry)",
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,378),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,378),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,378),sector)),industry)",
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,294),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,294),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,294),sector)),industry)",
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,420),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,420),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,420),sector)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,336),sector),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,336),sector)),industry)",
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_ebt_fy1_pred_surps_v1,378),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,378),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,378),sector)),industry)",
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_bps_fy1_pred_surps_v1,378),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,378),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,378),sector)),industry)",
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy2_pred_surps_v1,378),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,378),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy2_pred_surps_v1,378),sector)),industry)",
+  "group_rank(ts_av_diff(divide(anl10_smartest_ebi_fy1_pred_surps_v1,add(abs(anl10_smartest_dps_fy1_pred_surps_v1),0.0001)),378), sector)",
+  "group_neutralize(multiply(multiply(group_rank(ts_av_diff(anl10_smartest_opr_fy1_pred_surps_v1,378),sector),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,378),sector)),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,378),sector)),industry)"
+]

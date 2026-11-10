@@ -1,0 +1,1658 @@
+[
+ {
+  "id": "anl25_12f_td_dts",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 19,
+  "alphaCount": 35,
+  "description": "Reference date for Analyst Consensus calculation"
+ },
+ {
+  "id": "anl25_1_my_sg",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 17,
+  "description": "Fiscal End"
+ },
+ {
+  "id": "anl25_adj_eps_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "EPS(adj.) (Min)"
+ },
+ {
+  "id": "anl25_adj_oper_p_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 57,
+  "alphaCount": 90,
+  "description": "Operating Income (Max)"
+ },
+ {
+  "id": "anl25_adj_oper_p_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 65,
+  "alphaCount": 97,
+  "description": "Operating Income (Median)"
+ },
+ {
+  "id": "anl25_adj_oper_p_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 20,
+  "alphaCount": 45,
+  "description": "Operating Income (Min)"
+ },
+ {
+  "id": "anl25_adj_oper_profit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 89,
+  "alphaCount": 154,
+  "description": "Operating Income"
+ },
+ {
+  "id": "anl25_adj_oper_profit_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 195,
+  "alphaCount": 374,
+  "description": "Operating Income, 12 Month Forward"
+ },
+ {
+  "id": "anl25_adj_oper_profit_12t",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 40,
+  "alphaCount": 51,
+  "description": "Operating Income, Trailing 12 Months"
+ },
+ {
+  "id": "anl25_adj_oper_profit_margin",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Adjusted Operating Profit Margin"
+ },
+ {
+  "id": "anl25_aor",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 34,
+  "alphaCount": 42,
+  "description": "ROA"
+ },
+ {
+  "id": "anl25_asset_to_ratio",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 27,
+  "description": "Asset Turnover Ratio"
+ },
+ {
+  "id": "anl25_asset_tot",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "description": "Assets"
+ },
+ {
+  "id": "anl25_bf_tax_income",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 58,
+  "alphaCount": 87,
+  "description": "Pretax Continued Operation Income"
+ },
+ {
+  "id": "anl25_bf_tax_income_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 27,
+  "alphaCount": 46,
+  "description": "Pretax Continued Operation Income Growth (YoY)"
+ },
+ {
+  "id": "anl25_bf_tax_income_growth_p",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Pretax Continued Operation Income Growth (QoQ)"
+ },
+ {
+  "id": "anl25_bf_tax_income_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 53,
+  "alphaCount": 68,
+  "description": "Pretax Continued Operation Income (Max)"
+ },
+ {
+  "id": "anl25_bf_tax_income_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 42,
+  "alphaCount": 67,
+  "description": "Pretax Continued Operation Income (Median)"
+ },
+ {
+  "id": "anl25_bf_tax_income_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 52,
+  "alphaCount": 119,
+  "description": "Pretax Continued Operation Income (Min)"
+ },
+ {
+  "id": "anl25_bf_tax_profit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 36,
+  "alphaCount": 63,
+  "description": "Net Income Before Taxes"
+ },
+ {
+  "id": "anl25_borrow",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 10,
+  "description": "Borrowings"
+ },
+ {
+  "id": "anl25_borrow_rate",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Interest-bearing Liabilities to Equity"
+ },
+ {
+  "id": "anl25_bps_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 51,
+  "alphaCount": 91,
+  "description": "BPS Growth (YoY)"
+ },
+ {
+  "id": "anl25_bps_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 32,
+  "alphaCount": 45,
+  "description": "BPS (Max)"
+ },
+ {
+  "id": "anl25_bps_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 12,
+  "description": "BPS (Min)"
+ },
+ {
+  "id": "anl25_cap",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "description": "Capital Stock"
+ },
+ {
+  "id": "anl25_cap_ratio",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Stockholders' Equity to Total Assets"
+ },
+ {
+  "id": "anl25_cap_tot",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 17,
+  "description": "Stockholders' Equity"
+ },
+ {
+  "id": "anl25_cap_tot_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 21,
+  "description": "Total Capital Growth (YoY)"
+ },
+ {
+  "id": "anl25_cash_asset",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 16,
+  "description": "Cash asset"
+ },
+ {
+  "id": "anl25_cash_flow_tot_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 20,
+  "alphaCount": 32,
+  "description": "Cash Flow, 12 month forward"
+ },
+ {
+  "id": "anl25_cls_prc_rate",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 33,
+  "description": "Close price return"
+ },
+ {
+  "id": "anl25_control_equity",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Parent Company's Equity"
+ },
+ {
+  "id": "anl25_cps_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 50,
+  "alphaCount": 69,
+  "description": "CPS (Max)"
+ },
+ {
+  "id": "anl25_cps_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 25,
+  "alphaCount": 40,
+  "description": "CPS (Min)"
+ },
+ {
+  "id": "anl25_crp_slc",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 24,
+  "description": "Close price"
+ },
+ {
+  "id": "anl25_current_asset",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "description": "Current asset"
+ },
+ {
+  "id": "anl25_current_liability",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Current liability"
+ },
+ {
+  "id": "anl25_current_long_liability",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Current Long Liability"
+ },
+ {
+  "id": "anl25_current_ratio",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "description": "Current Ratio"
+ },
+ {
+  "id": "anl25_debt_rate",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 13,
+  "description": "Debt to Equity Ratio"
+ },
+ {
+  "id": "anl25_debt_rate_rate",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 33,
+  "description": "Debt to Equity Ratio (1W Chg)"
+ },
+ {
+  "id": "anl25_debt_tot",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 7,
+  "description": "Liabilities"
+ },
+ {
+  "id": "anl25_debt_tot_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 16,
+  "description": "Total Liabilities Growth Rate (YoY)"
+ },
+ {
+  "id": "anl25_dem_aor",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 60,
+  "alphaCount": 82,
+  "description": "ROA (Median)"
+ },
+ {
+  "id": "anl25_dem_rbp",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 9,
+  "description": "PBR (Median)"
+ },
+ {
+  "id": "anl25_dem_spb",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "description": "BPS (Median)"
+ },
+ {
+  "id": "anl25_dem_spc",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 23,
+  "alphaCount": 37,
+  "description": "CPS (Median)"
+ },
+ {
+  "id": "anl25_dem_spd",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "DPS (Median)"
+ },
+ {
+  "id": "anl25_dem_sps",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 10,
+  "description": "SPS (Median)"
+ },
+ {
+  "id": "anl25_depreciation",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Depreciation & Amortization (Manuf.)"
+ },
+ {
+  "id": "anl25_depreciation_i",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 14,
+  "description": "Amortization of Intangible Assets"
+ },
+ {
+  "id": "anl25_dps_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 6,
+  "description": "DPS Growth (YoY)"
+ },
+ {
+  "id": "anl25_dps_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "DPS (Max)"
+ },
+ {
+  "id": "anl25_dps_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "DPS (Min)"
+ },
+ {
+  "id": "anl25_ebit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 23,
+  "alphaCount": 41,
+  "description": "EBIT (Manuf.)"
+ },
+ {
+  "id": "anl25_ebit_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 28,
+  "alphaCount": 48,
+  "description": "EBIT Growth (YoY)"
+ },
+ {
+  "id": "anl25_ebit_margin",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 85,
+  "alphaCount": 220,
+  "description": "EBIT margin"
+ },
+ {
+  "id": "anl25_ebit_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 78,
+  "alphaCount": 210,
+  "description": "EBIT (Manuf. Max)"
+ },
+ {
+  "id": "anl25_ebit_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 22,
+  "description": "EBIT (Manuf. Med)"
+ },
+ {
+  "id": "anl25_ebit_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 22,
+  "alphaCount": 35,
+  "description": "EBIT (Manuf. Min)"
+ },
+ {
+  "id": "anl25_ebitda_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 69,
+  "alphaCount": 96,
+  "description": "EBITDA, 12 months forward"
+ },
+ {
+  "id": "anl25_ebitda_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 13,
+  "description": "EBITDA Growth (YoY)"
+ },
+ {
+  "id": "anl25_ebitda_margin",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "EBITDA margin"
+ },
+ {
+  "id": "anl25_ebitda_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 25,
+  "alphaCount": 33,
+  "description": "EBITDA (Manufacturing Median)"
+ },
+ {
+  "id": "anl25_ebitda_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 22,
+  "description": "EBITDA (Manuf. Min)"
+ },
+ {
+  "id": "anl25_ebitdaps",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 52,
+  "alphaCount": 81,
+  "description": "EBITDAPS"
+ },
+ {
+  "id": "anl25_ebitdaps_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 28,
+  "alphaCount": 40,
+  "description": "EBITDAPS (Median)"
+ },
+ {
+  "id": "anl25_eps_down_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 99,
+  "alphaCount": 208,
+  "description": "Number ofEPS Estimates Down"
+ },
+ {
+  "id": "anl25_eps_even_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Number ofEPS Estimates Hold"
+ },
+ {
+  "id": "anl25_eps_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 23,
+  "description": "EPS Growth (YoY)"
+ },
+ {
+  "id": "anl25_eps_growth_p",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 7,
+  "description": "EPS Growth (QoQ)"
+ },
+ {
+  "id": "anl25_eps_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 94,
+  "alphaCount": 127,
+  "description": "EPS (Max)"
+ },
+ {
+  "id": "anl25_eps_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 50,
+  "alphaCount": 65,
+  "description": "EPS (Min)"
+ },
+ {
+  "id": "anl25_eps_new_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "description": "Number ofNew EPS Estimates"
+ },
+ {
+  "id": "anl25_equity_eps",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "EPS from Parent Company(Consolidated)"
+ },
+ {
+  "id": "anl25_equity_per_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 4,
+  "description": "PER from Parent Company(Consolidated)(MAX)"
+ },
+ {
+  "id": "anl25_est_dt_recent",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 21,
+  "description": "Latest Estimate Date"
+ },
+ {
+  "id": "anl25_ev_ebit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "description": "EV/EBIT"
+ },
+ {
+  "id": "anl25_ev_ebit_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 32,
+  "description": "EV/EBIT, 12 months forward"
+ },
+ {
+  "id": "anl25_ev_ebitda",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 20,
+  "description": "EV/EBITDA"
+ },
+ {
+  "id": "anl25_ev_ebitda_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 14,
+  "description": "EV/EBITDA, 12 month forward"
+ },
+ {
+  "id": "anl25_ev_ebitda_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "EV/EBITDA (Max)"
+ },
+ {
+  "id": "anl25_ev_ebitda_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 9,
+  "description": "EV/EBITDA (Median)"
+ },
+ {
+  "id": "anl25_ev_ebitda_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 12,
+  "description": "EV/EBITDA (Min)"
+ },
+ {
+  "id": "anl25_ev_sales",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "description": "EV/Sales"
+ },
+ {
+  "id": "anl25_ev_sales_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 16,
+  "description": "EV/Sales, 12 month forward"
+ },
+ {
+  "id": "anl25_f21_fcf",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "description": "FCF, 12 months forward"
+ },
+ {
+  "id": "anl25_f21_rbp",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 23,
+  "description": "PBR, 12 month forward"
+ },
+ {
+  "id": "anl25_f21_spb",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 26,
+  "description": "BPS, 12 months forward"
+ },
+ {
+  "id": "anl25_f21_spe",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 207,
+  "alphaCount": 470,
+  "description": "EPS, 12 month forward"
+ },
+ {
+  "id": "anl25_fcf",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 9,
+  "description": "FCF"
+ },
+ {
+  "id": "anl25_finance_cf",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Cashflow from Financing Activity"
+ },
+ {
+  "id": "anl25_general_expense",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Selling and Administrative Expenses"
+ },
+ {
+  "id": "anl25_gross_profit_margin",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 8,
+  "description": "Gross Profit Margin"
+ },
+ {
+  "id": "anl25_intang_asset",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Intangible Assets"
+ },
+ {
+  "id": "anl25_interest_income",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Interest Income"
+ },
+ {
+  "id": "anl25_invest_cf",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "description": "Cashflow from Investing Activity"
+ },
+ {
+  "id": "anl25_long_borrow",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Long Borrow"
+ },
+ {
+  "id": "anl25_long_financial_debt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Long financial debt"
+ },
+ {
+  "id": "anl25_net_asset",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 16,
+  "description": "Book Value"
+ },
+ {
+  "id": "anl25_net_borrow_rate",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Net Interest-bearing Liabilities to Equity (Manuf.)"
+ },
+ {
+  "id": "anl25_net_p_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 25,
+  "description": "Net Income (Max)"
+ },
+ {
+  "id": "anl25_net_p_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 19,
+  "description": "Net Income (Median)"
+ },
+ {
+  "id": "anl25_net_p_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 14,
+  "description": "Net Income (Min)"
+ },
+ {
+  "id": "anl25_net_profit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 13,
+  "description": "Net Income"
+ },
+ {
+  "id": "anl25_net_profit_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 84,
+  "alphaCount": 170,
+  "description": "Net Income, 12 months forward"
+ },
+ {
+  "id": "anl25_net_profit_12t",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 24,
+  "alphaCount": 38,
+  "description": "Net Income, trailing 12 months"
+ },
+ {
+  "id": "anl25_net_profit_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 19,
+  "alphaCount": 26,
+  "description": "Net Income Growth (YoY)"
+ },
+ {
+  "id": "anl25_net_profit_growth_p",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 10,
+  "description": "Net Income Growth (QoQ)"
+ },
+ {
+  "id": "anl25_net_profit_margin",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 10,
+  "alphaCount": 10,
+  "description": "Net Profit Margin"
+ },
+ {
+  "id": "anl25_net_profit_margin_con",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 47,
+  "alphaCount": 91,
+  "description": "Parent Company's Net Profit Margin"
+ },
+ {
+  "id": "anl25_non_current_liability",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Non-Current Liability"
+ },
+ {
+  "id": "anl25_oper_p_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Adjusted Operating Income (Max)"
+ },
+ {
+  "id": "anl25_oper_p_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 3,
+  "description": "Adjusted Operating Income (Median)"
+ },
+ {
+  "id": "anl25_oper_p_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Adjusted Operating Income (Min)"
+ },
+ {
+  "id": "anl25_oper_profit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Adjusted Operating Income"
+ },
+ {
+  "id": "anl25_oper_profit_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Adjusted Operating Income, 12 month forward"
+ },
+ {
+  "id": "anl25_oper_profit_12t",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Adjusted Operating Income, trailing 12 month"
+ },
+ {
+  "id": "anl25_oper_profit_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Adjusted Operating Income Growth (YoY)"
+ },
+ {
+  "id": "anl25_oper_profit_growth_p",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Adjusted Operating Income Growth (YoY, %)"
+ },
+ {
+  "id": "anl25_oper_profit_margin",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 70,
+  "alphaCount": 165,
+  "description": "Operating Profit Margin"
+ },
+ {
+  "id": "anl25_operate_cf",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 12,
+  "description": "Cashflow from Operating Activity"
+ },
+ {
+  "id": "anl25_ordinary_p_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Ordinary Income (Median)"
+ },
+ {
+  "id": "anl25_ordinary_p_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Ordinary Income (Min)"
+ },
+ {
+  "id": "anl25_ordinary_profit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Ordinary Income"
+ },
+ {
+  "id": "anl25_ordinary_profit_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Ordinary Income Growth"
+ },
+ {
+  "id": "anl25_payout_ratio",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Payout Ratio"
+ },
+ {
+  "id": "anl25_pbr_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "PBR (Min)"
+ },
+ {
+  "id": "anl25_per",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 24,
+  "description": "PER"
+ },
+ {
+  "id": "anl25_per_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 37,
+  "alphaCount": 75,
+  "description": "PER, 12 Months Forward"
+ },
+ {
+  "id": "anl25_per_12t",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 8,
+  "description": "PER, trailing 12 months"
+ },
+ {
+  "id": "anl25_per_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 8,
+  "description": "PER (Max)"
+ },
+ {
+  "id": "anl25_per_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "description": "PER (Median)"
+ },
+ {
+  "id": "anl25_pretax_oper_inc_margin",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 24,
+  "description": "Pretax Continued Operation Income Margin"
+ },
+ {
+  "id": "anl25_private_loan",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Private Loan"
+ },
+ {
+  "id": "anl25_rbp",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 23,
+  "description": "PBR"
+ },
+ {
+  "id": "anl25_recom_val",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Target price"
+ },
+ {
+  "id": "anl25_recom_val_chg_1m",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Change in target price, 1 month"
+ },
+ {
+  "id": "anl25_recom_val_chg_1w",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Change in target price, 1 week"
+ },
+ {
+  "id": "anl25_recom_val_chg_3m",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Change in Target Price, 3 months"
+ },
+ {
+  "id": "anl25_recom_val_chg_6m",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Change in target price, 6 months"
+ },
+ {
+  "id": "anl25_recom_val_down_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 9,
+  "description": "Number of Analysts with Target Price Revised Downwards"
+ },
+ {
+  "id": "anl25_recom_val_even_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 11,
+  "description": "Number of analysts with target price unchanged"
+ },
+ {
+  "id": "anl25_recom_val_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 7,
+  "description": "Target price, max"
+ },
+ {
+  "id": "anl25_recom_val_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 10,
+  "description": "Target price, median"
+ },
+ {
+  "id": "anl25_recom_val_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Target Price (Min)"
+ },
+ {
+  "id": "anl25_recom_val_new_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Number of New Analysts with Target Price"
+ },
+ {
+  "id": "anl25_recom_val_up_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 8,
+  "description": "Number of analysts with target price revised upwards"
+ },
+ {
+  "id": "anl25_revert_net_p_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 44,
+  "alphaCount": 64,
+  "description": "Net Income from Parent Company (Max)"
+ },
+ {
+  "id": "anl25_revert_net_p_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 23,
+  "alphaCount": 33,
+  "description": "Net Income from Parent Company (Min)"
+ },
+ {
+  "id": "anl25_revert_net_profit_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 139,
+  "alphaCount": 348,
+  "description": "Net Income from Parent Company, 12 months forward"
+ },
+ {
+  "id": "anl25_revert_net_profit_12t",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 18,
+  "alphaCount": 19,
+  "description": "Net Income from Parent Company, trailing 12 months"
+ },
+ {
+  "id": "anl25_revert_net_profit_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 26,
+  "alphaCount": 36,
+  "description": "Net Income from Parent Company Growth"
+ },
+ {
+  "id": "anl25_revert_net_profit_growth_p",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Net Income from Parent Company Growth (%)"
+ },
+ {
+  "id": "anl25_rfcp",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 15,
+  "description": "PCFR"
+ },
+ {
+  "id": "anl25_roa_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 48,
+  "alphaCount": 78,
+  "description": "ROA (Max)"
+ },
+ {
+  "id": "anl25_roa_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 15,
+  "description": "ROA (Min)"
+ },
+ {
+  "id": "anl25_roe",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 92,
+  "alphaCount": 222,
+  "description": "ROE"
+ },
+ {
+  "id": "anl25_roe_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 57,
+  "alphaCount": 82,
+  "description": "ROE (Max)"
+ },
+ {
+  "id": "anl25_roe_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 20,
+  "alphaCount": 30,
+  "description": "ROE (Min)"
+ },
+ {
+  "id": "anl25_roic",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 13,
+  "description": "ROIC"
+ },
+ {
+  "id": "anl25_roic_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 18,
+  "description": "ROIC (Max)"
+ },
+ {
+  "id": "anl25_roic_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 4,
+  "alphaCount": 6,
+  "description": "ROIC (Median)"
+ },
+ {
+  "id": "anl25_roic_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "ROIC (Min)"
+ },
+ {
+  "id": "anl25_sales_12f",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "description": "Sales, 12 months forward"
+ },
+ {
+  "id": "anl25_sales_12t",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Sales, Trailing 12 Months"
+ },
+ {
+  "id": "anl25_sales_growth",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 64,
+  "alphaCount": 108,
+  "description": "Sales Growth"
+ },
+ {
+  "id": "anl25_sales_growth_p",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 16,
+  "alphaCount": 29,
+  "description": "Sales Growth (%)"
+ },
+ {
+  "id": "anl25_sales_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 19,
+  "description": "Sales (Max)"
+ },
+ {
+  "id": "anl25_sales_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Sales (Median)"
+ },
+ {
+  "id": "anl25_sales_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 10,
+  "description": "Sales (Min)"
+ },
+ {
+  "id": "anl25_sales_profit",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 21,
+  "description": "Gross Profit (Dis.)"
+ },
+ {
+  "id": "anl25_short_borrow",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Short Borrow"
+ },
+ {
+  "id": "anl25_short_financial_debt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Short financial debt"
+ },
+ {
+  "id": "anl25_spb",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 19,
+  "description": "BPS"
+ },
+ {
+  "id": "anl25_spc",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 59,
+  "alphaCount": 75,
+  "description": "CPS"
+ },
+ {
+  "id": "anl25_spe",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 48,
+  "alphaCount": 69,
+  "description": "EPS"
+ },
+ {
+  "id": "anl25_sps",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 18,
+  "description": "SPS"
+ },
+ {
+  "id": "anl25_sps_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 73,
+  "alphaCount": 171,
+  "description": "SPS (Max)"
+ },
+ {
+  "id": "anl25_sps_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 17,
+  "alphaCount": 18,
+  "description": "SPS (Min)"
+ },
+ {
+  "id": "anl25_t21_rbp",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "PBR, trailing 12 months"
+ },
+ {
+  "id": "anl25_t21_spb",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 8,
+  "description": "BPS, Trailing 12 Months"
+ },
+ {
+  "id": "anl25_t21_spe",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 19,
+  "alphaCount": 23,
+  "description": "EPS, trailing 12 months"
+ },
+ {
+  "id": "anl25_tangible_asset",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 11,
+  "description": "Tangible asset"
+ },
+ {
+  "id": "anl25_target_prc",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 15,
+  "alphaCount": 17,
+  "description": "Target price"
+ },
+ {
+  "id": "anl25_target_prc_chg_1m",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 16,
+  "description": "Change in target price, 1 month"
+ },
+ {
+  "id": "anl25_target_prc_chg_1w",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 12,
+  "description": "Change in target price, 1 week"
+ },
+ {
+  "id": "anl25_target_prc_chg_3m",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 11,
+  "description": "Change in target price, 3 months"
+ },
+ {
+  "id": "anl25_target_prc_chg_6m",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Change in Target Price, 6 Months"
+ },
+ {
+  "id": "anl25_target_prc_down_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Number of analysts with target price revised downwards"
+ },
+ {
+  "id": "anl25_target_prc_even_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 16,
+  "description": "Number of analysts with target price unchanged"
+ },
+ {
+  "id": "anl25_target_prc_max",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 16,
+  "description": "Target price, max"
+ },
+ {
+  "id": "anl25_target_prc_med",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 13,
+  "alphaCount": 15,
+  "description": "Target price, median"
+ },
+ {
+  "id": "anl25_target_prc_min",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "Target price, min"
+ },
+ {
+  "id": "anl25_target_prc_new_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 8,
+  "alphaCount": 8,
+  "description": "Number of New Analysts with Target Price"
+ },
+ {
+  "id": "anl25_target_prc_stddev",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 12,
+  "alphaCount": 14,
+  "description": "Target price, standard deviation of different analyst estimates"
+ },
+ {
+  "id": "anl25_target_prc_up_cnt",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 9,
+  "description": "Number of Analysts with Target Price Revised Upwards"
+ },
+ {
+  "id": "anl25_td_dts",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Standard Date for Consensus Data Example: If std_dt = '20130528', then the corresponding consensus data is the consensus of reports issued between 20130228-2013…"
+ },
+ {
+  "id": "anl25_times_interest_earned",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 9,
+  "alphaCount": 13,
+  "description": "Interest Coverage Ratio (Manufacturing)"
+ },
+ {
+  "id": "anl25_tnc_pu_spe",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 55,
+  "alphaCount": 82,
+  "description": "Number of EPS Estimates Up"
+ },
+ {
+  "id": "anl25_tnc_tsni_tse",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 14,
+  "alphaCount": 31,
+  "description": "# of Ests inst"
+ },
+ {
+  "id": "anl25_tot_eps_ests_num",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 19,
+  "alphaCount": 27,
+  "description": "Number ofEPS Estimates"
+ },
+ {
+  "id": "anl25_tot_recomm_num",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 11,
+  "alphaCount": 15,
+  "description": "Number of Analysts with Target Recommended Value Estimation"
+ },
+ {
+  "id": "anl25_tot_target_prc_num",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 5,
+  "alphaCount": 12,
+  "description": "Number of Analysts with Target Price Estimation"
+ },
+ {
+  "id": "anl25_trade_payable",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 6,
+  "alphaCount": 9,
+  "description": "Trade payable"
+ },
+ {
+  "id": "anl25_trade_receivable",
+  "type": "VECTOR",
+  "coverage": 0.5,
+  "userCount": 7,
+  "alphaCount": 12,
+  "description": "Trade receivable"
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "dataset": "pv103",
+ "wave": "pv103ds intraday-session microstructure",
+ "multisim": "30wKDr4fo5aP9khqabGLnRq",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "alpha_expressions": [
+  "reverse(group_rank(ts_backfill(divide(session_1430to1430_final_trade_price, session_1430to1430_initial_trade_price), 5), sector))",
+  "group_rank(ts_backfill(divide(session_1430to1430_final_trade_price, session_1430to1430_volume_weighted_avg_price), 5), sector)",
+  "reverse(group_rank(ts_backfill(divide(session_1430to1430_final_trade_price, session_1430to1430_volume_weighted_avg_price), 5), sector))",
+  "reverse(group_rank(ts_backfill(divide(session_1430to1430_max_trade_price, session_1430to1430_min_trade_price), 5), sector))",
+  "group_rank(ts_backfill(divide(subtract(session_1430to1430_final_trade_price, session_1430to1430_min_trade_price), subtract(session_1430to1430_max_trade_price, session_1430to1430_min_trade_price)), 5), sector)",
+  "reverse(group_rank(ts_backfill(session_1430to1430_total_traded_volume, 5), sector))",
+  "group_rank(ts_zscore(ts_backfill(divide(session_1430to1430_final_trade_price, session_1430to1430_initial_trade_price), 5), 66), sector)",
+  "group_rank(ts_mean(ts_backfill(divide(session_1430to1430_final_trade_price, session_1430to1430_volume_weighted_avg_price), 5), 22), sector)",
+  "group_rank(ts_rank(ts_backfill(divide(session_1430to1430_final_trade_price, session_1430to1430_initial_trade_price), 5), 66), sector)",
+  "group_rank(ts_backfill(session_1430to1430_market_value, 5), sector)"
+ ]
+}

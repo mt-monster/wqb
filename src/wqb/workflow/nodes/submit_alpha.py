@@ -26,7 +26,7 @@ from .._common import (
     persist_workflow_record,
     run_async as _run_async,
 )
-from ...config import compute_webdata_failed_counts, merge_failed_items
+from ...config import PRODCORR_CEILING, compute_webdata_failed_counts, merge_failed_items
 from ...quota import REGULAR_DAILY_LIMIT, probe_today
 
 logger = logging.getLogger(__name__)
@@ -40,9 +40,10 @@ _POLL_INTERVAL_SEC = int(WAIT_THRESHOLDS["submit_flip_poll_s"])
 # 2026-09-29 P0：这些 WARNING 在 POST submit 时平台会重新评估为 FAIL，必须在本地 fail-closed 拦截。
 _SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE", "IS_LADDER_SHARPE"}
 
-#: REGULAR 提交前 prod 闸阈值（用户铁律：prod ≥ 0.7 不得提交）。与 super_build.py 的
-#: `--prod-gate` 默认值同口径；本节点不允许把阈值放宽到 ≥0.7 之外。
-_PROD_THRESHOLD = 0.7
+#: REGULAR 提交前 prod 闸阈值（用户铁律：prod ≥ 0.7 不得提交）。
+#: 2026-11-10 审查 P1-11：改引 `wqb.config.PRODCORR_CEILING`（唯一事实源），
+#: 不再各写 0.7 字面量；本节点仍不允许把阈值放宽到 ≥0.7 之外。
+_PROD_THRESHOLD = float(PRODCORR_CEILING)
 
 #: REGULAR 每日提交配额上限（ET 日历日）。唯一实现口径 = `wqb.quota`
 #: （REGULAR 4 / SUPER 1 / PPA 独立 1）。本节点只前置 REGULAR 的账务核对。
@@ -56,12 +57,17 @@ def _derive_tags(alpha_id: str, dataset: Optional[str], wave: Optional[str],
     规范见 `docs/alpha_properties_spec.md`：
         CH_<通道> · SRC_<数据集> · W<波次> · EXPRFAM_<族> · CORR_<档> · TOOL_<工具>
     平台已有的 `RETIRE_*` 等人工留痕一律保留、追加在末尾。
+
+    ⚠ 2026-11-08：`PowerPoolSelected` **不保留**（提交前剔除）。该标签由平台在
+    **提交成功后**自动追加（11-06 / 11-07 两次实证）；若在 PATCH 里预置它，平台
+    会把这次提交当 PURE_POWER_POOL_THEME 处理，合法 REGULAR 可能被直接拒。
+    提交后的去向由 Step 6 `tag_disposal` 记录（清 / 留按 PPA 政策）。
     """
     try:
-        from ...alpha_properties import build_tags  # wqb.alpha_properties
+        from ...alpha_properties import build_tags, PPA_TAG  # wqb.alpha_properties
     except Exception:  # pragma: no cover - 路径兜底
         try:
-            from wqb.alpha_properties import build_tags  # type: ignore
+            from wqb.alpha_properties import build_tags, PPA_TAG  # type: ignore
         except Exception:
             return []
 
@@ -75,8 +81,11 @@ def _derive_tags(alpha_id: str, dataset: Optional[str], wave: Optional[str],
     except Exception as e:  # noqa: BLE001
         logger.warning(f"读取已有 tags 失败（将不保留）：{e}")
 
-    # 已有手工留痕（RETIRE_* 等）保留；规范前缀的旧标签由新生成覆盖
-    keep = [t for t in existing if not t.startswith(("CH_", "SRC_", "W", "EXPRFAM_", "CORR_", "TOOL_"))]
+    # 已有手工留痕（RETIRE_* 等）保留；规范前缀的旧标签由新生成覆盖；
+    # PPA 通道标签一律剔除（见 docstring：提交前预置会触发 PPA 主题检查）
+    keep = [t for t in existing
+            if not t.startswith(("CH_", "SRC_", "W", "EXPRFAM_", "CORR_", "TOOL_"))
+            and t != PPA_TAG]
 
     built = build_tags(
         channel=channel,
@@ -277,6 +286,9 @@ def run(
                         "POST /alphas/{id}/submit",
                         f"poll get_alpha_details until OS/ACTIVE (<= {verify_timeout}s)",
                         "若响应形态②/③（异步受理）且轮询未翻 ACTIVE：re-POST 补发一次再轮询（四态处置）",
+                        "prod 快照恒等式：闸门 prod_max vs 平台冻结值，Δ>0.005 告警（不改 success）",
+                        "标签处置留痕：回读 tags，记录 PowerPoolSelected 的 kept/absent 与"
+                        " pre_submit_has_ppa_tag（信息项，不阻断）",
                     ] if confirm_submit else [])
                 ),
                 "note": (
@@ -587,6 +599,21 @@ def run(
                 _tag_warnings = [f"check_tags 调用失败（{e}）"]
         if _tag_warnings:
             logger.warning("[submit_alpha] tags 规范告警: %s", _tag_warnings)
+        # 信息项（非违规）：2026-11-08 起 `PowerPoolSelected` 走这条，
+        # 不再计入告警（它是平台自动标签，见 alpha_properties.tag_notes）
+        _tag_notes = []
+        try:
+            from ...alpha_properties import tag_notes as _tag_notes_fn
+        except Exception:  # pragma: no cover
+            try:
+                from wqb.alpha_properties import tag_notes as _tag_notes_fn  # type: ignore
+            except Exception:
+                _tag_notes_fn = None
+        if _tag_notes_fn is not None:
+            try:
+                _tag_notes = list(_tag_notes_fn(tags or []))
+            except Exception:  # noqa: BLE001
+                _tag_notes = []
         # color 默认 BLUE（待观察）；GREEN 须由 OS 结果挣得，禁当默认值（2026-09-20 规范）
         _color = color
         if _color is None:
@@ -611,6 +638,7 @@ def run(
             "preserved": preserved,
             "name_derived": _name_info,
             "tag_warnings": _tag_warnings,
+            "tag_notes": _tag_notes,
             "result": props,
         })
     else:
@@ -721,6 +749,12 @@ def run(
                 alpha_id, snap.get("gate_value") or 0.0,
                 snap.get("recorded_value") or 0.0, snap.get("delta") or 0.0,
             )
+
+    # Step 6: 标签处置留痕（2026-11-08，信息项，不阻断）
+    # `PowerPoolSelected` 是平台提交后自动追加的；本步记录「提交前有没有预置 /
+    # 提交后平台上有没有 / 处置口径」，供事后审计 CAP 口径选择（见 _tag_disposal）。
+    if result["success"]:
+        result["steps"].append(_tag_disposal(client, alpha_id, tags))
 
     return _finalize(result, store, alpha_id, client=client)
 
@@ -1168,6 +1202,67 @@ def _mix_audit(details: Any, *, narrative: Any = None) -> Dict[str, Any]:
     }
 
 
+def _local_today_quota(db_path: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    """从本地 ``submission_ledger`` 读当日提交，用与平台**同一口径**（`probe_today`）计数。
+
+    ★ 2026-11-09 实证缺陷（本函数存在的原因）：`_quota_gate` 只数平台 ``stage=OS`` 池，
+    而**当天刚提交的 alpha 在 OS 批次开跑前仍留在 ``stage=IS``**，OS 池看不到它。
+    实测：``akK9ooZv`` 提交时 ``P0obGoQJ`` 已 ACTIVE 67 秒，闸门仍报 ``0/4``（真实 1/4）；
+    约 1 小时后 OS 池才收录。⇒ 连续提报会**低估**用量，把第 5 颗放过去白跑一次 POST
+    （平台 403，不扣配额但污染 attempt 记录，且让 agent 误报"还剩 4 个"）。
+
+    返回 ``probe_today`` 的 dict，或 ``None``（无库 / 读不到 / 任何异常）。
+    **只读**（``readonly=True``），绝不影响提交路径。
+    """
+    try:
+        from ...db_conn import (  # type: ignore
+            connect as _db_connect,
+            under_pytest_isolation as _under_pytest_isolation,
+        )
+    except Exception:  # pragma: no cover - 路径兜底
+        try:
+            from wqb.db_conn import (  # type: ignore
+                connect as _db_connect,
+                under_pytest_isolation as _under_pytest_isolation,
+            )
+        except Exception:
+            return None
+
+    # 测试隔离：未显式传库路径时，pytest 下**不读生产库**——否则闸门读数会随当天的真实
+    # 提交数漂移，单测既不可复现，又会与「真实今日 2 颗」互相污染（首版实测打挂了
+    # test_submit_gate_p0_20261002 的 used==1 断言）。覆盖本地下限的用例请显式传 tmp 库。
+    # 判定复用 db_conn 的单源 helper，避免测试隔离语义在多处各写一份。
+    if db_path is None and _under_pytest_isolation():
+        return None
+
+    con = None
+    try:
+        con = _db_connect(db_path, readonly=True)
+        rows = con.execute(
+            "SELECT alpha_id, region, submission_type, submitted_at "
+            "FROM submission_ledger "
+            "WHERE status = 'ACTIVE' AND submitted_at IS NOT NULL AND submitted_at <> '' "
+            "ORDER BY submitted_at DESC LIMIT 50"
+        ).fetchall()
+    except Exception:  # noqa: BLE001 —— 读本地台账失败绝不能让闸门崩溃
+        return None
+    finally:
+        try:
+            if con is not None:
+                con.close()
+        except Exception:  # noqa: BLE001
+            pass
+
+    entries = [
+        {"id": r[0], "type": r[2], "dateSubmitted": r[3], "settings": {"region": r[1]}}
+        for r in rows
+    ]
+    try:
+        return probe_today(entries)
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _quota_gate(client, alpha_id: str, *, limit: int = None) -> Dict[str, Any]:
     """REGULAR 提交前配额闸（P0，2026-10-02，F9 修复）。
 
@@ -1185,7 +1280,11 @@ def _quota_gate(client, alpha_id: str, *, limit: int = None) -> Dict[str, Any]:
     fail-**open**（与 prod 闸的 fail-closed 不同）：无法判定（拉不到 OS 池）时**放行** ——
     配额是账务性前置，读不到绝不能变成新故障点；平台 403 仍是最终兜底（零成本）。
 
-    返回 {allowed, used, limit, remaining, super_used, reason}。
+    ★ 2026-11-09 补「本地下限」：平台 OS 池对当天刚提交的 alpha 有收录延迟，单看它会
+    低估用量（实测漏计 1 颗）。现取 ``max(平台, 本地 submission_ledger)``——只抬不降，
+    不会放松既有闸门；本地读不到时行为与旧版一致。
+
+    返回 {allowed, used, limit, remaining, super_used, local_used, reason}。
     """
     lim = _REGULAR_QUOTA_LIMIT if limit is None else int(limit)
     try:
@@ -1205,17 +1304,58 @@ def _quota_gate(client, alpha_id: str, *, limit: int = None) -> Dict[str, Any]:
         return {"allowed": True, "used": None, "limit": lim, "remaining": None,
                 "reason": f"配额检查异常（{e}）→ fail-open 放行，由平台 403 兜底"}
 
+    # ★ 2026-11-09：平台 OS 池对**当天刚提交**的 alpha 有收录延迟（提交后仍留 stage=IS，
+    # OS 批次开跑才翻），实测 akK9ooZv 提交时 P0obGoQJ 已 ACTIVE 67s 而闸门报 0/4。
+    # 用本地 submission_ledger 做**下限**兜底：used = max(平台, 本地)。
+    # 只抬不降 ⇒ 不会放松既有闸门；读不到本地台账时行为与旧版完全一致（fail-open 语义不变）。
+    local_used = None
+    local = _local_today_quota()
+    if local:
+        local_used = local["regular_used"]
+        if local_used > used:
+            logger.info("[submit_alpha] 配额闸：平台 OS 池 lag（%s < 本地 %s），按本地计",
+                        used, local_used)
+            used = local_used
+        super_used = max(super_used, local["super_used"])
+
     remaining = max(0, lim - used)
     if used >= lim:
         return {"allowed": False, "used": used, "limit": lim, "remaining": 0,
-                "super_used": super_used,
+                "super_used": super_used, "local_used": local_used,
                 "reason": (f"ET 今日 REGULAR 已用 {used}/{lim}，配额已满 → 提交必 403 "
                            "`REGULAR_SUBMISSION(value=4, limit=4)`；等 ET 次日 00:00 重置"
                            "（不扣配额但白跑 POST，故前置拦截）"
                            f"（SUPER 另计 {super_used}/1，两条线互不影响）")}
     return {"allowed": True, "used": used, "limit": lim, "remaining": remaining,
-            "super_used": super_used,
+            "super_used": super_used, "local_used": local_used,
             "reason": f"ET 今日 REGULAR {used}/{lim} → 剩余 {remaining}"}
+
+
+def _cache_source_untrusted(prod: Dict[str, Any]) -> bool:
+    """缓存命中的 prod 值是否来自**不可直接判闸**的来源（2026-11-10 审查 P0-1）。
+
+    背景：``results/prod_peek_*.json`` → ``alpha_corr_cache`` 历史上是一次手工 SQL，
+    正规写入口又用「写库时刻」而非平台测量时刻，且 ``source`` 可以是任意自由文本。
+    于是一个几天前的值今天写库就被当成「48h 内新鲜实测」，而缓存命中分支
+    （``brain_mixin_correlation.check_correlation``）不带 ``provisional`` ⇒ 直接放行。
+
+    现在：``source`` 落在 :data:`wqb.store.NON_REALTIME_SOURCES`（人工录入 / 历史自由
+    文本 / 跨表搬运 / 本地抽测）或**根本没有来源标记**时，按 provisional 处理——
+    补一次 ``refresh=True`` 真重测，拿不到数 fail-closed。
+    ``prod_peek`` 不在此列：它读的就是平台端点已算结果，只要落库时写了真实探测时刻
+    （``tools/prod_peek_ingest.py``），48h 保鲜判据即成立。
+    """
+    if not prod.get("from_cache"):
+        return False
+    src = str(prod.get("source") or "").strip().lower()
+    if not src:
+        return True
+    try:
+        from ...store import NON_REALTIME_SOURCES
+    except Exception:  # noqa: BLE001 - store 不可用时退回内置同口径集合
+        return src in {"manual", "legacy", "alphas_backfill",
+                       "checkpoint_backfill", "triage_local"}
+    return src in NON_REALTIME_SOURCES
 
 
 def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, Any]:
@@ -1287,7 +1427,8 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
     # 且一次提交只发生一次）；重测拿不到数仍 fail-closed。
     provisional = bool(prod.get("provisional")
                        or prod.get("source") == "alpha_detail_cached"
-                       or r.get("provisional"))
+                       or r.get("provisional")
+                       or _cache_source_untrusted(prod))
     if (not force_refresh and provisional
             and prod.get("max_correlation") is not None):
         try:
@@ -1305,7 +1446,9 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
                                " → fail-closed")}
         r = r2
         prod = ((r.get("checks") or {}).get("production") or {})
-        provisional = bool(prod.get("provisional"))
+        provisional = bool(prod.get("provisional")
+                           or prod.get("source") == "alpha_detail_cached"
+                           or _cache_source_untrusted(prod))
 
     raw_max = prod.get("max_correlation")
     status = str(prod.get("status") or r.get("status") or "ok")
@@ -1327,6 +1470,14 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
                 "reason": f"prod max 非数值：{raw_max!r} → fail-closed"}
 
     src = f"缓存@{cached_at}" if from_cache else "平台实时"
+    # ★ 2026-11-10（审查 P1-2）：强制重测后**仍**只有预读值 / 非实时来源值 ⇒ 不得放行。
+    # 旧实现重测后重算了 provisional 却不再检查它，留下理论放行口。
+    if provisional:
+        return {"allowed": False, "prod_max": prod_max, "threshold": thr, "status": status,
+                "from_cache": from_cache, "cached_at": cached_at, "provisional": True,
+                "reason": (f"prod max={prod_max} 仅来自预读/非实时来源（source="
+                           f"{prod.get('source')!r}），重测后仍未取得平台实测值 "
+                           "→ fail-closed 拒绝提交")}
     if prod_max >= thr:
         return {"allowed": False, "prod_max": prod_max, "threshold": thr, "status": status,
                 "from_cache": from_cache, "cached_at": cached_at,
@@ -1354,7 +1505,7 @@ def _prod_snapshot_check(client, alpha_id: str, steps: List[Dict[str, Any]],
 
     ★ 信息项，**不阻断、不改 success**：提交已完成，此处只能告警留痕。
     与 ``tools/gates/prod_gate_audit.py`` 的分工必须分清——
-    那个是**账户级事后审计**（400+ 请求、算历史泄漏率与口径校准）；
+    那个是**账户级事后审计**（分页拉 OS alpha + board 均值，≤ ~22 个 GET；算历史泄漏计数与口径校准）；
     本函数是**单颗在线恒等式**（1 请求、查这一次闸门是否诚实）。两者不可互替，
     也都不构成新的准入条件。
     """
@@ -1385,6 +1536,54 @@ def _prod_snapshot_check(client, alpha_id: str, steps: List[Dict[str, Any]],
             "note": ("闸门读数与平台冻结值一致，prod 闸诚实"
                      if abs(delta) <= tol else
                      "★ 闸门读数与平台冻结值不一致 ⇒ 闸门可能被缓存/池变动骗过，须查同源")}
+
+
+def _tag_disposal(client, alpha_id: str,
+                  planned_tags: Optional[List[str]]) -> Dict[str, Any]:
+    """Step 6：记录 `PowerPoolSelected` 在平台上的现状与本链路的处置（信息项）。
+
+    为什么单独记（2026-11-08）：该标签是**平台**在提交成功后自动追加的（11-06 KOR、
+    11-07 GBR risk68 两次实证），不是我们打的。清它属于「PPA 通道一律不接受」的
+    **政策动作**，代价是放弃 CAP 四口径（all submitted / WQ selected / Power Pool /
+    Osmosis，取最大）中的 Power Pool 一条。
+
+    此前这一步零留痕：11-06 / 11-07 只在报告里各写一句，今日 4 颗连报告都没写
+    ⇒ 事后无法回答「哪些颗清了、清的当时平台上到底有没有」。本函数把三件事钉在
+    提交记录里：① 提交前 PATCH 的 tags 有没有预置该标签（应为 False，`_derive_tags`
+    已剔除）；② 提交后平台回读到的 tags；③ 处置口径（kept / absent）。
+
+    ★ 不阻断、不改 success——提交已 ACTIVE 无法回退，此处只能留痕。
+    """
+    out: Dict[str, Any] = {"step": "tag_disposal", "success": True, "available": False}
+    want = [str(t) for t in (planned_tags or [])]
+    out["pre_submit_has_ppa_tag"] = "PowerPoolSelected" in want
+    if out["pre_submit_has_ppa_tag"]:
+        out["pre_submit_warning"] = (
+            "提交前 PATCH 预置了 PowerPoolSelected ⇒ 平台会按 PURE_POWER_POOL_THEME "
+            "检查本次提交，合法 REGULAR 可能被拒；`_derive_tags` 本应剔除它")
+    try:
+        details = _run_async(client.get_alpha_details(alpha_id))
+    except Exception as e:  # noqa: BLE001
+        out["note"] = f"回读平台 tags 失败（{type(e).__name__}: {e}）；不影响提交"
+        return out
+    if isinstance(details, dict) and details.get("__error__"):
+        out["note"] = f"回读平台 tags 失败（{details['__error__']}）；不影响提交"
+        return out
+    if not isinstance(details, dict):
+        out["note"] = "平台未返回详情；不影响提交"
+        return out
+    got = [str(t) for t in (details.get("tags") or [])]
+    has_pp = "PowerPoolSelected" in got
+    out.update({
+        "available": True,
+        "platform_tags": got,
+        "power_pool_selected": has_pp,
+        "disposition": "kept（平台已挂标签，未清）" if has_pp else "absent（平台未挂或已清）",
+        "note": ("平台在提交成功后自动追加 PowerPoolSelected；本步只记录、不改变。"
+                 "清 / 留是 PPA 政策选择（代价 = CAP 四口径的 Power Pool 一条，"
+                 "取最大 ⇒ 实际损失远小于字面），不是合规闸"),
+    })
+    return out
 
 
 def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:

@@ -1,0 +1,28 @@
+{
+ "note": "中性化补扫：dividend_policy 缺4档优先，每批1中性化×2表达式(dividend+other532)，槽位释放即派",
+ "base": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "truncation": 0.08,
+  "nan_handling": "ON"
+ },
+ "dividend_expr": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+ "other532_expr": "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+ "chartcnn_expr": "group_rank(multiply(imgpred_eqstar4_60dret_q5_prob4, imgpred_eqstar4_60dret_q5_confscore4), sector)",
+ "batches_priority": [
+  "CROWDING",
+  "NONE",
+  "SECTOR",
+  "INDUSTRY"
+ ],
+ "batches_extend": [
+  "STATISTICAL",
+  "SLOW",
+  "FAST",
+  "MARKET",
+  "SUBINDUSTRY",
+  "SLOW_AND_FAST"
+ ]
+}

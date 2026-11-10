@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "3klGYV1n74Pfavoctd53SUN",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/3klGYV1n74Pfavoctd53SUN",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/3klGYV1n74Pfavoctd53SUN",
+ "submitted_expressions": [
+  "reverse(group_rank(ts_backfill(divide(oth496_a_ard_tot_liabilities, oth496_ard_tot_assets), 22), sector))",
+  "reverse(group_rank(ts_backfill(divide(oth496_ard_total_intangible_asset_net, oth496_ard_tot_assets), 22), sector))",
+  "group_rank(ts_backfill(divide(oth496_ard_total_shareholders_equity, oth496_ard_tot_assets), 22), sector)",
+  "group_rank(ts_backfill(divide(oth496_a2_ard_cash_and_cash_equivalents, oth496_ard_tot_assets), 22), sector)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_difference), 22), sector)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 22), sector)",
+  "group_rank(ts_backfill(vec_avg(oth496_afterest_difference), 22), sector)",
+  "reverse(group_rank(ts_backfill(oth496_returns250, 22), sector))",
+  "reverse(group_rank(ts_backfill(oth496_returns750, 22), sector))",
+  "group_rank(ts_backfill(oth496_returns120, 22), sector)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

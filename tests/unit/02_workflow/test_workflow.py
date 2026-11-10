@@ -408,10 +408,32 @@ def test_judge_platform_check_fail_on_sharpe():
     assert "sharpe" in g["reason"]
 
 
-def test_judge_correlation_unavailable_passes():
+def test_judge_correlation_unavailable_fail_closed():
+    """2026-11-10 审查 P0-4：契约由 fail-open 改为 fail-closed。
+
+    旧行为（本测试原名 ``..._unavailable_passes``）：拿不到相关性数据时 ``pass=True``，
+    可静默凑出 READY。现缺值/异常一律 ``pass=False``，并由 _compute_final_verdict
+    计入 hard_fail → BLOCK。
+    """
     judge = _import_judge_helpers()
     g = judge._eval_correlation({"__error__": "timeout"})
-    assert g["pass"] is True and g["unavailable"] is True
+    assert g["pass"] is False and g["unavailable"] is True
+    assert judge._compute_final_verdict([g]) == "BLOCK"
+
+
+def test_judge_correlation_missing_values_fail_closed():
+    judge = _import_judge_helpers()
+    # 只有 prod、没有 self ⇒ 不可判闸
+    g = judge._eval_correlation({"checks": {"production": {"max_correlation": 0.4}}})
+    assert g["pass"] is False
+    assert "self" in g["reason"]
+    # 预读值不足以放行
+    g2 = judge._eval_correlation({"checks": {
+        "production": {"max_correlation": 0.4, "source": "alpha_detail_cached",
+                       "provisional": True},
+        "self": {"max_correlation": 0.2}}})
+    assert g2["pass"] is False
+    assert g2["provenance"] == "preread"
 
 
 def test_judge_correlation_blocks_on_prod():

@@ -548,7 +548,7 @@ def _tags_for(rec: Dict[str, Any], db_path: Optional[str] = None) -> str:
     """
     try:
         from ..alpha_properties import build_tags, resolve_source_dataset
-        ds = resolve_source_dataset(rec.get("expr"), db_path)
+        ds = resolve_source_dataset(rec.get("expr"), db_path, region=rec.get("region"))
         return json.dumps(build_tags(
             alpha_type=rec.get("alpha_type") or "REGULAR",
             dataset=ds,
@@ -1454,9 +1454,14 @@ def list_ready(region: Optional[str] = None, db_path: Optional[str] = None,
 
 # ---------------- 相关性新鲜度标注（2026-10-20 P1-4） ----------------
 
-#: 相关性保鲜期（小时）。与 MCP `get_alpha_corr_metrics` 缺省一致（48h）：
-#: 平台 prod 池随时变动，实测 2-3 天可从 0.58 漂到 0.98（见该工具 docstring）。
-CORR_STALE_AFTER_HOURS = 48.0
+#: 相关性保鲜期（小时）。2026-11-10 审查 P1-11：改引唯一事实源
+#: ``wqb.store._corr_cache.CORR_FRESH_HOURS``，不再各写 48.0（此前三处独立默认值）。
+#: 平台 prod 池随时变动，实测 2-3 天可从 0.58 漂到 0.98。
+try:
+    from ._corr_cache import CORR_FRESH_HOURS as _CORR_FRESH_HOURS
+except Exception:  # noqa: BLE001 - 最小 fixture / 循环导入时退回同口径默认
+    _CORR_FRESH_HOURS = 48.0
+CORR_STALE_AFTER_HOURS = float(_CORR_FRESH_HOURS)
 
 
 def _parse_ts(raw) -> Optional[datetime]:
@@ -1473,24 +1478,47 @@ def _parse_ts(raw) -> Optional[datetime]:
 
 
 def _corr_checked_times(con: sqlite3.Connection, alpha_ids) -> Dict[str, Any]:
-    """alpha_id → `alphas.corr_checked_at`（相关性最近一次平台检测时刻）。
+    """alpha_id → 相关性最近一次检测时刻（**单源读**，2026-11-10 审查 P1-3）。
 
-    缺表 / 缺列（最小 fixture 库）返回 {}，绝不因它影响 list_ready 主流程。
+    优先取权威表 ``alpha_corr_cache.checked_at``，缺条目才回落 ``alphas.corr_checked_at``
+    ——与 ``CampaignStore.get_corr_authoritative`` 同口径。旧实现只查 ``alphas``，
+    于是「权威表有新鲜值、alphas 无时间戳」的候选被标 ``no_timestamp`` 判 stale，
+    尽管 ``check_correlation(refresh=False)`` 会命中它。
+
+    缺表 / 缺列（最小 fixture 库）返回已收集到的部分或 {}，绝不因它影响 list_ready 主流程。
     """
     ids = [i for i in (alpha_ids or []) if i]
     if not ids:
         return {}
     out: Dict[str, Any] = {}
     try:
-        for i in range(0, len(ids), 500):
-            chunk = ids[i:i + 500]
-            ph = ",".join("?" * len(chunk))
+        has_cache = con.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='alpha_corr_cache'"
+        ).fetchone() is not None
+    except sqlite3.Error:
+        has_cache = False
+    for i in range(0, len(ids), 500):
+        chunk = ids[i:i + 500]
+        ph = ",".join("?" * len(chunk))
+        if has_cache:
+            try:
+                for aid, ts in con.execute(
+                        "SELECT alpha_id, checked_at FROM alpha_corr_cache "
+                        f"WHERE checked_at IS NOT NULL AND alpha_id IN ({ph})", chunk):
+                    out[aid] = ts
+            except sqlite3.Error:
+                pass
+        missing = [a for a in chunk if a not in out]
+        if not missing:
+            continue
+        ph2 = ",".join("?" * len(missing))
+        try:
             for aid, ts in con.execute(
                     "SELECT alpha_id, corr_checked_at FROM alphas "
-                    f"WHERE corr_checked_at IS NOT NULL AND alpha_id IN ({ph})", chunk):
+                    f"WHERE corr_checked_at IS NOT NULL AND alpha_id IN ({ph2})", missing):
                 out[aid] = ts
-    except sqlite3.Error:
-        return {}
+        except sqlite3.Error:
+            continue
     return out
 
 

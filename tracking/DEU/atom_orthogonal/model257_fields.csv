@@ -1,0 +1,5 @@
+id,type,cov,uc,ac,desc
+annual_report_language_similarity_eu,MATRIX,0.0,0,0,Year-over-year textual similarity metric for companies' annual reports; measuring changes or stability in language/content
+mdl257_eu_lm_nnc,MATRIX,0.0,0,0,Score derived from convolutional neural network models trained on annual regulatory reports
+mdl257_eu_score,MATRIX,0.0,2,3,Composite GINA alpha score for the security; capturing various qualitative and quantitative factors as modeled by Wolfe's process
+mdl257_eu_sentiment_ml,MATRIX,0.0,1,4,Machine learning-based sentiment score derived from analysis of regulatory filings and behavioral features

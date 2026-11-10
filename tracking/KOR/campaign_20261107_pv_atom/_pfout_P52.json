@@ -1,0 +1,34 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "residualized_return_asia_minvol1m",
+  "rsk68_beta",
+  "rsk68_weight_dadv",
+  "rsk68_weight_volatility_short",
+  "rsk71_eqy_asi_supported_minvol1m_dsrt",
+  "rsk72_asi_top2000_eqy_dsrt",
+  "rsk72_eqy_xjpci_supported_minvol1m_dsrt"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 7,
+ "fixed_expressions": [
+  "multiply(group_rank(ts_sum(residualized_return_asia_minvol1m, 5), sector), -1)",
+  "multiply(group_rank(ts_sum(rsk71_eqy_asi_supported_minvol1m_dsrt, 5), sector), -1)",
+  "multiply(group_rank(ts_sum(rsk72_asi_top2000_eqy_dsrt, 5), sector), -1)",
+  "multiply(group_rank(ts_sum(rsk72_eqy_xjpci_supported_minvol1m_dsrt, 5), sector), -1)",
+  "multiply(group_rank(ts_mean(rsk71_eqy_asi_supported_minvol1m_dsrt, 22), sector), -1)",
+  "multiply(group_rank(ts_zscore(rsk72_asi_top2000_eqy_dsrt, 66), sector), -1)",
+  "multiply(group_rank(rsk68_beta, sector), -1)",
+  "multiply(group_rank(rsk68_weight_volatility_short, sector), -1)",
+  "multiply(group_rank(rsk68_weight_dadv, sector), -1)",
+  "group_rank(ts_delta(rsk68_weight_volatility_short, 22), sector)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}

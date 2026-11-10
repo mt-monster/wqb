@@ -1,0 +1,35 @@
+﻿{
+ "results": [
+  {
+   "id": "company_total_market_value_3",
+   "type": "VECTOR",
+   "coverage": 0.9217,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "The total market value of a company's outstanding shares."
+  },
+  {
+   "id": "corporate_structure_event_score_2",
+   "type": "VECTOR",
+   "coverage": 0.9222,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Model score for corporate structure and executive events in the global dataset."
+  },
+  {
+   "id": "earnings_financial_event_score_2",
+   "type": "VECTOR",
+   "coverage": 0.9222,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Model score for earnings, financial, and product-related events in the global dataset."
+  }
+ ],
+ "count": 3,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 3,
+ "complete": true,
+ "pages_fetched": 1
+}
+

@@ -237,4 +237,22 @@ ts_target_tvr_decay(
 
 ⇒ **对 ATOM 候选的优化目标要改口径**：抬**近 2 年 Sharpe**（本波已到 1.79-1.91）并不够，还要把**全期 S 抬到 ≥1.58、F 抬到 ≥1.0**；两者同时满足才有提交资格。
 
+### 2026-11-09 ★ news20 的 6 个分类器语气面 6/6 全灭，news17 是特例
+
+同一模板（`ts_target_tvr_decay(group_neutralize(-ts_rank(ts_mean(vec_sum(F),60),252),densify(market)),tvr=0.05)`）
+换 6 个 news20 分类器专属字段，实测：
+
+| 字段 | 经济含义 | S | F | 2Y |
+|---|---|---:|---:|---:|
+| `nws20_multiple_comp_qep` | 正负措辞分 | −0.18 | −0.04 | −0.13 |
+| `nws20_multiple_comp_ghc_lna` | 语气变化 | 0.10 | 0.01 | 0.45 |
+| `nws20_multiple_comp_ber` | 新闻内分析师评级变动 | 0.65 | 0.24 | −0.01 |
+| `nws20_multiple_comp_nip` | 市场影响度 | 0.05 | 0.01 | 0.31 |
+| `nws20_multiple_comp_qmb` | 并购情绪 | 0.18 | 0.03 | −0.57 |
+| `..._rp_story_event_count` | 报道数量（注意力） | −0.85 | −0.37 | −0.77 |
+
+**结论**：news17 的 `event_sentiment_score`（S1.76 全闸）是**单点特例**，不是「news 情绪族普遍有效」。
+分类器细分语气（措辞/语气变化/影响度/并购）在 GBR TOP700 上全部无预测力，报道数量面反向。
+⇒ 想复用 news 通道只能回到 `nws17_multiple_comp_event_sentiment_score`，别指望换分类器字段扩席。
+
 <!-- profiles:manual:end -->

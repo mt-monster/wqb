@@ -1,0 +1,12 @@
+[
+ "group_rank(star_pm_shortterm_d1, sector)",
+ "group_rank(star_pm_midterm_d1, sector)",
+ "group_rank(star_pm_longterm_d1, sector)",
+ "group_rank(subtract(star_pm_shortterm_d1, star_pm_longterm_d1), sector)",
+ "group_rank(subtract(star_pm_midterm_d1, star_pm_longterm_d1), sector)",
+ "group_rank(subtract(star_pm_shortterm_d1, star_pm_midterm_d1), sector)",
+ "group_rank(star_pm_industry_d1, sector)",
+ "multiply(group_rank(star_pm_shortterm_d1, sector), group_rank(star_pm_longterm_d1, sector))",
+ "subtract(0.5, group_rank(star_pm_shortterm_d1, sector))",
+ "group_rank(ts_av_diff(star_pm_shortterm_d1, 66), sector)"
+]

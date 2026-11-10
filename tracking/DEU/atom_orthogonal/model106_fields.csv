@@ -1,0 +1,15 @@
+id,type,cov,uc,ac,desc
+mdl106_country,MATRIX,1.0,0,0,Country of listing
+mdl106_dividend,MATRIX,0.5049,0,0,Forecast dividend yield for the next 12 months (percent)
+mdl106_fmb,MATRIX,1.0,1,2,Measure of a stockâs downside sensitivity in bear markets; higher values imply greater susceptibility during market downturns
+mdl106_fnb,MATRIX,1.0,0,0,Bad News Factor indicating the stockâs sensitivity to negative news and its tendency to underperform during adverse events
+mdl106_global_evaluation,MATRIX,1.0,5,6,Composite multi-criteria evaluation score combining fundamentals; technicals; and risk; range -2 (negative) to +2 (positive)
+mdl106_mkt_cap,MATRIX,0.5049,0,0,Market capitalization in USD billions; calculated as share price times shares outstanding
+mdl106_pr,MATRIX,0.5049,3,4,4-week performance relative to the national or regional index; in percent
+mdl106_price,MATRIX,0.5049,1,1,Latest daily stock price in the securityâs trading currency
+mdl106_risk,MATRIX,1.0,1,1,risk levels by historic price
+mdl106_rv,MATRIX,1.0,8,9,Valuation rating from -2 to +2 indicating whether the stock appears overvalued or undervalued relative to growth potential
+mdl106_stars,MATRIX,1.0,10,16,Overall star rating summarizing the four pillars; on a 0â4 scale
+mdl106_tre,MATRIX,0.5049,2,4,Earnings Revision (Revenue) Trend score in the range [-1; 1]; with positive values indicating upward revisions
+mdl106_tt,MATRIX,0.5049,2,3,Medium-term technical trend indicator: +1 positive; -1 negative; includes a tech reverse price threshold where the trend would reverse
+mdl106_ycc,MATRIX,1.0,2,2,ISO 4217 currency code of the security (currency used for price and related fields)

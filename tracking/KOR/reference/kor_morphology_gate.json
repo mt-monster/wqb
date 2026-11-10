@@ -1,0 +1,58 @@
+{
+  "region": "KOR",
+  "description": "KOR 提交墙 = CW(集中权重) + investability(可投资性)。破墙要素与命名构型源自 Claude/skills/wq-brain-ra-kor/references/_probe-sop.md。其它 region 无此文件则 M5 跳过（通用闸不写死区域）。",
+  "wall_features": {
+    "liquidity_gate": [
+      "trade_when",
+      "adv20"
+    ],
+    "smoothing": [
+      "hump"
+    ]
+  },
+  "feature_operator_extensions": {
+    "tail_handling": [
+      "ts_kurtosis"
+    ],
+    "higher_moment": [
+      "ts_kurtosis"
+    ]
+  },
+  "named_configs": {
+    "PV": {
+      "applies_to_morphology": [
+        "return_distribution",
+        "zero_inflated"
+      ],
+      "template": "scale(vector_neut(trade_when(rank(adv20)>0.1, ts_kurtosis({X},140), -1), power(rank(rsk68_weight_dadv),0.5)), shortscale=0.5)",
+      "settings": {
+        "neutralization": "MARKET",
+        "decay": 4,
+        "truncation": 0.08,
+        "nan_handling": "ON"
+      },
+      "note": "MATRIX 收益分布/稀疏事件用；ts_kurtosis 放大尾部 + 流动性门控 + dadv 中性化破 investability"
+    },
+    "SH": {
+      "applies_to_morphology": [
+        "ratio_level",
+        "bounded_spread"
+      ],
+      "template": "hump(subtract(group_rank(divide(vec_sum({A}),vec_sum({B})),industry),0.5), hump=0.003)",
+      "settings": {
+        "neutralization": "SECTOR",
+        "decay": 4
+      },
+      "note": "VECTOR 比率用；居中排名(group_rank-0.5)放 hump 内层是破 CW 唯一有效法"
+    }
+  },
+  "death_verdict_rules": {
+    "min_families": 2,
+    "min_unused_ops": 2,
+    "reading_bands": {
+      "dead": "|S|<0.8 且两构型都试过",
+      "config_mismatch": "0.8<=|S|<1.58 只说明构型没找对，不许判死",
+      "near_line": "|S|>=1.58 进精修"
+    }
+  }
+}

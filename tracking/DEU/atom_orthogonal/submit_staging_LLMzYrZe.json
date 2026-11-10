@@ -1,0 +1,25 @@
+{
+ "alpha_id": "LLMzYrZe",
+ "workflow": "mcp__wq-brain-http__workflow_submit_alpha",
+ "role": "备选席：仅当 QPvzNNGG 提交失败（prod 漂过 0.7 或平台 FAIL）时启用；二者互相关 0.678 不可都提",
+ "params": {
+  "alpha_id": "LLMzYrZe",
+  "name": "DEU_R_starmine_fix_02",
+  "tags": [
+   "CH_REG",
+   "SRC_predictive_starmine",
+   "W27"
+  ],
+  "descriptions": "Idea: The two fastest-moving analyst revision signals for DEU equities - short-horizon earnings estimate revision breadth and the StarMine predicted EBITDA surprise - are combined in an equal-weight sector-relative composite. The market systematically under-reacts to analyst revision clusters, so stocks with fresh upward revision momentum and a positive predicted surprise continue to drift upward over the following weeks.\n\nRationale for data used: predictive_starmine vendor dataset for DEU TOP500 delay-1. mean_estimate_change_pct_f12m_earnings_14d_4 measures the 14-day percentage change breadth of FY1 earnings consensus estimates; predicted_surprise_f12m_ebitda_4 is the StarMine model forecast of the EBITDA surprise versus consensus for the forward twelve months. Both fields carry full ten-year coverage in the backtest window and are MATRIX type requiring no vector aggregation.\n\nRationale for operators used: ts_mean over 5 days stabilizes each signal against daily noise; rank equalizes scale; add forms the equal-weight composite; the outer group_rank against GICS sector removes sector-level revision waves, isolating stock-specific revision conviction. 7 operators total, within the 12-operator policy.",
+  "confirm_submit": true,
+  "color": "BLUE",
+  "robustness_audited": true,
+  "robustness_note": "robustness_LLMzYrZe = CONDITIONAL (ledger wqb-db, 2026-11-08); soft_flags: recent-3yr mean 1.570 marginal vs 1.58 (platform 2Y=1.69 passes), self 0.6702 near line"
+ },
+ "precheck_notes": [
+  "换防触发条件：QPvzNNGG 终验 prod≥0.7 或提交 FAIL",
+  "CONDITIONAL 处置：提交前重跑 robustness（skill 规定 ≤2 轮修复重审）",
+  "提交前一刻 check_correlation(refresh=true) 终验 prod<0.7",
+  "提交后 get_alpha_details 验证 status=ACTIVE 且 dateSubmitted 非空"
+ ]
+}

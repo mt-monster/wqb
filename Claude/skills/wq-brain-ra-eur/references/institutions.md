@@ -3,6 +3,11 @@
 > 回到 [EUR 区域流程](../SKILL.md) · [EUR profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/EUR.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region EUR --category institutions`
 
 <!-- profiles:cell-panel:start -->
+> ⭐ **2026-11-08 实测补充（eur10 战役）**：组合形态「analyst7 载体 × inst6 小腿」全闸可达（N1NGbddg S1.69/F1.05/2Y2.17 全过 + prod0.687/self0.66），
+> 但**同载体族在 0.7 篮内容量 = 1 席**（换科目 ebt corr 0.7645 / 换 tilt 0.7307-0.7562，均 >0.7）——别再投同族换腿波次。
+> inst6 小腿的正确读数是「rank(ts_zscore(ts_backfill((B−S)/H,120),35))−0.5」**时序 z 后有界 rank**（流动读数），
+> 直接用水平 rank 或截面 z 都会把 2Y 打崩（0.78-1.08 vs 2.17）。
+
 **状态**：active（跟区域入场 full-coverage）　**分组**：Institutions　**类别卡**：institutions
 
 **涉及数据集**：fund_holdings_panel、institutions6、institutions6 (广度平滑/金额净买入率; 发现广度正-深度负)、institutions6 (换分母广度0.86/金额深度取负0.75 收敛)、institutions6 @TOP2500 (归因: TOPCS1600 优于 TOP2500)、institutions6 ATOM 首批 (INSTITUTIONS单塔 effective1; 买卖广度失衡 S0.84)、institutions6 去壳对照、institutions6 股数口径

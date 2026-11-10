@@ -1,0 +1,2 @@
+id,type,cov,uc,ac,desc
+fnd22_value,VECTOR,0.69,10,46,Numerical value of the specific ESG KPI for the given entity and date

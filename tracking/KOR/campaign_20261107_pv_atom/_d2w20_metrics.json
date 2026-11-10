@@ -1,0 +1,55 @@
+{
+ "total": 2,
+ "success": 2,
+ "failed": 0,
+ "results": [
+  {
+   "alpha_id": "ZYQ116ln",
+   "sharpe": 1.86,
+   "fitness": 1.1,
+   "turnover": 0.2205,
+   "two_year_sharpe": 1.8,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.55,
+   "investability_sharpe": 1.72,
+   "investability_fitness": 1.16,
+   "margin": 0.000697,
+   "returns": 0.0768,
+   "drawdown": 0.0489,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 0,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 0.9247
+  },
+  {
+   "alpha_id": "O0A2gVR1",
+   "sharpe": 1.74,
+   "fitness": 1.1,
+   "turnover": 0.1792,
+   "two_year_sharpe": 1.73,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.46,
+   "investability_sharpe": 1.7,
+   "investability_fitness": 1.2,
+   "margin": 0.000801,
+   "returns": 0.0718,
+   "drawdown": 0.0586,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 0,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 0.977
+  }
+ ],
+ "prescreen": {
+  "READY": [],
+  "REVIEW": [
+   "ZYQ116ln",
+   "O0A2gVR1"
+  ],
+  "REJECT": []
+ }
+}

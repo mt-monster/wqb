@@ -1,0 +1,12 @@
+[
+  "-group_rank(rsk68_beta, sector)",
+  "-group_rank(ts_av_diff(rsk68_beta, 66), sector)",
+  "-group_rank(ts_zscore(rsk68_beta, 250), sector)",
+  "-group_rank(rsk68_weight_volatility_short, sector)",
+  "group_rank(rsk68_weight_dadv, sector)",
+  "-group_rank(divide(rsk68_beta, rsk68_weight_dadv), sector)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(rsk68_beta, 250), sector), group_rank(ts_av_diff(rsk68_beta, 66), sector)), industry)",
+  "subtract(0.5, group_rank(ts_std_dev(rsk68_beta, 250), sector))",
+  "-group_rank(multiply(rsk68_beta, rsk68_weight_dadv), industry)",
+  "-group_rank(ts_decay_linear(rsk68_beta, 22), subindustry)"
+]

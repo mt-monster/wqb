@@ -1,0 +1,34 @@
+id,type,cov,uc,ac,desc
+company_name_match_score,VECTOR,0.2123,0,0,Similarity score indicating confidence in entity mapping/match (0â1)
+conference_analyst_attendees,VECTOR,0.2123,0,0,List of analyst participants on the call
+conference_company_attendees,VECTOR,0.2123,0,0,List of company participant names for the event
+event_full_title,VECTOR,0.2123,0,0,Official title of the event (e.g.; âQ1 2018 Apple Inc Earnings Conference Callâ)
+event_headline_text,VECTOR,0.2123,0,0,Headline or title text of the event or transcript
+oth384_oecsi,VECTOR,0.2123,0,0,Indicator flag showing whether a CEO is listed among the participants
+oth384_ofcsi,VECTOR,0.2123,0,0,Flag indicating if a CFO participant is present (1=yes; 0=no)
+oth384_presentation_count,VECTOR,0.2123,0,0,Number of content words in the presentation section; excluding annotations and speaker names
+oth384_presentation_negfreq,VECTOR,0.2123,0,0,Frequency (ratio) of negative sentiment in the presentation section
+oth384_presentation_negnum,VECTOR,0.2123,0,0,Number of negative sentiment word instances in the presentation
+oth384_presentation_paragraphcount,VECTOR,0.2123,0,0,Number of paragraphs in the presentation section
+oth384_presentation_posfreq,VECTOR,0.2123,0,0,Ratio of positive words to total content words in the presentation (Presentation_posNum / Presentation_count)
+oth384_presentation_posnum,VECTOR,0.2123,0,0,Count of positive sentiment instances in the presentation section
+oth384_presentation_questions,VECTOR,0.2123,0,0,Number of questions asked during the presentation if any
+oth384_presentation_sentcount,VECTOR,0.2123,0,0,Number of sentences in the presentation section
+oth384_presentation_tone,VECTOR,0.2123,1,1,Sentiment tone score for the presentation section
+oth384_presentation_wordcount,VECTOR,0.2123,0,0,Number of words in the presentation section including annotations and speaker names
+oth384_qa_count,VECTOR,0.2123,0,0,Number of content words in the Q&A section; excluding annotations and speaker names
+oth384_qa_negnum,VECTOR,0.2123,0,0,Count of negative sentiment instances in the Q&A section
+oth384_qa_paragraphcount,VECTOR,0.2123,0,0,Number of paragraphs in the Q&A section
+oth384_qa_posnum,VECTOR,0.2123,0,0,Count of positive sentiment instances in the Q&A section
+oth384_qa_questions,VECTOR,0.2123,0,0,Total number of questions asked during the Q&A
+oth384_qa_sentcount,VECTOR,0.2123,0,0,Number of sentences in the Q&A section
+oth384_qa_tone,VECTOR,0.2123,2,2,Sentiment tone score for the Q&A section
+oth384_qa_wordcount,VECTOR,0.2123,0,0,Number of words in the Q&A section of the transcript; including annotations and speaker names
+oth384_qerfgen_aq,VECTOR,0.2123,1,1,Ratio of negative words to total content words in the Q&A section
+oth384_qerfsop_aq,VECTOR,0.2123,1,1,Frequency of positive words in the Q&A calculated as QA_posNum divided by QA_count
+presentation_laughter_count,VECTOR,0.2123,0,0,Count of laughter annotations during the presentation segment
+presentation_section_speaker_list,VECTOR,0.2123,0,0,List of speakers during the presentation section including roles and counts
+qa_section_laughter_count,VECTOR,0.2123,0,0,Count of laughter annotations during the Q&A session
+qa_section_speaker_list,VECTOR,0.2123,0,0,List of speakers in the Q&A section; possibly with roles and counts
+transcript_body_headline,VECTOR,0.2123,0,0,Headline extracted from the body of the transcript
+transcript_is_initial_version,VECTOR,0.2123,0,0,Flag indicating whether the transcript is a preliminary version from the vendor

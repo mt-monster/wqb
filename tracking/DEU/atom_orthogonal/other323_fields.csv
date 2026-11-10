@@ -1,0 +1,8 @@
+id,type,cov,uc,ac,desc
+oth323_esod,VECTOR,0.0,0,0,Date of the most recent shares outstanding figure (YYYYMMDD)
+oth323_esor,VECTOR,0.0,0,0,Number of shares outstanding (unrounded)
+oth323_ibc,VECTOR,0.0,0,0,Bloomberg Company ID (issuer-level numeric identifier)
+oth323_ibs,VECTOR,0.0,0,0,Bloomberg security-level identifier (instrument serial number)
+oth323_par_amt,VECTOR,0.0,0,0,Par amount or face value of the security; in currency units
+oth323_pxrls,VECTOR,0.0,3,3,Standard round lot size for trading the security (number of shares)
+oth323_pxtls,VECTOR,0.0,0,0,Minimum tradable lot size for the security as defined by the venue or regulator

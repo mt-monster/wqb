@@ -1,0 +1,1 @@
+["subtract(group_rank(ts_mean(vec_avg(insd5_tnc), 22), sector), 0.5)"]

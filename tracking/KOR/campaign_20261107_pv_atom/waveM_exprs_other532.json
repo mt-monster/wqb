@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector), 0.5)",
+ "subtract(group_rank(ts_sum(oth532_global_daily_specificreturn, 252), sector), 0.5)",
+ "subtract(0.5, group_rank(ts_sum(oth532_asia_ase2_daily_specificreturn, 5), sector))",
+ "subtract(group_rank(ts_std_dev(oth532_emerging_daily_specificreturn, 66), sector), 0.5)",
+ "subtract(group_rank(ts_sum(oth532_emerging_monthly_specificreturn, 12), sector), 0.5)",
+ "subtract(group_rank(ts_sum(oth532_emerging_daily_specificreturn, 22), sector), group_rank(ts_sum(oth532_asia_ase2_monthly_specificreturn, 2), sector))",
+ "subtract(0.5, group_rank(ts_sum(vec_sum(oth532_spret), 5), sector))",
+ "subtract(group_rank(ts_sum(oth532_global_daily_specificreturn, 66), sector), group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+ "subtract(group_rank(ts_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), 252), sector), 0.5)",
+ "multiply(group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector), group_rank(ts_std_dev(oth532_emerging_daily_specificreturn, 66), sector))"
+]

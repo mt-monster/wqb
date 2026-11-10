@@ -1,0 +1,29 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "group_rank(ts_backfill(sentiment_distribution_skewness, 10), sector)",
+  "reverse(group_rank(ts_backfill(sentiment_distribution_skewness, 10), sector))",
+  "group_rank(ts_backfill(sentiment1_lowest_score, 10), sector)",
+  "group_rank(ts_backfill(sentiment_overall_average, 10), sector)",
+  "reverse(group_rank(ts_backfill(sentiment_overall_average, 10), sector))",
+  "group_rank(ts_delta(ts_backfill(sentiment_overall_average, 10), 22), sector)",
+  "group_rank(ts_backfill(subtract(sentiment1_average_value, sentiment2_average_value), 10), sector)",
+  "group_rank(ts_zscore(ts_backfill(sentiment_overall_average, 10), 66), sector)",
+  "group_rank(ts_backfill(normalized_headline_count, 10), sector)",
+  "group_rank(ts_delta(ts_backfill(sentiment1_distribution_skewness, 10), 22), sector)"
+ ],
+ "dataset": "news85",
+ "wave": "N85 sentiment-skewness/asymmetry"
+}

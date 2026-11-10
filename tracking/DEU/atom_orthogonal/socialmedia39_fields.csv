@@ -1,0 +1,2 @@
+id,type,cov,uc,ac,desc
+"scl39_top5_people_also_watch_ticker_ii",VECTOR,0.2748,86,145,"Atlas instrument IDs of the co-viewed neighbor tickers; stable identifiers suitable for joins across files"

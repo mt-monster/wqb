@@ -107,4 +107,57 @@
 `institutions25`（cov 0）· `institutions1`（本轮判死）。
 **⇒ 跨区补量请走 IND 的 `institutions6` 卖压回归族（`E5VNe67L` S 3.20 / F 2.52 / 2Y 3.00，INSTITUTIONS+PV 双塔），不要在本区继续派发。**
 （提交前五道闸见 [`../rules/gate-and-submit-discipline.md`](../rules/gate-and-submit-discipline.md)；字段通道地图见 `docs/reference/GBR/field_mechanism_map_20261031.md`。）
+
+### 2026-11-09 修正：institutions25 = 做空经理数据；institutions4 不是标识符映射
+
+**★ `institutions25` 此前被记成「cov 0 ⇒ 无数据」，实读 20 字段全是做空机构行为面**（不是 13F 多头持股）：
+`inst25_crowding`（拥挤度 0–100）· `inst25_concentration`（前三大空头占比）· `inst25_position` / `inst25_position_change` ·
+`inst25_security_cover_count`（平空笔数）· `inst25_security_short_count`（开空笔数）· `inst25_security_trade_count_1wk/1mo/3mo/1yr` ·
+`inst25_activity` · `inst25_manager_count` · `inst25_age`。
+⇒ **它与 `shortinterest3`（借贷费/券源）是两个不同信息通道，且都在禁混集合外 ⇒ 组腿不限量**，是 GBR 少见的合规扩席口子。
+
+实测（GBR / TOP700 / D1，主腿对比）：
+
+| 主腿机制 | 短腿 | S | 2Y | 结论 |
+|---|---|---:|---:|---|
+| `reverse(group_rank(ts_zscore(ts_backfill(vec_avg(inst25_crowding),66),126),sector))` | `transaction_count_main` | 1.19 | 1.39 | 短腿太弱，不代表主腿 |
+| `divide(vec_sum(inst25_security_cover_count), add(vec_sum(inst25_security_short_count),1))` 开平比 | `transaction_count_main` | 0.28 | 2.26 | 比值 2Y 高但 S 崩 |
+| `reverse(group_rank(ts_zscore(ts_backfill(vec_sum(inst25_position_change),66),126),sector))` | `transaction_count_main` | 1.15 | 1.54 | 同族 |
+
+★ **纠错：`institutions4` 不是「FSYM_ID/CUSID/ISIN 标识符映射」**。实读 6 字段为
+`institutional_holding_current_market_value` / `current_shares` / `percent_of_portfolio` / `percent_of_shares_outstanding` /
+`previous_market_value` / `previous_shares` ⇒ **可用于「机构净增持率」的真信号**。
+但纯 ATOM 形态实测 **S −0.37**（wave-M），单独不做信号，只可作组合腿候选。
+
+## ★★★ ANALYST × INSTITUTIONS 组合跨区移植证伪（2026-11-09 实测 · 重要）
+
+**为什么这条值得单独记**：`ANALYST` 与 `INSTITUTIONS` 两腿**都在 `{PV,MODEL,OTHER}` 之外**，
+按 GBR 规则**不占组腿配额**，且该配方在 EUR 已跑通（EUR 冠军 `N1NGbddg`：S1.69 / F1.05 / 2Y2.17）。
+理论上它是扩席的完美路径 —— 实测**全灭**。
+
+GBR 可用字段（6 个全部存在）：
+- 主腿 `divide(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), est_12m_ebi_num_4wks_ago)`（EBI 修正广度比率）
+- 小腿 `divide(subtract(count_institutional_buyers_security, count_institutional_sellers_security), count_institutional_holders_security)`
+
+| 变体（结构差异） | S | 2Y |
+|---|---:|---:|
+| **V1 = EUR 冠军原样**（signed_power 2.1 + `-0.5` 小腿 + market 外中性化，12 算子） | **0.88** | **0.60** |
+| V2 主腿朴素 `group_rank` + 小腿 `group_zscore`（9 算子） | 0.51 | −0.30 |
+| V3 主腿 `ts_rank(66)` 平滑等权 | 0.34 | 1.09 |
+| V4 小腿换买盘单腿比率（`buyers/holders`） | **0.98** | 0.89 |
+| V5 = V1 但外中性化 market→subindustry | 0.73 | 0.48 |
+| V6 主腿改 `ts_delta(21)` 广度动量 | 0.35 | 0.60 |
+
+⇒ **EUR 冠军原样搬到 GBR 只有 S0.88 / 2Y0.60**（EUR 1.69 / 2.17），6 个结构变体最高 0.98。
+**组合层的 alpha 同样不可跨区搬运**，与「GOLD2 主腿离开借券短腿就崩」是同一枚硬币的两面：
+GBR 的强度绑定在 `loaned_share_count_main` 这条借券腿的**区内**信息上。
+
+**规则化**：跨区移植只有两种情况才值得花一票——① 该机制在**本区单腿探针**已显示 S≥1.0；
+② 移植的是**几何结构**（如 `-0.5` 居中、`ts_zscore` 后 `rank`），不是**腿的语义**。
+腿的语义（谁是主腿、谁是短腿）必须在本区重测。
+
+**附：`institutions` 侧的可用读数**（除已知 `institutional_*` 六字段外）
+`count_institutional_buyers_security` / `count_institutional_sellers_security` / `count_institutional_holders_security`
+是**广度计数**三件套（不是市值），可作组合腿的分母/分子；单独做 ATOM 实测同族全弱。
+
 <!-- profiles:manual:end -->

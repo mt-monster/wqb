@@ -1,0 +1,12 @@
+[
+  "group_rank(five_day_total_return_dlr1, sector)",
+  "group_rank(ts_av_diff(five_day_total_return_dlr1,66), sector)",
+  "group_rank(ts_av_diff(five_day_total_return_dlr1,132), sector)",
+  "group_rank(divide(five_day_total_return_dlr1,add(abs(twenty_day_total_return_dlr1),0.0001)), sector)",
+  "group_neutralize(multiply(group_rank(five_day_total_return_dlr1,sector),group_rank(divide(trading_volume_dlr1,ts_mean(trading_volume_dlr1,66)),sector)),industry)",
+  "group_rank(subtract(five_day_total_return_dlr1,twenty_day_total_return_dlr1), sector)",
+  "group_rank(divide(subtract(closing_price_dlr1,opening_price_dlr1),opening_price_dlr1), sector)",
+  "group_rank(divide(subtract(highest_price_dlr1,lowest_price_dlr1),volume_weighted_avg_price_dlr1), sector)",
+  "group_rank(ts_mean(five_day_total_return_dlr1,22), sector)",
+  "group_rank(divide(five_day_total_return_dlr1,add(ts_std_dev(one_day_total_return_dlr1,66),0.0001)), sector)"
+]

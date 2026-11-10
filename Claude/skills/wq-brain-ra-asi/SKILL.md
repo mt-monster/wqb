@@ -100,13 +100,14 @@ last_verified: 2026-11-08
 | 类别 | 分组 | 状态 | 回测覆盖 | 阈值覆盖 | 回测 / RA 全过 | prod 已测（低于上限） | 判死 / 胜绩 | 分支文件 |
 |---|---|---|---|---|---|---|---|---|
 | pv | PV | probe | — | — | 405 / 6 | 2（0） | 7 / 0 | [references/pv.md](references/pv.md) |
-| other | Other | probe | — | — | 153 / 4 | 18（4） | 4 / 0 | [references/other.md](references/other.md) |
-| model | MODEL | probe | — | — | 117 / 0 | 1（1） | 2 / 0 | [references/model.md](references/model.md) |
-| analyst | Analyst | probe | — | — | 37 / 0 | 0（0） | 2 / 0 | [references/analyst.md](references/analyst.md) |
+| other | Other | probe | — | — | 159 / 4 | 68（24） | 4 / 0 | [references/other.md](references/other.md) |
+| model | MODEL | probe | — | — | 129 / 0 | 0（0） | 2 / 0 | [references/model.md](references/model.md) |
+| analyst | Analyst | probe | — | — | 47 / 0 | 0（0） | 2 / 0 | [references/analyst.md](references/analyst.md) |
+| institutions | Institutions | probe | — | — | 20 / 0 | 2（0） | 0 / 0 | [references/institutions.md](references/institutions.md) |
 | sentiment | News-Sentiment | probe | — | — | 8 / 0 | 0（0） | 1 / 0 | [references/sentiment.md](references/sentiment.md) |
 | shortinterest | ShortInterest | probe | — | — | 0 / 0 | 0（0） | 1 / 0 | [references/shortinterest.md](references/shortinterest.md) |
 
-说明：另有 45 条回测行没写数据集，无法归到组合；1 条判死 / 胜绩连类别也推断不出；证据于 2026-10-04 只读汇总。
+说明：另有 738 条回测行没写数据集，无法归到组合；1 条判死 / 胜绩连类别也推断不出；证据于 2026-11-08 只读汇总。
 <!-- profiles:cells-index:end -->
 
 ## 六步纵深骨架（本区覆盖）

@@ -1,0 +1,104 @@
+﻿{
+ "alpha_id": "88RJx7Na",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "checks": {
+  "production": {
+   "max_correlation": 0.8687,
+   "passes_check": false,
+   "attempts": 5,
+   "elapsed_ms": 5653,
+   "computed": true,
+   "histogram_nonzero": [
+    {
+     "range": [
+      -0.3,
+      -0.2
+     ],
+     "n": 10
+    },
+    {
+     "range": [
+      -0.2,
+      -0.1
+     ],
+     "n": 695
+    },
+    {
+     "range": [
+      -0.1,
+      0.0
+     ],
+     "n": 17061
+    },
+    {
+     "range": [
+      0.0,
+      0.1
+     ],
+     "n": 50767
+    },
+    {
+     "range": [
+      0.1,
+      0.2
+     ],
+     "n": 32930
+    },
+    {
+     "range": [
+      0.2,
+      0.3
+     ],
+     "n": 8842
+    },
+    {
+     "range": [
+      0.3,
+      0.4
+     ],
+     "n": 2998
+    },
+    {
+     "range": [
+      0.4,
+      0.5
+     ],
+     "n": 1043
+    },
+    {
+     "range": [
+      0.5,
+      0.6
+     ],
+     "n": 214
+    },
+    {
+     "range": [
+      0.6,
+      0.7
+     ],
+     "n": 43
+    },
+    {
+     "range": [
+      0.7,
+      0.8
+     ],
+     "n": 4
+    },
+    {
+     "range": [
+      0.8,
+      0.9
+     ],
+     "n": 1
+    }
+   ],
+   "max": 0.8687,
+   "min": -0.2708
+  }
+ },
+ "all_passed": false
+}
+

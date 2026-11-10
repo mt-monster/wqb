@@ -1,0 +1,13 @@
+id,type,cov,uc,ac,desc
+daily_closing_price_2,VECTOR,0.0,0,0,The price at which the security last traded during the day.
+daily_opening_price,VECTOR,0.0,0,0,The price at which the security first traded during the day.
+daily_trading_volume,VECTOR,0.0,0,0,The total number of shares or units traded during the day.
+dividend_amount_paid,VECTOR,0.0,0,0,The cash amount distributed per share to shareholders.
+foreign_exchange_conversion_rate,VECTOR,0.0,0,0,The rate used to convert values between currencies.
+is_security_tradeable_flag,VECTOR,0.0,0,0,Indicator showing whether the security is available for trading.
+main_market_closing_price,VECTOR,0.0,0,0,The closing price on the primary exchange for the instrument.
+market_value_total_2,VECTOR,0.0,0,0,The total market value of a company's outstanding shares.
+session_high_price_2,VECTOR,0.0,0,0,The highest price reached by the security during the trading session.
+session_low_price_2,VECTOR,0.0,0,0,The lowest price reached by the security during the trading session.
+shares_outstanding_count_4,VECTOR,0.0,0,0,The total number of shares currently issued and outstanding.
+stock_split_ratio_3,VECTOR,0.0,0,0,The ratio indicating how shares are split or consolidated.

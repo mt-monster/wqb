@@ -7,11 +7,13 @@
    "datasets": [
     "analyst10",
     "analyst11",
+    "analyst39",
+    "analyst69",
     "other436+analyst_base_ref"
    ],
    "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 37,
+    "synced_at": "2026-11-08",
+    "backtests": 47,
     "ra_clean": 0,
     "prod_measured": 0,
     "prod_clean": 0,
@@ -28,6 +30,14 @@
      {
       "dataset": "analyst11",
       "backtests": 6
+     },
+     {
+      "dataset": "analyst69",
+      "backtests": 6
+     },
+     {
+      "dataset": "analyst39",
+      "backtests": 4
      }
     ],
     "dead_ends": [
@@ -54,8 +64,10 @@
    "datasets": [
     "acquisition_model+other545",
     "ai_equity_alpha",
+    "behavioral_signals",
     "chart_cnn_alpha",
     "global_seasonal_model",
+    "model170",
     "model28",
     "multi_source_model",
     "multifactor_return_pred",
@@ -64,11 +76,11 @@
     "quant_factor_lib"
    ],
    "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 117,
+    "synced_at": "2026-11-08",
+    "backtests": 129,
     "ra_clean": 0,
-    "prod_measured": 1,
-    "prod_clean": 1,
+    "prod_measured": 0,
+    "prod_clean": 0,
     "prod_blocked": 0,
     "top_datasets": [
      {
@@ -128,15 +140,16 @@
    "datasets": [
     "acquisition_model",
     "dl_riskfree_returns",
+    "mmp_nlp_sentiment",
     "other36"
    ],
    "evidence": {
-    "synced_at": "2026-10-04",
-    "backtests": 153,
+    "synced_at": "2026-11-08",
+    "backtests": 159,
     "ra_clean": 4,
-    "prod_measured": 18,
-    "prod_clean": 4,
-    "prod_blocked": 14,
+    "prod_measured": 68,
+    "prod_clean": 24,
+    "prod_blocked": 44,
     "top_datasets": [
      {
       "dataset": "dl_riskfree_returns",
@@ -149,6 +162,10 @@
      {
       "dataset": "other36",
       "backtests": 14
+     },
+     {
+      "dataset": "mmp_nlp_sentiment",
+      "backtests": 6
      }
     ],
     "dead_ends": [
@@ -193,7 +210,7 @@
     "pv13"
    ],
    "evidence": {
-    "synced_at": "2026-10-04",
+    "synced_at": "2026-11-08",
     "backtests": 405,
     "ra_clean": 6,
     "prod_measured": 2,
@@ -285,7 +302,7 @@
     "news_sentiment_transfer"
    ],
    "evidence": {
-    "synced_at": "2026-10-04",
+    "synced_at": "2026-11-08",
     "backtests": 8,
     "ra_clean": 0,
     "prod_measured": 0,
@@ -315,7 +332,7 @@
     "shortinterest5"
    ],
    "evidence": {
-    "synced_at": "2026-10-04",
+    "synced_at": "2026-11-08",
     "backtests": 0,
     "ra_clean": 0,
     "prod_measured": 0,
@@ -333,9 +350,36 @@
     ],
     "wins": []
    }
+  },
+  "institutions": {
+   "status": "auto",
+   "datasets": [
+    "fund_holdings_panel",
+    "institutions6"
+   ],
+   "evidence": {
+    "synced_at": "2026-11-08",
+    "backtests": 20,
+    "ra_clean": 0,
+    "prod_measured": 2,
+    "prod_clean": 0,
+    "prod_blocked": 2,
+    "top_datasets": [
+     {
+      "dataset": "fund_holdings_panel",
+      "backtests": 12
+     },
+     {
+      "dataset": "institutions6",
+      "backtests": 8
+     }
+    ],
+    "dead_ends": [],
+    "wins": []
+   }
   }
  },
- "evidence_synced_at": "2026-10-04",
+ "evidence_synced_at": "2026-11-08",
  "unbound_registry_entries": 1,
- "unattributed_backtests": 45
+ "unattributed_backtests": 738
 }

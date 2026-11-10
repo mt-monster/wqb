@@ -1,0 +1,34 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "insd5_fa_tr",
+  "insd5_ghc_tr",
+  "insd5_officer",
+  "insd5_trd_amt",
+  "insd5_vol_bf",
+  "insd5_vol_chg"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 6,
+ "fixed_expressions": [
+  "group_rank(ts_mean(vec_avg(insd5_vol_chg),66), sector)",
+  "subtract(0.5, group_rank(ts_mean(vec_avg(insd5_vol_chg),66), sector))",
+  "group_rank(ts_mean(vec_avg(insd5_ghc_tr),66), sector)",
+  "group_rank(ts_mean(vec_avg(insd5_trd_amt),66), sector)",
+  "group_rank(ts_mean(divide(vec_avg(insd5_vol_chg),add(vec_avg(insd5_vol_bf),1)),66), sector)",
+  "multiply(group_rank(ts_mean(vec_avg(insd5_vol_chg),66), sector),group_rank(ts_mean(vec_avg(insd5_officer),66), sector))",
+  "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_trd_amt),66), sector))",
+  "group_rank(ts_mean(vec_range(insd5_vol_chg),66), sector)",
+  "group_rank(ts_mean(vec_avg(insd5_fa_tr),66), sector)",
+  "group_rank(ts_av_diff(vec_avg(insd5_vol_chg),126), sector)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}
+

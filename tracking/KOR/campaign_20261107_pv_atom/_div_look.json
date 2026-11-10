@@ -1,0 +1,108 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1dO7AAm25eVboFUSqaAkDn",
+   "location_url": "https://api.worldquantbrain.com/simulations/1dO7AAm25eVboFUSqaAkDn",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "WjOx2jwG",
+   "raw": {
+    "id": "1dO7AAm25eVboFUSqaAkDn",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 2,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+    "status": "COMPLETE",
+    "alpha": "WjOx2jwG"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/x9E1zgZW4gRaUd27kJWDRo",
+   "location_url": "https://api.worldquantbrain.com/simulations/x9E1zgZW4gRaUd27kJWDRo",
+   "error": "Simulation did not get through; inspect raw/status for the platform response.",
+   "status": null,
+   "alpha": null,
+   "raw": {
+    "progress": 0.35
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4fSF4gdPC5gG8YrryT6nxfw",
+   "location_url": "https://api.worldquantbrain.com/simulations/4fSF4gdPC5gG8YrryT6nxfw",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "RREvwRwd",
+   "raw": {
+    "id": "4fSF4gdPC5gG8YrryT6nxfw",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 8,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+    "status": "COMPLETE",
+    "alpha": "RREvwRwd"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4x844t2VC58v9K912Xn3mMkK",
+   "location_url": "https://api.worldquantbrain.com/simulations/4x844t2VC58v9K912Xn3mMkK",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "ZYQ1vPOx",
+   "raw": {
+    "id": "4x844t2VC58v9K912Xn3mMkK",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 2,
+     "neutralization": "FAST",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+    "status": "COMPLETE",
+    "alpha": "ZYQ1vPOx"
+   },
+   "extra_info": ""
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+{
+ "_doc": "skill 文档「cov<X ⇒ 剔除/判死」措辞门的历史欠账豁免表（tools/gates/audit_dataset_coverage.py --lint-skills）。key = '相对仓库根路径|规范化行片段前80字'。**修好一条就从这里删一条**；本表只允许缩小，不允许为新违规扩充。",
+ "_why_gbr_gone": "GBR 三条已修（SKILL.md 第1层 UNUSABLE 行 / 第0步画像闸 / references/_probe-sop.md 第0步），故不在表内。",
+ "allow": {
+  "Claude/skills/wq-brain-ra-deu/SKILL.md|**★ 覆盖率 <0.6 的字段直接剔除** —— 占全量 **77.6%**（`UNUSABLE` 17460 个）。": "DEU 区域 SOP：本 session 区域锁定 GBR，未改其它区文档；同一判据已被 GBR 实证证伪（coverage 三层都不可判存在性）。DEU 自身 SKILL.md:174 已写「coverage<0.6 剔除是区域启发式、不是平台限制」，与本条自相矛盾，留待 DEU 战役修正。",
+  "Claude/skills/wq-brain-ra-deu/references/_dataset-scan-method.md|DEU 的 `cov<0.6 剔除` 是**字段级**启发式（见 `_probe-sop.md` 第 0 步），": "DEU 区域 SOP：本 session 区域锁定 GBR，未改其它区文档；同一判据已被 GBR 实证证伪（coverage 三层都不可判存在性）。DEU 自身 SKILL.md:174 已写「coverage<0.6 剔除是区域启发式、不是平台限制」，与本条自相矛盾，留待 DEU 战役修正。",
+  "Claude/skills/wq-brain-ra-deu/references/_field-profile.md|| `UNUSABLE` | `coverage < 0.6` | **永久剔除**（占全量 77.6%） |": "DEU 区域 SOP：本 session 区域锁定 GBR，未改其它区文档；同一判据已被 GBR 实证证伪（coverage 三层都不可判存在性）。DEU 自身 SKILL.md:174 已写「coverage<0.6 剔除是区域启发式、不是平台限制」，与本条自相矛盾，留待 DEU 战役修正。",
+  "Claude/skills/wq-brain-ra-deu/references/_probe-sop.md|- coverage<0.6 剔除（DEU 占 77.6%）；`to_med<0.03` → DEAD_STATIC；`to_med>0.7` → DEAD_T": "DEU 区域 SOP：本 session 区域锁定 GBR，未改其它区文档；同一判据已被 GBR 实证证伪（coverage 三层都不可判存在性）。DEU 自身 SKILL.md:174 已写「coverage<0.6 剔除是区域启发式、不是平台限制」，与本条自相矛盾，留待 DEU 战役修正。",
+  "Claude/skills/wq-brain-ra-eur/references/_probe-sop.md|- `coverage < 0.35` 剔除（EUR 未点亮类大量数据集命中）；`to_med < 0.03` → **DEAD_STATIC**（近静态）；`": "DEU 区域 SOP：本 session 区域锁定 GBR，未改其它区文档；同一判据已被 GBR 实证证伪（coverage 三层都不可判存在性）。DEU 自身 SKILL.md:174 已写「coverage<0.6 剔除是区域启发式、不是平台限制」，与本条自相矛盾，留待 DEU 战役修正。",
+  "Claude/skills/wq-brain-ra-kor/references/_probe-sop.md|- 阈值：`coverage<0.6` 剔除（KOR 大头）；`to_med<0.03` → DEAD_STATIC；`to_med>0.7` → DEAD_T": "DEU 区域 SOP：本 session 区域锁定 GBR，未改其它区文档；同一判据已被 GBR 实证证伪（coverage 三层都不可判存在性）。DEU 自身 SKILL.md:174 已写「coverage<0.6 剔除是区域启发式、不是平台限制」，与本条自相矛盾，留待 DEU 战役修正。"
+ }
+}

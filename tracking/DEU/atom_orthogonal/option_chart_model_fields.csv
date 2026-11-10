@@ -1,0 +1,40 @@
+id,type,cov,uc,ac,desc
+option_call_iv_level_0,MATRIX,0.0,0,0,Implied volatility value for call options at the 0th reference point.
+option_call_iv_level_1,MATRIX,0.0,0,0,Implied volatility value for call options at the 1st reference point.
+option_call_iv_level_10,MATRIX,0.0,0,0,Implied volatility value for call options at the 10th reference point.
+option_call_iv_level_11,MATRIX,0.0,0,0,Implied volatility value for call options at the 11th reference point.
+option_call_iv_level_12,MATRIX,0.0,1,1,Implied volatility value for call options at the 12th reference point.
+option_call_iv_level_2,MATRIX,0.0,1,5,Implied volatility value for call options at the 2nd reference point.
+option_call_iv_level_3,MATRIX,0.0,0,0,Implied volatility value for call options at the 3rd reference point.
+option_call_iv_level_4,MATRIX,0.0,1,2,Implied volatility value for call options at the 4th reference point.
+option_call_iv_level_5,MATRIX,0.0,1,1,Implied volatility value for call options at the 5th reference point.
+option_call_iv_level_6,MATRIX,0.0,0,0,Implied volatility value for call options at the 6th reference point.
+option_call_iv_level_7,MATRIX,0.0,2,6,Implied volatility value for call options at the 7th reference point.
+option_call_iv_level_8,MATRIX,0.0,1,4,Implied volatility value for call options at the 8th reference point.
+option_call_iv_level_9,MATRIX,0.0,2,2,Implied volatility value for call options at the 9th reference point.
+option_put_iv_level_0,MATRIX,0.0,2,3,Implied volatility value for put options at the 0th reference point.
+option_put_iv_level_1,MATRIX,0.0,1,1,Implied volatility value for put options at the 1st reference point.
+option_put_iv_level_10,MATRIX,0.0,0,0,Implied volatility value for put options at the 10th reference point.
+option_put_iv_level_11,MATRIX,0.0,0,0,Implied volatility value for put options at the 11th reference point.
+option_put_iv_level_12,MATRIX,0.0,2,2,Implied volatility value for put options at the 12th reference point.
+option_put_iv_level_2,MATRIX,0.0,0,0,Implied volatility value for put options at the 2nd reference point.
+option_put_iv_level_3,MATRIX,0.0,0,0,Implied volatility value for put options at the 3rd reference point.
+option_put_iv_level_4,MATRIX,0.0,0,0,Implied volatility value for put options at the 4th reference point.
+option_put_iv_level_5,MATRIX,0.0,1,1,Implied volatility value for put options at the 5th reference point.
+option_put_iv_level_6,MATRIX,0.0,1,1,Implied volatility value for put options at the 6th reference point.
+option_put_iv_level_7,MATRIX,0.0,0,0,Implied volatility value for put options at the 7th reference point.
+option_put_iv_level_8,MATRIX,0.0,0,0,Implied volatility value for put options at the 8th reference point.
+option_put_iv_level_9,MATRIX,0.0,0,0,Implied volatility value for put options at the 9th reference point.
+put_call_parity_metric_0,MATRIX,0.0,0,0,Put-call parity calculation at the 0th reference point.
+put_call_parity_metric_1,MATRIX,0.0,0,0,Put-call parity calculation at the 1st reference point.
+put_call_parity_metric_10,MATRIX,0.0,1,6,Put-call parity calculation at the 10th reference point.
+put_call_parity_metric_11,MATRIX,0.0,0,0,Put-call parity calculation at the 11th reference point.
+put_call_parity_metric_12,MATRIX,0.0,0,0,Put-call parity calculation at the 12th reference point.
+put_call_parity_metric_2,MATRIX,0.0,1,3,Put-call parity calculation at the 2nd reference point.
+put_call_parity_metric_3,MATRIX,0.0,1,3,Put-call parity calculation at the 3rd reference point.
+put_call_parity_metric_4,MATRIX,0.0,0,0,Put-call parity calculation at the 4th reference point.
+put_call_parity_metric_5,MATRIX,0.0,1,1,Put-call parity calculation at the 5th reference point.
+put_call_parity_metric_6,MATRIX,0.0,1,1,Put-call parity calculation at the 6th reference point.
+put_call_parity_metric_7,MATRIX,0.0,0,0,Put-call parity calculation at the 7th reference point.
+put_call_parity_metric_8,MATRIX,0.0,2,4,Put-call parity calculation at the 8th reference point.
+put_call_parity_metric_9,MATRIX,0.0,1,2,Put-call parity calculation at the 9th reference point.

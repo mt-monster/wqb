@@ -1,0 +1,82 @@
+{
+ "results": [
+  {
+   "id": "mdl56_companyname",
+   "type": "MATRIX",
+   "coverage": 0.9195,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Company name index"
+  },
+  {
+   "id": "mdl56_country",
+   "type": "MATRIX",
+   "coverage": 0.9195,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Country"
+  },
+  {
+   "id": "mdl56_exchange",
+   "type": "MATRIX",
+   "coverage": 0.9195,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Stock exchange"
+  },
+  {
+   "id": "srp_average_score",
+   "type": "MATRIX",
+   "coverage": 0.8886,
+   "userCount": 28,
+   "alphaCount": 47,
+   "description": "Average score"
+  },
+  {
+   "id": "srp_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0.4043,
+   "userCount": 11,
+   "alphaCount": 21,
+   "description": "Earnings score"
+  },
+  {
+   "id": "srp_fundamental_score",
+   "type": "MATRIX",
+   "coverage": 0.9074,
+   "userCount": 27,
+   "alphaCount": 60,
+   "description": "Fundamental score"
+  },
+  {
+   "id": "srp_price_momentum_score",
+   "type": "MATRIX",
+   "coverage": 0.8997,
+   "userCount": 12,
+   "alphaCount": 23,
+   "description": "Price momentum score"
+  },
+  {
+   "id": "srp_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.6647,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Relative valuation score"
+  },
+  {
+   "id": "srp_risk_score",
+   "type": "MATRIX",
+   "coverage": 0.9081,
+   "userCount": 22,
+   "alphaCount": 36,
+   "description": "Risk score"
+  }
+ ],
+ "count": 9,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 9,
+ "complete": true,
+ "pages_fetched": 1
+}

@@ -1,0 +1,373 @@
+{
+ "wave": "AW1_analyst_atom_20261107",
+ "dispatched_at": "2026-11-06T21:32:29.252Z",
+ "scope_note": "用户问卷 60s 超时自动选定『扩展到 DEU 其他未点亮类别』（opt_expand，推荐项，非手动确认，可改）——复用 2026-11-06 analyst ATOM Wave1 设计稿",
+ "batchA": {
+  "label": "analyst7_revision_breadth",
+  "multisim": {
+   "success": true,
+   "message": "Multisimulation submitted successfully with 10 alpha expressions",
+   "async": true,
+   "multisimulation_id": "1AVHs33KA4YYclbcFaBhQGp",
+   "multisimulation_location": "https://api.worldquantbrain.com/simulations/1AVHs33KA4YYclbcFaBhQGp",
+   "multisimulation_url": "https://api.worldquantbrain.com/simulations/1AVHs33KA4YYclbcFaBhQGp",
+   "submitted_expressions": [
+    "group_rank(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), industry)",
+    "group_rank(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), industry)",
+    "group_rank(ts_delta(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), 22), industry)",
+    "group_zscore(ts_sum(subtract(est_12m_ebi_raised_1wk, est_12m_ebi_lowered_1wk), 66), industry)",
+    "group_rank(subtract(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), subtract(est_12m_sal_raisednum_4wks, est_12m_sal_lowerednum_4wks)), industry)",
+    "group_rank(subtract(rec_raisednum_4wks, rec_lowerednum_4wks), industry)",
+    "-group_rank(divide(est_12m_ebi_std, abs(est_12m_ebi_mean)), industry)",
+    "group_rank(ts_backfill(act_q_ebi_surprisemean, 66), industry)",
+    "trade_when(greater(est_12m_ebi_num, 5), group_rank(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), subindustry), -1)",
+    "group_rank(ts_av_diff(est_12m_ebi_mean, 66), industry)"
+   ],
+   "polling_tool": "lookINTO_SimError_message",
+   "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+  },
+  "expressions": [
+   "group_rank(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), industry)",
+   "group_rank(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), industry)",
+   "group_rank(ts_delta(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), 22), industry)",
+   "group_zscore(ts_sum(subtract(est_12m_ebi_raised_1wk, est_12m_ebi_lowered_1wk), 66), industry)",
+   "group_rank(subtract(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), subtract(est_12m_sal_raisednum_4wks, est_12m_sal_lowerednum_4wks)), industry)",
+   "group_rank(subtract(rec_raisednum_4wks, rec_lowerednum_4wks), industry)",
+   "-group_rank(divide(est_12m_ebi_std, abs(est_12m_ebi_mean)), industry)",
+   "group_rank(ts_backfill(act_q_ebi_surprisemean, 66), industry)",
+   "trade_when(greater(est_12m_ebi_num, 5), group_rank(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), subindustry), -1)",
+   "group_rank(ts_av_diff(est_12m_ebi_mean, 66), industry)"
+  ]
+ },
+ "batchB": {
+  "label": "afs_dispersion_family",
+  "multisim": {
+   "success": true,
+   "message": "Multisimulation submitted successfully with 10 alpha expressions",
+   "async": true,
+   "multisimulation_id": "4ldpao3TQ54ecIRQ8Vmsoi5",
+   "multisimulation_location": "https://api.worldquantbrain.com/simulations/4ldpao3TQ54ecIRQ8Vmsoi5",
+   "multisimulation_url": "https://api.worldquantbrain.com/simulations/4ldpao3TQ54ecIRQ8Vmsoi5",
+   "submitted_expressions": [
+    "-group_rank(ts_backfill(eps_y1_estimate_coeff_var, 66), industry)",
+    "-group_rank(ts_backfill(eps_y1_estimate_skewness, 66), industry)",
+    "-group_rank(ts_backfill(eps_y2_estimate_coeff_var, 66), industry)",
+    "group_rank(-ts_delta(ts_backfill(eps_y1_estimate_coeff_var, 252), 66), industry)",
+    "-group_rank(ts_backfill(revenue_y1_estimate_skewness, 66), industry)",
+    "-group_rank(ts_backfill(netprofit_y1_estimate_volatility_adj_1yr, 66), industry)",
+    "group_rank(ts_backfill(netprofit_y1_estimate_asymmetry, 66), industry)",
+    "-group_rank(ts_rank(ts_backfill(eps_y1_estimate_coeff_var, 66), 252), industry)",
+    "group_rank(ts_backfill(eps_estimate_trend_slope_1yr, 66), industry)",
+    "-group_rank(winsorize(ts_backfill(eps_y1_estimate_coeff_var, 66), std=4), industry)"
+   ],
+   "polling_tool": "lookINTO_SimError_message",
+   "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+  },
+  "expressions": [
+   "-group_rank(ts_backfill(eps_y1_estimate_coeff_var, 66), industry)",
+   "-group_rank(ts_backfill(eps_y1_estimate_skewness, 66), industry)",
+   "-group_rank(ts_backfill(eps_y2_estimate_coeff_var, 66), industry)",
+   "group_rank(-ts_delta(ts_backfill(eps_y1_estimate_coeff_var, 252), 66), industry)",
+   "-group_rank(ts_backfill(revenue_y1_estimate_skewness, 66), industry)",
+   "-group_rank(ts_backfill(netprofit_y1_estimate_volatility_adj_1yr, 66), industry)",
+   "group_rank(ts_backfill(netprofit_y1_estimate_asymmetry, 66), industry)",
+   "-group_rank(ts_rank(ts_backfill(eps_y1_estimate_coeff_var, 66), 252), industry)",
+   "group_rank(ts_backfill(eps_estimate_trend_slope_1yr, 66), industry)",
+   "-group_rank(winsorize(ts_backfill(eps_y1_estimate_coeff_var, 66), std=4), industry)"
+  ]
+ },
+ "settings": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "nan_handling": "OFF"
+ },
+ "self_guard": "estimate_change_3mo 族整族禁用（已提交 2rjrMZ25/LLM93nGa 占族）——本波全部走非修正机制",
+ "harvest_B": {
+  "at": "2026-11-07T05:35",
+  "key": "afs 分歧度族死亡：CV/偏度/不对称/趋势斜率全部 |S|≤0.51，方向与 Diether 2002 相反（DEU 高分歧→高收益但量级不足）；B5 revenue_skew− 0.48/2Y1.27 族内最佳仍不过快杀线。该族封存",
+  "best": [
+   {
+    "tag": "B5_revskew_neg",
+    "id": "omEPP5A5",
+    "S": 0.48,
+    "Y2": 1.27
+   }
+  ]
+ },
+ "harvest_A": {
+  "at": "2026-11-07T05:36",
+  "key": "analyst7 修正广度族突破：A2 广度占比 S 1.40/F 1.14✅/2Y 1.58✅/sub 1.18（比值 0.84 全场最健康）——距 S 闸仅 13%；A4 zsum 1.03/35bp；delta/rec/PEAD/门控/分歧全灭。AW2 升杠杆批已派",
+  "best": [
+   {
+    "tag": "A2_breadth_ratio",
+    "id": "0mYGG3l6",
+    "S": 1.4,
+    "F": 1.14,
+    "Y2": 1.58,
+    "sub": 1.18
+   },
+   {
+    "tag": "A4_breadth_zsum66",
+    "id": "vR1YYMMz",
+    "S": 1.03,
+    "Y2": 0.84
+   }
+  ]
+ },
+ "batchAW2": {
+  "multisim_id": "1GPqqiMp56791FpoHKsnOd",
+  "label": "A2_upgrade_8",
+  "dispatched_at": "2026-11-06T21:36:39.919Z",
+  "note": "sector/zscore/winsorize/tsmean/A2+A4 两腿/backfill/tvr0.05/bf252+mean22"
+ },
+ "harvest_AW2": {
+  "at": "2026-11-07T05:39",
+  "key": "A2 家族全线走强：U1_sector S 1.46（距闸 8%）/2Y 1.52；U7_tvr05 S 1.32/2Y 1.91/margin 24bp 最均衡；U2_zscore 1.35/2Y 1.71/sub 1.22——全部 fail[]。S 闸 0.12 缺口，AW3 收尾杠杆：sector×tvr、1mth/1wk 窗口、sal 指标、zscore 组合",
+  "best": [
+   {
+    "tag": "U1_sector",
+    "id": "mLoKK5z2",
+    "S": 1.46,
+    "F": 1.26,
+    "Y2": 1.52,
+    "sub": 1.2
+   },
+   {
+    "tag": "U7_tvr05",
+    "id": "1YNKEdEW",
+    "S": 1.32,
+    "F": 1.06,
+    "Y2": 1.91,
+    "sub": 1.21
+   },
+   {
+    "tag": "U2_zscore",
+    "id": "ZYQzGned",
+    "S": 1.35,
+    "Y2": 1.71
+   }
+  ]
+ },
+ "batchAW3": {
+  "multisim_id": "3bv5Ex98m5cn9HJQ4CxSkmX",
+  "label": "A2_final_lever_8",
+  "dispatched_at": "2026-11-06T21:39:24.149Z"
+ },
+ "gate_precheck_20261107": {
+  "scope": "准闸候选群前置全闸件（AW3 结果无关的部分）",
+  "coverage": "0mYGG3l6 / mLoKK5z2 / 1YNKEdEW 十年 2014-2023 全 PASS（gapYears 空，lc 65-100）",
+  "yearly_profile": "逐年 S 均衡无时代依赖（0.57-2.94，五年 ≥1.4）——与 fnd45/fnd90 的偏态剖面形成对照，OS 稳健性先验更强",
+  "operator_counts": {
+   "A2_baseline": 4,
+   "U1_sector": 4,
+   "U7_tvr05": 5
+  },
+  "remaining_gate": "仅 S≥1.58（当前 1.32-1.46，缺口 +8~20%）；AW3 在测 sector×tvr 合体与窗口/指标变体"
+ },
+ "basket_structure_20261107": {
+  "mutual_corr": "A2 家族 4 候选两两 0.847-0.962（max U1×U2 0.9623）→ 同族互斥，最终篮子该族仅 1 席",
+  "implication": "10 颗 ATOM 需 ~10 个独立机制族；当前独立族：analyst7 广度（准闸 1.32-1.46）、fnd45 X3（0.99 S顶）、fnd90 cfc（1.02 2Y顶）、fnd6（已占）。扩展面需继续开新机制（AW3 后按读数决策下一类别）"
+ },
+ "harvest_AW3": {
+  "at": "2026-11-07T05:43",
+  "key": "A2 家族 S 平台期确认：12 变体全部 1.15-1.46（W8 winsor=U1 同 1.46 顶），无一破 1.58；sector 轴最优、1mth/1wk/sal 变体全部更弱；W2_sector_zscore 1.40/2Y1.58 最均衡。剩余杠杆=设置轴（decay/SLOW）→ AW4 双批",
+  "best": [
+   {
+    "tag": "W8_sector_winsor",
+    "id": "58E5Wrgk",
+    "S": 1.46,
+    "Y2": 1.52
+   },
+   {
+    "tag": "W2_sector_zscore",
+    "id": "JjezKoNx",
+    "S": 1.4,
+    "Y2": 1.58
+   },
+   {
+    "tag": "W1_sector_tvr05",
+    "id": "ZYQzGgbx",
+    "S": 1.38,
+    "F": 1.17,
+    "Y2": 1.51
+   }
+  ]
+ },
+ "batchAW4": {
+  "decay2_multisim": "2gFXwZ8nV50tbPJWMFsghTX",
+  "slow_multisim": "4qtQXW6lZ4Ud8FAFrIgfsmt",
+  "label": "settings_contrast_4x2",
+  "dispatched_at": "2026-11-06T21:44:06.686Z"
+ },
+ "harvest_AW4_decay2": {
+  "at": "2026-11-07T05:47",
+  "key": "decay 4→2 有效：rank_sector S 1.46→1.48 且 2Y 1.52→1.62（距闸 0.10）；zscore 1.43/1.69；tvr05 1.41/1.56/sub 1.25。decay 方向为正，AW5 试 decay1 + cps 复合 + ts_rank 机制 + 无阻尼比值",
+  "best": [
+   {
+    "tag": "D2_rank_sector",
+    "id": "MPYzAOLo",
+    "S": 1.48,
+    "F": 1.26,
+    "Y2": 1.62,
+    "sub": 1.16
+   },
+   {
+    "tag": "D2_zscore_sector",
+    "id": "kqNG5dZk",
+    "S": 1.43,
+    "Y2": 1.69
+   }
+  ]
+ },
+ "harvest_AW4_slow": {
+  "at": "2026-11-07T05:49",
+  "key": "SLOW 全线弱（0.72-1.37）——A2 家族设置曲线定案：decay2+SUBINDUSTRY 1.48/1.62 为峰；中性化轴 SLOW 无增益",
+  "best": [
+   {
+    "tag": "SL_rank_sector",
+    "id": "A1VzdKdd",
+    "S": 1.37,
+    "Y2": 1.16
+   }
+  ]
+ },
+ "batchAW5": {
+  "multisim_id": "3X3Jz9fOv4lgb1Z5BzBlzlU",
+  "label": "decay1_expression_levers_8",
+  "note": "grw 字段不存在已换 dps",
+  "dispatched_at": "2026-11-06T21:50:30.377Z"
+ },
+ "harvest_AW5": {
+  "at": "2026-11-07T05:53",
+  "key": "V6 无阻尼比值 S 1.62 破闸（F1.32✓）但 2Y 0.67 塌——阻尼 k 上有 S/2Y frontier（k=1: 1.48/1.66 ↔ k=0: 1.62/0.67）。decay1 平台确认 1.48；cps 0.63/dps 0.86/ts_rank 0.75 全灭；V4 ebi+cps 2腿 1.21/2Y1.83。AW6 = k 前沿测绘（0/0.25/0.5/0.75）+ V6 的 decay2/tvr/zscore/mean/winsor 修复尝试",
+  "best": [
+   {
+    "tag": "V6_no_dampen",
+    "id": "rKRGmo8o",
+    "S": 1.62,
+    "F": 1.32,
+    "Y2": 0.67
+   },
+   {
+    "tag": "V1_decay1_rank",
+    "id": "j2YGQZxo",
+    "S": 1.48,
+    "Y2": 1.66
+   }
+  ]
+ },
+ "batchAW6": {
+  "multisim_id": "1Hw4xpbUf4XJbZz13UehnEom",
+  "label": "dampener_frontier_8_decay2",
+  "dispatched_at": "2026-11-06T21:53:28.305Z"
+ },
+ "harvest_AW6": {
+  "at": "2026-11-07T05:56",
+  "key": "Frontier 收敛：k=0.5 → S 1.54/2Y 1.59✅/F 1.34/sub 1.18（距 S 闸 0.04）；k=0.25 → 1.55/1.54；k=0 → 1.61/0.63。可行点近在咫尺，AW7 微调网格（k 0.375-0.5 × decay1/2 × rank/zscore/industry/tvr03/平滑分子）",
+  "best": [
+   {
+    "tag": "F_k05",
+    "id": "mLo7kYb5",
+    "S": 1.54,
+    "F": 1.34,
+    "Y2": 1.59,
+    "sub": 1.18
+   },
+   {
+    "tag": "F_k025",
+    "id": "GrWzvgL3",
+    "S": 1.55,
+    "Y2": 1.54
+   }
+  ]
+ },
+ "batchAW7": {
+  "decay1_multisim": "yoh4udkI5f8cxu4jutZptP",
+  "decay2_multisim": "LtqDi96q4xga5nxCNyCabp",
+  "label": "final_micro_grid_4x2",
+  "dispatched_at": "2026-11-06T21:57:07.046Z"
+ },
+ "harvest_AW7_decay2": {
+  "at": "2026-11-07T05:59",
+  "key": "k 峰值锁定 0.4：M1_k04 S 1.56/2Y 1.61/F 1.36/sub 1.18——距 S 闸 0.02，其余闸全过。k 曲线：0.25→1.55、0.4→1.56、0.5→1.54、0.75→1.50。industry 轴 1.47 弱于 sector；平滑分子 1.48/2Y1.38 无增益。decay1 批（k=0.25/0.375/0.5）待收，可能补最后 0.02",
+  "best": [
+   {
+    "tag": "M1_k04_rank_sector",
+    "id": "wpQGVAM1",
+    "S": 1.56,
+    "F": 1.36,
+    "Y2": 1.61,
+    "sub": 1.18
+   }
+  ]
+ },
+ "harvest_AW7_decay1": {
+  "at": "2026-11-07T06:00",
+  "key": "decay1 +0.01：N2_k0375 S 1.57/2Y 1.66/F 1.27/sub 1.16（距闸 0.01！）；N4_k025 1.57/1.59；k 平台 1.57±0.01（0.25-0.375）。AW8 末批：k=0.30/0.35 细网格 + rank 前 winsorize（新几何）",
+  "best": [
+   {
+    "tag": "N2_k0375_rank_d1",
+    "id": "omEGe0Vn",
+    "S": 1.57,
+    "F": 1.27,
+    "Y2": 1.66,
+    "sub": 1.16
+   },
+   {
+    "tag": "N4_k025_rank_d1",
+    "id": "QPvzdpEK",
+    "S": 1.57,
+    "Y2": 1.59
+   }
+  ]
+ },
+ "batchAW8": {
+  "multisim_id": "v4Epk9iA4EZc6dsre7RCk2",
+  "label": "final_006_plateau_probe",
+  "dispatched_at": "2026-11-06T22:01:09.897Z"
+ },
+ "harvest_AW8_final": {
+  "at": "2026-11-07T06:04",
+  "key": "A2 家族 S 平台硬顶 1.57 定案：k=0.30/0.35 与 pre-winsor 全部同读数（平台形状不敏感）。30+ 变体无一破 1.58。近闸候选 omEGe0Vn（1.57/1.66/1.27/1.16，距闸 0.01）入三级篮。终审报告 → A2_family_verdict_20261107.md",
+  "best": [
+   {
+    "tag": "P2_k035",
+    "id": "d5WzqVnX",
+    "S": 1.57,
+    "Y2": 1.66
+   }
+  ]
+ },
+ "campaign_final": "analyst 扩展段终审完成。全战役近闸篮呈报用户决策。",
+ "gate_dossier_omEGe0Vn": {
+  "at": "2026-11-07T06:08",
+  "prod": {
+   "max": 0.7552,
+   "verdict": "FAIL（0.7-0.8 桶 n=3 浅钉，max 0.755 略超 0.75 浅钉线）",
+   "histogram_tail": {
+    "0.6-0.7": 15,
+    "0.7-0.8": 3
+   },
+   "source": "platform 实测（MCP check_correlation production）"
+  },
+  "self": {
+   "max": 0.3466,
+   "verdict": "PASS（对 2rjrMZ25 等 OS 池最大 0.347，极干净）",
+   "pool": 14
+  },
+  "implication": "一级篮候选呈双重缺口：S 0.01 + prod 浅钉 0.755。若走特殊裁决路径需同时破 prod 墙（窗口谷/算子替换，wq-window-valley-break-prod-wall 法）——难度升级；二级篮 fnd45 X3/fnd90 cfc 未测 prod（S/2Y 闸未过，无意义）。"
+ },
+ "ruling_update_20261107": {
+  "auto_selected": "opt_si3（shortinterest3 授权，60s 超时自动选定，非用户手动确认）",
+  "execution_result": "调池核查发现 shortinterest3 塔已于 2026-11-04 收口（s1_shortinterest3_wave1_20261104.md §9.5）：MPY9VNY9 独占塔位；delta 核与 winner corr 0.90-0.92（挂 self）；水平/异常水平被 ttv 硬下限（<0.06 ERROR）锁死 S 1.27；loaned_market_value/share_count/transaction_count/duration 零信号或卡死。⇒ 选项②不可行，未派发（避免浪费槽位重扫已封存面）。10-30 报告的『十模板池待派』是过期引用——11-04 已跑完并收口。",
+  "corrected_menu": [
+   "① omEGe0Vn 双破（豁免 S 0.01 + prod 浅钉 0.755 破墙；注意 A2 核是纯横截面比值无 ts 窗口，窗口谷法适用性存疑，算子替换轴已测尽）",
+   "③ 现状收口（三级篮归档交付）"
+  ],
+  "recommendation": "③ 收口为主推（① 的 prod 破墙在无窗口可调的横截面信号上成功率低），① 留作用户明示后再执行"
+ }
+}

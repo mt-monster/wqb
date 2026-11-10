@@ -1,0 +1,650 @@
+﻿{
+ "results": [
+  {
+   "id": "shrt38_accum_buy_amt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 97,
+   "alphaCount": 191,
+   "description": "Accumulated purchase value in KRW over the aggregation window (scaled per atlas_unit_name)"
+  },
+  {
+   "id": "shrt38_accum_buy_amt_rt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 64,
+   "alphaCount": 119,
+   "description": "Accum. Purchase Value"
+  },
+  {
+   "id": "shrt38_accum_buy_qty",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 41,
+   "alphaCount": 55,
+   "description": "Accumulated buy quantity (shares) over the aggregation window"
+  },
+  {
+   "id": "shrt38_accum_buy_qty_rt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 50,
+   "alphaCount": 72,
+   "description": "Accum. Purchase Volume"
+  },
+  {
+   "id": "shrt38_accum_net_buy_amt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 138,
+   "alphaCount": 269,
+   "description": "Accumulated net purchase value (buy minus sell) in KRW over the aggregation window"
+  },
+  {
+   "id": "shrt38_accum_net_buy_qty",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 156,
+   "alphaCount": 260,
+   "description": "Accumulated net purchase quantity (shares) over the aggregation window (buy minus sell)"
+  },
+  {
+   "id": "shrt38_accum_sell_amt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 47,
+   "alphaCount": 66,
+   "description": "Accumulated sell value in KRW over the aggregation window (scaled per atlas_unit_name)"
+  },
+  {
+   "id": "shrt38_accum_sell_amt_rt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 198,
+   "alphaCount": 380,
+   "description": "Accum. Sell Value"
+  },
+  {
+   "id": "shrt38_accum_sell_qty",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 30,
+   "alphaCount": 44,
+   "description": "Accumulated sell quantity (shares) over the aggregation window"
+  },
+  {
+   "id": "shrt38_accum_sell_qty_rt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 159,
+   "alphaCount": 292,
+   "description": "Accum. Sell Volume"
+  },
+  {
+   "id": "shrt38_addr_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 16,
+   "description": "Address"
+  },
+  {
+   "id": "shrt38_agg_invactdc_vni",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Investor Code(0100:Institutions(Total), 0101:Securities, 0102:Insurance, 0103:Invest Trusts, 0104:Bank, 0105:Merchant & SavingBanks, 0106:Pension Funds, 0107:Pr…"
+  },
+  {
+   "id": "shrt38_amt",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 14,
+   "alphaCount": 27,
+   "description": "Total short-selling amount aggregated over the window; unit defined by atlas_unit_name"
+  },
+  {
+   "id": "shrt38_amt_wgt",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Short Selling Turnover Weight"
+  },
+  {
+   "id": "shrt38_auditor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Auditor"
+  },
+  {
+   "id": "shrt38_biz_reg_no_24",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Business No."
+  },
+  {
+   "id": "shrt38_c_companyatlas_unit_name",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "nan"
+  },
+  {
+   "id": "shrt38_c_companydc_pmc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Company Code"
+  },
+  {
+   "id": "shrt38_c_companylist_dt",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Listing date on the exchange (YYYYMMDD)"
+  },
+  {
+   "id": "shrt38_c_companypyt_tkm",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Market type code indicating listing market (e.g., 1=KRX, 2=KOSDAQ, 8=KONEX)"
+  },
+  {
+   "id": "shrt38_cmp_nm_kor_19",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Korean Name"
+  },
+  {
+   "id": "shrt38_corp_reg_no_20",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Corporation Number"
+  },
+  {
+   "id": "shrt38_dc_csk_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Market Index Code (Reference: TC_SECTOR > SEC_TYP = I)"
+  },
+  {
+   "id": "shrt38_dc_scig_17",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "WICS Code (WISEfn Industry Classification Standard) (Reference: TC_SECTOR > SEC_TYP = G)"
+  },
+  {
+   "id": "shrt38_dc_scik_14",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "KICS Code (Korea Industry Classification Standard) (Reference: TC_SECTOR > SEC_TYP = N)"
+  },
+  {
+   "id": "shrt38_finacc_typ_22",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "F/S Sector(0:Entire, 1:Manufacturing, 2:Banking, 3:Insurance, 4:Securities, 6:Mutual Savings, 7:Merchant Banking, 8:Credit Finance, 9:Other Financing)"
+  },
+  {
+   "id": "shrt38_gne_mn_luf_pmc_10",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "English Full Name"
+  },
+  {
+   "id": "shrt38_gne_mn_pmc_1",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "English Name"
+  },
+  {
+   "id": "shrt38_industry",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 47,
+   "alphaCount": 112,
+   "description": "Industry"
+  },
+  {
+   "id": "shrt38_issue_typ",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Issue type code of the security (e.g., common, preferred, fund/ETF, DR)"
+  },
+  {
+   "id": "shrt38_k_agg_invactdc_kts",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Stock Code"
+  },
+  {
+   "id": "shrt38_k_agg_short_selldc_kts",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Stock Code"
+  },
+  {
+   "id": "shrt38_k_invactdc_kts",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 14,
+   "description": "Stock Code"
+  },
+  {
+   "id": "shrt38_k_short_selldc_kts",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Stock Code"
+  },
+  {
+   "id": "shrt38_let_16",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Telephone No."
+  },
+  {
+   "id": "shrt38_list_yn",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Listing status flag (Y=Listed, N=Not listed)"
+  },
+  {
+   "id": "shrt38_lru_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 16,
+   "description": "URL"
+  },
+  {
+   "id": "shrt38_master_chk_12",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Main F/S (P: Parents, C: Consolidated)"
+  },
+  {
+   "id": "shrt38_mmyy_srfi_8",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Month and year of IFRS adoption (YYYYMM)"
+  },
+  {
+   "id": "shrt38_nm_eyf_21",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Fiscal year-end month (1–12)"
+  },
+  {
+   "id": "shrt38_ny_srfi_15",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "IFRS reporting status indicator for the company (Y=IFRS compliant, N=not IFRS)"
+  },
+  {
+   "id": "shrt38_ockdc_kts",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Stock Code"
+  },
+  {
+   "id": "shrt38_oec_18",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "CEO"
+  },
+  {
+   "id": "shrt38_pyt_kts",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Stock type code classifying the security (e.g., common, preferred, ETF, DR)"
+  },
+  {
+   "id": "shrt38_pyt_pmc_4",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Company Type(1:Company limited by shares, 2:Securities investment corporation, 3:Special purpose company, 4:Real estate investment trusts, 5:ETF, 6:Ship investm…"
+  },
+  {
+   "id": "shrt38_pyt_qrf",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Frequency type code of aggregation (e.g., 1=daily, 2=weekly, 3=monthly)"
+  },
+  {
+   "id": "shrt38_qtr_master_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 21,
+   "alphaCount": 31,
+   "description": "Quarter Main F/S (P: Parents, C: Consolidated)"
+  },
+  {
+   "id": "shrt38_s_stk_agg_invactatlas_unit_name",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "shrt38_s_stk_agg_short_sellatlas_unit_name",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 19,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "shrt38_s_stk_invactatlas_unit_name",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 18,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "shrt38_s_stk_short_sellatlas_unit_name",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 19,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "shrt38_s_stockatlas_unit_name",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "shrt38_s_stockdc_pmc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 10,
+   "description": "Company Code"
+  },
+  {
+   "id": "shrt38_s_stocklist_dt",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Listing date of the security in YYYYMMDD format"
+  },
+  {
+   "id": "shrt38_s_stockpyt_tkm",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Market type code indicating the exchange/board (e.g., KRX, KOSDAQ, KONEX)"
+  },
+  {
+   "id": "shrt38_sector",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 28,
+   "alphaCount": 57,
+   "description": "Sector"
+  },
+  {
+   "id": "shrt38_stk_agg_invactcalc_prd_typ",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Calculation period type code indicating the aggregation window (e.g., 5-day, 20-day, weekly, monthly, yearly)"
+  },
+  {
+   "id": "shrt38_stk_agg_invacttd_drt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Trading date in YYYYMMDD format (date associated with the aggregated window)"
+  },
+  {
+   "id": "shrt38_stk_agg_short_selltd_drt",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 6,
+   "alphaCount": 15,
+   "description": "Trading date in YYYYMMDD representing the anchor date for the aggregated record"
+  },
+  {
+   "id": "shrt38_stk_invactbuy_amt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 59,
+   "alphaCount": 141,
+   "description": "Purchase value in KRW, scaled per atlas_unit_name"
+  },
+  {
+   "id": "shrt38_stk_invactbuy_qty",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 52,
+   "alphaCount": 88,
+   "description": "Number of shares bought"
+  },
+  {
+   "id": "shrt38_stk_invactnet_buy_amt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 96,
+   "alphaCount": 203,
+   "description": "Net purchase value (buy minus sell) in KRW, scaled per atlas_unit_name"
+  },
+  {
+   "id": "shrt38_stk_invactnet_buy_qty",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 112,
+   "alphaCount": 215,
+   "description": "Net purchase volume in shares (buy minus sell)"
+  },
+  {
+   "id": "shrt38_stk_invactsell_amt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 65,
+   "alphaCount": 148,
+   "description": "Sell value in KRW, scaled per atlas_unit_name"
+  },
+  {
+   "id": "shrt38_stk_invactsell_qty",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 53,
+   "alphaCount": 93,
+   "description": "Number of shares sold"
+  },
+  {
+   "id": "shrt38_stk_invacttd_drt",
+   "type": "VECTOR",
+   "coverage": 0.9997,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Trading date in YYYYMMDD format"
+  },
+  {
+   "id": "shrt38_stk_nm_kor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Korean Name(Short)"
+  },
+  {
+   "id": "shrt38_stk_short_sellshort_sell_amt",
+   "type": "VECTOR",
+   "coverage": 0.9644,
+   "userCount": 7,
+   "alphaCount": 14,
+   "description": "Value of shares sold short on the date in KRW, scaled per atlas_unit_name"
+  },
+  {
+   "id": "shrt38_stk_short_sellshort_sell_qty",
+   "type": "VECTOR",
+   "coverage": 0.9644,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Number of shares sold short on the date"
+  },
+  {
+   "id": "shrt38_stk_short_sellshort_sell_qty_wgt",
+   "type": "VECTOR",
+   "coverage": 0.9644,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Short Selling Volume Weight"
+  },
+  {
+   "id": "shrt38_stk_short_selltd_drt",
+   "type": "VECTOR",
+   "coverage": 0.9644,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Trading date in YYYYMMDD format"
+  },
+  {
+   "id": "shrt38_td_tse_9",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Company establishment/incorporation date (YYYYMMDD)"
+  },
+  {
+   "id": "shrt38_tgw_ytq",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Short Selling Volume Weight"
+  },
+  {
+   "id": "shrt38_tot_amt_wgt",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 13,
+   "alphaCount": 25,
+   "description": "Short Selling Turnover Weight(All)"
+  },
+  {
+   "id": "shrt38_tot_qty_wgt",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 11,
+   "alphaCount": 27,
+   "description": "Short Selling Volume Weight(All)"
+  },
+  {
+   "id": "shrt38_ytq",
+   "type": "VECTOR",
+   "coverage": 0.9786,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Total shorted shares aggregated over the specified window"
+  },
+  {
+   "id": "shrt38_z_sec_relatlas_unit_name",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 30,
+   "alphaCount": 44,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "shrt38_z_sec_reldc_pmc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 30,
+   "description": "Company Code"
+  },
+  {
+   "id": "shrt38_z_sec_relsec_cd",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 29,
+   "alphaCount": 46,
+   "description": "Sector Code"
+  },
+  {
+   "id": "shrt38_zip_cd_23",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Zip Code"
+  }
+ ],
+ "count": 80,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 8,
+ "platform_count": 88,
+ "complete": true,
+ "pages_fetched": 2
+}

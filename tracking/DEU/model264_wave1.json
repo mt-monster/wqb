@@ -1,0 +1,322 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(mdl264_amihud_class)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(divide(subtract(mdl264_es_ebitda_fy1_r1m_l3,mdl264_es_ebitda_fy1_r1m_l1),add(mdl264_es_ebitda_fy1_r1m_l3,mdl264_es_ebitda_fy1_r1m_l1)))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(add(ts_zscore(ts_backfill(divide(subtract(mdl264_es_ebitda_fy1_r1m_l3,mdl264_es_ebitda_fy1_r1m_l1),add(mdl264_es_ebitda_fy1_r1m_l3,mdl264_es_ebitda_fy1_r1m_l1)),66),252),ts_delta(ts_zscore(ts_backfill(divide(subtract(mdl264_es_ebitda_ntm_r1m_l3,mdl264_es_ebitda_ntm_r1m_l1),add(mdl264_es_ebitda_ntm_r1m_l3,mdl264_es_ebitda_ntm_r1m_l1)),66),252),22)),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(ts_mean(add(add(divide(subtract(mdl264_es_ebit_fy1_r1m_l3,mdl264_es_ebit_fy1_r1m_l1),add(mdl264_es_ebit_fy1_r1m_l3,mdl264_es_ebit_fy1_r1m_l1)),divide(subtract(mdl264_es_roe_fy1_d1m_l3,mdl264_es_roe_fy1_d1m_l1),add(mdl264_es_roe_fy1_d1m_l3,mdl264_es_roe_fy1_d1m_l1))),divide(subtract(mdl264_es_sale_fy1_r1m_l3,mdl264_es_sale_fy1_r1m_l1),add(mdl264_es_sale_fy1_r1m_l3,mdl264_es_sale_fy1_r1m_l1))),5),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(ts_zscore(subtract(ts_backfill(divide(subtract(mdl264_es_ebit_ntm_r1m_l3,mdl264_es_ebit_ntm_r1m_l1),add(mdl264_es_ebit_ntm_r1m_l3,mdl264_es_ebit_ntm_r1m_l1)),66),ts_backfill(divide(subtract(mdl264_es_sale_ntm_r1m_l3,mdl264_es_sale_ntm_r1m_l1),add(mdl264_es_sale_ntm_r1m_l3,mdl264_es_sale_ntm_r1m_l1)),66)),252),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "trade_when(rank(subtract(1,ts_backfill(mdl264_es_sale_ntm_r1m_l2,22)))<0.5,group_rank(ts_zscore(ts_backfill(divide(subtract(mdl264_es_sale_ntm_r1m_l3,mdl264_es_sale_ntm_r1m_l1),add(mdl264_es_sale_ntm_r1m_l3,mdl264_es_sale_ntm_r1m_l1)),66),252),subindustry),-1)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(ts_scale(winsorize(ts_mean(multiply(divide(subtract(mdl264_3l_fmc,mdl264_1l_fmc),add(mdl264_3l_fmc,mdl264_1l_fmc)),subtract(1,ts_backfill(mdl264_2l_fmc,22))),22),std=4),252),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(winsorize(ts_mean(add(divide(subtract(mdl264_macd_l3,mdl264_macd_l1),add(mdl264_macd_l3,mdl264_macd_l1)),divide(subtract(mdl264_3l_fmc,mdl264_1l_fmc),add(mdl264_3l_fmc,mdl264_1l_fmc))),22),std=4),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(add(ts_zscore(ts_backfill(divide(subtract(mdl264_amihud_l3,mdl264_amihud_l1),add(mdl264_amihud_l3,mdl264_amihud_l1)),66),252),ts_delta(ts_zscore(ts_backfill(divide(subtract(mdl264_amihud_l3,mdl264_amihud_l1),add(mdl264_amihud_l3,mdl264_amihud_l1)),66),252),22)),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(divide(ts_backfill(divide(subtract(mdl264_news_abno_sent_1d_l3,mdl264_news_abno_sent_1d_l1),add(mdl264_news_abno_sent_1d_l3,mdl264_news_abno_sent_1d_l1)),66),add(ts_std_dev(ts_backfill(divide(subtract(mdl264_news_abno_sent_1d_l3,mdl264_news_abno_sent_1d_l1),add(mdl264_news_abno_sent_1d_l3,mdl264_news_abno_sent_1d_l1)),66),66),0.05)),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(multiply(signed_power(ts_zscore(ts_backfill(divide(subtract(mdl264_bookp_l3,mdl264_bookp_l1),add(mdl264_bookp_l3,mdl264_bookp_l1)),66),252),2),ts_mean(subtract(1,ts_backfill(mdl264_bookp_l2,22)),66)),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(ts_scale(winsorize(ts_delta(ts_delta(ts_zscore(ts_backfill(divide(subtract(mdl264_eps_sur_decay_l3,mdl264_eps_sur_decay_l1),add(mdl264_eps_sur_decay_l3,mdl264_eps_sur_decay_l1)),66),252),22),22),std=4),252),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(multiply(multiply(-1,ts_zscore(ts_backfill(divide(subtract(mdl264_eps_disp_l3,mdl264_eps_disp_l1),add(mdl264_eps_disp_l3,mdl264_eps_disp_l1)),66),252)),ts_mean(subtract(1,ts_backfill(mdl264_eps_disp_l2,22)),66)),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "group_rank(multiply(ts_zscore(ts_backfill(divide(subtract(mdl264_fincf_l3,mdl264_fincf_l1),add(mdl264_fincf_l3,mdl264_fincf_l1)),66),252),ts_zscore(ts_backfill(divide(subtract(mdl264_ext_fin_noa_l3,mdl264_ext_fin_noa_l1),add(mdl264_ext_fin_noa_l3,mdl264_ext_fin_noa_l1)),66),252)),subindustry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(subtract(mdl264_3l_fmc,mdl264_1l_fmc))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "decay": 4,
+      "delay": 1,
+      "instrumentType": "EQUITY",
+      "language": "FASTEXPR",
+      "maxTrade": "OFF",
+      "nanHandling": "OFF",
+      "neutralization": "SUBINDUSTRY",
+      "pasteurization": "ON",
+      "region": "DEU",
+      "testPeriod": "P0Y0M0D",
+      "truncation": 0.08,
+      "unitHandling": "VERIFY",
+      "universe": "TOP500",
+      "visualization": false
+    },
+    "regular": "rank(mdl264_es_eps_fy1_r1m_class)"
+  }
+]

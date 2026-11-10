@@ -1,0 +1,202 @@
+{
+ "results": [
+  {
+   "id": "adjfactor",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 91,
+   "alphaCount": 163,
+   "description": "Adjustment factor applied to historical prices and dividends to account for splits and other corporate actions"
+  },
+  {
+   "id": "adv20",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 587,
+   "alphaCount": 13153,
+   "description": "Average daily volume in past 20 days"
+  },
+  {
+   "id": "cap",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 841,
+   "alphaCount": 15229,
+   "description": "Daily market capitalization (in millions)"
+  },
+  {
+   "id": "close",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1426,
+   "alphaCount": 24890,
+   "description": "Daily close price"
+  },
+  {
+   "id": "country",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 612,
+   "alphaCount": 3056,
+   "description": "Country grouping"
+  },
+  {
+   "id": "currency",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 96,
+   "alphaCount": 342,
+   "description": "Currency"
+  },
+  {
+   "id": "cusip",
+   "type": "SYMBOL",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "CUSIP Value"
+  },
+  {
+   "id": "dividend",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 200,
+   "alphaCount": 2012,
+   "description": "Dividend"
+  },
+  {
+   "id": "exchange",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 464,
+   "alphaCount": 3765,
+   "description": "Exchange grouping"
+  },
+  {
+   "id": "high",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 479,
+   "alphaCount": 12244,
+   "description": "Daily high price"
+  },
+  {
+   "id": "industry",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2043,
+   "alphaCount": 27119,
+   "description": "Industry grouping"
+  },
+  {
+   "id": "isin",
+   "type": "SYMBOL",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISIN Value"
+  },
+  {
+   "id": "low",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 413,
+   "alphaCount": 12430,
+   "description": "Daily low price"
+  },
+  {
+   "id": "market",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1090,
+   "alphaCount": 15469,
+   "description": "Market grouping"
+  },
+  {
+   "id": "open",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 490,
+   "alphaCount": 12739,
+   "description": "Daily open price"
+  },
+  {
+   "id": "returns",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1110,
+   "alphaCount": 19980,
+   "description": "Daily returns"
+  },
+  {
+   "id": "sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1783,
+   "alphaCount": 23825,
+   "description": "Sector grouping"
+  },
+  {
+   "id": "sedol",
+   "type": "SYMBOL",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Sedol"
+  },
+  {
+   "id": "sharesout",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 283,
+   "alphaCount": 10918,
+   "description": "Daily outstanding shares (in millions)"
+  },
+  {
+   "id": "split",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 288,
+   "alphaCount": 7891,
+   "description": "Stock split ratio"
+  },
+  {
+   "id": "subindustry",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1839,
+   "alphaCount": 21430,
+   "description": "Subindustry grouping"
+  },
+  {
+   "id": "ticker",
+   "type": "SYMBOL",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Ticker"
+  },
+  {
+   "id": "volume",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 894,
+   "alphaCount": 16251,
+   "description": "Daily volume"
+  },
+  {
+   "id": "vwap",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 472,
+   "alphaCount": 12386,
+   "description": "Daily volume weighted average price"
+  }
+ ],
+ "count": 24,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 24,
+ "complete": true,
+ "pages_fetched": 1
+}

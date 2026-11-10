@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：probe（跟区域入场 probe-only）　**分组**：Analyst　**类别卡**：analyst
 
-**涉及数据集**：analyst10、analyst11、other436+analyst_base_ref
+**涉及数据集**：analyst10、analyst11、analyst39、analyst69、other436+analyst_base_ref
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-08 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 37 | 0 | 0 | 0 | 2 | 0 |
+| 47 | 0 | 0 | 0 | 2 | 0 |
 
-主要数据集（回测数）：analyst10（24）、other436+analyst_base_ref（7）、analyst11（6）
+主要数据集（回测数）：analyst10（24）、other436+analyst_base_ref（7）、analyst11（6）、analyst69（6）、analyst39（4）
 
 ### S1 字段理解
 

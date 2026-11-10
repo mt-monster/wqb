@@ -1,0 +1,113 @@
+id,type,cov,uc,ac,desc
+absolute_price_oscillator_value,MATRIX,0.0,2,2,Absolute Price Oscillator; a technical indicator measuring the difference between two moving averages to indicate momentum
+accumulation_distribution_oscillator,MATRIX,0.0,0,0,Oscillator measuring volume flow based on price changes.
+accumulation_distribution_value,MATRIX,0.0,2,2,Cumulative measure of volume flow based on price changes.
+adaptive_moving_average_value,MATRIX,0.0,2,3,Kaufman's Adaptive Moving Average; a technical indicator that adapts to market volatility for smoothing price series
+aroon_oscillator_value,MATRIX,0.0,0,0,Indicator showing strength of trend using Aroon Up and Down.
+average_directional_index_value,MATRIX,0.0,0,0,Average Directional Index; measures trend strength regardless of direction
+average_price_value,MATRIX,0.0,0,0,Mean price calculated from open; high; low; and close.
+average_true_range_value,MATRIX,0.0,1,1,Volatility measure based on recent price ranges.
+balance_of_power_indicator,MATRIX,0.0,0,0,Indicator measuring strength of buyers versus sellers.
+bollinger_bandwidth_value,MATRIX,0.0,0,0,Bollinger Bands; volatility bands plotted above and below a moving average
+bollinger_lower_band_value,MATRIX,0.0,0,0,Lower boundary of Bollinger Bands for the period.
+bollinger_upper_band_value,MATRIX,0.0,0,0,Upper Band of Bollinger Bands; a volatility indicator representing an upper boundary based on standard deviations from a moving average
+ceiling_value_operator,MATRIX,0.0,0,0,Smallest integer greater than or equal to the input value.
+chande_momentum_oscillator_value,MATRIX,0.0,0,0,Chande Momentum Oscillator; a technical momentum indicator oscillating between -100 and +100 to show buying and selling pressure
+commodity_channel_index_value,MATRIX,0.0,1,1,Commodity Channel Index; a momentum-based oscillator detecting cyclical trends and overbought/oversold conditions
+directional_movement_index,MATRIX,0.0,0,0,Quantifies trend strength based on directional movement.
+double_exponential_moving_average,MATRIX,0.0,0,0,Moving average using double exponential smoothing.
+exponential_moving_average_value,MATRIX,0.0,1,1,Exponential Moving Average; a type of moving average giving more weight to recent prices
+exponential_operator_value,MATRIX,0.0,5,6,Exponentiation of the input value.
+floor_value_operator,MATRIX,0.0,0,0,Largest integer less than or equal to the input value.
+hilbert_transform_trend_mode,MATRIX,0.0,0,0,Mode of the trend as determined by Hilbert Transform.
+linear_regression_angle_value,MATRIX,0.0,0,0,Angle of the fitted linear regression line.
+linear_regression_estimate,MATRIX,0.0,0,0,Value predicted by linear regression over the time window.
+linear_regression_intercept_value,MATRIX,0.0,0,0,Intercept term from linear regression fit to the data window.
+linear_regression_slope_value,MATRIX,0.0,0,0,Slope term from linear regression fit to the data window.
+macd_indicator_value,MATRIX,0.0,0,0,Moving Average Convergence Divergence indicator measuring momentum in the technical analysis module for European equities
+median_price_value,MATRIX,0.0,0,0,Median of high and low prices for the period.
+midpoint_price_value_2,MATRIX,0.0,0,0,Average of high and low prices for the period.
+momentum_indicator_value,MATRIX,0.0,0,0,Momentum indicator showing the difference between current price and price N periods ago
+money_flow_index_score,MATRIX,0.0,1,1,Money Flow Index; a volume-weighted momentum indicator in the technical analysis module for European equities
+negative_directional_indicator,MATRIX,0.0,0,0,Minus Directional Indicator; a normalized indicator representing negative movement strength in the DMI system
+negative_directional_movement,MATRIX,0.0,0,0,Minus Directional Movement; part of the Directional Movement Index (DMI) indicating negative directional movement
+normalized_average_true_range,MATRIX,0.0,0,0,Volatility measure normalized by current price.
+on_balance_volume_value,MATRIX,0.0,0,0,On-Balance Volume; a cumulative indicator that relates volume flow to price changes to measure buying/selling pressure
+percentage_price_oscillator_value,MATRIX,0.0,0,0,Percentage Price Oscillator; a momentum oscillator that shows the difference between two moving averages as a percentage
+positive_directional_indicator,MATRIX,0.0,0,0,Indicator showing strength of upward price movement.
+positive_directional_movement,MATRIX,0.0,0,0,Amount of upward movement in price over the period.
+predicted_quantile1_class,MATRIX,0.0,0,0,Continuous regression prediction for 5-day forward return for EUR stocks in the Pred_EUR_ohlc_ma module
+predicted_quantile2_class,MATRIX,0.0,0,0,Predicted class label for the second quantile group.
+predicted_quantile3_class,MATRIX,0.0,0,0,Quantile (bucket) label in 3 buckets for 5-day forward return in EUR OHLC moving average model
+predicted_quantile4_class,MATRIX,0.0,0,0,Predicted class label for the fourth quantile group.
+predicted_quantile5_class,MATRIX,0.0,0,0,Quantile (bucket) label in 5 buckets for 5-day forward return in EUR OHLC moving average model
+probability_quantile2_label0,MATRIX,0.0,0,0,Model-assigned probability for label 0 in the second quantile group.
+probability_quantile2_label1,MATRIX,0.0,0,0,Model-assigned probability for label 1 in the second quantile group.
+probability_quantile3_label0,MATRIX,0.0,0,0,Model-assigned probability for label 0 in the third quantile group.
+probability_quantile3_label1,MATRIX,0.0,0,0,Model-assigned probability for label 1 in the third quantile group.
+probability_quantile3_label2,MATRIX,0.0,0,0,Model-assigned probability for label 2 in the third quantile group.
+probability_quantile4_label0,MATRIX,0.0,0,0,Model-assigned probability for label 0 in the fourth quantile group.
+probability_quantile4_label1,MATRIX,0.0,0,0,Model-assigned probability for label 1 in the fourth quantile group.
+probability_quantile4_label2,MATRIX,0.0,0,0,Model-assigned probability for label 2 in the fourth quantile group.
+probability_quantile4_label3,MATRIX,0.0,0,0,Model-assigned probability for label 3 in the fourth quantile group.
+probability_quantile5_label0,MATRIX,0.0,0,0,Model-assigned probability for label 0 in the fifth quantile group.
+probability_quantile5_label1,MATRIX,0.0,0,0,Model-assigned probability for label 1 in the fifth quantile group.
+probability_quantile5_label2,MATRIX,0.0,0,0,Model-assigned probability for label 2 in the fifth quantile group.
+probability_quantile5_label3,MATRIX,0.0,0,0,Model-assigned probability for label 3 in the fifth quantile group.
+probability_quantile5_label4,MATRIX,0.0,0,0,Model-assigned probability for label 4 in the fifth quantile group.
+quantile1_predicted_label_r10,MATRIX,0.0,0,0,Continuous regression prediction (real-valued) of 10-day forward return for EUR region using ohlc_ma model
+quantile1_predicted_label_r20,MATRIX,0.0,0,0,Continuous regression prediction of the 20-day forward return in the European universe using the OHLC moving average model
+quantile2_label0_probability_r10,MATRIX,0.0,0,0,Model probability for label 0 in quantile 2 for 10-day prediction.
+quantile2_label0_probability_r20,MATRIX,0.0,0,0,Model probability for label 0 in quantile 2 for 20-day prediction.
+quantile2_label1_probability_r10,MATRIX,0.0,0,0,Model probability for label 1 in quantile 2 for 10-day prediction.
+quantile2_label1_probability_r20,MATRIX,0.0,0,0,Model probability for label 1 in quantile 2 for 20-day prediction.
+quantile2_predicted_label_r10,MATRIX,0.0,0,0,Quantile label (bucket integer 0 or 1) for 10-day forward return in 2-bucket classification for EUR region using ohlc_ma model
+quantile2_predicted_label_r20,MATRIX,0.0,1,1,Predicted label for quantile 2 in 20-day forecast.
+quantile3_label0_probability_r10,MATRIX,0.0,0,0,Model probability for label 0 in quantile 3 for 10-day prediction.
+quantile3_label0_probability_r20,MATRIX,0.0,0,0,Model probability for label 0 in quantile 3 for 20-day prediction.
+quantile3_label1_probability_r10,MATRIX,0.0,0,0,Log-probability for bucket 1 (middle bucket) of the 3-bucket classification for 10-day forward return predicted by EUR universe OHLC moving average model
+quantile3_label1_probability_r20,MATRIX,0.0,0,0,Model probability for label 1 in quantile 3 for 20-day prediction.
+quantile3_label2_probability_r10,MATRIX,0.0,0,0,Model probability for label 2 in quantile 3 for 10-day prediction.
+quantile3_label2_probability_r20,MATRIX,0.0,0,0,Model probability for label 2 in quantile 3 for 20-day prediction.
+quantile3_predicted_label_r10,MATRIX,0.0,0,0,Quantile label indicating which bucket (out of 3) the 10-day forward return falls into; predicted by EUR universe OHLC moving average model
+quantile3_predicted_label_r20,MATRIX,0.0,0,0,Quantile label (bucket index 0 to 2) for the 20-day forward return prediction with 3 quantile buckets in the European universe using the OHLC moving average modâ¦
+quantile4_label0_probability_r10,MATRIX,0.0,0,0,Model probability for label 0 in quantile 4 for 10-day prediction.
+quantile4_label0_probability_r20,MATRIX,0.0,0,0,Model probability for label 0 in quantile 4 for 20-day prediction.
+quantile4_label1_probability_r10,MATRIX,0.0,0,0,Model probability for label 1 in quantile 4 for 10-day prediction.
+quantile4_label1_probability_r20,MATRIX,0.0,0,0,Model probability for label 1 in quantile 4 for 20-day prediction.
+quantile4_label2_probability_r10,MATRIX,0.0,0,0,Model probability for label 2 in quantile 4 for 10-day prediction.
+quantile4_label2_probability_r20,MATRIX,0.0,0,0,Model probability for label 2 in quantile 4 for 20-day prediction.
+quantile4_label3_probability_r10,MATRIX,0.0,0,0,Log-probability for bucket 3 (fourth bucket) of the 4-bucket classification for 10-day forward return predicted by EUR universe OHLC moving average model
+quantile4_label3_probability_r20,MATRIX,0.0,0,0,Model probability for label 3 in quantile 4 for 20-day prediction.
+quantile4_predicted_label_r10,MATRIX,0.0,0,0,Quantile label (bucket integer 0 to 3) for 10-day forward return in 4-bucket classification for EUR region using ohlc_ma model
+quantile4_predicted_label_r20,MATRIX,0.0,0,0,Quantile label (bucket assignment) from 4-bucket classification model for 20-day forward return for European stocks using OHLC and moving average data
+quantile5_label0_probability_r10,MATRIX,0.0,0,0,Log-probability for bucket 0 (lowest quantile) of the 5-bucket classification for 10-day forward return predicted by EUR universe OHLC moving average model
+quantile5_label0_probability_r20,MATRIX,0.0,0,0,Model probability for label 0 in quantile 5 for 20-day prediction.
+quantile5_label1_probability_r10,MATRIX,0.0,0,0,Log-probability for bucket 1 (second lowest quantile) of the 5-bucket classification for 10-day forward return predicted by EUR universe OHLC moving average modâ¦
+quantile5_label1_probability_r20,MATRIX,0.0,0,0,Model probability for label 1 in quantile 5 for 20-day prediction.
+quantile5_label2_probability_r10,MATRIX,0.0,0,0,Log-probability for bucket 2 (middle bucket) of the 5-bucket classification for 10-day forward return predicted by EUR universe OHLC moving average model
+quantile5_label2_probability_r20,MATRIX,0.0,0,0,Model probability for label 2 in quantile 5 for 20-day prediction.
+quantile5_label3_probability_r10,MATRIX,0.0,0,0,Model probability for label 3 in quantile 5 for 10-day prediction.
+quantile5_label3_probability_r20,MATRIX,0.0,0,0,Log-probability for the 5-bucket classification model's 4th bucket (index 3) predicting 20-day forward return for European stocks using OHLC and moving averageâ¦
+quantile5_label4_probability_r10,MATRIX,0.0,0,0,Log-probability for bucket 4 (highest quantile) of the 5-bucket classification for 10-day forward return predicted by EUR universe OHLC moving average model
+quantile5_label4_probability_r20,MATRIX,0.0,0,0,Log-probability for the 5-bucket classification model's 5th bucket (index 4) predicting 20-day forward return for European stocks using OHLC and moving averageâ¦
+quantile5_predicted_label_r10,MATRIX,0.0,0,0,Quantile label (bucket integer between 0 and 4) for 10-day forward return in 5-bucket classification for EUR region using ohlc_ma model
+quantile5_predicted_label_r20,MATRIX,0.0,0,0,Quantile label (bucket index 0 to 4) for the 20-day forward return prediction with 5 quantile buckets in the European universe using the OHLC moving average modâ¦
+rate_of_change_percent,MATRIX,0.0,0,0,Rate of Change Percentage; a momentum oscillator measuring the percentage change between the current price and the price N periods ago
+rate_of_change_ratio,MATRIX,0.0,0,0,Ratio of current value to value N periods ago.
+rate_of_change_ratio_100,MATRIX,0.0,0,0,Rate of change ratio scaled by 100.
+rate_of_change_value,MATRIX,0.0,1,1,Rate of change; a momentum oscillator that measures the percentage change in price over a specified period
+relative_strength_index_value,MATRIX,0.0,0,0,Relative Strength Index; a momentum oscillator that measures the speed and change of price movements to identify overbought or oversold conditions
+simple_moving_average_score,MATRIX,0.0,0,0,Simple Moving Average; average price over a specified number of periods
+simple_moving_average_value,MATRIX,0.0,0,0,Moving Average; a commonly used technical indicator that smooths price data to identify trends
+time_series_forecast_value,MATRIX,0.0,0,0,Forecasted value using linear regression on time series.
+triangular_moving_average_value,MATRIX,0.0,0,0,Moving average using triangular weighting scheme.
+triple_exponential_oscillator,MATRIX,0.0,1,1,Oscillator based on triple-smoothed exponential moving average.
+true_range_value,MATRIX,0.0,0,0,Largest difference among high; low; and previous close.
+typical_price_value,MATRIX,0.0,0,0,Average of high; low; and close prices for the period.
+weighted_close_price_value,MATRIX,0.0,0,0,Weighted average of high; low; and close prices.
+weighted_moving_average_value,MATRIX,0.0,0,0,Moving average with weights assigned to each data point in the window.
+williams_percent_r_value,MATRIX,0.0,0,0,Williams %R; a momentum indicator measuring overbought or oversold levels
+window_maximum_value,MATRIX,0.0,0,0,Highest value observed in the selected time window.
+window_midpoint_value,MATRIX,0.0,0,0,Middle value between highest and lowest in the window.
+window_minimum_value,MATRIX,0.0,2,4,Minimum value in a specified period or dataset

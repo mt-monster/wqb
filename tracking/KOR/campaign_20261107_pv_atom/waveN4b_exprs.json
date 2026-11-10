@@ -1,0 +1,4 @@
+[
+ "subtract(group_rank(ts_mean(vec_avg(region_valuation_percentile_rank), 22), subindustry), 0.5)",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(global_valuation_percentile_rank), 22), sector))"
+]

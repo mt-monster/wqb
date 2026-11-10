@@ -3,7 +3,7 @@
 
 ★ 判据：对已回测的 alpha 查 prod 直方图，看 [0.7,0.8) 桶的 n 值：
     n=0  ⇔ 该族存在过线窗口，值得扫窗口网格
-    n>=1 ⇔ 该族无论怎么调窗口都过不了 0.70（单钉子卡死）
+    n>=1 ⇔ 窗口杠杆死：怎么调窗口都过不了 0.70（仅判死窗口手法；候选须先归因后定向破墙，非直接判死）
   实证：d50（10/10）+ d53（6/6）+ d54（4/4）= 16/16 精确。
 
 用法:
@@ -136,7 +136,7 @@ async def main():
             d = await fetch_prod(brain, aid)
             mx = (d.get("schema") or {}).get("max", d.get("max"))
             n = bucket_n(d)
-            verdict = "?" if n is None else ("SCAN(过线可期)" if n == 0 else "DEAD(单钉子卡死)")
+            verdict = "?" if n is None else ("SCAN(过线可期)" if n == 0 else "DEAD(窗口死,先归因后破墙)")
             bs = all_buckets(d) if a.all_buckets else []
             return aid, mx, n, verdict, bs
 

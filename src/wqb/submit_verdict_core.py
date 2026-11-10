@@ -70,10 +70,21 @@ def is_already_submitted(detail: Dict[str, Any]) -> bool:
 
 
 def is_ppa_alpha(detail: Dict[str, Any]) -> bool:
-    """PPA 判定：type=PPA 或带 PowerPoolSelected 标签（CLI 旧实现漏了标签，与 MCP 不一致）。"""
+    """PPA **通道**判定：``type=PPA`` 或带 ``CH_PPA`` 标签。
+
+    ★ 2026-11-10 修正：``PowerPoolSelected`` **不是**通道证据，它是 Power Pool
+    **成分开关**——平台会给 REGULAR/RA 提交成功的 alpha 自动追加（``P0obGoQJ``
+    实证），用户也可在提交后增删（11-10 对 ``O07AMoKR`` / ``JjeMlmXA`` 的
+    PATCH 实证：增删标签均不改变 ``themes``，也不改变 ``type``）。旧实现据此判
+    PPA，会把带平台标签的 RA alpha 全部误标，并让 ``ppa_bonus`` 多并入 PPA
+    专有失败项。通道只认 ``type`` 与 ``CH_PPA``。
+
+    注意：``CH_PPA`` 是历史 PPA 提交打的通道标签，与当期是否计入 CPPAP 无关；
+    当期资格另看平台 ``themes`` 是否命中当期 Power Pool 主题。
+    """
     if str(detail.get("type") or "").upper() == "PPA":
         return True
-    return any("PowerPoolSelected" in str(t) for t in (detail.get("tags") or []))
+    return "CH_PPA" in [str(t) for t in (detail.get("tags") or [])]
 
 
 def normalize_submit_layer(status_code: Optional[int], body: Any) -> List[Dict[str, Any]]:

@@ -1,0 +1,11 @@
+id,type,cov,uc,ac,desc
+oth296_call_time,VECTOR,0.0,0,0,UTC date and time of the earnings call
+oth296_confidence,VECTOR,0.0,0,0,Normalized confidence of the sentiment classification derived from the Prob_ fields; ranges from 0 to 1
+oth296_prob_neg,VECTOR,0.0,0,0,Raw probability that the topic sentiment is negative; POS/NTR/NEG probabilities sum to 1
+oth296_prob_ntr,VECTOR,0.0,1,1,Raw probability that the topic sentiment is neutral; POS/NTR/NEG probabilities sum to 1
+oth296_prob_pos,VECTOR,0.0,1,1,Raw probability that the topic sentiment is positive; POS/NTR/NEG probabilities sum to 1
+oth296_received_time,VECTOR,0.0,0,0,UTC timestamp when Alexandria received the transcript text
+oth296_sentiment,VECTOR,0.0,0,0,Trinary sentiment label for the section/topic based on highest probability: 1=positive; 0=neutral; -1=negative
+oth296_topic_count,VECTOR,0.0,0,0,Number of times the identified topic is discussed within the section
+oth296_word_count,VECTOR,0.0,0,0,Number of words in the transcript section
+oth296_wqreceivetime,VECTOR,0.0,0,0,Epoch time added by WQ.

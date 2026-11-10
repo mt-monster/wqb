@@ -89,6 +89,18 @@ def production_db_path() -> str:
     return ""
 
 
+def under_pytest_isolation() -> bool:
+    """pytest 运行中且未显式放行真实库 —— 供只读探针复用的**同一份**判定。
+
+    `PYTEST_CURRENT_TEST` / `WQB_ALLOW_REAL_DB` 的语义只在这里定义一次；
+    `submit_alpha` 之类的只读工具直接调本函数，避免判定在多处各写一份后分叉。
+    """
+    return (
+        "PYTEST_CURRENT_TEST" in os.environ
+        and os.environ.get("WQB_ALLOW_REAL_DB") != "1"
+    )
+
+
 def reject_production_db_under_tests(path: Any, *, entry: str) -> None:
     """结果层硬闸：**pytest 运行期间**不得拿生产 ``data/wqb.db`` 的**可写**连接。
 

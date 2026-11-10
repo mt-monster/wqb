@@ -1,0 +1,6 @@
+id,type,cov,uc,ac,desc
+anl47_indicator,MATRIX,1.0,37,51,Composite alpha indicator scaled 1â10; with higher values indicating stronger buy consensus
+anl47_rawalphadecay,MATRIX,0.5293,8,9,Raw component measuring impact of idea age or decay
+anl47_rawexperts,MATRIX,0.5293,7,7,Contribution of author historical performance to the raw signal
+anl47_rawsentiment,MATRIX,0.5293,29,33,Raw component reflecting long or short idea counts and open or closed status
+anl47_totalrawsignal,MATRIX,0.5293,33,45,Sum of raw components: sentiment + alpha decay + earnings + experts

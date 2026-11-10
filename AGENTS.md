@@ -886,6 +886,18 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   `data/wqb.db` 的 `datasets` 表**同样不是分母**：不分 universe/delay（实测 EUR 225 > 平台 173、USA 354 > 286）且混有由表达式串生成的伪数据集行，而 CHN 21 行 / JPN 19 行的 `category` 整列为空。
   判死 / 封盘前必须跑 `python tools/gates/category_coverage_audit.py --region <R> --universe <U> --delay 1 --category <CAT>`：`EXHAUSTED`(exit 0) 才可宣称穷尽；`NOT_EXHAUSTED` 的正确表述是「已测 M/N」，剩余差集须先入场。
   三层分工：本闸「该面下的数据集是否都进过场」→ `full_coverage_gate.py`「单个数据集内部字段/模板族/算子是否扫完」→ `wave_gate.py`「单条表达式是否合法」。
+- **★ 覆盖闸必须可逆、结论必须带 scope（2026-11-09 GBR 根因固化；实现在 `tools/gates/audit_dataset_coverage.py` 与 `category_coverage_audit.py --field-audit`）**：两条互相独立的根因，靠「再写一段说明」治不好，必须落成可执行门。
+  ① **数据集级 `coverage` 不是数据存在性判据**，它是不可逆硬拦截——它一旦砍掉一个集，后面的语义闸 / 近静态闸 / 模板设计**永远不会被评估**，而且静默（不报错、不告警，只留一个「跳过」）。GBR 实证反例 `techindi_model`：数据集级 `coverage=0`、真实字段 **399** 个、贡献该战役 10 席中的 2 席与全部 GOLD2 模板。⇒ 可用性判据只能是 **field 级**（`/data-fields` 真返回字段 + 字段 `coverage`）或一条探针看 `longCount/shortCount`。
+  ② **分子也要背书**：`category_coverage_audit.py` 2026-11-06 只修好了分母；`--tested/--tested-file` 声明的判死清单当时**没有任何 field 级验证**，「cov=0 + 档案里写一句已判死」即可静默入门。现在两条命令必须成对跑：先 `python tools/gates/audit_dataset_coverage.py --region R --universe U --delay D --cache <audit.json> --md <audit.md>`，再 `category_coverage_audit.py ... --field-audit <audit.json>`。只有 `TESTED`（我的 alpha `code` 真引用该集字段）或 `NO_DATA`（field 级实查确实无数据）算**已排除**，其余剥出分子、记入 `reversible_assumptions`，verdict 转 `NOT_EXHAUSTED`。
+  ③ **措辞门**：报告里出现「穷尽 / 数学不可达 / 上限 N 席 / 不再有未探轴」这类绝对断言时，**附近 4 行内必须有 scope**（样本来源 + 截断条件），否则 `audit_dataset_coverage.py --lint-report <md>` exit 1。**抽样被截断，结论就必须跟着截断**——用一个把储备排除在外的样本去证明储备不存在，是构造性偏倚，不是证据。
+  ④ 判据来源纪律：「档案里有记载」≠「挖过」（那是自指验证）；本地 `field_profile.n_tests` **不含 MCP 直连仿真**、`field_profile_full` 无 GBR 数据，两者都不作覆盖度判据；「最近 N 波 0 新增」若 N 波全抽样自同一个被前置闸截断的池子，只能叫「当前池的边际产出为 0」。
+  ⑤ **「必须探针」必须有执行器，否则门只是告示**：门判出的 `UNTESTED_BLIND` 由 `tools/probe/dataset_data_probe.py` 执行——每集一条最小仿真 `rank(ts_backfill(<字段>,250))`，**刻意 `neutralization=NONE`**（`rank` 恒正、不过中性化 ⇒ `longCount` 直接等于「本区有数据的股票数」；用 SUBINDUSTRY 会把常数型字段抹成 0 持仓、误判成没数据）。产物经 `audit_dataset_coverage.py --probe-results` 回灌，状态落成 `TESTED` / `NO_DATA`；探针失败留 `PROBE_FAILED` 并**继续阻断 `closure` 门**。
+     ★ **读不到 `longCount/shortCount` 绝不许写成「没数据」**：2026-11-09 首版正是在此处把 `lc=None` 算成 `data_present=False`，同一类假证据换了个位置复现 —— 判据实现必须 fail-closed 到 `data_present=null` + `PROBE_FAILED`。
+  ⑥ **SOP 文本本身也是根因（2026-11-09 补充）**：工具修好、报告措辞修好，但 skill 里那句「`coverage < 0.6` ⇒ 永久剔除」还在，下一次开波就会照着它重犯 —— **写在 SOP 里的纪律 = 下一个 agent 的默认动作**。`audit_dataset_coverage.py --lint-skills` 扫 `Claude/skills/**/*.md`，命中「`cov/coverage < 阈值` + 剔除/判死/直接排除/作废」即 exit 1；同行带 `cov-aux-ok` 或反例语境（已废止 / 反例 / 不得 / 禁止 / 误判 / 不可判 / 已修 / 修正 / 不再）才豁免。GBR 三条已改（`SKILL.md` 第 1 层 `UNUSABLE` 行废止 / 第 0 步画像闸移出 cov / `references/_probe-sop.md` 第 0 步），其它区域 6 条历史欠账登记在 `tools/gates/_covskill_allow.json`（只许缩小，不许为新违规扩充）。
+  ⑦ **证据通道自己也要标盲区（2026-11-09 同批收尾，两个实例）**：用一条有盲区的通道去下一条不标盲区的结论，与前五条同构。
+  实例一 `pull_pyramid()` 形态 B 把每条记录的 `alphaCount` **跨 delay 求和**，于是 D1 的点亮状态被套到 D0 —— D0 审计误报「45 集已点亮塔 ⇒ 排除」，实测 D0 十四类塔全为 0，修后未探集由 6 变 **28**。凡按维度（delay / universe / region）聚合的计数，必须显式过滤该维度并在返回体回显 `delay_filtered`。
+  实例二「挖过没」证据源只有 `db:expressions` / `db:text`，而 **MCP 直连仿真（`create_simulation` / `create_multi_simulation`）不写这张表** ⇒ 本轮自己跑的 MCP 波次对工具完全隐形，报告差点写成「一次挖掘尝试都没有」。
+  ⇒ 纪律：任何「未探 / 未测 / 没挖过」清单，必须同时标注**它由哪条证据通道得出**与该通道**对什么盲视**（工具落成 `scope.evidence_blind_spots` 并渲染进 MD）；否则下一步必然拿「我的台账里没有」冒充「没人跑过」。
 - **live 论坛路径已端到端跑通（2026-10-26）**：此前**从未跑通过**——先是 `load_creds(None)` 永远 TypeError（所有真实调用落进「鉴权失败 → 记成无解」）；
   2026-10-26 又逮到第二处：`forum_research.resolve_id()` 返回 `(post_id, is_comment, url)` 三元组，被整个当 pid 拼进
   `/community/posts/{pid}.json` ⇒ 平台一律非 200，表现为「搜到 N 条 / 读 0 条」的 `read_failed`（实测 48 命中 / 37 读全灭 / 0 正文）。

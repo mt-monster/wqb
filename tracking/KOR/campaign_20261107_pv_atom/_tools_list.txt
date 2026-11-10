@@ -1,0 +1,73 @@
+﻿manage_config  —  Manage configuration settings - get or update configuration.
+authenticate_brainlabs  —  Sign in to BRAIN Labs and return the live AWS WorkSpaces deepLink session URL.
+emit_labs_script  —  Generate the pasteable BRAIN Labs data-analysis script for a dataset's MATRIX fields.
+ingest_labs_result  —  Parse a BRAIN Labs data-analysis result (a JSON string or a file path) and return it.
+authenticate  —  Authenticate with WorldQuant BRAIN platform.
+get_events  —  Get available events and competitions.
+get_leaderboard  —  Get leaderboard data.
+get_user_profile  —  Get user profile information.
+get_user_activities  —  Get user activity diversity data.
+get_pyramid_multipliers  —  Get current pyramid multipliers showing BRAIN's encouragement levels.
+get_pyramid_alphas  —  Get user's current alpha distribution across pyramid categories.
+get_user_competitions  —  Get list of competitions that the user is participating in.
+get_competition_details  —  Get detailed information about a specific competition.
+get_competition_agreement  —  Get the rules, terms, and agreement for a specific competition.
+get_platform_setting_options  —  Discover valid simulation setting options (instrument types, regions, delays, universes, neutralization).
+performance_comparison  —  Get before-and-after performance comparison data for an alpha.
+get_daily_and_quarterly_payment  —  Get daily and quarterly payment information from WorldQuant BRAIN platform.
+create_simulation  —  Create a new simulation on BRAIN platform.
+create_multi_simulation  —  🚀 Create multiple regular alpha simulations on BRAIN platform in a single request.
+batch_create_simulations  —  🎯 一次调用提交 N 个“各自独立设置”的仿真（异步，立即返回全部 location）。
+harvest_multisim_alphas  —  一键收批 multisim 全部 alpha 详情（并行拉取，替代逐个 get_alpha_details）。
+lookINTO_SimError_message  —  Fetch and parse error/status from multiple simulation locations (URLs).
+fix_vector_fields  —  本地预检并自动修复：把表达式中裸用的 VECTOR(event) 字段裹上 vec_* 聚合。
+batch_get_alpha_metrics  —  批量获取 alpha 指标（S4 预筛用）.
+get_alpha_details  —  Get detailed information about an alpha.
+get_alpha_pnl  —  Get PnL (Profit and Loss) data for an alpha.
+get_user_alphas  —  Get user's alphas with advanced filtering, pagination, and sorting.
+get_alpha_yearly_stats  —  Get yearly statistics for an alpha.
+set_alpha_properties  —  Note: Update alpha properties (name, color, tags, descriptions).
+get_record_sets  —  List available record sets for an alpha.
+get_record_set_data  —  Get data from a specific record set.
+get_datasets  —  Get available datasets for research.
+get_datafields  —  Get available data fields for alpha construction.
+value_factor_trendScore  —  Compute and return the diversity score for REGULAR alphas in a submission-date window.
+get_operators  —  Get available operators for alpha creation.
+run_selection  —  Run a selection query to filter instruments.
+get_documentations  —  Get available documentations and learning materials.
+recommend_datasets  —  Recommend datasets for alpha construction with unlit pyramid priority:
+get_documentation_page  —  Retrieve detailed content of a specific documentation page/article.
+validate_expressions  —  Validate field identifiers in alpha expressions before batch submission.
+preflight_expressions  —  表达式一站式预检：字段校验 + VECTOR 自动修复（合并 validate_expressions + fix_vector_fields）.
+check_correlation  —  Check alpha correlation against the production pool and/or self pool.
+check_self_correlation  —  Validate self-correlation with the local incremental-cache calculation.
+compute_mutual_correlation  —  Compute pairwise ("mutual") correlation AMONG a given set of your alphas.
+get_messages  —  Get messages for the current user with optional pagination.
+get_glossary_terms  —  Get glossary terms from WorldQuant BRAIN forum.
+search_forum_posts  —  Search forum posts on WorldQuant BRAIN support site.
+read_forum_post  —  Get a specific forum post by article ID.
+get_spc_submissions  —  List the current user's SPC (Systematic Predictions Challenge) prompt submissions.
+create_spc_submission  —  Create a new SPC (Systematic Predictions Challenge) prompt submission.
+set_spc_submission_weight  —  Set the weight of an existing SPC submission. Setting weight to 0 withdraws it.
+get_spc_leaderboard  —  Get the SPC (Systematic Predictions Challenge) monthly leaderboard.
+workflow_list_nodes  —  列出所有可用的 workflow 节点及其元数据.
+workflow_execute  —  执行指定 workflow 节点.
+workflow_batch_track  —  S3 批量回测跟踪（batch_track 节点快捷方式）.
+workflow_submit_alpha  —  提交 Alpha 到平台（submit_alpha 节点快捷方式）.
+workflow_superalpha  —  构建并提交 SuperAlpha（superalpha 节点快捷方式）.
+workflow_judge  —  Alpha 六步闸门判定（judge 节点快捷方式）——**只判定，不提交**。
+workflow_gem  —  GEM 表达式生成（gem 节点快捷方式）.
+workflow_campaign  —  S1-S6 战役阶段执行（campaign 节点快捷方式）.
+workflow_feature_engineering  —  S1-S3 特征工程流程（feature_engineering 节点快捷方式）.
+workflow_chain  —  按顺序执行一串 workflow 节点（execute_chain 的 MCP 入口）.
+workflow_structural_reconstruct  —  结构重构变体生成与效果追踪（structural_reconstruct 节点快捷方式）.
+workflow_task_status  —  查询 workflow 异步后台任务的状态（2026-09-06 新增）.
+operator_audit  —  审计算子安全性：catalog vs 平台实测算子差异 + 表达式幽灵算子检测.
+batch_status  —  查询回测批次/子任务状态（单次查询，非轮询）.
+submit_verdict  —  提交层判定（**否决权威**，只能拦不能放）：模拟层 checks + Failed-count 资格门 + GET /submit 双视图.
+sa_probe  —  SuperAlpha 组件池探针（≥10 ACTIVE REGULAR 硬前置）.
+submit_batch  —  批量**派发** alpha 表达式去回测（REST 直连 `POST /simulations`）.
+get_proxy_mode  —  查看当前代理模式（可选联网体检）。
+set_proxy_mode  —  一键切换代理模式（本进程内热生效，无需重启服务）。
+
+[http://127.0.0.1:8000/mcp] 共 71 个工具

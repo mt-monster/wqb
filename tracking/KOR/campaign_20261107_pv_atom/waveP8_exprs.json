@@ -1,0 +1,12 @@
+[
+  "trade_when(ts_arg_max(count_institutional_holders_security, 90) < 33, signed_power(ts_quantile(divide(count_institutional_buyers_security, ts_mean(count_institutional_holders_security, 72)), 840, driver=\"gaussian\"), 1.6), -1)",
+  "trade_when(ts_arg_max(count_institutional_holders_security, 66) < 33, signed_power(ts_quantile(divide(count_institutional_buyers_security, ts_mean(count_institutional_holders_security, 72)), 840, driver=\"gaussian\"), 1.6), -1)",
+  "trade_when(ts_arg_max(count_institutional_holders_security, 90) < 22, signed_power(ts_quantile(divide(count_institutional_buyers_security, ts_mean(count_institutional_holders_security, 72)), 840, driver=\"gaussian\"), 1.6), -1)",
+  "trade_when(ts_arg_max(count_institutional_holders_security, 90) < 33, ts_quantile(divide(count_institutional_buyers_security, ts_mean(count_institutional_holders_security, 72)), 840, driver=\"gaussian\"), -1)",
+  "trade_when(ts_arg_max(count_institutional_holders_security, 90) < 33, signed_power(ts_quantile(divide(count_institutional_buyers_security, ts_mean(count_institutional_holders_security, 72)), 504, driver=\"gaussian\"), 1.6), -1)",
+  "trade_when(ts_arg_max(count_institutional_buyers_security, 90) < 33, signed_power(ts_quantile(divide(count_institutional_buyers_security, ts_mean(count_institutional_holders_security, 72)), 840, driver=\"gaussian\"), 1.6), -1)",
+  "group_rank(divide(subtract(count_institutional_buyers_security, count_institutional_sellers_security), ts_mean(count_institutional_holders_security, 72)), subindustry)",
+  "group_rank(divide(count_institutional_buyers_security, add(count_institutional_sellers_security, 1)), subindustry)",
+  "group_rank(ts_av_diff(count_institutional_holders_security, 250), subindustry)",
+  "trade_when(ts_arg_max(count_institutional_holders_security, 90) < 33, group_rank(signed_power(ts_quantile(divide(count_institutional_buyers_security, ts_mean(count_institutional_holders_security, 72)), 840, driver=\"gaussian\"), 1.6), subindustry), -1)"
+]

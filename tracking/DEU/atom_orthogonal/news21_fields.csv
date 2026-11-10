@@ -1,0 +1,16 @@
+id,type,cov,uc,ac,desc
+event_end_date_is_estimated,VECTOR,0.0,0,0,Flag indicating whether the event end date is estimated rather than confirmed
+event_end_date_type,VECTOR,0.0,0,0,Type or classification of the event's end date (e.g.; actual; estimated).
+event_end_time,VECTOR,0.0,0,0,Local time at which the event ends
+event_fiscal_year,VECTOR,0.0,0,0,The fiscal year associated with the earnings event.
+event_frequency_label,MATRIX,0.0,3,3,Integer count of StreetEvents mentions or hits for the company during the represented period or date
+event_quarter_label,VECTOR,0.0,1,1,Label or code indicating the quarter associated with the event (e.g.; Q1; Q2).
+event_start_date_is_estimated,VECTOR,0.0,0,0,Flag indicating whether the event start date is estimated rather than confirmed
+event_start_date_type,VECTOR,0.0,0,0,Type or classification of the event's start date (e.g.; actual; estimated).
+event_start_time_2,VECTOR,0.0,0,0,Local time at which the event starts
+nws21_event_freq,MATRIX,0.0,2,2,Count of events
+nws21_neg_sc,MATRIX,0.0,4,4,Negative word count divided by total word count
+nws21_pos_sc,MATRIX,0.0,3,3,Positive word count divided by total word count
+nws21_qerf_gen,MATRIX,0.0,0,0,Count of negative words
+nws21_qerf_sop,MATRIX,0.0,0,0,Count of positive words
+nws21_tone_tone_sc,MATRIX,0.0,0,0,Normalized tone: (positive word count minus negative word count) divided by (positive word count plus negative word count)

@@ -1,0 +1,43 @@
+id,type,cov,uc,ac,desc
+closing_price_dlr1,MATRIX,1.0,6,15,Daily closing price for the security; D1-delayed; point-in-time; event-masked; split- and FX-adjusted
+closing_price_dlr2,MATRIX,1.0,21,68,Closing price for the trading day; split- and FX-adjusted; point-in-time and D1-delayed; event-masked
+closing_price_dlr3,MATRIX,1.0,3,3,Closing price for the day (split/FX-adjusted; PIT; D1-delayed; event-masked)
+five_day_total_return_dlr1,MATRIX,1.0,6,13,Stock return over the last 5 trading days for Americas-region equities; D1-delayed; point-in-time; split/FX-adjusted and event-masked (rolling window masked ifâ¦
+five_day_total_return_dlr2,MATRIX,1.0,12,18,Stock return over the last 5 trading days for Europe; D1-delayed and point-in-time; split/FX-adjusted and event-masked (masked if any day in the window is maskeâ¦
+five_day_total_return_dlra1,MATRIX,1.0,1,1,Rolling stock return over the last 5 trading days for Europe; D1-delayed; point-in-time; split/FX-adjusted; masked if any day in the window is masked
+highest_price_dlr1,MATRIX,1.0,6,9,Daily highest traded price (session high) for the security; D1-delayed; point-in-time; event-masked; split- and FX-adjusted
+highest_price_dlr2,MATRIX,1.0,8,35,Highest traded price of the day; split- and FX-adjusted; point-in-time and D1-delayed; event-masked
+highest_price_dlr3,MATRIX,1.0,1,1,Highest trade price of the day (split/FX-adjusted; PIT; D1-delayed; event-masked)
+lowest_price_dlr1,MATRIX,1.0,3,7,Daily lowest traded price (session low) for the security; D1-delayed; point-in-time; event-masked; split- and FX-adjusted
+lowest_price_dlr2,MATRIX,1.0,6,17,Lowest traded price of the day; split- and FX-adjusted; point-in-time and D1-delayed; event-masked
+lowest_price_dlr3,MATRIX,1.0,3,3,Lowest trade price of the day (split/FX-adjusted; PIT; D1-delayed; event-masked)
+market_capitalization_dlr1,MATRIX,1.0,8,12,Market capitalization as of the as-of-date close (price Ã shares outstanding); D1-delayed; point-in-time; event-masked
+market_capitalization_dlr2,MATRIX,1.0,26,34,Europe region market capitalization as of close (price times shares outstanding); D1-delayed; point-in-time; currency- and split-adjusted; event-masked
+market_capitalization_dlr3,MATRIX,1.0,3,5,Market capitalization as of the as-of-date close; computed as price Ã shares outstanding (PIT; D1-delayed; event-masked)
+one_day_total_return_dlr1,MATRIX,1.0,2,2,Daily (1-day) stock return for Americas-region equities; D1-delayed; point-in-time; split/FX-adjusted and event-masked
+one_day_total_return_dlr2,MATRIX,1.0,14,21,Daily stock return (1 trading day) for Europe; D1-delayed and point-in-time; split/FX-adjusted and event-masked
+one_day_total_return_dlra1,MATRIX,1.0,3,5,Total return for the most recent trading day.
+one_twenty_day_total_return_dlr1,MATRIX,0.9951,0,0,Stock return over the last 120 trading days for Americas-region equities; D1-delayed; point-in-time; split/FX-adjusted and event-masked (rolling window masked iâ¦
+one_twenty_day_total_return_dlr2,MATRIX,0.9954,18,37,Stock return over the last 120 trading days for Europe; D1-delayed and point-in-time; split/FX-adjusted and event-masked (masked if any day in the window is masâ¦
+one_twenty_day_total_return_dlra1,MATRIX,0.9891,1,8,Rolling stock return over the last 120 trading days for Europe; D1-delayed; point-in-time; split/FX-adjusted; masked if any day in the window is masked
+opening_price_dlr1,MATRIX,1.0,1,4,Daily opening price for the stock in the Europe region (D1-delayed; point-in-time; split- and FX-adjusted; event-masked)
+opening_price_dlr2,MATRIX,1.0,7,19,Opening price for the trading day; split- and FX-adjusted; point-in-time and D1-delayed; event-masked
+opening_price_dlr3,MATRIX,1.0,1,1,Opening price for the day (split/FX-adjusted; PIT; D1-delayed; event-masked)
+shares_outstanding_dlr1,MATRIX,1.0,3,9,Shares outstanding for the stock as of the as-of-date in the Europe region (D1-delayed; point-in-time; masked if unavailable)
+shares_outstanding_dlr2,MATRIX,1.0,2,3,Shares outstanding as of the as-of-date; point-in-time and D1-delayed; masked when unavailable or invalid
+shares_outstanding_dlr3,MATRIX,1.0,4,16,Shares outstanding as of the as-of-date (PIT; D1-delayed; event-masked)
+sixty_day_total_return_dlr1,MATRIX,0.9999,1,4,Stock return over the last 60 trading days for Americas-region equities; D1-delayed; point-in-time; split/FX-adjusted and event-masked (rolling window masked ifâ¦
+sixty_day_total_return_dlr2,MATRIX,0.9999,10,11,Stock return over the last 60 trading days for Europe; D1-delayed and point-in-time; split/FX-adjusted and event-masked (masked if any day in the window is maskâ¦
+sixty_day_total_return_dlra1,MATRIX,0.9993,4,8,Rolling stock return over the last 60 trading days for Europe; D1-delayed; point-in-time; split/FX-adjusted; masked if any day in the window is masked
+trading_volume_dlr1,MATRIX,1.0,5,10,Total traded volume for the day; D1-delayed; point-in-time; event-masked per calendar and events
+trading_volume_dlr2,MATRIX,1.0,28,96,Europe region daily traded volume; D1-delayed; point-in-time; with event and calendar masking
+trading_volume_dlr3,MATRIX,1.0,1,1,Daily traded share volume for the security (PIT; D1-delayed; event-masked)
+twenty_day_total_return_dlr1,MATRIX,1.0,3,11,Stock return over the last 20 trading days for Americas-region equities; D1-delayed; point-in-time; split/FX-adjusted and event-masked (rolling window masked ifâ¦
+twenty_day_total_return_dlr2,MATRIX,1.0,14,33,Stock return over the last 20 trading days for Europe; D1-delayed and point-in-time; split/FX-adjusted and event-masked (masked if any day in the window is maskâ¦
+twenty_day_total_return_dlra1,MATRIX,1.0,4,6,Rolling stock return over the last 20 trading days for Europe; D1-delayed; point-in-time; split/FX-adjusted; masked if any day in the window is masked
+two_fifty_day_total_return_dlr1,MATRIX,0.9816,3,4,Stock return over the last 250 trading days for Americas-region equities; D1-delayed; point-in-time; split/FX-adjusted and event-masked (rolling window masked iâ¦
+two_fifty_day_total_return_dlr2,MATRIX,0.9836,8,11,Stock return over the last 250 trading days for Europe; D1-delayed and point-in-time; split/FX-adjusted and event-masked (masked if any day in the window is masâ¦
+two_fifty_day_total_return_dlra1,MATRIX,0.9651,1,1,Rolling stock return over the last 250 trading days for Europe; D1-delayed; point-in-time; split/FX-adjusted; masked if any day in the window is masked
+volume_weighted_avg_price_dlr1,MATRIX,0.9996,4,7,Daily volume-weighted average price; D1-delayed; point-in-time; event-masked; split- and FX-adjusted
+volume_weighted_avg_price_dlr2,MATRIX,0.9996,7,18,Europe region daily volume-weighted average price; D1-delayed; point-in-time; split- and currency-adjusted; event-masked
+volume_weighted_avg_price_dlr3,MATRIX,0.9995,2,2,Volume-weighted average price for the day (split/FX-adjusted; PIT; D1-delayed; event-masked)

@@ -1,0 +1,101 @@
+{
+ "success": true,
+ "multisimulation_id": "oycrP8Rf5fz9sLt6s672Le",
+ "total": 10,
+ "complete": 0,
+ "error_count": 10,
+ "alphas": [
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "expression": "",
+   "error": "No alpha_id in sim response"
+  }
+ ],
+ "errors": [
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  },
+  {
+   "alpha_id": null,
+   "error": "No alpha_id in sim response"
+  }
+ ]
+}

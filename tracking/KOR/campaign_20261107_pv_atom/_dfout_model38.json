@@ -1,0 +1,874 @@
+{
+ "results": [
+  {
+   "id": "buyback_yield_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.9508,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Percentile rank (1-100) of the stock’s valuation attractiveness based solely on its buyback yield"
+  },
+  {
+   "id": "buyback_yield_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9508,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile rank (floating-point) of buyback yield’s contribution to relative valuation within peer group"
+  },
+  {
+   "id": "dividend_yield_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.6699,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Global percentile rank (integer 1-100) of the stock for Dividend Yield component of the Relative Valuation model — higher value = better value on this measure"
+  },
+  {
+   "id": "dividend_yield_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.6699,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile rank (floating-point) for dividend yield’s contribution to relative valuation within peer group"
+  },
+  {
+   "id": "earnings_measure_type_float",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator (floating-point) specifying the type of earnings measure used (e.g., EPS, FFO) in the intrinsic valuation"
+  },
+  {
+   "id": "ev_ebitda_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9262,
+   "userCount": 28,
+   "alphaCount": 38,
+   "description": "Floating-point normalized score showing the contribution of the EV/EBITDA ratio to the relative valuation component"
+  },
+  {
+   "id": "ev_ebitda_relative_score_main",
+   "type": "MATRIX",
+   "coverage": 0.9262,
+   "userCount": 23,
+   "alphaCount": 31,
+   "description": "Global percentile rank (integer 1-100) of the stock for the EV/EBITDA component in the Relative Valuation model — higher value means better value on this measur…"
+  },
+  {
+   "id": "ev_sales_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.9247,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile rank (1-100) of the stock’s valuation attractiveness based solely on its EV/Sales ratio"
+  },
+  {
+   "id": "forward_10yr_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.74,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Compound annual growth rate of EPS from last reported EPS to fiscal year 10, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "forward_5yr_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.74,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Compound annual growth rate of EPS from last reported EPS to fiscal year 5, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "global_relative_valuation_rank_main",
+   "type": "MATRIX",
+   "coverage": 0.9899,
+   "userCount": 17,
+   "alphaCount": 19,
+   "description": "Current global 1–100 percentile rank of the security’s valuation attractiveness in the Relative Valuation Model, combining all measures, with higher scores indi…"
+  },
+  {
+   "id": "industry_rank_price_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.6944,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "A 1-100 percentile score ranking the stock’s price/intrinsic value ratio among stocks in its industry within the same region, higher scores indicating greater u…"
+  },
+  {
+   "id": "industry_rank_price_to_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.6944,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Percentile rank (floating-point) of a stock’s price-to-intrinsic value ratio within its industry; higher scores suggest more undervaluation"
+  },
+  {
+   "id": "industry_relative_valuation_rank_main",
+   "type": "MATRIX",
+   "coverage": 0.9864,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Industry percentile rank (1-100) of the stock's valuation attractiveness within its industry, higher is better"
+  },
+  {
+   "id": "intrinsic_value_in_currency",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Intrinsic value of the security (fair value estimate) calculated by StarMine, expressed in the chosen projection currency"
+  },
+  {
+   "id": "justified_forward_pe_ratio_2",
+   "type": "MATRIX",
+   "coverage": 0.7394,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Forward 12-month P/E ratio warranted by the intrinsic valuation model, calculated as intrinsic value divided by year-ahead EPS projection"
+  },
+  {
+   "id": "long_term_assumed_annual_dividends",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Year in which the company is projected to reach steady state dividend payout"
+  },
+  {
+   "id": "long_term_assumed_annual_earnings_main",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year in which the company is projected to reach steady state earnings growth"
+  },
+  {
+   "id": "long_term_dividend_payout_ratio_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dividend payout rate the company is projected to maintain at steady state in future years"
+  },
+  {
+   "id": "long_term_earnings_growth_rate_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Earnings growth rate the company is projected to maintain at steady state in future years"
+  },
+  {
+   "id": "market_implied_5yr_eps_growth",
+   "type": "MATRIX",
+   "coverage": 0.7385,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Forward 5-year compound annual growth rate (CAGR) of EPS implied by the market price (adjusted EPS over FY1-FY5 so the calculated intrinsic value matches curren…"
+  },
+  {
+   "id": "pb_ratio_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.9907,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Contribution of price-to-book ratio to the overall relative valuation attractiveness score"
+  },
+  {
+   "id": "pb_ratio_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9907,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Floating-point percentile rank for the Price/Book ratio component in the relative valuation model"
+  },
+  {
+   "id": "pcf_ratio_relative_score",
+   "type": "MATRIX",
+   "coverage": 0.9252,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile rank (1-100) of the stock’s valuation attractiveness based solely on its price-to-cash-flow (P/CF) ratio"
+  },
+  {
+   "id": "pcf_ratio_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9252,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Percentile score (floating-point) for Price/Cash Flow ratio, measuring valuation attractiveness globally in StarMine’s model"
+  },
+  {
+   "id": "price_to_intrinsic_value_ratio",
+   "type": "MATRIX",
+   "coverage": 0.739,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of current market price to model-estimated intrinsic value; values below 1 indicate possible undervaluation"
+  },
+  {
+   "id": "projected_dividends_fy10_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 10, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy11_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimated dividends per share (DPS) for fiscal year 11 according to the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy12_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dividend per share estimate for fiscal year 12 from the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy13_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Dividend per share estimate for fiscal year 13 from the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy14_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 14, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy15_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimated dividends per share (DPS) for fiscal year 15 projected by the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy1_2",
+   "type": "MATRIX",
+   "coverage": 0.996,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 1, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy2_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 2, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy3_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 3, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy4_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartGrowth model’s estimated dividends per share (DPS) for fiscal year 4 for the security"
+  },
+  {
+   "id": "projected_dividends_fy5_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimate of dividends per share (DPS) for fiscal year 5, projected by StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy6_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividends per share for fiscal year 6 based on the intrinsic valuation model"
+  },
+  {
+   "id": "projected_dividends_fy7_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dividend per share estimate for fiscal year 7 from the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_dividends_fy9_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dividend per share estimate for fiscal year 9 from the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_earnings_fy10_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 10 for the security"
+  },
+  {
+   "id": "projected_earnings_fy11_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected EPS estimate for fiscal year 11 for the company, based on the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_earnings_fy12_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fiscal year 12 EPS estimate from the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_earnings_fy13_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 13 for the security"
+  },
+  {
+   "id": "projected_earnings_fy14_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Projected earnings per share (EPS) for fiscal year 14 from StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_earnings_fy15_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 15 for the security"
+  },
+  {
+   "id": "projected_earnings_fy2_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 2 for the security"
+  },
+  {
+   "id": "projected_earnings_fy3_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 3 for the security"
+  },
+  {
+   "id": "projected_earnings_fy4_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Projected earnings per share (EPS) for fiscal year 4 from StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_earnings_fy5_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine SmartGrowth model’s estimated earnings per share (EPS) for fiscal year 5 for the security"
+  },
+  {
+   "id": "projected_earnings_fy6_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Projected EPS estimate for fiscal year 6 for the company, based on the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_earnings_fy7_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated EPS for fiscal year 7 projected by the StarMine SmartGrowth model"
+  },
+  {
+   "id": "projected_earnings_fy9_2",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated EPS for fiscal year 9 projected by the StarMine SmartGrowth model"
+  },
+  {
+   "id": "region_rank_price_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.739,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "A 1-100 percentile score ranking the stock’s price/intrinsic value ratio relative to all stocks in its region, where a lower ratio (cheaper stock) results in a…"
+  },
+  {
+   "id": "region_rank_price_to_intrinsic_value_float",
+   "type": "MATRIX",
+   "coverage": 0.739,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Floating-point percentile rank of price/intrinsic value within the region"
+  },
+  {
+   "id": "region_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.9899,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Percentile rank (1-100) for valuation attractiveness within the given region, reflecting how the stock compares to peers according to the Relative Valuation Mod…"
+  },
+  {
+   "id": "region_relative_valuation_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9899,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Floating-point regional percentile rank of the stock in the Relative Valuation Model"
+  },
+  {
+   "id": "sector_rank_price_intrinsic_value",
+   "type": "MATRIX",
+   "coverage": 0.7382,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "A 1-100 percentile score ranking the stock’s price/intrinsic value ratio relative to all stocks in its sector within the same region, higher scores indicating g…"
+  },
+  {
+   "id": "sector_rank_price_to_intrinsic_value_float",
+   "type": "MATRIX",
+   "coverage": 0.7382,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Floating-point version of the sector-relative percentile ranking for price/intrinsic value"
+  },
+  {
+   "id": "sector_relative_valuation_rank_main",
+   "type": "MATRIX",
+   "coverage": 0.9882,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Current 1–100 percentile rank of the stock in its sector within the overall Relative Valuation Model; higher scores mean the stock is viewed as better value in…"
+  },
+  {
+   "id": "sector_relative_valuation_score_float",
+   "type": "MATRIX",
+   "coverage": 0.9882,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "Floating-point version of the sector-relative percentile rank for valuation attractiveness"
+  },
+  {
+   "id": "star_val_buyback_yield",
+   "type": "MATRIX",
+   "coverage": 0.8889,
+   "userCount": 26,
+   "alphaCount": 40,
+   "description": "Global-relative (1-100) Share-buyback Rank"
+  },
+  {
+   "id": "star_val_dividend_projection_fy1",
+   "type": "MATRIX",
+   "coverage": 0.8672,
+   "userCount": 17,
+   "alphaCount": 25,
+   "description": "DPS projection for FY1"
+  },
+  {
+   "id": "star_val_dividend_projection_fy10",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 24,
+   "alphaCount": 29,
+   "description": "DPS projection for FY10"
+  },
+  {
+   "id": "star_val_dividend_projection_fy11",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 26,
+   "alphaCount": 45,
+   "description": "DPS projection for FY11"
+  },
+  {
+   "id": "star_val_dividend_projection_fy12",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "DPS projection for FY12"
+  },
+  {
+   "id": "star_val_dividend_projection_fy13",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 22,
+   "alphaCount": 35,
+   "description": "DPS projection for FY13"
+  },
+  {
+   "id": "star_val_dividend_projection_fy14",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 20,
+   "alphaCount": 30,
+   "description": "DPS projection for FY14"
+  },
+  {
+   "id": "star_val_dividend_projection_fy15",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "DPS projection for FY15"
+  },
+  {
+   "id": "star_val_dividend_projection_fy2",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 15,
+   "alphaCount": 25,
+   "description": "DPS projection for FY2"
+  },
+  {
+   "id": "star_val_dividend_projection_fy4",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "DPS projection for FY4"
+  },
+  {
+   "id": "star_val_dividend_projection_fy5",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "DPS projection for FY5"
+  },
+  {
+   "id": "star_val_dividend_projection_fy6",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 17,
+   "alphaCount": 29,
+   "description": "DPS projection for FY6"
+  },
+  {
+   "id": "star_val_dividend_projection_fy7",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "DPS projection for FY7"
+  },
+  {
+   "id": "star_val_dividend_projection_fy8",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 15,
+   "alphaCount": 26,
+   "description": "DPS projection for FY8"
+  },
+  {
+   "id": "star_val_dividend_projection_fy9",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "DPS projection for FY9"
+  },
+  {
+   "id": "star_val_dividend_yield",
+   "type": "MATRIX",
+   "coverage": 0.7241,
+   "userCount": 15,
+   "alphaCount": 29,
+   "description": "Global-relative (1-100) P/DPS Rank"
+  },
+  {
+   "id": "star_val_earnings_measure_type",
+   "type": "MATRIX",
+   "coverage": 0.9255,
+   "userCount": 15,
+   "alphaCount": 24,
+   "description": "Measure used for Earnings (typically EPS)"
+  },
+  {
+   "id": "star_val_earnings_projection_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 29,
+   "alphaCount": 59,
+   "description": "Adjusted Earnings projection for FY1"
+  },
+  {
+   "id": "star_val_earnings_projection_fy10",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 16,
+   "alphaCount": 33,
+   "description": "Adjusted Earnings projection for FY10"
+  },
+  {
+   "id": "star_val_earnings_projection_fy11",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 17,
+   "alphaCount": 23,
+   "description": "Adjusted Earnings projection for FY11"
+  },
+  {
+   "id": "star_val_earnings_projection_fy12",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 13,
+   "alphaCount": 21,
+   "description": "Adjusted Earnings projection for FY12"
+  },
+  {
+   "id": "star_val_earnings_projection_fy13",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Adjusted Earnings projection for FY13"
+  },
+  {
+   "id": "star_val_earnings_projection_fy14",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 17,
+   "alphaCount": 23,
+   "description": "Adjusted Earnings projection for FY14"
+  },
+  {
+   "id": "star_val_earnings_projection_fy15",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 16,
+   "alphaCount": 22,
+   "description": "Adjusted Earnings projection for FY15"
+  },
+  {
+   "id": "star_val_earnings_projection_fy2",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 35,
+   "alphaCount": 68,
+   "description": "Adjusted Earnings projection for FY2"
+  },
+  {
+   "id": "star_val_earnings_projection_fy3",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 24,
+   "alphaCount": 43,
+   "description": "Adjusted Earnings projection for FY3"
+  },
+  {
+   "id": "star_val_earnings_projection_fy4",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 22,
+   "alphaCount": 55,
+   "description": "Adjusted Earnings projection for FY4"
+  },
+  {
+   "id": "star_val_earnings_projection_fy5",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 15,
+   "alphaCount": 21,
+   "description": "Adjusted Earnings projection for FY5"
+  },
+  {
+   "id": "star_val_earnings_projection_fy7",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 9,
+   "alphaCount": 14,
+   "description": "Adjusted Earnings projection for FY7"
+  },
+  {
+   "id": "star_val_earnings_projection_fy8",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 18,
+   "alphaCount": 33,
+   "description": "Adjusted Earnings projection for FY8"
+  },
+  {
+   "id": "star_val_earnings_projection_fy9",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Adjusted Earnings projection for FY9"
+  },
+  {
+   "id": "star_val_ev_sales",
+   "type": "MATRIX",
+   "coverage": 0.878,
+   "userCount": 37,
+   "alphaCount": 61,
+   "description": "Global-relative (1-100) EV/Sales Rank"
+  },
+  {
+   "id": "star_val_fwd10_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.7058,
+   "userCount": 27,
+   "alphaCount": 63,
+   "description": "Compound Annual Growth Rate from first 10 years of adjusted EPS projections"
+  },
+  {
+   "id": "star_val_fwd5_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.7058,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "Compound Annual Growth Rate from first 5 years of adjusted EPS projections"
+  },
+  {
+   "id": "star_val_implied10_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.7037,
+   "userCount": 14,
+   "alphaCount": 24,
+   "description": "10-year Compound Annual Growth Rate derived from current market price"
+  },
+  {
+   "id": "star_val_implied5_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.7037,
+   "userCount": 22,
+   "alphaCount": 31,
+   "description": "5-year Compound Annual Growth Rate derived from current market price"
+  },
+  {
+   "id": "star_val_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.9194,
+   "userCount": 155,
+   "alphaCount": 392,
+   "description": "Industry-relative (1-100) Relative Valuation Rank"
+  },
+  {
+   "id": "star_val_iv_projection",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 20,
+   "alphaCount": 28,
+   "description": "Output of the Intrinsic Value Model; Sum of discounted future dividends"
+  },
+  {
+   "id": "star_val_pb",
+   "type": "MATRIX",
+   "coverage": 0.9196,
+   "userCount": 28,
+   "alphaCount": 41,
+   "description": "Global-relative (1-100) P/Book Rank"
+  },
+  {
+   "id": "star_val_pcf",
+   "type": "MATRIX",
+   "coverage": 0.8789,
+   "userCount": 36,
+   "alphaCount": 54,
+   "description": "Global-relative (1-100) P/CF Rank"
+  },
+  {
+   "id": "star_val_pe",
+   "type": "MATRIX",
+   "coverage": 0.9165,
+   "userCount": 109,
+   "alphaCount": 219,
+   "description": "Global-relative (1-100) P/E Rank"
+  },
+  {
+   "id": "star_val_piv_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 40,
+   "alphaCount": 72,
+   "description": "Industry-relative (1-100) rank of Price / Intrinsic Value"
+  },
+  {
+   "id": "star_val_piv_ratio",
+   "type": "MATRIX",
+   "coverage": 0.7122,
+   "userCount": 50,
+   "alphaCount": 207,
+   "description": "Ratio of current price to calculated intrinsic value"
+  },
+  {
+   "id": "star_val_piv_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.7122,
+   "userCount": 43,
+   "alphaCount": 155,
+   "description": "Region-relative (1-100) rank of Price/Intrinsic Value"
+  },
+  {
+   "id": "star_val_piv_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7103,
+   "userCount": 56,
+   "alphaCount": 170,
+   "description": "Sector-relative (1-100) rank of Price / Intrinsic Value"
+  },
+  {
+   "id": "star_val_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.9249,
+   "userCount": 122,
+   "alphaCount": 300,
+   "description": "Region-relative (1-100) Relative Valuation Rank"
+  },
+  {
+   "id": "star_val_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.9217,
+   "userCount": 159,
+   "alphaCount": 306,
+   "description": "Sector-relative (1-100) Relative Valuation Rank"
+  }
+ ],
+ "count": 108,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 12,
+ "platform_count": 120,
+ "complete": true,
+ "pages_fetched": 3
+}

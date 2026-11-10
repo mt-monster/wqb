@@ -1,0 +1,11 @@
+id,type,cov,uc,ac,desc
+adjusted_employee_headcount,VECTOR,0.0,0,0,Scaled count measure used in delta panels (unitless or scaled)
+employee_headcount_2,VECTOR,0.0,0,0,Count measure for the record slice (unit = count)
+employee_inflow_count_2,VECTOR,0.0,0,0,Monthly inflow count (hires/additions during the month)
+employee_outflow_count_2,VECTOR,0.0,0,0,Monthly outflow count (departures during the month)
+employee_prestige_score_2,VECTOR,0.0,0,0,Prestige score for the role/entity (scaled metric)
+position_seniority_level_2,VECTOR,0.0,1,1,Seniority level of the position; from 1 (most junior) to 4 (most senior)
+total_salary_amount_2,VECTOR,0.0,0,0,Expected total salary for employees in the specified position at that date
+unreliable_user_count_2,VECTOR,0.0,0,0,Count of flagged bad user records
+unreliable_user_inflow_2,VECTOR,0.0,0,0,Monthly inflow count of records flagged as bad users (data quality indicator)
+unreliable_user_outflow_2,VECTOR,0.0,0,0,Monthly outflow count of records flagged as bad users (data quality indicator)

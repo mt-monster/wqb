@@ -1,0 +1,4 @@
+[
+ "multiply(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), sector), group_rank(ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22), sector))",
+ "multiply(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 10), sector), group_rank(ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22), sector))"
+]

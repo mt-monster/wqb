@@ -5,7 +5,7 @@
 <!-- profiles:cell-panel:start -->
 **状态**：probe（跟区域入场 probe-only）　**分组**：Other　**类别卡**：other
 
-**涉及数据集**：acquisition_model、dl_riskfree_returns、other36
+**涉及数据集**：acquisition_model、dl_riskfree_returns、mmp_nlp_sentiment、other36
 
 ### 回测设置（进仿真的值）
 
@@ -32,13 +32,13 @@
 - Mode B 主闸 sharpe / fitness：1.25 / 0.8（default；下限锁生效，实时值看 explain）
 - 其余阈值跟区域 thresholds.json（本组合无覆盖）
 
-### 证据（2026-10-04 只读汇总）
+### 证据（2026-11-08 只读汇总）
 
 | 回测 | RA 全过 | prod 已测 | 其中低于上限 | 判死 | 胜绩 |
 |---|---|---|---|---|---|
-| 153 | 4 | 18 | 4 | 4 | 0 |
+| 159 | 4 | 68 | 24 | 4 | 0 |
 
-主要数据集（回测数）：dl_riskfree_returns（118）、acquisition_model（21）、other36（14）
+主要数据集（回测数）：dl_riskfree_returns（118）、acquisition_model（21）、other36（14）、mmp_nlp_sentiment（6）
 
 ### S1 字段理解
 

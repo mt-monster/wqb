@@ -1,0 +1,82 @@
+[
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "hump(subtract(group_rank(divide(rsk68_weight_volatility_short,rsk68_weight_dadv),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "reverse(hump(subtract(group_rank(divide(rsk68_weight_volatility_short,rsk68_weight_dadv),industry),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "hump(subtract(group_rank(rsk68_weight_volatility_short,sector),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "group_rank(ts_zscore(ts_backfill(rsk68_weight_volatility_short,22),252),industry)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_edadv",
+    "expression": "hump(subtract(group_rank(divide(rsk68_weight_edadv,rsk68_weight_dadv),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(rsk68_weight_volatility_short,industry),0.5),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "group_rank(ts_zscore(ts_backfill(rsk68_residual_return,22),252),sector)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "reverse(group_rank(ts_zscore(ts_backfill(rsk68_weight_volatility_short,22),252),industry))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  }
+]

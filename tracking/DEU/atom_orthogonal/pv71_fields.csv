@@ -1,0 +1,9 @@
+id,type,cov,uc,ac,desc
+pairwise_price_volume_corr_score,VECTOR,0.0,0,0,A numeric value representing the strength of the relationship between two instruments based on their price and volume correlation.
+pv71_ibesest_relation,VECTOR,0.0,0,0,For each as-of-date and source European equity; the directional list (AâB) of target equities linked by an IBES estimatesâdriven event (e.g.; shared analyst estâ¦
+pv71_ibesest_score,VECTOR,0.0,0,0,score
+pv71_ibesest_score_float,VECTOR,0.0,0,0,score float
+pv71_pvvolcorr_relation,VECTOR,0.0,1,5,Directional list of target stocks (AâB) linked to the source stock on the date by a priceâvolume correlation microstructure signal
+pv71_pvvolcorr_score_float,VECTOR,0.0,0,0,score float
+relation_edge_score,VECTOR,0.0,0,0,A raw integer score representing a discrete; event-driven metric for a relationship; such as the number of analyst overlaps or co-occurring news mentions. Referâ¦
+relation_weight_normalized,VECTOR,0.0,0,0,A research-grade; continuous float weight representing the normalized significance of an event-driven relationship between two stocks. This value; referred to aâ¦

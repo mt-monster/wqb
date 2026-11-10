@@ -1,0 +1,42 @@
+[
+ {
+  "id": "anl47_indicator",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 37,
+  "alphaCount": 51,
+  "description": "Composite alpha indicator scaled 1–10, with higher values indicating stronger buy consensus"
+ },
+ {
+  "id": "anl47_rawalphadecay",
+  "type": "MATRIX",
+  "coverage": 0.5293,
+  "userCount": 8,
+  "alphaCount": 9,
+  "description": "Raw component measuring impact of idea age or decay"
+ },
+ {
+  "id": "anl47_rawexperts",
+  "type": "MATRIX",
+  "coverage": 0.5293,
+  "userCount": 7,
+  "alphaCount": 7,
+  "description": "Contribution of author historical performance to the raw signal"
+ },
+ {
+  "id": "anl47_rawsentiment",
+  "type": "MATRIX",
+  "coverage": 0.5293,
+  "userCount": 29,
+  "alphaCount": 33,
+  "description": "Raw component reflecting long or short idea counts and open or closed status"
+ },
+ {
+  "id": "anl47_totalrawsignal",
+  "type": "MATRIX",
+  "coverage": 0.5293,
+  "userCount": 33,
+  "alphaCount": 45,
+  "description": "Sum of raw components: sentiment + alpha decay + earnings + experts"
+ }
+]

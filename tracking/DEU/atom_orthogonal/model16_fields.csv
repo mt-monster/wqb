@@ -1,0 +1,9 @@
+id,type,cov,uc,ac,desc
+fscore_growth,MATRIX,0.0,0,0,Composite measuring the stockâs expected medium-term growth potential
+fscore_momentum,MATRIX,0.0,1,1,Composite momentum metric focused on recent analyst estimate revisions to identify stocks experiencing upward or downward revisions
+fscore_profitability,MATRIX,0.0,0,0,Composite ranking stocks by their ability to generate cash flows and operational profitability
+fscore_quality,MATRIX,0.0,0,0,Composite measuring the sustainability and certainty of earnings
+fscore_surface,MATRIX,0.0,0,0,Static overall âstyle surfaceâ score combining Value; Growth; Profitability; Momentum; and Quality; larger surface implies higher rank
+fscore_surface_accel,MATRIX,0.0,0,0,Acceleration (derivative) of the pentagon surface score; indicating whether the overall style surface is rising or falling versus the previous month
+fscore_total,MATRIX,0.0,0,0,Final blended score that combines the static pentagon surface score with its acceleration
+fscore_value,MATRIX,0.0,0,0,Composite assessing whether the stock is under- or overpriced using standard valuation measures (e.g.; multiples)

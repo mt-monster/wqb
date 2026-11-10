@@ -1,0 +1,37 @@
+{
+ "submitted": 4,
+ "total": 4,
+ "results": [
+  {
+   "index": 0,
+   "location": "https://api.worldquantbrain.com/simulations/1AznTefTW5fgbhPxyKOquxp",
+   "simulation_id": "1AznTefTW5fgbhPxyKOquxp",
+   "ok": true,
+   "tag": "SLOW_d0_w22"
+  },
+  {
+   "index": 1,
+   "location": "https://api.worldquantbrain.com/simulations/10hsGt1qy4OGbytJl3S88sY",
+   "simulation_id": "10hsGt1qy4OGbytJl3S88sY",
+   "ok": true,
+   "tag": "SLOW_d2_w22"
+  },
+  {
+   "index": 2,
+   "location": "https://api.worldquantbrain.com/simulations/2aAHG8bYi4v8ake17hfmkSly",
+   "simulation_id": "2aAHG8bYi4v8ake17hfmkSly",
+   "ok": true,
+   "tag": "SLOW_d4_w20"
+  },
+  {
+   "index": 3,
+   "location": "https://api.worldquantbrain.com/simulations/4x0bMjcIe4Dxann2nDiwHdm",
+   "simulation_id": "4x0bMjcIe4Dxann2nDiwHdm",
+   "ok": true,
+   "tag": "SLOW_d4_w24"
+  }
+ ],
+ "note": "Async submit: poll each location with lookINTO_SimError_message or GET /simulations/{id} until status is terminal.",
+ "async": true,
+ "polling_tool": "lookINTO_SimError_message"
+}

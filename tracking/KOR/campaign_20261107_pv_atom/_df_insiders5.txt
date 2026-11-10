@@ -1,0 +1,435 @@
+﻿{
+ "results": [
+  {
+   "id": "insd5_c_company_list_dt",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 36,
+   "alphaCount": 63,
+   "description": "Listing date in YYYY-MM-DD"
+  },
+  {
+   "id": "insd5_c_company_pyt_tkm",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 26,
+   "alphaCount": 51,
+   "description": "Market type classification of the listed company (e.g., KOSPI, KOSDAQ, KONEX, OTHER)"
+  },
+  {
+   "id": "insd5_corp_reg_no",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 33,
+   "alphaCount": 57,
+   "description": "Corporation registration number"
+  },
+  {
+   "id": "insd5_data",
+   "type": "VECTOR",
+   "coverage": 0.9996,
+   "userCount": 128,
+   "alphaCount": 303,
+   "description": "Deduplicated number of shares held by the group"
+  },
+  {
+   "id": "insd5_fa_tr",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 53,
+   "alphaCount": 132,
+   "description": "Ownership percentage (ratio) after the transaction/change"
+  },
+  {
+   "id": "insd5_fb_tr",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 30,
+   "alphaCount": 76,
+   "description": "Ownership percentage (ratio) before the transaction/change"
+  },
+  {
+   "id": "insd5_finacc_typ",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 23,
+   "alphaCount": 45,
+   "description": "Financial sector type code"
+  },
+  {
+   "id": "insd5_ghc_tr",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 116,
+   "alphaCount": 220,
+   "description": "Change in ownership percentage resulting from the transaction"
+  },
+  {
+   "id": "insd5_group_s",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 23,
+   "alphaCount": 76,
+   "description": "Group 2"
+  },
+  {
+   "id": "insd5_grp_source_td_drt",
+   "type": "VECTOR",
+   "coverage": 0.9995,
+   "userCount": 79,
+   "alphaCount": 237,
+   "description": "Trading date"
+  },
+  {
+   "id": "insd5_grp_td_drt",
+   "type": "VECTOR",
+   "coverage": 0.9996,
+   "userCount": 29,
+   "alphaCount": 77,
+   "description": "Trading date"
+  },
+  {
+   "id": "insd5_grp_trsy_td_drt",
+   "type": "VECTOR",
+   "coverage": 0.8728,
+   "userCount": 59,
+   "alphaCount": 107,
+   "description": "Trading date"
+  },
+  {
+   "id": "insd5_history_td_drt",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 18,
+   "alphaCount": 56,
+   "description": "Trade date when the transaction occurred (YYYY-MM-DD)"
+  },
+  {
+   "id": "insd5_isd_history_issue_typ",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 23,
+   "alphaCount": 58,
+   "description": "Code indicating the security/issue type (e.g., equity, bond, warrant)"
+  },
+  {
+   "id": "insd5_list_yn",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 20,
+   "alphaCount": 32,
+   "description": "Listing status flag (Y = listed, N = not listed)"
+  },
+  {
+   "id": "insd5_mmyy_srfi",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 17,
+   "alphaCount": 28,
+   "description": "IFRS reporting year and month (YYYY-MM)"
+  },
+  {
+   "id": "insd5_nm_eyf",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 18,
+   "alphaCount": 48,
+   "description": "Fiscal year-end month (1–12)"
+  },
+  {
+   "id": "insd5_nm_kor",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 48,
+   "alphaCount": 100,
+   "description": "Insider’s Korean name"
+  },
+  {
+   "id": "insd5_ny_srfi",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 23,
+   "alphaCount": 39,
+   "description": "IFRS adoption flag (Yes/No)"
+  },
+  {
+   "id": "insd5_officer",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 22,
+   "alphaCount": 49,
+   "description": "Indicator whether the insider is a corporate officer (1=yes, 0=no)"
+  },
+  {
+   "id": "insd5_pyt_pmc",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 32,
+   "alphaCount": 68,
+   "description": "Company type code"
+  },
+  {
+   "id": "insd5_qes",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 25,
+   "alphaCount": 78,
+   "description": "Classification number"
+  },
+  {
+   "id": "insd5_ratio",
+   "type": "VECTOR",
+   "coverage": 0.9996,
+   "userCount": 57,
+   "alphaCount": 122,
+   "description": "Deduplicated ownership percentage of the group"
+  },
+  {
+   "id": "insd5_real_data",
+   "type": "VECTOR",
+   "coverage": 0.9996,
+   "userCount": 70,
+   "alphaCount": 162,
+   "description": "Undeduplicated share count including overlaps"
+  },
+  {
+   "id": "insd5_real_ratio",
+   "type": "VECTOR",
+   "coverage": 0.9996,
+   "userCount": 64,
+   "alphaCount": 205,
+   "description": "Undeduplicated ownership percentage including overlaps"
+  },
+  {
+   "id": "insd5_recent_dt",
+   "type": "VECTOR",
+   "coverage": 0.9996,
+   "userCount": 39,
+   "alphaCount": 127,
+   "description": "Date of the most recent change within the holdings record"
+  },
+  {
+   "id": "insd5_rpst_grp_typ",
+   "type": "VECTOR",
+   "coverage": 0.9995,
+   "userCount": 225,
+   "alphaCount": 590,
+   "description": "Holder group type code for the source (e.g., representative, related party, co-holder)"
+  },
+  {
+   "id": "insd5_s_stock_pyt_tkm",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 21,
+   "alphaCount": 37,
+   "description": "Market/board type code (e.g., KOSPI, KOSDAQ, KONEX)"
+  },
+  {
+   "id": "insd5_serial",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 16,
+   "alphaCount": 59,
+   "description": "Division number 2"
+  },
+  {
+   "id": "insd5_source_data",
+   "type": "VECTOR",
+   "coverage": 0.9995,
+   "userCount": 270,
+   "alphaCount": 744,
+   "description": "Deduplicated share count held by the source holder for the issuer"
+  },
+  {
+   "id": "insd5_source_ratio",
+   "type": "VECTOR",
+   "coverage": 0.9995,
+   "userCount": 184,
+   "alphaCount": 413,
+   "description": "Deduplicated ownership percentage corresponding to DATA"
+  },
+  {
+   "id": "insd5_source_real_data",
+   "type": "VECTOR",
+   "coverage": 0.9995,
+   "userCount": 231,
+   "alphaCount": 625,
+   "description": "Raw share count including overlaps before vendor deduplication"
+  },
+  {
+   "id": "insd5_source_real_ratio",
+   "type": "VECTOR",
+   "coverage": 0.9995,
+   "userCount": 129,
+   "alphaCount": 302,
+   "description": "Raw ownership percentage corresponding to REAL_DATA before deduplication"
+  },
+  {
+   "id": "insd5_source_recent_dt",
+   "type": "VECTOR",
+   "coverage": 0.9995,
+   "userCount": 80,
+   "alphaCount": 272,
+   "description": "Date of the latest change or update to this source holding record"
+  },
+  {
+   "id": "insd5_td_ctn",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 24,
+   "alphaCount": 71,
+   "description": "Disclosure/notice date when the transaction was made public (YYYY-MM-DD)"
+  },
+  {
+   "id": "insd5_td_ghc",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 13,
+   "alphaCount": 39,
+   "description": "Changing date"
+  },
+  {
+   "id": "insd5_td_tse",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 20,
+   "alphaCount": 23,
+   "description": "Established date in YYYYMMDD"
+  },
+  {
+   "id": "insd5_tnc",
+   "type": "VECTOR",
+   "coverage": 0.9996,
+   "userCount": 213,
+   "alphaCount": 478,
+   "description": "Number of special parties"
+  },
+  {
+   "id": "insd5_trd_amt",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 35,
+   "alphaCount": 85,
+   "description": "Monetary amount of the transaction (KRW)"
+  },
+  {
+   "id": "insd5_trd_reason_a",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 19,
+   "alphaCount": 62,
+   "description": "Transaction reason code A"
+  },
+  {
+   "id": "insd5_trd_reason_b",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 28,
+   "alphaCount": 99,
+   "description": "Insider transaction reason classification code (coded value; decode via TRD_REASON_BIx)"
+  },
+  {
+   "id": "insd5_trsy_data",
+   "type": "VECTOR",
+   "coverage": 0.8728,
+   "userCount": 29,
+   "alphaCount": 71,
+   "description": "Deduplicated number of treasury shares held (treasury stock share count)"
+  },
+  {
+   "id": "insd5_trsy_ratio",
+   "type": "VECTOR",
+   "coverage": 0.8728,
+   "userCount": 59,
+   "alphaCount": 156,
+   "description": "Deduplicated ownership percentage of treasury shares"
+  },
+  {
+   "id": "insd5_trsy_real_data",
+   "type": "VECTOR",
+   "coverage": 0.8728,
+   "userCount": 39,
+   "alphaCount": 97,
+   "description": "Raw (non-deduplicated) treasury share count including overlaps"
+  },
+  {
+   "id": "insd5_trsy_real_ratio",
+   "type": "VECTOR",
+   "coverage": 0.8728,
+   "userCount": 45,
+   "alphaCount": 129,
+   "description": "Raw (non-deduplicated) ownership percentage of treasury shares"
+  },
+  {
+   "id": "insd5_trsy_recent_dt",
+   "type": "VECTOR",
+   "coverage": 0.8728,
+   "userCount": 47,
+   "alphaCount": 100,
+   "description": "Most recent reporting/update date for this holding (YYYY-MM-DD)"
+  },
+  {
+   "id": "insd5_trsy_tnc",
+   "type": "VECTOR",
+   "coverage": 0.8728,
+   "userCount": 19,
+   "alphaCount": 67,
+   "description": "Number of sepcial parties"
+  },
+  {
+   "id": "insd5_unt_val",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 18,
+   "alphaCount": 45,
+   "description": "Unit price per share for the transaction"
+  },
+  {
+   "id": "insd5_vol_af",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 35,
+   "alphaCount": 75,
+   "description": "Number of shares held after the transaction/change"
+  },
+  {
+   "id": "insd5_vol_bf",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 34,
+   "alphaCount": 95,
+   "description": "Number of shares held before the transaction/change"
+  },
+  {
+   "id": "insd5_vol_chg",
+   "type": "VECTOR",
+   "coverage": 0.7318,
+   "userCount": 63,
+   "alphaCount": 126,
+   "description": "Change in share quantity resulting from the transaction"
+  },
+  {
+   "id": "issuance_category",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 17,
+   "alphaCount": 27,
+   "description": "Security issue type classification code (e.g., common stock, preferred, CB, BW, etc.)"
+  },
+  {
+   "id": "security_type",
+   "type": "VECTOR",
+   "coverage": 0.9991,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Stock type classification code (e.g., Common, Preferred, ETF, DR, etc.)"
+  }
+ ],
+ "count": 53,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 53,
+ "complete": true,
+ "pages_fetched": 2
+}
+

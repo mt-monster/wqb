@@ -1,0 +1,22 @@
+﻿{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "jPAwW4Vb4QcbVOcoS7fVKU",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/jPAwW4Vb4QcbVOcoS7fVKU",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/jPAwW4Vb4QcbVOcoS7fVKU",
+ "submitted_expressions": [
+  "multiply(group_rank(ts_sum(vec_sum(insd1_value), 44), sector), -1)",
+  "multiply(group_rank(ts_sum(vec_sum(insd1_value), 88), sector), -1)",
+  "multiply(group_rank(ts_sum(vec_sum(insd1_value), 132), sector), -1)",
+  "multiply(group_rank(ts_sum(vec_sum(insd1_value), 66), industry), -1)",
+  "multiply(group_rank(ts_sum(vec_sum(insd1_value), 66), subindustry), -1)",
+  "multiply(group_rank(ts_mean(vec_sum(insd1_shares), 44), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_sum(insd1_shares), 88), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_sum(insd1_shares), 66), industry), -1)",
+  "multiply(group_rank(ts_sum(vec_sum(insd1_value), 250), sector), -1)",
+  "multiply(group_rank(ts_zscore(vec_sum(insd1_value), 252), sector), -1)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

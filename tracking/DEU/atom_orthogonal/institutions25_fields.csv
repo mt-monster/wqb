@@ -1,0 +1,25 @@
+id,type,cov,uc,ac,desc
+inst25_activity,VECTOR,0.0,0,0,Activity score (0â100) showing how actively a security is traded (number of trades) relative to other securities
+inst25_age,VECTOR,0.0,1,2,A ranking from 0 to 100 representing how old the short positions in a security are compared to all others; based on average short trade duration (higher score =â¦
+inst25_concentration,VECTOR,0.0,0,0,Sum of the top three largest short positions as a percentage of shares outstanding for the security on the position date
+inst25_crowding,VECTOR,0.0,0,0,Crowdedness score (0â100) indicating the extent to which the security is held short by many managersâhigher means more crowded
+inst25_entry_position,VECTOR,0.0,1,2,The size of the managerâs short position in a security (as % of shares outstanding) at the time they opened the position
+inst25_is_open,VECTOR,0.0,0,0,Indicates whether the position is still open (1=open; 0=closed)
+inst25_manager_avg_trade_length,VECTOR,0.0,0,0,Average duration (weekdays) of all closed short positions held by the manager on the given position date
+inst25_manager_count,VECTOR,0.0,0,0,Number of open short positions (distinct managers) for the security on the position date
+inst25_manager_position_count,VECTOR,0.0,0,0,Number of short positions in the managerâs portfolio on a given date
+inst25_position,VECTOR,0.0,1,1,Manager's current reported short position in the security; expressed as % of total shares outstanding
+inst25_position_change,VECTOR,0.0,0,0,The change in the managerâs short position in the security (as % of shares outstanding) since the previous Position Date
+inst25_security_avg_trade_length,VECTOR,0.0,1,1,Average duration (in days) of all open short positions in the security as of the position date
+inst25_security_cover_count,VECTOR,0.0,0,0,Number of cover (i.e.; short covering) transactions for the security on the specific position date
+inst25_security_short_count,VECTOR,0.0,2,3,Number of short sale transactions for the security on the specific position date
+inst25_security_trade_count,VECTOR,0.0,1,1,Number of transactions in the security on the given position date
+inst25_security_trade_count_1mo,VECTOR,0.0,1,1,Number of transactions in the security over the past month
+inst25_security_trade_count_1wk,VECTOR,0.0,0,0,Count of all transactions in the security over the past week
+inst25_security_trade_count_1yr,VECTOR,0.0,0,0,Total number of trade transactions for the security over the past year
+inst25_security_trade_count_2yr,VECTOR,0.0,1,1,The total number of recorded transactions for the security over the last 2 years up to the position date
+inst25_security_trade_count_3mo,VECTOR,0.0,0,0,Total number of trade transactions for the security over the past three months
+inst25_security_trade_count_3yr,VECTOR,0.0,0,0,Number of transactions for the security over the past 3 years
+inst25_sentiment,VECTOR,0.0,0,0,A score (0-100) indicating how heavily shorted the security is relative to all securities; based on total short interest
+inst25_total_short_interest,VECTOR,0.0,0,0,Total short interest in the security as a percentage of shares outstanding; summed across all managers for that date
+inst25_trade_length,VECTOR,0.0,1,1,Number of weekdays since the position's entry date (trade duration)

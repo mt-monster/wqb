@@ -1,0 +1,23 @@
+id,type,cov,uc,ac,desc
+bid_par_spread_basis_points,VECTOR,0.0,0,0,Bid (best buyer price) for CDS par spread (annualized premium in basis points)
+bid_price_percent_of_notional,VECTOR,0.0,0,0,Bid price expressed as percent of par (notional) amount
+bid_quote_spread_basis_points,VECTOR,0.0,1,1,Bid for the CDS quote spread vs coupon in basis points
+bid_upfront_payment_percent,VECTOR,0.0,0,0,Bid (buyer price) for upfront payment (as percent of notional) to enter the CDS contract
+highest_mid_value_contributed,VECTOR,0.0,1,1,Highest mid price/spread value observed or contributed during the trading day
+instrument_currency_code,VECTOR,0.0,0,0,Numeric ISO currency code indicating the denomination currency of the CDS contract
+interest_rate_curve_parallel_shift_impact,VECTOR,0.0,4,5,The sensitivity of the CDS price to a one basis point change in interest rates (the IR Delta Value of 01); representing interest rate risk exposure
+isda_assumed_recovery_percent,VECTOR,0.0,2,3,The recovery rate (as a percentage) specified or implied by ISDA standards and used in CDS pricing and risk calculations
+lowest_mid_value_contributed,VECTOR,0.0,1,1,Lowest mid price/spread value observed or contributed during the trading day
+mid_par_spread_basis_points,VECTOR,0.0,5,6,The mid (average) value of the par spread (in basis points) for the CDS instrument; representing the central market price at which protection trades at par
+mid_quote_spread_basis_points,VECTOR,0.0,10,10,The mid value of the quoted spread for the CDS instrument; based on market quoting convention (can be spread overlay or coupon-based)
+offer_upfront_payment_percent,VECTOR,0.0,0,0,Offer (seller price) for upfront payment (as percent of notional) to enter the CDS contract
+oth169_coupon,VECTOR,0.0,1,1,Annual coupon rate for the CDS contract; expressed in basis points
+oth169_dailycontributedquotes,VECTOR,0.0,1,1,The total number of contributed quotes from all sources for the instrument across the full trading day (from 00:00 to close); indicating depth of overall marketâ¦
+oth169_dailycontributors,VECTOR,0.0,1,1,The total number of contributors (such as buy-side desks or banks) who submitted quotes for the CDS instrument during the full trading day; reflecting the breadâ¦
+oth169_monthlyobservationscore,VECTOR,0.0,2,2,A monthly numeric score (1-4) indicating the quality or reliability of observations for the CDS data; with lower scores representing better observation (1=Wellâ¦
+oth169_parspreadoffer,VECTOR,0.0,0,0,Offer (best seller price) for CDS par spread (annualized premium in basis points)
+oth169_percentofparoffer,VECTOR,0.0,0,0,Offer price expressed as percent of par (notional) amount
+oth169_quotespreadoffer,VECTOR,0.0,0,0,Offer for the CDS quote spread vs coupon in basis points
+oth169_recoveryrate,VECTOR,0.0,1,1,Assumed recovery rate (percent) used in CDS valuation for the reference entity
+oth169_recrisk,VECTOR,0.0,7,7,The sensitivity of the CDS price to changes in the assumed recovery rate for the underlying reference entity
+oth169_tenor,VECTOR,0.0,1,1,Term/maturity of the CDS contract in years; e.g.; 5 for 5-year maturity

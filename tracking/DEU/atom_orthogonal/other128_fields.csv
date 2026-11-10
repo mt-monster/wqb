@@ -1,0 +1,15 @@
+id,type,cov,uc,ac,desc
+chief_exec_investor_sentiment_score_dmexus,VECTOR,0.0,0,0,z-score of CEO Investor Confidence
+finance_exec_investor_sentiment_score_dmexus,VECTOR,0.0,0,0,z-score of CFO Investor Confidence
+oth128_dmexusceocashcompensation,VECTOR,0.0,1,3,z-score of CEO cash compensation
+oth128_dmexusceononcashcompensation,VECTOR,0.0,1,2,z-score of CEO non-cash compensation (e.g.; equity/options awards) for the firm
+oth128_dmexusceotenure,VECTOR,0.0,0,0,z-score of CEO tenure
+oth128_dmexuscfocashcompensation,VECTOR,0.0,0,0,z-score of CFO cash compensation
+oth128_dmexuscfononcashcompensation,VECTOR,0.0,1,4,z-score of CFO non-cash compensation
+oth128_dmexuscfotenure,VECTOR,0.0,0,0,z-score of CFO tenure
+oth128_dmexusexecutiveefficiencyinput,VECTOR,0.0,0,0,z-score of Executive Input Efficiency
+oth128_dmexusexecutiveefficiencyoutput,VECTOR,0.0,0,0,z-score of Executive Output Efficiency
+oth128_dmexuskeyexecutiveice,VECTOR,0.0,0,0,z-score of Investor Confidence for key executives (all C-suite)
+oth128_dmexuskeyexecutivetenure,VECTOR,0.0,0,0,z-score of tenure across key executives (C-suite)
+oth128_dmexusmarketcap,VECTOR,0.0,0,0,market cap in developed markets
+oth128_dmexusscore,VECTOR,0.0,0,0,Final Capri composite management quality score (unitless; normalized) for the company/date in DM ex-US

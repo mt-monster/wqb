@@ -1,0 +1,12 @@
+[
+  "group_rank(ts_av_diff(probability_label3_5quantile_60day_ohlcv, 66), sector)",
+  "group_rank(ts_av_diff(probability_label3_5quantile_20day_ohlcv_2, 66), sector)",
+  "group_rank(ts_av_diff(probability_label3_5quantile_5day_ohlcv_2, 66), sector)",
+  "group_rank(ts_av_diff(probability_label0_3quantile_60day_ohlcv, 66), sector)",
+  "group_rank(ts_av_diff(probability_label0_3quantile_20day_ohlcv_2, 66), sector)",
+  "group_rank(ts_av_diff(probability_label1_3quantile_60day_ohlcv, 66), sector)",
+  "group_rank(ts_av_diff(probability_label1_3quantile_5day_ohlcv_2, 66), sector)",
+  "group_rank(ts_av_diff(probability_label2_4quantile_5day_ohlcv, 66), sector)",
+  "group_rank(ts_av_diff(probability_label2_5quantile_5day_ohlcv, 66), sector)",
+  "group_rank(ts_av_diff(quantile_label_3bucket_20day_ohlcv, 66), sector)"
+]

@@ -1,0 +1,113 @@
+id,type,cov,uc,ac,desc
+conference_address_line1,VECTOR,0.0,0,0,First line of the address for the conference event.
+conference_address_line2,VECTOR,0.0,1,1,Second line of the address for the conference event.
+conference_country_identifier,SYMBOL,0.0,0,0,Unique identifier for the country where the conference is held.
+conference_end_datetime_utc,SYMBOL,0.0,0,0,Date and time when the conference event is scheduled to end; in UTC.
+conference_event_summary,VECTOR,0.0,0,0,Summary of topics or agenda covered during the conference event.
+conference_event_title,VECTOR,0.0,0,0,Title or headline of the conference event.
+conference_event_unique_identifier,SYMBOL,0.0,0,0,Unique identifier for the conference event.
+conference_organizer_url,VECTOR,0.0,0,0,Web address for the organizer of the conference event.
+conference_related_object_id,SYMBOL,0.0,0,0,Unique identifier for the company or object related to the conference event.
+conference_state_identifier,SYMBOL,0.0,0,0,Unique identifier for the state where the conference is held.
+conference_type_identifier,SYMBOL,0.0,0,0,Unique identifier for the type of conference.
+entity_disambiguation_score,VECTOR,0.0,0,0,Numerical score indicating the confidence of entity disambiguation in the transcript.
+entity_linking_active_flag,VECTOR,0.0,0,0,Flag indicating whether the entity linking record is currently active.
+entity_linking_updated_date,SYMBOL,0.0,0,0,Date and time when the entity linking record was last updated.
+entity_mention_end_position,VECTOR,0.0,5,5,Ending character position of the entity mention within the transcript text.
+entity_mention_index,VECTOR,0.0,2,3,Index or sequence number of the entity mention in the transcript.
+entity_mention_start_position,VECTOR,0.0,2,2,Starting character position of the entity mention within the transcript text.
+entity_recognition_score,VECTOR,0.0,5,5,Numerical score indicating the confidence of named entity recognition in the transcript.
+event_address_line1,VECTOR,0.0,0,0,First line of the address for the event.
+event_address_line2,VECTOR,0.0,0,0,Second line of the address for the event.
+event_call_description,VECTOR,0.0,0,0,Textual description of the conference call.
+event_cancelled_flag,VECTOR,0.0,0,0,Flag indicating whether the event was cancelled.
+event_contact_email_address,VECTOR,0.0,0,0,Email address for the contact person associated with the event or meeting.
+event_contact_fax_number,VECTOR,0.0,0,0,Fax number for the contact person associated with the event.
+event_contact_first_name,VECTOR,0.0,0,0,First name of the contact person for the event or meeting.
+event_contact_job_title,VECTOR,0.0,0,0,Job title of the contact person for the event or meeting.
+event_contact_middle_name,VECTOR,0.0,0,0,Middle name of the contact person for the event or meeting.
+event_contact_name_suffix,VECTOR,0.0,0,0,Suffix of the contact person's name (e.g.; Jr.; Sr.; III) for the event.
+event_contact_person_description,VECTOR,0.0,0,0,Brief description or notes about the contact person for the event.
+event_contact_phone_number,VECTOR,0.0,0,0,Phone number for the contact person related to the event or meeting.
+event_context_description,VECTOR,0.0,0,0,Additional descriptive text summarizing the event or development.
+event_country_identifier,SYMBOL,0.0,0,0,Unique identifier for the country where the event is held.
+event_country_identifier_2,SYMBOL,0.0,0,0,Unique identifier for the country where the event or meeting occurs.
+event_entry_datetime_local,SYMBOL,0.0,0,0,The date and time when the event was first entered; in local time.
+event_fiscal_quarter,SYMBOL,0.0,0,0,Fiscal quarter associated with the event.
+event_fiscal_year_2,SYMBOL,0.0,0,0,Fiscal year associated with the event.
+event_headline_text_2,VECTOR,0.0,0,0,The headline or summary statement for the event.
+event_key_development_id,SYMBOL,0.0,0,0,Unique identifier for the key development or event record.
+event_language_identifier,SYMBOL,0.0,0,0,Unique identifier for the language used in the event.
+event_last_update_datetime_local,SYMBOL,0.0,0,0,The date and time when the event was last modified; in local time.
+event_last_update_datetime_utc,SYMBOL,0.0,0,0,The date and time when the event record was last updated; in UTC.
+event_live_stream_url,VECTOR,0.0,0,0,URL for accessing the live stream of the event.
+event_location_address_line1,VECTOR,0.0,0,0,First line of the street address where the event or meeting is held.
+event_location_address_line2,VECTOR,0.0,0,0,Second line of the street address for the event or meeting location.
+event_main_datetime_utc,SYMBOL,0.0,0,0,The primary date and time when the event is scheduled to occur; in UTC.
+event_meeting_reason_id,SYMBOL,0.0,0,0,Unique identifier for the reason or type of meeting or event.
+event_object_eventtype_link_id,SYMBOL,0.0,0,0,Unique identifier linking the event; object; and event type.
+event_object_role_identifier,SYMBOL,0.0,0,0,Unique identifier for the companyâs role in the event.
+event_period_end_date,SYMBOL,0.0,0,0,End date of the reporting period for the event.
+event_postponed_flag,VECTOR,0.0,0,0,Flag indicating whether the event call was postponed.
+event_record_inserted_datetime_utc,SYMBOL,0.0,0,0,The date and time when the event record was inserted; in UTC.
+event_related_object_id,SYMBOL,0.0,0,0,Unique identifier for the company or object related to the event.
+event_related_object_id_2,SYMBOL,0.0,0,0,Unique identifier for the company or entity associated with the event.
+event_replay_phone_end_datetime_utc,SYMBOL,0.0,0,0,Date and time when phone replay access ends; in UTC.
+event_replay_start_datetime_utc,SYMBOL,0.0,0,0,Date and time when the event replay becomes available; in UTC.
+event_replay_url,VECTOR,0.0,0,0,URL for accessing the event replay.
+event_replay_web_end_datetime_utc,SYMBOL,0.0,0,0,Date and time when web replay access ends; in UTC.
+event_reporting_period_type_id,SYMBOL,0.0,0,0,Unique identifier for the reporting period type of the event.
+event_source_type_identifier,SYMBOL,0.0,0,0,Unique identifier for the source type of the event.
+event_status_identifier,SYMBOL,0.0,0,0,Unique identifier for the current status of the event.
+event_target_country_identifier,SYMBOL,0.0,0,0,Unique identifier for the country targeted by the event.
+event_title_text_2,VECTOR,0.0,0,0,The headline or title describing the event.
+event_type_identifier_2,SYMBOL,0.0,0,0,Unique identifier for the type of event.
+event_unique_identifier_7,SYMBOL,0.0,0,0,Unique identifier for the event or key development associated with the transcript.
+event_unique_identifier_daily,SYMBOL,0.0,0,0,Unique identifier for the event in the daily event table.
+eventcallbasic_related_object_id,SYMBOL,0.0,0,0,Unique identifier for the company or object related to the call event.
+eventcallbasic_unique_identifier,SYMBOL,0.0,0,0,Unique identifier for the call event in the basic call table.
+eventer_related_object_id,SYMBOL,0.0,0,0,Unique identifier for the company or object related to the earnings release event.
+eventer_unique_identifier,SYMBOL,0.0,0,0,Unique identifier for the earnings release event.
+file_extracted_event_date,SYMBOL,0.0,0,0,Date extracted from the file name; representing the event or transcript date.
+fiscal_quarter_end_date_3,SYMBOL,0.0,0,0,The end date of the fiscal quarter associated with the event.
+market_timing_type_identifier,SYMBOL,0.0,0,0,Unique identifier for the market timing type.
+meeting_agenda_description,VECTOR,0.0,0,0,Textual description of the agenda for the meeting event.
+meeting_contact_last_name,VECTOR,0.0,0,0,Last name of the contact person for the meeting event.
+meeting_notice_sent_datetime_utc,SYMBOL,0.0,0,0,Date and time when the meeting notice was sent; in UTC.
+oth78_calendarmonth,VECTOR,0.0,0,0,The calendar month of the call
+oth78_calendaryear,VECTOR,0.0,0,0,The calendar year of the call
+oth78_componentorder,VECTOR,0.0,0,0,Sequence order of the transcript component within the transcript
+oth78_daily_cancelledflag,VECTOR,0.0,0,0,Flag indicating whether the transcript/event was cancelled
+oth78_delayreasonnotes,VECTOR,0.0,0,0,Notes describing the reason the transcript was delayed
+oth78_delayreasontypename,VECTOR,0.0,0,0,Name of the reason the transcript was delayed
+oth78_erdaily_cancelledflag,VECTOR,0.0,0,0,Flag indicating whether the transcript/event was cancelled
+oth78_erdaily_estimatedtimeflag,VECTOR,0.0,0,0,Flag indicating whether the event date/time was declared by the source (0) or estimated (1)
+oth78_fiscalquarter,VECTOR,0.0,0,0,The fiscal quarter of the earnings release
+oth78_fiscalyear,VECTOR,0.0,0,0,The fiscal year of the earnings release
+oth78_fullyearflag,VECTOR,0.0,0,0,Flag indicating whether the earnings release was for a full year (0=no; 1=yes)
+oth78_icdaily_cancelledflag,VECTOR,0.0,0,0,Indicator (e.g.; 0/1) whether the event was cancelled
+oth78_meetingdaily_cancelledflag,VECTOR,0.0,0,0,Indicator whether the meeting or event was cancelled
+oth78_preliminaryresultsflag,VECTOR,0.0,0,0,Flag indicating whether the initial disclosure is preliminary results (0 = no; 1 = yes)
+oth78_sourcetypename,VECTOR,0.0,0,0,Name of the source type
+oth78_timestamp,VECTOR,0.0,0,0,UTC date and time when this transcript component/record was delivered or created
+oth78_transcribeflag,VECTOR,0.0,0,0,Flag indicating event is in transcript coverage universe (1=True; 0=previously covered but removed)
+reporting_period_type_identifier,SYMBOL,0.0,0,0,Unique identifier for the reporting period type.
+speaker_professional_identifier,SYMBOL,0.0,0,0,Unique identifier for a professional individual associated with the transcript.
+transcript_component_text_content,VECTOR,0.0,0,0,The actual text content of a transcript component.
+transcript_component_unique_id,SYMBOL,0.0,0,0,Unique identifier for a transcript component.
+transcript_copy_type_identifier,SYMBOL,0.0,0,0,Unique identifier for the type of transcript copy.
+transcript_creation_datetime_utc,SYMBOL,0.0,0,0,Date and time when the transcript was created; in UTC.
+transcript_delay_reason_id,SYMBOL,0.0,0,0,Unique identifier for the reason a transcript was delayed.
+transcript_event_main_datetime_utc,SYMBOL,0.0,0,0,The main date and time for the event related to the transcript; in UTC.
+transcript_event_unique_id,SYMBOL,0.0,0,0,Unique identifier for the event associated with the transcript.
+transcript_presentation_status_identifier,SYMBOL,0.0,0,0,Unique identifier for the transcript presentation status.
+transcript_professional_id,SYMBOL,0.0,0,0,Unique identifier for a professional associated with the transcript.
+transcript_related_object_id,SYMBOL,0.0,0,0,Unique identifier for the company or object related to the transcript.
+transcript_rescheduled_datetime_utc,SYMBOL,0.0,0,0,New date and time for the event if it was postponed; in UTC.
+transcript_section_text_content,VECTOR,0.0,0,0,The actual text content of a specific section within a transcript.
+transcript_section_type_identifier,SYMBOL,0.0,0,0,Unique identifier for the type of transcript section.
+transcript_section_unique_id,SYMBOL,0.0,0,0,Unique identifier for a specific section within a transcript.
+transcript_speaker_type_id,SYMBOL,0.0,0,0,Unique identifier for the type of speaker in the transcript.
+transcript_speaker_unique_id,SYMBOL,0.0,0,0,Unique identifier for the person speaking in the transcript.
+transcript_unique_identifier,SYMBOL,0.0,0,0,Unique identifier for the transcript document.
+transcriptcomponent_event_unique_id,SYMBOL,0.0,0,0,Unique identifier for the event associated with the transcript component.

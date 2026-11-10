@@ -1,0 +1,13 @@
+id,type,cov,uc,ac,desc
+global_momentum_rank_float,MATRIX,0.0,15,19,Floating-point percentile value (0â100) of overall price momentum versus all global stocks
+industry_momentum_score_float,MATRIX,0.0,0,0,Floating-point percentile value (0â100) of price momentum relative to TRBC industry peers
+long_horizon_momentum_score_float,MATRIX,0.0,4,4,Floating-point percentile value (0â100) for long-term (~12 months) price momentum
+mid_horizon_momentum_score_float,MATRIX,0.0,2,2,Floating-point percentile value (0â100) for mid-term (~3â6 months) price momentum
+regional_momentum_rank_float,MATRIX,0.0,3,5,Float percentile value (0â100) of the stockâs price momentum relative to peers in the USA region; higher values indicate stronger momentum
+short_horizon_momentum_score_float,MATRIX,0.0,0,0,Floating-point percentile value (0â100) for short-term (~1 week) price momentum
+star_pm_global_rank,MATRIX,0.0,1,1,Percentile rank of overall price momentum versus all global stocks
+star_pm_industry,MATRIX,0.0,0,0,Percentile rank of price momentum relative to TRBC industry peers (industry-specific momentum)
+star_pm_longterm,MATRIX,0.0,1,1,Percentile rank of long-term (~12 months) price momentum
+star_pm_midterm,MATRIX,0.0,1,1,Percentile rank of mid-term (~3â6 months) price momentum
+star_pm_region_rank,MATRIX,0.0,0,0,Integer percentile rank (1â100) of the stockâs price momentum relative to peers in the USA region; higher values indicate stronger momentum
+star_pm_shortterm,MATRIX,0.0,0,0,Percentile rank of short-term (~1 week) price momentum; higher values indicate stronger recent momentum

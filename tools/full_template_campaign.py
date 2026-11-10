@@ -623,24 +623,11 @@ def check_prod(alpha_id, max_wait=240):
     """
     import asyncio
     sys.path.insert(0, os.path.join(ROOT, "world-quant-brain-mcp"))
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
     from brain_api import brain_client
-
-    def _parse(j):
-        if not isinstance(j, dict):
-            return None
-        sch = j.get("schema") or {}
-        for v in ((sch or {}).get("max"), j.get("max"), j.get("max_correlation")):
-            if v is not None:
-                try:
-                    return float(v)
-                except (TypeError, ValueError):
-                    pass
-        mx = None
-        for row in (j.get("records") or []):
-            for v in (row if isinstance(row, (list, tuple)) else list(row.values())):
-                if isinstance(v, (int, float)) and (mx is None or v > mx):
-                    mx = float(v)
-        return mx
+    # 2026-11-10 审查 P2：复用 prod_wait.parse 唯一实现。旧自抄副本在 max 缺失时
+    # 会扫 records 取最大数值 ⇒ 把直方图 bin 上界/计数 n 当成 prod（P0-3 同源缺陷）。
+    from prod_wait import parse as _parse
 
     async def _go():
         await brain_client.ensure_authenticated()

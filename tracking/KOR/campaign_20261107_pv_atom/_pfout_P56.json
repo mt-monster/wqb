@@ -1,0 +1,34 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "insd1_shares",
+  "insd1_tradesignificance",
+  "insd1_value",
+  "mdl68_mktcap",
+  "mdl68_ram",
+  "mdl68_raw",
+  "mdl68_score"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 7,
+ "fixed_expressions": [
+  "multiply(group_rank(ts_std_dev(vec_sum(insd1_value), 66), sector), -1)",
+  "multiply(group_rank(ts_sum(vec_sum(insd1_value), 66), sector), -1)",
+  "multiply(group_rank(vec_count(insd1_value), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_avg(insd1_tradesignificance), 22), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_sum(insd1_shares), 66), sector), -1)",
+  "group_rank(ts_mean(vec_avg(mdl68_score), 22), sector)",
+  "group_rank(ts_delta(vec_avg(mdl68_score), 66), sector)",
+  "multiply(group_rank(ts_mean(vec_avg(mdl68_raw), 22), sector), -1)",
+  "group_rank(ts_mean(vec_avg(mdl68_ram), 22), sector)",
+  "multiply(group_rank(divide(vec_avg(mdl68_score), vec_avg(mdl68_mktcap)), sector), -1)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}

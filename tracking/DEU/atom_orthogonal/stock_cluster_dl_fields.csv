@@ -1,0 +1,6 @@
+id,type,cov,uc,ac,desc
+principal_component_features_5,MATRIX,0.3358,3,3,Feature vector for each stock derived from principal component analysis (TOP800 universe).
+principal_component_features_6,MATRIX,0.256,2,2,Feature vector for each stock derived from principal component analysis (TOP600 universe).
+principal_component_features_7,MATRIX,0.5008,3,4,Feature vector for each stock derived from principal component analysis (TOP1200 universe).
+principal_component_features_8,MATRIX,0.1706,0,0,Feature vector for each stock derived from principal component analysis (TOP400 universe).
+principal_component_features_9,MATRIX,1.0,3,3,Feature vector for each stock derived from principal component analysis (TOP2500 universe).

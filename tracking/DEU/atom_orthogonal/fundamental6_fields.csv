@@ -1,0 +1,197 @@
+id,type,cov,uc,ac,desc
+fnd6_adesinda_curcd,MATRIX,1.0,8,9,ISO Currency Code - Company Annual Market
+fnd6_amsa,MATRIX,0.1544,1,1,Amortization of Intangibles
+fnd6_amy,MATRIX,0.2765,1,1,Amortization of Intangibles
+fnd6_aolochy,MATRIX,0.4568,4,4,Assets and Liabilities - Other (Net Change)
+fnd6_apchy,MATRIX,0.3523,1,1,Accounts Payable/Creditors - Increase (Decrease)
+fnd6_aqcy,MATRIX,0.2457,1,1,Acquisitions
+fnd6_capxy,MATRIX,0.513,17,17,Capital Expenditures
+fnd6_chechy,MATRIX,0.542,6,7,Cash and Cash Equivalents - Increase (Decrease)
+fnd6_cogssa,MATRIX,0.4873,1,2,Cost of Goods Sold
+fnd6_cogsy,MATRIX,0.4936,5,5,Cost of Goods Sold
+fnd6_cptnewq_actq,MATRIX,0.552,3,4,Current Assets - Total
+fnd6_cptnewq_atq,MATRIX,0.6557,118,221,Assets - Total
+fnd6_cptnewq_ceqq,MATRIX,0.5255,16,20,Common/Ordinary Equity - Total
+fnd6_cptnewq_dlttq,MATRIX,0.5794,6,12,Long-Term Debt - Total
+fnd6_cptnewq_ibq,MATRIX,0.5452,211,329,Income Before Extraordinary Items
+fnd6_cptnewq_ltq,MATRIX,0.5395,12,14,Liabilities - Total
+fnd6_cptnewq_revtq,MATRIX,0.5439,57,88,Revenue - Total
+fnd6_dfxasa,MATRIX,0.4738,1,1,Depreciation of Fixed Assets (Tangible)
+fnd6_dfxay,MATRIX,0.4916,2,2,Depreciation of Fixed Assets (Tangible)
+fnd6_dpcy,MATRIX,0.5161,4,4,Depreciation and Amortization - Statement of Cash Flows
+fnd6_dpsa,MATRIX,0.6013,2,2,Depreciation and Amortization - Total
+fnd6_dpy,MATRIX,0.6176,1,1,Depreciation and Amortization - Total
+fnd6_dvy,MATRIX,0.3278,2,2,Cash Dividends
+fnd6_ewq_accdq,MATRIX,0.3691,2,2,Accrued Expenses & Deferred Income
+fnd6_ewq_amq,MATRIX,0.2174,1,1,Amortization of Intangibles
+fnd6_ewq_dfxaq,MATRIX,0.4583,4,5,Depreciation of Fixed Assets (Tangible)
+fnd6_ewq_eqrtq,MATRIX,0.6217,10,13,Equity Reserves - Total
+fnd6_ewq_eroq,MATRIX,0.4833,1,1,Equity Reserves - Other
+fnd6_ewq_gpq,MATRIX,0.4555,16,23,Gross Profit (Loss)
+fnd6_ewq_ibmiiq,MATRIX,0.6231,60,96,Income before Extraordinary Items and Noncontrolling Interests
+fnd6_ewq_iditq,MATRIX,0.4766,1,1,Interest Income - Total
+fnd6_ewq_intanq,MATRIX,0.6319,5,6,Intangible Assets - Total
+fnd6_ewq_ivaeqq,MATRIX,0.2971,2,2,Investment and Advances - Equity
+fnd6_ewq_ivaoq,MATRIX,0.4661,2,2,Investment and Advances - Other
+fnd6_ewq_lltq,MATRIX,0.5415,2,3,Long-Term Liabilities (Total)
+fnd6_ewq_mibnq,MATRIX,0.4567,3,3,Non-Redeemable Noncontrolling Interest (Balance Sheet) - Quarterly
+fnd6_ewq_mibtq,MATRIX,0.4567,1,1,Noncontrolling Interests - Total - Balance Sheet - Quarterly
+fnd6_ewq_nopioq,MATRIX,0.3899,1,1,Other Non-Operating Inc/Expense
+fnd6_ewq_oproq,MATRIX,0.1881,3,3,Operating Revenues - Other
+fnd6_ewq_rectoq,MATRIX,0.4145,1,1,Receivables - Current Other incl. Tax Refunds
+fnd6_ewq_teqq,MATRIX,0.641,22,48,Stockholders' Equity - Total - Quarterly
+fnd6_ewq_txdbq,MATRIX,0.4509,1,1,Deferred Taxes - Balance Sheet
+fnd6_ewq_xoproq,MATRIX,0.4561,1,1,Operating Expense - Other
+fnd6_ewq_xppq,MATRIX,0.1702,1,1,Prepaid Expenses & Accrued Income
+fnd6_ewq_xstq,MATRIX,0.3281,1,1,Staff Expense - Wages/Salaries
+fnd6_exrey,MATRIX,0.4278,2,2,Exchange Rate Effect
+fnd6_fiaoy,MATRIX,0.397,1,1,Financing Activities - Other
+fnd6_fincfy,MATRIX,0.539,22,35,Financing Activities - Net Cash Flow
+fnd6_fopoy,MATRIX,0.5017,3,4,Funds from Operations - Other
+fnd6_gpsa,MATRIX,0.5451,4,7,Gross Profit (Loss)
+fnd6_gpy,MATRIX,0.5515,6,15,Gross Profit (Loss)
+fnd6_ibcy,MATRIX,0.5283,7,7,Income Before Extraordinary Items - Statement of Cash Flows
+fnd6_ibmiisa,MATRIX,0.6171,7,7,Income before Extraordinary Items and Noncontrolling Interests
+fnd6_ibmiiy,MATRIX,0.6257,7,7,Income before Extraordinary Items and Noncontrolling Interests
+fnd6_ibsa,MATRIX,0.6491,12,15,Income Before Extraordinary Items
+fnd6_iby,MATRIX,0.66,25,40,Income Before Extraordinary Items
+fnd6_idesindq_curcd,MATRIX,1.0,3,4,ISO Currency Code - Company Annual Market
+fnd6_iditsa,MATRIX,0.5179,1,1,Interest Income - Total
+fnd6_idity,MATRIX,0.5543,2,2,Interest Income - Total
+fnd6_intanpy,MATRIX,0.2407,1,1,Intangible Assets - Purchase
+fnd6_intoacty,MATRIX,0.2125,1,1,Interest and Dividend Adjustments - Operating Activities
+fnd6_invchy,MATRIX,0.3722,2,2,Inventory - Decrease (Increase)
+fnd6_ivacoy,MATRIX,0.279,1,1,Investing Activities - Other
+fnd6_ivchy,MATRIX,0.2165,1,1,Increase in Investments
+fnd6_ivncfy,MATRIX,0.5417,2,2,Investing Activities - Net Cash Flow
+fnd6_ltdchy,MATRIX,0.469,3,7,Long-Term Debt - Change
+fnd6_mibn,MATRIX,0.4493,1,1,Noncontrolling Interests - Nonredeemable - Balance Sheet
+fnd6_mibt,MATRIX,0.4481,1,1,Noncontrolling Interests - Total - Balance Sheet
+fnd6_miisa,MATRIX,0.4358,1,1,Noncontrolling Interest - Income Account
+fnd6_miiy,MATRIX,0.4456,1,1,Noncontrolling Interest - Income Account
+fnd6_newa2_mii,MATRIX,0.5997,2,2,Noncontrolling Interest (Income Account)
+fnd6_newa2_oancf,MATRIX,0.5396,11,15,Operating Activities - Net Cash Flow
+fnd6_newa2_oiadp,MATRIX,0.6267,7,9,Operating Income After Depreciation
+fnd6_newa2_oibdp,MATRIX,0.6251,4,4,Operating Income Before Depreciation
+fnd6_newa2_pi,MATRIX,0.6224,5,7,Pretax Income
+fnd6_newa2_ppegt,MATRIX,0.5861,2,2,Property; Plant and Equipment - Total (Gross)
+fnd6_newa2_ppent,MATRIX,0.5963,1,1,Property; Plant and Equipment - Total (Net)
+fnd6_newa2_pstk,MATRIX,0.5372,2,2,Preferred/Preference Stock (Capital) - Total
+fnd6_newa2_pstkn,MATRIX,0.5372,1,1,Preferred/Preference Stock - Nonredeemable
+fnd6_newa2_re,MATRIX,0.6242,4,4,Retained Earnings
+fnd6_newa2_rect,MATRIX,0.5227,4,8,Receivables - Total
+fnd6_newa2_revt,MATRIX,0.6264,8,20,Revenue - Total
+fnd6_newa2_sale,MATRIX,0.521,7,9,Sales/Turnover (Net)
+fnd6_newa2_seq,MATRIX,0.6525,5,45,Stockholders' Equity - Parent
+fnd6_newa2_spi,MATRIX,0.605,3,3,Special Items
+fnd6_newa2_tstk,MATRIX,0.5567,1,1,Treasury Stock - Total (All Capital)
+fnd6_newa2_txditc,MATRIX,0.5181,1,1,Deferred Taxes and Investment Tax Credit
+fnd6_newa2_txp,MATRIX,0.5198,1,1,Income Taxes Payable
+fnd6_newa2_txt,MATRIX,0.6213,2,2,Income Taxes - Total
+fnd6_newa2_wcap,MATRIX,0.5218,4,5,Working Capital (Balance Sheet)
+fnd6_newa2_xido,MATRIX,0.5193,1,1,Extraordinary Items and Discontinued Operations
+fnd6_newa2_xint,MATRIX,0.6408,2,2,Interest and Related Expense - Total
+fnd6_newa2_xrd,MATRIX,0.3639,7,11,Research and Development Expense
+fnd6_newa2_xsga,MATRIX,0.5211,2,2,Selling; General and Administrative Expense
+fnd6_newq_acoq,MATRIX,0.4979,2,2,Current Assets - Other - Total
+fnd6_newq_acoxq,MATRIX,0.4696,3,3,Other Current Assets - Sundry
+fnd6_newq_ancq,MATRIX,0.5521,2,2,Non-Current Assets - Total
+fnd6_newq_aoq,MATRIX,0.6453,2,2,Assets - Other - Total
+fnd6_newq_apq,MATRIX,0.5846,2,3,Account Payable/Creditors - Trade
+fnd6_newq_capsq,MATRIX,0.3549,1,1,Capital Surplus/Share Premium Reserve
+fnd6_newq_cheq,MATRIX,0.6531,24,44,Cash and Short-Term Investments
+fnd6_newq_cogsq,MATRIX,0.4488,6,7,Cost of Goods Sold
+fnd6_newq_cstkq,MATRIX,0.6165,1,1,Common/Ordinary Stock (Capital)
+fnd6_newq_dlcq,MATRIX,0.5564,4,5,Debt in Current Liabilities
+fnd6_newq_dpactq,MATRIX,0.211,1,1,Depreciation; Depletion and Amortization (Accumulated)
+fnd6_newq_dpq,MATRIX,0.5145,3,4,Depreciation and Amortization - Total
+fnd6_newq_gdwlq,MATRIX,0.3841,2,2,Goodwill (net)
+fnd6_newq_invtq,MATRIX,0.5484,12,14,Inventories - Total
+fnd6_newq_lcoq,MATRIX,0.5326,3,44,Current Liabilities - Other - Total
+fnd6_newq_lcoxq,MATRIX,0.4809,2,2,Current Liabilities - Other (Sundry)
+fnd6_newq_lctq,MATRIX,0.5468,7,10,Current Liabilities - Total
+fnd6_newq_loq,MATRIX,0.57,2,2,Liabilities - Other
+fnd6_newq_lseq,MATRIX,0.6561,6,6,Liabilities and Stockholders' Equity - Total
+fnd6_newq_ltmibq,MATRIX,0.5523,1,1,Liabilities - Total and Non-controlling Interest
+fnd6_newq_miiq,MATRIX,0.3813,1,1,Noncontrolling Interest - Income Account
+fnd6_newq_nopiq,MATRIX,0.4548,2,2,Non-Operating Income (Expense) - Total
+fnd6_newq_oiadpq,MATRIX,0.4449,86,112,Operating Income After Depreciation - Quarterly
+fnd6_newq_oibdpq,MATRIX,0.4548,39,52,Operating Income Before Depreciation - Quarterly
+fnd6_newq_piq,MATRIX,0.5452,86,138,Pretax Income
+fnd6_newq_ppentq,MATRIX,0.6056,3,5,Property; Plant and Equipment - Total (Net)
+fnd6_newq_reccoq,MATRIX,0.4583,2,2,Receivables - Current - Other
+fnd6_newq_rectq,MATRIX,0.5481,7,8,Receivables - Total
+fnd6_newq_rectrq,MATRIX,0.5433,5,5,Receivables - Trade
+fnd6_newq_req,MATRIX,0.4841,9,11,Retained Earnings
+fnd6_newq_saleq,MATRIX,0.4544,21,33,Sales/Turnover (Net)
+fnd6_newq_sctq,MATRIX,0.6265,2,2,Total Share Capital
+fnd6_newq_seqq,MATRIX,0.6595,29,37,Stockholders' Equity - Total - Quarterly
+fnd6_newq_spiq,MATRIX,0.3064,1,1,Special Items
+fnd6_newq_tstkq,MATRIX,0.1705,1,1,Treasury Stock - Total (All Capital)
+fnd6_newq_txtq,MATRIX,0.5336,33,49,Income Taxes - Total
+fnd6_newq_xintq,MATRIX,0.5255,6,7,Interest and Related Expense - Total
+fnd6_newq_xoprq,MATRIX,0.4568,2,2,Operating Expense - Total
+fnd6_newq_xsgaq,MATRIX,0.4169,5,5,Selling; General and Administrative Expenses
+fnd6_nopi,MATRIX,0.5271,1,1,Nonoperating Income (Expense)
+fnd6_nopiosa,MATRIX,0.4093,1,1,Other Non-Operating Inc/Expense
+fnd6_nopioy,MATRIX,0.4579,1,1,Other Non-Operating Inc/Expense
+fnd6_nopisa,MATRIX,0.5485,1,1,Non-Operating Income (Expense) - Total
+fnd6_nopiy,MATRIX,0.5546,2,3,Non-Operating Income (Expense) - Total
+fnd6_np,MATRIX,0.587,2,2,Notes Payable - Short-Term Borrowings
+fnd6_oancfy,MATRIX,0.5419,27,35,Operating Activities - Net Cash Flow
+fnd6_oiadpsa,MATRIX,0.5327,10,15,Operating Income After Depreciation - Semiannual
+fnd6_oibdpsa,MATRIX,0.5409,5,5,Operating Income Before Depreciation - Semiannual
+fnd6_oibdpy,MATRIX,0.5486,7,9,Operating Income Before Depreciation
+fnd6_oproy,MATRIX,0.2373,2,2,Operating Revenues - Other
+fnd6_pisa,MATRIX,0.6525,7,7,Pretax Income
+fnd6_piy,MATRIX,0.6613,24,27,Pretax Income
+fnd6_psfix,MATRIX,0.4528,2,2,Proceeds From Sale of Fixed Assets
+fnd6_psfixy,MATRIX,0.3432,1,1,Proceeds - Sale of Fixed Assets
+fnd6_purtshr,MATRIX,0.2412,2,2,Purchase of Treasury Shares
+fnd6_recch,MATRIX,0.4123,3,3,Accounts Receivable - Decrease (Increase)
+fnd6_recchy,MATRIX,0.3455,6,6,Accounts Receivable - Decrease (Increase)
+fnd6_recco,MATRIX,0.5225,2,2,Receivables - Current - Other
+fnd6_rectr,MATRIX,0.5211,2,3,Receivables - Trade
+fnd6_revtsa,MATRIX,0.6513,12,19,Revenue - Total
+fnd6_revty,MATRIX,0.6587,22,34,Revenue - Total
+fnd6_salesa,MATRIX,0.5508,2,2,Sales/Turnover (Net)
+fnd6_saley,MATRIX,0.5553,9,10,Sales/Turnover (Net)
+fnd6_siv,MATRIX,0.2557,3,3,Sale of Investments
+fnd6_sivy,MATRIX,0.2026,1,1,Sale of Investments
+fnd6_spisa,MATRIX,0.2603,1,1,Special Items
+fnd6_spiy,MATRIX,0.3397,2,2,Special Items
+fnd6_sppiv,MATRIX,0.4882,1,1,Sale of Property; Plant and Equipment and Investments - Gain (Loss)
+fnd6_sppivy,MATRIX,0.3823,1,1,Sale of PP&E and Investments - (Gain) Loss
+fnd6_sstk,MATRIX,0.2943,1,1,Sale of Common and Preferred Stock
+fnd6_sstky,MATRIX,0.1548,2,2,Sale of Common and Preferred Stock
+fnd6_teq,MATRIX,0.622,10,13,Stockholders' Equity - Total
+fnd6_txc,MATRIX,0.6008,3,3,Income Taxes - Current
+fnd6_txdb,MATRIX,0.5181,2,2,Deferred Taxes - Balance Sheet
+fnd6_txdc,MATRIX,0.2533,2,2,Deferred Taxes (Cash Flow)
+fnd6_txdi,MATRIX,0.5992,2,2,Income Taxes - Deferred
+fnd6_txo,MATRIX,0.5997,2,2,Income Taxes - Other
+fnd6_txop,MATRIX,0.4486,1,1,Taxation - Operating Activities
+fnd6_txopy,MATRIX,0.3351,2,2,Taxation - Operating Activities
+fnd6_txpd,MATRIX,0.3876,2,2,Income Taxes Paid
+fnd6_txtsa,MATRIX,0.6315,3,3,Income Taxes - Total
+fnd6_txty,MATRIX,0.6427,8,9,Income Taxes - Total
+fnd6_txw,MATRIX,0.5187,6,8,Excise Taxes
+fnd6_wcapopc,MATRIX,0.5393,2,2,Working Capital/Net Operating Assets - Change
+fnd6_wcapopcy,MATRIX,0.5197,1,1,Working Capital/Net Operating Assets - Change
+fnd6_xacc,MATRIX,0.5203,1,1,Accrued Expenses
+fnd6_xintsa,MATRIX,0.5995,1,1,Interest and Related Expense - Total
+fnd6_xinty,MATRIX,0.6137,3,4,Interest and Related Expense - Total
+fnd6_xlr,MATRIX,0.4748,1,1,Staff Expense - Total
+fnd6_xopr,MATRIX,0.5274,3,4,Operating Expenses - Total
+fnd6_xopro,MATRIX,0.5251,1,1,Operating Expense - Other
+fnd6_xoprosa,MATRIX,0.5353,1,1,Operating Expense - Other
+fnd6_xoproy,MATRIX,0.5429,1,1,Operating Expense - Other
+fnd6_xoprsa,MATRIX,0.5448,3,3,Operating Expense - Total
+fnd6_xopry,MATRIX,0.5529,3,3,Operating Expense - Total
+fnd6_xpp,MATRIX,0.5494,1,1,Prepaid Expenses
+fnd6_xrent,MATRIX,0.3598,1,1,Rental Expense
+fnd6_xsgasa,MATRIX,0.4432,2,2,Selling; General and Administrative Expenses
+fnd6_xsgay,MATRIX,0.4642,5,8,Selling; General and Administrative Expenses
+fnd6_xstfws,MATRIX,0.4924,1,1,Staff Expense - Wages and Salaries
+fnd6_xstsa,MATRIX,0.3439,1,1,Staff Expense - Wages/Salaries
+fnd6_xsty,MATRIX,0.3932,1,1,Staff Expense - Wages/Salaries

@@ -1,0 +1,57 @@
+{
+  "alpha_id": "rKRx2Alj",
+  "name": "DEU_R_anlrev3_01",
+  "tags": [
+    "CH_REG",
+    "SRC_analyst_estimate_revision",
+    "CORR_MID"
+  ],
+  "descriptions": "## 经济含义\n卖方分析师对盈利、净利润与 EBITDA 三类口径的预期修正分别捕捉修正的速度、期限与口径，三者同向共振才构成强信号。\n\n## 构造\n三腿分别取 10、50、30 日窗口累加并在 sector、industry、industry 内做分组排序，再以单次变参 multiply 相乘，弱修正股被乘积自然压低。\n\n## 风险与验证\nIS 全闸通过（S1.95/F1.80/2Y2.23），prod 0.6561、self 0.5637、边际 ΔSharpe +0.68，近三年无负年但 2023 较 2022 有末段衰减。",
+  "expression": "multiply(group_rank(ts_sum(mean_estimate_change_pct_f12m_earnings_7d_4, 10), sector), group_rank(ts_sum(netprofit_y1_estimate_change_3mo, 50), industry), group_rank(ts_sum(mean_estimate_change_pct_f12m_ebitda_90d_3, 30), industry))",
+  "settings": {
+    "region": "DEU",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 2,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF"
+  },
+  "metrics": {
+    "sharpe": 1.95,
+    "fitness": 1.8,
+    "two_year_sharpe": 2.23,
+    "turnover": 0.1401,
+    "sub_universe_sharpe": 1.17,
+    "returns": 0.1196,
+    "drawdown": 0.07,
+    "margin": 0.001708
+  },
+  "correlations": {
+    "production": 0.6561,
+    "self": 0.5636882853567852
+  },
+  "marginal_contribution": {
+    "delta_sharpe": 0.68,
+    "before_sharpe": 1.73,
+    "after_sharpe": 2.41,
+    "dilutive": false
+  },
+  "gates": {
+    "failed_ra_count": 0,
+    "checks_fail": [],
+    "is_ladder_sharpe": "PASS",
+    "mix_audit": "none (legs=0, no three questions needed)",
+    "robustness": "CONDITIONAL (ledger_kv robustness_rKRx2Alj; recent3 CV 0.328, no negative years, soft flag 2023 decay)"
+  },
+  "operator_callsites": 7,
+  "supersedes": [
+    "mLovbnm2",
+    "2rAYpJKx"
+  ],
+  "source_report": "output_report/opmin_mlovbnm2_20261110.md",
+  "audited_at": "2026-11-10T02:13+08:00"
+}

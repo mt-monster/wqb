@@ -1,0 +1,16 @@
+id,type,cov,uc,ac,desc
+country_percentile_acquisition_likelihood,VECTOR,0.0,1,1,Percentile score of M&A target likelihood within the companyâs headquarters country (100 = highest; 1 = lowest)
+global_company_size_percentile_rank,VECTOR,0.0,2,2,Percentile rank of the size component versus all companies globally; 100 = most favorable on size dimension
+global_credit_quality_percentile_rank,VECTOR,0.0,1,3,Percentile rank of the modelâs credit-based component versus all companies globally; 100 = strongest; 1 = weakest
+global_fundamental_factor_percentile_rank,VECTOR,0.0,0,0,Percentile rank of the fundamentals component versus all companies globally; 100 = strongest; 1 = weakest
+global_percentile_acquisition_likelihood,VECTOR,0.0,2,2,Percentile score from the M&A Target Model versus all companies globally; 100 = highest target likelihood; 1 = lowest
+global_text_factor_percentile_rank,VECTOR,0.0,1,2,Global percentile rank based on text/news-driven factors in the M&A Target model (100 = highest; 1 = lowest)
+global_valuation_percentile_rank,VECTOR,0.0,3,5,Percentile rank of the valuation component versus all companies globally; 100 = most favorable; 1 = least
+industry_percentile_acquisition_likelihood,VECTOR,0.0,0,0,Percentile score from the M&A Target Model comparing the company to peers in the same Region+Industry; 100 = highest target likelihood; 1 = lowest
+region_company_size_percentile_rank,VECTOR,0.0,1,1,Percentile rank for the Size component within the M&A Target region set (100 = highest/largest; 1 = lowest)
+region_credit_quality_percentile_rank,VECTOR,0.0,1,3,Percentile rank (1â100) of credit-based factors within the region peer set; higher values indicate stronger credit profile
+region_fundamental_factor_percentile_rank,VECTOR,0.0,0,0,Percentile rank of the fundamentals component versus companies in the same M&A region; 100 = strongest; 1 = weakest
+region_percentile_acquisition_likelihood,VECTOR,0.0,0,0,Percentile score from the M&A Target Model versus companies in the same M&A region set; 100 = highest target likelihood; 1 = lowest
+region_text_factor_percentile_rank,VECTOR,0.0,0,0,Percentile rank (1â100) of the modelâs text/news factors for the company relative to peers in the same M&A Target region; higher values indicate stronger text-bâ¦
+region_valuation_percentile_rank,VECTOR,0.0,2,2,Percentile rank of the valuation component versus companies in the same M&A region; 100 = most favorable; 1 = least
+sector_percentile_acquisition_likelihood,VECTOR,0.0,0,0,Percentile score of M&A target likelihood within the Region+Sector peer group (100 = highest; 1 = lowest)

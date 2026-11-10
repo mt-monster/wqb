@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "1e1fk4aV4q09OU6MEWrgwa",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/1e1fk4aV4q09OU6MEWrgwa",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/1e1fk4aV4q09OU6MEWrgwa",
+ "submitted_expressions": [
+  "group_rank(ts_backfill(sentiment_distribution_skewness, 10), sector)",
+  "reverse(group_rank(ts_backfill(sentiment_distribution_skewness, 10), sector))",
+  "group_rank(ts_backfill(sentiment1_lowest_score, 10), sector)",
+  "group_rank(ts_backfill(sentiment_overall_average, 10), sector)",
+  "reverse(group_rank(ts_backfill(sentiment_overall_average, 10), sector))",
+  "group_rank(ts_delta(ts_backfill(sentiment_overall_average, 10), 22), sector)",
+  "group_rank(ts_backfill(subtract(sentiment1_average_value, sentiment2_average_value), 10), sector)",
+  "group_rank(ts_zscore(ts_backfill(sentiment_overall_average, 10), 66), sector)",
+  "group_rank(ts_backfill(normalized_headline_count, 10), sector)",
+  "group_rank(ts_delta(ts_backfill(sentiment1_distribution_skewness, 10), 22), sector)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

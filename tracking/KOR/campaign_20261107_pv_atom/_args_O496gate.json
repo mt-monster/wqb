@@ -1,0 +1,21 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 2,
+ "neutralization": "STATISTICAL",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "trade_when(greater(rank(ts_backfill(oth496_ard_tot_assets, 63)), 0.2), group_rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44), sector), -1)",
+  "trade_when(greater(rank(ts_backfill(oth496_ard_tot_assets, 63)), 0.4), group_rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44), sector), -1)",
+  "trade_when(greater(rank(ts_backfill(oth496_ard_tot_assets, 63)), 0.6), group_rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44), sector), -1)"
+ ],
+ "wave": "O496gate size-gate trade_when investability fix (new path)"
+}

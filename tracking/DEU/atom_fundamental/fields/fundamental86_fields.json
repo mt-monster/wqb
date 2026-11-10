@@ -1,0 +1,64 @@
+{
+ "results": [
+  {
+   "id": "fnd86_average_score",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 23,
+   "alphaCount": 48,
+   "description": "Overall composite score aggregating all pillars, scaled as deciles 1–10 with higher being better"
+  },
+  {
+   "id": "fnd86_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 59,
+   "alphaCount": 87,
+   "description": "Earnings pillar score (1–10 decile, higher is better), reflecting earnings quality, revisions, and growth"
+  },
+  {
+   "id": "fnd86_fundamental_score",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 38,
+   "alphaCount": 66,
+   "description": "Fundamental score on a 1–10 decile scale, higher indicates stronger fundamental quality"
+  },
+  {
+   "id": "fnd86_insider_trading_score",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Insider trading pillar score (decile 1–10), based on recent insider activity"
+  },
+  {
+   "id": "fnd86_price_momentum_score",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Price momentum score on a 1–10 decile scale, higher indicates stronger recent price trend"
+  },
+  {
+   "id": "fnd86_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Relative valuation score on a 1–10 decile scale, higher indicates more attractive valuation versus peers in the region"
+  },
+  {
+   "id": "fnd86_risk_score",
+   "type": "MATRIX",
+   "coverage": 0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Risk pillar score, integer decile 1–10 where higher indicates a more favorable risk profile"
+  }
+ ],
+ "count": 7,
+ "platform_count": 7,
+ "complete": true,
+ "pages_fetched": 1
+}

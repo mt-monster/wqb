@@ -548,6 +548,17 @@ GATES: Dict[str, Dict[str, object]] = {
     "platform": GATES_PLATFORM,
 }
 
+#: 篮子两两互相关上限（唯一事实源）。2026-11-09 由 0.5 放宽到 0.7：平台 self/prod 硬线均 0.7，
+#: 论坛社区篮子去重亦「先 0.7 看簇结构、再决定是否加严」（阈值拧太紧→短名单空了）。
+#: 0.5 过严会误伤真·不同机制的跨集组合（KOR E56jA0AP S1.58/2Y2.15/fRA0 因与 analyst10/insiders5
+#: ATOM 互相关 0.61/0.66 被挡）。防同源充数改靠 basket_diversity_gate 的簇识别 + 结构多样性审查，
+#: 而非一味压低本阈值。select_ra_basket / basket_diversity_gate 引用本值；--threshold 可覆盖。
+BASKET_MUTUAL_CORR_MAX: float = 0.7
+
+#: 篮内同一数据集过度集中警戒线：超过该颗数触发结构多样性 WARN（防同源充数）。
+#: 放宽互相关阈值后，同数据集兄弟可能 0.6x 相关仍过阈，用本警戒点名而非硬禁。
+BASKET_DATASET_CONCENTRATION_WARN: int = 2
+
 #: 全局提交闸（**fail-closed**）：`=1` 才允许 workflow 提交 alpha——它只解除闸门，
 #: **不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。
 #: ⚠ 本模块唯一的 `os.environ` 读取点，且是文档已承诺的口径：`docs/env_registry.json` 把

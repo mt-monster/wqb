@@ -9,6 +9,7 @@ async def check_correlation(
     alpha_id: str,
     correlation_type: str = "both",
     refresh: bool = False,
+    timeout_s: float = None,
 ) -> Dict[str, Any]:
     """Check alpha correlation against the production pool and/or self pool.
 
@@ -34,12 +35,27 @@ async def check_correlation(
 
     refresh=True：跳过本地缓存**并跳过预读**，强制走平台重测——交付前终验用
     （prod 漂移猛，台账 5 天作废）。
+
+    timeout_s（2026-11-10 审查第三批）：覆盖单次阻塞轮询窗口（缺省 =
+    ``wqb.config.WAIT_THRESHOLDS['prod_corr_timeout_s']`` = 240s）。平台停摆时
+    可调小以免长时间挂住调用；窗口内拿不到值返回 ``status=pending``（不缓存、不判死）。
+
+    platform_unavailable（2026-11-10 新增）：连续多次 pending 会触发**账号级熔断**，
+    期间本工具直接返回 ``status=platform_unavailable`` + ``retry_after``，不抢锁、
+    不发请求。拿到任一成功结果即提前清除；到点自动恢复。它与 ``correlation_busy``
+    的区别：busy 是「别人占着槽」，unavailable 是「平台侧算不出来」——两者都不可判闸。
     """
     if correlation_type not in ("production", "self", "both"):
         return {"error": f"correlation_type 必须是 production|self|both，收到 {correlation_type!r}"}
-    threshold = 0.7
+    # 2026-11-10 审查 P1-11：阈值改引唯一事实源（值仍是合规红线 0.7，不可放宽）
     try:
-        return _slim_check_correlation(await brain_client.check_correlation(alpha_id, correlation_type, threshold, refresh=refresh))
+        from wqb.config import PRODCORR_CEILING
+        threshold = float(PRODCORR_CEILING)
+    except Exception:  # noqa: BLE001
+        threshold = 0.7
+    try:
+        return _slim_check_correlation(await brain_client.check_correlation(
+            alpha_id, correlation_type, threshold, refresh=refresh, timeout_s=timeout_s))
     except Exception as e:
         return {"error": str(e)}
 

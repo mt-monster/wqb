@@ -1,0 +1,85 @@
+{
+ "wave": "F1_fnd45_20261107",
+ "dispatched_at": "2026-11-06T20:47:22.149Z",
+ "settings": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "nan_handling": "OFF",
+  "pasteurization": "ON",
+  "unit_handling": "VERIFY"
+ },
+ "batchA": {
+  "label": "fnd45_templates",
+  "multisim": {
+   "success": true,
+   "message": "Multisimulation submitted successfully with 10 alpha expressions",
+   "async": true,
+   "multisimulation_id": "4BBN7F6vD5k2bah14c3Xtz4p",
+   "multisimulation_location": "https://api.worldquantbrain.com/simulations/4BBN7F6vD5k2bah14c3Xtz4p",
+   "multisimulation_url": "https://api.worldquantbrain.com/simulations/4BBN7F6vD5k2bah14c3Xtz4p",
+   "submitted_expressions": [
+    "group_rank(ts_backfill(fnd45_sentiment_lm2_net_qa, 66), industry)",
+    "group_rank(ts_delta(ts_backfill(fnd45_sentiment_lm2_net_qa, 66), 66), industry)",
+    "group_rank(subtract(ts_backfill(fnd45_sentiment_lm2_net_qa, 66), ts_backfill(fnd45_sentiment_lm2_net_pr, 66)), industry)",
+    "group_rank(ts_backfill(fnd45_score, 66), industry)",
+    "group_rank(ts_decay_linear(ts_backfill(fnd45_score, 66), 20), industry)",
+    "-group_rank(ts_backfill(fnd45_readability_executives, 66), industry)",
+    "group_rank(ts_backfill(fnd45_numeric_perct_qa, 66), industry)",
+    "group_rank(ts_backfill(fnd45_lda_bigram_pr, 66), industry)",
+    "group_rank(ts_backfill(fnd45_sentiment_chanage_ceo, 66), industry)",
+    "group_rank(subtract(ts_backfill(fnd45_sentiment_chanage_ceo, 66), ts_backfill(fnd45_sentiment_chanage_othr, 66)), industry)"
+   ],
+   "polling_tool": "lookINTO_SimError_message",
+   "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+  },
+  "expressions": [
+   "group_rank(ts_backfill(fnd45_sentiment_lm2_net_qa, 66), industry)",
+   "group_rank(ts_delta(ts_backfill(fnd45_sentiment_lm2_net_qa, 66), 66), industry)",
+   "group_rank(subtract(ts_backfill(fnd45_sentiment_lm2_net_qa, 66), ts_backfill(fnd45_sentiment_lm2_net_pr, 66)), industry)",
+   "group_rank(ts_backfill(fnd45_score, 66), industry)",
+   "group_rank(ts_decay_linear(ts_backfill(fnd45_score, 66), 20), industry)",
+   "-group_rank(ts_backfill(fnd45_readability_executives, 66), industry)",
+   "group_rank(ts_backfill(fnd45_numeric_perct_qa, 66), industry)",
+   "group_rank(ts_backfill(fnd45_lda_bigram_pr, 66), industry)",
+   "group_rank(ts_backfill(fnd45_sentiment_chanage_ceo, 66), industry)",
+   "group_rank(subtract(ts_backfill(fnd45_sentiment_chanage_ceo, 66), ts_backfill(fnd45_sentiment_chanage_othr, 66)), industry)"
+  ]
+ },
+ "batchB": {
+  "label": "existence_probes_fnd90_fnd22",
+  "multisim": {
+   "success": true,
+   "message": "Multisimulation submitted successfully with 8 alpha expressions",
+   "async": true,
+   "multisimulation_id": "3Bgx6bgkr4G6cbkHhfOq4Ad",
+   "multisimulation_location": "https://api.worldquantbrain.com/simulations/3Bgx6bgkr4G6cbkHhfOq4Ad",
+   "multisimulation_url": "https://api.worldquantbrain.com/simulations/3Bgx6bgkr4G6cbkHhfOq4Ad",
+   "submitted_expressions": [
+    "group_rank(ts_backfill(fnd90_qes_gamef_pscore, 252), industry)",
+    "-group_rank(ts_backfill(fnd90_qes_gamef_ohlson, 252), industry)",
+    "group_rank(ts_backfill(fnd90_game_cash_flow_coverage, 252), industry)",
+    "group_rank(ts_backfill(fnd90_game_deferred_sal_chg, 252), industry)",
+    "group_rank(ts_backfill(fnd90_qes_gamef_icfroe_5y, 252), industry)",
+    "-group_rank(ts_backfill(fnd90_game_inventory_chg, 252), industry)",
+    "group_rank(ts_backfill(vec_avg(fnd22_value), 252), industry)",
+    "group_rank(ts_delta(ts_backfill(vec_avg(fnd22_value), 252), 66), industry)"
+   ],
+   "polling_tool": "lookINTO_SimError_message",
+   "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+  },
+  "expressions": [
+   "group_rank(ts_backfill(fnd90_qes_gamef_pscore, 252), industry)",
+   "-group_rank(ts_backfill(fnd90_qes_gamef_ohlson, 252), industry)",
+   "group_rank(ts_backfill(fnd90_game_cash_flow_coverage, 252), industry)",
+   "group_rank(ts_backfill(fnd90_game_deferred_sal_chg, 252), industry)",
+   "group_rank(ts_backfill(fnd90_qes_gamef_icfroe_5y, 252), industry)",
+   "-group_rank(ts_backfill(fnd90_game_inventory_chg, 252), industry)",
+   "group_rank(ts_backfill(vec_avg(fnd22_value), 252), industry)",
+   "group_rank(ts_delta(ts_backfill(vec_avg(fnd22_value), 252), 66), industry)"
+  ]
+ }
+}

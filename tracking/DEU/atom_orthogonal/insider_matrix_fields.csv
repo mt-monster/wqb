@@ -1,0 +1,34 @@
+id,type,cov,uc,ac,desc
+director_intensity_score,MATRIX,1.0,12,17,Dataset-specific timing/bookkeeping indicator used for internal sequence logging; not a trading signal
+eur_aggregated_value_1,MATRIX,0.5344,4,4,Mean value of shares bought in Euro currency
+eur_aggregated_value_2,MATRIX,0.5344,3,3,Sum value of shares bought in Euro currency
+eur_aggregated_value_3,MATRIX,0.5344,1,1,Mean value of shares sold in Euro currency
+eur_aggregated_value_4,MATRIX,0.5344,2,2,Sum value of shares sold in Euro currency
+eur_director_signal_value_1,MATRIX,0.5344,7,10,Mean value of shares bought directly in Euro currency by directors with significant trades
+eur_director_signal_value_2,MATRIX,0.5344,21,24,Sum value of shares bought directly in Euro currency by directors with significant trades
+eur_director_signal_value_3,MATRIX,0.5344,4,6,Mean value of shares sold directly in Euro currency by directors with significant trades
+eur_director_signal_value_4,MATRIX,0.5344,11,14,Sum value of shares sold directly in Euro currency by directors with significant trades
+eur_director_value_1,MATRIX,0.5344,4,4,Mean value of shares bought in Euro currency by all directors
+eur_director_value_2,MATRIX,0.5344,3,3,Sum value of shares bought in Euro currency by all directors
+eur_director_value_3,MATRIX,0.5344,1,1,Mean value of shares sold in Euro currency by all directors
+eur_director_value_4,MATRIX,0.5344,1,1,Sum value of shares sold in Euro currency by all directors
+eur_signal_value_1,MATRIX,0.5344,1,3,Mean value of shares bought in Euro currency by directors with significant trades
+eur_signal_value_2,MATRIX,0.5344,20,24,Sum value of shares bought in Euro currency by directors with significant trades
+eur_signal_value_3,MATRIX,0.5344,3,5,Mean value of shares sold in Euro currency by directors with significant trades
+eur_signal_value_4,MATRIX,0.5344,11,12,Sum value of shares sold in Euro currency by directors with significant trades
+eur_top_director_signal_value_1,MATRIX,0.5344,1,2,Mean value of shares bought directly in Euro currency by executives with significant trades
+eur_top_director_signal_value_2,MATRIX,0.5344,2,2,Sum value of shares bought directly in Euro currency by executives with significant trades
+eur_top_director_signal_value_3,MATRIX,0.5344,1,2,Mean value of shares sold directly in Euro currency by executives with significant trades
+eur_top_director_signal_value_4,MATRIX,0.5344,2,2,Sum value of shares sold directly in Euro currency by executives with significant trades
+eur_top_director_value_1,MATRIX,0.5344,2,2,Mean value of shares bought in Euro currency by specific directors
+eur_top_director_value_2,MATRIX,0.5344,1,1,Sum value of shares bought in Euro currency by specific directors
+eur_top_director_value_3,MATRIX,0.5344,2,2,Mean value of shares sold in Euro currency by specific directors
+eur_top_director_value_4,MATRIX,0.5344,0,0,Sum value of shares sold in Euro currency by specific directors
+eur_top_signal_value_1,MATRIX,0.5344,2,3,Mean value of shares bought in Euro currency by executives with significant trades
+eur_top_signal_value_2,MATRIX,0.5344,5,6,Sum value of shares bought in Euro currency by executives with significant trades
+eur_top_signal_value_3,MATRIX,0.5344,0,0,Mean value of shares sold in Euro currency by executives with significant trades
+eur_top_signal_value_4,MATRIX,0.5344,8,9,Sum value of shares sold in Euro currency by executives with significant trades
+eur_top_value_1,MATRIX,0.5344,1,1,Mean value of shares bought in Euro currency by executives
+eur_top_value_2,MATRIX,0.5344,4,4,Sum value of shares bought in Euro currency by executives
+eur_top_value_3,MATRIX,0.5344,0,0,Mean value of shares sold in Euro currency by executives
+eur_top_value_4,MATRIX,0.5344,1,1,Sum value of shares sold in Euro currency by executives

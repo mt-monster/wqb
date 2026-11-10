@@ -1,0 +1,44 @@
+{
+ "dataset": "risk68",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 5
+ },
+ "field_count": 5,
+ "fetched_at": "2026-11-09T14:20:00",
+ "fields": [
+  {
+   "id": "rsk68_beta",
+   "type": "MATRIX",
+   "coverage": 1,
+   "alphaCount": 27
+  },
+  {
+   "id": "rsk68_residual_return",
+   "type": "MATRIX",
+   "coverage": 1,
+   "alphaCount": 67
+  },
+  {
+   "id": "rsk68_weight_dadv",
+   "type": "MATRIX",
+   "coverage": 1,
+   "alphaCount": 34
+  },
+  {
+   "id": "rsk68_weight_edadv",
+   "type": "MATRIX",
+   "coverage": 1,
+   "alphaCount": 68
+  },
+  {
+   "id": "rsk68_weight_volatility_short",
+   "type": "MATRIX",
+   "coverage": 1,
+   "alphaCount": 20
+  }
+ ]
+}

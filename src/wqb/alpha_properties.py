@@ -245,10 +245,40 @@ def check_tags(tags: List[str]) -> List[str]:
     for t in tags:
         if re.fullmatch(r"[0-9]+(\.[0-9]+)?", t):
             warn.append(f"疑似把 PROD 数值当 tag：{t}（数值会过期，应放 description）")
-    if has_ppa_tag(tags) and CHANNEL_PPA not in tags:
-        warn.append("PowerPoolSelected 应仅用于真实 PPA 通道；普通提交请用 CH_REG；"
-                    "若确为 PPA，请同时补 CH_PPA 以保持通道口径一致")
+    # ⚠ 2026-11-08 撤下 `PowerPoolSelected` 违规告警：该标签是**平台**在提交成功后
+    #   自动追加的（11-06 KOR / 11-07 GBR risk68 两次实证），不是我们的规范缺陷。
+    #   此前把它记为「应仅用于真实 PPA 通道」会在审计里刷 36 条假违规（全账户 ACTIVE
+    #   297 颗中 36 颗带该标签，逐颗核实均为平台所打，且零退役）。改为 `tag_notes`
+    #   信息项，不进「有告警」统计；真实风险（提交**前**预置该标签会触发
+    #   `PURE_POWER_POOL_THEME` 检查）改由 `_derive_tags` 在 PATCH 前剔除来兜。
     return warn
+
+
+def tag_notes(tags: List[str]) -> List[str]:
+    """返回**信息项**（非违规），与 :func:`check_tags` 的告警分渠道统计。
+
+    为什么分开：告警意味着「该改」，信息项意味着「知道就行」。`PowerPoolSelected`
+    属于后者——平台自动打，清不清是策略选择，不是合规缺陷。混进告警会让审计噪音
+    盖掉真正要修的问题（缺 CH_* / 缺 SRC_* / 超 5 个标签）。
+
+    >>> tag_notes(["CH_REG", "PowerPoolSelected"])[0].startswith("PowerPoolSelected")
+    True
+    >>> tag_notes(["CH_REG"])
+    []
+    """
+    out: List[str] = []
+    if has_ppa_tag(tags):
+        if CHANNEL_PPA in tags:
+            out.append("PowerPoolSelected + CH_PPA：真 PPA 通道，正常")
+        else:
+            out.append(
+                "PowerPoolSelected：Power Pool 池成分开关，非违规、也不是 PPA 通道证据。"
+                "来源可为平台提交成功后自动追加，或提交后手动治理（PATCH 增删均可逆）。"
+                "提交前预置它会套用 PURE_POWER_POOL_THEME 检查（合法 REGULAR 可能被拒），"
+                "故提交链路在 PATCH 前剔除；提交后现状由 submit_alpha Step 6 tag_disposal 留痕。"
+                "★ 2026-11-10 实证：标签与平台 themes 是两个独立条件——增删标签都不改变"
+                " themes；只有 themes 命中当期 Power Pool 主题时，标签才影响当期 CPPAP。")
+    return out
 
 
 # ---------------------------------------------------------------- SRC 来源解析
@@ -300,8 +330,12 @@ def _is_plumbing(fname: str) -> bool:
     return f.startswith("session_")
 
 
-def resolve_source_dataset(expr: Optional[str], db_path: Optional[str] = None) -> Optional[str]:
+def resolve_source_dataset(expr: Optional[str], db_path: Optional[str] = None,
+                           region: Optional[str] = None) -> Optional[str]:
     """表达式 → 来源数据集名（供 `SRC_` 标签）。
+
+    传 `region` 时按 `datasets.region_id` 限定作用域：同名字段在不同区域可能归属
+    不同数据集，裸 `FROM fields` 会静默串区（见 `wqb.region_catalog` 的纪律）。
 
     ★ **不要用 `alphas.dataset_id`** —— 那记的是**波次主数据集**，与字段真实归属常不符。
       实测：`Grb67d6O`（用 news 字段 `headline_item_count`）在本地库被记为
@@ -337,19 +371,30 @@ def resolve_source_dataset(expr: Optional[str], db_path: Optional[str] = None) -
         if not con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='fields'").fetchone():
             return None
 
+        rid = None
+        if region:
+            try:
+                from .region_catalog import RegionCatalog
+                with RegionCatalog(db=db_path) as _rc:
+                    rid = _rc.region_id(region)
+            except Exception:
+                rid = None
+
         def _ds(f):
-            if f in _FIELD_DS_CACHE:
-                return _FIELD_DS_CACHE[f]
+            key = (region or "", f)
+            if key in _FIELD_DS_CACHE:
+                return _FIELD_DS_CACHE[key]
             try:
                 row = con.execute(
                     """SELECT d.name AS ds FROM fields fi
                        JOIN datasets d ON fi.dataset_id = d.id
                        WHERE fi.field_name = ? AND d.category IS NOT NULL
-                       LIMIT 1""", (f,)).fetchone()
+                         AND (? IS NULL OR d.region_id = ?)
+                       LIMIT 1""", (f, rid, rid)).fetchone()
                 ds = row["ds"] if row else None
             except Exception:
                 ds = None
-            _FIELD_DS_CACHE[f] = ds
+            _FIELD_DS_CACHE[key] = ds
             return ds
 
         fields = fields_of(expr)

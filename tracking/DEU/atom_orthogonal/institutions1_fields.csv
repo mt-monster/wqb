@@ -1,0 +1,8 @@
+id,type,cov,uc,ac,desc
+inst1_holdings,VECTOR,0.2289,11,16,The total number of shares or equity units held by the insider after the reported transaction is executed
+inst1_price,VECTOR,0.2289,1,1,Price per share/unit at which the transaction was executed; if a range is involved; this is the minimum price
+inst1_shares,VECTOR,0.2289,2,2,The total number of shares or equity units covered by the transaction
+inst1_tradesignificance,VECTOR,0.2289,5,5,A numerical score (1 to 3) indicating the importance or potential market impact of the trade; with 1 as low and 3 as high significance
+inst1_value,VECTOR,0.2289,3,3,Total monetary value of the transaction in its original currency (i.e.; price times number of shares traded)
+inst1_valueeur,VECTOR,0.2289,14,19,Total value of the transaction converted to Euro currency; for comparability across markets
+transaction_currency_code_2,VECTOR,0.2289,0,0,Three-digit ISO code indicating the national currency in which the transaction occurred (e.g.; EUR; USD; GBP)

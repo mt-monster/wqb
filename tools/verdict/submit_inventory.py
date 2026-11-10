@@ -807,7 +807,11 @@ async def run(args):
                         if not r.get("from_cache"):
                             persist_live_corr(aid, prod, selfc, args.db)
                 else:
-                    base["note"] = f"相关性未取得：平台 {r.get('status')}"
+                    # 2026-11-10 审查 P0-4：取数失败不得回落到台账旧值参与分类，
+                    # 否则 busy/pending 时可能用陈旧值产出 SUBMIT_NOW。
+                    prod, selfc = None, None
+                    base["note"] = (f"相关性未取得：平台 {r.get('status')}"
+                                    "（旧台账值不参与分类）")
                 if args.sleep_sec > 0:
                     await asyncio.sleep(args.sleep_sec)
         elif need_corr:
@@ -820,10 +824,12 @@ async def run(args):
         age = _age_hours(checked_at)
         fresh, reason = corr_fresh(age if age is not None else None,
                                    age if age is not None else None, args.stale_hours)
-        # --snapshot-only: 过期快照视为可用（提交时平台自会拦截）
+        # 2026-11-10 审查 P0-4：--snapshot-only 只表示「不重测」，不表示「值新鲜」。
+        # 旧实现强制 fresh=True 会把过期台账值判成 SUBMIT_NOW，与文件头
+        # 「>48h 的 prod 视为过期必须重测」自相矛盾。现保留真实时效，仅追加说明。
         if args.snapshot_only:
-            fresh = True
-            reason = ""
+            base["note"] = ((base["note"] + "；") if base["note"] else "") + \
+                "snapshot-only：未重测，时效按台账时间戳判定"
         # prod / self 的实测时间同源（同一次 check_correlation），故共用 age
         bucket, reason_code, note = classify(res, prod, selfc, fresh, args.thin_margin,
                                              lim_prod, lim_self)

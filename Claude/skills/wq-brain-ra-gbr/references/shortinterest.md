@@ -115,4 +115,42 @@
 - 6 条最好 S0.80，距 REGULAR 硬闸 1.58 差 49% ⇒ **SHORTINTEREST 塔（GBR D1 0/3 未点亮）本轮无可提交空间，不再投该集探针**。
 - ⚠ **别把历史最强当成本集战绩**：本域 `KPrmWlwN`（S1.62 / 2Y1.89 / `failed_ra_count=0`）表达式只用 **`pv47_spret` 单字段、`pyramid_short=pv`** ⇒ 属 **PV 塔**，不是 shortinterest3 字段。
 
+
+### 2026-11-09 ★ `loaned_share_count_main` 是 GBR 最强短腿，替代短腿普遍弱
+
+**已验证事实**：`reverse(group_rank(ts_zscore(vec_sum(loaned_share_count_main),504), sector))` 作为**第二短腿**
+与不同主腿组合可稳定产出全闸件：techindi 动量 S2.66 / insider 方向 S1.76 / insider 净买入 S1.82 /
+analyst9 广度 S2.09–2.15 / mdl28 排名 S1.62 / earnings surprise S1.74。
+**但替代短腿（wave-J 实测 6 条中 5 条全灭）**：`loan_rate_volatility_main` / `transaction_count_main` 组 S 1.24–1.59 且 fl=2`3；
+只有 `average_loan_duration_days_main` 成功一次（`mLoWX91p` S2.66/F1.28/2Y2.24/fl=0）。
+⇒ **短腿不是随便换的**：换短腿≈换半个信号，`loaned_share_count` 的信息量不可替代。
+
+**主腿口径实测**：`reverse(group_rank(ts_zscore(vec_avg(mean_loan_rate_main),126),sector))` 作主腿（借券费率高=做空需求强）
+组合 S1.09（wave-N，弱短腿）；`transaction_count_main` 作主腿 S 不足（S 1.15）。
+
+**单集 ATOM 提示**：主腿与短腿都用 `shortinterest3` 字段 ⇒ 单数据集 ATOM，**不占任何组腿配额**。
+
+### 2026-11-09 ★★ 决定性反证：短腿承载几乎全部 alpha，主腿是噪声级伴生
+
+**对照实验设计**：把已过闸的 6 条主腿**单独**跑（纯 ATOM，去掉借券短腿），两个设置档共 12 条。
+
+| 主腿 | 纯 ATOM S（FAST/5/0.1） | 纯 ATOM S（SUBINDUSTRY/4/0.08 + ts_rank） |
+|---|---:|---:|
+| `subtract(vec_avg(ern6_actual_eps), vec_avg(ern6_estimated_eps))` | **−0.89** | −0.63 |
+| `directional_indicator` | 0.00（无持仓） | 0.14 |
+| insider 净买比率 | −0.15 | 0.36 |
+| analyst FY1 营收上调−下调 | 0.96 | 0.10 |
+| `vec_avg(auction_order_imbalance_pct_adv)` | 0.69 | 0.50 |
+| `mdl28_sm_structural_credit_..._rank` | 1.07 | 0.29（换估值为水平） |
+
+**结论**：12/12 全灭。GOLD2 模板 `add(multiply(2,主腿), reverse(借券短腿))` 的 alpha <!-- lint:counterexample: 已判死的历史配方记录 -->
+**几乎全部由借券短腿承载**，主腿只贡献低相关噪声。两条推论：
+
+1. **「换主腿开新面」封死** —— 主腿更换后的混合体对同一基线相关系数逐位相同
+   （earnings 意外 / insider 方向 / insider 净买 三颗主腿完全不同，对 `1YNAJJ9z` 均 0.63–0.65）。
+2. **「去短腿做纯 ATOM 开新面」封死** —— 主腿独立时普遍 S<1.1。
+
+⇒ 本集的正确用法就是**当短腿用**。想扩席只能换**设置档**（见 `_seat-math-ceiling.md`），
+不能靠换主腿、也不能靠把主腿拆出来单跑。
+
 <!-- profiles:manual:end -->

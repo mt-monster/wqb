@@ -1,0 +1,23 @@
+{
+ "neutralization": "INDUSTRY",
+ "tags": [
+  "dividend_policy@INDUSTRY",
+  "other532@INDUSTRY",
+  "other335@INDUSTRY",
+  "chart_cnn@INDUSTRY"
+ ],
+ "success": true,
+ "message": "Multisimulation submitted successfully with 4 alpha expressions",
+ "async": true,
+ "multisimulation_id": "2KpVpk3ky5iDcL0i4ec2loA",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/2KpVpk3ky5iDcL0i4ec2loA",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/2KpVpk3ky5iDcL0i4ec2loA",
+ "submitted_expressions": [
+  "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 44), industry), 0.5)",
+  "subtract(0.5, group_rank(ts_sum(oth532_emerging_daily_specificreturn, 66), sector))",
+  "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+  "group_rank(multiply(imgpred_eqstar4_60dret_q5_prob4, imgpred_eqstar4_60dret_q5_confscore4), sector)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

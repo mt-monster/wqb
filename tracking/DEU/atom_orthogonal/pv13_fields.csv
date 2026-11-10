@@ -1,0 +1,27 @@
+id,type,cov,uc,ac,desc
+company_product_tradename,VECTOR,0.0,0,0,Product or tradename associated with the company.
+company_relationship_type,VECTOR,0.0,0,0,Flattened list of related company identifiers/indices; pair with relation_offsets to reconstruct each companyâs relation list (decode via current dateâs companyâ¦
+pv13_22_800_sector,GROUP,0.0,0,0,grouping fields for top800
+pv13_5_sector,GROUP,0.0,0,0,grouping fields
+pv13_com_page_rank,MATRIX,0.0,1,1,PageRank score of a company within the Revere competitor network (point-in-time)
+pv13_com_rk_au,MATRIX,0.0,1,1,HITS authority score of a company within the Revere competitor network (point-in-time)
+pv13_h_min2_sector,GROUP,0.0,0,0,Industry sector code (micro-sector identifier) for the America region in the Revere hierarchy_min2 module; decode the integer using the moduleâs date-specific sâ¦
+pv13_new_1l_scibr,GROUP,0.0,0,0,RBICS Level 1 sector code for the company on each date; decode using this moduleâs date-specific RBICS_L1 codebook to get the sector name
+pv13_new_2l_scibr,GROUP,0.0,0,0,RBICS Level 2 industry group code for the security as of the date; decode with the moduleâs date-specific RBICS_L2 codebook to get the industry group name
+pv13_new_3l_scibr,GROUP,0.0,0,0,RBICS Level 3 industry subgroup code for the security as of the date; decode with the moduleâs date-specific RBICS_L3 codebook to get the subgroup name
+pv13_new_4l_scibr,GROUP,0.0,0,0,RBICS Level 4 industry classification code for the company on the given date; decode using the moduleâs date-specific RBICS_L4 index to get the name
+pv13_new_5l_scibr,GROUP,0.0,0,0,RBICS Level 5 industry classification code for the company on the given date; decode using the moduleâs date-specific RBICS_L5 index to get the name
+pv13_new_6l_scibr,GROUP,0.0,0,0,RBICS Level 6 (most granular) industry classification code for the security as of the date; decode with the moduleâs date-specific RBICS_L6 codebook to get theâ¦
+pv13_ompetitorgraphrank_hub_rank,MATRIX,0.0,0,0,HITS hub score of a company within the Revere competitor network (point-in-time)
+pv13_revere_city,MATRIX,0.0,0,0,City or locality of the companyâs address
+pv13_revere_country,MATRIX,0.0,0,0,Country code
+pv13_revere_index_cap,MATRIX,0.0,4,4,Company market capitalization
+pv13_revere_index_value,MATRIX,0.0,0,0,Value of specified index for the date
+pv13_revere_key_sector_total,MATRIX,0.0,1,1,Number of key focus sectors for the company
+pv13_revere_term_sector_total,MATRIX,0.0,0,0,Number of terminal sectors for the company
+pv13_revere_zipcode,MATRIX,0.0,0,0,Postal or ZIP code of the companyâs address
+pv13_ustomergraphrank_auth_rank,MATRIX,0.0,0,0,HITS authority score of customers in the Revere customer relationship network (D1; point-in-time)
+pv13_ustomergraphrank_hub_rank,MATRIX,0.0,0,0,HITS hub score of customers in the Revere customer relationship network (D1; point-in-time)
+pv13_ustomergraphrank_page_rank,MATRIX,0.0,2,2,PageRank score of customers in the Revere customer relationship network (D1; point-in-time)
+sector_attachment_overlap_count,VECTOR,0.0,0,0,Number of sector/product levels in which both companies participate (competition overlap count)
+terminal_sector_focus_overlap_count,VECTOR,0.0,1,2,Number of terminal sectors of the focal company (CO_ID_FOR) in which the related company (CO_ID_TO) is also focused

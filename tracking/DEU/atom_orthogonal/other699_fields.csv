@@ -1,0 +1,8 @@
+id,type,cov,uc,ac,desc
+oth699_aggsplitfactor,VECTOR,0.506,0,0,Aggregate split adjustment factor applied to share counts to reflect corporate actions
+oth699_executiontimestamp,VECTOR,0.506,0,0,Timestamp when TipRanks recorded/logged the event (YYYYMMDDhhmmss; UTC)
+oth699_newnumofshares,VECTOR,0.506,1,1,Shares held in the position after the transaction; splitâadjusted in V2
+oth699_prevnumofshares,VECTOR,0.506,2,2,Shares held in the position before the transaction; splitâadjusted in V2
+oth699_priordistincttradingdays,VECTOR,0.506,1,1,Number of distinct prior trading days with user transactions before this event
+oth699_priortransactionnumber,VECTOR,0.506,1,1,Count of transactions the user made before this event in the portfolio
+oth699_sharestraded,VECTOR,0.506,4,4,Number of shares transacted in the event (positive buy; negative sell; split-adjusted)

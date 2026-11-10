@@ -1,0 +1,29 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "subtract(0.5, group_rank(ts_backfill(vec_avg(oth436_disc), 10), sector))",
+  "group_rank(ts_backfill(vec_avg(oth436_disc), 10), sector)",
+  "subtract(0.5, group_rank(ts_delta(ts_backfill(vec_avg(oth436_disc), 10), 22), sector))",
+  "subtract(0.5, group_rank(ts_delta(ts_backfill(vec_avg(oth436_disc), 10), 66), sector))",
+  "subtract(0.5, group_rank(ts_mean(ts_backfill(vec_avg(oth436_disc), 10), 66), sector))",
+  "subtract(0.5, group_rank(ts_zscore(ts_backfill(vec_avg(oth436_disc), 10), 252), sector))",
+  "group_rank(ts_backfill(vec_avg(oth436_divyld), 10), sector)",
+  "reverse(group_rank(ts_backfill(vec_avg(oth436_divyld), 10), sector))",
+  "subtract(0.5, group_rank(vector_neut(rank(ts_backfill(vec_avg(oth436_disc), 10)), rank(ts_backfill(vec_avg(oth436_mktcap), 10))), sector))",
+  "trade_when(greater(rank(ts_backfill(vec_avg(oth436_divyld), 10)), 0.3), subtract(0.5, group_rank(ts_backfill(vec_avg(oth436_disc), 10), sector)), -1)"
+ ],
+ "dataset": "other436",
+ "wave": "D2 dividend-cut risk"
+}

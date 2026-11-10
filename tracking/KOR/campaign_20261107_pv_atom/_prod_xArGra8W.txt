@@ -1,0 +1,117 @@
+﻿{
+ "alpha_id": "xArGra8W",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "checks": {
+  "production": {
+   "max_correlation": 0.7688,
+   "passes_check": false,
+   "from_cache": true,
+   "cached_at": "2026-11-07T12:03:00",
+   "source": "check_correlation",
+   "histogram_nonzero": [
+    {
+     "range": [
+      -0.6,
+      -0.5
+     ],
+     "n": 2
+    },
+    {
+     "range": [
+      -0.5,
+      -0.4
+     ],
+     "n": 15
+    },
+    {
+     "range": [
+      -0.4,
+      -0.3
+     ],
+     "n": 90
+    },
+    {
+     "range": [
+      -0.3,
+      -0.2
+     ],
+     "n": 484
+    },
+    {
+     "range": [
+      -0.2,
+      -0.1
+     ],
+     "n": 2848
+    },
+    {
+     "range": [
+      -0.1,
+      0.0
+     ],
+     "n": 11388
+    },
+    {
+     "range": [
+      0.0,
+      0.1
+     ],
+     "n": 24154
+    },
+    {
+     "range": [
+      0.1,
+      0.2
+     ],
+     "n": 25390
+    },
+    {
+     "range": [
+      0.2,
+      0.3
+     ],
+     "n": 21001
+    },
+    {
+     "range": [
+      0.3,
+      0.4
+     ],
+     "n": 15643
+    },
+    {
+     "range": [
+      0.4,
+      0.5
+     ],
+     "n": 9407
+    },
+    {
+     "range": [
+      0.5,
+      0.6
+     ],
+     "n": 3486
+    },
+    {
+     "range": [
+      0.6,
+      0.7
+     ],
+     "n": 520
+    },
+    {
+     "range": [
+      0.7,
+      0.8
+     ],
+     "n": 18
+    }
+   ],
+   "max": 0.7688
+  }
+ },
+ "all_passed": false
+}
+

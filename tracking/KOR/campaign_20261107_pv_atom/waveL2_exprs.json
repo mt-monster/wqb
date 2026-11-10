@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(ts_mean(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 5), 22), sector), 0.5)",
+ "subtract(group_rank(ts_std_dev(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 5), 66), sector), 0.5)",
+ "subtract(group_rank(ts_std_dev(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 66), sector), 0.5)",
+ "subtract(group_rank(ts_mean(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 5), 22), oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10), 0.5)",
+ "multiply(group_rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 22), sector), group_rank(ts_std_dev(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 66), sector))",
+ "subtract(group_rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 10), sector), 0.5)",
+ "subtract(group_rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 44), sector), 0.5)",
+ "subtract(group_rank(ts_std_dev(oth455_competitor_n2v_p10_q200_w1_pca_fact2_value, 66), sector), 0.5)",
+ "subtract(group_rank(ts_delta(oth455_competitor_roam_w1_pca_fact1_value, 22), sector), 0.5)",
+ "subtract(group_rank(ts_delta(oth455_customer_roam_w1_pca_fact1_value, 22), sector), 0.5)"
+]

@@ -1,0 +1,3 @@
+id,type,cov,uc,ac,desc
+mdl144_predict,MATRIX,0.4861,3,3,Raw output score from the StarPerformer (wolfe_star) deep learning model for each stock
+mdl144_score,MATRIX,0.4861,6,6,The post-processed and normalized model score designed for systematic alpha generation; usually clipped to [0;1]

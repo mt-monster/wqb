@@ -1,0 +1,12 @@
+[
+  "group_rank(vec_avg(rsk59_short_interest), sector)",
+  "trade_when(ts_arg_max(vec_avg(rsk59_daystocover90day), 90) < 33, signed_power(ts_quantile(vec_avg(rsk59_daystocover90day), 840, driver=\"gaussian\"), 1.6), -1)",
+  "group_rank(divide(subtract(vec_avg(rsk59_daystocover90day), ts_min(vec_avg(rsk59_daystocover90day), 252)), add(subtract(ts_max(vec_avg(rsk59_daystocover90day), 252), ts_min(vec_avg(rsk59_daystocover90day), 252)), 0.0001)), sector)",
+  "group_rank(ts_mean(vec_avg(rsk59_daystocover90day), 66), sector)",
+  "group_rank(ts_zscore(vec_avg(rsk59_daystocover90day), 250), sector)",
+  "group_rank(multiply(vec_avg(rsk59_daystocover90day), vec_avg(rsk59_squeeze_risk)), sector)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(vec_avg(rsk59_daystocover90day), 250), sector), group_rank(ts_av_diff(vec_avg(rsk59_daystocover90day), 66), sector)), industry)",
+  "group_rank(ts_decay_linear(vec_avg(rsk59_daystocover90day), 22), subindustry)",
+  "group_rank(multiply(vec_avg(rsk59_daystocover90day), vec_avg(rsk59_shortinterestpct)), sector)",
+  "group_rank(vec_avg(rsk59_daystocover10day), sector)"
+]

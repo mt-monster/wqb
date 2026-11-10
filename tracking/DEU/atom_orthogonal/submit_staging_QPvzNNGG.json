@@ -1,0 +1,26 @@
+{
+ "alpha_id": "QPvzNNGG",
+ "workflow": "mcp__wq-brain-http__workflow_submit_alpha",
+ "params": {
+  "alpha_id": "QPvzNNGG",
+  "name": "DEU_R_starmine_fix_01",
+  "tags": [
+   "CH_REG",
+   "SRC_predictive_starmine",
+   "W27",
+   "EXPRFAM_fix3"
+  ],
+  "descriptions": "Idea: Analyst estimate revisions and StarMine predicted surprise carry persistent information that the market under-reacts to. Combining three legs of the same information family (revision breadth over 12d, predicted surprise level, and 90-day revision velocity) into an equal-weight composite, then neutralizing within buckets of revision speed, isolates the slow-moving revision premium from its fast-moving confounder.\n\nRationale for data used: predictive_starmine is the vendor's StarMine analyst-revision dataset for DEU; mean_estimate_change_pct_f12m_earnings_14d_4 captures the 14-day consensus revision breadth for FY1 earnings, predicted_surprise_f12m_ebitda_4 the model-predicted EBITDA surprise versus consensus for the forward 12 months, and mean_estimate_change_pct_f12m_ebitda_90d_3 the slower quarterly-scale revision velocity. All three fields are MATRIX type with coverage above 0.60 and history covering the full ten-year backtest window.\n\nRationale for operators used: ts_mean smooths each leg to its stable information horizon (12d / 5d / 22d per leg velocity); rank equalizes units before the additive composite; the outer bucket(rank(...), range 0,1,0.05) groups stocks into 20 revision-speed decile buckets so group_neutralize removes cross-bucket speed drift, keeping only within-bucket relative conviction; 9 operators total, within the 12-operator policy.",
+  "confirm_submit": true,
+  "color": "BLUE",
+  "robustness_audited": true,
+  "robustness_note": "robustness_QPvzNNGG = PASS (ledger wqb-db, 2026-11-08, reports/robustness_20261108.md); soft_flags: 9 ops, self 0.6779 near line"
+ },
+ "precheck_notes": [
+  "步骤 1 先以 confirm_submit=False 跑预检，读平台返回的 checks",
+  "mix_narrative 不需要：单数据集（predictive_starmine）单源，非多源组合",
+  "提交前一刻 check_correlation(refresh=true) 终验 prod<0.7",
+  "提交后 get_alpha_details 验证 status=ACTIVE 且 dateSubmitted 非空",
+  "幂等保护：submit_verdict 已是 ALREADY_SUBMITTED 则停止"
+ ]
+}

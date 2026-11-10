@@ -1,0 +1,12 @@
+[
+  "group_rank(vec_avg(composite_story_sentiment_score_d0), subindustry)",
+  "group_rank(vec_stddev(composite_story_sentiment_score_d0), subindustry)",
+  "group_rank(vec_count(composite_story_sentiment_score_d0), subindustry)",
+  "group_rank(ts_delta(vec_avg(composite_story_sentiment_score_d0), 5), subindustry)",
+  "group_rank(divide(vec_sum(multiply(composite_story_sentiment_score_d0, entity_relevance_score_d0)), vec_sum(entity_relevance_score_d0)), subindustry)",
+  "group_rank(vec_avg(event_novelty_score_d0), subindustry)",
+  "group_rank(subtract(vec_avg(earnings_evaluation_sentiment_score_d0), vec_avg(corporate_action_report_sentiment_score_d0)), subindustry)",
+  "multiply(group_rank(vec_avg(composite_story_sentiment_score_d0), subindustry), group_rank(vec_avg(event_novelty_score_d0), subindustry))",
+  "group_rank(ts_std_dev(vec_avg(composite_story_sentiment_score_d0), 22), subindustry)",
+  "group_rank(ts_mean(vec_avg(analyst_recommendation_change_score_d0), 22), subindustry)"
+]

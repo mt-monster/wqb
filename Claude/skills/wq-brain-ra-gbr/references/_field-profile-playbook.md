@@ -207,7 +207,7 @@ $WQ_PY <repo 外>/wqb-scripts/semtype_scan.py run --region <R> --waves 1-N   # �
 |---|---|---|---|---|
 | 1 | `DEAD_COUNT`：字段名正则 | 名字会骗人 | `country`/`accounts` 误匹配；`*_surprisenum` 语义实为覆盖度 | ✅ 改为 description 驱动 |
 | 2 | `DEAD_TURNOVER`：`to_med > 0.70` | **换手是骨架属性**（`ts_decay_linear`/`ts_target_tvr_decay` 可压低），且该判据下 7 个字段 `n_tests` 全为 1 | — | ⏳ **待修**（建议降级为提示） |
-| 3 | **`UNUSABLE`：`coverage < 0.6`** | **coverage 是 `区域×universe×delay` 属性**；且 `cov == 0.00` 实为**未采集** | ★ **`model38` 全部字段 cov=0.0，其中 9 个 ALIVE（S1.87–2.44）、另 57 个仅因同一个 0.0 被判 UNUSABLE**；`pv47` cov=0.0 而 2 字段全 ALIVE；真低覆盖的 `model28` 族 cov 0.5837–0.5862 出 **4 个 ALIVE（S1.77–1.94）** | ✅ **已修**：`cov==0/None → UNKNOWN_COVERAGE`（回平台复核） |
+| 3 | **`UNUSABLE`：`coverage < 0.6`** | **coverage 是 `区域×universe×delay` 属性**；且 `cov == 0.00` 实为**未采集** | ★ **`model38` 全部字段 cov=0.0，其中 9 个 ALIVE（S1.87–2.44）、另 57 个仅因同一个 0.0 被判 UNUSABLE**；`pv47` cov=0.0 而 2 字段全 ALIVE；真低覆盖的 `model28` 族 cov 0.5837–0.5862 出 **4 个 ALIVE（S1.77–1.94）** | ✅ **已修**：`cov==0/None → UNKNOWN_COVERAGE`（回平台复核）；**★ 2026-11-09 再升级：三层 coverage 都不可判存在性 ⇒ 本行判据整条退役**，判死改由 `tools/gates/audit_dataset_coverage.py --gate closure` 出结论（GBR 177 集里 109 集全部字段 cov 全 0；唯一实测口径是探针 `longCount+shortCount > 0`） |
 
 ### 修正效果（GBR 15,522）
 

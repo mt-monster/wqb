@@ -1,0 +1,24 @@
+id,type,cov,uc,ac,desc
+oth571_views14d,MATRIX,0.0,1,1,Total Wikipedia company page views in the USA module over the trailing 14-day window ending 14 days ago (inclusive; module timezone)
+oth571_views1y,MATRIX,0.0,1,1,Total Wikipedia company page views in the USA module over the trailing 365-day window (366 in leap years) ending 364 days ago (inclusive; module timezone)
+oth571_views1yafternoon,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 12:00 to 17:59 on the day 364 days ago (module timezone)
+oth571_views1ydesktop,MATRIX,0.0,1,1,Total Wikipedia company page views in the USA module via desktop devices on the day 364 days ago (desktop web; module timezone)
+oth571_views1yevening,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 18:00 to 23:59 on the day 364 days ago (module timezone)
+oth571_views1ymobile,MATRIX,0.0,1,1,Total Wikipedia company page views in the USA module via mobile devices on the day 364 days ago (mobile web and apps; module timezone)
+oth571_views1ymorning,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 06:00 to 11:59 on the day 364 days ago (module timezone)
+oth571_views1ynight,MATRIX,0.0,2,2,Wikipedia company page views in the USA module from 00:00 to 05:59 on the day 364 days ago (module timezone)
+oth571_views28d,MATRIX,0.0,2,3,Total Wikipedia company page views in the USA module over the trailing 28-day window ending 28 days ago (inclusive; module timezone)
+oth571_views28dafternoon,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 12:00 to 17:59 on the day 28 days ago (module timezone)
+oth571_views28ddesktop,MATRIX,0.0,1,1,Total Wikipedia company page views in the USA module via desktop devices on the day 28 days ago (desktop web; module timezone)
+oth571_views28devening,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 18:00 to 23:59 on the day 28 days ago (module timezone)
+oth571_views28dmobile,MATRIX,0.0,1,1,Total Wikipedia company page views in the USA module via mobile devices on the day 28 days ago (mobile web and apps; module timezone)
+oth571_views28dmorning,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 06:00 to 11:59 on the day 28 days ago (module timezone)
+oth571_views28dnight,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 00:00 to 05:59 on the day 28 days ago (module timezone)
+oth571_views7d,MATRIX,0.0,2,3,Total Wikipedia page views over the past 7 natural days.
+oth571_views7dafternoon,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 12:00 to 17:59 on the day 7 days ago (module timezone)
+oth571_views7ddesktop,MATRIX,0.0,1,1,Wikipedia page views from desktop devices over the past 7 natural days.
+oth571_views7devening,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 18:00 to 23:59 on the day 7 days ago (module timezone)
+oth571_views7dmobile,MATRIX,0.0,2,2,Wikipedia page views from mobile devices over the past 7 natural days.
+oth571_views7dmorning,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 06:00 to 11:59 on the day 7 days ago (module timezone)
+oth571_views7dnight,MATRIX,0.0,1,1,Wikipedia company page views in the USA module from 00:00 to 05:59 on the day 7 days ago (module timezone)
+oth571_views84d,MATRIX,0.0,1,1,Total Wikipedia company page views in the USA module over the trailing 84-day window ending 84 days ago (inclusive; module timezone)

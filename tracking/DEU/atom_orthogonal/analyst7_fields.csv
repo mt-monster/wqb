@@ -1,0 +1,609 @@
+id,type,cov,uc,ac,desc
+act_12m_cps_value,MATRIX,0.1797,1,1,actual cash flow per share regarding the last 4 quarters
+act_12m_eps_value,MATRIX,0.3768,2,2,actual earnings per share regarding the last 4 quarters
+act_12m_ner_value,MATRIX,0.3333,2,4,actual net profit as reported regarding the last 4 quarters
+act_12m_net_value,MATRIX,0.4028,0,0,actual net income regarding the last 4 quarters
+act_12m_prr_value,MATRIX,0.283,0,0,actual pretax profit as reported regarding the last 4 quarters
+act_12m_sal_value,MATRIX,0.4786,1,1,actual sales/revenue regarding the last 4 quarters
+act_q_cpx_surprisenum,MATRIX,1.0,0,0,Number of estimates used for surprise calculation of actual capital expenditure regarding the last quarter
+act_q_ebi_surprisemean,MATRIX,0.6004,3,9,Mean surprise (actual - estimate) of actual EBIT regarding the last quarter
+act_q_ebi_surprisenum,MATRIX,1.0,9,11,Number of estimates used for surprise calculation of actual EBIT regarding the last quarter
+act_q_ebi_surprisestd,MATRIX,0.4973,0,0,Standard deviation of surprise (actual - estimate) of actual EBIT regarding the last quarter
+act_q_ebi_value,MATRIX,0.4953,1,1,actual EBIT regarding the last quarter
+act_q_eps_surprisemean,MATRIX,0.6,11,13,Mean surprise (actual - estimate) of actual earnings per share regarding the last quarter
+act_q_eps_surprisenum,MATRIX,1.0,1,1,Number of estimates used for surprise calculation of actual earnings per share regarding the last quarter
+act_q_eps_surprisestd,MATRIX,0.4929,2,2,Standard deviation of surprise (actual - estimate) of actual earnings per share regarding the last quarter
+act_q_eps_value,MATRIX,0.4907,0,0,actual earnings per share regarding the last quarter
+act_q_fcf_surprisenum,MATRIX,1.0,0,0,Number of estimates used for surprise calculation of actual free cash flow per share regarding the last quarter
+act_q_gps_surprisemean,MATRIX,0.5323,1,8,Mean surprise (actual - estimate) of actual GAAP earnings per share regarding the last quarter
+act_q_gps_surprisenum,MATRIX,1.0,1,1,Number of estimates used for surprise calculation of actual GAAP earnings per share regarding the last quarter
+act_q_gps_surprisestd,MATRIX,0.4009,0,0,Standard deviation of surprise (actual - estimate) of actual GAAP earnings per share regarding the last quarter
+act_q_gps_value,MATRIX,0.4538,1,1,actual GAAP earnings per share regarding the last quarter
+act_q_ner_surprisemean,MATRIX,0.5399,0,0,Mean surprise (actual - estimate) of actual net profit as reported regarding the last quarter
+act_q_ner_surprisenum,MATRIX,1.0,0,0,Number of estimates used for surprise calculation of actual net profit as reported regarding the last quarter
+act_q_ner_surprisestd,MATRIX,0.4191,0,0,Standard deviation of surprise (actual - estimate) of actual net profit as reported regarding the last quarter
+act_q_ner_value,MATRIX,0.4705,0,0,actual net profit as reported regarding the last quarter
+act_q_pre_surprisemean,MATRIX,0.5604,1,1,Mean surprise (actual - estimate) of actual pre-tax profit regarding the last quarter
+act_q_pre_surprisenum,MATRIX,1.0,1,1,Number of estimates used for surprise calculation of actual pre-tax profit regarding the last quarter
+act_q_pre_surprisestd,MATRIX,0.4264,1,2,Standard deviation of surprise (actual - estimate) of actual pre-tax profit regarding the last quarter
+act_q_pre_value,MATRIX,0.3944,1,1,actual pre-tax profit regarding the last quarter
+act_q_roe_surprisenum,MATRIX,1.0,0,0,Number of estimates used for surprise calculation of actual return on equity in percent regarding the last quarter
+est_12m_bps_high,MATRIX,0.7241,2,2,Highest analyst estimate of book value per share regarding the next 4 quarters
+est_12m_bps_high_3mth_ago,MATRIX,0.6906,5,9,Highest analyst estimate of book value per share regarding the next 4 quarters; made in the past 3 months
+est_12m_bps_high_4wks_ago,MATRIX,0.6941,1,7,Highest analyst estimate of book value per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_bps_low,MATRIX,0.7241,1,1,Lowest analyst estimate of book value per share regarding the next 4 quarters
+est_12m_bps_low_3mth_ago,MATRIX,0.6906,1,1,Lowest analyst estimate of book value per share regarding the next 4 quarters; made in past 3 months
+est_12m_bps_low_4wks_ago,MATRIX,0.6941,1,1,Lowest analyst estimate of book value per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_bps_lowered_1wk,MATRIX,1.0,2,2,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_bps_lowerednum_1mth,MATRIX,1.0,5,8,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_bps_lowerednum_4wks,MATRIX,1.0,2,2,Number of lowered analyst estimates of book value per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_bps_mean,MATRIX,0.7241,6,11,Mean analyst estimate of book value per share regarding the next 4 quarters
+est_12m_bps_mean_28d,MATRIX,0.6885,4,4,Mean analyst estimate of book value per share regarding the next 4 quarters; made in the last 28 days
+est_12m_bps_mean_3mth_ago,MATRIX,0.6906,1,1,Mean analyst estimate of book value per share regarding the next 4 quarters; made in past 3 months
+est_12m_bps_mean_4wks_ago,MATRIX,0.6941,1,1,Mean analyst estimate of book value per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_bps_median,MATRIX,0.7241,8,9,Median analyst estimate of book value per share regarding the next 4 quarters
+est_12m_bps_median_3mth_ago,MATRIX,0.6906,1,1,Median analyst estimate of book value per share regarding the next 4 quarters; made in the past 3 months
+est_12m_bps_median_4wks_ago,MATRIX,0.6941,2,2,Median analyst estimate of book value per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_bps_num,MATRIX,1.0,2,2,Number of analyst estimates of book value per share regarding the next 4 quarters
+est_12m_bps_num_28d,MATRIX,1.0,3,3,Number of analyst estimates of book value per share regarding the next 4 quarters; made in the last 28 days
+est_12m_bps_num_3mth_ago,MATRIX,1.0,2,2,Number of analyst estimates of book value per share regarding the next 4 quarters; made in the past 3 months
+est_12m_bps_num_4wks_ago,MATRIX,1.0,6,6,Number of analyst estimates of book value per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_bps_raised_1wk,MATRIX,1.0,7,13,Number of raised analyst estimates of book value per share regarding the next 4 quarters; compared to the last weekly update
+est_12m_bps_raisednum_1mth,MATRIX,1.0,4,5,Number of raised analyst estimates of book value per share regarding the next 4 quarters; compared to the last monthly update
+est_12m_bps_raisednum_4wks,MATRIX,1.0,5,8,Number of raised analyst estimates of book value per share regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_bps_std,MATRIX,0.6351,0,0,Standard deviation of analyst estimates of book value per share regarding the next 4 quarters
+est_12m_bps_std_28d,MATRIX,0.5517,0,0,Standard deviation of the analyst estimates of book value per share regarding the next 4 quarters; made in the last 28 days
+est_12m_bps_std_3mth_ago,MATRIX,0.6113,0,0,Standard deviation of the analyst estimate of book value per share regarding the next 4 quarters; made in past 3 months
+est_12m_bps_std_4wks_ago,MATRIX,0.6093,0,0,Standard deviation of the analyst estimates of book value per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_cps_high,MATRIX,0.7118,0,0,Highest analyst estimate of cash flow per share regarding the next 4 quarters
+est_12m_cps_high_3mth_ago,MATRIX,0.6768,0,0,Highest analyst estimate of cash flow per share regarding the next 4 quarters; made in past 3 months
+est_12m_cps_high_4wks_ago,MATRIX,0.6808,0,0,Highest analyst estimate of cash flow per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_cps_low,MATRIX,0.7118,3,3,Lowest analyst estimate of cash flow per share regarding the next 4 quarters
+est_12m_cps_low_3mth_ago,MATRIX,0.6768,0,0,Lowest analyst estimate of cash flow per share regarding the next 4 quarters; made in past 3 months
+est_12m_cps_low_4wks_ago,MATRIX,0.6808,0,0,Lowest analyst estimate of cash flow per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_cps_lowered_1wk,MATRIX,1.0,4,4,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_cps_lowerednum_1mth,MATRIX,1.0,5,8,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_cps_lowerednum_4wks,MATRIX,1.0,7,7,Number of lowered analyst estimates of cash flow per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_cps_mean,MATRIX,0.7118,2,2,Mean analyst estimate of cash flow per share regarding the next 4 quarters
+est_12m_cps_mean_28d,MATRIX,0.6581,1,1,Mean analyst estimate of cash flow per share regarding the next 4 quarters; made in the last 28 days
+est_12m_cps_mean_3mth_ago,MATRIX,0.6768,0,0,Mean analyst estimate of cash flow per share regarding the next 4 quarters; made in the past 3 months
+est_12m_cps_mean_4wks_ago,MATRIX,0.6808,2,2,Mean analyst estimate of cash flow per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_cps_median,MATRIX,0.7118,1,1,Median analyst estimate of cash flow per share regarding the next 4 quarters
+est_12m_cps_median_3mth_ago,MATRIX,0.6768,0,0,Median analyst estimate of cash flow per share regarding the next 4 quarters; made in the past 3 months
+est_12m_cps_median_4wks_ago,MATRIX,0.6808,1,1,Median analyst estimate of cash flow per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_cps_num,MATRIX,1.0,2,2,Number of analyst estimates of cash flow per share regarding the next 4 quarters
+est_12m_cps_num_28d,MATRIX,1.0,2,2,Number of analyst estimates of cash flow per share regarding the next 4 quarters; made in the last 28 days
+est_12m_cps_num_3mth_ago,MATRIX,1.0,1,1,Number of analyst estimates of cash flow per share regarding the next 4 quarters; made in past 3 months
+est_12m_cps_num_4wks_ago,MATRIX,1.0,3,3,Number of analyst estimates of cash flow per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_cps_raised_1wk,MATRIX,1.0,5,6,Number of raised analyst estimates of cash flow per share regarding the next 4 quarters; compared to the last weekly update
+est_12m_cps_raisednum_1mth,MATRIX,1.0,5,5,Number of raised analyst estimates of cash flow per share regarding the next 4 quarters; compared to the last monthly update
+est_12m_cps_raisednum_4wks,MATRIX,1.0,3,3,Number of raised analyst estimates of cash flow per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_cps_std,MATRIX,0.5767,0,0,Standard deviation of analyst estimates of cash flow per share regarding the next 4 quarters
+est_12m_cps_std_28d,MATRIX,0.4807,0,0,Standard deviation of the analyst estimate of cash flow per share regarding the next 4 quarters; made in the last 28 days
+est_12m_cps_std_3mth_ago,MATRIX,0.5574,0,0,Standard deviation of the analyst estimate of cash flow per share regarding the next 4 quarters; made in past 3 months
+est_12m_cps_std_4wks_ago,MATRIX,0.5526,0,0,Standard deviation of the analyst estimate of cash flow per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_csh_high,MATRIX,0.4827,0,0,Highest analyst estimate of cash earnings per share regarding the next 4 quarters
+est_12m_csh_high_3mth_ago,MATRIX,0.4402,0,0,Highest analyst estimate of cash earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_csh_high_4wks_ago,MATRIX,0.4538,1,1,Highest analyst estimate of cash earnings per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_csh_low,MATRIX,0.4827,0,0,Lowest analyst estimate of cash earnings per share regarding the next 4 quarters
+est_12m_csh_low_3mth_ago,MATRIX,0.4402,0,0,Lowest analyst estimate of cash earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_csh_low_4wks_ago,MATRIX,0.4538,0,0,Lowest analyst estimate of cash earnings per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_csh_lowered_1wk,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_csh_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_csh_lowerednum_4wks,MATRIX,1.0,0,0,Number of lowered analyst estimates of cash earnings per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_csh_mean,MATRIX,0.4827,2,2,Mean analyst estimate of cash earnings per share regarding the next 4 quarters
+est_12m_csh_mean_28d,MATRIX,0.4262,1,1,Mean analyst estimate of cash earnings per share regarding the next 4 quarters; made in the last 28 days
+est_12m_csh_mean_3mth_ago,MATRIX,0.4402,0,0,Mean analyst estimate of cash earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_csh_mean_4wks_ago,MATRIX,0.4538,0,0,Mean analyst estimate of cash earnings per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_csh_median,MATRIX,0.4827,1,1,Median analyst estimate of cash earnings per share regarding the next 4 quarters
+est_12m_csh_median_3mth_ago,MATRIX,0.4402,0,0,Median analyst estimate of cash earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_csh_median_4wks_ago,MATRIX,0.4538,0,0,Median analyst estimate of cash earnings per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_csh_num,MATRIX,1.0,0,0,Number of analyst estimates of cash earnings per share regarding the next 4 quarters
+est_12m_csh_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of cash earnings per share regarding the next 4 quarters; made in the last 28 days
+est_12m_csh_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of cash earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_csh_num_4wks_ago,MATRIX,1.0,1,1,Number of analyst estimates of cash earnings per share regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_csh_raised_1wk,MATRIX,1.0,1,1,Number of raised analyst estimates of cash earnings per share regarding the next 4 quarters; compared to last weekly update
+est_12m_csh_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of cash earnings per share regarding the next 4 quarters; compared to the last monthly update
+est_12m_csh_raisednum_4wks,MATRIX,1.0,1,1,Number of raised analyst estimates of cash earnings per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_csh_std,MATRIX,0.1714,1,1,Standard deviation of analyst estimates of cash earnings per share regarding the next 4 quarters
+est_12m_csh_std_3mth_ago,MATRIX,0.1571,0,0,Standard deviation of the analyst estimate of cash earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_csh_std_4wks_ago,MATRIX,0.1485,0,0,Standard deviation of the analyst estimates of cash earnings per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_dps_high,MATRIX,0.7351,3,3,Highest analyst estimate of dividend per share regarding the next 4 quarters
+est_12m_dps_high_3mth_ago,MATRIX,0.7062,1,1,Highest analyst estimate of dividend per share regarding the next 4 quarters; made in past 3 months
+est_12m_dps_high_4wks_ago,MATRIX,0.7086,2,2,Highest analyst estimate of dividend per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_dps_low,MATRIX,0.7351,0,0,Lowest analyst estimate of dividend per share regarding the next 4 quarters
+est_12m_dps_low_3mth_ago,MATRIX,0.7062,2,2,Lowest analyst estimate of dividend per share regarding the next 4 quarters; made in the past 3 months
+est_12m_dps_low_4wks_ago,MATRIX,0.7086,2,3,Lowest analyst estimate of dividend per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_dps_lowered_1wk,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_dps_lowerednum_1mth,MATRIX,1.0,3,3,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_dps_lowerednum_4wks,MATRIX,1.0,4,5,Number of lowered analyst estimates of dividend per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_dps_mean,MATRIX,0.7351,9,9,Mean analyst estimate of dividend per share regarding the next 4 quarters
+est_12m_dps_mean_28d,MATRIX,0.6482,2,2,Mean analyst estimate of dividend per share regarding the next 4 quarters; made in the last 28 days
+est_12m_dps_mean_3mth_ago,MATRIX,0.7062,0,0,Mean analyst estimate of dividend per share regarding the next 4 quarters; made in the past 3 months
+est_12m_dps_mean_4wks_ago,MATRIX,0.7086,2,2,Mean analyst estimate of dividend per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_dps_median,MATRIX,0.7351,4,4,Median analyst estimate of dividend per share regarding the next 4 quarters
+est_12m_dps_median_3mth_ago,MATRIX,0.7062,0,0,Median analyst estimate of dividend per share regarding the next 4 quarters; made in the past 3 months
+est_12m_dps_median_4wks_ago,MATRIX,0.7086,2,2,Median analyst estimate of dividend per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_dps_num,MATRIX,1.0,4,5,Number of analyst estimates of dividend per share regarding the next 4 quarters
+est_12m_dps_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of dividend per share regarding the next 4 quarters; made in the last 28 days
+est_12m_dps_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of dividend per share regarding the next 4 quarters; made in past 3 months
+est_12m_dps_num_4wks_ago,MATRIX,1.0,1,1,Number of analyst estimates of dividend per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_dps_raised_1wk,MATRIX,1.0,4,4,Number of raised analyst estimates of dividend per share regarding the next 4 quarters; compared to the last weekly update
+est_12m_dps_raisednum_1mth,MATRIX,1.0,1,1,Number of raised analyst estimates of dividend per share regarding the next 4 quarters; compared to the last monthly update
+est_12m_dps_raisednum_4wks,MATRIX,1.0,15,23,Number of raised analyst estimates of dividend per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_dps_std,MATRIX,0.6941,1,1,Standard deviation of analyst estimate of dividend per share regarding the next 4 quarters
+est_12m_dps_std_28d,MATRIX,0.4753,0,0,Standard deviation of the analyst estimates of dividend per share regarding the next 4 quarters; made in the last 28 days
+est_12m_dps_std_3mth_ago,MATRIX,0.6701,0,0,Standard deviation of the analyst estimates of dividend per share regarding the next 4 quarters; made in the past 3 months
+est_12m_dps_std_4wks_ago,MATRIX,0.6694,0,0,Standard deviation of the analyst estimate of dividend per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ebi_high,MATRIX,0.7323,17,18,Highest analyst estimate of EBIT regarding the next 4 quarters
+est_12m_ebi_high_3mth_ago,MATRIX,0.7048,2,2,Highest analyst estimate of EBIT regarding the next 4 quarters; made in the past 3 months
+est_12m_ebi_high_4wks_ago,MATRIX,0.7055,2,2,Highest analyst estimate of EBIT regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ebi_low,MATRIX,0.7323,30,40,Lowest analyst estimate of EBIT regarding the next 4 quarters
+est_12m_ebi_low_3mth_ago,MATRIX,0.7048,3,3,Lowest analyst estimate of EBIT regarding the next 4 quarters; made in past 3 months
+est_12m_ebi_low_4wks_ago,MATRIX,0.7055,12,16,Lowest analyst estimate of EBIT regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ebi_lowered_1wk,MATRIX,1.0,54,84,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_ebi_lowerednum_1mth,MATRIX,1.0,4,7,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_ebi_lowerednum_4wks,MATRIX,1.0,85,120,Number of lowered analyst estimates of EBIT regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_ebi_mean,MATRIX,0.7323,69,89,Mean analyst estimate of EBIT regarding the next 4 quarters
+est_12m_ebi_mean_28d,MATRIX,0.7002,93,137,Mean analyst estimate of EBIT regarding the next 4 quarters; made in the last 28 days
+est_12m_ebi_mean_3mth_ago,MATRIX,0.7048,12,13,Mean analyst estimate of EBIT regarding the next 4 quarters; made in the past 3 months
+est_12m_ebi_mean_4wks_ago,MATRIX,0.7055,28,35,Mean analyst estimate of EBIT regarding the next 4 quarters; made in past 4 weeks
+est_12m_ebi_median,MATRIX,0.7323,14,18,Median analyst estimate of EBIT regarding the next 4 quarters
+est_12m_ebi_median_3mth_ago,MATRIX,0.7048,0,0,Median analyst estimate of EBIT regarding the next 4 quarters; made in the past 3 months
+est_12m_ebi_median_4wks_ago,MATRIX,0.7055,6,7,Median analyst estimate of EBIT regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ebi_num,MATRIX,1.0,97,154,Number of analyst estimates of EBIT regarding the next 4 quarters
+est_12m_ebi_num_28d,MATRIX,1.0,13,18,Number of analyst estimates of EBIT regarding the next 4 quarters; made in the last 28 days
+est_12m_ebi_num_3mth_ago,MATRIX,1.0,5,5,Number of analyst estimates of EBIT regarding the next 4 quarters; made in the past 3 months
+est_12m_ebi_num_4wks_ago,MATRIX,1.0,28,32,Number of analyst estimates of EBIT regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_ebi_raised_1wk,MATRIX,1.0,601,1446,Number of raised analyst estimates of EBIT regarding the next 4 quarters; compared to the last weekly update
+est_12m_ebi_raisednum_1mth,MATRIX,1.0,71,92,Number of raised analyst estimates of EBIT regarding the next 4 quarters; compared to last monthly update
+est_12m_ebi_raisednum_4wks,MATRIX,1.0,426,786,Number of raised analyst estimates of EBIT regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_ebi_std,MATRIX,0.6909,16,19,Standard deviation of analyst estimates of EBIT regarding the next 4 quarters
+est_12m_ebi_std_28d,MATRIX,0.6205,7,10,Standard deviation of the analyst estimates of EBIT regarding the next 4 quarters; made in the last 28 days
+est_12m_ebi_std_3mth_ago,MATRIX,0.6711,0,0,Standard deviation of the analyst estimate of EBIT regarding the next 4 quarters; made in the past 3 months
+est_12m_ebi_std_4wks_ago,MATRIX,0.6709,0,0,Standard deviation of the analyst estimates of EBIT regarding the next 4 quarters; made in past 4 weeks
+est_12m_ebt_high,MATRIX,0.7289,10,10,Highest analyst estimate of EBITDA regarding the next 4 quarters
+est_12m_ebt_high_3mth_ago,MATRIX,0.6975,0,0,Highest analyst estimate of EBITDA regarding the next 4 quarters; made in the past 3 months
+est_12m_ebt_high_4wks_ago,MATRIX,0.7003,3,4,Highest analyst estimate of EBITDA regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ebt_low,MATRIX,0.7289,3,3,Lowest analyst estimate of EBITDA regarding the next 4 quarters
+est_12m_ebt_low_3mth_ago,MATRIX,0.6975,0,0,Lowest analyst estimate of EBITDA regarding the next 4 quarters; made in the past 3 months
+est_12m_ebt_low_4wks_ago,MATRIX,0.7003,1,1,Lowest analyst estimate of EBITDA regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ebt_lowered_1wk,MATRIX,1.0,39,50,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_ebt_lowerednum_1mth,MATRIX,1.0,40,54,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_ebt_lowerednum_4wks,MATRIX,1.0,46,58,Number of lowered analyst estimate of EBITDA regarding the next 4 quarters; where old and new estimate were made in past 4 weeks
+est_12m_ebt_mean,MATRIX,0.7289,46,58,Mean analyst estimate of EBITDA regarding the next 4 quarters
+est_12m_ebt_mean_28d,MATRIX,0.6857,38,51,Mean analyst estimate of EBITDA regarding the next 4 quarters; made in the last 28 days
+est_12m_ebt_mean_3mth_ago,MATRIX,0.6975,5,8,Mean analyst estimate of EBITDA regarding the next 4 quarters; made in the past 3 months
+est_12m_ebt_mean_4wks_ago,MATRIX,0.7003,21,30,Mean analyst estimate of EBITDA regarding the next 4 quarters; made in past 4 weeks
+est_12m_ebt_median,MATRIX,0.7289,29,31,Median analyst estimate of EBITDA regarding the next 4 quarters
+est_12m_ebt_median_3mth_ago,MATRIX,0.6975,2,3,Median analyst estimate of EBITDA regarding the next 4 quarters; made in the past 3 months
+est_12m_ebt_median_4wks_ago,MATRIX,0.7003,3,3,Median analyst estimate of EBITDA regarding the next 4 quarters; made in past 4 weeks
+est_12m_ebt_num,MATRIX,1.0,28,37,Number of analyst estimates of EBITDA regarding the next 4 quarters
+est_12m_ebt_num_28d,MATRIX,1.0,6,6,Number of analyst estimates of EBITDA regarding the next 4 quarters; made in the last 28 days
+est_12m_ebt_num_3mth_ago,MATRIX,1.0,4,4,Number of analyst estimates of EBITDA regarding the next 4 quarters; made in the past 3 months
+est_12m_ebt_num_4wks_ago,MATRIX,1.0,6,8,Number of analyst estimates of EBITDA regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_ebt_raised_1wk,MATRIX,1.0,153,263,Number of raised analyst estimates of EBITDA regarding the next 4 quarters; compared to the last weekly update
+est_12m_ebt_raisednum_1mth,MATRIX,1.0,36,52,Number of raised analyst estimates of EBITDA regarding the next 4 quarters; compared to the last monthly update
+est_12m_ebt_raisednum_4wks,MATRIX,1.0,98,138,Number of raised analyst estimates of EBITDA regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_ebt_std,MATRIX,0.6627,12,12,Standard deviation of analyst estimates of EBITDA regarding the next 4 quarters
+est_12m_ebt_std_28d,MATRIX,0.5894,3,3,Standard deviation of the analyst estimate of EBITDA regarding the next 4 quarters; made in the last 28 days
+est_12m_ebt_std_3mth_ago,MATRIX,0.6418,0,0,Standard deviation of the analyst estimates of EBITDA regarding the next 4 quarters; made in the past 3 months
+est_12m_ebt_std_4wks_ago,MATRIX,0.6406,0,0,Standard deviation of the analyst estimate of EBITDA regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ent_high,MATRIX,0.686,2,2,Highest analyst estimate of enterprise value regarding the next 4 quarters
+est_12m_ent_high_3mth_ago,MATRIX,0.6495,1,1,Highest analyst estimate of enterprise value regarding the next 4 quarters; made in the past 3 months
+est_12m_ent_high_4wks_ago,MATRIX,0.6542,0,0,Highest analyst estimate of enterprise value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ent_low,MATRIX,0.686,1,2,Lowest analyst estimate of enterprise value regarding the next 4 quarters
+est_12m_ent_low_3mth_ago,MATRIX,0.6495,1,1,Lowest analyst estimate of enterprise value regarding the next 4 quarters; made in past 3 months
+est_12m_ent_low_4wks_ago,MATRIX,0.6542,1,1,Lowest analyst estimate of enterprise value regarding the next 4 quarters; made in past 4 weeks
+est_12m_ent_lowered_1wk,MATRIX,1.0,1,1,Number of lowered analyst estimates of enterprise value regarding the next 4 quarters; since the last weekly update
+est_12m_ent_lowerednum_1mth,MATRIX,1.0,0,0,Number of lowered analyst estimate of enterprise value regarding the next 4 quarters; since last monthly update
+est_12m_ent_lowerednum_4wks,MATRIX,1.0,0,0,Number of lowered analyst estimates of enterprise value regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_ent_mean,MATRIX,0.686,1,1,Mean analyst estimate of enterprise value regarding the next 4 quarters
+est_12m_ent_mean_28d,MATRIX,0.6518,0,0,Mean analyst estimate of enterprise value regarding the next 4 quarters; made in the last 28 days
+est_12m_ent_mean_3mth_ago,MATRIX,0.6495,0,0,Mean analyst estimate of enterprise value regarding the next 4 quarters; made in the past 3 months
+est_12m_ent_mean_4wks_ago,MATRIX,0.6542,0,0,Mean analyst estimate of enterprise value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_ent_median,MATRIX,0.686,1,1,Median analyst estimate of enterprise value regarding the next 4 quarters
+est_12m_ent_median_3mth_ago,MATRIX,0.6495,0,0,Median analyst estimate of enterprise value regarding the next 4 quarters; made in the past 3 months
+est_12m_ent_median_4wks_ago,MATRIX,0.6542,0,0,Median analyst estimate of enterprise value regarding the next 4 quarters; made in past 4 weeks
+est_12m_ent_num,MATRIX,1.0,0,0,Number of analyst estimates of enterprise value regarding the next 4 quarters
+est_12m_ent_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of enterprise value regarding the next 4 quarters; made in the last 28 days
+est_12m_ent_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of enterprise value regarding the next 4 quarters; made in the past 3 months
+est_12m_ent_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of enterprise value regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_ent_raised_1wk,MATRIX,1.0,1,1,Number of raised analyst estimates of enterprise value regarding the next 4 quarters; compared to the last weekly update
+est_12m_ent_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of enterprise value regarding the next 4 quarters; compared to the last monthly update
+est_12m_ent_raisednum_4wks,MATRIX,1.0,0,0,Number of raised analyst estimates of enterprise value regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_ent_std,MATRIX,0.5388,0,0,Standard deviation of analyst estimates of enterprise value regarding the next 4 quarters
+est_12m_ent_std_28d,MATRIX,0.5051,0,0,Standard deviation of the analyst estimate of enterprise value regarding the next 4 quarters; made in the last 28 days
+est_12m_ent_std_3mth_ago,MATRIX,0.5373,0,0,Standard deviation of the analyst estimate of enterprise value regarding the next 4 quarters; made in the past 3 months
+est_12m_ent_std_4wks_ago,MATRIX,0.5346,1,2,Standard deviation of the analyst estimate of enterprise value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_gps_high,MATRIX,0.7199,4,4,Highest analyst estimate of GAAP earnings per share regarding the next 4 quarters
+est_12m_gps_high_3mth_ago,MATRIX,0.6817,0,0,Highest analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in past 3 months
+est_12m_gps_high_4wks_ago,MATRIX,0.6845,0,0,Highest analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_gps_low,MATRIX,0.7199,32,48,Lowest analyst estimate of GAAP earnings per share regarding the next 4 quarters
+est_12m_gps_low_3mth_ago,MATRIX,0.6817,7,7,Lowest analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_gps_low_4wks_ago,MATRIX,0.6845,3,5,Lowest analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_gps_lowered_1wk,MATRIX,1.0,10,13,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_gps_lowerednum_1mth,MATRIX,1.0,3,3,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_gps_lowerednum_4wks,MATRIX,1.0,25,36,Number of lowered analyst estimates of GAAP earnings per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_gps_mean,MATRIX,0.7199,28,39,Mean analyst estimate of GAAP earnings per share regarding the next 4 quarters
+est_12m_gps_mean_28d,MATRIX,0.6769,40,48,Mean analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the last 28 days
+est_12m_gps_mean_3mth_ago,MATRIX,0.6817,5,5,Mean analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_gps_mean_4wks_ago,MATRIX,0.6845,15,19,Mean analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_gps_median,MATRIX,0.7199,10,12,Median analyst estimate of GAAP earnings per share regarding the next 4 quarters
+est_12m_gps_median_3mth_ago,MATRIX,0.6817,1,1,Median analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_gps_median_4wks_ago,MATRIX,0.6845,4,6,Median analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_gps_num,MATRIX,1.0,13,16,Number of analyst estimates of GAAP earnings per share regarding the next 4 quarters
+est_12m_gps_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of GAAP earnings per share regarding the next 4 quarters; made in the last 28 days
+est_12m_gps_num_3mth_ago,MATRIX,1.0,2,2,Number of analyst estimates of GAAP earnings per share regarding the next 4 quarters; made in past 3 months
+est_12m_gps_num_4wks_ago,MATRIX,1.0,10,16,Number of analyst estimates of GAAP earnings per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_gps_raised_1wk,MATRIX,1.0,113,191,Number of raised analyst estimates of GAAP earnings per share regarding the next 4 quarters; compared to the last weekly update
+est_12m_gps_raisednum_1mth,MATRIX,1.0,51,63,Number of raised analyst estimates of GAAP earnings per share regarding the next 4 quarters; compared to the last monthly update
+est_12m_gps_raisednum_4wks,MATRIX,1.0,77,103,Number of raised analyst estimates of GAAP earnings per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_gps_std,MATRIX,0.6761,3,3,Standard deviation of analyst estimates of GAAP earnings per share regarding the next 4 quarters
+est_12m_gps_std_28d,MATRIX,0.5862,1,1,Standard deviation of the analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the last 28 days
+est_12m_gps_std_3mth_ago,MATRIX,0.6417,2,2,Standard deviation of the analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the past 3 months
+est_12m_gps_std_4wks_ago,MATRIX,0.6388,0,0,Standard deviation of the analyst estimate of GAAP earnings per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_grm_high,MATRIX,0.6245,0,0,Highest analyst estimate of gross margin in percent regarding the next 4 quarters
+est_12m_grm_high_3mth_ago,MATRIX,0.584,3,4,Highest analyst estimate of gross margin in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_grm_high_4wks_ago,MATRIX,0.5902,2,5,Highest analyst estimate of gross margin in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_grm_low,MATRIX,0.6245,0,0,Lowest analyst estimate of gross margin in percent regarding the next 4 quarters
+est_12m_grm_low_3mth_ago,MATRIX,0.584,0,0,Lowest analyst estimate of gross margin in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_grm_low_4wks_ago,MATRIX,0.5902,0,0,Lowest analyst estimate of gross margin in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_grm_lowered_1wk,MATRIX,1.0,1,1,Number of lowered analyst estimate of gross margin in percent regarding the next 4 quarters; since last weekly update
+est_12m_grm_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_grm_lowerednum_4wks,MATRIX,1.0,3,3,Number of lowered analyst estimates of gross margin in percent regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_grm_mean,MATRIX,0.6245,2,2,Mean analyst estimate of gross margin in percent regarding the next 4 quarters
+est_12m_grm_mean_28d,MATRIX,0.5694,2,2,Mean analyst estimate of gross margin in percent regarding the next 4 quarters; made in the last 28 days
+est_12m_grm_mean_3mth_ago,MATRIX,0.584,1,1,Mean analyst estimate of gross margin in percent regarding the next 4 quarters; made in past 3 months
+est_12m_grm_mean_4wks_ago,MATRIX,0.5902,1,1,Mean analyst estimate of gross margin in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_grm_median,MATRIX,0.6245,2,2,Median analyst estimate of gross margin in percent regarding the next 4 quarters
+est_12m_grm_median_3mth_ago,MATRIX,0.584,1,1,Median analyst estimate of gross margin in percent regarding the next 4 quarters; made in past 3 months
+est_12m_grm_median_4wks_ago,MATRIX,0.5902,0,0,Median analyst estimate of gross margin in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_grm_num,MATRIX,1.0,2,2,Number of analyst estimates of gross margin in percent regarding the next 4 quarters
+est_12m_grm_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of gross margin in percent regarding the next 4 quarters; made in the last 28 days
+est_12m_grm_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of gross margin in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_grm_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of gross margin in percent regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_grm_raised_1wk,MATRIX,1.0,2,3,Number of raised analyst estimates of gross margin in percent regarding the next 4 quarters; compared to the last weekly update
+est_12m_grm_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of gross margin in percent regarding the next 4 quarters; compared to the last monthly update
+est_12m_grm_raisednum_4wks,MATRIX,1.0,3,3,Number of raised analyst estimates of gross margin in percent regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_grm_std,MATRIX,0.4481,1,1,Standard deviation of analyst estimates of gross margin in percent regarding the next 4 quarters
+est_12m_grm_std_28d,MATRIX,0.3373,0,0,Standard deviation of the analyst estimates of gross margin in percent regarding the next 4 quarters; made in the last 28 days
+est_12m_grm_std_3mth_ago,MATRIX,0.451,0,0,Standard deviation of the analyst estimates of gross margin in percent regarding the next 4 quarters; made in past 3 months
+est_12m_grm_std_4wks_ago,MATRIX,0.4457,1,1,Standard deviation of the analyst estimate of gross margin in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_nav_high,MATRIX,0.6869,2,2,Highest analyst estimate of net asset value regarding the next 4 quarters
+est_12m_nav_high_3mth_ago,MATRIX,0.6717,0,0,Highest analyst estimate of net asset value regarding the next 4 quarters; made in past 3 months
+est_12m_nav_high_4wks_ago,MATRIX,0.6755,1,1,Highest analyst estimate of net asset value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_nav_low,MATRIX,0.6869,1,1,Lowest analyst estimate of net asset value regarding the next 4 quarters
+est_12m_nav_low_3mth_ago,MATRIX,0.6717,0,0,Lowest analyst estimate of net asset value regarding the next 4 quarters; made in the past 3 months
+est_12m_nav_low_4wks_ago,MATRIX,0.6755,1,1,Lowest analyst estimate of net asset value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_nav_lowered_1wk,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_nav_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_nav_lowerednum_4wks,MATRIX,1.0,1,2,Number of lowered analyst estimates of net asset value regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_nav_mean,MATRIX,0.6869,3,3,Mean analyst estimate of net asset value regarding the next 4 quarters
+est_12m_nav_mean_28d,MATRIX,0.665,1,2,Mean analyst estimate of net asset value regarding the next 4 quarters; made in the last 28 days
+est_12m_nav_mean_3mth_ago,MATRIX,0.6717,0,0,Mean analyst estimate of net asset value regarding the next 4 quarters; made in past 3 months
+est_12m_nav_mean_4wks_ago,MATRIX,0.6755,0,0,Mean analyst estimate of net asset value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_nav_median,MATRIX,0.6869,1,1,Median analyst estimate of net asset value regarding the next 4 quarters
+est_12m_nav_median_3mth_ago,MATRIX,0.6717,1,1,Median analyst estimate of net asset value regarding the next 4 quarters; made in the past 3 months
+est_12m_nav_median_4wks_ago,MATRIX,0.6755,0,0,Median analyst estimate of net asset value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_nav_num,MATRIX,1.0,3,3,Number of analyst estimates of net asset value regarding the next 4 quarters
+est_12m_nav_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of net asset value regarding the next 4 quarters; made in the last 28 days
+est_12m_nav_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of net asset value regarding the next 4 quarters; made in the past 3 months
+est_12m_nav_num_4wks_ago,MATRIX,1.0,1,1,Number of analyst estimates of net asset value regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_nav_raised_1wk,MATRIX,1.0,5,7,Number of raised analyst estimate of net asset value regarding the next 4 quarters; compared to last weekly update
+est_12m_nav_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of net asset value regarding the next 4 quarters; compared to the last monthly update
+est_12m_nav_raisednum_4wks,MATRIX,1.0,8,8,Number of raised analyst estimates of net asset value regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_nav_std,MATRIX,0.5967,2,2,Standard deviation of analyst estimates of net asset value regarding the next 4 quarters
+est_12m_nav_std_28d,MATRIX,0.5258,0,0,Standard deviation of the analyst estimate of net asset value regarding the next 4 quarters; made in the last 28 days
+est_12m_nav_std_3mth_ago,MATRIX,0.5934,0,0,Standard deviation of the analyst estimates of net asset value regarding the next 4 quarters; made in the past 3 months
+est_12m_nav_std_4wks_ago,MATRIX,0.587,0,0,Standard deviation of the analyst estimate of net asset value regarding the next 4 quarters; made in the past 4 weeks
+est_12m_net_high,MATRIX,0.7341,2,2,Highest analyst estimate of net income regarding the next 4 quarters
+est_12m_net_high_3mth_ago,MATRIX,0.7095,1,1,Highest analyst estimate of net income regarding the next 4 quarters; made in past 3 months
+est_12m_net_high_4wks_ago,MATRIX,0.7102,2,5,Highest analyst estimate of net income regarding the next 4 quarters; made in the past 4 weeks
+est_12m_net_low,MATRIX,0.7341,9,9,Lowest analyst estimate of net income regarding the next 4 quarters
+est_12m_net_low_3mth_ago,MATRIX,0.7095,5,5,Lowest analyst estimate of net income regarding the next 4 quarters; made in the past 3 months
+est_12m_net_low_4wks_ago,MATRIX,0.7102,6,7,Lowest analyst estimate of net income regarding the next 4 quarters; made in the past 4 weeks
+est_12m_net_lowered_1wk,MATRIX,1.0,3,6,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_net_lowerednum_1mth,MATRIX,1.0,2,2,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_net_lowerednum_4wks,MATRIX,1.0,13,21,Number of lowered analyst estimates of net income regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_net_mean,MATRIX,0.7341,12,17,Mean analyst estimate of net income regarding the next 4 quarters
+est_12m_net_mean_28d,MATRIX,0.7024,8,9,Mean analyst estimate of net income regarding the next 4 quarters; made in the last 28 days
+est_12m_net_mean_3mth_ago,MATRIX,0.7095,6,8,Mean analyst estimate of net income regarding the next 4 quarters; made in the past 3 months
+est_12m_net_mean_4wks_ago,MATRIX,0.7102,6,7,Mean analyst estimate of net income regarding the next 4 quarters; made in past 4 weeks
+est_12m_net_median,MATRIX,0.7341,4,4,Median analyst estimate of net income regarding the next 4 quarters
+est_12m_net_median_3mth_ago,MATRIX,0.7095,2,5,Median analyst estimate of net income regarding the next 4 quarters; made in the past 3 months
+est_12m_net_median_4wks_ago,MATRIX,0.7102,1,1,Median analyst estimate of net income regarding the next 4 quarters; made in the past 4 weeks
+est_12m_net_num,MATRIX,1.0,11,14,Number of analyst estimates of net income regarding the next 4 quarters
+est_12m_net_num_28d,MATRIX,1.0,5,9,Number of analyst estimates of net income regarding the next 4 quarters; made in the last 28 days
+est_12m_net_num_3mth_ago,MATRIX,1.0,2,2,Number of analyst estimates of net income regarding the next 4 quarters; made in the past 3 months
+est_12m_net_num_4wks_ago,MATRIX,1.0,2,3,Number of analyst estimates of net income regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_net_raised_1wk,MATRIX,1.0,17,24,Number of raised analyst estimates of net income regarding the next 4 quarters; compared to the last weekly update
+est_12m_net_raisednum_1mth,MATRIX,1.0,10,11,Number of raised analyst estimates of net income regarding the next 4 quarters; compared to the last monthly update
+est_12m_net_raisednum_4wks,MATRIX,1.0,24,33,Number of raised analyst estimates of net income regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_net_std,MATRIX,0.6948,2,2,Standard deviation of analyst estimate of net income regarding the next 4 quarters
+est_12m_net_std_28d,MATRIX,0.6252,2,2,Standard deviation of the analyst estimate of net income regarding the next 4 quarters; made in the last 28 days
+est_12m_net_std_3mth_ago,MATRIX,0.6747,0,0,Standard deviation of the analyst estimate of net income regarding the next 4 quarters; made in the past 3 months
+est_12m_net_std_4wks_ago,MATRIX,0.6748,0,0,Standard deviation of the analyst estimate of net income regarding the next 4 quarters; made in the past 4 weeks
+est_12m_opr_high,MATRIX,0.6456,1,1,Highest analyst estimate of operating profit regarding the next 4 quarters
+est_12m_opr_high_3mth_ago,MATRIX,0.4969,0,0,Highest analyst estimate of operating profit regarding the next 4 quarters; made in the past 3 months
+est_12m_opr_high_4wks_ago,MATRIX,0.5144,0,0,Highest analyst estimate of operating profit regarding the next 4 quarters; made in the past 4 weeks
+est_12m_opr_low,MATRIX,0.6456,1,1,Lowest analyst estimate of operating profit regarding the next 4 quarters
+est_12m_opr_low_3mth_ago,MATRIX,0.4969,0,0,Lowest analyst estimate of operating profit regarding the next 4 quarters; made in past 3 months
+est_12m_opr_low_4wks_ago,MATRIX,0.5144,0,0,Lowest analyst estimate of operating profit regarding the next 4 quarters; made in past 4 weeks
+est_12m_opr_lowered_1wk,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_opr_lowerednum_1mth,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_opr_lowerednum_4wks,MATRIX,1.0,0,0,Number of lowered analyst estimates of operating profit regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_opr_mean,MATRIX,0.6456,2,2,Mean analyst estimate of operating profit regarding the next 4 quarters
+est_12m_opr_mean_28d,MATRIX,0.4803,0,0,Mean analyst estimate of operating profit regarding the next 4 quarters; made in the last 28 days
+est_12m_opr_mean_3mth_ago,MATRIX,0.4969,0,0,Mean analyst estimate of operating profit regarding the next 4 quarters; made in past 3 months
+est_12m_opr_mean_4wks_ago,MATRIX,0.5144,0,0,Mean analyst estimate of operating profit regarding the next 4 quarters; made in the past 4 weeks
+est_12m_opr_median,MATRIX,0.6456,0,0,Median analyst estimate of operating profit regarding the next 4 quarters
+est_12m_opr_median_3mth_ago,MATRIX,0.4969,0,0,Median analyst estimate of operating profit regarding the next 4 quarters; made in the past 3 months
+est_12m_opr_median_4wks_ago,MATRIX,0.5144,0,0,Median analyst estimate of operating profit regarding the next 4 quarters; made in the past 4 weeks
+est_12m_opr_num,MATRIX,1.0,1,1,Number of analyst estimates of operating profit regarding the next 4 quarters
+est_12m_opr_num_28d,MATRIX,1.0,0,0,Number of analyst estimates of operating profit regarding the next 4 quarters; made in the last 28 days
+est_12m_opr_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of operating profit regarding the next 4 quarters; made in the past 3 months
+est_12m_opr_num_4wks_ago,MATRIX,1.0,1,2,Number of analyst estimates of operating profit regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_opr_raised_1wk,MATRIX,1.0,1,1,Number of raised analyst estimates of operating profit regarding the next 4 quarters; compared to the last weekly update
+est_12m_opr_raisednum_1mth,MATRIX,1.0,1,1,Number of raised analyst estimates of operating profit regarding the next 4 quarters; compared to the last monthly update
+est_12m_opr_raisednum_4wks,MATRIX,1.0,0,0,Number of raised analyst estimates of operating profit regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_opr_std,MATRIX,0.2848,0,0,Standard deviation of analyst estimates of operating profit regarding the next 4 quarters
+est_12m_opr_std_28d,MATRIX,0.1698,0,0,Standard deviation of the analyst estimate of operating profit regarding the next 4 quarters; made in the last 28 days
+est_12m_opr_std_3mth_ago,MATRIX,0.257,0,0,Standard deviation of the analyst estimates of operating profit regarding the next 4 quarters; made in past 3 months
+est_12m_opr_std_4wks_ago,MATRIX,0.2398,1,1,Standard deviation of the analyst estimate of operating profit regarding the next 4 quarters; made in past 4 weeks
+est_12m_pre_high,MATRIX,0.7321,11,12,Highest analyst estimate of pre-tax profit regarding the next 4 quarters
+est_12m_pre_high_3mth_ago,MATRIX,0.7046,1,1,Highest analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 3 months
+est_12m_pre_high_4wks_ago,MATRIX,0.7066,3,3,Highest analyst estimate of pre-tax profit regarding the next 4 quarters; made in past 4 weeks
+est_12m_pre_low,MATRIX,0.7321,5,5,Lowest analyst estimate of pre-tax profit regarding the next 4 quarters
+est_12m_pre_low_3mth_ago,MATRIX,0.7046,2,2,Lowest analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 3 months
+est_12m_pre_low_4wks_ago,MATRIX,0.7066,2,2,Lowest analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 4 weeks
+est_12m_pre_lowered_1wk,MATRIX,1.0,5,11,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_pre_lowerednum_1mth,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_pre_lowerednum_4wks,MATRIX,1.0,12,15,Number of lowered analyst estimates of pre-tax profit regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_pre_mean,MATRIX,0.7321,16,22,Mean analyst estimate of pre-tax profit regarding the next 4 quarters
+est_12m_pre_mean_28d,MATRIX,0.6987,34,42,Mean analyst estimate of pre-tax profit regarding the next 4 quarters; made in the last 28 days
+est_12m_pre_mean_3mth_ago,MATRIX,0.7046,8,9,Mean analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 3 months
+est_12m_pre_mean_4wks_ago,MATRIX,0.7066,10,15,Mean analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 4 weeks
+est_12m_pre_median,MATRIX,0.7321,10,15,Median analyst estimate of pre-tax profit regarding the next 4 quarters
+est_12m_pre_median_3mth_ago,MATRIX,0.7046,2,2,Median analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 3 months
+est_12m_pre_median_4wks_ago,MATRIX,0.7066,5,8,Median analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 4 weeks
+est_12m_pre_num,MATRIX,1.0,24,31,Number of analyst estimates of pre-tax profit regarding the next 4 quarters
+est_12m_pre_num_28d,MATRIX,1.0,4,7,Number of analyst estimates of pre-tax profit regarding the next 4 quarters; made in the last 28 days
+est_12m_pre_num_3mth_ago,MATRIX,1.0,1,1,Number of analyst estimates of pre-tax profit regarding the next 4 quarters; made in the past 3 months
+est_12m_pre_num_4wks_ago,MATRIX,1.0,1,1,Number of analyst estimates of pre-tax profit regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_pre_raised_1wk,MATRIX,1.0,126,237,Number of raised analyst estimates of pre-tax profit regarding the next 4 quarters; compared to last weekly update
+est_12m_pre_raisednum_1mth,MATRIX,1.0,20,24,Number of raised analyst estimates of pre-tax profit regarding the next 4 quarters; compared to the last monthly update
+est_12m_pre_raisednum_4wks,MATRIX,1.0,55,69,Number of raised analyst estimates of pre-tax profit regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_pre_std,MATRIX,0.6857,4,4,Standard deviation of analyst estimates of pre-tax profit regarding the next 4 quarters
+est_12m_pre_std_28d,MATRIX,0.6126,6,8,Standard deviation of the analyst estimate of pre-tax profit regarding the next 4 quarters; made in the last 28 days
+est_12m_pre_std_3mth_ago,MATRIX,0.6644,0,0,Standard deviation of the analyst estimate of pre-tax profit regarding the next 4 quarters; made in the past 3 months
+est_12m_pre_std_4wks_ago,MATRIX,0.6646,0,0,Standard deviation of the analyst estimate of pre-tax profit regarding the next 4 quarters; made in past 4 weeks
+est_12m_roa_high,MATRIX,0.6194,4,5,Highest analyst estimate of return on assets in percent regarding the next 4 quarters
+est_12m_roa_high_3mth_ago,MATRIX,0.6011,1,1,Highest analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_roa_high_4wks_ago,MATRIX,0.6092,1,1,Highest analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_roa_low,MATRIX,0.6194,1,2,Lowest analyst estimate of return on assets in percent regarding the next 4 quarters
+est_12m_roa_low_3mth_ago,MATRIX,0.6011,0,0,Lowest analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_roa_low_4wks_ago,MATRIX,0.6092,4,4,Lowest analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_roa_lowered_1wk,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_roa_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_roa_lowerednum_4wks,MATRIX,1.0,2,2,Number of lowered analyst estimates of return on assets in percent regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_roa_mean,MATRIX,0.6194,9,13,Mean analyst estimate of return on assets in percent regarding the next 4 quarters
+est_12m_roa_mean_28d,MATRIX,0.5903,3,3,Mean analyst estimate of return on assets in percent regarding the next 4 quarters; made in the last 28 days
+est_12m_roa_mean_3mth_ago,MATRIX,0.6011,1,1,Mean analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_roa_mean_4wks_ago,MATRIX,0.6092,4,4,Mean analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_roa_median,MATRIX,0.6194,3,7,Median analyst estimate of return on assets in percent regarding the next 4 quarters
+est_12m_roa_median_3mth_ago,MATRIX,0.6011,0,0,Median analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_roa_median_4wks_ago,MATRIX,0.6092,1,3,Median analyst estimate of return on assets in percent regarding the next 4 quarters; made in past 4 weeks
+est_12m_roa_num,MATRIX,1.0,1,1,Number of analyst estimates of return on assets in percent regarding the next 4 quarters
+est_12m_roa_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of return on assets in percent regarding the next 4 quarters; made in the last 28 days
+est_12m_roa_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of return on assets in percent regarding the next 4 quarters; made in the past 3 months
+est_12m_roa_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of return on assets in percent regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_roa_raised_1wk,MATRIX,1.0,14,18,Number of raised analyst estimates of return on assets in percent regarding the next 4 quarters; compared to the last weekly update
+est_12m_roa_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of return on assets in percent regarding the next 4 quarters; compared to the last monthly update
+est_12m_roa_raisednum_4wks,MATRIX,1.0,2,2,Number of raised analyst estimates of return on assets in percent regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_roa_std,MATRIX,0.3788,1,1,Standard deviation of analyst estimates of return on assets in percent regarding the next 4 quarters
+est_12m_roa_std_28d,MATRIX,0.2937,1,1,Standard deviation of the analyst estimate of return on assets in percent regarding the next 4 quarters; made in the last 28 days
+est_12m_roa_std_3mth_ago,MATRIX,0.3734,0,0,Standard deviation of the analyst estimate of return on assets in percent regarding the next 4 quarters; made in past 3 months
+est_12m_roa_std_4wks_ago,MATRIX,0.3714,0,0,Standard deviation of the analyst estimate of return on assets in percent regarding the next 4 quarters; made in the past 4 weeks
+est_12m_sal_high,MATRIX,0.736,3,3,Highest analyst estimate of sales/revenue regarding the next 4 quarters
+est_12m_sal_high_3mth_ago,MATRIX,0.7099,0,0,Highest analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 3 months
+est_12m_sal_high_4wks_ago,MATRIX,0.711,0,0,Highest analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 4 weeks
+est_12m_sal_low,MATRIX,0.736,1,1,Lowest analyst estimate of sales/revenue regarding the next 4 quarters
+est_12m_sal_low_3mth_ago,MATRIX,0.7099,0,0,Lowest analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 3 months
+est_12m_sal_low_4wks_ago,MATRIX,0.711,1,1,Lowest analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 4 weeks
+est_12m_sal_lowered_1wk,MATRIX,1.0,27,42,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_sal_lowerednum_1mth,MATRIX,1.0,3,8,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_sal_lowerednum_4wks,MATRIX,1.0,18,28,Number of lowered analyst estimates of sales/revenue regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_sal_mean,MATRIX,0.736,15,21,Mean analyst estimate of sales/revenue regarding the next 4 quarters
+est_12m_sal_mean_28d,MATRIX,0.7024,1,1,Mean analyst estimate of sales/revenue regarding the next 4 quarters; made in the last 28 days
+est_12m_sal_mean_3mth_ago,MATRIX,0.7099,4,4,Mean analyst estimate of sales/revenue regarding the next 4 quarters; made in past 3 months
+est_12m_sal_mean_4wks_ago,MATRIX,0.711,8,9,Mean analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 4 weeks
+est_12m_sal_median,MATRIX,0.736,8,8,Median analyst estimate of sales/revenue regarding the next 4 quarters
+est_12m_sal_median_3mth_ago,MATRIX,0.7099,0,0,Median analyst estimate of sales/revenue regarding the next 4 quarters; made in past 3 months
+est_12m_sal_median_4wks_ago,MATRIX,0.711,2,2,Median analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 4 weeks
+est_12m_sal_num,MATRIX,1.0,18,27,Number of analyst estimates of sales/revenue regarding the next 4 quarters
+est_12m_sal_num_28d,MATRIX,1.0,3,3,Number of analyst estimates of sales/revenue regarding the next 4 quarters; made in the last 28 days
+est_12m_sal_num_3mth_ago,MATRIX,1.0,1,1,Number of analyst estimates of sales/revenue regarding the next 4 quarters; made in the past 3 months
+est_12m_sal_num_4wks_ago,MATRIX,1.0,4,6,Number of analyst estimates of sales/revenue regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_sal_raised_1wk,MATRIX,1.0,62,91,Number of raised analyst estimates of sales/revenue regarding the next 4 quarters; compared to the last weekly update
+est_12m_sal_raisednum_1mth,MATRIX,1.0,9,14,Number of raised analyst estimates of sales/revenue regarding the next 4 quarters; compared to the last monthly update
+est_12m_sal_raisednum_4wks,MATRIX,1.0,44,57,Number of raised analyst estimates of sales/revenue regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_sal_std,MATRIX,0.6985,1,1,Standard deviation of analyst estimates of sales/revenue regarding the next 4 quarters
+est_12m_sal_std_28d,MATRIX,0.6242,1,1,Standard deviation of the analyst estimate of sales/revenue regarding the next 4 quarters; made in the last 28 days
+est_12m_sal_std_3mth_ago,MATRIX,0.6775,0,0,Standard deviation of the analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 3 months
+est_12m_sal_std_4wks_ago,MATRIX,0.6773,1,1,Standard deviation of the analyst estimate of sales/revenue regarding the next 4 quarters; made in the past 4 weeks
+est_12m_tbv_high,MATRIX,0.529,0,0,Highest analyst estimate of tangible book value per share regarding the next 4 quarters
+est_12m_tbv_high_3mth_ago,MATRIX,0.4855,1,1,Highest analyst estimate of tangible book value per share regarding the next 4 quarters; made in the past 3 months
+est_12m_tbv_high_4wks_ago,MATRIX,0.4938,0,0,Highest analyst estimate of tangible book value per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_tbv_low,MATRIX,0.529,0,0,Lowest analyst estimate of tangible book value per share regarding the next 4 quarters
+est_12m_tbv_low_3mth_ago,MATRIX,0.4855,0,0,Lowest analyst estimate of tangible book value per share regarding the next 4 quarters; made in the past 3 months
+est_12m_tbv_low_4wks_ago,MATRIX,0.4938,0,0,Lowest analyst estimate of tangible book value per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_tbv_lowered_1wk,MATRIX,1.0,3,3,Number of lowered analyst estimate of tangible book value per share regarding the next 4 quarters; since last weekly update
+est_12m_tbv_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_12m_tbv_lowerednum_4wks,MATRIX,1.0,0,0,Number of lowered analyst estimate of tangible book value per share regarding the next 4 quarters; where old and new estimate were made in past 4 weeks
+est_12m_tbv_mean,MATRIX,0.529,0,0,Mean analyst estimate of tangible book value per share regarding the next 4 quarters
+est_12m_tbv_mean_28d,MATRIX,0.4703,0,0,Mean analyst estimate of tangible book value per share regarding the next 4 quarters; made in the last 28 days
+est_12m_tbv_mean_3mth_ago,MATRIX,0.4855,0,0,Mean analyst estimate of tangible book value per share regarding the next 4 quarters; made in past 3 months
+est_12m_tbv_mean_4wks_ago,MATRIX,0.4938,0,0,Mean analyst estimate of tangible book value per share regarding the next 4 quarters; made in the past 4 weeks
+est_12m_tbv_median,MATRIX,0.529,2,2,Median analyst estimate of tangible book value per share regarding the next 4 quarters
+est_12m_tbv_median_3mth_ago,MATRIX,0.4855,0,0,Median analyst estimate of tangible book value per share regarding the next 4 quarters; made in past 3 months
+est_12m_tbv_median_4wks_ago,MATRIX,0.4938,1,1,Median analyst estimate of tangible book value per share regarding the next 4 quarters; made in past 4 weeks
+est_12m_tbv_num,MATRIX,1.0,0,0,Number of analyst estimates of tangible book value per share regarding the next 4 quarters
+est_12m_tbv_num_28d,MATRIX,1.0,0,0,Number of analyst estimates of tangible book value per share regarding the next 4 quarters; made in the last 28 days
+est_12m_tbv_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of tangible book value per share regarding the next 4 quarters; made in the past 3 months
+est_12m_tbv_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of tangible book value per share regarding the next 4 quarters; where old and new estimates were made in the past 4 weeks
+est_12m_tbv_raised_1wk,MATRIX,1.0,8,10,Number of raised analyst estimates of tangible book value per share regarding the next 4 quarters; compared to the last weekly update
+est_12m_tbv_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of tangible book value per share regarding the next 4 quarters; compared to the last monthly update
+est_12m_tbv_raisednum_4wks,MATRIX,1.0,1,1,Number of raised analyst estimates of tangible book value per share regarding the next 4 quarters; where old and new estimates were made in past 4 weeks
+est_12m_tbv_std,MATRIX,0.1368,0,0,Standard deviation of analyst estimate of tangible book value per share regarding the next 4 quarters
+est_12m_tbv_std_3mth_ago,MATRIX,0.1455,0,0,Standard deviation of the analyst estimates of tangible book value per share regarding the next 4 quarters; made in the past 3 months
+est_12m_tbv_std_4wks_ago,MATRIX,0.1359,0,0,Standard deviation of the analyst estimate of tangible book value per share regarding the next 4 quarters; made in the past 4 weeks
+est_q_dps_high,MATRIX,0.3549,0,0,Highest analyst estimate of dividend per share regarding the next quarter
+est_q_dps_high_3mth_ago,MATRIX,0.292,1,1,Highest analyst estimate of dividend per share regarding the next quarter; made in past 3 months
+est_q_dps_high_4wks_ago,MATRIX,0.3077,0,0,Highest analyst estimate of dividend per share regarding the next quarter; made in past 4 weeks
+est_q_dps_low,MATRIX,0.3549,0,0,Lowest analyst estimate of dividend per share regarding the next quarter
+est_q_dps_low_3mth_ago,MATRIX,0.292,0,0,Lowest analyst estimate of dividend per share regarding the next quarter; made in past 3 months
+est_q_dps_low_4wks_ago,MATRIX,0.3077,0,0,Lowest analyst estimate of dividend per share regarding the next quarter; made in the past 4 weeks
+est_q_dps_lowered_1wk,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_dps_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_dps_lowerednum_4wks,MATRIX,1.0,1,1,Number of lowered analyst estimates of dividend per share regarding the next quarter; where old and new estimates were made in past 4 weeks
+est_q_dps_mean,MATRIX,0.3549,0,0,Mean analyst estimate of dividend per share regarding the next quarter
+est_q_dps_mean_3mth_ago,MATRIX,0.292,1,1,Mean analyst estimate of dividend per share regarding the next quarter; made in past 3 months
+est_q_dps_mean_4wks_ago,MATRIX,0.3077,0,0,Mean analyst estimate of dividend per share regarding the next quarter; made in the past 4 weeks
+est_q_dps_median,MATRIX,0.3549,0,0,Median analyst estimate of dividend per share regarding the next quarter
+est_q_dps_median_3mth_ago,MATRIX,0.292,0,0,Median analyst estimate of dividend per share regarding the next quarter; made in the past 3 months
+est_q_dps_median_4wks_ago,MATRIX,0.3077,0,0,Median analyst estimate of dividend per share regarding the next quarter; made in past 4 weeks
+est_q_dps_num,MATRIX,1.0,1,1,Number of analyst estimates of dividend per share regarding the next quarter
+est_q_dps_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of dividend per share regarding the next quarter; made in the last 28 days
+est_q_dps_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of dividend per share regarding the next quarter; made in past 3 months
+est_q_dps_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of dividend per share regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_dps_raised_1wk,MATRIX,1.0,0,0,Number of raised analyst estimates of dividend per share regarding the next quarter; compared to the last weekly update
+est_q_dps_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of dividend per share regarding the next quarter; compared to last monthly update
+est_q_dps_raisednum_4wks,MATRIX,1.0,1,1,Number of raised analyst estimates of dividend per share regarding the next quarter; where old and new estimates were made in past 4 weeks
+est_q_ebt_high,MATRIX,0.562,2,2,Highest analyst estimate of EBITDA regarding the next quarter
+est_q_ebt_high_3mth_ago,MATRIX,0.2838,0,0,Highest analyst estimate of EBITDA regarding the next quarter; made in the past 3 months
+est_q_ebt_high_4wks_ago,MATRIX,0.3185,0,0,Highest analyst estimate of EBITDA regarding the next quarter; made in the past 4 weeks
+est_q_ebt_low,MATRIX,0.562,1,1,Lowest analyst estimate of EBITDA regarding the next quarter
+est_q_ebt_low_3mth_ago,MATRIX,0.2838,0,0,Lowest analyst estimate of EBITDA regarding the next quarter; made in the past 3 months
+est_q_ebt_low_4wks_ago,MATRIX,0.3185,0,0,Lowest analyst estimate of EBITDA regarding the next quarter; made in past 4 weeks
+est_q_ebt_lowered_1wk,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_ebt_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_ebt_lowerednum_4wks,MATRIX,1.0,0,0,Number of lowered analyst estimates of EBITDA regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_ebt_mean,MATRIX,0.562,0,0,Mean analyst estimate of EBITDA regarding the next quarter
+est_q_ebt_mean_28d,MATRIX,0.5012,0,0,Mean analyst estimate of EBITDA regarding the next quarter; made in the last 28 days
+est_q_ebt_mean_3mth_ago,MATRIX,0.2838,0,0,Mean analyst estimate of EBITDA regarding the next quarter; made in the past 3 months
+est_q_ebt_mean_4wks_ago,MATRIX,0.3185,1,1,Mean analyst estimate of EBITDA regarding the next quarter; made in past 4 weeks
+est_q_ebt_median,MATRIX,0.562,0,0,Median analyst estimate of EBITDA regarding the next quarter
+est_q_ebt_median_3mth_ago,MATRIX,0.2838,0,0,Median analyst estimate of EBITDA regarding the next quarter; made in the past 3 months
+est_q_ebt_median_4wks_ago,MATRIX,0.3185,1,1,Median analyst estimate of EBITDA regarding the next quarter; made in the past 4 weeks
+est_q_ebt_num,MATRIX,1.0,1,2,Number of analyst estimates of EBITDA regarding the next quarter
+est_q_ebt_num_28d,MATRIX,1.0,0,0,Number of analyst estimates of EBITDA regarding the next quarter; made in the last 28 days
+est_q_ebt_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of EBITDA regarding the next quarter; made in the past 3 months
+est_q_ebt_num_4wks_ago,MATRIX,1.0,1,1,Number of analyst estimates of EBITDA regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_ebt_raised_1wk,MATRIX,1.0,1,1,Number of raised analyst estimates of EBITDA regarding the next quarter; compared to last weekly update
+est_q_ebt_raisednum_1mth,MATRIX,1.0,0,0,Number of raised analyst estimates of EBITDA regarding the next quarter; compared to last monthly update
+est_q_ebt_raisednum_4wks,MATRIX,1.0,2,3,Number of raised analyst estimates of EBITDA regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_ebt_std,MATRIX,0.2277,0,0,Standard deviation of analyst estimate of EBITDA regarding the next quarter
+est_q_ebt_std_28d,MATRIX,0.1937,2,2,Standard deviation of the analyst estimate of EBITDA regarding the next quarter; made in the last 28 days
+est_q_ndt_high,MATRIX,0.3898,0,0,Highest analyst estimate of net debt regarding the next quarter
+est_q_ndt_high_3mth_ago,MATRIX,0.2286,0,0,Highest analyst estimate of net debt regarding the next quarter; made in the past 3 months
+est_q_ndt_high_4wks_ago,MATRIX,0.3144,0,0,Highest analyst estimate of net debt regarding the next quarter; made in the past 4 weeks
+est_q_ndt_low,MATRIX,0.3898,0,0,Lowest analyst estimate of net debt regarding the next quarter
+est_q_ndt_low_3mth_ago,MATRIX,0.2286,0,0,Lowest analyst estimate of net debt regarding the next quarter; made in past 3 months
+est_q_ndt_low_4wks_ago,MATRIX,0.3144,0,0,Lowest analyst estimate of net debt regarding the next quarter; made in the past 4 weeks
+est_q_ndt_lowered_1wk,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_ndt_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_ndt_lowerednum_4wks,MATRIX,1.0,2,2,Number of lowered analyst estimates of net debt regarding the next quarter; where old and new estimates were made in past 4 weeks
+est_q_ndt_mean,MATRIX,0.3898,0,0,Mean analyst estimate of net debt regarding the next quarter
+est_q_ndt_mean_28d,MATRIX,0.3654,0,0,Mean analyst estimate of net debt regarding the next quarter; made in the last 28 days
+est_q_ndt_mean_3mth_ago,MATRIX,0.2286,0,0,Mean analyst estimate of net debt regarding the next quarter; made in past 3 months
+est_q_ndt_mean_4wks_ago,MATRIX,0.3144,0,0,Mean analyst estimate of net debt regarding the next quarter; made in the past 4 weeks
+est_q_ndt_median,MATRIX,0.3898,0,0,Median analyst estimate of net debt regarding the next quarter
+est_q_ndt_median_3mth_ago,MATRIX,0.2286,0,0,Median analyst estimate of net debt regarding the next quarter; made in the past 3 months
+est_q_ndt_median_4wks_ago,MATRIX,0.3144,0,0,Median analyst estimate of net debt regarding the next quarter; made in the past 4 weeks
+est_q_ndt_num,MATRIX,1.0,0,0,Number of analyst estimates of net debt regarding the next quarter
+est_q_ndt_num_28d,MATRIX,1.0,0,0,Number of analyst estimates of net debt regarding the next quarter; made in the last 28 days
+est_q_ndt_num_3mth_ago,MATRIX,1.0,2,2,Number of analyst estimates of net debt regarding the next quarter; made in past 3 months
+est_q_ndt_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of net debt regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_ndt_raised_1wk,MATRIX,1.0,0,0,Number of raised analyst estimates of net debt regarding the next quarter; compared to the last weekly update
+est_q_ndt_raisednum_1mth,MATRIX,1.0,1,1,Number of raised analyst estimates of net debt regarding the next quarter; compared to last monthly update
+est_q_ndt_raisednum_4wks,MATRIX,1.0,3,3,Number of raised analyst estimates of net debt regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_ner_high,MATRIX,0.5451,0,0,Highest analyst estimate of net profit as reported regarding the next quarter
+est_q_ner_high_3mth_ago,MATRIX,0.2586,0,0,Highest analyst estimate of net profit as reported regarding the next quarter; made in the past 3 months
+est_q_ner_high_4wks_ago,MATRIX,0.2891,1,1,Highest analyst estimate of net profit as reported regarding the next quarter; made in the past 4 weeks
+est_q_ner_low,MATRIX,0.5451,0,0,Lowest analyst estimate of net profit as reported regarding the next quarter
+est_q_ner_low_3mth_ago,MATRIX,0.2586,0,0,Lowest analyst estimate of net profit as reported regarding the next quarter; made in past 3 months
+est_q_ner_low_4wks_ago,MATRIX,0.2891,0,0,Lowest analyst estimate of net profit as reported regarding the next quarter; made in the past 4 weeks
+est_q_ner_lowered_1wk,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_ner_lowerednum_1mth,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_ner_lowerednum_4wks,MATRIX,1.0,0,0,Number of lowered analyst estimates of net profit as reported regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_ner_mean,MATRIX,0.5451,0,0,Mean analyst estimate of net profit as reported regarding the next quarter
+est_q_ner_mean_28d,MATRIX,0.5039,1,1,Mean analyst estimate of net profit as reported regarding the next quarter; made in the last 28 days
+est_q_ner_mean_3mth_ago,MATRIX,0.2586,0,0,Mean analyst estimate of net profit as reported regarding the next quarter; made in the past 3 months
+est_q_ner_mean_4wks_ago,MATRIX,0.2891,0,0,Mean analyst estimate of net profit as reported regarding the next quarter; made in the past 4 weeks
+est_q_ner_median,MATRIX,0.5451,0,0,Median analyst estimate of net profit as reported regarding the next quarter
+est_q_ner_median_3mth_ago,MATRIX,0.2586,0,0,Median analyst estimate of net profit as reported regarding the next quarter; made in the past 3 months
+est_q_ner_median_4wks_ago,MATRIX,0.2891,0,0,Median analyst estimate of net profit as reported regarding the next quarter; made in past 4 weeks
+est_q_ner_num,MATRIX,1.0,0,0,Number of analyst estimates of net profit as reported regarding the next quarter
+est_q_ner_num_28d,MATRIX,1.0,4,4,Number of analyst estimates of net profit as reported regarding the next quarter; made in the last 28 days
+est_q_ner_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of net profit as reported regarding the next quarter; made in the past 3 months
+est_q_ner_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of net profit as reported regarding the next quarter; where old and new estimates were made in past 4 weeks
+est_q_ner_raised_1wk,MATRIX,1.0,1,1,Number of raised analyst estimates of net profit as reported regarding the next quarter; compared to last weekly update
+est_q_ner_raisednum_1mth,MATRIX,1.0,1,1,Number of raised analyst estimates of net profit as reported regarding the next quarter; compared to last monthly update
+est_q_ner_raisednum_4wks,MATRIX,1.0,0,0,Number of raised analyst estimates of net profit as reported regarding the next quarter; where old and new estimates were made in past 4 weeks
+est_q_ner_std,MATRIX,0.2224,0,0,Standard deviation of analyst estimates of net profit as reported regarding the next quarter
+est_q_ner_std_28d,MATRIX,0.1839,0,0,Standard deviation of the analyst estimates of net profit as reported regarding the next quarter; made in the last 28 days
+est_q_net_high,MATRIX,0.5927,1,1,Highest analyst estimate of net income regarding the next quarter
+est_q_net_high_3mth_ago,MATRIX,0.2981,0,0,Highest analyst estimate of net income regarding the next quarter; made in the past 3 months
+est_q_net_high_4wks_ago,MATRIX,0.3326,0,0,Highest analyst estimate of net income regarding the next quarter; made in the past 4 weeks
+est_q_net_low,MATRIX,0.5927,0,0,Lowest analyst estimate of net income regarding the next quarter
+est_q_net_low_3mth_ago,MATRIX,0.2981,1,2,Lowest analyst estimate of net income regarding the next quarter; made in the past 3 months
+est_q_net_low_4wks_ago,MATRIX,0.3326,1,1,Lowest analyst estimate of net income regarding the next quarter; made in past 4 weeks
+est_q_net_lowered_1wk,MATRIX,1.0,3,3,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_net_lowerednum_1mth,MATRIX,1.0,1,1,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_net_lowerednum_4wks,MATRIX,1.0,1,1,Number of lowered analyst estimates of net income regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_net_mean,MATRIX,0.5927,4,4,Mean analyst estimate of net income regarding the next quarter
+est_q_net_mean_28d,MATRIX,0.5697,8,9,Mean analyst estimate of net income regarding the next quarter; made in the last 28 days
+est_q_net_mean_3mth_ago,MATRIX,0.2981,0,0,Mean analyst estimate of net income regarding the next quarter; made in past 3 months
+est_q_net_mean_4wks_ago,MATRIX,0.3326,0,0,Mean analyst estimate of net income regarding the next quarter; made in the past 4 weeks
+est_q_net_median,MATRIX,0.5927,0,0,Median analyst estimate of net income regarding the next quarter
+est_q_net_median_3mth_ago,MATRIX,0.2981,0,0,Median analyst estimate of net income regarding the next quarter; made in the past 3 months
+est_q_net_median_4wks_ago,MATRIX,0.3326,0,0,Median analyst estimate of net income regarding the next quarter; made in past 4 weeks
+est_q_net_num,MATRIX,1.0,1,1,Number of analyst estimates of net income regarding the next quarter
+est_q_net_num_28d,MATRIX,1.0,1,1,Number of analyst estimates of net income regarding the next quarter; made in the last 28 days
+est_q_net_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of net income regarding the next quarter; made in past 3 months
+est_q_net_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of net income regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_net_raised_1wk,MATRIX,1.0,2,2,Number of raised analyst estimates of net income regarding the next quarter; compared to the last weekly update
+est_q_net_raisednum_1mth,MATRIX,1.0,2,2,Number of raised analyst estimates of net income regarding the next quarter; compared to the last monthly update
+est_q_net_raisednum_4wks,MATRIX,1.0,2,2,Number of raised analyst estimates of net income regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_net_std,MATRIX,0.3227,0,0,Standard deviation of analyst estimate of net income regarding the next quarter
+est_q_net_std_28d,MATRIX,0.2778,0,0,Standard deviation of the analyst estimate of net income regarding the next quarter; made in the last 28 days
+est_q_net_std_4wks_ago,MATRIX,0.1645,0,0,Standard deviation of the analyst estimate of net income regarding the next quarter; made in the past 4 weeks
+est_q_prr_high,MATRIX,0.4881,0,0,Highest analyst estimate of pre-tax profit as reported regarding the next quarter
+est_q_prr_high_3mth_ago,MATRIX,0.2358,0,0,Highest analyst estimate of pre-tax profit as reported regarding the next quarter; made in past 3 months
+est_q_prr_high_4wks_ago,MATRIX,0.2616,0,0,Highest analyst estimate of pretax profit as reported regarding the next quarter; made in the past 4 weeks
+est_q_prr_low,MATRIX,0.4881,1,1,Lowest analyst estimate of pretax profit as reported regarding the next quarter
+est_q_prr_low_3mth_ago,MATRIX,0.2358,0,0,Lowest analyst estimate of pretax profit as reported regarding the next quarter; made in past 3 months
+est_q_prr_low_4wks_ago,MATRIX,0.2616,0,0,Lowest analyst estimate of pretax profit as reported regarding the next quarter; made in the past 4 weeks
+est_q_prr_lowered_1wk,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_prr_lowerednum_1mth,MATRIX,1.0,0,0,Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity for the date; symbol; and transaction typeâ¦
+est_q_prr_lowerednum_4wks,MATRIX,1.0,0,0,Number of lowered analyst estimates of pretax profit as reported regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_prr_mean,MATRIX,0.4881,1,1,Mean analyst estimate of pretax profit as reported regarding the next quarter
+est_q_prr_mean_28d,MATRIX,0.4357,0,0,Mean analyst estimate of pre-tax profit as reported regarding the next quarter; made in the last 28 days
+est_q_prr_mean_3mth_ago,MATRIX,0.2358,0,0,Mean analyst estimate of pretax profit as reported regarding the next quarter; made in the past 3 months
+est_q_prr_mean_4wks_ago,MATRIX,0.2616,0,0,Mean analyst estimate of pretax profit as reported regarding the next quarter; made in the past 4 weeks
+est_q_prr_median,MATRIX,0.4881,0,0,Median analyst estimate of pretax profit as reported regarding the next quarter
+est_q_prr_median_3mth_ago,MATRIX,0.2358,0,0,Median analyst estimate of pretax profit as reported regarding the next quarter; made in the past 3 months
+est_q_prr_median_4wks_ago,MATRIX,0.2616,0,0,Median analyst estimate of pretax profit as reported regarding the next quarter; made in the past 4 weeks
+est_q_prr_num,MATRIX,1.0,0,0,Number of analyst estimates of pretax profit as reported regarding the next quarter
+est_q_prr_num_28d,MATRIX,1.0,0,0,Number of analyst estimates of pretax profit as reported regarding the next quarter; made in the last 28 days
+est_q_prr_num_3mth_ago,MATRIX,1.0,0,0,Number of analyst estimates of pretax profit as reported regarding the next quarter; made in the past 3 months
+est_q_prr_num_4wks_ago,MATRIX,1.0,0,0,Number of analyst estimates of pretax profit as reported regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_prr_raised_1wk,MATRIX,1.0,0,0,Number of raised analyst estimate of pretax profit as reported regarding the next quarter; compared to last weekly update
+est_q_prr_raisednum_1mth,MATRIX,1.0,1,1,Number of raised analyst estimates of pre-tax profit as reported regarding the next quarter; compared to the last monthly update
+est_q_prr_raisednum_4wks,MATRIX,1.0,2,2,Number of raised analyst estimates of pretax profit as reported regarding the next quarter; where old and new estimates were made in the past 4 weeks
+est_q_prr_std,MATRIX,0.1637,0,0,Standard deviation of analyst estimates of pretax profit as reported regarding the next quarter
+rec_lowerednum_4wks,MATRIX,1.0,117,204,Number of lowered analyst recommendations; where old and new estimates were made in the past 4 weeks
+rec_mean,MATRIX,0.7174,14,25,Mean estimate of the analyst recommendation
+rec_num,MATRIX,1.0,21,26,Number of estimates of the analyst recommendation
+rec_raisednum_4wks,MATRIX,1.0,95,139,Number of raised analyst recommendations; where old and new estimates were made in the past 4 weeks

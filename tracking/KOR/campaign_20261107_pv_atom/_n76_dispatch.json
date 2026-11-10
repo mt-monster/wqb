@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "ZwD4sbUt4jVcfrRxDcd64H",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/ZwD4sbUt4jVcfrRxDcd64H",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/ZwD4sbUt4jVcfrRxDcd64H",
+ "submitted_expressions": [
+  "group_rank(ts_backfill(vec_avg(mws76_score), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_avg(mws76_score), 22), sector))",
+  "group_rank(ts_delta(ts_backfill(vec_avg(mws76_score), 22), 22), sector)",
+  "group_rank(ts_zscore(ts_backfill(vec_avg(mws76_score), 22), 66), sector)",
+  "group_rank(ts_mean(ts_backfill(vec_avg(mws76_score), 22), 5), sector)",
+  "group_rank(ts_backfill(vec_avg(mws76_confidence), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_avg(mws76_confidence), 22), sector))",
+  "signed_power(group_rank(ts_backfill(vec_avg(mws76_score), 22), sector), 2)",
+  "trade_when(greater(rank(ts_backfill(vec_avg(mws76_confidence), 22)), 0.5), group_rank(ts_backfill(vec_avg(mws76_score), 22), sector), -1)",
+  "group_rank(ts_rank(ts_backfill(vec_avg(mws76_score), 22), 66), sector)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

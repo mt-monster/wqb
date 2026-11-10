@@ -1,0 +1,27 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "reverse(group_rank(ts_backfill(vec_avg(nws73_entitiessent_fearpartscr), 22), sector))",
+  "group_rank(ts_backfill(vec_avg(nws73_entitiessent_finhypepartscr), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_avg(nws73_entitiessent_uncertaintypartscr), 22), sector))",
+  "group_rank(ts_backfill(vec_avg(nws73_entitiessent_finuppartscr), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_avg(nws73_entitiessent_findownpartscr), 22), sector))",
+  "group_rank(ts_backfill(subtract(vec_avg(nws73_entitiessent_positivepartscr), vec_avg(nws73_entitiessent_negativepartscr)), 22), sector)",
+  "group_rank(ts_delta(ts_backfill(vec_avg(nws73_entitiessent_fearpartscr), 22), 22), sector)",
+  "group_rank(ts_backfill(subtract(vec_avg(nws73_entitiessent_finuppartscr), vec_avg(nws73_entitiessent_findownpartscr)), 22), sector)"
+ ],
+ "dataset": "news73",
+ "wave": "N73 fear/hype/uncertainty sentiment (last low-cov candidate)"
+}

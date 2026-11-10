@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+"snt7_all_languages_views",VECTOR,0.7539,34,65,"Number of views for the companyâs Wikipedia page"
+"snt7_timestamp",VECTOR,0.7357,4,4,"Content date for which the data were recorded (YYYYMMDD)"
+"snt7_views",VECTOR,0.7357,27,34,"Daily Wikipedia page view count for the specified project and access type"

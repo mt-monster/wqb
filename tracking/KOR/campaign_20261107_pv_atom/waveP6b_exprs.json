@@ -1,0 +1,12 @@
+[
+  "group_rank(ts_av_diff(sentiment_score_average, 66), sector)",
+  "group_rank(ts_av_diff(sentiment_score_average, 250), sector)",
+  "group_rank(ts_av_diff(subtract(primary_sentiment_average, secondary_sentiment_average), 66), sector)",
+  "group_rank(ts_delta(total_sentiment_score, 22), sector)",
+  "group_rank(ts_zscore(sentiment_score_average, 252), sector)",
+  "group_rank(ts_rank(sentiment_distribution_skewness_2, 252), sector)",
+  "-group_rank(ts_mean(news_article_count, 66), sector)",
+  "group_rank(ts_av_diff(normalized_news_article_count, 66), sector)",
+  "group_rank(multiply(ts_zscore(sentiment_score_average, 252), ts_zscore(normalized_news_article_count, 252)), sector)",
+  "group_rank(ts_decay_linear(ts_av_diff(sentiment_score_average, 66), 22), industry)"
+]

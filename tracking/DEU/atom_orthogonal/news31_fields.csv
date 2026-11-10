@@ -1,0 +1,13 @@
+id,type,cov,uc,ac,desc
+explicit_company_mention_count,VECTOR,0.0,1,1,Number of companies specifically listed or scored in the subjects field of the news item
+first_appearance_sentence_number,VECTOR,0.0,0,0,Index of the first sentence (starting with headline as 1) in which the scored asset is mentioned in the news item
+negative_sentiment_probability_2,VECTOR,0.0,6,8,Probability (0-1) that the sentiment expressed in the news item is negative towards the asset
+neutral_sentiment_probability_2,VECTOR,0.0,1,1,Probability (0-1) that the sentiment expressed is neutral towards the asset
+news_relevance_score,VECTOR,0.0,0,0,A value between 0 and 1 quantifying how relevant the news item is to the asset
+news_urgency_level,VECTOR,0.0,0,0,Integer indicating news urgency (1 = alert/breaking; 3 = full article)
+positive_sentiment_probability_2,VECTOR,0.0,2,2,Probability (0-1) that the sentiment expressed is positive towards the asset
+predominant_sentiment_class,VECTOR,0.0,2,2,Primary sentiment classification for the news item regarding the asset (-1: negative; 0: neutral; 1: positive)
+sentiment_analysis_word_count,VECTOR,0.0,1,1,Number of words and punctuation in text deemed relevant for sentiment scoring for the asset
+story_body_character_count,VECTOR,0.0,1,1,Number of characters in the body of the current news story version
+total_sentence_count,VECTOR,0.0,0,0,Total number of sentences in the news item's body text
+total_word_token_count,VECTOR,0.0,0,0,Total number of lexical tokens (words; punctuation) in the news item

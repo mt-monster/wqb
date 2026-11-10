@@ -1,0 +1,2954 @@
+{
+ "results": [
+  {
+   "id": "oth395_asset_41_11",
+   "type": "MATRIX",
+   "coverage": 0.6132,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_41_12",
+   "type": "MATRIX",
+   "coverage": 0.6132,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_41_13",
+   "type": "MATRIX",
+   "coverage": 0.5427,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_41_21",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_41_22",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_41_23",
+   "type": "MATRIX",
+   "coverage": 0.5916,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_41_31",
+   "type": "MATRIX",
+   "coverage": 0.5284,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_42_11",
+   "type": "MATRIX",
+   "coverage": 0.607,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_42_12",
+   "type": "MATRIX",
+   "coverage": 0.607,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_42_13",
+   "type": "MATRIX",
+   "coverage": 0.5368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_42_21",
+   "type": "MATRIX",
+   "coverage": 0.607,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_42_22",
+   "type": "MATRIX",
+   "coverage": 0.607,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_42_23",
+   "type": "MATRIX",
+   "coverage": 0.5855,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_42_31",
+   "type": "MATRIX",
+   "coverage": 0.5226,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_43_11",
+   "type": "MATRIX",
+   "coverage": 0.6056,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_43_12",
+   "type": "MATRIX",
+   "coverage": 0.6056,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_43_13",
+   "type": "MATRIX",
+   "coverage": 0.5358,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_43_21",
+   "type": "MATRIX",
+   "coverage": 0.6056,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current Asset Accruals /  Current Assets"
+  },
+  {
+   "id": "oth395_asset_43_22",
+   "type": "MATRIX",
+   "coverage": 0.6056,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_43_23",
+   "type": "MATRIX",
+   "coverage": 0.5843,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_43_31",
+   "type": "MATRIX",
+   "coverage": 0.5219,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_51_11",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_51_12",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_51_13",
+   "type": "MATRIX",
+   "coverage": 0.5454,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_51_21",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_51_22",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_51_23",
+   "type": "MATRIX",
+   "coverage": 0.5942,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_51_31",
+   "type": "MATRIX",
+   "coverage": 0.531,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_52_11",
+   "type": "MATRIX",
+   "coverage": 0.6125,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_52_12",
+   "type": "MATRIX",
+   "coverage": 0.6125,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_52_13",
+   "type": "MATRIX",
+   "coverage": 0.5712,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_52_21",
+   "type": "MATRIX",
+   "coverage": 0.6125,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_52_22",
+   "type": "MATRIX",
+   "coverage": 0.6125,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_52_23",
+   "type": "MATRIX",
+   "coverage": 0.5974,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_52_31",
+   "type": "MATRIX",
+   "coverage": 0.5559,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_53_11",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_53_12",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_53_13",
+   "type": "MATRIX",
+   "coverage": 0.5454,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_53_21",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_53_22",
+   "type": "MATRIX",
+   "coverage": 0.6159,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_53_23",
+   "type": "MATRIX",
+   "coverage": 0.5942,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_53_31",
+   "type": "MATRIX",
+   "coverage": 0.531,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_54_11",
+   "type": "MATRIX",
+   "coverage": 0.6283,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_54_12",
+   "type": "MATRIX",
+   "coverage": 0.6283,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_54_13",
+   "type": "MATRIX",
+   "coverage": 0.5866,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_54_21",
+   "type": "MATRIX",
+   "coverage": 0.6283,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_54_22",
+   "type": "MATRIX",
+   "coverage": 0.6283,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_54_23",
+   "type": "MATRIX",
+   "coverage": 0.6128,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_54_31",
+   "type": "MATRIX",
+   "coverage": 0.5709,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_55_11",
+   "type": "MATRIX",
+   "coverage": 0.6509,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_55_12",
+   "type": "MATRIX",
+   "coverage": 0.6509,
+   "userCount": 6,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_55_13",
+   "type": "MATRIX",
+   "coverage": 0.6025,
+   "userCount": 6,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_55_21",
+   "type": "MATRIX",
+   "coverage": 0.6106,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_55_22",
+   "type": "MATRIX",
+   "coverage": 0.6103,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_55_23",
+   "type": "MATRIX",
+   "coverage": 0.5953,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_55_31",
+   "type": "MATRIX",
+   "coverage": 0.5876,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_56_11",
+   "type": "MATRIX",
+   "coverage": 0.6506,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_56_12",
+   "type": "MATRIX",
+   "coverage": 0.6506,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_56_13",
+   "type": "MATRIX",
+   "coverage": 0.6023,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_56_21",
+   "type": "MATRIX",
+   "coverage": 0.6106,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_56_22",
+   "type": "MATRIX",
+   "coverage": 0.6104,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_56_23",
+   "type": "MATRIX",
+   "coverage": 0.5954,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_56_31",
+   "type": "MATRIX",
+   "coverage": 0.5874,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_57_11",
+   "type": "MATRIX",
+   "coverage": 0.6506,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_57_12",
+   "type": "MATRIX",
+   "coverage": 0.6506,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_57_13",
+   "type": "MATRIX",
+   "coverage": 0.6023,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_57_21",
+   "type": "MATRIX",
+   "coverage": 0.6106,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_57_22",
+   "type": "MATRIX",
+   "coverage": 0.6104,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_57_23",
+   "type": "MATRIX",
+   "coverage": 0.5954,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_57_31",
+   "type": "MATRIX",
+   "coverage": 0.5874,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_58_11",
+   "type": "MATRIX",
+   "coverage": 0.612,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_58_12",
+   "type": "MATRIX",
+   "coverage": 0.6119,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_58_13",
+   "type": "MATRIX",
+   "coverage": 0.5421,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_58_21",
+   "type": "MATRIX",
+   "coverage": 0.612,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_58_22",
+   "type": "MATRIX",
+   "coverage": 0.612,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_58_23",
+   "type": "MATRIX",
+   "coverage": 0.5906,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-current Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_58_31",
+   "type": "MATRIX",
+   "coverage": 0.528,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-current Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_61_11",
+   "type": "MATRIX",
+   "coverage": 0.6526,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Financial Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_61_12",
+   "type": "MATRIX",
+   "coverage": 0.6523,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_61_13",
+   "type": "MATRIX",
+   "coverage": 0.6084,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_61_21",
+   "type": "MATRIX",
+   "coverage": 0.6196,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_61_22",
+   "type": "MATRIX",
+   "coverage": 0.6191,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_61_23",
+   "type": "MATRIX",
+   "coverage": 0.6066,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_61_31",
+   "type": "MATRIX",
+   "coverage": 0.6012,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_62_11",
+   "type": "MATRIX",
+   "coverage": 0.6526,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Financial Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_62_12",
+   "type": "MATRIX",
+   "coverage": 0.6523,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_62_13",
+   "type": "MATRIX",
+   "coverage": 0.6084,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_62_21",
+   "type": "MATRIX",
+   "coverage": 0.6196,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_62_22",
+   "type": "MATRIX",
+   "coverage": 0.6191,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_62_23",
+   "type": "MATRIX",
+   "coverage": 0.6066,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_62_31",
+   "type": "MATRIX",
+   "coverage": 0.6012,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_63_11",
+   "type": "MATRIX",
+   "coverage": 0.6526,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Financial Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_63_12",
+   "type": "MATRIX",
+   "coverage": 0.6523,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_63_13",
+   "type": "MATRIX",
+   "coverage": 0.6084,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_63_21",
+   "type": "MATRIX",
+   "coverage": 0.6196,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_63_22",
+   "type": "MATRIX",
+   "coverage": 0.6191,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_63_23",
+   "type": "MATRIX",
+   "coverage": 0.6066,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_63_31",
+   "type": "MATRIX",
+   "coverage": 0.6012,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_64_11",
+   "type": "MATRIX",
+   "coverage": 0.6378,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Financial Asset Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_asset_64_12",
+   "type": "MATRIX",
+   "coverage": 0.6377,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_asset_64_13",
+   "type": "MATRIX",
+   "coverage": 0.5602,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_asset_64_21",
+   "type": "MATRIX",
+   "coverage": 0.6016,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_asset_64_22",
+   "type": "MATRIX",
+   "coverage": 0.6013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_asset_64_23",
+   "type": "MATRIX",
+   "coverage": 0.5803,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_asset_64_31",
+   "type": "MATRIX",
+   "coverage": 0.546,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Asset Accruals / Sales"
+  },
+  {
+   "id": "oth395_asset_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.6702,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of the latest asset over asset_ltm"
+  },
+  {
+   "id": "oth395_best11_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.543,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Accumulated sum of accruals ratio over the last 4 quarters"
+  },
+  {
+   "id": "oth395_best11_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_best11_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_best11_d1_current_t",
+   "type": "MATRIX",
+   "coverage": 0.5189,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current t-statistics of Accruals Ratio, Calculated as Current-t = (Current Accruals Ratio - Mean) / Std"
+  },
+  {
+   "id": "oth395_best11_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.6041,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of accruals ratio over history"
+  },
+  {
+   "id": "oth395_best11_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_best11_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.6202,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_best11_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.6202,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_best11_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.6202,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_best21_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.5201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated Sum of Accruals Ratio Over the Last 4 Quarters"
+  },
+  {
+   "id": "oth395_best21_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_best21_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_best21_d1_current_t",
+   "type": "MATRIX",
+   "coverage": 0.5519,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current t-statistics of accruals ratio, calculated as Current-t = (current accruals ratio - mean) / std"
+  },
+  {
+   "id": "oth395_best21_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.6935,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of accruals ratio over history"
+  },
+  {
+   "id": "oth395_best21_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of Accruals Ratio Data That Is Available Over History"
+  },
+  {
+   "id": "oth395_best21_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.7055,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_best21_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.7055,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_best21_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.7055,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjones_all_major_11",
+   "type": "MATRIX",
+   "coverage": 0.5156,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross-Sectional Ratio of Cash-related Field (Income Statement), Scaled by Average Total Asset across All Universe"
+  },
+  {
+   "id": "oth395_csjones_all_major_12",
+   "type": "MATRIX",
+   "coverage": 0.5124,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Cash-related field (income statement), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_major_13",
+   "type": "MATRIX",
+   "coverage": 0.4758,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Cash-related field (income statement), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_major_21",
+   "type": "MATRIX",
+   "coverage": 0.4826,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Asset-related field (balance sheet), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_major_22",
+   "type": "MATRIX",
+   "coverage": 0.4703,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross-sectional ratio of asset-related field (balance sheet), scaled by average total asset across all universe"
+  },
+  {
+   "id": "oth395_csjones_all_major_31",
+   "type": "MATRIX",
+   "coverage": 0.4492,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Asset-related field (balance sheet), scaled by Average Total Assets across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_major_32",
+   "type": "MATRIX",
+   "coverage": 0.4427,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Asset-related field (balance sheet), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_other_11",
+   "type": "MATRIX",
+   "coverage": 0.5117,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Comprehensive Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_other_12",
+   "type": "MATRIX",
+   "coverage": 0.5109,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross-Sectional Ratio of Operating Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_other_13",
+   "type": "MATRIX",
+   "coverage": 0.5109,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Financial Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_other_14",
+   "type": "MATRIX",
+   "coverage": 0.4826,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross Sectional Ratio of Working Capital Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_other_15",
+   "type": "MATRIX",
+   "coverage": 0.4826,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cross-sectional ratio of long-term operating accruals, scaled by average total asset across all universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_major_11",
+   "type": "MATRIX",
+   "coverage": 0.5182,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross-Sectional Ratio of Cash-Related Field (Income Statement), Scaled by Average Total Asset Across All Universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_major_12",
+   "type": "MATRIX",
+   "coverage": 0.515,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross Sectional Ratio of Cash-related field (income statement), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_major_13",
+   "type": "MATRIX",
+   "coverage": 0.4782,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "R squared value of cross-sectional ratio of cash-related field (income statement), scaled by average total asset across all universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_major_21",
+   "type": "MATRIX",
+   "coverage": 0.4832,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross Sectional Ratio of Asset-related field (balance sheet), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_major_22",
+   "type": "MATRIX",
+   "coverage": 0.4706,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "R Squared Value of Cross Sectional Ratio of Asset-related field (balance sheet), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_major_31",
+   "type": "MATRIX",
+   "coverage": 0.4498,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross-Sectional Ratio of Asset-related field (balance sheet), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_major_32",
+   "type": "MATRIX",
+   "coverage": 0.443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross-Sectional Ratio of Asset-related field (balance sheet), scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_other_11",
+   "type": "MATRIX",
+   "coverage": 0.513,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross Sectional Ratio of Comprehensive Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_other_12",
+   "type": "MATRIX",
+   "coverage": 0.5122,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross-Sectional Ratio of Operating Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_other_13",
+   "type": "MATRIX",
+   "coverage": 0.5122,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "R Squared Value of Cross Sectional Ratio of Financial Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_other_14",
+   "type": "MATRIX",
+   "coverage": 0.4832,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Cross Sectional Ratio of Working Capital Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_all_r2_other_15",
+   "type": "MATRIX",
+   "coverage": 0.4832,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R-Squared Value of Cross-Sectional Ratio of Long-term Operating Accruals, scaled by Average Total Asset across All universe"
+  },
+  {
+   "id": "oth395_csjones_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.4891,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of the latest asset over asset_ltm"
+  },
+  {
+   "id": "oth395_csjonesallmajor13_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_csjonesallmajor13_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_csjonesallmajor13_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_csjonesallother11_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.4763,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated Sum of Accruals Ratio Over the Last 4 Quarters"
+  },
+  {
+   "id": "oth395_csjonesallother11_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.3615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_csjonesallother11_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.3615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_csjonesallother11_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.3615,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_csjonesallother11_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.4466,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesallother11_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.4466,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesallother11_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.4466,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.4796,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated sum of accruals ratio over the last 4 quarters"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_current_t",
+   "type": "MATRIX",
+   "coverage": 0.4561,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current t-statistics of accruals ratio, calculated as Current-t = (current accruals ratio - mean) / std"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.4653,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.4884,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.4884,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustrymajor13_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.4884,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.5063,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated Sum of Accruals Ratio over the Last 4 Quarters"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_current_t",
+   "type": "MATRIX",
+   "coverage": 0.4919,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current t-statistics of accruals ratio, calculated as Current-t = (current accruals ratio - mean) / std"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.4928,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.5237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.5127,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.5127,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_csjonesindustryother11_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.5127,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_fixed1313_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.5255,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated sum of accruals ratio over the last 4 quarters"
+  },
+  {
+   "id": "oth395_fixed1313_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_fixed1313_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_fixed1313_d1_current_t",
+   "type": "MATRIX",
+   "coverage": 0.4899,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current t-statistics of accruals ratio, calculated as Current-t = (current accruals ratio - mean) / std"
+  },
+  {
+   "id": "oth395_fixed1313_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.5496,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of accruals ratio over history"
+  },
+  {
+   "id": "oth395_fixed1313_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_fixed1313_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.5734,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_fixed1313_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.5734,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_fixed1313_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.5734,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_fixed1513_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_fixed1513_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_fixed1513_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_jones_accrual_major_11",
+   "type": "MATRIX",
+   "coverage": 0.4043,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_major_12",
+   "type": "MATRIX",
+   "coverage": 0.4004,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_major_13",
+   "type": "MATRIX",
+   "coverage": 0.3731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_major_21",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_major_22",
+   "type": "MATRIX",
+   "coverage": 0.3897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_major_31",
+   "type": "MATRIX",
+   "coverage": 0.3555,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_major_32",
+   "type": "MATRIX",
+   "coverage": 0.3652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_other_11",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time Series Ratio of Comprehensive Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_other_12",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Operating Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_other_13",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Financial Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_other_14",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Working Capital Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_other_15",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time Series Ratio of Long-term Operating Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_major_11",
+   "type": "MATRIX",
+   "coverage": 0.4043,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Cash-related field (income statement), scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_major_12",
+   "type": "MATRIX",
+   "coverage": 0.4004,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Cash-related field (income statement), scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_major_13",
+   "type": "MATRIX",
+   "coverage": 0.3731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Cash-related field (income statement), scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_major_21",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Asset-related field (balance sheet), scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_major_22",
+   "type": "MATRIX",
+   "coverage": 0.3897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Asset-related field (balance sheet), scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_major_31",
+   "type": "MATRIX",
+   "coverage": 0.3556,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Asset-related field (balance sheet), scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_major_32",
+   "type": "MATRIX",
+   "coverage": 0.3652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Asset-related field (balance sheet), scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_other_11",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Comprehensive Accruals, scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_other_12",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Operating Accruals, scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_other_13",
+   "type": "MATRIX",
+   "coverage": 0.3985,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Financial Accruals, scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_other_14",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Working Capital Accruals, scaled by Average Total Assets out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_pct_other_15",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage of Discretionary Accrual for Long-term Operating Accruals, scaled by Average Total Asset out of Total Accruals"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_major_11",
+   "type": "MATRIX",
+   "coverage": 0.3862,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_major_12",
+   "type": "MATRIX",
+   "coverage": 0.383,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_major_13",
+   "type": "MATRIX",
+   "coverage": 0.3529,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R-Squared Value of Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_major_21",
+   "type": "MATRIX",
+   "coverage": 0.3655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_major_22",
+   "type": "MATRIX",
+   "coverage": 0.3501,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_major_31",
+   "type": "MATRIX",
+   "coverage": 0.3352,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_major_32",
+   "type": "MATRIX",
+   "coverage": 0.3176,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_other_11",
+   "type": "MATRIX",
+   "coverage": 0.3816,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Comprehensive Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_other_12",
+   "type": "MATRIX",
+   "coverage": 0.3816,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Operating Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_other_13",
+   "type": "MATRIX",
+   "coverage": 0.3816,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Financial Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_other_14",
+   "type": "MATRIX",
+   "coverage": 0.3655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Working Capital Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_accrual_r2_other_15",
+   "type": "MATRIX",
+   "coverage": 0.3655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "R Squared Value of Time Series Ratio of Long-term Operating Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.3432,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of the latest asset over asset_ltm"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_major_11",
+   "type": "MATRIX",
+   "coverage": 0.4043,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_major_12",
+   "type": "MATRIX",
+   "coverage": 0.4004,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_major_13",
+   "type": "MATRIX",
+   "coverage": 0.3731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Cash-related field (income statement), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_major_21",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_major_22",
+   "type": "MATRIX",
+   "coverage": 0.3897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_major_31",
+   "type": "MATRIX",
+   "coverage": 0.3555,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_major_32",
+   "type": "MATRIX",
+   "coverage": 0.3652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Asset-related field (balance sheet), scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_other_11",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Comprehensive Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_other_12",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Operating Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_other_13",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Financial Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_other_14",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Non-discretionary Time Series Ratio of Working Capital Accruals, scaled by Average Total Assets"
+  },
+  {
+   "id": "oth395_jones_nondiscretionary_accrual_other_15",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Non-discretionary Time Series Ratio of Long-term Operating Accruals, scaled by Average Total Asset"
+  },
+  {
+   "id": "oth395_jonesmajor13_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.3902,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated Sum of Accruals Ratio over the Last 4 Quarters"
+  },
+  {
+   "id": "oth395_jonesmajor13_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_jonesmajor13_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_jonesmajor13_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_jonesmajor13_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor13_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor13_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor31_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.3813,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Accumulated Sum of Accruals Ratio over the Last 4 Quarters"
+  },
+  {
+   "id": "oth395_jonesmajor31_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_jonesmajor31_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_jonesmajor31_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_jonesmajor31_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.3731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor31_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.3731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor31_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.3731,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor32_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.3635,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated sum of accruals ratio over the last 4 quarters"
+  },
+  {
+   "id": "oth395_jonesmajor32_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_jonesmajor32_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_jonesmajor32_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_jonesmajor32_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.3555,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor32_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.3555,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesmajor32_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.3555,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother11_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.5201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated sum of accruals ratio over the last 4 quarters"
+  },
+  {
+   "id": "oth395_jonesother11_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_jonesother11_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_jonesother11_d1_current_t",
+   "type": "MATRIX",
+   "coverage": 0.5519,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current t-statistics of accruals ratio, calculated as Current-t = (current accruals ratio - mean) / std"
+  },
+  {
+   "id": "oth395_jonesother11_d1_dts",
+   "type": "MATRIX",
+   "coverage": 0.6935,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother11_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.805,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_jonesother11_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.7055,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother11_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.7055,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother11_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.7055,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother14_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.4052,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Accumulated sum of accruals ratio over the last 4 quarters"
+  },
+  {
+   "id": "oth395_jonesother14_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_jonesother14_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_jonesother14_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accruals ratio data that is available over history"
+  },
+  {
+   "id": "oth395_jonesother14_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother14_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother14_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.3989,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother15_d1_accum_4q",
+   "type": "MATRIX",
+   "coverage": 0.3902,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accumulated sum of accruals ratio over the last 4 quarters"
+  },
+  {
+   "id": "oth395_jonesother15_d1_asset_double_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset doubled over history"
+  },
+  {
+   "id": "oth395_jonesother15_d1_asset_half_history",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Whether asset halved over history"
+  },
+  {
+   "id": "oth395_jonesother15_d1_length",
+   "type": "MATRIX",
+   "coverage": 0.3887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of Accruals Ratio Data that is Available over History"
+  },
+  {
+   "id": "oth395_jonesother15_d1_max",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother15_d1_mean",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of accruals ratio over history"
+  },
+  {
+   "id": "oth395_jonesother15_d1_min",
+   "type": "MATRIX",
+   "coverage": 0.3837,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum of accruals ratio over history"
+  },
+  {
+   "id": "oth395_major_11_11",
+   "type": "MATRIX",
+   "coverage": 0.5672,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Total Assets"
+  },
+  {
+   "id": "oth395_major_11_12",
+   "type": "MATRIX",
+   "coverage": 0.559,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_major_11_13",
+   "type": "MATRIX",
+   "coverage": 0.5584,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_major_11_21",
+   "type": "MATRIX",
+   "coverage": 0.5329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash-related field (income statement) / Current Assets"
+  },
+  {
+   "id": "oth395_major_11_22",
+   "type": "MATRIX",
+   "coverage": 0.5256,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_major_11_23",
+   "type": "MATRIX",
+   "coverage": 0.5255,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cash-related field (income statement) / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_major_11_31",
+   "type": "MATRIX",
+   "coverage": 0.5648,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Sales"
+  },
+  {
+   "id": "oth395_major_12_11",
+   "type": "MATRIX",
+   "coverage": 0.5629,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Total Assets"
+  },
+  {
+   "id": "oth395_major_12_12",
+   "type": "MATRIX",
+   "coverage": 0.5548,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_major_12_13",
+   "type": "MATRIX",
+   "coverage": 0.5542,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash-related field (income statement) / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_major_12_21",
+   "type": "MATRIX",
+   "coverage": 0.5303,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Current Assets"
+  },
+  {
+   "id": "oth395_major_12_22",
+   "type": "MATRIX",
+   "coverage": 0.5231,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_major_12_23",
+   "type": "MATRIX",
+   "coverage": 0.523,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_major_12_31",
+   "type": "MATRIX",
+   "coverage": 0.5611,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cash-related field (income statement) / Sales"
+  },
+  {
+   "id": "oth395_major_13_11",
+   "type": "MATRIX",
+   "coverage": 0.5134,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash-related field (income statement) / Total Assets"
+  },
+  {
+   "id": "oth395_major_13_12",
+   "type": "MATRIX",
+   "coverage": 0.5062,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cash-related field (income statement) / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_major_13_13",
+   "type": "MATRIX",
+   "coverage": 0.5056,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_major_13_21",
+   "type": "MATRIX",
+   "coverage": 0.4881,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Current Assets"
+  },
+  {
+   "id": "oth395_major_13_22",
+   "type": "MATRIX",
+   "coverage": 0.4816,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_major_13_23",
+   "type": "MATRIX",
+   "coverage": 0.4815,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_major_13_31",
+   "type": "MATRIX",
+   "coverage": 0.5117,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash-related field (income statement) / Sales"
+  },
+  {
+   "id": "oth395_major_21_11",
+   "type": "MATRIX",
+   "coverage": 0.6037,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Total Assets"
+  },
+  {
+   "id": "oth395_major_21_12",
+   "type": "MATRIX",
+   "coverage": 0.6036,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_major_21_13",
+   "type": "MATRIX",
+   "coverage": 0.5339,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_major_21_21",
+   "type": "MATRIX",
+   "coverage": 0.6037,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Current Assets"
+  },
+  {
+   "id": "oth395_major_21_22",
+   "type": "MATRIX",
+   "coverage": 0.6037,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related Field (Balance Sheet) / Time Series Average Current Assets"
+  },
+  {
+   "id": "oth395_major_21_23",
+   "type": "MATRIX",
+   "coverage": 0.5824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_major_21_31",
+   "type": "MATRIX",
+   "coverage": 0.52,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Sales"
+  },
+  {
+   "id": "oth395_major_22_11",
+   "type": "MATRIX",
+   "coverage": 0.5227,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Asset-related field (balance sheet) / Total Assets"
+  },
+  {
+   "id": "oth395_major_22_12",
+   "type": "MATRIX",
+   "coverage": 0.5227,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_major_22_13",
+   "type": "MATRIX",
+   "coverage": 0.4881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_major_22_21",
+   "type": "MATRIX",
+   "coverage": 0.5227,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Current Assets"
+  },
+  {
+   "id": "oth395_major_22_22",
+   "type": "MATRIX",
+   "coverage": 0.5227,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_major_22_23",
+   "type": "MATRIX",
+   "coverage": 0.5114,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_major_22_31",
+   "type": "MATRIX",
+   "coverage": 0.4774,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Sales"
+  },
+  {
+   "id": "oth395_major_31_11",
+   "type": "MATRIX",
+   "coverage": 0.4775,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Asset-related field (balance sheet) / Total Assets"
+  },
+  {
+   "id": "oth395_major_31_12",
+   "type": "MATRIX",
+   "coverage": 0.4775,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_major_31_13",
+   "type": "MATRIX",
+   "coverage": 0.4766,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_major_31_21",
+   "type": "MATRIX",
+   "coverage": 0.4775,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Current Assets"
+  },
+  {
+   "id": "oth395_major_31_22",
+   "type": "MATRIX",
+   "coverage": 0.4775,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_major_31_23",
+   "type": "MATRIX",
+   "coverage": 0.4764,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_major_31_31",
+   "type": "MATRIX",
+   "coverage": 0.4765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Sales"
+  },
+  {
+   "id": "oth395_major_32_11",
+   "type": "MATRIX",
+   "coverage": 0.4426,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Asset-related field (balance sheet) / Total Assets"
+  },
+  {
+   "id": "oth395_major_32_12",
+   "type": "MATRIX",
+   "coverage": 0.4426,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_major_32_13",
+   "type": "MATRIX",
+   "coverage": 0.4421,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_major_32_21",
+   "type": "MATRIX",
+   "coverage": 0.4426,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Current Assets"
+  },
+  {
+   "id": "oth395_major_32_22",
+   "type": "MATRIX",
+   "coverage": 0.4426,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_major_32_23",
+   "type": "MATRIX",
+   "coverage": 0.442,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_major_32_31",
+   "type": "MATRIX",
+   "coverage": 0.4425,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Asset-related field (balance sheet) / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_major_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.6702,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of the latest asset over asset_ltm"
+  },
+  {
+   "id": "oth395_other_11_11",
+   "type": "MATRIX",
+   "coverage": 0.6476,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Comprehensive Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_other_11_12",
+   "type": "MATRIX",
+   "coverage": 0.6475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Comprehensive Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_other_11_13",
+   "type": "MATRIX",
+   "coverage": 0.5696,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Comprehensive Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_other_11_21",
+   "type": "MATRIX",
+   "coverage": 0.6135,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Comprehensive Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_other_11_22",
+   "type": "MATRIX",
+   "coverage": 0.6133,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Comprehensive Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_other_11_23",
+   "type": "MATRIX",
+   "coverage": 0.5916,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Comprehensive Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_other_11_31",
+   "type": "MATRIX",
+   "coverage": 0.555,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Comprehensive Accruals / Sales"
+  },
+  {
+   "id": "oth395_other_12_11",
+   "type": "MATRIX",
+   "coverage": 0.6457,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_other_12_12",
+   "type": "MATRIX",
+   "coverage": 0.6457,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_other_12_13",
+   "type": "MATRIX",
+   "coverage": 0.5682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_other_12_21",
+   "type": "MATRIX",
+   "coverage": 0.6116,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_other_12_22",
+   "type": "MATRIX",
+   "coverage": 0.6113,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Operating Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_other_12_23",
+   "type": "MATRIX",
+   "coverage": 0.5897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_other_12_31",
+   "type": "MATRIX",
+   "coverage": 0.5539,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Operating Accruals / Sales"
+  },
+  {
+   "id": "oth395_other_13_11",
+   "type": "MATRIX",
+   "coverage": 0.6455,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_other_13_12",
+   "type": "MATRIX",
+   "coverage": 0.6455,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_other_13_13",
+   "type": "MATRIX",
+   "coverage": 0.568,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Financial Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_other_13_21",
+   "type": "MATRIX",
+   "coverage": 0.6115,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Financial Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_other_13_22",
+   "type": "MATRIX",
+   "coverage": 0.6112,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Financial Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_other_13_23",
+   "type": "MATRIX",
+   "coverage": 0.5897,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Financial Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_other_13_31",
+   "type": "MATRIX",
+   "coverage": 0.5538,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Accruals / Sales"
+  },
+  {
+   "id": "oth395_other_14_11",
+   "type": "MATRIX",
+   "coverage": 0.6037,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Working Capital Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_other_14_12",
+   "type": "MATRIX",
+   "coverage": 0.6036,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Working Capital Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_other_14_13",
+   "type": "MATRIX",
+   "coverage": 0.5339,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Working Capital Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_other_14_21",
+   "type": "MATRIX",
+   "coverage": 0.6037,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Working Capital Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_other_14_22",
+   "type": "MATRIX",
+   "coverage": 0.6037,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Working Capital Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_other_14_23",
+   "type": "MATRIX",
+   "coverage": 0.5824,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Working Capital Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_other_14_31",
+   "type": "MATRIX",
+   "coverage": 0.52,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Working Capital Accruals / Sales"
+  },
+  {
+   "id": "oth395_other_15_11",
+   "type": "MATRIX",
+   "coverage": 0.6035,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term Operating Accruals / Total Assets"
+  },
+  {
+   "id": "oth395_other_15_12",
+   "type": "MATRIX",
+   "coverage": 0.6035,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term Operating Accruals / Time Series Average Total Assets 1"
+  },
+  {
+   "id": "oth395_other_15_13",
+   "type": "MATRIX",
+   "coverage": 0.5338,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Long-term Operating Accruals / Time Series Average Total Assets 2"
+  },
+  {
+   "id": "oth395_other_15_21",
+   "type": "MATRIX",
+   "coverage": 0.6035,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term Operating Accruals / Current Assets"
+  },
+  {
+   "id": "oth395_other_15_22",
+   "type": "MATRIX",
+   "coverage": 0.6035,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term Operating Accruals / Time Series Average Current Assets 1"
+  },
+  {
+   "id": "oth395_other_15_23",
+   "type": "MATRIX",
+   "coverage": 0.5822,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term Operating Accruals / Time Series Average Current Assets 2"
+  },
+  {
+   "id": "oth395_other_15_31",
+   "type": "MATRIX",
+   "coverage": 0.52,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term Operating Accruals / Sales"
+  },
+  {
+   "id": "oth395_other_d1_asset_change",
+   "type": "MATRIX",
+   "coverage": 0.6702,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of the latest asset over asset_ltm"
+  }
+ ],
+ "count": 368,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 368,
+ "complete": true,
+ "pages_fetched": 8
+}

@@ -19,6 +19,48 @@ agent_created: true
 
 ---
 
+## ★ 发批前必过「字段形态 → 构型」闸（通用，全 region；2026-11-09 KOR 事故后新增）
+
+**这是「先判字段形态再配构型」的强制落地。** KOR 实测代价：用自造单一模板
+`group_rank(ts_backfill(vec_avg(X),W),sector)` + 只测 RAM 去判死 news76/other567 等，
+全部违反探针 SOP（无字段形态证据 / 未配双构型 / 族多样性不足）⇒ 那些「判死」按 SOP 无效，
+可能把活机制误判死、低估区域上限。**探针批次需要「形态→构型」前置闸，不是裸水平扫描。**
+
+**闸门工具**：`tools/gates/morphology_gate.py`（核心闸全 region 通用；区域差异经配置注入，不写死区域）。
+
+```bash
+# 派发前必跑（exit 0 才可发批；exit 1 有 FAIL 须先修；exit 2 输入错）
+$WQ_PY tools/gates/morphology_gate.py --spec <probes.json> --region <R>
+# 判死前必跑（核验族/算子多样性是否够格判死）
+$WQ_PY tools/gates/morphology_gate.py --region <R> --verdict <dataset_id>
+```
+
+**五道闸**：
+
+| 闸 | 判据 | 不过的后果 |
+|---|---|---|
+| M1 形态证据前置 | 每字段须带 field_meta(type/coverage/non_zero_rate/distribution_shape) | 无画像不许派发 |
+| M2 形态↔构型特征匹配 | 表达式须含该形态要求的构型特征（通用特征→算子集） | 裸 rank 扫稀疏字段=读数失真 |
+| M3 VECTOR 聚合多样性 | 同批 VECTOR 聚合算子 ≥2 种（禁只用 vec_avg） | 单聚合判不了 VECTOR |
+| M4 族多样性 | 批次覆盖 ≥2 构型族（template_families.json 签名识别） | 单族判死无效 |
+| M5 区域破墙要素 | 读 tracking/<R>/reference/<R>_morphology_gate.json 的 wall_features（批次级覆盖） | 无配置 region 自动跳过（不写死区域） |
+
+**probes.json 每条**：`{"field_id","expression","field_meta":{"type","coverage","non_zero_rate","distribution_shape"}}`。
+形态词表：zero_inflated / bounded_spread / ratio_level / return_distribution / flow_level / bounded_ceiling / concentrated / categorical。
+
+**区域配置（差异注入点）**：`tracking/<R>/reference/<R>_morphology_gate.json`，含
+`wall_features`（该区提交墙要求的构型特征）/ `feature_operator_extensions`（扩展算子集）/
+`named_configs`（该区命名构型，如 KOR 的 PV/SH）/ `death_verdict_rules`。
+KOR 已建（CW→hump、investability→trade_when(adv20)）；其它 region 按需建，无则 M5 跳过。
+
+**判死三分法（读数带）**：`|S|<0.8 且两构型都试过`=死；`0.8≤|S|<1.58`=「构型没找对」带，**不许判死**；`|S|≥1.58`=进精修。
+⇒ 判死前必过 `--verdict` 闸（族≥2 + 未用算子≥2），否则判死无效。
+
+**纪律**：探针批次**先判形态→配构型→过闸→才发批**；不许裸水平扫描判死。
+单测：`tests/unit/04_gates/test_morphology_gate.py`（18 例，含通用性/判死资格/CLI）。
+
+---
+
 ## 0. 判「这个族已经扫完」之前（★ 比任何发批动作都更前置）
 
 ### 0.0★★ 横向扫全史：这个指标的全史最优在哪

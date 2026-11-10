@@ -1,0 +1,24 @@
+id,type,cov,uc,ac,desc
+earnings_news_mention_count,MATRIX,0.0,7,7,"Number of news items per security and date that mention ""earnings;"" ""earning;"" or ""EPS"" in the text; representing earnings-related news frequency"
+europe_buyback_news_count,MATRIX,0.0,1,1,An integer count of news stories related to corporate share buybacks for European companies. The count is aggregated from news events sourced from the DJ News fâ¦
+live_news_area_identifier,VECTOR,0.0,0,0,Identifier for the geographic area or data center associated with the live news item.
+live_news_display_label,VECTOR,0.0,1,1,Display label or name for the live news item or source.
+live_news_headline_tag,VECTOR,0.0,0,0,Tag indicating the type or status of the live news headline.
+livenews_story_company_count_sl,VECTOR,0.0,0,0,Number of companies or entities mentioned or involved in the story
+livenews_story_full_text_sl,VECTOR,0.0,0,0,Full text content of the news story
+news_category_tag_livenews_all,VECTOR,0.0,0,0,"Integer code for fine-grained classification tag (e.g.; ""M&A""; ""Earnings""); resolved via codebook"
+news_display_name_livenews_all,VECTOR,0.0,0,0,Code indicating message subtype (e.g.; 0-alert; 1-first take; 2-subsequent take; etc.)
+news_geographic_area_livenews_all,VECTOR,0.0,0,0,Code for Data Centre where news was first broadcast (e.g.; 0-NY; 1-LD; 2-LO; 3-HA)
+news_mention_frequency_1_all,MATRIX,0.0,2,3,Number of news articles per security and date within the Europe region; with an additional delay; containing keywords related to sales; earnings; analysts; andâ¦
+news_mention_frequency_alt_livenewsfreq,MATRIX,0.0,3,5,"The count of news articles per security and date containing the keywords ""sale""; ""earning""; ""analyst""; ""sales""; ""earnings""; or ""EPS"" as detected in headline orâ¦"
+news_mention_frequency_pzeng,MATRIX,0.0,3,3,Number of news events or stories related to European securities; counted per security and date in the djnews dataset
+news_mention_frequency_v11_0_0,MATRIX,0.0,3,4,"Daily count of news events associated with a security or entity in the Europe (EUR) region; excluding stories containing the keyword ""insider"""
+news_product_code,VECTOR,0.0,0,0,Code indicating the news product or audience group to which a news item is published.
+news_product_code_all,VECTOR,0.0,1,1,Product code specifying the news product or audience for all news items in the feed.
+news_sales_mention_count,MATRIX,0.0,4,5,Daily count of news articles for European securities that mention sales-related keywords (e.g.; sale; sales) or earnings; aggregated per security per date
+news_sales_mention_count_1,MATRIX,0.0,2,4,Count of Europe news articles per security and date with one-day delay that contain earnings or sales-related keywords (e.g.; earning; earnings; EPS; sale; saleâ¦
+news_sales_mention_count_all,MATRIX,0.0,2,5,"Delayed next-day (D1) count of news stories for European securities containing the keywords ""sale""; ""sales""; or ""earnings"""
+news_story_company_count,VECTOR,0.0,0,0,Number of distinct companies or entities mentioned in the story
+news_story_full_text,VECTOR,0.0,0,0,Full text content of the news story/article
+news_subject_code,VECTOR,0.0,0,0,Code representing the subject or topic of a news item; such as asset class; geography; or industry.
+news_subject_code_all,VECTOR,0.0,0,0,Subject or topic code for all news items; indicating the main theme or category.

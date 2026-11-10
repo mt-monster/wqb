@@ -1,0 +1,128 @@
+{
+ "dataset": "sentiment26",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 19
+ },
+ "field_count": 19,
+ "fetched_at": "2026-11-09T12:45:00",
+ "fields": [
+  {
+   "id": "snt26_avgranking",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 14
+  },
+  {
+   "id": "snt26_dltcc",
+   "type": "VECTOR",
+   "coverage": 1,
+   "alphaCount": 35
+  },
+  {
+   "id": "snt26_kurtosis",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 10
+  },
+  {
+   "id": "snt26_rank",
+   "type": "VECTOR",
+   "coverage": 0.5835,
+   "alphaCount": 35
+  },
+  {
+   "id": "snt26_relpopularity08",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 75
+  },
+  {
+   "id": "snt26_relpopularity1",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 106
+  },
+  {
+   "id": "snt26_skewness",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 15
+  },
+  {
+   "id": "snt26_top10pctranking",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 14
+  },
+  {
+   "id": "snt26_top10pctrankingavg",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 17
+  },
+  {
+   "id": "snt26_top25pctranking",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 23
+  },
+  {
+   "id": "snt26_top25pctrankingavg",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 23
+  },
+  {
+   "id": "snt26_top50pctranking",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 6
+  },
+  {
+   "id": "snt26_top50pctrankingavg",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 21
+  },
+  {
+   "id": "snt26_top75pctranking",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 14
+  },
+  {
+   "id": "snt26_top75pctrankingavg",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 16
+  },
+  {
+   "id": "snt26_topranking",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 30
+  },
+  {
+   "id": "snt26_totalcountrydomains",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 25
+  },
+  {
+   "id": "snt26_totaldomains",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 34
+  },
+  {
+   "id": "snt26_wq_pit",
+   "type": "VECTOR",
+   "coverage": 0.7482,
+   "alphaCount": 4
+  }
+ ]
+}

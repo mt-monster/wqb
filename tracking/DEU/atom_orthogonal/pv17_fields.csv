@@ -1,0 +1,2 @@
+id,type,cov,uc,ac,desc
+sta3_6_sector,GROUP,0.0,8,27,Statistical; point-in-time; categorical industry grouping code for each eligible equity in the EUR region; assigned by the companyGrouping6 module logic

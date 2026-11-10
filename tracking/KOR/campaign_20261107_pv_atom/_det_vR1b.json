@@ -1,0 +1,105 @@
+{
+ "id": "vR1b50pQ",
+ "code": "group_rank(ts_mean(multiply(sign(subtract(divide(open, ts_delay(close,1)),1)), subtract(divide(low, open),1)),22), sector)",
+ "type": "REGULAR",
+ "status": "UNSUBMITTED",
+ "stage": "IS",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "REVERSION_AND_MOMENTUM",
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "simulationMode": "FULL"
+ },
+ "metrics": {
+  "sharpe": 1.16,
+  "fitness": 0.78,
+  "turnover": 0.1596,
+  "returns": 0.0724,
+  "drawdown": 0.0927,
+  "margin": 0.000908,
+  "longCount": 315,
+  "shortCount": 320,
+  "pnl": 7491594,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "sub_universe_sharpe": 1.15,
+  "two_year_sharpe": 1.6,
+  "investability_sharpe": 1.23,
+  "investability_fitness": 0.95
+ },
+ "ra": {
+  "failed_ra_count": 2,
+  "failed_ppa_count": 0,
+  "ra_failed": true,
+  "ppa_failed": false,
+  "ra_failed_checks": [
+   "LOW_SHARPE",
+   "LOW_FITNESS"
+  ],
+  "pyramid_short": "pv"
+ },
+ "checks": {
+  "fail": [
+   {
+    "name": "LOW_SHARPE",
+    "value": 1.16,
+    "limit": 1.58
+   },
+   {
+    "name": "LOW_FITNESS",
+    "value": 0.78,
+    "limit": 1.0
+   }
+  ],
+  "warning": [
+   {
+    "name": "CLUSTER_TEST",
+    "value": 0.88,
+    "limit": 1
+   },
+   {
+    "name": "MATCHES_COMPETITION"
+   },
+   {
+    "name": "MATCHES_THEMES"
+   }
+  ],
+  "pass": [
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+   "LOW_2Y_SHARPE",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "SELF_CORRELATION",
+   "DATA_DIVERSITY",
+   "PROD_CORRELATION",
+   "REGULAR_SUBMISSION"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "KOR/D1/PV",
+    "multiplier": 1.4
+   }
+  ]
+ }
+}

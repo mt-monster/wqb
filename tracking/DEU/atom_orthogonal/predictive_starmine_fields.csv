@@ -1,0 +1,632 @@
+id,type,cov,uc,ac,desc
+actual_last_quarter_earnings_3,MATRIX,0.7779,1,1,Actual earnings reported in the most recently reported quarter
+actual_last_quarter_earnings_7,MATRIX,0.614,1,2,Actual earnings reported in the most recently reported quarter
+actual_last_quarter_ebitda_3,MATRIX,0.7199,0,0,Actual EBITDA reported for the most recent fiscal quarter
+actual_last_quarter_ebitda_7,MATRIX,0.5935,0,0,Actual EBITDA reported for the most recent fiscal quarter
+actual_last_quarter_revenue_3,MATRIX,0.8907,0,0,Actual revenue reported in the most recent fiscal quarter
+actual_last_quarter_revenue_6,MATRIX,0.641,0,0,Actual revenue reported in the most recent fiscal quarter
+actual_last_year_earnings_3,MATRIX,0.9619,2,3,Actual earnings reported for the last fiscal year
+actual_last_year_earnings_6,MATRIX,0.6507,0,0,Actual earnings reported for the last fiscal year
+actual_last_year_ebitda_2,MATRIX,0.9341,2,2,Actual EBITDA reported for the last fiscal year
+actual_last_year_ebitda_7,MATRIX,0.6499,0,0,Actual EBITDA reported for the last fiscal year
+actual_last_year_revenue_2,MATRIX,0.9638,0,0,Actual revenue reported for the most recently completed fiscal year
+actual_last_year_revenue_4,MATRIX,0.6507,1,1,Actual revenue reported for the last fiscal year
+analyst_downgrade_count_14d_2,MATRIX,0.9725,11,13,Number of analyst rating downgrades aggregated over the last 14 days
+analyst_downgrade_count_14d_5,MATRIX,0.6512,0,0,Number of analyst downgrades over the last 14 days
+analyst_downgrade_count_30d_4,MATRIX,0.9725,5,7,Number of analyst downgrades over the last 30 days
+analyst_downgrade_count_30d_5,MATRIX,0.6512,1,1,Number of analyst recommendation downgrades over the last 30 days
+analyst_downgrade_count_60d_3,MATRIX,0.9725,24,49,Number of analyst recommendation downgrades over the last 60 days
+analyst_downgrade_count_60d_4,MATRIX,0.6512,1,2,Number of analyst recommendation downgrades over the last 60 days
+analyst_downgrade_count_7d_4,MATRIX,0.9725,4,5,Number of analyst recommendation downgrades over the last 7 days
+analyst_downgrade_count_7d_7,MATRIX,0.6512,0,0,Number of analyst recommendation downgrades over the last 7 days
+analyst_downgrade_count_90d_3,MATRIX,0.9725,21,33,Number of analyst recommendation downgrades over the last 90 days
+analyst_downgrade_count_90d_6,MATRIX,0.6512,1,1,Number of analyst recommendation downgrades over the last 90 days
+analyst_downward_revision_count_fq1_earnings_14d_4,MATRIX,0.9725,4,5,Number of analysts who revised earnings estimates downward for fiscal quarter 1 over the last 14 days
+analyst_downward_revision_count_fq1_earnings_14d_7,MATRIX,0.6512,0,0,Count of analysts who lowered FQ1 earnings estimates in the last 14 days
+analyst_downward_revision_count_fq1_earnings_30d_4,MATRIX,0.9725,4,8,Number of analysts revising down earnings estimates for fiscal quarter 1; aggregated over the last 30 days
+analyst_downward_revision_count_fq1_earnings_30d_7,MATRIX,0.6512,0,0,Number of analysts who lowered FQ1 earnings estimates over the last 30 days
+analyst_downward_revision_count_fq1_earnings_7d_5,MATRIX,0.9725,1,1,Number of analysts who revised earnings estimates downward for fiscal quarter 1 over the last 7 days
+analyst_downward_revision_count_fq1_earnings_7d_6,MATRIX,0.6512,0,0,Number of analysts revising earnings estimates downward for fiscal quarter 1 (FQ1) over the last 7 days
+analyst_downward_revision_count_fq1_ebitda_14d_4,MATRIX,0.9725,3,3,Number of analysts who revised their FQ1 EBITDA estimates downward over the last 14 days
+analyst_downward_revision_count_fq1_ebitda_14d_7,MATRIX,0.6512,0,0,Number of analysts who lowered their EBITDA estimates for fiscal quarter 1 over the last 14 days
+analyst_downward_revision_count_fq1_ebitda_30d_4,MATRIX,0.9725,2,4,Number of analysts revising downward their EBITDA estimates for fiscal quarter 1 over the last 30 days
+analyst_downward_revision_count_fq1_ebitda_30d_5,MATRIX,0.6512,0,0,Number of analysts revising EBITDA estimates downward for fiscal quarter 1 (FQ1) over the last 30 days
+analyst_downward_revision_count_fq1_revenue_14d_4,MATRIX,0.9725,0,0,Number of analysts revising downward their revenue estimates for fiscal quarter 1; aggregated over the last 14 days
+analyst_downward_revision_count_fq1_revenue_14d_5,MATRIX,0.6512,0,0,Number of analysts revising downward their revenue estimates for fiscal quarter 1; aggregated over the last 14 days
+analyst_downward_revision_count_fq1_revenue_30d_4,MATRIX,0.9725,1,1,Number of analysts revising downward their revenue estimates for fiscal quarter 1 over the last 30 days
+analyst_downward_revision_count_fq1_revenue_30d_7,MATRIX,0.6512,0,0,Number of analysts revising down their revenue estimates for fiscal quarter 1 over the last 30 days
+analyst_downward_revision_count_fq1_revenue_7d_5,MATRIX,0.9725,1,1,Number of analysts revising downward their revenue estimates for fiscal quarter 1 over the last 7 days
+analyst_downward_revision_count_fq1_revenue_7d_6,MATRIX,0.6512,0,0,Number of analysts revising down their revenue estimates for fiscal quarter 1 over the last 7 days
+analyst_downward_revision_count_fq2_earnings_14d_4,MATRIX,0.9725,1,0,Number of analysts revising downward their earnings estimates for Fiscal Quarter 2; aggregated over the last 14 days
+analyst_downward_revision_count_fq2_earnings_14d_6,MATRIX,0.6512,0,0,Number of analysts who revised their fiscal quarter 2 earnings estimates downward over the last 14 days
+analyst_downward_revision_count_fq2_earnings_30d_3,MATRIX,0.9725,2,2,Number of analysts revising downward their earnings estimates for fiscal quarter 2 over the last 30 days
+analyst_downward_revision_count_fq2_earnings_30d_5,MATRIX,0.6512,0,0,Number of analysts who lowered their earnings estimates for fiscal quarter 2 (FQ2) over the last 30 days
+analyst_downward_revision_count_fq2_ebitda_30d_3,MATRIX,0.9725,2,2,Number of analysts revising their EBITDA estimates downward for fiscal quarter 2 over the last 30 days
+analyst_downward_revision_count_fq2_ebitda_30d_5,MATRIX,0.6512,0,0,Number of analysts revising down EBITDA estimates for fiscal quarter 2 over the last 30 days
+analyst_downward_revision_count_fq2_revenue_14d_4,MATRIX,0.9725,0,0,Number of analysts who lowered their FQ2 revenue estimates over the last 14 days
+analyst_downward_revision_count_fq2_revenue_14d_6,MATRIX,0.6512,1,1,Number of analysts who lowered their revenue estimates for fiscal quarter 2 (FQ2) over the last 14 days
+analyst_downward_revision_count_fq2_revenue_30d_3,MATRIX,0.9725,0,0,Number of analysts revising downward their revenue estimates for fiscal quarter 2; aggregated over the last 30 days
+analyst_downward_revision_count_fq2_revenue_30d_6,MATRIX,0.6512,2,2,Number of analysts who lowered their revenue estimates for fiscal quarter 2 over the last 30 days
+analyst_downward_revision_count_fy1_earnings_14d_4,MATRIX,0.9725,35,58,Number of analysts who lowered their FY1 earnings estimates over the last 14 days
+analyst_downward_revision_count_fy1_earnings_14d_6,MATRIX,0.6512,0,0,Number of analysts who lowered their earnings estimates for fiscal year 1 (FY1) over the last 14 days
+analyst_downward_revision_count_fy1_earnings_30d_4,MATRIX,0.9725,3,5,Number of analysts revising earnings estimates downward for fiscal year 1; aggregated over the last 30 days
+analyst_downward_revision_count_fy1_earnings_30d_7,MATRIX,0.6512,1,1,Number of analysts revising down their earnings estimates for fiscal year 1 over the last 30 days
+analyst_downward_revision_count_fy1_earnings_7d_5,MATRIX,0.9725,1,1,Number of analysts revising down earnings estimates for fiscal year 1; aggregated over the last 7 days
+analyst_downward_revision_count_fy1_earnings_7d_7,MATRIX,0.6512,0,0,Number of analysts who lowered their earnings estimates for fiscal year 1 (FY1) over the last 7 days
+analyst_downward_revision_count_fy1_ebitda_14d_3,MATRIX,0.9725,3,3,Number of analysts who lowered their FY1 EBITDA estimates over the last 14 days
+analyst_downward_revision_count_fy1_ebitda_14d_6,MATRIX,0.6512,0,0,Number of analysts revising down their EBITDA estimate for fiscal year 1 over the last 14 days
+analyst_downward_revision_count_fy1_ebitda_30d_3,MATRIX,0.9725,2,2,Number of analysts who revised EBITDA estimates downward for fiscal year 1 over the last 30 days
+analyst_downward_revision_count_fy1_ebitda_30d_5,MATRIX,0.6512,0,0,Number of analysts revising EBITDA estimates downward for fiscal year 1 over the last 30 days
+analyst_downward_revision_count_fy1_ebitda_7d_4,MATRIX,0.9725,0,0,Number of analysts revising down EBITDA estimates for fiscal year 1; aggregated over the last 7 days
+analyst_downward_revision_count_fy1_ebitda_7d_5,MATRIX,0.6512,0,0,Number of analysts revising down their EBITDA estimates for fiscal year 1; aggregated over the last 7 days
+analyst_downward_revision_count_fy1_revenue_14d_4,MATRIX,0.9725,4,4,Number of analysts who revised their fiscal year 1 revenue estimates downward over the last 14 days
+analyst_downward_revision_count_fy1_revenue_14d_7,MATRIX,0.6512,0,0,Number of analysts revising down revenue estimates for fiscal year 1 over the last 14 days
+analyst_downward_revision_count_fy1_revenue_30d_4,MATRIX,0.9725,2,2,Number of analysts revising down revenue estimates for fiscal year 1 over the last 30 days
+analyst_downward_revision_count_fy1_revenue_30d_5,MATRIX,0.6512,0,0,Number of analysts revising down revenue estimates for fiscal year 1 over the last 30 days
+analyst_downward_revision_count_fy1_revenue_7d_5,MATRIX,0.9725,1,1,Number of analysts who lowered their FY1 revenue estimates over the last 7 days
+analyst_downward_revision_count_fy1_revenue_7d_7,MATRIX,0.6512,0,0,Number of analysts who lowered their revenue estimates for fiscal year 1 (FY1) over the last 7 days
+analyst_revisions_score_2,MATRIX,0.9553,5,10,Overall score from the Analyst Revisions Model (ARM)
+analyst_revisions_score_7,MATRIX,0.7012,15,20,Composite score reflecting analyst revisions activity
+analyst_upgrade_count_14d_3,MATRIX,0.9725,0,0,Number of analyst upgrades over the last 14 days
+analyst_upgrade_count_14d_5,MATRIX,0.6512,0,0,Number of analyst upgrades over the last 14 days
+analyst_upgrade_count_30d_4,MATRIX,0.9725,5,6,Number of analyst recommendation upgrades over the last 30 days
+analyst_upgrade_count_30d_6,MATRIX,0.6512,0,0,Number of analyst upgrades over the last 30 days
+analyst_upgrade_count_60d_2,MATRIX,0.9725,16,43,Number of analyst recommendation upgrades over the last 60 days
+analyst_upgrade_count_60d_5,MATRIX,0.6512,1,2,Number of analyst upgrades over the last 60 days
+analyst_upgrade_count_7d_4,MATRIX,0.9725,2,3,Number of analyst recommendation upgrades over the last 7 days
+analyst_upgrade_count_7d_7,MATRIX,0.6512,1,1,Number of analyst recommendation upgrades over the last 7 days
+analyst_upgrade_count_90d_3,MATRIX,0.9725,9,18,Number of analyst upgrades over the last 90 days
+analyst_upgrade_count_90d_7,MATRIX,0.6512,0,0,Number of analyst recommendation upgrades over the last 90 days
+analyst_upward_revision_count_fq1_earnings_14d_5,MATRIX,0.9725,4,5,Number of analysts who raised their FQ1 earnings estimates over the last 14 days
+analyst_upward_revision_count_fq1_earnings_14d_6,MATRIX,0.6512,0,0,Number of analysts revising earnings estimates upward for fiscal quarter 1 (FQ1) over the last 14 days
+analyst_upward_revision_count_fq1_earnings_30d_5,MATRIX,0.9725,4,8,Number of analysts who revised their earnings estimates upward for fiscal quarter 1 over the last 30 days
+analyst_upward_revision_count_fq1_earnings_30d_7,MATRIX,0.6512,1,1,Number of analysts revising earnings estimates upward for fiscal quarter 1 (FQ1) over the last 30 days
+analyst_upward_revision_count_fq1_ebitda_14d_4,MATRIX,0.9725,3,3,Number of analysts revising EBITDA estimates upward for fiscal quarter 1; aggregated over the last 14 days
+analyst_upward_revision_count_fq1_ebitda_14d_6,MATRIX,0.6512,0,0,Number of analysts who raised their EBITDA estimates for fiscal quarter 1 (FQ1) over the last 14 days
+analyst_upward_revision_count_fq1_ebitda_30d,MATRIX,0.9725,4,7,Number of analysts who raised their FQ1 EBITDA estimates over the last 30 days
+analyst_upward_revision_count_fq1_ebitda_30d_6,MATRIX,0.6512,0,0,Number of analysts revising up EBITDA estimates for fiscal quarter 1; aggregated over the last 30 days
+analyst_upward_revision_count_fq1_revenue_14d_5,MATRIX,0.9725,0,0,Number of analysts revising revenue estimates upward for fiscal quarter 1 over the last 14 days
+analyst_upward_revision_count_fq1_revenue_14d_6,MATRIX,0.6512,0,0,Number of analysts who raised their revenue estimates for fiscal quarter 1 over the last 14 days
+analyst_upward_revision_count_fq1_revenue_30d,MATRIX,0.9725,2,2,Number of analysts revising up revenue estimates for fiscal quarter 1; aggregated over the last 30 days
+analyst_upward_revision_count_fq1_revenue_30d_6,MATRIX,0.6512,0,0,Number of analysts revising revenue estimates upward for fiscal quarter 1 (FQ1) over the last 30 days
+analyst_upward_revision_count_fq1_revenue_7d_5,MATRIX,0.9725,1,1,Number of analysts revising up revenue estimate for fiscal quarter 1 over the last 7 days
+analyst_upward_revision_count_fq1_revenue_7d_6,MATRIX,0.6512,0,0,Number of analysts who raised their revenue estimates for fiscal quarter 1 over the last 7 days
+analyst_upward_revision_count_fq2_earnings_14d_3,MATRIX,0.9725,1,0,Number of analysts who raised their FQ2 earnings estimates over the last 14 days
+analyst_upward_revision_count_fq2_earnings_14d_7,MATRIX,0.6512,0,0,Number of analysts revising earnings estimates upward for fiscal quarter 2 (FQ2) over the last 14 days
+analyst_upward_revision_count_fq2_earnings_30d_4,MATRIX,0.9725,1,1,Number of analysts who raised their FQ2 earnings estimates over the last 30 days
+analyst_upward_revision_count_fq2_earnings_30d_5,MATRIX,0.6512,0,0,Number of analysts who revised their fiscal quarter 2 earnings estimates upward over the last 30 days
+analyst_upward_revision_count_fq2_ebitda_30d_4,MATRIX,0.9725,1,0,Number of analysts revising up EBITDA estimates for fiscal quarter 2; aggregated over the last 30 days
+analyst_upward_revision_count_fq2_ebitda_30d_6,MATRIX,0.6512,0,0,Number of analysts who increased their EBITDA estimates for fiscal quarter 2 over the last 30 days
+analyst_upward_revision_count_fq2_revenue_14d,MATRIX,0.9725,0,0,Number of analysts revising revenue estimates upwards for fiscal quarter 2; aggregated over the last 14 days
+analyst_upward_revision_count_fq2_revenue_14d_5,MATRIX,0.6512,0,0,Number of analysts revising revenue estimates upward for fiscal quarter 2 (FQ2) over the last 14 days
+analyst_upward_revision_count_fq2_revenue_30d_3,MATRIX,0.9725,0,0,Number of analysts revising revenue estimates upward for fiscal quarter 2 over the last 30 days
+analyst_upward_revision_count_fq2_revenue_30d_6,MATRIX,0.6512,0,0,Number of analysts who raised their revenue estimates for fiscal quarter 2 (FQ2) over the last 30 days
+analyst_upward_revision_count_fy1_earnings_14d_4,MATRIX,0.9725,19,37,Number of analysts revising earnings estimates upwards for Fiscal Year 1; aggregated over the last 14 days
+analyst_upward_revision_count_fy1_earnings_14d_7,MATRIX,0.6512,1,3,Number of analysts revising earnings estimates upward for fiscal year 1 (FY1) over the last 14 days
+analyst_upward_revision_count_fy1_earnings_30d_5,MATRIX,0.9725,4,6,Number of analysts who raised their FY1 earnings estimates over the last 30 days
+analyst_upward_revision_count_fy1_earnings_30d_6,MATRIX,0.6512,1,1,Number of analysts revising earnings estimates upward for fiscal year 1 (FY1) over the last 30 days
+analyst_upward_revision_count_fy1_earnings_7d,MATRIX,0.9725,1,1,Number of analysts revising up earnings estimates for fiscal year 1; aggregated over the last 7 days
+analyst_upward_revision_count_fy1_earnings_7d_7,MATRIX,0.6512,1,1,Number of analysts who increased their earnings estimates for fiscal year 1 over the last 7 days
+analyst_upward_revision_count_fy1_ebitda_14d_4,MATRIX,0.9725,1,0,Number of analysts revising up EBITDA estimate for fiscal year 1 over the last 14 days
+analyst_upward_revision_count_fy1_ebitda_14d_5,MATRIX,0.6512,1,1,Number of analysts revising EBITDA estimates upward for fiscal year 1 (FY1) over the last 14 days
+analyst_upward_revision_count_fy1_ebitda_30d,MATRIX,0.9725,2,2,Number of analysts revising up EBITDA estimate for fiscal year 1 over the last 30 days
+analyst_upward_revision_count_fy1_ebitda_30d_6,MATRIX,0.6512,2,2,Number of analysts who raised their EBITDA estimates for fiscal year 1 over the last 30 days
+analyst_upward_revision_count_fy1_ebitda_7d_4,MATRIX,0.9725,2,2,Number of analysts revising EBITDA estimates upward for fiscal year 1 over the last 7 days
+analyst_upward_revision_count_fy1_ebitda_7d_6,MATRIX,0.6512,0,0,Number of analysts who raised their EBITDA estimates for fiscal year 1 (FY1) over the last 7 days
+analyst_upward_revision_count_fy1_revenue_14d_4,MATRIX,0.9725,0,0,Number of analysts who raised their FY1 revenue estimates over the last 14 days
+analyst_upward_revision_count_fy1_revenue_14d_7,MATRIX,0.6512,1,1,Number of analysts who increased their revenue estimates for fiscal year 1 over the last 14 days
+analyst_upward_revision_count_fy1_revenue_30d_4,MATRIX,0.9725,2,2,Number of analysts revising revenue estimates upward for fiscal year 1 over the last 30 days
+analyst_upward_revision_count_fy1_revenue_30d_6,MATRIX,0.6512,0,0,Number of analysts revising up their revenue estimates for fiscal year 1 over the last 30 days
+analyst_upward_revision_count_fy1_revenue_7d_4,MATRIX,0.9725,2,2,Number of analysts revising revenue estimates upwards for fiscal year 1; aggregated over the last 7 days
+analyst_upward_revision_count_fy1_revenue_7d_6,MATRIX,0.6512,0,0,Number of analysts revising up their revenue estimates for fiscal year 1; aggregated over the last 7 days
+analyst_upward_revision_count_fy2_earnings_14d_5,MATRIX,0.9725,2,2,Number of analysts who revised earnings estimates upward for fiscal year 2 over the last 14 days
+analyst_upward_revision_count_fy2_earnings_14d_7,MATRIX,0.6512,0,0,Number of analysts who revised earnings estimates upward for fiscal year 2 (FY2) over the last 14 days
+analyst_upward_revision_count_fy2_earnings_30d_4,MATRIX,0.9725,0,0,Number of analysts who revised their earnings estimates upward for fiscal year 2 (FY2) over the last 30 days
+analyst_upward_revision_count_fy2_earnings_30d_6,MATRIX,0.6512,0,0,Number of analysts revising up their earnings estimates for fiscal year 2 over the last 30 days
+analyst_upward_revision_count_fy2_earnings_7d_4,MATRIX,0.9725,0,0,Number of analysts revising earnings estimates upward for fiscal year 2 over the last 7 days
+analyst_upward_revision_count_fy2_earnings_7d_5,MATRIX,0.6512,1,1,Number of analysts revising up their earnings estimates for fiscal year 2; aggregated over the last 7 days
+analyst_upward_revision_count_fy2_ebitda_14d_4,MATRIX,0.9725,1,1,Number of analysts revising EBITDA estimates upward for fiscal year 2 over the last 14 days
+analyst_upward_revision_count_fy2_ebitda_14d_6,MATRIX,0.6512,1,1,Number of analysts revising EBITDA estimates upward for fiscal year 2 (FY2) over the last 14 days
+analyst_upward_revision_count_fy2_ebitda_30d_4,MATRIX,0.9725,0,0,Number of analysts who revised their EBITDA estimates upward for fiscal year 2 over the last 30 days
+analyst_upward_revision_count_fy2_ebitda_30d_7,MATRIX,0.6512,0,0,Number of analysts who raised their EBITDA estimates for fiscal year 2 over the last 30 days
+analyst_upward_revision_count_fy2_ebitda_7d_4,MATRIX,0.9725,4,4,Number of analysts revising EBITDA estimates upward for fiscal year 2 over the last 7 days
+analyst_upward_revision_count_fy2_ebitda_7d_5,MATRIX,0.6512,1,1,Number of analysts revising up EBITDA estimates for fiscal year 2 over the last 7 days
+analyst_upward_revision_count_fy2_revenue_14d,MATRIX,0.9725,0,0,Number of analysts who raised their FY2 revenue estimates over the last 14 days
+analyst_upward_revision_count_fy2_revenue_14d_7,MATRIX,0.6512,2,2,Number of analysts revising up revenue estimates for fiscal year 2 over the last 14 days
+analyst_upward_revision_count_fy2_revenue_30d,MATRIX,0.9725,0,0,Number of analysts revising up revenue estimates for fiscal year 2; aggregated over the last 30 days
+analyst_upward_revision_count_fy2_revenue_30d_6,MATRIX,0.6512,1,1,Number of analysts who increased their revenue estimates for fiscal year 2 over the last 30 days
+analyst_upward_revision_count_fy2_revenue_7d_4,MATRIX,0.9725,1,0,Number of analysts revising revenue estimates upwards for fiscal year 2; aggregated over the last 7 days
+analyst_upward_revision_count_fy2_revenue_7d_5,MATRIX,0.6512,0,0,Number of analysts revising up their revenue estimates for fiscal year 2; aggregated over the last 7 days
+arm_country_rank_score_3,MATRIX,0.9708,2,2,Analyst Revisions Model country rank represented as a floating-point value
+arm_country_rank_score_7,MATRIX,0.6507,6,8,Analyst Revisions Model rank at the country level represented as a floating-point value
+arm_global_rank_score,MATRIX,0.9553,0,0,Analyst Revisions Model global percentile rank expressed as a floating-point value
+arm_global_rank_score_3,MATRIX,0.7012,10,16,Analyst Revisions Model global rank as a floating-point value
+arm_new_activity_flag_2,MATRIX,0.9725,2,2,Flag indicating new activity detected by the Analyst Revisions Model (ARM)
+arm_new_activity_flag_6,MATRIX,0.6513,1,1,Flag indicating new activity detected by the Analyst Revisions Model
+arm_preferred_earnings_component_score,MATRIX,0.9553,1,1,Preferred earnings revisions component score in the Analyst Revisions Model; expressed as a floating point value
+arm_preferred_earnings_component_score_6,MATRIX,0.7012,3,3,Preferred earnings component of the Analyst Revisions Model expressed as a floating-point value
+arm_recommendations_component_score_3,MATRIX,0.9535,0,0,Floating-point component score for analyst recommendations within the Analyst Revisions Model (ARM)
+arm_recommendations_component_score_6,MATRIX,0.701,3,3,Floating-point score for the analyst recommendations component within the Analyst Revisions Model (ARM)
+arm_region_rank_decimal_2,MATRIX,0.9708,3,3,Decimal regional rank in the Analyst Revisions Model
+arm_region_rank_decimal_6,MATRIX,0.6507,2,4,Analyst Revisions Model regional rank expressed as a decimal
+arm_revenue_component_score_3,MATRIX,0.9546,0,0,Revenue component of the Analyst Revisions Model expressed as a float
+arm_revenue_component_score_4,MATRIX,0.7012,1,1,Analyst Revisions Model (ARM) revenue component score represented as a floating-point value
+arm_score_5pt_scale_2,MATRIX,0.9553,3,4,Analyst Revisions Model (ARM) score representing 5-day change
+arm_score_5pt_scale_7,MATRIX,0.7012,1,1,Analyst Revisions Model five-day change score
+arm_score_change_1d_2,MATRIX,0.9708,0,0,Change in Analyst Revisions Model (ARM) score over the last 1 day
+arm_score_change_1d_3,MATRIX,0.6507,0,0,Change in Analyst Revisions Model score over the last 1 day
+arm_score_change_30d_4,MATRIX,0.9703,2,2,Change in the Analyst Revisions Model (ARM) score over the last 30 days
+arm_score_change_30d_6,MATRIX,0.6505,2,2,Change in Analyst Revisions Model score over the last 30 days
+arm_score_change_3d_2,MATRIX,0.6507,1,1,Change in the Analyst Revisions Model (ARM) score over the last 3 days
+arm_score_change_3d_21,MATRIX,0.9707,0,0,Change in Analyst Revisions Model (ARM) score over the last 3 days
+arm_score_change_60d_3,MATRIX,0.9698,1,2,Change in Analyst Revisions Model score over the last 60 days
+arm_score_change_60d_7,MATRIX,0.6505,0,0,Change in the Analyst Revisions Model (ARM) score over the last 60 days
+arm_score_change_7d_3,MATRIX,0.9707,2,2,Change in Analyst Revisions Model (ARM) score over the last 7 days
+arm_score_change_7d_6,MATRIX,0.6506,1,1,Change in the Analyst Revisions Model (ARM) score over the last 7 days
+arm_score_change_90d_3,MATRIX,0.9686,2,5,Change in the Analyst Revisions Model (ARM) score over the last 90 days
+arm_score_change_90d_4,MATRIX,0.6504,0,0,Change in Analyst Revisions Model score over the last 90 days
+arm_secondary_earnings_component_score_3,MATRIX,0.9375,0,0,Secondary earnings component in the Analyst Revisions Model (floating point value)
+arm_secondary_earnings_component_score_7,MATRIX,0.7005,10,13,Secondary earnings component value in the Analyst Revisions Model (float)
+cagr_base_year_projection,MATRIX,0.9118,0,0,Base year used for the CAGR calculations in the intrinsic value model
+days_since_last_report_3,MATRIX,0.9725,2,2,Number of days since the last analyst report
+days_since_last_report_7,MATRIX,0.6513,1,1,Number of days since the last report was issued
+ep_yield_pct_smest_f12m,MATRIX,0.9667,3,3,Earnings yield percentage based on SmartEstimate for the next 12 months (F12M)
+ep_yield_pct_smest_f12m_6,MATRIX,0.6503,0,0,Earnings yield percentage based on SmartEstimate for the next 12 months
+ep_yield_pct_smest_fy1_3,MATRIX,0.9658,5,8,Earnings yield percentage based on the SmartEstimate for FY1
+ep_yield_pct_smest_fy1_6,MATRIX,0.6503,0,0,Earnings yield percentage based on SmartEstimate for fiscal year 1
+ep_yield_pct_smest_fy2_3,MATRIX,0.9658,2,2,Earnings yield percentage based on SmartEstimate for fiscal year 2 (FY2)
+ep_yield_pct_smest_fy2_7,MATRIX,0.6503,0,0,Earnings yield percentage based on SmartEstimate for fiscal year 2 (FY2)
+eq_vr_dlra1_accruals_component,MATRIX,0.7179,1,2,Price to Book (P/B) ratio (relation-value adjusted)
+eq_vr_dlra1_accruals_component_change,MATRIX,0.7111,0,0,Price to Book (P/B) ratio quarter-over-quarter change (level difference); 1 quarter difference (relation-value adjusted)
+eq_vr_dlra1_cashflow_component,MATRIX,0.7128,1,1,Price to Free Cash Flow (P/FCF) ratio (relation-value adjusted)
+eq_vr_dlra1_cashflow_component_change,MATRIX,0.7148,1,1,Free Cash Flow to Enterprise Value (%) (relation-value adjusted)
+eq_vr_dlra1_cashflow_component_change_2,MATRIX,0.7152,3,6,Free Cash Flow Yield (%) (relation-value adjusted)
+eq_vr_dlra1_exclusions_component,MATRIX,0.717,0,0,Price to Sales ratio year-over-year change (%); 1 fiscal year difference (relation-value adjusted)
+eq_vr_dlra1_exclusions_component_change,MATRIX,0.7027,0,0,EV/EBITDA quarter-over-quarter change (%); 1 quarter difference (relation-value adjusted)
+eq_vr_dlra1_operating_efficiency_change,MATRIX,0.7167,0,0,Enterprise Value to EBITDA (EV/EBITDA) ratio (relation-value adjusted)
+eq_vr_dlra1_operating_efficiency_component,MATRIX,0.7178,9,10,Price to Sales (P/S) ratio (relation-value adjusted)
+eq_vr_dlra1_operating_efficiency_component_2,MATRIX,0.718,1,1,Enterprise Value (EV) (relation-value adjusted)
+eq_vr_dlra1_operating_efficiency_component_change,MATRIX,0.7111,0,0,Price to Book (P/B) ratio quarter-over-quarter change (%); 1 quarter difference (relation-value adjusted)
+eq_vr_dlra1_raw_score,MATRIX,0.7135,1,1,Price to Cash Flow from Operations (P/CFO) ratio (relation-value adjusted)
+eq_vr_dlra1_region_rank,MATRIX,0.717,0,0,Price to Sales (P/S) ratio year-over-year change (level difference); 1 fiscal year difference (relation-value adjusted)
+eq_vr_dlra1_region_rank_change,MATRIX,0.7178,2,2,Enterprise Value to Sales (EV/Sales) ratio (relation-value adjusted)
+eq_vr_dlra1_score,MATRIX,0.7148,31,43,Cash Flow from Operations to Enterprise Value (%) (relation-value adjusted)
+eq_vr_dlra2_accruals_component,MATRIX,0.7179,0,0,Price/Book
+eq_vr_dlra2_accruals_component_change,MATRIX,0.7111,0,0,Price/Book - 1 Quarter Difference
+eq_vr_dlra2_cashflow_component,MATRIX,0.7128,0,0,Price/FCF
+eq_vr_dlra2_cashflow_component_change,MATRIX,0.7152,1,0,FCF Yield (%)
+eq_vr_dlra2_exclusions_component,MATRIX,0.717,0,0,Price/Sales - 1 FY Difference (%)
+eq_vr_dlra2_exclusions_component_change,MATRIX,0.7027,1,1,EV/EBITDA - 1 Quarter Difference (%)
+eq_vr_dlra2_operating_efficiency_change,MATRIX,0.7167,1,1,EV/EBITDA
+eq_vr_dlra2_operating_efficiency_component,MATRIX,0.718,1,2,Enterprise Value (EV)
+eq_vr_dlra2_raw_score,MATRIX,0.7135,0,0,Price/CFO
+eq_vr_dlra2_region_rank,MATRIX,0.717,0,0,Price/Sales - 1 FY Difference
+eq_vr_dlra2_region_rank_change,MATRIX,0.7148,1,0,FCF/EV (%)
+eq_vr_dlra2_score,MATRIX,0.7148,6,11,CFO/EV (%)
+eq_vr_dlra2_v16,MATRIX,0.7178,0,0,EV/Sales
+eq_vr_dlra2_v7,MATRIX,0.7111,0,0,Price/Book - 1 Quarter Difference (%)
+eq_vr_dlra2_v8,MATRIX,0.7178,1,0,Price/Sales
+eq_vr_dlra3_new_region_rank,MATRIX,0.7178,0,0,Percentile ranking of the combined earnings quality and valuation score relative to all companies in the same region.
+eq_vr_dlra3_new_sector_diff,MATRIX,0.7104,0,0,Difference between a company's combined earnings quality and valuation score and the sector median in the region.
+eq_vr_dlra3_new_sector_median,MATRIX,0.7009,0,0,Median value of the earnings quality and valuation score within the sector for the current region.
+eq_vr_dlra3_v10,MATRIX,0.7166,1,1,Custom model output or component labeled as v10 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v11,MATRIX,0.7135,0,0,Custom model output or component labeled as v11 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v12,MATRIX,0.7124,0,0,Custom model output or component labeled as v12 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v13,MATRIX,0.7178,0,0,Custom model output or component labeled as v13 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v14,MATRIX,0.716,1,1,Custom model output or component labeled as v14 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v16,MATRIX,0.7175,0,0,Custom model output or component labeled as v16 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v17,MATRIX,0.716,0,0,Custom model output or component labeled as v17 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v18,MATRIX,0.7156,1,2,Custom model output or component labeled as v18 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v19,MATRIX,0.7156,7,11,Custom model output or component labeled as v19 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v7,MATRIX,0.7104,0,0,Custom model output or component labeled as v7 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v8,MATRIX,0.7175,0,0,Custom model output or component labeled as v8 from the third version of the enhanced earnings quality and valuation module.
+eq_vr_dlra3_v9,MATRIX,0.7166,1,3,Custom model output or component labeled as v9 from the third version of the enhanced earnings quality and valuation module.
+forward_10yr_eps_cagr_projection,MATRIX,0.9118,0,0,Forward 10-year EPS compound annual growth rate from SmartGrowth
+forward_5yr_eps_cagr_projection,MATRIX,0.9118,1,1,Compound annual growth rate of EPS from current to year 5 projected by the SmartGrowth model
+forward_pe_mean_f12m_4,MATRIX,0.9555,3,4,Forward price to earnings ratio based on mean estimates for the next 12 months
+forward_pe_mean_f12m_6,MATRIX,0.6505,0,0,Mean forward price-to-earnings ratio based on estimates for the next 12 months
+forward_pe_mean_fy1_3,MATRIX,0.9477,1,3,Forward price-to-earnings ratio based on mean FY1 earnings estimates
+forward_pe_mean_fy1_5,MATRIX,0.6503,0,0,Mean forward price-to-earnings ratio based on fiscal year 1 (FY1) estimates
+forward_pe_mean_fy2_3,MATRIX,0.9582,1,1,Mean forward price-to-earnings ratio estimate for fiscal year 2
+forward_pe_mean_fy2_7,MATRIX,0.6506,0,0,Forward price-to-earnings ratio using mean analyst estimates for fiscal year 2
+forward_pe_smest_f12m_4,MATRIX,0.9515,5,7,Forward price to earnings ratio based on SmartEstimate for the next 12 months
+forward_pe_smest_f12m_6,MATRIX,0.6501,0,0,Forward price-to-earnings ratio based on SmartEstimate for the next 12 months (F12M)
+forward_pe_smest_fy1_3,MATRIX,0.9417,1,2,Forward price-to-earnings ratio based on the StarMine SmartEstimate for FY1
+forward_pe_smest_fy1_5,MATRIX,0.6498,1,1,Forward price-to-earnings ratio based on SmartEstimate for fiscal year 1
+forward_pe_smest_fy2,MATRIX,0.9533,0,0,Forward price-to-earnings ratio based on SmartEstimate for fiscal year 2 (FY2)
+forward_pe_smest_fy2_7,MATRIX,0.6501,2,2,Forward price-to-earnings ratio based on SmartEstimate for fiscal year 2
+intrinsic_valuation_discount_rate,MATRIX,0.9351,0,0,Discount rate used in the intrinsic valuation model
+intrinsic_value_projection_currency_3,MATRIX,0.9118,0,0,The intrinsic value calculated in a specified projection currency
+intrinsic_value_projection_currency_4,MATRIX,0.9118,0,0,Intrinsic value calculated in the specified projection currency
+iv_cagr_base_year_3,MATRIX,0.9118,1,0,Base year used for CAGR calculations in the intrinsic value model
+iv_discount_rate_3,MATRIX,0.9352,0,0,Discount rate used in the valuation model
+iv_forward_10yr_eps_cagr_3,MATRIX,0.9118,0,0,Projected 10-year forward EPS compound annual growth rate from the SmartGrowth model
+iv_forward_5yr_eps_cagr_3,MATRIX,0.9118,3,4,Compound annual growth rate of EPS from current to Year 5 projected by SmartGrowth
+iv_market_implied_10yr_eps_cagr_3,MATRIX,0.9109,0,0,Market-implied compound annual growth rate of EPS over 10 years based on current market price
+iv_market_implied_10yr_eps_cagr_4,MATRIX,0.9109,0,0,Market-implied compound annual growth rate of EPS over 10 years based on current price
+iv_market_implied_5yr_eps_cagr_3,MATRIX,0.9109,1,1,Market-implied compound annual growth rate of EPS over 5 years based on current market price
+iv_projected_dividends_fy10_3,MATRIX,0.9118,0,0,Fiscal year 10 dividends per share estimate (DPS)
+iv_projected_dividends_fy11_3,MATRIX,0.9118,0,0,Fiscal year 11 dividends per share estimate (DPS)
+iv_projected_dividends_fy12_3,MATRIX,0.9118,0,0,Fiscal year 12 dividends per share estimate (DPS)
+iv_projected_dividends_fy13,MATRIX,0.9118,1,1,Fiscal year 13 dividends per share estimate (DPS)
+iv_projected_dividends_fy13_2,MATRIX,0.9118,1,1,Dividends per share (DPS) projection for fiscal year 13
+iv_projected_dividends_fy14,MATRIX,0.9118,0,0,Fiscal year 14 dividends per share estimate (DPS)
+iv_projected_dividends_fy15_3,MATRIX,0.9118,2,2,Fiscal year 15 dividends per share estimate (DPS)
+iv_projected_dividends_fy1_3,MATRIX,0.9461,0,0,Fiscal year 1 dividends per share estimate (DPS)
+iv_projected_dividends_fy2_3,MATRIX,0.9118,0,0,Projected dividends per share (DPS) for fiscal year 2
+iv_projected_dividends_fy3_2,MATRIX,0.9118,0,0,Fiscal year 3 dividends per share estimate (DPS)
+iv_projected_dividends_fy4_3,MATRIX,0.9118,0,0,Fiscal year 4 dividends per share estimate (DPS)
+iv_projected_dividends_fy5_3,MATRIX,0.9118,0,0,Fiscal year 5 dividends per share estimate (DPS)
+iv_projected_dividends_fy5_4,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 5
+iv_projected_dividends_fy6_3,MATRIX,0.9118,0,0,Fiscal year 6 dividends per share estimate (DPS)
+iv_projected_dividends_fy7_2,MATRIX,0.9118,0,0,Fiscal year 7 dividends per share estimate (DPS)
+iv_projected_dividends_fy8_3,MATRIX,0.9118,0,0,Fiscal year 8 dividends per share estimate (DPS)
+iv_projected_dividends_fy8_4,MATRIX,0.9118,1,1,Dividends per share (DPS) projection for fiscal year 8
+iv_projected_dividends_fy9_3,MATRIX,0.9118,0,0,Fiscal year 9 dividends per share estimate (DPS)
+iv_projected_dividends_fy9_4,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 9
+iv_projected_earnings_fy10_3,MATRIX,0.9118,0,0,Adjusted earnings projection for FY10
+iv_projected_earnings_fy11_3,MATRIX,0.9118,2,2,Adjusted earnings projection for FY11
+iv_projected_earnings_fy11_4,MATRIX,0.9118,1,1,Adjusted earnings projection for fiscal year 11 used in the intrinsic value model
+iv_projected_earnings_fy12_3,MATRIX,0.9118,1,1,Adjusted earnings projection for FY12
+iv_projected_earnings_fy12_4,MATRIX,0.9118,0,0,Adjusted EPS projection for fiscal year 12
+iv_projected_earnings_fy13_3,MATRIX,0.9118,2,2,Adjusted earnings per share (EPS) projection for fiscal year 13
+iv_projected_earnings_fy14_3,MATRIX,0.9118,0,0,Projected earnings per share for fiscal year 14 used in the intrinsic value model
+iv_projected_earnings_fy15_4,MATRIX,0.9118,1,2,Projected EPS for fiscal year 15 used in the intrinsic value model
+iv_projected_earnings_fy15_5,MATRIX,0.9118,0,0,Adjusted earnings projection for fiscal year 15 used in the intrinsic value model
+iv_projected_earnings_fy1_3,MATRIX,0.9118,1,1,Adjusted earnings per share (EPS) projection for fiscal year 1
+iv_projected_earnings_fy1_4,MATRIX,0.9118,4,4,Adjusted earnings projection for fiscal year 1 used in the intrinsic value model
+iv_projected_earnings_fy2_3,MATRIX,0.9118,0,0,Adjusted earnings per share (EPS) projection for fiscal year 2
+iv_projected_earnings_fy3_3,MATRIX,0.9118,0,0,Projected earnings per share for fiscal year 3 used in the intrinsic value model
+iv_projected_earnings_fy4_3,MATRIX,0.9118,1,0,Adjusted earnings projection for FY4
+iv_projected_earnings_fy5_2,MATRIX,0.9118,1,1,Adjusted earnings per share (EPS) projection for fiscal year 5
+iv_projected_earnings_fy6_2,MATRIX,0.9118,0,0,Adjusted earnings projection for FY6
+iv_projected_earnings_fy7_3,MATRIX,0.9118,0,0,Projected earnings per share for fiscal year 7 used in the intrinsic value model
+iv_projected_earnings_fy7_4,MATRIX,0.9118,1,1,Adjusted earnings projection for fiscal year 7 used in the intrinsic value model
+iv_projected_earnings_fy8_3,MATRIX,0.9118,0,0,Adjusted earnings per share (EPS) projection for fiscal year 8
+iv_projected_earnings_fy9_3,MATRIX,0.9118,0,0,Projected EPS for fiscal year 9 used in the intrinsic value model
+iv_projected_earnings_fy9_4,MATRIX,0.9118,1,1,Adjusted EPS projection for fiscal year 9
+iv_steady_state_dividend_payout_rate_3,MATRIX,0.9352,1,1,Dividend payout rate at steady state
+iv_steady_state_growth_earnings_3,MATRIX,0.9352,1,2,Growth rate of earnings at steady state
+iv_steady_state_year_dividends_3,MATRIX,0.9352,1,1,Year in which dividends reach steady state in the model
+iv_steady_state_year_dividends_4,MATRIX,0.9351,0,0,Year in which the company reaches steady-state dividends in the projection
+iv_steady_state_year_earnings_3,MATRIX,0.9352,0,0,Year in which earnings growth reaches steady state in the model
+iv_warranted_f12m_pe_3,MATRIX,0.9348,0,0,Warranted forward 12-month price-to-earnings (P/E) ratio
+market_implied_5yr_eps_cagr_dlr1,MATRIX,0.9109,1,2,Market-implied 5-year EPS compound annual growth rate based on current price
+mean_estimate_change_pct_f12m_earnings_14d_4,MATRIX,0.9706,15,25,Percentage change in the mean earnings estimate for the next 12 months (F12M) over the last 14 days
+mean_estimate_change_pct_f12m_earnings_14d_7,MATRIX,0.6506,0,0,Percentage change in the mean earnings estimate for the next 12 months (F12M); aggregated over the last 14 days
+mean_estimate_change_pct_f12m_earnings_30d_5,MATRIX,0.9704,24,35,Percentage change in the mean earnings estimate for the forward 12 months; aggregated over the last 30 days
+mean_estimate_change_pct_f12m_earnings_30d_6,MATRIX,0.6506,0,0,Percentage change in the mean earnings estimate for the next 12 months over the last 30 days
+mean_estimate_change_pct_f12m_earnings_60d_4,MATRIX,0.97,7,11,Percentage change in mean earnings estimate for the next 12 months over the last 60 days
+mean_estimate_change_pct_f12m_earnings_60d_6,MATRIX,0.6505,0,0,Percentage change in mean earnings estimate for the next 12 months; aggregated over the last 60 days
+mean_estimate_change_pct_f12m_earnings_7d_4,MATRIX,0.9706,2,2,Percentage change in mean earnings estimate for the next 12 months (F12M); aggregated over the last 7 days
+mean_estimate_change_pct_f12m_earnings_7d_5,MATRIX,0.6507,0,0,Percentage change in mean earnings estimate for the next 12 months; aggregated over the last 7 days
+mean_estimate_change_pct_f12m_earnings_90d,MATRIX,0.9692,4,4,Percentage change in the mean earnings estimate for the next 12 months (F12M) over the last 90 days
+mean_estimate_change_pct_f12m_earnings_90d_7,MATRIX,0.6505,0,0,Percentage change in the mean earnings estimate for the next 12 months (F12M) over the last 90 days
+mean_estimate_change_pct_f12m_ebitda_14d_4,MATRIX,0.9524,19,25,Percentage change in the mean EBITDA estimate for the forward 12 months; aggregated over the last 14 days
+mean_estimate_change_pct_f12m_ebitda_14d_7,MATRIX,0.6503,0,0,Percentage change in the mean EBITDA estimate for the next 12 months over the last 14 days
+mean_estimate_change_pct_f12m_ebitda_30d_4,MATRIX,0.952,10,12,Percentage change in mean EBITDA estimate over the next 12 months (F12M); aggregated over the last 30 days
+mean_estimate_change_pct_f12m_ebitda_30d_7,MATRIX,0.6502,0,0,Percentage change in the mean EBITDA estimate for the next 12 months over the last 30 days
+mean_estimate_change_pct_f12m_ebitda_60d_4,MATRIX,0.9511,92,155,Percentage change in the mean EBITDA estimate for the next 12 months over the last 60 days
+mean_estimate_change_pct_f12m_ebitda_60d_5,MATRIX,0.6502,2,2,Percentage change in the mean EBITDA estimate for the next 12 months (F12M) over the last 60 days
+mean_estimate_change_pct_f12m_ebitda_7d_4,MATRIX,0.9527,8,9,Percentage change in mean EBITDA estimate over the next 12 months (F12M); aggregated over the last 7 days
+mean_estimate_change_pct_f12m_ebitda_7d_7,MATRIX,0.6503,0,0,Percentage change in the mean EBITDA estimate for the next 12 months (F12M) over the last 7 days
+mean_estimate_change_pct_f12m_ebitda_90d_3,MATRIX,0.9496,26,36,Percentage change in the mean EBITDA estimate for the next 12 months over the last 90 days
+mean_estimate_change_pct_f12m_ebitda_90d_6,MATRIX,0.6501,0,0,Percentage change in the mean EBITDA estimate for the next 12 months (F12M) over the last 90 days
+mean_estimate_change_pct_f12m_revenue_14d,MATRIX,0.9703,0,0,Percentage change in mean revenue estimate for the next 12 months (F12M); aggregated over the last 14 days
+mean_estimate_change_pct_f12m_revenue_14d_7,MATRIX,0.6506,0,0,Percentage change in the mean revenue estimate for the next 12 months over the last 14 days
+mean_estimate_change_pct_f12m_revenue_30d_5,MATRIX,0.9701,4,5,Percentage change in mean revenue estimate for the next 12 months over the last 30 days
+mean_estimate_change_pct_f12m_revenue_30d_6,MATRIX,0.6506,1,1,Percentage change in the mean revenue estimate for the next 12 months (F12M); aggregated over the last 30 days
+mean_estimate_change_pct_f12m_revenue_60d_4,MATRIX,0.9695,8,8,Percentage change in mean revenue estimate for the next 12 months (F12M); aggregated over the last 60 days
+mean_estimate_change_pct_f12m_revenue_60d_7,MATRIX,0.6505,0,0,Percentage change in the mean revenue estimate for the next 12 months (F12M) over the last 60 days
+mean_estimate_change_pct_f12m_revenue_7d_4,MATRIX,0.9704,2,2,Percentage change in the mean revenue estimate for the next 12 months over the last 7 days
+mean_estimate_change_pct_f12m_revenue_7d_6,MATRIX,0.6507,0,0,Percentage change in the mean revenue estimate for the next 12 months (F12M); aggregated over the last 7 days
+mean_estimate_change_pct_f12m_revenue_90d_5,MATRIX,0.9688,4,4,Percentage change in the mean revenue estimate for the forward 12 months; aggregated over the last 90 days
+mean_estimate_change_pct_f12m_revenue_90d_7,MATRIX,0.6505,0,0,Percentage change in the mean revenue estimate for the next 12 months (F12M); aggregated over the last 90 days
+mean_estimate_change_pct_fq1_earnings_14d_5,MATRIX,0.7295,1,1,Percentage change in the mean earnings estimate for fiscal quarter 1 (FQ1) over the last 14 days
+mean_estimate_change_pct_fq1_earnings_14d_6,MATRIX,0.5665,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 (FQ1); aggregated over the last 14 days
+mean_estimate_change_pct_fq1_earnings_30d_5,MATRIX,0.7165,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 over the last 30 days
+mean_estimate_change_pct_fq1_earnings_30d_6,MATRIX,0.5522,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 over the last 30 days
+mean_estimate_change_pct_fq1_earnings_60d_4,MATRIX,0.7057,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 over the last 60 days
+mean_estimate_change_pct_fq1_earnings_60d_6,MATRIX,0.5355,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 (FQ1) over the last 60 days
+mean_estimate_change_pct_fq1_earnings_7d_4,MATRIX,0.7416,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 over the last 7 days
+mean_estimate_change_pct_fq1_earnings_7d_7,MATRIX,0.5766,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1; aggregated over the last 7 days
+mean_estimate_change_pct_fq1_earnings_90d_3,MATRIX,0.6977,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 over the last 90 days
+mean_estimate_change_pct_fq1_earnings_90d_6,MATRIX,0.5233,0,0,Percentage change in the mean earnings estimate for fiscal quarter 1 aggregated over the last 90 days
+mean_estimate_change_pct_fq1_ebitda_14d_4,MATRIX,0.6872,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 1 over the last 14 days
+mean_estimate_change_pct_fq1_ebitda_14d_6,MATRIX,0.5683,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 1 over the last 14 days
+mean_estimate_change_pct_fq1_ebitda_30d,MATRIX,0.6682,0,0,Mean percentage change in EBITDA estimates for Fiscal Quarter 1; aggregated over the last 30 days
+mean_estimate_change_pct_fq1_ebitda_30d_6,MATRIX,0.5511,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 1 over the last 30 days
+mean_estimate_change_pct_fq1_ebitda_60d,MATRIX,0.6488,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 1 over the last 60 days
+mean_estimate_change_pct_fq1_ebitda_60d_5,MATRIX,0.5305,0,0,Percentage change in mean EBITDA estimate for fiscal quarter 1 over the last 60 days
+mean_estimate_change_pct_fq1_ebitda_7d_4,MATRIX,0.7018,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 1; aggregated over the last 7 days
+mean_estimate_change_pct_fq1_ebitda_7d_6,MATRIX,0.5768,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 1 over the last 7 days
+mean_estimate_change_pct_fq1_ebitda_90d_3,MATRIX,0.636,1,1,Percentage change in the mean EBITDA estimate for fiscal quarter 1 over the last 90 days
+mean_estimate_change_pct_fq1_ebitda_90d_6,MATRIX,0.5148,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 1 over the last 90 days
+mean_estimate_change_pct_fq1_revenue_14d,MATRIX,0.7805,0,0,Percentage change in the mean revenue estimate for fiscal quarter 1 over the last 14 days
+mean_estimate_change_pct_fq1_revenue_14d_7,MATRIX,0.6071,0,0,Percentage change in the mean revenue estimate for fiscal quarter 1 over the last 14 days
+mean_estimate_change_pct_fq1_revenue_30d_4,MATRIX,0.7582,0,0,Percentage change in the mean revenue estimate for fiscal quarter 1 over the last 30 days
+mean_estimate_change_pct_fq1_revenue_30d_6,MATRIX,0.593,0,0,Percentage change in the mean revenue estimate for fiscal quarter 1 (FQ1) over the last 30 days
+mean_estimate_change_pct_fq1_revenue_60d_5,MATRIX,0.7391,0,0,Percentage change in mean revenue estimate for fiscal quarter 1 (FQ1); aggregated over the last 60 days
+mean_estimate_change_pct_fq1_revenue_60d_6,MATRIX,0.5731,0,0,Percentage change in mean revenue estimate for fiscal quarter 1 over the last 60 days
+mean_estimate_change_pct_fq1_revenue_7d_4,MATRIX,0.7971,0,0,Percentage change in the mean FQ1 revenue estimate over the last 7 days
+mean_estimate_change_pct_fq1_revenue_7d_6,MATRIX,0.6146,0,0,Percentage change in the mean revenue estimate for fiscal quarter 1 over the last 7 days
+mean_estimate_change_pct_fq1_revenue_90d_3,MATRIX,0.7272,0,0,Mean percentage change in revenue estimates for fiscal quarter 1 over the last 90 days
+mean_estimate_change_pct_fq1_revenue_90d_6,MATRIX,0.5582,0,0,Percentage change in the mean revenue estimate for fiscal quarter 1 over the last 90 days
+mean_estimate_change_pct_fq2_earnings_14d_4,MATRIX,0.6925,0,0,Mean percentage change in earnings estimates for Fiscal Quarter 2; aggregated over the last 14 days
+mean_estimate_change_pct_fq2_earnings_14d_5,MATRIX,0.516,0,0,Percentage change in the mean earnings estimate for fiscal quarter 2 over the last 14 days
+mean_estimate_change_pct_fq2_earnings_30d_5,MATRIX,0.687,0,0,Percentage change in the mean earnings estimate for fiscal quarter 2 over the last 30 days
+mean_estimate_change_pct_fq2_earnings_30d_7,MATRIX,0.5079,0,0,Percentage change in the mean earnings estimate for fiscal quarter 2 (FQ2) over the last 30 days
+mean_estimate_change_pct_fq2_earnings_60d_4,MATRIX,0.6772,0,0,Mean percentage change in earnings estimates for fiscal quarter 2 over the last 60 days
+mean_estimate_change_pct_fq2_earnings_60d_5,MATRIX,0.4962,0,0,Percentage change in the mean analyst earnings estimate for fiscal quarter 2; aggregated over the last 60 days
+mean_estimate_change_pct_fq2_earnings_7d_4,MATRIX,0.6947,0,0,Mean percentage change in earnings estimates for Fiscal Quarter 2; aggregated over the last 7 days
+mean_estimate_change_pct_fq2_earnings_7d_5,MATRIX,0.5193,0,0,Mean percentage change in earnings estimates for fiscal quarter 2 over the last 7 days
+mean_estimate_change_pct_fq2_earnings_90d,MATRIX,0.667,0,0,Mean percentage change in earnings estimates for fiscal quarter 2 over the last 90 days
+mean_estimate_change_pct_fq2_earnings_90d_4,MATRIX,0.4847,0,0,Mean percentage change in earnings estimates for fiscal quarter 2 over the last 90 days
+mean_estimate_change_pct_fq2_ebitda_14d_4,MATRIX,0.6262,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 2; aggregated over the last 14 days
+mean_estimate_change_pct_fq2_ebitda_14d_6,MATRIX,0.5,0,0,Percentage change in the mean EBITDA estimate for fiscal quarter 2 (FQ2) over the last 14 days
+mean_estimate_change_pct_fq2_ebitda_30d_4,MATRIX,0.6182,0,0,Percentage change in the mean EBITDA estimate for fiscal quarter 2 (FQ2) over the last 30 days
+mean_estimate_change_pct_fq2_ebitda_30d_5,MATRIX,0.4903,0,0,Percentage change in mean EBITDA estimate for fiscal quarter 2 over the last 30 days
+mean_estimate_change_pct_fq2_ebitda_60d_4,MATRIX,0.6049,0,0,Mean percentage change in EBITDA estimates for Fiscal Quarter 2; aggregated over the last 60 days
+mean_estimate_change_pct_fq2_ebitda_60d_6,MATRIX,0.4739,0,0,Percent change in the consensus mean FQ2 EBITDA estimate over the last 60 days
+mean_estimate_change_pct_fq2_ebitda_7d_4,MATRIX,0.6292,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 2; aggregated over the last 7 days
+mean_estimate_change_pct_fq2_ebitda_7d_6,MATRIX,0.5036,0,0,Percentage change in the mean EBITDA estimate for fiscal quarter 2 over the last 7 days
+mean_estimate_change_pct_fq2_ebitda_90d_4,MATRIX,0.5903,0,0,Mean percentage change in EBITDA estimates for fiscal quarter 2 over the last 90 days
+mean_estimate_change_pct_fq2_ebitda_90d_5,MATRIX,0.4551,0,0,Percent change in the consensus mean FQ2 EBITDA estimate over the last 90 days
+mean_estimate_change_pct_fq2_revenue_14d_4,MATRIX,0.7155,0,0,Mean percentage change in revenue estimates for fiscal quarter 2; aggregated over the last 14 days
+mean_estimate_change_pct_fq2_revenue_14d_5,MATRIX,0.5455,0,0,Mean percentage change in revenue estimates for fiscal quarter 2 over the last 14 days
+mean_estimate_change_pct_fq2_revenue_30d_4,MATRIX,0.7093,0,0,Mean percentage change in revenue estimates for Fiscal Quarter 2; aggregated over the last 30 days
+mean_estimate_change_pct_fq2_revenue_30d_6,MATRIX,0.5366,0,0,Percentage change in the mean revenue estimate for fiscal quarter 2 (FQ2) over the last 30 days
+mean_estimate_change_pct_fq2_revenue_60d_5,MATRIX,0.6987,0,0,Percentage change in the mean revenue estimate for fiscal quarter 2 over the last 60 days
+mean_estimate_change_pct_fq2_revenue_60d_7,MATRIX,0.5238,0,0,Mean percentage change in revenue estimates for fiscal quarter 2 over the last 60 days
+mean_estimate_change_pct_fq2_revenue_7d_4,MATRIX,0.7183,0,0,Percentage change in mean revenue estimate for fiscal quarter 2 over the last 7 days
+mean_estimate_change_pct_fq2_revenue_7d_6,MATRIX,0.5493,0,0,Percentage change in the mean revenue estimate for fiscal quarter 2 over the last 7 days
+mean_estimate_change_pct_fq2_revenue_90d_4,MATRIX,0.6866,0,0,Mean percentage change in revenue estimates for fiscal quarter 2; aggregated over the last 90 days
+mean_estimate_change_pct_fq2_revenue_90d_5,MATRIX,0.5075,0,0,Mean percentage change in analystsâ revenue estimates for fiscal quarter 2 over the last 90 days
+mean_estimate_change_pct_fy1_earnings_14d_5,MATRIX,0.9709,14,18,Percentage change in the mean earnings estimate for fiscal year 1 over the last 14 days
+mean_estimate_change_pct_fy1_earnings_14d_7,MATRIX,0.6507,0,0,Percent change in the consensus mean FY1 earnings estimate over the last 14 days
+mean_estimate_change_pct_fy1_earnings_30d_4,MATRIX,0.9707,7,9,Percentage change in mean earnings estimate for fiscal year 1 (FY1); aggregated over the last 30 days
+mean_estimate_change_pct_fy1_earnings_30d_6,MATRIX,0.6506,1,1,Percentage change in mean earnings estimate for fiscal year 1 over the last 30 days
+mean_estimate_change_pct_fy1_earnings_60d_4,MATRIX,0.9704,5,6,Percentage change in mean earnings estimate for fiscal year 1 (FY1); aggregated over the last 60 days
+mean_estimate_change_pct_fy1_earnings_60d_7,MATRIX,0.6505,0,0,Percentage change in the mean earnings estimate for fiscal year 1 (FY1) over the last 60 days
+mean_estimate_change_pct_fy1_earnings_7d_4,MATRIX,0.9709,14,20,Percentage change in the mean earnings estimate for fiscal year 1 over the last 7 days
+mean_estimate_change_pct_fy1_earnings_7d_6,MATRIX,0.6507,0,0,Percentage change in the mean earnings estimate for fiscal year 1 over the last 7 days
+mean_estimate_change_pct_fy1_earnings_90d_3,MATRIX,0.9696,24,30,Percentage change in the mean earnings estimate for fiscal year 1 over the last 90 days
+mean_estimate_change_pct_fy1_earnings_90d_6,MATRIX,0.6505,1,2,Percentage change in the mean earnings estimate for fiscal year 1 over the last 90 days
+mean_estimate_change_pct_fy1_ebitda_14d_5,MATRIX,0.9531,17,18,Percentage change in mean EBITDA estimate for fiscal year 1; aggregated over the last 14 days
+mean_estimate_change_pct_fy1_ebitda_14d_7,MATRIX,0.6503,1,1,Percentage change in the mean EBITDA estimate for fiscal year 1 over the last 14 days
+mean_estimate_change_pct_fy1_ebitda_30d_4,MATRIX,0.9527,32,38,Percentage change in the consensus mean FY1 EBITDA estimate over the last 30 days
+mean_estimate_change_pct_fy1_ebitda_30d_6,MATRIX,0.6502,0,0,Percentage change in the mean EBITDA estimate for fiscal year 1 over the last 30 days
+mean_estimate_change_pct_fy1_ebitda_60d,MATRIX,0.952,16,21,Percentage change in the consensus mean FY1 EBITDA estimate over the last 60 days
+mean_estimate_change_pct_fy1_ebitda_60d_6,MATRIX,0.6502,2,3,Percentage change in the mean EBITDA estimate for fiscal year 1 (FY1) over the last 60 days
+mean_estimate_change_pct_fy1_ebitda_7d_4,MATRIX,0.9533,9,11,Percentage change in the consensus mean FY1 EBITDA estimate over the last 7 days
+mean_estimate_change_pct_fy1_ebitda_7d_7,MATRIX,0.6503,0,0,Percentage change in the mean EBITDA estimate for fiscal year 1 (FY1); aggregated over the last 7 days
+mean_estimate_change_pct_fy1_ebitda_90d_3,MATRIX,0.9507,13,16,Percentage change in mean EBITDA estimate for fiscal year 1 (FY1); aggregated over the last 90 days
+mean_estimate_change_pct_fy1_ebitda_90d_4,MATRIX,0.6501,0,0,Percentage change in the mean EBITDA estimate for fiscal year 1; aggregated over the last 90 days
+mean_estimate_change_pct_fy1_revenue_14d_5,MATRIX,0.9708,1,0,Percentage change in the mean revenue estimate for fiscal year 1 over the last 14 days
+mean_estimate_change_pct_fy1_revenue_14d_7,MATRIX,0.6506,0,0,Percentage change in the mean revenue estimate for fiscal year 1 over the last 14 days
+mean_estimate_change_pct_fy1_revenue_30d_5,MATRIX,0.9706,6,7,Percentage change in the mean revenue estimate for fiscal year 1 over the last 30 days
+mean_estimate_change_pct_fy1_revenue_30d_6,MATRIX,0.6506,0,0,Percentage change in the mean revenue estimate for fiscal year 1 (FY1) over the last 30 days
+mean_estimate_change_pct_fy1_revenue_60d_4,MATRIX,0.9703,2,3,Percentage change in the mean revenue estimate for fiscal year 1 over the last 60 days
+mean_estimate_change_pct_fy1_revenue_60d_5,MATRIX,0.6505,1,1,Percentage change in mean revenue estimate for fiscal year 1 over the last 60 days
+mean_estimate_change_pct_fy1_revenue_7d_5,MATRIX,0.9709,2,3,Mean percentage change in revenue estimate for fiscal year 1; aggregated over the last 7 days
+mean_estimate_change_pct_fy1_revenue_7d_7,MATRIX,0.6507,1,1,Percentage change in the mean FY1 revenue estimate over the last 7 days
+mean_estimate_change_pct_fy1_revenue_90d_5,MATRIX,0.9695,8,10,Mean percentage change in revenue estimate for fiscal year plus 1; aggregated over the last 90 days
+mean_estimate_change_pct_fy1_revenue_90d_7,MATRIX,0.6505,0,0,Percentage change in the mean revenue estimate for fiscal year 1 over the last 90 days
+mean_estimate_price_ratio_f12m_earnings_5,MATRIX,0.9555,1,1,Mean estimated price-to-earnings ratio over the next 12 months
+mean_estimate_price_ratio_f12m_earnings_6,MATRIX,0.6505,0,0,Mean estimated price-to-earnings ratio for the next 12 months (forward 12M)
+mean_estimate_price_ratio_f12m_ebitda_4,MATRIX,0.9455,0,0,Mean estimated price to EBITDA ratio for the next 12 months (F12M)
+mean_estimate_price_ratio_f12m_ebitda_6,MATRIX,0.6502,0,0,Mean estimated price-to-EBITDA ratio for the next 12 months (forward 12 months)
+mean_estimate_price_ratio_f12m_revenue_5,MATRIX,0.9706,1,0,Mean estimated price to revenue ratio for the next 12 months (F12M)
+mean_estimate_price_ratio_f12m_revenue_6,MATRIX,0.6507,0,0,Mean estimated price-to-revenue ratio for the next 12 months
+mean_estimate_price_ratio_fy1_earnings_4,MATRIX,0.9477,0,0,Mean estimated price to earnings ratio for fiscal year 1 (FY1)
+mean_estimate_price_ratio_fy1_earnings_6,MATRIX,0.6503,0,0,Mean estimated price-to-earnings ratio for fiscal year 1
+mean_estimate_price_ratio_fy1_ebitda_5,MATRIX,0.9413,2,2,Mean estimated price-to-EBITDA ratio for Fiscal Year 1
+mean_estimate_price_ratio_fy1_ebitda_7,MATRIX,0.6502,0,0,Mean estimated price-to-EBITDA ratio for fiscal year 1 (FY1)
+mean_estimate_price_ratio_fy1_revenue_5,MATRIX,0.9704,2,2,Mean estimated price-to-revenue ratio for fiscal year 1 (FY1)
+mean_estimate_price_ratio_fy1_revenue_6,MATRIX,0.6507,0,0,Mean estimated price-to-revenue ratio for fiscal year 1
+mean_estimate_price_ratio_fy2_earnings_4,MATRIX,0.9582,1,1,Mean estimated price to earnings ratio for fiscal year 2 (FY2)
+mean_estimate_price_ratio_fy2_earnings_5,MATRIX,0.6506,0,0,Mean estimated price-to-earnings ratio for fiscal year 2
+mean_estimate_price_ratio_fy2_ebitda_4,MATRIX,0.9458,1,1,Mean estimated price-to-EBITDA ratio for fiscal year 2
+mean_estimate_price_ratio_fy2_ebitda_5,MATRIX,0.6502,0,0,Mean estimated price-to-EBITDA ratio for fiscal year 2
+mean_estimate_price_ratio_fy2_revenue_4,MATRIX,0.9702,1,1,Mean estimated price-to-revenue ratio for fiscal year 2 (FY2)
+mean_estimate_price_ratio_fy2_revenue_6,MATRIX,0.6507,0,0,Mean estimated price-to-revenue ratio for fiscal year 2
+predicted_surprise_f12m_earnings_5,MATRIX,0.9648,10,15,Predicted earnings surprise for the next 12 months
+predicted_surprise_f12m_earnings_7,MATRIX,0.6503,4,4,Predicted earnings surprise over the next 12 months
+predicted_surprise_f12m_ebitda_4,MATRIX,0.9448,36,66,Predicted surprise in EBITDA over the next 12 months (F12M)
+predicted_surprise_f12m_ebitda_6,MATRIX,0.65,1,1,Predicted earnings surprise for EBITDA over the next 12 months (F12M)
+predicted_surprise_f12m_revenue_4,MATRIX,0.9625,2,2,Predicted surprise in revenue over the next 12 months (F12M)
+predicted_surprise_f12m_revenue_6,MATRIX,0.6503,1,1,StarMine predicted revenue surprise over the next 12 months (F12M)
+predicted_surprise_fq1_earnings_5,MATRIX,0.7538,0,0,Predicted earnings surprise for fiscal quarter 1 (absolute)
+predicted_surprise_fq1_earnings_6,MATRIX,0.5861,0,0,Predicted surprise in earnings for fiscal quarter 1
+predicted_surprise_fq1_ebitda_4,MATRIX,0.7167,0,0,Predicted EBITDA surprise amount for fiscal quarter 1 (FQ1)
+predicted_surprise_fq1_ebitda_6,MATRIX,0.5887,0,0,StarMine predicted EBITDA surprise amount for fiscal quarter 1 (difference between actual and consensus)
+predicted_surprise_fq1_revenue_4,MATRIX,0.819,0,0,Predicted surprise in revenue for Fiscal Quarter 1
+predicted_surprise_fq1_revenue_7,MATRIX,0.6239,0,0,Predicted revenue surprise amount for fiscal quarter 1
+predicted_surprise_fq2_earnings_5,MATRIX,0.6927,0,0,StarMine predicted earnings surprise amount for fiscal quarter 2
+predicted_surprise_fq2_earnings_6,MATRIX,0.5142,0,0,Predicted surprise amount for fiscal quarter 2 earnings
+predicted_surprise_fq2_ebitda_3,MATRIX,0.6275,0,0,StarMine predicted EBITDA surprise amount for fiscal quarter 2
+predicted_surprise_fq2_ebitda_7,MATRIX,0.4991,0,0,Predicted EBITDA surprise amount for fiscal quarter 2
+predicted_surprise_fq2_revenue_3,MATRIX,0.7156,0,0,StarMine predicted revenue surprise amount for fiscal quarter 2
+predicted_surprise_fq2_revenue_5,MATRIX,0.5462,0,0,Predicted revenue surprise amount for fiscal quarter 2
+predicted_surprise_fy1_earnings_4,MATRIX,0.9659,7,10,Predicted earnings surprise for Fiscal Year 1 (absolute)
+predicted_surprise_fy1_earnings_6,MATRIX,0.6503,2,8,Predicted earnings surprise for fiscal year 1 (FY1)
+predicted_surprise_fy1_ebitda_4,MATRIX,0.9469,129,282,Predicted surprise in EBITDA for fiscal year 1
+predicted_surprise_fy1_ebitda_6,MATRIX,0.65,0,0,Predicted EBITDA surprise for fiscal year 1
+predicted_surprise_fy1_revenue_4,MATRIX,0.9637,5,8,Predicted surprise in revenue for fiscal year 1 (FY1)
+predicted_surprise_fy1_revenue_5,MATRIX,0.6504,0,0,Predicted revenue surprise for fiscal year 1
+predicted_surprise_fy2_earnings_4,MATRIX,0.9659,8,12,Predicted earnings surprise for Fiscal Year 2 (absolute)
+predicted_surprise_fy2_earnings_6,MATRIX,0.6503,2,0,Predicted earnings surprise for fiscal year 2 (FY2)
+predicted_surprise_fy2_ebitda_5,MATRIX,0.9468,13,18,Predicted EBITDA surprise for fiscal year 2
+predicted_surprise_fy2_ebitda_7,MATRIX,0.65,0,0,Predicted earnings surprise for EBITDA in fiscal year 2
+predicted_surprise_fy2_revenue_3,MATRIX,0.9639,1,1,Predicted revenue surprise for fiscal year 2
+predicted_surprise_fy2_revenue_6,MATRIX,0.6504,0,0,Predicted revenue surprise for fiscal year 2
+predicted_surprise_pct_f12m_earnings_5,MATRIX,0.9648,33,41,Predicted percentage surprise in net earnings over the forward 12 months
+predicted_surprise_pct_f12m_earnings_6,MATRIX,0.6503,0,0,Predicted percentage surprise in net earnings over the next 12 months (F12M)
+predicted_surprise_pct_f12m_ebitda_5,MATRIX,0.9448,113,200,Predicted percentage earnings surprise for EBITDA over the next 12 months
+predicted_surprise_pct_f12m_ebitda_7,MATRIX,0.65,2,2,Predicted percentage surprise in EBITDA over the next 12 months (F12M)
+predicted_surprise_pct_f12m_revenue_4,MATRIX,0.9625,4,5,Predicted percentage revenue surprise over the next 12 months (F12M)
+predicted_surprise_pct_f12m_revenue_6,MATRIX,0.6503,0,0,Predicted revenue surprise percentage for the next 12 months (F12M)
+predicted_surprise_pct_fq1_earnings,MATRIX,0.7538,1,1,Predicted percentage earnings surprise for net earnings for Fiscal Quarter 1
+predicted_surprise_pct_fq1_earnings_5,MATRIX,0.5861,0,0,Predicted percentage earnings surprise for fiscal quarter 1 (FQ1)
+predicted_surprise_pct_fq1_ebitda_3,MATRIX,0.7167,1,1,Predicted percentage EBITDA surprise for fiscal quarter 1
+predicted_surprise_pct_fq1_ebitda_6,MATRIX,0.5887,0,0,Predicted percentage EBITDA surprise for fiscal quarter 1 (FQ1)
+predicted_surprise_pct_fq1_revenue_4,MATRIX,0.819,0,0,Predicted revenue surprise for fiscal quarter 1 (FQ1); expressed as a percentage
+predicted_surprise_pct_fq1_revenue_6,MATRIX,0.6239,1,1,Predicted percentage revenue surprise for fiscal quarter 1
+predicted_surprise_pct_fq2_earnings_5,MATRIX,0.6927,0,0,StarMine predicted percentage earnings surprise for fiscal quarter 2
+predicted_surprise_pct_fq2_earnings_7,MATRIX,0.5142,0,0,Predicted percentage earnings surprise for fiscal quarter 2 (FQ2)
+predicted_surprise_pct_fq2_ebitda_4,MATRIX,0.6275,0,0,Predicted percentage EBITDA surprise for fiscal quarter 2
+predicted_surprise_pct_fq2_ebitda_6,MATRIX,0.4991,0,0,Predicted percentage EBITDA surprise for fiscal quarter 2 (FQ2)
+predicted_surprise_pct_fq2_revenue_3,MATRIX,0.7156,0,0,Predicted percentage revenue surprise for fiscal quarter 2
+predicted_surprise_pct_fq2_revenue_5,MATRIX,0.5462,0,0,Predicted percentage revenue surprise for fiscal quarter 2
+predicted_surprise_pct_fy1_earnings_5,MATRIX,0.9659,13,15,Predicted percentage earnings surprise for fiscal year 1 (FY1)
+predicted_surprise_pct_fy1_earnings_7,MATRIX,0.6503,0,0,Predicted percentage earnings surprise for fiscal year 1 (FY1)
+predicted_surprise_pct_fy1_ebitda,MATRIX,0.9469,49,73,Predicted percentage earnings surprise for EBITDA in fiscal year 1
+predicted_surprise_pct_fy1_ebitda_5,MATRIX,0.65,0,0,Predicted percentage surprise in EBITDA for fiscal year 1
+predicted_surprise_pct_fy1_revenue_4,MATRIX,0.9637,5,8,Predicted percentage revenue surprise for fiscal year 1
+predicted_surprise_pct_fy1_revenue_7,MATRIX,0.6504,0,0,Predicted percentage surprise in revenue for fiscal year 1 relative to consensus
+predicted_surprise_pct_fy2_earnings_4,MATRIX,0.9659,29,41,Predicted percentage earnings surprise for fiscal year 2 (FY2)
+predicted_surprise_pct_fy2_earnings_6,MATRIX,0.6503,2,2,Predicted percentage earnings surprise for fiscal year 2 (FY2)
+predicted_surprise_pct_fy2_ebitda_4,MATRIX,0.9468,18,27,Predicted EBITDA surprise for fiscal year 2 (FY2); expressed as a percentage
+predicted_surprise_pct_fy2_ebitda_7,MATRIX,0.65,0,0,Predicted percentage EBITDA surprise for fiscal year 2 (FY2)
+predicted_surprise_pct_fy2_revenue_4,MATRIX,0.9639,7,12,Predicted revenue surprise for fiscal year 2 (FY2); expressed as a percentage
+predicted_surprise_pct_fy2_revenue_5,MATRIX,0.6504,0,0,Predicted percentage revenue surprise for fiscal year 2
+price_to_intrinsic_value_industry_rank_3,MATRIX,0.847,1,1,Industry percentile rank (floating-point) of Price to Intrinsic Value
+price_to_intrinsic_value_industry_rank_4,MATRIX,0.8469,0,0,Industry-relative percentile rank (floating-point) of Price to Intrinsic Value
+price_to_intrinsic_value_ratio_2,MATRIX,0.9118,2,3,Price to Intrinsic Value ratio
+price_to_intrinsic_value_ratio_3,MATRIX,0.9118,3,0,Price to Intrinsic Value ratio
+price_to_intrinsic_value_region_rank_3,MATRIX,0.9118,0,0,Price to Intrinsic Value Region Rank as float
+price_to_intrinsic_value_region_rank_4,MATRIX,0.9118,0,0,Region-relative percentile rank (floating-point) of the Price to Intrinsic Value ratio
+price_to_intrinsic_value_sector_rank_2,MATRIX,0.9115,0,0,Percentile rank (floating point) of the price-to-intrinsic-value ratio within the sector
+price_to_intrinsic_value_sector_rank_4,MATRIX,0.9115,1,1,Sector-relative percentile rank (floating-point) of the price to intrinsic value ratio
+projected_dividends_fy10_dlr1,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 10
+projected_dividends_fy11_dlr1,MATRIX,0.9118,1,1,Dividends per share (DPS) projection for fiscal year 11
+projected_dividends_fy12_dlr1,MATRIX,0.9118,1,0,Fiscal year 12 dividends per share estimate (DPS)
+projected_dividends_fy14_3,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 14
+projected_dividends_fy15_3,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 15
+projected_dividends_fy1_3,MATRIX,0.946,0,0,Dividends per share (DPS) projection for fiscal year 1
+projected_dividends_fy2_3,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 2
+projected_dividends_fy3_dlr1,MATRIX,0.9118,1,1,Fiscal year 3 dividends per share estimate (DPS)
+projected_dividends_fy4_3,MATRIX,0.9118,0,0,Fiscal year 4 dividends per share estimate (DPS)
+projected_dividends_fy6_3,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 6
+projected_dividends_fy7_3,MATRIX,0.9118,0,0,Dividends per share (DPS) projection for fiscal year 7
+projected_earnings_fy10_3,MATRIX,0.9118,0,0,Adjusted earnings projection for fiscal year 10 used in the intrinsic value model
+projected_earnings_fy13_3,MATRIX,0.9118,0,0,Adjusted EPS projection for fiscal year 13
+projected_earnings_fy14_dlr1,MATRIX,0.9118,0,0,Adjusted EPS projection for fiscal year 14
+projected_earnings_fy2_dlr1,MATRIX,0.9118,0,0,Adjusted earnings projection for fiscal year 2 used in the intrinsic value model
+projected_earnings_fy3_3,MATRIX,0.9118,0,0,Adjusted earnings projection for fiscal year 3 used in the intrinsic value model
+projected_earnings_fy4_3,MATRIX,0.9118,0,0,Adjusted earnings projection for fiscal year 4 used in the intrinsic value model
+projected_earnings_fy5_3,MATRIX,0.9118,1,1,Adjusted earnings projection for fiscal year 5 used in the intrinsic value model
+projected_earnings_fy6_3,MATRIX,0.9118,0,0,Adjusted earnings projection for fiscal year 6 used in the intrinsic value model
+projected_earnings_fy8_3,MATRIX,0.9118,0,0,Adjusted EPS projection for fiscal year 8
+recommendation_mean_change_14d_2,MATRIX,0.9711,1,1,Mean change in analyst recommendations over the last 14 days
+recommendation_mean_change_14d_5,MATRIX,0.6511,0,0,Mean change in analyst recommendations over the last 14 days
+recommendation_mean_change_30d_5,MATRIX,0.971,3,3,Mean change in analyst recommendations over the last 30 days
+recommendation_mean_change_30d_6,MATRIX,0.6511,0,0,Mean change in analyst recommendations over the last 30 days
+recommendation_mean_change_60d_2,MATRIX,0.9707,2,0,Mean change in analyst recommendations over the last 60 days
+recommendation_mean_change_60d_7,MATRIX,0.651,0,0,Mean change in analyst recommendations over the last 60 days
+recommendation_mean_change_7d_2,MATRIX,0.9712,2,2,Mean change in analyst recommendations over the last 7 days
+recommendation_mean_change_7d_7,MATRIX,0.6512,1,1,Mean change in analyst recommendations over the last 7 days
+recommendation_mean_change_90d_2,MATRIX,0.97,3,8,Mean change in analyst recommendations over the last 90 days
+recommendation_mean_change_90d_6,MATRIX,0.651,1,1,Mean change in analyst recommendations over the last 90 days
+rel_val_buyback_yield_component_score_3,MATRIX,0.9629,3,4,Percentile rank (floating-point) for the buyback yield component in the Relative Valuation model
+rel_val_buyback_yield_component_score_31,MATRIX,0.9629,0,0,Percentile rank (floating-point) for the Buyback Yield component in the Relative Valuation model
+rel_val_dividend_yield_component_score_3,MATRIX,0.9121,0,0,Percentile rank (floating-point) for the Dividend Yield component of the Relative Valuation model
+rel_val_dividend_yield_component_score_31,MATRIX,0.9122,0,0,Percentile rank (floating-point) for Dividend Yield component
+rel_val_ev_ebitda_component_score_3,MATRIX,0.8898,2,3,Percentile rank (floating-point) for the EV/EBITDA component of the Relative Valuation model
+rel_val_ev_ebitda_component_score_31,MATRIX,0.8899,1,1,Percentile rank (floating-point) for EV/EBITDA component
+rel_val_ev_sales_component_score_3,MATRIX,0.8675,0,0,Percentile rank (floating-point) for the EV/Sales component of the Relative Valuation model
+rel_val_ev_sales_component_score_31,MATRIX,0.8675,0,0,Percentile rank (floating-point) for EV/Sales component
+rel_val_global_rank_score_3,MATRIX,0.9669,3,3,Current overall percentile rank (floating-point) in the Relative Valuation model
+rel_val_global_rank_score_31,MATRIX,0.9669,3,3,Current percentile rank (floating-point) in the overall Relative Valuation Model
+rel_val_industry_rank_score_3,MATRIX,0.9632,12,15,Industry-relative percentile rank (floating-point) in the Relative Valuation model
+rel_val_industry_rank_score_31,MATRIX,0.9632,3,3,Industry percentile rank (floating-point) in the Relative Valuation Model
+rel_val_p_book_component_score_3,MATRIX,0.9666,1,1,Percentile rank (floating-point) for the Price-to-Book component of the Relative Valuation model
+rel_val_p_book_component_score_31,MATRIX,0.9666,1,1,Percentile rank (floating point) of the Price-to-Book component in the relative valuation model
+rel_val_p_cf_component_score_3,MATRIX,0.8669,0,0,Percentile rank (floating-point) for the Price-to-Cash-Flow component of the Relative Valuation model
+rel_val_p_cf_component_score_31,MATRIX,0.8669,0,0,Percentile rank (floating-point) for Price/Cash Flow component
+rel_val_pe_component_score_3,MATRIX,0.9651,1,0,Percentile rank (floating-point) for the P/E component in the Relative Valuation model
+rel_val_pe_component_score_31,MATRIX,0.9651,0,0,Percentile rank (floating-point) for P/E component
+rel_val_region_rank_score_4,MATRIX,0.9663,1,1,Region-relative percentile rank (floating-point) in the Relative Valuation model
+rel_val_region_rank_score_41,MATRIX,0.9663,2,2,Current regional percentile rank (floating-point) in the Relative Valuation Model
+rel_val_sector_rank_score_3,MATRIX,0.9662,7,8,Sector-relative percentile rank (floating-point) in the Relative Valuation model
+rel_val_sector_rank_score_31,MATRIX,0.9662,2,2,Sector percentile rank (floating-point) within the Relative Valuation model
+smest_f12m_earnings_5,MATRIX,0.9648,0,0,SmartEstimate of earnings for the next 12 months (F12M)
+smest_f12m_earnings_6,MATRIX,0.6503,1,1,StarMine SmartEstimate of earnings for the next 12 months
+smest_f12m_ebitda_5,MATRIX,0.9448,0,0,SmartEstimate of EBITDA for the next 12 months
+smest_f12m_ebitda_6,MATRIX,0.65,0,0,SmartEstimate of EBITDA for the next 12 months
+smest_f12m_revenue_4,MATRIX,0.9625,0,0,SmartEstimate of revenue for the next 12 months (F12M)
+smest_f12m_revenue_6,MATRIX,0.6503,0,0,SmartEstimate of revenue for the next 12 months (F12M)
+smest_fq1_earnings_5,MATRIX,0.7538,0,0,StarMine SmartEstimate of net earnings for fiscal quarter 1
+smest_fq1_earnings_6,MATRIX,0.5861,0,0,StarMine SmartEstimate of earnings for fiscal quarter 1 (FQ1)
+smest_fq1_ebitda_4,MATRIX,0.7167,1,1,SmartEstimate for EBITDA for fiscal quarter 1
+smest_fq1_ebitda_7,MATRIX,0.5887,0,0,StarMine SmartEstimate of EBITDA for fiscal quarter 1
+smest_fq1_revenue_5,MATRIX,0.819,0,0,SmartEstimate of revenue for the upcoming fiscal quarter 1
+smest_fq1_revenue_7,MATRIX,0.6239,0,0,SmartEstimate of revenue for fiscal quarter 1
+smest_fq2_earnings_4,MATRIX,0.6927,0,0,StarMine SmartEstimate of earnings for fiscal quarter 2
+smest_fq2_earnings_7,MATRIX,0.5142,0,0,StarMine SmartEstimate consensus for fiscal quarter 2 earnings
+smest_fq2_ebitda_3,MATRIX,0.6275,0,0,StarMine SmartEstimate for EBITDA for fiscal quarter 2 (FQ2)
+smest_fq2_ebitda_4,MATRIX,0.4991,0,0,StarMine SmartEstimate for EBITDA for fiscal quarter 2
+smest_fq2_revenue_4,MATRIX,0.7156,0,0,SmartEstimate for revenue in fiscal quarter 2 (FQ2)
+smest_fq2_revenue_7,MATRIX,0.5462,0,0,SmartEstimate of revenue for fiscal quarter 2
+smest_fy1_earnings_4,MATRIX,0.9659,7,8,StarMine SmartEstimate of earnings for FY1
+smest_fy1_earnings_5,MATRIX,0.6503,0,0,SmartEstimate of earnings for fiscal year 1
+smest_fy1_ebitda_4,MATRIX,0.9469,1,1,StarMine SmartEstimate of EBITDA for fiscal year 1
+smest_fy1_ebitda_6,MATRIX,0.65,0,0,SmartEstimate of EBITDA for fiscal year 1
+smest_fy1_revenue,MATRIX,0.9637,0,0,SmartEstimate of revenue for fiscal year 1
+smest_fy1_revenue_4,MATRIX,0.6504,0,0,SmartEstimate of revenue for fiscal year 1
+smest_fy2_earnings_4,MATRIX,0.9659,2,2,StarMine SmartEstimate of earnings for fiscal year 2
+smest_fy2_earnings_7,MATRIX,0.6503,0,0,SmartEstimate of earnings for fiscal year 2
+smest_fy2_ebitda_4,MATRIX,0.9468,0,0,SmartEstimate of EBITDA for fiscal year 2
+smest_fy2_ebitda_7,MATRIX,0.65,0,0,SmartEstimate of EBITDA for fiscal year 2 (FY2)
+smest_fy2_revenue_3,MATRIX,0.9639,0,0,SmartEstimate of revenue for fiscal year 2
+smest_fy2_revenue_5,MATRIX,0.6504,0,0,StarMine SmartEstimate of revenue for fiscal year 2
+smest_growth_next_vs_this_yr_earnings_5,MATRIX,0.9407,2,3,SmartEstimate growth comparing next fiscal yearâs earnings to this fiscal yearâs earnings
+smest_growth_next_vs_this_yr_earnings_6,MATRIX,0.6497,0,0,SmartEstimate growth rate comparing next fiscal yearâs earnings to this yearâs earnings
+smest_growth_next_vs_this_yr_ebitda_5,MATRIX,0.9331,1,1,SmartEstimate growth comparing next year to this year for EBITDA
+smest_growth_next_vs_this_yr_ebitda_6,MATRIX,0.6496,0,0,SmartEstimate projected EBITDA growth from this fiscal year to next fiscal year
+smest_growth_next_vs_this_yr_revenue_4,MATRIX,0.9624,0,0,SmartEstimate growth ratio of revenue for next fiscal year compared to this fiscal year
+smest_growth_next_vs_this_yr_revenue_6,MATRIX,0.6503,1,1,SmartEstimate projected revenue growth from this fiscal year to next fiscal year
+smest_growth_this_vs_last_yr_earnings_2,MATRIX,0.9203,1,5,SmartEstimate growth comparing this year to last year for earnings
+smest_growth_this_vs_last_yr_earnings_6,MATRIX,0.6491,1,1,SmartEstimate growth rate for earnings comparing this year to last year
+smest_growth_this_vs_last_yr_ebitda_4,MATRIX,0.9099,1,1,SmartEstimate growth comparing this yearâs EBITDA to last yearâs EBITDA
+smest_growth_this_vs_last_yr_ebitda_5,MATRIX,0.6485,2,2,SmartEstimate-based growth rate of EBITDA from last year to this year
+smest_growth_this_vs_last_yr_revenue_3,MATRIX,0.9554,3,4,SmartEstimate growth rate of revenue comparing this year to last year
+smest_growth_this_vs_last_yr_revenue_7,MATRIX,0.65,0,0,SmartEstimate growth rate comparing this yearâs revenue to last yearâs revenue
+smest_price_ratio_f12m_earnings_4,MATRIX,0.9515,2,2,SmartEstimate price-to-earnings ratio for the forward 12 months
+smest_price_ratio_f12m_earnings_7,MATRIX,0.6501,0,0,SmartEstimate price-to-earnings ratio for the next 12 months (F12M)
+smest_price_ratio_f12m_ebitda_4,MATRIX,0.94,0,0,Price to EBITDA ratio for the next 12 months based on SmartEstimate
+smest_price_ratio_f12m_ebitda_7,MATRIX,0.6498,0,0,SmartEstimate price-to-EBITDA ratio for the next 12 months (F12M)
+smest_price_ratio_f12m_revenue_5,MATRIX,0.9646,1,0,SmartEstimate price-to-revenue ratio for the next 12 months (F12M)
+smest_price_ratio_f12m_revenue_6,MATRIX,0.6504,0,0,SmartEstimate-based price-to-revenue ratio for the next 12 months
+smest_price_ratio_fy1_earnings_4,MATRIX,0.9417,1,1,SmartEstimate price-to-earnings ratio for fiscal year 1 (FY1)
+smest_price_ratio_fy1_earnings_7,MATRIX,0.6498,0,0,SmartEstimate price-to-earnings ratio for fiscal year 1
+smest_price_ratio_fy1_ebitda_6,MATRIX,0.9347,1,0,SmartEstimate price-to-EBITDA ratio for fiscal year 1 (FY1)
+smest_price_ratio_fy1_ebitda_7,MATRIX,0.6497,0,0,SmartEstimate price-to-EBITDA ratio for fiscal year 1
+smest_price_ratio_fy1_revenue_4,MATRIX,0.9633,1,1,SmartEstimate-based price-to-revenue ratio for fiscal year 1 (FY1)
+smest_price_ratio_fy1_revenue_7,MATRIX,0.6504,0,0,SmartEstimate price-to-revenue ratio for fiscal year 1
+smest_price_ratio_fy2_earnings_4,MATRIX,0.9533,2,2,SmartEstimate-based price-to-earnings ratio for fiscal year 2 (FY2)
+smest_price_ratio_fy2_earnings_7,MATRIX,0.6501,0,0,SmartEstimate price-to-earnings ratio for fiscal year 2
+smest_price_ratio_fy2_ebitda_6,MATRIX,0.9394,1,1,SmartEstimate price-to-EBITDA ratio for fiscal year 2
+smest_price_ratio_fy2_ebitda_7,MATRIX,0.6498,0,0,SmartEstimate price-to-EBITDA ratio for fiscal year 2
+smest_price_ratio_fy2_revenue_3,MATRIX,0.9636,2,4,SmartEstimate price-to-revenue ratio for fiscal year 2 (FY2)
+smest_price_ratio_fy2_revenue_7,MATRIX,0.6503,0,0,SmartEstimate price-to-revenue ratio for fiscal year 2
+steady_state_annual_earnings_projection,MATRIX,0.9351,0,0,Year in which the company reaches steady-state earnings growth in the projection
+steady_state_dividend_payout_ratio,MATRIX,0.9351,0,0,Assumed dividend payout rate at steady state
+steady_state_earnings_growth_rate,MATRIX,0.9351,1,1,Assumed earnings growth rate at steady state
+surprise_pct_last_quarter_earnings_4,MATRIX,0.7564,3,3,Percentage surprise (actual minus estimated) in earnings for the most recent reported quarter
+surprise_pct_last_quarter_earnings_6,MATRIX,0.5901,0,0,Percentage earnings surprise in the most recently reported quarter compared to estimates
+surprise_pct_last_quarter_ebitda_4,MATRIX,0.7062,2,4,Percentage surprise (actual minus estimated) for EBITDA in the most recent reported quarter
+surprise_pct_last_quarter_ebitda_6,MATRIX,0.5799,1,1,Percentage surprise for last quarter EBITDA (actual minus expected)
+surprise_pct_last_quarter_revenue,MATRIX,0.8296,2,3,Percentage surprise in revenue for the last reported quarter compared to consensus
+surprise_pct_last_quarter_revenue_7,MATRIX,0.627,0,0,Actual revenue surprise percentage for the last reported quarter versus consensus
+surprise_pct_last_year_earnings_3,MATRIX,0.9613,2,2,Percentage surprise in earnings for the last fiscal year reported compared to consensus
+surprise_pct_last_year_earnings_6,MATRIX,0.6506,0,0,Percentage surprise in earnings for the last fiscal year relative to consensus
+surprise_pct_last_year_ebitda_2,MATRIX,0.9329,0,0,Percentage surprise in EBITDA for the last fiscal year relative to prior estimates
+surprise_pct_last_year_ebitda_6,MATRIX,0.6498,0,0,Percentage EBITDA surprise in the last fiscal year relative to estimates
+surprise_pct_last_year_revenue_4,MATRIX,0.9629,0,0,Percentage surprise in revenue for the last year actual versus estimated
+surprise_pct_last_year_revenue_6,MATRIX,0.6507,0,0,Percentage surprise in last fiscal yearâs reported revenue versus consensus
+trailing_4_quarter_pe_7,MATRIX,0.5193,0,0,Price-to-earnings ratio based on the trailing four quarters
+trailing_pe_last_4q,MATRIX,0.6786,0,0,Modelâs trailing four quarters price-to-earnings ratio
+trailing_pe_last_fiscal_year_2,MATRIX,0.9256,0,0,Price-to-Earnings ratio for the last fiscal year
+trailing_pe_last_fiscal_year_6,MATRIX,0.6498,0,0,Price-to-earnings ratio for the last completed fiscal year
+warranted_forward_pe_ratio,MATRIX,0.9348,0,0,Warranted forward 12-month price-to-earnings ratio

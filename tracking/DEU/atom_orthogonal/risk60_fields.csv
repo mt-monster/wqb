@@ -1,0 +1,6 @@
+id,type,cov,uc,ac,desc
+lending_fee_bid_rate,VECTOR,0.835,103,145,Composite lending fee (annualized) at which long inventory is lent
+rsk60_crowding,VECTOR,0.835,38,53,Signed daily indicator of shorting activity (positive = increased shorting/crowding; negative = covering/decrowding)
+rsk60_datatime,VECTOR,0.835,9,11,Vendor timestamp in HHMMSS for the snapshot; used to order intraday prints
+rsk60_last,VECTOR,0.835,88,128,Most recent borrow/lend rate observed at the snapshot time
+rsk60_offer,VECTOR,0.835,127,196,Composite borrow fee (annualized) paid by the short seller

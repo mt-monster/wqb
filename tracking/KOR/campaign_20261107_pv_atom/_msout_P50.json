@@ -1,0 +1,22 @@
+﻿{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "1IIy46BT4qda2Xj4nLuTs4",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/1IIy46BT4qda2Xj4nLuTs4",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/1IIy46BT4qda2Xj4nLuTs4",
+ "submitted_expressions": [
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_bid_rate), 22), sector), -1)",
+  "multiply(group_rank(ts_delta(vec_avg(rsk59_bid_rate), 22), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_s3utilization), 22), sector), -1)",
+  "group_rank(ts_mean(vec_avg(rsk59_squeeze_risk), 22), sector)",
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_crowded_score), 22), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_shortinterestpct), 22), sector), -1)",
+  "group_rank(ts_delta(vec_avg(rsk59_shortinterestpct), 22), sector)",
+  "group_rank(ts_mean(vec_avg(rsk59_daystocover30day), 22), sector)",
+  "group_rank(ts_mean(vec_avg(rsk59_short_momentum), 22), sector)",
+  "multiply(group_rank(divide(vec_avg(rsk59_offer_rate), ts_mean(vec_avg(rsk59_offer_rate), 66)), sector), -1)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

@@ -1,0 +1,30 @@
+id,type,cov,uc,ac,desc
+activity_change_aggregated_metric,VECTOR,0.0,0,0,Aggregation of time-series changes in activity proxies including units; tickets; and utilization
+aggregated_lending_contract_count,VECTOR,0.0,0,0,Aggregated count/proxy of borrowing tickets (lending transactions)
+aggregated_loan_rate_cash_collateral,VECTOR,0.0,0,0,Primary aggregated securities-lending borrow rate (annualized)
+aggregated_loan_rate_non_cash_collateral,VECTOR,0.0,0,0,Aggregated secondary or alternative securities-lending borrow rate; monthly
+average_contract_age_aggregated,VECTOR,0.0,0,0,Aggregated average age of loans in days
+cross_sectional_activity_difference_agg,VECTOR,0.0,0,0,Aggregation for current differences between overnight contracts and standard contracts
+cross_sectional_metric_difference_agg,VECTOR,0.0,0,0,aggregation for cross-sectional differences in loan rates; age and tickets
+daily_short_interest_model_score,VECTOR,0.0,0,0,Machine-learning short crowding or squeeze risk score using the current dayâs data (higher = higher risk)
+loan_rate_change_aggregated_metric,VECTOR,0.0,1,1,Aggregated time-series change in borrow/loan rates (e.g.; day-over-day change)
+long_term_contract_difference_agg,VECTOR,0.0,0,0,aggregation for long term differences between overnight contracts and standard contracts
+mdl239_combo_age,VECTOR,0.0,1,1,Normalized average age in days of outstanding loans
+mdl239_combo_crossdeltaactivity,VECTOR,0.0,0,0,Normalized cross-sectional measure of changes in activity (units; tickets; utilization) between overnight and standard contracts
+mdl239_combo_deltaactivity,VECTOR,0.0,0,0,Normalized day-over-day time-series change in activity (units; tickets; utilization) of lending contracts
+mdl239_combo_deltacrossdelta,VECTOR,0.0,0,0,Normalized cross sectional difference in units; tickets and utilization between loans
+mdl239_combo_deltarate,VECTOR,0.0,1,1,Normalized time-series change in loan or borrow rate
+mdl239_combo_loanrate1,VECTOR,0.0,23,27,Normalized aggregated cash collateral borrow rate (annualized)
+mdl239_combo_loanrate2,VECTOR,0.0,2,2,Normalized aggregated non-cash collateral borrow rate (annualized)
+mdl239_combo_ltdelta,VECTOR,0.0,0,0,Normalized long-term difference in units; tickets; and utilization between overnight and standard contracts
+mdl239_combo_tickets,VECTOR,0.0,1,1,Normalized aggregation of securities-lending ticket activity or counts
+mdl239_combo_utilisation,VECTOR,0.0,1,1,Normalized utilization ratio (shares on loan divided by lendable shares)
+mdl239_combo_utilisation_x_rate,VECTOR,0.0,5,5,Normalized product of utilization and loan rate (interaction metric)
+mdl239_gvkey,VECTOR,0.0,0,0,Permanent company identifier (Compustat GVKEY) used for joins/merges
+mdl239_shortlasso1d,VECTOR,0.0,6,8,Machine-learning short crowding or squeeze risk score using current dayâs data (higher implies higher risk)
+mdl239_shortlasso30d,VECTOR,0.0,9,9,Machine-learning short crowding or squeeze risk score using the last 30 days of data
+mdl239_shortlasso92d,VECTOR,0.0,23,31,Machine-learning short crowding or squeeze risk score using the last 92 days of data
+ninety_two_day_avg_short_interest_score,VECTOR,0.0,0,0,Average crowding or short-squeeze risk model score over the last 92 days
+normalized_utilization_rate_aggregated,VECTOR,0.0,0,0,Normalized utilization rate (shares on loan over lendable shares) aggregated monthly
+thirty_day_avg_short_interest_score,VECTOR,0.0,1,1,Average crowding or short-squeeze risk model score over the last 30 days
+utilization_loan_rate_interaction_agg,VECTOR,0.0,0,0,Interaction metric equal to Utilisation multiplied by Loan Rate; combined stress/cost indicator

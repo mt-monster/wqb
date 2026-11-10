@@ -1,0 +1,50 @@
+﻿{
+ "results": [
+  {
+   "id": "rsk72_asi_top1000_eqy_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.3534,
+   "userCount": 33,
+   "alphaCount": 89,
+   "description": "Daily reproducible specific returns in % units"
+  },
+  {
+   "id": "rsk72_asi_top1500_eqy_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.5426,
+   "userCount": 35,
+   "alphaCount": 82,
+   "description": "Daily reproducible specific returns in % units"
+  },
+  {
+   "id": "rsk72_asi_top2000_eqy_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.7085,
+   "userCount": 88,
+   "alphaCount": 132,
+   "description": "Daily reproducible specific returns in % units"
+  },
+  {
+   "id": "rsk72_eqy_asi_supported_minvol1m_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.7592,
+   "userCount": 46,
+   "alphaCount": 91,
+   "description": "Daily reproducible specific returns in % units"
+  },
+  {
+   "id": "rsk72_eqy_xjpci_supported_minvol1m_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.7592,
+   "userCount": 41,
+   "alphaCount": 92,
+   "description": "Daily reproducible specific returns in % units"
+  }
+ ],
+ "count": 5,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 5,
+ "complete": true,
+ "pages_fetched": 1
+}

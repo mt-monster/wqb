@@ -1,0 +1,27 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "group_rank(ts_backfill(vec_stddev(mws76_score), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_stddev(mws76_score), 22), sector))",
+  "group_rank(ts_backfill(vec_max(mws76_score), 22), sector)",
+  "reverse(group_rank(ts_backfill(vec_min(mws76_score), 22), sector))",
+  "group_rank(ts_backfill(vec_sum(mws76_score), 22), sector)",
+  "group_rank(ts_delta(ts_backfill(vec_stddev(mws76_score), 22), 22), sector)",
+  "group_rank(ts_backfill(vec_stddev(mws76_confidence), 22), sector)",
+  "group_rank(ts_backfill(subtract(vec_max(mws76_score), vec_min(mws76_score)), 22), sector)"
+ ],
+ "dataset": "news76",
+ "wave": "N76disp aggregation-diversity re-probe (vec_stddev/max/min/sum)"
+}

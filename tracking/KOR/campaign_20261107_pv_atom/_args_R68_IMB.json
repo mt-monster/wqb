@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "imb5_score",
+    "expression": "hump(subtract(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "hump(subtract(group_rank(ts_delta(rsk68_weight_dadv,22),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "reverse(hump(subtract(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "hump(multiply(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "hump(vector_neut(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  },
+  {
+    "field_id": "imb5_score",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(ts_delta(rsk68_weight_volatility_short,22),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.8559,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.85
+    }
+  }
+]

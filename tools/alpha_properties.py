@@ -188,6 +188,16 @@ def cmd_audit(a):
     print("--- 合规告警 Top ---")
     for k, v in Counter(w for r in rows for w in ap.check_tags(r["tags"])).most_common(6):
         print(f"  {v:4d}  {k}")
+    # 信息项（非违规）：`PowerPoolSelected` 自 2026-11-08 起归这里，不再计入"有告警"。
+    # 它是平台提交成功后自动追加的（11-06 / 11-07 实证），算违规会刷一屏假告警。
+    _notes_fn = getattr(ap, "tag_notes", None)
+    if callable(_notes_fn):
+        _notes = [(r["id"], _notes_fn(r["tags"])) for r in rows]
+        _notes = [(i, n) for i, n in _notes if n]
+        if _notes:
+            print(f"--- 信息项（非违规，不计入告警）: {len(_notes)} / {len(rows)} 颗 ---")
+            for k, v in Counter(n for _, ns in _notes for n in ns).most_common(4):
+                print(f"  {v:4d}  {k[:96]}")
     if a.limit:
         print(f"--- 明细（前 {a.limit} 条有告警者）---")
         n = 0
@@ -238,10 +248,12 @@ async def _normalize(a):
         keep = [t for t in old_tags
                 if not re.match(r"^(CH_|SRC_|W\d|EXPRFAM_|CORR_|TOOL_)", t)]
         # ★ 通道判定：PPA alpha 本身就是 type=REGULAR，按 type 推会误标成普通通道。
-        #   旧的 `PowerPoolSelected` 正是 PPA 通道的证据 → 产出 CH_PPA（而非 CH_REG）。
-        #   注意 SUPER 不走 PPA 通道，其 CH_SUPER 信息量更高，不做 PPA 覆盖。
+        #   ★ 2026-11-10 修正：旧实现把 `PowerPoolSelected` 当 PPA 通道证据，会给
+        #   平台自动追加标签的 RA alpha（以及我们提交后手动补标签治理 PP 池的
+        #   CH_REG 货）错打 CH_PPA。该标签只是 PP 池成分开关，不是通道证据。
+        #   通道只认 CH_PPA（历史 PPA 提交）；SUPER 的 CH_SUPER 信息量更高不覆盖。
         chan = None
-        if typ != "SUPER" and "PowerPoolSelected" in old_tags:
+        if typ != "SUPER" and "CH_PPA" in old_tags:
             chan = ap.CHANNEL_PPA
         new_tags = ap.build_tags(
             alpha_type=typ,

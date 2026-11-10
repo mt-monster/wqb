@@ -1,0 +1,466 @@
+{
+ "multi_source_model": {
+  "platform_count": 60,
+  "nParsed": 60,
+  "probe": {
+   "id": "analyst_quantile5_confidence_60d_pred",
+   "type": "MATRIX",
+   "ac": 3
+  }
+ },
+ "news21": {
+  "platform_count": 15,
+  "nParsed": 15,
+  "probe": {
+   "id": "nws21_neg_sc",
+   "type": "MATRIX",
+   "ac": 4
+  }
+ },
+ "news23": {
+  "platform_count": 116,
+  "nParsed": 116,
+  "probe": {
+   "id": "actual_investment_round_total",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "news29": {
+  "platform_count": 16,
+  "nParsed": 16,
+  "probe": {
+   "id": "company_event_description_text_full",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "news3": {
+  "platform_count": 19,
+  "nParsed": 19,
+  "probe": {
+   "id": "nws3_scores_certaintynormscr",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "news31": {
+  "platform_count": 12,
+  "nParsed": 12,
+  "probe": {
+   "id": "explicit_company_mention_count",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "news52": {
+  "platform_count": 21,
+  "nParsed": 21,
+  "probe": {
+   "id": "mws52_eventtype",
+   "type": "MATRIX",
+   "ac": 3
+  }
+ },
+ "news54": {
+  "platform_count": 39,
+  "nParsed": 39,
+  "probe": {
+   "id": "daily_event_announcement_time",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "news7": {
+  "platform_count": 23,
+  "nParsed": 23,
+  "probe": {
+   "id": "earnings_news_mention_count",
+   "type": "MATRIX",
+   "ac": 7
+  }
+ },
+ "news73": {
+  "platform_count": 22,
+  "nParsed": 22,
+  "probe": {
+   "id": "nws73_djnindustry",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "news76": {
+  "platform_count": 2,
+  "nParsed": 2,
+  "probe": {
+   "id": "company_analytics_previous_score",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "news81": {
+  "platform_count": 23,
+  "nParsed": 23,
+  "probe": {
+   "id": "secondary_sentiment_average_value",
+   "type": "MATRIX",
+   "ac": 54
+  }
+ },
+ "news_sentiment_nlp": {
+  "platform_count": 23,
+  "nParsed": 23,
+  "probe": {
+   "id": "headline_average_sentence_length",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "option1": {
+  "platform_count": 22,
+  "nParsed": 22,
+  "probe": {
+   "id": "delta_surface_data_quality",
+   "type": "VECTOR",
+   "ac": 5
+  }
+ },
+ "option_chart_model": {
+  "platform_count": 39,
+  "nParsed": 39,
+  "probe": {
+   "id": "option_call_iv_level_7",
+   "type": "MATRIX",
+   "ac": 6
+  }
+ },
+ "other128": {
+  "platform_count": 14,
+  "nParsed": 14,
+  "probe": {
+   "id": "chief_exec_investor_sentiment_score_dmexus",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other169": {
+  "platform_count": 22,
+  "nParsed": 22,
+  "probe": {
+   "id": "bid_par_spread_basis_points",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other296": {
+  "platform_count": 10,
+  "nParsed": 10,
+  "probe": {
+   "id": "oth296_call_time",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other315": {
+  "platform_count": 22,
+  "nParsed": 22,
+  "probe": {
+   "id": "active_notional_value_leg1",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "other323": {
+  "platform_count": 7,
+  "nParsed": 7,
+  "probe": {
+   "id": "oth323_esod",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other327": {
+  "platform_count": 3,
+  "nParsed": 3,
+  "probe": {
+   "id": "oth327_sirc_sl",
+   "type": "MATRIX",
+   "ac": 1
+  }
+ },
+ "other335": {
+  "platform_count": 10,
+  "nParsed": 10,
+  "probe": {
+   "id": "oth335_combined_all_region_hedge",
+   "type": "MATRIX",
+   "ac": 80
+  }
+ },
+ "other424": {
+  "platform_count": 3,
+  "nParsed": 3,
+  "probe": {
+   "id": "oth424_divyld",
+   "type": "MATRIX",
+   "ac": 50
+  }
+ },
+ "other425": {
+  "platform_count": 12,
+  "nParsed": 12,
+  "probe": {
+   "id": "daily_closing_price_2",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other436": {
+  "platform_count": 3,
+  "nParsed": 3,
+  "probe": {
+   "id": "oth436_disc",
+   "type": "VECTOR",
+   "ac": 3
+  }
+ },
+ "other546": {
+  "platform_count": 22,
+  "nParsed": 22,
+  "probe": {
+   "id": "analyst_coverage_count",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other566": {
+  "platform_count": 112,
+  "nParsed": 112,
+  "probe": {
+   "id": "exponential_operator_value",
+   "type": "MATRIX",
+   "ac": 6
+  }
+ },
+ "other567": {
+  "platform_count": 48,
+  "nParsed": 48,
+  "probe": {
+   "id": "avg_business_outlook_score",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other571": {
+  "platform_count": 23,
+  "nParsed": 23,
+  "probe": {
+   "id": "oth571_views28d",
+   "type": "MATRIX",
+   "ac": 3
+  }
+ },
+ "other635": {
+  "platform_count": 3,
+  "nParsed": 3,
+  "probe": {
+   "id": "oth635_char_count",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "other696": {
+  "platform_count": 220,
+  "nParsed": 220,
+  "probe": {
+   "id": "capacity_positive_event_count",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "other734": {
+  "platform_count": 4,
+  "nParsed": 4,
+  "probe": {
+   "id": "oth734_standardized_company_value",
+   "type": "VECTOR",
+   "ac": 10
+  }
+ },
+ "other78": {
+  "platform_count": 112,
+  "nParsed": 112,
+  "probe": {
+   "id": "conference_address_line1",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "pv1": {
+  "platform_count": 23,
+  "nParsed": 23,
+  "probe": {
+   "id": "volume",
+   "type": "MATRIX",
+   "ac": 963
+  }
+ },
+ "pv103": {
+  "platform_count": 8,
+  "nParsed": 8,
+  "probe": {
+   "id": "session_1600to1600_total_traded_volume",
+   "type": "MATRIX",
+   "ac": 29
+  }
+ },
+ "pv106": {
+  "platform_count": 8,
+  "nParsed": 8,
+  "probe": {
+   "id": "pv106_spreadbp",
+   "type": "MATRIX",
+   "ac": 41
+  }
+ },
+ "pv13": {
+  "platform_count": 26,
+  "nParsed": 26,
+  "probe": {
+   "id": "pv13_revere_index_cap",
+   "type": "MATRIX",
+   "ac": 4
+  }
+ },
+ "pv132": {
+  "platform_count": 29,
+  "nParsed": 29,
+  "probe": {
+   "id": "average_bid_ask_price_warrant",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "pv17": {
+  "platform_count": 1,
+  "nParsed": 1,
+  "probe": null
+ },
+ "pv173": {
+  "platform_count": 81,
+  "nParsed": 81,
+  "probe": {
+   "id": "pv173_ranks_bondreturn20deqwt",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "pv20": {
+  "platform_count": 681,
+  "nParsed": 400,
+  "probe": {
+   "id": "adv20_extra",
+   "type": "MATRIX",
+   "ac": 189
+  }
+ },
+ "pv47": {
+  "platform_count": 2,
+  "nParsed": 2,
+  "probe": {
+   "id": "pv47_spret",
+   "type": "MATRIX",
+   "ac": 4
+  }
+ },
+ "pv71": {
+  "platform_count": 8,
+  "nParsed": 8,
+  "probe": {
+   "id": "pairwise_price_volume_corr_score",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "quant_factor_lib": {
+  "platform_count": 289,
+  "nParsed": 289,
+  "probe": {
+   "id": "qfl_cassie_convention_cng_longdebt_equity",
+   "type": "VECTOR",
+   "ac": 2
+  }
+ },
+ "risk68": {
+  "platform_count": 5,
+  "nParsed": 5,
+  "probe": {
+   "id": "rsk68_weight_edadv",
+   "type": "MATRIX",
+   "ac": 76
+  }
+ },
+ "risk71": {
+  "platform_count": 10,
+  "nParsed": 10,
+  "probe": {
+   "id": "residualized_return_top2500",
+   "type": "MATRIX",
+   "ac": 11
+  }
+ },
+ "risk72": {
+  "platform_count": 31,
+  "nParsed": 31,
+  "probe": {
+   "id": "ecs_top1600_residual_return_cfg2",
+   "type": "MATRIX",
+   "ac": 10
+  }
+ },
+ "search_interest": {
+  "platform_count": 3,
+  "nParsed": 3,
+  "probe": {
+   "id": "relative_interest_score_6",
+   "type": "VECTOR",
+   "ac": 5
+  }
+ },
+ "socialmedia12": {
+  "platform_count": 18,
+  "nParsed": 18,
+  "probe": {
+   "id": "sentiment_score",
+   "type": "MATRIX",
+   "ac": 25
+  }
+ },
+ "stock_search_trends": {
+  "platform_count": 6,
+  "nParsed": 6,
+  "probe": {
+   "id": "search_interest_84d_corporate_name",
+   "type": "MATRIX",
+   "ac": 5
+  }
+ },
+ "techindi_model": {
+  "platform_count": 399,
+  "nParsed": 399,
+  "probe": {
+   "id": "tm_8_r1_r5_r10_rh_glb_d1_r10_q1",
+   "type": "MATRIX",
+   "ac": 833
+  }
+ },
+ "workforce_flow_skills": {
+  "platform_count": 10,
+  "nParsed": 10,
+  "probe": {
+   "id": "adjusted_employee_headcount",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ }
+}

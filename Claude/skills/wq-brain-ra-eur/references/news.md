@@ -3,6 +3,11 @@
 > 回到 [EUR 区域流程](../SKILL.md) · [EUR profile（证据与历史）](../../wq-brain-ra-pipeline/references/regions/EUR.md) · 实时生效画像：`$WQ_PY -m wqb.profiles explain --region EUR --category news`
 
 <!-- profiles:cell-panel:start -->
+> ⭐ **2026-11-08 实测补充（eur10 战役）**：
+> - **news46 mws46_ravenpack_sum_story_count 关注度读数**：最强几何 = `group_rank(ts_zscore(ts_backfill(·,120),35), subindustry)`，纯读数天花板 **S 1.32**（组轴换 market 1.05 / ts_delta 动量 1.17 / 窗口 250d 0.89 / 5d 0.54 / NIP −0.14——全扫描后确认结构性封顶）。Xgojww1X 的 S1.8 = 35d 注意度 + risk70 earnyild 双腿合成，纯新闻腿不够线。
+> - **mws46_* 字段设置陷阱**：新闻字段只覆盖大票，TOPCS1600 + nanON 档会平台级 FAIL（无 alpha 产出）；必须用 TOP2500/INDUSTRY/trunc0.15/nanOFF/maxTradeON 档（Xgojww1X 实测档）。
+> - mws46_ravenpack_mean_nip 与 sum_story_count 合成会互相稀释（S 0.84 < 单腿 1.32）。
+
 **状态**：active（跟区域入场 full-coverage）　**分组**：News-Sentiment　**类别卡**：news
 
 **涉及数据集**：news17、news20、news21、news29、news31、news36、news38、news46、news48、news50、news52、news54、news54 事件密度 (NEWS单塔 effective1, 密度无效=已知失败模式复现)、news73、news84、news85、predictive_starmine × news73、{'dataset': 'news54', 'max_sharpe': 0.4, 'reason': 'mws54_factor semi-annual+单边恒正+稀疏', 'tower': 'news'}

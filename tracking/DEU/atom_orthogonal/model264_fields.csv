@@ -1,0 +1,381 @@
+id,type,cov,uc,ac,desc
+mdl264_1l_57_03_am,MATRIX,0.9964,35,62,"The probability that the future trend of ""Moving average crossover; 30W-75W"" will be fall"
+mdl264_1l_63_51_am,MATRIX,0.9965,2,3,Probability that the future trend of the 15W-36W moving average crossover will be fall
+mdl264_1l_acf,MATRIX,0.9966,1,1,"The probability that the future trend of ""Foreign Exchange Income (Loss)"" will be fall"
+mdl264_1l_bb,MATRIX,0.9966,5,6,"The probability that the future trend of ""Bollinger Bands"" will be fall"
+mdl264_1l_d0252ntr,MATRIX,0.9938,2,2,"Probability that the future trend of ""Total return; past 120M"" will be fall"
+mdl264_1l_d12ntr,MATRIX,0.9965,2,2,"The probability that the future trend of ""Total return; past 1M"" will be fall"
+mdl264_1l_d36ntr,MATRIX,0.9965,5,7,Probability that the future trend of 3-month total return will be fall
+mdl264_1l_dlyspe_rh,MATRIX,0.9966,5,6,Probability that the future trend of historical relative earnings yield will be fall
+mdl264_1l_fmc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Chaikin Money Flow"" will be fall"
+mdl264_1l_ghc_qe_td_tl,MATRIX,0.9966,1,1,"The probability that the future trend of ""YoY change in long-term debt/common equity"" will be fall"
+mdl264_1l_icc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Commodity Channel Index"" will be fall"
+mdl264_1l_ifm,MATRIX,0.9966,0,0,The probability that the future trend of Money Flow Index will be fall
+mdl264_1l_im,MATRIX,0.9966,1,1,Probability that the future trend of Mass Index will be fall
+mdl264_1l_ips,MATRIX,0.9966,0,0,The probability that the future trend of Special Items will be fall
+mdl264_1l_ist,MATRIX,0.9966,0,0,Probability that the future trend of True Strength Index will be fall
+mdl264_1l_iv,MATRIX,0.9966,2,2,Probability that the future trend of Vortex Indicator will be fall
+mdl264_1l_ivn,MATRIX,0.9966,1,2,Model-estimated probability that the future trend of the Negative Volume Index will be fall
+mdl264_1l_lda,MATRIX,0.9966,0,0,Probability that the future trend of Accumulation Distribution Line will be fall
+mdl264_1l_m1d_1yf_spb_se,MATRIX,0.9966,1,1,Model-estimated probability that the future trend of FY1 BPS diffusion (up/down ratio); 1M will be fall
+mdl264_1l_m1d_1yf_spd_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""FY1 DPS diffusion (up/down ratio); 1M"" will be fall"
+mdl264_1l_m1d_1yf_spe_se,MATRIX,0.9966,5,13,Model-estimated probability that the future trend of FY1 EPS diffusion (up/down ratio); 1M will be fall
+mdl264_1l_m1d_1yf_spfc_se,MATRIX,0.9966,1,1,Probability that the future trend of FY1 CFPS diffusion (up/down ratio); 1M will be fall
+mdl264_1l_m1d_1yf_van_se,MATRIX,0.9961,0,0,Probability that the future trend of FY1 NAV diffusion (up/down ratio); 1M will be fall
+mdl264_1l_m1d_cer_se,MATRIX,0.9966,0,0,Probability that the future trend of Recommendation diffusion (up/down ratio); 1M will be fall
+mdl264_1l_m1d_gtl_se,MATRIX,0.9963,0,0,"The probability that the future trend of ""Long-term growth diffusion (up/down ratio); 1M"" will be fall"
+mdl264_1l_m1d_pt_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""Target price diffusion (up/down ratio); 1M"" will be fall"
+mdl264_1l_m1m21_ntr,MATRIX,0.9964,4,4,Probability that the future trend of Price momentum; 12M-1M will be fall
+mdl264_1l_m1r_1yf_spb_se,MATRIX,0.9965,1,1,Probability that the future trend of FY1 BPS revision over 1 month will be fall
+mdl264_1l_m1r_1yf_spd_se,MATRIX,0.9966,3,4,Probability that the future trend of FY1 DPS revision; 1M will be fall
+mdl264_1l_m1r_1yf_spe_se,MATRIX,0.9966,1,1,"Probability that the future trend of ""FY1 EPS revision; 1M"" will be fall"
+mdl264_1l_m1r_1yf_spfc_se,MATRIX,0.9965,1,1,Probability that the future trend of FY1 CFPS revision; 1M will be fall
+mdl264_1l_m1r_1yf_van_se,MATRIX,0.9958,0,0,Probability that the future trend of FY1 NAV revision; 1M will be fall
+mdl264_1l_m1r_cer_se,MATRIX,0.9966,0,0,"Probability that the future trend of ""Recommendation revision; 1M"" will be fall"
+mdl264_1l_m1r_gtl_se,MATRIX,0.9963,0,0,Probability that the future trend of long-term growth revision; 1M will be fall
+mdl264_1l_m1r_mtn_spd_se,MATRIX,0.9966,0,0,Probability that the future trend of NTM DPS revision over 1 month will be fall
+mdl264_1l_m1r_mtn_spe_se,MATRIX,0.9966,2,2,"The probability that the future trend of ""NTM EPS revision; 1M"" will be fall"
+mdl264_1l_m1r_mtn_spfc_se,MATRIX,0.9965,0,0,The probability that the future trend of NTM CFPS revision; 1M will be fall
+mdl264_1l_m1r_pt_se,MATRIX,0.9966,3,4,"The probability that the future trend of ""Target price revision; 1M"" will be fall"
+mdl264_1l_m3d_1yf_van_se,MATRIX,0.9961,0,0,Probability that the future trend of FY1 NAV diffusion (up/down ratio) over 3 months will be fall
+mdl264_1l_m3d_cer_se,MATRIX,0.9966,1,1,The probability that the future trend of Recommendation diffusion (up/down ratio); 3M will be fall
+mdl264_1l_m3r_mtn_spb_se,MATRIX,0.9965,2,3,Probability that the future trend of NTM BPS revision over 3 months will be fall
+mdl264_1l_oc,MATRIX,0.9966,1,1,"The probability that the future trend of ""Chaikin Oscillator"" will be fall"
+mdl264_1l_ocl,MATRIX,0.9966,1,2,Probability that the future trend of Current Liabilities Other Total will be fall
+mdl264_1l_od,MATRIX,0.9966,0,0,Probability that the future trend of Discontinued Operations will be a fall
+mdl264_1l_ompd,MATRIX,0.9966,0,0,Probability that the future trend of DecisionPoint Price Momentum Oscillator will be fall
+mdl264_1l_opd,MATRIX,0.9966,0,0,The probability that the future trend of Detrended Price Oscillator will be fall
+mdl264_1l_opp,MATRIX,0.9966,0,0,Probability that the future trend of percentage price oscillator will be fall
+mdl264_1l_os,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of the Stochastic Oscillator will be fall
+mdl264_1l_ovp,MATRIX,0.9966,0,0,"The probability that the future trend of ""Percentage Volume Oscillator"" will be fall"
+mdl264_1l_rta,MATRIX,0.9966,0,0,Probability that the future trend of Average True Range will be fall
+mdl264_1l_rw,MATRIX,0.9966,1,1,"The probability that the future trend of ""Williams %R"" will be fall"
+mdl264_1l_spe_y5_rg,MATRIX,0.9964,0,0,Probability that the future trend of Historical 5Y EPS growth trend will be fall
+mdl264_1l_speo_y5_rg,MATRIX,0.9964,0,0,"The probability that the future trend of ""Historical 5Y operating EPS growth trend"" will be fall"
+mdl264_1l_spfc_rtnie_rg,MATRIX,0.9911,1,1,Probability that the future trend of YoY expected interim CFPS growth will be fall
+mdl264_1l_spfc_y5_rg,MATRIX,0.9966,0,0,Probability that the future trend of Historical 5Y CFPS growth trend will be fall
+mdl264_1l_tpv,MATRIX,0.9966,0,0,Probability that the future trend of Volume Price Trend will be fall
+mdl264_1l_vbo,MATRIX,0.9966,0,0,Probability that the future trend of On Balance Volume will be fall
+mdl264_1l_vlc,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of Close Location Value will be fall
+mdl264_1l_vme,MATRIX,0.9966,0,0,The probability that the future trend of Ease of Movement will be fall
+mdl264_2l_57_03_am,MATRIX,0.9964,1,1,"The probability that the future trend of ""Moving average crossover; 30W-75W"" will be neutral"
+mdl264_2l_63_51_am,MATRIX,0.9965,0,0,Probability that the future trend of the 15W-36W moving average crossover will be neutral
+mdl264_2l_acf,MATRIX,0.9966,1,2,Probability that the future trend of Foreign Exchange Income (Loss) will be neutral
+mdl264_2l_bb,MATRIX,0.9966,2,2,"The probability that the future trend of ""Bollinger Bands"" will be neutral"
+mdl264_2l_d0252ntr,MATRIX,0.9938,1,1,"Probability that the future trend of ""Total return; past 120M"" will be neutral"
+mdl264_2l_d12ntr,MATRIX,0.9965,0,0,"The probability that the future trend of ""Total return; past 1M"" will be neutral"
+mdl264_2l_d36ntr,MATRIX,0.9965,0,0,Probability that the future trend of 3-month total return will be neutral
+mdl264_2l_dlyspe_rh,MATRIX,0.9966,0,0,Probability that the future trend of historical relative earnings yield will be neutral
+mdl264_2l_fmc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Chaikin Money Flow"" will be neutral"
+mdl264_2l_ghc_qe_td_tl,MATRIX,0.9966,0,0,"The probability that the future trend of ""YoY change in long-term debt/common equity"" will be neutral"
+mdl264_2l_icc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Commodity Channel Index"" will be neutral"
+mdl264_2l_ifm,MATRIX,0.9966,1,1,The probability that the future trend of Money Flow Index will be neutral
+mdl264_2l_im,MATRIX,0.9966,1,2,Probability that the future trend of Mass Index will be neutral
+mdl264_2l_ips,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of Special Items will be neutral
+mdl264_2l_ist,MATRIX,0.9966,0,0,Probability that the future trend of True Strength Index will be neutral
+mdl264_2l_iv,MATRIX,0.9966,1,1,Probability that the future trend of Vortex Indicator will be neutral
+mdl264_2l_ivn,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of the Negative Volume Index will be neutral
+mdl264_2l_lda,MATRIX,0.9966,0,0,Probability that the future trend of Accumulation Distribution Line will be neutral
+mdl264_2l_m1d_1yf_spb_se,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of FY1 BPS diffusion (up/down ratio); 1M will be neutral
+mdl264_2l_m1d_1yf_spd_se,MATRIX,0.9966,1,1,"The probability that the future trend of ""FY1 DPS diffusion (up/down ratio); 1M"" will be neutral"
+mdl264_2l_m1d_1yf_spe_se,MATRIX,0.9966,1,1,Model-estimated probability that the future trend of FY1 EPS diffusion (up/down ratio); 1M will be neutral
+mdl264_2l_m1d_1yf_spfc_se,MATRIX,0.9966,0,0,Probability that the future trend of FY1 CFPS diffusion (up/down ratio); 1M will be neutral
+mdl264_2l_m1d_1yf_van_se,MATRIX,0.9961,6,8,Probability that the future trend of FY1 NAV diffusion (up/down ratio); 1M will be neutral
+mdl264_2l_m1d_cer_se,MATRIX,0.9966,0,0,Probability that the future trend of Recommendation diffusion (up/down ratio); 1M will be neutral
+mdl264_2l_m1d_gtl_se,MATRIX,0.9963,0,0,"The probability that the future trend of ""Long-term growth diffusion (up/down ratio); 1M"" will be neutral"
+mdl264_2l_m1d_pt_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""Target price diffusion (up/down ratio); 1M"" will be neutral"
+mdl264_2l_m1m21_ntr,MATRIX,0.9964,0,0,Probability that the future trend of Price momentum; 12M-1M will be neutral
+mdl264_2l_m1r_1yf_spb_se,MATRIX,0.9965,0,0,"The probability that the future trend of ""FY1 BPS revision; 1M"" will be neutral"
+mdl264_2l_m1r_1yf_spd_se,MATRIX,0.9966,0,0,Probability that the future trend of FY1 DPS revision; 1M will be neutral
+mdl264_2l_m1r_1yf_spe_se,MATRIX,0.9966,0,0,"Probability that the future trend of ""FY1 EPS revision; 1M"" will be neutral"
+mdl264_2l_m1r_1yf_spfc_se,MATRIX,0.9965,0,0,Probability that the future trend of FY1 CFPS revision; 1M will be neutral
+mdl264_2l_m1r_1yf_van_se,MATRIX,0.9958,0,0,Probability that the future trend of FY1 NAV revision; 1M will be neutral
+mdl264_2l_m1r_cer_se,MATRIX,0.9966,0,0,"Probability that the future trend of ""Recommendation revision; 1M"" will be neutral"
+mdl264_2l_m1r_gtl_se,MATRIX,0.9963,1,1,"Probability that the future trend of ""Long-term growth revision; 1M"" will be neutral"
+mdl264_2l_m1r_mtn_spd_se,MATRIX,0.9966,0,0,Probability that the future trend of NTM DPS revision over 1 month will be neutral
+mdl264_2l_m1r_mtn_spe_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""NTM EPS revision; 1M"" will be neutral"
+mdl264_2l_m1r_mtn_spfc_se,MATRIX,0.9965,0,0,The probability that the future trend of NTM CFPS revision; 1M will be neutral
+mdl264_2l_m1r_pt_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""Target price revision; 1M"" will be neutral"
+mdl264_2l_m3d_1yf_van_se,MATRIX,0.9961,0,0,Probability that the future trend of FY1 NAV diffusion (up/down ratio) over 3 months will be neutral
+mdl264_2l_m3d_cer_se,MATRIX,0.9966,0,0,The probability that the future trend of Recommendation diffusion (up/down ratio); 3M will be neutral
+mdl264_2l_m3r_mtn_spb_se,MATRIX,0.9965,0,0,Probability that the future trend of NTM BPS revision over 3 months will be neutral
+mdl264_2l_oc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Chaikin Oscillator"" will be neutral"
+mdl264_2l_ocl,MATRIX,0.9966,0,0,Probability that the future trend of Current Liabilities Other Total will be neutral
+mdl264_2l_od,MATRIX,0.9966,0,0,Probability that the future trend of Discontinued Operations will be neutral
+mdl264_2l_ompd,MATRIX,0.9966,0,0,Probability that the future trend of DecisionPoint Price Momentum Oscillator will be neutral
+mdl264_2l_opd,MATRIX,0.9966,0,0,The probability that the future trend of Detrended Price Oscillator will be neutral
+mdl264_2l_opp,MATRIX,0.9966,0,0,Probability that the future trend of percentage price oscillator will be neutral
+mdl264_2l_os,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of the Stochastic Oscillator will be neutral
+mdl264_2l_ovp,MATRIX,0.9966,0,0,"The probability that the future trend of ""Percentage Volume Oscillator"" will be neutral"
+mdl264_2l_rta,MATRIX,0.9966,0,0,Probability that the future trend of Average True Range will be neutral
+mdl264_2l_rw,MATRIX,0.9966,1,1,"The probability that the future trend of ""Williams %R"" will be neutral"
+mdl264_2l_spe_y5_rg,MATRIX,0.9964,0,0,Probability that the future trend of Historical 5Y EPS growth trend will be neutral
+mdl264_2l_speo_y5_rg,MATRIX,0.9964,0,0,"The probability that the future trend of ""Historical 5Y operating EPS growth trend"" will be neutral"
+mdl264_2l_spfc_rtnie_rg,MATRIX,0.9911,1,1,Probability that the future trend of YoY expected interim CFPS growth will be neutral
+mdl264_2l_spfc_y5_rg,MATRIX,0.9966,0,0,Probability that the future trend of Historical 5Y CFPS growth trend will be neutral
+mdl264_2l_tpv,MATRIX,0.9966,0,0,Probability that the future trend of Volume Price Trend will be neutral
+mdl264_2l_vbo,MATRIX,0.9966,0,0,Probability that the future trend of On Balance Volume will be neutral
+mdl264_2l_vlc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Close Location Value"" will be neutral"
+mdl264_2l_vme,MATRIX,0.9966,0,0,The probability that the future trend of Ease of Movement will be neutral
+mdl264_3l_57_03_am,MATRIX,0.9964,1,2,"The probability that the future trend of ""Moving average crossover; 30W-75W"" will be move-up"
+mdl264_3l_63_51_am,MATRIX,0.9965,0,0,Probability that the future trend of the 15W-36W moving average crossover will be move-up
+mdl264_3l_acf,MATRIX,0.9966,3,3,"The probability that the future trend of ""Foreign Exchange Income (Loss)"" will be move-up"
+mdl264_3l_bb,MATRIX,0.9966,0,0,"The probability that the future trend of ""Bollinger Bands"" will be move-up"
+mdl264_3l_d0252ntr,MATRIX,0.9938,1,1,"Probability that the future trend of ""Total return; past 120M"" will be move-up"
+mdl264_3l_d12ntr,MATRIX,0.9965,1,1,"The probability that the future trend of ""Total return; past 1M"" will be move-up"
+mdl264_3l_d36ntr,MATRIX,0.9965,1,1,Probability that the future trend of 3-month total return will be move-up
+mdl264_3l_dlyspe_rh,MATRIX,0.9966,0,0,Probability that the future trend of historical relative earnings yield will be move-up
+mdl264_3l_fmc,MATRIX,0.9966,1,1,"The probability that the future trend of ""Chaikin Money Flow"" will be move-up"
+mdl264_3l_ghc_qe_td_tl,MATRIX,0.9966,1,1,"The probability that the future trend of ""YoY change in long-term debt/common equity"" will be move-up"
+mdl264_3l_icc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Commodity Channel Index"" will be move-up"
+mdl264_3l_ifm,MATRIX,0.9966,0,0,The probability that the future trend of Money Flow Index will be move-up
+mdl264_3l_im,MATRIX,0.9966,0,0,Probability that the future trend of Mass Index will be move-up
+mdl264_3l_ips,MATRIX,0.9966,1,2,Model-estimated probability that the future trend of Special Items will be move-up
+mdl264_3l_ist,MATRIX,0.9966,0,0,Probability that the future trend of True Strength Index will be move-up
+mdl264_3l_iv,MATRIX,0.9966,0,0,Probability that the future trend of Vortex Indicator will be move-up
+mdl264_3l_ivn,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of the Negative Volume Index will be move-up
+mdl264_3l_lda,MATRIX,0.9966,3,3,Probability that the future trend of Accumulation Distribution Line will be move-up
+mdl264_3l_m1d_1yf_spb_se,MATRIX,0.9966,2,2,Model-estimated probability that the future trend of FY1 BPS diffusion (up/down ratio); 1M will be move-up
+mdl264_3l_m1d_1yf_spd_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""FY1 DPS diffusion (up/down ratio); 1M"" will be move-up"
+mdl264_3l_m1d_1yf_spe_se,MATRIX,0.9966,2,2,Model-estimated probability that the future trend of FY1 EPS diffusion (up/down ratio); 1M will be move-up
+mdl264_3l_m1d_1yf_spfc_se,MATRIX,0.9966,1,1,Probability that the future trend of FY1 CFPS diffusion (up/down ratio); 1M will be move-up
+mdl264_3l_m1d_1yf_van_se,MATRIX,0.9961,0,0,Probability that the future trend of FY1 NAV diffusion (up/down ratio); 1M will be move-up
+mdl264_3l_m1d_cer_se,MATRIX,0.9966,0,0,Probability that the future trend of Recommendation diffusion (up/down ratio); 1M will be move-up
+mdl264_3l_m1d_gtl_se,MATRIX,0.9963,0,0,"The probability that the future trend of ""Long-term growth diffusion (up/down ratio); 1M"" will be move-up"
+mdl264_3l_m1d_pt_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""Target price diffusion (up/down ratio); 1M"" will be move-up"
+mdl264_3l_m1m21_ntr,MATRIX,0.9964,1,1,Probability that the future trend of Price momentum; 12M-1M will be move-up
+mdl264_3l_m1r_1yf_spb_se,MATRIX,0.9965,0,0,"The probability that the future trend of ""FY1 BPS revision; 1M"" will be move-up"
+mdl264_3l_m1r_1yf_spd_se,MATRIX,0.9966,0,0,Probability that the future trend of FY1 DPS revision; 1M will be move-up
+mdl264_3l_m1r_1yf_spe_se,MATRIX,0.9966,4,6,"Probability that the future trend of ""FY1 EPS revision; 1M"" will be move-up"
+mdl264_3l_m1r_1yf_spfc_se,MATRIX,0.9965,0,0,Probability that the future trend of FY1 CFPS revision; 1M will be move-up
+mdl264_3l_m1r_1yf_van_se,MATRIX,0.9958,0,0,Probability that the future trend of FY1 NAV revision; 1M will be move-up
+mdl264_3l_m1r_cer_se,MATRIX,0.9966,0,0,"Probability that the future trend of ""Recommendation revision; 1M"" will be move-up"
+mdl264_3l_m1r_gtl_se,MATRIX,0.9963,0,0,"Probability that the future trend of ""Long-term growth revision; 1M"" will be move-up"
+mdl264_3l_m1r_mtn_spd_se,MATRIX,0.9966,0,0,Probability that the future trend of NTM DPS revision over 1 month will be move-up
+mdl264_3l_m1r_mtn_spe_se,MATRIX,0.9966,0,0,"The probability that the future trend of ""NTM EPS revision; 1M"" will be move-up"
+mdl264_3l_m1r_mtn_spfc_se,MATRIX,0.9965,0,0,The probability that the future trend of NTM CFPS revision; 1M will be move-up
+mdl264_3l_m1r_pt_se,MATRIX,0.9966,1,1,"The probability that the future trend of ""Target price revision; 1M"" will be move-up"
+mdl264_3l_m3d_1yf_van_se,MATRIX,0.9961,0,0,Probability that the future trend of FY1 NAV diffusion (up/down ratio) over 3 months will be move-up
+mdl264_3l_m3d_cer_se,MATRIX,0.9966,1,1,The probability that the future trend of Recommendation diffusion (up/down ratio); 3M will be move-up
+mdl264_3l_m3r_mtn_spb_se,MATRIX,0.9965,0,0,Probability that the future trend of NTM BPS revision over 3 months will be move-up
+mdl264_3l_oc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Chaikin Oscillator"" will be move-up"
+mdl264_3l_ocl,MATRIX,0.9966,0,0,Probability that the future trend of Current Liabilities Other Total will be move-up
+mdl264_3l_od,MATRIX,0.9966,0,0,Probability that the future trend of Discontinued Operations will be a move-up
+mdl264_3l_ompd,MATRIX,0.9966,1,1,Probability that the future trend of DecisionPoint Price Momentum Oscillator will be move-up
+mdl264_3l_opd,MATRIX,0.9966,0,0,The probability that the future trend of Detrended Price Oscillator will be move-up
+mdl264_3l_opp,MATRIX,0.9966,0,0,Probability that the future trend of percentage price oscillator will be move-up
+mdl264_3l_os,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of the Stochastic Oscillator will be move-up
+mdl264_3l_ovp,MATRIX,0.9966,0,0,"The probability that the future trend of ""Percentage Volume Oscillator"" will be move-up"
+mdl264_3l_rta,MATRIX,0.9966,0,0,Probability that the future trend of Average True Range will be move-up
+mdl264_3l_rw,MATRIX,0.9966,1,1,"The probability that the future trend of ""Williams %R"" will be move-up"
+mdl264_3l_spe_y5_rg,MATRIX,0.9964,0,0,Probability that the future trend of Historical 5Y EPS growth trend will be move-up
+mdl264_3l_speo_y5_rg,MATRIX,0.9964,0,0,"The probability that the future trend of ""Historical 5Y operating EPS growth trend"" will be move-up"
+mdl264_3l_spfc_rtnie_rg,MATRIX,0.9911,0,0,Probability that the future trend of YoY expected interim CFPS growth will be move-up
+mdl264_3l_spfc_y5_rg,MATRIX,0.9966,1,2,Probability that the future trend of Historical 5Y CFPS growth trend will be move-up
+mdl264_3l_tpv,MATRIX,0.9966,1,1,Probability that the future trend of Volume Price Trend will be move-up
+mdl264_3l_vbo,MATRIX,0.9966,0,0,Probability that the future trend of On Balance Volume will be move-up
+mdl264_3l_vlc,MATRIX,0.9966,0,0,"The probability that the future trend of ""Close Location Value"" will be move-up"
+mdl264_3l_vme,MATRIX,0.9966,0,0,The probability that the future trend of Ease of Movement will be move-up
+mdl264_abn_volm_class,MATRIX,1.0,1,1,Modal class of the predicted trend for Abnormal volume (1=fall; 2=neutral; 3=move-up)
+mdl264_abn_volm_l1,MATRIX,0.9966,0,0,Probability that the future trend of Abnormal volume will be fall
+mdl264_abn_volm_l2,MATRIX,0.9966,0,0,Probability that the future trend of Abnormal volume will be neutral
+mdl264_abn_volm_l3,MATRIX,0.9966,0,0,Probability that the future trend of Abnormal volume will be move-up
+mdl264_adl_class,MATRIX,1.0,0,0,Predicted trend class (1: fall; 2: neutral; 3: move-up) of Accumulation Distribution Line
+mdl264_amihud_class,MATRIX,1.0,1,6,Modal class of the predicted trend for Amihud illiquidity (1=fall; 2=neutral; 3=move-up)
+mdl264_amihud_l1,MATRIX,0.9965,1,1,Probability that the future trend of Amihud illiquidity will be fall
+mdl264_amihud_l2,MATRIX,0.9965,0,0,Probability that the future trend of Amihud illiquidity will be neutral
+mdl264_amihud_l3,MATRIX,0.9965,3,5,Probability that the future trend of Amihud illiquidity will be move-up
+mdl264_atr_class,MATRIX,1.0,0,0,Predicted trend class (1: fall; 2: neutral; 3: move-up) of Average True Range
+mdl264_bb_class,MATRIX,1.0,0,0,"Predicted trend of ""Bollinger Bands"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_bookp_class,MATRIX,1.0,2,2,"Predicted trend class for ""Book-to-market"" where 1=fall; 2=neutral; 3=move-up"
+mdl264_bookp_fy1_class,MATRIX,1.0,0,0,"Predicted trend of ""Book-to-market; FY1"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_bookp_fy1_l1,MATRIX,0.9965,0,0,"The probability that the future trend of ""Book-to-market; FY1"" will be fall"
+mdl264_bookp_fy1_l2,MATRIX,0.9965,0,0,"The probability that the future trend of ""Book-to-market; FY1"" will be neutral"
+mdl264_bookp_fy1_l3,MATRIX,0.9965,1,1,"The probability that the future trend of ""Book-to-market; FY1"" will be move-up"
+mdl264_bookp_l1,MATRIX,0.9966,0,0,"Probability that the future trend of ""Book-to-market"" will be fall"
+mdl264_bookp_l2,MATRIX,0.9966,0,0,"Probability that the future trend of ""Book-to-market"" will be neutral"
+mdl264_bookp_l3,MATRIX,0.9966,0,0,"Probability that the future trend of ""Book-to-market"" will be move-up"
+mdl264_cci_class,MATRIX,1.0,0,0,"Predicted trend of ""Commodity Channel Index"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_clv_class,MATRIX,1.0,0,0,Predicted trend class (1=fall; 2=neutral; 3=move-up) for Close Location Value
+mdl264_cmf_class,MATRIX,1.0,0,0,"Predicted trend of ""Chaikin Money Flow"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_co_class,MATRIX,1.0,0,0,"Predicted trend of ""Chaikin Oscillator"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_compustat_a2_xgb_dl8_d1_xido_class,MATRIX,1.0,0,0,"Predicted trend of ""Extraordinary Items and Discontinued Operations"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_compustat_a2_xgb_dl8_d1_xido_l1,MATRIX,0.9966,0,0,"The probability that the future trend of ""Extraordinary Items and Discontinued Operations"" will be fall"
+mdl264_compustat_a2_xgb_dl8_d1_xido_l2,MATRIX,0.9966,0,0,"The probability that the future trend of ""Extraordinary Items and Discontinued Operations"" will be neutral"
+mdl264_compustat_a2_xgb_dl8_d1_xido_l3,MATRIX,0.9966,0,0,"The probability that the future trend of ""Extraordinary Items and Discontinued Operations"" will be move-up"
+mdl264_div_payout_class,MATRIX,1.0,2,2,"Predicted trend class for ""Dividend payout ratio; trailing"" where 1=fall; 2=neutral; 3=move-up"
+mdl264_div_payout_l1,MATRIX,0.9965,0,0,"Probability that the future trend of ""Dividend payout ratio; trailing"" will be fall"
+mdl264_div_payout_l2,MATRIX,0.9965,1,1,"Probability that the future trend of ""Dividend payout ratio; trailing"" will be neutral"
+mdl264_div_payout_l3,MATRIX,0.9965,0,0,"Probability that the future trend of ""Dividend payout ratio; trailing"" will be move-up"
+mdl264_divyld_bb_class,MATRIX,1.0,2,2,Predicted trend class for Total yield (dividend + share change): 1 fall; 2 neutral; 3 move-up
+mdl264_divyld_bb_l1,MATRIX,0.9965,2,2,Probability that the future trend of Total yield (dividend + share change) will be fall
+mdl264_divyld_bb_l2,MATRIX,0.9965,0,0,"The probability that the future trend of ""Total yield (dividend + share change)"" will be neutral"
+mdl264_divyld_bb_l3,MATRIX,0.9965,1,1,"The probability that the future trend of ""Total yield (dividend + share change)"" will be move-up"
+mdl264_do_class,MATRIX,1.0,0,0,"Predicted trend of ""Discontinued Operations"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_dpmo_class,MATRIX,1.0,0,0,Predicted trend class for DecisionPoint Price Momentum Oscillator: 1 fall; 2 neutral; 3 move-up
+mdl264_dpo_class,MATRIX,1.0,0,0,Predicted trend of Detrended Price Oscillator (1: fall; 2: neutral; 3: move-up)
+mdl264_emv_class,MATRIX,1.0,0,0,Predicted trend of Ease of Movement (1: fall; 2: neutral; 3: move-up)
+mdl264_eps_disp_class,MATRIX,1.0,0,0,Predicted trend class for FY1 EPS dispersion coded as 1 fall 2 neutral 3 move-up
+mdl264_eps_disp_l1,MATRIX,0.9966,0,0,Probability that the future trend of FY1 EPS dispersion will be fall
+mdl264_eps_disp_l2,MATRIX,0.9966,3,3,Probability that the future trend of FY1 EPS dispersion will be neutral
+mdl264_eps_disp_l3,MATRIX,0.9966,0,0,Probability that the future trend of FY1 EPS dispersion will be move-up
+mdl264_eps_sur_decay_class,MATRIX,1.0,1,1,Modal class (1=fall; 2=neutral; 3=move-up) for predicted trend of EPS Surprise with Decay
+mdl264_eps_sur_decay_l1,MATRIX,0.9963,0,0,Probability that the future trend of EPS Surprise with Decay will be fall
+mdl264_eps_sur_decay_l2,MATRIX,0.9963,2,2,Probability that the future trend of EPS Surprise with Decay will be neutral
+mdl264_eps_sur_decay_l3,MATRIX,0.9963,0,0,Probability that the future trend of EPS Surprise with Decay will be move-up
+mdl264_es_bps_fy1_d1m_class,MATRIX,1.0,0,0,Predicted trend class (1=fall; 2=neutral; 3=move-up) for FY1 BPS diffusion (up/down ratio); 1M
+mdl264_es_bps_fy1_r1m_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) of the predicted trend for FY1 BPS revision over 1 month
+mdl264_es_bps_ntm_r3m_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) of the predicted trend for NTM BPS revision over 3 months
+mdl264_es_cfps_fy1_d1m_class,MATRIX,1.0,0,0,Predicted trend class for FY1 CFPS diffusion (up/down ratio); 1M: 1 fall; 2 neutral; 3 move-up
+mdl264_es_cfps_fy1_r1m_class,MATRIX,1.0,0,0,Predicted trend class (1: fall; 2: neutral; 3: move-up) of FY1 CFPS revision; 1M
+mdl264_es_cfps_ntm_r1m_class,MATRIX,1.0,0,0,Predicted modal trend class for NTM CFPS revision; 1M (1=fall; 2=neutral; 3=move-up)
+mdl264_es_dps_fy1_d1m_class,MATRIX,1.0,0,0,"Predicted trend of ""FY1 DPS diffusion (up/down ratio); 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_dps_fy1_r1m_class,MATRIX,1.0,1,1,Predicted trend of FY1 DPS revision; 1M: 1=fall; 2=neutral; 3=move-up
+mdl264_es_dps_ntm_r1m_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) of the predicted trend for NTM DPS revision over 1 month
+mdl264_es_ebit_fy1_d1m_class,MATRIX,1.0,0,0,Predicted trend of FY1 EBIT diffusion (up/down ratio); 1M (1: fall; 2: neutral; 3: move-up)
+mdl264_es_ebit_fy1_d1m_l1,MATRIX,0.9966,0,0,The probability that the future trend of FY1 EBIT diffusion (up/down ratio); 1M will be fall
+mdl264_es_ebit_fy1_d1m_l2,MATRIX,0.9966,2,3,"The probability that the future trend of ""FY1 EBIT diffusion (up/down ratio); 1M"" will be neutral"
+mdl264_es_ebit_fy1_d1m_l3,MATRIX,0.9966,1,1,"The probability that the future trend of ""FY1 EBIT diffusion (up/down ratio); 1M"" will be move-up"
+mdl264_es_ebit_fy1_r1m_class,MATRIX,1.0,1,1,Predicted trend class (1=fall; 2=neutral; 3=move-up) for FY1 EBIT revision; 1M
+mdl264_es_ebit_fy1_r1m_l1,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of FY1 EBIT revision; 1M will be fall
+mdl264_es_ebit_fy1_r1m_l2,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of FY1 EBIT revision; 1M will be neutral
+mdl264_es_ebit_fy1_r1m_l3,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of FY1 EBIT revision; 1M will be move-up
+mdl264_es_ebit_ntm_r1m_class,MATRIX,1.0,0,0,Predicted modal trend class for NTM EBIT revision; 1M (1=fall; 2=neutral; 3=move-up)
+mdl264_es_ebit_ntm_r1m_l1,MATRIX,0.9966,0,0,The probability that the future trend of NTM EBIT revision; 1M will be fall
+mdl264_es_ebit_ntm_r1m_l2,MATRIX,0.9966,0,0,The probability that the future trend of NTM EBIT revision; 1M will be neutral
+mdl264_es_ebit_ntm_r1m_l3,MATRIX,0.9966,0,0,The probability that the future trend of NTM EBIT revision; 1M will be move-up
+mdl264_es_ebitda_fy1_d1m_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) for predicted trend of FY1 EBITDA diffusion (up/down ratio); 1M
+mdl264_es_ebitda_fy1_d1m_l1,MATRIX,0.9966,0,0,Probability that the future trend of FY1 EBITDA diffusion (up/down ratio); 1M will be fall
+mdl264_es_ebitda_fy1_d1m_l2,MATRIX,0.9966,0,0,Probability that the future trend of FY1 EBITDA diffusion (up/down ratio); 1M will be neutral
+mdl264_es_ebitda_fy1_d1m_l3,MATRIX,0.9966,0,0,Probability that the future trend of FY1 EBITDA diffusion (up/down ratio); 1M will be move-up
+mdl264_es_ebitda_fy1_r1m_class,MATRIX,1.0,0,0,Predicted trend class (1: fall; 2: neutral; 3: move-up) of FY1 EBITDA revision; 1M
+mdl264_es_ebitda_fy1_r1m_l1,MATRIX,0.9965,0,0,Probability that the future trend of FY1 EBITDA revision; 1M will be fall
+mdl264_es_ebitda_fy1_r1m_l2,MATRIX,0.9965,0,0,Probability that the future trend of FY1 EBITDA revision; 1M will be neutral
+mdl264_es_ebitda_fy1_r1m_l3,MATRIX,0.9965,0,0,Probability that the future trend of FY1 EBITDA revision; 1M will be move-up
+mdl264_es_ebitda_ntm_r1m_class,MATRIX,1.0,0,0,Predicted trend class for NTM EBITDA revision; 1M: 1 fall; 2 neutral; 3 move-up
+mdl264_es_ebitda_ntm_r1m_l1,MATRIX,0.9965,0,0,Probability that the future trend of NTM EBITDA revision; 1M will be fall
+mdl264_es_ebitda_ntm_r1m_l2,MATRIX,0.9965,0,0,Probability that the future trend of NTM EBITDA revision; 1M will be neutral
+mdl264_es_ebitda_ntm_r1m_l3,MATRIX,0.9965,0,0,Probability that the future trend of NTM EBITDA revision; 1M will be move-up
+mdl264_es_eps_fy1_d1m_class,MATRIX,1.0,1,1,Predicted trend class (1=fall; 2=neutral; 3=move-up) for FY1 EPS diffusion (up/down ratio); 1M
+mdl264_es_eps_fy1_r1m_class,MATRIX,1.0,1,1,"Predicted trend class for ""FY1 EPS revision; 1M"" where 1=fall; 2=neutral; 3=move-up"
+mdl264_es_eps_ntm_r1m_class,MATRIX,1.0,1,1,"Predicted trend of ""NTM EPS revision; 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_ltg_d1m_class,MATRIX,1.0,0,0,"Predicted trend of ""Long-term growth diffusion (up/down ratio); 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_ltg_r1m_class,MATRIX,1.0,1,1,Predicted trend class for long-term growth revision; 1M (1=fall; 2=neutral; 3=move-up)
+mdl264_es_nav_fy1_d1m_class,MATRIX,1.0,2,3,Predicted trend of FY1 NAV diffusion (up/down ratio); 1M: 1=fall; 2=neutral; 3=move-up
+mdl264_es_nav_fy1_d3m_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) of the predicted trend for FY1 NAV diffusion (up/down ratio) over 3 months
+mdl264_es_nav_fy1_r1m_class,MATRIX,1.0,0,0,Predicted trend class for FY1 NAV revision; 1M (1=fall; 2=neutral; 3=move-up)
+mdl264_es_rec_d1m_class,MATRIX,1.0,0,0,Predicted trend class for Recommendation diffusion (up/down ratio); 1M (1=fall; 2=neutral; 3=move-up)
+mdl264_es_rec_d3m_class,MATRIX,1.0,1,1,Predicted trend of Recommendation diffusion (up/down ratio); 3M (1: fall; 2: neutral; 3: move-up)
+mdl264_es_rec_r1m_class,MATRIX,1.0,1,1,"Predicted trend class for ""Recommendation revision; 1M"" where 1=fall; 2=neutral; 3=move-up"
+mdl264_es_roe_fy1_d1m_class,MATRIX,1.0,1,1,"Predicted trend of ""FY1 ROE diffusion (up/down ratio); 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_roe_fy1_d1m_l1,MATRIX,0.9966,0,0,"The probability that the future trend of ""FY1 ROE diffusion (up/down ratio); 1M"" will be fall"
+mdl264_es_roe_fy1_d1m_l2,MATRIX,0.9966,0,0,"The probability that the future trend of ""FY1 ROE diffusion (up/down ratio); 1M"" will be neutral"
+mdl264_es_roe_fy1_d1m_l3,MATRIX,0.9966,0,0,"The probability that the future trend of ""FY1 ROE diffusion (up/down ratio); 1M"" will be move-up"
+mdl264_es_roe_fy1_r1m_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) of the predicted trend for FY1 ROE revision over 1 month
+mdl264_es_roe_fy1_r1m_l1,MATRIX,0.9964,1,1,Probability that the future trend of FY1 ROE revision over 1 month will be fall
+mdl264_es_roe_fy1_r1m_l2,MATRIX,0.9964,0,0,Probability that the future trend of FY1 ROE revision over 1 month will be neutral
+mdl264_es_roe_fy1_r1m_l3,MATRIX,0.9964,0,0,Probability that the future trend of FY1 ROE revision over 1 month will be move-up
+mdl264_es_roe_ntm_r1m_class,MATRIX,1.0,0,0,Predicted trend of NTM ROE revision; 1M (1: fall; 2: neutral; 3: move-up)
+mdl264_es_roe_ntm_r1m_l1,MATRIX,0.9964,0,0,The probability that the future trend of NTM ROE revision; 1M will be fall
+mdl264_es_roe_ntm_r1m_l2,MATRIX,0.9964,0,0,The probability that the future trend of NTM ROE revision; 1M will be neutral
+mdl264_es_roe_ntm_r1m_l3,MATRIX,0.9964,2,2,The probability that the future trend of NTM ROE revision; 1M will be move-up
+mdl264_es_sale_fy1_d1m_class,MATRIX,1.0,0,0,Predicted modal trend class for FY1 revenue diffusion (up/down ratio); 1M (1=fall; 2=neutral; 3=move-up)
+mdl264_es_sale_fy1_d1m_l1,MATRIX,0.9966,0,0,The probability that the future trend of FY1 revenue diffusion (up/down ratio); 1M will be fall
+mdl264_es_sale_fy1_d1m_l2,MATRIX,0.9966,1,2,The probability that the future trend of FY1 revenue diffusion (up/down ratio); 1M will be neutral
+mdl264_es_sale_fy1_d1m_l3,MATRIX,0.9966,0,0,The probability that the future trend of FY1 revenue diffusion (up/down ratio); 1M will be move-up
+mdl264_es_sale_fy1_r1m_class,MATRIX,1.0,0,0,"Predicted trend of ""FY1 revenue revision; 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_sale_fy1_r1m_l1,MATRIX,0.9965,1,1,"The probability that the future trend of ""FY1 revenue revision; 1M"" will be fall"
+mdl264_es_sale_fy1_r1m_l2,MATRIX,0.9965,0,0,"The probability that the future trend of ""FY1 revenue revision; 1M"" will be neutral"
+mdl264_es_sale_fy1_r1m_l3,MATRIX,0.9965,0,0,"The probability that the future trend of ""FY1 revenue revision; 1M"" will be move-up"
+mdl264_es_sale_ntm_r1m_class,MATRIX,1.0,0,0,"Predicted trend of ""NTM revenue revision; 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_sale_ntm_r1m_l1,MATRIX,0.9965,0,0,"The probability that the future trend of ""NTM revenue revision; 1M"" will be fall"
+mdl264_es_sale_ntm_r1m_l2,MATRIX,0.9965,0,0,"The probability that the future trend of ""NTM revenue revision; 1M"" will be neutral"
+mdl264_es_sale_ntm_r1m_l3,MATRIX,0.9965,0,0,"The probability that the future trend of ""NTM revenue revision; 1M"" will be move-up"
+mdl264_es_tp_d1m_class,MATRIX,1.0,0,0,"Predicted trend of ""Target price diffusion (up/down ratio); 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_tp_r1m_class,MATRIX,1.0,0,0,"Predicted trend of ""Target price revision; 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_vol_r1m_class,MATRIX,1.0,0,0,"Predicted trend of ""Analyst estimated vol revision; 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_es_vol_r1m_l1,MATRIX,0.9967,0,0,"The probability that the future trend of ""Analyst estimated vol revision; 1M"" will be fall"
+mdl264_es_vol_r1m_l2,MATRIX,0.9967,0,0,"The probability that the future trend of ""Analyst estimated vol revision; 1M"" will be neutral"
+mdl264_es_vol_r1m_l3,MATRIX,0.9967,1,1,"The probability that the future trend of ""Analyst estimated vol revision; 1M"" will be move-up"
+mdl264_ext_fin_noa_class,MATRIX,1.0,0,0,Predicted trend class for net external financing over net operating assets coded as 1 fall 2 neutral 3 move-up
+mdl264_ext_fin_noa_l1,MATRIX,0.9966,0,0,Probability that the future trend of net external financing over net operating assets will be fall
+mdl264_ext_fin_noa_l2,MATRIX,0.9966,0,0,Probability that the future trend of net external financing over net operating assets will be neutral
+mdl264_ext_fin_noa_l3,MATRIX,0.9966,0,0,Probability that the future trend of net external financing over net operating assets will be move-up
+mdl264_fca_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) for the predicted future trend of Foreign Exchange Income (Loss)
+mdl264_fincf_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) for the predicted future trend of Financing Activities Net Cash Flow
+mdl264_fincf_l1,MATRIX,0.9965,2,2,Probability that the future trend of Financing Activities Net Cash Flow will be a fall
+mdl264_fincf_l2,MATRIX,0.9965,1,1,"The probability that the future trend of ""Financing Activities Net Cash Flow"" will be neutral"
+mdl264_fincf_l3,MATRIX,0.9965,1,1,"The probability that the future trend of ""Financing Activities Net Cash Flow"" will be move-up"
+mdl264_float_to_class,MATRIX,1.0,0,0,"Predicted trend of ""Float turnover; 12M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_float_to_l1,MATRIX,0.9966,0,0,"The probability that the future trend of ""Float turnover; 12M"" will be fall"
+mdl264_float_to_l2,MATRIX,0.9966,0,0,"The probability that the future trend of ""Float turnover; 12M"" will be neutral"
+mdl264_float_to_l3,MATRIX,0.9966,0,0,"The probability that the future trend of ""Float turnover; 12M"" will be move-up"
+mdl264_gr_5y_cfps_class,MATRIX,1.0,2,3,Predicted trend class for Historical 5Y CFPS growth trend (1=fall; 2=neutral; 3=move-up)
+mdl264_gr_5y_eps_class,MATRIX,1.0,1,2,Predicted trend class (1: fall; 2: neutral; 3: move-up) of Historical 5Y EPS growth trend
+mdl264_gr_5y_oeps_class,MATRIX,1.0,0,0,"Predicted trend of ""Historical 5Y operating EPS growth trend"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_gr_eintr_cfps_class,MATRIX,1.0,0,0,Predicted trend class for YoY expected interim CFPS growth (1=fall; 2=neutral; 3=move-up)
+mdl264_hilomid_class,MATRIX,1.0,0,0,Predicted trend class (1=fall; 2=neutral; 3=move-up) for the High Low Mid Point factor
+mdl264_hilomid_l1,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of High Low Mid Point will be fall
+mdl264_hilomid_l2,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of High Low Mid Point will be neutral
+mdl264_hilomid_l3,MATRIX,0.9966,0,0,Model-estimated probability that the future trend of High Low Mid Point will be move-up
+mdl264_hr_epsyld_class,MATRIX,1.0,0,0,Predicted trend class for historical relative earnings yield coded as 1 fall 2 neutral 3 move-up
+mdl264_lco_class,MATRIX,1.0,0,0,Predicted trend class for Current Liabilities Other Total; 1=fall; 2=neutral; 3=move-up (modal class from the L1âL3 probabilities)
+mdl264_lottery_class,MATRIX,1.0,0,0,Predicted trend class for maximum daily return in the last 1M (lottery factor) (1=fall; 2=neutral; 3=move-up)
+mdl264_lottery_l1,MATRIX,0.9965,1,1,Probability that the future trend of maximum daily return in the last 1M (lottery factor) will be fall
+mdl264_lottery_l2,MATRIX,0.9965,0,0,Probability that the future trend of maximum daily return in the last 1M (lottery factor) will be neutral
+mdl264_lottery_l3,MATRIX,0.9965,1,1,Probability that the future trend of maximum daily return in the last 1M (lottery factor) will be move-up
+mdl264_lt_dt_eq_chg_class,MATRIX,1.0,1,1,"Predicted trend of ""YoY change in long-term debt/common equity"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_ma_15_36_class,MATRIX,1.0,0,0,Modal class (1=fall; 2=neutral; 3=move-up) of the predicted trend for moving average crossover (15-week vs 36-week)
+mdl264_ma_30_75_class,MATRIX,1.0,0,0,"Predicted trend of ""Moving average crossover; 30W-75W"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_macd_class,MATRIX,1.0,0,0,Predicted trend of the Moving Average Convergence/Divergence (MACD): 1=fall; 2=neutral; 3=move-up
+mdl264_macd_l1,MATRIX,0.9966,0,0,Probability that the future trend of MACD will be fall
+mdl264_macd_l2,MATRIX,0.9966,0,0,Probability that the future trend of MACD will be neutral
+mdl264_macd_l3,MATRIX,0.9966,0,0,Probability that the future trend of MACD will be move-up
+mdl264_mfi_class,MATRIX,1.0,0,0,Predicted trend of Money Flow Index (1: fall; 2: neutral; 3: move-up)
+mdl264_mi_class,MATRIX,1.0,0,0,Predicted trend class for Mass Index coded as 1 fall 2 neutral 3 move-up
+mdl264_news_abno_sent_1d_class,MATRIX,1.0,1,1,"Predicted trend of ""Abnormal sentiment of novel/relevant/non-neutral news 1D/365D"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_news_abno_sent_1d_l1,MATRIX,0.9962,0,0,"The probability that the future trend of ""Abnormal sentiment of novel/relevant/non-neutral news 1D/365D"" will be fall"
+mdl264_news_abno_sent_1d_l2,MATRIX,0.9962,0,0,"The probability that the future trend of ""Abnormal sentiment of novel/relevant/non-neutral news 1D/365D"" will be neutral"
+mdl264_news_abno_sent_1d_l3,MATRIX,0.9962,0,0,"The probability that the future trend of ""Abnormal sentiment of novel/relevant/non-neutral news 1D/365D"" will be move-up"
+mdl264_news_abno_vol_1d_class,MATRIX,1.0,0,0,Predicted trend class (1: fall; 2: neutral; 3: move-up) of abnormal volume (z-score) of novel/relevant/non-neutral news; 1D over 365D
+mdl264_news_abno_vol_1d_l1,MATRIX,0.9962,0,0,Probability that the future trend of abnormal volume (z-score) of novel/relevant/non-neutral news; 1D over 365D will be fall
+mdl264_news_abno_vol_1d_l2,MATRIX,0.9962,1,1,"The probability that the future trend of ""Abnormal volume (z-score) of novel/relevant/non-neutral news; 1D/365D"" will be neutral"
+mdl264_news_abno_vol_1d_l3,MATRIX,0.9962,0,0,"The probability that the future trend of ""Abnormal volume (z-score) of novel/relevant/non-neutral news; 1D/365D"" will be move-up"
+mdl264_news_sentvol_1d_class,MATRIX,1.0,0,0,Predicted trend class for number of novel/relevant/non-neutral news; 1D (1=fall; 2=neutral; 3=move-up)
+mdl264_news_sentvol_1d_l1,MATRIX,0.9962,0,0,Probability that the future trend of number of novel/relevant/non-neutral news; 1D will be fall
+mdl264_news_sentvol_1d_l2,MATRIX,0.9962,0,0,Probability that the future trend of number of novel/relevant/non-neutral news; 1D will be neutral
+mdl264_news_sentvol_1d_l3,MATRIX,0.9962,0,0,Probability that the future trend of number of novel/relevant/non-neutral news; 1D will be move-up
+mdl264_nvi_class,MATRIX,1.0,1,2,Predicted trend class (1=fall; 2=neutral; 3=move-up) for the Negative Volume Index
+mdl264_obv_class,MATRIX,1.0,0,0,Predicted trend class (1: fall; 2: neutral; 3: move-up) of On Balance Volume
+mdl264_payable_to_class,MATRIX,1.0,1,1,"Predicted trend of ""Accounts payable turnover"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_payable_to_l1,MATRIX,0.9962,2,2,"The probability that the future trend of ""Accounts payable turnover"" will be fall"
+mdl264_payable_to_l2,MATRIX,0.9962,1,1,"The probability that the future trend of ""Accounts payable turnover"" will be neutral"
+mdl264_payable_to_l3,MATRIX,0.9962,1,1,"The probability that the future trend of ""Accounts payable turnover"" will be move-up"
+mdl264_ppo_class,MATRIX,1.0,0,0,Predicted trend class for percentage price oscillator (1=fall; 2=neutral; 3=move-up)
+mdl264_psale_class,MATRIX,1.0,4,6,"Predicted trend class for ""Price-to-sales"" where 1=fall; 2=neutral; 3=move-up"
+mdl264_psale_l1,MATRIX,0.9966,0,0,"Probability that the future trend of ""Price-to-sales"" will be fall"
+mdl264_psale_l2,MATRIX,0.9966,0,0,"Probability that the future trend of ""Price-to-sales"" will be neutral"
+mdl264_psale_l3,MATRIX,0.9966,1,2,"Probability that the future trend of ""Price-to-sales"" will be move-up"
+mdl264_pvo_class,MATRIX,1.0,0,0,"Predicted trend of ""Percentage Volume Oscillator"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_rtn21d_class,MATRIX,1.0,1,2,"Predicted trend of ""Total return; past 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_rtn2520d_class,MATRIX,1.0,0,0,"Predicted trend class for ""Total return; past 120M"" where 1=fall; 2=neutral; 3=move-up"
+mdl264_rtn63d_class,MATRIX,1.0,0,0,Predicted trend class for 3-month total return: 1 fall; 2 neutral; 3 move-up
+mdl264_rtn_12m1m_class,MATRIX,1.0,3,4,Modal class of the predicted trend for Price momentum; 12M-1M (1=fall; 2=neutral; 3=move-up)
+mdl264_so_class,MATRIX,1.0,2,2,Predicted trend class (1=fall; 2=neutral; 3=move-up) for the Stochastic Oscillator
+mdl264_spi_class,MATRIX,1.0,0,0,"Predicted trend class for ""Special Items"" (1=fall; 2=neutral; 3=move-up)"
+mdl264_trix_class,MATRIX,1.0,1,1,Modal class of the predicted trend for TRIX (1=fall; 2=neutral; 3=move-up)
+mdl264_trix_l1,MATRIX,0.9966,0,0,Probability that the future trend of TRIX will be fall
+mdl264_trix_l2,MATRIX,0.9966,0,0,Probability that the future trend of TRIX will be neutral
+mdl264_trix_l3,MATRIX,0.9966,0,0,Probability that the future trend of TRIX will be move-up
+mdl264_tsi_class,MATRIX,1.0,0,0,Predicted trend class for True Strength Index (1=fall; 2=neutral; 3=move-up)
+mdl264_tstk_class,MATRIX,1.0,0,0,Predicted trend class of Treasury Stock - Total (All Capital) (1: fall; 2: neutral; 3: move-up)
+mdl264_tstk_l1,MATRIX,0.9966,0,0,The probability that the future trend of Treasury Stock - Total (All Capital) will be fall
+mdl264_tstk_l2,MATRIX,0.9966,0,0,The probability that the future trend of Treasury Stock - Total (All Capital) will be neutral
+mdl264_tstk_l3,MATRIX,0.9966,0,0,The probability that the future trend of Treasury Stock - Total (All Capital) will be move-up
+mdl264_vi_class,MATRIX,1.0,0,0,Predicted trend class for Vortex Indicator (1=fall; 2=neutral; 3=move-up)
+mdl264_vol_vo_p_1m_class,MATRIX,1.0,0,0,"Predicted trend of ""Volatility of volume/price; 1M"" (1: fall; 2: neutral; 3: move-up)"
+mdl264_vol_vo_p_1m_l1,MATRIX,0.9966,0,0,"The probability that the future trend of ""Volatility of volume/price; 1M"" will be fall"
+mdl264_vol_vo_p_1m_l2,MATRIX,0.9966,0,0,"The probability that the future trend of ""Volatility of volume/price; 1M"" will be neutral"
+mdl264_vol_vo_p_1m_l3,MATRIX,0.9966,0,0,"The probability that the future trend of ""Volatility of volume/price; 1M"" will be move-up"
+mdl264_vpt_class,MATRIX,1.0,0,0,Predicted trend class (1: fall; 2: neutral; 3: move-up) of Volume Price Trend
+mdl264_wr_class,MATRIX,1.0,4,5,"Predicted trend of ""Williams %R"" (1: fall; 2: neutral; 3: move-up)"

@@ -1,0 +1,12 @@
+[
+ "signed_power(subtract(group_rank(divide(analyst_upward_revision_count_fy1_earnings_14d_4,add(add(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),1)),sector),0.5),2.5)",
+ "signed_power(subtract(group_rank(analyst_upward_revision_count_fy1_earnings_14d_4,industry),0.5),2.5)",
+ "signed_power(subtract(group_neutralize(multiply(group_rank(analyst_upward_revision_count_fy1_earnings_14d_4,sector),group_rank(mean_estimate_change_pct_f12m_earnings_14d_4,sector)),industry),0.5),2.5)",
+ "group_neutralize(multiply(signed_power(subtract(group_rank(analyst_upward_revision_count_fy1_earnings_14d_4,sector),0.5),2.5),group_rank(mean_estimate_change_pct_f12m_earnings_14d_4,sector)),industry)",
+ "signed_power(subtract(group_rank(add(analyst_upward_revision_count_fy1_earnings_14d_4,subtract(analyst_upgrade_count_60d_2,analyst_downgrade_count_60d_3)),sector),0.5),2.5)",
+ "signed_power(subtract(group_rank(analyst_upward_revision_count_fy1_earnings_14d_4,sector),0.5),2.0)",
+ "signed_power(subtract(group_rank(analyst_upward_revision_count_fy1_earnings_14d_4,sector),0.5),3.0)",
+ "signed_power(subtract(group_rank(divide(analyst_upward_revision_count_fy1_earnings_14d_4,add(add(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),1)),industry),0.5),2.5)",
+ "signed_power(subtract(group_rank(divide(analyst_upward_revision_count_fy1_earnings_14d_4,add(add(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),1)),sector),0.5),2.0)",
+ "signed_power(subtract(group_rank(ts_decay_linear(divide(analyst_upward_revision_count_fy1_earnings_14d_4,add(add(analyst_upward_revision_count_fy1_earnings_14d_4,analyst_downward_revision_count_fy1_earnings_14d_4),1)),22),sector),0.5),2.5)"
+]

@@ -1,0 +1,9 @@
+[
+ "subtract(group_rank(vector_neut(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22)), sector), 0.5)",
+ "subtract(group_rank(vector_neut(ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22), ts_delta(probability_label1_2quantile_5day_ohlcv, 5)), sector), 0.5)",
+ "subtract(group_rank(vector_neut(ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22), ts_mean(probability_label1_2quantile_60day_ohlcv, 22)), sector), 0.5)",
+ "subtract(group_rank(ts_delta(subtract(probability_label1_2quantile_20day_ohlcv_2, probability_label1_2quantile_5day_ohlcv), 10), sector), 0.5)",
+ "subtract(group_rank(ts_delta(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), 5), sector), 0.5)",
+ "multiply(group_rank(ts_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), 66), sector), group_rank(ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22), sector))",
+ "subtract(group_rank(vector_neut(multiply(group_rank(ts_delta(probability_label1_2quantile_5day_ohlcv, 5), sector), group_rank(ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22), sector)), ts_mean(probability_label1_2quantile_20day_ohlcv_2, 22)), sector), 0.5)"
+]

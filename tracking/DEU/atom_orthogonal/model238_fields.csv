@@ -1,0 +1,23 @@
+id,type,cov,uc,ac,desc
+country_relative_investment_rank,MATRIX,0.7106,4,5,Normalized (0â100) float value for the stockâs Smart Holdings score within its country
+global_change_in_preference_rank,MATRIX,0.7107,3,3,Normalized (float; 0â100) global rank of the Change Component; representing recent changes (momentum) in ownership signals for the stock globally
+global_institutional_preference_rank,MATRIX,0.711,5,6,Normalized (0â100) float percentile rank of the stockâs Smart Holdings score globally. Higher value = higher likelihood of institutional ownership worldwide
+global_peer_investment_concentration_rank,MATRIX,0.7109,3,4,Normalized (0â100) float value measuring global peer crowding/risk; where higher values indicate higher global institutional ownership. This is a reversal scoreâ¦
+global_screening_factor_alignment_rank,MATRIX,0.711,2,3,Normalized (0â100) float value indicating the stock's style-fit or screening component; globally; adjusted for peer characteristics. Higher values suggest stronâ¦
+industry_relative_investment_rank,MATRIX,0.7075,9,15,Normalized (0â100) float value representing the stockâs Smart Holdings score within its industry
+mdl238_country_rank,MATRIX,1.0,6,7,Country rank (1â100) of Smart Holdings score. Higher rank = higher likelihood of institutional ownership within that country
+mdl238_global_change_rank,MATRIX,1.0,10,16,Global rank (1â100) for the momentum or recent change component; representing the degree of recent increase in institutional ownership likelihood compared to glâ¦
+mdl238_global_owner_rank,MATRIX,1.0,10,10,Global rank (1â100) of peer crowding/capacity risk. 100 = highest global institutional ownership (most crowded); 1 = lowest. Indicates liquidity/capacity risk fâ¦
+mdl238_global_rank,MATRIX,1.0,18,29,Global rank (1â100) of Smart Holdings model score. Higher ranks imply greater probability of global institutional ownership
+mdl238_global_screening_rank,MATRIX,1.0,5,7,Global rank (1â100) of the stockâs style-fit or screening component; adjusted for peer characteristics. Higher values represent better alignment with factors faâ¦
+mdl238_industry_rank,MATRIX,1.0,24,28,Industry rank (1â100) of Smart Holdings score. Higher rank means higher probability of institutional ownership within that industry
+mdl238_region_change_rank,MATRIX,1.0,5,6,Regional rank (1â100) indicating the strength of recent change or momentum in institutional ownership within the region
+mdl238_region_owner_rank,MATRIX,1.0,6,12,Regional rank (1â100) of peer crowding. 100 = highest regional institutional ownership (most crowded); 1 = lowest. Highlights local capacity risk
+mdl238_region_rank,MATRIX,1.0,6,6,Regional rank (1â100) of Smart Holdings score. Higher rank = higher likelihood of institutional ownership within the region
+mdl238_region_screening_rank,MATRIX,1.0,5,6,Regional rank (1â100) of the stockâs style-fit or screening component; peer-adjusted. Higher rank suggests stronger regional style fit
+mdl238_sector_rank,MATRIX,1.0,15,23,Sector rank (1â100) of Smart Holdings score. Higher values represent higher expected institutional ownership in that sector
+regional_change_in_preference_rank,MATRIX,0.7104,3,3,Normalized (float; 0â100) regional rank of the Change Component; representing momentum in institutional ownership signals at the region level
+regional_institutional_preference_rank,MATRIX,0.711,6,6,Normalized (0â100) float value for the stockâs Smart Holdings score within its region
+regional_peer_investment_concentration_rank,MATRIX,0.7107,3,4,Normalized (0â100) float value measuring regional peer crowding. High values mean higher institutional ownership regionally (reversed: high = high crowding riskâ¦
+regional_screening_factor_alignment_rank,MATRIX,0.711,4,5,Normalized (0â100) float value indicating the stock's style-fit or screening component within the region; adjusted for peer characteristics
+sector_relative_investment_rank,MATRIX,0.7101,7,9,Normalized (0â100) float value reflecting the stockâs Smart Holdings score within its sector

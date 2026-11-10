@@ -1,0 +1,7 @@
+id,type,cov,uc,ac,desc
+search_interest_14d_corporate_name,MATRIX,0.0,1,1,14-day rolling average of daily Google Trends search-interest for company-name queries in the USA; 0â100 scale (D1)
+search_interest_1y_corporate_name,MATRIX,0.0,2,4,364-day rolling average of daily Google Trends search-interest for company-name queries in the USA; 0â100 scale (D1)
+search_interest_28d_corporate_name,MATRIX,0.0,1,1,28-day rolling average of daily Google Trends search-interest for company-name queries in the USA; 0â100 scale (D1)
+search_interest_7d_corporate_name,MATRIX,0.0,1,1,7-day rolling average of daily Google Trends search-interest for company-name queries in the USA; 0â100 scale (D1)
+search_interest_84d_corporate_name,MATRIX,0.0,3,5,84-day rolling average of daily Google Trends search-interest for company-name queries in the USA; 0â100 scale (D1)
+search_interest_today_corporate_name,MATRIX,0.0,2,2,Latest complete calendar day Google Trends search-interest value for company-name queries in the USA; daily point-in-time value on Googleâs 0â100 scale (D1 delaâ¦

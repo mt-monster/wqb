@@ -1,0 +1,12 @@
+[
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_ratio), 22), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_source_ratio), 22), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_tnc), 22), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_avg(insd5_ratio), 22), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_real_ratio), 22), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_ratio), 55), sector))",
+ "subtract(group_rank(ts_mean(divide(1, add(vec_stddev(insd5_ratio), 100)), 22), sector), 0.5)",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_data), 22), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_source_data), 22), sector))",
+ "subtract(0.5, group_rank(ts_std_dev(ts_mean(vec_avg(insd5_ratio), 5), 66), sector))"
+]

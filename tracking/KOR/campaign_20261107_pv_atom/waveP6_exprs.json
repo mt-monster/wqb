@@ -1,0 +1,12 @@
+[
+  "group_rank(sentiment_score_average, subindustry)",
+  "group_rank(ts_delta(sentiment_score_average, 5), subindustry)",
+  "group_rank(subtract(primary_sentiment_maximum, primary_sentiment_minimum), subindustry)",
+  "group_rank(sentiment_distribution_skewness_2, subindustry)",
+  "group_rank(news_article_count, subindustry)",
+  "group_rank(ts_delta(normalized_news_article_count, 22), subindustry)",
+  "group_rank(total_sentiment_score, subindustry)",
+  "group_rank(subtract(primary_sentiment_average, secondary_sentiment_average), subindustry)",
+  "group_rank(divide(total_sentiment_score, news_article_count), subindustry)",
+  "multiply(group_rank(ts_delta(sentiment_score_average, 5), subindustry), group_rank(news_article_count, subindustry))"
+]

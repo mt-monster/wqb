@@ -1,0 +1,26 @@
+{
+ "C": [
+  "group_rank(ts_mean(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), 22), industry)",
+  "group_rank(ts_backfill(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), 22), industry)",
+  "group_zscore(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), subindustry)",
+  "group_rank(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), sector)",
+  "group_rank(divide(est_12m_ebi_raisednum_1mth, add(est_12m_ebi_raisednum_1mth, add(est_12m_ebi_lowerednum_1mth, 1))), industry)",
+  "group_rank(divide(est_12m_ebi_raised_1wk, add(est_12m_ebi_raised_1wk, add(est_12m_ebi_lowered_1wk, 1))), industry)",
+  "group_rank(ts_rank(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), 252), industry)",
+  "group_rank(winsorize(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), std=4), industry)",
+  "group_rank(ts_decay_linear(divide(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_raisednum_4wks, add(est_12m_ebi_lowerednum_4wks, 1))), 10), industry)"
+ ],
+ "D": [
+  "group_rank(divide(est_12m_ebt_raisednum_4wks, add(est_12m_ebt_raisednum_4wks, add(est_12m_ebt_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_pre_raisednum_4wks, add(est_12m_pre_raisednum_4wks, add(est_12m_pre_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_gps_raisednum_4wks, add(est_12m_gps_raisednum_4wks, add(est_12m_gps_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_net_raisednum_4wks, add(est_12m_net_raisednum_4wks, add(est_12m_net_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_sal_raisednum_4wks, add(est_12m_sal_raisednum_4wks, add(est_12m_sal_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_dps_raisednum_4wks, add(est_12m_dps_raisednum_4wks, add(est_12m_dps_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_cps_raisednum_4wks, add(est_12m_cps_raisednum_4wks, add(est_12m_cps_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_roa_raisednum_4wks, add(est_12m_roa_raisednum_4wks, add(est_12m_roa_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_tbv_raisednum_4wks, add(est_12m_tbv_raisednum_4wks, add(est_12m_tbv_lowerednum_4wks, 1))), industry)",
+  "group_rank(divide(est_12m_bps_raisednum_4wks, add(est_12m_bps_raisednum_4wks, add(est_12m_bps_lowerednum_4wks, 1))), industry)"
+ ]
+}

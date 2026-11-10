@@ -1,0 +1,94 @@
+{
+ "batches": [
+  {
+   "batch_id": "3eqn9kegR4Yb9Fi1ausBuHE6",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  },
+  {
+   "batch_id": "2dZlWcuh4JTcIh1eHUElgP8",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  },
+  {
+   "batch_id": "4y8A043go4E1bWd13NaSaYwE",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  },
+  {
+   "batch_id": "40eJUU9jd4sNa2kVM7B8pQv",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  },
+  {
+   "batch_id": "4weRcbGT5jMbe540ysDwLZ",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  },
+  {
+   "batch_id": "2Twhjx5aH4yD98MWf7voWTs",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  },
+  {
+   "batch_id": "4x7CH81ff4pQcKE178vNWZSr",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  },
+  {
+   "batch_id": "rIiQJ9mH50ua6v15XGfaTAI",
+   "kind": "multisim",
+   "child_count": 0,
+   "terminal": 0,
+   "errors": 0,
+   "all_terminal": false,
+   "children": [],
+   "parent_status": null,
+   "error": ""
+  }
+ ],
+ "all_ok": false,
+ "total": 8
+}

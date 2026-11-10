@@ -1,0 +1,82 @@
+[
+ {
+  "id": "alt_rec_analyst_mask_code",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Encoded identifier for the individual analyst contributing the recommendation, used for anonymization"
+ },
+ {
+  "id": "alt_rec_standardized_code",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Numeric code denoting the type of analyst recommendation (e.g., Buy, Hold, Sell etc.), as defined by the IBES code table"
+ },
+ {
+  "id": "anl8_analyst_code",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Unique identifier code for the analyst issuing the price target"
+ },
+ {
+  "id": "anl8_eur_ibessplit_rec_analyst_maskcode",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Encoded identifier for the analyst providing the recommendation"
+ },
+ {
+  "id": "anl8_eur_ibessplit_rec_ibes_reccode",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Numerical code representing the type of analyst recommendation (e.g. Buy, Sell, Hold) based on IBES lookup"
+ },
+ {
+  "id": "anl8_horizon",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Time horizon in days for which the price target is forecasted"
+ },
+ {
+  "id": "anl8_irl_level",
+  "type": "MATRIX",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Indicates how frequently the recommendation data is updated or reported (e.g., daily, weekly, monthly)"
+ },
+ {
+  "id": "anl8_value",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "Analyst-reported price target for the security"
+ },
+ {
+  "id": "rec_d0_analyst_mask_code",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "An encoded identifier for the analyst who made the recommendation"
+ },
+ {
+  "id": "rec_d0_standardized_code",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The recommendation code given by the analyst, indicating buy/sell/hold status"
+ }
+]

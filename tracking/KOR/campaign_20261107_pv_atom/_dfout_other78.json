@@ -1,0 +1,99 @@
+{
+ "results": [
+  {
+   "id": "oth78_calendaryear",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The calendar year of the call"
+  },
+  {
+   "id": "oth78_erdaily_cancelledflag",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating whether the transcript/event was cancelled"
+  },
+  {
+   "id": "oth78_erdaily_estimatedtimeflag",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating whether the event date/time was declared by the source (0) or estimated (1)"
+  },
+  {
+   "id": "oth78_fiscalquarter",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The fiscal quarter of the earnings release"
+  },
+  {
+   "id": "oth78_fiscalyear",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The fiscal year of the earnings release"
+  },
+  {
+   "id": "oth78_fullyearflag",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating whether the earnings release was for a full year (0=no, 1=yes)"
+  },
+  {
+   "id": "oth78_icdaily_cancelledflag",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator (e.g., 0/1) whether the event was cancelled"
+  },
+  {
+   "id": "oth78_meetingdaily_cancelledflag",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Indicator whether the meeting or event was cancelled"
+  },
+  {
+   "id": "oth78_preliminaryresultsflag",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating whether the initial disclosure is preliminary results (0 = no, 1 = yes)"
+  },
+  {
+   "id": "oth78_sourcetypename",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 23,
+   "alphaCount": 64,
+   "description": "Name of the source type"
+  },
+  {
+   "id": "oth78_transcribeflag",
+   "type": "VECTOR",
+   "coverage": 0.7925,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Flag indicating event is in transcript coverage universe (1=True; 0=previously covered but removed)"
+  }
+ ],
+ "count": 11,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 11,
+ "complete": true,
+ "pages_fetched": 1
+}
+

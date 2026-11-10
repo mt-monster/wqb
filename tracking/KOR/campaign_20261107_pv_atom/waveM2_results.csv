@@ -1,0 +1,6 @@
+batch_idx,expression,multisim_id,child_location,status,alpha_id,code,dataset,sharpe,fitness,two_year_sharpe,margin_bp,turnover_pct,rn_sharpe,rn_fitness,ra_failed_count,failed_checks,error
+1,,https://api.worldquantbrain.com/simulations/2CilI6eCC5jec8DzuqgxdE8,https://api.worldquantbrain.com/simulations/2CilI6eCC5jec8DzuqgxdE8,COMPLETE,,,,,,,,,,,,,COMPLETE
+2,,https://api.worldquantbrain.com/simulations/2ZEUvQ9E94w2b3G1a8fKLc4C,https://api.worldquantbrain.com/simulations/2ZEUvQ9E94w2b3G1a8fKLc4C,COMPLETE,,,,,,,,,,,,,COMPLETE
+3,,https://api.worldquantbrain.com/simulations/3kjUdmcHz4MocdTp6tPIjmu,https://api.worldquantbrain.com/simulations/3kjUdmcHz4MocdTp6tPIjmu,COMPLETE,,,,,,,,,,,,,COMPLETE
+4,,https://api.worldquantbrain.com/simulations/4pkYsFcGc5iecxp1bubx7QlS,https://api.worldquantbrain.com/simulations/4pkYsFcGc5iecxp1bubx7QlS,COMPLETE,,,,,,,,,,,,,COMPLETE
+5,,https://api.worldquantbrain.com/simulations/4oSbON4nZ4i39WnC915MYDE,https://api.worldquantbrain.com/simulations/4oSbON4nZ4i39WnC915MYDE,COMPLETE,,,,,,,,,,,,,COMPLETE

@@ -1,0 +1,210 @@
+[
+ {
+  "id": "news_sentiment_dl",
+  "name": "Deep Learning News Sentiment Signals",
+  "fc": 22,
+  "cov": 0.2588,
+  "aC": 3,
+  "uC": 3
+ },
+ {
+  "id": "event_relation",
+  "name": "Text-Based Event Relationship Analysis",
+  "fc": 3,
+  "cov": 0.3392,
+  "aC": 4,
+  "uC": 4
+ },
+ {
+  "id": "news_sentiment_nlp",
+  "name": "News Sentiment Signal Features",
+  "fc": 23,
+  "cov": 0.2767,
+  "aC": 4,
+  "uC": 4
+ },
+ {
+  "id": "other635",
+  "name": "Thomson Reuters News Analytics Equities",
+  "fc": 6,
+  "cov": 0.3011,
+  "aC": 5,
+  "uC": 3
+ },
+ {
+  "id": "other546",
+  "name": "Institutional Network Analysis Dataset",
+  "fc": 10,
+  "cov": 0.5632,
+  "aC": 9,
+  "uC": 8
+ },
+ {
+  "id": "other436",
+  "name": "Dividend model",
+  "fc": 3,
+  "cov": 0.57,
+  "aC": 15,
+  "uC": 12
+ },
+ {
+  "id": "equity_forum_data",
+  "name": "International Equity Forum Activity",
+  "fc": 6,
+  "cov": 0.8948,
+  "aC": 16,
+  "uC": 12
+ },
+ {
+  "id": "other567",
+  "name": "Employee Review Data",
+  "fc": 2,
+  "cov": 0.2571,
+  "aC": 16,
+  "uC": 12
+ },
+ {
+  "id": "other327",
+  "name": "Sensitivity to Interest Rates Model",
+  "fc": 3,
+  "cov": 0.7866,
+  "aC": 31,
+  "uC": 25
+ },
+ {
+  "id": "ai_news_scores",
+  "name": "AI News Sentiment Scores",
+  "fc": 103,
+  "cov": 0.373,
+  "aC": 36,
+  "uC": 26
+ },
+ {
+  "id": "other424",
+  "name": "Dividend prediction model",
+  "fc": 3,
+  "cov": 0.5919,
+  "aC": 44,
+  "uC": 31
+ },
+ {
+  "id": "other545",
+  "name": "Linked Firms Momentum Data",
+  "fc": 4,
+  "cov": 0.8393,
+  "aC": 49,
+  "uC": 31
+ },
+ {
+  "id": "other571",
+  "name": "Wikipedia Viewing Data",
+  "fc": 23,
+  "cov": 0.2649,
+  "aC": 62,
+  "uC": 49
+ },
+ {
+  "id": "other78",
+  "name": "Earnings and conference call data",
+  "fc": 11,
+  "cov": 0.7925,
+  "aC": 70,
+  "uC": 29
+ },
+ {
+  "id": "mmp_nlp_sentiment",
+  "name": "Multilingual NLP News Sentiment Signals",
+  "fc": 521,
+  "cov": 0.6187,
+  "aC": 80,
+  "uC": 49
+ },
+ {
+  "id": "acquisition_model",
+  "name": "Corporate Acquisition Likelihood Model",
+  "fc": 15,
+  "cov": 0.9937,
+  "aC": 113,
+  "uC": 67
+ },
+ {
+  "id": "other695",
+  "name": "Korean Imports Data",
+  "fc": 3,
+  "cov": 0.4886,
+  "aC": 185,
+  "uC": 87
+ },
+ {
+  "id": "other315",
+  "name": "Equity Swap Data",
+  "fc": 32,
+  "cov": 0.4022,
+  "aC": 511,
+  "uC": 169
+ },
+ {
+  "id": "other455",
+  "name": "Relationship enhanced with AI/ML",
+  "fc": 1500,
+  "cov": 0.8973,
+  "aC": 553,
+  "uC": 138
+ },
+ {
+  "id": "other475",
+  "name": "Manufacturer Exports Data",
+  "fc": 1,
+  "cov": 0.357,
+  "aC": 637,
+  "uC": 232
+ },
+ {
+  "id": "other496",
+  "name": "Intraday FX rates",
+  "fc": 104,
+  "cov": 0.8006,
+  "aC": 847,
+  "uC": 236
+ },
+ {
+  "id": "other323",
+  "name": "Global Equity Premarket Data",
+  "fc": 11,
+  "cov": 1,
+  "aC": 1046,
+  "uC": 280
+ },
+ {
+  "id": "other335",
+  "name": "Multi-Region Dividend Alpha Model Dataset",
+  "fc": 10,
+  "cov": 0.59,
+  "aC": 1068,
+  "uC": 392
+ },
+ {
+  "id": "other532",
+  "name": "Specific Returns",
+  "fc": 8,
+  "cov": 0.9956,
+  "aC": 1867,
+  "uC": 472
+ },
+ {
+  "id": "insider_feats",
+  "name": "Global Insider Transaction Features",
+  "fc": 31,
+  "cov": 0.6636,
+  "aC": 2058,
+  "uC": 468
+ },
+ {
+  "id": "dl_riskfree_returns",
+  "name": "Deep Learning Risk Free Returns",
+  "fc": 57,
+  "cov": 0.9095,
+  "aC": 8496,
+  "uC": 1230
+ }
+]

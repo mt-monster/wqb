@@ -1,0 +1,9 @@
+id,type,cov,uc,ac,desc
+aggregated_slippage_metric,MATRIX,0.0,1,1,Comprehensive measure of slippage across multiple trades or venues.
+pv106_lastspread,MATRIX,0.0,0,0,Bid-ask spread averaged over the last 30 minutes (in instrument currency)
+pv106_lastspreadbp,MATRIX,0.0,1,1,Bid-ask spread over the last 30 minutes expressed in basis points
+pv106_spread,MATRIX,0.0,1,1,Difference between best bid and best ask price for the security (in instrument currency)
+pv106_spreadbp,MATRIX,0.0,35,41,Bid-ask spread expressed in basis points (normalized to mid/VWAP)
+slippage_at_spread_35,MATRIX,0.0,1,1,Modeled slippage/transaction cost estimate for executing an order equal to 35% of average daily volume; derived from spread-based microstructure and VWAP data;â¦
+transaction_cost_maximum,MATRIX,0.0,0,0,Maximum estimated transaction cost for a trade.
+transaction_cost_percentile_10,MATRIX,0.0,5,7,Estimated transaction cost at the 10th percentile for a trade.

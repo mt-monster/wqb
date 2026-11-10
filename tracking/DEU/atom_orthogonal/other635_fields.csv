@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+oth635_char_count,VECTOR,0.0,1,1,Count of Unicode characters in decode_title; including whitespace
+oth635_sentiment,VECTOR,0.0,1,1,Neural-derived sentiment score for the event/title in [-1; 1] (negative to positive; 0 neutral)
+oth635_words_count,VECTOR,0.0,0,0,Number of tokens/words in the normalized title (purify_title); whitespace-separated

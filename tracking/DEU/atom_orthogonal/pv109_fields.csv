@@ -1,0 +1,27 @@
+id,type,cov,uc,ac,desc
+ask_side_conversion_yield,VECTOR,0.4665,2,2,Yield to conversion based on the ask price.
+ask_side_yield_to_maturity,VECTOR,0.4665,2,2,Yield to maturity calculated using the ask price; represents expected annualized return if purchased at the ask price and held to maturity
+bid_side_conversion_yield,VECTOR,0.4665,0,0,Yield to conversion based on the bid price.
+bid_side_yield_to_maturity,VECTOR,0.4665,4,4,Yield to maturity on the bid side; i.e.; yield investors would earn if buying at bid price and holding to maturity
+bond_coupon_rate,VECTOR,0.4665,1,1,The nominal coupon rate specified for the bond; representing periodic interest paid
+bond_maturity_structure,VECTOR,0.4665,0,0,Type of bond maturity (e.g.; bullet; fixed-term); categorizing how and when the bond principal is repaid
+coupon_payment_frequency,VECTOR,0.4665,0,0,Code for frequency of coupon payments (e.g.; annual; semiannual; quarterly)
+coupon_type_description,VECTOR,0.4665,1,1,Code indicating the coupon type (e.g.; fixed; floating; step-up)
+current_coupon_rate,VECTOR,0.4665,0,0,Current coupon rate applicable on the bond as of the date; especially relevant for floating or step-up coupons
+face_value_amount,VECTOR,0.4665,2,2,Par amount or face value of the bond
+highest_bid_price,VECTOR,0.4665,4,4,Bid price; i.e.; the price a buyer is willing to pay for the bond
+initial_issue_price,VECTOR,0.4665,4,4,Price at which the bond was originally issued
+interest_day_count_basis,VECTOR,0.4665,2,3,Day count convention code; specifying the interest accrual calculation method for coupon payments
+last_traded_price,VECTOR,0.4665,1,1,Last traded price for the bond; typically representing the end-of-day closing price or last price observed
+lowest_ask_price,VECTOR,0.4665,1,1,Bond's quoted ask (offer) price at the as-of date
+midpoint_conversion_yield,VECTOR,0.4665,0,0,Yield to conversion calculated using the average of bid and ask prices.
+midpoint_trade_price,VECTOR,0.4665,3,3,Mid price of the bond; either calculated or observed; typically midway between bid and ask prices
+midpoint_yield_to_maturity,VECTOR,0.4665,1,1,Yield to maturity calculated at the mid price for the bond as of the as-of-date
+minimum_bond_denomination,VECTOR,0.4665,0,0,Minimum denomination or smallest tradable amount of the bond
+minimum_trade_increment,VECTOR,0.4665,0,0,Minimum trading increment; i.e.; the smallest allowable amount by which the bond can be traded; expressed as a numerical value
+pv109_amt_issued,VECTOR,0.4665,1,1,Total amount of the bond issued at origination
+pv109_amt_outstanding,VECTOR,0.4665,1,1,The face value amount of the bond that is currently outstanding (not yet repaid) as of the date
+pv109_announce_dt,VECTOR,0.4665,1,1,Date when the bond or related event (such as issuance) was publicly announced
+pv109_maturity,VECTOR,0.4665,0,0,Date on which the bond matures; when principal is scheduled to be repaid
+redemption_value_amount,VECTOR,0.4665,6,8,Redemption value; i.e.; the amount paid upon maturity or call/redemption event of the bond
+total_traded_volume,VECTOR,0.4665,2,2,Trading volume (number/amount of bonds traded) for the bond at the as-of date

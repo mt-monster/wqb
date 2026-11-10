@@ -788,6 +788,25 @@ class CorrelationMixin:
     # ``wqb.store._corr_cache.CORR_FRESH_HOURS``。别再在 MCP 侧重建同义常量——
     # 两份"48h"并存正是当初 Redis 7 天 TTL 漂移的成因。
 
+    @staticmethod
+    def _corr_cache_provisional(cached: Dict[str, Any]) -> bool:
+        """缓存命中的值是否只能证伪、不足以放行（2026-11-10 审查 P0-1）。
+
+        判据与 ``wqb.workflow.nodes.submit_alpha._cache_source_untrusted`` 同口径：
+        ``source`` 落在 ``NON_REALTIME_SOURCES``（人工 / 历史自由文本 / 跨表搬运 /
+        本地抽测）或**根本没有来源标记**时为 True。平台实测来源
+        （``check_correlation`` / ``platform_sync`` / ``prod_peek`` 等）为 False。
+        """
+        src = str((cached or {}).get("source") or "").strip().lower()
+        if not src:
+            return True
+        try:
+            from wqb.store import NON_REALTIME_SOURCES
+        except Exception:  # noqa: BLE001 - wqb 不可用时退回同口径内置集合
+            NON_REALTIME_SOURCES = {"manual", "legacy", "alphas_backfill",
+                                    "checkpoint_backfill", "triage_local"}
+        return src in NON_REALTIME_SOURCES
+
     def _prod_corr_cached(self, alpha_id: str) -> Optional[Dict[str, Any]]:
         """读 prod 相关的**单源缓存**（权威表 → ``alphas`` 回落），**未过期**才返回。
 
@@ -879,7 +898,7 @@ class CorrelationMixin:
         except Exception as e:
             self.log(f"prod corr cache write failed for {alpha_id}: {e}", "WARNING")
 
-    async def check_correlation(self, alpha_id: str, correlation_type: str = "production", threshold: float = 0.7, refresh: bool = False) -> Dict[str, Any]:
+    async def check_correlation(self, alpha_id: str, correlation_type: str = "production", threshold: float = 0.7, refresh: bool = False, timeout_s: float = None) -> Dict[str, Any]:
         """ Only where all IS metrics PASS to Check alpha correlation, Check alpha correlation against production alphas, self alphas, or both.
 
         Concurrency: production correlation hits BRAIN's per-account
@@ -923,6 +942,13 @@ class CorrelationMixin:
 
             # Determine which correlations to check
             check_types = []
+            # 2026-11-10 审查 P1-8：参数校验下沉到底层。旧实现只在 MCP 工具层校验，
+            # 而底层被大量直连（batch_submit_verdict / corr_check / judge / submit_inventory）；
+            # 未知 correlation_type 会让两个分支都不匹配 ⇒ checks 为空却 all_passed=True（假通过）。
+            if correlation_type not in ("production", "self", "both"):
+                return {"error": (f"correlation_type 必须是 production|self|both，"
+                                  f"收到 {correlation_type!r}"),
+                        "all_passed": None, "checks": {}}
             if correlation_type == "both":
                 check_types = ["production", "self"]
             else:
@@ -948,6 +974,10 @@ class CorrelationMixin:
                             'cached_at': cached.get('cached_at'),
                             'source': cached.get('source'),
                             'from_alphas': bool(cached.get('from_alphas')),
+                            # 2026-11-10 审查 P0-1：缓存命中也要表达可信度。
+                            # 非实时来源（人工/历史自由文本/跨表搬运/本地抽测）或
+                            # 根本没有来源标记 ⇒ provisional=True，消费方不得凭它放行。
+                            'provisional': self._corr_cache_provisional(cached),
                             'correlation_data': cached,
                         }
                         if not passes_check:
@@ -957,7 +987,8 @@ class CorrelationMixin:
                         continue
 
                     correlation_data = await self.get_production_correlation(
-                        alpha_id, use_pre_read=not refresh)
+                        alpha_id, use_pre_read=not refresh,
+                        max_wait_seconds=timeout_s)
                     
                     # Handle pending/data-not-yet-available case (super alphas, fresh simulations)
                     if correlation_data and correlation_data.get('status') == 'pending':
@@ -1004,6 +1035,27 @@ class CorrelationMixin:
                         results['message'] = correlation_data.get('message', '')
                         results['retry_after'] = correlation_data.get('retry_after')
                         results['inflight'] = bool(correlation_data.get('inflight'))
+                        results['last_known'] = _last_known
+                        return results
+
+                    # ── 账号级熔断（2026-11-10 审查第三批）：平台侧连续 pending ──
+                    # 与 busy 同样 fail-closed，但语义不同：不是「别人占着槽」，而是
+                    # 「平台相关性服务暂时不可用」，调用方应等 retry_after 而非抢槽。
+                    if correlation_data and correlation_data.get('status') == 'platform_unavailable':
+                        _last_known = self._prod_corr_last_known(alpha_id)
+                        results['checks'][check_type] = {
+                            'max_correlation': None,
+                            'passes_check': None,
+                            'status': 'platform_unavailable',
+                            'message': correlation_data.get('message', ''),
+                            'retry_after': correlation_data.get('retry_after'),
+                            'last_known': _last_known,
+                            'correlation_data': correlation_data,
+                        }
+                        results['all_passed'] = None
+                        results['status'] = 'platform_unavailable'
+                        results['message'] = correlation_data.get('message', '')
+                        results['retry_after'] = correlation_data.get('retry_after')
                         results['last_known'] = _last_known
                         return results
 

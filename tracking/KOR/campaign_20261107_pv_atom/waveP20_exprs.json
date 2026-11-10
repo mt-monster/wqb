@@ -1,0 +1,12 @@
+[
+  "-group_rank(vec_avg(salience_weighted_return_score), sector)",
+  "group_rank(vec_avg(consecutive_return_streak_length), sector)",
+  "-group_rank(vec_avg(extreme_daily_return_indicator), sector)",
+  "-group_rank(vec_avg(price_path_curvature_measure), sector)",
+  "-group_rank(vec_avg(chronological_return_sequence_correlation), sector)",
+  "group_rank(vec_avg(visual_price_path_shape_score), sector)",
+  "-group_rank(ts_av_diff(vec_avg(salience_weighted_return_score), 66), sector)",
+  "-group_rank(multiply(vec_avg(extreme_daily_return_indicator), vec_avg(salience_weighted_return_score)), sector)",
+  "group_neutralize(multiply(group_rank(vec_avg(consecutive_return_streak_length),sector), group_rank(vec_avg(visual_price_path_shape_score),sector)), industry)",
+  "-group_rank(divide(vec_avg(salience_weighted_return_score), add(abs(vec_avg(price_path_curvature_measure)), 0.0001)), sector)"
+]

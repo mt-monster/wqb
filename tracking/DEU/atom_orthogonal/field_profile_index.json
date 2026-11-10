@@ -1,0 +1,1550 @@
+[
+ {
+  "ds": "analyst_consensus",
+  "n": 1972,
+  "MATRIX": 18,
+  "VECTOR": 1954,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 209
+ },
+ {
+  "ds": "other455",
+  "n": 1500,
+  "MATRIX": 300,
+  "VECTOR": 0,
+  "GROUP": 1200,
+  "SYMBOL": 0,
+  "used_fields": 409
+ },
+ {
+  "ds": "analyst_revision_horizons",
+  "n": 1095,
+  "MATRIX": 1095,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 230
+ },
+ {
+  "ds": "fundamental72",
+  "n": 1031,
+  "MATRIX": 347,
+  "VECTOR": 684,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 334
+ },
+ {
+  "ds": "pv20",
+  "n": 681,
+  "MATRIX": 678,
+  "VECTOR": 0,
+  "GROUP": 3,
+  "SYMBOL": 0,
+  "used_fields": 193
+ },
+ {
+  "ds": "multifactor_return_pred",
+  "n": 648,
+  "MATRIX": 648,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 262
+ },
+ {
+  "ds": "predictive_starmine",
+  "n": 631,
+  "MATRIX": 631,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 282
+ },
+ {
+  "ds": "analyst7",
+  "n": 608,
+  "MATRIX": 608,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 352
+ },
+ {
+  "ds": "intraday_pv_feats",
+  "n": 585,
+  "MATRIX": 585,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 156
+ },
+ {
+  "ds": "continuation_score",
+  "n": 560,
+  "MATRIX": 560,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 73
+ },
+ {
+  "ds": "model26",
+  "n": 548,
+  "MATRIX": 548,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 240
+ },
+ {
+  "ds": "model109",
+  "n": 544,
+  "MATRIX": 271,
+  "VECTOR": 273,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 185
+ },
+ {
+  "ds": "analyst15",
+  "n": 537,
+  "MATRIX": 533,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 4,
+  "used_fields": 119
+ },
+ {
+  "ds": "pattern_scores",
+  "n": 504,
+  "MATRIX": 504,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 158
+ },
+ {
+  "ds": "global_seasonal_model",
+  "n": 449,
+  "MATRIX": 449,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 64
+ },
+ {
+  "ds": "fundamental89",
+  "n": 407,
+  "MATRIX": 407,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 115
+ },
+ {
+  "ds": "techindi_model",
+  "n": 399,
+  "MATRIX": 399,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 337
+ },
+ {
+  "ds": "model264",
+  "n": 380,
+  "MATRIX": 380,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 114
+ },
+ {
+  "ds": "analyst83",
+  "n": 345,
+  "MATRIX": 0,
+  "VECTOR": 345,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 27
+ },
+ {
+  "ds": "analyst69",
+  "n": 292,
+  "MATRIX": 104,
+  "VECTOR": 188,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 120
+ },
+ {
+  "ds": "quant_factor_lib",
+  "n": 289,
+  "MATRIX": 0,
+  "VECTOR": 289,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 25
+ },
+ {
+  "ds": "pv30",
+  "n": 285,
+  "MATRIX": 0,
+  "VECTOR": 0,
+  "GROUP": 285,
+  "SYMBOL": 0,
+  "used_fields": 120
+ },
+ {
+  "ds": "order_book_imbalance",
+  "n": 256,
+  "MATRIX": 0,
+  "VECTOR": 256,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 75
+ },
+ {
+  "ds": "sentiment33",
+  "n": 255,
+  "MATRIX": 0,
+  "VECTOR": 255,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 34
+ },
+ {
+  "ds": "model138",
+  "n": 240,
+  "MATRIX": 0,
+  "VECTOR": 240,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 107
+ },
+ {
+  "ds": "other696",
+  "n": 220,
+  "MATRIX": 0,
+  "VECTOR": 220,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 20
+ },
+ {
+  "ds": "model25",
+  "n": 217,
+  "MATRIX": 217,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 193
+ },
+ {
+  "ds": "fundamental6",
+  "n": 196,
+  "MATRIX": 196,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 196
+ },
+ {
+  "ds": "earningscall_sentiment",
+  "n": 167,
+  "MATRIX": 144,
+  "VECTOR": 23,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 78
+ },
+ {
+  "ds": "model262",
+  "n": 159,
+  "MATRIX": 159,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 25
+ },
+ {
+  "ds": "model135",
+  "n": 137,
+  "MATRIX": 0,
+  "VECTOR": 137,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 9
+ },
+ {
+  "ds": "fundamental17",
+  "n": 135,
+  "MATRIX": 135,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 135
+ },
+ {
+  "ds": "dl_riskfree_returns",
+  "n": 133,
+  "MATRIX": 133,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 76
+ },
+ {
+  "ds": "fundamental1",
+  "n": 123,
+  "MATRIX": 0,
+  "VECTOR": 123,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 16
+ },
+ {
+  "ds": "chart_cnn_alpha",
+  "n": 122,
+  "MATRIX": 122,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 27
+ },
+ {
+  "ds": "news23",
+  "n": 116,
+  "MATRIX": 0,
+  "VECTOR": 116,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 25
+ },
+ {
+  "ds": "other566",
+  "n": 112,
+  "MATRIX": 112,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 12
+ },
+ {
+  "ds": "other78",
+  "n": 112,
+  "MATRIX": 0,
+  "VECTOR": 52,
+  "GROUP": 0,
+  "SYMBOL": 60,
+  "used_fields": 5
+ },
+ {
+  "ds": "analyst_factor_signals",
+  "n": 108,
+  "MATRIX": 108,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 87
+ },
+ {
+  "ds": "ai_news_scores",
+  "n": 105,
+  "MATRIX": 105,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 11
+ },
+ {
+  "ds": "event_ml_signals",
+  "n": 104,
+  "MATRIX": 0,
+  "VECTOR": 104,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 8
+ },
+ {
+  "ds": "analyst93",
+  "n": 100,
+  "MATRIX": 0,
+  "VECTOR": 100,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 50
+ },
+ {
+  "ds": "pv173",
+  "n": 81,
+  "MATRIX": 0,
+  "VECTOR": 78,
+  "GROUP": 0,
+  "SYMBOL": 3,
+  "used_fields": 11
+ },
+ {
+  "ds": "analyst44",
+  "n": 72,
+  "MATRIX": 0,
+  "VECTOR": 72,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 29
+ },
+ {
+  "ds": "model38",
+  "n": 71,
+  "MATRIX": 71,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 71
+ },
+ {
+  "ds": "news18",
+  "n": 70,
+  "MATRIX": 0,
+  "VECTOR": 64,
+  "GROUP": 0,
+  "SYMBOL": 6,
+  "used_fields": 48
+ },
+ {
+  "ds": "analyst16",
+  "n": 66,
+  "MATRIX": 0,
+  "VECTOR": 38,
+  "GROUP": 0,
+  "SYMBOL": 28,
+  "used_fields": 15
+ },
+ {
+  "ds": "fundamental90",
+  "n": 66,
+  "MATRIX": 66,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 40
+ },
+ {
+  "ds": "alpha_factor_lib",
+  "n": 65,
+  "MATRIX": 0,
+  "VECTOR": 65,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "multi_source_model",
+  "n": 60,
+  "MATRIX": 60,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 16
+ },
+ {
+  "ds": "analyst10",
+  "n": 53,
+  "MATRIX": 40,
+  "VECTOR": 8,
+  "GROUP": 0,
+  "SYMBOL": 5,
+  "used_fields": 17
+ },
+ {
+  "ds": "event_sentiment_signals",
+  "n": 52,
+  "MATRIX": 0,
+  "VECTOR": 52,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 13
+ },
+ {
+  "ds": "analyst9",
+  "n": 51,
+  "MATRIX": 0,
+  "VECTOR": 51,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 18
+ },
+ {
+  "ds": "pv29",
+  "n": 50,
+  "MATRIX": 40,
+  "VECTOR": 0,
+  "GROUP": 10,
+  "SYMBOL": 0,
+  "used_fields": 25
+ },
+ {
+  "ds": "news17",
+  "n": 48,
+  "MATRIX": 0,
+  "VECTOR": 48,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 29
+ },
+ {
+  "ds": "other567",
+  "n": 48,
+  "MATRIX": 0,
+  "VECTOR": 48,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "fundamental93",
+  "n": 46,
+  "MATRIX": 46,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 18
+ },
+ {
+  "ds": "news20",
+  "n": 46,
+  "MATRIX": 0,
+  "VECTOR": 46,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 26
+ },
+ {
+  "ds": "model216",
+  "n": 45,
+  "MATRIX": 0,
+  "VECTOR": 45,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 43
+ },
+ {
+  "ds": "analyst_earnings_ibes",
+  "n": 42,
+  "MATRIX": 42,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 41
+ },
+ {
+  "ds": "news54",
+  "n": 39,
+  "MATRIX": 0,
+  "VECTOR": 39,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 9
+ },
+ {
+  "ds": "option_chart_model",
+  "n": 39,
+  "MATRIX": 39,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 19
+ },
+ {
+  "ds": "model77",
+  "n": 37,
+  "MATRIX": 37,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 14
+ },
+ {
+  "ds": "news50",
+  "n": 37,
+  "MATRIX": 0,
+  "VECTOR": 37,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 23
+ },
+ {
+  "ds": "analyst94",
+  "n": 34,
+  "MATRIX": 17,
+  "VECTOR": 17,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 9
+ },
+ {
+  "ds": "insider_agg_matrix",
+  "n": 34,
+  "MATRIX": 34,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 30
+ },
+ {
+  "ds": "insider_matrix",
+  "n": 33,
+  "MATRIX": 33,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 30
+ },
+ {
+  "ds": "insider_trx_matrix",
+  "n": 33,
+  "MATRIX": 33,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 13
+ },
+ {
+  "ds": "other384",
+  "n": 33,
+  "MATRIX": 0,
+  "VECTOR": 33,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 4
+ },
+ {
+  "ds": "risk72",
+  "n": 31,
+  "MATRIX": 25,
+  "VECTOR": 6,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 21
+ },
+ {
+  "ds": "model239",
+  "n": 29,
+  "MATRIX": 0,
+  "VECTOR": 29,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 12
+ },
+ {
+  "ds": "model37",
+  "n": 29,
+  "MATRIX": 29,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 8
+ },
+ {
+  "ds": "pv132",
+  "n": 29,
+  "MATRIX": 0,
+  "VECTOR": 29,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "pv109",
+  "n": 26,
+  "MATRIX": 0,
+  "VECTOR": 26,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 18
+ },
+ {
+  "ds": "pv13",
+  "n": 26,
+  "MATRIX": 13,
+  "VECTOR": 4,
+  "GROUP": 9,
+  "SYMBOL": 0,
+  "used_fields": 6
+ },
+ {
+  "ds": "model28",
+  "n": 25,
+  "MATRIX": 25,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 12
+ },
+ {
+  "ds": "shortinterest3",
+  "n": 25,
+  "MATRIX": 0,
+  "VECTOR": 25,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 25
+ },
+ {
+  "ds": "analyst39",
+  "n": 24,
+  "MATRIX": 24,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 23
+ },
+ {
+  "ds": "institutions25",
+  "n": 24,
+  "MATRIX": 0,
+  "VECTOR": 24,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 9
+ },
+ {
+  "ds": "analyst35",
+  "n": 23,
+  "MATRIX": 23,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 8
+ },
+ {
+  "ds": "news7",
+  "n": 23,
+  "MATRIX": 9,
+  "VECTOR": 14,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 11
+ },
+ {
+  "ds": "news81",
+  "n": 23,
+  "MATRIX": 20,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 23
+ },
+ {
+  "ds": "news_sentiment_nlp",
+  "n": 23,
+  "MATRIX": 0,
+  "VECTOR": 23,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "other571",
+  "n": 23,
+  "MATRIX": 23,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 23
+ },
+ {
+  "ds": "pv1",
+  "n": 23,
+  "MATRIX": 13,
+  "VECTOR": 0,
+  "GROUP": 7,
+  "SYMBOL": 3,
+  "used_fields": 22
+ },
+ {
+  "ds": "model238",
+  "n": 22,
+  "MATRIX": 22,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 22
+ },
+ {
+  "ds": "model53",
+  "n": 22,
+  "MATRIX": 21,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 1,
+  "used_fields": 12
+ },
+ {
+  "ds": "news73",
+  "n": 22,
+  "MATRIX": 0,
+  "VECTOR": 22,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 10
+ },
+ {
+  "ds": "option1",
+  "n": 22,
+  "MATRIX": 0,
+  "VECTOR": 22,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 17
+ },
+ {
+  "ds": "other169",
+  "n": 22,
+  "MATRIX": 0,
+  "VECTOR": 22,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 14
+ },
+ {
+  "ds": "other315",
+  "n": 22,
+  "MATRIX": 0,
+  "VECTOR": 22,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "other546",
+  "n": 22,
+  "MATRIX": 0,
+  "VECTOR": 22,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "news52",
+  "n": 21,
+  "MATRIX": 18,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 9
+ },
+ {
+  "ds": "ai_factor_transfer",
+  "n": 20,
+  "MATRIX": 20,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 15
+ },
+ {
+  "ds": "model250",
+  "n": 20,
+  "MATRIX": 20,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 19
+ },
+ {
+  "ds": "model36",
+  "n": 20,
+  "MATRIX": 20,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 20
+ },
+ {
+  "ds": "news3",
+  "n": 19,
+  "MATRIX": 0,
+  "VECTOR": 19,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 13
+ },
+ {
+  "ds": "earnings6",
+  "n": 18,
+  "MATRIX": 0,
+  "VECTOR": 18,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 18
+ },
+ {
+  "ds": "fund_holdings_panel",
+  "n": 18,
+  "MATRIX": 0,
+  "VECTOR": 18,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 16
+ },
+ {
+  "ds": "other47",
+  "n": 18,
+  "MATRIX": 0,
+  "VECTOR": 18,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 14
+ },
+ {
+  "ds": "sentiment27",
+  "n": 18,
+  "MATRIX": 0,
+  "VECTOR": 14,
+  "GROUP": 0,
+  "SYMBOL": 4,
+  "used_fields": 14
+ },
+ {
+  "ds": "socialmedia12",
+  "n": 18,
+  "MATRIX": 14,
+  "VECTOR": 4,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 17
+ },
+ {
+  "ds": "news29",
+  "n": 16,
+  "MATRIX": 0,
+  "VECTOR": 16,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "acquisition_model",
+  "n": 15,
+  "MATRIX": 0,
+  "VECTOR": 15,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 9
+ },
+ {
+  "ds": "news21",
+  "n": 15,
+  "MATRIX": 7,
+  "VECTOR": 8,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "model106",
+  "n": 14,
+  "MATRIX": 14,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 10
+ },
+ {
+  "ds": "model29",
+  "n": 14,
+  "MATRIX": 14,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 9
+ },
+ {
+  "ds": "model30",
+  "n": 14,
+  "MATRIX": 14,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 10
+ },
+ {
+  "ds": "other128",
+  "n": 14,
+  "MATRIX": 0,
+  "VECTOR": 14,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "macro27",
+  "n": 13,
+  "MATRIX": 0,
+  "VECTOR": 13,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 12
+ },
+ {
+  "ds": "event_relation",
+  "n": 12,
+  "MATRIX": 0,
+  "VECTOR": 12,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "fundamental45",
+  "n": 12,
+  "MATRIX": 12,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 12
+ },
+ {
+  "ds": "model27",
+  "n": 12,
+  "MATRIX": 12,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "model32",
+  "n": 12,
+  "MATRIX": 12,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 7
+ },
+ {
+  "ds": "news31",
+  "n": 12,
+  "MATRIX": 0,
+  "VECTOR": 12,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 7
+ },
+ {
+  "ds": "other250",
+  "n": 12,
+  "MATRIX": 0,
+  "VECTOR": 12,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "other425",
+  "n": 12,
+  "MATRIX": 0,
+  "VECTOR": 12,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 0
+ },
+ {
+  "ds": "institutions6",
+  "n": 11,
+  "MATRIX": 11,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 11
+ },
+ {
+  "ds": "model307",
+  "n": 11,
+  "MATRIX": 0,
+  "VECTOR": 11,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 6
+ },
+ {
+  "ds": "news104",
+  "n": 11,
+  "MATRIX": 0,
+  "VECTOR": 11,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 10
+ },
+ {
+  "ds": "analyst8",
+  "n": 10,
+  "MATRIX": 1,
+  "VECTOR": 9,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 4
+ },
+ {
+  "ds": "other296",
+  "n": 10,
+  "MATRIX": 0,
+  "VECTOR": 10,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "other335",
+  "n": 10,
+  "MATRIX": 10,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 7
+ },
+ {
+  "ds": "risk71",
+  "n": 10,
+  "MATRIX": 10,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 7
+ },
+ {
+  "ds": "workforce_flow_skills",
+  "n": 10,
+  "MATRIX": 0,
+  "VECTOR": 10,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "digital_ad_spend",
+  "n": 9,
+  "MATRIX": 0,
+  "VECTOR": 9,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 4
+ },
+ {
+  "ds": "insiders1",
+  "n": 8,
+  "MATRIX": 0,
+  "VECTOR": 8,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 8
+ },
+ {
+  "ds": "model110",
+  "n": 8,
+  "MATRIX": 8,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 8
+ },
+ {
+  "ds": "model16",
+  "n": 8,
+  "MATRIX": 8,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "other532",
+  "n": 8,
+  "MATRIX": 8,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 8
+ },
+ {
+  "ds": "pv103",
+  "n": 8,
+  "MATRIX": 8,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 8
+ },
+ {
+  "ds": "pv106",
+  "n": 8,
+  "MATRIX": 8,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 6
+ },
+ {
+  "ds": "pv71",
+  "n": 8,
+  "MATRIX": 0,
+  "VECTOR": 8,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "analyst48",
+  "n": 7,
+  "MATRIX": 0,
+  "VECTOR": 7,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 4
+ },
+ {
+  "ds": "earnings_sent_matrix",
+  "n": 7,
+  "MATRIX": 7,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 7
+ },
+ {
+  "ds": "fundamental86",
+  "n": 7,
+  "MATRIX": 7,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 6
+ },
+ {
+  "ds": "institutions1",
+  "n": 7,
+  "MATRIX": 0,
+  "VECTOR": 7,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 6
+ },
+ {
+  "ds": "model182",
+  "n": 7,
+  "MATRIX": 0,
+  "VECTOR": 7,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "other323",
+  "n": 7,
+  "MATRIX": 0,
+  "VECTOR": 7,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "other699",
+  "n": 7,
+  "MATRIX": 0,
+  "VECTOR": 7,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "institutions4",
+  "n": 6,
+  "MATRIX": 0,
+  "VECTOR": 6,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 6
+ },
+ {
+  "ds": "model141",
+  "n": 6,
+  "MATRIX": 6,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "stock_search_trends",
+  "n": 6,
+  "MATRIX": 6,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 6
+ },
+ {
+  "ds": "analyst46",
+  "n": 5,
+  "MATRIX": 5,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "analyst47",
+  "n": 5,
+  "MATRIX": 5,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "risk60",
+  "n": 5,
+  "MATRIX": 0,
+  "VECTOR": 5,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "risk68",
+  "n": 5,
+  "MATRIX": 5,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 5
+ },
+ {
+  "ds": "stock_cluster_dl",
+  "n": 5,
+  "MATRIX": 5,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 4
+ },
+ {
+  "ds": "model162",
+  "n": 4,
+  "MATRIX": 4,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "model257",
+  "n": 4,
+  "MATRIX": 4,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "model313",
+  "n": 4,
+  "MATRIX": 4,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "model68",
+  "n": 4,
+  "MATRIX": 0,
+  "VECTOR": 4,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "other545",
+  "n": 4,
+  "MATRIX": 0,
+  "VECTOR": 4,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 4
+ },
+ {
+  "ds": "other734",
+  "n": 4,
+  "MATRIX": 0,
+  "VECTOR": 4,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 4
+ },
+ {
+  "ds": "model140",
+  "n": 3,
+  "MATRIX": 3,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "model252",
+  "n": 3,
+  "MATRIX": 0,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "news38",
+  "n": 3,
+  "MATRIX": 0,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "other327",
+  "n": 3,
+  "MATRIX": 3,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "other424",
+  "n": 3,
+  "MATRIX": 3,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "other436",
+  "n": 3,
+  "MATRIX": 0,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "other635",
+  "n": 3,
+  "MATRIX": 0,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "search_interest",
+  "n": 3,
+  "MATRIX": 0,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "sentiment7",
+  "n": 3,
+  "MATRIX": 0,
+  "VECTOR": 3,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 3
+ },
+ {
+  "ds": "imbalance5",
+  "n": 2,
+  "MATRIX": 2,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "model139",
+  "n": 2,
+  "MATRIX": 0,
+  "VECTOR": 2,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "model144",
+  "n": 2,
+  "MATRIX": 2,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "news76",
+  "n": 2,
+  "MATRIX": 0,
+  "VECTOR": 2,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "pv47",
+  "n": 2,
+  "MATRIX": 2,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 2
+ },
+ {
+  "ds": "fundamental22",
+  "n": 1,
+  "MATRIX": 0,
+  "VECTOR": 1,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "pv17",
+  "n": 1,
+  "MATRIX": 0,
+  "VECTOR": 0,
+  "GROUP": 1,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "risk88",
+  "n": 1,
+  "MATRIX": 1,
+  "VECTOR": 0,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ },
+ {
+  "ds": "socialmedia39",
+  "n": 1,
+  "MATRIX": 0,
+  "VECTOR": 1,
+  "GROUP": 0,
+  "SYMBOL": 0,
+  "used_fields": 1
+ }
+]

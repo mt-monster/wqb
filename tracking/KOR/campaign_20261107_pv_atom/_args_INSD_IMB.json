@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "insd5_vol_chg",
+    "expression": "hump(subtract(group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.7318,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.7
+    }
+  },
+  {
+    "field_id": "insd5_vol_chg",
+    "expression": "reverse(hump(subtract(group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003))",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.7318,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.7
+    }
+  },
+  {
+    "field_id": "insd5_vol_chg",
+    "expression": "hump(multiply(group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.7318,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.7
+    }
+  },
+  {
+    "field_id": "insd5_vol_chg",
+    "expression": "hump(vector_neut(group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.7318,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.7
+    }
+  },
+  {
+    "field_id": "insd5_vol_chg",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(ts_mean(vec_stddev(insd5_vol_chg),55),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003), -1)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.7318,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.7
+    }
+  },
+  {
+    "field_id": "insd5_vol_chg",
+    "expression": "hump(subtract(group_rank(ts_delta(vec_avg(insd5_vol_chg),66),sector),group_rank(ts_backfill(imb5_score,66),industry)),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.7318,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.7
+    }
+  }
+]

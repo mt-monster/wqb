@@ -1,0 +1,24 @@
+id,type,cov,uc,ac,desc
+headline_news_count_normalized,MATRIX,0.0,11,13,The normalized count of news headlines; adjusted for typical news volume for the entity.
+headline_news_item_count,MATRIX,0.0,12,17,Raw count of djnews items per stock-day in the D0 (same-day) window
+headline_sentiment_average,MATRIX,0.0,13,16,Daily mean of the primary sentiment channel across D0 events for each stock-day
+headline_sentiment_maximum,MATRIX,0.0,7,8,Daily maximum of the primary sentiment channel across D0 events for each stock-day
+headline_sentiment_median_value,MATRIX,0.0,6,6,Daily median of the primary sentiment channel across D0 events for each stock-day
+headline_sentiment_minimum,MATRIX,0.0,1,1,Daily minimum of the primary sentiment channel across D0 events for each stock-day
+headline_sentiment_skewness,MATRIX,0.0,4,4,Daily skewness of the primary sentiment channel across D0 events for each stock-day
+headline_sentiment_total,MATRIX,0.0,4,4,Daily sum of the primary sentiment channel across D0 events for each stock-day
+mws81_sentiment,VECTOR,0.0,4,4,Event-level primary sentiment score per djnews headline mapped to the stock for the D0 (same-day) window; roughly scaled to [-1; 1]
+primary_sentiment_average_value,MATRIX,0.0,11,12,Daily mean of sentiment1 across same-day (D0) news events per stock in ASI; unitless
+primary_sentiment_central_value,MATRIX,0.0,34,40,Daily median of sentiment1 across same-day (D0) news events per stock in ASI; unitless
+primary_sentiment_minimum_value,MATRIX,0.0,8,9,Daily minimum of sentiment1 across same-day (D0) news events per stock in ASI; unitless
+primary_sentiment_peak_value,MATRIX,0.0,2,2,Daily maximum of sentiment1 across all same-day (D0) news events for each stock in ASI; unitless
+primary_sentiment_score,VECTOR,0.0,6,6,"Event-level ""sentiment1"" channel score per djnews headline aligned to each stock for the D0 (same-day) horizon; unitless; typically in [-1; 1]"
+primary_sentiment_skewness,MATRIX,0.0,5,5,The skewness of the primary sentiment metric; indicating asymmetry in its distribution.
+primary_sentiment_total,MATRIX,0.0,3,3,Daily sum of the sentiment1 channel over all D0 events for each stock-day
+secondary_sentiment_average_value,MATRIX,0.0,43,54,Daily mean of sentiment2 across all same-day (D0) news events for each stock in ASI; unitless
+secondary_sentiment_central_value,MATRIX,0.0,22,24,Daily median of sentiment2 across same-day (D0) news events per stock in ASI; unitless
+secondary_sentiment_lowest_value,MATRIX,0.0,13,17,Daily minimum of sentiment2 across same-day (D0) news events per stock in ASI; unitless
+secondary_sentiment_peak_value,MATRIX,0.0,3,3,Daily maximum of sentiment2 across same-day (D0) news events per stock in ASI; unitless
+secondary_sentiment_score,VECTOR,0.0,16,18,Secondary per-headline sentiment channel (sentiment2) vector for D0; scaled roughly in [-1; 1]; unitless
+secondary_sentiment_skewness,MATRIX,0.0,3,4,Daily skewness of the sentiment2 channel distribution across D0 events for each stock-day
+secondary_sentiment_total,MATRIX,0.0,4,6,Daily sum of sentiment2 scores for each stock-day in ASI; D0 (same-day) window; unitless

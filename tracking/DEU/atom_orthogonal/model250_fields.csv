@@ -1,0 +1,21 @@
+id,type,cov,uc,ac,desc
+mdl250_close_eq_cap,MATRIX,0.5366,2,2,Market capitalization of the security at prior close; expressed in US dollars for US and in local currency for other regions
+mdl250_eq_hedge,MATRIX,0.5556,4,4,Machine learning signal indicating defensive; downside-protective characteristics (predicts resilience during market stress or drawdowns)
+mdl250_eq_medium,MATRIX,0.5556,6,6,Machine learning sub-signal score targeting medium-term returns (1â4 week horizon); trained on a rolling 12-month window
+mdl250_eq_mktcap,MATRIX,0.5556,4,5,Market capitalization for the security; in local currency (USD for US); as of prior close
+mdl250_eq_seasonality,MATRIX,0.5556,14,15,Machine learning signal capturing systematic seasonal or calendar patterns in returns; trained over approximately 10 years of same-month history
+mdl250_eq_short,MATRIX,0.5556,7,7,Machine learning sub-signal targeting short-term returns (about 2â3 trading day horizon); trained on recent data (previous month)
+mdl250_hc_eq_hedge,MATRIX,0.5556,3,3,ML model sub-signal score predicting securities with downside resilience; providing defensive/insurance overlay especially in adverse market conditions
+mdl250_hc_eq_medium,MATRIX,0.5556,13,13,Machine learning output signal forecasting expected medium-term (1â4 weeks) returns for the security; trained on a rolling 12-month window
+mdl250_hc_eq_mktcap,MATRIX,0.5556,2,2,Market capitalization of the stock; in US dollars for US listings and in local currency for each other region
+mdl250_hc_eq_seasonality,MATRIX,0.5556,27,33,ML-generated signal capturing systematic calendar or seasonal effects for the security; trained using a rolling 10-year sample of the same calendar periods
+mdl250_hc_eq_short,MATRIX,0.5556,1,1,ML-generated signal forecasting expected short-term (2â3 day) returns for the security; using only previous month data
+mdl250_lmt_close_eq_score,MATRIX,0.5366,6,7,Primary composite machine learning alpha score from the MALTA model; representing expected relative returns for the stock over the model's target horizon; higheâ¦
+mdl250_lmt_close_eq_sector,MATRIX,1.0,4,4,Industry sector classification (likely GICS sector) to which the company or security belongs
+mdl250_lmt_open_eq_score,MATRIX,0.5366,4,5,The primary machine-learning composite alpha signal output by MALTA; indicating expected relative returns; z-score standardized per day
+mdl250_lmt_open_eq_sector,MATRIX,1.0,1,1,Standardized industry classification of the security according to GICS sector
+mdl250_malta_eq_score,MATRIX,0.5556,45,48,Primary composite machine learning alpha score for each security; summarizing the overall ML modelâs stock selection signal for the modelâs target horizon; highâ¦
+mdl250_malta_eq_sector,MATRIX,1.0,0,0,Industry group or sector classification of the stock; based on GICS taxonomy for grouping; risk modeling; and neutralization
+mdl250_maltahc_eq_score,MATRIX,0.5556,25,28,Primary composite ML score for each stock; indicating overall expected return (relative); daily cross-sectional z-score
+mdl250_maltahc_eq_sector,MATRIX,1.0,4,4,Company's sector classification; typically using GICS standard
+mdl250_open_eq_cap,MATRIX,0.5366,1,1,Market capitalization of the security; expressed in U.S. dollars for U.S. securities and local currency for each respective region

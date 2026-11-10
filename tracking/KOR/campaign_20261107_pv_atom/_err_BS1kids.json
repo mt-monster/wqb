@@ -1,0 +1,119 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4pXwBGh014pr9fa17caVdf6h",
+   "location_url": "https://api.worldquantbrain.com/simulations/4pXwBGh014pr9fa17caVdf6h",
+   "error": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "4pXwBGh014pr9fa17caVdf6h",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 50,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": "Operator xxx does not support event inputs : If fields is vector type  should use vec_* operator with event input"
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1BeAih4ef4Xv9uEuszRlRgK",
+   "location_url": "https://api.worldquantbrain.com/simulations/1BeAih4ef4Xv9uEuszRlRgK",
+   "error": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "1BeAih4ef4Xv9uEuszRlRgK",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 52,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": "Operator xxx does not support event inputs : If fields is vector type  should use vec_* operator with event input"
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3fuXsRe1E4RP9har2CbHLdC",
+   "location_url": "https://api.worldquantbrain.com/simulations/3fuXsRe1E4RP9har2CbHLdC",
+   "error": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "3fuXsRe1E4RP9har2CbHLdC",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 48,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": "Operator xxx does not support event inputs : If fields is vector type  should use vec_* operator with event input"
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2ljjFr3vq4IUa7p1hmuXiIcL",
+   "location_url": "https://api.worldquantbrain.com/simulations/2ljjFr3vq4IUa7p1hmuXiIcL",
+   "error": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "2ljjFr3vq4IUa7p1hmuXiIcL",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 14,
+     "end": 64,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": "Operator xxx does not support event inputs : If fields is vector type  should use vec_* operator with event input"
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1SRlu1bAg4NUbU6125Jo05l7",
+   "location_url": "https://api.worldquantbrain.com/simulations/1SRlu1bAg4NUbU6125Jo05l7",
+   "error": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "1SRlu1bAg4NUbU6125Jo05l7",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Operator group_rank does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 49,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": "Operator xxx does not support event inputs : If fields is vector type  should use vec_* operator with event input"
+  }
+ ]
+}

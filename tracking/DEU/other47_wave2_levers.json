@@ -1,0 +1,107 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "universe": "TOP500",
+      "pruning": "xy",
+      "combMethod": null,
+      "neutralization": "SUBINDUSTRY",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "region": "DEU",
+      "delay": 1,
+      "decay": 4,
+      "decayField": null
+    },
+    "regular": "group_rank(multiply(rank(ts_delta(vec_avg(oth47_organic_traffic), 252)), rank(ts_delta(vec_avg(oth47_organic_traffic), 126))), industry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "universe": "TOP500",
+      "pruning": "xy",
+      "combMethod": null,
+      "neutralization": "SUBINDUSTRY",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "region": "DEU",
+      "delay": 1,
+      "decay": 4,
+      "decayField": null
+    },
+    "regular": "group_rank(multiply(rank(ts_delta(vec_avg(oth47_organic_traffic), 504)), rank(ts_delta(vec_avg(oth47_organic_traffic), 252))), industry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "universe": "TOP500",
+      "pruning": "xy",
+      "combMethod": null,
+      "neutralization": "SUBINDUSTRY",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "region": "DEU",
+      "delay": 1,
+      "decay": 4,
+      "decayField": null
+    },
+    "regular": "subtract(0, group_rank(ts_delta(vec_avg(oth47_rank), 66), industry))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "universe": "TOP500",
+      "pruning": "xy",
+      "combMethod": null,
+      "neutralization": "SUBINDUSTRY",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "region": "DEU",
+      "delay": 1,
+      "decay": 4,
+      "decayField": null
+    },
+    "regular": "group_rank(subtract(rank(ts_delta(vec_avg(oth47_organic_traffic), 252)), rank(ts_delta(vec_avg(oth47_organic_traffic), 22))), industry)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "universe": "TOP500",
+      "pruning": "xy",
+      "combMethod": null,
+      "neutralization": "SUBINDUSTRY",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "region": "DEU",
+      "delay": 1,
+      "decay": 4,
+      "decayField": null
+    },
+    "regular": "group_rank(subtract(ts_delta(vec_avg(oth47_organic_traffic), 66), ts_delta(vec_avg(oth47_organic_traffic), 22)), industry)"
+  }
+]

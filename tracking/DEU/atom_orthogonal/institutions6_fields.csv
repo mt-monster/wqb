@@ -1,0 +1,12 @@
+id,type,cov,uc,ac,desc
+"aggregate_equity_value_all_owners",MATRIX,1.0,17,19,"Aggregate dollar value of shares of the security held by all owners; with duplication between child and parent owners removed"
+"aggregate_equity_value_institutions",MATRIX,1.0,20,24,"Aggregate dollar value of shares of the security currently held by all institutional investors at the reporting date"
+"aggregate_share_count_all_owners",MATRIX,1.0,14,21,"Aggregate number of shares of the security held by all owners; with duplication between child and parent owners removed"
+"aggregate_share_count_institutions",MATRIX,1.0,16,20,"Total number of shares of the security currently held by all institutional investors at the reporting date"
+"count_institutional_buyers_security",MATRIX,1.0,42,61,"Number of institutional investors who purchased shares of the security during the reporting period"
+"count_institutional_holders_security",MATRIX,1.0,19,31,"Number of institutional investors currently holding shares (with holdings greater than zero) for the security at the reporting date"
+"count_institutional_sellers_security",MATRIX,1.0,36,51,"Number of institutional investors who sold shares of the security during the reporting period"
+"market_value_institutional_shares_acquired",MATRIX,1.0,52,85,"Aggregate dollar value of shares of the security purchased by institutional investors during the reporting period"
+"market_value_institutional_shares_disposed",MATRIX,1.0,23,39,"Aggregate dollar value of shares of the security sold by institutional investors during the reporting period"
+"quantity_institutional_shares_acquired",MATRIX,1.0,48,66,"Total number of shares of the security purchased by institutional investors during the reporting period"
+"quantity_institutional_shares_disposed",MATRIX,1.0,27,39,"Total number of shares of the security sold by institutional investors during the reporting period"

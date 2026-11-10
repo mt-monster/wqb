@@ -1,0 +1,34 @@
+﻿{
+ "results": [
+  {
+   "id": "rsk68_beta",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 39,
+   "alphaCount": 74,
+   "description": "Unitless stock beta for a European asset relative to the regional liquidity-weighted market_return, typically estimated over a long rolling window (e.g., ~504 t…"
+  },
+  {
+   "id": "rsk68_weight_dadv",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 54,
+   "alphaCount": 95,
+   "description": "Simple moving average dollar average daily trading volume for European instruments, used as a liquidity weight (dollar units)"
+  },
+  {
+   "id": "rsk68_weight_volatility_short",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 265,
+   "alphaCount": 525,
+   "description": "Short-term volatility estimate for European instruments, expressed in decimal terms"
+  }
+ ],
+ "count": 3,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 2,
+ "platform_count": 5,
+ "complete": true,
+ "pages_fetched": 1
+}

@@ -326,3 +326,31 @@ sentiment26（17 字段 snt26_*，cov 0.58-1.0，aC 7-103）4 臂预检通过（
 **篮子更新**：可提交余 4 颗（ZYQXZj73 / QPvbxjXw / rKRPAWv9 / leAgQPO5）。0.5 口径矩阵在去掉已提交两颗后无变化（原矩阵里它们与其他四颗全 <0.5）。
 
 **SHORTINTEREST 塔已点亮** ⇒ 依赖 COLD 腿的新组合价值重估：COLD 腿关联的 SHORTINTEREST 塔已亮，未来新组合改用其他塔位更优；存量 COLD 配方候选仍可继续（点亮已不增收益，但塔配额不变）。
+
+## §22 2026-11-08 16:48 恢复后复核：第 13 连 ERROR，提醒重设
+
+Runtime 恢复（16:48）后探针：**ERROR（第 13 连）**，故障窗口 ~110 分钟。原 16:31 提醒因 Runtime 恢复丢失，已重设 60 分钟节奏（含最新事实与"顺延不再报用户"的修正——转区问卷已在 15:4x 摆出且未获授权，静默等待用户主动指示）。
+
+## §23 2026-11-08 16:5x EUR 试发（用户指令「重新生成试下」）：news36 判死，sentiment26 在飞
+
+GBR 重试探针第 15 连 ERROR（用户指令下重试，确认故障仍在）⇒ 按用户「试下」语义转 EUR 通道试发：
+
+- **news36 ATOM 4 臂 COMPLETE**：S 0.02-0.28 全弱（最好 0.28 = 闸 18%，与 analyst83 判死同型）⇒ **news36 判死**。alpha：GrWNMP3G / YP1O262W / E56Mg1gL / QPvA2Mnr。
+- **sentiment26 4 臂在飞**（`3AK7Q7eqC4U8ccGZQbuXcJD`，35% 处）。
+
+**交叉验证再次确认**：GBR ERROR vs EUR COMPLETE 同账号同分钟 ⇒ region 级故障结论稳固。
+
+## §24 2026-11-08 17:0x sentiment26 收割：EUR 两条初探线全部判死
+
+sentiment26 4 臂 COMPLETE（`3AK7Q7eqC4U8ccGZQbuXcJD`）：
+
+| # | 机制 | alpha | S | 判定 |
+|---|---|---|---:|---|
+| 1 | dltcc 水平（cov1.0） | `gJe5RNd0` | 0.45 | 弱 |
+| 2 | relpopularity1 人气衰减 | `pwdkVb3g` | 0.48 | 弱 |
+| 3 | skewness | `A1V5gXEw` | 0.33 | 弱 |
+| 4 | top10rank 反号 | `QPvA2R6W` | -0.09 | 弱 |
+
+⇒ **EUR 初探收官**：news36（max 0.28）+ sentiment26（max 0.48）双判死。EUR 未点亮塔的冷门数据集**首层试探**完成，均为弱信号面。EUR 剩余可试：news50（GBR 同名集 EUR 版 aC466）、news31（aC1178）等中拥挤集，但先验不强。
+
+**总战况**：第 8 颗仍缺。GBR analyst9 4 臂就绪等恢复；EUR 初探 8 臂判死（冷门≠有信号，再次验证）；16:52 提醒已重设 ~17:52 触发。

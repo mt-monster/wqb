@@ -1,0 +1,28 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "STATISTICAL",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_difference), 10), sector)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_difference), 44), sector)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_difference), 66), sector)",
+  "group_rank(ts_mean(ts_backfill(vec_avg(oth496_aftercons_difference), 22), 5), sector)",
+  "group_rank(ts_mean(ts_backfill(vec_avg(oth496_aftercons_difference), 22), 10), sector)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_difference), 22), industry)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_difference), 22), subindustry)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_difference), 22), market)",
+  "group_rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44), sector)",
+  "group_rank(ts_zscore(ts_backfill(vec_avg(oth496_aftercons_difference), 22), 66), sector)"
+ ],
+ "wave": "O496push STATISTICAL geometry refinement on wpQ7Rnm6 S1.47"
+}

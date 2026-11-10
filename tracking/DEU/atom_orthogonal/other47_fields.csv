@@ -1,0 +1,19 @@
+id,type,cov,uc,ac,desc
+organic_search_budget_enriched,VECTOR,0.5023,0,0,Estimated monthly cost to buy equivalent organic traffic via paid search; in USD
+organic_search_terms_enriched,VECTOR,0.5023,0,0,Count of keywords the domain ranks for in Google organic search
+organic_search_visitors_enriched,VECTOR,0.5023,2,3,Estimated monthly visits from Google organic search to the website
+oth47_organic_cost,VECTOR,0.6516,1,0,Estimated cost to buy the equivalent organic traffic via Google Ads; unit: USD
+oth47_organic_keywords,VECTOR,0.6516,3,4,Count of unique keywords the domain ranks for in Google organic search; unit: count
+oth47_organic_traffic,VECTOR,0.6516,30,54,Estimated monthly visits from organic Google search to the domain in the specified SEMrush regional database; unit: visits
+oth47_rank,VECTOR,0.6516,6,10,SEMrush rank of the website in the database based on organic traffic; lower is more visible
+paid_search_budget_estimate,VECTOR,0.6516,1,1,Estimated monthly spend on Google Ads for the domain; unit: USD
+paid_search_budget_estimate_enriched,VECTOR,0.5023,1,2,Estimated monthly spend on Google Ads for the domain; in USD
+paid_search_terms_count,VECTOR,0.6516,1,1,Count of paid keywords the domain is bidding on in Google Ads; unit: count
+paid_search_terms_count_enriched,VECTOR,0.5023,0,0,Count of paid keywords the domain is bidding on in Google Ads
+paid_search_visitors,VECTOR,0.6516,2,3,Estimated monthly visits from paid Google Ads to the domain; unit: visits
+paid_search_visitors_enriched,VECTOR,0.5023,0,0,Estimated monthly visits from paid Google Ads to the website
+product_listing_ad_terms,VECTOR,0.6516,3,3,Product listing keywords a website is buying on google Adwords
+product_listing_ad_terms_enriched,VECTOR,0.5023,1,1,Number of product listing ads (PLA) keywords the domain is actively bidding on
+unique_product_listing_ads,VECTOR,0.6516,2,2,Product listing unique keywords specific to company a website is buying on google Adwords
+unique_product_listing_ads_enriched,VECTOR,0.5023,1,1,PLA uniques
+website_traffic_rank_enriched,VECTOR,0.5023,1,1,SEMrush organic visibility rank of the domain in the regional database; lower number means more visible

@@ -1,0 +1,11 @@
+id,type,cov,uc,ac,desc
+"ecs_top1200_specific_return_dsrt",MATRIX,0.0,2,2,"Reproducible specific return for the top 1200 equities in the ECS universe."
+"ecs_top1600_specific_return_dsrt",MATRIX,0.0,1,2,"Reproducible specific return for the top 1600 equities in the ECS universe."
+"ecs_top400_specific_return_dsrt",MATRIX,0.0,3,4,"Reproducible specific return for the top 400 equities in the ECS universe."
+"ecs_top800_specific_return_dsrt",MATRIX,0.0,0,0,"Reproducible specific return for the top 800 equities in the ECS universe."
+"epp_minvol1m_specific_return_dsrt",MATRIX,0.0,0,0,"Reproducible specific return for the minimum volatility 1-month strategy in the Asia Pacific supported universe."
+"eur_minvol1m_specific_return_dsrt",MATRIX,0.0,4,5,"Reproducible specific return for the minimum volatility 1-month strategy in the Europe supported universe."
+"residualized_return_top2500",MATRIX,0.0,9,11,"Daily stock-specific idiosyncratic residual returns panel for the Europe TOP2500 ATS universe from the mfm2 risk model; in daily percent (stocks Ã dates)"
+"residualized_return_top600_ats",MATRIX,0.0,2,3,"Panel of daily stock-specific residual returns (DSRT) from the MFM2 risk model for the Americas TOP600 universe; float matrix stock Ã date in daily percent"
+"top1200_residual_return_dsrt",MATRIX,0.0,2,2,"Reproducible specific return for the top 1200 equities in the selected universe."
+"top800_residual_return_dsrt",MATRIX,0.0,0,0,"Reproducible specific return for the top 800 equities in the selected universe."

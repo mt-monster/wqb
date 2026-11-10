@@ -1,0 +1,6 @@
+id,type,cov,uc,ac,desc
+rsk68_beta,MATRIX,0.0,13,20,Unitless stock beta for a European asset relative to the regional liquidity-weighted market_return; typically estimated over a long rolling window (e.g.; ~504 tâ¦
+rsk68_residual_return,MATRIX,0.0,28,35,Idiosyncratic 1-day return for a European asset unexplained by the market factor; computed as actual return minus beta times market_return; expressed in decimal
+rsk68_weight_dadv,MATRIX,0.0,29,38,Simple moving average dollar average daily trading volume for European instruments; used as a liquidity weight (dollar units)
+rsk68_weight_edadv,MATRIX,0.0,53,76,Exponentially decayed dollar average daily trading volume for European instruments; used as a liquidity weight (dollar units)
+rsk68_weight_volatility_short,MATRIX,0.0,38,76,Short-term volatility estimate for European instruments; expressed in decimal terms

@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(ts_mean(vec_avg(insd5_grp_td_drt), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_stddev(insd5_grp_td_drt), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(insd5_recent_dt), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_stddev(insd5_recent_dt), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_stddev(insd5_rpst_grp_typ), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(insd5_source_real_data), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_stddev(insd5_source_data), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(insd5_qes), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_stddev(insd5_grp_source_td_drt), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(insd5_unt_val), 22), sector), 0.5)"
+]

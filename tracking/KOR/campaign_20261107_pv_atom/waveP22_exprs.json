@@ -1,0 +1,12 @@
+[
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_bps_fy1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_bps_fy2_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_bps_fy1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_bps_fy1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebi_fy1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_net_fy1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_ebt_fy1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_dps_fy1_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_pre_fq1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_pre_fq2_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_net_fq1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_net_fq2_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_sal_fq1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_sal_fq2_pred_surps_v1,189),exchange)),industry)",
+  "group_neutralize(multiply(group_rank(ts_av_diff(anl10_smartest_gps_fq1_pred_surps_v1,189),exchange),group_rank(ts_av_diff(anl10_smartest_gps_fq2_pred_surps_v1,189),exchange)),industry)"
+]

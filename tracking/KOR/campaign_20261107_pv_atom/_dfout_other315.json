@@ -1,0 +1,234 @@
+{
+ "results": [
+  {
+   "id": "active_notional_value_leg1",
+   "type": "VECTOR",
+   "coverage": 0.1728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Notional amount becoming effective on the associated unadjusted effective date for Leg 1 in a notional schedule"
+  },
+  {
+   "id": "contract_notional_value_leg1",
+   "type": "VECTOR",
+   "coverage": 0.8531,
+   "userCount": 27,
+   "alphaCount": 79,
+   "description": "Notional amount for leg 1 (initial or current outstanding); rules for schedules, amendments, FX options, and CDS gross notional apply"
+  },
+  {
+   "id": "contract_notional_value_leg2",
+   "type": "VECTOR",
+   "coverage": 0.5763,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "For Leg 2, the contractual notional amount; initial notional at inception, updated for lifecycle events to the outstanding amount; report full terminated value…"
+  },
+  {
+   "id": "contract_trade_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 26,
+   "description": "Price specified in the OTC derivative transaction (excluding fees, taxes, commissions); initial or forward price depending on product; updated when available"
+  },
+  {
+   "id": "leg1_aggregate_notional_quantity",
+   "type": "VECTOR",
+   "coverage": 0.8531,
+   "userCount": 30,
+   "alphaCount": 73,
+   "description": "Aggregate notional quantity of the underlying asset for Leg 1 over the term of the transaction, updated when available"
+  },
+  {
+   "id": "leg1_call_option_value",
+   "type": "VECTOR",
+   "coverage": 0.0585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "For foreign exchange options, the monetary amount that the option gives the right to buy. DMO expects this data element and the corresponding currency data elem…"
+  },
+  {
+   "id": "leg1_fixed_payment_period_count",
+   "type": "VECTOR",
+   "coverage": 0.5752,
+   "userCount": 15,
+   "alphaCount": 21,
+   "description": "Number of time units determining payment frequency for the fixed rate on leg 1 (paired with payment period; special cases for ADHO, EXPI, DAIL)"
+  },
+  {
+   "id": "leg1_floating_payment_period_count",
+   "type": "VECTOR",
+   "coverage": 0.8219,
+   "userCount": 12,
+   "alphaCount": 37,
+   "description": "Number of time units (per the payment frequency period) determining how often floating-leg payments occur for leg 1; special cases: ADHO not applicable, EXPI=1,…"
+  },
+  {
+   "id": "leg1_floating_reset_period_count",
+   "type": "VECTOR",
+   "coverage": 0.5169,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of time units determining reset frequency for the floating rate on leg 1 (paired with reset period; special cases for ADHO, EXPI, DAIL)"
+  },
+  {
+   "id": "leg1_notional_quantity_value",
+   "type": "VECTOR",
+   "coverage": 0.662,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "For Leg 1 negotiated in non-monetary amounts, the fixed notional quantity per schedule period; frequency reported in Quantity frequency and unit in Quantity uni…"
+  },
+  {
+   "id": "leg1_put_option_value",
+   "type": "VECTOR",
+   "coverage": 0.0585,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "For FX options, the monetary amount that the option gives the right to sell for Leg 1; expected across asset classes alongside its currency"
+  },
+  {
+   "id": "leg1_quantity_frequency_count",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of time units for the quantity frequency on Leg 1"
+  },
+  {
+   "id": "leg1_spread_expression_format",
+   "type": "VECTOR",
+   "coverage": 0.5206,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "For each leg of the transaction, where applicable: manner in which the spread is expressed."
+  },
+  {
+   "id": "leg1_spread_value",
+   "type": "VECTOR",
+   "coverage": 0.4933,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "For applicable swaps, the spread applied to leg 1’s floating index or the difference between reference prices; for equity/portfolio swaps and CFDs, the weighted…"
+  },
+  {
+   "id": "leg2_aggregate_notional_quantity",
+   "type": "VECTOR",
+   "coverage": 0.5752,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Aggregate notional quantity of the underlying for leg 2 over the transaction’s term; updated when available"
+  },
+  {
+   "id": "leg2_call_option_value",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "For foreign exchange options, the monetary amount that the option gives the right to buy. DMO expects this data element and the corresponding currency data elem…"
+  },
+  {
+   "id": "leg2_floating_reset_period_count",
+   "type": "VECTOR",
+   "coverage": 0.5771,
+   "userCount": 14,
+   "alphaCount": 41,
+   "description": "Number of time units (as defined by the floating rate reset frequency period) that determines how often resets occur on Leg 2; not applicable if ADHO, equals 1…"
+  },
+  {
+   "id": "leg2_notional_quantity_value",
+   "type": "VECTOR",
+   "coverage": 0.6621,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "For nonmonetary swaps, the fixed notional quantity per schedule period for leg 2; frequency and unit of measure are reported in separate fields"
+  },
+  {
+   "id": "leg2_notional_value_on_effective_date",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "For monetary-amount schedules, the leg 2 notional that becomes effective on the associated unadjusted effective date in the schedule"
+  },
+  {
+   "id": "leg2_put_option_value",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "For foreign exchange options, the monetary amount that the option gives the right to sell. DMO expects this data element and the corresponding currency data ele…"
+  },
+  {
+   "id": "leg2_quantity_frequency_count",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of time units for the quantity frequency on Leg 2"
+  },
+  {
+   "id": "leg2_spread_expression_format",
+   "type": "VECTOR",
+   "coverage": 0.521,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "For each leg of the transaction, where applicable: manner in which the spread is expressed."
+  },
+  {
+   "id": "leg2_spread_value",
+   "type": "VECTOR",
+   "coverage": 0.5197,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Spread applied to the floating reference for leg 2 (or overall basket spread for equities/CFDs), expressed per product conventions"
+  },
+  {
+   "id": "option_premium_value",
+   "type": "VECTOR",
+   "coverage": 0.0046,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Monetary amount paid by the option buyer for options/swaptions; not applicable if no optionality"
+  },
+  {
+   "id": "option_strike_expression_format",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Manner in which the strike price is expressed"
+  },
+  {
+   "id": "oth315_execution_timestamp",
+   "type": "VECTOR",
+   "coverage": 0.8531,
+   "userCount": 91,
+   "alphaCount": 228,
+   "description": "Date and time the transaction was originally executed, creating the UTI; remains unchanged for the life of the UTI. For cleared swaps, it is when the DCO accept…"
+  },
+  {
+   "id": "price_expression_format",
+   "type": "VECTOR",
+   "coverage": 0.5792,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Manner in which the price is expressed."
+  },
+  {
+   "id": "transaction_currency_exchange_rate",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exchange rate agreed at inception between unit and quoted currency, expressed as conversion from unit to quoted currency; for FX, the forward rate is reported"
+  }
+ ],
+ "count": 28,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 4,
+ "platform_count": 32,
+ "complete": true,
+ "pages_fetched": 1
+}

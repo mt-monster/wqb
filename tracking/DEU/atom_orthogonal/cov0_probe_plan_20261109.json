@@ -1,0 +1,172 @@
+{
+ "noProbe": [
+  {
+   "id": "pv17",
+   "v": {
+    "platform_count": 1,
+    "nParsed": 1,
+    "probe": null
+   }
+  }
+ ],
+ "batches": [
+  {
+   "batch": 1,
+   "datasets": [
+    "acquisition_model",
+    "ai_factor_transfer",
+    "ai_news_scores",
+    "alpha_factor_lib",
+    "analyst10",
+    "analyst15",
+    "analyst16",
+    "analyst35",
+    "analyst39",
+    "analyst46"
+   ]
+  },
+  {
+   "batch": 2,
+   "datasets": [
+    "analyst69",
+    "analyst8",
+    "analyst94",
+    "analyst_consensus",
+    "analyst_revision_horizons",
+    "chart_cnn_alpha",
+    "continuation_score",
+    "digital_ad_spend",
+    "earnings6",
+    "earnings_sent_matrix"
+   ]
+  },
+  {
+   "batch": 3,
+   "datasets": [
+    "earningscall_sentiment",
+    "event_ml_signals",
+    "event_relation",
+    "event_sentiment_signals",
+    "fundamental1",
+    "fundamental17",
+    "fundamental72",
+    "fundamental86",
+    "fundamental89",
+    "fundamental90"
+   ]
+  },
+  {
+   "batch": 4,
+   "datasets": [
+    "fundamental93",
+    "global_seasonal_model",
+    "imbalance5",
+    "institutions25",
+    "intraday_pv_feats",
+    "macro27",
+    "model110",
+    "model135",
+    "model138",
+    "model139"
+   ]
+  },
+  {
+   "batch": 5,
+   "datasets": [
+    "model141",
+    "model16",
+    "model239",
+    "model252",
+    "model257",
+    "model27",
+    "model29",
+    "model32",
+    "model37",
+    "model38"
+   ]
+  },
+  {
+   "batch": 6,
+   "datasets": [
+    "model68",
+    "model77",
+    "multi_source_model",
+    "news21",
+    "news23",
+    "news29",
+    "news3",
+    "news31",
+    "news52",
+    "news54"
+   ]
+  },
+  {
+   "batch": 7,
+   "datasets": [
+    "news7",
+    "news73",
+    "news76",
+    "news81",
+    "news_sentiment_nlp",
+    "option1",
+    "option_chart_model",
+    "other128",
+    "other169",
+    "other296"
+   ]
+  },
+  {
+   "batch": 8,
+   "datasets": [
+    "other315",
+    "other323",
+    "other327",
+    "other335",
+    "other424",
+    "other425",
+    "other436",
+    "other546",
+    "other566",
+    "other567"
+   ]
+  },
+  {
+   "batch": 9,
+   "datasets": [
+    "other571",
+    "other635",
+    "other696",
+    "other734",
+    "other78",
+    "pv1",
+    "pv103",
+    "pv106",
+    "pv13",
+    "pv132"
+   ]
+  },
+  {
+   "batch": 10,
+   "datasets": [
+    "pv173",
+    "pv20",
+    "pv47",
+    "pv71",
+    "quant_factor_lib",
+    "risk68",
+    "risk71",
+    "risk72",
+    "search_interest",
+    "socialmedia12"
+   ]
+  },
+  {
+   "batch": 11,
+   "datasets": [
+    "stock_search_trends",
+    "techindi_model",
+    "workforce_flow_skills"
+   ]
+  }
+ ]
+}

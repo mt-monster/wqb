@@ -1,0 +1,24 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 4,
+ "neutralization": "REVERSION_AND_MOMENTUM",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "group_rank(ts_backfill(vec_avg(global_text_factor_percentile_rank), 10), sector)",
+  "reverse(group_rank(ts_backfill(vec_avg(global_text_factor_percentile_rank), 10), sector))",
+  "group_rank(ts_backfill(vec_avg(region_text_factor_percentile_rank), 10), sector)",
+  "group_rank(ts_delta(ts_backfill(vec_avg(global_text_factor_percentile_rank), 10), 66), sector)"
+ ],
+ "dataset": "acquisition_model",
+ "wave": "ACQTEXT text-factor leg (last untested OTHER field)",
+ "note": "数值似然腿已死(§5.23/5.114)，仅测文本因子；VECTOR 先 vec_avg；槽位释放即派"
+}

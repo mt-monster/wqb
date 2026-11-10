@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "1NVLsvgz94tuc8Q1bDNPhpPh",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/1NVLsvgz94tuc8Q1bDNPhpPh",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/1NVLsvgz94tuc8Q1bDNPhpPh",
+ "submitted_expressions": [
+  "group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector)",
+  "reverse(group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector))",
+  "group_rank(ts_mean(ts_backfill(oth335_combined_all_region_mind, 10), 66), sector)",
+  "group_rank(ts_backfill(oth335_combined_all_region_shield, 10), sector)",
+  "group_rank(ts_delta(ts_backfill(oth335_combined_all_region_mind, 10), 66), sector)",
+  "group_rank(ts_zscore(ts_backfill(oth335_combined_all_region_mind, 10), 252), sector)",
+  "group_rank(ts_backfill(oth335_combined_all_region_linear, 10), sector)",
+  "group_rank(ts_backfill(oth335_combined_all_region_hedge, 10), sector)",
+  "subtract(group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector), group_rank(ts_backfill(oth335_combined_all_region_shield, 10), sector))",
+  "signed_power(group_rank(ts_backfill(oth335_combined_all_region_mind, 10), sector), 2)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

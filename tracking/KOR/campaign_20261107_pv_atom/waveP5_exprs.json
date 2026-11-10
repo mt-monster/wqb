@@ -1,0 +1,12 @@
+[
+  "group_rank(vec_avg(mws38_tone_score), subindustry)",
+  "group_rank(divide(vec_sum(mws38_positive_score), add(vec_sum(mws38_positive_score), vec_sum(mws38_negative_score))), subindustry)",
+  "group_rank(vec_stddev(mws38_tone_score), subindustry)",
+  "group_rank(vec_avg(mws38_d1_hotlevel), subindustry)",
+  "group_rank(ts_delta(vec_avg(mws38_tone_score), 5), subindustry)",
+  "group_rank(divide(vec_sum(multiply(mws38_tone_score, mws38_d1_hotlevel)), vec_sum(mws38_d1_hotlevel)), subindustry)",
+  "group_rank(divide(vec_sum(multiply(mws38_tone_score, mws38_d1_relevances)), vec_sum(mws38_d1_relevances)), subindustry)",
+  "group_rank(ts_std_dev(vec_avg(mws38_tone_score), 22), subindustry)",
+  "group_rank(vec_avg(mws38_d1_related_num), subindustry)",
+  "group_rank(vec_avg(story_analytics_metric_value), subindustry)"
+]

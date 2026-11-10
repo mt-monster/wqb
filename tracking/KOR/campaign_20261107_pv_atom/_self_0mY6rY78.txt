@@ -1,0 +1,35 @@
+﻿{
+ "alpha_id": "0mY6rY78",
+ "threshold": 0.7,
+ "correlation_type": "self",
+ "passes_check": true,
+ "local_calculation": true,
+ "max_correlation": 0.22142172526546033,
+ "top_correlated": [
+  {
+   "id": "0mre68gv",
+   "correlation": 0.22142172526546033
+  },
+  {
+   "id": "9qjGvaWe",
+   "correlation": 0.2044885546881172
+  },
+  {
+   "id": "leAEYLM8",
+   "correlation": 0.2029664952970542
+  },
+  {
+   "id": "RRA2eE70",
+   "correlation": 0.19962895149037002
+  },
+  {
+   "id": "RRA9EZKz",
+   "correlation": 0.18066066280560375
+  }
+ ],
+ "pool_size": 30,
+ "full_os_pool_size": 46,
+ "excluded_power_pool_count": 16,
+ "ppac_ids_cached": 16
+}
+

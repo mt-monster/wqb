@@ -1,0 +1,8 @@
+id,type,cov,uc,ac,desc
+"intraday_delay_indicator",MATRIX,0.0,5,5,"A code indicating whether the data is updated intraday or with a delay."
+"likelihood_of_neutral_tone",MATRIX,0.0,22,35,"Model-estimated probability [0â1] that the intraday transcript slice has neutral sentiment; sums with the other two probabilities to 1"
+"negative_sentiment_probability_3",MATRIX,0.0,18,31,"Model-estimated probability [0â1] that the intraday transcript slice has negative sentiment; designed to sum to 1 with Prob_NTR and Prob_POS"
+"overall_sentiment_score",MATRIX,0.0,11,11,"Categorical sentiment label derived by argmax over Prob_POS; Prob_NTR; Prob_NEG; typically -1 negative; 0 neutral; 1 positive"
+"positive_sentiment_probability_3",MATRIX,0.0,45,79,"Model-estimated probability [0â1] that the intraday transcript slice has positive sentiment; part of the three-class distribution"
+"sentiment_weighting_method1",MATRIX,0.0,28,43,"Aggregate transcript tone score computed via method 1; higher values indicate more positive sentiment for the segment"
+"sentiment_weighting_method2",MATRIX,0.0,11,16,"Alternative aggregate transcript tone score computed via method 2; higher values indicate more positive sentiment"

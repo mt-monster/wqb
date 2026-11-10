@@ -1,0 +1,778 @@
+﻿{
+ "results": [
+  {
+   "id": "apacm6_total_market_cap_usd",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 50,
+   "alphaCount": 81,
+   "description": "Total market capitalization in US dollars for the APACM6 region as calculated by the risk model."
+  },
+  {
+   "id": "broad_market_exposure_factor",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Exposure to the overall market factor in the risk model (ASETRD version)."
+  },
+  {
+   "id": "country_adjustment_factor_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Adjustment factor applied to account for country-specific effects."
+  },
+  {
+   "id": "current_market_cap_usd",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 50,
+   "alphaCount": 90,
+   "description": "The current market capitalization of the company in US dollars."
+  },
+  {
+   "id": "hedge_fund_number_owners",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 20,
+   "description": "Number of hedge funds owning shares of a given asset."
+  },
+  {
+   "id": "hedge_fund_ownership_percentage",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 22,
+   "description": "Percentage of shares owned by hedge funds for a given asset."
+  },
+  {
+   "id": "industry_adjustment_factor_3",
+   "type": "MATRIX",
+   "coverage": 0.9923,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Adjustment factor applied to account for industry-specific effects."
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_airlines",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 39,
+   "alphaCount": 85,
+   "description": "Airlines Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_anlystsn",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 622,
+   "alphaCount": 2922,
+   "description": "Analysts' Sentiment Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_autocomp",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 41,
+   "alphaCount": 90,
+   "description": "Auto Components Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_banks",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 35,
+   "alphaCount": 71,
+   "description": "Banks Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_beta",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 150,
+   "alphaCount": 499,
+   "description": "Beta Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_btop",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 248,
+   "alphaCount": 794,
+   "description": "Book-to-Price Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_capgoods",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 36,
+   "alphaCount": 72,
+   "description": "Capital Goods Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_cnt_kor",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 117,
+   "alphaCount": 428,
+   "description": "South Korea Country Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_cntadj",
+   "type": "MATRIX",
+   "coverage": 0.943,
+   "userCount": 89,
+   "alphaCount": 249,
+   "description": "Country adjusted factor loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_commsvcs",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 27,
+   "alphaCount": 47,
+   "description": "Communication Services Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_consdur",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 33,
+   "alphaCount": 80,
+   "description": "Consumer Durables Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_constr",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 31,
+   "alphaCount": 68,
+   "description": "Construction Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_consvcs",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 32,
+   "alphaCount": 58,
+   "description": "Consumer Services Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_divfinan",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 34,
+   "alphaCount": 78,
+   "description": "Diversified Financial Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_divyild",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 108,
+   "alphaCount": 274,
+   "description": "Dividend Yield Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 252,
+   "alphaCount": 1063,
+   "description": "Specific returns"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_earnqlty",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 86,
+   "alphaCount": 255,
+   "description": "Earnings Quality Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_earnvar",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 121,
+   "alphaCount": 607,
+   "description": "Earnings Variability Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_earnyild",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 582,
+   "alphaCount": 1795,
+   "description": "Earnings Yield Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_foodprd",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 34,
+   "alphaCount": 55,
+   "description": "Food Products Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_foodretl",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 28,
+   "alphaCount": 57,
+   "description": "Food Retail Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_growth",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 157,
+   "alphaCount": 551,
+   "description": "Growth Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_hardware",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 36,
+   "alphaCount": 74,
+   "description": "Hardware Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_health",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 40,
+   "alphaCount": 74,
+   "description": "Health Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_hshldprd",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 36,
+   "alphaCount": 61,
+   "description": "Household Products Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_indadj",
+   "type": "MATRIX",
+   "coverage": 0.943,
+   "userCount": 101,
+   "alphaCount": 307,
+   "description": "Industry factor loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_indmom",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 102,
+   "alphaCount": 427,
+   "description": "Industrial Momentum Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_insuran",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 39,
+   "alphaCount": 52,
+   "description": "Insurance Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_invsqlty",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 123,
+   "alphaCount": 530,
+   "description": "Investment Quality Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_leverage",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 120,
+   "alphaCount": 416,
+   "description": "Leverage Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_ltrevrsl",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 127,
+   "alphaCount": 434,
+   "description": "Long-Term Reversal Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_machin",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 38,
+   "alphaCount": 91,
+   "description": "Machinery Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_market",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 35,
+   "alphaCount": 58,
+   "description": "Market Market Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_metals",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 55,
+   "alphaCount": 130,
+   "description": "Metals Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_midcap",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 94,
+   "alphaCount": 414,
+   "description": "Midcap Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_momentum",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 123,
+   "alphaCount": 460,
+   "description": "Momentum Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_newssent",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 40,
+   "alphaCount": 93,
+   "description": "News Sentiment Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_oilgas",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 37,
+   "alphaCount": 70,
+   "description": "Oil & Gas Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_othermat",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 128,
+   "alphaCount": 425,
+   "description": "Other Materials Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_pharmac",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 39,
+   "alphaCount": 79,
+   "description": "Pharmaceuticals Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_primaryindustry",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 56,
+   "alphaCount": 126,
+   "description": "Industry factor loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_profit",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 107,
+   "alphaCount": 467,
+   "description": "Profit Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_realest",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 24,
+   "alphaCount": 45,
+   "description": "Real Estate Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_resvol",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 231,
+   "alphaCount": 1006,
+   "description": "Residual Volatility Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_retail",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 32,
+   "alphaCount": 63,
+   "description": "Retail Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_season",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 107,
+   "alphaCount": 703,
+   "description": "Season Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_semicond",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 38,
+   "alphaCount": 106,
+   "description": "Semiconductors Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_shortint",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 91,
+   "alphaCount": 248,
+   "description": "Short Interest Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_size",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 132,
+   "alphaCount": 508,
+   "description": "Size Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_software",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 45,
+   "alphaCount": 94,
+   "description": "Software Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_srisk",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 150,
+   "alphaCount": 473,
+   "description": "Final specific risk annualized in units of %-squared"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_srisku",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 189,
+   "alphaCount": 588,
+   "description": "Unadjusted initial specific risk annualized in units of %-squared"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_srtindcnt",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 225,
+   "alphaCount": 1431,
+   "description": "Industry factor loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_strevrsl",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 77,
+   "alphaCount": 199,
+   "description": "Short-Term Reversal Style Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_telecom",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 45,
+   "alphaCount": 87,
+   "description": "Telecommunications Industry Factor Loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_transprt",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 28,
+   "alphaCount": 66,
+   "description": "Transport industry factor loading"
+  },
+  {
+   "id": "rsk70_mfm2_asetrd_utility",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 29,
+   "alphaCount": 56,
+   "description": "Utility industry factor loading"
+  },
+  {
+   "id": "sector_exposure_airlines_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Exposure to the airlines sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_auto_components",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Exposure to the auto components sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_banking_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Exposure to the banking sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_capital_goods",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exposure to the capital goods sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_communication_services",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Exposure to the communication services sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_construction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exposure to the construction sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_consumer_services",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exposure to the consumer services sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_diversified_financials_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 5,
+   "description": "Exposure to the diversified financials sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_food_products_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 7,
+   "description": "Exposure to the food products sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_food_retail_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Exposure to the food retail sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_hardware",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exposure to the hardware sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_healthcare",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 7,
+   "description": "Exposure to the healthcare sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_household_products",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exposure to the household products sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_machinery",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 12,
+   "description": "Exposure to the machinery sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_media",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exposure to the media sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_metals_mining",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exposure to the metals and mining sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_oil_gas",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exposure to the oil and gas sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_other_materials",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Exposure to the other materials sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_pharmaceuticals_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exposure to the pharmaceuticals sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_real_estate_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exposure to the real estate sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_semiconductors_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Exposure to the semiconductors sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_software",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Exposure to the software sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_telecom",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Exposure to the telecommunications sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_transportation_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exposure to the transportation sector in the risk model."
+  },
+  {
+   "id": "sector_exposure_utilities",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Exposure to the utilities sector in the risk model."
+  },
+  {
+   "id": "sector_relative_momentum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 13,
+   "alphaCount": 22,
+   "description": "Momentum factor calculated relative to sector peers."
+  },
+  {
+   "id": "short_term_industry_country_factor",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 26,
+   "alphaCount": 44,
+   "description": "Short-term factor capturing combined industry and country exposures."
+  },
+  {
+   "id": "us_equity_consumer_durables_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Indicator flag showing whether a U.S. company is classified in the consumer durables industry segment."
+  },
+  {
+   "id": "us_equity_insurance_sector_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 8,
+   "description": "Indicator flag showing whether a U.S. company is classified in the insurance sector."
+  },
+  {
+   "id": "us_equity_korea_country_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Indicator flag showing if a U.S.-listed company is associated with South Korea as its country of risk or incorporation."
+  },
+  {
+   "id": "us_equity_retail_sector_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 12,
+   "description": "Indicator denoting whether a U.S. company operates primarily in the retail sector."
+  },
+  {
+   "id": "us_equity_short_interest_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "The proportion of shares sold short relative to total shares outstanding for a U.S. company."
+  }
+ ],
+ "count": 96,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 96,
+ "complete": true,
+ "pages_fetched": 2
+}

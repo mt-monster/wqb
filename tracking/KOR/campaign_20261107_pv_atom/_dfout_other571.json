@@ -1,0 +1,194 @@
+{
+ "results": [
+  {
+   "id": "oth571_views14d",
+   "type": "MATRIX",
+   "coverage": 0.2649,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total Wikipedia company page views in the USA module over the trailing 14-day window ending 14 days ago (inclusive; module timezone)"
+  },
+  {
+   "id": "oth571_views28d",
+   "type": "MATRIX",
+   "coverage": 0.2636,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total Wikipedia company page views in the USA module over the trailing 28-day window ending 28 days ago (inclusive; module timezone)"
+  },
+  {
+   "id": "oth571_views28dafternoon",
+   "type": "MATRIX",
+   "coverage": 0.2636,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Wikipedia company page views in the USA module from 12:00 to 17:59 on the day 28 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views28ddesktop",
+   "type": "MATRIX",
+   "coverage": 0.2636,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Wikipedia company page views in the USA module via desktop devices on the day 28 days ago (desktop web; module timezone)"
+  },
+  {
+   "id": "oth571_views28devening",
+   "type": "MATRIX",
+   "coverage": 0.2636,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Wikipedia company page views in the USA module from 18:00 to 23:59 on the day 28 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views28dmobile",
+   "type": "MATRIX",
+   "coverage": 0.2636,
+   "userCount": 17,
+   "alphaCount": 20,
+   "description": "Total Wikipedia company page views in the USA module via mobile devices on the day 28 days ago (mobile web and apps; module timezone)"
+  },
+  {
+   "id": "oth571_views28dmorning",
+   "type": "MATRIX",
+   "coverage": 0.2636,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Wikipedia company page views in the USA module from 06:00 to 11:59 on the day 28 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views28dnight",
+   "type": "MATRIX",
+   "coverage": 0.2636,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Wikipedia company page views in the USA module from 00:00 to 05:59 on the day 28 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views7d",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total Wikipedia page views over the past 7 natural days."
+  },
+  {
+   "id": "oth571_views7dafternoon",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Wikipedia company page views in the USA module from 12:00 to 17:59 on the day 7 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views7ddesktop",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Wikipedia page views from desktop devices over the past 7 natural days."
+  },
+  {
+   "id": "oth571_views7devening",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Wikipedia company page views in the USA module from 18:00 to 23:59 on the day 7 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views7dmobile",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 16,
+   "alphaCount": 18,
+   "description": "Wikipedia page views from mobile devices over the past 7 natural days."
+  },
+  {
+   "id": "oth571_views7dmorning",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Wikipedia company page views in the USA module from 06:00 to 11:59 on the day 7 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views7dnight",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Wikipedia company page views in the USA module from 00:00 to 05:59 on the day 7 days ago (module timezone)"
+  },
+  {
+   "id": "oth571_views84d",
+   "type": "MATRIX",
+   "coverage": 0.2593,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Total Wikipedia company page views in the USA module over the trailing 84-day window ending 84 days ago (inclusive; module timezone)"
+  },
+  {
+   "id": "oth571_viewstoday",
+   "type": "MATRIX",
+   "coverage": 0.2658,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total Wikipedia company page views in the USA module today (calendar day; module timezone)"
+  },
+  {
+   "id": "oth571_viewstodayafternoon",
+   "type": "MATRIX",
+   "coverage": 0.2658,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Wikipedia company page views in the USA module from 12:00 to 17:59 today (module timezone)"
+  },
+  {
+   "id": "oth571_viewstodaydesktop",
+   "type": "MATRIX",
+   "coverage": 0.2658,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total Wikipedia company page views in the USA module via desktop devices today (desktop web; module timezone)"
+  },
+  {
+   "id": "oth571_viewstodayevening",
+   "type": "MATRIX",
+   "coverage": 0.2658,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Wikipedia company page views in the USA module from 18:00 to 23:59 today (module timezone)"
+  },
+  {
+   "id": "oth571_viewstodaymobile",
+   "type": "MATRIX",
+   "coverage": 0.2658,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Total Wikipedia company page views in the USA module via mobile devices today (mobile web and apps; module timezone)"
+  },
+  {
+   "id": "oth571_viewstodaymorning",
+   "type": "MATRIX",
+   "coverage": 0.2658,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Wikipedia company page views in the USA module from 06:00 to 11:59 today (module timezone)"
+  },
+  {
+   "id": "oth571_viewstodaynight",
+   "type": "MATRIX",
+   "coverage": 0.2658,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Wikipedia company page views in the USA module from 00:00 to 05:59 today (module timezone)"
+  }
+ ],
+ "count": 23,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 23,
+ "complete": true,
+ "pages_fetched": 1
+}

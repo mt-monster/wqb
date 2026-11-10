@@ -1,0 +1,15 @@
+id,type,cov,uc,ac,desc
+analyst_count_current_quarter_estimate,MATRIX,0.0,0,0,Number of analysts contributing to the current fiscal quarter weighted estimate.
+analyst_count_current_year_estimate,MATRIX,0.0,3,4,Number of analysts contributing to the current fiscal year weighted estimate.
+analyst_count_next_quarter_estimate,MATRIX,0.0,0,0,Number of analysts contributing to the next fiscal quarter weighted estimate.
+analyst_count_next_year_estimate,MATRIX,0.0,1,1,Number of analysts contributing to the next fiscal year weighted estimate.
+forecast_deviation_pct_current_quarter,MATRIX,0.0,0,0,Percent difference between weighted analyst forecast and consensus for the current fiscal quarter.
+forecast_deviation_pct_current_year,MATRIX,0.0,26,32,Percent difference between weighted analyst forecast and consensus for the current fiscal year.
+forecast_deviation_pct_forward_12m,MATRIX,0.0,18,21,Percent difference between weighted analyst forecast and consensus for the forward 12 months.
+forecast_deviation_pct_next_quarter,MATRIX,0.0,0,0,Percent difference between weighted analyst forecast and consensus for the next fiscal quarter.
+forecast_deviation_pct_next_year,MATRIX,0.0,4,4,Percent difference between weighted analyst forecast and consensus for the next fiscal year.
+weighted_estimate_current_quarter,MATRIX,0.0,0,0,Weighted analyst estimate for the current fiscal quarter.
+weighted_estimate_current_year,MATRIX,0.0,1,1,Weighted analyst estimate for the current fiscal year.
+weighted_estimate_forward_12m,MATRIX,0.0,5,5,Weighted analyst estimate for the forward 12 months.
+weighted_estimate_next_quarter,MATRIX,0.0,1,1,Weighted analyst estimate for the next fiscal quarter.
+weighted_estimate_next_year,MATRIX,0.0,1,1,Weighted analyst estimate for the next fiscal year.

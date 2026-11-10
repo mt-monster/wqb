@@ -1,0 +1,12 @@
+[
+  "-group_rank(divide(subtract(session_1430to1430_final_trade_price,session_1430to1430_volume_weighted_avg_price),session_1430to1430_volume_weighted_avg_price), sector)",
+  "-group_rank(divide(subtract(session_1430to1430_max_trade_price,session_1430to1430_min_trade_price),session_1430to1430_volume_weighted_avg_price), sector)",
+  "-group_rank(divide(subtract(session_1430to1430_final_trade_price,session_1430to1430_min_trade_price),add(subtract(session_1430to1430_max_trade_price,session_1430to1430_min_trade_price),0.0001)), sector)",
+  "group_rank(divide(subtract(session_1430to1430_max_trade_price,session_1430to1430_min_trade_price),add(abs(subtract(session_1430to1430_final_trade_price,session_1430to1430_initial_trade_price)),0.0001)), sector)",
+  "-group_rank(ts_mean(divide(subtract(session_1430to1430_final_trade_price,session_1430to1430_initial_trade_price),session_1430to1430_initial_trade_price),22), sector)",
+  "-group_rank(divide(session_1430to1430_total_traded_volume,ts_mean(session_1430to1430_total_traded_volume,66)), sector)",
+  "group_rank(ts_std_dev(divide(subtract(session_1430to1430_final_trade_price,session_1430to1430_initial_trade_price),session_1430to1430_initial_trade_price),66), sector)",
+  "group_neutralize(multiply(group_rank(divide(subtract(session_1430to1430_final_trade_price,session_1430to1430_volume_weighted_avg_price),session_1430to1430_volume_weighted_avg_price),sector),group_rank(divide(session_1430to1430_total_traded_volume,ts_mean(session_1430to1430_total_traded_volume,66)),sector)),industry)",
+  "group_rank(divide(subtract(session_1430to1430_volume_weighted_avg_price,ts_mean(session_1430to1430_volume_weighted_avg_price,378)),ts_mean(session_1430to1430_volume_weighted_avg_price,378)), sector)",
+  "-group_rank(ts_zscore(divide(subtract(session_1430to1430_final_trade_price,session_1430to1430_initial_trade_price),session_1430to1430_initial_trade_price),66), sector)"
+]

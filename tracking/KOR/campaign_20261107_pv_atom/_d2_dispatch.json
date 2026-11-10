@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "oycrP8Rf5fz9sLt6s672Le",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/oycrP8Rf5fz9sLt6s672Le",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/oycrP8Rf5fz9sLt6s672Le",
+ "submitted_expressions": [
+  "subtract(0.5, group_rank(ts_backfill(vec_avg(oth436_disc), 10), sector))",
+  "group_rank(ts_backfill(vec_avg(oth436_disc), 10), sector)",
+  "subtract(0.5, group_rank(ts_delta(ts_backfill(vec_avg(oth436_disc), 10), 22), sector))",
+  "subtract(0.5, group_rank(ts_delta(ts_backfill(vec_avg(oth436_disc), 10), 66), sector))",
+  "subtract(0.5, group_rank(ts_mean(ts_backfill(vec_avg(oth436_disc), 10), 66), sector))",
+  "subtract(0.5, group_rank(ts_zscore(ts_backfill(vec_avg(oth436_disc), 10), 252), sector))",
+  "group_rank(ts_backfill(vec_avg(oth436_divyld), 10), sector)",
+  "reverse(group_rank(ts_backfill(vec_avg(oth436_divyld), 10), sector))",
+  "subtract(0.5, group_rank(vector_neut(rank(ts_backfill(vec_avg(oth436_disc), 10)), rank(ts_backfill(vec_avg(oth436_mktcap), 10))), sector))",
+  "trade_when(greater(rank(ts_backfill(vec_avg(oth436_divyld), 10)), 0.3), subtract(0.5, group_rank(ts_backfill(vec_avg(oth436_disc), 10), sector)), -1)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

@@ -1,0 +1,47 @@
+{
+ "alpha_id": "e73Rw8qg",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "provisional": true,
+ "checks": {
+  "production": {
+   "max_correlation": 0.5096,
+   "passes_check": true,
+   "source": "alpha_detail_cached",
+   "provisional": true,
+   "joined": false
+  },
+  "self": {
+   "max_correlation": 0.5101105108241609,
+   "passes_check": true,
+   "top_correlated": [
+    {
+     "id": "KP78pLWk",
+     "correlation": 0.5101105108241609
+    },
+    {
+     "id": "O0Aw0Y7Y",
+     "correlation": 0.3773641060394214
+    },
+    {
+     "id": "9qjGvaWe",
+     "correlation": 0.2861685014255827
+    },
+    {
+     "id": "rKOPg9gd",
+     "correlation": 0.2692109314315913
+    },
+    {
+     "id": "88RNX7la",
+     "correlation": 0.2623087275635762
+    }
+   ],
+   "pool_size": 30,
+   "correlation_type": "self",
+   "full_os_pool_size": 46,
+   "excluded_power_pool_count": 16,
+   "ppac_ids_cached": 17
+  }
+ },
+ "all_passed": true
+}

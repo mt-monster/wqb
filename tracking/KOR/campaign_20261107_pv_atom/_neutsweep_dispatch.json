@@ -1,0 +1,65 @@
+{
+ "submitted": 8,
+ "total": 8,
+ "results": [
+  {
+   "index": 0,
+   "location": "https://api.worldquantbrain.com/simulations/3eqn9kegR4Yb9Fi1ausBuHE6",
+   "simulation_id": "3eqn9kegR4Yb9Fi1ausBuHE6",
+   "ok": true,
+   "tag": "neut_STATISTICAL"
+  },
+  {
+   "index": 1,
+   "location": "https://api.worldquantbrain.com/simulations/2dZlWcuh4JTcIh1eHUElgP8",
+   "simulation_id": "2dZlWcuh4JTcIh1eHUElgP8",
+   "ok": true,
+   "tag": "neut_MARKET"
+  },
+  {
+   "index": 2,
+   "location": "https://api.worldquantbrain.com/simulations/4y8A043go4E1bWd13NaSaYwE",
+   "simulation_id": "4y8A043go4E1bWd13NaSaYwE",
+   "ok": true,
+   "tag": "neut_SECTOR"
+  },
+  {
+   "index": 3,
+   "location": "https://api.worldquantbrain.com/simulations/40eJUU9jd4sNa2kVM7B8pQv",
+   "simulation_id": "40eJUU9jd4sNa2kVM7B8pQv",
+   "ok": true,
+   "tag": "neut_INDUSTRY"
+  },
+  {
+   "index": 4,
+   "location": "https://api.worldquantbrain.com/simulations/4weRcbGT5jMbe540ysDwLZ",
+   "simulation_id": "4weRcbGT5jMbe540ysDwLZ",
+   "ok": true,
+   "tag": "neut_SUBINDUSTRY"
+  },
+  {
+   "index": 5,
+   "location": "https://api.worldquantbrain.com/simulations/2Twhjx5aH4yD98MWf7voWTs",
+   "simulation_id": "2Twhjx5aH4yD98MWf7voWTs",
+   "ok": true,
+   "tag": "neut_SLOW_AND_FAST"
+  },
+  {
+   "index": 6,
+   "location": "https://api.worldquantbrain.com/simulations/4x7CH81ff4pQcKE178vNWZSr",
+   "simulation_id": "4x7CH81ff4pQcKE178vNWZSr",
+   "ok": true,
+   "tag": "neut_FAST"
+  },
+  {
+   "index": 7,
+   "location": "https://api.worldquantbrain.com/simulations/rIiQJ9mH50ua6v15XGfaTAI",
+   "simulation_id": "rIiQJ9mH50ua6v15XGfaTAI",
+   "ok": true,
+   "tag": "neut_SLOW"
+  }
+ ],
+ "note": "Async submit: poll each location with lookINTO_SimError_message or GET /simulations/{id} until status is terminal.",
+ "async": true,
+ "polling_tool": "lookINTO_SimError_message"
+}

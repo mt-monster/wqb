@@ -1,0 +1,10 @@
+id,type,cov,uc,ac,desc
+ad_content_format,VECTOR,0.0,0,0,Format/type of the ad creative
+ad_display_count,VECTOR,0.0,0,0,Estimated number of ad exposures (impressions count)
+ad_purchase_channel,VECTOR,0.0,0,0,Enumerated code indicating the channel through which media was purchased (e.g.; direct; DSP; ad network)
+ad_sales_channel,VECTOR,0.0,1,1,Enumerated code indicating the channel through which the ad inventory was sold or distributed (e.g.; direct; SSP; exchange)
+advertising_spend_local_currency,VECTOR,0.0,0,0,The estimated advertising expenditure in the local currency of the ad's geographic region; corresponding to the 'LocalSpend' field. This value is of type float.
+advertising_spend_usd,VECTOR,0.0,2,2,The estimated advertising expenditure in US Dollars (USD); corresponding to the 'Spend' field. This value is inferred by applying cost-per-mille (CPM) estimatesâ¦
+estimated_ad_impressions,VECTOR,0.0,2,2,The estimated number of times a digital advertisement was served; corresponding to the 'Impressions' field. This value is modeled from sampled observations andâ¦
+estimated_ad_spend,VECTOR,0.0,1,1,Total advertising spend for the record in USD (normalized amount)
+estimated_local_ad_spend,VECTOR,0.0,0,0,Advertising spend in original/local currency (pre-normalization; unconverted)

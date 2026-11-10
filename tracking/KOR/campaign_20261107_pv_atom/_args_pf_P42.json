@@ -1,0 +1,12 @@
+{"alpha_expressions":[
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg),66), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg),22), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg),44), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg),88), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg),66), industry))",
+ "subtract(0.5, group_rank(ts_mean(divide(vec_range(insd5_vol_chg), add(vec_stddev(insd5_vol_chg),1)),66), sector))",
+ "subtract(0.5, group_rank(ts_mean(divide(vec_range(insd5_vol_chg), add(vec_avg(insd5_vol_bf),1)),66), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_fa_tr),66), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_ghc_tr),66), sector))",
+ "subtract(0.5, group_rank(ts_mean(vec_avg(insd5_fa_tr),66), sector))"
+],"region":"KOR","universe":"TOP600","delay":1}

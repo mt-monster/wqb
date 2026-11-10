@@ -61,6 +61,7 @@ def _bootstrap_src() -> None:
 
 _bootstrap_src()
 from wqb.paths import find_repo_root  # noqa: E402
+from wqb.config import BASKET_MUTUAL_CORR_MAX  # noqa: E402  篮子互相关阈值单一事实源
 REPO_ROOT = find_repo_root(__file__)
 sys.path.insert(0, str(REPO_ROOT / "world-quant-brain-mcp"))
 
@@ -157,9 +158,10 @@ except Exception:  # noqa: BLE001
 #: prod 值算「新鲜」的天数缺省。
 #: 2026-10-03：IND 旧候选 09-19~23 实测 prod 0.51–0.67，10-02 复测**全部** 0.83–0.99
 #: （社区同族 alpha 持续进 book，WorkBuddy 记忆 MEMORY §1.3「陈旧 prod 值一律作废」）。
-#: ⚠ 本工具刻意比 store 侧的 :data:`_corr_cache.CORR_FRESH_HOURS`（48h）**更严**：
-#: 提交篮子的门槛严于「权威表新鲜」的门槛，因为篮子送进限流队列前先剔一次比事后返工便宜。
-#: 改动 48h 常请同步检查这里。
+#: ⚠ 2026-11-10 审查校正：本值 2 天 = 48h，与 store 侧
+#: :data:`_corr_cache.CORR_FRESH_HOURS` **同口径**，并非旧注释声称的「更严」。
+#: 若将来要收紧篮子门槛（篮子送进限流队列前先剔一次比事后返工便宜），应显式调小
+#: 本值并同步更新说明；改动 store 的 48h 时请同步检查这里。
 PROD_FRESH_DAYS = 2
 
 
@@ -372,7 +374,7 @@ def main():
     ap.add_argument("candidates", help="build_gate_prior_from_inventory.py --emit-candidates 的产物")
     ap.add_argument("--target", type=int, default=20, help="篮子大小（默认 20）")
     ap.add_argument("--pool", type=int, default=120, help="送进互相关计算的候选数（默认 120）")
-    ap.add_argument("--threshold", type=float, default=0.7, help="相关性阈值（默认 0.7）")
+    ap.add_argument("--threshold", type=float, default=BASKET_MUTUAL_CORR_MAX, help="相关性阈值（缺省读 config.BASKET_MUTUAL_CORR_MAX=0.7）")
     ap.add_argument("--years", type=int, default=4, help="相关性计算的回看年数（默认 4）")
     ap.add_argument("--out", default=None, help="篮子 JSON 输出路径")
     ap.add_argument("--db", default=None, help="wqb.db 路径（缺省自动探测仓库根）")

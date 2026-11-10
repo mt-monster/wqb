@@ -1,0 +1,33 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "broad_market_exposure_factor",
+  "hedge_fund_number_owners",
+  "hedge_fund_ownership_percentage",
+  "sector_relative_momentum",
+  "short_term_industry_country_factor",
+  "us_equity_short_interest_ratio"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 6,
+ "fixed_expressions": [
+  "group_rank(ts_delta(hedge_fund_ownership_percentage, 66), sector)",
+  "group_rank(ts_mean(hedge_fund_number_owners, 22), sector)",
+  "multiply(group_rank(ts_delta(hedge_fund_number_owners, 66), sector), -1)",
+  "group_rank(ts_mean(sector_relative_momentum, 22), sector)",
+  "multiply(group_rank(ts_mean(us_equity_short_interest_ratio, 22), sector), -1)",
+  "group_rank(ts_delta(us_equity_short_interest_ratio, 66), sector)",
+  "multiply(group_rank(ts_mean(short_term_industry_country_factor, 22), sector), -1)",
+  "multiply(group_rank(ts_sum(short_term_industry_country_factor, 5), sector), -1)",
+  "multiply(group_rank(ts_mean(broad_market_exposure_factor, 22), sector), -1)",
+  "group_rank(divide(hedge_fund_ownership_percentage, hedge_fund_number_owners), sector)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}

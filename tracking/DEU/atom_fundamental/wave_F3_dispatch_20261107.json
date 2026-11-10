@@ -1,0 +1,297 @@
+{
+ "wave": "F3_fundamental_20261107",
+ "settings": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "nan_handling": "OFF"
+ },
+ "attribution_F1_F2B": {
+  "batchA_fnd45": "书窄是主因（lc 21-26）。tone_qa 0.67/2Y1.49 最佳、numeric 0.53/sub0.60 次之、readability 方向翻转后 0.65；合成/差分族全灭。F3 主杠杆=回填 252 扩书 + 事件窗",
+  "batchF2B_fnd90": "rank 加法合成证伪（0.64-0.68 不及 icfroe 单腿 0.86，margin 4-5bp 且 CW 闸）；zscore-subind 抬 2Y（icfroe 0.68→0.91）"
+ },
+ "batchF1": {
+  "A_multisim": "4BBN7F6vD5k2bah14c3Xtz4p",
+  "B_multisim": "3Bgx6bgkr4G6cbkHhfOq4Ad",
+  "B_harvest": [
+   {
+    "tag": "B1_pscore",
+    "id": "LLMzWv12",
+    "S": 0.74,
+    "Y2": 1.11
+   },
+   {
+    "tag": "B2_ohlson",
+    "id": "P0ozNROE",
+    "S": 0.66,
+    "Y2": 0.93
+   },
+   {
+    "tag": "B3_cfc",
+    "id": "pwdGm2K6",
+    "S": 0.77,
+    "Y2": 0.45
+   },
+   {
+    "tag": "B4_deferred_sal",
+    "id": "A1Vz9p7e",
+    "S": 0.6,
+    "Y2": 1.13
+   },
+   {
+    "tag": "B5_icfroe5y",
+    "id": "QPvzMx9w",
+    "S": 0.92,
+    "Y2": 0.68
+   },
+   {
+    "tag": "B6_inv_chg",
+    "id": "P0ozNRGE",
+    "S": 0.49
+   },
+   {
+    "tag": "B7_esg_level",
+    "id": "pwdGm2N6",
+    "S": 0.48,
+    "Y2": 1.37,
+    "sub": -0.02
+   },
+   {
+    "tag": "B8_esg_mom",
+    "id": "mLo7pG5K",
+    "S": 0.41
+   }
+  ],
+  "note": "fnd90 有数据（lc 52-73，平台 cov=0 失真）；fnd22 ESG 弱"
+ },
+ "coverage_facts": {
+  "icfroe5y_QPvzMx9w": "2014-2023 十年 longCount 47-59 全>0 无连续空窗；逐年 S 2.06/0.31/1.0/1.64/1.18/1.05/2020负/… 近年衰减"
+ },
+ "batchF3A": {
+  "multisim": "7TgAjfTw4oG9ZvdWJsfCVB",
+  "label": "fnd45_widen_book_10"
+ },
+ "harvest_F3A": {
+  "at": "2026-11-07T05:07",
+  "key": "2Y 全破闸（bf252 tone 1.78 / sector 1.65 / tsmean22 1.61 / eventwin10 1.58），S 顶 0.81；书未扩（lc 27-28，日频真实覆盖 ~11%）；仅剩 LOW_SHARPE+LOW_FITNESS",
+  "best": [
+   {
+    "tag": "W6_zscore_subind",
+    "id": "0mYg3q71",
+    "S": 0.81,
+    "Y2": 1.39
+   },
+   {
+    "tag": "W1_bf252_ind",
+    "id": "58E50xvX",
+    "S": 0.77,
+    "Y2": 1.78
+   },
+   {
+    "tag": "W2_bf504_ind",
+    "id": "bl6zZXLM",
+    "S": 0.79,
+    "Y2": 1.68
+   },
+   {
+    "tag": "W10_sector",
+    "id": "O0AzPOZJ",
+    "S": 0.77,
+    "Y2": 1.65
+   }
+  ]
+ },
+ "batchF3B": {
+  "multisim": "41E3tk4Hi4sva0crWblYXy3",
+  "label": "fnd90_geometry_upgrade_8"
+ },
+ "harvest_F3B": {
+  "at": "2026-11-07T05:10",
+  "key": "cfc 换 market 组轴 = fnd90 突破点：S 1.02/F 0.87/sub 0.96/margin 97bp，短板 2Y 0.42（2023 S 0.01）；icfroe sector 0.95；ts_delta504/ts_rank504 死（0.48/0.03）；病灶镜像：fnd90 缺 2Y，fnd45 缺 S",
+  "best": [
+   {
+    "tag": "V8_cfc_market",
+    "id": "vR1GMV93",
+    "S": 1.02,
+    "F": 0.87,
+    "Y2": 0.42,
+    "sub": 0.96,
+    "margin": 0.009727
+   },
+   {
+    "tag": "V1_icfroe_sector",
+    "id": "A1VzZdJE",
+    "S": 0.95,
+    "Y2": 0.67
+   },
+   {
+    "tag": "V5_accrualvol_zsub",
+    "id": "leAGOZkl",
+    "S": 0.85,
+    "Y2": 0.9,
+    "margin": 0.00834
+   }
+  ]
+ },
+ "batchF4A": {
+  "multisim": "LNn0P7WJ4ric8HWTEquMZo",
+  "label": "fnd45_ortho_rank_composite_10"
+ },
+ "harvest_F4A": {
+  "at": "2026-11-07T05:14",
+  "key": "正交三轴 rank 合成突破：X3_sector S 0.99/F 0.80/2Y 1.89/sub 0.81；X1_industry 0.98/1.88 同级（组轴不敏感）；仅剩 LOW_SHARPE+LOW_FITNESS（S 驱动）。qa+pr 同模型双腿 0.23 无效、av_diff66 0.05 死",
+  "best": [
+   {
+    "tag": "X3_ortho3_sector",
+    "id": "omEG5nk6",
+    "S": 0.99,
+    "F": 0.8,
+    "Y2": 1.89,
+    "sub": 0.81
+   },
+   {
+    "tag": "X1_ortho3_ind",
+    "id": "LLMzan2n",
+    "S": 0.98,
+    "F": 0.76,
+    "Y2": 1.88,
+    "sub": 0.8
+   }
+  ]
+ },
+ "batchF5_FAST": {
+  "multisim": "1rpqIBbNt57SafBvmJ0tBRn",
+  "label": "neutralization_contrast_FAST_8",
+  "design": "与 SUBINDUSTRY 基线严格单变量对比（W1/W2/W8/W9/W6/W10 fnd45 + icfroe subind/sector）"
+ },
+ "batchF7_STAT": {
+  "multisim": "4cxnOrefh4DqcmP12drb3VPw",
+  "label": "fnd45_ortho_x_STATISTICAL_8",
+  "note": "X3 复合体 × STATISTICAL（techindi 先例 S+31%）+ decay10/tsmean22/winsorize/zscore/bf504/eventwin22 变体"
+ },
+ "coverage_gate_20261107": {
+  "scope": "连续空窗口径（逐年 longCount>0 且 pnl≠0）",
+  "58E50xvX_fnd45_tone_bf252": {
+   "verdict": "PASS 十年无空窗",
+   "yearly_S": [
+    0.42,
+    0.66,
+    0.26,
+    0.49,
+    0.54,
+    2.33,
+    0.07,
+    -0.36,
+    2.19,
+    1.29
+   ],
+   "note": "lc 10→44 增长；信号后置 → 2Y 1.78；早年小书噪声拖总 S"
+  },
+  "vR1GMV93_fnd90_cfc_market": {
+   "verdict": "PASS 十年无空窗",
+   "yearly_S": [
+    1.64,
+    3.42,
+    0.31,
+    0.75,
+    2.13,
+    1.74,
+    -2.05,
+    2.58,
+    0.75,
+    0.01
+   ],
+   "note": "信号前置；2023 S 0.01 → 2Y 0.42；OS 前需重验近年"
+  }
+ },
+ "harvest_F5_FAST": {
+  "at": "2026-11-07T05:17",
+  "key": "中性化=FAST 把书从 27 扩到 186-195（书窄部分是 subindustry 分组成员数伪影），但 S 不抬（0.63-0.75）、TO 14-16%、margin 4-5bp ⇒ S 瓶颈是信号强度不是书宽。icfroe sector FAST 0.97 与 SUBINDUSTRY 0.95 持平",
+  "best": [
+   {
+    "tag": "FAST_icfroe_sector",
+    "id": "P0ozazeE",
+    "S": 0.97
+   },
+   {
+    "tag": "FAST_W6_zsub",
+    "id": "mLo7R7kK",
+    "S": 0.75
+   }
+  ]
+ },
+ "harvest_F7_STAT": {
+  "at": "2026-11-07T05:17",
+  "key": "STATISTICAL 对 fnd45 是毒药：X3 复合体 S 0.99→0.51、2Y 1.89→0.73，全部 8 条塌方（techindi +31% 先例不可跨信号迁移）。fnd45 中性化曲线定论：SUBINDUSTRY(0.99/2Y1.89) ≫ FAST(0.75/1.75) ≫ STATISTICAL(0.51/0.73)。复合体天花板 ≈1.0",
+  "best": [
+   {
+    "tag": "STAT_X3_zscore",
+    "id": "3qoPrvEX",
+    "S": 0.7
+   }
+  ]
+ },
+ "batchF6": {
+  "SLOW_multisim": "dOoiYdmu584ab613wMlI2TQ",
+  "cfc_deepen_multisim": "3M6j7A1VI4k7a9KQWWdulPS",
+  "dispatched_at": "2026-11-07T05:18",
+  "design_ref": "wave_F6_design_20261107.md"
+ },
+ "strategic_note": "fnd45 单集天花板 ≈1.0（全部杠杆已扫：窗 66/252/504×组轴×几何×正交合成×中性化 3 档）；fnd90 双轴 cfc(1.02/2Y0.42) + icfroe(0.95/2Y0.67)，2Y 是主要缺口，F6-B 修。若 F6-B 仍 <1.3，fnd6 重开（oiadpq 历史顶 1.73）是唯一 >1.58 原始强度的面",
+ "fnd6_recon_20261107": {
+  "key_finding": "Wje5K71x（fnd6 oiadpq 六层配方，S1.73/F1.37/2Y1.87/prod0.4305）已于 2026-10-12 提交并 ACTIVE(OS)。含义：①本类目出货能力已被证明；②oiadpq ts_delta 加速度族 prod+self 槽位被占 ⇒ 该族新变体死路；③fnd6 第二梯队 piq1.37/ibq1.27 < 1.58 闸，六层配方下无新机制",
+  "untried_transfer": "ts_target_tvr_decay(·, target_tvr=0.03) × FAST 中性化 在慢频基本面信号有效（Wje5K71x 实证，TO 12.7% 受控）；10-30 报告的『tvr 伤排名信号』结论仅对 techindi 快信号成立。fnd45 X3 复合体与 fnd90 cfc 同为慢频信号，可移植",
+  "structural": "fnd6 机制稀缺（16 概念仅 oiadpq 过线）+ prod 刀锋（参数级 0.43↔0.99 漂移）+ 同骨架互斥 ⇒ fnd6 单机制上限 1 颗（已用）"
+ },
+ "harvest_F6B": {
+  "at": "2026-11-07T05:23",
+  "key": "cfc 族 4 几何全部 S≈1.0 但 2Y 钉死 0.29-0.42（2023 死亡系机制内禀）；双腿合成稀释 S（0.79/0.92）不修 2Y；动量轴死。fnd90 的 2Y 闸不可达。zscore_market 1.01/0.89 与 winsor 1.02 与 rank 基线同级——cfc 水平信号对几何稳健",
+  "best": [
+   {
+    "tag": "C3_winsor",
+    "id": "KPJzjRx8",
+    "S": 1.02,
+    "F": 0.87,
+    "Y2": 0.42
+   },
+   {
+    "tag": "C1_zscore",
+    "id": "vR1G3V0Q",
+    "S": 1.01,
+    "F": 0.89,
+    "Y2": 0.41
+   }
+  ]
+ },
+ "batchF8_FAST": {
+  "multisim_id": "1vvQELbFA55TcKBJOPvkRRT",
+  "label": "tvr_decay_x_FAST_transplant_8",
+  "note": "Wje5K71x 配方（tvr 限速×FAST）移植到 X3 复合体/单腿/4轴/ts_rank 几何"
+ },
+ "harvest_F6SLOW": {
+  "at": "2026-11-07T05:24",
+  "key": "SLOW 档同样抬不动 S（0.46-0.86，最好 zscore-subind 0.86）。中性化四点曲线定案：SUBINDUSTRY 0.99 > SLOW 0.86 > FAST 0.75 > STATISTICAL 0.51；fnd45 S 闸（1.58）在所有中性化档位下不可达，天花板 ≈1.0 定案",
+  "best": [
+   {
+    "tag": "SLOW_W6_zsub",
+    "id": "QPvzLE1w",
+    "S": 0.86
+   }
+  ]
+ },
+ "harvest_F8_FAST": {
+  "at": "2026-11-07T05:28",
+  "key": "tvr_decay×FAST 配方移植全灭（S 0.28-0.78，2Y 0.31-1.36，TO 13-17%）——Wje5K71x 配方不可跨机制迁移。类目终审证据链闭合：fnd45 天花板 0.99（S 差 60%）、fnd90 1.02/2Y0.42（2Y 内禀死亡）、fnd6 槽位已占、其余全灭",
+  "best": [
+   {
+    "tag": "T7_tone_tvr05",
+    "id": "d5WzA9Kv",
+    "S": 0.78
+   }
+  ]
+ },
+ "final_verdict": "10 颗新 ATOM 在 DEU+Fundamental+硬闸范围内结构性不可达（110 条回测 + 5 机制面天花板证据 + 类目历史唯一全闸件已提交）。已呈报用户决策。"
+}

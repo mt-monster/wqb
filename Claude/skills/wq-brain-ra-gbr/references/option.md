@@ -83,4 +83,22 @@
 ## 补充说明（手写）
 
 <!-- profiles:manual:start -->
+
+### 2026-11-09 option1 不是「空覆盖」，而是「有数据但弱」——判死理由要改
+
+`option1`（22 字段）实读为**期权隐含波动率曲面**：`opt1_p_deltasurface_d1_vi`（曲面坐标 IV）·
+`opt1_p_deltasurface_d1_delta` · `opt1_vp_deltasurface_d1_period`（到期天数）· `opt1_raw_deltasurface_d1_moneyness` ·
+`opt1_p_raw_deltasurface_d1_vi` · `opt1_price_*` · `opt1_volume`。
+
+实测（GBR / TOP700 / D1 / FAST / decay5 / tr0.1）：
+
+| 几何 | S | F | 2Y | fl |
+|---|---:|---:|---:|---:|
+| `group_rank(ts_zscore(vec_avg(opt1_p_deltasurface_d1_vi),126),sector)`（纯 ATOM） | 0.44 | 0.14 | 1.00 | 3 |
+| 同上 + `loaned_share_count` 短腿（GOLD2） | 1.39 | 0.75 | 2.59 | 2 |
+| `ts_av_diff(vec_avg(ivi),66)` 变化 + 短腿 | 1.40 | 0.74 | 2.46 | 2 |
+
+⇒ **数据存在且非零**，旧原因「EMPTY-COVERAGE」应改为「信号弱（S 天花板 `1.40，距 1.58 差 13%）」。
+IV 水平与 IV 变化两条几何几乎同强 ⇒ 该族是**一条**机制，不是两条。
+
 <!-- profiles:manual:end -->

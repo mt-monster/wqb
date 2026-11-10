@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "rsk70_mfm2_asetrd_anlystsn",
+    "expression": "hump(subtract(group_rank(ts_backfill(rsk70_mfm2_asetrd_anlystsn,22),industry),group_rank(ts_delta(rsk68_weight_volatility_short,22),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.967,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "rsk70_mfm2_asetrd_anlystsn",
+    "expression": "reverse(hump(subtract(group_rank(ts_backfill(rsk70_mfm2_asetrd_anlystsn,22),industry),group_rank(ts_delta(rsk68_weight_volatility_short,22),sector)),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.967,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "rsk70_mfm2_asetrd_anlystsn",
+    "expression": "hump(multiply(group_rank(ts_backfill(rsk70_mfm2_asetrd_anlystsn,22),industry),group_rank(ts_delta(rsk68_weight_volatility_short,22),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.967,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "rsk70_mfm2_asetrd_anlystsn",
+    "expression": "hump(vector_neut(group_rank(ts_backfill(rsk70_mfm2_asetrd_anlystsn,22),industry),group_rank(ts_delta(rsk68_weight_volatility_short,22),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.967,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "rsk70_mfm2_asetrd_anlystsn",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(ts_backfill(rsk70_mfm2_asetrd_anlystsn,22),industry),group_rank(ts_delta(rsk68_weight_volatility_short,22),sector)),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.967,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.9
+    }
+  },
+  {
+    "field_id": "rsk70_mfm2_asetrd_anlystsn",
+    "expression": "hump(subtract(group_rank(ts_backfill(rsk70_mfm2_asetrd_anlystsn,22),industry),group_rank(ts_delta(rsk68_weight_dadv,22),sector)),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.967,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.9
+    }
+  }
+]

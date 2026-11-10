@@ -1,0 +1,41 @@
+{
+ "dataset": "risk60",
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "data_type": "MIXED",
+ "field_count": 5,
+ "fetched_at": "2026-11-09T14:24:00",
+ "fields": [
+  {
+   "id": "lending_fee_bid_rate",
+   "type": "VECTOR",
+   "coverage": 0.8168,
+   "alphaCount": 32
+  },
+  {
+   "id": "rsk60_crowding",
+   "type": "VECTOR",
+   "coverage": 0.8168,
+   "alphaCount": 115
+  },
+  {
+   "id": "rsk60_datatime",
+   "type": "VECTOR",
+   "coverage": 0.8168,
+   "alphaCount": 26
+  },
+  {
+   "id": "rsk60_last",
+   "type": "VECTOR",
+   "coverage": 0.8168,
+   "alphaCount": 302
+  },
+  {
+   "id": "rsk60_offer",
+   "type": "VECTOR",
+   "coverage": 0.8168,
+   "alphaCount": 349
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+[
+  "group_rank(abs(subtract(probability_label1_2quantile_60day_ohlcv, probability_label0_2quantile_60day_ohlcv)), sector)",
+  "group_rank(ts_av_diff(probability_label2_3quantile_20day_ohlcv, 66), sector)",
+  "group_rank(ts_mean(subtract(probability_label4_5quantile_5day_ohlcv_2, probability_label0_5quantile_5day_ohlcv_2), 22), sector)",
+  "group_zscore(subtract(probability_label1_2quantile_5day_ohlcv, probability_label1_2quantile_60day_ohlcv), sector)",
+  "group_rank(ts_delta(ts_delta(probability_label1_2quantile_20day_ohlcv_2, 22), 22), sector)",
+  "group_rank(ts_rank(probability_label1_2quantile_60day_ohlcv, 252), sector)",
+  "group_neutralize(ts_mean(add(add(probability_label1_2quantile_5day_ohlcv, probability_label1_2quantile_20day_ohlcv_2), probability_label1_2quantile_60day_ohlcv), 22), industry)",
+  "group_rank(ts_delta(quantile_label_3bucket_5day_ohlcv, 5), sector)",
+  "signed_power(group_rank(ts_std_dev(subtract(probability_label1_2quantile_20day_ohlcv_2, probability_label0_2quantile_20day_ohlcv), 66), sector), 1.5)",
+  "group_zscore(ts_av_diff(subtract(probability_label1_2quantile_20day_ohlcv_2, probability_label0_2quantile_20day_ohlcv), 126), subindustry)"
+]

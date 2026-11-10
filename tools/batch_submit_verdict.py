@@ -281,10 +281,14 @@ async def main():
                 oc = _phase2_outcome(res_prod, res_self, threshold=0.7)
                 prod_max, prod_pass = oc["prod_max"], oc["prod_pass"]
                 self_max, self_pass = oc["self_max"], oc["self_pass"]
-                ckpt[aid]["phase2_done"] = True
+                # 2026-11-10 审查 P0-4：PENDING 不得写 phase2_done——旧实现无条件置 True，
+                # 而下轮只挑 `not phase2_done` ⇒ pending 行永不再验，等于把「未决」冻成终态。
+                ckpt[aid]["phase2_done"] = oc["verdict"] != "PENDING"
                 ckpt[aid]["phase2"] = {
                     "prod_max": prod_max, "self_max": self_max,
                     "prod_pass": prod_pass, "self_pass": self_pass,
+                    "prod_provenance": oc.get("prod_provenance"),
+                    "prod_status": oc.get("prod_status"),
                 }
                 if oc["verdict"] == "PROMOTE":
                     n = mark_verified(aid, region=region, rec={
@@ -347,25 +351,21 @@ def _phase2_outcome(res_prod, res_self, threshold=0.7):
     else:
         self_max, self_pass = None, None
 
-    # --- prod：真值在 checks["production"]；顶层只有 all_passed（None=未决）---
-    prod_max = None
-    prod_pass = None
-    if isinstance(res_prod, dict):
-        p = (res_prod.get("checks") or {}).get("production") or {}
-        prod_max = p.get("max_correlation")
-        prod_pass = p.get("passes_check")
-        if prod_pass is None and prod_max is None:
-            # 缓存命中/旧结构兜底：顶层 max_correlation
-            prod_max = res_prod.get("max_correlation")
-        if prod_pass is None:
-            ap = res_prod.get("all_passed")
-            # all_passed=None 是未决信号，不能 bool() 成 FAIL
-            if ap is True and prod_max is not None:
-                prod_pass = prod_max < threshold
-            elif ap is False:
-                prod_pass = False
-    if prod_pass is None and prod_max is not None:
-        prod_pass = prod_max < threshold
+    # --- prod：统一走 wqb.prod_verdict（2026-11-10 审查 P0-4）---
+    # 旧实现只读 max_correlation/passes_check，完全不看 provisional / from_cache /
+    # source ⇒ 一个预读值或 48h 缓存里的非实时值就能升 SUBMIT_LAYER_VERIFIED，
+    # 与 _prod_gate 的「预读只许证伪不许放行」直接冲突。
+    from wqb.prod_verdict import prod_verdict
+    pv = prod_verdict(res_prod, threshold)
+    prod_max = pv["value"]
+    if prod_max is None:
+        prod_pass = None                      # 未决（pending/busy/unavailable）
+    elif pv["passes"] is False:
+        prod_pass = False                     # 证伪有效：任何来源 ≥ 阈值都拦
+    elif pv["usable"]:
+        prod_pass = True                      # 平台实测 / 可信缓存
+    else:
+        prod_pass = None                      # 预读/非实时且 < 阈值 ⇒ 不足以放行，留待真重测
     if self_pass is None and self_max is not None:
         self_pass = self_max < threshold
 
@@ -381,6 +381,8 @@ def _phase2_outcome(res_prod, res_self, threshold=0.7):
         "prod_max": prod_max, "prod_pass": prod_pass,
         "self_max": self_max, "self_pass": self_pass,
         "verdict": verdict,
+        "prod_provenance": pv["provenance"],
+        "prod_status": pv["status"],
     }
 
 

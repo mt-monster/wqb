@@ -1,0 +1,248 @@
+{
+ "success": true,
+ "multisimulation_id": "1EcXxCgbM51La6b1fSp1Z4jv",
+ "total": 2,
+ "complete": 2,
+ "error_count": 0,
+ "alphas": [
+  {
+   "id": "0mYLA5w1",
+   "code": "group_rank(ts_mean(multiply(sign(vector_neut(subtract(divide(open, ts_delay(close,1)),1), ts_delay(divide(volume, sharesout),1))), subtract(divide(low, open),1)),22), sector)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 0.95,
+    "fitness": 0.54,
+    "turnover": 0.1627,
+    "returns": 0.0528,
+    "drawdown": 0.108,
+    "margin": 0.000649,
+    "longCount": 317,
+    "shortCount": 319,
+    "pnl": 5461846,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.79,
+    "two_year_sharpe": 1.25,
+    "investability_sharpe": 1.0,
+    "investability_fitness": 0.65
+   },
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.95,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.54,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 1.25,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.73,
+      "limit": 1
+     },
+     {
+      "name": "UNITS",
+      "message": "Incompatible unit for input of \"vector_neut\" at index 1, expected \"Unit[]\", found \"Unit[TSPrice:1]\""
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "0mYLA5w1",
+   "expression": "group_rank(ts_mean(multiply(sign(vector_neut(subtract(divide(open, ts_delay(close,1)),1), ts_delay(divide(volume, sharesout),1))), subtract(divide(low, open),1)),22), sector)"
+  },
+  {
+   "id": "j2YJnO3W",
+   "code": "group_rank(ts_mean(multiply(sign(vector_neut(subtract(divide(open, ts_delay(close,1)),1), ts_delay(volume,1))), subtract(divide(low, close),1)),22), sector)",
+   "type": "REGULAR",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "REVERSION_AND_MOMENTUM",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   },
+   "metrics": {
+    "sharpe": 0.66,
+    "fitness": 0.31,
+    "turnover": 0.1631,
+    "returns": 0.0366,
+    "drawdown": 0.0674,
+    "margin": 0.000449,
+    "longCount": 313,
+    "shortCount": 322,
+    "pnl": 3787263,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.6,
+    "two_year_sharpe": 0.77,
+    "investability_sharpe": 0.76,
+    "investability_fitness": 0.43
+   },
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.66,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.31,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 0.77,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "CLUSTER_TEST",
+      "value": 0.59,
+      "limit": 1
+     },
+     {
+      "name": "UNITS",
+      "message": "Incompatible unit for input of \"vector_neut\" at index 1, expected \"Unit[]\", found \"Unit[TSPrice:1,TSShare:1]\""
+     },
+     {
+      "name": "MATCHES_COMPETITION"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "KOR/D1/PV",
+      "multiplier": 1.4
+     }
+    ]
+   },
+   "alpha_id": "j2YJnO3W",
+   "expression": "group_rank(ts_mean(multiply(sign(vector_neut(subtract(divide(open, ts_delay(close,1)),1), ts_delay(volume,1))), subtract(divide(low, close),1)),22), sector)"
+  }
+ ],
+ "errors": null
+}

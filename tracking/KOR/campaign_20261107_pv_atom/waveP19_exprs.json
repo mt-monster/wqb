@@ -1,0 +1,12 @@
+[
+  "-group_rank(five_day_total_return_dlr1, sector)",
+  "-group_rank(twenty_day_total_return_dlr1, sector)",
+  "group_rank(subtract(two_fifty_day_total_return_dlr1, twenty_day_total_return_dlr1), sector)",
+  "group_rank(two_fifty_day_total_return_dlr1, sector)",
+  "-group_rank(divide(subtract(highest_price_dlr1, lowest_price_dlr1), volume_weighted_avg_price_dlr1), sector)",
+  "-group_rank(divide(subtract(closing_price_dlr1, opening_price_dlr1), opening_price_dlr1), sector)",
+  "-group_rank(ts_zscore(trading_volume_dlr1, 66), sector)",
+  "group_rank(divide(sixty_day_total_return_dlr1, add(abs(twenty_day_total_return_dlr1), 0.0001)), sector)",
+  "-group_rank(ts_std_dev(one_day_total_return_dlr1, 66), sector)",
+  "group_rank(subtract(one_twenty_day_total_return_dlr1, sixty_day_total_return_dlr1), sector)"
+]

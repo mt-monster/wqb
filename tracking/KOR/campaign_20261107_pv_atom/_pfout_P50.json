@@ -1,0 +1,35 @@
+﻿{
+ "valid": true,
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "expressions": 10,
+ "fields_checked": [
+  "rsk59_bid_rate",
+  "rsk59_crowded_score",
+  "rsk59_daystocover30day",
+  "rsk59_offer_rate",
+  "rsk59_s3utilization",
+  "rsk59_short_momentum",
+  "rsk59_shortinterestpct",
+  "rsk59_squeeze_risk"
+ ],
+ "unknown_fields": [],
+ "unknown_soft": [],
+ "builtin_fields": [],
+ "platform_field_count": 8,
+ "fixed_expressions": [
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_bid_rate), 22), sector), -1)",
+  "multiply(group_rank(ts_delta(vec_avg(rsk59_bid_rate), 22), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_s3utilization), 22), sector), -1)",
+  "group_rank(ts_mean(vec_avg(rsk59_squeeze_risk), 22), sector)",
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_crowded_score), 22), sector), -1)",
+  "multiply(group_rank(ts_mean(vec_avg(rsk59_shortinterestpct), 22), sector), -1)",
+  "group_rank(ts_delta(vec_avg(rsk59_shortinterestpct), 22), sector)",
+  "group_rank(ts_mean(vec_avg(rsk59_daystocover30day), 22), sector)",
+  "group_rank(ts_mean(vec_avg(rsk59_short_momentum), 22), sector)",
+  "multiply(group_rank(divide(vec_avg(rsk59_offer_rate), ts_mean(vec_avg(rsk59_offer_rate), 66)), sector), -1)"
+ ],
+ "vector_fields": [],
+ "any_changed": false
+}

@@ -1,0 +1,21 @@
+id,type,cov,uc,ac,desc
+credit_risk_coverage_score_d1,MATRIX,0.696,3,4,Numeric score for coverage factors (e.g.; ability to cover interest/debt); higher indicates better coverage
+credit_risk_growth_score_d1,MATRIX,0.6972,3,6,Numeric score for growth-related factors affecting credit health; higher indicates stronger growth profile
+credit_risk_leverage_score_d1,MATRIX,0.6987,6,6,Percentile score reflecting leverage factors in credit risk assessment (daily version).
+credit_risk_liquidity_score_d1,MATRIX,0.6981,1,1,Numeric score for liquidity-related factors; higher indicates stronger liquidity
+credit_risk_profitability_score_d1,MATRIX,0.6987,4,4,Numeric score for profitability-related factors; higher indicates better profitability
+default_risk_country_percentile_d1_2,MATRIX,0.6987,1,1,Float percentile rank (0â100) of the companyâs financial health within its country peer group; higher indicates better credit quality
+default_risk_global_percentile_d1_2,MATRIX,0.6987,2,3,Float percentile rank (0â100) of financial health globally; higher indicates better credit quality
+default_risk_industry_percentile_d1_2,MATRIX,0.6935,1,1,Float percentile rank (0â100) within the companyâs industry; higher indicates better credit quality
+default_risk_region_percentile_d1_2,MATRIX,0.6987,1,1,Float percentile rank (0â100) of financial health within the region; higher indicates better credit quality
+default_risk_sector_percentile_d1_2,MATRIX,0.6973,4,4,Float percentile rank (0â100) within the companyâs sector; higher indicates better credit quality
+star_sr_country_rank_d1,MATRIX,1.0,3,3,Percentile rank (1â100) within the companyâs country of its 1âyear default probability; higher means lower default risk
+star_sr_coverage_d1,MATRIX,1.0,6,7,Percentile rank (1â100) reflecting only the coverage factors; higher indicates better credit quality
+star_sr_global_rank_d1,MATRIX,1.0,3,3,Global percentile rank (1â100) of the companyâs 1âyear default probability from SmartRatios; higher means lower default risk
+star_sr_growth_d1,MATRIX,1.0,6,9,Percentile rank (1â100) reflecting only the growth and stability factors; higher indicates better credit quality
+star_sr_industr_rank_d1,MATRIX,1.0,2,2,Percentile rank (1â100) within the same region and industry of the companyâs 1âyear default probability; higher means lower default risk
+star_sr_leverage_d1,MATRIX,1.0,9,15,Percentile rank (1â100) reflecting only the leverage factors; higher indicates better credit quality
+star_sr_liquidity_d1,MATRIX,1.0,7,7,Percentile rank (1â100) reflecting only the liquidity factors; higher indicates better credit quality
+star_sr_profitability_d1,MATRIX,1.0,8,9,Percentile rank (1â100) reflecting only the profitability factors in the SmartRatios Credit Risk Model; higher indicates better credit quality
+star_sr_region_rank_d1,MATRIX,1.0,2,2,Regional percentile rank (1â100) of the companyâs 1âyear default probability; higher means lower default risk
+star_sr_sector_rank_d1,MATRIX,1.0,3,3,Percentile rank (1â100) within the same region and sector of the companyâs 1âyear default probability; higher means lower default risk

@@ -171,9 +171,30 @@ EXPRFAM_<骨架族>       ← 防自相残杀（可直接用 structural_signatur
 | `QPbjxMYw`(SUPER) | `CH_SUPER` `SA_IND_20comp` |
 
 ### 3.5 过渡与兼容
-- **`PowerPoolSelected`**：只在**真实走 PPA 通道**时保留；新提交统一用 `CH_PPA`。
+- **`PowerPoolSelected`**：**PP 池成分开关**，来源分三类，**2026-11-10 全量复核后修正**。
+  - **来源修正（推翻旧记「36 颗均为平台所打」）**：`results/ppa_tag_20261107/patch_tags.py` + `patch_results.json` 实证，11-07 我们曾按指令把 **13 颗** alpha 的 tags 改成 `['PowerPoolSelected']` only。2026-11-10 平台 `tag=PowerPoolSelected` 实查 **66/301 ACTIVE**：24 颗只有单标签（缺 `CH_*`/`SRC_*`，不合规）、28 颗 `CH_PPA`（真 PPA）、9 颗 `CH_REG`（平台自动追加）、5 颗其它。逐颗数据见 `results/ppa_tag_pool_20261110.json`。
+  - **平台自动追加是有条件的**：提交后对有 PP 资格/命中当期主题的 alpha 自动打（`P0obGoQJ` 实证带标签），并非每颗必打（`rKRx2Alj` 提交后 8 分钟复查仍 `absent`）。`zq3eb7No` 无标签仍挂 `POWER_POOL_CORRELATION` ⇒ 旧记「无标签不出该项」作废。
+  - **提交前绝不预置**：`_derive_tags` 把它从 keep 里剔除。带标签做 PATCH 会让平台按 `PURE_POWER_POOL_THEME` 检查本次提交，合法 REGULAR 可能被直接拒（外部实践者 quantforge-miner 明确记录该坑）。
+  - **提交后按 PPA 政策处置**：`submit_alpha` Step 6 `tag_disposal` 回读平台 tags 并留痕（`kept` / `absent` + `pre_submit_has_ppa_tag`）。
+  - **★ 以 CPPAP 为目标时，标签是核心杠杆**：标签决定哪些 alpha 计入 Combined Power Pool Alpha Performance；摘掉差货 = 直接提高组合表现，且**可逆**（官方帖 `33099321751447` + 论坛 `44230497234839` 实测加回后下一次刷新即生效）。旧记「清掉 = 放弃 CAP 四口径之一，取最大故损失≈0」只在**以 CAP 总分为目标**时成立；用户明确以 CPPAP 为目标时不成立。
+  - **治理规范**：提交后**不要默认清**平台自动追加的标签；按质量治理池子——摘「margin<10bp 且 TO>0.15」的拖后腿件（论坛 `44230497234839`），**别摘**低换手边缘货（实测 BC 反掉 .053）；给未带标签的好货**追加**标签（总数≤5，只能在提交后）。一次只动一条、等约 6 小时刷新读 BC/AC 做对照。24 颗单标签用 `tools/alpha_properties.py normalize --apply` 补 `CH_*`/`SRC_*`（工具无条件保留 `PowerPoolSelected`）。完整方案见 `output_report/ppa_tag_governance_20261110.md`。
+  - **`check_tags` 不再把它算违规**（2026-11-08 撤下），改走 `tag_notes` 信息项——否则审计会刷大量假告警，盖掉真正要修的缺 `CH_*` / 缺 `SRC_*`。
+  - **★★★ 前置条件修正（2026-11-10 实测，优先于上面所有治理规则）**：标签只是**开关**，平台 `themes` 才是**当期资格**。实测给 `O07AMoKR` 补 `PowerPoolSelected` 后 `themes` 仍为 `[]`；摘掉 `JjeMlmXA` 的标签后 `themes` 仍含 `GLB/D1 Power Pool Nov'26` ⇒ **PATCH tags 不改变 themes**。全账户 301 颗 ACTIVE 仅 **1 颗**命中当期 Nov'26 主题，其余带标签货命中 Sept'26(10)/Oct'26(2)/Aug'26(1) 往期主题或无主题。
+    ⇒ 判定顺序必须是 **`themes` 命中当期主题 → 再看标签 → 再看质量**；只有前两项都满足，摘/补标签才影响当期 CPPAP（论坛 `44230497234839`：「带了标签却没挂主题的，是类别不在这期里」；交满 5 条才够评奖）。
+    ⇒ 因此**不要**无条件按「margin<10bp 且 TO>0.15」批量摘标签，也不要给无主题货批量补标签。11-10 两条实验（摘 `JjeMlmXA` / 补 `O07AMoKR`）已全部回滚，平台零净变化。主题扫描见 `results/ppa_theme_scan_20261110.json`，四步台账见 `results/ppa_tag_governance_log.jsonl`。
+  - **★ 通道判定（2026-11-10 修正）**：`PowerPoolSelected` **不是 PPA 通道证据**。`submit_verdict_core.is_ppa_alpha` 与 `tools/alpha_properties.py normalize` 已改为只认 `type=PPA` 或 `CH_PPA` 标签；旧实现会把平台自动追加标签的 RA alpha 错判成 PPA，违反「只认 RA 全闸」。守护测试 `tests/unit/05_submit_quota/test_ppa_channel_vs_pool_tag_20261110.py`。
 - **`RETIRE_20260912` / `RETIRE_20260919`**：**一律不动**（退役留痕的唯一手段）。
 - `homework` / `tabbit` 等旧 tag：保留，后续统一为 `TOOL_<x>`。
+
+### 3.6 CPPAP 取向的提交端软标准（2026-11-10 落地）
+
+- **判据顺序不可颠倒**：① 平台 `themes` 是否命中**当期** Power Pool 主题 → ② 是否带 `PowerPoolSelected` → ③ 质量档。只有前两项都满足，标签才影响当期 CPPAP（`themes` 由平台按类别/区域判定，PATCH tags 改不了）。
+- **工具**：`tools/gates/ppa_readiness.py`（只读判据，离线快照优先 + 治理台账校正）、`tools/gates/ppa_tag_apply.py`（默认 dry-run，六道安全阀，需 `--confirm` 才写平台）。
+- **质量档**：`ANCHOR`（margin≥15bp 且 TO≤0.15，必须留）｜`OK`（≥10bp 且 TO≤0.15）｜`WEAK`（<10bp 且 TO>0.15，论坛双判据的该摘候选）｜`EDGE`（<10bp 且 TO≤0.15，**别摘**，实测 BC 反掉 .053）｜`WATCH`。
+- **★ margin 只是软标记，不是提交硬闸**：`MEMORY.md` §8 的 124 颗 USA 真实 OS 实证「IS 指标全不预测 OS」，margin 只是低换手代理（ρ(margin,−TO)=+0.922），设闸会误伤 62% READY 队列。`candidate_soft_flag()` 只产出排序信息、不拦截。CPPAP 虽是扣成本后组合 IR（口径不同），若要改成硬闸**须用户明确裁决**。
+- **提交质量口径（论坛 `38846510482967` MZ45384）**：S/F>1、margin 目标 15bp / 最低 10bp、曲线不低头 / 尾年不差、每月专注 2 个区域 + 月底点满塔。
+- **池治理纪律**：一次只动一条、等约 6h 刷新读 BC/AC，涨了留跌了加回；当期池 <5 条评奖线时**禁止摘货**（条数越少 BC 越低）；禁止用本地日 PnL 穷举挑组合。
+- **边界**：tag 管理只保护 CPPAP，对 Combined/Selected 无效；BC−AC 差值固定 .159–.177 只能靠换货；本地 PnL 近似不可信。
 
 ---
 

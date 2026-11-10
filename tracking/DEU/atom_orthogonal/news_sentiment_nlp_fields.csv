@@ -1,0 +1,24 @@
+id,type,cov,uc,ac,desc
+headline_average_sentence_length,VECTOR,0.0,0,0,Average number of words per sentence in the headline
+headline_flesch_kincaid_score,VECTOR,0.0,0,0,FleschâKincaid Grade Level readability score of the headline text
+headline_flesch_readability_score,VECTOR,0.0,0,0,Flesch Reading Ease score of the headline text
+headline_gunning_fog_index,VECTOR,0.0,0,0,Gunning Fog readability index of the headline text
+headline_sentence_sentiment_average,VECTOR,0.0,1,3,Mean of the per-sentence sentiment scores within the headline
+headline_sentence_sentiment_maximum,VECTOR,0.0,0,0,Maximum per-sentence sentiment score within the headline; based on the same sentiment metric used for sentence analysis (e.g.; VADER compound)
+headline_sentence_sentiment_median,VECTOR,0.0,0,0,Median of the per-sentence sentiment scores within the headline
+headline_sentence_sentiment_minimum,VECTOR,0.0,0,0,Minimum per-sentence sentiment score within the headline
+headline_sentence_sentiment_variance,VECTOR,0.0,0,0,Variance of the per-sentence sentiment scores within the headline
+headline_sentiment_vader_score,VECTOR,0.0,0,0,VADER compound sentiment score of the headline text; approximately ranging from -1 (negative) to 1 (positive)
+headline_sentiwordnet_negative_polarity,VECTOR,0.0,0,0,Negative polarity score from SentiWordNet for the headline text (approximately 0â1; not necessarily summing to 1 with other components)
+headline_sentiwordnet_neutral_polarity,VECTOR,0.0,0,0,Neutral polarity score from SentiWordNet for the headline text (approximately 0â1)
+headline_sentiwordnet_positive_polarity,VECTOR,0.0,1,2,Positive polarity score from SentiWordNet for the headline text (approximately 0â1)
+headline_smog_readability_index,VECTOR,0.0,0,0,SMOG readability index of the headline text
+headline_stopword_frequency,VECTOR,0.0,0,0,Proportion of stop words among the words in the headline
+headline_subjectivity_score,VECTOR,0.0,0,0,TextBlob subjectivity score of the headline; from 0 (objective) to 1 (subjective)
+headline_textblob_sentiment_score,VECTOR,0.0,2,2,TextBlob polarity sentiment score of the headline; approximately from -1 (negative) to 1 (positive)
+headline_total_sentence_count,VECTOR,0.0,0,0,Number of sentences detected in the headline
+headline_unique_word_count,VECTOR,0.0,0,0,Number of unique words in the headline
+headline_vader_negative_polarity,VECTOR,0.0,0,0,Negative polarity component from VADER for the headline; typically between 0 and 1
+headline_vader_neutral_polarity,VECTOR,0.0,0,0,Neutral polarity component from VADER for the headline; typically between 0 and 1
+headline_vader_positive_polarity,VECTOR,0.0,0,0,Positive polarity component from VADER for the headline; typically between 0 and 1
+headline_word_count_total,VECTOR,0.0,0,0,Total number of words in the headline

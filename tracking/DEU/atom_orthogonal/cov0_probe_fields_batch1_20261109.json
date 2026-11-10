@@ -1,0 +1,470 @@
+{
+ "acquisition_model": {
+  "platform_count": 15,
+  "nParsed": 15,
+  "probe": {
+   "id": "country_percentile_acquisition_likelihood",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "ai_factor_transfer": {
+  "platform_count": 20,
+  "nParsed": 20,
+  "probe": {
+   "id": "short_term_price_change",
+   "type": "MATRIX",
+   "ac": 23
+  }
+ },
+ "ai_news_scores": {
+  "platform_count": 105,
+  "nParsed": 105,
+  "probe": {
+   "id": "negative_score_average_value_3",
+   "type": "MATRIX",
+   "ac": 8
+  }
+ },
+ "alpha_factor_lib": {
+  "platform_count": 65,
+  "nParsed": 65,
+  "probe": {
+   "id": "airline_fuel_consumption_per_asm",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "analyst10": {
+  "platform_count": 53,
+  "nParsed": 53,
+  "probe": {
+   "id": "anl10_smartest_tbv_fy1_nums",
+   "type": "MATRIX",
+   "ac": 9
+  }
+ },
+ "analyst15": {
+  "platform_count": 537,
+  "nParsed": 400,
+  "probe": {
+   "id": "anl15_dps_s_cal_fy3_gro",
+   "type": "MATRIX",
+   "ac": 24
+  }
+ },
+ "analyst16": {
+  "platform_count": 66,
+  "nParsed": 66,
+  "probe": {
+   "id": "actual_currency_adjustment",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "analyst35": {
+  "platform_count": 23,
+  "nParsed": 23,
+  "probe": {
+   "id": "anl35_ce",
+   "type": "MATRIX",
+   "ac": 4
+  }
+ },
+ "analyst39": {
+  "platform_count": 24,
+  "nParsed": 24,
+  "probe": {
+   "id": "anl39_ttmepsincx",
+   "type": "MATRIX",
+   "ac": 94
+  }
+ },
+ "analyst46": {
+  "platform_count": 5,
+  "nParsed": 5,
+  "probe": {
+   "id": "anl46_performancepercentile",
+   "type": "MATRIX",
+   "ac": 4
+  }
+ },
+ "analyst69": {
+  "platform_count": 292,
+  "nParsed": 292,
+  "probe": {
+   "id": "anl69_ebit_best_eeps_nxt_yr",
+   "type": "MATRIX",
+   "ac": 82
+  }
+ },
+ "analyst8": {
+  "platform_count": 10,
+  "nParsed": 10,
+  "probe": {
+   "id": "anl8_irl_level",
+   "type": "MATRIX",
+   "ac": 1
+  }
+ },
+ "analyst94": {
+  "platform_count": 34,
+  "nParsed": 34,
+  "probe": {
+   "id": "anl94_divyld",
+   "type": "MATRIX",
+   "ac": 24
+  }
+ },
+ "analyst_consensus": {
+  "platform_count": 1972,
+  "nParsed": 400,
+  "probe": {
+   "id": "estimate_count_eps_longterm",
+   "type": "MATRIX",
+   "ac": 7
+  }
+ },
+ "analyst_revision_horizons": {
+  "platform_count": 1095,
+  "nParsed": 400,
+  "probe": {
+   "id": "avg_estimate_change_pct_f12m_ebitda_60d_short_4",
+   "type": "MATRIX",
+   "ac": 22
+  }
+ },
+ "chart_cnn_alpha": {
+  "platform_count": 122,
+  "nParsed": 122,
+  "probe": {
+   "id": "eur_img_feature2_leapstar6_d1",
+   "type": "MATRIX",
+   "ac": 17
+  }
+ },
+ "continuation_score": {
+  "platform_count": 560,
+  "nParsed": 400,
+  "probe": {
+   "id": "ascending_channel_similarity_dispersion",
+   "type": "MATRIX",
+   "ac": 9
+  }
+ },
+ "digital_ad_spend": {
+  "platform_count": 9,
+  "nParsed": 9,
+  "probe": {
+   "id": "ad_content_format",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "earnings6": {
+  "platform_count": 18,
+  "nParsed": 18,
+  "probe": {
+   "id": "ern6_1q",
+   "type": "VECTOR",
+   "ac": 5
+  }
+ },
+ "earnings_sent_matrix": {
+  "platform_count": 7,
+  "nParsed": 7,
+  "probe": {
+   "id": "positive_sentiment_probability_3",
+   "type": "MATRIX",
+   "ac": 76
+  }
+ },
+ "earningscall_sentiment": {
+  "platform_count": 167,
+  "nParsed": 167,
+  "probe": {
+   "id": "mean_polarity_profitability_summary",
+   "type": "MATRIX",
+   "ac": 13
+  }
+ },
+ "event_ml_signals": {
+  "platform_count": 104,
+  "nParsed": 104,
+  "probe": {
+   "id": "activist_agreement_event",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "event_relation": {
+  "platform_count": 12,
+  "nParsed": 12,
+  "probe": {
+   "id": "entity_connection_type_financial",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "event_sentiment_signals": {
+  "platform_count": 52,
+  "nParsed": 52,
+  "probe": {
+   "id": "event_count_in_section_aggregation",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "fundamental1": {
+  "platform_count": 123,
+  "nParsed": 123,
+  "probe": {
+   "id": "aggregate_director_compensation",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "fundamental17": {
+  "platform_count": 135,
+  "nParsed": 135,
+  "probe": {
+   "id": "revenue_change_year_ago_quarter",
+   "type": "MATRIX",
+   "ac": 381
+  }
+ },
+ "fundamental72": {
+  "platform_count": 1031,
+  "nParsed": 400,
+  "probe": {
+   "id": "fnd72_s_pit_or_bs_q_1_bs_tot_asset",
+   "type": "MATRIX",
+   "ac": 30
+  }
+ },
+ "fundamental86": {
+  "platform_count": 7,
+  "nParsed": 7,
+  "probe": {
+   "id": "fnd86_earnings_score",
+   "type": "MATRIX",
+   "ac": 87
+  }
+ },
+ "fundamental89": {
+  "platform_count": 407,
+  "nParsed": 400,
+  "probe": {
+   "id": "fnd89_major_11_11",
+   "type": "MATRIX",
+   "ac": 173
+  }
+ },
+ "fundamental90": {
+  "platform_count": 66,
+  "nParsed": 66,
+  "probe": {
+   "id": "fnd90_game_deferred_sal_chg",
+   "type": "MATRIX",
+   "ac": 44
+  }
+ },
+ "fundamental93": {
+  "platform_count": 46,
+  "nParsed": 46,
+  "probe": {
+   "id": "fnd93_tax_accruals_51",
+   "type": "MATRIX",
+   "ac": 12
+  }
+ },
+ "global_seasonal_model": {
+  "platform_count": 449,
+  "nParsed": 400,
+  "probe": {
+   "id": "funda_regime_5d_5bucket_prob_2",
+   "type": "MATRIX",
+   "ac": 80
+  }
+ },
+ "imbalance5": {
+  "platform_count": 2,
+  "nParsed": 2,
+  "probe": {
+   "id": "imb5_score",
+   "type": "MATRIX",
+   "ac": 106
+  }
+ },
+ "institutions25": {
+  "platform_count": 24,
+  "nParsed": 24,
+  "probe": {
+   "id": "inst25_activity",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "intraday_pv_feats": {
+  "platform_count": 585,
+  "nParsed": 400,
+  "probe": {
+   "id": "avg_vwap_to_last_price_ratio",
+   "type": "MATRIX",
+   "ac": 117
+  }
+ },
+ "macro27": {
+  "platform_count": 13,
+  "nParsed": 13,
+  "probe": {
+   "id": "avg_days_job_posting_active",
+   "type": "VECTOR",
+   "ac": 9
+  }
+ },
+ "model110": {
+  "platform_count": 8,
+  "nParsed": 8,
+  "probe": {
+   "id": "mdl110_score",
+   "type": "MATRIX",
+   "ac": 49
+  }
+ },
+ "model135": {
+  "platform_count": 137,
+  "nParsed": 137,
+  "probe": {
+   "id": "mdl135_d01_bb",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "model138": {
+  "platform_count": 240,
+  "nParsed": 240,
+  "probe": {
+   "id": "berry_ratio_deviation_3",
+   "type": "VECTOR",
+   "ac": 6
+  }
+ },
+ "model139": {
+  "platform_count": 2,
+  "nParsed": 2,
+  "probe": {
+   "id": "mdl139_mktcap",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "model141": {
+  "platform_count": 6,
+  "nParsed": 6,
+  "probe": {
+   "id": "mdl141_qes_fleir_irr",
+   "type": "MATRIX",
+   "ac": 2
+  }
+ },
+ "model16": {
+  "platform_count": 8,
+  "nParsed": 8,
+  "probe": {
+   "id": "fscore_momentum",
+   "type": "MATRIX",
+   "ac": 1
+  }
+ },
+ "model239": {
+  "platform_count": 29,
+  "nParsed": 29,
+  "probe": {
+   "id": "activity_change_aggregated_metric",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "model252": {
+  "platform_count": 3,
+  "nParsed": 3,
+  "probe": {
+   "id": "firm_market_value",
+   "type": "VECTOR",
+   "ac": 0
+  }
+ },
+ "model257": {
+  "platform_count": 4,
+  "nParsed": 4,
+  "probe": {
+   "id": "mdl257_eu_sentiment_ml",
+   "type": "MATRIX",
+   "ac": 4
+  }
+ },
+ "model27": {
+  "platform_count": 12,
+  "nParsed": 12,
+  "probe": {
+   "id": "sector_relative_default_percentile",
+   "type": "MATRIX",
+   "ac": 1
+  }
+ },
+ "model29": {
+  "platform_count": 14,
+  "nParsed": 14,
+  "probe": {
+   "id": "forecast_deviation_pct_current_year",
+   "type": "MATRIX",
+   "ac": 27
+  }
+ },
+ "model32": {
+  "platform_count": 12,
+  "nParsed": 12,
+  "probe": {
+   "id": "global_momentum_rank_float",
+   "type": "MATRIX",
+   "ac": 19
+  }
+ },
+ "model37": {
+  "platform_count": 29,
+  "nParsed": 29,
+  "probe": {
+   "id": "credit_risk_broker_research_component_score",
+   "type": "MATRIX",
+   "ac": 17
+  }
+ },
+ "model38": {
+  "platform_count": 71,
+  "nParsed": 71,
+  "probe": {
+   "id": "long_term_assumed_annual_earnings",
+   "type": "MATRIX",
+   "ac": 1725
+  }
+ },
+ "model68": {
+  "platform_count": 4,
+  "nParsed": 4,
+  "probe": {
+   "id": "mdl68_mktcap",
+   "type": "VECTOR",
+   "ac": 1
+  }
+ },
+ "model77": {
+  "platform_count": 37,
+  "nParsed": 37,
+  "probe": {
+   "id": "mdl177_rvm_rvm_eur_composite_alt",
+   "type": "MATRIX",
+   "ac": 11
+  }
+ }
+}

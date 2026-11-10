@@ -1,0 +1,20 @@
+id,type,cov,uc,ac,desc
+nws3_scores_certaintynormscr,VECTOR,0.0,1,1,Float vector of normalized certainty sentiment scores for all news articles about the company on that day
+nws3_scores_certaintypartnormscr,VECTOR,0.0,0,0,Vector of normalized certainty sentiment scores from a prioritized subset of news articles for the stock and date
+nws3_scores_fearnormscr,VECTOR,0.0,2,2,Float vector of normalized fear sentiment scores for all news articles about the company on that day
+nws3_scores_fearpartnormscr,VECTOR,0.0,1,1,Vector of normalized fear sentiment scores from a prioritized subset of news articles for the stock and date
+nws3_scores_findownnormscr,VECTOR,0.0,6,8,Float vector of normalized financial pessimism (downbeat financial news) scores for all news articles about the company on that day
+nws3_scores_findownpartnormscr,VECTOR,0.0,1,1,Vector of normalized financial pessimism (downside emotion) scores from a prioritized subset of news articles for the stock on the given date
+nws3_scores_finhypenormscr,VECTOR,0.0,1,1,Float vector of normalized financial hype sentiment scores for all news articles about the company on that day
+nws3_scores_finhypepartnormscr,VECTOR,0.0,1,1,Vector of normalized âfinancial hypeâ sentiment scores from a prioritized subset of news articles related to the stock and date
+nws3_scores_finupnormscr,VECTOR,0.0,2,2,Float vector of normalized financial optimism (upbeat financial news) scores for all news articles about the company on that day
+nws3_scores_finuppartnormscr,VECTOR,0.0,0,0,Vector of normalized financial optimism (âfinancial upâ) sentiment scores from a prioritized subset of news articles for the stock and date
+nws3_scores_finvolatilenormscr,VECTOR,0.0,2,2,Float vector of normalized financial volatility sentiment scores for all news articles about the company on that day
+nws3_scores_finvolatilepartnormscr,VECTOR,0.0,0,0,Vector of normalized âfinancial volatilityâ sentiment scores from a prioritized subset of news articles for the stock and date
+nws3_scores_negnormscr,VECTOR,0.0,1,1,Float vector of normalized negative sentiment scores for all news articles about the company on that day
+nws3_scores_negpartnormscr,VECTOR,0.0,0,0,Vector of normalized negative sentiment scores from prioritized/relevant subset of news articles for the company and date
+nws3_scores_posnormscr,VECTOR,0.0,1,1,Float vector of normalized positive sentiment scores for all news articles about the company on that day
+nws3_scores_pospartnormscr,VECTOR,0.0,0,0,Vector of normalized positive sentiment scores from prioritized/relevant subset of news articles for the company and date
+nws3_scores_uncertaintynormscr,VECTOR,0.0,1,1,Float vector of normalized uncertainty sentiment scores for all news articles about the company on that day
+nws3_scores_uncertaintypartnormscr,VECTOR,0.0,0,0,Vector of normalized uncertainty sentiment scores from a prioritized subset of news articles for the stock and date
+nws3_wqreceivetime,VECTOR,0.0,1,1,Technical timestamp indicating when the data was received or captured

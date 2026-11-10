@@ -1,0 +1,15 @@
+id,type,cov,uc,ac,desc
+star_new_eps_analyst_number_fq1,MATRIX,0.6327,0,0,Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Quarter 1
+star_new_eps_analyst_number_fq2,MATRIX,0.6188,1,1,Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Quarter 2
+star_new_eps_analyst_number_fy1,MATRIX,0.6731,5,5,Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Year 1
+star_new_eps_analyst_number_fy2,MATRIX,0.6731,1,1,Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Year 2
+star_new_eps_smart_estimate_12m,MATRIX,0.6649,11,13,StarMine SmartEstimate (analyst-weighted) EPS forecast for the forward 12 months
+star_new_eps_smart_estimate_fq1,MATRIX,0.3989,0,0,StarMine SmartEstimate (analyst-weighted) EPS forecast for Fiscal Quarter 1
+star_new_eps_smart_estimate_fq2,MATRIX,0.2906,0,0,StarMine SmartEstimate (analyst-weighted) EPS forecast for Fiscal Quarter 2
+star_new_eps_smart_estimate_fy1,MATRIX,0.6663,25,37,StarMine SmartEstimate (analyst-weighted) EPS forecast for Fiscal Year 1
+star_new_eps_smart_estimate_fy2,MATRIX,0.6663,22,24,StarMine SmartEstimate (analyst-weighted) EPS forecast for Fiscal Year 2
+star_new_eps_surprise_prediction_12m,MATRIX,0.6649,31,33,Predicted surprise percentage for EPS over the forward 12 months; as the deviation of SmartEstimate from the consensus mean
+star_new_eps_surprise_prediction_fq1,MATRIX,0.3989,2,3,Predicted surprise percentage for EPS for Fiscal Quarter 1; as the deviation of SmartEstimate from the consensus mean
+star_new_eps_surprise_prediction_fq2,MATRIX,0.2906,0,0,Predicted surprise percentage for EPS for Fiscal Quarter 2; as the deviation of SmartEstimate from the consensus mean
+star_new_eps_surprise_prediction_fy1,MATRIX,0.6663,8,10,Predicted surprise percentage for EPS for Fiscal Year 1; as the deviation of SmartEstimate from the consensus mean
+star_new_eps_surprise_prediction_fy2,MATRIX,0.6663,68,104,Predicted surprise percentage for EPS for Fiscal Year 2; as the deviation of SmartEstimate from the consensus mean

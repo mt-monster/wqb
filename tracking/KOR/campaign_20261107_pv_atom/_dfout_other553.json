@@ -1,0 +1,178 @@
+{
+ "results": [
+  {
+   "id": "oth553_est_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7397,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Number of analysts providing estimates."
+  },
+  {
+   "id": "oth553_est_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7397,
+   "userCount": 25,
+   "alphaCount": 36,
+   "description": "Value of current estimates."
+  },
+  {
+   "id": "oth553_est_isprevspeak",
+   "type": "VECTOR",
+   "coverage": 0.7397,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Indicator if there was previous speech related to estimates."
+  },
+  {
+   "id": "oth553_est_preestvalue",
+   "type": "VECTOR",
+   "coverage": 0.6555,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Value of current estimates."
+  },
+  {
+   "id": "oth553_est_yearspeakcnt",
+   "type": "VECTOR",
+   "coverage": 0.7397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of speeches related to estimates within the year."
+  },
+  {
+   "id": "oth553_horizon",
+   "type": "VECTOR",
+   "coverage": 0.5838,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time horizon for the data point."
+  },
+  {
+   "id": "oth553_preptgvalue",
+   "type": "VECTOR",
+   "coverage": 0.5049,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Value of the previous price target."
+  },
+  {
+   "id": "oth553_prerecvalue",
+   "type": "VECTOR",
+   "coverage": 0.4844,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Value of the previous recommendation."
+  },
+  {
+   "id": "oth553_ptg_analyst",
+   "type": "VECTOR",
+   "coverage": 0.5838,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts providing price target estimates."
+  },
+  {
+   "id": "oth553_ptg_isprevspeak",
+   "type": "VECTOR",
+   "coverage": 0.5838,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator if there was previous speech related to price targets."
+  },
+  {
+   "id": "oth553_ptg_yearspeakcnt",
+   "type": "VECTOR",
+   "coverage": 0.5838,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of speeches related to price targets within the year."
+  },
+  {
+   "id": "oth553_ptgvalue",
+   "type": "VECTOR",
+   "coverage": 0.5838,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Value of the current price target."
+  },
+  {
+   "id": "oth553_rec_analyst",
+   "type": "VECTOR",
+   "coverage": 0.4844,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of analysts providing recommendation estimates."
+  },
+  {
+   "id": "oth553_rec_isprevspeak",
+   "type": "VECTOR",
+   "coverage": 0.4844,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator if there was previous speech related to recommendations."
+  },
+  {
+   "id": "oth553_rec_yearspeakcnt",
+   "type": "VECTOR",
+   "coverage": 0.4844,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of speeches related to recommendations within the year."
+  },
+  {
+   "id": "oth553_recvalue",
+   "type": "VECTOR",
+   "coverage": 0.4844,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Value of the current recommendation."
+  },
+  {
+   "id": "oth553_sal_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7485,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Number of analysts providing sales estimates."
+  },
+  {
+   "id": "oth553_sal_estvalue",
+   "type": "VECTOR",
+   "coverage": 0.7485,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Value of current sales estimates."
+  },
+  {
+   "id": "oth553_sal_isprevspeak",
+   "type": "VECTOR",
+   "coverage": 0.7485,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Indicator if there was previous speech related to sales."
+  },
+  {
+   "id": "oth553_sal_preestvalue",
+   "type": "VECTOR",
+   "coverage": 0.6565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Value of current sales estimates."
+  },
+  {
+   "id": "oth553_sal_yearspeakcnt",
+   "type": "VECTOR",
+   "coverage": 0.7485,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of speeches related to sales within the year."
+  }
+ ],
+ "count": 21,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 21,
+ "complete": true,
+ "pages_fetched": 1
+}

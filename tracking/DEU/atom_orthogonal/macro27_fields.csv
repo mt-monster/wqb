@@ -1,0 +1,14 @@
+id,type,cov,uc,ac,desc
+avg_days_job_posting_active,VECTOR,0.0,6,9,average length of time the job posts have been active
+avg_days_job_posting_closed,VECTOR,0.0,6,7,average length of time the deleted jobs were posted before removal
+is_job_repost_flag,VECTOR,0.0,19,29,Indicator if the job is a repost (1) or original (0)
+mcr27_company_jobsactive,VECTOR,0.0,10,14,Number of currently active job postings for the company
+mcr27_company_jobscreated,VECTOR,0.0,10,19,Number of job postings created for the company
+mcr27_company_jobsremoved,VECTOR,0.0,7,13,Number of job postings removed/deleted for the company
+mcr27_country,VECTOR,0.0,0,0,country
+mcr27_zip,VECTOR,0.0,1,0,Postal/ZIP code for the job location
+mean_days_job_active,VECTOR,0.0,26,45,Average time job posts have been active; in days
+mean_days_job_closed,VECTOR,0.0,30,69,Average number of days the companyâs removed jobs had been posted before deletion
+num_jobs_active,VECTOR,0.0,19,32,Number of active job postings
+num_jobs_created,VECTOR,0.0,9,16,Number of job postings created
+num_jobs_removed,VECTOR,0.0,9,13,Number of job postings removed/deleted

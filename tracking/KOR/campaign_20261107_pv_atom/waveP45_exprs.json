@@ -1,0 +1,12 @@
+[
+ "trade_when(greater(vec_count(insd5_vol_chg), 1), signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector)), 2.5), -1)",
+ "subtract(0.5, group_rank(ts_mean(divide(vec_range(insd5_vol_chg), add(vec_count(insd5_vol_chg), 1)), 44), sector))",
+ "subtract(subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_vol_af), 66), sector)), group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector))",
+ "signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 55), sector)), 2.5)",
+ "signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 33), sector)), 2)",
+ "subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_af), 66), sector))",
+ "multiply(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector)), group_rank(vec_count(insd5_vol_chg), sector))",
+ "subtract(0.5, group_rank(ts_mean(divide(subtract(vec_max(insd5_vol_chg), vec_min(insd5_vol_chg)), add(vec_max(insd5_vol_chg), 1)), 44), sector))",
+ "subtract(0.5, group_rank(winsorize(ts_mean(vec_range(insd5_vol_chg), 44), std=1.0), sector))",
+ "trade_when(greater(vec_count(insd5_vol_chg), 0), signed_power(subtract(0.5, group_rank(ts_mean(vec_range(insd5_vol_chg), 22), sector)), 1.5), -1)"
+]

@@ -1,0 +1,114 @@
+{
+ "results": [
+  {
+   "id": "mdl250_close_eq_cap",
+   "type": "MATRIX",
+   "coverage": 0.9041,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Market capitalization of the security at prior close; expressed in US dollars for US and in local currency for other regions"
+  },
+  {
+   "id": "mdl250_eq_hedge",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 21,
+   "alphaCount": 30,
+   "description": "Machine learning signal indicating defensive, downside-protective characteristics (predicts resilience during market stress or drawdowns)"
+  },
+  {
+   "id": "mdl250_eq_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Market capitalization for the security, in local currency (USD for US), as of prior close"
+  },
+  {
+   "id": "mdl250_eq_seasonality",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 27,
+   "alphaCount": 34,
+   "description": "Machine learning signal capturing systematic seasonal or calendar patterns in returns, trained over approximately 10 years of same-month history"
+  },
+  {
+   "id": "mdl250_eq_short",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Machine learning sub-signal targeting short-term returns (about 2–3 trading day horizon), trained on recent data (previous month)"
+  },
+  {
+   "id": "mdl250_hc_eq_hedge",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 23,
+   "alphaCount": 28,
+   "description": "ML model sub-signal score predicting securities with downside resilience, providing defensive/insurance overlay especially in adverse market conditions"
+  },
+  {
+   "id": "mdl250_hc_eq_medium",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Machine learning output signal forecasting expected medium-term (1–4 weeks) returns for the security; trained on a rolling 12-month window"
+  },
+  {
+   "id": "mdl250_hc_eq_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Market capitalization of the stock, in US dollars for US listings and in local currency for each other region"
+  },
+  {
+   "id": "mdl250_lmt_close_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.9051,
+   "userCount": 193,
+   "alphaCount": 398,
+   "description": "Primary composite machine learning alpha score from the MALTA model, representing expected relative returns for the stock over the model's target horizon; highe…"
+  },
+  {
+   "id": "mdl250_lmt_close_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.9051,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Industry sector classification (likely GICS sector) to which the company or security belongs"
+  },
+  {
+   "id": "mdl250_lmt_open_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.9051,
+   "userCount": 46,
+   "alphaCount": 51,
+   "description": "The primary machine-learning composite alpha signal output by MALTA, indicating expected relative returns, z-score standardized per day"
+  },
+  {
+   "id": "mdl250_malta_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.904,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Industry group or sector classification of the stock, based on GICS taxonomy for grouping, risk modeling, and neutralization"
+  },
+  {
+   "id": "mdl250_open_eq_cap",
+   "type": "MATRIX",
+   "coverage": 0.9041,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Market capitalization of the security, expressed in U.S. dollars for U.S. securities and local currency for each respective region"
+  }
+ ],
+ "count": 13,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 7,
+ "platform_count": 20,
+ "complete": true,
+ "pages_fetched": 1
+}

@@ -1,0 +1,27 @@
+﻿{
+ "results": [
+  {
+   "id": "mdl252_shield",
+   "type": "VECTOR",
+   "coverage": 0.9007,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Primary SHIELD model composite risk/defense score for the stock, between 0 and 1"
+  },
+  {
+   "id": "mdl252_shield2",
+   "type": "VECTOR",
+   "coverage": 0.9005,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Auxiliary or alternate composite SHIELD risk/defense score for the stock, between 0 and 1"
+  }
+ ],
+ "count": 2,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 1,
+ "platform_count": 3,
+ "complete": true,
+ "pages_fetched": 1
+}
+

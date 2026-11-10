@@ -74,6 +74,7 @@ CORR_SOURCES = (
     "platform_sync",       # 平台权威（收批同步 / check_correlation 落库）
     "platform_cached",     # 命中缓存，未回源平台
     "check_correlation",   # MCP check_correlation 实测
+    "prod_peek",           # 无锁只读探测平台 /correlations/prod（prod_wait --peek / prod_peek_batch）
     "prod_first_screen",   # tools/prod_first_screen.py
     "prod_recheck",        # PROD_BLOCKED 实时复核器
     "triage_local",        # 本地抽测（对近期孪生体失明，会低估）
@@ -82,6 +83,22 @@ CORR_SOURCES = (
     "manual",              # 人工录入
     "legacy",              # 历史自由文本，原值见 detail
 )
+
+#: **不可直接判闸**的来源（2026-11-10 审查 P0-1）：这些值不是本轮平台实测，
+#: 或测量时刻不可知。提交闸 ``_prod_gate`` 看到它们时按 provisional 处理
+#: （补一次 refresh=True 真重测，拿不到数 fail-closed），不得凭它放行。
+#:
+#: ``prod_peek`` **不在此列**：它读的就是平台 /correlations/prod 端点的已算结果，
+#: 与 check_correlation 的差别只是「不触发重算」；只要落库时把探测时刻写进
+#: ``checked_at``（见 ``tools/prod_peek_ingest.py``），48h 保鲜判据即成立。
+#: 真正危险的是「手工录入 / 历史自由文本 / 跨表搬运 / 本地抽测」这四类。
+NON_REALTIME_SOURCES = frozenset({
+    "manual",              # 人工录入，无平台依据
+    "legacy",              # 历史自由文本，无法归类
+    "alphas_backfill",     # 从 alphas 搬运，非本轮实测
+    "checkpoint_backfill",  # 从 checkpoint 搬运，非本轮实测
+    "triage_local",        # 本地抽测，对近期孪生体失明会低估
+})
 
 #: 历史自由文本 → 登记词表。键一律小写。
 _LEGACY_SOURCE_ALIASES = {
@@ -95,6 +112,11 @@ _LEGACY_SOURCE_ALIASES = {
     "alphas-backfill": "alphas_backfill",
     "platform": "platform_sync",
     "prod_blocked_recheck": "prod_recheck",
+    # 2026-11-10：peek 产物历史上用过三种自由文本，统一收敛到登记词 prod_peek
+    "no-lock peek": "prod_peek",
+    "no-lock peek batch": "prod_peek",
+    "prod_wait_peek": "prod_peek",
+    "prod_peek_batch": "prod_peek",
 }
 
 
@@ -120,29 +142,39 @@ def normalize_corr_source(raw: Any) -> Dict[str, Any]:
 
 
 def corr_age_hours(checked_at: Any, now: Optional[str] = None) -> Optional[float]:
-    """``checked_at`` 距今小时数；无法解析返回 ``None``（**不是 0**，别把「未知」当「新鲜」）。"""
+    """``checked_at`` 距今小时数；无法解析返回 ``None``（**不是 0**，别把「未知」当「新鲜」）。
+
+    2026-11-10 修复（审查 P1-8）：旧实现对「aware 时间戳（``+00:00`` / ``Z``）与 naive
+    ``datetime.now()`` 相减」会抛 ``TypeError`` → 返回 ``None`` → 被 :meth:`_row_to_corr`
+    判 ``stale``，把有效时间戳误当成「无缓存」而触发无谓重测。现统一把 naive 值按
+    **本地时区**解释（与 :func:`wqb.store._common._now` 的写入语义一致），再一律转 UTC 相减。
+    """
     if not checked_at:
         return None
-    from datetime import datetime
-    try:
-        dt = datetime.fromisoformat(str(checked_at).replace("Z", "+00:00"))
-    except (TypeError, ValueError):
-        return None
-    ref = None
-    if now:
+    from datetime import datetime, timezone
+
+    def _parse(v: Any):
         try:
-            ref = datetime.fromisoformat(str(now).replace("Z", "+00:00"))
+            return datetime.fromisoformat(str(v).replace("Z", "+00:00"))
         except (TypeError, ValueError):
-            ref = None
+            return None
+
+    dt = _parse(checked_at)
+    if dt is None:
+        return None
+    ref = _parse(now) if now else None
     if ref is None:
         ref = datetime.now()
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=ref.tzinfo)
-    if ref.tzinfo is not None and dt.tzinfo is None:
-        dt = dt.replace(tzinfo=ref.tzinfo)
+    local_tz = datetime.now().astimezone().tzinfo
+
+    def _utc(x):
+        if x.tzinfo is None:
+            x = x.replace(tzinfo=local_tz)
+        return x.astimezone(timezone.utc)
+
     try:
-        return round((ref - dt).total_seconds() / 3600.0, 2)
-    except TypeError:
+        return round((_utc(ref) - _utc(dt)).total_seconds() / 3600.0, 2)
+    except (TypeError, ValueError, OverflowError):
         return None
 
 
@@ -284,6 +316,12 @@ class CorrCacheMixin:
         # 一律标成「刚测过」，保鲜期判据彻底失真（实测 fresh=848/stale=0）。
         # 搬运场景传原始测量时间戳；正常测量场景留 None 用当前时间。
         now = checked_at or _now()
+        # ★ 2026-11-10 修复（审查 P0-2）：**只有本次带来了有效 prod/self 值时**才刷新
+        # source / checked_at。旧实现里 `_corr_value` 把越界值置 None 后，因 recs_json
+        # 通常是 "[]"（非 None）而不触发上面的 no_valid_value 短路，SQL 又用 COALESCE
+        # 保留旧 prod 却无条件 `checked_at=excluded.checked_at` ⇒ 一次畸形响应把**旧值
+        # 洗成「刚测过」**，直接污染 48h 保鲜判据。纯 records 更新不得触碰时间戳。
+        has_value = 1 if (p is not None or s is not None) else 0
         # ★ 2026-10-27 P0：与 get_corr_cache 同——所有 DB 写入在同一把锁内完成；
         # persist_correlation（mirror）也在此锁内取 RLock（可重入），保证「权威表+alphas」
         # 的写入对其他线程原子可见，避免半写状态被并发读到。
@@ -298,10 +336,12 @@ class CorrCacheMixin:
                 "  prod_correlation=COALESCE(excluded.prod_correlation, prod_correlation),"
                 "  self_correlation=COALESCE(excluded.self_correlation, self_correlation),"
                 "  prod_records=COALESCE(excluded.prod_records, prod_records),"
-                "  source=excluded.source,"
-                "  checked_at=excluded.checked_at,"
+                "  source=CASE WHEN ? THEN excluded.source ELSE alpha_corr_cache.source END,"
+                "  checked_at=CASE WHEN ? THEN excluded.checked_at "
+                "             ELSE alpha_corr_cache.checked_at END,"
                 "  updated_at=excluded.updated_at",
-                (str(alpha_id), p, s, recs_json, src, now, now, now),
+                (str(alpha_id), p, s, recs_json, src, now, now, now,
+                 has_value, has_value),
             )
             self.connection.commit()
             out = {
@@ -309,12 +349,13 @@ class CorrCacheMixin:
                 "alpha_id": str(alpha_id),
                 "prod_correlation": p,
                 "self_correlation": s,
-                "source": src,
-                "checked_at": now,
+                "source": src if has_value else None,
+                "checked_at": now if has_value else None,
+                "meta_refreshed": bool(has_value),
             }
             if norm["detail"]:
                 out["source_detail"] = norm["detail"]
-            if mirror_to_alphas:
+            if mirror_to_alphas and has_value:
                 # ⚠ overwrite=True 是 2026-10-06 修复：本方法语义就是「全库 prod 唯一写入口」，
                 # 权威表已拿到新的平台实测值，镜像也必须一起覆盖，否则 alphas 里
                 # 会留着旧值 —— 消费者走 alphas 表（select_ra_basket / prod_saturation_gate /

@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(vec_avg(mean_surprise_value_net2), sector), 0.5)",
+ "multiply(subtract(group_rank(vec_avg(mean_surprise_value_net2), sector), 0.5), subtract(group_rank(vec_avg(mean_surprise_value_revenue_annual12), sector), 0.5))",
+ "subtract(group_rank(ts_mean(vec_avg(mean_surprise_value_net2), 66), sector), 0.5)",
+ "subtract(group_rank(divide(subtract(vec_avg(avg_net_income_estimate), vec_avg(avg_net_income_4wks_prior)), add(abs(vec_avg(avg_net_income_4wks_prior)), 1)), sector), 0.5)",
+ "subtract(group_rank(divide(subtract(vec_avg(avg_net_income_estimate), vec_avg(avg_net_income_3mth_prior)), add(abs(vec_avg(avg_net_income_3mth_prior)), 1)), sector), 0.5)",
+ "subtract(group_rank(ts_delta(vec_avg(count_net_income_estimates), 66), sector), 0.5)",
+ "subtract(0.5, group_rank(vec_avg(count_net_income_estimates), sector))",
+ "subtract(0.5, group_rank(divide(vec_avg(stdev_net_income_3mth_prior), add(abs(vec_avg(avg_net_income_3mth_prior)), 1)), sector))",
+ "subtract(0.5, group_rank(divide(vec_avg(stddev_estimate_targetprice_annual12_tribes), add(vec_avg(median_estimate_targetprice_annual12_tribes), 1)), sector))",
+ "subtract(group_rank(divide(vec_avg(max_estimate_targetprice_annual12_tribes), add(vec_avg(median_estimate_targetprice_annual12_tribes), 1)), sector), 0.5)"
+]

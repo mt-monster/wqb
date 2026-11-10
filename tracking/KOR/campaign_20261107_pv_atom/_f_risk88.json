@@ -1,0 +1,434 @@
+﻿{
+ "results": [
+  {
+   "id": "rsk88_mfm_ase1_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 163,
+   "alphaCount": 297,
+   "description": "Instrument specific returns in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_advertising",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 21,
+   "alphaCount": 31,
+   "description": "Advertising industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_agriculture",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 23,
+   "alphaCount": 70,
+   "description": "Agriculture industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_airlines",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 21,
+   "alphaCount": 41,
+   "description": "Airlines industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_banks",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 11,
+   "alphaCount": 28,
+   "description": "Banks industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_beverages",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Beverages industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_biotechnology",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Biotechnology industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_buildingmaterials",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "Building materials industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_chemicals",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Chemicals industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_commercialservices",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Commercial services industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_cosmetics_personalcare",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Personal Care industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_distribution_wholesale",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Wholesale industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_diversifiedfinanserv",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Diversified finance services industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_electric",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 16,
+   "alphaCount": 19,
+   "description": "Electrical industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_energy_alternatesources",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Energy alternate sources industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_entertainment",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 8,
+   "alphaCount": 16,
+   "description": "Entertainment industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_environmentalcontrol",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Environmental control industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_food",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Food industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_gas",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Gas industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_hand_machinetools",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Machine tools industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_homebuilders",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Home Builders industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_homefurnishings",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Home furnishings industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_householdproducts_wares",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Household products wares industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_insurance",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Insurance industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_investmentcompanies",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Investment companies industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_iron_steel",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Iron and steel industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_leisuretime",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Leisure time industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_lodging",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 6,
+   "alphaCount": 14,
+   "description": "Lodging industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_machinery_diversified",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Machinery diversified industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_media",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Media industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_metalfabricate_hardware",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 6,
+   "alphaCount": 12,
+   "description": "Metal Fabrication and Hardware industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_mining",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Mining industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_miscellaneousmanufactur",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 14,
+   "alphaCount": 37,
+   "description": "Miscellaneous manufacturing industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_officefurnishings",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Office furnishings industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_pharmaceuticals",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Pharmaceuticals industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_realestate",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Real estate industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_retail",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Retail industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_semiconductors",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Semiconductors industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_shipbuilding",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Shipbuilding industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_software",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Software industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_telecommunications",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Telecommunications industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ind_transportation",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 10,
+   "alphaCount": 16,
+   "description": "Transportation industry factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_market",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Instrument market membership factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_beta",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 26,
+   "alphaCount": 39,
+   "description": "Beta style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_divyield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 53,
+   "alphaCount": 73,
+   "description": "Dividend Yield style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 54,
+   "alphaCount": 85,
+   "description": "Growth style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_leverage",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 22,
+   "alphaCount": 30,
+   "description": "Leverage style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_momentum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 35,
+   "alphaCount": 53,
+   "description": "Momentum style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_nonlsize",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 26,
+   "alphaCount": 34,
+   "description": "Non-linear size style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_size",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 31,
+   "alphaCount": 52,
+   "description": "Size style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_value",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 121,
+   "alphaCount": 247,
+   "description": "Value style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_ri_volatility",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 67,
+   "alphaCount": 98,
+   "description": "Volatility style factor loading in ASI region"
+  },
+  {
+   "id": "rsk88_mfm_ase1_srisk",
+   "type": "MATRIX",
+   "coverage": 0.967,
+   "userCount": 65,
+   "alphaCount": 102,
+   "description": "Instrument specific risk in ASI region"
+  }
+ ],
+ "count": 53,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 11,
+ "platform_count": 64,
+ "complete": true,
+ "pages_fetched": 2
+}

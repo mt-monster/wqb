@@ -1,0 +1,89 @@
+{
+  "alpha_id": "9qxnNkeq",
+  "STATUS": "REJECT_DO_NOT_SUBMIT",
+  "name": "DEU 借券需求加速度反转 ATOM (3)",
+  "tags": [
+    "shortinterest",
+    "borrow_demand",
+    "DEU",
+    "ATOM"
+  ],
+  "descriptions": "借券需求评级变化加速度反转：借券需求评级的 264 日长窗变化 × 88 日短窗变化，取负（做多借券需求回落股、做空借券需求抬升股），以 target_tvr=0.03 约束换手，subindustry 截面排序。借券需求激增代表做空/对冲需求拥挤（Lou & Polk 2018 comomentum；short-interest skew 拥挤预警），后续反转。ts_backfill 将稀疏借券事件填稠密以消除 CONCENTRATED_WEIGHT。S1.66/F1.18/2Y2.69/prod0.5327/self0.5327。",
+  "expression": "-group_rank(ts_target_tvr_decay(multiply(rank(ts_delta(ts_backfill(vec_avg(shrt3_bar), 132), 264)), rank(ts_delta(ts_backfill(vec_avg(shrt3_bar), 132), 88))), target_tvr=0.03), subindustry)",
+  "dataset": "shortinterest3",
+  "core_field": "shrt3_bar",
+  "operator_count": 10,
+  "settings": {
+    "region": "DEU",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "FAST",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "OFF"
+  },
+  "metrics": {
+    "sharpe": 1.66,
+    "fitness": 1.18,
+    "two_year_sharpe": 2.69,
+    "turnover": 0.1117,
+    "sub_universe_sharpe": 0.87,
+    "returns": 0.0629,
+    "drawdown": 0.0404,
+    "margin": 0.001127,
+    "longCount": 220,
+    "shortCount": 163,
+    "failed_ra_count": 0,
+    "checks_fail": [],
+    "pyramid": [
+      "DEU/D1/SHORTINTEREST"
+    ]
+  },
+  "correlations": {
+    "production": 0.5327,
+    "production_checked_at": "2026-11-10T09:20+08:00",
+    "production_histogram": "[0.4,0.5] n=1, [0.5,0.6] n=1, 无 [0.6,1] 桶 ⇒ 无深钉区",
+    "self": 0.5326712174143211,
+    "self_checked_at": "2026-11-10T09:10+08:00",
+    "self_method": "check_self_correlation local_calculation (excl. Power Pool), pool_size=16 / full_os_pool=19"
+  },
+  "orthogonality": {
+    "vs_1YNMAA8M": 0.1259,
+    "vs_xArzm3Mn": 0.5327,
+    "vs_bl6OWZ2M": 0.0281,
+    "vs_Wje5K71x": 0.0289,
+    "vs_2rmGAPqN": 0.0483,
+    "note": "与全部 17 件 OS REGULAR 构成 18/18 完整独立集（all_below_threshold=true）"
+  },
+  "coverage": {
+    "years": "2014-2023 每年均有数据",
+    "longCount_range": "159 → 299 单调上升，无空窗",
+    "negative_years": 0
+  },
+  "robustness": {
+    "10y_mean_sharpe": 1.62,
+    "10y_cv": 0.618,
+    "recent_3yr_sharpe": [
+      0.5,
+      3.0,
+      2.35
+    ],
+    "recent_3yr_mean": 1.95,
+    "recent_3yr_cv": 0.665,
+    "verdict": "按字面 CV 闸（>=0.60 REJECT）判定 REJECT；为借券族 5 颗四闸全过候选中 CV 最优（第二名 0.869），且无负年。需用户明确指令方可放宽。",
+    "root_cause": "2021 年德国借券市场几无波动（借券评级变化信号信息量不足），2022 年极端反弹；所有窗口变体在 2021 均退化 ⇒ 数据环境特性，非选样问题"
+  },
+  "same_family_capacity": "借券族三颗候选内部互相关 0.7583~0.9009 ⇒ 该族最多出 1 席，本件为最优选。",
+  "risk_notes": [
+    "prod/self 余量 0.167，健康",
+    "与 OS 池 xArzm3Mn 相关 0.5327（同为 shrt3_bar 借券族）",
+    "提交不可逆，需用户明确文字授权",
+    "提交前必须 refresh 复测 prod（平台 prod 池会漂移）"
+  ],
+  "audited_at": "2026-11-10T09:30+08:00",
+  "reject_reason": "Recent-3yr max/min Sharpe ratio = 6.00 > 5 (skill Phase C); submit_verdict measured BLOCKED (ROBUSTNESS_REJECT)",
+  "family_representative": "E569ZE7L (max/min 4.80, CONDITIONAL not REJECT)"
+}

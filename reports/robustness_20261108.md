@@ -200,3 +200,246 @@ DEU/TOP500/D1/decay6/SUBINDUSTRY/trunc0.08/nanOFF，6 ops
 
 **产物**：最优仍是原候选 zq3eb7No（S 2.01 / F 1.28 / 2Y 1.64 / sub 1.00 / RA fail 0 / CV 0.387 / 衰减比 0.403 / prod 0.6171 / ΔS +0.70）。
 次优 VkxRLv68（S 2.08 / F 1.36 / 2Y 1.63 / RA fail 0）头指标更好但 2023 更脆，且多 2 个算子。
+
+---
+
+# 附：今日 4 颗的标签处置（2026-11-08 16:5x 回读平台）
+
+此前该动作**零留痕**（11-06 / 11-07 只在报告里各写一句），事后无法回答「清了哪些、清的时候平台上到底有没有」。本节按新口径（`submit_alpha` Step 6 `tag_disposal`）补齐今日 4 颗。
+
+| alpha | name | 提交时刻 (ET) | 平台 tags（回读） | PowerPoolSelected | checks.pending |
+|---|---|---|---|---|---|
+| `zq3eb7No` | DEU_R_afslvlrev_01 | 11-08 01:11 | `CH_REG` · `SRC_afs_level_revision` · `CORR_060` | **无** | `POWER_POOL_CORRELATION` · `MATCHES_THEMES` |
+| `3qoGxkqZ` | GBR_R_pv103lend_01 | 11-08 01:59 | `CH_REG` · `SRC_pv103` · `EXPRFAM_pv103_lend` · `CORR_NEAR` | **无** | `POWER_POOL_CORRELATION` · `MATCHES_THEMES` |
+| `RRE5Mwkn` | GBR_R_pv103tvr_01 | 11-08 02:00 | `CH_REG` · `SRC_pv103` · `EXPRFAM_pv103_lend_tvr` · `CORR_LOW` | **无** | 空（已算完） |
+| `bl6KwjwK` | GBR_R_anlrevlend_01 | 11-08 02:00 | `CH_REG` · `SRC_analyst_revision` · `EXPRFAM_anlrev_lend` · `CORR_LOW` | **无** | 空（已算完） |
+
+**口径说明（2026-11-08 定案）**
+
+1. `PowerPoolSelected` 是**平台**在提交成功后自动追加的，不是我们打的。全账户 ACTIVE 297 颗中 36 颗带此标签，状态 22 COMPLETE + 12 ACTIVE + 2 UNSUBMITTED，**零退役**。
+2. 清掉它的代价 = 放弃 CAP 四口径（all submitted / WQ selected / Power Pool / Osmosis，**取最大**）中的 Power Pool 一条。因取最大、且该口径系统性偏低（论坛六维：Expert 0.51 vs combinedAlpha 0.93、GM 1.63 vs 2.12），**实际损失远小于字面**。
+3. 保留它并非纯赚：提交**前**预置会触发 `PURE_POWER_POOL_THEME` 检查（合法 REGULAR 可能被拒），故 `_derive_tags` 已在 PATCH 前剔除；提交后是否清按「PPA 通道一律不接受」政策执行。
+4. `check_tags` 自本日起**不再把它算违规**，改走 `tag_notes` 信息项——否则每次审计在 297 颗上刷 36 条假告警，盖掉真正要修的缺 `CH_*` / 缺 `SRC_*`。
+
+**观察到的旁证**：`RRE5Mwkn` / `bl6KwjwK` 的 checks 已全部完成，`pending` 为空，且 **pass/fail/warning 三处都没有 `POWER_POOL_CORRELATION`** ⇒ 平台对**不带**该标签的 alpha 不产出 PP 相关性结果；`zq3eb7No` / `3qoGxkqZ` 仍挂着该项只是异步队列未跑完。这条留待判别实验（PATCH 加回标签 → 看该项是否出数）确认。
+
+
+---
+
+# DEU · QPvzNNGG（2026-11-08 22:25，Phase B/C/D 完整审计）
+
+**候选**：QPvzNNGG — predictive_starmine（严格 ATOM，MODEL 塔）
+表达式：`group_neutralize(add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 12)), rank(ts_mean(predicted_surprise_f12m_ebitda_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 22))), bucket(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 252)), range="0,1,0.05"))`
+设置：DEU/TOP500/D1/SUBINDUSTRY/decay4/trunc0.08，9 算子。
+IS：S 1.70 / F 1.30 / 2Y 2.18 / TO 0.155 / margin 0.000774 / sub_u 过平台闸。
+
+## B.0 WebDataScope 门
+submit_verdict: failed_ra=0, sim_fails=[] ⇒ Failed=0 且无 PENDING ⇒ PASS。
+
+## B.2 逐年 Sharpe（2014–2023）
+1.56 / 1.54 / 0.93 / 1.26 / 1.15 / 1.52 / 2.37 / 2.34 / 2.32 / 2.03
+- Recent-3yr（2021-2023）：[2.34, 2.32, 2.03]，均值 2.23 ≥ 1.58，每年为正 ✓
+- Recent-3yr CV = 0.064 < 0.40 ✓
+- 衰减比 = 2.03 / 1.70 = 1.19 ≥ 0.50 ✓
+- 平年 0 ✓；max/min = 1.15 ≤ 3 ✓
+- 全历史 CV 0.269，曲线随时间改善（无厂字形）✓
+
+## B.3 pnl
+年回撤均值 0.0282，最大 0.0469（2021）< 2×均值 0.0563 ⇒ 无季度异常 ✓
+margin 7.7bp @ TO 15.5% ⇒ ≥5bp ✓
+Top-5 个股集中度：get_alpha_pnl 无逐股分解（可选项跳过，记软信息）。
+
+## B.4 相关性
+prod 0.6777（refresh 终验 2026-11-08）✓ / self 0.6779（新 OS 池 18，通过 <0.7 但贴线，软标记）。
+
+## Phase C 判定：**PASS**
+软标记：①9 算子（≤12 合规）②self 0.6779 贴线 ③Top-5 集中度无逐股数据。
+经济可解释性：分析师预期修正广度 + StarMine 预测惊喜三腿等权，bucket 中性化按修正速度分组消除速度暴露——「修正向上+预测惊喜为正的股票市场反应不足」。
+
+# DEU · LLMzYrZe（2026-11-08 22:25，备选席审计）
+
+逐年 Sharpe：1.75 / 2.03 / 0.91 / 1.65 / 2.50 / 1.00 / 1.68 / 1.26 / 1.09 / 2.36
+- Recent-3yr：[1.26, 1.09, 2.36]，均值 **1.570**（贴线 1.58，边际）；平台 2Y = 1.69 ≥ 1.58 ✓
+- CV 0.367 < 0.40 ✓；衰减比 2.36/1.61 = 1.47 ✓；max/min 2.17 ✓；平年 0 ✓
+- prod 0.6697 ✓ / self 0.6702（贴线）
+## Phase C 判定：**CONDITIONAL**
+软标记：近 3 年均值 1.570 边际（按年化均值口径贴线，平台 2Y 口径过线）＋ self 贴线。
+处置：作为 QPvzNNGG 的备选席（二者互相关 0.678，同族只占一席）；若 QPvzNNGG 提交失败换防前需重跑本审计。
+
+
+---
+
+# DEU · RREwqrNa（2026-11-08 23:10，Wave 65 修复产出审计）
+
+**候选**：RREwqrNa — shortinterest3 借贷交易族（严格 ATOM，SHORTINTEREST 塔）
+表达式：`winsorize(reverse(group_rank(multiply(multiply(rank(subtract(ts_sum(vec_avg(transaction_count_main),176),ts_sum(vec_avg(transaction_count_main),66))),rank(subtract(ts_sum(vec_avg(average_loan_duration_days_main),176),ts_sum(vec_avg(average_loan_duration_days_main),66)))),rank(subtract(ts_sum(vec_avg(loan_rate_volatility_main),176),ts_sum(vec_avg(loan_rate_volatility_main),66)))),industry)),std=4)`
+设定：DEU/TOP500/D1/FAST/decay4/trunc0.08/**nanHandling ON**（从 salvage 原件 omWbGMzn 平台 settings 破案恢复；本轮修复的关键是找回 nanHandling=ON 与 decay=4）。
+IS：S 1.65 / F 1.17 / 2Y 2.57 / TO 0.1073 / sub 1.12 / failed_ra=0。
+
+## B.0 门
+failed_ra=0, sim_fails=[] ⇒ PASS。
+
+## B.2 逐年 Sharpe
+1.46 / 1.94 / 1.17 / 1.22 / **3.51** / 1.38 / **0.18** / 0.58 / **3.56** / 1.42
+- Recent-3yr（2021-2023）：[0.58, 3.56, 1.42]，均值 1.85 ≥ 1.58 ✓，每年 >0.3 ✓
+- **Recent-3yr CV = 0.68–0.83 ≥ 0.60 ⇒ REJECT**（2022 尖峰拉高离散度）
+- 衰减比 = 1.42/1.65 = 0.86 ✓；平年（近3）0 ✓；max/min 6.1（全历史软标记）
+
+## B.4 相关性
+prod **0.6684** ✓（余量 0.032）/ self 0.2626 ✓（池 18）/ vs 已提交两颗 <0.5 ✓（0.051）。
+
+## Phase C 判定：**REJECT**（唯一失败项：CV_Sharpe）
+其余全部 PASS。**放宽入口 = 用户明确指令**（skill 规则）：若用户豁免 CV 闸，本件即 submission-ready（prod/self/互相关/IS 全绿）。
+经济可解释性：证券借贷活跃度上升 + 借贷期限变化 + 利率波动上升的股票=空头压力累积，做空其后续走弱——三腿反向合成。
+
+---
+
+# DEU · RREOz5qn（2026-11-09 21:20，Wave 88 换血版 robustness 审计）
+
+**候选**：RREOz5qn — predictive_starmine（严格 ATOM，MODEL 塔，Wave 88 换血版）
+表达式：`group_neutralize(add(add(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 12)), rank(ts_mean(predicted_surprise_fy1_ebitda_4, 5))), rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 22))), bucket(rank(ts_mean(mean_estimate_change_pct_f12m_earnings_14d_4, 252)), range="0,1,0.05"))`
+设置：DEU/TOP500/D1/SUBINDUSTRY/decay4/trunc0.08，9 算子。
+IS：S 1.72 / F 1.31 / 2Y 2.10 / TO 0.156 / sub 1.31 / failed_ra=0 / **prod 0.5834 ✓**（余量 0.117，全家族最干净）
+
+## B.0 WebDataScope 门
+failed_ra=0 ⇒ PASS。
+
+## B.2 逐年 Sharpe（2014–2023）
+1.72 / 1.67 / 1.31 / 1.47 / 1.08 / 1.51 / 1.66 / 2.54 / 2.91 / 1.24
+- Recent-3yr（2021-2023）：[2.54, 2.91, 1.24]，均值 2.23 ≥ 1.58 ✓，每年 >0.3 ✓
+- Recent-3yr CV = 0.32 < 0.60 ✓
+- 衰减比 = 1.24 / 1.72 = 0.72 ≥ 0.50 ✓
+- 平年 0 ✓；max/min = 2.35 ≤ 3 ✓
+- 全历史 CV 0.32（无厂字形）✓
+
+## B.3 margin
+年 margin 均 >0.0006（全期 0.00098），TO 15.6% ⇒ margin/TO 比健康 ✓
+
+## B.4 相关性
+prod **0.5834** ✓（余量 0.117）/ self 待查（与新腿 fy1_ebitda_4 相关性预期低于原版）
+
+## Phase C 判定：**PASS**（无软标记需带上）
+经济可解释性：分析师对 FY1 EBITDA 的预测惊喜（对比 F12M 口径的修正广度）+ 90d 修正速度，bucket 中性化消除修正速度暴露——多视界预期惊喜组合。
+
+---
+
+# 稳健性审计 — mLovbnm2（2026-11-10 01:5x）★★★ 本轮首个全闸通过件
+
+**口径：Recent-3yr（2021/2022/2023，skill 判定表主判）**
+
+表达式（9 ops，DEU/TOP500/D1/FAST/decay2/trunc0.08/nanOFF/SUBINDUSTRY）：
+```
+multiply(
+  multiply(group_rank(ts_mean(mean_estimate_change_pct_f12m_earnings_7d_4, 10), sector),
+          group_rank(ts_mean(netprofit_y1_estimate_change_3mo, 50), industry)),
+  group_rank(ts_mean(mean_estimate_change_pct_f12m_ebitda_90d_3, 30), industry)
+)
+```
+
+| 年 | Sharpe | Fitness | TO | margin | longCount |
+|---|---:|---:|---:|---:|---:|
+| 2014 | 2.02 | 1.73 | 0.1520 | 14.6bp | 80 |
+| 2015 | **3.63** | 4.57 | 0.1437 | 31.7bp | 81 |
+| 2016 | 1.42 | 1.04 | 0.1471 | 10.8bp | 89 |
+| 2017 | 1.97 | 1.68 | 0.1405 | 14.5bp | 101 |
+| **2018** | **0.35** | 0.13 | 0.1478 | 2.9bp | 102 |
+| 2019 | 2.90 | 3.09 | 0.1430 | 22.7bp | 105 |
+| 2020 | 1.07 | 0.89 | 0.1332 | 13.8bp | 115 |
+| 2021 | **3.00** | 3.49 | 0.1278 | 27.1bp | 134 |
+| 2022 | 2.25 | 2.39 | 0.1309 | 22.5bp | 148 |
+| 2023 | 1.28 | 0.93 | 0.1348 | 10.6bp | 133 |
+
+- 近 3 年均值 = **2.177 ≥ 1.58** ⇒ 主判 **PASS**
+- **无负年**（最低 2018 = 0.35）；**十年无空仓年**（longCount 80→148 全覆盖）
+- 全史 CV ≈ **0.476**（均值 1.989，sd 0.947）；max/min = 3.63/0.35 ≈ 10.4（2018 单年拉大分母，仅参考）
+- 末段三年缓降 3.00 → 2.25 → 1.28，**末年 1.28 仍为正且 2Y 闸 2.18 已过**（2Y 由 2022+2023 合成）
+- 换手稳定 12.8%–15.2%，十年无漂移 ⇒ 无「靠换手堆指标」风险
+- margin 2015 = 31.7bp、2021 = 27.1bp、2022 = 22.5bp；2023 = 10.6bp（弱年但为正）
+
+**结论：PASS（主判通过，无 soft_flag 阻断）**
+依据：2026-11-07 定案的 Recent-3yr 口径——本候选近 3 年均值 2.177、无负年、无空仓年、无末段破线；2018 单年 0.35 属历史中段单年离群（其后 2019 即回到 2.90），不构成 REJECT。
+
+**全闸终验（2026-11-10 01:5x 实测）**：
+| 项 | 值 |
+|---|---|
+| Sharpe | **1.94**（≥1.58 ✅） |
+| Fitness | **1.79**（≥1.0 ✅） |
+| 2Y Sharpe | **2.18**（≥1.58 ✅） |
+| Turnover | 0.1401（0.01~0.7 ✅） |
+| sub_universe_sharpe | 1.17 ✅ |
+| investability_sharpe | 1.40 ✅ |
+| risk_neutralized_sharpe | 1.07 ✅ |
+| drawdown | 0.0709 ✅ |
+| **failed_ra_count** | **0** |
+| **checks.fail** | **[]** |
+| **production corr** | **0.6572 < 0.7 ✅**（直方图 [0.6,0.7) n=8，无 [0.7,0.8] 钉） |
+| **self corr** | **0.562 < 0.7 ✅** |
+| **边际贡献 ΔSharpe** | **+0.68 ✅ 正向**（组合 sharpe 1.73 → 2.41，fitness 1.37 → 2.08） |
+
+⇒ **本件是 DEU 战役首个同时通过 RA / prod / self / 边际贡献四道的候选**（前轮 5 颗候选池全部因 ΔSharpe 为负被拦）。
+---
+
+# 稳健性审计 — 1YNMAA8M（2026-11-10 06:3x）★★★ 第二席
+
+**口径：Recent-3yr（2021/2022/2023，skill 判定表主判）**
+
+表达式（9 ops，DEU/TOP500/D1/FAST/decay4/SUBINDUSTRY/trunc0.08/nanOFF）：
+```
+multiply(
+  multiply(group_rank(ts_mean(mean_estimate_change_pct_f12m_earnings_7d_4, 10), sector),
+          group_rank(ts_mean(netprofit_y1_estimate_change_3mo, 50), sector)),
+  group_rank(ts_sum(anl15_dps_gr_12_m_3m_chg, 22), sector)
+)
+
+| 年 | Sharpe | Fitness | TO | margin | long | short |
+|---|---:|---:|---:|---:|---:|---:|
+| 2014 | 1.65 | 1.31 | 14.9% | 12.7bp | 76 | 87 |
+| 2015 | 1.59 | 1.32 | 13.4% | 13.7bp | 81 | 95 |
+| 2016 | 1.56 | 1.28 | 14.7% | 13.4bp | 88 | 106 |
+| 2017 | 1.01 | 0.63 | 13.8% | 7.7bp | 97 | 118 |
+| 2018 | 1.06 | 0.78 | 13.1% | 10.7bp | 102 | 119 |
+| 2019 | 2.06 | 1.96 | 13.6% | 18.1bp | 103 | 123 |
+| 2020 | 0.78 | 0.54 | 13.5% | 9.6bp | 122 | 151 |
+| 2021 | **2.96** | 3.54 | 11.8% | 30.5bp | 140 | 169 |
+| 2022 | 2.19 | 2.34 | 12.5% | 22.9bp | 150 | 176 |
+| 2023 | 1.25 | 0.97 | 12.5% | 12.1bp | 129 | 155 |
+
+- 近 3 年均值 = **2.133 ≥ 1.58** ⇒ 主判 **PASS**
+- **无负年**（最低 2020 = 0.78）；**十年无空仓年**（longCount 76→150 单调上升）
+- 全史 mean 1.611 / sd 0.620 / **CV 0.385**（低于 mLovbnm2 的 0.476，更稳）
+- max/min = 2.96 / 0.78 ≈ 3.8（分母健康）
+- 换手稳定 11.8%–14.9%，十年几乎无漂移 ⇒ 无「靠换手堆指标」风险
+
+**结论：PASS（主判通过）**
+
+### 全闸终验（2026-11-10 06:3x 实测）
+| 项 | 值 | 闸 |
+|---|---|---|
+| Sharpe | **1.58** | ≥1.58 ✅ |
+| Fitness | **1.36** | ≥1.0 ✅ |
+| 2Y Sharpe | **2.13** | ≥1.58 ✅ |
+| Turnover | 0.1337 | 0.01~0.7 ✅ |
+| sub_universe_sharpe | 1.01 | ✅ |
+| investability_sharpe | 1.26 | ✅ |
+| drawdown | 0.0845 | ✅ |
+| returns / margin | 9.96% / 14.9bp | |
+| **failed_ra_count** | **0** | ✅ |
+| **checks.fail** | **[]** | ✅ |
+| **production corr** | **0.6951** | <0.7 ✅（余量仅 0.005） |
+| **self corr** | **0.6946** | <0.7 ✅（余量仅 0.005，贴线） |
+| **边际贡献 ΔSharpe** | **+0.43**（组合 1.73→2.16） | >0 ✅ |
+| mix_audit | 不阻断（usage=MULTI_DATA_SET） | ✅ |
+
+### 与现有件的正交性（compute_mutual_correlation, threshold 0.7）
+| 对 | 相关 |
+|---|---:|
+| 1YNMAA8M ~ mLovbnm2 | **0.6955** |
+| 1YNMAA8M ~ bl6AvMkN（已提交） | 0.5128 |
+| 1YNMAA8M ~ zq3eb7No（已提交） | 0.2471 |
+| mLovbnm2 ~ bl6AvMkN | 0.5620 |
+
+⇒ `max_mutually_below_subset` = **[1YNMAA8M, mLovbnm2, bl6AvMkN, zq3eb7No]（4/4 全部低于 0.7）** ⇒ **四颗件可同时入池**。
+
+**★ 两点风险提示**：
+1. **prod 余量仅 0.005**（0.6951）与 **self 余量仅 0.005**（0.6946）——两者都贴线，prod 会随生产池变化漂移（历史有 0.69→0.99 的漂移记录）⇒ **提交前必须 refresh 终验**。
+2. 与 mLovbnm2 互相关 0.6955 亦贴线 ⇒ 两颗件**不宜同时提交**（除非 prod 复核后仍稳定）。

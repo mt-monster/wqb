@@ -1,0 +1,117 @@
+﻿{
+ "alpha_id": "6Xd0A1ZE",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "checks": {
+  "production": {
+   "max_correlation": 0.7986,
+   "passes_check": false,
+   "from_cache": true,
+   "cached_at": "2026-11-07T11:35:54",
+   "source": "check_correlation",
+   "histogram_nonzero": [
+    {
+     "range": [
+      -0.6,
+      -0.5
+     ],
+     "n": 1
+    },
+    {
+     "range": [
+      -0.5,
+      -0.4
+     ],
+     "n": 12
+    },
+    {
+     "range": [
+      -0.4,
+      -0.3
+     ],
+     "n": 57
+    },
+    {
+     "range": [
+      -0.3,
+      -0.2
+     ],
+     "n": 373
+    },
+    {
+     "range": [
+      -0.2,
+      -0.1
+     ],
+     "n": 2722
+    },
+    {
+     "range": [
+      -0.1,
+      0.0
+     ],
+     "n": 12836
+    },
+    {
+     "range": [
+      0.0,
+      0.1
+     ],
+     "n": 26965
+    },
+    {
+     "range": [
+      0.1,
+      0.2
+     ],
+     "n": 25683
+    },
+    {
+     "range": [
+      0.2,
+      0.3
+     ],
+     "n": 21598
+    },
+    {
+     "range": [
+      0.3,
+      0.4
+     ],
+     "n": 14752
+    },
+    {
+     "range": [
+      0.4,
+      0.5
+     ],
+     "n": 7343
+    },
+    {
+     "range": [
+      0.5,
+      0.6
+     ],
+     "n": 1889
+    },
+    {
+     "range": [
+      0.6,
+      0.7
+     ],
+     "n": 197
+    },
+    {
+     "range": [
+      0.7,
+      0.8
+     ],
+     "n": 4
+    }
+   ],
+   "max": 0.7986
+  }
+ },
+ "all_passed": false
+}
+

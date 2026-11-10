@@ -1,0 +1,72 @@
+id,type,cov,uc,ac,desc
+buyback_yield_relative_component_rank_d1,MATRIX,0.0,96,626,Floating-point percentile score representing the global-relative attractiveness (valuation rank) based on the Buyback Yield component
+dividend_yield_relative_component_rank_d1,MATRIX,0.0,30,154,Floating-point percentile score representing the global-relative attractiveness (valuation rank) based on the Dividend Yield component
+ev_ebitda_relative_score,MATRIX,0.0,52,306,Floating-point percentile score representing the global-relative attractiveness (valuation rank) based on the EV/EBITDA ratio component
+ev_sales_relative_component_rank_d1,MATRIX,0.0,45,222,Floating-point percentile score representing the global-relative attractiveness (valuation rank) based on the EV/Sales ratio component
+industry_relative_valuation_rank,MATRIX,0.0,112,703,Floating-point percentile rank for relative valuation attractiveness within industry; higher is more attractive
+long_term_assumed_annual_earnings,MATRIX,0.0,342,1725,Year when the company is projected to reach steady state earnings growth
+mdl38_iv_cagr_base_year,MATRIX,0.0,37,186,Compound annual growth rate (CAGR) computed over the designated base years as used in the intrinsic value modelâs projections; serves as baseline reference forâ¦
+mdl38_iv_discount_rate,MATRIX,0.0,30,102,Discount rate used in the StarMine Intrinsic Valuation model for discounting dividends to FY0
+mdl38_iv_div_payout_rate,MATRIX,0.0,34,104,Dividend payout rate of the company at and after the steady state year defined in the StarMine model
+mdl38_iv_growth_ear,MATRIX,0.0,35,97,Earnings growth rate expected at steady state
+mdl38_iv_warranted_f12m_p_e,MATRIX,0.0,49,222,Forward 12-month price-to-earnings ratio implied by the StarMine intrinsic value and SmartGrowth EPS projections; represents what the P/E would be if both estimâ¦
+mdl38_iv_year_div,MATRIX,0.0,27,54,Year when the company is projected to reach steady state dividends
+mdl38_rel_val_ev_ebitda,MATRIX,0.0,49,232,Percentile rank (1-100) of the security for its enterprise value/EBITDA (EV/EBITDA) ratio valuation component versus global peers; higher scores indicate more aâ¦
+mdl38_rel_val_global_rk,MATRIX,0.0,84,631,Current global percentile (1-100) rank of a stockâs attractiveness in the Relative Valuation Model; higher is better value
+pb_ratio_relative_component_rank_d1,MATRIX,0.0,49,228,Floating-point percentile score representing the global-relative attractiveness (valuation rank) based on the Price/Book ratio component
+pcf_ratio_relative_component_rank_d1,MATRIX,0.0,62,580,Floating-point percentile score representing the global-relative attractiveness (valuation rank) based on the Price/Cash Flow ratio component
+pe_ratio_relative_score,MATRIX,0.0,41,268,Floating-point percentile score representing the global-relative attractiveness (valuation rank) based on the Price/Earnings ratio component
+price_to_intrinsic_value_industry_position_d1,MATRIX,0.0,60,382,Percentile ranking (as floating-point value) of the Price/Intrinsic Value ratio for the stock relative to its industry peer group; higher rank means stronger unâ¦
+region_rank_price_to_intrinsic_value,MATRIX,0.0,40,164,Percentile ranking (as a floating-point value) of the Price/Intrinsic Value ratio for the stock relative to its regional peer group; higher rank means strongerâ¦
+region_relative_valuation_rank,MATRIX,0.0,57,414,Floating-point percentile rank for relative valuation attractiveness within region; higher is more attractive
+relative_valuation_global_position_d1,MATRIX,0.0,80,736,Floating-point global percentile rank for relative valuation attractiveness; higher is more attractive
+sector_rank_price_to_intrinsic_value,MATRIX,0.0,61,421,Percentile ranking (as a floating-point value) of the Price/Intrinsic Value ratio for the stock relative to its sector peer group; higher rank means stronger unâ¦
+sector_relative_valuation_rank,MATRIX,0.0,98,846,Floating-point percentile rank for relative valuation attractiveness within sector; higher is more attractive
+star_val_buyback_yield,MATRIX,0.0,86,556,Global percentile rank of the stock in the buyback yield component of the Relative Valuation Model; 1-100 scale; higher scores indicate better value
+star_val_dividend_projection_fy1,MATRIX,0.0,40,193,Estimated dividends per share (DPS) for fiscal year 1; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy10,MATRIX,0.0,67,523,Estimated dividends per share (DPS) for fiscal year 10; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy11,MATRIX,0.0,69,525,Fiscal year 11 dividends per share (DPS) estimate from StarMine SmartGrowth model
+star_val_dividend_projection_fy12,MATRIX,0.0,99,699,Estimated dividends per share (DPS) for fiscal year 12; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy13,MATRIX,0.0,80,603,Estimated dividends per share (DPS) for fiscal year 13; as projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy14,MATRIX,0.0,77,674,Estimated dividends per share (DPS) for fiscal year 14; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy15,MATRIX,0.0,82,714,Estimated dividends per share (DPS) for fiscal year 15; as projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy2,MATRIX,0.0,43,315,Estimated dividends per share (DPS) for fiscal year 2; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy3,MATRIX,0.0,41,285,Estimated dividends per share (DPS) for fiscal year 3; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy4,MATRIX,0.0,49,263,Estimated dividends per share (DPS) for fiscal year 4; as projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy5,MATRIX,0.0,45,305,Estimated dividends per share (DPS) for fiscal year 5; as projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy6,MATRIX,0.0,49,461,Estimated dividends per share (DPS) for fiscal year 6; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy7,MATRIX,0.0,54,459,Estimated dividends per share (DPS) for fiscal year 7; as projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy8,MATRIX,0.0,75,369,Estimated dividends per share (DPS) for fiscal year 8; projected by the StarMine SmartGrowth model
+star_val_dividend_projection_fy9,MATRIX,0.0,87,560,Fiscal year 9 dividends per share (DPS) estimate from StarMine SmartGrowth model
+star_val_dividend_yield,MATRIX,0.0,36,123,Percentile (1-100) rank of the stockâs dividend yield within the Relative Valuation Model; higher means better value on dividend yield
+star_val_earnings_projection_fy1,MATRIX,0.0,58,460,Estimated earnings per share (EPS) for fiscal year 1; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy10,MATRIX,0.0,98,758,Estimated earnings per share (EPS) for fiscal year 10; as projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy11,MATRIX,0.0,57,660,Estimated earnings per share (EPS) for fiscal year 11; as projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy12,MATRIX,0.0,50,623,Estimated earnings per share (EPS) for fiscal year 12; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy13,MATRIX,0.0,65,649,Estimated earnings per share (EPS) for fiscal year 13; as projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy14,MATRIX,0.0,91,654,Estimated earnings per share (EPS) for fiscal year 14; as projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy15,MATRIX,0.0,72,624,Estimated earnings per share (EPS) for fiscal year 15; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy2,MATRIX,0.0,51,420,Estimated earnings per share (EPS) for fiscal year 2; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy3,MATRIX,0.0,63,664,Estimated earnings per share (EPS) for fiscal year 3; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy4,MATRIX,0.0,64,625,Fiscal year 4 EPS estimate from StarMine SmartGrowth model
+star_val_earnings_projection_fy5,MATRIX,0.0,76,707,Estimated earnings per share (EPS) for fiscal year 5; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy6,MATRIX,0.0,73,625,Estimated earnings per share (EPS) for fiscal year 6; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy7,MATRIX,0.0,127,904,Estimated earnings per share (EPS) for fiscal year 7; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy8,MATRIX,0.0,177,1194,Estimated earnings per share (EPS) for fiscal year 8; projected by the StarMine SmartGrowth model
+star_val_earnings_projection_fy9,MATRIX,0.0,95,789,Estimated earnings per share (EPS) for fiscal year 9; as projected by the StarMine SmartGrowth model
+star_val_ev_sales,MATRIX,0.0,44,268,Percentile (1-100) rank of the stockâs enterprise value/sales ratio in the Relative Valuation Model; higher means better value on EV/Sales
+star_val_fwd10_eps_cagr,MATRIX,0.0,65,531,Compound annual growth rate (CAGR) between last reported EPS and forecasted EPS for year 10 from StarMine SmartGrowth model
+star_val_fwd5_eps_cagr,MATRIX,0.0,83,659,Compound annual growth rate (CAGR) between last reported EPS and forecasted EPS for year 5 from StarMine SmartGrowth model
+star_val_implied10_eps_cagr,MATRIX,0.0,40,185,Forward compound annual growth rate of EPS over 10 years implied by the market price and analyst projections; such that intrinsic value matches market price
+star_val_implied5_eps_cagr,MATRIX,0.0,49,476,Market-implied compound annual EPS growth rate over 5 years needed for intrinsic value to equal current market price
+star_val_industry_rank,MATRIX,0.0,183,955,Percentile rank (1-100) of the securityâs valuation attractiveness versus industry peers in the Relative Valuation Model; higher scores indicate stocks with betâ¦
+star_val_iv_projection,MATRIX,0.0,65,501,Intrinsic value of the stock calculated by StarMine; expressed in the currency used for projections
+star_val_pb,MATRIX,0.0,55,313,Global percentile rank of the stock in the Price/Book component of the Relative Valuation Model; 1-100 scale; higher scores indicate better value
+star_val_pcf,MATRIX,0.0,82,796,Global percentile rank of the stock in the Price/Cash Flow component of the Relative Valuation Model; 1-100 scale; higher scores indicate better value
+star_val_pe,MATRIX,0.0,41,180,Percentile rank (1-100) of the security for its price/earnings (P/E) ratio valuation component versus global peers; higher scores mean more attractive P/E valuaâ¦
+star_val_piv_industry_rank,MATRIX,0.0,48,212,Percentile ranking (integer value; scale 1-100) of the Price/Intrinsic Value ratio for the stock relative to its industry peer group; higher rank means strongerâ¦
+star_val_piv_ratio,MATRIX,0.0,41,106,Ratio of previous day's market close price to the StarMine model's calculated intrinsic value
+star_val_piv_region_rank,MATRIX,0.0,47,242,Percentile ranking (integer value; scale 1-100) of the Price/Intrinsic Value ratio for the stock relative to its regional peer group; higher rank means strongerâ¦
+star_val_piv_sector_rank,MATRIX,0.0,51,350,Percentile rank (1-100) of a stockâs price to intrinsic value ratio within its region-sector; higher means more undervalued within sector
+star_val_region_rank,MATRIX,0.0,83,667,Current regional percentile (1-100) rank of a stockâs attractiveness in the Relative Valuation Model; higher is better value
+star_val_sector_rank,MATRIX,0.0,115,921,Sector-relative valuation rank (1-100) indicating attractiveness within the sector

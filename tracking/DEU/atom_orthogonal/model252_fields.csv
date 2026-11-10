@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+firm_market_value,VECTOR,0.0,0,0,Market capitalization of the security on the given date
+mdl252_shield,VECTOR,0.0,1,1,Primary SHIELD model composite risk/defense score for the stock; between 0 and 1
+mdl252_shield2,VECTOR,0.0,8,8,Auxiliary or alternate composite SHIELD risk/defense score for the stock; between 0 and 1

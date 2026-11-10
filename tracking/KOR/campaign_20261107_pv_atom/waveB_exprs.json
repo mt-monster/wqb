@@ -1,0 +1,12 @@
+[
+ "subtract(rank(add(add(subtract(bullish_flag_similarity_average, bearish_flag_similarity_average), subtract(bullish_pennant_similarity_average, bearish_pennant_similarity_average_h40w)), subtract(ascending_staircase_similarity_average, descending_staircase_similarity_average))), 0.5)",
+ "subtract(group_rank(divide(add(bullish_flag_similarity_average, 0.01), add(bearish_flag_similarity_average, 0.01)), sector), 0.5)",
+ "subtract(group_rank(subtract(gap_up_continuation_similarity_average, gap_down_continuation_similarity_average), sector), 0.5)",
+ "subtract(group_rank(ts_delta(add(subtract(bullish_flag_similarity_average, bearish_flag_similarity_average), subtract(bullish_rectangle_similarity_average, bearish_rectangle_similarity_average)), 22), sector), 0.5)",
+ "subtract(group_rank(ts_rank(subtract(bullish_flag_similarity_average, bearish_flag_similarity_average), 252), sector), 0.5)",
+ "subtract(group_rank(subtract(max(bullish_flag_similarity_average, bullish_pennant_similarity_average), max(bearish_flag_similarity_average, bearish_pennant_similarity_average_h40w)), sector), 0.5)",
+ "subtract(0.5, group_rank(add(ascending_channel_similarity_dispersion, descending_channel_similarity_dispersion), sector))",
+ "subtract(group_rank(subtract(bull_flag_recent_similarity, bullish_flag_similarity_average), sector), 0.5)",
+ "subtract(group_rank(subtract(bullish_rectangle_similarity_percentile_95, bearish_rectangle_similarity_percentile_95), sector), 0.5)",
+ "subtract(group_rank(subtract(cup_handle_pattern_similarity_average, inverse_cup_handle_similarity_average), sector), 0.5)"
+]

@@ -1,0 +1,1 @@
+{"instrumentType":"EQUITY","region":"KOR","universe":"TOP600","delay":1,"neutralization":"REVERSION_AND_MOMENTUM","decay":4,"truncation":0.12,"pasteurization":"ON","unitHandling":"VERIFY","nanHandling":"ON","maxTrade":"OFF","language":"FASTEXPR","visualization":false,"startDate":"2014-01-01","endDate":"2023-12-31"}

@@ -1,0 +1,40 @@
+id,type,cov,uc,ac,desc
+daily_event_announcement_time,VECTOR,0.0,0,0,Time of the announcement in the announcedDateTimeZoneId time zone
+daily_event_announcement_time_utc,VECTOR,0.0,1,1,Time the event was announced (UTC)
+daily_event_entry_time,VECTOR,0.0,0,0,The time when the event was entered in the dataset.
+daily_event_entry_time_utc,VECTOR,0.0,0,0,Time the record was first entered into the system (UTC)
+daily_event_last_update_time,VECTOR,0.0,0,0,Time the event record was last modified
+daily_event_last_update_time_utc,VECTOR,0.0,0,0,Time the record was last modified (UTC)
+daily_event_record_end_time,VECTOR,0.0,0,0,The time when the current record for the daily event ceased to be active.
+daily_event_record_start_time,VECTOR,0.0,0,0,The time when the current record for the daily event became active.
+daily_event_relevant_time_utc,VECTOR,0.0,0,0,Time in UTC of the eventâs key moment (often the event time; otherwise announcement time)
+event_announcement_time,VECTOR,0.0,0,0,The UTC time at which the event was announced
+event_entry_time,VECTOR,0.0,0,0,The time when the event record was entered into the system
+event_last_update_time,VECTOR,0.0,1,1,The time when the event record was last modified
+event_relevant_time_utc,VECTOR,0.0,0,0,UTC time of the key moment for the event (usually the announced time; for scheduled events; the event time)
+future_event_announcement_time,VECTOR,0.0,0,0,Time the announcement is scheduled to be made; in UTC
+future_event_announcement_time_utc,VECTOR,0.0,0,0,Time the announcement is scheduled/made in UTC
+future_event_entry_time,VECTOR,0.0,0,0,Time when this Future Event was entered
+future_event_entry_time_utc,VECTOR,0.0,0,0,Time the Future Event was entered; in UTC
+future_event_last_update_time,VECTOR,0.0,0,0,Time of the last modification to the Future Event
+future_event_last_update_time_utc,VECTOR,0.0,1,1,Time of the last modification in UTC
+future_event_record_end_time,VECTOR,0.0,0,0,End time of the S&P effective window during which this record is valid
+future_event_record_start_time,VECTOR,0.0,1,1,Start time of the S&P effective window for this record
+future_event_relevant_time_utc,VECTOR,0.0,0,0,Time the event occurs in UTC time zone
+mws54_eventcallbasicinfo_cancelledflag,VECTOR,0.0,1,1,Flag indicating whether the event call was cancelled; 0=no; 1=yes
+mws54_eventcallbasicinfo_fiscalquarter,VECTOR,0.0,0,0,Fiscal quarter associated with the event
+mws54_eventcallbasicinfo_fiscalyear,VECTOR,0.0,0,0,Fiscal year pertaining to the event call
+mws54_eventcallbasicinfo_postponedflag,VECTOR,0.0,0,0,Indicator whether the event call was postponed; 0=no; 1=yes
+mws54_eventerinfo_calendarmonth,VECTOR,0.0,0,0,Calendar month of the earnings release
+mws54_eventerinfo_calendaryear,VECTOR,0.0,0,0,Calendar year of the earnings release
+mws54_eventerinfo_cancelledflag,VECTOR,0.0,2,2,Indicator that the earnings event was canceled
+mws54_eventerinfo_fiscalquarter,VECTOR,0.0,1,1,Fiscal quarter associated with the earnings release
+mws54_eventerinfo_fiscalyear,VECTOR,0.0,0,0,Fiscal year of the earnings release
+mws54_eventerinfo_fullyearflag,VECTOR,0.0,0,0,Flag indicating the earnings release covers a full fiscal year; 0=no; 1=yes
+mws54_eventsdaily_headline,VECTOR,0.0,1,1,Headline text for the event
+mws54_eventsdaily_situation,VECTOR,0.0,0,0,Additional descriptive text for the event
+mws54_factor,VECTOR,0.0,0,0,Numeric amount/factor associated with the event; e.g.; dividend amount or stock split ratio
+mws54_futureeventmkt_headline,VECTOR,0.0,1,1,Headline for the event
+mws54_futureeventmkt_situation,VECTOR,0.0,0,0,Additional descriptive text/details for the event
+mws54_keydevelopments_headline,VECTOR,0.0,0,0,Headline text describing the event
+mws54_keydevelopments_situation,VECTOR,0.0,0,0,Additional descriptive narrative text about the event

@@ -1,0 +1,34 @@
+{
+ "total": 1,
+ "success": 1,
+ "failed": 0,
+ "results": [
+  {
+   "alpha_id": "mLolQA29",
+   "sharpe": 1.84,
+   "fitness": 0.95,
+   "turnover": 0.2817,
+   "two_year_sharpe": 1.66,
+   "robust_universe_sharpe": null,
+   "sub_universe_sharpe": 1.53,
+   "investability_sharpe": 1.68,
+   "investability_fitness": 1.05,
+   "margin": 0.000537,
+   "returns": 0.0756,
+   "drawdown": 0.0482,
+   "self_correlation": null,
+   "prod_correlation": null,
+   "failed_ra_count": 1,
+   "status": "UNSUBMITTED",
+   "error": null,
+   "investability_ratio": 0.913
+  }
+ ],
+ "prescreen": {
+  "READY": [],
+  "REVIEW": [
+   "mLolQA29"
+  ],
+  "REJECT": []
+ }
+}

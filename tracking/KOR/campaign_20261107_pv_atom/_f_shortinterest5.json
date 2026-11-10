@@ -1,0 +1,34 @@
+﻿{
+ "results": [
+  {
+   "id": "max_price_decrease_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 19,
+   "alphaCount": 26,
+   "description": "The daily proportionate lower price limit ratio (as a decimal or percentage), representing how much a stock’s price can fall in a single day according to exchan…"
+  },
+  {
+   "id": "max_price_increase_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 25,
+   "alphaCount": 32,
+   "description": "The daily proportionate upper price limit ratio (as a decimal or percentage), representing how much a stock’s price can rise in a single day according to exchan…"
+  },
+  {
+   "id": "price_limit_condition",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 21,
+   "alphaCount": 25,
+   "description": "Numeric code indicating the current tradability regime for the security, such as fully tradable, limit up, limit down, or halted/suspended; requires codebook de…"
+  }
+ ],
+ "count": 3,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 3,
+ "complete": true,
+ "pages_fetched": 1
+}

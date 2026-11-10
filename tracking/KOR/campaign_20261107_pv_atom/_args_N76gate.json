@@ -1,0 +1,82 @@
+[
+  {
+    "field_id": "mws76_score",
+    "expression": "hump(subtract(group_rank(divide(vec_sum(mws76_score),vec_sum(mws76_confidence)),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  },
+  {
+    "field_id": "mws76_score",
+    "expression": "reverse(hump(subtract(group_rank(divide(vec_sum(mws76_score),vec_sum(mws76_confidence)),industry),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  },
+  {
+    "field_id": "mws76_score",
+    "expression": "hump(subtract(group_rank(divide(vec_avg(mws76_score),vec_avg(mws76_confidence)),sector),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  },
+  {
+    "field_id": "mws76_score",
+    "expression": "group_rank(ts_zscore(ts_backfill(vec_avg(mws76_score),22),252),industry)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  },
+  {
+    "field_id": "mws76_score",
+    "expression": "reverse(group_rank(ts_zscore(ts_backfill(vec_avg(mws76_score),22),252),industry))",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  },
+  {
+    "field_id": "mws76_score",
+    "expression": "scale(trade_when(rank(adv20)>0.1, ts_kurtosis(ts_backfill(vec_avg(mws76_score),22),140), -1), shortscale=0.5)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  },
+  {
+    "field_id": "mws76_score",
+    "expression": "hump(group_rank(ts_backfill(vec_max(mws76_score),63),industry),hump=0.003)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  },
+  {
+    "field_id": "mws76_score",
+    "expression": "group_rank(ts_delta(ts_backfill(vec_stddev(mws76_score),22),66),sector)",
+    "field_meta": {
+      "type": "VECTOR",
+      "coverage": 0.6592,
+      "distribution_shape": "flow_level",
+      "non_zero_rate": 0.6
+    }
+  }
+]

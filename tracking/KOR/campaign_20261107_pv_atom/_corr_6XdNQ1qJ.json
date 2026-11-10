@@ -1,0 +1,24 @@
+{
+ "alpha_id": "6XdNQ1qJ",
+ "threshold": 0.7,
+ "correlation_type": "both",
+ "status": "pending",
+ "message": "Production correlation data for alpha 6XdNQ1qJ was not available after 240s of polling. The platform may still be computing it. Please retry check_correlation in a few minutes.",
+ "retry_after": 1.0,
+ "last_known": null,
+ "inflight": true,
+ "checks": {
+  "production": {
+   "max_correlation": null,
+   "passes_check": null,
+   "status": "pending",
+   "message": "Production correlation data for alpha 6XdNQ1qJ was not available after 240s of polling. The platform may still be computing it. Please retry check_correlation in a few minutes.",
+   "retry_after": 1.0,
+   "last_known": null,
+   "inflight": true,
+   "attempts": 179,
+   "elapsed_ms": 240215
+  }
+ },
+ "all_passed": null
+}

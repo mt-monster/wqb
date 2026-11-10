@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(pv106_wli_spreadbp, sector), 0.5)",
+ "subtract(group_rank(divide(pv106_wli_spreadbp, add(ts_mean(pv106_wli_spreadbp, 252), 0.001)), sector), 0.5)",
+ "subtract(group_rank(ts_delta(pv106_wli_spreadbp, 22), sector), 0.5)",
+ "subtract(group_rank(divide(asia_trade_rate_sell, add(asia_trade_rate_buy, 0.001)), sector), 0.5)",
+ "subtract(group_rank(transaction_cost_median, sector), 0.5)",
+ "subtract(group_rank(subtract(transaction_cost_median, aggregated_slippage_metric), sector), 0.5)",
+ "subtract(group_rank(divide(pv106_lastspreadbp, add(pv106_spreadbp, 0.001)), sector), 0.5)",
+ "subtract(group_rank(subtract(transaction_cost_maximum, transaction_cost_percentile_10), sector), 0.5)",
+ "subtract(group_rank(korean_market_slippage, sector), 0.5)",
+ "subtract(group_rank(ts_rank(pv106_wli_spreadbp, 252), sector), 0.5)"
+]

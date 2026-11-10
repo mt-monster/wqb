@@ -1,0 +1,18 @@
+﻿{
+ "results": [
+  {
+   "id": "scl39_top5_people_also_watch_ticker_ii",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 183,
+   "alphaCount": 580,
+   "description": "Atlas instrument IDs of the co-viewed neighbor tickers; stable identifiers suitable for joins across files"
+  }
+ ],
+ "count": 1,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 1,
+ "complete": true,
+ "pages_fetched": 1
+}

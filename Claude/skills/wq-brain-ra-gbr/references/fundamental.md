@@ -190,4 +190,41 @@ W ∈ {168, 252} ／ Q ∈ {56, 84}
 
 **字段池余量**：本地 `fields` 表 `fnd6_` 前缀共 **2233 个**（ds=368 → 838 / ds=1481 → 279 / ds=658 → 266 / ds=1189 → 258 / ds=172 → 197 / ds=858 → 197 / ds=1006 → 196），GBR 侧已用不到 10 个 ⇒ **放大器是换科目，不是换骨架**。
 
+
+### ★★ 2026-11-08 · 本族三条硬边界修正（`cap` 归属 / 分母即收益本体 / 合规替代分母）
+
+**① `cap` 属 `pv1`，本族不是单塔 ATOM。** `get_datafields(dataset_id="pv1", region="GBR")` 实读：`cap`
+= "Daily market capitalization (in millions)"，与 `close/volume/returns/adv20/sharesout/vwap/market` 同集（pv1，23 字段）。
+⇒ `divide(fnd6_<科目>, cap)` = **PV × FUNDAMENTAL 两腿**。选集/组腿判据必须按两腿登记：
+在「PV/MODEL/OTHER 与其它 category 组腿 ≤5」口径下合法；**若目标战役把 FUNDAMENTAL 也并入禁混集合，整族不可用**，
+不要浪费批次。
+
+**② 分母不是可选件，它就是收益本体。** 把 `cap` 换成报表同量纲分母 `fnd6_cptnewq_atq`（纯 fnd6 单数据集 ATOM），
+10 个结构互异模板（投资强度 / 应计 Sloan / 资产周转 / 杠杆 / ROE 变化 / ROA 水平 / ROA 动量 / 营业利润率 / 权益比率）
+实测 **S −0.43 ~ 0.74，全部 fail≥3**，长仓 200–474 只（不是覆盖率问题）。
+⇒ 结论：**fnd6 的会计内容在 GBR TOP700 无预测力**，本族强度 100% 来自「每单位市值的会计含量」这个价值/投资-to-price 比。
+与上节「同量纲 X/Y 判死」合并，该判死现有 **43 条**（33 + 10）证据、覆盖 5 类机制。**不要再派 fnd6 内部比率。**
+
+**③ 合规替代分母：`alternative_market_cap_usd`（`risk88`，RISK 类，coverage 1.0，全数据集只有这 1 个字段）。**
+
+```
+rank(ts_quantile(ts_av_diff(divide(fnd6_<科目>, alternative_market_cap_usd), 252), 84, driver=gaussian))
+```
+
+组腿变为 **FUNDAMENTAL × RISK**（避开 PV）。实测 4 科目 `failed_ra_count=0`：
+`fnd6_newa2_ppent` S1.99/2Y2.08、`fnd6_capxy` S1.83/2Y2.09、`fnd6_newa2_xsga` S1.63/2Y2.06、`fnd6_newq_rectq` S1.62/2Y2.04
+（`d5Wr8mzw` / `LLMYb6z1` / `6XdLP10J` / `0mY2kdg2`）。
+
+**⚠ 但它只值 1 席**：4 条彼此互相关 **0.5729–0.7872（六对全超 0.5）**，最大独立集 = 1；与既有篮子仅 −0.07~0.21。
+⇒ **换分母只解决合规，不解决容量。** 本机制在 GBR 的容量硬上限：`cap` 版 **2 席**、`altcap` 版 **1 席**。
+
+**④ 扩招纪律（覆盖旧版「换科目扩招」）**：换科目 = 同一资产增长/应计因子的不同投影，**不增席**。
+想拿到第 3 颗必须换机制族（不是换科目、不是换窗口、不是换分母）。此族每轮先跑 0.5 矩阵再谈扩容。
+
+**⑤ ⚠ 设置杠杆不是普适的（2026-11-08 同夜反例）**：本族的制胜档 `SUBINDUSTRY/d4/t0.08` 对**别的机制族会反向**。
+`pattern_scores` 的 `ts_zscore(common_gap_up_mean_simscore_lookback120,252)` 同表达式三点对照：
+原档 `S1.21` → `d10` `S1.09` → `INDUSTRY/d4/t0.05` `S0.95` → `MARKET` `S0.59`（单调恶化），`trunc 0.20` 完全 no-op。
+⇒ **设置杠杆只在「机制对、但被行业共同因子遮蔽」时生效**；对已经是横截面形态分/组内排名的信号，
+加强中性化与加 decay 只会砍掉信号。开波前先判断本族属于哪一类，别把 fnd6 的档无脑套用。
+
 <!-- profiles:manual:end -->

@@ -1,0 +1,18 @@
+{
+ "results": [
+  {
+   "id": "oth475_export_value",
+   "type": "VECTOR",
+   "coverage": 0.357,
+   "userCount": 232,
+   "alphaCount": 637,
+   "description": "Weekly export value in USD for the associated company"
+  }
+ ],
+ "count": 1,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 1,
+ "complete": true,
+ "pages_fetched": 1
+}

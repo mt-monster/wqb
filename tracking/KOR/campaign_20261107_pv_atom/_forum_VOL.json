@@ -1,0 +1,119 @@
+{
+ "success": true,
+ "results": [
+  {
+   "title": "【直通通过】【Alpha灵感】成交量冲击与隔夜回报",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXYUYZfR86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQ2MjIxNTU0MTU4MzEtLSVFNyU5QiVCNCVFOSU4MCU5QSVFOSU4MCU5QSVFOCVCRiU4Ny1BbHBoYSVFNyU4MSVCNSVFNiU4NCU5Ri0lRTYlODglOTAlRTQlQkElQTQlRTklODclOEYlRTUlODYlQjIlRTUlODclQkIlRTQlQjglOEUlRTklOUElOTQlRTUlQTQlOUMlRTUlOUIlOUUlRTYlOEElQTUGOwhUOg5zZWFyY2hfaWRJIilkZGVlMGFmNy1kNzkwLTQwMjItYTE3Ny1jNmZhMzIyYjZiYWQGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIiHmiJDkuqTph4%2FlhrLlh7sg6ZqU5aSc5Zue5oqlBjsIVDoScmVzdWx0c19jb3VudGl7--c60bf3e9894e753f6b97a1f65b44a42ee537ebf3",
+   "snippet": "Wilson 概述：该篇论文研究了日内成交量冲击与股票隔夜收益之间的关系。作者首先定义了成交冲击量是当日成交量相对于过去成交量的指数移动均值的偏离。作者随后在美股市场对其进行了回测，研究发现，成交量冲击与当如后的隔夜收益呈显著正相关，而与次日盘中收益无关。",
+   "votes": 0,
+   "comments": 0,
+   "author": "ZY54128",
+   "date": "2025-09-02T04:46:16Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】成交量冲击因子",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXVu233B86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUwMzI4MzkwNTA3NzUtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNiU4OCU5MCVFNCVCQSVBNCVFOSU4NyU4RiVFNSU4NiVCMiVFNSU4NyVCQiVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKWRkZWUwYWY3LWQ3OTAtNDAyMi1hMTc3LWM2ZmEzMjJiNmJhZAY7CEY6CXJhbmtpBzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiIeaIkOS6pOmHj%2BWGsuWHuyDpmpTlpJzlm57miqUGOwhUOhJyZXN1bHRzX2NvdW50aXs%3D--0bdb3de0ed6b8427453f86666fedc34dfd5e6fbc",
+   "snippet": "结果显示，当日的成交量冲击与接下来的隔夜收益呈明显的正相关，成交量冲击越大，隔夜收益越高。成交量冲击与次日的日内收益没有明显关系。 Alpha构造：直接按照原文构建成交量冲击因子。分别构建了天和周的成交量冲击因子。 直接构建因子volumeshock",
+   "votes": 1,
+   "comments": 1,
+   "author": "XT84539",
+   "date": "2025-09-18T14:46:18Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】隔夜与日内拉锯战暗藏的信息",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXvdboKhQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjIxNzQ1Mjc1NjkzMDMtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5QyVFNCVCOCU4RSVFNiU5NyVBNSVFNSU4NiU4NSVFNiU4QiU4OSVFOSU5NCVBRiVFNiU4OCU5OCVFNiU5QSU5NyVFOCU5NyU4RiVFNyU5QSU4NCVFNCVCRiVBMSVFNiU4MSVBRgY7CFQ6DnNlYXJjaF9pZEkiKWRkZWUwYWY3LWQ3OTAtNDAyMi1hMTc3LWM2ZmEzMjJiNmJhZAY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiIeaIkOS6pOmHj%2BWGsuWHuyDpmpTlpJzlm57miqUGOwhUOhJyZXN1bHRzX2NvdW50aXs%3D--9da11a10d5c9624ca05680c918bef952dbf2c6aa",
+   "snippet": "Jiang c , Paul D. Koch d 概述： 该篇研报分析了隔夜回报与日内回报的相关性对于预测未来收益的效果，同时得出如果隔夜回报与日内反转相关性越低，未来的横截面收益也就越高。同时两者的相关性越低预示着多空双方的拉锯战激烈程度越高，未来收益会随之下降。",
+   "votes": 13,
+   "comments": 2,
+   "author": "WH24469",
+   "date": "2024-03-19T05:25:08Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】隔夜涨跌反转",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXz1CxYBE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZtodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTkxMDY5ODkzOTU4NjMtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5QyVFNiVCNiVBOCVFOCVCNyU4QyVFNSU4RiU4RCVFOCVCRCVBQwY7CFQ6DnNlYXJjaF9pZEkiKWRkZWUwYWY3LWQ3OTAtNDAyMi1hMTc3LWM2ZmEzMjJiNmJhZAY7CEY6CXJhbmtpCToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiIeaIkOS6pOmHj%2BWGsuWHuyDpmpTlpJzlm57miqUGOwhUOhJyZXN1bHRzX2NvdW50aXs%3D--cacb0c9d768e3624530fcb9ad549d7ec8663d993",
+   "snippet": "热问题，光看价格肯定是不够的，还必须加上成交量的信息。若昨日换手率较高，那么相对于换手率较低的交易日，这些有信息优势的投资者（“知情交易者”）就更有获取了隔夜信息，市场有效性差，应该做空。 取每日隔夜涨跌幅绝对值与昨日换手率的相关系数。 4",
+   "votes": 26,
+   "comments": 2,
+   "author": "RB70881",
+   "date": "2023-11-16T04:55:19Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】隔夜上涨与日内反转构建因子",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXJULMmR86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQ3NDU0MTczNDQyNzktLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFOSU5QSU5NCVFNSVBNCU5QyVFNCVCOCU4QSVFNiVCNiVBOCVFNCVCOCU4RSVFNiU5NyVBNSVFNSU4NiU4NSVFNSU4RiU4RCVFOCVCRCVBQyVFNiU5RSU4NCVFNSVCQiVCQSVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKWRkZWUwYWY3LWQ3OTAtNDAyMi1hMTc3LWM2ZmEzMjJiNmJhZAY7CEY6CXJhbmtpCjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiIeaIkOS6pOmHj%2BWGsuWHuyDpmpTlpJzlm57miqUGOwhUOhJyZXN1bHRzX2NvdW50aXs%3D--8aae641a61a89d6e169931c9000e50dcded21456",
+   "snippet": "已经可以提交了。 优化2 符合隔夜涨，当日跌，并且volume大于中位数的命中率很低。将过滤标准放松，不在要求当日跌，只要当日涨幅没有隔夜涨幅大即可，认为投资者信心不足。计算隔夜涨，日内涨的差与日内成交量相关性因子。 diff=open/ts_delay(close",
+   "votes": 1,
+   "comments": 1,
+   "author": "AS53518",
+   "date": "2025-09-06T04:40:48Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "晨光熹微时的脚步声：other323 盘前交易活动随想",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXeeUQoyc6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDM1ODEzMTY2MjY3MTEtJUU2JTk5JUE4JUU1JTg1JTg5JUU3JTg2JUI5JUU1JUJFJUFFJUU2JTk3JUI2JUU3JTlBJTg0JUU4JTg0JTlBJUU2JUFEJUE1JUU1JUEzJUIwLW90aGVyMzIzLSVFNyU5QiU5OCVFNSU4OSU4RCVFNCVCQSVBNCVFNiU5OCU5MyVFNiVCNCVCQiVFNSU4QSVBOCVFOSU5QSU4RiVFNiU4MyVCMwY7CFQ6DnNlYXJjaF9pZEkiKWRkZWUwYWY3LWQ3OTAtNDAyMi1hMTc3LWM2ZmEzMjJiNmJhZAY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiIeaIkOS6pOmHj%2BWGsuWHuyDpmpTlpJzlm57miqUGOwhUOhJyZXN1bHRzX2NvdW50aXs%3D--21d79bea8743db19a790cd8935b0fb69dfc2522b",
+   "snippet": "et），流动性相对清淡，但蕴藏着隔夜新闻发酵后最纯粹的初始定价。other323 提供了印度及全球盘前异动的数据。 盘前异动的微观结构隔夜信息的吸收池 ：非交易时段发布的消息，在盘前以极低成交量快速拉抬或砸盘； 真突破 vs",
+   "votes": 29,
+   "comments": 1,
+   "author": "WL27618",
+   "date": "2026-09-18T05:35:39Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】将隔夜涨跌变为有效的选股因子",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXCRByaxI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjAyNTI2ODQ0NTQyOTUtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNSVCMCU4NiVFOSU5QSU5NCVFNSVBNCU5QyVFNiVCNiVBOCVFOCVCNyU4QyVFNSU4RiU5OCVFNCVCOCVCQSVFNiU5QyU4OSVFNiU5NSU4OCVFNyU5QSU4NCVFOSU4MCU4OSVFOCU4MiVBMSVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKWRkZWUwYWY3LWQ3OTAtNDAyMi1hMTc3LWM2ZmEzMjJiNmJhZAY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiIeaIkOS6pOmHj%2BWGsuWHuyDpmpTlpJzlm57miqUGOwhUOhJyZXN1bHRzX2NvdW50aXs%3D--f900fdcb37cea08cd83cb3305b931fe566c75c3d",
+   "snippet": "盘中就进行了相应的操作，这就意味着这只股票的市场有效性较弱。 idea： 在对隔夜涨跌幅的基础上，利用成交量的信息，计算隔夜涨跌幅与昨日换手率的相关系数，构造新的因子。该因子衡量了知情交易者信息优势的大小，也反映了市场有效性的强弱。",
+   "votes": 4,
+   "comments": 6,
+   "author": "XC63878",
+   "date": "2024-01-02T10:48:42Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "顾问专属中文论坛"
+   ]
+  },
+  {
+   "title": "【Alpha灵感】Liquidity Shocks and Stock Market Reactions",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXWkc%2BaRc6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjU3NDA3ODM4Njg0MzktLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLUxpcXVpZGl0eS1TaG9ja3MtYW5kLVN0b2NrLU1hcmtldC1SZWFjdGlvbnMGOwhUOg5zZWFyY2hfaWRJIilkZGVlMGFmNy1kNzkwLTQwMjItYTE3Ny1jNmZhMzIyYjZiYWQGOwhGOglyYW5raQ06C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIiHmiJDkuqTph4%2FlhrLlh7sg6ZqU5aSc5Zue5oqlBjsIVDoScmVzdWx0c19jb3VudGl7--a69c503676409fe383c68f573feac56b4e243a6e",
+   "snippet": "研究发现股票市场对流动性冲击的反应不足： 流动性冲击不仅与同期回报正相关 ，而且还能预测未来长达六个月的回报持续性。通过构建基于流动性冲击的多空投资组合，可以产生每月0.70%到1.20%的显著回报，这些回报在不同的流动性冲击度量标准下以及控制风险因素和股票特征后依然稳健。",
+   "votes": 17,
+   "comments": 9,
+   "author": "ZL29184",
+   "date": "2024-08-19T07:50:31Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "中文论坛"
+   ]
+  }
+ ],
+ "total_found": 8,
+ "navigation_failed": false
+}

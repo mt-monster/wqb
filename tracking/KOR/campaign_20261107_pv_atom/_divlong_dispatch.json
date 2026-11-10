@@ -1,0 +1,17 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 5 alpha expressions",
+ "async": true,
+ "multisimulation_id": "ltR3aevk4SgaotHzJ6IRwe",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/ltR3aevk4SgaotHzJ6IRwe",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/ltR3aevk4SgaotHzJ6IRwe",
+ "submitted_expressions": [
+  "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 126), industry), 0.5)",
+  "subtract(group_rank(ts_mean(vec_avg(dividend_policy_analysis_3), 252), industry), 0.5)",
+  "subtract(group_rank(ts_rank(vec_avg(dividend_policy_analysis_3), 252), industry), 0.5)",
+  "subtract(group_rank(ts_zscore(vec_avg(dividend_policy_analysis_3), 252), industry), 0.5)",
+  "subtract(group_rank(ts_decay_linear(vec_avg(dividend_policy_analysis_3), 126), industry), 0.5)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

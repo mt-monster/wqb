@@ -1,0 +1,5 @@
+id,type,cov,uc,ac,desc
+mdl68_mktcap,VECTOR,0.0,1,1,Market capitalization of the company; measured in millions of USD
+mdl68_ram,VECTOR,0.0,2,2,Risk-adjusted momentum score for a China-listed equity; representing momentum alpha after adjusting for key risk factors such as beta; size; value; and rates
+mdl68_raw,VECTOR,0.0,0,0,Raw; unadjusted momentum score from the DREAM model; not risk-adjusted or standardized
+mdl68_score,VECTOR,0.0,2,2,Final; risk-adjusted; and standardized DREAM momentum score: the main recommended alpha signal

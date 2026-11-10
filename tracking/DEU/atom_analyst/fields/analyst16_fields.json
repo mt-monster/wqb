@@ -1,0 +1,530 @@
+[
+ {
+  "id": "actual_announce_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The date when the actual value was officially announced."
+ },
+ {
+  "id": "actual_currency_adjustment",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The adjustment factor to convert the actual value to a default currency."
+ },
+ {
+  "id": "actual_effective_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The date when the actual value became valid."
+ },
+ {
+  "id": "actual_fiscal_year_end_month",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The fiscal year end month for the period covered by the actual value."
+ },
+ {
+  "id": "actual_period_duration",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The length of the period covered by the actual value, such as number of months or quarters."
+ },
+ {
+  "id": "actual_system_timestamp",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The system-generated date and time when the actual record was processed."
+ },
+ {
+  "id": "anl16_actnorm_estcomsplitadj",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Adjustment factor for common stock split normalization applied to activity/estimate values"
+ },
+ {
+  "id": "anl16_actnorm_estnormcuradj",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Currency-adjusted normalized actual value in the fiscal report."
+ },
+ {
+  "id": "anl16_actunit_scale",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Scale factor applied to the actual value (e.g., 1, 1e6)"
+ },
+ {
+  "id": "anl16_actunit_scale_ascontrib",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Contributor-specific scale factor for the actual value (e.g., thousands, millions)"
+ },
+ {
+  "id": "anl16_actunit_scale_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Normalized scale factor for the actual value to ensure comparability"
+ },
+ {
+  "id": "anl16_actvalue",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Numeric value of the actual reported measure (e.g., EPS, revenue)"
+ },
+ {
+  "id": "anl16_actvalue_ascontrib",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Actual value as provided by the contributor, unadjusted"
+ },
+ {
+  "id": "anl16_actvalue_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Activity value after normalization for currency, units, and corporate actions"
+ },
+ {
+  "id": "anl16_eststddev",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of the estimates, indicating dispersion among contributors"
+ },
+ {
+  "id": "anl16_eststddev_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Normalized standard deviation of all estimates for the period (shows consensus dispersion)"
+ },
+ {
+  "id": "anl16_highest",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Highest estimate among contributors"
+ },
+ {
+  "id": "anl16_highest_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Highest contributor estimate after normalization"
+ },
+ {
+  "id": "anl16_lowest",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Lowest estimate value in the summary"
+ },
+ {
+  "id": "anl16_lowest_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Lowest contributor estimate after normalization"
+ },
+ {
+  "id": "anl16_meanest",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean value of the consensus estimate for the period"
+ },
+ {
+  "id": "anl16_meanest_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Normalized mean consensus estimate value"
+ },
+ {
+  "id": "anl16_meanestnorm_estcomsplitadj",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "split adjusted mean of estimate value in the summary"
+ },
+ {
+  "id": "anl16_meanestnorm_estnormcuradj",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Normalization adjustment applied to the mean estimate for currency conversion"
+ },
+ {
+  "id": "anl16_meanestunit_scale",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Scale factor applied to the mean estimate units"
+ },
+ {
+  "id": "anl16_meanestunit_scale_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Normalized scale factor applied to the mean estimate units after currency/unit normalization"
+ },
+ {
+  "id": "anl16_medianest",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median value of the consensus estimate for the period"
+ },
+ {
+  "id": "anl16_medianest_normal",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of contributor estimates after normalization"
+ },
+ {
+  "id": "anl16_numests",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of contributing estimates included in the summary"
+ },
+ {
+  "id": "anl16_numincests",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 4,
+  "description": "the number of estimates used to generate the summary analytic values"
+ },
+ {
+  "id": "anl16_reccode",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The recommendation code indicating the type or category of the analyst recommendation"
+ },
+ {
+  "id": "anl16_recsdown",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 7,
+  "alphaCount": 7,
+  "description": "the number of brokers revising their ratings downward during the comparison window"
+ },
+ {
+  "id": "anl16_recsup",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "the number of brokers revising their ratings upward during the comparison window"
+ },
+ {
+  "id": "anl16_recvalue",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Recommendation value or score (e.g., numeric buy/hold/sell code)"
+ },
+ {
+  "id": "basedata_ticker_to_period_index_map_d1",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "A mapping from company tickers to their dependent period indexes for the D1 data partition."
+ },
+ {
+  "id": "internal_id_to_security_mapping_base_d1",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mapping from internal instrument identifier to security identifier in base data partition d1."
+ },
+ {
+  "id": "internal_id_to_security_mapping_d1",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mapping from internal instrument identifier to security identifier for data partition d1."
+ },
+ {
+  "id": "mean_estimate_activation_time",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The timestamp when the mean estimate summary became active."
+ },
+ {
+  "id": "mean_estimate_effective_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The date when the mean estimate summary became valid."
+ },
+ {
+  "id": "mean_estimate_fiscal_year_end_month",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The fiscal year end month for the period covered by the mean estimate."
+ },
+ {
+  "id": "mean_estimate_period_duration",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The length of the period covered by the mean estimate, such as number of months or quarters."
+ },
+ {
+  "id": "mean_estimate_period_end_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The end date of the period for which the mean estimate is calculated."
+ },
+ {
+  "id": "mean_estimate_system_timestamp",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The system-generated date and time when the mean estimate summary was processed."
+ },
+ {
+  "id": "mean_estimate_valid_until_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The date until which the mean estimate summary is valid."
+ },
+ {
+  "id": "period_advance_activation_datetime",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The system timestamp when the period advance indicator record became active."
+ },
+ {
+  "id": "period_advance_effective_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The real-world date when the period advance indicator record becomes valid."
+ },
+ {
+  "id": "period_advance_effective_end_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The date when the period advance indicator record ceases to be valid."
+ },
+ {
+  "id": "period_advance_fiscal_year_end_month",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The fiscal year end month for the period advance indicator."
+ },
+ {
+  "id": "period_advance_period_end_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The end date of the fiscal or reporting period for the period advance indicator."
+ },
+ {
+  "id": "period_advance_period_length",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "The duration of the reporting period for the period advance indicator."
+ },
+ {
+  "id": "period_advance_system_timestamp",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The system-generated timestamp when the period advance indicator was processed."
+ },
+ {
+  "id": "period_end_date_5",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The end date of the fiscal or reporting period for the actual value."
+ },
+ {
+  "id": "premap_ticker_to_period_index_map_d1",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "A mapping from company tickers to dependent period indexes in the pre-mapped D1 data partition."
+ },
+ {
+  "id": "recommendation_activation_time",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The timestamp when the recommendation record became active."
+ },
+ {
+  "id": "recommendation_announce_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The date when the recommendation was officially announced."
+ },
+ {
+  "id": "recommendation_effective_date_2",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The date when the recommendation became valid."
+ },
+ {
+  "id": "recommendation_system_timestamp",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The system-generated date and time when the recommendation record was processed."
+ },
+ {
+  "id": "recommendation_valid_until_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The date until which the recommendation is considered valid."
+ },
+ {
+  "id": "recommendation_window_end_date",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The end date for which the recommendation summary window record is valid."
+ },
+ {
+  "id": "recommendation_window_length",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The length of the time window used for recommendation summary analytics."
+ },
+ {
+  "id": "recommendation_window_timestamp",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The system-generated timestamp for the recommendation summary window record."
+ },
+ {
+  "id": "record_activation_time_actual",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The timestamp when the actual record became active in the system."
+ },
+ {
+  "id": "record_effective_date_10",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The real-world date when the record becomes valid."
+ },
+ {
+  "id": "security_to_internal_id_mapping_base_d1",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mapping from security identifier to internal instrument identifier in base data partition d1."
+ },
+ {
+  "id": "security_to_internal_id_mapping_d1",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mapping from security identifier to internal instrument identifier for data partition d1."
+ },
+ {
+  "id": "system_activation_datetime",
+  "type": "SYMBOL",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The system timestamp when the record became active."
+ }
+]

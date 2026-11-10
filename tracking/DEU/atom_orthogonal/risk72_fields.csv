@@ -1,0 +1,32 @@
+id,type,cov,uc,ac,desc
+ats_top1200_equity_residualized_return,MATRIX,0.0,1,1,Specific return for the top 1200 equities in the ATS universe.
+ats_top800_equity_residualized_return,MATRIX,0.0,2,2,Specific return for the top 800 equities in the ATS universe.
+cfg2_top1200_replicator1,VECTOR,0.0,4,6,First replicator value for the top 1200 equity universe using configuration 2.
+cfg2_top1200_replicator2,VECTOR,0.0,1,1,Second replicator value for the top 1200 equity universe using configuration 2.
+cfg2_top1200_residual_return,MATRIX,0.0,2,4,Daily matrix of residual (idiosyncratic) stock returns for the EUR TOP1200 universe; in percent units; after neutralizing market/country/industry and MFM1 Riskâ¦
+cfg2_top600_replicator1,VECTOR,0.0,0,0,First replicator value for the top 600 equity universe using configuration 2.
+cfg2_top600_replicator2,VECTOR,0.0,2,2,Second replicator value for the top 600 equity universe using configuration 2.
+cfg2_top600_residual_return,MATRIX,0.0,1,1,Daily matrix of residual (idiosyncratic) stock returns for the EUR TOP600 universe; in percent units; after neutralizing market/country/industry and MFM1 Risk Iâ¦
+cfg2_top800_replicator1,VECTOR,0.0,2,2,First replicator value for the top 800 equity universe using configuration 2.
+cfg2_top800_replicator2,VECTOR,0.0,1,1,Second replicator value for the top 800 equity universe using configuration 2.
+cfg2_top800_residual_return,MATRIX,0.0,0,0,Daily matrix of residual (idiosyncratic) stock returns for the EUR TOP800 universe; in percent units; after neutralizing market/country/industry and MFM1 Risk Iâ¦
+ecs_top1200_equity_residualized_return,MATRIX,0.0,2,4,Specific return for the top 1200 equities in the ECS universe.
+ecs_top1200_residual_return_cfg2,MATRIX,0.0,2,3,Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP1200 Europe universe after removing systematic factors via tâ¦
+ecs_top1600_equity_residualized_return,MATRIX,0.0,0,0,Specific return for the top 1600 equities in the ECS universe.
+ecs_top1600_residual_return_cfg2,MATRIX,0.0,5,10,Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP1600 Europe universe after removing systematic factors via tâ¦
+ecs_top400_equity_residualized_return,MATRIX,0.0,0,0,Specific return for the top 400 equities in the ECS universe.
+ecs_top400_residual_return_cfg2,MATRIX,0.0,2,3,Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP400 Europe universe after removing systematic factors via thâ¦
+ecs_top800_equity_residualized_return,MATRIX,0.0,0,0,Specific return for the top 800 equities in the ECS universe.
+ecs_top800_residual_return_cfg2,MATRIX,0.0,0,0,Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP800 Europe universe after removing systematic factors via thâ¦
+epp_equity_minvol1m_residual_return,MATRIX,0.0,1,1,Residualized return for EPP equities with minimum 1M trading volume.
+eur_equity_minvol1m_residual_return,MATRIX,0.0,1,1,Residualized return for EUR equities with minimum 1M trading volume.
+eur_equity_minvol1m_residual_return_validated,MATRIX,0.0,0,0,Residualized return for EUR equities with minimum 1M volume; validated for current day.
+top1200_equity_residualized_return,MATRIX,0.0,2,2,Specific return for the top 1200 equities in the selected universe.
+top1200_equity_residualized_return_nogroup,MATRIX,0.0,1,1,Specific return for the top 1200 equities without group-based adjustments.
+top2500_equity_residualized_return,MATRIX,0.0,3,3,Specific return for the top 2500 equities in the selected universe.
+top2500_equity_residualized_return_nogroup,MATRIX,0.0,0,0,Specific return for the top 2500 equities without group-based adjustments.
+top600_equity_residualized_return,MATRIX,0.0,2,2,Specific return for the top 600 equities in the selected universe.
+top600_equity_residualized_return_nogroup,MATRIX,0.0,0,0,Specific return for the top 600 equities without group-based adjustments.
+top600_reproducible_specific_return,MATRIX,0.0,2,2,Daily reproducible specific (idiosyncratic) returns for the AMR TOP600 universe from the MFM1 risk model with D1 lag; i.e.; residual returns after removing markâ¦
+top800_equity_residualized_return,MATRIX,0.0,1,1,Specific return for the top 800 equities in the selected universe.
+top800_equity_residualized_return_nogroup,MATRIX,0.0,0,0,Specific return for the top 800 equities without group-based adjustments.

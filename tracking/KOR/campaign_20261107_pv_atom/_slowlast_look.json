@@ -1,0 +1,128 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1AznTefTW5fgbhPxyKOquxp",
+   "location_url": "https://api.worldquantbrain.com/simulations/1AznTefTW5fgbhPxyKOquxp",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "mLolQA29",
+   "raw": {
+    "id": "1AznTefTW5fgbhPxyKOquxp",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 0,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(0.5, group_rank(ts_mean(corr_bid_price_with_bid_size, 22), industry))",
+    "status": "COMPLETE",
+    "alpha": "mLolQA29"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/10hsGt1qy4OGbytJl3S88sY",
+   "location_url": "https://api.worldquantbrain.com/simulations/10hsGt1qy4OGbytJl3S88sY",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "ZYQ116ln",
+   "raw": {
+    "id": "10hsGt1qy4OGbytJl3S88sY",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 2,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(0.5, group_rank(ts_mean(corr_bid_price_with_bid_size, 22), industry))",
+    "status": "COMPLETE",
+    "alpha": "ZYQ116ln"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2aAHG8bYi4v8ake17hfmkSly",
+   "location_url": "https://api.worldquantbrain.com/simulations/2aAHG8bYi4v8ake17hfmkSly",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "O0A2gVR1",
+   "raw": {
+    "id": "2aAHG8bYi4v8ake17hfmkSly",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(0.5, group_rank(ts_mean(corr_bid_price_with_bid_size, 20), industry))",
+    "status": "COMPLETE",
+    "alpha": "O0A2gVR1"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4x0bMjcIe4Dxann2nDiwHdm",
+   "location_url": "https://api.worldquantbrain.com/simulations/4x0bMjcIe4Dxann2nDiwHdm",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "e75WELvJ",
+   "raw": {
+    "id": "4x0bMjcIe4Dxann2nDiwHdm",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "SLOW",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(0.5, group_rank(ts_mean(corr_bid_price_with_bid_size, 24), industry))",
+    "status": "COMPLETE",
+    "alpha": "e75WELvJ"
+   },
+   "extra_info": ""
+  }
+ ]
+}

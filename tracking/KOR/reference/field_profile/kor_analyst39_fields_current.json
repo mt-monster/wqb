@@ -1,0 +1,346 @@
+[
+ {
+  "id": "anl39_2_curfperiodend",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 98,
+  "alphaCount": 212,
+  "description": "End date of the current fiscal period as of the point in time"
+ },
+ {
+  "id": "anl39_2_curfyearend",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 91,
+  "alphaCount": 193,
+  "description": "Current fiscal year-end month as of the point-in-time date"
+ },
+ {
+  "id": "anl39_2_curperiodnum",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 31,
+  "alphaCount": 33,
+  "description": "Number of the current fiscal period within the fiscal year (e.g., quarter 1–4)"
+ },
+ {
+  "id": "anl39_2_cursharesoutstanding",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 22,
+  "alphaCount": 27,
+  "description": "Current shares outstanding for the security as of the point-in-time date"
+ },
+ {
+  "id": "anl39_2curfperiodend",
+  "type": "MATRIX",
+  "coverage": 0.909,
+  "userCount": 70,
+  "alphaCount": 205,
+  "description": "End date of the current fiscal period as of the PIT date"
+ },
+ {
+  "id": "anl39_2curfyearend",
+  "type": "MATRIX",
+  "coverage": 0.909,
+  "userCount": 110,
+  "alphaCount": 253,
+  "description": "Fiscal year-end for the entity as of the current point in time (e.g., month of fiscal year end)"
+ },
+ {
+  "id": "anl39_2curperiodtype",
+  "type": "MATRIX",
+  "coverage": 0.8173,
+  "userCount": 46,
+  "alphaCount": 83,
+  "description": "Type of Current Period"
+ },
+ {
+  "id": "anl39_2cursharesoutstanding",
+  "type": "MATRIX",
+  "coverage": 0.909,
+  "userCount": 24,
+  "alphaCount": 28,
+  "description": "Shares outstanding for the security as of the current point in time"
+ },
+ {
+  "id": "anl39_aepsinclxo",
+  "type": "MATRIX",
+  "coverage": 0.9884,
+  "userCount": 85,
+  "alphaCount": 142,
+  "description": "EPS including extraordinary items - most recent fiscal year"
+ },
+ {
+  "id": "anl39_agrosmgn",
+  "type": "MATRIX",
+  "coverage": 0.92,
+  "userCount": 19,
+  "alphaCount": 29,
+  "description": "Gross Margin - 1st historical fiscal year"
+ },
+ {
+  "id": "anl39_agrosmgn2",
+  "type": "MATRIX",
+  "coverage": 0.909,
+  "userCount": 14,
+  "alphaCount": 16,
+  "description": "Gross Margin - 2nd historical fiscal year"
+ },
+ {
+  "id": "anl39_analyststart",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 9,
+  "alphaCount": 9,
+  "description": "Point-in-time effective start date when an analyst begins coverage of a given security or company"
+ },
+ {
+  "id": "anl39_atanbvps",
+  "type": "MATRIX",
+  "coverage": 0.9958,
+  "userCount": 68,
+  "alphaCount": 96,
+  "description": "Book value (tangible) per share - most recent fiscal year"
+ },
+ {
+  "id": "anl39_curfperiodend",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 76,
+  "alphaCount": 175,
+  "description": "Calendar date of the current fiscal period end as of the point-in-time date"
+ },
+ {
+  "id": "anl39_curfyearend",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 82,
+  "alphaCount": 169,
+  "description": "Fiscal year-end month for the entity as of the point-in-time date"
+ },
+ {
+  "id": "anl39_curperiodtype",
+  "type": "MATRIX",
+  "coverage": 0.8289,
+  "userCount": 44,
+  "alphaCount": 63,
+  "description": "Type of current period"
+ },
+ {
+  "id": "anl39_cursharesoutstanding",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 21,
+  "alphaCount": 27,
+  "description": "Shares outstanding for the security as of the point-in-time date"
+ },
+ {
+  "id": "anl39_epschngin",
+  "type": "MATRIX",
+  "coverage": 0.9935,
+  "userCount": 78,
+  "alphaCount": 113,
+  "description": "EPS Change % - prior quarter"
+ },
+ {
+  "id": "anl39_ghcspea",
+  "type": "MATRIX",
+  "coverage": 0.9733,
+  "userCount": 34,
+  "alphaCount": 38,
+  "description": "EPS Change % - year over year"
+ },
+ {
+  "id": "anl39_ghcspemtt",
+  "type": "MATRIX",
+  "coverage": 0.9691,
+  "userCount": 25,
+  "alphaCount": 31,
+  "description": "Percent change in EPS, trailing 12 months versus the prior trailing 12 months"
+ },
+ {
+  "id": "anl39_grosmgn5yr",
+  "type": "MATRIX",
+  "coverage": 0.7792,
+  "userCount": 16,
+  "alphaCount": 16,
+  "description": "Gross Margin 5-year average"
+ },
+ {
+  "id": "anl39_ptmepsincx",
+  "type": "MATRIX",
+  "coverage": 0.9713,
+  "userCount": 13,
+  "alphaCount": 13,
+  "description": "Earnings per share including extraordinary items for the prior trailing 12-month period"
+ },
+ {
+  "id": "anl39_qepsinclxo",
+  "type": "MATRIX",
+  "coverage": 0.9983,
+  "userCount": 247,
+  "alphaCount": 442,
+  "description": "EPS including extraordinary items - most recent quarter"
+ },
+ {
+  "id": "anl39_qgrosmgn",
+  "type": "MATRIX",
+  "coverage": 0.9319,
+  "userCount": 62,
+  "alphaCount": 79,
+  "description": "Gross Margin - most recent quarter"
+ },
+ {
+  "id": "anl39_qtanbvps",
+  "type": "MATRIX",
+  "coverage": 0.9982,
+  "userCount": 145,
+  "alphaCount": 195,
+  "description": "Book value (tangible) per share - most recent quarter"
+ },
+ {
+  "id": "anl39_qtotd2eq",
+  "type": "MATRIX",
+  "coverage": 0.9974,
+  "userCount": 46,
+  "alphaCount": 56,
+  "description": "Total debt to total equity ratio for the most recent quarter"
+ },
+ {
+  "id": "anl39_qtotd2eq2",
+  "type": "MATRIX",
+  "coverage": 0.9683,
+  "userCount": 9,
+  "alphaCount": 9,
+  "description": "Total debt/total equity - most recent quarter, 1 year ago"
+ },
+ {
+  "id": "anl39_rasv2_atotd2eq",
+  "type": "MATRIX",
+  "coverage": 0.9938,
+  "userCount": 13,
+  "alphaCount": 14,
+  "description": "Total debt to total equity ratio for the most recent fiscal year"
+ },
+ {
+  "id": "anl39_roxlcxspea",
+  "type": "MATRIX",
+  "coverage": 0.9884,
+  "userCount": 68,
+  "alphaCount": 98,
+  "description": "EPS excluding extraordinary items - most recent fiscal year"
+ },
+ {
+  "id": "anl39_roxlcxspeq",
+  "type": "MATRIX",
+  "coverage": 0.9983,
+  "userCount": 145,
+  "alphaCount": 219,
+  "description": "EPS excluding extraordinary items - most recent quarter"
+ },
+ {
+  "id": "anl39_rygnhcspe",
+  "type": "MATRIX",
+  "coverage": 0.9878,
+  "userCount": 75,
+  "alphaCount": 95,
+  "description": "EPS Change % - most recent quarter 1 year ago"
+ },
+ {
+  "id": "anl39_spvba",
+  "type": "MATRIX",
+  "coverage": 0.9958,
+  "userCount": 83,
+  "alphaCount": 117,
+  "description": "Book value (Common Equity) per share - most recent fiscal year"
+ },
+ {
+  "id": "anl39_spvbq",
+  "type": "MATRIX",
+  "coverage": 0.9982,
+  "userCount": 237,
+  "alphaCount": 387,
+  "description": "Book value (Common Equity) per share - most recent quarter"
+ },
+ {
+  "id": "anl39_tp_all_delay_1_high",
+  "type": "MATRIX",
+  "coverage": 0.5647,
+  "userCount": 27,
+  "alphaCount": 35,
+  "description": "High estimate"
+ },
+ {
+  "id": "anl39_tp_all_delay_1_low",
+  "type": "MATRIX",
+  "coverage": 0.5647,
+  "userCount": 14,
+  "alphaCount": 16,
+  "description": "Low estimate"
+ },
+ {
+  "id": "anl39_tp_all_delay_1_mean",
+  "type": "MATRIX",
+  "coverage": 0.5647,
+  "userCount": 17,
+  "alphaCount": 23,
+  "description": "Mean estimate"
+ },
+ {
+  "id": "anl39_tp_all_delay_1_median",
+  "type": "MATRIX",
+  "coverage": 0.5647,
+  "userCount": 15,
+  "alphaCount": 18,
+  "description": "Median estimate"
+ },
+ {
+  "id": "anl39_tp_all_delay_1_numofests",
+  "type": "MATRIX",
+  "coverage": 0.5647,
+  "userCount": 21,
+  "alphaCount": 28,
+  "description": "Number of estimates"
+ },
+ {
+  "id": "anl39_tp_all_delay_1_stddev",
+  "type": "MATRIX",
+  "coverage": 0.5647,
+  "userCount": 42,
+  "alphaCount": 61,
+  "description": "Standart deviation of estimates"
+ },
+ {
+  "id": "anl39_ttmepsincx",
+  "type": "MATRIX",
+  "coverage": 0.9896,
+  "userCount": 121,
+  "alphaCount": 200,
+  "description": "EPS including extraordinary items - trailing 12 month"
+ },
+ {
+  "id": "anl39_ttmgrosmgn",
+  "type": "MATRIX",
+  "coverage": 0.9263,
+  "userCount": 68,
+  "alphaCount": 83,
+  "description": "Gross Margin - trailing 12 month"
+ },
+ {
+  "id": "anl39_xlcxspemtp",
+  "type": "MATRIX",
+  "coverage": 0.9713,
+  "userCount": 8,
+  "alphaCount": 13,
+  "description": "Earnings per share excluding extraordinary items for the prior trailing 12-month period"
+ },
+ {
+  "id": "anl39_xlcxspemtt",
+  "type": "MATRIX",
+  "coverage": 0.9896,
+  "userCount": 103,
+  "alphaCount": 133,
+  "description": "EPS excluding extraordinary items - trailing 12 month"
+ }
+]

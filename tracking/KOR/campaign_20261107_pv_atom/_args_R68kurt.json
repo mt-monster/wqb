@@ -1,0 +1,62 @@
+[
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "hump(subtract(group_rank(ts_kurtosis(ts_backfill(rsk68_residual_return,22),126),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "reverse(hump(subtract(group_rank(ts_kurtosis(ts_backfill(rsk68_residual_return,22),126),industry),0.5),hump=0.003))",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_weight_volatility_short",
+    "expression": "hump(subtract(group_rank(ts_kurtosis(ts_backfill(rsk68_weight_volatility_short,22),126),sector),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 1,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "trade_when(rank(adv20)>0.1, hump(subtract(group_rank(ts_kurtosis(ts_backfill(rsk68_residual_return,22),126),industry),0.5),hump=0.003), -1)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "group_rank(ts_zscore(ts_backfill(ts_kurtosis(ts_backfill(rsk68_residual_return,22),66),22),252),industry)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  },
+  {
+    "field_id": "rsk68_residual_return",
+    "expression": "hump(subtract(group_rank(ts_kurtosis(ts_backfill(rsk68_residual_return,22),252),industry),0.5),hump=0.003)",
+    "field_meta": {
+      "type": "MATRIX",
+      "coverage": 0.957,
+      "distribution_shape": "bounded_spread",
+      "non_zero_rate": 0.95
+    }
+  }
+]

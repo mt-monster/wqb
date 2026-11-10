@@ -1,0 +1,22 @@
+﻿{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "OK3kdazt4ly8QpBaPow35B",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/OK3kdazt4ly8QpBaPow35B",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/OK3kdazt4ly8QpBaPow35B",
+ "submitted_expressions": [
+  "group_rank(ts_delta(hedge_fund_ownership_percentage, 66), sector)",
+  "group_rank(ts_mean(hedge_fund_number_owners, 22), sector)",
+  "multiply(group_rank(ts_delta(hedge_fund_number_owners, 66), sector), -1)",
+  "group_rank(ts_mean(sector_relative_momentum, 22), sector)",
+  "multiply(group_rank(ts_mean(us_equity_short_interest_ratio, 22), sector), -1)",
+  "group_rank(ts_delta(us_equity_short_interest_ratio, 66), sector)",
+  "multiply(group_rank(ts_mean(short_term_industry_country_factor, 22), sector), -1)",
+  "multiply(group_rank(ts_sum(short_term_industry_country_factor, 5), sector), -1)",
+  "multiply(group_rank(ts_mean(broad_market_exposure_factor, 22), sector), -1)",
+  "group_rank(divide(hedge_fund_ownership_percentage, hedge_fund_number_owners), sector)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

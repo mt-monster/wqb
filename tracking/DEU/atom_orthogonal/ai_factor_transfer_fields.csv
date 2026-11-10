@@ -1,0 +1,21 @@
+id,type,cov,uc,ac,desc
+balanced_price_oscillator,MATRIX,0.0,2,8,Price-Volume Ratio
+balanced_price_oscillator_2,MATRIX,0.0,4,8,Compares short-term and long-term price trends to measure their balance.
+cumulative_money_flow_volume_adjusted,MATRIX,0.0,1,2,Relative Strength (RSI)
+cumulative_money_flow_volume_adjusted_2,MATRIX,0.0,1,1,Logarithmic Price Transform
+liquidity_money_flow_alignment,MATRIX,0.0,2,3,Relative Turnover (RTN63D)
+liquidity_money_flow_alignment_2,MATRIX,0.0,2,2,Indicates whether liquidity and money flow are moving together.
+liquidity_weighted_returns_ma,MATRIX,0.0,0,0,13-week price change
+liquidity_weighted_returns_ma_2,MATRIX,0.0,2,2,Commodity Channel Index (CCI)
+momentum_williams_r_adjusted,MATRIX,0.0,2,2,Return momentum
+momentum_williams_r_adjusted_2,MATRIX,0.0,0,0,Price momentum (from ABN_VOLM)
+money_flow_strength_typical_price,MATRIX,0.0,2,2,Assesses the relative strength of money flow adjusted for typical price levels.
+money_flow_strength_typical_price_2,MATRIX,0.0,1,1,ADL trend component
+short_term_price_change,MATRIX,0.0,19,23,Williams %R
+short_term_price_change_2,MATRIX,0.0,3,3,Chaikin Money Flow (CMF)
+typical_price_bollinger_band_position,MATRIX,0.0,3,7,Shows the position of the typical price within Bollinger Bands.
+typical_price_bollinger_band_position_2,MATRIX,0.0,0,0,Price Volume Oscillator (PVO)
+volume_anomaly_price_positioning,MATRIX,0.0,1,1,Examines the relationship between unusual trading volume events and the current price level.
+volume_anomaly_price_positioning_2,MATRIX,0.0,4,4,Detrended Price Oscillator (DPO)
+volume_trend_money_flow_interaction,MATRIX,0.0,0,0,Analyzes how volume trends interact with money flow dynamics.
+volume_trend_money_flow_interaction_2,MATRIX,0.0,0,0,Bollinger Band (BB) indicator

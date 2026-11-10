@@ -34,10 +34,13 @@ def test_submit_flip_window_is_240s_and_shared_by_node_and_mcp_tool():
 
 def test_prod_corr_poll_constants_match_the_mcp_implementation():
     src = (ROOT / "world-quant-brain-mcp" / "brain_mixin_spcread.py").read_text(encoding="utf-8")
-    # 2026-10-28：窗口收成**单一模块常量**。旧版有两处独立字面量（``= 120`` 与
-    # ``else 120.0``），本用例只逮到前者 ⇒ 改窗口时另一处静默漏改（inflight TTL 跟着错）。
-    assert int(re.search(r"_PROD_CORR_WAIT_S\s*=\s*(\d+)", src).group(1)) == \
-        W["prod_corr_timeout_s"]
+    # 2026-11-10 审查 P1-5：由「正则比对源码字面量」升级为**运行时断言同源**。
+    # 旧实现 MCP 侧写独立字面量 240，改 config 不影响 MCP，正则只能逮到文本一致。
+    import brain_mixin_spcread as _sr
+    assert float(_sr._PROD_CORR_WAIT_S) == W["prod_corr_timeout_s"], \
+        "MCP 轮询窗口必须运行时真读 config，不能是独立字面量"
+    assert float(_sr._PROD_CORR_WAIT_S_FALLBACK) == W["prod_corr_timeout_s"], \
+        "wqb 不可导入时的 fallback 也须与 config 同值"
     assert not re.search(r"max_wait_seconds\s*=\s*\d", src), \
         "窗口不得再写字面量：一律引用 _PROD_CORR_WAIT_S"
     assert src.count("_PROD_CORR_WAIT_S") >= 3, "常量应有 1 个定义 + 2 个使用点"

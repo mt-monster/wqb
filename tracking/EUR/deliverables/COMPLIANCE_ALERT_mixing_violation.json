@@ -1,0 +1,21 @@
+{
+ "date": "2026-11-10 02:50",
+ "severity": "提交前必读",
+ "finding": "两颗已交付 REGULAR alpha（P0oR7vYw / leAnKOEA）均含 insider_matrix 腿，而平台实查该数据集 category = other（非 insiders）。组合实为 techindi_model(other) + analyst + insider_matrix(other) = OTHER+OTHER 组腿，违反目标硬约束「禁止 OTHER 内部两两组腿」。",
+ "rootCause": "设计组合时按数据集名字把 insider_matrix 误判为 INSIDERS 类；平台 get_datasets 返回 category=other（同族的 insider_agg_matrix / insiders1 才是 insiders 类）。",
+ "expressions": {
+  "P0oR7vYw": "techindi(other) + analyst(analyst) + insider_matrix(other) ⇒ OTHER+OTHER 违规",
+  "leAnKOEA": "techindi(other) + analyst(analyst) + insider_matrix(other) ⇒ OTHER+OTHER 违规"
+ },
+ "impact": "两颗 prod 达标件（0.6881 / 0.6476）指标全过但组合违规；同批含 insider_matrix 腿的四腿/五腿变体全部同违规。",
+ "compliantAlternatives": {
+  "note": "合规两腿（techindi other × analyst）此前只在 S2.90-2.96 测过 prod（0.7289/0.7464/0.7536 全失败）；U 形甜点区 S2.0-2.3 的合规两腿从未测过。",
+  "batchDispatched": "3B0ufyL857z9og1exEcSdYr（8 条：平滑两腿4 + OTHER×RISK 两腿2 + OTHER×ANALYST×RISK 三腿2）。组合类型配额已用 OTHER×ANALYST、OTHER×RISK = 2/5。",
+  "platformIssue": "批次状态接口当时返回 HTTP 504，7/8 子任务报错，结果未读取。"
+ },
+ "userOptions": [
+  "A. 接受合规瑕疵提交（机制独立、指标全过，但违反自设组腿约束）",
+  "B. 等合规替代批结果，若有 S2.0-2.3 合规件 prod<0.7 则替换",
+  "C. 裁定 insider_matrix 归类争议（平台归 other、语义上是 insiders 数据）是否豁免"
+ ]
+}

@@ -1,0 +1,91 @@
+﻿{
+ "id": "9qxmWxw1",
+ "code": "subtract(subtract(0.5, group_rank(ts_mean(vec_stddev(insd5_vol_af), 66), sector)), group_rank(ts_mean(vec_range(insd5_vol_chg), 44), sector))",
+ "type": "REGULAR",
+ "status": "UNSUBMITTED",
+ "stage": "IS",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "REVERSION_AND_MOMENTUM",
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "simulationMode": "FULL"
+ },
+ "metrics": {
+  "sharpe": 1.6,
+  "fitness": 1.4,
+  "turnover": 0.1044,
+  "returns": 0.0957,
+  "drawdown": 0.0767,
+  "margin": 0.001833,
+  "longCount": 316,
+  "shortCount": 319,
+  "pnl": 9897340,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "sub_universe_sharpe": 1.43,
+  "two_year_sharpe": 2.76,
+  "investability_sharpe": 1.55,
+  "investability_fitness": 1.34
+ },
+ "ra": {
+  "failed_ra_count": 0,
+  "failed_ppa_count": 0,
+  "ra_failed": false,
+  "ppa_failed": false,
+  "pyramid_short": "insiders"
+ },
+ "checks": {
+  "fail": [],
+  "warning": [
+   {
+    "name": "MATCHES_COMPETITION"
+   },
+   {
+    "name": "MATCHES_THEMES"
+   }
+  ],
+  "pass": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+   "CLUSTER_TEST",
+   "LOW_2Y_SHARPE",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "SELF_CORRELATION",
+   "DATA_DIVERSITY",
+   "PROD_CORRELATION",
+   "REGULAR_SUBMISSION",
+   "POWER_POOL_CORRELATION",
+   "MATCHES_THEMES"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "KOR/D1/INSIDERS",
+    "multiplier": 1.2
+   }
+  ]
+ }
+}
+

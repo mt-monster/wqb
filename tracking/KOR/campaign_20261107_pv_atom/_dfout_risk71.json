@@ -1,0 +1,58 @@
+﻿{
+ "results": [
+  {
+   "id": "asi_top1000_liquidity_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.3785,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Reproducible specific return for the top 1000 Asia equities, adjusted for liquidity."
+  },
+  {
+   "id": "asi_top1500_liquidity_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.5879,
+   "userCount": 20,
+   "alphaCount": 21,
+   "description": "Reproducible specific return for the top 1500 Asia equities, adjusted for liquidity."
+  },
+  {
+   "id": "residualized_return_asia_minvol1m",
+   "type": "MATRIX",
+   "coverage": 0.908,
+   "userCount": 26,
+   "alphaCount": 37,
+   "description": "Stock-by-date panel of MFM2 idiosyncratic residual daily returns for the EQY_ASI_Supported_MinVol1M universe in Asia/APACM6; units are daily percent; point-in-t…"
+  },
+  {
+   "id": "residualized_return_asia_top1100_liquid",
+   "type": "MATRIX",
+   "coverage": 0.3601,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Panel of daily stock-specific (idiosyncratic) residual returns from the MFM2 risk model for the Asia TOP1100 liquid universe, arranged stocks × dates, values in…"
+  },
+  {
+   "id": "rsk71_eqy_asi_supported_minvol1m_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.7592,
+   "userCount": 63,
+   "alphaCount": 158,
+   "description": "Daily Reproducible Specific Returns in % units in MINVOL1M universe"
+  },
+  {
+   "id": "rsk71_eqy_xjpci_supported_minvol1m_dsrt",
+   "type": "MATRIX",
+   "coverage": 0.7592,
+   "userCount": 59,
+   "alphaCount": 156,
+   "description": "Daily Reproducible Specific Returns in % units in MINVOL1M universe"
+  }
+ ],
+ "count": 6,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 1,
+ "platform_count": 7,
+ "complete": true,
+ "pages_fetched": 1
+}

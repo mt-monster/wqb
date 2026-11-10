@@ -1,0 +1,49 @@
+id,type,cov,uc,ac,desc
+avg_business_outlook_score,VECTOR,0.0,0,0,Company month average business outlook rating on a 1 to 5 scale higher is more positive
+avg_career_growth_score,VECTOR,0.0,0,0,Company-month average employee rating of career opportunities on a 1â5 scale
+avg_ceo_approval_score,VECTOR,0.0,0,0,Average CEO approval rating from reviews (scale mapped; e.g.; 1â5)
+avg_culture_values_score,VECTOR,0.0,0,0,Company-level average review rating for culture and values (1â5)
+avg_diversity_inclusion_score,VECTOR,0.0,1,2,Company-month average rating of diversity and inclusion on a 1â5 scale
+avg_overall_company_score,VECTOR,0.0,0,0,Rolling average overall company rating from employee reviews at the company-month level (scale roughly 1â5)
+avg_pay_and_benefits_score,VECTOR,0.0,0,0,Company-level average review rating of compensation and benefits (1â5)
+avg_recommend_to_peer_score,VECTOR,0.0,0,0,Average score indicating whether reviewers would recommend the company to a friend for the period (typically 1â5; company-month level)
+avg_senior_management_score,VECTOR,0.0,0,0,Company-level average review rating of senior leadership (1â5)
+avg_work_life_balance_score,VECTOR,0.0,0,0,Company-level average review rating of work-life balance (1â5)
+benefits_perks_sentiment,VECTOR,0.0,0,0,Text-derived score reflecting sentiment about company perks and benefits
+career_advancement_sentiment_score,VECTOR,0.0,0,0,Text-derived score for career advancement opportunities
+career_growth_rating,VECTOR,0.0,0,0,Reviewerâs rating of career opportunities (1 to 5)
+company_size_sentiment_score,VECTOR,0.0,0,0,Topic score related to company size or employee count derived from review text (scale varies)
+compensation_sentiment_score,VECTOR,0.0,0,0,Numeric score reflecting perceived compensation competitiveness
+coworkers_sentiment_score,VECTOR,0.0,0,0,Text-derived sentiment score about coworkers/peer environment
+culture_values_rating,VECTOR,0.0,0,0,Rating of company culture and values (typically 1â5 at review level)
+diversity_inclusion_rating,VECTOR,0.0,0,0,Reviewerâs rating of diversity and inclusion (1 to 5)
+diversity_inclusion_sentiment_score,VECTOR,0.0,0,0,Text-derived sentiment score on diversity and inclusion
+employment_duration_years,VECTOR,0.0,0,0,Number of years the reviewer worked at the company
+innovation_technology_sentiment_score,VECTOR,0.0,0,0,Model-derived sentiment score for innovation and technology discussed in the review text
+leadership_sentiment_score,VECTOR,0.0,0,0,Model-derived sentiment score related to management
+mentorship_sentiment_score,VECTOR,0.0,0,0,Text-derived mentorship sentiment score
+negative_feedback_text,VECTOR,0.0,0,0,Cons/negative comments text provided by the reviewer
+onboarding_sentiment_score,VECTOR,0.0,0,0,Model-derived sentiment score about onboarding experiences
+oth567_trendrating_business_outlook,VECTOR,0.0,0,0,Average business outlook rating (typically 1â5 or normalized)
+oth567_trendrating_career_opportunities,VECTOR,0.0,0,0,Average rating of career opportunities (1â5 scale) at the company-month level
+oth567_trendrating_ceo,VECTOR,0.0,0,0,Average CEO approval/effectiveness rating (typically on a 1â5 scale)
+oth567_trendrating_compensation_and_benefits,VECTOR,0.0,0,0,Average review rating of compensation and benefits on a 1â5 scale
+oth567_trendrating_culture_and_values,VECTOR,0.0,0,0,Average rating of culture and values (1â5 scale) at the company-month level
+oth567_trendrating_diversity_and_inclusion,VECTOR,0.0,0,0,Average review rating of diversity and inclusion on a 1â5 scale
+oth567_trendrating_overall,VECTOR,0.0,1,1,Average overall company rating from reviews (1â5 scale) at the company-month level
+oth567_trendrating_recommend_to_friend,VECTOR,0.0,0,0,Average rating of likelihood to recommend the company to a friend (1â5 scale or normalized)
+oth567_trendrating_senior_leadership,VECTOR,0.0,0,0,Average review rating of senior leadership on a 1â5 scale
+oth567_trendrating_work_life_balance,VECTOR,0.0,0,0,Average review rating of work-life balance on a 1â5 scale
+oth567atlas_month,VECTOR,0.0,0,0,Vendor atlas month key for the recordâs period (month-year; used to align trends)
+overall_company_rating,VECTOR,0.0,0,0,Reviewerâs overall rating of the company on a 1â5 scale
+remote_work_sentiment_score,VECTOR,0.0,0,0,Model-derived sentiment score indicating remote work friendliness or experience reflected in the review text
+remuneration_benefits_score,VECTOR,0.0,0,0,Reviewerâs rating of compensation and benefits (1 to 5)
+review_helpful_count,VECTOR,0.0,0,0,Number of users who marked the review as helpful
+review_positive_comments,VECTOR,0.0,0,0,Free-text section listing the pros or positive aspects of the company
+review_title_summary,VECTOR,0.0,0,0,Title or short summary of the review
+review_unhelpful_count,VECTOR,0.0,0,0,Number of users who marked the review as not helpful
+senior_management_rating,VECTOR,0.0,0,0,Reviewerâs rating of senior leadership on a 1â5 scale
+suggestion_to_management,VECTOR,0.0,0,0,Free-text advice or recommendations to management provided by the reviewer
+work_life_balance_rating,VECTOR,0.0,0,0,Reviewerâs rating of work-life balance (1 to 5)
+work_life_balance_sentiment_score,VECTOR,0.0,0,0,Text-derived sentiment score regarding work-life balance
+workplace_culture_sentiment,VECTOR,0.0,0,0,Model-derived sentiment score about company culture

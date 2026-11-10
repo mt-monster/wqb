@@ -1,0 +1,26 @@
+{
+ "results": [
+  {
+   "id": "mws59_event_fiscal_year",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 227,
+   "alphaCount": 1627,
+   "description": "Fiscal year in which the event takes place"
+  },
+  {
+   "id": "mws59_event_time_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 216,
+   "alphaCount": 1457,
+   "description": "Scheduled time of the event in UTC (if MarketTime is specified); integer value"
+  }
+ ],
+ "count": 2,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 0,
+ "platform_count": 2,
+ "complete": true,
+ "pages_fetched": 1
+}

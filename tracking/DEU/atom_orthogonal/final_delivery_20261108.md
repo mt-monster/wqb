@@ -28,6 +28,15 @@
 
 # v2 存档（<0.5 标准 · 5 席）
 
+**⚠⚠⚠ v3 变更（2026-11-08 22:10，风暴第三波）**：
+- QPv6jLvX prod **0.992 FAIL**（analyst93 族清零）——18h 终验全景：RREPm361 0.6881 ✓ / QPvzNNGG 0.6777 ✓ / bl6AvMkN 0.6470 ✓ / zq3eb7No 0.6171 ✓ / QPv6jLvX 0.992 ✗。
+- **有效篮子 = 3 席**，两个互斥方案（RREPm361↔zq3eb7No 互相关 0.688 只能二选一）：
+  - **方案 A**：[RREPm361, QPvzNNGG, bl6AvMkN]——IS 最优（S 2.02/2Y 1.82），但 RREPm361 prod 余量 0.012 极薄
+  - **方案 B（推荐）**：[zq3eb7No, QPvzNNGG, bl6AvMkN]——zq3eb7No prod 余量 0.083 最抗漂移（S 2.01/2Y 1.64）
+- 补探收官：Wave 59 analyst47（S≤0.53）/ Wave 60 model30（S≤0.92）判死，pv30=GROUP 分组集跳过 ⇒ **68/68 数据集全部处置完毕**。
+- 24h 死亡总名单：mLox6Mg2/A1Vvqded/MPY9VNY9/QPv6jLvX + npvwXA8l/QPveY7Kg（族连坐）。
+- 提交纪律：**终验→立即提交**，不得隔夜；每颗提交前 refresh 终验。
+
 **⚠ v2 变更（2026-11-08 深夜）**：
 1. 用户指令：交付篮子互相关全对 ≤0.7 → **<0.5**（严格不等）。
 2. prod 漂移事件：mLox6Mg2 终验 prod **0.9922 FAIL**；孪生 A1Vvqded **0.916 FAIL**；QPveY7Kg 同骨架按族判死 ⇒ 情绪族全灭。

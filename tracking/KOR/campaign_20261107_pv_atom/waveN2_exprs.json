@@ -1,0 +1,12 @@
+[
+ "subtract(group_rank(ts_mean(vec_avg(global_percentile_acquisition_likelihood), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(country_percentile_acquisition_likelihood), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(industry_percentile_acquisition_likelihood), 22), sector), 0.5)",
+ "subtract(group_rank(ts_delta(vec_avg(global_percentile_acquisition_likelihood), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(region_valuation_percentile_rank), 22), sector), 0.5)",
+ "subtract(group_rank(ts_mean(vec_avg(global_valuation_percentile_rank), 22), sector), 0.5)",
+ "multiply(group_rank(ts_mean(vec_avg(global_percentile_acquisition_likelihood), 22), sector), group_rank(ts_mean(vec_avg(region_valuation_percentile_rank), 22), sector))",
+ "subtract(group_rank(ts_mean(vec_avg(global_text_factor_percentile_rank), 22), sector), 0.5)",
+ "subtract(0.5, group_rank(ts_mean(vec_avg(global_company_size_percentile_rank), 22), sector))",
+ "subtract(group_rank(ts_mean(vec_avg(global_credit_quality_percentile_rank), 22), sector), 0.5)"
+]

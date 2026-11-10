@@ -1,0 +1,21 @@
+{
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "instrument_type": "EQUITY",
+ "decay": 2,
+ "neutralization": "STATISTICAL",
+ "truncation": 0.08,
+ "nan_handling": "ON",
+ "pasteurization": "ON",
+ "unit_handling": "VERIFY",
+ "language": "FASTEXPR",
+ "wait_for_completion": false,
+ "validate_fields": true,
+ "alpha_expressions": [
+  "group_rank(vector_neut(rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44)), rank(oth496_ard_tot_assets)), sector)",
+  "group_rank(vector_neut(rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44)), power(rank(oth496_ard_tot_assets), 0.8)), sector)",
+  "group_rank(vector_neut(rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44)), power(rank(oth496_ard_tot_assets), 0.85)), sector)"
+ ],
+ "wave": "O496inv investability fix via size-vector_neut"
+}

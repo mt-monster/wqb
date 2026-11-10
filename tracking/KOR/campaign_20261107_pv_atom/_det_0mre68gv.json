@@ -1,0 +1,91 @@
+{
+ "id": "0mre68gv",
+ "code": "multiply(rank(ts_decay_linear(short_term_hedge_signal_5d_q5, 15)), rank(short_term_seasonal_5d_quantile1_pred))",
+ "type": "REGULAR",
+ "status": "ACTIVE",
+ "stage": "OS",
+ "dateSubmitted": "2026-10-05T01:35:28-04:00",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "ON",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "simulationMode": "FULL"
+ },
+ "metrics": {
+  "sharpe": 1.75,
+  "fitness": 1.46,
+  "turnover": 0.1482,
+  "returns": 0.1035,
+  "drawdown": 0.0971,
+  "margin": 0.001398,
+  "longCount": 259,
+  "shortCount": 348,
+  "pnl": 6390352,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "selfCorrelation": 0.6873,
+  "prodCorrelation": 0.6873,
+  "sub_universe_sharpe": 1.69,
+  "two_year_sharpe": 3.39,
+  "risk_neutralized_sharpe": 1.33
+ },
+ "os": {
+  "startDate": "2024-01-01"
+ },
+ "ra": {
+  "failed_ra_count": 0,
+  "failed_ppa_count": 0,
+  "ra_failed": false,
+  "ppa_failed": false,
+  "pyramid_short": "model"
+ },
+ "checks": {
+  "fail": [],
+  "warning": [
+   {
+    "name": "MATCHES_COMPETITION"
+   },
+   {
+    "name": "MATCHES_THEMES"
+   }
+  ],
+  "pass": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "CLUSTER_TEST",
+   "LOW_2Y_SHARPE",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "POWER_POOL_CORRELATION",
+   "MATCHES_THEMES"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "KOR/D1/MODEL",
+    "multiplier": 1.6
+   }
+  ]
+ },
+ "color": "BLUE"
+}

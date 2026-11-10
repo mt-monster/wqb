@@ -1,0 +1,95 @@
+{
+  "alpha_id": "1YNMAA8M",
+  "STATUS": "READY_PENDING_USER_AUTHORIZATION",
+  "name": "DEU 分析师预期修正三腿共振 ATOM (2)",
+  "tags": [
+    "analyst",
+    "estimate_revision",
+    "DEU",
+    "ATOM"
+  ],
+  "descriptions": "分析师预期修正三腿共振：earnings 7日修正(sector) × netprofit 3个月修正(sector) × analyst15 DPS粒度修正3个月(sector)，multiply 共振。三腿跨 analyst7/analyst15 两个数据集（同机制不同数据源），全 sector 同轴 + 跨源使 prod 脱钩至 0.6951。S1.58/F1.36/2Y2.13/prod0.6951/self0.6946/ΔSharpe+0.43。",
+  "expression": "multiply(multiply(group_rank(ts_mean(mean_estimate_change_pct_f12m_earnings_7d_4, 10), sector), group_rank(ts_mean(netprofit_y1_estimate_change_3mo, 50), sector)), group_rank(ts_sum(anl15_dps_gr_12_m_3m_chg, 22), sector))",
+  "settings": {
+    "region": "DEU",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF"
+  },
+  "metrics": {
+    "sharpe": 1.58,
+    "fitness": 1.36,
+    "two_year_sharpe": 2.13,
+    "turnover": 0.1337,
+    "sub_universe_sharpe": 1.01,
+    "returns": 0.0996,
+    "drawdown": 0.0845,
+    "margin": 0.00149,
+    "longCount": 109,
+    "shortCount": 131,
+    "failed_ra_count": 0,
+    "checks_fail": [],
+    "pyramid": [
+      "DEU/D1/MODEL",
+      "DEU/D1/ANALYST"
+    ]
+  },
+  "correlations": {
+    "production": 0.6951,
+    "production_refreshed_at": "2026-11-10T09:55:00+08:00",
+    "production_histogram_note": "refresh 复测 0.6951 与上轮一致（池未漂移）；[0.6,0.7] 桶 n=2，无深钉区",
+    "self": 0.6946094107038141,
+    "self_checked_at": "2026-11-10T07:05+08:00",
+    "self_method": "check_self_correlation local_calculation (excl. Power Pool), pool_size=16 / full_os_pool=19",
+    "self_top_correlated": [
+      {
+        "id": "rKRx2Alj",
+        "correlation": 0.6946094107038141
+      }
+    ],
+    "os_pool_state": "2026-11-10 09:5x 复核：DEU OS 池 19 件全部 ACTIVE，无新增/变动 ⇒ self 0.6946 结论仍有效"
+  },
+  "marginal_contribution": {
+    "delta_sharpe": 0.43,
+    "before_sharpe": 1.73,
+    "after_sharpe": 2.16,
+    "dilutive": false
+  },
+  "robustness": {
+    "verdict": "PASS",
+    "ledger_key": "robustness_1YNMAA8M",
+    "checks": {
+      "Recent-3yr Sharpe (main)": "PASS - 2.96/2.19/1.25, mean 2.133 >= 1.58, all > 0.3",
+      "Recent-3yr CV_Sharpe": "PASS - 0.3278 (population sd; < 0.40)",
+      "decay ratio": "PASS - 0.776",
+      "flat years": "PASS - 0",
+      "Recent-3yr max/min": "PASS - 2.37 <= 3",
+      "full-history weakness": "soft flag only",
+      "Sub-universe": "PASS - 1.01",
+      "operator count": "soft flag only - 9",
+      "Margin @ TO": "PASS - 12.13bp @ TO 13.37%",
+      "economic explainability": "PASS",
+      "WebDataScope failed": "PASS - Failed RA 0 / PPA 0"
+    }
+  },
+  "orthogonality": {
+    "vs_rKRx2Alj": 0.6946,
+    "vs_bl6AvMkN": 0.5128,
+    "vs_zq3eb7No": 0.2471,
+    "vs_mLovbnm2": 0.6955,
+    "note": "mLovbnm2 已于 2026-11-10 撤回提交授权（与 rKRx2Alj 互相关 0.9966 撞死），不再占用提交位。"
+  },
+  "risk_notes": [
+    "prod/self 双闸余量各约 0.005（贴线），提交前必须再 refresh 终验",
+    "与 OS 池 rKRx2Alj 互相关 0.6946（最高），该池新增件时需重算",
+    "提交不可逆，需用户明确文字授权",
+    "稳健性 PASS（全项），台账已落 robustness_1YNMAA8M"
+  ],
+  "audited_at": "2026-11-10T10:00:00+08:00"
+}

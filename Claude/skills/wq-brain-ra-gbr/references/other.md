@@ -277,4 +277,10 @@ lim = [c for c in i["checks"] if c["name"]=="LOW_2Y_SHARPE"]  # 含 value + limi
 
 **★★ 判死台账写法要求（新增）**：每行必须写清「探针数 / 覆盖了几个字段 / 覆盖了几个机制族 / 最好读数 / 标签」。**只写「判死」三个字的行一律视为无效台账**——下一波无法判断是真死还是没测够。
 
+**`other699` TipRanks 散户交易（2026-11-09 实测 · 判死）**：`oth699_sharestraded`，
+骨架 `group_rank(ts_zscore(vec_sum(...), 126), sector)` ⇒ **S −0.16 / 2Y 1.09 / TO 0.2741**。
+2Y 尚可但 S 远不足；散户成交量是**噪声级**读数（散户交易与未来收益无稳定符号）。
+⇒ OTHER 塔的判死名单再添一员；本轮 `star_sr_*`（见 [model.md](model.md)）与 `other699` 合计
+补测 7 个 OTHER 系机制，全部零信号。
+
 <!-- profiles:manual:end -->

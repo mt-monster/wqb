@@ -1,0 +1,88 @@
+{
+ "rank": 1,
+ "id": "P0oR7vYw",
+ "status": "VALIDATED_UNSUBMITTED",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "decay": 8,
+ "neutralization": "CROWDING",
+ "truncation": 0.08,
+ "maxTrade": "OFF",
+ "nanHandling": "ON",
+ "pasteurization": "ON",
+ "expression": "group_rank(add(add(group_rank(subtract(probability_fifth_quantile_ten_day_bucket_four_15,probability_fifth_quantile_ten_day_bucket_zero_15),industry),group_rank(divide(eps_revision_magnitude,ts_mean(eps_y1_estimate_coeff_var,55)),industry)),group_rank(ts_backfill(eur_director_signal_value_1,66),industry)),industry)",
+ "operators": [
+  "group_rank×3",
+  "add×2",
+  "subtract",
+  "divide",
+  "ts_mean",
+  "ts_backfill"
+ ],
+ "opCount": 10,
+ "datasets": [
+  "techindi_model(OTHER)",
+  "analyst_factor_signals(ANALYST)",
+  "insider_matrix(INSIDERS)"
+ ],
+ "comboType": "三塔等权（OTHER × ANALYST × INSIDERS），禁混集合内×集合外，配额 3/5",
+ "coreFields": {
+  "main": "probability_fifth_quantile_ten_day_bucket_four_15 / _zero_15（模型第五分位 ten_day 概率桶，aC 1–5 白地）",
+  "leg2": "eps_revision_magnitude / eps_y1_estimate_coeff_var（分析师 EPS 修正幅度÷分歧度）",
+  "leg3": "eur_director_signal_value_1（欧元区高管申报信号，cov 0.61 需 backfill 66）"
+ },
+ "metrics": {
+  "sharpe": 2.28,
+  "fitness": 1.61,
+  "turnover": 0.0924,
+  "returns": 0.0623,
+  "twoYearSharpe": 2.42,
+  "subUniverseSharpe": 1.46,
+  "margin": null,
+  "failedRa": 0,
+  "checksFail": []
+ },
+ "correlations": {
+  "self": 0.5347,
+  "selfPass": true,
+  "prod": 0.6881,
+  "prodPass": true,
+  "mostCorrelated": "kqJOQgnk(0.5347)"
+ },
+ "yearly": "2014–2023 全部 10 年 longCount 1315–1485 >0 且 pnl 全为正（624607 / 471443 / 452787 / 707298 / 622849 / 750177 / 333359 / 931350 / ...），零空窗零负年",
+ "mechanism": "模型对最乐观桶 vs 最悲观桶的概率差 = 做多信念；三腿等权后 TO 压到 9.24%、prod 降到 0.6881",
+ "attribution": "prod 走 U 形：S4.29→0.8175、S3.66→0.8134、S2.90→0.7289、S2.32→0.7092、S2.28→0.6881(过线)、S1.96→0.7240(回升)。极小值在 S≈2.2–2.3。",
+ "profileArchiveIndex": {
+  "techindi_model": "tracking/EUR/reference/profiles/eur_other_techindi_model_profile_20261108.md",
+  "analyst_factor_signals": "tracking/EUR/config/cells.json §analyst7 修订族（analyst_factor_signals 1111 字段四件套）",
+  "analyst_revision_horizons": "tracking/EUR/reference/profiles/eur_model_analyst_revision_horizons_profile_20261108.md",
+  "risk60": "tracking/EUR/reference/profiles/eur_risk_risk60_profile_20261108.md",
+  "sentiment26": "tracking/EUR/reference/profiles/eur_sentiment_sentiment26_profile_20261109.md",
+  "insider_matrix": "tracking/EUR/reference/datasets/insider_matrix.md",
+  "fieldLists": "tracking/EUR/reference/eur_other_techindi_model_fields.json（798 字段全量）",
+  "miningMap": "tracking/EUR/reference/EUR_CATEGORY_MINING_MAP.md"
+ },
+ "tuningSummary": {
+  "common": [
+   "prod 与 S 呈 U 形（极小值 S≈2.0-2.3，且要求主腿 S≥3 才有稀释空间）",
+   "跨塔稀释：秩空间等权（禁 weighted_leg_mix），prod −0.064；三腿各来自不同 category",
+   "中性化 CROWDING 压 prod（7/8 全闸）、INDUSTRY/MARKET 抬 F（+0.21）",
+   "宇宙 TOP2500（TOP1200/800 全灭）；decay 8（16 过度平滑）；truncation 非杠杆",
+   "U 形甜点区 S 2.0-2.3：两腿版 prod 0.71-0.74 贴线，三腿版（+RISK/+SENTIMENT）0.68-0.70 过线"
+  ],
+  "perAlpha": {
+   "KPJ1rG0j": "三腿 OTHER×ANALYST×RISK：prob主腿 + eps修正÷分歧 + rsk60借券费率翻号（-vec_avg(rsk60_last) ts_mean5）；互相关与 rKR 0.39",
+   "rKRx7v6m": "三腿 OTHER×ANALYST×SENTIMENT：prob主腿 + eps修正÷分歧 + snt26_avgranking（网页关注度，VECTOR 需 vec_avg+ts_backfill66）；互相关与 KPJ 0.39；★ 第 4 信号族（SENTIMENT）稀释成功",
+   "leAnKOEA": "同 rKR 结构但第三腿为 insider_matrix（other）⇒ 违规；prod 0.6476 全场最优"
+  },
+  "pitfalls": [
+   "insider_matrix 平台归 other（非 insiders）⇒ 含它的组合 = OTHER+OTHER 违规",
+   "ts_skewness 幽灵算子（单条即废整批）；ts_max 平台不可访问；hump 必须命名参数",
+   "divide(subtract(A,B),add(0.001,abs(B))) 极易多打右括号 ⇒ 疑难批先单条试探",
+   "toolkit_static 门禁拦显式加权腿混合（weighted_leg_mix_func_suffix）",
+   "prod 读取：MCP 120s 上限 vs 平台 4-8 分钟 ⇒ 超时即丢弃；prod_wait.py --minutes 后台加锁模式最可靠"
+  ]
+ },
+ "submissionNote": "与 KPJ 0.7285、与 leAn 0.7837 ⇒ 不在 3 颗最大提交团内；可作 rKR 提交失败时的替补（与 rKR 0.5215）"
+}

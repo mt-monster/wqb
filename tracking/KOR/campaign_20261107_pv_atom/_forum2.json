@@ -1,0 +1,175 @@
+{
+ "success": true,
+ "results": [
+  {
+   "title": "【Alpha Idea】彩票偏好与MAX效应：把一篇JFE经典论文搬进BRAIN的完整复现",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXGk8Fkic6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiEBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQzNTA4MTA3Nzc4NzExLS1BbHBoYS1JZGVhLSVFNSVCRCVBOSVFNyVBNSVBOCVFNSU4MSU4RiVFNSVBNSVCRCVFNCVCOCU4RU1BWCVFNiU5NSU4OCVFNSVCQSU5NC0lRTYlOEElOEElRTQlQjglODAlRTclQUYlODdKRkUlRTclQkIlOEYlRTUlODUlQjglRTglQUUlQkElRTYlOTYlODclRTYlOTAlQUMlRTglQkYlOUJCUkFJTiVFNyU5QSU4NCVFNSVBRSU4QyVFNiU5NSVCNCVFNSVBNCU4RCVFNyU4RSVCMAY7CFQ6DnNlYXJjaF9pZEkiKTBmMDRhZTdkLTE3NzktNDJkNi04YTk3LTAyMjc1MmZiNjM0ZAY7CEY6CXJhbmtpBjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD01BWCDlvannpagGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--50b70fff31c131809a39625de567d6033cc53b7c",
+   "snippet": "1] → 取负号（做多\"冷门\"低MAX、做空\"彩票\"高MAX）。 关键 Operator： ts_max_diff （重建MAX）、 ts_std_dev （波动率标准化）、 rank / quantile / group_rank",
+   "votes": 2,
+   "comments": 17,
+   "author": "GZ43439",
+   "date": "2026-09-15T15:48:52Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "顾问专属中文论坛"
+   ]
+  },
+  {
+   "title": "大家会开Max Position吗？",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXX279pyM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzkyMDQ0MTgzNzk1NDMtJUU1JUE0JUE3JUU1JUFFJUI2JUU0JUJDJTlBJUU1JUJDJTgwTWF4LVBvc2l0aW9uJUU1JTkwJTk3BjsIVDoOc2VhcmNoX2lkSSIpMGYwNGFlN2QtMTc3OS00MmQ2LThhOTctMDIyNzUyZmI2MzRkBjsIRjoJcmFua2kHOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPTUFYIOW9qeelqAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--17c2b58f09e30bbd20d1e4fc97b8f880f2bd0a0a",
+   "snippet": "我发现开了MaxPosition出alpha的难度提高了不止一倍，比开那个maxtrade难多了。也用之前提交的alpha开了这个试一下发现质量直接直线下滑，想知道这个功能该怎么合理的去使用。===================",
+   "votes": 43,
+   "comments": 0,
+   "author": "DA98440",
+   "date": "2026-03-21T16:48:29Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "关于Max Position这个功能的作用",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXuNn5pyM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAalodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzkyMDQzNTgzMDU5NDMtJUU1JTg1JUIzJUU0JUJBJThFTWF4LVBvc2l0aW9uJUU4JUJGJTk5JUU0JUI4JUFBJUU1JThBJTlGJUU4JTgzJUJEJUU3JTlBJTg0JUU0JUJEJTlDJUU3JTk0JUE4BjsIVDoOc2VhcmNoX2lkSSIpMGYwNGFlN2QtMTc3OS00MmQ2LThhOTctMDIyNzUyZmI2MzRkBjsIRjoJcmFua2kIOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPTUFYIOW9qeelqAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--83c97d4932404112fcbf088fdcf91d3a3475ad55",
+   "snippet": "核心要点总结 1. 设计目的 提升流动性与可扩展性 ：确保Alpha策略在BRAIN平台上具备实际可投资性 规避非现实持仓 ：防止在流动性差的标的（小盘股、低成交量股票）上建立过大头寸",
+   "votes": 43,
+   "comments": 1,
+   "author": "DA98440",
+   "date": "2026-03-21T16:44:41Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "【新人向】Max Trade与Max Position可投资性约束深度详解 — 它们和Truncation到底哪里不同",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX%2F7VagCY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAj0BaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQyMzMyNzE5NTQ2MjYzLS0lRTYlOTYlQjAlRTQlQkElQkElRTUlOTAlOTEtTWF4LVRyYWRlJUU0JUI4JThFTWF4LVBvc2l0aW9uJUU1JThGJUFGJUU2JThBJTk1JUU4JUI1JTg0JUU2JTgwJUE3JUU3JUJBJUE2JUU2JTlEJTlGJUU2JUI3JUIxJUU1JUJBJUE2JUU4JUFGJUE2JUU4JUE3JUEzLSVFNSVBRSU4MyVFNCVCQiVBQyVFNSU5MiU4Q1RydW5jYXRpb24lRTUlODglQjAlRTUlQkElOTUlRTUlOTMlQUElRTklODclOEMlRTQlQjglOEQlRTUlOTAlOEMGOwhUOg5zZWFyY2hfaWRJIikwZjA0YWU3ZC0xNzc5LTQyZDYtOGE5Ny0wMjI3NTJmYjYzNGQGOwhGOglyYW5raQk6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9NQVgg5b2p56WoBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--3313047e6bb59347b1dfcd7324be232597b70879",
+   "snippet": "类约束，却产生显著交易需求。 这就是为什么MaxTrade 与MaxPosition 不能合并成一个概念。 --- ## 三、什么是MaxPosition？ 在稳定概念层面，可以理解为：",
+   "votes": 43,
+   "comments": 1,
+   "author": "QW94165",
+   "date": "2026-07-30T05:40:19Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  },
+  {
+   "title": "【代码分享】保持max streak不中断",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX8%2B2ZDCA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAalodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUyMzg0OTQyMDQ2OTUtLSVFNCVCQiVBMyVFNyVBMCU4MSVFNSU4OCU4NiVFNCVCQSVBQi0lRTQlQkYlOUQlRTYlOEMlODFtYXgtc3RyZWFrJUU0JUI4JThEJUU0JUI4JUFEJUU2JTk2JUFEBjsIVDoOc2VhcmNoX2lkSSIpMGYwNGFlN2QtMTc3OS00MmQ2LThhOTctMDIyNzUyZmI2MzRkBjsIRjoJcmFua2kKOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPTUFYIOW9qeelqAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--77c273e98e3a96db1be8e4bcb77c614400346be7",
+   "snippet": "json['count']}次,不需要回测一次保持maxstreak\") print(f\"在过去一个小时已经回测{res_json['count']}次,不需要回测一次保持maxstreak\") time.sleep(3)",
+   "votes": 21,
+   "comments": 1,
+   "author": "XC66172",
+   "date": "2025-09-27T08:14:21Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  },
+  {
+   "title": "【max trade主题工具】比较pnl绿线与蓝线靠近度以决定是否打开max trade，含代码",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXE3%2BeVRw6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAjwBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzMxMTU0MDU2OTI1OTc1LS1tYXgtdHJhZGUlRTQlQjglQkIlRTklQTIlOTglRTUlQjclQTUlRTUlODUlQjctJUU2JUFGJTk0JUU4JUJFJTgzcG5sJUU3JUJCJUJGJUU3JUJBJUJGJUU0JUI4JThFJUU4JTkzJTlEJUU3JUJBJUJGJUU5JTlEJUEwJUU4JUJGJTkxJUU1JUJBJUE2JUU0JUJCJUE1JUU1JTg2JUIzJUU1JUFFJTlBJUU2JTk4JUFGJUU1JTkwJUE2JUU2JTg5JTkzJUU1JUJDJTgwbWF4LXRyYWRlLSVFNSU5MCVBQiVFNCVCQiVBMyVFNyVBMCU4MQY7CFQ6DnNlYXJjaF9pZEkiKTBmMDRhZTdkLTE3NzktNDJkNi04YTk3LTAyMjc1MmZiNjM0ZAY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD01BWCDlvannpagGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--2249a2cd497b6b942d7f2fac7f0dbbf3285ce857",
+   "snippet": "我们在模拟时，为了保证产量，默认关闭maxtrade，等模拟后再通过比较绿线与蓝线来决定是否打开，以获得主题加成，以下是一个实现： 首先在machine_lib中添加get_pnl函数，该函数以改进，可获得一个alpha的多条pnl曲线。",
+   "votes": 67,
+   "comments": 4,
+   "author": "DZ31817",
+   "date": "2025-04-03T23:25:52Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "顾问专属中文论坛"
+   ]
+  },
+  {
+   "title": "赛季末，个人6维思考——Max simulation streak和Community activity",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX9vaODSA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcdodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUyNDI2MDUyMTMzMzUtJUU4JUI1JTlCJUU1JUFEJUEzJUU2JTlDJUFCLSVFNCVCOCVBQSVFNCVCQSVCQTYlRTclQkIlQjQlRTYlODAlOUQlRTglODAlODMtTWF4LXNpbXVsYXRpb24tc3RyZWFrJUU1JTkyJThDQ29tbXVuaXR5LWFjdGl2aXR5BjsIVDoOc2VhcmNoX2lkSSIpMGYwNGFlN2QtMTc3OS00MmQ2LThhOTctMDIyNzUyZmI2MzRkBjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPTUFYIOW9qeelqAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--a9d9309a31bafc15bed1029ac7929ee5719d8c35",
+   "snippet": "赛季末，个人6维思考，Maxsimulation streak，这个实在太重要了，我之前断过一次，少了将近60天左右，然后我自己计算过，如果加上这60天，我的这项指标在所有人中的排名能前进100名不止，很可惜。 对于新手，一定要理解Maxsimulation",
+   "votes": 22,
+   "comments": 1,
+   "author": "MZ54236",
+   "date": "2025-09-27T15:44:51Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  },
+  {
+   "title": "【稳住Max simulation streak】windows配置定时任务",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXqQ%2F%2BVyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEwNTk4NTQ4MjE3ODMtLSVFNyVBOCVCMyVFNCVCRCU4Rk1heC1zaW11bGF0aW9uLXN0cmVhay13aW5kb3dzJUU5JTg1JThEJUU3JUJEJUFFJUU1JUFFJTlBJUU2JTk3JUI2JUU0JUJCJUJCJUU1JThBJUExBjsIVDoOc2VhcmNoX2lkSSIpMGYwNGFlN2QtMTc3OS00MmQ2LThhOTctMDIyNzUyZmI2MzRkBjsIRjoJcmFua2kNOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPTUFYIOW9qeelqAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--839c4e677d1ce3fcb852ea3fa31d38c633559ee2",
+   "snippet": "Hi，大家好 六维的重要性不言而喻，其中streak-连续回测天数指标更是老顾问的护城河，唯一季度更新不会清空的指标。我见过挺多顾问在假期忘记回测，导致该指标清零的。为了解决这个问题，我尝试了给windows配置定时任务来跑简单的回测。",
+   "votes": 53,
+   "comments": 0,
+   "author": "TL53163",
+   "date": "2026-06-08T16:21:55Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "顾问专属中文论坛"
+   ]
+  },
+  {
+   "title": "ts_min_max_cps 与 ts_min_max_diff 反转因子可减少一个op的使用",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXyRrLsiU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE0NDk4NDE5MzY2NjMtdHMtbWluLW1heC1jcHMtJUU0JUI4JThFLXRzLW1pbi1tYXgtZGlmZi0lRTUlOEYlOEQlRTglQkQlQUMlRTUlOUIlQTAlRTUlQUQlOTAlRTUlOEYlQUYlRTUlODclOEYlRTUlQjAlOTElRTQlQjglODAlRTQlQjglQUFvcCVFNyU5QSU4NCVFNCVCRCVCRiVFNyU5NCVBOAY7CFQ6DnNlYXJjaF9pZEkiKTBmMDRhZTdkLTE3NzktNDJkNi04YTk3LTAyMjc1MmZiNjM0ZAY7CEY6CXJhbmtpDjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD01BWCDlvannpagGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--6b8e2a243f6ce02a0a501755d9c578a1c933ef0b",
+   "snippet": "从公式可以发现ts_min_max_diff是从当前值出发，往区间中心回撤一半的距离，而ts_min_max_cps是从区间跨度出发，再扣掉两倍当前值。 当这两个op都使用默认的f参数时，同时x = 0.5*((ts_min(x, d) + ts_max(x,",
+   "votes": 16,
+   "comments": 1,
+   "author": "DQ66419",
+   "date": "2026-06-24T09:40:34Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "监控Max simulation streak思路，为你的Genuis保驾护航！",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXILd6EiA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiActodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUyNjM3NDAzMjE4MTUtJUU3JTlCJTkxJUU2JThFJUE3TWF4LXNpbXVsYXRpb24tc3RyZWFrJUU2JTgwJTlEJUU4JUI3JUFGLSVFNCVCOCVCQSVFNCVCRCVBMCVFNyU5QSU4NEdlbnVpcyVFNCVCRiU5RCVFOSVBOSVCRSVFNiU4QSVBNCVFOCU4OCVBQQY7CFQ6DnNlYXJjaF9pZEkiKTBmMDRhZTdkLTE3NzktNDJkNi04YTk3LTAyMjc1MmZiNjM0ZAY7CEY6CXJhbmtpDzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD01BWCDlvannpagGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--d222fa691fffa1131262ec70caa1a8907deb7409",
+   "snippet": "在上文中我提到，Maxsimulation streak是很重要的一个指标，保证连续回测天数，可以让我们在genuis的6维竞争中抢占先机 https://support.worldquantbrain.com/hc/en-us/comm",
+   "votes": 16,
+   "comments": 1,
+   "author": "TL53163",
+   "date": "2025-09-29T07:23:16Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "Advisory Program Discussion Forum - Kunqi"
+   ]
+  },
+  {
+   "title": "[MCP-守护] 让你的mcp无视token限制，实现免费的MAX模式",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXvJ742SE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzcyMjAwNjI3NzIzNzUtLU1DUC0lRTUlQUUlODglRTYlOEElQTQtJUU4JUFFJUE5JUU0JUJEJUEwJUU3JTlBJTg0bWNwJUU2JTk3JUEwJUU4JUE3JTg2dG9rZW4lRTklOTklOTAlRTUlODglQjYtJUU1JUFFJTlFJUU3JThFJUIwJUU1JTg1JThEJUU4JUI0JUI5JUU3JTlBJTg0TUFYJUU2JUE4JUExJUU1JUJDJThGBjsIVDoOc2VhcmNoX2lkSSIpYWVmNmJiNjItYjRmYS00MmRiLTllNzEtN2E2NmViNTlkYTUwBjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPTUFYIOW9qeelqAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--cdeea56178a49f57163e1373ecbc7bdf0d23ebd5",
+   "snippet": "σ↓→Sharpe↑ Factor=Signal-Noise Backtest→Live→Repeat βNeutral|αMaxWin>Loss|Risk<Reward InSample→OutOfSample ----------",
+   "votes": 63,
+   "comments": 4,
+   "author": "CZ78575",
+   "date": "2025-12-23T13:40:52Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "顾问专属中文论坛"
+   ]
+  },
+  {
+   "title": "一篇帖子带你读懂ts_arg_max(x, d)",
+   "link": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXWgGkDR86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQxNDM0NDY1ODc5MjctJUU0JUI4JTgwJUU3JUFGJTg3JUU1JUI4JTk2JUU1JUFEJTkwJUU1JUI4JUE2JUU0JUJEJUEwJUU4JUFGJUJCJUU2JTg3JTgydHMtYXJnLW1heC14LWQGOwhUOg5zZWFyY2hfaWRJIilhZWY2YmI2Mi1iNGZhLTQyZGItOWU3MS03YTY2ZWI1OWRhNTAGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9NQVgg5b2p56WoBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--481af897f0c7321d2a5061d6f0a181b985d28c16",
+   "snippet": "金融制高点定位仪： ts_arg_max(x, d) 如何捕捉市场巅峰时刻？ —— 一眼锁定近期最高点，逃顶精准度提升300%！ 🔥 核心功能一句话 “ ts_arg_max是金融界的 巅峰坐标仪 ——告诉你过去一段时间里的最高值",
+   "votes": 22,
+   "comments": 1,
+   "author": "SG46247",
+   "date": "2025-08-13T04:02:15Z",
+   "breadcrumbs": [
+    "WorldQuant BRAIN-CN",
+    "社区",
+    "[AI_ONLY] Advisory Forum-Weijie"
+   ]
+  }
+ ],
+ "total_found": 12,
+ "navigation_failed": false
+}

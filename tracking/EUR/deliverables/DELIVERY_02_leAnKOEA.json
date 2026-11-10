@@ -1,0 +1,78 @@
+{
+ "rank": 2,
+ "id": "leAnKOEA",
+ "status": "VALIDATED_UNSUBMITTED",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "decay": 8,
+ "neutralization": "CROWDING",
+ "truncation": 0.08,
+ "maxTrade": "OFF",
+ "nanHandling": "ON",
+ "pasteurization": "ON",
+ "expression": "group_rank(add(group_rank(ts_mean(subtract(probability_fifth_quantile_ten_day_bucket_four_15,probability_fifth_quantile_ten_day_bucket_zero_15),22),industry),group_rank(ts_mean(divide(revenue_revision_magnitude,ts_mean(revenue_y1_estimate_coeff_var,55)),55),industry)),industry) [四腿/平滑变体]",
+ "metrics": {
+  "sharpe": 2.05,
+  "fitness": 1.39,
+  "turnover": 0.0715,
+  "returns": 0.0577,
+  "twoYearSharpe": 2.48,
+  "subUniverseSharpe": 1.28,
+  "failedRa": 0,
+  "checksFail": []
+ },
+ "correlations": {
+  "self": 0.4625,
+  "selfPass": true,
+  "prod": 0.6476,
+  "prodPass": true,
+  "vs_P0oR7vYw": 0.7837
+ },
+ "note": "prod 0.6476 余量比第1颗更大（0.0524 vs 0.0119）；2Y 2.48 为族内最高；TO 7.15% 最低",
+ "basketNote": "与 P0oR7vYw 互相关 0.7837 > 0.5 ⇒ 0.5 口径只能同篮 1 席；但两颗均可独立提交（self 分别 0.5347 / 0.4625 均 PASS）",
+ "yearly": {
+  "verified": true,
+  "verifiedAt": "2026-11-09 22:52",
+  "span": "2014-2023",
+  "years": 10,
+  "blankYears": [],
+  "negPnlYears": [],
+  "minLongCount": 1311,
+  "minYearSharpe": 0.17,
+  "note": "补验完成：全部 10 年 longCount>0 且 pnl>0，零空窗零负年（此前该栏为 —）"
+ },
+ "verificationComplete": "★★ 全部验证完成：全闸（S/F/2Y/TO/fRA）+ self 0.4625 + prod 0.6476 + 逐年 10 年无空窗",
+ "profileArchiveIndex": {
+  "techindi_model": "tracking/EUR/reference/profiles/eur_other_techindi_model_profile_20261108.md",
+  "analyst_factor_signals": "tracking/EUR/config/cells.json §analyst7 修订族（analyst_factor_signals 1111 字段四件套）",
+  "analyst_revision_horizons": "tracking/EUR/reference/profiles/eur_model_analyst_revision_horizons_profile_20261108.md",
+  "risk60": "tracking/EUR/reference/profiles/eur_risk_risk60_profile_20261108.md",
+  "sentiment26": "tracking/EUR/reference/profiles/eur_sentiment_sentiment26_profile_20261109.md",
+  "insider_matrix": "tracking/EUR/reference/datasets/insider_matrix.md",
+  "fieldLists": "tracking/EUR/reference/eur_other_techindi_model_fields.json（798 字段全量）",
+  "miningMap": "tracking/EUR/reference/EUR_CATEGORY_MINING_MAP.md"
+ },
+ "tuningSummary": {
+  "common": [
+   "prod 与 S 呈 U 形（极小值 S≈2.0-2.3，且要求主腿 S≥3 才有稀释空间）",
+   "跨塔稀释：秩空间等权（禁 weighted_leg_mix），prod −0.064；三腿各来自不同 category",
+   "中性化 CROWDING 压 prod（7/8 全闸）、INDUSTRY/MARKET 抬 F（+0.21）",
+   "宇宙 TOP2500（TOP1200/800 全灭）；decay 8（16 过度平滑）；truncation 非杠杆",
+   "U 形甜点区 S 2.0-2.3：两腿版 prod 0.71-0.74 贴线，三腿版（+RISK/+SENTIMENT）0.68-0.70 过线"
+  ],
+  "perAlpha": {
+   "KPJ1rG0j": "三腿 OTHER×ANALYST×RISK：prob主腿 + eps修正÷分歧 + rsk60借券费率翻号（-vec_avg(rsk60_last) ts_mean5）；互相关与 rKR 0.39",
+   "rKRx7v6m": "三腿 OTHER×ANALYST×SENTIMENT：prob主腿 + eps修正÷分歧 + snt26_avgranking（网页关注度，VECTOR 需 vec_avg+ts_backfill66）；互相关与 KPJ 0.39；★ 第 4 信号族（SENTIMENT）稀释成功",
+   "leAnKOEA": "同 rKR 结构但第三腿为 insider_matrix（other）⇒ 违规；prod 0.6476 全场最优"
+  },
+  "pitfalls": [
+   "insider_matrix 平台归 other（非 insiders）⇒ 含它的组合 = OTHER+OTHER 违规",
+   "ts_skewness 幽灵算子（单条即废整批）；ts_max 平台不可访问；hump 必须命名参数",
+   "divide(subtract(A,B),add(0.001,abs(B))) 极易多打右括号 ⇒ 疑难批先单条试探",
+   "toolkit_static 门禁拦显式加权腿混合（weighted_leg_mix_func_suffix）",
+   "prod 读取：MCP 120s 上限 vs 平台 4-8 分钟 ⇒ 超时即丢弃；prod_wait.py --minutes 后台加锁模式最可靠"
+  ]
+ },
+ "submissionNote": "★ 在 3 颗最大提交团内（与 KPJ 0.589、与 rKR 0.3969 均 <0.7）；合规瑕疵需用户豁免"
+}

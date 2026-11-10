@@ -1,0 +1,2466 @@
+[
+ {
+  "id": "actuals_reporting_currency",
+  "type": "VECTOR",
+  "coverage": 0.8831,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Home currency of instrument"
+ },
+ {
+  "id": "anl4_acbaafv4_item",
+  "type": "VECTOR",
+  "coverage": 0.5642,
+  "userCount": 16,
+  "alphaCount": 20,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_actualafv4_item",
+  "type": "VECTOR",
+  "coverage": 0.5412,
+  "userCount": 11,
+  "alphaCount": 18,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_actualbasicqfv4_item",
+  "type": "VECTOR",
+  "coverage": 0.5245,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_actualqfv4_item",
+  "type": "VECTOR",
+  "coverage": 0.5105,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_adjusted_netincome_ft",
+  "type": "MATRIX",
+  "coverage": 0.8295,
+  "userCount": 47,
+  "alphaCount": 64,
+  "description": "Adjusted net income - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_afv4_actual",
+  "type": "VECTOR",
+  "coverage": 0.6304,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Announced financial data"
+ },
+ {
+  "id": "anl4_afv4_cfps_high",
+  "type": "MATRIX",
+  "coverage": 0.8627,
+  "userCount": 72,
+  "alphaCount": 196,
+  "description": "Cash Flow Per Share - The highest estimation for the annual forecast"
+ },
+ {
+  "id": "anl4_afv4_cfps_low",
+  "type": "MATRIX",
+  "coverage": 0.8627,
+  "userCount": 58,
+  "alphaCount": 90,
+  "description": "Cash Flow Per Share - The lowest estimation for the upcoming fiscal year"
+ },
+ {
+  "id": "anl4_afv4_cfps_mean",
+  "type": "MATRIX",
+  "coverage": 0.8627,
+  "userCount": 112,
+  "alphaCount": 388,
+  "description": "Cash Flow Per Share - average of estimations for the annual frequency"
+ },
+ {
+  "id": "anl4_afv4_cfps_median",
+  "type": "MATRIX",
+  "coverage": 0.8627,
+  "userCount": 81,
+  "alphaCount": 207,
+  "description": "Cash Flow Per Share - Median value among forecasts for the annual frequency"
+ },
+ {
+  "id": "anl4_afv4_cfps_number",
+  "type": "MATRIX",
+  "coverage": 0.8627,
+  "userCount": 28,
+  "alphaCount": 40,
+  "description": "Cash Flow Per Share - number of estimations for annual frequency"
+ },
+ {
+  "id": "anl4_afv4_div_high",
+  "type": "MATRIX",
+  "coverage": 0.9525,
+  "userCount": 99,
+  "alphaCount": 180,
+  "description": "Dividend per share - The highest estimation for the annual forecast."
+ },
+ {
+  "id": "anl4_afv4_div_low",
+  "type": "MATRIX",
+  "coverage": 0.9525,
+  "userCount": 29,
+  "alphaCount": 44,
+  "description": "Dividend - The lowest estimation for the annual forecast"
+ },
+ {
+  "id": "anl4_afv4_div_mean",
+  "type": "MATRIX",
+  "coverage": 0.9525,
+  "userCount": 71,
+  "alphaCount": 181,
+  "description": "Dividend per share - average of estimations for annual frequency"
+ },
+ {
+  "id": "anl4_afv4_div_median",
+  "type": "MATRIX",
+  "coverage": 0.9525,
+  "userCount": 92,
+  "alphaCount": 247,
+  "description": "Dividend per share - Median value among forecasts"
+ },
+ {
+  "id": "anl4_afv4_div_number",
+  "type": "MATRIX",
+  "coverage": 0.9525,
+  "userCount": 33,
+  "alphaCount": 41,
+  "description": "Number of estimations for Dividend per share - annually"
+ },
+ {
+  "id": "anl4_afv4_div_std",
+  "type": "MATRIX",
+  "coverage": 0.5698,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Dividend per share - standard deviation of estimations"
+ },
+ {
+  "id": "anl4_afv4_dts_spe",
+  "type": "MATRIX",
+  "coverage": 0.5845,
+  "userCount": 15,
+  "alphaCount": 29,
+  "description": "Earnings per share - standard deviation of estimations"
+ },
+ {
+  "id": "anl4_afv4_dts_spfc",
+  "type": "MATRIX",
+  "coverage": 0.4369,
+  "userCount": 4,
+  "alphaCount": 6,
+  "description": "Cash Flow Per Share - Standard deviation of estimations"
+ },
+ {
+  "id": "anl4_afv4_eps_high",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 374,
+  "alphaCount": 992,
+  "description": "Earnings per share - The highest estimation"
+ },
+ {
+  "id": "anl4_afv4_eps_low",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 88,
+  "alphaCount": 447,
+  "description": "Earnings per share - The lowest estimation for annual frequency"
+ },
+ {
+  "id": "anl4_afv4_eps_mean",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 366,
+  "alphaCount": 1095,
+  "description": "Earnings per share - mean of estimations for annual frequency"
+ },
+ {
+  "id": "anl4_afv4_eps_number",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 35,
+  "alphaCount": 43,
+  "description": "Earnings per share - number of estimations for annual frequency"
+ },
+ {
+  "id": "anl4_afv4_median_eps",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 232,
+  "alphaCount": 684,
+  "description": "Earnings per share - median of estimations"
+ },
+ {
+  "id": "anl4_basicafv4_actual",
+  "type": "VECTOR",
+  "coverage": 0.6291,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Announced financial data for the annual period."
+ },
+ {
+  "id": "anl4_basicqfv4_actual",
+  "type": "VECTOR",
+  "coverage": 0.5687,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Announced financial data"
+ },
+ {
+  "id": "anl4_bvps_flag",
+  "type": "MATRIX",
+  "coverage": 0.8108,
+  "userCount": 26,
+  "alphaCount": 51,
+  "description": "Book Value Per Share - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_bvps_high",
+  "type": "MATRIX",
+  "coverage": 0.48,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Book value - the highest estimation, per share"
+ },
+ {
+  "id": "anl4_bvps_low",
+  "type": "MATRIX",
+  "coverage": 0.48,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Book value - the lowest estimation, per share"
+ },
+ {
+  "id": "anl4_bvps_median",
+  "type": "MATRIX",
+  "coverage": 0.48,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Book value per share - Median value among forecasts"
+ },
+ {
+  "id": "anl4_bvps_number",
+  "type": "MATRIX",
+  "coverage": 0.48,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Book value per share - number of estimations"
+ },
+ {
+  "id": "anl4_capex_flag",
+  "type": "MATRIX",
+  "coverage": 0.8511,
+  "userCount": 36,
+  "alphaCount": 52,
+  "description": "Capital Expenditures - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_capex_high",
+  "type": "MATRIX",
+  "coverage": 0.2983,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Capital Expenditures - The highest estimation"
+ },
+ {
+  "id": "anl4_capex_low",
+  "type": "MATRIX",
+  "coverage": 0.2983,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Capital Expenditures - The lowest estimation"
+ },
+ {
+  "id": "anl4_capex_number",
+  "type": "MATRIX",
+  "coverage": 0.2983,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Capital Expenditures - number of estimations"
+ },
+ {
+  "id": "anl4_cff_flag",
+  "type": "MATRIX",
+  "coverage": 0.904,
+  "userCount": 21,
+  "alphaCount": 29,
+  "description": "Cash Flow From Financing Activities - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_cfi_flag",
+  "type": "MATRIX",
+  "coverage": 0.9052,
+  "userCount": 31,
+  "alphaCount": 58,
+  "description": "Cash Flow from Investing - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_cfo_flag",
+  "type": "MATRIX",
+  "coverage": 0.9023,
+  "userCount": 25,
+  "alphaCount": 34,
+  "description": "Cash Flow From Operations - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_detailrecv4_est",
+  "type": "VECTOR",
+  "coverage": 0.8273,
+  "userCount": 18,
+  "alphaCount": 30,
+  "description": "Estimation value for recommendation detail"
+ },
+ {
+  "id": "anl4_detailrecv4_item",
+  "type": "VECTOR",
+  "coverage": 0.8187,
+  "userCount": 9,
+  "alphaCount": 10,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_dez1afv4_est",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 43,
+  "alphaCount": 71,
+  "description": "Estimation value"
+ },
+ {
+  "id": "anl4_dez1afv4_item",
+  "type": "VECTOR",
+  "coverage": 0.8563,
+  "userCount": 14,
+  "alphaCount": 18,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_dez1afv4_preest",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 50,
+  "alphaCount": 90,
+  "description": "The previous estimation of finanicial item"
+ },
+ {
+  "id": "anl4_dez1basicafv4_est",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 8,
+  "alphaCount": 10,
+  "description": "Estimation value"
+ },
+ {
+  "id": "anl4_dez1basicafv4_item",
+  "type": "VECTOR",
+  "coverage": 0.8576,
+  "userCount": 20,
+  "alphaCount": 27,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_dez1basicafv4_preest",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 18,
+  "alphaCount": 29,
+  "description": "The previous estimation of finanicial item"
+ },
+ {
+  "id": "anl4_dez1basicqfv4_est",
+  "type": "VECTOR",
+  "coverage": 0.9244,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Estimation value"
+ },
+ {
+  "id": "anl4_dez1basicqfv4_item",
+  "type": "VECTOR",
+  "coverage": 0.7518,
+  "userCount": 10,
+  "alphaCount": 18,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_dez1basicqfv4_preest",
+  "type": "VECTOR",
+  "coverage": 0.911,
+  "userCount": 3,
+  "alphaCount": 4,
+  "description": "The previous estimation of finanicial item"
+ },
+ {
+  "id": "anl4_dez1qfv4_est",
+  "type": "VECTOR",
+  "coverage": 0.9228,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Estimation value"
+ },
+ {
+  "id": "anl4_dez1qfv4_item",
+  "type": "VECTOR",
+  "coverage": 0.7475,
+  "userCount": 15,
+  "alphaCount": 20,
+  "description": "Financial item"
+ },
+ {
+  "id": "anl4_dez1qfv4_preest",
+  "type": "VECTOR",
+  "coverage": 0.9097,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "The previous estimation of finanicial item"
+ },
+ {
+  "id": "anl4_dez1safv4_est",
+  "type": "VECTOR",
+  "coverage": 0.2606,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Estimation value"
+ },
+ {
+  "id": "anl4_dez1safv4_preest",
+  "type": "VECTOR",
+  "coverage": 0.257,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The previous estimation of finanicial item"
+ },
+ {
+  "id": "anl4_dts_ptp",
+  "type": "MATRIX",
+  "coverage": 0.37,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Pretax income- std of estimations"
+ },
+ {
+  "id": "anl4_ebit_high",
+  "type": "MATRIX",
+  "coverage": 0.9093,
+  "userCount": 87,
+  "alphaCount": 175,
+  "description": "Earnings before interest and taxes - The highest estimation"
+ },
+ {
+  "id": "anl4_ebit_low",
+  "type": "MATRIX",
+  "coverage": 0.9093,
+  "userCount": 62,
+  "alphaCount": 138,
+  "description": "Earnings before interest and taxes - The lowest estimation"
+ },
+ {
+  "id": "anl4_ebit_median",
+  "type": "MATRIX",
+  "coverage": 0.9093,
+  "userCount": 43,
+  "alphaCount": 62,
+  "description": "Earnings before interest and taxes - median of estimations"
+ },
+ {
+  "id": "anl4_ebit_number",
+  "type": "MATRIX",
+  "coverage": 0.9093,
+  "userCount": 36,
+  "alphaCount": 54,
+  "description": "Earnings before interest and taxes - number of estimations"
+ },
+ {
+  "id": "anl4_ebit_std",
+  "type": "MATRIX",
+  "coverage": 0.4898,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Earnings before interest and taxes - std of estimations"
+ },
+ {
+  "id": "anl4_ebitda_flag",
+  "type": "MATRIX",
+  "coverage": 0.7887,
+  "userCount": 25,
+  "alphaCount": 33,
+  "description": "Earnings Before Interest, Taxes, Depreciation and Amortization - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_ebitda_high",
+  "type": "MATRIX",
+  "coverage": 0.517,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Earnings before interest, taxes, depreciation and amortization - The highest estimation"
+ },
+ {
+  "id": "anl4_ebitda_low",
+  "type": "MATRIX",
+  "coverage": 0.517,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Earnings before interest, taxes, depreciation and amortization - The lowest estimation"
+ },
+ {
+  "id": "anl4_ebitda_number",
+  "type": "MATRIX",
+  "coverage": 0.517,
+  "userCount": 2,
+  "alphaCount": 4,
+  "description": "Earnings before interest, taxes, depreciation and amortization - number of estimations"
+ },
+ {
+  "id": "anl4_epsa_flag",
+  "type": "MATRIX",
+  "coverage": 0.8474,
+  "userCount": 21,
+  "alphaCount": 38,
+  "description": "Earnings per share adjusted by excluding extraordinary items and stock option expenses - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_epsa_high",
+  "type": "MATRIX",
+  "coverage": 0.3246,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Earnings per share adjusted by excluding extraordinary items and stock option expenses - The highest estimation"
+ },
+ {
+  "id": "anl4_epsa_low",
+  "type": "MATRIX",
+  "coverage": 0.3246,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Earnings per share adjusted by excluding extraordinary items and stock option expenses - The lowest estimation"
+ },
+ {
+  "id": "anl4_epsa_median",
+  "type": "MATRIX",
+  "coverage": 0.3246,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Earnings per share adjusted by excluding extraordinary items and stock option expenses - median of estimations"
+ },
+ {
+  "id": "anl4_epsa_number",
+  "type": "MATRIX",
+  "coverage": 0.3246,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Earnings per share adjusted by excluding extraordinary items and stock option expenses - number of estimations"
+ },
+ {
+  "id": "anl4_epsr_flag",
+  "type": "MATRIX",
+  "coverage": 0.8477,
+  "userCount": 16,
+  "alphaCount": 24,
+  "description": "GAAP Earnings - estimation type (revision/new/...), per share"
+ },
+ {
+  "id": "anl4_epsr_high",
+  "type": "MATRIX",
+  "coverage": 0.3139,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "GAAP Earnings per share - The highest estimation"
+ },
+ {
+  "id": "anl4_epsr_low",
+  "type": "MATRIX",
+  "coverage": 0.3139,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "GAAP Earnings per share - The lowest estimation"
+ },
+ {
+  "id": "anl4_epsr_number",
+  "type": "MATRIX",
+  "coverage": 0.3139,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "GAAP Earnings per share - number of estimations"
+ },
+ {
+  "id": "anl4_fcf_flag",
+  "type": "MATRIX",
+  "coverage": 0.9284,
+  "userCount": 26,
+  "alphaCount": 43,
+  "description": "Free cash flow - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_fcfps_flag",
+  "type": "MATRIX",
+  "coverage": 0.9659,
+  "userCount": 14,
+  "alphaCount": 19,
+  "description": "Free cash flow per share - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_ffo_flag",
+  "type": "MATRIX",
+  "coverage": 0.967,
+  "userCount": 22,
+  "alphaCount": 30,
+  "description": "Funds from Operation - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_flag_erbfintax",
+  "type": "MATRIX",
+  "coverage": 0.6626,
+  "userCount": 5,
+  "alphaCount": 10,
+  "description": "Earnings Before Interest and Taxes - Forecast Type (revision/new/...)"
+ },
+ {
+  "id": "anl4_fs_actual_af_v4_nd_actual",
+  "type": "VECTOR",
+  "coverage": 0.6261,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Reported actual value for the financial item"
+ },
+ {
+  "id": "anl4_fs_actual_af_v4_nd_currency",
+  "type": "VECTOR",
+  "coverage": 0.8771,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Home currency of the instrument in which the actual value is reported"
+ },
+ {
+  "id": "anl4_fs_actual_basic_af_v4_nd_actual",
+  "type": "VECTOR",
+  "coverage": 0.6247,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Reported actual value of the financial item for the annual period"
+ },
+ {
+  "id": "anl4_fs_actual_basic_qf_v4_nd_actual",
+  "type": "VECTOR",
+  "coverage": 0.5648,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Reported actual value for the item"
+ },
+ {
+  "id": "anl4_fs_actual_qf_v4_nd_actual",
+  "type": "VECTOR",
+  "coverage": 0.5621,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Reported actual value for the specified item"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_bvps_high",
+  "type": "MATRIX",
+  "coverage": 0.4767,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Book Value Per Share High Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_bvps_low",
+  "type": "MATRIX",
+  "coverage": 0.4767,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Book Value Per Share Low Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_bvps_mean",
+  "type": "MATRIX",
+  "coverage": 0.4767,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Book Value Per Share Mean Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_bvps_median",
+  "type": "MATRIX",
+  "coverage": 0.4767,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Book Value Per Share Median Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_bvps_number",
+  "type": "MATRIX",
+  "coverage": 0.4767,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of Book Value Per Share Estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_capex_high",
+  "type": "MATRIX",
+  "coverage": 0.2963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Capital Expenditure High Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_capex_low",
+  "type": "MATRIX",
+  "coverage": 0.2963,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Capital Expenditure Low Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_capex_mean",
+  "type": "MATRIX",
+  "coverage": 0.2963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Capital Expenditure Mean Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_capex_median",
+  "type": "MATRIX",
+  "coverage": 0.2963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Capital Expenditure Median Estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_capex_number",
+  "type": "MATRIX",
+  "coverage": 0.2963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of Capital Expenditure Estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebit_high",
+  "type": "MATRIX",
+  "coverage": 0.903,
+  "userCount": 11,
+  "alphaCount": 11,
+  "description": "High EBIT estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebit_low",
+  "type": "MATRIX",
+  "coverage": 0.903,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Low EBIT estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebit_mean",
+  "type": "MATRIX",
+  "coverage": 0.903,
+  "userCount": 8,
+  "alphaCount": 9,
+  "description": "Mean of analyst estimates for EBIT"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebit_median",
+  "type": "MATRIX",
+  "coverage": 0.903,
+  "userCount": 6,
+  "alphaCount": 10,
+  "description": "Median of EBIT (earnings before interest and taxes) estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebit_number",
+  "type": "MATRIX",
+  "coverage": 0.903,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of EBIT estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebit_std",
+  "type": "MATRIX",
+  "coverage": 0.4864,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of analyst estimates for EBIT"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebitda_high",
+  "type": "MATRIX",
+  "coverage": 0.5134,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "High EBITDA estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebitda_low",
+  "type": "MATRIX",
+  "coverage": 0.5134,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Lowest estimate of EBITDA"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebitda_mean",
+  "type": "MATRIX",
+  "coverage": 0.5134,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of analyst estimates for EBITDA"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebitda_median",
+  "type": "MATRIX",
+  "coverage": 0.5134,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of EBITDA estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ebitda_number",
+  "type": "MATRIX",
+  "coverage": 0.5134,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of analyst estimates for EBITDA"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsa_high",
+  "type": "MATRIX",
+  "coverage": 0.3223,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Adjusted EPS excluding extraordinary items and stock option expenses — highest estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsa_low",
+  "type": "MATRIX",
+  "coverage": 0.3223,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Adjusted EPS excluding extraordinary items and stock option expenses — lowest estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsa_mean",
+  "type": "MATRIX",
+  "coverage": 0.3223,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean estimated EPS"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsa_median",
+  "type": "MATRIX",
+  "coverage": 0.3223,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of EPS (adjusted, excluding extraordinary items and stock option expenses) estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsa_number",
+  "type": "MATRIX",
+  "coverage": 0.3223,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of analyst estimates for adjusted EPS (excluding extraordinary items and option expense)"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsr_high",
+  "type": "MATRIX",
+  "coverage": 0.3117,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "High estimated EPS growth rate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsr_low",
+  "type": "MATRIX",
+  "coverage": 0.3117,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Lowest analyst estimate for GAAP EPS (reported EPS)"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsr_mean",
+  "type": "MATRIX",
+  "coverage": 0.3117,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean estimated EPS growth rate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsr_median",
+  "type": "MATRIX",
+  "coverage": 0.3117,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of analyst estimates for GAAP EPS (reported EPS)"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_epsr_number",
+  "type": "MATRIX",
+  "coverage": 0.3117,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of EPS growth rate estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_grossincome_high",
+  "type": "MATRIX",
+  "coverage": 0.572,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Gross Income - highest estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_grossincome_low",
+  "type": "MATRIX",
+  "coverage": 0.572,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Lowest analyst estimate for gross income"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_grossincome_mean",
+  "type": "MATRIX",
+  "coverage": 0.572,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Mean of analyst estimates for gross income"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_grossincome_median",
+  "type": "MATRIX",
+  "coverage": 0.572,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median (50th percentile) of analyst estimates for gross income"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_grossincome_number",
+  "type": "MATRIX",
+  "coverage": 0.572,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of analyst estimates for gross income"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netdebt_high",
+  "type": "MATRIX",
+  "coverage": 0.3963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Net debt highest analyst estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netdebt_low",
+  "type": "MATRIX",
+  "coverage": 0.3963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Lowest estimate of net debt"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netdebt_mean",
+  "type": "MATRIX",
+  "coverage": 0.3963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of analyst estimates for Net Debt"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netdebt_median",
+  "type": "MATRIX",
+  "coverage": 0.3963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Net Debt estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netdebt_number",
+  "type": "MATRIX",
+  "coverage": 0.3963,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Net debt - number of contributing analyst estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofit_high",
+  "type": "MATRIX",
+  "coverage": 0.8867,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Net Profit — highest estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofit_low",
+  "type": "MATRIX",
+  "coverage": 0.8867,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Net profit - lowest analyst estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofit_mean",
+  "type": "MATRIX",
+  "coverage": 0.8867,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Net profit mean of analyst estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofit_median",
+  "type": "MATRIX",
+  "coverage": 0.8867,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Median of analyst estimates for net profit"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofit_number",
+  "type": "MATRIX",
+  "coverage": 0.8867,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Net Profit - number of analyst estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofit_std",
+  "type": "MATRIX",
+  "coverage": 0.4411,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Net Profit - standard deviation of estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofita_high",
+  "type": "MATRIX",
+  "coverage": 0.4118,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Highest estimate of Adjusted Net Income (Net Profit, Adjusted)"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofita_low",
+  "type": "MATRIX",
+  "coverage": 0.4118,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Adjusted net income – lowest analyst estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofita_mean",
+  "type": "MATRIX",
+  "coverage": 0.4118,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of analyst estimates for adjusted net income"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofita_median",
+  "type": "MATRIX",
+  "coverage": 0.4118,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of Adjusted Net Income (Net Profit, Adjusted) estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_netprofita_number",
+  "type": "MATRIX",
+  "coverage": 0.4118,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of adjusted net income (Net Profit Attributable) estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ptp_high",
+  "type": "MATRIX",
+  "coverage": 0.8238,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Highest analyst estimate for pretax income"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ptp_low",
+  "type": "MATRIX",
+  "coverage": 0.8238,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Lowest estimate of pretax income"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ptp_mean",
+  "type": "MATRIX",
+  "coverage": 0.8238,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Mean of Pre-tax Income estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ptp_median",
+  "type": "MATRIX",
+  "coverage": 0.8238,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Median of Pre-tax Income estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ptp_number",
+  "type": "MATRIX",
+  "coverage": 0.8238,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Pre-tax income number of contributing estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_ptp_std",
+  "type": "MATRIX",
+  "coverage": 0.3675,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Pre-tax income standard deviation of estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sga_high",
+  "type": "MATRIX",
+  "coverage": 0.5568,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Highest analyst estimate for Selling, General and Administrative expenses"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sga_low",
+  "type": "MATRIX",
+  "coverage": 0.5568,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Lowest analyst estimate for Selling, General and Administrative expenses"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sga_mean",
+  "type": "MATRIX",
+  "coverage": 0.5568,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of analysts' estimates for Selling, General and Administrative expenses"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sga_median",
+  "type": "MATRIX",
+  "coverage": 0.5568,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of analyst estimates for selling, general and administrative expense"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sga_number",
+  "type": "MATRIX",
+  "coverage": 0.5568,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of Selling, General and Administrative Expense estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sh_equity_high",
+  "type": "MATRIX",
+  "coverage": 0.2968,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Shareholders' Equity highest analyst estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sh_equity_low",
+  "type": "MATRIX",
+  "coverage": 0.2968,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Shareholders' Equity lowest analyst estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sh_equity_mean",
+  "type": "MATRIX",
+  "coverage": 0.2968,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean of analyst estimates for shareholders' equity"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sh_equity_median",
+  "type": "MATRIX",
+  "coverage": 0.2968,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Shareholders' Equity - median estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_sh_equity_number",
+  "type": "MATRIX",
+  "coverage": 0.2968,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Number of Shareholders' Equity estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_totassets_high",
+  "type": "MATRIX",
+  "coverage": 0.2905,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total Assets - The highest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_totassets_low",
+  "type": "MATRIX",
+  "coverage": 0.2905,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total Assets - lowest estimate"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_totassets_mean",
+  "type": "MATRIX",
+  "coverage": 0.2905,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Mean (average) of total assets estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_totassets_median",
+  "type": "MATRIX",
+  "coverage": 0.2905,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median of total assets estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_1qf_v4_nd_totassets_number",
+  "type": "MATRIX",
+  "coverage": 0.2905,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total Assets - number of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_af_v4_nd_estimate",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Current analyst estimate value for the item and fiscal period"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_af_v4_nd_previosestimate",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 5,
+  "alphaCount": 7,
+  "description": "Previous estimate value from this analyst before the current revision"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_basic_af_v4_nd_currency",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Currency code in which the estimate is reported"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_basic_af_v4_nd_estimate",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 5,
+  "alphaCount": 8,
+  "description": "Current estimate value reported by the broker/analyst for the item and period"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_basic_af_v4_nd_previosestimate",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Previous estimate value from the same broker/analyst prior to this revision"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_basic_qf_v4_nd_currency",
+  "type": "VECTOR",
+  "coverage": 0.921,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Currency code in which the estimate is reported"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_basic_qf_v4_nd_estimate",
+  "type": "VECTOR",
+  "coverage": 0.918,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Estimated value"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_basic_qf_v4_nd_previosestimate",
+  "type": "VECTOR",
+  "coverage": 0.9047,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Previous estimate value before the current revision"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_qf_v4_nd_currency",
+  "type": "VECTOR",
+  "coverage": 0.9191,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Currency code in which the estimate value is reported"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_qf_v4_nd_estimate",
+  "type": "VECTOR",
+  "coverage": 0.9164,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Analyst or broker forecast value for the specified item and fiscal period"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_qf_v4_nd_previosestimate",
+  "type": "VECTOR",
+  "coverage": 0.9035,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Previous value of this broker or analyst’s estimate before the current revision"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_saf_v4_nd_estimate",
+  "type": "VECTOR",
+  "coverage": 0.2588,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Estimated value for the financial item"
+ },
+ {
+  "id": "anl4_fs_detail_estimate_saf_v4_nd_previosestimate",
+  "type": "VECTOR",
+  "coverage": 0.2552,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Previous estimate value for the same item"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_cfps_high",
+  "type": "MATRIX",
+  "coverage": 0.8568,
+  "userCount": 5,
+  "alphaCount": 5,
+  "description": "Cash Flow Per Share (CFPS) highest analyst estimate for the annual forecast"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_cfps_low",
+  "type": "MATRIX",
+  "coverage": 0.8568,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Cash Flow Per Share (CFPS) lowest analyst estimate for the upcoming fiscal year"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_cfps_mean",
+  "type": "MATRIX",
+  "coverage": 0.8568,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Cash Flow Per Share (CFPS) consensus mean of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_cfps_median",
+  "type": "MATRIX",
+  "coverage": 0.8568,
+  "userCount": 7,
+  "alphaCount": 7,
+  "description": "Cash Flow Per Share (CFPS) median of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_cfps_number",
+  "type": "MATRIX",
+  "coverage": 0.8568,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share (CFPS) number of contributing analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_cfps_std",
+  "type": "MATRIX",
+  "coverage": 0.4339,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Cash Flow Per Share (CFPS) standard deviation of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_currency",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Home currency of the instrument"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_div_high",
+  "type": "MATRIX",
+  "coverage": 0.946,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Dividend per share highest analyst estimate for the annual forecast"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_div_low",
+  "type": "MATRIX",
+  "coverage": 0.946,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share lowest analyst estimate for the annual forecast"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_div_mean",
+  "type": "MATRIX",
+  "coverage": 0.946,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Dividend per share consensus mean of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_div_median",
+  "type": "MATRIX",
+  "coverage": 0.946,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Dividend per share median of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_div_number",
+  "type": "MATRIX",
+  "coverage": 0.946,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share number of contributing analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_div_std",
+  "type": "MATRIX",
+  "coverage": 0.5658,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share standard deviation of analyst estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_eps_high",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 37,
+  "alphaCount": 39,
+  "description": "Earnings per share (EPS) highest analyst estimate for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_eps_low",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Earnings per share (EPS) lowest analyst estimate for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_eps_mean",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 34,
+  "alphaCount": 39,
+  "description": "Earnings per share (EPS) consensus mean of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_eps_median",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 14,
+  "alphaCount": 18,
+  "description": "Earnings per share (EPS) median of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_eps_number",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Earnings per share (EPS) number of contributing analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_eps_std",
+  "type": "MATRIX",
+  "coverage": 0.5805,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Earnings per share (EPS) standard deviation of analyst estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_sales_high",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 15,
+  "alphaCount": 17,
+  "description": "Sales/Revenue highest analyst estimate for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_sales_low",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Sales/Revenue lowest analyst estimate for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_sales_mean",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Sales/Revenue consensus mean of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_sales_median",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 6,
+  "alphaCount": 7,
+  "description": "Sales/Revenue median of analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_sales_number",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Sales/Revenue number of contributing analyst estimates for the annual period"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_af_v4_nd_sales_std",
+  "type": "MATRIX",
+  "coverage": 0.535,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Sales/Revenue standard deviation of analyst estimates"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_cfps_high",
+  "type": "MATRIX",
+  "coverage": 0.2632,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share - highest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_cfps_low",
+  "type": "MATRIX",
+  "coverage": 0.2632,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share - lowest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_cfps_mean",
+  "type": "MATRIX",
+  "coverage": 0.2632,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share - average of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_cfps_median",
+  "type": "MATRIX",
+  "coverage": 0.2632,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Cash Flow Per Share - median of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_cfps_number",
+  "type": "MATRIX",
+  "coverage": 0.2632,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share - number of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_div_high",
+  "type": "MATRIX",
+  "coverage": 0.3207,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share - highest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_div_low",
+  "type": "MATRIX",
+  "coverage": 0.3207,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share - lowest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_div_mean",
+  "type": "MATRIX",
+  "coverage": 0.3207,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share - average of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_div_median",
+  "type": "MATRIX",
+  "coverage": 0.3207,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share - median of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_div_number",
+  "type": "MATRIX",
+  "coverage": 0.3207,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share - number of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_eps_high",
+  "type": "MATRIX",
+  "coverage": 0.6087,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Earnings per share - highest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_eps_low",
+  "type": "MATRIX",
+  "coverage": 0.6087,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Earnings per share - lowest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_eps_mean",
+  "type": "MATRIX",
+  "coverage": 0.6087,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Earnings per share - mean of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_eps_median",
+  "type": "MATRIX",
+  "coverage": 0.6087,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Earnings per share - 50th percentile (median) of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_eps_number",
+  "type": "MATRIX",
+  "coverage": 0.6087,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Earnings per share - number of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_sales_high",
+  "type": "MATRIX",
+  "coverage": 0.9095,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "Sales - the highest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_sales_low",
+  "type": "MATRIX",
+  "coverage": 0.9095,
+  "userCount": 3,
+  "alphaCount": 64,
+  "description": "Sales - the lowest estimation"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_sales_mean",
+  "type": "MATRIX",
+  "coverage": 0.9095,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Sales - mean of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_sales_median",
+  "type": "MATRIX",
+  "coverage": 0.9095,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Sales - median of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_sales_number",
+  "type": "MATRIX",
+  "coverage": 0.9095,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Sales - number of estimations"
+ },
+ {
+  "id": "anl4_fs_detail_estimates_basic_qf_v4_nd_sales_std",
+  "type": "MATRIX",
+  "coverage": 0.4874,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of Sales estimations"
+ },
+ {
+  "id": "anl4_fs_detail_rec_v4_nd_estimate",
+  "type": "VECTOR",
+  "coverage": 0.8216,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Recommendation value/rating provided by the broker/analyst"
+ },
+ {
+  "id": "anl4_gric_flag",
+  "type": "MATRIX",
+  "coverage": 0.789,
+  "userCount": 12,
+  "alphaCount": 17,
+  "description": "Gross income - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_gric_high",
+  "type": "MATRIX",
+  "coverage": 0.576,
+  "userCount": 6,
+  "alphaCount": 9,
+  "description": "Gross income- The highest estimation"
+ },
+ {
+  "id": "anl4_gric_low",
+  "type": "MATRIX",
+  "coverage": 0.576,
+  "userCount": 10,
+  "alphaCount": 30,
+  "description": "Gross income- The lowest estimation"
+ },
+ {
+  "id": "anl4_gric_median",
+  "type": "MATRIX",
+  "coverage": 0.576,
+  "userCount": 10,
+  "alphaCount": 51,
+  "description": "Gross income- median of estimations"
+ },
+ {
+  "id": "anl4_gric_number",
+  "type": "MATRIX",
+  "coverage": 0.576,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Gross income- number of estimations"
+ },
+ {
+  "id": "anl4_median_capexp",
+  "type": "MATRIX",
+  "coverage": 0.2983,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Capital Expenditures - median of estimations"
+ },
+ {
+  "id": "anl4_median_epsreported",
+  "type": "MATRIX",
+  "coverage": 0.3139,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "GAAP Earnings per share - median of estimations"
+ },
+ {
+  "id": "anl4_medianepsbfam",
+  "type": "MATRIX",
+  "coverage": 0.517,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "Earnings before interest, taxes, depreciation and amortization - median of estimations"
+ },
+ {
+  "id": "anl4_netdebt_flag",
+  "type": "MATRIX",
+  "coverage": 0.8308,
+  "userCount": 27,
+  "alphaCount": 42,
+  "description": "Net debt - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_netdebt_high",
+  "type": "MATRIX",
+  "coverage": 0.3991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Net debt- The highest estimation"
+ },
+ {
+  "id": "anl4_netdebt_low",
+  "type": "MATRIX",
+  "coverage": 0.3991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Net debt- The lowest estimation"
+ },
+ {
+  "id": "anl4_netdebt_median",
+  "type": "MATRIX",
+  "coverage": 0.3991,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Net debt- median of estimations"
+ },
+ {
+  "id": "anl4_netdebt_number",
+  "type": "MATRIX",
+  "coverage": 0.3991,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Net debt- number of estimations"
+ },
+ {
+  "id": "anl4_netprofit_flag",
+  "type": "MATRIX",
+  "coverage": 0.7,
+  "userCount": 4,
+  "alphaCount": 7,
+  "description": "Net Profit - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_netprofit_high",
+  "type": "MATRIX",
+  "coverage": 0.8929,
+  "userCount": 74,
+  "alphaCount": 143,
+  "description": "Net profit- The highest estimation"
+ },
+ {
+  "id": "anl4_netprofit_low",
+  "type": "MATRIX",
+  "coverage": 0.8929,
+  "userCount": 38,
+  "alphaCount": 90,
+  "description": "Net profit- The lowest estimation"
+ },
+ {
+  "id": "anl4_netprofit_median",
+  "type": "MATRIX",
+  "coverage": 0.8929,
+  "userCount": 64,
+  "alphaCount": 162,
+  "description": "Net profit- median of estimations"
+ },
+ {
+  "id": "anl4_netprofit_number",
+  "type": "MATRIX",
+  "coverage": 0.8929,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Net profit- number of estimations"
+ },
+ {
+  "id": "anl4_netprofit_std",
+  "type": "MATRIX",
+  "coverage": 0.4442,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Net profit- std of estimations"
+ },
+ {
+  "id": "anl4_netprofita_high",
+  "type": "MATRIX",
+  "coverage": 0.4146,
+  "userCount": 3,
+  "alphaCount": 5,
+  "description": "Adjusted net income- The highest estimation"
+ },
+ {
+  "id": "anl4_netprofita_low",
+  "type": "MATRIX",
+  "coverage": 0.4146,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Adjusted net income- The lowest estimation"
+ },
+ {
+  "id": "anl4_netprofita_median",
+  "type": "MATRIX",
+  "coverage": 0.4146,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Adjusted net income- median of estimations"
+ },
+ {
+  "id": "anl4_netprofita_number",
+  "type": "MATRIX",
+  "coverage": 0.4146,
+  "userCount": 2,
+  "alphaCount": 4,
+  "description": "Adjusted net income- number of estimations"
+ },
+ {
+  "id": "anl4_ptp_flag",
+  "type": "MATRIX",
+  "coverage": 0.6935,
+  "userCount": 3,
+  "alphaCount": 7,
+  "description": "Pretax income - Forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_ptp_high",
+  "type": "MATRIX",
+  "coverage": 0.8295,
+  "userCount": 28,
+  "alphaCount": 61,
+  "description": "Pretax income- The highest estimation"
+ },
+ {
+  "id": "anl4_ptp_low",
+  "type": "MATRIX",
+  "coverage": 0.8295,
+  "userCount": 12,
+  "alphaCount": 12,
+  "description": "Pretax income- The lowest estimation"
+ },
+ {
+  "id": "anl4_ptp_median",
+  "type": "MATRIX",
+  "coverage": 0.8295,
+  "userCount": 12,
+  "alphaCount": 22,
+  "description": "Pretax income- median of estimations"
+ },
+ {
+  "id": "anl4_ptp_number",
+  "type": "MATRIX",
+  "coverage": 0.8295,
+  "userCount": 9,
+  "alphaCount": 11,
+  "description": "Pretax income- number of estimations"
+ },
+ {
+  "id": "anl4_ptpr_flag",
+  "type": "MATRIX",
+  "coverage": 0.9312,
+  "userCount": 17,
+  "alphaCount": 21,
+  "description": "Reported Pretax income - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_qfv4_actual",
+  "type": "VECTOR",
+  "coverage": 0.566,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Announced financial data"
+ },
+ {
+  "id": "anl4_qfv4_cfps_high",
+  "type": "MATRIX",
+  "coverage": 0.265,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share - The highest estimation for the quarter"
+ },
+ {
+  "id": "anl4_qfv4_cfps_low",
+  "type": "MATRIX",
+  "coverage": 0.265,
+  "userCount": 2,
+  "alphaCount": 3,
+  "description": "Cash Flow Per Share - The lowest estimation"
+ },
+ {
+  "id": "anl4_qfv4_cfps_mean",
+  "type": "MATRIX",
+  "coverage": 0.265,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Cash Flow Per Share - average of estimations"
+ },
+ {
+  "id": "anl4_qfv4_cfps_median",
+  "type": "MATRIX",
+  "coverage": 0.265,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share - Median value among forecasts"
+ },
+ {
+  "id": "anl4_qfv4_cfps_number",
+  "type": "MATRIX",
+  "coverage": 0.265,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Cash Flow Per Share - number of estimations"
+ },
+ {
+  "id": "anl4_qfv4_div_high",
+  "type": "MATRIX",
+  "coverage": 0.323,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Dividend per share - The highest estimation"
+ },
+ {
+  "id": "anl4_qfv4_div_low",
+  "type": "MATRIX",
+  "coverage": 0.323,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Dividend per share - The lowest estimation"
+ },
+ {
+  "id": "anl4_qfv4_div_mean",
+  "type": "MATRIX",
+  "coverage": 0.323,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share - mean of estimations"
+ },
+ {
+  "id": "anl4_qfv4_div_median",
+  "type": "MATRIX",
+  "coverage": 0.323,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend per share - median of estimations"
+ },
+ {
+  "id": "anl4_qfv4_div_number",
+  "type": "MATRIX",
+  "coverage": 0.323,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Dividend - number of estimations"
+ },
+ {
+  "id": "anl4_qfv4_eps_high",
+  "type": "MATRIX",
+  "coverage": 0.613,
+  "userCount": 6,
+  "alphaCount": 12,
+  "description": "Earnings per share - The highest estimation"
+ },
+ {
+  "id": "anl4_qfv4_eps_low",
+  "type": "MATRIX",
+  "coverage": 0.613,
+  "userCount": 6,
+  "alphaCount": 6,
+  "description": "Earnings per share - The lowest estimation"
+ },
+ {
+  "id": "anl4_qfv4_eps_mean",
+  "type": "MATRIX",
+  "coverage": 0.613,
+  "userCount": 3,
+  "alphaCount": 8,
+  "description": "Earnings per share - mean of estimations"
+ },
+ {
+  "id": "anl4_qfv4_eps_number",
+  "type": "MATRIX",
+  "coverage": 0.613,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Earnings per share - number of estimations"
+ },
+ {
+  "id": "anl4_qfv4_median_eps",
+  "type": "MATRIX",
+  "coverage": 0.613,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Earnings per share - median of estimations"
+ },
+ {
+  "id": "anl4_rd_exp_flag",
+  "type": "MATRIX",
+  "coverage": 0.9445,
+  "userCount": 21,
+  "alphaCount": 35,
+  "description": "Research and development expense - Forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_tbve_ft",
+  "type": "MATRIX",
+  "coverage": 0.9659,
+  "userCount": 22,
+  "alphaCount": 31,
+  "description": "Tangible Book Value per Share - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_tot_gw_ft",
+  "type": "MATRIX",
+  "coverage": 0.9414,
+  "userCount": 23,
+  "alphaCount": 42,
+  "description": "Total Goodwill - Forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_totassets_flag",
+  "type": "MATRIX",
+  "coverage": 0.8722,
+  "userCount": 25,
+  "alphaCount": 31,
+  "description": "Total assets - forecast type (revision/new/...)"
+ },
+ {
+  "id": "anl4_totassets_high",
+  "type": "MATRIX",
+  "coverage": 0.2925,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total Assets - The highest estimation"
+ },
+ {
+  "id": "anl4_totassets_low",
+  "type": "MATRIX",
+  "coverage": 0.2925,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Total Assets - The lowest estimation"
+ },
+ {
+  "id": "anl4_totassets_median",
+  "type": "MATRIX",
+  "coverage": 0.2925,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Total Assets - median of estimations"
+ },
+ {
+  "id": "anl4_totassets_number",
+  "type": "MATRIX",
+  "coverage": 0.2925,
+  "userCount": 1,
+  "alphaCount": 2,
+  "description": "Total Assets - number of estimations"
+ },
+ {
+  "id": "est_bookvalue_ps",
+  "type": "MATRIX",
+  "coverage": 0.48,
+  "userCount": 9,
+  "alphaCount": 10,
+  "description": "Book value per share - average of estimations"
+ },
+ {
+  "id": "est_capex",
+  "type": "MATRIX",
+  "coverage": 0.2983,
+  "userCount": 4,
+  "alphaCount": 9,
+  "description": "Capital Expenditures - mean of estimations"
+ },
+ {
+  "id": "est_ebit",
+  "type": "MATRIX",
+  "coverage": 0.9093,
+  "userCount": 48,
+  "alphaCount": 90,
+  "description": "Earnings before interest and taxes - mean of estimations"
+ },
+ {
+  "id": "est_ebitda",
+  "type": "MATRIX",
+  "coverage": 0.517,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Earnings before interest, taxes, depreciation and amortization - mean of estimations"
+ },
+ {
+  "id": "est_epsa",
+  "type": "MATRIX",
+  "coverage": 0.3246,
+  "userCount": 4,
+  "alphaCount": 9,
+  "description": "Earnings per share adjusted by excluding extraordinary items and stock option expenses - average of estimations"
+ },
+ {
+  "id": "est_epsr",
+  "type": "MATRIX",
+  "coverage": 0.3139,
+  "userCount": 1,
+  "alphaCount": 4,
+  "description": "GAAP Earnings per share - mean of estimations"
+ },
+ {
+  "id": "est_grossincome",
+  "type": "MATRIX",
+  "coverage": 0.576,
+  "userCount": 8,
+  "alphaCount": 34,
+  "description": "Gross income- mean of estimations"
+ },
+ {
+  "id": "est_netdebt",
+  "type": "MATRIX",
+  "coverage": 0.3991,
+  "userCount": 4,
+  "alphaCount": 6,
+  "description": "Net debt- mean of estimations"
+ },
+ {
+  "id": "est_netprofit",
+  "type": "MATRIX",
+  "coverage": 0.8929,
+  "userCount": 78,
+  "alphaCount": 210,
+  "description": "Net profit- mean of estimations"
+ },
+ {
+  "id": "est_netprofit_adj",
+  "type": "MATRIX",
+  "coverage": 0.4146,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Adjusted net income- mean of estimations"
+ },
+ {
+  "id": "est_ptp",
+  "type": "MATRIX",
+  "coverage": 0.8295,
+  "userCount": 17,
+  "alphaCount": 45,
+  "description": "Pretax income- mean of estimations"
+ },
+ {
+  "id": "est_tot_assets",
+  "type": "MATRIX",
+  "coverage": 0.2925,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Total Assets - mean of estimations"
+ },
+ {
+  "id": "estimate_value_currency_code",
+  "type": "VECTOR",
+  "coverage": 1,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Home currency of instrument"
+ },
+ {
+  "id": "estimate_value_currency_code_detail_qtr",
+  "type": "VECTOR",
+  "coverage": 0.9254,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Home currency of instrument"
+ },
+ {
+  "id": "estimate_value_currency_code_qtr",
+  "type": "VECTOR",
+  "coverage": 0.9273,
+  "userCount": 2,
+  "alphaCount": 2,
+  "description": "Home currency of instrument"
+ },
+ {
+  "id": "highest_sales_estimate",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 18,
+  "alphaCount": 19,
+  "description": "Sales - The highest estimation for the annual period"
+ },
+ {
+  "id": "lowest_sales_estimate",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 7,
+  "alphaCount": 8,
+  "description": "Sales - The lowest estimation for the annual period"
+ },
+ {
+  "id": "median_sales_estimate",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 31,
+  "alphaCount": 39,
+  "description": "Sales - median of estimations"
+ },
+ {
+  "id": "previous_recommendation_value",
+  "type": "VECTOR",
+  "coverage": 0,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "The previous estimation of financial item for recommendation"
+ },
+ {
+  "id": "reporting_currency_code_9",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 4,
+  "alphaCount": 5,
+  "description": "Home currency of instrument"
+ },
+ {
+  "id": "sales_estimate_average_annual",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 11,
+  "alphaCount": 11,
+  "description": "Sales - mean of estimations"
+ },
+ {
+  "id": "sales_estimate_average_quarterly",
+  "type": "MATRIX",
+  "coverage": 0.9158,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Sales - mean of estimations"
+ },
+ {
+  "id": "sales_estimate_count_2",
+  "type": "MATRIX",
+  "coverage": 1,
+  "userCount": 3,
+  "alphaCount": 3,
+  "description": "Number of Sales estimates"
+ },
+ {
+  "id": "sales_estimate_count_quarterly",
+  "type": "MATRIX",
+  "coverage": 0.9158,
+  "userCount": 5,
+  "alphaCount": 6,
+  "description": "Sales - number of estimations"
+ },
+ {
+  "id": "sales_estimate_dispersion",
+  "type": "MATRIX",
+  "coverage": 0.5387,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of Sales estimations for the annual period."
+ },
+ {
+  "id": "sales_estimate_maximum_quarterly",
+  "type": "MATRIX",
+  "coverage": 0.8247,
+  "userCount": 4,
+  "alphaCount": 4,
+  "description": "Sales - The highest estimation"
+ },
+ {
+  "id": "sales_estimate_median_quarterly",
+  "type": "MATRIX",
+  "coverage": 0.9158,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Sales - median of estimations"
+ },
+ {
+  "id": "sales_estimate_minimum_quarterly",
+  "type": "MATRIX",
+  "coverage": 0.9158,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Sales - The lowest estimation"
+ },
+ {
+  "id": "sales_estimate_stddev_quarterly",
+  "type": "MATRIX",
+  "coverage": 0.4908,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Standard deviation of Sales estimations"
+ },
+ {
+  "id": "selling_general_admin_expense_estimate_average_qf",
+  "type": "MATRIX",
+  "coverage": 0.5607,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Average value of broker estimates for selling, general, and administrative expenses (quarterly frequency)."
+ },
+ {
+  "id": "selling_general_admin_expense_estimate_count_qf",
+  "type": "MATRIX",
+  "coverage": 0.5607,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of broker estimates for selling, general, and administrative expenses (quarterly frequency)."
+ },
+ {
+  "id": "selling_general_admin_expense_estimate_maximum_qf",
+  "type": "MATRIX",
+  "coverage": 0.5607,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Highest value among broker estimates for selling, general, and administrative expenses (quarterly frequency)."
+ },
+ {
+  "id": "selling_general_admin_expense_estimate_median_qf",
+  "type": "MATRIX",
+  "coverage": 0.5607,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median value of broker estimates for selling, general, and administrative expenses (quarterly frequency)."
+ },
+ {
+  "id": "selling_general_admin_expense_estimate_minimum_qf",
+  "type": "MATRIX",
+  "coverage": 0.5607,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Lowest value among broker estimates for selling, general, and administrative expenses (quarterly frequency)."
+ },
+ {
+  "id": "shareholders_equity_estimate_average_qf",
+  "type": "MATRIX",
+  "coverage": 0.2988,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Average value of broker estimates for shareholders' equity (quarterly frequency)."
+ },
+ {
+  "id": "shareholders_equity_estimate_count_qf",
+  "type": "MATRIX",
+  "coverage": 0.2988,
+  "userCount": 1,
+  "alphaCount": 1,
+  "description": "Number of broker estimates for shareholders' equity (quarterly frequency)."
+ },
+ {
+  "id": "shareholders_equity_estimate_maximum_qf",
+  "type": "MATRIX",
+  "coverage": 0.2988,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Highest value among broker estimates for shareholders' equity (quarterly frequency)."
+ },
+ {
+  "id": "shareholders_equity_estimate_median_qf",
+  "type": "MATRIX",
+  "coverage": 0.2988,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Median value of broker estimates for shareholders' equity (quarterly frequency)."
+ },
+ {
+  "id": "shareholders_equity_estimate_minimum_qf",
+  "type": "MATRIX",
+  "coverage": 0.2988,
+  "userCount": 0,
+  "alphaCount": 0,
+  "description": "Lowest value among broker estimates for shareholders' equity (quarterly frequency)."
+ }
+]

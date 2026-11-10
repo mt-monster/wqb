@@ -1,0 +1,1106 @@
+{
+ "results": [
+  {
+   "id": "snt21_2dts_gen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Standard deviation of negative sentiment scores."
+  },
+  {
+   "id": "snt21_2dts_sop",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standard deviation of positive sentiment scores."
+  },
+  {
+   "id": "snt21_2dts_tuen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of neutral sentiment scores."
+  },
+  {
+   "id": "snt21_2neg_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lower bound of the confidence interval for the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neg_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neg_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neg_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neg_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neg_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Standard deviation of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neut_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the confidence interval for the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neut_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper bound of the confidence interval for the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neut_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neut_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neut_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neut_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Minimum value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2neut_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Standard deviation of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2pos_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lower bound of the confidence interval for the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2pos_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Upper bound of the confidence interval for the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2pos_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2pos_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2pos_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2pos_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_2pos_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Standard deviation of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3dts_gen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of negative sentiment scores."
+  },
+  {
+   "id": "snt21_3dts_sop",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standard deviation of positive sentiment scores."
+  },
+  {
+   "id": "snt21_3dts_tuen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of neutral sentiment scores."
+  },
+  {
+   "id": "snt21_3neg_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lower bound of the confidence interval for the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neg_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper bound of the confidence interval for the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neg_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neg_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neg_median",
+   "type": "MATRIX",
+   "coverage": 0.3537,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neg_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neg_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of the negative sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neut_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the confidence interval for the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neut_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Upper bound of the confidence interval for the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neut_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neut_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neut_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neut_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3neut_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of the neutral sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3pos_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the confidence interval for the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3pos_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Upper bound of the confidence interval for the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3pos_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3pos_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3pos_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3pos_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_3pos_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of the positive sentiment measure in USA modules"
+  },
+  {
+   "id": "snt21_4dts_gen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of negative sentiment scores."
+  },
+  {
+   "id": "snt21_4dts_sop",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of positive sentiment scores."
+  },
+  {
+   "id": "snt21_4dts_tuen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of neutral sentiment scores."
+  },
+  {
+   "id": "snt21_4neg_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the approximate 95% confidence interval for the daily mean negative sentiment score, aggregated from TRNA equity-linked news linked to the stock…"
+  },
+  {
+   "id": "snt21_4neg_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Upper bound of the approximate 95% confidence interval for the daily mean negative sentiment score, aggregated from TRNA equity-linked news linked to the stock…"
+  },
+  {
+   "id": "snt21_4neg_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily maximum of negative sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neg_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Daily mean negative sentiment score from TRNA equity-linked news linked to the stock, computed by the in-house transformer in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neg_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily median negative sentiment score from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neg_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily minimum of negative sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neg_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily standard deviation of negative sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neut_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3537,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily lower bound of the approximate 95% confidence interval for the mean neutral sentiment score, aggregated from that day's TRNA equity-linked news linked to…"
+  },
+  {
+   "id": "snt21_4neut_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily upper bound of the approximate 95% confidence interval for the mean neutral sentiment score, aggregated from TRNA equity-linked news linked to the stock i…"
+  },
+  {
+   "id": "snt21_4neut_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Daily maximum of neutral sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neut_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily mean neutral sentiment score from TRNA equity-linked news linked to the stock, computed by the in-house transformer in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neut_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily median neutral sentiment score from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neut_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily minimum of neutral sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4neut_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily standard deviation of neutral sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4pos_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily lower bound of the approximate 95% confidence interval for the mean positive sentiment score, aggregated from TRNA equity-linked news linked to the stock…"
+  },
+  {
+   "id": "snt21_4pos_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily upper bound of the approximate 95% confidence interval for the mean positive sentiment score, aggregated from that day's TRNA equity-linked news linked to…"
+  },
+  {
+   "id": "snt21_4pos_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily maximum of positive sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4pos_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily mean positive sentiment score from TRNA equity-linked news linked to the stock, computed by the in-house transformer in this USA D0 module"
+  },
+  {
+   "id": "snt21_4pos_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily median positive sentiment score from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4pos_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily minimum of positive sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_4pos_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily standard deviation of positive sentiment scores from TRNA equity-linked news linked to the stock in this USA D0 module"
+  },
+  {
+   "id": "snt21_5dts_gen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of negative sentiment scores."
+  },
+  {
+   "id": "snt21_5dts_sop",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of positive sentiment scores."
+  },
+  {
+   "id": "snt21_5dts_tuen",
+   "type": "MATRIX",
+   "coverage": 0.4733,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Standard deviation of neutral sentiment scores."
+  },
+  {
+   "id": "snt21_5neg_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lower bound of the confidence interval for the negative sentiment measure"
+  },
+  {
+   "id": "snt21_5neg_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Upper bound of the confidence interval for the negative sentiment measure"
+  },
+  {
+   "id": "snt21_5neg_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the negative sentiment measure"
+  },
+  {
+   "id": "snt21_5neg_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean value of the negative sentiment measure"
+  },
+  {
+   "id": "snt21_5neg_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the negative sentiment measure"
+  },
+  {
+   "id": "snt21_5neg_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the negative sentiment measure"
+  },
+  {
+   "id": "snt21_5neg_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of the negative sentiment measure"
+  },
+  {
+   "id": "snt21_5neut_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lower bound of the confidence interval for the neutral sentiment measure"
+  },
+  {
+   "id": "snt21_5neut_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper bound of the confidence interval for the neutral sentiment measure"
+  },
+  {
+   "id": "snt21_5neut_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the neutral sentiment measure"
+  },
+  {
+   "id": "snt21_5neut_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value of the neutral sentiment measure"
+  },
+  {
+   "id": "snt21_5neut_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the neutral sentiment measure"
+  },
+  {
+   "id": "snt21_5neut_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value of the neutral sentiment measure"
+  },
+  {
+   "id": "snt21_5neut_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of the neutral sentiment measure"
+  },
+  {
+   "id": "snt21_5pos_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the confidence interval for the positive sentiment measure"
+  },
+  {
+   "id": "snt21_5pos_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Upper bound of the confidence interval for the positive sentiment measure"
+  },
+  {
+   "id": "snt21_5pos_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the positive sentiment measure"
+  },
+  {
+   "id": "snt21_5pos_mean",
+   "type": "MATRIX",
+   "coverage": 0.3537,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the positive sentiment measure"
+  },
+  {
+   "id": "snt21_5pos_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the positive sentiment measure"
+  },
+  {
+   "id": "snt21_5pos_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value of the positive sentiment measure"
+  },
+  {
+   "id": "snt21_5pos_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Standard deviation of the positive sentiment measure"
+  },
+  {
+   "id": "snt21_neg_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the approximate 95% confidence interval for the daily mean negative sentiment in the USA D0 module"
+  },
+  {
+   "id": "snt21_neg_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper bound of the approximate 95% confidence interval for the daily mean negative sentiment in the USA D0 module"
+  },
+  {
+   "id": "snt21_neg_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the daily negative sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neg_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily mean of the negative sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neg_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily median of the negative sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neg_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the daily negative sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neg_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily standard deviation of the negative sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neut_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the approximate 95% confidence interval for the daily mean neutral sentiment in the USA D0 module"
+  },
+  {
+   "id": "snt21_neut_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Upper bound of the approximate 95% confidence interval for the daily mean neutral sentiment in the USA D0 module"
+  },
+  {
+   "id": "snt21_neut_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the daily neutral sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neut_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily mean of the neutral sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neut_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily median of the neutral sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neut_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the daily neutral sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_neut_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily standard deviation of the neutral sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_pos_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower bound of the approximate 95% confidence interval for the daily mean positive sentiment in the USA D0 module"
+  },
+  {
+   "id": "snt21_pos_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper bound of the approximate 95% confidence interval for the daily mean positive sentiment in the USA D0 module"
+  },
+  {
+   "id": "snt21_pos_max",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the daily positive sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_pos_mean",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily mean of the positive sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_pos_median",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily median of the positive sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21_pos_min",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the daily positive sentiment scores (0–1) for a stock in the USA D0 module, aggregated from TRNA equity-linked events"
+  },
+  {
+   "id": "snt21_pos_std",
+   "type": "MATRIX",
+   "coverage": 0.3518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Daily standard deviation of the positive sentiment scores for a stock in the USA D0 module"
+  },
+  {
+   "id": "snt21dts_gen",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of negative sentiment scores."
+  },
+  {
+   "id": "snt21dts_sop",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of positive sentiment scores."
+  },
+  {
+   "id": "snt21dts_tuen",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of neutral sentiment scores."
+  },
+  {
+   "id": "snt21neg_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lower confidence bound for negative sentiment scores."
+  },
+  {
+   "id": "snt21neg_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper confidence bound for negative sentiment scores."
+  },
+  {
+   "id": "snt21neg_max",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of negative sentiment scores."
+  },
+  {
+   "id": "snt21neg_mean",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean value of negative sentiment scores."
+  },
+  {
+   "id": "snt21neg_median",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Median value of negative sentiment scores."
+  },
+  {
+   "id": "snt21neg_min",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum value of negative sentiment scores."
+  },
+  {
+   "id": "snt21neut_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lower confidence bound for neutral sentiment scores."
+  },
+  {
+   "id": "snt21neut_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Upper confidence bound for neutral sentiment scores."
+  },
+  {
+   "id": "snt21neut_max",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of neutral sentiment scores."
+  },
+  {
+   "id": "snt21neut_mean",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of neutral sentiment scores."
+  },
+  {
+   "id": "snt21neut_median",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Median value of neutral sentiment scores."
+  },
+  {
+   "id": "snt21neut_min",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Minimum value of neutral sentiment scores."
+  },
+  {
+   "id": "snt21pos_conf_low",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lower confidence bound for positive sentiment scores."
+  },
+  {
+   "id": "snt21pos_conf_up",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper confidence bound for positive sentiment scores."
+  },
+  {
+   "id": "snt21pos_max",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of positive sentiment scores."
+  },
+  {
+   "id": "snt21pos_mean",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of positive sentiment scores."
+  },
+  {
+   "id": "snt21pos_median",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 0,
+   "description": "Median value of positive sentiment scores."
+  },
+  {
+   "id": "snt21pos_min",
+   "type": "MATRIX",
+   "coverage": 0.475,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of positive sentiment scores."
+  }
+ ],
+ "count": 137,
+ "sharpe_filter_applied": true,
+ "sharpe_filter_removed": 1,
+ "platform_count": 138,
+ "complete": true,
+ "pages_fetched": 3
+}

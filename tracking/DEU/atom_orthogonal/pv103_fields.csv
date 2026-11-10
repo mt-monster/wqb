@@ -1,0 +1,9 @@
+id,type,cov,uc,ac,desc
+pv103_ivam_sum,MATRIX,0.0,14,14,daily sum of interval volume above mid quote
+session_1600to1600_final_trade_price,MATRIX,0.0,15,17,Last trade price within the 16:00 to 16:00 session
+session_1600to1600_initial_trade_price,MATRIX,0.0,6,6,First trade price within the 16:00 to 16:00 session
+session_1600to1600_market_value,MATRIX,0.0,6,6,Aggregate market value of all trades during the 16:00 to 16:00 session.
+session_1600to1600_max_trade_price,MATRIX,0.0,1,1,Highest trade price during the 16:00 to 16:00 session
+session_1600to1600_min_trade_price,MATRIX,0.0,3,3,Lowest trade price during the 16:00 to 16:00 session
+session_1600to1600_total_traded_volume,MATRIX,0.0,23,29,Total shares traded during the 16:00 to 16:00 session
+session_1600to1600_volume_weighted_avg_price,MATRIX,0.0,6,8,Volume-weighted average trade price over the 16:00 to 16:00 session

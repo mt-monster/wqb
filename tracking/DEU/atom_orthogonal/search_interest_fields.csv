@@ -1,0 +1,4 @@
+id,type,cov,uc,ac,desc
+relative_interest_score_6,VECTOR,0.0,3,5,Standardized unbounded daily search interest score comparable across time and terms
+trend_confidence_overlap_months_4,VECTOR,0.0,0,0,the confident of our guessing over months
+trend_estimation_confidence_score_4,VECTOR,0.0,1,1,Confidence score of the nowcasted search interest value; higher indicates more reliable estimates
