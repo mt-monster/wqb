@@ -1,7 +1,7 @@
 ---
 name: brain-alpha-robustness
 description: "提交前稳健性验证：汇集论坛实证的归因与反过拟合技术，跨年度与子宇宙做 PnL 归因分析，拒绝高 Sharpe 来自噪声拟合、股票集中或单年行情的候选。当任务涉及提交前验证、OS 表现不佳的事后复盘，或用户提到过拟合/稳健性/子宇宙/逐年统计/PnL 归因/衰减比/参数稳定性时使用。"
-last_verified: 2026-10-29
+last_verified: 2026-11-10
 layer: L4
 allowed-tools:
   - Read
@@ -141,7 +141,7 @@ mcp__wqb-db__upsert_ledger_key(region=<alpha 的区域>, key="robustness_<alpha_
 
 ## prod 相关性怎么取（RB-17：从验证清单提到正文）
 
-- `check_correlation(alpha_id)`（MCP）会**阻塞**（轮询最长 60 min）、账号级单并发（忙时立即返回 `correlation_busy`），提交前终验用 `refresh=True`。**这些环境事实（含 Redis 只是可选缓存、三种返回的处置、`refresh=True` 的量化）只写一处**：RA [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md) §1，本 skill 不再复述。
+- `check_correlation(alpha_id)`（MCP）会**阻塞**（轮询最长 60 min）、账号级单并发（忙时立即返回 `correlation_busy`），提交前 prod 闸用 `refresh=False`（48h 缓存优先，2026-11-14 用户明令），仅过期/预读不可信才 `refresh=True`。**这些环境事实（含 Redis 只是可选缓存、三种返回的处置、`refresh=True` 的量化）只写一处**：RA [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md) §1，本 skill 不再复述。
 - 想直接看平台值：`GET /alphas/{id}/correlations/prod` 恒秒回 200，**空体 = 平台仍在算**，非空返回 `{records, max, min}`，**`max` 才是判定值**；不要高频 `refresh=true`（会加长平台队列）。合规入口：`python tools/campaign_intel.py prod-first`（串行、进程锁、单条硬超时；见 [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md)）。任一返回空时重试一次后向用户报错——**不得编造数字**。
 
 ## 设计边界

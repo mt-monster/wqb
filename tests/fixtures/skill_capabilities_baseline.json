@@ -156,6 +156,11 @@
    "mcp__wqb-db__list_alphas_by_wave",
    "mcp__wqb-db__list_wave_results"
   ],
+  "wq-basket-composition": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
   "wq-brain-alpha-optimization-v1": [
    "Bash",
    "Read",

@@ -626,7 +626,7 @@
     "op": "swap_denominator",
     "params": {
      "root_cause": "divide(A,B) 的分母 B 决定横截面比较基准；同分母 ⇒ 持仓结构相似 ⇒ 高相关。**换分子只改经济量，不改比较基准，撞同一面墙。**",
-     "tool": "compute_mutual_correlation（先定位撞的是哪一颗）+ check_correlation(refresh=True)",
+     "tool": "compute_mutual_correlation（先定位撞的是哪一颗）+ check_correlation(refresh=False)（48h 缓存优先）",
      "denominator_candidates": {
       "asset_side": [
        "bs_assets_curr_q",
@@ -996,7 +996,7 @@
      "doc": "docs/experience/01_platform_gates.md",
      "doc_section": "14",
      "region_evidence": "tracking/KOR/reference/kor_session_lessons_20261031.md",
-     "tool": "check_correlation(refresh=True)",
+     "tool": "check_correlation(refresh=False)（48h 缓存优先）",
      "stale_hours_max": 48,
      "family_histogram_bucket": [0.7, 0.8],
      "family_dead_if_n_ge": 1,

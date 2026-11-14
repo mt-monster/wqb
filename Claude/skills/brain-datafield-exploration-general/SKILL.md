@@ -27,6 +27,8 @@ allowed-tools:
 
 六法里**法 1（覆盖）、法 3（频率）、法 6（分布形态）在包里有现成答案**；法 2、4、5 没有直接对应。缺包 / 区域不在包内 → 在线。
 
+**区不在七区包内的可执行判定分支（2026-11-14 IND 实测固化）**：先 `ls tracking/mining/field_inspect_<region 小写>_*.json` —— 零命中即确认本区无包，直接走在线最小仿真集，并给 `field_inspect_gate` 挂 `tools/waiver.py new --gate inspect --region <R>` 留痕（**不得静默跳过**；IND 无包且本地 WebData ZIP 不含 IND，2026-09-18 已有先例）。另注意 `get_datafields` 参数陷阱：显式传 `max_fields=null` 会触发 `max_fields_cap` 每集只返 1 条（IND 5/5 集复现，2026-11-14）；要全集必须**不传该参数**或传 ≥ `platform_count`，且 `filter_sharpe=False`（否则按 Sharpe<0 过滤字段 = 隐性抽样）。
+
 **在线最小仿真集**（一个字段全跑六法 ≈ 15 条仿真 ≈ 2 批，**别对整个数据集逐字段全跑**——1000+ 字段的集只对 dataset-exploration §1 抽出的 Top-N 字段在线复核）：
 
 | 集 | 内容 | 条数 |

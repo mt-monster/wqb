@@ -1,0 +1,372 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "socialmedia15",
+  "fetched_at": "2026-11-12T11:24:57.433Z",
+  "platform_count": 45,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "dividend_trend_score",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Score of dividend trend, scaled -1 to 1, where negative indicates falling dividends and positive indicates rising dividends"
+    },
+    {
+      "id": "scl15_analystrating",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Upgrade/downgrade activity scaled from -1 (downgrades) to 1 (upgrades)"
+    },
+    {
+      "id": "scl15_anger",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Displeasure or anger toward the stock on a 0 to 1 scale, where 1 denotes maximum resentment"
+    },
+    {
+      "id": "scl15_attrition_score",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Score from 0 to 1 indicating staff reductions at a company; 1 means more layoffs"
+    },
+    {
+      "id": "scl15_buzz",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "Media attention or intensity score from 0 to 1 indicating how much the stock is being talked about; zero implies other scores may be unavailable"
+    },
+    {
+      "id": "scl15_conflict",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Score from -1 to 1 measuring disagreement versus agreement/conciliation in media coverage"
+    },
+    {
+      "id": "scl15_d1_buzz",
+      "type": "VECTOR",
+      "coverage": 0.2991,
+      "userCount": 88,
+      "alphaCount": 128,
+      "description": "A 0 to 1 score representing how much a particular stock is talked about. 0 indicates that other scores would also be N/A."
+    },
+    {
+      "id": "scl15_d1_conflict",
+      "type": "VECTOR",
+      "coverage": 0.2779,
+      "userCount": 100,
+      "alphaCount": 140,
+      "description": "This score denotes disagreement and net of agreement and conciliation, ranging from -1 to 1"
+    },
+    {
+      "id": "scl15_d1_emotionvsfact",
+      "type": "VECTOR",
+      "coverage": 0.2936,
+      "userCount": 71,
+      "alphaCount": 94,
+      "description": "This score denotes net emotional sentiment on a stock in the range of -1 to 1"
+    },
+    {
+      "id": "scl15_d1_fundamentalstrength",
+      "type": "VECTOR",
+      "coverage": 0.2589,
+      "userCount": 72,
+      "alphaCount": 87,
+      "description": "This score denotes positivity about accounting fundamentals, net of references to negativity about accounting fundamentals, in range of -1 to 1"
+    },
+    {
+      "id": "scl15_d1_longshort",
+      "type": "VECTOR",
+      "coverage": 0.2671,
+      "userCount": 37,
+      "alphaCount": 49,
+      "description": "A score denoting buying, net of references to shorting/selling, scaled in the range of -1 to 1"
+    },
+    {
+      "id": "scl15_d1_optimism",
+      "type": "VECTOR",
+      "coverage": 0.2681,
+      "userCount": 52,
+      "alphaCount": 68,
+      "description": "A score ranging from -1 to 1 expressing optimism to future growth of stock. -1 means maximum pessimism or minimum optimism towards a stock."
+    },
+    {
+      "id": "scl15_d1_pricedirection",
+      "type": "VECTOR",
+      "coverage": 0.2627,
+      "userCount": 28,
+      "alphaCount": 33,
+      "description": "A score ranging from -1 to 1 giving the direction of price movement. Upward is +ve. Maximum directional change upwards is denoted by 1."
+    },
+    {
+      "id": "scl15_d1_risk_score",
+      "type": "VECTOR",
+      "coverage": 0.2656,
+      "userCount": 46,
+      "alphaCount": 51,
+      "description": "A score ranging from -1 to 1 indicating bubble risk on a stock, considering speculative bubbles using social media and emotional expectations."
+    },
+    {
+      "id": "scl15_d1_sentiment",
+      "type": "VECTOR",
+      "coverage": 0.2952,
+      "userCount": 44,
+      "alphaCount": 56,
+      "description": "A score scaled between -1 to 1 expressing net sentiment on stock."
+    },
+    {
+      "id": "scl15_d1_stress",
+      "type": "VECTOR",
+      "coverage": 0.2688,
+      "userCount": 50,
+      "alphaCount": 64,
+      "description": "0 to 1 score that denotes an apprehension on a stock price. 1 means maximum apprehension."
+    },
+    {
+      "id": "scl15_d1_timeurgency",
+      "type": "VECTOR",
+      "coverage": 0.2686,
+      "userCount": 54,
+      "alphaCount": 77,
+      "description": "A score ranging from -1 to 1 denoting urgency and timeliness, net of references to tardiness and delays, indicating future growth prospects of stock/company. 1…"
+    },
+    {
+      "id": "scl15_d1_trust",
+      "type": "VECTOR",
+      "coverage": 0.2552,
+      "userCount": 51,
+      "alphaCount": 63,
+      "description": "A score ranging from -1 to 1 indicating trustworthiness of a stock as opposed to corruption practices for the underlying. 1 indicates maximum trustworthiness an…"
+    },
+    {
+      "id": "scl15_d1_volatility",
+      "type": "VECTOR",
+      "coverage": 0.2635,
+      "userCount": 48,
+      "alphaCount": 57,
+      "description": "0 to 1 score indicating volatility in market prices or business conditions."
+    },
+    {
+      "id": "scl15_debt_score",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Bankruptcy/default risk on a 0 to 1 scale, where 1 indicates higher bankruptcy risk"
+    },
+    {
+      "id": "scl15_earn_score",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Score from -1 to 1 denoting future earnings growth or surprise; positive values indicate positive surprise, with 1 as the maximum positive"
+    },
+    {
+      "id": "scl15_emotionvsfact",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Net emotional sentiment on the stock, ranging from -1 (more negative emotion) to +1 (more positive emotion)"
+    },
+    {
+      "id": "scl15_fear",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Level of fear regarding the stock on a 0 to 1 scale, where 1 denotes maximum fear"
+    },
+    {
+      "id": "scl15_fundamentalstrength",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Media-derived score from -1 to 1 representing positivity about accounting fundamentals net of negative references"
+    },
+    {
+      "id": "scl15_gloom",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Negative future outlook or gloom, scaled 0 to 1, with 1 indicating maximum gloom"
+    },
+    {
+      "id": "scl15_innovation",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Company innovativeness on a 0 to 1 scale, where 1 indicates maximum innovation"
+    },
+    {
+      "id": "scl15_joy",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Happiness or affection sentiment toward the stock on a 0 to 1 scale, with 1 meaning maximum happiness"
+    },
+    {
+      "id": "scl15_litigation",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Score from 0 to 1 indicating legal activity or controversy around a stock; 1 means more legal activity"
+    },
+    {
+      "id": "scl15_longshort",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Score from -1 to 1 indicating net buying versus shorting/selling sentiment, where positive implies more buying"
+    },
+    {
+      "id": "scl15_longshortforecast",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forecasts of buying net of forecasts of shorting/selling scaled from -1 to 1"
+    },
+    {
+      "id": "scl15_lovehate",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Score denoting love, net of references to hate towards a stock, scaled from -1 to 1"
+    },
+    {
+      "id": "scl15_managementchange",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Score from -1 to 1 capturing stability of a company's management; 1 implies maximum change and thus less stability"
+    },
+    {
+      "id": "scl15_managementtrust",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Score from -1 to 1 reflecting trust in a company's management; -1 indicates minimum trust, potentially due to unethical behavior"
+    },
+    {
+      "id": "scl15_mergers",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 3,
+      "alphaCount": 6,
+      "description": "Score from 0 to 1 denoting merger and acquisition activity; 1 means the company is most likely undergoing a merger or acquisition"
+    },
+    {
+      "id": "scl15_optimism",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Degree of optimism about the stock’s future growth, from -1 (maximum pessimism) to +1 (maximum optimism)"
+    },
+    {
+      "id": "scl15_price_score",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Forecasts of asset price rises net of references to price drops, scaled from -1 to 1"
+    },
+    {
+      "id": "scl15_pricedirection",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "A score ranging from -1 to 1 giving the direction of price movement; positive values indicate upward moves, with 1 denoting maximum upward change"
+    },
+    {
+      "id": "scl15_risk_score",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Bubble risk indicator for the stock, scaled -1 to 1 based on social and emotional signals; higher positive suggests elevated bubble risk"
+    },
+    {
+      "id": "scl15_sentiment",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Net aggregate sentiment about the stock scaled from -1 (negative) to +1 (positive)"
+    },
+    {
+      "id": "scl15_stress",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Apprehension regarding the stock price, scaled 0 to 1, with 1 indicating maximum stress"
+    },
+    {
+      "id": "scl15_timeurgency",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Urgency and timeliness net of delays scaled from -1 to 1; 1 indicates maximum timeliness and better growth prospects"
+    },
+    {
+      "id": "scl15_trust",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Trustworthiness of the stock scaled from -1 to 1; 1 indicates maximum trust and minimal corruption concerns"
+    },
+    {
+      "id": "scl15_uncertainty",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Confusion or uncertainty about the stock’s movement, scaled 0 to 1, with 1 indicating maximum uncertainty"
+    },
+    {
+      "id": "scl15_violence",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Intensity of violent or highly entropic reactions related to the stock, scaled 0 to 1, with 1 indicating maximum intensity"
+    },
+    {
+      "id": "scl15_volatility",
+      "type": "VECTOR",
+      "coverage": 0.3708,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Volatility in market prices or business conditions on a 0 to 1 scale"
+    }
+  ]
+}

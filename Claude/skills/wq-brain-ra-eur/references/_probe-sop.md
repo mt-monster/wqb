@@ -91,7 +91,7 @@
 
 | 双结构最好读数 | 动作 |
 |---|---|
-| **S ≥ 1.58 且 2Y ≥ 1.58 且 F ≥ 1.0** | 全闸验证：`get_alpha_details`（全 checks）→ prod/self 双端点（`check_correlation(refresh=True)`）→ **PnL 互相关去重** |
+| **S ≥ 1.58 且 2Y ≥ 1.58 且 F ≥ 1.0** | 全闸验证：`get_alpha_details`（全 checks）→ prod/self 双端点（`check_correlation(refresh=False)`，48h 缓存优先）→ **PnL 互相关去重** |
 | **S 1.0–1.58 或 F 0.6–1.0（且 returns ≥ 3.5%）** | **不判死** —— 「结构没找对」信号带。升级顺序见下表 |
 | **反算 returns < 3.5%** | **判死**（F 闸数学封顶，结构与参数无解） |
 | **双结构 S < 0.5** | 判死；同族字段免测。**判死前自检两问：真的用了两个结构吗？字段真的跨概念族吗？** |

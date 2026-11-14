@@ -1,0 +1,70 @@
+{
+ "dataset": "stock_search_trends",
+ "region": "GBR",
+ "delay": 1,
+ "field_count": 12,
+ "verdict": "PAUSED 2026-11-13（TO墙0.71-0.78+弱S，未判死）",
+ "fields": [
+  {
+   "id": "search_interest_1y_equity_symbol",
+   "t": "MATRIX",
+   "uc": 3
+  },
+  {
+   "id": "search_interest_1y_corporate_name",
+   "t": "MATRIX",
+   "uc": 2
+  },
+  {
+   "id": "search_interest_84d_equity_symbol",
+   "t": "MATRIX",
+   "uc": 1
+  },
+  {
+   "id": "search_interest_84d_corporate_name",
+   "t": "MATRIX",
+   "uc": 1
+  },
+  {
+   "id": "search_interest_28d_equity_symbol",
+   "t": "MATRIX",
+   "uc": 1
+  },
+  {
+   "id": "search_interest_28d_corporate_name",
+   "t": "MATRIX",
+   "uc": 1
+  },
+  {
+   "id": "search_interest_14d_equity_symbol",
+   "t": "MATRIX",
+   "uc": 1
+  },
+  {
+   "id": "search_interest_14d_corporate_name",
+   "t": "MATRIX",
+   "uc": 3
+  },
+  {
+   "id": "search_interest_7d_equity_symbol",
+   "t": "MATRIX",
+   "uc": 2
+  },
+  {
+   "id": "search_interest_7d_corporate_name",
+   "t": "MATRIX",
+   "uc": 3
+  },
+  {
+   "id": "search_interest_today_equity_symbol",
+   "t": "MATRIX",
+   "uc": 1
+  },
+  {
+   "id": "search_interest_today_corporate_name",
+   "t": "MATRIX",
+   "uc": 2
+  }
+ ],
+ "note": "6窗口×2查询类型，全 MATRIX，cov 0 但探针 d5WJdGp2 实证有数据（longCount 210）"
+}

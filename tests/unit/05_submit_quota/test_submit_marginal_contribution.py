@@ -127,3 +127,145 @@ def test_metrics_delta_is_computed_not_passed_through():
     assert abs(r["delta"]["sharpe"] - 0.09) < 1e-9
     # drawdown 改善 = 数值下降 ⇒ Δ 为负
     assert r["delta"]["drawdown"] < 0
+
+
+# ---------------------------------------------------------------------------
+# 2026-11-13 分级硬闸：ΔSharpe / ΔReturns 硬拦，成本指标只告警
+# ---------------------------------------------------------------------------
+
+class _CostlyPositive:
+    """ΔS>0、ΔRet>0，但换手与回撤都变差 —— 只应软告警，不得阻断。"""
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.04, "fitness": 2.55, "turnover": 0.1453,
+                           "returns": 0.102, "drawdown": 0.0337},
+                "after": {"sharpe": 3.13, "fitness": 2.61, "turnover": 0.150,
+                          "returns": 0.1025, "drawdown": 0.040},
+            },
+        }
+
+
+class _FullyPositive:
+    """五项按方向全部达标。"""
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.04, "fitness": 2.55, "turnover": 0.1453,
+                           "returns": 0.102, "drawdown": 0.0337},
+                "after": {"sharpe": 3.13, "fitness": 2.61, "turnover": 0.140,
+                          "returns": 0.1025, "drawdown": 0.030},
+            },
+        }
+
+
+def test_returns_negative_marks_hard_gate():
+    """ΔSharpe>0 但 ΔReturns<0 ⇒ hard_blocked=True（新增硬项），dilutive 仍为 False。"""
+    r = _marginal_contribution(_Dispersive(), "FAKE")
+    assert r["available"] is True
+    assert r["dilutive"] is False, "dilutive 仍只表达 ΔSharpe<0，供 Step 1.8 复用"
+    assert "blocked" not in r, "blocked 由 run() 置位，本函数不得自带"
+    assert r["delta"]["sharpe"] > 0 and r["delta"]["returns"] < 0
+    assert r["hard_blocked"] is True
+    assert r["hard_failures"] == ["returns"], r["hard_failures"]
+    assert "组合分散" in (r["risk_note"] or ""), "risk_note 仍按 ΔSharpe 语义产出"
+    assert "阻断" in (r["hard_gate_note"] or "")
+
+
+def test_cost_metrics_are_soft_warnings_only():
+    """ΔTurnover>0 / ΔDrawdown>0 只进 soft_warnings，绝不触发硬闸。"""
+    r = _marginal_contribution(_CostlyPositive(), "FAKE")
+    assert r["hard_blocked"] is False
+    assert r["hard_failures"] == []
+    assert "turnover" in r["soft_warnings"] and "drawdown" in r["soft_warnings"]
+    assert r["direction_ok"]["turnover"] is False
+    assert r["direction_ok"]["drawdown"] is False
+    assert r["direction_ok"]["sharpe"] is True
+    assert r["direction_ok"]["returns"] is True
+    assert "不阻断" in (r["hard_gate_note"] or "")
+
+
+def test_all_directional_metrics_pass():
+    r = _marginal_contribution(_FullyPositive(), "FAKE")
+    assert r["hard_blocked"] is False
+    assert r["soft_warnings"] == []
+    assert all(v is True for v in r["direction_ok"].values())
+    assert "方案D通过" in (r["hard_gate_note"] or "")
+
+
+def test_direction_rule_is_exposed():
+    """方向定义与硬项清单必须随结果透出，便于审计与口径同步。"""
+    r = _marginal_contribution(_FullyPositive(), "FAKE")
+    rule = r["direction_rule"]
+    assert set(rule["higher_is_better"]) == {"sharpe", "fitness", "returns"}
+    assert set(rule["lower_is_better"]) == {"turnover", "drawdown"}
+    assert set(rule["hard_block_metrics"]) == {"sharpe", "fitness"}
+    assert set(rule["pair_cost_metrics"]) == {"turnover", "drawdown"}
+    assert rule["scheme"].startswith("D:")
+
+
+class _FitnessNegative:
+    """ΔS>0、ΔRet>0，但换手抬高把 ΔFitness 压负 —— 复合成本信号，应硬拦。"""
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.00, "fitness": 2.35, "turnover": 0.13,
+                           "returns": 0.080, "drawdown": 0.0337},
+                "after": {"sharpe": 3.10, "fitness": 1.97, "turnover": 0.20,
+                          "returns": 0.081, "drawdown": 0.030},
+            },
+        }
+
+
+def test_fitness_negative_marks_hard_gate():
+    """2026-11-13 追加：Fitness 与 Sharpe/Returns 同属正向族，ΔF<0 亦硬拦。"""
+    r = _marginal_contribution(_FitnessNegative(), "FAKE")
+    assert r["available"] is True
+    assert r["dilutive"] is False
+    assert r["hard_blocked"] is True
+    assert r["hard_failures"] == ["fitness"], r["hard_failures"]
+    assert r["direction_ok"]["fitness"] is False
+    assert "turnover" in r["soft_warnings"], "成本指标仍只作软告警"
+    assert "阻断" in (r["hard_gate_note"] or "")
+
+
+class _DiversificationOffset:
+    """ΔRet<0 但 ΔTO/ΔDD 同步下降、ΔS/ΔF 上升 —— 健康分散化，方案 D 必须放行。"""
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.00, "fitness": 2.35, "turnover": 0.13,
+                           "returns": 0.080, "drawdown": 0.0337},
+                "after": {"sharpe": 3.10, "fitness": 2.50, "turnover": 0.12,
+                          "returns": 0.078, "drawdown": 0.030},
+            },
+        }
+
+
+def test_pair_offset_passes():
+    """方案 D 核心：收益降但成本同步降 ⇒ 分散化补偿，不阻断。"""
+    r = _marginal_contribution(_DiversificationOffset(), "FAKE")
+    assert r["hard_blocked"] is False
+    assert r["hard_failures"] == []
+    assert r["pair_rule"]["triggered"] is False
+    assert r["pair_rule"]["offset"] is True
+    assert r["pair_rule"]["cost_metrics_up"] == []
+    assert "returns" in r["soft_warnings"], "收益下降仍须作为归因软告警"
+    assert "分散化补偿" in (r["hard_gate_note"] or "")
+
+
+def test_pair_triggered_blocks():
+    """收益降 + 成本升 ⇒ 双重恶化，returns 进硬失败列表。"""
+    r = _marginal_contribution(_Dispersive(), "FAKE")
+    assert r["hard_blocked"] is True
+    assert r["hard_failures"] == ["returns"]
+    assert r["pair_rule"]["triggered"] is True
+    assert "turnover" in r["pair_rule"]["cost_metrics_up"]

@@ -15,7 +15,7 @@
 2026-10 两战役（`campaign_20261014` / `campaign_20261017`）的脚本都是**一次性**的：
 
 - 批次派发与收割 → 走 MCP `create_multi_simulation` / `harvest_multisim_alphas`，无需本地脚本
-- prod/self 相关性 → 走 MCP `check_correlation(refresh=True)`，本地复现反而更慢
+- prod/self 相关性 → 走 MCP `check_correlation(refresh=False)`（48h 缓存优先），本地复现反而更慢
 - 提交链路 → `submit_alpha` 节点（`wqb.workflow.nodes.submit_alpha`），已由 skill 化，不需要每区一份
 
 ⇒ **无值得固化的 skill 级脚本**。若日后出现「本区特有、每次都要跑」的流程（例如 USA 专属的

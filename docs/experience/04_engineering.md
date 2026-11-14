@@ -331,7 +331,7 @@ AGENTS.md 三处写 S11 基线 `171`（基线文件是 `159`，与 `branch_polic
    现在 `wave_results.key_findings` 固定四列（① 强度上限 max|S| / ② 机制方向与证伪条件 /
    ③ prod 读数，未测显式标注 / ④ 闸缺口按差值排序），并附 TO 越界标注
    （保留区间 **[0.03, 0.70]**，只标注不删行；越界行不进 prod/self 队列）。
-   **「未测」是显式结论，不是及格线**：提交前仍必须 `check_correlation(refresh=True)`。
+   **「未测」是显式结论，不是及格线**：提交前走 `check_correlation(refresh=False)`；48h 内可信缓存直接过闸（2026-11-14 用户明令），仅过期/缺失/不可信才 `refresh=True`。
 
 > 共同形状与 §14.2 一致：**把「不知道」输出成「通过」**。写收批/复盘/去重代码时先问
 > 「这个字段缺失时，下游会读成什么」。守护：`test_ra_failed_checks_single_definition.py`、

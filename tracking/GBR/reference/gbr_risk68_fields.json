@@ -1,0 +1,45 @@
+{
+ "dataset": "risk68",
+ "name": "Forecast Data",
+ "region": "GBR",
+ "delay": 1,
+ "field_count": 5,
+ "note": "cov 元数据全 0；GBR 残差反转族曾撞 prod 墙 0.71-0.76",
+ "fields": [
+  {
+   "id": "rsk68_beta",
+   "t": "MATRIX",
+   "uc": 93,
+   "ac": 144,
+   "d": "欧洲资产单位化 beta"
+  },
+  {
+   "id": "rsk68_residual_return",
+   "t": "MATRIX",
+   "uc": 214,
+   "ac": 341,
+   "d": "特质 1 日收益"
+  },
+  {
+   "id": "rsk68_weight_dadv",
+   "t": "MATRIX",
+   "uc": 80,
+   "ac": 115,
+   "d": "SMA 日均成交额"
+  },
+  {
+   "id": "rsk68_weight_edadv",
+   "t": "MATRIX",
+   "uc": 78,
+   "ac": 109,
+   "d": "EWMA 日均成交额"
+  },
+  {
+   "id": "rsk68_weight_volatility_short",
+   "t": "MATRIX",
+   "uc": 106,
+   "ac": 176,
+   "d": "短期波动率估计"
+  }
+ ]
+}

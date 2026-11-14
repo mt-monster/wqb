@@ -1,0 +1,347 @@
+{
+ "dataset": "order_book_imbalance",
+ "name": "Order Book Liquidity and Imbalance Analytics",
+ "region": "GBR",
+ "tower": "other(2)",
+ "field_count": 240,
+ "note": "全 VECTOR。平台目录实拉 240 字段（2026-11-14 MCP get_datafields 全量）；本档案按字段族归并收录 45 个代表字段，族内其余为同族 lvl2-5 / ref / exclusive 变体。覆盖分三档：trade 分类组 0.4294（12 字段）/ auction+执行质量组 0.2028-0.2029（10）/ 微观结构深度组 0.1641-0.1671（218：rest_time 30 / min_rest 20 / fill_prob 10 / spread 7 / duration 12 / price level 10 / order events 18 / notional flows 12 / pct 8 / 其它）。11-11 已测 14 字段（最强 nonaddressable_trade_volume S0.56/2Y1.64），翻符号对称=真噪声；未测 226。",
+ "fields": [
+  {
+   "id": "nonaddressable_trade_volume",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 0,
+   "ac": 0,
+   "d": "shares traded classified non-addressable (not part of price-forming)"
+  },
+  {
+   "id": "nonaddressable_trade_count",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 1,
+   "ac": 1,
+   "d": "number of executions classified non-addressable"
+  },
+  {
+   "id": "nonaddressable_trade_notional_value",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 1,
+   "ac": 1,
+   "d": "notional value traded classified non-addressable"
+  },
+  {
+   "id": "lit_trade_volume",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 5,
+   "ac": 5,
+   "d": "share volume on lit/transparent books"
+  },
+  {
+   "id": "lit_trade_count",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 3,
+   "ac": 3,
+   "d": "number of trades on lit books"
+  },
+  {
+   "id": "lit_trade_notional_value",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 1,
+   "ac": 1,
+   "d": "notional traded lit addressable"
+  },
+  {
+   "id": "dark_trade_volume",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 7,
+   "ac": 8,
+   "d": "shares on dark venues/non-displayed books"
+  },
+  {
+   "id": "dark_trade_count",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 2,
+   "ac": 2,
+   "d": "number of dark-venue trades"
+  },
+  {
+   "id": "dark_trade_notional_value",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 3,
+   "ac": 3,
+   "d": "notional traded dark addressable"
+  },
+  {
+   "id": "bilateral_trade_volume",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 0,
+   "ac": 0,
+   "d": "shares bilateral addressable (price-forming, requires relationship)"
+  },
+  {
+   "id": "bilateral_trade_count",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 0,
+   "ac": 0,
+   "d": "number of bilateral addressable executions"
+  },
+  {
+   "id": "bilateral_trade_notional_value",
+   "t": "VECTOR",
+   "cov": 0.4294,
+   "uc": 0,
+   "ac": 0,
+   "d": "notional bilateral addressable"
+  },
+  {
+   "id": "closing_auction_dislocation_last",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 1,
+   "ac": 2,
+   "d": "bps change: last continuous mid -> auction close"
+  },
+  {
+   "id": "closing_auction_dislocation_1min",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 0,
+   "ac": 0,
+   "d": "bps change: mid 1min before close -> auction close"
+  },
+  {
+   "id": "closing_auction_dislocation_5min",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 0,
+   "ac": 0,
+   "d": "bps change: mid 5min before close -> auction close"
+  },
+  {
+   "id": "auction_order_imbalance_absolute",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 0,
+   "ac": 0,
+   "d": "excess bid volume on book after auction execution"
+  },
+  {
+   "id": "auction_order_imbalance_notional",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 1,
+   "ac": 1,
+   "d": "excess notional bid volume after auction"
+  },
+  {
+   "id": "auction_order_imbalance_pct_adv",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 3,
+   "ac": 3,
+   "d": "closing auction imbalance as pct of ADV"
+  },
+  {
+   "id": "auction_order_imbalance_pct_auction",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 0,
+   "ac": 0,
+   "d": "excess volume as pct of auction volume"
+  },
+  {
+   "id": "intraday_price_volatility",
+   "t": "VECTOR",
+   "cov": 0.2028,
+   "uc": 3,
+   "ac": 3,
+   "d": "realized intraday volatility estimate"
+  },
+  {
+   "id": "quote_to_trade_ratio",
+   "t": "VECTOR",
+   "cov": 0.2029,
+   "uc": 1,
+   "ac": 1,
+   "d": "quote/trade volume off-best, execution quality proxy"
+  },
+  {
+   "id": "time_weighted_spread_bps",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 0,
+   "ac": 0,
+   "d": "time-weighted relative spread (bps)"
+  },
+  {
+   "id": "time_weighted_spread_price_units",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 2,
+   "ac": 3,
+   "d": "time-weighted absolute spread (price units)"
+  },
+  {
+   "id": "mean_relative_bid_ask_spread",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 2,
+   "ac": 2,
+   "d": "mean relative spread over day"
+  },
+  {
+   "id": "mean_absolute_bid_ask_spread",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 0,
+   "ac": 0,
+   "d": "mean absolute spread (price units)"
+  },
+  {
+   "id": "final_bid_ask_spread_bps",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 0,
+   "ac": 0,
+   "d": "last relative spread of day"
+  },
+  {
+   "id": "last_absolute_bid_ask_spread",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 1,
+   "ac": 2,
+   "d": "last absolute spread (price units)"
+  },
+  {
+   "id": "ebbo_execution_to_order_ratio",
+   "t": "VECTOR",
+   "cov": 0.1671,
+   "uc": 0,
+   "ac": 0,
+   "d": "traded/quote volume at EBBO"
+  },
+  {
+   "id": "bid_order_insertion_count",
+   "t": "VECTOR",
+   "cov": 0.1649,
+   "uc": 1,
+   "ac": 1,
+   "d": "new bid limit order insertions per day"
+  },
+  {
+   "id": "ask_order_insertion_count_2",
+   "t": "VECTOR",
+   "cov": 0.1649,
+   "uc": 1,
+   "ac": 1,
+   "d": "new ask limit order insertions per day"
+  },
+  {
+   "id": "bid_order_deletion_count",
+   "t": "VECTOR",
+   "cov": 0.1649,
+   "uc": 0,
+   "ac": 0,
+   "d": "bid cancellations per day"
+  },
+  {
+   "id": "ask_order_deletion_count",
+   "t": "VECTOR",
+   "cov": 0.1649,
+   "uc": 1,
+   "ac": 1,
+   "d": "ask cancellations per day"
+  },
+  {
+   "id": "fill_prob_bid_lvl1",
+   "t": "VECTOR",
+   "cov": 0.1645,
+   "uc": 0,
+   "ac": 0,
+   "d": "P(bid lvl1 order filled within 60s)"
+  },
+  {
+   "id": "fill_prob_ask_lvl1",
+   "t": "VECTOR",
+   "cov": 0.1645,
+   "uc": 0,
+   "ac": 0,
+   "d": "P(ask lvl1 order filled within 60s)"
+  },
+  {
+   "id": "avg_rest_time_ask_cancelled_lvl1",
+   "t": "VECTOR",
+   "cov": 0.1645,
+   "uc": 3,
+   "ac": 3,
+   "d": "mean resting time of cancelled ask lvl1 orders"
+  },
+  {
+   "id": "avg_rest_time_bid_cancelled_lvl1",
+   "t": "VECTOR",
+   "cov": 0.1645,
+   "uc": 1,
+   "ac": 1,
+   "d": "mean resting time of cancelled bid lvl1 orders"
+  },
+  {
+   "id": "duration_best_bid_ask_venue",
+   "t": "VECTOR",
+   "cov": 0.1671,
+   "uc": 3,
+   "ac": 3,
+   "d": "time with at least one order at EBBO bid AND ask"
+  },
+  {
+   "id": "percentage_time_best_bid_venue",
+   "t": "VECTOR",
+   "cov": 0.1671,
+   "uc": 2,
+   "ac": 2,
+   "d": "pct time at least one venue at best bid"
+  },
+  {
+   "id": "mean_notional_bid_price_improvement",
+   "t": "VECTOR",
+   "cov": 0.1671,
+   "uc": 1,
+   "ac": 1,
+   "d": "notional added when venue improves consolidated bid"
+  },
+  {
+   "id": "mean_notional_ask_price_worsening",
+   "t": "VECTOR",
+   "cov": 0.1671,
+   "uc": 1,
+   "ac": 1,
+   "d": "notional at last venue before ask worsens"
+  },
+  {
+   "id": "final_midpoint_price",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 1,
+   "ac": 2,
+   "d": "end-of-day midpoint (price level - not signal)"
+  },
+  {
+   "id": "max_midpoint_price_daily",
+   "t": "VECTOR",
+   "cov": 0.1644,
+   "uc": 1,
+   "ac": 2,
+   "d": "daily max midpoint (price level - not signal)"
+  }
+ ],
+ "profile_batch": "campaign2_20261114"
+}

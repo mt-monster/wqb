@@ -76,7 +76,7 @@
 ### S5 提交前
 
 - 资格判定：`$WQ_PY tools/mode_b_qualify.py evaluate --region DEU --sharpe <S> --fitness <F> --two-year-sharpe <2Y>`（喂全指标，旁路 A–E 才会生效）
-- 提交链：`submit_verdict` 只否决；prod 与 self 双端点实测（`check_correlation(refresh=True)`）；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
+- 提交链：`submit_verdict` 只否决；prod 走 `check_correlation(refresh=False)`（48h 缓存优先，不默认回源）+ self 实测；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
 
 ### 判死记录（不要重试；「归属」= payload 绑定 / 由条目名推断 / 关键词推断）
 
@@ -138,7 +138,7 @@ group_neutralize(group_rank(add(ts_mean(bf,1), ts_mean(bf,210)), sector),
 | `9qWX78vV` | 框架 | 1.65 | 1.47 | 1.69 | 0.3014 ✅ | 0.6197 ✅ |
 
 **⚠ 二者同腿（均为 `eps_y1_estimate_change_3mo`）⇒ 互相关系数 0.9372 ⇒ 只能提交其一**（平台 self 只算已提交 OS 池）。
-**⚠ prod 余量小（0.651 vs 0.7）且逐日漂移 ⇒ 提交当日必须 `check_correlation(refresh=True)` 复核。**
+**⚠ prod 余量小（0.651 vs 0.7）且逐日漂移 ⇒ 建议复核；但 48h 内可信缓存按用户明令可直接过闸，不得擅自 `refresh=True`。**
 
 **★ 框架 × 同族字段的可迁移性（批 W-ANL5/6，20 条）**：`eps_y1_change` 1.77 ✅；
 `netprofit_y1` 最好 **1.36**、`eps_y2` **1.30**、`netprofit_y2` 1.08、`revenue_y1` 1.01、`revenue_y2` 0.75、

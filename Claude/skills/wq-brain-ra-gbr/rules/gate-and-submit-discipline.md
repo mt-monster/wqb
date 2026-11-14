@@ -112,7 +112,7 @@ WHERE stage = 'IS'
 ⇒ **零仿真配额**地把候选池从 14 条扩到 34 条，再跨区到 **21 条五道闸全过**。
 
 **配套纪律**：
-1. 本地 prod 是**筛选器不是终验**（平台 prod 池 2–3 天可从 0.58 漂到 0.98）⇒ 提交前仍须 `check_correlation(refresh=True)` 当场终验。
+1. 本地 prod 是**筛选器不是终验**（平台 prod 池 2–3 天可从 0.58 漂到 0.98）⇒ 提交前走 `check_correlation(refresh=False)`；48h 内可信缓存直接过闸（2026-11-14 用户明令），过期才 `refresh=True`。
 2. `prod_corr_source` 字段区分 `platform_sync`（权威）/ `manual` / `triage_local` ⇒ 按 source 分层读，别把本地估算当平台值。
 3. **★ prod 墙是族属性**：同一字段族的 prod 命中率一致 ⇒ **选族优先，选几何次要**。本区已验证通道见 `field_mechanism_map_20261031.md` §2。
 
@@ -123,7 +123,7 @@ WHERE stage = 'IS'
 1. **先提 GBR 15 条**（点 3 塔：PV 1→4 / FUNDAMENTAL 0→4 / NEWS 0→5），产出最快。
 2. 逐条当场观察平台 prod 判定；**撞墙的当场从 47 条合格替补池**（`results/backup_screen_20261031.json`）按「族不同 + 塔位合规」顶上。撞 prod **非破坏性**（平台拒收、alpha 保持未提交、不消耗塔位与配额）。
 3. 再提 EUR 2 → IND 1 → USA 3。
-4. 每条：`check_correlation(refresh=True)` → `set_alpha_properties`（name/tags/descriptions 见 `gbr_submit_execution_pack_20261031.md`）→ `workflow_submit_alpha(confirm_submit=True)`（**须用户确认后执行，不可逆**）。
+4. 每条：`check_correlation(refresh=False)`（48h 缓存优先）→ `set_alpha_properties`（name/tags/descriptions 见 `gbr_submit_execution_pack_20261031.md`）→ `workflow_submit_alpha(confirm_submit=True)`（**须用户确认后执行，不可逆**）。
 5. **提交动作必须用户明确确认**；问卷超时自动选中**不算**确认。
 6. 命名/标签规范：`<REGION>_R_<family>_<NN>`（禁含 PROD 数值）；tags = `CH_<通道>` + `SRC_<数据集>` + `EXPRFAM_<族>`（≤5）。
 

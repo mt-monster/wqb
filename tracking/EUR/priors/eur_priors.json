@@ -29,15 +29,15 @@
    "source": "region_kb"
   },
   {
-   "id": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
-   "what": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
-   "key": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
-   "evidence": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
+   "id": "EUR-SEARCH-INTEREST-AMPLIFY-SHELL-WIN-20261102",
+   "what": "EUR-SEARCH-INTEREST-AMPLIFY-SHELL-WIN-20261102",
+   "key": "",
+   "evidence": "",
    "source": "registry_win"
   },
   {
-   "id": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
-   "what": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
+   "id": "EUR-INSIDER-FEATS-AMPLIFY-LEVER-WIN-20261102",
+   "what": "EUR-INSIDER-FEATS-AMPLIFY-LEVER-WIN-20261102",
    "key": "",
    "evidence": "",
    "source": "registry_win"
@@ -105,6 +105,1034 @@
    "source": "region_kb_dead_pattern"
   }
  ],
+ "_dead_ends_all": [
+  {
+   "family": "region_kb",
+   "reason": "news54/news塔: mws54_factor semi-annual+单边恒正+稀疏,信号天花板0.40",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "news_sentiment_nlp/other塔: 情绪信号弱,max0.39",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "analyst45/analyst塔: 分析师想法表现弱,max0.32",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "insider买入信号族(total_buy/total_top_buy/mean_buy/mean_top_buy): prod_corr0.75-0.78撞墙,insider族拥挤",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "纯信号族(动量/低波/量价/质量/institutions持仓): max0.62太弱",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "model193慢残差: EUR/TOPCS1600覆盖仅0.26,持仓45-99只,信号天花板0.42",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "predicted_surprise-价值-insider族: 唯一达硬闸结构但self_corr同族撞车,只能1颗",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 wave175: 三腿结构中换 FCF2 腿（short_term_trailing_fcf 1.24 / long_term_time_weighted_earnings_yield_3 1.46）强度崩塌——FCF2 是强度来源不可替换；快腿 ts_mean 预处理杀信号（0.37）",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 wave177: predictive_starmine 字段无 delay=0 覆盖（平台 unknown variable）——该数据集仅 d1，delay0 对照不可行",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 wave179: 2腿族(ps+fast+bucket,无FCF2) 换掉 median_gap 后强度塌方（best 0.80）——FCF2 与 median_upward_gap_continuation_score 是强度双支点，缺一不可",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 wave183: ILLIQUID_MINVOL1M 宇宙强度塌方（S1.17-1.23）+ 独有 LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE 硬闸，设置探索杠杆判死",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 wave184: ts_rank 外层杀信号（0.60）；mid_term_growth 变体无强度；growth_flow lift 1.64 卡 SUB_UNIVERSE；yield lift 1.41 不达；ts_decay 外层=指标不变",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 wave185: 骨架移植判死——冠军3腿骨架移到 news46×risk70/risk因子族 best S1.04，远低于1.58；骨架增益与特定三元组 ps×gap_up×FCF 绑定，非通用放大器",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 wave186: 中性化对照轨判死——母配方 le8Y68K2 换 INDUSTRY(E5vMr2bL S1.91)/SECTOR(akL8W0J6 S1.72)/COUNTRY(xAYom79n S1.72)/STATISTICAL(RRVo2bXa S1.29) 全部触发 LOW_SUB_UNIVERSE_SHARPE（fails!=None 不过闸1）；SUBINDUS",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 饱和字段锁定演化：{fcf2, median_gap, buy_count}（wave178）→ +predicted_surprise_pct_f12m_revenue_4（wave180 后）；新变体需用 ebitda_5/fy1 等未饱和姊妹",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "2026-09-14 数据集赢面诊断（backtest_results 全量 287 COMPLETE 行）：仅 continuation_score 族曾过 S≥1.58 且 gate1-pass（18 条，全同座位）；其他数据集峰值均≤1.36（chart_cnn_alpha 1.36 / predictive_starmine 1.21 / other571 0.58 / news_sent",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "acquisition_model/other塔: M&A收购概率percentile全15字段 8探针max|S|=0.16,纯信号缺席判死(2026-09-23 w218);news48/news20: 体检硬门系统性拦截（single-sided monthly 分数 raw 水平+短窗）,两轮 GEM 池耗尽未烧配额(2026-09-23)",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "region_kb",
+   "reason": "news族(48/20/31/17)/news塔: 四集连续体检硬门全灭（single-sided monthly/quarterly 分数 raw 水平+短窗错配），GEM 生成侧未消费字段画像是根因；NEWS 塔在 GEM pregate 修复前视为无供给(2026-09-23)",
+   "rule": "",
+   "entry_id": null
+  },
+  {
+   "family": "socialmedia12 / scl12_sentiment+scl12_buzz 单数据集信号面",
+   "reason": "EUR/D1 12 条实跑（10 结构互异模板+2 平滑对照）S 全域[−0.38,0.38]、fitness≤0.07、2Y≤0.79，无一近 1.58 闸线；10 大信息加工结构轴全灭，证明字段在 EUR 无横截面 alpha；DEU 同数据集 12 臂 max S 0.06 跨区独立佐证。信号层不可医；ts_mean5/trade_when 仅压 TO 1.0→0.14-0.47 且 sub",
+   "rule": "",
+   "entry_id": "EUR-SM12-SIGNAL-DEAD"
+  },
+  {
+   "family": "other571 Wikipedia 页面浏览：水平 / 期限比 / 一阶差分 / 构成比族",
+   "reason": "wave 3092-3096 十条探针：水平 ts_rank S-0.09(TO46%)、短长比 0.42(TO59%)、比的一阶差分 0.43(TO58%)、平滑水平 -0.28、平滑期限比 -0.07、双时窗期限结构差 -0.14，8 条水平类 max|S|=0.43；另 3 条 viewstoday* 构成比恒等退化(S=0/TO=0/margin=0/fra6 含 LOW_TURNOVER",
+   "rule": "",
+   "entry_id": "EUR-OTHER571-LEVEL-FAMILY-DEAD-20261102"
+  },
+  {
+   "family": "用分组轴切除共同成分来修 2Y 的杠杆（group_rank/group_neutralize 类）",
+   "reason": "在 earnings 语调 ts_arg_max 骨架上加 group_rank(..., country) 剔除国家层面共同情绪成分，确实把 2023 从 −0.28 修到 +0.48（+0.76），但 2014-2022 的 9 年全部下降（2014 2.67→0.71、2016 1.14→−0.49、2021 2.77→1.44），整体 S 从 1.57 砍到 0.68，2Y 仅从 1.15",
+   "rule": "",
+   "entry_id": "EUR-EARNINGS-GROUPRANK-COUNTRY-LEVER-DEAD-20261102"
+  },
+  {
+   "family": "earnings 语调字段的二阶波动代数（ts_std_dev）",
+   "reason": "把 earnings 语调概率字段的时序标准差（二阶矩）当作 alpha 信号，在 EUR 完全无效；与 ts_ir / ts_av_diff 同属失败族，而与有效的 ts_arg_max 形成强对照。",
+   "rule": "",
+   "entry_id": "EUR-EARNINGS-TSSTDDEV-GEOMETRY-DEAD-20261102"
+  },
+  {
+   "family": "窄区间概率字段差值几何（ts_av_diff 类）",
+   "reason": "rank(ts_av_diff(ts_backfill(sentiment_weighting_method1,10),252)) 实测 S=-0.07 / F=-0.01 / TO=43.35% / margin=-0.38bp / 2Y=-0.55 / 仅 longCount=59 shortCount=59 / CONCENTRATED_WEIGHT=0.5 超限 0.1 @2020-01-",
+   "rule": "",
+   "entry_id": "EUR-EARNINGS-AVDIFF-GEOMETRY-DEAD-20261102"
+  },
+  {
+   "family": "域名热度/注意力水平（Tranco ranking, snl27_* / snt27_*）",
+   "reason": "EUR 主信号轴 4 模板实测全灭：跨 4 个信息维度（关注度水平 avgranking / 相对流行度 relpopularity08 / 网络规模 totaldomains）与 4 种算子几何（纯水平 / 行业内分组水平 / 时序分位 / 一阶差分），|Sharpe| 上限 0.68（-0.40 / +0.68 / -0.05 / +0.15），距硬闸 1.58 差 0.90，无一条过 nea",
+   "rule": "",
+   "entry_id": "EUR-SENTIMENT27-ATTENTION-LEVEL-DEAD-20261102"
+  },
+  {
+   "family": "socialmedia12 情绪/热度",
+   "reason": "十模板结构互异（水平/时序分位/一阶差分/乘积/门控/比值/国别中性/差几何）全灭且方向统一为负；几何复杂度与 |S| 单调正相关（0.32→0.40→0.48→0.51）说明增加的是噪声方差；T9 国别中性归零定位根因为国别偏置",
+   "rule": "",
+   "entry_id": "EUR-SOCIALMEDIA12-SENT-BUZZ-DEAD-20261102"
+  },
+  {
+   "family": "RISK68 低波族 + BAB beta 族",
+   "reason": "wave 3071 三模板实测全灭：低波 vR1LOoeQ S=0.24 / F=0.10 / 2Y=0.84 / fra=4；波动率 22 日变化 9qxwEn71 S=-0.26 / F=-0.06 / fra=4；BAB beta 2rA7AdEw S=0.26 / F=0.13 / margin=38.4bp / fra=5。三者均距 1.58 闸线 6 倍以上。",
+   "rule": "",
+   "entry_id": "EUR-RISK68-LOWVOL-BAB-DEAD-20261102"
+  },
+  {
+   "family": "RISK68 残差反转族",
+   "reason": "wave 3071 十模板实测，残差反转族随加工深度严格单调衰减：5 日裸秩 S=1.03（E56wEKNK，fra=5）→ 波动率归一 0.63（rKRolnp1）→ industry 分组 0.47（xArxkRkJ）→ t-stat 66 日 0.16（JjepP3Yj）→ 低 beta 门控 -0.04（akKdKl21）。四层加工全是负贡献，无一路触及 S=1.58 闸线，最好的 1.0",
+   "rule": "",
+   "entry_id": "EUR-RISK68-RESIDUAL-REVERSAL-DEAD-20261102"
+  },
+  {
+   "family": "risk60_offer_time_series_moment",
+   "reason": "一阶差分矩归零：ts_delta(ts_backfill(vec_avg(rsk60_offer),66),22) 入 group_zscore(sector) 后 S=-0.26 / F=-0.04 / TO 25.43% / margin -0.6bp / 2Y 0.15 / fra=5（全灭）。叠加同波的自身时序分位（ts_rank 66→ S=0.02，252→ S=0.67），risk6",
+   "rule": "",
+   "entry_id": "EUR-RISK60-TS-MOMENT-DEAD-20261102"
+  },
+  {
+   "family": "risk60_offer_own_history_percentile",
+   "reason": "对费率水平做逐股自身时序分位在两档窗口上都归零：ts_rank(B,66) S=0.02 / TO 20.17% / margin 0.1bp / fra=5（全灭）；ts_rank(B,252) S=0.67 / TO 14.64% / margin 2.6bp / fra=4。同字段的截面 z 分数是 1.41，即截面水平 ≫ 自身时序分位。机制：融券费率的信息是「截面上谁贵」而不是「比自己过",
+   "rule": "",
+   "entry_id": "EUR-RISK60-OWNHIST-PCTILE-DEAD-20261102"
+  },
+  {
+   "family": "risk60_crowding_short_activity",
+   "reason": "三路独立一致无方向：① 水平 vec_sum+裸 rank S=0.20 / TO 75.29%(破 70% 上界) / margin 0.2bp；② 峰值年龄 ts_std_dev(-ts_arg_max(vec_avg(X),T1),T2) S=-0.54 / TO 11.33% / margin -2.8bp；③ 库史 best_s 0.47 / best_2y 0.67 / best_f ",
+   "rule": "",
+   "entry_id": "EUR-RISK60-CROWDING-FIELD-DEAD-20261102"
+  },
+  {
+   "family": "news73 story 级语调水平 (POS-NEG 慢速平滑 → 截面/分组排序)",
+   "reason": "wave 3065 (14 条) + wave 3066 (12 条) 覆盖两大设计块与四条分组轴，最高 Sharpe 0.76：「不得越过 1.58 闸」。证据分块如下。",
+   "rule": "",
+   "entry_id": "EUR-NEWS73-TONE-LEVEL-DEAD-20261102"
+  },
+  {
+   "family": "institutions6 机构买卖家数净额 LL 通道",
+   "reason": "LL 通道累计 23 条实测（3062 的 10 条 + 3064 的 13 条）。S 天花板 0.95（B2 GrWolgZZ = rank(ts_zscore(LL,252))），F 天花板 0.47（T1/C1），2Y 天花板 1.89（A3 zq3WkX9X country 轴，但 robust 0.13 且 2016-2018 连续三年近零 -0.81/0.40/0.20，属约5年周期复",
+   "rule": "",
+   "entry_id": "EUR-INSTITUTIONS6-LL-CHANNEL-DEAD-20261102"
+  },
+  {
+   "family": "insiders1 交易级 VECTOR（活跃度 + 方向）",
+   "reason": "10 模板全回，S 天花板 0.95（T1 交易笔数密度=纯活跃度，无方向信息），robust 天花板 0.73（仅 T2 一条过 0.70），无一条 failed_ra_count==0。有方向含义的五条全部 0.23-0.55，门控型 T8 -0.05。最强 T1 kqNKPb56 的 2Y 1.17 经逐年核验是 2023 单年驱动（2022 仅 0.44、2017 -1.70），2018+",
+   "rule": "",
+   "entry_id": "EUR-INSIDERS1-TRADE-LEVEL-DEAD-20261102"
+  },
+  {
+   "family": "analyst14",
+   "reason": "analyst14 (121 fields, all MATRIX, coverage 0.5) yields no viable EUR/D1 alpha. 10 probes across 6 distinct economic mechanisms (expected fundamental growth, forecast dispersion both signs, forecast-r",
+   "rule": "",
+   "entry_id": "EUR-ANALYST14-F-GATE-CEILING"
+  },
+  {
+   "family": "analyst_factor_signals",
+   "reason": "bucket / group_cartesian_product reference-frame change is NOT a decorrelation axis in EUR. Bucketed cells sit at 0.94-0.9972 PnL correlation with their own unbucketed parent, so bucketing cannot brea",
+   "rule": "",
+   "entry_id": "EUR-BUCKET-AXIS-NOT-A-DECORRELATOR"
+  },
+  {
+   "family": "analyst39",
+   "reason": "用把 analyst_factor_signals 抬到 S 1.84/1.77/1.70 的同一 FAST 配方（TOP2500/D1/decay40/signed_power(group_zscore(field, subindustry), 1.8)）横扫 analyst39 十字段（EPS 动量 4 + EPS 水平 1 + 杠杆 1 + 毛利率 2 + 账面 1 + 动量加速度 1），1",
+   "rule": "",
+   "entry_id": "EUR-ANALYST39-FAST-RECIPE-DEAD"
+  },
+  {
+   "family": "credit_default",
+   "reason": "analyst81（5 字段 cov 0.2316-0.2531）与 model52（3 字段 cov 0.1986）信用违约机制在 EUR/D1/TOP2500 全灭：10 格 0 错误，最好 |S| 仅 0.42，且每一格 CONCENTRATED_WEIGHT 都 = 0.5003~0.5008 撞 0.1 上限（超 5 倍），TO 爆到 0.27~0.56。",
+   "rule": "",
+   "entry_id": "EUR-CREDIT-DEFAULT-ANALYST81-MODEL52"
+  },
+  {
+   "family": "analyst_revision",
+   "reason": "country / exchange / sector grouping each collapse Sharpe by 0.6-0.8 versus subindustry on the same field (netprofit_y2_estimate_change_3mo, decay 80, CROWDING). Mechanism: the vendor already normaliz",
+   "rule": "",
+   "entry_id": "EUR-COUNTRY-EXCHANGE-SECTOR-GROUPING-DEAD"
+  },
+  {
+   "family": "analyst_consensus",
+   "reason": "18 个 targetprice MATRIX 字段（cov 0.9477）按 returns 判据数学判死：批 40SH178Fj5bZa7U1eJy0hivs 10/10 完成，最好读数 S 0.41，反算 returns 0.9% < 3.5% ⇒ 过 F ≥ 1.0 需 S ≥ 3.73，本族 S 天花板 0.41，不可达。",
+   "rule": "",
+   "entry_id": "EUR-ANALYST-CONSENSUS-TARGETPRICE-DEAD"
+  },
+  {
+   "family": "fundamental23 营运资本/存货效率族",
+   "reason": "2026-10-03 wave267 6 式全 FAIL，max|S|=0.46。营运资本与存货效率在 EUR D1 无横截面预测力。本族水平式为正(S0.09~0.20)而变化率式为负(S-0.31~-0.46)，方向不一致，不存在统一反向信号可取负修正。CONCENTRATED_WEIGHT 6/6 PASS + turnover 6/6 PASS + longCount 408-624，排除",
+   "rule": "",
+   "entry_id": "EUR-FND23-WORKINGCAP-INVENTORY-DEAD"
+  },
+  {
+   "family": "fundamental23 应计质量/费用结构族",
+   "reason": "2026-10-03 wave266 6 式全 FAIL，max|S|=0.51（异常损益/总资产，应计质量异象——学术文献中著名的 accrual anomaly 在 EUR D1 无预测力）。费用结构族（实际税负 0.05、隐含融资成本 0.04、折旧强度 -0.19）整体无信号。CONCENTRATED_WEIGHT 6/6 PASS + LOW/HIGH_TURNOVER 6/6 PASS",
+   "rule": "",
+   "entry_id": "EUR-FND23-ACCRUAL-EXPENSE-DEAD"
+  },
+  {
+   "family": "fundamental23 资本结构/杠杆族 + 股息族",
+   "reason": "2026-10-03 两波共 12 式（资本结构 6 + 取负 2 + 股息 4）全 FAIL，max|S|=0.62。三个正交概念（资产负债表杠杆 / 股东回报）互不相关，全部距 1.58 至少 2.5 倍。取负验证证伪（-0.62→-0.16 而非 +0.62），排除方向修正路径。结构性判据：CONCENTRATED_WEIGHT 100% PASS + LOW/HIGH_TURNOVER 1",
+   "rule": "",
+   "entry_id": "EUR-FND23-CAPSTRUCT-DIVIDEND-DEAD"
+  },
+  {
+   "family": "fundamental93 Earnings Tax Data（递延税/税务应计族）",
+   "reason": "2026-10-03 四式烟测 4/4 全 FAIL，max|S|=0.53（JjQY0nZm deferred_tax_expense_11/12），距闸门 1.58 差 3 倍。四种正交机制（水平 zscore / 差分 / 比值 / 税务应计差）全灭。CONCENTRATED_WEIGHT 4/4 PASS 且 longCount 371-566 远超 EUR longCount>=80 底",
+   "rule": "",
+   "entry_id": "EUR-FND93-TAXACCRUAL-ZERO-SIGNAL-DEAD"
+  },
+  {
+   "family": "EUR 未测数据集通道（pv106 PV价差 / model50 MODEL估值）",
+   "reason": "2026-10-02 实测：经 S0-tier ∩ TRI ∩ 未测 ∩ 非判死 四重筛选后，EUR 仅剩 pv106 与 model50 两个真空白候选。首波 pv106 11 式 max|S|=0.70、model50 23 式 max|S|=0.80（骨架含 group_rank/group_zscore/ts_zscore/价差对/门控），全 LOW_SHARPE+LOW_FITNESS，",
+   "rule": "",
+   "entry_id": "EUR-UNTESTED-CHANNEL-FIRSTPROBE-DEAD"
+  },
+  {
+   "family": "mws46_* ravenpack news sentiment/impact MATRIX",
+   "reason": "两轮实测均无 IS 信号：wave245 基础探针(单字段 rank/ts_delta/rank差) best|S|=0.46 n=5；wave257 复合结构第二轮(group_rank 新中性化几何 + trade_when 事件门控跨字段比值 divide) best|S|=0.41 signed best 0.13 n=10。均远低 IS 闸 1.58。符合 SIGNAL-STRENGTH",
+   "rule": "",
+   "entry_id": "EUR-NEWS46-ZERO-IS-SIGNAL"
+  },
+  {
+   "family": "earnings6 normalized EPS surprise and preliminary range SUBINDUSTRY decay4",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-W255-EARNINGS6-EPS-EVENT-PAIRS"
+  },
+  {
+   "family": "other460 four target probability directions SUBINDUSTRY decay4",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-W254-OTHER460-FORWARD-PROBABILITY-PAIRS"
+  },
+  {
+   "family": "other455 customer network monthly returns seed1 k5",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS"
+  },
+  {
+   "family": "fundamental17 reported earnings level and accounting adjustment",
+   "reason": "Corrected spread S-.50 and direct reported level S1.13/F.75; no Mode B qualification",
+   "rule": "",
+   "entry_id": "EUR-W252-FUNDAMENTAL17-MEASUREMENT-RETEST"
+  },
+  {
+   "family": "fundamental17 operating-quality changes and matched levels",
+   "reason": "No candidate reaches joint Sharpe>=1.25 and Fitness>=.8; slow turnover 1.00%-2.11%; level controls outperform transformations but no qualified alpha",
+   "rule": "",
+   "entry_id": "EUR-W251-FUNDAMENTAL17-QUALITY-PROBE"
+  },
+  {
+   "family": "news50_cashless_news_mechanism_probe",
+   "reason": "EUR TOPCS1600 D1 本轮8条概念原式 max S=0.32, max |S|=0.52; 无 S>=1.25 且 F>=0.8，停止本轮机制增强。仅封存所测机制，不宣称全数据集无效。",
+   "rule": "",
+   "entry_id": "EUR-W246-news50-mechanisms-D1"
+  },
+  {
+   "family": "news46_cashless_news_mechanism_probe",
+   "reason": "EUR TOPCS1600 D1 本轮5条概念原式 max S=0.42, max |S|=0.46; 无 S>=1.25 且 F>=0.8，停止本轮机制增强。仅封存所测机制，不宣称全数据集无效。",
+   "rule": "",
+   "entry_id": "EUR-W245-news46-mechanisms-D1"
+  },
+  {
+   "family": "news17 comp_d1 分数族",
+   "reason": "news17 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+   "rule": "",
+   "entry_id": "EUR-NEWS17-INSPECT-GATE-WALL"
+  },
+  {
+   "family": "news31 事件/相似度分族",
+   "reason": "news31 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+   "rule": "",
+   "entry_id": "EUR-NEWS31-INSPECT-GATE-WALL"
+  },
+  {
+   "family": "news20 multiple_comp 事件分族",
+   "reason": "news20 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+   "rule": "",
+   "entry_id": "EUR-NEWS20-INSPECT-GATE-WALL"
+  },
+  {
+   "family": "news48 ENS 情绪分族",
+   "reason": "news48 体检硬门系统性拦截（单边恒正 monthly/quarterly 分数 raw 水平+短窗错配+稀疏未 trade_when），GEM 池两轮收敛后仍违规，零配额判死。根因=GEM 生成侧未消费字段画像。NEWS 塔在 pregate 修复前无供给。",
+   "rule": "",
+   "entry_id": "EUR-NEWS48-INSPECT-GATE-WALL"
+  },
+  {
+   "family": "news29 主题显著性族（nws29_topic/significance VECTOR）",
+   "reason": "wave244 4 探针全灭 best |sharpe|=0.25（另 4 条 group_rank 单位错误被隔离）→ fast_kill 判死。NEWS 族五集全灭。",
+   "rule": "",
+   "entry_id": "EUR-NEWS29-WEAK"
+  },
+  {
+   "family": "analyst_factor_signals 分析师因子信号族（EPS/revenue revision magnitude × coeff_var）",
+   "reason": "wave243 9 探针全灭 best |sharpe|=0.31 → 达 fast_kill 判死线。ANALYST 塔候选出局。今日 7 集回测探针全灭（max|S| 0.16-0.91），与 2026-09-22 零竞争轴证伪结论互证。",
+   "rule": "",
+   "entry_id": "EUR-ANALYST-FACTOR-SIGNALS-WEAK"
+  },
+  {
+   "family": "insider_feats 内部人买卖比率族（buy/sell ratio × tx count × lookback）",
+   "reason": "wave238 10 探针全灭 best |sharpe|=0.47 < 0.5 → 达 fast_kill 判死线。此前 w232 多样性闸（flow 单 exposure）+ 字段名拼接幻觉 + 低覆盖无 backfill 三轮门禁墙已记录。OTHER 塔 4 候选全灭（acquisition_model/insider_feats/event_relation + ml_factor_pro",
+   "rule": "",
+   "entry_id": "EUR-INSIDER-FEATS-WEAK"
+  },
+  {
+   "family": "sentiment21 情绪评分族（snt21_* 210 字段）",
+   "reason": "wave237 11 探针全灭 best |sharpe|=0.49 < 0.5 → 达 fast_kill 判死线。cov 0.97 高覆盖但 IS 无强度；SENTIMENT 塔差 3 但此路无供给。",
+   "rule": "",
+   "entry_id": "EUR-SENTIMENT21-WEAK"
+  },
+  {
+   "family": "other401 基本面矩阵族（oth401_* 65 字段 MATRIX）",
+   "reason": "wave235 9 探针全灭：best sharpe 0.70 / fit 0.34 / 2Y 1.07，CONCENTRATED_WEIGHT+LOW_ROBUST_UNIVERSE；D4 资格线 1.25 未达 → 判死。1 条 group_cartesian_product(sector,sector) 坏式被自动隔离。FUNDAMENTAL 塔候选 other401 出局；other452",
+   "rule": "",
+   "entry_id": "EUR-OTHER401-WEAK"
+  },
+  {
+   "family": "event_relation 实体关系强度族（relation_strength_rank/score × merger/partner/financial/general）",
+   "reason": "wave233 8 探针全灭 max|sharpe|=0.43 < 0.5 → 达 EUR fast_kill 判死线。字段全冷门（users<=1）理论 prod≈0，纯信号缺席。OTHER 塔已连续三集判死（acquisition_model 0.16 / insider_feats 多样性墙 / event_relation 0.43）。",
+   "rule": "",
+   "entry_id": "EUR-EVENT-RELATION-WEAK"
+  },
+  {
+   "family": "risk72 equity_residualized_return 残差族（cfg2/ecs/ats × top1200/top2500 残差价差）",
+   "reason": "wave230 8 探针全灭：best sharpe 0.91 / fitness 0.48，2Y 1.65 但 LOW_ROBUST_UNIVERSE_SHARPE；未达 Mode B 资格线 1.25（D4）→ 判死。2 条 group_cartesian_product/group_count 单位错误被自动隔离。RISK 塔剩余候选：risk68(fields=5 仅条件腿)/risk62",
+   "rule": "",
+   "entry_id": "EUR-RISK72-RESIDUAL-RETURN-WEAK"
+  },
+  {
+   "family": "mna_target_likelihood_percentile (acquisition_model 全 15 字段 VECTOR percentile)",
+   "reason": "wave218 8 探针全灭 max|sharpe|=0.16（best 2y 1.46 但 IS 无强度），达 EUR profile fast_kill 线（新集 8 探针无 |S|>=0.5 即判死）。字段全冷门（users<=4）理论 prod≈0，死因是纯信号缺席。2 条 group_cartesian_product/group_count 单位错误被自动隔离（VECTOR 字段不能喂",
+   "rule": "",
+   "entry_id": "EUR-ACQUISITION-MODEL-COLD-ZERO-YIELD"
+  },
+  {
+   "family": "机构持有人广度比例 / 机构权益占比 / 买入-卖出股数差",
+   "reason": "INSTITUTIONS 塔仅 11 字段且机构持股类字段本质是慢变存量，不具备日频预测力；本区不再投槽",
+   "rule": "",
+   "entry_id": "EUR-INSTITUTIONS6-COLD-ZERO-YIELD"
+  },
+  {
+   "family": "内部人买入股数比例与二级买入广度",
+   "reason": "命中 EUR profile fast_kill（新集 8 探针无 |S|>=0.5）；INSIDERS 塔另一集 insider_matrix / insider_trx_matrix 已分标 yield=0@8bt / SATURATED，不重试",
+   "rule": "",
+   "entry_id": "EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD"
+  },
+  {
+   "family": "一致预期修正标准化劾量 / 预期陈旧度 / 修正广度",
+   "reason": "本区该集不再投槽位；同机制（一致预期修正）在其他 analyst 集要进先跑 1-2 条 prod-first + 强度探针",
+   "rule": "",
+   "entry_id": "EUR-ANALYST9-COLD-ZERO-YIELD"
+  },
+  {
+   "family": "sentiment7 Wikipedia page-view attention (shock reversal / ratio / cap-decile / 66d trend)",
+   "reason": "EUR: wiki attention closed",
+   "rule": "",
+   "entry_id": "EUR-SENTIMENT7-WIKI-ATTENTION-DEAD"
+  },
+  {
+   "family": "analyst10 performance-weighted estimates (predicted surprise EBT/net/pretax/sales, innovation counts, revision ratio)",
+   "reason": "EUR analyst tower: predicted-surprise family closed",
+   "rule": "",
+   "entry_id": "EUR-ANALYST10-PREDICTED-SURPRISE-DEAD"
+  },
+  {
+   "family": "news21 event calendar / transcript tone (post-call drift, pre-call premium, tone level/change, attention)",
+   "reason": "EUR news tower: event-calendar family closed",
+   "rule": "",
+   "entry_id": "EUR-NEWS21-EVENT-CALENDAR-DEAD"
+  },
+  {
+   "family": "risk60 securities lending borrow fee level (rsk60_offer / rsk60_last / bid-offer spread)",
+   "reason": "EUR risk tower: borrow-fee level is closed; only fee-change / crowding mechanisms remain and they have no signal.",
+   "rule": "",
+   "entry_id": "EUR-RISK60-BORROW-FEE-PROD-WALL"
+  },
+  {
+   "family": "predicted_surprise 慢 - continuation_score 快(取负同向) 价差",
+   "reason": "EUR 快腿 PV 族(continuation_score/intraday_pv_feats) 判死：正向价差方向反(wave169)、取负同向强度不足(wave170)，两向都过不了 1.58。与 wave166 实证一致(纯信号族 max0.62、非MODEL塔 0.32-0.40)。EUR 可挖空间=慢腿 predicted_surprise 族(prod 池容量=1 已占 GrdxAP",
+   "rule": "",
+   "entry_id": "EUR-W170-FASTPV-NEGATED-WEAK-DEAD"
+  },
+  {
+   "family": "continuation_score/intraday_pv_feats 快腿 - predicted_surprise 慢腿 价差骨架",
+   "reason": "EUR D1 快腿 PV 族(continuation_score/intraday_pv) 禁止作正向 rank 腿；其信号方向为反转，若用必须取负(-rank)且与慢腿同向叠加而非价差。intraday_pv corr 字段高换手(>0.49)需长窗平滑。该族与已 ACTIVE 的 MODEL-insider桶 骨架正交但方向反向，直接价差无效。",
+   "rule": "",
+   "entry_id": "EUR-W169-FASTPV-SPREAD-REVERSED-DEAD"
+  },
+  {
+   "family": "non_model_tower_sparse_event_sentiment_analyst",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-NONMODEL-TOWER-CEILING"
+  },
+  {
+   "family": "EUR-GSM-SAME-SRC-BUCKET-RATIO",
+   "reason": "confidence/prob 同源分桶置信度 divide 比值近乎常数零区分度；5d vs calendar_5d 变体同源相关；multiply(ts_zscore) 交互同源高相关",
+   "rule": "",
+   "entry_id": "EUR-GSM-SAME-SRC-BUCKET-RATIO"
+  },
+  {
+   "family": "dl_riskfree_returns",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-DLRFR-OHLCV-GEOM-WALL"
+  },
+  {
+   "family": "institutions6 机构持股聚合 ATOM 主信号",
+   "reason": "2026-11-09 复核修正：institutions6 ATOM 主信号不可达（全量覆盖波 best S1.03=58EKQZrk 净广度z，<近闸 1.2；2Y 结构性塌最高 0.96），但信号层存在（>0.5 不满足 seal）；旧文「完全 exhausted/无预测力」作废。FHP 部分已复活（见 EUR-FHP-INSTITUTIONS-WEAK 范围修正：stable_boundar",
+   "rule": "",
+   "entry_id": "EUR-INST6-INSTITUTIONS-TOWER-EXHAUSTED"
+  },
+  {
+   "family": "analyst11 ESG 评分体系（三支柱 + 行业排名 + 改善动量）",
+   "reason": "ESG 评分是年度/季度慢变量，日度有效密度极低：尽管 catalog coverage 报 0.91，实际只有 ~52 只股票有持仓（占 TOP2500 的 2%），ts_delta(252) 后更只剩 3 只。longCount 远低于 80 下限 + CW FAIL + turnover 0.0082 撞 LOW_TURNOVER 硬闸。",
+   "rule": "",
+   "entry_id": "EUR-ANL11-ESG-SLOWVAR-LONGCOUNT"
+  },
+  {
+   "family": "sentiment26 网站流行度/投资者注意力族",
+   "reason": "注意力族信号强度不足：returns 天花板 0.0319 导致 Fitness 上限仅 0.455，数学不可达提交线 1.0。结构指标全健康（longCount 1061、CW PASS、Sub PASS），非稀疏事件双墙，纯粋信号弱。",
+   "rule": "",
+   "entry_id": "EUR-SNT26-ATTENTION-FITNESS-CEILING"
+  },
+  {
+   "family": "dl_riskfree_returns 全数据集（ohlcv 通用族 + eur_ohlc_ma 专用族）",
+   "reason": "两个字段族分别卡在互斥的墙上：ohlcv 族 IS 达标但 prod 0.80-0.82（字段级，四种算子几何全撞）；eur_ohlc_ma 族 prod 0.32-0.38 极低但 Fitness 数学上限仅 0.876。无合规手段能同时满足两族优势（禁止 add(A,B) 混信号稀释，用户 2026-09-09 纪律）。",
+   "rule": "",
+   "entry_id": "EUR-DLRF-BOTH-FAMILIES-DEAD-MATH-PROOF"
+  },
+  {
+   "family": "dl_riskfree_returns eur_ohlc_ma EUR 专用模型族 × 跨期分位数差",
+   "reason": "eur_ohlc_ma 族跨期分位数差信号 prod_corr 极低（0.32-0.38，全战役最低）、self_corr 极低（0.047）、checks.fail 为空（无任何硬闸 FAIL），但 turnover 恒 0.50-0.62 导致 Fitness 恒 <0.4，远低于提交线 1.0；最强 akLENZa5 Sharpe 1.48 也差 0.10 到 1.58。Fitness = ",
+   "rule": "",
+   "entry_id": "EUR-DLRF-EUROHLCMA-TURNOVER-FITNESS-WALL"
+  },
+  {
+   "family": "dl_riskfree_returns ohlcv 通用模型字段族 × 四种算子几何",
+   "reason": "ohlcv 通用模型字段（quantile_label_1bucket_*_ohlcv / probability_label*_5quantile_*_ohlcv）IS 极强（Sharpe 2.32-2.75，Fitness 1.03-1.40，failed_ra_count=0）但 prod_corr 恒 0.80-0.82，且换四种算子几何（rank / group_rank+subindu",
+   "rule": "",
+   "entry_id": "EUR-DLRF-OHLCV-PRODWALL-FIELD-LEVEL"
+  },
+  {
+   "family": "fund_holdings_panel 比率/散度读数族",
+   "reason": "原判（2026-10-13）：institutions 塔无可挖数据集。2026-11-09 范围修正：死仅适用于比率/散度读数（W1-B TO 爆炸 6/10、best |S| 0.47）与旧口径 HHI delta（重算后 −0.07）；水平 z+平滑族活——W3 实证 stable_boundary_trade_count_21d_active S1.45/2Y2.30/sub1.23/re",
+   "rule": "",
+   "entry_id": "EUR-FHP-INSTITUTIONS-WEAK"
+  },
+  {
+   "family": "EUR-O567-COVERAGE-STRUCTURAL",
+   "reason": "other567 员工评价数据在 EUR D1 判死：覆盖率极低导致 longCount 不足，CW 墙结构性不可破",
+   "rule": "",
+   "entry_id": "EUR-O567-COVERAGE-STRUCTURAL"
+  },
+  {
+   "family": "EUR-AINEWS-POS-INTENSITY-WEAK",
+   "reason": "ai_news_scores pos 水平×强度族在 EUR D1 判死：信号极弱，wave108 存活线索无法复现",
+   "rule": "",
+   "entry_id": "EUR-AINEWS-POS-INTENSITY-WEAK"
+  },
+  {
+   "family": "EUR-NSNLP-SPARSE-TWO-WALLS",
+   "reason": "news_sentiment_nlp 情绪×强度族在 EUR D1 判死：稀疏事件流导致 CW+turnover 双墙，信号强度不足（Sharpe -0.18~0.32）",
+   "rule": "",
+   "entry_id": "EUR-NSNLP-SPARSE-TWO-WALLS"
+  },
+  {
+   "family": "EUR-DLRF-PROD-WALL-080",
+   "reason": "dl_riskfree_returns DL 分位数概率信号在 EUR D1 有真实预测力（Sharpe 2.4-2.75），但信号方向（做多高预测收益-做空低预测收益）已被平台大量探索，prod_corr 结构性 0.80-0.81。SIGNAL-STRENGTH-AND-CROWDING-ARE-ONE-COIN 又一实证。",
+   "rule": "",
+   "entry_id": "EUR-DLRF-PROD-WALL-080"
+  },
+  {
+   "family": "model193 信用风险/CDS/困境轴",
+   "reason": "14 条候选（8 首批 + 6 修复）全 ra_failed。修复 CW 后信号普遍为负，最佳仅 sharpe 0.13。信用风险/CDS/困境轴在 EUR/D1 无预测力。",
+   "rule": "",
+   "entry_id": "EUR-MODEL193-W129-CREDIT-AXIS-DEAD"
+  },
+  {
+   "family": "intraday_pv_feats 事件门控 × 成交量厚尾分位",
+   "reason": "机制真实但强度封顶：最强 pwPoekzg sharpe 1.20 / fitness 0.51，未达 D4 资格线(1.25/0.8)。fitness 为束缚约束且已证明不能从 deferred 分支解决。",
+   "rule": "",
+   "entry_id": "EUR-INTRADAY-PV-W126-128-NEAR-MISS"
+  },
+  {
+   "family": "analyst_earnings_ibes event-masked OHLCV × 未用算子族",
+   "reason": "8 个互异机制全 ra_failed；整波最强 |S|=0.88、正向最强 0.42，fitness 峰值仅 0.11——远低于 D4 资格线(1.25/0.8)。event-masked OHLCV 在 EUR/D1 的横截面区分度不足。",
+   "rule": "",
+   "entry_id": "EUR-AEIBES-W125-OPERATOR-LEVERAGE-WEAK"
+  },
+  {
+   "family": "EUR-pattern_scores-BREAKAWAY-GAP-WEAK",
+   "reason": "breakaway_gap 字段族信号弱，8 条全灭，最高 Sharpe 0.03",
+   "rule": "",
+   "entry_id": "EUR-pattern_scores-BREAKAWAY-GAP-WEAK"
+  },
+  {
+   "family": "predictive_starmine smest/iv family",
+   "reason": "predictive_starmine smest/iv 族在 EUR D1 无正向预测力；9 条中 8 条负或弱，1 条 S0.47 弱；if_else 条件逻辑唯一正信号但强度不足",
+   "rule": "",
+   "entry_id": "EUR-predictive_starmine-SMEST-IV-WEAK"
+  },
+  {
+   "family": "predictive_starmine eq_vr_dlra1 accruals/cashflow",
+   "reason": "predictive_starmine eq_vr_dlra1 族在 EUR TOP2500 有信号但强度不足（S0.97 天花板）；F<0.8 未达 Mode B 资格线",
+   "rule": "",
+   "entry_id": "EUR-predictive_starmine-EQVR-WEAK"
+  },
+  {
+   "family": "chart_cnn_alpha malta2 q3 × leapstar6 Mode B ceiling",
+   "reason": "chart_cnn_alpha malta2 q3 × leapstar6 Mode B 优化在 EUR 已达天花板（S1.44/F0.91）；所有近闸候选 S<1.58 且 F<1.0 无法通过提交硬闸；需换区域或换策略",
+   "rule": "",
+   "entry_id": "EUR-chart_cnn_alpha-MODEB-CEILING"
+  },
+  {
+   "family": "other571 Wikipedia page views",
+   "reason": "other571 Wikipedia 浏览量在 EUR D1 无正向预测力；9 条中 8 条负，1 条 S0.58 弱；if_else 条件逻辑唯一正信号但强度不足",
+   "rule": "",
+   "entry_id": "EUR-other571-WIKI-WEAK"
+  },
+  {
+   "family": "news54 event timestamp fields",
+   "reason": "news54 时间戳字段（event_announcement_time/entry_time）是 UNIX 时间戳，ts_mean/ts_delta 无意义；需转换为'距今天数'但 GEM 不理解；可用数值字段极少",
+   "rule": "",
+   "entry_id": "EUR-news54-TIMESTAMP-INVALID"
+  },
+  {
+   "family": "analyst45 return/benchmark fields",
+   "reason": "analyst45 收益/基准类字段在 EUR TOP2500 无正向预测力；收益类字段全负或弱，条件逻辑无效",
+   "rule": "",
+   "entry_id": "EUR-analyst45-RET-WEAK"
+  },
+  {
+   "family": "chart_cnn_alpha leapstar6/malta2 image features",
+   "reason": "chart_cnn_alpha leapstar6/malta2 图像特征在 EUR TOP2500 有信号但强度不足（S1.36 天花板）；F<0.8 未达 Mode B 资格线；group_sum 契约算子失效",
+   "rule": "",
+   "entry_id": "EUR-chart_cnn_alpha-LEAPSTAR-WEAK"
+  },
+  {
+   "family": "price_signal_dl trend/volume indicators",
+   "reason": "price_signal_dl 在 EUR TOP2500 无实际数据（字段存在但值为空），platform 返回 FAIL 无详细错误",
+   "rule": "",
+   "entry_id": "EUR-price_signal_dl-NO-DATA"
+  },
+  {
+   "family": "news_sentiment_dl sentiment word stats",
+   "reason": "news_sentiment_dl 情绪词统计与文本复杂度在 EUR D1 无正向预测力；positive_entropy 唯一正信号但强度不足（S0.38）；与 news73/news_sentiment_nlp 同属新闻情绪类弱信号族",
+   "rule": "",
+   "entry_id": "EUR-news_sentiment_dl-SENTIMENT-WEAK"
+  },
+  {
+   "family": "predictive_starmine × news73 sentiment mix",
+   "reason": "MODEL×NEWS 跨集混合弱信号：surprise 与 news73 sentiment 相关性不足，组合后 IS 衰减；11 条全部 FAIL（LOW_SHARPE/FITNESS/SUB/IS_LADDER）",
+   "rule": "",
+   "entry_id": "EUR-predictive_starmine-NEWS-MIX-WEAK"
+  },
+  {
+   "family": "starmine-surprise",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-STARMINE-SIBLING-PROD-WALL"
+  },
+  {
+   "family": "shortinterest6 × pattern_scores fast leg variants",
+   "reason": "star_hold 家族与任何 pattern_scores 快腿组合 prod_corr 必超 0.7（wave110 0.74-0.77），换快腿字段无法破墙；shortinterest6 在 EUR 区域 IS 天花板 1.24-1.71 但 prod 墙无法突破",
+   "rule": "",
+   "entry_id": "EUR-shortinterest6-PATTERN-FAST-LEG-PROD"
+  },
+  {
+   "family": "shortinterest6 × pattern_scores win mix",
+   "reason": "star_hold 家族与 pattern_scores 快腿组合 prod_corr 0.74-0.77 超 0.7 硬闸，无法提交",
+   "rule": "",
+   "entry_id": "EUR-shortinterest6-PATTERN-MIX-PROD"
+  },
+  {
+   "family": "shortinterest6 change/owner component",
+   "reason": "change/owner 组件单独使用信号强度不足（IS 天花板 1.24），无法突破 EUR 硬闸；需回归 win recipe 结构",
+   "rule": "",
+   "entry_id": "EUR-shortinterest6-CHANGE-OWNER-WEAK"
+  },
+  {
+   "family": "ai_news_scores advanced stats",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-ai_news_scores-ADVANCED-NEG"
+  },
+  {
+   "family": "news_sentiment_structure",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-news_sentiment_nlp-STRUCTURE-DEAD"
+  },
+  {
+   "family": "insider",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-insider_trx_matrix-WEAK-DRIFT"
+  },
+  {
+   "family": "risk72 residualized return family",
+   "reason": "risk72 residualized equity returns (top2500/ecs/cfg2/minvol 族) 在 EUR TOP2500 SUBINDUSTRY decay4 下 8/8 全灭, sharpe -0.27~0.02, 2y 全负或微弱。慢动量66d/快反转5d/线性0.4-0.6/行业 group_sum/ts_covariance 多方向无信号。residual ",
+   "rule": "",
+   "entry_id": "EUR-risk72-wave104-all-fail"
+  },
+  {
+   "family": "EUR-pattern_scores-wave83-skeleton-fail",
+   "reason": "",
+   "rule": "",
+   "entry_id": "EUR-pattern_scores-wave83-skeleton-fail"
+  },
+  {
+   "family": "multi_horizon trailing FCF-to-price invert x common_gap_up",
+   "reason": "Wave81 invert trailing_free_cash_flow_to_price passed cheap+ladder+2Y (S2.15 F1.46 RN0.67) but prod 0.734. Sibling E5lEXpwL prod 0.731. Mutual 0.85 vs 3qlRb8xg. Do not Mode A this field vs prod.",
+   "rule": "",
+   "entry_id": "EUR-MH-FCF-INVERT-PROD"
+  },
+  {
+   "family": "multi_horizon mgmt leverage invert x common_gap_up",
+   "reason": "Wave80 invert mgmt leverage passed cheap gate (S1.68 F1.0 2Y2.56) but RN 0.41 vs gJj1nxLM 0.66. Invert recipe is valid; do not Mode A this field.",
+   "rule": "",
+   "entry_id": "EUR-MH-LEVERAGE-INVERT-RN"
+  },
+  {
+   "family": "multi_horizon deep_value invert x common_gap_up",
+   "reason": "Wave80 invert long_term_deep_value_europe_rank x winning PV passed cheap gate but prod 0.712. Do not Mode A this field.",
+   "rule": "",
+   "entry_id": "EUR-MH-DEEPVALUE-INVERT-PROD"
+  },
+  {
+   "family": "starmine ARM preferred/revenue/score-change/region-global as slow; regular_upward_gap as fast",
+   "reason": "weaker than surprise x common_gap_up",
+   "rule": "",
+   "entry_id": "EUR-STAR-ARM-LEFTOVER-WEAK"
+  },
+  {
+   "family": "starmine actual EPS/revenue and upgrade/downgrade and ARM country as slow legs",
+   "reason": "new slows dilute winning surprise x gap mix",
+   "rule": "",
+   "entry_id": "EUR-STAR-ACTUAL-UPGDNG-ARMCOUNTRY-WEAK"
+  },
+  {
+   "family": "pattern_scores asc_triangle / support-resistance / trendline / regular gap as fast legs",
+   "reason": "unused PV families weak vs common_gap_up winner",
+   "rule": "",
+   "entry_id": "EUR-STAR-PV-ASCT-TREND-WEAK"
+  },
+  {
+   "family": "predictive_starmine surprise x common_gap_up factor neutralization",
+   "reason": "factor neutralization kills F vs SUBINDUSTRY, does not produce RN>1",
+   "rule": "",
+   "entry_id": "EUR-STAR-GAP-FACTOR-NEUT-WEAK"
+  },
+  {
+   "family": "starmine rec mean change / smest levels",
+   "reason": "Wave73 rec mean change max S0.90 but 2021-23 Sharpe ~0.15 collapse. smest F12M/FY1 levels max S0.76 TVR often <2%. Last-year surprise ak7d0ZKR S1.04 F0.40 TVR2.1% 2Y=0.95 RN0.38 — |S|>=1 and 2Y not ac",
+   "rule": "",
+   "entry_id": "EUR-STAR-REC-SMEST-WEAK"
+  },
+  {
+   "family": "starmine revision counts / ARM rec-activity",
+   "reason": "Wave72 56 exprs on unused upgrade/up/down revision counts + ARM recommendations/new-activity. Max S0.97 F0.30 (arm_new_activity_flag_2 ts_delta). Do not mix PV (|S|<1). Leave RelVal EV/EBITDA and revi",
+   "rule": "",
+   "entry_id": "EUR-STAR-REVCOUNT-ARM-WEAK"
+  },
+  {
+   "family": "global_seasonal_model event flags",
+   "reason": "Wave71 56 exprs on stock-specific event flags (confirmation/update/transcript/days-since). Max S0.68 F0.29. Wave20 already RED on to-next + return-quantile. Calendar constants have no cross-section. L",
+   "rule": "",
+   "entry_id": "EUR-GSM-EVENT-WEAK"
+  },
+  {
+   "family": "ai_factor_transfer _2 oscillators/money-flow",
+   "reason": "Wave70 56 exprs on unused _2 fields (anomaly/DPO/liq_2/PVO/ADL/CCI/BPO_2). Max S0.58 F0.16. Wave18 already killed base oscillators. Do not mix PV.",
+   "rule": "",
+   "entry_id": "EUR-AFT-OSC2-WEAK"
+  },
+  {
+   "family": "starmine RelVal EV/EBITDA ts_delta × v_rev/wedge",
+   "reason": "Wave68 naked rank(ts_delta(rel_val_ev_ebitda_component_score_3,5)) S1.09 2Y=0.10. Wave69 win mix mLj81962 S1.34 F0.77 TVR9.6% prod 0.645 OK but 2Y=0.02 IS_LADDER. Year-regime accident. self 0.64 vs 78",
+   "rule": "",
+   "entry_id": "EUR-STAR-RELVAL-EVEBITDA-2Y-DEAD"
+  },
+  {
+   "family": "ml_factor_proj 0-alpha coverage/rating/CCC/capex",
+   "reason": "Wave67 56 exprs / 7 slots. Max S0.70 F0.23 (E5lwN5WJ abnormal capex ts_delta). Rating 0.47, CCC 0.41. No cheap-gate. Do not mix PV.",
+   "rule": "",
+   "entry_id": "EUR-MLFP-0ALPHA-OPS-WEAK"
+  },
+  {
+   "family": "model354 group valuation yield concepts",
+   "reason": "Wave66 56 exprs / 7 slots (FY2/NTM EY, FCF/CFO/div yield, sales/EV, FY1-LTM disagreement). Max S0.26 F0.07 (KP7bgexN). Many TVR 2-4%. No cheap-gate. Do not mix PV.",
+   "rule": "",
+   "entry_id": "EUR-M354-VALUATION-YIELD-WEAK"
+  },
+  {
+   "family": "news36 novelty/phrase/word/confidence concepts",
+   "reason": "Wave65 56 exprs / 7 slots. Max S0.60 F0.19 (rKjodQr9 relevance-gated inverted neg phrases). Confidence S0.54, phrase S0.51. No cheap-gate. Slow |S|<1 so do not mix PV.",
+   "rule": "",
+   "entry_id": "EUR-NEWS36-NOVELTY-SENT-WEAK"
+  },
+  {
+   "family": "news38 densified tone/polarity/relevance concepts",
+   "reason": "Wave64 56 exprs / 7 concept slots (tone invert, pos-neg score/freq, relevance-gated tone, relevance-heat, related_num, analytics-score). Max S0.61 F0.20 (ak7dLe55). Heat slot max S0.53 F0.36. No cheap",
+   "rule": "",
+   "entry_id": "EUR-NEWS38-CONCEPT-WEAK"
+  },
+  {
+   "family": "analyst_consensus surprise/estimate/target x v_rev/wedge",
+   "reason": "Wave63 seven consensus slows (EPS mean/std, EPS surprise, estimate count, rev/FCF/EBIT surprise, MATRIX target price) x v_rev/wedge. Max S0.97. Stop resid x PV template grinding.",
+   "rule": "",
+   "entry_id": "EUR-CONSENSUS-SURPRISE-TP-WEAK"
+  },
+  {
+   "family": "analyst39 EPS/margin/book residual x v_rev/wedge",
+   "reason": "Wave62 seven analyst39 slows (YoY EPS/FY-Q EPS/ex-XO/GM/book/TTM/prior-Q change) x v_rev/wedge. Max S0.88. Differentiated but far from cheap gate. Do not Mode A leftover overlapping GM/book fields.",
+   "rule": "",
+   "entry_id": "EUR-ANL39-EPS-GM-BOOK-WEAK"
+  },
+  {
+   "family": "analyst45 VECTOR trade-idea residual x v_rev/wedge",
+   "reason": "Wave61 seven analyst45 trade-idea slows (probability/jensen/exposure/age/count/rel-return/PnL) x v_rev/wedge. Max S0.71. Differentiated but far from cheap gate. Do not Mode A. Do not reuse leftover an",
+   "rule": "",
+   "entry_id": "EUR-ANL45-TRADE-IDEAS-WEAK"
+  },
+  {
+   "family": "model193 named MATRIX residual x v_rev/wedge",
+   "reason": "Wave60 seven named model193 slows (dispersion/cashflow/CCC/loan/industry z/revision/liquidity) x v_rev/wedge produced identical S1.03 F0.53 across all slots. Slow residual added no differentiation; si",
+   "rule": "",
+   "entry_id": "EUR-M193-NAMED-SLOW-INERT"
+  },
+  {
+   "family": "pattern_scores rising_wedge / symmetrical_triangle / continuation as fast legs",
+   "reason": "Wave59 Mode B swapped v_rev/wedge for rising_wedge, symmetrical_triangle, continuation_falling_wedge. Max S0.84. AFT x new PV all negative. Restore v_rev+falling_wedge as fast legs.",
+   "rule": "",
+   "entry_id": "EUR-PV-RISING-WEDGE-TRIANGLE-CONT-FAST-WEAK"
+  },
+  {
+   "family": "multi_horizon EV rank / ebitda-to-EV x v_rev x wedge",
+   "reason": "Wave58 EV rank 3leg P071R0vK S1.75 F1.08 ladder 2.10 RN0.81 prod 0.9285. EBITDA/EV d5jQPR5X S1.69 F1.03 ladder 2.03 RN0.66 prod 0.8461. Both fail RN>1 and prod>=0.7. Do not Mode A grind weights.",
+   "rule": "",
+   "entry_id": "EUR-MH-EV-EBITDA-3LEG-RN-PROD"
+  },
+  {
+   "family": "ai_equity_alpha",
+   "reason": "Wave57 leftover AIEQ 0.30/0.40/0.30 x v_rev/wedge max S0.82. W50-W57 leftover path exhausted.",
+   "rule": "",
+   "entry_id": "EUR-AIEQ-W57-EQA-FCHG-PTB-DEBT-WEAK"
+  },
+  {
+   "family": "multi_horizon_nrev",
+   "reason": "Wave49 Mode A/B: S/F tunable to pass; IS ladder / 2Y sharpe hard ceiling ~1.1-1.28; rn_sharpe weak",
+   "rule": "",
+   "entry_id": "EUR-MH-NREV-LADDER-WALL"
+  },
+  {
+   "family": "ai_equity quality/opacity/unused liquidity/clarity x v_rev x wedge",
+   "reason": "Wave50 AIEQ unused VECTOR 3leg all missed cheap gate. Best asset_liquidity_score_2 S1.31. five_day 0.55. Do not grind.",
+   "rule": "",
+   "entry_id": "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK"
+  },
+  {
+   "family": "multi_horizon PTA/street/nrev/pmom/rational_decay x v_rev x wedge",
+   "reason": "Wave49 unused MH slow legs all missed cheap gate. PTA 1.00 street 1.27 nrev 1.54/0.97 pmom 1.28 decay 0.46. Do not Mode A grind these families.",
+   "rule": "",
+   "entry_id": "EUR-MH-W49-UNUSED-3LEG-WEAK"
+  },
+  {
+   "family": "multi_horizon ROE residual x v_rev x wedge",
+   "reason": "Wave48 ROE/ROE1 3leg max S1.47 F0.93 missed cheap gate. Horizon/weight variants will not jump 1.58. Do not occupy another slot.",
+   "rule": "",
+   "entry_id": "EUR-MH-ROE-3LEG-WEAK"
+  },
+  {
+   "family": "multi_horizon income_statement_rank residual x v_rev x wedge",
+   "reason": "Wave48 income_statement_rank 0.30 3leg S1.90 F1.22 ladder 2.05 but RN 0.74 and prod 0.8538. OLL change max S1.21. Do not Mode A.",
+   "rule": "",
+   "entry_id": "EUR-MH-INCOME-STMT-3LEG-PROD"
+  },
+  {
+   "family": "multi_horizon FS rank residual x v_rev x wedge",
+   "reason": "Wave48 FS_rank 0.30 3leg S1.75 F1.13 ladder 2.13 RN0.92 prod 0.9029. FS strength max S1.21 missed cheap gate. Do not Mode A.",
+   "rule": "",
+   "entry_id": "EUR-MH-FS-RANK-3LEG-PROD"
+  },
+  {
+   "family": "multi_horizon value_analyst residual x v_rev x wedge",
+   "reason": "Wave48 0.30 value_analyst residual x v_rev x wedge S1.99 F1.33 ladder 2.14 RN0.90 prod 0.9101. Do not Mode A.",
+   "rule": "",
+   "entry_id": "EUR-MH-VALUE-ANALYST-3LEG-PROD"
+  },
+  {
+   "family": "multi_horizon growth_flow_to_price residual x v_rev x wedge",
+   "reason": "Wave48 0.30 growth_flow_to_price_2 residual x 0.40 v_rev x 0.30 wedge S1.91 F1.25 ladder 2.20 RN0.87 but prod 0.8136. Do not Mode A.",
+   "rule": "",
+   "entry_id": "EUR-MH-GROWTH-FLOW-3LEG-PROD"
+  },
+  {
+   "family": "multi_horizon leverage residual x v_reversal x falling_wedge",
+   "reason": "Wave46 leverage 3-leg passes IS/ladder (P071A7zL S1.80 F1.13 2Y2.27 RN1.02 RA=0) but prod 0.7644. Lower MODEL weight made prod worse (E5lK2l80 0.30 -> 0.7867; d5jQPj3j 0.28 -> 0.7958). Do not Mode A. ",
+   "rule": "",
+   "entry_id": "EUR-MH-LEVERAGE-3LEG-VREV-WEDGE-PROD"
+  },
+  {
+   "family": "multi_horizon leverage industry residual as dominant",
+   "reason": "Leverage industry residual has independent IS (|S|1.58) but is single-pyramid EUR/D1/MODEL. Invert unused. Do not use as dominant; allowed only as 0.40 slow mix with non-MODEL PV.",
+   "rule": "",
+   "entry_id": "EUR-MH-LEVERAGE-RESID-DOMINANT"
+  },
+  {
+   "family": "shortinterest star_hold_country_rank dominant",
+   "reason": "S1.19 F0.85 2Y1.46 prod 0.8935. Same EUR/D1/MODEL wall as industry/sector/screening. Do not Mode A.",
+   "rule": "",
+   "entry_id": "EUR-STARHOLD-COUNTRY-RANK-PROD"
+  },
+  {
+   "family": "shortinterest star_hold_industry_rank dominant",
+   "reason": "Near-gate Fitness 0.90 2Y1.59 but prod 0.8787 same EUR/D1/MODEL wall as screening/sector. Do not Mode A.",
+   "rule": "",
+   "entry_id": "EUR-STARHOLD-INDUSTRY-RANK-PROD"
+  },
+  {
+   "family": "news84 migration sentiment MATRIX probe",
+   "reason": "Wave40 slot1 news84 migration sentiment MATRIX max |S|0.35 with sign-flip mirror. Same weak-probe outcome as news85. No independent IS.",
+   "rule": "",
+   "entry_id": "EUR-NEWS84-SENTIMENT-MATRIX-WEAK"
+  },
+  {
+   "family": "multi_horizon country gz value and sales_to_price",
+   "reason": "country gz / neutralize invert deep_value max S0.89; sales_to_price |S|0.22. Not independent of Wave38 value residual path. Do not occupy another slot.",
+   "rule": "",
+   "entry_id": "EUR-MH-VALUE-COUNTRY-SALES-WEAK"
+  },
+  {
+   "family": "multi_horizon NOA change and PEG",
+   "reason": "NOA max |S|0.27 PEG |S|0.15. Not independent. IS rank |S|0.6 only. Do not occupy another slot with NOA/PEG probes.",
+   "rule": "",
+   "entry_id": "EUR-MH-NOA-PEG-WEAK"
+  },
+  {
+   "family": "ai_equity forensic+accrual mix dominant",
+   "reason": "0.6 forensic + 0.4 invert accruals S0.96 F0.58 2Y1.90 TVR8.3% but prod 0.8161. 2Y already passes; Mode A will not break prod. Leave forensic/accrual as dominant.",
+   "rule": "",
+   "entry_id": "EUR-AIEQ-FORENSIC-ACCRUAL-MIX-PROD"
+  },
+  {
+   "family": "multi_horizon invert FY2 three-month revision",
+   "reason": "invert FY2 3m revision S0.95 F0.69 prod 0.945. Same analyst-revision crowding as long_term estrev invert. Residual |S|1.11 is the uninverted side. Do not invert-dominant or dilute.",
+   "rule": "",
+   "entry_id": "EUR-MH-FY2-INVERT-CROWD"
+  },
+  {
+   "family": "multi_horizon invert management_efficiency gzscore",
+   "reason": "invert long_term_management_efficiency_europe_rank industry gz S1.0 F0.53 TVR1.7% prod 0.8178. EUR/D1/MODEL wall. Do not Mode A. Do not use invert mgeff as dominant.",
+   "rule": "",
+   "entry_id": "EUR-MH-MGEFF-INVERT-GZ-PROD"
+  },
+  {
+   "family": "news85 DNN sentiment MATRIX probe",
+   "reason": "Wave39 slot1 news85 DNN sentiment MATRIX max |S|0.32 with exact sign-flip mirror. No independent IS. Do not occupy another slot with news85 naked probes.",
+   "rule": "",
+   "entry_id": "EUR-NEWS85-SENTIMENT-MATRIX-WEAK"
+  },
+  {
+   "family": "multi_horizon balance_sheet and price_adj_eps residual",
+   "reason": "Unused quality legs BS residual max |S|0.06 and price_adj_eps residual max |S|0.28. Not independent signal. Capacq invert is a separate dead_end (prod).",
+   "rule": "",
+   "entry_id": "EUR-MH-QUALITY-BS-EPS-WEAK"
+  },
+  {
+   "family": "ai_equity_alpha analyst revision without vol/score",
+   "reason": "Wave38 slot4 analyst revision/forecast/target/opinion without vol/score max |S|0.57. Weak set, do not occupy another slot.",
+   "rule": "",
+   "entry_id": "EUR-AIEQ-ANALYST-REV-NOSCORE-WEAK"
+  },
+  {
+   "family": "multi_horizon capital_acquisition invert residual dominant",
+   "reason": "omqnqr3m invert capacq industry residual S1.28 F0.69 2Y1.80 SUB0.59 but prod 0.8851. Do not Mode A. Do not keep this invert residual as dominant.",
+   "rule": "",
+   "entry_id": "EUR-MH-CAPACQ-INVERT-RESID-PROD"
+  },
+  {
+   "family": "shortinterest star_hold_sector_rank dominant",
+   "reason": "Near-gate Fitness 0.91 but prod 0.8992 same EUR/D1/MODEL wall as screening. 9qX9XMNq S1.28 F0.91 2Y1.43 SUB0.42. Do not Mode A clone sector rank.",
+   "rule": "",
+   "entry_id": "EUR-STARHOLD-SECTOR-RANK-PROD"
+  },
+  {
+   "family": "multi_horizon long_term estrev invert residual as minority",
+   "reason": "Salvage of EUR-MH-ESTREV-RESID-INVERT-CROWD failed. 0.30 invert x growth/FS killed IS (S~-0.08). 0.40 invert + 0.60 mid_term O07nGp8Y S1.08 F0.51 2Y0.88 prod=0.7057 (still >=0.7) though self vs Wj71Q1",
+   "rule": "",
+   "entry_id": "EUR-MH-ESTREV-INVERT-DILUTE-PROD"
+  },
+  {
+   "family": "model238 uncrowded alignment / industry_relative / preference",
+   "reason": "Uncrowded m238 fields have IS but do NOT beat the change/screening prod ~0.89 wall. 9qX9pVKe industry_relative S1.34 F0.90 2Y1.59 prod=0.8787; ZY7jE0qd alignment S1.24 prod=0.8923; E5lqGwR9 three-way ",
+   "rule": "",
+   "entry_id": "EUR-M238-UNCROWDED-ALIGN-INDREL-PROD"
+  },
+  {
+   "family": "multi_horizon mid_term estimate_revision",
+   "reason": "Horizon shift from long_term estrev residual (|S|1.48) to mid_term (alphaCount=0) failed. Best 88lOpzjm invert residual+growth S0.52 F0.19 2Y-0.03. Not independent of the long_term estrev residual pro",
+   "rule": "",
+   "entry_id": "EUR-MH-MIDTERM-ESTREV-WEAK"
+  },
+  {
+   "family": "multi_horizon long_term estimate_revision industry residual full invert",
+   "reason": "Has independent IS (|S|1.48, self vs Wj71Q12o 0.17) but the profitable invert aligns with model238 institutional crowding (mutual -0.74 on uninverted => +0.74 after invert) and prod min already -0.95.",
+   "rule": "",
+   "entry_id": "EUR-MH-ESTREV-RESID-INVERT-CROWD"
+  },
+  {
+   "family": "model238 d1 rank combos of screening/change/industry/country",
+   "reason": "Intra-dataset d1 rank combos do not beat wave26 single-field rank(mdl238_global_screening_rank) S1.32 F0.87. Best 1YwozLvz S1.28 F0.85 2Y1.48 prod 0.896; lej73Xm7 S1.16 prod 0.8851; mutual 0.96. LOW_S",
+   "rule": "",
+   "entry_id": "EUR-M238-D1-RANK-COMBO-PROD"
+  },
+  {
+   "family": "multi_horizon FCF invert residual mixed with to-price value",
+   "reason": "FCF as minority mixed with other to-price/value fields does not break prod 0.7. np7n8Mgd S1.17 F0.69 2Y2.03 prod 0.8693 vs pure FCF 88lOQrdm prod 0.9381. Three-way FCF 0.30 killed IS (max +S 0.49). Do",
+   "rule": "",
+   "entry_id": "EUR-FCF-MINORITY-VALUE-MIX-PROD"
+  },
+  {
+   "family": "model36 default_risk residual",
+   "reason": "Industry residual lifts S to 1.04 vs naked 0.96 but Fitness still 0.58 and prod 0.86. ts_av_diff weaker. Leave MODEL credit/default_risk.",
+   "rule": "",
+   "entry_id": "EUR-M36-DEFAULTRISK-RESID-PROD"
+  },
+  {
+   "family": "pattern_scores breakaway residual alone",
+   "reason": "Breakaway-gap residual/invert max S0.71 F0.29. PV pyramid but weak as standalone. Wj71Q12o used gap as 0.60 mix with FCF; gap-only residual is not a RA path. Do not clone Wj71Q12o mix.",
+   "rule": "",
+   "entry_id": "EUR-PATTERN-BREAKAWAY-RESID-WEAK"
+  },
+  {
+   "family": "analyst_revision surprise/primary residual",
+   "reason": "ts_av_diff/group_mean residual of surprise+primary killed IS vs wave34 surprise×primary S1.04. Best wpj5lVJp S0.48. Residual path on this pair is dead.",
+   "rule": "",
+   "entry_id": "EUR-ARH-SURPRISE-RESID-WEAK"
+  },
+  {
+   "family": "multi_horizon FCF invert industry residual dominant",
+   "reason": "IS S/F/2Y pass but prod 0.94 because pure FCF without heterogeneous dilution. Self vs Wj71Q12o 0.45 so not a clone of the submitted mix, but FCF-to-price dominant is crowded. Do not Mode A; next only ",
+   "rule": "",
+   "entry_id": "EUR-FCF-PURE-INVERT-RESID-PROD"
+  },
+  {
+   "family": "shortinterest residual of screening_rank",
+   "reason": "group_mean residual ≈ gzscore; still prod 0.85-0.89. ts_av_diff killed Sharpe (0.20-0.55). Do not Mode A clone residual wrappers of screening_rank.",
+   "rule": "",
+   "entry_id": "EUR-STARHOLD-SCREENING-RESID-PROD"
+  },
+  {
+   "family": "model36 credit / default_risk dominant",
+   "reason": "Credit/default_risk dominant not near-gate (max S0.96 F0.58) and prod 0.91>=0.7. Do not Mode A clone decay/neut. Next only ts_av_diff or group_mean residual, or leave MODEL.",
+   "rule": "",
+   "entry_id": "EUR-M36-CREDIT-DEFAULTRISK-PROD"
+  },
+  {
+   "family": "shortinterest",
+   "reason": "COUNTRY/6 wrapper lifts starhold to S1.39 F0.96 2Y1.45 but prod 0.89 and LOW_SUB 0.39. EUR/D1/MODEL crowded. Sibling E5lqK9gL S1.38 F0.96 2Y1.49 same wall likely. Do not Mode A clone screening zscore.",
+   "rule": "",
+   "entry_id": "EUR-STARHOLD-SCREENING-GZSCORE-PROD"
+  },
+  {
+   "family": "continuation_score chart-similarity composites",
+   "reason": "After composite round (bull-bear subtract, group_rank, ts_av_diff, ts_corr) max |sharpe| 0.44. Not worth another probe round.",
+   "rule": "",
+   "entry_id": "EUR-CONTINUATION-COMPOSITE-WEAK"
+  },
+  {
+   "family": "ai_equity_alpha financial_statement_volatility_factor / alpha_score dominant legs",
+   "reason": "Do not use financial_statement_volatility_factor or alpha_score as the dominant (weight>=0.6) leg. Wrappers/group/ts_av_diff/SLOW-X-FAST mix still prod 0.78-0.83.",
+   "rule": "",
+   "entry_id": "EUR-AIEQ-VOL-SCORE-PRODCORR"
+  }
+ ],
  "region_context": {},
  "_meta": {
   "region": "EUR",
@@ -116,23 +1144,202 @@
    "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
    "profile_fallback (仅 DB KB 空时)",
    "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
-  ]
+  ],
+  "truncated": {
+   "wins": [
+    "EUR-DECORRELATION-AXIS-HIERARCHY",
+    "EUR-DEADEND-TEMPLATE-SCOPED-OVERBLOCK",
+    "EUR-ONE-MECHANISM-YIELDS-ONE-ALPHA",
+    "EUR-FAST-NEUT-LOW-DECAY-BREAKS-PROD-WALL",
+    "EUR-SUBINDUSTRY-GROUPING-ONLY-SUB-PASS",
+    "EUR-INDUSTRY-GROUPING-RETURNS-LEVER",
+    "EUR-REVISION-FS-STRENGTH-CRITERION",
+    "EUR-CROWDING-NEUT-BREAKS-PROD-WALL",
+    "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
+    "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
+    "EUR-Xgojww1X-RISK-NEWS-ACTIVE",
+    "T-KB-01 慢×快跨周期混合",
+    "T-KB-02 镜像反转翻案",
+    "T-KB-04 镜像稀释破 PROD 墙"
+   ],
+   "dead_ends": [
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "region_kb",
+    "EUR-SM12-SIGNAL-DEAD",
+    "EUR-OTHER571-LEVEL-FAMILY-DEAD-20261102",
+    "EUR-EARNINGS-GROUPRANK-COUNTRY-LEVER-DEAD-20261102",
+    "EUR-EARNINGS-TSSTDDEV-GEOMETRY-DEAD-20261102",
+    "EUR-EARNINGS-AVDIFF-GEOMETRY-DEAD-20261102",
+    "EUR-SENTIMENT27-ATTENTION-LEVEL-DEAD-20261102",
+    "EUR-SOCIALMEDIA12-SENT-BUZZ-DEAD-20261102",
+    "EUR-RISK68-LOWVOL-BAB-DEAD-20261102",
+    "EUR-RISK68-RESIDUAL-REVERSAL-DEAD-20261102",
+    "EUR-RISK60-TS-MOMENT-DEAD-20261102",
+    "EUR-RISK60-OWNHIST-PCTILE-DEAD-20261102",
+    "EUR-RISK60-CROWDING-FIELD-DEAD-20261102",
+    "EUR-NEWS73-TONE-LEVEL-DEAD-20261102",
+    "EUR-INSTITUTIONS6-LL-CHANNEL-DEAD-20261102",
+    "EUR-INSIDERS1-TRADE-LEVEL-DEAD-20261102",
+    "EUR-ANALYST14-F-GATE-CEILING",
+    "EUR-BUCKET-AXIS-NOT-A-DECORRELATOR",
+    "EUR-ANALYST39-FAST-RECIPE-DEAD",
+    "EUR-CREDIT-DEFAULT-ANALYST81-MODEL52",
+    "EUR-COUNTRY-EXCHANGE-SECTOR-GROUPING-DEAD",
+    "EUR-ANALYST-CONSENSUS-TARGETPRICE-DEAD",
+    "EUR-FND23-WORKINGCAP-INVENTORY-DEAD",
+    "EUR-FND23-ACCRUAL-EXPENSE-DEAD",
+    "EUR-FND23-CAPSTRUCT-DIVIDEND-DEAD",
+    "EUR-FND93-TAXACCRUAL-ZERO-SIGNAL-DEAD",
+    "EUR-UNTESTED-CHANNEL-FIRSTPROBE-DEAD",
+    "EUR-NEWS46-ZERO-IS-SIGNAL",
+    "EUR-W255-EARNINGS6-EPS-EVENT-PAIRS",
+    "EUR-W254-OTHER460-FORWARD-PROBABILITY-PAIRS",
+    "EUR-W253-OTHER455-CUSTOMER-NETWORK-RETURNS",
+    "EUR-W252-FUNDAMENTAL17-MEASUREMENT-RETEST",
+    "EUR-W251-FUNDAMENTAL17-QUALITY-PROBE",
+    "EUR-W246-news50-mechanisms-D1",
+    "EUR-W245-news46-mechanisms-D1",
+    "EUR-NEWS17-INSPECT-GATE-WALL",
+    "EUR-NEWS31-INSPECT-GATE-WALL",
+    "EUR-NEWS20-INSPECT-GATE-WALL",
+    "EUR-NEWS48-INSPECT-GATE-WALL",
+    "EUR-NEWS29-WEAK",
+    "EUR-ANALYST-FACTOR-SIGNALS-WEAK",
+    "EUR-INSIDER-FEATS-WEAK",
+    "EUR-SENTIMENT21-WEAK",
+    "EUR-OTHER401-WEAK",
+    "EUR-EVENT-RELATION-WEAK",
+    "EUR-RISK72-RESIDUAL-RETURN-WEAK",
+    "EUR-ACQUISITION-MODEL-COLD-ZERO-YIELD",
+    "EUR-INSTITUTIONS6-COLD-ZERO-YIELD",
+    "EUR-INSIDER-AGG-MATRIX-COLD-ZERO-YIELD",
+    "EUR-ANALYST9-COLD-ZERO-YIELD",
+    "EUR-SENTIMENT7-WIKI-ATTENTION-DEAD",
+    "EUR-ANALYST10-PREDICTED-SURPRISE-DEAD",
+    "EUR-NEWS21-EVENT-CALENDAR-DEAD",
+    "EUR-RISK60-BORROW-FEE-PROD-WALL",
+    "EUR-W170-FASTPV-NEGATED-WEAK-DEAD",
+    "EUR-W169-FASTPV-SPREAD-REVERSED-DEAD",
+    "EUR-NONMODEL-TOWER-CEILING",
+    "EUR-GSM-SAME-SRC-BUCKET-RATIO",
+    "EUR-DLRFR-OHLCV-GEOM-WALL",
+    "EUR-INST6-INSTITUTIONS-TOWER-EXHAUSTED",
+    "EUR-ANL11-ESG-SLOWVAR-LONGCOUNT",
+    "EUR-SNT26-ATTENTION-FITNESS-CEILING",
+    "EUR-DLRF-BOTH-FAMILIES-DEAD-MATH-PROOF",
+    "EUR-DLRF-EUROHLCMA-TURNOVER-FITNESS-WALL",
+    "EUR-DLRF-OHLCV-PRODWALL-FIELD-LEVEL",
+    "EUR-FHP-INSTITUTIONS-WEAK",
+    "EUR-O567-COVERAGE-STRUCTURAL",
+    "EUR-AINEWS-POS-INTENSITY-WEAK",
+    "EUR-NSNLP-SPARSE-TWO-WALLS",
+    "EUR-DLRF-PROD-WALL-080",
+    "EUR-MODEL193-W129-CREDIT-AXIS-DEAD",
+    "EUR-INTRADAY-PV-W126-128-NEAR-MISS",
+    "EUR-AEIBES-W125-OPERATOR-LEVERAGE-WEAK",
+    "EUR-pattern_scores-BREAKAWAY-GAP-WEAK",
+    "EUR-predictive_starmine-SMEST-IV-WEAK",
+    "EUR-predictive_starmine-EQVR-WEAK",
+    "EUR-chart_cnn_alpha-MODEB-CEILING",
+    "EUR-other571-WIKI-WEAK",
+    "EUR-news54-TIMESTAMP-INVALID",
+    "EUR-analyst45-RET-WEAK",
+    "EUR-chart_cnn_alpha-LEAPSTAR-WEAK",
+    "EUR-price_signal_dl-NO-DATA",
+    "EUR-news_sentiment_dl-SENTIMENT-WEAK",
+    "EUR-predictive_starmine-NEWS-MIX-WEAK",
+    "EUR-STARMINE-SIBLING-PROD-WALL",
+    "EUR-shortinterest6-PATTERN-FAST-LEG-PROD",
+    "EUR-shortinterest6-PATTERN-MIX-PROD",
+    "EUR-shortinterest6-CHANGE-OWNER-WEAK",
+    "EUR-ai_news_scores-ADVANCED-NEG",
+    "EUR-news_sentiment_nlp-STRUCTURE-DEAD",
+    "EUR-insider_trx_matrix-WEAK-DRIFT",
+    "EUR-risk72-wave104-all-fail",
+    "EUR-pattern_scores-wave83-skeleton-fail",
+    "EUR-MH-FCF-INVERT-PROD",
+    "EUR-MH-LEVERAGE-INVERT-RN",
+    "EUR-MH-DEEPVALUE-INVERT-PROD",
+    "EUR-STAR-ARM-LEFTOVER-WEAK",
+    "EUR-STAR-ACTUAL-UPGDNG-ARMCOUNTRY-WEAK",
+    "EUR-STAR-PV-ASCT-TREND-WEAK",
+    "EUR-STAR-GAP-FACTOR-NEUT-WEAK",
+    "EUR-STAR-REC-SMEST-WEAK",
+    "EUR-STAR-REVCOUNT-ARM-WEAK",
+    "EUR-GSM-EVENT-WEAK",
+    "EUR-AFT-OSC2-WEAK",
+    "EUR-STAR-RELVAL-EVEBITDA-2Y-DEAD",
+    "EUR-MLFP-0ALPHA-OPS-WEAK",
+    "EUR-M354-VALUATION-YIELD-WEAK",
+    "EUR-NEWS36-NOVELTY-SENT-WEAK",
+    "EUR-NEWS38-CONCEPT-WEAK",
+    "EUR-CONSENSUS-SURPRISE-TP-WEAK",
+    "EUR-ANL39-EPS-GM-BOOK-WEAK",
+    "EUR-ANL45-TRADE-IDEAS-WEAK",
+    "EUR-M193-NAMED-SLOW-INERT",
+    "EUR-PV-RISING-WEDGE-TRIANGLE-CONT-FAST-WEAK",
+    "EUR-MH-EV-EBITDA-3LEG-RN-PROD",
+    "EUR-AIEQ-W57-EQA-FCHG-PTB-DEBT-WEAK",
+    "EUR-MH-NREV-LADDER-WALL",
+    "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK",
+    "EUR-MH-W49-UNUSED-3LEG-WEAK",
+    "EUR-MH-ROE-3LEG-WEAK",
+    "EUR-MH-INCOME-STMT-3LEG-PROD",
+    "EUR-MH-FS-RANK-3LEG-PROD",
+    "EUR-MH-VALUE-ANALYST-3LEG-PROD",
+    "EUR-MH-GROWTH-FLOW-3LEG-PROD",
+    "EUR-MH-LEVERAGE-3LEG-VREV-WEDGE-PROD",
+    "EUR-MH-LEVERAGE-RESID-DOMINANT",
+    "EUR-STARHOLD-COUNTRY-RANK-PROD",
+    "EUR-STARHOLD-INDUSTRY-RANK-PROD",
+    "EUR-NEWS84-SENTIMENT-MATRIX-WEAK",
+    "EUR-MH-VALUE-COUNTRY-SALES-WEAK",
+    "EUR-MH-NOA-PEG-WEAK",
+    "EUR-AIEQ-FORENSIC-ACCRUAL-MIX-PROD",
+    "EUR-MH-FY2-INVERT-CROWD",
+    "EUR-MH-MGEFF-INVERT-GZ-PROD",
+    "EUR-NEWS85-SENTIMENT-MATRIX-WEAK",
+    "EUR-MH-QUALITY-BS-EPS-WEAK",
+    "EUR-AIEQ-ANALYST-REV-NOSCORE-WEAK",
+    "EUR-MH-CAPACQ-INVERT-RESID-PROD",
+    "EUR-STARHOLD-SECTOR-RANK-PROD",
+    "EUR-MH-ESTREV-INVERT-DILUTE-PROD",
+    "EUR-M238-UNCROWDED-ALIGN-INDREL-PROD",
+    "EUR-MH-MIDTERM-ESTREV-WEAK",
+    "EUR-MH-ESTREV-RESID-INVERT-CROWD",
+    "EUR-M238-D1-RANK-COMBO-PROD",
+    "EUR-FCF-MINORITY-VALUE-MIX-PROD",
+    "EUR-M36-DEFAULTRISK-RESID-PROD",
+    "EUR-PATTERN-BREAKAWAY-RESID-WEAK",
+    "EUR-ARH-SURPRISE-RESID-WEAK",
+    "EUR-FCF-PURE-INVERT-RESID-PROD",
+    "EUR-STARHOLD-SCREENING-RESID-PROD",
+    "EUR-M36-CREDIT-DEFAULTRISK-PROD",
+    "EUR-STARHOLD-SCREENING-GZSCORE-PROD",
+    "EUR-CONTINUATION-COMPOSITE-WEAK",
+    "EUR-AIEQ-VOL-SCORE-PRODCORR"
+   ]
+  }
  },
  "gate_priors": {
   "sample_size": 1000,
-  "pass_rate": 0.17,
+  "pass_rate": 0.172,
   "by_neutralization": {
    "SECTOR": {
-    "rate": 0.2,
-    "n": 25
+    "rate": 0.2083,
+    "n": 24
    },
    "INDUSTRY": {
-    "rate": 0.058,
-    "n": 207
+    "rate": 0.0583,
+    "n": 206
    },
    "SUBINDUSTRY": {
-    "rate": 0.236,
-    "n": 572
+    "rate": 0.2416,
+    "n": 567
    },
    "STATISTICAL": {
     "rate": 0.1519,
@@ -146,6 +1353,10 @@
     "rate": 0.16,
     "n": 25
    },
+   "NONE": {
+    "rate": 0.0,
+    "n": 15
+   },
    "CROWDING": {
     "rate": 0.0,
     "n": 18
@@ -153,56 +1364,56 @@
   },
   "by_universe": {
    "TOPCS1600": {
-    "rate": 0.0678,
-    "n": 295
+    "rate": 0.0731,
+    "n": 301
    },
    "TOP2500": {
-    "rate": 0.2222,
-    "n": 675
+    "rate": 0.2246,
+    "n": 668
    },
    "TOP1200": {
     "rate": 0.0,
-    "n": 24
+    "n": 25
    }
   },
   "by_operator_count": {
    "5-8": {
-    "rate": 0.1927,
-    "n": 384
+    "rate": 0.1958,
+    "n": 383
    },
    "<=4": {
-    "rate": 0.1128,
-    "n": 266
+    "rate": 0.1111,
+    "n": 270
    },
    ">8": {
-    "rate": 0.1886,
-    "n": 350
+    "rate": 0.1931,
+    "n": 347
    }
   },
   "by_decay": {
    "4": {
-    "rate": 0.2572,
-    "n": 587
+    "rate": 0.2615,
+    "n": 585
    },
    "2": {
-    "rate": 0.1556,
-    "n": 45
+    "rate": 0.1628,
+    "n": 43
    },
    "6": {
     "rate": 0.0541,
     "n": 74
    },
    "0": {
-    "rate": 0.087,
-    "n": 23
+    "rate": 0.0645,
+    "n": 31
    },
    "8": {
-    "rate": 0.0625,
-    "n": 80
+    "rate": 0.0633,
+    "n": 79
    },
    "5": {
     "rate": 0.0,
-    "n": 111
+    "n": 109
    },
    "3": {
     "rate": 0.05,
@@ -223,8 +1434,8 @@
     "n": 32
    },
    "mdl": {
-    "rate": 0.0079,
-    "n": 126
+    "rate": 0.0081,
+    "n": 124
    },
    "?": {
     "rate": 0.1746,
@@ -252,7 +1463,7 @@
    },
    "cfg": {
     "rate": 0.0,
-    "n": 133
+    "n": 131
    },
    "probability": {
     "rate": 0.2,
@@ -263,23 +1474,23 @@
     "n": 17
    },
    "surprise": {
-    "rate": 0.3396,
-    "n": 53
+    "rate": 0.3529,
+    "n": 51
    },
    "star": {
-    "rate": 0.0526,
-    "n": 38
+    "rate": 0.0571,
+    "n": 35
    }
   },
   "avoid": [
    "field_family=relative(0%, n=32)",
    "field_family=anl(0%, n=32)",
-   "field_family=mdl(1%, n=126)",
+   "field_family=mdl(1%, n=124)",
    "field_family=fnd(2%, n=55)",
    "field_family=rsk(1%, n=85)",
-   "field_family=cfg(0%, n=133)"
+   "field_family=cfg(0%, n=131)"
   ],
-  "generated_at": "2026-09-22T12:31:48.403080+00:00",
+  "generated_at": "2026-09-25T09:12:08.584138+00:00",
   "source": "tools/build_gate_prior_from_inventory.py"
  },
  "settings_prior": {
@@ -288,11 +1499,11 @@
    {
     "dim": "decay",
     "current": 4,
-    "current_rate": 0.2572,
-    "current_n": 587,
+    "current_rate": 0.2615,
+    "current_n": 585,
     "recommended": 4,
-    "rate": 0.2572,
-    "n": 587,
+    "rate": 0.2615,
+    "n": 585,
     "lift": 1.0,
     "source": "gate_priors",
     "apply": false
@@ -300,11 +1511,11 @@
    {
     "dim": "neutralization",
     "current": "SUBINDUSTRY",
-    "current_rate": 0.236,
-    "current_n": 572,
+    "current_rate": 0.2416,
+    "current_n": 567,
     "recommended": "SUBINDUSTRY",
-    "rate": 0.236,
-    "n": 572,
+    "rate": 0.2416,
+    "n": 567,
     "lift": 1.0,
     "source": "gate_priors",
     "apply": false

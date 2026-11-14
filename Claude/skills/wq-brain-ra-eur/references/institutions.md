@@ -5,6 +5,12 @@
 <!-- profiles:cell-panel:start -->
 > ⭐ **2026-11-08 实测补充（eur10 战役）**：组合形态「analyst7 载体 × inst6 小腿」全闸可达（N1NGbddg S1.69/F1.05/2Y2.17 全过 + prod0.687/self0.66），
 > 但**同载体族在 0.7 篮内容量 = 1 席**（换科目 ebt corr 0.7645 / 换 tilt 0.7307-0.7562，均 >0.7）——别再投同族换腿波次。
+>
+> ⚠ **2026-11-12 勘误（EUR 战役复核）**：
+> 1. 本条引用的 alpha 为 N1NGbddg，其**实配**是 TOP2500 / decay **40** / neutralization **FAST** / maxTrade **ON**（本文件头部的区域默认表 TOPCS1600/SUBINDUSTRY/decay4 **不是**该件的配置——复现勿用区域缺省，必须 `get_alpha_details` 读 `code`+`settings`）。
+> 2. 记录中的 **2Y2.17 在 2026-11-12 环境下无法复现**（实测 2Y=None；四轮 36 臂：skill 配置 1.06/我的配置 1.17/双腿 1.48+None/日期区间无效）。inst6 **单腿**上限 S 1.17-1.22。
+> 3. N1NGbddg 当前实测：S1.69/F1.05/2Y **None**/SUB0.90/**prod 0.6872 ✓**，模拟层全闸（2Y 算不出 ⇒ 2Y 闸不触发）。稀疏双腿会致 2Y 不可计算从而绕过 LOW_2Y_SHARPE。
+> 4. 精确表达式（平台 code 原文）：`group_neutralize(add(signed_power(group_zscore(divide(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), est_12m_ebi_num_4wks_ago), subindustry), 2.1), subtract(group_rank(ts_zscore(ts_backfill(divide(subtract(count_institutional_buyers_security, count_institutional_sellers_security), count_institutional_holders_security), 120), 35), subindustry), 0.5)), market)` <!-- lint:counterexample -->
 > inst6 小腿的正确读数是「rank(ts_zscore(ts_backfill((B−S)/H,120),35))−0.5」**时序 z 后有界 rank**（流动读数），
 > 直接用水平 rank 或截面 z 都会把 2Y 打崩（0.78-1.08 vs 2.17）。
 
@@ -77,7 +83,7 @@
 ### S5 提交前
 
 - 资格判定：`$WQ_PY tools/mode_b_qualify.py evaluate --region EUR --sharpe <S> --fitness <F> --two-year-sharpe <2Y>`（喂全指标，旁路 A–E 才会生效）
-- 提交链：`submit_verdict` 只否决；prod 与 self 双端点实测（`check_correlation(refresh=True)`）；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
+- 提交链：`submit_verdict` 只否决；prod 走 `check_correlation(refresh=False)`（48h 缓存优先，不默认回源）+ self 实测；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
 
 ### 判死记录（不要重试；「归属」= payload 绑定 / 由条目名推断 / 关键词推断）
 

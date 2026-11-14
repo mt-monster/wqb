@@ -1,0 +1,69 @@
+{
+  "alpha_id": "1YWqzPGQ",
+  "dataset_legs": [
+    "shortinterest3 (shrt3_bar)",
+    "other47 (oth47_organic_traffic)"
+  ],
+  "pyramids": [
+    "DEU/D1/SHORTINTEREST",
+    "DEU/D1/OTHER"
+  ],
+  "expression": "group_rank(add(-group_rank(ts_delta(ts_backfill(vec_avg(shrt3_bar), 132), 264), subindustry), group_rank(ts_quantile(ts_delta(ts_backfill(vec_avg(oth47_organic_traffic), 132), 66), 252), sector)), sector)",
+  "settings": {
+    "region": "DEU",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "OFF"
+  },
+  "metrics": {
+    "sharpe": 1.59,
+    "fitness": 1.1,
+    "two_year_sharpe": 2.81,
+    "sub_universe_sharpe": 1.11,
+    "turnover": 0.1555,
+    "self_max_corr": 0.58796,
+    "self_pass": true
+  },
+  "prod_corr": "PENDING — 平台队列拥塞（correlation_busy）",
+  "yearly": {
+    "2014": 3.04,
+    "2015": 1.64,
+    "2016": -1,
+    "2017": 0.44,
+    "2018": 1.19,
+    "2019": 1.91,
+    "2020": 0.86,
+    "2021": 1.5,
+    "2022": 2.5,
+    "2023": 3.42
+  },
+  "yearly_zero_windows": [],
+  "yearly_negative": [
+    "2016"
+  ],
+  "mutual_corr": {
+    "E569ZE7L": 0.2715,
+    "O0W1ZnY7": 0.5608,
+    "RREPm361": 0.0384,
+    "1YNMAA8M": 0.0527,
+    "gJaY125M": 0.3531
+  },
+  "compliance": {
+    "tower_mix": "SHORTINTEREST(禁混集合外) x OTHER(禁混集合内) = 允许，占集合内x集合外配额 1/5",
+    "operator_count": 11,
+    "atom": false,
+    "note": "会点亮 OTHER 塔（2->3）"
+  },
+  "submit_blockers": [
+    "prod 相关性未实测（必须 <0.7）",
+    "用户未授权提交",
+    "用户未确认「点亮 OTHER 塔」是否可接受"
+  ],
+  "status": "READY_PENDING_PROD_AND_AUTH"
+}

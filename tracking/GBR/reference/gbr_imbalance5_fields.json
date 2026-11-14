@@ -1,0 +1,24 @@
+{
+ "dataset": "imbalance5",
+ "name": "Oil Price Resilience Scores",
+ "region": "GBR",
+ "tower": "imbalance(0)",
+ "field_count": 2,
+ "fields": [
+  {
+   "id": "imb5_score",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 746,
+   "d": "SHIELD-OIL composite score 0-1"
+  },
+  {
+   "id": "imb5_mktcap",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 181,
+   "d": "market cap"
+  }
+ ],
+ "note": "imb5_score 746 用户拥挤；leAgQPO5(11-09 老篮)曾用 imb5_score×pv1"
+}

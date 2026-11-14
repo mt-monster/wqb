@@ -26,8 +26,29 @@
 | imbalance | 1 | 未点亮 | ✅ |
 | **合计** | **173** | 已点亮 4 类 / 未点亮 10 类（**93 个数据集**） | — |
 
-> ⚠ 「已点亮塔」按**平台类别**判定，且**按自然季度清零**（2026Q4：MODEL/FUNDAMENTAL/ANALYST/RISK 各 1 颗）。
-> 曾误把 PV/News/Other 当「已点亮」而整块排除 —— 务必先跑 `get_pyramid_alphas` 确认。
+> ⚠ 「已点亮塔」按**平台类别**判定，且**按自然季度清零**。务必先跑 `get_pyramid_alphas` 确认。
+
+## 一bis、塔位实测快照（2026-11-12，get_pyramid_alphas 实测，**以此为准**）
+
+| 塔 | 已提交 | 状态 |
+|---|---:|---|
+| analyst | 10 | 🔒 已点亮 |
+| news | 3 | 🔒 已点亮 |
+| model | 3 | 🔒 已点亮 |
+| fundamental | 3 | 🔒 已点亮 |
+| other | 3 | 🔒 已点亮 |
+| sentiment | 3 | 🔒 已点亮 |
+| imbalance | 3 | 🔒 已点亮 |
+| **risk** | **2** | 未点亮（差 1） |
+| **insiders** | **2** | 未点亮（差 1） |
+| **pv** | **2** | 未点亮（差 1） |
+| **earnings** | **1** | 未点亮（差 2） |
+| **institutions** | **0** | 未点亮 |
+| **macro** | **0** | 未点亮 |
+| **socialmedia** | **0** | 未点亮 |
+
+> 上表覆盖了本文 2026-10-14 版「MODEL/FUNDAMENTAL/ANALYST/RISK 各 1 颗」的旧快照（现已全部变化）。
+> **未点亮塔的实测终局**（7 塔全字段判死/判弱证据）见 [`_unlit-towers-verdict.md`](_unlit-towers-verdict.md)。
 
 ---
 

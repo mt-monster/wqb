@@ -16,6 +16,8 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "tools" / "gates"))
 
@@ -76,7 +78,10 @@ def test_edge_is_kept_and_never_selected_for_removal():
 
 
 def test_default_apply_selects_nothing_on_real_plan():
-    plan = json.loads((ROOT / "results" / "ppa_readiness_20261110.json").read_text(encoding="utf-8"))
+    plan_path = ROOT / "results" / "ppa_readiness_20261110.json"
+    if not plan_path.is_file():
+        pytest.skip("results/ppa_readiness_20261110.json 不存在（运行期产物，干净克隆跳过）")
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
     got = A.select(plan["items"], SimpleNamespace(add=False, allow_no_leverage=False,
                                                   force_low_count=False, limit=10))
     assert got == []

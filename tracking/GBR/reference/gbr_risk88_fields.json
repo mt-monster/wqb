@@ -1,0 +1,17 @@
+{
+ "dataset": "risk88",
+ "name": "Other Multi-Factor Risk Models",
+ "region": "GBR",
+ "delay": 1,
+ "field_count": 1,
+ "fields": [
+  {
+   "id": "alternative_market_cap_usd",
+   "t": "MATRIX",
+   "cov": 1,
+   "uc": 314,
+   "ac": 598,
+   "d": "市值（老候选分母字段；规模因子）"
+  }
+ ]
+}

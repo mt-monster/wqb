@@ -1,0 +1,77 @@
+{
+ "dataset": "insider_agg_matrix",
+ "name": "Smart Insider Transaction Aggregates",
+ "region": "GBR",
+ "tower": "insiders(0)",
+ "field_count": 34,
+ "fields": [
+  {
+   "id": "directional_indicator",
+   "t": "MATRIX",
+   "cov": 1,
+   "uc": 54,
+   "d": "overall direction metric"
+  },
+  {
+   "id": "directional_indicator_2",
+   "t": "MATRIX",
+   "cov": 1,
+   "uc": 30,
+   "d": "direction metric v2"
+  },
+  {
+   "id": "avg_buy_shares",
+   "t": "MATRIX",
+   "cov": 0.5937,
+   "uc": 56,
+   "d": "mean shares bought by directors"
+  },
+  {
+   "id": "avg_sell_shares",
+   "t": "MATRIX",
+   "cov": 0.5937,
+   "uc": 29,
+   "d": "mean shares sold by directors"
+  },
+  {
+   "id": "avg_secondary_buy_shares",
+   "t": "MATRIX",
+   "cov": 0.5937,
+   "uc": 18
+  },
+  {
+   "id": "avg_secondary_sell_shares",
+   "t": "MATRIX",
+   "cov": 0.5937,
+   "uc": 20
+  },
+  {
+   "id": "avg_top_buy_shares",
+   "t": "MATRIX",
+   "cov": 0.5937,
+   "uc": 19,
+   "d": "executives mean buy"
+  },
+  {
+   "id": "avg_top_sell_shares",
+   "t": "MATRIX",
+   "cov": 0.5937,
+   "uc": 15,
+   "d": "executives mean sell"
+  },
+  {
+   "id": "directional_significant_value_1",
+   "t": "MATRIX",
+   "cov": 0.5935,
+   "uc": 0,
+   "d": "highest directional significant value"
+  },
+  {
+   "id": "directional_significant_value_4",
+   "t": "MATRIX",
+   "cov": 0.5935,
+   "uc": 13
+  }
+ ],
+ "note": "cov 0.5937 真实覆盖（非盲区）；34 字段全 MATRIX；英国董事交易披露；EUR 同名集判死但 GBR 覆盖更实"
+}

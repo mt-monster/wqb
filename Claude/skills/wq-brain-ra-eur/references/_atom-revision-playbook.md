@@ -118,13 +118,18 @@ trade_when(abs(ts_zscore(<单字段水平值或原信号>, 66)) > 1.0, CORE, 0)
 - **最大互不相关团 = 7（精确解）**：`{LL5dmv9a, e76xGOQO, P0MOK7wx, qME6VWbj, 3qjeJGle, 6XAe27eL, wp9EvMmv}`，团内最大对 0.6957（贴线合规）。
 - 因此「14 颗通过验证」≠「14 颗可同时提交」；**一次最多 7 颗**，其余进 B 席。
 
+> ⚠ **2026-11-12 勘误（EUR 战役复核）**：截至 2026-11-12，手册 15 颗中 **4 颗已 ACTIVE**（e76xGOQO / LL5dmv9a / Grge2lN3 / 6XAe27eL，用户 2026-10-20 起提交），**其余 11 颗 UNSUBMITTED 件的 prod 已被同族 ACTIVE 件拉高，全部卡墙**：A1Q729Ll 0.9341 / P0MOK7wx 0.7952 / wp9EvMmv 0.7779（其余同族推演同命运）。
+> ⇒ **一个族的第一颗提交后，该族「再产出能力」即被消耗**（同族 ACTIVE 件占位生产池 ⇒ 兄弟件 prod 全升）。
+> ⇒ 本手册库存已封死，勿再对 UNSUBMITTED 件做「直接复活」；新区域应优先选「族内无任何已提交件」的族。
+> ⇒ 例外路径：换正交骨架 + 换数据集的组合（如 qfl 骨架 × risk60 卫星，prod 0.6073 过线）可逃出本规律。
+
 ## 9. 测量与提交协议（顺序不可换）
 
 1. `get_alpha_details`：读数 + 确认 `failed_ra_count = 0`。
 2. `get_alpha_yearly_stats`：最近 3 年逐年 Sharpe（robustness 的 CV 口径）。
 3. `get_alpha_pnl`：回撤日历与换手 × margin。
 4. 本地 `check_self_correlation` 预估同族占用。
-5. `check_correlation(refresh=True)`：平台 prod/self 终值（阻塞、账号级单并发、7 天缓存）。**读 `max`**。
+5. `check_correlation(refresh=False)`：平台 prod/self 读数（48h 权威缓存，命中即过闸；2026-11-14 用户明令不默认回源）。**读 `max`**。
 6. `compute_mutual_correlation`：新增腿与既有池的最大相关（本地 4 年日收益即可，1021 点已够）。
 7. 台账 `robustness_<id>` → `submit_verdict`（只否决）→ 用户明确确认 → `workflow_submit_alpha(confirm_submit=True)`。
 

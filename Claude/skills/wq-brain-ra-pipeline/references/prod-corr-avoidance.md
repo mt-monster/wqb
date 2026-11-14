@@ -14,17 +14,17 @@
 | **跨进程槽**：账号级单并发由文件 token `logs/_dblock/correlation.lock.json` 守护（`wqb.correlation_slot`，TTL 600 s，环境变量 `BRAIN_CORRELATION_LOCK_TTL_SECONDS`）。**任何进程**（MCP 服务 / `super_build` / `prod_bucket_scan` / `prod_watch` / 一次性脚本）都必须经它取数；拿不到就 fail-fast，**不排队、不降级放行**。放行等于让第二个进程也去打这个单并发接口——2026-10-22 实测事故就是这样让一方空转 1499 s | `src/wqb/correlation_slot.py` · `brain_mixin_transport.py` |
 | 同一 alpha 的已决结果缓存 **48 小时**（2026-10-06 改：后端由 Redis 换成 SQLite 权威表 `data/wqb.db::alpha_corr_cache`，**不再依赖 Redis**）。过期即回源平台——生产池会漂移，陈值比没值更危险。`pending` / `correlation_busy` / `data_unavailable` **不缓存**；命中缓存的响应带 `from_cache: true` | `brain_mixin_correlation.py::_prod_corr_cached`（TTL 与 `wqb.store._corr_cache.CORR_FRESH_HOURS=48` 同口径） |
 | `correlation_busy` 带 `retry_after`（缺省 180 s，环境变量 `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS`） | `brain_mixin_transport.py` |
-| **提交前终验必须 `refresh=True`** 强制回源——本地 / 缓存的 prod 值会随平台 prod 池变动快速漂移（0.6997 → 1.0000 一小时内发生过） | `incidents.md` I-2 |
+| **48h 内可信缓存即提交判定，不 `refresh=True`**（2026-11-14 用户明令）：`check_correlation(refresh=False)` 命中 `alpha_corr_cache` 且 `provisional=False` 直接过闸；仅 >48h / 无缓存 / 预读不可信才回源。历史漂移案例（0.6997 → 1.0000）已被 48h 保鲜期覆盖，不再构成「每次提交前强制回源」的理由 | `incidents.md` I-2 · `submit_alpha._prod_gate` |
 
 **三种返回怎么处置**（这是环境事实的唯一一处；how-to-pass / robustness 都指向这里）：
 
 | 返回 | 含义 | 动作 |
 |---|---|---|
-| 命中缓存（`from_cache: true`） | **48 小时**内的已决结果（SQLite 权威表，无需 Redis） | 直接用；**提交前终验**仍须 `refresh=True` 回源 |
+| 命中缓存（`from_cache: true`） | **48 小时**内的已决结果（SQLite 权威表，无需 Redis） | 来源可信（`provisional=False`）即**直接放行，不回源**；仅 `provisional=True` 时由 `_prod_gate` 补一次 `refresh=True` |
 | `pending` | 轮询超时（**≥ 4 min**，一轮窗口）仍无数据 | 视为**未决**：不据此放行、不据此判死；按响应里的 `retry_after`（= 写入的冷却）再查一次，再空则向用户报错，**不得编造数字** |
 | `correlation_busy` | 账号级单并发已被占用（fail-fast，立即返回） | 按 `retry_after` 等待后**串行**重试；不要另起并行进程去抢 |
 
-**`refresh=True` 的量化**（防止拉长平台队列）：每个 alpha 的每个决策点**至多 1 次**——用于提交前终验；同一 alpha 两次 refresh 至少间隔 **5 分钟**（经验值：平台 prod 计算通常 1–5 分钟，间隔内的重复请求只会撞上在飞的那一个）。
+**`refresh=True` 的量化**（防止拉长平台队列）：**48h 缓存有效时不得调用**；仅在缓存过期 / 缺失 / 预读不可信时，每个 alpha 的每个决策点**至多 1 次**。同一 alpha 两次 refresh 至少间隔 **5 分钟**（经验值：平台 prod 计算通常 1–5 分钟，间隔内的重复请求只会撞上在飞的那一个）。
 
 **批量候选调度（串行泳道 + 本地并行）**：
 1. 全批先跑完本地检查（selfcorrQuick / mutual / 逐年归因——不占平台队列，可并行）。

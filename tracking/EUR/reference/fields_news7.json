@@ -1,0 +1,3176 @@
+[
+ {
+  "id": "news_category_tag",
+  "description": "Integer code representing a classification tag for the news headline (e.g., M&A, Earnings, Regulatory), decoded via the PIT codebook",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 1.0,
+  "userCount": 7,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_item_value",
+  "description": "news type value",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 1.0,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_related_count",
+  "description": "Number of financial instruments affected or mentioned in the news event",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 1.0,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_signal_alt_dmgrhchendtn",
+  "description": "A computed signal or indicator derived from news data in the alternative DmgrHchenDtn module.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 1.0,
+  "userCount": 9,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_topic_name_2",
+  "description": "index to type name",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 1.0,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "nws7_d1_comp_count",
+  "description": "the number of different companies in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_d1_timestamp",
+  "description": "timestamp of the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 16,
+  "alphaCount": 22,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_sl_d1_comp_count",
+  "description": "the number of different companies in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_sl_d1_timestamp",
+  "description": "timestamp of the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 1.0,
+  "userCount": 20,
+  "alphaCount": 74,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "news_story_company_count",
+  "description": "Number of distinct companies or entities mentioned in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9882,
+  "userCount": 34,
+  "alphaCount": 126,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_story_full_text",
+  "description": "Full text content of the news story/article",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9882,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "livenews_story_company_count_sl",
+  "description": "Number of companies or entities mentioned or involved in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.976,
+  "userCount": 16,
+  "alphaCount": 32,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "livenews_story_full_text_sl",
+  "description": "Full text content of the news story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.976,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "nws7_all_story_time",
+  "description": "Time (in GMT, to the second) the first alert/take for this story was issued",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9753,
+  "userCount": 59,
+  "alphaCount": 176,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_all_take_seqno",
+  "description": "Number of alerts/takes in the story. Set to 1 for the first and incremented by 1 for each subsequent alert/take in that story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9753,
+  "userCount": 42,
+  "alphaCount": 60,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_livenews_all_tag",
+  "description": "news headline tag",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9753,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_livenews_all_time",
+  "description": "Time (in GMT, to the second) this alert/take was issued",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9753,
+  "userCount": 23,
+  "alphaCount": 52,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_all_area",
+  "description": "Returns News Service Data Centre where the news was first broadcast (0 - NY, 1 - LD, 2 - LO, 3 - HA)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9744,
+  "userCount": 11,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_all_display_name",
+  "description": "Message subtype (0: alert, 1: first_take, 2: subsequent_take, 3: correction, 4: corrected, 5: delete)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.9732,
+  "userCount": 7,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_eur_news_freq_2_qerf",
+  "description": "number of news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.9572,
+  "userCount": 17,
+  "alphaCount": 30,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_newsfreq_qerf",
+  "description": "Number of news without imbalance\" key words\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.9572,
+  "userCount": 9,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_nf_qerf",
+  "description": "number of news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.9572,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_news_d1_tag",
+  "description": "news headline tag",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.957,
+  "userCount": 25,
+  "alphaCount": 40,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_news_d1_time",
+  "description": "news time",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.957,
+  "userCount": 15,
+  "alphaCount": 40,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_related_num",
+  "description": "news affected instruments number",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.957,
+  "userCount": 26,
+  "alphaCount": 30,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_tvalue",
+  "description": "news type value",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.957,
+  "userCount": 20,
+  "alphaCount": 51,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_eur_news_freq_pzeng_qerf",
+  "description": "number of news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.9568,
+  "userCount": 25,
+  "alphaCount": 27,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_newsfreq_qerf",
+  "description": "Number of news without insider\" keywords\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.9565,
+  "userCount": 9,
+  "alphaCount": 14,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_eur_newsfreq_all_delay_qerf",
+  "description": "Number of news without insider\" key words (extra delay)\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "coverage": 0.9564,
+  "userCount": 82,
+  "alphaCount": 215,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_livenews_time",
+  "description": "Time (in GMT, to the second) this alert/take was issued",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.9475,
+  "userCount": 22,
+  "alphaCount": 68,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_story_time",
+  "description": "time (in GMT, to the second) the first alert/take for this story was issued",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.9475,
+  "userCount": 33,
+  "alphaCount": 46,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_take_seqno",
+  "description": "Number of alerts/takes in the story. Set to 1 for the first and incremented by 1 for each subsequent alert/take in that story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.9475,
+  "userCount": 20,
+  "alphaCount": 24,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_livenews_tag",
+  "description": "news headline tag",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.9474,
+  "userCount": 10,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_eur_headlinetone2_d1_news_freq",
+  "description": "number of news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.9472,
+  "userCount": 19,
+  "alphaCount": 49,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_area",
+  "description": "Returns News Service Data Centre where the news was first broadcast (0 - NY, 1 - LD, 2 - LO, 3 - HA)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.9454,
+  "userCount": 25,
+  "alphaCount": 41,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "nws7_display_name",
+  "description": "Message subtype (0: alert, 1: first_take, 2: subsequent_take, 3: correction, 4: corrected, 5: delete)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.9443,
+  "userCount": 28,
+  "alphaCount": 40,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "news_product_code_all",
+  "description": "Product code specifying the news product or audience for all news items in the feed.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9336,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2026-04-01"
+ },
+ {
+  "id": "news_subject_code_all",
+  "description": "Subject or topic code for all news items, indicating the main theme or category.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9336,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2026-04-01"
+ },
+ {
+  "id": "news_mention_frequency_alt_newsfreq",
+  "description": "Count of news stories linked to the security on each date, excluding stories containing \"imbalance\" keywords",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9313,
+  "userCount": 124,
+  "alphaCount": 616,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_alt_nf",
+  "description": "Number of news articles/events associated with the security on a given date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9313,
+  "userCount": 85,
+  "alphaCount": 173,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_2",
+  "description": "Count of news articles per US security and date, excluding stories containing insider-related keywords (real-time D0 delay)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.931,
+  "userCount": 191,
+  "alphaCount": 832,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_alt_xtangnfgdata",
+  "description": "The number of news items or mentions within a specified period in the alternative XtangNfgData module.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9308,
+  "userCount": 25,
+  "alphaCount": 30,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_v11_0_0",
+  "description": "Daily count of news events associated with a security or entity in the Europe (EUR) region, excluding stories containing the keyword \"insider\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9307,
+  "userCount": 77,
+  "alphaCount": 149,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_pzeng",
+  "description": "Number of news events or stories related to European securities, counted per security and date in the djnews dataset",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9306,
+  "userCount": 105,
+  "alphaCount": 203,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_product_code",
+  "description": "Code indicating the news product or audience group to which a news item is published.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9259,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2026-04-01"
+ },
+ {
+  "id": "news_subject_code",
+  "description": "Code representing the subject or topic of a news item, such as asset class, geography, or industry.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9259,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2026-04-01"
+ },
+ {
+  "id": "headline_mention_count_2",
+  "description": "Number of news headlines for the given security and date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9258,
+  "userCount": 256,
+  "alphaCount": 929,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_mention_count_2",
+  "description": "Total count of negative words appearing in all news headlines for the day",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9258,
+  "userCount": 72,
+  "alphaCount": 84,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_tone_score_2",
+  "description": "The average ratio of negative words to all words in all news headlines for the day",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9258,
+  "userCount": 60,
+  "alphaCount": 127,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_overall_tone_score_2",
+  "description": "average normalized headline tone score across all news, calculated as (positive words - negative words) divided by (positive words + negative words) per headline",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9258,
+  "userCount": 70,
+  "alphaCount": 106,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_mention_count_2",
+  "description": "Total count of positive words appearing in all news headlines for the day",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9258,
+  "userCount": 63,
+  "alphaCount": 73,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_tone_score_2",
+  "description": "The average ratio of positive words to all words in all news headlines for the day",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9258,
+  "userCount": 68,
+  "alphaCount": 81,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "nws7_tname",
+  "description": "index to type name",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "coverage": 0.8845,
+  "userCount": 25,
+  "alphaCount": 40,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-08-01"
+ },
+ {
+  "id": "news_category_tag_livenews_all",
+  "description": "Integer code for fine-grained classification tag (e.g., \"M&A\", \"Earnings\"), resolved via codebook",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7583,
+  "userCount": 24,
+  "alphaCount": 35,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_display_name_livenews_all",
+  "description": "Code indicating message subtype (e.g., 0-alert, 1-first take, 2-subsequent take, etc.)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7583,
+  "userCount": 35,
+  "alphaCount": 105,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_geographic_area_livenews_all",
+  "description": "Code for Data Centre where news was first broadcast (e.g., 0-NY, 1-LD, 2-LO, 3-HA)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7583,
+  "userCount": 51,
+  "alphaCount": 86,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "live_news_area_identifier",
+  "description": "Identifier for the geographic area or data center associated with the live news item.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7491,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "live_news_display_label",
+  "description": "Display label or name for the live news item or source.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7491,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "live_news_headline_tag",
+  "description": "Tag indicating the type or status of the live news headline.",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7491,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_1_simple",
+  "description": "Count of news articles per security and date in Europe that contain keywords related to sales, earnings, analyst, and EPS",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6322,
+  "userCount": 45,
+  "alphaCount": 93,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_1_all",
+  "description": "Number of news articles per security and date within the Europe region, with an additional delay, containing keywords related to sales, earnings, analysts, and EPS",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6321,
+  "userCount": 31,
+  "alphaCount": 56,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_sales_mention_count_1",
+  "description": "Count of Europe news articles per security and date with one-day delay that contain earnings or sales-related keywords (e.g., earning, earnings, EPS, sale, sales, estimate)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6238,
+  "userCount": 28,
+  "alphaCount": 32,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_sales_mention_count_1_all_delay_1",
+  "description": "Count of news articles related to earnings, EPS, sales, or estimates, mentioning keywords such as \"earning\", \"earnings\", \"EPS\", \"sale\", \"sales\", or \"estimate\", with an additional delay imposed to avoid lookahead bias",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6236,
+  "userCount": 19,
+  "alphaCount": 28,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_sales_mention_count_1_d0",
+  "description": "Number of news articles per security and date in the EUR region (real-time/daily) containing keywords related to earnings, EPS, sales, or estimates",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6233,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_mention_count",
+  "description": "Total number of news items for the security/date in the dataset",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.594,
+  "userCount": 47,
+  "alphaCount": 67,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_mention_count",
+  "description": "Count of negative words in headlines across all news for a security/date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.594,
+  "userCount": 13,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_tone_score",
+  "description": "Average proportion of negative words in news headlines, calculated as negative words divided by total words, across all news for the security/date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.594,
+  "userCount": 7,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_overall_tone_score",
+  "description": "average tone score calculated as (positive word count - negative word count) divided by (positive word count + negative word count) for headlines of news stories",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.594,
+  "userCount": 10,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_mention_count",
+  "description": "Count of positive words in headlines across all news for a security/date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.594,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_tone_score",
+  "description": "Average proportion of positive words in news headlines, calculated as positive words divided by total words, across all news for the security/date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.594,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_mention_frequency_alt_livenewsfreq",
+  "description": "The count of news articles per security and date containing the keywords \"sale\", \"earning\", \"analyst\", \"sales\", \"earnings\", or \"EPS\" as detected in headline or text",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.594,
+  "userCount": 28,
+  "alphaCount": 132,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_negative_mention_count_alt_storytone",
+  "description": "date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5938,
+  "userCount": 43,
+  "alphaCount": 64,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_negative_tone_score_alt_storytone",
+  "description": "Total count of negative words in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5938,
+  "userCount": 27,
+  "alphaCount": 38,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_overall_tone_score_alt_storytone",
+  "description": "Normalized sentiment score calculated as (positive word count minus negative word count) divided by total positive and negative word count",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5938,
+  "userCount": 56,
+  "alphaCount": 87,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_positive_mention_count_alt_storytone",
+  "description": "Total count of positive words in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5938,
+  "userCount": 26,
+  "alphaCount": 32,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_positive_tone_score_alt_storytone",
+  "description": "Proportion of positive words relative to all words in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5938,
+  "userCount": 28,
+  "alphaCount": 36,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_story_mention_count_alt_storytone",
+  "description": "Proportion of negative words relative to all words in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5938,
+  "userCount": 31,
+  "alphaCount": 35,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_sales_mention_count",
+  "description": "Daily count of news articles for European securities that mention sales-related keywords (e.g., sale, sales) or earnings, aggregated per security per date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5889,
+  "userCount": 26,
+  "alphaCount": 28,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_sales_mention_count_all",
+  "description": "Delayed next-day (D1) count of news stories for European securities containing the keywords \"sale\", \"sales\", or \"earnings\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.5888,
+  "userCount": 26,
+  "alphaCount": 30,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "nws7_eur_newsfreq_1_d1_sales_qerf",
+  "description": "Number of news with earning|earnings|EPS|sale|sales|estimate\" keywords\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5719,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_newsfreq_1_d1_sales_all_delay_1_qerf",
+  "description": "Number of news with earning|earnings|EPS|sale|sales|estimate\" key words (extra delay)\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5718,
+  "userCount": 3,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_news_freq_1_qerf",
+  "description": "Number of news with sale|earning|analyst|sales|earnings|EPS\" keywords\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5692,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_news_freq_1_all_delay_1_qerf",
+  "description": "Number of news with sale|earning|analyst|sales|earnings|EPS\" key words (extra delay)\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5691,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_news_freq_sales_qerf",
+  "description": "Number of news with sale|sales|earnings\" keywords\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5495,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_news_freq_sales_all_delay_1_qerf",
+  "description": "Number of news with sale|sales|earnings\" key words\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5494,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_headlinetone_d1_news_freq",
+  "description": "number of news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.541,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_storytone_news_freq",
+  "description": "negative words divided by all words",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5404,
+  "userCount": 28,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_livenewsfreq_qerf",
+  "description": "Number of news with sale|earning|analyst|sales|earnings|EPS\" keywords\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.5402,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_storytone_tone_score",
+  "description": "((pos - neg) / (pos + neg))",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.4514,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_storytone_positive_freq",
+  "description": "how many positive words in story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.4409,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_storytone_positive_score",
+  "description": "positive words divided by all words",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.4409,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_storytone_negative_freq",
+  "description": "date",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.4297,
+  "userCount": 4,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_storytone_negative_score",
+  "description": "how many negative words in story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.4297,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "earnings_news_mention_count",
+  "description": "Number of news items per security and date that mention \"earnings,\" \"earning,\" or \"EPS\" in the text, representing earnings-related news frequency",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4276,
+  "userCount": 60,
+  "alphaCount": 67,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "news_earnings_mention_count_all",
+  "description": "Number of news articles mentioning earnings-related keywords (such as \"earning\", \"earnings\", \"EPS\") for each security on each date, aggregated with additional delay to avoid lookahead bias",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4275,
+  "userCount": 27,
+  "alphaCount": 43,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_sentiment_score",
+  "description": "Ratio of negative words to total words in the story headline",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_sentiment_score_story",
+  "description": "Ratio of negative words to total words in the headline",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_word_count",
+  "description": "Number of negative words in the story headline",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_negative_word_count_story",
+  "description": "Number of negative words in the headline across all news articles",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_sentiment_score",
+  "description": "Ratio of positive words to total words in the story headline",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_sentiment_score_story",
+  "description": "Ratio of positive words to total words in the headline",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_word_count",
+  "description": "Number of positive words in the story headline",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_positive_word_count_story",
+  "description": "Number of positive words in the headline across all news articles",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_sentiment_score_2",
+  "description": "Sentiment score for the headline, calculated as (positive words minus negative words) divided by (positive plus negative words)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 0,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "headline_sentiment_score_story",
+  "description": "Net sentiment score for the headline, calculated as (positive words - negative words) divided by (positive words + negative words)",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "story_body_negative_sentiment_score",
+  "description": "Ratio of negative words to total words in the story text",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "story_body_negative_word_count",
+  "description": "Number of negative words in the story text",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "story_body_positive_sentiment_score",
+  "description": "Ratio of positive words to total words in the story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "story_body_positive_word_count",
+  "description": "Number of positive words in the story text",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "story_body_sentiment_score",
+  "description": "Number of alerts/takes in the story. Starts at 1 for first alert/take and increases by 1 for each additional alert/take in that story",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4208,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2025-11-01"
+ },
+ {
+  "id": "nws7_eur_headlinetone2_d1_tone_score",
+  "description": "Average tone_score ((pos - neg) / (pos + neg))",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.4182,
+  "userCount": 7,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_news_earning_qerf",
+  "description": "Number of news with earning|earnings|EPS\" keywords\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.4,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_news_earning_all_delay_1_qerf",
+  "description": "Number of news with earning|earnings|EPS\" key words (extra delay)\"",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.3999,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_news_revisions_d1_time",
+  "description": "when the event was published",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 1.0,
+  "coverage": 0.3786,
+  "userCount": 21,
+  "alphaCount": 23,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-07-01"
+ },
+ {
+  "id": "nws7_eur_headlinetone2_d1_negative_freq",
+  "description": "How many negative words in the headline of all news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.2864,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_headlinetone2_d1_negative_score",
+  "description": "average negative score (negative words by all words) of all news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.2864,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_headlinetone2_d1_positive_freq",
+  "description": "How many positive words in the headline of all news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.2848,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ },
+ {
+  "id": "nws7_eur_headlinetone2_d1_positive_score",
+  "description": "average positive score (negative words by all words) of all news",
+  "dataset": {
+   "id": "news7",
+   "name": "Real Time News Feed Data"
+  },
+  "category": {
+   "id": "news",
+   "name": "News"
+  },
+  "subcategory": {
+   "id": "news-news",
+   "name": "News"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 1.0,
+  "coverage": 0.2848,
+  "userCount": 7,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.4,
+  "themes": [],
+  "dateCreated": "2022-05-01"
+ }
+]

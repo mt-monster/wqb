@@ -1,0 +1,1875 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "risk62",
+ "fetched_at": "2026-11-13",
+ "platform_count": 233,
+ "complete": true,
+ "fields": [
+  {
+   "id": "rsk62_1_100_intercept",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 45,
+   "alphaCount": 58,
+   "description": "Intercept term of the multi-factor regression used to estimate combined betas in the USA risk model (1-day horizon, 100-day trailing window)"
+  },
+  {
+   "id": "rsk62_1_100_ksrs",
+   "type": "MATRIX",
+   "coverage": 0.9873,
+   "userCount": 23,
+   "alphaCount": 28,
+   "description": "Stock-specific idiosyncratic risk (specific risk) per stock in the USA model, for the 1-day horizon using a 100-day rolling window; reported as a risk ratio use…"
+  },
+  {
+   "id": "rsk62_1_100_val10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Val10"
+  },
+  {
+   "id": "rsk62_1_100_val100",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 22,
+   "alphaCount": 36,
+   "description": "Val100"
+  },
+  {
+   "id": "rsk62_1_100_val11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Val11"
+  },
+  {
+   "id": "rsk62_1_100_val12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val12"
+  },
+  {
+   "id": "rsk62_1_100_val13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Val13"
+  },
+  {
+   "id": "rsk62_1_100_val14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val14"
+  },
+  {
+   "id": "rsk62_1_100_val15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val15"
+  },
+  {
+   "id": "rsk62_1_100_val16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 12,
+   "description": "Val16"
+  },
+  {
+   "id": "rsk62_1_100_val17",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val17"
+  },
+  {
+   "id": "rsk62_1_100_val18",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Val18"
+  },
+  {
+   "id": "rsk62_1_100_val19",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val19"
+  },
+  {
+   "id": "rsk62_1_100_val20",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val20"
+  },
+  {
+   "id": "rsk62_1_100_val21",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val21"
+  },
+  {
+   "id": "rsk62_1_100_val22",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val22"
+  },
+  {
+   "id": "rsk62_1_100_val23",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val23"
+  },
+  {
+   "id": "rsk62_1_100_val24",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val24"
+  },
+  {
+   "id": "rsk62_1_100_val25",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val25"
+  },
+  {
+   "id": "rsk62_1_100_val26",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Val26"
+  },
+  {
+   "id": "rsk62_1_100_val27",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val27"
+  },
+  {
+   "id": "rsk62_1_100_val28",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val28"
+  },
+  {
+   "id": "rsk62_1_100_val29",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val29"
+  },
+  {
+   "id": "rsk62_1_100_val3",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Val3"
+  },
+  {
+   "id": "rsk62_1_100_val30",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val30"
+  },
+  {
+   "id": "rsk62_1_100_val31",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Val31"
+  },
+  {
+   "id": "rsk62_1_100_val32",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val32"
+  },
+  {
+   "id": "rsk62_1_100_val33",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val33"
+  },
+  {
+   "id": "rsk62_1_100_val34",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Val34"
+  },
+  {
+   "id": "rsk62_1_100_val35",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val35"
+  },
+  {
+   "id": "rsk62_1_100_val36",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val36"
+  },
+  {
+   "id": "rsk62_1_100_val37",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val37"
+  },
+  {
+   "id": "rsk62_1_100_val38",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Val38"
+  },
+  {
+   "id": "rsk62_1_100_val39",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Val39"
+  },
+  {
+   "id": "rsk62_1_100_val4",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val4"
+  },
+  {
+   "id": "rsk62_1_100_val40",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Val40"
+  },
+  {
+   "id": "rsk62_1_100_val41",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val41"
+  },
+  {
+   "id": "rsk62_1_100_val42",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Val42"
+  },
+  {
+   "id": "rsk62_1_100_val43",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val43"
+  },
+  {
+   "id": "rsk62_1_100_val44",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Val44"
+  },
+  {
+   "id": "rsk62_1_100_val45",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val45"
+  },
+  {
+   "id": "rsk62_1_100_val46",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val46"
+  },
+  {
+   "id": "rsk62_1_100_val47",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val47"
+  },
+  {
+   "id": "rsk62_1_100_val48",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val48"
+  },
+  {
+   "id": "rsk62_1_100_val49",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Val49"
+  },
+  {
+   "id": "rsk62_1_100_val5",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val5"
+  },
+  {
+   "id": "rsk62_1_100_val50",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val50"
+  },
+  {
+   "id": "rsk62_1_100_val51",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val51"
+  },
+  {
+   "id": "rsk62_1_100_val52",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val52"
+  },
+  {
+   "id": "rsk62_1_100_val53",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val53"
+  },
+  {
+   "id": "rsk62_1_100_val54",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val54"
+  },
+  {
+   "id": "rsk62_1_100_val55",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val55"
+  },
+  {
+   "id": "rsk62_1_100_val56",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val56"
+  },
+  {
+   "id": "rsk62_1_100_val57",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val57"
+  },
+  {
+   "id": "rsk62_1_100_val58",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val58"
+  },
+  {
+   "id": "rsk62_1_100_val59",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val59"
+  },
+  {
+   "id": "rsk62_1_100_val6",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val6"
+  },
+  {
+   "id": "rsk62_1_100_val60",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val60"
+  },
+  {
+   "id": "rsk62_1_100_val61",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val61"
+  },
+  {
+   "id": "rsk62_1_100_val62",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val62"
+  },
+  {
+   "id": "rsk62_1_100_val63",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val63"
+  },
+  {
+   "id": "rsk62_1_100_val64",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val64"
+  },
+  {
+   "id": "rsk62_1_100_val65",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val65"
+  },
+  {
+   "id": "rsk62_1_100_val66",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val66"
+  },
+  {
+   "id": "rsk62_1_100_val67",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val67"
+  },
+  {
+   "id": "rsk62_1_100_val68",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val68"
+  },
+  {
+   "id": "rsk62_1_100_val69",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val69"
+  },
+  {
+   "id": "rsk62_1_100_val7",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val7"
+  },
+  {
+   "id": "rsk62_1_100_val70",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val70"
+  },
+  {
+   "id": "rsk62_1_100_val71",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val71"
+  },
+  {
+   "id": "rsk62_1_100_val72",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Val72"
+  },
+  {
+   "id": "rsk62_1_100_val73",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val73"
+  },
+  {
+   "id": "rsk62_1_100_val74",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val74"
+  },
+  {
+   "id": "rsk62_1_100_val75",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val75"
+  },
+  {
+   "id": "rsk62_1_100_val76",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Val76"
+  },
+  {
+   "id": "rsk62_1_100_val77",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val77"
+  },
+  {
+   "id": "rsk62_1_100_val78",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val78"
+  },
+  {
+   "id": "rsk62_1_100_val79",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val79"
+  },
+  {
+   "id": "rsk62_1_100_val8",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val8"
+  },
+  {
+   "id": "rsk62_1_100_val80",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val80"
+  },
+  {
+   "id": "rsk62_1_100_val81",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val81"
+  },
+  {
+   "id": "rsk62_1_100_val82",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val82"
+  },
+  {
+   "id": "rsk62_1_100_val83",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val83"
+  },
+  {
+   "id": "rsk62_1_100_val84",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val84"
+  },
+  {
+   "id": "rsk62_1_100_val85",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val85"
+  },
+  {
+   "id": "rsk62_1_100_val86",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val86"
+  },
+  {
+   "id": "rsk62_1_100_val87",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val87"
+  },
+  {
+   "id": "rsk62_1_100_val88",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val88"
+  },
+  {
+   "id": "rsk62_1_100_val89",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val89"
+  },
+  {
+   "id": "rsk62_1_100_val9",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val9"
+  },
+  {
+   "id": "rsk62_1_100_val90",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val90"
+  },
+  {
+   "id": "rsk62_1_100_val91",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val91"
+  },
+  {
+   "id": "rsk62_1_100_val92",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val92"
+  },
+  {
+   "id": "rsk62_1_100_val93",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val93"
+  },
+  {
+   "id": "rsk62_1_100_val94",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val94"
+  },
+  {
+   "id": "rsk62_1_100_val95",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val95"
+  },
+  {
+   "id": "rsk62_1_100_val96",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Val96"
+  },
+  {
+   "id": "rsk62_1_100_val97",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val97"
+  },
+  {
+   "id": "rsk62_1_100_val98",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val98"
+  },
+  {
+   "id": "rsk62_1_100_val99",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val99"
+  },
+  {
+   "id": "rsk62_1_1_100_intercept",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "intercept"
+  },
+  {
+   "id": "rsk62_1_1_100_ksrs",
+   "type": "MATRIX",
+   "coverage": 0.9873,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "specific risks of stocks"
+  },
+  {
+   "id": "rsk62_1_1_100_val10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val10"
+  },
+  {
+   "id": "rsk62_1_1_100_val100",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Val100"
+  },
+  {
+   "id": "rsk62_1_1_100_val11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val11"
+  },
+  {
+   "id": "rsk62_1_1_100_val12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val12"
+  },
+  {
+   "id": "rsk62_1_1_100_val13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val13"
+  },
+  {
+   "id": "rsk62_1_1_100_val14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val14"
+  },
+  {
+   "id": "rsk62_1_1_100_val15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val15"
+  },
+  {
+   "id": "rsk62_1_1_100_val16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val16"
+  },
+  {
+   "id": "rsk62_1_1_100_val17",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val17"
+  },
+  {
+   "id": "rsk62_1_1_100_val18",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val18"
+  },
+  {
+   "id": "rsk62_1_1_100_val19",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val19"
+  },
+  {
+   "id": "rsk62_1_1_100_val20",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val20"
+  },
+  {
+   "id": "rsk62_1_1_100_val21",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val21"
+  },
+  {
+   "id": "rsk62_1_1_100_val22",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val22"
+  },
+  {
+   "id": "rsk62_1_1_100_val23",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val23"
+  },
+  {
+   "id": "rsk62_1_1_100_val24",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val24"
+  },
+  {
+   "id": "rsk62_1_1_100_val25",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val25"
+  },
+  {
+   "id": "rsk62_1_1_100_val26",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val26"
+  },
+  {
+   "id": "rsk62_1_1_100_val27",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val27"
+  },
+  {
+   "id": "rsk62_1_1_100_val28",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Val28"
+  },
+  {
+   "id": "rsk62_1_1_100_val29",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val29"
+  },
+  {
+   "id": "rsk62_1_1_100_val3",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val3"
+  },
+  {
+   "id": "rsk62_1_1_100_val30",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val30"
+  },
+  {
+   "id": "rsk62_1_1_100_val31",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val31"
+  },
+  {
+   "id": "rsk62_1_1_100_val32",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val32"
+  },
+  {
+   "id": "rsk62_1_1_100_val33",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val33"
+  },
+  {
+   "id": "rsk62_1_1_100_val34",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val34"
+  },
+  {
+   "id": "rsk62_1_1_100_val35",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val35"
+  },
+  {
+   "id": "rsk62_1_1_100_val36",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val36"
+  },
+  {
+   "id": "rsk62_1_1_100_val37",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val37"
+  },
+  {
+   "id": "rsk62_1_1_100_val38",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val38"
+  },
+  {
+   "id": "rsk62_1_1_100_val39",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val39"
+  },
+  {
+   "id": "rsk62_1_1_100_val4",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Val4"
+  },
+  {
+   "id": "rsk62_1_1_100_val40",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val40"
+  },
+  {
+   "id": "rsk62_1_1_100_val41",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val41"
+  },
+  {
+   "id": "rsk62_1_1_100_val42",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val42"
+  },
+  {
+   "id": "rsk62_1_1_100_val43",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val43"
+  },
+  {
+   "id": "rsk62_1_1_100_val44",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val44"
+  },
+  {
+   "id": "rsk62_1_1_100_val45",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Val45"
+  },
+  {
+   "id": "rsk62_1_1_100_val46",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val46"
+  },
+  {
+   "id": "rsk62_1_1_100_val47",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val47"
+  },
+  {
+   "id": "rsk62_1_1_100_val48",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val48"
+  },
+  {
+   "id": "rsk62_1_1_100_val49",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val49"
+  },
+  {
+   "id": "rsk62_1_1_100_val5",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Val5"
+  },
+  {
+   "id": "rsk62_1_1_100_val50",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val50"
+  },
+  {
+   "id": "rsk62_1_1_100_val51",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val51"
+  },
+  {
+   "id": "rsk62_1_1_100_val52",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val52"
+  },
+  {
+   "id": "rsk62_1_1_100_val53",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val53"
+  },
+  {
+   "id": "rsk62_1_1_100_val54",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val54"
+  },
+  {
+   "id": "rsk62_1_1_100_val55",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val55"
+  },
+  {
+   "id": "rsk62_1_1_100_val56",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val56"
+  },
+  {
+   "id": "rsk62_1_1_100_val57",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val57"
+  },
+  {
+   "id": "rsk62_1_1_100_val58",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val58"
+  },
+  {
+   "id": "rsk62_1_1_100_val59",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val59"
+  },
+  {
+   "id": "rsk62_1_1_100_val6",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val6"
+  },
+  {
+   "id": "rsk62_1_1_100_val60",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val60"
+  },
+  {
+   "id": "rsk62_1_1_100_val61",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val61"
+  },
+  {
+   "id": "rsk62_1_1_100_val62",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Val62"
+  },
+  {
+   "id": "rsk62_1_1_100_val63",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val63"
+  },
+  {
+   "id": "rsk62_1_1_100_val64",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val64"
+  },
+  {
+   "id": "rsk62_1_1_100_val65",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val65"
+  },
+  {
+   "id": "rsk62_1_1_100_val66",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val66"
+  },
+  {
+   "id": "rsk62_1_1_100_val67",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val67"
+  },
+  {
+   "id": "rsk62_1_1_100_val68",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val68"
+  },
+  {
+   "id": "rsk62_1_1_100_val69",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val69"
+  },
+  {
+   "id": "rsk62_1_1_100_val7",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val7"
+  },
+  {
+   "id": "rsk62_1_1_100_val70",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val70"
+  },
+  {
+   "id": "rsk62_1_1_100_val71",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val71"
+  },
+  {
+   "id": "rsk62_1_1_100_val72",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val72"
+  },
+  {
+   "id": "rsk62_1_1_100_val73",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val73"
+  },
+  {
+   "id": "rsk62_1_1_100_val74",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val74"
+  },
+  {
+   "id": "rsk62_1_1_100_val75",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val75"
+  },
+  {
+   "id": "rsk62_1_1_100_val76",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val76"
+  },
+  {
+   "id": "rsk62_1_1_100_val77",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val77"
+  },
+  {
+   "id": "rsk62_1_1_100_val78",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val78"
+  },
+  {
+   "id": "rsk62_1_1_100_val79",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val79"
+  },
+  {
+   "id": "rsk62_1_1_100_val8",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Val8"
+  },
+  {
+   "id": "rsk62_1_1_100_val80",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val80"
+  },
+  {
+   "id": "rsk62_1_1_100_val81",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Val81"
+  },
+  {
+   "id": "rsk62_1_1_100_val82",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val82"
+  },
+  {
+   "id": "rsk62_1_1_100_val83",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val83"
+  },
+  {
+   "id": "rsk62_1_1_100_val84",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val84"
+  },
+  {
+   "id": "rsk62_1_1_100_val85",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val85"
+  },
+  {
+   "id": "rsk62_1_1_100_val86",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val86"
+  },
+  {
+   "id": "rsk62_1_1_100_val87",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val87"
+  },
+  {
+   "id": "rsk62_1_1_100_val88",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Val88"
+  },
+  {
+   "id": "rsk62_1_1_100_val89",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val89"
+  },
+  {
+   "id": "rsk62_1_1_100_val9",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val9"
+  },
+  {
+   "id": "rsk62_1_1_100_val90",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val90"
+  },
+  {
+   "id": "rsk62_1_1_100_val91",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val91"
+  },
+  {
+   "id": "rsk62_1_1_100_val92",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val92"
+  },
+  {
+   "id": "rsk62_1_1_100_val93",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val93"
+  },
+  {
+   "id": "rsk62_1_1_100_val94",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val94"
+  },
+  {
+   "id": "rsk62_1_1_100_val95",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val95"
+  },
+  {
+   "id": "rsk62_1_1_100_val96",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val96"
+  },
+  {
+   "id": "rsk62_1_1_100_val97",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val97"
+  },
+  {
+   "id": "rsk62_1_1_100_val98",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val98"
+  },
+  {
+   "id": "rsk62_1_1_100_val99",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val99"
+  },
+  {
+   "id": "rsk62_beta1_1_100_growth",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "growth"
+  },
+  {
+   "id": "rsk62_beta1_1_100_logadv20",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "logadv20"
+  },
+  {
+   "id": "rsk62_beta1_1_100_logcap",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "logcap"
+  },
+  {
+   "id": "rsk62_beta1_1_100_mtl",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "ltm"
+  },
+  {
+   "id": "rsk62_beta1_1_100_mts",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "stm"
+  },
+  {
+   "id": "rsk62_beta1_1_100_pb",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "bp"
+  },
+  {
+   "id": "rsk62_beta1_1_100_qe2d",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "d2eq"
+  },
+  {
+   "id": "rsk62_beta1_1_100_spe",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "eps"
+  },
+  {
+   "id": "rsk62_beta1_1_100_volatility",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "volatility"
+  },
+  {
+   "id": "rsk62_beta_1_100_averagereturn",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "averageReturn"
+  },
+  {
+   "id": "rsk62_beta_1_100_growth",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Regression beta coefficient for the Earnings Growth style factor, estimated over a 100-day window using 1-day forward returns"
+  },
+  {
+   "id": "rsk62_beta_1_100_logadv20",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Regression beta coefficient for the log of 20-day average dollar volume (liquidity) style factor, estimated over a 100-day window using 1-day forward returns"
+  },
+  {
+   "id": "rsk62_beta_1_100_logcap",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Regression beta coefficient for the log of market capitalization (size) style factor, estimated over a 100-day window using 1-day forward returns"
+  },
+  {
+   "id": "rsk62_beta_1_100_mtl",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "ltm"
+  },
+  {
+   "id": "rsk62_beta_1_100_mts",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Regression beta coefficient for the short-term momentum style factor, estimated over a 100-day window using 1-day forward returns"
+  },
+  {
+   "id": "rsk62_beta_1_100_pb",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Regression beta coefficient for the Book-to-Price style factor, estimated over a 100-day window using 1-day forward returns"
+  },
+  {
+   "id": "rsk62_beta_1_100_qe2d",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "d2eq"
+  },
+  {
+   "id": "rsk62_beta_1_100_spe",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Regression beta (loading) on the earnings‑per‑share style factor (earnings yield proxy) for the stock, estimated with a 1‑day horizon over a 100‑day window"
+  },
+  {
+   "id": "rsk62_beta_1_100_volatility",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Regression beta coefficient for the recent return volatility style factor, estimated over a 100-day window using 1-day forward returns"
+  },
+  {
+   "id": "rsk62_retseries1_1_100_val1",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val1"
+  },
+  {
+   "id": "rsk62_retseries1_1_100_val2",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Val2"
+  },
+  {
+   "id": "rsk62_retseries_1_100_val1",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val1"
+  },
+  {
+   "id": "rsk62_retseries_1_100_val2",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Val2"
+  },
+  {
+   "id": "rsk62_return",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 37,
+   "alphaCount": 49,
+   "description": "Forward-looking asset return at a 1-day horizon for each stock, used in the risk model regressions (units: return per period)"
+  },
+  {
+   "id": "rsk62_risk_growth",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "growth"
+  },
+  {
+   "id": "rsk62_risk_logadv20",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Log of 20-day average dollar trading volume (ADV), normalized exposure"
+  },
+  {
+   "id": "rsk62_risk_logcap",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Style factor exposure: natural log of market capitalization"
+  },
+  {
+   "id": "rsk62_risk_mtl",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Style factor exposure: long-term momentum in stock returns, cross-section normalized"
+  },
+  {
+   "id": "rsk62_risk_mts",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Style factor exposure: short-term momentum in stock returns, cross-section normalized"
+  },
+  {
+   "id": "rsk62_risk_pb",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Style factor exposure: book-to-price ratio (value)"
+  },
+  {
+   "id": "rsk62_risk_qe2d",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "d2eq"
+  },
+  {
+   "id": "rsk62_risk_spe",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 16,
+   "alphaCount": 26,
+   "description": "eps"
+  },
+  {
+   "id": "rsk62_risk_volatility",
+   "type": "MATRIX",
+   "coverage": 0.9348,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Recent stock return volatility (e.g., standard deviation), normalized exposure"
+  }
+ ]
+}

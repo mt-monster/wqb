@@ -2,7 +2,7 @@
 name: wq-window-valley-break-prod-wall
 layer: L4
 description: 用「窗口微调 (ts_rank 的 W)」破 prod 相关性墙的完整方法论——当候选 IS 全闸通过但 prod 卡在 0.70-0.72 时使用。核心：先用 prod 直方图 [0.7,0.8) 桶 n 值判族级命运（n=0 窗口可救 / n≥1 窗口杠杆死：先归因后破墙，非候选判死），再在 n=0 的族上扫窗口网格找谷。含实证谷位表、工具脚本、与秩后裁剪法的分工。
-last_verified: 2026-10-29
+last_verified: 2026-11-10
 agent_created: true
 ---
 

@@ -1,0 +1,452 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "earnings6",
+  "fetched_at": "2026-11-12T11:24:39.957Z",
+  "platform_count": 66,
+  "complete": true,
+  "sharpe_filter_removed": 11,
+  "fields": [
+    {
+      "id": "eps_change_absolute_value",
+      "type": "VECTOR",
+      "coverage": 0.5258,
+      "userCount": 16,
+      "alphaCount": 17,
+      "description": "The absolute change in earnings per share compared to the previous period."
+    },
+    {
+      "id": "eps_change_percentage_value",
+      "type": "VECTOR",
+      "coverage": 0.5258,
+      "userCount": 9,
+      "alphaCount": 9,
+      "description": "The percentage change in earnings per share compared to the previous period."
+    },
+    {
+      "id": "ern6_1q_221",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 17,
+      "alphaCount": 20,
+      "description": "Earnings Date for 1st quarter - may be historical"
+    },
+    {
+      "id": "ern6_2q",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 66,
+      "alphaCount": 76,
+      "description": "Earnings date for the 2nd quarter (may be historical)"
+    },
+    {
+      "id": "ern6_2q_222",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Earnings Date for 2nd quarter - may be historical"
+    },
+    {
+      "id": "ern6_3q",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 127,
+      "alphaCount": 173,
+      "description": "Earnings date for the 3rd quarter (may be historical)"
+    },
+    {
+      "id": "ern6_3q_223",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 28,
+      "alphaCount": 35,
+      "description": "Earnings Date for 3rd quarter - may be historical"
+    },
+    {
+      "id": "ern6_4q",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 67,
+      "alphaCount": 76,
+      "description": "Earnings date for the 4th quarter (may be historical)"
+    },
+    {
+      "id": "ern6_4q_224",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 17,
+      "alphaCount": 19,
+      "description": "Earnings Date for 4th quarter - may be historical"
+    },
+    {
+      "id": "ern6_actual_currenty_256",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 41,
+      "alphaCount": 46,
+      "description": "Actual Currency"
+    },
+    {
+      "id": "ern6_actual_eps_274",
+      "type": "VECTOR",
+      "coverage": 0.5367,
+      "userCount": 13,
+      "alphaCount": 14,
+      "description": "The diluted (or basic if diluted not provided) non-GAAP EPS as reported in the press release or filing"
+    },
+    {
+      "id": "ern6_actual_fiscal_year_258",
+      "type": "VECTOR",
+      "coverage": 0.795,
+      "userCount": 15,
+      "alphaCount": 15,
+      "description": "The fiscal year that corresponds to the earnings release (YYYY)"
+    },
+    {
+      "id": "ern6_actual_period_259",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 50,
+      "alphaCount": 57,
+      "description": "The actual quarter or half year as reported in the earnings announcement"
+    },
+    {
+      "id": "ern6_actual_source_260",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 57,
+      "alphaCount": 67,
+      "description": "Possible values are PR (press release), WEBSITE, SEC-SEDAR, OTHER or nulls"
+    },
+    {
+      "id": "ern6_actual_url_262",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 55,
+      "alphaCount": 64,
+      "description": "The link to the earnings announcement press release or SEC filing"
+    },
+    {
+      "id": "ern6_board_of_directors_meeting",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 47,
+      "alphaCount": 50,
+      "description": "Date of Board/Shareholder Meeting"
+    },
+    {
+      "id": "ern6_company_name_264",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 36,
+      "alphaCount": 44,
+      "description": "Name of the company"
+    },
+    {
+      "id": "ern6_company_names_213",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 20,
+      "alphaCount": 23,
+      "description": "Name of the company"
+    },
+    {
+      "id": "ern6_conferencecalltime",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 65,
+      "alphaCount": 74,
+      "description": "Published time of the earnings conference call"
+    },
+    {
+      "id": "ern6_conferencecalltime_227",
+      "type": "VECTOR",
+      "coverage": 0.7517,
+      "userCount": 25,
+      "alphaCount": 28,
+      "description": "Published time of conference call"
+    },
+    {
+      "id": "ern6_confnumber_229",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 43,
+      "alphaCount": 52,
+      "description": "Publicly available phone number for replay conference call"
+    },
+    {
+      "id": "ern6_confpasscode_230",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 11,
+      "alphaCount": 11,
+      "description": "Passcode for replay conference call"
+    },
+    {
+      "id": "ern6_div_freq_232",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 33,
+      "alphaCount": 44,
+      "description": "Identifies payment frequency of announced dividend. \"ANNUAL\", \"SEMI-ANNUAL\", \"QUARTERLY\", \"MONTHLY\" or \"SPECIAL\""
+    },
+    {
+      "id": "ern6_dividend_status_240",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 47,
+      "alphaCount": 53,
+      "description": "P - Pays, X - Does not pay, S - Suspended, R - Resumed"
+    },
+    {
+      "id": "ern6_eps6stock_symbol_271",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 65,
+      "alphaCount": 76,
+      "description": "This is the stock ticker symbol. A “CA.” prefix is used for companies WSH tracks as Canadian"
+    },
+    {
+      "id": "ern6_eps6ww_status_273",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 41,
+      "alphaCount": 52,
+      "description": "Denotes whether the security trades on a North American stock exchange (NA) or not (WW)"
+    },
+    {
+      "id": "ern6_estimated_fiscal_year",
+      "type": "VECTOR",
+      "coverage": 0.5258,
+      "userCount": 92,
+      "alphaCount": 122,
+      "description": "Fiscal year associated with the scheduled (estimated) earnings period"
+    },
+    {
+      "id": "ern6_estimated_fiscal_year_267",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "The fiscal year associated with the quarter or half-year"
+    },
+    {
+      "id": "ern6_estimated_period_268",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 34,
+      "alphaCount": 40,
+      "description": "The scheduled earnings quarter or half year we have a date for"
+    },
+    {
+      "id": "ern6_estimated_tod_269",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 47,
+      "alphaCount": 60,
+      "description": "This indicates the scheduled time of earnings announcement; \"Unspecified\" or \"Before Market\" or \"During Market\" or \"After Market\""
+    },
+    {
+      "id": "ern6_etype_219",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 29,
+      "alphaCount": 34,
+      "description": "T - Tentative date, V - Verified date I - Inferred date See Earnings Date Status Definitions section for additional information"
+    },
+    {
+      "id": "ern6_goto_broadcast_231",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 79,
+      "alphaCount": 101,
+      "description": "Website link for Conference Call recording"
+    },
+    {
+      "id": "ern6_isin_212",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 15,
+      "alphaCount": 16,
+      "description": "This is a unique security identifier structured to include the country in which the issuing company is headquartered, the specific security identification numbe…"
+    },
+    {
+      "id": "ern6_meeting_status_254",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 81,
+      "alphaCount": 102,
+      "description": "Possible values are PENDING, INPROCESS, HELD, CANCEL or POSTPONED."
+    },
+    {
+      "id": "ern6_mtg_type_248",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 51,
+      "alphaCount": 56,
+      "description": "Identifies whether it’s a BoD (B) or Shareholder (S) meeting"
+    },
+    {
+      "id": "ern6_next_ed",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 62,
+      "alphaCount": 90,
+      "description": "Next earnings date (interpret using Etype status)"
+    },
+    {
+      "id": "ern6_next_ed_216",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 16,
+      "alphaCount": 17,
+      "description": "Next Earnings Date. See Etype to determine how to interpret this field"
+    },
+    {
+      "id": "ern6_next_ed_fiscal_year",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 111,
+      "alphaCount": 124,
+      "description": "Fiscal year associated with Next_ED and Next_ED_QUARTER"
+    },
+    {
+      "id": "ern6_next_ed_fiscal_year_218",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 21,
+      "alphaCount": 24,
+      "description": "The fiscal year associated with Next ED and Next ED Quarter"
+    },
+    {
+      "id": "ern6_next_ed_quarter_217",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 110,
+      "alphaCount": 145,
+      "description": "Corresponds to the Next ED"
+    },
+    {
+      "id": "ern6_prelim_earnings_link_279",
+      "type": "VECTOR",
+      "coverage": 0.8075,
+      "userCount": 54,
+      "alphaCount": 63,
+      "description": "The link to the preliminary earnings announcement press release"
+    },
+    {
+      "id": "ern6_quarter_215",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 169,
+      "alphaCount": 216,
+      "description": "The letter \"Q\" followed by the quarter number the earnings information applies to"
+    },
+    {
+      "id": "ern6_stock_exchange_214",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 34,
+      "alphaCount": 35,
+      "description": "This is the exchange the stock is traded on"
+    },
+    {
+      "id": "ern6_stock_split_ratio_243",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 26,
+      "alphaCount": 30,
+      "description": "Split parameters (typically #:#) where the first number is the amount of the new shares, the second number is original shares"
+    },
+    {
+      "id": "ern6_stock_symbol",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 44,
+      "alphaCount": 50,
+      "description": "This is the stock ticker symbol. A “CA.” prefix is used for companies WSH tracks as Canadian"
+    },
+    {
+      "id": "ern6_time_of_day_220",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 115,
+      "alphaCount": 151,
+      "description": "Indicates the time of the announcement: Before Market, During Market, After Market, Unspecified"
+    },
+    {
+      "id": "ern6_transcript_fiscal_year",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "Fiscal year in YYYY format for the earnings transcript"
+    },
+    {
+      "id": "ern6_transcript_quarter_250",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 37,
+      "alphaCount": 48,
+      "description": "The letter “Q” followed by the quarter number the earnings transcript applies to"
+    },
+    {
+      "id": "ern6_wqreceivetimestamp",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 30,
+      "alphaCount": 32,
+      "description": "Ingestion timestamp added at file end in a fixed format"
+    },
+    {
+      "id": "ern6_wqreceivetimestamp_252",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "This is added timestamp at the end of the file with fixed format"
+    },
+    {
+      "id": "ern6_ww_status",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 31,
+      "alphaCount": 36,
+      "description": "Denotes whether the security trades on a North American stock exchange (NA) or not (WW)"
+    },
+    {
+      "id": "ern6_x_dividend_233",
+      "type": "VECTOR",
+      "coverage": 0.9258,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Amount of dividend in US dollars. If converted to USD, exchange rate at time of entry is used"
+    },
+    {
+      "id": "ern6_x_dividend_oc",
+      "type": "VECTOR",
+      "coverage": 0.6372,
+      "userCount": 60,
+      "alphaCount": 81,
+      "description": "The amount of the dividend in the currency specified by X_Dividend_currency"
+    },
+    {
+      "id": "preliminary_eps_range_lower_bound",
+      "type": "VECTOR",
+      "coverage": 0.5258,
+      "userCount": 13,
+      "alphaCount": 13,
+      "description": "Preliminary EPS or the low end of the preliminary EPS range reported by the company"
+    },
+    {
+      "id": "preliminary_eps_range_upper_bound",
+      "type": "VECTOR",
+      "coverage": 0.5258,
+      "userCount": 12,
+      "alphaCount": 12,
+      "description": "High end of the preliminary EPS range, or same as prelim_amount_from if single value"
+    }
+  ]
+}

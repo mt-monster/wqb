@@ -1,0 +1,44 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "socialmedia12",
+  "fetched_at": "2026-11-12T11:24:40.603Z",
+  "platform_count": 6,
+  "complete": true,
+  "sharpe_filter_removed": 2,
+  "fields": [
+    {
+      "id": "entity_profile_summary",
+      "type": "VECTOR",
+      "coverage": 0.7507,
+      "userCount": 100,
+      "alphaCount": 158,
+      "description": "Description of the company from snapshot data"
+    },
+    {
+      "id": "entity_sector_name",
+      "type": "VECTOR",
+      "coverage": 0.7507,
+      "userCount": 101,
+      "alphaCount": 154,
+      "description": "Business sector or industry classification for the entity"
+    },
+    {
+      "id": "scl12_buzz",
+      "type": "MATRIX",
+      "coverage": 0.8495,
+      "userCount": 452,
+      "alphaCount": 897,
+      "description": "relative sentiment volume"
+    },
+    {
+      "id": "scl12_sentiment",
+      "type": "MATRIX",
+      "coverage": 0.8495,
+      "userCount": 459,
+      "alphaCount": 925,
+      "description": "sentiment"
+    }
+  ]
+}

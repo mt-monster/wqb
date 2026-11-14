@@ -1,0 +1,40 @@
+{
+ "dataset": "risk72",
+ "name": "Specific return of extended factors",
+ "region": "GBR",
+ "delay": 1,
+ "field_count": 23,
+ "note": "多口径残差收益（top600/800/1200/2500 × grouped/nogroup × EUR/EPP minvol × replicators）",
+ "key_fields": [
+  {
+   "id": "top2500_equity_residualized_return",
+   "t": "MATRIX",
+   "uc": 153,
+   "ac": 242
+  },
+  {
+   "id": "top2500_equity_residualized_return_nogroup",
+   "t": "MATRIX",
+   "uc": 124,
+   "ac": 200
+  },
+  {
+   "id": "eur_equity_minvol1m_residual_return",
+   "t": "MATRIX",
+   "uc": 43,
+   "ac": 57
+  },
+  {
+   "id": "top1200_equity_residualized_return",
+   "t": "MATRIX",
+   "uc": 7,
+   "ac": 9
+  },
+  {
+   "id": "cfg2_top1200_residual_return",
+   "t": "MATRIX",
+   "uc": 4,
+   "ac": 4
+  }
+ ]
+}

@@ -8,21 +8,34 @@
 
 > ⚠ **不可逆：`POST /alphas/{id}/submit`——通过即提交，无撤回。** 平台把它同时当「提交」和「提交前检查」，所以**没有零成本的 POST 探测**：
 > 任何一次「试探性 POST」只要全过，就是一次真提交。
-> **前置（缺一不得执行）**：① `submit_verdict` 不是 `BLOCKED`（§2 步 2）；② 资格门 Failed RA / PPA = 0（步 1）；③ `check_correlation(alpha_id, refresh=True)`
+> **前置（缺一不得执行）**：① `submit_verdict` 不是 `BLOCKED`（§2 步 2）；② 资格门 Failed RA / PPA = 0（步 1）；③ prod < 0.7（`check_correlation(refresh=False)`，48h 内可信缓存即可，见 §0.1）
 > 实测 prod < 0.7（步 3）；④ **用户明确确认**（步 5）；⑤ 本 ET 日 REGULAR 配额未满（`python tools/quota_status.py`）。
 > **默认形态（预检 / 干跑）**：`workflow_submit_alpha(alpha_id=…, confirm_submit=False)`——只做本地预检并查状态，不 POST。
 > **需要用户明确确认**：是（`confirm_submit=True`、`super_build.py submit`、PPA 走 web UI 都一样）。
 > **执行后必须核验**：`get_alpha_details` → `status == ACTIVE` 且 `dateSubmitted` 非空。**异常**：见 §4；不盲重试，仅「异步受理未翻转」可补发一次。
 
+## 0.1 prod 48h 缓存规则（2026-11-14 用户明令，现行口径）
+
+> ★★ **2026-11-14 用户明令：prod 读数在 48h 保鲜期内无需 `refresh=True`，可直接提交。**
+> 提交链 `_prod_gate` 默认 `check_correlation(refresh=False)`：命中 `alpha_corr_cache` 48h 内、来源可信
+> （`provisional=False`）且 `max < 0.7` 即放行，零平台成本、不占账号级单并发槽。
+> 仅三种情况才 `refresh=True` 真重测：① 缓存 >48h 或无缓存；② 只有预读值 `alpha_detail_cached`
+> 或 `NON_REALTIME_SOURCES` 等不可信来源；③ 用户明确要求复核。重测拿不到数仍 fail-closed。
+> `WQB_PROD_GATE_REFRESH=1` 是强制回源开关，**用户未要求时不得设置**；prod ≥ 0.7 无豁免。
+> 历史教训（GLB 0.694 贴线）降级为「贴线件可建议复核」，**不再是提交前必做动作**。
+
+> 与代码同源：`src/wqb/workflow/nodes/submit_alpha.py::_prod_gate`（`refresh=False` + 48h `CORR_FRESH_HOURS`
+> + `provisional` 补刷）。**旧文「提交当刻必须回源」已废止**，见 `docs/experience/01_platform_gates.md` §5。
+
 ## 1. 权力分层：否决权威 ≠ 放行权威
 
 | 权力 | 谁 | 能做什么 |
 |---|---|---|
-| **否决权威** | 资格门、`submit_verdict`、prod 实测（步 4）、稳健性闸、边际贡献（步 4b，2026-11-08 起）、混腿审查（步 4c，2026-11-08 起）、**分散度软闸（步 4e，2026-11-08 起，`force` 可豁免）** | **只能拦，不能放**。任何一个说「不」就停（4c 的三问与 4e 属自设纪律，`force` 例外放行但留痕） |
+| **否决权威** | 资格门、`submit_verdict`、prod 实测（步 4）、稳健性闸、边际贡献（步 4b，2026-11-08 起 / 2026-11-13 分级硬闸）、混腿审查（步 4c，2026-11-08 起）、**分散度软闸（步 4e，2026-11-08 起，`force` 可豁免）** | **只能拦，不能放**。任何一个说「不」就停（4c 的三问与 4e 属自设纪律，`force` 例外放行但留痕） |
 | **纯信息** | prod 快照恒等式 `is.prodCorrelation`（步 8） | **既不拦也不放**。提交后校验「闸门读数 == 平台冻结值」，不一致只告警留痕——此时已 ACTIVE，无可回退；拿不到就跳过 |
 | **放行权威** | **用户明确确认** + `workflow_submit_alpha(confirm_submit=True)` | 唯一能让 POST 发生的路径；不可逆 |
 
-因此「`submit_verdict` 说了算」只对否决成立：它说 `BLOCKED` 就不提交；它说 `UNVERIFIABLE`（现实中最好的结果）**不是放行**，后面还有 prod 实测和用户确认。
+因此「`submit_verdict` 说了算」只对否决成立：它说 `BLOCKED` 就不提交；它说 `UNVERIFIABLE`（现实中最好的结果）**不是放行**，后面还有 prod 闸和用户确认。
 
 ## 2. 可达状态机
 
@@ -30,9 +43,9 @@
 |---|---|---|---|---|---|
 | 1 | **资格门**：`Failed RA == 0`（PPA 看 `Failed PPA`）；名单内若仍有 `PENDING`，`Failed=0` 只表示「暂无失败」，**待其算完再判** | 否决 | `wqb.config.compute_webdata_failed_counts`（`submit_verdict` 已内含；输出里的 `pending_ra` / `pending_ppa`） | 非零 → 回 ra-pipeline 步 7 修 | 是 |
 | 2 | **模拟层 + 硬闸类 WARNING**：`is.checks` 无 FAIL；`LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`（后两者 = `RA_2Y_NAMES` 双载体）的 WARNING 视同 FAIL | 否决 | `python tools/submit_verdict.py --alpha-id <ID>`（或 MCP `submit_verdict`；同一份实现 `wqb.submit_verdict_core`） | 见 §2.1 退出码 | 是 |
-| 3 | **prod 实测 < 0.7**（`GET correlations/prod`，账号级单并发；忙时立即返回 `correlation_busy`，阻塞轮询窗口见 `WAIT_THRESHOLDS`） | 否决 | `mcp__wq-brain-http__check_correlation(alpha_id, refresh=True)`；SUPER 用 `super_build.py probe` | ≥ 0.7 → prod 墙决策表（ra-pipeline `decision-table.md` D0） | 是 |
+| 3 | **prod < 0.7**：`check_correlation(refresh=False)` 缓存优先，48h 内可信缓存直接过闸；仅过期/缺失/预读不可信才 `refresh=True`（§0.1） | 否决 | `mcp__wq-brain-http__check_correlation(alpha_id, refresh=False)`（节点 `_prod_gate` 自动跑）；SUPER 用 `super_build.py probe` | ≥ 0.7 → prod 墙决策表（ra-pipeline `decision-table.md` D0）；拿不到数 fail-closed | 是 <!-- lint:counterexample --> |
 | 4 | **稳健性闸** | 否决（**有代码读取**：结论落台账 `robustness_<alpha_id>`，`submit_verdict` 三入口读它——`REJECT` → `BLOCKED`；`CONDITIONAL` / 无记录只在 `next_step` 提示，不拦） | brain-alpha-robustness | `REJECT` → 停 | 是 |
-| **4b** | **边际贡献闸**：`performance_comparison` 把候选等权叠加到其**所属分区组合**，返回 before/after。`submit_alpha` 节点 **Step 1.7** 自动跑（`confirm_submit=False` 的预检也跑） | **否决**（2026-11-08 用户明令「边际贡献为负就阻断不准提交」；此前 2026-11-04 为信息项）。`ΔSharpe<0` + `confirm_submit=True` ⇒ `blocked=True`，在 set_properties/POST 之前 return，**force 不豁免**；`available=False`（空体/超时/异常）**不阻断**（可用性缺失 ≠ 为负） | `mcp__wq-brain-http__performance_comparison(alpha_id)` | `blocked_reason` 指向「换候选或改结构使 ΔS ≥ 0」；预检阶段只出数值 + 预告 | 是 |
+| **4b** | **边际贡献闸（方案 D：分层 + 配对）**：`performance_comparison` 把候选等权叠加到其**所属分区组合**，返回 before/after。`submit_alpha` 节点 **Step 1.7** 自动跑（`confirm_submit=False` 的预检也跑） | **否决**（2026-11-08 ΔSharpe 铁律；2026-11-13 19:5x 定案方案 D）。**净效果硬闸**：`ΔSharpe<0` 或 `ΔFitness<0` + `confirm_submit=True` ⇒ `blocked=True`，在 set_properties/POST 之前 return，**force 不豁免**。**配对判据**：仅当 `ΔReturns<0` 且（`ΔTurnover>0` 或 `ΔDrawdown>0`）才追加阻断；`ΔReturns<0` 但成本同步下降 = 分散化补偿，放行。`ΔTurnover`/`ΔDrawdown` 单独变差只写 `soft_warnings`、不设闸。原因：`F=S×√(ret/max(TO,.125))` 四量共线，逐个判符号会三重把关且让成本指标「名义软、实际硬」；before/after 是等权叠加结果，ΔRet<0 常只是机械摊薄。`available=False`（空体/超时/异常）**不阻断** | `mcp__wq-brain-http__performance_comparison(alpha_id)` | `blocked_reason` 指向「换候选或改结构使 ΔS/ΔF ≥ 0 且避免收益降+成本升」；预检只出数值 + 预告 | 是 |
 | **4c** | **混腿审查**：对 `regular.code` 分级 + 验「三问」。`submit_alpha` 节点 **Step 1.2** 自动跑（`confirm_submit=False` 的预检也跑，纯函数零网络，位置在 prod 闸之前以省探针槽） | **否决（两级）**：① `weight_grid`（单次 `add` 顶层 ≥2 条系数腿）/ `stack`（展平 ≥4 条腿）⇒ **一律阻断，`force` 不豁免**；② `two_leg` / `three_leg` 缺三问 ⇒ 阻断，`force=True` 可豁免留痕。判定哲学：官方只禁「**without any strong economic sense**」的跨源相加（Consultant Dos and Don'ts），不是禁 `add` 本身 | `submit_queue.mix_review(expr, narrative)`；三问经 `workflow_submit_alpha(mix_narrative={holders, polarity, prior})` 传入，每条 ≥8 字符（挡 "ok"/"n/a"） | `blocked_reason` 指向「拆成单腿重挖，或改 ≤3 腿且权重由先验固定后重跑」；预检只出 `mix_warning` 预告 | 是 |
 | **4d** | **路径判决**（与 4c 同一步顺带产出，**不阻断**）：`is.checks` 里 `LOW_2Y_SHARPE` 与 `IS_LADDER_SHARPE` **互斥**，据此读平台把本颗归为单数据集（ATOM）还是多数据集 | **纯信息** | 同上（`mix_audit.data_usage` / `path` / `hint`） | `ATOM:LAST_2Y` ⇒ **不走 Ladder**，只查 Last-2Y IS Sharpe，2Y 不足直接 FAIL、无退路；`LADDER` ⇒ 2Y 不足时可逐级降线到 7Y / 10Y 窗 ⇒ 近 2 年弱不必然死。**具体线随 region/universe/delay 变**（官方示例 2.38 / 7Y 2.06 / 10Y 1.59；实测 GBR-TOP700-D1 的 2Y=1.98 可过、DEU 侧 7Y 1.751）——以该颗 checks 的实判为准，别套死数字 | — |
 | **4e** | **分散度审查**：`is.selfCorrelation` ≥ **0.55**（软线）时，要求 `ΔSharpe ≥ +0.02` 才放行。`submit_alpha` 节点 **Step 1.8** 自动跑，**零额外网络请求**（复用 4b 已算的 ΔS 与 `precheck` 的 self 读数），位置在 Step 1.7 之后、set_properties 之前 | **软否决**：高相关 + ΔS 落在噪声带 ⇒ `blocked`，但 **`force=True` 可豁免留痕**（自设纪律，非平台红线；与 4c 的三问同级）。self 或 ΔS 读不到 ⇒ `unknown` **fail-open** | 无新调用（`diversity_audit` 步骤直接读 `is.selfCorrelation` + 上一步 `delta.sharpe`） | 依据：CAP ≈ (μ̄/σ̄)·sqrt(N/(1+(N-1)ρ̄))，有效宽度**饱和于 1/ρ̄** ⇒ 降 ρ 比增 N 有效；官方 Consultant FAQ「build diversity in your personal Alpha pool」+ Brain Genius「pyramids … improve Combined Alpha Performance through diversification」。阈值口径：READY 队列 self 分位 p50=0.394 / p75=0.505 / p90=0.656 ⇒ 0.55 命中 top 15–25%；ΔS 噪声 0.005–0.01，0.02 = 2–4 倍噪声。**平台线仍是 0.7**，0.55 只是自设软线 | 是 |
@@ -61,7 +74,7 @@
 | `POST /alphas/{id}/submit` | 提交层真相：200 / 201·202 / 403（带全量 `is.checks` 与真因） | **是——通过即提交** |
 | `get_alpha_details(alpha_id).is.checks` | 模拟层各检查的 `PASS` / `FAIL` / `WARNING` / `PENDING`；`status` / `dateSubmitted` | 否 |
 | `submit_verdict` 输出 | 上面两类模拟层信息 + 资格门 + 硬闸类 WARNING 的合成判定（**否决**用） | 否 |
-| `check_correlation(refresh=True)` | prod / self 相关性实测（异步排队，已决结果缓存 **48 小时**，落 SQLite 权威表 `alpha_corr_cache`；终验用 `refresh=True`） | 否 |
+| `check_correlation(refresh=False)` | prod / self 相关性读数（先读 SQLite 权威表 `alpha_corr_cache`，**48h 保鲜**；命中且来源可信即作提交判定，不回源）。`refresh=True` 仅在缓存过期/缺失/不可信时使用 | 否 |
 | `performance_comparison(alpha_id)` | **仅未提交候选**：候选叠加到所属分区组合前后的 before/after（提交前预览）。**已提交后恒 `400 Bad Request`**——2026-11-04 实测 20/20 已提交（HKG/DEU/USA/GBR/GLB/EUR/KOR/IND/ASI/MEA 九区抽样）全 400，3/3 未提交全 200 ⇒ **平台自定位为「提交前预览」，不是事后归因工具**，别拿它做 OS 归因（OS 归因走 `get_alpha_pnl` / 逐年 stats） | 否 |
 
 > 「提交层视图」一词只指第一行那个死端点；其余都直接说来源名。

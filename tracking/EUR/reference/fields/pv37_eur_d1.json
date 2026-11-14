@@ -1,0 +1,2019 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "pv37",
+ "fetched_at": "2026-11-13",
+ "platform_count": 251,
+ "complete": true,
+ "fields": [
+  {
+   "id": "pv37_cap_10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "10-Day Market Capitalization"
+  },
+  {
+   "id": "pv37_cap_11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Market cap"
+  },
+  {
+   "id": "pv37_cap_12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Market cap"
+  },
+  {
+   "id": "pv37_cap_13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Market cap"
+  },
+  {
+   "id": "pv37_cap_14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "14-Day Market Capitalization"
+  },
+  {
+   "id": "pv37_cap_15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Market cap"
+  },
+  {
+   "id": "pv37_cap_153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Market cap at 15:30"
+  },
+  {
+   "id": "pv37_cap_16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "16-Day Market Capitalization"
+  },
+  {
+   "id": "pv37_close_10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "10-Day Closing Price"
+  },
+  {
+   "id": "pv37_close_11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Close price"
+  },
+  {
+   "id": "pv37_close_12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Close price"
+  },
+  {
+   "id": "pv37_close_13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Close price"
+  },
+  {
+   "id": "pv37_close_14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "14-Day Closing Price"
+  },
+  {
+   "id": "pv37_close_15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Close price"
+  },
+  {
+   "id": "pv37_close_153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Close price at 15:30"
+  },
+  {
+   "id": "pv37_close_16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "16-Day Closing Price"
+  },
+  {
+   "id": "pv37_downvolume",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Downward Volume"
+  },
+  {
+   "id": "pv37_high_10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "10-Day Highest Price"
+  },
+  {
+   "id": "pv37_high_11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "High price"
+  },
+  {
+   "id": "pv37_high_12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "High price"
+  },
+  {
+   "id": "pv37_high_13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "High price"
+  },
+  {
+   "id": "pv37_high_14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "14-Day Highest Price"
+  },
+  {
+   "id": "pv37_high_15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "High price"
+  },
+  {
+   "id": "pv37_high_153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "High price at 15:30"
+  },
+  {
+   "id": "pv37_high_16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "16-Day Highest Price"
+  },
+  {
+   "id": "pv37_low_10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 8,
+   "alphaCount": 22,
+   "description": "10-Day Lowest Price"
+  },
+  {
+   "id": "pv37_low_11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Low price"
+  },
+  {
+   "id": "pv37_low_12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Low price"
+  },
+  {
+   "id": "pv37_low_13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Low price"
+  },
+  {
+   "id": "pv37_low_14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "14-Day Lowest Price"
+  },
+  {
+   "id": "pv37_low_15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Low price"
+  },
+  {
+   "id": "pv37_low_153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Low price at 15:30"
+  },
+  {
+   "id": "pv37_low_16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "16-Day Lowest Price"
+  },
+  {
+   "id": "pv37_open_10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "10-Day Opening Price"
+  },
+  {
+   "id": "pv37_open_11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Open price"
+  },
+  {
+   "id": "pv37_open_12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Open price"
+  },
+  {
+   "id": "pv37_open_13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Open price"
+  },
+  {
+   "id": "pv37_open_14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "14-Day Opening Price"
+  },
+  {
+   "id": "pv37_open_15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Open price"
+  },
+  {
+   "id": "pv37_open_153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Open price at 15:30"
+  },
+  {
+   "id": "pv37_open_16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "16-Day Opening Price"
+  },
+  {
+   "id": "pv37_pricesnap1600_cap_160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Market Capitalization at 1600 Snapshot"
+  },
+  {
+   "id": "pv37_pricesnap1600_close_160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Closing Price at 1600 Snapshot."
+  },
+  {
+   "id": "pv37_pricesnap1600_high_160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Highest Price at 1600 Snapshot"
+  },
+  {
+   "id": "pv37_pricesnap1600_low_160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Lowest Price at 16:00 Snapshot"
+  },
+  {
+   "id": "pv37_pricesnap1600_open_160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Opening Price at 1600 Snapshot"
+  },
+  {
+   "id": "pv37_pricesnap1600_volume_160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Trading Volume at 16:00 Snapshot"
+  },
+  {
+   "id": "pv37_pricesnap1600_vwap_160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Volume-Weighted Average Price at 1600 Snapshot"
+  },
+  {
+   "id": "pv37_snapshot1_price090000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 09:00"
+  },
+  {
+   "id": "pv37_snapshot1_price090500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 09:05"
+  },
+  {
+   "id": "pv37_snapshot1_price091000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 09:10"
+  },
+  {
+   "id": "pv37_snapshot1_price091500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 09:15."
+  },
+  {
+   "id": "pv37_snapshot1_price092000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 09:20"
+  },
+  {
+   "id": "pv37_snapshot1_price092500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 09:25"
+  },
+  {
+   "id": "pv37_snapshot1_price093000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 09:30"
+  },
+  {
+   "id": "pv37_snapshot1_price093500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 09:35"
+  },
+  {
+   "id": "pv37_snapshot1_price094000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Price at 09:40"
+  },
+  {
+   "id": "pv37_snapshot1_price094500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 09:45"
+  },
+  {
+   "id": "pv37_snapshot1_price095000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 09:50"
+  },
+  {
+   "id": "pv37_snapshot1_price095500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 09:55"
+  },
+  {
+   "id": "pv37_snapshot1_price100000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:00"
+  },
+  {
+   "id": "pv37_snapshot1_price100500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:05"
+  },
+  {
+   "id": "pv37_snapshot1_price101000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:10"
+  },
+  {
+   "id": "pv37_snapshot1_price101500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:15"
+  },
+  {
+   "id": "pv37_snapshot1_price102000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:20"
+  },
+  {
+   "id": "pv37_snapshot1_price102500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 10:25"
+  },
+  {
+   "id": "pv37_snapshot1_price103000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:30"
+  },
+  {
+   "id": "pv37_snapshot1_price103500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:35"
+  },
+  {
+   "id": "pv37_snapshot1_price104000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:40"
+  },
+  {
+   "id": "pv37_snapshot1_price104500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 10:45"
+  },
+  {
+   "id": "pv37_snapshot1_price105000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 10:50"
+  },
+  {
+   "id": "pv37_snapshot1_price105500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 10:55"
+  },
+  {
+   "id": "pv37_snapshot1_price110000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 11:00"
+  },
+  {
+   "id": "pv37_snapshot1_price110500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 11:05"
+  },
+  {
+   "id": "pv37_snapshot1_price111000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 11:10"
+  },
+  {
+   "id": "pv37_snapshot1_price111500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 11:15"
+  },
+  {
+   "id": "pv37_snapshot1_price112000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 11:20"
+  },
+  {
+   "id": "pv37_snapshot1_price112500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 11:25"
+  },
+  {
+   "id": "pv37_snapshot1_price113000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 11:30"
+  },
+  {
+   "id": "pv37_snapshot1_price113500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 11:35"
+  },
+  {
+   "id": "pv37_snapshot1_price114000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 11:40"
+  },
+  {
+   "id": "pv37_snapshot1_price114500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 11:45"
+  },
+  {
+   "id": "pv37_snapshot1_price115000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 11:50"
+  },
+  {
+   "id": "pv37_snapshot1_price115500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 11:55"
+  },
+  {
+   "id": "pv37_snapshot1_price120000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:00"
+  },
+  {
+   "id": "pv37_snapshot1_price120500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:05"
+  },
+  {
+   "id": "pv37_snapshot1_price121000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:10"
+  },
+  {
+   "id": "pv37_snapshot1_price121500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:15"
+  },
+  {
+   "id": "pv37_snapshot1_price122000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 12:20"
+  },
+  {
+   "id": "pv37_snapshot1_price122500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:25"
+  },
+  {
+   "id": "pv37_snapshot1_price123000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:30"
+  },
+  {
+   "id": "pv37_snapshot1_price123500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:35"
+  },
+  {
+   "id": "pv37_snapshot1_price124000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:40"
+  },
+  {
+   "id": "pv37_snapshot1_price124500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:45"
+  },
+  {
+   "id": "pv37_snapshot1_price125000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:50"
+  },
+  {
+   "id": "pv37_snapshot1_price125500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 12:55"
+  },
+  {
+   "id": "pv37_snapshot1_price130000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:00"
+  },
+  {
+   "id": "pv37_snapshot1_price130500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 13:05"
+  },
+  {
+   "id": "pv37_snapshot1_price131000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:10"
+  },
+  {
+   "id": "pv37_snapshot1_price131500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Price at 13:15"
+  },
+  {
+   "id": "pv37_snapshot1_price132000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:20"
+  },
+  {
+   "id": "pv37_snapshot1_price132500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:25"
+  },
+  {
+   "id": "pv37_snapshot1_price133000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 13:30"
+  },
+  {
+   "id": "pv37_snapshot1_price133500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:35"
+  },
+  {
+   "id": "pv37_snapshot1_price134000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:40"
+  },
+  {
+   "id": "pv37_snapshot1_price134500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:45"
+  },
+  {
+   "id": "pv37_snapshot1_price135000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:50"
+  },
+  {
+   "id": "pv37_snapshot1_price135500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 13:55"
+  },
+  {
+   "id": "pv37_snapshot1_price140000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 14:00."
+  },
+  {
+   "id": "pv37_snapshot1_price140500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 14:05"
+  },
+  {
+   "id": "pv37_snapshot1_price141000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 14:10"
+  },
+  {
+   "id": "pv37_snapshot1_price141500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 14:15"
+  },
+  {
+   "id": "pv37_snapshot1_price142000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 14:20"
+  },
+  {
+   "id": "pv37_snapshot1_price142500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 14:25"
+  },
+  {
+   "id": "pv37_snapshot1_price143000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 14:30"
+  },
+  {
+   "id": "pv37_snapshot1_price143500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 14:35"
+  },
+  {
+   "id": "pv37_snapshot1_price144000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 14:40"
+  },
+  {
+   "id": "pv37_snapshot1_price144500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 14:45"
+  },
+  {
+   "id": "pv37_snapshot1_price145000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 14:50"
+  },
+  {
+   "id": "pv37_snapshot1_price145500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 14:55"
+  },
+  {
+   "id": "pv37_snapshot1_price150000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 15:00"
+  },
+  {
+   "id": "pv37_snapshot1_price150500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 15:05"
+  },
+  {
+   "id": "pv37_snapshot1_price151000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 15:10"
+  },
+  {
+   "id": "pv37_snapshot1_price151500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 15:15"
+  },
+  {
+   "id": "pv37_snapshot1_price152000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 15:20"
+  },
+  {
+   "id": "pv37_snapshot1_price152500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 15:25"
+  },
+  {
+   "id": "pv37_snapshot1_price153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 15:30"
+  },
+  {
+   "id": "pv37_snapshot1_price153500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 15:35"
+  },
+  {
+   "id": "pv37_snapshot1_price154000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 15:40"
+  },
+  {
+   "id": "pv37_snapshot1_price154500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 15:45"
+  },
+  {
+   "id": "pv37_snapshot1_price155000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 15:50"
+  },
+  {
+   "id": "pv37_snapshot1_price155500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 15:55"
+  },
+  {
+   "id": "pv37_snapshot1_price160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Price at 16:00"
+  },
+  {
+   "id": "pv37_snapshot1_price160500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 16:05"
+  },
+  {
+   "id": "pv37_snapshot1_price161000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 16:10"
+  },
+  {
+   "id": "pv37_snapshot1_price161500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 16:15"
+  },
+  {
+   "id": "pv37_snapshot1_price162000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 16:20"
+  },
+  {
+   "id": "pv37_snapshot1_price162500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Price at 16:25"
+  },
+  {
+   "id": "pv37_snapshot1_price163000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at 16:30"
+  },
+  {
+   "id": "pv37_snapshot1_price163500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price at 16:35"
+  },
+  {
+   "id": "pv37_snapshot1_price164000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Price at 16:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume090000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume090500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume091000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume091500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 09:15"
+  },
+  {
+   "id": "pv37_snapshot1_volume092000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume092500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume093000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume093500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume094000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume094500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:45"
+  },
+  {
+   "id": "pv37_snapshot1_volume095000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 09:50"
+  },
+  {
+   "id": "pv37_snapshot1_volume095500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 09:55"
+  },
+  {
+   "id": "pv37_snapshot1_volume100000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume100500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume101000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume101500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:15"
+  },
+  {
+   "id": "pv37_snapshot1_volume102000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume102500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume103000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Volume at 10:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume103500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume104000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 10:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume104500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:45"
+  },
+  {
+   "id": "pv37_snapshot1_volume105000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 10:50"
+  },
+  {
+   "id": "pv37_snapshot1_volume105500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 10:55"
+  },
+  {
+   "id": "pv37_snapshot1_volume110000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 11:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume110500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 11:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume111000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Volume at 11:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume111500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 11:15"
+  },
+  {
+   "id": "pv37_snapshot1_volume112000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 11:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume112500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 11:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume113000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 11:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume113500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 11:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume114000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 11:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume114500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 11:45"
+  },
+  {
+   "id": "pv37_snapshot1_volume115000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 11:50"
+  },
+  {
+   "id": "pv37_snapshot1_volume115500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 11:55"
+  },
+  {
+   "id": "pv37_snapshot1_volume120000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 12:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume120500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Volume at 12:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume121000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 12:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume121500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 12:15"
+  },
+  {
+   "id": "pv37_snapshot1_volume122000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 12:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume122500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 12:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume123000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 12:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume123500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Volume at 12:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume124000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 12:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume124500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 12:45"
+  },
+  {
+   "id": "pv37_snapshot1_volume125000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 12:50"
+  },
+  {
+   "id": "pv37_snapshot1_volume125500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 12:55"
+  },
+  {
+   "id": "pv37_snapshot1_volume130000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 13:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume130500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume131000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume131500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:15."
+  },
+  {
+   "id": "pv37_snapshot1_volume132000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume132500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume133000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume133500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 13:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume134000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume134500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Volume at 13:45"
+  },
+  {
+   "id": "pv37_snapshot1_volume135000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:50"
+  },
+  {
+   "id": "pv37_snapshot1_volume135500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 13:55"
+  },
+  {
+   "id": "pv37_snapshot1_volume140000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume140500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 14:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume141000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume141500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:15"
+  },
+  {
+   "id": "pv37_snapshot1_volume142000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 14:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume142500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume143000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume143500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume144000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Volume at 14:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume144500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:45"
+  },
+  {
+   "id": "pv37_snapshot1_volume145000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:50"
+  },
+  {
+   "id": "pv37_snapshot1_volume145500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 14:55"
+  },
+  {
+   "id": "pv37_snapshot1_volume150000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 15:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume150500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 15:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume151000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 15:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume151500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 15:15"
+  },
+  {
+   "id": "pv37_snapshot1_volume152000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 15:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume152500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 15:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 15:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume153500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 15:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume154000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Volume at 15:40"
+  },
+  {
+   "id": "pv37_snapshot1_volume154500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Volume at 15:45"
+  },
+  {
+   "id": "pv37_snapshot1_volume155000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 15:50"
+  },
+  {
+   "id": "pv37_snapshot1_volume155500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 15:55"
+  },
+  {
+   "id": "pv37_snapshot1_volume160000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Volume at 16:00"
+  },
+  {
+   "id": "pv37_snapshot1_volume160500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 16:05"
+  },
+  {
+   "id": "pv37_snapshot1_volume161000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Volume at 16:10"
+  },
+  {
+   "id": "pv37_snapshot1_volume161500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 16:15"
+  },
+  {
+   "id": "pv37_snapshot1_volume162000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Volume at 16:20"
+  },
+  {
+   "id": "pv37_snapshot1_volume162500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume at 16:25"
+  },
+  {
+   "id": "pv37_snapshot1_volume163000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 16:30"
+  },
+  {
+   "id": "pv37_snapshot1_volume163500",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 16:35"
+  },
+  {
+   "id": "pv37_snapshot1_volume164000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume at 16:40"
+  },
+  {
+   "id": "pv37_upvolume",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Upward Volume"
+  },
+  {
+   "id": "pv37_volume_10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "10-Day Trading Volume"
+  },
+  {
+   "id": "pv37_volume_11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Trading volume"
+  },
+  {
+   "id": "pv37_volume_12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Trading volume"
+  },
+  {
+   "id": "pv37_volume_13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Trading volume"
+  },
+  {
+   "id": "pv37_volume_14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "14-Day Trading Volume"
+  },
+  {
+   "id": "pv37_volume_15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Trading volume"
+  },
+  {
+   "id": "pv37_volume_153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Trading volume at 15:30"
+  },
+  {
+   "id": "pv37_volume_16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "16-Day Trading Volume"
+  },
+  {
+   "id": "pv37_vwap_10",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "10-Day VWAP"
+  },
+  {
+   "id": "pv37_vwap_11",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "VWAP"
+  },
+  {
+   "id": "pv37_vwap_12",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "VWAP"
+  },
+  {
+   "id": "pv37_vwap_13",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "VWAP"
+  },
+  {
+   "id": "pv37_vwap_14",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "14-Day VWAP"
+  },
+  {
+   "id": "pv37_vwap_15",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 11,
+   "description": "VWAP"
+  },
+  {
+   "id": "pv37_vwap_153000",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "VWAP at 15:30"
+  },
+  {
+   "id": "pv37_vwap_16",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "16-Day VWAP"
+  }
+ ]
+}

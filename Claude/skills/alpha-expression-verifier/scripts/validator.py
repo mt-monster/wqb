@@ -182,7 +182,12 @@ supported_functions = {
     'ts_regression': {'min_args': 3, 'max_args': 5, 'arg_types': ['expression', 'expression', 'number', 'number', 'number'], 'param_names': ['y', 'x', 'd', 'lag', 'rettype'], 'keyword_only': True},
     'ts_skewness': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     'ts_max_diff': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
-    'kth_element': {'min_args': 3, 'max_args': 3, 'arg_types': ['expression', 'number', 'number']},
+    # Platform: kth_element(x, d, k, ignore="NaN") — k 必须具名：2026-10-31 实测位置写法
+    # kth_element(x, d, 5) 平台报 Required attribute "k" 并连坐整批 CANCELLED，k=5 正常
+    # （与 wqb.expression.op_arity._MUST_BE_NAMED 对齐）。2026-11-13 事故修复：漏标
+    # param_names 导致合法命名 k=1 被判「函数 kth_element 不存在参数 'k'」、toolkit
+    # 静态闸整批拒派。keyword_only_from=2：x/d 可位置传，k 及其后的 ignore 必须命名。
+    'kth_element': {'min_args': 3, 'max_args': 4, 'arg_types': ['expression', 'number', 'number', 'string'], 'param_names': ['x', 'd', 'k', 'ignore'], 'keyword_only': True, 'keyword_only_from': 2},
     # 2026-09-07 事故修复：漏标 keyword_only 导致 hump(x, 0.005) 通过本地闸，平台回
     # "Invalid number of inputs : 2, should be exactly 1 input(s)." 并 CANCEL 整批 8 条
     # multisim。catalog 签名 hump(x, hump = 0.01) 的 = 即命名参数标记，只能写 hump=0.005。

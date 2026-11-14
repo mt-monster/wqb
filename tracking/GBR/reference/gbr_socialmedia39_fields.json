@@ -1,0 +1,17 @@
+{
+ "dataset": "socialmedia39",
+ "region": "GBR",
+ "delay": 1,
+ "field_count": 1,
+ "verdict": "DEAD 2026-11-13（唯一字段正反对称±0.21）",
+ "fields": [
+  {
+   "id": "scl39_top5_people_also_watch_ticker_ii",
+   "t": "VECTOR",
+   "cov": 0.4948,
+   "uc": 137,
+   "ac": 298,
+   "d": "people-also-watch 社媒关注"
+  }
+ ]
+}

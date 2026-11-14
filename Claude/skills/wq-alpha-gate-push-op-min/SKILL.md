@@ -84,7 +84,7 @@ asyncio.run(main())
 **★ 读取格式铁律**：原始 API 指标在 **`is` 下直接展开**（`is.sharpe` / `is.fitness` / `is.checks`），
 **不是 `is.metrics.*`**（后者是 MCP 封装格式，用错键会得到全 `None` 的假数据）。
 
-相关性：`self` 用 `check_self_correlation(alpha_id)`；`prod` 用 `check_correlation(alpha_id, refresh=True)`
+相关性：`self` 用 `check_self_correlation(alpha_id)`；`prod` 用 `check_correlation(alpha_id, refresh=False)`（48h 缓存优先；仅新变体无缓存/过期/预读不可信才 `refresh=True`）
 （**>48h 的台账读数不可信**）。
 
 **逐项记录缺口**：把每个 FAIL / 未过的闸写成 `(闸名, 当前值, 门槛, 缺口)`——这是 ③ 的输入。
@@ -262,7 +262,7 @@ vector_neut(ts_quantile(ts_ir(ts_mean(max(a, ts_delay(a, 5)), 5), 22), 252, driv
    - 反向教训：**删除** `ts_quantile`（而非替换）→ S 2.15→**0.55** 全崩 ⇒ 删除与替换是两回事，删除崩≠替换不可行。
 
 **铁律**：等效替换同样产生新 alpha id，最终只保留最优 1 颗，其余标 `SUPERSEDED`；
-判定只走平台（IS 闸 + `check_correlation` self/prod 实测）；**替换变体必须复检 prod**（refresh=True，占平台单并发槽）。
+判定只走平台（IS 闸 + `check_correlation` self/prod 读数）；**替换变体必须复检 prod**：`refresh=False` 优先，新变体无 48h 缓存才 `refresh=True`（占平台单并发槽）。
 
 ---
 
@@ -303,7 +303,7 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参�
   ⚠ 删最外层 `rank` 常 S 变好但 sub/2Y 崩；删 `ts_backfill` 常省算子但 sub_universe 崩——**必看全部闸，不能只看 S**。
 - **替换**：**数学等价**（`ts_rank↔ts_quantile(gaussian)` 等）无需实测——外层单调算子吸收内层变换，逐位相同；
   **语义等价**（`ts_av_diff↔ts_zscore` 等）必实测，采纳判据 = **prod 更低**（prod 贴线时尤其）或指标更好或算子更少。
-  ⚠ 替换变体必须复检 prod（refresh=True）。
+  ⚠ 替换变体必须复检 prod（`refresh=False` 优先；无 48h 缓存才 `refresh=True`）。
   ⚠ **单位闸**：`vector_neut↔group_neutralize` 第 2 参单位不同（向量轴 vs `Unit[Group:1]`），直接替换会
   `Incompatible unit ...` ⇒ **整批 CANCELLED（连坐）**——`scan.py` 已标 `need_unit` 占位不自动生成；派发前必须过
   单位闸（`bucket`/`group_*` 第 2 参内层首个参数必须是 `rank(...)`，见 op-compression.md §四 闸④）。

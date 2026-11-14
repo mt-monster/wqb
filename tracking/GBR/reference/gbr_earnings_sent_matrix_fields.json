@@ -1,0 +1,66 @@
+{
+ "dataset": "earnings_sent_matrix",
+ "name": "Global Earnings Call Sentiment Matrix",
+ "region": "GBR",
+ "tower": "earnings(0)",
+ "field_count": 7,
+ "note": "电话会情绪矩阵；284 用户；事件型候选",
+ "fields": [
+  {
+   "id": "intraday_delay_indicator",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 52,
+   "ac": 66,
+   "d": "A code indicating whether the data is updated intraday or with a delay"
+  },
+  {
+   "id": "likelihood_of_neutral_tone",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 57,
+   "ac": 71,
+   "d": "Model-estimated probability [0–1] that the intraday transcript slice h"
+  },
+  {
+   "id": "negative_sentiment_probability_3",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 105,
+   "ac": 141,
+   "d": "Model-estimated probability [0–1] that the intraday transcript slice h"
+  },
+  {
+   "id": "overall_sentiment_score",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 66,
+   "ac": 82,
+   "d": "Categorical sentiment label derived by argmax over Prob_POS, Prob_NTR,"
+  },
+  {
+   "id": "positive_sentiment_probability_3",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 109,
+   "ac": 161,
+   "d": "Model-estimated probability [0–1] that the intraday transcript slice h"
+  },
+  {
+   "id": "sentiment_weighting_method1",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 139,
+   "ac": 215,
+   "d": "Aggregate transcript tone score computed via method 1; higher values i"
+  },
+  {
+   "id": "sentiment_weighting_method2",
+   "t": "MATRIX",
+   "cov": 0,
+   "uc": 76,
+   "ac": 90,
+   "d": "Alternative aggregate transcript tone score computed via method 2; hig"
+  }
+ ]
+}

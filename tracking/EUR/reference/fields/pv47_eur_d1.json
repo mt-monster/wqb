@@ -1,0 +1,27 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "pv47",
+ "fetched_at": "2026-11-13",
+ "platform_count": 2,
+ "complete": true,
+ "fields": [
+  {
+   "id": "pv47_for_statssimple_only_spret",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 39,
+   "alphaCount": 65,
+   "description": "Residual (specific/idiosyncratic) daily return for each Asia-region security from the UBER risk model, scaled as a fraction of 1 (e.g., 0.015 = +1.5%)"
+  },
+  {
+   "id": "pv47_spret",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 15,
+   "alphaCount": 21,
+   "description": "Daily specific (idiosyncratic) residual return from the UBER risk model for each US security; D1 (next-day) variant, values expressed in percentage terms (e.g.,…"
+  }
+ ]
+}

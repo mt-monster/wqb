@@ -1,0 +1,91 @@
+{
+  "alpha_id": "88NmN37X",
+  "name": "DEU_R_shrtinsd_01",
+  "tags": [
+    "CH_REG",
+    "SRC_shortinterest_insiders",
+    "CORR_MID"
+  ],
+  "descriptions": "## 经济含义\n证券借贷强度与内部人持股位置是两类互不重叠的知情人读数：借券变化反映做空方施加的压力，内部人持股的时序分位反映管理层的长期信心。当空头压力上升而管理层信心处于低位时，做差给出负向信号；反之亦然。\n\n## 构造\n两腿各先以 110 日回填填补稀疏披露；借券腿取 220 日变化，持股腿取 252 日时序分位，分别在 sector 内做分组排序后以单次 subtract 做差，decay 8 平滑持仓以降低换手。共 9 个算子调用点，未引入加权混合或多腿堆叠。\n\n## 风险与验证\nIS 九项闸门全过（S1.79/F1.53/2Y2.37/sub0.95），逐年 Sharpe 十年全正、近三年 1.87/2.13/2.74 递增，CV 0.162；margin 20.06bp、换手 9.12%。self 0.5538、边际 ΔSharpe +0.74（POWER_POOL 分区）。2017 早年 Sharpe 0.57 偏弱，属早年软标记。",
+  "expression": "subtract(group_rank(ts_rank(ts_backfill(vec_avg(insd1_holdings), 110), 252), sector), group_rank(ts_delta(ts_backfill(vec_avg(shrt3_bar), 110), 220), sector))",
+  "settings": {
+    "region": "DEU",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 8,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "metrics": {
+    "sharpe": 1.79,
+    "fitness": 1.53,
+    "two_year_sharpe": 2.37,
+    "turnover": 0.0912,
+    "sub_universe_sharpe": 0.95,
+    "returns": 0.0914,
+    "drawdown": 0.0491,
+    "margin": 0.002006,
+    "margin_bp": 20.06,
+    "pnl": 9436207
+  },
+  "correlations": {
+    "production": null,
+    "production_note": "本 id 至今从未算出 prod 值；原件 0.543 不可继承。提交前必须拿到 <0.7 的本 id 权威读数。",
+    "self": 0.5538333436005995,
+    "attempt_log": [
+      "22:03 refresh=True 240s → pending/inflight=true/last_known=null",
+      "22:07 refresh=false → platform_unavailable (streak 熔断 547s)",
+      "22:13 refresh=false → pending 240s, inflight=true",
+      "22:16 alpha_corr_cache 0 命中；平台详情 is.prodCorrelation=None",
+      "22:20 correlation_busy, holder=corr:get_production_correlation(RREPm361)",
+      "22:26 锁 pid 13448 = tools/prod_wait.py RREPm361 --minutes 12（另一会话，未干预）",
+      "22:30 锁已释放，但账号级熔断再次触发（剩余 422s）",
+      "22:39 熔断解除后重试 → correlation_busy, holder=corr:get_production_correlation(78Yk1A2L)；锁已正常轮转但其它会话连续占用账号唯一槽，停止盲等"
+    ]
+  },
+  "marginal_contribution": {
+    "delta_sharpe": 0.74,
+    "partition": "EQUITY:DEU:1:POWER_POOL",
+    "dilutive": false,
+    "cross_partition_note": "原件 +0.08 在 EQUITY:DEU:1 常规分区，两套基准禁横比"
+  },
+  "gates": {
+    "failed_ra_count": 0,
+    "checks_fail": [],
+    "is_ladder_sharpe": "PASS",
+    "cluster_test": "PASS",
+    "mix_audit": "none (legs=0, no three questions needed); 仍备 two_leg 三问文本以防识别器误判",
+    "robustness": "PASS (ledger_kv robustness_88NmN37X; recent3 [1.87,2.13,2.74] CV 0.162, 10/10 正年, 衰减比 1.53, max/min 1.47, 软标记 2017=0.57)",
+    "diversity": "self 0.5538 ≥0.55 但 ΔS +0.74 ≥ +0.02 ⇒ 软闸不拦"
+  },
+  "mix_narrative": {
+    "holders": "借券变化腿的信息持有者是证券借贷柜台与做空方，内部人持股腿的信息持有者是公司管理层与法定披露义务人。",
+    "polarity": "两腿均以数值升高表示压力或信心增强，经 sector 内分组排序后做差使极性对齐，未做反向拼接。",
+    "prior": "组合方向与等权做差由空头压力与管理层信心背离这一先验在回测前钉死，权重未做任何参数搜索。"
+  },
+  "operator_callsites": 9,
+  "pyramids": {
+    "DEU/D1/SHORTINTEREST": 1.3,
+    "DEU/D1/INSIDERS": 1.6,
+    "effective": 2,
+    "note": "INSIDERS 当季 0→1，不点亮新塔"
+  },
+  "supersedes": [
+    "qM7KxkQV",
+    "d5a2aO7v",
+    "zqdvb0YE"
+  ],
+  "source_report": "output_report/opmin_qm7kxkqv_20261110.md",
+  "audited_at": "2026-11-10T22:03+08:00",
+  "status": "BLOCKED_PROD_UNAVAILABLE",
+  "blocked_reason": "submit_alpha.py Step 1.6 prod 闸 fail-closed：未出数一律 blocked，无豁免入口",
+  "next_action": "平台/其它会话空闲后：check_correlation(88NmN37X, production, refresh=True) 拿到 <0.7 → confirm_submit=True",
+  "user_decision": "22:4x 暂不安排自动重试；用户回「重试提交」后再补 prod 终验并提交"
+}

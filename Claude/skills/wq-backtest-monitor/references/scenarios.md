@@ -40,7 +40,7 @@ R2 提交状态盘点（数据取自 alphas / robustness / submit_verdict）
 | CCCC3333 | Failed RA 0 | 0.81（14:40） | PASS | BLOCKED | 🔶 仍需验证（prod 墙，按 D0-P 处置） |
 R3 核心发现  本波 40 条过闸，过廉价闸 6 条；瓶颈在 prod 读数而非回测吞吐（待步 9 漏斗确认）
 R4 结论  3 个候选：0 已提交，1 待提交（须用户确认），2 仍需验证
-    问题：CCCC3333 落在 D0-P 的 ≥ 0.75 行 → 先 forum_recon 再封存；行动：AAAA1111 提交前 check_correlation(refresh=True) 终验
+    问题：CCCC3333 落在 D0-P 的 ≥ 0.75 行 → 先 forum_recon 再封存；行动：AAAA1111 提交前 check_correlation(refresh=False) 读 48h 缓存即可
 ```
 
 要点：**ETA 与提交状态盘点两个强制章节都在**；`PASS_CHEAP` 不称可提交；prod 读数带时间；结论句式是「N 个候选：a 已提交，b 待提交，c 仍需验证」。

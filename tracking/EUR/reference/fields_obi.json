@@ -1,0 +1,1352 @@
+[
+ {
+  "id": "auction_order_imbalance_absolute",
+  "description": "Refers to the excess volume after the closing auction that stays on the book after the auction execution. This is the volume of bid orders at  the crossing price minus the volume of ask orders at the crossing price.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2301,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "auction_order_imbalance_notional",
+  "description": "Refers to the excess notional volume after the closing auction that stays on the book after the auction execution. This is the notional volume of bid orders at the crossing price minus the notional volume of ask orders at the crossing price.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2301,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "auction_order_imbalance_pct_adv",
+  "description": "Closing auction order imbalance expressed as a percentage of the stock’s Average Daily Volume",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2301,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "auction_order_imbalance_pct_auction",
+  "description": "Refers to the excess volume after the closing auction that stays on the book after the auction execution as a percentage of volume traded during the auction. This is the volume of bid orders at the crossing price minus the volume of ask orders at the crossing price.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2301,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_deletion_count",
+  "description": "Number of ask-side order deletions/cancellations during the day",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 2,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_execution_count",
+  "description": "Number of execution events that filled resting ask-side orders during the day",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 1,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_insertion_count_2",
+  "description": "Number of new limit order insert events on the ask side during the day",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_modification_count",
+  "description": "Number of modification events (e.g., size changes) on the ask side during the day",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_replacement_count",
+  "description": "Number of order replacement events on the ask side during the day",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_volume_after_modification_2",
+  "description": "Refers to the total volume of modified ask orders",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_volume_after_replacement",
+  "description": "Refers to the total volume of replaced ask orders",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_volume_before_modification",
+  "description": "Refers to the total volume of modified ask orders",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_volume_change_modification",
+  "description": "Refers to the total change in volume of ask orders due to orders being modified.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_volume_change_replacement",
+  "description": "Refers to the total change in volume of ask orders due to orders being replaced.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_volume_deleted",
+  "description": "Total share volume removed via cancellations on the ask side during the day",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_order_volume_executed",
+  "description": "Total share volume executed from resting ask-side orders during the day",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.205,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_cancelled_lvl1",
+  "description": "Refers to the mean resting time (in seconds) of ask orders placed at the 1st level of the book which were subsequently cancelled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 2,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_cancelled_lvl2",
+  "description": "Average resting time in seconds for ask-side orders at depth level 2 away from the EBBO that were cancelled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_cancelled_lvl3",
+  "description": "Average time in seconds that ask-side limit orders resting 3 levels away from the EBBO remained on the book before being cancelled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_cancelled_lvl4",
+  "description": "Refers to the mean resting time (in seconds) of ask orders placed at the 4th level of the book which were subsequently cancelled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_cancelled_lvl5",
+  "description": "Refers to the mean resting time (in seconds) of ask orders placed at the 5th level of the book which were subsequently cancelled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_filled_lvl1",
+  "description": "Refers to the mean resting time (in seconds) of ask orders placed at the 1st level of the book which were subsequently completely filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_filled_lvl2",
+  "description": "Average resting time in seconds for ask-side orders at depth level 2 away from the EBBO that were fully filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_filled_lvl3",
+  "description": "Average resting time in seconds for ask-side orders at depth level 3 away from the EBBO that were fully filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_filled_lvl4",
+  "description": "Refers to the mean resting time (in seconds) of ask orders placed at the 4th level of the book which were subsequently completely filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_filled_lvl5",
+  "description": "Refers to the mean resting time (in seconds) of ask orders placed at the 5th level of the book which were subsequently completely filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_partial_lvl1",
+  "description": "Refers to the mean resting time (in seconds) of ask orders placed at the 1st level of the book which were subsequently partially filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_partial_lvl2",
+  "description": "Average resting time in seconds for ask-side orders at depth level 2 away from the EBBO that were partially filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_partial_lvl3",
+  "description": "Average resting time in seconds for ask-side orders at depth level 3 away from the EBBO that were partially filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_partial_lvl4",
+  "description": "Average time in seconds that ask-side limit orders resting 4 levels away from the EBBO remained on the book before being partially filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_ask_partial_lvl5",
+  "description": "Average time in seconds that ask-side limit orders resting 5 levels away from the EBBO remained on the book before being partially filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_cancelled_lvl1",
+  "description": "Average time in seconds that bid-side limit orders resting 1 level away from the EBBO remained on the book before being cancelled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_cancelled_lvl2",
+  "description": "Average resting time in seconds for bid-side orders at depth level 2 away from the EBBO that were cancelled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_cancelled_lvl3",
+  "description": "Refers to the mean resting time (in seconds) of bid orders placed at the 3rd level of the book which were subsequently cancelled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_cancelled_lvl4",
+  "description": "Refers to the mean resting time (in seconds) of bid orders placed at the 4th level of the book which were subsequently cancelled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_cancelled_lvl5",
+  "description": "Refers to the mean resting time (in seconds) of bid orders placed at the 5th level of the book which were subsequently cancelled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_filled_lvl1",
+  "description": "Average time in seconds that bid-side limit orders resting 1 level away from the EBBO remained on the book before being fully filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_filled_lvl2",
+  "description": "Average resting time in seconds for bid-side orders at depth level 2 away from the EBBO that were fully filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_filled_lvl3",
+  "description": "Average resting time in seconds for bid-side orders at depth level 3 away from the EBBO that were fully filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_filled_lvl4",
+  "description": "Refers to the mean resting time (in seconds) of bid orders placed at the 4th level of the book which were subsequently completely filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_filled_lvl5",
+  "description": "Average time in seconds that bid-side limit orders resting 5 levels away from the EBBO remained on the book before being fully filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_partial_lvl1",
+  "description": "Refers to the mean resting time (in seconds) of bid orders placed at the 1st level of the book which were subsequently partially filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_partial_lvl2",
+  "description": "Average resting time in seconds for bid-side orders at depth level 2 away from the EBBO that were partially filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_partial_lvl3",
+  "description": "Average time in seconds that bid-side limit orders resting 3 levels away from the EBBO remained on the book before being partially filled",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_partial_lvl4",
+  "description": "Refers to the mean resting time (in seconds) of bid orders placed at the 4th level of the book which were subsequently partially filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_rest_time_bid_partial_lvl5",
+  "description": "Refers to the mean resting time (in seconds) of bid orders placed at the 5th level of the book which were subsequently partially filled.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.2036,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_trade_imbalance_1_level",
+  "description": "Refers to the volume of aggressive asks executed 1 level or more away from the best offer, as a percentage of the total volume traded in that period.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.1948,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_trade_imbalance_2_levels",
+  "description": "Refers to the volume of aggressive asks executed 2 levels or more away from the best offer, as a percentage of the total volume traded in that period.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.1948,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_trade_imbalance_3_levels",
+  "description": "Refers to the volume of aggressive asks executed 3 levels or more away from the best offer, as a percentage of the total volume traded in that period.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.1948,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_trade_imbalance_all_levels",
+  "description": "Refers to the volume of aggressive asks executed as a percentage of the total volume traded in that period.",
+  "dataset": {
+   "id": "order_book_imbalance",
+   "name": "Order Book Liquidity and Imbalance Analytics"
+  },
+  "category": {
+   "id": "other",
+   "name": "Other"
+  },
+  "subcategory": {
+   "id": "other-aiml-data",
+   "name": "AI/ML Data"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "VECTOR",
+  "dateCoverage": 0.6588,
+  "coverage": 0.1948,
+  "userCount": 2,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.5,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ }
+]

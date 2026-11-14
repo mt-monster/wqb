@@ -2,7 +2,7 @@
 name: wq-wave-preflight-dispatch
 layer: L-RA
 description: WQ BRAIN 批量仿真发批前自查 SOP。判「族扫完了吗」前先做三件事：横向扫全史最优、字段笛卡尔积清点、设置档盲区清点；发批时过候选实测/覆盖率闸/字段存在性硬闸/禁混信号自检，断点续跑去重键须含全部设置档，扩设置维度时运行器三处同步。本地库不可判全闸通过与所属区（alphas.region_id/universe 混区）。含 SuperAlpha 发批与提交前自查（区域资格≥10 组件、SA 相关闸单独实测、同源自锁、余量=1−prod）。触发词：发批/跑一波/扫数据集/批量仿真/items.json/续跑/换数据集/判死/扫完了吗/查论坛/SuperAlpha/SA/组件池。
-last_verified: 2026-11-01
+last_verified: 2026-11-10
 agent_created: true
 ---
 
@@ -749,7 +749,7 @@ if det["checks"]["fail"]:             # ① 平台硬挂清单
 elif det["ra"]["ra_failed"]:          # ② ★ 最容易漏的一条！
     fix(get=det["ra"]["ra_failed_checks"])
 else:
-    # ③ 还要 prod/self 平台实测（check_correlation refresh=True）
+    # ③ 还要 prod/self 读数（check_correlation refresh=False，48h 缓存优先）
     accumulable()
 ```
 ⚠ **别把 sub=0.84 当成过不了闸** —— 平台线比 1.0 低。
@@ -761,7 +761,7 @@ else:
 |---|---|---|---|
 | ① | `checks.fail == []` | `get_alpha_details` | ✅ 容易查 |
 | ② | ★ `ra.ra_failed_checks == []` | `get_alpha_details` | ❌ **最容易漏** |
-| ③ | `prod < 0.7` **且** `self < 0.7` | `check_correlation(refresh=True)` | ❌ 常只测 prod |
+| ③ | `prod < 0.7` **且** `self < 0.7` | `check_correlation(refresh=False)`（48h 缓存优先） | ❌ 常只测 prod |
 
 **实测反例（三颗全过①③，但卡②）**：
 

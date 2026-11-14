@@ -1,0 +1,5402 @@
+[
+ {
+  "id": "last_trade_price_30m_pre_close_2",
+  "description": "Last trade price at the 30-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9993,
+  "userCount": 10,
+  "alphaCount": 20,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "last_trade_price_60m_post_open",
+  "description": "Last trade price recorded 60 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9993,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "last_trade_price_60m_pre_close_2",
+  "description": "Last trade price at the 60-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9993,
+  "userCount": 8,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "last_trade_price_last_interval",
+  "description": "Last intraday observation of the last trade price at the end of the trading session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9993,
+  "userCount": 10,
+  "alphaCount": 22,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "last_trade_price_30m_post_open",
+  "description": "Last trade price recorded 30 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.992,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "high_price_last_interval",
+  "description": "Last observed intraday high (final interval's high) of the session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9853,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "low_price_last_interval",
+  "description": "Low price in the last interval of the day.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9853,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "high_price_30m_pre_close_2",
+  "description": "High price at the 30-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9852,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "low_price_30m_pre_close_2",
+  "description": "Low price at the 30-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9852,
+  "userCount": 3,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "high_price_60m_pre_close_2",
+  "description": "High price at the 60-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.985,
+  "userCount": 4,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "low_price_60m_pre_close_2",
+  "description": "Low price at the 60-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.985,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_last_trade_price_interval",
+  "description": "Kurtosis of the intraday last-traded price series over the session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9846,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "last_trade_price_first_interval",
+  "description": "First intraday observation of the last trade price at the start of the trading session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9846,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_price_60m_pre_close",
+  "description": "Maximum bid price within the last 60 minutes before the exchange close",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9824,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_60m_pre_close_2",
+  "description": "Bid price at the 60-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9823,
+  "userCount": 7,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_ask_price_60m_pre_close",
+  "description": "Maximum ask price observed during the last 60 minutes before the exchange close",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9805,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_60m_pre_close_2",
+  "description": "Ask price at the 60-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9804,
+  "userCount": 6,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_price_30m_pre_close_2",
+  "description": "Maximum bid price in the last 30 minutes before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9799,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_30m_pre_close_2",
+  "description": "Bid price at the 30-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9798,
+  "userCount": 4,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_slippage_interval",
+  "description": "Kurtosis of slippage values across intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9783,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_trade_volume_interval",
+  "description": "Kurtosis of the intraday volume series across intervals over the prior trading day’s session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9783,
+  "userCount": 15,
+  "alphaCount": 34,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_ask_price_30m_pre_close",
+  "description": "Maximum ask price within the last 30 minutes before the exchange close",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.978,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_30m_pre_close_2",
+  "description": "Ask price at the 30-minute mark before market close.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9779,
+  "userCount": 17,
+  "alphaCount": 24,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_60m_post_open",
+  "description": "Bid price recorded 60 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9773,
+  "userCount": 8,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_30m_post_open",
+  "description": "Bid price recorded 30 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.977,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_60m_post_open",
+  "description": "Ask price recorded 60 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.976,
+  "userCount": 8,
+  "alphaCount": 17,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_30m_post_open",
+  "description": "Ask price recorded 30 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9759,
+  "userCount": 27,
+  "alphaCount": 32,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_slippage",
+  "description": "Pearson correlation across intraday intervals during the trading day between last trade price per interval and interval slippage, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.973,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_price_interval_2",
+  "description": "Maximum intraday bid quote during the trading session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9717,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_size_to_volume_ratio",
+  "description": "Maximum ratio of bid size to traded volume observed in intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9717,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_bid_price_interval",
+  "description": "Kurtosis of the intraday bid price series across the session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9714,
+  "userCount": 1,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_high_price_interval",
+  "description": "Kurtosis of the intraday high price series over the session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9713,
+  "userCount": 4,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_low_price_interval",
+  "description": "Kurtosis of the intraday low price series across the session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9713,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_volume_to_last_trade_ratio",
+  "description": "Average ratio of traded volume to last trade size over intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9709,
+  "userCount": 12,
+  "alphaCount": 18,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_vwap_to_last_price_ratio",
+  "description": "Average ratio of volume-weighted average price to last trade price over intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9709,
+  "userCount": 87,
+  "alphaCount": 134,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_vwap_interval",
+  "description": "Kurtosis of the intraday VWAP series across the trading session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9708,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_price_60m_post_open",
+  "description": "Maximum bid price observed during the first 60 minutes after market open",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.97,
+  "userCount": 0,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_price_30m_post_open",
+  "description": "Maximum bid price during the first 30 minutes after the exchange open",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9697,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_volume",
+  "description": "Pearson correlation across intraday intervals during the trading day between last trade price per interval and interval traded volume, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9696,
+  "userCount": 24,
+  "alphaCount": 55,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_ask_price_interval",
+  "description": "Maximum of the intraday ask price across all intervals during the trading session, computed from the prior day’s intraday data (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9696,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_ask_size_to_volume_ratio",
+  "description": "Maximum ratio of ask size to traded volume observed in intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9696,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "kurtosis_ask_price_interval",
+  "description": "Kurtosis of the best ask price series across intraday intervals during the session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9694,
+  "userCount": 2,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_first_interval",
+  "description": "First intraday value of the bid quote after market open",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9693,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_to_ask_price_ratio",
+  "description": "Average ratio of bid price to ask price across intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9688,
+  "userCount": 9,
+  "alphaCount": 16,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_ask_price_ratio_daily",
+  "description": "Intraday maximum across intervals of the ratio of bid to ask price",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9688,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_ask_size_ratio_daily",
+  "description": "Maximum ratio of bid size to ask size for the day.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9688,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_bid_ask_size_volume_ratio_daily",
+  "description": "Maximum ratio of combined bid and ask size to trading volume for the day.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9688,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_ask_price_60m_post_open",
+  "description": "Maximum ask price observed during the first 60 minutes after the market open",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9687,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_ask_price_30m_post_open",
+  "description": "max best ask price observed within the first 30 minutes since market open",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9685,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_first_interval",
+  "description": "First intraday value of the ask quote after market open",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9683,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_price_with_slippage",
+  "description": "Pearson-type correlation computed over intraday intervals during the trading session between interval bid price and interval slippage for the stock-day (daily scalar, D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.968,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_ask_price_with_slippage",
+  "description": "Pearson-type correlation computed over intraday intervals during the trading session between interval ask price and interval slippage for the stock-day (daily scalar, D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9676,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_bid_with_interval_ask",
+  "description": "Daily Pearson correlation across intraday intervals between the interval bid quote and the interval ask quote for the stock (D1-delayed)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9676,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_interval_bid",
+  "description": "Correlation between last trade price and interval bid price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9674,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_interval_ask",
+  "description": "Correlation between last trade price and interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9672,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_last_interval",
+  "description": "Last intraday value of the bid quote during the trading session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9667,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "high_price_60m_post_open",
+  "description": "High price recorded 60 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9667,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "low_price_60m_post_open",
+  "description": "Low price recorded 60 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9667,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_twap_with_slippage",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval TWAP and interval slippage, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9657,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_slippage",
+  "description": "Pearson-type correlation computed over intraday intervals during the trading session between end-of-interval VWAP and interval slippage for the stock-day (daily scalar, D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.965,
+  "userCount": 7,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_last_interval",
+  "description": "Last intraday observation of the ask price at the end of the trading session",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9649,
+  "userCount": 6,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_vwap_with_slippage",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval VWAP and interval slippage, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9648,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_interval_twap",
+  "description": "Correlation between last trade price and interval time-weighted average price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9647,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_twap_with_volume",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval TWAP and interval traded volume, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9647,
+  "userCount": 13,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_interval_twap_2",
+  "description": "Correlation between the last volume-weighted average price and the interval time-weighted average price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.964,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_last_price_2",
+  "description": "Correlation between the last volume-weighted average price and the last trade price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.964,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_volume",
+  "description": "Pearson-type correlation computed over intraday intervals during the trading session between end-of-interval VWAP and interval traded volume for the stock-day (daily scalar, D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.964,
+  "userCount": 4,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "max_ask_price_to_vwap_ratio",
+  "description": "Maximum ratio of ask price to volume-weighted average price in intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.964,
+  "userCount": 8,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_vwap_with_interval_twap_2",
+  "description": "Pearson correlation across intraday intervals between interval VWAP and interval TWAP for the day (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9639,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_interval_vwap",
+  "description": "Pearson correlation coefficient across intraday intervals between the last-sampled VWAP (last_vwap) and the interval VWAP for the trading day (reported at D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9639,
+  "userCount": 1,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_vwap_with_volume",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval VWAP and interval traded volume, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9639,
+  "userCount": 16,
+  "alphaCount": 26,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_interval_vwap",
+  "description": "Pearson correlation coefficient across intraday intervals between the last trade price and the interval VWAP for the trading day (reported at D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9638,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_ask_size_to_volume_ratio",
+  "description": "Average ratio of combined bid and ask sizes to traded volume over intervals.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9637,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "high_price_30m_post_open",
+  "description": "High price recorded 30 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9636,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "low_price_30m_post_open",
+  "description": "Low price recorded 30 minutes after market open.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9636,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_twap_with_interval_high",
+  "description": "Pearson correlation coefficient across intraday intervals between the interval TWAP and the interval high price for the trading day (reported at D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9634,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_twap_with_interval_low",
+  "description": "Correlation between interval time-weighted average price and interval low price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9634,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_price_with_interval_high",
+  "description": "Correlation between the last trade price and the interval high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9634,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_interval_low",
+  "description": "Correlation between last trade price and interval low price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9634,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_price_with_slippage",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval high price and interval slippage, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9633,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_low_with_interval_high",
+  "description": "Pearson correlation across intraday intervals between each interval’s low and high prices for the trading day (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9633,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_low_price_with_slippage",
+  "description": "Pearson-type correlation computed over intraday intervals during the trading session between interval low price and interval slippage for the stock-day (daily scalar, D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9633,
+  "userCount": 0,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_ask_price_with_volume",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval best ask price and interval traded volume, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9632,
+  "userCount": 21,
+  "alphaCount": 50,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_price_with_volume",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval best bid price and interval traded volume, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9631,
+  "userCount": 13,
+  "alphaCount": 48,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_price_with_volume",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval high price and interval traded volume, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9631,
+  "userCount": 22,
+  "alphaCount": 38,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_low_price_with_volume",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval low price and interval traded volume, aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9631,
+  "userCount": 10,
+  "alphaCount": 20,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_vwap_with_interval_high",
+  "description": "Correlation between interval VWAP and interval high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9628,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_vwap_with_interval_low_2",
+  "description": "Pearson correlation across intraday intervals between interval VWAP and interval low price for the day (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9628,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_interval_high_2",
+  "description": "Correlation between the last volume-weighted average price and the interval high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9628,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_interval_low",
+  "description": "Correlation between last VWAP and interval low price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9628,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_price_modulo_10_ratio_first_half",
+  "description": "Average ratio of price modulo 10 during the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9627,
+  "userCount": 9,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_low_with_interval_twap_2",
+  "description": "Correlation between the last low price and the interval time-weighted average price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9627,
+  "userCount": 2,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_last_low",
+  "description": "Correlation between last trade price and last low price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9627,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_high_with_interval_twap",
+  "description": "Correlation between last high price and interval time-weighted average price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9625,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_last_high",
+  "description": "Correlation between last trade price and last high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9624,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_last_low_2",
+  "description": "Correlation between the last volume-weighted average price and the last low price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.962,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_low_with_interval_vwap_2",
+  "description": "Correlation between the last low price and the interval volume-weighted average price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9619,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_last_high_2",
+  "description": "Correlation between the last volume-weighted average price and the last high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9618,
+  "userCount": 4,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_high_with_interval_vwap",
+  "description": "Correlation between last high price and interval VWAP.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9617,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_price_to_vwap_ratio_first_half",
+  "description": "Average ratio of bid price to VWAP in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9612,
+  "userCount": 38,
+  "alphaCount": 49,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_size_to_volume_ratio_first_half",
+  "description": "Average ratio of bid size to traded volume in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9612,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_price_to_vwap_ratio_first_half",
+  "description": "Average ratio of ask price to VWAP in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9611,
+  "userCount": 63,
+  "alphaCount": 77,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_size_to_volume_ratio_first_half",
+  "description": "Average ratio of ask size to traded volume in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9611,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_to_ask_price_ratio_first_half",
+  "description": "Average ratio of bid price to ask price in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9611,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_low_with_interval_low",
+  "description": "Correlation between last low price and interval low price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9606,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_low_with_interval_high",
+  "description": "Correlation between last low price and interval high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9605,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_high_with_interval_high_2",
+  "description": "Correlation between the last high price and the interval high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9603,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_high_with_interval_low",
+  "description": "Correlation between last high price and interval low price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9602,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_twap_with_interval_ask",
+  "description": "Correlation between interval time-weighted average price and interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9581,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_twap_with_interval_bid_2",
+  "description": "Correlation between interval time-weighted average price and interval bid price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9579,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_vwap_with_interval_ask",
+  "description": "Correlation between interval VWAP and interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9575,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_interval_ask",
+  "description": "Correlation between last VWAP and interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9575,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_vwap_with_interval_bid_2",
+  "description": "Pearson correlation across intraday intervals between interval VWAP and interval bid quote price for the day (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9574,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_low_with_last_high",
+  "description": "Correlation between last low price and last high price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9574,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_interval_bid",
+  "description": "Correlation between last VWAP and interval bid price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9574,
+  "userCount": 1,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_bid_price_first_half",
+  "description": "Correlation between traded volume and bid price in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9574,
+  "userCount": 6,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_ask_price_first_half",
+  "description": "Correlation between traded volume and ask price in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9573,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_with_ask_price_first_half",
+  "description": "Pearson correlation between bid price and ask price within the first 50% cumulative-volume slice",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9571,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_low_with_interval_ask",
+  "description": "Correlation between last low price and interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9564,
+  "userCount": 4,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_low_with_interval_bid",
+  "description": "Correlation between last low price and interval bid price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9563,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_high_with_interval_ask_2",
+  "description": "Correlation between the last high price and the interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9562,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_ask_price_first_quarter_volumeclock",
+  "description": "Correlation between volume and ask price in the first quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9562,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_bid_price_first_quarter_volumeclock",
+  "description": "Correlation between volume and bid price in the first quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9562,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_high_with_interval_bid",
+  "description": "Correlation between last high price and interval bid price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9559,
+  "userCount": 3,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_with_ask_price_first_quarter_volumeclock",
+  "description": "Correlation between bid price and ask price in the first quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9558,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_last_trade_price_first_half",
+  "description": "Pearson correlation between intraday volume and last trade price within the first 50% cumulative-volume slice",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9552,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_high_with_interval_bid",
+  "description": "Correlation between interval high price and interval bid price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9541,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_high_with_interval_ask",
+  "description": "Correlation between interval high price and interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.954,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_low_with_interval_ask",
+  "description": "Correlation between interval low price and interval ask price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.954,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_low_with_interval_bid",
+  "description": "Correlation between interval low price and interval bid price.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.954,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_last_trade_price_first_quarter_volumeclock",
+  "description": "Correlation between volume and last trade price in the first quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9536,
+  "userCount": 8,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_low_price_first_half",
+  "description": "Correlation between traded volume and low price in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9517,
+  "userCount": 1,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_high_price_first_half",
+  "description": "Correlation between traded volume and high price in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9511,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_low_price_first_quarter_volumeclock",
+  "description": "Correlation between volume and low price in the first quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9493,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_high_price_first_quarter_volumeclock",
+  "description": "Correlation between volume and high price in the first quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9489,
+  "userCount": 5,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_high_price_last_half",
+  "description": "Mean of high prices in the last 50% of the trading period.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9459,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_last_trade_price_last_half",
+  "description": "Mean last trade price computed over the last 50% of the day's cumulative volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9459,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_low_price_last_half",
+  "description": "Mean of the low price across intraday intervals within the last 50% of the day's cumulative traded volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9459,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_price_modulo_10_ratio_last_half",
+  "description": "Mean ratio of price modulo 10 in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9459,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_trade_volume_last_half",
+  "description": "Mean traded volume in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9459,
+  "userCount": 6,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_vwap_last_half",
+  "description": "Mean volume-weighted average price (VWAP) across intraday intervals within the last 50% of the day's cumulative traded volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9458,
+  "userCount": 3,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "high_price_first_interval",
+  "description": "First intraday interval high observed at session start",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9444,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "low_price_first_interval",
+  "description": "Low price in the first interval of the day.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9444,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_price_last_half",
+  "description": "Mean bid price computed over the last 50% of the day's cumulative volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9438,
+  "userCount": 8,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_price_last_half",
+  "description": "Mean ask price across intraday intervals within the last 50% of the day's cumulative traded volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9437,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_size_to_volume_ratio_last_half",
+  "description": "Average ratio of ask size to traded volume in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9437,
+  "userCount": 10,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_to_vwap_ratio_last_half",
+  "description": "Mean ratio of ask price to VWAP across intraday intervals within the last 50% of the day's cumulative traded volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9437,
+  "userCount": 6,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_size_to_volume_ratio_last_half",
+  "description": "Average ratio of bid size to traded volume in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9437,
+  "userCount": 5,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_to_vwap_ratio_last_half",
+  "description": "Average ratio of bid price to VWAP in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9437,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_to_ask_price_ratio_last_half",
+  "description": "Average ratio of bid price to ask price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9436,
+  "userCount": 7,
+  "alphaCount": 10,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_with_low_price_first_half",
+  "description": "Correlation between high and low prices in the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9425,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_last_half",
+  "description": "Ask price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9423,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_last_half",
+  "description": "Bid price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9423,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_last_price_last_half",
+  "description": "Pearson correlation between intraday interval volume and the last traded price computed over the last 50% of the day's cumulative traded volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9381,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_ask_price_last_half",
+  "description": "Correlation between traded volume and ask price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9379,
+  "userCount": 9,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_bid_price_last_half",
+  "description": "Correlation between traded volume and bid price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9379,
+  "userCount": 10,
+  "alphaCount": 13,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_with_ask_price_last_half",
+  "description": "Correlation between bid price and ask price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9377,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_with_low_price_first_quarter_volumeclock",
+  "description": "Correlation between high and low prices across intervals within the first 25% of the day's cumulative traded volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9367,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_high_price_last_half",
+  "description": "Correlation between traded volume and high price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9266,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_low_price_last_half",
+  "description": "Correlation between traded volume and low price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9259,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_price_with_bid_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval best bid price and interval bid size (best bid depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9119,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_high_price_last_quarter",
+  "description": "Average high price within the last 25% of intraday volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9118,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_trade_volume_last_quarter",
+  "description": "Average intraday volume across intervals within the last 25% of cumulative volume of the prior trading day",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9118,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_vwap_last_quarter",
+  "description": "Average VWAP across intraday intervals within the last 25% volume slice",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9118,
+  "userCount": 6,
+  "alphaCount": 15,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_ask_price_with_ask_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval best ask price and interval ask size (best ask depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9118,
+  "userCount": 9,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_price_with_ask_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval best bid price and interval ask size (best ask depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9115,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_ask_price_with_bid_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval best ask price and interval bid size (best bid depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9106,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_price_last_quarter",
+  "description": "Average ask price within the last 25% of intraday volume",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9097,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_to_vwap_ratio_last_quarter",
+  "description": "Average ratio of bid price to VWAP in the last 25% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9097,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_size_to_volume_ratio_last_quarter",
+  "description": "Average ratio of ask size to traded volume in the last 25% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9095,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_size_to_volume_ratio_last_quarter",
+  "description": "Average ratio of bid size to traded volume in the last 25% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9094,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_last_quarter",
+  "description": "Ask price in the last 25% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9078,
+  "userCount": 9,
+  "alphaCount": 9,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_last_quarter",
+  "description": "Bid price in the last 25% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9077,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_asksize_with_interval_bidsize",
+  "description": "Pearson correlation coefficient across intraday intervals between the interval ask size and the interval bid size for the trading day (reported at D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.907,
+  "userCount": 6,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_ask_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between last trade price per interval and interval ask size (best ask depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9045,
+  "userCount": 6,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_trade_price_with_bid_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between last trade price per interval and interval bid size (best bid depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9036,
+  "userCount": 4,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_volume_with_interval_asksize",
+  "description": "Correlation between interval trade volume and interval ask size.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9033,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_interval_volume_with_interval_bid_size",
+  "description": "Pearson correlation coefficient across intraday intervals between the interval traded volume and the interval bid size for the trading day (reported at D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.9024,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_ask_price_last_quarter_volumeclock",
+  "description": "Pearson-type correlation between intraday volume and ask price within the last 25% cumulative volume slice of the prior trading day",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8989,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_bid_price_last_quarter_volumeclock",
+  "description": "Pearson-type correlation between intraday volume and bid price within the last 25% cumulative volume slice of the prior trading day",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8987,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_bid_with_ask_price_last_quarter_volumeclock",
+  "description": "Pearson-type correlation between bid price and ask price within the last 25% cumulative volume slice of the prior trading day",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8981,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_last_price_last_quarter",
+  "description": "Pearson-type correlation between intraday volume and last-traded price within the last 25% cumulative volume slice of the prior trading day",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8946,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_twap_with_ask_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval TWAP and interval ask size (best ask depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8904,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_ask_size",
+  "description": "Pearson-type correlation computed over intraday intervals during the trading session between end-of-interval VWAP and interval ask size for the stock-day (daily scalar, D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8902,
+  "userCount": 1,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_vwap_with_ask_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval VWAP and interval ask size (best ask depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8899,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_twap_with_bid_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval TWAP and interval bid size (best bid depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8898,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_last_vwap_with_bid_size",
+  "description": "Pearson-type correlation computed over intraday intervals during the trading session between end-of-interval VWAP and interval bid size for the stock-day (daily scalar, D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8896,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_vwap_with_bid_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval VWAP and interval bid size (best bid depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8893,
+  "userCount": 3,
+  "alphaCount": 11,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_price_with_ask_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval high price and interval ask size (best ask depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8834,
+  "userCount": 10,
+  "alphaCount": 12,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_low_price_with_ask_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval low price and interval ask size (best ask depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8834,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_price_with_bid_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval high price and interval bid size (best bid depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.883,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_low_price_with_bid_size",
+  "description": "Pearson correlation across intraday intervals during the trading day between interval low price and interval bid size (best bid depth), aggregated as a daily feature (D1)",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.883,
+  "userCount": 3,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_with_low_price_last_half",
+  "description": "Correlation between high price and low price in the last 50% of the session.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8727,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_high_price_last_quarter_volumeclock",
+  "description": "Correlation between volume and high price in the last quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.8011,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_volume_with_low_price_last_quarter_volumeclock",
+  "description": "Correlation between volume and low price in the last quarter of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7929,
+  "userCount": 1,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_ask_price_first_half_volume",
+  "description": "Average ask price during the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7245,
+  "userCount": 6,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "avg_bid_price_first_half_volume",
+  "description": "Average bid price during the first half of volume clock.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.7245,
+  "userCount": 4,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "corr_high_with_low_last_quarter_volume",
+  "description": "Correlation between high and low prices during the last 25% of cumulative daily volume.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.6388,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "ask_price_first_quarter_volume",
+  "description": "Ask price during the first 25% of cumulative daily volume.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4097,
+  "userCount": 8,
+  "alphaCount": 8,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "bid_price_first_quarter_volume",
+  "description": "Bid price during the first 25% of cumulative daily volume.",
+  "dataset": {
+   "id": "intraday_pv_feats",
+   "name": "Daily Intraday Price Volume Features"
+  },
+  "category": {
+   "id": "pv",
+   "name": "Price Volume"
+  },
+  "subcategory": {
+   "id": "pv-price-volume",
+   "name": "Price Volume"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.9507,
+  "coverage": 0.4097,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.1,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ }
+]

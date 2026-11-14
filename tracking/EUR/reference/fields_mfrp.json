@@ -1,0 +1,2702 @@
+[
+ {
+  "id": "alt_short_hedge_5d_bin5_confidence",
+  "description": "Model confidence for alternative short-term hedge signal over 5 days, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5871,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_5d_bin1",
+  "description": "Alternative short-term hedge signal over 5 days, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5871,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_5d_bin5",
+  "description": "Alternative short-term hedge signal over 5 days, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5871,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_60d_bin5",
+  "description": "Alternative short-term hedge signal over 60 days, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5871,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "event_embedding_5d_quantile1_pred_mfml",
+  "description": "5-day prediction using event-driven features, quantile 1 (multi-model variant).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5871,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_hedge_5d_q5_confidence_score",
+  "description": "Model confidence score for second alternative short-term hedge, 5-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_hedge_60d_q5_confidence_score",
+  "description": "Model confidence score for second alternative short-term hedge, 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_term_hedge_signal_20d_q1",
+  "description": "Second alternative short-term hedge signal for 20-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_term_hedge_signal_20d_q5",
+  "description": "Second alternative short-term hedge signal for 20-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_term_hedge_signal_5d_q1",
+  "description": "Second alternative short-term hedge signal for 5-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_term_hedge_signal_5d_q5",
+  "description": "Second alternative short-term hedge signal for 5-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_term_hedge_signal_60d_q1",
+  "description": "Second alternative short-term hedge signal for 60-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt2_short_term_hedge_signal_60d_q5",
+  "description": "Second alternative short-term hedge signal for 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_hedge_20d_q5_confidence_score",
+  "description": "Model confidence score for third alternative short-term hedge, 20-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_hedge_5d_q5_confidence_score",
+  "description": "Model confidence score for third alternative short-term hedge, 5-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_hedge_60d_q5_confidence_score",
+  "description": "Model confidence score for third alternative short-term hedge, 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_term_hedge_signal_20d_q1",
+  "description": "Third alternative short-term hedge signal for 20-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_term_hedge_signal_20d_q5",
+  "description": "Third alternative short-term hedge signal for 20-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_term_hedge_signal_5d_q1",
+  "description": "Third alternative short-term hedge signal for 5-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_term_hedge_signal_5d_q5",
+  "description": "Third alternative short-term hedge signal for 5-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt3_short_term_hedge_signal_60d_q1",
+  "description": "Third alternative short-term hedge signal for 60-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_long_hedge_120d_bin5_confidence_mcr",
+  "description": "Model confidence for alternative long-term hedge signal over 120 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_long_hedge_60d_bin5_confidence_mcr",
+  "description": "Model confidence for alternative long-term hedge signal over 60 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_long_term_hedge_signal_120d_bin1_mcr",
+  "description": "Alternative long-term hedge signal over 120 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_long_term_hedge_signal_120d_bin5_mcr",
+  "description": "Alternative long-term hedge signal over 120 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_long_term_hedge_signal_60d_bin1_mcr",
+  "description": "Alternative long-term hedge signal over 60 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_hedge_20d_bin5_confidence_mcr",
+  "description": "Model confidence for alternative short-term hedge signal over 20 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_hedge_5d_bin5_confidence_mcr",
+  "description": "Model confidence for alternative short-term hedge signal over 5 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_hedge_60d_bin5_confidence_mcr",
+  "description": "Model confidence for alternative short-term hedge signal over 60 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_20d_bin1_mcr",
+  "description": "Alternative short-term hedge signal over 20 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_5d_bin1_mcr",
+  "description": "Alternative short-term hedge signal over 5 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_5d_bin5_mcr",
+  "description": "Alternative short-term hedge signal over 5 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_60d_bin1_mcr",
+  "description": "Alternative short-term hedge signal over 60 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_short_term_hedge_signal_60d_q5",
+  "description": "Alternative short-term hedge signal for 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "event_5d_single_quantile_pred",
+  "description": "5-day, single-quantile return prediction using event-driven features.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 3,
+  "alphaCount": 3,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "event_5d_single_quantile_pred_m1",
+  "description": "5-day, single-quantile return prediction using event-driven features (alternate model version).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "event_embedded_pred_5d_q1",
+  "description": "Prediction using event-based features for 5-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "event_embedding_5d_quantile1_pred",
+  "description": "5-day prediction using event-driven features, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "event_embedding_5d_regression_prediction",
+  "description": "5-day forward return forecast based on event-driven model inputs.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 5,
+  "alphaCount": 5,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "event_embedding_quantile1_r5_pred",
+  "description": "Prediction for 5-day, quantile 1 return using event-driven data embedding.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5869,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_5bucket_class_confidence",
+  "description": "Model confidence score for 120-day analyst-based 5-bucket classification.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 5,
+  "alphaCount": 6,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_5bucket_class_pred_solar",
+  "description": "120-day forward return classification into five buckets using analyst-derived features (SolarEquiNox variant).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_5quantile_confidence_score",
+  "description": "Model confidence score for 120-day, 5-quantile return prediction using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_5quantile_pred",
+  "description": "120-day, 5-quantile return prediction using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_5quantile_pred_m1",
+  "description": "120-day, 5-quantile return prediction using analyst data (alternate model version).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_bin5_confidence_mcr",
+  "description": "Model confidence for analyst-based signal over 120 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_quantile1_pred",
+  "description": "120-day prediction using analyst-derived features, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_quantile5_confidence_score",
+  "description": "Model confidence score for 120-day analyst-based quantile 5 prediction.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_quantile5_confidence_score_mfml",
+  "description": "Model confidence score for 120-day analyst-based quantile 5 prediction (multi-model variant).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 0,
+  "alphaCount": 0,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_regression_pred",
+  "description": "Regression-based 120-day forward return prediction using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_120d_single_quantile_pred",
+  "description": "120-day, single-quantile return prediction using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_5bucket_class_pred_solar",
+  "description": "60-day forward return classification into five buckets using analyst-derived features (SolarEquiNox variant).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_5quantile_confidence_score",
+  "description": "Model confidence score for 60-day, 5-quantile return prediction using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_5quantile_confidence_score_m1",
+  "description": "Model confidence score for 60-day, 5-quantile return prediction using analyst data (alternate model version).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_5quantile_pred",
+  "description": "60-day, 5-quantile return prediction using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_bin5_confidence_mcr",
+  "description": "Model confidence for analyst-based signal over 60 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_qtile5_class_pred",
+  "description": "Classification of 60-day return into quantile 5 using analyst-based features.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_quantile1_pred",
+  "description": "60-day prediction using analyst-derived features, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_quantile1_pred_mfml",
+  "description": "60-day prediction using analyst-derived features, quantile 1 (multi-model variant).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_quantile5_confidence_score",
+  "description": "Model confidence score for 60-day analyst-based quantile 5 prediction.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_quantile5_confidence_score_mfml",
+  "description": "Model confidence score for 60-day analyst-based quantile 5 prediction (multi-model variant).",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_quantile5_pred",
+  "description": "60-day prediction using analyst-derived features, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_regression_pred",
+  "description": "Regression-based 60-day forward return prediction using analyst-derived features.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 4,
+  "alphaCount": 7,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_60d_single_quantile_pred",
+  "description": "60-day, single-quantile return prediction using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_120d_quantile5_confidence_score",
+  "description": "Model's confidence in the 5-bucket quantile prediction for 120-day analyst-based return.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_120d_regression_prediction",
+  "description": "120-day forward return forecast derived from analyst data inputs.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_60d_quantile5_confidence_score",
+  "description": "Model's confidence in the 5-bucket quantile prediction for 60-day analyst-based return.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_60d_regression_prediction",
+  "description": "60-day forward return forecast derived from analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_pred_120d_q1",
+  "description": "Analyst-derived prediction for 120-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_pred_120d_q5",
+  "description": "Analyst-derived prediction for 120-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_pred_60d_q1",
+  "description": "Analyst-derived prediction for 60-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_based_pred_60d_q5",
+  "description": "Analyst-derived prediction for 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_pred_120d_q5_confidence_score",
+  "description": "Model confidence score for analyst-based prediction, 120-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_pred_60d_q5_confidence_score",
+  "description": "Model confidence score for analyst-based prediction, 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_quantile1_r120_pred",
+  "description": "Prediction for 120-day, quantile 1 return using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_quantile1_r60_pred",
+  "description": "Prediction for 60-day, quantile 1 return using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_quantile5_confidence_r120",
+  "description": "Model confidence for 120-day, quantile 5 return prediction from analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_quantile5_confidence_r60",
+  "description": "Model confidence for 60-day, quantile 5 return prediction from analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_quantile5_r120_pred",
+  "description": "Prediction for 120-day, quantile 5 return using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_quantile5_r120_pred_mfm2",
+  "description": "Prediction for 120-day, quantile 5 return using analyst data from Mfm2 module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_quantile5_r60_pred",
+  "description": "Prediction for 60-day, quantile 5 return using analyst data.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_signal_120d_bin1_mcr",
+  "description": "Analyst-based signal over 120 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_signal_120d_bin5_mcr",
+  "description": "Analyst-based signal over 120 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 4,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_signal_120d_quantile1",
+  "description": "Analyst-based return prediction for 120-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_signal_120d_quantile5",
+  "description": "Analyst-based return prediction for 120-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_signal_60d_bin1_mcr",
+  "description": "Analyst-based signal over 60 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_signal_60d_bin5_mcr",
+  "description": "Analyst-based signal over 60 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "analyst_signal_60d_quantile5",
+  "description": "Analyst-based return prediction for 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.5262,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_pred_120d_q5",
+  "description": "Alternative fundamental-based prediction for 120-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4241,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_pred_60d_q1",
+  "description": "Alternative fundamental-based prediction for 60-day horizon, quantile 1.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4241,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_pred_60d_q5",
+  "description": "Alternative fundamental-based prediction for 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4241,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_pred_60d_q5_confidence_score",
+  "description": "Model confidence score for alternative fundamental-based prediction, 60-day horizon, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4241,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_120d_bin5_confidence",
+  "description": "Model confidence for alternative fundamental-based signal over 120 days, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_120d_bin5_confidence_mcr",
+  "description": "Model confidence for alternative fundamental-based signal over 120 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_60d_bin5_confidence",
+  "description": "Model confidence for alternative fundamental-based signal over 60 days, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 3,
+  "alphaCount": 4,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_60d_bin5_confidence_mcr",
+  "description": "Model confidence for alternative fundamental-based signal over 60 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_signal_120d_bin1_mcr",
+  "description": "Alternative fundamental-based signal over 120 days, quantile 1, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 2,
+  "alphaCount": 2,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_signal_120d_bin5",
+  "description": "Alternative fundamental-based signal over 120 days, quantile 5.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_signal_120d_bin5_mcr",
+  "description": "Alternative fundamental-based signal over 120 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ },
+ {
+  "id": "alt_fundamental_signal_60d_bin5_mcr",
+  "description": "Alternative fundamental-based signal over 60 days, quantile 5, Mfmcr module.",
+  "dataset": {
+   "id": "multifactor_return_pred",
+   "name": "Multi Factor Market Return Predictions"
+  },
+  "category": {
+   "id": "model",
+   "name": "Model"
+  },
+  "subcategory": {
+   "id": "model-risk-based-models",
+   "name": "Risk Based Models"
+  },
+  "region": "EUR",
+  "delay": 1,
+  "universe": "TOP2500",
+  "type": "MATRIX",
+  "dateCoverage": 0.6262,
+  "coverage": 0.4232,
+  "userCount": 1,
+  "alphaCount": 1,
+  "pyramidMultiplier": 1.3,
+  "themes": [],
+  "dateCreated": "2026-03-01"
+ }
+]

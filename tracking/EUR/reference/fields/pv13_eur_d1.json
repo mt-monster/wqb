@@ -1,0 +1,595 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "pv13",
+ "fetched_at": "2026-11-13",
+ "platform_count": 73,
+ "complete": true,
+ "fields": [
+  {
+   "id": "business_partnership_category",
+   "type": "VECTOR",
+   "coverage": 0.6988,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Type of strategic partnership between companies (e.g., joint venture, licensing)."
+  },
+  {
+   "id": "company_competitor_entity_2",
+   "type": "VECTOR",
+   "coverage": 0.3532,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Entity identified as a competitor to the company."
+  },
+  {
+   "id": "company_customer_entity",
+   "type": "VECTOR",
+   "coverage": 0.4454,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Entity identified as a customer of the company."
+  },
+  {
+   "id": "company_partner_entity",
+   "type": "VECTOR",
+   "coverage": 0.6988,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Entity identified as a strategic partner of the company."
+  },
+  {
+   "id": "company_product_tradename",
+   "type": "VECTOR",
+   "coverage": 0.9825,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Product or tradename associated with the company."
+  },
+  {
+   "id": "company_relationship_type",
+   "type": "VECTOR",
+   "coverage": 0.8277,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Type of business relationship between two companies (e.g., supplier, customer, competitor, partner)."
+  },
+  {
+   "id": "customer_revenue_share_percent",
+   "type": "VECTOR",
+   "coverage": 0.4454,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Percentage of company revenue attributed to a specific customer."
+  },
+  {
+   "id": "pv13_1l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 13,
+   "alphaCount": 22,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_22_800_sector",
+   "type": "GROUP",
+   "coverage": 0.3394,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "grouping fields for top800"
+  },
+  {
+   "id": "pv13_2_sector",
+   "type": "GROUP",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_2l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 29,
+   "alphaCount": 34,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_3l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 11,
+   "alphaCount": 19,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_4l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_52_600_sector",
+   "type": "GROUP",
+   "coverage": 0.5447,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_52_sector",
+   "type": "GROUP",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_5_sector",
+   "type": "GROUP",
+   "coverage": 0.5255,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_5l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_6l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_com_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.6898,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "the PageRank of competitors"
+  },
+  {
+   "id": "pv13_com_rk_au",
+   "type": "MATRIX",
+   "coverage": 0.6898,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "the HITS authority score of competitors"
+  },
+  {
+   "id": "pv13_di_1l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Unique numeric identifier for the RBICS sector"
+  },
+  {
+   "id": "pv13_di_2l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Unique numeric identifier for the RBICS sector"
+  },
+  {
+   "id": "pv13_di_3l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Unique numeric identifier for the RBICS sector"
+  },
+  {
+   "id": "pv13_di_4l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Unique numeric identifier for the RBICS sector"
+  },
+  {
+   "id": "pv13_di_5l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Unique numeric identifier for the RBICS sector"
+  },
+  {
+   "id": "pv13_di_6l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Unique numeric identifier for the RBICS sector"
+  },
+  {
+   "id": "pv13_eur_revere_risc_sector_level",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_eur_revere_risc_sector_parent",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_h_min2_sector",
+   "type": "GROUP",
+   "coverage": 0.5255,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_h_min52_sector",
+   "type": "GROUP",
+   "coverage": 0.5255,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_hierarchy_min52_600_sector",
+   "type": "GROUP",
+   "coverage": 0.2503,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_level",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_new_1l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_new_2l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_new_3l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_new_4l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_new_5l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_new_6l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_ompetitorgraphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.6898,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "the HITS hub score of competitors"
+  },
+  {
+   "id": "pv13_parent",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_rcsed_6l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "L6 Description"
+  },
+  {
+   "id": "pv13_revere_city",
+   "type": "MATRIX",
+   "coverage": 0.9248,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "City code"
+  },
+  {
+   "id": "pv13_revere_country",
+   "type": "MATRIX",
+   "coverage": 0.9613,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Country code"
+  },
+  {
+   "id": "pv13_revere_index_cap",
+   "type": "MATRIX",
+   "coverage": 0.8639,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Company market capitalization"
+  },
+  {
+   "id": "pv13_revere_index_value",
+   "type": "MATRIX",
+   "coverage": 0.8643,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Value of specified index for the date"
+  },
+  {
+   "id": "pv13_revere_key_sector_total",
+   "type": "MATRIX",
+   "coverage": 0.9393,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of key focus sectors for the company"
+  },
+  {
+   "id": "pv13_revere_level",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Level of the sector within the hierarchy"
+  },
+  {
+   "id": "pv13_revere_parent",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Code of parent sector"
+  },
+  {
+   "id": "pv13_revere_term",
+   "type": "MATRIX",
+   "coverage": 0.4557,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Indicates when a sector is the terminal sector (i.e., no sub-sectors)"
+  },
+  {
+   "id": "pv13_revere_term_sector_total",
+   "type": "MATRIX",
+   "coverage": 0.9393,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of terminal sectors for the company"
+  },
+  {
+   "id": "pv13_revere_zipcode",
+   "type": "MATRIX",
+   "coverage": 0.9195,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Zip code"
+  },
+  {
+   "id": "pv13_reverebasedatamap_2",
+   "type": "MATRIX",
+   "coverage": 0.9936,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mapping data"
+  },
+  {
+   "id": "pv13_reveremap",
+   "type": "MATRIX",
+   "coverage": 1,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mapping data"
+  },
+  {
+   "id": "pv13_term",
+   "type": "MATRIX",
+   "coverage": 0.3537,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Indicates when a sector is the terminal sector (i.e. no sub-sectors)"
+  },
+  {
+   "id": "pv13_ustomergraphrank_auth_rank",
+   "type": "MATRIX",
+   "coverage": 0.781,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "the HITS authority score of customers"
+  },
+  {
+   "id": "pv13_ustomergraphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.781,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "the HITS hub score of customers"
+  },
+  {
+   "id": "pv13_ustomergraphrank_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.781,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "the PageRank of customers"
+  },
+  {
+   "id": "pv13_v3_1l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 28,
+   "alphaCount": 33,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_v3_2l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_v3_3l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 24,
+   "alphaCount": 27,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_v3_4l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 34,
+   "alphaCount": 44,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_v3_5l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "grouping fields"
+  },
+  {
+   "id": "pv13_v3_6l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 17,
+   "alphaCount": 18,
+   "description": "grouping fields"
+  },
+  {
+   "id": "rel_num_all",
+   "type": "MATRIX",
+   "coverage": 0.6857,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "number of the companies whose product overlapped with the instrument"
+  },
+  {
+   "id": "rel_num_comp",
+   "type": "MATRIX",
+   "coverage": 0.5418,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "number of the instrument's competitors"
+  },
+  {
+   "id": "rel_num_cust",
+   "type": "MATRIX",
+   "coverage": 0.277,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "number of the instrument's customers"
+  },
+  {
+   "id": "rel_num_part",
+   "type": "MATRIX",
+   "coverage": 0.5571,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "number of the instrument's partners"
+  },
+  {
+   "id": "rel_ret_all",
+   "type": "MATRIX",
+   "coverage": 0.6189,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Averaged one-day return of the companies whose product overlapped with the instrument"
+  },
+  {
+   "id": "rel_ret_comp",
+   "type": "MATRIX",
+   "coverage": 0.4463,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Averaged one-day return of the competing companies"
+  },
+  {
+   "id": "rel_ret_cust",
+   "type": "MATRIX",
+   "coverage": 0.2502,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "averaged one-day-return of the instrument's customers"
+  },
+  {
+   "id": "rel_ret_part",
+   "type": "MATRIX",
+   "coverage": 0.4452,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Averaged one-day return of the instrument's partners"
+  },
+  {
+   "id": "sector_attachment_overlap_count",
+   "type": "VECTOR",
+   "coverage": 0.8277,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of sectors in which both companies are mapped or participate."
+  },
+  {
+   "id": "terminal_sector_focus_overlap_count",
+   "type": "VECTOR",
+   "coverage": 0.8277,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Number of terminal sectors where both companies are primarily focused."
+  }
+ ]
+}

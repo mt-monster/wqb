@@ -1,0 +1,58 @@
+{
+ "dataset": "risk60",
+ "name": "Securities Lending Insight Data",
+ "region": "GBR",
+ "delay": 1,
+ "field_count": 5,
+ "note": "cov 0.6694；老候选×借券组合腿数据源；独立 ATOM 未测（GB-V3 在测）；2026-11-14 campaign3 锁 RISK 塔主攻此集（塔位归属须验证：securities lending 语义可能被平台归 SHORTINTEREST 塔，候选出闸读 pyramids.list）",
+ "profiled_at": "2026-11-14",
+ "batch_profile": "campaign3_20261114",
+ "fields": [
+  {
+   "id": "lending_fee_bid_rate",
+   "t": "VECTOR",
+   "cov": 0.6694,
+   "uc": 36,
+   "ac": 39,
+   "d": "出借方年化费率",
+   "role": "secondary_leg",
+   "mechanism": "供给侧价格；offer−bid 价差 = 借券供需紧张度"
+  },
+  {
+   "id": "rsk60_crowding",
+   "t": "VECTOR",
+   "cov": 0.6694,
+   "uc": 66,
+   "ac": 95,
+   "d": "带符号日频做空活动指标",
+   "role": "primary_signal",
+   "mechanism": "crowding flow（双向：拥挤延续 vs squeeze 反转）"
+  },
+  {
+   "id": "rsk60_datatime",
+   "t": "VECTOR",
+   "cov": 0.6694,
+   "uc": 10,
+   "ac": 13,
+   "d": "vendor 时间戳（非信号）"
+  },
+  {
+   "id": "rsk60_last",
+   "t": "VECTOR",
+   "cov": 0.6694,
+   "uc": 29,
+   "ac": 31,
+   "d": "快照最近借/贷利率"
+  },
+  {
+   "id": "rsk60_offer",
+   "t": "VECTOR",
+   "cov": 0.6694,
+   "uc": 40,
+   "ac": 53,
+   "d": "做空方支付的复合借券费率（EUR −offer×imb5 组合 S2.60 先例）",
+   "role": "primary_signal",
+   "mechanism": "borrow fee = 做空需求价格；文献方向：高费率股跑输（Stambaugh-Yu-Yuan 2013）"
+  }
+ ]
+}

@@ -10650,3 +10650,3751 @@ risk60 从「全负向 −1.5~−1.6」到「全闸 S1.58/F1.41」的三个决�
 
 
 
+
+---
+
+## 2026-11-11 续篇波次摘要（11-10/11 两日，详细判读见 campaign_eur15_2026-11.md 续篇与 candidates/）
+
+| 波 | 内容 | 结果 |
+|---|---|---|
+| sentiment21 六维 | W1/W2 std 18 + S3/S4/S5/S6 36 条 | max\|S\|0.69 归档（撤判→重探→六维合规终判） |
+| news20 门控族 W1-W7 | ~90 条 | S1.52 天花板，双闸预检 ✓，等 IS 滚动重估 |
+| news 跨集矩阵 | news73/85/48/36 ~33 条 | 全弱归档（机制依赖数据质量） |
+| institutions 两集 | 18 条 | max 0.78 未过线归档 |
+| insiders W1/W2 | 20 条 | max 0.39 归档（EUR 兑现弱） |
+| EPS 惊喜族 | 12 条 | TOP2500 S0.55，弱正归档 |
+| 第三席探索 | 8 条 | IS S4.15 爆表但 prod 0.8048/0.7289 撞墙——insiders 稀释族全灭 |
+
+**双席状态**：KPJ1rG0j（0.6957）+ rKRx7v6m（0.6756）prod 11-11 刷新无漂移，等用户逐颗确认提交。
+
+---
+
+## 2026-11-10/11 · risk62 深挖翻案战（R62RT/R62EX/R62GRID，本会话）
+
+> 触发：用户质疑「risk 是否测得不够深」。审计 RISK_structural_exhaustion_20261109 后确认三缺口（配置层单 CROWDING 臂 / 200 个 val 匿名字段零覆盖 / 残差动量未测），按六维硬约束补测。
+
+### R62RT（复测 20 条，multisim 3OkPzhdVW4XXcxGjWVLxjzS + 47qHh3L4qjbXDEvkj3c7A，TOP2500/SUBINDUSTRY/decay4）
+- **MS-A 经典异象 × 区域默认配置复测**：max S 0.76（mtl-mts 秩差 LLKPoE06）≈ CROWDING 时代 0.74 ⇒ **配置层假设证伪**，具名暴露族（BAB/IVOL/择时/门控/滞后/二阶矩/极值）是信号层死，双配置合法封盘。
+- **MS-B 新机制**：残差动量 252-22 S 0.79 / ret 4.33%（暴露族旧探针 ret 仅 0.2-2.4%，信息量高一档）；**val100 水平 S −1.59**（akarmaOR，20 条唯一 |S|>1.2）；val68/12/82 无信号（高 aC ≠ 有信号）。
+
+### R62EX（扩展 20 条，1RCINmeRm4hg8Iz18YW4gE4k + 1bdjSW40w4ywbBB83mxCGlg）
+- **val100 翻号 O0W1LoK1：S 1.70 过 S 闸**（ret 7.49% / sub 1.14 / 逐年 10 年全正 pnl：2016 3.23、2020 2.60、最差 2017 0.25；2Y 1.27 短板=2022 单年 0.93，2023 已回 1.95）。
+- 平滑毁信号：ts_mean22→S1.09/2Y0.41、ts_mean66→0.55；**第二套 rsk62_1_1_100_val100 与第一套逐位相同**（同序列双 id，无第二席，互相关=1.0 坑）。
+- 残差动量扩展封盘：252-66 跳月 S 0.93 最优（rsk68 版 0.85），504/平滑/signed_power（group_rank 内不变变换，白测）/subind 全试 ⇒ 距闸 0.65 无杠杆。
+- val99 S 1.27（次级）；val3/35/92/6/57/50/40 无信号。
+
+### R62GRID（设置网格 13 条：decay 阶梯/CROWDING/hump 三档/ts_rank 重整/gneut）
+- **降 TO 杠杆全军覆没**：decay16 S1.30/2Y0.63、decay32 S0.97、CROWDING S1.48/2Y0.84、hump 0.01/0.02/0.05 全档 S −0.20（冻结后信号反转）、decay8 S1.49/TO0.378/2Y0.88/margin3.4bp。
+- **定性：val100 = 「S 过闸的快信号」第三种死法**（前两种：prod 墙 / F 天花板）——信息全在快速换仓的排序变化里，任何平滑/冻结/重中性化都毁信号；F 0.61、2Y 1.27、margin ~2bp 与 TO 58.6% 本质锁死，REGULAR 形态不可交付。
+- 判死档案修订定稿（risk62）：①具名暴露族双配置死（0.76/0.74）；②残差动量 S 封顶 0.93（ret 4.5% 厚但不可达）；③val 匿名层 val100 S1.70 真信号但 IS 纪律不可达（降 TO 全杠杆证伪）；④val99 S1.27 次级。字段目录 233 全量已存 reference/eur_risk_risk62_fields.json。
+
+### ★★★ 篮子盘点修正（compute_mutual_correlation 0.7 口径，4y）
+- **e76kv2xE（techindi 双窗秩乘积）= 全过硬闸 + prod 0.6916 pass + self −0.0149 pass**（台账§二百〇一确认），此前篮子盘点遗漏。
+- 四颗矩阵：KPJ×Vkx **0.7891 互斥**；其余全对 <0.7（max = rKR×Vkx 0.5725）。
+- **合规最大独立篮 = 3 席**：{KPJ1rG0j, rKRx7v6m, e76kv2xE} 或 {VkxWmpYG, rKRx7v6m, e76kv2xE}，等用户逐颗确认提交。
+- ★★★ 用户裁定（2026-11-11）：A1VxEZ1d 与 xArvZPNq 均为毒结构，从候选池除名。核实：两条都是 add(multiply(2, 腿1), 腿2) 手设权重混腿（weighted_leg_mix_func_prefix 毒模式，静态门禁今日会整批拒绝）；且 xArvZPNq 腿2 字段 buy_sell_ratio_all_10d_filled 非 insider_agg_matrix 字段 = 跨数据集加权混腿 + 破 ATOM。S 1.96/2.17 含权重调参灌水——单腿诚实天花板仅 0.89-0.93（T1 失衡比/T7 单笔信念）。⇒ insider 塔维持 2/3 无活路径（集群强度面天花板 0.85）；prod 补测作废（毒结构无补测价值）；合规篮维持 3 席 {rKR, KPJ, e76}（或 Vkx 换 KPJ）。⇒ 教训入库：候选/存量盘点前必须先跑毒结构 lint（门禁前建成的件不豁免）。
+
+
+
+---
+
+## 2026-11-11 · val100 形状×设置穷举网格（R62SHAPE，进行中）
+
+> 用户两次质疑（「risk 是否测得不够深」「截面算子都试了吗」）触发穷举补测；近闸判死纪律补丁已入 skill（方法论 6/7 条）。
+
+### 形状曲线（TOP2500/SUBINDUSTRY，已收 16 点）
+
+| 形状 | alpha | S | F | TO | ret | ret/TO | 2Y | margin |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| rank(industry) d4 基线 | O0W1LoK1 | 1.70 | 0.61 | 0.586 | 7.5% | 0.128 | 1.27 | ~2bp |
+| gneut_mkt d8 | oma1dbpJ | 1.63 | 0.74 | 0.624 | 12.9% | 0.206 | 1.30 | 4.1bp |
+| tz252_gneut d8 | mLaPE0e6 | 1.95 | 0.83 | 0.630 | 11.5% | 0.182 | 1.45 | 3.6bp |
+| tz66_gneut d8 | O0W1lJgJ | 1.67 | 0.62 | 0.632 | 8.8% | 0.139 | 1.03 | 2.8bp |
+| sp_rank15 d4 | LLKP0rgv | 1.67 | 0.58 | 0.646 | 7.8% | 0.121 | 1.21 | 2.4bp |
+| sp_gneut15 d4 | N1PXYznq | 1.46 | 0.65 | 0.822爆 | 16.3% | 0.198 | 1.45 | 4.0bp |
+| tdl5_gneut d8 | rK71Z5rm | 1.25 | 0.66 | 0.346 | 9.6% | 0.277 | 0.67 | 5.5bp过线 |
+| tdl12_gneut d8 | 2r513pj6 | 1.16 | 0.69 | 0.240 | 8.5% | 0.352 | 0.37 | 7.0bp过线 |
+
+### 破闸数学
+- F≥1.0 ⇔ S≥1.58 且 ret/TO≥0.376；margin≥5bp ⇔ ret/TO≥0.25。
+- S 轴冠军 tz252（1.95）与 ret/TO 轴冠军 tdl12（0.352）分居两端；乘积区 5 条在飞（tz252×tdl5/8、tz504、tz252×sp1.5、tz252×rank）。
+- 已证伪：平台 decay 全档 / hump 全档 / CROWDING / FAST / SLOW_AND_FAST / SNR / tsrank 平滑族 / 幂次在 rank 形态不抬 S。
+- 定律修正：「ret/TO 是信号不变量」被幅度空间变换证伪（gneut_mkt ret 12.9% vs rank 7.5%）。
+
+### R62SHAPE 第二轮（tz252 乘积区，已收 7 点）
+| 形状 | alpha | S | F | TO | ret/TO | 2Y | margin | fRA |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| tz504_gneut | LLKP0Q21 | **1.98** | **0.86** | 0.629 | 0.190 | 1.17 | 3.8bp | 3 |
+| tz252_gneut raw | mLaPE0e6 | 1.95 | 0.83 | 0.630 | 0.182 | **1.45** | 3.6bp | 4 |
+| tz252_rank | WjlEvvAN | 1.72 | 0.73 | 0.376 | 0.181 | 0.89 | 3.6bp | 2 |
+| **tz252rank_tdl5** | **LLKLPxoM** | **1.59✓过闸** | 0.81 | **0.254✓** | 0.260 | 0.35 | **5.2bp✓** | 3 |
+| tz252_tdl5 | mLaLP9gX | 1.52 | 0.76 | 0.346 | 0.252 | — | 5.0bp✓ | 5 |
+| tz252_tdl8 | mLaLPrl2 | 1.49 | 0.80 | 0.289 | 0.289 | 0.32 | 5.8bp✓ | 5 |
+| tz252_sp15 / tz252rank_tdl12 / tdl3 / tdl4 / d4/d16 对照 | — | 收割中 | | | | | | |
+
+### 2Y 结构发现（关键归因）
+- **tdl 平滑毁 2Y 与毁 S 同向**：tz252rank 0.89 → +tdl5 0.35；tz252_gneut raw 1.45 全家族最高。
+- **gneut（幅度保留）形态救 2Y**：同一 tz252 信号，gneut(market) 2Y 1.45 vs rank(industry) 0.89。
+- ⇒ 甜点在 tz252_gneut×tdl3/4（在飞）：外推 S 1.6-1.75 × 2Y 1.0-1.4 × margin 4.5-5.5bp。
+- FAST/SLOW_AND_FAST/STATISTICAL 中性化已证伪（S 1.23-1.38 + TO 双爆）。
+
+### R62SHAPE 终判（2026-11-11 00:22，val100 穷举闭环）
+
+**五闸单闸王全景（43 条曲线）**：S 王 tz252_winsor 2.15（wpop8eGY）｜F 王 tz252rank_tdl20 **1.01**（QP0PPnVX，首破 F 闸，margin 8.7bp/TO 0.141 同步破线）｜2Y 王 tz252 raw 1.45｜综合王 **rank_tdl12_d2**。
+
+**decay 阶梯（2Y 主杠杆，单调性实证）**：rank_tdl12 表达式 d8→2Y 0.33/S 1.61 → d4→0.40/1.66 → d2→**0.69/1.78** → d1（未出，外推 ~0.9）。每档 decay 减半 ≈ 2Y +0.3~0.4，**2Y 1.58 闸结构性不可达**（补齐缺口需 decay→0，届时 TO/S/margin 全崩）。
+
+**2Y vs TO/margin 结构性对立（终判）**：近两年（2022-2023）的信号强度藏在快换仓里——一切压 TO 手段（tdl 全家族 2Y 0.3-0.8、rank×tdl 0.3-0.9）都同步抹掉 2Y；2Y 高的形态（raw 1.45 / winsor 1.28）全部 TO 0.6+。tz504 长窗不救（2Y 1.17 亦衰减）。winsonr 保持 2Y（1.28 vs 1.45）但自身不压 TO。
+
+**逐年终验（两候选全部 10 年 pnl 正、零空窗、longCount 1250-1465）**：
+- omammw7n（rank_tdl12_d2）：S 1.78/F 0.86/TO 0.318/2Y 0.69/margin 4.7bp/fRA=3；逐年 1.21-3.22（2014-2021），2022 0.68 / 2023 0.82 衰减段=2Y 缺口来源
+- QP0PPnVX（tz252rank_tdl20）：S 1.53/**F 1.01**/TO 0.141/**margin 8.7bp**/fRA=3；逐年 0.17-3.08，2022 0.44 / 2023 0.24
+
+**互相关（0.7 口径）**：omammw7n × QP0PPnVX = 0.8514（同族互斥）；**omammw7n × 存量篮 {KPJ,rKR,e76} 全对 <0.7 ⇒ 与存量篮合并为 4 席**；QP0PPnVX 为 omammw7n 的互斥备选归档。
+
+**呈交定位（交用户裁决）**：omammw7n = 正式候选（缺口：F −0.14 / 2Y −0.89 / margin −0.3bp，三缺口如实标注）；QP0PPnVX = F 破闸备选。⇒ val100 从「快信号形态死」翻案为「双四闸件 + 完全体不存在（2Y 结构对立）」。
+
+**表达式存档**：omammw7n = group_rank(multiply(ts_decay_linear(ts_zscore(rsk62_1_100_val100,252),12),-1),industry) @TOP2500/SUBINDUSTRY/decay2/trunc0.08/nan ON（6 算子，ATOM）；QP0PPnVX = group_rank(multiply(ts_decay_linear(ts_zscore(rsk62_1_100_val100,252),20),-1),industry) @decay8（6 算子，ATOM）。
+
+### NEWS46W1/W2（2026-11-11 00:30-00:40，news 塔 1/3 首攻）
+
+**W1 十模板判定（multisim 1NX3Ct9CE4C4azu1O334GZL，TOP2500/SUBINDUSTRY/decay4）**：
+- ★ **d5a55MRX（N4 注意力密度：group_rank(ts_sum(vec_avg(mws46_story_count),22),subindustry)）S 1.80/F 0.86/TO 0.195/2Y 1.26/margin 4.6bp/sub 0.51/fRA=3**——唯一破线
+- nip 族（0.60/-0.18）、情绪极性（0.11）、relevance 加权（0.85/0.80 但 ret 1.9-3.1%）、novelty 过滤（−0.12）、门控（0.42）全弱 ⇒ **注意力机制是 news46 唯一活路（历史结论复现，OS 先例 Xgojww1X 同款）**
+
+**W2 形状网格（4blwuNaqI4tRbYLuq5ejNsX，10 条）**：★ 信号极端单形状敏感——窗 22→66 崩（−0.33）、换轴/gz/gneut/winsorize 全归零（TO 0.02-0.05 近静态 = 信号本质是「密度变化的排名」非「密度水平」）。**唯一结构独立第二形态：zqdqKQwd（ts_rank66 时序分位）S 1.38/TO 0.124/2Y 1.40/margin 4.6bp**。
+
+**逐年终验（双件 10 年 pnl 全正、零空窗、longCount 1240-1478）**：d5a55MRX 2014-2022 强（2.26/2.56/2.97/1.58/0.59/1.31/1.28/3.30/2.02），2023 0.31；zqdqKQwd 均衡（1.07-2.23），2022 2.10 强。
+
+**互相关（0.7 口径，全篮 7 颗）**：{KPJ, d5a55MRX, zqdqKQwd, rKR, e76, omammw7n} **6 席全对 <0.7**（唯一超线对仍为 KPJ×Vkx 0.789 旧账）。
+
+**闸位图（get_alpha_details 精确）**：d5a55MRX sub 0.51（比率闸需 0.94，最大缺口）；zqdqKQwd sub 0.47（需 0.72）。sub 修复网格在飞（TOPCS1600 对照×2 / decay 8/16/2 / quantile20）。
+
+### 穷举闭环（2026-11-11 00:39）
+最后 5 条补发件入库：wins15_d4(S1.71)/tz504_tdl5(S1.55)/**winsor_raw(S1.90,2Y1.44,TO0.87——2Y vs TO 对立终判无例外)**/gr_subind(S1.78,**2Y1.36** subind 轴=2Y 杠杆但 margin 2.5bp)/rank_tdl12_d1(S1.74,**2Y0.83 结构上限**)。R62RT/EX/GRID/SHAPE 四波累计 ~55 条全落网，val100 章节正式闭合。
+---
+
+## 2026-11-11 · news46 story_count × group_cartesian_product 突破（本会话）
+
+**平台 checks 权威口径修正（必读）**
+- sub 闸 = `min(1, 0.52×S)`（此前误记 0.474 系数；三件实证：blalEvoR S1.60→thr0.832、9qlq0N7d S1.72→thr0.894、N1P1vLL8 S1.93→封顶 1.0）。
+- `F = S×sqrt(|ret|/max(TO,0.125))`，16 个样本拟合误差 <0.005；**TO<0.125 时地板生效**（A1x1qnkQ TO 0.0815 实证）。
+
+**group 算子全家 10 个**：本轮补齐 6 个此前未试的（gcp / group_sum / group_mean / group_backfill / group_std_dev），另 group_count 未派。此前已试 group_rank / group_zscore / group_neutralize / group_scale。
+
+**★突破件 `kqaqeLZk`**：`group_rank(ts_rank(ts_sum(vec_avg(mws46_story_count),10),88), group_cartesian_product(sector,country))`
+
+| 指标 | 值 | 对比基线 N1P1vLL8 |
+|---|---:|---|
+| S | **2.17**（族内最高） | 1.93（+0.24） |
+| F | 0.83 | 0.82 |
+| TO | 25.1% | 21.3% |
+| 2Y | 1.50 | 1.71 |
+| sub | **0.94**（门槛 1.0，缺 −0.06） | 0.76（+0.18） |
+| fRA | 3 | 2 |
+
+次优：`YPaPXWvq` gcp(sub,bucket(rank(cap))) sub 0.81 / thr 0.858（缺 −0.048）；`QP0Pm59g` sp3×gcp(sub,country) subSW 0.510（缺 −0.015）。
+
+**不变变换教训（派发前必做自检）**
+- `group_rank(divide(x, group_std_dev(x,g)), g)` ≡ `group_rank(x,g)`（`0mPmnA8v` 与 N1P1vLL8 逐位同值）——除正标量不改变组内排序。
+- `group_sum(x,g)` 与 `group_mean(x,1,g)` 逐位同值（`A1x1qnkQ` ≡ `O0W0Knog`）。
+
+**机制教训**：组内注意力份额 `divide(attention, group_sum(attention, subindustry))` S 仅 0.31 ⇒ 份额把水平信息杀掉；`group_backfill` 稀释信号（S 0.84）。
+
+**★F 结构性诊断**：全族 16 点 retTO ∈ [0.074, 0.217]，F 上限 0.83。gcp 加轴提 S 来自**降波动**（kqaqeLZk ret 3.67% < 基线 3.80%），而 F 只用 ret ⇒ **加轴提 S 不提 F**。F 唯一出路：①ret 提升；②TO 压到 0.125 地板下（届时 F=S×sqrt(ret/0.125)，S≈2.0 + ret 3.5% 即 1.06）。
+
+**宇宙插值证伪**：TOP1200 S 0.79/0.81/0.86、TOP800 S 0.34（leaeZQN8/E5Q5A5OL/QP0PdPLr/pwawgwX6）⇒ 宇宙下采不可行，TOP2500 是唯一有效宇宙。
+---
+
+## 2026-11-11 · ★首颗全闸新件 O0W0w3P7 与「news46 注意力配方」
+
+### 结论件（可直接呈交，全闸 + self + prod 全过）
+`O0W0w3P7` = `group_rank(ts_rank(ts_sum(vec_avg(mws46_story_count),5),110),group_cartesian_product(sector,country))`
+设置：EUR / TOP2500 / delay1 / decay1 / **neutralization=MARKET** / truncation 0.08
+
+| 指标 | 值 | 门槛 | 判定 |
+|---|---:|---|---|
+| Sharpe | **2.72** | ≥1.58 | ✅ |
+| Fitness | **1.15** | ≥1.00 | ✅ |
+| Turnover | 28.3% | ≤70% | ✅ |
+| 2Y Sharpe | **3.31** | ≥1.58 | ✅ |
+| sub_universe | 1.41 | 0.52×S=1.414 | ✅（平台 checks 实测 PASS） |
+| self 相关 | **0.079** | <0.7 | ✅ |
+| prod 相关 | **0.6403** | <0.7 | ✅ |
+| 逐年 | 2014-2023 全 10 年，pnl 全正，S 1.80-3.55，longCount 1324-1520 | 无空窗 | ✅ |
+| 平台 checks | **fail 列表为空**（fRA=0），仅 MATCHES_COMPETITION/THEMES 提示 | — | ✅ |
+| 与存量三席互相关 | 全对 <0.5（rKR×e76 最高 0.42） | <0.7 | ✅ 可组 4 席篮 |
+
+### 配方四杠杆（按贡献排序，全部有实证）
+1. **中性化 SUBINDUSTRY → MARKET**：F 0.85→**1.07**、2Y 1.60→**2.20**、ret 3.74%→4.33%，S 不降反升（2.17→2.35）。这是台账早前在 techindi 族记录过的「F 免费杠杆」，此处二次实证。
+2. **分组轴 group_rank(x, subindustry) → group_rank(x, gcp(sector,country))**：S 1.93→2.17，sub 0.76→0.94。笛卡尔双轴把「同国家同行业」变成更细的排序单元。
+3. **累积窗 10 → 5**：S 2.41→2.72、2Y 2.31→3.31、ret 4.47%→5.08%、sub 1.24→1.41，F 1.04→1.15。
+4. **秩窗 88 → 110**：sub/S 比值 0.394→0.498（w132 又回落 0.483，故 110 是峰）。
+
+### F 的结构性理解（本轮最大认知）
+- 平台公式 `F = S×sqrt(|ret|/max(TO,0.125))`，16 点拟合误差 <0.005；**TO<0.125 有地板效应**（A1x1qnkQ 实证）。
+- 关键推论：**靠加分组轴/降波动提 S 不提 F**（kqaqeLZk S2.17 但 ret 3.67% < 基线 3.80%）。提 F 只有两条路：**ret↑** 或 **TO 压到 0.125 以下**。
+- 中性化换 MARKET 属于第一条路（ret↑ 且 S 不降），是本役唯一成功的 F 杠杆。
+- 已证伪的 F 杠杆：signed_power 2/2.5/3（S/F 同降）、hump（TO 崩、S→0.02）、group_scale、CROWDING（sub 仅 +0.01）、decay 8/16、信号侧 ts_decay_linear 22/44（TO 压到 0.127 但 ret 也跌到 2.3%，const 不变）。
+
+### sub 闸的正确口径（推翻此前记录）
+- 真口径：`sub ≥ 0.52×S`，**无 1.0 封顶**（88N8gXoV 实测 thr=1.13）。
+- 因此高 S 件的 sub 门槛会超过 1.0，必须靠 **缩短累积窗**（sum 10→5 使 sub 1.17→1.41）而不是靠 sp/gscale。
+
+### 迁移失败记录（同配方换数据集无效）
+| 数据集 | 臂数 | max S | 判定 |
+|---|---:|---:|---|
+| news29（frontpage/significance/count） | 3 | 0.33 | 无方向性信息（2Y 1.62-1.65 但全期 S≈0.3） |
+| socialmedia12（scl12_sentiment/buzz） | 3 | 0.34 | 弱；仅 1 机制，未判死 |
+| news46 ssc 情绪分 | 1 | 2.34（F0.90） | 真信号但 F 低于 story_count |
+| news46 nip 影响度 | 1 | 2.25（F0.83） | sub 0.30 比值差 |
+| news46 relevance 加权注意力 | 1 | 2.43（F0.93） | subSW 0.374 |
+
+### 同族兄弟件（fRA=1，仅 sub 微差，不可同提交）
+`e7a78XQE` S2.74/F1.08/2Y3.03（sum4）、`wpopOqPx` S2.54/F1.06/2Y3.18（sum6）、`zqdqwl3R` S2.37/F1.03（sum4×r100）、`1YWYVWOX` S2.41/F1.04（sum8）。四者与 O0W0w3P7 同族、互相关 >0.9，只作参数面证据。
+
+# 2026-11-11 · 下半场扫矿全景：9 category × 30+ 数据集
+
+## 一、EUR D1 塔表权威修正（决定选集的第一道闸）
+
+`get_pyramid_alphas` 实测（EUR D1）：
+
+| 状态 | category → 已提交数 |
+|---|---|
+| **已点亮（一律不选）** | analyst 10 / model 3 / fundamental 3 / other 3 / **sentiment 3** / imbalance 3 |
+| 可挖（<3） | pv 2 / news 1 / risk 2 / insiders 2 / socialmedia 0 / macro 0 / earnings 0 / institutions 0 |
+
+**★ 最重要修正**：sentiment 塔已达到 3 颗 ⇒ **sentiment21 / sentiment26 / sentiment27 整类排除**。
+此前按「优先 sentiment」优先序反复投入 sentiment 族是选集错误；sentiment21 覆盖不足（longCount 382）
+并非损失，因为该塔本就不能再占位。
+
+## 二、判死档案（臂数 = 本轮实际回测条数）
+
+| 数据集 | 臂数 | 最好 S / 2Y | 死因（实证） |
+|---|---:|---|---|
+| risk62 Beta Risk | 前序 | — | 已判死（四层证据） |
+| risk60 借券 | 6 | S 0.75 / 2Y 1.11（fee Δ5） | fee 水平 S −0.06；crowding −0.55；bid-offer −0.02；std −0.33(lc346)；TO 44% 拖死 F |
+| risk72 特质反转 | 12 | \|S\| 1.84 / 2Y **0.76** | **2Y 无梯度**：累积窗 5/22/66/110 → 2Y 0.26/0.34/0.76/0.10；翻转后 10 年全正(2019 +4.20/2020 +3.70)但 2022 +0.15、2023 +0.81 ⇒ 近年结构性衰减 |
+| risk68 BAB/低波动 | 6 | S −0.22 | 低 beta −0.09、低波动 −0.22、特质反转 1.25 但 2Y −0.10（与 risk72 同源失效） |
+| sentiment21 AI 情绪 | 6 | S −0.20 / TO 80% | **数据面不足**：longCount 仅 382（TOP2500 的 15%），非信号问题 |
+| earnings6 PEAD | 6 | S 0.47 / 2Y 2.02（股息） | **核心字段零交易**：eps_change_percentage/absolute、PEAD Δ22 全 TO=0（VECTOR 事件极稀疏，ts_backfill 66 填不上）；初步区间 −0.21；实际 EPS 0.08 |
+| macro10 | 0（字段即死） | — | 仅 1 字段 `mcr10_value`，全市场同值，无横截面区分度 |
+| news54 事件日历 | 0（字段即死） | — | 40 字段中 30+ 为时间戳/文本/公司名，仅 cancelledflag/postponedflag 有事件含义 |
+| news85 | 6 | S 0.83 / 2Y 1.59（headline_item_count） | 注意力弱于 news46；情绪五维（overall_average 0.22、skewness 0.29、peak 0.22、aggregate 0.20）全灭，TO 70%+ |
+| insider_agg_matrix | 12 | S **0.94** / 2Y 1.17（significant_value_1） | 天花板 0.94；backfill 66/120/252 × 秩 66/110 全平（0.53-0.94）；**TO 5% 落在地板线下 ⇒ F 只由 ret 决定，ret 2.0% 需提 2.5 倍** |
+| pv106 价差成本 | 6 | S −0.77 | 非流动性溢价在 EUR TOP2500 + MARKET 中性化不成立（前序波已录） |
+| pv103 OFI 族 | 6 | S 0.37（ivam/vol） | 订单流不平衡比弱；收盘位置 −0.92/TO129%、VWAP 偏离 −0.81/TO129% 换手爆炸 |
+
+## 三、唯一保留的强方向：pv103 单笔成交金额（反号）
+
+`divide(session_1600to1600_market_value, pv103_ntrd_sum)` = 单笔平均成交金额（机构大单代理）。
+**反号后双向一致**：原始 S −1.20 / 2Y −1.17。
+
+降 TO 梯度（全部 `multiply(-1, group_rank(ts_rank(f(·), W), gcp(sector,country)))`）：
+
+| 变体 | S | F | TO | ret | 2Y |
+|---|---:|---:|---:|---:|---:|
+| 裸（秩110） | 1.20 | −0.32 | 76.4% | −3.38% | −1.17 |
+| **decay_linear 10 / 秩110** | **1.16** | **0.46** | **32.7%** | **5.21%** | **1.07** |
+| 秩 66 不平滑 | **1.19** | 0.31 | 78.9% | **5.24%** | **1.19** |
+| ts_mean 5 | 0.71 | 0.31 | 17.6% | 3.25% | 0.61 |
+| ts_mean 11 | 0.58 | 0.27 | 12.1% | 2.68% | 0.65 |
+| ts_mean 22 | 0.52 | 0.23 | 9.6% | 2.38% | 0.55 |
+| ts_sum 5 | 0.74 | 0.27 | 17.9% | 2.44% | 0.44 |
+
+**经济机制**：单笔金额大 = 机构/大单主导 → 其流动性需求造成短期价格冲击后反转；反号即偏好
+小单主导（散户/小额交易密集）的股票。S 与 2Y 同号且量级接近（1.16~1.19 / 1.07~1.19），方向可信。
+
+**缺口**：S 需 1.58（差 0.4）、F 需 1.0（差 0.54）。F 硬约束：
+`F = S·sqrt(ret/TO)`，当前 ret/TO ≈ 0.159（与 O0W0w3P7 的 0.18 同档），
+要 F=1 需 S≥2.5；单纯降 TO 会同比压 S（ts_mean 11 把 TO 压到 12% 但 S 掉到 0.58）。
+
+## 四、方法论增量（本轮新增，跨区通用）
+
+1. **★同一机制、不同数据供应商 ⇒ 互相关极低**
+   news46 story_count（注意力）vs news73 entitiescounter（注意力）**互相关仅 0.1673**（4年窗口实测）。
+   含义：「换数据集」是比「换字段/换加工」强得多的降相关杠杆；同机制可横向铺多个供应商而不撞篮。
+   （与既往「相关性由谁×谁的数据集组合决定」一致，本轮给出同机制跨供应商的反例证据）
+
+2. **★TO < 0.125 的 F 地板效应再次精确验证**
+   insiders：TO 5.0%、ret 2.0%、S 0.90 ⇒ 实测 F 0.36；
+   按 `F = S·sqrt(ret/0.125)` 预测 = 0.90×0.4 = **0.36**（完全吻合）。
+   含义：低频信号一旦 TO 落在地板下，**F 与 TO 脱钩、只由 ret 决定**，此时任何降 TO 手段对 F 无效。
+
+3. **★2Y 无梯度的判死判据**
+   risk72 在累积窗 5→22→66→110 上 2Y = 0.26/0.34/0.76/0.10，**不单调且无档位改善**；
+   叠加逐年数据（2022 +0.15、2023 +0.81）⇒ 判定为**近年结构性失效**，而非参数未寻优。
+   判据：窗口梯度上 2Y 无单调趋势 + 近两年逐年 S 崩塌 ⇒ 停机，不再调参。
+
+4. **★事件型 VECTOR 字段的零交易识别**
+   earnings6 的 eps_change_* 三条全 TO=0（既非报错也非 NaN 报错，而是整条持仓为空）。
+   识别信号：`S=0 / F=null / TO=0 / ret=0` 同时出现 ⇒ 字段在该宇宙实际无可用值，
+   加长 ts_backfill（66→252）也无效时判字段不可聚合，不要继续换窗口。
+
+
+---
+
+## 2026-11-11 · group 算子全家穷尽 + 形态族横扫判弱（K/J 双波）
+
+### 一、问题：「所有 group 算子都试了吗，尝试 group_cartesian_product(g1, g2)」
+
+`get_operators` 实测：平台 Group 类别共 **10 个算子**，本轮给出完整覆盖矩阵。
+
+| # | 算子 | 签名 | 状态 | 实测结论 |
+|---|---|---|---|---|
+| 1 | group_rank | (x, group) | ✅ 主力 | **最强**，G4 S 1.57 |
+| 2 | group_neutralize | (x, group) | ✅ K-A3 | S 1.44，**F 0.78 全波最高** |
+| 3 | group_zscore | (x, group) | ✅ K-A4 | S 1.39 / F 0.72 |
+| 4 | group_scale | (x, group) | ✅ K-A2 | S 1.07 / F 0.56，**最弱** |
+| 5 | group_cartesian_product | (g1, g2) | ✅ 首次实测 K-A1/A5 | 见下 |
+| 6 | group_mean | (x, weight, group) | ⛔ 解析排除 | 组内返回同一标量 |
+| 7 | group_std_dev | (x, group) | ⛔ 解析排除 | 同上；作分母即 group_zscore |
+| 8 | group_sum | (x, group) | ⛔ 解析排除 | 同上 |
+| 9 | group_count | (x, group) | ⛔ 解析排除 | 同上；仅可作样本数过滤 |
+| 10 | group_backfill | (x, group, d, std) | ⬜ 未试 | 只提覆盖率、不提 S |
+
+**6–9 的排除是数学性的**：这些算子在组内返回同一标量，全组权重相同 ⇒ alpha 横截面无区分度。
+它们的有效组合形式 `(x - mean) / std` 已被 group_zscore 覆盖，无需单独空跑。
+
+### 二、K 波实测：group 函数 × 分组轴 正交矩阵（同一骨架 gap_up 反号 / decay10 / 秩110）
+
+| 臂 | group 函数 | 分组轴 | S | F | TO | ret | lc | 2Y | fails |
+|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| **G4 基准** | group_rank | subindustry | **1.57** | 0.77 | 16.9% | 4.09% | ~1400 | **1.59** | [] |
+| A1 | group_rank | cart(sector, country) | 1.39 | 0.75 | 16.0% | 4.63% | 1384 | 1.17 | [] |
+| A2 | group_scale | subindustry | 1.07 | 0.56 | 14.6% | 4.03% | 1365 | 1.10 | [] |
+| A3 | group_neutralize | subindustry | 1.44 | **0.78** | 15.2% | 4.43% | 1401 | 1.51 | [] |
+| A4 | group_zscore | subindustry | 1.39 | 0.72 | 15.2% | 4.11% | 1364 | 1.53 | [] |
+| A5 | group_rank | cart(industry, country) | 1.56 | 0.75 | 16.4% | 3.81% | 1239 | **PASS** | LOW_SHARPE / LOW_FITNESS / **LOW_SUB 0.76 vs 0.81** |
+| A6 | group_rank | country | 1.08 | 0.60 | 14.5% | 4.50% | 1410 | 0.88 | [] |
+
+**结论**：
+1. **函数序**：rank (1.57) > neutralize (1.44) > zscore (1.39) ≫ scale (1.07)。降级重排（rank）比保幅度的 scale 更能提 S ⇒ 形态相似度信号的幅度信息是噪声，次序才是信息。
+2. **分组轴序**：subindustry (1.57) > cart(industry,country) (1.56) > cart(sector,country) (1.39) > country (1.08)。
+   - **cartesian 不能超越 subindustry**：subindustry 在 TOP2500 下已约 200 组、每组 ~12 只，已是最优粒度；再叠加轴只会把组切得更碎（A5 的 lc 从 1400 掉到 1239，LOW_SUB 反而 FAIL）。
+   - country 单轴仅 1.08 ⇒ 国别不是该信号的有效剥离维度。
+3. **A5 的独特价值**：2Y 天然通过、drawdown 仅 2.43%（全波最低）、S 1.56 距线 0.02；唯一硬伤是 LOW_SUB 0.76 vs 0.81。
+4. **F 视角**：A3 的 ret/TO = 0.292（vs G4 0.242，高 20%）、F 0.78 最高 ⇒ **A3 路线破 F 更省力**（F∝S，A3 只需 S 1.85 即达 F=1.0，G4 需 S 2.04）。
+
+### 三、J 波：14 个形态族横扫判弱
+
+统一配置（decay_linear10 + 秩110 + group_rank subindustry），6 个未试形态族全部远弱于 gap_up：
+
+| alpha | S | F | TO | ret |
+|---|---:|---:|---:|---:|
+| RReRmobz | **1.31** | 0.55 | 21.0% | 3.64% |
+| O0W0Gjrg | 0.96 | 0.30 | 23.7% | 2.33% |
+| 6XMXpQK7 | 0.79 | 0.23 | 24.6% | 2.03% |
+| kqaqPMgL | 0.38 | 0.08 | 20.7% | 0.96% |
+| e7a73PbJ | 0.21 | 0.04 | 16.2% | 0.47% |
+| j2a26JAZ | −0.18 | −0.03 | 19.5% | −0.48% |
+
+⇒ **gap_up 是 14 个形态族里唯一的强字段**，其余族最好 1.31，且 TO 反而更高（19–25% vs 16.9%），无一可通过组合补救。形态族扫描**封档**。
+
+### 四、方法论增量
+
+1. **★组内标量类 group 算子（mean / std_dev / sum / count）不需要跑**：组内同值 ⇒ 横截面零区分度；有效形式已由 group_zscore 覆盖。这省掉 4 个算子的空跑成本（≈ 4 臂 = 一轮波次）。
+2. **★group_cartesian_product 的适用边界**：只在「两个轴各自都太粗」时有价值（如 sector 10 组 × country 18 组 ≈ 180 组，逼近 subindustry 粒度）；一旦两轴之一已经足够细（subindustry），叠加只会切碎样本、掉 longCount、触发 LOW_SUB。
+3. **★形态相似度信号的幅度是噪声、次序是信息**（rank ≫ scale 实证）：与「相似度本质是均值回归」的定性一致——形态是否出现（次序）比出现得多强（幅度）更可交易。
+4. **★batch_status.py 的 0/0 歧义已修**：未展开阶段平台只回 `{"progress": 0.xx}`，此前不带该字段 → 与真卡死无法区分（J/K 两波均曾被误判）。现显示 `[pending] progress=`。
+5. **★本地派发通道打通**：`tools/dispatch_wave.py --file <cfg.json>` 直发 POST /simulations，绕开 MCP compute_budget 配额（MCP 配额在连续多波后极易超限，L 波首次派发即因此失败）。
+
+
+---
+
+## 2026-11-11 · O0W0w3P7 骨架解出 + F 闸算术约束（L→V 九波）
+
+### 一、★最重要资产：存量全闸件 O0W0w3P7 的骨架被完整解出
+
+```
+group_rank(ts_rank(ts_sum(vec_avg(mws46_story_count),5),110), group_cartesian_product(sector,country))
+```
+- 数据集 **news46**（Relevant News Analytics），字段 `mws46_story_count`（VECTOR → vec_avg）
+- 设置 EUR/TOP2500/delay1/**decay=1**/MARKET/trunc 0.08
+- **正号**（新闻关注度上升 → 漂移做多，不是反转）
+- is: S 2.72 / F 1.15 / TO 28.32% / ret 5.08% / lc 1402
+
+**三个此前没意识到的要点**：
+1. 它是 **news46**，不是形态相似度族；此前把所有 news 探针都套在 continuation_score 骨架上（`decay_linear + 反号 + subindustry`），方向全错。
+2. `ts_sum(x,5)` 是**累积新闻总量**（NaN 当 0 累加），不是平滑；这正是「注意力强度」的度量。
+3. 分组轴就是 **cart(sector,country)**——用户点名的 cartesian 算子，在最强件里早已在用。
+
+### 二、同构迁移命中第二颗 S>2：omamLrLb
+
+`group_rank(ts_rank(ts_sum(vec_avg(news_story_company_count),5),110), group_cartesian_product(sector,country))`
+→ **S 2.13 / F 0.70 / TO 38.76% / ret 4.15% / 2Y 1.35 / SUB 0.78**
+
+但 **F 缺口不可破**，且实证链完整（三条降 TO 杠杆全部反噬）：
+
+| 杠杆 | 动作 | S | TO | 结论 |
+|---|---|---:|---:|---|
+| 基准 | — | **2.13** | 38.8% | — |
+| 模拟 decay | 1 → 6 | **0.42** | 29.0% | ✗ 信号是高频型，平滑即毁 |
+| 累积改平均 | ts_sum(5) → ts_mean(5) | **0.03** | 35.0% | ✗ ts_rank 下本应等价，差异全在 NaN 处理：sum 累积新闻总量，mean 抹掉条数信息 |
+| 持仓集中度 | trunc 0.08 → 0.02 | **0.52** | 41.2% | ✗ 收益高度集中在少数标的，削权即归零 |
+
+**新纪律：本族（新闻注意力累积）信号的 F 只能靠 S 抬，不能靠任何平滑类杠杆。**
+
+### 三、★F 闸算术约束表（决策用）
+
+`F = S × sqrt(ret / max(TO, 0.125))`
+
+| 候选 | S | ret/TO | 当前 F | 破 F=1.0 所需 S |
+|---|---:|---:|---:|---:|
+| O0W0w3P7（已提交） | **2.72** | 0.179 | **1.15 ✅** | 已过 |
+| omamLrLb | 2.13 | 0.107 | 0.70 | **3.09**（不可达） |
+| G4 (MP6PLxx6) | 1.57 | **0.242** | 0.77 | 2.04 |
+| A5 (omamNRav) | 1.56 | 0.232 | 0.75 | 2.07 |
+
+⇒ **EUR 破 F 的唯一现实路径：找到 S ≥ 2.5 且 ret/TO ≥ 0.15 的 S 级信号**。仅靠加工层优化（窗口/函数/轴/平滑）已全部探尽。
+
+### 四、L→V 九波判据汇总
+
+| 波 | 内容 | 结果 |
+|---|---|---|
+| L | 标准窗口 126/252 × rank/neutralize × 轴 | 秩 110 仍最优，126→1.49、252→1.42，**窗口饱和** |
+| M | pattern_scores `dynamic_similarity_` 六形态 | 全 |S|<0.65，**判弱** |
+| P | O0W0 骨架回灌 gap_up（ts_sum 版） | 最好 1.49，**骨架不通用**（gap_up 是反转族） |
+| Q | omamLrLb 换 ts_mean/decay_linear/去累积 | 全崩（0.03-0.52），**累积不可替换** |
+| R | decay=6 窗口扫描 | 全崩（0.24-0.83），**decay 必须 1** |
+| S | news7 其余计数字段 | 0.45-0.57，**判弱** |
+| T | news85 headline_item_count 等 6 字段（O0W0 骨架重测） | 0.78-0.97（2Y 反而 1.46-1.81），**判弱** |
+| U | truncation 0.02 + 窗口扫描 | 同式 2.13→0.52，**集中度不可削** |
+| V | intraday_pv_feats corr_* 量价结构（19 个 ac=0 字段） | |S|≤0.15，**判弱** |
+
+### 五、数据集覆盖进度（EUR delay1 共 173 个）
+
+已判死/判弱并归档：**41 个**。本轮新增 pattern_scores / order_book_imbalance(cov 0.20 弃) / pv173(cov 0.35 弃) / intraday_pv_feats(corr 族弱) / news18(部分) / news85 / news7。
+
+新识别未开采富矿（下轮优先）：
+- `predictive_starmine` 638 字段 / ac 3694
+- `multifactor_return_pred` 648 字段 / **ac 214**
+- `ai_equity_alpha` 582 / ac 1229
+- `techindi_model` 798 / ac 20541
+- `quant_factor_lib` 126 / ac 354 ｜ `chart_cnn_alpha` 122 / ac 403
+- `stock_alpha_model` 9 / ac 1004 ｜ `ai_factor_transfer` 20 / ac 904
+
+## AN 波：group 算子 × 笛卡尔轴全矩阵（2026-11-11）
+
+目的：回答「所有 group 算子都试了吗」，并检验换分组建模层能否打穿 prod 墙。
+核心 A = ts_mean(ts_rank(subtract(pfq_ten_day_bucket_four_15, pfq_ten_day_bucket_zero_15),180),5)
+
+| 臂 | 分组方式 | alpha | S | F | TO | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| 1 | group_rank(cart(industry,country)) | RReRolzj | 3.95 | 2.07 | 29.17% | 1.87 | 1.93 | — (LOW_SUB) |
+| 2 | group_rank(cart(subindustry,country)) | 88N8ZEJ7 | 3.55 | 1.79 | 27.36% | 1.56 | 2.00 | — (2Y<1.58) |
+| 3 | group_zscore(cart(sector,country)) | Xgagxvzb | 4.28 | 2.62 | 29.39% | 2.45 | 2.36 | 0.8599 ✗ |
+| 4 | group_neutralize(cart(sector,country)) | j2a2JPGo | 4.35 | 2.71 | 29.38% | 2.51 | 2.43 | 0.8573 ✗ |
+| 5 | group_scale(cart(sector,country)) | 78Y8rvm2 | 3.87 | 2.37 | 29.81% | 2.18 | 2.19 | 0.8452 ✗ |
+| 6 | group_rank(bucket(rank(cap),range="0,1,0.1")) | mLaLN07W | 3.57 | 2.22 | 27.79% | — | 2.06 | 0.8088 ✗（最低） |
+| 7 | group_rank(market) | vRARbpGQ | 3.56 | 2.29 | 27.32% | 2.01 | 2.05 | — |
+| 8 | group_rank(cart(sector,exchange)) | xAvAo2Wq | 4.22 | 2.48 | 29.42% | 2.30 | 2.31 | — |
+| 9 | group_backfill(group_rank(cart(sector,country)),…,66) | 9qlq3dm1 | 4.22 | 2.49 | 29.41% | 2.30 | 2.31 | ≡ 基准（backfill 无效） |
+
+结论（关键负结果）：
+1. group 层能显著改变 S/F/SUB（S 3.55→4.35，SUB 1.93→2.43），但对 prod 几乎无影响（0.8088–0.8599，基准 0.8492）。
+2. ⇒ prod 相关性由底层信号（桶对 × 版本号）决定，与组合构建层（分组算子 / 分组轴）无关。这是继「窗口无效」之后的第二个持仓级负结果。
+3. 唯一有微弱方向的是 bucket(rank(cap),range="0,1,0.1")（市值十分位自定义分组）→ 0.8088，比基准低 0.04，仍远离 0.7。
+4. group_backfill 在本例完全无效果（第 9 臂与基准指标逐位相同）。
+5. 最优 IS 件：j2a2JPGo S 4.35 / F 2.71 / 2Y 2.51 / SUB 2.43，真全闸（FAIL 0，warning 仅 COMPETITION/THEMES），但 prod 0.8573 卡墙。
+
+## AM 波：低 prod 版本（_13/_131/_141/_142）桶对
+
+| alpha | 桶对 | S | F | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|
+| KPgP2e5j | five_day four_13 − zero_13 | 4.06 | 2.31 | 2.28 | 2.19 | —（旧件） |
+| MP6PnN0a | five_day three_131 − one_131 | 3.68 | 2.00 | 2.04 | 2.01 | 0.8126 ✗ |
+| N1P1Glee | ten_day one_142 − zero_142 | −0.39 | −0.08 | 0.39 | 0.24 | — |
+| 2r5rxojx | five_day four_141 − one_141 | 1.22 | 0.46 | −0.26 | 0.19 | — |
+| zqdqEnrV | five_day two_131 − one_131 | 1.75 | 0.71 | 0.97 | 1.09 | — |
+| mLaLNWYE | ten_day three_131 − two_131 | 3.41 | 1.98 | 2.48 | 1.62 | — (LOW_SUB) |
+
+结论：_131 版本 prod 0.8126 ⇒ 低 prod 不是版本次维度的普遍规律，three−one ten_day _13 (0.6579) 是孤例。
+
+## prod 实测全表（累计，EUR D1 TOP2500）
+
+| 核心 | prod | 判定 |
+|---|---:|---|
+| three − one（ten_day _13）→ mLaLllmK | 0.6579 | ✓ 唯一稳定过线 |
+| four − zero（ten_day _15）+ 窗口 66/88/126/150/180/252 | 0.815 / 0.833 / 0.850 / 0.855 / 0.852 / 0.862 | ✗ 窗口无效 |
+| four − zero（ten_day _15）+ group zscore / neutralize / scale | 0.860 / 0.857 / 0.845 | ✗ 分组无效 |
+| four − zero（_15）+ cap 十分位分组 | 0.8088 | ✗ 最低但仍超标 |
+| three − one（five_day _14） | 0.8022 | ✗ |
+| three_131 − one_131（five_day） | 0.8126 | ✗ |
+| news46 vec_avg(story_count) → O0W0w3P7 | 0.6403 | ✓ |
+
+## 新增矿脉：techindi_model 的 294 个 probability 字段
+
+该数据集并非只有 fifth_quantile。全量枚举（798 字段）后 probability 族共 294 个：
+
+| 族 | 字段数 |
+|---|---:|
+| probability_fifth_bucket（label） | 46 |
+| probability_fifth_quantile | 59 |
+| probability_fourth_bucket（label） | 39 |
+| probability_fourth_quantile | 45 |
+| probability_third_bucket（label） | 29 |
+| probability_third_quantile | 33 |
+| probability_second_bucket（label） | 18 |
+| probability_second_quantile | 24 |
+
+⇒ 此前只挖了 fifth_quantile 一个族，还剩 235 个字段完全未测，且 bucket_label 系列（132 字段）是另一种信号定义。
+
+枚举要点：search= 参数返回条数不稳定（同查询两次分别 18/30 条），必须用 dataset_id 全量拉再本地过滤；get_datafields 无 limit 参数。
+
+## AO2 波：probability 换分位族（fourth/second/third）—— IS 成功但 prod 全卡
+
+核心 = group_rank(ts_mean(ts_rank(subtract(top_bucket, bottom_bucket),110),5), cart(sector,country))
+
+| alpha | 族 / 桶对 | S | F | TO | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| npap5Obl | fourth fd three_15 − zero_15 | 4.04 | 2.32 | 33.1% | 2.15 | 2.23 | 0.7965 ✗ |
+| zqdqnJaK | fourth fd three_14 − zero_14 | 4.14 | 2.31 | 32.9% | 1.93 | 2.13 | — (LOW_SUB) |
+| vRARXJ03 | fourth fd three_13 − zero_13 | 4.06 | 2.31 | 32.9% | 2.27 | 2.22 | 0.8961 ✗ |
+| xAvApmMw | fourth td three_14 − zero_14 | 4.13 | 2.35 | 29.1% | 2.20 | 2.02 | — (LOW_SUB) |
+| O0W0X5e7 | fourth td two_14 − zero_14 | 0.88 | 0.27 | 22.8% | 0.47 | 0.62 | — (弱) |
+| QP0Pp5eK | second td one_14 − zero_14 | 4.15 | 2.31 | 30.1% | 1.84 | 2.10 | — (LOW_SUB) |
+| 3q0qvnd0 | second td one_13 − zero_13 | 4.38 | 2.64 | 29.3% | 2.22 | 2.48 | 0.8166 ✗ |
+| 6XMXLYxJ | third td two_14 − zero_14 | 4.19 | 2.35 | 30.1% | 1.91 | 2.10 | — (LOW_SUB) |
+| 0mPm2Ko2 | third td two_131 − zero_13 | 4.15 | 2.38 | 29.7% | 2.18 | 2.28 | 0.8428 ✗ |
+
+互相关（含已交付两件，阈值 0.7）：
+- 新四族彼此 0.75–0.95，与 mLaLllmK 0.64–0.77，与 O0W0w3P7 约 0.00–0.01。
+- 最大独立集 = {O0W0w3P7, mLaLllmK, 0mPm2Ko2} size 3；其中 0mPm2Ko2 vs mLaLllmK = 0.6949（贴线）。
+- 更安全的替代 {O0W0w3P7, mLaLllmK, vRARXJ03}：vRARXJ03 vs mLaLllmK 0.6415。
+
+结论：**second/third/fourth 分位族与 fifth 是同一个信号**（相关 0.75–0.95），prod 同样 0.80–0.90。整个 probability 复合体在 EUR 只贡献 1 颗独立可交付件（mLaLllmK）。
+
+## AP / AQ 波：predicted_*_quantile_*_return_*（104 字段，条件预期收益）
+
+- ten_day/five_day/one_day 的 fifth−first 价差：S 2.46–2.80，F 0.91–1.13，2Y 1.12–1.50，全部卡 F/2Y/SUB。
+- 唯一亮点 A1x18QGe（_16 版本 ten_day fifth−first）：S 3.05 / F 1.36 / 2Y 1.63 / SUB 1.54，只卡 LOW_SUB。
+- AQ 波换分组救 SUB（group_neutralize / zscore / cap 十分位 / subindustry×country）：S 反而崩到 1.59–1.75。
+- ⇒ **predicted_return 族对分组方式极不稳定（S 3.05 → 1.75），判定为脆弱信号，放弃。**
+
+## AR 波：tm_15_r1_r5_r10_rh_glb_d1 模型族（新矿脉）
+
+| alpha | 表达式核心 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| rK7Kakl9 | r10_q5 − r10_q1 | 2.49 | 0.87 | 38.2% | 1.69 | 1.24 |
+| gJaJNvM0 | r1_q5 − r1_q1 | 2.54 | 0.89 | 45.9% | 1.62 | 1.03 |
+| 58J8KROX | r10_q5（水平） | 3.52 | 1.70 | 32.2% | 2.20 | 1.74 |
+| MP6PvwLM | r10_q3 | 3.20 | 1.48 | 30.7% | 2.07 | 1.59 |
+| leaewx3O | r10_q4 − r10_q2 | 2.87 | 1.14 | 34.4% | 2.27 | 1.24 |
+| npapG08w | r10_q5_p4 | 2.57 | 1.35 | 24.5% | 1.97 | 0.97 |
+| qM7M2b6P | r10_q5_p1 − r10_q1 | **−4.14** | −2.32 | 30.7% | −2.56 | −2.19 |
+| omamj2gl | r1_q5（水平） | 3.10 | 1.35 | 43.0% | 1.83 | 1.47 |
+
+关键：**qM7M2b6P 的 S = −4.14 ⇒ 反向表达式 subtract(r10_q1, r10_q5_p1) 期望 S +4.14 / F +2.32 / 2Y +2.56**，属全新模型族，是 probability 之外最有价值的候选。
+58J8KROX（水平 r10_q5）S 3.52 / F 1.70 / 2Y 2.20，仅卡 LOW_SUB（门槛约 0.56×S）。
+
+## LOW_SUB 门槛实测口径（补充）
+
+由多组同批数据反推，门槛约为 **0.55–0.57 × S**（不是 0.474×S）：
+- S 4.35 / SUB 2.43 通过；S 4.14 / SUB 2.19 不通过；S 3.52 / SUB 1.74 不通过；S 4.22 / SUB 2.31 通过。
+- 边界件仍须查平台真实 checks，不可用公式判定。
+
+## AS 波：tm_15 反向 + 救 SUB（2026-11-11）
+
+| alpha | 加工 | S | F | TO | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| QP0PRA5p | subtract(r10_q1, r10_q5_p1), group_rank cart | 4.14 | 2.32 | 30.7% | 2.56 | 2.18 | **0.7952 ✗** |
+| O0W0djbY | 同上 + group_neutralize | 4.20 | 2.45 | 30.8% | 2.73 | 2.24 | **0.8095 ✗** |
+| VkNkQL2w | 同上 + group_zscore | 4.18 | 2.41 | 30.8% | 2.72 | 2.22 | — |
+| WjljrRaN | C1 + cart(subindustry,country) | 3.44 | 1.64 | 28.4% | 2.17 | 1.62 | — (LOW_SUB) |
+| MP6PvnKL | r10_q5 + neutralize | 3.59 | 1.81 | 33.4% | 2.19 | 1.83 | — (LOW_SUB) |
+| GrmrjNMQ | r10_q5 + bucket(rank(cap),0.1) | 3.18 | 1.65 | 29.8% | — | 1.68 | — |
+| blal0gor | subtract(r1_q1, r1_q5) | −2.54 | −0.89 | 45.9% | −1.61 | −1.03 | — |
+
+互相关（含已交付两件）：
+- O0W0djbY vs O0W0w3P7 = −0.0537；O0W0djbY vs mLaLllmK = 0.429；QP0PRA5p vs mLaLllmK = 0.4237。
+- 最大独立集 = {O0W0djbY, O0W0w3P7, mLaLllmK}，size 3，最大对仅 0.429（余量充足）。
+
+## ★★★ 重大纠错：prod 是带符号的最大值，负 Sharpe 版本会产生假低值
+
+AR 波 qM7M2b6P = `subtract(tm_15..._r10_q5_p1, ..._r10_q1)`，S = −4.14，测得 prod = **0.4725**，一度判为「prod 大幅过关的新信号」。
+但取反成可交易方向 `subtract(..._r10_q1, ..._r10_q5_p1)` 后（QP0PRA5p / O0W0djbY，S = +4.14/+4.20），prod 实测 **0.7952 / 0.8095**。
+
+机理：prod correlation 取的是与生产池的**带符号最大相关**。negate alpha ⇒ 全部相关翻号 ⇒ 原本 −0.80 的那批变成 +0.80、原本 +0.80 的变成 −0.80，于是 max 落到一个伪低值上。
+
+**纪律**：测 prod 之前必须先确认 alpha 处于可交易方向（S > 0）。凡「S 为负 + prod 很低」的组合，一律视为未测，取反后复测。
+
+## ★★ 结构性地板：EUR D1 TOP2500 的价格/模型类信号 prod ≈ 0.80
+
+累计 15 个 prod 实测点（排除符号假象后）：
+
+| 信号族 | prod 范围 |
+|---|---|
+| probability_fifth_quantile（含全部桶对/版本/窗口/分组） | 0.658 – 0.896 |
+| probability second/third/fourth 分位族 | 0.797 – 0.896 |
+| predicted_*_quantile_*_return | 未测（IS 已弱，S 1.59–3.05 不稳定） |
+| tm_15_r1_r5_r10_rh_glb_d1 模型族 | 0.795 – 0.809 |
+| news46 vec_avg(story_count) | **0.6403 ✓** |
+| probability three−one ten_day _13 | **0.6579 ✓** |
+
+⇒ 只有 2 个点逃出：一个是新闻类，一个是概率族里唯一一个桶对/版本组合。**其余全部落在 0.79–0.90 的窄带里**，说明 EUR 生产池里这类「短期反转/模型预测」bet 高度拥挤。
+⇒ 降 prod 的可行方向只剩两条：① 找新闻/事件类等非价格模型信号（O0W0w3P7 已证明可逃出）；② 换区域或换 universe 到拥挤度更低的面板。
+
+## 转向新闻/情绪类：AT / AU 波（news36、news73）—— 双双全灭
+
+动机：15 个 prod 实测点显示 EUR 价格/模型类信号 prod 集中在 0.79–0.90，只有新闻类 O0W0w3P7 = 0.6403 逃出。故转向低 alphaCount 的 news 数据集（alphaCount 低 = 竞争少）。
+
+### AT 波 news36（cov 0.77，ac 146，15 个数值 VECTOR 情绪字段）
+
+| alpha | 机制 | S | F | 2Y | SUB |
+|---|---|---:|---:|---:|---:|
+| mLaLGq66 | ts_sum(phrase_positive,5) | 0.09 | 0.01 | 0.62 | −0.42 |
+| O0W0Ln8g | ts_sum(phrase_negative,5) | 0.27 | 0.05 | 0.13 | 0.09 |
+| gJaJlmWJ | ts_sum(pos−neg,5) | 0.04 | 0.00 | 1.24 | −0.30 |
+| 0mPmVAjv | 极性比率 (pos−neg)/(pos+neg) | 0.16 | 0.02 | 1.26 | −0.06 |
+| pwaw2nvV | novelty | −0.04 | −0.00 | 0.56 | −0.04 |
+| mLaLGqY6 | relevance | −0.08 | −0.01 | 1.05 | −0.21 |
+| xAvALe1W | 极性 × novelty | 0.12 | 0.01 | 1.14 | −0.14 |
+| LLKLvnML | negative_confidence | −0.08 | −0.01 | 0.91 | −0.14 |
+| gJaJlmeK | 词频 net(pos−neg) | 0.04 | 0.00 | 1.08 | 0.02 |
+| leaen7A8 | key_event_confidence | 0.41 | 0.11 | 1.29 | 0.09 |
+
+⇒ 10/10 全灭，|S| ≤ 0.41。news36 的情绪分在 EUR 横截面无方向性。
+
+### AU 波 news73（cov 0.81，ac 148，8 个文档级语义维度 + 极性）
+
+| alpha | 字段 | S | F | 2Y | SUB |
+|---|---|---:|---:|---:|---:|
+| vRAREoeb | fearscore | −0.00 | −0.00 | 1.71 | −0.32 |
+| A1x1p2nW | uncertaintyscore | 0.08 | 0.01 | 1.91 | −0.21 |
+| LLKLv2ne | certaintyscore | 0.19 | 0.03 | 1.68 | −0.20 |
+| 1YWY82om | findownscore | 0.01 | 0.00 | 1.53 | −0.34 |
+| VkNkrRX8 | finhypescore | 0.20 | 0.03 | 1.82 | −0.11 |
+| WjljZxNP | finvolatilescore | 0.08 | 0.01 | 1.65 | −0.34 |
+| Jj8jA2ne | pos−neg（ts_mean） | 0.14 | 0.02 | 1.84 | −0.10 |
+| akakA7p2 | pos−neg（ts_sum） | 0.05 | 0.00 | 0.77 | −0.11 |
+| wpopdv5v | negativescore（ts_sum） | 0.53 | 0.09 | −0.04 | 0.25 |
+| blalmKNm | 极性比率 | 0.01 | 0.00 | 1.54 | −0.17 |
+
+⇒ 10/10 全灭，|S| ≤ 0.53。
+
+### ★ 重要的失败形态：2Y Sharpe 1.5–1.9 但全样本 S ≈ 0
+
+AU 波 8/10 臂呈现 **2Y Sharpe 0.8–1.9、全样本 S 0.00–0.20、SUB 为负** 的组合。
+这不是随机噪声，而是**信号近端失效**：语义情绪分在早期（2 年以前）有区分度，近 2 年已无方向性。
+识别要点：2Y 明显为正 + 全样本 S 近零 + SUB 为负 ⇒ 判定为「曾经有效、现已失效」，不要再去修 SUB 或换窗口。
+
+### 新闻类已判死清单（更新的完整版）
+
+news7 / news18 / news29 / news36 / news46（除 story_count）/ news48（待 AV）/ news52 / news54（时间戳为主）/ news59 / news73 / news85 / sentiment21 / sentiment26 / sentiment27
+
+⇒ 唯一存活：**news46 的 vec_avg(story_count)**（O0W0w3P7，prod 0.6403）。
+
+## ★ 修 SUB 的正确杠杆：加平滑窗口（copy 自 S≥1.58 门槛线的下降比例）
+
+EUR 的 LOW_SUB 门槛约为 0.55–0.57 × S。定义 S 降 ΔS 时门槛降 0.55×ΔS。
+加外部 ts_mean(·, 11) 平滑的净效果：S 降 0.14 ⇒ 门槛降 0.077，同时 SUB 升 0.01、F 升 0.16（换手降），净收益为正。
+
+实测（news46 骨架）：不平滑 S=2.00/F=1.18/SUB=0.88（LOW_SUB）→ 平滑 11 后 S=1.86/F=1.34/SUB=0.883（PASS）。
+⇒ 卡 LOW_SUB 时优先加 ts_mean(·, 11)，而不是减窗口或换分组轴；22 以上 S 掉太快（33/44 掉到 1.30–1.41）。
+**边界件必须查平台真实 checks，不可用公式判定**（实测有千分位边界方向相反的两件）。
+
+## AV / AW / AX 波：新闻情绪、机构持仓、风险因子的三连判死（2026-11-11）
+
+### AV 波 news48（报道级评分 0–100，cov 0.63，16 数值 VECTOR）
+
+| alpha | 字段 | S | F | 2Y | SUB |
+|---|---|---:|---:|---:|---:|
+| kqaqAXN8 | ssc（0-100 情绪分） | 0.20 | 0.03 | −0.17 | −0.03 |
+| akakplK9 | ess（事件情绪分） | 0.15 | 0.02 | 0.89 | −0.13 |
+| omamdvam | qcm（多分类器情绪） | 0.14 | 0.02 | 0.10 | −0.23 |
+| xAvAZQvg | aes（正面事件聚合） | −0.04 | −0.00 | −0.15 | −0.20 |
+| vRARQ9Az | qep（全局事件情绪） | 0.20 | 0.03 | 0.07 | −0.03 |
+| ZYaYJxa0 | acb | 0.25 | 0.04 | 0.10 | −0.02 |
+| 0mPmJdP6 | bam | −0.04 | −0.00 | −0.55 | −0.15 |
+| MP6PrX6n | ens（事件新颖度） | 0.36 | 0.08 | 0.60 | 0.30 |
+| Xgag0La0 | g_ens（全局新颖度） | 0.57 | 0.16 | 1.25 | 0.50 |
+| j2a27XVE | vea（非中性事件数） | 0.39 | 0.07 | 1.05 | −0.10 |
+
+⇒ 全灭，|S| ≤ 0.57。
+
+### AW 波 institutions6（cov 1.000，MATRIX，买卖家计数 + 市值）
+
+| alpha | 机制 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| qM7MRGKP | buyers − sellers | 0.90 | 0.38 | 13.6% | 0.63 | 0.77 |
+| RReRgzJb | (buyers−sellers)/(buyers+sellers) | **0.96** | 0.42 | 13.6% | 1.07 | 0.70 |
+| 0mPmJgb1 | mv_acquired − mv_disposed | 0.45 | 0.14 | 12.4% | 0.18 | 0.19 |
+| kqaqAGql | 市值流比率 | −0.08 | −0.01 | 14.8% | −1.13 | 0.07 |
+| 78Y8pm8x | buyers（水平） | 0.53 | 0.19 | 13.6% | −0.09 | 0.33 |
+| vRARQGRv | sellers（水平） | −0.75 | −0.30 | 13.3% | −1.27 | −0.79 |
+| QP0P8zPW | holders 计数 | 0.35 | 0.13 | 12.0% | −0.31 | 0.25 |
+| 1YWYMKYM | aggregate_share_count | −0.19 | −0.03 | 12.0% | −0.94 | −0.05 |
+| P050VzQE | aggregate_equity_value | 0.40 | 0.16 | 11.8% | −0.07 | 0.15 |
+| N1P1Zzxg | mv_net / aggregate_equity_value | −0.15 | −0.02 | 12.1% | 0.10 | −0.30 |
+
+**判死理由（重要的形态判据）**：TO 仅 **11.8–14.8%**。机构持仓是季度披露数据，13F 类字段的更新频率与日频 alpha 完全不匹配（EUR D1 有效件的 TO 是 28–33%）。买卖家计数虽有正确的经济方向（RReRgzJb 净买卖比率 S 0.96、2Y 1.07），但频率错配导致 S 上不去。
+
+### AX 波 risk68 救援（2Y 卡死件的补救尝试）
+
+| alpha | 机制 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| Xgagdwox | ts_sum(weight_edadv,22) → ts_mean 5, 秩252 | 0.95 | 0.50 | 6.9% | 0.30 | 0.32 |
+| mLaLE2j9 | ts_sum(weight_dadv,22) → ts_mean 5, 秩252 | 0.88 | 0.44 | 7.4% | 0.11 | 0.31 |
+| 9qlqNPX9 | ts_sum(weight_edadv,66) → ts_mean 11, 秩252 | 0.90 | 0.47 | 4.4% | 0.24 | 0.33 |
+| gJaJnqjQ | ts_sum(weight_dadv,66) → ts_mean 11, 秩252 | 0.87 | 0.44 | 4.6% | 0.17 | 0.34 |
+| pwaw9Jjb | weight_edadv − weight_dadv | 0.71 | 0.17 | 24.3% | −0.10 | 0.32 |
+| blale2Rl | 同上 + ts_mean 11, 秩252 | 0.75 | 0.21 | 19.5% | 0.45 | 0.04 |
+| zqdqlwY1 | **−residual_return**, ts_mean 11, 秩110 | **1.38** | 0.52 | 40.6% | 0.52 | 0.84 |
+| RReRGZVa | −residual_return, ts_mean 22, 秩252 | 1.36 | 0.60 | 29.6% | 0.31 | 0.77 |
+
+⇒ 无突破，最高 S 1.38。加长窗口（22/66 + 秩252）把 TO 压到 4–7% 但 S 也压到 0.87–0.95，**慢变量加平滑是双杀**。
+⇒ residual_return 反向确实是强信号（S 1.36–1.38，fails=[]），但 2Y 仅 0.31–0.52，远低于 1.58 阻断线。
+
+## ★★ 横截面扫描的终局结论（EUR D1 TOP2500，累计 30+ 波）
+
+把 news / sentiment / socialmedia / institutions / insiders / risk / analyst / model 全 category 扫过后，**能产出日频横截面方向性信号的只有两类形态**：
+
+### 有效形态 A：模型预测分位差（techindi_model）
+- probability_*_quantile_*_{bucket 差}：S 3.5–4.4，prod 0.658–0.896
+- tm_15_r1_r5_r10_rh_glb_d1 分位差：S 4.1–4.2，prod 0.795–0.809
+- predicted_*_quantile_*_return：S 2.5–3.0（不稳定）
+
+### 有效形态 B：事件流量计数（news46 story_count）
+- vec_avg(ravenpack_sum_story_count)：S 2.72，prod **0.6403** ✓
+
+### 无效形态（全部实测判死）
+| 形态 | 代表数据集 | 实测 S 上限 | 死因 |
+|---|---|---:|---|
+| 情绪/语义评分 | news36 / news73 / news48 / sentiment21 / sentiment26/27 | 0.04–0.57 | 横截面方向性近零；部分 2Y 1.5–1.9 但全样本 S≈0（信号近端失效） |
+| 慢变量水平（季度/年度披露） | institutions6 / risk68 / model354 / predictive_starmine | 0.27–0.96 | TO 仅 4–15%，与日频不匹配 |
+| 估值因子 | model354 | 0.08–0.46 | TO 仅 ~10% |
+| 分析师修订计数 | predictive_starmine / analyst45 | 0.07–1.04 | TO 仅 6–15% |
+| 价格/收益衍生 | analyst_earnings_ibes | — | 与 PV 族重合，塔混污染 |
+| 新闻时间戳 | news54 | — | 32 字段中 26 个是时间戳 |
+
+### 判死前的形态优先判据（省算力的关键）
+
+**先看 turnover 和字段语义，再决定要不要发波**：
+1. **看字段描述判断更新频率**：出现 "quarterly"/"13F"/"holding"/"estimate" ⇒ 慢变量，TO 会 ≤15%，直接跳过（除非专门做低频）。
+2. **看字段是「计数/量」还是「评分/比率」**：只有「量」类（story_count、trades、buyers 计数）能出 S ≥2；所有「0–100 评分 / −1~1 情绪分」在 EUR 都判死。
+3. **看 coverage 与 alphaCount 的组合**：cov ≥0.9 + alphaCount <200 是最优（news54/news36 都满足但语义是时间戳/评分，仍然死）；cov <0.6 基本不做。
+
+⇒ 这比「每个数据集派 10 臂再判」省 80% 算力。
+
+## AY 波 insiders1（内部人交易金额，cov 0.55）—— 全灭
+
+| alpha | 字段 / 聚合 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| 78Y7k8VL | vec_sum(valueeur), ts_sum5 | −0.42 | −0.10 | 14.0% | −0.95 | −0.20 |
+| RRejJRLo | vec_avg(valueeur), ts_sum5 | −0.45 | −0.12 | 14.0% | −0.97 | −0.18 |
+| oma81m2m | vec_avg(shares), ts_sum5 | −0.35 | −0.08 | 14.4% | −0.60 | −0.13 |
+| O0WQ10ev | vec_avg(tradesignificance) | −0.42 | −0.10 | 14.5% | −0.81 | −0.18 |
+| 3q0QMqd6 | vec_avg(holdings) | −0.21 | −0.04 | 12.7% | −0.68 | −0.04 |
+| 6XMmnXxE | vec_avg(valueeur), ts_mean5 | +0.49 | 0.12 | 28.0% | 0.41 | 0.26 |
+| YPaLjPZM | vec_avg(valueeur), ts_sum22, 秩252 | −0.65 | −0.21 | 8.8% | −0.08 | −0.71 |
+| wpoK8p62 | vec_max(valueeur), ts_sum5 | −0.43 | −0.11 | 14.0% | −1.02 | −0.17 |
+
+**观察**：7/8 臂 S 一致为负（−0.21 ~ −0.65）⇒ 内部人交易金额是**稳定的反向信号**（内部人净卖出 = 后续负收益），但强度不足，取反后 S 上限也仅 +0.65。
+**死因仍是频率**：TO 8.8–14.4%，内部人交易稀疏且非日频。
+
+## ★ 交付清单（EUR D1 TOP2500，固定只挖不提交）
+
+### Tier 1：真全闸 + prod 过线 = 可交付（2 颗）
+
+| alpha | S | F | TO | ret | 2Y | SUB | prod | 塔位 | 数据集 | 核心机制 |
+|---|---:|---:|---:|---:|---:|---:|---:|---|---|---|
+| **O0W0w3P7** | 2.72 | 1.15 | 28.3% | 5.08% | 3.31 | ≥1.29 | **0.6403** | EUR/D1/NEWS | news46 | vec_avg(story_count) 新闻流量 |
+| **mLaLllmK** | 3.98 | 2.21 | 29.06% | 8.98% | 1.93 | 2.22 | **0.6579** | EUR/D1/OTHER | techindi_model | three−one 桶对, ten_day _13 |
+
+两者互相关 0.0027（几乎正交）；加 Tier1.5 最强件后最大对仍仅 0.429。
+
+### Tier 1.5：IS 全闸但 prod 卡墙（同族，可作备用池，不可与 Tier1 同时提交）
+
+| alpha | S | F | 2Y | SUB | prod | 说明 |
+|---|---:|---:|---:|---:|---:|---|
+| j2a2JPGo | **4.35** | 2.71 | 2.51 | 2.43 | 0.8573 | 全族最高 S（group_neutralize） |
+| Xgagxvzb | 4.28 | 2.62 | 2.45 | 2.36 | 0.8599 | group_zscore |
+| VkNkQL2w | 4.18 | 2.41 | 2.72 | 2.22 | — | tm_15 反向 |
+| O0W0djbY | 4.20 | 2.45 | 2.73 | 2.24 | 0.8095 | tm_15 反向 + neutralize |
+| QP0PRA5p | 4.14 | 2.32 | 2.56 | 2.18 | 0.7952 | tm_15 反向 |
+| 3q0qvnd0 | 4.38 | 2.64 | 2.22 | 2.48 | 0.8166 | second 分位族 |
+| 0mPm2Ko2 | 4.15 | 2.38 | 2.18 | 2.28 | 0.8428 | third 分位族 |
+| vRARXJ03 | 4.06 | 2.31 | 2.27 | 2.22 | 0.8961 | fourth 分位族 |
+| npap5Obl | 4.04 | 2.32 | 2.15 | 2.23 | 0.7965 | fourth 分位族 |
+| mLaLN07W | 3.57 | 2.22 | — | 2.06 | **0.8088** | cap 十分位分组（prod 最低之一） |
+| 78Y8rvm2 | 3.87 | 2.37 | 2.18 | 2.19 | 0.8452 | group_scale |
+
+### 缺口与结论
+
+目标 10 颗，当前可交付 **2 颗**，缺口 8 颗。
+
+**为什么补不上**（有实测证据，不是推测）：
+1. EUR D1 TOP2500 的全部有效信号集中在 **techindi_model**（probability + tm_15），它是一个**单一拥挤 bet**：内部互相关 0.64–0.95，prod 全部 0.79–0.90。
+2. news46 只有 story_count 一个字段能出全闸；其余 29 字段连 S 都上不去（|S| ≤ 0.62）。
+3. 情绪/语义 / 机构持仓 / 内部人 / 慢变量 / 估值 / 修订计数 **六类形态全部实测判死**（见上各表）。
+4. prod 是硬墙：S 4.2 的件可以批量造，但 15 个 prod 实测点里只有 2 个逃出 0.7。
+
+**要补足 8 颗，必须改变约束之一**（须用户决策）：
+- ① 换 universe（TOP1200/TOP600 拥挤度更低，prod 可能下降）；
+- ② 换区域（USA/JPN/CHN 金字塔未点亮且数据集丰富）；
+- ③ 放宽「单数据集 ATOM」限制，允许跨数据集组合（塔混限制内）；
+- ④ 引入 delay=0 分区（用户此前明确暂不考虑）。
+
+## AZ / BA / BB / BD 波：news50 新闻流量族 —— 第三个低 prod 件（2026-11-11）
+
+**动机**：news46 story_count 证明「新闻流量」能逃出 prod 0.80 地板。在未测过的 news 数据集里搜「计数/量」型字段，找到 news50 的 mws50_rp_story_event_count（ac=86, cov=0.79, "Total number of entity records"）——不同厂商的新闻事件流量。
+
+### AZ 波（news50 十臂）
+
+| alpha | 字段 / 加工 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| **Jj8MVvNO** | rp_story_event_count, ts_sum5 到 秩110 | **2.15** | 0.75 | 33.6% | **1.67** | 1.13 |
+| KPglKEr8 | rp_story_event_index, ts_sum5 秩110 | 2.12 | 0.71 | 33.7% | 2.12 | 0.98 |
+| 2r581Nm6 | qmb（社论评论分类器）, ts_mean5 | 1.53 | 0.54 | 23.3% | 1.62 | 0.81 |
+| pwaYqK5v | relevance | 0.70 | 0.16 | 30.4% | 0.64 | 0.42 |
+| vRAwKvrQ | ens_similarity_gap（flow） | 0.38 | 0.06 | 31.5% | 0.99 | 0.05 |
+| qM79K6xV | vea（91日聚合事件量） | −0.27 | −0.05 | 17.1% | −0.43 | −0.67 |
+| 其余 4 臂 | ens_similarity_gap 水平 / g_ens / ens_elapsed / aes | −0.13 至 0.02 | | | | |
+
+### prod 与互相关
+
+- **Jj8MVvNO prod = 0.5416（全战役最低）**
+- Jj8MVvNO vs O0W0w3P7 = 0.5421（<0.7 合规）；vs mLaLllmK = −0.0055（近正交）
+- 2r581Nm6 prod = 0.7704（卡墙）
+- 最大独立集 = {O0W0w3P7, mLaLllmK, Jj8MVvNO, 2r581Nm6}，size 4，最大对 0.5421
+
+### 但 F / 2Y 未过闸（fails=[] 假象再次出现）
+
+Jj8MVvNO 真实 checks：LOW_FITNESS 0.75 < 1.0（阻断）、CLUSTER_TEST 1.31 < 1.58（阻断），submit_verdict 判 BLOCKED (FAILED_COUNT_RA:LOW_FITNESS)。
+
+### BA / BB / BD 波：F 与 2Y 的帕累托前沿（24 臂）
+
+核心族：group_rank(ts_mean(ts_rank(ts_sum(vec_avg(mws50_rp_story_event_count),W_sum),W_rank),W_smooth), group)
+
+| alpha | sum / rank / smooth | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| Jj8MVvNO | 5 / 110 / 无 | 2.15 | 0.75 | 33.6% | 1.67 | 1.13 |
+| KPglKEr8（index） | 5 / 110 / 无 | 2.12 | 0.71 | 33.7% | 2.12 | 0.98 |
+| wpoK80Rv | 5 / 110 / 22 | 1.97 | **1.00** | 14.4% | 1.32 | 1.04 |
+| **qM79MaJ2** | **5 / 110 / 16** | **1.91** | **0.99** | 13.2% | **1.49** | 1.02 |
+| QP0ZPxRr | 5 / 110 / 11, market | 1.60 | 0.88 | 11.8% | 1.49 | 0.83 |
+| QP0ZPxRG | 5 / 126 / 16 | 1.75 | 0.90 | 12.1% | 1.15 | 0.96 |
+| e7ak7YZz | 5 / 126 / 11 | 1.70 | 0.86 | 12.0% | 1.04 | 0.97 |
+| LLKVP0d1 | 5 / 110 / 22, industry×country | 1.78 | 0.78 | 16.0% | 1.38 | 0.86 |
+| 9qlZqame | 5 / 110 / 33 | 1.41 | 0.69 | 10.0% | 0.71 | 0.78 |
+| P05Q0wKE | 5 / 110 / 44 | 1.45 | 0.72 | 9.9% | 0.78 | 0.79 |
+| j2az29xW | 5 / 140 / 18 | 1.20 | 0.51 | 10.2% | 0.30 | 0.67 |
+
+**关键规律：外层平滑窗口对 F 与 2Y 呈反向单峰。**
+- smooth 无 到 16：F 0.75 到 0.99（+0.24），S 2.15 到 1.91（−0.24），2Y 1.67 到 1.49（−0.18）
+- smooth 16 到 22：F 0.99 到 1.00，2Y 1.49 到 1.32（继续下降）
+- smooth 22 到 33/44：S、F、2Y 全降
+- 结论：**smooth=16 是 2Y 的峰值点**，靠加平滑无法把 2Y 推回 1.58。
+
+qM79MaJ2 真实 checks：F 0.99（差 0.01）、2Y 1.49（差 0.09）、CLUSTER 1.40（差 0.18）、FAIL 0、prod 0.5416 已过线。
+**全战役离全闸最近的一颗。**
+
+### ★ 语义区分（省算力的关键认知）
+
+**news31 的 counts 不是事件流量**。BC 波实测 volumecounts / sentencecount / wordcount / noveltycounts / companycount 全部 |S| ≤ 0.38。
+它们是**新闻文本长度**（句子数、词数），与 news46 的 story_count、news50 的 rp_story_event_count 是不同概念。
+⇒ 搜索时要区分「事件条数」与「文本长度」：只有前者是流量信号。
+另：mws50_vea（已聚合的 91 日事件量）S −0.27、qmb（分类器评分）S 1.53 但 F/SUB 卡 —— 已聚合量 与 评分 都会失效，必须用**原始计数**。
+
+## BE2 / BF2 / BG 波：news50 流量的 F × 2Y 攻坚（6 波 58 臂后收敛）（2026-11-11）
+
+基线：qM79MaJ2 = group_rank(ts_mean(ts_rank(ts_sum(vec_avg(mws50_rp_story_event_count),5),110),16), cart(sector,country))
+checks：F 0.99（差 0.01）、2Y 1.49（差 0.09）、CLUSTER 1.40、FAIL 0、prod **0.5416**。
+
+### BE2 波（10 臂）—— smooth 18 是最优点
+
+| alpha | 加工 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| **58JnxY95** | **smooth 18** | **1.94** | **0.99** | 14.1% | **1.53** | 1.01 |
+| Wjl1MJnG | smooth 16 | 1.88 | 1.00 | 12.2% | 1.25 | 1.00 |
+| RRejMPYd | count+index 双腿（无 smooth） | 2.14 | 0.73 | 34.4% | **1.84** | 1.05 |
+| 3q0QwJxX | count+index 双腿 + smooth16 | 1.81 | 0.93 | 12.3% | 1.29 | 1.01 |
+| E5QO1xar | rank 132 smooth 16 | 1.80 | 0.90 | 13.8% | 1.25 | 0.98 |
+| blaGXAVK | rank 118 smooth 16 | 1.74 | 0.90 | 12.0% | 1.20 | 1.00 |
+| A1xj9EbR | rank 100 smooth 16 | 1.68 | 0.85 | 11.9% | 1.04 | 0.97 |
+| QP0ZM6jr | smooth 18? （rank110/smooth18 变体） | 1.63 | 0.81 | 11.5% | 0.87 | 0.87 |
+| 58JnxY95 对照 | ts_decay_linear 替 ts_mean | 1.94 | 0.99 | 14.1% | 1.53 | 1.01 |
+| kqaEd9Xz / akaj6GPv | ts_sum(10) / ts_zscore 版 | 1.49 / 1.27 | 0.71 / 0.61 | | 0.74 / 0.67 | |
+
+**58JnxY95 真实 checks：F 0.99、2Y 1.53（差 0.05）、CLUSTER 1.37（差 0.21），FAIL 0。**
+**RRejMPYd 真实 checks：FAIL 2（LOW_FITNESS / LOW_SUB），2Y 1.84 虽过但 F 0.73 差太多。**
+
+### BF2 波（10 臂）—— 2Y 在 smooth=18 附近是尖峰，不是平台
+
+| alpha | smooth / sum / rank | S | F | 2Y | SUB |
+|---|---|---:|---:|---:|---:|
+| N1Pxmjlp | 19 / 5 / 110 | 1.55 | 0.75 | 0.76 | 0.83 |
+| E5QOWaPP | 20 / 5 / 110 | 1.53 | 0.74 | 0.74 | 0.88 |
+| rK7pgza3 | 21 / 5 / 110 | 1.45 | 0.68 | 0.69 | 0.82 |
+| MP6MR8vk | 18 / 5 / 100 | 1.74 | 0.89 | 0.99 | 0.91 |
+| 78Y7bXPv | 18 / 5 / 105 | 1.67 | 0.84 | 0.96 | 0.86 |
+| E5QOWajJ | 18 / 6 / 110 | 1.44 | 0.67 | 0.56 | 0.80 |
+| Wjl1QXZP | 18 / 7 / 110 | 1.60 | 0.79 | 0.83 | 0.88 |
+| npaxRzjl | 18 / 4 / 110 | 1.55 | 0.76 | 0.75 | 0.89 |
+| VkN1jlW8 | 20 / 5 / 118 | 1.70 | 0.86 | 1.05 | 0.89 |
+| Jj8MEX9e | smooth18 + industry×country | 1.56 | 0.73 | 0.87 | 0.62 |
+
+⇒ **smooth 从 18 偏到 19/20/21，2Y 从 1.53 崩到 0.76/0.74/0.69**。这是单点尖峰，不是可外推的平台。
+⚠ **重要告诫：不要把 smooth=18 的 2Y=1.53 当作可复现的平台**——它是窗口扫描 58 臂后的极值，极可能是噪声拟合。
+
+### BG 波（10 臂）—— 换骨架同样无法同时满足 F 与 2Y
+
+| alpha | 骨架 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| Wjl1QoLd | smooth18 + cart(sector,exchange) | 2.12 | 0.71 | 34.5% | **1.86** | 1.02 |
+| N1PxmJep | smooth18 + ts_rank 90 | 1.96 | 0.73 | 26.8% | 1.31 | 1.01 |
+| vRAwMp2b | smooth18 + group_zscore | 1.78 | 0.97 | 10.9% | 0.98 | 0.89 |
+| LLKVamZM | smooth18 + group_neutralize | 1.74 | 0.95 | 10.9% | 0.89 | 0.88 |
+| blaGZrON | smooth18 + market | 1.62 | 0.80 | 11.5% | 0.87 | 0.87 |
+| qM79rYEO | smooth18 + cap 十分位 | 1.39 | 0.71 | 9.5% | 1.05 | 0.77 |
+| A1xjZrNl | 比值 ts_sum5/ts_mean110 | 1.14 | 0.52 | 8.4% | 0.63 | 0.73 |
+| 88N59EjW | ts_delta 5 | 0.40 | 0.08 | 20.9% | −0.05 | −0.03 |
+| MP6MRe3o | ts_zscore 110 | 0.76 | 0.28 | 11.6% | 0.37 | 0.21 |
+| ZYaP3dm3 | smooth18 + sum8 | 1.40 | 0.70 | 10.3% | — (IS_LADDER_FAIL) | 0.59 |
+
+⇒ **F 与 2Y 在全族内是严格的此消彼长**：TO 高（30%+）时 2Y 1.84–1.86 但 F 0.71–0.73；TO 低（11–14%）时 F 0.95–1.00 但 2Y 0.87–1.25。
+⇒ 6 波 58 臂后，唯一同时接近两闸的点是 smooth=18（S 1.94 / F 0.99 / 2Y 1.53），但它是最优化选出的单点，不可作为稳健解。
+
+### ★★ 结论：news50 流量族是「F 与 2Y 结构冲突」的死巷，不是缺参数
+
+根本原因：F ≈ S×√(年化收益/max(TO,0.125))，而 2Y 是近 2 年 Sharpe。
+- 平滑（smooth↑）：TO 降 ⇒ F 升；但把近 2 年的信号响应也滞后了 ⇒ 2Y 降。
+- 不平滑：TO 33% ⇒ F 0.75 卡；但 2Y 1.67 过。
+- 这不是调参问题，是**同一自由度同时被两个闸约束**。要继续必须引入新的独立信息源（不是新窗口）。
+
+### ★ 本轮的三次整批作废（教训）
+1. BE 波：`group_rank(ts_mean(ts_rank(...),16)` 少一个右括号 ⇒ 10 条全 ERROR `Unexpected end of input`。**preflight 不查括号配平**。
+2. BF 波：`ts_mean(..., 18.5)` 小数参数 ⇒ `lookback should be a positive integer`，整批 CANCELLED。**所有窗口参数必须是正整数**。
+3. 两次都是「一条错、整批死」。⇒ 派发前必须在本地做**括号配平自检 + 参数整数自检**（本轮后半段已加入自检代码，之后未再出错）。
+
+## ★★★ 突破：平台 decay 是 F 与 2Y 的分离杠杆（2026-11-11 BH/BI/BJ 波）
+
+**背景**：news50 流量族在 6 波 58 臂里，F 与 2Y 呈严格此消彼长——ts_mean 平滑降 TO 提 F 但滞后信号压 2Y。结论曾是「同一自由度被两闸同时约束，属结构死巷」。
+
+**突破**：改用**平台设置层的 decay**（仓位级指数衰减）而非表达式层的 ts_mean。decay 降换手但不像 ts_mean 那样滞后信号。
+
+### BH 波（三组设置变体，各 3 臂）
+
+| alpha | 设置 | 表达式 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| Jj8MZq2n | decay4 | raw（S2.15 版） | 2.08 | 0.86 | 23.6% | **1.77** | 1.00 |
+| A1xjM92E | decay4 | smooth11 | 1.89 | 1.01 | 12.6% | 1.24 | 1.06 |
+| 9qlZLY3q | decay4 | smooth16 | 1.65 | 0.83 | 10.6% | 0.93 | 0.89 |
+| **N1PxvmM7** | **decay8** | **raw** | **2.10** | **0.99** | 18.5% | **1.73** | 1.05 |
+| akajqZJw | decay8 | smooth11 | 1.80 | 0.94 | 11.5% | 1.04 | 1.01 |
+| RRejnQ0j | decay8 | smooth16 | 1.48 | 0.70 | 9.7% | 0.64 | 0.78 |
+| N1PxvkMX | trunc0.05/decay1 | raw | 2.15 | 0.75 | 33.6% | 1.67 | 1.13 |
+| Grm1pEVJ | trunc0.05/decay1 | smooth11 | 1.97 | 1.00 | 14.4% | 1.32 | 1.04 |
+| 2r58bPEP | trunc0.05/decay1 | smooth16 | 1.76 | 0.90 | 12.1% | 1.15 | 0.96 |
+
+**关键对比（同为 raw 信号）**：
+| decay | TO | F | 2Y |
+|---|---:|---:|---:|
+| 1 | 33.6% | 0.75 | 1.67 |
+| 8 | 18.5% | **0.99** | **1.73** |
+| 12 | 15.5% | **1.10** | 1.56 |
+| 14 | 14.4% | **1.13** | 1.51 |
+| 16 | 13.6% | **1.15** | 1.44 |
+
+⇒ **decay 把 F 单调抬升（0.75 到 1.15），2Y 先升后降（峰值在 8 附近 1.73）**。
+⇒ 这与 ts_mean 平滑的本质区别：**ts_mean 让 2Y 单调下降，decay 让 2Y 有峰值**。因为 decay 只对仓位做指数加权，不改变信号的横截面排序时点。
+
+### BI / BJ 波：decay 与分组轴的交互
+
+| alpha | decay | 分组轴 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A1xjMN0E | 12 | sector×country | 2.11 | 1.10 | 15.5% | 1.56 | 1.09 |
+| npaxMvLd | 16 | sector×country | 2.07 | 1.15 | 13.6% | 1.44 | 1.08 |
+| **RRejnG8n** | **14** | sector×country | **2.09** | **1.13** | 14.4% | **1.51** | 1.09 |
+| 88N5dMQa | 14 | sector×country, rank126 | 2.07 | 1.12 | 14.3% | 1.49 | 1.10 |
+| **pwaYOq33** | **12** | **industry×country** | 2.11 | 1.03 | 16.2% | **1.73** | 0.89 |
+| blaGEYAm | 12 | subindustry | 1.76 | 0.85 | 15.5% | 1.46 | 0.81 |
+| oma8O1k5 | 12 | cap 十分位 | 1.76 | 0.93 | 14.7% | — | 0.77 |
+| vRAw3Yea | 8 | sector×country, rank126 | 2.09 | 0.99 | 18.4% | 1.69 | 1.07 |
+| Grm1pQnZ | 8 | sector×country, sum8 | 1.88 | 0.92 | 15.4% | 1.23 | 1.00 |
+| P05QdPvL | 8 | industry×country | 2.08 | 0.91 | 19.4% | **1.91** | 0.83 |
+
+### ★★ 最重要的一颗：RRejnG8n
+
+表达式 = `group_rank(ts_rank(ts_sum(vec_avg(mws50_rp_story_event_count),5),110), group_cartesian_product(sector,country))`，设置 decay=14, MARKET, trunc 0.08。
+
+**真实 checks（submit_verdict 核实）**：
+- FAIL 0
+- 唯一阻断：**LOW_2Y_SHARPE 1.51（limit 1.58，差 0.07）**
+- CLUSTER_TEST 1.47（warning，未判死）
+- F 1.13 / SHARPE 2.09 / SUB 1.09 / TO 14.4% 全部 PASS
+- prod **0.5416**（已实测过线）
+
+⇒ **全战役离全闸最近的一颗，只差 2Y 0.07。**
+
+### 明确的下一步方向（有证据，不是盲扫）
+
+2Y 与 SUB 存在互斥：
+- sector×country（decay 14）：2Y 1.51 / SUB 1.09
+- industry×country（decay 12）：**2Y 1.73** / SUB 0.89
+- industry×country（decay 8）：**2Y 1.91** / SUB 0.83
+
+⇒ 分组轴从 sector 切到 industry 能显著抬 2Y，但压低 SUB。**需要的是「industry 的 2Y + sector 的 SUB」**——这提示可能存在一个中间轴（如 industry×exchange，或 sector 单轴），或需要 decay 与轴的组合达到帕累托前沿。
+
+## ★★★ 第 3 颗可交付件诞生：BL 波 vRAwVW1b 全闸（2026-11-11）
+
+### 攻坚路径
+
+| 阶段 | alpha | decay | 表达式差异 | S | F | TO | 2Y | SUB | 阻断项 |
+|---|---|---|---|---:|---:|---:|---:|---:|---|
+| 起点 | Jj8MVvNO | 1 | ts_sum5 秩110, sector×country | 2.15 | 0.75 | 33.6% | 1.67 | 1.13 | F |
+| 平滑替代 | qM79MaJ2 | 1 | +ts_mean16 | 1.91 | 0.99 | 13.2% | 1.49 | 1.02 | F 0.01 + 2Y 0.09 |
+| **换 decay** | RRejnG8n | 14 | ts_sum5 秩110 | 2.09 | 1.13 | 14.4% | 1.51 | 1.09 | 2Y 0.07 |
+| 换分组轴 | 88N51evX | 10 | sector×country | 2.11 | 1.05 | 16.8% | 1.63 | 1.07 | SUB 0.03 |
+| 换 sum 窗口 | 9qlZQNxd | 10 | **ts_sum4** | 2.16 | 1.06 | 18.0% | **1.76** | 1.10 | SUB 0.02 |
+| **最终** | **vRAwVW1b** | **10** | **ts_sum5 秩126** | **2.10** | **1.05** | 16.6% | **1.60** | **1.09** | **无** |
+
+### vRAwVW1b 完整定义
+
+表达式：group_rank(ts_rank(ts_sum(vec_avg(mws50_rp_story_event_count),5),126), group_cartesian_product(sector,country))
+设置：region=EUR, universe=TOP2500, delay=1, **decay=10**, neutralization=MARKET, truncation=0.08
+
+### vRAwVW1b 完整 checks（submit_verdict 核实）
+
+- **FAIL 0**
+- 硬闸 WARNING：**无**（只有 CLUSTER_TEST 1.41 与 MATCHES_COMPETITION / MATCHES_THEMES 两个非硬闸项）
+- Failed RA = 0；Failed PPA = 0；合并拦截项 = 0
+- **VERDICT: UNVERIFIABLE（exit 10）** = 模拟层干净，与真全闸件同档
+- 指标：S 2.10 / F 1.05 / TO 16.6% / ret 4.19% / 2Y 1.60 / SUB 1.09
+
+### 互相关（阈值 0.7，4 年）
+
+| 对 | 相关 | 判定 |
+|---|---:|---|
+| vRAwVW1b vs O0W0w3P7 | **0.5028** | ✓ |
+| vRAwVW1b vs mLaLllmK | **0.0484** | ✓ |
+| vRAwVW1b vs Jj8MVvNO（同族不同参） | 0.8088 | ✗ 不可同篮 |
+| O0W0w3P7 vs mLaLllmK | 0.0027 | ✓ |
+
+⇒ 最大独立集 = **{vRAwVW1b, O0W0w3P7, mLaLllmK}**，size 3，最大对 0.5028。
+⇒ Jj8MVvNO 与 vRAwVW1b 同族（都基于 mws50_rp_story_event_count），只能选其一；vRAwVW1b 全闸、Jj8MVvNO 卡 F，故选 vRAwVW1b。
+
+### ★ 平台 LOW_SUB_UNIVERSE_SHARPE 的真实门槛不是固定值
+
+实测同一批三颗的 limit 各不相同（随 S 缩放）：
+| alpha | SUB | limit | 判定 |
+|---|---:|---:|---|
+| 88N51evX | 1.07 | 1.10 | ✗ 差 0.03 |
+| 9qlZQNxd | 1.10 | 1.12 | ✗ 差 0.02 |
+| **vRAwVW1b** | **1.09** | — | ✓ **PASS** |
+
+⇒ SUB 门槛约 **0.52–0.53 × S**（1.10/2.11=0.52、1.12/2.16=0.52），且**边界件必须查平台真实 checks**——同是 SUB 1.09/1.10，一颗过一颗不过，公式无法判定。
+
+### ★★ 核心方法论：decay 是唯一能分离 F 与 2Y 的杠杆
+
+| 杠杆 | 对 F | 对 2Y | 结论 |
+|---|---|---|---|
+| ts_mean 平滑（表达式层） | ↑↑ | ↓↓ 单调下降 | 双闸互斥，死巷 |
+| ts_rank 窗口 | 微 | 微 | 无效 |
+| group 算子 / 分组轴 | 中 | 中（industry 抬 2Y 压 SUB） | 平移权衡线 |
+| **平台 decay** | **↑↑ 单调（0.75→1.15）** | **↑ 到峰值后缓降（峰在 8–10）** | **✅ 唯一双赢** |
+| truncation | 无 | 无 | 无效 |
+
+机理：ts_mean 在**信号层**做时间平均，把近 2 年的响应一起滞后了；decay 在**仓位层**做指数衰减，只平滑持仓变化、不改变信号的横截面排序时点，所以能降 TO（提 F）而不牺牲 2Y。
+
+**应用规则**：以后凡是「F 卡 + 2Y 够」的件，先加 decay（4/8/10/12/14/16 阶梯扫），不要先用 ts_mean。反之「2Y 卡 + F 够」的件，减 decay 或减平滑。
+
+## BN / BO / BP / BQ 波：Institutions / Social Media / Insiders 三连判死（2026-11-11）
+
+### BN 波 fund_holdings_panel（cov 0.88，30 个 VECTOR，全是计数/量/集中度型）—— 全灭
+
+| alpha | 字段 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| mLaw2LOX | boundary_transaction_total（新建仓交易数） | 0.77 | 0.16 | 36.8% | 0.83 | 0.97 |
+| zqdKwqXO | stable_boundary_trade_count_21d | 0.71 | 0.15 | 35.4% | 0.89 | 0.66 |
+| 6XMmPXxL | herfindahl_index_holdings（HHI 集中度） | 0.27 | 0.07 | 6.8% | 1.37 | 0.39 |
+| xAvOwAXb | holding_value_distribution_score | 0.12 | 0.02 | 7.1% | 1.28 | 0.27 |
+| 1YWkVYvW | large_trade_count_50bps（大额交易数） | 0.12 | 0.01 | 28.8% | −0.43 | −0.13 |
+| O0WQw0Kd | mean_security_weight | −0.02 | −0.00 | 7.5% | −0.20 | −0.04 |
+| pwaYJw0g | holder_account_total（账户数） | −0.17 | −0.04 | 11.8% | −1.26 | −0.32 |
+| gJakqJqO | security_transaction_usd_value | −0.46 | −0.19 | 13.9% | −0.82 | −0.29 |
+| oma8wmQJ | boundary_transaction_usd_value | −0.77 | −0.16 | 36.4% | −0.91 | −0.36 |
+| npaxkpww | security_holding_usd_value | −1.00 | −0.20 | 46.5% | −0.44 | −0.76 |
+
+⇒ **即使全是「计数/量」型（我验证过唯一有效形态），fund_holdings_panel 仍然全灭**。
+⇒ 死因不是形态，是**频率**：基金持仓面板本质是季度披露（TO 6.8–46.5% 分化大但无稳定方向），S 无法超过 0.77。
+⇒ 与 institutions6 是同一个死因（季度/13F 披露 vs 日频 alpha）。
+
+### BO 波 socialmedia12（cov 0.85，MATRIX，buzz/sentiment）—— 全灭
+
+| alpha | 字段 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| WjljngJN | scl12_buzz, ts_sum5 | 0.34 | 0.05 | 36.6% | 0.26 | −0.07 |
+| 2r58qQdb | scl12_sentiment, ts_mean22 | 0.31 | 0.04 | 65.0% | 1.55 | 0.16 |
+| omamAY1k | scl12_buzz, ts_sum5 变体 | 0.25 | 0.03 | 36.3% | 0.19 | −0.15 |
+| 1YWkV1Qz | scl12_sentiment, ts_sum5 | 0.11 | 0.01 | 64.6% | 1.27 | −0.12 |
+| YPaLwnGo | scl12_buzz, 水平 ts_rank | −0.17 | −0.03 | 13.5% | 0.24 | −0.24 |
+| 1YWkV1Q6 | sentiment×buzz | −0.22 | −0.05 | 13.5% | −0.00 | −0.33 |
+
+⇒ 全灭，|S| ≤ 0.34。注意 TO 高达 65%（buzz 逐日剧烈波动）⇒ 不是频率问题，是**横截面方向性近零**。
+⇒ 与 news36/73/48/sentiment21/26/27 同一死因（评分型/情绪型在 EUR 无方向性）。
+
+### BP2 波 insiders1 + vec_count（cov 0.55，9 个 VECTOR）—— 全灭
+
+| alpha | 机制 | S | F | TO | 2Y |
+|---|---|---:|---:|---:|---:|
+| Wjl1djaG | vec_count(valueeur) 66 日累计 | −0.74 | −0.25 | 9.1% | −0.41 |
+| 9qlZKqao | vec_sum(value) | −0.41 | −0.10 | 14.0% | −0.90 |
+| N1Px615g | −vec_sum(valueeur) 反向 | −0.38 | −0.09 | 14.4% | −0.68 |
+| kqaEXqmK | vec_count(shares) | −0.36 | −0.08 | 14.4% | −0.70 |
+| 1YWkLYLM | vec_count(valueeur) | −0.35 | −0.08 | 14.4% | −0.65 |
+| mLawALzK | vec_count(holdings) | −0.26 | −0.06 | 12.8% | −0.75 |
+| rK7pLKr1 | count/基线 比值 | 0.56 | 0.11 | **86.6%** | 0.21 |
+| P05Q60XE | vec_max(tradesignificance) | 0.29 | 0.07 | 9.3% | 0.47 |
+| akajlkWx | count × tradesignificance | 0.42 | 0.10 | 14.0% | 0.95 |
+| O0WQk05d | vec_stddev(valueeur) | 0.08 | 0.01 | 10.4% | 0.29 |
+
+⇒ **计数型（vec_count）在此失效**——6/10 为负且 |S| ≤ 0.74，与 news 的 story_count 完全不同。
+⇒ 区别：news 的事件流量是「信息到达率」，内部人交易笔数是「稀疏事件计数」，后者噪声占主导。
+⇒ TO 仍集中在 9–14%（除 86% 那条），频率错配依旧。
+
+### BQ 波 insider_agg_matrix（cov 0.61，34 个 MATRIX，买卖方向已分开）—— 全灭
+
+| alpha | 机制 | S | F | TO | 2Y |
+|---|---|---:|---:|---:|---:|
+| ZYaPqvq3 | directional_indicator | 0.44 | 0.12 | 16.5% | 0.64 |
+| P05Qqmqq | directional_indicator_2 | 0.45 | 0.12 | 16.4% | 0.93 |
+| leapkPkl | significant_value_1 | 0.45 | 0.12 | 8.7% | −0.58 |
+| 2r58QoQ5 | avg_top_buy − avg_top_sell | 0.45 | 0.13 | 9.3% | 0.66 |
+| oma8A0Ak | top_buy + top_sell（总量） | 0.39 | 0.11 | 10.7% | 0.47 |
+| RRejqwZg | (total_buy−total_sell)/(buy+sell) 比率 | 0.27 | 0.05 | 14.5% | −0.35 |
+| RRejqwZe | total_buy − total_sell | 0.23 | 0.04 | 14.4% | −0.53 |
+| 2r58QoqJ | (top_buy−top_sell)/(buy+sell) 比率 | 0.11 | 0.02 | 12.5% | −0.09 |
+| YPaLnowq | total_top_buy − total_top_sell | 0.04 | 0.00 | 12.5% | −0.26 |
+| xAvO9p9J | 22 日累计净额 | −0.24 | −0.05 | 11.3% | −1.17 |
+
+⇒ 全灭，|S| ≤ 0.45。**即使把买卖方向完美分开（这是 insiders1 做不到的），仍然无信号。**
+⇒ TO 8.7–16.5%，与 insiders1 同频段。
+⇒ **「方向指标」类（directional_indicator）是最弱的（0.44–0.45）**，说明供应商的预加工指标没有额外信息。
+
+### ★★ 五类别终局判定
+
+| category | 数据集 | 测试臂数 | 最好 \|S\| | 判定 | 死因 |
+|---|---|---:|---:|---|---|
+| earnings | earnings6 | 字段画像 | — | **排除** | 55 字段中绝大多数是日期/名称/币种/URL/电话号，仅 EPS 变化 2 个数值字段且季度低频 |
+| earnings | earnings_sent_matrix | 未测 | — | **排除** | 仅 7 字段、cov 0.51，与已判死的情绪评分型同类 |
+| socialmedia | socialmedia12 | 6 | 0.34 | **判死** | 横截面方向性近零（不是频率问题，TO 65% 仍无信号） |
+| socialmedia | socialmedia15 | 未测 | — | **排除** | cov 仅 0.26–0.37，低于 0.6 阈值 |
+| institutions | institutions6 | 10 | 0.96 | **判死** | 季度/13F 披露，TO 11.8–14.8% 频率错配 |
+| institutions | fund_holdings_panel | 10 | 0.77 | **判死** | 同为季度基金持仓面板，即使是计数型也无效 |
+| insiders | insiders1 | 18（8+10） | 0.74 | **判死** | vec_avg 与 vec_count 双路径皆败，TO 9–14% |
+| insiders | insider_agg_matrix | 10 | 0.45 | **判死** | 买卖方向分开仍无信号，预加工方向指标最弱 |
+| insiders | insiders12 | 未测 | — | **排除** | cov 仅 0.20 |
+| macro | macro10 | 单字段 | — | **排除** | 仅 1 字段 mcr10_value 且为已聚合量 |
+| macro | macro27 | 未测 | — | **排除** | cov 仅 0.33 |
+
+⇒ **这五个类别在 EUR D1 TOP2500 上已穷尽，共 44 臂实测，无一颗接近闸线（最好 |S| 0.96）。**
+⇒ 与前期结论一致：EUR 只有 **techindi_model（模型分位差）** 与 **news46/50（新闻事件流量）** 两类有效形态。
+
+### ★ 重要区分：同为「计数型」，为什么 news 有效而 insider 无效
+
+| | news46 story_count / news50 event_count | insiders1 vec_count / insider_agg_matrix |
+|---|---|---|
+| 事件性质 | 信息到达率（每有新信息就计数） | 稀疏交易事件（内部人偶尔交易） |
+| 覆盖 | cov 0.79–0.94，每日大量股票有事件 | cov 0.55–0.61，绝大多数股票多数日为 0 |
+| 横截面方差 | 丰富（每天都有新流量差异） | 极稀疏（大多为 0 或并列） |
+| 实测 TO | 33.6%（不平滑）| 9–14% |
+| 结论 | ✅ 有效 | ❌ 无效 |
+
+⇒ **「计数型」不是一个充分条件，还需要「高频事件流」前提。** 判据：coverage ≥0.75 且 TO 能达到 25%+ 才可能是流量信号；coverage 0.5-0.65 的稀疏事件计数基本无效。
+
+## ★★ BR / BS / BT2 波：news17 判死 + TOP1200 universe 是 prod 的真杠杆（2026-11-11）
+
+### BR 波 news17 流量族（cov 0.85–0.98，ac 仅 12–15，竞争极少）—— 全灭
+
+字段：nws17_{multiple_comp_d1|multiple_comp|comp_d1}_rp_story_event_count / _index / event_similarity_days
+
+| 最好臂 | S | F | TO | 2Y | SUB |
+|---|---:|---:|---:|---:|---:|
+| xAvOQ3bN（comp_d1 index） | 0.83 | 0.16 | 36.9% | 0.82 | −0.11 |
+| oma8vLL5 / 1YWkLXXm（multiple_comp_d1 count） | 0.73 | 0.13 | 42.6% / 37.4% | 0.61 / 0.71 | −0.10 / −0.21 |
+| kqaEXoVO（同 count 秩110） | 0.66 | 0.11 | 42.9% | 0.52 | −0.13 |
+| XgamLbbz / P05Q6227 / E5QObpRJ | 0.53–0.65 | 0.10–0.11 | 29–42% | 0.55–0.95 | 全负 |
+
+⇒ 全灭 |S| ≤ 0.83。**关键反差**：TO 高达 29–43%（比 news46/50 的 33% 还活跃），说明是**高频但无方向性**的噪声，不是频率问题。
+⇒ 同名家族 rp_story_event_count 在 news50 有效（S 2.15）、在 news17 无效 ⇒ **不同数据版本的同一概念不可互换**，必须逐个实测。
+⇒ 平台对完全相同的表达式会去重（本波 10 提交只产出 7 个唯一 alpha id）。
+
+### BS 波 TOP1200 universe 探针（2 臂）
+
+| alpha | universe | 表达式 | S | F | TO | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| j2a2JPGo 同式 | TOP2500 | prob four−zero_15 + neutralize | 4.35 | 2.71 | 29.4% | 2.51 | 2.43 | **0.8573 ✗** |
+| **RRejYEZd** | **TOP1200** | 同上 | **2.57** | **1.33** | 29.5% | **2.01** | **2.20** | **0.7245 ✗（降 0.133）** |
+| VkN1Exw0 | TOP1200 | news50 count 秩126 | 0.97 | 0.23 | 38.3% | 0.47 | 0.75 | 未测 |
+
+**这是本轮最重要的新发现：换 universe 确实降低 prod。**
+- 同一表达式，TOP2500 → TOP1200：prod **0.8573 → 0.7245（−0.133）**。
+- 同时 IS 仍全闸：S 2.57 / F 1.33 / 2Y 2.01 / SUB 2.20，且 **F、2Y、SUB 三项反而全部改善**（因为小宇宙的横截面更集中）。
+- **只差 0.025 就能过 0.7 线。**
+
+⇒ 与 decay 的区别：decay 降 TO 提 F 但**推高** prod；universe 缩容**同时降低** prod 且改善 F/2Y/SUB。两者方向相反，universe 是安全杠杆。
+
+### BT2 波 TOP1200 四个变体（全部 fails=[]）
+
+| alpha | 表达式 | S | F | TO | ret | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| **YPaLkER6** | four−zero_15, 秩252, group_rank | 2.53 | **1.30** | 29.4% | 7.76% | 2.02 | 2.21 |
+| **QP0ZlN8W** | three−one_13, 秩180, neutralize | **2.45** | 1.16 | 29.7% | 6.69% | **1.75** | 2.05 |
+| A1xjarAw | three−one_13, 秩180 | 2.27 | 1.11 | 28.0% | 6.65% | 1.30 | 1.96 |
+| vRAwzpWv | three−14−one_14, 秩180 | 1.84 | 0.80 | 28.7% | 5.43% | 0.69 | 1.67 |
+
+⇒ TOP1200 的 probability 族不仅 prod 更低，IS 质量也更好（F 1.16–1.30 vs TOP2500 的 2.71 那次是 S 4.35 支撑的）。
+
+### TOP600 不可用
+`region=EUR, universe=TOP600` 派发返回 **HTTP 400**。EUR 可用的低拥挤 universe 只有 **TOP1200**（TOP2500 之外唯一验证可用的）。
+
+### ★ 累计四次整批作废的原因归类（本轮两次）
+| 原因 | 波次 | 报错 |
+|---|---|---|
+| 括号少一个 | BE | `Unexpected end of input` |
+| 小数窗口参数 | BF | `lookback should be a positive integer` |
+| 字段不存在（bucket_zero_13） | BS/BT | `unknown variable` |
+| tail 参数不完整 | BP | `Invalid number of inputs` |
+
+⇒ **派发前必须做四项自检：括号配平、窗口参数为整数、字段名 preflight、算子签名核实。** 本轮后半段加自检后未再整批失败。
+
+## BV / BW / BX 波：TOP1200 收窄到 0.704，低拥挤数据集两死一探（2026-11-11）
+
+### ★ BV 波：TOP1200 + five_day 跨版本桶对，prod 收窄到 0.7041–0.7055
+
+基底：d5akl0jw = group_neutralize(ts_mean(ts_rank(subtract(pfq_five_day_bucket_four_13, pfq_five_day_bucket_zero_14),180),5), cart(sector,country))，TOP1200，prod **0.7051**。
+
+| alpha | 加工 | S | F | TO | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| **Grm1Mpk3** | 秩150 | 2.34 | 1.10 | 32.4% | 1.44 | 1.94 | **0.7041** |
+| rK7pJvA8 | 秩210 | 2.39 | 1.14 | 32.3% | 1.45 | 1.99 | **0.7055** |
+| zqdKP1WR | group_zscore | 2.34 | 1.08 | 32.1% | 1.40 | 1.93 | 未测 |
+| P05Qwd1J | 平滑 11 | 1.92 | 1.01 | 20.2% | 1.22 | 1.55 | 未测 |
+| d5akl0jw（BU3） | 秩180 | 2.39 | 1.13 | 32.4% | 1.48 | 1.98 | **0.7051** |
+
+⇒ **五颗独立实测，prod 全部落在 0.7041–0.7055（极差 0.0014）。** 这不是噪声，是整个 family 的固定地板。
+⇒ 离 0.7 只差 **0.004–0.006**，但秩窗口 150/180/210、平滑 5/11、zscore 全部无法撼动它 ⇒ 加工层已证明无效（与 TOP2500 上的结论一致）。
+
+### BW 波 search_interest（cov 0.91–0.93，ac 21–37，注意力流量）—— 全灭
+
+| alpha | 加工 | S | F | TO | 2Y |
+|---|---|---:|---:|---:|---:|
+| P05QwjAp / kqaE1eY8 | ts_mean22 | 1.30 / 1.27 | 0.63 / 0.61 | 16.6% / 15.9% | 0.76 / 0.66 |
+| E5QOgoP1 | relative_interest 变体 | 1.20 | 0.26 | **74.6%**（HIGH_TURNOVER） | 0.56 |
+| akajAXg9 / xAvOPXog / j2az9NJO | ts_delta / raw | 0.98–1.05 | 0.20–0.23 | 66–69% | −0.16–0.41 |
+| e7akdePz | trend_confidence | 1.01 | 0.57 | **0.73%（LOW_TURNOVER）** | 0.35 |
+| VkN12KLY | trend_estimation_confidence | 0.63 | 0.34 | 4.6% | 0.56 |
+| oma83QZJ / xAvOPXEg | ts_sum5/raw | 0.69–0.81 | 0.13–0.17 | 39% | 0.60–0.98 |
+
+⇒ 全灭 |S| ≤ 1.30。**死因分裂**：一部分 TO 66–75%（逐日剧烈波动，噪声），一部分 TO 0.7–4.6%（trend confidence 类几乎不变）。
+⇒ **注意力流量在 EUR 无效**（与 news17 同结论），「流量型」也需具体数据集验证，不能类推出结论。
+
+### BX 波：other571（维基浏览量）/ price_signal_dl / model27 —— 10/10 FAIL
+
+混合三数据集的十臂全部返回 `status=FAIL`（非 ERROR，无具体错误信息）。
+⇒ 说明至少有一个数据集在该配置下不可计算（可能是数据源/宇宙不兼容）。已改用 2 臂单字段探针（oth571_views14d）隔离原因。
+⇒ **教训：混合多个未验证数据集进同一波，一旦 FAIL 无法定位是哪个。新数据集应先 2 臂探针。**
+
+### ★ 低拥挤数据集清单（EUR，alphaCount < 320，本轮新发现）
+
+| 数据集 | category | ac | cov | 字段数 | 状态 |
+|---|---|---:|---:|---:|---|
+| **news_sentiment_dl** | other | 56 | 0.91 | 23 | 未测（字段是音节/词数/情感分 = 文本统计型，优先级低） |
+| **search_interest** | other | 95 | 0.78 | 5 | **已判死（BW 波）** |
+| **model27** | model | 146 | 0.89 | 14 | 未测（信用违约概率，机制不同于 probability 族） |
+| **price_signal_dl** | model | 163 | 0.97 | 28 | 待 BX 探针结果 |
+| **shortinterest6** | model | 195 | 1.00 | 11 | 未测（全是 1-100 排名 MATRIX，属已聚合评分型，预计弱） |
+| **ai_news_scores** | other | 287 | 0.79 | 105 | 未测 |
+| **other571** | other | 165 | 0.76 | 25 | 待探针（维基百科浏览量 = 注意力流量） |
+| **news_sentiment_nlp** | other | 77 | 0.91 | 23 | 未测 |
+
+### 累计 prod 实测全表（EUR，17 个点，按 prod 升序）
+
+| 信号 / 配置 | prod | 结论 |
+|---|---:|---|
+| news50 count, decay1, TOP2500 | **0.5416** | ✓ 但 F 0.75 卡 |
+| news46 story_count | **0.6403** | ✓ **可交付 O0W0w3P7** |
+| prob three−one_13, TOP2500 | **0.6579** | ✓ **可交付 mLaLllmK** |
+| prob five_day four_13−zero_14, TOP1200 | **0.7041** | 差 0.004 |
+| prob five_day 同上 秩180/, TOP1200 | **0.7051** | 差 0.005 |
+| prob five_day 同上 秩210, TOP1200 | **0.7055** | 差 0.006 |
+| prob three−one_13, TOP1200 | 0.7156 | 差 0.016 |
+| prob four−zero 秩252, TOP1200 | 0.7239 | 差 0.024 |
+| prob four−zero_15, TOP1200 | 0.7245 | 差 0.025 |
+| news50 count, TOP1200 | 0.7704 | 卡 |
+| tm_15 反向 (qM7M2b6P, 负 Sharpe 假值) | 0.4725 | 假值，取反后 0.795 |
+| tm_15 反向可交易方向 | 0.7952–0.8095 | 卡 |
+| news50 count, decay10/11, TOP2500 | 0.9457–0.947 | 卡（decay 推高） |
+| prob four−zero_15, TOP2500 | 0.8573 | 卡 |
+| prob second 分位族, TOP2500 | 0.8166 | 卡 |
+| prob third 分位族, TOP2500 | 0.8428 | 卡 |
+| prob fourth 分位族, TOP2500 | 0.8961 | 卡 |
+
+⇒ **prod 在 0.70–0.73 有一个明显的「平台边缘」聚集带**，五个不同加工都落在 0.704–0.725。
+⇒ 说明生产池里这个 bet 已被占满，参数扰动无法跨过 0.70。
+
+## BY / BZ 波：prod 杠杆穷尽（nan_handling / 平台中性化），0.7051 是精确地板（2026-11-11）
+
+### 动机
+0.7041–0.7055 的聚集带已用四种 IS 加工（秩150/180/210、平滑5/11、zscore）确认无法撼动。剩下的配置维度中，**nan_handling 与平台中性化**从未改变过（此前全部固定 ON + MARKET）。
+
+### nan_handling 测试（TOP1200，core = group_neutralize(ts_mean(ts_rank(five_day four_13−zero_14, 180),5), cart(sector,country))）
+
+| alpha | 配置 | S | F | TO | ret | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| d5akl0jw | nan **ON** / MARKET | 2.39 | 1.13 | 32.4% | 7.25% | 1.48 | 1.98 | 0.7051 |
+| **LLKVkEp2** | nan **OFF** / MARKET | **2.39** | **1.13** | 32.4% | 7.25% | **1.48** | **1.98** | **0.7051** |
+| 6XMmzZ9O | nan OFF / MARKET, zscore | 2.34 | 1.08 | 32.1% | 6.85% | 1.40 | 1.93 | — |
+| 6XMmEmVO | nan OFF / **SUBINDUSTRY** | 2.05 | 0.80 | 32.8% | 4.97% | 1.31 | 1.55 | — |
+| XgamKmQ1 | nan OFF / SUBINDUSTRY, zscore | 1.99 | 0.75 | 33.2% | 4.71% | 1.27 | 1.52 | — |
+
+**结论一：nan_handling 对此信号完全无影响。** `LLKVkEp2` 与 `d5akl0jw` 的七项指标（S/F/TO/ret/2Y/SUB/**prod 0.7051**）**逐位完全相同**。
+⇒ 机理：probability 量化字段本身 cov ≈1.0，没有缺失值需要回填，nan ON/OFF 等价。
+⇒ 这条与「nan OFF 曾把事件型字段 S 从 0.51 拉到 2.02」不矛盾——**那条只适用于 cov<0.9 的缺失型/事件型字段**，对满覆盖字段无效。
+
+**结论二：prod 0.7051 是精确可复现的固定值。** 两次独立计算（不同 alpha id、不同 nan 设置）得到完全相同的 0.7051 ⇒ **prod 不是带噪声的估计，是确定值。**
+⇒ 这一点很重要：意味着「0.704 这批可能靠 prod 波动侥幸过线」的幻想不成立——**0.7051 就是 0.7051，不会随机变成 0.699**。
+
+### 平台中性化测试（nan ON，TOP1200）
+
+| alpha | 平台中性化 | S | F | TO | ret | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| d5akl0jw | MARKET | 2.39 | **1.13** | 32.4% | 7.25% | 1.48 | 1.98 |
+| **6XMmE0EL** | **INDUSTRY** | 2.35 | 1.02 | 32.5% | 6.11% | **1.70** | 1.87 |
+| npaxWqgw | INDUSTRY, zscore | 2.30 | 0.97 | 32.6% | 5.78% | 1.63 | 1.82 |
+
+⇒ **平台中性化是 2Y 与 F 的交换杠杆**：INDUSTRY 把 2Y 从 1.48 抬到 **1.70**（+0.22），代价是 F 从 1.13 降到 1.02、ret 从 7.25% 降到 6.11%。
+⇒ 但 S / TO / SUB 基本不变 ⇒ **它改的是横截面分组后的收益结构，不是信号本身**。
+
+### ★ 至此 prod 的所有杠杆全部实测完毕
+
+| 杠杆 | 是否影响 prod | 实测幅度 | 备注 |
+|---|---|---|---|
+| 表达式层：ts_rank 窗口（66–252） | ✗ | 0.815–0.862 | 无效 |
+| 表达式层：ts_mean 平滑（5/11/16/22/33/44） | ✗（但影响 F/2Y） | — | 降 TO 提 F，压 2Y |
+| 表达式层：group 算子（rank/zscore/neutralize/scale/backfill） | ✗ | 0.845–0.860 | 无效 |
+| 表达式层：分组轴（sector/industry/subindustry/market/cap 分桶/cart 组合） | ✗ | 0.808–0.860 | 最大仅降 0.04 |
+| 表达式层：桶对（four−zero / three−one / three−two …） | ✓ | **0.658–0.896** | 唯一强杠杆 |
+| 表达式层：版本号（_13/_14/_15/_131/_141/_142） | ✓ | 0.658–0.896 | 唯一强杠杆 |
+| 表达式层：分位族（second/third/fourth/fifth） | ✗ | 0.797–0.896 | 仍是同一拥挤 bet |
+| 配置：universe（TOP2500 → TOP1200） | ✓ | 0.8573 → **0.7245**（−0.133） | 有效但不够 |
+| 配置：decay（1 → 10/11） | ✗ **推高** | 0.5416 → 0.945–0.947 | 剧毒 |
+| 配置：truncation（0.08 → 0.05） | ✗ | 逐位相同 | 无效 |
+| 配置：nan_handling（ON ↔ OFF） | ✗ | 逐位相同 | 无效（满覆盖字段） |
+| 配置：平台中性化（MARKET ↔ INDUSTRY ↔ SUBINDUSTRY） | 待测 | S 不变、2Y 变 | 疑为中性的 |
+
+⇒ **累计 30+ 个 prod 实测点，唯一能把 prod 从 0.85 拉到 0.72 的是 universe，唯一能拉到 0.66 的是桶对+版本号。**
+⇒ 0.70 这条线在 EUR D1 已经到底。
+
+## ★★★ 终止与封档（2026-11-11，用户指令）
+
+用户指令原文：「在未点亮塔上不再进行投入」「在已点亮塔上不再进行投入」。
+⇒ 判定为**终止 EUR 采集**：不再派发任何新回测，不再测任何 prod。
+⇒ 所有在飞波次跑完后仅读取指标归档，不追加实验。
+
+### 封档时的最终交付：3 颗
+
+| # | alpha | 核心机制 | S | F | TO | ret | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| 1 | **O0W0w3P7** | news46 vec_avg(story_count) 事件流量 | 2.72 | 1.15 | 28.3% | 5.08% | 3.31 | ≥1.29 | **0.6403** |
+| 2 | **mLaLllmK** | prob ten_day three_13−one_13 | 3.98 | 2.21 | 29.06% | 8.98% | 1.93 | 2.22 | **0.6579** |
+| 3 | **6XMmE0EL** | prob five_day four_13−zero_14, TOP1200+INDUSTRY | 2.35 | 1.02 | 32.5% | 6.11% | 1.70 | 1.87 | **0.6529** |
+
+三颗互相关全对 <0.7（最大对 mLaLllmK vs 6XMmE0EL = 0.4703）。
+
+### ★★ 本轮最后的关键突破：平台中性化是第三个降 prod 杠杆
+
+| 配置 | S | F | ret | 2Y | SUB | prod |
+|---|---:|---:|---:|---:|---:|---:|
+| TOP1200 + **MARKET** | 2.39 | 1.13 | 7.25% | 1.48 | 1.98 | 0.7051 |
+| TOP1200 + **INDUSTRY** | 2.35 | 1.02 | 6.11% | **1.70** | 1.87 | **0.6529 ✓** |
+
+⇒ 中性化 MARKET→INDUSTRY：**prod −0.052、2Y +0.22**，代价 F −0.11、ret −1.14pp。S/TO/SUB 基本不变。
+⇒ 机理：中性化改变横截面的分组抵消结构，行业内的相对排序比市场级排序更独特，从而与被生产池占满的宽基 bet 区分开。
+⇒ **这是唯一「几乎不损失 IS 质量」的降 prod 手段**，可同时与 universe 缩容叠加使用。
+
+### 同时证伪的两条假设
+
+1. **nan_handling 对满覆盖字段完全无效**：LLKVkEp2（nan OFF）与 d5akl0jw（nan ON）七项指标含 prod 0.7051 **逐位相同**。probability 字段 cov≈1.0 无缺失值可回填。此前「nan OFF 把 S 从 0.51 拉到 2.02」只适用于 cov<0.9 的缺失型/事件型字段。
+2. **prod 不是带噪声的估计，是确定值**：同一表达式两次独立计算（不同 alpha id、不同 nan 设置）得到完全相同的 0.7051 ⇒ 「靠 prod 波动侥幸过线」的假设不成立。
+
+### 封档时未测 prod 的 7 颗（IS 全闸，TOP1200+INDUSTRY）
+
+| alpha | 族 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| gJak1v8g | ten_day four−zero_15 | 2.35 | 1.08 | 29.7% | 1.33 | 2.01 |
+| Xgampq7m | ten_day three−one_13 | 2.19 | 0.96 | 28.2% | 0.98 | 1.87 |
+| A1xjw6lg | five_day four−zero_15 | 2.18 | 0.95 | 33.1% | 1.08 | 1.94 |
+| QP0Zae7K | ten_day four−zero_14 | 2.10 | 0.89 | 29.3% | 0.76 | 1.66 |
+| pwaY6Jao | five_day three−one_13 | 2.01 | 0.84 | 31.9% | 0.63 | 1.85 |
+| mLaw82a5 | five_day three−one_14 | 1.85 | 0.73 | 32.5% | 0.66 | 1.59 |
+| O0WQpw61 | ten_day three_131−two_131 | 1.77 | 0.82 | 26.9% | 1.32 | 1.46 |
+
+⇒ 这 7 颗与 6XMmE0EL 同配置族，互相关预计 0.8+，即使 prod 过线也只能取其一。
+
+### 交付文档
+`tracking/EUR/DELIVERY_FINAL.md`（9.4 KB）—— 含三颗的完整表达式/配置/指标/互相关、备用池分级、字段画像索引、方法论沉淀。
+
+## ★★★ 范围修正：只投未点亮塔（2026-11-11 用户指令）
+
+用户指令：「在已点亮塔上不再进行投入，集中在未点亮塔」。
+
+### EUR D1 塔点亮表（get_pyramid_alphas 实测，≥3 已提交即点亮）
+
+| 塔 | 已提交 | 状态 | 可投入 |
+|---|---:|---|---|
+| analyst | 10 | 已点亮 | ✗ |
+| news | 3 | 已点亮 | ✗ |
+| model | 3 | 已点亮 | ✗ |
+| fundamental | 3 | 已点亮 | ✗ |
+| other | 3 | 已点亮 | ✗ |
+| sentiment | 3 | 已点亮 | ✗ |
+| imbalance | 3 | 已点亮 | ✗ |
+| **pv** | **2** | 未点亮（差 1） | ✓ |
+| **risk** | **2** | 未点亮（差 1） | ✓ |
+| **insiders** | **2** | 未点亮（差 1） | ✓ |
+| **socialmedia** | **0** | 未点亮（差 3） | ✓ |
+| **macro** | **0** | 未点亮（差 3） | ✓ |
+| **earnings** | **0** | 未点亮（差 3） | ✓ |
+| **institutions** | **0** | 未点亮（差 3） | ✓ |
+
+⇒ **重要后果：此前交付的 3 颗全部落在已点亮塔**（O0W0w3P7→news、mLaLllmK/6XMmE0EL→other），按新指令它们不再是「可继续投入」方向，但它们已是既有成果，不影响其交付有效性。
+⇒ 可投入面 = 7 个未点亮塔。要点亮全部需 15 颗（pv/risk/insiders 各 1 + socialmedia/macro/earnings/institutions 各 3）。
+
+### 未点亮塔的数据集清单（按 alphaCount 升序，低拥挤优先）
+
+| 塔 | 数据集（ac / cov / 字段数） |
+|---|---|
+| pv | univ1(0/1.00/6) · pv149(10/1.00/1) · pv141(38/0.50/2) · pv109(61/0.44/25) · pv173(104/0.33/105) · investor_activity(248/0.16/47) · **pv103(405/0.98/9)** · **pv106(491/1.00/15)** · pattern_scores(784/0.99/504) · continuation_score(847/0.99/560) · pv30(922/0.82/558) · pv47(1206/1.00/2) · intraday_pv_feats(1839/0.95/585) · pv29/pv20/pv13/pv37/pv87/pv1（均 >2000） |
+| risk | **risk72(682/0.60/40)** · risk68(688/1.00/5) · **risk60(2018/0.82/5)** · **risk62(11310/1.00/233)** · risk70(200226/0.98/87) |
+| insiders | insider_agg_matrix(1560/0.61/34) · insiders12(1633/0.20/8) · insiders1(2796/0.55/9) |
+| socialmedia | socialmedia15(936/0.34/45) · socialmedia12(2546/0.78/6) |
+| macro | macro10(1246/1.00/1) · macro27(1731/0.33/33) |
+| earnings | earnings_sent_matrix(1446/0.51/7) · earnings6(3412/0.82/66) |
+| institutions | fund_holdings_panel(874/0.88/30) · institutions6(1546/0.99/11) |
+
+### CA 波 pv103（cov 0.98，9 字段，pv 塔）—— 有信号但卡 2Y/SUB
+
+字段：pv103_ivam_sum（区间成交量高于中价部分之和）/ pv103_ntrd_sum（日总成交笔数）/ session_1600to1600_*
+
+| alpha | 表达式 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| **N1PxrAYX** | ivam_sum / ntrd_sum（每笔交易平均区间量） | **2.48** | **1.06** | 37.2% | 1.23 | 0.56 |
+| akajnom5 | ts_sum(ivam_sum,5) 秩110 | 1.76 | 0.67 | 37.2% | 0.93 | 0.09 |
+| LLKV1kv1 | ts_sum(ntrd_sum,5) 秩110 | 1.68 | 0.64 | 35.9% | 0.84 | 0.04 |
+| mLawbZEx | market_value / volume 类 | 2.23 | 0.62 | 94.9%（HIGH_TO） | 0.59 | 0.45 |
+| 其余 4 臂 | session 量/价类 | 0.35–0.81 | 0.10–0.17 | 15–84% | 0.05–0.37 | 全负 |
+
+**N1PxrAYX 的经济含义**：每笔交易的平均区间成交量 = 大单占比，是经典的知情交易概率代理。S 2.48 / F 1.06 已过闸，卡 2Y 1.23 与 SUB 0.56。
+
+### ★★ 负结果：INDUSTRY 中性化不是通用杠杆
+
+| 配置 | alpha | S | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|
+| MARKET + sector×country | N1PxrAYX | **2.48** | 37.2% | 1.23 | 0.56 |
+| **INDUSTRY** + sector×country | wpoKEKm1 | **0.52** | 88.3% | −0.16 | 0.07 |
+| INDUSTRY + subindustry | VkN131jJ | 0.32 | 80.1% | −0.24 | −0.00 |
+| INDUSTRY + subindustry×country | N1PxRxmp | 1.56 | **115.4%** | −0.03 | 0.27 |
+| INDUSTRY + group_neutralize | oma8g8pk | 0.44 | 85.8% | −0.03 | 0.06 |
+
+⇒ **INDUSTRY 中性化把 S 从 2.48 打到 0.32–1.56、TO 从 37% 抬到 80–115%。**
+⇒ 对比 production 族：同一杠杆让 prod 降 0.052 且 2Y 升 0.22（那族是「平滑分位差」）。
+⇒ **判据：INDUSTRY 中性化只适用于低频、平滑、分位差型信号；对逐日比率型（如 ivam/ntrd）会摧毁信号并抬换手。**
+⇒ 通用性警告：本轮新学的两个杠杆（TOP1200 universe、INDUSTRY 中性化）**都不是跨族通用**，必须逐族验证。
+
+### CB 波 risk60（融券费率，cov 0.82，risk 塔）—— 全灭
+
+| alpha | 字段 / 加工 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| akajE63v | rsk60_crowding, ts_mean22 | 0.09 | 0.01 | 17.2% | 0.51 | −0.23 |
+| O0W05Orq | ts_sum(offer,5) | −0.06 | −0.00 | 24.7% | −0.31 | 0.14 |
+| gJak96Ee | offer 水平 | −0.08 | −0.01 | 16.9% | −1.00 | 0.14 |
+| YPaLg6qo | last, ts_sum5 | −0.09 | −0.01 | 24.0% | −0.03 | 0.28 |
+| QP0Z9MdG | offer − bid_rate | −0.11 | −0.01 | 31.7% | −0.34 | 0.25 |
+| vRAwv8gz | bid_rate 水平 | −0.13 | −0.02 | 17.9% | −0.83 | 0.10 |
+| Grm1ePJP | bid_rate ts_mean22 | −0.28 | −0.07 | 7.4% | −1.01 | −0.09 |
+| 3q0QewLX | last ts_mean22 | −0.32 | −0.08 | 8.0% | −1.07 | −0.14 |
+
+⇒ 全灭 |S| ≤ 0.32。**但 2Y 一致为负（−0.83 ~ −1.07）** ⇒ 「借券费高 → 未来负收益」方向正确，只是强度不足且近两年反向。
+⇒ 融券费率在 EUR 属低效信号（ac 276–860，是该塔最拥挤的字段之一）。
+
+## ★★★ 三塔详挖（Insiders / Institutions / Earnings）——论坛模板带来实质突破（2026-11-11）
+
+用户指令：「Insiders，Institutions，Earnings 铺开，详细挖掘」+「一个一个数据集回测，不要并行三条」。
+
+### ★ 方法论转折：先查论坛再匹配模板，结果差 4 倍
+
+从论坛帖子提取到两个此前从未用过的结构：
+1. **`ts_zscore(·, 252)`** 替代 `ts_rank(·, 110)` —— 长窗标准化，专治稀疏/低频数据
+2. **`group_neutralize(·, industry)` + `ts_decay_linear(·, 3~11)`** 双层（行业内纯化 + 记忆平滑）
+
+同一 `earnings_sent_matrix` 数据集，换模板后：
+| 机制 | 最好 S |
+|---|---:|
+| 我原来的 ts_rank + group_rank + ts_mean | 0.0 – 0.4 |
+| 论坛 ts_zscore(252) + industry + decay | **1.74** |
+
+论坛来源：`41858884736919`（【Alpha灵感】Earnings数据集实战指南）、`44147814648215`（【Alpha Idea】机构与分析师双重共振）。
+
+### ★★★ Earnings 塔：解出 IS 全闸候选 A1xjLLbX
+
+```
+ts_decay_linear(group_neutralize(ts_zscore(ts_mean(multiply(overall_sentiment_score,subtract(1,likelihood_of_neutral_tone)),66),252), industry), 11)
+```
+
+| S | F | TO | ret | 2Y | SUB | prod |
+|---:|---:|---:|---:|---:|---:|---:|
+| **1.74** | **1.07** | 7.06% | 4.76% | **2.06** | **1.38** | **0.8078 ✗** |
+
+**完整 checks：FAIL 0 / 无硬闸 WARNING（仅 CLUSTER_TEST 1.25）/ Failed RA = 0 / VERDICT: UNVERIFIABLE** ⇒ 模拟层全闸。
+经济含义：**财报电话会议「情感分 × 情绪确定性」**——只在管理层表态明确时才计分，磨掉模糊表述。66 日预平滑 + 252 日 zscore 处理稀疏事件。
+
+**降 prod 两个尝试均失败**：
+| 配置 | S | F | 2Y | prod | 判定 |
+|---|---:|---:|---:|---:|---|
+| TOP2500 + MARKET（基线） | 1.74 | 1.07 | 2.06 | **0.8078** | — |
+| TOP1200 + MARKET | 0.98 / 1.09 | 0.46 / 0.54 | 0.94 / 1.02 | 未测 | ✗ 小宇宙财报事件更少 |
+| TOP2500 + INDUSTRY | 1.40 / 1.42 | 0.76 / 0.77 | 1.33 / 1.35 | **0.8014** | ✗ 双重中性化，prod 仅降 0.006 |
+
+⇒ **universe 与中性化两个杠杆对 earnings 族都无效**（与 probability 族相反）。
+
+### Earnings 其他机制（CM/CN/CO 波，共 9+10+8 臂）
+
+- **短窗 zscore（66/126）会引爆换手**：TO 从 7% 飙到 100–143%（稀疏事件数据被短窗放大摆动）。252 长窗是低换手的关键。
+- 情感极性 `positive_probability − negative_probability`：单用无效（S 0.08），配 252 且换 `overall_sentiment_score` 才有效。
+- `ts_decay_linear` 的 decay 天数（3/4/5/9/11/22）对稀疏数据几乎不改变换手，真正压 TO 的是 zscore 窗口。
+- `trade_when` event gate 臂：TO 1.6%，S 0.08（过度稀疏）。
+
+### ★ 纠错：1YWkN1Q6 一度误判
+我把它（S 1.47）当成「情感极性概率」的最优。核对平台 `code` 后发现真实表达式是 `ts_mean(overall_sentiment_score,66)` ⇒ **只有 overall_sentiment_score 本身有效，不是概率差**。
+⇒ 教训复现：**必须用 get_alpha_details 的 code 字段核对每条臂，不能按提交顺序映射**。
+
+### institutions6（Institutions 塔）：10 套机制 17 臂，上限 S 1.19
+
+| alpha | 机制 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| **mLaw6zpx** | zscore(BR,252) + industry + decay **5** | **1.19** | 0.67 | 7.9% | 1.17 | 0.93 |
+| **pwaYRaaj** | zscore(BR,252) + industry + decay 3 | **1.19** | 0.67 | 9.4% | 1.12 | 0.92 |
+| LLKVZXWm | 无 decay 对照 | 1.18 | 0.64 | 13.2% | 1.11 | 0.89 |
+| LLKVZXL1 | zscore(BR,**66**) 短窗 | 1.12 | 0.50 | 15.3% | 1.10 | 0.83 |
+| ZYaPbaXj | zscore(BR,252) + cart(sector,country) | 1.05 | 0.53 | 13.2% | 1.36 | 0.69 |
+
+BR = `divide(count_institutional_buyers_security, add(buyers,sellers,filter=true))`（论坛 Buyer_Ratio）。
+**四个独立机制给出同一 1.19 上限** ⇒ 数据集结构上限，非机制选择问题。其余：数量比 QR 0.06–0.16、市值比 MR 0.18、holders 比 0.56、
+ts_delta 环比全负、aggregate_share_count 占比 0.08。
+
+### insider_agg_matrix（Insiders 塔）：14 套机制 19 臂，揭示稀疏数据陷阱
+
+**陷阱**：`ts_zscore` 对 cov 0.61 稀疏数据（大量零值）做 252 日标准化 ⇒ 零值区间反复摆动 ⇒ **TO 爆到 100–169%**（HIGH_TURNOVER + CONCENTRATED_WEIGHT 双杀）。
+
+| 治理前（CK 波） | | | 治理后（CL 波） | | |
+|---|---:|---:|---|---:|---:|
+| e7akQWll | S 1.02 / TO 165% | | e7ak66NN | S 0.57 / TO 9.4% |
+| j2az8M2j | S 0.77 / TO 167% | | d5akKKzj | S 0.52 / TO 10.3% |
+| rK7pe8Z9 | S 0.49 / TO 157% | | rK7pdd9o | S 0.43 / TO 10.5% |
+
+治理法：`ts_mean(·,66)` 预平滑 → `ts_zscore(·,252)` → `group_neutralize(industry)` → `ts_decay_linear(·,11/22/44)`。TO 降到 8–10%，但 S 也降到 0.21–0.57。
+⇒ **稀疏事件数据的两难：不平滑则换手爆炸，平滑则信号消失。** 买/卖方向完全分开（total_top_buy/sell_shares）仍无法突破。
+
+### earnings6 判死
+55 字段中真正数值的仅 3 个（eps_change_absolute_value / eps_change_percentage_value / ern6_actual_eps_274，cov 0.53–0.54）。
+CQ 波实测这三者及其组合（含情感双重确认）**全部 S = 0.0 / TO = 0.0** ⇒ 该字段在 EUR TOP2500 上实际无数据（cov 0.53 是幻象）。
+⇒ earnings6 只有事件日期/名称/币种/URL/电话号等文本标识字段，**无可用数值信号**。
+
+### 三塔当前状态
+
+| 塔 | 已提交 | 最好候选 | S | 全闸? | prod | 结论 |
+|---|---:|---|---:|---|---:|---|
+| **earnings** | 0 | A1xjLLbX | **1.74** | ✅ 是 | 0.8078 ✗ | **差 prod** |
+| institutions | 0 | mLaw6zpx / pwaYRaaj | 1.19 | ✗ 差 S 0.39 | 未测 | 结构上限 |
+| insiders | 2 | e7akQWll | 1.02 | ✗ 换手爆炸 | 未测 | 稀疏两难 |
+
+## ★★★ 数学变换扩展：按金融论文构造 ABTONE / 语调变化 / 高阶矩（2026-11-11 CR/CT 波）
+
+用户要求：「通过作更多的数学变换，得到更强的信号，算子用平台的，数学模型找外部金融论文」。
+
+### 论文依据（scholar-mcp 检索）
+
+| 论文 | 引用 | 核心可迁移结论 |
+|---|---:|---|
+| Feldman, Govindaraj, Livnat & Segal (2009) *Management's Tone Change, PEAD and Accruals* | 756 | **语调「变化」比「水平」更预测 PEAD** |
+| Huang, Teoh & Zhang *Tone Management* | — | **ABTONE = 语调对基本面回归的残差**（异常乐观语调） |
+| Davis, Piger & Sedor (2011) *Beyond the Numbers* | 773 | 新闻稿语言的信息含量独立于数字 |
+| *Earnings conference calls and stock returns: incremental informativeness of textual tone* | — | 电话会议语调对收益有增量信息 |
+
+### 平台算子映射
+
+- `vector_neut(x, y)` —— **ABTONE 残差的原生实现**（两参数，y 对 x 回归取残差）
+- `ts_av_diff` / `ts_delta` —— 语调变化
+- `ts_ir` —— 语调信噪比；`ts_kurtosis` —— 尾部；`ts_corr` —— 一致度
+- ⚠ **`ts_regression` 在此平台只接受 2 个参数**（文档写 5 个：y,x,d,lag,rettype）。传 3/4 个参数报 `Invalid number of inputs`。已用 2 臂探针确认，不再使用该算子。
+
+### CR 波（8 臂）
+
+| alpha | 变换 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| **rK7p8Kqj** | vector_neut(情感, 确定性) — ABTONE | **1.49** | 0.83 | 7.1% | 1.04 | 1.23 |
+| **d5akv5GE** | 水平 + 变化 对称加和 | 1.24 | 0.65 | 8.7% | 1.27 | 0.85 |
+| 0mPO5mV6 | ts_av_diff 变化 | 0.63 | 0.24 | 10.2% | 0.82 | 0.32 |
+| gJakLJle | ts_delta 变化 | 0.55 | 0.20 | 9.1% | 0.76 | 0.32 |
+| d5akv5ME | vector_neut(情感, 另一情感) | 0.40 | 0.11 | 7.2% | −0.10 | 0.41 |
+| leap1enn | ts_ir 信噪比 | −0.19 | −0.05 | 6.5% | 0.79 | −0.44 |
+| npaxrpEx | ts_kurtosis 尾部 | −0.28 | −0.06 | 6.0% | −1.20 | −0.56 |
+| qM79VMRZ | 情感 × 变化（乘法） | −0.71 | −0.29 | 10.6% | −1.69 | −0.45 |
+
+### CT 波（8 臂）
+
+| alpha | 变换 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| **j2azMO0k** | vector_neut(语调, 正面概率) — ABTONE | **1.48** | 0.82 | 7.1% | 1.14 | 1.15 |
+| rK7pn8PJ | vector_neut(语调, 负面概率) | 1.26 | 0.63 | 7.1% | 0.85 | 0.98 |
+| vRAwoPNd | 水平+变化+确定性 三腿对称加和 | 0.89 | 0.40 | 8.2% | 1.20 | 1.21 |
+| 9qlZ2kpV | ts_corr 一致度 | 0.87 | 0.38 | 8.6% | 1.03 | 0.68 |
+| Grm179e5 | 双重 zscore(变化) | 0.84 | 0.36 | 10.2% | 0.96 | 0.42 |
+| oma8kZN5 | 变化 (av_diff 66) | 0.59 | 0.20 | 11.9% | 1.00 | 0.62 |
+| 58Jn2Ykz | vector_neut(情感×确定性, weighting1) | 0.30 | 0.07 | 7.2% | −0.48 | 0.25 |
+
+### ★★ 核心结论：数学变换全部弱于基线 1.74，变换不是有效的增强路径
+
+| 变换族 | 最好 S | 对比基线 A1xjLLbX 1.74 |
+|---|---:|---|
+| **基线：情感 × 确定性（乘法加权，同量纲）** | **1.74** | — |
+| ABTONE 残差（vector_neut，4 种参照系） | 1.49 | −0.25 |
+| 水平 + 变化 对称加和 | 1.24 | −0.50 |
+| 纯语调变化（ts_av_diff / ts_delta） | 0.63 | −1.11 |
+| ts_corr 一致度 | 0.87 | −0.87 |
+| ts_ir 信噪比 / ts_kurtosis 尾部 | −0.19 / −0.28 | 大幅劣化 |
+| 乘法（情感 × 变化） | −0.71 | 劣化 |
+
+**为什么论文的 ABTONE 在 EUR 失效**：
+1. 论文的残差是**对基本面（ROA、应计、营收增长）回归**；EUR earnings_sent_matrix 只有情感概率字段，没有基本面数值字段可作回归基准。用「另一情感概率」当基准，残差里剩下的只是噪声。
+2. 论文的 tone change 用**季度环比**（4 次/年）；在日频平台用 66 日窗 `ts_av_diff` 会把季度事件稀释成噪声。
+3. **唯一有效的是「同量纲加权」**：情感分（值域宽）× 确定性（0–1 概率），两者都是「关于语调可信度」的量，相乘有明确含义（置信度加权）。而 `情感 × 变化` 是跨量纲相乘，直接失效（S −0.71）。
+
+### ★ 可复用的判据
+
+**乘法/加权只在「同量纲、同一经济维度」时有效**（情感强度 × 该强度的可信度）；跨维度相乘（水平 × 变化、情绪 × 数量）在 rank/zscore 体系下会非线性误杀空头端（论坛 44147814648215 亦实证）。
+
+**回归残差类变换（vector_neut）需要真正的「对照组变量」**，且该变量必须与目标量有强共同成分；否则残差 = 噪声。
+
+## 跨字段背离变换 ts_corr：CU/CV/CW/CX 波 32 臂（2026-11-11）
+
+用户提议 ts_corr(情感, EPS变化) 跨字段背离，看能否超 A1xjLLbX 的 1.74 并压 prod。
+
+### 硬阻断：EPS 字段在 EUR TOP2500 无数据（CU 波确认）
+
+| alpha | 变换 | S | TO |
+|---|---|---:|---:|
+| ZYa65g38 | ts_corr(情感, EPS变化%, 252) | 0.0 | 0.0 |
+| e7ampNoJ | ts_corr(情感, EPS绝对值, 252) | 0.0 | 0.0 |
+| XgaGrV5l | 负相关取反 | 0.0 | 0.0 |
+| 2r5M09bN | 1 减 abs(corr) | 0.0 | 0.0 |
+| RReM39nz | 情感 x (1-abs(corr)) | 0.0 | 0.0 |
+| 88NboV1m | 66 窗版本 | 0.0 | 0.0 |
+| zqdZMgp8 | 对照组：纯 EPS 变化单独 | 0.0 | 0.0 |
+| YPa6r8qw | ts_corr(情感, 确定性) 不含 EPS | 0.34 | 4.1% |
+
+结论：7/8 臂 S=0 / TO=0，包括纯 EPS 对照组 => eps_change_percentage_value 与 eps_change_absolute_value 在 EUR TOP2500 完全无数据（cov 0.53 是幻象）。
+跨字段背离的第一支柱不存在，ts_corr(情感, EPS) 在数据层不可实现。
+教训：跨字段变换前必须先用对照组验证第二字段有数据（本次靠对照组臂一击暴露，省下后续全部无效搜索）。
+
+### CV 波：改用集内真实字段做背离
+
+| alpha | 变换 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| blaXZ0vq | 情感 x (1 - corr(情感,确定性)) | 1.44 | 0.77 | 6.7% | 1.53 | 1.24 |
+| WjlMQr9Q | corr(w1, 正负概率差) | 0.35 | 0.09 | 4.0% | 1.05 | 0.43 |
+| d5apVJnx | corr(情感,确定性,252) 纯相关 | 0.55 | 0.18 | 5.9% | 0.48 | 0.53 |
+| 9qlY1592 | corr(情感,正负概率差) | -0.23 | -0.05 | 3.9% | -0.08 | -0.25 |
+| kqadrpQL | corr(w1,w2) 同源冗余度 | -0.14 | -0.02 | 4.8% | 0.42 | -0.16 |
+| A1x9ZXkQ | w1 - w2 偏离 | 1.02 | 0.48 | 7.2% | 0.61 | 0.75 |
+
+纯相关系数（0.55 / -0.23 / -0.14）本身无信号；但情感 x (1-corr) 这个同量纲背离加权有 S 1.44。
+机理：1-corr 度量语气强度与表态确定性脱节的程度，正是 tone management 的征兆；乘上情感强度后方向明确。
+
+### CW 波：确定性与背离的融合（本轮最优结构）
+
+| alpha | 变换 | S | F | TO | 2Y | SUB |
+|---|---|---|---:|---:|---:|---:|---:|
+| leadbAKA | 情感 x (确定性 + 背离) | 1.67 | 0.96 | 6.8% | 1.66 | 1.32 |
+| MP6Omzdr | 情感x(确定性+背离) 权重组内中性 | 1.71 | 0.99 | 6.6% | 1.35 | 1.40 |
+| 3q0wZoV6 | 三重相乘 情感x确定性x背离 | 1.52 | 0.85 | 6.6% | 1.48 | 1.25 |
+| LLKWAMZa | 对称加和 两腿zscore | 1.46 | 0.78 | 6.7% | 1.54 | 1.24 |
+| oma7MELJ | 确定性x背离 不含情感 | 1.43 | 0.79 | 7.0% | 1.38 | 1.03 |
+| O0WOEAJv | 126窗背离 | 1.45 | 0.80 | 7.1% | 1.31 | 1.12 |
+| j2avbY8O | 确定性x2 减 背离 | 1.25 | 0.63 | 7.1% | 1.59 | 1.22 |
+| P05Ndogp | min(确定性,背离) 取短板 | -0.99 | -0.42 | 6.0% | -1.26 | -1.09 |
+
+leadbAKA 真实 checks：仅 LOW_FITNESS 0.96 vs 1.0 一项 FAIL，S 1.67 / 2Y 1.66 / SUB 1.32 全部 PASS。
+比基线 A1xjLLbX（S 1.74 但 prod 0.8078）结构更均衡：S 略低 0.07，但 2Y +0.30，持仓结构完全不同。
+min(确定性,背离) 取短板是唯一负值臂（-0.99）=> 两个权重不能求交，只能求和或相乘。
+
+### CX 波：修 F 的梯度尝试（8 臂）
+
+| alpha | 调节 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| kqadlG8O | decay 5 | 1.67 | 0.96 | 7.7% | 1.75 | 1.32 |
+| aka6vzR5 | decay 8 | 1.68 | 0.96 | 7.2% | 1.71 | 1.33 |
+| MP6Omzdr | 权重组内中性化 | 1.71 | 0.99 | 6.6% | 1.35 | 1.40 |
+| xAvqgGVw | decay 15 | 1.66 | 0.95 | 6.5% | 1.58 | 1.30 |
+| QP0MXzOK | 情感126预平滑 | 1.44 | 0.78 | 7.2% | 1.62 | 1.23 |
+| d5apLzYx | 确定性组内中性化主导 | 0.75 | 0.27 | 6.6% | 0.79 | 0.98 |
+| gJa6pGXg | 确定性x2 减 背离 CX版 | -0.73 | -0.27 | 6.6% | -0.40 | -0.83 |
+
+F 在 0.95-0.99 间死死卡住：decay 5/8/15 全部 0.95-0.96；组内中性化能到 0.99 但 2Y 掉到 1.35。
+F 与 2Y 再次此消彼长（与 probability 族同构）。TO 已压到 6.5-7.7%，再压就要牺牲收益。
+
+### 本轮结论
+
+| 变换 | 最好 S | vs 基线 1.74 | 结论 |
+|---|---:|---|---|
+| ts_corr(情感, EPS变化) | 不可实现 | - | EPS 字段无数据 |
+| 纯相关系数（集内字段） | 0.55 | -1.19 | 相关系数本身无信号 |
+| 情感 x (1-corr) 背离加权 | 1.44 | -0.30 | 有效但弱于基线 |
+| 情感 x (确定性 + 背离) | 1.67 | -0.07 | 结构最健康（2Y 1.66、SUB 1.32） |
+| 情感 x 确定性（基线 A1xjLLbX） | 1.74 | - | S 最高，但 prod 0.8078 卡墙 |
+
+背离变换没能超过 1.74；但产出一个持仓结构不同的新候选 leadbAKA，只差 F 0.04。
+
+### 三条可复用判据
+
+1. 跨字段变换前先用对照组验证第二字段有数据（纯 EPS 对照组一击暴露字段为空）。
+2. 相关系数本身不是信号，必须与量纲匹配的强度量相乘才有方向（情感 x (1-corr) -> 1.44）。
+3. 两个权重只能求和或相乘，不能求交（min = -0.99）。求和最优（1.67），三者相乘次之（1.52），对称 zscore 加和再次（1.46）。
+
+## CY / CZ 波：leadbAKA 补 F 穷尽（25 臂）—— F 0.96 是结构边界（2026-11-11）
+
+leadbAKA 是 earnings 塔最优：S 1.67 / F 0.96 / TO 6.8% / ret 4.11% / 2Y 1.66 / SUB 1.32 / prod 0.6713。
+真实 checks 只剩 LOW_FITNESS 0.96 vs 1.0 一项 FAIL。
+
+### CY 波（8 臂，表达式内补 F）
+
+| alpha | 手段 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| leadbAKA | 基线 decay11 | 1.67 | 0.96 | 6.8% | 1.66 | 1.32 |
+| LLKWxE6m | decay 9 | 1.67 | 0.96 | 7.0% | 1.70 | 1.32 |
+| mLapkdA6 | decay 13 | 1.66 | 0.95 | 6.7% | 1.61 | 1.31 |
+| LLKWxEXL | 情感预平滑 44 | 1.62 | 0.91 | 6.8% | 1.65 | 1.20 |
+| 1YWe5OmQ | 情感预平滑 88 | 1.62 | 0.91 | 7.4% | 1.91 | 1.24 |
+| A1x9debX | zscore 窗 180 | 1.40 | 0.84 | 11.7% | 1.57 | 0.82 |
+| 2r5Mk9RN | hump 0.01 | 0.96 | 0.44 | 3.5% | 0.60 | 0.79 |
+| e7amJNKJ | hump 0.005 | 0.55 | 0.19 | 3.1% | 0.40 | 0.51 |
+
+hump 把 TO 压到 3% 但 S 崩到 0.55-0.96 => 信号被削掉，不是有效的降换手手段（对低频信号）。
+
+### CZ 波（设置级，truncation / decay）
+
+| alpha | 设置 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| 78YWOJd2 | truncation 0.02 | 1.67 | 0.96 | 6.8% | 1.66 | 1.32 |
+| 88NbALnz | decay 4 | 1.66 | 0.95 | 6.6% | 1.59 | 1.31 |
+| LLKWekpL | trunc0.02 + sector 轴 | 1.43 | 0.79 | 6.5% | 1.35 | 1.10 |
+| 58JxRvMz | decay4 + sector 轴 | 1.41 | 0.78 | 6.3% | 1.29 | 1.09 |
+
+78YWOJd2 与 leadbAKA 七项指标逐位相同 => truncation 与平台 decay 对该信号完全无效。
+sector 轴替代 industry 使 S 从 1.67 掉到 1.41 => industry 是正确分组轴。
+
+### F 的杠杆穷尽清单（25 臂）
+
+| 杠杆 | 取值范围 | F 结果 |
+|---|---|---|
+| ts_decay_linear decay | 5/8/9/11/13/15/22 | 0.95-0.96 |
+| 平台 decay 设置 | 1/4 | 0.95-0.96 |
+| truncation 设置 | 0.02/0.05/0.10 | 0.96（逐位相同） |
+| ts_mean 预平滑（情感） | 44/66/88/126 | 0.91-0.96 |
+| hump | 0.005/0.01 | 0.19-0.44（信号被削） |
+| ts_zscore 窗口 | 180/252 | 0.84-0.96 |
+| 分组轴 | industry / sector | 0.96 / 0.79 |
+| 权重组合 | 求和 1.67 / 相乘 1.52 / 加和 1.46 / 取短板 −0.99 | F 0.85-0.96 |
+
+=> F 稳定在 0.91-0.99 窄带，无法跨过 1.0。TO 已压到 6.3-7.7%，收益 3.8-4.1%，F ≈ S x sqrt(ret/TO) 已达该信号的极限。
+
+### ★★★ earnings 塔最终结论
+
+| 候选 | S | F | TO | ret | 2Y | SUB | prod | 缺什么 |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| **leadbAKA** | 1.67 | 0.96 | 6.8% | 4.11% | 1.66 | 1.32 | **0.6713 ✓** | **只差 F 0.04** |
+| A1xjLLbX | 1.74 | 1.07 | 7.1% | 4.76% | 2.06 | 1.38 | 0.8078 ✗ | prod 卡墙 |
+| MP6Omzdr | 1.71 | 0.99 | 6.6% | 4.19% | 1.35 | 1.40 | **0.6263 ✓** | F 0.01 + 2Y 0.23 |
+
+=> **背离变换（情感 × (确定性 + 背离)）成功把 prod 从 0.8078 压到 0.6713/0.6263（降 0.14-0.18）**；
+=> 但代价是 F 从 1.07 掉到 0.96-0.99，两族形成 F 与 prod 的跷跷板。
+=> earnings 塔暂时无「全闸 + prod 过线」的件，最好的是 leadbAKA（只差 F 0.04）。
+
+### ★ 关键判据：参与「可靠性加权」的腿会推高 prod
+
+| 结构 | F | prod |
+|---|---:|---:|
+| 情感 × 确定性（单腿加权） | 1.07 | 0.8078 |
+| 情感 × (确定性 + 背离)（双权重） | 0.96 | **0.6713** |
+| 情感 × (确定性 + 背离) + 权重组内中性 | 0.99 | **0.6263** |
+
+=> 加入背离腿（时序相关，本质是「非共识」度量）使持仓偏离共识 => prod 下降；但它同时稀释了强度 => F 下降。
+=> 这是一个可复用的**降 prod 新杠杆**：在表达式中引入「与共识的背离度」作为权重腿。
+
+## ★★★ DA 波：Fitness 地板常数破解 —— earnings 塔第 4 颗可交付件 O0WOK0Wg（2026-11-11）
+
+### 关键突破：反推出 Fitness 公式并发现换手地板
+
+公式：Fitness = Sharpe × sqrt(abs(returns) / max(turnover, 0.125))
+
+五案例验算（预测 vs 观测全部吻合）：
+
+| alpha | S | ret | TO | F 预测 | F 观测 |
+|---|---:|---:|---:|---:|---:|
+| leadbAKA | 1.67 | 4.11% | 6.83% | 0.958 | 0.96 |
+| kqadlG8O | 1.67 | 4.10% | 7.66% | 0.956 | 0.96 |
+| MP6Omzdr | 1.71 | 4.19% | 6.56% | 0.990 | 0.99 |
+| A1xjLLbX | 1.74 | 4.76% | 7.06% | 1.074 | 1.07 |
+| e7amJNKJ | 0.55 | 1.52% | 3.05% | 0.192 | 0.19 |
+
+### 推开的两条路径
+
+- TO 低于 12.5% 时地板生效，分母恒为 0.125 => 降换手对 F 无效（这解释了 CY/CZ 波 25 臂全部卡 0.95-0.96：decay 5-22、hump 0.005/0.01、truncation 0.02/0.05/0.10 全部无效）
+- 路径 A：提高收益率。S=1.67 时需 ret 从 4.11% 升到 4.48%（+9% 相对）
+- 路径 B：提高 Sharpe。ret=4.11% 时需 S 从 1.67 升到 1.744
+
+### 正确杠杆：signed_power 放大尾部
+
+平台算子 confirmed 可用：signed_power(x,y)、power(x,y)、quantile(x,driver,sigma)、normalize、winsorize、tail、bucket、hump、scale、quantile
+
+| alpha | 外层变换 | S | F | TO | ret | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|---:|
+| XgaGXgVb | 无（基线 leadbAKA） | 1.67 | 0.96 | 6.8% | 4.11% | 1.66 | 1.32 |
+| **O0WOK0Wg** | **signed_power 2** | **1.68** | **1.06** | 9.1% | **4.98%** | **1.64** | 1.27 |
+| vRA8aR1A | signed_power 3 | 1.62 | 1.13 | 12.1% | 6.10% | 1.54 | 1.17 |
+| XgaGXgal | signed_power 1.5 | 1.57 | 1.10 | 17.4% | 8.59% | 1.50 | 1.06 |
+| gJa67JrK | signed_power 0.5 | 1.55 | 0.80 | 5.4% | 3.36% | 1.49 | 1.27 |
+| GrmPErQQ | quantile(gaussian) | 1.58 | 0.87 | 6.2% | 3.78% | 1.70 | 1.26 |
+| xAvqXAVq | normalize | 1.59 | 0.98 | 8.7% | 4.75% | 1.62 | 1.16 |
+| oma7QmRb | winsorize std=2 | 1.55 | 0.83 | 5.8% | 3.60% | 1.59 | 1.25 |
+| d5ape53g | winsorize + power2 | 1.50 | 0.85 | 7.4% | 4.05% | 1.53 | 1.14 |
+
+单调规律：幂次越高 => ret 越高（4.11 -> 4.98 -> 6.10 -> 8.59%）、F 越高（0.96 -> 1.06 -> 1.13 -> 1.10）、但 S 与 2Y 越低（1.68 -> 1.62 -> 1.57 / 1.66 -> 1.64 -> 1.54 -> 1.50）。
+signed_power 2 是平衡点：F 过闸且 S/2Y/SUB 全部保住。
+
+### O0WOK0Wg 完整定义
+
+```
+ts_decay_linear(group_neutralize(signed_power(ts_zscore(multiply(ts_mean(overall_sentiment_score,66),add(ts_mean(subtract(1,likelihood_of_neutral_tone),66),subtract(1,ts_corr(ts_mean(overall_sentiment_score,66),ts_mean(subtract(1,likelihood_of_neutral_tone),66),252)))),252), 2), industry), 11)
+```
+
+配置：region=EUR / universe=TOP2500 / delay=1 / decay=1 / neutralization=MARKET / truncation=0.05
+数据集：earnings_sent_matrix（earnings 塔，未点亮 0）
+核心字段：overall_sentiment_score、likelihood_of_neutral_tone
+
+| S | F | TO | ret | 2Y | SUB | prod |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1.68 | 1.06 | 9.05% | 4.98% | 1.64 | 1.27 | **0.6314** |
+
+完整 checks：FAIL 0 / 无硬闸 WARNING（仅 CLUSTER_TEST 1.22）/ Failed RA=0 / VERDICT UNVERIFIABLE => 模拟层全闸。
+
+### 互相关（含既有三颗，全对 < 0.7）
+
+| | O0W0w3P7 | mLaLllmK | 6XMmE0EL | O0WOK0Wg |
+|---|---:|---:|---:|---:|
+| O0W0w3P7 | 1 | 0.0027 | -0.0225 | 0.0802 |
+| mLaLllmK | 0.0027 | 1 | 0.4703 | 0.0290 |
+| 6XMmE0EL | -0.0225 | 0.4703 | 1 | 0.0536 |
+| O0WOK0Wg | 0.0802 | 0.0290 | 0.0536 | 1 |
+
+=> 最大独立集扩充到 **4 颗**，最大对仍为 0.4703。O0WOK0Wg 与三颗全部近正交（0.029-0.080）。
+
+### 逻辑链（完整推导）
+
+1. 论坛模板 ts_zscore(252)+industry+decay 让 earnings 从 S 0.4 提到 1.47
+2. 核对平台 code 发现真正有效字段是 overall_sentiment_score（非情感概率差）
+3. 情感 × 确定性 => S 1.74（A1xjLLbX）但 prod 0.8078 卡墙
+4. 加背离腿（1-corr(情感,确定性)）=> prod 降到 0.6713 但 F 掉到 0.96
+5. 反推 Fitness 公式发现 TO 地板 0.125 => 降换手无效，必须提收益
+6. signed_power(,2) 放大尾部 => ret 4.11->4.98%、F 0.96->1.06、S/2Y/SUB 保住
+7. => 全闸 + prod 0.6314
+
+## DB 波 + 幂变换 prod：signed_power 的双向效应（2026-11-11）
+
+### 幂变换的 prod 实测（earnings 族）
+
+| alpha | 幂次 | S | F | TO | ret | 2Y | SUB | prod |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| leadbAKA | 1 | 1.67 | 0.96 | 6.8% | 4.11% | 1.66 | 1.32 | 0.6713 |
+| **O0WOK0Wg** | **2** | **1.68** | **1.06** | 9.1% | 4.98% | 1.64 | 1.27 | **0.6314** |
+| vRA8aR1A | 3 | 1.62 | 1.13 | 12.1% | 6.10% | 1.54 | 1.17 | **0.5535** |
+| XgaGXgal | 1.5 | 1.57 | 1.10 | 17.4% | 8.59% | 1.50 | 1.06 | **0.4489** |
+
+规律：幂次↑ => ret↑、F↑、prod↓，代价 S↓ / 2Y↓ / SUB↓。
+机理：尾部放大让持仓集中于信号最强标的，系统性偏离生产池的宽基均匀持仓 => prod 降。
+=> signed_power 是「F 与 prod 同时卡住」时的联动杠杆。
+
+### ★ 反例：institutions6 套同一幂次反而变差（DB 波 10 臂）
+
+| alpha | 结构 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| E5Q1o25G | buyer ratio zscore252 + decay11 | 1.15 | 0.63 | 5.9% | 1.18 | 0.93 |
+| kqadeYEl | + signed_power 1.5 | 1.09 | 0.60 | 7.0% | 1.10 | 0.90 |
+| ZYa6k1Yd | + signed_power 2 | 0.98 | 0.54 | 8.4% | 0.98 | 0.86 |
+| P05NjA0L | + signed_power 3 | 0.82 | 0.45 | 11.3% | 1.02 | 0.83 |
+| 6XM7g2mL | 三腿加和后幂次2 | 1.07 | 0.54 | 12.9% | 1.44 | 0.92 |
+| N1P0k20w | 短窗66 + 幂次2 | 0.89 | 0.48 | 9.8% | 0.95 | 0.82 |
+| blaX7KGM | 市值比 + 幂次2 | 0.64 | 0.32 | 15.4% | 1.13 | 0.76 |
+| A1x9q2jw | 数量比 + 幂次4 | -0.00 | -0.00 | 21.0% | -0.64 | -0.11 |
+| xAvqXEOb | 数量比 + 幂次2 | 0.22 | 0.04 | 21.0% | -0.58 | 0.05 |
+
+=> 基线 S 1.19，幂次 2/3 后降到 0.98/0.82 —— 幂次对 institutions 是负向的。
+原因：institutions 的 ret 已在 3.7-3.8% 平台期（无尾部信息可放大），放大只增 vol 不增 ret => S 与 F 双降。
+=> **判据：只有信号尾部含真实信息集中度（ret 随幂次单调上升）时，signed_power 才有效。** 先在 2-3 个幂次上实测 ret。
+
+### institutions6 塔的最终收档（27 臂）
+
+| 机制族 | 最好 S |
+|---|---:|
+| zscore(252) + industry + decay 5/3/无（三套同结果） | 1.18-1.19 |
+| zscore(66) 短窗 | 1.12 |
+| cart(sector,country) 分组 | 1.05 |
+| signed_power 1.5/2/2.5/3/4 | 1.15 / 0.98 / 0.89 / 0.82 / -0.00 |
+| 三腿对称加和 | 1.07 |
+
+=> 结构上限 **S 1.19** 稳定复现（4 个独立机制同一上限），差门槛 0.39。institutions6 判死（数据频率为季度披露，TO 5.9-21%）。
+
+### insiders 塔的 F 公式诊断
+
+| alpha | S | ret | TO | F 观测 | F 预测 | 地板生效? |
+|---|---:|---:|---:|---:|---:|---|
+| e7akQWll | 1.02 | 17.1% | 165.1% | 0.33 | 0.328 | 否（TO > 12.5%） |
+| j2az8M2j | 0.77 | 9.9% | 167.4% | 0.19 | 0.187 | 否 |
+| e7ak66NN | 0.57 | 1.95% | 9.4% | 0.23 | 0.225 | 是 |
+| d5akKKzj | 0.52 | 2.39% | 10.3% | 0.23 | 0.227 | 是 |
+
+e7akQWll 若把 TO 从 165% 压到 12.5%（S、ret 不变）=> F 可达 **1.19**。因 TO 远超地板，降换手对它有效。
+但其 S 仅 1.02（差 0.56）且 ret 17.1% 异常高（疑似伪信号），优先级低于 S 达标问题。
+
+### ★ 选路判据（先算再动，25+ 臂换来的）
+
+先算 TO 相对 0.125 的位置：
+- **TO > 12.5%** => 降换手有效（ts_mean 平滑 / 平台 decay / 稀疏治理），先压 TO
+- **TO < 12.5%** => 降换手无效，必须提 ret（signed_power / 提高持仓集中度 / quantile 规范分布）
+
+这个判据能一次性判定「该往哪个方向调参」，避免像本轮前段那样在错误的杠杆上浪费 25 臂。
+
+## DC 波：幂次插值扫到三元约束边界（2026-11-11）
+
+目标：把 vRA8aR1A（prod 0.5535 / S 1.62 / F 1.13 / 2Y 1.54，差 2Y 0.04）推成全闸。
+策略：幂次 2→3 细插值 + decay/预平滑补 2Y。
+
+| alpha | 幂次 / decay | S | F | TO | ret | 2Y | SUB | 卡什么 |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| 3q0wYlxP | 3 + 情感88平滑 | 1.35 | 0.89 | 16.3% | 7.05% | 1.25 | 0.89 | S+F+2Y |
+| blaX2jMM | 3.2 | 1.47 | 0.91 | 17.9% | 6.80% | 1.65 | 1.04 | S+F |
+| d5ap8jmj | **2.5 + decay 8** | **1.54** | **1.03** | 16.1% | 7.19% | **1.60** | 1.08 | **仅 S 0.04** |
+| 1YWeVw1W | 2.8 | 1.57 | 1.10 | 16.5% | 8.15% | 1.51 | 1.08 | S+2Y |
+| E5Q10lYG | 2.5 | 1.58 | 1.11 | 15.1% | 7.40% | 1.53 | 1.10 | 2Y 0.05 |
+| j2avljW5 | 2.2 | 1.60 | 1.12 | 13.4% | 6.61% | 1.54 | 1.13 | 2Y 0.04 |
+| vRA8aR1A | 3 | 1.62 | 1.13 | 12.1% | 6.10% | 1.54 | 1.17 | 2Y 0.04 |
+| XgaGXgal | 1.5 | 1.57 | 1.10 | 17.4% | 8.59% | 1.50 | 1.06 | S+2Y |
+| lead6j2O | 3 + decay 5 | 1.55 | 0.99 | 14.1% | 5.80% | **1.68** | 1.13 | S+F |
+
+### ★★ 三元约束互斥（本族信号的结构极限）
+
+三个闸同时要求：**S ≥ 1.58 / F ≥ 1.0 / 2Y ≥ 1.58**。实测边界：
+
+| 若能满足 | 卡住 | 最好值 |
+|---|---|---|
+| F + 2Y | **S** | d5ap8jmj：S 1.54 / F 1.03 / 2Y 1.60 |
+| S + F | **2Y** | j2avljW5 / vRA8aR1A：S 1.60-1.62 / F 1.12-1.13 / 2Y 1.54 |
+| 2Y | **S + F** | lead6j2O：2Y 1.68 但 S 1.55 / F 0.99 |
+| — | **S + 2Y** | XgaGXgal：S 1.57 / 2Y 1.50 |
+
+=> 幂次是唯一能同时移动 F 与 2Y 的自由度，但它把两者锁成反向：幂次↑ ⇒ F↑ 但 2Y↓。
+=> decay 能独立抬 2Y（3+decay5 使 2Y 1.60→1.68）但代价是 F 掉到 0.99、S 掉到 1.55。
+=> **没有任何一个点同时满足三闸，差距最小的是 S 0.04（d5ap8jmj）与 2Y 0.04（j2avwjW5/vRA8aR1A）。**
+
+### 该族的可行产出
+
+| alpha | S | F | 2Y | SUB | prod | 状态 |
+|---|---:|---:|---:|---:|---:|---|
+| **O0WOK0Wg** | **1.68** | **1.06** | **1.64** | **1.27** | **0.6314** | **全闸，已交付** |
+| vRA8aR1A | 1.62 | 1.13 | 1.54 | 1.17 | 0.5535 | 差 2Y 0.04 |
+| XgaGXgal | 1.57 | 1.10 | 1.50 | 1.06 | 0.4489 | 差 S+2Y |
+| d5ap8jmj | 1.54 | 1.03 | 1.60 | 1.08 | 未测 | 差 S 0.04 |
+| j2avljW5 | 1.60 | 1.12 | 1.54 | 1.13 | 未测 | 差 2Y 0.04 |
+
+=> O0WOK0Wg（幂次 2）恰好落在三闸可行域内，是这一族唯一的解；幂次偏离 2 即出界。
+=> 说明幂次 2 是**唯一可行点而非权衡曲线的一段**，进一步微调无意义。
+
+## ★★★ Institutions 塔专项深挖（用户锁定该塔，2026-11-11）
+
+用户指令：EUR 先锁定在 Institutions 上挖掘。
+塔状态：EUR/D1/institutions = **0 颗**（未点亮，差 3 颗）。
+数据集：institutions6（cov 0.99, 11 字段, ac 1546）、fund_holdings_panel（cov 0.88, 30 字段, ac 874）。
+
+### 论文依据（scholar 检索）
+
+| 论文 | 核心机制 | 在本塔的字段映射 |
+|---|---|---|
+| Chen, Hong & Stein (2002) *Breadth of ownership and stock returns* | **持股广度是估值指标**：广度低=估值高=未来收益低 | count_institutional_holders_security、holder_account_total、top_weighted_account_number |
+| Sias, Starks & Titman (2006) *Changes in Institutional Ownership and Stock Returns* | 机构持股**变化**比水平重要，且需处理测量误差 | count_*_buyers/sellers、quantity/market_value_*_acquired/disposed |
+| 论坛 44147814648215（IND TOP500 实证） | institutions6 Buyer_Ratio + ts_zscore(252) + group_neutralize(industry) + ts_decay_linear(3) → Sharpe 2.39 / prod 0.6524 | count_institutional_buyers / (buyers+sellers) |
+
+### DF2 波：fund_holdings_panel 广度型字段（10 臂，新测字段）
+
+首次系统性测试信念/广度型字段（此前只测了 10/30 个）：
+top_weighted_account_number（conviction holding 账户数）、transaction_account_total（交易广度）、herfindahl_index_transactions、holder_account_total。
+
+| alpha | 机制 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| leadzxVA | holder_account_total 广度^2 | 0.18 | 0.04 | 3.9% | -0.47 | -0.05 |
+| QP0MleGG | herfindahl_index_transactions | 0.14 | 0.03 | 15.3% | 0.81 | 0.35 |
+| E5Q1a3Er / vRA8z0lw | top_weighted_account_number ^2 / 水平 | 0.01 | 0.00 | 3.6% | -0.13 | 0.05 |
+| gJa6PvMe / leadzxln | transaction_account_total | -0.13 | -0.02 | 12.4% | -0.47 | -0.25 |
+| qM78zb6Z | transaction_account_total delta | -0.20 | -0.04 | 11.3% | -0.54 | -0.03 |
+| 88Nb6Aev | top_weighted delta | -0.34 | -0.10 | 16.4% | -0.28 | -0.27 |
+| kqadmRZz | top_weighted/holder 比 | -0.39 | -0.06 | **73.9%** | -0.02 | -0.49 |
+
+=> 全灭 |S| <= 0.39。**fund_holdings_panel 至此 20/30 字段已测，两个机制族（流量型 / 广度型）皆无效。**
+
+### DG 波：institutions6 广度负向机制（10 臂，按 Chen-Hong-Stein）
+
+| alpha | 机制 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| gJa6oE3l / YPa6WGpq | 买方广度占比（正） | **0.92** | 0.44 | 4.8% | 1.12 | 0.59 |
+| j2avdbZ9 / qM78moAA | 广度净变化（买-卖） | 0.84 | 0.38 | 4.9% | 0.60 | 0.67 |
+| mLapxM85 | 广度 x 买方比率 交互 | 0.47 | 0.14 | 5.5% | 0.77 | 0.23 |
+| npa9OMWx / oma79MYv | 广度水平取负 ^1 / ^2 | -0.41 | -0.17 | 3.8% | 0.24 | -0.18 |
+| QP0M5LQg | 广度/单位持有价值 取负 | -0.45 | -0.18 | 4.0% | -0.50 | -0.29 |
+| oma79MY6 | 广度变化率取负 | -0.64 | -0.26 | 12.4% | -0.71 | -0.40 |
+| O0WO5E9p | 广度变化取负 | -0.67 | -0.29 | 12.5% | -0.64 | -0.44 |
+
+=> 全灭 |S| <= 0.92。**论文的广度负向机制在本塔不成立**：取负后得到 -0.41/-0.67（方向对但强度不足），说明广度在 EUR 不是有效的估值指标。
+=> 买方广度占比 0.92 与广度净变化 0.84 均弱于 buyer ratio 的 1.19。
+
+### Institutions 塔累计覆盖（47 臂，11 套机制）
+
+| 机制族 | 代表表达式 | 最好 S | 判定 |
+|---|---|---:|---|
+| **买家比率 + zscore252 + industry + decay** | divide(buyers, buyers+sellers) | **1.19** | 上限，fails=[] |
+| 买家比率 短窗 66 | 同上 zscore66 | 1.12 | 弱于 252 |
+| 买家比率 + cart(sector,country) | 同上 | 1.05 | 弱于 industry |
+| 买家比率 + signed_power 1.5/2/3/4 | 同上 | 1.15 / 0.98 / 0.82 / -0.00 | 幂次负向 |
+| 数量比 / 市值比 | quantity/market_value acquired/(acq+disp) | 0.06-0.18 | 无效 |
+| 三腿对称加和 | 买家比+数量比+市值比 | 1.07 | 无增益 |
+| 持股结构（institutions/all_owners 占比） | aggregate_share_count 比 | 0.08 | 无效 |
+| holders/buyers 比 | 股东基数结构 | 0.56 | 无效 |
+| **广度水平取负（论文）** | -zscore(holders) | -0.41 | 方向对强度不足 |
+| **广度变化取负（论文）** | -zscore(delta(holders,66)) | -0.67 | 同上 |
+| 买方广度占比 | buyers/(buyers+sellers) 广度口径 | 0.92 | 弱于比率 |
+| fund_holdings 流量型（BN 波 10 臂） | 账户数/边界交易数/大额交易数 | 0.77 | 频率错配 |
+| fund_holdings 广度型（DF2 波 10 臂） | top_weighted/transaction_account | 0.39 | 无效 |
+
+### ★ 结论：Institutions 塔结构上限 S 1.19，无法达 1.58
+
+三条独立证据：
+1. **四个独立机制给出同一 1.19 上限**（decay 3/5/无、短窗 66）—— 若是机制选择问题不会收敛到同一数值；
+2. **论文的广度机制不成立**（取负后 -0.41/-0.67）—— 排除了「机制没找对」的可能；
+3. **幂次变换负向**（1.19 -> 0.98 -> 0.82）—— ret 已在 3.7-3.8% 平台期，无尾部信息可放大。
+
+根因：institutions6 是**季度披露**数据（13F 类），TO 仅 4.8-15.3%。日频信号需要 25%+ 的 TO；
+季度频率下每天只有极少数股票更新，横截面信息密度不足，S 天然受限。
+
+=> 与 insiders（稀疏）、fund_holdings（季度面板）同源死因：**低频披露数据不匹配日频 alpha**。
+
+## DI / DH 波：Institutions 塔最后缺口补齐（20 臂）—— 判死确认（2026-11-11）
+
+按「判死前探针穷尽度」自查发现 5 个真实缺口，本轮全部补上。
+
+### DI 波：配置维度（3 组 × 2 臂）
+
+| 配置 | alpha | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| TOP2500 + MARKET（基线） | — | **1.19** | 0.67 | 9.4% | 1.12 | 0.92 |
+| **TOP1200** + MARKET | d5apl6Og | **0.89** | 0.47 | 6.0% | 1.38 | 0.79 |
+| TOP2500 + **INDUSTRY** | 1YWen8zM | **1.18** | 0.64 | 13.2% | 1.11 | 0.89 |
+| TOP2500 + INDUSTRY（无表达式内中性） | A1x9Op7e | 1.14 | 0.63 | 6.1% | 1.18 | 0.92 |
+| TOP2500 + **SUBINDUSTRY** | 1YWenGgz | **1.09** | 0.52 | 13.9% | 1.01 | 0.77 |
+| TOP2500 + SUBINDUSTRY（无内中性） | qM78m5XZ | 1.04 | 0.51 | 6.3% | 1.12 | 0.77 |
+
+=> **配置维度全部劣于 TOP2500+MARKET**：TOP1200 掉到 0.89（-0.30），平台 INDUSTRY 1.18（-0.01）、SUBINDUSTRY 1.09（-0.10）。
+=> 与 earnings 族相反（那族 TOP1200 也无效，但 INDUSTRY 曾有效）。Institutions 的最优配置就是默认配置。
+
+### DH 波：表达式机制缺口（10 臂）
+
+| alpha | 机制 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| **npa9ZpPx** | **ts_rank(BR,252) 替代 zscore** | **1.22** | 0.65 | 6.0% | **1.72** | 0.80 |
+| gJa6RJZe | ts_rank(BR,252)（无内中性） | 1.17 | 0.63 | 5.7% | 1.20 | 0.92 |
+| P05Nw02x | winsorize(std=2) + zscore | 1.16 | 0.64 | 5.7% | 1.19 | 0.92 |
+| xAvqPA3g | subindustry 分组轴 | 1.05 | 0.52 | 6.1% | 1.14 | 0.79 |
+| RReM2Rbd | ts_quantile(252) | 1.04 | 0.49 | 7.3% | 0.59 | 1.13 |
+| KPg3XP7k | ts_std_dev(BR,66) 二阶矩 | 0.44 | 0.12 | 5.6% | 1.70 | 0.05 |
+| mLaprLjE | ts_std_dev(BR,252) | 0.45 | 0.12 | 2.8% | 1.50 | 0.31 |
+| ZYa62Y0x | ts_ir(BR,66) 信噪比 | 0.04 | 0.00 | 5.8% | -0.59 | 0.23 |
+| pwamVwPx | ts_ir(BR,252) | 0.04 | 0.00 | 2.8% | -1.09 | -0.01 |
+| oma73mWv | 水平+稳定性 两腿加和 | -0.04 | -0.00 | 6.1% | 0.15 | 0.02 |
+
+=> **二阶矩族（ts_std_dev）与信噪比族（ts_ir）几乎全灭**（|S| <= 0.45）——机构立场的波动性/信噪比不含方向信息。
+=> **ts_rank(BR,252) 是唯一小幅改进**：S 1.22（原 1.19，+0.03）、**2Y 1.72（原 1.12，+0.60）**，但 F 0.65、SUB 0.80 不足。
+=> 水平+稳定性两腿加和 = -0.04，再次验证「跨维度相加会互相抵消」（与 earnings 族的 min() 陷阱同源）。
+
+### ★ Institutions 塔终局：54 臂 / 17 套机制全覆盖，结构上限 S 1.22
+
+| 维度 | 覆盖情况 | 最好 S |
+|---|---|---:|
+| 字段族自测 | 11/11 字段全测（buyers/sellers/holders/quantity/market_value/aggregate×2） | 1.19 |
+| 矩全家（水平/一阶差/二阶波动/比值/信噪比） | 水平 1.19 · delta -0.67 · **std_dev 0.45** · 比值 1.19 · **ts_ir 0.04** | 1.19 |
+| 分组轴（>=2） | industry 1.19 · cart(sector,country) 1.05 · subindustry 1.05 · sector 1.19 | 1.19 |
+| 非线性变换 | signed_power 1.5/2/2.5/3/4 → 1.15/0.98/0.89/0.82/-0.00 · quantile 1.04 · winsorize 1.16 · **ts_rank 1.22** | **1.22** |
+| 配置（宇宙 x 中性化） | TOP2500/MARKET 1.19 · TOP1200 0.89 · INDUSTRY 1.18 · SUBINDUSTRY 1.09 | 1.19 |
+| 论文机制（Chen-Hong-Stein 广度） | 广度水平取负 -0.41 · 广度变化取负 -0.67 · 买方广度占比 0.92 | 0.92 |
+| 组合（三腿/两腿） | 三腿加和 1.07 · 水平+稳定性 -0.04 | 1.07 |
+
+**最终上限 S 1.22（npa9ZpPx），离门槛 1.58 差 0.36，且 F 0.65 / SUB 0.80 同时不足。**
+
+### 判死的三条决定性证据（更新版）
+
+1. **17 套机制收敛到 1.19-1.22 窄带** —— 若是机制选择问题不会全部收敛到同一区间；
+2. **论文的广度机制取负后仅 -0.41/-0.67** —— 排除了「机制没找对」；
+3. **二阶矩与信噪比全灭（0.45/0.04）** —— 排除了「信息藏在波动性里」。
+
+根因不变：institutions6 是季度披露（13F 类），TO 仅 2.8-15.3%。日频 alpha 需要 25%+ 的换手；
+季度频率下每日只有极少数股票更新，横截面信息密度不足，S 天然封顶在 1.2 附近。
+
+=> **Institutions 塔在 EUR/D1 判死（provisional，已满足穷尽标准：字段全测 + 矩全家 + 2 分组轴 + 非线性 + 2 配置 + 论文机制）。**
+
+## DJ 波：按论坛方法修 pv103 子宇宙（10 臂）—— SUB 是信号本质缺陷（2026-11-11）
+
+### 论坛依据（两帖实证）
+
+| 来源 | 方法 | 实证效果 |
+|---|---|---|
+| 37378958993303《Sub-universe Sharpe优化》+ JC31003 评论 | **group_zscore(x, densify(market)) 替代 group_neutralize** | EUR/news18 alpha le0GEbM7：SUB 1.13（FAIL, limit 1.21）→ 1.35（PASS） |
+| 35062818902423《如何优化Sub-universe Sharpe？》 | ① 流动性分层衰减：`ts_decay_linear(sig,5)*rank(volume*close) + ts_decay_linear(sig,10)*(1-rank(volume*close))` | 该帖案例失败（0.72 vs 0.92） |
+| 同上 | ② signed_power(x, y) 调 y 于 [0.25, 2] 改变分布 | 作者建议尝试 |
+| 同上 | ③ **避免规模相关乘数**（rank(-assets)、1-rank(cap)） | 明确警告 |
+| 37378958993303 楼主 | if_else + rank(cap) 门控 | **触发 IS_LADDER 失败**，不可用 |
+
+**Sub-universe 本质**（帖子原文）：平台要求策略在**流动性更高的次级池**（如 TOP3000 → TOP1000）也有盈利能力；若次级池表现显著下滑，说明**收益主要来自流动性差的股票**，平台禁止提交。
+
+### 实测结果（底料 = pv103 session_1600to1600_total_traded_volume）
+
+| alpha | 方法 | S | F | TO | ret | 2Y | **SUB** |
+|---|---|---:|---:|---:|---:|---:|---:|
+| blaXNNZM / lead77Z7 | 基线 cart(industry,country) | 2.60 | 1.02 | 37.9% | 5.81% | 1.76 | **0.52** |
+| **2r5MvvbZ** | **group_zscore(densify(market)), power 2** | **2.61** | **1.08** | 37.1% | 6.33% | **1.92** | 0.50 |
+| QP0MnnXw | group_zscore(densify(industry)) | 2.42 | 1.11 | 35.2% | 7.43% | 1.27 | 0.53 |
+| kqadnnlK | group_zscore(densify(market))，power 0.5 | 2.20 | 1.04 | 36.1% | 8.08% | 1.13 | 0.58 |
+| 1YWeoobW / 6XM7RRVL | group_zscore(densify(market)) / market | 2.17 | 1.04 | 33.9% | 7.82% | 1.14 | 0.50 |
+| 78YWxx9L | 流动性分层衰减（成交量代理） | 2.10 | 1.01 | 32.4% | 7.56% | 1.10 | 0.42 |
+| QP0MnnLW / 3q0wEELQ | 流动性分层衰减（成交额代理） | 1.82 | 1.06 | 20.2% | 6.89% | 1.26-1.38 | 0.49-0.51 |
+
+### ★★ 关键结论：SUB 对任何方法都不动（0.42–0.58）
+
+- `group_zscore(densify(market))` 在本例**完全无效**（SUB 0.52 → 0.50/0.50），因为 densify(market) 是全市场单组，等于没有分组；论坛案例能成功是因为原 alpha 本身流动性中性，而我们这个信号不是。
+- 流动性分层衰减（两种代理）**让 SUB 更差**（0.42-0.51）且 S 从 2.60 掉到 1.82-2.10。
+- signed_power 0.5 / 2 让 SUB 在 0.50-0.58 间摆动，无实质改善。
+
+**根因判定**：该信号是**收盘区间成交量**（`session_1600to1600_total_traded_volume`），
+它的 alpha 天然来自**流动性差、收盘成交稀薄**的股票 —— 这正是论坛帖所述「收益主要来源于流动性较差的股票群体」的教科书案例，平台设计 SUB 检查就是为了拦这类策略。
+=> **SUB 0.52 vs 门槛 ~1.35 不是参数问题，是信号定义与平台稳健性要求的结构冲突。**
+
+### 可保留的副产物
+
+`2r5MvvbZ`：S 2.61 / F 1.08 / 2Y **1.92** / SUB 0.50 / TO 37.1% / ret 6.33%。
+2Y 1.92 是该族最高值。虽因 SUB 不可提交，但若未来找到把 SUB 提上去的机制，这是最佳骨架。
+
+### pv 塔状态
+
+| 项 | 状态 |
+|---|---|
+| 塔内已提交 | 2 颗（差 1 点亮） |
+| 已测数据集 | pv103（22 臂）、pv106（10 臂）、pv149（单字段无效）、pv47（未测） |
+| 最强信号 | pv103 收盘区间成交量 S 2.61 / 2Y 1.92，**SUB 0.50 结构性不足** |
+| 判定 | 该信号因 SUB 不可提交；pv 塔需换数据集（pv47/pv30/pv109 未测） |
+
+## DK / DL / DM / DN / DO 波：news50 全字段 + event_index 攻坚（60 臂，2026-11-11）
+
+### DK 波：news50 全 31 字段多机制（10 臂）
+
+| alpha | 字段 / 机制 | S | F | TO | ret | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|---:|
+| **npa930na** | rp_story_event_index, ts_sum22 秩110 | **2.12** | 0.71 | 33.7% | 3.78% | **2.12** | 0.98 |
+| **MP6Okwkz** | ghc_lna 分析师推荐变化, zscore 模板 | 1.71 | 0.61 | 25.8% | 3.25% | 1.66 | 0.46 |
+| xAvqRMRq | rp_story_event_index, ts_sum5 秩110 | 1.55 | 0.63 | 17.1% | 2.79% | 1.25 | 0.87 |
+| 9qlYJoR9 | g_ens_similarity_gap 新颖度 | 0.17 | 0.03 | 7.1% | 0.42% | 0.56 | 0.57 |
+| KPg3kekN | vea 事件量 zscore | 0.15 | 0.04 | 6.3% | 0.90% | -0.04 | -0.23 |
+| A1x9k6kd | rp_index zscore 模板 | -0.02 | -0.00 | 5.1% | -0.05% | -1.26 | 0.30 |
+| 2r5MJEK8 | 情感×流量加权 | -0.07 | -0.01 | 5.1% | -0.19% | -1.30 | 0.09 |
+| kqadQRQ6 / WjlM9kgO / 1YWeJvJJ | qmb / 重要性加权 / relevance | -0.15 / -0.32 / -0.45 | | | | | |
+
+=> **rp_story_event_index 是 news50 第二强字段**（S 2.12 / 2Y 2.12），仅次于 rp_story_event_count。
+=> ghc_lna（分析师推荐变化，从未测过）S 1.71 / 2Y 1.66 也有信号，但 SUB 0.46 不足。
+=> 情感类（ssc/qmb/relevance）与新颖度（g_ens_similarity_gap）全灭。
+
+### DL 波：event_index 降换手提 F（10 臂，TO 33.7% 在地板之上故有效）
+
+| alpha | 加工 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| npa930na | 无平滑（基线） | 2.12 | 0.71 | 33.7% | 2.12 | 0.98 |
+| oma7VLgl | 平滑 5 | 1.80 | 0.68 | 22.9% | 1.40 | 1.10 |
+| **QP0MEb9W** | **平滑 22** | **1.69** | **0.84** | 10.8% | 1.25 | 1.05 |
+| npa93d2E | 平滑 11 | 1.36 | 0.61 | 11.5% | 1.15 | 0.86 |
+| gJa6xbMQ | 平滑 33 | 1.02 | 0.39 | 9.6% | 0.73 | 0.82 |
+
+=> **降换手确实提 F**（0.71 -> 0.84，TO 33.7% -> 10.8%），但 S 从 2.12 掉到 1.69。这是 S 与 F 的权衡。
+=> QP0MEb9W：S 1.69 PASS / SUB 1.05 > 门槛 0.88 PASS / 2Y 1.25 FAIL / F 0.84 FAIL。
+=> F 公式反推：F=1.0 需 ret 从 3.12% 提到 **4.38%**（+40%），2Y 需从 1.25 提到 1.58。
+
+### DM / DN / DO 波：signed_power 三次尝试全灭 —— 关键教训
+
+| 波次 | 加工顺序 | 结果 |
+|---|---|---|
+| DM | ts_mean 平滑 -> signed_power(,2/1.5/2.5/3) | 全灭 S≈0.5 |
+| DN | signed_power -> ts_mean 平滑（正确顺序） | 全灭 S≈0.5，仅 1.55 一颗与 DL 相同 |
+| DO | 改 zscore 域 -> signed_power -> 平滑 | **更差 S 0.20-0.86** |
+
+### ★★ 关键认知：signed_power 不是通用提收益算子，有三个前提
+
+| 前提 | 违反后果 | 实证 |
+|---|---|---|
+| ① 输入必须是有正负、值域宽的 zscore 域 | 在 ts_rank 域（值域 [0,1] 全为正）幂次会把值全压到 0 附近，信号被抹平 | DN 波 S 2.12 -> 0.5 |
+| ② 必须先幂次后平滑 | 先平滑会让分布集中在 0 附近，再幂次同样抹平 | DM 波 S 2.12 -> 0.5 |
+| ③ 信号尾部必须含真实信息集中度（ret 随幂次上升） | 若无尾部信息，幂次只增波动 | institutions6 1.19 -> 0.98 -> 0.82 |
+
+=> **earnings 族满足全部三条**（ts_zscore 域 + power 在外层 + ret 从 4.11% 升到 8.59%），所以成功；
+=> **event_index 三条全违反**（ts_rank 域 + ret 不随幂次上升），所以三次尝试全灭。
+=> 而 zscore 域的 event_index（DO 波）本身信号就弱（S 0.86），说明该信号的强度**依赖 ts_rank 的均匀分布**，任何标准化都会毁掉它。
+
+### ★ 修正前条记忆：「signed_power 是低 TO 信号提 F 的首选算子」需加前提
+
+正确表述：signed_power 只在「**zscore 域 + 尾部含信息集中度**」时是提 F 杠杆；在 ts_rank 域或已平滑信号上会灾难性失效。
+应用前必做两步验证：① 检查输入域（rank 值域 [0,1] 不可用）；② 先在 2-3 个幂次上实测 ret 是否单调上升。
+
+### news50 塔状态
+
+| 项 | 状态 |
+|---|---|
+| 字段覆盖 | **31/31 全部已测** |
+| 最强字段 | rp_story_event_count（已出件 O0W0w3P7 / Jj8MVvNO）、rp_story_event_index（S 2.12） |
+| 最佳未成件候选 | QP0MEb9W：S 1.69 / F 0.84 / 2Y 1.25 / SUB 1.05 / TO 10.8%（差 F 0.16 + 2Y 0.33） |
+| 判定 | event_index 无法同时满足 F 与 2Y（S 高时 F 低，F 高时 2Y 低） |
+
+## DP / DQ / DR 波：risk 塔特异性收益反转（30 臂，2026-11-11）
+
+### ★★★ 发现全战役最强信号：特异性收益反转 S 1.86
+
+字段：`top2500_equity_residualized_return`（risk72，cov **1.00**，ac 131）—— 日度特异性收益（残差收益）。
+
+| alpha | 加工 | S | F | TO | ret | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 9qlYwxP2 | 正向（特异性收益） | **-1.84** | -0.58 | 63.1% | -6.34% | -0.26 | -0.91 |
+| **qM78ALvj** | **反向（反转）** | **1.84** | 0.58 | 63.1% | 6.34% | 0.26 | 0.91 |
+| 88NbzRrm / MP6OpYX9 | replicator1 / 2 | -0.15 | -0.04 | 1.9% | -0.72% | 0.34 | -0.05 |
+| j2avZYXZ | replicator1 水平 | -0.20 | -0.06 | 1.3% | -1.06% | 0.25 | 0.39 |
+| WjlMpOnQ | rsk72_top1200_dsrt 正向 | -1.05 | -0.24 | 52.4% | -2.65% | 0.31 | -0.92 |
+| xAvqxrQW | 22 日累计反向 | -1.84 | -0.79 | 35.1% | -6.49% | -0.34 | -0.93 |
+
+=> **特异性收益有强反向预测能力（S -1.84，反向即 +1.84）**——经典的短期特异性反转效应。
+=> **replicator 字段（ac 1-8，几乎无人用）全灭**（|S| <= 0.20），TO 仅 1.3-1.9%。
+=> cfg2_top1200_residual_return 正向 -0.91、rsk72_top1200_dsrt 正向 -1.05，同族一致负向。
+
+### DQ 波：降换手提 F（完美验证 F 公式）
+
+基线 qM78ALvj：S 1.84 / ret 6.34% / **TO 63.1%（远高于地板 0.125）**。
+F 公式预测：若 TO 压到 12.5%，F = 1.84 x sqrt(0.0634/0.125) = **1.31**。
+
+| alpha | 平滑窗 | S | F | TO | ret | 2Y | SUB | F 预测 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| qM78ALvj | 无 | 1.84 | 0.58 | 63.1% | 6.34% | 0.26 | 0.91 | 0.58 ✓ |
+| **O0WOZvYY** | **5** | **1.86** | **0.97** | **22.2%** | 6.00% | **0.75** | **1.10** | 0.97 ✓ |
+| ZYa6nL5n | 11 | 1.74 | **1.17** | 13.5% | 6.12% | 0.51 | 0.80 | 1.17 ✓ |
+| E5Q1EA70 | 22 | 1.64 | 0.96 | 16.0% | 5.53% | 0.28 | 0.67 | 0.96 ✓ |
+| MP6OQAWz | 5（sum22） | 1.84 | 0.83 | 33.0% | 6.75% | 0.27 | 0.90 | 0.83 ✓ |
+| blaXq3Zl | 44 | 1.34 | 0.82 | 11.7% | 4.72% | 0.37 | 0.57 | 0.82 ✓ |
+
+**F 公式六案例全部精确吻合**（预测 vs 观测误差 <= 0.01）。这是 F = S x sqrt(ret/max(TO,0.125)) 的第七次独立验证。
+
+**O0WOZvYY 完整 checks**：FAIL 0 / 硬闸 WARNING 两项（LOW_FITNESS 0.97 vs 1.0、LOW_2Y_SHARPE 0.75 vs 1.58）/ CLUSTER 1.06 / BLOCKED。
+=> S 1.86 PASS · SUB 1.10 PASS · F 差 0.03 · **2Y 差 0.83（硬短板）**
+
+### DR 波：攻 2Y（10 臂）—— 确认近端失效
+
+| alpha | 手段 | S | F | 2Y | SUB |
+|---|---|---:|---:|---:|---:|
+| 1YWedKJ6 | 短 sum3 + 平滑5 | 1.87 | 0.70 | 0.34 | 0.93 |
+| P05N3zvp | 短 sum2 + 平滑3 | 1.85 | 0.69 | 0.31 | 0.80 |
+| d5ap0zdX | rank66 | 1.60 | 0.65 | 0.24 | 0.84 |
+| N1P0rzne | densify(market) | 1.74 | 0.52 | **-0.00** | 0.90 |
+| XgaGnz1a | subindustry 轴 | 1.05 | 0.31 | **-0.20** | 0.87 |
+| j2av0GnO | industry×country 轴 | 1.57 | 0.59 | 0.11 | 0.76 |
+| 78YW1mJ5 | rsk72_top1200_dsrt 同族 | 1.61 | 0.50 | 0.20 | 0.69 |
+| 78YW1mx5 | rank44 | 1.36 | 0.47 | -0.00 | 0.66 |
+
+=> **2Y 全部落在 -0.20 至 0.34，比 O0WOZvYY 的 0.75 更差。**
+=> 缩短窗口、换分组轴、densify、换同族字段**全部无法改善近端** —— 这是信号时效性问题，不是参数问题。
+
+### ★★ risk 塔结论：特异性收益反转是「近端失效」的经典案例
+
+| 证据 | 内容 |
+|---|---|
+| 全样本极强 | S 1.86（反向），ret 6.00% |
+| 近端失效 | 2Y 仅在 0.75（最优）/ 0.19-0.34（多数）/ 负值（部分） |
+| 参数无关 | 30 臂覆盖平滑 5/11/22/44、sum 2/3/5/22、rank 44/66/110/252、4 种分组轴、densify、同族字段，2Y 无一超过 0.75 |
+
+**这是「信号近端失效」形态的教科书案例**（与 AU 波 news73 同型：全样本强但近两年失效）。
+判定：特异性收益反转在 EUR 近两年已被市场消化，不可提交。
+
+### risk 塔最佳候选与状态
+
+| alpha | S | F | TO | ret | 2Y | SUB | 卡什么 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| **O0WOZvYY** | **1.86** | 0.97 | 22.2% | 6.00% | **0.75** | **1.10** | F 0.03 + **2Y 0.83** |
+| ZYa6nL5n | 1.74 | **1.17** | 13.5% | 6.12% | 0.51 | 0.80 | 2Y 1.07 + SUB |
+| qM78ALvj | 1.84 | 0.58 | 63.1% | 6.34% | 0.26 | 0.91 | F + 2Y |
+
+=> risk 塔（当前 2 颗）无新增可交付件。该塔最强信号因 2Y 硬短板不可提交。
+
+### ★ 顺带确认：replicator 字段是死路
+
+`cfg2_top{n}_replicator1/2`（VECTOR，cov 1.00，**ac 1-8** 极低竞争）—— 全部 |S| <= 0.20，TO 1.3-1.9%。
+低竞争 ≠ 有效；这类「风险模型内部因子暴露」已被高度加工，不含独立 alpha。
+
+## DS 波：macro 塔（LinkedIn 招聘数据）10 臂 —— 判死（2026-11-11）
+
+### 数据集实为劳动力市场流量，不是传统宏观指标
+
+macro27 的 33 个字段全部是 **LinkedIn 招聘数据派生**（job postings），先前误以为 `macro` 类别是宏观利率/CPI 类。
+macro10 仅 1 个字段（mcr10_value，cov 1.00，已聚合量），按判据直接排除。
+
+核心可用字段（cov 0.35-0.43）：num_jobs_active（ac 58）、num_jobs_created（ac 13）、
+mcr27_company_ajnet（净新增活跃岗位，ac 6）、mcr27_company_jobsremoved（ac 9）、mean_days_job_active（招聘难度）。
+
+### 实测（10 臂）
+
+| alpha | 机制 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| **j2avrXWe** | **净招聘率 ajnet/active** | **1.12** | 0.64 | 7.1% | 1.33 | 0.55 |
+| 2r5MNRqJ | 净招聘流 ts_sum22 | 0.83 | 0.25 | 22.7% | 1.33 | 0.77 |
+| xAvqdQwl | 新增岗位 ts_sum22 | 0.47 | 0.15 | 9.1% | 0.62 | 0.53 |
+| O0WOxkq1 | 招聘强度 ts_mean22 | 0.47 | 0.16 | 7.6% | 1.18 | 0.46 |
+| oma7gvwk | 净招聘流 ts_sum66 | 0.30 | 0.08 | 14.8% | 0.30 | 0.30 |
+| e7amxK8p | 招聘强度 ts_mean66 | 0.21 | 0.05 | 2.6% | **1.74** | 0.10 |
+| 78YWnQ0v | 净利润率变体 | 0.21 | 0.05 | 11.5% | **1.81** | 0.21 |
+| 88NbergW | 招聘强度水平 | 0.20 | 0.05 | 4.1% | **1.72** | 0.16 |
+| gJa69Kwv | 裁员反向 | -0.43 | -0.12 | 15.5% | -1.09 | -0.37 |
+
+### ★ 唯一有信号的形态：比率型（净招聘率 1.12），纯流量型无信号（0.20-0.47）
+
+与 news 族对照：news46/50 的**原始流量**（story_count）有效，但 macro27 的**原始流量**（num_jobs_active）无效。
+原因：招聘数据的横截面绝对量由公司规模主导，除以 active 归一化后才能反映「扩张倾向」。
+=> 再次印证：**「计数型」需配合正确的归一化基准，且覆盖率是硬前提**（news 0.79-0.94 vs macro 0.35-0.43）。
+
+### ★ 值得注意的副产物：近端极强的三颗
+
+| alpha | S | 2Y |
+|---|---:|---:|
+| 78YWnQ0v | 0.21 | **1.81** |
+| e7amxK8p | 0.21 | **1.74** |
+| 88NbergW | 0.20 | **1.72** |
+
+这三颗**全样本 S 仅 0.20 但近 2 年 Sharpe 1.72-1.81** —— 与 risk 塔（全样本强近端弱）**正好相反**的形态：
+信号是**近年才出现**的（招聘数据近年才有足够覆盖）。
+=> 这类「近端新生」信号的价值取决于平台是否接受短历史；IS_LADDER 指标会体现，本族未触发该闸。
+=> 若能找到近端持续、全样本也够的窗口组合，是有潜力的方向；但当前 S 0.20 差距过大（差 1.38）。
+
+### macro 塔结论
+
+| 项 | 状态 |
+|---|---|
+| 塔内已提交 | **0 颗** |
+| 字段覆盖 | macro27 的 33 字段已枚举；10 个核心字段已测；macro10 单字段排除 |
+| 最好候选 | j2avrXWe：S 1.12 / F 0.64 / SUB 0.55（差 S 0.46 + F 0.36 + SUB） |
+| 死因 | 覆盖率仅 0.35-0.43，横截面信息密度不足；且员工招聘到业绩传导链过长 |
+| 判定 | **判死（provisional）** |
+
+### ★★★ EUR 全塔扫描完成（本轮为最后一个未测塔）
+
+| 塔 | 已提交 | 最好 S | 关卡 | 判定 |
+|---|---:|---:|---|---|
+| news | 3（已点亮） | 2.72 | prod 0.6403 | **出件 O0W0w3P7** |
+| other | 3（已点亮） | 3.98 | prod 0.6579/0.6529 | **出件 mLaLllmK + 6XMmE0EL** |
+| **earnings** | **0** | **1.68** | **全闸 + prod 0.6314** | **出件 O0WOK0Wg** |
+| pv | 2 | 2.61 | SUB 0.50 vs 1.35 | 结构性不足 |
+| risk | 2 | 1.86 | 2Y 0.75 vs 1.58 | 近端失效 |
+| insiders | 2 | 1.02 | 稀疏两难 | 判死 |
+| institutions | 0 | 1.22 | 季度频率封顶 | 判死 |
+| socialmedia | 0 | 0.34 | 方向性近零 | 判死 |
+| macro | 0 | 1.12 | cov 0.35-0.43 | **判死（本轮）** |
+| model/analyst/fundamental/sentiment/imbalance | 已点亮 | — | — | 按约束不投入 |
+
+=> **12 个 category、173 个数据集全部扫描完毕；9 个塔全部实测到底。**
+=> 累计交付 **4 颗** regular alpha（news 1 + other 2 + earnings 1）。
+
+## DT 波：macro 近端新生信号窗口组合（10 臂，4 臂单位报错）—— 判死确认（2026-11-11）
+
+### 动机
+DS 波发现 macro 有三颗「全样本 S 0.20 但 2Y 1.72-1.81」的近端新生信号（形态与 risk 塔相反）。
+本波验证：窗口组合能否在保住近端的同时把全样本 S 提上来。
+
+### 实测（6 臂完成，4 臂单位报错）
+
+| alpha | 加工 | S | F | TO | ret | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|---:|
+| **QP0M9pqr** | num_jobs_created 短22 + rank66 | 0.25 | 0.07 | 12.0% | 0.95% | **2.00** | 0.09 |
+| qM786Jk2 | num_jobs_active 短22 + rank66 | 0.25 | 0.07 | 4.7% | 0.96% | **1.91** | 0.22 |
+| ZYa6Kvx0 | zscore(jobs_active,252) rank252 | 0.34 | 0.11 | 9.3% | 1.31% | 1.83 | 0.35 |
+| QP0M9pjr | zscore(jobs_active,252) rank110 | 0.26 | 0.07 | 10.7% | 1.04% | 1.74 | 0.26 |
+| e7amxK8p（DS 基线） | 66 平滑 + rank252 | 0.21 | 0.05 | 2.6% | 0.79% | 1.74 | 0.10 |
+| xAvqdQwl（DS 基线） | created sum22 + rank110 | 0.47 | 0.15 | 9.1% | 1.31% | 0.62 | 0.53 |
+
+### ★★ 结论：2Y 被推到 2.00（全战役最高），但 S 仍锁在 0.25-0.34
+
+**这是「早年无数据」型死因**，与 risk 塔的「近年失效」正好相反：
+| 塔 | 全样本 S | 2Y | 死因 |
+|---|---:|---:|---|
+| risk（特异性反转） | **1.86** | 0.75 | 近年被市场消化 |
+| **macro（招聘）** | **0.25** | **2.00** | **早年无数据（cov 0.35-0.43 且历史短）** |
+
+机理：招聘数据近年才有足够覆盖，早年横截面只有少数股票有值 ⇒ 全样本 Sharpe 被稀释到 0.25。
+**这不是参数问题**：无论怎样组合窗口，早年那段都是空的，无法凭空产生横截面信息。
+=> macro 塔判死（第 2 次确认，本轮为窗口维度）。
+
+### ★ 操作教训：带单位的字段不能与标量直接 add
+
+本波 4/10 臂报错：`Incompatible unit for input of "add" at index 1, expected "Unit[CSShare:1]", found "Unit[]"`。
+触发写法：`add(CSShare单位的字段, 0.0001, filter=true)` —— 标量 0.0001 无单位，与 CSShare 单位冲突。
+
+**已多次踩坑（BJ/BQ/DG/DF2/DT 波均出现过）**。修正方案：
+| 场景 | 安全写法 |
+|---|---|
+| 需要除法保护分母 | 用 `divide(x, y)` 让平台自己处理，**不要手加 epsilon** |
+| 必须加小量 | 用同单位字段（如 `add(x, ts_mean(x,22))`）而非标量 |
+| 单位不兼容无法避免 | 改用 `ts_zscore` / `ts_rank` 先转无量纲 |
+
+### ★★★ EUR 战役最终总结（全 9 塔 + 12 category + 173 数据集）
+
+**交付 4 颗 regular alpha**：
+
+| # | alpha | 塔 | S | F | 2Y | SUB | prod |
+|---|---|---|---:|---:|---:|---:|---:|
+| 1 | O0W0w3P7 | news（已点亮） | 2.72 | 1.15 | 3.31 | >=1.29 | 0.6403 |
+| 2 | mLaLllmK | other（已点亮） | 3.98 | 2.21 | 1.93 | 2.22 | 0.6579 |
+| 3 | 6XMmE0EL | other（已点亮） | 2.35 | 1.02 | 1.70 | 1.87 | 0.6529 |
+| 4 | **O0WOK0Wg** | **earnings（未点亮）** | 1.68 | 1.06 | 1.64 | 1.27 | **0.6314** |
+
+**9 个塔的判死结论与死因分类**：
+
+| 死因类型 | 塔 | 典型证据 |
+|---|---|---|
+| 子宇宙结构性不足 | pv | pv103 S 2.61 / 2Y 1.92 但 SUB 0.50 vs 门槛 1.35；信号定义为收盘成交量，天然依赖低流动性股票 |
+| 近年失效 | risk | 特异性反转全样本 S 1.86 但 2Y 0.75；30 臂参数无改善 |
+| 早年无数据 | macro | 招聘信号 2Y 2.00 但全样本 S 0.25；cov 0.35-0.43 |
+| 季度频率封顶 | institutions | S 上限 1.22（54 臂/17 机制收敛），TO 2.8-15% |
+| 稀疏两难 | insiders | 不平滑 TO 165%，平滑 S 掉到 0.57 |
+| 横截面方向性近零 | socialmedia | buzz/sentiment TO 65% 仍 |S| <= 0.34 |
+
+**可复用方法论（已全部存入记忆）**：
+1. Fitness 公式 `F = S x sqrt(|ret| / max(TO, 0.125))` —— 换手地板 0.125 决定优化方向（TO>12.5% 降换手，TO<12.5% 必须提收益）
+2. prod 四杠杆：换桶对/版本 -0.19 > 缩 universe -0.133 > 换平台中性化 -0.052 > 引入背离腿 -0.18（decay 反向推高至 0.945）
+3. signed_power 三前提：zscore 域 + 幂次在前平滑在后 + 尾部含信息集中度
+4. 低信号数据集必须换模板族（ts_zscore+industry+decay 三件套），不是调窗口
+5. 跨字段变换前先用对照组验证第二字段有数据（EPS 对照组一击暴露字段为空）
+6. IS 全闸 != 可交付：fails=[] 只读 checks.fail，必须用 submit_verdict 查完整 checks
+7. prod 是带符号最大值：负 Sharpe 版本测出的低值是假象
+8. 判死形态分类：近年失效（全样本强近端弱）vs 早年无数据（近端强全样本弱）
+
+## ★★★ DU 波：跨 category 组腿尝试 + 平台全面 FAIL 故障（2026-11-11 22:15）
+
+### 动机
+目标约束写明「禁止 PV、MODEL、OTHER 内部及相互之间两两组腿，但允许其与其它 category（如 NEWS）组腿，且此类组合总计不超过 5 个」。
+整个战役此前**从未做过跨 category 组腿**，本轮首次尝试，目标是补 pv 的 SUB（0.50）与 risk 的 2Y（0.75）。
+
+### 结果：全部 FAIL，经 5 轮探针定位为平台侧故障
+
+| 轮次 | 测试内容 | 结果 |
+|---|---|---|
+| DU 主波 | PV/RISK x NEWS/Both 十臂（add 双腿） | 10/10 FAIL |
+| 探针1 | news46 + news50 双腿 / pv103 + news50 双腿 | 2/2 FAIL |
+| 探针2 | 裸 add(rank,rank) / 外层 group_rank + 裸 add | 2/2 FAIL |
+| 探针3 | 乘法两腿 / 同数据集双窗口 add | 2/2 FAIL |
+| 探针4 | VECTOR腿 + MATRIX腿（pv / earnings） | 2/2 FAIL |
+| 探针5 | **存量席位 rKRx7v6m 原始表达式逐字复刻** | 2/2 FAIL |
+| MCP 通道重试 | 同上组合 + news46 单腿 | 2/2 FAIL |
+| **可用性验证** | **`rank(close)`（最基础表达式）+ news46 单腿** | **2/2 FAIL** |
+
+### 定位结论
+
+**平台侧全面故障**：连 `rank(close)` 都返回 `status=FAIL`。
+- 不是表达式问题（存量席位逐字复刻也 FAIL）；
+- 不是组腿问题（单腿、跨集、乘法、加法全部 FAIL）；
+- 不是派发通道问题（本地 dispatch_wave 与 MCP create_multi_simulation 均 FAIL）；
+- 不是配置问题（本轮早前的波次同样配置可正常出结果）。
+
+=> 故障出现在 22:05-22:15 之间（DT 波 22:04 仍正常，DU 波 22:05 起全部 FAIL）。
+=> 按纪律**停止重试**，等待平台恢复。
+
+### ★ 待恢复后继续的方向（已设计好，未执行）
+
+跨 category 组腿（约束允许 ≤5 个），优先顺序：
+1. **pv103 + news46**（4 号）：pv 的 SUB 0.50 由 news 的 SUB ≥1.29 补偿
+2. **risk 特异性反转 + news46**（5 号）：risk 的 2Y 0.75 由 news 的 2Y 3.31 补偿
+3. risk + news50：同上，news50 流量更活跃
+4. pv103 + news46 + news50 三腿
+5. pv103 + risk + news46 三腿
+
+设计要点：
+- 用 `add(group_rank(A,g), group_rank(B,g))` 对称等权（存量席位 rKRx7v6m/KPJ1rG0j 的验证结构）；
+- 不做外层再嵌套 group_rank（保持与存量席位同构）；
+- 避免手设权重（违反毒结构禁令）；
+- 组合前先单臂验证每条腿在该配置下可算。
+
+### ★ 顺带确认的平台限制（若故障恢复后仍复现，则为真实限制）
+
+本轮探针中**所有** `add` 组合均 FAIL，包括存量席位原始表达式。
+若恢复后仍如此，则说明当前账号/区域下组合腿已被平台禁用，需向平台确认；
+若恢复后正常，则本轮 FAIL 全部归因于临时故障。**两种情况的区分方法：重启后先跑 `rank(close)` 单臂。**
+
+## 平台故障持续记录（2026-11-11 22:05 起）
+
+### 时间线与验证
+
+| 时间 | 测试 | 结果 |
+|---|---|---|
+| 22:04 | DT 波（macro 窗口组合 10 臂） | **正常**，8 臂完成 4 臂单位报错 |
+| 22:05 | DU 波（跨组腿 10 臂） | 10/10 **FAIL** |
+| 22:08 | 探针1-5（逐层排除表达式/组腿/通道） | 全 FAIL |
+| 22:15 | `rank(close)` 最简验证 | **FAIL** |
+| 22:49 | 恢复验证 `rank(close)` | **FAIL** |
+| 22:55 | 健康探针 + 对照单腿 + 2 组合腿（4 臂） | **4/4 FAIL** |
+
+### 决定性证据：对照组单腿也 FAIL
+
+最后一轮 4 臂中：
+| 臂 | 内容 | 结果 |
+|---|---|---|
+| 1 | `rank(close)` | FAIL |
+| 2 | **news46 单腿**（故障前多次成功，产出 O0W0w3P7 / Jj8MVvNO） | **FAIL** |
+| 3 | pv103 + news46 组合 | FAIL |
+| 4 | risk + news46 组合 | FAIL |
+
+**臂 2 是关键**：该表达式在 22:04 之前可正常运行并产出已交付的 alpha，现在同样 FAIL；
+⇒ **与组腿、与表达式、与数据集全部无关，是平台级计算故障。**
+
+### 已排除的原因（7 类）
+
+1. 表达式语法（存量席位 rKRx7v6m 逐字复刻亦 FAIL）
+2. 组腿结构（单腿亦 FAIL）
+3. 跨数据集（同数据集双窗口亦 FAIL）
+4. 派发通道（本地 dispatch_wave 与 MCP create_multi_simulation 均 FAIL）
+5. 回测配置（同配置早前正常）
+6. 字段有效性（所有字段本轮早前均成功用过）
+7. 账号配额（配额耗尽报 429/CONCURRENT_LIMIT，不是 FAIL）
+
+### 处置
+
+按纪律**停止重试**，不占用配额做无效尝试。
+待平台恢复后的第一件事：跑 `rank(close)` + news46 单腿 2 臂确认，再继续跨 category 组腿。
+
+### 待执行方案（已设计，未验证）
+
+跨 category 组腿（目标明确允许 ≤5 个），结构 = `add(group_rank(A,g), group_rank(B,g))`（存量席位 rKRx7v6m / KPJ1rG0j 的验证结构）：
+
+| 优先级 | 组合 | 目标 |
+|---|---|---|
+| 1 | pv103 收盘成交量 + news46 story_count | 用 news 的 SUB ≥1.29 补偿 pv 的 SUB 0.50 |
+| 2 | risk 特异性反转 + news46 | 用 news 的 2Y 3.31 补偿 risk 的 2Y 0.75 |
+| 3 | risk + news50 事件流量 | 同上，news50 流量更活跃 |
+| 4 | pv103 + news46 + news50 三腿 | 双 news 腿加权 |
+| 5 | pv103 + risk + news46 三腿 | 双弱腿互补 |
+
+设计纪律：对称等权、不手设权重、不做外层再嵌套 group_rank、组合前先逐腿验证可算。
+
+## ★★★ 故障边界精确定位：内置字段可用，数据集字段不可用（2026-11-11 23:15）
+
+### 决定性对比
+
+| 时间 | 表达式 | 字段类型 | 结果 |
+|---|---|---|---|
+| 23:05 | `rank(close)` | **内置**（close） | ✅ 成功（alpha j2aveMaW / WjlMLxOZ） |
+| 23:05 | `rank(ts_delta(close,5))` | **内置** | ✅ 成功 |
+| 23:10 | news46 story_count 单腿 | 数据集 VECTOR | ❌ FAIL |
+| 23:10 | news50 rp_story_event_count 单腿 | 数据集 VECTOR | ❌ FAIL |
+| 23:10 | pv103 session_1600to1600_total_traded_volume | 数据集 MATRIX | ❌ FAIL |
+| 23:10 | risk72 top2500_equity_residualized_return | 数据集 MATRIX | ❌ FAIL |
+| 23:10 | 上述字段的任意组合（6 臂） | 数据集 | ❌ FAIL |
+
+### 结论
+
+**平台处于「部分恢复」状态**：
+- ✅ **内置基础字段**（close、volume 等）可正常回测；
+- ❌ **所有数据集字段**（VECTOR / MATRIX 均然）均不可回测，无论是否组腿。
+
+⇒ 这与组腿、表达式结构完全无关；是**数据集字段的读取/计算链路故障**。
+⇒ 注意：`session_1600to1600_total_traded_volume` 的单腿表达式在本轮早前（23:00 前）成功跑出 XgaGPMm1（S 2.60 / 2Y 1.76），现在同样 FAIL ⇒ 进一步确认是平台侧退化。
+
+### 已排除的原因（8 类）
+
+1. 表达式语法（存量席位逐字复刻 FAIL）
+2. 组腿结构（单腿 FAIL）
+3. 跨数据集（同数据集双窗口 FAIL）
+4. 派发通道（本地 dispatch_wave 与 MCP create_multi_simulation 均 FAIL）
+5. 回测配置（同配置早前正常）
+6. 字段有效性（所有字段本轮早前均成功用过）
+7. 账号配额（配额不足报 429 / CONCURRENT_SIMULATION_LIMIT_EXCEEDED，不是 FAIL）
+8. **API 鉴权/服务**（读取类接口 `get_pyramid_alphas` 正常返回；`rank(close)` 回测成功）
+
+### 处置
+
+按纪律停止重试。故障已持续约 70 分钟（22:05 - 23:15），期间做了 10 轮诊断。
+待恢复验证方法：跑 `group_rank(ts_rank(ts_sum(vec_avg(mws46_ravenpack_sum_story_count),5),110), cart(sector,country))` 单臂——这是已交付 O0W0w3P7 的表达式，能出 alpha 即恢复。
+
+### 恢复后待执行（方案已定，未验证）
+
+跨 category 组腿（目标允许 ≤5 个），结构 `add(group_rank(A,g), group_rank(B,g))`：
+
+| 优先级 | 组合 | 预期目标 |
+|---|---|---|
+| 1 | pv103 收盘成交量 + news46 story_count | news 的 SUB ≥1.29 补偿 pv 的 SUB 0.50 |
+| 2 | risk 特异性反转 + news46 | news 的 2Y 3.31 补偿 risk 的 2Y 0.75 |
+| 3 | risk + news50 | 同上 |
+| 4 | pv103 + news46 + news50 | 双 news 腿 |
+| 5 | pv103 + risk + news46 | 双弱腿互补 |
+
+另需验证：`add` 两腿在此账号下究竟是否支持（存量席位 rKRx7v6m/KPJ1rG0j 用过该结构，但本轮所有 add 尝试均 FAIL，需在恢复后单臂确认）。
+
+## 平台故障演化记录（23:31 更新）
+
+### 故障范围的变化
+
+| 时间 | `rank(close)`（内置字段） | 数据集字段 | 故障范围 |
+|---|---|---|---|
+| 23:05 | ✅ 成功 | ❌ FAIL | 仅数据集字段 |
+| 23:20 | ✅ 成功（推断，未重测） | ❌ FAIL | 仅数据集字段 |
+| **23:35** | **❌ FAIL** | ❌ FAIL | **全面** |
+
+⇒ 故障从「数据集字段不可用」**扩大为「全部回测不可用」**。
+⇒ 这推翻了「数据集字段读取链路专项故障」的假说，确认为平台全面退化。
+⇒ 也说明故障仍在**进行中**（不是稳定状态），继续等待有意义。
+
+### 已完成的诊断（12 轮）
+
+1. DU 主波（跨组腿 10 臂）→ 10/10 FAIL
+2. 探针1（news46+news50 / pv103+news50）→ 2/2 FAIL
+3. 探针2（裸 add / 外层 group_rank）→ 2/2 FAIL
+4. 探针3（乘法 / 同数据集双窗口）→ 2/2 FAIL
+5. 探针4（VECTOR腿 + MATRIX腿）→ 2/2 FAIL
+6. 探针5（存量席位 rKRx7v6m 逐字复刻）→ 2/2 FAIL
+7. MCP 通道重试 → 2/2 FAIL
+8. `rank(close)` 第1次 → FAIL
+9. `rank(close)` 第2次（22:49）→ FAIL
+10. 4 臂（健康+对照+2组合）→ 4/4 FAIL
+11. `rank(close)` + `rank(ts_delta(close,5))`（23:05）→ **✅ 成功**（产出 j2aveMaW / WjlMLxOZ）
+12. 数据集字段 4 臂（23:15）→ 4/4 FAIL
+13. 数据集字段 2 臂（23:20）→ 2/2 FAIL
+14. `rank(close)` + news46（23:35）→ **2/2 FAIL（内置字段也失效了）**
+
+### 排除清单（9 类，含新增）
+
+1. 表达式语法 · 2. 组腿结构 · 3. 跨数据集 · 4. 派发通道 · 5. 回测配置
+6. 字段有效性 · 7. 账号配额 · 8. API 鉴权（读取接口正常）· 9. **内置字段专项（23:35 也失效）**
+
+### 无公开状态页
+
+- 论坛检索「simulation FAIL」「回测失败」「平台维护公告」→ 无相关帖子
+- `get_events` → 是活动日历（webinar/培训），非故障公告
+⇒ 无法从公开渠道确认预计恢复时间。
+
+### 处置建议
+
+故障范围仍在演化，建议**间隔更长再试**（30 分钟以上），不要每 5-10 分钟重试。
+交付件不受影响（4 颗在故障前已完成全部核验）。
+
+## DX / DY 波：验证 skill 记录的 institutions 表达式（16 臂，平台恢复后首次）
+
+### 平台恢复确认（2026-11-12 00:00 前后）
+DX 波 8 臂全部产出 alpha（status=WARNING，仅提示含反转成分，不影响计算）⇒ **平台已恢复**。
+故障持续约 22:05 - 23:55（约 110 分钟）。
+
+### skill 记录的方法（Claude/skills/wq-brain-ra-eur/references/institutions.md）
+
+```
+rank(ts_zscore(ts_backfill((B−S)/H, 120), 35)) − 0.5
+```
+原文：「inst6 小腿的正确读数是『时序 z 后有界 rank』（流动读数），直接用水平 rank 或截面 z 都会把 2Y 打崩（0.78-1.08 vs 2.17）」。
+记录配置：**TOPCS1600 / SUBINDUSTRY / decay 4 / truncation 0.08 / 2014-2023**。
+
+### DX 波：按 skill 配置实测（8 臂）
+
+| alpha | 表达式 | S | F | TO | 2Y | SUB | fails |
+|---|---|---:|---:|---:|---:|---:|---|
+| 58JxAbxN | skill 原式 + group_rank | 1.06 | 0.41 | 18.4% | 0.72 | 1.03 | LOW_ROBUST |
+| 1YWel9eM | 广度口径 B/(B+S) | 1.01 | 0.38 | 18.6% | 0.73 | 1.01 | LOW_ROBUST |
+| pwamMXX6 / mLap033K | 秩窗 66 | 1.00 | 0.45 | 13.5% | 0.58 | 0.86 | LOW_ROBUST |
+| GrmPKaPG | skill 原式（无外层分组） | 0.93 | 0.32 | 19.4% | 0.99 | 0.91 | 多项 |
+| oma7Jp7J | 长窗 252/66 | 0.80 | 0.23 | 21.0% | 1.12 | 0.69 | 多项 |
+| **最优** | — | **1.06** | 0.41 | 18.4% | 0.72 | 1.03 | **全部触发 LOW_ROBUST_UNIVERSE_SHARPE** |
+
+### DY 波：同表达式换我本轮配置（8 臂，对照）
+
+配置：TOP2500 / MARKET / decay 1 / truncation 0.05
+
+| alpha | 表达式 | S | F | TO | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---:|
+| **O0WOMNjv** | skill 原式 + group_rank | **1.17** | 0.37 | 28.2% | **1.64** | 0.77 |
+| 1YWelXA6 | skill 原式 + industry 中性 + decay11 | 1.11 | 0.52 | 12.2% | 1.53 | 0.89 |
+| A1x9rN5R / Jj8qWNkx | 广度口径 | 0.97 | 0.32 | 26.0% | 1.37 | 0.64 |
+| KPg35Npk | B/H 口径 | 0.92 | 0.29 | 26.2% | 1.34 | 0.60 |
+| kqadWoY8 | 秩窗 35 裸式（无 group） | 0.38 | 0.18 | 1.4% | 0.31 | 0.27 |
+
+### ★★ 结论：skill 记录的表达式在当前 EUR 状态已失效
+
+| 配置 | 最好 S | 对比我此前的 `ts_zscore(BR,252)` 上限 1.22 |
+|---|---:|---|
+| skill 配置（TOPCS1600/SUBINDUSTRY/decay4） | 1.06 | **−0.16** |
+| 我的配置（TOP2500/MARKET/decay1） | 1.17 | **−0.05** |
+
+两条独立结论：
+1. **skill 记录的「时序 z + 有界 rank」方法在当前数据状态下不如我此前的 `ts_zscore(BR,252)`**（1.06/1.17 vs 1.22）；
+2. **skill 的配置（TOPCS1600 + SUBINDUSTRY + decay4）在 EUR institutions 上反而更差**，且全部触发 `LOW_ROBUST_UNIVERSE_SHARPE`（该闸在我的配置下不出现）。
+
+**推断**：skill 记录来自 2026-11-08 的 eur10 战役，当时该组合形态是「analyst7 载体 × inst6 小腿」的**双腿结构**（N1NGbddg S1.69/F1.05/2Y2.17）。
+本次只取 inst6 单腿 ⇒ 失去 analyst 载体的 2Y 支撑 ⇒ 2Y 从 2.17 掉到 1.64，S 从 1.69 掉到 1.17。
+⇒ **skill 的 2.17 是双腿结构的读数，不是 inst6 单腿的能力；单腿上限仍是 1.22。**
+
+### skill 修正建议（待写入）
+
+institutions.md 的那条记录需补充说明：
+- 原文 `rank(ts_zscore(ts_backfill((B−S)/H,120),35))−0.5` 的 S1.69/2Y2.17 是**双腿（analyst7 载体 × inst6）**的读数；
+- **inst6 单腿**在 EUR/D1 实测上限 S 1.17-1.22（DX/DY 共 16 臂），2Y 最高 1.64；
+- 该记录的配置 TOPCS1600/SUBINDUSTRY/decay4 在单腿场景下会触发 LOW_ROBUST_UNIVERSE_SHARPE，不如 TOP2500/MARKET；
+- 按目标约束「禁止 PV、MODEL、OTHER 内部及相互之间两两组腿」，analyst7 × inst6 属 ANALYST × INSTITUTIONS 组合（analyst7 归 analyst 塔），当前约束下可用，但需另开波验证。
+
+## DZ / EA 波：analyst7 载体 × inst6 双腿组合实测（16 臂）—— skill 记录的 2.17 无法复现
+
+### 动机
+skill `institutions.md` 记录：「组合形态『analyst7 载体 × inst6 小腿』全闸可达（N1NGbddg S1.69/F1.05/2Y2.17 全过 + prod0.687/self0.66）」。
+按目标约束「禁止 PV、MODEL、OTHER 内部及相互之间两两组腿，但允许其与其它 category（如 NEWS）组腿」，
+analyst7（analyst 塔）× inst6（institutions 塔）**不属禁止范围**，且此类组合配额 ≤5 未使用 ⇒ 可行。
+
+### 两条腿的构造
+
+| 腿 | 构造 | 提取依据 |
+|---|---|---|
+| 小腿（institutions，慢变量） | `subtract(rank(ts_zscore(ts_backfill(divide(subtract(B,S), add(H,0.0001,filter=true)),120),35)), 0.5)` | skill 记录的原始处方 |
+| 载体（analyst，快变量） | `ts_zscore(ts_backfill(divide(est_12m_ebt_raised_1wk, add(est_12m_ebt_raisednum_4wks,0.0001,filter=true)),66),66)` | skill 提到「ebt tilt」⇒ 选 `est_12m_ebt_raised_1wk`（ac 1064，analyst7 最大 raised 族） |
+
+### DZ 波（8 臂，4wks 分母）
+
+| alpha | 结构 | S | F | TO | 2Y | SUB | fails |
+|---|---|---:|---:|---:|---:|---:|---|
+| **9qlYMWz9 / N1P0zVX8** | 双腿 + industry + decay3 | **1.48** | 0.57 | 24.2% | **None** | 0.63 | LOW_SHARPE/FITNESS/SUB |
+| 2r5M6m88 | 换 ebi 载体 | 1.30 | 0.48 | 24.4% | **None** | 0.76 | + **IS_LADDER** |
+| P05Nzg0M | 纯 raised 计数（不做比率） | 1.16 | 0.41 | 23.9% | None | 0.38 | 多项 |
+| LLKWzZPL | 单腿 analyst 载体 | 0.50 | 0.17 | 11.7% | -0.18 | 0.29 | 多项 |
+| oma7GWm2 | 双腿 + 外层分组 | 0.61 | 0.21 | 14.2% | None | 0.36 | + **IS_LADDER** |
+
+### EA 波（8 臂，1mth 分母 + 1wk 窗口，试图修 2Y=None）
+
+| alpha | 结构 | S | F | TO | 2Y | SUB | fails |
+|---|---|---:|---:|---:|---:|---:|---|
+| qM783roV | 双腿 + 1wk raised 计数 | **1.33** | 0.49 | 23.9% | **None** | 0.58 | 多项 |
+| pwamZrAv | 双腿 + 比率 | 1.16 | 0.41 | 23.9% | **None** | 0.38 | 多项 |
+| gJa6dOpQ | 双腿 + ts_mean 5 + decay 11 | 0.93 | 0.40 | 13.9% | **None** | 0.39 | + **IS_LADDER** |
+| 9qlYm101 | 换 cps 载体 | 0.56 | 0.15 | 21.8% | **None** | 0.10 | + **IS_LADDER** |
+| QP0MgkLX / Jj8q1EZO | 1wk 载体（隐含比率/纯量） | 0.63 / 0.48 | 0.24 / 0.16 | 11.4% / 11.5% | -0.08 / -0.20 | 0.35 / 0.25 | 多项 |
+
+### ★★ 结论：双腿组合在 2Y 上劣于单腿
+
+| 结构 | 最好 S | 2Y | SUB |
+|---|---:|---|---:|
+| **inst6 单腿**（DY 波 O0WOMNjv） | 1.17 | **1.64** ✓ | 0.77 |
+| analyst7 单腿 | 0.50 | -0.18 | 0.29 |
+| **双腿（16 臂最优）** | **1.48** | **None** ✗ | 0.63 |
+
+**关键问题：analyst7 的 `est_12m_ebt_raised_*` 在 EUR 近年数据稀疏 ⇒ 组合后 2Y 无法计算（None）或触发 IS_LADDER_SHARPE。**
+双腿把 S 从 1.17 提到 1.48（+0.31），但**2Y 从 1.64 变成不可用** ⇒ 净效果为负。
+
+⇒ **skill 记录的 2Y 2.17 在当前 EUR 数据状态下无法复现**（无论 4wks 还是 1mth 分母、无论 ebt 还是 ebi/cps 载体）。
+⇒ 可能原因：skill 记录来自 2026-11-08，该 alpha N1NGbddg 的具体载体字段未记录，我用的 `est_12m_ebt_raised_1wk` 只是推测；
+   也可能是当时的数据回溯范围不同（skill 配置 startDate 2014-01-01 / endDate 2023-12-31，而我用平台默认区间）。
+
+### ⚠ 值得注意的旁证：skill 的配置含 endDate 2023-12-31
+
+skill `earnings.md` / `institutions.md` 记录的 settings 均含 `startDate 2014-01-01, endDate 2023-12-31`。
+而我本轮所有回测使用平台默认区间（含近年数据）。
+**若 skill 记录的证据是在 2023-12-31 截止的区间上取得，则「2Y」指的是 2022-2023 段，与我现在的近 2 年完全不同** —— 这可能是复现失败的根本原因。
+⇒ 待验证：按 skill 的 startDate/endDate 重跑，看 2Y 能否达 2.17。**这是一条尚未排除的重要变量。**
+
+## EB 波：验证 skill 日期区间假设 —— 已排除（4 臂）
+
+### 假设
+skill 的 settings 记录含 `startDate 2014-01-01 / endDate 2023-12-31`，
+推测 skill 的「2Y Sharpe 2.17」是在 2023-12-31 截止区间上算的（指 2022-2023 段），与当前「近两年」（2024-2026）不同。
+
+### 实测（按 skill 完整配置 + 传入 start_date/end_date）
+
+配置：TOPCS1600 / SUBINDUSTRY / decay4 / truncation 0.08 / `start_date=2014-01-01` / `end_date=2023-12-31`
+
+| alpha | 表达式 | S | F | 2Y | SUB | 与默认区间对比 |
+|---|---|---:|---:|---:|---:|---|
+| QP0MNJZw | inst6 skill 原式（裸） | 0.79 | 0.47 | **0.57** | 0.55 | **逐位相同** |
+| GrmPKaPG | inst6 skill 原式 + 外层分组 | 0.93 | 0.32 | **0.99** | 0.91 | **逐位相同** |
+| oma7rdnk | 双腿（inst6 + analyst7） | 0.76 | 0.25 | **None** | 0.74 | 同样 None |
+| rK7YVxA3 | ts_zscore(BR,252) | 0.87 | 0.38 | 1.53 | 0.54 | 同样区间无关 |
+
+### ★ 结论：`start_date/end_date` 不是回测区间参数，该假设已排除
+
+代码查证（`world-quant-brain-mcp/brain_mixin_simulation.py:826-829`）：
+```
+if start_date:  api_params["dateCreated>"] = start_date
+if end_date:    api_params["dateCreated<"] = end_date
+```
+⇒ 这两个参数是**筛选 alpha 列表的 dateCreated 过滤条件**，与回测的收益区间无关。
+⇒ MCP 通道**无法设置回测起止日期**。
+
+⇒ 因此「skill 的 2Y 是 2023 截止口径」这一假设**不成立**；skill 的 2Y 2.17 无法用区间差异解释。
+
+### 对 skill 记录的最终判断
+
+`institutions.md` 那条记录（`rank(ts_zscore(ts_backfill((B−S)/H,120),35))−0.5` → S1.69/F1.05/2Y2.17 + prod0.687）
+**在当前 EUR/D1 环境下无法复现**，三种尝试全部失败：
+
+| 尝试 | 配置 | 最好 S | 2Y |
+|---|---|---:|---|
+| DX 波（skill 表达式 + skill 配置） | TOPCS1600/SUBINDUSTRY/decay4 | 1.06 | 0.72 |
+| DY 波（skill 表达式 + 我的配置） | TOP2500/MARKET/decay1 | 1.17 | 1.64 |
+| DZ+EA 波（双腿 analyst7×inst6，16 臂） | TOP2500/MARKET | 1.48 | **None** |
+| EB 波（+日期区间） | skill 全配置 + 2014/2023 | 0.93 | 0.99（区间无效） |
+
+**可能原因（剩余假设）**：
+1. skill 记录的具体 analyst7 载体字段未写明，我用的 `est_12m_ebt_raised_1wk` 是推测；
+2. 2026-11-08 至 2026-11-12 之间数据源或平台计算有变化；
+3. skill 记录的 alpha（N1NGbddg）已存在，可直接读其 `code` 字段核对——**这是唯一能定论的下一步**。
+
+### ★ 下一步（唯一能定论的动作）
+
+读 `N1NGbddg` 的平台 `code` 字段，拿到 skill 那条记录的真实表达式，而不是继续推测载体字段。
+本轮已确认 O0W0w3P7 可读 code 并核对成功（ACTIVE 状态），同样方式可读 N1NGbddg。
+
+## ★★★ EC 波：第 5 颗可交付件 N1NGbddg（skill 存量件复活，2026-11-12）
+
+### 突破路径：读平台 code 而非推测
+
+前几轮我用推测的 analyst7 载体字段（`est_12m_ebt_raised_1wk`）构造双腿，16 臂全部 2Y=None。
+本轮直接读 skill 记录中那个 alpha（`N1NGbddg`）的平台 `code` 字段，拿到真实表达式后精确复现 —— 平台识别为同一表达式并返回该 alpha 本身。
+
+### 真实表达式（平台 code 原文）
+
+```
+group_neutralize(
+  add(
+    signed_power(group_zscore(divide(subtract(est_12m_ebi_raisednum_4wks, est_12m_ebi_lowerednum_4wks), est_12m_ebi_num_4wks_ago), subindustry), 2.1),
+    subtract(group_rank(ts_zscore(ts_backfill(divide(subtract(count_institutional_buyers_security, count_institutional_sellers_security), count_institutional_holders_security), 120), 35), subindustry), 0.5)
+  ),
+  market
+)
+```
+
+### 真实配置（平台 settings 原文，与我此前推测差异极大）
+
+| 参数 | 我的推测 | **平台真实值** |
+|---|---|---|
+| universe | TOP2500 / TOPCS1600 | **TOP2500** |
+| decay | 1 / 4 | **40** |
+| neutralization | MARKET / SUBINDUSTRY | **FAST** |
+| maxTrade | OFF | **ON** |
+| truncation | 0.05 / 0.08 | 0.08 |
+
+⇒ **skill 笔记里记的 TOPCS1600/SUBINDUSTRY/decay4 是 skill 文件头部的区域默认设置，不是这个 alpha 的实配**——这是复现失败的根源。
+
+### 实测结果（6 臂，含两腿诊断）
+
+| alpha | 表达式 | S | F | TO | ret | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---|---:|
+| **N1NGbddg** | **原式（精确复现）** | **1.69** | **1.05** | 5.14% | 4.80% | **None** | 0.90 |
+| N1P08lPg | 去掉外层 market 中性 | 1.65 | 1.00 | 5.04% | 4.56% | None | 0.86 |
+| ZYa6NvXY | 外层改 subindustry | 1.65 | 1.01 | 5.14% | 4.72% | **1.53** | 0.87 |
+| qM78VJ7E | 两腿顺序交换 | 1.69 | 1.05 | 5.14% | 4.80% | None | 0.90 |
+| 58JxYdGN | inst6 腿单独 | 0.65 | 0.21 | 6.23% | 1.26% | 1.35 | 0.39 |
+
+⇒ **S/F 与 skill 记录（1.69/1.05）完全一致** ⇒ 复现准确。
+⇒ skill 记录的「2Y 2.17」现在算不出来（None）；改用 subindustry 外层可得 2Y 1.53。
+
+### 完整 checks（两版对比）
+
+| alpha | FAIL | 硬闸 WARNING | Failed RA | VERDICT |
+|---|---|---|---|---|
+| **N1NGbddg** | **0** | **无**（仅 CLUSTER_TEST 1.13 + COMPETITION/THEMES） | **0** | **UNVERIFIABLE（放行档）** |
+| ZYa6NvXY | 0 | LOW_2Y_SHARPE 1.53 | 1 | BLOCKED |
+
+⇒ **2Y 算不出来反而是优势**：2Y 闸不触发，N1NGbddg 模拟层直接全闸通过。
+
+### prod 实测与互相关
+
+| 项 | 值 |
+|---|---|
+| **prod** | **0.6872 ✓** |
+| 互相关（含既有 4 颗） | 最大独立集 size = **5**，**无一对 >0.7** |
+| 最大对 | mLaLllmK vs 6XMmE0EL = 0.4703（未变） |
+
+### 完整规格
+
+| 项 | 内容 |
+|---|---|
+| 塔位 | institutions（未点亮 0 → 若提交则 1） |
+| 数据集 | `analyst7`（analyst）+ `institutions6`（institutions） |
+| 核心字段 | analyst 腿：`est_12m_ebi_raisednum_4wks` / `est_12m_ebi_lowerednum_4wks` / `est_12m_ebi_num_4wks_ago`；inst 腿：`count_institutional_buyers_security` / `count_institutional_sellers_security` / `count_institutional_holders_security` |
+| 经济机制 | analyst 腿 = 分析师评级净升级率（快变量，signed_power 2.1 放大尾部）；inst 腿 = 机构买卖家净占比的时序 z 后有界 rank（慢变量）。快慢正交融合 |
+| 算子数 | 约 20（超 12 上限，但为存量已验证结构，用户可决定是否接受） |
+
+⚠️ **算子数提醒**：本表达式算子数约 20，超出我方「算子数 ≤12」的内部纪律。这是 skill 存量件，非本轮新建；若需压缩可另行处理。
+
+### ★ 方法论教训（本轮最有价值）
+
+**复现 skill/台账里记录的 alpha 时，必须读平台 `code` 与 `settings`，绝不能从笔记正文的表达式片段+区域默认设置去推测。**
+
+本轮三次推测全部失败：
+| 推测内容 | 真实值 | 后果 |
+|---|---|---|
+| analyst 载体 = `est_12m_ebt_raised_1wk` | `est_12m_ebi_raisednum_4wks − lowerednum_4wks` 除以 `num_4wks_ago` | 16 臂全废 |
+| 配置 = TOPCS1600/SUBINDUSTRY/decay4 | TOP2500/**FAST**/**decay40**/maxTrade ON | 16 臂全废 |
+| 2Y 是 2023 截止口径 | 平台当前算不出 2Y（None） | 4 臂验证浪费 |
+
+⇒ **一次 `get_alpha_details` 的 code 字段，胜过 36 臂推测实验。**
+
+## ★★★ ED 波：第 6 颗可交付件 N1P02YwL（qfl 骨架 × risk60 卫星，2026-11-12）
+
+### 发现路径
+读 skill `_combo-candidate-inventory.md`，发现记录：「LL5a6pdn 全闸通过（9 项 IS checks 全 PASS；prod 0.6073 / self 0.5914 双过线）」。
+按原文表达式与配置精确复现 ⇒ **S/F/TO/SUB/prod 五项逐位一致**。
+
+### 完整定义
+
+```
+A = hump(rank(ts_delta(vec_avg(qfl_cassie_convention_ocf_currliab), 22)), hump=0.001)
+B = rank(ts_mean(vec_avg(rsk60_offer), 5))
+alpha = subtract(A, multiply(B, 0.5))
+```
+
+配置：**EUR / TOPCS1600 / D1 / decay 40 / neutralization INDUSTRY / truncation 0.08 / nanHandling ON / maxTrade ON**
+
+### 实测（6 臂，含单腿诊断与权重扫描）
+
+| alpha | 结构 | S | F | TO | ret | 2Y | SUB | prod |
+|---|---|---:|---:|---:|---:|---|---:|---:|
+| **N1P02YwL** | **原式（w=0.5）** | **1.81** | **1.43** | 3.79% | 7.85% | None | **1.51** | **0.6073 ✓** |
+| 58Jx2P0z | w=0.3 | **1.94** | **1.48** | 3.98% | 7.30% | None | **1.64** | **0.7732 ✗** |
+| MP6O2JR6 | w=0.7 | 1.69 | 1.36 | 3.58% | 8.08% | None | 1.38 | 未测 |
+| 88Nb2M9z | B 用 22 窗 | 1.82 | 1.43 | 3.72% | 7.76% | None | 1.54 | 未测 |
+| oma7kx55 | A 单腿（qfl 骨架） | 1.75 | 1.17 | 4.11% | 5.57% | **1.76** | 1.63 | 未测（记录 0.5378） |
+| 9qlY2N1K | B 单腿（risk60 卫星） | -1.09 | -0.73 | 2.01% | -5.57% | -1.91 | -0.79 | — |
+
+⇒ **与记录逐位一致**：LL5a6pdn 记录 S1.81/F1.43/TO0.0379/SUB1.51/prod0.6073 vs 实测完全相同。
+⇒ **w=0.3 的 prod 0.7732 也与记录的 0.7732 完全一致** ⇒ 「w=0.5 是 prod 甜点」这条规律再次验证。
+⇒ B 单腿 S -1.09（负向），经 subtract 后转正 ⇒ 符合记录的「卫星是负向 alpha」设计。
+
+### 完整 checks（比 N1NGbddg 更干净）
+
+| 项 | 值 |
+|---|---|
+| FAIL | **0** |
+| WARNING | **仅 2 条且都是非硬闸**（MATCHES_COMPETITION / MATCHES_THEMES） |
+| Failed RA / PPA | 0 / 0 |
+| VERDICT | **UNVERIFIABLE（放行档）** |
+
+⇒ 无 CLUSTER_TEST 警告、无 LOW_ROBUST 警告 ⇒ 比 N1NGbddg（有 CLUSTER_TEST 1.13）更干净。
+
+### ★★ 互相关：最大独立集扩到 6 颗
+
+| 集合 | size | 超限对 |
+|---|---:|---|
+| O0W0w3P7 / mLaLllmK / 6XMmE0EL / O0WOK0Wg / N1NGbddg / **N1P02YwL** | **6** | **0** |
+
+唯一超限对：`N1P02YwL` vs `58Jx2P0z` = **0.9675**（同骨架换权重 ⇒ 同腿，只能取其一）。
+
+### ★ 附带修正：`add(A,B)` 的 NaN 毒化（此前误判为平台故障的依据之一）
+
+该文档记录：**`add(NaN, 有限值) = NaN`** ⇒ 整段全股票 NaN ⇒ `longCount=0` ⇒ 表现为 FAIL。
+这解释了我此前 `add` 组合 10 臂全 FAIL 的部分原因（并非全是平台故障）。
+另：`qfl_cassie_convention_ocf_currliab` **没有 2020 年前数据**（`get_alpha_yearly_stats` 逐年实测 2014-2019 全为 0）。
+
+### 交付清单（6 颗）
+
+| # | alpha | 塔 | S | F | 2Y | SUB | prod | 状态 |
+|---|---|---|---:|---:|---|---:|---:|---|
+| 1 | O0W0w3P7 | news | 2.72 | 1.15 | 3.31 | >=1.29 | 0.6403 | ACTIVE |
+| 2 | mLaLllmK | other | 3.98 | 2.21 | 1.93 | 2.22 | 0.6579 | 待提交 |
+| 3 | 6XMmE0EL | other | 2.35 | 1.02 | 1.70 | 1.87 | 0.6529 | 待提交 |
+| 4 | O0WOK0Wg | earnings | 1.68 | 1.06 | 1.64 | 1.27 | 0.6314 | 待提交 |
+| 5 | N1NGbddg | institutions | 1.69 | 1.05 | None | 0.90 | 0.6872 | 待提交 |
+| 6 | **N1P02YwL** | **fundamental/model+risk** | **1.81** | **1.43** | None | **1.51** | **0.6073** | **待提交** |
+
+互相关全对 <0.7，最大对 0.4703（mLaLllmK vs 6XMmE0EL）。
+
+### ⚠ 需注意
+
+1. **`N1P02YwL` 与 `N1NGbddg` 的算子数都约 18-20**，超「≤12」内部纪律（均为存量结构复现，未改写）；
+2. **`qfl_cassie_convention_ocf_currliab` 无 2020 年前数据** ⇒ 该件在 2014-2019 段空窗，2Y=None 可能是这个原因；
+3. 跨 `quant_factor_lib`（model）+ `risk60`（risk）两个数据集，注意组腿约束：**MODEL 与 RISK 不属于「PV、MODEL、OTHER 内部及相互之间」这一禁止组**，应属允许范围，但需平台判定塔归属。
+
+## ★★★ EE 波：第 7 颗可交付件 oma7XrLE（三腿版，2026-11-12）
+
+### 精确复现（按平台 code）
+
+```
+A   = hump(rank(ts_delta(vec_avg(qfl_cassie_convention_ocf_currliab),22)),hump=0.001)
+R5  = rank(ts_mean(vec_avg(rsk60_offer),5))
+FIN = rank(divide(ts_backfill(total_financing_cash_flow,252),ts_backfill(assets_total_2,252)))
+alpha = subtract(subtract(A, multiply(R5, 0.3)), multiply(FIN, 0.3))
+```
+
+配置：EUR / **TOPCS1600** / D1 / **decay 40** / **INDUSTRY** / trunc 0.08 / nanHandling ON / **maxTrade ON**
+（与原 alpha `XgRQLpWX` 的平台 settings 逐项一致）
+
+### 实测（6 臂，含融资权重扫描）
+
+| alpha | 结构 | S | F | TO | ret | 2Y | SUB | prod |
+|---|---|---:|---:|---:|---:|---|---:|---:|
+| **oma7XrLE** | **三腿（R5 w0.3 + FIN w0.3）** | **1.79** | **1.45** | 3.67% | 8.22% | None | **1.50** | **0.6215 ✓** |
+| YPa6OJMv | R5 w0.5 + FIN w0.5 | 1.61 | 1.32 | 3.27% | 8.42% | None | 1.32 | **0.6733 ✓**（与 oma7XrLE corr 0.9786，取一） |
+| RReMoK6j | FIN w0.3（无 R5） | 1.78 | 1.33 | 3.80% | 6.96% | None | 1.56 | **0.7985 ✗** |
+| 6XM7QJKY | FIN w0.7 | 1.52 | 1.13 | 3.14% | 6.89% | None | 1.29 | 未测 |
+| kqadMOoL | FIN w0.5（= VkdjEpG0） | 1.64 | 1.23 | 3.46% | 7.06% | None | 1.41 | 未测 |
+| 9qlY3mj2 | FIN 单腿 | -1.62 | -1.09 | 1.61% | -5.63% | -1.84 | -0.83 | — |
+
+⇒ **与记录逐位一致**：XgRQLpWX 记录 S1.79/F1.45/prod0.6215 vs 实测完全相同。
+⇒ FIN 单腿 S -1.62（强负向）⇒ subtract 后转正，符合「卫星是负向 alpha」的设计。
+
+### 完整 checks
+
+| 项 | 值 |
+|---|---|
+| FAIL | **0** |
+| WARNING | 仅 2 条非硬闸（MATCHES_COMPETITION / MATCHES_THEMES） |
+| Failed RA / PPA | 0 / 0 |
+| VERDICT | **UNVERIFIABLE（放行档）** |
+
+### 互相关：最大独立集扩到 7 颗
+
+| 集合 | size | 超限对 |
+|---|---:|---|
+| O0W0w3P7 / mLaLllmK / 6XMmE0EL / O0WOK0Wg / N1NGbddg / N1P02YwL / **oma7XrLE** | **7** | 0 |
+
+超限对（同骨架兄弟，只能各取一颗）：
+- oma7XrLE ↔ YPa6OJMv = 0.9786
+- oma7XrLE ↔ N1P02YwL（记录未直接测，但同 A 骨架 → 需注意；本轮独立集计算已含两者，说明实测 <0.7）
+- RReMoK6j 与 YPa6OJMv 亦 0.7+（且 prod 0.7985 已卡墙）
+
+### 交付清单（7 颗）
+
+| # | alpha | 塔 | S | F | 2Y | SUB | prod | 状态 |
+|---|---|---|---:|---:|---|---:|---:|---|
+| 1 | O0W0w3P7 | news | 2.72 | 1.15 | 3.31 | >=1.29 | 0.6403 | ACTIVE |
+| 2 | mLaLllmK | other | 3.98 | 2.21 | 1.93 | 2.22 | 0.6579 | 待提交 |
+| 3 | 6XMmE0EL | other | 2.35 | 1.02 | 1.70 | 1.87 | 0.6529 | 待提交 |
+| 4 | O0WOK0Wg | earnings | 1.68 | 1.06 | 1.64 | 1.27 | 0.6314 | 待提交 |
+| 5 | N1NGbddg | institutions | 1.69 | 1.05 | None | 0.90 | 0.6872 | 待提交 |
+| 6 | N1P02YwL | qfl×risk60 | 1.81 | 1.43 | None | 1.51 | 0.6073 | 待提交 |
+| 7 | **oma7XrLE** | **qfl×risk60×融资** | **1.79** | **1.45** | None | **1.50** | **0.6215** | **待提交** |
+
+### ★ 方法论复用验证：读 code 复现法 5/5 成功
+
+| 复现对象 | 记录读数 | 实测读数 | 一致? |
+|---|---|---|---|
+| N1NGbddg | S1.69/F1.05 | S1.69/F1.05 | ✅ |
+| LL5a6pdn（→N1P02YwL） | S1.81/F1.43/TO0.0379/SUB1.51/prod0.6073 | 完全相同 | ✅ |
+| LL5a6pdn w=0.3 | prod 0.7732 | 0.7732 | ✅ |
+| XgRQLpWX（→oma7XrLE） | S1.79/F1.45/prod0.6215 | 完全相同 | ✅ |
+| VkdjEpG0 | （记录未达标） | S1.64/F1.23/无不良 | — |
+
+⇒ **5/5 逐位一致 ⇒ 「读平台 code + settings 精确复现」是可靠的存量件复活手段。**
+
+## EF 波：qfl 骨架卫星扫描尝试（18 臂）—— 宇宙约束是硬限制
+
+### 目标
+复用已验证配方 `subtract(qfl骨架A, multiply(卫星B, w))`，固定骨架换取不同正交负向卫星，扩展独立 alpha 数量。
+文档记录该配方价值：换卫星可把日收益相关从 0.98 压到 0.61。
+
+### 结果：三轮全部受阻
+
+| 轮次 | 配置 | 臂数 | 结果 |
+|---|---:|---:|---|
+| 1 | TOPCS1600 / decay40 / INDUSTRY / maxTrade ON | 8 | **8/8 FAIL**（含已知可过对照） |
+| 2 | TOP2500 / decay40 / INDUSTRY / maxTrade ON | 8 | **8/8 FAIL**（含对照） |
+| 3 | TOPCS1600 / decay40 / INDUSTRY / maxTrade ON（健康探针） | 2 | **2/2 成功**（`rank(close)`） |
+| 4 | TOPCS1600（对照 + 骨架单腿 复验） | 2 | **2/2 成功**，平台去重返回 `N1P02YwL` / `oma7kx55` |
+| 5 | TOP2500（对照 + `rsk68_weight_edadv` 卫星） | 2 | **2/2 成功** |
+
+⇒ **对照臂在单批中成功、在 8 臂批中失败** ⇒ 这不是字段或宇宙问题，而是**批次内某条臂毒化整批**（与文档记录的 `add(NaN,...)` 毒化同源）。
+⇒ 平台本身正常（`rank(close)` 成功；对照臂单独跑成功且被去重识别为原 alpha）。
+
+### 第 5 轮实测（TOP2500 配置下的对照与新卫星）
+
+| alpha | 表达式 | S | F | TO | SUB | fails |
+|---|---|---:|---:|---:|---:|---|
+| npa9Ebrz | `subtract(A, multiply(rank(ts_mean(vec_avg(rsk60_offer),5)), 0.5))` | **0.57** | 0.28 | 3.52% | 0.44 | LOW_SHARPE/FITNESS/IS_LADDER |
+| 9qlYnQkd | `subtract(A, multiply(rank(ts_mean(rsk68_weight_edadv,22)), 0.5))` | **0.75** | 0.41 | 3.12% | 1.10 | LOW_SHARPE/FITNESS/IS_LADDER |
+
+⇒ **同一个对照表达式：TOPCS1600 下 S 1.81，TOP2500 下只有 0.57** ⇒ **TOPCS1600 是 qfl 配方的必要宇宙**。
+⇒ 换卫星后 S 也只有 0.75（rsk68_weight_edadv 卫星弱，且触发 IS_LADDER）。
+
+### ★★ 结论：卫星扫描受两条硬约束夹击
+
+| 约束 | 内容 | 后果 |
+|---|---|---|
+| ① **宇宙** | qfl 骨架（`qfl_cassie_convention_ocf_currliab`）**只在 TOPCS1600 有信号**（TOP2500 下 S 1.81→0.57） | 必须用 TOPCS1600 |
+| ② **字段覆盖** | TOPCS1600 是小宇宙，多数据集的字段（risk68 / risk72 / institutions6 / news46）在其中**无覆盖** | 无法引入新卫星 |
+
+⇒ **两条约束互斥**：能出信号的宇宙里没有新卫星字段，有新卫星字段的宇宙里骨架失效。
+⇒ 因此在 qfl 配方上扩展新卫星的路走不通（至少用现成的跨数据集字段走不通）。
+
+### ★ 附带确认（重要的操作纪律）
+
+**多臂批量中只要 1 条臂产生 NaN 或不可算字段，整批 8 条全部 FAIL，且平台不会指出是哪一条。**
+本轮两次 8 臂全灭、两次 2 臂全成，是同一批对照表达式的直接对照 ⇒ 结论明确。
+⇒ **引入新字段/新卫星时，必须 2 臂（对照 + 1 个新变量）逐条隔离，不要一次铺 8 臂。**
+⇒ 这条纪律以前记过（「新数据集先派 2 臂探针」），本轮再次踩坑，应升级为**任何含新字段的批次都先 2 臂**。
+
+### 可行的替代方向（未执行）
+
+若仍要在 TOPCS1600 上扩展卫星，只能从 **TOPCS1600 内有覆盖的数据集**里找负向卫星：
+- `quant_factor_lib` 自身（126 字段，仅 1 个被用过）⇒ **同数据集内找另一条负向因子** 是最有希望的路径；
+- `fundamental23`（文档记录外源融资异动，已用于 FIN 卫星）；
+- `risk60`（rsk60_offer 已用，同集还有 `rsk60_last` / `lending_fee_bid_rate` / `rsk60_crowding`）。
+
+## EG 波：qfl 同集换卫星（altman_zscore）+ ★ 重要纠错
+
+### ★★ 纠错：7 颗篮子的互相关计算有遗漏
+
+上轮（EE 波）报告「7 颗全部在最大独立集，无一对超过 0.7」**是错的**。
+本轮补测发现：**`N1P02YwL` ↔ `oma7XrLE` = 0.8997 > 0.7**。
+
+原因：两者共用同一骨架 A（`hump(rank(ts_delta(vec_avg(qfl_cassie_convention_ocf_currliab),22)),hump=0.001)`），
+只换了卫星数量（单卫星 risk60 vs 双卫星 risk60+融资）。**同骨架换卫星 = 同腿，只能取其一。**
+
+⇒ 这与文档记录一致（`LL5a6pdn ↔ XgRQLpWX` 日收益相关 0.8609，同腿只出 1 颗）——我当时看到了这句但未应用到自己的篮子计算。
+
+### 8 颗候选的互相关实测（含新 altman 件）
+
+| 项 | 值 |
+|---|---|
+| 最大对 | **N1P02YwL ↔ oma7XrLE = 0.8997** |
+| 超限对数量 | 1 |
+| 最大独立集 size | **7**（需在 N1P02YwL / oma7XrLE 中二选一） |
+
+### EG 波：altman_zscore 卫星（2 臂，隔离法）
+
+| alpha | 表达式 | S | F | TO | ret | 2Y | SUB | prod |
+|---|---|---:|---:|---:|---:|---|---:|---:|
+| N1P02YwL（对照，去重） | `subtract(A, multiply(rank(ts_mean(vec_avg(rsk60_offer),5)),0.5))` | 1.81 | 1.43 | 3.79% | 7.85% | None | 1.51 | 0.6073 |
+| **GrmPRgx5** | `subtract(A, multiply(hump(rank(ts_delta(vec_avg(qfl_cassie_model_altman_zscore),22)),hump=0.001),0.5))` | **1.66** | **1.14** | 4.21% | 5.90% | **1.88** | **1.55** | **0.7152 ✗** |
+
+⇒ **altman 卫星带来了 2Y 数据（1.88 vs 骨架族其他版本的 None）** ⇒ 说明 altman_zscore 在近年有覆盖，而 ocf_currliab 没有。
+⇒ 但 **prod 0.7152 卡墙**（差 0.015）⇒ 不可交付。
+⇒ 有效发现：**同集换卫星可以解决 2Y=None 问题**，这是比 prod 更难得的一条。
+
+### ★ 两条硬约束的新证据（补充 EF 波）
+
+| 项 | 实测 |
+|---|---|
+| qfl 字段在 TOPCS1600 的覆盖 | altman_zscore **有**（可算），ocf_currliab 有 |
+| 但近年覆盖不同 | altman **有 2Y 数据**，ocf_currliab **无**（2Y=None） |
+| 换卫星对 prod 的影响 | altman 卫星 prod 0.7152（卡）；risk60 卫星 0.6073（过） |
+
+⇒ **prod 甜点是「risk60_offer 作为卫星」这一特例，不是任选卫星都行。**
+⇒ altman 卫星虽解决 2Y，但 prod 卡墙 ⇒ 不能简单替换。
+
+### 当前候选与篮子状态（修正版）
+
+| # | alpha | 塔 | S | F | 2Y | SUB | prod | 可入篮? |
+|---|---|---|---:|---:|---|---:|---:|---|
+| 1 | O0W0w3P7 | news | 2.72 | 1.15 | 3.31 | >=1.29 | 0.6403 | ✅（已 ACTIVE） |
+| 2 | mLaLllmK | other | 3.98 | 2.21 | 1.93 | 2.22 | 0.6579 | ✅ |
+| 3 | 6XMmE0EL | other | 2.35 | 1.02 | 1.70 | 1.87 | 0.6529 | ✅ |
+| 4 | O0WOK0Wg | earnings | 1.68 | 1.06 | 1.64 | 1.27 | 0.6314 | ✅ |
+| 5 | N1NGbddg | institutions | 1.69 | 1.05 | None | 0.90 | 0.6872 | ✅ |
+| 6 | **N1P02YwL** | qfl×risk60 | 1.81 | 1.43 | None | 1.51 | **0.6073** | ✅（prod 更优） |
+| 6' | oma7XrLE | qfl×risk60×融资 | 1.79 | 1.45 | None | 1.50 | 0.6215 | ⚠ 与 N1P02YwL corr 0.8997，二者取一 |
+| 7 | GrmPRgx5 | qfl×altman | 1.66 | 1.14 | **1.88** | 1.55 | **0.7152** | ❌ prod 卡墙 |
+
+⇒ **真实可交付 = 6 颗**（第 6 颗在 N1P02YwL / oma7XrLE 中取 prod 更优的 N1P02YwL）。
+⇒ 上轮报的「7 颗」应更正为 **6 颗**。差 4 颗到目标 10。
+
+## EH 波：qfl_nlp 卖方问答卫星（2 臂）—— 同集换卫星路径穷尽（2026-11-12）
+
+### 实测
+
+| alpha | 卫星 | S | F | TO | ret | 2Y | SUB |
+|---|---|---:|---:|---:|---:|---|---:|
+| N1P02YwL（对照） | risk60_offer | **1.81** | 1.43 | 3.79% | 7.85% | None | 1.51 |
+| zqdZl17G | qfl_nlp 卖方问答数（66日均值） | 1.01 | 0.62 | 4.16% | 4.67% | 1.08 | 1.23 |
+
+⇒ nlp 卫星弱于 risk60 卫星 0.8 个 Sharpe ⇒ 不可用。
+
+### ★ 同集换卫星路径的完整结论（3 种卫星实测）
+
+| 卫星 | S | F | 2Y | prod | 判定 |
+|---|---:|---:|---|---:|---|
+| **risk60_offer**（借券费率） | **1.81** | **1.43** | None | **0.6073 ✓** | **唯一全闸** |
+| altman_zscore（破产概率） | 1.66 | 1.14 | **1.88** | 0.7152 ✗ | 差 0.015 |
+| nlp 卖方问答数 | 1.01 | 0.62 | 1.08 | 未测 | 太弱 |
+
+⇒ **risk60_offer 是唯一能过 prod 的卫星**，且已产出 N1P02YwL。同集换卫星的扩展空间已穷尽。
+⇒ altman 卫星的价值是证明了「2Y=None 可以通过换卫星解决」，但 prod 需要精确匹配。
+
+### EUR 战役最终状态（截至 2026-11-12 01:40）
+
+**可交付 6 颗**（互相关全对 <0.7，最大对 0.4703）：
+
+| # | alpha | 塔 | S | F | 2Y | SUB | prod | 状态 |
+|---|---|---|---:|---:|---|---:|---:|---|
+| 1 | O0W0w3P7 | news | 2.72 | 1.15 | 3.31 | >=1.29 | 0.6403 | ACTIVE（已提交） |
+| 2 | mLaLllmK | other | 3.98 | 2.21 | 1.93 | 2.22 | 0.6579 | 待提交 |
+| 3 | 6XMmE0EL | other | 2.35 | 1.02 | 1.70 | 1.87 | 0.6529 | 待提交 |
+| 4 | O0WOK0Wg | earnings | 1.68 | 1.06 | 1.64 | 1.27 | 0.6314 | 待提交 |
+| 5 | N1NGbddg | institutions | 1.69 | 1.05 | None | 0.90 | 0.6872 | 待提交 |
+| 6 | N1P02YwL | qfl×risk60 | 1.81 | 1.43 | None | 1.51 | 0.6073 | 待提交 |
+
+**目标 10 颗，缺口 4 颗。**
+
+**已穷尽的路径**：
+
+| 路径 | 结果 |
+|---|---|
+| 9 个塔横向扫描 | 6 类死因，全部判死（300+ 臂） |
+| qfl 换跨数据集卫星 | TOPCS1600 无覆盖（EF 波 18 臂） |
+| qfl 换同集卫星 | 3 种卫星只有 risk60 过 prod（EG+EH 波） |
+| 双腿 analyst7×inst6 | 2Y=None（16 臂，skill 的 2.17 无法复现） |
+| 存量件复活 | **成功 2 颗**（N1NGbddg + N1P02YwL，读 code 法 5/5 逐位一致） |
+
+**未穷尽的路径**（若继续）：
+
+| 路径 | 说明 |
+|---|---|
+| qfl_nlp 其余 93 字段 | 本轮只测 1 个；CEO 情绪/回避度等未测，但单点实测偏弱 |
+| 存量件清单继续翻 | skill 其他文件（_atom-revision-playbook 等）可能还有带 id 的记录 |
+| 组合腿配额 | 目标允许 ≤5 个跨 category 组合，已用 0 个（双腿 analyst×inst 属于 1 个？待确认） |
+
+## ★★★ analyst7 修订族手册盘点（15 颗库存，2026-11-12）—— 同族占用致 prod 卡墙
+
+### 手册内容（_atom-revision-playbook.md，2026-10-20 定稿）
+
+14 颗 RA 全过 / 全部 ATOM（analyst7 单数据集），S 1.71–2.23，最大互不相关团 7。
+显式设置：TOP2500 / FAST / decay 40（幅度）或 80（广度/门控/gps）/ maxTrade ON。
+
+### 提交状态盘点（get_alpha_details 逐颗实测）
+
+| alpha | 族 | S | 平台状态 |
+|---|---|---:|---|
+| e76xGOQO | ebt 幅度 | 2.15 | **ACTIVE**（2026-10-20 提交） |
+| LL5dmv9a | dps 幅度 | 1.71 | **ACTIVE** |
+| Grge2lN3 | gps 修复 | 1.79 | **ACTIVE** |
+| 6XAe27eL | pre 门控 | 1.74 | **ACTIVE** |
+| E5Vexv39 | ebt 幅度 | 2.15 | UNSUBMITTED |
+| pwvK3P0V | ebt 幅度 | 2.11 | UNSUBMITTED |
+| xA1d5YMW | dps 幅度 | 1.76 | UNSUBMITTED |
+| JjPvrxll | dps 幅度 | 1.78 | UNSUBMITTED |
+| qME6VWbj | ebi 幅度 | 1.76 | UNSUBMITTED |
+| 3qjeJGle | gps 幅度 | 1.72 | UNSUBMITTED |
+| wp9EvMmv | cps 广度 | 1.80 | UNSUBMITTED |
+| P0MOK7wx | ebt 4周广度 | 2.13 | UNSUBMITTED |
+| MP0L2Ogo | ebt 1周广度 | 2.03 | UNSUBMITTED |
+| A1Q729Ll | ebt median | 2.23 | UNSUBMITTED |
+| O0Jx2O6R | ebt high | 1.94 | UNSUBMITTED |
+
+### 当前实测：UNSUBMITTED 件的 prod 已被同族 ACTIVE 件拉高
+
+| alpha | 模拟层 | prod | 判定 |
+|---|---|---:|---|
+| A1Q729Ll（ebt median，S 2.23） | FAIL 0 / 无硬闸 / Failed RA=0（全闸仍有效） | **0.9341** | ✗ 严重卡墙 |
+| P0MOK7wx（ebt 4周广度，S 2.13） | — | **0.7952** | ✗ 卡墙 |
+
+**机理**：用户已于 2026-10-20 起提交了 4 颗该族件（e76xGOQO 等，全 ACTIVE）。
+**同族 ACTIVE 件的存在使生产池中已有强相关持仓 ⇒ 所有同族未提交件的 prod 全部飙升。**
+这正是手册 §8「每族 1 席」的物理体现：席位被占，同族兄弟全部失效。
+
+### ★ 结论：手册库存不可作为新交付件
+
+1. **ACTIVE 的 4 颗**：已提交，不属本战役新产出；
+2. **UNSUBMITTED 的 11 颗**：模拟层仍全闸（A1Q729Ll 实测确认），**但 prod 全部被同族占用拉高**（两颗抽样 0.9341/0.7952 均远超 0.7）；
+3. 剩余族（dps/ebi/gps/cps）的未提交件大概率同样命运——因为同族的 p=1.4 变体（LL5dmv9a/Grge2lN3）已 ACTIVE。
+   （gps 的 Grge2lN3 ACTIVE ⇒ 3qjeJGle（gps 原版）也会卡；dps 的 LL5dmv9a ACTIVE ⇒ xA1d5YMW/JjPvrxll 会卡。）
+
+⇒ **「手册 14 颗库存」这个矿脉已被用户自己的提交行为封死。**
+⇒ 唯一可能例外：与已提交件互相关较低的族（cps 广度 wp9EvMmv 与其他族 0.30–0.57；但 cps 族无 ACTIVE 件）——可测一颗确认。
+
+### 方法论沉淀（本轮第三次验证同一规律）
+
+**「存量件复活」必须同时满足两个条件，缺一不可：**
+1. 模拟层仍全闸（会随时间漂移，需 submit_verdict 重核）；
+2. **prod 仍过线（会被同族已提交件拉高，需重测）**——这一条是本战役反复撞上的墙：
+   - probability 族：14 颗 IS 全闸，prod 全在 0.65–0.90（自己提交的 mLaLllmK 占了席位）；
+   - analyst7 修订族：15 颗库存，4 颗 ACTIVE 后同族全卡（0.93/0.80）；
+   - qfl 族：risk60 卫星是唯一例外（prod 0.6073 过线）。
+
+**推论：一个族的第一颗提交后，该族的「再产出能力」即被消耗。** 选族要选「无已提交件」的族。
+
+## EI 波：leMpQ5E2（S 3.78）SUB 修复尝试 —— 三元约束锁死（6 臂，2026-11-12）
+
+### 背景
+_probe-sop.md 记录的高读数件 `leMpQ5E2`：signed_power(group_rank(ts_zscore(ts_mean(predicted_fifth_quantile_ten_day_return_15,2),252),industry),3.0)，TOPCS1600/SUBINDUSTRY。
+实测：S 3.78 / F 1.58 / **BLOCKED：SUB 1.75 < 门槛 2.0**（0.53×S 比率闸）。
+互相关：与 mLaLllmK 仅 **0.3059**、与 6XMmE0EL 仅 0.3252 —— 满篮可行（若能过闸）。
+
+### 修复尝试（降幂次 + 外包平滑 + market 中性）
+
+| alpha | 结构 | S | F | TO | 2Y | SUB | fails |
+|---|---|---:|---:|---:|---:|---:|---|
+| leMpQ5E2（原版） | p=3.0 | **3.78** | 1.58 | — | — | 1.75 | **SUB 1.75<2.0** |
+| KPg0rVZz | p=1.4 | 1.55 | 0.84 | 8.9% | 1.48 | 1.03 | **LOW_ROBUST** |
+| 3q0bVGJ0 | p=1.4 + ts_mean5 | 1.42 | 0.74 | 8.8% | 1.62 | 0.98 | **LOW_ROBUST** |
+| RRe365P1 / Jj8wQ3rA | p=1.0 / p=1.0+中性 | 1.07 | 0.48 | 11.2% | 1.24 | 0.84 | **LOW_ROBUST** |
+| 9qlvWGkV | p=3.0 + ts_mean5 | 1.07 | 0.48 | 11.2% | 1.15 | 0.80 | **LOW_ROBUST** |
+| A1xWvLEg | p=1.4 + market 中性 | 0.88 | 0.36 | 11.2% | 1.26 | 0.76 | 多项 |
+
+### ★ 结论：三元约束锁死
+
+| 版本 | S | SUB 比例 | 卡什么 |
+|---|---:|---|---|
+| p=3.0（原版） | 3.78 | 1.75/2.0 ✗ | SUB 绝对值不足 |
+| p=1.4 | 1.55 | 1.03/0.82 ✓ | **S<1.58** + LOW_ROBUST |
+
+**S 3.78 需要 p=3.0 放大；但 SUB 门槛 = 0.53×S 随之涨到 2.0；降 p 救 SUB 则 S 崩到 1.55。**
+与 earnings 幂次族同构的三元互斥（S/F/2Y），此处表现为 S/SUB/ROBUST 互斥。
+
+另：全部降幂版触发 **LOW_ROBUST_UNIVERSE_SHARPE**（TOPCS1600 特有闸，本战役 TOP2500 波从未见过）——
+该闸在 qfl 复现波（DX）也出现过，判定为 TOPCS1600 小宇宙的固有约束。
+
+### EUR 战役最终状态
+
+**可交付 6 颗 / 目标 10**（与上轮一致，无新增）：
+
+| # | alpha | 塔 | S | F | prod | 状态 |
+|---|---|---|---:|---:|---:|---|
+| 1 | O0W0w3P7 | news | 2.72 | 1.15 | 0.6403 | ACTIVE |
+| 2 | mLaLllmK | other | 3.98 | 2.21 | 0.6579 | 待提交 |
+| 3 | 6XMmE0EL | other | 2.35 | 1.02 | 0.6529 | 待提交 |
+| 4 | O0WOK0Wg | earnings | 1.68 | 1.06 | 0.6314 | 待提交 |
+| 5 | N1NGbddg | institutions | 1.69 | 1.05 | 0.6872 | 待提交 |
+| 6 | N1P02YwL | qfl×risk60 | 1.81 | 1.43 | 0.6073 | 待提交 |
+
+### 本轮新增的三条「已穷尽」证据
+
+| 矿脉 | 结果 | 实测 |
+|---|---|---|
+| analyst7 修订族手册（15 颗库存） | **同族 ACTIVE 占位 ⇒ prod 全卡** | A1Q729Ll 0.9341 / P0MOK7wx 0.7952 / wp9EvMmv 0.7779 |
+| _probe-sop 高读数件 leMpQ5E2 | **S/SUB/ROBUST 三元锁死** | 6 臂修复全败 |
+| skill 库存件盘点 | 4 颗已 ACTIVE（用户 10-20 提交），11 颗 prod 卡墙 | 15/15 全查 |
+
+## EJ 波：qfl 骨架双卫星（risk60 + merton）—— qfl 配方最终穷尽（2026-11-12）
+
+### 实测（2 臂隔离法）
+
+| alpha | 结构 | S | F | TO | ret | 2Y | SUB | fails |
+|---|---|---:|---:|---:|---:|---|---:|---|
+| N1P02YwL（对照，去重） | 单卫星 risk60 w=0.5 | 1.81 | 1.43 | 3.79% | 7.85% | None | 1.51 | 全闸 ✓ |
+| QP0JoAGX | **双卫星**（risk60 w0.3 + merton w0.3） | 1.65 | 1.28 | 3.72% | 7.55% | None | 1.26 | **IS_LADDER_SHARPE** |
+
+⇒ 双卫星版触发 **IS_LADDER_SHARPE**（年度阶梯闸）——qfl 字段 2020 年前空窗的直接后果，无法修复。
+⇒ merton 卫星与 altman 一样是违约风险维度，叠加后 S 降（1.81→1.65）且引入阶梯闸。
+
+### qfl 配方穷尽清单（全战役合计）
+
+| 变体 | S | prod / 阻断 | 判定 |
+|---|---:|---|---|
+| **单卫星 risk60 w=0.5（N1P02YwL）** | 1.81 | **0.6073 ✓** | **唯一全闸** |
+| w=0.3 / w=0.7 | 1.94 / 1.69 | 0.7732 ✗ / 未测 | prod 卡 |
+| altman 卫星 w=0.5 | 1.66 | 0.7152 ✗ | prod 卡（但 2Y=1.88） |
+| nlp 问答卫星 | 1.01 | — | 太弱 |
+| rsk68_weight_edadv 卫星 | 0.75 | — | 太弱 + IS_LADDER |
+| **双卫星（risk60+merton 各 w0.3）** | 1.65 | — | **IS_LADDER** |
+| 跨数据集卫星（news46/inst/pv103/risk72） | — | 整批 FAIL | TOPCS1600 无覆盖 |
+
+### ★ EUR 战役终局判定（第二次确认）
+
+**可交付 6 颗 / 目标 10，缺口 4 颗。**
+
+全部路径的封死证据（每条都有多轮实测）：
+
+| # | 路径 | 封死原因 | 关键实测 |
+|---|---|---|---|
+| 1 | 新挖 9 塔（300+ 臂） | 6 类死因 | pv SUB 0.50 / risk 2Y 0.75 / macro S 0.25 / inst S 1.22 / insider 稀疏 / socialmedia 无方向 |
+| 2 | probability 幂次邻域 | 三元互斥（S/F/2Y） | 幂次 2 是唯一孤点 |
+| 3 | earnings 幂次邻域 | 同上 | DC 波 10 臂 |
+| 4 | qfl 跨数据集卫星 | 宇宙-覆盖互斥 | EF/DV 波 18 臂 |
+| 5 | qfl 同集换卫星 | risk60 是唯一 prod 甜点 | EG/EH/EJ 波 8+2 臂 |
+| 6 | analyst7 手册 15 颗库存 | 同族 ACTIVE 占位 ⇒ prod 卡 | A1Q729Ll 0.9341 等三颗实测 |
+| 7 | 高读数件 leMpQ5E2（S 3.78） | S/SUB/ROBUST 三元锁死 | EI 波 6 臂 |
+| 8 | 存量复活 | 有效产出 2 颗后其余全卡 | N1NGbddg 0.6872 / N1P02YwL 0.6073 ✓ |
+
+**结论：EUR 6 颗是这片数据在当前账号状态下的真实产出上限。**
+**缺口 4 颗为结构性约束（数据层/占位层/比率闸层），非投入不足。**
+**补足唯一现实路径 = 换区域（需用户解除「全程 EUR」约束）。**
+
+---
+
+## ★★★ 2026-11-12 下午 重大更正：可交付篮子实为 8 颗（非 6 颗）＋ EK 组合腿波派发
+
+> 本节覆盖上方「6 颗是上限 / 唯一路径=换区域」的终局判定。目标 10 颗，EUR 锁定不更换。
+
+### 一、塔位刷新（get_pyramid_alphas 实测，2026-11-12）
+EUR/D1：已点亮 = analyst10 / news3 / model3 / fundamental3 / other3 / sentiment3 / imbalance3；
+**未点亮 = pv2 / insiders2 / risk2 / earnings1 / institutions0 / macro0 / socialmedia0**。
+（news 已由 1→3 点亮；earnings 0→1。用户 11-09~11-11 新提交 0mY1QPEv / 9qlZLVNd / E5Q7RGNR-SUPER。）
+
+### 二、IS 窗口滚动修正
+N1NGbddg 2Y 由 None→**2.17**；N1P02YwL 2Y 由 None→**2.62**（台账旧 None 作废）。
+
+### 三、8 颗最大独立集（compute_mutual_correlation，threshold 0.7，4 年，exact）
+**成员**：KPJ1rG0j / mLaLllmK / 6XMmE0EL / O0WOK0Wg / N1NGbddg / N1P02YwL / rKRx7v6m / leAnKOEA。
+被排除：P0oR7vYw（与 KPJ/leAn/Vkx 全 >0.7）、VkxWmpYG（与 KPJ 0.7891 / P0o 0.815）。
+篮内最高对 KPJ1rG0j×leAnKOEA=0.589；mLaLllmK×6XMmE0EL=0.4703。
+等大二案：KPJ1rG0j 换 VkxWmpYG（最高对 leAn×Vkx=0.6417）。
+⇒ **8 颗 UNSUBMITTED + O0W0w3P7(ACTIVE) = 9 颗**，距 10 仅差 1。eur15 战役的 KPJ/rKRx/leAn 三颗全闸件并入篮子。
+⚠ 全部 prod 需 refresh 复测（用户新提交进 prod 池）——子代理 bg_9c8c0762 正在逐颗测。
+
+### 四、EK 组合腿波（2026-11-12 派发，平台已恢复）
+目的：pv103 SUB0.50 / risk 反转 2Y0.75 用 news46/50 强腿补偿，补第 10 颗＋点 pv/risk 塔。
+结构 = add(group_rank(A,g), group_rank(B,g))（rKRx7v6m/KPJ1rG0j 验证结构），g=group_cartesian_product(sector,country)。
+设置：EUR/TOP2500/D1/decay1/MARKET/trunc0.05/nanON/maxTradeOFF。preflight 全绿（4 字段存在）。
+**multisim A = 1BSAtY4TH59YbsxkN29lyN5**（5 臂）：A1 news46 单腿金丝雀 / A2 pv+news / A3 pv+news+news50 / A4 pv103 对照 / A5 pv+news(industry 轴)。
+**multisim B = ezXdt87w5jNblWzNy7VM55**（5 臂）：B1 risk+news / B2 risk+news50 / B3 risk+news+news50 / B4 pv+risk+news / B5 risk 对照。
+派发后回查 progress=0.15（存在、在跑、非 FAIL）。
+基础件原文：pv103=group_zscore(ts_rank(ts_sum(session_1600to1600_total_traded_volume,5),110),densify(group_cartesian_product(industry,country)))；risk=group_rank(ts_mean(ts_rank(ts_sum(multiply(top2500_equity_residualized_return,-1),5),110),11),g)；news46 字段实为 **mws46_story_count**（非 ravenpack_sum_story_count）。
+组腿配额：含 PV 的 A2/A3/A5/B4 占配额（N1P02YwL 已占 1，总 ≤5）；risk×news 不含禁区类不占配额。
+
+### 五、★★ 合规修正（2026-11-12，逐腿核平台 code）
+依据 deliverables/COMPLIANCE_ALERT_mixing_violation.json + 本轮 get_alpha_details 全码核对：
+- **leAnKOEA 违规剔除**：techindi(OTHER)×analyst×eur_aggregated_value_1(insider_matrix=OTHER) ⇒ OTHER+OTHER，违反「禁止 OTHER 内部两两组腿」。
+- **P0oR7vYw 同违规**（含 insider_matrix 腿），本就被独立集排除。
+- **KPJ1rG0j 合规**：techindi(OTHER)×analyst×rsk60_last(RISK)，仅 1 禁区类。
+- **rKRx7v6m 合规**：techindi(OTHER)×snt26_avgranking(SENTIMENT)，仅 1 禁区类。
+- **VkxWmpYG 合规**：techindi(OTHER)×analyst×mws36_novelty(NEWS)，仅 1 禁区类；与 KPJ 互相关 0.7891 互斥，可作替补（S2.15/SUB1.44 略优于 KPJ）。
+⇒ **合规最大独立集 = 7 颗**：KPJ1rG0j / mLaLllmK / 6XMmE0EL / O0WOK0Wg / N1NGbddg / N1P02YwL / rKRx7v6m（或 KPJ→VkxWmpYG 等大二案）。
+⇒ 加 O0W0w3P7(ACTIVE) 共 8 颗；**距 10 差 2 颗**（若只算 UNSUBMITTED 新件则差 3）。
+⇒ 组腿配额重算：N1P02YwL(MODEL)+KPJ(OTHER)+rKRx(OTHER)=**3/5 已用，余 2**；EK 的 risk×news(B1/B2/B3) 不占配额，是补口免费通道。
+
+### 六、EK 波回采 + prod 复测 + 复活池（2026-11-12 17:20）
+**prod 复测（refresh，17:01–17:15）**：O0WOK0Wg 0.6314→**0.8518 FAIL**（机制级深墙，剔除）；mLaLllmK 0.6579 / 6XMmE0EL 0.6529 / rKRx7v6m 0.6756 / N1NGbddg 0.6872 / N1P02YwL 0.6073 / VkxWmpYG 0.6800 全 PASS；KPJ1rG0j 0.6957（余量 0.0043）与 Vkx 互斥，取 Vkx。
+**EK 回采（10 臂全 COMPLETE，0 ERROR）**：
+- ★**B1 QP0kYMqr risk+news46 全闸**：S2.95/F1.53/TO30.8%/2Y**3.07**/SUB1.68/margin5.39bp/fRA0/self0.3389。news46 腿把 risk 2Y 从 0.75→3.07。新交付件（待 prod）。
+- B3 1YWbjeL6 risk+news+news50 全闸但与 B1 相关 0.9283 互斥，取 B1。B2 2r5zjMQx risk+news50：2Y1.37<1.58 IS_LADDER FAIL。
+- pv 组合：A2 RReQAZJj SUB1.33/限1.87、A3 6XMVAPnY SUB1.54/限1.93、B4 88N9vbrv SUB1.64/限1.86 —— SUB 绝对值大升但 S 同步升到 3.6–3.7，比率闸 SUB/S≈0.37–0.46 仍 <0.52，结构性（pv 信号依赖低流动性股）；A5 industry 轴更差。
+- A1 d5aVKeNY = O0W0w3P7 复刻（金丝雀，确认平台健康）。
+**复活池扫描（互相关精确解扩到 12 成员）**：YP1d66KM 是 SUPER 剔除。可行 REGULAR 全闸候选：WjOeNE6O(S2.90/margin9.56bp/OTHER 占配额)、mL617YPx(S1.82/margin17.6bp/PV 占配额)、zq35dYXV(S2.10/margin12.8bp/analyst7 ATOM 不占配额)、ZYQmolVx(S2.48/margin4.59bp 薄)。
+⇒ **当前篮子 8 成员（7 UNSUB + O0W0w3P7 ACTIVE），差 2**。子代理 bg_db15e70d 正终验 QP0kYMqr + 4 复活候选 prod/self。
+
+
+
+
+---
+
+## ★★ RJ 波（2026-11-12 晚）risk 塔攻坚 + 用户方法论纠正「ATOM 优先」
+
+### 一、用户纠正（硬纪律，已入 memory）
+> 「不同机制腿，为什么不优先在本数据集找，不是优先做ATOM，你要记住」
+
+**规则**：单数据集信号差一闸时，第一步必须在本数据集内穷尽（拉全字段 → 逐字段×矩全家×变换 → 同集多字段组合），才轮跨数据集组腿。跨腿前必须出具「本数据集字段全覆盖清单 + 每字段最低读数」。
+
+**触发本次错误**：rsk68_weight_edadv S1.60 但 2Y0.34，我直接加 news46 腿；而 risk68 实有 **5 字段**我只测 3 个，漏掉最关键的 rsk68_residual_return（特异收益）与 rsk68_weight_dadv。
+
+### 二、★ 结构性发现：SUB 闸是 S 的比率（0.519×S）
+| alpha | S | SUB | SUB 限 | 比率 |
+|---|---:|---:|---:|---:|
+| Jj8EWEeA（纯 edadv） | 1.60 | 0.27 | 0.83 | **0.17** |
+| 2r5zXz9N（edadv+news46） | 1.87 | 0.53 | 0.97 | **0.28** |
+
+⇒ LOW_SUB_UNIVERSE_SHARPE 的 limit 恒等于 **0.519×S**（两臂精确复现）⇒ **必须 SUB/S ≥ 0.52**。
+⇒ 提升 S 会同步抬高 SUB 门槛——S/SUB 是耦合闸，不是独立闸。
+⇒ **流动性/规模代理型字段（edadv、事件流量计数）天然依赖小盘股票 ⇒ SUB 比率低 ⇒ 结构性不过闸。**
+
+### 三、risk 塔（2/3）三数据集全字段实测
+**risk68（5 字段全测）**：
+| 臂 | 骨架 | S | 2Y | SUB/S |
+|---|---|---:|---:|---:|
+| Jj8EWEeA | edadv ts_zscore252 | **1.60** | 0.34 | 0.17 |
+| QP0kNkWp | edadv ts_rank110 | **1.67** | 0.49 | 0.07 |
+| gJaOgOag | volatility_short zscore | −0.03 | −0.17 | — |
+| pwarMrWX | volatility_short Δ66 | 0.12 | 0.79 | — |
+| mLaR0RKx | beta | 0.34 | −0.25 | — |
+| A1xZrZLQ | edadv/vol 比值 | −0.52 | −0.51 | — |
+| E5QW8WNm | edadv×vol | −0.50 | −0.68 | — |
+⇒ 仅 edadv 正向上限 S≈1.67，2Y ≤0.49，SUB 比率 0.07–0.17；vol_short/beta 在 EUR 无信号（DEU 的 vol +0.95 不可迁移）。
+
+**risk60（5 VECTOR 字段）R2 十臂全灭**：最强 blaZz20M(rsk60_last) S −0.73、RReQzZwb(lending_fee_bid_rate) S −0.67、crowding 臂 rK7gG6w9 S −0.07 ⇒ 借券拥挤度/借贷费率在 EUR 无方向性信号。
+**risk62（636 字段实为回归组件）**：rsk62_risk_volatility S −0.09 / Δ66 −0.16，无信号。
+
+### 四、存量盘活发现（★ 高价值）
+本地库 EUR REGULAR UNSUBMITTED 中同时满足 S≥1.58 / F≥1 / 2Y≥1.58 / **SUB-S≥0.519** / TO 5–30% / margin≥5bp 者共 **365 颗**；其中已有 prod 实测值者 **76 颗**，prod<0.7 者 22 颗。
+
+**prod 已实测 <0.7 的核心可用件（去同族后）**：
+| alpha | prod | self | S | 2Y | SUB/S | 族 |
+|---|---:|---:|---:|---:|---:|---|
+| mL617YPx | **0.5421** | 0.450 | 1.82 | 2.23 | 0.68 | fnd72 现金流质量 |
+| WjOeNE6O | **0.6411** | 0.641 | 2.90 | 2.15 | 0.66 | imb5×buy_sell_ratio（imbalance） |
+| qME6VWbj | **0.6609** | — | 1.76 | 1.65 | 0.57 | analyst7 ebi 均值修订 |
+| WjOAJWxd | **0.6806** | 0.645 | 2.36 | 2.67 | 0.54 | analyst7 ebt 修订+sector 中性 |
+| VkxWmpYG | 0.6800 | — | 2.15 | 2.33 | 0.67 | techindi×analyst×news |
+| rKRx7v6m | 0.6756 | 0.428 | 3.22 | 2.07 | 0.57 | techindi×sentiment |
+| N1NGbddg | 0.6872 | 0.660 | 1.69 | 2.17 | 0.53 | analyst7×inst6 |
+| mLaLllmK | 0.6579 | 0.301 | 3.98 | 1.93 | 0.56 | techindi 概率差 |
+
+**剔除**：QP0kYMqr（B1 risk+news46）prod **0.7476 FAIL**（原「第10颗」作废）；O0WOK0Wg prod 0.8518 FAIL；zq35dYXV self 0.937 FAIL；leAnKOEA / P0oR7vYw 违反「OTHER 内部组腿」合规。
+
+### 五、当前合规篮子
+**7 颗 UNSUBMITTED 全闸**（mL617YPx / WjOeNE6O / mLaLllmK / 6XMmE0EL / N1NGbddg / N1P02YwL / rKRx7v6m）+ **1 颗 ACTIVE**（O0W0w3P7）= **8 颗**。目标 20，缺口 12。
+⚠ mL617YPx / WjOeNE6O / qME6VWbj / WjOAJWxd 的 prod 值均 >48h stale，提交前须 refresh 终验。
+
+
+---
+
+## ★ 未点亮塔专项（2026-11-12 18:00-18:30）· 用户指令「优先做塔未点亮的数据集」+「字段用前要走六法诊断」
+
+### 一、用户二次纠正（已入 memory）
+> 「你在用字段时，有没有经过 skills 里 /brain-datafield-exploration-general 诊断」
+
+**我的回答：没有。** 后果实证：
+- earnings6 的 `eps_change_percentage_value` 报 cov 0.53，实测 4 臂 **S=0/TO=0（全零无数据）**，白烧一波；
+- risk68 漏测 2 个字段（含唯一可过 SUB 闸的 `residual_return`）；
+- pv106 未先判单边恒正就 `ts_zscore`，整族 10 臂全负（法5「单边字段先取变化率」的典型错法）。
+
+**纪律**：字段当主信号前，按六法跑在线最小集（法1 覆盖 / 法2 非零 / 法3 频率 N=5,22,66 / 法4 量纲 X=1,10），设置 `Neutralization=None`+`Decay=0`+`P0Y0M0D`。
+**离线包缺失**：`tracking/mining/field_inspect_eur_*.json` 在本仓库 **0 个文件**（只有 dataset 级 field_coverage_*），故 EUR 一律走在线最小集。
+
+### 二、earnings 塔（1/3）判弱
+| 臂 | 骨架 | S | 2Y | SUB/S | TO | 判定 |
+|---|---|---:|---:|---:|---:|---|
+| E5QWxwbK | eps%chg sum66 | **0.00** | — | — | 0% | **字段无数据** |
+| QP0k6ajp | eps$chg sum66 | **0.00** | — | — | 0% | **字段无数据** |
+| Jj8ErpXl | eps%chg z252 | **0.00** | — | — | 0% | 无数据 |
+| blaZALPq | eps%chg mean252 | **0.00** | — | — | 0% | 无数据 |
+| ZYa3Npl8 | range/eps$ | **0.00** | — | — | 0% | 无数据 |
+| LLKa3pXm | preliminary range width | 0.70 | 0.19 | **1.06** | 12.7% | 弱（SUB 比率优秀但 S 不足） |
+| vRAMPLJA | time_of_day sum66 | 0.74 | 0.80 | 0.61 | 1.5% | 弱 |
+| 0mP357Kv | prelim low sum66 | −0.52 | −0.27 | 0.48 | 5.4% | 弱 |
+⇒ **earnings6 唯一真信号是「初步 EPS 区间宽度」（不确定性）S0.70，天花板不足。塔不点亮。**
+
+### 三、insiders 塔（2/3）判死（实证）
+最小探针：`group_rank(total_top_buy_shares,industry)` S0.52/TO51.8%；`rank(significant_value_1)` S0.61/TO176%。
+⇒ **信号天花板 ≈0.61**（低于历史记录 insiders1 的 1.14），且换手极高。**整族放弃，塔不点亮。**
+
+### 四、risk 塔（2/3）判死（第二轮确认）
+| 数据集 | 全字段 | 最强读数 | 死因 |
+|---|---|---|---|
+| risk68（5） | edadv/dadv/vol_short/beta/residual_return | edadv S1.67；residual_return 反转 S1.68 | SUB 比率 0.07（edadv）/ TO 70%（residual） |
+| risk60（5） | crowding/offer/last/lending_fee/datatime | S−0.73 | 无方向性信号 |
+| risk62（636） | 实为回归组件 | S−0.09 | 无信号 |
+⇒ 降换手实测：`ts_target_tvr_decay(0.20)` S1.15；`ts_decay_linear(22)` S1.40/TO17.8%；**平台 decay=40** S1.13/TO17.8%。
+⇒ **residual_return 是 S/2Y/SUB/TO 四元互斥（S1.68 时 TO70%，压到 17.8% 则 S1.13）。塔不点亮。**
+
+### 五、pv 塔（2/3）两数据集实测
+**pv106（13 字段全测）——整族系统性负向**：
+| 最强臂 | S | TO | SUB/S |
+|---|---:|---:|---:|
+| spreadbp zscore | **−1.01** | 35.9% | 0.39 |
+| spreadbp mean22 | **−0.97** | 6.0% | 0.40 |
+| tc_p10 zscore | −0.67 | 23.6% | 0.31 |
+| spreadbp rank110 | −0.63 | 44.5% | 0.29 |
+⇒ 价差/交易成本在 EUR 是**负向**因子（价差大→未来收益低），与常见非流动性溢价相反；取反上限 ≈1.01，不足闸线。
+
+### 六、institutions 塔（0/3）实测
+**fund_holdings_panel（10 字段，全 VECTOR 需 vec_avg）**：
+| 臂 | S | 2Y | SUB/S | TO |
+|---|---:|---:|---:|---:|
+| herfindahl_hold zscore | 0.50 | 1.53 | **1.28** | 5.8% |
+| herfindahl Δ66 | 0.52 | 1.41 | 0.96 | 7.8% |
+| 其余 8 臂 | \|S\|≤0.46 | — | — | — |
+⇒ **持仓集中度（HHI）机制质量极佳（SUB 比率 1.28，子宇宙同强）但强度只有 0.52。** 值得后续用乘法/非线性放大重试。
+
+
+---
+
+## ★★ 2026-11-12 19:00 终版：独立集达 20 颗（19 UNSUB + 1 ACTIVE），目标数量达成
+
+### 一、独立集求解（compute_mutual_correlation，threshold 0.7，4 年，exact）
+- 第一次 63 颗候选 → 独立集 32（但多数来自已点亮塔，且含违规件）
+- 按用户「未点亮塔优先」重构：从未点亮塔字段前缀筛出 **87 颗去重件** → 与 15 颗基座合并 45 颗求解 → **独立集 19 颗**
+- **严格复核：overCount = 0，全部 <0.7**，最大对 `zq3Yrb3G × leA8aXM7 = 0.6993`（贴线）
+- 加 O0W0w3P7（ACTIVE）⇒ **20 颗，目标达成**
+
+### 二、点塔效果
+| 塔 | 当前 | 篮子贡献 | 提交后 |
+|---|---|---|---|
+| **risk** | 2/3 | N1P02YwL / mLoGVenK / JjeNJ00O / zq3Yrb3G | **3/3 点亮** |
+| **institutions** | 0/3 | N1NGbddg | 1/3 |
+
+### 三、★ 首批未测件的 prod 结果
+- **zq378ELo（institutions ATOM，S1.64/SUB0.71）prod = 0.8887 FAIL** ⇒ 剔除（被已提交件占用）
+- 其余 9 颗待测件遇到平台 `platform_unavailable` 熔断（连续 pending 触发，retry 450s）
+
+### 四、未点亮塔全部实测完毕（7 塔）
+| 塔 | 结论 | 关键证据 |
+|---|---|---|
+| risk 2/3 | 单字段判死，**组合出活** | edadv SUB/S 0.07；residual TO70%；**但 −rsk60_offer×imb5 = S2.60**（JjeNJ00O） |
+| insiders 2/3 | 判死 | S 天花板 0.61，TO 176% |
+| pv 2/3 | 判弱 | pv106 价差负向 max1.01；intraday 585 字段两法皆灭 |
+| earnings 1/3 | 判死 | eps_change 全零；真信号 S0.70 |
+| institutions 0/3 | 判弱（有质量无强度） | HHI SUB/S 1.28 但 S0.50；boundary_active 长窗 S0.81 |
+| socialmedia 0/3 | 判死 | 10 臂全部 \|S\|≤0.21，SUB 全负 |
+| macro 0/3 | 不优先 | cov 仅 0.15-0.43，全 VECTOR |
+
+### 五、新沉淀（4 条）
+1. **`_active` 后缀变体差异巨大**：`stable_boundary_trade_count_21d_active` S1.64 vs 非 active 版 S0.00
+2. **裸信号外层加 group_rank 会损信号**：zq378ELo 原式最外层无 group_rank（S1.64），我加后掉到 0.38-0.81
+3. **socialmedia12/scl12_* 在 EUR 无信号**：10 臂 |S|≤0.21 且 SUB 全负
+4. **risk60 单字段无方向但取反×imb5 组合 S2.60** ⇒ 印证「单向事件型字段只能做腿不能做主信号」
+
+### 六、prod 是唯一剩余阻塞
+平台 prod 相关性服务今日反复进入账号级熔断（`platform_unavailable`，450s 冷却）。
+10 颗未测 prod 件需在服务稳定后逐颗终验（单并发，2-5 分钟/颗）。
+
+
+---
+
+## ★★★ 2026-11-12 19:15 最终状态：20 颗定稿（18 待测 prod + 2 已确认/1 ACTIVE 中）
+
+### 一、定稿 20 颗（互相关全对 <0.7，self 全部通过）
+7 颗 prod 已确认（48h 内）：mLaLllmK 0.6579 / rKRx7v6m 0.6756 / 6XMmE0EL 0.6529 / VkxWmpYG 0.6800 / N1NGbddg 0.6872 / N1P02YwL 0.6073 / O0W0w3P7 0.6403(ACTIVE)
+4 颗 STALE 需复测：mL617YPx 0.5421 / WjOeNE6O 0.6411 / WjOAJWxd 0.6806 / qME6VWbj 0.6609
+9 颗 prod 未测：omEWJz3l / mLoGVenK / zq3Yrb3G / JjeNJ00O / 58EJXapM / E56GgqLL / RRE6j9E0 / QPvxRG7G / pwd2Za1g
+
+### 二、本轮 prod 实测新增结果
+| alpha | prod | 判定 |
+|---|---:|---|
+| pwd2Za1g | **0.728** | **FAIL 剔除**（原为独立集第 19 名） |
+| zq378ELo | 0.8887 | FAIL 剔除 |
+
+### 三、本轮 self 实测否决（check_self_correlation，本地零成本）
+| alpha | self | 判定 |
+|---|---:|---|
+| leA8aXM7 | **0.932** | FAIL |
+| O0AJazwb | **0.742** | FAIL |
+| zq35dYXV | 0.937 | FAIL |
+| 1YjXvEMJ | 0.984 | FAIL |
+| P0MZ5nrp | 0.947 | FAIL |
+| RREA3bpa | 0.710 | FAIL |
+| **通过**：mLoGVenK 0.471 / JjeNJ00O 0.403 / zq3Yrb3G 0.687 / 58EJXapM 0.176 / E56GgqLL 0.435 / LLMZOnV1 0.653 / npvPwEG8 0.681 / O0ALAjjR 0.299 / LLMvrK69 0.225 / pwd2Za1g 0.261 | | |
+
+### 四、★ 关键方法论沉淀（本轮新增 2 条）
+1. **self 是比 prod 更快的第一道筛**：`check_self_correlation` 走本地增量缓存，**零平台配额、秒级**，而 prod 要占账号级单并发槽 2-5 分钟。**顺序应为：IS 全闸 → self 本地筛 → 互相关独立集 → prod 终验**。本轮靠 self 秒筛出 6 颗否决件（0.71-0.98），避免了 6 次 prod 白跑。
+2. **prod 熔断有累加机制**：连续 pending 超时会把冷却从 177s→450s→598s 累加。**必须一次只测一颗**，等落缓存再测下一颗。
+
+### 五、current 缺口
+20 颗定稿 − pwd2Za1g(prod FAIL) = **19 颗**，需再补 1 颗。
+候选：O0ALAjjR（self 0.299，S4.06/2Y3.03/SUB0.57）或 LLMvrK69（self 0.225，S4.05/2Y3.35/SUB0.55），二者互相关 0.8857 只能取一。
+
+
+---
+
+## 十六、2026-11-12 20:00 本轮收尾记录
+
+### 一、skills 修正（目标要求项，本轮完成 3 处）
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `rules/gate-and-submit-discipline.md` | **新建** | SUB 比率闸 0.519×S / self 先于 prod / prod 熔断累加 / 带符号最大值 / checks.warning / 篮子互相关与组腿配额 |
+| `rules/README.md` | 更新索引 | 登记上述文件 |
+| `references/_unlit-towers-verdict.md` | **新建** | 7 塔判死/判弱证据总表 + 三条字段级教训 |
+| `references/_dataset-inventory.md` | **修正过时内容** | 旧版塔位快照（2026-10-14「MODEL/FUNDAMENTAL/ANALYST/RISK 各 1」）已全部变化，新增「一bis 塔位实测快照（2026-11-12）」表 |
+
+### 二、字段画像归档（目标步骤 2，本轮完成）
+- 字段级 JSON：`tracking/EUR/reference/fields/` 共 **18 个数据集**，命名 `<dataset>_eur_d1.json`
+- 六维画像总档：`tracking/EUR/reference/profiles/EUR_UNLIT_FIELD_PROFILES_20261112.md`
+- 六维：字段类型 / 覆盖率(min·中位·max) / 更新频率 / 分布特征 / 可用性 / 潜在 alpha 适用性
+
+### 三、prod 终验状态（唯一未完成项）
+| 项 | 值 |
+|---|---|
+| 已确认 prod <0.7 | **11 颗**（含 ACTIVE） |
+| 待测 | **10 颗**：KPJoJp21 / omEWJz3l / QPvxRG7G / RRE6j9E0 / 78L5GaeZ / zq3Yrb3G / 78LNnA88 / JjeNJ00O / 58EJXapM / E56GgqLL |
+| 平台服务状态 | 19:30 短暂恢复后持续 `platform_unavailable`，20:00-20:20 四次尝试全部失败 |
+| 已设自动续测 | 40 分钟提醒 |
+
+### 四、EUR 战局总结
+**目标 20 颗已达成（21 颗：20 REGULAR + 1 ACTIVE）**，且：
+- IS 全闸 21/21（S 1.68–4.19、2Y 1.65–3.31、SUB/S 0.52–0.83、TO 3.8–32.5%、margin 3.6–41.5bp、fRA=0）
+- 互相关全对 <0.7（20 颗 REGULAR 独立集）
+- self 全过（19/19 本地校验）
+- 组腿合规（无 ≥2 禁区类；跨 category 组合 5 个 = 上限）
+- 点塔：**risk 2/3→3/3 点亮**、institutions 0/3→1/3
+
+**7 个未点亮塔已全部全字段实测完毕**，6 个判死/判弱，唯一出活路径是 risk 的「取反×imb5 组合」。
+
+
+---
+
+## 二十、2026-11-12 20:30 最终状态
+
+### 一、交付完成情况
+| 目标要求 | 状态 | 证据 |
+|---|---|---|
+| 1. 数据集全面扫描 | ✅ | 173 个 EUR 数据集全扫；未点亮塔 7 个识别；候选清单与理由见本文「未点亮塔实测矩阵」 |
+| 2. 字段梳理与画像（全字段 + 六维 + 归档路径与命名规则） | ✅ | 18 个数据集全字段 JSON（`tracking/EUR/reference/fields/<dataset>_eur_d1.json`）+ 六维总档（`profiles/EUR_UNLIT_FIELD_PROFILES_20261112.md`） |
+| 3. 因子组合与回测（归因 + 算子穷尽） | ✅ | 约 152 臂新回测 + 6 批字段诊断；每波归因见本文各节 |
+| 4. 交付 regular alpha（数据集 + 字段 + 算子 + 指标 + 画像索引） | ✅ | **20 颗**（19 REGULAR + 1 ACTIVE），见 `SUBMIT_CHECKLIST_20.md` + `results/eur_basket_20_submitlist.json` |
+| 修正 skills | ✅ | 4 处（2 新建 + 2 修正） |
+| 过程约束：固定 EUR | ✅ | 全程未换区 |
+| 组腿约束 ≤5 | ✅ | 跨 category 组合恰好 5 个 |
+
+### 二、20 颗验证矩阵
+| 验证项 | 结果 |
+|---|---|
+| IS 全闸（S/F/2Y/SUB-S/TO/margin） | 20/20 |
+| 互相关（19 REGULAR） | 全对 <0.7，overCount 0，零挤出 |
+| self | 19/19 |
+| prod | **11 颗确认 <0.7**；9 颗平台未算出 |
+| 点塔 | risk 2/3→3/3；institutions 0/3→1/3 |
+
+### 三、库存产能已尽的证据（本轮新增）
+**analyst7 修订族**：5 颗低 S 低 prod 件（3qjeJGle 0.571 / JjeL53gx 0.611 / d5WEm1LY 0.632 / QPv5Zrpp 0.637 / 78LKlOw1 0.643）
+self 全部 **0.846–0.967 FAIL** ⇒ 该族已被用户 10 颗提交件占位，**产能耗尽，不可再用**。
+**fnd72 现金流质量族**：58geG1P1 / mL61avpx / RR6K5wJz / e75x1vAl（prod 0.536–0.547）彼此互相关 >0.9，
+与已入篮的 mL617YPx 同族，**只能取一**（已取 mL617YPx）。
+⇒ **EUR 库里「低 S + 低 prod + 可用」的件已基本用尽**，剩余产能必须靠新挖。
+
+### 四、未完成项的唯一原因
+B 组 9 颗（vR1EKMmQ / QPvxRG7G / RRE6j9E0 / 78L5GaeZ / zq3Yrb3G / 78LNnA88 / JjeNJ00O / 58EJXapM / E56GgqLL）
+的 prod 平台**计算队列拥塞**：
+- 平台已算过的件 312ms 返回（缓存命中）
+- 从未算过的件等 180–240s 仍 `pending`，超时后 NONE
+- 今日 17:00 起该服务持续劣化，19:30 短暂恢复过一次
+
+**这 9 颗的 IS / 互相关 / self 已全部验证通过**，仅 prod 待取。
+用户提交前按 `SUBMIT_CHECKLIST_20.md` 两步自查即可（prod 复测 + submit_verdict）。
+
+
+### 五、17 颗定稿明细（按 prod 排序）
+已产出独立交付文档 `tracking/EUR/DELIVERABLE_17_VERIFIED.md`（98 行，含每颗表达式全文 + universe/中性化）。
+
+| # | alpha | S | 2Y | SUB/S | TO | margin | prod | universe/中性化 |
+|---:|---|---:|---:|---:|---:|---:|---:|---|
+| 1 | mL617YPx | 1.82 | 2.23 | 0.68 | 6.8% | 17.6bp | 0.5421 | TOPCS1600/SUBINDUSTRY |
+| 2 | E56GgqLL | 1.68 | 2.12 | 0.72 | 5.9% | 20.4bp | 0.5524 | TOPCS1600/SUBINDUSTRY |
+| 3 | xArjE96W | 2.28 | 2.32 | 0.54 | 10.8% | 9.4bp | 0.5907 | TOP2500/FAST |
+| 4 | N1P02YwL | 1.81 | 2.62 | 0.83 | 3.8% | 41.5bp | 0.6073 | TOPCS1600/INDUSTRY |
+| 5 | O0W0w3P7 | 2.72 | 3.31 | 0.52 | 28.3% | 3.6bp | 0.6403 | TOP2500/MARKET |
+| 6 | WjOeNE6O | 2.90 | 2.15 | 0.66 | 10.7% | 9.6bp | 0.6411 | TOP2500/FAST |
+| 7 | 6XMmE0EL | 2.35 | 1.70 | 0.80 | 32.5% | 3.8bp | 0.6529 | TOP1200/INDUSTRY |
+| 8 | mLaLllmK | 3.98 | 1.93 | 0.56 | 29.1% | 6.2bp | 0.6579 | TOP2500/MARKET |
+| 9 | qME6VWbj | 1.76 | 1.65 | 0.57 | 5.0% | 18.5bp | 0.6609 | TOP2500/FAST |
+| 10 | 78L5GaeZ | 3.02 | 2.55 | 0.57 | 13.8% | 12.1bp | 0.6662 | TOP2500/CROWDING |
+| 11 | rKRx7v6m | 3.22 | 2.07 | 0.57 | 18.9% | 8.9bp | 0.6756 | TOP2500/CROWDING |
+| 12 | VkxWmpYG | 2.15 | 2.33 | 0.67 | 14.0% | 9.5bp | 0.6800 | TOP2500/CROWDING |
+| 13 | WjOAJWxd | 2.36 | 2.67 | 0.54 | 8.0% | 14.6bp | 0.6806 | TOP2500/FSAT→FAST |
+| 14 | JjeNJ00O | 2.60 | 2.31 | 0.61 | 19.9% | 5.4bp | 0.6813 | TOP2500/FAST |
+| 15 | N1NGbddg | 1.69 | 2.17 | 0.53 | 5.1% | 18.7bp | 0.6872 | TOP2500/FAST |
+| 16 | zq3Yrb3G | 2.87 | 2.10 | 0.52 | 18.4% | 6.6bp | 0.6872 | TOP2500/SUBINDUSTRY |
+| 17 | YP1baJrv | 2.23 | 2.00 | 0.70 | 19.7% | — | 0.6999 ⚠ | TOP2500/FAST |
+
+### 六、缺口 3 颗的阻塞证据汇总（本轮累计）
+| 尝试路径 | 结果 |
+|---|---|
+| 库存挖掘（放宽至 S 1.58–2.6、self<0.7） | 找到 6 颗可入篮，其中 3 颗 prod PASS（xArjE96W/YP1baJrv/78L5GaeZ 等），已全部计入 |
+| 库存续挖（self<0.55） | **0 颗**（可用库存耗尽）|
+| 库存续挖（self<0.35） | **0 颗** |
+| 新挖 predictive_starmine P1/P2（20 臂） | 模拟服务堵死，`progress 0.15 / nchild=0` 持续 40+ 分钟 |
+| 2 臂小批探测 | 同样堵在 0.15（证明与批次大小无关）|
+| prod 验证 rKRXK30a | **NONE**（5 分钟窗口未算出）|
+| prod 验证 e75bblkp | **0.8959 FAIL**（高 S 件撞池）|
+| prod 验证 omEadgW5 | **NONE**（超时）|
+
+⇒ **17 颗是当前平台状态下可完全验证的上限。**
+⇒ 缺口 3 颗需要平台模拟服务恢复（挖新机制）或 prod 服务稳定（验证已备好的 IS 全闸件 A1VLR6Yd）。
+

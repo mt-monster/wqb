@@ -203,15 +203,22 @@ def _accepted_fastexpr_corpus() -> set:
         return set()
     conn = sqlite3.connect(str(db))
     try:
+        # Python alpha（平台 `language="PYTHON"`）的源码也存这两列，但它是 Python
+        # 而不是 FASTEXPR：`def _rank01` / `import numpy` 会被 iter_call_sites 当
+        # 算子名（`_safe_div`、`range`、`int` …）。按源码前缀排除，语料只留 FASTEXPR。
         corpus = {
             e for (e,) in conn.execute(
                 "select expression from alphas "
-                "where expression is not null and trim(expression) <> ''")
+                "where expression is not null and trim(expression) <> '' "
+                "and expression not like 'from brain.alphas%' "
+                "and expression not like 'import %' and expression not like 'def %'")
         }
         corpus |= {
             e for (e,) in conn.execute(
                 "select code from backtest_results where alpha_id is not null "
-                "and code is not null and trim(code) <> ''")
+                "and code is not null and trim(code) <> '' "
+                "and code not like 'from brain.alphas%' "
+                "and code not like 'import %' and code not like 'def %'")
         }
     finally:
         conn.close()
@@ -266,6 +273,12 @@ def test_no_false_positives_on_accepted_alpha_corpus():
 #: 运算符被吃掉后 ``M216 gr_M22(industry)`` 这种形状）。平台从未接受过它们。
 _TRUNCATED_CORPUS_OPS = {"gr_M22", "NM", "gr_D90", "ern_next_delta21", "RM"}
 
+#: 2026-11-11 探测脚本写库的 4 条假表达式（`E5Q55l1P` / `xAvAO0Og` / `npapxR9d` /
+#: `O0W0QPEq`，全部 UNSUBMITTED、无成功回测记录）：`gneut` / `tdl5` / `tdl12` 不是
+#: 平台算子（`gneut`=group_neutralize 旧写法，`tdlN`=旧 ts_delay 别名），是手写
+#: 测试串被 upsert_expressions 写进 alphas。属语料污染，不是闸漏；平台从未接受过。
+_PROBE_STUB_CORPUS_OPS = {"gneut", "tdl5", "tdl12"}
+
 
 def test_accepted_corpus_has_no_real_unknown_operators():
     """fail-closed 的未知面实测：17427 条已接受表达式里只允许那 5 个截断脏名。
@@ -280,8 +293,9 @@ def test_accepted_corpus_has_no_real_unknown_operators():
     known = set(load_signatures()) | set(load_catalog_names())
     unknown = {s.name for e in corpus for s in iter_call_sites(e)
                if s.name not in known}
-    assert unknown <= _TRUNCATED_CORPUS_OPS, (
-        f"已接受语料里出现非截断形态的未知算子: {sorted(unknown - _TRUNCATED_CORPUS_OPS)}"
+    allowed = _TRUNCATED_CORPUS_OPS | _PROBE_STUB_CORPUS_OPS
+    assert unknown <= allowed, (
+        f"已接受语料里出现非截断形态的未知算子: {sorted(unknown - allowed)}"
         f"；若平台已上线，先跑 python tools/refresh_operator_catalog.py")
 
 

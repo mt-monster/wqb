@@ -1,0 +1,74 @@
+{
+  "dataset_id": "sentiment33",
+  "region": "GBR",
+  "delay": 1,
+  "universe": "TOP700",
+  "profiled_at": "2026-11-13T23:40+08:00",
+  "source": "get_datafields (255 fields, 全 VECTOR)",
+  "metadata": {
+    "fieldCount": 255,
+    "coverage_meta": 0.3218,
+    "userCount": 224,
+    "alphaCount": 224,
+    "valueScore": 5,
+    "pyramidMultiplier": 1.6,
+    "tower": "sentiment",
+    "towerState": "未点亮 0/3"
+  },
+  "structure": {
+    "keyword_sets": "fkw1..fkw5（5 套关键词表，覆盖同批新闻的不同词面）",
+    "methods": "method_1..method_9（9 套 NLP 打分法，含 filtered/unfiltered、pos/neg/neut/obj）",
+    "polarity_fields": "每 (fkw, method) 组合有 pos/neg/neut/obj 四类分数，另有 _filtered_ 变体（仅保留过关键词过滤的句子）",
+    "auxiliary": "valid_tokens_total / max_token_length / median_token_length / group_level_3_count / group_level_5_count（文本体量代理）",
+    "text_metadata": "snt33_1..5_headline / event_title / true_timestamp(_epoch) / time_ingested_epoch —— 文本与时间戳，无横截面数值含义，不用作信号",
+    "legacy": "sentiment_model6/7/8/9_score*（旧版模型分，ac 0-13）"
+  },
+  "coverage": {
+    "uniform": "全部字段 cov 0.3199-0.3239（同源同批新闻，覆盖一致）",
+    "implication": "约 226/700 名有数据 ⇒ longCount 预期 200-250，sub-universe 需盯"
+  },
+  "signal_families": [
+    {
+      "family": "极性差 pos-neg",
+      "field_example": "snt33_sefke1v1_fkw1_method_1_pos / _neg",
+      "mechanism": "情绪漂移（Tetlock 媒体情绪 → 短期漂移 / 长期反转）",
+      "ops_shape": "group_rank(ts_mean|ts_sum(subtract(vec_avg(pos),vec_avg(neg)),W),sector)"
+    },
+    {
+      "family": "单边 negative",
+      "field_example": "snt33_sefke1v1_fkw1_method_1_neg",
+      "mechanism": "负面情绪不对称（损失厌恶，负面信息定价更慢更久）",
+      "ops_shape": "multiply(-1, group_rank(ts_sum(vec_avg(neg),W),sector))"
+    },
+    {
+      "family": "中性占比 neut",
+      "field_example": "snt33_sefke1v1_fkw1_method_1_neut",
+      "mechanism": "信息歧义度（高中性占比 = 无信息 / 低冲击新闻）",
+      "ops_shape": "multiply(-1, group_rank(ts_mean(vec_avg(neut),W),sector))"
+    },
+    {
+      "family": "跨关键词集分歧",
+      "field_example": "fkw1_pos vs fkw5_pos",
+      "mechanism": "分歧度 → 高分歧预示负收益（Miller 1977 卖空约束）",
+      "ops_shape": "group_rank(ts_mean(subtract(vec_avg(fkw1_pos),vec_avg(fkw5_pos)),W),sector)"
+    },
+    {
+      "family": "跨模型分歧",
+      "field_example": "method_1_pos vs method_3_pos",
+      "mechanism": "模型不确定性 = 信息质量低",
+      "ops_shape": "同上"
+    },
+    {
+      "family": "注意力加权",
+      "field_example": "valid_tokens_total",
+      "mechanism": "注意力配置（Da-Engelberg-Gao 注意力正负不对称：高注意力放大情绪）",
+      "ops_shape": "group_rank(multiply(sentiment, attention_rank),sector)"
+    }
+  ],
+  "risks": [
+    "事件型 VECTOR + cov 0.32 ⇒ nanHandling ON 会把无新闻股票填 0 造成巨大并列块（已 4 次复现）→ 本集一律 nan OFF",
+    "ts_mean 会把事件频率除掉，事件型信号优先 ts_sum（DEU 实证 Sharpe 1.44→0.73）",
+    "GBR 事件链 winsorize+tail 反效（V1A A2 -0.10）→ 不加 tail"
+  ],
+  "pending": "GB-Z2 8 臂读数（1USC78J34mhcnCkfq4x7rO）"
+}

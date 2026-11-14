@@ -50,7 +50,16 @@
   "prodPass": true,
   "mostCorrelated": "kqJOQgnk(0.5347)"
  },
- "yearly": "2014–2023 全部 10 年 longCount 1315–1485 >0 且 pnl 全为正（624607 / 471443 / 452787 / 707298 / 622849 / 750177 / 333359 / 931350 / ...），零空窗零负年",
+ "yearly": {
+  "verified": true,
+  "verifiedAt": "2026-11-10 14:43",
+  "span": "2014-2023",
+  "years": 10,
+  "blankYears": [],
+  "negPnlYears": [],
+  "minLongCount": 1315,
+  "note": "全部 10 年 longCount>0 且 pnl>0，零空窗零负年"
+ },
  "mechanism": "模型对最乐观桶 vs 最悲观桶的概率差 = 做多信念；三腿等权后 TO 压到 9.24%、prod 降到 0.6881",
  "attribution": "prod 走 U 形：S4.29→0.8175、S3.66→0.8134、S2.90→0.7289、S2.32→0.7092、S2.28→0.6881(过线)、S1.96→0.7240(回升)。极小值在 S≈2.2–2.3。",
  "profileArchiveIndex": {
@@ -84,5 +93,6 @@
    "prod 读取：MCP 120s 上限 vs 平台 4-8 分钟 ⇒ 超时即丢弃；prod_wait.py --minutes 后台加锁模式最可靠"
   ]
  },
- "submissionNote": "与 KPJ 0.7285、与 leAn 0.7837 ⇒ 不在 3 颗最大提交团内；可作 rKR 提交失败时的替补（与 rKR 0.5215）"
+ "submissionNote": "与 KPJ 0.7285、与 leAn 0.7837 ⇒ 不在 3 颗最大提交团内；可作 rKR 提交失败时的替补（与 rKR 0.5215）",
+ "verificationComplete": "★★ 全部验证完成：全闸（S/F/2Y/TO/fRA）+ self 0.5347 + prod 0.6881 + 逐年 10 年无空窗"
 }

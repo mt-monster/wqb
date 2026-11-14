@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-11-08
+last_verified: 2026-11-10
 name: worldquant-submit-alpha
 description: "把用户已确认的 REGULAR alpha 真实提交到 WorldQuant Brain 平台（POST /alphas/{id}/submit，不可逆）：workflow_submit_alpha 预检 → 用户确认后提交 → 四态响应处置（补发 / ASYNC_STUCK）。用户说“提交 alpha / submit / 上平台 / 落地”时用。不作提交判定（→ submit_verdict）、不处理 SUPER（→ wq-brain-superalpha）；PPA 人工通道与配额、点塔优选见 references/。"
 layer: L5
@@ -29,10 +29,13 @@ allowed-tools:
 
 **前置**（缺一不得进入步骤 2）：`submit_verdict` 退出码 ≠ 1；prod 实测 < 0.7（见 `config.GATES_PLATFORM.prod_corr_max`）；用户明确确认；当日 REGULAR 配额未满（`python tools/quota_status.py`）。
 
-> ★ **prod 必须是「提交当刻」的 `refresh=True` 重测值**（2026-10-28 GLB 实测）：prod 池会漂移，缓存值只作参考。
-> 某候选 48h 缓存 prod = **0.694**（只差 0.006 就要越线）——若按缓存判定就提交，可能在平台侧已越线而被 `REGULAR_SUBMISSION` 拦下、
-> 白占一个配额位。正确顺序：**提交当刻逐颗 `check_correlation(refresh=True)`**（一次只回源一颗，别批量并发 —— 见 `wqb-concurrency` §9），
-> 越线则当场换备选，**不要先提交再等平台报错**。
+> ★★ **2026-11-14 用户明令：prod 读数在 48h 保鲜期内无需 `refresh=True`，可直接提交。**
+> 提交链 `_prod_gate` 默认 `check_correlation(refresh=False)`：命中 `alpha_corr_cache` 48h 内、来源可信
+> （`provisional=False`）且 `max < 0.7` 即放行，零平台成本、不占账号级单并发槽。
+> 仅三种情况才 `refresh=True` 真重测：① 缓存 >48h 或无缓存；② 只有预读值 `alpha_detail_cached`
+> 或 `NON_REALTIME_SOURCES` 等不可信来源；③ 用户明确要求复核。重测拿不到数仍 fail-closed。
+> `WQB_PROD_GATE_REFRESH=1` 是强制回源开关，**用户未要求时不得设置**；prod ≥ 0.7 无豁免。
+> 历史教训（GLB 0.694 贴线）降级为「贴线件可建议复核」，**不再是提交前必做动作**。
 
 **步骤 1 · 预检（默认形态，不 POST）**
 

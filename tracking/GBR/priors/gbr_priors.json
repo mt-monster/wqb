@@ -1,6 +1,13 @@
 {
  "wins": [
   {
+   "id": "GBR-NEWS50-VEA-MEANREV-WIN",
+   "what": "news50 的 vea（事件量）均值回复族是 GBR NEWS 塔目前唯一存活机制，S 1.26 / F 0.80 / 2Y 1.79 / SUB 0.89 / TO 0.088，failed_ra_count=2，只差 LOW_SHARPE 与 LOW_FITNESS 两闸；全 ATOM（单数据集 news50），落在未点亮的 NEWS 塔。",
+   "key": "reverse(group_neutralize(ts_decay_linear(ts_zscore(ts_backfill(vec_avg(mws50_vea), 5), 252), 22), subindustry))",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
    "id": "GBR-TRADEWHEN-GATE-PROD-CURVE",
    "what": "GBR 上 trade_when(five_day_total_return_dlr2) 门控阈值 → prod 的实测曲线：门控越严 prod 单调降，但在 -0.021 触到 IS_LADDER 边界后收敛于 ~0.737，无法降到 0.7",
    "key": "降 prod 的有效杠杆是改变【何时交易】（换门控字段），不是改【持什么】（backfill/窗口/残差轴对 prod 几乎无影响）。门控阈值只能买到 ~0.10 的降幅，剩下的必须换门控字段",
@@ -61,105 +68,502 @@
    "key": "",
    "evidence": "",
    "source": "registry_win"
-  },
-  {
-   "id": "GBR-ASYM-GATE-MIRROR-WIN-KPNgQApj",
-   "what": "GBR-ASYM-GATE-MIRROR-WIN-KPNgQApj",
-   "key": "",
-   "evidence": "",
-   "source": "registry_win"
   }
  ],
  "dead_ends": [
   {
-   "family": "FUNDAMENTAL",
-   "reason": "类级结构性弱信号：195 条回测平均 Sharpe -0.041（等于零信号），历史最佳 0.80（2Y -0.1 已死）；本轮新增 4 波 32 条（fundamental72×3 + fundamental93×1）全部 ≤0.57。结构性成因：① GBR TOP700=英国大盘蓝筹，VA/质量/应计类经典因子已被套利抹平；② 季频数据 TO 0.02-0.09 远低于 0.125 地板 ⇒ F 结构上限 ~0.8-1.0；③ 2Y 普遍塌。论坛四篇高票配方（TMM 滚动累计/应计质量/基本面稳定性/财务质量三招）全部实测判负。复访：fundamental93(aCnt=0,sub全OK) 数据更新时可优先复访。",
-   "salvage": {
-    "alpha_ids": [],
-    "count": 0,
-    "source_waves": [],
-    "sealed_at": "2026-10-10T18:51:02",
-    "note": "seal_dead_end 沉降：供 Mode B 组合腿救援消费（get_salvage_pool）；动用仍守 mode_b_qualification 资格线"
-   },
+   "family": "insiders/institutions 单信号几何",
+   "reason": "探针波 unlit_ins_1 四条全灭（S 0.0/0.11/-0.18/0.78 最高 0.78），两种塔×三种几何（水平/加速度/delta）覆盖后无一达 near 线 1.2；insider_agg_matrix/institutions6 单字段横截面在 GBR TOP700 无独立 alpha，机构净流与内部人强度水平项几乎零区分度",
+   "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "GBR_FUNDAMENTAL_category"
+   "_entry_id": "GBR-INSIDERS-INST-SINGLE-SIGNAL-DEAD"
+  },
+  {
+   "family": "socialmedia39 共同观看邻居 ID 族",
+   "reason": "唯一字段是「共同观看的邻居标的 Atlas ID 列表」，本质是标识符集合而非数值型经济量。vec_* 聚合后只能得到两类量：①邻居 ID 的均值/中位数——纯标识符算术，无经济含义；②邻居个数——因为字段本身是固定 top5，计数恒为常数，无横截面差异。两者都不构成可回测信号。cov 0.4948 又要求 ts_backfill，进一步稀释。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-SOCIALMEDIA39-IDLIST-ONLY"
+  },
+  {
+   "family": "institutions1 内部人申报事件流（流量/存量比 + 事件累加 66）",
+   "reason": "GBR institutions1 4 条单自由度探针全灭：P1 帖原版裸骨架 group_rank(ts_sum(divide(vec_sum(inst1_shares),vec_sum(inst1_holdings)),66),industry) S −0.27 / 2Y −1.14 / TO 7.61%；P2 同 SIG 套强几何基底 S 0.28 / 2Y 2.22；P3 group_rank(vec_count(inst1_valueeur),industry) S −0.14 / TO 27.07%；P4 同 P3 强几何 S 0.32 / 2Y 0.69。⇒ 论坛帖 43212475386007 的 DEU institutions1 S 1.53–1.59 在 GBR 完全不可复现（该帖「数据集可替换/跨区可移植」第二次被证伪）。",
+   "salvage": "",
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-INSTITUTIONS1-DEAD-20261031"
+  },
+  {
+   "family": "GBR_fundamental1_governance_compensation",
+   "reason": "冻结快照，无时间维度。6 条实验覆盖 4 个结构互异模板（T1 水平秩 / T2 自身基线 zscore / T3 一阶差分 / T6 二阶离散）× A/B/C 三类字段，换手全部锁在 1.41%–3.04%、|S| ≤ 0.67。同设置下对照 fundamental17 的年报字段 rKRQbPPE 换手 15.73%，差 5–10 倍 ⇒ 低换手是数据集属性而非设置属性（非 decay10 压低）。决定性字段选 wealth_sensitivity_to_stock（delta，含股价分量，若数据是活的必然逐日变动），其 ts_delta 与 ts_std_dev 仍不动 ⇒ 数据集在 GBR 为单点快照，ts_backfill 向后无限延拓使所有 ts_ 算子退化为常数。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-FUNDAMENTAL1-DEAD"
+  },
+  {
+   "family": "pv47_spret_prodsat",
+   "reason": "pv47 的 spret 子族（pv47_spret / pv47_for_statssimple_only_spret）13 条候选全部 prod >= 0.70，无一例外。与本已有条目 GBR-PV47-RESIDUAL-REVERSAL-PRODSAT 判的是不同子族（那条针对 residual reversal 骨架），两者互相独立，合起来把 pv47 的两个主要子族都封死。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-PV47-SPRET-PRODSAT"
+  },
+  {
+   "family": "institutions4_holdings_flow",
+   "reason": "institutions4 机构持仓流量族，2 条结构互异探针（水平值 / 变化量）在 GBR/TOP700/D1 均未达闸。该数据集字段全部为 VECTOR，需先 vec_* 折叠，聚合后信号仍不落地。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-INSTITUTIONS4-PROBE-DEAD"
+  },
+  {
+   "family": "institutions1_insider_clone",
+   "reason": "institutions1 名义上属 INSTITUTIONS category，实际是 INSIDER 同源数据——字段描述全部是「held by the insider after the reported transaction」。且字段间存在恒等式：price × shares ≡ value；valueeur = value × 汇率 ⇒ 独立维度仅 3 个（price / shares / value 三选一 + 汇率派生），做不出结构互异模板。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-INSTITUTIONS1-INSIDER-CLONE-DEAD"
+  },
+  {
+   "family": "annualized_pd_credit_default",
+   "reason": "两条独立死因：①塔位误判——违约概率族归 MODEL 不归 RISK。3qVa2Lze（annualized_pd_2_year_jc7）实测 ra.pyramid_short=model、pyramids.list=[GBR/D1/MODEL,1.5]，且已 ACTIVE（2026-10-05 提交）；npPWX19w（mdl28_credit_structural_leverage）同样归 MODEL ⇒ 为点 RISK 塔挖这个族是白做工。②prod 饱和——7 条全闸通过里 4 条 prod 落 0.9893-0.9985（QPK2oXEX 0.9927 / A1vg2KnX 0.9985 / QPK26lQX 0.9985 / j289xaxO 0.9893）。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-ANNUALIZEDPD-DS111-MODEL-OWNED"
+  },
+  {
+   "family": "techindi_model_tm16_tm17_prodsat",
+   "reason": "techindi_model 时序预测族（tm_16 / tm_17，合计 399 字段）在 GBR/TOP700/D1 均已确认 prod 饱和，覆盖 OTHER 塔：tm_16 族被自家已 ACTIVE 的 3qVP6pNO 占位（self 0.87-1.0），tm_17 族 19+ 条全闸通过但 prod 实测 0.7343-1.0（N1NogQ87 0.8439 / O0Av1nZd 0.8333 / kqNlzEAK 0.8719 / 88R1XNo7 0.7736 / 3qoLJb16 0.7945 / rKRX8Jd1 0.7919 / YP1qR9wA 0.7716 / npvVQ8WE 0.7343 / XgJzLbl1 0.8413与0.8891与1.0）。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-TECHINDI-TM16-TM17-PRODSAT"
+  },
+  {
+   "family": "fundamental45_calltranscript_divergence",
+   "reason": "fundamental45（电话会议语言同源姊妹集）2 条结构互异探针在 GBR/TOP700/D1 均未达闸：双模型分歧骨架 S = -0.57、双重差分骨架 S = -0.17，均为负信号。与 analyst83（6 模板全灭）、other384（6 模板全灭）合计 16 条回测 0 达标。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-FUNDAMENTAL45-CALLTRANSCRIPT-DEAD"
+  },
+  {
+   "family": "analyst93_type_d_ceiling",
+   "reason": "analyst93 全族 28 条回测，GBR/TOP700/D1 侧 max Sharpe 仅 0.80，距硬闸 1.58 差 49%。属于「类型 D」判死形态：全族有信号但天花板系统性低于闸，不是单条骨架选错。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-ANALYST93-TYPE-D-DEAD"
+  },
+  {
+   "family": "other384_earningscall_qa",
+   "reason": "电话会议 Q&A 类数据集 6 个结构互异模板 + 1 条 E11 变体在 GBR/TOP700/D1 全部未达闸（详见 docs/reference/template_library_other384_earningscall_gbr_20261030.md）。与 analyst83 / fundamental45 同属电话会议语言数据，三者合计 16 条回测 0 达标。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-OTHER384-EARNINGSCALL-DEAD"
+  }
+ ],
+ "_dead_ends_all": [
+  {
+   "family": "insiders/institutions 单信号几何",
+   "reason": "探针波 unlit_ins_1 四条全灭（S 0.0/0.11/-0.18/0.78 最高 0.78），两种塔×三种几何（水平/加速度/delta）覆盖后无一达 near 线 1.2；insider_agg_matrix/institutions6 单字段横截面在 GBR TOP700 无独立 alpha，机构净流与内部人强度水平项几乎零区分度",
+   "rule": "",
+   "entry_id": "GBR-INSIDERS-INST-SINGLE-SIGNAL-DEAD"
+  },
+  {
+   "family": "socialmedia39 共同观看邻居 ID 族",
+   "reason": "唯一字段是「共同观看的邻居标的 Atlas ID 列表」，本质是标识符集合而非数值型经济量。vec_* 聚合后只能得到两类量：①邻居 ID 的均值/中位数——纯标识符算术，无经济含义；②邻居个数——因为字段本身是固定 top5，计数恒为常数，无横截面差异。两者都不构成可回测信号。cov 0.4948 又要求 ts_backfill，进一步稀释。",
+   "rule": "",
+   "entry_id": "GBR-SOCIALMEDIA39-IDLIST-ONLY"
+  },
+  {
+   "family": "institutions1 内部人申报事件流（流量/存量比 + 事件累加 66）",
+   "reason": "GBR institutions1 4 条单自由度探针全灭：P1 帖原版裸骨架 group_rank(ts_sum(divide(vec_sum(inst1_shares),vec_sum(inst1_holdings)),66),industry) S −0.27 / 2Y −1.14 / TO 7.61%；P2 同 SIG 套强几何基底 S 0.28 / 2Y 2.22；P3 group_ra",
+   "rule": "",
+   "entry_id": "GBR-INSTITUTIONS1-DEAD-20261031"
+  },
+  {
+   "family": "GBR_fundamental1_governance_compensation",
+   "reason": "冻结快照，无时间维度。6 条实验覆盖 4 个结构互异模板（T1 水平秩 / T2 自身基线 zscore / T3 一阶差分 / T6 二阶离散）× A/B/C 三类字段，换手全部锁在 1.41%–3.04%、|S| ≤ 0.67。同设置下对照 fundamental17 的年报字段 rKRQbPPE 换手 15.73%，差 5–10 倍 ⇒ 低换手是数据集属性而非设置属性（非 decay10 压",
+   "rule": "",
+   "entry_id": "GBR-FUNDAMENTAL1-DEAD"
+  },
+  {
+   "family": "pv47_spret_prodsat",
+   "reason": "pv47 的 spret 子族（pv47_spret / pv47_for_statssimple_only_spret）13 条候选全部 prod >= 0.70，无一例外。与本已有条目 GBR-PV47-RESIDUAL-REVERSAL-PRODSAT 判的是不同子族（那条针对 residual reversal 骨架），两者互相独立，合起来把 pv47 的两个主要子族都封死。",
+   "rule": "",
+   "entry_id": "GBR-PV47-SPRET-PRODSAT"
+  },
+  {
+   "family": "institutions4_holdings_flow",
+   "reason": "institutions4 机构持仓流量族，2 条结构互异探针（水平值 / 变化量）在 GBR/TOP700/D1 均未达闸。该数据集字段全部为 VECTOR，需先 vec_* 折叠，聚合后信号仍不落地。",
+   "rule": "",
+   "entry_id": "GBR-INSTITUTIONS4-PROBE-DEAD"
+  },
+  {
+   "family": "institutions1_insider_clone",
+   "reason": "institutions1 名义上属 INSTITUTIONS category，实际是 INSIDER 同源数据——字段描述全部是「held by the insider after the reported transaction」。且字段间存在恒等式：price × shares ≡ value；valueeur = value × 汇率 ⇒ 独立维度仅 3 个（price / shares",
+   "rule": "",
+   "entry_id": "GBR-INSTITUTIONS1-INSIDER-CLONE-DEAD"
+  },
+  {
+   "family": "annualized_pd_credit_default",
+   "reason": "两条独立死因：①塔位误判——违约概率族归 MODEL 不归 RISK。3qVa2Lze（annualized_pd_2_year_jc7）实测 ra.pyramid_short=model、pyramids.list=[GBR/D1/MODEL,1.5]，且已 ACTIVE（2026-10-05 提交）；npPWX19w（mdl28_credit_structural_leverage）同样归 M",
+   "rule": "",
+   "entry_id": "GBR-ANNUALIZEDPD-DS111-MODEL-OWNED"
+  },
+  {
+   "family": "techindi_model_tm16_tm17_prodsat",
+   "reason": "techindi_model 时序预测族（tm_16 / tm_17，合计 399 字段）在 GBR/TOP700/D1 均已确认 prod 饱和，覆盖 OTHER 塔：tm_16 族被自家已 ACTIVE 的 3qVP6pNO 占位（self 0.87-1.0），tm_17 族 19+ 条全闸通过但 prod 实测 0.7343-1.0（N1NogQ87 0.8439 / O0Av1nZd 0.",
+   "rule": "",
+   "entry_id": "GBR-TECHINDI-TM16-TM17-PRODSAT"
+  },
+  {
+   "family": "fundamental45_calltranscript_divergence",
+   "reason": "fundamental45（电话会议语言同源姊妹集）2 条结构互异探针在 GBR/TOP700/D1 均未达闸：双模型分歧骨架 S = -0.57、双重差分骨架 S = -0.17，均为负信号。与 analyst83（6 模板全灭）、other384（6 模板全灭）合计 16 条回测 0 达标。",
+   "rule": "",
+   "entry_id": "GBR-FUNDAMENTAL45-CALLTRANSCRIPT-DEAD"
+  },
+  {
+   "family": "analyst93_type_d_ceiling",
+   "reason": "analyst93 全族 28 条回测，GBR/TOP700/D1 侧 max Sharpe 仅 0.80，距硬闸 1.58 差 49%。属于「类型 D」判死形态：全族有信号但天花板系统性低于闸，不是单条骨架选错。",
+   "rule": "",
+   "entry_id": "GBR-ANALYST93-TYPE-D-DEAD"
+  },
+  {
+   "family": "other384_earningscall_qa",
+   "reason": "电话会议 Q&A 类数据集 6 个结构互异模板 + 1 条 E11 变体在 GBR/TOP700/D1 全部未达闸（详见 docs/reference/template_library_other384_earningscall_gbr_20261030.md）。与 analyst83 / fundamental45 同属电话会议语言数据，三者合计 16 条回测 0 达标。",
+   "rule": "",
+   "entry_id": "GBR-OTHER384-EARNINGSCALL-DEAD"
+  },
+  {
+   "family": "other47_web_traffic_semrush",
+   "reason": "SEMrush 网站流量 / Google Ads 数据集的 8 个结构互异模板在 GBR/TOP700/D1 全部未达闸（详见 docs/reference/template_library_other47_webattention_gbr_20261030.md）。字段为 oth47_organic_traffic / oth47_organic_keywords / oth47_rank /",
+   "rule": "",
+   "entry_id": "GBR-OTHER47-WEBATTENTION-DEAD"
+  },
+  {
+   "family": "analyst83 earnings-call transcript language (anl83_* 214 + no-prefix 115 fields)",
+   "reason": "6 structurally distinct templates across 5 mechanism families all dead: S 0.29/0.07/-0.18/-0.18/-0.25/-0.26, best |S|=0.29 = 18% of gate 1.58; best R/TO=0.095 -> F ceiling 0.089 = 8.9% of gate 1.00. T",
+   "rule": "",
+   "entry_id": "GBR-ANALYST83-CALLTRANSCRIPT-DEAD"
+  },
+  {
+   "family": "pv109 公司债信用利差/价格/债务存量（bond credit signal）",
+   "reason": "Six structurally distinct templates spanning three field families (yield / price / balance) all fail. Best |S| 0.47 = 29.7% of the 1.58 gate. Turnover uniformly 5.5%-11.0% (quarter-updated bond data) ",
+   "rule": "",
+   "entry_id": "GBR-PV109-BOND-CREDIT-DEAD"
+  },
+  {
+   "family": "news_volume_meanrev",
+   "reason": "GBR news50 的 vea（Aggregate Event Volume 91 日）均值回复族在 REGULAR 口径下 S 天花板稳定为 1.24-1.26（最佳 1YNEqJbQ），距 LOW_SHARPE 硬闸 1.58 差 20%；LOW_2Y_SHARPE / LOW_SUB_UNIVERSE_SHARPE / CONCENTRATED_WEIGHT / 换手全闸已过，只差 LOW",
+   "rule": "",
+   "entry_id": "GBR-NEWS50-VEA-S-CEILING-20261028"
+  },
+  {
+   "family": "FUNDAMENTAL",
+   "reason": "类级结构性弱信号：195 条回测平均 Sharpe -0.041（等于零信号），历史最佳 0.80（2Y -0.1 已死）；本轮新增 4 波 32 条（fundamental72×3 + fundamental93×1）全部 ≤0.57。结构性成因：① GBR TOP700=英国大盘蓝筹，VA/质量/应计类经典因子已被套利抹平；② 季频数据 TO 0.02-0.09 远低于 0.125 地板 ⇒ ",
+   "rule": "",
+   "entry_id": "GBR_FUNDAMENTAL_category"
   },
   {
    "family": "region_relative_valuation_rank",
    "reason": "该主体存在 S↔prod 单调权衡曲线：Sharpe 每降约 0.1，prod 降约 0.01。外推到 IS 门槛 S=1.58 时 prod 仍约 0.72 > 0.7，两闸不可兼得",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-RRVR-SHARPE-PROD-TRADEOFF-NO-SOLUTION"
+   "rule": "",
+   "entry_id": "GBR-RRVR-SHARPE-PROD-TRADEOFF-NO-SOLUTION"
   },
   {
    "family": "neutralization_axis",
    "reason": "中性化轴三维扫描完毕（STATISTICAL / SUBINDUSTRY / MARKET），STATISTICAL 全面最优，另两轴在全部 4 条最强表达式上一致劣化。且三个轴的表现呈现同一个守恒形状：换轴 = 用 Sharpe 换 margin，汇率不利。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-NEUTRALIZATION-AXIS-EXHAUSTED"
+   "rule": "",
+   "entry_id": "GBR-NEUTRALIZATION-AXIS-EXHAUSTED"
   },
   {
    "family": "decay_lower_turnover_lever",
-   "reason": "论坛与文献三方指向的 decay/降换手杠杆，在 GBR analyst47 顶点信号上实测全 8 条 ΔF 为负。汇率核算：margin 增益/Sharpe 损耗比值 = ts_decay_linear20 0.32 / ts_decay_linear120 0.63 / tvr_decay0.15 0.23，全部小于 1 即亏本买卖。根因是压 TO 必然同时压 R（持仓变化本身就是收益来源），而 S 的降幅总是跑赢 margin 的涨幅。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-DECAY-LEVER-NEGATIVE-TURNOVER-FLOOR"
+   "reason": "论坛与文献三方指向的 decay/降换手杠杆，在 GBR analyst47 顶点信号上实测全 8 条 ΔF 为负。汇率核算：margin 增益/Sharpe 损耗比值 = ts_decay_linear20 0.32 / ts_decay_linear120 0.63 / tvr_decay0.15 0.23，全部小于 1 即亏本买卖。根因是压 TO 必然同时压 R（持仓变化本身就是收益来源），",
+   "rule": "",
+   "entry_id": "GBR-DECAY-LEVER-NEGATIVE-TURNOVER-FLOOR"
   },
   {
    "family": "group_rank_cluster_axis",
-   "reason": "★ 守恒律实证（本轮最硬的方法论产出）★ group_rank 换porPO不同轴，Sharpe 全部坍缩到 ~0.95 极差仅 0.05（6 个轴/包装变体：group10/group20/group50/sta2收益聚类/PCA10/winsorize包装 → S = 0.94/0.96/0.94/0.93/0.98/0.94）。而母信号顶点 S=1.96。核算：相关降幅 44.3%（1→0.557）≈ Sharpe 损耗 51.6%（1.96→0.95），二者近似 1:1。 ⇒ 【去相关不是免费的：group_rank 是用「砍掉一半信噪比」买来的相关性下降】，因为组内均匀化强制每组都出满多空，人为注入噪声持仓。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-GROUPRANK-DECORREL-SHARPE-CONSERVATION"
+   "reason": "★ 守恒律实证（本轮最硬的方法论产出）★ group_rank 换porPO不同轴，Sharpe 全部坍缩到 ~0.95 极差仅 0.05（6 个轴/包装变体：group10/group20/group50/sta2收益聚类/PCA10/winsorize包装 → S = 0.94/0.96/0.94/0.93/0.98/0.94）。而母信号顶点 S=1.96。核算：相关降幅 44.3%（1→0.",
+   "rule": "",
+   "entry_id": "GBR-GROUPRANK-DECORREL-SHARPE-CONSERVATION"
   },
   {
    "family": "analyst47_rawsentiment_tsquantile_signedpower",
-   "reason": "LADDER-CEILING 收手判据命中（两轮共 50+ 变体全扫毕仍差 F 0.03-0.04<0.05）——停止无限微调烧配额；非信号死（S 1.96/2Y 1.73/SUB 1.32 已全过），是 F 平台极限。【2026-10-04 补充第二轮 10 条结构性新维度实证（multisim 4o1ayAcXh5anaOS7g3aEUob）】全劣于或持平原顶点：trade_when 门控 5 条全灭（rawexperts>0.6/0.4/0.8、rawalphadecay>0.5、indicator>0.7 → S 0.03/-0.03/0.44/-0.04/0.60，margin 从 4.85bp 掉到 0.12-1.96bp）；winsorize(std=2.0) 几乎无变化（S1.95/F0.96/margin4.82bp）；quantile() 等价替换是负效应（S1.69，KOR +0.05 结论在 GBR 反向）；group_rank(subindustry) 毒药（S0.76）。margin 目标 5.165bp 未达（最高 4.82bp）。",
-   "salvage": [],
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-ANL47-SENTIMENT-TSQUANTILE-PINNACLE"
+   "reason": "LADDER-CEILING 收手判据命中（两轮共 50+ 变体全扫毕仍差 F 0.03-0.04<0.05）——停止无限微调烧配额；非信号死（S 1.96/2Y 1.73/SUB 1.32 已全过），是 F 平台极限。【2026-10-04 补充第二轮 10 条结构性新维度实证（multisim 4o1ayAcXh5anaOS7g3aEUob）】全劣于或持平原顶点：trade_when 门控 5",
+   "rule": "",
+   "entry_id": "GBR-ANL47-SENTIMENT-TSQUANTILE-PINNACLE"
   },
   {
    "family": "analyst48_bbpdiip_level_momentum",
    "reason": "bbpdiip水平/动量族18结构best S0.72（距D4资格线差42%），按「同一想法>10种结构仍不过记dead_end」判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-ANL48-BBPDIIP-CEILING"
+   "rule": "",
+   "entry_id": "GBR-ANL48-BBPDIIP-CEILING"
   },
   {
    "family": "analyst44_eps_sales_revision",
    "reason": "EPS/Sales预期修正族20结构best S0.64（距D4资格线差49%），按「同一想法>10种结构仍不过记dead_end」判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-ANL44-EPS-REVISION-CEILING"
+   "rule": "",
+   "entry_id": "GBR-ANL44-EPS-REVISION-CEILING"
   },
   {
    "family": "sentiment27_hump_logrank_slow",
    "reason": "hump慢结构族10结构不过（best S0.51），按「同一想法>10种结构仍不过记dead_end」判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-S27-HUMP-SLOW-CEILING"
+   "rule": "",
+   "entry_id": "GBR-S27-HUMP-SLOW-CEILING"
   },
   {
    "family": "other455_n2v_relation_pca",
    "reason": "N2V关系嵌入PCA分量在GBR TOP700无超额（8探针max|S|0.38<0.5），按「8探针快判死」规则判死，不扩批不换设置重试",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-O455-N2V-PROBE-DEAD"
+   "rule": "",
+   "entry_id": "GBR-O455-N2V-PROBE-DEAD"
   },
   {
    "family": "option1_empty_coverage",
    "reason": "option1全22字段GBR/TOP700覆盖为0（空集），字段存在但无数据；与news48同款陷阱但更隐蔽（users/ac非零系他区使用数）",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-OPTION1-EMPTY-COVERAGE"
+   "rule": "",
+   "entry_id": "GBR-OPTION1-EMPTY-COVERAGE"
   },
   {
    "family": "sentiment27_countrydomain_slowfast_spread",
    "reason": "国家域名占比慢快差分10结构全测毕 best S1.27(距1.58差24%)、2Y/SUB结构性弱(差136%/48%)，9个几何/窗口/形变变体全劣化；按「同一想法>10种结构仍不过记dead_end」判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-S27-COUNTRYDOMAIN-SPREAD-CEILING"
+   "rule": "",
+   "entry_id": "GBR-S27-COUNTRYDOMAIN-SPREAD-CEILING"
+  },
+  {
+   "family": "institutions6_institutional_holdings_flow",
+   "reason": "机构持仓/流量族14结构77条回测全灭，best 0.64距ModeB资格线1.25差49%；按「同一想法>10种结构仍不过记dead_end」判死；与GBR fundamental/model/news域同为信号强度天花板",
+   "rule": "",
+   "entry_id": "GBR-INST6-HOLDINGS-CEILING-20260929"
+  },
+  {
+   "family": "analyst_earnings_ibes_return_acceleration_mirror",
+   "reason": "wave76-77 12 条实证：镜像收益加速度族 best e7barXNg sharpe 1.36/fitness 0.56/2Y 1.28，sim_fails=[] 但 hard_gate 三项未达（S 差 14%/F 差 44%/2Y 差 19%）；按 D4（sharpe≥1.25 且 fitness≥0.8）fitness 不达标 → 判死禁进 near_pool 禁发增强波；该信号是 ",
+   "rule": "",
+   "entry_id": "GBR-MIRROR-ACCEL-SIGNAL-20260925"
+  },
+  {
+   "family": "model109_vector_forecast",
+   "reason": "model109 VECTOR 前瞻/风险字段 5 条实证：best 0.26（altman1983 变化/波动），距硬闸 1.58 差 84%；1yf_ep 动量最强反向 -0.88；与 model109 MATRIX 债务族同模式（IS 天花板≈0.8）",
+   "rule": "",
+   "entry_id": "GBR-MODEL109-VECTOR-CEILING"
+  },
+  {
+   "family": "intraday_pv_composite_stat",
+   "reason": "intraday_pv_feats 复合结构（keep_open 唯一一批）5 条实证：best npdawPZx 0.33/2Y 1.59，距 Mode B 资格线 1.25 差 74%；2Y 过闸但 IS 不足 = 慢信号结构性上限；按 D4 判死禁进 near_pool",
+   "rule": "",
+   "entry_id": "GBR-INTRADAY-PV-COMPOSITE-CEILING"
+  },
+  {
+   "family": "debt_x_fundamental17_cross_dataset",
+   "reason": "debt×fundamental17 跨数据集 5 条实证：best 6XjMxV5G sharpe 0.80/fitness 0.33/2Y 0.75，距硬闸 1.58 差 49%、距 Mode B 资格线 1.25 差 36%；已实测全部救援武器（STATISTICAL 孪生/几何变换/跨数据集/门控），GBR 结构性天花板实证收敛于 IS≈0.8",
+   "rule": "",
+   "entry_id": "GBR-DEBT-X-FUND17-CROSS-CEILING"
+  },
+  {
+   "family": "model109_debt_dynamics",
+   "reason": "model109 debt 杠杆动态族（debt_to_market_cap_ratio 变化/波动结构）两轮 12 条实证：best ZYbaGv1d sharpe 0.55/2Y 1.08（STATISTICAL+group_rank），距硬闸 1.58 差 65%、距 Mode B 资格线 1.25 差 56%；2Y 稳健但 IS 弱 = 慢信号生命周期末期；按 D4 纪律判死，禁进 nea",
+   "rule": "",
+   "entry_id": "GBR-MODEL109-DEBT-CEILING"
+  },
+  {
+   "family": "model110_composite",
+   "reason": "model110 复合模型 5 条回测全灭：best 0.75（quality 变化/波动）距硬闸 1.58 差 52%；2Y 0.56 不稳健；与 GBR 其他 model 数据集同模式（信号生命周期末期）",
+   "rule": "",
+   "entry_id": "GBR-MODEL110-DEAD"
+  },
+  {
+   "family": "model144_starperformer",
+   "reason": "model144 StarPerformer 7 条回测全灭：best 0.38（predict-score 差分 66 日变化）距硬闸 1.58 差 76%；2Y 0.35 不稳健；仅 2 字段组合空间不足",
+   "rule": "",
+   "entry_id": "GBR-MODEL144-DEAD"
+  },
+  {
+   "family": "acquisition_model_ma_target",
+   "reason": "acquisition_model M&A Target Model 全灭：12条回测（SUBINDUSTRY 7条 + STATISTICAL 5条）0达硬闸，最强 industry 层级变化/波动 0.85/2Y-0.26；2Y全负说明M&A信号在2022-23完全失效；与GBR其他dead_end同模式（信号生命周期末期）",
+   "rule": "",
+   "entry_id": "GBR-ACQUISITION-MODEL-DEAD"
+  },
+  {
+   "family": "fundamental17_non_value",
+   "reason": "fundamental17 非value机制全灭：10条回测（SUBINDUSTRY 7条 + STATISTICAL 3条）0达硬闸，最强运营利润率变化/资产周转波动 0.45/2Y0.07；收入加速度/人均效率/盈利质量全<0.5；与fundamental6/fundamental72同模式",
+   "rule": "",
+   "entry_id": "GBR-FUNDAMENTAL17-DEAD"
+  },
+  {
+   "family": "GBR OTHER-category compliant atoms (light OTHER tower)",
+   "reason": "GBR 不再投 dl_riskfree/other545/insider_trx 合规探针冲OTHER",
+   "rule": "",
+   "entry_id": "GBR-OTHER-COMPLIANT-CEILING-20260922"
+  },
+  {
+   "family": "fundamental72_statement_lines",
+   "reason": "wave63 首探 46 条全灭：best 有效 |S|=0.55（股息/融资现金流比），全部远低于 1.58；CW 结构性超闸普遍；与 GBR-FUNDAMENTAL6-CEILING 同模式",
+   "rule": "",
+   "entry_id": "GBR-FND72-FASTKILL"
+  },
+  {
+   "family": "macro27_job_postings",
+   "reason": "wave62 首探 11 条全灭：best |S| 0.81（closed/active 时长比反向）距 1.58 缺口 49%，2Y 分裂（-0.27）；净流量机制（created-removed）≈0 无信号；ghost jobs（repost）0.06-0.49 弱；fast_kill 线（8 探针无 |S|≥0.5）实质触发",
+   "rule": "",
+   "entry_id": "GBR-MACRO27-FASTKILL"
+  },
+  {
+   "family": "intraday_microstructure",
+   "reason": "585 cold MATRIX fields (users<=9). 13 single-field/conjunction structures: max |S| 0.78 (VWAP-to-last ratio, sign = continuation not reversal), order-imbalance +0.67/2Y0.81 (STAT 0.94 but sub-universe",
+   "rule": "",
+   "entry_id": "GBR-INTRADAY-MICRO-WEAK"
+  },
+  {
+   "family": "earnings_call_tone",
+   "reason": "Earnings-call transcript tone (pos/neg/neutral probabilities, weighting m1/m2): 14 structures max 0.74 (net tone backfill 252) under SUBINDUSTRY, 0.95/2Y1.35 under STATISTICAL; sign unstable (group-re",
+   "rule": "",
+   "entry_id": "GBR-EARNINGS-SENT-DEAD"
+  },
+  {
+   "family": "other335_dividend_model",
+   "reason": "Wolfe MIND dividend/income model (mind/hc_mind/linear/hedge/shield): 15 structures IS <= 1.13 (T-KB-05 long-window 1.13/0.71, size-bucket group_rank 1.05, hc composite 0.97, income x defensive 0.89) w",
+   "rule": "",
+   "entry_id": "GBR-OTHER335-DIVIDEND-2Y-DEAD"
+  },
+  {
+   "family": "model250_ml_composite",
+   "reason": "MALTA ML composite rank(ts_backfill(mdl250_maltahc_eq_score,5)) is the strongest structural signal of wave57: 1.28/1.00/tvr8%/2Y0.84, rn_sharpe 0.87 (real excess), but yearly sharpe decays 2014 2.87 /",
+   "rule": "",
+   "entry_id": "GBR-MODEL250-LIFECYCLE-PRODSAT"
+  },
+  {
+   "family": "pv47_residual_reversal",
+   "reason": "UBER residual-return reversal is IS-passable under STATISTICAL neutralization (monthly 1.59/0.96/2Y1.79, weekly 1.68/0.72/2Y2.07, ts_quantile geometry 1.69/0.98/2Y1.98, industry group_rank 1.62/0.93/2",
+   "rule": "",
+   "entry_id": "GBR-PV47-RESIDUAL-REVERSAL-PRODSAT"
+  },
+  {
+   "family": "news18_event_gated",
+   "reason": "news18 事件门控结构（trade_when + ts_backfill + vec_avg，relevance/ber/similarity_days/analyst_change 门控 × nip/qcm/ssc 信号）全灭：5 条 0 达硬闸，最强 novelty 门控 ssc sharpe 0.42/rn 0.68 但 2Y 0.12；nip 冲击预测反向 -0.92。profile ",
+   "rule": "",
+   "entry_id": "GBR-NEWS18-EVENTGATE-DEAD"
+  },
+  {
+   "family": "fundamental6_quality_value",
+   "reason": "fundamental6 基本面质量/价值族全灭：33 条回测 0 达硬闸，最强 akLevrVw（oancf-oiadp/atq）sharpe 0.37/2Y 1.08/rn 0.33 距 1.58 差 76%；裸 rank/group_rank(fnd6_*_atq/revt) 全是规模因子暴露（rn -0.25~-0.73）非超额；ts_zscore(atq/revt,66) 0.68-0.",
+   "rule": "",
+   "entry_id": "GBR-FUNDAMENTAL6-CEILING"
+  },
+  {
+   "family": "analyst7_revision_momentum",
+   "reason": "analyst7 revision-momentum (est_*_raisednum - est_*_lowerednum / num) 机制有效但严重衰减：d5OYVodX (est_12m_ebt) IS sharpe 1.2/rn 1.07 机制成立，但 yearly stats 2014-2017 sharpe 2.86-3.55 → 2022-2023 仅 0.66-0.88，2Y 0",
+   "rule": "",
+   "entry_id": "GBR-ANALYST7-REVISION-DECAYED"
+  },
+  {
+   "family": "settings_variation",
+   "reason": "",
+   "rule": "",
+   "entry_id": "GBR-DELAY0-INFEASIBLE"
+  },
+  {
+   "family": "insider_agg_matrix",
+   "reason": "IS 天花板 0.51 + CW 闸结构性超闸 + 2Y 全弱，10 条结构无路径可过全闸",
+   "rule": "",
+   "entry_id": "GBR-INSIDER-AGG-CEILING"
+  },
+  {
+   "family": "sales_pct_home_bias",
+   "reason": "TO 结构性超闸 + IS 天花板 0.61，35 条结构无路径可过全闸",
+   "rule": "",
+   "entry_id": "MODEL307-HOME-BIAS"
+  },
+  {
+   "family": "news104 marketimpactscore 冲击动量域",
+   "reason": "三波 30+ 条实证（wave26-28 简单结构 + wave47 窗口展开 10 条 + wave48 概念加权 7 条），16 种结构 IS 天花板 0.71（Vk7GeezV=novelty 加权×5d 平滑，乘数加权实证 0.23→0.71）；2Y 峰值 1.48（W20）近闸但 IS 差 55%+；5d 平滑残差 0.68 微新高不突破；sentiment 腿终判无效（-0.24）；a",
+   "rule": "",
+   "entry_id": "NEWS104-IMPACT-CEILING"
+  },
+  {
+   "family": "model36 star_sr 信用质量域",
+   "reason": "两波 23 条：动量骨架（global-industr delta）IS 天花板 0.89、反向镜像 0.76 精确反转、ts_corr/group 弱；平台门槛 LOW_SHARPE/LOW_2Y=1.58，2Y 仅 0.98，IS 差距 44%+，同 M28-REVERSE-CEILING 结构性天花板",
+   "rule": "",
+   "entry_id": "M36-CEILING"
+  },
+  {
+   "family": "credit_reverse",
+   "reason": "",
+   "rule": "",
+   "entry_id": "GBR-M28-REVERSE-CEILING"
+  },
+  {
+   "family": "shortinterest3",
+   "reason": "wave37-39 共 22 条实证：镜像 4/4 精确反转确认 squeeze 反向机制，但信号 IS/2Y 分裂天花板——乘积族（mktval×rate）IS 1.04/2Y 0.29，比值族（vol/rate）IS 0.80/2Y 1.52，两组均不达闸（1.58/1.6）且无重叠；Mode A 差分/zscore/窗口变体全部衰减（基线 1.04 最优）；ts_corr 换腿方向不稳定；判",
+   "rule": "",
+   "entry_id": "GBR-SI3-MIRROR-CEILING"
+  },
+  {
+   "family": "news18",
+   "reason": "wave36 8 条 GEM 复合结构全 FAIL（max sh 0.40，max|S| 0.53）；ts_backfill(66) 结构全部 resource 超限（去掉 backfill 才能跑）；ts_corr 机制从 sentiment27 换腿不泛化（np7Nd37M sh 0.06）；与 ppa-mining-experience 记录一致（news18 GBR 结构性弱数据，INDU",
+   "rule": "",
+   "entry_id": "GBR-NEWS18-STRUCTURAL-WEAK"
+  },
+  {
+   "family": "model106_rank",
+   "reason": "wave31 model106 10 条 GEM 全 FAIL（含 T-KB-01 慢×快混合/ts_regression 复合结构），max sharpe 0.38；TOP700 排名类信号结构性偏弱（与 model238 同型）",
+   "rule": "",
+   "entry_id": "GBR-MDL106-CEILING"
+  },
+  {
+   "family": "prod_saturated",
+   "reason": "predictive_starmine（GrlqxwKx 四向价值）/ analyst_earnings_ibes（vRNk56mz ep_yield delta66）/ pattern_scores（A1G7o1EE）/ other455×model264（WjAV89jG）已各 1 颗 ACTIVE，同族变体 PROD 饱和，禁生成同族新表达式",
+   "rule": "",
+   "entry_id": "GBR-PROD-SATURATED"
+  },
+  {
+   "family": "fund_holdings_panel",
+   "reason": "ledger fund_holdings_panel_dead 标记判死",
+   "rule": "",
+   "entry_id": "GBR-FUNDHOLDINGS-DEAD"
+  },
+  {
+   "family": "model53",
+   "reason": "ledger model53_dead 标记判死",
+   "rule": "",
+   "entry_id": "GBR-MODEL53-DEAD"
+  },
+  {
+   "family": "news20",
+   "reason": "ledger news20_dead 标记判死",
+   "rule": "",
+   "entry_id": "GBR-NEWS20-DEAD"
+  },
+  {
+   "family": "news17",
+   "reason": "ledger news17_dead 标记判死",
+   "rule": "",
+   "entry_id": "GBR-NEWS17-DEAD"
+  },
+  {
+   "family": "analyst9",
+   "reason": "ledger analyst9_dead 标记判死",
+   "rule": "",
+   "entry_id": "GBR-ANALYST9-DEAD"
+  },
+  {
+   "family": "simple_structure_dead",
+   "reason": "news104 / pattern_scores / model264 简单结构 wave26-28 判死（s0_whitelist_2026-08-26 excluded 理由）",
+   "rule": "",
+   "entry_id": "GBR-SIMPLE-STRUCTURE-DEAD"
+  },
+  {
+   "family": "model238_rank",
+   "reason": "wave29 model238 9 条 GEM 多结构全 FAIL，IS 天花板 0.68（TOP700 排名类信号结构性偏弱）",
+   "rule": "",
+   "entry_id": "GBR-MDL238-RANK-CEILING"
+  },
+  {
+   "family": "dl_riskfree_label",
+   "reason": "wave30 dl_riskfree_returns 5 条全 FAIL：max sharpe 1.09 但 2Y=-0.05，quantile_label/probability_label 族 2Y 段结构性崩溃（GEM 8-26 生成 6 条同族重复）",
+   "rule": "",
+   "entry_id": "GBR-DLRISKFREE-LABEL-DEAD"
+  },
+  {
+   "family": "tier1",
+   "reason": "tier1 数据集挖穿（8-18 结论，gbr_tier1_exhausted ledger key）：ranking 强信号族全部 PROD 饱和或判死",
+   "rule": "",
+   "entry_id": "GBR-TIER1-EXHAUSTED"
   }
  ],
  "region_context": {
@@ -178,10 +582,27 @@
   ],
   "truncated": {
    "wins": [
+    "GBR-ASYM-GATE-MIRROR-WIN-KPNgQApj",
     "T-KB-01 慢×快跨周期混合",
     "T-KB-07 四向价值结构"
    ],
    "dead_ends": [
+    "GBR-OTHER47-WEBATTENTION-DEAD",
+    "GBR-ANALYST83-CALLTRANSCRIPT-DEAD",
+    "GBR-PV109-BOND-CREDIT-DEAD",
+    "GBR-NEWS50-VEA-S-CEILING-20261028",
+    "GBR_FUNDAMENTAL_category",
+    "GBR-RRVR-SHARPE-PROD-TRADEOFF-NO-SOLUTION",
+    "GBR-NEUTRALIZATION-AXIS-EXHAUSTED",
+    "GBR-DECAY-LEVER-NEGATIVE-TURNOVER-FLOOR",
+    "GBR-GROUPRANK-DECORREL-SHARPE-CONSERVATION",
+    "GBR-ANL47-SENTIMENT-TSQUANTILE-PINNACLE",
+    "GBR-ANL48-BBPDIIP-CEILING",
+    "GBR-ANL44-EPS-REVISION-CEILING",
+    "GBR-S27-HUMP-SLOW-CEILING",
+    "GBR-O455-N2V-PROBE-DEAD",
+    "GBR-OPTION1-EMPTY-COVERAGE",
+    "GBR-S27-COUNTRYDOMAIN-SPREAD-CEILING",
     "GBR-INST6-HOLDINGS-CEILING-20260929",
     "GBR-MIRROR-ACCEL-SIGNAL-20260925",
     "GBR-MODEL109-VECTOR-CEILING",

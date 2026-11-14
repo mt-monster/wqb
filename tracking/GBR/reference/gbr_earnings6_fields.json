@@ -1,0 +1,155 @@
+{
+ "dataset": "earnings6",
+ "name": "International Findings Data",
+ "region": "GBR",
+ "tower": "earnings(0)",
+ "field_count": 18,
+ "note": "cov 元数据 0（盲区）；2026-11-12 用户放宽约束在案；2026-11-13 六法实测：actual_eps 7/700 日覆盖（季度事件流）、estimated 1/700、next_ed zscore 探针空转（需 Etype 解读）、x_dividend 432/700(62%) 覆盖冠军但与在篮 starval 股息率同族。EPS/PEAD 面需 ts_backfill+横截面 zscore，长射",
+ "fields": [
+  {
+   "id": "ern6_1q",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 26,
+   "ac": 35,
+   "d": "Earnings date 1Q"
+  },
+  {
+   "id": "ern6_2q",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 14,
+   "ac": 16,
+   "d": "Earnings date 2Q"
+  },
+  {
+   "id": "ern6_3q",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 10,
+   "ac": 11,
+   "d": "Earnings date 3Q"
+  },
+  {
+   "id": "ern6_4q",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 11,
+   "ac": 16,
+   "d": "Earnings date 4Q"
+  },
+  {
+   "id": "ern6_actual_eps",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 27,
+   "ac": 29,
+   "d": "Reported non-GAAP diluted EPS"
+  },
+  {
+   "id": "ern6_actual_fiscal_year",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 11,
+   "ac": 12,
+   "d": "Fiscal year of actual release"
+  },
+  {
+   "id": "ern6_board_of_directors_meeting",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 16,
+   "ac": 20,
+   "d": "Board/Shareholder Meeting date"
+  },
+  {
+   "id": "ern6_conferencecalltime",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 11,
+   "ac": 13,
+   "d": "Earnings call published time"
+  },
+  {
+   "id": "ern6_estimated_eps",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 23,
+   "ac": 31,
+   "d": "Estimize weighted EPS estimate"
+  },
+  {
+   "id": "ern6_estimated_fiscal_year",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 8,
+   "ac": 14,
+   "d": "Fiscal year of estimated earnings"
+  },
+  {
+   "id": "ern6_next_ed",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 17,
+   "ac": 23,
+   "d": "Next earnings date (interpret using Etype status)"
+  },
+  {
+   "id": "ern6_next_ed_fiscal_year",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 27,
+   "ac": 37,
+   "d": "Fiscal year of Next_ED"
+  },
+  {
+   "id": "ern6_transcript_fiscal_year",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 9,
+   "ac": 12,
+   "d": "Transcript fiscal year YYYY"
+  },
+  {
+   "id": "ern6_wqreceivetimestamp",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 5,
+   "ac": 6,
+   "d": "Ingestion timestamp"
+  },
+  {
+   "id": "ern6_x_dividend",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 25,
+   "ac": 35,
+   "d": "Dividend amount USD；六法实测 432/700 覆盖冠军"
+  },
+  {
+   "id": "ern6_x_dividend_oc",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 15,
+   "ac": 15,
+   "d": "Dividend in specified currency"
+  },
+  {
+   "id": "preliminary_eps_range_lower_bound",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 7,
+   "ac": 10,
+   "d": "Preliminary EPS low bound"
+  },
+  {
+   "id": "preliminary_eps_range_upper_bound",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 7,
+   "ac": 8,
+   "d": "Preliminary EPS high bound"
+  }
+ ],
+ "profile_batch": "3PxsLc2CY4n3bn4SYeaHm8l（2026-11-13）"
+}

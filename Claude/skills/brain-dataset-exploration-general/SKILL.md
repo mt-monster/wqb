@@ -23,6 +23,7 @@ allowed-tools:
 
 - **分类**（§3）用本地脚本，零配额、秒级——**永远全量**。
 - **深挖**（§5）只做**代表字段 ≤ 12 个**（缺省，经验值，可按需调）：每个语义大类取 `coverage` 最高、同分取 `userCount` 最高的 1–2 个，再加 3 个**冷门候选**（`userCount` 0–9 且 `coverage ≥ 0.4`——RA 步 3 §3.3 的冷门优先）。
+- **全量静态画像模式（用户明令「全字段完整探测、禁止抽样」时启用，2026-11-14 IND 固化）**：分类仍全量，另对**每个字段**出静态 8 列画像（type/coverage/userCount/alphaCount/更新频率/分布特征/可用性/alpha 适用性），100% 覆盖不抽样——频率与分布用字段语义 + DB `field_profile_full.freq_hint` 静态推定并标 `[inferred]`，**在线六法仍只对入选主信号字段做**（配额约束不变）。工具硬前置：`get_datafields` 不传 `max_fields`（显式 `null` 只返 1 条）且 `filter_sharpe=False`；逐集 `count == platform_count == complete=true` 三重对账。注意 DB 画像可能过期（model77 DB 348 字段/cov 0.85 vs 平台 23 字段/cov 0.40），以 MCP 实读为准。
 - **描述**：平台字段描述以平台为准；本 skill 不产「增强描述」，对代表字段最多在审计结论里各写一行注释。
 
 ## 2. 画像（一次 `get_datasets` + 一次 `get_datafields`）
@@ -67,7 +68,7 @@ python tools/field_semantic_classify.py --region <R> --dataset <ds> --write-ledg
 
 ## 7. 审计结论怎么写
 
-- **机器可读的只有 `s1_semantic_<ds>`**（§3）与步 3 写的 `catalog_<ds>`；其余都是给人读的结论，写在对话里，需要留档时写 `reports/dataset_audit_<REGION>_<ds>.md`（**不是事实源**，事实源在 DB）。结论模板见 [`references/overview.md`](references/overview.md)。
+- **机器可读的只有 `s1_semantic_<ds>`**（§3）与步 3 写的 `catalog_<ds>`；其余都是给人读的结论，写在对话里，需要留档时写 `reports/dataset_experience/<region 小写>_<ds>_field_profile_<YYYYMMDD>.md`（**人工报告按 AGENTS.md §8.13 带日期后缀；不要占用 `reports/dataset_experience/<region>_<ds>_campain.md`——那是 `dataset_experience.py` 生成器 + `step9_audit.py` 消费的既定文件名**。**不是事实源**，事实源在 DB）。结论模板见 [`references/overview.md`](references/overview.md)。
 - **Alpha 思路**只写**机制假设**（一句话经济叙事 + 该用哪一类数据当主 / 辅信号），**不写表达式**——表达式走 RA 步 4 的概念优先生成。
 
 ## 验证清单（每项写产物）

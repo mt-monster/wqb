@@ -1,0 +1,68 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "earnings_sent_matrix",
+  "fetched_at": "2026-11-12T11:24:57.323Z",
+  "platform_count": 7,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "intraday_delay_indicator",
+      "type": "MATRIX",
+      "coverage": 0.5062,
+      "userCount": 94,
+      "alphaCount": 112,
+      "description": "A code indicating whether the data is updated intraday or with a delay."
+    },
+    {
+      "id": "likelihood_of_neutral_tone",
+      "type": "MATRIX",
+      "coverage": 0.5062,
+      "userCount": 98,
+      "alphaCount": 132,
+      "description": "Model-estimated probability [0–1] that the intraday transcript slice has neutral sentiment; sums with the other two probabilities to 1"
+    },
+    {
+      "id": "negative_sentiment_probability_3",
+      "type": "MATRIX",
+      "coverage": 0.5062,
+      "userCount": 214,
+      "alphaCount": 333,
+      "description": "Model-estimated probability [0–1] that the intraday transcript slice has negative sentiment; designed to sum to 1 with Prob_NTR and Prob_POS"
+    },
+    {
+      "id": "overall_sentiment_score",
+      "type": "MATRIX",
+      "coverage": 0.5062,
+      "userCount": 133,
+      "alphaCount": 182,
+      "description": "Categorical sentiment label derived by argmax over Prob_POS, Prob_NTR, Prob_NEG; typically -1 negative, 0 neutral, 1 positive"
+    },
+    {
+      "id": "positive_sentiment_probability_3",
+      "type": "MATRIX",
+      "coverage": 0.5062,
+      "userCount": 232,
+      "alphaCount": 356,
+      "description": "Model-estimated probability [0–1] that the intraday transcript slice has positive sentiment; part of the three-class distribution"
+    },
+    {
+      "id": "sentiment_weighting_method1",
+      "type": "MATRIX",
+      "coverage": 0.5062,
+      "userCount": 328,
+      "alphaCount": 491,
+      "description": "Aggregate transcript tone score computed via method 1; higher values indicate more positive sentiment for the segment"
+    },
+    {
+      "id": "sentiment_weighting_method2",
+      "type": "MATRIX",
+      "coverage": 0.5062,
+      "userCount": 201,
+      "alphaCount": 249,
+      "description": "Alternative aggregate transcript tone score computed via method 2; higher values indicate more positive sentiment"
+    }
+  ]
+}

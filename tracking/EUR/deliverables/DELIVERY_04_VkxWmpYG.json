@@ -1,0 +1,44 @@
+{
+ "rank": 4,
+ "compliantRank": 3,
+ "id": "VkxWmpYG",
+ "status": "VALIDATED_UNSUBMITTED_FULLY_COMPLIANT",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "decay": 8,
+ "neutralization": "CROWDING",
+ "truncation": 0.08,
+ "maxTrade": "OFF",
+ "nanHandling": "ON",
+ "pasteurization": "ON",
+ "expression": "group_rank(add(group_rank(subtract(probability_fifth_quantile_ten_day_bucket_four_15,probability_fifth_quantile_ten_day_bucket_zero_15),industry),group_rank(add(vec_avg(probability_fifth_quantile_ten_day_bucket_zero_15),vec_avg(probability_fifth_quantile_ten_day_bucket_four_15)),industry)),industry)",
+ "metrics": {
+  "S": 2.15,
+  "F": 1.49,
+  "TO": 0.1398,
+  "ret": 0.0667,
+  "twoY": 2.33,
+  "sub": 1.44,
+  "marginBp": 9.54,
+  "fRA": 0,
+  "checksFail": []
+ },
+ "correlations": {
+  "self": 0.4954,
+  "selfPass": true,
+  "prod": 0.68,
+  "prodPass": true,
+  "vs_KPJ1rG0j": 0.7891,
+  "vs_rKRx7v6m": 0.5725,
+  "vs_leAnKOEA": "未测"
+ },
+ "yearly": {
+  "span": "2014-2023",
+  "years": 10,
+  "blank": 0,
+  "negPnl": 0
+ },
+ "verification": "全闸 + self 0.4954 + prod 0.68 + 逐年 10 年无空窗无负年 = 完整验证通过",
+ "constraint": "与合规双席（KPJ 0.79 / rKR 0.57）互斥 ⇒ 只能单席提交，不能与 KPJ/rKR 同池"
+}

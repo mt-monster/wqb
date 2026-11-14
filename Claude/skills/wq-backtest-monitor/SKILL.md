@@ -60,7 +60,7 @@ agent_created: true
 |---|---|
 | `alpha_id` / 所属 wave | `alphas` / `backtest_results` |
 | IS 结论 | Failed RA（`config.compute_webdata_failed_counts`；`PENDING` = 暂无失败但**待复查**，不是通过）；只过廉价闸者写 `PASS_CHEAP` |
-| prod 读数 | `alphas.prod_correlation` + `alphas.corr_checked_at`——**读数带时间**；prod 值会在一小时内漂移，提交前终验必须 `check_correlation(refresh=True)` |
+| prod 读数 | `alphas.prod_correlation` + `alphas.corr_checked_at`——**读数带时间**；48h 内可信缓存直接过闸、不 `refresh=True`（2026-11-14 用户明令），过期才回源 |
 | 稳健性 | ledger `robustness_<alpha_id>`（`get_ledger_key`）：`REJECT` 会让 `submit_verdict` 判 `BLOCKED` |
 | `submit_verdict` 标签 | `SUBMITTABLE` / `BLOCKED` / `UNVERIFIABLE` / `ALREADY_SUBMITTED`（词义见 [GLOSSARY](../GLOSSARY.md)；`UNVERIFIABLE` **不是放行**） |
 

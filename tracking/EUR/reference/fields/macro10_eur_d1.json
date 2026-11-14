@@ -1,0 +1,20 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "macro10",
+  "fetched_at": "2026-11-12T11:24:57.235Z",
+  "platform_count": 1,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "mcr10_value",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 421,
+      "alphaCount": 1246,
+      "description": "Data value"
+    }
+  ]
+}

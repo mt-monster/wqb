@@ -1,0 +1,276 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "macro27",
+  "fetched_at": "2026-11-12T11:24:40.654Z",
+  "platform_count": 33,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "avg_days_job_posting_active",
+      "type": "VECTOR",
+      "coverage": 0.43,
+      "userCount": 16,
+      "alphaCount": 21,
+      "description": "average length of time the job posts have been active"
+    },
+    {
+      "id": "avg_days_job_posting_closed",
+      "type": "VECTOR",
+      "coverage": 0.43,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "average length of time the deleted jobs were posted before removal"
+    },
+    {
+      "id": "bucket_avg_days_job_active",
+      "type": "VECTOR",
+      "coverage": 0.1478,
+      "userCount": 20,
+      "alphaCount": 30,
+      "description": "Average time the jobs have been active (days)"
+    },
+    {
+      "id": "bucket_avg_days_job_closed",
+      "type": "VECTOR",
+      "coverage": 0.1478,
+      "userCount": 9,
+      "alphaCount": 12,
+      "description": "Average time the deleted/removed jobs were posted (days)"
+    },
+    {
+      "id": "continuous_value_break_flag",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "cvbbrksflag"
+    },
+    {
+      "id": "is_historically_hosted_job_flag",
+      "type": "VECTOR",
+      "coverage": 0.3414,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Historical indicator that the job was hosted by LinkUp (1=Yes, 0=No)"
+    },
+    {
+      "id": "is_hosted_job_flag",
+      "type": "VECTOR",
+      "coverage": 0.3414,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Boolean flag indicating if the job posting was hosted by LinkUp (1=yes, 0=no)"
+    },
+    {
+      "id": "is_job_repost_flag",
+      "type": "VECTOR",
+      "coverage": 0.4124,
+      "userCount": 5,
+      "alphaCount": 9,
+      "description": "Indicator if the job is a repost (1) or original (0)"
+    },
+    {
+      "id": "is_sponsored_ad_flag",
+      "type": "VECTOR",
+      "coverage": 0.3414,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Binary flag indicating whether the job posting is part of a vendor-sponsored ad campaign (1=yes, 0=no)"
+    },
+    {
+      "id": "mcr27_bigdrpbrksflag",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Binary flag indicating a “big drop” occurred since the previous scraping"
+    },
+    {
+      "id": "mcr27_bucket_daily_jobsactive",
+      "type": "VECTOR",
+      "coverage": 0.1478,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Number of active job postings in this macro bucket on this date"
+    },
+    {
+      "id": "mcr27_bucket_daily_jobscreated",
+      "type": "VECTOR",
+      "coverage": 0.1478,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Number of job postings created in this macro bucket since the prior scrape"
+    },
+    {
+      "id": "mcr27_bucket_daily_jobsremoved",
+      "type": "VECTOR",
+      "coverage": 0.1478,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Number of job postings removed/deleted in this macro bucket since the prior scrape"
+    },
+    {
+      "id": "mcr27_company_ajnet",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Net amount of active job postings added (net change in active jobs, e.g., created minus removed)"
+    },
+    {
+      "id": "mcr27_company_jobsactive",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 297,
+      "alphaCount": 541,
+      "description": "Number of currently active job postings for the company"
+    },
+    {
+      "id": "mcr27_company_jobsactive_n",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 78,
+      "alphaCount": 99,
+      "description": "Number of active job postings after neutralization within the respective macro bucket"
+    },
+    {
+      "id": "mcr27_company_jobscreated",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 11,
+      "alphaCount": 14,
+      "description": "Number of job postings created for the company"
+    },
+    {
+      "id": "mcr27_company_jobsremoved",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 7,
+      "alphaCount": 9,
+      "description": "Number of job postings removed/deleted for the company"
+    },
+    {
+      "id": "mcr27_companyidmap",
+      "type": "VECTOR",
+      "coverage": 0.2324,
+      "userCount": 96,
+      "alphaCount": 121,
+      "description": "An integer mapped to the canonical company ID used in the dataset"
+    },
+    {
+      "id": "mcr27_country",
+      "type": "VECTOR",
+      "coverage": 0.3414,
+      "userCount": 99,
+      "alphaCount": 139,
+      "description": "country"
+    },
+    {
+      "id": "mcr27_normalizedflag",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Binary flag indicating whether jobsactive was normalized within the respective macro bucket"
+    },
+    {
+      "id": "mcr27_postlength2",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 66,
+      "alphaCount": 85,
+      "description": "postlength2"
+    },
+    {
+      "id": "mcr27_unmapped_location",
+      "type": "VECTOR",
+      "coverage": 0.3414,
+      "userCount": 104,
+      "alphaCount": 158,
+      "description": "Flag that the job’s location could not be identified by the vendor (1=Yes)"
+    },
+    {
+      "id": "mcr27_verified_ds1",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 73,
+      "alphaCount": 99,
+      "description": "Binary flag indicating highest confidence that the company ID mapping is correct; 1 = verified, 0 = not"
+    },
+    {
+      "id": "mcr27_verified_ds2",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 64,
+      "alphaCount": 80,
+      "description": "Binary flag indicating highest-confidence company ID mapping based on corporate action information"
+    },
+    {
+      "id": "mcr27_verified_ds3",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 69,
+      "alphaCount": 94,
+      "description": "Binary flag indicating high confidence that the company ticker mapping is correct based on vendor information; 1 = verified, 0 = not"
+    },
+    {
+      "id": "mcr27_verified_ds4",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 66,
+      "alphaCount": 85,
+      "description": "Binary flag indicating high confidence that the company ticker mapping is correct based on legal entity updates; 1 = verified, 0 = not"
+    },
+    {
+      "id": "mcr27_zip",
+      "type": "VECTOR",
+      "coverage": 0.3414,
+      "userCount": 116,
+      "alphaCount": 156,
+      "description": "Postal/ZIP code for the job location"
+    },
+    {
+      "id": "mean_days_job_active",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 16,
+      "alphaCount": 20,
+      "description": "Average time job posts have been active, in days"
+    },
+    {
+      "id": "mean_days_job_closed",
+      "type": "VECTOR",
+      "coverage": 0.348,
+      "userCount": 21,
+      "alphaCount": 24,
+      "description": "Average number of days the company’s removed jobs had been posted before deletion"
+    },
+    {
+      "id": "num_jobs_active",
+      "type": "VECTOR",
+      "coverage": 0.43,
+      "userCount": 41,
+      "alphaCount": 58,
+      "description": "Number of active job postings"
+    },
+    {
+      "id": "num_jobs_created",
+      "type": "VECTOR",
+      "coverage": 0.43,
+      "userCount": 8,
+      "alphaCount": 13,
+      "description": "Number of job postings created"
+    },
+    {
+      "id": "num_jobs_removed",
+      "type": "VECTOR",
+      "coverage": 0.43,
+      "userCount": 8,
+      "alphaCount": 10,
+      "description": "Number of job postings removed/deleted"
+    }
+  ]
+}

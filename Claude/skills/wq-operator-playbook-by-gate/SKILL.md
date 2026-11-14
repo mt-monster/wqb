@@ -32,7 +32,7 @@ agent_created: true
 | 2 | 算子/轴面**对账** | `get_operators` 差集逐个至少 1 条；先读仓库现成资料 |
 | 3 | 按**增益量级**逐维加/换 | 轴族(+0.49) > `decay`(+0.10) > 双窗(+0.02 零代价) > 异族第三轴(+0.01) > 变换(S+0.10) > 换字段 |
 | 4 | **正交轴族叠加**直到闸过 | 三条有效族 + 三条硬约束（见 `§4.1`）；**轴必须与经济结构同源** |
-| 5 | **终验三闸**（顺序不可颠倒） | `submit_verdict` → `check_correlation(refresh=True)` → `brain-alpha-robustness` |
+| 5 | **终验三闸**（顺序不可颠倒） | `submit_verdict` → `check_correlation(refresh=False)`（48h 缓存优先）→ `brain-alpha-robustness` |
 | 6 | **台账回写 + 零提交** | 写 `robustness_<id>`；agent 一律不提交 |
 
 **最快见效的三个动作**：① 换**轴族**（不是换族内参数）② 扫平台 **`decay`**（有单峰）

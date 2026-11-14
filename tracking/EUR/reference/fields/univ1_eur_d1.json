@@ -1,0 +1,59 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "univ1",
+ "fetched_at": "2026-11-13",
+ "platform_count": 6,
+ "complete": true,
+ "fields": [
+  {
+   "id": "top1200",
+   "type": "UNIVERSE",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "No field description"
+  },
+  {
+   "id": "top2500",
+   "type": "UNIVERSE",
+   "coverage": 1,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "No field description"
+  },
+  {
+   "id": "top400",
+   "type": "UNIVERSE",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "No field description"
+  },
+  {
+   "id": "top500",
+   "type": "UNIVERSE",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "No field description"
+  },
+  {
+   "id": "top800",
+   "type": "UNIVERSE",
+   "coverage": 1,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "No field description"
+  },
+  {
+   "id": "topcs1600",
+   "type": "UNIVERSE",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "No field description"
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "dataset": "risk71",
+ "name": "Daily Specific Return Profiling",
+ "region": "GBR",
+ "delay": 1,
+ "field_count": 6,
+ "fields": [
+  {
+   "id": "residualized_return_top2500",
+   "t": "MATRIX",
+   "uc": 262,
+   "ac": 536,
+   "d": "日频特质残差收益"
+  },
+  {
+   "id": "residualized_return_top600_ats",
+   "t": "MATRIX",
+   "uc": 6,
+   "ac": 6
+  },
+  {
+   "id": "epp_minvol1m_specific_return_dsrt",
+   "t": "MATRIX",
+   "uc": 24,
+   "ac": 28
+  },
+  {
+   "id": "eur_minvol1m_specific_return_dsrt",
+   "t": "MATRIX",
+   "uc": 27,
+   "ac": 33
+  },
+  {
+   "id": "top1200_residual_return_dsrt",
+   "t": "MATRIX",
+   "uc": 10,
+   "ac": 14
+  },
+  {
+   "id": "top800_residual_return_dsrt",
+   "t": "MATRIX",
+   "uc": 5,
+   "ac": 5
+  }
+ ]
+}

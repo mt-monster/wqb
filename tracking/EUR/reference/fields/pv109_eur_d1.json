@@ -1,0 +1,211 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "pv109",
+ "fetched_at": "2026-11-13",
+ "platform_count": 25,
+ "complete": true,
+ "fields": [
+  {
+   "id": "ask_side_conversion_yield",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Yield to conversion based on the ask price."
+  },
+  {
+   "id": "ask_side_yield_to_maturity",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Yield to maturity calculated using the ask price; represents expected annualized return if purchased at the ask price and held to maturity"
+  },
+  {
+   "id": "bid_side_conversion_yield",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Yield to conversion based on the bid price."
+  },
+  {
+   "id": "bid_side_yield_to_maturity",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Yield to maturity on the bid side, i.e., yield investors would earn if buying at bid price and holding to maturity"
+  },
+  {
+   "id": "bid_side_yield_to_maturity_duplicate",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Yield to maturity calculated using the bid price (duplicate field)."
+  },
+  {
+   "id": "bond_coupon_rate",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The nominal coupon rate specified for the bond, representing periodic interest paid"
+  },
+  {
+   "id": "coupon_payment_frequency",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Code for frequency of coupon payments (e.g., annual, semiannual, quarterly)"
+  },
+  {
+   "id": "current_coupon_rate",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current coupon rate applicable on the bond as of the date, especially relevant for floating or step-up coupons"
+  },
+  {
+   "id": "face_value_amount",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Par amount or face value of the bond"
+  },
+  {
+   "id": "highest_bid_price",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Bid price, i.e., the price a buyer is willing to pay for the bond"
+  },
+  {
+   "id": "initial_issue_price",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Price at which the bond was originally issued"
+  },
+  {
+   "id": "interest_day_count_basis",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Day count convention code, specifying the interest accrual calculation method for coupon payments"
+  },
+  {
+   "id": "last_traded_price",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Last traded price for the bond, typically representing the end-of-day closing price or last price observed"
+  },
+  {
+   "id": "lowest_ask_price",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Bond's quoted ask (offer) price at the as-of date"
+  },
+  {
+   "id": "midpoint_conversion_yield",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Yield to conversion calculated using the average of bid and ask prices."
+  },
+  {
+   "id": "midpoint_trade_price",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Mid price of the bond, either calculated or observed, typically midway between bid and ask prices"
+  },
+  {
+   "id": "midpoint_yield_to_maturity",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Yield to maturity calculated at the mid price for the bond as of the as-of-date"
+  },
+  {
+   "id": "minimum_bond_denomination",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum denomination or smallest tradable amount of the bond"
+  },
+  {
+   "id": "minimum_trade_increment",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum trading increment, i.e., the smallest allowable amount by which the bond can be traded; expressed as a numerical value"
+  },
+  {
+   "id": "pv109_amt_issued",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total amount of the bond issued at origination"
+  },
+  {
+   "id": "pv109_amt_outstanding",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "The face value amount of the bond that is currently outstanding (not yet repaid) as of the date"
+  },
+  {
+   "id": "pv109_announce_dt",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Date when the bond or related event (such as issuance) was publicly announced"
+  },
+  {
+   "id": "pv109_maturity",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Date on which the bond matures, when principal is scheduled to be repaid"
+  },
+  {
+   "id": "redemption_value_amount",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Redemption value, i.e., the amount paid upon maturity or call/redemption event of the bond"
+  },
+  {
+   "id": "total_traded_volume",
+   "type": "VECTOR",
+   "coverage": 0.4397,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Trading volume (number/amount of bonds traded) for the bond at the as-of date"
+  }
+ ]
+}

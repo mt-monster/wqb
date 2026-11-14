@@ -500,35 +500,47 @@ def run(
     result["steps"].append(marginal)
     if marginal.get("available"):
         _d_s = (marginal.get("delta") or {}).get("sharpe")
+        _hard = bool(marginal.get("hard_blocked"))
         logger.info(
             "[submit_alpha] 边际贡献 %s partition=%s ΔSharpe=%s%s",
             alpha_id, marginal.get("partition"), _d_s,
-            "（稀释，阻断）" if marginal.get("dilutive") else "",
+            "（分级硬闸命中，阻断）" if _hard else "",
         )
-        if marginal.get("dilutive"):
+        # ★ 2026-11-13 方案 D（分层 + 配对）：净效果 ΔSharpe<0 / ΔFitness<0 硬拦；
+        #   ΔReturns<0 仅在 ΔTurnover>0 或 ΔDrawdown>0（双重恶化）时追加硬拦；
+        #   收益降但成本同步降 = 分散化补偿，放行；成本指标单独变差只记 soft_warnings。
+        if _hard or marginal.get("dilutive"):
+            _fails = marginal.get("hard_failures") or []
+            _detail = marginal.get("hard_failures_detail") or "ΔSharpe<0"
             result["marginal_warning"] = {
                 "partition": marginal.get("partition"),
                 "delta_sharpe": _d_s,
                 "delta_drawdown": (marginal.get("delta") or {}).get("drawdown"),
+                "hard_failures": _fails,
+                "hard_failures_detail": _detail,
+                "soft_warnings": marginal.get("soft_warnings") or [],
                 "note": (
-                    "组合边际贡献为负（ΔSharpe < 0）⇒ **硬闸阻断**（用户 2026-11-08 明令）。"
-                    "无豁免入口，force 不豁免。出路：换候选，或改结构使 ΔSharpe ≥ 0 后重跑。"
+                    "组合边际贡献硬闸命中（%s）⇒ **硬闸阻断**（用户 2026-11-08 ΔSharpe 铁律"
+                    " + 2026-11-13 方案D：ΔFitness 净效果硬拦，ΔReturns 仅在成本同步上升时双重恶化才拦）。"
+                    "无豁免入口，force 不豁免。出路：换候选，或改结构使 ΔSharpe / ΔFitness ≥ 0 且避免「收益降 + 成本升」后重跑。"
+                    % _detail
                 ),
             }
             if confirm_submit:
                 result["reason"] = (
-                    "marginal_contribution blocked: ΔSharpe=%+.4f < 0 (partition=%s)"
-                    % (_d_s if _d_s is not None else 0.0, marginal.get("partition")))
+                    "marginal_contribution blocked: %s (partition=%s)"
+                    % (_detail, marginal.get("partition")))
                 result["blocked"] = True
                 result["blocked_reason"] = (
-                    "组合边际贡献为负（稀释）不得提交（用户 2026-11-08 铁律：ΔSharpe < 0 一律阻断）；"
-                    "force 不豁免。换候选或改结构使 ΔSharpe ≥ 0 后重跑。")
+                    "组合边际贡献方案D：ΔSharpe<0 / ΔFitness<0 一律阻断；ΔReturns<0 且成本上升时阻断"
+                    "（用户 2026-11-08 / 2026-11-13 明令）；命中 %s，force 不豁免。"
+                    "换候选或改结构使净效果达标且避免双重恶化后重跑。" % _detail)
                 return _finalize(result, store, alpha_id)
             # 预检（confirm_submit=False）不阻断，但必须预告真提交会被拦
             logger.warning(
-                "[submit_alpha] %s 边际贡献为负（ΔSharpe=%+.4f，partition=%s）——"
+                "[submit_alpha] %s 边际贡献硬闸命中（%s，partition=%s）——"
                 "预检已判定：confirm_submit=True 时将被阻断",
-                alpha_id, _d_s, marginal.get("partition"),
+                alpha_id, _detail, marginal.get("partition"),
             )
     else:
         logger.info("[submit_alpha] 边际贡献不可用：%s（可用性缺失不阻断）",
@@ -1384,6 +1396,8 @@ def _prod_gate(client, alpha_id: str, *, threshold: float = None) -> Dict[str, A
     """
     thr = _PROD_THRESHOLD if threshold is None else float(threshold)
 
+    # ★★ 2026-11-14 用户明令「48h 内不用 refresh prod 直接提交」：本缓存优先实现即合规口径，
+    #    不得改回默认 refresh=True；WQB_PROD_GATE_REFRESH=1 仅在用户明确要求复核时才设。
     # ★ 2026-10-27（用户要求「有值的话就不实时重算了」）：改为**缓存优先**。
     # 旧实现硬编码 refresh=True ⇒ 每次提交都绕过 ``wqb.db::alpha_corr_cache``
     # 的 48h 保鲜缓存，直接打平台单并发相关性队列；队列一忙就
@@ -1586,6 +1600,23 @@ def _tag_disposal(client, alpha_id: str,
     return out
 
 
+# ★ 边际贡献「分层 + 配对」判据（2026-11-13 用户明令，19:5x 定案方案 D）——唯一事实源。
+# 越大越好：sharpe / fitness / returns；越小越好：turnover / drawdown。
+# 第一层「净效果硬闸」：ΔSharpe<0 或 ΔFitness<0 ⇒ 阻断。二者已把收益/波动/换手压缩成比值。
+# 第二层「配对判据」：仅当 ΔReturns<0 且 (ΔTurnover>0 或 ΔDrawdown>0) 才追加阻断。
+#   收益降但成本同步降 = 健康分散化（16 颗里 vRAgNK3w / Wjl8Z20O / O0A6Qz7p 三例），放行。
+# 第三层：ΔTurnover / ΔDrawdown 单独变差只记 soft_warnings，不设闸。
+# 依据：before/after 是「等权叠加到分区组合」的结果，ΔRet<0 常只是新腿收益低于池均值的
+#   机械摊薄；硬拦 ΔRet 会系统性拒绝「合格但不突出」的分散化来源（Step 1.7 docstring 遗留风险②）。
+#   16 颗实测：方案 D 12/16；原 S+F+Ret 全硬拦 9/16；五项全按方向 3/16；只 S+F 16/16（形同虚设）。
+# ⚠ 指标共线：F = S×√(ret/max(TO,.125))。净效果层已含成本信息，故成本指标不再单独设硬闸，
+#   避免「同一条 ΔTO 单独看软告警、复合成 ΔF 却硬拦」的口径矛盾。
+MARGINAL_HIGHER_IS_BETTER: tuple = ("sharpe", "fitness", "returns")
+MARGINAL_LOWER_IS_BETTER: tuple = ("turnover", "drawdown")
+MARGINAL_HARD_BLOCK_METRICS: tuple = ("sharpe", "fitness")
+MARGINAL_PAIR_COST_METRICS: tuple = ("turnover", "drawdown")
+
+
 def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
     """Step 1.7 边际贡献（``performance_comparison``）：候选叠加到所属**分区组合**前后的对比。
 
@@ -1618,8 +1649,20 @@ def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
       ⚠ 触发升闸的实例：`bl6AvMkN`（DEU/TOP500）ΔSharpe=−0.04 于 2026-11-08 13:00 提交成功，
       用户随即裁定该口径不合用 ⇒ 改判硬闸。
 
-    本账本口径：`dilutive = Δsharpe < 0` ⇒ **提交阻断**（`run()` Step 1.7）；
-    空体 / 超时 / 异常一律 `available=False`（**可用性缺失不阻断** —— 与「为负」区分）。
+    本账本口径（2026-11-13 定案**方案 D：分层 + 配对**，用户 19:5x 从三方案中选定）：
+      * **方向**：`sharpe/fitness/returns` 越大越好（Δ≥0）；`turnover/drawdown` 越小越好（Δ≤0）。
+      * **第一层·净效果硬闸** `MARGINAL_HARD_BLOCK_METRICS = (sharpe, fitness)`：任一 Δ<0 ⇒
+        `hard_blocked=True` ⇒ `run()` Step 1.7 阻断，`force` 不豁免。
+        二者已把收益/波动/换手压缩成比值（`F=S×√(ret/max(TO,.125))`），无需再逐个重复把关。
+        `dilutive` 仍保留 `Δsharpe<0` 语义，供 Step 1.8 分散度软闸与旧调用方复用。
+      * **第二层·配对判据**：仅当 `ΔReturns<0` **且**（`ΔTurnover>0` 或 `ΔDrawdown>0`）时追加阻断。
+        收益降但成本同步降 = 健康分散化（`vRAgNK3w` / `Wjl8Z20O` / `O0A6Qz7p` 三例）⇒ 放行并记
+        `pair_rule.offset=True`。根因：before/after 是等权叠加到分区组合的结果，`ΔRet<0` 常只是
+        「新腿收益低于池均值」的机械摊薄，硬拦会系统性拒绝合格但不突出的分散化来源（遗留风险②）。
+      * **第三层·纯软告警**：`turnover`/`drawdown` 单独变差只写 `soft_warnings`，不设闸。
+        ⚠ 不再出现「ΔTO 单独看软告警、复合成 ΔF 却硬拦」的口径矛盾 —— 成本信息只经净效果层与配对层进入判定。
+      * 空体 / 超时 / 异常一律 `available=False`（**可用性缺失不阻断** —— 与「为负」区分）。
+      * 16 颗实测：方案 D **12/16** 可交｜原 S+F+Ret 全硬拦 9/16｜五项全按方向 3/16｜只 S+F 16/16（形同虚设）。
     """
     out: Dict[str, Any] = {"step": "marginal_contribution", "success": True, "available": False}
     try:
@@ -1655,6 +1698,49 @@ def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
         for k in keys
     }
     d_s = delta.get("sharpe")
+
+    # 方向判据（2026-11-13）：None 视为「不可判」，不进任何失败列表（与 available=False 同级 fail-open）。
+    direction_ok = {
+        k: (None if delta.get(k) is None else
+            (delta[k] >= 0 if k in MARGINAL_HIGHER_IS_BETTER else delta[k] <= 0))
+        for k in keys
+    }
+    # 第一层：净效果硬闸（Sharpe / Fitness）
+    hard_failures = [
+        k for k in MARGINAL_HARD_BLOCK_METRICS
+        if delta.get(k) is not None and delta[k] < 0
+    ]
+    # 第二层：配对判据（方案 D）——收益下降不可怕，成本同步下降即分散化补偿；
+    # 只有「收益降 + 成本升」双重恶化才追加硬拦。
+    d_ret = delta.get("returns")
+    cost_up = [
+        k for k in MARGINAL_PAIR_COST_METRICS
+        if delta.get(k) is not None and delta[k] > 0
+    ]
+    pair_triggered = bool(d_ret is not None and d_ret < 0 and cost_up)
+    pair_offset = bool(d_ret is not None and d_ret < 0 and not cost_up)
+    if pair_triggered and "returns" not in hard_failures:
+        hard_failures.append("returns")
+    pair_rule = {
+        "triggered": pair_triggered,
+        "offset": pair_offset,
+        "cost_metrics_up": cost_up,
+        "rule": ("ΔReturns<0 且 (ΔTurnover>0 或 ΔDrawdown>0) ⇒ 双重恶化，硬拦；"
+                 "ΔReturns<0 但成本同步下降 ⇒ 分散化补偿，放行"),
+    }
+    soft_warnings = [
+        k for k in keys
+        if k not in MARGINAL_HARD_BLOCK_METRICS
+        and not (k == "returns" and pair_triggered)
+        and direction_ok.get(k) is False
+    ]
+    hard_blocked = bool(hard_failures)
+    hard_detail = ", ".join(
+        "%s=%+.4f" % (k, delta[k]) for k in hard_failures
+    ) or "none"
+    if pair_triggered:
+        hard_detail += " [配对判据：ΔRet<0 且 %s 上升]" % "/".join(cost_up)
+
     out.update({
         "available": True,
         "partition": d.get("partitionName"),
@@ -1662,13 +1748,39 @@ def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
         "after": after,
         "delta": delta,
         "dilutive": bool(d_s is not None and d_s < 0),
+        # ↓ 2026-11-13 分级硬闸新增字段
+        "hard_blocked": hard_blocked,
+        "hard_failures": hard_failures,
+        "hard_failures_detail": hard_detail,
+        "soft_warnings": soft_warnings,
+        "direction_ok": direction_ok,
+        "pair_rule": pair_rule,
+        "direction_rule": {
+            "higher_is_better": list(MARGINAL_HIGHER_IS_BETTER),
+            "lower_is_better": list(MARGINAL_LOWER_IS_BETTER),
+            "hard_block_metrics": list(MARGINAL_HARD_BLOCK_METRICS),
+            "pair_cost_metrics": list(MARGINAL_PAIR_COST_METRICS),
+            "scheme": "D: net-effect hard gate + returns/cost pair rule",
+        },
         "risk_note": (
             None if d_s is None else
             (f"ΔSharpe={d_s:+.4f} ⇒ 组合稀释（**硬闸：提交阻断**，用户 2026-11-08 铁律）"
              if d_s < 0 else
              f"ΔSharpe={d_s:+.4f} ⇒ 组合分散（正向边际贡献）")
         ),
-        "note": "ΔSharpe < 0 ⇒ 阻断提交（force 不豁免）；ΔS 仅在**同一分区**内可比",
+        "hard_gate_note": (
+            "方案D硬闸命中：%s（净效果 %s；软告警 %s）⇒ 提交阻断，force 不豁免"
+            % (hard_detail, "/".join(MARGINAL_HARD_BLOCK_METRICS),
+               ",".join(soft_warnings) or "none")
+            if hard_blocked else
+            "方案D通过：%s 均 ≥0；%s软告警 %s（成本指标不单独设闸、不阻断）"
+            % ("/".join(MARGINAL_HARD_BLOCK_METRICS),
+               "分散化补偿(ΔRet<0 但成本同步下降)已放行；" if pair_offset else "",
+               ",".join(soft_warnings) or "none")
+        ),
+        "note": ("方案D：ΔSharpe<0 / ΔFitness<0 ⇒ 阻断；ΔReturns<0 且 ΔTurnover>0 或 ΔDrawdown>0 ⇒ 阻断；"
+                 "ΔReturns<0 但成本同步下降 ⇒ 分散化补偿放行；ΔTurnover/ΔDrawdown 单独变差仅告警。"
+                 "force 不豁免；ΔS 仅在**同一分区**内可比"),
     })
     return out
 

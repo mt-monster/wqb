@@ -81,8 +81,15 @@ _BEFORE = {"sharpe": 1.73, "fitness": 1.37, "turnover": 0.127,
            "returns": 0.0799, "drawdown": 0.0608}
 _DILUTIVE_AFTER = {"sharpe": 1.55, "fitness": 1.30, "turnover": 0.130,
                    "returns": 0.0750, "drawdown": 0.0700}
+# 2026-11-13 分级硬闸后「正向样本」需 ΔReturns >= 0；原 0.0784（Δ=-0.0015）改作负例见下。
 _HELPFUL_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.137,
-                  "returns": 0.0784, "drawdown": 0.0402}
+                  "returns": 0.0810, "drawdown": 0.0402}
+# ΔSharpe>0 但 ΔReturns<0 ⇒ 新增硬闸命中
+_RET_NEGATIVE_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.137,
+                       "returns": 0.0784, "drawdown": 0.0402}
+# 硬项全过，但换手与回撤都变差 ⇒ 只允许软告警
+_SOFT_ONLY_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.150,
+                    "returns": 0.0810, "drawdown": 0.0700}
 
 
 def _marginal_step(result):
@@ -136,4 +143,76 @@ def test_positive_delta_has_no_warning(monkeypatch):
     r = _run(monkeypatch, _BEFORE, _HELPFUL_AFTER, confirm_submit=True)
     assert "marginal_warning" not in r
     assert _marginal_step(r)["dilutive"] is False
+    assert not r.get("blocked")
+
+
+# ---------------------------------------------------------------------------
+# 2026-11-13 方案 D 接线：净效果 S/F 硬拦、ΔReturns 配对判据、成本只告警
+# ---------------------------------------------------------------------------
+
+def test_returns_negative_blocks_real_submit(monkeypatch):
+    """ΔSharpe>0 但 ΔReturns<0 ⇒ 仍阻断，且早于 set_properties / POST。"""
+    r = _run(monkeypatch, _BEFORE, _RET_NEGATIVE_AFTER, confirm_submit=True)
+    s = _marginal_step(r)
+    assert s["dilutive"] is False, "ΔSharpe 为正，旧口径本应放行"
+    assert s["hard_blocked"] is True
+    assert s["hard_failures"] == ["returns"]
+    assert r.get("blocked") is True
+    assert r.get("reason", "").startswith("marginal_contribution blocked")
+    assert "force 不豁免" in (r.get("blocked_reason") or "")
+    w = r.get("marginal_warning")
+    assert w and w["hard_failures"] == ["returns"]
+    assert "硬闸阻断" in w["note"]
+    step_names = [x.get("step") for x in (r.get("steps") or [])]
+    assert "set_properties" not in step_names and "submit" not in step_names
+    assert r.get("submitted") is not True
+
+
+def test_returns_negative_preflight_warns_but_not_blocked(monkeypatch):
+    r = _run(monkeypatch, _BEFORE, _RET_NEGATIVE_AFTER, confirm_submit=False)
+    assert r.get("marginal_warning"), "预检必须预告真提交会被拦"
+    assert not r.get("blocked")
+    assert r.get("success") is True
+
+
+def test_cost_metrics_do_not_block(monkeypatch):
+    """ΔTurnover / ΔDrawdown 变差只写 soft_warnings，不产生 marginal_warning。"""
+    r = _run(monkeypatch, _BEFORE, _SOFT_ONLY_AFTER, confirm_submit=True)
+    s = _marginal_step(r)
+    assert s["hard_blocked"] is False
+    assert "turnover" in s["soft_warnings"] and "drawdown" in s["soft_warnings"]
+    assert "marginal_warning" not in r
+    assert not r.get("blocked")
+
+
+# ΔS>0、ΔRet>0、ΔFitness<0 ⇒ 2026-11-13 追加硬项命中
+_FITNESS_NEGATIVE_AFTER = {"sharpe": 1.98, "fitness": 1.20, "turnover": 0.150,
+                           "returns": 0.0810, "drawdown": 0.0402}
+
+
+def test_fitness_negative_blocks_real_submit(monkeypatch):
+    r = _run(monkeypatch, _BEFORE, _FITNESS_NEGATIVE_AFTER, confirm_submit=True)
+    s = _marginal_step(r)
+    assert s["dilutive"] is False
+    assert s["hard_blocked"] is True
+    assert "fitness" in s["hard_failures"]
+    assert r.get("blocked") is True
+    w = r.get("marginal_warning")
+    assert w and "硬闸阻断" in w["note"]
+    step_names = [x.get("step") for x in (r.get("steps") or [])]
+    assert "set_properties" not in step_names and "submit" not in step_names
+    assert r.get("submitted") is not True
+
+
+# 方案 D：ΔRet<0 但 ΔTO/ΔDD 同步下降 ⇒ 分散化补偿，真提交也须放行
+_OFFSET_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.120,
+                 "returns": 0.0784, "drawdown": 0.0402}
+
+
+def test_pair_offset_does_not_block_real_submit(monkeypatch):
+    r = _run(monkeypatch, _BEFORE, _OFFSET_AFTER, confirm_submit=True)
+    s = _marginal_step(r)
+    assert s["hard_blocked"] is False
+    assert s["pair_rule"]["offset"] is True
+    assert "marginal_warning" not in r
     assert not r.get("blocked")

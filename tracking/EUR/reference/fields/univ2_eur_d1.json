@@ -1,0 +1,19 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "univ2",
+ "fetched_at": "2026-11-13",
+ "platform_count": 1,
+ "complete": true,
+ "fields": [
+  {
+   "id": "illiquid_minvol1m",
+   "type": "UNIVERSE",
+   "coverage": 0.67,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "universe"
+  }
+ ]
+}

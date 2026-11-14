@@ -6,7 +6,7 @@
 ## 情景 S5-01　一颗 REGULAR alpha 从「判定通过」到 ACTIVE（正常路径）
 
 - **前置状态**：候选 X（IND，`type=REGULAR`，`status=UNSUBMITTED`）；`submit_verdict` = `UNVERIFIABLE`（退出码 10，`GET /submit` 恒 404，属预期）；`Failed RA == 0` 且名单内无 PENDING；
-  `check_correlation(X, refresh=True)` 实测 prod = 0.55（< 0.7）；用户已在本会话**明确确认**；`quota_status.py` 显示当日 REGULAR 未满。
+  `check_correlation(X, refresh=False)` 命中 48h 内可信缓存 prod = 0.55（< 0.7），**无需 refresh 即可提交**；用户已在本会话**明确确认**；`quota_status.py` 显示当日 REGULAR 未满。 <!-- lint:counterexample -->
 - **步骤**：
   1. 预检：`workflow_submit_alpha(alpha_id=X, name="IND_R_<family>_01", tags=["CH_REG","SRC_<ds>","W<wave>"], descriptions="Idea: …\n\nRationale for data used: …\n\nRationale for operators used: …", confirm_submit=False)`
      → 预期预检通过并返回当前状态（`color` 缺省即 `BLUE`）；不通过则停。
@@ -16,7 +16,7 @@
 - **分支**：`200 + success:true` → 直接步骤 3；`201/202` 或 `200` 空体 → 见 S5-02；`403` → 读 `is.checks` 里唯一的 `FAIL`：`REGULAR_SUBMISSION value ≥ limit` → 见 S5-03，其余 FAIL → 回 ra-pipeline 步 7。
 - **产物与落点**：`wave_results.verdict`（经 `upsert_wave_result`）；`submit_ready` 表该条状态更新；OS 表现监控目前没有承接者（见 RA step9 §9.8），S6 只做监控复盘与台账回写。
 - **完成定义（可机检）**：`status == ACTIVE ∧ dateSubmitted ≠ null ∧ wave_results.verdict ≠ null`。
-- **反例**：不要用 POST 试探配额；不要在 `UNVERIFIABLE` 时跳过 prod 实测；不要在 201 后立刻判失败；不要把硬闸类 `WARNING`（`LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`，后两者 = `RA_2Y_NAMES` 双载体）当「不挡」——它们在提交层等价 FAIL。
+- **反例**：不要用 POST 试探配额；不要在 `UNVERIFIABLE` 时跳过 prod 闸；不要在 48h 缓存有效时强行 `refresh=True`；不要在 201 后立刻判失败；不要把硬闸类 `WARNING`（`LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`，后两者 = `RA_2Y_NAMES` 双载体）当「不挡」——它们在提交层等价 FAIL。
 
 ## 情景 S5-02　异步受理后一直没翻转
 

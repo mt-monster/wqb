@@ -1,0 +1,38 @@
+{
+ "dataset": "option1",
+ "name": "Options Volatility Surfaces Data",
+ "region": "GBR",
+ "tower": "option(0)",
+ "field_count": 22,
+ "fields": [
+  {
+   "id": "opt1_p_deltasurface_d1_vi",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 42,
+   "d": "IV at surface coordinate"
+  },
+  {
+   "id": "opt1_p_deltasurface_d1_delta",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 9,
+   "d": "option delta"
+  },
+  {
+   "id": "delta_surface_data_quality",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 22,
+   "d": "quality flag"
+  },
+  {
+   "id": "opt1_deltasurface_d1_moneyness",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 22,
+   "d": "moneyness"
+  }
+ ],
+ "note": "2026-10-13 判「近静态」（TO 0.016-0.041、2Y 多负）；cells index option 1 判死；复挖需新证据"
+}

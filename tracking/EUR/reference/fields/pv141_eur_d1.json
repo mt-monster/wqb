@@ -1,0 +1,27 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "pv141",
+ "fetched_at": "2026-11-13",
+ "platform_count": 2,
+ "complete": true,
+ "fields": [
+  {
+   "id": "pv141_europe_1c",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Close price"
+  },
+  {
+   "id": "pv141_global_1c",
+   "type": "VECTOR",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Close price"
+  }
+ ]
+}

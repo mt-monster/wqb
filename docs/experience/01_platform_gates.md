@@ -210,7 +210,7 @@
 
 1. **prod 值会腐烂，必须当日实测**：实测 0.6678→0.981、同族顶高 0.5836→0.9805、`le8Y68K2` 0.6929→0.9932、`3qX6wLJQ` 库内 0.5171→实测 0.9895。
    2026-10-21 再添两例（**14 天尺度**）：`58gp1wdz` 库内 0.6738（`verified_at` 10-17）→ 实测 **0.9868**；`pw5RbrYX` 库内 0.5857 → 实测 **0.9000**。
-   → 筛查产出的是**排序队列**而非终局清单，提交当日须 `refresh=True` 复测；`get_submit_ready` 的 `READY` 只代表「**曾经**过闸」，`corr_stale=true` 的行一律当作未验证。
+   → 筛查产出的是**排序队列**而非终局清单；**提交当日读 48h 内可信缓存即可直接过闸**（2026-11-14 用户明令），>48h / 无缓存才 `refresh=True` 复测；`get_submit_ready` 的 `READY` 只代表「**曾经**过闸」，`corr_stale=true` 的行一律当作未验证。
    ⚠ **队列读数只认 `submit_ready` 表**：`ledger_kv` 里那份旧副本（2026-10-31 实测 KOR **72** 行 READY）
    **已不再被 `get_submit_ready` 读取**，是审计遗留物、没有生命周期；同一时刻真表只有 **1** 行（`LLZ6wZO2`）。
    两个数字差 71 倍时**以表为准**——别再翻 `ledger_kv` 找队列。
@@ -248,10 +248,10 @@
 
 ### 提交前必做
 
-- **★ prod 无需本地单独复测（2026-10-08 用户裁定）**：`prod_gate` 节点在 `confirm_submit=True` 时会**自己实时拉取 prod**（拿不到即 fail-closed 拒发，这正是 `correlation_busy` 的成因）。
+- **★★ prod 无需本地单独复测（2026-10-08 用户裁定；2026-11-14 用户明令「48h 内不用 refresh 直接提交」重申）**：`prod_gate` 节点默认 `check_correlation(refresh=False)`，命中 48h 内 `alpha_corr_cache` 且 `provisional=False` 即过闸；只有缓存过期/缺失/不可信才回源（拿不到即 fail-closed，这正是 `correlation_busy` 的成因）。
   ⇒ 提交前那次独立的 `check_correlation(refresh=True)` 属**冗余动作**：它与节点抢同一个**单并发**队列，反而更容易把端点挤爆。**跳过它不降低安全标准**（硬闸在节点内）。
   ⇒ 处置：**用户确认后**执行 `workflow_submit_alpha(confirm_submit=True)`（真提交、**不可逆**）；若节点报 `correlation_busy`，**间隔重试**（≥90s），**切勿改参数或降标准**。
-  ⚠ 仅当需要**事先排序/取舍**多个候选（不打算立即提交）时，才需 `check_correlation(refresh=True)` 复测。
+  ⚠ `WQB_PROD_GATE_REFRESH=1` 是强制回源开关，**用户未要求不得设置**。仅当**事先排序/取舍**多个候选、或缓存 >48h 时，才需 `check_correlation(refresh=True)`。
 - **name + description（≥100 字，house style ~1200 字）必须预先写好并回读**——空描述会被平台**静默丢弃**（POST 返回 201 但被丢）。
 - **REGULAR 用 `set_alpha_properties`，SUPER 必须裸 PATCH**（`set_alpha_properties` 对 SUPER 必 400）。
 - ⚠ **`set_alpha_properties` 是全量覆盖接口不是局部更新**：曾清空 **115 颗 ACTIVE 的 name** 并覆写 description。改单个属性用**最小字段 PATCH** `{"tags":[...]}`，**改前先 dump 快照**。
@@ -519,8 +519,8 @@ decay / hump / 平滑只是把同一条持仓序列按比例缩小（交易和�
 
 | 档 | 形态 | 可否作闸 |
 |---|---|---|
-| A | `refresh=True` 实测，`stale=false`，age < 48h，`prod_corr_source` / `corr_checked_at` 非空 | ✅ 唯一可作提交判定 |
-| B | 缓存命中但 age < 48h、有源 | ⚠ 可作**族级预判**，交付前仍须 A 档终验 |
+| A | `check_correlation(refresh=False)` 命中 48h 内 `alpha_corr_cache`，来源可信（`provisional=False`），或 `refresh=True` 实测，`stale=false`、有源 | ✅ **可直接作提交判定，无需回源** |
+| B | 缓存命中但 `provisional=True`（预读值 / `NON_REALTIME_SOURCES` / 无来源标记） | ⚠ 只许证伪；节点自动补一次 `refresh=True` 才能放行 |
 | C | `stale=true`（> 48h） | ⛔ 不可作闸（prod 漂移猛，48h 作废） |
 | D | `prod_corr_source=NULL` / `corr_checked_at=NULL`（**无源旧值**） | ⛔ 不可作闸，等同未知 |
 | E | 文档 / 台账里手写的 prod 值 | ⛔ **可被实测证伪**，见下 |
@@ -542,9 +542,9 @@ KOR 队列 **19 行**本地 prod 落在 **.57–.70**（看着全都过线），
 ⇒ 族代表测一次即可决定整族去留，**不必逐条费 prod 槽**
 （与 `wq-window-valley-break-prod-wall` 的「n=0 可救 / n≥1 必死」同一判据）。
 
-### 14.4 刀锋档必须重测
+### 14.4 刀锋档建议复核（非强制，2026-11-14 用户明令后降级）
 
-prod 落在 **.6886–.6958**（余量 **.004–.011**）的候选，不 `refresh=True` 就等于没测。
+prod 落在 **.6886–.6958**（余量 **.004–.011**）的候选可**建议**用户复核，但 48h 内可信缓存仍按现值直接过闸，不得擅自 `refresh=True`。
 另：prod 单槽是**账号级、跨会话竞争**（`holder: corr:get_production_correlation(...)`，retry 240s）
 ⇒ 被占时读 `last_known`、不重复触发；**仿真槽独立于 prod 槽**，prod 被占不影响派波。
 
@@ -607,3 +607,107 @@ KOR/D1 的 IS 窗由平台硬定 **2014-01-01 → 2023-12-31**。两轮干净差
 ⇒ **判据只有一条**：`get_alpha_yearly_stats` 逐年核 `longCount>0 && shortCount>0`（需要收益的再加 `pnl>0`）。
 这与 `AGENTS.md` §7.5 五道闸的第 3 条「近十年」是同一口径的两半：**coverage 决定要不要 backfill，逐年 longCount 决定够不够十年**。
 把 coverage 当时间口径会同时犯两类错：放走 macro63 这种「满覆盖零持仓」的集，错杀低覆盖但逐年连续的集。
+
+## 17. ★ 边际贡献闸（2026-11-13 演进史；**现行口径见 §18 方案 D**）
+
+用户口径：「表格里所有指标在提交 alpha 变正向才比较好，把这个也加进标准约束」。
+经 16 颗活跃候选实测校准后，用户选定 **分级硬闸**（而非五项全硬拦）。
+
+### 方向定义（唯一事实源：`src/wqb/workflow/nodes/submit_alpha.py::MARGINAL_*`）
+
+| 指标 | 方向 | 达标 | 违反时处置 |
+|---|---|---|---|
+| `sharpe` | 越大越好 | Δ ≥ 0 | **净效果层硬闸阻断**（2026-11-08 铁律） |
+| `returns` | 越大越好 | Δ ≥ 0 | **配对判据**：仅当 ΔTO>0 或 ΔDD>0 时硬拦 |
+| `fitness` | 越大越好 | Δ ≥ 0 | **净效果层硬闸阻断**（2026-11-13 追加） |
+| `turnover` | **越小越好** | Δ ≤ 0 | 仅 `soft_warnings` |
+| `drawdown` | **越小越好** | Δ ≤ 0 | 仅 `soft_warnings` |
+
+⚠ 不能一律要求「Δ 变正」：换手升高、回撤扩大是**变差**。
+
+### 闸行为
+
+- 任一硬项 `Δ < 0` ⇒ `hard_blocked=True` ⇒ Step 1.7 在 `set_properties` / POST **之前** `return`，
+  `blocked=True`，**`force` 不豁免**。预检（`confirm_submit=False`）只出数值 + 顶层 `marginal_warning` 预告。
+- `available=False`（空体 / 超时 / 异常 / 无分区归属）**不阻断**：可用性缺失 ≠ 为负。
+- `dilutive` 仍保留 `ΔSharpe<0` 原语义，供 Step 1.8 分散度软闸与历史调用方复用；
+  新增字段 `hard_blocked / hard_failures / hard_failures_detail / soft_warnings / direction_ok / direction_rule`。
+- ΔS 仍**只能在同一分区内比符号**，禁止横向排序（见 §2、节点 docstring 遗留风险③）。
+
+### 为什么不把成本指标设硬闸
+
+16 颗活跃候选实测（`results/_marginal_allmetrics_20261113.json`）：
+
+| 判据 | 达标 |
+|---|---:|
+| ΔSharpe ≥ 0 | 16/16 |
+| ΔFitness ≥ 0 | 16/16 |
+| ΔReturns ≥ 0 | 9/16 |
+| ΔTurnover ≤ 0 | **6/16** |
+| ΔDrawdown ≤ 0 | 14/16 |
+| 五项按方向全达标 | **3/16** |
+
+新增一条信号腿几乎必然抬高组合换手（10/16 如此）；分散化 alpha 常以「收益略降、波动降更多」
+换取 Sharpe 上升。全硬拦会**系统性拒绝分散化来源**，正是 Step 1.7 docstring 第②条已警告的遗留风险。
+
+按方案 D（分层 + 配对）**12/16 可交**；拦下 4 颗真恶化：
+`ZYQ116ln` / `JjeNJ00O` / `YP1baJrv` / `qM7KxkQV`；放行 3 颗分散化补偿：`vRAgNK3w` / `Wjl8Z20O` / `O0A6Qz7p`。
+`omEdka3v`（ΔRet +0.0028）、`wpo8olA6`（+0.0015）、`6XdkW08J`（+0.0020）仍可交。
+
+### Fitness 为什么也升为硬项（2026-11-13 追加）
+
+- 对称性：`sharpe/fitness/returns` 同为「越大越好」的正向族，只拦两个是口径缺口。
+- 零误伤：16 颗活跃候选 ΔFitness<0 为 **0 颗**，加入后 9/16 可交的裁决**逐颗不变**。
+- 捕捉复合成本：`F = S×√(ret/max(TO,0.125))`。存在 ΔS>0、ΔRet>0、ΔTO>0 但 ΔF<0 的情形
+  （构造例：S 3.0→3.1、ret .080→.081、TO .13→.20 ⇒ F 2.353→1.973，ΔF −0.381），
+  即「换手成本吃掉收益改善」，只有 Fitness 能直接反映。
+- ⚠ 已知取舍：Fitness 复合了 Turnover，因此 ΔTO 大幅上升会**经 ΔFitness 间接硬拦**，
+  与「成本指标只告警」的初衷部分重叠。若要完全避免，把 `fitness` 从
+  `MARGINAL_HARD_BLOCK_METRICS` 移除即可（常量集中、改动可逆）。
+
+### 追溯
+
+今日 17:44 已提交的 `P059RmzM` 的 ΔReturns = −0.0040，**按新闸会被拦**；提交不可逆，
+仅标注为「新闸生效前的历史提交」，不改终态、不追溯撤销。
+
+同步面：节点代码 + `tests/unit/05_submit_quota/test_submit_marginal_{contribution,wiring}.py`
+（388 passed）+ `worldquant-submit-alpha/references/submit-chain.md` 步 4b（项目级 / 用户级双份）。
+
+
+## 18. ★★ 现行口径：方案 D「分层 + 配对」（2026-11-13 19:5x 用户拍板）
+
+用户追问「换手不是越小越好吗，为什么会有反例，怎么匹配这几个指标才是最佳方案」⇒ 发现
+`F = S×√(ret/max(TO,0.125))` 使 `sharpe/fitness/returns/turnover` 四量共线，原「三项正向指标全硬拦」
+对同一信息三重把关；且 ΔTO 单独看是软告警、复合成 ΔF 却硬拦，口径自相矛盾。
+
+### 三层结构（唯一事实源 `submit_alpha.MARGINAL_*`）
+
+1. **净效果层（唯一硬闸）**：`ΔSharpe ≥ 0` 且 `ΔFitness ≥ 0`。二者已把收益、波动、换手压缩成比值。
+2. **配对判据（仅 ΔReturns<0 时启用）**：`ΔReturns<0` **且** (`ΔTurnover>0` 或 `ΔDrawdown>0`)
+   ⇒ 双重恶化，追加阻断；`ΔReturns<0` 但成本同步下降 ⇒ **分散化补偿**，放行并记 `pair_rule.offset=True`。
+3. **归因层（纯软告警）**：`ΔTurnover` / `ΔDrawdown` 单独变差只写 `soft_warnings`，不设闸。
+
+### 为什么 ΔReturns 不能单独硬拦
+
+`performance_comparison` 的 before/after 是把候选**等权叠加到分区已提交组合**的结果，不是候选自身指标。
+`ΔRet<0` 常只是「新腿收益低于池均值」的机械摊薄，低相关分散化来源几乎必然如此。16 颗实测里被原闸
+误伤的 3 颗健康分散化：`vRAgNK3w`（ΔS +0.28 / ΔF +0.22 / ΔRet −0.0040 / ΔTO **−0.0160** / ΔDD −0.0019）、
+`Wjl8Z20O`、`O0A6Qz7p`；今日已提交的 `P059RmzM` 同形态。硬拦 ΔRet = 系统性拒绝「合格但不突出」的新机制
+（Step 1.7 docstring 遗留风险②）。
+
+### 方案对比（16 颗活跃候选实测）
+
+| 方案 | 可交 | 评价 |
+|---|---:|---|
+| A 原 S+F+Ret 全硬拦 | 9/16 | 误伤 3 颗健康分散化 |
+| B 五项全按方向 | 3/16 | 连首推 `omEdka3v` 都拦 |
+| C 只 S+F | 16/16 | 闸形同虚设（本池 ΔS/ΔF 恰全 ≥0） |
+| **D 分层 + 配对（现行）** | **12/16** | 拦 4 颗真恶化、放行 3 颗补偿 |
+
+⚠ **局限**：本池 ΔS/ΔF 恰好全 ≥0，净效果层在样本内没有区分度，D 的分辨力主要来自配对判据；
+需跨区多批样本再验证。另「闸放行」≠「推荐提交」，排序仍以全篮质量分与塔倍率为准。
+
+**同步面**：`src/wqb/workflow/nodes/submit_alpha.py`（常量 + 判定 + docstring + Step 1.7 文案）、
+两个 `05_submit_quota` 测试文件（新增「分散化补偿放行」「配对触发硬拦」「真提交放行」用例）、
+`worldquant-submit-alpha/references/submit-chain.md` 步 4b（项目级 + 5 安装位）、
+`MEMORY.md` §0、`output_report/marginal_gate_v2_20261113.md` §7。

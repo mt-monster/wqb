@@ -1,0 +1,708 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "risk70",
+  "fetched_at": "2026-11-12T11:24:59.021Z",
+  "platform_count": 87,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "airlines_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 50,
+      "alphaCount": 168,
+      "description": "Exposure or weight to the airlines industry sector within the model."
+    },
+    {
+      "id": "auto_components_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 67,
+      "alphaCount": 215,
+      "description": "Exposure or weight to the auto components industry sector within the model."
+    },
+    {
+      "id": "banking_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 66,
+      "alphaCount": 370,
+      "description": "Exposure or weight to the banking industry sector within the model."
+    },
+    {
+      "id": "broad_market_factor_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 59,
+      "alphaCount": 208,
+      "description": "Exposure or sensitivity to the overall market factor in the risk model."
+    },
+    {
+      "id": "capital_goods_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 67,
+      "alphaCount": 240,
+      "description": "Exposure or weight to the capital goods industry sector within the model."
+    },
+    {
+      "id": "communications_services_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 34,
+      "alphaCount": 200,
+      "description": "Exposure or sensitivity to the communications services sector factor."
+    },
+    {
+      "id": "construction_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 41,
+      "alphaCount": 314,
+      "description": "Exposure or weight to the construction industry sector within the model."
+    },
+    {
+      "id": "consumer_durables_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 42,
+      "alphaCount": 252,
+      "description": "Exposure or sensitivity to the consumer durables sector factor."
+    },
+    {
+      "id": "consumer_services_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 40,
+      "alphaCount": 165,
+      "description": "Exposure or sensitivity to the consumer services sector factor."
+    },
+    {
+      "id": "country_adjustment_factor",
+      "type": "MATRIX",
+      "coverage": 0.9906,
+      "userCount": 93,
+      "alphaCount": 340,
+      "description": "Adjustment factor applied to account for country-specific effects in the model."
+    },
+    {
+      "id": "country_austria_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 29,
+      "alphaCount": 262,
+      "description": "Exposure or sensitivity to the Austria country factor."
+    },
+    {
+      "id": "country_exposure_bel",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 39,
+      "alphaCount": 235,
+      "description": "Exposure or weight to companies domiciled in Belgium."
+    },
+    {
+      "id": "country_exposure_deu",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 54,
+      "alphaCount": 143,
+      "description": "Exposure or weight to companies domiciled in Germany."
+    },
+    {
+      "id": "country_exposure_dnk",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 40,
+      "alphaCount": 254,
+      "description": "Exposure or weight to companies domiciled in Denmark."
+    },
+    {
+      "id": "country_exposure_esp",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 32,
+      "alphaCount": 297,
+      "description": "Exposure or weight to companies domiciled in Spain."
+    },
+    {
+      "id": "country_exposure_gbr",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 66,
+      "alphaCount": 310,
+      "description": "Exposure or weight to companies domiciled in the United Kingdom."
+    },
+    {
+      "id": "country_exposure_irl",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 34,
+      "alphaCount": 324,
+      "description": "Exposure or weight to companies domiciled in Ireland."
+    },
+    {
+      "id": "country_exposure_nld",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 39,
+      "alphaCount": 201,
+      "description": "Exposure or weight to companies domiciled in the Netherlands."
+    },
+    {
+      "id": "country_finland_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 32,
+      "alphaCount": 171,
+      "description": "Exposure or sensitivity to the Finland country factor."
+    },
+    {
+      "id": "country_france_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 57,
+      "alphaCount": 276,
+      "description": "Exposure or sensitivity to the France country factor."
+    },
+    {
+      "id": "country_italy_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 50,
+      "alphaCount": 265,
+      "description": "Exposure or sensitivity to the Italy country factor."
+    },
+    {
+      "id": "country_norway_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 42,
+      "alphaCount": 234,
+      "description": "Exposure or sensitivity to the Norway country factor."
+    },
+    {
+      "id": "country_portugal_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 46,
+      "alphaCount": 385,
+      "description": "Exposure or sensitivity to the Portugal country factor."
+    },
+    {
+      "id": "country_southafrica_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 41,
+      "alphaCount": 193,
+      "description": "Exposure or sensitivity to the South Africa country factor."
+    },
+    {
+      "id": "country_sweden_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 43,
+      "alphaCount": 470,
+      "description": "Exposure or sensitivity to the Sweden country factor."
+    },
+    {
+      "id": "country_switzerland_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 83,
+      "alphaCount": 285,
+      "description": "Exposure or sensitivity to the Switzerland country factor."
+    },
+    {
+      "id": "current_market_cap_usd",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 185,
+      "alphaCount": 880,
+      "description": "The current market capitalization of the company in US dollars."
+    },
+    {
+      "id": "diversified_financials_europe_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 44,
+      "alphaCount": 478,
+      "description": "Exposure or sensitivity to the diversified financials sector factor within the European universe."
+    },
+    {
+      "id": "energy_sector_exposure_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 75,
+      "alphaCount": 603,
+      "description": "Exposure or sensitivity to the energy sector factor."
+    },
+    {
+      "id": "european_hedge_fund_ownership_count",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 184,
+      "alphaCount": 651,
+      "description": "Number of hedge funds holding a position in the security within the European universe."
+    },
+    {
+      "id": "food_products_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 25,
+      "alphaCount": 106,
+      "description": "Exposure or weight to the food products industry sector within the model."
+    },
+    {
+      "id": "food_retail_europe_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 42,
+      "alphaCount": 244,
+      "description": "Exposure or sensitivity to the food retail sector factor within the European universe."
+    },
+    {
+      "id": "hardware_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 33,
+      "alphaCount": 236,
+      "description": "Exposure or weight to the hardware industry sector within the model."
+    },
+    {
+      "id": "healthcare_sector_exposure_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 32,
+      "alphaCount": 142,
+      "description": "Exposure or sensitivity to the healthcare sector factor."
+    },
+    {
+      "id": "hedge_fund_ownership_percent_europe",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 252,
+      "alphaCount": 1145,
+      "description": "Percentage of shares owned by hedge funds in European companies."
+    },
+    {
+      "id": "household_products_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 29,
+      "alphaCount": 219,
+      "description": "Exposure or sensitivity to the household products sector factor."
+    },
+    {
+      "id": "industry_adjustment_factor",
+      "type": "MATRIX",
+      "coverage": 0.9906,
+      "userCount": 46,
+      "alphaCount": 251,
+      "description": "Adjustment factor applied to account for industry-specific effects in the model."
+    },
+    {
+      "id": "industry_count_short",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 138,
+      "alphaCount": 981,
+      "description": "The number of distinct industry sectors represented in the short leg of the portfolio or model."
+    },
+    {
+      "id": "insurance_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 42,
+      "alphaCount": 218,
+      "description": "Exposure or weight to the insurance industry sector within the model."
+    },
+    {
+      "id": "machinery_sector_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 46,
+      "alphaCount": 213,
+      "description": "Exposure or sensitivity to the machinery sector factor."
+    },
+    {
+      "id": "media_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 28,
+      "alphaCount": 140,
+      "description": "Exposure or weight to the media industry sector within the model."
+    },
+    {
+      "id": "metals_mining_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 26,
+      "alphaCount": 218,
+      "description": "Exposure or sensitivity to the metals and mining sector factor."
+    },
+    {
+      "id": "momentum_factor_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 113,
+      "alphaCount": 795,
+      "description": "Exposure or sensitivity to the momentum style factor in the risk model."
+    },
+    {
+      "id": "oil_gas_sector_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 48,
+      "alphaCount": 296,
+      "description": "Exposure or sensitivity to the oil and gas sector factor."
+    },
+    {
+      "id": "other_materials_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 33,
+      "alphaCount": 175,
+      "description": "Exposure or weight to the other materials industry sector within the model."
+    },
+    {
+      "id": "pharmaceuticals_europe_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 40,
+      "alphaCount": 231,
+      "description": "Exposure or sensitivity to the pharmaceuticals sector factor within the European universe."
+    },
+    {
+      "id": "primary_industry_classification",
+      "type": "MATRIX",
+      "coverage": 0.9972,
+      "userCount": 38,
+      "alphaCount": 175,
+      "description": "The main industry classification assigned to the company or security."
+    },
+    {
+      "id": "real_estate_europe_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 35,
+      "alphaCount": 179,
+      "description": "Exposure or sensitivity to the real estate sector factor within the European universe."
+    },
+    {
+      "id": "retail_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 41,
+      "alphaCount": 266,
+      "description": "Exposure or weight to the retail industry sector within the model."
+    },
+    {
+      "id": "rsk70_gse_drteue_2mfm",
+      "type": "MATRIX",
+      "coverage": 0.7884,
+      "userCount": 516,
+      "alphaCount": 15268,
+      "description": "ESG Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_anlystsn",
+      "type": "MATRIX",
+      "coverage": 0.9116,
+      "userCount": 2445,
+      "alphaCount": 115082,
+      "description": "Analysts' Sentiment Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_beta",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 568,
+      "alphaCount": 20587,
+      "description": "Beta Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_btop",
+      "type": "MATRIX",
+      "coverage": 0.9594,
+      "userCount": 754,
+      "alphaCount": 33067,
+      "description": "Book-to-Price Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_cntadj",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 533,
+      "alphaCount": 17649,
+      "description": "Country adjusted factor loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_divyild",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 1444,
+      "alphaCount": 72935,
+      "description": "Dividend Yield Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_earnqlty",
+      "type": "MATRIX",
+      "coverage": 0.9378,
+      "userCount": 978,
+      "alphaCount": 53969,
+      "description": "Earnings Quality Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_earnvar",
+      "type": "MATRIX",
+      "coverage": 0.9159,
+      "userCount": 494,
+      "alphaCount": 18613,
+      "description": "Earnings Variability Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_earnyild",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1276,
+      "alphaCount": 47422,
+      "description": "Earnings Yield Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_exeurexp",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 631,
+      "alphaCount": 27486,
+      "description": "Europe Exposure Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_growth",
+      "type": "MATRIX",
+      "coverage": 0.916,
+      "userCount": 535,
+      "alphaCount": 23542,
+      "description": "Growth Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_indadj",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 489,
+      "alphaCount": 19998,
+      "description": "Industrial adjustment factor loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_indmom",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 648,
+      "alphaCount": 47228,
+      "description": "Industrial Momentum Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_leverage",
+      "type": "MATRIX",
+      "coverage": 0.9583,
+      "userCount": 504,
+      "alphaCount": 18692,
+      "description": "Leverage Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_ltrevrsl",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 649,
+      "alphaCount": 39252,
+      "description": "Long-Term Reversal Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_market",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 409,
+      "alphaCount": 16208,
+      "description": "Market Market Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_midcap",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 490,
+      "alphaCount": 25893,
+      "description": "Midcap Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_momentum",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 816,
+      "alphaCount": 73860,
+      "description": "Momentum Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_newssent",
+      "type": "MATRIX",
+      "coverage": 0.9601,
+      "userCount": 597,
+      "alphaCount": 32830,
+      "description": "News Sentiment Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_primaryindustry",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 543,
+      "alphaCount": 23506,
+      "description": "Industry factor loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_profit",
+      "type": "MATRIX",
+      "coverage": 0.9066,
+      "userCount": 758,
+      "alphaCount": 53428,
+      "description": "Profit Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_resvol",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 522,
+      "alphaCount": 22139,
+      "description": "Residual Volatility Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_season",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 465,
+      "alphaCount": 26941,
+      "description": "Season Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_shortint",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1603,
+      "alphaCount": 93165,
+      "description": "Short Interest Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_size",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 554,
+      "alphaCount": 29784,
+      "description": "Size Style Factor Loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_srisk",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 584,
+      "alphaCount": 38445,
+      "description": "Final specific risk annualized in units of %-squared"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_srisku",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 623,
+      "alphaCount": 49449,
+      "description": "Unadjusted initial specific risk annualized in units of %-squared"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_srtindcnt",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 851,
+      "alphaCount": 72853,
+      "description": "Industry factor loading"
+    },
+    {
+      "id": "rsk70_mfm2_euetrd_strevrsl",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 1246,
+      "alphaCount": 72852,
+      "description": "Short-Term Reversal Style Factor Loading"
+    },
+    {
+      "id": "rsk70_rbg_tnc_drteue_2mfm",
+      "type": "MATRIX",
+      "coverage": 0.3313,
+      "userCount": 421,
+      "alphaCount": 19827,
+      "description": "Great Britain Country Factor Loading"
+    },
+    {
+      "id": "rsk70_trsd_drteue_2mfm",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 957,
+      "alphaCount": 74493,
+      "description": "Specific returns"
+    },
+    {
+      "id": "rsk70_ytlqsvni_drteue_2mfm",
+      "type": "MATRIX",
+      "coverage": 0.8676,
+      "userCount": 774,
+      "alphaCount": 47783,
+      "description": "Investment Quality Style Factor Loading"
+    },
+    {
+      "id": "semiconductor_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 32,
+      "alphaCount": 238,
+      "description": "Exposure or weight to the semiconductor industry sector within the model."
+    },
+    {
+      "id": "short_interest_europe_factor_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 766,
+      "alphaCount": 3684,
+      "description": "Exposure to the short interest factor within the European universe, reflecting short selling activity."
+    },
+    {
+      "id": "software_sector_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 52,
+      "alphaCount": 615,
+      "description": "Exposure or sensitivity to the software sector factor."
+    },
+    {
+      "id": "telecom_services_exposure_score",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 44,
+      "alphaCount": 306,
+      "description": "Exposure or sensitivity to the telecom services sector factor."
+    },
+    {
+      "id": "transportation_sector_exposure",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 36,
+      "alphaCount": 198,
+      "description": "Exposure or weight to the transportation industry sector within the model."
+    },
+    {
+      "id": "utilities_sector_exposure_score_2",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 39,
+      "alphaCount": 266,
+      "description": "Exposure or sensitivity to the utilities sector factor."
+    }
+  ]
+}

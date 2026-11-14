@@ -137,7 +137,7 @@ self._sub_sem = threading.Semaphore(C)   # C 取自 config.CONCURRENCY['slots']�
    → ② 无锁端点 `GET /alphas/{id}/correlations/prod` 读平台已算好的值 → ③ 两者都没有才 `refresh=True` 回源**一次**。
    `refresh=True` 会把 alpha 排进账号级单并发队列，批量场景反复 refresh 等于自己把自己的队列反复重排 ⇒ **永远排不完**
    （GLB 实测 4 颗候选长期全 busy）。
-4. **prod 池会漂移**：缓存值只作参考，**提交当刻必须 refresh 重测一次**（GLB：某候选缓存 0.694，只差 0.006）。
+4. **prod 池会漂移，但 48h 内缓存即权威**（2026-11-14 用户明令）：提交当刻**不 refresh**，`_prod_gate` 读 48h 缓存直接过闸；仅缓存过期/缺失/预读不可信才回源一次。贴线件（GLB 0.694）可建议复核，非强制。
 5. **看到 429 的第一反应是「我并发开太大了」**，不是「平台出问题了」，更不是「表达式有问题」。
 6. **长跑收割器要用脱离进程跑**（`Start-Process` + 日志重定向），后台 bash 任务有 **1 小时硬上限**会把长跑进程 kill 掉。
 

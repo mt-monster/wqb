@@ -1,0 +1,76 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "insiders12",
+  "fetched_at": "2026-11-12T15:17:30.326Z",
+  "platform_count": 8,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "insd12_mktprice",
+      "type": "VECTOR",
+      "coverage": 0.1925,
+      "userCount": 343,
+      "alphaCount": 736,
+      "description": "Market price per share/security at the transaction date, as reported, unadjusted for corporate actions"
+    },
+    {
+      "id": "insd12_percent",
+      "type": "VECTOR",
+      "coverage": 0.1925,
+      "userCount": 106,
+      "alphaCount": 272,
+      "description": "Post-event insider ownership percentage, as directly reported; may be a bound depending on GLTPercent"
+    },
+    {
+      "id": "insd12_positionchangetransactionamount",
+      "type": "VECTOR",
+      "coverage": 0.1925,
+      "userCount": 120,
+      "alphaCount": 310,
+      "description": "Number of shares bought (+) or sold (-) in the transaction"
+    },
+    {
+      "id": "insd12_sharesheld",
+      "type": "VECTOR",
+      "coverage": 0.1925,
+      "userCount": 99,
+      "alphaCount": 318,
+      "description": "Number of shares held by the insider after the transaction as officially reported"
+    },
+    {
+      "id": "insd12_transactioncode",
+      "type": "VECTOR",
+      "coverage": 0.2592,
+      "userCount": 310,
+      "alphaCount": 692,
+      "description": "A code representing the type or nature of the transaction."
+    },
+    {
+      "id": "option_exercise_price_eur",
+      "type": "VECTOR",
+      "coverage": 0.1925,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Exercise price for derivatives or options in EUR, as disclosed in the transaction"
+    },
+    {
+      "id": "option_exercise_price_gbp",
+      "type": "VECTOR",
+      "coverage": 0.1925,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Exercise price of derivatives or options in GBP, as disclosed in the transaction"
+    },
+    {
+      "id": "option_exercise_price_reported",
+      "type": "VECTOR",
+      "coverage": 0.1925,
+      "userCount": 14,
+      "alphaCount": 16,
+      "description": "Price at which the option/derivative was exercised at the time of the trade; currency varies by context"
+    }
+  ]
+}

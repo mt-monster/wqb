@@ -1,0 +1,116 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "pv106",
+  "fetched_at": "2026-11-12T11:24:21.525Z",
+  "platform_count": 15,
+  "complete": true,
+  "sharpe_filter_removed": 2,
+  "fields": [
+    {
+      "id": "aggregated_slippage_metric",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 25,
+      "alphaCount": 30,
+      "description": "Comprehensive measure of slippage across multiple trades or venues."
+    },
+    {
+      "id": "average_spread_slippage",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 19,
+      "alphaCount": 20,
+      "description": "Estimated portion of trade slippage attributable to crossing the bid-ask spread, i.e., the extra transaction cost versus mid-price execution when trading future…"
+    },
+    {
+      "id": "price_difference_bid_ask",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 15,
+      "alphaCount": 18,
+      "description": "Unknown"
+    },
+    {
+      "id": "pv106_lastspread",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 46,
+      "alphaCount": 67,
+      "description": "Bid-ask spread averaged over the last 30 minutes (in instrument currency)"
+    },
+    {
+      "id": "pv106_lastspreadbp",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 63,
+      "alphaCount": 99,
+      "description": "Bid-ask spread over the last 30 minutes expressed in basis points"
+    },
+    {
+      "id": "pv106_spread",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 39,
+      "alphaCount": 65,
+      "description": "Difference between best bid and best ask price for the security (in instrument currency)"
+    },
+    {
+      "id": "pv106_spreadbp",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 65,
+      "alphaCount": 87,
+      "description": "Bid-ask spread expressed in basis points (normalized to mid/VWAP)"
+    },
+    {
+      "id": "slippage_at_spread_35",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 13,
+      "alphaCount": 13,
+      "description": "Modeled slippage/transaction cost estimate for executing an order equal to 35% of average daily volume, derived from spread-based microstructure and VWAP data;…"
+    },
+    {
+      "id": "transaction_cost_estimate",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 14,
+      "alphaCount": 18,
+      "description": "Estimated cost incurred when executing a trade."
+    },
+    {
+      "id": "transaction_cost_maximum",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Maximum estimated transaction cost for a trade."
+    },
+    {
+      "id": "transaction_cost_median",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 23,
+      "alphaCount": 26,
+      "description": "Median estimated transaction cost for a trade."
+    },
+    {
+      "id": "transaction_cost_percentile_10",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 17,
+      "alphaCount": 24,
+      "description": "Estimated transaction cost at the 10th percentile for a trade."
+    },
+    {
+      "id": "transaction_cost_percentile_25",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 19,
+      "alphaCount": 28,
+      "description": "Estimated transaction cost at the 25th percentile for a trade."
+    }
+  ]
+}

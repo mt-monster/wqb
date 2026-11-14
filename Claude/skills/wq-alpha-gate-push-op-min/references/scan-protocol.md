@@ -82,7 +82,7 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt         # 
    - **prod 更低** ⇒ 优先采纳（**prod 贴线时尤其**：余量 <0.05 的候选，低 prod 变体比 S 最优变体更值得交付——prod 漂移猛，48h 作废）。
    - 或 **指标更好**（S/2Y/sub 更高）；或 **算子更少**。
    - 否则回滚，保留原式。
-4. **铁律**：替换变体必须**复检 prod**（`check_correlation(refresh=True)`，占平台单并发槽）；替换同样产生新 id，最终只保留最优 1 颗。
+4. **铁律**：替换变体必须**复检 prod**（`check_correlation(refresh=False)` 优先；新 id 无 48h 缓存才 `refresh=True`，占平台单并发槽）；替换同样产生新 id，最终只保留最优 1 颗。
 
 **⚠ 替换通道的常见陷阱**：
 - `ts_mean→ts_sum` / `ts_mean→ts_decay_linear`：**第 2 参语义不同**（窗口 vs 衰减）——是「语义等价」但参数含义漂移，实测后若指标塌则回滚。

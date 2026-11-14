@@ -1,0 +1,84 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "insiders1",
+  "fetched_at": "2026-11-12T15:17:30.266Z",
+  "platform_count": 9,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "insd1_gvkey",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 280,
+      "alphaCount": 576,
+      "description": "Compustat Global Company Identifier (Global Value Key) for the issuer"
+    },
+    {
+      "id": "insd1_holdings",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 292,
+      "alphaCount": 461,
+      "description": "Total equity share holdings of the insider after the transaction"
+    },
+    {
+      "id": "insd1_price",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 258,
+      "alphaCount": 461,
+      "description": "Transaction price per share; if a range was reported, this is the minimum price"
+    },
+    {
+      "id": "insd1_shares",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 325,
+      "alphaCount": 549,
+      "description": "Number of shares (or units) traded in the transaction"
+    },
+    {
+      "id": "insd1_tradesignificance",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 226,
+      "alphaCount": 380,
+      "description": "Significance score of the trade (1 = low significance, 3 = high significance)"
+    },
+    {
+      "id": "insd1_value",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 148,
+      "alphaCount": 262,
+      "description": "Total value of the transaction in original currency"
+    },
+    {
+      "id": "insd1_valueeur",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 224,
+      "alphaCount": 428,
+      "description": "Total value of the transaction in Euro"
+    },
+    {
+      "id": "max_trade_price",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 28,
+      "alphaCount": 41,
+      "description": "Maximum transaction price per share when a price range was reported"
+    },
+    {
+      "id": "transaction_currency_code",
+      "type": "VECTOR",
+      "coverage": 0.5512,
+      "userCount": 49,
+      "alphaCount": 65,
+      "description": "Three-letter ISO currency code of the transaction’s currency"
+    }
+  ]
+}

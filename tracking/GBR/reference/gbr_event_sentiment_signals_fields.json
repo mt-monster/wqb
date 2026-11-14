@@ -1,0 +1,169 @@
+{
+ "dataset": "event_sentiment_signals",
+ "region": "GBR",
+ "delay": 1,
+ "universe": "TOP700",
+ "field_count": 52,
+ "verdict": "DEAD 2026-11-13（16结构×7字段，max S 0.69）",
+ "fields": [
+  {
+   "id": "section_sentiment_score_3",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 26,
+   "ac": 54,
+   "d": "(P-N)/(P+N+1) 净情绪"
+  },
+  {
+   "id": "sentiment_section_score_improved_d1",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 8,
+   "ac": 10,
+   "d": "improved section score"
+  },
+  {
+   "id": "sentiment_section_score_d1",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 5,
+   "ac": 6
+  },
+  {
+   "id": "key_factor_score_section",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 1,
+   "d": "key driver 净分"
+  },
+  {
+   "id": "key_factor_score_section_2",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 2
+  },
+  {
+   "id": "key_factor_negative_score_section",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 3,
+   "ac": 6,
+   "d": "key driver 负面分"
+  },
+  {
+   "id": "key_factor_negative_score_section_2",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 2,
+   "ac": 2
+  },
+  {
+   "id": "key_factor_positive_score_section",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 2,
+   "ac": 2
+  },
+  {
+   "id": "section_negative_score",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 0,
+   "ac": 0
+  },
+  {
+   "id": "section_positive_score",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 1
+  },
+  {
+   "id": "sentiment_section_negative_score_d1",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 1
+  },
+  {
+   "id": "key_factor_negative_event_count_section",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 4,
+   "ac": 8
+  },
+  {
+   "id": "positive_event_count_section",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 1
+  },
+  {
+   "id": "sentiment_section_event_count_d1",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 1
+  },
+  {
+   "id": "word_count_section",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 0,
+   "ac": 0
+  },
+  {
+   "id": "event_count_in_section_aggregation",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 2,
+   "ac": 3
+  },
+  {
+   "id": "event_weight_aggregation",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 2
+  },
+  {
+   "id": "section_negative_event_count",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 1,
+   "ac": 1
+  },
+  {
+   "id": "sentiment_section_keydriver_score",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 0,
+   "ac": 0
+  },
+  {
+   "id": "sentiment_section_keydriver_negative_score",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 0,
+   "ac": 0
+  },
+  {
+   "id": "sentiment_section_keydriver_positive_weighted_count",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 2,
+   "ac": 2
+  },
+  {
+   "id": "sentiment_section_word_count_d1",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 0,
+   "ac": 0
+  }
+ ],
+ "note": "其余 31 字段为 _2/_improved_d1 变体；全 VECTOR；cov 元数据全 0 但探针 O0Ado8a7 实证有数据（longCount 343）"
+}

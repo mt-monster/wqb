@@ -1,0 +1,155 @@
+[
+ {
+  "tpl": "A1_keydriver_level",
+  "id": "88RM0j9X",
+  "S": 0.7,
+  "F": 0.34,
+  "Y2": 1.97,
+  "TO": 0.034,
+  "lc": 126,
+  "sub": 0.64,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS"
+  ]
+ },
+ {
+  "tpl": "A8_section_d1",
+  "id": "E569jpAL",
+  "S": 0.59,
+  "F": 0.28,
+  "Y2": 0.93,
+  "TO": 0.0365,
+  "lc": 131,
+  "sub": 0.74,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A9_quantile_annual",
+  "id": "ZYQO8bZY",
+  "S": 0.59,
+  "F": 0.27,
+  "Y2": 1.44,
+  "TO": 0.0549,
+  "lc": 117,
+  "sub": 0.65,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A5_negvol",
+  "id": "E569jpJL",
+  "S": 0.23,
+  "F": 0.08,
+  "Y2": 0.3,
+  "TO": 0.0141,
+  "lc": 172,
+  "sub": -0.21,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A7_wordcount_delta",
+  "id": "npvLjdb8",
+  "S": 0.06,
+  "F": 0.01,
+  "Y2": -0.01,
+  "TO": 0.0365,
+  "lc": 71,
+  "sub": 0.68,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A4_keydriver_delta66",
+  "id": "78Le5N9x",
+  "S": 0.0,
+  "F": 0.0,
+  "Y2": -0.31,
+  "TO": 0.0429,
+  "lc": 71,
+  "sub": 0.67,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A2_keydriver_qIR",
+  "id": "omExbLMl",
+  "S": -0.03,
+  "F": -0.0,
+  "Y2": 0.68,
+  "TO": 0.1752,
+  "lc": 35,
+  "sub": -0.11,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A6_eventweight",
+  "id": "WjOvZbmk",
+  "S": -0.1,
+  "F": -0.02,
+  "Y2": 0.17,
+  "TO": 0.0271,
+  "lc": 74,
+  "sub": 0.53,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A3_posneg_cov",
+  "id": "WjOvZb6Z",
+  "S": -0.32,
+  "F": -0.13,
+  "Y2": -0.08,
+  "TO": 0.0157,
+  "lc": 78,
+  "sub": 0.09,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ]
+ },
+ {
+  "tpl": "A10_tvrdecay",
+  "id": "0mY1VXok",
+  "S": -0.47,
+  "F": -0.19,
+  "Y2": -1.38,
+  "TO": 0.0332,
+  "lc": 162,
+  "sub": -0.61,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ]
+ }
+]

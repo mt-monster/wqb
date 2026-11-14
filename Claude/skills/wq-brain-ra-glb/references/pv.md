@@ -86,7 +86,7 @@
 ### S5 提交前
 
 - 资格判定：`$WQ_PY tools/mode_b_qualify.py evaluate --region GLB --sharpe <S> --fitness <F> --two-year-sharpe <2Y>`（喂全指标，旁路 A–E 才会生效）
-- 提交链：`submit_verdict` 只否决；prod 与 self 双端点实测（`check_correlation(refresh=True)`）；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
+- 提交链：`submit_verdict` 只否决；prod 走 `check_correlation(refresh=False)`（48h 缓存优先，不默认回源）+ self 实测；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
 
 ### 判死记录（不要重试；「归属」= payload 绑定 / 由条目名推断 / 关键词推断）
 

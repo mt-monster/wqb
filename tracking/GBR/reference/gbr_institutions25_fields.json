@@ -1,0 +1,108 @@
+{
+ "dataset": "institutions25",
+ "name": "Fund Short Selling Data",
+ "region": "GBR",
+ "tower": "institutions(0)",
+ "field_count": 24,
+ "fields": [
+  {
+   "id": "inst25_activity",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 5,
+   "d": "Activity score 0-100"
+  },
+  {
+   "id": "inst25_age",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 7,
+   "d": "position age rank 0-100"
+  },
+  {
+   "id": "inst25_concentration",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 2,
+   "d": "top3 short position sum"
+  },
+  {
+   "id": "inst25_crowding",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 2,
+   "d": "crowdedness 0-100"
+  },
+  {
+   "id": "inst25_entry_position",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 4,
+   "d": "manager short position entry size"
+  },
+  {
+   "id": "inst25_is_open",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 3,
+   "d": "position open flag"
+  },
+  {
+   "id": "inst25_manager_avg_trade_length",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 7,
+   "d": "avg closed trade duration"
+  },
+  {
+   "id": "inst25_manager_count",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 3,
+   "d": "distinct open short managers"
+  },
+  {
+   "id": "inst25_manager_position_count",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 3,
+   "d": "manager position count"
+  },
+  {
+   "id": "inst25_position",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 4,
+   "d": "manager current short position"
+  },
+  {
+   "id": "inst25_position_change",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 12,
+   "d": "short position change"
+  },
+  {
+   "id": "inst25_security_avg_trade_length",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 3,
+   "d": "avg open short duration"
+  },
+  {
+   "id": "inst25_security_cover_count",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 7,
+   "d": "short covering trade count"
+  },
+  {
+   "id": "inst25_security_short_count",
+   "t": "VECTOR",
+   "cov": 0,
+   "uc": 5,
+   "d": "short sale transaction count"
+  }
+ ],
+ "note": "英国 FCA 做空披露衍生；cov 元数据全 0（盲区待探针）；其余 10 字段为 _2/days/last 变体"
+}

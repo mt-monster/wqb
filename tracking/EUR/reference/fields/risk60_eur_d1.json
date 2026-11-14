@@ -1,0 +1,52 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "risk60",
+  "fetched_at": "2026-11-12T11:24:20.765Z",
+  "platform_count": 5,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "lending_fee_bid_rate",
+      "type": "VECTOR",
+      "coverage": 0.8168,
+      "userCount": 141,
+      "alphaCount": 248,
+      "description": "Composite lending fee (annualized) at which long inventory is lent"
+    },
+    {
+      "id": "rsk60_crowding",
+      "type": "VECTOR",
+      "coverage": 0.8168,
+      "userCount": 164,
+      "alphaCount": 286,
+      "description": "Signed daily indicator of shorting activity (positive = increased shorting/crowding, negative = covering/decrowding)"
+    },
+    {
+      "id": "rsk60_datatime",
+      "type": "VECTOR",
+      "coverage": 0.8168,
+      "userCount": 80,
+      "alphaCount": 135,
+      "description": "Vendor timestamp in HHMMSS for the snapshot, used to order intraday prints"
+    },
+    {
+      "id": "rsk60_last",
+      "type": "VECTOR",
+      "coverage": 0.8168,
+      "userCount": 438,
+      "alphaCount": 718,
+      "description": "Most recent borrow/lend rate observed at the snapshot time"
+    },
+    {
+      "id": "rsk60_offer",
+      "type": "VECTOR",
+      "coverage": 0.8168,
+      "userCount": 502,
+      "alphaCount": 835,
+      "description": "Composite borrow fee (annualized) paid by the short seller"
+    }
+  ]
+}

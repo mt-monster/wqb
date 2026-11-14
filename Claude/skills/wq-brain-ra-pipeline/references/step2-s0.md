@@ -24,7 +24,7 @@
 | `[跨区弱:REG:maxS@bt]` | 同集在其它区 ≥16 条回测且 max\|S\|<1.0 | 降权（排在健康集之后、判死之前）；细则 `step1-inventory.md` §1.4 |
 | `[跨区RA-clean:REG:n]` | 其它区的正证据 | 加分参考 |
 | `fields<5` → `仅条件腿` | 只能做 `trade_when` / bucket 辅助腿或事件探针 | **不进主攻**；与步 3 的「字段数 < 10」阈值分开：< 5 仅条件腿，< 10 移出白名单 |
-| `lit=Y` | 该 category 已点亮（当季 ACTIVE ≥ 3） | **直接剔除**（硬约束 0） |
+| `lit=Y` | 该 category 已点亮（当季 ACTIVE ≥ 3） | **直接剔除**（硬约束 0）；⚠ **例外分支（2026-11-14 IND 战役固化，需用户口径授权）**：用户明确「按数据集级排除」时，已亮塔 category 里**未被历史 ACTIVE/判死台账占用过的 dataset** 可标 `lit_category_but_unoccupied` 进白名单——`s0-select` 的 `lit=Y` 是类别级硬剔，会误杀同 category 未占用集（IND 实证：真实 ACTIVE/OS 占用仅 2 集，`expressions`+`backtest_results` 回测记录 68 集也只代表「测过」≠「占用」）。逐集判定须写 `select_reason`/`exclude_reason` 并留档 | 硬约束 0 是 2026-09-19 类别级定案；数据集级是 2026-11-14 用户确认口径，两者并存按当次战役用户指令选用 |
 | `[WARN] 结构性不可达` | 存活 top-n 的 Σ`est_seats` < `--target` | 扩集 / 换区，不在不足座位上反复打磨 |
 
 **座位**：`--target N` = 本战役目标独立座位数（缺省建议 ≈ 3 × 目标塔数，因为一座塔要 3 颗点亮）；每候选带 `est_seats`（同族高互相关只算 1 座位）。`seat_model` 台账目前**没有写入方**（`docs/ledger_keys.json` 登记为 orphan），缺省每集按 2 个座位估——这是占位值，不是实测。

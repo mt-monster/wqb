@@ -1,0 +1,76 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "pv103",
+  "fetched_at": "2026-11-12T11:24:40.786Z",
+  "platform_count": 9,
+  "complete": true,
+  "sharpe_filter_removed": 1,
+  "fields": [
+    {
+      "id": "pv103_ivam_sum",
+      "type": "MATRIX",
+      "coverage": 0.9241,
+      "userCount": 54,
+      "alphaCount": 67,
+      "description": "daily sum of interval volume above mid quote"
+    },
+    {
+      "id": "pv103_ntrd_sum",
+      "type": "MATRIX",
+      "coverage": 0.9241,
+      "userCount": 39,
+      "alphaCount": 49,
+      "description": "Daily total number of trades for the symbol in Europe, computed as the sum of interval trade counts over the day"
+    },
+    {
+      "id": "session_1600to1600_final_trade_price",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 53,
+      "alphaCount": 83,
+      "description": "Last trade price within the 16:00 to 16:00 session"
+    },
+    {
+      "id": "session_1600to1600_market_value",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 60,
+      "alphaCount": 72,
+      "description": "Aggregate market value of all trades during the 16:00 to 16:00 session."
+    },
+    {
+      "id": "session_1600to1600_max_trade_price",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 20,
+      "alphaCount": 23,
+      "description": "Highest trade price during the 16:00 to 16:00 session"
+    },
+    {
+      "id": "session_1600to1600_min_trade_price",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 27,
+      "alphaCount": 29,
+      "description": "Lowest trade price during the 16:00 to 16:00 session"
+    },
+    {
+      "id": "session_1600to1600_total_traded_volume",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 44,
+      "alphaCount": 56,
+      "description": "Total shares traded during the 16:00 to 16:00 session"
+    },
+    {
+      "id": "session_1600to1600_volume_weighted_avg_price",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 56,
+      "alphaCount": 65,
+      "description": "Volume-weighted average trade price over the 16:00 to 16:00 session"
+    }
+  ]
+}

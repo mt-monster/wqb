@@ -511,7 +511,16 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     # 2026-09-28 补充：「等权」加两条独立信号腿同样违规（既有判定明文豁免等权 → 实测漏网）。
     # 详见 _detect_equal_weight_leg_add 文档；KOR wave189/190 实证 7 条漏网已作废。
     _non_field = known_ops | group_ids | driver_args | kw_args
-    structural_equal_leg = _detect_equal_weight_leg_add(expr, _non_field)
+    _eq_hits = _find_equal_weight_leg_add(expr, _non_field, pc.get("_field_dataset"),
+                                          bool(pc.get("_single_dataset_batch")))
+    structural_equal_leg = any(not h["same_dataset"] for h in _eq_hits)
+    if any(h["same_dataset"] for h in _eq_hits):
+        warnings.append(
+            "[SAME_DATASET_LEG_ADD] add() 相加的腿全部引用**同一数据集**字段 ⇒ 同源豁免，"
+            "不按闸5 拦截（官方 ATOM 定义只约束字段同源、不约束组合结构）。"
+            "但同源两腿相加不产生新信息、且权重本身是过拟合通道 ⇒ 派发前必须登记权重来源"
+            "（等权 / 由经济含义决定的配比），禁止试多个权重挑最好看的一个。"
+            "见 tracking/DEU/atom_orthogonal/MECHANISM_FIRST_DISPATCH_CHECKLIST_20261112.md")
     # 2026-09-29 X-3：中缀 `+`（权重在右 / 无 add( 的写法）与价差规则（跨数据集 / 带系数）。
     infix_sum, infix_spreads = _detect_infix_leg_sum(expr, _non_field)
     spread_weighted, spread_cross = _spread_findings(
@@ -804,7 +813,62 @@ def _mask_denominators(expr):
     return "".join(out)
 
 
-def _detect_equal_weight_leg_add(expr, non_field):
+_LEG_IDENT_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+
+
+def _legs_all_same_dataset(legs, non_field, field_dataset, single_dataset_batch):
+    """两条腿引用的字段是否**全部来自同一数据集**（同源豁免判定，2026-11-12 用户裁定）。
+
+    依据：
+      - 官方 ATOM 定义只约束「所有数据字段来自同一数据集」，**不约束组合结构**；
+        group 字段（industry / country 等）是豁免字段，不计入数据集数量限制。
+        （forum post 32032672214807，201 赞科普帖；平台 single-dataset-alphas 文档）
+      - 官方对 ATOM 的设计逻辑表述：「同一数据集下字段类型更统一，**降低混信号风险**」
+        ⇒ 同源本身就在降低混信号，与禁 add(A,B) 的**防调参过拟合**目的不冲突。
+      - 但仍须登记权重来源（防「试几个权重挑最好看」），故本级只降为 **warn**，不直接放行。
+
+    fail-closed：无法把每条腿的字段全部解析到**同一个**数据集时返回 False（维持 block）。
+    """
+    if single_dataset_batch:
+        return True
+    if not field_dataset:
+        return False
+    ds_of_legs = []
+    for leg in legs:
+        ids = {t for t in _LEG_IDENT_RE.findall(leg or "") if t not in non_field}
+        if not ids:
+            return False
+        ds = {field_dataset.get(i) for i in ids}
+        if len(ds) != 1 or None in ds:
+            return False
+        ds_of_legs.append(next(iter(ds)))
+    return len(set(ds_of_legs)) == 1
+
+
+def _find_equal_weight_leg_add(expr, non_field, field_dataset=None, single_dataset_batch=False):
+    """扫描所有「≥2 条形态不同的信号腿被 add() 相加」的位置，标注是否同源。
+
+    返回 [{legs, same_dataset}]；空列表 = 无命中。
+    """
+    hits = []
+    for m in _ADD_OPEN_RE.finditer(_mask_denominators(expr)):
+        args, _ = _top_level_args(expr, m.end())
+        if not args or len(args) < 2:
+            continue
+        legs = [a for a in args if _is_signal_leg(a, non_field)]
+        if len(legs) < 2:
+            continue
+        if len({_normalize_numbers(a) for a in legs}) < 2:
+            continue
+        hits.append({
+            "legs": legs,
+            "same_dataset": _legs_all_same_dataset(legs, non_field, field_dataset,
+                                                   single_dataset_batch),
+        })
+    return hits
+
+
+def _detect_equal_weight_leg_add(expr, non_field, field_dataset=None, single_dataset_batch=False):
     """闸5 结构判定（2026-09-28 新增）：「等权」加两条**独立信号腿**同样违规。
 
     背景：既有 `_detect_weighted_mix_structural` 只拦「实参以 系数* 开头」的腿，
@@ -820,17 +884,13 @@ def _detect_equal_weight_leg_add(expr, non_field):
 
     **分母位跳过（2026-10-27，P0-P4）**：`divide(x, add(A,B))` / `x/(A+B)` 里的 `add` 是
     归一化的除数，不是「两条独立信号腿相加」⇒ `_mask_denominators` 先屏蔽分母位再扫描。
+
+    **同源豁免（2026-11-12，用户裁定）**：命中的 add() 里所有腿引用的字段**全部来自
+    同一数据集**时不算混信号（官方 ATOM 口径：同源降低混信号风险），降为 warning
+    [SAME_DATASET_LEG_ADD]，由 check_one 追加；仍须登记权重来源。
     """
-    for m in _ADD_OPEN_RE.finditer(_mask_denominators(expr)):
-        args, _ = _top_level_args(expr, m.end())
-        if not args or len(args) < 2:
-            continue
-        legs = [a for a in args if _is_signal_leg(a, non_field)]
-        if len(legs) < 2:
-            continue
-        if len({_normalize_numbers(a) for a in legs}) >= 2:
-            return True
-    return False
+    return any(not h["same_dataset"] for h in _find_equal_weight_leg_add(
+        expr, non_field, field_dataset, single_dataset_batch))
 
 
 #: 顶层出现这些字符的片段不做「加减号切项」（比较 / 三元 / 逻辑 / 命名参数）——宁可漏判不可误伤

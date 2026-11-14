@@ -1,0 +1,332 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "risk72",
+  "fetched_at": "2026-11-12T11:24:21.115Z",
+  "platform_count": 40,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "ats_top1200_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.5252,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Specific return for the top 1200 equities in the ATS universe."
+    },
+    {
+      "id": "ats_top800_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.3392,
+      "userCount": 3,
+      "alphaCount": 5,
+      "description": "Specific return for the top 800 equities in the ATS universe."
+    },
+    {
+      "id": "cfg2_top1200_replicator1",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "First replicator value for the top 1200 equity universe using configuration 2."
+    },
+    {
+      "id": "cfg2_top1200_replicator2",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Second replicator value for the top 1200 equity universe using configuration 2."
+    },
+    {
+      "id": "cfg2_top1200_residual_return",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 8,
+      "alphaCount": 14,
+      "description": "Daily matrix of residual (idiosyncratic) stock returns for the EUR TOP1200 universe, in percent units, after neutralizing market/country/industry and MFM1 Risk…"
+    },
+    {
+      "id": "cfg2_top600_replicator1",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "First replicator value for the top 600 equity universe using configuration 2."
+    },
+    {
+      "id": "cfg2_top600_replicator2",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Second replicator value for the top 600 equity universe using configuration 2."
+    },
+    {
+      "id": "cfg2_top600_residual_return",
+      "type": "MATRIX",
+      "coverage": 0.5247,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Daily matrix of residual (idiosyncratic) stock returns for the EUR TOP600 universe, in percent units, after neutralizing market/country/industry and MFM1 Risk I…"
+    },
+    {
+      "id": "cfg2_top800_replicator1",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "First replicator value for the top 800 equity universe using configuration 2."
+    },
+    {
+      "id": "cfg2_top800_replicator2",
+      "type": "VECTOR",
+      "coverage": 1,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Second replicator value for the top 800 equity universe using configuration 2."
+    },
+    {
+      "id": "cfg2_top800_residual_return",
+      "type": "MATRIX",
+      "coverage": 0.7134,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Daily matrix of residual (idiosyncratic) stock returns for the EUR TOP800 universe, in percent units, after neutralizing market/country/industry and MFM1 Risk I…"
+    },
+    {
+      "id": "ecs_top1200_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.4471,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Specific return for the top 1200 equities in the ECS universe."
+    },
+    {
+      "id": "ecs_top1200_residual_return_cfg2",
+      "type": "MATRIX",
+      "coverage": 0.5825,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP1200 Europe universe after removing systematic factors via t…"
+    },
+    {
+      "id": "ecs_top1600_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.5375,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Specific return for the top 1600 equities in the ECS universe."
+    },
+    {
+      "id": "ecs_top1600_residual_return_cfg2",
+      "type": "MATRIX",
+      "coverage": 0.5825,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP1600 Europe universe after removing systematic factors via t…"
+    },
+    {
+      "id": "ecs_top400_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.1518,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 400 equities in the ECS universe."
+    },
+    {
+      "id": "ecs_top400_residual_return_cfg2",
+      "type": "MATRIX",
+      "coverage": 0.3176,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP400 Europe universe after removing systematic factors via th…"
+    },
+    {
+      "id": "ecs_top800_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.3028,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 800 equities in the ECS universe."
+    },
+    {
+      "id": "ecs_top800_residual_return_cfg2",
+      "type": "MATRIX",
+      "coverage": 0.5779,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Daily reproducible specific returns (idiosyncratic residual returns) for equities in the EQY_ECS_TOP800 Europe universe after removing systematic factors via th…"
+    },
+    {
+      "id": "epp_equity_minvol1m_residual_return",
+      "type": "MATRIX",
+      "coverage": 0.5406,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Residualized return for EPP equities with minimum 1M trading volume."
+    },
+    {
+      "id": "epp_equity_minvol1m_residual_return_crats",
+      "type": "MATRIX",
+      "coverage": 0.5406,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Residualized return for EPP equities with minimum 1M volume in the CRATS configuration."
+    },
+    {
+      "id": "eur_equity_minvol1m_residual_return",
+      "type": "MATRIX",
+      "coverage": 0.5406,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Residualized return for EUR equities with minimum 1M trading volume."
+    },
+    {
+      "id": "eur_equity_minvol1m_residual_return_crats",
+      "type": "MATRIX",
+      "coverage": 0.5406,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Residualized return for EUR equities with minimum 1M volume in the CRATS configuration."
+    },
+    {
+      "id": "eur_equity_minvol1m_residual_return_validated",
+      "type": "MATRIX",
+      "coverage": 0.4732,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Residualized return for EUR equities with minimum 1M volume, validated for current day."
+    },
+    {
+      "id": "rsk72_top1200_dsrt",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 151,
+      "alphaCount": 205,
+      "description": "Daily reproducible specific returns in % units"
+    },
+    {
+      "id": "rsk72_top600_dsrt",
+      "type": "MATRIX",
+      "coverage": 0.5382,
+      "userCount": 71,
+      "alphaCount": 98,
+      "description": "Daily reproducible specific returns in % units"
+    },
+    {
+      "id": "rsk72_top800_dsrt",
+      "type": "MATRIX",
+      "coverage": 0.7217,
+      "userCount": 69,
+      "alphaCount": 100,
+      "description": "Daily reproducible specific returns in % units"
+    },
+    {
+      "id": "top1200_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.5252,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Specific return for the top 1200 equities in the selected universe."
+    },
+    {
+      "id": "top1200_equity_residualized_return_nocountry",
+      "type": "MATRIX",
+      "coverage": 0.5252,
+      "userCount": 3,
+      "alphaCount": 6,
+      "description": "Specific return for the top 1200 equities without country-based adjustments."
+    },
+    {
+      "id": "top1200_equity_residualized_return_nogroup",
+      "type": "MATRIX",
+      "coverage": 0.5252,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Specific return for the top 1200 equities without group-based adjustments."
+    },
+    {
+      "id": "top2500_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 80,
+      "alphaCount": 119,
+      "description": "Specific return for the top 2500 equities in the selected universe."
+    },
+    {
+      "id": "top2500_equity_residualized_return_nocountry",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 18,
+      "alphaCount": 36,
+      "description": "Specific return for the top 2500 equities without country-based adjustments."
+    },
+    {
+      "id": "top2500_equity_residualized_return_nogroup",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 27,
+      "alphaCount": 41,
+      "description": "Specific return for the top 2500 equities without group-based adjustments."
+    },
+    {
+      "id": "top600_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.2501,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 600 equities in the selected universe."
+    },
+    {
+      "id": "top600_equity_residualized_return_nocountry",
+      "type": "MATRIX",
+      "coverage": 0.2501,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 600 equities without country-based adjustments."
+    },
+    {
+      "id": "top600_equity_residualized_return_nogroup",
+      "type": "MATRIX",
+      "coverage": 0.2501,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 600 equities without group-based adjustments."
+    },
+    {
+      "id": "top600_reproducible_specific_return",
+      "type": "MATRIX",
+      "coverage": 0.2501,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Daily reproducible specific (idiosyncratic) returns for the AMR TOP600 universe from the MFM1 risk model with D1 lag, i.e., residual returns after removing mark…"
+    },
+    {
+      "id": "top800_equity_residualized_return",
+      "type": "MATRIX",
+      "coverage": 0.3392,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 800 equities in the selected universe."
+    },
+    {
+      "id": "top800_equity_residualized_return_nocountry",
+      "type": "MATRIX",
+      "coverage": 0.3392,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 800 equities without country-based adjustments."
+    },
+    {
+      "id": "top800_equity_residualized_return_nogroup",
+      "type": "MATRIX",
+      "coverage": 0.3392,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Specific return for the top 800 equities without group-based adjustments."
+    }
+  ]
+}

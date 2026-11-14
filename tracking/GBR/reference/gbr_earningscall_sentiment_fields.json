@@ -1,0 +1,82 @@
+{
+  "dataset_id": "earningscall_sentiment",
+  "region": "GBR",
+  "delay": 1,
+  "universe": "TOP700",
+  "profiled_at": "2026-11-14T00:10+08:00",
+  "tower": "other",
+  "towerState": "2/3 未点亮",
+  "metadata": {
+    "fieldCount": 167,
+    "coverage_meta": 0,
+    "userCount": 43,
+    "alphaCount": 66,
+    "valueScore": 6,
+    "pyramidMultiplier": 1.6
+  },
+  "nature": "财报电话会（earnings call）逐句 NLP：把通话切成 semantic chunk，按 5 个财务维度打正/中/负概率，再按 4 个章节聚合。MATRIX 聚合值可直接用；VECTOR 逐 chunk 分需 vec_avg。",
+  "axes": {
+    "financial": [
+      "assetutilization",
+      "cashflow",
+      "leverage",
+      "profitability",
+      "valuation"
+    ],
+    "sections": [
+      "presentation（管理层陈述）",
+      "question（分析师问答 Q&A）",
+      "answer（管理层回答）",
+      "summary（全会汇总）"
+    ],
+    "metrics": [
+      "positive_score / negative_score / neutral_score（概率）",
+      "sentiment_polarity（带符号净极性）",
+      "count_*（句数）",
+      "mean_*（均值，MATRIX 已聚合，首选）"
+    ],
+    "body": [
+      "presentation_chunk_count / question_chunk_count / answer_chunk_count / summary_chunk_count（通话长度代理）",
+      "chunk_relevance_z0/z1/z2_flag（chunk 相关性强弱旗标）"
+    ]
+  },
+  "signal_families": [
+    {
+      "family": "净极性水平",
+      "field_example": "mean_polarity_cashflow_answer",
+      "mechanism": "电话会语气漂移（管理层措辞 → 会后漂移），PEAD 的文本版",
+      "ops_shape": "group_rank(ts_sum(F,250),sector)"
+    },
+    {
+      "family": "Q&A 语气（信息含量更高）",
+      "field_example": "mean_polarity_cashflow_question",
+      "mechanism": "Matsumoto-Pronk-Wu：Q&A 段语气比陈述段更有信息量（管理层即兴应答泄露真实预期）",
+      "ops_shape": "同上（与 presentation 段做 A/B）"
+    },
+    {
+      "family": "分维度语气分歧",
+      "field_example": "cashflow vs valuation",
+      "mechanism": "不同财务维度语气不一致 → 信息不确定",
+      "ops_shape": "group_rank(ts_sum(subtract(F1,F2),250),sector)"
+    },
+    {
+      "family": "负面概率单边",
+      "field_example": "mean_negative_cashflow_question",
+      "mechanism": "负面信息定价更慢（损失厌恶）",
+      "ops_shape": "multiply(-1, group_rank(ts_sum(F,250),sector))"
+    },
+    {
+      "family": "通话长度/参与度",
+      "field_example": "question_chunk_count / summary_chunk_count",
+      "mechanism": "分析师提问越多 = 不确定性越高（负）",
+      "ops_shape": "multiply(-1, group_rank(ts_sum(F,250),sector))"
+    }
+  ],
+  "risks": [
+    "coverage 元数据 0 不可信，须用探针 longCount 复核（Z3 在飞）",
+    "稀疏事件流：按季度发生 ⇒ 250 日窗口聚合，短窗口会产生大量 0 并列块",
+    "MATRIX 字段不需要 vec_avg（用了会语法错）；VECTOR 字段必须 vec_avg/vec_sum",
+    "GBR 事件链 winsorize+tail 历史反效 → 本集不加 tail"
+  ],
+  "pending": "GB-Z3 读数（bBzH037N4PzbtI5H4P98GN）"
+}

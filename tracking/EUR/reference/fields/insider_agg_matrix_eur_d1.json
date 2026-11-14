@@ -1,0 +1,284 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "insider_agg_matrix",
+  "fetched_at": "2026-11-12T11:24:21.346Z",
+  "platform_count": 34,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "avg_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 110,
+      "alphaCount": 154,
+      "description": "Mean shares bought by all directors"
+    },
+    {
+      "id": "avg_secondary_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 44,
+      "alphaCount": 48,
+      "description": "Mean shares bought directly by directors"
+    },
+    {
+      "id": "avg_secondary_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 40,
+      "alphaCount": 48,
+      "description": "Mean shares sold directly by directors"
+    },
+    {
+      "id": "avg_secondary_top_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 41,
+      "alphaCount": 49,
+      "description": "Mean shares bought directly by executives"
+    },
+    {
+      "id": "avg_secondary_top_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 47,
+      "alphaCount": 52,
+      "description": "Mean shares sold directly by executives"
+    },
+    {
+      "id": "avg_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 51,
+      "alphaCount": 65,
+      "description": "Mean shares sold by all directors"
+    },
+    {
+      "id": "avg_top_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 62,
+      "alphaCount": 84,
+      "description": "Mean shares bought by all executives"
+    },
+    {
+      "id": "avg_top_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 82,
+      "alphaCount": 121,
+      "description": "Mean shares sold by all executives"
+    },
+    {
+      "id": "directional_indicator",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 65,
+      "alphaCount": 89,
+      "description": "A metric indicating the overall direction or bias of insider activity."
+    },
+    {
+      "id": "directional_indicator_2",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 32,
+      "alphaCount": 46,
+      "description": "A metric indicating the overall direction or bias of enhanced insider activity."
+    },
+    {
+      "id": "directional_significant_value_1",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "Highest value among directional significant insider transactions."
+    },
+    {
+      "id": "directional_significant_value_2",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Second highest value among directional significant insider transactions."
+    },
+    {
+      "id": "directional_significant_value_3",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Third highest value among directional significant insider transactions."
+    },
+    {
+      "id": "directional_significant_value_4",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 31,
+      "alphaCount": 39,
+      "description": "Fourth highest value among directional significant insider transactions."
+    },
+    {
+      "id": "significant_value_1",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 58,
+      "alphaCount": 71,
+      "description": "Value of the most significant insider transaction."
+    },
+    {
+      "id": "significant_value_2",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 35,
+      "alphaCount": 42,
+      "description": "Value of the second most significant insider transaction."
+    },
+    {
+      "id": "significant_value_3",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 41,
+      "alphaCount": 54,
+      "description": "Value of the third most significant insider transaction."
+    },
+    {
+      "id": "significant_value_4",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 51,
+      "alphaCount": 58,
+      "description": "Value of the fourth most significant insider transaction."
+    },
+    {
+      "id": "top_directional_significant_value_1",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 37,
+      "alphaCount": 42,
+      "description": "Highest value among top directional significant insider transactions."
+    },
+    {
+      "id": "top_directional_significant_value_2",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 22,
+      "alphaCount": 31,
+      "description": "Second highest value among top directional significant insider transactions."
+    },
+    {
+      "id": "top_directional_significant_value_3",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 38,
+      "alphaCount": 45,
+      "description": "Third highest value among top directional significant insider transactions."
+    },
+    {
+      "id": "top_directional_significant_value_4",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 24,
+      "alphaCount": 31,
+      "description": "Fourth highest value among top directional significant insider transactions."
+    },
+    {
+      "id": "top_significant_value_1",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 47,
+      "alphaCount": 63,
+      "description": "Highest value among top significant insider transactions."
+    },
+    {
+      "id": "top_significant_value_2",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 17,
+      "alphaCount": 17,
+      "description": "Second highest value among top significant insider transactions."
+    },
+    {
+      "id": "top_significant_value_3",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 99,
+      "alphaCount": 150,
+      "description": "Third highest value among top significant insider transactions."
+    },
+    {
+      "id": "top_significant_value_4",
+      "type": "MATRIX",
+      "coverage": 0.6149,
+      "userCount": 98,
+      "alphaCount": 142,
+      "description": "Fourth highest value among top significant insider transactions."
+    },
+    {
+      "id": "total_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 60,
+      "alphaCount": 74,
+      "description": "Sum shares bought by all directors"
+    },
+    {
+      "id": "total_secondary_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 40,
+      "alphaCount": 47,
+      "description": "Sum shares bought directly by directors"
+    },
+    {
+      "id": "total_secondary_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 34,
+      "alphaCount": 41,
+      "description": "Sum shares sold directly by directors"
+    },
+    {
+      "id": "total_secondary_top_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 32,
+      "alphaCount": 42,
+      "description": "Sum shares bought directly by executives"
+    },
+    {
+      "id": "total_secondary_top_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 32,
+      "alphaCount": 46,
+      "description": "Sum shares sold directly by executives"
+    },
+    {
+      "id": "total_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 57,
+      "alphaCount": 72,
+      "description": "Sum shares sold by all directors"
+    },
+    {
+      "id": "total_top_buy_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 107,
+      "alphaCount": 162,
+      "description": "Sum shares bought by all executives"
+    },
+    {
+      "id": "total_top_sell_shares",
+      "type": "MATRIX",
+      "coverage": 0.6083,
+      "userCount": 117,
+      "alphaCount": 177,
+      "description": "Sum shares sold by all executives"
+    }
+  ]
+}

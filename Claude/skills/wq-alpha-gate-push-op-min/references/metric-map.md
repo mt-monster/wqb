@@ -62,7 +62,7 @@ fitness  = sharpe × sqrt(return / max(tvr, 0.125))
 | 取整规则 | ladder / 2Y 类**四舍五入 2 位后严格比较** ⇒ 目标值取 `limit + 0.005`（即 1.585） |
 | `checks` 列表 | 只含仿真时评估的项；`SELF_CORRELATION` / `PROD_CORRELATION` 常为 `PENDING` ⇒ **必须单独调 check 接口** |
 | `fails=NONE` 的含义 | 只代表「已评估的项无 FAIL」，**不代表未评估的闸通过**（如当前 S < 1.58 时 `LOW_SHARPE` 可能不在列表里） |
-| prod 读数时效 | **>48h 不可信** ⇒ 提交前 `check_correlation(refresh=True)` |
+| prod 读数时效 | **≤48h 可信缓存直接过闸**（2026-11-14 用户明令）；**>48h 不可信** ⇒ `check_correlation(refresh=True)` 回源 |
 | 相关性池 | self 池可能极小 ⇒ self 低 ≠ 安全；prod 池是全平台 |
 
 ---
@@ -74,7 +74,7 @@ fitness  = sharpe × sqrt(return / max(tvr, 0.125))
 ```
 ① is.checks 全 PASS（含 2Y 闸；注意 ladder 的 +0.005 取整）
 ② SELF_CORRELATION < 0.7（check_self_correlation） <!-- from config.self_corr_max -->
-③ PROD_CORRELATION < 0.7（check_correlation refresh=True） <!-- from config.prod_corr_max -->
+③ PROD_CORRELATION < 0.7（check_correlation refresh=False，48h 缓存优先） <!-- from config.prod_corr_max -->
 ④ 同骨架只保留 1 颗（其余 SUPERSEDED）
 ```
 

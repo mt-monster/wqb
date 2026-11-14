@@ -365,6 +365,19 @@ def test_ev_subtract_accepts_the_named_filter_parameter():
     assert not v.check_expression("divide(a, b, filter=true)")["valid"]      # divide 没有 filter
 
 
+def test_ev_kth_element_named_k_passes_and_positional_k_is_rejected():
+    """平台签名 kth_element(x, d, k, ignore="NaN") 的 k 必须具名（2026-10-31 实测位置写法
+    整批 CANCELLED）；此前漏标 param_names，连合法命名 k=1 都被误判「不存在参数 'k'」，
+    toolkit 静态闸整批拒派（2026-11-13 EUR pat 波）。"""
+    pytest.importorskip("ply")
+    v = _load_validator().ExpressionValidator()
+    assert v.check_expression("kth_element(close, 22, k=1)")["valid"]
+    assert v.check_expression('kth_element(close, 22, k=1, ignore="NaN")')["valid"]
+    assert not v.check_expression("kth_element(close, 22, 1)")["valid"]      # 位置 k 平台也拒
+    assert not v.check_expression("kth_element(close, 22)")["valid"]         # 元数不足
+    assert not v.check_expression("kth_element(close, 22, foo=1)")["valid"]  # 不存在参数
+
+
 def test_ev_docs_reference_paths_that_exist():
     t = _skill("alpha-expression-verifier")
     for rel in ("Claude/skills/alpha-expression-verifier/scripts/verify_expr.py",

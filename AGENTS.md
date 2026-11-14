@@ -75,7 +75,7 @@
 | 5 | S2→S3 门禁 | `workflow_execute(node="wave_gate")`（2026-09-11 起有节点）或 CLI `tools/wave_gate.py`（已内置体检硬门 `tools/field_inspect_gate.py`；多样性走 toolkit `gate.py` 闸6） |
 | 6 | S3 并发回测 | `workflow_batch_track`（并发参数见 `wqb.config.CONCURRENCY` 与 `wqb-concurrency` §8） |
 | 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` |
-| 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（**否决权威**：只能拦不能放）→ `check_correlation(refresh=True)` prod 实测 → **用户确认** → `workflow_submit_alpha(confirm_submit=True)`（不可逆） |
+| 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（**否决权威**：只能拦不能放）→ `check_correlation(refresh=False)` prod 闸（48h 缓存优先，不默认回源）→ **用户确认** → `workflow_submit_alpha(confirm_submit=True)`（不可逆） |
 | 9 | S6 复盘回写 | `mcp__wqb-db__upsert_wave_result` / `seal_dead_end` / `upsert_registry_empirical`，再跑一次 `assemble-priors`（完成定义见 ra-pipeline `references/step9-writeback.md`） |
 
 整链可用 `mcp__wq-brain-http__workflow_chain`（先 `dry_run=True` 看每步构建出的命令）。
@@ -427,6 +427,21 @@ git config core.hooksPath tools/git-hooks
 **★ 判死标记（台账 `dead` / registry `family_dead_datasets`）一律不得单独作为依据** ——
 实测仍在出货全闸候选的集（`fundamental17` / `news17` / `news18`）也被列为死集。
 
+### 7.6 判死六维穷尽闸（2026-11-10 用户指令「判死的太快了，探针没有穷尽所有机制和模板」固化）
+
+任何数据集/字段族标「终判死 / XX 宇宙关闭 / family_dead」**之前**，判死档案必须逐维举证；缺任一维 ⇒ 只能记 PROVISIONAL，**不得**引用为邻接数据集/族的先验，**不得**据此宣布塔/宇宙关闭：
+
+| 维度 | 合格线 |
+|---|---|
+| D1 结构互异模板 | ≥10 个（不同经济机制/算子几何；换窗口、换常数、同假设正反两向均不算） |
+| D2 字段族自测 | 数据集内每个可用字段族 ≥1 条实测；禁止凭族先验封禁未测字段 |
+| D3 矩全家 | 水平 / 一阶差 / 二阶波动 / 比值或信噪比 各 ≥1 |
+| D4 分组轴 | ≥2 个（subindustry / industry / sector / market / bucket） |
+| D5 非线性 | ≥1 条（signed_power / ts_rank / ts_quantile / trade_when / bucket） |
+| D6 配置 | ≥2 套（宇宙×中性化×decay 至少变一维），区分配置层死 vs 信号层死 |
+
+配套纪律：①判死分层＝信号层死 / 配置层死（CW、TO 等闸卡死必须先测替代几何与设置再判）/ 数据层排除（cov=0 写明是排除，不是信号死）；②探针（<10 条）只能输出「继续/停止加注」，不产生判死；③同机制先验（判据 MH 类）只决定优先级，不构成判死依据；④撤判在同一档案追加，不得新开口径；⑤机器层自动拦截是后续项（methodology_rules 仅 4 个硬编码 op 消费点，见 §3 双轨同源），当前靠判死档案模板人工遵守。首例执行：`tracking/DEU/atom_orthogonal/DEATH_AUDIT_20261110.md`（risk60/risk88 撤判重开、news18/50/38 从未探针——「news 塔终判死」已撤回）。
+
 ## 8. 结构维护约定（2026-09-20 结构审计固化）
 
 ### 8.1 gate 门禁分层（**2026-09-20 修正：是分层流水线，不是四份重复实现**）
@@ -510,6 +525,17 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
 - **工具注册**：新函数不要插在某个 `@mcp.tool()` 与它原本装饰的函数之间（2026-09-19 就这样把
   `harvest_multisim_results` 挤出了工具表，N31）；下划线开头的函数不得是工具；SKILL.md 引用的工具必须已注册。
   三条都由 `tests/unit/07_docs_skills/test_skill_integrity.py` 守护，"已移除工具"白名单只收真正下线的工具。
+
+- **高频工具的入参名（2026-11-12 固化：单轮连吃 4 次按参数名报错）**：
+  `create_multi_simulation` / `preflight_expressions` / `operator_audit` 的表达式数组参数一律叫
+  **`alpha_expressions`**（不是 `expressions`）；`batch_status` 要 **`simulation_ids`**（数组，不是 `location`）；
+  `harvest_multisim_alphas` 要 **`multisimulation_location`**（不是 `multisim_id`）。
+  参数名错会在本地 PTC 层抛 `must have required properties`，根本不会打到平台——
+  看到该报错先对照本表，不要怀疑表达式本身。
+- **multisim 收割兜底通路（2026-11-12 实证）**：队列拥塞期 `harvest_multisim_alphas` 会对刚跑完的
+  multisim 返回 `HTTP 404`（multisim 侧注册滞后），而 `batch_status` 已能看到全部 children。
+  此时不要重试等待，改走 `batch_status(simulation_ids)` → 取 children 的 8 位 alpha id →
+  `batch_get_alpha_metrics` + `get_alpha_details`（后者拿平台 `code` 核对臂归属）回读。
 
 ### 8.3 配置文件权威源
 

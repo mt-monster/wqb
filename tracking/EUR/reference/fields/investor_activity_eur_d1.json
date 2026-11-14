@@ -1,0 +1,387 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "investor_activity",
+ "fetched_at": "2026-11-13",
+ "platform_count": 47,
+ "complete": true,
+ "fields": [
+  {
+   "id": "average_trade_price",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Volume-weighted average executed price for the day in local currency across all participants"
+  },
+  {
+   "id": "average_trade_price_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume-weighted average executed price for the day in EUR across all participants"
+  },
+  {
+   "id": "average_trade_price_professional",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume-weighted average executed price for professional trades in local currency"
+  },
+  {
+   "id": "average_trade_price_professional_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume-weighted average executed price for professional activity during the day in EUR"
+  },
+  {
+   "id": "average_trade_price_retail",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume-weighted average executed price for retail activity during the day in local currency"
+  },
+  {
+   "id": "average_trade_price_retail_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Volume-weighted average executed price for retail trades, expressed in EUR"
+  },
+  {
+   "id": "closing_trade_price",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last executed price of the session in local currency"
+  },
+  {
+   "id": "closing_trade_price_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Last executed price of the session expressed in EUR"
+  },
+  {
+   "id": "company_equity_valuation_amount",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Market capitalization of the instrument in local currency"
+  },
+  {
+   "id": "highest_executed_price_professional",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest executed price during the day within professional trades in local currency"
+  },
+  {
+   "id": "highest_executed_price_professional_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Highest executed price within professional activity during the session, in EUR"
+  },
+  {
+   "id": "highest_executed_price_retail",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Highest executed price within retail activity during the session in local currency"
+  },
+  {
+   "id": "highest_executed_price_retail_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Highest executed price within retail activity during the session, in EUR"
+  },
+  {
+   "id": "highest_executed_trade_price",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Highest executed price during the day in local currency across all activity"
+  },
+  {
+   "id": "highest_executed_trade_price_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Highest executed price during the session, expressed in EUR"
+  },
+  {
+   "id": "lowest_executed_price_professional",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Lowest executed price during the day within professional trades in local currency"
+  },
+  {
+   "id": "lowest_executed_price_professional_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Lowest executed price during the day within professional trades, expressed in EUR"
+  },
+  {
+   "id": "lowest_executed_price_retail",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest executed price during the day within retail trades in local currency"
+  },
+  {
+   "id": "lowest_executed_price_retail_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest executed price during the day within retail trades, expressed in EUR"
+  },
+  {
+   "id": "lowest_executed_trade_price",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Lowest executed price during the day in local currency across all activity"
+  },
+  {
+   "id": "lowest_executed_trade_price_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Lowest executed price during the session, expressed in EUR"
+  },
+  {
+   "id": "market_capitalization_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Market capitalization of the instrument expressed in EUR"
+  },
+  {
+   "id": "net_professional_buying_selling_value",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net buying or selling value by professional participants for the day in local currency, positive for net buying and negative for net selling"
+  },
+  {
+   "id": "net_professional_buying_selling_value_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Net buying or selling value aggregated across professional participants for the day in EUR"
+  },
+  {
+   "id": "net_retail_buying_selling_value",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Net buying or selling value by retail participants for the day in local currency, positive for net buying and negative for net selling"
+  },
+  {
+   "id": "net_retail_buying_selling_value_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Net buying or selling value by retail participants for the day in EUR; positive means net buying, negative net selling"
+  },
+  {
+   "id": "opening_trade_price",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "First executed price of the session in local currency"
+  },
+  {
+   "id": "opening_trade_price_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "First executed price of the day expressed in EUR"
+  },
+  {
+   "id": "orders_placed_professional_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of orders placed by professional participants during the day"
+  },
+  {
+   "id": "orders_placed_retail_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Number of orders placed by retail participants during the day"
+  },
+  {
+   "id": "professional_investor_trading_turnover",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Daily traded value attributable to professional participants in local currency"
+  },
+  {
+   "id": "professional_investor_trading_turnover_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total traded value by professional participants during the day in EUR"
+  },
+  {
+   "id": "retail_investor_trading_turnover",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Daily traded value attributable to retail participants in local currency"
+  },
+  {
+   "id": "retail_investor_trading_turnover_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total traded value by retail participants during the day in EUR"
+  },
+  {
+   "id": "shares_purchased_professional_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Number of shares bought during the day by professional participants"
+  },
+  {
+   "id": "shares_purchased_retail_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of shares bought during the day by retail participants"
+  },
+  {
+   "id": "shares_sold_professional_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Number of shares sold by professional participants during the day"
+  },
+  {
+   "id": "shares_sold_retail_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of shares sold during the day by retail participants"
+  },
+  {
+   "id": "shares_traded_professional_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of shares traded by professional participants during the day"
+  },
+  {
+   "id": "shares_traded_retail_investors_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total number of shares traded by retail participants during the day"
+  },
+  {
+   "id": "total_orders_placed_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total number of orders during the day across all participants"
+  },
+  {
+   "id": "total_shares_listed",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of shares outstanding or listed for the instrument"
+  },
+  {
+   "id": "total_shares_purchased_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total number of shares bought during the day across all participants"
+  },
+  {
+   "id": "total_shares_sold_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of shares sold during the day across all participants"
+  },
+  {
+   "id": "total_shares_traded_daily",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total number of shares traded during the day across all participants"
+  },
+  {
+   "id": "total_trading_turnover_eur",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total traded value for the day in EUR across all participants"
+  },
+  {
+   "id": "total_trading_turnover_value",
+   "type": "VECTOR",
+   "coverage": 0.1644,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Total daily traded value for the instrument across all participants in local currency"
+  }
+ ]
+}

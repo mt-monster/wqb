@@ -26,8 +26,16 @@ allowed-tools:
 | 战役目录内、DB 里已有本波表达式，要整波过闸后回测 | **`mcp__wq-brain-http__workflow_batch_track`**（推荐） | 节点内含区域闸；填槽；细则 RA 步 6 §6.1 |
 | 战役目录内、要调引擎参数 / 调试 | toolkit `pipeline.py run …`（`wq-brain-campaign-toolkit`） | 引擎本体；`--submit` = 发起回测 |
 | **手写 / 外部来源的 alpha 列表，或非战役目录的跨区临时批** | **本 skill 的 `scripts/batch_simulator.py`**（兼容路径） | CSV 是进度缓存；见下 |
+| **MCP 直发的临时探索批（≤10 条、单批共 settings）** | **`mcp__wq-brain-http__create_multi_simulation`**（2026-11-14 IND 实测补充） | 见下方「手工 multisim SOP」 |
 
-**并发纪律（填槽、C≈7、账户级仲裁）的唯一权威在 `wqb-concurrency`（§8）**，本 skill 只引用。填槽内容（组合优先 vs 弱探针）的硬约束在 RA 步 4 / 步 6，这里不复写。
+**手工 multisim SOP（2026-11-14 固化，IND 战役 8 波实证）**：
+1. `create_multi_simulation` 是**手工路径，不落库、不进战役统计**——`wait_for_completion=False`（缺省）立即返回 `multisimulation_location`，必须显式收批：`harvest_multisim_alphas(location)` 一次取回全部子 alpha → `mcp__wqb-db__workflow_auto_harvest` / `harvest_multisim_results` 入库；**不用 `get_user_alphas` 收批**。
+2. **整批共享同一 settings 且各入口缺省不同**（`neutralization` 缺省 INDUSTRY、`truncation` 0.0、`test_period` P0Y0M）——区域战役必须**逐项显式覆盖**为区域档（IND=STATISTICAL/0.08/P0Y0M0D）；per-item 不同设置才用 `batch_create_simulations`。
+3. 发批前门禁：`get_operators()` 核实 → `preflight_expressions(dataset_id=<ds>, auto_fix_vector=True)`（已知假阳性：`quantile(...,driver="gaussian")` 的 `gaussian` 被误判 unknown_field，人工放行）→ 连坐语义：批内任一条 ERROR 全批 CANCELLED。
+4. 并发 ≤ `CONCURRENCY.slots=2`；`lookINTO_SimError_message` 看进度（`progress` 字段）；子仿真生成需 1–10 分钟，轮询间隔 ≥90s。
+5. 指标归档：`batch_get_alpha_metrics(≤20)` → `get_alpha_details`（`regular.operatorCount` 平台实值）→ `get_alpha_yearly_stats`（近十年逐年，REST 常返非 JSON 必走 MCP）。
+
+**并发纪律（填槽、C≈7、账户级仲裁）的唯一权威在 `wqb-concurrency`（§8）**，本 skill 只引用（⚠ 该文 C≈7 已过时，现行 `config.CONCURRENCY.slots=2`，2026-10-06 用户定案）。填槽内容（组合优先 vs 弱探针）的硬约束在 RA 步 4 / 步 6，这里不复写。
 
 ## 持久化铁律（DB 单轨）
 

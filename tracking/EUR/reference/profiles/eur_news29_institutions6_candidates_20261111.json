@@ -1,0 +1,222 @@
+{
+  "generated_at": "2026-11-11",
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "purpose": "转场候选数据集全字段画像（未点亮塔：news 1/3、institutions 0/3）",
+  "datasets": [
+    {
+      "id": "news29",
+      "name": "Significant Developments Data",
+      "category": "news",
+      "alphaCount": 84,
+      "userCount": 52,
+      "coverage": 0.6888,
+      "fieldCount": 12,
+      "crowding": "极低（字段级 alphaCount 2-15，几乎无人挖）",
+      "fields": [
+        {
+          "id": "nws29_significance",
+          "type": "VECTOR",
+          "coverage": 0.7733,
+          "alphaCount": 14,
+          "meaning": "事件重要性 1=High 2=Medium 3=Low（需反号成显著性权重）",
+          "use": "显著性加权主信号"
+        },
+        {
+          "id": "nws29_full_significance",
+          "type": "VECTOR",
+          "coverage": 0.7559,
+          "alphaCount": 6,
+          "meaning": "同上全量口径",
+          "use": "稳健性对照"
+        },
+        {
+          "id": "nws29_frontpage",
+          "type": "VECTOR",
+          "coverage": 0.7733,
+          "alphaCount": 7,
+          "meaning": "是否上路透首页 1/0",
+          "use": "高关注度门控/权重"
+        },
+        {
+          "id": "nws29_full_frontpage",
+          "type": "VECTOR",
+          "coverage": 0.7559,
+          "alphaCount": 9,
+          "meaning": "同上全量口径",
+          "use": "稳健性对照"
+        },
+        {
+          "id": "nws29_topic1",
+          "type": "VECTOR",
+          "coverage": 0.7733,
+          "alphaCount": 4,
+          "meaning": "主主题代码（需解码）",
+          "use": "分组轴/主题掩码"
+        },
+        {
+          "id": "nws29_topic2",
+          "type": "VECTOR",
+          "coverage": 0.371,
+          "alphaCount": 2,
+          "meaning": "二级主题代码",
+          "use": "细分主题掩码"
+        },
+        {
+          "id": "event_secondary_topic_code",
+          "type": "VECTOR",
+          "coverage": 0.7559,
+          "alphaCount": 2,
+          "meaning": "二级子类代码",
+          "use": "细分主题掩码"
+        },
+        {
+          "id": "event_tertiary_topic_code",
+          "type": "VECTOR",
+          "coverage": 0.7559,
+          "alphaCount": 5,
+          "meaning": "三级主题代码",
+          "use": "细分主题掩码"
+        },
+        {
+          "id": "company_event_description_text_full",
+          "type": "VECTOR",
+          "coverage": 0.7733,
+          "alphaCount": 15,
+          "meaning": "事件全文描述（文本）",
+          "use": "不可直接数值化，仅可做长度代理"
+        },
+        {
+          "id": "company_event_headline_text_full",
+          "type": "VECTOR",
+          "coverage": 0.7733,
+          "alphaCount": 7,
+          "meaning": "标题全文（文本）",
+          "use": "不可直接数值化"
+        },
+        {
+          "id": "company_event_structured_fields_full",
+          "type": "VECTOR",
+          "coverage": 0.2956,
+          "alphaCount": 3,
+          "meaning": "结构化标签集合",
+          "use": "覆盖率低，不作主腿"
+        },
+        {
+          "id": "nws29_full_topic1",
+          "type": "VECTOR",
+          "coverage": 0.7559,
+          "alphaCount": 9,
+          "meaning": "主主题代码全量口径",
+          "use": "分组轴对照"
+        }
+      ],
+      "mechanism_hypothesis": "高显著性 × 首页曝光的事件型新闻产生注意力冲击，短期动量/中期反转；sig=High 事件与 Low 事件的后续漂移方向应不同",
+      "notes": "VECTOR 字段必须 vec_* 聚合；significance 是 1/2/3 序数，直接 vec_avg 后需反向（4-x）才能当显著性权重"
+    },
+    {
+      "id": "institutions6",
+      "name": "Institutions and Beneficial Stake Ownership",
+      "category": "institutions",
+      "alphaCount": 1468,
+      "userCount": 587,
+      "coverage": 0.9915,
+      "fieldCount": 11,
+      "crowding": "中（字段级 alphaCount 113-382）",
+      "dead_note": "本会话前序台账记载 institutions 两集 18 条 max S 0.78 未过线——再次启用需换机制而非换算子",
+      "fields": [
+        {
+          "id": "aggregate_equity_value_all_owners",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 132,
+          "meaning": "全部持有人持股总市值",
+          "use": "规模基准/分母"
+        },
+        {
+          "id": "aggregate_equity_value_institutions",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 120,
+          "meaning": "机构持股总市值",
+          "use": "机构持股水平"
+        },
+        {
+          "id": "aggregate_share_count_all_owners",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 266,
+          "meaning": "全部持有人持股总数",
+          "use": "覆盖率归一化分母"
+        },
+        {
+          "id": "aggregate_share_count_institutions",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 131,
+          "meaning": "机构持股总数",
+          "use": "机构持股比例"
+        },
+        {
+          "id": "count_institutional_buyers_security",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 382,
+          "meaning": "买入机构家数",
+          "use": "广度指标（breadth of buying）"
+        },
+        {
+          "id": "count_institutional_holders_security",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 196,
+          "meaning": "持有机构家数",
+          "use": "广度水平"
+        },
+        {
+          "id": "count_institutional_sellers_security",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 362,
+          "meaning": "卖出机构家数",
+          "use": "广度指标（breadth of selling）"
+        },
+        {
+          "id": "market_value_institutional_shares_acquired",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 172,
+          "meaning": "机构买入金额",
+          "use": "资金流强度"
+        },
+        {
+          "id": "market_value_institutional_shares_disposed",
+          "type": "MATRIX",
+          "coverage": 0.9307,
+          "alphaCount": 113,
+          "meaning": "机构卖出金额",
+          "use": "资金流强度"
+        },
+        {
+          "id": "quantity_institutional_shares_acquired",
+          "type": "MATRIX",
+          "coverage": 0.9976,
+          "alphaCount": 175,
+          "meaning": "机构买入股数",
+          "use": "股数口径资金流"
+        },
+        {
+          "id": "quantity_institutional_shares_disposed",
+          "type": "MATRIX",
+          "coverage": 0.997,
+          "alphaCount": 158,
+          "meaning": "机构卖出股数",
+          "use": "股数口径资金流"
+        }
+      ],
+      "mechanism_hypothesis": "Chen-Hong-Stein 持股广度：买家家数净增（buyers−sellers）/持有家数 是正向预测因子；净买入金额/总市值 是强度版本",
+      "notes": "11 字段全 MATRIX，无 VECTOR；覆盖 0.9976，longCount 应充足"
+    }
+  ]
+}

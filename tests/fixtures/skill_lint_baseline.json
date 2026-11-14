@@ -12,7 +12,6 @@
   "const-literal|Claude/skills/brain-next-move-analysis/SKILL.md|- **数字口径**：输出里的「达标」`pass_ge_158` = 本地 `backtest_results` 中 `sharpe ≥ 1.58` 的条数（*|门槛数字 sharpe-2y/internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
   "const-literal|Claude/skills/worldquant-submit-alpha/SKILL.md|- **上游 / 下游**：上游 = 用户已明确确认的候选（`submit_verdict` 不是 `BLOCKED`、资格门 Failed RA = 0、pr|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
   "const-literal|Claude/skills/worldquant-submit-alpha/references/ppa-handoff.md|PPAC（本地 `brain-calculate-alpha-selfcorr-quick`，≤ 0.5 才走 PPA 通道）、当期主题窗口、已准备好的属性（n|门槛数字 self-corr-internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
-  "const-literal|Claude/skills/worldquant-submit-alpha/references/scenarios.md|`check_correlation(X, refresh=True)` 实测 prod = 0.55（< 0.7）；用户已在本会话**明确确认**；`quot|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
   "const-literal|Claude/skills/worldquant-submit-alpha/references/submit-chain.md|> 实测 prod < 0.7（步 3）；④ **用户明确确认**（步 5）；⑤ 本 ET 日 REGULAR 配额未满（`python tools/quota|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
   "const-literal|Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md|| 主闸 | `main_gate` | `sharpe ≥ 1.25` **且** `fitness ≥ 0.8` | 无绑定（走 optimization-|门槛数字 sharpe-is-d1 的抄写（写「见 config.X」，或加 <!-- from config.X --": 1,
   "const-literal|Claude/skills/wq-brain-ra-pipeline/references/decision-table.md|| 4 | 硬闸核查：`get_alpha_details` 的 `is.checks` + 本地 SELF / PPAC（PPAC = Power Pool |门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,

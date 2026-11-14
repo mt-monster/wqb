@@ -1,0 +1,851 @@
+{
+ "region": "EUR",
+ "universe": "TOPCS1600",
+ "delay": 1,
+ "dataset": "pv173",
+ "fetched_at": "2026-11-13",
+ "platform_count": 105,
+ "complete": true,
+ "fields": [
+  {
+   "id": "pv173_ranks_bondreturn20deqwt",
+   "type": "VECTOR",
+   "coverage": 0.3019,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Cross-sectional rank across the USA Markit BLE universe (D0) of the issuer’s equally weighted 20-day bond return"
+  },
+  {
+   "id": "pv173_ranks_eqbddivrgbdrtn120d",
+   "type": "VECTOR",
+   "coverage": 0.293,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Cross-sectional rank (ASI, D0) of the 120-day divergence between equity and issuer bond returns"
+  },
+  {
+   "id": "pv173_ranks_eqbddivrgsprd5y120dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3001,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cross-sectional rank (ASI, D0) of the substituted 120-day equity–bond divergence based on 5-year z-spread change"
+  },
+  {
+   "id": "pv173_ranks_mt5yzspreadchg60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3036,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Cross-sectional rank (ASI, D0) of the substituted 60-day change in the 5-year z-spread"
+  },
+  {
+   "id": "pv173_ranks_mt5yzspreadchgstd20dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3103,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_ranks_mt5yzspreadindrelsbst",
+   "type": "VECTOR",
+   "coverage": 0.3112,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_ranks_mt5yzspreadsbst",
+   "type": "VECTOR",
+   "coverage": 0.3112,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cross-sectional rank (ASI, D0) of the substituted 5-year z-spread level (bond-level aggregation when curve nodes are missing)"
+  },
+  {
+   "id": "pv173_ranks_mt5yzspreadzscore60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3071,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Cross-sectional rank across the USA Markit BLE universe (D0) of the 60-day z-score of the issuer 5-year Z-spread, using substituted/imputed values when curve no…"
+  },
+  {
+   "id": "pv173_ranksatlas_unit_name_36",
+   "type": "VECTOR",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "pv173_ranksbondreturn20deqwt_40",
+   "type": "VECTOR",
+   "coverage": 0.3908,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "It is defined as the equally weighted single bond return over last 20 days with the filter of the bonds that mature between 3 years and 7 years."
+  },
+  {
+   "id": "pv173_rankseqbddivrgbdrtn120d_41",
+   "type": "VECTOR",
+   "coverage": 0.3683,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on aggregated bond retur…"
+  },
+  {
+   "id": "pv173_rankseqbddivrgsprd5y120d_56",
+   "type": "VECTOR",
+   "coverage": 0.2733,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on 5-year mid z-spread p…"
+  },
+  {
+   "id": "pv173_rankseqbddivrgsprd5y120dsbst_48",
+   "type": "VECTOR",
+   "coverage": 0.3792,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on 5-year mid z-spread p…"
+  },
+  {
+   "id": "pv173_ranksmt5yzspread_45",
+   "type": "VECTOR",
+   "coverage": 0.2875,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the region relative 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadchg60d_43",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day change of 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadchg60dsbst_30",
+   "type": "VECTOR",
+   "coverage": 0.3925,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "It is defined as the 60-day change of 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadchgstd20d_51",
+   "type": "VECTOR",
+   "coverage": 0.2867,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadchgstd20dsbst_34",
+   "type": "VECTOR",
+   "coverage": 0.4033,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadindrel_38",
+   "type": "VECTOR",
+   "coverage": 0.2875,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadindrelsbst_39",
+   "type": "VECTOR",
+   "coverage": 0.4067,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadsbst_32",
+   "type": "VECTOR",
+   "coverage": 0.4067,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the region relative 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadzscore60d_50",
+   "type": "VECTOR",
+   "coverage": 0.285,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 60-day z-score of 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_ranksmt5yzspreadzscore60dsbst_31",
+   "type": "VECTOR",
+   "coverage": 0.3992,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day z-score of 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_ranksreltermspreadtransfema120d_29",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of transformed relative term spread."
+  },
+  {
+   "id": "pv173_ranksreltermspreadtransfema120dsbst_42",
+   "type": "VECTOR",
+   "coverage": 0.3308,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of transformed relative term spread"
+  },
+  {
+   "id": "pv173_ranksshift60dchg60d_37",
+   "type": "VECTOR",
+   "coverage": 0.2792,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "It is defined as the 60-day change of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_ranksshift60dlast_49",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the average factor loading of the first principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_ranksshift60dstd60d_44",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day standard deviation of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_ranksshift60dzscore60d_53",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day z-score of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_rankstilt5y1ydiff60dema60d_54",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day exponential average of the difference of factor loading of the second principal component for the 5-year z-spread and 1-year z-sprea…"
+  },
+  {
+   "id": "pv173_rankstilt60dchg60d_46",
+   "type": "VECTOR",
+   "coverage": 0.2792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 60-day change of TiltIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_rankstilt60dema60d_35",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day exponential average of average factor loading of the second principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_rankstilt6m1yavg60dlast_52",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the average factor loading of the second principal component for the 6-month and 1-year z-spread"
+  },
+  {
+   "id": "pv173_rankstwist120dlast_33",
+   "type": "VECTOR",
+   "coverage": 0.2792,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the average factor loading of the third principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_rankstwist6m1yavg120dema120d_55",
+   "type": "VECTOR",
+   "coverage": 0.2758,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 120-day exponential average of average factor loading of the third principal component for the 6-month and 1-year z-spread"
+  },
+  {
+   "id": "pv173_rawratios_bondreturn20deqwt",
+   "type": "VECTOR",
+   "coverage": 0.3022,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Equally weighted 20-day bond return for the issuer’s bond universe, reported as a raw value on D1"
+  },
+  {
+   "id": "pv173_rawratios_eqbddivrgbdrtn120d",
+   "type": "VECTOR",
+   "coverage": 0.2933,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Equity–bond divergence based on issuer bond returns over 120 trading days"
+  },
+  {
+   "id": "pv173_rawratios_eqbddivrgsprd5y120dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3004,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Substituted/imputed equity–bond divergence at 5Y over 120 days"
+  },
+  {
+   "id": "pv173_rawratios_mt5yzspreadchg60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3039,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Smoothed/substituted 60-day change in the MT5Y Z-spread"
+  },
+  {
+   "id": "pv173_rawratios_mt5yzspreadchgstd20dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3105,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Smoothed/substituted standard deviation of MT5YZSpread change over 20 days"
+  },
+  {
+   "id": "pv173_rawratios_mt5yzspreadindrelsbst",
+   "type": "VECTOR",
+   "coverage": 0.3114,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Smoothed/substituted industry-relative MT 5Y Z-spread"
+  },
+  {
+   "id": "pv173_rawratios_mt5yzspreadsbst",
+   "type": "VECTOR",
+   "coverage": 0.3114,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Substituted composite version of the issuer 5-year Z-spread level"
+  },
+  {
+   "id": "pv173_rawratios_mt5yzspreadzscore60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3073,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Smoothed/substituted 60-day z-score of the MT5Y Z-spread"
+  },
+  {
+   "id": "pv173_rawratiosatlas_unit_name",
+   "type": "VECTOR",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "pv173_rawratiosbondreturn20deqwt",
+   "type": "VECTOR",
+   "coverage": 0.3917,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "It is defined as the equally weighted single bond return over last 20 days with the filter of the bonds that mature between 3 years and 7 years."
+  },
+  {
+   "id": "pv173_rawratioseqbddivrgbdrtn120d",
+   "type": "VECTOR",
+   "coverage": 0.37,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on aggregated bond retur…"
+  },
+  {
+   "id": "pv173_rawratioseqbddivrgsprd5y120d",
+   "type": "VECTOR",
+   "coverage": 0.2742,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on 5-year mid z-spread p…"
+  },
+  {
+   "id": "pv173_rawratioseqbddivrgsprd5y120dsbst",
+   "type": "VECTOR",
+   "coverage": 0.38,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on 5-year mid z-spread p…"
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspread",
+   "type": "VECTOR",
+   "coverage": 0.2883,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the region relative 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadchg60d",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day change of 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadchg60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3942,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "It is defined as the 60-day change of 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadchgstd20d",
+   "type": "VECTOR",
+   "coverage": 0.2875,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadchgstd20dsbst",
+   "type": "VECTOR",
+   "coverage": 0.4042,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadindrel",
+   "type": "VECTOR",
+   "coverage": 0.2883,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadindrelsbst",
+   "type": "VECTOR",
+   "coverage": 0.4075,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadsbst",
+   "type": "VECTOR",
+   "coverage": 0.4075,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the region relative 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadzscore60d",
+   "type": "VECTOR",
+   "coverage": 0.2858,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 60-day z-score of 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_rawratiosmt5yzspreadzscore60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.4,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day z-score of 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_rawratiosreltermspreadtransfema120d",
+   "type": "VECTOR",
+   "coverage": 0.2842,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of transformed relative term spread."
+  },
+  {
+   "id": "pv173_rawratiosreltermspreadtransfema120dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3317,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of transformed relative term spread"
+  },
+  {
+   "id": "pv173_rawratiosshift60dchg60d",
+   "type": "VECTOR",
+   "coverage": 0.2792,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day change of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_rawratiosshift60dlast",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the average factor loading of the first principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_rawratiosshift60dstd60d",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day standard deviation of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_rawratiosshift60dzscore60d",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 60-day z-score of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_rawratiostilt5y1ydiff60dema60d",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 60-day exponential average of the difference of factor loading of the second principal component for the 5-year z-spread and 1-year z-sprea…"
+  },
+  {
+   "id": "pv173_rawratiostilt60dchg60d",
+   "type": "VECTOR",
+   "coverage": 0.2792,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day change of TiltIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_rawratiostilt60dema60d",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day exponential average of average factor loading of the second principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_rawratiostilt6m1yavg60dlast",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the average factor loading of the second principal component for the 6-month and 1-year z-spread"
+  },
+  {
+   "id": "pv173_rawratiostwist120dlast",
+   "type": "VECTOR",
+   "coverage": 0.28,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the average factor loading of the third principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_rawratiostwist6m1yavg120dema120d",
+   "type": "VECTOR",
+   "coverage": 0.2767,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of average factor loading of the third principal component for the 6-month and 1-year z-spread"
+  },
+  {
+   "id": "pv173_zscores_bondreturn20deqwt",
+   "type": "VECTOR",
+   "coverage": 0.302,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the equally weighted single bond return over last 20 days with the filter of the bonds that mature between 3 years and 7 years."
+  },
+  {
+   "id": "pv173_zscores_eqbddivrgbdrtn120d",
+   "type": "VECTOR",
+   "coverage": 0.2931,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "120-day divergence between equity return and issuer bond return"
+  },
+  {
+   "id": "pv173_zscores_eqbddivrgsprd5y120dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3002,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Substituted/imputed 120-day equity–bond divergence versus 5Y spread change"
+  },
+  {
+   "id": "pv173_zscores_mt5yzspreadchg60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3037,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Smoothed/substituted 60‑day change in the 5‑year Z‑spread"
+  },
+  {
+   "id": "pv173_zscores_mt5yzspreadchgstd20dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3103,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Substituted/smoothed 20-day standard deviation of 5Y Z-spread changes"
+  },
+  {
+   "id": "pv173_zscores_mt5yzspreadindrelsbst",
+   "type": "VECTOR",
+   "coverage": 0.3112,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "Substituted/smoothed industry-relative 5Y Z-spread"
+  },
+  {
+   "id": "pv173_zscores_mt5yzspreadsbst",
+   "type": "VECTOR",
+   "coverage": 0.3112,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Substituted/composite 5-year z-spread level based on bond-level aggregation"
+  },
+  {
+   "id": "pv173_zscores_mt5yzspreadzscore60dsbst",
+   "type": "VECTOR",
+   "coverage": 0.3071,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60‑day z‑score of the substituted 5‑year Z‑spread from the issuer curve (provider composite)"
+  },
+  {
+   "id": "pv173_zscoresatlas_unit_name_68",
+   "type": "VECTOR",
+   "coverage": 1,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "pv173_zscoresbondreturn20deqwt_80",
+   "type": "VECTOR",
+   "coverage": 0.3908,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the equally weighted single bond return over last 20 days with the filter of the bonds that mature between 3 years and 7 years."
+  },
+  {
+   "id": "pv173_zscoreseqbddivrgbdrtn120d_77",
+   "type": "VECTOR",
+   "coverage": 0.3683,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on aggregated bond retur…"
+  },
+  {
+   "id": "pv173_zscoreseqbddivrgsprd5y120d_63",
+   "type": "VECTOR",
+   "coverage": 0.2742,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on 5-year mid z-spread p…"
+  },
+  {
+   "id": "pv173_zscoreseqbddivrgsprd5y120dsbst_81",
+   "type": "VECTOR",
+   "coverage": 0.3792,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the difference of market equity return and estimated equity return based on 120-day linear regression of equity return on 5-year mid z-spread p…"
+  },
+  {
+   "id": "pv173_zscoresmt5yzspread_83",
+   "type": "VECTOR",
+   "coverage": 0.2875,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the region relative 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadchg60d_65",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day change of 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadchg60dsbst_60",
+   "type": "VECTOR",
+   "coverage": 0.3933,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "It is defined as the 60-day change of 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadchgstd20d_75",
+   "type": "VECTOR",
+   "coverage": 0.2867,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadchgstd20dsbst_67",
+   "type": "VECTOR",
+   "coverage": 0.4033,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 20-day standard deviation of changeIn 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadindrel_70",
+   "type": "VECTOR",
+   "coverage": 0.2875,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadindrelsbst_66",
+   "type": "VECTOR",
+   "coverage": 0.4075,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as theIndustry relative 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadsbst_76",
+   "type": "VECTOR",
+   "coverage": 0.4075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the region relative 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadzscore60d_58",
+   "type": "VECTOR",
+   "coverage": 0.2858,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the 60-day z-score of 5-year mid z-spreadIn the bond z-spread curve."
+  },
+  {
+   "id": "pv173_zscoresmt5yzspreadzscore60dsbst_73",
+   "type": "VECTOR",
+   "coverage": 0.3992,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day z-score of 5-year mid z-spreadIn the bond z-spread curve"
+  },
+  {
+   "id": "pv173_zscoresreltermspreadtransfema120d_69",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of transformed relative term spread."
+  },
+  {
+   "id": "pv173_zscoresreltermspreadtransfema120dsbst_62",
+   "type": "VECTOR",
+   "coverage": 0.3308,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of transformed relative term spread"
+  },
+  {
+   "id": "pv173_zscoresshift60dchg60d_64",
+   "type": "VECTOR",
+   "coverage": 0.2792,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day change of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_zscoresshift60dlast_61",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "It is defined as the average factor loading of the first principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_zscoresshift60dstd60d_71",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day standard deviation of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_zscoresshift60dzscore60d_59",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day z-score of ShiftIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_zscorestilt5y1ydiff60dema60d_82",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day exponential average of the difference of factor loading of the second principal component for the 5-year z-spread and 1-year z-sprea…"
+  },
+  {
+   "id": "pv173_zscorestilt60dchg60d_84",
+   "type": "VECTOR",
+   "coverage": 0.2792,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day change of TiltIn Bond Z-spread Curve."
+  },
+  {
+   "id": "pv173_zscorestilt60dema60d_79",
+   "type": "VECTOR",
+   "coverage": 0.2817,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the 60-day exponential average of average factor loading of the second principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_zscorestilt6m1yavg60dlast_57",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the average factor loading of the second principal component for the 6-month and 1-year z-spread"
+  },
+  {
+   "id": "pv173_zscorestwist120dlast_74",
+   "type": "VECTOR",
+   "coverage": 0.28,
+   "userCount": 0,
+   "alphaCount": 1,
+   "description": "It is defined as the average factor loading of the third principal component for the z-spread between 6 months and 40 years"
+  },
+  {
+   "id": "pv173_zscorestwist6m1yavg120dema120d_78",
+   "type": "VECTOR",
+   "coverage": 0.2758,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "It is defined as the 120-day exponential average of average factor loading of the third principal component for the 6-month and 1-year z-spread"
+  }
+ ]
+}

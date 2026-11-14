@@ -1,0 +1,52 @@
+{
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "dataset": "risk68",
+  "fetched_at": "2026-11-12T11:24:20.721Z",
+  "platform_count": 5,
+  "complete": true,
+  "sharpe_filter_removed": 0,
+  "fields": [
+    {
+      "id": "rsk68_beta",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 87,
+      "alphaCount": 117,
+      "description": "Unitless stock beta for a European asset relative to the regional liquidity-weighted market_return, typically estimated over a long rolling window (e.g., ~504 t…"
+    },
+    {
+      "id": "rsk68_residual_return",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 226,
+      "alphaCount": 381,
+      "description": "Idiosyncratic 1-day return for a European asset unexplained by the market factor, computed as actual return minus beta times market_return, expressed in decimal"
+    },
+    {
+      "id": "rsk68_weight_dadv",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 71,
+      "alphaCount": 98,
+      "description": "Simple moving average dollar average daily trading volume for European instruments, used as a liquidity weight (dollar units)"
+    },
+    {
+      "id": "rsk68_weight_edadv",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 73,
+      "alphaCount": 81,
+      "description": "Exponentially decayed dollar average daily trading volume for European instruments, used as a liquidity weight (dollar units)"
+    },
+    {
+      "id": "rsk68_weight_volatility_short",
+      "type": "MATRIX",
+      "coverage": 1,
+      "userCount": 92,
+      "alphaCount": 124,
+      "description": "Short-term volatility estimate for European instruments, expressed in decimal terms"
+    }
+  ]
+}
