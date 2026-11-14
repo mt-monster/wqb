@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-11-08
+last_verified: 2026-11-14
 ---
 
 # DEU 区域挖掘流程（RA 区域分支）
@@ -30,6 +30,11 @@ last_verified: 2026-11-08
 
    `workflow_batch_track` 会把该组合的回测覆盖以 `--set` 钉住；直接用 MCP 发仿真（`create_multi_simulation` / `create_simulation`）时，按 explain 输出逐项传设置，不要依赖工具缺省（各入口缺省不同，换档等于换信号）。
 3. **走九步**：按 `wq-brain-ra-pipeline` 执行；步 3 / 4 / 7 / 8 先读对应组合的分支文件（下表最后一列）。
+
+   > **组篮子 / 判「这颗能不能交付」时**：先读 [`references/_basket-and-atom.md`](references/_basket-and-atom.md)
+   > （DEU 四段式准入 + ATOM 免 IS_Ladder + 已判死类别），通用方法论走 [`wq-basket-composition`](../wq-basket-composition/SKILL.md)。
+   > **跑类别战役波次循环时**：每波骨架与硬约束（≤10 臂、并发≤2、臂序归因、预检判据顺序）读
+   > [`references/_atom-wave-loop.md`](references/_atom-wave-loop.md)；杠杆与反模式读 [`references/_effective-levers.md`](references/_effective-levers.md)。
 4. **步 9 回写之后**刷新组合证据并重渲本 skill：
 
    ```bash
