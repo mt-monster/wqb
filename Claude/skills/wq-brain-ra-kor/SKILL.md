@@ -8,7 +8,7 @@ allowed-tools:
 - Bash
 - mcp__wq-brain-http__*
 - mcp__wqb-db__*
-last_verified: 2026-11-08
+last_verified: 2026-11-16
 ---
 
 # KOR 字段体检 → 组装 → 归因 → 破闸
@@ -421,6 +421,29 @@ NONE / REVERSION_AND_MOMENTUM / STATISTICAL / CROWDING / FAST / SLOW / MARKET / 
 - 长批后 `lookINTO` 报 HTTP 401 ⇒ `authenticate` 重认证即恢复。
 - `performance_comparison` **不是风险因子归因工具**（端点是 merged performance check）⇒ 风险因子暴露走 `get_alpha_pnl` 的 `risk-neutralized-pnl` 列。
 - 平台算子目录可能过期 ⇒ **以实测为准**。
+- **⚠ 裸 VECTOR 字段不得进算术算子（2026-11-15 实测，代价 = 整批 10 条全灭）**：`divide(insd5_source_real_ratio, insd5_source_ratio)`
+  报 `Operator divide does not support event inputs`。**判据**：任何算术算子的**直接实参**里出现未 `vec_*` 的 VECTOR 字段 ⇒ 必错；
+  合法写法是「先各自 `vec_avg` 聚成标量再算」（`divide(vec_avg(A), vec_avg(B))`）。
+  ⚠ `preflight_expressions` **查不出这一层**（只查字段存在性与包裹建议）⇒ 只能人工审。
+  ⚠ **multisim 会连坐**：一条子任务解析失败 ⇒ **同批其余 9 条一起 CANCELLED**（不是只废那一条）。
+- **⚠ `warning` 也计入 `failed_ra_count`（2026-11-15 实测）**：`LOW_INVESTABILITY_CONSTRAINED_SHARPE` 落在 `checks.warning`
+  桶（1.99 vs limit 2.02）时 `failed_ra_count=1`。⇒ 「全闸」必须连 warning 一起清；只读 `checks.fail` 会误判。
+- **⚠ prod 相关性是对平台全局生产池，不是本账号 OS 池（2026-11-15 实测）**：`check_correlation(production)` 返回的直方图
+  合计 **10 万级 pair 计数**，远大于本账号 OS 池（KOR 49 条）。因此 **self 低 ≠ prod 低**：实测 `zq3eAMbV` self=0.085
+  而同族 `leA1gqMn` prod=0.958；`akKGb8w9` self=0.338 而 `rKR8wXZE`(同族) prod=0.783。
+  ⇒ prod 只能 `check_correlation` 实测，**不能用 self 预筛**；顺序改为「先按子族查历史 prod，再实测」。
+- **★ 降 prod 的两级杠杆（2026-11-16 实证，10 颗 prod<0.7<!-- from config.GATES_INTERNAL.prod_corr_max --> 全部由此产出）**：
+  ① **价差结构**——两条**不同信息源**的秩相减，是唯一稳定把 prod 从 0.84 压到 0.50–0.70 的一级杠杆
+  （`同信号 − anl10 FY1 惊奇` 0.697；`同信号 − label 概率差` 0.504；`insd5_tnc − 同信号` 0.526–0.665）。
+  ⚠ 第二腿**自身必须有信号**：`− oth475 出口额` 会把 S 打到 1.00 甚至 −1.05（弱腿拖累）。
+  ② **中性化 SLOW + decay 1–2**——同一表达式只改设置即可再压 0.15–0.18
+  （`tnc − 分歧度`：REV&MOM/d4 **0.839** → SLOW/d1 **0.663** → SLOW/d2 **0.665**；PV 日内相关：SLOW/d2 **0.698** vs REV&MOM/d8 0.783）。
+  代价 = TO 抬升、F 下降 ⇒ **只对本身低换手的核成立**（纯分歧度核 S 会从 1.90 掉到 1.18）。
+  ⛔ **反面**：`hump` + 300–900 日 `ts_decay_linear` 壳层**不能**降 prod（10/10 全灭，label 核 2.82→0.58）——
+  本库 shortinterest38 那 14 颗低 prod 件是**信号本身**低拥挤，不是壳层的功劳。**别再试壳层。**
+- **★ 价差结构选型（逐项实测，直接照抄）**：第二腿字段 **`vol_af` ≥ `vol_chg` ≫ `ghc_tr`**
+  （`vol_af` 版 prod 0.526–0.529；`ghc_tr` 版 0.723 ⇒ 撞墙）；label 期限 **只取 5 日**（20/60 日的 2Y 掉到 1.45–1.54）；
+  分组轴 **sector**（industry/subindustry 使 TO 升到 33–35%、F 掉到 0.67–0.97）；decay 甜蜜点 **2**。
 
 ## Resources
 

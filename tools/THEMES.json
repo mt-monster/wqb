@@ -3,14 +3,14 @@
   "_source": "tools/README.md 主题节（表格首列）优先，其余按前缀规则兜底；都命不中的进 _unassigned 等人工裁定，不允许默认塞进已有目录。",
   "_why_not_moved": "2026-10-04 实测：全仓 80 处 `sys.path.insert(... 'tools')`，且 index_tables / migrate_wave_verdict_enum 等被当模块 import；仓库根推导写法同主题内就有 5 种（dirname(dirname()) / parents[1] / parent.parent / '..','src' 拼接）。下沉一层会同时改变 import 解析与路径层数，逐文件迁改需跟验收流程（见 tools/README.md 「迁移配方」）；本表先把目标结构与存量基线定下来，由 S11 保证顶层只减不增。",
   "themes": {
-  "infra": {
-   "dir": "tools/infra",
-   "title": "infra",
-   "files": [
-    "proxy_mode.py"
-   ],
-   "status": "moved"
-  },
+    "infra": {
+      "dir": "tools/infra",
+      "title": "infra",
+      "files": [
+        "proxy_mode.py"
+      ],
+      "status": "moved"
+    },
     "gates": {
       "dir": "tools/gates",
       "title": "gates",
@@ -80,28 +80,9 @@
         "probe_sa_unsubmitted.py",
         "full_template_campaign.py",
         "harvest_campaign_top.py",
-        "_r22_run.py",
-        "_r22_seq.py",
-        "_r22_wave.py",
-        "_r23_exp.py",
-        "_r24_sweep.py",
-        "_r24b_sweep.py",
         "kor_near_gate_watch.py",
         "kor_year_probe.py",
         "kor_year_sweep.py",
-        "_anl45_probe.py",
-        "_detach_probe.py",
-        "_e1_probe_pp.py",
-        "_grp_rank_probe.py",
-        "_lowcov_status.py",
-        "_modelfam_probe.py",
-        "_oth335_reading.py",
-        "_pv_preclose_sweep.py",
-        "_pvpc_gen_preflight.py",
-        "_snt26_probe.py",
-        "_snt27_sweep.py",
-        "_wide_probe.py",
-        "_yp_for_2y_leaders.py",
         "kor_form_probe.py",
         "prod_peek_batch.py"
       ],
@@ -118,7 +99,8 @@
       "title": "super",
       "files": [
         "sa_probe.py",
-        "super_build.py"
+        "super_build.py",
+        "genius_tiebreak.py"
       ],
       "status": "frozen-pending"
     },
@@ -151,11 +133,7 @@
         "daily_select.py",
         "continue_submit_leM88RN5.py",
         "find_leM88RN5_collision.py",
-        "submit_rravgrn0.py",
-        "_ab_adopt.py",
-        "_ab_template.py",
-        "_prodbreak.py",
-        "_sub_fix_probe.py"
+        "submit_rravgrn0.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -173,7 +151,8 @@
         "backfill_gate_plan.py",
         "backfill_skeletons.py",
         "pick_backlog_representatives.py",
-        "prod_watch.py"
+        "prod_watch.py",
+        "candidate_inventory_20261115.py"
       ],
       "status": "frozen-pending"
     },
@@ -229,8 +208,6 @@
         "osmosis_allocate.py",
         "osmosis_best_return.py",
         "submit_and_verify.py",
-        "_repair_dataset.py",
-        "_test_carrier_upgrade.py",
         "backfill_year_profile.py",
         "backfill_alpha_pyramids.py"
       ],
@@ -352,7 +329,6 @@
         "gen_inspect_from_db.py",
         "os_inventory_scan.py",
         "step9_audit.py",
-        "_dataset_report.py",
         "webdata_scan.py"
       ],
       "status": "frozen-pending"
@@ -386,8 +362,7 @@
         "scan_fields.py",
         "skeleton_panel.py",
         "validate_fields_batch.py",
-        "verify_platform_fields.py",
-        "_unlit_sweep.py"
+        "verify_platform_fields.py"
       ],
       "status": "moved-partial",
       "moved_files": [
@@ -416,7 +391,8 @@
       "files": [
         "diag_forum_read.py",
         "forum_cache_builder.py",
-        "forum_research.py"
+        "forum_research.py",
+        "forum_post.py"
       ],
       "status": "frozen-pending"
     },
@@ -442,6 +418,17 @@
         "sync_skills.py"
       ],
       "status": "frozen-pending"
+    },
+    "knowledge": {
+      "dir": "tools/knowledge",
+      "title": "knowledge",
+      "files": [
+        "rebuild.py",
+        "distill.py",
+        "yield_report.py",
+        "digest.py"
+      ],
+      "status": "moved"
     },
     "legacy": {
       "dir": "tools/legacy",
@@ -546,11 +533,6 @@
     "reason": "2026-10-26 清理会话：S11「主题归属棘轮」查出 15 个顶层脚本无归属（此前 `_unassigned` 长期为空的假象，实测闸跑出来才现形）。本轮**只补登记、不搬家**——归属按脚本功能人工裁定，目录下沉仍按「一次一个主题」的批次纪律另开议题。",
     "assigned": {
       "probe": [
-        "_r22_run.py",
-        "_r22_seq.py",
-        "_r22_wave.py",
-        "_r23_exp.py",
-        "_r24_sweep.py",
         "kor_near_gate_watch.py",
         "kor_year_probe.py",
         "kor_year_sweep.py"
@@ -578,9 +560,7 @@
   "_adopted_20261027": {
     "reason": "2026-10-27 治理评审（`reports/codebase_governance_review_20261027.md` §4-P6）：S11 归属棘轮报 2 个已暂存的新顶层脚本无归属；另有 1 个未跟踪的启动器被**误判成数据件**（S11 取面按 `.py` 划脚本 ⇒ `.ps1` 落到「非脚本件」那条判据上）。本批只补登记 + 修正分类，**不搬家**。",
     "assigned": {
-      "probe": [
-        "_r24b_sweep.py"
-      ],
+      "probe": [],
       "verdict": [
         "prod_wait.py"
       ],
@@ -636,24 +616,9 @@
     "reason": "2026-10-27 提交前治理：S11 归属棘轮报 29 个已暂存顶层脚本无归属（其中 23 个零引用已归档至 attic/unregistered_tools_20261027/，本批登记剩余 29 个）。按功能人工裁定归属，**只补登记、不搬家**——S11 顶层冻结的合规路径是 THEMES.json 登记，目录下沉按「一次一个主题」的批次纪律另开议题。",
     "assigned": {
       "probe": [
-        "_anl45_probe.py",
-        "_detach_probe.py",
-        "_e1_probe_pp.py",
-        "_grp_rank_probe.py",
-        "_lowcov_status.py",
-        "_modelfam_probe.py",
-        "_oth335_reading.py",
-        "_pv_preclose_sweep.py",
-        "_pvpc_gen_preflight.py",
-        "_snt26_probe.py",
-        "_snt27_sweep.py",
-        "_wide_probe.py",
-        "_yp_for_2y_leaders.py",
         "kor_form_probe.py"
       ],
       "data-repair": [
-        "_repair_dataset.py",
-        "_test_carrier_upgrade.py",
         "backfill_year_profile.py"
       ],
       "research": [
@@ -663,22 +628,14 @@
         "corr_check.py"
       ],
       "reporting": [
-        "_dataset_report.py",
         "webdata_scan.py"
       ],
-      "verdict": [
-        "_ab_adopt.py",
-        "_ab_template.py",
-        "_prodbreak.py",
-        "_sub_fix_probe.py"
-      ],
+      "verdict": [],
       "gates": [
         "hook_selftest.py",
         "sreq_precheck.py"
       ],
-      "fields": [
-        "_unlit_sweep.py"
-      ],
+      "fields": [],
       "ledger": [
         "wqb_tools_shim.py"
       ]

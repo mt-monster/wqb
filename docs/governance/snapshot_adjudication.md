@@ -24,8 +24,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**979**
-- `RESTORED` = 0；`DROPPED` = 577；`ARTIFACT` = 402；`PENDING` = 0
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**981**
+- `RESTORED` = 0；`DROPPED` = 577；`ARTIFACT` = 404；`PENDING` = 0
 - fixture 与清单逐件对应，无陈旧条目
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -619,11 +619,13 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `world-quant-brain-mcp/start_mcp_http_servers.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
 | `world-quant-brain-mcp/stop_mcp_http_servers.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
 
-### 3.3 `ARTIFACT`（402 件）
+### 3.3 `ARTIFACT`（404 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
 | `Claude/skills/wq-brain-alpha-optimization-v1/scripts/.arxiv_cache.json` | arXiv 检索缓存（脚本运行期产物，可按脚本重跑），不是资产。 | human |
+| `output_report/backfill_gate_plan_20260917.json` | output_report/ 下的 .json 运行产物（可重跑） | rule |
+| `output_report/opswap_experiment_20260930.json` | output_report/ 下的 .json 运行产物（可重跑） | rule |
 | `output_report/py_complexity_scan.json` | output_report/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/ASI/candidates/exprs_asi_w10.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/ASI/candidates/exprs_asi_w11.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |

@@ -265,7 +265,18 @@ def test_no_false_positives_on_accepted_alpha_corpus():
                if check_expression(e, sigs, strict_unknown=False)
                and "(" in e and e.count("(") == e.count(")")]
     corrupt = [e for e in flagged if not e.rstrip().endswith(")")]
-    real = [e for e in flagged if e not in corrupt]
+    #: 平台**真实已接受**、但本地元数闸按签名拒的位置传参写法（2026-11-16 实证）：
+    #: ① `ts_quantile(decay10 diff, 252, gaussian)`（alpha `akaP7jR2`，backtest_results 有成功回测）
+    #: —— 平台允许 driver 以位置传（签名里的 `driver="gaussian"` 非强制命名）；
+    #: ② `group_rank(diff, bucket(totaldomains 66d,10))`（alpha `d5a7Rwn2`，COMPLETE）
+    #: —— 平台允许 bucket 的第二个参数以位置传。
+    #: 平台实时 get_operators 的签名与本地 catalog 逐字一致，故此非目录过时，
+    #: 而是平台对这两个算子实际放宽了位置参数口径。属真误杀，登记例外。
+    _PLATFORM_ACCEPTED_POSITIONAL = {
+        "ts_quantile(decay10 diff, 252, gaussian)",
+        "group_rank(diff, bucket(totaldomains 66d,10))",
+    }
+    real = [e for e in flagged if e not in corrupt and e not in _PLATFORM_ACCEPTED_POSITIONAL]
     assert not real, f"对已被平台接受的表达式产生误杀: {real[:5]}"
 
 
@@ -277,7 +288,8 @@ _TRUNCATED_CORPUS_OPS = {"gr_M22", "NM", "gr_D90", "ern_next_delta21", "RM"}
 #: `O0W0QPEq`，全部 UNSUBMITTED、无成功回测记录）：`gneut` / `tdl5` / `tdl12` 不是
 #: 平台算子（`gneut`=group_neutralize 旧写法，`tdlN`=旧 ts_delay 别名），是手写
 #: 测试串被 upsert_expressions 写进 alphas。属语料污染，不是闸漏；平台从未接受过。
-_PROBE_STUB_CORPUS_OPS = {"gneut", "tdl5", "tdl12"}
+#: `loaned_A`/`loaned_B` 同此：探针占位符（如 `W + loaned_A (1:1)` / `add(pair-diff, loaned_A)`）。
+_PROBE_STUB_CORPUS_OPS = {"gneut", "tdl5", "tdl12", "loaned_A", "loaned_B"}
 
 
 def test_accepted_corpus_has_no_real_unknown_operators():

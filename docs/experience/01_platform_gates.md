@@ -674,7 +674,7 @@ KOR/D1 的 IS 窗由平台硬定 **2014-01-01 → 2023-12-31**。两轮干净差
 （388 passed）+ `worldquant-submit-alpha/references/submit-chain.md` 步 4b（项目级 / 用户级双份）。
 
 
-## 18. ★★ 现行口径：方案 D「分层 + 配对」（2026-11-13 19:5x 用户拍板）
+## 18. 方案 D「分层 + 配对」（2026-11-13 19:5x 拍板；**零死区版，已被 §18.1 v2 取代**）
 
 用户追问「换手不是越小越好吗，为什么会有反例，怎么匹配这几个指标才是最佳方案」⇒ 发现
 `F = S×√(ret/max(TO,0.125))` 使 `sharpe/fitness/returns/turnover` 四量共线，原「三项正向指标全硬拦」
@@ -711,3 +711,166 @@ KOR/D1 的 IS 窗由平台硬定 **2014-01-01 → 2023-12-31**。两轮干净差
 两个 `05_submit_quota` 测试文件（新增「分散化补偿放行」「配对触发硬拦」「真提交放行」用例）、
 `worldquant-submit-alpha/references/submit-chain.md` 步 4b（项目级 + 5 安装位）、
 `MEMORY.md` §0、`output_report/marginal_gate_v2_20261113.md` §7。
+
+---
+
+## 18.1 ★★★ 现行口径：方案 D **v2 严格档**（2026-11-16 09:5x 用户明令「分层阈值再调严格一点」）
+
+### 为什么改：零死区在噪声里抛硬币
+
+平台实测同一 `EQUITY:DEU:1` 分区（before S 3.52 / F 3.05 / Ret 10.13% / TO 13.53% / DD 2.64%）
+两颗候选的边际贡献：
+
+| alpha | ΔSharpe | ΔFitness | ΔReturns | ΔTurnover | ΔDrawdown | 旧零死区 | v2 严格档 |
+|---|---:|---:|---:|---:|---:|---|---|
+| `akaWd90w` | **+0.06** | **+0.02** | −0.09pp | +0.13pp | −0.09pp | ❌ pair_rule 硬拦 | ✅ `pass_offset` |
+| `kqamAeRg` | **+0.06** | **+0.01** | −0.09pp | +0.17pp | −0.10pp | ❌ pair_rule 硬拦 | ✅ `pass_offset` |
+
+两颗**净效果双双为正**（组合 Sharpe 3.52→3.58），却因为「ΔRet 为负 0.09pp 且 ΔTO 为正 0.17pp」
+被当成「收益降 + 成本升」双重恶化否决。0.09pp / 0.17pp 完全在噪声量级 —— 这是抛硬币弃件，
+不是质量把关。官方侧同向证据：`Consultant Submission Tests` 九项里**没有**边际贡献项；
+`Clear these tests before submitting` 原话 "low correlation is more important than minor increase
+in performance"；`Brain Genius` 明说点塔通过分散提升 CAP。
+
+### 四层判定（唯一事实源 `submit_alpha.MARGINAL_*`）
+
+| 层 | 条件 | 结果 |
+|---|---|---|
+| **L0 死区** | `|ΔS| ≤ 0.02` ∧ `|ΔF| ≤ 0.02` ∧ `|ΔRet| ≤ 0.3pp` | `verdict="neutral"`，放行且不出软告警 |
+| **L1 净效果** | `ΔS < −0.05` **或** `ΔF < −0.05` | 硬拦（`net_block`，force 不豁免） |
+| **L2 配对** | `ΔRet ≤ −0.5pp` **且**（`ΔTO ≥ +1.5pp` **或** `ΔDD ≥ +0.5pp`） | 硬拦（`pair_block`） |
+| **L3 归因** | `ΔTO` / `ΔDD` 单独变差 | 只写 `soft_warnings` |
+
+严格档 vs 宽松档（本次刻意砍半）：净效果容差 **0.05 vs 0.10**｜配对收益 **−0.5pp vs −1.0pp**｜
+配对换手 **+1.5pp vs +3.0pp**｜配对回撤 **+0.5pp vs +1.0pp**｜死区 **0.02/0.3pp vs 0.03/0.5pp**。
+噪声实测上限约 ΔRet 0.1pp、ΔTO 0.3pp ⇒ 门槛仍有 5 倍以上安全边际，不会误杀。
+
+### 两条接线要点（v2 与旧版最容易改错的地方）
+
+1. **`run()` 只认 `hard_blocked`，不再 `or dilutive`**。旧版 `if _hard or marginal.get("dilutive")`
+   会让「ΔS=−0.001」直接阻断 —— 容差带形同虚设。`dilutive`（ΔS<0）现仅作排序键与
+   Step 1.8 分散度输入。
+2. **不设「点亮塔」豁免通道**。点塔有官方经济依据，但豁免等于允许为凑塔位降质量门槛，
+   与「调严」指令冲突 ⇒ 塔信息只作排序键，不进闸门；确需豁免时报用户个案裁定。
+
+### 判定标签（`verdict`）
+
+`net_block` / `pair_block` / `neutral` / `pass_offset` / `pass`；阈值经 `thresholds` 字段随每次
+结果透出，便于审计（`test_thresholds_are_exposed_and_strict` 锁死取值）。
+
+**同步面**：`submit_alpha.py`（常量区 + `_marginal_contribution` 判定 + `run()` Step 1.7 接线 +
+docstring/plan 文案）、
+`tests/unit/05_submit_quota/test_submit_marginal_contribution.py`（新增 `_Deadzone` / `_MildNegative` /
+`_PairWorsened` / `_AkaWd90wSnapshot` / `_KqamAeRgSnapshot` 五组用例）、
+`test_submit_marginal_wiring.py`（新增 `test_noise_level_returns_does_not_block` 反回归用例）、
+`MEMORY.md` §1。
+
+---
+
+## §X 相关性闸的两条口径纠正（2026-11-15 KOR 实测）
+
+### X.1 `prod` 是**平台全局生产池**，不是本账号 OS 池 ⇒ `self` 不能预筛 `prod`
+
+硬证据（同一天、同一账号、KOR）：
+
+| alpha | self（本地 OS 池，32 条参与） | prod（平台） | 结论 |
+|---|---:|---:|---|
+| `3qokqkZQ` | **0.270** | **0.8495** | self 极低而 prod 撞墙 |
+| `zq3eAMbV` | 0.085 | 同族 `leA1gqMn` = 0.9579 | 同上 |
+| `akKGb8w9` | 0.338 | 同族 `rKR8wXZE` = 0.7827 | 同上 |
+| `78LpqZYQ` | 0.477 | **0.697** ✅ | 唯一双低 |
+
+量化口径：`check_correlation(production)` 返回的直方图**合计 10 万级 pair 计数**，
+而本账号 KOR OS 池只有 **49** 条 ⇒ prod 的对照池远大于本账号。
+⇒ **纪律**：① 不许用 `check_self_correlation` 预筛 prod（会漏掉 0.85 的墙）；
+② 判 prod 只能 `check_correlation(correlation_type='production')` 实测；
+③ 查历史值时先看**同子族**的已知 prod（同族一条撞墙 ≈ 整族撞墙），再决定要不要烧那一次平台计算；
+④ 平台相关性**每账号仅 1 个在飞**，且可能被 `corr:prod_backfill(...)` 后台任务占住 ⇒ 返回 `correlation_busy` 时按 `retry_after` 等，不要重触发。
+
+### X.2 `checks.warning` 也计入 `failed_ra_count` ⇒ 「全闸」= fail 与 warning 都空
+
+实测：`58g6lPkX` 的 `LOW_INVESTABILITY_CONSTRAINED_SHARPE` = **1.99**，limit **2.02**（差 1.5%），
+平台把它放在 `checks.warning` 桶，但 `ra.failed_ra_count` 仍为 **1**、`ra.ra_failed = true`。
+同批 `dl_riskfree_returns` 18 条里 **8 条**因此不过闸（investability 1.65–1.91 vs ~2.02）。
+⇒ 判「全闸」必须 `len(checks.fail) + len(checks.warning) == 0`（`MATCHES_COMPETITION` / `MATCHES_THEMES` 除外，
+它们是信息项不是阈值项）；只看 `checks.fail` 会把 8 条误判成可提交。
+
+---
+
+## 19. ★★★ Genius tie-breaker「六维」—— 用户 2026-11-16 10:2x 明令纳入考评
+
+### 19.1 官方口径（唯一事实源：`brain-genius` 文档 §Criteria，2026-09-18 版）
+
+**六维不是"Genius 六维评分"这种笼统说法，而是官方 tie-breaker 六项**，原文在
+*"What happens if more consultants qualify for a level than there are available spots?"*：
+
+| 序号 | 官方原文 | 方向 | 可操作含义 |
+|---|---|---|---|
+| T1 | Avg distinct Operators\*/Alpha | **越低越好** | 单件算子越少越好 |
+| T2 | Avg distinct Fields/Alpha | **越低越好** | 单件字段越少越好 |
+| T3 | Total distinct Operators\* | **越高越好** | 引入未用算子加分 |
+| T4 | Total distinct Fields | **越高越好** | 引入未用字段加分 |
+| T5 | Maximum Simulation Streak | 越高越好 | 连续仿真天数，与选件无关 |
+| T6 | Community leader（论坛 ≥100 字符帖的赞 + 成功推荐） | 越高越好 | 与选件无关 |
+
+\* 官方脚注：`ts_backfill` / `group_backfill` **不计入** T1/T3 的算子计数。
+
+**判定方式**：先是三项 eligibility 阈值（① 季度提交信号数 ② 塔数 ③ Combined Alpha Performance），
+**同档达标者之间按「六项排名之和」排序**。官方原话："Eligibility criteria are thresholds,
+not rankings. Meeting the thresholds, whether narrowly or by a wide margin, is the same.
+Hence they are relatively easy to achieve, compared to the tie breaker criteria."
+
+### 19.2 为什么六维直接等于钱
+
+tiebreak → Genius 等级 → 数据/算子权限（Gold 50%/45%、Expert 61%/63%、Master 78%/78%、
+Grand Master 100%/100%）＋**季度付款档位**（`brain-genius` 原文：Master "$2,000 or more"、
+Grand Master "80x or more, upwards of $8,000 or more"）。⇒ 六维是"能不能摸到更高付款档"的临门一脚。
+另外官方明说 "Formulating a higher number of pyramids can potentially improve both the Value Factor
+and Combined Alpha Performance **through diversification**" ⇒ **塔与六维方向一致，不冲突**。
+
+### 19.3 ★ 权重不对称（本条的实践核心）
+
+- **T1/T2 是平均值** ⇒ 单颗权重 `1/(N+1)`（当前 N=377），单件 ΔT1 只到 0.02% 量级 ⇒
+  **几乎不改变 tiebreak 排名**，属**软成本**。
+- **T3/T4 是总数** ⇒ +1 就是确定性 +1.75%（57→58）⇒ **对 tiebreak 敏感**，属**硬收益**。
+
+⇒ **可操作判据（四条）**：
+1. 同绩效**优先 distinct ops / fields 更少**的件（压 T1/T2）；
+2. **优先引入未用过的算子/字段**（提 T3/T4）；未用算子池 = 103 − 57 = **46 个**，是最确定的增量来源；
+3. **纯堆算子但全是旧算子 = 双重伤害**（T1 变差、T3 不动），这是最该先砍的形态；
+4. **不设硬闸**。六维是 tiebreak 不是提交闸，只作**排序键 + 报告必列项**。
+
+**优先级**：**塔 eligibility（≥3 才计入）> 六维 tiebreak**。先保证点塔，再在同一塔档内比六维。
+
+### 19.4 取数与基线（2026-11-16 10:2x 实测）
+
+MCP **没有** Genius tiebreak 端点（`get_leaderboard` 只给 valueFactor / dataFieldsUsed /
+submissionsCount / meanProd / meanSelf）；平台 REST 侧 `/users/self/competition/genius`、
+`/users/self/genius`、`/users/self/activities/genius`、`/genius/leaderboard` **全部 404**。
+⇒ 落为仓库正式 CLI **`tools/super/genius_tiebreak.py`**（`--compute` / `--alphas` / `--probe` / `--json`），
+它拉全量 OS alpha（`regular.code` 在原始 REST 的 `regular` 子对象里，MCP 才拍平到顶层），
+用 `wqb.expression.atom.extract_fields` + 算子正则自行统计。
+
+账户基线（2026-11-16 10:2x）：
+
+| 项 | 值 |
+|---|---|
+| OS alpha 总数 / REGULAR 有效 | 434 / **377** |
+| **T1** avg distinct ops/alpha | **4.6074** |
+| **T2** avg distinct fields/alpha | **1.8488** |
+| **T3** total distinct ops | **57 / 103（未用 46）** |
+| **T4** total distinct fields | 481（脚本口径）／平台 `dataFieldsUsed` = **422** |
+| 其它 | valueFactor **0.43**、submissionsCount 237、meanProd .6391、meanSelf .4076、geniusLevel **GOLD** |
+
+⚠ 口径差异：T4 脚本 481 vs 平台 422 —— 平台 `dataFieldsUsed` 只数数据集字段，脚本已剔除
+`BASE_MARKET_FIELDS` 与 `GROUPING_KEYS`（不剔时 495），残差 59 来自历史/已下架字段。
+**边际判断用同一套脚本口径即可**（相对量，不影响 T4"+N 新字段"的方向）。
+⚠ `VERIFIED_SAFE_OPERATORS` 运行时为空（`len()==0`，靠 config 状态注入）⇒ **不要拿它当算子过滤器**，
+否则会把所有算子算成 0（本次踩过，第一版候选全 `ops=0`）。
+⚠ 平台 `regular.operatorCount` 是**调用次数**（含重复），官方 tiebreak 要的是 **distinct**，不能直接拿来当 T1。
+
+### 19.5 报告模板（与塔六元组同表）
+
+`id | 塔六元组 | ops | fields | ΔT1 | ΔT2 | T3 新算子 | T4 新字段 | 六维结论`
+
+T5/T6 写 `n/a（与选件无关）`，不得静默省略。

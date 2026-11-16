@@ -118,6 +118,20 @@
 | `campaign_report.py` | **全量流水线增量汇报器**：唯一事实源 `results/campaign_digest.md`（每跑完一个集追加一行），已汇报游标存 `cache/campaign_report_state.json`，只打印新增；`--wait-secs N` 空转最多等 N 秒（轮询 15s）便于「跑完一个就报」；`--reset` 重置游标。★ **无 argparse：传任何参数都会直接开跑**（含 `--help`），别拿它当普通 CLI 试探 | 手工翻 `campaign_digest.md` 数进度 |
 | `reset_low_cov_skips.py` | **把 `SKIPPED_LOW_COV` 的集从 checkpoint / 结果里摘除，使它们重新入队**：覆盖率门槛 0.8→0.6 后，原先被判低覆盖的 32 个集仍在 checkpoint `done` 里，续跑会直接跳过。只动 `verdict==SKIPPED_LOW_COV`；`SKIPPED_TOO_FEW_FIELDS` / `DEAD` / `ALIVE` 一律不碰；默认 `--dry-run` | 手改 `results/full_template_campaign_checkpoint.json` |
 
+## 经验闭环（2026-11-15）
+
+逐条回测经验索引与波级蒸馏。事实源仍是 `backtest_results` / `expressions`；派生解释落
+`attempt_knowledge`（`wqb.knowledge.capture` 唯一写入，可幂等重建），蒸馏统计进
+`region_kb.family_stats` / `skeleton_stats`，由 `assemble_priors` 注入 GEM。
+语义规则只产出 `status=proposed`，**不自动晋升、不自动判死**。
+
+| 工具 | 用途 | 取代 |
+|---|---|---|
+| `knowledge/rebuild.py` | 从事实表幂等重建 `attempt_knowledge`（`--region` + `--wave`/`--all`，`--dry-run` 只算不写；默认删除本批已不在 `backtest_results` 的旧行，`--no-prune` 关闭）。首次上线回填历史波次、验证派生层可重建 | 手写 SQL 回填 |
+| `knowledge/distill.py` | 波级 / 区域级蒸馏：`--wave` 出 `wave_lessons`，`--publish` 写 `region_kb.family_stats` / `experience_proposals_<region>` / `template_kb.measured_*`；不传 `--wave` 做区域快照（proposals 也生成，但**不推进生命周期**）；`--dry-run` 只算不写 | 手写 `s4_walls` 汇总、人工数族 |
+| `knowledge/yield_report.py` | 知识版本产出率：按 `knowledge_version` 分组算 win/near/dead 率与 prod/self clean 率，写 `output_report/experience_yield_<region>_<YYYYMMDD>.md` + ledger `experience_yield_<region>` | 手工对比“换知识前后有没有变好” |
+| `knowledge/digest.py` | 区域经验摘要：生成 `tracking/<REGION>/priors/experience_digest.md`（有效骨架 / 统计死路 / 待确认提案 / 最新版本产出率），标记外人工笔记保留 | 翻多份 wave_lessons 拼现状 |
+
 ## 探针编排（新数据集首探）
 
 S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
@@ -346,24 +360,6 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `load_field_profiles_to_db.py` | 把字段画像灌进 `wqb.db`（`dataset_profile` / `field_profile_full`）。`--region <R>` 选区域；`--no-catalog` 禁用 EUR catalog（**非 EUR 区域必加**，否则同名集被 EUR 覆盖指标）；`--catalog <path>` 指定其它 catalog。 | 需参数 |
 | `query_profile.py` | 字段/数据集画像查询器（本地库优先，兜底查平台）。 | 需参数 |
 | `verify_platform_fields.py` | 平台字段校验：对比本地库 vs 平台真实字段，找出「本地有、平台无」的幽灵字段。 | 需参数 |
-| `_ab_adopt.py` | 把「手动补派」的 A/B 批次收割进断点，避免重复派发。 | 无参直跑 |
-| `_ab_template.py` | P3 验证：新模板（删 5 族 + pp 统一）vs 旧模板 —— 同字段同设置的真 A/B。 | `--dry-run` / `--fresh` |
-| `_anl45_probe.py` | analyst45 三门修复探针：S 1.28 / F 0.63 / robust 0.41。 | `--dry-run` |
-| `_detach_probe.py` | 脱离 Job object 的存活探针：每 5 秒写一行心跳，共 120 秒。 | 无参直跑 |
-| `_e1_probe_pp.py` | E1：同字段 A/B —— pp 是否真的优于 lvl_rk。 | `--dry-run` / `--only` |
-| `_grp_rank_probe.py` | 模板实验：`group_rank(<base>, market)` 是否真的「抬地板」。 | `--dry-run` |
-| `_modelfam_probe.py` | 未点亮塔：模型型集的字段探针（为三腿混合选主腿/辅腿）。 | `--dry-run` |
-| `_oth335_reading.py` | 定向波 5：other335 —— 改「读数方式」降 prod（最后一轮）。 | `--dry-run` |
-| `_prodbreak.py` | 破 prod 墙 · 归因 + 对照实验（2026-10-27）。 | `--dry-run` / `--dump` |
-| `_pv_preclose_sweep.py` | 定向波：intraday_pv_feats 的 *_pre_close_2 子族扫描。 | `--dry-run` / `--fresh` |
-| `_pvpc_gen_preflight.py` | 生成 *_pre_close_2 子族的待校验表达式清单（供 preflight 用）。 | 无参直跑 |
-| `_repair_dataset.py` | 从已完成的仿真把某个集的结果补写进 results / checkpoint（进程卡死后的修复）。 | 无参直跑 |
-| `_snt26_probe.py` | sentiment26 补 S 探针：只要 +0.04。 | `--dry-run` |
-| `_snt27_sweep.py` | sentiment27 定向波：验证 sentiment26 的配方能否移植（兄弟集）。 | `--dry-run` |
-| `_sub_fix_probe.py` | sub_universe 修复探针：model25 / model31 只差 sub 一门。 | `--dry-run` |
-| `_unlit_sweep.py` | 未点亮塔攻坚：跨集单腿探针 → 同集辅腿组合。 | `--stage` / `--dry-run` |
-| `_wide_probe.py` | 绕过 select_fields 的预算，直接对全集取字段做探针。 | `--dry-run` |
-| `_yp_for_2y_leaders.py` | 对「S 弱 / 2Y 强」的集，按其 max-2Y 那颗算年度画像，判断 2Y 是否为样本假象。 | 无参直跑 |
 | `attribution_scan.py` | 回溯归因：把 `results/full_template_campaign_results.json` 里已有的变体矩阵一次性算成归因台账，并输出跨集轴效应汇总。 | `--dry-run` / `--min-s` |
 | `backfill_year_profile.py` | 回填 `year_profile`：修 fail-open 的历史遗留。 | `--dry-run` / `--min-s` |
 | `corr_check.py` | 通用相关性检查：给定 alpha id 列表，取 self + production 的最大相关性。⚠ prod 必须走 MCP `check_correlation` 同一后端，**不要并发起多个**。 | `--ids` / `--types` / `--out` / `--wait` / `--threshold` |

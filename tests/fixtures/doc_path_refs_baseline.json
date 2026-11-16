@@ -1,11 +1,11 @@
 {
  "_doc": "doc_path_refs.py 的棘轮基线（2026-10-06 P3）。此处列出的路径是『活文档引用但当前不可达』的**存量**违规：不阻断提交，但不得新增。修好一条请重跑 --update-baseline 收紧；只在确认违规合理时才手工放宽。",
  "_triage": "剩余条目全部属于「**有意缺席**」，逐条复核于 2026-10-06，共三类：① docs/design/ 下的**计划 / 设计稿**引用尚未落地的模块（如 modeb_* 一族、corr_screen 节点、family_key 工具、某个尚未编写的测试）——这类文档描述的是「将要建什么」，不是「现在有什么」，与 docs/plans/ 同性质；② **未初始化区域 TWN 的模板路径**（tracking/TWN/**）——开区前按设计就不存在，相关 SKILL 已写明「本区没有战役目录、开波前先补」；③ **运行期按需生成的目录**（tracking/runs、tracking/taxonomies）——首次跑对应流程才出现。处置纪律：这些**不阻断提交**，但也不要「顺手清掉」——清掉会把「计划中」误表达成「已放弃」。要收紧基线，先在对应的设计文档里给这些路径加上「尚未落地」的说明（本工具认同行/上一行的豁免标记）。",
- "_generated_at": "2026-10-27T14:43:30Z",
- "_live_docs_checked": 766,
+ "_generated_at": "2026-11-16T04:29:03Z",
+ "_live_docs_checked": 876,
  "violations": [
-  ".clinerules/skills",
   ".github/copilot-instructions.md",
+  "docs/operations",
   "output_report/brain-alpha-judge",
   "tools/campaign_supervisor.py",
   "tools/skill_lint",
@@ -19,7 +19,24 @@
   "tracking/TWN/config/thresholds.json",
   "tracking/TWN/scripts",
   "tracking/USA/campaign_20261014/02_wave_ledger.md",
-  "tracking/USA/scripts"
+  "tracking/USA/scripts",
+  "tracking/_scratch"
  ],
- "untracked": []
+ "untracked": [
+  "output_report/USA_regular_alpha_delivery_20261114.md",
+  "output_report/ts_step_templates_20261114.md",
+  "src/wqb/methodology_rules.py",
+  "tests/unit/02_workflow/test_priors_family_stats.py",
+  "tests/unit/04_gates/test_build_wave_skeleton_soft_penalty.py",
+  "tests/unit/09_core/test_attempt_knowledge.py",
+  "tools/knowledge/digest.py",
+  "tools/knowledge/rebuild.py",
+  "tools/knowledge/yield_report.py",
+  "tracking/DEU/atom_orthogonal/NEARGATE_BREAK_GRID_FND72_20261115.md",
+  "tracking/DEU/atom_orthogonal/WAVE_w1_fundamental72_20261114.md",
+  "tracking/DEU/atom_orthogonal/WAVE_w3_fundamental72_20261115.md",
+  "tracking/DEU/regular_tower/WAVE_rt-fundamental-w1_20261116.md",
+  "tracking/USA/reference/_usa-shortinterest43-field-profile-20261115.md",
+  "tracking/USA/reference/usa_s0_dataset_scan_20261114.md"
+ ]
 }

@@ -42,18 +42,6 @@ DIRECT_CONNECT_WHITELIST = (
     "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py",
     "Claude/skills/brain-data-feature-engineering/scripts/feature_engineering.py",
     "tools/sreq_precheck.py",           # S_req 前置筛选（pre-existing untracked）
-    "tools/_ab_adopt.py",                # A/B 批次收割（pre-existing untracked）
-    "tools/_ab_template.py",              # P3 A/B 验证（pre-existing untracked）
-    "tools/_dataset_report.py",           # EUR 战役全景报告（pre-existing untracked）
-    "tools/_e1_probe_pp.py",              # E1 pp vs lvl_rk A/B（pre-existing untracked）
-    "tools/_grp_rank_probe.py",           # group_rank 模板实验（pre-existing untracked）
-    "tools/_lowcov_status.py",            # 低覆盖波状态（pre-existing untracked）
-    "tools/_modelfam_probe.py",           # 模型型集字段探针（pre-existing untracked）
-    "tools/_pvpc_gen_preflight.py",       # *_pre_close_2 表达式预生成（pre-existing untracked）
-    "tools/_pv_preclose_sweep.py",        # *_pre_close_2 子族扫描（pre-existing untracked）
-    "tools/_test_carrier_upgrade.py",      # carrier_expand 离线验证（pre-existing untracked）
-    "tools/_unlit_sweep.py",              # 未点亮塔攻坚（pre-existing untracked）
-    "tools/_wide_probe.py",               # 全集字段宽探针（pre-existing untracked）
 )
 
 

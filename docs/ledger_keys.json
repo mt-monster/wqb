@@ -382,6 +382,26 @@
    "refresh": "同上"
   },
   {
+   "key": "candidate_basket_20261114",
+   "status": "active",
+   "purpose": "IND 交付篮子快照（2026-11-14 战役终验：候选 alpha_id、self/prod 读数、组腿配额占用）",
+   "writers": [
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "output_report/ind_campaign_delivery_20261114.md"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/pool-hygiene/candidate_inventory_20261115.py"
+    }
+   ],
+   "missing": "候选盘点工具读不到篮子快照",
+   "refresh": "IND 战役交付时覆盖"
+  },
+  {
    "key": "waiver_<gate>_<region>_<wave>",
    "status": "active",
    "purpose": "闸放行 / 豁免协议（字段、批准人、有效期见 `wqb.waiver`；`<wave>` 缺省 `all`）",
@@ -615,7 +635,7 @@
    "readers": [
     {
      "kind": "code",
-     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py"
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_gate_diversity.py"
     },
     {
      "kind": "code",
@@ -898,7 +918,7 @@
    "key": "region_kb",
    "status": "active",
    "region": "各区 + GLOBAL",
-   "purpose": "区域知识库：`win_recipes[]` / `dead_patterns[]` / 算子使用统计 / `gate_priors`（GLOBAL 区另有通用 `templates[]`）",
+   "purpose": "区域知识库：`win_recipes[]` / `dead_patterns[]` / 算子使用统计 / `gate_priors` / 实测 `family_stats[]` / `skeleton_stats[]`（GLOBAL 区另有通用 `templates[]`）",
    "writers": [
     {
      "kind": "code",
@@ -907,6 +927,11 @@
     {
      "kind": "code",
      "ref": "tools/build_gate_prior_from_inventory.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/knowledge/distill.py",
+     "via": "publish_region_stats：完整 read-modify-write 写 family_stats / skeleton_stats / knowledge_stats"
     }
    ],
    "readers": [
@@ -920,6 +945,11 @@
     },
     {
      "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/rules.py",
+     "via": "cross_wave_stats → recommend_next_wave 的 cross_wave_evidence"
+    },
+    {
+     "kind": "code",
      "ref": "src/wqb/workflow/nodes/gem.py"
     }
    ],
@@ -930,8 +960,14 @@
    "key": "template_kb",
    "status": "active",
    "region": "KB",
-   "purpose": "模板库 `validated` / `failed` 两层（蒸馏晋升终点）",
-   "writers": [],
+   "purpose": "模板库 `validated` / `failed` 两层（人工维护）+ `measured_validated` / `measured_failed`（2026-11-15 P4 由 distill 自动写，advisory、低于人工层）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/knowledge/templates.py",
+     "via": "publish_templates：只写 measured_* 子键，保留 templates[] 人工层"
+    }
+   ],
    "readers": [
     {
      "kind": "code",
@@ -943,12 +979,7 @@
     }
    ],
    "missing": "wins / dead_ends 少来源",
-   "refresh": "蒸馏晋升时更新",
-   "orphan": {
-    "kind": "read-without-writer",
-    "tracked_by": "IX-20",
-    "reason": "仓库内没有脚本写它；文档只描述读取映射，写入靠人工 / agent"
-   }
+   "refresh": "每波 distill --publish 合并 measured 层；人工层不动"
   },
   {
    "key": "operator_principle_kb",
@@ -1538,6 +1569,85 @@
    "readers": [],
    "missing": "无记录 = 该区还没做过 win/dead_end 回写，或钩子异常被 fail-open 吞掉；读取方按「无历史报告」处理，不影响回写与选集（profile 本身仍走文档 + `-m wqb.profiles render --apply`）",
    "refresh": "每次 registry 回写 win/dead_end 后自动覆盖同 region 值；要全量重算跑 `python tools/profile_drift_check.py --region <R> [--write-ledger]`。改 profile 结论永远需人工复核，本键只报告不写回 profile"
+  },
+  {
+   "key": "forum_paper_recon_<qkey>",
+   "status": "active",
+   "purpose": "外部金融论文检索留痕（机制证据闸 EVID-PAPER 的取证键）：WebSearch 命中的论文题目+方向+适用边界，或网络超时时本地 docs/experience 论文库 grep 的降级摘要",
+   "writers": [
+    {
+     "kind": "agent",
+     "doc": "Claude/skills/wq-brain-ra-pipeline/SKILL.md",
+     "via": "步 4 机制证据闸：S2 机制设计阶段写摘要（MCP upsert_ledger_key，键含数据集 token）",
+     "ref": "mcp__wqb-db__upsert_ledger_key"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_gate_knowledge.py",
+     "via": "EVID-PAPER 项按 7 天窗口回查"
+    }
+   ],
+   "missing": "视为无论文取证；--require-evidence 时闸阻断",
+   "refresh": "同 qkey 覆盖；7 天窗口由闸判定"
+  },
+  {
+   "key": "wave_lessons_<region>_<wave>",
+   "status": "active",
+   "purpose": "单波经验蒸馏快照：`n_attempts` / `outcome_mix` / `knowledge_version` / `by_family[]` / `by_skeleton[]` / `settings` / `proposals`（2026-11-15 P2）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/knowledge/distill.py",
+     "via": "publish_region_stats（pipeline.stage_review / MCP harvest 自动调用；CLI tools/knowledge/distill.py --publish）"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/step9_audit.py",
+     "via": "第 ⑦ 项 wave_lessons：存在性 + n_attempts + published_at 不早于 wave 回写"
+    }
+   ],
+   "missing": "本波未跑经验蒸馏 → step9_audit 软判据 WARN（strict 下 FAIL）；下一波仍可用旧 region_kb 统计",
+   "refresh": "每波覆盖同 region+wave；distill 重跑即刷新 published_at"
+  },
+  {
+   "key": "experience_proposals_<region>",
+   "status": "active",
+   "purpose": "待确认的语义提案（dead_families / dead_skeletons / wins / rules）。默认只累积；`stat_dead_*` 规则满 2 个独立波次确认后自动转 `active`（只写 strategy 咨询型，不生成硬拦截），判死仍需 forum_recon + seal_dead_end（2026-11-15 P2/P3）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/knowledge/distill.py",
+     "via": "publish_region_stats → _merge_proposals（按 family/skeleton/rule_id 去重，保留最近 200 条）"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/knowledge/distill.py",
+     "via": "下次发布时 read-modify-write 合并（S6 决策仍由 agent 经 get_ledger_key 读取，不登记为 reader）"
+    }
+   ],
+   "missing": "该区还没跑过 distill --publish，或提案为空（正常）",
+   "refresh": "每波 distill --publish 合并；不入 GEM prompt，只给 S6 决策"
+  },
+  {
+   "key": "experience_yield_<region>",
+   "status": "active",
+   "purpose": "知识版本产出率快照：按 `knowledge_version` 分组统计 win/near/dead 率、最高/平均 |S|、prod/self clean 率，并记录 `report_path`（2026-11-15 P4）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/knowledge/yield_report.py",
+     "via": "write_yield_report（tools/knowledge/yield_report.py CLI；缺省非 dry-run 时写）"
+    }
+   ],
+   "readers": [],
+   "missing": "该区还没跑过 yield 报告；摘要里产出率一节显示“暂无”（摘要自行重算，不读本键）",
+   "refresh": "每次跑 tools/knowledge/yield_report.py 覆盖；报告文件按日期另存"
   }
  ]
 }

@@ -7,6 +7,33 @@
 
 ---
 
+## ★ 零、多参算术摊平（2026-11-16 平台实证，**压缩第一步，优于一切消融**）
+
+**规则：`add` / `multiply` / `subtract` / `max` / `min` 是多参算子，无论几个入参都只计 1 个算子。**
+⇒ 任何嵌套求和/求积都可**整层摊平**，指标逐位不变（加法结合律）。
+
+**证伪过程（别信文档，文档自相矛盾）**：catalog 里 `multiply(x, y, ..., filter=false)` 带 `...`，
+但 `add(x, y, filter=false) <!-- lint:counterexample -->` **没有 `...`**，只有描述写 "Adds two or more inputs element wise"。
+⇒ 用探针仿真实测：`add(rank(close), rank(volume), rank(cap)) <!-- lint:counterexample -->` → **`regular.operatorCount = 4`**（3 rank + 1 add）。
+`op_arity` 本地闸对该写法报 PASS，不会误杀。
+
+```text
+# 摊平嵌套求和：3 个 add -> 1 个
+add(add(a,b), add(c,d)) <!-- lint:counterexample -->                    ->  add(a,b,c,d)
+
+# 整层吃进父 add：7 个 add -> 1 个（把子层 an 直接摊进 core）
+core = add(add(add(add(leg1,leg2),grm),gri), add(add(r1,r2),add(r3,r4)))
+  ->  core = add(leg1, leg2, grm, gri, r1, r2, r3, r4)
+```
+
+实测：DEU `1YWnZ9rK` 36 ops → 28 ops（−8），S2.64/F2.17/TO18.39%/**逐位相同**。
+
+**⚠ 两口径必须分开报（官方 tiebreak 原文口径）**：T1 = **Avg distinct Operators/Alpha**（**去重**算子种类）。
+⇒ 多参摊平只降 `operatorCount`（调用次数），**不降 T1**。降 T1 必须**消掉算子种类本身**（见 C3.9/C3.10）。
+T1 基线（2026-11-16）：**4.6074 / N=377**，单颗权重 1/378 ⇒ 每减 1 个 distinct 算子 ≈ **−0.0026**。
+
+---
+
 ## 一、无损改写（UNSAFE=否，理论上指标逐位不变，但仍需 1 条仿真确认）
 
 | # | 改写 | 省算子 | 说明 |
@@ -19,6 +46,9 @@
 | C3.6 | `-1 * (-1 * x)`（若表达式里有显式负号乘法） → `x` | −2 | 双重取负 |
 | C3.7 | `abs(abs(x))` → `abs(x)` | −1 | 幂等 |
 | C3.8 | `signed_power(signed_power(x,1),1)` → `x` | −2 | 幂=1 |
+| **C3.9** ★★★ | **多参算术摊平**：`add(add(a,b),add(c,d)) <!-- lint:counterexample -->` → `add(a,b,c,d)`；子层求和整体摊进父 `add` | **−2~−8** | **2026-11-16 平台实证逐位相同**（`add(rank,rank,rank)` → operatorCount=4）。见 §零 |
+| **C3.10** ★★★ | **`group_zscore(x, market)` 整个删除** | **−1** | **2026-11-16 实测逐位相同**：`market` 只有 1 个组 ⇒ 单组 zscore = 全截面仿射缩放（减均值除标准差），被平台建仓 `scale()` 归一化**完全抵消**。同理 `normalize(x)`/`zscore(x)` 这类全局仿射变换若后面没有非线性环节，都是 no-op |
+| **C3.11** ★★ | **消掉 `reverse`**：`group_rank(reverse(x),g)` → `add(group_rank(x,g), -1)` 再整式取负 | **−1 ops，且 distinct −1** | **2026-11-16 实测逐位相同**。原理：`reverse` = `-x`，外层 `group_rank` 保序 ⇒ `group_rank(reverse(x),g) ≡ 1 − group_rank(x,g)`。若该腿是加性组合的一项，用**三参 `multiply(leg, add(gr,-1), -1)`** 一次调用同时补回符号，不新增算子种类。⚠ `reverse` 若被多处使用则此法不省全账号 T3 |
 
 ⚠ **C3 有一个陷阱**：平台的部分算子在 `x` 为常量/全 NaN 时行为不同；改写后仍要跑 1 条仿真确认。
 
