@@ -138,8 +138,13 @@ echo "[pre-commit] destructive-default audit passed."
 echo "[pre-commit] running pytest validation route..."
 # 输出先落文件再 cat：POSIX sh 没有 PIPESTATUS，`cmd | tee` 会把退出码变成 tee 的，
 # 于是「pytest 红了也拦不住」。重定向 + 回显既能拿退出码又不断人看输出。
+# ⚠ 不带 -x（2026-11-16 修）：pytest.ini 已开 -n auto（xdist 并行），`-x` 首个失败即
+#   中断会强制回收 worker，而 `test_silent_server_deadline*` 等用例会拉起 time.sleep 的
+#   后台子进程、主体早已返回，早停时这些残留子进程被中途杀，引发跨 worker 的临时文件
+#   清理竞态（FileNotFoundError 挂到无关 testcase）。并行下 -x 早停也省不了多少（worker
+#   已全起满），去掉它跑完整套更稳。失败仍由退出码阻断。
 _PYTEST_LOG="$_WQB_PYTEST_TMP/pre-commit_pytest_$$.log"
-if ! "$PY" -m pytest tests/ -x "--basetemp=$_WQB_BASETEMP" > "$_PYTEST_LOG" 2>&1; then
+if ! "$PY" -m pytest tests/ "--basetemp=$_WQB_BASETEMP" > "$_PYTEST_LOG" 2>&1; then
     cat "$_PYTEST_LOG"
     echo ""
     echo "[pre-commit] BLOCKED: pytest failed. Fix failing tests before committing."

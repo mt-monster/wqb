@@ -7,3 +7,4 @@
 
 # 开发/测试依赖
 pytest>=8.0.0
+pytest-xdist>=3.0.0

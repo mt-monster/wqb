@@ -175,9 +175,12 @@ class TestInflightSidecar:
         assert second["base_max"] == first["base_max"]
 
     def test_ttl_expiry_prunes_entry(self, lock_env):
-        cs.inflight_mark("A1", ttl_sec=0.05)
+        # ttl 用较大值（0.5s）而非 0.05s：本用例靠真实墙钟断言，xdist 并行（pytest.ini
+        # -n auto）下高并发会让 mark→get 的调度间隔抖动，0.05s 会在「还没 sleep」的断言
+        # 上就被 prune 掉（2026-11-16 实测 flaky）。0.5s 留足容差，sleep 相应拉大，意图不变。
+        cs.inflight_mark("A1", ttl_sec=0.5)
         assert cs.inflight_get("A1")
-        time.sleep(0.12)
+        time.sleep(0.65)
         assert cs.inflight_get("A1") == {}
         assert cs.inflight_all() == {}
 
