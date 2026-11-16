@@ -109,6 +109,11 @@ def test_s1_separates_real_bootstrap_from_false_positives(az, tmp_path, monkeypa
     # 报错文案用 `p.relative_to(REPO_ROOT)`，沙箱在仓库外会抛 ValueError，
     # 故一并把 REPO_ROOT 指到沙箱根（只影响报错文案，不影响判定）。
     monkeypatch.setattr(az, "REPO_ROOT", tmp_path)
+    # 隔离 TOOLS：check_s1 末尾会 tokenize py_files(TOOLS) 只为算一个**不阻塞的
+    # WARN 计数**（tools_hits，2026-11-16 实测真实 tools/ 310 文件 tokenize 要 ~7.6s），
+    # 与本用例断言的「自举 FAIL 判定」无关。不隔离的话本沙箱测试会白扫一遍真实
+    # tools/，从毫秒级拖到 7s。指向沙箱空 tools/ 即可，判定逻辑不变。
+    monkeypatch.setattr(az, "TOOLS", tmp_path / "tools")
     rep = _Rep()
     az.check_s1_syspath(rep)
     detail = [r[2] for r in rep.rows if r[0] == "FAIL" and "自举" in r[1]]
