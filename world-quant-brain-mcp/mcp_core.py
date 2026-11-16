@@ -40,12 +40,24 @@ except Exception:
     _MCP_PORT = 8000
 _MCP_STREAMABLE_HTTP_PATH = os.getenv("MCP_STREAMABLE_HTTP_PATH", "/mcp")
 
+# --- 会话策略（2026-11-15）：默认 stateless -------------------------------
+# 现象（本会话第 3 次复现）：服务进程重启后，长连 Agent 客户端仍持着旧
+#   `mcp-session-id` 发请求，服务端回 `-32600 Session not found`，而客户端
+#   **不会自动重新 initialize** ⇒ 该客户端此后所有工具调用永久失败，
+#   唯有靠人去重载 MCP 连接。`tools/mcp_ping.py` 始终正常（它自建新会话），
+#   所以「ping 全通 + 工具全灭」是这类失效的固定指纹，不要误判成服务挂了。
+# 修法：streamable-http 用 stateless 模式，请求不绑定会话 ⇒ 陈旧 session id
+#   不再致命。安全性已核：本服务工具层零 `ctx:` 依赖（无会话内状态）。
+# 回退：`MCP_STATELESS_HTTP=0` 恢复有会话模式。
+_MCP_STATELESS = os.getenv("MCP_STATELESS_HTTP", "1").strip() != "0"
+
 mcp = FastMCP(
     "brain-platform-mcp",
     "A server for interacting with the WorldQuant BRAIN platform",
     host=_MCP_HOST,
     port=_MCP_PORT,
     streamable_http_path=_MCP_STREAMABLE_HTTP_PATH,
+    stateless_http=_MCP_STATELESS,
 )
 
 # Add health check endpoint for container monitoring

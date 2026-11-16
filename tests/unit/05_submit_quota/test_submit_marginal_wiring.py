@@ -10,9 +10,10 @@
 
 1. `confirm_submit=False` 的**预检仍必须产出**该数值（用户要据此判断分散/稀释），
    预检本身不阻断，但必须留下「真提交会被拦」的痕迹（顶层 `marginal_warning`）；
-2. `ΔSharpe<0` 且 `confirm_submit=True` ⇒ `blocked=True`，在 set_properties / POST
-   **之前** return（零平台副作用）；
-3. `ΔSharpe>=0` ⇒ 无 `marginal_warning`，流程照常。
+2. `hard_blocked=True`（v2 严格档：`ΔS/ΔF < −0.05`，或 `ΔRet≤−0.5pp` 且成本越阈）
+   且 `confirm_submit=True` ⇒ `blocked=True`，在 set_properties / POST **之前** return
+   （零平台副作用）；`ΔS<0` 但落在容差带内 ⇒ **不得阻断**（`dilutive` 只作排序）；
+3. 净效果达标 ⇒ 无 `marginal_warning`，流程照常。
 """
 import sys
 from pathlib import Path
@@ -84,9 +85,13 @@ _DILUTIVE_AFTER = {"sharpe": 1.55, "fitness": 1.30, "turnover": 0.130,
 # 2026-11-13 分级硬闸后「正向样本」需 ΔReturns >= 0；原 0.0784（Δ=-0.0015）改作负例见下。
 _HELPFUL_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.137,
                   "returns": 0.0810, "drawdown": 0.0402}
-# ΔSharpe>0 但 ΔReturns<0 ⇒ 新增硬闸命中
-_RET_NEGATIVE_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.137,
-                       "returns": 0.0784, "drawdown": 0.0402}
+# ΔS>0 但 ΔRet=−0.15pp / ΔTO=+1.0pp：噪声级 ⇒ 2026-11-16 v2 起放行
+# （旧零死区口径会把它当「收益降+成本升」硬拦，实测 kqamAeRg / akaWd90w 都是这个量级）
+_NOISE_RET_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.137,
+                    "returns": 0.0784, "drawdown": 0.0402}
+# ΔRet=−0.99pp「且」ΔTO=+2.3pp ⇒ 越双阈值，配对否决
+_PAIR_WORSE_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.150,
+                     "returns": 0.0700, "drawdown": 0.0402}
 # 硬项全过，但换手与回撤都变差 ⇒ 只允许软告警
 _SOFT_ONLY_AFTER = {"sharpe": 1.98, "fitness": 1.50, "turnover": 0.150,
                     "returns": 0.0810, "drawdown": 0.0700}
@@ -150,12 +155,13 @@ def test_positive_delta_has_no_warning(monkeypatch):
 # 2026-11-13 方案 D 接线：净效果 S/F 硬拦、ΔReturns 配对判据、成本只告警
 # ---------------------------------------------------------------------------
 
-def test_returns_negative_blocks_real_submit(monkeypatch):
-    """ΔSharpe>0 但 ΔReturns<0 ⇒ 仍阻断，且早于 set_properties / POST。"""
-    r = _run(monkeypatch, _BEFORE, _RET_NEGATIVE_AFTER, confirm_submit=True)
+def test_pair_worse_blocks_real_submit(monkeypatch):
+    """ΔRet≤−0.5pp 且 ΔTO≥+1.5pp ⇒ 阻断，且早于 set_properties / POST。"""
+    r = _run(monkeypatch, _BEFORE, _PAIR_WORSE_AFTER, confirm_submit=True)
     s = _marginal_step(r)
-    assert s["dilutive"] is False, "ΔSharpe 为正，旧口径本应放行"
+    assert s["dilutive"] is False, "ΔSharpe 为正"
     assert s["hard_blocked"] is True
+    assert s["verdict"] == "pair_block"
     assert s["hard_failures"] == ["returns"]
     assert r.get("blocked") is True
     assert r.get("reason", "").startswith("marginal_contribution blocked")
@@ -163,16 +169,31 @@ def test_returns_negative_blocks_real_submit(monkeypatch):
     w = r.get("marginal_warning")
     assert w and w["hard_failures"] == ["returns"]
     assert "硬闸阻断" in w["note"]
+    assert w["thresholds"]["pair_returns_lte"] == -0.005, "阈值须随告警透出"
     step_names = [x.get("step") for x in (r.get("steps") or [])]
     assert "set_properties" not in step_names and "submit" not in step_names
     assert r.get("submitted") is not True
 
 
-def test_returns_negative_preflight_warns_but_not_blocked(monkeypatch):
-    r = _run(monkeypatch, _BEFORE, _RET_NEGATIVE_AFTER, confirm_submit=False)
+def test_pair_worse_preflight_warns_but_not_blocked(monkeypatch):
+    r = _run(monkeypatch, _BEFORE, _PAIR_WORSE_AFTER, confirm_submit=False)
     assert r.get("marginal_warning"), "预检必须预告真提交会被拦"
     assert not r.get("blocked")
     assert r.get("success") is True
+
+
+def test_noise_level_returns_does_not_block(monkeypatch):
+    """★ v2 关键回归：ΔRet=−0.15pp / ΔTO=+1.0pp 属噪声 ⇒ 真提交也放行。
+
+    这是 `kqamAeRg` / `akaWd90w` 被零死区误杀的同形态用例，锁住「别改回零死区」。
+    """
+    r = _run(monkeypatch, _BEFORE, _NOISE_RET_AFTER, confirm_submit=True)
+    s = _marginal_step(r)
+    assert s["hard_blocked"] is False
+    assert s["verdict"] == "pass_offset", s["verdict"]
+    assert "marginal_warning" not in r
+    assert not r.get("blocked")
+    assert r.get("submitted") is True
 
 
 def test_cost_metrics_do_not_block(monkeypatch):

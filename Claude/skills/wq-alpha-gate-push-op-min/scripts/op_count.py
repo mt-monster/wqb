@@ -64,8 +64,9 @@ def report_one(expr: str, as_json: bool) -> dict:
     if rep.get("error"):
         print(f"  ⚠ 解析失败: {rep['error']}（算子计数仍按正则给出）")
     print(f"  算子调用点数: {rep['op_count']}")
-    if rep["per_op"]:
-        print("  逐算子计数: " + ", ".join(f"{k}×{v}" for k, v in rep["per_op"].items()))
+    if rep["per_op"] or rep.get("per_op_full"):
+        per = rep.get("per_op_full") or rep["per_op"]
+        print("  逐算子计数: " + ", ".join(f"{k}×{v}" for k, v in per.items()))
     if rep["fields"]:
         print("  字段/轴: " + ", ".join(rep["fields"][:12]))
     if rep["rewrites"]:

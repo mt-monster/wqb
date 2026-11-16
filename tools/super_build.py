@@ -241,7 +241,8 @@ async def cmd_select(a):
         instrumentType="EQUITY", region=a.region, universe=a.universe,
         delay=a.delay, decay=a.decay, neutralization=a.neutralization,
         truncation=a.truncation, testPeriod="P0Y0M", language="FASTEXPR",
-        visualization=False, pasteurization="ON", maxTrade="OFF",
+        visualization=False, pasteurization="ON",
+        maxTrade=getattr(a, "max_trade", "OFF"),
         selectionHandling="POSITIVE", selectionLimit=a.selection_limit,
         componentActivation="IS", unitHandling="VERIFY", nanHandling="ON",
     )
@@ -431,6 +432,9 @@ def main():
                    help="selection turnover 上限（池内成分 turnover 最高 0.5495 时需调至 0.6）")
     p.add_argument("--prod-ceiling", type=float, default=0.7,
                    help="selection 评分项 prod 上限；池内存在 prod>0.7 成分被 POSITIVE 剔除致不足 10 颗时调至 1.0（超标成分降权参与而非出局）")
+    p.add_argument("--max-trade", default="OFF", choices=["OFF", "ON"],
+                   help="平台 maxTrade 开关（2026-11-15 新增）：ON 会限制单日换手上限，"
+                        "用于压低 TO 抬 F（EUR/GLB 的 F 缺口卡在 TO 上）。缺省 OFF")
     p.add_argument("--selection", default=None,
                    help="（可选）完整 selection 表达式，覆盖模板；缺省按 --self-gate / --turnover-* / --prod-ceiling 生成")
     p.add_argument("--combo", default=None,

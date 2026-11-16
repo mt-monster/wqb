@@ -112,7 +112,10 @@ def test_masking_is_what_makes_the_difference(monkeypatch):
     g = _load_gate()
     expr = "divide(subtract(aaa1,bbb1), add(aaa1,bbb1))"
     assert not _blocked(expr), "前置不成立：带掩码时应放行"
-    monkeypatch.setattr(g, "_mask_denominators", lambda s: s, raising=True)
+    # 2026-11-15 gate.py 充分拆分：_mask_denominators 与 check_one 同住在实现模块，
+    # patch 落在实现模块才对 check_one 的模块全局读取可见（写 facade 属性会被绕过）。
+    impl = sys.modules[g.check_one.__module__]
+    monkeypatch.setattr(impl, "_mask_denominators", lambda s: s, raising=True)
     assert _blocked(expr), "掩码失效后仍放行：本组用例没有真正验证分母位修复"
 
 

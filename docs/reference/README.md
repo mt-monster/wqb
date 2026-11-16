@@ -19,7 +19,7 @@
 | 走完一次标准特征工程波次 | [feature_engineering_sop.md](feature_engineering_sop.md)（六阶段）＋ [feature_engineering_template.md](feature_engineering_template.md)（波级填表） |
 | 从字段画像一路推到产出 alpha | [field_profile_to_alpha_playbook.md](field_profile_to_alpha_playbook.md) |
 | 用现成字段画像库判「这个字段值不值得测」 | [field_profile_usage_guide.md](field_profile_usage_guide.md)（`field_profile_perf` 13 区 / 293,060 行） |
-| 找一个有经济学含义的表达式骨架 | [economic_alpha_template_library.md](economic_alpha_template_library.md)（T1–T12）＋ [101_formulaic_alphas_kb.md](101_formulaic_alphas_kb.md) |
+| 找一个有经济学含义的表达式骨架 | [economic_alpha_template_library.md](economic_alpha_template_library.md)（T1–T13）＋ [101_formulaic_alphas_kb.md](101_formulaic_alphas_kb.md) |
 | 看社区/论坛沉淀的模板 | [community_tpl_library_sequel.md](community_tpl_library_sequel.md)＋ `alpha_template_community.docx`＋ [atom_workflow_and_attribution_20261013.md](atom_workflow_and_attribution_20261013.md) |
 | 做 news / sentiment 类 | [news_sentiment_playbook.md](news_sentiment_playbook.md) → [news_bucket_field_map.md](news_bucket_field_map.md) → [news_dataset_portfolio.md](news_dataset_portfolio.md) → [news.md](news.md) |
 | 查算子能不能用 / 语法怎么写 | [operator_availability_ledger.md](operator_availability_ledger.md)（实测台账，先读这个）→ [operators_notes.md](operators_notes.md) → [bucket_operator_syntax_fix.md](bucket_operator_syntax_fix.md) |
@@ -47,7 +47,7 @@
 | [field_profile_usage_guide.md](field_profile_usage_guide.md) | 字段画像全景与「值不值得测」的判断流程 |
 | [feature_engineering_sop.md](feature_engineering_sop.md) | 六阶段特征工程 SOP（字段理解→筛选→预处理→生成→质量预估→候选池优化） |
 | [feature_engineering_template.md](feature_engineering_template.md) | 波级六节式填表模板 |
-| [economic_alpha_template_library.md](economic_alpha_template_library.md) | T1–T12 经济学含义骨架库 |
+| [economic_alpha_template_library.md](economic_alpha_template_library.md) | T1–T13 经济学含义骨架库 |
 | [101_formulaic_alphas_kb.md](101_formulaic_alphas_kb.md) | Kakushadze 2015 "101 Formulaic Alphas" 知识库（**顶部政策提示优先**） |
 | [atom_workflow_and_attribution_20261013.md](atom_workflow_and_attribution_20261013.md) | ATOM 生产流程 + 回测归因（论坛经验整合） |
 | [low_priority_probe.md](low_priority_probe.md) | 低优先级探针机制（≥2 次 RED 但结构重构未验证 ⇒ 降级不判死） |

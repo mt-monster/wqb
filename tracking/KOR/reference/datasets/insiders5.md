@@ -114,3 +114,55 @@
 4. 若某族 S≥1.0 且 2Y 缺口小 ⇒ wave 186 在该族上扫窗口（22/66/252）+ 套 P-ATOM-1 壳层（bf/σ/p/tvr），候选数 ≤ ⌈8/3⌉=3。
 
 **禁忌（本集专属）**：不对 `trd_amt` 当方向；不对编码字段（`trd_reason_*`/`rpst_grp_typ`）直接做算术；不对 VECTOR 裸字段进算子；不与 PV/MODEL/OTHER 组腿（用户要求 5）；不混信号（add 两腿）。
+
+## 9. 2026-11-15 补测：两个「从未进过候选池」的子族 —— 双双判死
+
+> 背景：2026-11-06 战役已把「交易流量族（A 组）」打穿，唯一出货轴 = `−group_rank(ts_mean(vec_stddev(F),N), sector)`
+> （F ∈ {`vol_chg`, `ghc_tr`, `vol_af`}）。但该族 **prod 0.84–0.97 全撞墙**（因同母件 `RRE9NkVj` 在 OS 池）。
+> 本轮专打两个**从未被任何区域消费**的子族，看能否拿到 prod 白空间。批：`rtsdtbLy4lCaLZpDkwC5On`（10 条）+ `2VNNk41Kh4tG9Cz133MygHPM`（10 条）。
+
+### 9.1 库藏股族（D 组，`insd5_trsy_*`，cov 0.8728）—— ⛔ 判死
+
+| 几何 | alpha | S | TO | 结论 |
+|---|---|---:|---:|---|
+| 比例水平 `ts_mean(vec_avg(trsy_ratio),252)` | `KPg892o1` | 0.29 | .045 | ✗ |
+| 比例 126d 变化 `ts_delta(vec_avg(trsy_ratio),126)` | `XgalnO0X` | 0.44 | .220 | ✗ |
+| **分歧度** `−group_rank(ts_mean(vec_stddev(trsy_ratio),55),sector)` | `akaPngpO` | **−0.60** | .056 | ✗ **反向**（分歧度越大越好？） |
+| 时序分位 `group_rank(ts_rank(ts_backfill(vec_avg(trsy_ratio),66),504),subindustry)` | `E5QaE2dR` | 0.28 | .061 | ✗ |
+| 未去重比例水平 / 252d 变化 | `N1PjR0Og` / `2r5ZNMKw` | 0.44 / 0.56 | .047 / .198 | ✗ |
+| 股数分歧度 | `vRAzv8mG` | −0.77 | .056 | ✗ |
+
+**判决**：四条几何 + 未去重口径共 7 条，S ∈ [−0.77, 0.56]。叠加 wave 185 的 `D±`（`ts_delta(trsy_ratio,252)`，max|S| 0.81）
+⇒ **本区库藏股比例无可用信号**。分歧度 −0.60 说明存在「库藏越稳定越好」的弱反向效应，但强度不足单独成腿。
+
+### 9.2 去重缺口族（口径陷阱）—— ⛔ 空账
+
+| 几何 | alpha | S / TO | 结论 |
+|---|---|---:|---|
+| `divide(vec_avg(source_real_ratio), vec_avg(source_ratio))` 252d 均值 | `vRAzloQb` | **0.00 / 0.00** | ⛔ 空账 |
+| 同上 55d 时序波动 | `rK7zlnZ3` | **0.00 / 0.00** | ⛔ 空账 |
+| `divide(vec_avg(real_ratio), vec_avg(ratio))` 252d | `9ql67YJx` | **0.00 / 0.00** | ⛔ 空账 |
+| `ts_delta(divide(vec_avg(source_real_data), vec_avg(source_data)),126)` | `gJaP963O` | **0.00 / 0.00** | ⛔ 空账 |
+
+**根因（重要）**：KOR 上**去重与未去重的「比例」口径完全相同**（`source_real_ratio ≡ source_ratio`、`real_ratio ≡ ratio`），
+差值恒 0 ⇒ 0/0 → NaN ⇒ 全空仓。**股数口径也空**（`source_real_data / source_data` 恒 1），说明 KOR DART 侧不做父/子公司去重。
+⇒ 该子族在 KOR **物理上不存在**（不是弱，是恒等），其它区域若去重逻辑不同需重测。
+
+### 9.3 持有人结构族（E 组）—— ⛔ 判死
+
+| 几何 | alpha | S |
+|---|---|---:|
+| 持有人组类型分歧度 `−group_rank(ts_mean(vec_stddev(rpst_grp_typ),55),sector)` | `E5Qae1qG` | −0.21 |
+| 组类型时序不稳定 `ts_std_dev(vec_avg(rpst_grp_typ),252)` | `P05lONnL` | −0.60 |
+| 高管占比 `group_rank(ts_mean(vec_avg(officer),252),sector)` | `pwazKm8g` | 0.29 |
+| 高管标记分歧度 | `A1xa79kw` | −0.84 |
+| 关系方家数 252d 变化 | `KPg8E3bj` | 0.88 |
+
+**判决**：编码字段（`rpst_grp_typ`/`officer`）的均值/方差在经济上不成立（编码是名义变量），实测也印证（|S| ≤ 0.84）；
+`tnc`（特别关系方家数）的水平有信号（`Xg9vxXrb` S 1.59 全闸），但其**变化率**只剩 0.88 ⇒ 本字段只有「存量」可用。
+
+### 9.4 结论
+
+`insiders5` 的 53 字段里，**唯一可出货面 = 交易流量族的分歧度几何**（3 字段 × 多窗），
+且该面 prod 已撞墙（0.84–0.97）。其余 4 个子族（库藏股 / 去重缺口 / 持有人结构 / 所有权变化）**全部实测判死**。
+⇒ **本数据集在 2026-11-15 的状态：可贡献「全闸但 prod 撞墙」的候选，不能贡献新提交件**。

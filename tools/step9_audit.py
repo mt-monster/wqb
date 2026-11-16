@@ -2,7 +2,7 @@
 """step9_audit.py — 步 9（S6）完成定义只读校验器（2026-10-02 新增）。
 
 ## 为什么有这只工具
-`step9-writeback.md §9.7` 定了六项完成定义，并声明「**缺任何一项 = 本波未完成**」——
+`step9-writeback.md §9.7` 定了七项完成定义，并声明「**缺任何一项 = 本波未完成**」——
 但此前**没有任何代码强制**：GEM 对 stale 先验快照只 WARN 不阻断，漏做 ⑥⑦⑧ 不报错，
 只是下一波带着旧先验跑。GBR 实测快照落后 8 天（快照停 09-19，而 region_kb 已 09-25、
 registry_empirical 已 09-26）就是这个静默退化的后果。
@@ -17,6 +17,7 @@ registry_empirical 已 09-26）就是这个静默退化的后果。
   4. 本波候选全被 prod 墙卡死 → 已 `mark-saturated`
   5. 每个实际回测的数据集都已 `dataset-experience`
   6. `priors_snapshot_<region>` 不早于本次回写（`wave_results.updated_at`）
+  7. 本波已跑经验蒸馏（`wave_lessons_<region>_<wave>`，2026-11-15 P2 新增）
 
 ## 判据强度（防误判）
 - 第 1 / 6 项是**硬判据**：可完全由 DB 断定。
@@ -49,7 +50,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 VERDICT_ENUM = ("PASS", "FAIL", "PARTIAL")
 #: 软判据（无法由 DB 完全断定；strict 才计入失败）
-SOFT_ITEMS = {"key_findings", "dead_end_win", "saturated", "dataset_experience"}
+SOFT_ITEMS = {"key_findings", "dead_end_win", "saturated", "dataset_experience", "wave_lessons"}
 
 
 def resolve_db_path() -> str:
@@ -242,6 +243,43 @@ def check_priors_snapshot(conn, region: str, wave_updated_at: Optional[str]) -> 
                  hint="⑧ 再跑一次 assemble-priors（GEM 对 stale 只 WARN，不会阻止你）")
 
 
+def check_wave_lessons(conn, region: str, wave: Optional[str],
+                       wave_updated_at: Optional[str]) -> Dict[str, Any]:
+    """第 7 项（软）：本波已跑经验蒸馏（wave_lessons_<region>_<wave>）。
+
+    2026-11-15 P2 新增：`pipeline.stage_review` / MCP 收批会自动写；手工回填用
+    `tools/knowledge/distill.py --region R --wave W --publish`。
+    """
+    if not _table_exists(conn, "ledger_kv"):
+        return _item(None, "ledger_kv 表不存在", soft=True)
+    w = wave
+    if w is None:
+        try:
+            row = conn.execute(
+                "SELECT wave_number FROM wave_results WHERE region=? ORDER BY id DESC LIMIT 1",
+                (region,),
+            ).fetchone()
+            w = str(row[0]) if row else None
+        except sqlite3.Error:
+            w = None
+    if not w:
+        return _item(None, "无法确定波号（wave_results 无记录）", soft=True)
+    key = f"wave_lessons_{region}_{w}"
+    lesson = _ledger_get(conn, region, key)
+    if not isinstance(lesson, dict):
+        return _item(False, f"ledger 无 {key}", soft=True,
+                     hint=f"python tools/knowledge/distill.py --region {region} --wave {w} --publish")
+    if lesson.get("n_attempts") is None or not lesson.get("knowledge_version"):
+        return _item(False, f"{key} 缺 n_attempts / knowledge_version", soft=True,
+                     hint="重跑 distill（capture 先于 distill）")
+    published = str(lesson.get("published_at") or "")
+    if wave_updated_at and published and published[:19] < str(wave_updated_at)[:19]:
+        return _item(False, f"{key} published_at={published[:19]} < 回写={str(wave_updated_at)[:19]}",
+                     soft=True, hint="本波结论之后又改过 wave_results，重跑 distill --publish")
+    return _item(True, f"{key} n_attempts={lesson.get('n_attempts')} "
+                       f"kv={lesson.get('knowledge_version')}", soft=True)
+
+
 def audit(conn, region: str, wave: Optional[str]) -> Dict[str, Any]:
     region = region.upper()
     latest_id = None
@@ -266,6 +304,7 @@ def audit(conn, region: str, wave: Optional[str]) -> Dict[str, Any]:
         "saturated": check_saturated(conn, region),
         "dataset_experience": check_dataset_experience(conn, region, wave),
         "priors_snapshot": check_priors_snapshot(conn, region, wave_updated_at),
+        "wave_lessons": check_wave_lessons(conn, region, wave, wave_updated_at),
     }
     hard_fail = [k for k, v in items.items() if v["status"] == "fail" and not v["soft"]]
     soft_fail = [k for k, v in items.items() if v["status"] == "fail" and v["soft"]]
@@ -285,6 +324,7 @@ _LABELS = {
     "saturated": "④全波撞 prod 墙→mark-saturated",
     "dataset_experience": "⑤每个回测数据集有经验文件",
     "priors_snapshot": "⑥assemble-priors 已再跑（快照不早于回写）",
+    "wave_lessons": "⑦本波已跑经验蒸馏（wave_lessons）",
 }
 _MARK = {"pass": "[OK]  ", "fail": "[FAIL]", "unknown": "[ ? ] "}
 
@@ -293,7 +333,7 @@ def render(res: Dict[str, Any], enforce: str) -> str:
     L: List[str] = []
     scope = res["region"] + (f" / wave={res['wave']}" if res.get("wave") else " / 最近一行")
     L.append("=" * 74)
-    L.append(f"步 9（S6）完成定义审计 · {scope}   —— 只读校验（§9.7 六项）")
+    L.append(f"步 9（S6）完成定义审计 · {scope}   —— 只读校验（§9.7 七项）")
     L.append("=" * 74)
     for key, label in _LABELS.items():
         it = res["items"][key]

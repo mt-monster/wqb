@@ -19,8 +19,8 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "world-quant-brain-mcp"))
 
-ALLOC = {"IND", "KOR", "GBR", "GLB", "DEU"}   # 可分配区
-EXCL = {"USA", "MEA", "EUR", "ASI", "CHN", "TWN", "HKG", "JPN", "AMR"}
+ALLOC = {"IND", "KOR", "GBR", "GLB", "DEU", "USA"}   # 可分配区（2026-11-05 起 USA 纳入）
+EXCL = {"MEA", "EUR", "ASI", "CHN", "TWN", "HKG", "JPN", "AMR"}
 TOP_N = 4                                     # 与 --super-top-n 保持一致
 SUPER_MAX_PTS = 10_000                        # 与 --super-max-pts 保持一致
 

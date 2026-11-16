@@ -783,7 +783,11 @@ def test_ar_evidence_schema_ledger_writers_and_ghost_source_match_the_code():
         assert f"`{f.name}`" in t, f.name
     cat = {e["key"]: e for e in json.loads(_read(REPO / "docs" / "ledger_keys.json"))["entries"]}
     assert any(w["ref"] == "tools/forum_recon.py" for w in cat["community_tpl_kb"]["writers"])
-    assert cat["template_kb"]["writers"] == [] and cat["template_kb"].get("orphan")
+    # 2026-11-15 P4：template_kb 不再是 read-without-writer——wqb.knowledge.templates
+    # 写 measured_validated / measured_failed 子键（人工 templates[] 不动）。
+    assert any(w["ref"] == "src/wqb/knowledge/templates.py"
+               for w in cat["template_kb"]["writers"])
+    assert not cat["template_kb"].get("orphan")
     assert len(config.GHOST_OPERATORS) >= 10 and "config.GHOST_OPERATORS" in t
     assert "operator_audit" in _all_http_tools()
     fa = _read(REPO / "tools" / "fetch_all_universes.py")
@@ -1168,7 +1172,9 @@ def test_df_every_operator_is_in_the_platform_catalog_unless_marked_as_a_counter
 
 def test_df_vector_matrix_event_rules_match_gate_3_gate_8_and_the_fix_tool():
     t = _read(DF / "SKILL.md")
-    gate = _read(_TK / "gate.py")
+    # 2026-11-15 gate.py 充分拆分：闸3（类型）规则在 _gate_expr_checks.py、闸8（EVENT）在
+    # _gate_sanity.py，gate.py 降为 facade——规则文本断言的比对源跟随实现走。
+    gate = _read(_TK / "gate.py") + _read(_TK / "_gate_expr_checks.py") + _read(_TK / "_gate_sanity.py")
     assert "最内层" in _read(SKILLS / "wq-brain-campaign-toolkit" / "references" / "gate-rules.md") and "[TYPE]" in t
     assert re.search(r"8.*EVENT.*block", gate) and "平台无 ts_event_*" in gate
     assert "平台没有 `ts_event_*` 系列" in t and "闸 8 直接 FAIL" in t
@@ -1388,7 +1394,8 @@ def test_gm_priors_keys_and_prompt_nudge_claims_match_the_engine():
     src = _read(TRAIL / "economic_priors.py")
     body = src.split("def compact_priors_text", 1)[1].split("\ndef shape_constraint_rules", 1)[0]
     used = set(re.findall(r'priors\.get\("([a-z_]+)"\)', body))
-    assert used == {"region_context", "wins", "dead_ends", "skeleton_field_matrix", "gate_priors"}, used
+    assert used == {"region_context", "wins", "dead_ends", "skeleton_field_matrix",
+                    "gate_priors", "family_stats", "skeleton_stats"}, used
     assert "by_decay" not in body and "by_neutralization" not in body
     t = _read(GEM / "SKILL.md")
     for k in used:

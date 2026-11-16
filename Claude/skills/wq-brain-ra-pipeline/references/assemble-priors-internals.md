@@ -22,7 +22,8 @@
 
 **`region_context`**：`region_kb.tier` / `settings_proven` / `notes`（取前 6，GEM 只渲染前 4）/ `operator_usage_stats`。
 **`gate_priors`**（来自 `tools/build_gate_prior_from_inventory.py --write-priors`）：`by_operator_count` / `by_field_family` 渲染进 GEM prompt（表达式层能作用）；`by_decay` / `by_neutralization` 是仿真设置，**不进 prompt**，assemble 只把它们落成只读的 `settings_prior` 快照，真正改写发生在步 6 的 `pipeline.py run`（显式 `--set` 钉住的维度不动）。
-**`skeleton_field_matrix`**：`KB/operator_principle_kb` 存在时才有（字段特性 × 算子原理 → 有效 / 死 / 正交提示；末尾恒带一条「加权混信号 = 闸 5 poison」的死路）。
+**`skeleton_field_matrix`**：`KB/operator_principle_kb` 存在时才有（字段特性 × 算子原理 → 有效 / 死 / 正交提示；末尾恒带一条「加权混信号 = 闸 5 poison」的死路）。2026-11-15 P2 起**实测优先**：`region_kb.family_stats` / `skeleton_stats` 里的 measured 条目排在静态原理之前，`dead` 标 `advisory=true`（只提示，不做不可逆过滤）。
+**`family_stats` / `skeleton_stats`**（2026-11-15 P2）：由 `wqb.knowledge.distill.distill_region` 从 `attempt_knowledge` 逐条索引聚合，`publish_region_stats` 写回 `region_kb`。只保留 `n / n_win / n_near / max_sharpe / dominant_wall / dominant_wall_share / dead`；`_unknown` 分组不发布。GEM 渲染有效 ≤ 8 / 死路 ≤ 8；**死路是 advisory，不是硬禁**。`family_stats` 依赖 `expressions.family`（GEM 写入）；历史波该列多为空，此时统计退化到 `skeleton_stats`（结构签名维度），不报错。
 
 ## 截断可见，不是静默丢弃
 
@@ -41,7 +42,8 @@
 | 判死：`seal_dead_end(...)`（或 `campaign.py registry add-dead-end`） | `registry_empirical` `dead_end` 层 | 进 `dead_ends` ②（倒序，新封存者靠前） |
 | 胜绩：`upsert_registry_empirical(layer="win", …)`（或 `campaign.py registry add-win`） | `registry_empirical` `win` 层 | 进 `wins` ③ |
 | 波后评审：`pipeline.py --review` | `region_kb` 的 `recent_waves` / `gate_priors_local` / `updated_at` | `gate_priors` 与区域上下文自动变新 |
-| `region_kb.win_recipes` / `dead_patterns` / `forum_templates` / `template_kb` | **没有脚本写入方**（`docs/ledger_keys.json`：`template_kb` 与 `operator_principle_kb` 登记为 orphan；`region_kb` 的这几个数组靠人工 / agent 维护） | 读取方容忍缺失 |
+| 经验蒸馏：`stage_review` / MCP 收批 / `tools/knowledge/distill.py --publish` | `attempt_knowledge` → `wave_lessons_<R>_<W>` / `region_kb.family_stats` / `skeleton_stats` / `experience_proposals_<R>` / `KB/template_kb.measured_*` | `family_stats` / `skeleton_stats` 进 priors 与 `skeleton_field_matrix`；`template_kb.measured_*` 进 wins / dead_ends（低于人工层）；提案不进 prompt，留 S6 决策 |
+| `region_kb.win_recipes` / `dead_patterns` / `forum_templates` / `template_kb.templates[]` | **没有脚本写入方**（`operator_principle_kb` 仍登记 orphan；`region_kb` 的这几个数组靠人工 / agent 维护；`template_kb` 的实测层由 `wqb.knowledge.templates` 写） | 读取方容忍缺失 |
 
 **S6 回写之后必须再跑一次 assemble-priors** 刷新快照（GEM 对 stale 快照只 WARN 不阻断）——这是步 9 完成定义的一部分。
 profile 静态 priors 仅作 DB 空时的种子，不再手工更新。

@@ -9,10 +9,12 @@
    一律 `available=False` 且**不得带 `blocked`**，提交链路照常往下走（「ΔS 不可得」≠「ΔS 为负」）。
    `blocked` 只能由 `run()` 依据 `dilutive` 置位，本函数自身永不置位 —— 避免两层各自判定。
 
-2. **负值 ⇒ 硬闸**：`ΔSharpe < 0` 时 `dilutive=True`、`risk_note` 须写明「硬闸：提交阻断」，
-   由 `run()` 在 `confirm_submit=True` 时阻断（见 test_submit_marginal_wiring.py）。
-   2026-11-04 的反例依据（EUR V5：ΔS −0.04 但 F/DD/TO 全改善）记录在节点 docstring 里，
-   作为**遗留风险说明**保留，不再作为放行依据。
+2. **越容差 ⇒ 硬闸**：2026-11-16 v2 严格档起，`ΔS/ΔF < −0.05` 或
+   （`ΔRet ≤ −0.5pp` 且 `ΔTO ≥ +1.5pp`／`ΔDD ≥ +0.5pp`）才 `hard_blocked=True`；
+   `ΔS` 在 `(−0.05, 0)` 属容差带 ⇒ 放行但记 `dilutive=True` 供排序与 Step 1.8 用。
+   零死区（`Δ<0` 即拦）已于 2026-11-16 废止 —— 实测噪声级 ΔRet 约 0.1pp 被误杀
+   （`kqamAeRg` −0.09pp、`akaWd90w` −0.09pp）。新语义由 `run()` 在
+   `confirm_submit=True` 时阻断（见 test_submit_marginal_wiring.py）。
 
 3. **基准不可跨 alpha 比较**：`partition` 必须原样透出。实测同批 DEU/D1 两颗候选
    分属 `EQUITY:DEU:1`（before S 3.04）与 `EQUITY:DEU:1:POWER_POOL`（before S 1.73）
@@ -163,17 +165,24 @@ class _FullyPositive:
         }
 
 
-def test_returns_negative_marks_hard_gate():
-    """ΔSharpe>0 但 ΔReturns<0 ⇒ hard_blocked=True（新增硬项），dilutive 仍为 False。"""
+def test_noise_level_returns_not_blocked():
+    """★ 2026-11-16 v2 严格档：ΔRet=−0.02pp / ΔTO=+0.07pp 属噪声，不得否决。
+
+    这正是 `kqamAeRg`（−0.09pp/+0.17pp）与 `akaWd90w`（实测 −0.09pp/+0.13pp）
+    被零死区误杀的形态 —— v2 用「ΔRet≤−0.5pp 且 ΔTO≥+1.5pp」双阈值把它放回来。
+    """
     r = _marginal_contribution(_Dispersive(), "FAKE")
     assert r["available"] is True
     assert r["dilutive"] is False, "dilutive 仍只表达 ΔSharpe<0，供 Step 1.8 复用"
     assert "blocked" not in r, "blocked 由 run() 置位，本函数不得自带"
     assert r["delta"]["sharpe"] > 0 and r["delta"]["returns"] < 0
-    assert r["hard_blocked"] is True
-    assert r["hard_failures"] == ["returns"], r["hard_failures"]
+    assert r["hard_blocked"] is False, "噪声级 ΔRet 不得进硬闸"
+    assert r["hard_failures"] == []
+    assert r["verdict"] == "pass_offset", r["verdict"]
+    assert r["pair_rule"]["triggered"] is False
+    assert r["pair_rule"]["offset"] is True
+    assert "returns" in r["soft_warnings"], "收益下降仍须作为归因软告警"
     assert "组合分散" in (r["risk_note"] or ""), "risk_note 仍按 ΔSharpe 语义产出"
-    assert "阻断" in (r["hard_gate_note"] or "")
 
 
 def test_cost_metrics_are_soft_warnings_only():
@@ -263,9 +272,162 @@ def test_pair_offset_passes():
 
 
 def test_pair_triggered_blocks():
-    """收益降 + 成本升 ⇒ 双重恶化，returns 进硬失败列表。"""
-    r = _marginal_contribution(_Dispersive(), "FAKE")
+    """收益降超过 −0.5pp「且」换手升超过 +1.5pp ⇒ 双重恶化，returns 进硬失败列表。"""
+    r = _marginal_contribution(_PairWorsened(), "FAKE")
     assert r["hard_blocked"] is True
+    assert r["verdict"] == "pair_block", r["verdict"]
     assert r["hard_failures"] == ["returns"]
     assert r["pair_rule"]["triggered"] is True
+    assert r["pair_rule"]["cost_up_beyond_tol"] == ["turnover"]
     assert "turnover" in r["pair_rule"]["cost_metrics_up"]
+
+
+# ---------------------------------------------------------------------------
+# 2026-11-16 v2 严格档：死区 / 净效果容差 / 配对双阈值
+# ---------------------------------------------------------------------------
+
+class _Deadzone:
+    """ΔS/ΔF/ΔRet 全在噪声带内 ⇒ 判中性放行（这是对零死区的正面修复）。"""
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.04, "fitness": 2.55, "turnover": 0.1453,
+                           "returns": 0.102, "drawdown": 0.0337},
+                "after": {"sharpe": 3.05, "fitness": 2.56, "turnover": 0.1450,
+                          "returns": 0.1018, "drawdown": 0.0336},
+            },
+        }
+
+
+class _MildNegative:
+    """ΔS=−0.03 / ΔF=−0.02 小幅为负，但在 −0.05 容差带内 ⇒ 放行。"""
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.04, "fitness": 2.55, "turnover": 0.1453,
+                           "returns": 0.102, "drawdown": 0.0337},
+                "after": {"sharpe": 3.01, "fitness": 2.53, "turnover": 0.1440,
+                          "returns": 0.1022, "drawdown": 0.0340},
+            },
+        }
+
+
+class _PairWorsened:
+    """ΔRet −0.6pp「且」ΔTO +2.0pp ⇒ 越过双阈值，配对否决。"""
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.04, "fitness": 2.55, "turnover": 0.1453,
+                           "returns": 0.102, "drawdown": 0.0337},
+                "after": {"sharpe": 3.13, "fitness": 2.61, "turnover": 0.1653,
+                          "returns": 0.096, "drawdown": 0.0330},
+            },
+        }
+
+
+def test_deadzone_is_neutral_not_blocked():
+    r = _marginal_contribution(_Deadzone(), "FAKE")
+    assert r["hard_blocked"] is False
+    assert r["deadzone"] is True
+    assert r["verdict"] == "neutral", r["verdict"]
+    assert r["soft_warnings"] == []
+    assert "死区" in (r["hard_gate_note"] or "")
+
+
+def test_mild_negative_within_tolerance_passes():
+    """ΔS<0 但在 −0.05 容差内 ⇒ 放行，risk_note 须说明「容差带内、仅排序降权」。"""
+    r = _marginal_contribution(_MildNegative(), "FAKE")
+    assert r["delta"]["sharpe"] < 0 and r["delta"]["sharpe"] > -0.05
+    assert r["dilutive"] is True, "dilutive 仍表达 ΔS<0（排序用）"
+    assert r["hard_blocked"] is False, "容差带内不得阻断"
+    assert r["verdict"] == "pass", r["verdict"]
+    assert "容差带内" in (r["risk_note"] or "")
+    assert "阻断" not in (r["risk_note"] or ""), "放行件不得出现阻断措辞"
+
+
+def test_beyond_tolerance_blocks_with_hard_wording():
+    """ΔS=−0.13 越过 −0.05 ⇒ 硬拦，risk_note 必须带「硬闸/阻断」。"""
+    r = _marginal_contribution(_Dilutive(), "FAKE")
+    assert r["hard_blocked"] is True
+    assert r["verdict"] == "net_block", r["verdict"]
+    assert "sharpe" in r["hard_failures"]
+    assert "硬闸" in (r["risk_note"] or "") and "阻断" in (r["risk_note"] or "")
+
+
+def test_thresholds_are_exposed_and_strict():
+    """阈值必须随结果透出，并锁死在严格档取值（防止被悄悄放宽）。"""
+    r = _marginal_contribution(_Deadzone(), "FAKE")
+    t = r["thresholds"]
+    assert t["net_abs_tol"] == 0.05
+    assert t["deadzone_net"] == 0.02
+    assert t["deadzone_returns"] == 0.003
+    assert t["pair_returns_lte"] == -0.005
+    assert t["pair_turnover_gte"] == 0.015
+    assert t["pair_drawdown_gte"] == 0.005
+    assert r["pair_rule"]["thresholds"] == {
+        "returns_lte": -0.005, "turnover_gte": 0.015, "drawdown_gte": 0.005,
+    }
+    assert "no pyramid exemption" in r["direction_rule"]["scheme"]
+
+
+# ---------------------------------------------------------------------------
+# 2026-11-16 真实快照回归：这两颗在零死区口径下被误杀，v2 严格档必须放行
+# ---------------------------------------------------------------------------
+
+class _AkaWd90wSnapshot:
+    """`akaWd90w`（DEU/TOP500/D1，EQUITY:DEU:1）2026-11-16 09:59 实测。
+
+    ΔS=+0.06 / ΔF=+0.02 / ΔRet=−0.09pp / ΔTO=+0.13pp / ΔDD=−0.09pp。
+    旧零死区：ΔRet<0 ∧ ΔTO>0 ⇒ pair_rule 硬拦（判死一颗能点亮 DEU/FUNDAMENTAL 的件）。
+    """
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.52, "fitness": 3.05, "turnover": 0.1353,
+                           "returns": 0.1013, "drawdown": 0.0264},
+                "after": {"sharpe": 3.58, "fitness": 3.07, "turnover": 0.1366,
+                          "returns": 0.1004, "drawdown": 0.0255},
+            },
+        }
+
+
+class _KqamAeRgSnapshot:
+    """`kqamAeRg`（DEU/TOP500/D1，EQUITY:DEU:1）2026-11-16 实测。
+
+    ΔS=+0.06 / ΔF=+0.01 / ΔRet=−0.09pp / ΔTO=+0.17pp / ΔDD=−0.10pp。
+    旧零死区：ΔRet<0 ∧ ΔTO>0 ⇒ pair_rule 硬拦 —— 但净效果双双为正，
+    说明零死区否决的是噪声、不是稀释（治理层面解封；能否提交另看自身指标与人工判定）。
+    """
+
+    async def performance_comparison(self, alpha_id):
+        return {
+            "partitionName": "EQUITY:DEU:1",
+            "stats": {
+                "before": {"sharpe": 3.52, "fitness": 3.05, "turnover": 0.1353,
+                           "returns": 0.1013, "drawdown": 0.0264},
+                "after": {"sharpe": 3.58, "fitness": 3.06, "turnover": 0.1370,
+                          "returns": 0.1004, "drawdown": 0.0254},
+            },
+        }
+
+
+def test_real_snapshot_akawd90w_passes():
+    r = _marginal_contribution(_AkaWd90wSnapshot(), "akaWd90w")
+    assert r["hard_blocked"] is False, "噪声级 ΔRet 不得否决（v2 核心修复）"
+    assert r["verdict"] == "pass_offset", r["verdict"]
+    assert abs(r["delta"]["returns"] + 0.0009) < 1e-9
+    assert abs(r["delta"]["turnover"] - 0.0013) < 1e-9
+
+
+def test_real_snapshot_kqamAeRg_passes_noise_gate():
+    r = _marginal_contribution(_KqamAeRgSnapshot(), "kqamAeRg")
+    assert r["hard_blocked"] is False
+    assert r["verdict"] == "pass_offset", r["verdict"]

@@ -1,0 +1,31 @@
+{
+  "dataset": "fundamental72",
+  "region": "DEU",
+  "total_fields": 1031,
+  "total_families": 21,
+  "families": {
+    "other": 393,
+    "leases": 26,
+    "assets": 110,
+    "receivables": 26,
+    "equity_capital": 104,
+    "depreciation": 3,
+    "pension": 17,
+    "deposits": 29,
+    "liabilities": 68,
+    "debt": 51,
+    "investments": 34,
+    "tax": 21,
+    "inventory": 30,
+    "currency": 3,
+    "intangibles": 13,
+    "payables": 20,
+    "cash_equivalents": 7,
+    "metadata": 25,
+    "loans": 37,
+    "insurance": 9,
+    "dividends": 5
+  },
+  "fields_with_userCount": 33,
+  "fields_with_coverage": 0
+}

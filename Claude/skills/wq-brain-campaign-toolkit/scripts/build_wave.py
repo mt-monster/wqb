@@ -1066,6 +1066,25 @@ def main():
     except Exception as _he:
         print(f"[diversity-heal] 跳过：{_he}")
 
+    # 2026-11-15 P2：跨波实测死骨架软降权（只重排，绝不删除）。
+    # 依据 region_kb.skeleton_stats（distill 写入）：n>=5、dead=true。
+    # 刻意不做硬过滤 —— 2026-11-09 教训：不可逆的覆盖闸会静默跳过数据集。
+    stat_deprioritized = set()
+    try:
+        from _lib.region_kb import load_region_kb
+        _kb = load_region_kb(ctx) or {}
+        if _kb.get("skeleton_stats"):
+            from wqb.knowledge.select import deprioritize_dead_skeletons
+            picked, stat_deprioritized = deprioritize_dead_skeletons(
+                picked, _kb.get("skeleton_stats"))
+            if stat_deprioritized:
+                for _e in stat_deprioritized:
+                    exclusion_reasons.setdefault(_e, "skeleton_stat_deprioritized")
+                print(f"[knowledge] skeleton_stats 软降权 {len(stat_deprioritized)} 条"
+                      f"（只重排，不删除）")
+    except Exception as _ke:
+        print(f"[knowledge] skeleton_stats 软降权跳过：{_ke}")
+
     if required and set(picked) != {item["expression"] for item in required}:
         missing = [{**item, "reason": exclusion_reasons.get(item["expression"], "capacity_or_selection")}
                    for item in required if item["expression"] not in picked]
@@ -1098,9 +1117,10 @@ def main():
         "selection_audit": [
             {"source_id": r["id"], "expression": r["expression"], "source_status": r.get("status"),
              "decision": "selected" if r["expression"] in picked else "deferred",
-             "reason": "reviewed_plan" if required and r["expression"] in picked
-                       else "selected" if r["expression"] in picked
-                       else exclusion_reasons.get(r["expression"], "capacity_or_selection")}
+             "reason": ("reviewed_plan" if required and r["expression"] in picked
+                        else "skeleton_stat_deprioritized" if r["expression"] in stat_deprioritized
+                        else "selected" if r["expression"] in picked
+                        else exclusion_reasons.get(r["expression"], "capacity_or_selection"))}
             for r in source_rows],
         "selection_shortfall": max(0, a.size - len(picked)),
         "coverage_injected": cov_injected,

@@ -1769,3 +1769,191 @@ KOR 单塔单字段 ATOM 的实测上限 **S 1.04**（对 1.58 的闸缺 34%）�
 ⇒ **开波前先算组合上限**：若当前攻击面的单腿上限 × 可达腿数仍低于平台闸，
 继续铺量是结构性无效努力，应换攻击面（换塔 / 换区 / 请用户放宽约束），而不是再扫参数。
 这条与 §11「多腿强度不可逆拆分」是同一枚硬币的两面：**存量多腿不能拆成单信号供给，新组合也不能靠机制命名凑强度**。
+
+---
+
+## §18 ★★ 时间轴回归族（`ts_step`）：`rettype` 选错等于白跑（2026-11-14 实证，21 条）
+
+**触发场景**：拿到「趋势 / 斜率 / 去趋势」类配方，想用 `ts_regression(y, ts_step(1), d, rettype=k)` 落地。
+
+### 18.1 核心判据：`rettype` 的选择比窗口重要一个数量级
+
+同一骨架、同一批字段，只改 `rettype`：
+
+| 族 | 表达式核心 | USA 实测 S |
+|---|---|---:|
+| 斜率（rettype=2） | `rank(ts_regression(ts_zscore(close,252), ts_step(1),252, rettype=2))` | **−0.05 ~ −0.08** |
+| TM=β×R²（2 与 6 相乘） | `rank(multiply(β, R²))` | −0.08 |
+| 趋势 t 值（2 / 8） | `rank(divide(β, SE_β))` | −0.07 |
+| 趋势线性度（`ts_corr`） | `rank(ts_corr(ts_zscore(close,252), ts_step(1),252))` | −0.08 |
+| **去趋势残差（rettype=0）** | `rank(-ts_regression(..., rettype=0))` | **IND 1.55 → STATISTICAL 1.76** |
+
+⇒ **斜率族的幅度本身接近零，不是符号反了**（反向也只有 +0.08）。判"这个方向没信号"之前，先确认 `rettype` 是不是选错了。
+
+### 18.2 载体必须零均值可判：去趋势只用在有水平漂移的变量上
+
+| 载体 | 结果 |
+|---|---|
+| `ts_zscore(close, d)` | 可用（IND S 1.55） |
+| 财务存量（revenue / operating_income / est_*） | 正但弱（S 0.45–0.57） |
+| **`ts_zscore(returns, d)`** | **报废：TO 0.8433、F 0.34、4 项 FAIL** |
+
+机理：returns 是零均值序列，其 z 分数在 0 附近反复穿越 ⇒ 残差符号剧烈翻转 ⇒ 换手爆炸。**判据一句话：载体是否零均值；零均值的 flow 变量不能做去趋势。**
+
+### 18.3 有效性 ∝ 宇宙小市值程度（同一条骨架跨区）
+
+| USA/TOP3000 | GBR/TOP700 | EUR/TOP2500 | IND/TOP500 |
+|---:|---:|---:|---:|
+| 0.60 | 1.20 | 1.39 | **1.55** |
+
+⇒ 长期均值回复类信号**不在 USA 大盘磨**；USA 上 S 0.60 且 2Y 0.45，已属结构性无效。
+
+### 18.4 `STATISTICAL` 是 `robust universe sharpe` 的专用杠杆
+
+IND 同一表达式，只换中性化：
+
+| 中性化 | S | F | robust universe sharpe |
+|---|---:|---:|---:|
+| SUBINDUSTRY | 1.55 | 1.30 | **0.51 FAIL** |
+| **STATISTICAL** | **1.76** | **1.35** | **0.85**（仍差 0.15） |
+
+对照：`truncation 0.08 → 0.04` **逐位相同，完全无效**。
+⇒ 遇 `LOW_ROBUST_UNIVERSE_SHARPE` 卡点，先换 `STATISTICAL`（纯风险因子中性化把持仓从"行业内相对偏移"改成"风险暴露对齐"），不要调 truncation。
+
+### 18.5 `REVERSION_COMPONENT` 按结构触发，不按字段
+
+21/21 条全部命中，包括**纯基本面载体**（`revenue`）与**纯分析师载体**（`est_12m_ebt_mean`），完全不碰价格。
+
+原文：`Alpha expression includes a reversion component so we may not accept these alphas in the future`。
+
+判读：① 是 **WARNING 不是 ERROR**（21 条全有完整指标，不是拒付）；② 但整族背标记 ⇒ 即便调到 S 1.76 也有提交隐患；③ 检测依据是「对时间回归」结构在日频持仓上表现出的短期反转相关性。
+⇒ 该族的最优解不是继续调参，而是**换机制**（见 `05_antipatterns.md`）。
+
+### 18.6 已达上限的实证（供判死参照）
+
+最强件 `2r5q1Kex`（IND/TOP500/STATISTICAL/decay4/trunc0.08）：
+S 1.76 ✓ / F 1.35 ✓ / sub ✓ / CW ✓ / MATCHES_PYRAMID ✓，但 `LOW_ROBUST_UNIVERSE_SHARPE` **0.85 < 1.0** FAIL 且 `LOW_2Y_SHARPE` **1.14 < 1.58**（按铁律 WARNING 视同 FAIL）。
+IND 只有 TOP500 一个 universe 档位（`get_platform_setting_options` 实测），无法换宇宙 ⇒ 剩余 0.15 无杠杆可推。
+
+详见 `output_report/ts_step_templates_20261114.md`；模板骨架见 `docs/reference/economic_alpha_template_library.md` T13。
+
+---
+
+## §19 ★★ F 闸的定量可达界 + 两条对模型输出/符号翻转的实测律（USA news 族 14 臂，2026-11-15）
+
+### 19.1 F 闸不能靠调参补：先把「可达界」算出来再决定要不要继续加臂
+
+`F = S × sqrt(returns / max(TO, 0.125))`，`TO` 有 **0.125 下限**。于是：
+
+- `TO ≥ 0.125` 时 `F` 随 `ret/TO`（≈ 单边 margin）线性开方，**降 TO 不改变 F**（ret 与 TO 同比例缩）；
+- `TO ≤ 0.125` 时等价于 **`F = S × sqrt(ret/0.125)`**，判据塌缩成一条：**`S × sqrt(ret) ≥ 0.3536`**。
+
+⇒ **开波前先算可达界**：拿该族已知最强臂的 `S` 与 `ret` 相乘开方，若离 0.3536 差 1.5 倍以上，
+**换模板/换窗口/换 decay 全都无解**，必须换信息源。
+
+USA news 族实测（14 臂 / 3 集 / 12 结构互异模板）：
+
+| 臂 | S | ret | `S×sqrt(ret)` | 距 0.3536 |
+|---|---|---|---|---|
+| `88NrXV3a`（news48 注意力稀释） | 1.18 | 0.0325 | 0.213 | **差 1.66×** |
+| `E5Qb2PKm`（event_return_model 三期限集成） | 0.77 | 0.0281 | 0.129 | **差 2.74×** |
+| 交付对照 `vRAn3xkG` | 1.97 | 0.0383 | **0.386** | ✓ 过 |
+
+该族需 **S ≈ 1.9–2.4** 才可能过闸，而 12 个模板最高 S 仅 1.18 ⇒ **F 闸结构性天花板**。
+⚠ 这是 **PROVISIONAL**（D2 字段族 6/22·6/59·2/23、D4 单分组轴、D6 单配置，未满足判死六维），
+**不得**作邻接 news 集先验、**不得**据此宣布 news 塔关闭。
+
+### 19.2 ★ 四闸同号负值 ⇒ 先 `reverse()` 再判死，不要判「弱」
+
+`58J92waN`（event_return_model 跨期限分歧 5d−20d）实测：
+`S −0.54 / 2Y −0.55 / SUB −0.55 / invest_S −0.63` —— **四个独立度量同号同量级**。
+加 `reverse()` 后 `omavk0Yn` = **+0.54**，精确镜像。
+
+判据：**单看 S 为负可能是噪声；四个度量同时同号，是符号反了**。
+这类臂的信息量与正 S 臂等价，丢弃它等于白烧一次配额。
+（附带的判死反面：真正该判死的是 `9qlK2wAe` 那种 `S 0.15 / F 0.02 / 2Y −0.04`——S 近零且各闸方向不一致。）
+
+### 19.3 ★ 模型输出类数据集：**水平值 ≫ 变化量**（与通用直觉相反）
+
+同一 DL 收益预测字段族（`event_return_model`，category=news，59 字段、覆盖 0.999）：
+
+| 构造 | 轴 | S |
+|---|---|---|
+| `ts_mean(ts_backfill(prob_rank_bin1_20d, 5), 10)` | **水平值** | **0.72** |
+| `ts_mean(ts_delta(ts_backfill(prob_rank_bin1_10d,5),5), 5)` | **日间一阶差** | **0.15** |
+| 5d+10d+20d 三 horizon 集成 | 同模型内 ensemble | 0.77（仅 +0.05） |
+| 4 分位极差概率（label3−label0） | 分布形状 | 0.44 |
+
+推理：模型**已经把时序信息消化进输出**，再对输出做差分等于对残差做差分，只放大噪声。
+⇒ 模型/预测类字段（`predicted_*`、`prob_rank_*`、`*_model_score`）**先测水平值**，
+"变化量优于水平值" 只适用于**原始观测字段**（情绪分、持仓量、财务科目）。
+
+同批推论：**同模型内多 horizon 平均不是分散化**（0.77 vs 0.72，增益 0.05）——
+要分散化必须**换信息源**，不是同模型多字段平均。
+
+### 19.4 附：本轮两条工作清单纠错（不是新知识，是执行缺口）
+
+1. **`CONCENTRATED_WEIGHT` 早在本文件 §14 有完整破局手册**，但我的开波闸清单漏了它。
+   后果：`E56YX80G`（S2.91/F2.40/2Y3.87/SUB1.36）本地标签 `SUBMIT_LAYER_VERIFIED`，
+   实测 `CONCENTRATED_WEIGHT` **0.1523 vs 0.1 FAIL** ⇒ BLOCKED。**闸清单必须固定为**
+   `S / F / 2Y / SUB / TO / CW / invest_S·S / prod / self`。
+2. **`submit_ready.gate='SUBMIT_LAYER_VERIFIED'` 不是放行依据**：平台 `GET /alphas/{id}/submit` **恒 404**，
+   该标签只说明"查过并拿到 404"。同表 `towers` 列实测全为 `[]`，也不能用于塔位/ATOM 判定。
+   任何候选一律以 `tools/submit_verdict.py` 实测为准（`E56YX80G` 即活证）。
+
+---
+
+## §20 ★★★ 收割池「一族一席」：IS-clean 行数 ≠ 候选数（USA 2026-11-15 全量聚类实证）
+
+### 20.1 事实
+
+`get_submit_ready(READY)` 的 38 条 `UNVERIFIABLE`（IS FAIL 0 / Failed-count 0）看起来是 38 个机会。
+把 31 条剩余件做 `compute_mutual_correlation`（4y / 986 点，阈值 0.5）后：
+
+| 互相关 | 组 | 说明 |
+|---|---|---|
+| **1.000** | `88R7JMxX` ≡ `78L0meRx` | 同一条，仅 `vector_neut` 参数序互换 |
+| **0.9982** | `2rAQ5G0N` ≡ `QPvqzKjX` | 同一条，加/减一层 `vector_neut` |
+| **0.9983** | `akKq92aO` ≡ `N1eLE1de`（已交付） | 同一条，加 `group_neutralize` |
+| **0.9694** | `KPgYg8Nk` ≡ `MP6l68aa`（已交付） | 同一骨架，换 `group_rank` 轴 |
+| 0.895 / 0.847 / 0.840 | `58EqmQEN`·`j2YdKN3Q`·`KPJwQzex` | institutions20 同族 |
+| 0.734 / 0.621 / 0.588 | `ZYaweYl0`·`3q0YZPqg`·`mLaJ1Zq5` | earnings 语气反转族（与 ACTIVE `A1xJdOmg` 同骨架） |
+| 0.762 / 0.658 | `gJezNxjg`·`gJevwxg0`·`MPYwqvLn` | shortinterest 贷款利率族 |
+| 0.835 / 0.719 / 0.532 | `E56YodoJ`·`6Xd3lqnL` / `0mYopJ7r`·`P0oe533W` / `QPvex8G5`·`mLokaQJ5` | 三对同族 |
+
+⇒ **31 条实际只有 6–8 个独立族**；扣除与已交付 6 颗重复后，
+真正值得花 prod 槽的新增代表件**只有 6 条**（`Xg9Ymw1b`/`YP1ww82o`/`58EqmQEN`/
+`MPYwqvLn`/`0mYopJ7r`/`QPvex8G5`）。
+
+### 20.2 ★ 固化顺序（省 80% 平台单并发槽）
+
+平台 prod 相关性是**账号级单并发**（`correlation_busy` 时 `retry_after` 可达 240s），
+而 `compute_mutual_correlation` / `check_self_correlation` 是**本地计算、零配额**。
+
+```
+① 表达式文本比对（含变量赋值版 vs 展开版、参数序互换）
+② compute_mutual_correlation 全量聚类，按「一族一席」挑代表件
+③ 每族只 1 条跑 self-corr（并核 pool_size 合理性）
+④ 每族只 1 条跑 prod（缓存优先，不默认 refresh）
+⑤ 代表件 + 已交付件再合成一次篮内矩阵
+```
+
+顺序反了会用宝贵平台槽去测一条已经重复的件。本轮 31 次 → 6 次。
+
+### 20.3 为什么行数会虚高
+
+平台按表达式文本去重**只对同一批 multisim 内**有效；跨批次、参数序互换、
+`a=…; b=…` 变量赋值 vs 展开写法、同族换一个高度相关字段，都会各占一行。
+`submit_ready` 是**行级清单**，不是**因子级清单**。
+
+### 20.4 实测撞墙率（代表件也要过 prod）
+
+6 条代表件中，已完成的两条全部 FAIL：
+`YP1ww82o` **0.7754**（0.7–0.8 桶 n=8）、`Xg9Ymw1b` **0.9559**（0.9–1.0 桶 n=1）。
+⇒ **一族一席之后，prod 墙依然是主瓶颈**；收割池不是"捡钱"。
+`Xg9Ymw1b` 的 `get_alpha_details` 侧证 IS 面完全干净（checks.fail=[]、CW PASS、
+pyramids.effective=1、S2.04/F1.08/2Y2.14/SUB0.95/TO0.072），仍被单个 prod alpha 打掉。
+
+**直方图判据**：`0.9–1.0` 桶 `n=1` 且 `max>0.9` ⇒ 生产池里有一颗几乎同形的已上线 alpha。
+这与 §14 的「同表达式母件上线后 IS 件失效」是同一现象的不同强度，
+不一定要同表达式，**同 PnL 形状即可**（见 [[prod-reduction-and-corr]] PC=PnL 形状）。

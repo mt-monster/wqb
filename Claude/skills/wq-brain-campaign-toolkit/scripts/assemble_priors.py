@@ -36,6 +36,10 @@ MAX_DEADENDS = 12
 # 与 MAX_DEADENDS 分离：后者是 prompt 预算，前者是**闸的可见面**——两者混用会让
 # 「死名单超过 12 条」直接等于「闸对 88% 的死路失明」（2026-10-30 KOR 实测 99 条）。
 MAX_DEADENDS_ALL = 400
+# 实测统计的名额（2026-11-15 P2）：region_kb.family_stats / skeleton_stats 已经是
+# distill 后的 ≤40 条；priors 文件再截一次，防止手工写入的超大 KB 撑爆 prompt。
+MAX_FAMILY_STATS = 40
+MAX_SKELETON_STATS = 40
 
 # profile 探测路径（顺序由 _lib/skill_roots.py 单源维护；2026-09-11 收敛，此前只探历史位）
 def _profile_path(region):
@@ -231,6 +235,23 @@ def assemble_priors_dict(ctx):
             "evidence": v,
             "source": "template_kb_validated",
         })
+    # 2026-11-15 P4：template_kb 的实测层（wqb.knowledge.templates 写入；低于人工层、高于空）
+    for m in (tkb.get("measured_validated") or []):
+        if not isinstance(m, dict) or m.get("region") != ctx.region:
+            continue
+        wid = f"measured:{m.get('kind')}:{m.get('name')}"
+        if wid in seen:
+            continue
+        seen.add(wid)
+        wins.append({
+            "id": wid,
+            "what": f"[实测] {m.get('name')}",
+            "key": (f"{m.get('kind')}={m.get('name')}; n={m.get('n')} win={m.get('n_win')} "
+                    f"max|S|={m.get('max_sharpe')}"),
+            "evidence": (f"wave={m.get('wave')}; attempts="
+                         f"{','.join((m.get('evidence_attempt_ids') or [])[:3])}"),
+            "source": "template_kb_measured",
+        })
     for a in (kb.get("active_alphas") or []):
         if a in seen:
             continue
@@ -284,6 +305,22 @@ def assemble_priors_dict(ctx):
             continue
         dseen.add(fam)
         de.append({"family": fam, "reason": f, "source": "template_kb_failed"})
+    # 2026-11-15 P4：template_kb 实测死路层（advisory，不是硬禁）
+    for m in (tkb.get("measured_failed") or []):
+        if not isinstance(m, dict) or m.get("region") != ctx.region:
+            continue
+        fam = f"measured:{m.get('kind')}:{m.get('name')}"
+        if fam in dseen:
+            continue
+        dseen.add(fam)
+        share = m.get("dominant_wall_share")
+        share_txt = f" {share:.0%}" if isinstance(share, (int, float)) else ""
+        de.append({
+            "family": fam,
+            "reason": (f"实测 n={m.get('n')} 最高 |S|={m.get('max_sharpe')}，"
+                       f"主墙 {m.get('dominant_wall')}{share_txt}（advisory）"),
+            "source": "template_kb_measured_failed",
+        })
     # 2026-10-30 修复（KOR wave187/200 两次打已判死数据集的根因）：
     # `dead_ends` 是**注入 GEM prompt 的**名单，受 MAX_DEADENDS=12 名额限制；而 gate 的
     # PRIORS-DEADEND-HIT 也读同一个键 ⇒ 死名单超 12 条后闸就只看得见 12/99。
@@ -312,6 +349,12 @@ def assemble_priors_dict(ctx):
     # 比 registry_empirical 的百级大两个数量级），由 economic_priors.compact_priors_text
     # 渲染进 GEM prompt。缺失时不注入，不报错。
     gate_priors = kb.get("gate_priors") if isinstance(kb, dict) else None
+    # 2026-11-15 P2：实测 family/skeleton 统计（region_kb 由 distill 写入）。
+    # 只保留判定所需字段，避免把 wall_histogram / examples 全量塞进 prompt。
+    family_stats = _compact_stats(kb.get("family_stats") if isinstance(kb, dict) else None,
+                                  "family", MAX_FAMILY_STATS)
+    skeleton_stats = _compact_stats(kb.get("skeleton_stats") if isinstance(kb, dict) else None,
+                                    "skeleton", MAX_SKELETON_STATS)
 
     payload = {
         "wins": wins,
@@ -330,6 +373,12 @@ def assemble_priors_dict(ctx):
                         "profile_fallback (仅 DB KB 空时)"],
         },
     }
+    if family_stats:
+        payload["family_stats"] = family_stats
+        payload["_meta"]["sources"].append("ledger_kv:region_kb.family_stats (measured)")
+    if skeleton_stats:
+        payload["skeleton_stats"] = skeleton_stats
+        payload["_meta"]["sources"].append("ledger_kv:region_kb.skeleton_stats (measured)")
     if truncated:
         # 名额外被截掉的条目（registry 层已按新登记优先排序）——让截断可见，而非静默丢弃
         payload["_meta"]["truncated"] = truncated
@@ -354,21 +403,90 @@ def assemble_priors_dict(ctx):
     # GEM 的 economic_priors.compact_priors_text 已支持渲染该键（effective/dead/orthogonal_hints），
     # 但 assemble_priors 此前未组装——本注入补上「建而不用」的断链（operator_principle_kb → GEM 自动消费）。
     opkb = _operator_principle_kb(ctx)
-    if opkb:
-        payload["skeleton_field_matrix"] = _build_skeleton_field_matrix(opkb)
-        payload["_meta"]["sources"].append("ledger_kv:KB/operator_principle_kb (字段特性×算子原理)")
+    if opkb or family_stats or skeleton_stats:
+        payload["skeleton_field_matrix"] = _build_skeleton_field_matrix(
+            opkb or {}, family_stats, skeleton_stats)
+        if opkb:
+            payload["_meta"]["sources"].append("ledger_kv:KB/operator_principle_kb (字段特性×算子原理)")
     return payload
 
 
-def _build_skeleton_field_matrix(opkb: dict) -> dict:
-    """把 operator_principle_kb 转化为 GEM 已支持的 skeleton_field_matrix。
+def _compact_stats(stats, key, cap):
+    """region_kb 的统计组 → priors 文件的紧凑列表（只留决策字段）。"""
+    out = []
+    for g in (stats or [])[:cap]:
+        if not isinstance(g, dict):
+            continue
+        name = g.get(key)
+        if not name:
+            continue
+        out.append({
+            key: name,
+            "n": g.get("n"),
+            "n_win": g.get("n_win"),
+            "n_near": g.get("n_near"),
+            "max_sharpe": g.get("max_sharpe"),
+            "dominant_wall": g.get("dominant_wall"),
+            "dominant_wall_share": g.get("dominant_wall_share"),
+            "dead": bool(g.get("dead")),
+        })
+    return out
 
-    区域级全 trait 注入（priors 文件区域共享，非单数据集）：effective 取全部 field_traits 的
-    skeleton_hints（GEM 按当前数据集字段自取），dead 取全局禁区 + 各 trait 禁用算子，
-    orthogonal_hints 给原理层约束（防伪多样性 + 实证偏好）。
+
+def _build_skeleton_field_matrix(opkb: dict, family_stats=None, skeleton_stats=None) -> dict:
+    """把 operator_principle_kb + 实测统计转化为 GEM 已支持的 skeleton_field_matrix。
+
+    2026-11-15 P2：实测优先、静态兜底。measured 条目带 `source="measured"`，
+    `dead` 一律 `advisory=True`（只提示，不做不可逆过滤）。
     """
     traits = (opkb.get("field_traits") or {})
     effective, dead = [], []
+    # 实测优先：高胜率 skeleton / family 排在静态原理之前
+    for g in (skeleton_stats or []):
+        if not isinstance(g, dict) or not g.get("skeleton"):
+            continue
+        if (g.get("n_win") or 0) + (g.get("n_near") or 0) <= 0:
+            continue
+        effective.append({
+            "skeleton": g.get("skeleton"),
+            "field_family": "measured",
+            "empirical": (f"n={g.get('n')} win={g.get('n_win')} near={g.get('n_near')} "
+                          f"max|S|={g.get('max_sharpe')}"),
+            "source": "measured",
+        })
+    for g in (family_stats or []):
+        if not isinstance(g, dict) or not g.get("family"):
+            continue
+        if (g.get("n_win") or 0) <= 0:
+            continue
+        effective.append({
+            "skeleton": f"family:{g.get('family')}",
+            "field_family": "measured",
+            "empirical": f"n={g.get('n')} win={g.get('n_win')} max|S|={g.get('max_sharpe')}",
+            "source": "measured",
+        })
+    for g in (skeleton_stats or []):
+        if not isinstance(g, dict) or not g.get("dead"):
+            continue
+        dead.append({
+            "skeleton": g.get("skeleton"),
+            "family": "measured",
+            "reason": (f"实测 n={g.get('n')} 最高 |S|={g.get('max_sharpe')}，"
+                       f"主墙 {g.get('dominant_wall')} 占 {g.get('dominant_wall_share'):.0%}"),
+            "source": "measured",
+            "advisory": True,
+        })
+    for g in (family_stats or []):
+        if not isinstance(g, dict) or not g.get("dead"):
+            continue
+        dead.append({
+            "skeleton": f"family:{g.get('family')}",
+            "family": "measured",
+            "reason": (f"实测 n={g.get('n')} 最高 |S|={g.get('max_sharpe')}，"
+                       f"主墙 {g.get('dominant_wall')} 占 {g.get('dominant_wall_share'):.0%}"),
+            "source": "measured",
+            "advisory": True,
+        })
     for tid, tr in traits.items():
         if not isinstance(tr, dict):
             continue

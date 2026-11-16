@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.3"
-last_verified: 2026-11-08
+last_verified: 2026-11-16
 ---
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
 
@@ -160,6 +160,7 @@ last_verified: 2026-11-08
 - **完成定义**：`list_expressions` 查到本波条目——**未验证 DB 有表达式，不得声称步 4 成功**；且本波形态**从族出发**（非按字段平铺）、**探针先于扩批**。
 - **选波机检（2026-10-01 起）**：选波段 `build_wave` **已有机检**兜底上面两条纪律——① 每族 cap 从 DB `expressions.family` 读取（`--from-db` 主路径生效；GEM 落库时带入 family）；② 某族**全库尚无已回测行**时，本波该族 cap 收紧为 `WQB_PROBE_CAP`（默认 1）→ 强制「先放 1 条探针验证机制，再扩批」。`WQB_PROBE_GATE=off` 可关；`meta.probe_limited_families` 可查本波被收紧的族。**family 由落库带入（`final_expressions_meta.json`），2026-10-01 前生成的存量行无 family，存量波次不生效。** 字段池另带 L3.5 `families` 段（`s2_field_pool_<ds>`，v5），供概念优先消费。
 - **失败分支**：GEM 报「no meta.json within 90s」→ **先查 LLM 通道**（`402` 余额不足会被误报；干跑验证不了可达性），不要重试；候选不足 → 显式扩容或分波，**不补参数变体凑数**；机制枯竭 → `forum_recon`（触发表 #2）。
+- **★ 机制证据闸（2026-11-15 落地）**：某数据集×机制**首次**派波前，必须完成**论坛+论文双取证并留痕**——论坛走触发表 #0（三维检索词矩阵：机制措辞词/算子×字段词/数据集名，各至少 1 个；高赞长评作者反查）；论文走 WebSearch 或本地 `docs/experience` 论文库 grep 降级，摘要写 `forum_paper_recon_<qkey>`。步 5 的 wave_gate 会核对留痕（gate_results 的 `evidence_gate` 段：`EVID-FORUM`/`EVID-PAPER`），`--require-evidence` 时缺留痕 = FAIL。三次漏检实证（情绪相关性错位/横向点塔两模板帖均因只按数据集名检索漏检，各晚 1-2 个战役才发现）。repair/probe 批自动豁免；豁免走 waiver `--gate evidence`（3 天期）。
 - **不做**：不手写表达式（**手写 ideas ≠ 手写表达式**）；不手写 priors；不加权 / 等权相加两条信号腿（CLAUDE.md「禁止混信号调参」；允许的组合形态见步 7 §7.7）；不每个字段套一层 `rank`；**不从单个字段出发、从族出发**；**不跳过 L3.5 直接拍骨架**。
 - **细则**：[`step4-generation.md`](references/step4-generation.md)（含 §4.5.1 模板形状配额与形状源）、[`assemble-priors-internals.md`](references/assemble-priors-internals.md)、[`signal-hypothesis-construction.md`](references/signal-hypothesis-construction.md)（**L4 形态构建五步法 + 三源验证 + 合规红线**）。适用决策表：D3 / D6 / D11。
 
@@ -168,7 +169,7 @@ last_verified: 2026-11-08
 - **目的**：在配额之前拦下坏表达式（一条坏式 ERROR 会取消整批 8 条兄弟）与同质化批。
 - **前置**：本波表达式已入库；含 VECTOR 字段先 `preflight_expressions(auto_fix_vector=true)`。
 - **调用**：① `python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <txt>`（幽灵算子硬闸，零配额，先拦）② `python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $W --from-db`（节点等价 `workflow_execute(node="wave_gate")`；`workflow_campaign(stage="S2")` 是**选波**，不能代替本步）。
-- **产物**：`gate_results`（含 `report_json.semantic` 脱敏摘要：闸 SEM 的 `ledger_missing`/`n_removed`/`n_kept`/`dropped_in_db`，2026-10-01 起）。**闸清单只在 [INDEX 两张生成表](../INDEX.md)**（`GATE_REGISTRY` / `waiver.GATE_POLICIES`），这里不复述编号与开关。
+- **产物**：`gate_results`（含 `report_json.semantic` 脱敏摘要：闸 SEM 的 `ledger_missing`/`n_removed`/`n_kept`/`dropped_in_db`，2026-10-01 起；**`evidence_gate` 段 2026-11-15 起**：`EVID-FORUM`/`EVID-PAPER` 项核对新机制首次派波的论坛/论文留痕，`--require-evidence` 时缺留痕 FAIL——留痕怎么产生见步 4 机制证据闸条目）。**闸清单只在 [INDEX 两张生成表](../INDEX.md)**（`GATE_REGISTRY` / `waiver.GATE_POLICIES`），这里不复述编号与开关。
 - **完成定义**：`get_gate_result(region, wave, dataset)` 有本波记录且 **外层 `all_pass=1`**（门禁脚本崩溃 = ERROR 终态、退出码 2，不是 FAIL）。⚠ `all_pass` 与 `report_json.gate.all_pass` **不同**：后者只是 `gate.py` 8 闸段的结果，不含 SEM / 体检 / 饱和 / PF / 质量聚合——放行永远读外层。
 - **失败分支**：闸 → 现象 → 动作 → 回哪步 → 能否豁免的全表见 [`step5-gates.md`](references/step5-gates.md) §5.2；开波区域闸命中（exit 2）→ 消化积压 / 补 catalog / 换区，用户显式要求继续才写 waiver。闸 PF 对「未探明骨架（新骨架/低置信度/混合）」默认只 WARN，饱和区可用 `--pf-unknown-mode enforce`（`WQB_PF_UNKNOWN_MODE`）升级为拦截。
 - **不做**：不新建 `_gate_waveNN.py`、不写 `cache/gate_wave*.json`（用 `wave_gate.py`，结果落 `gate_results`）；不以为 `validate_expressions` / `preflight_expressions` 查了幽灵算子（**不查**）；不把「干跑绿」当「LLM 可达」。

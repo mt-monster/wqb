@@ -246,7 +246,8 @@ def compact_priors_text(priors: dict[str, Any], category: str | None) -> str:
             lines.append("")
             lines.append("Skeleton x Field-family EFFECTIVE combos (prefer these shapes, swap in THIS dataset's fields):")
             for e in eff[:6]:
-                lines.append(f"- [OK] {e.get('skeleton')} x {e.get('field_family')}: {e.get('evidence','')}")
+                lines.append(f"- [OK] {e.get('skeleton')} x {e.get('field_family')}: "
+                             f"{e.get('empirical') or e.get('evidence','')}")
         if mdead:
             lines.append("")
             lines.append("Skeleton x Field-family DEAD combos (structurally blocked, do not retry):")
@@ -257,6 +258,29 @@ def compact_priors_text(priors: dict[str, Any], category: str | None) -> str:
             lines.append("Orthogonal opportunities (proven skeleton, unexplored field family -> low-correlation direction):")
             for h in hints[:4]:
                 lines.append(f"- {h}")
+
+    # P2（2026-11-15）：region_kb 实测 family/skeleton 统计。只渲染「有效」与「死路」
+    # 各 8 条；空则整节省略，避免把 prompt 撑大。
+    fam = priors.get("family_stats") or []
+    sk = priors.get("skeleton_stats") or []
+    if fam or sk:
+        lines.append("")
+        lines.append("Measured family/skeleton outcomes in this region "
+                     "(n, best |S|, dominant wall; DEAD = advisory only, not a hard ban):")
+        eff2 = [g for g in (sk + fam) if (g.get("n_win") or 0) + (g.get("n_near") or 0) > 0]
+        dead2 = [g for g in (sk + fam) if g.get("dead")]
+        for g in eff2[:8]:
+            name = g.get("skeleton") or g.get("family")
+            lines.append(
+                f"- [OK] {name}: n={g.get('n')} win={g.get('n_win')} near={g.get('n_near')} "
+                f"max|S|={g.get('max_sharpe')} wall={g.get('dominant_wall') or '-'}")
+        for g in dead2[:8]:
+            name = g.get("skeleton") or g.get("family")
+            share = g.get("dominant_wall_share")
+            share_txt = f" {share:.0%}" if isinstance(share, (int, float)) else ""
+            lines.append(
+                f"- [DEAD] {name}: n={g.get('n')} max|S|={g.get('max_sharpe')} "
+                f"wall={g.get('dominant_wall') or '-'}{share_txt}")
 
     # 2026-09-08：库存实证的条件过闸率（tools/build_gate_prior_from_inventory.py 产出）。
     # 样本源是本账户已回测的历史 alpha（万级），比 campaign registry（百级）大两个数量级，

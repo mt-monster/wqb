@@ -205,6 +205,26 @@ def base_weight(a: Dict[str, Any], usa: bool) -> float:
     return core.quality(a)
 
 
+def margin_soft_factor(a: Dict[str, Any], args) -> Tuple[float, Optional[float]]:
+    """margin 软加权（2026-11-16 增补，官方+论坛 review 结论）。
+
+    依据：Genius Combined Osmosis = after-cost Sharpe（费后）；论坛 11-02 实证帖
+    （margin≥1.5×地板甜点）+ 62 赞原理帖「毛 Sharpe 好看、费后白干」。
+    口径：margin 转 bp 后低于 `--margin-floor`（默认 10bp）的候选权重 ×`--margin-soft-weight`
+    （默认 0.5）——软降权不清零，保证每 scope 仍能凑满 ≥10 颗；margin 缺失按未降权处理
+    （不做惩罚，缺失≠差）。仅作用于 RA 权重；SA 锚点不受影响（top4 由 inv 决定）。
+
+    返回 (factor, margin_bp)：factor∈{1.0, margin_soft_weight}，margin_bp 供日志。
+    """
+    m = a.get("margin")
+    if m is None or args.margin_floor <= 0:
+        return 1.0, None
+    bp = float(m) * 10000.0
+    if bp < args.margin_floor:
+        return args.margin_soft_weight, bp
+    return 1.0, bp
+
+
 # --------------------------------------------------------------------------- #
 # 单 scope 规划
 # --------------------------------------------------------------------------- #
@@ -232,6 +252,14 @@ def plan_scope(region: str, rows: List[Dict[str, Any]], mat: Dict[str, Dict[str,
     log["dropped_filter"] = dropped_filter
 
     weight = {r["alpha_id"]: base_weight(r, usa) for r in kept_c}
+    # margin 软加权（费后质量维度，2026-11-16）：低于地板的 RA 权重打折，仅记账不清零。
+    margin_soft: Dict[str, float] = {}
+    for r in kept_c:
+        f, bp = margin_soft_factor(r, args)
+        if f < 1.0:
+            weight[r["alpha_id"]] *= f
+            margin_soft[r["alpha_id"]] = round(bp, 1) if bp is not None else -1.0
+    log["margin_soft"] = margin_soft
     kept_c = [r for r in kept_c if weight[r["alpha_id"]] > 0]
 
     # --- 2. SA 锚点（按 inv 取 topN）---
@@ -337,17 +365,21 @@ def plan_scope(region: str, rows: List[Dict[str, Any]], mat: Dict[str, Dict[str,
         log["ra_capped"] = [k for k, p in ra_pts.items() if p >= cap_ra]
 
     for s in sa_keep:
+        _sm = s.get("margin")
         plan.append({"region": region, "delay": s.get("delay") or 1, "alpha_id": s["alpha_id"],
                      "alpha_type": "SUPER", "pool": "SA", "points": sa_alloc[s["alpha_id"]],
                      "inv": s.get("investability_sharpe"), "os": s.get("os_sharpe"),
-                     "prod": s.get("prod")})
+                     "prod": s.get("prod"),
+                     "margin_bp": round(_sm * 10000, 1) if _sm is not None else None})
     for r in kept_ra:
         rid = r["alpha_id"]
+        _m = r.get("margin")
         plan.append({"region": region, "delay": r.get("delay") or 1, "alpha_id": rid,
                      "alpha_type": "REGULAR", "pool": "RA", "points": ra_pts[rid],
                      "inv": r.get("investability_sharpe"), "os": r.get("os_sharpe"),
                      "prod": r.get("prod"), "weight": round(weight[rid], 4),
                      "corr_max": round(soft.get(rid, 0.0), 3),
+                     "margin_bp": round(_m * 10000, 1) if _m is not None else None,
                      "forced": rid in forced})
 
     # --- 6. 精确 trim 到 100k（差额优先落在最大、且未触 REGULAR 上限的项）---
@@ -417,6 +449,10 @@ def build_arg_parser() -> argparse.ArgumentParser:
     ap.add_argument("--corr-unknown-weight", type=float, default=0.50,
                     help="PnL 缺失、相关未知的 alpha 权重折扣（不当零相关处理）")
     ap.add_argument("--soft-weight", type=float, default=0.50)
+    ap.add_argument("--margin-floor", type=float, default=10.0,
+                    help="margin 软加地板（bp，10bp=官方费后代理 0 线；0=关闭软加权）")
+    ap.add_argument("--margin-soft-weight", type=float, default=0.50,
+                    help="margin<地板 的候选权重折扣（软降权不清零，保 ≥10 颗资格）")
     ap.add_argument("--decay-cut", type=float, default=0.60)
     ap.add_argument("--drop-inv-below", type=float, default=1.0)
     ap.add_argument("--turnover-cut", type=float, default=0.20)
@@ -483,7 +519,7 @@ def make_plan(pool: List[Dict[str, Any]], want: List[str], args
         print(f"[{reg}] 候选 {len(rows)} → 计划 {len(sel)} 颗 / "
               f"{sum(p['points'] for p in sel):,} 点 | n_eff {log['neff_before']} → {log['neff_after']} "
               f"| 剔除: 硬闸 {len(log['dropped_filter'])} / 相关 {len(log['dropped_corr'])} "
-              f"| soft降权 {len(log['soft'])} | forced {len(log.get('forced', []))}",
+              f"| soft降权 {len(log['soft'])} | margin降权 {len(log.get('margin_soft', {}))} | forced {len(log.get('forced', []))}",
               file=sys.stderr)
     return plan, logs, mats
 

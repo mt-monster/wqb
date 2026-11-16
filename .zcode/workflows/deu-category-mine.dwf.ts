@@ -46,7 +46,7 @@ const HONESTY =
 
 /** S0 盘点结论。 */
 interface SurveyResult {
-  /** 选定的目标数据集 id（如 fnd90）；类别内无值得开的目标集时空串。 */
+  /** 选定的目标数据集 id；类别内无值得开的目标集时空串。 */
   targetDataset: string;
   /** 一句话机制假设，驱动臂表设计。 */
   mechanismHypothesis: string;
@@ -60,17 +60,7 @@ interface SurveyResult {
   moreTargetsRemain: boolean;
 }
 
-/** 单臂规格。 */
-interface ArmSpec {
-  /** 臂序（1 起，收割归因键）。 */
-  index: number;
-  /** FASTEXPR 表达式。 */
-  expression: string;
-  /** 一句话：这臂检验什么（换轴/换分母/反号/乘法交互/bucket 条件化/存在性探针）。 */
-  intent: string;
-  /** 是否存在性探针臂（VECTOR vec_avg 包裹；只作存在性判断，不作覆盖度读数）。 */
-  isProbe: boolean;
-}
+
 
 /** 每波臂表。 */
 interface ArmTable {
@@ -78,25 +68,14 @@ interface ArmTable {
   datasetId: string;
   /** 固定设置行（原样随表达式派发）。 */
   settings: string;
-  /** 本波臂表，硬上限 10 臂。 */
-  arms: ArmSpec[];
-  /** 设计说明：机制假设→臂的对应、ATOM 合规自检结论。 */
+  /** 臂行：每条形如「臂1：表达式=rank(x)；意图=EBIT水平；探针=false」。 */
+  armLines: string[];
+  /** 设计说明：机制假设→臂的对应、合规自检结论。 */
   designNotes: string;
 }
 
-/** 单臂平台读数。 */
-interface ArmRead {
-  /** 臂序。 */
-  index: number;
-  /** 表达式。 */
-  expression: string;
-  /** 平台 8 位 alpha id；未产出时空串。 */
-  alphaId: string;
-  /** S/F/2Y/sub/TO/DD/margin 读数摘要，原样转录。 */
-  metrics: string;
-  /** 平台 ERROR/CANCELLED 等状态；正常为空串。 */
-  simStatus: string;
-}
+/** 单臂平台读数行（读数落库用）。 */
+type ArmRead = string; // 形如 "臂1|S=1.60|F=1.40|2Y=2.01|sub=1.25|TO=2.6%|DD=7.6%|margin=74bp|alphaId=xxx|status=COMPLETE"
 
 /** 派发与收割结局。 */
 interface DispatchOutcome {
@@ -104,11 +83,11 @@ interface DispatchOutcome {
   status: "dispatched" | "rebuild_needed" | "failed";
   /** multisim id；未派发时空串。 */
   multisimId: string;
-  /** 按派发臂序的逐臂读数；未收割时空数组。 */
-  armReads: ArmRead[];
-  /** 被拦/塌方原因（如 [INACCESSIBLE_OP] …）；正常为空串。 */
+  /** 按派发臂序的逐臂读数行；未收割时空数组。 */
+  readLines: string[];
+  /** 被拦/塌方原因；正常为空串。 */
   blockReason: string;
-  /** 轮询/收割过程说明（含兜底通路是否启用）。 */
+  /** 轮询/收割过程说明。 */
   harvestNote: string;
 }
 
@@ -126,11 +105,11 @@ interface NearGateCandidate {
 interface WaveAttribution {
   /** 本波波号（原字符串）。 */
   wave: string;
-  /** 逐臂归因条目（符号指纹/稀释铁律/跨区不外推核对）。 */
+  /** 逐臂归因条目（每行一条：符号指纹/稀释铁律/跨区不外推核对）。 */
   armNotes: string[];
-  /** 绿芽/活体结构清单。 */
+  /** 绿芽/活体结构清单（每行一条）。 */
   sprouts: string[];
-  /** 死轴清单（2Y 死轴、S-2Y 跷跷板等）。 */
+  /** 死轴清单（每行一条：2Y 死轴、S-2Y 跷跷板等）。 */
   deadAxes: string[];
   /** 本波最佳 S（无数值时 0）。 */
   bestSharpe: number;
@@ -138,37 +117,25 @@ interface WaveAttribution {
   sweptDimensions: string[];
   /** 数据集终态裁决。 */
   datasetStatus: "active" | "provisional" | "data_excluded" | "dead_proposed" | "capped";
-  /** 裁决依据（读数引用；判死依据=读数，不改写邻接集先验）。 */
+  /** 裁决依据（读数引用；判死依据=读数）。 */
   verdictEvidence: string;
-  /** 是否需要卡点论坛取证（如 2Y 死轴驱动下波设计）。 */
+  /** 是否需要卡点论坛取证。 */
   needsForumRecon: boolean;
   /** 跨波实证、可入册的新杠杆（须有归因对照）；无则空串。 */
   newLever: string;
-  /** 近闸候选（最多 2 条，按 S 降序）。 */
-  nearGateCandidates: NearGateCandidate[];
-  /** 波次文档路径（<类型>_<主题>_<YYYYMMDD>.md）。 */
+  /** 近闸候选（每行一条：alphaId|S|触发原因）。 */
+  nearGateCandidates: string[];
+  /** 波次文档路径。 */
   docPath: string;
 }
 
-/** prod 前置探针单条读数。 */
-interface ProdProbe {
-  /** 平台 alpha id。 */
-  alphaId: string;
-  /** prod 相关性读数；未取得为 null。 */
-  prodCorrelation: number | null;
-  /** 读数来源与 refresh 口径。 */
-  source: string;
-  /** 是否成功取到读数。 */
-  ok: boolean;
-  /** 失败/排队/未决说明。 */
-  note: string;
-}
+
 
 /** 提交链触发条目（脚本内部）。 */
 interface ProdCleanCand {
   /** 平台 alpha id。 */
   alphaId: string;
-  /** 所属目标数据集 id（跨波待处理补跑时，台账排除 rg 用它，不用当前波的数据集）。 */
+  /** 所属目标数据集 id（跨波待处理补跑时，台账排除 rg 用它）。 */
   datasetId: string;
   /** 触发证据（MCP 读数或 CLI 兜底说明）。 */
   evidence: string;
@@ -178,13 +145,13 @@ interface ProdCleanCand {
 interface GateCore {
   /** 平台 alpha id。 */
   alphaId: string;
-  /** ①台账排除 ②RA+塔位 ③近十年 robustness 硬闸 逐条结论。 */
+  /** ①②③与 robustness 逐条结论（每行一条）。 */
   gateNotes: string[];
-  /** ②的平台实读 failed_ra 是否为 0；未取得为 null（本地快照不得当准）。 */
+  /** ②的平台实读 failed_ra 是否为 0；未取得为 null。 */
   failedRaZero: boolean | null;
   /** 塔位 pyramids 摘要。 */
   pyramids: string;
-  /** ④⑤ 待共享相关性员查的项。 */
+  /** ④⑤ 待共享相关性员查的项（每行一条）。 */
   correlationRequests: string[];
   /** 未跑/未取到的检查，如实列出。 */
   notCovered: string[];
@@ -196,11 +163,11 @@ interface CorrReads {
   prodCorrelation: number | null;
   /** self-corr；未取得为 null。 */
   selfCorrelation: number | null;
-  /** self-corr 是否「未决」（超 30s 客户端窗不硬编，由平台提交时自算解除）。 */
+  /** self-corr 是否「未决」（超 30s 客户端窗）。 */
   selfPending: boolean;
   /** 篮内互相关最大值；未取得为 null。 */
   maxMutualCorrelation: number | null;
-  /** 读数来源与说明。 */
+  /** 读数来源与说明（每行一条）。 */
   notes: string[];
 }
 
@@ -208,7 +175,7 @@ interface CorrReads {
 interface SubmitGateOutcome {
   /** 平台 alpha id。 */
   alphaId: string;
-  /** 五道闸逐条结论。 */
+  /** 五道闸逐条结论（每行一条）。 */
   gateNotes: string[];
   /** 平台实读 failed_ra=0。 */
   failedRaZero: boolean;
@@ -216,11 +183,11 @@ interface SubmitGateOutcome {
   prodCorrelation: number | null;
   /** 篮内互相关最大值；未取得为 null。 */
   maxMutualCorrelation: number | null;
-  /** submit_verdict 判定原文（否决权威：BLOCKED 即不提交；UNVERIFIABLE≠放行）。 */
+  /** submit_verdict 判定原文。 */
   verdict: string;
-  /** 全闸通过判据：failed_ra=0 且 prod<0.7 且互相关<0.7 且 verdict 非 BLOCKED。 */
+  /** 全闸通过判据。 */
   allGatesPassed: boolean;
-  /** await_user_confirmation=全闸通过停在待用户确认；blocked=被否决；missing_data=读数缺失。 */
+  /** await_user_confirmation / blocked / missing_data。 */
   nextStep: "await_user_confirmation" | "blocked" | "missing_data";
   /** 未跑/未取到的检查，如实列出。 */
   notCovered: string[];
@@ -246,13 +213,13 @@ interface ForumRecon {
 interface DeadAuditOutcome {
   /** 六维 D1–D6 是否每维都有实证。 */
   sixDimsComplete: boolean;
-  /** 缺的维度与缺的证据。 */
-  missingDimensions: string[];
+  /** 缺的维度与缺的证据（每行一条）。 */
+  missingDims: string[];
   /** 检索覆盖矩阵是否补齐。 */
   coverageComplete: boolean;
-  /** signal_dead/config_dead/data_excluded/provisional；缺任一维只能 provisional。 */
+  /** signal_dead/config_dead/data_excluded/provisional。 */
   layer: "signal_dead" | "config_dead" | "data_excluded" | "provisional";
-  /** 是否已走 seal_dead_end（fail-closed 取证闸可能拒绝沉降——拒绝时如实留档，不 force）。 */
+  /** 是否已走 seal_dead_end。 */
   sealed: boolean;
   /** 沉降/未沉降说明。 */
   note: string;
@@ -262,11 +229,11 @@ interface DeadAuditOutcome {
 
 /** 杠杆入册结论。 */
 interface LeverRegistration {
-  /** 本次登记的杠杆/反模式条目名。 */
+  /** 本次登记的杠杆/反模式条目名（每行一条）。 */
   levers: string[];
-  /** 入册前置核查：归因对照读数（禁止无对照入册）。 */
+  /** 入册前置核查：归因对照读数。 */
   evidenceCheck: string;
-  /** sync_skills 校验结果（应为全部安装位零漂移）。 */
+  /** sync_skills 校验结果。 */
   syncResult: string;
   /** 更新后的杠杆册路径。 */
   docPath: string;
@@ -484,7 +451,7 @@ ${JSON.stringify(rebuilt)}
     continue;
   }
   verified.push(
-    `第 ${waveNo} 波经 preflight_expressions + toolkit 静态闸预检后派发（multisim=${outcome.multisimId}，${outcome.armReads.length} 臂读数）`,
+    `第 ${waveNo} 波经 preflight_expressions + toolkit 静态闸预检后派发（multisim=${outcome.multisimId}，${outcome.readLines.length} 臂读数）`,
   );
 
   // —— 逐臂归因 + 波次档案 ——
@@ -493,7 +460,7 @@ ${JSON.stringify(rebuilt)}
     `逐臂归因第 ${waveNo} 波（目标集 ${dataset}，wave=${waveLabel}）。
 判读基准：${baseline}
 按臂序读数（原样，勿按 alpha id 猜）：
-${JSON.stringify(outcome.armReads)}
+${JSON.stringify(outcome.readLines)}
 收割说明：${outcome.harvestNote}
 归因要求：
 - 符号指纹校验；复合形态稀释铁律核对（乘法/bucket 低于对应单腿=稀释）；跨区不外推（TWN 经验在 DEU 无一致增益）。
@@ -524,12 +491,12 @@ ${JSON.stringify(outcome.armReads)}
   if (attr.nearGateCandidates.length > 0) {
     phase("近闸 prod 探针");
     const cands = attr.nearGateCandidates.slice(0, 2);
-    const probe = await corrOfficer.ask<ProdProbe[]>(
+    const probe = await corrOfficer.ask<string[]>(
       `近闸 prod 前置探针（探索口径，refresh=True）：对下列候选逐个 check_correlation(production)，单槽串行跑，不逐臂重探——同核变体共 prod 命运，每个核心测 1 条即可。
 候选：${JSON.stringify(cands)}
-读数 [0,1]；取不到 ⇒ ok=false+note（排队/超时/未决），不要编数。每个候选返回一条 ProdProbe。`,
+读数 [0,1]；取不到 ⇒ ok=false+note（排队/超时/未决），不要编数。每候选返回一行：alphaId=<id>|prod=<0.xx>|ok=<true/false>|note=<说明>`,
     );
-    if (probe.some((p) => !p.ok)) {
+    if (probe.some((line) => !line.includes("ok=true"))) {
       // CLI 兜底：prod-first 有进程锁 data/.prod_first.lock（平台 prod 单并发），退出码为值非异常
       try {
         const cli = await world.run(
@@ -547,9 +514,19 @@ ${JSON.stringify(outcome.armReads)}
         notCovered.push(`第 ${waveNo} 波 prod-first CLI 兜底失败`);
       }
     }
-    for (const p of probe) {
+    for (const line of probe) {
+      const alphaIdMatch = line.match(/alphaId=([A-Za-z0-9]{8})/);
+      const prodMatch = line.match(/prod=([\d.]+)/);
+      const okMatch = line.match(/ok=(true|false)/);
+      const noteMatch = line.match(/note=(.+)/);
+      const p = {
+        alphaId: alphaIdMatch ? alphaIdMatch[1] : "",
+        prodCorrelation: prodMatch ? Number(prodMatch[1]) : null,
+        ok: okMatch ? okMatch[1] === "true" : false,
+        note: noteMatch ? noteMatch[1] : "",
+        source: "parsed",
+      };
       if (!p.alphaId.trim()) {
-        // 探针没带回 alpha id：空串进 prodClean 会让提交链找不到对象，按未取得如实登记
         notCovered.push(`第 ${waveNo} 波探针返回空 alphaId（ok=${p.ok}，note=${p.note}）——该候选无法进入提交链`);
         continue;
       }
@@ -570,7 +547,6 @@ ${JSON.stringify(outcome.armReads)}
       } else if (p.prodCorrelation !== null && p.prodCorrelation >= PROD_CEILING) {
         wallNote = `prod ${p.prodCorrelation} 堵（${p.alphaId}）——雷在核心不在搭档：同核变体共 prod 命运，整族停手换核心，不逐臂重探`;
       } else {
-        // ok=true 却没带读数：探针自称成功但没带数，兜底按未取得登记，不许静默丢弃
         notCovered.push(`${p.alphaId} 的探针报告成功但未带 prod 读数（prodCorrelation=null，来源 ${p.source}）——按未取得处理`);
       }
     }
@@ -687,7 +663,7 @@ ${JSON.stringify(gtable)}
       const gattr = await attributor.ask<WaveAttribution>(
         `精修波 ${gLabel} 归因（目标集 ${dataset}）。
 判读基准：${baseline}
-按臂序读数：${JSON.stringify(gout.armReads)}
+按臂序读数：${JSON.stringify(gout.readLines)}
 同主波归因要求；重点产出带宽曲线/杠杆结论；sweptDimensions 填本轮实际扫过的维度；newLever 仅在带归因对照时给。
 档案 ${ARCHIVE_DIR}/WAVE_${gLabel}_${dataset}_<YYYYMMDD>.md + mcp__wqb-db__upsert_wave_result。`,
       );
@@ -751,7 +727,7 @@ ${JSON.stringify(gtable)}
 逐维核对 D1–D6：D1 ≥10 结构互异模板（换窗口/换常数/同假设正反两向均不算）；D2 每个可用字段族 ≥1 实测；D3 矩全家（水平/一阶差/二阶波动/比值或信噪比 各≥1）；D4 ≥2 分组轴；D5 ≥1 非线性（signed_power/ts_rank/ts_quantile/trade_when/bucket）；D6 ≥2 配置（宇宙×中性化×decay 至少变一维）。结合本 run 实测波次与台账历史臂数。
 缺任一维 ⇒ layer=provisional（不得沉降、不得引用为邻接集先验）；全维齐+覆盖齐 ⇒ 按分层给 signal_dead/config_dead，并经 mcp__wqb-db__seal_dead_end 沉降（fail-closed 取证闸可能拒绝——拒绝时 sealed=false 如实留档，不要 force）。判死档案写 ${ARCHIVE_DIR}/DEATH_AUDIT_${dataset}_<YYYYMMDD>.md；判死依据=读数，不改写邻接集先验。`,
     );
-    report({ runId: run.id, dataset, layer: audit.layer, sealed: audit.sealed, missing: audit.missingDimensions, doc: audit.docPath });
+    report({ runId: run.id, dataset, layer: audit.layer, sealed: audit.sealed, missing: audit.missingDims, doc: audit.docPath });
     datasetStates.push({
       text: `${dataset}：${audit.layer}${audit.sealed ? "（seal_dead_end 已沉降）" : "（未沉降，档案留痕）"}`,
       status: audit.sealed ? "verified" : "unconfirmed", // 沉降=fail-closed 取证闸证实；未沉降=归因判断

@@ -37,6 +37,7 @@ from _lib.poller import TERMINAL, poll_config, poll_until_terminal
 from _lib.ledger import make_ledger_store, today
 from _lib import rules as rules_mod
 from _lib import region_kb as region_kb_mod
+from _lib import knowledge as knowledge_mod
 from _lib import slots as slots_mod
 import gate as gate_mod
 import metrics_cache
@@ -1138,6 +1139,41 @@ def _write_s4_walls(ctx, ck, rows, reviewed_at=None):
         return None
 
 
+def _write_attempt_knowledge(ctx, wave, rows):
+    """P1/P2：收批后写逐条经验索引 + 波级蒸馏（失败不阻断）。
+
+    顺序必须是 capture → distill：distill 读 attempt_knowledge。
+    `_write_s4_walls` 要先跑（capture 的 walls 兜底来源）。
+    """
+    try:
+        t_near = ctx.thresh("near") or {}
+        summary = knowledge_mod.refresh_from_review(
+            ctx, wave, rows, settings=ctx.settings,
+            thresholds={"near_sharpe_min": t_near.get("sharpe_min", 1.0)},
+        )
+        if summary:
+            print(f"[knowledge] attempt_knowledge +{summary.get('written', 0)}/"
+                  f"{summary.get('records', 0)} kv={summary.get('knowledge_version')} "
+                  f"outcomes={summary.get('outcomes')}")
+    except (Exception, SystemExit) as e:
+        print(f"[knowledge] 经验索引异常（不阻断）: {e}")
+    try:
+        d = knowledge_mod.distill_and_publish(ctx, wave)
+        if d:
+            pub = d.get("published") or {}
+            print(f"[knowledge] wave_lessons n={d.get('wave_lessons', {}).get('n_attempts')} "
+                  f"proposals={len((d.get('wave_lessons', {}).get('proposals') or {}).get('dead_families') or [])} "
+                  f"published={bool(pub.get('ok')) if pub else False}")
+    except (Exception, SystemExit) as e:
+        print(f"[knowledge] 波级蒸馏异常（不阻断）: {e}")
+    try:
+        dg = knowledge_mod.write_digest(ctx)
+        if dg:
+            print(f"[knowledge] digest -> {dg.get('path')}")
+    except (Exception, SystemExit) as e:
+        print(f"[knowledge] 经验摘要异常（不阻断）: {e}")
+
+
 def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     if ck["stages"].get("review", {}).get("done"):
         print("[review] 已完成（checkpoint），跳过")
@@ -1192,6 +1228,7 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
             if _r.get("sharpe") is not None and not _r.get("walls"):
                 _r["walls"] = review_mod.walls(_r, t)
         _write_s4_walls(ctx, ck, rows)
+        _write_attempt_knowledge(ctx, ck["wave"], rows)
         ck["stages"]["review"] = {"done": True, "candidates": 0, "near": 0,
                                   "completeness": completeness}
         ckpt_save(ctx, ck, checkpoint_dir)
@@ -1271,6 +1308,7 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     print(f"[review] total={len(rows)} candidates={len(candidates)} near={len(near)}")
     # 2026-10-02 P0：写结构化 s4_walls（消除「SOP 主路径不写该键」断流；见 build_s4_walls_payload 注释）
     _write_s4_walls(ctx, ck, rows)
+    _write_attempt_knowledge(ctx, ck["wave"], rows)
     if write_ledger:
         store = make_ledger_store(ctx)
 

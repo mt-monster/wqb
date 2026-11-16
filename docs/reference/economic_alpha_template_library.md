@@ -86,6 +86,44 @@
 - **骨架**：`trade_when(x, greater(condition_field, threshold), 0)`、`if_else`
 - **算子**：trade_when / if_else / greater / and / or（此前未用）；注意 TVR 下限 5%，条件太严会低于下限。
 
+### T13 长期去趋势均值回复（Detrended Reversion，`ts_step` 时间轴族）
+- **经济逻辑**：把价格对**自身长期线性趋势**做 OLS，残差 = 当前价相对自身趋势线的偏离。偏离过大 → 均值回复。与 T1 的区别是**持仓期**：T1 是 1–5 天流动性冲击回复，T13 是 60–250 天的趋势偏离修复（技术分析里的 DPO / Detrended Price Oscillator 等价实现）。为什么有效：长期趋势线代表基本面锚，短期噪声把价格推离锚点后，套利资金推动回归。
+- **实现关键**：`ts_step(1)` 不是"信号"，是**时间轴 t**（0,1,2,…）。把它当 `ts_regression` 的自变量，`rettype` 决定取什么：
+
+  | rettype | 官方 return | 用途 | 本族实测 |
+  |---:|---|---|---|
+  | **0** | Error Term | **去趋势残差** | **唯一有效** |
+  | 2 | slope (β) | 趋势速度 | 失效（见下） |
+  | 6 | R-Square | 趋势清晰度 | 配合 β 用 |
+  | 8 | Standard Error of β | β/SE(β) = 趋势 t 值 | 失效 |
+
+- **骨架（按有效性排序，均为实测）**：
+
+  ```
+  # ★ 主骨架：长期去趋势残差（rettype=0）
+  rank(-ts_regression(ts_zscore(close, 252), ts_step(1), 252, rettype=0))
+
+  # 窗口：126 / 252 / 500 都可用，500 在 GBR 最优（S 1.20 / F 0.81）
+  rank(-ts_regression(ts_zscore(close, 500), ts_step(1), 500, rettype=0))
+
+  # 中性化杠杆：robust universe 专用（IND 0.51→0.85，S 1.55→1.76）
+  # 设置项 neutralization=STATISTICAL，不是表达式改动
+  ```
+
+- **★ 载体铁律：必须用有水平漂移的变量**。`close` / 财务存量（revenue、assets、operating_income）可用；**`returns` 不可用**——零均值高噪声序列的 z 分数在 0 附近反复穿越，残差符号剧烈翻转，实测 **TO 0.8433（84% 换手）、F 0.34、多条 FAIL**。判据：载体是否零均值。
+- **★ 跨区规律：有效性 ∝ 宇宙小市值程度**（同一条骨架实测 S）：
+
+  | 区 / 宇宙 | USA/TOP3000 | GBR/TOP700 | EUR/TOP2500 | IND/TOP500 |
+  |---|---:|---:|---:|---:|
+  | S | 0.60 | 1.20 | 1.39 | **1.55（STATISTICAL 1.76）** |
+  | F | 0.30 | 0.81 | 0.94 | **1.30（STATISTICAL 1.35）** |
+
+  ⇒ 挖这类信号直接去 IND / GBR / KOR，**不要在 USA 大盘磨**。
+- **★ 已证伪：`rettype=2`（趋势斜率）不可用**。论坛 268 赞《60天点亮60个塔》一元模板 index 0 就是 `ts_regression(ts_zscore({a},500), ts_step(1),500, rettype=2)`，本账号 2026-11-14 实测 10 条：价格载体 S **−0.08 ~ −0.05**、2Y −0.77 ~ −1.00；基本面/分析师载体 0.45–0.57 正但弱。**斜率族 |S| ≤ 0.08，反向也只有 +0.08 ⇒ 幅度本身近零，不是符号问题**。
+- **风险标记**：整族（含纯基本面载体）实测 **21/21 全带 `REVERSION_COMPONENT` WARNING** —— 平台按「对时间回归」这一结构在日频持仓上的表现判定，不按字段。原文 "may not accept these alphas **in the future**" 是前瞻警告，但属结构性提交风险。
+- **适用**：pv1（close）+ 小市值宇宙；不适用 USA 大盘、不适用 flow 变量（returns）。
+- **实测出处**：`output_report/ts_step_templates_20261114.md`（21 条 / 8 表）。
+
 ---
 
 ## 二、未用算子 × 经济用途速查（针对 16.9% 探索率的整改清单）

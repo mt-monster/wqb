@@ -19,7 +19,7 @@
   action       机器可执行动作 dict：{"op": "...", "params": {...}, "message": "给人看的提示"}
   evidence     证据 dict：campaign/wave/metrics 等
   confidence   0.0-1.0，初始 0.8，验证成功 +0.05（封顶 1.0），冲突 *0.7
-  status       active | contested | deprecated
+  status       active | contested | deprecated | proposed（草稿：不参与 query() 默认过滤）
   times_applied / times_succeeded  应用/成功计数（L4 用）
   created_at / validated_at        ISO 时间戳
 """
@@ -48,6 +48,29 @@ def _today():
 
 def _region_from_dir(campaign_dir):
     return os.path.basename(os.path.abspath(campaign_dir)).upper()
+
+
+# 规则连通性校验（单一实现在 src/wqb/methodology_rules.py）。
+# 技能装在仓库外时 wqb 不可导入 —— 那种场景服务的是真实战役运行而非测试，
+# 降级为一次性告警（不阻断），与 _lib/db.py 的委托模式一致。
+_RULE_VALIDATOR_WARNED = False
+
+
+def _assert_rule_writable(rule):
+    global _RULE_VALIDATOR_WARNED
+    try:
+        from wqb.methodology_rules import assert_writable
+    except Exception:
+        if not _RULE_VALIDATOR_WARNED:
+            _RULE_VALIDATOR_WARNED = True
+            print("[rules][WARN] wqb.methodology_rules 不可导入，跳过规则连通性校验"
+                  "（技能装在仓库外？）")
+        return
+    # 只更新计数/时间戳的调用（不带 action）不做连通性校验：老规则可能带历史 op，
+    # 不该因为一次 times_applied += 1 就被拦下。
+    if not rule.get("action"):
+        return
+    assert_writable(rule)
 
 
 # ---------------- L2：规则存储 ----------------
@@ -160,6 +183,7 @@ class RuleStore:
         global_scope：True=写全局库（跨 region 共享）；False=写区域库；
                       None=按 rule.trigger.region 自动路由（"*"/缺省 -> 全局，否则 -> 区域）。
         """
+        _assert_rule_writable(rule)
         if global_scope is None:
             trig_region = (rule.get("trigger") or {}).get("region")
             global_scope = trig_region in (None, "", "*")
@@ -855,6 +879,54 @@ def classify_failure(rows, wave_meta=None, thresh=None):
 
 # ---------------- P1：verdict 自动推荐（规则 -> 下波方向） ----------------
 
+def _canon_wall(name):
+    """墙名规范化（委托 wqb.knowledge.classify；wqb 不可导入时原样返回）。"""
+    try:
+        from wqb.knowledge.classify import canonical_wall
+        return canonical_wall(name)
+    except Exception:
+        return str(name or "").upper()
+
+
+def cross_wave_stats(ctx, limit=10):
+    """读 region_kb 的 family_stats / skeleton_stats（跨波实测，P2）。
+
+    只读、失败静默返回 []：推荐是建议层，不该因为 KB 缺失阻断评审。
+    """
+    try:
+        from wqb_store import get_store
+        st = get_store(ctx)
+        try:
+            kb = st.get_ledger(getattr(ctx, "region", None), "region_kb") or {}
+        finally:
+            st.close()
+    except Exception:
+        return []
+    if not isinstance(kb, dict):
+        return []
+    out = []
+    for kind in ("family_stats", "skeleton_stats"):
+        for g in (kb.get(kind) or []):
+            if not isinstance(g, dict):
+                continue
+            name = g.get("family") or g.get("skeleton")
+            if not name:
+                continue
+            out.append({
+                "kind": kind,
+                "name": name,
+                "n": g.get("n"),
+                "n_win": g.get("n_win"),
+                "n_near": g.get("n_near"),
+                "max_sharpe": g.get("max_sharpe"),
+                "dominant_wall": g.get("dominant_wall"),
+                "dominant_wall_share": g.get("dominant_wall_share"),
+                "dead": bool(g.get("dead")),
+            })
+    out.sort(key=lambda x: (-(x.get("n") or 0), str(x.get("name"))))
+    return out[:limit]
+
+
 def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
     """verdict 后自动推荐下波方向（仅建议，非强制；提交前仍过 5 闸 + 闸6）。
 
@@ -896,6 +968,17 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
                 continue
             wall_count[w] = wall_count.get(w, 0) + 1
     dom_wall = max(wall_count, key=wall_count.get) if wall_count else None
+
+    # ---- 跨波实测（P2）：同族/同骨架是否反复卡同一堵墙 ----
+    # 只作为 evidence 附在既有建议上；不新增 action.op、不改变四分支语义。
+    xw = cross_wave_stats(ctx)
+    matched_xw = []
+    if xw and dom_wall:
+        _cw = _canon_wall(dom_wall)
+        matched_xw = [
+            x for x in xw
+            if _canon_wall(x.get("dominant_wall")) == _cw and (x.get("n") or 0) >= 5
+        ][:3]
 
     # ---- 规则匹配（strategy/diagnosis/universe_lever）----
     strat_rules = store.query(rule_type="strategy", region=region)
@@ -1008,6 +1091,23 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
                 r["action_hint"] = (f"{r['action_hint']}；fail-fast 命中 {len(ff['hits'])} 项："
                                     + "、".join(ff["hits"]))
                 break
+
+    # 跨波统计附在既有建议上（没有建议时才单列一条，避免并列条目改变既有优先级断言）
+    if matched_xw:
+        if recs:
+            for r in recs:
+                r.setdefault("cross_wave_evidence", matched_xw)
+        else:
+            recs.append({
+                "direction": f"跨波统计：{dom_wall} 墙在同类结构中反复出现",
+                "rationale": "；".join(
+                    f"{x['kind']}:{x['name']} n={x.get('n')} 主墙 {x.get('dominant_wall')}"
+                    for x in matched_xw),
+                "priority": 60,
+                "action_hint": "优先读 region_kb.family_stats / skeleton_stats 的证据再决定加注或换方向",
+                "source_rule": None,
+                "cross_wave_evidence": matched_xw,
+            })
 
     # 按优先级降序
     recs.sort(key=lambda x: -x["priority"])

@@ -88,5 +88,5 @@
 - 全量候选台账：`tracking/IND/results/ind_candidate_ledger_20261114.md`（53 条：expr/锚/decay/S/F/TO/败闸/verdict/归因）
 - 判死回写：`seal_dead_end` ×5（IND-SENT21-BARE-DEAD / IND-EARN11-VECTOR-META-DEAD / IND-MDL77-ESG-WEAK-DEAD / IND-OTHER323-STATIC-DEAD / IND-ATOM-BARE-STRUCT-DEAD）
 - 波次结论：`upsert_wave_result` W1–W8
-- 台账 key：`candidate_basket_20261114`（5+1 颗终验值）
+- 台账 key：`candidate_basket_20261114`（5+1 颗终验值，经 upsert_ledger_key 登记）
 - 人工复盘：`reports/ind_atom_delivery_review_20261114.md`；调优经验：`reports/ind_tuning_experience_20261114.md`

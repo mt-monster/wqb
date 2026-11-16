@@ -16,6 +16,8 @@
 | ⑦ | **逐数据集经验沉淀** | 对本波**每个实际回测的数据集**：`workflow_campaign(stage="S6", subcommand="dataset-experience", dataset=$DS, extra_args=["--delay", str($DELAY)])`，收取后台任务终态，再补充块外的中文字段 / 机制复盘 | `reports/dataset_experience/<region>_<dataset>_campain.md`（只读 DB 生成，保留人工复盘块；默认累计该数据集历史，专门总结本次战役才传 `--waves`） |
 | ⑧ | **刷新先验快照** | `mcp__wq-brain-http__workflow_campaign(region=$REGION, stage="S2", subcommand="assemble-priors")`（默认带 `--snapshot-ledger`） | `priors_snapshot_<region>` |
 | ⑨ | **刷新区域字段画像**（区域级，不按波过滤） | `mcp__wq-brain-http__workflow_campaign(region=$REGION, stage="S6", subcommand="field-profile")`：缺省刷新本区**全部**有字段目录的集并落盘；单集传 `dataset=$DS`，只预览传 `extra_args=["--dry-run"]`，只刷有本区战役痕迹的集传 `extra_args=["--active-only"]` | `docs/reference/<REGION>/datasets/<dataset>_field_profile.md` + `README.md`（机器段在 `BEGIN/END` 标记内可刷；`## 人工机制复盘` 在标记外，刷新时保留）。工具 = `tools/fields/dataset_profile_doc.py`，纯本地只读 DB |
+| ⑩ | **经验蒸馏回写**（2026-11-15 P1/P2；自动路径已内置，手工补跑用 CLI） | `python tools/knowledge/distill.py --region $REGION --wave $W --publish`（收批时 `pipeline.py stage_review` / MCP `harvest_multisim_results` 已自动跑 capture → distill → publish；本节只在补跑/回填时手动执行） | `attempt_knowledge` 逐条索引 + `wave_lessons_<region>_<wave>` + `region_kb.family_stats` / `skeleton_stats` + `experience_proposals_<region>` + `KB/template_kb.measured_*`。`proposed` 规则满 2 个独立波次确认后自动 `active`（仅 `strategy` 咨询型）；**判死仍走 §9.5** |
+| ⑪ | **经验摘要与产出率**（P4；`pipeline` 自动刷新摘要，产出率按需跑） | `python tools/knowledge/yield_report.py --region $REGION`；`python tools/knowledge/digest.py --region $REGION` | `output_report/experience_yield_<region>_<YYYYMMDD>.md` + ledger `experience_yield_<region>`；`tracking/<REGION>/priors/experience_digest.md`（机器段可刷、标记外人工笔记保留） |
 
 未回测、诊断中、待出相关性的不能记成已验证成果（步 7 → 步 8 的候选不是 win）。
 
@@ -107,6 +109,8 @@ mcp__wqb-db__upsert_registry_empirical  region=$REGION  layer="win"  entry_id=<I
 - [ ] 每个实际回测的数据集都已 `dataset-experience`
 - [ ] 本区字段画像已按本波回测结果刷新（`docs/reference/<REGION>/datasets/`；S6 `subcommand="field-profile"`，本波回测过的数据集页应含本次证据）
 - [ ] **assemble-priors 已再跑**：`priors_snapshot_<region>` 不早于本次回写（GBR 实测：快照停在 09-19，而 `region_kb` 已 09-25、`registry_empirical` 已 09-26 → 落后 8 天，本波结论不回流）
+- [ ] **经验蒸馏已跑**：`wave_lessons_<region>_<wave>` 存在且 `n_attempts` 已记录（0 = 本波无可分析行，属正常）；`python tools/step9_audit.py --region $REGION --wave $W` 第 ⑦ 项可核（`--enforce strict` 才算硬失败）。收批自动路径通常已写；手工补跑用 ⑩
+- [ ] **经验摘要已刷新**：`tracking/<REGION>/priors/experience_digest.md`（pipeline 自动刷新；手工 `python tools/knowledge/digest.py --region $REGION`）
 
 产物归属见 [CONTRACT §4 共享产物归属](../../CONTRACT.md)。
 

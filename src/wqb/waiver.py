@@ -109,6 +109,9 @@ GATE_POLICIES: Dict[str, GatePolicy] = {p.gate: p for p in (
     GatePolicy("prod_family", "闸 PF 信号族死路预检", ("user", "agent"), 3, None,
                ("--no-prod-family-gate",),
                layer="wave_gate 内置", default="开"),
+    GatePolicy("evidence", "机制证据闸（新机制首次派波前论坛/论文检索留痕，2026-11-15）", ("user", "agent"), 3, None,
+               ("--require-evidence 不传即 WARN 档", "repair/probe 批自动豁免"),
+               layer="gate.py 机制证据闸", default="WARN（--require-evidence 升级为阻断）"),
 )}
 
 #: wave_gate CLI 开关 → 闸 id（`tools/wave_gate.py` 用它把「开了哪些逃生口」翻成 waiver 检查）

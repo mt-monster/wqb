@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.1"
-last_verified: 2026-11-10
+last_verified: 2026-11-16
 ---
 
 # GBR 区域挖掘流程（RA 区域分支）
@@ -303,6 +303,7 @@ last_verified: 2026-11-10
 
 ### ② 组装 · 本区覆盖
 
+- **★ 机制证据闸（2026-11-15 本区三次漏检后落地，全 workflow 生效）**：新机制首次派波前必须论坛+论文双留痕——GBR 本区已三次因漏查论坛模板而晚 1-2 战役（FF65210 情绪相关性错位帖 / WL58980 Earnings 横向点塔帖 / MY82844 nip 族帖）。检索词按三维矩阵（机制措辞/算子×字段/数据集名）；作者线反查（≥200 字方法论长评者）。wave_gate 的 `evidence_gate` 段按 7 天窗口核对 ledger 留痕，`--require-evidence` 缺留痕 = FAIL。详见 ra-pipeline 步 4/5 与 forum-recon-triggers.md 触发点 0。
 - **白名单按波动态生成，不再用固定清单**（旧「10 个数据集 · 2026-08-26 建」已作废 —— 它与「空间封闭裁决」同源，2026-10-29 已实证其字段事实错误）。
   - **生成方式**：每波开场按 `get_datasets(region=GBR, delay=1, universe=TOP700)` 实读 + S1 体检（`get_datafields` 逐集字段画像）产出 `s0_whitelist`；**体检全部跑完再一次性锁**，不要边跑边改共享键。
   - **失效条件（命中任一即重扫）**：距上次建表 > 60 天 ／ 平台重算过指标 ／ 本区连续 3 波 0 达标 ／ 已判死集数 > 候选集数。

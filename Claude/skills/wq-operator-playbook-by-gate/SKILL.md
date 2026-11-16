@@ -2,7 +2,7 @@
 name: wq-operator-playbook-by-gate
 description: 破闸算子处方与语法手册。候选卡平台闸（LOW_SHARPE/FITNESS/换手/CONCENTRATED_WEIGHT/LOW_SUB_UNIVERSE_SHARPE/IS_LADDER_SHARPE/PROD_CORRELATION/SELF_CORRELATION/CLUSTER_TEST）要挑算子时用；按六步 SOP 破闸时用；发批前判方向是否试完、整批 CANCELLED/ERROR 定位算子语法时用。含按闸算子优先级、103 算子语法与命名参规则、unit_handling=VERIFY 量纲规则、三条正交轴族与硬约束、算子预算账、发批前对账 SOP。
 layer: L4
-last_verified: 2026-11-01
+last_verified: 2026-11-16
 agent_created: true
 ---
 
@@ -199,6 +199,47 @@ expected "Unit[]", found "Unit[TSShare:1]"
 
 **一句话记法**：**带单位的量只能与同单位的量相除/相比；要跟常数打交道，先 `rank()` / `ts_zscore()` 收口到无量纲。**
 这和 `cap`（`CSPrice·CSShare`）的处理是同一条规则 —— 比值/比较前先收口。
+
+### 2.8 ★★ `ts_regression` 的 `rettype` 全表（摘要里没有，必须查逐算子端点）
+
+**坑**：`get_operators` 返回的 `description` 只有一句 `Returns various parameters related to regression function`，
+**rettype 表、参数区别、公式全都不在里面**。踩过三次。完整规格在逐算子端点：
+
+```
+GET https://api.worldquantbrain.com/operators/ts_regression
+```
+
+| rettype | 官方 return | 什么时候用 |
+|---:|---|---|
+| 0（默认） | Error Term | 去趋势残差；剥离「跟随某变量本应有一部分」后的残余 |
+| 1 | y-intercept (α) | 截距（极少单用） |
+| 2 | slope (β) | 趋势速度 / CAPM beta |
+| 3 | y-estimate | 拟合值（平滑版 y） |
+| 4 | SSE | 残差平方和 |
+| 5 | SST | 总平方和 |
+| 6 | R-Square | 趋势清晰度（配合 β 用，见论文 TM=β×R²） |
+| 7 | MSE | 均方误差 |
+| 8 | Standard Error of β | **β/SE(β) = 趋势 t 值**（trend strength 的统计版本） |
+| 9 | Standard Error of α | α 标准误 |
+
+**两条容易看漏的实现细节（官方原文）**：
+
+1. `"All summations are over day index, using only valid tuples"` + `"'n' (may differ from d) is a number of valid (x, y) tuples"` —— **逐对剔除 NaN，有效样本 n 可能远小于窗口 d**。所以 rettype 4/5/6/7 这类带 n 量纲或比值的量，在缺失率不同的两只股票间**不可直接横截比较**；rettype 8/9 的自由度也由 n 决定。
+2. `"lag ... to calculate lagged regression parameters"` —— **lag 只平移 x，y 用当期**。
+
+**`ts_step(1)` = 时间轴，不是信号**。`ts_regression(y, ts_step(1), d, rettype=k)` 就是「y 对时间的 OLS」：
+
+| 想做什么 | 写法 | 实测结论（2026-11-14，21 条） |
+|---|---|---|
+| 趋势斜率 | `rettype=2` | **失效**：价格载体 abs(S) ≤ 0.08，反向也只有 +0.08 |
+| 去趋势残差 | `rettype=0` | **唯一有效**：IND S 1.76（STATISTICAL） |
+| 趋势清晰度 | `rettype=6` | 必须与 β 相乘（TM=β×R²），单用无方向 |
+| 趋势 t 值 | `rettype=2 / rettype=8` | 失效（同斜率） |
+
+**载体铁律**：去趋势只用在**有水平漂移**的变量（价格、财务存量）；`returns` 这类零均值 flow 变量会 TO 84% 报废。
+
+> 完整实证与跨区规律见 [`02_signal_patterns.md` §18](docs/experience/02_signal_patterns.md)；
+> 模板骨架见 [`economic_alpha_template_library.md` T13](docs/reference/economic_alpha_template_library.md)。
 
 ---
 

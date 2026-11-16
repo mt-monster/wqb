@@ -2,11 +2,12 @@
 """WQ BRAIN alpha 表达式的最小解析器 + 压缩改写规则（只读、零副作用、无第三方依赖）。
 
 语法覆盖：函数调用 `name(a, b, k=v)`、标识符（字段/轴/常量）、数字、括号、
-中缀 `+ - * /`、字符串字面量（如 bucket 的 range='0,1,0.05'）。
+中缀 `+ - * /`、中缀比较 `< <= > >= == !=`、字符串字面量（如 bucket 的 range='0,1,0.05'）。
+中缀比较按平台语义归一为函数式算子（`a < b` ≡ `less(a, b)`），因此 `to_str()` 输出
+始终是函数式写法。
 
-算子的「调用点数」口径与平台一致：
-    OP_CALL_RE = r"\\b([a-z][a-z0-9_]{2,})\\s*\\("      # 名称( 形式的调用点个数
-（与 tools/build_gate_prior_from_inventory.py::op_count 同源）
+算子的「调用点数」口径与平台一致（`count_ops`）：函数调用点各计 1，中缀算术/比较
+（`a + b` / `a < b`）与一元负号（`-x` ≡ `reverse(x)`）各计 1；数字常量 `-1` 不计数。
 """
 from __future__ import annotations
 
@@ -22,6 +23,7 @@ _TOKEN_RE = re.compile(
   | (?P<num>\d+(?:\.\d+)?)
   | (?P<str>'[^']*'|"[^"]*")
   | (?P<ident>[A-Za-z_][A-Za-z0-9_]*)
+  | (?P<cmp><=|>=|==|!=|<|>)
   | (?P<op>[(),=+\-*/])
     """,
     re.VERBOSE,
@@ -110,6 +112,27 @@ class _Parser:
         if t[1] != val:
             raise ParseError(f"期望 {val!r} 实际 {t[1]!r}")
 
+    #: 中缀比较符 -> 平台函数算子（语法糖，operatorCount 均计 1）
+    _CMP_MAP = {
+        "<": "less",
+        "<=": "less_equal",
+        ">": "greater",
+        ">=": "greater_equal",
+        "==": "equal",
+        "!=": "not_equal",
+    }
+
+    # cmp := expr (cmp_op expr)?      -- 比较不可链式，最多一层
+    def parse_cmp(self) -> Node:
+        node = self.parse_expr()
+        t = self.peek()
+        if t and t[0] == "cmp":
+            self.next()
+            return Node(
+                "call", name=self._CMP_MAP[t[1]], args=[node, self.parse_expr()], kwargs={}
+            )
+        return node
+
     # expr := term (('+'|'-') term)*
     def parse_expr(self) -> Node:
         node = self.parse_term()
@@ -136,7 +159,12 @@ class _Parser:
         t = self.next()
         kind, val = t
         if kind == "op" and val == "-":
-            # 一元负号：-x ≡ reverse(x)（平台语义等价，operatorCount 均计 1）
+            # 一元负号：数字常量保留为负数（trade_when(..., -1) 的 exit 位），
+            # 否则等价 reverse(x)（平台 operatorCount 均计 1）
+            nxt = self.peek()
+            if nxt and nxt[0] == "num":
+                self.next()
+                return Node("num", text="-" + nxt[1])
             operand = self.parse_factor()
             return Node("call", name="reverse", args=[operand], kwargs={})
         if kind == "num":
@@ -164,9 +192,9 @@ class _Parser:
                             self.i = save
                     if is_kw:
                         self.next()  # '='
-                        kwargs[kw_name] = self.parse_expr()
+                        kwargs[kw_name] = self.parse_cmp()
                     else:
-                        args.append(self.parse_expr())
+                        args.append(self.parse_cmp())
                     nxt = self.next()
                     if nxt[1] == ")":
                         break
@@ -175,7 +203,7 @@ class _Parser:
                 return Node("call", name=val, args=args, kwargs=kwargs)
             return Node("ident", name=val)
         if kind == "op" and val == "(":
-            node = self.parse_expr()
+            node = self.parse_cmp()
             self.expect(")")
             return node
         raise ParseError(f"意外的 token {val!r}")
@@ -184,7 +212,7 @@ class _Parser:
 def parse(expr: str) -> Node:
     """把表达式解析成 AST。"""
     p = _Parser(_tokenize(expr))
-    node = p.parse_expr()
+    node = p.parse_cmp()
     if p.peek() is not None:
         raise ParseError(f"尾部有多余 token: {p.peek()}")
     return node
@@ -224,13 +252,65 @@ def iter_idents(node: Node):
         yield from iter_idents(node.right)
 
 
+def count_ops(node: Node) -> int:
+    """AST 口径的算子调用点数（与平台一致）。
+
+    call 各计 1；中缀算术/比较（bin）各计 1，对应 add/multiply/less 等语法糖；
+    数字常量 `-1` 不计。
+    """
+    if node is None:
+        return 0
+    if node.kind == "call":
+        return 1 + sum(count_ops(a) for a in node.args) + sum(
+            count_ops(v) for v in node.kwargs.values()
+        )
+    if node.kind == "bin":
+        return 1 + count_ops(node.left) + count_ops(node.right)
+    return 0
+
+
 def op_count(expr: str) -> int:
-    """算子调用点数（平台口径）。"""
-    return len(re.findall(r"\b([a-z][a-z0-9_]{2,})\s*\(", expr or ""))
+    """算子调用点数（平台口径）。
+
+    解析成功走 AST（含中缀比较/算术与一元负号 reverse）；解析失败回退正则，
+    回退口径额外补计中缀比较符（`< <= > >= == !=` 各计 1）。
+    """
+    try:
+        return count_ops(parse(expr))
+    except ParseError:
+        pass
+    base = len(re.findall(r"\b([a-z][a-z0-9_]{2,})\s*\(", expr or ""))
+    return base + len(re.findall(r"<=|>=|==|!=|<|>", expr or ""))
 
 
 def per_op(node: Node) -> Counter:
     return Counter(c.name for c in iter_calls(node))
+
+
+#: 中缀算术 -> 平台函数算子名（语法糖，operatorCount 计 1）
+_BIN_OP_NAME = {"+": "add", "-": "subtract", "*": "multiply", "/": "divide"}
+
+
+def iter_bins(node: Node):
+    """深度优先遍历所有中缀算术节点（bin）。"""
+    if node is None:
+        return
+    if node.kind == "bin":
+        yield node
+        yield from iter_bins(node.left)
+        yield from iter_bins(node.right)
+    elif node.kind == "call":
+        for a in node.args:
+            yield from iter_bins(a)
+        for v in node.kwargs.values():
+            yield from iter_bins(v)
+
+
+def per_op_full(node: Node) -> Counter:
+    """逐算子计数（含中缀算术），与 `count_ops` 的总数一致。"""
+    cnt = Counter(c.name for c in iter_calls(node))
+    cnt.update(_BIN_OP_NAME[b.op] for b in iter_bins(node))
+    return cnt
 
 
 def fields_used(node: Node) -> List[str]:
@@ -372,12 +452,13 @@ def compress_report(expr: str) -> Dict[str, Any]:
         "expr": expr,
         "op_count": op_count(expr),
         "per_op": dict(per_op(node).most_common()),
+        "per_op_full": dict(per_op_full(node).most_common()),
         "fields": fields_used(node),
         "rewrites": sorted(find_rewrites(node), key=lambda r: (not r["lossless"], -r["op_saved"])),
     }
 
 
 __all__ = [
-    "parse", "op_count", "per_op", "fields_used",
+    "parse", "op_count", "count_ops", "per_op", "per_op_full", "iter_bins", "fields_used",
     "find_rewrites", "compress_report", "Node", "ParseError", "RULES", "is_lossless",
 ]

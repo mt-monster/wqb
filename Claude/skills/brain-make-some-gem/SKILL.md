@@ -2,7 +2,7 @@
 name: brain-make-some-gem
 layer: L2
 description: "S2 概念优先的 GEM 表达式生成引擎：标准入口是 workflow_gem，本 skill 写引擎契约（priors / ideas 注入、LLM 通道与凭据前置、产物与落库核对）和排障。要为某 region / dataset / delay / universe 生成候选表达式，或排查 GEM 失败（no meta.json / 402 / [skill-doc] MISSING）时使用。触发词：生成表达式 / 跑 GEM / 概念优先生成 / final_expressions。"
-last_verified: 2026-10-18
+last_verified: 2026-11-16
 allowed-tools:
   - Read
   - Bash
@@ -44,7 +44,7 @@ mcp__wq-brain-http__workflow_gem  region=$REGION  dataset_id=$DS  delay=$DELAY  
 
 1. **机制 → 1–2 个具体字段 id → 一个 Implementation Example**。禁止「每个字段套 `rank`」式枚举。
 2. **必须带 priors**：默认 DB 快照直读（fail-closed，无快照即报错，不静默无 priors 运行）；`priors_file` 仅作显式覆盖 / 降级兜底。（RA 旧硬约束「必须带 `priors_file`」已过期。）
-3. **引擎实际消费的 priors 键**（`economic_priors.compact_priors_text`）：`wins`（≤ 6）、`dead_ends`（≤ 12）、`region_context`（`tier` / `settings_proven` / `key_notes` ≤ 4）、`skeleton_field_matrix`（有效 ≤ 6 / 死 ≤ 8 / 正交提示 ≤ 4）、`gate_priors` 的 `by_operator_count` / `by_field_family` / `avoid`（`by_decay` / `by_neutralization` 是仿真设置，**不进 prompt**，由步 6 改写设置）。旧文说「只消费 `wins` / `dead_ends` 两个键」是错的。
+3. **引擎实际消费的 priors 键**（`economic_priors.compact_priors_text`）：`wins`（≤ 6）、`dead_ends`（≤ 12）、`region_context`（`tier` / `settings_proven` / `key_notes` ≤ 4）、`skeleton_field_matrix`（有效 ≤ 6 / 死 ≤ 8 / 正交提示 ≤ 4）、`gate_priors` 的 `by_operator_count` / `by_field_family` / `avoid`（`by_decay` / `by_neutralization` 是仿真设置，**不进 prompt**，由步 6 改写设置）、`family_stats` / `skeleton_stats`（各区**实测**统计，有效 ≤ 8 / 死路 ≤ 8；死路是 advisory，不是硬禁）。旧文说「只消费 `wins` / `dead_ends` 两个键」是错的。
 4. 只用标准时间窗口 1 / 5 / 22 / 66 / 252 / 504 / 1008 / 1260；其他窗口须给解释或实测证据（预闸会把 20 / 60 / 250 等别名到最近标准窗）。
 5. 取骨架前必查 `KB/community_tpl_kb` 的 `ghost_operator_advisory`，先做幽灵算子替换再进批，否则整批 ERROR / CANCELLED。
 6. **复杂度预算**：默认 2–5 个算子，8 个概念里至少 3 个 ≤ 4 算子（859 条过闸样本：算子数 p25 = 3 / 中位 5 / p90 = 12，46% 的过闸者只有 ≤ 4 个算子）。**不靠加腿修闸**（CLAUDE.md「禁止混信号调参」、决策表 D3）：多组件概念的每个组件必须写明**经济角色**——条件 / 分组 / 残差 / 同源对偶价差（RA 步 7 §7.7.2 的允许形态）；「补它以修 `sub_universe_sharpe` / `2Y_sharpe` / `concentrated_weight`」**不是**理由（CW 修法顺序看 D6；margin 是数据集属性，补腿修不了）。反例：`add(rank(A), rank(B))`、`0.4*rank(A) + 0.6*rank(B)`（闸 5 拦）。

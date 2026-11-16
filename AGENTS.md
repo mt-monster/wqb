@@ -467,13 +467,14 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
 | 文件 | 角色 | 关键事实（实测） |
 |---|---|---|
 | `tools/wave_gate.py` | 每波门禁**编排器 CLI**（唯一入口） | §6 指定工具；`gate_py = find_script(_TOOLKIT_CANDIDATES, "gate.py")`（第 567 行） |
-| `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py` | **8 闸权威实现**（58KB） | 被 wave_gate 子进程调用；测试注入该目录后 `import gate` |
+| `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py` | **8 闸权威实现**（2026-11-15 充分拆分后降为 facade：CLI main + 再导出 + `__getattr__` 读转发，336 行） | 被 wave_gate 子进程调用；测试注入该目录后 `import gate`；实现按业务分四模块：`_gate_expr_checks.py`（表达式六闸+签名/缓存+ghost 算子）、`_gate_diversity.py`（闸6 多样性+exposure 持久化）、`_gate_sanity.py`（体检硬门+闸0）、`_gate_knowledge.py`（priors 知识闸+机制证据闸） |
 | `src/wqb/workflow/nodes/wave_gate.py` | workflow 节点（包装） | subprocess 调 `tools/wave_gate.py`，带 dry-run 契约 |
 | `src/wqb/workflow/nodes/unified_gate.py` | workflow 节点（超集） | = `campaign_intel ghost-audit` + 转发 `tools/wave_gate.py`（第 134 行） |
 | `tools/legacy/gate.py` | **遗留**（16KB，2026-09-20 归档） | 代码零引用；曾 `from src.wqb.config import OP_FAMILIES` |
 
-**纪律**：不要新增 gate 实现。要加闸门 → 改 toolkit `gate.py`（8 闸权威）；
+**纪律**：不要新增 gate 实现。要加闸门 → 改 toolkit 四模块（对应业务模块；`GATE_REGISTRY`/`GATE_CODE_VERSION` 定义在 `_gate_expr_checks.py`，gate.py 经 `import *` 再导出）；
 要新入口 → 包一层 workflow 节点转发 `tools/wave_gate.py`。
+⚠ **monkeypatch 契约（拆分遗留约束）**：gate.py 的 `__getattr__` 只覆盖**读路径**——测试 monkeypatch 写入实现模块全局（`GATE_CODE_VERSION` / `_mask_denominators` / `_call_counter` 等）必须 setattr 到实现模块（`sys.modules[g.check_one.__module__]`），写 facade 属性会被实现函数的模块全局读取绕过（patch 不可见）；源码文本断言指向实现文件而非 gate.py。
 
 #### 8.1.1 开波区域闸的模式（2026-09-27 定案）
 
@@ -1249,3 +1250,39 @@ import 解析与路径层数，且都在运行期才爆。因此采用 S11 冻�
   `tools/gates/category_coverage_audit.py --show-extra-local` 的 `extra_local` 就是「本地有、平台无」。
 - **测试**：`tests/unit/01_store_db/test_dataset_name_guard.py`（形状口径 / 回落哨兵 / 审计行 / 审计故障不阻断）、
   `tests/unit/01_store_db/test_datasets_phantom_repair.py`（dry-run 不改库 / 归档重指向删除 / 幂等 / 生产库禁 `--no-backup`）。
+
+### 8.16 回测经验闭环：事实 / 派生解释 / 统计先验三层分离（2026-11-15 P1/P2 落地）
+
+- **三层各只有一个写入方**：
+  - 事实：`backtest_results` / `expressions` / `alphas`（既有收批链路，**不新增**）；
+  - 派生解释：`attempt_knowledge`（每 alpha 一行：`skeleton` / `family` / `primary_wall` /
+    `failure_class` / `outcome` / `knowledge_version`）→ 唯一写入方
+    `wqb.knowledge.capture.refresh_attempt_knowledge`，两个钩子分别是 `pipeline.stage_review` 与
+    `harvest_multisim_results`；可用 `tools/knowledge/rebuild.py` 幂等重建；
+  - 统计先验：`wave_lessons_<R>_<W>` / `region_kb.family_stats` / `skeleton_stats` /
+    `experience_proposals_<R>` → `wqb.knowledge.distill`。
+- **消费点必须已存在**（写了没人读 = 没写，§15 同源）：`family_stats` / `skeleton_stats` 经
+  `assemble_priors` → GEM；`skeleton_stats.dead` 经 `build_wave` 的
+  `wqb.knowledge.select.deprioritize_dead_skeletons` **只重排不删除**；`recommend_next_wave`
+  把跨波统计挂成 `cross_wave_evidence`（不新增 `action.op`）；`step9_audit` 第 ⑦ 项查
+  `wave_lessons`。
+- **自动化边界（用户 2026-11-15 裁定）**：统计自动写；语义规则/模板只写 `status=proposed`
+  或 `experience_proposals_<R>`；**判死永不自动**（仍走论坛取证 + `seal_dead_end`）。
+  P3 起允许**统计规则**（`stat_dead_*`，仅 `type=strategy` 咨询型）在**2 个独立波次确认**后
+  自动转 `active`；出现反例自动转 `contested`。`dead_end` / `universe_lever` 永不自动晋升。
+  `template_kb` 只写 `measured_validated` / `measured_failed` 子键，**不覆盖**人工 `templates[]`。
+  不自动改 skill 正文。
+- **P4 产出率与摘要**：`tools/knowledge/yield_report.py` 按 `knowledge_version` 出产出率报告；
+  `tools/knowledge/digest.py` 生成 `tracking/<R>/priors/experience_digest.md`（机器段可刷、
+  标记外人工笔记保留）。两者都是**观察值**，不自动调整知识。
+- **可逆优先**：统计先验只降权/提示，不做不可逆过滤（§8.11 `coverage` 闸静默跳过的教训）。
+- **`region_kb` 整键 read-modify-write**：`publish_region_stats` 读全量 → 改子键 → canonical diff
+  → 写回；不手写 JSON、不做部分 `merge`（§16 同源）。
+- **规则连通性闸**：`src/wqb/methodology_rules.py` 按 type 校验 op/字段是否被真实消费；
+  `RuleStore.upsert()` 拒绝未知 `active` op（`proposed` 放行，晋升再校验）。
+  `ADVISORY_OPS` **只收现状、只减不增**；新 op 先改消费代码再写规则。
+- **守护**：`tests/unit/07_docs_skills/test_methodology_rules_connectivity.py`、
+  `tests/unit/09_core/test_attempt_knowledge.py`、`test_knowledge_distill.py`、
+  `test_knowledge_lifecycle.py`、`test_knowledge_templates.py`、`test_knowledge_yield.py`、
+  `test_knowledge_digest.py`、`tests/unit/02_workflow/test_priors_family_stats.py`、
+  `tests/unit/04_gates/test_build_wave_skeleton_soft_penalty.py`。

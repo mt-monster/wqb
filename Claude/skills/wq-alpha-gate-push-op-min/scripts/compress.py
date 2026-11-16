@@ -130,6 +130,10 @@ def main() -> None:
         print(f"\n[compress] 已写出 {len(out_lines)} 条候选 -> {args.out}")
 
     if args.json:
+        if not results:
+            print(json.dumps({"expr": None, "op_count": 0, "variants": [],
+                              "error": "no parsable expression"}, ensure_ascii=False, indent=1))
+            return
         print(json.dumps(results if len(results) > 1 else results[0], ensure_ascii=False, indent=1))
 
 

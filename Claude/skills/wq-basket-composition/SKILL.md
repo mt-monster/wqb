@@ -1,7 +1,7 @@
 ---
 name: wq-basket-composition
 description: "候选篮子的组合与准入判定：ATOM 优先、三段式准入（checks fail=[]/互相关<0.7/分类合规）、破高相关用「换核心而非换搭档」、双窗口搭档叠加、塔归属速查与 trio 禁混、逐年无负年质量判据。触发：组篮子/篮子互相关/入不了篮/高相关堆叠/相关性卡住/同源废件/怎么凑够 N 颗/ATOM 优先/塔归属/trio 冲突/交付集合怎么选。"
-last_verified: 2026-11-12
+last_verified: 2026-11-16
 layer: L4
 allowed-tools:
   - Read

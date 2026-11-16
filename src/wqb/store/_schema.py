@@ -310,6 +310,46 @@ class SchemaMixin:
             );
             CREATE INDEX IF NOT EXISTS idx_alpha_pyramids_region
                 ON alpha_pyramids(region, delay);
+            -- 2026-11-15：逐条回测经验索引（P1）。
+            -- 事实（指标/表达式）仍在 backtest_results/expressions；本表只存**派生解释**
+            -- （骨架、主墙、失败类别、outcome、知识版本），可随时由 rebuild 重建。
+            -- 单一写入方：wqb.knowledge.capture.refresh_attempt_knowledge → CampaignStore。
+            CREATE TABLE IF NOT EXISTS attempt_knowledge (
+                attempt_id TEXT PRIMARY KEY,   -- alpha_id；缺失时 expr:<expression_id>
+                alpha_id TEXT,
+                expression_id INTEGER,
+                region TEXT NOT NULL,
+                wave TEXT NOT NULL,
+                dataset TEXT,
+                expression TEXT,
+                skeleton TEXT,                 -- wqb.expression.skeleton.structural_signature
+                family TEXT,
+                mechanism TEXT,
+                source TEXT,
+                expected_exposure TEXT,
+                settings_json TEXT,
+                metrics_json TEXT,
+                walls_json TEXT,
+                primary_wall TEXT,
+                failure_class TEXT,
+                is_structural INTEGER,
+                ra_failed_json TEXT,
+                checks_json TEXT,
+                outcome TEXT,
+                next_action TEXT,
+                priors_sha TEXT,
+                rules_sha TEXT,
+                knowledge_version TEXT,
+                evidence_ref TEXT,
+                created_at TEXT,
+                updated_at TEXT
+            );
+            CREATE INDEX IF NOT EXISTS idx_attempt_region_wave
+                ON attempt_knowledge(region, wave);
+            CREATE INDEX IF NOT EXISTS idx_attempt_region_ds
+                ON attempt_knowledge(region, dataset);
+            CREATE INDEX IF NOT EXISTS idx_attempt_skeleton
+                ON attempt_knowledge(region, skeleton);
             """
         )
         for col, ddl in (

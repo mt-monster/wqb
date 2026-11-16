@@ -158,6 +158,9 @@ def test_gate_signature_tracks_detector_code_version(g, monkeypatch):
     pc = _pc()
     wl = ({"aaa1"}, "MATRIX", {"aaa1": "MATRIX"}, [])
     a = g.gate_signature(["D1"], wl, list(pc["poison_patterns"]), pc)
-    monkeypatch.setattr(g, "GATE_CODE_VERSION", "bumped-for-test")
+    # 2026-11-15 gate.py 充分拆分：GATE_CODE_VERSION 定义随 gate_signature 搬进实现模块，
+    # patch 必须落在实现模块——写 facade 属性会被实现函数的模块全局读取绕过（patch 不可见）。
+    impl = sys.modules[g.check_one.__module__]
+    monkeypatch.setattr(impl, "GATE_CODE_VERSION", "bumped-for-test")
     b = g.gate_signature(["D1"], wl, list(pc["poison_patterns"]), pc)
     assert a != b, "判定器代码变更必须让逐条缓存失效（GATE_CODE_VERSION 入签名）"

@@ -1,0 +1,48 @@
+{
+  "dataset_id": "institutions6",
+  "name": "Institutions and Beneficial Stake Ownership",
+  "category": "institutions",
+  "region": "GBR",
+  "universe": "TOP700",
+  "delay": 1,
+  "profiled_at": "2026-11-14",
+  "source": "mcp__wq-brain-http__get_datafields (field-level, filter_sharpe=false, complete=true)",
+  "dataset_coverage": 1.0,
+  "field_count_platform": 11,
+  "pyramid_multiplier": 1.4,
+  "tower_note": "候选出闸须读 pyramids.list 验证塔位（annualized_pd→MODEL 前科）",
+  "usability_notes": "全 MATRIX 无需折叠（vec 陷阱不适用）；报告期聚合数据 ts_backfill(66) 必带；ac 99-212 全平台高频使用",
+  "field_families": {
+    "holdings_stock": {
+      "fields": ["aggregate_equity_value_all_owners", "aggregate_equity_value_institutions", "aggregate_share_count_all_owners", "aggregate_share_count_institutions"],
+      "mechanism": "机构化水平（institutions/all_owners 比值 = 机构持股占比）+ 机构化动量 Δ"
+    },
+    "count_flow": {
+      "fields": ["count_institutional_buyers_security", "count_institutional_sellers_security", "count_institutional_holders_security"],
+      "mechanism": "净买家-卖家 = 聪明钱方向；holders Δ = 持仓广度动量（Chen-Hong-Stein 2002 breadth，文献正方向）"
+    },
+    "volume_flow": {
+      "fields": ["quantity_institutional_shares_acquired", "quantity_institutional_shares_disposed", "market_value_institutional_shares_acquired", "market_value_institutional_shares_disposed"],
+      "mechanism": "净流比率 (acq−disp)/(acq+disp) = 机构净流强度；Sias 2004 机构 herding"
+    }
+  },
+  "fields": [
+    {"id": "aggregate_equity_value_all_owners", "cov": 1.0, "uc": 80, "ac": 99},
+    {"id": "aggregate_equity_value_institutions", "cov": 1.0, "uc": 97, "ac": 128},
+    {"id": "aggregate_share_count_all_owners", "cov": 1.0, "uc": 89, "ac": 135},
+    {"id": "aggregate_share_count_institutions", "cov": 1.0, "uc": 85, "ac": 119},
+    {"id": "count_institutional_buyers_security", "cov": 1.0, "uc": 122, "ac": 181},
+    {"id": "count_institutional_holders_security", "cov": 1.0, "uc": 73, "ac": 110},
+    {"id": "count_institutional_sellers_security", "cov": 1.0, "uc": 148, "ac": 212},
+    {"id": "market_value_institutional_shares_acquired", "cov": 1.0, "uc": 78, "ac": 116},
+    {"id": "market_value_institutional_shares_disposed", "cov": 1.0, "uc": 64, "ac": 83},
+    {"id": "quantity_institutional_shares_acquired", "cov": 1.0, "uc": 111, "ac": 151},
+    {"id": "quantity_institutional_shares_disposed", "cov": 1.0, "uc": 68, "ac": 93}
+  ],
+  "prior_laws_transferred": [
+    "量族活价族死（risk60 campaign3 实证）⇒ 全量族构成好先验",
+    "机构语义 @FAST（campaign2+3 双实证）⇒ Wave1 直发 FAST/decay5/trunc0.1",
+    "同字段多窗叠加 ρ≈0.8 增益≤0.05（campaign3 叠加定律）"
+  ],
+  "batch_profile": "campaign4_20261114"
+}

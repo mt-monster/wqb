@@ -189,12 +189,14 @@ L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure
 
 **过闸分层**（操作定义在 RA 步 5–8）：① IS 廉价闸 → ② PC 等待 → ③ 硬闸（PROD / SELF）。`PASS_CHEAP` 只代表过了 ①，绝不等于可提交。
 
-### gate.py 闸编号（权威 = `gate.py` 的 `GATE_REGISTRY`，表由代码生成）
+### gate.py 闸编号（权威 = `GATE_REGISTRY`，定义在 `_gate_expr_checks.py`、gate.py 再导出，表由代码生成）
 
 `wq-brain-campaign-toolkit/scripts/gate.py` 共 **8 闸 + 可选闸0**（闸 1–8 + 闸0），另有**子闸** 1b / 2b / 2b-2
 与**附加闸 9**（窗口，默认 warn）。文档中出现的「5 闸」一律指闸 1–5，「7 闸」指闸 1–7；**不要**再用第三种口径。
-下表由 `$WQ_PY Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py --print-gate-table` 生成（唯一注册表 = gate.py 的
-`GATE_REGISTRY`），`tests/unit/04_gates/test_gate_registry_docs.py` 比对——**改闸先改注册表，再重新生成本表**：
+2026-11-15 充分拆分：gate.py 为 facade（CLI + 再导出），实现按业务分四模块（`_gate_expr_checks` 表达式六闸/
+`_gate_diversity` 闸6/`_gate_sanity` 体检+闸0/`_gate_knowledge` priors+证据闸）；monkeypatch 写路径须落在实现模块。
+下表由 `$WQ_PY Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py --print-gate-table` 生成（唯一注册表 =
+`GATE_REGISTRY`，gate.py 命名空间可取），`tests/unit/04_gates/test_gate_registry_docs.py` 比对——**改闸先改注册表，再重新生成本表**：
 
 <!-- gate-table:start -->
 | 闸 | 名称 | 性质 | 开关 | 说明 |
@@ -235,6 +237,7 @@ L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure
 | `full_coverage` | wave_gate 内置（数据驱动：战役 reference/ 声明 boundary_ops_<region>.json 即启用） | 全量覆盖闸（字段 / 模板族 / 边界算子三闸） | `--fcov-mode off\|warn`、`WQB_FCOV_MODE=off\|warn` | 随 region_gates 按日缺省（enforce，2026-10-12 起） | — | user/agent / 7 天 |
 | `diversity` | gate.py 闸 6 | gate.py 闸 6 多样性契约 | `--skip-diversity-gate` | 常开（repair / probe 批豁免） | — | user/agent / 3 天 |
 | `prod_family` | wave_gate 内置 | 闸 PF 信号族死路预检 | `--no-prod-family-gate` | 开 | — | user/agent / 3 天 |
+| `evidence` | gate.py 机制证据闸 | 机制证据闸（新机制首次派波前论坛/论文检索留痕，2026-11-15） | `--require-evidence 不传即 WARN 档`、`repair/probe 批自动豁免` | WARN（--require-evidence 升级为阻断） | — | user/agent / 3 天 |
 <!-- switch-table:end -->
 
 > 另：**PROD 饱和闸**（字段热度 + 数据集占比，`tools/wave_gate.py` 内置，常开）无逃生口，enforced 态违规直接拦截。

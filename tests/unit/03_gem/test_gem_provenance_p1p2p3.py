@@ -260,8 +260,11 @@ def test_gem_registry_has_new_params():
 # ---------------------------------------------------------------------------
 
 def test_gate_has_exposure_persistence():
-    """gate.py 必须存在 exposure 落库函数，且是尽力而为（异常返回 0）。"""
-    src = open(os.path.join(TK_SCRIPTS, "gate.py"), encoding="utf-8").read()
+    """gate 必须存在 exposure 落库函数，且是尽力而为（异常返回 0）。
+
+    2026-11-15 gate.py 充分拆分：exposure 持久化随闸6 搬进 _gate_diversity.py，
+    gate.py facade 经 `from _gate_diversity import *` 再导出（行为不变）。"""
+    src = open(os.path.join(TK_SCRIPTS, "_gate_diversity.py"), encoding="utf-8").read()
     assert "_persist_exposure_map" in src
     assert "UPDATE expressions SET expected_exposure=" in src
     assert "except Exception" in src.split("def _persist_exposure_map")[1].split("def ")[0]

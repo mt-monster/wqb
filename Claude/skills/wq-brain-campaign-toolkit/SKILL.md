@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-29
+last_verified: 2026-11-16
 name: wq-brain-campaign-toolkit
 description: "战役目录内执行引擎（gate / pipeline / build_wave / score_datasets / review_wave / campaign.py 的 ledger·registry·wave）的用法与契约。要跑战役脚本、查子命令与台账键、处理超时或重发时使用；何时用、怎么判由 wq-brain-ra-pipeline 定。"
 layer: L-TOOL
@@ -108,7 +108,7 @@ $CD = "tracking/<REGION>"
 |---|---|---|
 | `scan-fields` | `scan_fields.py` | typed catalog 字段扫描（`--dataset` / `--limit` / `--zero-comp`）；**过滤必须是 `dataset.id=`**，裸 `dataset=` 会被平台静默忽略 |
 | `score` | `score_datasets.py` | 数据集评分 / `--probe-plan` / `--probe-score`（三灯）/ `--calibrate`，细则 [`probe-scoring-v2.md`](references/probe-scoring-v2.md) |
-| `gate` | `gate.py` | **8 闸 + 可选闸0**（子闸 1b / 2b / 2b-2，附加闸 9）；闸表由代码生成（`gate.py --print-gate-table`，INDEX 已收录），细则 [`gate-rules.md`](references/gate-rules.md) |
+| `gate` | `gate.py` | **8 闸 + 可选闸0**（子闸 1b / 2b / 2b-2，附加闸 9）；闸表由代码生成（`gate.py --print-gate-table`，INDEX 已收录），细则 [`gate-rules.md`](references/gate-rules.md)。2026-11-15 充分拆分：`gate.py` 为 facade（CLI main + 再导出 + `__getattr__` 读转发），实现分四模块——`_gate_expr_checks.py`（表达式六闸 + `GATE_REGISTRY`/`GATE_CODE_VERSION` + ghost 算子）、`_gate_diversity.py`（闸6 多样性 + exposure 落库）、`_gate_sanity.py`（体检硬门 + 闸0）、`_gate_knowledge.py`（priors 知识闸 + 机制证据闸） |
 | `build-wave` | `build_wave.py` | 选波后处理（去重 / 分桶 / 骨架配给 / near 加权 / 选波权威化）；数量与身份契约见 [`selection-plan.md`](references/selection-plan.md) |
 | `assemble-priors` | `assemble_priors.py` | 从 DB 确定性组装 GEM priors（内部映射见 RA `assemble-priors-internals.md`）；**回写后必须再跑** |
 | `pipeline` | `pipeline.py` | 端到端编排（填槽）与 `quota`，细则 [`poll-and-quota.md`](references/poll-and-quota.md) |

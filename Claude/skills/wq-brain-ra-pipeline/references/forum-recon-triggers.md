@@ -10,6 +10,7 @@
 
 | # | 步 | 触发条件（**怎么发现**该查了） | 问题模板 | `--out` | 命中后 | 取不到时 |
 |---|---|---|---|---|---|---|
+| **0** | **步 4** | **新机制首次派波**（机制证据闸 `check_evidence_gate` 的取证动作，2026-11-15 落地）：某数据集×机制组合**首次**设计回测臂时，必须先出论坛+论文双留痕——gate.py 的 `EVID-FORUM`/`EVID-PAPER` 项在 S2→S3 门按 7 天窗口回查 ledger，缺留痕即阻断（`--require-evidence` 硬约束）或 WARN。**检索词按三维矩阵各至少 1 个**：① 机制措辞词（错位/错配/联动失效/传导/拥挤/出清…）② 算子×字段词（如 `ts_corr returns` / `ts_regression sentiment`）③ 数据集名——三次漏检实证（FF65210 情绪相关性帖/WL58980 横向点塔帖均因只按数据集名检索而漏） | `"<数据集> <机制措辞> 模板"` + `"<算子> <字段> template"` + `"<数据集名> alpha"` 三查 | `ledger`（论文线写 `forum_paper_recon_<qkey>`：论文名+方向+适用边界） | 命中的模板进设计稿素材；**作者线反查**：评论区 ≥200 字方法论长评的作者，以其 ID 再查一轮 | 论坛超时/WebSearch 不可达时降级为本地 `docs/experience` 论文库 grep，**留痕仍必写**（注明降级） |
 | 1 | 步 1 | **判死区复开评估**：某区被 `frozen` / 停止规则 A · B2 停下后，有人（用户或 agent）想复开——判据是「有翻案线索吗」，不是「想再试试」 | `"<REGION> <被判死的数据集/族> 有无翻案线索"` | `ledger` | 线索写入 `forum_recon_<qkey>`，供复开评估读；**不改变** `entry_verdict`（那只能按该区 profile 的后门走） | 维持判死 |
 | 2 | 步 4 | **机制枯竭 / 同质化**：GEM 产出触每骨架封顶（`WQB_GEM_MAX_PER_SKELETON`，缺省 12），或 win 配方**无腿可换** | `"<数据集/机制> 换腿骨架 / 论坛验证模板"` | `kb` | 合入 `KB/community_tpl_kb.forum_recon_entries[]`；模板**先过 `ghost_operator_advisory`** 替换幽灵算子，再重跑 GEM | 缩窄数据集 / 换集，**不手写表达式** |
 | 3 | 步 5 | **闸 6（批级多样性）FAIL 且 `KB/community_tpl_kb` 按 category 检索无货** | `"<category> 骨架 / 换腿参考"` | `kb` | 同 2，回步 4 补骨架 | 拆回单集组合，不停挖 |

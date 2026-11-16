@@ -96,7 +96,8 @@ def test_gate_1c_registered_as_block(g):
 def test_gate_code_version_bumped_for_cache_invalidation():
     """★ 闸判定代码变更必须递增 GATE_CODE_VERSION，否则逐条缓存会继续返回
     **未含闸1b-2** 的旧结论——新闸等于没加（静默失效，且比没加更危险）。"""
-    src = (TOOLKIT / "gate.py").read_text(encoding="utf-8")
+    # 2026-11-15 gate.py 充分拆分：版本常量定义随判定器搬进 _gate_expr_checks.py。
+    src = (TOOLKIT / "_gate_expr_checks.py").read_text(encoding="utf-8")
     import re
     m = re.search(r'GATE_CODE_VERSION\s*=\s*"([^"]+)"', src)
     assert m, "未找到 GATE_CODE_VERSION"

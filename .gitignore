@@ -275,3 +275,9 @@ reports/tmp_*.json
 world-quant-brain-mcp/cache.db
 tracking/*/_mcp_reads/
 
+
+# genius tie-breaker 工具缓存（output_report/ 下的运行期产物，非报告）
+output_report/.cache_genius_os_alphas.json
+
+# opmin 挖掘批次输入（运行期产物，非报告）
+output_report/opmin-2r5mo67z/*.txt

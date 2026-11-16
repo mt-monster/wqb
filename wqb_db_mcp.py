@@ -1828,8 +1828,9 @@ def harvest_multisim_results(
                 else:
                     a["expression_id"] = None
 
+        settings = {}
+        rows = []
         if auto_upsert and alpha_list:
-            rows = []
             for a in alpha_list:
                 settings = a.get("settings") if isinstance(a.get("settings"), dict) else {}
                 # 2026-09-18 修复（设计文档 §2.2 改动#3 / 断链 B）：
@@ -1933,6 +1934,24 @@ def harvest_multisim_results(
             "multisim_id": multisim_id,
             "wave_result": wave_result_action,
         }
+        # 2026-11-15：逐条经验索引（唯一实现 src/wqb/knowledge/capture.py）。
+        # 手工收批路径没有 review 行 → walls 先留空，等下一次 S4 评审补全。
+        try:
+            from wqb.knowledge.capture import refresh_attempt_knowledge
+            out["knowledge"] = refresh_attempt_knowledge(
+                store, region, str(wave), rows=rows, settings=settings)
+        except Exception as e:
+            out["knowledge"] = f"skipped: {e}"
+        try:
+            from wqb.knowledge.distill import distill_wave, publish_region_stats
+            _lesson = distill_wave(store, region, str(wave))
+            out["wave_lessons"] = {
+                "n_attempts": _lesson.get("n_attempts"),
+                "knowledge_version": _lesson.get("knowledge_version"),
+                "published": bool(publish_region_stats(store, region, _lesson).get("ok")),
+            }
+        except Exception as e:
+            out["wave_lessons"] = f"skipped: {e}"
         if not alpha_list:
             out["warning"] = ("alphas 里没有可用条目：要传 harvest_multisim_alphas 返回的 alphas 列表"
                               "（或它的整个返回值），每项是 dict")

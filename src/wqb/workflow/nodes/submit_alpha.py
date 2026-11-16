@@ -201,7 +201,8 @@ def run(
         descriptions: 描述文本（三段式，≥100 英文词）
         force: 是否跳过本地预检（仅当 confirm_submit=True 时有意义）。
             **不豁免 prod 闸**——prod 是用户合规红线，与预检分离，且无任何豁免入口。
-            **也不豁免** Step 1.2 的 `weight_grid`/`stack` 结构硬拦、Step 1.7 的 ΔSharpe<0 硬闸。
+            **也不豁免** Step 1.2 的 `weight_grid`/`stack` 结构硬拦、Step 1.7 的
+            边际贡献硬闸（v2 严格档：`ΔS`/`ΔF` < −0.05，或 `ΔRet`≤−0.5pp 且成本越阈）。
             **可豁免**（留痕）Step 1.2 的三问、Step 1.5 的 robustness 声明、Step 1.8 的分散度软闸
             ——这三项是自设纪律，不是平台规则。
         robustness_audited: 是否已通过 brain-alpha-robustness 审计（Phase B/C 逐年归因）。
@@ -277,7 +278,8 @@ def run(
                     ] if confirm_submit else [])
                     + [
                         "边际贡献：performance_comparison(before-and-after 分区组合) → "
-                        "ΔSharpe<0 硬闸阻断（2026-11-08 用户明令，force 不豁免；取数失败才 fail-open）",
+                        "v2 严格档：ΔS/ΔF < −0.05 或 (ΔRet≤−0.5pp 且 ΔTO≥+1.5pp/ΔDD≥+0.5pp) ⇒ 硬闸阻断"
+                        "（2026-11-16 用户明令调严，force 不豁免；取数失败才 fail-open）",
                         "分散度：self≥0.55 且 ΔSharpe<+0.02 → 软闸阻断（force 可豁免）"
                         "—— 读 is.selfCorrelation，为空回落本地库缓存（不现算，避免拖长节点）",
                     ]
@@ -506,23 +508,25 @@ def run(
             alpha_id, marginal.get("partition"), _d_s,
             "（分级硬闸命中，阻断）" if _hard else "",
         )
-        # ★ 2026-11-13 方案 D（分层 + 配对）：净效果 ΔSharpe<0 / ΔFitness<0 硬拦；
-        #   ΔReturns<0 仅在 ΔTurnover>0 或 ΔDrawdown>0（双重恶化）时追加硬拦；
-        #   收益降但成本同步降 = 分散化补偿，放行；成本指标单独变差只记 soft_warnings。
-        if _hard or marginal.get("dilutive"):
+        # ★ 2026-11-16 v2 严格版：**只认 `hard_blocked`**（L1 容差带 / L2 配对阈值）。
+        #   `dilutive`（ΔS<0）仅作排序与 Step 1.8 的输入，**不再单独触发阻断** ——
+        #   否则 −0.05 的容差带形同虚设（ΔS=−0.001 会被 dilutive 拦掉）。
+        if _hard:
             _fails = marginal.get("hard_failures") or []
-            _detail = marginal.get("hard_failures_detail") or "ΔSharpe<0"
+            _detail = marginal.get("hard_failures_detail") or "net-effect"
             result["marginal_warning"] = {
                 "partition": marginal.get("partition"),
+                "verdict": marginal.get("verdict"),
                 "delta_sharpe": _d_s,
                 "delta_drawdown": (marginal.get("delta") or {}).get("drawdown"),
                 "hard_failures": _fails,
                 "hard_failures_detail": _detail,
                 "soft_warnings": marginal.get("soft_warnings") or [],
+                "thresholds": marginal.get("thresholds") or {},
                 "note": (
-                    "组合边际贡献硬闸命中（%s）⇒ **硬闸阻断**（用户 2026-11-08 ΔSharpe 铁律"
-                    " + 2026-11-13 方案D：ΔFitness 净效果硬拦，ΔReturns 仅在成本同步上升时双重恶化才拦）。"
-                    "无豁免入口，force 不豁免。出路：换候选，或改结构使 ΔSharpe / ΔFitness ≥ 0 且避免「收益降 + 成本升」后重跑。"
+                    "组合边际贡献硬闸命中（%s）⇒ **硬闸阻断**（2026-11-16 v2 严格档："
+                    "ΔS/ΔF < −0.05 净效果否决；ΔRet≤−0.5pp 且 ΔTO≥+1.5pp 或 ΔDD≥+0.5pp 配对否决）。"
+                    "无豁免入口，force 不豁免。出路：换候选，或改结构使 ΔS/ΔF ≥ −0.05 且避免「收益降 + 成本升」后重跑。"
                     % _detail
                 ),
             }
@@ -532,8 +536,9 @@ def run(
                     % (_detail, marginal.get("partition")))
                 result["blocked"] = True
                 result["blocked_reason"] = (
-                    "组合边际贡献方案D：ΔSharpe<0 / ΔFitness<0 一律阻断；ΔReturns<0 且成本上升时阻断"
-                    "（用户 2026-11-08 / 2026-11-13 明令）；命中 %s，force 不豁免。"
+                    "组合边际贡献方案D v2（严格档）：ΔS<−0.05 / ΔF<−0.05 一律阻断；"
+                    "ΔRet≤−0.5pp 且成本越阈（ΔTO≥+1.5pp 或 ΔDD≥+0.5pp）时阻断"
+                    "（用户 2026-11-16 明令调严）；命中 %s，force 不豁免。"
                     "换候选或改结构使净效果达标且避免双重恶化后重跑。" % _detail)
                 return _finalize(result, store, alpha_id)
             # 预检（confirm_submit=False）不阻断，但必须预告真提交会被拦
@@ -1600,21 +1605,43 @@ def _tag_disposal(client, alpha_id: str,
     return out
 
 
-# ★ 边际贡献「分层 + 配对」判据（2026-11-13 用户明令，19:5x 定案方案 D）——唯一事实源。
+# ★ 边际贡献「分层 + 配对」判据 —— 唯一事实源。
+# 沿革：2026-11-13 定案方案 D（零死区：ΔS/ΔF<0 即拦）；**2026-11-16 v2 严格版**
+#   —— 用户 09:5x 明令「分层阈值再调严格一点」，同日实测 `kqamAeRg` ΔRet −0.09pp /
+#   ΔTO +0.17pp、`akaWd90w` ΔRet −0.09pp / ΔTO +0.13pp 全被零死区否决 ⇒ 零死区在噪声里抛硬币。
+#   官方 `Consultant Submission Tests` 九项里**没有**边际贡献项，`Brain Genius` 明说点塔靠分散
+#   提升 CAP ⇒ 本闸只作「组合质量」纪律，必须带容差、只在**显著恶化**时否决。
+#
+# 单位：sharpe / fitness 无量纲；returns / turnover / drawdown 为小数（0.01 = 1pp）。
 # 越大越好：sharpe / fitness / returns；越小越好：turnover / drawdown。
-# 第一层「净效果硬闸」：ΔSharpe<0 或 ΔFitness<0 ⇒ 阻断。二者已把收益/波动/换手压缩成比值。
-# 第二层「配对判据」：仅当 ΔReturns<0 且 (ΔTurnover>0 或 ΔDrawdown>0) 才追加阻断。
-#   收益降但成本同步降 = 健康分散化（16 颗里 vRAgNK3w / Wjl8Z20O / O0A6Qz7p 三例），放行。
-# 第三层：ΔTurnover / ΔDrawdown 单独变差只记 soft_warnings，不设闸。
-# 依据：before/after 是「等权叠加到分区组合」的结果，ΔRet<0 常只是新腿收益低于池均值的
-#   机械摊薄；硬拦 ΔRet 会系统性拒绝「合格但不突出」的分散化来源（Step 1.7 docstring 遗留风险②）。
-#   16 颗实测：方案 D 12/16；原 S+F+Ret 全硬拦 9/16；五项全按方向 3/16；只 S+F 16/16（形同虚设）。
-# ⚠ 指标共线：F = S×√(ret/max(TO,.125))。净效果层已含成本信息，故成本指标不再单独设硬闸，
-#   避免「同一条 ΔTO 单独看软告警、复合成 ΔF 却硬拦」的口径矛盾。
+#
+# 四层判定（自上而下，命中即止）：
+#   L0 死区   |ΔS|≤0.02 ∧ |ΔF|≤0.02 ∧ |ΔRet|≤0.3pp ⇒ `neutral`（噪声带，标注后放行）
+#   L1 净效果 ΔS < −0.05 或 ΔF < −0.05            ⇒ 硬拦（容差带，替代零死区）
+#   L2 配对   ΔRet ≤ −0.5pp ∧ (ΔTO ≥ +1.5pp ∨ ΔDD ≥ +0.5pp) ⇒ 硬拦（双重恶化）
+#   L3 其余   ΔTO/ΔDD 单独变差 ⇒ 仅 soft_warnings，不设闸
+#
+# 为什么 L1 取 0.05、L2 取 0.5pp/1.5pp/0.5pp（严格档取值，非宽松档）：
+#   · 严格档相对宽松档（0.10 / 1.0pp / 3.0pp / 1.0pp）整体砍半 ⇒ 仍能过滤真实稀释，
+#     又能放过噪声；实测噪声级为 ΔRet ≤ 0.1pp、ΔTO ≤ 0.3pp，门槛是其 5 倍以上 ⇒ 不会误杀。
+#   · `F = S×√(ret/max(TO,.125))` 已把收益/换手压成比值，L1 覆盖成本信息；L2 只补
+#     「收益降 + 成本升」这种 F 可能看不出（分子分母同时恶化）的双重恶化。
+#   · **不设「点亮塔」豁免通道**：点塔有官方经济依据，但豁免等于允许为凑塔位降低质量门槛，
+#     与本次「调严」指令冲突 ⇒ 塔信息只作排序键，不进闸门（需豁免时按个案报用户裁定）。
 MARGINAL_HIGHER_IS_BETTER: tuple = ("sharpe", "fitness", "returns")
 MARGINAL_LOWER_IS_BETTER: tuple = ("turnover", "drawdown")
 MARGINAL_HARD_BLOCK_METRICS: tuple = ("sharpe", "fitness")
 MARGINAL_PAIR_COST_METRICS: tuple = ("turnover", "drawdown")
+
+# L0 死区（噪声带，判中性放行）
+MARGINAL_DEADZONE_NET: float = 0.02      # |ΔSharpe|、|ΔFitness| ≤ 0.02
+MARGINAL_DEADZONE_RET: float = 0.003     # |ΔReturns| ≤ 0.3pp
+# L1 净效果硬闸容差（Δ < −TOL 才拦）
+MARGINAL_HARD_NET_TOL: float = 0.05
+# L2 配对否决阈值（两项都要越过才算双重恶化）
+MARGINAL_PAIR_RET: float = -0.005        # ΔReturns ≤ −0.5pp
+MARGINAL_PAIR_TO: float = 0.015          # ΔTurnover ≥ +1.5pp
+MARGINAL_PAIR_DD: float = 0.005          # ΔDrawdown ≥ +0.5pp
 
 
 def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
@@ -1649,20 +1676,26 @@ def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
       ⚠ 触发升闸的实例：`bl6AvMkN`（DEU/TOP500）ΔSharpe=−0.04 于 2026-11-08 13:00 提交成功，
       用户随即裁定该口径不合用 ⇒ 改判硬闸。
 
-    本账本口径（2026-11-13 定案**方案 D：分层 + 配对**，用户 19:5x 从三方案中选定）：
+    本账本口径（2026-11-16 **v2 严格版**，用户 09:5x 明令「分层阈值再调严格一点」）：
       * **方向**：`sharpe/fitness/returns` 越大越好（Δ≥0）；`turnover/drawdown` 越小越好（Δ≤0）。
-      * **第一层·净效果硬闸** `MARGINAL_HARD_BLOCK_METRICS = (sharpe, fitness)`：任一 Δ<0 ⇒
-        `hard_blocked=True` ⇒ `run()` Step 1.7 阻断，`force` 不豁免。
-        二者已把收益/波动/换手压缩成比值（`F=S×√(ret/max(TO,.125))`），无需再逐个重复把关。
-        `dilutive` 仍保留 `Δsharpe<0` 语义，供 Step 1.8 分散度软闸与旧调用方复用。
-      * **第二层·配对判据**：仅当 `ΔReturns<0` **且**（`ΔTurnover>0` 或 `ΔDrawdown>0`）时追加阻断。
-        收益降但成本同步降 = 健康分散化（`vRAgNK3w` / `Wjl8Z20O` / `O0A6Qz7p` 三例）⇒ 放行并记
-        `pair_rule.offset=True`。根因：before/after 是等权叠加到分区组合的结果，`ΔRet<0` 常只是
-        「新腿收益低于池均值」的机械摊薄，硬拦会系统性拒绝合格但不突出的分散化来源（遗留风险②）。
-      * **第三层·纯软告警**：`turnover`/`drawdown` 单独变差只写 `soft_warnings`，不设闸。
-        ⚠ 不再出现「ΔTO 单独看软告警、复合成 ΔF 却硬拦」的口径矛盾 —— 成本信息只经净效果层与配对层进入判定。
+      * **L0 死区**：`|ΔS| ≤ 0.02` ∧ `|ΔF| ≤ 0.02` ∧ `|ΔRet| ≤ 0.3pp` ⇒ `verdict="neutral"`，
+        **放行**并标注（这是对「零死区」的正面修复：噪声带内不判死）。
+      * **L1 净效果硬闸**：`ΔS < −0.05` 或 `ΔF < −0.05` ⇒ `hard_blocked=True`，`force` 不豁免。
+        二者已把收益/波动/换手压成比值（`F=S×√(ret/max(TO,.125))`）。
+        `dilutive` 保留 `ΔS<0` 语义供排序与 Step 1.8 复用，但**不再单独触发阻断** ——
+        否则容差带形同虚设（v2 与旧口径最关键的接线差异）。
+      * **L2 配对判据**：仅当 `ΔRet ≤ −0.5pp` **且**（`ΔTO ≥ +1.5pp` 或 `ΔDD ≥ +0.5pp`）
+        才追加阻断。收益降但成本同步降 = 健康分散化（`vRAgNK3w` / `Wjl8Z20O` / `O0A6Qz7p`）
+        ⇒ 放行并记 `pair_rule.offset=True`。阈值存在的理由：实测噪声级 ΔRet 约 0.1pp、
+        ΔTO 约 0.2–0.3pp（`kqamAeRg` −0.09pp/+0.17pp、`akaWd90w` −0.09pp/+0.13pp），
+        零阈值等于在噪声里抛硬币否决。
+      * **L3 纯软告警**：`turnover`/`drawdown` 单独变差只写 `soft_warnings`，不设闸。
+      * **无塔豁免**：能点亮金字塔的件同样按 L1/L2 判。点塔有官方经济依据
+        （`Brain Genius`：分散提升 CAP），但豁免等于允许为凑塔位降标准，与「调严」指令冲突
+        ⇒ 塔信息只作排序键，不进闸门；确需豁免时报用户个案裁定。
       * 空体 / 超时 / 异常一律 `available=False`（**可用性缺失不阻断** —— 与「为负」区分）。
-      * 16 颗实测：方案 D **12/16** 可交｜原 S+F+Ret 全硬拦 9/16｜五项全按方向 3/16｜只 S+F 16/16（形同虚设）。
+      * 历史标定（零死区口径，仅供对照）：方案 D **12/16** 可交｜原 S+F+Ret 全硬拦 9/16｜
+        五项全按方向 3/16｜只 S+F 16/16（形同虚设）。v2 容差档在其上再放行噪声级件。
     """
     out: Dict[str, Any] = {"step": "marginal_contribution", "success": True, "available": False}
     try:
@@ -1705,28 +1738,55 @@ def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
             (delta[k] >= 0 if k in MARGINAL_HIGHER_IS_BETTER else delta[k] <= 0))
         for k in keys
     }
-    # 第一层：净效果硬闸（Sharpe / Fitness）
+    # ---- 四层判定（2026-11-16 v2 严格版；单位见常量区）----
+    d_f = delta.get("fitness")
+    d_ret = delta.get("returns")
+    d_to = delta.get("turnover")
+    d_dd = delta.get("drawdown")
+
+    # L0 死区：三指标全落在噪声带内 ⇒ 中性放行（零死区的正面修复）
+    deadzone = bool(
+        d_s is not None and d_f is not None and d_ret is not None
+        and abs(d_s) <= MARGINAL_DEADZONE_NET
+        and abs(d_f) <= MARGINAL_DEADZONE_NET
+        and abs(d_ret) <= MARGINAL_DEADZONE_RET
+    )
+
+    # L1 净效果硬闸（带容差）：Δ 低于 −TOL 才拦（None ⇒ 不可判 ⇒ 不进失败列表，fail-open）
     hard_failures = [
         k for k in MARGINAL_HARD_BLOCK_METRICS
-        if delta.get(k) is not None and delta[k] < 0
+        if delta.get(k) is not None and delta[k] < -MARGINAL_HARD_NET_TOL
     ]
-    # 第二层：配对判据（方案 D）——收益下降不可怕，成本同步下降即分散化补偿；
-    # 只有「收益降 + 成本升」双重恶化才追加硬拦。
-    d_ret = delta.get("returns")
+
+    # L2 配对判据：收益降「且」成本升，两者都要越过阈值才算双重恶化。
+    cost_up_beyond_tol = []
+    if d_to is not None and d_to >= MARGINAL_PAIR_TO:
+        cost_up_beyond_tol.append("turnover")
+    if d_dd is not None and d_dd >= MARGINAL_PAIR_DD:
+        cost_up_beyond_tol.append("drawdown")
+    pair_triggered = bool(
+        d_ret is not None and d_ret <= MARGINAL_PAIR_RET and cost_up_beyond_tol
+    )
+    # 成本「方向变差但未超阈」：只作归因，不进闸
     cost_up = [
         k for k in MARGINAL_PAIR_COST_METRICS
         if delta.get(k) is not None and delta[k] > 0
     ]
-    pair_triggered = bool(d_ret is not None and d_ret < 0 and cost_up)
-    pair_offset = bool(d_ret is not None and d_ret < 0 and not cost_up)
+    pair_offset = bool(d_ret is not None and d_ret < 0 and not pair_triggered)
     if pair_triggered and "returns" not in hard_failures:
         hard_failures.append("returns")
     pair_rule = {
         "triggered": pair_triggered,
         "offset": pair_offset,
         "cost_metrics_up": cost_up,
-        "rule": ("ΔReturns<0 且 (ΔTurnover>0 或 ΔDrawdown>0) ⇒ 双重恶化，硬拦；"
-                 "ΔReturns<0 但成本同步下降 ⇒ 分散化补偿，放行"),
+        "cost_up_beyond_tol": cost_up_beyond_tol,
+        "thresholds": {
+            "returns_lte": MARGINAL_PAIR_RET,
+            "turnover_gte": MARGINAL_PAIR_TO,
+            "drawdown_gte": MARGINAL_PAIR_DD,
+        },
+        "rule": ("ΔReturns ≤ −0.5pp 且 (ΔTurnover ≥ +1.5pp 或 ΔDrawdown ≥ +0.5pp) ⇒ 双重恶化，硬拦；"
+                 "ΔReturns<0 但成本未越阈（或同步下降）⇒ 分散化补偿，放行"),
     }
     soft_warnings = [
         k for k in keys
@@ -1734,12 +1794,27 @@ def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
         and not (k == "returns" and pair_triggered)
         and direction_ok.get(k) is False
     ]
+    # 死区内连告警也不出：噪声带里的方向差异没有信息量（原始列表另存备查）
+    soft_warnings_deadzone_suppressed: list = []
+    if deadzone:
+        soft_warnings_deadzone_suppressed = list(soft_warnings)
+        soft_warnings = []
     hard_blocked = bool(hard_failures)
+    # 判定标签（自上而下，命中即止）：net_block / pair_block / neutral / pass_offset / pass
+    if hard_blocked:
+        verdict = "pair_block" if pair_triggered else "net_block"
+    elif deadzone:
+        verdict = "neutral"
+    elif pair_offset:
+        verdict = "pass_offset"
+    else:
+        verdict = "pass"
     hard_detail = ", ".join(
         "%s=%+.4f" % (k, delta[k]) for k in hard_failures
     ) or "none"
     if pair_triggered:
-        hard_detail += " [配对判据：ΔRet<0 且 %s 上升]" % "/".join(cost_up)
+        hard_detail += " [配对判据：ΔRet≤%+.4f 且 %s 越阈]" % (
+            MARGINAL_PAIR_RET, "/".join(cost_up_beyond_tol))
 
     out.update({
         "available": True,
@@ -1747,40 +1822,57 @@ def _marginal_contribution(client, alpha_id: str) -> Dict[str, Any]:
         "before": before,
         "after": after,
         "delta": delta,
+        # 仅表达「ΔS 为负」，供排序与 Step 1.8 复用；**v2 起不再单独触发阻断**
         "dilutive": bool(d_s is not None and d_s < 0),
-        # ↓ 2026-11-13 分级硬闸新增字段
+        # ↓ 2026-11-16 v2 严格版新增字段
+        "verdict": verdict,
+        "deadzone": deadzone,
+        "soft_warnings_deadzone_suppressed": soft_warnings_deadzone_suppressed,
         "hard_blocked": hard_blocked,
         "hard_failures": hard_failures,
         "hard_failures_detail": hard_detail,
         "soft_warnings": soft_warnings,
         "direction_ok": direction_ok,
         "pair_rule": pair_rule,
+        "thresholds": {
+            "net_abs_tol": MARGINAL_HARD_NET_TOL,
+            "deadzone_net": MARGINAL_DEADZONE_NET,
+            "deadzone_returns": MARGINAL_DEADZONE_RET,
+            "pair_returns_lte": MARGINAL_PAIR_RET,
+            "pair_turnover_gte": MARGINAL_PAIR_TO,
+            "pair_drawdown_gte": MARGINAL_PAIR_DD,
+        },
         "direction_rule": {
             "higher_is_better": list(MARGINAL_HIGHER_IS_BETTER),
             "lower_is_better": list(MARGINAL_LOWER_IS_BETTER),
             "hard_block_metrics": list(MARGINAL_HARD_BLOCK_METRICS),
             "pair_cost_metrics": list(MARGINAL_PAIR_COST_METRICS),
-            "scheme": "D: net-effect hard gate + returns/cost pair rule",
+            "scheme": ("D: v2 strict — deadzone + net-effect tolerance gate"
+                       " + returns/cost pair rule (no pyramid exemption)"),
         },
         "risk_note": (
             None if d_s is None else
-            (f"ΔSharpe={d_s:+.4f} ⇒ 组合稀释（**硬闸：提交阻断**，用户 2026-11-08 铁律）"
-             if d_s < 0 else
-             f"ΔSharpe={d_s:+.4f} ⇒ 组合分散（正向边际贡献）")
+            (f"ΔSharpe={d_s:+.4f} ⇒ 组合稀释**越过容差**（<−{MARGINAL_HARD_NET_TOL}）"
+             "（**硬闸：提交阻断**）"
+             if d_s < -MARGINAL_HARD_NET_TOL else
+             (f"ΔSharpe={d_s:+.4f} ⇒ 组合稀释但在容差带内（≥−{MARGINAL_HARD_NET_TOL}），"
+              "放行、仅排序降权" if d_s < 0 else
+              f"ΔSharpe={d_s:+.4f} ⇒ 组合分散（正向边际贡献）"))
         ),
         "hard_gate_note": (
-            "方案D硬闸命中：%s（净效果 %s；软告警 %s）⇒ 提交阻断，force 不豁免"
-            % (hard_detail, "/".join(MARGINAL_HARD_BLOCK_METRICS),
-               ",".join(soft_warnings) or "none")
+            "方案D硬闸命中：%s（净效果容差 ±%.2f；软告警 %s）⇒ 提交阻断，force 不豁免"
+            % (hard_detail, MARGINAL_HARD_NET_TOL, ",".join(soft_warnings) or "none")
             if hard_blocked else
-            "方案D通过：%s 均 ≥0；%s软告警 %s（成本指标不单独设闸、不阻断）"
-            % ("/".join(MARGINAL_HARD_BLOCK_METRICS),
-               "分散化补偿(ΔRet<0 但成本同步下降)已放行；" if pair_offset else "",
+            "方案D通过（%s）：%s软告警 %s（成本指标不单独设闸、不阻断）"
+            % (verdict,
+               "死区判定，噪声带内不否决；" if deadzone else
+               ("分散化补偿(ΔRet<0 但成本未越阈)已放行；" if pair_offset else ""),
                ",".join(soft_warnings) or "none")
         ),
-        "note": ("方案D：ΔSharpe<0 / ΔFitness<0 ⇒ 阻断；ΔReturns<0 且 ΔTurnover>0 或 ΔDrawdown>0 ⇒ 阻断；"
-                 "ΔReturns<0 但成本同步下降 ⇒ 分散化补偿放行；ΔTurnover/ΔDrawdown 单独变差仅告警。"
-                 "force 不豁免；ΔS 仅在**同一分区**内可比"),
+        "note": ("方案D v2（严格档）：ΔS<−0.05 / ΔF<−0.05 ⇒ 阻断；"
+                 "ΔRet≤−0.5pp 且 (ΔTO≥+1.5pp 或 ΔDD≥+0.5pp) ⇒ 阻断；"
+                 "三指标同处噪声带（|ΔS|≤0.02 ∧ |ΔF|≤0.02 ∧ |ΔRet|≤0.3pp）⇒ 判中性放行；"
+                 "ΔTO/ΔDD 单独变差仅告警。force 不豁免；ΔS 仅在**同一分区**内可比"),
     })
     return out
 

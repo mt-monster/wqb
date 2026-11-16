@@ -369,9 +369,11 @@ AGENTS.md 三处写 S11 基线 `171`（基线文件是 `159`，与 `branch_polic
 - 咨询性规则请在 `action.params.consumption` 里显式写 `advisory_only`，
   避免后来者误以为它会拦批（本次新增 5 条都这么标）。
 - 这与 §11「死代码判定三原则」同源：**`refs=0` 不等于没用，但「声明了却无人读」等于没写**。
-  守护现状：`test_methodology_rules_consistency.py` 只守 JSON 合法 / id 唯一 / 区域覆盖语义，
-  **不守连通性**（其 docstring 提到的 `test_methodology_rules_connectivity.py` 实测不存在）
-  ⇒ 「规则写了但永不生效」目前**没有机械闸**，只能靠本节的消费点表人工对照。
+  **2026-11-15 已补机械闸**：`src/wqb/methodology_rules.py` 按 type 校验 op / 字段是否被真实消费；
+  `RuleStore.upsert()` 对 `active/contested` 的未知 op 直接拒绝（`proposed` 草稿放行，
+  晋升时再校验），`tests/unit/07_docs_skills/test_methodology_rules_connectivity.py` 守护
+  全部现存规则 + 白名单只收现状。`ADVISORY_OPS` 是**存量白名单、只减不增**：新增 op 先改消费代码，
+  再写规则；不要往白名单里加新名字来“洗白”一条死规则。
 
 ---
 
@@ -441,3 +443,49 @@ AGENTS.md 三处写 S11 基线 `171`（基线文件是 `159`，与 `branch_polic
 - 本节**刻意不新增机器规则**：它是「写规则时的操作纪律」，消费者是正在改规则库的 agent
   （读 `AGENTS.md` §5），不是开波流程；写成 `strategy` 只会在每波多打一条无关提示。
   双轨义务在此以「人读层 + `AGENTS.md` §5 写入口径」履行，已同步。
+
+---
+
+## 17. ★ 回测经验闭环：事实、派生解释、统计先验三层分离（2026-11-15 P1/P2）
+
+### 17.1 三层与唯一写入方
+
+| 层 | 落点 | 存什么 | 写入方 |
+|---|---|---|---|
+| 事实 | `backtest_results` / `expressions` / `alphas` / `gate_results` | 平台读数、表达式、设置 | 既有收批链路（不新增） |
+| 派生解释 | `attempt_knowledge` | 每 alpha 一行：`skeleton` / `family` / `primary_wall` / `failure_class` / `outcome` / `is_structural` / `knowledge_version` | **唯一**：`wqb.knowledge.capture.refresh_attempt_knowledge`（`pipeline.stage_review` 与 `harvest_multisim_results` 两个钩子） |
+| 统计先验 | `wave_lessons_<R>_<W>` / `region_kb.family_stats` / `skeleton_stats` / `experience_proposals_<R>` | 波级统计、区域累计统计、待确认提案 | `wqb.knowledge.distill.distill_wave` / `publish_region_stats` |
+
+**`attempt_knowledge` 是派生层，不是第二事实源**：`tools/knowledge/rebuild.py` 可从事实表幂等重建（连跑两次除 `updated_at` 外逐字节一致；`created_at` 取回测行时间，历史回填会被 rebuild 纠正）。任何“改指标”的写路径都不该碰它；指标仍只来自 `backtest_results`。
+
+### 17.2 消费点（写了必须有人读）
+
+| 产物 | 消费方 | 行为 |
+|---|---|---|
+| `region_kb.family_stats` / `skeleton_stats` | `assemble_priors.py` → `economic_priors.compact_priors_text` | measured 条目排在静态原理之前；死路 `advisory=true`，进 GEM prompt ≤ 8 条 |
+| `skeleton_stats.dead` | `build_wave.py` → `wqb.knowledge.select.deprioritize_dead_skeletons` | **只重排到尾部，绝不删除**；`wave_meta.selection_audit[].reason=skeleton_stat_deprioritized` |
+| `family_stats` | `_lib/rules.py::recommend_next_wave` | 附 `cross_wave_evidence`，不新增 `action.op` |
+| `wave_lessons_<R>_<W>` | `tools/step9_audit.py` 第 ⑦ 项 | 缺失/过期 → 软失败（`--enforce strict` 才算硬失败） |
+| `experience_proposals_<R>` | S6 agent（`get_ledger_key`）/ `wqb.knowledge.lifecycle` | `stat_dead_*` 满 2 个独立波次确认 → `active`；反例 → `contested`；判死仍走 §9.5 |
+| `KB/template_kb.measured_*` | `assemble_priors.py` → wins / dead_ends | 低于人工 `templates[]` 的优先级；死路 `advisory` |
+| `experience_yield_<R>` | agent / 产出率报告 | 按 `knowledge_version` 的 win/near/dead 率；**观察值，不自动调知识** |
+| `tracking/<R>/priors/experience_digest.md` | agent / 人 | 一页纸：有效骨架 / 统计死路 / 待确认提案 / 最新版本产出率 |
+
+`knowledge_version = priors_sha[:8]-rules_sha[:8]`（`wqb.knowledge.versions`）：每条 attempt 记录它是在哪套“先验 + 规则”下产生的，P4 才能按版本对比产出率。
+
+### 17.3 纪律
+
+- **统计自动、语义分级**：`attempt_knowledge` / `family_stats` / `template_kb.measured_*` 自动写；`stat_dead_*` 规则满 2 个独立波次确认后自动 `active`（**仅 `type=strategy` 咨询型**）；`dead_end` / `universe_lever` 永不自动晋升。
+- **判死永不自动**：`dead_families` / `dead_skeletons` 只是提案，必须 `forum_recon` 取证 + `seal_dead_end`。
+- **可逆优先**：统计先验只降权/提示，不做不可逆过滤（2026-11-09 `coverage` 闸静默跳过的教训，见 AGENTS.md §8.11）。
+- **`region_kb` 整键 read-modify-write**：`publish_region_stats` 读全量 → 改子键 → canonical diff → 写回；不手写 JSON、不做部分 `merge`（§16 同源）。
+- **`template_kb` 人工层不可覆盖**：只写 `measured_validated` / `measured_failed` 子键，`templates[]` 由人维护。
+- **不自动改 skill 正文**：语义文本仍由 agent 在 S6 写；工具只提供证据/统计块。
+
+## 18. ★ gate.py 充分拆分与 monkeypatch 契约（2026-11-15）
+
+toolkit `gate.py`（原 2060 行单文件）已按业务功能拆为 **facade + 四模块**：`gate.py` 只剩 CLI main + `import *` 再导出 + PEP 562 `__getattr__` 下划线名读转发（336 行）；实现分 `_gate_expr_checks.py`（表达式六闸 + `GATE_REGISTRY`/`GATE_CODE_VERSION` + ghost 算子 + op_arity）、`_gate_diversity.py`（闸6 多样性 + exposure 落库）、`_gate_sanity.py`（体检硬门 + 闸0）、`_gate_knowledge.py`（priors 知识闸 + 机制证据闸）。权威描述见 AGENTS.md §8.1。
+
+- **monkeypatch 契约是拆分的硬约束**：模块 `__getattr__` 只对**属性读**生效，函数内的全局名字解析不走它——所以 `monkeypatch.setattr(gate, "_mask_denominators", …)` 这种写路径对实现函数**不可见**（facade `__dict__` 有值，实现模块读自己的全局）。凡是「patch 后调 check_one/gate_signature 验证行为」的测试，patch 目标必须落在实现模块（`sys.modules[g.check_one.__module__]`，与加载名解耦）；源码文本断言同理指向实现文件。改测试时**只换 patch/读取目标，断言语义零改动**——这是测试跟随实现搬家的正当维护，不是放宽契约。
+- **为什么首选拆分而不是「兼容 shim 保测试」**：曾评估让 `check_one` 经 facade 反查助手（bind-facade 模式），但测试文件各自以不同模块名 importlib 加载 gate.py，facade 实例会互相覆盖注册，patch 依旧不可见——改测试目标比造隐式绑定诚实。
+- **拆分的连带面（漏一处测试即红）**：① 源码文本断言（`GATE_CODE_VERSION` → `_gate_expr_checks.py`；exposure SQL → `_gate_diversity.py`；闸8 EVENT 文本 → `_gate_sanity.py`）；② `docs/ledger_keys.json` 的 readers（`diversity_audit_latest` → `_gate_diversity.py`）；③ `tools/index_tables.py env` 表的读取位置列（`--apply` 重生成）；④ toolkit SKILL.md 必须提及每个 `scripts/*.py`（守护 `test_sd_docs`）；⑤ INDEX/AGENTS.md 的闸表权威措辞。

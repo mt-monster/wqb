@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-10-29
+last_verified: 2026-11-16
 name: wqb-test-failure-triage
 description: "wqb 工作区 pytest 失败的分簇诊断纪律与固化检查表。当用户说'测试红了 / 全量回归有失败 / 这 N 个失败怎么解决 / 修复测试 / pytest 失败'或跑完 pytest 看到非全绿时触发。提供 7 步诊断顺序（完整 traceback → 根因聚类 → 端到端最小复现 → 区分期望过时 vs 代码回归 → 查状态文件 → 新失败定性 → 沉淀固化）、workflow 节点四处同步审计、漂移类型速查表（skills 安装位 / INDEX 计数 / NodeMeta 签名 / 状态文件陈旧 / ledger 白名单契约），并防把生产 bug 当测试过时改掉。"
 layer: L7

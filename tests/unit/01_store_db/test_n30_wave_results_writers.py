@@ -221,6 +221,25 @@ def test_harvest_tool_writes_same_key_as_backtest_rows(db_mcp, db_path):
     assert {e["wave"] for e in pool["entries"]} == {"s2_ml_factor_proj_d1"}
 
 
+def test_harvest_tool_writes_attempt_knowledge_and_wave_lessons(db_mcp, db_path):
+    """2026-11-15 P1/P2：手工收批也要留下逐条经验 + 波级蒸馏（不只 pipeline 自动路径）。"""
+    alphas = [dict(a, expression=f"rank(ts_delta(y{i}, 5))") for i, a in enumerate(WEAK + NEAR)]
+    out = db_mcp.harvest_multisim_results("KOR", "s2_knowledge_d1", alphas)
+    assert out["upserted"] == 5
+    assert out["knowledge"]["written"] == 5
+    assert out["wave_lessons"]["n_attempts"] == 5
+    conn = sqlite3.connect(str(db_path))
+    try:
+        n = conn.execute("SELECT COUNT(*) FROM attempt_knowledge WHERE region='KOR'").fetchone()[0]
+        raw = conn.execute("SELECT value FROM ledger_kv WHERE region='KOR' "
+                           "AND key='wave_lessons_KOR_s2_knowledge_d1'").fetchone()
+    finally:
+        conn.close()
+    assert n == 5
+    lesson = json.loads(raw[0])
+    assert lesson["n_attempts"] == 5 and lesson.get("published_at")
+
+
 # ---------------------------------------------------------------- 评审写入（toolkit）
 
 def _rows(n, sharpe=1.4):
