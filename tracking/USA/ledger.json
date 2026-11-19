@@ -270,7 +270,18 @@
   "submission_candidates": 0,
   "institutions": [
    "institutions6"
-  ]
+  ],
+  "_authority": "⚠ 本块是 **2026-08-16 的历史快照**（tracking/USA/reference/usa_dead_datasets.md 为唯一权威判死清单，由 tools/campaign_intel.py s0-select 读取）。本块**无任何代码消费**，名单与权威清单不同步 ⇒ 不要拿它判断「是否被判死」。",
+  "_not_in_machine_list": [
+   "sentiment21",
+   "sentiment22",
+   "option8",
+   "option40",
+   "shortinterest3",
+   "analyst44",
+   "institutions6"
+  ],
+  "_not_in_machine_list_note": "以上 7 个集在 2026-08 快照里被记为判死，但**不在**权威清单里 ⇒ 机器投槽**不拦**它们；若要封死须在权威清单补条目（带 as_of + evidence），若已复活则本块该行已过时。"
  },
  "mix_strategy": {
   "authorized": "2026-08-16 用户授权 (初限 2, 后放宽至 3-5)",

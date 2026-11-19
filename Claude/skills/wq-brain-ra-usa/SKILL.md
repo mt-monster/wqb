@@ -77,7 +77,7 @@ last_verified: 2026-11-16
 | 阈值 | 值 | 来源 |
 |---|---|---|
 | Mode B 主闸（sharpe / fitness） | 1.25 / 0.8 | default（实时值含区域台账，看 explain） |
-| review.sharpe_min | 1.25 | thresholds.json |
+| review.sharpe_min | 1.58 | thresholds.json |
 | review.fitness_min | 1.0 | thresholds.json |
 | review.turnover_min | 0.05 | thresholds.json |
 | review.turnover_max | 0.3 | thresholds.json |
@@ -99,11 +99,23 @@ last_verified: 2026-11-16
 
 **USA 的 alpha 必须查 `investability_sharpe`**：平台虽不把 `LOW_INVESTABILITY_CONSTRAINED_SHARPE` 下放进提交层（IND 实测不下发），但 IS 面 Sharpe 再高也可能是**不可投资权重**堆出来的。判据：
 
-- **`invest_S / S ≥ 0.70`**，排在 `Failed RA == 0` 之后、`submit_verdict` 之前（第 2 号），**在 Sharpe / fitness 排序之前**用它筛。
+- **`invest_S / S ≥ 0.70`**，**排在第一位筛**（`Failed RA == 0` 之后、`submit_verdict` 与任何相关性检查**之前**）——
+  它**免费**：同一个仿真结果里就有，不占配额、不占相关性槽。先做它，能省掉后面所有 prod/self 槽位。
 - 唯一直接入口是 `batch_get_alpha_metrics` 的 **`investability_ratio`**（= invest_S / S），本地库无此列。
 - **S 越高越要查**：S 3+ 的候选常见 invest 比 0.09–0.30 —— 那是「只在不可交易标的上成立」的形状，不是强候选。
-- 当前阈值 **0.70 只在 USA 标定**（单区单会话样本），跨区使用前需重新标定，不要照搬。
-- 实证：`0mjaa2Ev` S 3.24 / F 2.60 / 2Y 4.30 / prod 0.646 但 invest 比 **0.0895**（`total_*_transaction_count` 族）⇒ 不可提交；RISK 篮三颗 invest 比 0.93–1.01 ⇒ 全过。
+- **★ 阈值标定（2026-11-16 实测，USA）**：取 10 颗有该字段的 ACTIVE 件，`investability_ratio` **全部 ≥ 0.839**
+  （实测值 1.108 / 1.014 / 1.006 / 0.993 / 0.951 / 0.934 / 0.926 / 0.881 / 0.848 / 0.839）；同期 3 颗因该闸被拒件
+  **≤ 0.45**（0.450 / 0.189 / **−0.151**）。⇒ **分离带是 (0.45, 0.839)，中间是空的**；带内任取阈值判定相同，
+  **0.70 取在带中部 = 抗噪选择**。阈值**只在 USA 标定**（样本 13 颗），跨区使用前需重新标定，不要照搬。
+- **★ `null` = 容量未知，不是失败**：旧件（平台该字段上线前）普遍无此读数（实测 20 颗老 ACTIVE 中 17 颗 null）。
+  无值 ⇒ 记「容量未知」并**不作为 PASS**；要判就补一次同设置仿真（新 sim 会带出该字段），**不得据 null 判负**。
+- **★ 孪生判据 `investability_fitness / fitness`**：同批实测分离一致（ACTIVE 10 颗 0.87–1.19 vs 被拒件 −0.07/0.10/0.30），
+  更抗「S 被杠杆虚高」。建议 **`min(ratio_S, ratio_F) ≥ 0.70`**，两条互为校验。
+- **它是容量体检，不是质量预测器**（必要不充分）：实测反例 `2gZAd58` invest 比 0.99 但 `os_sharpe` 仅 0.38 ⇒
+  过闸不等于 OS 好，只是「不是不可交易形状」。
+- 实证：`0mjaa2Ev` S 3.24 / F 2.60 / 2Y 4.30 / prod 0.646 但 invest 比 **0.0895**（`total_*_transaction_count` 族）⇒ 不可提交；
+  `kqNb1g5d` S 3.32 / F 3.29 / 2Y 3.65 但 invest 比 **−0.151**（invest Sharpe 为负）⇒ 不可提交；
+  RISK 篮三颗 invest 比 0.93–1.01 ⇒ 全过。
 
 ## 组合分支（区域 × 类别）
 

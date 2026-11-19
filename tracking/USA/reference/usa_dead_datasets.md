@@ -41,8 +41,6 @@
     {"dataset": "fundamental69", "verdict": "dead_end", "reason": "fundamental 全线逐集全灭（覆盖 0.39-0.43 + 季度频率）", "evidence": "_usa-risk60-field-profile-20261023.md §1；_usa-fnd69-field-profile-20261021.md", "as_of": "2026-10-23"},
     {"dataset": "fundamental72", "verdict": "dead_end", "reason": "fundamental 全线逐集全灭", "evidence": "_usa-risk60-field-profile-20261023.md §1", "as_of": "2026-10-23"},
     {"dataset": "fundamental91", "verdict": "dead_end", "reason": "fundamental 全线逐集全灭", "evidence": "_usa-risk60-field-profile-20261023.md §1", "as_of": "2026-10-23"},
-    {"dataset": "fundamental93", "verdict": "dead_end", "reason": "fundamental 全线逐集全灭（LOW_TURNOVER 实证）", "evidence": "_usa-risk60-field-profile-20261023.md §1", "as_of": "2026-10-23"},
-    {"dataset": "fundamental110", "verdict": "dead_end", "reason": "fundamental 全线逐集全灭", "evidence": "_usa-risk60-field-profile-20261023.md §1", "as_of": "2026-10-23"},
     {"dataset": "other416", "verdict": "dead_end", "reason": "fundamental 路线同批全灭（字段退化 / 强度不足）", "evidence": "_usa-risk60-field-profile-20261023.md §1", "as_of": "2026-10-23"},
     {"dataset": "other452", "verdict": "dead_end", "reason": "fundamental 路线同批全灭", "evidence": "_usa-risk60-field-profile-20261023.md §1", "as_of": "2026-10-23"},
     {"dataset": "risk60", "verdict": "prod_sealed", "reason": "prod 0.9917（A1Qr9Y8W，RA 全过 / S 2.39）⇒ [0.9,1] 桶 n=116 结构性墙", "evidence": "复盘报告 §5 / §9.1；_usa-risk60-field-profile-20261023.md §7.2", "as_of": "2026-10-23"},
@@ -60,7 +58,7 @@
     {"dataset": "web_traffic_engage", "verdict": "prod_sealed", "reason": "prod 0.9908（水平 0.9740/0.9906；变化量 0.9781/0.9782）⇒ USA-WEB-TRAFFIC-PROD-SAT", "evidence": "复盘报告 §5；交付日志附录 AB", "as_of": "2026-10-21"},
     {"dataset": "workforce_flow_skills", "verdict": "prod_sealed", "reason": "四条 RA 全闸的 prod 0.8586-0.9078 ⇒ USA-WORKFORCE-PROD-SEAL", "evidence": "交付日志附录 AE", "as_of": "2026-10-21"},
     {"dataset": "stock_search_trends", "verdict": "prod_sealed", "reason": "7/7 条 prod 0.8244-0.9382（跨中性化/窗口/反号/平滑）⇒ USA-STOCK-SEARCH-TRENDS-PROD-SAT", "evidence": "交付日志 §9 表", "as_of": "2026-10-21"},
-    {"dataset": "intraday_pv_feats", "verdict": "structural", "reason": "corr-reversal prod 0.8693/0.8739；尾盘分支 0.7429 + CROWDING 负杠杆 ⇒ 收益/降 prod/换手三者互斥", "evidence": "_usa-intraday-pv-feats-field-profile-20261022.md §7", "as_of": "2026-10-22"},
+    {"dataset": "intraday_pv_feats", "verdict": "structural", "reason": "**仅 corr-reversal 分支**判死（prod 0.8693/0.8739；尾盘分支 0.7429 + CROWDING 负杠杆 ⇒ 收益/降 prod/换手三者互斥）；⚠ corr-slow 分支**未穷尽**（wave probe_preclose_usa_20260920 的 wpZJPRql S1.66/F1.05/2Y2.00/prod0.7429 —— prod 仍 >0.70 故**不可交付**，但不构成整集判死）", "evidence": "_usa-intraday-pv-feats-field-profile-20261022.md §7 + 2026-11-19 DB 复核（backtest_results wave probe_preclose_usa_20260920）", "as_of": "2026-11-19"},
     {"dataset": "news_transformer_scores", "verdict": "signal_short", "reason": "8 条最高 |S| 0.50（正向 0.46），远低于预登记 S≥1.00；同族 prod 0.72-0.83", "evidence": "_usa-news-transformer-scores-field-profile-20261022.md §4.2", "as_of": "2026-10-22"},
     {"dataset": "chart_return_model", "verdict": "structural", "reason": "期限错配：1-bar 预测在 D1 不可执行（_t100 S 1.22 / 2Y -0.01 / TO 57%），20 日臂 S 0.90", "evidence": "_usa-chart-return-model-field-profile-20261023.md §5-§6", "as_of": "2026-10-23"},
     {"dataset": "chart_model_alpha", "verdict": "structural", "reason": "11 波 30 臂：F 墙结构性（S≥1.58 需 RET≥5%，缺的完全是 TO 0.414 vs ≤0.125），平滑同时砍 S 与 RET", "evidence": "tracking/USA/runs/usa_cma_w1_notes.md §12", "as_of": "2026-10-23"},
@@ -74,7 +72,6 @@
     {"dataset": "pv115", "verdict": "dead_end", "reason": "已判弱 / 已封存", "evidence": "交付日志 §2 / §9 表", "as_of": "2026-10-21"},
     {"dataset": "dl_volume_pred", "verdict": "dead_end", "reason": "已判弱 / 已封存", "evidence": "_usa-dl-volume-pred-field-profile-20261020.md；交付日志 §9 表", "as_of": "2026-10-21"},
     {"dataset": "insiders4", "verdict": "dead_end", "reason": "已判弱 / 已封存", "evidence": "交付日志 §2 / §9 表", "as_of": "2026-10-21"},
-    {"dataset": "board_gov_stats", "verdict": "dead_end", "reason": "已判弱 / 已封存（波 85-87 三条轴扫尽）", "evidence": "交付日志 §2 / §9 表", "as_of": "2026-10-21"},
     {"dataset": "earnings_risk", "verdict": "dead_end", "reason": "已判弱 / 已封存（波 84 复查留痕）", "evidence": "交付日志 §2 / §9 表", "as_of": "2026-10-21"},
     {"dataset": "news_sentiment_transfer", "verdict": "dead_end", "reason": "已判弱 / 已封存", "evidence": "交付日志 §2 / §9 表", "as_of": "2026-10-21"},
     {"dataset": "sentiment26", "verdict": "dead_end", "reason": "已判弱 / 已封存", "evidence": "交付日志 §2 / §9 表", "as_of": "2026-10-21"}
@@ -90,7 +87,7 @@
 | `prod_sealed`（prod ≥0.75 机制级饱和） | `risk60`、`other143`、`institutions18`、`web_traffic_engage`、`workforce_flow_skills`、`stock_search_trends` |
 | `signal_short`（强度不足 / 空列 / 退化） | `pv106`、`pv149`、`pv20`、`other635`、`other699`、`other545`、`other571`、`other596`、`news_transformer_scores`、`shortinterest29`、`multi_horizon_alpha`、`continuation_score`、`order_flow_imb` |
 | `structural`（构造与闸门互斥） | `intraday_pv_feats`、`chart_return_model`、`chart_model_alpha` |
-| `dead_end`（已判弱 / 已封存） | `other685`、`option3`、`pv47`、`pv103`、`pv115`、`dl_volume_pred`、`insiders4`、`board_gov_stats`、`earnings_risk`、`news_sentiment_transfer`、`sentiment26` |
+| `dead_end`（已判弱 / 已封存） | `other685`、`option3`、`pv47`、`pv103`、`pv115`、`dl_volume_pred`、`insiders4`、`earnings_risk`、`news_sentiment_transfer`、`sentiment26` |
 
 **不在本清单（仍在途 / 有余量）**：`insider_matrix`（族内还有 prod<0.7）、`insider_agg_matrix`（virgin）、
 `earnings_sent_matrix`、`techindi_model`（tm_w3 在途）、`ai_equity_alpha`（可交付但 MODEL 塔已点亮）。

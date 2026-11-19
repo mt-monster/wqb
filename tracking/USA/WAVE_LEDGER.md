@@ -18,7 +18,7 @@ sharpe>1.58 · fitness>1 · 2y sharpe>1.6 · margin>5bp · turnover 5%–30% · 
 | 累计回测条数 | 波1-14 约 672 条 + 波15 已回收 22 条（2 批），0 ERROR 连坐 | 2026-08-20 |
 | 白名单 | D1 scope 649 字段 / 12 数据集（analyst15 新增 300 字段） | 2026-08-20 |
 | 主攻数据集 | 待确定（analyst15 BPS 族已判死） | 2026-08-20 |
-| 判死数据集 | sentiment21 · news_transformer_scores · sentiment22（情绪金字塔 3 数据集 88 条）· option8 · option40（option 金字塔 88+ 条 PROD 墙）· shortinterest3（PROD 墙）· analyst44（天花板 0.45 差 3.5 倍）· institutions6（96 条 PASS=0）· macro38（fit/margin 双结构性墙）· pattern_scores（1 PPA 过但信号弱）· option_horizon_decomp（2 PPA 过但需验证 PROD）· **analyst15 BPS 族（22 条全灭，天花板 0.34 差 4.6 倍）** | 2026-08-20 |
+| ⚠ **判死数据集（2026-08 快照，非权威）** | ⚠ 权威判死清单 = `tracking/USA/reference/usa_dead_datasets.md`（唯一被工具消费）；本行是 2026-08-20 的人类可读快照，**名单与之不同步**。下列 7 个集（sentiment21 / sentiment22 / option8 / option40 / shortinterest3 / analyst44 / institutions6）**不在权威清单里** ⇒ 机器投槽**不拦**它们；「已判死」请以权威清单为准 | 2026-11-19 标注 |
 | 数值七闸门全过 | 17 条（波3）但 PROD 0.83-0.91 全灭，**提交候选仍为 0** | 2026-08-20 |
 | 最佳候选 | 6XpL2qjP（2.19/PROD 墙）；活候选 ZYEVZQw0 1.03（inst6 share 复合 d2，tv 9.9%/margin 7.2bp 双达标，精调中） | 2026-08-20 |
 

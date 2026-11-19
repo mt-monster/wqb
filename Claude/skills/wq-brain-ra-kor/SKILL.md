@@ -553,7 +553,7 @@ $WQ_PY -m wqb.profiles sync-cells --region KOR --apply  # 刷新判死 / 胜绩
 | review.fitness_min | 1.0 | thresholds.json |
 | review.turnover_min | 0.01 | thresholds.json |
 | review.turnover_max | 0.7 | thresholds.json |
-| review.two_year_sharpe_min | 1.0 | thresholds.json |
+| review.two_year_sharpe_min | 1.58 | thresholds.json |
 | near.sharpe_min | 1.0 | thresholds.json |
 | diversity.signal_floor.max_sharpe_floor | 0.5 | thresholds.json |
 

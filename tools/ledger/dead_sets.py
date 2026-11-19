@@ -67,18 +67,24 @@ def _rows(conn: sqlite3.Connection, region: str) -> list[tuple[str, str]]:
 
 
 def _reopen_payload(region: str, dataset: str, reason: str) -> dict:
-    """生成撤判回写 payload（**由执行者照抄调用 upsert_ledger_key**）。"""
+    """生成撤判回写 payload（**由执行者照抄调用 upsert_ledger_key**）。
+
+    ⚠ **必须用 `mode="merge"`，不得 `replace`**（AGENTS.md §5 的覆写事故）：
+    台账里该键的**原始判死证据**（dead_at / evidence / max_sharpe / probed …）必须原样保留，
+    merge 只覆盖本次要改的标量字段 ⇒ 不会丢证据、也不会整值改坏。
+    本函数**不重写原 value**，只给出增量字段。
+    """
     return {
         "region": region,
         "key": f"{dataset}_dead",
+        "mode": "merge",
         "value": {
-            "dataset": dataset,
             "status": "reopened",
             "reopened_at": "2026-11-19",
-            "reason": reason,
-            "note": ("2026-11-19 撤判回写：档案已判「撤判重开」，台账同步标记 reopened，"
-                     "硬闸不再拦（判据本体 src/wqb/dead_datasets.py）。"
-                     "原始判死证据保留在本键的其余字段 / 对应档案里。"),
+            "reopened_reason": reason,
+            "reopen_note": ("2026-11-19 撤判回写：档案已判「撤判重开」，台账同步标记 reopened，"
+                            "硬闸不再拦（判据本体 src/wqb/dead_datasets.py：status=reopened ⇒ 不入任何档）。"
+                            "原始判死证据保留在本键的其余字段 / 对应档案里（merge 增量写，未整值覆盖）。"),
         },
     }
 

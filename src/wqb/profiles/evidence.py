@@ -64,11 +64,30 @@ def _region_datasets(conn, region: str) -> Dict[str, str]:
     return out
 
 
+def _dataset_members(ds: str) -> List[str]:
+    """把**复合数据集名**拆成成员集。
+
+    ⚠ 2026-11-19 实测：`alphas.dataset_id` / `backtest_results.dataset` 里存在
+    **跨集组合**形态（`fundamental1+pv1` 367 行、`analyst_factor_signals+pv1` 215 行、
+    `pv1+sentiment27` 152 行…；全库 1875 行 join 不到单集）。
+    它们**不是**「未解析的占位」，而是 AGENTS.md §7.7 合法跨集形态的正常归属
+    （⚠ `alpha_properties.py:340` 已明写「不要用 alphas.dataset_id —— 那记的是波次主数据集」）。
+    不拆开 ⇒ 这些行会被归到前缀猜测出的错误类别（实测落进 "other"），污染分类统计。
+    """
+    return [x.strip() for x in re.split(r"[+&]", str(ds or "")) if x.strip()]
+
+
 def _cat_of_dataset(ds: str, table: Dict[str, str]) -> str:
     """数据集 → 类别；回测行没写数据集（历史行 dataset 为空）返回 unknown，不并进任何组合。"""
     low = (ds or "").strip().lower()
     if not low or low in ("?", "none", "null"):
         return "unknown"
+    # 复合名（跨集组合）：逐个成员找第一个能解析的
+    if "+" in low or "&" in low:
+        for member in _dataset_members(low):
+            m = member.lower()
+            if m in table:
+                return table[m]
     if low in table:
         return table[low]
     return normalize_category(category_from_prefix(low) or "other")

@@ -74,8 +74,8 @@
   ts_target_tvr_decay(trade_when(greater(vec_avg(fnd72_pit_or_is_a_ebit), vec_avg(fnd72_pit_or_is_a_net_income)), group_zscore(divide(vec_avg(fnd72_pit_or_cf_a_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_a_bs_tot_asset)), industry), -1), lambda_min=0, lambda_max=1, target_tvr=0.06)
   ```
 
-  - vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets)… ← 2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；★ 2026-10-20 更正：12 次算子调用**过不了闸 1b-2**（gate.py MAX_OP_CALLS=10 ⇒ 合法 ≤9），且其 fam3 'vector_neut→vector_neut→reverse' 实测 n=4、prod 0.9789 / 0.9859 / 0.9998 / 0.9998 = **DEAD** ⇒ 只作历史证据，不再作首选
-  - vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)… ← ★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = 'vector_neut→vector_neut→vector_neut'，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg 'rank' 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌 <!-- from config.PRODCORR_CEILING -->
+  - vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets)… ← 2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；★ 2026-10-20 更正：12 次算子调用**过不了闸 1b-2**（gate.py MAX_OP_CALLS=10 ⇒ 合法 ≤9），且其 fam3 'vector_neut→vector_neut→reverse' 实测 n=4、prod 0.9789 / 0.9859 / 0.9998 / 0.9998 = **DEAD** ⇒ 只作历史证据，不再作首选 <!-- lint:const-ok 证据原文 -->
+  - vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)… ← ★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = 'vector_neut→vector_neut→vector_neut'，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg 'rank' 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌 <!-- lint:const-ok 证据原文 -->
   - ts_target_tvr_decay(trade_when(greater(vec_avg(fnd72_pit_or_… ← 9 调用点。EBIT>NI 闸是该闸族最优；tvr 0.06 → vROkA5nw（S1.58/F1.08/2Y1.68/prod0.6663/self0.5270）。同骨架 tvr 0.09 ⇒ P0MZ5nrp(0.6653)、0.12 ⇒ pwvPanJx(0.6595)、0.15 ⇒ akVLzLV1(0.6585/2Y1.83)。闸替换：EBITDA>CFNI（rKd5lAo8 0.6747）、EBIT>CFNI（leM88RN5 0.6701）、EBITDA>NI（wave307 新探）。CFO>NI / OPINC>NI 闸摧毁信号（S→0，不得用）
 - **类别通用原语**（类别卡，跨区）：
   - accrual / cash gap: earnings quality, not the earnings level
@@ -109,7 +109,7 @@
 - **不要用**：慢化（ts_mean）：反而抬 prod（0.7071→0.7974）（WorkBuddy MEMORY §1.7） <!-- lint:const-ok 证据原文 -->
 - **不要用**：ts_target_tvr_hump：只对齐换手、不降 prod（WorkBuddy MEMORY §1.7） <!-- lint:const-ok 证据原文 -->
 - **不要用**：中性化切到 MARKET：IS 最高但 prod 涨到 0.7254（WorkBuddy MEMORY §1.7） <!-- lint:const-ok 证据原文 -->
-- **不要用**：MATRIX 载荷族 'fnd72_s_*'（双轴皆 prod 墙）：industry 0.7968 / subindustry 0.7870（wave303 6XArAz1E；wave305 bl8RalWK（S2.00/F1.57 全闸过仍 prod 0.7870）） <!-- lint:const-ok 证据原文 -->
+- **不要用**：MATRIX 载荷族 'fnd72_s_*'（双轴皆 prod 墙）：industry 0.7968 / subindustry 0.7870（wave303 6XArAz1E；wave305 bl8RalWK（S2.00/F1.57 全闸过仍 prod 0.7870） <!-- lint:const-ok 证据原文 -->） <!-- lint:const-ok 证据原文 -->
 - **不要用**：sector 轴（prod 0.7553–0.7571）与 market 轴（0.7805）（wave305 E5VvwZer / gJWQMx9v / 1Yjxxn2m） <!-- lint:const-ok 证据原文 -->
 - **不要用**：group_neutralize（CFO/TA 上 CONCENTRATED_WEIGHT）与 group_rank（S 1.27–1.5）（wave301 / wave302） <!-- lint:const-ok 证据原文 -->
 - **不要用**：normalize() 归一化（CONCENTRATED_WEIGHT 0.24771，S 1.41 差线）（wave306 leM8G8M2） <!-- lint:const-ok 证据原文 -->
@@ -123,7 +123,7 @@
 ### S5 提交前
 
 - 资格判定：`$WQ_PY tools/mode_b_qualify.py evaluate --region EUR --sharpe <S> --fitness <F> --two-year-sharpe <2Y>`（喂全指标，旁路 A–E 才会生效）
-- 提交链：`submit_verdict` 只否决；prod 走 `check_correlation(refresh=False)`（48h 缓存优先，不默认回源）+ self 实测；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
+- 提交链：`submit_verdict` 只否决；prod 与 self 双端点实测（`check_correlation(refresh=True)`）；用户明确确认后才 `workflow_submit_alpha(confirm_submit=True)`——见 `worldquant-submit-alpha`
 
 ### 判死记录（不要重试；「归属」= payload 绑定 / 由条目名推断 / 关键词推断）
 

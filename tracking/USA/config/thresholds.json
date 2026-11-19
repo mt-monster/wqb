@@ -1,13 +1,14 @@
 {
  "_doc": "USA D1 战役集中阈值配置。闸门统一引用本文件，禁止散落硬编码。D1 门槛取自 how-to-pass-AlphaTest（D1 Sharpe>1.25 / Fitness>1.0）。",
  "review": {
-  "sharpe_min": 1.25,
+  "sharpe_min": 1.58,
   "fitness_min": 1.0,
   "two_year_sharpe_min": 1.6,
   "margin_min": 0.0005,
   "turnover_min": 0.05,
   "turnover_max": 0.3,
-  "ra_failed_count_max": 0
+  "ra_failed_count_max": 0,
+  "_note_sharpe_20261119": "2026-11-19 由 1.25 改为 1.58 —— 1.25 是**平台 LOW_SHARPE 线**（D1），被误当作「评审交付线」；全域 12 个区均为 1.58，config.GATES_PLATFORM.sharpe_min = 1.58（交付线按 2Y 线的 1.58），且 USA 自身判死档案措辞亦用 1.58（「强度上限远低于 1.58」）。⚠ 收紧方向。"
  },
  "near": {
   "sharpe_min": 1.0,

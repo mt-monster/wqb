@@ -2,10 +2,11 @@
  "review": {
   "sharpe_min": 1.58,
   "fitness_min": 1.0,
-  "two_year_sharpe_min": 1.0,
+  "two_year_sharpe_min": 1.58,
   "margin_min": 0.0005,
   "turnover_max": 0.7,
-  "turnover_min": 0.01
+  "turnover_min": 0.01,
+  "_note_two_year_20261119": "2026-11-19 由 1.0 改为 1.58 —— 平台 LOW_2Y_SHARPE limit 实测 = 1.58（DEU 2026-11-05 用 RREALzx0 的 checks.fail 实读：旧值 1.0 会把 2Y 1.0-1.57 的候选误当达标；判别件 YP1ZvjWA 同）。原值 1.0 是该次更正之前的存量值。⚠ 收紧方向：评审达标与「2Y 塌」判定同步变严。"
  },
  "near": {
   "sharpe_min": 1.0

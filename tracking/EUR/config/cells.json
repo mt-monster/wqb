@@ -506,11 +506,11 @@
     "skeletons": [
      {
       "text": "vector_neut(vector_neut(reverse(rank(divide(FCF_fin, assets))), rank(divide(free_cash_flow, assets))), rank(divide(operating_cashflow, assets)))",
-      "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；★ 2026-10-20 更正：12 次算子调用**过不了闸 1b-2**（gate.py MAX_OP_CALLS=10 ⇒ 合法 ≤9），且其 fam3 `vector_neut→vector_neut→reverse` 实测 n=4、prod 0.9789 / 0.9859 / 0.9998 / 0.9998 = **DEAD** ⇒ 只作历史证据，不再作首选"
+      "evidence": "2 层嵌套 prod 0.6997 过线（WorkBuddy MEMORY §1.7）；★ 2026-10-20 更正：12 次算子调用**过不了闸 1b-2**（gate.py MAX_OP_CALLS=10 ⇒ 合法 ≤9），且其 fam3 `vector_neut→vector_neut→reverse` 实测 n=4、prod 0.9789 / 0.9859 / 0.9998 / 0.9998 = **DEAD** ⇒ 只作历史证据，不再作首选 <!-- lint:const-ok 证据原文 -->"
      },
      {
       "text": "vector_neut(vector_neut(vector_neut(rank(A),rank(B)),rank(C)),rank(D))  # A/B/C/D = 平台原生 scale-free 字段（mpns/ppgs/ppos/kcqs/rucs/sebv/sedv/iabs/iads/fbbs/fbds/pbts/rtes/mtps/1spdd）",
-      "evidence": "★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = `vector_neut→vector_neut→vector_neut`，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg `rank` 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌"
+      "evidence": "★ 当前首选：depth-3 / 4 叶 / per-leg rank / 无 divide = 7~8 次调用（闸 1b-2 预算内）。fam3 = `vector_neut→vector_neut→vector_neut`，n=1 prod 0.6695 = EUR 当前唯一 <0.7 的深度（JjQmx9nm，ACTIVE，S1.73 / F1.17 / 2Y2.10 / prod0.6695 / self0.3807）。★ per-leg `rank` 必需：wave290 同几何去掉 rank 改用 divide（8 调用）10 条 S 0.16–1.14 全灭 ⇒ 量纲不齐即崩塌 <!-- lint:const-ok 证据原文 -->"
      },
      {
       "text": "ts_target_tvr_decay(trade_when(greater(vec_avg(fnd72_pit_or_is_a_ebit), vec_avg(fnd72_pit_or_is_a_net_income)), group_zscore(divide(vec_avg(fnd72_pit_or_cf_a_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_a_bs_tot_asset)), industry), -1), lambda_min=0, lambda_max=1, target_tvr=0.06)",
@@ -596,7 +596,7 @@
      },
      {
       "what": "MATRIX 载荷族 `fnd72_s_*`（双轴皆 prod 墙）：industry 0.7968 / subindustry 0.7870",
-      "evidence": "wave303 6XArAz1E；wave305 bl8RalWK（S2.00/F1.57 全闸过仍 prod 0.7870）"
+      "evidence": "wave303 6XArAz1E；wave305 bl8RalWK（S2.00/F1.57 全闸过仍 prod 0.7870） <!-- lint:const-ok 证据原文 -->"
      },
      {
       "what": "sector 轴（prod 0.7553–0.7571）与 market 轴（0.7805）",
