@@ -200,6 +200,11 @@ def build_attempt_records(
         structural = classify.is_structural(walls, metrics)
         fclass = classify.failure_class(primary, outv)
         action = classify.next_action(primary, structural)
+        # ⚠ 内部严线（2026-11-16 用户定案，2026-11-19 接入）：只过平台线没过内部严线的件
+        # outcome 已由 win 降为 near；这里把不过项写进 next_action，便于人工复核「为何不算全闸」。
+        internal_fail = classify.internal_gate_failures(metrics)
+        if internal_fail:
+            action = f"{action}|internal:{','.join(internal_fail)}"
 
         skeleton = (expr_row.get("skeleton") or "").strip() or structural_signature(code)
         family = expr_row.get("family") or expr_row.get("bucket")

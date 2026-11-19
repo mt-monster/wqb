@@ -24,7 +24,7 @@ Propagation) must be fed by their ● families.
 When designing one batch, spread it over buckets and lean toward D / E / P
 (Dispersion / Event-conditioned / Propagation) so HIGH-priority coverage exists even
 in the first wave. Targets for a batch: ≥3 buckets, ≥1 HIGH. There is no sampler that
-draws buckets for you (no Beta posterior anywhere in `src/wqb/search/`).
+draws buckets for you (no Beta posterior anywhere in the repo — the earlier search-prototype package was archived on 2026-11-19).
 
 ## 3. Cross-family field pairing rules
 - Pair across families, never 3-from-1.

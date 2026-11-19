@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
-from wqb.config import GATES_PLATFORM, PRODCORR_CEILING
+from wqb.config import GATES_INTERNAL, GATES_PLATFORM, PRODCORR_CEILING
 
 #: 主墙优先级：越靠前越“决定性”。未知/缺数据永远排最后。
 WALL_PRIORITY = (
@@ -180,17 +180,72 @@ def _gates_pass(metrics: Dict[str, Any]) -> bool:
             and f is not None and f > float(GATES_PLATFORM["fitness_min"]))
 
 
+def internal_gate_failures(metrics: Dict[str, Any]) -> List[str]:
+    """内部严线（2026-11-16 用户定案）不过的项。
+
+    口径唯一来源 = :data:`wqb.config.GATES_INTERNAL`（此前该表**只有文档、没有任何执行点**，
+    2026-11-19 审计发现 ⇒ 本函数是它第一次真正被执行的地方）：
+
+    ==========  ==================================================
+    项            判据
+    ==========  ==================================================
+    ``prod``      prod_correlation **< 0.65**（平台硬线 0.70）
+    ``self``      self_correlation **< 0.50**（平台硬线 0.70）
+    ``turnover``  turnover ∈ [0.05, 0.20]（平台带 [0.01, 0.70]）
+    ==========  ==================================================
+
+    - **未知不算不过**：读不到值的项（None）不判失败——与 §8.7「NULL 二义已消除」同源纪律，
+      不得因缺数据把好件误降级。
+    - ``margin`` / ``returns`` **只作提示不进闸**：`GATES_INTERNAL` 里
+      ``margin_bp_min=10`` / ``returns_min=0.05`` 的方向与量纲在本仓未取得一致口径
+      （margin 是分数、returns 是年化还是日化不明）⇒ 判错会把合格件误杀，故不入闸、只报。
+    """
+    out: List[str] = []
+    prod = metrics.get("prod_correlation")
+    if prod is not None and float(prod) >= float(GATES_INTERNAL["prod_corr_max"]):
+        out.append("prod")
+    self_c = metrics.get("self_correlation")
+    if self_c is not None and float(self_c) >= float(GATES_INTERNAL["self_corr_max"]):
+        out.append("self")
+    to = metrics.get("turnover")
+    if to is not None:
+        lo, hi = (float(x) for x in GATES_INTERNAL["turnover_range"])
+        if not (lo <= float(to) <= hi):
+            out.append("turnover")
+    return out
+
+
+def internal_gate_advice(metrics: Dict[str, Any]) -> List[str]:
+    """内部严线里**只作提示**的两项（margin / returns）——不参与闸，但会被记进产出报告。"""
+    out: List[str] = []
+    margin = metrics.get("margin")
+    if margin is not None and float(margin) * 10000.0 < float(GATES_INTERNAL["margin_bp_min"]):
+        out.append("margin")
+    ret = metrics.get("returns")
+    if ret is not None and float(ret) < float(GATES_INTERNAL["returns_min"]):
+        out.append("returns")
+    return out
+
+
 def outcome(
     status: Any,
     metrics: Dict[str, Any],
     walls: Optional[Sequence[Any]],
     ra_failed: Optional[Sequence[Any]],
     near_sharpe_min: float = 1.0,
+    strict_internal: bool = True,
 ) -> str:
     """win / near / dead / error / unknown。
 
     - `walls is None` 表示“尚未做墙诊断”，此时用平台硬线粗判，不把缺数据当死；
-    - `walls == []` 表示已诊断且无墙 → 达标的强信号（仍需 RA clean）。
+    - `walls == []` 表示已诊断且无墙 → 达标的强信号（仍需 RA clean）；
+    - ⚠ **内部严线（`strict_internal=True`，默认）**：除平台硬线外，还要过
+      :func:`internal_gate_failures`（prod<0.65 / self<0.50 / turnover∈[5%,20%]）。
+      **只过平台线、没过内部严线的件降级为 `near`**（不算 win）——
+      这是「内部严线」第一次真正被执行；此前它只存在于文档与 `config.GATES_INTERNAL`，
+      任何判定都不看它 ⇒ 「全闸候选」的表述比仓库口径宽一档
+      （实测：EUR 交付 10 颗里有 6 颗 prod 在 0.6604–0.6951）。
+      **降级可逆**：行仍留在库里，只是不再计入「win」统计、不进 GEM 的成功样本。
     """
     st = str(status or "").strip().upper()
     if st in ("ERROR", "FAIL", "FAILED", "CANCELLED", "CANCELED"):
@@ -201,12 +256,13 @@ def outcome(
     # RA 状态三态：[] = 已知全过；非空 = 有失败；None = 未知。
     # `None` 不得当成"全过"——那会把没读过 RA 的行误判成 win（N35 同源纪律）。
     clean = (ra_failed is not None and len(ra_failed) == 0)
+    internal_fail = internal_gate_failures(metrics) if strict_internal else []
     if walls is None:
-        if _gates_pass(metrics) and clean:
+        if _gates_pass(metrics) and clean and not internal_fail:
             return "win"
     else:
         real = [w for w in walls if canonical_wall(w) != "UNKNOWN"]
-        if not real and clean and _gates_pass(metrics):
+        if not real and clean and _gates_pass(metrics) and not internal_fail:
             return "win"
     if is_structural(walls, metrics):
         return "dead"

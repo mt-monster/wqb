@@ -18,7 +18,7 @@ import datetime
 from collections import defaultdict
 from typing import Any, Dict, List, Optional
 
-from wqb.config import GATES_PLATFORM, PRODCORR_CEILING
+from wqb.config import GATES_INTERNAL, GATES_PLATFORM, PRODCORR_CEILING
 from wqb.knowledge import config as kcfg
 
 
@@ -43,6 +43,48 @@ def _corr_stats(rows, key: str, ceiling: float) -> Dict[str, Any]:
         return {"n_known": 0, "clean_rate": None}
     clean = sum(1 for v in vals if v < ceiling)
     return {"n_known": len(vals), "clean_rate": round(clean / len(vals), 4)}
+
+
+def _internal_stats(rows) -> Dict[str, Any]:
+    """内部严线口径的产出率（2026-11-16 用户定案 / 2026-11-19 接入）。
+
+    与平台线并列给出：平台线（prod<0.70）回答「能不能交」，内部严线
+    （prod<0.65 / self<0.50 / turnover∈[5%,20%]）回答「这个知识版本产出的东西质量如何」。
+    ⚠ 未知值不算失败（与 classify.internal_gate_failures 同口径）。
+    """
+    prod_vals, self_vals, tos = [], [], []
+    both_clean = both_known = 0
+    for r in rows:
+        m = r.get("metrics_json") or {}
+        if not isinstance(m, dict):
+            continue
+        p_v = m.get("prod_correlation")
+        s_v = m.get("self_correlation")
+        t_v = m.get("turnover")
+        if isinstance(p_v, (int, float)):
+            prod_vals.append(float(p_v))
+        if isinstance(s_v, (int, float)):
+            self_vals.append(float(s_v))
+        if isinstance(t_v, (int, float)):
+            tos.append(float(t_v))
+        if isinstance(p_v, (int, float)) and isinstance(s_v, (int, float)):
+            both_known += 1
+            if (float(p_v) < float(GATES_INTERNAL["prod_corr_max"])
+                    and float(s_v) < float(GATES_INTERNAL["self_corr_max"])):
+                both_clean += 1
+    lo, hi = (float(x) for x in GATES_INTERNAL["turnover_range"])
+    return {
+        "prod": _corr_stats(rows, "prod_correlation", float(GATES_INTERNAL["prod_corr_max"])),
+        "self": _corr_stats(rows, "self_correlation", float(GATES_INTERNAL["self_corr_max"])),
+        "turnover": {
+            "n_known": len(tos),
+            "in_band_rate": (round(sum(1 for v in tos if lo <= v <= hi) / len(tos), 4)
+                            if tos else None),
+            "band": [lo, hi],
+        },
+        "both_corr_clean_rate": (round(both_clean / both_known, 4) if both_known else None),
+        "both_corr_known": both_known,
+    }
 
 
 def compute_yield(store: Any, region: str) -> Dict[str, Any]:
@@ -79,6 +121,7 @@ def compute_yield(store: Any, region: str) -> Dict[str, Any]:
             "prod": _corr_stats(rows, "prod_correlation", float(PRODCORR_CEILING)),
             "self": _corr_stats(rows, "self_correlation",
                                 float(GATES_PLATFORM.get("self_corr_max", 0.7))),
+            "internal": _internal_stats(rows),
             "first_at": min(created) if created else None,
             "last_at": max(created) if created else None,
         })

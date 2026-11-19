@@ -180,7 +180,7 @@
 - `test_concept_overlap.py`
 - `test_concept_taxonomy_map.py`
 - `test_dead_end_forum_gate.py`
-- `test_diagnostics.py`
+- `test_diagnostics.py`  —— **已归档** `attic/wqb_prototype_20261119/`（2026-11-19，原型零消费者）
 - `test_forum_cache_builder_paths.py`
 - `test_forum_recon.py`
 - `test_forum_recon_node.py`
@@ -198,15 +198,15 @@
 - `test_field_semantic_classify.py`
 - `test_ghost_operator_lists.py`
 - `test_grammar.py`
-- `test_handoff.py`
+- `test_handoff.py`  —— **已归档** `attic/wqb_prototype_20261119/`（2026-11-19，原型零消费者）
 - `test_index_tables.py`
-- `test_memory.py`
-- `test_observability.py`
+- `test_memory.py`  —— **已归档** `attic/wqb_prototype_20261119/`（2026-11-19，原型零消费者）
+- `test_observability.py`  —— **已归档** `attic/wqb_prototype_20261119/`（2026-11-19，原型零消费者）
 - `test_op_arity.py`
 - `test_pyenv.py`
 - `test_research.py`
-- `test_scheduler.py`
-- `test_search.py`
+- `test_scheduler.py`  —— **已归档** `attic/wqb_prototype_20261119/`（2026-11-19，原型零消费者）
+- `test_search.py`  —— **已归档** `attic/wqb_prototype_20261119/`（2026-11-19，原型零消费者）
 - `test_skeleton_dedup_p5.py`
 - `test_structural_reconstruct.py`
 - `test_time_bombs.py`

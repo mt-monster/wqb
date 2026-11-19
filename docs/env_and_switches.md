@@ -24,7 +24,7 @@
 | selfcorr-quick `skill.py` | 环境（`CREDENTIALS_*` → `BRAIN_USERNAME` / `BRAIN_PASSWORD`）；命令行 `--password` 仍可用但告警 | 否 | 产物落固定目录（`WQ_SELFCORR_OUT_DIR`），不落 CWD |
 | inspect-raw `load_credentials.py` | 环境（`CREDENTIALS_*` 优先）→ 旧别名 | 否 | 测试钉死「标准名优先」 |
 | `tools/fetch_all_universes.py` | `CREDENTIALS_*` → `WQ_USERNAME` / `WQ_PASSWORD`；`.env` 路径 `WQ_ENV_PATH` | 否 | 一次性运维脚本 |
-| `tools/forum_recon.py`（HTTP 实现复用 `forum_research.py`；论坛只读检索） | 进程环境 `CREDENTIALS_*` → MCP `world-quant-brain-mcp/.env`（`forum_research.load_creds` 的路径约定） | 否 | 缺凭据 = **工具故障**（记 `forum_recon_error_<qkey>`，不是「论坛无解」）；不打印、不记录值 |
+| `tools/forum_recon.py`（论坛只读检索，经 MCP 唯一入口 `tools/lib/forum_mcp.py`） | **进程侧不再读凭据**：由 `wq-brain-http` 服务端配置读取 `CREDENTIALS_*`（客户端不收、不读、不传口令） | 否 | 服务不可达 = **工具故障**（记 `forum_recon_error_<qkey>`，不是「论坛无解」）；不打印、不记录值 |
 
 **外发通道**（凭据之外，另一类泄露面——把研究资产发给第三方）：
 
@@ -51,8 +51,8 @@
 | `BRAIN_JUDGE_LLM_API_KEY` | — | judge `llm_judge.py` 的 LLM 通道密钥（缺省不启用；启用即外发候选字段——见 judge SKILL 的外发边界） | `brain-alpha-judge/scripts/vendor/llm_judge.py` | — |
 | `BRAIN_PASSWORD` | — | 旧别名（BRAIN 口令）；同时是 GEM runner / sim-alphas 传给下游子进程的内部变量。新代码用 `CREDENTIALS_PASSWORD` | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +10 | — |
 | `BRAIN_USERNAME` | — | 旧别名（BRAIN 邮箱）：judge 的 `load_credentials`、feature-implementation、GEM runner 兜底。新代码用 `CREDENTIALS_EMAIL` | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +8 | — |
-| `CREDENTIALS_EMAIL` | — | BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名 | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +16 | — |
-| `CREDENTIALS_PASSWORD` | — | BRAIN 账号口令——标准名（同上） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +16 | — |
+| `CREDENTIALS_EMAIL` | — | BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名 | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +13 | — |
+| `CREDENTIALS_PASSWORD` | — | BRAIN 账号口令——标准名（同上） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +13 | — |
 | `MCP_CONFIG_FILE` | — | toolkit / `tools/lib/api_client.py`：`~/.brain_mcp_config.json` 路径覆盖（凭据来源之一） | `wq-brain-campaign-toolkit/scripts/_lib/common.py` · `tools/lib/api_client.py` · +1 | — |
 | `MOONSHOT_API_KEY` | — | GEM 的 LLM 通道密钥（优先于 `config.json` 的 `moonshot_api_key`；给了 `ideas_file` 就不需要） | `brain-make-some-gem/scripts/headless_runner/run.py` · `brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py` · +1 | — |
 | `MOONSHOT_BASE_URL` | `https://api.moonshot.cn/v1` | GEM 的 LLM 端点（runner 从 `config.json` 的 `moonshot_base_url` 写入） | `brain-make-some-gem/scripts/headless_runner/run.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_llm.py` | — |
@@ -94,6 +94,7 @@
 | `CAMPAIGN_SKIP_DIR_CHECK` | — | `=1` 跳过战役目录合法性检查（仅测试） | `wq-brain-campaign-toolkit/scripts/_lib/common.py` | — |
 | `LC_FRESH` | — | `tools/backfill_longcount.py`：`=1` 忽略 checkpoint 强制全量重跑（同 --fresh） | `tools/backfill_longcount.py` | — |
 | `WQB_ALLOW_ALPHA_SUBMIT` | — | `=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入） | `src/wqb/config.py` · `tests/unit/05_submit_quota/test_global_submit_lock.py` · +1 | — |
+| `WQB_ALLOW_CLI_DISPATCH` | — | `=1` 允许走 CLI `tools/submit_batch.py` 派发仿真（默认禁止，fail-closed）——2026-11-16 用户点名「回测尽量用 MCP create_multi_simulation、少写临时脚本」的 CLI 内置双保险闸。默认空值时 dry-run 也拦；只给确实需要 CLI 的场景由用户显式开启（仅当次进程）。hook 层 G7 另拦一次 | `tools/submit_batch.py` | — |
 | `WQB_ATOM_ONLY` | — | `=1` 让 IND 战役只派发纯 ATOM（单数据集）表达式：`wq_campaign.generate.build_residual()` 返回空，残差族（含 PV `returns`，属组腿）整段跳过。缺省不设 = 保留残差族（该族是 IND 唯一被证实能过 prod 墙的配方）。用户口径 2026-10-26「IND 优先挖掘 ATOM」；模块级常量，长驻进程不热加载 | `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/generate.py` | — |
 | `WQB_CAMPAIGN_FRESH` | — | 非空时 `wq_campaign.persist.load_ckpt()` 忽略磁盘断点、返回空 checkpoint（全新一轮战役，不续跑）。ind/usa campaign 包读；只影响本进程 | `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/persist.py` · `wq-brain-ra-usa/scripts/usa_campaign/wqb_campaign/persist.py` · +1 | — |
 | `WQB_CAMPAIGN_FULL_CAP` | `0` | 车道级字段上限覆写（正整数；`wq_campaign.fields` 把它当 `FULL_FIELD_CAP`，0/缺省 = 用常量 8）。仅影响本进程，用于「某集字段覆盖太窄」的补测 | `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/fields.py` · `wq-brain-ra-usa/scripts/usa_campaign/wqb_campaign/fields.py` | — |
@@ -169,7 +170,7 @@
 | `WQB_CAMPAIGN_REGION` | `EUR` | 战役区域代码（`wq_campaign.config` / `campaign_semantics` 缺省 EUR；`ind_runner.py` / `usa_runner.py` 在 import 前硬钉 IND / USA 防止与 EUR 共用断点与 universe） | `wq-brain-ra-ind/scripts/ind_campaign/campaign_semantics.py` · `wq-brain-ra-ind/scripts/ind_campaign/ind_main.py` · +7 | — |
 | `WQB_CAMPAIGN_STATE_DIR` | — | 战役断点 / 结果 / digest 目录覆盖（缺省 `<仓库根>/results`；ind/usa runner 与 `wq_campaign.config` 同一口径，区域隔离靠文件名的 `_<REGION>` 后缀而非目录） | `wq-brain-ra-ind/scripts/ind_campaign/ind_runner.py` · `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/config.py` · +2 | — |
 | `WQB_DB` | — | `tools/full_coverage_gate.py` 的库路径覆盖（缺省 `<仓库根>/data/wqb.db`；与 `WQB_DB_PATH` 是两个独立读取点，后者管 `wqb.db_conn`） | `tools/full_coverage_gate.py` | — |
-| `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` · +8 | — |
+| `WQB_DBLOCK_DIR` | — | DB 写锁文件目录（缺省在仓库根下） | `wq-brain-campaign-toolkit/scripts/_lib/dblock.py` · `src/wqb/db_write_lock.py` · +10 | — |
 | `WQB_DB_PATH` | — | `data/wqb.db` 路径覆盖（`wqb.db_conn` 单点解析，其余入口都经它） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-inspect-raw-template-create-setting/scripts/_workspace.py` · +60 | — |
 | `WQB_GEM_DATA_ROOT` | — | GEM 产物根（缺省 `data/gem_runs`；`final_expressions.json` 与 `output_report/` 都在其下） | `brain-feature-implementation/scripts/fetch_dataset.py` · `brain-feature-implementation/scripts/implement_idea.py` · +9 | — |
 | `WQB_JUDGE_DATA_ROOT` | — | `brain-alpha-judge` 评审报告根：单测 / 部署显式注入，缺省落 `output_report/brain-alpha-judge/`，脱离仓库时退 `SKILL_DIR/outputs/` | `brain-alpha-judge/scripts/judge_alpha.py` | — |
@@ -177,7 +178,7 @@
 | `WQB_PROD_QUEUE_PATH` | — | `wqb.prod_queue` 的队列文件覆盖（缺省 `<仓库根>/cache/prod_queue.json`） | `src/wqb/prod_queue.py` · `tests/unit/09_core/test_prod_queue.py` | — |
 | `WQB_PROXY_MODE_FILE` | — | `world-quant-brain-mcp/proxy_mode.py` 的代理模式配置覆盖（缺省 `<仓库根>/cache/proxy_mode.json`，cache/ 已 gitignore，属本机运行期状态）。内容：`{mode: on|off|auto, proxy_url}` | `mcp/proxy_mode.py` | — |
 | `WQB_REPO_ROOT` | — | 显式仓库根（`wq_campaign.config` / `ind_runner.py` / `usa_runner.py` 的首选，最可靠；缺省从文件位置上溯找 `pyproject.toml` + `src/wqb`） | `wq-brain-ra-ind/scripts/ind_campaign/alpha_meta.py` · `wq-brain-ra-ind/scripts/ind_campaign/harvest_safe.py` · +7 | — |
-| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +24 | — |
+| `WQB_ROOT` | — | 工作区根覆盖（各脚本的仓库根缺省由文件相对位置推导；只有脚本被复制到别处运行时才需要设） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_kb.py` · +23 | — |
 | `WQB_SLOTS_DIR` | — | 账户级槽位 token 目录（缺省 `logs/_slots`） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` · `tests/unit/10_toolkit_scripts/test_slots_arbitration.py` | — |
 | `WQB_TASK_ROOT` | — | 后台任务目录（缺省 `logs/_async_tasks`；`workflow_task_status` 读它） | `src/wqb/workflow/_common.py` · `tests/unit/02_workflow/test_mining_efficiency_guards.py` · +4 | — |
 | `WQB_WORKSPACE` | — | 工作区根覆盖（同 `WQB_ROOT`，wave_gate / GEM 等按各自的解析顺序取用） | `brain-data-feature-engineering/scripts/feature_engineering.py` · `brain-make-some-gem/scripts/headless_runner/run.py` · +9 | — |
@@ -224,10 +225,11 @@
 | `WQB_CAMPAIGN_TIMEOUT` | — | campaign 节点子进程超时（秒） | `src/wqb/workflow/nodes/campaign.py` · `tests/unit/02_workflow/test_workflow_nodes.py` | — |
 | `WQB_CORR_COOLDOWN_SEC` | — | 相关性槽位 release 后的本地冷却秒数（缺省 195，略大于平台 `retry_after=180s`；`wqb.correlation_slot._cooldown_sec` 读取）。2026-10-28 起冷却**按结果分流**：只有「真触发了一次平台计算且超时」才写满这个值，算成功只留 `WQB_CORR_SETTLE_SEC`，立即拿到既有值 / 4xx 终态不写。本地锁只管跨进程互斥，平台槽位在算完后仍占一段时间，不冷却就会出现「加了锁还撞 correlation_busy」 | `src/wqb/correlation_slot.py` · `tests/unit/09_core/test_corr_slot_outcome_inflight_20261028.py` | — |
 | `WQB_CORR_INFLIGHT_TTL_SEC` | — | 同一 alpha 的「在飞」标记有效期（秒，缺省 300；`wqb.correlation_slot.inflight_mark` 读取）。TTL 内对同一 alpha 的新调用只做预读轮询、不再二次触发平台计算，避免超时后立刻重触发把账号槽继续占住 | `src/wqb/correlation_slot.py` · `tests/unit/09_core/test_corr_slot_outcome_inflight_20261028.py` | — |
+| `WQB_CORR_MIN_HOLD_FOR_COOLDOWN` | — | 「没算过就不写冷却」的持槽时长阈值（秒，缺省 60；`wqb.correlation_slot.min_hold_for_cooldown` 读取）。一次真实 prod/self 计算平台侧要 180–200s，故持槽 < 此值必然是既有值直读、账号槽没被占用 ⇒ `release` 跳过 195s 冷却。2026-11-17 事故：Claw 面板「自动终验」每 30 min 查一颗，持槽 21s 却写满 195s，账号每半小时有 3.25 min 伪冷却，SUPER 提交首跑撞上即 fail-closed | `src/wqb/correlation_slot.py` · `tests/unit/09_core/test_corr_slot_short_hold_20261117.py` | — |
 | `WQB_CORR_JOIN_WAIT_SEC` | `25` | 发现账号槽正被**同一 alpha** 的计算持有时，最多等多久去拿它的结果（秒，缺省取 min(60, 剩余窗口)；`brain_mixin_spcread._await_same_alpha_value` 读取）。超时按 busy 返回，不改写冷却 | `tests/unit/05_submit_quota/test_prod_corr_flow_20261028.py` · `mcp/brain_mixin_spcread.py` | — |
 | `WQB_CORR_SETTLE_SEC` | — | 平台计算成功后留给它释放账号槽的收尾时间（秒，缺省 5；`wqb.correlation_slot.settle_seconds` 读取）。成功路径的冷却只写这么久，替代旧的「无条件 195s」 | `src/wqb/correlation_slot.py` · `tests/unit/05_submit_quota/test_prod_corr_flow_20261028.py` · +1 | — |
 | `WQB_CORR_UNAVAILABLE_SEC` | — | 账号级熔断持续秒数（缺省 600；`wqb.correlation_slot._unavailable_sec` 读取）。2026-11-10 新增：连续 pending 达阈值后写 `correlation.unavailable.json`，期间 `acquire` 与 `get_production_correlation` 直接返回 `platform_unavailable`，不抢锁不发请求；任一成功结果即提前清除。修「平台停摆时每次调用各自空转 240s + 195s 冷却 + inflight 残留」的自我放大等待 | `src/wqb/correlation_slot.py` · `tests/unit/09_core/test_corr_resilience_20261110.py` | — |
-| `WQB_CORR_UNAVAILABLE_STREAK` | — | 触发账号级熔断所需的连续 pending 次数（缺省 3，最小 1；`wqb.correlation_slot._unavailable_streak_limit` 读取）。计数与熔断标记同存 `correlation.unavailable.json`，拿到成功结果即归零 | `src/wqb/correlation_slot.py` · `tests/unit/09_core/test_corr_resilience_20261110.py` | — |
+| `WQB_CORR_UNAVAILABLE_STREAK` | — | 触发账号级熔断所需的连续 pending 次数（缺省 3，最小 1；`wqb.correlation_slot._unavailable_streak_limit` 读取）。计数与熔断标记同存 `correlation.unavailable.json`，拿到成功结果即归零 | `src/wqb/correlation_slot.py` · `tests/unit/05_submit_quota/test_super_build_prod_gate.py` · +2 | — |
 | `WQB_DETACHED_FIRST_OUTPUT_SEC` | `20` | detached 后台任务的首次输出心跳窗口（秒；超时判启动即死） | `src/wqb/workflow/nodes/batch_track.py` | — |
 | `WQB_DISPATCH_DELAY` | — | `tools/wqb_tools_shim.py` 转调 `tools/submit_batch.py` 时两批之间的 sleep 秒数（缺省 1；EUR/KOR/GLB 均按 1 调） | `tools/wqb_tools_shim.py` | — |
 | `WQB_FORUM_RECON_TIMEOUT_SEC` | — | forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900） | `wq-brain-campaign-toolkit/scripts/pipeline.py` · `src/wqb/workflow/nodes/forum_recon.py` · +1 | — |

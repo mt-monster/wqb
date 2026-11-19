@@ -8,7 +8,7 @@
 |---|---|---|
 | `tracking/` | 区域战役追踪（KOR/USA/EUR/IND/GLB/DEU…）：candidates/results/reviews/scripts | `tracking/mining/` 为共享数据湖，勿改动/移动；全量索引见 `tracking/reference/tooling/generate_manifest.py`（`MANIFEST.json` 当前未生成） |
 | `tools/` | 工具链（字段解析、质量检查、同步等）；**新脚本一律进这里**，索引见 `tools/README.md` | 被多区域脚本引用，改动前先查调用点 |
-| `src/wqb/` | **规范核心包（single source of truth）**：config/expression/research/search/memory；区域/算子/中性化域常量唯一来源（见 `config.py`） | 行为变更须保持根 `tests/` 全绿（数量以 `pytest --collect-only -q \| tail -1` 为准，不在此硬编码） |
+| `src/wqb/` | **规范核心包（single source of truth）**：config/expression/research/knowledge/profiles/store/workflow；区域/算子/中性化域常量唯一来源（见 `config.py`）。⚠ 历史原型（memory / search / diagnostics 三件，**零生产消费者，勿新建依赖**）已于 2026-11-19 归档至 `attic/wqb_prototype_20261119/`（归档区按约定不入 git，内容仍在 git 历史中可取回） | 行为变更须保持根 `tests/` 全绿（数量以 `pytest --collect-only -q \| tail -1` 为准，不在此硬编码） |
 | `tests/` | pytest 单元测试（根 `tests/` + MCP 包 `world-quant-brain-mcp/tests/`；数量以 collect-only 为准；根 `tests/` 递归包含 `tests/unit/`，见 §4） | 见 §4 |
 | `world-quant-brain-mcp/` | MCP 服务（`wq-brain-http`）：`brain_api.py` 为门面（36 行），方法体 verbatim 拆至 `brain_mixin_transport/auth/simulation/spcread/correlation.py`；模型 `brain_api_models.py`、配置 `brain_config.py`；回测/提交/论坛工具在 `tools_*` | 运行中服务，改 `brain_mixin_*` 需回归 `world-quant-brain-mcp/tests/` |
 | `docs/` | 计划、参考、经验文档（**长期规范 / SOP / 速查**，不写一次性结论） | 行为变更需同步相关文档 |
@@ -44,6 +44,7 @@
   | 选区 / 选数据集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md)（含停投结论） |
   | 改工程链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) |
   | 复盘 / 准备放弃某方向 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) |
+  | 选题 / 找字段 / 决定 ATOM 还是跨集 | [`06_atom_mining.md`](docs/experience/06_atom_mining.md)（**木桶倍率律**：混集按最低倍率结算、≥3 集计 0 塔；**按 onboard 时间找字段**而非 alphaCount==0；4 套单字段模板） |
   ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局。**实际消费点**：`build_wave.py` 的 `apply_rules("dead_end")` 拦截 + 打印 strategy 提示；`pipeline.py` 的 L1 采集 / L4 证伪 + strategy 提示；`review_wave.py` → `recommend_next_wave` **只认四个硬编码 `action.op` 分支**（`gradient_dilute` / `warn_rnf_drop` / `dead_universe` / `classify_failure_nature`·`fail_fast_stop`），**没有通用注入器**；`gate.py` **只**消费 `explore_contract` 契约规则，不消费 strategy / diagnosis 规则。旧文写「四处 `RuleStore.query()` 强制注入」不符合实际，2026-10-04 更正；旧文写「通用 `inject_rules` + `when`/`emit` 条件化命中 + 其余 active 规则常驻兜底」同样不成立，**2026-10-31 机器级核验更正**（全仓 `def inject_rules` 零命中、`emit`/`when` 无任何消费方；**只有 `strategy` 型会被 `build_wave.py:789` / `pipeline.py:1499` 无条件打印 `action.message`**，新造 op 名的 diagnosis 规则永不生效）。消费点全表与「写规则前先确认谁读它」见 `docs/experience/04_engineering.md` §15）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/07_docs_skills/test_experience_kb_refs.py`。
 - 凭据位于 `world-quant-brain-mcp/.env`：禁止读取、打印或提交到 git。
 
@@ -287,6 +288,23 @@
 python -m pytest tests/ -x
 ```
 
+### ★ 全字段探测禁止抽样（2026-11-17 用户硬约束 + 机械闸）
+
+用户硬约束：「数据集一旦选定，必须做全字段探测，禁止抽样或仅试探部分字段」。
+历史违例：`fund_holdings_panel` 30 字段只探了 15 个 active 中的 5 个「代表」，理由是
+「active 是非active 的同源子集」——拿合理先验推翻硬约束（与 W4 拿 dateCreated 复活死集同类错误）。
+根因是**没有任何机制检查「字段全表声明」vs「实际探测的字段」**，全靠自觉。
+
+**机械闸**（禁止再用「代表字段」交差）：
+```bash
+python tools/gates/field_profile_completeness_gate.py --profile tracking/KOR/reference/datasets/<ds>.md
+# exit 0 = 全字段均有带数字的实测读数且分母无通配占位；exit 2 = 缺字段或清单含 *_active/「N 个同构」等通配
+```
+三道判据：① 字段全表必须逐字段列真实 id，⛔ 不接受 `*_active`/「8 个同构孪生」等通配（分母不全）；
+② 全表每个字段必须有带数字读数的实测行（差集逐条列出）；③ 零配额零 API、只读档案。
+字段画像档案写完必须跑此闸；守护 `tests/unit/01_store_db/test_field_profile_completeness_gate.py`。
+与 `audit_dataset_coverage.py`（管「数据集验过没」）分工：本闸管「集内字段探全没」。
+
 ### 失败诊断纪律（2026-09-18 固化）
 
 面对一批测试失败时，按这个顺序处理——**这套顺序是实测出来的，跳过任一步都会走偏**：
@@ -337,7 +355,8 @@ git config core.hooksPath tools/git-hooks
 环境为 Windows PowerShell（无 `&&`，用 `;`）。引号经“工具传参→PowerShell→解释器”三层嵌套必出事故，按优先级分层规避：
 
 0. **结构化数据读写首选 wqb-db MCP 工具**（根治层）：MCP 调用传 JSON 参数，不经过 shell，引号问题不存在。读：`get_wave_result`/`get_ledger_key`/`list_expressions`/`get_field_catalog`/`list_*`；写：`upsert_wave_result`/`upsert_ledger_key`/`upsert_registry_empirical`/`upsert_expressions`/`upsert_field_catalog`/`upsert_gate_result`/`upsert_backtest_rows`（幂等）。仅当需要执行逻辑（如批量入库带自动派生）才走 `campaign.py` CLI。⚠ **`upsert_ledger_key` 的 `merge` 不保护 list，且整值手转录会静默改坏数据（2026-10-31 KOR 实测）**：merge 只对 dict 递归、遇 list **整列覆盖** ⇒ 往 `methodology_rules` 这类 `{rules:[...]}` 键增量加一条必须传**完整列表**，只传新条目会抹掉既有的；同一次整值写入实测 **8 条里 7 条被改坏**（40 字符批次哈希截断成 30、`confidence:1.0` 变 `1`），而回执照样 `action=updated` ⇒ **回执成功 ≠ 数据正确**。长 payload 的 read-modify-write 交给脚本（`logs/_tmp_*.py`，走 `store.upsert_*` 既定写入方），**写后必须按 canonical JSON（`sort_keys=True`）逐条 diff 写前快照**。另：区域 `methodology_rules` 的运行期真相源是 **DB `ledger_kv`**，`tracking/<R>/reference/methodology_rules.json` 只是镜像 / DB 为空时的迁移源（`RuleStore._use_db()`：路径含 `tracking` 即读 DB；全局规则相反，始终读 toolkit config 文件）⇒ **只改区域文件等于白改，且守护测试照样全绿**。详见 `docs/experience/04_engineering.md` §16。**战役产物（expressions/gate/ranking/checkpoint/review/batches）只入库，禁止 Agent `Write`/`Copy-Item` 落 `tracking/*/candidates|cache|results|reviews/*.json|*.csv`。** CLI 临时 `@file.json`（AGENTS.md 引号规避）用完可删，不算战役持久化。
-1. **执行逻辑禁止 `python -c "..."` 内联带引号嵌套/中文/JSON 的代码**：一律先写临时脚本 `logs/_tmp_*.py`（UTF-8），执行 `python logs/_tmp_xxx.py`，用完可删。历史惯例 `logs/_*.py` 下划线前缀即临时脚本。
+1. **★ MCP 优先于临时脚本（2026-11-16 用户三次点名，先于下一条）**：**取数 / 回测派发 / 批次跟踪 / 指标判定 / 入库一律走现成 MCP，禁止为这些能力写临时脚本或大段内联 `python -c`**。回测派发只用 `create_multi_simulation`（≥2 条，单条补 control），收结果用 `lookINTO_SimError_message` + `batch_get_alpha_metrics`；取数用 `get_alpha_details`/`get_user_alphas`/`check_correlation` 等；入库用 `upsert_*`。仓库既有 CLI（`tools/quota_status.py`、`tools/super/genius_tiebreak.py` 等）与必要的输入/报告文件不受限。硬闸见 `.workbuddy/hooks/campaign_guard.py` G7/G8/G9 与 `tools/submit_batch.py` 的 `WQB_ALLOW_CLI_DISPATCH`。⚠ 与下一条的关系：**下一条只适用于「MCP 无对应能力、且需要执行逻辑」的场景**——不得拿它当写临时脚本的借口。
+1. **执行逻辑禁止 `python -c "..."` 内联带引号嵌套/中文/JSON 的代码**（仅当 MCP 无对应能力时）：一律先写临时脚本 `logs/_tmp_*.py`（UTF-8），执行 `python logs/_tmp_xxx.py`，用完可删。历史惯例 `logs/_*.py` 下划线前缀即临时脚本。**新建 `tools/*.py` 必须先在 `tools/README.md` 登记**（G9 硬闸）。
 2. **CLI 传中文/JSON/多行参数走 `@file` 文件通道**：先写临时 JSON 再以 `--extra @path.json` / `--candidates @path.json` 形式传入（`campaign.py` 系列已支持）；不要用引号包裹中文直接传参。
 3. **路径/含 `$` 的字符串用单引号**：PowerShell 双引号会展开 `$变量` 与反引号转义，路径参数一律 `'...'`。
 4. **中文输出乱码是显示层问题**：跑 Python 时加 `-X utf8`（或命令前 `$env:PYTHONUTF8=1`）；乱码不代表逻辑错误，但按规约 0/1 走 MCP 或文件脚本可彻底规避。
@@ -361,11 +380,11 @@ git config core.hooksPath tools/git-hooks
 1. 网络工具一律用 MCP venv（`$WQ_PY` 或 `world-quant-brain-mcp/.venv`）运行，工具已内置自动切换；
    不手写 requests 脚本（429 事故根因之一），统一走 `BrainApiClient`（自带 429 退避）。
 2. skill 依赖路径用 `WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR` 或 `skill_roots()`（自动搜索顺序：`~/.claude` → `~/.codex` → 历史位 `.trae-cn`/`.qoder-cn`/`.cursor`/`.workbuddy` → 仓库 `Claude/skills` 兜底），禁止硬编码 `C:\Users\...` 绝对路径。
-3. 一次性排障探针（`_inspect_*`/`probe_payment*` 等探索类）仍可写 `tracking/_scratch/`，但结论落地后归档 `attic/`，不留在活跃目录累积。
+3. 一次性排障探针（`_inspect_*`/`probe_payment*` 等探索类）写 `logs/_tmp_*.py`（**用完即删**；`tracking/_scratch/` 目录已不存在，见 §8.4 结构性问题台账第 4 条）；结论落地后归档 `attic/`，不留在活跃目录累积。
 4. **已跑完的一次性脚本移入 `tools/legacy/`（2026-09-20 落地）**：判据为"类型一次性
    （`backfill_*`/`migrate_*`/`triage_*`/`submit_<alpha_id>*`）+ 全库 refs=0"，用
    `git mv` 移动（保留历史，**不是删除**），索引见 `tools/legacy/README.md`。
-   `tracking/_scratch/` 同理，属临时区，用完清空（2026-09-20 已清空 31 个文件）。
+   一次性探针一律落 `logs/_tmp_*.py`（用完即删），**不再用 `tracking/_scratch/`**（该目录已不存在）。
 
 ## 7. 提交纪律（2026-09-11 固化）
 
@@ -427,6 +446,46 @@ git config core.hooksPath tools/git-hooks
 **★ 判死标记（台账 `dead` / registry `family_dead_datasets`）一律不得单独作为依据** ——
 实测仍在出货全闸候选的集（`fundamental17` / `news17` / `news18`）也被列为死集。
 
+**★ 判死台账的三档口径（2026-11-19 审计修复）**：判死记录在 ledger 里有**四种键形态**
+（`<ds>_dead` / `dead_datasets` 聚合键 / `dead_end_*` 族级镜像 / `*_dead_<日期>`），
+旧读取口径只认 `key LIKE '%_dead'` ⇒ 聚合键与带日期/后缀的记录**一条都读不到**
+（实测 GBR 另有 model264 / news104 / pattern_scores / pv29 / pv30 只记在聚合键里），
+且缩写键 `anl83_dead` 返回的名字与真名 `analyst83` 对不上。
+现在**判据本体只有一份** `src/wqb/dead_datasets.py`（MCP `get_dead_datasets` /
+pipeline `dead_dataset_guard` / `tools/ledger/dead_sets.py` 同源），按载荷语义分三档：
+
+| 档 | 判据 | 硬闸行为 |
+|---|---|---|
+| **数据集级** | 键 `<ds>_dead`，或载荷有 `dataset` 且无 `family`、rule 未写「仅可作辅助腿」 | **拦** |
+| **条件死** | 载荷写「不再作为单塔主信号投入／仅可作 boost 辅助腿」或 `death_level=DEAD_CONDITIONAL` | **告警不拦**（作辅助腿仍可） |
+| **族级** | 载荷带 `family`（判的是字段族/机制，不是整集） | 不拦 |
+
+- **撤判必须回写台账**：档案判了「撤判重开」却没回写 ledger ⇒ 硬闸照拦
+  （实测 DEU `risk60` / `risk88` / `news50` / `other545`：`DEATH_AUDIT_20261110.md` 已撤判，ledger 死键原封未动）。
+  回写用 `python tools/ledger/dead_sets.py --region R --reopen a,b` 打印 payload，再走 `upsert_ledger_key`
+  写 `status: reopened`（**不要手写 JSON**——§5 台账 merge 对 list 是整列覆盖）。
+- **硬闸只挂在知道数据集名的路径上**：`dead_dataset_guard` 在 `pipeline.py` 内；
+  裸 `create_multi_simulation` 不带数据集信息 ⇒ 查不到死集（**不是闸失效，是口径边界**）。
+- 查看某区三档判死：`python tools/ledger/dead_sets.py --region GBR`。
+
+**★ 内部严线（2026-11-16 用户定案，2026-11-19 接入流水线）**：
+`src/wqb/config.py::GATES_INTERNAL`（prod<0.65 / self<0.50 / turnover∈[5%,20%]）此前
+**只有文档、没有执行点**（唯一读它的是 `index_tables.py` 出表与 `skill_lint.py` 文档 lint）
+⇒ 「全闸候选」的表述比仓库口径宽一档（实测：EUR 交付 10 颗里 6 颗 prod 在 0.6604–0.6951）。
+现按用户裁定「接进流水线当硬预筛」，**唯一实现 = `src/wqb/knowledge/classify.py`**：
+
+| 落点 | 行为 |
+|---|---|
+| `classify.internal_gate_failures(metrics)` | 读 `GATES_INTERNAL`；**未知值（None）不判不过**；`margin`/`returns` **只作提示不进闸**（方向与量纲未取得一致口径） |
+| `classify.outcome(..., strict_internal=True)` | 只过平台线、没过内部严线 ⇒ **win 降为 near**（**可逆**：行仍留库，只是不再计入 win 统计、不进 GEM 成功样本） |
+| `capture.refresh_attempt_knowledge` | 把不过项写进 `next_action`（`…\|internal:prod,self`），人工可复核「为何不算全闸」 |
+| `knowledge/yield_report` | 产出率报告并列给 `internal` 段（内部严线 clean 率 / TO 带内率） |
+
+- **平台线 vs 内部严线分工**：平台线（`PRODCORR_CEILING`=0.70）答「能不能交」；内部严线答「这批产出质量如何」。
+- **落地即影响既有结论**：历史 `attempt_knowledge` 行是按旧口径记的 `win` ⇒ 重跑 capture 后统计口径会变
+  （`tools/knowledge/rebuild.py --region … --wave …` 可重建）。
+- 守护 `tests/unit/09_core/test_internal_gates.py`（12 例，含「未知不判不过」「结构墙优先」「可退回旧行为」）。
+
 ### 7.6 判死六维穷尽闸（2026-11-10 用户指令「判死的太快了，探针没有穷尽所有机制和模板」固化）
 
 任何数据集/字段族标「终判死 / XX 宇宙关闭 / family_dead」**之前**，判死档案必须逐维举证；缺任一维 ⇒ 只能记 PROVISIONAL，**不得**引用为邻接数据集/族的先验，**不得**据此宣布塔/宇宙关闭：
@@ -441,6 +500,30 @@ git config core.hooksPath tools/git-hooks
 | D6 配置 | ≥2 套（宇宙×中性化×decay 至少变一维），区分配置层死 vs 信号层死 |
 
 配套纪律：①判死分层＝信号层死 / 配置层死（CW、TO 等闸卡死必须先测替代几何与设置再判）/ 数据层排除（cov=0 写明是排除，不是信号死）；②探针（<10 条）只能输出「继续/停止加注」，不产生判死；③同机制先验（判据 MH 类）只决定优先级，不构成判死依据；④撤判在同一档案追加，不得新开口径；⑤机器层自动拦截是后续项（methodology_rules 仅 4 个硬编码 op 消费点，见 §3 双轨同源），当前靠判死档案模板人工遵守。首例执行：`tracking/DEU/atom_orthogonal/DEATH_AUDIT_20261110.md`（risk60/risk88 撤判重开、news18/50/38 从未探针——「news 塔终判死」已撤回）。
+
+### 7.7 ATOM 优先与 regular 回退（2026-11-17 用户裁定；从 workflow 草稿提升为顶层规范）
+
+**用户原话**：「ATOM 优先，实在没有 ATOM 就挖 regular」。此前该裁定只写在
+`.zcode/workflows/gbr-regular-alpha-mine.dwf.ts` 的 `atomExhaustedEvidence` 规则里，
+`AGENTS.md` / `GLOSSARY.md` / `wq-brain-ra-pipeline` 都看不到；本节把它提升为顶层规范。
+
+- **默认 ATOM（单数据集）**：先在本数据集内把几何用尽——水平 / 一阶差 / 分位 / 比值 /
+  二阶波动 / 非线性 × 分组轴 × 配置档（D1–D6 口径见 §7.6）。**不得**以「感觉挖完了」转 regular。
+- **只有 ATOM 穷尽后才允许 regular 跨集**，且必须留下 `atomExhaustedEvidence`：
+  历史波次 + 读数（本集单集天花板 S、卡在哪道闸、已试过的形态），不能是自由文本感想。
+- **跨集只许四形态**：`gating`（`trade_when(他集条件, 本集信号, -1)`）/ `grouping`
+  （他集字段作分组键）/ `residual`（`vector_neut(本集信号, 他集字段)`）/ `ratio`
+  （`divide(本集信号, 他集字段)`，须单一经济含义）。
+- **仍然无条件禁止**：`add(独立信号腿A, 独立信号腿B)` 等权/加权混腿（与 ATOM 无关的独立铁律，
+  见 §7.5 与 `mixed_signal_leg_ban_v1`）。
+- **PV / MODEL / OTHER 类数据集只做单集**（用户 2026-10-27 明令）；跨集不得把这些类当第二腿。
+- **归因必须区分**「ATOM 单集形态死」与「regular 跨集形态也死」；**单集死 ≠ 数据集死**。
+  判死仍走 §7.6 六维 + §8.11 论坛取证闸，不得用本节做判死依据。
+- **交付清单分区**：ATOM 区在前、regular 备选区在后，不得混排（`tools/campaign_intel.py atom-first`）。
+- **塔位与 ATOM 是两套口径**：`pyramids.effective==1` **不是** ATOM 判据（同塔可容纳多数据集）；
+  ATOM 天然少塔但仍受两塔/三塔配额约束（§7.5 第 5 条）。
+- 机器可见性：全局 `methodology_rules.json` 的 `atom_first_regular_fallback_v1`（`type=strategy`）
+  会在 `build_wave.py` / `pipeline.py` 的常驻循环打印提醒；它只是提示，不改变候选或闸门。
 
 ## 8. 结构维护约定（2026-09-20 结构审计固化）
 
@@ -566,7 +649,7 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
    `CLAUDE.md`（Claude Code 宿主常驻上下文：alpha 挖掘准则）、`README.md`（项目概述 + 上手）。
    已在 README 顶部「文档分工」与 CLAUDE.md 头部声明三者定位。
    *更正*：初版把 CLAUDE.md 写成"宿主入口、指向 AGENTS.md"——实际它承载挖掘准则、不指向 AGENTS.md。
-4. **`tracking/_scratch/` 临时区** —— **已清空（2026-09-20）**，日后仍按 §6 第 3/4 条使用。
+4. **`tracking/_scratch/` 临时区** —— **已清空（2026-09-20）且目录已删除**；日后一次性探针一律走 `logs/_tmp_*.py`（§6 第 1 条）。
 5. **代码级结构债与优化项** —— 见独立报告 `reports/code_structure_survey_20260925.md`
    （2026-09-25 全库梳理产出，含 `tools/` 文档覆盖率 38%、默认 zip 路径缺失、
    WebDataScope/info_data.bin 冗余、Skill 嵌套副本等，按优先级 P1–P11 排序）。
@@ -634,7 +717,7 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
      其余多在采集层且有 `data_caveat` 或更弱的后果，待有具体故障证据再动，别批量改。
 9. **⚠ 拆 `wqb_db_mcp.py` 入包：已尝试并当场回滚（2026-10-04，P2-2）** —— 结论：**先别拆**，
    除非同时下列三类耦合都处理完。**完整实测与可照做的执行顺位见
-   [`reports/db_mcp_split_20261004.md`](../reports/db_mcp_split_20261004.md)**，
+   [`reports/db_mcp_split_20261004.md`](reports/db_mcp_split_20261004.md)**，
    回归凭据工具已入仓：`python tools/code-audit/mcp_surface_diff.py`。
    实测结论一行：拆分本身成功（入口 2792→91 行门面，**MCP 工具面 47=47 逐项一致**），
    失败全部来自耦合面。**两次尝试后测得共 6 类**（数字均为实测，不是估算）：
@@ -900,6 +983,13 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 
 ### 8.11 论坛取证证据契约 / 判死闸 / 波级默认取证 / 形状配额（2026-09-30 落地）
 
+- **★ 查论坛唯一方式（2026-11-18 用户裁定）**：全项目查论坛一律按 [`docs/reference/forum_and_doc_tools_guide.md`](docs/reference/forum_and_doc_tools_guide.md)，
+  只经 `wq-brain-http` 的 5 个 MCP 工具（`search_forum_posts` / `read_forum_post` / `get_glossary_terms` / `get_documentations` / `get_documentation_page`）。
+  **论坛访问单一实现 = `tools/lib/forum_mcp.py`**；`tools/forum_recon.py` 传输层已切到它。**不再** requests 抓 HTML / 直连 Zendesk API
+  （`tools/forum_research.py` 旧 requests 抓取链**已删除**，不留兼容实现），**不拿 WebSearch 当论坛或论文通道**——论坛走 5 个 MCP 工具；论文线 EVID-PAPER 唯一稳定通道 = `tools/research/paper_search.py`（Crossref→arXiv→本地论文库三层冗余，2026-11-19 用户裁定；WebSearch/WebFetch/Semantic Scholar 已弃用——不稳/429）。**EVID-PAPER 默认硬拦：paper_search found=false 即 FAIL，留痕不算通过**；证据闸实现 `_gate_knowledge.py::check_evidence_gate` 自己调 paper_search 实证。
+  **search 不可靠（超时 / 0 结果）时的正路** = guide §2.3 文档两步绕行（`get_documentations`→`get_documentation_page`→提取 `/posts/<数字>` id→`read_forum_post`）或直读已知 article_id；
+  **读帖与文档两步已实测跑通，search 服务端 Playwright 不稳——超时/0 结果一律记工具故障，不是「论坛无解」**。凭据由 MCP 服务端读取，客户端不碰口令。
+  机械闸 `tests/unit/08_forum_recon/test_forum_single_way_gate.py`（活跃代码不得 import 退役抓取模块 / forum_recon 必须走 forum_mcp / 白名单只含这 5 个工具）。
 - **故障 ≠ 无解（2026-09-29 事故：5 条 recon 记录里 2 条是工具故障，被记成 `found=false` 当判死证据）**。取证只有三种结局：`ok`（`found=true`）/ `no_result`（`found=false`，检索**可靠**完成）/ `error`（`found=null`，工具故障）。
   **单一实现 = `src/wqb/recon_evidence.py`**（`forum_recon_*` 键名、记录分类、判死闸判定）：写入方 `tools/forum_recon.py` / `tools/forum_recon_wave.py`、判死闸 `wqb_db_mcp.seal_dead_end`、
   统计方 `tools/step_funnel.py` 都从它取——**不要在别处再拼 `forum_recon_*` 键或再判一遍 `found`**。故障绝不落 `forum_recon_negative_*`、不入 7 天缓存；旧版遗留的「`found=false` + `error`」记录按故障处理。
@@ -925,12 +1015,13 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   实例一 `pull_pyramid()` 形态 B 把每条记录的 `alphaCount` **跨 delay 求和**，于是 D1 的点亮状态被套到 D0 —— D0 审计误报「45 集已点亮塔 ⇒ 排除」，实测 D0 十四类塔全为 0，修后未探集由 6 变 **28**。凡按维度（delay / universe / region）聚合的计数，必须显式过滤该维度并在返回体回显 `delay_filtered`。
   实例二「挖过没」证据源只有 `db:expressions` / `db:text`，而 **MCP 直连仿真（`create_simulation` / `create_multi_simulation`）不写这张表** ⇒ 本轮自己跑的 MCP 波次对工具完全隐形，报告差点写成「一次挖掘尝试都没有」。
   ⇒ 纪律：任何「未探 / 未测 / 没挖过」清单，必须同时标注**它由哪条证据通道得出**与该通道**对什么盲视**（工具落成 `scope.evidence_blind_spots` 并渲染进 MD）；否则下一步必然拿「我的台账里没有」冒充「没人跑过」。
-- **live 论坛路径已端到端跑通（2026-10-26）**：此前**从未跑通过**——先是 `load_creds(None)` 永远 TypeError（所有真实调用落进「鉴权失败 → 记成无解」）；
-  2026-10-26 又逮到第二处：`forum_research.resolve_id()` 返回 `(post_id, is_comment, url)` 三元组，被整个当 pid 拼进
-  `/community/posts/{pid}.json` ⇒ 平台一律非 200，表现为「搜到 N 条 / 读 0 条」的 `read_failed`（实测 48 命中 / 37 读全灭 / 0 正文）。
-  修法 = 新增 `forum_recon._resolve_post_id()` 收敛成 `str | None`（None / 异常 / 空 href 四条退路），`live_search_round` 改走它；
-  实测 `tools/diag_forum_read.py --probe-n 3` 读帖 **3/3**，同一问题 `forum_recon.py` 返回 `found=true`（3 篇）。
-  回归用例 `test_click_href_resolution_unwraps_resolve_id_tuple` / `test_resolve_post_id_returns_none_on_failure`。
+- **live 论坛路径演进（2026-10-26 修通 → 2026-11-18 切 MCP）**：2026-10-26 曾修通 requests 抓取链（`load_creds(None)` TypeError、
+  `resolve_id()` 三元组被当 pid 拼 URL 致「搜到 N 条 / 读 0 条」两处 bug，新增 `_resolve_post_id()` 收敛）。
+  **2026-11-18 用户裁定查论坛唯一方式 = MCP 后，该 requests 链整文件删除**：`forum_recon` 传输层改走 `tools/lib/forum_mcp.py`（MCP），
+  post_id 直接从 `search_forum_posts` 的 `results[].link` 提取（不再有 click 重定向三元组问题）；`_resolve_post_id` / `_load_credentials` 已删除。
+  实测（stateless MCP 服务）：`read_forum_post` 与文档两步绕行端到端跑通；`search_forum_posts` 服务端 Playwright 不稳（超时 / 0 结果）⇒ 记故障非无解。
+  回归用例 `test_post_id_extracted_from_link_not_click_redirect` / `test_live_round_reads_by_string_post_id` / `test_forum_single_way_gate.py`。
+  ⚠ `mcp_http_caller.McpHttpClient` 已兼容 **stateless 服务**（initialize 不回 `mcp-session-id` 时不再报错，与 `mcp_ping` 同口径）。
 
 
 ### 8.12 仓库结构守护与可安装包（2026-09-30 落地）
