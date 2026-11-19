@@ -45,6 +45,16 @@
 3. **「D1 sentiment 邻接宇宙全部关闭」→ 降级**。ai_news_scores / news_sentiment_nlp / analyst10 / sentiment33 属探针级或配置级死，改记 PROVISIONAL；earningscall / event_sentiment / socialmedia12 / sentiment27 / sentiment7 / other47 的天花板证据维持有效。
 4. **「DEU 15 塔全部实测完毕 / D1 可挖面穷尽」→ 撤回**（叠加 §7.5 既有教训：fundamental17/news17/news18 实际仍在出货却被登记死集）。
 
+## 二-bis、粒度说明：塔级判词 vs 数据集级判死（2026-11-19 补）
+
+本页撤回的是**塔级**判词「news 塔事件情绪通道终判死」（news18/50/38 从未探针）。
+⚠ **这不等于把 news50 这个数据集从死表里摘掉**：`news50_dead`（2026-09-15，另一次判死）
+带**自己的 8 探针证据**（新闻情绪 TO+CW 双超闸 SPARSE-EVENT-TWO-WALLS，max|S|=0.6 但双墙）⇒ 数据集级判死成立。
+⇒ **不拆成两条记录**（避免新增判死记录；用户 2026-11-19「轻易不要把数据集字段判死」）：
+塔级撤回留在本页，数据集级判死留在台账与死集清单，两件事各归各位。
+⚠ 若将来要摘掉 news50 的数据集级死键，须先给**替代几何**的实测（TO/CW 双墙是否可解），
+再走 `tools/ledger/dead_sets.py --region DEU --reopen news50`（merge 增量写）。
+
 ## 三、重开队列（用户优先序：sentiment/risk → 其余）
 
 - **BA1（本日派发，后台退避重试中）**：risk60 9 条（crowding 水平/流量/费率水平/费差/费动量/IR/波动/交互 + industry 轴）+ risk88 1 条（市值反转）。全部 ts_backfill(vec_avg()) 转面板（MI 教训落地，波 N 未做）。

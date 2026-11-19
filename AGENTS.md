@@ -488,6 +488,16 @@ pipeline `dead_dataset_guard` / `tools/ledger/dead_sets.py` 同源），按载�
 
 ### 7.6 判死六维穷尽闸（2026-11-10 用户指令「判死的太快了，探针没有穷尽所有机制和模板」固化）
 
+**★ 红线：轻易不要把数据集 / 字段判死（2026-11-19 用户明令）**——判死是**例外**不是默认。
+判死一次 = 该集（或该字段族）在该区**不能再开波**（硬闸 `dead_dataset_guard` 直接中止）⇒ 误判代价极高。
+因此：
+- **证据不足只能记 PROVISIONAL**，不得进「数据集级」档（判据见下表三档与 `src/wqb/dead_datasets.py`）；
+- **族级 / 条件级不硬拦**：族级（判的是字段族/机制）不拦；条件级（只禁主信号用法、允许作辅助腿）只告警；
+- **撤判必须回写台账**：档案判了「撤判重开」却没回写 ledger ⇒ 硬闸照拦（实测 DEU risk60/risk88/news50/other545）；
+  回写用 `python tools/ledger/dead_sets.py --region R --reopen a,b` 打印 payload，走 `upsert_ledger_key`
+  的 **merge** 模式（增量写，不覆盖原始判死证据）；
+- **判死与撤判都要留证据**：判死要六维举证（§7.6 表），撤判要写明「为什么原判死不成立」。
+
 任何数据集/字段族标「终判死 / XX 宇宙关闭 / family_dead」**之前**，判死档案必须逐维举证；缺任一维 ⇒ 只能记 PROVISIONAL，**不得**引用为邻接数据集/族的先验，**不得**据此宣布塔/宇宙关闭：
 
 | 维度 | 合格线 |
@@ -499,7 +509,7 @@ pipeline `dead_dataset_guard` / `tools/ledger/dead_sets.py` 同源），按载�
 | D5 非线性 | ≥1 条（signed_power / ts_rank / ts_quantile / trade_when / bucket） |
 | D6 配置 | ≥2 套（宇宙×中性化×decay 至少变一维），区分配置层死 vs 信号层死 |
 
-配套纪律：①判死分层＝信号层死 / 配置层死（CW、TO 等闸卡死必须先测替代几何与设置再判）/ 数据层排除（cov=0 写明是排除，不是信号死）；②探针（<10 条）只能输出「继续/停止加注」，不产生判死；③同机制先验（判据 MH 类）只决定优先级，不构成判死依据；④撤判在同一档案追加，不得新开口径；⑤机器层自动拦截是后续项（methodology_rules 仅 4 个硬编码 op 消费点，见 §3 双轨同源），当前靠判死档案模板人工遵守。首例执行：`tracking/DEU/atom_orthogonal/DEATH_AUDIT_20261110.md`（risk60/risk88 撤判重开、news18/50/38 从未探针——「news 塔终判死」已撤回）。
+配套纪律：①判死分层＝信号层死 / 配置层死（CW、TO 等闸卡死必须先测替代几何与设置再判）/ 数据层排除（cov=0 写明是排除，不是信号死）；**①-bis 跨族不外推**：轴（中性化/分组）排序结论**只对被测的那一族/那一几何成立**，同区不同族之间也不许套用——实测 DEU 三处并存且**不互斥**，各测各的对象：聚类轴族（`atom_orthogonal/VERDICT_CLUSTER_AXIS_DEAD_20261112.md:32-33`：中性化 SUBINDUSTRY 1.40 最优、分组轴 sector 最优）、oinadpq Va 几何（`s2_nearmiss_rescue_20261104.md:4394`：INDUSTRY 1.52 > SECTOR 1.44 = MARKET 1.44 > SUBINDUSTRY 1.07）、fundamental 族（`regular_tower/WAVE_rt-fundamental-w4_20261116.md:79`：sector > industry ≫ subindustry）⇒ **不存在全区统一终判**，缺的是一张「族 × 轴」映射表；②探针（<10 条）只能输出「继续/停止加注」，不产生判死；③同机制先验（判据 MH 类）只决定优先级，不构成判死依据；④撤判在同一档案追加，不得新开口径；⑤机器层自动拦截是后续项（methodology_rules 仅 4 个硬编码 op 消费点，见 §3 双轨同源），当前靠判死档案模板人工遵守。首例执行：`tracking/DEU/atom_orthogonal/DEATH_AUDIT_20261110.md`（risk60/risk88 撤判重开、news18/50/38 从未探针——「news 塔终判死」已撤回）。
 
 ### 7.7 ATOM 优先与 regular 回退（2026-11-17 用户裁定；从 workflow 草稿提升为顶层规范）
 

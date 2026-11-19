@@ -38,6 +38,41 @@ def read_dead_rows(conn, region: str) -> list[tuple[str, str]]:
     return cur.fetchall()
 
 
+def dead_reasons(rows) -> dict[str, str]:
+    """``{dataset: 一行判死证据}``——给硬闸命中时当场出示（误判当场可辨）。
+
+    与 :func:`dead_levels` 同源（同一份 rows）。降级模式下只给规范形态 ``<ds>_dead`` 的原始
+    reason 文本；不复制解析逻辑，只做「取值」。
+    """
+    out: dict[str, str] = {}
+    for key, value in rows:
+        try:
+            payload = json.loads(value) if isinstance(value, str) else value
+        except (json.JSONDecodeError, TypeError):
+            payload = None
+        if not isinstance(payload, dict):
+            continue
+        ds = payload.get("dataset") if isinstance(payload.get("dataset"), str) else None
+        if not ds and key.endswith("_dead"):
+            ds = key[:-5]
+        if not ds:
+            continue
+        reason = str(payload.get("reason") or payload.get("evidence")
+                     or payload.get("conclusion") or "")[:180]
+        extra = []
+        if payload.get("dead_at"):
+            extra.append(str(payload["dead_at"]))
+        if payload.get("evidence"):
+            extra.append(str(payload["evidence"])[:80])
+        if payload.get("source"):
+            extra.append(str(payload["source"])[:60])
+        line = reason
+        if extra:
+            line = (line + " 〔" + " | ".join(extra) + "〕").strip()
+        out.setdefault(ds, line)
+    return out
+
+
 def dead_levels(rows) -> dict[str, list[str]]:
     """返回 ``{"dataset": [...], "conditional": [...], "family": [...]}``。
 

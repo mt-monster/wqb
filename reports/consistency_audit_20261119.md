@@ -201,8 +201,8 @@
 | **2Y 门槛** | 统一 **1.58**（平台 limit 实测） | AMR/IND/JPN/KOR 的 1.0 → 1.58（`review_wave` 读该键 ⇒ 评审同步收紧）；USA/EUR/GBR 等自设 1.6 的保留但标「我方更严」 |
 | **USA 评审 S 线** | **1.58** | 1.25 是平台 LOW_SHARPE 线被误当交付线 ⇒ 改 1.58 |
 | **prod 三套数** | 分层：0.70 提交线 / 0.75 封族线（须标层级）/ 0.86~0.89 实测分界（非死线） | 文档口径统一 |
-| **coverage 判死线** | 以各区 `config/thresholds.json` 为准 | 全局草案 `tracking/reference/region_thresholds.json` **归档**（无代码读取 + 9 区漂移）；MEA 0.45 vs 0.70 **待专项复核** |
-| **中性化排序** | 各区实测为准、禁跨区外推 | DEU 内部 3 处互斥 **待裁定终判** |
+| **coverage 判死线** | 以各区 `config/thresholds.json` 为准 | 全局草案 `tracking/reference/region_thresholds.json` **归档**（无代码读取 + 9 区漂移）；MEA 0.45 vs 0.70：**用户 2026-11-19 裁定「MEA 不改」⇒ 保持 0.70**（MEA 无实测支持 0.45） |
+| **中性化排序** | 各区实测为准、禁跨区外推；**同区不同族也不外推** | DEU 那 3 处**不是互斥**：各测各的对象（聚类轴族 / oinadpq Va 几何 / fundamental 族）⇒ **不存在全区统一终判**，缺的是「族 × 轴」映射表 |
 
 ### 3.4 RA 口径混用（机械可修）
 
@@ -279,6 +279,7 @@ a55a842 feat(gates)      内部严线接入流水线 + 零消费者原型包归�
 | 「13 份 `rules/README.md` 的 `six-step-*-override.md` 是死指针」 | 是**「（待填）」占位**（GLB/USA 真有） | 没读表格语义 |
 | 「22 篇活文档相对链接失效」 | 绝大多数是**仓库根相对**（仓库自己的测试明确允许：`test_skill_integrity.py:186`），真死链只有 **3 条** | 把"渲染器语义"当"仓库约定" |
 | 「USA 区判死记录一条都没生效」 | USA 的 4 条判死**都是族级**
+| 「DEU 一区内部 3 处互斥的中性化排序」 | **框架错**：三处各测各的对象（① 聚类轴族 `VERDICT_CLUSTER_AXIS_DEAD_20261112.md:32-33` 中性化 SUBINDUSTRY 1.40 / 分组轴 sector 最优；② oinadpq Va 几何 `s2_nearmiss_rescue_20261104.md:4394` INDUSTRY 1.52 > SECTOR 1.44 = MARKET 1.44 > SUBINDUSTRY 1.07；③ fundamental 族 `WAVE_rt-fundamental-w4_20261116.md:79` sector > industry ≫ subindustry）⇒ 不是同一问题的三个答案，**没有全区统一终判**；真缺「族 × 轴」映射表 | 排错时先问「这几份各自测的是谁」——同区≠同题 |
 | 「`alphas.dataset_id` 51% 指向 `_unknown`」 | **证伪**：`_unknown` 与 NULL 都是 **0 行**；真实形态是**跨集组合名**（`fundamental1+pv1` 367 行…共 1875 行 join 不到单集），属 AGENTS.md §7.7 合法跨集形态 ⇒ 不是「占位未解析」。真 bug 在消费方：`_cat_of_dataset` 对复合名走前缀猜测 ⇒ 错归 \"other\" | 归因要从**消费方**查，不是从数据查 |（带 `family`）⇒ 本就不该按数据集拦；真正的问题是**族级判死无人读** | 没分粒度就判"失效" |
 
 ### 7.2 反复出现的根因（4 类，值得当规则）
@@ -297,11 +298,11 @@ a55a842 feat(gates)      内部严线接入流水线 + 零消费者原型包归�
 ## 8. 待治理台账（按处置难度）
 
 **需要用户/业务裁定（口径类）**
-1. ✅ **已裁定并落地**（2026-11-19）：2Y 统一 1.58；USA 评审 S 线 1.58；prod 三层分工写入口径；coverage 以区级配置为准 + 全局草案归档。**遗留**：MEA 0.45 vs 0.70 待专项复核；DEU 中性化排序 3 处互斥待裁定终判
+1. ✅ **已裁定并落地**（2026-11-19）：2Y 统一 1.58；USA 评审 S 线 1.58；prod 三层分工写入口径；coverage 以区级配置为准 + 全局草案归档。**遗留**：MEA 0.45 vs 0.70 → **用户裁定不改（保持 0.70）**；DEU 中性化排序 → **不裁定统一终判**（三处各测各的族），改为「族 × 轴」映射表 + 跨族禁外推
 2. R4 中性化排序 7 处各一套（DEU 内部 3 处互斥）⇒ 各区实测为准 + 禁止跨区外推（**DEU 终判待裁定**；其余区按本区实测）
 3. ✅ **已落地**：过期全局草案 `tracking/reference/region_thresholds.json` **已归档**（attic/region_thresholds_20261119/，附归档说明）；**遗留**：MEA 0.45 vs 0.70 需专项复核
-4. ✅ **已裁定并落地**：机读清单 = 唯一权威源；撤销 fundamental93 / fundamental110 / board_gov_stats 三条被 DB 证伪的判死；intraday_pv_feats 覆盖面收窄；第 2/3 份快照改为引用权威清单并点名 7 个差异集。**遗留**：EUR `insider_agg_matrix` 条件死（允许作辅助腿）与 `EUR/dead_datasets` 聚合键口径仍待裁定（R1）+ **EUR `insider_agg_matrix` 条件死**（允许作辅助腿）与 `EUR/dead_datasets` 聚合键口径
-5. ✅ **已落地**：DEU risk60 / risk88 / other545 + GBR institutions4（merge 增量写，原始判死证据保留）；⚠ news50 **未回写**（其数据集级判死有独立探针证据，被撤回的是塔级判词 —— 粒度不同，已登记待复核）（`tools/ledger/dead_sets.py --reopen DEU risk60,risk88,…` 打印 payload，
+4. ✅ **已裁定并落地**：机读清单 = 唯一权威源；撤销 fundamental93 / fundamental110 / board_gov_stats 三条被 DB 证伪的判死；intraday_pv_feats 覆盖面收窄；第 2/3 份快照改为引用权威清单并点名 7 个差异集。**遗留**：EUR `insider_agg_matrix` 条件死（允许作辅助腿）与 `EUR/dead_datasets` 聚合键口径仍待裁定；⚠ 用户 2026-11-19「轻易不要把数据集字段判死」⇒ 该集**先按未判死处理**（不新增任何判死记录）（R1）+ **EUR `insider_agg_matrix` 条件死**（允许作辅助腿）与 `EUR/dead_datasets` 聚合键口径
+5. ✅ **已落地**：DEU risk60 / risk88 / other545 + GBR institutions4（merge 增量写，原始判死证据保留）；⚠ news50 **未回写且不拆分**（用户 2026-11-19 裁定：轻易不要判死、塔级判词与数据集级判死是两件事）⇒ 已在 `DEATH_AUDIT_20261110.md` 加「二-bis 粒度说明」，**不新增/不拆分判死记录**（`tools/ledger/dead_sets.py --reopen DEU risk60,risk88,…` 打印 payload，
    走 `upsert_ledger_key` 写 `status: reopened`）
 6. ⚠ **原表述证伪**（不是 `_unknown` 占位，是跨集组合名）；真 bug 在消费方 `_cat_of_dataset` ⇒ **已修**（按成员集解析，守护 tests/unit/09_core/test_profiles_evidence_composite.py）
 

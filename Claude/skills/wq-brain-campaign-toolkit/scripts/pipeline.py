@@ -315,6 +315,7 @@ def dead_dataset_guard(ctx, dataset, datasets_extra=None, allow=False):
         finally:
             conn.close()
         levels = dead_sets.dead_levels(rows)
+        reasons = dead_sets.dead_reasons(rows)
         if dead_sets.DEGRADED:
             print("[dead-guard] WARN 降级口径：未装仓库 skill，只认规范形态 `<ds>_dead`；"
                   "聚合键 / 族级镜像 / 带日期后缀的判死记录未纳入检查")
@@ -337,6 +338,9 @@ def dead_dataset_guard(ctx, dataset, datasets_extra=None, allow=False):
     hit = [d for d in ds_all if d in dead]
     if hit:
         print(f"[dead-guard] ⛔ 死集命中: {hit}（{ctx.region} 数据集级死表 {len(dead)} 个）")
+        # 误判成本高（该集开不了波）⇒ 命中时把判死证据当场打出，误判可当场辨明
+        for d in hit:
+            print(f"[dead-guard]    判死依据 · {d}: {reasons.get(d, '（台账未记录理由字段）')}")
         print("[dead-guard] 中止：死集不得再投配额。换活集；确需复验请显式 --allow-dead-dataset 并在台账记因")
         return False
     extra = f"；另有条件死 {len(conditional)} 个" if conditional else ""
