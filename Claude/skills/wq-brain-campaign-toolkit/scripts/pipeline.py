@@ -283,15 +283,24 @@ def ckpt_save(ctx, ck, checkpoint_dir=None):
 # ---------------- 各阶段 ----------------
 
 def dead_dataset_guard(ctx, dataset, datasets_extra=None, allow=False):
-    """硬闸：波数据集命中 `ledger_kv` 的 `<ds>_dead` 判死表 ⇒ 中止本波（返回 False）。
+    """硬闸：波数据集命中 `ledger_kv` 的**数据集级**判死表 ⇒ 中止本波（返回 False）。
 
     2026-10-30 落地（wave 205 institutions6 第三次误发之后，前两次是 wave 187/200
     fund_holdings_panel）。根因不是数据不全，而是**链路从不检查死表**：
     gate 的 `PRIORS-DEADEND-HIT` 只在 `--require-priors` 时升 FAIL，而 pipeline
-    从不传该 flag ⇒ 死集一路 WARN 到派发。这里直接读 ledger_kv（与
-    `wqb_db_mcp.get_dead_datasets` 同口径：`key LIKE '%_dead'`），不依赖 GEM priors 注入。
+    从不传该 flag ⇒ 死集一路 WARN 到派发。这里直接读 ledger_kv，不依赖 GEM priors 注入。
 
-    fail-open 仅限「判死表本身读不到」（只读查询异常），并打 WARN；死集命中一律 fail-closed。
+    ⚠ **口径 2026-11-19 修正**：旧实现用 `key LIKE '%_dead'` + `key[:-5]`，而 ledger 的
+    判死记录有四种键形态（`<ds>_dead` / `dead_datasets` 聚合键 / `dead_end_*` 族级镜像 /
+    `*_dead_<日期>`）⇒ 聚合键与带日期/后缀的记录**一条都读不到**（实测 GBR 另有
+    model264 / news104 / pattern_scores / pv29 / pv30 只记在聚合键里），且 `anl83_dead`
+    这类缩写键返回的名字与真数据集名（analyst83）对不上。
+    现在按载荷语义分三档（判据本体 = `src/wqb/dead_datasets.py`，本处经 `_lib/dead_sets.py` 委托）：
+      · **dataset 级** → 硬拦（历史口径）
+      · **conditional**（只禁主信号用法、允许作辅助腿）→ **告警不拦**
+      · **family**（判的是字段族/机制，不是整集）→ 不拦
+
+    fail-open 仅限「判死表本身读不到」（只读查询异常），并打 WARN；数据集级死集命中一律 fail-closed。
     """
     if allow:
         print("[dead-guard] ⚠ --allow-dead-dataset 已启用：跳过死集硬闸（须在台账写明复验理由）")
@@ -299,23 +308,39 @@ def dead_dataset_guard(ctx, dataset, datasets_extra=None, allow=False):
     ds_all = [dataset] + [x.strip() for x in (datasets_extra or "").split(",") if x.strip()]
     try:
         from _lib.db import connect
+        from _lib import dead_sets
         conn = connect()
         try:
-            cur = conn.cursor()
-            cur.execute("SELECT key FROM ledger_kv WHERE region=? AND key LIKE '%_dead'",
-                        (ctx.region,))
-            dead = {str(r[0])[:-5] for r in cur.fetchall()}
+            rows = dead_sets.read_dead_rows(conn, ctx.region)
         finally:
             conn.close()
+        levels = dead_sets.dead_levels(rows)
+        if dead_sets.DEGRADED:
+            print("[dead-guard] WARN 降级口径：未装仓库 skill，只认规范形态 `<ds>_dead`；"
+                  "聚合键 / 族级镜像 / 带日期后缀的判死记录未纳入检查")
     except Exception as e:  # pragma: no cover - 只读异常
         print(f"[dead-guard] WARN: 判死表读取失败({e})，本轮放行（只读查询异常，非死集判定）")
         return True
+
+    dead = set(levels.get("dataset", []))
+    conditional = set(levels.get("conditional", []))
+    family = set(levels.get("family", []))
+
+    soft_hit = [d for d in ds_all if d in conditional]
+    if soft_hit:
+        print(f"[dead-guard] ○ 条件死命中（**告警不拦**）：{soft_hit}"
+              f"——这些集只禁『作主信号』，作辅助腿/换形态仍可；复验理由请写台账")
+    fam_hit = [d for d in ds_all if d in family]
+    if fam_hit:
+        print(f"[dead-guard] ○ 族级判死命中（不拦）：{fam_hit}——判死的是其中的字段族/机制，不是整集")
+
     hit = [d for d in ds_all if d in dead]
     if hit:
-        print(f"[dead-guard] ⛔ 死集命中: {hit}（{ctx.region} 死表 {len(dead)} 个）")
+        print(f"[dead-guard] ⛔ 死集命中: {hit}（{ctx.region} 数据集级死表 {len(dead)} 个）")
         print("[dead-guard] 中止：死集不得再投配额。换活集；确需复验请显式 --allow-dead-dataset 并在台账记因")
         return False
-    print(f"[dead-guard] OK: {ds_all} 均不在死表（{ctx.region} 共 {len(dead)} 个）")
+    extra = f"；另有条件死 {len(conditional)} 个" if conditional else ""
+    print(f"[dead-guard] OK: {ds_all} 均不在数据集级死表（{ctx.region} 共 {len(dead)} 个{extra}）")
     return True
 
 

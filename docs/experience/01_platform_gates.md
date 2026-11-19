@@ -10,10 +10,18 @@
 
 | 闸 | 阈值 | 备注 |
 |---|---|---|
-| `LOW_SHARPE` | ≥ **1.58** | 严格不等式 |
+| `LOW_SHARPE` | ≥ **1.25**（D1）／**2.0**（D0） | 严格不等式；⚠ **1.58 是 2Y 线（`LOW_2Y_SHARPE`），不是本行**——平台 `LOW_SHARPE` 硬线 Delay-1 为 1.25（`config.PLATFORM_CHECK_LINES.low_sharpe_min`）；本仓**交付线**另按 S>1.58 要求，两条线不可互相顶替（见 `GLOSSARY.md`「Sharpe 有三条不同的线」） |
 | `LOW_FITNESS` | ≥ **1.0** | 严格不等式 |
 | `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | ≥ **1.58** | 同一事实的两个载体，平台按 alpha 代际只发其一 |
 | `LOW_SUB_UNIVERSE_SHARPE` | 比值闸（见 §2） | |
+
+> ⚠ **「TO<30% ⇒ 2Y 阈值 ×0.85」在本仓未复现（2026-11-17 实测）**：判别件 `YP1ZvjWA`
+> （USA/TOP3000/D1，ATOM 单数据集：仅 `discount_store_retail_score` + 豁免 `sector`）
+> TO **17.7%**、2Y **1.57**，平台 `LOW_2Y_SHARPE` 仍是 `warning`、`limit=1.58`、`ra_failed=true`
+> —— 若折扣成立，1.57 应过 1.343。⇒ **近闸线一律按 1.58，不要用 1.34**；若某区确要使用
+> 1.343，必须先用该区 1.34–1.58 区间的 ATOM 件实测确认，不能引用外部文章。
+> 另：`IS_LADDER_SHARPE` 载体同样未见折扣（`WjP07oJN`/`vRk6QNga`/`rKjRj8qj` 均 TO<30%、
+> 2Y 1.57、`limit=1.58` 判 fail/warning）。详见 `docs/reference/atom_mining_playbook_20261117.md` §二。
 
 **四者必须同时成立**。另有区域专属闸：
 - `LOW_ROBUST_UNIVERSE_SHARPE`（IND，limit **1.0**）
@@ -139,6 +147,35 @@
 | 两种锁分文件 | 写库锁 `dbwrite.lock.json` 与相关性锁 `correlation.lock.json` **必须分开**：TTL 不同，共用一个文件会让短 TTL 的写锁回收长 TTL 的相关性锁 token（两个进程同时自认持有）。`_prune_expired` 已改为**按文件名精确回收**，不再扫全目录 | `src/wqb/db_write_lock.py` |
 
 **纪律**：任何要打 prod 端点的**新工具**都必须 `with wqb.correlation_slot.slot(...)`；拿不到槽就 fail-closed 立即返回并提示稍后重跑。**不要自建第二把锁、也不要因为"我只是查一次"而不拿锁**——那正是本次事故的成因。
+
+**2026-11-17 补（残留锁 / busy 分因）**：`acquire` 的 busy 有三种，处置**完全不同**，旧实现全塞进一个
+`busy=True` ⇒ 调用方只能一律放弃：
+
+| `reason` | 含义 | 正确处置 |
+|---|---|---|
+| `cooldown` | 上一轮计算刚结束、平台仍占槽；`retry_after` 是**已知时长**（195 s 或平台 Retry-After） | **等它到期再抢**（`super_build` 的 prod 闸据此在窗口内等待，最多 3 轮） |
+| `token_busy` | 另一个**存活**进程持有互斥 token（附 `holder` = pid/tag/alive） | fail-fast、不排队；日志带 pid/tag 便于定位 |
+| `platform_unavailable` | 账号级熔断中（连续 pending） | 直接放弃 |
+
+实测事故：`super_build.py submit` 首跑 `attempts=0` 退出，日志只说"被其它进程占用"，真实原因是
+`correlation.cooldown.json` 里一条 195 s 冷却（写入进程 pid 已死）——人工等 TTL 到期重跑即成功。
+顺带加固：冷却标记**脏值自愈**——半写/非 JSON、或 `until` 超过 `max(195s, env)×3`（时钟跳变 / 被手改的
+远期值）一律退役为 `.stale` 并返回 0（`clear_cooldown` 也改为改名退役，不再 `unlink`，避开 safe-delete
+守卫且可追溯）。回归：`tests/unit/09_core/test_corr_slot_stale_cooldown_20261117.py` +
+`tests/unit/05_submit_quota/test_super_build_prod_gate.py::test_probe_waits_out_known_cooldown_instead_of_giving_up`。
+
+**2026-11-17 补（伪冷却：没算过也写 195 s）**：残留锁的**上游来源**同一天定位到了——
+
+| 项 | 实测 |
+|---|---|
+| 谁在占槽 | `WorkBuddy/Claw` 面板「自动终验」`picksAutoVerify`（`panel_ui_js_cand.py`，`PICKS_AUTO_THROTTLE_MS = 30 min`）→ POST `/api/refresh-corr` → `wq_prod_backfill.py --alpha <id>`，slot tag `prod_backfill(<id>)` |
+| 现场 | 08:36:41 acquire `prod_backfill(QP02jR9w)` → 08:37:02 release，**持槽仅 21 s**，却写满 195 s |
+| 为什么是错的 | 一次真实 prod/self 计算平台侧 **180–200 s**；21 s 拿到值只能是**既有值直读**，账号槽根本没被占用 ⇒ 冷却纯属自伤：每 30 min 有 3.25 min 伪冷却，提交首跑正好撞上 |
+| 修法 | `release()` 按**持槽时长**自查：`seconds` 缺省且持槽 < `WQB_CORR_MIN_HOLD_FOR_COOLDOWN`（60 s）⇒ 跳过冷却；真算过的调用必然在槽里等 ≥180 s，自动过阈值 ⇒ **阈值只能放过"没算过"的，不会放过"算过"的**。显式 `seconds=` / `cooldown=False` 的调用点语义不变（调用方优先） |
+| 可观测 | 每次释放追加 `logs/_dblock/correlation.cooldown.audit.jsonl`（`action`/`tag`/`held_s`/`cooldown_s`）——下次"谁占的槽"一眼可查，不必再逆向 |
+
+回归：`tests/unit/09_core/test_corr_slot_short_hold_20261117.py`（8 例：21 s 不写 / 200 s 照写 /
+`env` 阈值可覆盖 / token 不可读时保守回退旧行为 / 显式 `seconds` 优先）。
 
 ### 2026-10-28：把「14 小时只出 56 个数」拆成四件可修的事
 
@@ -274,6 +311,31 @@ combo:     线性 1-maxCorr
 ```
 
 **MEA 的 SUPER 通道已关闭**（`region=MEA type=SUPER` → 400 `Region MEA is not available`）。
+
+### 6.1 ★ SA 提交准入分级（2026-11-18 用户定案，取代「三条件硬拦」）
+
+旧做法把「S≥5 ∧ F≥5 ∧ prod≤0.65」当唯一门槛，导致闸门既是排序键又是准出闸：达不到就整颗不报，边际信息全丢。新判据把**平台行为**与**自设偏好**分层，自设层降级为汇报。
+
+```
+红线   = prod >= 0.70 或 IS checks 有 FAIL                     -> REDLINE    一律硬拦，不报
+准入   = S >= 5.0 且 F >= 5.0 且 prod <= 0.65                    -> ADMIT      直接进提交建议
+可汇报 = prod <= 0.68 且区内 Pareto 不劣：
+         S >= 区内最强 S × 0.95 且 F >= 区内最强 F × 0.95        -> REPORT     可汇报，标注缺口
+其余（过红线但无边际）                                          -> NO_EDGE    不报，仅留档
+prod 未实测                                                    -> UNMEASURED 待测，不判死
+```
+
+判定顺序 **REDLINE > ADMIT > REPORT > NO_EDGE**。
+
+**三条必须遵守的口径**：
+
+1. **红线不可降级**。`prod ≥ 0.70` 是平台提交校验（`check_correlation` 返回 `passes_check=false`），不是我们的策略分支——放宽只会得到一次必然被拒的 POST。IS checks 的 FAIL 同理。这一层永不出现在「可汇报」名单里。
+2. **区内基线取 maxS / maxF 两个独立值**，允许来自不同 alpha。实测 IND 最强 S 属 `pw52P3jb`（5.43）、最强 F 属 `QPbjxMYw`（5.74）；若合并成「最强那一颗的 S 和 F」，基线会虚高，REPORT 永久无法命中。
+3. **「比昨天强」不能当判据**。2026-11-17 基准件 `pwa8mYvV`（GBR S5.05/F5.18/prod .6548）本身只是 3/3 的边缘件，而同账户存在 `KPg60XNp`（KOR S5.96/F7.50/prod **.5475**，11-15 提交）这种高一档的件。以低档件为靶会形成向下竞争，必须对**区内最强**比。
+
+**判据的实际约束力（2026-11-18 首轮验证，9 颗候选）**：REDLINE 3 颗（`Jj8p9Zb2` .7360 / `d5axMLxx` .7311 / `qM7lKoYj` .7575）、UNMEASURED 4 颗、NO_EDGE 2 颗（`E5QEZrl1` S5.02 < 5.43×0.95=5.16）、ADMIT 0 颗、REPORT 0 颗。`E5QEZrl1` 在旧记里是「排序第一」，新判据下判 **NO_EDGE** —— 因为它 F 6.51 虽高，S 5.02 低于区内最强 7.5%，属横向替换而非升级。**这正是本判据要挡的东西。**
+
+**工具**：`tools/super/sa_grade.py`（离线，零平台调用、零配额）。输入候选指标 JSON + 已 ACTIVE SUPER 基线 JSON，输出 `ADMIT/REPORT/REDLINE/NO_EDGE/UNMEASURED` 分级表；判据常量在文件头部，改判据只改那几行。
 
 ---
 
@@ -830,15 +892,15 @@ and Combined Alpha Performance **through diversification**" ⇒ **塔与六维�
 
 ### 19.3 ★ 权重不对称（本条的实践核心）
 
-- **T1/T2 是平均值** ⇒ 单颗权重 `1/(N+1)`（当前 N=377），单件 ΔT1 只到 0.02% 量级 ⇒
+- **T1/T2 是平均值** ⇒ 单颗权重 `1/(N+1)`（当前 **N=386**），单件 ΔT1 只到 **0.010–0.020** 量级（相对 0.2%–0.4%）⇒
   **几乎不改变 tiebreak 排名**，属**软成本**。
-- **T3/T4 是总数** ⇒ +1 就是确定性 +1.75%（57→58）⇒ **对 tiebreak 敏感**，属**硬收益**。
+- **T3/T4 是总数** ⇒ +1 就是确定性收益（62→63，按 103 分母约 +1.6%）⇒ **对 tiebreak 敏感**，属**硬收益**。
 
 ⇒ **可操作判据（四条）**：
 1. 同绩效**优先 distinct ops / fields 更少**的件（压 T1/T2）；
-2. **优先引入未用过的算子/字段**（提 T3/T4）；未用算子池 = 103 − 57 = **46 个**，是最确定的增量来源；
+2. **优先引入未用过的算子/字段**（提 T3/T4）；未用算子池见 §19.4.2 与 `MEMORY.md`（当前 38 个）；
 3. **纯堆算子但全是旧算子 = 双重伤害**（T1 变差、T3 不动），这是最该先砍的形态；
-4. **不设硬闸**。六维是 tiebreak 不是提交闸，只作**排序键 + 报告必列项**。
+4. **六维整体不设硬闸**（tiebreak 不是提交闸）；**但 T1 可按用户指令单独设为 ceiling 硬闸**，见 §19.4.2（`--t1-ceiling`，exit 3 阻断）。
 
 **优先级**：**塔 eligibility（≥3 才计入）> 六维 tiebreak**。先保证点塔，再在同一塔档内比六维。
 
@@ -851,20 +913,86 @@ submissionsCount / meanProd / meanSelf）；平台 REST 侧 `/users/self/competi
 它拉全量 OS alpha（`regular.code` 在原始 REST 的 `regular` 子对象里，MCP 才拍平到顶层），
 用 `wqb.expression.atom.extract_fields` + 算子正则自行统计。
 
-账户基线（2026-11-16 10:2x）：
+账户基线（**2026-11-19 00:0x 用平台面板真值标定，取代此前所有版本**）：
 
-| 项 | 值 |
-|---|---|
-| OS alpha 总数 / REGULAR 有效 | 434 / **377** |
-| **T1** avg distinct ops/alpha | **4.6074** |
-| **T2** avg distinct fields/alpha | **1.8488** |
-| **T3** total distinct ops | **57 / 103（未用 46）** |
-| **T4** total distinct fields | 481（脚本口径）／平台 `dataFieldsUsed` = **422** |
-| 其它 | valueFactor **0.43**、submissionsCount 237、meanProd .6391、meanSelf .4076、geniusLevel **GOLD** |
+**★★★★★ 统计窗口＝当季，不是累计**（用户 2026-11-19 提供 Genius 面板截图定案，
+此前 11-18 的「累计」结论**作废**）。三条铁证：
 
-⚠ 口径差异：T4 脚本 481 vs 平台 422 —— 平台 `dataFieldsUsed` 只数数据集字段，脚本已剔除
-`BASE_MARKET_FIELDS` 与 `GROUPING_KEYS`（不剔时 495），残差 59 来自历史/已下架字段。
-**边际判断用同一套脚本口径即可**（相对量，不影响 T4"+N 新字段"的方向）。
+1. 面板标题写死 `2026-04, October 1st, 2026 - December 31st, 2026`（＝ 2026-Q4）；
+2. **Q4 REGULAR 的 distinct 算子 = 54 ＝ 面板 `Operators used`**（全生命周期是 64/65）—— 精确命中；
+3. 领导板 `dataFieldsUsed = 435` 是**另一个指标**（生命周期），与面板 `Fields Used = 227` 并存。
+   11-18 拿 `dataFieldsUsed` 反推「T4 不归零」是**把两个指标混为一谈**。
+
+| 项 | 平台面板真值（2026-Q4） | 本地复算（`--compute --window quarter --panel`） | 差 |
+|---|---:|---:|---:|
+| 窗口 | 2026-10-01 … 2026-12-31 | 同 | — |
+| N（REGULAR） | 141 | 140（本地库少 1 颗） | −1 |
+| **T1** Operators per Alpha | **5.73** | **5.7214** | −0.009（−0.15%） |
+| **T2** Fields per Alpha | **2.07** | **2.0857** | +0.016（N=141 时 2.071） |
+| **T3** Operators used | **54** | **54** | **0（精确）** |
+| **T4** Fields Used | **227** | **228** | +1（0.4%） |
+| **T5** Max simulation streak | **130** | 平台无端点 | — |
+| **T6** Community activity | **10.3** | 平台无端点 | — |
+
+### 19.4.1 ★★★★★ 四个口径的精确算法（已标定）
+
+| 维度 | 算法 | 关键细节 |
+|---|---|---|
+| **T1** | `distinct( 命名调用 ∪ 算术中缀 ∪ 比较中缀 )`，**剔除 backfill** | ⚠ **一元负号也算 `subtract`**（如 `-group_rank(...)`）。不加这一条会系统性低估 **0.13/alpha**（5.5929 vs 5.7214）。⚠ 不是 named-only（低 1.2）、也不是中缀按次数累加（高 0.09） |
+| **T2/T4** | distinct **字段** | ⚠ **只剔分组键** `market/sector/industry/subindustry/country/exchange/currency`；**base 行情字段（close/volume/returns/cap/adv20…）照常计入**。旧版把 base 一起剔 → T4 224 / T2 1.99（错） |
+| **T3** | distinct **命名算子**，剔除 backfill | 本地与面板**精确相等**（54），是最可靠的锚点 |
+| **T5/T6** | streak / community | 与选件无关；平台无端点，只能人工看面板 |
+
+⚠ 平台**没有**任何端点暴露六维（`/users/self/genius`、`/consultant/genius`、
+`/users/self/competition/genius|leaderboard` 全部 **404**；`get_leaderboard` 只给
+`dataFieldsUsed`/`submissionsCount`/`meanProd`/`meanSelf`）⇒ 只能本地从
+`GET /alphas?stage=OS` 的 code 自算，并用面板数对标定。
+
+### 19.4.1.1 ★★★ 季初归零的两条战略后果
+
+1. **T3/T4 每季重置可重赚** ⇒ 未用算子不是「一次性资本」。Q4 未用 **49**（扣掉不计入 T3 的
+   backfill 与 SUPER 专用 `combo_a` ⇒ **46 个可赚**）；另有 **11 个算子上季用过、本季未用**
+   （`equal`,`generate_stats`,`group_mean`,`is_nan`,`log`,`normalize`,`reduce_max`,`scale`,
+   `self_corr`,`sign`,`ts_arg_max`）⇒ **本季可以重新赚一次 T3**。正确节奏是**每季重新铺一批
+   覆盖多算子/多字段的件**。
+2. **T1 也在季初归零** ⇒ 每季**第一颗**的 ops 直接决定当季 T1 起点（交一颗 9 算子件即 T1=9.0）。
+   **每季应先用低 ops 件铺底**，再补高 T3 件抬多样性。
+
+### 19.4.2 ★★★ 把 T1 设为首要条件：怎么做（2026-11-18 用户指令）
+
+**先看杠杆再定规则**：T1 是**平均值（存量）**，单颗的边际是固定的
+`ΔT1 = (ops_new − T1_old) / (N+1)`，N=386 ⇒ 单件只 0.010–0.020（相对 0.2%–0.4%）。
+所以「T1 首要」不可能靠"挑一颗"实现，必须做成**逐颗上限 + 字典序排序**两层：
+
+| 层 | 规则 | 实现 |
+|---|---|---|
+| **L1 硬闸（首要条件）** | 候选 distinct ops（归一口径）超过 `ceiling` ⇒ 直接 BLOCK，不看绩效 | `genius_tiebreak.py --alphas <ids> --t1-ceiling <float>` → **exit 3** |
+| **L2 字典序排序** | 全闸通过件按 `ops 升 → fields 升` 排，第一名标 `PRIMARY` | `genius_tiebreak.py --alphas <ids> --primary t1` |
+| L3 报告 | 每颗必列 `ops / ops_named_only / ΔT1 / T3新增 / T4新增` | 同上输出 |
+
+**ceiling 取值与 T1 的关系（当季口径：N=141，T1_old=5.73）**：
+
+| ops | ΔT1 | T1_new | 建议档 |
+|---:|---:|---:|---|
+| 4 | −0.0121 | 5.7179 | **唯一能降 T1 的档**（ops < 5.73） |
+| 6 | +0.0019 | 5.7319 | A 档首选 |
+| 7 | +0.0090 | 5.7390 | A 档 |
+| 9 | +0.0232 | 5.7532 | B 档 |
+| 11 | +0.0374 | 5.7674 | C 档 |
+| 13 | +0.0516 | 5.7816 | D 档上限 |
+| ≥15 | ≥+0.066 | ≥5.796 | 原则上不交 |
+
+**⚠ 两个必须知道的反直觉点**：
+1. **只有 ops < T1_old（5.73）才能降 T1**，而现实里的像样信号几乎都在 9–13 ⇒ **T1 只可能被"少恶化"，不可能被"优化"**。真正的 T1 战略是**长期把 ops 压到 6 以下**，而不是在候选间挑。
+2. **T1 与 T3 直接对冲**：每引入 1 个未用算子 T3 +1，同时 T1 +1/(N+1)=+0.0071。当前换算 **T3 +1 ≈ +1.6% 收益 vs ΔT1 +0.0071（≈ T1 相对 +0.12%）** ⇒ **T3 仍划算**，但若 ceiling 收到 6 以下，"加新算子换 T3"这条路就基本关闭。
+
+**★ 季初重置的用法**：因为 T1 每季归零，`ΔT1` 公式里的 `T1_old` 在季初是 0，
+所以**每季最有价值的动作是「先用 ops ≤ 6 的件铺底」**——铺 5 颗 6-ops 件后 T1 才 6.0，
+此时再交一颗 13-ops 的高 T3 件只把 T1 推到 7.17，代价可控；反过来先交 13-ops，
+后续每颗低 ops 件都在"往回拉"。**顺序决定当季 T1 曲线。**
+
+⚠ 已作废：11-18 那份「T1–T4 是累计口径、未用算子是一次性资本」的结论**错误**——
+它把领导板 `dataFieldsUsed`（生命周期指标）当成了 T4。见 §19.4 的三条铁证。
 ⚠ `VERIFIED_SAFE_OPERATORS` 运行时为空（`len()==0`，靠 config 状态注入）⇒ **不要拿它当算子过滤器**，
 否则会把所有算子算成 0（本次踩过，第一版候选全 `ops=0`）。
 ⚠ 平台 `regular.operatorCount` 是**调用次数**（含重复），官方 tiebreak 要的是 **distinct**，不能直接拿来当 T1。

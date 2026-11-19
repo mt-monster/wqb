@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-11-16
+last_verified: 2026-11-19
 name: wqb-concurrency
 description: "回测被 429 / CONCURRENT_SIMULATION_LIMIT_EXCEEDED 卡住、回测吞吐低、孤儿模拟占槽、要弄清填槽并发口径时使用：并发上限 C 的测定、在飞数锁定原则、孤儿模拟与三类卡住根因、七槽填槽 SOP 的并发纪律。"
 layer: L3
@@ -98,9 +98,9 @@ self._sub_sem = threading.Semaphore(C)   # C 取自 config.CONCURRENCY['slots']�
 **SOP（并发部分）**：
 
 1. **提交前门禁**：每批表达式先过 `tools/wave_gate.py`（RA 步 5；含 toolkit `gate.py`），确认算子签名 / 字段白名单 / 单位语义合规，杜绝批内 ERROR 连坐。
-2. **7 批同提**：`mcp__wq-brain-http__create_multi_simulation`（异步模式）每轮同时提交 7 批 × 8 条；**禁止串行「提交 → 等完 → 再提」**（槽位利用率仅 ~14%）。**`validate_fields` 分场景**：**验活探针**（新字段先验活幽灵字段，RA 步 3）用 `true`；**正式批**用 `false`（避免预检超时）。
+2. **N 批同提（N = `CONCURRENCY['slots']` = 2）**：`mcp__wq-brain-http__create_multi_simulation`（异步模式）每轮同时提交 **2 批 × 8 条**（2026-10-06 用户定案 7→2；平台实测容量 **C≈7** 是**容量上限**，不是工作水位）；**禁止串行「提交 → 等完 → 再提」**。**`validate_fields` 分场景**：**验活探针**（新字段先验活幽灵字段，RA 步 3）用 `true`；**正式批**用 `false`（避免预检超时）。
 3. **统一轮询与收批**：用 `mcp__wq-brain-http__harvest_multisim_alphas` 一次取回 multisim 全部子 alpha 详情（含 `checks`；把旧的「`lookINTO_SimError_message` → children → `get_alpha_details` 逐 ID」三段链压成 2 次调用），再 `harvest_multisim_results` 入库；批内 ERROR 的定位用 `lookINTO_SimError_message`。**不用 `get_user_alphas`**：它按时间排序拉摘要列表，无法保证目标 ID 全在里面，也可能不含完整 `checks`。
-4. **即收即补**：任一批 COMPLETE 立即回收筛选，空槽当轮补新批，保持 7 槽常满，单轮吞吐 ×7。
+4. **即收即补**：任一批 COMPLETE 立即回收筛选，空槽当轮补新批，保持 **2 槽常满**（= 工作水位 `slots=2`）。
 5. **批间间隔**：缺省不设（N 槽同提，N = `CONCURRENCY['slots']`）；遇 429 时按 §8.1 降账户级并发，并把批间隔拉到 ≥ 45 s（令牌约 1 个 / 20–40 s 补充）。
 
 **台账与复盘不在本 SOP 里**：写波结论（`upsert_wave_result`）、「未写结论不得开下一波」、选波前读 `get_latest_wave` / `step_funnel`、多样性评估，都是 RA 步 1 / 步 9 的事。现行的「台账同步门」= 开波三道区域闸（DB 判定）+ `tools/step_funnel.py`；`check_ledger_sync.py`（`tools/` 与 toolkit 各一份）校验的是 `runs/` 批次字母与 `WAVE_LEDGER.md`——**文件时代**的做法，仅当战役目录仍保留这些文件时才有意义。

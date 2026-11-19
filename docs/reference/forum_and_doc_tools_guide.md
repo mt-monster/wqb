@@ -1,7 +1,7 @@
 # 论坛 / 文档工具速查（2026-11-17）
 
 > **★ 本指南已被裁定为全项目查论坛的唯一方式（2026-11-18 用户指令）**：只经下面 5 个 `wq-brain-http` MCP 工具，
-> 不再 requests 抓 HTML / 直连 Zendesk API / 拿 WebSearch 当论坛通道（WebSearch/WebFetch 只用于**论文**线）。
+> 不再 requests 抓 HTML / 直连 Zendesk API / 拿 WebSearch 当论坛或论文通道。**论文线唯一稳定通道 = `tools/research/paper_search.py`（Crossref→arXiv→本地论文库三层冗余，2026-11-19；WebSearch/WebFetch/Semantic Scholar 已弃用）**；EVID-PAPER 闸自己调它实证 found=true，查不到即 FAIL。
 > 实现落点：论坛访问单一实现 `tools/lib/forum_mcp.py`；问题驱动检索 `tools/forum_recon.py`（传输层已切 MCP）；
 > 旧抓取链 `tools/forum_research.py` **已删除**（2026-11-18，不留兼容实现）。机械闸 `tests/unit/08_forum_recon/test_forum_single_way_gate.py`；
 > 顶层规范见 `AGENTS.md` §8.11。

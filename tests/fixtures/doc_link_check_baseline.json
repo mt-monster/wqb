@@ -1,0 +1,6 @@
+{
+  "_doc": "活文档 markdown 死链基线（棘轮）。只拦新增：修好一条请重跑 --update-baseline 收紧；只在确认该死链合理时才手工放宽。",
+  "n_docs": 878,
+  "n_links": 1794,
+  "violations": []
+}

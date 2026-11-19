@@ -292,9 +292,10 @@ def main():
     priors_gate = check_priors(ctx, exprs, a.dataset, require_priors=a.require_priors)
     if not priors_gate["pass"]:
         all_pass = False
-    # 机制证据闸（2026-11-15）：新机制首次派波前须有论坛/论文检索留痕（漏检 WL58980/
-    # FF65210 模板帖三次实证后落地）。repair/probe 批自动豁免；闸只查 ledger 留痕，
-    # live 检索是 S2 设计动作（tools/forum_recon.py）。
+    # 机制证据闸（2026-11-15 落地，2026-11-19 加严）：新机制首次派波前须有论坛留痕 + 论文实证查到。
+    # ★用户 2026-11-19 明令：EVID-PAPER 不再「留痕就算过」——闸调 tools/research/paper_search.py
+    #   （Crossref→arXiv→本地库三层冗余）真查论文，found=false 即 fail（默认硬拦，所有 wave_gate）。
+    #   弃用 WebSearch/WebFetch/Semantic Scholar。repair/probe 批自动豁免。
     evidence_gate = check_evidence_gate(ctx, a.dataset, require_evidence=a.require_evidence,
                                         batch_type=a.batch_type)
     if not evidence_gate["pass"]:

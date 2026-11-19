@@ -62,7 +62,7 @@ tracking/<REGION>/                       # 区域大写；region 只从 settings
 
 `diversity.signal_floor` 的语义（易误读）：**整节缺失 → fail-closed**，回落缺省 `max_sharpe_floor=0.5` / `min_batches=2` 继续判定并输出 `warning`；`thresholds.json` 不可读同理。**只有显式 `enabled:false` 才放行**。改版前是「整节缺失即静默放行」，与停止闸使命矛盾（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。
 
-`diversity.stop_rules` 完整键（缺节取缺省；ledger `stop_rules_override{reason,until}` 可按用户指令放行）：`enabled` / `yield_min_backtests`（100）/ `consecutive_fail_waves`（3）/ `axis_scope` / `axis_window` / `distinct_fail_axes` / `exempt_zero_cost_waves` / `exempt_dead_end_waves`。规则 A：区域 backtested ≥ `yield_min_backtests` 且 passed = 0；规则 B（按轴）：同轴连续 K 波可计数 FAIL 熔断，或窗口内 ≥ D 个不同轴全 FAIL 且无 PASS 停区；`axis_scope:false` 或 schema 不齐回落旧口径「最近 3 个 closed 波全 FAIL」。
+`diversity.stop_rules` 完整键（缺节取缺省；ledger `waiver_stop_rules_<region>_<wave|all>{gate,reason_code,reason,evidence,approved_by,created_at,expires_at}` 可按用户指令放行（旧键 `stop_rules_override` 只被识别、缺 `until` 视为永久放行并告警 NO_EXPIRY））：`enabled` / `yield_min_backtests`（100）/ `consecutive_fail_waves`（3）/ `axis_scope` / `axis_window` / `distinct_fail_axes` / `exempt_zero_cost_waves` / `exempt_dead_end_waves`。规则 A：区域 backtested ≥ `yield_min_backtests` 且 passed = 0；规则 B（按轴）：同轴连续 K 波可计数 FAIL 熔断，或窗口内 ≥ D 个不同轴全 FAIL 且无 PASS 停区；`axis_scope:false` 或 schema 不齐回落旧口径「最近 3 个 closed 波全 FAIL」。
 
 ## reference/ 约定
 

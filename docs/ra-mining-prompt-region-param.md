@@ -133,7 +133,7 @@
 步6 S3 七槽回测（并发纪律唯一来源 = wqb-concurrency §8；S3 入口可选
     brain-sim-alphas-in-batch-and-track；设置展开按需 brain-inspect-raw-template-create-setting --from-db）
   mcp__wq-brain-http__workflow_batch_track  region=$REGION  wave=<W>  dataset=<DS>
-    （★ 禁止拼 --concurrency；n_slots 内部 min(7,批数)；WQB_GLOBAL_SLOTS=7 账户级仲裁）
+    （★ 禁止拼 --concurrency；n_slots 内部 min(slots,批数)（slots=2）；WQB_GLOBAL_SLOTS=2 账户级仲裁）
   mcp__wq-brain-http__workflow_task_status  task_id=<返回的 task_id>
   收批：mcp__wq-brain-http__harvest_multisim_alphas → mcp__wqb-db__harvest_multisim_results
   连坐隔离默认开（ERROR 批自动定位坏式、无辜式重发一次）；故障协议见 SKILL.md 步 6 表。
@@ -170,7 +170,7 @@
   C. 同轴连续 3 波可计数 FAIL，或 8 波窗口 ≥4 轴全 FAIL 无新 dead_end → 该区暂停。
   D. 连续 3 波 gate 通过率=0 → 换数据集；白名单被 dead_end 全覆盖 → 停。
   E. 配额耗尽 → 挂起提交，继续步 2→9。
-  用户显式要求继续 → upsert_ledger_key(region, "stop_rules_override", {...}) 留痕放行。
+  用户显式要求继续 → upsert_ledger_key(region, `waiver_stop_rules_<region>_all`, {...}) 留痕放行（**必填 `expires_at`**；旧键 `stop_rules_override` 只被识别、不是写入键）。
 
 【验收清单（提交给用户前逐项自检）】
   □ 步0 region_rotation 已跑（清库存回切判定落 ledger）；库存扫描先于新挖

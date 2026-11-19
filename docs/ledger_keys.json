@@ -833,12 +833,17 @@
   {
    "key": "<dataset>_dead",
    "status": "active",
-   "purpose": "数据集判死记录 `{dataset, reason, dead_at, dead_count, salvage?}`",
+   "purpose": "数据集判死记录 `{dataset, reason, dead_at, dead_count, salvage?}`；**2026-11-19 起按载荷语义分三档**（判据本体 `src/wqb/dead_datasets.py`）：数据集级=硬闸拦 / 条件死（只禁主信号用法，允许作辅助腿）=告警不拦 / 族级（判的是字段族或机制）=不拦。载荷含 `status: reopened` ⇒ 撤判重开，不入任何档（硬闸放行）",
    "writers": [
     {
      "kind": "code",
      "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
      "via": "`campaign.py ledger mark-dead` / `score_datasets --mark-dead`"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/ledger/dead_sets.py",
+     "via": "撤判回写**计划**（只打印 `upsert_ledger_key` payload，不写库）；执行由 MCP 工具完成"
     }
    ],
    "readers": [
@@ -849,11 +854,21 @@
     {
      "kind": "code",
      "ref": "wqb_db_mcp.py",
-     "via": "get_dead_datasets"
+     "via": "get_dead_datasets（2026-11-19 起走 `wqb.dead_datasets.blocking_datasets`，只返回数据集级）"
+    },
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py",
+     "via": "`dead_dataset_guard` 硬闸（经 `_lib/dead_sets.py` 委托同一实现；条件死/族级只告警）"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/ledger/dead_sets.py",
+     "via": "三档判死台账查看"
     }
    ],
    "missing": "视为未判死",
-   "refresh": "判死结论战役结束后提炼进 `registry_empirical`"
+   "refresh": "判死结论战役结束后提炼进 `registry_empirical`；**撤判必须回写本键**（`status: reopened`），否则硬闸与档案矛盾（DEU risk60/risk88/news50 实测）"
   },
   {
    "key": "dataset_empirical_prior",
@@ -1648,6 +1663,90 @@
    "readers": [],
    "missing": "该区还没跑过 yield 报告；摘要里产出率一节显示“暂无”（摘要自行重算，不读本键）",
    "refresh": "每次跑 tools/knowledge/yield_report.py 覆盖；报告文件按日期另存"
+  },
+  {
+   "key": "<x>_dead_<x>",
+   "status": "active",
+   "purpose": "**判死记录的同族键形态**（与 `<dataset>_dead` 同一语义，带日期后缀的判死键（如 `gbr_other699_dead_20261029`））。判据本体 = `src/wqb/dead_datasets.py`：按载荷语义分三档——数据集级=硬闸拦 / 条件死（只禁主信号用法）=告警不拦 / 族级（判的是字段族）=不拦。**旧读取口径只认 `%_dead` ⇒ 这些形态全部读不到**（2026-11-19 修复）。",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "形态与分级语义的**定义处**；实际写入方同 `<dataset>_dead`（`campaign.py ledger mark-dead` / `score_datasets --mark-dead` / 战役内 ad-hoc 写入）"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "解析与分级处；消费方 = MCP `get_dead_datasets`（只返回数据集级）、toolkit `pipeline.dead_dataset_guard` 硬闸（经 `_lib/dead_sets.py` 委托）、`tools/ledger/dead_sets.py` 三档查看"
+    }
+   ],
+   "missing": "视为未判死",
+   "refresh": "与 `<dataset>_dead` 同；**撤判必须回写** `<dataset>_dead` 的 `status: reopened`（否则档案已撤判而硬闸照拦）"
+  },
+  {
+   "key": "<x>_dead_end",
+   "status": "active",
+   "purpose": "**判死记录的同族键形态**（与 `<dataset>_dead` 同一语义，`_dead_end` 后缀的判死键（如 `model252_dead_end`））。判据本体 = `src/wqb/dead_datasets.py`：按载荷语义分三档——数据集级=硬闸拦 / 条件死（只禁主信号用法）=告警不拦 / 族级（判的是字段族）=不拦。**旧读取口径只认 `%_dead` ⇒ 这些形态全部读不到**（2026-11-19 修复）。",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "形态与分级语义的**定义处**；实际写入方同 `<dataset>_dead`（`campaign.py ledger mark-dead` / `score_datasets --mark-dead` / 战役内 ad-hoc 写入）"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "解析与分级处；消费方 = MCP `get_dead_datasets`（只返回数据集级）、toolkit `pipeline.dead_dataset_guard` 硬闸（经 `_lib/dead_sets.py` 委托）、`tools/ledger/dead_sets.py` 三档查看"
+    }
+   ],
+   "missing": "视为未判死",
+   "refresh": "与 `<dataset>_dead` 同；**撤判必须回写** `<dataset>_dead` 的 `status: reopened`（否则档案已撤判而硬闸照拦）"
+  },
+  {
+   "key": "dead_<x>",
+   "status": "active",
+   "purpose": "**判死记录的同族键形态**（与 `<dataset>_dead` 同一语义，`dead_<x>` 形态（如 `dead_datasets` 聚合键、`dead_empty_*`））。判据本体 = `src/wqb/dead_datasets.py`：按载荷语义分三档——数据集级=硬闸拦 / 条件死（只禁主信号用法）=告警不拦 / 族级（判的是字段族）=不拦。**旧读取口径只认 `%_dead` ⇒ 这些形态全部读不到**（2026-11-19 修复）。",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "形态与分级语义的**定义处**；实际写入方同 `<dataset>_dead`（`campaign.py ledger mark-dead` / `score_datasets --mark-dead` / 战役内 ad-hoc 写入）"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "解析与分级处；消费方 = MCP `get_dead_datasets`（只返回数据集级）、toolkit `pipeline.dead_dataset_guard` 硬闸（经 `_lib/dead_sets.py` 委托）、`tools/ledger/dead_sets.py` 三档查看"
+    }
+   ],
+   "missing": "视为未判死",
+   "refresh": "与 `<dataset>_dead` 同；**撤判必须回写** `<dataset>_dead` 的 `status: reopened`（否则档案已撤判而硬闸照拦）"
+  },
+  {
+   "key": "dead_end_<x>",
+   "status": "active",
+   "purpose": "**判死记录的同族键形态**（与 `<dataset>_dead` 同一语义，`dead_end_*` 族级镜像键（如 `dead_end_eur_analyst_consensus_actual`））。判据本体 = `src/wqb/dead_datasets.py`：按载荷语义分三档——数据集级=硬闸拦 / 条件死（只禁主信号用法）=告警不拦 / 族级（判的是字段族）=不拦。**旧读取口径只认 `%_dead` ⇒ 这些形态全部读不到**（2026-11-19 修复）。",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "形态与分级语义的**定义处**；实际写入方同 `<dataset>_dead`（`campaign.py ledger mark-dead` / `score_datasets --mark-dead` / 战役内 ad-hoc 写入）"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/dead_datasets.py",
+     "via": "解析与分级处；消费方 = MCP `get_dead_datasets`（只返回数据集级）、toolkit `pipeline.dead_dataset_guard` 硬闸（经 `_lib/dead_sets.py` 委托）、`tools/ledger/dead_sets.py` 三档查看"
+    }
+   ],
+   "missing": "视为未判死",
+   "refresh": "与 `<dataset>_dead` 同；**撤判必须回写** `<dataset>_dead` 的 `status: reopened`（否则档案已撤判而硬闸照拦）"
   }
  ]
 }

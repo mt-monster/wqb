@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-11-16
+last_verified: 2026-11-19
 name: wq-brain-ppa-mining
 description: "开 PPA（Power Pool Alpha）战役、或要判断某个数据集在目标区域能不能打 PPA 时使用：S0 体检的 PPA 方法论（三条硬门槛与拥挤度口径）、数据集 / 字段体检指标 → 预处理的决策映射、白空间取数路径。RA 常规战役的白名单排序走 ra-pipeline 决策表 D4，不走本 skill；不编排、不提交。"
 layer: L0
@@ -110,7 +110,7 @@ trade_when(ts_zscore(returns, 22) < 0, rank(ts_zscore(subtract(ts_mean(ts_backfi
 
 ## 7. 参数与设置
 
-- **并发不在这里定**：见 `wqb-concurrency`（`config.CONCURRENCY`）；旧文的「C = 5」已删（config 里 slots = 7）。
+- **并发不在这里定**：见 `wqb-concurrency`（`config.CONCURRENCY`）；旧文的「C = 5」已删（config 里 slots = 2，2026-10-06 用户定案 7→2）。
 - delay：以 `config.REGIONS[<R>]["delays"]` 为准（D0 数据只有部分区域有，其余用 D1）；universe：`get_platform_setting_options` 与 `config.REGIONS[<R>]["universes"]`，**不凭记忆**——非法档位报 HTTP 500 而不是 400。
 - decay / truncation：**缺省**才用 returns 信号 4、close 信号 6、truncation 0.08；有库存实测时以 settings prior 为准（决策表 D5）。**参数只在有依据的少数维度内扫**，并记录取值理由；**不扫权重**、不补参数变体凑数。
 - testPeriod：「无测试期」写 `P0Y0M0D`（示例里的 `P0D` 是简写，平台接受的规范写法用前者）；`P6Y` 是真实的 6 年测试期，也是平台允许的最大值（`P6Y0M0D`）——是两回事。

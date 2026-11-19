@@ -10,9 +10,9 @@
 
 | 词 | 本库采用的含义 | 弃用 / 易混的说法 | 定义所在 |
 |---|---|---|---|
-| **并发令牌** `sim_token` | 平台同时在飞的仿真上限（Token-Bucket，`slots=7`，安全瞬时 ≤6） | 裸写「槽」 | `config.CONCURRENCY` |
+| **并发令牌** `sim_token` | 平台同时在飞的仿真上限（Token-Bucket，**工作水位 `slots=2`**（2026-10-06 用户定案 7→2）；平台实测容量 **C≈7** 是上限、不是水位） | 裸写「槽」 | `config.CONCURRENCY` |
 | **波内配额** `wave_quota` | 一波里表达式要满足的配比（如「跨金字塔 ≥2 条」） | 裸写「槽」「七槽」 | `config.MINING`；ra-pipeline 决策表 D8 |
-| **批** | 一次 multisimulation（8 条子模拟；一轮 7 批同提） | 「槽」 | wqb-concurrency |
+| **批** | 一次 multisimulation（8 条子模拟；一轮 **2 批**同提 = 工作水位 slots=2） | 「槽」 | wqb-concurrency |
 | **dispatch（派发）** | 把表达式派去仿真：`POST /simulations`（`tools/submit_batch.py`、MCP `submit_batch` / `create_multi_simulation`） | 「批量提交」「submit」 | brain-sim-alphas-in-batch-and-track |
 | **submit（提交）** | 把**已存在**的 alpha 提交上平台：`POST /alphas/{id}/submit`（`workflow_submit_alpha(confirm_submit=True)`、`super_build.py submit`）——**不可逆** | 把 dispatch 也叫「提交」 | worldquant-submit-alpha [`submit-chain.md`](worldquant-submit-alpha/references/submit-chain.md) |
 | **提交层信息** | `POST /submit` 响应里的 checks。`GET /alphas/{id}/submit` 在本平台恒 404，**不是**信息来源 | 「提交层视图」（指 GET 的那个） | submit-chain.md §3 |
@@ -23,7 +23,7 @@
 | **meets_internal_line** | Sharpe>1.58 且 Fitness>1.0（停止规则 A 的「达标」） | 裸写「达标」 | `config.GATES_PLATFORM` |
 | **ra_clean** | `is.checks` 里 RA 18 项没有任何非 PASS/PENDING（Failed RA = 0） | 裸写「达标」「零硬闸失败」 | `config.compute_webdata_failed_counts` |
 | **review_passed** | 评审闸全过，波结论 `PASS` | 「GREEN 波」 | `wave_results.verdict` |
-| **ATOM alpha** | 只用**单一数据集**字段的 alpha（允许的分组字段除外），享受放宽的提交口径（以近 2 年 Sharpe 为准）。**★ 放宽的确切边界（官方 Single Dataset Alphas 页 + Consultant Submission Tests 页）**：① 判据 = 非豁免字段的 dataset id 唯一 + 无 `inst_pnl()` / `convert()`（这两个算子按 pv1 计）；② **只豁免 IS Ladder Sharpe Test**（改用 Last-2Y Avg IS Sharpe 判，官方表见平台文档；TO<30% 时该 PASS 阈值 ×0.85）；③ **`LOW_SHARPE`（全期）与 `LOW_FITNESS` 仍在 RA 名单内、不豁免**，平台会把它们从 fail 降级为 warning，但资格门仍按 WARNING 计失败 ⇒ **ATOM 候选仍须全期 S 与 F 过常规线**；④ IS Testing Status 会显示「2 year Sharpe of X is below cutoff of Y」代替 ladder 的 Pass/Fail。**⇒ ATOM 省掉的是 ladder 那一步，不是「全期 S 1.58」** | 把「ATOM 提交口径」与 judge 的 `SINGLE_DATA_SET` 标签当两件事；把 ATOM 当成「只要 2Y 过就行」 | brain-how-to-pass-alpha-test `reference.md`；放宽的具体阈值**只引用官方表**，不在别处写数字 |
+| **ATOM alpha** | 只用**单一数据集**字段的 alpha（允许的分组字段除外），享受放宽的提交口径（以近 2 年 Sharpe 为准）。**★ 放宽的确切边界（官方 Single Dataset Alphas 页 + Consultant Submission Tests 页）**：① 判据 = 非豁免字段的 dataset id 唯一 + 无 `inst_pnl()` / `convert()`（这两个算子按 pv1 计）；② **只豁免 IS Ladder Sharpe Test**（改用 Last-2Y Avg IS Sharpe 判，官方表见平台文档；官方页提到 TO<30% 时 PASS 阈值 ×0.85，但**本仓实测未见**：USA ATOM `YP1ZvjWA` TO 17.7%、2Y 1.57、`LOW_2Y_SHARPE` warning `limit=1.58`、`ra_failed=true` ⇒ 近闸线按 **1.58**，不要用 1.34；详见 `docs/reference/atom_mining_playbook_20261117.md` §二）；③ **`LOW_SHARPE`（全期）与 `LOW_FITNESS` 仍在 RA 名单内、不豁免**，平台会把它们从 fail 降级为 warning，但资格门仍按 WARNING 计失败 ⇒ **ATOM 候选仍须全期 S 与 F 过常规线**；④ IS Testing Status 会显示「2 year Sharpe of X is below cutoff of Y」代替 ladder 的 Pass/Fail。**⇒ ATOM 省掉的是 ladder 那一步，不是「全期 S 1.58」** | 把「ATOM 提交口径」与 judge 的 `SINGLE_DATA_SET` 标签当两件事；把 ATOM 当成「只要 2Y 过就行」 | brain-how-to-pass-alpha-test `reference.md`；放宽的具体阈值**只引用官方表**，不在别处写数字 |
 | **FAIL / PENDING / WARNING** | `FAIL` 挡；`PENDING` = 结果未出，**不据此判死也不据此放行**；`WARNING` 见 §2.4 | 一个词三种范围 | §2.4 |
 | **判死（按粒度）** | 候选=淘汰；字段搭配=禁配；**家族=`dead_end`（范围 = region × 信号族名）**；数据集=`<ds>_dead` 台账键；波=`FAIL` | 「判死」不带粒度 | registry / ledger-keys |
 | **否决权威 / 放行权威** | 否决权威**只能拦不能放**（`submit_verdict`、Failed-count 门、prod 实测）；放行权威 = **用户明确确认 + `confirm_submit=True` 的 POST**（不可逆） | 「唯一权威」 | submit-chain.md §1 |

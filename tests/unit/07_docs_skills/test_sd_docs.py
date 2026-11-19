@@ -17,9 +17,16 @@ REPO = Path(__file__).resolve().parents[3]
 SKILLS = REPO / "Claude" / "skills"
 TK = SKILLS / "wq-brain-campaign-toolkit"
 TK_SCRIPTS = TK / "scripts"
-for _p in (REPO / "src", REPO / "tools", TK_SCRIPTS):
+for _p in (REPO / "src", REPO / "tools", TK_SCRIPTS, TK_SCRIPTS / "_lib"):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
+# ⚠ 2026-11-19：`_lib` 必须**显式**进 sys.path。
+# 本文件的 `import slots` / `import poller`（物理住在 toolkit/scripts/_lib/）此前只能靠
+# 「同进程里恰好先 import 过某个 _lib 模块」才可解析——_lib/registry.py、_lib/ledger.py、
+# _lib/wave_results.py 都会把 _lib 目录塞进 sys.path。于是这两个用例**依赖用例执行顺序**：
+# 单跑、或 xdist 分到没先跑过 _lib 的 worker ⇒ ModuleNotFoundError: No module named 'slots'
+# （2026-11-19 治理批次实测：文档口径修复改变收集顺序后暴露）。
+# 显式加 _lib ⇒ 与执行顺序无关。
 
 SIX = ("wq-brain-campaign-matrix", "wq-brain-campaign-toolkit", "wqb-concurrency",
        "brain-sim-alphas-in-batch-and-track", "brain-inspect-raw-template-create-setting")

@@ -497,23 +497,36 @@ def get_submit_ready(region: str, status: str = "READY", limit: int = 50) -> Lis
 
 @mcp.tool()
 def get_dead_datasets(region: str) -> List[str]:
-    """获取某区域判死数据集列表（ledger_kv 的 *_dead keys）。
+    """获取某区域**数据集级**判死清单（硬闸会拦的那一档）。
+
+    口径（2026-11-19 起走 `wqb.dead_datasets` 单一实现）：
+    判死记录在 ledger_kv 里有四种键形态（`<ds>_dead` / `dead_datasets` 聚合键 /
+    `dead_end_*` 族级镜像 / `*_dead_<日期>`），旧实现只认 `key LIKE '%_dead'` ⇒
+    聚合键与带日期/带 `_dead_end` 后缀的记录**一条都读不到**（实测：GBR 另有
+    model264 / news104 / pattern_scores / pv29 / pv30 只记在聚合键里）。
+    现在按载荷语义分三档，本工具只返回**数据集级**（可硬拦）那一档：
+    族级（判的是字段族/机制，不是整集）与条件死（只禁主信号用法、允许作辅助腿）
+    不在此列。
 
     Args:
         region: 区域
 
     Returns:
-        判死数据集名列表
+        数据集级判死的数据集名列表
     """
+    from wqb.dead_datasets import blocking_datasets
+
     conn = _conn()
     c = conn.cursor()
     c.execute(
-        "SELECT key FROM ledger_kv WHERE region=? AND key LIKE '%_dead'",
+        "SELECT key, value FROM ledger_kv WHERE region=? AND ("
+        " key LIKE '%_dead' OR key LIKE 'dead_%' OR key LIKE '%_dead_%'"
+        " OR key LIKE '%_dead_end' OR key LIKE 'dead_end_%')",
         (region,),
     )
-    keys = [r[0].replace("_dead", "") for r in c.fetchall()]
+    rows = c.fetchall()
     conn.close()
-    return keys
+    return sorted(blocking_datasets(rows))
 
 
 # ---------------- alpha 查询 ----------------

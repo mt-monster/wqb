@@ -1202,7 +1202,12 @@ shortinterest）至此**全部有实测依据地关闭**，未点亮塔空间**�
 
 #### 9.9.5 强档复测（wave 260）：nanHandling ON 不翻盘，sentiment 塔关闭
 
-**先修读帖链路（工程项，已闭环）**：根因是 `forum_recon.live_search_round` 把
+> ⚠ **2026-11-18 更新**：查论坛已统一到 MCP（`tools/lib/forum_mcp.py`，见 `docs/reference/forum_and_doc_tools_guide.md`），
+> `tools/forum_research.py` 与 `forum_recon._resolve_post_id` 均已删除；下文的 requests 修法仅作历史记录。
+
+**先修读帖链路（工程项，已闭环）** —— ⚠ 以下为**历史记录**，`resolve_id` / `_resolve_post_id`
+两套实现与其回归用例已于 2026-11-18 随 requests 抓取链一并删除（现行链路 = `tools/lib/forum_mcp.py`：
+从 `results[].link` 正则取 `str` id）。原记录：根因是 `forum_recon.live_search_round` 把
 `forum_research.resolve_id()` 的 **三元组** `(post_id, is_comment, url)` 整个当 pid 拼进
 `/community/posts/{pid}.json` ⇒ 平台一律非 200，表现为「搜到 N 条、读 0 条」。
 修法 = 新增 `forum_recon._resolve_post_id()` 收敛成 `str | None`（含 None / 异常 / 空 href 四条退路），

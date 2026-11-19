@@ -1149,6 +1149,49 @@
    "created_at": "2026-10-31T16:00:00",
    "validated_at": "2026-10-31T16:00:00",
    "source": "KOR 2026-10-31 未点亮塔战役复盘（会话经验蒸馏）"
+  },
+  {
+   "rule_id": "atom_first_regular_fallback_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_design"
+   },
+   "action": {
+    "op": "atom_first",
+    "params": {
+     "doc": "docs/reference/atom_mining_playbook_20261117.md",
+     "doc_section": "§四 行动清单",
+     "consumption": "advisory_only：strategy 型由 build_wave.py / pipeline.py 的常驻提示循环打印 action.message；本 op 无自动拦截分支"
+    },
+    "message": "★ ATOM 优先：先穷尽单数据集几何（水平/一阶差/分位/比值/二阶/非线性 × 分组轴 × 配置档）并留下读数；只有举证穷尽后才走 regular 跨集，且只许 gating/grouping/residual/ratio；add 等权混腿仍禁。2Y 近闸线按 checks 实读 1.58，不要用 0.85 折扣后的 1.34。"
+   },
+   "evidence": {
+    "source": "用户 2026-11-17 裁定 + 2026-11-17 平台实读",
+    "user_quote": "ATOM 优先，实在没有 ATOM 就挖 regular",
+    "refs": [
+     "docs/reference/atom_mining_playbook_20261117.md",
+     "AGENTS.md §7.7"
+    ],
+    "counterexample_2y_discount": {
+     "alpha_id": "YP1ZvjWA",
+     "region": "USA",
+     "universe": "TOP3000",
+     "delay": 1,
+     "turnover": 0.177,
+     "two_year_sharpe": 1.57,
+     "check": "LOW_2Y_SHARPE",
+     "result": "warning",
+     "limit": 1.58,
+     "ra_failed": true
+    }
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-11-17T00:00:00",
+   "source": "ATOM playbook 2026-11-17（外部文章交叉核验 + 用户裁定）"
   }
  ]
 }

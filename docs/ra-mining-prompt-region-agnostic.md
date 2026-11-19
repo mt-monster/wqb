@@ -118,7 +118,7 @@ mcp__wqb-db__region_rotation  current_region=<上一区>  target=<$TARGET>  writ
 判据：SATURATED 需 strong≥2（mined_out / prod_wall / no_feasible_headroom / yield_collapse / 战役穷尽）；
 `feasible_unsubmitted >= 5` 豁免降为 WATCH（仍有可采库存）。
 **规则**：当前区 `should_rotate=true` → 转 `to_region`；否则留在当前区。
-  所有区都 SATURATED（`all_saturated=true`）→ 停，写 `stop_rules_override` 需用户显式指令。
+  所有区都 SATURATED（`all_saturated=true`）→ 停，写 `waiver_stop_rules_<region>_all` 需用户显式指令（**必填 `expires_at`**；旧键 `stop_rules_override` 只被识别）。
 
 **④ 目标可达性预检**：对候选区跑
 `python tools/campaign_intel.py s0-select --region $REGION --delay $D --universe $U --top-n 15 --target <$TARGET>`
@@ -270,7 +270,7 @@ mcp__wq-brain-http__get_platform_setting_options
   0.60–0.70 → 直接进步 8（若本区 `gate_overrides.prod_corr_early_warn < 0.7` 则按该阈值提前停扩）。
 实证（IND pv103）：连投 3 波 24 条后才查 prod = 0.79–0.92，整族报废。### 步6 S3 七槽回测
 
-【唯一并发来源】`wqb-concurrency` §8（Token-Bucket C≈7，`WQB_GLOBAL_SLOTS` 缺省 7；
+【唯一并发来源】`wqb-concurrency` §8（平台实测容量 C≈7；**工作水位 `WQB_GLOBAL_SLOTS` 缺省 2**；
   多条 pipeline 同跑用 `_lib/slots.py` 的 token 文件跨进程计数，`WQB_GLOBAL_SLOTS=0` 关闭）。
 
 【填槽】`mcp__wq-brain-http__workflow_batch_track region=$REGION wave=<W> dataset=<DS>`
@@ -395,7 +395,7 @@ mcp__wqb-db__upsert_ledger_key         region=$REGION key="s6_verdict_<wave>" ..
 | 7 | 配额耗尽 | 挂起提交，继续步 2→9（00:00 ET 重置） |
 
 停止闸阈值引用 `tracking/<R>/config/thresholds.json` 的 `diversity.stop_rules` / `diversity.signal_floor`；
-用户显式要求继续时写 `mcp__wqb-db__upsert_ledger_key(region=$REGION, "stop_rules_override", {...})` 放行。
+用户显式要求继续时写 `mcp__wqb-db__upsert_ledger_key(region=$REGION, `waiver_stop_rules_<region>_all`, {...})（**必填 `expires_at`**；旧键 `stop_rules_override` 只被识别、不是写入键）` 放行。
 
 【验收清单（提交给用户前的自检，逐项打勾）】
   □ 步0 库存扫描已先做（build_gate_prior_from_inventory + select_ra_basket），跨区命中已清完

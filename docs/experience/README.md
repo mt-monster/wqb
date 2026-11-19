@@ -24,6 +24,9 @@
 | [03_region_dataset.md](03_region_dataset.md) | **区域与数据集特性** | 12 区实测画像、已判死数据集清单、塔点亮状态、选区优先级 |
 | [04_engineering.md](04_engineering.md) | **工程与流程纪律** | skill 单点写入、DB 写锁与裸连接守卫、闸 SEM、提交钩子、测试守护、并发会话纪律 |
 | [05_antipatterns.md](05_antipatterns.md) | **反模式与已证伪路径** | 加权混腿禁令、同族连提、存量微调抢救、已证伪端点与算子、误判陷阱 |
+| [06_atom_mining.md](06_atom_mining.md) | **ATOM 挖掘（外部文章蒸馏 + 本仓校验）** | ATOM 三大制度红利（免 IS-Ladder 只看 2Y / PowerPool+ATOM 不吃日配额 / Genius 六维）、**木桶倍率律（混集取最低、≥3 集计 0 塔）**、隐形破 ATOM 三坑、**按 onboard 时间找字段**（不是 alphaCount==0）、4 套单字段模板、与本仓规则的口径差异 |
+| [08_paper_evidence_gate.md](08_paper_evidence_gate.md) | **外部论文取证：稳定通道 + 多样证硬闸**（2026-11-19） | 唯一稳定通道 `tools/research/paper_search.py`（Crossref→arXiv→本地库三层冗余，弃用 WebSearch/WebFetch/Semantic Scholar）；EVID-PAPER 默认硬拦且要求 ≥5 篇不同论文 ∧ ≥3 不同第一作者（DOI/标题去重、相关性校验防假阳性），留痕/孤证不算过 |
+| [07_field_profile_template_mapping.md](07_field_profile_template_mapping.md) | **字段画像 → 模板映射（静态 × 六法集成）** | 静态全量筛 vs 六法实证裁决的两段式集成、六法→模板准入/排除规则表、`holder_account_total` 白名单实证、裸常数 UNITS 坑、无离线包 waiver |
 
 ---
 

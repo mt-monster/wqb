@@ -94,7 +94,7 @@ variables:
 - **产物**：gate_results 表（all_pass / fail_reasons）
 
 ### 步 6（S3）七槽回测
-- **MCP**：`workflow_batch_track(region=$REGION, wave=$W, dataset=$DS, concurrency=7)` / `batch_status(simulation_ids=[...])` / `create_multi_simulation`（7 批同提）/ `lookINTO_SimError_message`（统一轮询）/ `get_alpha_details`（逐 ID 拉详情）
+- **MCP**：`workflow_batch_track(region=$REGION, wave=$W, dataset=$DS)`（并发由 `config.CONCURRENCY['slots']`=2 决定，**勿传 concurrency**，传了也只记计划并告警） / `batch_status(simulation_ids=[...])` / `create_multi_simulation`（N 批同提，N = slots = 2）/ `lookINTO_SimError_message`（统一轮询）/ `get_alpha_details`（逐 ID 拉详情）
 - **产物**：backtest_results 表 + wave_results 表 + checkpoint
 - **结构化摘要**：stdout_tail 精简为 structured_summary（COMPLETE/ERROR/CANCELLED 计数）
 

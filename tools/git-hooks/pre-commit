@@ -9,8 +9,9 @@
 #   1) tools/audit_structure.py      —— 结构契约 S1–S21（FAIL 阻断；S17 顶层目录 / S18 tracking 产物纯度 / S20 索引↔工作树 为 2026-10-14 新增，S21 跟踪件扩展名 为 2026-10-15 批次I 新增；S19 尚未落地 = 待用户裁决）
 #   2) code-audit/repo_governance_check.py --warn —— 未跟踪源码（**告警位，不阻断**）
 #   3) code-audit/doc_path_refs.py   —— 活文档死指针（棘轮：只拦新增，FAIL 阻断）
-#   4) code-audit/audit_destructive_default.py —— 默认即破坏（棘轮：只拦新增，FAIL 阻断）
-#   5) python -m pytest tests/ -x    —— 验证路由（失败阻断；skipped 不阻断但会顶屏）
+#   4) code-audit/doc_link_check.py —— 活文档 markdown 链接死链（棘轮：只拦新增，FAIL 阻断）
+#   5) code-audit/audit_destructive_default.py —— 默认即破坏（棘轮：只拦新增，FAIL 阻断）
+#   6) python -m pytest tests/ -x    —— 验证路由（失败阻断；skipped 不阻断但会顶屏）
 #
 # ⚠ 第 2 步是告警位不阻断（并行会话常态有未跟踪文件，硬卡只会逼人 --no-verify）。
 #   所以「新增未跟踪源码」**不会被钩子拦住**，人工对齐不可省：
@@ -118,6 +119,20 @@ if ! "$PY" tools/code-audit/doc_path_refs.py; then
     exit 1
 fi
 echo "[pre-commit] doc path refs passed."
+
+# --- 活文档 markdown 链接死链（2026-11-19 新增，**棘轮：只拦新增**）---------------
+# doc_path_refs 只校验反引号路径与「带 / 且首段是仓库顶层目录」的写法 ⇒ markdown 链接
+# （](docs/experience/02_signal_patterns.md) 之类）与裸文件名永不在它的视野里。
+# 本闸按两种口径判定：(a) 相对链接所在目录（渲染器语义）(b) 相对仓库根（agent 语义）；
+# 两种都解析不到 ⇒ 死链。存量记 tests/fixtures/doc_link_check_baseline.json，只拦新增。
+if ! "$PY" tools/code-audit/doc_link_check.py; then
+    echo ""
+    echo "[pre-commit] BLOCKED: 活文档出现新增的 markdown 死链。"
+    echo "[pre-commit] 修法：① 改成真实路径（相对所在目录，或仓库根相对——skill 里直写 docs/... 亦可）"
+    echo "[pre-commit]       ② 恢复丢失文件 ③ 归档到 attic 并在文中写明「已归档」"
+    exit 1
+fi
+echo "[pre-commit] doc link check passed."
 
 # --- 默认即破坏（2026-10-06 新增，**棘轮：只拦新增**）-------------------------
 # 模块级（import 时就会跑的）写盘 / 删除调用，且"提前退出型开关"在其**后面** ⇒

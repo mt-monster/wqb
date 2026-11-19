@@ -5,7 +5,7 @@
 
 ## 4.1 生成前的硬约束与准则
 
-术语：**波内配额**（一波里表达式的配比，如「跨金字塔 ≥ 2」；旧称「七槽」）≠ **并发令牌**（Token-Bucket，`slots=7`）≠ **批**（一次 `create_multi_simulation`，8 条子模拟）——见 [`GLOSSARY.md`](../../GLOSSARY.md)。
+术语：**波内配额**（一波里表达式的配比，如「跨金字塔 ≥ 2」；旧称「七槽」）≠ **并发令牌**（Token-Bucket，工作水位 `slots=2`）≠ **批**（一次 `create_multi_simulation`，8 条子模拟）——见 [`GLOSSARY.md`](../../GLOSSARY.md)。
 
 | # | 约束 | 类型 | 说明 |
 |---|---|---|---|

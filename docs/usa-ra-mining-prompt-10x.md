@@ -163,7 +163,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
   实证（IND pv103）：连投 3 波 24 条后才查 prod = 0.79–0.92，整族报废。
 
 步6 S3 七槽回测
-  【唯一并发来源】`wqb-concurrency` §8（Token-Bucket C≈7，`WQB_GLOBAL_SLOTS` 缺省 7）。
+  【唯一并发来源】`wqb-concurrency` §8（平台实测容量 C≈7；**工作水位 `WQB_GLOBAL_SLOTS` 缺省 2**）。
   【填槽】`mcp__wq-brain-http__workflow_batch_track region="USA" wave=<W> dataset=<DS>`
     ★ 禁止拼 `--concurrency`（pipeline.py 无此参数；曾致 S3 "启动成功"却从未真跑 13 天）。
     n_slots 内部 = min(7, 批数)。空槽补组合批，不用裸探针凑数。
@@ -241,7 +241,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
      规则 B2 区级多轴停：最近 8 波窗口内无任何 PASS 且 ≥4 个不同轴全部 FAIL → 停区。
      豁免：零配额 FAIL、产出新 dead_end 的 FAIL 不计数；撞墙型 FAIL 计数但附路由提示。
      （阈值 `diversity.stop_rules`；schema 不齐或 axis_scope:false 回落旧口径。）
-     用户显式要求继续时写 `mcp__wqb-db__upsert_ledger_key(region="USA", "stop_rules_override", {...})` 放行。
+     用户显式要求继续时写 `mcp__wqb-db__upsert_ledger_key(region="USA", "waiver_stop_rules_USA_all", {...})` 放行（**必填 `expires_at`**；旧键 `stop_rules_override` 只被识别——生成键值请用 `python tools/waiver.py new`）。
   B. 信号天花板闸：连续 min_batches 个波次 max|sharpe| < floor → 拒开（USA floor=0.9/min_batches=2）。
      缺节 fail-closed；仅 `enabled:false` 放行。
   C. 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0）→ 该信号族/数据集判死，换数据集。

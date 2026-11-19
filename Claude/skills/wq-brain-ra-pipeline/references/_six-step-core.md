@@ -296,10 +296,10 @@
 
 | 步骤 | 工具 | 说明 |
 |---|---|---|
-| 机制假说与实证 | **`domain_search`** | 一句话高层意图；**把 A-1 五问的答案写进 query** |
-| 补充单点事实 | `WebSearch` / `WebFetch` | arXiv / NBER / SSRN / 期刊摘要页，取**摘要 + 结论段** |
+| 机制假说与实证 | **`tools/research/paper_search.py`** | 一句话高层意图作 query；稳定三层 Crossref→arXiv→本地库，须 found=true |
+| 补充单点事实 | `tools/research/paper_search.py --layers local,crossref` | 本地论文库 + Crossref 取**标题/DOI**；WebSearch/WebFetch/Semantic Scholar 已弃用 |
 
-⚠ **`domain_search` 昂贵**（远端规划 + 多源检索 + 高延迟）⇒ **每个机制只调一次**；查定义用 `WebSearch` 即可。
+⚠ 论文检索只用稳定工具 `tools/research/paper_search.py`（每个机制一次，found=true 才采）；**WebSearch/WebFetch/domain_search/Semantic Scholar 全部弃用**（不稳/429）。
 
 **通道 B 的检索纪律**：
 

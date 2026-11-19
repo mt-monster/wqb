@@ -223,6 +223,7 @@
       "files": [
         "ab_test_framework.py",
         "atom_labeler.py",
+        "attribution_scan.py",
         "build_cluster_variants.py",
         "complexity_scan.py",
         "concept_overlap.py",
@@ -233,6 +234,7 @@
         "gem_pilot_sample.py",
         "kb_templates.py",
         "operator_diversity_analyzer.py",
+        "paper_search.py",
         "quality_control_engine.py",
         "role_cluster.py",
         "skeleton_origin_report.py",
@@ -241,8 +243,7 @@
         "targeted_dev.py",
         "vwap_field_dist.py",
         "vwap_histogram.py",
-        "vwap_pnl_fetch.py",
-        "attribution_scan.py"
+        "vwap_pnl_fetch.py"
       ],
       "status": "frozen-pending"
     },
@@ -257,20 +258,21 @@
         "audit_node_registration.py",
         "audit_skill_drift.py",
         "audit_structure.py",
+        "audit_write_targets.py",
         "clean_logs.py",
         "clean_unused_imports.py",
+        "doc_link_check.py",
         "fix_bom.py",
+        "fix_intentional_refs.py",
         "mcp_http_caller.py",
         "mcp_ping.py",
         "refs_scan.py",
         "retention.py",
         "run_grouped_tests.py",
         "scan_test_groups.py",
+        "snapshot_adjudicate.py",
         "start_wq_mcp.py",
         "sync_gem_embedded_skill.py",
-        "audit_write_targets.py",
-        "fix_intentional_refs.py",
-        "snapshot_adjudicate.py",
         "verify.py"
       ],
       "status": "moved-partial",
@@ -286,15 +288,16 @@
       "dir": "tools/ledger",
       "title": "ledger",
       "files": [
+        "check_ledger_sync.py",
         "closure_ledger.py",
+        "dead_sets.py",
+        "enqueue_propose.py",
         "ledger_keys.py",
+        "mining_ledger.py",
         "normalize_ledger_whitelist.py",
+        "scan_backup_ra.py",
         "sync_platform_alphas.py",
         "waiver.py",
-        "enqueue_propose.py",
-        "scan_backup_ra.py",
-        "mining_ledger.py",
-        "check_ledger_sync.py",
         "wqb_tools_shim.py"
       ],
       "status": "moved-partial",
@@ -337,6 +340,7 @@
       "dir": "tools/fields",
       "title": "fields",
       "files": [
+        "atom_fresh_fields.py",
         "build_field_index.py",
         "campaign_semantics.py",
         "category_field_triage.py",
@@ -391,7 +395,6 @@
       "files": [
         "diag_forum_read.py",
         "forum_cache_builder.py",
-        "forum_research.py",
         "forum_post.py"
       ],
       "status": "frozen-pending"
