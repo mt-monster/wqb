@@ -393,7 +393,13 @@ def _run_e2e(e2e, tag, exprs_file, fcov_mode):
            "--wave", tag, "--exprs-file", str(exprs_file),
            "--fcov-mode", fcov_mode,
            "--skip-diversity-gate", "--skip-quality", "--skip-semantic-gate",
-           "--inspect-mode", "off", "--gate-mode", "warn", "--waiver-mode", "off"]
+           "--inspect-mode", "off", "--gate-mode", "warn", "--waiver-mode", "off",
+           # ⚠ 2026-11-19：证据闸（EVID-FORUM / EVID-PAPER）改为**默认硬拦**（用户明令
+           # 「EVID-PAPER 必须真查到论文」⇒ found=false 即 fail），而本用例的合成数据集
+           # `myds` 不可能有论文 ⇒ 与本用例要验的 **FCV 接线**无关地恒红。
+           # `batch_type=probe` 按闸自身的口径**豁免证据闸**（_gate_knowledge.py:50），
+           # diversity 闸本用例已显式 skip ⇒ 不影响本用例任何断言。
+           "--batch-type", "probe"]
     return subprocess.run(cmd, cwd=str(REPO), capture_output=True, text=True,
                           encoding="utf-8", errors="replace", timeout=300, env=env)
 

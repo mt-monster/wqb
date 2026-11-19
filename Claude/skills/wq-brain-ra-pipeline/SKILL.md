@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.3"
-last_verified: 2026-11-16
+last_verified: 2026-11-19
 ---
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
 
@@ -72,7 +72,7 @@ last_verified: 2026-11-16
 | 步 8 提交判定       | [`01_platform_gates.md`](docs/experience/01_platform_gates.md)                                                                                                                                                               | 提交层四闸 + SUB 比值律 + 配额 / 相关性取数口径                                                   |
 | 改链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md)                                                                                                                                                                     | skill 单点写入、DB 写锁、节点五处同步                                                             |
 
-这些 md 是给人 / Agent 读的**软层**，**不进**上面「冲突裁决」链：与代码闸 / 决策表冲突时以后者为准，并回写经验库。**机器强制层另有其物**：`wq-brain-campaign-toolkit/config/methodology_rules.json`（全局）+ `tracking/<REGION>/reference/`（区域），由 `RuleStore.query()` 在 `build_wave` / `pipeline` / `gate` / `review_wave` 注入；两轨同源，**改一边要同步另一边**（`tests/unit/07_docs_skills/test_experience_kb_refs.py` 守引用锚点）。
+这些 md 是给人 / Agent 读的**软层**，**不进**上面「冲突裁决」链：与代码闸 / 决策表冲突时以后者为准，并回写经验库。**机器强制层另有其物**：`wq-brain-campaign-toolkit/config/methodology_rules.json`（全局）+ `tracking/<REGION>/reference/`（区域），由 `build_wave.py` / `pipeline.py` 按类型**分别消费**（⚠ **不是**「四处强制注入」——全仓无 `inject_rules` 通用注入器：`strategy` 型只被打印、`dead_end`/`universe_lever` 才硬拦、`explore_contract` 只进多样性闸、`diagnosis` 仅 4 个硬编码 op 生效；准确口径见 `AGENTS.md` §3「双轨同源」）；两轨同源，**改一边要同步另一边**（`tests/unit/07_docs_skills/test_experience_kb_refs.py` 守引用锚点）。
 
 ## 区域 Profile
 
@@ -160,7 +160,7 @@ last_verified: 2026-11-16
 - **完成定义**：`list_expressions` 查到本波条目——**未验证 DB 有表达式，不得声称步 4 成功**；且本波形态**从族出发**（非按字段平铺）、**探针先于扩批**。
 - **选波机检（2026-10-01 起）**：选波段 `build_wave` **已有机检**兜底上面两条纪律——① 每族 cap 从 DB `expressions.family` 读取（`--from-db` 主路径生效；GEM 落库时带入 family）；② 某族**全库尚无已回测行**时，本波该族 cap 收紧为 `WQB_PROBE_CAP`（默认 1）→ 强制「先放 1 条探针验证机制，再扩批」。`WQB_PROBE_GATE=off` 可关；`meta.probe_limited_families` 可查本波被收紧的族。**family 由落库带入（`final_expressions_meta.json`），2026-10-01 前生成的存量行无 family，存量波次不生效。** 字段池另带 L3.5 `families` 段（`s2_field_pool_<ds>`，v5），供概念优先消费。
 - **失败分支**：GEM 报「no meta.json within 90s」→ **先查 LLM 通道**（`402` 余额不足会被误报；干跑验证不了可达性），不要重试；候选不足 → 显式扩容或分波，**不补参数变体凑数**；机制枯竭 → `forum_recon`（触发表 #2）。
-- **★ 机制证据闸（2026-11-15 落地）**：某数据集×机制**首次**派波前，必须完成**论坛+论文双取证并留痕**——论坛走触发表 #0（三维检索词矩阵：机制措辞词/算子×字段词/数据集名，各至少 1 个；高赞长评作者反查）；论文走 WebSearch 或本地 `docs/experience` 论文库 grep 降级，摘要写 `forum_paper_recon_<qkey>`。步 5 的 wave_gate 会核对留痕（gate_results 的 `evidence_gate` 段：`EVID-FORUM`/`EVID-PAPER`），`--require-evidence` 时缺留痕 = FAIL。三次漏检实证（情绪相关性错位/横向点塔两模板帖均因只按数据集名检索漏检，各晚 1-2 个战役才发现）。repair/probe 批自动豁免；豁免走 waiver `--gate evidence`（3 天期）。
+- **★ 机制证据闸（2026-11-15 落地）**：某数据集×机制**首次**派波前，必须完成**论坛+论文双取证并留痕**——论坛走触发表 #0（三维检索词矩阵：机制措辞词/算子×字段词/数据集名，各至少 1 个；高赞长评作者反查）；论文走唯一稳定通道 `tools/research/paper_search.py`（Crossref→arXiv→本地库三层冗余，2026-11-19；**弃用 WebSearch/WebFetch/Semantic Scholar**，不稳/429），found=false 即确无对应论文须换机制；摘要写 `forum_paper_recon_<qkey>`（带 `papers[].cite` 供闸核验）。步 5 的 wave_gate **默认硬拦**：`_gate_knowledge.py::check_evidence_gate` 自己调 paper_search 实证，**EVID-PAPER 查不到论文即 FAIL（不再只是留痕核对，也不限 --require-evidence）**。三次漏检实证（情绪相关性错位/横向点塔两模板帖均因只按数据集名检索漏检，各晚 1-2 个战役才发现）。repair/probe 批自动豁免；豁免走 waiver `--gate evidence`（3 天期）。
 - **不做**：不手写表达式（**手写 ideas ≠ 手写表达式**）；不手写 priors；不加权 / 等权相加两条信号腿（CLAUDE.md「禁止混信号调参」；允许的组合形态见步 7 §7.7）；不每个字段套一层 `rank`；**不从单个字段出发、从族出发**；**不跳过 L3.5 直接拍骨架**。
 - **细则**：[`step4-generation.md`](references/step4-generation.md)（含 §4.5.1 模板形状配额与形状源）、[`assemble-priors-internals.md`](references/assemble-priors-internals.md)、[`signal-hypothesis-construction.md`](references/signal-hypothesis-construction.md)（**L4 形态构建五步法 + 三源验证 + 合规红线**）。适用决策表：D3 / D6 / D11。
 
@@ -201,7 +201,7 @@ last_verified: 2026-11-16
 - **产物**：`backtest_results` / `wave_results` 暂定结论 / `salvage_pool`（收批入库即级联；`multisim_id` 写进每条回测行）。
 - **完成定义**：本波全部 multisim 到**终态**，且 `backtest_results` 行数 = 波内表达式数（含 ERROR / CANCELLED 的标记行）；整批 CANCELLED → 回步 5。
 - **失败分支**：故障表（全 ERROR / 连坐 CANCEL / 429 / 超时）见 [`step6-backtest.md`](references/step6-backtest.md) §6.4：**先归因再决定重发 / 跳过 / 拆批**；确定性 ERROR 重发只会烧配额。
-- **不做**：**QUICK 模式产物不可提交**（无 visualization / correlation / theme 检查）——仅作探针，必须 FULL 复测并在 `key_findings` 记 `simulationMode`；不往 pipeline 传非 7 的并发（只收 warning）；`pipeline.py --submit` 是派发仿真，**不是**提交 alpha。
+- **不做**：**QUICK 模式产物不可提交**（无 visualization / correlation / theme 检查）——仅作探针，必须 FULL 复测并在 `key_findings` 记 `simulationMode`；不往 pipeline 传非 2 的并发（只收 warning）；`pipeline.py --submit` 是派发仿真，**不是**提交 alpha。
 - **⚠ 设置档不可比（2026-10-03）**：`nanHandling` / `maxTrade` / `decay` / `neutralization` / `truncation` **不是风格开关，是强度闸**——实测 IND behavioral_signals 同表达式 decay8 下，`nanHandling=OFF` 或 `maxTrade=ON` ⇒ `sharpe 2.19 → 0.46`。**换档位 = 换信号**，跨档位结果不可比。而回测入口有多套且缺省互不相同（`batch_track` / `tools/submit_batch.py` / MCP `create_simulation` / MCP `create_multi_simulation` / `brain-sim-alphas-in-batch-and-track`），「用哪套跑」会**静默改变结论**。因此：
   - 档位以 `tracking/<R>/config/settings.json` 为权威（toolkit 铁律：region 只从它派生）；
   - 工具缺省与 settings.json 不一致时**显式传参覆盖**，不要依赖工具缺省；

@@ -292,18 +292,29 @@ def test_real_data_dir_backup_count_within_policy(ret):
 
     2026-10-03 实测曾堆到 3 份陈旧备份（合计 900 MB）→ 复发即红。
     阈值 2 = 最新 1 份 + 允许 1 份在途。
+
+    ⚠ **按「备份组」计数**（2026-11-19 修复）：一份备份的主文件与其 `-wal` / `-shm`
+    附属是**一个整体**。此前按文件计数 ⇒ 单份备份被算成 3 份（实测
+    `wqb.db.bak_20261119` + `-wal` + `-shm`）而误红，且 `retention.py --apply`
+    会把**唯一那一份**备份的主文件删掉。分组口径与 `retention._bak_group_key` 同一份实现。
     """
     if not ret.DATA.is_dir():
         pytest.skip("data/ 不存在（干净克隆）")
-    baks = [p for p in ret.DATA.iterdir()
-            if p.is_file() and p.name not in ret.LIVE_DB_NAMES
-            and any(p.name.startswith(pfx) for pfx in ret.DATA_BAK_PREFIXES)]
-    assert len(baks) <= MAX_DATA_BAKS, (
-        f"data/ 有 {len(baks)} 份备份（>{MAX_DATA_BAKS}），超保留策略：\n"
+    groups: dict[str, list] = {}
+    for p in ret.DATA.iterdir():
+        if not p.is_file() or p.name in ret.LIVE_DB_NAMES:
+            continue
+        if not any(p.name.startswith(pfx) for pfx in ret.DATA_BAK_PREFIXES):
+            continue
+        groups.setdefault(ret._bak_group_key(p.name), []).append(p)
+    n_groups = len(groups)
+    assert n_groups <= MAX_DATA_BAKS, (
+        f"data/ 有 {n_groups} 份备份（>{MAX_DATA_BAKS}），超保留策略：\n"
         + "\n".join(
-            f"  · {p.name}  {p.stat().st_size / 1048576:.1f} MB  "
-            f"{time.strftime('%Y-%m-%d', time.localtime(p.stat().st_mtime))}"
-            for p in sorted(baks))
+            f"  · {key}  {sum(p.stat().st_size for p in sorted(v, key=lambda x: x.name)) / 1048576:.1f} MB  "
+            f"{time.strftime('%Y-%m-%d', time.localtime(max(p.stat().st_mtime for p in v)))}"
+            f"  （{len(v)} 个文件：{', '.join(p.name for p in sorted(v, key=lambda x: x.name))}）"
+            for key, v in sorted(groups.items()))
         + "\n  → 跑 `python tools/retention.py` 查看，--apply 回收"
     )
 
@@ -315,11 +326,11 @@ def test_real_cache_stale_probe_volume_within_limit(ret):
     故本断言当时为绿——但若长期不清理或再堆一份即会红）。
     """
     probe = ret.CACHE / "_probe"
-    if not probe.is_dir():
-        pytest.skip("cache/_probe 不存在")
+    # 目录不存在 = 无陈旧产物，断言自然成立；skip 会让这条真实回归失去覆盖。
+    entries = probe.iterdir() if probe.is_dir() else ()
     now = time.time()
     stale_mb = 0.0
-    for f in probe.iterdir():
+    for f in entries:
         if not f.is_file():
             continue
         try:

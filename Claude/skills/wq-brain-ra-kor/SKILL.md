@@ -8,7 +8,7 @@ allowed-tools:
 - Bash
 - mcp__wq-brain-http__*
 - mcp__wqb-db__*
-last_verified: 2026-11-16
+last_verified: 2026-11-19
 ---
 
 # KOR 字段体检 → 组装 → 归因 → 破闸
@@ -306,10 +306,10 @@ TOP30 里**资产负债表科目家数 + BVPS 实际值 + flash 快照家数**�
 
 | 步骤      | 工具                       | 说明                                                         |
 | ------- | ------------------------ | ---------------------------------------------------------- |
-| 机制假说与实证 | **`domain_search`**      | 一句话高层意图；**把 A-1 五问的答案写进 query**（写「覆盖**广度变化**」而非笼统的「分析师数据」） |
-| 补充单点事实  | `WebSearch` / `WebFetch` | arXiv / NBER / SSRN / 期刊摘要页，取**摘要 + 结论段**                  |
+| 机制假说与实证 | **`tools/research/paper_search.py`** | 一句话高层意图作 query（写「覆盖**广度变化**」而非笼统「分析师数据」）；稳定三层 Crossref→arXiv→本地库，须 found=true |
+| 补充单点事实  | `tools/research/paper_search.py --layers local,crossref` | 本地论文库 + Crossref 取**标题/DOI/摘要线索**；WebSearch/WebFetch/Semantic Scholar 已弃用（不稳/429） |
 
-⚠ **`domain_search` 昂贵**（远端规划 + 多源检索 + 高延迟）⇒ **每个机制只调一次**；查一个定义用 `WebSearch` 即可。
+⚠ 论文检索只用稳定工具 `tools/research/paper_search.py`（每个机制一次，found=true 才采）；**WebSearch/WebFetch/domain_search/Semantic Scholar 全部弃用**（不稳/429）。
 
 **通道 B 的检索纪律**：
 
@@ -426,6 +426,15 @@ NONE / REVERSION_AND_MOMENTUM / STATISTICAL / CROWDING / FAST / SLOW / MARKET / 
   合法写法是「先各自 `vec_avg` 聚成标量再算」（`divide(vec_avg(A), vec_avg(B))`）。
   ⚠ `preflight_expressions` **查不出这一层**（只查字段存在性与包裹建议）⇒ 只能人工审。
   ⚠ **multisim 会连坐**：一条子任务解析失败 ⇒ **同批其余 9 条一起 CANCELLED**（不是只废那一条）。
+- **⚠ 裸常数不得与带单位字段相加（2026-11-17 实测，代价 = 整批 10 条 WARNING 白跑）**：
+  `divide(vec_sum(usd_value), add(holding_usd_value, 0.0001))` 报
+  `Incompatible unit for input of "add" at index 1, expected Unit[CSPrice:1,CSShare:1], found Unit[]`。
+  **判据**：`add(x, 常数)` / `subtract(x, 常数)` 里 x 带单位（CSPrice/CSShare/Share/Time）时，
+  裸常数无单位 ⇒ 必报 UNITS 错；`preflight_expressions` 同样查不出。
+  **正解**：① 防除零不要靠 add epsilon，直接 `divide(x, y)`——同单位相除自然无量纲；
+  ② 确实需要中心化时用同字段派生量（如 `ts_av_diff(x, 252)` = x−其均值，或比值 `divide(x, ts_mean(x, 252))`）而非裸常数；⛔ 不要写 `add(x, ...)` 形式的双实参考瞰——那会触发 `POISON:equal_weight_leg_add` 闸（顶层 add 两腿都引用同字段亦属违规）。
+  ⚠ 这与 `ts_regression` 量纲闸是两条独立规则；本条更隐蔽（语法/字段全合法，只错在单位）。
+  发批前人工过一遍所有 `add(..., 数字)` / `subtract(..., 数字)` 的实参单位。
 - **⚠ `warning` 也计入 `failed_ra_count`（2026-11-15 实测）**：`LOW_INVESTABILITY_CONSTRAINED_SHARPE` 落在 `checks.warning`
   桶（1.99 vs limit 2.02）时 `failed_ra_count=1`。⇒ 「全闸」必须连 warning 一起清；只读 `checks.fail` 会误判。
 - **⚠ prod 相关性是对平台全局生产池，不是本账号 OS 池（2026-11-15 实测）**：`check_correlation(production)` 返回的直方图

@@ -173,14 +173,31 @@ def _size(p: Path) -> int:
 
 
 
+def _bak_group_key(name: str) -> str:
+    """备份**组**的基名：把 WAL 附属（`-wal` / `-shm`）与 journal 归到同一份备份。
+
+    ⚠ 2026-11-19 修复：此前按**文件**计数与清理，于是
+    `wqb.db.bak_20261119` + `wqb.db.bak_20261119-wal` + `wqb.db.bak_20261119-shm`
+    被当成 3 份独立备份 ⇒ ① 硬闸 `test_real_data_dir_backup_count_within_policy` 误红；
+    ② `--apply` 会把**唯一那一份**备份的主文件删掉（只留没用的 `-shm`）⇒ 真实数据丢失风险。
+    备份是「主文件 + 附属」的整体 ⇒ 按组计数、按组保留、按组清理。
+    """
+    for suf in ("-wal", "-shm"):
+        if name.endswith(suf):
+            return name[: -len(suf)]
+    return name
+
+
 def collect_data_baks(keep: int = 1) -> List[Target]:
-    """data/ 的陈旧备份：按 mtime 倒序保留最新 ``keep`` 份，其余可回收。
+    """data/ 的陈旧备份：按**备份组**保留最新 ``keep`` 组，其余可回收。
 
     ⚠ live DB 与其 WAL 附属在任何情况下都不进候选集（硬保护）。
+    ⚠ 一份备份的主文件与其 `-wal`/`-shm` 附属是**一组**（见 `_bak_group_key`）：
+    保留时整组保留，清理时整组删除（否则会留下孤儿 `-wal`/`-shm`，或删主文件只留侧车）。
     """
     if not DATA.is_dir():
         return []
-    cands = []
+    groups: dict[str, list[tuple[float, Path]]] = {}
     for child in DATA.iterdir():
         if not child.is_file():
             continue
@@ -191,10 +208,16 @@ def collect_data_baks(keep: int = 1) -> List[Target]:
         mt = _safe_mtime(child)
         if mt is None:
             continue
-        cands.append((mt, child))
-    cands.sort(reverse=True)  # 最新在前
-    return [Target(c, _size(c), f"data/ 备份，仅留最新 {keep} 份")
-            for _mt, c in cands[keep:]]
+        groups.setdefault(_bak_group_key(child.name), []).append((mt, child))
+    # 组的时间取组内最大 mtime（附属可能比主文件新）
+    ordered = sorted(groups.items(),
+                     key=lambda kv: max(mt for mt, _ in kv[1]), reverse=True)
+    out: List[Target] = []
+    for _key, members in ordered[keep:]:
+        label = f"data/ 备份，仅留最新 {keep} 份"
+        for _mt, child in sorted(members, key=lambda x: x[1].name):
+            out.append(Target(child, _size(child), label))
+    return out
 
 
 def collect_stale_probe_dbs(keep_days: int, now: float) -> List[Target]:
