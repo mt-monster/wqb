@@ -429,12 +429,12 @@ class WorkflowRegistry:
                 alpha_booster.run,
                 NodeMeta(
                     name="alpha_booster",
-                    description="通用 Alpha 短板提升（S4 增强）：自动诊断 2y_sharpe/sub_universe/turnover 短板，基于论坛实证算子库生成改进变体并入库",
+                    description="通用 Alpha 短板提升（S4 增强）：自动诊断 2y_sharpe/sub_universe/turnover 短板，基于内置实证算子库生成改进变体并入库",
                     category="review",
                     phase=4,
                     required_params=["region", "wave"],
                     optional_params=["dataset", "alpha_id", "max_variants_per_alpha",
-                                     "auto_insert", "forum_refresh"],
+                                     "auto_insert"],
                 )
             )
         except ImportError as e:

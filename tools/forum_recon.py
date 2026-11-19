@@ -3,7 +3,9 @@
 """forum_recon.py — 问题驱动的论坛只读检索（recon），回测流水线按需调用（2026-09-28）。
 
 定位（与既有论坛工具的分工）：
-  - `forum_research.py`：批量关键词清扫 → JSON dump（抓取核心的**唯一 HTTP 实现**，本工具 import 复用）；
+  - **查论坛唯一方式** = `docs/reference/forum_and_doc_tools_guide.md`（2026-11-18 用户裁定）：
+    只经 `wq-brain-http` 的 MCP 工具，传输层单一实现在 `tools/lib/forum_mcp.py`；
+  - `forum_research.py`：旧 requests 抓取链，**已删除**（2026-11-18 用户裁定；不再保留兼容实现）；
   - `forum_cache_builder.py`：稳健性 Phase A 的关键词包缓存（7 天 TTL）；
   - **本工具**：**单问题 → 结构化答案 → 入库（含负结果）**，供 GEM/build_wave/Mode B/seal_dead_end 消费。
 
@@ -23,7 +25,8 @@
 现在「无解」只在检索**可靠完成**时才成立：鉴权成功；每轮检索都没抛异常；搜到的帖子至少读成功一篇；
 且末尾用固定对照词（`CONTROL_QUERY`）再搜一次确认检索通道仍有结果（会话过期 / 被拦 / 页面改版时搜索页会安静地返回 0 条）。
 
-凭据：进程环境 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（标准名）优先；缺则读 MCP `.env`（与 `forum_research.py` 主流程同一路径）。
+凭据：由 **MCP 服务端配置**读取（`CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`）；本工具作为 MCP 客户端
+**不收、不读、不传**口令（guide §2.4 / skill 审查 FB-10/X-15）。MCP 服务不可达 ⇒ 工具故障（`mcp_unreachable`）。
 本工具**不打印、不记录**凭据值。
 
 退出码：0=有产出（有效文章≥1）；2=无解（可靠的负结果已入库）；1=工具故障（含未捕获异常；故障记录见 `forum_recon_error_<qkey>`）。
@@ -233,125 +236,104 @@ def _kb_merge_entries(db_path: str, entries: List[Dict[str, Any]]) -> str:
     return "KB/community_tpl_kb"
 
 
-# ---------------------------------------------------------------- live 抓取（复用 forum_research 核心）
-def _load_credentials(fr) -> Tuple[str, str]:
-    """标准名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（进程环境）优先；缺则读 MCP `.env`（`forum_research.load_creds` 的路径约定）。
-
-    旧版给 `load_creds` 传的是 None 并按元组解包：它要的是 `.env` 路径、返回的是 dict，
-    传 None 直接 TypeError——live 路径因此**从未跑通过**，所有真实调用都落进「鉴权失败 → 记成无解」。
-    """
-    email = os.environ.get("CREDENTIALS_EMAIL")
-    password = os.environ.get("CREDENTIALS_PASSWORD")
-    if not (email and password):
-        env_path = os.path.join(REPO_ROOT, "world-quant-brain-mcp", ".env")
-        creds = fr.load_creds(env_path)
-        email = email or creds.get("CREDENTIALS_EMAIL")
-        password = password or creds.get("CREDENTIALS_PASSWORD")
-    if not (email and password):
-        raise ReconToolError(
-            "credentials_missing",
-            "缺凭据：请设置环境变量 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD（或在 MCP .env 里配置）")
-    return email, password
-
-
+# ---------------------------------------------------------------- live 检索（唯一入口 = guide 的 MCP 工具）
 def _live_session():
+    """构造论坛 MCP 客户端，返回 `(client, forum_mcp)`。
+
+    2026-11-18 用户裁定：查论坛唯一方式 = `docs/reference/forum_and_doc_tools_guide.md` 的
+    `wq-brain-http` MCP 工具（见 `tools/lib/forum_mcp.py`）。**不再** requests 抓 HTML / 直连
+    Zendesk API；凭据由**服务端配置**读取，客户端不收、不读、不传口令。
+    MCP 服务不可达 / 配置缺失 / 依赖缺失 ⇒ 工具故障（不是「论坛无解」）。
+    """
     sys.path.insert(0, os.path.join(REPO_ROOT, "tools"))
     try:
-        import forum_research as fr  # noqa: WPS433（唯一 HTTP 实现；顶层 import requests / bs4）
-        import requests  # noqa: WPS433
+        from lib import forum_mcp as fr  # noqa: WPS433（论坛访问唯一实现）
     except ImportError as e:
         raise ReconToolError("deps_missing", f"缺依赖（{e}）——请用 MCP venv 的解释器（$WQ_PY）运行") from e
-    email, password = _load_credentials(fr)
-    s = requests.Session()
-    s.headers.update({"User-Agent": fr.UA})
     try:
-        fr.authenticate(s, email, password)
-        fr.sso_handshake(s)
-    except Exception as e:
-        raise ReconToolError("auth_failed", f"forum auth failed: {type(e).__name__}: {e}") from e
-    return s, fr
-
-
-def _resolve_post_id(session, fr, click_href: str) -> Optional[str]:
-    """把搜索结果的 click 链接解析成**字符串** post_id（取不到返回 None）。
-
-    `forum_research.resolve_id()` 的返回值是 `(post_id, is_comment, url)` 三元组——旧版直接把它
-    当 id 传给 `read_post`，拼出来的 URL 形如 `/community/posts/('123', True, 'https://…').json`，
-    平台一律非 200 ⇒ 表现为「搜到 N 条、读帖 0 条」的 `read_failed`（2026-10-26 实测 37/37）。
-    这里统一收敛成 str | None，供 live_search_round 使用。
-    """
-    if not click_href:
-        return None
-    try:
-        res = fr.resolve_id(session, click_href)
-    except Exception:
-        return None
-    if isinstance(res, (tuple, list)):
-        res = res[0] if res else None
-    if not res:
-        return None
-    return str(res)
+        cli = fr.client()
+    except (Exception, SystemExit) as e:
+        raise ReconToolError(
+            "mcp_unreachable",
+            f"无法构造 wq-brain-http MCP 客户端：{type(e).__name__}: {e}"
+            f"（服务没起？先 python tools/start_wq_mcp.py --all；地址以 .mcp.json 为准）") from e
+    return cli, fr
 
 
 def live_search_round(session, fr, query: str, max_pages: int, read_top: int,
                       seen: set, stats: Optional[Dict[str, int]] = None) -> List[Dict[str, Any]]:
-    """一轮：搜 → 解析候选 → 读帖 → 返回新读到的结构化文章（跳过已读）。
+    """一轮：MCP 搜 → 从 results[].link 取 post_id → MCP 读帖 → 返回新读到的结构化文章（跳过已读）。
 
+    `session` = MCP 客户端，`fr` = `tools/lib/forum_mcp.py`（唯一论坛访问实现）。
+    `max_pages` 保留签名兼容（MCP search 用 max_results 控制条数，不再翻页）。
     `stats` 累计这一轮的可靠性信号（`recon` 据此判断「没搜到」是真无解还是检索坏了）：
     searches_ok / search_errors / hits / reads_ok / read_errors。
+    **search 超时/失败 ⇒ search_errors（工具故障），绝不解释成「论坛无解」。**
     """
     st = stats if stats is not None else {}
     for k in ("searches_ok", "search_errors", "hits", "reads_ok", "read_errors"):
         st.setdefault(k, 0)
     out: List[Dict[str, Any]] = []
     try:
-        hits = fr.search_html(session, query, max_pages=max_pages) or []
+        res = fr.search_posts(session, query, max_results=max(read_top, 1))
     except Exception as e:
         st["search_errors"] += 1
         print(f"[forum_recon] 搜索失败（{query}）：{e}", file=sys.stderr)
         return out
+    if fr.is_error(res):
+        st["search_errors"] += 1
+        print(f"[forum_recon] 搜索失败（{query}）：{res.get('error') or 'success=False'}"
+              f"（工具故障 ≠ 论坛无解；见 forum_and_doc_tools_guide.md §2.2/2.3）", file=sys.stderr)
+        return out
     st["searches_ok"] += 1
-    candidates = hits[:read_top]
+    candidates = fr.search_results(res)[:read_top]
     st["hits"] += len(candidates)
     for hit in candidates:
-        pid = hit.get("post_id") or hit.get("id")
-        if not pid and hit.get("click_href"):
-            pid = _resolve_post_id(session, fr, hit["click_href"])
+        pid = hit.get("post_id") or fr.post_id_from_link(hit.get("link"))
         if not pid or pid in seen:
             continue
         seen.add(pid)
         try:
-            post = fr.read_post(session, pid) or {}
+            pres = fr.read_post(session, pid)
         except Exception as e:
             st["read_errors"] += 1
             print(f"[forum_recon] 读帖失败（{pid}）：{e}", file=sys.stderr)
             continue
-        if not post:
+        if fr.is_error(pres):
+            st["read_errors"] += 1
+            print(f"[forum_recon] 读帖失败（{pid}）：{pres.get('error') or 'success=False'}", file=sys.stderr)
+            continue
+        body = fr.post_body(pres)
+        if not body:
             st["read_errors"] += 1
             continue
         st["reads_ok"] += 1
+        votes = fr.post_votes(pres)
         out.append({
             "post_id": pid,
-            "title": post.get("title") or hit.get("title") or "",
-            "votes": post.get("votes") or hit.get("votes"),
-            "body": post.get("body") or post.get("text") or "",
+            "title": fr.post_title(pres) or hit.get("title") or "",
+            "votes": votes if votes is not None else hit.get("votes"),
+            "body": body,
             "query": query,
         })
-        time.sleep(2.5)          # 限速：与 forum_research 的 page_delay 同一包络
     return out
 
 
 def _control_probe(session, fr) -> Optional[Tuple[str, str]]:
-    """「无解」成立前的对照检索：`CONTROL_QUERY` 必须有结果。`forum_research.search_html` 遇到非 200 只 log 一行、返回空列表——
-    会话过期 / 被拦 / 页面改版时，任何检索都会安静地得到 0 条，看起来和「论坛没有答案」一模一样。
+    """「无解」成立前的对照检索：`CONTROL_QUERY` 必须有结果。MCP search 超时/失败/0 结果都说明
+    检索通道失效（会话过期 / 被拦 / 服务不可达），看起来和「论坛没有答案」一模一样。
     通过返回 None；失败返回 (code, message)。"""
     try:
-        hits = fr.search_html(session, CONTROL_QUERY, max_pages=1) or []
+        res = fr.search_posts(session, CONTROL_QUERY, max_results=5)
     except Exception as e:
         return ("control_probe_failed", f"对照检索异常：{e}")
-    if not hits:
+    if fr.is_error(res):
         return ("control_probe_failed",
-                f"对照检索（{CONTROL_QUERY!r}）0 结果——检索通道疑似失效（会话过期 / 被拦 / 页面改版），不能把「没搜到」当作「论坛无解」")
+                f"对照检索（{CONTROL_QUERY!r}）故障：{res.get('error') or 'success=False'}"
+                f"——检索通道失效，不能把「没搜到」当作「论坛无解」")
+    if not fr.search_results(res):
+        return ("control_probe_failed",
+                f"对照检索（{CONTROL_QUERY!r}）0 结果——检索通道疑似失效（会话过期 / 被拦 / 服务不可达），不能把「没搜到」当作「论坛无解」")
     return None
 
 
@@ -565,6 +547,6 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    import _pyenv  # noqa: E402  文档里写的是 `python tools/forum_recon.py`——系统解释器缺 requests / bs4 时自动切到 MCP venv
+    import _pyenv  # noqa: E402  文档里写的是 `python tools/forum_recon.py`——统一切到 MCP venv 解释器（论坛走 MCP，需 wqb 可导入）
     _pyenv.reexec_under_venv()
     sys.exit(main())

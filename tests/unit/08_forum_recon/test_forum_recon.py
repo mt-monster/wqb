@@ -389,126 +389,124 @@ def test_exit_code_contract():
     assert fr.exit_code({"dry_run": True}) == 0
 
 
-# ---------------------------------------------------------------- 凭据与依赖（live 路径旧版从未跑通过）
-class _FakeFr:
-    UA = "test-agent"
-
-    def __init__(self, creds=None):
-        self.creds = creds or {}
-        self.paths = []
-
-    def load_creds(self, env_path):
-        self.paths.append(env_path)
-        return dict(self.creds)
-
-
-def _clear_creds(monkeypatch):
-    for k in ("CREDENTIALS_EMAIL", "CREDENTIALS_PASSWORD"):
-        monkeypatch.setenv(k, "x")
-        monkeypatch.delenv(k)
-
-
-def test_credentials_prefer_the_standard_env_names_and_do_not_touch_dotenv(monkeypatch):
-    monkeypatch.setenv("CREDENTIALS_EMAIL", "user@example.test")
-    monkeypatch.setenv("CREDENTIALS_PASSWORD", "placeholder-pw")
-    f = _FakeFr()
-    assert fr._load_credentials(f) == ("user@example.test", "placeholder-pw")
-    assert f.paths == []                                             # 环境齐全就不读 .env
-
-
-def test_credentials_fall_back_to_the_mcp_dotenv_path(monkeypatch):
-    _clear_creds(monkeypatch)
-    f = _FakeFr({"CREDENTIALS_EMAIL": "u@example.test", "CREDENTIALS_PASSWORD": "placeholder-pw"})
-    assert fr._load_credentials(f) == ("u@example.test", "placeholder-pw")
-    assert len(f.paths) == 1 and f.paths[0].replace("\\", "/").endswith("world-quant-brain-mcp/.env")
-
-
-def test_missing_credentials_is_a_tool_error_that_names_variables_not_values(monkeypatch):
-    _clear_creds(monkeypatch)
-    with pytest.raises(fr.ReconToolError) as ei:
-        fr._load_credentials(_FakeFr({}))
-    assert ei.value.code == "credentials_missing" and "CREDENTIALS_EMAIL" in str(ei.value)
-
-
-def test_the_old_load_creds_none_call_is_gone():
+# ---------------------------------------------------------------- 唯一入口 = MCP（2026-11-18 用户裁定）
+def test_forum_recon_no_longer_scrapes_or_handles_credentials_client_side():
+    """查论坛唯一方式 = guide 的 MCP 工具；客户端不再 requests 抓取、不再收/读/传口令。"""
     src = (REPO_ROOT / "tools" / "forum_recon.py").read_text(encoding="utf-8")
-    assert "load_creds(None)" not in src, "load_creds 要的是 .env 路径且返回 dict；传 None 会 TypeError（live 路径旧版从未跑通）"
+    assert "_load_credentials" not in src, "凭据由 MCP 服务端读取，客户端不再处理"
+    assert "load_creds(None)" not in src
+    assert "import requests" not in src, "论坛唯一入口是 MCP，不再 requests 抓取"
+    assert "search_html" not in src, "不再抓 HTML 搜索页"
+    assert "forum_mcp" in src, "传输层必须走 tools/lib/forum_mcp.py（MCP 唯一实现）"
 
 
-# ---------------------------------------------------------------- 一轮检索的可靠性信号
-class _SearchFr:
-    def __init__(self, hits=None, search_exc=None, posts=None):
-        self._hits, self._exc, self._posts = hits or [], search_exc, posts or {}
+def test_live_session_returns_mcp_client(monkeypatch):
+    import lib.forum_mcp as FM
+    fake_cli = object()
+    monkeypatch.setattr(FM, "client", lambda timeout=180: fake_cli)
+    cli, fm = fr._live_session()
+    assert cli is fake_cli and fm is FM
 
-    def search_html(self, session, query, max_pages=2):
-        if self._exc:
-            raise self._exc
-        return list(self._hits)
 
-    def read_post(self, session, pid):
-        p = self._posts.get(pid)
-        if isinstance(p, Exception):
-            raise p
-        return p
+def test_live_session_unreachable_mcp_is_a_tool_error(monkeypatch):
+    import lib.forum_mcp as FM
+
+    def _boom(timeout=180):
+        raise RuntimeError("service down")
+    monkeypatch.setattr(FM, "client", _boom)
+    with pytest.raises(fr.ReconToolError) as ei:
+        fr._live_session()
+    assert ei.value.code == "mcp_unreachable"
+
+
+# ---------------------------------------------------------------- 一轮检索的可靠性信号（MCP 返回形态）
+def _patch_search(monkeypatch, FM, fn):
+    monkeypatch.setattr(FM, "search_posts", fn)
 
 
 def test_live_round_counts_search_failures_and_successes(monkeypatch):
-    monkeypatch.setattr(fr.time, "sleep", lambda s: None)
+    import lib.forum_mcp as FM
+
+    def _raise(cli, q, max_results=50):
+        raise RuntimeError("boom")
+    _patch_search(monkeypatch, FM, _raise)
     st = {}
-    assert fr.live_search_round(None, _SearchFr(search_exc=RuntimeError("boom")), "q", 1, 3, set(), stats=st) == []
+    assert fr.live_search_round(None, FM, "q", 1, 3, set(), stats=st) == []
     assert st["search_errors"] == 1 and st["searches_ok"] == 0
+
+    # success=False（超时/故障）也计 search_errors，不是「无解」
+    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": False, "error": "timeout"})
+    st_err = {}
+    assert fr.live_search_round(None, FM, "q", 1, 3, set(), stats=st_err) == []
+    assert st_err["search_errors"] == 1 and st_err["searches_ok"] == 0
+
+    hits = [{"link": "https://x/posts/1-a", "title": "t1"},
+            {"link": "https://x/posts/2-b", "title": "t2"},
+            {"link": "https://x/posts/3-c", "title": "t3"}]
+    posts = {"1": {"title": "t", "body": LONG_BODY}, "2": RuntimeError("读帖炸了"), "3": None}
+
+    def _search(cli, q, max_results=50):
+        return {"success": True, "results": hits}
+
+    def _read(cli, pid, include_comments=True):
+        p = posts.get(pid)
+        if isinstance(p, Exception):
+            raise p
+        if p is None:
+            return {"error": "empty"}
+        return {"success": True, "post": p}
+    _patch_search(monkeypatch, FM, _search)
+    monkeypatch.setattr(FM, "read_post", _read)
     st2 = {}
-    hits = [{"post_id": "p1"}, {"post_id": "p2"}, {"post_id": "p3"}]
-    posts = {"p1": {"title": "t", "body": LONG_BODY}, "p2": RuntimeError("读帖炸了"), "p3": None}
-    out = fr.live_search_round(None, _SearchFr(hits=hits, posts=posts), "q", 1, 3, set(), stats=st2)
-    assert [p["post_id"] for p in out] == ["p1"]
+    out = fr.live_search_round(None, FM, "q", 1, 3, set(), stats=st2)
+    assert [p["post_id"] for p in out] == ["1"]
     assert (st2["searches_ok"], st2["hits"], st2["reads_ok"], st2["read_errors"]) == (1, 3, 1, 2)
 
 
-class _ResolveFr(_SearchFr):
-    """搜索结果只有 click_href（无 post_id），走 resolve_id 解析的形态。"""
-
-    def __init__(self, resolve_result, posts=None):
-        super().__init__(hits=[{"click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?d=abc"}],
-                         posts=posts or {})
-        self._resolve_result = resolve_result
-        self.seen_pids = []
-
-    def resolve_id(self, session, click_href):
-        if isinstance(self._resolve_result, Exception):
-            raise self._resolve_result
-        return self._resolve_result
-
-    def read_post(self, session, pid):
-        self.seen_pids.append(pid)
-        return super().read_post(session, pid)
+def test_post_id_extracted_from_link_not_click_redirect():
+    """MCP search 的 results[].link 直接含 /posts/<数字>；不再走 click 重定向解析（旧三元组 bug 根源）。"""
+    import lib.forum_mcp as FM
+    assert FM.post_id_from_link("https://support.worldquantbrain.com/hc/zh-cn/community/posts/12345-foo") == "12345"
+    assert FM.post_id_from_link("https://x/posts/9") == "9"
+    assert FM.post_id_from_link("https://x/hc/en-us/articles/9-bar") is None   # articles 不是 posts
+    assert FM.post_id_from_link("") is None
+    assert FM.post_id_from_link(None) is None
 
 
-def test_click_href_resolution_unwraps_resolve_id_tuple(monkeypatch):
-    """2026-10-26 事故回归：resolve_id 返回 (id, is_comment, url) 三元组，
-    旧版把它整个当 pid 拼进读帖 URL ⇒ 37/37 读帖失败（read_failed）。"""
-    monkeypatch.setattr(fr.time, "sleep", lambda s: None)
-    fake = _ResolveFr(("12345", False, "https://support.worldquantbrain.com/community/posts/12345"),
-                      posts={"12345": {"title": "t", "body": LONG_BODY}})
+def test_live_round_reads_by_string_post_id(monkeypatch):
+    """read_post 必须收到从 link 提取的字符串 id（回归旧版把三元组当 id 的 read_failed 事故）。"""
+    import lib.forum_mcp as FM
+    seen = []
+    hits = [{"link": "https://support.worldquantbrain.com/community/posts/12345-x", "title": "t"}]
+
+    def _search(cli, q, max_results=50):
+        return {"success": True, "results": hits}
+
+    def _read(cli, pid, include_comments=True):
+        seen.append(pid)
+        return {"success": True, "post": {"title": "t", "body": LONG_BODY}}
+    _patch_search(monkeypatch, FM, _search)
+    monkeypatch.setattr(FM, "read_post", _read)
     st = {}
-    out = fr.live_search_round(None, fake, "q", 1, 5, set(), stats=st)
-    assert fake.seen_pids == ["12345"], "read_post 必须收到字符串 id，不能是 resolve_id 的返回值本身"
+    out = fr.live_search_round(None, FM, "q", 1, 5, set(), stats=st)
+    assert seen == ["12345"], "read_post 必须收到字符串 id"
     assert [p["post_id"] for p in out] == ["12345"]
     assert (st["reads_ok"], st["read_errors"]) == (1, 0)
 
 
-def test_resolve_post_id_returns_none_on_failure(monkeypatch):
-    assert fr._resolve_post_id(None, _ResolveFr(None), "https://x/click") is None
-    assert fr._resolve_post_id(None, _ResolveFr((None, False, None)), "https://x/click") is None
-    assert fr._resolve_post_id(None, _ResolveFr(RuntimeError("boom")), "https://x/click") is None
-    assert fr._resolve_post_id(None, _ResolveFr(("9", False, "u")), "") is None
+def test_control_probe_helper(monkeypatch):
+    import lib.forum_mcp as FM
+    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": True, "results": [{"link": "https://x/posts/1"}]})
+    assert fr._control_probe(None, FM) is None
+    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": True, "results": []})
+    assert fr._control_probe(None, FM)[0] == "control_probe_failed"
+    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": False, "error": "timeout"})
+    assert fr._control_probe(None, FM)[0] == "control_probe_failed"
 
-
-
-def test_control_probe_helper():
-    assert fr._control_probe(None, _SearchFr(hits=[{"post_id": "x"}])) is None
-    assert fr._control_probe(None, _SearchFr(hits=[]))[0] == "control_probe_failed"
-    assert fr._control_probe(None, _SearchFr(search_exc=RuntimeError("x")))[0] == "control_probe_failed"
+    def _raise(cli, q, max_results=50):
+        raise RuntimeError("x")
+    _patch_search(monkeypatch, FM, _raise)
+    assert fr._control_probe(None, FM)[0] == "control_probe_failed"
 
 
 def test_unreliable_reason_table():

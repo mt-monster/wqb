@@ -39,7 +39,7 @@ tracking/
    - `kor_wave*_exprs.json` 位于 `KOR/candidates/`（kor_op_exploration_stats 以 `glob('...KOR/candidates/kor_wave*.json')` 读取）
    - `kor_wave*_review.json` 位于 `KOR/reviews/`
    - 白名单 `kor_chart_cnn_alpha_field_whitelist.json` 位于 `KOR/reference/`（kor_preflight_check 默认 `../reference/` 解析）
-3. 外部工具默认路径已对齐：`tools/forum_research.py` → `tracking/FORUM/`、`tools/webdata_quality.py` → `tracking/reference/`。
+3. 外部工具默认路径已对齐：论坛检索缓存 → `tracking/FORUM/`（`forum_recon` 的 `forum_recon_cache.json`；旧 `forum_research.py` 已删除）、`tools/webdata_quality.py` → `tracking/reference/`。
 
 ## 4. 还原与回滚
 

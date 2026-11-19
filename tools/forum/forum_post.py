@@ -9,7 +9,11 @@
   python tools/forum_post.py --title "标题" --body-file body.html --topic-id 12913416465431
   python tools/forum_post.py --probe        # 只读探测：验证认证/会话链路，不发帖
 
-链路（复刻现役 MCP BrainApiClient.create_forum_post，独立用 requests，不 import FastMCP）：
+链路（⚠ 2026-11-19 更正：此处原写「复刻现役 MCP BrainApiClient.create_forum_post」——
+      **该说法已过期**：MCP 包内已无 create_forum_post 方法，发帖方向 MCP 无对应工具，
+      故本脚本是当前唯一发帖实现；它是**登记在册的例外**（不是隐形旁路），见
+      docs/reference/forum_and_doc_tools_guide.md 顶部「一处登记在册的例外（写方向）」，
+      机械闸 tests/unit/08_forum_recon/test_forum_single_way_gate.py 逐个登记）:
   POST  api.worldquantbrain.com/authentication        (Basic) -> 201, 拿 t cookie
   GET   api.worldquantbrain.com/authentication/support        -> 200, 换 zendesk cookies
   GET   support.worldquantbrain.com/hc/<locale>/community/topics -> 200, bootstrap 会话

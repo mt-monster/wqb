@@ -96,7 +96,9 @@ class McpHttpClient:
         return resp if expect_body else None
 
     # ---- session ----
-    def new_session(self) -> str:
+    def new_session(self) -> str | None:
+        """握手取 session id。**stateless 服务（FastMCP stateless_http）不发 session id**，
+        此时返回 None（后续请求不带该头），而不是报错——与 `mcp_ping.McpHttpClient` 同口径。"""
         resp = self._post({
             "jsonrpc": "2.0", "id": 1, "method": "initialize",
             "params": {
@@ -106,22 +108,32 @@ class McpHttpClient:
             },
         })
         sid = resp.headers.get("mcp-session-id")
-        if not sid:
-            raise RuntimeError("响应头里没有 mcp-session-id（服务是否以 streamable-http 启动？）")
         try:
             self._post({"jsonrpc": "2.0", "method": "notifications/initialized"}, sid=sid)
         except Exception:
             pass  # 通知类失败不致命，与改名前一致
-        self.session_file.parent.mkdir(parents=True, exist_ok=True)
-        self.session_file.write_text(sid, encoding="utf-8")
+        if sid:
+            self.session_file.parent.mkdir(parents=True, exist_ok=True)
+            self.session_file.write_text(sid, encoding="utf-8")
+        else:
+            # stateless：清掉可能残留的旧 session，避免后续误带陈旧 id。
+            try:
+                self.session_file.unlink()
+            except OSError:
+                pass
         return sid
 
-    def session(self) -> str:
+    def session(self) -> str | None:
+        if getattr(self, "_sid_cache", "unset") != "unset":
+            return self._sid_cache
         try:
             sid = self.session_file.read_text(encoding="utf-8").strip()
-            return sid or self.new_session()
         except OSError:
-            return self.new_session()
+            sid = ""
+        if not sid:
+            sid = self.new_session()
+        self._sid_cache = sid
+        return sid
 
     # ---- 解析：SSE 里取最后一个 data: 帧 ----
     @staticmethod
@@ -148,7 +160,8 @@ class McpHttpClient:
         try:
             resp = self._post(payload_req, sid=sid)
         except urllib.error.HTTPError:
-            sid = self.new_session()          # session 陈旧：重握手后重试一次
+            self._sid_cache = "unset"        # session 陈旧：重握手后重试一次
+            sid = self.new_session()
             resp = self._post(payload_req, sid=sid)
         payload = self.parse(resp.read().decode())
         if payload is None:

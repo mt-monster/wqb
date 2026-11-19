@@ -130,28 +130,6 @@ BOOSTER_LIBRARY = {
 }
 
 
-#: 论坛查询缓存 TTL（小时）
-FORUM_CACHE_TTL_HOURS = 24
-
-#: 论坛查询关键词映射（按短板维度）
-FORUM_SEARCH_KEYWORDS = {
-    "2y_sharpe": ["2y_sharpe", "2 year sharpe", "LOW_2Y_SHARPE", "长期稳健性"],
-    "sub_universe_sharpe": ["sub_universe_sharpe", "Sub-universe Sharpe", "LOW_SUB_UNIVERSE_SHARPE", "子宇宙"],
-    "turnover": ["turnover", "换手率", "LOW_TURNOVER", "HIGH_TURNOVER"],
-    "fitness": ["fitness", "LOW_FITNESS", "健康度"],
-}
-
-#: 已知算子名（用于从论坛文本提取）
-KNOWN_OPERATORS = {
-    "hump", "signed_power", "ts_mean", "ts_decay_linear", "ts_zscore",
-    "rank", "zscore", "ts_rank", "ts_delta", "ts_sum", "ts_stddev",
-    "group_neutralize", "group_rank", "group_zscore", "trade_when",
-    "ts_backfill", "ts_ir", "ts_av_diff", "ts_arg_max", "ts_arg_min",
-    "vec_avg", "vec_sum", "vec_max", "vec_min", "vec_std", "vec_count",
-    "if_else", "bucket", "tail", "quantile", "winsorize",
-}
-
-
 def run(
     region: str,
     wave: str,
@@ -159,10 +137,12 @@ def run(
     alpha_id: Optional[str] = None,
     max_variants_per_alpha: int = 6,
     auto_insert: bool = True,
-    forum_refresh: bool = True,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行 Alpha 短板提升.
+
+    论坛检索已于 2026-11-18 统一到 `tools/forum_recon.py` / `tools/lib/forum_mcp.py`；
+    本节点不再自建论坛通道（旧 `forum_refresh` 参数已删除）。
 
     Args:
         region: 区域代码
@@ -171,7 +151,6 @@ def run(
         alpha_id: 指定单个 alpha（可选，默认处理整波）
         max_variants_per_alpha: 每个 alpha 最多生成变体数
         auto_insert: 是否自动写入 expressions 表
-        forum_refresh: 是否实时查询论坛刷新算子库（默认 True）
         _context: 执行上下文
 
     Returns:
@@ -197,15 +176,13 @@ def run(
             "calls": [
                 "SELECT * FROM backtest_results WHERE region=? [AND wave=?] [AND alpha_id=?]",
                 "_diagnose_shortfalls(bt) → 2y_sharpe/sub_universe_sharpe/turnover_high/turnover_low/fitness",
-                "forum_refresh ? _refresh_library_from_forum(walls)（24h 缓存，干跑不发网络请求）",
-                "_generate_variants(diagnosed, max_variants_per_alpha, forum_updates)",
+                "_generate_variants(diagnosed, max_variants_per_alpha)",
                 "auto_insert ? _insert_variants(...) into expressions (status=pending)",
             ],
             "booster_dimensions": list(BOOSTER_LIBRARY.keys()),
             "operator_counts": {k: len(v["operators"]) for k, v in BOOSTER_LIBRARY.items()},
             "max_variants_per_alpha": max_variants_per_alpha,
             "auto_insert": auto_insert,
-            "forum_refresh": forum_refresh,
         }
         result["steps"].append({
             "step": "build_plan", "success": True,
@@ -266,27 +243,10 @@ def run(
             "diagnosed_count": len(diagnosed),
         })
 
-        # 步骤 1.5：论坛实时刷新算子库（可选）
-        forum_updates = {}
-        if forum_refresh and diagnosed:
-            # 收集所有短板维度
-            all_walls = set()
-            for d in diagnosed:
-                all_walls.update(d["walls"])
-            
-            forum_updates = _refresh_library_from_forum(c, all_walls)
-            if forum_updates:
-                result["steps"].append({
-                    "step": "forum_refresh",
-                    "success": True,
-                    "updated_dimensions": list(forum_updates.keys()),
-                    "new_operators_count": sum(len(v) for v in forum_updates.values()),
-                })
-
         # 步骤 2：生成改进变体
         all_variants = []
         for d in diagnosed:
-            variants = _generate_variants(d, max_variants_per_alpha, forum_updates)
+            variants = _generate_variants(d, max_variants_per_alpha)
             all_variants.extend(variants)
 
         result["variants_generated"] = len(all_variants)
@@ -360,221 +320,15 @@ def _diagnose_shortfalls(bt: Dict[str, Any]) -> List[str]:
     return walls
 
 
-def _refresh_library_from_forum(
-    conn: sqlite3.Connection,
-    walls: set,
-) -> Dict[str, List[Dict[str, Any]]]:
-    """从论坛实时查询并更新算子库.
-
-    Args:
-        conn: 数据库连接（用于缓存）
-        walls: 短板维度集合
-
-    Returns:
-        新增算子字典，如 {"2y_sharpe": [{"name": "ts_ir", ...}]}
-    """
-    updates = {}
-    
-    for wall in walls:
-        if wall not in FORUM_SEARCH_KEYWORDS:
-            continue
-        
-        # 检查缓存
-        cache_key = f"booster_forum_cache_{wall}"
-        cached = _get_forum_cache(conn, cache_key)
-        if cached:
-            logger.info(f"Using cached forum data for {wall} (age: {cached['age_hours']:.1f}h)")
-            if cached["operators"]:
-                updates[wall] = cached["operators"]
-            continue
-        
-        # 实时查询论坛
-        try:
-            operators = _query_forum_for_wall(wall)
-            if operators:
-                updates[wall] = operators
-                # 写入缓存
-                _set_forum_cache(conn, cache_key, operators)
-                logger.info(f"Forum refresh for {wall}: {len(operators)} new operators")
-        except Exception as e:
-            logger.warning(f"Forum query failed for {wall}: {e}")
-    
-    return updates
-
-
-def _query_forum_for_wall(wall: str) -> List[Dict[str, Any]]:
-    """查询论坛获取指定短板维度的最新方案.
-
-    Args:
-        wall: 短板维度，如 "2y_sharpe"
-
-    Returns:
-        提取的算子列表
-    """
-    keywords = FORUM_SEARCH_KEYWORDS.get(wall, [])
-    if not keywords:
-        return []
-    
-    # 使用 wq-brain-http MCP 工具查询论坛
-    # 注意：这里通过动态导入避免循环依赖
-    try:
-        from ...mcp_check import get_mcp_client
-        client = get_mcp_client()
-    except Exception as e:
-        logger.warning(f"MCP client not available: {e}")
-        return []
-    
-    all_operators = []
-    seen_ops = set()
-    
-    for keyword in keywords[:2]:  # 每个维度最多查 2 个关键词
-        try:
-            result = client.call_tool("search_forum_posts", {
-                "search_query": keyword,
-                "max_results": 5,
-            })
-            
-            if not result or "results" not in result:
-                continue
-            
-            for post in result["results"]:
-                # 从标题和摘要提取算子
-                text = f"{post.get('title', '')} {post.get('snippet', '')}"
-                extracted = _extract_operators_from_text(text, wall)
-                
-                for op in extracted:
-                    if op["name"] not in seen_ops:
-                        seen_ops.add(op["name"])
-                        all_operators.append(op)
-                        
-        except Exception as e:
-            logger.warning(f"Forum search failed for '{keyword}': {e}")
-    
-    return all_operators
-
-
-def _extract_operators_from_text(text: str, wall: str) -> List[Dict[str, Any]]:
-    """从论坛文本提取算子信息.
-
-    Args:
-        text: 帖子标题 + 摘要
-        wall: 短板维度
-
-    Returns:
-        提取的算子列表
-    """
-    operators = []
-    
-    # 匹配已知算子名
-    for op_name in KNOWN_OPERATORS:
-        if op_name in text.lower():
-            # 根据算子类型生成模板
-            template, params = _infer_template(op_name)
-            if template:
-                operators.append({
-                    "name": op_name,
-                    "template": template,
-                    "params": params,
-                    "mechanism": f"论坛提取：{op_name} 用于 {wall}",
-                    "forum_votes": 0,  # 无法从摘要获取票数
-                    "risk": "论坛方案，需验证",
-                    "source": "forum_live",
-                })
-    
-    return operators
-
-
-def _infer_template(op_name: str) -> tuple:
-    """根据算子名推断模板和参数."""
-    templates = {
-        "hump": ("hump({expr}, hump={hump})", {"hump": [0.01, 0.02]}),
-        "signed_power": ("signed_power({expr}, {exp})", {"exp": [0.5, 0.7]}),
-        "ts_mean": ("ts_mean({expr}, {window})", {"window": [5, 10, 20]}),
-        "ts_decay_linear": ("ts_decay_linear({expr}, {window})", {"window": [5, 10, 20]}),
-        "ts_zscore": ("ts_zscore({expr}, {window})", {"window": [20, 60]}),
-        "rank": ("rank({expr})", {}),
-        "zscore": ("zscore({expr})", {}),
-        "ts_rank": ("ts_rank({expr}, {window})", {"window": [20, 60]}),
-        "ts_delta": ("ts_delta({expr}, {window})", {"window": [5, 10, 20]}),
-        "ts_sum": ("ts_sum({expr}, {window})", {"window": [20, 60]}),
-        "ts_stddev": ("ts_stddev({expr}, {window})", {"window": [20, 60]}),
-        "group_neutralize": ("group_neutralize({expr}, subindustry)", {}),
-        "group_rank": ("group_rank({expr}, subindustry)", {}),
-        "group_zscore": ("group_zscore({expr}, subindustry)", {}),
-        "trade_when": ("trade_when({cond}, {expr}, 0)", {"cond": ["vec_count > 0"]}),
-        "ts_backfill": ("ts_backfill({expr}, {window})", {"window": [66]}),
-        "ts_ir": ("ts_ir({expr}, {window})", {"window": [20, 60]}),
-        "ts_av_diff": ("ts_av_diff({expr}, {window})", {"window": [10, 20]}),
-        "ts_arg_max": ("ts_arg_max({expr}, {window})", {"window": [20, 60]}),
-        "ts_arg_min": ("ts_arg_min({expr}, {window})", {"window": [20, 60]}),
-        "vec_avg": ("vec_avg({expr})", {}),
-        "vec_sum": ("vec_sum({expr})", {}),
-        "vec_max": ("vec_max({expr})", {}),
-        "vec_min": ("vec_min({expr})", {}),
-        "vec_std": ("vec_std({expr})", {}),
-        "vec_count": ("vec_count({expr})", {}),
-        "if_else": ("if_else({cond}, {expr}, 0)", {"cond": ["vec_count > 0"]}),
-        "bucket": ("bucket({expr}, range=\"0,1,0.1\")", {}),
-        "tail": ("tail({expr}, lower=0.1, upper=0.9, newval=0.5)", {}),
-        "quantile": ("quantile({expr})", {}),
-        "winsorize": ("winsorize({expr})", {}),
-    }
-    
-    return templates.get(op_name, (None, None))
-
-
-def _get_forum_cache(conn: sqlite3.Connection, key: str) -> Optional[Dict[str, Any]]:
-    """获取论坛缓存."""
-    c = conn.cursor()
-    c.execute(
-        "SELECT value, updated_at FROM ledger_kv WHERE key=?",
-        (key,),
-    )
-    row = c.fetchone()
-    if not row:
-        return None
-    
-    try:
-        value = json.loads(row[0])
-        updated_at = datetime.fromisoformat(row[1])
-        age_hours = (datetime.now() - updated_at).total_seconds() / 3600
-        
-        if age_hours > FORUM_CACHE_TTL_HOURS:
-            return None
-        
-        return {
-            "operators": value.get("operators", []),
-            "age_hours": age_hours,
-        }
-    except (json.JSONDecodeError, ValueError, TypeError):
-        return None
-
-
-def _set_forum_cache(conn: sqlite3.Connection, key: str, operators: List[Dict[str, Any]]) -> None:
-    """设置论坛缓存."""
-    c = conn.cursor()
-    value = json.dumps({"operators": operators}, ensure_ascii=False)
-    now = datetime.now().isoformat(timespec="seconds")
-    
-    c.execute(
-        """INSERT OR REPLACE INTO ledger_kv (key, value, updated_at)
-           VALUES (?, ?, ?)""",
-        (key, value, now),
-    )
-    conn.commit()
-
-
 def _generate_variants(
     diagnosed: Dict[str, Any],
     max_variants: int,
-    forum_updates: Optional[Dict[str, List[Dict[str, Any]]]] = None,
 ) -> List[Dict[str, Any]]:
     """生成改进表达式变体.
 
     Args:
         diagnosed: 诊断结果（含 expression, settings, walls）
         max_variants: 最大变体数
-        forum_updates: 论坛实时获取的新算子（可选）
 
     Returns:
         变体列表
@@ -587,30 +341,12 @@ def _generate_variants(
     if not expr:
         return variants
 
-    # 合并静态算子库和论坛动态算子
-    merged_library = dict(BOOSTER_LIBRARY)
-    if forum_updates:
-        for wall, ops in forum_updates.items():
-            if wall in merged_library:
-                # 合并算子列表（去重）
-                existing_names = {op["name"] for op in merged_library[wall]["operators"]}
-                for op in ops:
-                    if op["name"] not in existing_names:
-                        merged_library[wall]["operators"].append(op)
-            else:
-                # 新增维度
-                merged_library[wall] = {
-                    "description": f"论坛实时获取：{wall}",
-                    "operators": ops,
-                    "settings_override": {},
-                }
-
-    # 为每个短板维度生成变体
+    # 只用静态实证算子库；论坛检索已统一到 tools/forum_recon.py（本节点不再自建通道）
     for wall in walls:
-        if wall not in merged_library:
+        if wall not in BOOSTER_LIBRARY:
             continue
 
-        booster = merged_library[wall]
+        booster = BOOSTER_LIBRARY[wall]
 
         # 算子变体
         for op in booster["operators"]:

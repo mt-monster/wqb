@@ -213,12 +213,22 @@ def _accepted_fastexpr_corpus() -> set:
                 "and expression not like 'from brain.alphas%' "
                 "and expression not like 'import %' and expression not like 'def %'")
         }
+        # ⚠ **平台 `code` 字段不总是 FASTEXPR**（2026-11-19 实测）：
+        # 跨集形态的 alpha（AGENTS.md §7.7 的 gating / grouping / residual / ratio 四形态），
+        # 平台把 `code` 存成「**形态标签: 短式**」，例如
+        #     code = "gating: trade_when(ts_rank(volume,252)>0.3)"     ← 1 参 trade_when
+        # 而**完整表达式**在 `alphas.expression`：
+        #     expression = "trade_when(ts_rank(volume, 252) > 0.3, <腿>, -1)"
+        # 短式不是 FASTEXPR（参数被截断），拿它进语料 ⇒ 元数闸把「平台已接受」误判成误杀。
+        # 故语料只取**无形态标签前缀**的 code（标签前缀形如 `gating: ` / `grouping: ` /
+        # `residual: ` / `ratio: `，即 AGENTS.md §7.7 的四形态命名）。
         corpus |= {
             e for (e,) in conn.execute(
                 "select code from backtest_results where alpha_id is not null "
                 "and code is not null and trim(code) <> '' "
                 "and code not like 'from brain.alphas%' "
-                "and code not like 'import %' and code not like 'def %'")
+                "and code not like 'import %' and code not like 'def %' "
+                "and code not like '%: %'")
         }
     finally:
         conn.close()

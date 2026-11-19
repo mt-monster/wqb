@@ -5,6 +5,13 @@
 > 工具：`tools/forum_recon.py`（问题驱动的**只读**检索；`brain-forum-browse` 的 recon 模式经它执行，免贡献义务）；节点等价入口 `workflow_execute(node="forum_recon")`。
 > **波级默认取证**：`tools/forum_recon_wave.py` / 节点 `forum_recon_wave`——收批时由代码替 Agent 问一次（见下「波级默认取证」），不必每次记得触发。
 > **需要论坛 / 平台可达**——本环境无凭据或出口被拦时工具返回**故障**（退出码 1、`found=null`、记 `forum_recon_error_<qkey>`），此时按各行「取不到时」处理。**故障 ≠ 无解**：不得当作 `found=false`，更不是判死证据。
+>
+> **★ 查论坛唯一方式（2026-11-18 用户裁定）**：一律按 [`docs/reference/forum_and_doc_tools_guide.md`](../../../../docs/reference/forum_and_doc_tools_guide.md)，
+> 只经 `wq-brain-http` 的 5 个 MCP 工具（`search_forum_posts` / `read_forum_post` / `get_glossary_terms` / `get_documentations` / `get_documentation_page`）；
+> 论坛访问单一实现 = `tools/lib/forum_mcp.py`（`forum_recon` 传输层已切到它）。**不再** requests 抓 HTML / 直连 Zendesk API（`forum_research.py` 旧抓取链**已删除**），
+> **不拿 WebSearch 当论坛通道**（WebSearch/WebFetch 只用于论文线 EVID-PAPER）。机械闸：`tests/unit/08_forum_recon/test_forum_single_way_gate.py`。
+> **search 不可靠时（超时 / 0 结果）的正路** = guide §2.3 文档两步绕行：`get_documentations` → `get_documentation_page(page_id)` → 从正文 `<a href=".../posts/<数字>">` 提取 id → `read_forum_post` 直读；
+> 或直接 `read_forum_post` 读归档记忆里已知的 article_id。**读帖（read）与文档两步已实测跑通；search 服务端 Playwright 不稳，超时/0 结果一律记故障，不是「论坛无解」。**
 
 ## 触发点
 
@@ -23,7 +30,7 @@
 - **有效文章** = 标题不含「公告 / 直播 / 签到 / 问卷 / 获奖 / 名单公示」，正文 ≥ 200 字，且前 2000 字内含可操作标记之一（实测 / 指标 / sharpe / fitness / 表达式 / 字段 / 算子 / 配方 / 换手 / turnover / 稳健 / prod / 相关性 / 中性化 / 破墙 / 回测 / 因子 …，以 `tools/forum_recon.py` 的 `ACTION_MARKERS` 为准）。
 - **缓存 7 天**（`tracking/FORUM/forum_recon_cache.json`）：同一问题（`qkey`）7 天内命中缓存不重复 live 查——**只缓存可靠结局**（有货 / 无解）；工具故障不入缓存（故障应当重试，不该被回放一周），旧版遗留的「`found=false` + `error`」条目也不回放。缓存文件不分 region，回放时会把记录补写进**本 region** 的 ledger（判死闸按 `question_key` 回 ledger 核对）。触发点 4 的「每波 ≤ 1 次」是防 token 黑洞的操作约定，在缓存之上。
 - 每条有效文章带：post_id / 标题 / 赞数 / 摘录 / 适用边界（context）/ 幽灵算子标注。
-- **退出码 = 三种结局**：0 = 有产出（`found=true`，`status=ok`）；2 = **可靠的**无解（`found=false`，`status=no_result`，负结果已入库）；1 = **工具故障**（`found=null`，`status=error`：凭据缺失 / 依赖缺失 / 鉴权失败 / 检索全失败 / 读帖全失败 / 对照检索失败，含未捕获异常）。「无解」只在检索**可靠完成**时成立：鉴权成功、每轮检索都没抛异常、搜到的帖子至少读成功一篇，且末尾用固定对照词（`alpha`）再搜一次仍有结果（会话过期 / 被拦 / 页面改版时搜索页会安静地返回 0 条）。判断「无解」看退出码 2；退出码 1 永远不是取证。`--dry-run` 只输出检索计划（关键词包 + 缓存状态），零网络零写库。凭据：进程环境 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD` 优先，缺则读 MCP `.env`；本工具不打印、不记录凭据值。
+- **退出码 = 三种结局**：0 = 有产出（`found=true`，`status=ok`）；2 = **可靠的**无解（`found=false`，`status=no_result`，负结果已入库）；1 = **工具故障**（`found=null`，`status=error`：凭据缺失 / 依赖缺失 / 鉴权失败 / 检索全失败 / 读帖全失败 / 对照检索失败，含未捕获异常）。「无解」只在检索**可靠完成**时成立：鉴权成功、每轮检索都没抛异常、搜到的帖子至少读成功一篇，且末尾用固定对照词（`alpha`）再搜一次仍有结果（会话过期 / 被拦 / 页面改版时搜索页会安静地返回 0 条）。判断「无解」看退出码 2；退出码 1 永远不是取证。`--dry-run` 只输出检索计划（关键词包 + 缓存状态），零网络零写库。凭据：由 **MCP 服务端配置**读取（`CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`）；`forum_recon` 作为 MCP 客户端**不收、不读、不传**口令（guide §2.4），不打印、不记录凭据值。
 - 产出**必入库**（含负结果与故障）：`found=true` 按 `--out` 落 `KB/community_tpl_kb` 或 `<region>/forum_recon_<qkey>`；可靠的 `found=false` 一律落 `forum_recon_negative_<qkey>`（负结果也是判死证据）；工具故障落 `forum_recon_error_<qkey>`（审计用，**不是取证**）。键契约见 `docs/ledger_keys.json`；三种记录的分类与判死闸的判定是同一份实现（`src/wqb/recon_evidence.py`），写入方、判死闸、`tools/step_funnel.py` 的命中率统计（故障不计入）都从那里取。
 
 ## 与 `brain-forum-browse` 的分工
@@ -53,7 +60,7 @@
 | 形状配额机检 | `tools/shape_quota_check.py`（步 4 §4.5.1；不入闸链） |
 
 **已知缺口（如实写出，别当作已覆盖）**：
-- **live 路径没有端到端实测过**——本环境无论坛凭据也无出口，测试到「假 session / 假检索轮」为止（认证失败、检索异常、读帖失败、对照检索失败各路径都有回归用例）。首次真跑请先 `--dry-run`，再用一个具体问题验证；页面改版会让「有效文章」判据与对照检索失效，表现为故障（退出码 1）而不是「无解」。
+- **live 路径实测状态（2026-11-18 更新）**：传输层已切 MCP（`tools/lib/forum_mcp.py`）。**读帖 `read_forum_post` 与文档两步绕行已端到端实测跑通**（stateless MCP 服务，`mcp_http_caller.McpHttpClient` 已兼容无 session-id）；**`search_forum_posts` 服务端 Playwright 不稳**（超时 / 安静返回 0 条），故 search 驱动的自动 recon 常报故障（退出码 1）——这是工具故障不是「无解」。发现论坛知识请优先用文档两步绕行 + 已知 article_id 直读。页面改版会让「有效文章」判据与对照检索失效，表现为故障而不是「无解」。
 - **判死闸只在 `seal_dead_end` 上**：`campaign.py registry add-dead-end`（无 MCP 时的 CLI 备选路径）与 `upsert_registry_empirical(layer="dead_end")`（低层写入口）**不经取证闸**——判死统一走 `seal_dead_end`，走别的口时判死前须人工核对取证（同 §9.5 ①）。
 - **闸认的是证据可靠，不核对相关性**：能追溯到 ledger、不是故障、没被更新的「有货」推翻即放行；问的问题是否对得上要判死的那个族，看留痕里的 `question` 由人判断。也**不给证据龄设上限**（留痕有 `searched_at`）。
 - `forum_recon_wave` 的派生阈值（同墙 ≥ 2 条）与 `shape_quota_check` 的阈值（≥ 3 个形状族、`trade_when` ≤ 40%）是经验值，不是统计推导；积累几波证据后再评估是否调整。
