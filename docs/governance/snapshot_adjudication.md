@@ -24,8 +24,8 @@
 
 ## 2. 读数
 
-- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**996**
-- `RESTORED` = 0；`DROPPED` = 572；`ARTIFACT` = 404；`PENDING` = 20
+- 清单总数（所有抢救点 ∪ 未跟踪父提交，减去 `main`）：**997**
+- `RESTORED` = 0；`DROPPED` = 572；`ARTIFACT` = 405；`PENDING` = 20
 - 已写裁决但不在清单中的陈旧条目：1 件（取回或消失后请从 fixture 删掉）
 
 取数口径（两条腿都要，只取受跟踪部分会漏关键依赖 —— 本仓已踩过）：
@@ -614,7 +614,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `world-quant-brain-mcp/start_mcp_http_servers.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
 | `world-quant-brain-mcp/stop_mcp_http_servers.py` | MCP 服务历史版本，现行版在 `world-quant-brain-mcp/` 主干 | human |
 
-### 3.3 `ARTIFACT`（404 件）
+### 3.3 `ARTIFACT`（405 件）
 
 | 路径 | 依据 | 来源 |
 |---|---|---|
@@ -972,6 +972,7 @@ git ls-tree -r --name-only <ref>^3     # stash 式快照的未跟踪父提交
 | `tracking/reference/fields_KOR_insiders5.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/kor_strong_fields.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/pyramid_state_20260929.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
+| `tracking/reference/region_thresholds.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/round_status_20260929.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/strong_ds_scan.json` | tracking/ 下的 .json 运行产物（可重跑） | rule |
 | `tracking/reference/tmp_alpha_full.py` | 一次性会话草稿脚本（`tmp_` 前缀；AGENTS.md §8.13 目录职责表：「一次性/会话草稿脚本用完即删」） | rule |
