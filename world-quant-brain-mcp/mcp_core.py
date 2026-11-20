@@ -427,6 +427,11 @@ def _slim_correlation_block(b):
         if k in b:
             out[k] = b[k]
     cd = b.get("correlation_data") or {}
+    # 2026-11-20：真实轮询路径的 progress 藏在 correlation_data 里（_poll 的
+    # _meta 注入点），而 check_correlation 构造块时未提到块层 ⇒ 这里兜底提取，
+    # 否则只有缓存命中路径能显示进度，最需要进度的轮询反而是空的。
+    if "progress" not in out and isinstance(cd.get("progress"), dict):
+        out["progress"] = cd["progress"]
     recs = cd.get("records")
     if isinstance(recs, list) and recs and isinstance(recs[0], list) and len(recs[0]) >= 3:
         out["histogram_nonzero"] = [{"range": [r[0], r[1]], "n": r[2]} for r in recs if len(r) >= 3 and r[2]]

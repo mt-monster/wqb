@@ -18,9 +18,18 @@ def _lift_progress(payload):
     checks = payload.get("checks") or {}
     for _t in ("production", "self"):
         blk = checks.get(_t) or {}
-        if isinstance(blk, dict) and isinstance(blk.get("progress"), dict):
-            payload["progress"] = blk["progress"]
-            p = blk["progress"]
+        if not isinstance(blk, dict):
+            continue
+        # 真实轮询路径：progress 在 checks.<t>.correlation_data.progress（_poll
+        # 的 _meta 注入点），块层没有；两处都找，取到即提升到顶层。
+        _p = blk.get("progress")
+        if not isinstance(_p, dict):
+            _cd = blk.get("correlation_data") or {}
+            if isinstance(_cd, dict) and isinstance(_cd.get("progress"), dict):
+                _p = _cd["progress"]
+        if isinstance(_p, dict):
+            payload["progress"] = _p
+            p = _p
             payload.setdefault("progress_message", (
                 f"[{_t}] {p.get('stage')} · 已耗时 {p.get('elapsed_s')}s · "
                 f"预计剩余 {p.get('eta_human')} ({p.get('percent')}%)"

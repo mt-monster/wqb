@@ -1824,6 +1824,12 @@ def check_s17_top_level_dirs(rep: Report) -> None:
                 continue
         if p.name in S17_TOP_DIR_ALLOWLIST:
             continue
+        # 2026-11-20：SA 扫描自动化会把中间 json 直接写到仓库根 sa_scan_<日期>/，
+        # 该目录已被根 .gitignore 的 `sa_scan_*/` 排除（不入索引），但 S17 判磁盘面
+        # 仍报 FAIL。同 selfcorr_quick_out 先例：写死的名字会被持续重建 ⇒ 登记豁免
+        # 而非反复搬走。仅豁免这一前缀，不开通用口子。
+        if p.name.startswith("sa_scan_"):
+            continue
         offenders.append(p.name)
     if offenders:
         rep.fail(

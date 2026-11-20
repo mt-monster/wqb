@@ -123,16 +123,31 @@ def batch_dispatch_progress(elapsed_s: Optional[float], n: int) -> Dict[str, Any
 
 def prod_poll_progress(elapsed_s: Optional[float], *, done: bool = False,
                        timed_out: bool = False) -> Dict[str, Any]:
-    """prod 轮询专用：窗口 240 s 作 ETA 上限，典型 190 s 作进度基准。"""
+    """prod 轮询专用：窗口 240 s 作 ETA 上限，典型 190 s 作进度基准。
+
+    2026-11-20 实测修正：done/超时是终态，必须强制 eta=0、percent=100，
+    否则快速命中（如预读/缓存加速）会出现「stage=done 却显示还需 3m30s」的
+    自相矛盾。只有 polling 中间态才按 elapsed 推算剩余。
+    """
     stage = "done" if done else ("pending" if timed_out else "polling")
-    p = progress_snapshot(
-        elapsed_s=elapsed_s,
-        stage=stage,
-        basis_s=PROD_TYPICAL_S,
-        window_s=PROD_WINDOW_S,
-        note=("平台计算典型 180–200s, 轮询窗口上限 240s"
-              + (" (已超时, 返回 pending)" if timed_out else "")),
-    )
+    if done or timed_out:
+        p = {
+            "stage": stage,
+            "elapsed_s": round(max(0.0, float(elapsed_s or 0)), 1),
+            "eta_s": 0.0,
+            "eta_human": "0s" if done else "—",
+            "percent": 100.0,
+            "basis_s": PROD_TYPICAL_S,
+            "note": ("已完成" if done else "轮询窗口耗尽, 返回 pending (未判死, 可隔时重查)"),
+        }
+    else:
+        p = progress_snapshot(
+            elapsed_s=elapsed_s,
+            stage=stage,
+            basis_s=PROD_TYPICAL_S,
+            window_s=PROD_WINDOW_S,
+            note="平台计算典型 180–200s, 轮询窗口上限 240s",
+        )
     p["window_s"] = PROD_WINDOW_S
     return p
 
