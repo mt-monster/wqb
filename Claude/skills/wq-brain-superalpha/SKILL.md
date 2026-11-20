@@ -97,6 +97,7 @@ allowed-tools:
 2. **描述**：selection / combo 描述各 ≥ 100 英文字（平台硬门槛）。
 3. **配额**：提交 REGULAR 组件与 SA 都占 **ET 日历日**配额（REGULAR 4 + SUPER 1，00:00 ET 重置），模型与来源见 [`worldquant-submit-alpha/references/quota-and-tower.md`](../worldquant-submit-alpha/references/quota-and-tower.md)，不在这里重述。
 4. **区域可用性**：区域状态（例如 MEA 的 `POST /simulations` 现返回 400 "Region MEA is not available."，既有 2 颗 MEA SA 是存量）属于平台状态，不属于 SA 方法论：以各区 profile（`wq-brain-ra-pipeline/references/regions/<R>.md`）与 `wq-brain-campaign-matrix` 为准。
+5. **准入分级（2026-11-18 定案，汇报口径以此为准）**：`REDLINE`（prod≥0.70 或 checks FAIL，硬拦不报）> `ADMIT`（S≥5 ∧ F≥5 ∧ prod≤0.65）> `REPORT`（prod≤0.68 ∧ S≥区内最强 S×0.95 ∧ F≥区内最强 F×0.95）> `NO_EDGE`；prod 未测记 `UNMEASURED`。区内基线取 **maxS 与 maxF 两个独立值**（可分属不同 alpha）。**旧「三条件不达就整颗不报」已废止**——自设闸降级为汇报，平台红线不放宽。判定工具 `tools/super/sa_grade.py`，规范原文 `docs/experience/01_platform_gates.md` §6.1。
 
 ## SA 结构与语法（实测）
 

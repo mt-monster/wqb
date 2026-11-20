@@ -42,7 +42,7 @@ _由阅读引发的研究 / 探索 / skill 交接想法。论坛里的表达式�
 
 | 工具 | 已用 / 上限 |
 |------|-------------|
-| search_forum_posts | 0 / 30 |
+| search_forum_posts_local | 0 / 30 |
 | read_forum_post | 0 / 8 |
 | get_glossary_terms | 0 / 5 |
 | get_messages | 0 / 5 |

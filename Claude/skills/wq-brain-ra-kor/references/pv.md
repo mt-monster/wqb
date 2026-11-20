@@ -262,6 +262,8 @@ neut 轴越**强**，investability 越高但 2Y 越低（因为 2022–23 的防
 #### 外部 investability 配方实测失败（2026-10-13，勿重试）
 
 **来源**：外部检索（论坛工具 `search_forum_posts` 连续 4 次报 `unexpected error`，已不可用 ⇒ 改走 WebSearch）。
+> ⚠ 2026-11-20 更正：该工具已**退役并删除**；同等检索改用 `search_forum_posts_local(keywords=[...])`（确定性通道）。
+> 本段保留当时的取证过程，不代表现在仍可用 WebSearch 代替论坛检索。
 某 BRAIN 顾问公开 system prompt 宣称 investability 标准配方是 `EXPR * rank(adv20)` 或 `if_else(adv20 > 阈值, EXPR, -EXPR)`。
 **在 KOR `pv47_spret` 上实测（d196，8 条，MARKET/decay4/trunc0.08）全部劣于基准**：
 

@@ -24,7 +24,7 @@ Per-run 快照入 `outputs/runs/<run_id>/`。
 3. **然后**才调 forum/platform MCP — 顺序不可反。
 4. **绝不用** 浏览器/WebFetch/alpha-judge 静态语料替代 live forum state。
 
-**Pinned post trap：** 默认 skip `4902349883927`（glossary 锚）。加 `skip_registry.pinned_post_ids` 的启发式：`vote_sum >= 50` 且标题含 `术语|必读|glossary|导航`；topic top-3 高 comment_count 低 gap_score → `pinned_low_roi`。规则：`get_glossary_terms` → seed tokens only，不 Deep Read 锚帖；`search_forum_posts` 结果过 `skip_registry` 再 gap 评分；同 post_id 在 gap_list 连续 2 轮未贡献 → `low_roi_post_ids`。
+**Pinned post trap：** 默认 skip `4902349883927`（glossary 锚）。加 `skip_registry.pinned_post_ids` 的启发式：`vote_sum >= 50` 且标题含 `术语|必读|glossary|导航`；topic top-3 高 comment_count 低 gap_score → `pinned_low_roi`。规则：`get_glossary_terms` → seed tokens only，不 Deep Read 锚帖；`search_forum_posts_local` 结果过 `skip_registry` 再 gap 评分；同 post_id 在 gap_list 连续 2 轮未贡献 → `low_roi_post_ids`。
 
 **Ledger updates：** Deep Read 完成 → `read_post_ids`；comment/post/upvote 成功 → `contributed_*` + `past_contribution_snippets`；新置顶 → `pinned_marked` + `skip_registry`。
 

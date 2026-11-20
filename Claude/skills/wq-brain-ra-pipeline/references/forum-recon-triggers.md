@@ -6,12 +6,12 @@
 > **波级默认取证**：`tools/forum_recon_wave.py` / 节点 `forum_recon_wave`——收批时由代码替 Agent 问一次（见下「波级默认取证」），不必每次记得触发。
 > **需要论坛 / 平台可达**——本环境无凭据或出口被拦时工具返回**故障**（退出码 1、`found=null`、记 `forum_recon_error_<qkey>`），此时按各行「取不到时」处理。**故障 ≠ 无解**：不得当作 `found=false`，更不是判死证据。
 >
-> **★ 查论坛唯一方式（2026-11-18 用户裁定）**：一律按 [`docs/reference/forum_and_doc_tools_guide.md`](../../../../docs/reference/forum_and_doc_tools_guide.md)，
-> 只经 `wq-brain-http` 的 5 个 MCP 工具（`search_forum_posts` / `read_forum_post` / `get_glossary_terms` / `get_documentations` / `get_documentation_page`）；
+> **★ 查论坛唯一方式（2026-11-18 用户裁定；11-20 旧 Playwright 搜索退役）**：一律按 [`docs/reference/forum_and_doc_tools_guide.md`](../../../../docs/reference/forum_and_doc_tools_guide.md)，
+> 只经 `wq-brain-http` 的 6 个 MCP 工具（`search_forum_posts_local` / `get_forum_posts` / `read_forum_post` / `get_glossary_terms` / `get_documentations` / `get_documentation_page`）；
 > 论坛访问单一实现 = `tools/lib/forum_mcp.py`（`forum_recon` 传输层已切到它）。**不再** requests 抓 HTML / 直连 Zendesk API（`forum_research.py` 旧抓取链**已删除**），
 > **不拿 WebSearch 当论坛通道**（WebSearch/WebFetch 只用于论文线 EVID-PAPER）。机械闸：`tests/unit/08_forum_recon/test_forum_single_way_gate.py`。
-> **search 不可靠时（超时 / 0 结果）的正路** = guide §2.3 文档两步绕行：`get_documentations` → `get_documentation_page(page_id)` → 从正文 `<a href=".../posts/<数字>">` 提取 id → `read_forum_post` 直读；
-> 或直接 `read_forum_post` 读归档记忆里已知的 article_id。**读帖（read）与文档两步已实测跑通；search 服务端 Playwright 不稳，超时/0 结果一律记故障，不是「论坛无解」。**
+> **检索失败时（超时 / 0 结果）的正路** = guide §2.3 文档两步绕行：`get_documentations` → `get_documentation_page(page_id)` → 从正文 `<a href=".../posts/<数字>">` 提取 id → `read_forum_post` 直读；
+> 或直接 `read_forum_post` 读归档记忆里已知的 article_id。**读帖（read）与文档两步已实测跑通；检索失败一律记故障，不是「论坛无解」。**
 
 ## 触发点
 
@@ -60,7 +60,7 @@
 | 形状配额机检 | `tools/shape_quota_check.py`（步 4 §4.5.1；不入闸链） |
 
 **已知缺口（如实写出，别当作已覆盖）**：
-- **live 路径实测状态（2026-11-18 更新）**：传输层已切 MCP（`tools/lib/forum_mcp.py`）。**读帖 `read_forum_post` 与文档两步绕行已端到端实测跑通**（stateless MCP 服务，`mcp_http_caller.McpHttpClient` 已兼容无 session-id）；**`search_forum_posts` 服务端 Playwright 不稳**（超时 / 安静返回 0 条），故 search 驱动的自动 recon 常报故障（退出码 1）——这是工具故障不是「无解」。发现论坛知识请优先用文档两步绕行 + 已知 article_id 直读。页面改版会让「有效文章」判据与对照检索失效，表现为故障而不是「无解」。
+- **live 路径实测状态（2026-11-20 更新）**：传输层走 MCP（`tools/lib/forum_mcp.py`）。**读帖 `read_forum_post` 与文档两步绕行已端到端实测跑通**（stateless MCP 服务，`mcp_http_caller.McpHttpClient` 已兼容无 session-id）；检索走 `search_forum_posts_local`（Zendesk 列表端点 + 本地过滤，确定性）。**旧 Playwright `search_forum_posts` 已退役并从 MCP 删除**（超时 / 静默 0 条是假信号）。发现论坛知识时仍可优先用文档两步绕行 + 已知 article_id 直读。页面改版会让「有效文章」判据与对照检索失效，表现为故障而不是「无解」。
 - **判死闸只在 `seal_dead_end` 上**：`campaign.py registry add-dead-end`（无 MCP 时的 CLI 备选路径）与 `upsert_registry_empirical(layer="dead_end")`（低层写入口）**不经取证闸**——判死统一走 `seal_dead_end`，走别的口时判死前须人工核对取证（同 §9.5 ①）。
 - **闸认的是证据可靠，不核对相关性**：能追溯到 ledger、不是故障、没被更新的「有货」推翻即放行；问的问题是否对得上要判死的那个族，看留痕里的 `question` 由人判断。也**不给证据龄设上限**（留痕有 `searched_at`）。
 - `forum_recon_wave` 的派生阈值（同墙 ≥ 2 条）与 `shape_quota_check` 的阈值（≥ 3 个形状族、`trade_when` ≤ 40%）是经验值，不是统计推导；积累几波证据后再评估是否调整。

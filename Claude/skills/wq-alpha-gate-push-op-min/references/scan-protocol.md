@@ -18,7 +18,7 @@
 |---|---|---|
 | ④ 压缩算子 | 消融**协议** + 规则化候选（`compress.py`，只匹配 C1/C3/C4… 既定模式） | **逐算子节点遍历**：`scan.py --delete` 对**每个**算子节点生成删除候选，包括 `compress.py` 没有的 `f(x)→x` 单参包裹删除 |
 | ④b 等效替换 | **强制全量遍历**：`operator_coverage_audit.py --checklist` 逐类过审全部 REGULAR 算子 + 派发前先写 `results/op_coverage_signoff.jsonl`（钩子 G6 会拦） | **自动等价表（子集）**：`scan.py --replace` 内置 14 组等价对，逐节点生成替换候选 + 数学等价标记。⚠ 14 组 ≠ 全量，不能替代|
-| ③ / ⑤ 杠杆与设置 | 杠杆阶梯 + decay/trunc 收敛 | **参数级扫描**：`scan.py --params` 对每个数值参数展开 0.5/0.75/1.25/1.5 档；`ts_*` 窗口额外补扫绝对值阶梯 `21|63|126|252|504|756`（倍数扫描漏跨量级甜点） |
+| ③ / ⑤ 杠杆与设置 | 杠杆阶梯 + decay/trunc/**universe** 收敛 | **参数级扫描**：`scan.py --params` 对每个数值参数展开 0.5/0.75/1.25/1.5 档；`ts_*` 窗口额外补扫绝对值阶梯 `21|63|126|252|504|756`（倍数扫描漏跨量级甜点）。**universe 扫描见 SKILL §⑤**（用户 2026-11-16 补入：multisim 每档单独派，`get_platform_setting_options` 查可用档，别当标准值跳过） |
 
 **⇒ 本协议是 ④/④b 的「自动化执行层」**：先跑 `scan.py` 拿候选矩阵，再按下面的判定规则逐条实测、逐条取舍。
 
@@ -134,6 +134,60 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt         # 
    `Got invalid value "33.0" for attribute "lookback", should be a positive integer` ⇒ **整批 ERROR**。
    `scan.py --params` 已自动对 `ts_*` 窗口参数 round 取整并输出无 `.0` 字符串；标量参数（权重/幂）保留小数。
 7. **与删除/替换解耦**：参数扫描在表达式冻结后做（不占算子，属 ⑤ 设置层收敛的延伸）。
+
+---
+
+## 4.5 精调协议（--finetune，用户指令 2026-11-16，硬环节）
+
+> §4 的 `--params` 是**粗扫**（找甜点区）；本节是**精扫**（找精确甜点）。
+> **任何进入「采纳/交付」决定的候选，必须先过本节**——跳过它曾导致 `e7adKz7g` 漏掉全面更优件 `wponnkmd`。
+
+### 三重盲区（粗扫做不到的）
+
+| 盲区 | `--params` 现状 | 实证后果 |
+|---|---|---|
+| ① 邻域绝对步进缺失 | 倍数 0.5/0.75/1.25/1.5 + ts 阶梯 21/63/126/252/504/756 | 窗口 66 只测过 21/126/252，**60/63/69/72 从没扫** |
+| ② 成对参数未联动 | 逐参数单扫，`tail(lower,upper)` 只动一个 ⇒ 不对称无意义 | 最优件 `(0.18,0.82)` 生成不出 |
+| ③ 参数 × 设置未交叉 | scan 在单一 settings 下扫，不重扫最终 decay 档 | tail 边界在 decay2/3 测过，**decay=1 下从没系统扫** |
+
+### 执行
+
+```bash
+$WQ_PY scripts/scan.py --expr "<当前最优表达式>" --finetune --json > finetune.json
+# 或写文件供 create_multi_simulation 逐条派发（G7 硬闸：不许 CLI submit_batch）
+$WQ_PY scripts/scan.py --expr "<...>" --finetune --out finetune_exprs.txt
+```
+
+**★ 用户 16:56 强化：凡含参数的算子全部精调，不限固定算子**。遍历每个 call 的每一类数值参数，生成四类候选（`op_count` 不变）：
+- **`finetune_neighbor`**：**所有位置数值参数**（ts 窗口/系数/幂/分位…）`base±step`/`±2step`。ts 窗口 step=5% 取整⇒66→63/69/60/72；其余 step=10%。
+- **`finetune_kwarg`**：**所有 kwargs 数值**（`std=`/`sigma=`/`rate=`/`target_tvr=`…任何 `=数字`）⇒ `std=4`→3.6/4.4/3.2/4.8。
+- **`finetune_strnum`**：**字符串内嵌数值**（`bucket` 的 `range="0,1,0.1"`/`buckets="2,5,6"`）逐位微调，保留格式。
+- **`finetune_pair`**：**通用对称检测**（参数名属 lower/upper/low/high/min/max 等对称对，或两数和≈1）保持和联动 ⇒ `(0.12,0.88)`/`(0.18,0.82)`。不硬编码算子名。
+⚠ `finetune_kwarg` 会顺带生成不对称档（只动 lower 不动 upper），实测前人工过滤，以 pair 对称档为准。
+
+### 强制流程（坐标上升 + 交叉复核）
+
+1. **触发**（任一）：候选全闸通过准备采纳 / 任一闸余量薄（F≤1.02、prod≥0.65、self≥0.55、sub≤门槛+0.1）/ 参数呈尖峰。
+2. ④c 粗扫定位甜点区 ⇒ `--finetune` 生成邻域+联动候选。
+3. **★ 参数 × 设置交叉复核**：表达式冻结后，每个关键参数（尤其成对边界、窗口）**必须在最终选定的 settings（decay/neutralization/nanHandling）下重扫**。
+   ⚠ 不要复用「在别的 settings 下测过的参数结论」——`e7adKz7g` 正是 tail 在 decay2/3 测过就以为够了。
+4. 逐档实测走 MCP `create_multi_simulation` + `lookINTO_SimError_message` + `batch_get_alpha_metrics`（零临时脚本）。
+5. **采纳判据**：全闸 PASS 且指标全面优于或持平原件（prod 不更高）⇒ 采纳，原件 `SUPERSEDED`；
+   S 略升但任一闸 PASS→FAIL ⇒ 回滚。⚠ F 恰在 1.00 的件优先找能抬 F 的档（零余量是交付风险）。
+6. **终止**：邻域+联动+交叉三档全部实测无更优 ⇒ 精调完成，进入 ⑤ 设置收敛。
+7. **记账**：每个精调件新 alpha id，只留最优 1 颗；报告必须有「参数精调审计」小节（逐参数列已测档/缺口/补测动作）。
+
+### 端到端实例（2026-11-16 e7adKz7g，反面→正面）
+
+| 步 | 动作 | 结果 |
+|---|---|---|
+| 原 | tail 边界只在 decay2/3 测 | 原件 F=1.00 零余量，以为无更优 |
+| ① | ④c 粗扫窗口 21/126/252 | 全 FAIL，以为 66 是唯一档 |
+| ② | `--finetune` 邻域 60/63/69/72 | 全 FAIL ⇒ 确认 66 真尖峰（有价值：排除伪甜点） |
+| ③ | `--finetune` 联动 (0.12,0.88)/(0.18,0.82) **在 decay=1 下** | **(0.18,0.82)=wponnkmd 全面更优**：S1.72→1.77、F1.00→1.03、sub0.91→1.05、2Y2.08→2.22 |
+
+**净效果**：结论翻转，改交 `wponnkmd`；原件 `SUPERSEDED`。
+**教训**：参数扫描「测过了」≠「精调透了」——成对参数必须联动、邻域必须细扫、且必须在最终 settings 下重扫。
 
 ---
 

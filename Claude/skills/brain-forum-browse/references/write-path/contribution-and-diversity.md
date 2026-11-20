@@ -33,7 +33,7 @@ unique_contribution:
 
 **Angle pool（`action_ledger.content_angles_used[]`）：** ppac-turnover-operator / ppac-submission-debug / ppac-region-usa / vf-diversity-atom / beginner-first-template / theme-official-interpret / theme-counterexample / dataset-field-audit。选**近 5 轮未用**的 angle_slug；耗尽 → 换话题或 L1=linker。
 
-**Community Similarity Check（saturation 后、draft 前，MCP read）：** search_forum_posts(keywords + L2) → read_forum_post top hits → claims[] overlap vs draft_claims → diversity_ok = community_ok AND personal_ok。失败：commenter → sub-argument；author → 新 angle/title 或 linker。
+**Community Similarity Check（saturation 后、draft 前，MCP read）：** search_forum_posts_local(keywords + L2) → read_forum_post top hits → claims[] overlap vs draft_claims → diversity_ok = community_ok AND personal_ok。失败：commenter → sub-argument；author → 新 angle/title 或 linker。
 
 **Banned patterns：** Theme 后泛标题（无 dataset/region/operator）；与 7 天内 top-3 同【】模板；只同意 OP 的评论（须 ≥1 新可执行细节）；空洞表扬；parroting OP/神评无 E1/P5 数据。
 

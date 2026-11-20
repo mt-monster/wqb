@@ -6,7 +6,7 @@
 
 contribute/hybrid recon 必做；explore 欢迎 purposeful signals 但不要求 formal gap 打分。
 
-**并行 MCP 批次（一次全发）：** `get_messages(limit=30)` + `get_events()` + `search_forum_posts(max_results=50)` + `get_glossary_terms()`（L2 seed tokens only）。
+**并行 MCP 批次（一次全发）：** `get_messages(limit=30)` + `get_events()` + `search_forum_posts_local(limit=50)` + `get_glossary_terms()`（L2 seed tokens only）。
 
 **Outputs：** `outputs/runs/<run_id>/scan_<ts>.json`（contribute 必，explore 可选）；`forum_findings.md` 记公告/置顶/热帖；新置顶 → `skip_registry.json`。
 
@@ -16,7 +16,7 @@ contribute/hybrid recon 必做；explore 欢迎 purposeful signals 但不要求 
 
 无远程 JSON registry，**live forum content = MCP reads only**。
 
-**Dedup before post：** `search_forum_posts(title_keywords + L2 tokens)` → 稀疏则宽关键词再搜 → `read_forum_post` on hits；title_sim ≥ 0.65 → comment/linker not new post。
+**Dedup before post：** `search_forum_posts_local(keywords=title_keywords+L2_tokens)` → 稀疏则宽关键词再搜 → `read_forum_post` on hits；title_sim ≥ 0.65 → comment/linker not new post。
 
 **Per-run `forum_manifest.json`** 捕获 gap_list/session_l1/actions，非全局 registry。本地过滤 `skip_registry`，deprioritize ledger `read_post_ids`/`contributed_post_ids`（除非 STALE_FAQ refresh）。
 
@@ -54,7 +54,7 @@ gap_score = 0.35*search_scarcity + 0.30*engagement_gap + 0.15*recency_boost
 
 ```
 1. title_keywords ← draft title + L2 tokens
-2. MCP search（通常 search_forum_posts；模糊则宽关键词）
+2. MCP search（通常 search_forum_posts_local；模糊则宽关键词）
 3. MCP read_forum_post on hits where title_sim > 0.5
 4. ≥2 posts with sim ≥ 0.65 → BLOCK_POST
 5. 1 post sim ≥ 0.65 → WARN → commenter on that post
@@ -71,7 +71,7 @@ Log 入 `forum_findings.md` + `session_plan.md` Phase 7。commenter/linker/curat
 
 ## 5. L2 Search Tokens & L3 Signal Patterns
 
-**L2 tokens（map profile `l2[]` to search/gap buckets，source `configs/topic-buckets.yaml`）：** 每 token → 通常 `search_forum_posts`；Gap Scan 稀缺搜索；Community Similarity 时 append L2 tokens；官方 appeal 标题含 L2 label + region/dataset/operator。多 L2 tag 时 union tokens、dedupe searches。
+**L2 tokens（map profile `l2[]` to search/gap buckets，source `configs/topic-buckets.yaml`）：** 每 token → 通常 `search_forum_posts_local`；Gap Scan 稀缺搜索；Community Similarity 时 append L2 tokens；官方 appeal 标题含 L2 label + region/dataset/operator。多 L2 tag 时 union tokens、dedupe searches。
 
 | L2 | Primary tokens |
 |----|----------------|

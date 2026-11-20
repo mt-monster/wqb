@@ -102,7 +102,9 @@ allowed-tools:
 - **窗口**：原帖用 20 / 60 / 180；仍按 §3 的标准窗口白名单（1 / 5 / 22 / 66 / 252 / 504 …）取最近值，
   非标窗口要给证据。
 - **检索通道**：这两条是 2026-10-23 用 MCP `search_forum_posts(search_query="news sentiment")`
-  （50 条命中、可读）捞到、再用 `read_forum_post` 取正文的。同一时刻 `tools/forum_recon.py`
+  （50 条命中、可读）捞到、再用 `read_forum_post` 取正文的。⚠ 该工具已于 2026-11-20 **退役并删除**，
+  现在同等检索一律用 `search_forum_posts_local(keywords=[...])`（Zendesk 列表端点 + 本地过滤，确定性）。
+  同一时刻 `tools/forum_recon.py`
   的读帖链路**失败**（42 命中 / 34 读失败 / 0 正文，按证据契约记 `status=error`）
   ⇒ **论坛复查优先走 MCP**，本地 recon 脚本的读帖通道另有工程债。
 

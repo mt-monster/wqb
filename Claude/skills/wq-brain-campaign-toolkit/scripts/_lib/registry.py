@@ -26,6 +26,17 @@ from .common import load_json
 from .ledger import SqliteLedgerStore  # 复用 db 路径单一来源
 
 
+class _ContractStub:
+    """--help 场景下的占位对象：REQUIRED/STATUS_OK 为空，让 argparse 能打印帮助。
+
+    ``_contract()`` 在 argparse 之前被调用（REQUIRED/STATUS_OK 用于 argparse 参数定义）。
+    无工作区环境时若直接 SystemExit，--help 永远走不到 argparse。
+    """
+
+    REQUIRED: dict = {}
+    STATUS_OK: list = []
+
+
 def _contract():
     """工作区的写入契约 `wqb.registry_contract`（校验的唯一实现）；找不到直接退出并说明怎么设。"""
     try:
@@ -44,6 +55,10 @@ def _contract():
                 return registry_contract
             except ImportError:
                 continue
+    # --help / -h 场景：返回占位，让 argparse 能正常打印帮助后退出。
+    # 非 --help 场景仍 fail-closed，提示用户设 WQB_WORKSPACE。
+    if "--help" in sys.argv or "-h" in sys.argv:
+        return _ContractStub()
     raise SystemExit("找不到工作区的写入契约 wqb.registry_contract（src/wqb）：设 WQB_WORKSPACE "
                      "指向工作区根后重试。registry 只经这一个契约校验，不在 toolkit 里另存一份规则")
 

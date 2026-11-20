@@ -29,14 +29,14 @@
 | 2 | Phase 0a | 外部记忆 harvest | 无（读宿主记忆文件；会读私人内容，见脱敏） | 可选，记忆过期时 |
 | 3 | Phase 0b | 个人事实同步 | `get_user_alphas`、可选 `get_user_profile` | 总是 |
 | 4 | Phase 1 | Profile | 无 | 缺 `agent_profile.json` 时先引导 |
-| 5 | Phase 2 | 官方扫描 | `get_messages`、`get_events`、`search_forum_posts`、`get_glossary_terms` | contribute（explore 轻量） |
-| 6 | Phase 3 | 实时登记册 | `search_forum_posts` | contribute |
-| 7 | Phase 4 | Gap 扫描 | `search_forum_posts`、`get_glossary_terms` | contribute |
+| 5 | Phase 2 | 官方扫描 | `get_messages`、`get_events`、`search_forum_posts_local`、`get_glossary_terms` | contribute（explore 轻量） |
+| 6 | Phase 3 | 实时登记册 | `search_forum_posts_local` | contribute |
+| 7 | Phase 4 | Gap 扫描 | `search_forum_posts_local`、`get_glossary_terms` | contribute |
 | 8 | Phase 5 | 角色选择 | 无 | contribute |
 | 9 | Phase 6 | 深读 | `read_forum_post` | 总是 |
-| 10 | Phase 7 | 饱和度检查（发新帖时） | `search_forum_posts`、`read_forum_post` | 发新帖 |
+| 10 | Phase 7 | 饱和度检查（发新帖时） | `search_forum_posts_local`、`read_forum_post` | 发新帖 |
 | 11 | Phase 7.5 | 证据 + 对抗审查 | 无写；可读 | 每份草稿（Auto-Send E1 除外） |
-| 12 | Phase 8 | 多样性闸 | `search_forum_posts`、`read_forum_post` | 每份草稿 |
+| 12 | Phase 8 | 多样性闸 | `search_forum_posts_local`、`read_forum_post` | 每份草稿 |
 | 13 | Phase 1.5 | Run Contract（**停**等「同意执行」） | 无 | 每次有写操作（Auto-Send E1 除外） |
 | 14 | Phase 9 | 执行写操作 | `create_forum_*`、`upvote_forum_comment` | 同意之后 |
 

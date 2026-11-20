@@ -194,7 +194,7 @@ TOP30 里**资产负债表科目家数 + BVPS 实际值 + flash 快照家数**�
 | 全量字段 typed catalog（闸 2/3 数据源）    | `wq-brain-campaign-toolkit` 的 `scan_fields.py`                                               |
 
 ⚠ **已核对并决定「不调用」的 L1**（2026-10-16，防误挂）：`brain-data-feature-engineering` ——
-无 `search_forum_posts` 权限 / 产物是单层模板（无壳层抽象）/ 体征读数无下游消费 / `Expected Exposure` 只用于事后去重。
+无 `search_forum_posts_local` 权限 / 产物是单层模板（无壳层抽象）/ 体征读数无下游消费 / `Expected Exposure` 只用于事后去重。
 ⇒ ② 自建。**但 `**Concept**` 块与 `s1_<ds>_d1` 台账契约照用**（GEM 只认这个格式）。
 
 **★ 8 问法的适用边界（2026-11-16 裁断，防再纠结）**：按 `brain-data-feature-engineering` 第 0 步的
@@ -297,7 +297,7 @@ TOP30 里**资产负债表科目家数 + BVPS 实际值 + flash 快照家数**�
 
 | 步骤        | 工具                                                                            |
 | --------- | ----------------------------------------------------------------------------- |
-| 搜机制模板     | `search_forum_posts(search_query="<机制关键词> 模板")`                               |
+| 搜机制模板     | `search_forum_posts_local(keywords=["<机制关键词>", "模板"])`                               |
 | 读正文 + 评论  | `read_forum_post(article_id="")`（正文在 `post.body`）                         |
 | 术语 / 算子核对 | `get_glossary_terms`、`get_documentations` / `get_documentation_page(page_id)` |
 | 判死取证纪律    | `seal_dead_end` 的 `forum_recon` 闸 fail-closed：**工具故障 ≠ 论坛无解**                 |
@@ -499,7 +499,7 @@ $WQ_PY -m wqb.profiles sync-cells --region KOR --apply  # 刷新判死 / 胜绩
 **MCP 工具 · 平台侧 `wq-brain-http`**：`get_datafields`（字段实名核对）、`preflight_expressions`（发批前必跑）、
 `get_platform_setting_options`（合法设置档，别照搬别区）、`batch_create_simulations` / `batch_status`、
 `get_alpha_details`（新建 alpha 逐个拉）、`get_alpha_pnl`（`risk-neutralized-pnl` 列做归因）、`get_alpha_yearly_stats`、
-`search_forum_posts` / `read_forum_post` / `get_glossary_terms`（取证通道 A）、
+`search_forum_posts_local` / `read_forum_post` / `get_glossary_terms`（取证通道 A）、
 `check_correlation`（prod）、`check_self_correlation`（self，本地不占配额）、`submit_verdict`（只有否决权）。
 
 **MCP 工具 · 台账侧 `wqb-db`**：`get_dead_ends`、`list_wave_results` / `get_latest_wave`、`get_submit_ready`、

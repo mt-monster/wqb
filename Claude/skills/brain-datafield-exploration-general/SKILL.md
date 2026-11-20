@@ -56,13 +56,21 @@ allowed-tools:
 - **→ 交 FE**：频率决定**窗口下限**——读体检包的 `min_window`；硬门的代码口径是 daily ≥ 22（流量 / 事件类 daily 字段降为 5）/ weekly ≥ 52 / monthly ≥ 120 / quarterly ≥ 252（WebDataScope 规则 13 的 21d / 63d 是理论下限，见 field-quality 的规则文档）。低频字段换手天然低，走低换手轨道。
 
 ## 法 4：取值范围
-- **表达式**：`abs(datafield) > X`，X = 1 / 10 / 100（按量纲继续放大）
-- **解读**：X = 1 时计数≈覆盖 → 字段落在 [-1, 1]（已归一化）；逐档放大 X 直到计数归零，得到量纲。
+- **表达式（已修正 2026-11-17）**：`abs(datafield) > X` 里的**裸常数 X 在带单位字段上报 UNITS 错**
+  （KOR `holder_account_total` 实测 `greater(index 1) expected Unit[CSShare:1], found Unit[]`，整条 WARNING）。
+  **可用写法**：① 只测「是否归一化」用与 0 比较（`abs(datafield) > 0` 恒真，仅验非零）；
+  ② 要测量纲尺度用**同字段派生量**——`divide(datafield, ts_mean(datafield, 252)) > 1`（比值无量纲，
+  数倍于年均值的股票占比），或 `rank(datafield)` 看是否覆盖满格；
+  ③ 有离线包时直接读 `metadata` 的取值范围，省掉在线法4。
+  ⚠ 旧写法 `> 1 / 10 / 100` 的裸常数只对**无量纲字段**（如已归一化的 sentiment score）成立。
+- **解读**：`divide(F, ts_mean(F,252))` 接近 1 ⇒ 字段集中在均值附近；远大于 1 ⇒ 长尾/大量纲跨度。
 - **→ 交 FE**：量纲跨度大 → 用 `rank` / `ts_zscore` / `ts_rank` 去量纲，**不要**把不同量纲的字段直接相加（尺度支配 = 事实上的混信号）；有界 [-1, 1] 的评分类字段可直接 `rank`。
 
 ## 法 5：中心趋势
-- **表达式**：`ts_mean(datafield, 252) > X`（252 = 1 年；要 4 年典型值用 `ts_mean(datafield, 1008)`）
-- **解读**：X = 0 看是否为正；逐档 X = 1 / 10 找中心尺度。**不要用 `ts_median`**——它是幽灵算子，用了会取消整批 multisim；均值受偏态影响，偏态大时与法 6 / 体检 `skewness` 对照读。
+- **表达式（已修正 2026-11-17）**：`ts_mean(datafield, 252) > 0`（252 = 1 年；要 4 年典型值用 `ts_mean(datafield, 1008)`）。
+  **阈值为 0 可用**（COMPLETE）；`> 1 / 10` 等非零裸常数在带单位字段上报 UNITS 错（同法4）——
+  要找中心尺度改用 `ts_mean(F,252) > ts_mean(F,1008)`（同单位比较）或直接读离线包。
+- **解读**：X = 0 看是否为正；偏态大时与法 6 / 体检 `skewness` 对照读。**不要用 `ts_median`**——它是幽灵算子，用了会取消整批 multisim；均值受偏态影响。
 - **→ 交 FE**：单边（恒正 / 恒负）字段先取变化率（`ts_delta` / `ts_returns`）或 `ts_zscore` 再用（体检 advice「单边恒正 → 变化率 / 排名」）。
 
 ## 法 6：分布形态
@@ -95,6 +103,29 @@ allowed-tools:
 2. **在线有成本意识**：只跑了最小集（一批 6 条）；扩展集只对将当主信号的字段跑；没有为整个数据集逐字段全跑。
 3. **类型已核**：字段 `type` 已写明，VECTOR 已 `vec_*`、EVENT 已单条探针；表达式里没有 `ts_median` / `ts_event_*` / `scale_down`。
 4. **每法有去向**：每个结论带「→ 交 FE 的哪一步」（覆盖 → backfill、频率 → 窗口下限、形态 → 预处理）。
+
+## ★ 静态元数据 × 六法实证 的集成（目标：产出「字段 → 合法模板白名单」）
+
+两者不是二选一，是**两段式**——静态是便宜的筛子（全字段、零配额、定方向），六法是贵的裁决（仅主信号字段、少量配额、给预处理硬约束）。
+**只做静态就把推定当结论**（如「description 写季频 ⇒ 窗口≥63d」实测 66 日内 87% 就变过，推定偏了）；**只做六法不全量**（1000 字段跑不起）。
+
+**字段画像档案必须落一张集成表**（`tracking/<R>/reference/datasets/<ds>.md`）：
+
+| 列 | 来源 | 作用 |
+|---|---|---|
+| 静态读数 | `get_datafields` 的 type/cov/aC/description + 五问**推定** | 圈候选模板集合（存量→`ts_delta`、事件→`trade_when`、VECTOR→`vec_*`） |
+| 六法实测 | 在线最小集 / 离线包的 **Long Count** | 裁决候选模板的准入/排除 |
+| **合法模板白名单** | 两者合成 | 模板匹配的直接输入 |
+| **排除模板 + 理由** | 六法反证 | 防止再用已证伪几何 |
+
+**合成规则（KOR 2026-11-17 实证样例 `holder_account_total`）**：
+- 静态：type=MATRIX、cov 0.9553、description="number of accounts holding"（**存量**）⇒ 候选模板 = `ts_delta` 变化率族 + `group_rank` 横截面排序
+- 六法：法2 `F!=0` longCount 527→527 ⇒ 零值≈0 ⇒ **排除 `trade_when` 门控模板**；
+  法3 `ts_std_dev(F,66)!=0` longCount 481/527=87% ⇒ 窗口下限从「季频63d」下调，**允许 22d 短窗**；
+  法4/5 裸常数 UNITS 错 ⇒ 量纲确认需 `rank` 去量纲 ⇒ **确认 `group_rank` 外壳**
+- ⇒ **合法模板白名单 = `group_rank(ts_delta(F,22|66), sector/industry)`；排除 = trade_when 门控 / ts_backfill（零值≈0 无需）/ 裸水平（单边恒正）**
+
+这样后面选模板是**查表**而不是拍脑袋。注意六法读数是 Long Count（覆盖率），**不是 Sharpe**——体检批用 NONE/d0/P0Y0M0D，只看 long/short count。
 
 ## references
 

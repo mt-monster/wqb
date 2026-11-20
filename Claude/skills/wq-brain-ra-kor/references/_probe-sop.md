@@ -209,9 +209,11 @@ $WQ_PY tracking/KOR/scripts/scan_diversity.py --build <field> --all-families   #
 7. **CW 假阴性**：直接 `subtract(group_rank(·),0.5)` 不加 hump ⇒ CW 仍 1.0；
    `normalize`/`scale`/`winsorize`/`quantile`/换轴/换中性化档 **全部 CW 1.0**（23 条对照）。
 8. **prod 误判**：`ts_mean` 平滑反而把 prod 推高（0.76）；只有 `industry` 轴 / `hump=0.005` 降 prod。
-9. **工具失效**：论坛 `search_forum_posts` 服务端 Playwright 不稳（超时 / `unexpected error` / 0 结果）⇒ **按
-   [`forum_and_doc_tools_guide.md`](../../../../docs/reference/forum_and_doc_tools_guide.md) §2.3 走文档两步绕行**
+9. **工具失效**：旧 Playwright `search_forum_posts` 已于 2026-11-20 **退役并删除**（它对任何查询都倾向
+   超时 / `unexpected error` / 0 结果，且「success + 0 结果」是 Cloudflare 挑战页造成的**假信号**）⇒
+   **一律改走 `search_forum_posts_local(keywords=[...])` / `get_forum_posts`**（Zendesk 列表端点 + 本地过滤，确定性、零超时）；
+   仍查不到时按 [`forum_and_doc_tools_guide.md`](../../../../docs/reference/forum_and_doc_tools_guide.md) §2.3 走文档两步绕行
    （`get_documentations`→`get_documentation_page`→提取 `/posts/<数字>` id→`read_forum_post` 直读）或直读已知 article_id；
-   **论坛知识不用 WebSearch 顶替**（2026-11-18 裁定：查论坛唯一方式 = 那 5 个 MCP 工具；WebSearch/WebFetch 只用于**论文**线）。
-   search 超时/0 结果是**工具故障**，不是「论坛无解」，不得据此判死。（用户明令：遇到困难或没灵感要及时查论坛/外部论文或数据。）
+   **论坛知识不用 WebSearch 顶替**（2026-11-18 裁定：查论坛唯一方式 = 论坛 MCP 工具；WebSearch/WebFetch 只用于**论文**线）。
+   0 结果是**工具故障**，不是「论坛无解」，不得据此判死。（用户明令：遇到困难或没灵感要及时查论坛/外部论文或数据。）
 10. **写脚本只用 ASCII 引号**（全角引号混入 heredoc 已致两次 SyntaxError）。

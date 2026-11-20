@@ -7,7 +7,7 @@
 
 | 资源 | 上限 / 次运行 | 性质 |
 |---|---|---|
-| `search_forum_posts` | 30 | 读取预算 |
+| `search_forum_posts_local` | 30 | 读取预算 |
 | `read_forum_post` | 8 | 读取预算 |
 | `get_glossary_terms` | 5 | 读取预算 |
 | `get_messages` | 5 | 读取预算 |

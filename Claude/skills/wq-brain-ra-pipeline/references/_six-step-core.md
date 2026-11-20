@@ -287,7 +287,7 @@
 
 | 步骤 | 工具 |
 |---|---|
-| 搜机制模板 | `search_forum_posts(search_query="<机制关键词> 模板")` |
+| 搜机制模板 | `search_forum_posts_local(keywords=["<机制关键词>", "模板"])` |
 | 读正文 + 评论 | `read_forum_post(article_id="<id>")`（正文在 `post.body`） |
 | 术语 / 算子核对 | `get_glossary_terms`、`get_documentations` / `get_documentation_page(page_id)` |
 | 判死取证纪律 | `seal_dead_end` 的 `forum_recon` 闸 fail-closed：**工具故障 ≠ 论坛无解** |

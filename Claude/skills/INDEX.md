@@ -184,7 +184,7 @@ L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure
 | Margin | 平台不检 | > 10 bp | `GATES_INTERNAL.margin_bp_min` |
 | Returns | 平台不检 | > 5% | `GATES_INTERNAL.returns_min` |
 | SELF 相关性 | < 0.7 | < 0.5 | `GATES_PLATFORM.self_corr_max` / `GATES_INTERNAL.self_corr_max` |
-| PROD 相关性 | < 0.7 | — | `GATES_PLATFORM.prod_corr_max`（= `PRODCORR_CEILING`） |
+| PROD 相关性 | < 0.7 | < 0.65 | `GATES_PLATFORM.prod_corr_max`（= `PRODCORR_CEILING`） / `GATES_INTERNAL.prod_corr_max` |
 <!-- gate-ladder:end -->
 
 **过闸分层**（操作定义在 RA 步 5–8）：① IS 廉价闸 → ② PC 等待 → ③ 硬闸（PROD / SELF）。`PASS_CHEAP` 只代表过了 ①，绝不等于可提交。
@@ -249,9 +249,12 @@ L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure
 
 其他 skill 一律**引用本段**，禁止裸写计数数字（`test_docs_consistency.py` 守护；历史变更见 CHANGELOG）：
 
-- `wq-brain-http` 服务器：**71 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
-  `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 4 /
-  `tools_labs` 3 / `tools_ops` 7 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 71）。
+- `wq-brain-http` 服务器：**72 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
+  `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 5 /
+  `tools_labs` 3 / `tools_ops` 7 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 72）。
+  2026-11-19 增 `tools_forum` 两个确定性检索工具（`get_forum_posts` / `search_forum_posts_local`，Zendesk 列表端点 + 本地过滤）；
+  2026-11-20 **退役并删除旧 Playwright `search_forum_posts`**（「success + 0 结果」是 Cloudflare 挑战页造成的假信号），
+  检索只剩上述两个确定性通道。
   由 `tests/unit/07_docs_skills/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护。
   **`tools_submit` 0 是有意的**：原生 `submit_alpha` 工具已于 2026-09-02 删除，提交统一走 workflow 节点 `workflow_submit_alpha`；
   所以「MCP 里没有 `submit_alpha` 工具」成立，而 `submit_batch` 是**仿真派发**（`POST /simulations`），不是提交。

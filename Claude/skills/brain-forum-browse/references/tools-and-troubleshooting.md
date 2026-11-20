@@ -15,7 +15,8 @@
 |---|---|---|
 | 公告 / 主题 / 比赛 | `get_messages` | `limit`（无，建议 30）、`offset`（0） |
 | 事件 | `get_events` | 无 |
-| 关键词搜帖 | `search_forum_posts` | `search_query`、`max_results`（50） |
+| 关键词搜帖（首选） | `search_forum_posts_local` | `keywords`（列表）、`limit`（5）、`max_pages`（8） |
+| 列表浏览 / 自建检索 | `get_forum_posts` | `page`（1）、`per_page`（100） |
 | 读帖 + 评论 | `read_forum_post` | `article_id`、`include_comments`（true） |
 | 术语表 | `get_glossary_terms` | 无 |
 | 用户自己的 alpha 事实 | `get_user_alphas` | `stage`（IS）、`limit`（30，建议 20）、`offset`（0） |
@@ -26,9 +27,9 @@
 ## 3. 搜索选型
 
 ```
-要找关键词？        → search_forum_posts（先精后宽）
+要找关键词？        → search_forum_posts_local（先精后宽）
 首搜为空 / 稀疏？    → 换更宽的关键词再搜一次；不要据一次为空宣称「无帖」
-没有关键词、想逛逛？  → 用宽泛词（如 "PPAC"、"Sharpe"、"模板"）搜，或从 get_messages / get_events 取话题
+没有关键词、想逛逛？  → get_forum_posts 翻列表，或从 get_messages / get_events 取话题
 要术语 / 官方文档？   → get_glossary_terms（只作种子词；锚帖不深读）
 多次搜索合并？       → 按 post_id 去重
 ```
@@ -38,7 +39,7 @@
 
 ## 4. 读取预算（惯例，服务端不强制）
 
-`search_forum_posts` ≤ 30、`read_forum_post` ≤ 8、`get_glossary_terms` ≤ 5、`get_messages` ≤ 5、`get_events` ≤ 5（每次运行；与 `configs/config.example.json` 的 `quotas` 一致）。服务端只有一个可选的全局限速（环境变量 `FORUM_RATE_LIMIT_SECONDS`，缺省 0 = 关）；触发时返回 `status: rate_limited` 与 `retry_after`。
+`search_forum_posts_local` ≤ 30、`read_forum_post` ≤ 8、`get_glossary_terms` ≤ 5、`get_messages` ≤ 5、`get_events` ≤ 5（每次运行；与 `configs/config.example.json` 的 `quotas` 一致）。服务端只有一个可选的全局限速（环境变量 `FORUM_RATE_LIMIT_SECONDS`，缺省 0 = 关）；触发时返回 `status: rate_limited` 与 `retry_after`。
 
 ## 5. 失败处理
 
@@ -53,8 +54,8 @@
 ## 6. 调用示例
 
 ```json
-{ "tool": "mcp__wq-brain-http__search_forum_posts",
-  "arguments": { "search_query": "PPAC turnover", "max_results": 15 } }
+{ "tool": "mcp__wq-brain-http__search_forum_posts_local",
+  "arguments": { "keywords": ["PPAC", "turnover"], "limit": 15, "max_pages": 8 } }
 
 { "tool": "mcp__wq-brain-http__read_forum_post",
   "arguments": { "article_id": "32984819083415", "include_comments": true } }

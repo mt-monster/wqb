@@ -1203,6 +1203,103 @@ def _write_attempt_knowledge(ctx, wave, rows):
         print(f"[knowledge] 经验摘要异常（不阻断）: {e}")
 
 
+def _run_attribution_stage(ctx, ck, rows, candidates, near, thresholds, max_rows=6,
+                           forum_max_pages=4):
+    """收批后**必做**归因层（2026-11-19 用户明令）。
+
+    三件事缺一不可（只读聚合指标会漏）：
+    ① 逐年 longCount/shortCount/pnl —— 唯一能发现「数据不满十年」的手段；
+    ② PnL 三线（原始 / 风险中性化 / 可投资性约束）—— 定位波动主导与可投资性折损；
+    ③ 论坛定向破闸检索（确定性语料通道，见 _lib/forum_corpus）—— 对本波主导墙找社区破解办法。
+
+    数据层排除（任一年零持仓）⇒ 该候选从 candidates 中移除（近十年硬约束不可补救）。
+    返回 {"attributions": [...], "removed": [...], "forum": [...]}。
+    """
+    empty = {"attributions": [], "removed": [], "forum": []}
+    try:
+        from _lib import attribution as attr_mod
+    except Exception as e:  # 模块缺失不阻断流水线，但必须可见
+        print(f"[attribution] 模块不可用（不阻断）: {e}")
+        return empty
+
+    pool = [r for r in (list(candidates) + list(near))
+            if isinstance(r.get("sharpe"), (int, float))]
+    pool.sort(key=lambda r: -abs(r.get("sharpe") or 0))
+    pool = pool[:max_rows]
+    if not pool:
+        print("[attribution] 无达标候选（candidates+near 为空），跳过归因层")
+        return empty
+
+    try:
+        api = Api(); api.login(*load_credentials())
+    except Exception as e:
+        print(f"[attribution] 平台登录失败（不阻断）: {e}")
+        return empty
+
+    attrs, removed, walls = [], [], []
+    for r in pool:
+        aid = r.get("alpha_id") or r.get("id")
+        if not aid:
+            continue
+        try:
+            yearly = attr_mod.yearly_stats(api, aid)
+            pnl = attr_mod.pnl_shape(api, aid)
+        except Exception as e:
+            # 取数失败 ≠ 该件没有逐年读数：显式留痕，不许静默当成「通过」。
+            attrs.append({
+                "alpha": aid, "expr": (r.get("expression") or r.get("code") or "-")[:200],
+                "ten_year_ok": False, "empty_years": [], "yearly": [],
+                "pnl": {"available": False},
+                "defects": [{"source": "逐年/PnL 取数失败",
+                             "evidence": f"{type(e).__name__}: {str(e)[:200]} ⇒ 满十年与失效年均**未判定**（不得当作通过）"}],
+                "fetch_error": str(e)[:300],
+            })
+            print(f"[attribution] {aid}: 逐年/PnL 取数失败（不阻断，但该件不得判为满十年）: {str(e)[:120]}")
+            continue
+        a = attr_mod.build_attribution(r, yearly, pnl)
+        attrs.append(a)
+        for w in attr_mod.wall_keywords_for_row(r, thresholds):
+            if w not in walls:
+                walls.append(w)
+        if not a["ten_year_ok"] and attr_mod.is_data_layer_exclusion(a["defects"]):
+            removed.append(aid)
+        empties = a.get("empty_years") or []
+        worst = min((y["sharpe"] for y in a["yearly"]), default=None)
+        print(f"[attribution] {aid}: 满十年={a['ten_year_ok']} 零持仓年={empties or '无'} "
+              f"最弱年S={worst} 缺陷={[d['source'] for d in a['defects']]}")
+
+    # 论坛定向破闸（确定性语料通道；抓不到不算失败，但要留痕）
+    forum = []
+    if walls:
+        try:
+            from _lib.forum_corpus import ForumCorpus
+            corpus = ForumCorpus(*load_credentials())
+            forum = attr_mod.forum_breakthrough(corpus, walls)
+            for f in forum:
+                print(f"[attribution] 论坛破闸 {f['wall']}: 命中 {f['found']} 帖"
+                      + (("｜" + str(f["posts"][0]["title"])[:60]) if f["posts"] else "｜无命中（记为未取证）"))
+        except Exception as e:
+            print(f"[attribution] 论坛检索异常（不阻断）: {e}")
+
+    payload = {
+        "region": ctx.region,
+        "wave": ck["wave"],
+        "dataset": ck.get("dataset"),
+        "attributions": attrs,
+        "removed_data_layer": removed,
+        "forum": forum,
+        "walls": walls,
+    }
+    try:
+        store = make_ledger_store(ctx)
+        store.set_key(f"s4_attribution_{ctx.region}_{ck['wave']}", payload)
+        print(f"[attribution] 已写 ledger 键 s4_attribution_{ctx.region}_{ck['wave']}"
+              f"（{len(attrs)} 件 / 排除 {len(removed)} 件 / 墙 {walls}）")
+    except Exception as e:
+        print(f"[attribution] ledger 写入失败（不阻断）: {e}")
+    return payload
+
+
 def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     if ck["stages"].get("review", {}).get("done"):
         print("[review] 已完成（checkpoint），跳过")
@@ -1303,6 +1400,19 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
                   f"越界行不进 prod/self 队列）")
     except (Exception, SystemExit) as e:
         print(f"[to_band] 标注异常（不阻断）: {e}")
+    # ---- 必做归因层（2026-11-19 用户明令）：逐年 + PnL + 论坛破闸 ----
+    # 位置很关键：必须在 wave_results 入库**之前**跑完，数据层排除（任一年零持仓）
+    # 才有机会把候选剔出 wave_results 的 candidates 池；跑在之后就来不及了。
+    _attr = _run_attribution_stage(ctx, ck, rows, candidates, near, t)
+    _removed_ids = set(_attr.get("removed") or [])
+    if _removed_ids:
+        _before = len(candidates)
+        candidates = [r for r in candidates
+                      if (r.get("alpha_id") or r.get("id")) not in _removed_ids]
+        near = [r for r in near
+                if (r.get("alpha_id") or r.get("id")) not in _removed_ids]
+        print(f"[attribution] 数据层排除（近十年不成立）{sorted(_removed_ids)}："
+              f"candidates { _before } → {len(candidates)}")
     # ---- wave_results 自动入库（波次结论 + near 池，替代 review JSON 文件）----
     try:
         from _lib.wave_results import WaveResultsStore

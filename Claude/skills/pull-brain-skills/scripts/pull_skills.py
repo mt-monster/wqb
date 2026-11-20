@@ -145,6 +145,17 @@ def _frontmatter(text: str) -> str:
     return m.group(1) if m else ""
 
 
+def _is_link(p: str) -> bool:
+    """符号链接 + Windows junction：后者 `os.path.islink` 恒 False，需查 reparse point。"""
+    if os.path.islink(p):
+        return True
+    try:
+        import stat
+        return bool(os.lstat(p).st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
+    except (OSError, AttributeError):
+        return False
+
+
 def audit_skill_folder(folder: str) -> Dict[str, object]:
     """Static audit of one candidate folder. Never executes anything from it."""
     findings: List[str] = []
@@ -155,12 +166,12 @@ def audit_skill_folder(folder: str) -> Dict[str, object]:
         for name in list(dirs) + list(files):
             p = os.path.join(root, name)
             rel = os.path.relpath(p, folder).replace(os.sep, "/")
-            if os.path.islink(p):
+            if _is_link(p):
                 symlinks.append(rel)
         for name in files:
             p = os.path.join(root, name)
             rel = os.path.relpath(p, folder).replace(os.sep, "/")
-            if os.path.islink(p):
+            if _is_link(p):
                 continue
             if rel.startswith("scripts/") or name.lower().endswith((".sh", ".ps1", ".bat", ".cmd", ".py", ".js")):
                 scripts.append(rel)

@@ -22,15 +22,18 @@ allowed-tools:
 
 **★ 查论坛唯一方式（2026-11-18 用户裁定）**：一律按 [`docs/reference/forum_and_doc_tools_guide.md`](docs/reference/forum_and_doc_tools_guide.md)，
 只经下面这些 `wq-brain-http` MCP 工具；论坛访问单一实现 = `tools/lib/forum_mcp.py`。**不用** requests 抓取 / 直连 Zendesk API / WebSearch 当论坛通道
-（WebSearch/WebFetch 只用于**论文**）。**search 不稳（超时 / 0 结果）时的正路** = guide §2.3 文档两步绕行：
+（WebSearch/WebFetch 只用于**论文**）。**2026-11-20 起旧 Playwright `search_forum_posts` 已整体退役**
+（「success=True + 0 结果」是 Cloudflare 挑战页造成的假信号），检索只剩上面表格里的
+`search_forum_posts_local` / `get_forum_posts`。**检索仍失败时的正路** = guide §2.3 文档两步绕行：
 `get_documentations` → `get_documentation_page(page_id)` → 从正文 `<a href=".../posts/<数字>">` 提取 id → `read_forum_post` 直读；或直读已知 article_id。
-**search 超时 / 0 结果 = 工具故障，不是「论坛无帖 / 无解」**。
+**检索失败 = 工具故障，不是「论坛无帖 / 无解」**。
 
 `wq-brain-http` 只注册了下面这些论坛 / 平台读取工具（由测试对照代码签名）：
 
 | 工具 | 参数 | 用途 |
 |---|---|---|
-| `search_forum_posts` | `search_query`、`max_results`（缺省 50） | 关键词搜帖（服务端 Playwright，**不稳**，超时/0 结果记故障） |
+| `search_forum_posts_local` | `keywords`、`limit`（缺省 5）、`max_pages`（缺省 8） | **唯一检索通道**：Zendesk 列表端点 + 本地词命中率过滤，确定性、零超时 |
+| `get_forum_posts` | `page`、`per_page`（缺省 100） | 列表端点原始分页（自建过滤 / 绕行用） |
 | `read_forum_post` | `article_id`、`include_comments`（缺省 true） | 读帖 + 评论区（**可靠**；id 须纯数字或含 `/posts/<数字>` 的 URL） |
 | `get_glossary_terms` | 无 | 术语表 |
 | `get_documentations` | 无 | 官方文档集合索引（绕行第 1 步） |
@@ -60,11 +63,11 @@ allowed-tools:
 
 1. **（可选）建笔记目录**：`& $WQ_PY Claude/skills/brain-forum-browse/scripts/init_workspace.py --new-run` → 在本 skill 目录的 `outputs/runs/<run_id>/`（已 `.gitignore`）生成 `session_plan.md` 与 `forum_stroll_notes.md`，打印 JSON 里有 `run_dir`。skill 被同步到宿主目录后，`outputs/` 落在那份 skill 目录里。
 2. **起步**：有话题就 purposeful（先 `get_messages(limit=30)` / `get_events()`；需要个人视角再 `get_user_alphas(limit=20)`）；没有议程就 emergent（先宽搜，逛出发现再定方向）。
-3. **搜与读**：`search_forum_posts` 先用精确关键词，结果为空 / 稀疏就换更宽的词再搜一次，**不要一次为空就宣称「无帖」**；对值得读的帖用 `read_forum_post`（`include_comments=true`）深读。**search 超时 / 持续 0 结果 ⇒ 改文档两步绕行**（`get_documentations`→`get_documentation_page`→提取帖子 id→`read_forum_post`，见 §1 / guide §2.3），或直读归档记忆里已知的 article_id；**这是工具故障，不是「论坛无帖」**。
+3. **搜与读**：`search_forum_posts_local(keywords=[...])` 用精确关键词（多个词是按「命中比例」打分，命中率 ≥50% 才计入 matched），结果为空 / 稀疏就换更宽的关键词再搜一次，**不要一次为空就宣称「无帖」**；对值得读的帖用 `read_forum_post`（`include_comments=true`）深读。**检索仍失败 ⇒ 改文档两步绕行**（`get_documentations`→`get_documentation_page`→提取帖子 id→`read_forum_post`，见 §1 / guide §2.3），或直读归档记忆里已知的 article_id；**这是工具故障，不是「论坛无帖」**。
 4. **记笔记**：写进 `forum_stroll_notes.md`——起步意图、逛中发现、深读摘要（post_id / 标题 / 一句 hook）、和你研究的交集、0–3 条延伸想法（**明确标「待验证」，不自动执行**）。
 5. **汇报**：亮点、与用户研究的交集、深读摘要、延伸想法。
 
-**每次运行的读取预算**（惯例，服务端不强制；与 `configs/config.example.json` 一致）：`search_forum_posts` ≤ 30、`read_forum_post` ≤ 8、`get_glossary_terms` ≤ 5、`get_messages` ≤ 5、`get_events` ≤ 5。批量读、同一关键词一次运行里不重复搜。
+**每次运行的读取预算**（惯例，服务端不强制；与 `configs/config.example.json` 一致）：`search_forum_posts_local` ≤ 30、`read_forum_post` ≤ 8、`get_glossary_terms` ≤ 5、`get_messages` ≤ 5、`get_events` ≤ 5。批量读、同一关键词一次运行里不重复搜。
 
 **内容纪律**：
 - 帖子标题、评论、票数一律来自 MCP 返回，**不凭记忆编造** post_id / 标题 / 评论 / 排名；

@@ -161,14 +161,214 @@ tail(group_rank(multiply(rank(δ240), rank(δ176), ts_rank(p,1008)), sector),
 
 - 实测域：DEU/TOP500/D1/FAST/decay0。权威档案：`tracking/DEU/regular_tower/WAVE_rt-fundamental-w1_20261116.md` §1 臂1、`WAVE_rt-fundamental-w2_20261116.md` §1 臂7 / §9 / §12、`WAVE_rt-fundamental-w3_20261116.md` §0 / §3、`WAVE_rt-fundamental-w4_20261116.md` §1 / §3；族内 tail 先验 `tracking/DEU/atom_orthogonal/NEARGATE_BREAK_GRID_FND72_20261115.md` §二 B5/B8、§四。
 
+## 杠杆 I — 跨维度乘法交互（同集两腿不同维度：规模集中 × 事件新鲜度；2026-11-16 入册）
+
+```
+conc66 = ts_sum(divide(vec_max(insd1_valueeur), vec_sum(insd1_valueeur)), 66)  // 最大单笔占当日总额（规模/信念集中）
+fresh  = 1/(days_from_last_change(vec_avg(insd1_holdings))+1)                   // 距上次持仓变动天数（信息新鲜度）
+multiply(rank(conc66), rank(fresh))                                             // ✅ 两腿是不同维度，乘法增益
+subtract(rank(conc66), rank(ts_ir(vec_avg(insd1_holdings), 66)))                // ❌ 同集复合≠增益：减法+错维度 → 负
+```
+
+「又大又新」：规模集中度是**存量/截面**维度，事件新鲜度是**流量/时间**维度——不是同一潜变量的投影，
+乘法保留两维信息并让「大且新」的持仓拿最高分（`WAVE_rt-insiders-w2_20261116.md` §2.2）。
+
+**对照读数（DEU/TOP500/D1/insiders1、中性化 SUBINDUSTRY、decay0/nanON/trunc0.08/66 窗，2014-01-01→2023-12-31）**
+
+| 臂 | 结构 | S | F | 2Y | sub | margin | 来源 |
+|---|---|---:|---:|---:|---:|---:|---|
+| conc 单腿（w1 臂7 `oma3GYeb`） | 裸 `rank(conc66)` | 0.81 | 0.50 | 0.83 | 0.19 | 20.39bp | w1 平台实读 |
+| fresh 单腿（w2 臂1 `gJaR5gov`） | `group_rank(fresh, sector)` | 0.78 | 0.51 | **1.08** | 0.18 | 19.89bp | w2 平台实读 |
+| **复合（w2 臂3 `d5aE63Ew`）** | `multiply(rank(conc66), rank(fresh))` | **0.89** | **0.63** | 0.92 | **0.26** | **21.56bp** | w2 平台实读 |
+| Δ vs conc 单腿 | 左腿表达式**逐字相同**、同配置同日期（跨波） | +0.08 | +0.13 | +0.09 | +0.07 | +1.17bp | 纯单变量 |
+| Δ vs fresh 单腿 | ⚠ 含 `group_rank(sector)`→`rank` 混淆 | +0.11 | +0.12 | **−0.16** | +0.08 | +1.67bp | 非纯单变量 |
+
+- **增益方向**：S/F/sub/margin 四项同时高于两条单腿 ⇒ 不触发稀释铁律；这是 insd1 两波 20 臂里**首个「复合高于单腿」**的形态（§5）。
+- **归因纯度（如实标注）**：左腿对照为**跨波**（w1 已入库档，本波未重跑 conc 腿），但表达式逐字相同 + 同配置同日期 ⇒ 单变量成立；
+  右腿含分组差混淆 ⇒ 只能把「不稀释」判给乘法结构，不能把 +0.11 精确归因到乘法。严格按本册「同批」口径，跨波对照是残留折扣。
+- **波 verdict=PARTIAL（n_pass=0 / n_near=2；判定表 `src/wqb/wave_results_contract.py:79-90`）**：10/10 臂 `failed_ra_count` 3–5、无一过 RA 全闸；
+  近闸仅两条——复合臂 `d5aE63Ew` 距 F 闸 0.37（F 0.63 vs limit 1.0，S/F/margin 全波最高）、fresh 单腿 `gJaR5gov` 距 CW 闸 0.069
+  （0.168741 vs limit 0.1，挂点 **2014-01-02 样本首日**）。距 S 闸最近 0.69（复合臂）、距 2Y 闸最近 0.47（臂6 1.11）、距本地 sub 线最近 0.56（臂2 0.44）。
+- **平台闸限实读（`checks.fail.limit`）**：LOW_SHARPE=1.58（10/10）/ LOW_FITNESS=1.0 / HIGH_TURNOVER=0.70 / LOW_2Y·IS_LADDER=1.58 /
+  CONCENTRATED_WEIGHT=0.10（比本地 review 线 0.5 严 5 倍）/ LOW_SUB **逐臂动态 0.09–0.42** ⇒ **sub≥1.0 是本地 review 线、不是平台闸限**
+  （臂2 sub 0.44 平台判 PASS；`tracking/DEU/config/thresholds.json:21`）；verdict 与 sub 口径无关（10/10 臂都挂 S+F 两项）。
+
+**边界**
+
+① **仅单一探针档验证**：decay0/nanON/SUBINDUSTRY/trunc0.08/66 窗（两波同档），与区域生产档（decay4/nanOFF/2013 起）不同 ⇒ **配置层未验**，配置层死/活未判。
+② **2Y 是让步项**：0.92 **低于** fresh 单腿 1.08 ⇒ 2Y 为主缺口时不适用；本波 10 臂 2Y ≤1.11，两项近闸也都不在 2Y。
+③ **绝对强度弱、不改路线结论**：S 0.89 距 LOW_SHARPE 闸 0.69，仍低于 BE176 的 insiders1 单集上限 1.30（两波 20 臂 0/20 破 1.30）⇒
+   「insd1 单集 ATOM 过不了 1.58」继续成立；本杠杆是**方向性结构增益**，不是过闸配方（复合臂自身挂 4 闸：S/F/sub/2Y）。
+④ **单点对照**：未做配置/时间稳健性；窗口只 66（22/132 未测）；prod/self 全 null（未测）。
+⑤ **对照纯度**：conc 侧纯单变量但跨波；fresh 侧含 `group_rank→rank` 混淆。
+
+**失效反例 / 适用边界修正**
+
+- **修正 BE176 的适用范围**：BE176「6 字段同源 ⇒ 任何叠加都平均化同源噪声」（`BE176_INSIDERS1_CEILING_130_20261112.md`「机理（已确认）」）
+  对**加法/等权叠加**成立，对**不同维度的乘法**不成立。这是边界修正、不是推翻：**同一潜变量投影**的乘法仍按同源处理
+  （杠杆 C 内 fnd90 同族质量分乘法稀释，BE250；insd1 的 value/valueeur 亦是同源）。
+- **同集复合≠增益**：`subtract(rank(conc66), rank(ts_ir(...)))`（臂4 `0mPeLNer`）S −0.16 / F −0.06 / 2Y −0.53 / DD **44.56%** / LC-SC **31/30**，
+  CW 0.285488>0.1 挂 ⇒ 方向错（减法）+ 维度错（ts_ir 与 conc 同属交易强度族）即崩到负；且缺 `ts_ir` 单腿对照，定量归因不成立。
+- **同源门控仍稀释**：`if_else(mask<0.5, rank(fresh), 0.5)`（臂10 `9qla3dJV`）0.50/0.24/0.96/0.13 vs fresh 单腿 **−0.28/−0.27/−0.12/−0.05**
+  ⇒ 增益来自「不同维度 × 乘法」这个结构，不是「复合」本身。
+- **2Y 主缺口场景**：要 2Y 用 fresh 单腿（1.08）或掩码臂（1.11），不要用本复合。
+
+- 实测域：DEU/TOP500/D1/`insiders1`（provisional，未判死）/decay0。权威档案：`tracking/DEU/regular_tower/WAVE_rt-insiders-w1_20261116.md` §1 臂7、
+  `WAVE_rt-insiders-w2_20261116.md` §1 臂1/臂3、§1.1、§2.2、§3 C1/C2/C9、§5、§6、§10、§12；先验 `tracking/DEU/atom_orthogonal/BE176_INSIDERS1_CEILING_130_20261112.md`。
+
+## 杠杆 J — 单笔金额统计量：离散度优于集中度（`vec_stddev÷vec_sum` 取代 `vec_max÷vec_sum`，2026-11-16 入册）
+
+```
+conc66 = ts_sum(divide(vec_max(insd1_shares),    vec_sum(insd1_shares)), 66)   // 最大单笔占当日总额
+conc_s = ts_rank(conc66, 252)                                                  // 集中度臂
+disp66 = ts_sum(divide(vec_stddev(insd1_shares), vec_sum(insd1_shares)), 66)   // 单笔金额离散度÷当日总额
+disp_s = ts_rank(disp66, 252)                                                  // ✅ 同壳替换：离散度臂
+```
+
+同字段、同壳（`ts_sum(·,66)` + `ts_rank(·,252)`）、**只差一个 token**（`vec_max` → `vec_stddev`）——insd1 三波 30 臂里**最干净的单变量消融**（w3 §2.1 原话）。
+经济含义：内部人**单笔金额的分散/一致程度**比「最大单笔占比」更含信息（后者易被一次性协议转让/巨额单笔主导），
+集中度只回答「有没有大手笔」，离散度回答「多笔之间是否一致」。
+
+**同壳单 token 消融（w3 臂1 vs 臂10；DEU/TOP500/D1/`insiders1`、SUBINDUSTRY、decay0/nanON/trunc0.08、66+252 窗、2014-01-01→2023-12-31）**
+
+| 臂 | 结构 | S | F | 2Y | sub | TO | DD | margin | RA 挂闸 |
+|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| 裸（臂1 `2r5v12Kb`） | `ts_rank(ts_sum(vec_max÷vec_sum, 66), 252)` 集中度 | 0.17 | 0.04 | −0.23 | 0.00 | 7.27% | 12.22% | 2.08bp | 4（含 LOW_SUB 0.08） |
+| 改造（臂10 `Jj8nV2OE`） | `ts_rank(ts_sum(vec_stddev÷vec_sum, 66), 252)` 离散度 | **0.44** | **0.18** | **0.56** | **0.47** | 6.08% | 14.40% | **6.72bp** | 3（sub 平台判 PASS） |
+| Δ（单 token） | | **+0.27** | +0.14 | **+0.79** | **+0.47** | −1.19pp | **+2.18pp** | +4.64bp | |
+
+**跨波支撑（valueeur 口径，独立对照；⚠ 壳不同 ⇒ 非单变量）**
+
+| 波 | 臂 | 结构 | S | F | 2Y | sub | DD | margin |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|
+| w1 | `oma3GYeb`（臂7） | 集中度 `ts_sum(max÷sum,66)` + 裸 `rank` | **0.81** | 0.50 | 0.83 | 0.19 | 13.90% | 20.39bp |
+| w2 | `mLarN0x1`（臂2） | 离散度 `group_rank(ts_sum(stddev÷sum,66), sector)` | 0.72 | 0.44 | 0.60 | **0.44** | 14.35% | 21.00bp |
+| Δ | | | −0.09 | −0.06 | −0.23 | **+0.25** | +0.45pp | +0.61bp |
+
+⇒ 两次独立对照（不同波、不同字段口径 shares / valueeur）：**sub 方向一致**（+0.47 / +0.25），margin 同向；
+⚠ **S/2Y 在 valueeur 跨波对上方向相反**（0.72 < 0.81 / 0.60 < 0.83）⇒ 「离散度全面优于集中度」**只在 shares 同壳单变量上成立**，
+跨波可复现的只有 **sub 维度**。如实登记，不外推。
+
+**边界**
+
+① **仅单探针档**：decay0/nanON/SUBINDUSTRY/trunc0.08/单一 66+252 窗；区域生产档（decay4/nanOFF、2013 起，`tracking/DEU/config/settings.json:5-16`）三波未跑 ⇒ 配置层死/活未判（D6 未达）。
+② **只证明族内统计量选择**，**不改变 shares 口径整体偏弱**：同波 shares 集中度 0.17、加权 0.33/−0.22、掩码 0.27/−0.01、乘法左腿 0.17，
+   而 valueeur 集中度 w1 是 0.81 ⇒ 同一个 `max÷sum` 换字段后 S 掉 0.64。「离散度更好」≠「shares 口径可用」。
+③ **不构成可推进候选**：臂10 S 0.44 距 LOW_SHARPE 闸 **1.14**；sub 0.47 距本地 review 线 1.0 仍 0.53
+   （平台 `LOW_SUB_UNIVERSE_SHARPE` 是**逐臂动态限** 0.08–0.37，臂10 判 PASS——sub≥1.0 是本地 review 线而非平台闸限，`tracking/DEU/config/thresholds.json:21`）。
+④ **强项是 sub**：0.47 = **三波非退化最高**（w1 0.38 / w2 0.44 / w3 0.47）；若目标是 ★v2 的 sub≥1.0，本族优先离散度而非集中度。
+⑤ **波 verdict=FAIL**（n_pass=0 / n_near=0；判定表 `src/wqb/wave_results_contract.py:79-90` 的 `verdict_from_counts`）——本杠杆是方向性结构结论，不是过闸配方。
+⑥ **未扫**：窗口梯（只 66+252，22/132 未测）、prod/self 全 null（归相关性员）、宇外维度未变。
+
+**失效反例**
+
+- **同波 `trade_when(…, −1)` 兜底做空是破坏性的**：`trade_when(dfc(bf(vec_count,252))<66, ts_rank(conc,252), −1)`（臂4 `KPgnK2L1`）
+  S −0.23 / 2Y −0.76 / sub −0.36 / DD **26.56%**，对同核臂1 为 **S −0.40 / 2Y −0.53 / sub −0.36 / DD +14.34pp** ⇒ 门控失败落 −1 制造长期空头偏置。
+  FIELD 档 M9「DEU 未测 trade_when」由此改为「实测负」。本杠杆若要叠门控，先别用 −1 兜底。
+- **`vec_stddev` 的增益不可跨指标外推**：valueeur 跨波对上 S −0.09 / 2Y −0.23（见上表）⇒ 需要 S/2Y 时不能假设离散度更好，必须重测。
+- **「低/高机构持股是强侧」是形态产物，与本杠杆无关，勿混**：掩码形态三波一致「低带强」（+0.21/+0.18/+0.28），而互补权重形态同波**反号**
+  （低带 −0.22 vs 高带 0.33，且代数上 臂6+臂7 = 裸腿）⇒ 引用时必须带形态限定；不要把机构的形态效应记到统计量选择名下。
+- **同源稀释仍适用**：insd1 内部 `value` / `valueeur` 是同一潜变量投影，等权加法/乘法按同源处理（BE176；边界修正见杠杆 I）。
+
+- 实测域：DEU/TOP500/D1/`insiders1`（provisional，未判死）/decay0。权威档案：`tracking/DEU/regular_tower/WAVE_rt-insiders-w3_20261116.md`
+  §1 臂1/臂10、§1.1、§2.1、§2.3、§3 C1/C3、§10–§12；跨波对照 `WAVE_rt-insiders-w2_20261116.md` §1 臂2 / §2.1、
+  `WAVE_rt-insiders-w1_20261116.md` §1 臂7；闸限 `src/wqb/wave_results_contract.py:79-90`、`tracking/DEU/config/thresholds.json:2-12,21`。
+
+## 杠杆 K — 事件时钟用金额变化，不用交易条数（同壳单变量，跨波；2026-11-16 入册）
+
+```
+金额时钟 = ts_rank(252 - days_from_last_change(ts_backfill(vec_sum(insd1_valueeur), 252)), 252)   // ✅ w4 臂9 1YWovJdJ
+条数时钟 = ts_rank(252 - days_from_last_change(ts_backfill(vec_count(insd1_shares),  252)), 252)   // ❌ w3 臂2 O0Wn129p
+```
+
+「事件多久没发生」的时钟按**金额**计量：一次大额申报与一次小额申报不是同一个事件，条数把两者等价。
+两式**同壳**，`ts_backfill` 内只差一个聚合式（`vec_sum(valueeur)` vs `vec_count(shares)`）。
+
+**对照读数（DEU/TOP500/D1/`insiders1`、SUBINDUSTRY、decay0/nanON/trunc0.08、2014-01-01→2023-12-31；两波同档同日期）**
+
+| 臂 | 时钟 | S | F | 2Y | sub | TO | DD | margin | RA 挂闸 |
+|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| 裸（w3 臂2 `O0Wn129p`） | 条数 `vec_count(insd1_shares)` | 0.27 | 0.08 | 0.09 | 0.02 | 9.31% | 8.61% | 2.56bp | 4（含 LOW_SUB 0.13） |
+| 改造（w4 臂9 `1YWovJdJ`） | 金额 `vec_sum(insd1_valueeur)` | **0.43** | **0.17** | **0.32** | **0.24** | 11.21% | **8.48%（四波最低）** | **3.53bp** | 3（sub 平台判 PASS） |
+| Δ（单变量，跨波） | | **+0.16** | +0.09 | **+0.23** | **+0.22** | **+1.90pp** | −0.13pp | **+0.97bp** | |
+
+- **判据**：S 差 0.16 > ask 给的 H4 阈值 0.10（`WAVE_rt-insiders-w4_20261116.md` §2.5、§3 C5）。
+- **归因纯度**：两波配置/日期/中性化逐项相同（平台 `get_alpha_details` 逐臂回显 10/10 一致；两波各 10/10 COMPLETE、errors=0），表达式同壳、仅时钟聚合式不同 ⇒ **跨波单变量**（满足本册「裸 vs 改造」口径；唯一残留折扣是跨波而非同批）。
+- ⚠ **条数轴的语义前提未复核**：`vec_count` 是「当日申报记录条数」，不是股数口径的新鲜度——FIELD 档曾证 5 个字段的 `vec_count` 指标逐位相同（`FIELD_insiders1_20261116.md` §4.2），w3 未复核该等价性（`WAVE_rt-insiders-w3_20261116.md` §3 末项）⇒ 「条数」这一解释带一条未复核前提，不影响两式读数本身。
+- **波 verdict=PARTIAL**（n_pass=0 / n_near=2；判定表 `src/wqb/wave_results_contract.py:79-90` 的 `verdict_from_counts`）：10/10 臂 `failed_ra_count` 3–4、无一过 RA 全闸。近闸仅两条——臂1 `LLKnekRL` 距 F 闸 0.33（F 0.67 vs limit 1.0）、臂10 `MP6bwkGM` 距本地 sub 线 0.32（sub 0.68 vs 1.0；⚠ 平台 `LOW_SUB_UNIVERSE_SHARPE` 判 PASS，该近闸只在本地 1.0 线下成立，且长侧仅 55 只）。**本杠杆两臂都不在 near 池**（臂9 四闸距 S 1.15 / F 0.83 / 2Y 1.26 / 本地 sub 0.76）。排序外如实登记：臂7 `Jj8nlbpW` S 0.88 / 2Y 1.05 / sub 0.46 是综合最好结构，但四闸距 S 0.70 / F 0.48 / 2Y 0.53 / 本地 sub 0.54 全 >0.4 ⇒ 不入选。margin 机械命中（臂6 2.43bp / 臂9 3.53bp / 臂2 负值，绝对差均 ≤0.4）因闸量纲 0.0005（全区间约 0.007）、「0.4」比全量程大 50+ 倍而失去分辨力，明确不列 near（同 w1 排 TO、w3 排 margin 的处置逻辑）。
+- **verdict 对 sub 口径不敏感**：10/10 臂在任何 sub 判据下仍挂 LOW_SHARPE + LOW_FITNESS（§11）⇒ n_pass=0 不依赖 sub 线取平台动态限（逐臂 0.09–0.42）还是本地 1.0；只有臂10 的 near 依赖本地线（`tracking/DEU/config/thresholds.json:21`）。
+
+**边界**
+
+① **仅探针档**：decay0/nanON/SUBINDUSTRY/单一 252 回填窗；区域生产档是 decay4/nanOFF/2013 起（`tracking/DEU/config/settings.json:5-17`）⇒ 配置层死/活未判（D6 未达）。
+② **两侧 S 都低**（0.43 vs 0.27）：这是「哪个时钟更对」的**设计结论，不是可推进候选**——臂9 四闸距 1.15 / 0.83 / 1.26 / 0.76，全部远离 near。
+③ **换手代价**：金额时钟 TO 11.21%（本波最高，+1.90pp）；DD 8.48%（四波最低，−0.13pp）⇒ 低换手目标下不适用，回撤优先时可作候选轴。
+④ **时钟未穷尽**：只测 valueeur（金额）与 count（条数）。`vec_avg(insd1_holdings)` 在 w2 是**不同壳**（`1/(dfc+1)` + 裸 rank/group_rank，杠杆 I fresh 单腿 `gJaR5gov` S 0.78 / 2Y 1.08）⇒ **不可与两时钟直接比**；holdings 时钟待同壳补测（本结论最大的未覆盖面）。
+⑤ **单点对照**：只一个回填窗，未做时间/配置稳健性；prod/self 全 null（归相关性员）。
+
+**失效反例**
+
+- **条数时钟不作默认口径**：同壳下 S −0.16 / 2Y −0.23 / sub −0.22；若沿用 count 时钟当新鲜度/事件腿，会把「时钟选错」误读成「字段没信号」。
+- **不可外推成「金额场一切皆优」**：杠杆 J 的跨波 valueeur 对照已显示方向可反（valueeur 离散度 vs 集中度 S −0.09 / 2Y −0.23）⇒ 本杠杆的优势在**时钟轴（金额 vs 条数）**，不是「valueeur 优于 shares」的一般命题。
+- **不可把 0.43 当进度**：仍需 S/F/2Y 三闸同时破；本条只提供时钟轴方向，不提供过闸配方。
+
+- 实测域：DEU/TOP500/D1/`insiders1`（provisional，未判死）/decay0。权威档案：`tracking/DEU/regular_tower/WAVE_rt-insiders-w4_20261116.md` §1 臂9、§2.5、§3 C5、§10、§11；对照臂 `WAVE_rt-insiders-w3_20261116.md` §1 臂2、§2.6；闸限 `src/wqb/wave_results_contract.py:79-90`、`tracking/DEU/config/thresholds.json:2-12,21`。
+
+## 杠杆 L — Δmean66 分子的分母通道：事件 IR(shares, bf250) 优于静态集中度(valueeur)（通道级跨块交换；2026-11-17 入册）
+
+```
+裸（w2批2 臂4 XgaKMZwb）   = group_rank(divide(ts_delta(ts_mean(vec_avg(insd1_holdings),66),66),
+                             ts_sum(divide(vec_max(insd1_valueeur),vec_sum(insd1_valueeur)),66)),sector)
+改造（w3批2 臂6 A1x3AN0l）  = group_rank(divide(ts_delta(ts_mean(vec_avg(insd1_holdings),66),66),
+                             ts_ir(ts_backfill(vec_avg(insd1_shares),250),66)),sector)
+```
+
+分子（Δmean66·holdings）、壳（`group_rank`·sector）、轴、配置逐项相同，**只有分母块不同**：
+静态集中度 `ts_sum(max÷sum valueeur, 66)` → 事件 IR `ts_ir(bf(vec_avg(shares),250),66)`。
+分母回答的问题从「单笔大手笔的集中度」换成「申报强度的事件稳定性」（IR = 均值÷波动，bf250 补稀疏覆盖）。
+
+**对照读数（DEU/TOP500/D1/`insiders1`、SUBINDUSTRY、decay0/nanON/trunc0.08、2014-01-01→2023-12-31；两波同档同日期，跨波单块交换）**
+
+| 臂 | 分母块 | S | F | 2Y | sub | TO | DD | RA 挂闸 |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| 裸（w2批2 臂4 `XgaKMZwb`） | conc66 `ts_sum(max÷sum valueeur,66)` | 1.16 | 1.01 | 0.98 | 0.26 | 9.81% | 10.50% | 4（F 平台 pass，全战役首次；S/CW/sub/2Y 挂） |
+| 改造（w3批2 臂6 `A1x3AN0l`） | `ts_ir(bf(vec_avg(shares),250),66)` | **1.27** | **1.15** | 1.02 | **0.32** | 10.19% | **9.89%** | 4（F 平台 pass；LOW_SHARPE 1.27/1.58、CW 0.5@2014-01-29、sub 0.32/0.6、2Y 挂） |
+| Δ（块交换） | | **+0.11** | **+0.14** | +0.04 | **+0.06** | +0.38pp | **−0.61pp** | |
+
+**同波复现**（仅分母统计量 vec_avg→vec_count 的单变量变体，`XgaK0bWX`）：1.23 / 1.10 / 1.09 / 0.32 / DD 10.94% ⇒ 对基线 S **+0.07** / F +0.09 / sub +0.06，同向复现；vec_avg 优于 vec_count（同壳单变量对 ΔS −0.04）。三波 S 演进 0.81→0.89→1.16→1.27 单调爬升（1.27 = 全战役 insiders1 系新高）。
+
+- **归因层级（如实登记）**：分子/壳/轴/配置逐项相同仅分母块不同 ⇒ **跨波单块交换对照**；但分母块内含 **3 个 token 差异**（字段 valueeur→shares、统计 ts_sum(max÷sum)→ts_ir、backfill 250 有无）⇒ 是**通道级对照，不是单 token 消融**；shares 裸 IR 腿（`group_rank(rank(ts_ir(ts_backfill(vec_avg(insd1_shares),250),66)),sector)`）本波未排，复合 vs 裸分母的归因部分开放。
+- **波 verdict=PARTIAL**（n_pass=0 / n_near=2；判定表 `src/wqb/wave_results_contract.py:84-90` 的 `verdict_from_counts(0,2)`）：10/10 臂 `failed_ra_count` 3–5、无一过 RA 全闸。近闸 2 条（按 S 降序）：①`A1x3AN0l` S 1.27——S≥1.2✓ + 距 S 闸 0.31✓ + CW 0.5 vs 平台 limit 0.1 差 0.40（边界）✓ + sub 0.32 距平台动态限 0.6 差 0.28✓，F 1.15 平台 pass；②`XgaK0bWX` S 1.23——距 S 闸 0.35✓ + CW 差 0.40✓，F 1.10 pass。机械命中出名额（如实登记，非 near）：臂9 `YPaAebbA` / 臂2 `E5QKdper` F 0.97 距 F 闸 0.03、臂3 `N1POZaRE` 2Y 1.20 距 1.58 闸 0.38，按 S 降序 ≤2 名额用尽未入池。指纹①取反对 0 条（本波未排，不得据此判死或证机制在）。
+- **prod/self 状态（入册时点核验，更新 ask 口径）**：ask/波档记「prod/self 未测」；本员核验时 DB 实读 **prod 已测**：`A1x3AN0l` 0.5715 / `XgaK0bWX` 0.5819（`prod_corr_source=check_correlation`，corr_checked_at 2026-11-17T22:48–22:49，均低于内部严线 0.65 与平台线 0.70——`src/wqb/config.py:512,532`）⇒ **prod 净**；`self_correlation` 仍 null（未测，仍开放）。
+- **与杠杆 I（conc×fresh 乘法）的关系**：不同层级——杠杆 I 是**壳层**跨维度交互（conc×fresh 两腿相乘）；本条是**分母通道替换**（÷ 什么）。两者不互替，也不能把本条的 +0.11 记到乘法名下。
+
+**边界**
+
+① **通道级对照非单 token 消融**（见上）：3 token 同时变，「事件 IR 更好」是块级结论，不能精确归因到字段/统计量/backfill 任一 token；shares 裸 IR 腿未测是最大开放点。
+② **仅探针档**：decay0/nanON/SUBINDUSTRY/trunc0.08/单一 66+250 窗；区域生产档 decay4/nanOFF、2013 起（`tracking/DEU/config/settings.json:5-16`）未扫 ⇒ 配置层死/活未判（D6 是 insiders1 六维唯一未达维）。
+③ **获胜臂仍挂两闸**：CW 0.5@2014-01-29（Δmean66 分子首月建仓伪影；**Δmean 分子 7 臂 7/7 挂、非 Δmean 臂 3/3 pass** ⇒ CW 是 Δmean 分子的家族属性，臂4 ts_av_diff+bf250 证明 bf250 可修）+ sub 0.32；2Y 1.02 距 1.58 闸 0.56 仍挂。S 1.27 距 LOW_SHARPE 1.58 闸 0.31 ⇒ **不是过闸候选**，是近闸件。
+④ **分组轴通道已关闭，不能当替代路径**：同核 Δmean66÷conc66 四点扫 sector 1.16（基线跨波复现）/ market 1.13 / industry 1.10 / subindustry 0.99 ⇒ 三个替代轴全部低于基线、更低于分母通道改造的 1.27，sector 局部最优已扫净。
+⑤ **窗口不能随意缩**：分母窗 66→22 无增益（S +0.00、TO +6.38pp、margin −5.45bp）；分子窗 66→22 损 S（−0.39）且 TO 翻倍。66+250 是实测局部最优。
+⑥ **裸 vec_count 频次不能当主信号**：`rank(ts_sum(vec_count(shares),66))` 0.77，远低于复合 1.23/1.27 ⇒ 频次只配当分母件。
+⑦ **未测清单**：shares 裸 IR 腿、分子裸腿（`group_rank(rank(Δmean66),sector)`——全战役最大归因缺口）、分子窗 126、self-corr、生产档配置（D6）。
+
+**失效反例**
+
+- **不可外推成「shares 口径可用」**：分母换 shares 通道赢，不代表 shares 当主信号好——11-16 批实测同一 `max÷sum` 统计量换到 shares 口径 S 从 valueeur 的 0.81 掉到 0.17；本杠杆分子仍是 holdings，shares 只出现在分母。
+- **不可把块交换增益记到任一单 token 名下**（尤其不能记成「backfill 万能」）：3 token 同时变，单 token 消融未做；唯一已证的单 token 是 vec_avg vs vec_count（+0.04）。
+- **不可据此判 vec_count 无用**：vec_count 变体同向 +0.07 复现了通道结论；它只是弱于 vec_avg，不是失效。
+
+- 实测域：DEU/TOP500/D1/`insiders1`（provisional，未判死）/decay0。权威档案：`tracking/DEU/regular_tower/WAVE_rt-insiders-w3_20261117.md` §1 臂5/6、§2.1、§3、§10–§12；基线臂 `WAVE_rt-insiders-w2_20261117.md` §1 臂4、conc66 定义 `WAVE_rt-insiders-w2_20261116.md` §1 注；闸限 `src/wqb/wave_results_contract.py:84-90`、`tracking/DEU/config/thresholds.json:2-12`、prod 线 `src/wqb/config.py:512,532`；表达式逐字核验 `mcp__wqb-db__get_alpha_by_id`（XgaKMZwb id 46330 / A1x3AN0l id 46386 / XgaK0bWX id 46390）、波台账 `mcp__wqb-db__get_wave_result(DEU, rt-insiders-w3)` id 2238。
+
 ## 反模式（实测证伪，勿再投）
 
 | 反模式 | 实测证据 |
 |---|---|
-| **同源合成**（等权 add / 乘法把同数据集两腿拼一起） | BE250/BE242#9/BE257/BE252 四证全稀释（fnd90 0.84→0.49、fnd1 1.26→1.17）；闸5 同源豁免的 corr<0.7 假设在同族字段上不成立 |
+| **同源合成**（等权 add / 乘法把**同一潜变量**的两腿拼一起） | BE250/BE242#9/BE257/BE252 四证全稀释（fnd90 0.84→0.49、fnd1 1.26→1.17）；闸5 同源豁免的 corr<0.7 假设在同族字段上不成立。⚠ **2026-11-16 边界修正**：**不同维度**两腿的乘法不在此列（杠杆 I：insd1 规模集中×事件新鲜 `d5aE63Ew` **0.89** > 两单腿 0.81/0.78，S/F/sub/margin 四项全高）；判据是「同一潜变量投影」而**不是「同数据集」** |
 | **S-2Y 跷跷板**（设置级手段破不了 S 闸） | decay12/轴切换/平滑/锐化在 fnd1 上无一抬 S（1.43-1.49 反降），fnd1 靠结构跃迁（zscore 量级）破闸——S 卡壳先换结构再动设置 |
 | **宽度塌缩入场**（平台集级 cov=0 或 lc<50 的集不开波） | digital_ad_spend lc25/sc25+CW 挂、alpha_factor_lib DD 71-199% 超窄账户签名——**数据层排除≠信号死**，登记口径见判死分层 |
 | **tail 跨核外推**（把三年窗核的 tail 增益搬到任意核） | w3 增量 ROA 核同波干净对照：裸 C0 1.48/1.02 → tail0.12 1.35/0.86（S −0.13/F −0.16）、tail0.15 1.43/0.93（S −0.05/F −0.09）；w4 又证字段×带宽交互（oper_inc 0.10 / EBIT 0.08，无全族统一带宽）——tail 是核相关杠杆，换核必须重测 |
+| **`trade_when(…, −1)` 兜底做空**（门控失败落满仓空头） | w3 臂4 `KPgnK2L1` 对同核臂1：S −0.40 / 2Y −0.53 / sub −0.36 / DD **+14.34pp**（DD 26.56%）⇒ 门控失败落 −1 制造长期空头偏置与来回摆动；insiders1 由「未测」改「实测负」（杠杆 J §失效反例） |
 
 ## 通用纪律
 

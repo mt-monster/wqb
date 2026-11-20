@@ -16,7 +16,7 @@
   "mcp_server": "wq-brain-http",
   "mcp_tool_prefix": "mcp__wq-brain-http__",
   "quotas": {
-    "search_forum_posts": 30,
+    "search_forum_posts_local": 30,
     "read_forum_post": 8,
     "get_glossary_terms": 5,
     "get_messages": 5,

@@ -23,8 +23,9 @@
 - **症状**：IS 阶段 `CONCENTRATED_WEIGHT` 显示 `WARNING`（无 value / limit）。
 - **根因**：瞬时离散计数 / 事件类信号，权重集中在少数股。
 - **动作**：建议对信号加**时间平滑**（`ts_mean` / `ts_decay_linear`，窗口取 5 或 22）；低频字段先 `ts_backfill`。**不要换中性化、不要调 truncation**（实测全无效，见 [证据页](concentrated-weight-evidence.md)）。
+- **★★ 平滑位置决定成败（2026-11-16 `blaoMOAq` 实证）**：当信号末端是截面算子（`group_rank` / `rank` / `group_zscore`）且 CW 来自**小分组内 rank 输出二值化**时，平滑必须加在该截面算子的**输出侧** `ts_mean(group_rank(...), w)`；加在**输入侧** `group_rank(ts_mean(...))` 无效（14 条全败即加错位置）。换 `group_neutralize` 替 `group_rank` 会让 S 崩（有界分位是承重件，别换）。输出侧窗口甜点 w∈[5,10]，w≥15 常触 LOW_SHARPE。
 - **验收**：重测后该检查为 `PASS`（`WARNING` 计入 Failed RA，不清零不该提交）。
-- **反例**：把 neutralization 四档轮流试一遍；末端再套 `rank`。
+- **反例**：把 neutralization 四档轮流试一遍；末端再套 `rank`；把平滑加在 `group_rank` 输入侧。
 
 ## 卡 HP-4　`LOW_SUB_UNIVERSE_SHARPE` 不过
 

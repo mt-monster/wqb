@@ -1,7 +1,7 @@
 ---
 name: wq-alpha-gate-push-op-min
-description: "候选 alpha 双目标优化器：推到全闸通过（LOW_SHARPE/FITNESS/2Y/self/prod/CW/sub）+ 压算子到最少。含杠杆阶梯、压缩等价改写、逐算子消融、金融含义分层、等效替换与参数扫描，及 op_count/compress/plan/scan 四脚本。触发：优化指标/压缩算子/简化表达式/算子太多/operatorCount太高/推到能提交/等效替换/同等算子/金融含义/逐算子扫描/删除算子/替换算子/扫描参数/删除后压缩/替换更精简。"
-last_verified: 2026-11-16
+description: "候选 alpha 双目标优化器：ATOM 前置判定（单数据集判定 + 三种隐形破 ATOM 自查 + 去混降维）→ 推到全闸通过（LOW_SHARPE/FITNESS/2Y/self/prod/CW/sub）→ 压算子到最少。含杠杆阶梯、压缩等价改写、逐算子消融、金融含义分层、等效替换与参数扫描，及 op_count/compress/plan/scan 四脚本。触发：优化指标/压缩算子/简化表达式/算子太多/operatorCount太高/推到能提交/等效替换/同等算子/金融含义/逐算子扫描/删除算子/替换算子/扫描参数/删除后压缩/替换更精简/ATOM判定/去混降维。"
+last_verified: 2026-11-17
 layer: L4
 agent_created: true
 allowed-tools:
@@ -31,12 +31,56 @@ user-invocable: true
 
 ---
 
-## 核心次序：先测杠杆，再压算子，最后收敛设置
+## ★ ATOM 前置检查（用户指令 2026-11-17，先于一切优化）
+
+> **定位**：优化前先判定候选是否 ATOM（单数据集纯血统）。非 ATOM 件的第一优化杠杆不是调表达式，而是**去混降维**——
+> 混数据集使 Pyramid 倍率按最低类别结算（木桶短板）、混 ≥3 类别计 0 塔，且 IS-Ladder 比 ATOM 的 Last-2Y 闸更严。
+
+**判定**（依据 `docs/reference/atom_mining_playbook_20261117.md` §一，与本仓实测一致）：
+- ATOM = 全表达式只用**同一数据集**字段，仅豁免 6 个分组字段 `country / exchange / market / sector / industry / subindustry`。
+- **三种隐形破 ATOM 写法**（自查）：
+  ① 调 `convert()` / `inst_pnl()`（底层拉 pv1 价量）；
+  ② 用 `cap / close / returns / vwap` 做 `bucket()` 分组（全是 pv1 字段）；
+  ③ `vector_neut(x, cap)` / `vector_neut(x, returns)` 等把 pv1 字段当中性化腿。
+- 替代方案：改用 Settings 面板的中性化（SUBINDUSTRY/SLOW 等），或用**主数据集自带**的辅助字段造桶
+  （例：`model26` 的 `mdl26_market_cap_u` 替代 `cap`）。
+
+**优化路径分流**：
+| 候选 | 第一杠杆 |
+|---|---|
+| 非 ATOM（混 2 数据集） | 先试**去混**：删/替换掉跨数据集腿或分组字段，恢复单集纯血统 ⇒ 直接把 IS-Ladder 换成宽松的 Last-2Y 闸 + 倍率按高类别结算。去混失败的腿才进入本 skill 的常规压缩/消融流程 |
+| 非 ATOM（混 ≥3 类别） | 塔计 0 + 倍率垫底 ⇒ 优先拆成多条 ATOM，而不是优化这条混血件 |
+| 已是 ATOM | 直接进 ①采集→②审计 常规流程 |
+
+**口径纪律**：ATOM 免 IS-Ladder、只查 Last-2Y IS Sharpe——**阈值以 `checks` 实读为准（USA/DEU 实测 1.58），
+不要用外部文章的 1.59 或「TO<30% ×0.85 折扣」（本仓判别件 `YP1ZvjWA`：TO 17.7%、2Y 1.57、limit 仍 1.58，折扣未复现）**。
+本仓交付口径不变：S ≥1.58 全期闸（比平台 ATOM 2Y 闸更严）。
+
+**完整经验与模板**：`docs/experience/06_atom_mining.md`（外部文章蒸馏+本仓校验）、
+`docs/reference/atom_mining_playbook_20261117.md`（含 KOR 负面校准：文章 4 模板在低频 institutions 字段上 10/10 REJECT——
+sparse/低频字段不适用，dense 字段才可照抄）、`AGENTS.md` §7.7（ATOM 优先 / regular 回退四形态）。
+
+---
+
+## 核心次序：先测杠杆，再压算子，精调参数，最后收敛设置
 
 ```
-① 采集  →  ② 算子审计  →  ③ 杠杆推指标  →  ④ 压缩算子  →  ⑤ 设置收敛  →  ⑥ 判定/止损
-   (只读)      (op_count)      (plan 出的阶梯)    (逐算子消融)     (decay/trunc)    (全闸)
+① 采集 → ② 算子审计 → ③ 杠杆推指标 → ④ 压缩算子 → ④b 替换 → ④c 三通道扫描
+  (只读)    (op_count)   (plan 阶梯)    (逐算子消融)  (等价替换)   (删/换/粗参数)
+                                                                        ↓
+⑥ 判定/止损 ← ⑤ 设置收敛 ★ ← ④d 精调 ★ ←─────────────────────────────┘
+   (全闸)    (decay/universe)  (邻域细扫+成对联动+参数×设置交叉)
 ```
+
+**★ ⑤ 的 universe 扫描也是硬环节**（2026-11-16 用户指令，详见 ⑤ 节）：universe 非「标准值」，
+凡表达式依赖横截面分位/覆盖广度（`rank`/`group_rank`/`tail`）或指标贴线（F/sub）必扫；
+单档区域（KOR/IND/DEU/GBR/CHN/AMR）跳过，多档区域（USA 6 档/EUR 5 档）逐档派 multisim。
+`e7adKz7g` 实测 TOP3000→TOP2000 腰斩（S1.77→0.76），证明它是真杠杆。
+
+**★ ④d 精调是硬环节，不是建议**（2026-11-16 用户指令）：④c 的 `scan.py` 只做**倍数粗扫**（0.5/0.75/1.25/1.5）与 ts 窗口**绝对值阶梯**，
+生成不出「紧贴基线的邻域档」「成对参数的联动档」，也**不在最终 settings 下重扫参数**。
+`e7adKz7g` 初轮因此漏掉全面更优件 `wponnkmd`（tail 0.15/0.85→0.18/0.82，S 1.72→1.77、F 1.00→1.03）。
+⇒ **任何进入「采纳/交付」决定的候选，必须先过 ④d 精调**，详见下文 ④d 节。
 
 **为什么压缩放在推指标之后**：压缩会改变指标（正向或负向）。
 先把指标推到**有余量**（S 超过门槛 ≥0.02、fit ≥1.02），再压缩时就有预算承受个别算子的损失；
@@ -322,10 +366,88 @@ $WQ_PY scripts/scan.py --expr "<表达式>" --params --out params.txt    # 参�
 
 ---
 
+## ④d 精调（fine-tune）—— 用户指令 2026-11-16，硬环节
+
+> **定位**：④c 的 `scan.py` 参数扫描是**粗扫**（找大致甜点区），本节是**精扫**（找精确甜点）。
+> **任何准备采纳/交付的候选，必须先过本节**——跳过它曾导致 `e7adKz7g` 漏掉全面更优件。
+>
+> **★★ 用户 16:56 强化：凡表达式里用到含参数的算子，都要精调它的全部数值参数，不限于固定的几个算子**。
+> 不设算子白名单——位置参数（窗口/系数/幂/分位）、kwargs 数值（`std=`/`sigma=`/`rate=`/`target_tvr=`/`k=`…）、
+> 字符串内嵌数值（`bucket` 的 `range="0,1,0.1"`）、对称成对参数，**一律扫到**。
+
+### 为什么必须有（三重盲区，全部有实证）
+
+| 盲区 | scan.py 现状 | 实证后果 |
+|---|---|---|
+| ① **邻域绝对步进缺失** | 倍数 0.5/0.75/1.25/1.5 + ts 阶梯 21/63/126/252/504/756，生成不出「66→60/63/69/72」这种 ±5% 邻域档 | `e7adKz7g` 窗口 66 只测了 21/126/252，邻域从未扫 |
+| ② **成对参数未联动** | 逐参数单扫，`tail(lower,upper)` 只扫一个 ⇒ lower=0.075/upper=0.85 不对称无意义 | 最优件 `wponnkmd` 的 `(0.18,0.82)` 是联动档，scan 生成不出 |
+| ③ **参数 × 设置未交叉** | scan 在单一 settings 下扫，不重扫最终 decay 档 | tail 边界全在 decay2/3 测过，**decay=1 下从没系统扫** ⇒ 漏掉最优 |
+
+### 执行入口（纯本地生成候选，平台实测走 create_multi_simulation）
+
+```bash
+$WQ_PY scripts/scan.py --expr "<当前最优表达式>" --finetune --json > finetune.json
+```
+
+`--finetune` 遍历**每个含数值参数的算子节点**，生成四类候选（与 `--params` 粗扫互补）：
+
+| 类 | 覆盖 | 生成规则 | 实例 |
+|---|---|---|---|
+| `finetune_neighbor` | **所有算子的位置数值参数**（ts 窗口/系数/幂/分位…） | `base ± step` 与 `base ± 2×step`；ts 窗口 step=5% 取整，其余 10% | 66→60/63/69/72 |
+| `finetune_kwarg` | **所有 kwargs 数值**（`std=`/`sigma=`/`rate=`/`target_tvr=`/`k=`…任何 `=数字`） | 同上（step=10%） | `std=4`→3.6/4.4/3.2/4.8 |
+| `finetune_strnum` | **字符串内嵌数值**（`bucket` 的 `range="0,1,0.1"`、`buckets="2,5,6"`…） | 逐位小幅微调，保留原格式/引号 | range 0.1→0.09/0.11 |
+| `finetune_pair` | **对称成对数值**（通用检测：参数名属 lower/upper 等对称对，或两数和≈1） | 保持和不变联动 `(a−δ,b+δ)`/`(a+δ,b−δ)` | `(0.18,0.82)` |
+
+⚠ 成对联动是**通用检测，不硬编码算子名**；kwargs 单参数扫描会顺带生成一些不对称档（如只动 lower 不动 upper），
+这类候选**实测前人工过滤**，以 `finetune_pair` 的对称档为准。已测档由外部台账/报告排除；scan 只保证结构合法。
+
+### 强制流程（坐标上升 + 交叉复核）
+
+1. **触发条件**（满足任一必做）：
+   - 候选全闸通过、准备采纳/交付；
+   - 任一闸余量薄（F≤1.02 / prod≥0.65 / self≥0.55 / sub≤门槛+0.1）；
+   - 参数呈尖峰（相邻档一档就掉）——说明最优点可能在未测邻域。
+2. **先粗后精**：④c 粗扫定位甜点区 ⇒ `--finetune` 在甜点区生成邻域+联动候选。
+3. **★ 参数 × 设置交叉复核（最易漏）**：表达式冻结后，**每一个关键参数**（尤其成对边界、窗口）
+   必须在**最终选定的 settings**（decay/neutralization/nanHandling）下**重扫一遍**。
+   ⚠ 不要复用「在别的 settings 下测过的参数结论」——`e7adKz7g` 正是 tail 在 decay2/3 测过就以为够了。
+4. **逐档实测**：全部走 MCP `create_multi_simulation`（≥2 条，单条补 control）+ `lookINTO_SimError_message`
+   拿 alpha id + `batch_get_alpha_metrics` 批量取指标（用户 2026-11-16 硬闸，零临时脚本）。
+5. **采纳判据**：某精调档**全闸 PASS 且指标全面优于或持平原件**（prod 不更高）⇒ 采纳，原件标 `SUPERSEDED`；
+   若 S 略升但某闸从 PASS 变 FAIL ⇒ 回滚。⚠ **F 恰在 1.00 的件优先找能抬 F 的档**（零余量是交付风险）。
+6. **终止**：邻域+联动+交叉三档全部实测无更优 ⇒ 精调完成，进入 ⑤ 设置收敛。
+7. **记账**：每个精调件新 alpha id，只留最优 1 颗；精调结论写进报告的「参数精调审计」小节（逐参数列已测档/缺口/补测动作）。
+
+### 精调报告模板（必须随交付）
+
+| 参数 | 粗扫已测 | 精调邻域 | 联动/交叉 | 结论 |
+|---|---|---|---|---|
+| `ts_mean` 窗口 | 21/66/126/252 | 60/63/69/72 | decay 固定后复核 | 66 尖峰确认 / 或更优档 |
+| `tail` lower/upper | 0.15/0.85 | 0.12/0.88、0.18/0.82 | 成对联动 + 最终 decay 下重扫 | 采纳最优联动档 |
+
+---
+
 ## ⑤ 设置收敛（表达式冻结后）
 
 只动不占算子的旋钮：`decay`（2/3/4/6/8）、`truncation`（本战役零杠杆，可不动）、
-`nanHandling`（ON/OFF 是「换信号」档，改动后不可与旧档对比）、`neutralization`（**全档降 S，保持 FAST**）。
+`nanHandling`（ON/OFF 是「换信号」档，改动后不可与旧档对比）、`neutralization`（**全档降 S，保持 FAST**）、
+**`universe`（用户 2026-11-16 16:49 补入，见下）**。
+
+### ★ universe 扫描（用户指令 2026-11-16，别当「标准值」跳过）
+
+**universe 是真实且可能很强的设置层杠杆**，不占算子、不改塔归属（塔按 region/delay/category 定），
+但同时改变**单位换手收益、sub_universe_sharpe、横截面区分度**——恰好是贴线件（F/sub 贴线）的关键旋钮。
+
+- **触发**（满足任一必扫）：候选准备采纳/交付；F≤1.02 或 sub 贴线；信号依赖横截面分位（`rank`/`group_rank`/`tail`）或覆盖广度。
+- **可用档**：用 MCP `get_platform_setting_options` 查（返回 region+delay→universe 权威表）。
+  USA/delay1 有 6 档：`TOP3000|TOP2000|TOP1000|TOP500|TOP200|TOPSP500`；EUR 5 档、KOR/IND/DEU/GBR 单档（无扫描空间）、ALL 3 档（LARGE/MEDIUM/SMALL）。
+  ⚠ **单档区域（KOR/IND/DEU/GBR/CHN/AMR）直接跳过，别浪费仿真**。
+- **派发**：multisim 一批共享同一 settings ⇒ **每个 universe 单独派一批**，批内放最优件 + 一个 control 变体（≥2 条满足 G7），
+  用 MCP `create_multi_simulation`（`universe=` 参数）+ `lookINTO_SimError_message` + `batch_get_alpha_metrics`。
+- **判据**：全闸 PASS 且指标优于当前档 ⇒ 采纳（universe 变了是新件，与原件相关可能较低，未必互斥）。
+  **别预设方向**——`e7adKz7g` 是「越大越好」的极端例（TOP3000 S1.77/F1.03/2Y2.22，缩到 TOP500 S0.47/2Y−0.11，严格单调恶化），
+  但其它信号（如小市值效应）可能相反，必须实测。
+- **记账**：扫描结论写进报告（逐 universe 列 S/F/sub/2Y/Ra failed）；每档新件新 id，最终只留全闸最优且塔边际正的 1 颗。
 
 ---
 

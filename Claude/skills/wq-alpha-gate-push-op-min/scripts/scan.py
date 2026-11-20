@@ -14,14 +14,19 @@
      - 每个候选标注：数学等价（rank 吸收单调变换，无需实测）vs 语义等价（需实测）
   ③ 参数扫描（--params）：把每个数值参数按 0.5/0.75/1.25/1.5 倍展开成扫描变体。
      ts_* 窗口参数额外补扫绝对值阶梯 [21,63,126,252,504,756]（倍数扫描漏跨量级甜点）。
+  ④d 精调（--finetune，用户指令 2026-11-16）：补 ③ 的三重盲区——
+     - 邻域绝对步进：base±step / ±2step（ts 窗口 step=5% 取整，标量 10%）→ 66→63/69/60/72
+     - 对称成对联动：tail(lower,upper) 保持 lower+upper=1 联动 → (0.18,0.82)
+     实证：e7adKz7g 初轮漏掉更优件 wponnkmd（tail 0.15/0.85→0.18/0.82，F 1.00→1.03）。
 
 本脚本**只生成候选表达式**（JSON），零平台调用、零队列成本；是否派发实测 / 采纳由调用方按
-references/scan-protocol.md 决定。判定只走平台（submit_batch + check_correlation）。
+references/scan-protocol.md §4.5 决定。判定只走平台（create_multi_simulation + batch_get_alpha_metrics）。
 """
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter
 from typing import Any, Dict, List, Optional, Tuple
@@ -470,10 +475,190 @@ def param_scan(expr: str) -> List[Dict[str, Any]]:
     return out
 
 
+# ------------------------------------------------------------------ ④d 精调（用户指令 2026-11-16）
+# ★ 用户 2026-11-16 16:56 强化：「只要有用到含参数的表达式，都要精调参数，不限于固定的几个算子」。
+# ⇒ 不再硬编码算子白名单：遍历**每个 call 的每一类数值参数**——
+#   ① 位置数值参数 args[i]（含 ts_* 窗口与所有算子的标量位置参数）
+#   ② kwargs 数值参数（std=/sigma=/rate=/target_tvr=/k= … 任何 =数字）
+#   ③ 字符串内嵌数值（bucket range="0,1,0.1" / buckets="2,5,6" 等）
+#   ④ 对称成对联动（通用检测：两数值参数之和≈1，或参数名属 lower/upper 等对称对）
+# 三重盲区实证：e7adKz7g 漏掉全面更优件 wponnkmd（tail 0.15/0.85→0.18/0.82，F 1.00→1.03）。
+
+#: 对称参数名（成对联动用）：任两个同时出现且都是数值 ⇒ 保持和不变联动。
+SYMMETRIC_KWARGS = {"lower", "upper", "low", "high", "min", "max", "left", "right", "start", "end"}
+
+
+def _finetune_step(op_name: str, idx: int, v: float) -> float:
+    """邻域步长：ts 窗口 5%（整数），其余标量 10%。对任何算子的任何数值参数生效。"""
+    is_window = op_name.startswith("ts_") and idx >= 1
+    if is_window:
+        return float(max(1, int(round(abs(v) * 0.05))))
+    return abs(v) * 0.1
+
+
+def _fmt_num(v: float, is_window: bool) -> str:
+    return str(int(round(v))) if is_window else repr(round(v, 4))
+
+
+def finetune_scan(expr: str) -> List[Dict[str, Any]]:
+    """★ 凡含数值参数的算子节点必精调（用户 2026-11-16 强化，不限固定算子）：
+    对每个 call 的 ①位置数值参数 ②kwargs 数值 ③字符串内嵌数值 生成 base±step/±2step 邻域档；
+    对 ④对称成对数值参数 生成保持和不变的联动档。与 --params 粗扫互补。
+    """
+    try:
+        node = parse(expr)
+    except ParseError:
+        return []
+    canon = node.to_str()
+    base = op_count(canon)
+    out: List[Dict[str, Any]] = []
+    seen: set = set()
+
+    def emit(ne: str, kind: str, target: str, layer: str, old, new, step, **extra):
+        if ne == canon or ne in seen:
+            return
+        seen.add(ne)
+        rec = {"kind": kind, "target_op": target, "layer": layer,
+               "old_value": old, "new_value": new, "step": step,
+               "expr": ne, "op_before": base, "op_after": op_count(ne)}
+        rec.update(extra)
+        out.append(rec)
+
+    for call in iter_calls(node):
+        layer = layer_of(call.name)
+
+        # ── ① 位置数值参数（所有算子的 args，非仅 ts_*）──
+        for i, a in enumerate(call.args):
+            if a.kind != "num":
+                continue
+            v = float(a.text)
+            is_window = call.name.startswith("ts_") and i >= 1
+            step = _finetune_step(call.name, i, v)
+            if step <= 0:
+                continue
+            for k in (1, 2):
+                for sign in (-1, 1):
+                    nv = v + sign * k * step
+                    if is_window:
+                        nv = int(round(nv))
+                        if nv <= 0:
+                            continue
+                    else:
+                        nv = round(nv, 4)
+                    new_args = [x for x in call.args]
+                    new_args[i] = Node("num", text=_fmt_num(nv, is_window))
+                    nn, ch = _subst_call(node, call.to_str(), call.name, new_args, dict(call.kwargs))
+                    if ch:
+                        emit(nn.to_str(), "finetune_neighbor", call.name, layer, v, nv, step, param_idx=i)
+
+        # ── ② kwargs 数值参数（std=/sigma=/rate=/target_tvr= … 任何 =数字）──
+        for kn, kv in call.kwargs.items():
+            if kv.kind != "num":
+                continue
+            v = float(kv.text)
+            step = _finetune_step(call.name, 0, v)
+            if step <= 0:
+                continue
+            for k in (1, 2):
+                for sign in (-1, 1):
+                    nv = round(v + sign * k * step, 4)
+                    if nv <= 0:
+                        continue
+                    nk = dict(call.kwargs)
+                    nk[kn] = Node("num", text=repr(nv))
+                    nn, ch = _subst_call(node, call.to_str(), call.name, list(call.args), nk)
+                    if ch:
+                        emit(nn.to_str(), "finetune_kwarg", call.name, layer, v, nv, step, kwarg=kn)
+
+        # ── ③ 字符串内嵌数值（bucket range/buckets 等；逐个数值微调，保留格式与引号）──
+        for kn, kv in call.kwargs.items():
+            if kv.kind != "str":
+                continue
+            raw = kv.text
+            nums = re.findall(r"-?\d+(?:\.\d+)?", raw)
+            if not nums:
+                continue
+            for j, ns in enumerate(nums):
+                v = float(ns)
+                step = _finetune_step(call.name, 0, v) if v else 0.01   # 0 值给小步长
+                for sign in (-1, 1):
+                    nv = round(v + sign * step, 4)
+                    if nv <= 0:
+                        continue
+                    # 用占位符逐位替换，避免 replace 误伤相同数字
+                    parts = re.split(r"(-?\d+(?:\.\d+)?)", raw)
+                    idx = 0
+                    new_parts = []
+                    for p in parts:
+                        if re.fullmatch(r"-?\d+(?:\.\d+)?", p):
+                            new_parts.append(_fmt_num(nv, False) if idx == j else p)
+                            idx += 1
+                        else:
+                            new_parts.append(p)
+                    nk = dict(call.kwargs)
+                    nk[kn] = Node("str", text="".join(new_parts))
+                    nn, ch = _subst_call(node, call.to_str(), call.name, list(call.args), nk)
+                    if ch:
+                        emit(nn.to_str(), "finetune_strnum", call.name, layer, v, nv, step,
+                             kwarg=kn, str_idx=j)
+
+        # ── ④ 对称成对数值联动（通用：名字对称对，或两数和≈1）──
+        # 收集本 call 内所有数值参数位置（位置 + kwargs 数值）
+        slots = []  # (kind, key, value, step)
+        for i, a in enumerate(call.args):
+            if a.kind == "num":
+                slots.append(("arg", i, float(a.text), _finetune_step(call.name, i, float(a.text))))
+        for kn, kv in call.kwargs.items():
+            if kv.kind == "num":
+                slots.append(("kw", kn, float(kv.text), _finetune_step(call.name, 0, float(kv.text))))
+        # 配对：优先参数名对称对；否则任意两数和≈1
+        pairs = []
+        for x in range(len(slots)):
+            for y in range(x + 1, len(slots)):
+                sx, sy = slots[x], slots[y]
+                by_name = (sx[0] == "kw" and sy[0] == "kw"
+                           and sx[1] in SYMMETRIC_KWARGS and sy[1] in SYMMETRIC_KWARGS)
+                by_sum = abs(sx[2] + sy[2] - 1.0) < 1e-6
+                if by_name or by_sum:
+                    pairs.append((sx, sy))
+        for sx, sy in pairs:
+            va, vb = sx[2], sy[2]
+            step = min(sx[3], sy[3])
+            if step <= 0:
+                continue
+            target_sum = round(va + vb, 6)
+            for k in (1, 2):
+                for sign in (-1, 1):
+                    newa = round(va + sign * k * step, 4)
+                    newb = round(target_sum - newa, 4)   # 保持和不变 ⇒ 对称
+                    if newa < 0 or newb < 0:
+                        continue
+                    new_args, nk = list(call.args), dict(call.kwargs)
+                    if sx[0] == "arg":
+                        new_args[sx[1]] = Node("num", text=_fmt_num(newa, call.name.startswith("ts_") and sx[1] >= 1))
+                    else:
+                        nk[sx[1]] = Node("num", text=repr(newa))
+                    if sy[0] == "arg":
+                        new_args[sy[1]] = Node("num", text=_fmt_num(newb, call.name.startswith("ts_") and sy[1] >= 1))
+                    else:
+                        nk[sy[1]] = Node("num", text=repr(newb))
+                    nn, ch = _subst_call(node, call.to_str(), call.name, new_args, nk)
+                    if ch:
+                        # pair 记录用 old_values/new_values（列表），避免与 emit 的标量 new_value 混淆
+                        emit(nn.to_str(), "finetune_pair", call.name, layer,
+                             va, newa, k * step,
+                             old_values=[va, vb], new_values=[newa, newb],
+                             pair=[f"{sx[0]}:{sx[1]}", f"{sy[0]}:{sy[1]}"])
+
+    out.sort(key=lambda d: (d["target_op"], d["kind"]))
+    return out
+
+
 # ------------------------------------------------------------------ 汇总
 
 def scan_report(expr: str, do_delete: bool = True,
-                do_replace: bool = True, do_params: bool = True) -> Dict[str, Any]:
+                do_replace: bool = True, do_params: bool = True,
+                do_finetune: bool = False) -> Dict[str, Any]:
     try:
         node = parse(expr)
     except ParseError as exc:
@@ -489,6 +674,7 @@ def scan_report(expr: str, do_delete: bool = True,
         "delete_candidates": delete_candidates(canon) if do_delete else [],
         "replace_candidates": replace_candidates(canon) if do_replace else [],
         "param_variants": param_scan(canon) if do_params else [],
+        "finetune_candidates": finetune_scan(canon) if do_finetune else [],
     }
     for c in iter_calls(node):
         report["layers"].setdefault(layer_of(c.name), []).append(c.name)
@@ -504,14 +690,20 @@ def main() -> None:
     src.add_argument("--file")
     ap.add_argument("--delete", action="store_true", help="生成删除候选")
     ap.add_argument("--replace", action="store_true", help="生成等价替换候选")
-    ap.add_argument("--params", action="store_true", help="生成参数扫描变体")
+    ap.add_argument("--params", action="store_true", help="生成参数扫描变体（倍数粗扫+ts 阶梯）")
+    ap.add_argument("--finetune", action="store_true",
+                    help="④d 精调：邻域绝对步进 + 对称成对参数联动（补齐 scan 粗扫的三重盲区）")
     ap.add_argument("--json", action="store_true", help="JSON 输出（默认人类可读）")
     ap.add_argument("--out", help="把候选表达式写到文件（每行一个，可喂 submit_batch）")
     args = ap.parse_args()
 
-    do_delete = args.delete or not (args.replace or args.params)
-    do_replace = args.replace or not (args.delete or args.params)
-    do_params = args.params or not (args.delete or args.replace)
+    # --finetune 是独立增量：显式指定时只出精调；未指定时保持原三通道全开行为。
+    if args.finetune:
+        do_delete = do_replace = do_params = False
+    else:
+        do_delete = args.delete or not (args.replace or args.params)
+        do_replace = args.replace or not (args.delete or args.params)
+        do_params = args.params or not (args.delete or args.replace)
 
     exprs = [args.expr] if args.expr else [
         ln.strip() for ln in open(args.file, encoding="utf-8")
@@ -520,12 +712,13 @@ def main() -> None:
 
     all_out: List[str] = []
     for e in exprs:
-        rep = scan_report(e, do_delete, do_replace, do_params)
+        rep = scan_report(e, do_delete, do_replace, do_params, args.finetune)
         if "error" in rep:
             print(f"[scan] 跳过无法解析: {rep['error']}", file=sys.stderr)
             continue
         if args.out:
-            for c in (rep["delete_candidates"] + rep["replace_candidates"] + rep["param_variants"]):
+            for c in (rep["delete_candidates"] + rep["replace_candidates"]
+                      + rep["param_variants"] + rep["finetune_candidates"]):
                 if c.get("expr"):
                     all_out.append(c["expr"])
         if not args.json:
@@ -535,11 +728,18 @@ def main() -> None:
             print(f"分层: {json.dumps(rep['layers'], ensure_ascii=False)}")
             for title, key in [("① 删除候选", "delete_candidates"),
                                ("② 替换候选", "replace_candidates"),
-                               ("③ 参数变体", "param_variants")]:
+                               ("③ 参数变体", "param_variants"),
+                               ("④d 精调候选", "finetune_candidates")]:
                 items = rep[key]
                 print(f"\n--- {title}（{len(items)}） ---")
                 for c in items:
-                    if c["kind"] == "param":
+                    if c["kind"] == "finetune_neighbor":
+                        print(f"  [fine邻域] {c['target_op']}[{c['param_idx']}] {c['old_value']}→{c['new_value']} (±{c['step']})")
+                        print(f"     {c['expr'][:190]}")
+                    elif c["kind"] == "finetune_pair":
+                        print(f"  [fine联动] {c['target_op']} {c['old_values']}→{c['new_values']} (±{c['step']})")
+                        print(f"     {c['expr'][:190]}")
+                    elif c["kind"] == "param":
                         print(f"  [param] {c['target_op']}[{c['param_idx']}] {c['old_value']}→{c['new_value']} (×{c['factor']})")
                         print(f"     {c['expr'][:190]}")
                     elif c.get("expr"):

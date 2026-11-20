@@ -37,8 +37,8 @@
 
 | Tool | Count | Quota |
 |------|-------|-------|
-| search_forum_posts | 0 | 30 |
-| search_forum_posts | 0 | 5 |
+| search_forum_posts_local | 0 | 30 |
+| search_forum_posts_local | 0 | 5 |
 | read_forum_post / read_forum_post | 0 | 8 |
 | create_forum_comment | 0 | 3 |
 | upvote_forum_comment | 0 | 3 |
