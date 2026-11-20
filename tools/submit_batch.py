@@ -265,6 +265,19 @@ async def run(batches, sleep, dry_run):
 
 
 def main():
+    # ★ 通道闸（2026-11-16 用户三次点名「回测尽量用 mcp/create-multi-simu」）：
+    #   fail-closed —— 默认禁止 CLI 派发，只有显式设 WQB_ALLOW_CLI_DISPATCH=1 才放行。
+    #   与 wqb.config.ALLOW_ALPHA_SUBMIT 同范式：dry-run 也拦（防养成绕过习惯）；
+    #   --help 不受影响（argparse 在建 parser 前就退出，这里放在 parser 之后、parse 之前）。
+    if os.environ.get("WQB_ALLOW_CLI_DISPATCH", "") != "1":
+        print("[channel-gate] BLOCKED: 回测派发禁止走 CLI submit_batch.py。"
+              "改用 MCP `create_multi_simulation`（≥2 条表达式，单条时补 control 变体）；"
+              "收结果用 `lookINTO_SimError_message` + `batch_get_alpha_metrics`，"
+              "全程 MCP 零临时脚本（用户 2026-11-16 16:22 点名）。"
+              "确需本 CLI 时由用户显式设 WQB_ALLOW_CLI_DISPATCH=1（仅当次进程）。",
+              file=sys.stderr)
+        raise SystemExit(2)
+
     ap = argparse.ArgumentParser(description="通用 alpha 批量提交（取代 _submit_*.py）")
     ap.add_argument("--path", nargs="+", help="表达式文件路径（可多个，使用相同 decay/neut）")
     ap.add_argument("--decay", type=int, help="decay 值")

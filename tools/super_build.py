@@ -81,8 +81,15 @@ async def _probe_prod_max(brain, alpha_id, timeout_s=900.0, interval_s=15.0,
     本函数**绕过** MCP 客户端的锁直接轮询 ⇒ 会与 MCP 服务 / 其它脚本抢同一个槽，
     把对方堵到轮询上限（实测事故：一方卡住，另一方空转 800s+ 拿不到数）。
     故此处**显式申请同一个跨进程槽**（``wqb.correlation_slot``，token 文件与 MCP 侧
-    同名 ⇒ 跨进程真互斥）；拿不到就**立即**返回 (None, 0) —— 调用方 fail-closed，
-    稍后重跑即可（不排队等别人算完）。
+    同名 ⇒ 跨进程真互斥）。
+
+    ★ 2026-11-17（残留锁事故）：拿不到槽时分三种处置，不再一律 attempts=0 放弃——
+    - ``cooldown``（上一轮计算留下的**已知时长**冷却，可能来自已退出的进程）⇒
+      **等它到期再抢**（受本函数窗口约束）。这正是此前需要人工「等 195s 再重跑」的场景；
+      脏值/远期值已由 ``correlation_slot`` 退役，不会再锁死账号。
+    - ``token_busy``（另一个**存活**进程持有）⇒ 仍 fail-fast、不排队，但日志带上
+      holder pid/tag，便于定位是谁占着。
+    - ``platform_unavailable``（账号级熔断）⇒ 直接放弃。
     """
     import time
     # 跨进程槽：与 MCP 客户端同一个 token 文件 ⇒ 跨进程真互斥
@@ -91,8 +98,10 @@ async def _probe_prod_max(brain, alpha_id, timeout_s=900.0, interval_s=15.0,
     except Exception:  # pragma: no cover - 依赖缺失时退回无锁（仅降级，不改变判定）
         _corr_slot = None
 
-    async def _probe_unlocked():
-        deadline = time.monotonic() + float(timeout_s)
+    deadline = time.monotonic() + float(timeout_s)
+
+    async def _probe_unlocked(budget_s):
+        deadline = time.monotonic() + float(budget_s)
         attempts = 0
         while True:
             attempts += 1
@@ -111,22 +120,49 @@ async def _probe_prod_max(brain, alpha_id, timeout_s=900.0, interval_s=15.0,
                 return None, attempts
             if attempts == 1:
                 log(f"[prod-gate] 平台计算中（空体），每 {interval_s:g}s 轮询一次，"
-                    f"窗口 {timeout_s:g}s ...")
-            await asyncio.sleep(interval_s)
+                    f"窗口 {budget_s:g}s ...")
+            await asyncio.sleep(min(interval_s, max(0.0, deadline - time.monotonic())))
 
     if _corr_slot is None:
-        return await _probe_unlocked()
+        return await _probe_unlocked(timeout_s)
 
-    with _corr_slot(f"super_build.prod_gate({alpha_id})", ttl_sec=float(timeout_s) + 300.0) as s:
-        if not s.get("acquired"):
-            log("[prod-gate] 账号级相关性槽被其它进程占用 → 不排队、fail-closed，"
-                "稍后重跑（平台每账号仅 1 个 prod 计算在飞）。")
+    # 冷却轮次上限：被别人反复触发冷却时不至于无限等（每轮至少消耗对应时长）
+    cooldown_rounds = 0
+    while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            log("[prod-gate] 窗口耗尽仍未拿到账号级相关性槽 → fail-closed。")
             return None, 0
-        max_v, attempts = await _probe_unlocked()
-        if attempts == 1 and max_v is not None:
-            # P0-1：首个请求就拿到既有值 ⇒ 不写 195s 冷却
-            s["write_cooldown"] = False
-        return max_v, attempts
+        with _corr_slot(f"super_build.prod_gate({alpha_id})",
+                        ttl_sec=remaining + 300.0) as s:
+            if s.get("acquired"):
+                max_v, attempts = await _probe_unlocked(remaining)
+                if attempts == 1 and max_v is not None:
+                    # P0-1：首个请求就拿到既有值 ⇒ 不写 195s 冷却
+                    s["write_cooldown"] = False
+                return max_v, attempts
+
+            reason = str(s.get("reason") or "busy")
+            retry_after = float(s.get("retry_after") or 0.0)
+            if reason == "cooldown" and cooldown_rounds < 3 and 0 < retry_after < remaining:
+                cooldown_rounds += 1
+                log(f"[prod-gate] 账号级相关性槽处于冷却（剩余 {retry_after:g}s，"
+                    f"上次计算占平台槽；标记来自 pid={s.get('cooldown_pid')}）"
+                    f" → 等待后继续，不放弃。")
+                await asyncio.sleep(retry_after + 1.0)
+                continue
+            if reason == "platform_unavailable":
+                log("[prod-gate] 账号级熔断中（平台侧连续 pending）→ fail-closed。")
+                return None, 0
+            if reason == "cooldown":
+                log(f"[prod-gate] 冷却剩余 {retry_after:g}s（可用窗口 {remaining:g}s / "
+                    f"已等 {cooldown_rounds} 轮）→ 等不到，fail-closed，稍后重跑。")
+                return None, 0
+            holder = s.get("holder") or {}
+            log("[prod-gate] 账号级相关性槽被其它**存活**进程占用"
+                f"（pid={holder.get('pid')} tag={holder.get('tag')}）"
+                " → 不排队、fail-closed，稍后重跑（平台每账号仅 1 个 prod 计算在飞）。")
+            return None, 0
 
 
 def _prod_gate_verdict(prod_max, threshold=0.7):

@@ -36,6 +36,27 @@
 4. **在飞 sidecar**：``inflight_mark/get/clear/all`` 记录「某 alpha 正在算」，
    TTL 内同 alpha 的新调用只预读轮询、不二次触发。它不是互斥锁（互斥仍是 token）。
 
+2026-11-17 追加（残留锁事故）
+---------------------------
+5. **冷却标记的脏值自愈**：``cooldown_remaining`` 改为走 ``cooldown_info``——
+   半写/非 JSON 的标记、以及 ``until`` 远超 ``max(195s, env)*3`` 的远期值（时钟跳变或
+   被手改）一律**退役为 ``.stale`` 并返回 0**，不再让一条脏记录把账号锁几小时。
+   ``clear_cooldown`` 同样改为改名退役（``os.replace``），不再 ``unlink``——避开
+   沙箱 safe-delete 守卫，且事后可追溯。
+6. **``acquire`` 的 busy 分因**：返回值新增 ``reason``（``cooldown`` /
+   ``token_busy`` / ``platform_unavailable`` / ``ok`` / ``degraded``）与
+   ``holder`` 快照（pid/tag/alive）。此前三者都是 ``busy=True``，调用方只能一律
+   fail-closed——``tools/super_build.py`` 的 prod 闸就因此在一个**已知时长**的
+   冷却上直接放弃（2026-11-17 实测：提交首跑 attempts=0 退出，人工等 195s 后重跑
+   成功）。现在 cooldown 可被等掉，存活持有者仍 fail-fast、不排队。
+7. **短持槽不写冷却 + 冷却审计**：``release`` 现在按**持槽时长**自查——持槽 < 60s
+   （平台一次真计算要 180–200s，不可能这么快）⇒ 本次只是既有值直读、没占账号槽
+   ⇒ **不写 195s 冷却**；同时把每次冷却写入/跳过记进
+   ``logs/_dblock/correlation.cooldown.audit.jsonl``（tag / held_s / action）。
+   事故来源已定位：``WorkBuddy/Claw`` 面板「自动终验」每 **30 min** 用
+   ``wq_prod_backfill.py --alpha <id>`` 查一颗（tag ``prod_backfill(<id>)``），
+   单次持槽 21s 却写满 195s ⇒ 账号每 30 min 有 3.25 min 处于伪冷却。
+
 ⚠ **同 pid 重入的语义**：``db_write_lock`` 把「同 pid 再 acquire」当**续约**。
 所以**同一进程内的并发互斥不能靠本模块**——那要用进程内 ``asyncio.Lock``
 （MCP 侧见 ``brain_mixin_transport._try_acquire_brain_correlation_lock``，
@@ -112,6 +133,37 @@ COOLDOWN_NAME = "correlation.cooldown.json"
 #: 短暂报 busy，5s 足够；可用 ``WQB_CORR_SETTLE_SEC`` 覆盖。
 COOLDOWN_SETTLE_SEC = 5.0
 
+#: **持槽时长低于该值 ⇒ 平台根本没跑过新计算**，本次只是「既有值直读」，
+#: 不写 195s 冷却（2026-11-17 事故）。
+#:
+#: 依据：一次真实的 prod/self 计算平台侧要 180–200s（本模块头注释与
+#: ``_corr_cache.CORR_FRESH_HOURS`` 同源实测）。若调用方 20s 就拿到值并释放，
+#: 只可能是平台**已缓存**的既有值 ⇒ 账号槽没被本次调用占用，此时再挂 195s
+#: 冷却纯属自伤——2026-11-17 实测：面板「自动终验」每 30 min 查一颗，单次
+#: 持槽 **21s** 却写满 195s，导致账号每 30 min 有 3.25 分钟处于伪冷却，
+#: SUPER 提交首跑就撞在这段窗口上。
+#:
+#: 反向保证：真触发计算的调用**必然会**在槽里等候（≥180s），持槽时长自动过阈值，
+#: 冷却照写——阈值只能放过「没算过」的调用，不会放过「算过」的调用。
+#: 可用 ``WQB_CORR_MIN_HOLD_FOR_COOLDOWN`` 覆盖。
+MIN_HOLD_FOR_COOLDOWN_SEC = 60.0
+
+
+def min_hold_for_cooldown() -> float:
+    """持槽时长的冷却判定阈值（秒），见 :data:`MIN_HOLD_FOR_COOLDOWN_SEC`。"""
+    try:
+        return float(os.environ.get("WQB_CORR_MIN_HOLD_FOR_COOLDOWN",
+                                    MIN_HOLD_FOR_COOLDOWN_SEC))
+    except (TypeError, ValueError):
+        return MIN_HOLD_FOR_COOLDOWN_SEC
+
+
+#: 冷却写入/跳过审计（JSONL，append-only）。用于事后回答「谁占的槽、占多久、
+#: 为什么写/不写冷却」——2026-11-17 排查「每 30 min 一条 195s」花了半小时，
+#: 有这个文件就只需一眼。超 ``COOLDOWN_AUDIT_MAX_BYTES`` 轮转到 ``.1``。
+COOLDOWN_AUDIT_NAME = "correlation.cooldown.audit.jsonl"
+COOLDOWN_AUDIT_MAX_BYTES = 512 * 1024
+
 
 def cooldown_path() -> str:
     return os.path.join(_flock_dir(), COOLDOWN_NAME)
@@ -124,6 +176,29 @@ def _cooldown_sec() -> float:
         return COOLDOWN_SEC_DEFAULT
 
 
+#: 冷却标记的「可信上限」倍数（2026-11-17 残留锁事故）。
+#: 正常冷却 ≤ ``max(195s, WQB_CORR_COOLDOWN_SEC)``；记录里的 ``until`` 远超它 ⇒
+#: 只可能是系统时钟跳变 / 被手改成远期值 / 半写脏数据，**不是**真实的平台占槽，
+#: 按陈旧标记退役（改名 ``.stale``），绝不让人为脏值把账号锁死几小时。
+COOLDOWN_SANE_FACTOR = 3.0
+
+
+def _cooldown_sane_max() -> float:
+    return max(COOLDOWN_SEC_DEFAULT, _cooldown_sec()) * COOLDOWN_SANE_FACTOR
+
+
+def _retire(path: str) -> None:
+    """退役标记文件：改名 ``<path>.stale`` 而非删除（与 ``db_write_lock._retire`` 同姿势）。
+
+    删除在沙箱 safe-delete 守卫下会被截获（见 ``db_write_lock._retire`` 注释），
+    且留 ``.stale`` 可事后追溯「谁写过一个远期脏值」。改名后标记即视为无主。
+    """
+    try:
+        os.replace(path, path + ".stale")
+    except OSError:
+        pass  # 已被其它进程退役 / 不存在
+
+
 def settle_seconds() -> float:
     """计算成功后留给平台释放账号槽的收尾冷却（``WQB_CORR_SETTLE_SEC``）。"""
     try:
@@ -132,17 +207,44 @@ def settle_seconds() -> float:
         return COOLDOWN_SETTLE_SEC
 
 
-def cooldown_remaining() -> float:
-    """距冷却结束还剩多少秒；≤0 表示已可抢槽。"""
+def cooldown_info() -> dict:
+    """冷却标记的完整快照（诊断用；不含任何判定）。
+
+    Returns:
+        ``{"remaining": float, "until": float, "sec": float, "pid": int|None,
+           "at": str, "stale": bool}``；无标记 → ``remaining=0``。
+        ``stale=True`` 表示该标记已被判定为脏值并退役（本次不阻塞）。
+    """
     import json
     import time
     p = cooldown_path()
     try:
         with open(p, encoding="utf-8") as f:
-            until = float(json.load(f).get("until") or 0)
+            d = json.load(f)
+        if not isinstance(d, dict):
+            raise ValueError("cooldown record is not an object")
+        until = float(d.get("until") or 0)
+    except FileNotFoundError:
+        return {"remaining": 0.0, "stale": False}
     except Exception:
-        return 0.0
-    return max(0.0, until - time.time())
+        # 半写 / 截断 / 非 JSON ⇒ 脏标记，退役，不阻塞（2026-11-17）
+        _retire(p)
+        return {"remaining": 0.0, "stale": True}
+    rem = until - time.time()
+    if rem > _cooldown_sane_max():
+        # 时钟跳变 / 远期脏值 ⇒ 退役（否则一次手改能把账号锁几小时）
+        _retire(p)
+        return {"remaining": 0.0, "stale": True, "until": until}
+    out = {"remaining": max(0.0, rem), "until": until, "stale": False}
+    for k in ("sec", "pid", "at"):
+        if d.get(k) is not None:
+            out[k] = d.get(k)
+    return out
+
+
+def cooldown_remaining() -> float:
+    """距冷却结束还剩多少秒；≤0 表示已可抢槽（脏值会被退役并返回 0）。"""
+    return float(cooldown_info().get("remaining") or 0.0)
 
 
 def write_cooldown(seconds=None) -> None:
@@ -168,11 +270,8 @@ def write_cooldown(seconds=None) -> None:
 
 
 def clear_cooldown() -> None:
-    """清掉冷却标记（幂等）。"""
-    try:
-        os.remove(cooldown_path())
-    except OSError:
-        pass
+    """清掉冷却标记（幂等；改名 ``.stale`` 退役，不 unlink —— 避开 safe-delete 守卫）。"""
+    _retire(cooldown_path())
 
 
 def _write_cooldown() -> None:  # 历史私有名，保留给既有调用点
@@ -300,14 +399,45 @@ def clear_unavailable() -> None:
             pass
 
 
+def _holder_snapshot() -> dict:
+    """读锁 token 的持有者快照（pid / tag / 是否存活）；读不到 → ``{}``。
+
+    只用于**诊断与日志**：判定逻辑不依赖它（死持有者由 ``db_write_lock`` 回收）。
+    """
+    import json
+    try:
+        with open(slot_path(), encoding="utf-8") as f:
+            d = json.load(f)
+        if not isinstance(d, dict):
+            return {}
+    except Exception:
+        return {}
+    pid = d.get("pid")
+    try:
+        from wqb.db_write_lock import _pid_alive  # noqa: WPS433 —— 复用同一判活实现
+
+        alive = bool(_pid_alive(pid))
+    except Exception:  # pragma: no cover - 判活失败按存活处理（保守）
+        alive = True
+    return {"pid": pid, "tag": d.get("tag"), "alive": alive}
+
+
 def acquire(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Dict[str, object]:
     """抢账号级相关性槽。**fail-fast**：被他人持有时立即返回 ``busy``。
 
     Returns:
-        ``{"acquired": bool, "busy": bool, "token": path|None, "degraded": bool}``
+        ``{"acquired": bool, "busy": bool, "token": path|None, "degraded": bool,
+           "reason": str}``
         - ``acquired=False, busy=True`` ⇒ 他人持有（**不放行**，调用方应稍后重试）
         - ``degraded=True`` ⇒ 锁目录不可写等异常 → 无法承担跨进程互斥，
           此时 ``acquired=True``（降级放行，与 ``db_write_lock`` 的既有降级语义一致）
+
+        ``reason`` 区分**三种不同的 busy**（调用方的处置完全不同，2026-11-17）：
+        - ``"cooldown"`` ⇒ 上一次计算刚结束、平台仍占槽，``retry_after`` 是**已知
+          时长**，可等它到期后重试（``super_build`` 的 prod 闸据此等待而非直接放弃）；
+        - ``"token_busy"`` ⇒ 另一个**存活**进程正持有互斥 token（附 ``holder``
+          快照：pid/tag/alive），按原设计 fail-fast、不排队；
+        - ``"platform_unavailable"`` ⇒ 账号级熔断中，直接放弃。
     """
     # 0) 账号级熔断（2026-11-10）：平台侧连续 pending ⇒ 直接短路，不抢锁不发请求。
     # 避免「240s 轮询 → 195s 冷却 → inflight 残留 → busy → 再 240s」的自我放大等待。
@@ -317,19 +447,24 @@ def acquire(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Dict[str, object]
             "acquired": False,
             "busy": True,
             "unavailable": True,
+            "reason": "platform_unavailable",
             "retry_after": round(_ua, 1),
             "token": None,
             "degraded": False,
         }
 
     # 0) 冷却窗口：上一次调用刚结束，平台槽位还没释放 ⇒ 直接 busy，不去撞平台
-    _cd = cooldown_remaining()
-    if _cd > 0:
+    _cd = cooldown_info()
+    _cd_rem = float(_cd.get("remaining") or 0.0)
+    if _cd_rem > 0:
         return {
             "acquired": False,
             "busy": True,
             "cooldown": True,
-            "retry_after": round(_cd, 1),
+            "reason": "cooldown",
+            "retry_after": round(_cd_rem, 1),
+            "cooldown_pid": _cd.get("pid"),
+            "cooldown_at": _cd.get("at"),
             "token": None,
             "degraded": False,
         }
@@ -341,12 +476,63 @@ def acquire(op_name: str, ttl_sec: float = DEFAULT_TTL_SEC) -> Dict[str, object]
         name=LOCK_NAME,
         fail_fast=True,
     )
-    return {
+    out = {
         "acquired": bool(info.get("ok")),
         "busy": bool(info.get("busy")),
         "token": info.get("token"),
         "degraded": bool(info.get("degraded")),
+        "reason": ("ok" if info.get("ok") else
+                   ("token_busy" if info.get("busy") else "degraded")),
     }
+    if out["busy"]:
+        # 诊断：谁占着槽、还活着吗（token 死持有者已由 db_write_lock 回收，
+        # 走到这里说明持有者**存活**；仍带上快照便于定位是哪个进程）
+        out["holder"] = _holder_snapshot()
+    return out
+
+
+def _token_snapshot(token) -> dict:
+    """读 token 文件的快照（``pid``/``tag``/``at``）；读不到返回 ``{}``。
+
+    必须在 ``_flock_release`` **之前**读——退役会把 token 改名成 ``.stale``。
+    """
+    import json
+    try:
+        with open(token, "r", encoding="utf-8") as f:
+            d = json.load(f)
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+def audit_cooldown(action: str, snap: dict, held=None, seconds=None) -> None:
+    """记一条冷却审计（best-effort，失败绝不影响主流程）。
+
+    ``action``：``write`` / ``skip_short``（持槽太短，没算过）/ ``skip_by_caller``。
+    """
+    import json
+    import time
+    try:
+        d = _flock_dir()
+        p = os.path.join(d, COOLDOWN_AUDIT_NAME)
+        try:
+            if os.path.getsize(p) > COOLDOWN_AUDIT_MAX_BYTES:
+                os.replace(p, p + ".1")
+        except OSError:
+            pass
+        rec = {
+            "at": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "pid": os.getpid(),
+            "action": action,
+            "tag": snap.get("tag"),
+            "holder_pid": snap.get("pid"),
+            "held_s": None if held is None else round(float(held), 1),
+            "cooldown_s": None if seconds is None else round(float(seconds), 1),
+        }
+        with open(p, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    except Exception:  # noqa: BLE001  审计是附加物，绝不能因它中断释放
+        pass
 
 
 def release(token, cooldown: bool = True, seconds=None) -> None:
@@ -360,11 +546,35 @@ def release(token, cooldown: bool = True, seconds=None) -> None:
       - ``seconds=x`` ⇒ 写 x 秒（触发计算后按平台 Retry-After 或 195s；
         计算成功后用 ``COOLDOWN_SETTLE_SEC``）。
     不传参的旧调用点保持 195s 语义不变。
+
+    ★ 2026-11-17：**没算过就不写冷却**。``seconds`` 缺省（= 走 195s 那条路）时，
+    若持槽时长 < :func:`min_hold_for_cooldown`（60s），说明平台侧根本没跑新计算
+    （真计算 180–200s，20s 拿到值只能是既有值直读）⇒ 跳过冷却并记审计。
+    显式传 ``seconds`` / ``cooldown=False`` 的调用点语义不变（调用方比本模块更懂结果）。
+
+    每次释放都会往 ``logs/_dblock/correlation.cooldown.audit.jsonl`` 记一行
+    （action / tag / held_s / cooldown_s），排查「谁在占槽」不必再猜。
     """
+    snap = _token_snapshot(token) if token else {}
+    held = None
+    try:
+        _at = float(snap.get("at") or 0)
+        if _at > 0:
+            import time
+            held = max(0.0, time.time() - _at)
+    except (TypeError, ValueError):
+        held = None
     if token:
         _flock_release(token)
-    if cooldown:
-        write_cooldown(seconds)
+    if not cooldown:
+        audit_cooldown("skip_by_caller", snap, held, seconds)
+        return
+    if seconds is None and held is not None and held < min_hold_for_cooldown():
+        audit_cooldown("skip_short", snap, held, None)
+        return
+    write_cooldown(seconds)
+    audit_cooldown("write", snap, held,
+                   _cooldown_sec() if seconds is None else seconds)
 
 
 @contextmanager

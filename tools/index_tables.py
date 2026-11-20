@@ -135,7 +135,8 @@ def render_ladder() -> str:
         ("Returns", "平台不检", f"> {_pct(i['returns_min'])}", "`GATES_INTERNAL.returns_min`"),
         ("SELF 相关性", f"< {p['self_corr_max']:g}", f"< {i['self_corr_max']:g}",
          "`GATES_PLATFORM.self_corr_max` / `GATES_INTERNAL.self_corr_max`"),
-        ("PROD 相关性", f"< {p['prod_corr_max']:g}", "—", "`GATES_PLATFORM.prod_corr_max`（= `PRODCORR_CEILING`）"),
+        ("PROD 相关性", f"< {p['prod_corr_max']:g}", f"< {i['prod_corr_max']:g}",
+         "`GATES_PLATFORM.prod_corr_max`（= `PRODCORR_CEILING`） / `GATES_INTERNAL.prod_corr_max`"),
     ]
     lines = ["| 检查 | 平台线（提交必须） | 内部线（研究阶段，省配额） | 来源常量（`src/wqb/config.py`） |", "|---|---|---|---|"]
     for name, plat, internal, const in rows:

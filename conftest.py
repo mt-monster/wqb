@@ -17,16 +17,22 @@ ROOT = Path(__file__).resolve().parent
 
 #: marker → (资源路径, 为什么缺)
 _FILE_MARKERS = {
-    "needs_operators_verified": (ROOT / "data" / "operators_verified.json",
-                                 "由平台 get_operators 实测生成，被 .gitignore 排除"),
     "needs_attic_step_metrics": (ROOT / "attic" / "step_metrics_20260917" / "README.md",
                                  "attic/ 被 .gitignore 排除，归档说明只在作者本机"),
+}
+
+#: 已不再依赖本机产物：wqb.config 回退到被追踪的 docs/reference/operators_catalog.json。
+#: 保留 marker 注册以兼容既有写法，但不再自动 skip（否则守卫无覆盖）。
+_ALWAYS_AVAILABLE_MARKERS = {
+    "needs_operators_verified": "算子目录由被追踪的 catalog 兜底，始终运行",
 }
 
 
 def pytest_configure(config):
     for name, (path, why) in _FILE_MARKERS.items():
         config.addinivalue_line("markers", f"{name}: 需要 {path.relative_to(ROOT)}（{why}）；缺失则跳过")
+    for name, why in _ALWAYS_AVAILABLE_MARKERS.items():
+        config.addinivalue_line("markers", f"{name}: {why}")
 
 
 def pytest_collection_modifyitems(config, items):

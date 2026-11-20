@@ -3,15 +3,19 @@
 """forum_mcp.py — 论坛访问的**唯一实现**（2026-11-18 用户裁定）。
 
 全项目查论坛一律按 `docs/reference/forum_and_doc_tools_guide.md`：只经 `wq-brain-http`
-的 5 个 MCP 工具 —— `search_forum_posts` / `read_forum_post` / `get_glossary_terms` /
+的 6 个 MCP 工具 —— `search_forum_posts_local` / `get_forum_posts`（**确定性检索，唯一检索通道**）/
+`read_forum_post` / `get_glossary_terms` /
 `get_documentations` / `get_documentation_page`。
 
 **不再** requests 抓 HTML 搜索页、**不再**直连 Zendesk JSON API、**不再**拿 WebSearch 当论坛通道。
 （WebSearch/WebFetch 只用于**论文**取证线 EVID-PAPER，与论坛线分开。）
 
 要点（与 guide 对齐）：
-  - 搜索 `search_forum_posts`：服务端 Playwright + SSO。**超时/失败 ⇒ 工具故障，不是「论坛无解」**，
-    不得落 `forum_recon_negative_*`、不得据此判死。
+  - **检索唯一通道 = `search_forum_posts_local`**：服务端走 Zendesk 列表端点（`/api/v2/community/posts.json`，
+    实测 count=11296 / page_count=113，列表项自带正文）拉语料后本地词命中率过滤，**确定性、零超时**。
+  - 旧 `search_forum_posts`（Playwright 抓 Cloudflare 页）**已于 2026-11-20 整体退役**
+    （用户裁定）：它的「0 结果 + navigation_failed=false」是**假信号**（挑战页与真无结果无法区分），
+    实现已从 MCP 删除，本项目不得再引用。
   - 读帖 `read_forum_post`：`article_id` 接受纯数字或含 `/posts/<数字>` 的 URL；标题前缀（如 `LC97552`）会被拒。
   - search 坏时的绕行：`get_documentations` → `get_documentation_page(page_id)` → 从正文
     `<a href=".../posts/<数字>-...">` 提取数字 id → `read_forum_post` 直读。
@@ -41,11 +45,14 @@ REPO_ROOT = _MHC.REPO_ROOT
 
 #: guide 规定的论坛/文档工具白名单——本模块只允许调这些（机械闸据此校验）。
 ALLOWED_TOOLS = frozenset({
-    "search_forum_posts",
     "read_forum_post",
     "get_glossary_terms",
     "get_documentations",
     "get_documentation_page",
+    # 2026-11-19：确定性检索通道（Zendesk 列表端点 + 本地过滤）。
+    # 2026-11-20：旧 Playwright `search_forum_posts` 已整体退役，这两个是**唯一**检索通道。
+    "get_forum_posts",
+    "search_forum_posts_local",
 })
 
 #: 客户端超时（秒）：> 服务端 search overall_timeout(120s)，避免传输层先掐断。
@@ -69,12 +76,7 @@ def _call(cli, tool: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
     return out if isinstance(out, dict) else {"raw": out}
 
 
-# ---------------------------------------------------------------- 五个工具
-def search_posts(cli, query: str, max_results: int = 50) -> Dict[str, Any]:
-    """搜索论坛帖。返回 {success, results:[{title,link,snippet,votes,...}], total_found} 或 {error}。"""
-    return _call(cli, "search_forum_posts", {"search_query": query, "max_results": int(max_results)})
-
-
+# ---------------------------------------------------------------- 工具封装
 def read_post(cli, article_id: str, include_comments: bool = True) -> Dict[str, Any]:
     """读单帖全文（含评论）。返回 {success, post:{title,body,details:{votes,...}}, comments} 或 {error}。"""
     return _call(cli, "read_forum_post",
@@ -93,6 +95,20 @@ def docs_index(cli) -> Any:
 def doc_page(cli, page_id: str) -> Dict[str, Any]:
     """单页文档。content[].value 是 HTML 字符串（链接在 <a href> 里）。"""
     return _call(cli, "get_documentation_page", {"page_id": str(page_id)})
+
+
+def list_posts(cli, page: int = 1, per_page: int = 100) -> Dict[str, Any]:
+    """列出论坛帖（确定性列表端点，实测 count=11296 / page_count=113）。"""
+    return _call(cli, "get_forum_posts",
+                 {"page": int(page), "per_page": int(per_page)})
+
+
+def search_posts_local(cli, keywords: List[str], limit: int = 5,
+                       max_pages: int = 8) -> Dict[str, Any]:
+    """确定性论坛检索（列表端点 + 本地词命中率过滤）。**查得到**的通道。"""
+    return _call(cli, "search_forum_posts_local",
+                 {"keywords": list(keywords), "limit": int(limit),
+                  "max_pages": int(max_pages)})
 
 
 # ---------------------------------------------------------------- 结果判读 / id 提取

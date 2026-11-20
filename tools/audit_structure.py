@@ -1182,6 +1182,8 @@ NON_REGION_DIRS = {
     "prod_probe": "prod 探针 dump（运行期，tracking/.gitignore 已排除）",
     "hypotheses": "hypothesis_round 账本（运行期追加写，.gitignore 已排除）",
     "_scratch": "临时区（§6 第 3 条：用完清空）",
+    "SA_BASE": "SA→base 追踪台账（11-20 建立：base_daily/sa_daily/account_daily jsonl + README；"
+               "文档 docs/experience/09 引用，受控 4 文件，物理改名会断台账连续性故只登记）",
 }
 
 #: 登记了、但**允许磁盘上暂时没有**的非区域目录（S13 的 stale WARN 对此静音）。

@@ -498,3 +498,31 @@ def test_verifier_table_hump_is_keyword_only():
     text = (scripts / "validator.py").read_text(encoding="utf-8")
     line = next(ln for ln in text.splitlines() if ln.strip().startswith("'hump':"))
     assert "keyword_only" in line, "hump 漏标 keyword_only —— 2026-09-07 事故复发"
+
+
+# ---------------------------------------------------------------------------
+# 10. ts_target_tvr_* 的 target_tvr 平台必填（2026-11-20 补）
+# ---------------------------------------------------------------------------
+
+def test_tvr_target_tvr_is_required_despite_catalog_default():
+    """catalog 的 definition 显示 target_tvr=0.1，但**平台侧必填**——缺它平台报
+    ``Required attribute "target_tvr" must have a value.`` 并**连坐整批 CANCELLED**
+    （原始记录：docs/experience/02_signal_patterns.md §结论 32）。
+    ⇒ op_arity 必须把它当必填，不能信 catalog 的默认值标注。
+    """
+    from wqb.expression.op_arity import check_expression
+    errs = check_expression("ts_target_tvr_decay(close, lambda_min=0, lambda_max=1)")
+    assert errs, "缺 target_tvr 应报错"
+    assert any("target_tvr" in e for e in errs), errs
+
+
+def test_tvr_target_tvr_supplied_passes():
+    from wqb.expression.op_arity import check_expression
+    assert check_expression(
+        "ts_target_tvr_decay(close, lambda_min=0, lambda_max=1, target_tvr=0.1)") == []
+
+
+def test_tvr_hump_required_named_arg_also_checked():
+    from wqb.expression.op_arity import check_expression
+    errs = check_expression("ts_target_tvr_hump(close, lambda_min=0, lambda_max=1)")
+    assert any("target_tvr" in e for e in errs), errs

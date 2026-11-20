@@ -47,8 +47,10 @@
       "dir": "tools/backtest",
       "title": "backtest",
       "files": [
+        "batch_isolate.py",
         "batch_status.py",
         "cleanup_async_tasks.py",
+        "corr_check.py",
         "dataset_experience.py",
         "five_slot_executor.py",
         "harvest_multisim.py",
@@ -59,8 +61,7 @@
         "pipeline_integration.py",
         "poll_single_sims.py",
         "reset_low_cov_skips.py",
-        "submit_batch.py",
-        "corr_check.py"
+        "submit_batch.py"
       ],
       "status": "moved-partial"
     },
@@ -234,6 +235,7 @@
         "gem_pilot_sample.py",
         "kb_templates.py",
         "operator_diversity_analyzer.py",
+        "operator_swap_matrix.py",
         "paper_search.py",
         "quality_control_engine.py",
         "role_cluster.py",
@@ -452,7 +454,7 @@
   },
   "_unassigned": [],
   "counts": {
-    "backtest": 12,
+    "backtest": 15,
     "catalog": 5,
     "code-audit": 17,
     "data-repair": 17,
@@ -465,7 +467,7 @@
     "pool-hygiene": 5,
     "probe": 7,
     "reporting": 4,
-    "research": 20,
+    "research": 24,
     "rotation": 7,
     "skills": 3,
     "super": 2,

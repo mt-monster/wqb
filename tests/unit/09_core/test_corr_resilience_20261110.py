@@ -75,17 +75,9 @@ def test_success_would_reset_streak_file(lock_env, monkeypatch):
 
 
 # ------------------------------------------------------------------ sidecar 原子性
-def test_inflight_semantics_unchanged_under_sidecar_lock(lock_env):
-    assert cs.inflight_get("B1") == {}
-    r1 = cs.inflight_mark("B1")
-    r2 = cs.inflight_mark("B1")
-    assert r2["n"] == r1["n"] + 1
-    assert r2["started_at"] == r1["started_at"]
-    assert cs.inflight_get("B1")["n"] == 2
-    assert cs.inflight_clear("B1") is True
-    assert cs.inflight_clear("B1") is False
-    assert cs.inflight_get("B1") == {}
-
+# inflight mark/get/clear 的 n+1、started_at 不变、clear 幂等断言已由
+# test_corr_slot_outcome_inflight_20261028.py 的 roundtrip / remark 两条完整覆盖，
+# 此处原用例函数体内并未真正持有 sidecar 锁（名字误导），删除避免重复。
 
 def test_sidecar_lock_is_released_after_exception(lock_env):
     with pytest.raises(RuntimeError):

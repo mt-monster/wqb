@@ -42,30 +42,37 @@ def _rec(aid, ts, *, type_=None, name=None, settings=None, region="IND"):
 
 # ---------------------------------------------------------------- alpha_kind
 
-def test_kind_prefers_explicit_type_field(q):
-    assert q.alpha_kind(_rec("A", None, type_="REGULAR")) == "REGULAR"
-    assert q.alpha_kind(_rec("B", None, type_="SUPER")) == "SUPER"
-    assert q.alpha_kind(_rec("C", None, type_="regular")) == "REGULAR"   # 大小写不敏感
+@pytest.mark.parametrize("type_,expected", [
+    ("REGULAR", "REGULAR"),
+    ("SUPER", "SUPER"),
+    ("regular", "REGULAR"),   # 大小写不敏感
+])
+def test_kind_prefers_explicit_type_field(q, type_, expected):
+    assert q.alpha_kind(_rec("A", None, type_=type_)) == expected
 
 
-def test_kind_falls_back_to_selection_settings(q):
+@pytest.mark.parametrize("settings,expected", [
+    ({"selectionHandling": "POSITIVE"}, "SUPER"),
+    ({"selectionLimit": 10}, "SUPER"),
+    ({"componentActivation": "IS"}, "SUPER"),
+    ({"decay": 5, "neutralization": "SECTOR"}, "UNKNOWN"),  # 普通 REGULAR settings 不误判
+])
+def test_kind_falls_back_to_selection_settings(q, settings, expected):
     """无 type 时，SUPER 专有 settings 键可判型。"""
-    assert q.alpha_kind(_rec("A", None, settings={"selectionHandling": "POSITIVE"})) == "SUPER"
-    assert q.alpha_kind(_rec("B", None, settings={"selectionLimit": 10})) == "SUPER"
-    assert q.alpha_kind(_rec("C", None, settings={"componentActivation": "IS"})) == "SUPER"
-    # 普通 REGULAR settings 不误判
-    assert q.alpha_kind(_rec("D", None, settings={"decay": 5, "neutralization": "SECTOR"})) == "UNKNOWN"
+    assert q.alpha_kind(_rec("A", None, settings=settings)) == expected
 
 
-def test_kind_falls_back_to_name_convention(q):
-    assert q.alpha_kind(_rec("A", None, name="IND_S_10comp_1nKZJE")) == "SUPER"
-    assert q.alpha_kind(_rec("B", None, name="ASI_R_qbucket_01")) == "REGULAR"
+@pytest.mark.parametrize("name,expected", [
+    ("IND_S_10comp_1nKZJE", "SUPER"),
+    ("ASI_R_qbucket_01", "REGULAR"),
+])
+def test_kind_falls_back_to_name_convention(q, name, expected):
+    assert q.alpha_kind(_rec("A", None, name=name)) == expected
 
 
-def test_kind_unknown_on_malformed_record(q):
-    assert q.alpha_kind(None) == "UNKNOWN"
-    assert q.alpha_kind({}) == "UNKNOWN"
-    assert q.alpha_kind({"settings": None}) == "UNKNOWN"
+@pytest.mark.parametrize("record", [None, {}, {"settings": None}])
+def test_kind_unknown_on_malformed_record(q, record):
+    assert q.alpha_kind(record) == "UNKNOWN"
 
 
 # ---------------------------------------------------------------- probe_today

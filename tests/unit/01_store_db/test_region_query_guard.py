@@ -42,7 +42,8 @@ GUARD_BASELINE = {
     "tools/validate_fields_batch.py:123",
     "tools/wave_gate.py:1411",
     "tools/wave_gate_pkg/gates_quality.py:120",
-    "src/wqb/alpha_properties.py:345",
+    # 2026-11-16：该查询已补 d.region_id 作用域（现 389 行），启发式假阳性消除。
+    # 按测试意图「已修复即移除」删条目，而非按旧注释机械重钉行号。
     "src/wqb/step_eval.py:200",
     "src/wqb/step_eval.py:213",
     "src/wqb/step_eval.py:221",

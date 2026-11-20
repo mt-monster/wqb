@@ -317,75 +317,26 @@ def test_parse_tolerates_surrounding_and_embedded_whitespace():
 # parse_expression — 错误分支（ParseError）
 # ---------------------------------------------------------------------------
 
-def test_parse_error_trailing_tokens():
-    with pytest.raises(ParseError):
-        parse_expression("rank(close) extra")
-
-
-def test_parse_error_missing_close_paren():
-    with pytest.raises(ParseError):
-        parse_expression("rank(close")
-
-
-def test_parse_error_leading_paren():
-    """括号分组仍不支持（保持既有行为）。"""
-    with pytest.raises(ParseError):
-        parse_expression("(close)")
-    with pytest.raises(ParseError):
-        parse_expression("(a > b) && (c < d)")
-
-
-def test_parse_error_numeric_root():
-    with pytest.raises(ParseError):
-        parse_expression("123")
-
-
-def test_parse_error_bare_literal_root():
-    """负数 / 字符串字面量单独成表达式也不是 alpha。"""
-    with pytest.raises(ParseError):
-        parse_expression("-1")
-    with pytest.raises(ParseError):
-        parse_expression('"abc"')
-
-
-def test_parse_error_empty():
-    with pytest.raises(ParseError):
-        parse_expression("")
-
-
-def test_parse_error_unexpected_char():
-    with pytest.raises(ParseError):
-        parse_expression("rank@close")
-
-
-@pytest.mark.parametrize("expr", ["a & b", "a | b", "!a", "a ? b : c", "x; y"])
-def test_parse_error_unsupported_operator_chars(expr):
+@pytest.mark.parametrize("expr", [
+    "rank(close) extra",                 # 尾随 token
+    "rank(close",                        # 缺右括号
+    "(close)",                           # 括号分组仍不支持（保持既有行为）
+    "(a > b) && (c < d)",
+    "123",                               # 数值根
+    "-1",                                # 负数字面量根
+    '"abc"',                             # 字符串字面量根
+    "",                                  # 空表达式
+    "rank@close",                        # 非法字符
+    "a & b", "a | b", "!a", "a ? b : c", "x; y",  # 不支持的运算符字符
+    'bucket(rank(x), range="0,1',        # 未闭合字符串
+    "foo(bar,)",                         # 尾随逗号
+    "winsorize(close, std=)",            # kwarg 缺值
+    "rank(close) <", "rank(close) && ", "a = b",  # 悬空运算符
+])
+def test_parse_error(expr):
+    """所有非法表达式统一走 ParseError；输入集与合并前逐条用例一一对应。"""
     with pytest.raises(ParseError):
         parse_expression(expr)
-
-
-def test_parse_error_unterminated_string():
-    with pytest.raises(ParseError):
-        parse_expression('bucket(rank(x), range="0,1')
-
-
-def test_parse_error_trailing_comma():
-    with pytest.raises(ParseError):
-        parse_expression("foo(bar,)")
-
-
-def test_parse_error_kwarg_without_value():
-    with pytest.raises(ParseError):
-        parse_expression("winsorize(close, std=)")
-
-
-def test_parse_error_dangling_operators():
-    with pytest.raises(ParseError):
-        parse_expression("rank(close) <")
-    with pytest.raises(ParseError):
-        parse_expression("rank(close) && ")
-    with pytest.raises(ParseError):
-        parse_expression("a = b")
 
 
 def test_parse_error_propagates_value_error():

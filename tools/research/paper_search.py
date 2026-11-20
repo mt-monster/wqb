@@ -168,6 +168,44 @@ def _local(query: str, limit: int) -> List[Dict[str, Any]]:
     return hits[:limit]
 
 
+# 中文金融术语 → 英文检索词（Crossref 是英文库，中文查询零命中——2026-11-19 workflow
+# 实测：中文 prompt 下模板员写中文 mechanism，paper_search found=false 误杀。此表在查询层自动扩容）。
+_CN_EN = {
+    "反转": "return reversal", "特质反转": "idiosyncratic return reversal",
+    "动量": "momentum", "特质动量": "idiosyncratic momentum",
+    "低贝塔": "low beta anomaly betting against beta", "贝塔": "beta anomaly",
+    "低波动": "low volatility anomaly", "低波": "low volatility anomaly",
+    "异象": "anomaly", "均值回复": "mean reversion",
+    "特质收益": "idiosyncratic return residual return",
+    "残差": "residual return", "流动性": "liquidity",
+    "交易量": "trading volume", "波动率": "volatility",
+    "价值": "value premium", "规模": "size premium",
+    "应计": "accruals", "盈余": "earnings announcement drift",
+    "分析师": "analyst revision", "情绪": "sentiment",
+    "做空": "short selling constraints", "卖空": "short sale constraints",
+    "拥挤": "crowding", "换手": "turnover",
+    "截面": "cross section", "行业": "industry", "分组": "portfolio sort",
+    "持有期": "holding period", "信息扩散": "information diffusion",
+}
+
+
+def _expand_cn(query: str) -> List[str]:
+    """中文查询扩容为多个英文/中英查询；纯英文原样返回。"""
+    if not re.search(r"[一-鿿]", query):
+        return [query]
+    en_terms: List[str] = []
+    for cn, en in _CN_EN.items():
+        if cn in query:
+            en_terms.append(en)
+    out = [query]
+    if en_terms:
+        # 去重保序，英文同义词合并成一个查询（Crossref 对多词查询 tolerant）
+        seen = set()
+        en_terms = [e for e in en_terms if not (e in seen or seen.add(e))]
+        out.append(" ".join(en_terms[:6]))
+    return out
+
+
 def _relevance(query: str, papers: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Crossref 对任何查询都返回「最接近」结果——必须校验与检索词有实质重叠。
     两种模式：
@@ -210,6 +248,38 @@ def search_papers(query: str, limit: int = 5, layers: str = "crossref,arxiv,loca
     found=true 只要任一层返回「与检索词相关」的论文（经 _relevance 校验）；
     全失败或只有无关结果 found=false（fail-closed）。
     """
+    papers: List[Dict[str, Any]] = []
+    tried: List[Dict[str, Any]] = []
+    errors: List[str] = []
+    # 中文查询自动扩容为「中文原词 + 英文同义词」，逐个检索后合并（KOR/GBR 中文 mechanism 场景）
+    for sub_q in _expand_cn(query):
+        _sub = _search_single(sub_q, limit, layers)
+        papers.extend(_sub["papers"])
+        tried.extend(_sub["layers_tried"])
+        errors.extend(_sub.get("errors") or [])
+        if _sub["found"]:
+            break
+    return {
+        "query": query,
+        "found": bool(papers),
+        "papers": _dedup(papers)[:limit],
+        "layers_tried": tried,
+        "errors": errors,
+    }
+
+
+def _dedup(papers: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    seen = set()
+    out = []
+    for p in papers:
+        k = _identity(p)
+        if k not in seen:
+            seen.add(k)
+            out.append(p)
+    return out
+
+
+def _search_single(query: str, limit: int, layers: str) -> Dict[str, Any]:
     papers: List[Dict[str, Any]] = []
     tried: List[Dict[str, Any]] = []
     errors: List[str] = []

@@ -37,6 +37,7 @@ def test_internal_lines_are_at_least_as_strict_as_platform_lines():
     lo_p, hi_p = GATES_PLATFORM["turnover_range"]
     assert lo_p <= lo_i and hi_i <= hi_p                     # 内部换手窗 ⊂ 平台换手窗
     assert GATES_INTERNAL["self_corr_max"] <= GATES_PLATFORM["self_corr_max"]
+    assert GATES_INTERNAL["prod_corr_max"] <= GATES_PLATFORM["prod_corr_max"]
 
 
 def test_submit_queue_lines_come_from_config():

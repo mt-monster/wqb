@@ -275,7 +275,8 @@ def live_search_round(session, fr, query: str, max_pages: int, read_top: int,
         st.setdefault(k, 0)
     out: List[Dict[str, Any]] = []
     try:
-        res = fr.search_posts(session, query, max_results=max(read_top, 1))
+        res = fr.search_posts_local(session, [query], limit=max(read_top, 1),
+                                    max_pages=max(1, int(max_pages)))
     except Exception as e:
         st["search_errors"] += 1
         print(f"[forum_recon] 搜索失败（{query}）：{e}", file=sys.stderr)
@@ -289,7 +290,7 @@ def live_search_round(session, fr, query: str, max_pages: int, read_top: int,
     candidates = fr.search_results(res)[:read_top]
     st["hits"] += len(candidates)
     for hit in candidates:
-        pid = hit.get("post_id") or fr.post_id_from_link(hit.get("link"))
+        pid = hit.get("post_id") or hit.get("id") or fr.post_id_from_link(hit.get("url"))
         if not pid or pid in seen:
             continue
         seen.add(pid)
@@ -324,7 +325,7 @@ def _control_probe(session, fr) -> Optional[Tuple[str, str]]:
     检索通道失效（会话过期 / 被拦 / 服务不可达），看起来和「论坛没有答案」一模一样。
     通过返回 None；失败返回 (code, message)。"""
     try:
-        res = fr.search_posts(session, CONTROL_QUERY, max_results=5)
+        res = fr.search_posts_local(session, [CONTROL_QUERY], limit=5, max_pages=8)
     except Exception as e:
         return ("control_probe_failed", f"对照检索异常：{e}")
     if fr.is_error(res):

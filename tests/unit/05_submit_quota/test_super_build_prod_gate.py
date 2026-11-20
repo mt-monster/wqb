@@ -33,33 +33,18 @@ def _isolate_correlation_slot(tmp_path, monkeypatch):
 
 
 # ------------------------------------------------- 判定（纯函数）
-def test_block_when_above_threshold():
-    allowed, reason = _prod_gate_verdict(0.8571, 0.7)
-    assert allowed is False
-    assert "0.8571" in reason
-
-
-def test_block_at_exact_threshold():
-    # 用户口径 prod>=0.7 不能提交 → 恰好 0.7 也拒
-    allowed, _ = _prod_gate_verdict(0.7, 0.7)
-    assert allowed is False
-
-
-def test_allow_below_threshold():
-    allowed, reason = _prod_gate_verdict(0.6999, 0.7)
-    assert allowed is True
-    assert "过闸" in reason
-
-
-def test_timeout_fail_closed():
-    allowed, reason = _prod_gate_verdict(None, 0.7)
-    assert allowed is False
-    assert "fail-closed" in reason
-
-
-def test_custom_threshold():
-    allowed, _ = _prod_gate_verdict(0.75, 0.8)
-    assert allowed is True
+@pytest.mark.parametrize("value,threshold,allowed,reason_sub", [
+    (0.8571, 0.7, False, "0.8571"),   # 超阈值拒
+    (0.7, 0.7, False, None),          # 恰好等于也拒（用户口径 >= 不提交）
+    (0.6999, 0.7, True, "过闸"),       # 低于阈值放行
+    (None, 0.7, False, "fail-closed"), # 探针超时 fail-closed
+    (0.75, 0.8, True, None),          # 自定义阈值
+])
+def test_prod_gate_verdict(value, threshold, allowed, reason_sub):
+    got_allowed, reason = _prod_gate_verdict(value, threshold)
+    assert got_allowed is allowed
+    if reason_sub:
+        assert reason_sub in reason
 
 
 # ------------------------------------------------- 轮询（假客户端）
@@ -107,6 +92,54 @@ def test_probe_timeout_returns_none():
     mx, n = asyncio.run(_probe_prod_max(brain, "ABC123", timeout_s=0.05,
                                         interval_s=0.01, log=lambda *_: None))
     assert mx is None and n >= 2
+
+
+# ------------------------------------------- 残留锁分因（2026-11-17 事故回归）
+def test_probe_waits_out_known_cooldown_instead_of_giving_up():
+    """**事故回归**：上一轮计算留下的 195s 冷却（写入进程已退出）曾被当成「别的进程
+    占着槽」直接 attempts=0 放弃，人工等 TTL 重跑才成功。
+
+    冷却时长是**已知的**，应在窗口内等它到期再抢，而不是 fail-closed。
+    """
+    from wqb import correlation_slot as cs
+    cs.write_cooldown(0.2)
+    brain = _FakeBrain([{"max": 0.55}])
+    logs = []
+    mx, n = asyncio.run(_probe_prod_max(brain, "ABC123", timeout_s=10, interval_s=0.01,
+                                        log=logs.append))
+    assert mx == 0.55 and n == 1
+    assert any("冷却" in s for s in logs)
+
+
+def test_probe_fail_closed_when_holder_is_alive():
+    """存活进程持槽 ⇒ 仍 fail-fast、不排队（原设计不变量，不得被冷却修复放宽）。"""
+    import json
+    from wqb import correlation_slot as cs
+    info = cs.acquire("holder")
+    tok = cs.slot_path()
+    data = json.loads(open(tok, encoding="utf-8").read())
+    data["pid"] = os.getppid()
+    open(tok, "w", encoding="utf-8").write(json.dumps(data))
+
+    brain = _FakeBrain([{"max": 0.55}])
+    logs = []
+    mx, n = asyncio.run(_probe_prod_max(brain, "ABC123", timeout_s=2, interval_s=0.01,
+                                        log=logs.append))
+    assert (mx, n) == (None, 0)
+    assert brain.calls == 0                       # 没抢到槽 ⇒ 一个请求都不许发
+    assert any("存活" in s for s in logs)
+    cs.release(info["token"], cooldown=False)
+
+
+def test_probe_fail_closed_when_platform_unavailable(monkeypatch):
+    from wqb import correlation_slot as cs
+    monkeypatch.setenv("WQB_CORR_UNAVAILABLE_STREAK", "1")
+    cs.note_pending_streak("ABC123")
+    brain = _FakeBrain([{"max": 0.55}])
+    mx, n = asyncio.run(_probe_prod_max(brain, "ABC123", timeout_s=2, interval_s=0.01,
+                                        log=lambda *_: None))
+    assert (mx, n) == (None, 0)
+    cs.clear_unavailable()
 
 
 # ------------------------------------------------- CLI 缺省（skills 审查 SP-17）

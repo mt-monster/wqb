@@ -18,8 +18,19 @@
 import importlib.util
 import os
 import sys
+from datetime import date, timedelta
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+
+def _fresh_as_of(days_ago: int = 3) -> str:
+    """相对今天的「新鲜」日期（2026-11-20 修正）。
+
+    旧测试写死 ``2026-10-20``，当时距 review_after_days=30 的窗口还新鲜；
+    日历走到 11-20 后该日期自然过期，两条「fresh」样本被判 stale ⇒ 测试
+    随时间推移必然变红。改为相对日期，使守卫只验证分流逻辑、不绑具体日历。
+    """
+    return (date.today() - timedelta(days=days_ago)).isoformat()
 
 
 def _load():
@@ -45,10 +56,10 @@ def test_dead_list_splits_live_and_stale(tmp_path):
 {
   "region": "TESTREG", "as_of": "2026-10-01", "review_after_days": 30,
   "datasets": [
-    {"dataset": "fresh_ds", "verdict": "prod_sealed", "reason": "prod 0.99", "as_of": "2026-10-20"},
+    {"dataset": "fresh_ds", "verdict": "prod_sealed", "reason": "prod 0.99", "as_of": "__FRESH__"},
     {"dataset": "old_ds", "verdict": "signal_short", "reason": "S 0.3", "as_of": "2026-01-01"}
   ]
-}""")
+}""".replace("__FRESH__", _fresh_as_of()))
     res = ci._load_region_dead_list("TESTREG", root=str(tmp_path))
     assert set(res["live"]) == {"fresh_ds"}
     assert set(res["stale"]) == {"old_ds"}
@@ -100,10 +111,10 @@ def test_mechanism_map_stale_entries_not_live(tmp_path):
 {
   "as_of": "2026-01-01", "review_after_days": 30,
   "datasets": [
-    {"dataset": "classic_ds", "mechanism": "PEAD", "classic_anomaly": true, "as_of": "2026-10-20"},
+    {"dataset": "classic_ds", "mechanism": "PEAD", "classic_anomaly": true, "as_of": "__FRESH__"},
     {"dataset": "old_mech", "mechanism": "x", "classic_anomaly": true, "as_of": "2026-01-01"}
   ]
-}""")
+}""".replace("__FRESH__", _fresh_as_of()))
     res = ci._load_region_mechanisms("TESTREG", root=str(tmp_path))
     assert set(res["live"]) == {"classic_ds"}
     assert set(res["stale"]) == {"old_mech"}

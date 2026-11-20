@@ -92,7 +92,7 @@
 | `legacy/gate.py` | **遗留归档**：通用提交前闸门（5 闸 + 批级多样性）。**权威实现是 skill toolkit 的 `gate.py`**；本文件代码零引用（`wave_gate.py` 走 `_TOOLKIT_CANDIDATES` 加载 toolkit 版），2026-09-20 归档至 `tools/legacy/` | — |
 | `legacy/backfill_backtest_dataset.py` | **一次性回填已跑完**（`backtest_results.dataset` 只填空），2026-09-28 按 §6.4 归档至 `tools/legacy/`（三维引用全 0） | — |
 | `forum_recon.py` | **问题驱动论坛只读检索（recon，2026-09-28）**：单问题 → 有效文章 → 入库（`KB/community_tpl_kb.forum_recon_entries` 或 ledger `forum_recon_<qkey>`；无解落 `forum_recon_negative_*` 作「论坛无解」判死证据）。额度以查出有效文章为标准（自适应扩关键词，命中即收束）；同问题 7 天缓存；**传输层走 `tools/lib/forum_mcp.py`（MCP 唯一入口，2026-11-18 用户裁定，见 `docs/reference/forum_and_doc_tools_guide.md`）**；`--dry-run` 零副作用；退出码 0=有货 / 2=**可靠的**无解 / 1=**工具故障**（故障落 `forum_recon_error_*`、不入缓存，**故障 ≠ 无解**，2026-09-29 事故后落地；共享契约 `src/wqb/recon_evidence.py`） | 手写论坛抓取、每次现搜不落库 |
-| `lib/forum_mcp.py` | **论坛访问唯一实现（2026-11-18，库非 CLI）**：只经 `wq-brain-http` 的 5 个 MCP 工具（search_forum_posts / read_forum_post / get_glossary_terms / get_documentations / get_documentation_page）；含文档两步绕行 `discover_post_ids_via_doc`、`post_id_from_link`。传输复用 `mcp_http_caller.McpHttpClient`（已兼容 stateless 服务）。机械闸 `tests/unit/08_forum_recon/test_forum_single_way_gate.py` | requests 抓取 / 直连 Zendesk API / WebSearch 当论坛通道（旧 `forum_research.py` 已删除） |
+| `lib/forum_mcp.py` | **论坛访问唯一实现（2026-11-18，库非 CLI；11-20 旧 Playwright 搜索退役）**：只经 `wq-brain-http` 的 6 个 MCP 工具（search_forum_posts_local / get_forum_posts / read_forum_post / get_glossary_terms / get_documentations / get_documentation_page）；含文档两步绕行 `discover_post_ids_via_doc`、`post_id_from_link`。传输复用 `mcp_http_caller.McpHttpClient`（已兼容 stateless 服务）。机械闸 `tests/unit/08_forum_recon/test_forum_single_way_gate.py` | requests 抓取 / 直连 Zendesk API / WebSearch 当论坛通道（旧 `forum_research.py` 已删除） |
 | `forum_recon_wave.py` | **波级默认取证（2026-09-30）**：收批时对本波共同卡住的墙（全灭时为「有无解法」）问一次论坛——本波回测结果机械派生决策问题（`src/wqb/recon_wave.py`），交 `forum_recon.recon()` 执行，落 ledger + 完成标记 `forum_recon_wave_<wave>`；每波 ≤ 1 次（可靠结局占额度，故障不占）；`--force` 重跑、`--dry-run` 只读库零网络零写库；退出码同 `forum_recon`；节点 `forum_recon_wave`、`pipeline.py --forum-recon`（`batch_track` 缺省带上） | 卡墙时靠 Agent 记性想起去查论坛 |
 | `shape_quota_check.py` | **模板形状配额机检（2026-09-30）**：一波候选须覆盖 ≥ 3 个形状族、`trade_when` 占比 ≤ 40%（步 4 §4.5.1）；只读、`--verbose` 逐条列族、`--json`；退出码 0=达标或候选不足 3 条 / 1=不达标 / 2=无法检查；不入闸链（闸 6 才是批级多样性权威）。分类规则见 `src/wqb/shape_quota.py` | 人工数一遍算子形状 |
 | `l1_backfill_validate.py` | **补测批字段名校验（本地，零平台调用）**：读 `cache/_l1_backfill.json`（`[{"ds","tpl","e"}]`），从表达式反提字段名并与本地库 `fields`（EUR）比对，滤掉不存在的名字，避免 `unknown variable` 连坐整批 CANCELLED。上游 `gem_pilot_sample.py` 产物，下游 `submit_batch.py --path` | 手数批内字段名 |
@@ -115,8 +115,9 @@
 |---|---|---|
 | `mcp_7slot_batch.py` | 七槽并发回测（MCP 驱动，`--alpha-json` + `--settings-json` + `--output-csv`）。★ 2026-09-17 修正：此前本表写 `mcp_5slot_batch.py`，**该文件并不存在** | — |
 | `batch_status.py` | 批次/子任务状态查询与 `--watch` 轮询（multisim 或单条） | `tracking/_scratch/check_*batch*.py`、`track_mea_super_resume.py` 轮询段 |
-| `harvest_multisim.py` | multisim 收批：拉 children → 拉 alpha 详情 → 关联 expressions → 可选 upsert backtest_rows | `tracking/*/scripts/poll_wave*.py`、手写收批脚本 |
+| `harvest_multisim.py` | multisim 收批：拉 children → 拉 alpha 详情 → 关联 expressions → 可选 upsert backtest_rows。★**`--auto-upsert` 必须同时给 `--wave` 与 `--region`**（2026-11-20 修：原先缺 `--wave` 会**静默跳过整段写库**，只打印读数看似收批成功、实则一行未入库；实测 pv20/earningscall 两役 80+ 臂因此丢失，现改为显式报错中止） | `tracking/*/scripts/poll_wave*.py`、手写收批脚本 |
 | `submit_batch.py` | 批量**派发仿真**（`POST /simulations`；`--spec` 支持逐批不同设置）。⚠ 不是把 alpha 提交上平台——那是不可逆的 `workflow_submit_alpha(confirm_submit=True)` | 31 个 `_submit_*.py` |
+| `batch_isolate.py` | **批次连坐后的坏臂定位与好臂重投**（2026-11-20 新增，针对形态 A：父 multisim 状态 ERROR、出错条 ERROR、**其余全部 CANCELLED** ⇒ 整批槽位净损失）。用 `--expr-file` 复原派发顺序，二分重投递归定位坏臂，**只重投好臂**（坏臂写 `--out` 报告）。默认 `--plan-only` 只出计划；实际派发受通道闸约束（`WQB_ALLOW_CLI_DISPATCH=1`），正常路径是「本工具出计划 + MCP `create_multi_simulation` 派发」。⚠ 平台口径：`GET /simulations/{id}` 的 `children` 是**子任务相对路径**，须逐个再 GET 才拿得到 status | 手写二分重投脚本 |
 | `campaign_report.py` | **全量流水线增量汇报器**：唯一事实源 `results/campaign_digest.md`（每跑完一个集追加一行），已汇报游标存 `cache/campaign_report_state.json`，只打印新增；`--wait-secs N` 空转最多等 N 秒（轮询 15s）便于「跑完一个就报」；`--reset` 重置游标。★ **无 argparse：传任何参数都会直接开跑**（含 `--help`），别拿它当普通 CLI 试探 | 手工翻 `campaign_digest.md` 数进度 |
 | `reset_low_cov_skips.py` | **把 `SKIPPED_LOW_COV` 的集从 checkpoint / 结果里摘除，使它们重新入队**：覆盖率门槛 0.8→0.6 后，原先被判低覆盖的 32 个集仍在 checkpoint `done` 里，续跑会直接跳过。只动 `verdict==SKIPPED_LOW_COV`；`SKIPPED_TOO_FEW_FIELDS` / `DEAD` / `ALIVE` 一律不碰；默认 `--dry-run` | 手改 `results/full_template_campaign_checkpoint.json` |
 
@@ -339,6 +340,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `kor_ledger_write.py` | KOR 台账写入（wqb-db MCP 未连接时的降级写库）。 | 无参直跑 |
 | `gates/operator_coverage_audit.py` | 算子覆盖审计（**用算子必须考虑所有可能情况的机械化闸**，2026-10-09）：`--checklist` 打印 REGULAR 全量算子清单+「何时用」提示（设计前必看）；`--glob/--expr-file/--wave` 审计已用覆盖率并列出从未用过的算子，`--min-coverage` 低于阈值 exit 1 ⇒ **覆盖率不足不得宣称「方向穷尽」**。 | 需参数 |
 | `operator_diversity_analyzer.py` | 算子多样性分析器. | 需参数 |
+| `operator_swap_matrix.py` | **按需工具**（用户 2026-11-20 裁定不做默认硬闸）：输入基线表达式 + 要替换的算子名，按平台 catalog 的 category 做**同类别全替换**（如 `ts_rank`→全部单参 Time Series 算子），按 §17「rank 壳内聚合互换是 no-op」骨架签名去重，输出可直接喂 `create_multi_simulation` 的表达式 JSON + Δ对比模板。**arity 双校验**：①方法白名单按调用形状分组（窗口/无窗/命名参）；②平台 `definition` 精确判定必填参数个数（2026-11-20 修 `group_mean(x,weight,group)`/`group_backfill(x,group,d,std=4)` 被误当 2 参生成不可派发表达式）。`--nth N` 只替换同名算子第 N 处（逐层替换必须，否则多层同算子被一起改）。 | `--expr/--op --out`，`--list`，`--nth N` |
 | `pipeline_integration.py` | （无模块 docstring） | 需参数 |
 | `populate_external_fields.py` | 灌 external_fields 表。 | 需参数 |
 | `pre_backtest_filter.py` | 回测前快筛闭环（self/PPAC + 关键闸）。 | 需参数 |
@@ -449,7 +451,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `concept_overlap.py` | concept_overlap.py — 概念重叠检查（skills 审查 EX-01 / EX-10）。 | `Claude/skills/CHANGELOG.md` |
 | `db/db_lock_audit.py` | db_lock_audit.py - wqb.db 写锁探针（2026-09-20 L2；2026-10-14 主题下沉进 `db/`）。 | `tests/unit/01_store_db/test_db_write_guards.py` |
 | `db/datasets_phantom_repair.py` | **datasets 表伪数据集行修复器**（2026-11-06）：`_ensure_dataset` 曾按任意字符串现建行 ⇒ 82 行塔位组合标签 / 表达式描述 / region 名混进表里，污染任何按 `datasets` 表的统计。缺省 dry-run 出报告（exit 1 = 有脏行）；`--apply` = 写锁 + SQLite backup API 一致性备份（不用 `copy2`，会撕 WAL）→ 归档到 `datasets_phantom_archive` → 外键（`PRAGMA foreign_key_list` 动态发现）重指向本区 `_unknown` 哨兵 → 删活表行 → 洗白 `expressions.dataset`（`--keep-expression-dataset` 关）。**只认形状**，id 形假名走 `gates/category_coverage_audit.py --show-extra-local` | `tests/unit/01_store_db/test_datasets_phantom_repair.py` |
-| `diag_forum_read.py` | 论坛 **MCP** 读帖链路最小诊断（只读、零回测配额；2026-11-18 改 MCP 唯一入口）：MCP 客户端构造 → search_forum_posts → 从 link 提取 post_id → 逐帖 read_forum_post。search 超时/0 结果报故障（非「论坛无解」）。 | `Claude/skills/brain-alpha-research/SKILL.md` |
+| `diag_forum_read.py` | 论坛 **MCP** 读帖链路最小诊断（只读、零回测配额；2026-11-18 改 MCP 唯一入口）：MCP 客户端构造 → search_forum_posts_local → 从 `results[].id`/`url` 取 post_id → 逐帖 read_forum_post。检索失败报故障（非「论坛无解」）。 | `Claude/skills/brain-alpha-research/SKILL.md` |
 | `discover_datasets.py` | discover_datasets.py - 数据集发现（灌 datasets 表）。 | `Claude/skills/INDEX.md` |
 | `dryrun_multidim.py` | dryrun_multidim.py — 多维骨架标签 dry-run 验证脚本 | `docs/reference/multidim_production_deployment.md` |
 | `dynamic_recipe_weighter.py` | dynamic_recipe_weighter.py - 成功配方动态权重. | `docs/design/skills_review_decisions.md` |

@@ -106,20 +106,14 @@ def test_neutralization_search_order_return_valid_names():
 # get_operator_family
 # ---------------------------------------------------------------------------
 
-def test_get_operator_family_ts_rank():
-    assert get_operator_family("ts_rank") == "TS_RANK"
-
-
-def test_get_operator_family_group_neutralize():
-    assert get_operator_family("group_neutralize") == "GROUP"
-
-
-def test_get_operator_family_math_abs():
-    assert get_operator_family("abs") == "MATH"
-
-
-def test_get_operator_family_unknown():
-    assert get_operator_family("nonexistent_op") == "NONE"
+@pytest.mark.parametrize("op,expected", [
+    ("ts_rank", "TS_RANK"),
+    ("group_neutralize", "GROUP"),
+    ("abs", "MATH"),
+    ("nonexistent_op", "NONE"),
+])
+def test_get_operator_family(op, expected):
+    assert get_operator_family(op) == expected
 
 
 def test_all_op_families_are_nonempty():
@@ -136,12 +130,9 @@ def test_ghost_operators_is_nonempty_set():
     assert len(GHOST_OPERATORS) >= 15  # 17 known ghosts
 
 
-def test_ghost_operators_contains_ts_entropy():
-    assert "ts_entropy" in GHOST_OPERATORS
-
-
-def test_ghost_operators_contains_group_normalize():
-    assert "group_normalize" in GHOST_OPERATORS
+@pytest.mark.parametrize("op", ["ts_entropy", "group_normalize", "neutralize"])
+def test_ghost_operators_contains(op):
+    assert op in GHOST_OPERATORS
 
 
 # ---------------------------------------------------------------------------
@@ -163,20 +154,14 @@ def test_verified_safe_contains_ts_kurtosis():
 # is_news_dataset
 # ---------------------------------------------------------------------------
 
-def test_is_news_dataset_by_prefix():
-    assert is_news_dataset("news12") is True
-
-
-def test_is_news_dataset_by_category():
-    assert is_news_dataset("fnd5", category="news") is True
-
-
-def test_is_news_dataset_false():
-    assert is_news_dataset("fundamental44", category="fundamental") is False
-
-
-def test_is_news_dataset_prefix_snt():
-    assert is_news_dataset("snt21") is True
+@pytest.mark.parametrize("name,category,expected", [
+    ("news12", None, True),
+    ("fnd5", "news", True),
+    ("fundamental44", "fundamental", False),
+    ("snt21", None, True),
+])
+def test_is_news_dataset(name, category, expected):
+    assert is_news_dataset(name, category=category) is expected
 
 
 # ---------------------------------------------------------------------------
@@ -228,12 +213,12 @@ def test_compute_webdata_failed_counts_details():
 # default_universe / default_delay / get_categories
 # ---------------------------------------------------------------------------
 
-def test_default_universe_usa():
-    assert default_universe("USA") == "TOP3000"
-
-
-def test_default_universe_china():
-    assert default_universe("CHN") == "TOP2000U"
+@pytest.mark.parametrize("region,expected", [
+    ("USA", "TOP3000"),
+    ("CHN", "TOP2000U"),
+])
+def test_default_universe(region, expected):
+    assert default_universe(region) == expected
 
 
 def test_default_universe_unknown_raises():
@@ -337,10 +322,6 @@ def test_country_scope_covers_every_region_and_neutralization_best_is_gone():
     assert set(REGION_COUNTRY_SCOPE) == set(REGIONS)
     assert set(REGION_COUNTRY_SCOPE.values()) <= {"single", "multi"}
     assert C.is_multi_country("eur") and not C.is_multi_country("DEU") and not C.is_multi_country("GBR")
-
-
-def test_ghost_operators_contains_neutralize():
-    assert "neutralize" in GHOST_OPERATORS  # 平台无此表达式算子 (catalog 权威)
 
 
 @pytest.mark.needs_operators_verified

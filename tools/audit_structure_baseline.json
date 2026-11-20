@@ -147,7 +147,6 @@
     "forum_cache_builder.py",
     "forum_recon.py",
     "forum_recon_wave.py",
-    "forum_research.py",
     "full_coverage_gate.py",
     "full_template_campaign.py",
     "gate_attribution.py",

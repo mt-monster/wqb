@@ -332,7 +332,7 @@ _DRY_RUN_CASES = {
     # 纯本地 DB 读写，dry-run 零副作用安全。
     "modeb_improve": {"region": "KOR", "dataset": "_test", "base_field": "_test"},
     # 2026-09-18 新增：alpha_booster 节点（Phase 4）通用 Alpha 短板提升。
-    # 纯本地 DB 读写，dry-run 零副作用安全（forum_refresh 在干跑下不发起网络请求）。
+    # 纯本地 DB 读写，dry-run 零副作用安全（论坛检索已移出本节点，统一到 forum_recon）。
     "alpha_booster": {"region": "KOR", "wave": "_test"},
 }
 

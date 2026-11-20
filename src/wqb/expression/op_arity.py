@@ -116,6 +116,22 @@ _INFIX_BINARY_OPS = {
 #: ``kth_element(x, d, k=5)`` 正常。新增条目必须先有平台实测原文。
 _MUST_BE_NAMED = {"kth_element": ("k",)}
 
+#: 平台侧**必填**、但 catalog 的 ``definition`` 显示带默认值的命名参数。
+#:
+#: 2026-11-20 补（原始记录见 docs/experience/02_signal_patterns.md §结论 32）：
+#: ``ts_target_tvr_decay`` / ``ts_target_tvr_hump`` 的 catalog 签名写作
+#: ``(x, lambda_min=0, lambda_max=1, target_tvr=0.1)``，但**平台侧 target_tvr 是必填**——
+#: 写 ``ts_target_tvr_hump(x, 1.0)`` 会把 ``lambda_min`` 置 1、``target_tvr`` 留空 ⇒
+#: 平台报 ``Required attribute "target_tvr" must have a value.`` **并连坐整批 CANCELLED**
+#: （实测 4 条：1 条报错、2 条 CANCELLED、1 条 404）。
+#:
+#: ⇒ catalog 的默认值标注**不能**当「平台可省略」；本表登记「名义有默认、实为必填」的参数。
+#: 新增条目必须先有平台实测原文（同 _MUST_BE_NAMED 的纪律）。
+_REQUIRED_NAMED_ARGS: Dict[str, Tuple[str, ...]] = {
+    "ts_target_tvr_decay": ("target_tvr",),
+    "ts_target_tvr_hump": ("target_tvr",),
+}
+
 
 class ArityError(ValueError):
     """算子元数 / 命名参数违规。"""
@@ -526,6 +542,20 @@ def check_expression(expr: str,
                     f"[KWARG] {site.name} 的 {param} 必须命名传参"
                     f"（写成位置形式平台会回 Required attribute \"{param}\" "
                     f"must have a value，并连坐 CANCELLED 整批）；"
+                    f"应写作 {param}=...　签名: {sig.definition}")
+        # 3b) 平台必填（catalog 名义有默认）的命名参数缺省 → 平台报
+        #     "Required attribute ... must have a value" 并连坐整批 CANCELLED。
+        for param in _REQUIRED_NAMED_ARGS.get(site.name, ()):
+            supplied_by_name = any(key == param for key, _ in site.named)
+            supplied_positional = (
+                param in sig.positional
+                and n_pos > sig.positional.index(param)
+            )
+            if not (supplied_by_name or supplied_positional):
+                errors.append(
+                    f"[KWARG] {site.name} 的 {param} 在平台侧**必填**（catalog 的默认值标注"
+                    f"不代表可省略）：缺它平台会回 Required attribute \"{param}\" "
+                    f"must have a value.，并连坐 CANCELLED 整批；"
                     f"应写作 {param}=...　签名: {sig.definition}")
         seen = set()
         for key, _value in site.named:

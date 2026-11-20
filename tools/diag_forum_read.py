@@ -5,8 +5,8 @@
 查论坛唯一方式 = `docs/reference/forum_and_doc_tools_guide.md` 的 `wq-brain-http` MCP 工具
 （单一实现 `tools/lib/forum_mcp.py`）。本诊断分步打印每一跳，定位「搜到 N 条但读帖全失败」的根因：
   1) MCP 客户端构造（.mcp.json 解析 / 服务可达）
-  2) search_forum_posts（control probe）
-  3) 从 results[].link 提取 post_id
+  2) search_forum_posts_local（control probe；旧 Playwright search 已于 2026-11-20 退役）
+  3) 从 results[].id / url 取 post_id
   4) 逐帖 read_forum_post（含 success / error / body 片段）
 
 ⚠ search 超时/失败是**工具故障**（guide §2.2 传输层错配），不是「论坛无解」；本诊断只报状态，不落负结果。
@@ -51,7 +51,7 @@ def main() -> int:
 
     # 2) 搜索（control probe）
     try:
-        res = FM.search_posts(cli, args.query, max_results=max(args.probe_n, 5))
+        res = FM.search_posts_local(cli, [args.query], limit=max(args.probe_n, 5), max_pages=8)
     except Exception as e:
         print(f"[2] search FAILED: {type(e).__name__}: {e}", file=sys.stderr)
         return 4
@@ -65,7 +65,7 @@ def main() -> int:
         print("[diag] 对照检索 0 结果 —— 检索通道失效（会话/被拦/服务不可达）", file=sys.stderr)
         return 4
     for h in hits[:5]:
-        print(f"      hit: id={FM.post_id_from_link(h.get('link'))} title={str(h.get('title'))[:40]}")
+        print(f"      hit: id={h.get('id') or FM.post_id_from_link(h.get('url'))} title={str(h.get('title'))[:40]}")
 
     # 3)+4) 逐帖 read_forum_post
     ok = 0

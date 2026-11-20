@@ -84,11 +84,25 @@ def test_audit_flags_hooks_scripts_symlinks_and_risky_patterns(ps, tmp_path):
     # 创建符号链接需管理员权限，原写法会让整个审计器测试模块报 error 而非失败。
     # 符号链接识别是本审计器的安全能力，不能默默放弃覆盖——故优先尝试建链接，
     # 实在建不了才显式 skip 并说明原因。
+    symlink_made = True
     try:
         (linked / "sneaky").symlink_to("/etc/hostname")
-    except (OSError, NotImplementedError) as e:
-        pytest.skip(f"当前环境无法创建符号链接（Windows 需开发者模式/管理员）: {e}")
-    assert ps.audit_skill_folder(str(linked))["risk"] == "high"
+    except (OSError, NotImplementedError):
+        symlink_made = False
+    if not symlink_made:
+        # Windows 无 SeCreateSymbolicLinkPrivilege 时 junction 不需管理员权限；
+        # 审计器已识别 reparse point，用它保持链接检测覆盖而非 skip。
+        import subprocess
+        target = linked.parent / "junction_target"
+        target.mkdir(exist_ok=True)
+        r = subprocess.run(["cmd", "/c", "mklink", "/J",
+                            str(linked / "sneaky"), str(target)],
+                           capture_output=True)
+        if r.returncode != 0:
+            pytest.skip("当前环境既无法建符号链接也无法建 junction")
+    report = ps.audit_skill_folder(str(linked))
+    assert "sneaky" in report["symlinks"], "链接未被审计器识别"
+    assert report["risk"] == "high"
 
 
 def test_overwrite_moves_the_old_folder_aside_instead_of_deleting_it(ps, tmp_path):

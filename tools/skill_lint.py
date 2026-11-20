@@ -667,6 +667,9 @@ def _const_patterns() -> Dict[str, "re.Pattern[str]"]:
         "sharpe-is-d1": re.compile(rf"(?i)sharpe{head}{gt}{num(pl['low_sharpe_min']['delay1'])}(?![\d.])"),
         "fitness": re.compile(rf"(?i)fitness{head}{gt}{num(gi['fitness_min'])}(?![\d.])"),
         "prod-corr": re.compile(rf"(?i)prod{head}?[^\n|]{{0,8}}{lt}{num(gp['prod_corr_max'])}(?![\d.])"),
+        # 内部 prod 严线：仅在明确写作「prod_corr_max/prod 内部线 < 0.65」时命中，
+        # 避免误伤历史文档里作为实测数值出现的 < 0.65（如 USA intraday field profile 批次 23）。
+        "prod-corr-internal": re.compile(rf"(?i)(?:prod[_\s-]?corr[_\s-]?max|内部\s*prod|prod\s*内部线){head}{lt}{num(gi['prod_corr_max'])}(?![\d.])"),
         "self-corr-platform": re.compile(rf"(?i)self{head}?[^\n|]{{0,8}}{lt}{num(gp['self_corr_max'])}(?![\d.])"),
         "self-corr-internal": re.compile(rf"(?i)self{head}?[^\n|]{{0,8}}{lt}{num(gi['self_corr_max'])}(?![\d.])"),
         "margin": re.compile(rf"(?i)margin{head}{gt}{num(gi['margin_bp_min'])}\s*bp"),

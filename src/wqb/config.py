@@ -303,7 +303,17 @@ def _load_operators_state() -> dict:
         with open(_OPERATORS_STATE_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     except (OSError, json.JSONDecodeError):
-        return {}
+        # 干净克隆下 data/operators_verified.json 被 gitignore 排除。回退到被追踪的
+        # 平台目录快照 docs/reference/operators_catalog.json（get_operators 权威快照，
+        # 103 个算子），否则 VERIFIED_SAFE_OPERATORS 为空 → op_arity/gate 守卫形同虚设。
+        # 已验证 KNOWN_GHOST_SEED 与 catalog 零交集，差集不会清空幽灵黑名单。
+        try:
+            with open(REPO_ROOT / "docs" / "reference" / "operators_catalog.json",
+                      "r", encoding="utf-8") as f:
+                catalog = json.load(f)
+            return {"verified": [r["name"] for r in catalog["results"]]}
+        except (OSError, json.JSONDecodeError, KeyError, TypeError):
+            return {}
 
 
 _STATE = _load_operators_state()
@@ -519,6 +529,9 @@ GATES_INTERNAL: Dict[str, object] = {
     "margin_bp_min": 10.0,
     "returns_min": 0.05,
     "self_corr_max": 0.50,
+    # 2026-11-16 用户指令：prod 内部严线 0.65（平台硬线仍 0.70，见 PRODCORR_CEILING）。
+    # 留 0.05 缓冲，挡住「提交时贴线过、48h 后池漂移翻闸」的件（实证 78LpqZYQ 0.697）。
+    "prod_corr_max": 0.65,
 }
 
 #: 平台各检查的**官方线**（how-to-pass 参考文档；Delay-1 / Delay-0），按检查名分开登记

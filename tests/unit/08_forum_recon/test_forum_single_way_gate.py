@@ -22,11 +22,15 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "tools"))
 
 GUIDE_TOOLS = {
-    "search_forum_posts",
     "read_forum_post",
     "get_glossary_terms",
     "get_documentations",
     "get_documentation_page",
+    # 2026-11-19：确定性检索通道（Zendesk 列表端点 + 本地过滤）。
+    # 2026-11-20：旧 Playwright `search_forum_posts` 已整体退役（「0 结果」是 Cloudflare
+    # 挑战页造成的假信号），下面两个是唯一「查得到」的通道，缺一个查论坛就会退回抓取路径。
+    "get_forum_posts",
+    "search_forum_posts_local",
 }
 
 #: 唯一允许的「requests + 论坛」模块（写方向）。
@@ -139,3 +143,28 @@ def test_forum_write_exception_is_documented_in_guide():
             f"{rel} 是登记在册的 requests 论坛例外，但 guide "
             "（docs/reference/forum_and_doc_tools_guide.md）没有写明它——"
             "请在 guide 里补一句：发帖方向为何仍走它、何时退役。")
+
+
+def test_retired_playwright_search_is_not_reintroduced():
+    """2026-11-20 用户裁定：`search_forum_posts`（Playwright 抓 Cloudflare 页）整体退役。
+
+    它的「success=True + 0 结果」是假信号（挑战页与真无结果无法区分），留着就会被
+    误读成「论坛没有这个内容」。本闸防止它被悄悄加回：白名单 / MCP 工具注册 /
+    client 方法三处都不得再出现该名字（`*_local` 不算）。
+    """
+    from lib import forum_mcp as FM
+
+    assert "search_forum_posts" not in FM.ALLOWED_TOOLS, "退役工具仍在白名单里"
+    assert not hasattr(FM, "search_posts"), "forum_mcp.search_posts 是已退役的 Playwright 搜索封装"
+
+    mcp_dir = REPO_ROOT / "world-quant-brain-mcp"
+    offenders = []
+    for name in ("tools_forum.py", "brain_mixin_spcread.py", "forum_functions.py"):
+        src = (mcp_dir / name).read_text(encoding="utf-8")
+        for node in ast.walk(ast.parse(src)):
+            if (isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                    and node.name == "search_forum_posts"):
+                offenders.append(f"{name}:{node.name}(L{node.lineno})")
+    assert not offenders, (
+        f"已退役的 Playwright 论坛搜索被重新加回：{offenders}；"
+        "检索请改用 search_forum_posts_local（Zendesk 列表端点 + 本地过滤）。")

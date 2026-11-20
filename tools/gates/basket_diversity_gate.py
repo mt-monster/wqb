@@ -28,13 +28,11 @@ import json
 import sys
 from pathlib import Path
 
-try:
-    from wqb import config as wqb_config
-    from wqb.paths import find_repo_root
-except ImportError:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
-    from wqb import config as wqb_config
-    from wqb.paths import find_repo_root
+# 子进程调用时 sys.path[0] 是本脚本目录，会误 import 到 site-packages 的残缺 wqb。
+# 无条件优先工作区 src；仓库外运行时该路径不存在，自动降级到安装版。
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+from wqb import config as wqb_config
+from wqb.paths import find_repo_root
 
 ROOT = find_repo_root()
 

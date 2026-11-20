@@ -111,6 +111,12 @@ logs/_tmp_*
 # 同上：MCP 包内一次性探针脚本（wave 检查/指标/字段抓取等，用完即弃）
 world-quant-brain-mcp/_tmp_*.py
 
+# 一次性查询/扫描的中间产物（2026-11-20：整理提交时确认不入库）
+# output_report/.tmp: q.json / qp_batch*.json 等临时查询结果
+output_report/.tmp/
+# sa_scan_*: SA 扫描中间 json（res_ind_*.json 等），根级目录
+sa_scan_*/
+
 # SuperAlpha API result dumps (runtime artifacts, never commit)
 world-quant-brain-mcp/super_alpha_result_*.json
 

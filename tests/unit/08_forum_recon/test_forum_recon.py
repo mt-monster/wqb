@@ -421,13 +421,14 @@ def test_live_session_unreachable_mcp_is_a_tool_error(monkeypatch):
 
 # ---------------------------------------------------------------- 一轮检索的可靠性信号（MCP 返回形态）
 def _patch_search(monkeypatch, FM, fn):
-    monkeypatch.setattr(FM, "search_posts", fn)
+    # 2026-11-20：旧 Playwright `search_posts` 已退役，检索封装换成 search_posts_local
+    monkeypatch.setattr(FM, "search_posts_local", fn)
 
 
 def test_live_round_counts_search_failures_and_successes(monkeypatch):
     import lib.forum_mcp as FM
 
-    def _raise(cli, q, max_results=50):
+    def _raise(cli, keywords, limit=5, max_pages=8):
         raise RuntimeError("boom")
     _patch_search(monkeypatch, FM, _raise)
     st = {}
@@ -435,17 +436,18 @@ def test_live_round_counts_search_failures_and_successes(monkeypatch):
     assert st["search_errors"] == 1 and st["searches_ok"] == 0
 
     # success=False（超时/故障）也计 search_errors，不是「无解」
-    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": False, "error": "timeout"})
+    _patch_search(monkeypatch, FM, lambda cli, keywords, limit=5, max_pages=8:
+                  {"success": False, "error": "timeout"})
     st_err = {}
     assert fr.live_search_round(None, FM, "q", 1, 3, set(), stats=st_err) == []
     assert st_err["search_errors"] == 1 and st_err["searches_ok"] == 0
 
-    hits = [{"link": "https://x/posts/1-a", "title": "t1"},
-            {"link": "https://x/posts/2-b", "title": "t2"},
-            {"link": "https://x/posts/3-c", "title": "t3"}]
+    hits = [{"url": "https://x/posts/1-a", "title": "t1"},
+            {"url": "https://x/posts/2-b", "title": "t2"},
+            {"url": "https://x/posts/3-c", "title": "t3"}]
     posts = {"1": {"title": "t", "body": LONG_BODY}, "2": RuntimeError("读帖炸了"), "3": None}
 
-    def _search(cli, q, max_results=50):
+    def _search(cli, keywords, limit=5, max_pages=8):
         return {"success": True, "results": hits}
 
     def _read(cli, pid, include_comments=True):
@@ -474,12 +476,12 @@ def test_post_id_extracted_from_link_not_click_redirect():
 
 
 def test_live_round_reads_by_string_post_id(monkeypatch):
-    """read_post 必须收到从 link 提取的字符串 id（回归旧版把三元组当 id 的 read_failed 事故）。"""
+    """read_post 必须收到从 url 提取的字符串 id（回归旧版把三元组当 id 的 read_failed 事故）。"""
     import lib.forum_mcp as FM
     seen = []
-    hits = [{"link": "https://support.worldquantbrain.com/community/posts/12345-x", "title": "t"}]
+    hits = [{"url": "https://support.worldquantbrain.com/community/posts/12345-x", "title": "t"}]
 
-    def _search(cli, q, max_results=50):
+    def _search(cli, keywords, limit=5, max_pages=8):
         return {"success": True, "results": hits}
 
     def _read(cli, pid, include_comments=True):
@@ -496,14 +498,17 @@ def test_live_round_reads_by_string_post_id(monkeypatch):
 
 def test_control_probe_helper(monkeypatch):
     import lib.forum_mcp as FM
-    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": True, "results": [{"link": "https://x/posts/1"}]})
+    _patch_search(monkeypatch, FM, lambda cli, keywords, limit=5, max_pages=8:
+                  {"success": True, "results": [{"url": "https://x/posts/1"}]})
     assert fr._control_probe(None, FM) is None
-    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": True, "results": []})
+    _patch_search(monkeypatch, FM, lambda cli, keywords, limit=5, max_pages=8:
+                  {"success": True, "results": []})
     assert fr._control_probe(None, FM)[0] == "control_probe_failed"
-    _patch_search(monkeypatch, FM, lambda cli, q, max_results=50: {"success": False, "error": "timeout"})
+    _patch_search(monkeypatch, FM, lambda cli, keywords, limit=5, max_pages=8:
+                  {"success": False, "error": "timeout"})
     assert fr._control_probe(None, FM)[0] == "control_probe_failed"
 
-    def _raise(cli, q, max_results=50):
+    def _raise(cli, keywords, limit=5, max_pages=8):
         raise RuntimeError("x")
     _patch_search(monkeypatch, FM, _raise)
     assert fr._control_probe(None, FM)[0] == "control_probe_failed"

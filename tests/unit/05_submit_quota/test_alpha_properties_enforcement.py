@@ -153,6 +153,7 @@ def test_ppa_tag_is_exact_member_not_substring(ap):
     assert ap.has_ppa_tag(["PowerPoolSelected_old"]) is False
     assert ap.has_ppa_tag(["my_PowerPoolSelected"]) is False
     assert ap.has_ppa_tag(["CH_REG"]) is False
+    assert ap.has_ppa_tag([]) is False
     assert ap.has_ppa_tag(None) is False
 
 

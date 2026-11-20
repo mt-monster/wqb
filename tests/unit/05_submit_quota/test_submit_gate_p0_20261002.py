@@ -109,24 +109,21 @@ def _prod(payload):
     return sa._prod_gate(_ProdClient(payload), "A1")
 
 
-def test_prod_gate_allows_below_threshold():
-    r = _prod({"all_passed": True, "checks": {"production": {
-        "max_correlation": 0.42, "passes_check": True}}})
-    assert r["allowed"] is True and r["prod_max"] == 0.42
-
-
-def test_prod_gate_blocks_at_or_above_threshold():
-    r = _prod({"all_passed": False, "checks": {"production": {
-        "max_correlation": 0.7, "passes_check": False}}})
-    assert r["allowed"] is False and r["prod_max"] == 0.7
-    assert "不得提交" in r["reason"]
-
-
-def test_prod_gate_fail_closed_when_no_data():
-    r = _prod({"all_passed": None, "status": "pending",
-               "checks": {"production": {"max_correlation": None, "status": "pending"}}})
-    assert r["allowed"] is False
-    assert "fail-closed" in r["reason"]
+@pytest.mark.parametrize("payload,allowed,prod_max,reason_sub", [
+    ({"all_passed": True, "checks": {"production": {
+        "max_correlation": 0.42, "passes_check": True}}}, True, 0.42, None),
+    ({"all_passed": False, "checks": {"production": {
+        "max_correlation": 0.7, "passes_check": False}}}, False, 0.7, "不得提交"),
+    ({"all_passed": None, "status": "pending", "checks": {"production": {
+        "max_correlation": None, "status": "pending"}}}, False, None, "fail-closed"),
+])
+def test_prod_gate_verdict(payload, allowed, prod_max, reason_sub):
+    r = _prod(payload)
+    assert r["allowed"] is allowed
+    if prod_max is not None:
+        assert r["prod_max"] == prod_max
+    if reason_sub:
+        assert reason_sub in r["reason"]
 
 
 def test_prod_gate_fail_closed_on_exception(monkeypatch):

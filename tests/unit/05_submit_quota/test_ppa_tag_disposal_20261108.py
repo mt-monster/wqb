@@ -125,9 +125,5 @@ def test_tag_disposal_never_blocks_on_read_failure():
 
 
 # ---------------------------------------------------------------- 4. 精确判定
-
-def test_has_ppa_tag_exact_membership():
-    assert ap.has_ppa_tag(["PowerPoolSelected"]) is True
-    assert ap.has_ppa_tag(["PowerPoolSelected_old"]) is False
-    assert ap.has_ppa_tag(["my_PowerPoolSelected"]) is False
-    assert ap.has_ppa_tag([]) is False
+# 已并入 test_alpha_properties_enforcement.py::test_ppa_tag_is_exact_member_not_substring
+# （同一函数 has_ppa_tag 的更全断言集，含 []/CH_REG/None 分支），此处不再重复。

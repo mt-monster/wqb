@@ -547,6 +547,13 @@ async def main():
                       f"2Y={tys_str} prod={prod_str}")
 
     # 关联 expressions 并 upsert
+    if a.auto_upsert and not (a.wave and a.region):
+        # 2026-11-20：原写法 `if a.auto_upsert and a.wave and a.region:` 在缺 --wave 时
+        # **静默跳过整段 upsert**（只打印读数、看起来收批成功，实则一行没写库）——
+        # 实测 pv20/earningscall 两役共 80+ 臂因此丢失入库。改为显式报错。
+        print("[error] --auto-upsert 需要同时提供 --wave 与 --region；"
+              "缺任一项会跳过写库（不再静默）。已中止 upsert。")
+        return 1
     if a.auto_upsert and a.wave and a.region:
         sys.path.insert(0, str(os.path.join(os.path.dirname(__file__), "..", "src")))
         from wqb.store import CampaignStore

@@ -515,8 +515,11 @@ def test_me_manual_review_skeleton_matches_what_the_tool_writes_for_a_new_file(t
 # ----------------------------------------------------------------------------- FB：forum-browse
 
 FB = SKILLS / "brain-forum-browse"
-FORUM_TOOLS = ("search_forum_posts", "read_forum_post", "get_glossary_terms", "get_messages", "get_events",
-               "get_user_alphas")
+# 2026-11-20：旧 Playwright `search_forum_posts` 已整体退役（假信号），
+# 检索通道换成 Zendesk 列表端点的 `search_forum_posts_local` / `get_forum_posts`。
+FORUM_TOOLS = ("search_forum_posts_local", "get_forum_posts", "read_forum_post", "get_glossary_terms",
+               "get_messages", "get_events", "get_user_alphas", "get_documentations",
+               "get_documentation_page")
 NONEXISTENT_WRITE_TOOLS = ("create_forum_comment", "create_forum_post", "upvote_forum_comment",
                            "get_forum_comment_votes", "delete_forum_comment", "delete_forum_vote")
 
@@ -548,8 +551,9 @@ def test_fb_documented_tools_exist_and_the_write_tools_really_do_not():
         assert name in t                                         # 文档明确列出「不存在」
     assert "delete_forum_" in t
     # 参数与缺省值逐项对照
-    assert _params(http["search_forum_posts"]) == ["search_query", "max_results"]
-    assert _default_of(http["search_forum_posts"], "max_results") == 50 and "缺省 50" in t
+    assert _params(http["search_forum_posts_local"]) == ["keywords", "limit", "max_pages"]
+    assert _default_of(http["search_forum_posts_local"], "limit") == 5 and "缺省 5" in t
+    assert "search_forum_posts" not in http, "旧 Playwright 搜索工具已退役，不得重新注册"
     assert _params(http["read_forum_post"]) == ["article_id", "include_comments"]
     assert _default_of(http["read_forum_post"], "include_comments") is True and "缺省 true" in t
     assert _params(http["get_glossary_terms"]) == []

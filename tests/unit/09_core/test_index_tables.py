@@ -60,6 +60,7 @@ def test_gate_ladder_numbers_come_from_config_and_the_old_single_hard_line_is_go
     assert f"> {C.PLATFORM_CHECK_LINES['low_2y_sharpe_min']:g}" in table
     assert f"Delay-1 > {C.PLATFORM_CHECK_LINES['low_sharpe_min']['delay1']:g}" in table
     assert f"< {C.GATES_PLATFORM['self_corr_max']:g}" in table and f"< {C.GATES_INTERNAL['self_corr_max']:g}" in table
+    assert f"< {C.GATES_PLATFORM['prod_corr_max']:g}" in table and f"< {C.GATES_INTERNAL['prod_corr_max']:g}" in table
     for const in ("PLATFORM_CHECK_LINES", "GATES_INTERNAL", "GATES_PLATFORM", "PRODCORR_CEILING"):
         assert const in table, const
     idx = _read(INDEX)
