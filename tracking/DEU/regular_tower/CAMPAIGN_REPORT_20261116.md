@@ -276,3 +276,42 @@
 | rollup 数组字面、pending vs null | §2 照录 ask 原文并说明是 ask 字段；§3.1 区分平台 pending 与本地 null |
 | 备胎表漏 wpozrXV5、标准未写 | §4.3 改为"全部 S≥1.5 非 PASS 臂（11 条）"并补 wpozrXV5（2Y 2.56）与 qM7zReZj；注明不是 ≤2 near 表 |
 | 未支撑断言：RA 全闸/全族唯一/点亮预测/PASS/族峰/trio/CW 归因/落库/1031/D1-D6/prod 0.70/分年/单数据集/effective | 逐条降级或补出处：RA 改"RA 层全过"且限本 run；"全族"改"本 run 50 臂"；点亮改条件式；PASS 引判定表；族峰补出处；trio 标 ask 给定未独立复核；CW 归因降级为假设；落库改 5/5 波 50/50 臂并保留 w3/w4 缺口；1031 补 FIELD 档行号；D1-D6 补定义/现状；prod 0.70 补 thresholds/config 行号；分年补 S0:178 并区分"近十年"；单数据集/effective 修正为 w1 5 双 + 45 单 |
+
+## §11 提交前置复核（2026-11-16 补测；只追加，不改写 v2 正文）
+
+> 触发：v2 的 §8/§9 建议「先补 `kqamAeRg` 提交前置」。本节是那次补测的**实测**结果——结论**推翻 §8/§9 的可提交假设**。
+
+### §11.1 五道闸逐条
+
+| 闸 | 结果 | 证据 |
+|---|---|---|
+| ① 台账排除 | 通过（但捞出同集另一变体的族级判死） | `rg fundamental72 docs reports Claude/skills`：`docs/design/design_s1_family_deadend.md:38` 记 `"fundamental72 is_q 水平场 zscore252 (oper_inc/EBITDA 族)" → PROD 0.7879 REJECT`——同集**不同变体**，非本形 |
+| ② RA + 塔位 | **过** | `get_alpha_details(kqamAeRg)`：`ra.failed_ra_count=0`、`checks.fail=[]`、`pyramids.list=[{DEU/D1/FUNDAMENTAL, 1.8}]`、`effective=1` |
+| ③ 近十年 | **不过（严格口径）** | `get_alpha_yearly_stats`：10 年 LC/SC 全 >0，但 **2020 年 pnl −222,603 / Sharpe −0.43 / returns −2.33%**；2018 0.68 / 2019 1.23 / 2020 −0.43。2021–2023 贡献 4,702k / 全期 8,510k（55%） |
+| ④ self-corr | **FAIL（决定性）** | 本地 self-corr：**max 0.99746 vs `akaWd90w`**（limit 0.7，严格不等式）；pool_size 20 / full_os_pool 24 |
+| ⑤ 篮内互相关 | **FAIL** | `compute_mutual_correlation`（4 条 prod-clean 候选，4y，1021 点）：max pair `kqamAeRg×3q0nqYbN` = 0.9861；四条两两 0.725–0.986 全部 >0.7；`max_mutually_below_subset` 仅 1 条 |
+
+### §11.2 决定性事实：候选是已提交件的重复
+
+| 对象 | alpha | 表达式 | decay | 状态 | 时间 |
+|---|---|---|---|---|---|
+| 本 run w4 臂9 | `kqamAeRg` | 三窗动量 + tail(0.08/0.92, 0.5) | **0** | UNSUBMITTED / IS | created `2026-11-16T03:08:44` |
+| 他槽提交件 | `akaWd90w`（名 `DEU_R_fndprofit_01`） | **逐字相同** | **2** | ACTIVE / OS | created `2026-11-16T09:18:26`，`dateSubmitted=2026-11-15T21:35:02-05:00`（本地 10:35） |
+
+- 两条 `code` 逐字一致，唯一差别是 decay（0 vs 2）⇒ self-corr 0.9975 符合预期，不是测量噪声。
+- `akaWd90w` 平台读数：S 1.61 / F 1.13 / 2Y 2.49 / self 0.3361 / **prod 0.5235**；pyramids `DEU/D1/FUNDAMENTAL ×1.8`。
+- ⇒ **`kqamAeRg` 与 w4/w5 同核族（互相关 0.74–0.99）全部不可提交**；该族在平台上已用完，同核变体必撞 self-corr。
+- 归属（**推断，非实证**）：本 run 03:08 先产出该表达式，他槽 09:18 才建同名件；是否抄自本 run 的波次档案无法从数据判定，本档只记时间序。
+
+### §11.3 塔位已变（v2 前提失效）
+
+- v2 与 S0 档记 `fundamental alphas=2 / need=1`——那是 S0 时点读数。
+- **本节实测 `get_pyramid_alphas`：DEU/D1/fundamental = 3 ⇒ 已点亮**（由 `akaWd90w` 的提交贡献）。
+- ⚠ **口径陷阱**：`tools/campaign_intel.py pyramid` 对平台响应用 **1h sqlite 缓存**（键 `pyramid_alphas:<hash>`，TTL 3600）。本次同一 turn 内它读 **2**、MCP 直读为 **3**。判「差 1 颗」这类临界结论必须用 MCP 直读或先确认缓存龄。
+
+### §11.4 对 §8/§9 的更正
+
+- §8「先冻结新开波、优先补 `kqamAeRg` 前置」——前置已补：**self-corr 0.9975 直接否决**，该候选不存在提交路径，无需再测 prod（不占账号级相关性槽）。
+- §9「若被平台计入则 fundamental 2→3」——已被他槽实际计入，塔已亮；本 run 的产出被平台同核件覆盖。
+- **下一步：转向其他未点亮塔**（sentiment 1/3 ×1.8、insiders 1/3 ×1.6、institutions 1/3 ×1.6）；**fnd72 三窗动量族不再开挖**（同核必撞 self-corr）。
+- 本 run 的可复用资产只剩：带宽内点峰证据（0.08）+ 杠杆 H（tail 壳）+ insiders 的 CW 口径问题——不涉被占用的表达式。

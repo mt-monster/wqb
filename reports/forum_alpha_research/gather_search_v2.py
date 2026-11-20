@@ -36,7 +36,9 @@ def extract_id(link):
     return mm.group(1) if mm else None
 
 async def search(sess, q):
-    res = await sess.call_tool("search_forum_posts", {"search_query": q, "max_results": 15})
+    # 2026-11-20：旧 Playwright `search_forum_posts` 已退役，改走确定性列表端点检索。
+    res = await sess.call_tool("search_forum_posts_local",
+                               {"keywords": [q], "limit": 15, "max_pages": 8})
     texts = [c.text for c in res.content if getattr(c, "type", None) == "text"]
     blob = "\n".join(texts)
     try:

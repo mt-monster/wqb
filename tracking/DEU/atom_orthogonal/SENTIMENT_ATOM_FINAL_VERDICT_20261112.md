@@ -1,5 +1,11 @@
 # ★SENTIMENT 塔 ATOM 终局：42 臂，天花板 S 0.72
 
+> ⚠ **2026-11-17 更正**：本文 §一「同塔 ATOM 前提」的表述错误——**同塔 ≠ ATOM**。
+> ATOM 的定义是「非豁免字段只来自**一个数据集**」；3 个 sentiment 数据集同属 `DEU/D1/SENTIMENT`
+> 塔，但用多个数据集仍是 `combined`。本文的 42 臂读数仍有效，但每条须按
+> `expressions.atom_flag` / `classify_atom` 复核是单集还是跨集；判 ATOM 不要用 `pyramids.effective==1`。
+> 参见 `docs/reference/atom_mining_playbook_20261117.md` 与 `AGENTS.md` §7.7。
+
 日期：2026-11-12　用户指令：「转到 sentiment 下同样去组 atom」
 
 ## 一、判据与同塔 ATOM 前提（已确认）

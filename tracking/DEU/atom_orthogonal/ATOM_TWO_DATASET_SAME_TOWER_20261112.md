@@ -1,5 +1,12 @@
 # ★insiders 双数据集 = 单塔 ATOM：判据纠正与 1.37 天花板
 
+> ⚠ **2026-11-17 更正（本文标题结论错误，勿引用「双数据集 = ATOM」）**：官方 ATOM =
+> **非豁免字段只来自一个数据集**；`insiders1` + `insider_agg_matrix` 是**两个数据集**，**不是 ATOM**。
+> 本文真正有效的部分是「同塔 / 几何 / 天花板」——平台把它们合并为同一座 `DEU/D1/INSIDERS` 塔
+> （`pyramids.list` 只有 3 座），但塔合并 ≠ 数据集合并。判 ATOM 用
+> `src/wqb/expression/atom.py::classify_atom` / `expressions.atom_flag`，**不要用 `pyramids.effective==1`**。
+> 参见 `docs/reference/atom_mining_playbook_20261117.md` 与 `AGENTS.md` §7.7。
+
 日期：2026-11-12
 用户提问：「这2个互补是不是意味着，它们可以组在一起」
 

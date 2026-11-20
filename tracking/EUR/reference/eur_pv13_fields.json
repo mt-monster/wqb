@@ -1,0 +1,667 @@
+{
+ "dataset": "pv13",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "field_count": 73,
+ "fetched_at": "2026-11-19",
+ "fields": [
+  {
+   "id": "business_partnership_category",
+   "type": "VECTOR",
+   "coverage": 0.6988,
+   "userCount": 4,
+   "alphaCount": 4,
+   "semantic": "合作类型（JV/licensing）",
+   "usability": "元数据"
+  },
+  {
+   "id": "company_competitor_entity_2",
+   "type": "VECTOR",
+   "coverage": 0.3532,
+   "userCount": 8,
+   "alphaCount": 9,
+   "semantic": "竞对实体",
+   "usability": "元数据"
+  },
+  {
+   "id": "company_customer_entity",
+   "type": "VECTOR",
+   "coverage": 0.4454,
+   "userCount": 5,
+   "alphaCount": 10,
+   "semantic": "客户实体",
+   "usability": "元数据"
+  },
+  {
+   "id": "company_partner_entity",
+   "type": "VECTOR",
+   "coverage": 0.6988,
+   "userCount": 29,
+   "alphaCount": 31,
+   "semantic": "伙伴实体",
+   "usability": "元数据"
+  },
+  {
+   "id": "company_product_tradename",
+   "type": "VECTOR",
+   "coverage": 0.9825,
+   "userCount": 5,
+   "alphaCount": 7,
+   "semantic": "产品名",
+   "usability": "元数据"
+  },
+  {
+   "id": "company_relationship_type",
+   "type": "VECTOR",
+   "coverage": 0.8277,
+   "userCount": 2,
+   "alphaCount": 2,
+   "semantic": "关系类型",
+   "usability": "元数据"
+  },
+  {
+   "id": "customer_revenue_share_percent",
+   "type": "VECTOR",
+   "coverage": 0.4454,
+   "userCount": 4,
+   "alphaCount": 5,
+   "semantic": "客户收入占比",
+   "usability": "弱信号候选"
+  },
+  {
+   "id": "pv13_1l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 58,
+   "alphaCount": 93,
+   "semantic": "RBICS L1 分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_22_800_sector",
+   "type": "GROUP",
+   "coverage": 0.3394,
+   "userCount": 15,
+   "alphaCount": 16,
+   "semantic": "top800 分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_2_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 16,
+   "semantic": "分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_2l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 309,
+   "alphaCount": 762,
+   "semantic": "RBICS L2",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_3l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 60,
+   "alphaCount": 114,
+   "semantic": "RBICS L3",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_4l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 59,
+   "alphaCount": 131,
+   "semantic": "RBICS L4",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_52_600_sector",
+   "type": "GROUP",
+   "coverage": 0.5447,
+   "userCount": 1,
+   "alphaCount": 1,
+   "semantic": "600 sector",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_52_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "semantic": "分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_5_sector",
+   "type": "GROUP",
+   "coverage": 0.5255,
+   "userCount": 36,
+   "alphaCount": 47,
+   "semantic": "分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_5l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 46,
+   "alphaCount": 101,
+   "semantic": "RBICS L5",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_6l_scibr",
+   "type": "GROUP",
+   "coverage": 0.9257,
+   "userCount": 59,
+   "alphaCount": 155,
+   "semantic": "RBICS L6",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_com_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.6898,
+   "userCount": 61,
+   "alphaCount": 83,
+   "semantic": "竞对 PageRank",
+   "usability": "弱信号候选（静态分·伪预测型）"
+  },
+  {
+   "id": "pv13_com_rk_au",
+   "type": "MATRIX",
+   "coverage": 0.6898,
+   "userCount": 40,
+   "alphaCount": 53,
+   "semantic": "竞对 HITS authority",
+   "usability": "弱信号候选（静态分）"
+  },
+  {
+   "id": "pv13_di_1l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 1,
+   "alphaCount": 2,
+   "semantic": "RBICS 数字 id",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_di_2l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 1,
+   "alphaCount": 1,
+   "semantic": "RBICS 数字 id",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_di_3l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 1,
+   "alphaCount": 1,
+   "semantic": "RBICS 数字 id",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_di_4l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 2,
+   "alphaCount": 2,
+   "semantic": "RBICS 数字 id",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_di_5l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 2,
+   "alphaCount": 3,
+   "semantic": "RBICS 数字 id",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_di_6l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 6,
+   "alphaCount": 28,
+   "semantic": "RBICS 数字 id",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_eur_revere_risc_sector_level",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 7,
+   "alphaCount": 7,
+   "semantic": "行业层级",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_eur_revere_risc_sector_parent",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 3,
+   "alphaCount": 3,
+   "semantic": "父行业",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_h_min2_sector",
+   "type": "GROUP",
+   "coverage": 0.5255,
+   "userCount": 52,
+   "alphaCount": 65,
+   "semantic": "分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_h_min52_sector",
+   "type": "GROUP",
+   "coverage": 0.5255,
+   "userCount": 35,
+   "alphaCount": 44,
+   "semantic": "分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_hierarchy_min52_600_sector",
+   "type": "GROUP",
+   "coverage": 0.2503,
+   "userCount": 7,
+   "alphaCount": 9,
+   "semantic": "分组",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_level",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 6,
+   "alphaCount": 6,
+   "semantic": "层级",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_new_1l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 3,
+   "alphaCount": 3,
+   "semantic": "RBICS",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_new_2l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 3,
+   "alphaCount": 3,
+   "semantic": "RBICS",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_new_3l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 8,
+   "alphaCount": 9,
+   "semantic": "RBICS",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_new_4l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 4,
+   "alphaCount": 4,
+   "semantic": "RBICS",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_new_5l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 8,
+   "alphaCount": 16,
+   "semantic": "RBICS",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_new_6l_scibr",
+   "type": "GROUP",
+   "coverage": 0.794,
+   "userCount": 12,
+   "alphaCount": 14,
+   "semantic": "RBICS",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_ompetitorgraphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.6898,
+   "userCount": 18,
+   "alphaCount": 20,
+   "semantic": "竞对 HITS hub",
+   "usability": "弱信号候选（静态分）"
+  },
+  {
+   "id": "pv13_parent",
+   "type": "GROUP",
+   "coverage": 0.382,
+   "userCount": 4,
+   "alphaCount": 4,
+   "semantic": "父级",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_rcsed_6l",
+   "type": "GROUP",
+   "coverage": 0.2577,
+   "userCount": 4,
+   "alphaCount": 19,
+   "semantic": "L6 描述",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_revere_city",
+   "type": "MATRIX",
+   "coverage": 0.9248,
+   "userCount": 21,
+   "alphaCount": 21,
+   "semantic": "城市码",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_revere_country",
+   "type": "MATRIX",
+   "coverage": 0.9613,
+   "userCount": 27,
+   "alphaCount": 35,
+   "semantic": "国家码",
+   "usability": "元数据（可用作轴）"
+  },
+  {
+   "id": "pv13_revere_index_cap",
+   "type": "MATRIX",
+   "coverage": 0.8639,
+   "userCount": 18,
+   "alphaCount": 19,
+   "semantic": "市值",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_revere_index_value",
+   "type": "MATRIX",
+   "coverage": 0.8643,
+   "userCount": 26,
+   "alphaCount": 32,
+   "semantic": "指数值",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_revere_key_sector_total",
+   "type": "MATRIX",
+   "coverage": 0.9393,
+   "userCount": 12,
+   "alphaCount": 16,
+   "semantic": "关键行业数",
+   "usability": "弱信号候选"
+  },
+  {
+   "id": "pv13_revere_level",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 10,
+   "alphaCount": 11,
+   "semantic": "层级",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_revere_parent",
+   "type": "MATRIX",
+   "coverage": 0.266,
+   "userCount": 13,
+   "alphaCount": 23,
+   "semantic": "父行业码",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_revere_term",
+   "type": "MATRIX",
+   "coverage": 0.4557,
+   "userCount": 12,
+   "alphaCount": 13,
+   "semantic": "终端行业标记",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_revere_term_sector_total",
+   "type": "MATRIX",
+   "coverage": 0.9393,
+   "userCount": 16,
+   "alphaCount": 34,
+   "semantic": "终端行业数",
+   "usability": "弱信号候选"
+  },
+  {
+   "id": "pv13_revere_zipcode",
+   "type": "MATRIX",
+   "coverage": 0.9195,
+   "userCount": 16,
+   "alphaCount": 20,
+   "semantic": "邮编",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_reverebasedatamap_2",
+   "type": "MATRIX",
+   "coverage": 0.9936,
+   "userCount": 26,
+   "alphaCount": 43,
+   "semantic": "映射",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_reveremap",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 8,
+   "semantic": "映射",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_term",
+   "type": "MATRIX",
+   "coverage": 0.3537,
+   "userCount": 8,
+   "alphaCount": 9,
+   "semantic": "终端标记",
+   "usability": "元数据"
+  },
+  {
+   "id": "pv13_ustomergraphrank_auth_rank",
+   "type": "MATRIX",
+   "coverage": 0.781,
+   "userCount": 13,
+   "alphaCount": 18,
+   "semantic": "客户 HITS authority",
+   "usability": "弱信号候选（静态分）"
+  },
+  {
+   "id": "pv13_ustomergraphrank_hub_rank",
+   "type": "MATRIX",
+   "coverage": 0.781,
+   "userCount": 25,
+   "alphaCount": 62,
+   "semantic": "客户 HITS hub",
+   "usability": "弱信号候选（静态分）"
+  },
+  {
+   "id": "pv13_ustomergraphrank_page_rank",
+   "type": "MATRIX",
+   "coverage": 0.781,
+   "userCount": 24,
+   "alphaCount": 36,
+   "semantic": "客户 PageRank",
+   "usability": "弱信号候选（静态分）"
+  },
+  {
+   "id": "pv13_v3_1l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 221,
+   "alphaCount": 489,
+   "semantic": "RBICS v3",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_v3_2l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 217,
+   "alphaCount": 431,
+   "semantic": "RBICS v3",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_v3_3l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 302,
+   "alphaCount": 731,
+   "semantic": "RBICS v3",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_v3_4l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 331,
+   "alphaCount": 953,
+   "semantic": "RBICS v3",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_v3_5l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 25,
+   "alphaCount": 39,
+   "semantic": "RBICS v3",
+   "usability": "分组轴"
+  },
+  {
+   "id": "pv13_v3_6l_scibr",
+   "type": "GROUP",
+   "coverage": 0.8918,
+   "userCount": 388,
+   "alphaCount": 1028,
+   "semantic": "RBICS v3",
+   "usability": "分组轴"
+  },
+  {
+   "id": "rel_num_all",
+   "type": "MATRIX",
+   "coverage": 0.6857,
+   "userCount": 25,
+   "alphaCount": 29,
+   "semantic": "关联公司总数",
+   "usability": "信号候选"
+  },
+  {
+   "id": "rel_num_comp",
+   "type": "MATRIX",
+   "coverage": 0.5418,
+   "userCount": 21,
+   "alphaCount": 23,
+   "semantic": "竞对数",
+   "usability": "信号候选"
+  },
+  {
+   "id": "rel_num_cust",
+   "type": "MATRIX",
+   "coverage": 0.277,
+   "userCount": 13,
+   "alphaCount": 18,
+   "semantic": "客户数",
+   "usability": "信号候选（cov 低）"
+  },
+  {
+   "id": "rel_num_part",
+   "type": "MATRIX",
+   "coverage": 0.5571,
+   "userCount": 18,
+   "alphaCount": 42,
+   "semantic": "伙伴数",
+   "usability": "信号候选"
+  },
+  {
+   "id": "rel_ret_all",
+   "type": "MATRIX",
+   "coverage": 0.6189,
+   "userCount": 29,
+   "alphaCount": 73,
+   "semantic": "关联方日均收益",
+   "usability": "**主信号候选**"
+  },
+  {
+   "id": "rel_ret_comp",
+   "type": "MATRIX",
+   "coverage": 0.4463,
+   "userCount": 10,
+   "alphaCount": 11,
+   "semantic": "竞对日均收益",
+   "usability": "信号候选"
+  },
+  {
+   "id": "rel_ret_cust",
+   "type": "MATRIX",
+   "coverage": 0.2502,
+   "userCount": 7,
+   "alphaCount": 10,
+   "semantic": "客户日均收益",
+   "usability": "信号候选（cov 低）"
+  },
+  {
+   "id": "rel_ret_part",
+   "type": "MATRIX",
+   "coverage": 0.4452,
+   "userCount": 6,
+   "alphaCount": 9,
+   "semantic": "伙伴日均收益",
+   "usability": "信号候选"
+  },
+  {
+   "id": "sector_attachment_overlap_count",
+   "type": "VECTOR",
+   "coverage": 0.8277,
+   "userCount": 2,
+   "alphaCount": 2,
+   "semantic": "行业重叠数",
+   "usability": "弱信号候选"
+  },
+  {
+   "id": "terminal_sector_focus_overlap_count",
+   "type": "VECTOR",
+   "coverage": 0.8277,
+   "userCount": 11,
+   "alphaCount": 13,
+   "semantic": "终端行业重叠数",
+   "usability": "弱信号候选"
+  }
+ ]
+}

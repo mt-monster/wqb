@@ -257,3 +257,29 @@ Sharpe 排除零持仓日 ⇒ 空仓年既不稀释也不触发 FAIL（见 `docs
 ⇒ **一族一席之后 prod 墙依然是主瓶颈**，收割池不是"捡钱"。
 
 **结论**：本轮扩样没有增加可交付件；清单维持 §8.1 的**首选 5 颗 + 备选 1 颗**。
+
+---
+
+## 9. 2026-11-16 增补：`e7adKz7g` 全闸通过（第 7 颗，earnings 塔第 3 颗）
+
+**构造**：`tail(group_rank(ts_mean(subtract(positive_sentiment_probability_3, negative_sentiment_probability_3), 66), subindustry), lower=0.15, upper=0.85, newval=0)`
+设置：USA/TOP3000/D1/**SUBINDUSTRY**/decay1/trunc0.08/nanON/maxTradeOFF
+
+| 闸 | 读数 | 判定 |
+|---|---|---|
+| IS FAIL / Failed RA / PPA | 0 / 0 / 0 | ✅ |
+| S / F / TO | 1.72 / 1.00 / 0.0477 | ✅（F 恰在 1.0 线） |
+| 2Y / SUB | 2.08 / 0.91（limit 0.748） | ✅ |
+| 近十年 | 10/10 双边持仓，2016 单负年（−291,450） | ⚠️ 族级 regime |
+| self / prod | **0.5496 / 0.6753** | ✅✅ |
+
+**机制**：earnings 电话会概率三元组的**净语气**（POS−NEG，66 日均值 + industry→subindustry 组内排序 +
+tail 0.15/0.85 修剪 + SUBINDUSTRY 中性化）。是 `method1/2` 聚合音调的**概率空间表示**，
+且是本会话唯一推进塔位计数的件：**提交即点亮 USA/D1/EARNINGS 塔（2→3）**。
+
+**三条可复用经验**（详见台账 §16）：
+1. **SUB 缺口的有效杠杆 = 分组轴下移**：industry→subindustry（同中性化同字段）让 SUB 0.69→0.91；
+   「提 S 抬 SUB 门槛（0.435×S）」的律意味着降 S 反而更容易过 SUB。
+2. **概率三元组净语气（POS−NEG）> 回归型聚合音调（method1/2）**：S 1.95/1.72 vs 1.79/1.67。
+3. **族级负年 regime**：三个不同字段表示在同一年（2016）全负 ⇒ 是数据性质不是单颗缺陷，
+   交付报告须按「单负年」标注而非当缺陷。

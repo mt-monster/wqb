@@ -1,14 +1,14 @@
 # other106 数据集画像（KOR / TOP600 / Delay=1）
 
-> 手工维护。数据源：**平台 `get_datafields(KOR, TOP600, D1, dataset=other106, filter_sharpe=false)` 实测 15/15 字段**（2026-10-30，权威）。
-> 塔：**OTHER**（金字塔未点亮，倍率 1.6）。category 名 = other，**用户约束 5 的禁止组腿域**（PV/MODEL/OTHER 之间不得两两组腿）⇒ 本集只能做 **ATOM**。
+> 手工维护。数据源：**平台 `get_datafields(KOR, TOP600, D1, dataset=other106, filter_sharpe=false)` 实测 15/15 字段**（2026-10-30；2026-11-20 复核仍 15/15、complete=true）。
+> ⚠ **平台口径漂移（2026-11-20 实读修正）**：`get_datasets` 现返回 **category=macro / pyramidMultiplier=1.4**（旧档案写的 OTHER/1.6 已过期；wave 190 harvest 返回的也是 `KOR/D1/MACRO ×1.4`）。⇒ 本集现属 **MACRO 塔（KOR 未点亮 0/3）**，**不再受「PV/MODEL/OTHER 禁两两组腿」约束**，可作跨类第二腿。
 
 ## 0. 元信息
 
 | 项 | 值 |
 |---|---|
 | dataset id | `other106` |
-| category | **OTHER**（塔 0 点亮，乘数 1.6） |
+| category | **MACRO**（2026-11-20 实读；塔 0/3 未点亮，乘数 **1.4**） |
 | 字段数 | **15**，**全部 VECTOR**（必须先 `vec_avg` 降维） |
 | 覆盖率 | **.4032–.4040**（全字段一致）⇒ 低于 0.4 线，**必须 `ts_backfill`** |
 | 本质 | **KOSPI 指数成分 / 公司行为调整文件**（`ospi` = OSPI = KOSPI）：变动前(`_cls`, close-side/source) vs 变动后(`_nxt`, next) 成对 |
@@ -165,3 +165,10 @@
 - 本集属 **OTHER** ⇒ **不得与 PV / MODEL / OTHER 字段组腿**（用户约束 5）；与其它 category 组腿全库 ≤5 且本集暂不动用。
 - 全 VECTOR ⇒ 每个字段必须 `vec_avg`，**禁裸字段**。
 - 覆盖率 .404 ⇒ 未 `ts_backfill` 的裸式覆盖不足，勿当成「信号弱」误判。
+
+## 9. 收口（2026-11-20，台账 ern3_other106_final / ern3_other106_socialmedia_probe）
+
+1. **平台口径漂移已修正**：category 现为 **MACRO / 倍率 1.4**（旧档案 OTHER/1.6 过期），本集不再受 PV/MODEL/OTHER 禁两两组腿约束。
+2. **剩余未测轴收口**（继承 §7.1 第 2 条）：属性差分 + 长窗 `ts_decay_linear` 平滑——`2r5AAv5P`（index_share Δ）S−0.06、`e7a55naM`（free_float Δ）S0.26，**均死**。长窗把 TO 压进甜点带（0.197/0.081）但 S 归零、CW 未解。
+3. **社会塔封闭**：other100（共搜向量 `vec_count` 探针 S0.25/CW FAIL）与 socialmedia39（标识符向量、dateCreated 2024-12、第二臂无产出）均不构成候选。
+4. **最终判定**：other106「指数供给冲击」机制在 KOR D1 **全面关闭**（wave190 主机制 + 本轴一致）；文献（USA/JPN/CAN 大市值被动买压）**在 KOR 不可迁移**（KOSPI 指数化程度低 + 散户占比高）。**十年覆盖 PASS 是本集唯一永久正面读数**。

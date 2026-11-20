@@ -13,15 +13,32 @@
 | sumAC | 极高（`ern3_pre_interval` aC=540、`all_delay_1_pre_interval` 548、`pre_reptime` 511）⇒ **拥挤度最高的一档** |
 | 性质 | **事件时点表**，不是信号表：能回答「还有几天财报 / 距离上次财报多久 / 几点发布」 |
 
-## 1. 字段分类（只有两类语义）
+## 1. 字段分类（只有两类语义）——字段全表（8/8，平台 get_datafields 2026-11-20 实读，complete=true）
+
+> 完整性闸分母：8 个真实 id 全列（无通配）；实测读数列 = 平台 coverage/alphaCount（2026-11-20）。
+
+| 字段 | type | cov | aC | 六法读数（法1 覆盖 / 频率 / 取值域 / 语义） |
+|---|---|---|---|---|
+| `ern3_next_interval` | MATRIX | .5825 | 249 | 法1 cov .5825；日更；取值 0–90 正整数（0=今日发，NaN=无排期）；时点距离 |
+| `ern3_next_reptime` | MATRIX | .5825 | 199 | 法1 cov .5825；日更；HHMM 时钟码/session code，非日期；下一财报时点 |
+| `ern3_pre_interval` | MATRIX | .7756 | 627 | 法1 cov .7756；日更；**非正整数**（0=今天，负=已过去 N 天）——符号陷阱见 §2 |
+| `ern3_pre_reptime` | MATRIX | .7756 | 543 | 法1 cov .7756；日更；HHMM 时钟码；上一财报时点 |
+| `ern3_all_delay_1_next_interval` | MATRIX | .5599 | 358 | 法1 cov .5599；日更；ASI 口径的下一财报间隔；与无前缀版同源（§8.1 判死，不另扫） |
+| `ern3_all_delay_1_next_reptime` | MATRIX | .5599 | 202 | 法1 cov .5599；日更；HHMM；ASI 口径下一财报时点 |
+| `ern3_all_delay_1_pre_interval` | MATRIX | .7232 | 600 | 法1 cov .7232；日更；非正整数；ASI 口径上次财报间隔 |
+| `ern3_all_delay_1_pre_reptime` | MATRIX | .7232 | 343 | 法1 cov .7232；HHMM；ASI 口径上次财报时点 |
+
+> 法2–法6（非零率/频率分布/取值范围/中心/分布形态）未做离线实测：本集字段全部是「日历计数/时钟码」，
+> KOR 无离线数据包，六法只能经回测 Long/Short Count 与平台元数据部分替代——
+> 已在 §8 各波以 Long/Short Count 逐年核过（2014–2023 longCount 292–354 / shortCount 287–328，无空年）。
 
 | 族 | 字段 | cov | aC | 含义 |
 |---|---|---|---|---|
 | **未来事件** | `ern3_next_interval` | .5825 | 249 | 距**下一次**财报的交易日数（正） |
-| | `ern3_next_reptime` / `all_delay_1_next_reptime` | .58/.56 | 180/180 | 下一财报的**时点**（HHMM / session code） |
+| | `ern3_next_reptime` / `ern3_all_delay_1_next_reptime` | .58/.56 | 199/202 | 下一财报的**时点**（HHMM / session code） |
 | | `ern3_all_delay_1_next_interval` | .5599 | 336 | ASI 口径的下一财报间隔 |
 | **过去事件** | `ern3_pre_interval` | .7756 | **540** | 距**上一次**财报的交易日数（**非正**） |
-| | `ern3_pre_reptime` / `all_delay_1_pre_reptime` | .78/.72 | 511/318 | 上一次财报时点 |
+| | `ern3_pre_reptime` / `ern3_all_delay_1_pre_reptime` | .78/.72 | 543/343 | 上一次财报时点 |
 | | `ern3_all_delay_1_pre_interval` | .7232 | **548** | ASI 口径的上次财报间隔 |
 
 ⚠ **两组 `_all_delay_1_*` 与不带前缀的那组是同一信息的两个口径**（ASI 全会 vs 区域），实测用户数/AC 接近 ⇒ **不可当两条腿**。
@@ -343,3 +360,152 @@ rank / zscore / ts_rank 只改权重分布，不改"单位波动换多少收益"
 
 **下一步本线的唯一合法动法**：加**正交腿**抬 R（而非抬 S）。按用户约束 5，EARNINGS 属非 PV/MODEL/OTHER 类，
 可与任意类别组腿；但混信号必须"不同机制"，不能 add A,B 加权调参 —— 见 wave 211 起的 news20 探针。
+
+---
+
+## 9. 跨区模板证据（2026-11-20 全区域检索补全，唯一档案 = earnings3_cross_region_evidence.md）
+
+> 13 个区域实测面已检索（GLB/IND/MEA/USA/DEU/EUR/GBR/HKG/ASI/JPN/CHN/TWN/AMR），完整证据、逐字表达式与
+> 读数见 **`earnings3_cross_region_evidence.md`**（同目录）。结论摘要：
+>
+> **KOR 侧此前（W186–210）只测了「水平形态」（rank/zscore/ts_rank 直接作信号）——但全库跨区证据显示
+> 日历字段的已证用法是两个「角色」，不是信号本体：**
+>
+> | 角色 | 出处 | 读数 | KOR 状态 |
+> |---|---|---|---|
+> | **对 returns 残差回归**（主信号翻案形态） | IND w250/251 | S 2.24–2.37 / F 1.73–1.92 / 2Y 2.93（SUBINDUSTRY+decay126） | **未测** |
+> | **trade_when 门控腿**（临近/远离双阈值，门强基底信号） | GLB w115/117 | S 2.78–3.21，LLM7kvYm prod 0.6066/self 0.5682 双过 | **未测**（KOR akKXKJOR 的失败是「门控对象=日历本身」，与此不同） |
+> | 水平形态（rank/zscore/ts_rank） | KOR W186–210 / MEA / DEU / GBR | 全部 ≤0.95，MEA 9 条全灭 | 已测到顶 |
+> | 组合腿 0.35–0.4 权重 | MEA w81/82/83 | S 1.69–1.92 但 prod 0.85 撞墙 + 违反混腿铁律 | 不可抄 |
+>
+> 平移要点（全表见证据档案）：残差几何下 all_delay_1 与直连同强（可吃掉 KOR 的 delay 损耗）；
+> SUBINDUSTRY-ladder 结论只对残差几何成立（跨族不外推）；USA 教训「强度由数据集决定，封顶时换角色不换骨架」。
+
+---
+
+## 10. 跨区角色实测收官（2026-11-20，两波 14 臂，台账 `ern3_xregion_residual_L1` / `ern3_xregion_gate_L2`）
+
+> 按「证据档案的三个角色」逐一在 KOR 实测收官。臂归属均经 get_alpha_details 平台 code 核对。
+
+### 10.1 L1 残差形态（10 臂，SUBINDUSTRY/decay126，operator_swap_matrix 全替）
+
+| alpha | 外层算子 | S | F | 2Y | subU | fRA | 注 |
+|---|---|---|---|---|---|---|---|
+| A1xQPnLX | rank(x)（IND 原版） | 0.43 | 0.20 | −0.15 | .14 | 4 | CW fail |
+| **O0WJZnRY** | **group_rank(sector)＝基线** | **0.51** | **0.25** | −0.01 | .14 | 4 | CW fail |
+| LLK5doGM | group_neutralize | 0.48 | 0.26 | 0.09 | .18 | 5 | CW fail |
+| LLK5dLJ2 | group_backfill(...,5;sec,10) | 0.46 | 0.24 | 0.07 | .22 | 5 | |
+| Jj8PGeQA | group_scale | 0.42 | 0.20 | −0.19 | .23 | 4 | |
+| 6XMApkNK | group_zscore | 0.55 | 0.31 | −0.22 | .21 | 4 | ★唯一 CW pass，ΔS+0.04 但 2Y 恶化 |
+| zqdrN3ro | group_std_dev | 0.25 | 0.11 | **1.29** | 0 | 6 | 2Y 最高但 S 崩+CW .339 |
+| j2aerk69 | group_mean(…,1,…) | −0.05 | −0.01 | 0.02 | −.01 | 4 | 等权聚合灾害 |
+| xAv1NZ5m | group_count | −0.06 | −0.01 | 0.34 | −.03 | 4 | 灾害 |
+| P05MO0Ep | group_sum | −0.39 | −0.24 | −0.84 | −.43 | 5 | 灾害 |
+
+**判定**：① IND 残差翻案（S2.24–2.37）在 KOR **不复现**（0.43–0.55，低于自身水平形态 0.95）——跨区不外推再实证；
+② 外层分组槽位 ΔS 全负（最高 +0.04 但 2Y 恶化）——USA「外层分组最高杠杆」结论在本族不成立；③ CW 是残差几何结构伤（8/10 fail）。
+
+### 10.2 L2 门控形态（4 臂，SLOW/decay4，门=日历、被门=KOR 强基底 E5QgnpaG 核 S1.98）
+
+| alpha | 门 | S | F | 2Y | subU |
+|---|---|---|---|---|---|
+| LLK5NM96 | 远离财报（rank(next)>0.7） | −1.27 | −0.72 | −1.15 | −1.12 |
+| e7a6b59N | 临近财报（rank(−next)>0.7） | −0.05 | −0.01 | 0.66 | −0.04 |
+| QP0Y7wwg | PEAD 窗（pre∈[−5,−2]） | −1.13 | −0.57 | −0.76 | −0.85 |
+| 58JjQZZn | reptime 门 | −0.83 | −0.49 | −0.69 | −0.59 |
+
+**判定**：门控全灭且**方向揭示了机制**——「临近门」近零、「远离门」深负 ⇒ **KOR 基底 alpha 本身就是财报临近溢价**，
+日历门把基底切成两半后远离段是纯亏损段；GLB 的成功（S3.07）依赖其基底在两段都强，KOR 基底不满足。PEAD 窗与 IND S4.49 相反——窗口本身在 KOR 无效。
+
+### 10.3 三角色收官结论
+
+| 角色 | KOR S 上界 | 出处 | 状态 |
+|---|---|---|---|
+| 水平形态 | **0.95**（omEwRJwJ，ts_backfill+group_rank） | W186–210 | 到顶（2Y 可 1.75，CW 可解） |
+| 残差形态 | 0.55（6XMApkNK） | ern3_xregion_residual_L1 | 到顶且弱于水平 |
+| 门控形态 | ≈0（e7a6b59N） | ern3_xregion_gate_L2 | 机制性死亡（KOR 无双段强基底） |
+
+**earnings3 在 KOR 的证据链闭合**：日历字段的唯一幸存用法 = **组合腿（ts_backfill 解 CW）**；跨区模板平移三连败
+（IND 残差、GLB 门控、MEA 组合腿均不可迁移），根因 = 各区成功都依赖「本区强基底/强残差对手盘」，KOR 缺这一环。
+判集死前置条件（§7.6 D1–D6）仍未齐（D1 已 13+ 条结构互异、D4 两轴、D6 两配置档齐；D2 全字段自测已含 8/8；D3 矩全家有水平/一阶差/二阶波动、比值未测）⇒ 按红线记 **PROVISIONAL 信号层封顶**，不判集死。
+
+---
+
+## 11. 单算子替换梯度破闸（2026-11-20，L1–L4 共 38 臂，台账 ern3_gradscan_L1..L4）
+
+> 用户方法论：每加一个算子就把同类别全替换回测，得 Δ 表归因后逐层推进。四层梯度把 S 从 0.51 推到 1.67（首次过 1.58 闸），但五闸互斥、不可交付。
+
+### 11.1 梯度路径（每层只动一维，由上层 Δ 表指路）
+
+| 层 | 动作 | 最优 S | 关键 Δ |
+|---|---|---|---|
+| 起点 | IND 残差配方原样（SUBINDUSTRY+decay126） | 0.51 | — |
+| L1 | ts_zscore→**ts_quantile**（16 替换唯一幸存） | 0.51 | Δ2Y **+1.25**（分布假设匹配度） |
+| L2 | →**STATISTICAL+decay4** | **1.47** | 配置平移律首次被打破（对 quantile 内核不成立） |
+| L3 | →**双窗(66+252)等权** | **1.66** | S 过闸；subU1.19 |
+| L4 | TO/2Y 修复（内层 decay/混合比/22 窗） | 1.67 | 三墙互斥，无可行点 |
+
+### 11.2 L1 全类别 Δ 表要点
+
+- 时序标准化 16 替换仅 ts_quantile 幸存；ts_scale/rettype3/rettype1 最深三死（−0.53/−0.56/−0.37）。
+- rettype=0（残差）唯一正确，1/2/3 全死。
+- 外层 normalize/zscore/quantile/winsorize 与基线等价（±0.04）⇒ 外壳不敏感。
+- UNITS 量纲闸：ts_mean/ts_av_diff/ts_sum/ts_delta/ts_max_diff 与无量纲残差组合触发警告，即便读数好也不可交付。
+
+### 11.3 L4 三墙互斥（与 EUR pv20 同形）
+
+内层 decay S/TO 同向单调：2→(1.54,0.64)、3→(1.47,0.55)、5→(1.14,0.45) ⇒ 无 S≥1.58∧TO≤0.7 点。
+22-混合修 2Y→−0.01 但 TO0.796；1:3 混合保 S1.67 不修 TO/2Y；hump 毁信号（S−0.11）。
+no-op：两腿同 /4 的「1:3」=1:1（rank 正缩放不变）。
+
+### 11.4 结论
+
+earnings3 在 KOR 有真实 S 信号（1.6+，首次过 S 闸）但属**高换手/早年集中/低可投资**信号；单内核梯度无法闭合 S/F/2Y/TO/invest 五闸。要交付须换信息源（正交腿）——与 §10「仅组合腿幸存」一致。最优单件 QP0veMbw/2r5ARLvw（S1.66-1.67/subU1.19-1.24）留作组合腿候选，不作主信号。判死纪律：D3 比值形态已测（残差=比值族）但五闸互斥属配置/信号层冲突，记 PROVISIONAL，不判集死。
+
+### 11.5 L5 三轴收尾（4 臂，台账 ern3_gradscan_L5）
+
+| 轴 | alpha | 读数 | 判 |
+|---|---|---|---|
+| FAST 中性化 | P05onr6E | S1.49 / TO.870 / 2Y−0.01 | S 与 TO 双负 ⇒ 该内核不用 FAST |
+| 外层 group_neutralize（FAST 下） | A1xVnJbe | S1.18 / 2Y**+0.42** / TO.845 | 2Y 全战最佳但 S 掉 0.48 |
+| ts_quantile driver=uniform | mLaoX865 | S1.61 / TO.796 / 2Y−0.14 | 略弱于 gaussian |
+| ts_quantile driver=cauchy | 1YWNg7ZK | S1.29 / TO.689 / 2Y−0.25 | 最差 |
+
+**driver 排序 gaussian > uniform > cauchy（默认即最优）**；FAST 与本内核不匹配；外层 group_neutralize 是唯一能抬 2Y 的杠杆但代价 S。
+
+### 11.6 L6 字段维梯度（2 臂，台账 ern3_gradscan_L6）
+
+残差+quantile 形态下的字段补测（水平形态已测过的字段在残差形态下未测）：
+
+| 字段 | alpha | S | F | 2Y | subU | invest |
+|---|---|---|---|---|---|---|
+| `ern3_all_delay_1_pre_interval` | VkNx7rvJ | 1.65 | 0.55 | −0.30 | 1.22 | **0.503** |
+| `ern3_next_interval` | leaAjnLl | 0.88 | 0.23 | −0.70 | 0.50 | 0.386 |
+
+两条结论：① **delay1 口径在残差形态下与直连等价**（1.65 vs 1.66）且**可投资性更好**（0.503 vs 0.42）⇒ 水平形态「delay 版掉 0.2S」不适用于残差形态；② **前瞻倒数（next）残差化后远弱**（0.88），与水平形态「前瞻>回看」相反——残差形态下有效腿是回看字段。
+③ 4 个 reptime 字段为 HHMM 时钟码、跨日不可序，按语义排除（有依据的排除，非抽样）。
+
+### 11.7 L7 ATOM 内 add 组合（2 臂，台账 ern3_gradscan_L7）
+
+按 2026-11-20 用户裁定「ATOM 内 add 合法」（只判字段同源），测同数据集双残差腿相加：
+
+| 组合 | alpha | S | F | 2Y | subU | TO |
+|---|---|---|---|---|---|---|
+| pre + next（回看+前瞻） | QP0v3oKQ | 1.12 | 0.31 | −0.85 | 0.72 | .747 |
+| pre + all_delay_1_pre（双口径） | 88NR32PX | 1.59 | 0.52 | −0.28 | 1.15 | .801 |
+
+**同机制 add 无增量**：两腿是同一日历机制的两种口径/方向（高相关），相加＝平均化＋TO 抬升，未引入正交信息。ATOM 内 add 合法但需「不同机制」前提。
+
+### 11.8 七层梯度总结（46 臂，L1–L7）
+
+| 层 | 维度 | 结论 |
+|---|---|---|
+| L1 | 算子（ts_zscore 16 替 + rank 4 + rettype 3） | 仅 ts_quantile 幸存（Δ2Y+1.25） |
+| L2 | 配置（decay 4/8/16/32/126 × 中性化） | **STATISTICAL+decay4 = S1.47**（配置平移律对此内核被打破） |
+| L3 | 窗口（单/双窗/轴） | **双窗 66+252 = S1.66 首过 S 闸** |
+| L4 | TO 修复（内层 decay 2/3/5、混合比、22 窗） | S/TO 同向单调 ⇒ 无可行点 |
+| L5 | 中性化 FAST / 外层 group_neutralize / driver | 全部无净增益（driver gaussian 最优） |
+| L6 | 字段维（delay1 / next 残差形态） | delay1 等价且 invest 更好（0.503）；next 弱 |
+| L7 | ATOM 内 add（双残差腿） | 同机制无增量 |
+
+**终局**：最优 `QP0veMbw`/`2r5ARLvw`（S 1.66–1.67 / subU 1.19–1.24 / CW pass）卡 F 0.55、TO 0.795、2Y −0.10、invest 0.42。F 闸定量约束：R=0.087 时需 TO≤0.24，与 S 闸不可同时满足。**单数据集路线定案不可交付，留作正交腿候选。**

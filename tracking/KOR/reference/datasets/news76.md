@@ -71,3 +71,23 @@
 - **`mws76_version` / `news_story_title` 不进表达式**（元数据 / 文本）。
 - **禁与 PV / MODEL 数据集字段组腿**（用户硬约束 #5；PV/NEWS 组合全库上限 5 条）。
 - 未点亮塔优先，但**本数据集覆盖率 0.6592 需先核近十年连续性**（用户约束 #4）。
+
+---
+
+## 9. 2026-11-20 复核 + 全字段表（完整性闸分母）
+
+> 平台 `get_datafields(news76, filter_sharpe=false)` 实读 complete=true / 6/6。alphaCount 已从 0–5 涨到 0–9（仍属蓝海）。
+> 本集在此前**从未回测**（`backtest_results.code LIKE '%nws76_%'` = 0 行）。
+
+## 字段全表
+
+| 字段 | type | cov | aC | 角色 |
+|---|---|---|---|---|
+| `mws76_score` | VECTOR | .6592 | 9 | 主信号：实体级情绪 −1/0/+1 |
+| `mws76_confidence` | VECTOR | .6592 | 5 | 主信号/权重：置信度或市场异动概率（0–100 或 0–1） |
+| `mws76_classnum` | VECTOR | .6592 | 1 | 排除：分类编号无经济序 |
+| `mws76_timeofarrival` | VECTOR | .6592 | 3 | 排除：UTC 时间戳 |
+| `mws76_version` | VECTOR | .6592 | 4 | 排除：模型版本号 |
+| `news_story_title` | VECTOR | .6592 | 0 | 排除：标题文本 |
+
+选入理由：非 OTHER 类蓝海（aC 5–9 / cov .659 > 0.5 硬地板 / 倍率 1.6）；与 news54（40 字段全是时间戳+文本，唯一数值字段 cov .245 低于地板）形成对照。

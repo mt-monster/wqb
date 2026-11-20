@@ -1,0 +1,12 @@
+{
+  "dataset": "pv47",
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "field_count": 2,
+  "fetched_at": "2026-11-19",
+  "fields": [
+    {"id": "pv47_spret", "type": "MATRIX", "coverage": 1.0, "userCount": 241, "alphaCount": 589, "dateCreated": "2025-11-01", "pyramidMultiplier": 1.1, "description": "Daily specific (idiosyncratic) residual return from the UBER risk model; D1 (next-day) variant, values expressed in percentage terms"},
+    {"id": "pv47_for_statssimple_only_spret", "type": "MATRIX", "coverage": 1.0, "userCount": 307, "alphaCount": 712, "dateCreated": "2025-11-01", "pyramidMultiplier": 1.1, "description": "Residual (specific/idiosyncratic) daily return from the UBER risk model, scaled as a fraction of 1 (e.g. 0.015 = +1.5%)"}
+  ]
+}

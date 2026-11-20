@@ -23,7 +23,7 @@
 要重跑论坛取证，走现行链路，别改这个端口：
 
 ```
-mcp__wq-brain-http__search_forum_posts / read_forum_post     # 平台论坛读取
+mcp__wq-brain-http__search_forum_posts_local / read_forum_post     # 平台论坛读取（确定性检索）
 tools/forum_recon.py 与 tools/forum_recon_wave.py            # 波级默认取证（AGENTS.md §8.11）
 brain-forum-browse                                            # 按需调用的知识型 skill
 ```

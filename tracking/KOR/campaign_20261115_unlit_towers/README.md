@@ -111,3 +111,15 @@ institutions（本轮判决）、analyst / fundamental / model / shortinterest�
 
 **可复用模板**（10/10 全闸）：
 `subtract(group_rank(ts_mean(vec_avg(insd5_tnc), W1), sector), group_rank(ts_mean(vec_stddev(insd5_vol_af), W2), sector))` @ SLOW / decay 2。
+
+## 9. ⚠ 2026-11-16 14:30 交付清单刷新（本节的结论覆盖 §7/§8）
+
+交付前按用户口径 **prod ≥0.7 不计入** 做 `refresh=True` 逐颗回源，**10 颗里 6 颗当场失效**：
+
+- **失效 6 颗**（全部 tnc−分歧度族）：`qM7mArVj` 0.7075、`KPgwLqX8` 0.7078、`P05X3j77` 0.8292、`MP65Lx5k` **0.9984**、
+  `Jj85OR7e` / `O0W5x9mR`（同族推定）。
+- **稳定 4 颗**：`wpoJRxW5` 0.5040、`A1xOPqGE` 0.5112、`78LpqZYQ` 0.6970、`ZYQ116ln` 0.6981。
+- **根因**：期间 **KOR `insiders` 塔 1→2**（有颗 tnc 族 alpha 被提交）⇒ 同族窗口变体一次性全部作废。
+
+⇒ **当前可交付 = 4 颗**（+3 颗待 prod 终验）。详见 [DELIVERY_20261116.md](DELIVERY_20261116.md)。
+**纪律**：一族一席；交付前必须逐颗 `refresh=True`，不许用缓存值判闸。

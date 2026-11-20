@@ -196,3 +196,23 @@ multisim `1ip4rtgDn4nLbtR6OrLGi2n`，设置统一 SUBINDUSTRY / decay=9 / trunca
   该结构在任何 decay/窗口参数档都过不了 2Y 闸。
 - ⭐ **归因结论：这是「信号弱」的死，不是「数据缺」的死** —— 同一判据要用于后续每个候选集
   （数据够 ≠ 该集能出 alpha；两者必须分开核）。
+
+---
+
+## §5 论文复验（2026-11-17，外部检索；结论：机制已测、跨区不迁移）
+
+本会话按用户指令查论坛 + 外部论文，为本集再找机制。结果全部指向 §1–§3 已测几何，**无新机制**：
+
+| 论文/来源 | 机制 | 本集对应已测项 |
+|---|---|---|
+| S&P Global《An IQ Test For The Smart Money》 | IO 四类信号中 Dynamics 最强；亚洲最佳 = breadth stability（变化÷std）+ institutional turnover；大机构 > 小机构 | 广度 buyers/holders `QPvrZwWG`/`gJeqknre`（已死 0.57–0.60）；「stability=变化÷std」= §1 M 族 ts_quantile 已覆盖 |
+| Choi/Jin/Yan 2013 *Rev Finance* | 机构 breadth 增加 → 未来收益高（财富加权 +8%/yr, t=2.6）| 就是 count_institutional_holders/buyers 的 change，§3 wave205 已测 |
+| Choi & Sias 2009 | 机构 herding 后反转最多 4 季 | 对应 rolling 持仓集中度变化，§1 M1 已覆盖 |
+| Chen-Hong-Stein 2002 / Coval-Stafford 2007 | 卖空约束下广度↑→收益↑ / 基金流价格压力反转 | 已在 §3.2 记录并实测 |
+
+论坛：`search_forum_posts("institutional holdings alpha")` 本会话返回 0（`navigation_failed=false`，legit no_result）；
+旧帖 433587556696703 / 43212475386007 见 `fund_holdings_panel.md` §3.2，同样已验无效。
+
+**裁决**：论文机制在 KOR institutions 塔**全部不迁移**（USA/亚洲大盘样本 ≠ KOR TOP600），
+与 AGENTS.md 跨区不外推铁律一致。⛔ **不据此重开波**——本集 11 字段、两条信号轴（count + 金额）已全测归零，
+任何"新角度"必须先证明确实超出 §1 的 M1–M3 几何，否则就是第 N 次重复。

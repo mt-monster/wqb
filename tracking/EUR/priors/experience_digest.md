@@ -1,8 +1,8 @@
 <!-- BEGIN WQB EXPERIENCE DIGEST -->
 # EUR 经验摘要（自动生成）
 
-- generated_at: 2026-11-15T16:03:11
-- 样本：6029 条 `attempt_knowledge`
+- generated_at: 2026-11-19T16:15:11
+- 样本：6039 条 `attempt_knowledge`
 - 知识版本（top3）：`0cd8a385-088149f5` n=5774, `dda432d7-088149f5` n=158, `6c1c896e-088149f5` n=39
 
 ## 有效骨架（win+near，top 10）
@@ -38,11 +38,12 @@
 
 ## 最新知识版本产出率
 
-- knowledge_version: `0cd8a385-088149f5` (n=5774)
-- win 8.7% / near 36.5% / dead 54.3% / 最高|S| 6.54
-- vs 上一版：win +8.7% / near +36.5% / dead -45.7%
+- knowledge_version: `0cd8a385-8f933fbc` (n=10)
+- win 0.0% / near 20.0% / dead 80.0% / 最高|S| 1.51
+- vs 上一版：win -8.7% / near -16.5% / dead +25.7%
 
 > 判死仍走 `forum_recon` + `seal_dead_end`；本摘要只提供统计与提案，不自动封存。
 <!-- END WQB EXPERIENCE DIGEST -->
+
 
 

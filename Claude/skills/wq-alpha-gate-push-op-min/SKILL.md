@@ -1,7 +1,7 @@
 ---
 name: wq-alpha-gate-push-op-min
 description: "候选 alpha 双目标优化器：ATOM 前置判定（单数据集判定 + 三种隐形破 ATOM 自查 + 去混降维）→ 推到全闸通过（LOW_SHARPE/FITNESS/2Y/self/prod/CW/sub）→ 压算子到最少。含杠杆阶梯、压缩等价改写、逐算子消融、金融含义分层、等效替换与参数扫描，及 op_count/compress/plan/scan 四脚本。触发：优化指标/压缩算子/简化表达式/算子太多/operatorCount太高/推到能提交/等效替换/同等算子/金融含义/逐算子扫描/删除算子/替换算子/扫描参数/删除后压缩/替换更精简/ATOM判定/去混降维。"
-last_verified: 2026-11-17
+last_verified: 2026-11-20
 layer: L4
 agent_created: true
 allowed-tools:

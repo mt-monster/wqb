@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.0"
-last_verified: 2026-11-19
+last_verified: 2026-11-20
 ---
 
 # EUR 区域挖掘流程（RA 区域分支）

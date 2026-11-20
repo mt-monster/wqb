@@ -16,6 +16,9 @@
 ## 索引
 | category | dataset | 文件 | 结论速览 |
 |---|---|---|---|
+| earnings | earnings6 + earnings_sent_matrix | **eur_earnings_earnings6_earnings_sent_matrix_profile_20261119.md** | 全量 **73 字段**（earnings6 66 全 VECTOR + sent_matrix 7 全 MATRIX，闸 73/73 PASS）；8 语义族；分层（程序计数）：L1 量纲 11 / L1′ 待裁决情绪 6 / L2 门控 12 / L3 事件时点 19 / L4 排除 25；**71 字段在 EUR 从未回测**（仅 preliminary_eps_range_upper_bound S0.18、ern6_actual_eps S−0.35 有读数，均 DEAD） |
+| institutions | institutions6 | **eur_institutions_institutions6_profile_20261118.md** | 全量 11 字段（闸 11/11 PASS）；EBI 修正强腿+机构家数不对称小腿=N1NGbddg(prod0.6872) 点亮 INSTITUTIONS；ATOM 仍判死、只作小腿 |
+| insiders | insider_agg_matrix | **eur_insiders_insider_agg_matrix_profile_20261118.md** | 全量 34 字段（闸 34/34 PASS）；EBI×净买入小腿=A1x7E3ae(prod0.6604) 点亮 INSIDERS；ATOM 裸 net-buy prod 0.76–0.80 撞墙 |
 | institutions | institutions6 | eur_institutions_institutions6_profile_20261108.md | ATOM 判死(S≤0.56/2Y<0)；小腿/门控可用(leAXvaLn) |
 | institutions | fund_holdings_panel | eur_institutions_fund_holdings_panel_profile_20261108.md | ATOM F-数学判死(returns 2.33%)；仅门控/辅助 |
 | other | techindi_model | eur_other_techindi_model_profile_20261108.md | 400+ 字段 ML 分位预测；self 锁 LL5VwgO1，需新读数 |
@@ -32,3 +35,5 @@
 | other | news_sentiment_dl | eur_other_news_sentiment_dl_profile_20261109.md | 文本可读性特征 cov 0.74-0.77 覆盖判死 + 低先验 → 排除 |
 | insiders | insiders12 | eur_insiders_insiders12_profile_20261108.md | cov 0.19-0.26 → 覆盖判死，不投槽 |
 | model(其它cat=other) | predictive_starmine | eur_model_predictive_starmine_profile_20261108.md | arm 字段平台归属 MODEL 塔(已点亮) → 降级不投主槽 |
+| pv | pv47 | **eur_pv_pv47_profile_20261119.md** | 全量 2 字段（闸 2/2 PASS）；UBER 特异残差收益；EUR 首测 31 臂六维闭合——S1.68-1.99/F 可过/sub 可过/十年满仓，**2Y 天花板 1.05-1.27**（2018/2022 衰减）→ 信号层 2Y 时效死（PROVISIONAL） |
+| pv | pv13 | **eur_pv_pv13_profile_20261119.md** | 全量 **73 字段**（闸 73/73 PASS；本地旧快照记 3）；40 分组轴 + 20 映射元数据 + 9 信号候选；rel_ret 关联溢出族 6 臂探针全灭（\|S\|≤0.28）→ 族级 PROVISIONAL；图分族按伪预测型不投入 |
