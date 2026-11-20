@@ -993,13 +993,13 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 
 ### 8.11 论坛取证证据契约 / 判死闸 / 波级默认取证 / 形状配额（2026-09-30 落地）
 
-- **★ 查论坛唯一方式（2026-11-18 用户裁定）**：全项目查论坛一律按 [`docs/reference/forum_and_doc_tools_guide.md`](docs/reference/forum_and_doc_tools_guide.md)，
-  只经 `wq-brain-http` 的 5 个 MCP 工具（`search_forum_posts` / `read_forum_post` / `get_glossary_terms` / `get_documentations` / `get_documentation_page`）。
+- **★ 查论坛唯一方式（2026-11-18 用户裁定；11-19 增补确定性通道；11-20 旧 Playwright 搜索退役）**：全项目查论坛一律按 [`docs/reference/forum_and_doc_tools_guide.md`](docs/reference/forum_and_doc_tools_guide.md)，
+  只经 `wq-brain-http` 的 6 个 MCP 工具（`search_forum_posts_local` / `get_forum_posts` / `read_forum_post` / `get_glossary_terms` / `get_documentations` / `get_documentation_page`）。
   **论坛访问单一实现 = `tools/lib/forum_mcp.py`**；`tools/forum_recon.py` 传输层已切到它。**不再** requests 抓 HTML / 直连 Zendesk API
-  （`tools/forum_research.py` 旧 requests 抓取链**已删除**，不留兼容实现），**不拿 WebSearch 当论坛或论文通道**——论坛走 5 个 MCP 工具；论文线 EVID-PAPER 唯一稳定通道 = `tools/research/paper_search.py`（Crossref→arXiv→本地论文库三层冗余，2026-11-19 用户裁定；WebSearch/WebFetch/Semantic Scholar 已弃用——不稳/429）。**EVID-PAPER 默认硬拦：paper_search found=false 即 FAIL，留痕不算通过**；证据闸实现 `_gate_knowledge.py::check_evidence_gate` 自己调 paper_search 实证。
-  **search 不可靠（超时 / 0 结果）时的正路** = guide §2.3 文档两步绕行（`get_documentations`→`get_documentation_page`→提取 `/posts/<数字>` id→`read_forum_post`）或直读已知 article_id；
-  **读帖与文档两步已实测跑通，search 服务端 Playwright 不稳——超时/0 结果一律记工具故障，不是「论坛无解」**。凭据由 MCP 服务端读取，客户端不碰口令。
-  机械闸 `tests/unit/08_forum_recon/test_forum_single_way_gate.py`（活跃代码不得 import 退役抓取模块 / forum_recon 必须走 forum_mcp / 白名单只含这 5 个工具）。
+  （`tools/forum_research.py` 旧 requests 抓取链**已删除**，不留兼容实现），**不拿 WebSearch 当论坛或论文通道**——论坛走 6 个 MCP 工具；论文线 EVID-PAPER 唯一稳定通道 = `tools/research/paper_search.py`（Crossref→arXiv→本地论文库三层冗余，2026-11-19 用户裁定；WebSearch/WebFetch/Semantic Scholar 已弃用——不稳/429）。**EVID-PAPER 默认硬拦：paper_search found=false 即 FAIL，留痕不算通过**；证据闸实现 `_gate_knowledge.py::check_evidence_gate` 自己调 paper_search 实证。
+  **★★ 检索唯一通道 `search_forum_posts_local` / `get_forum_posts`（2026-11-19 定性 · 11-20 旧通道退役）**：旧 `search_forum_posts` 走 Playwright 抓 Cloudflare 保护页，实测对任何查询都倾向「success=True + 0 结果」；其源码在选择器缺失时**显式不设 `navigation_failed`** ⇒ **「0 结果 + navigation_failed=false」是假信号**。2026-11-20 用户裁定**整体退役并从 MCP 删除**（实现 / 注册 / client 方法 / 白名单四处已移除，机械闸 `test_retired_playwright_search_is_not_reintroduced` 防回归）。检索正路 = **Zendesk 列表端点** `GET /api/v2/community/posts.json`（实测 `count=11296` / `page_count=113`，列表项自带正文/赞数/评论数）**拉语料 + 本地过滤**；关键词按**词命中率**折算（整串子串匹配会因连字符写法的差异 0 命中）。
+  **读帖与文档两步已实测跑通；检索失败（超时 / 0 结果）一律记工具故障，不是「论坛无解」**。凭据由 MCP 服务端读取，客户端不碰口令。
+  机械闸 `tests/unit/08_forum_recon/test_forum_single_way_gate.py`（活跃代码不得 import 退役抓取模块 / forum_recon 必须走 forum_mcp / 白名单只含这 6 个工具 / 退役工具不得被加回）。
 - **故障 ≠ 无解（2026-09-29 事故：5 条 recon 记录里 2 条是工具故障，被记成 `found=false` 当判死证据）**。取证只有三种结局：`ok`（`found=true`）/ `no_result`（`found=false`，检索**可靠**完成）/ `error`（`found=null`，工具故障）。
   **单一实现 = `src/wqb/recon_evidence.py`**（`forum_recon_*` 键名、记录分类、判死闸判定）：写入方 `tools/forum_recon.py` / `tools/forum_recon_wave.py`、判死闸 `wqb_db_mcp.seal_dead_end`、
   统计方 `tools/step_funnel.py` 都从它取——**不要在别处再拼 `forum_recon_*` 键或再判一遍 `found`**。故障绝不落 `forum_recon_negative_*`、不入 7 天缓存；旧版遗留的「`found=false` + `error`」记录按故障处理。
@@ -1028,8 +1028,8 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 - **live 论坛路径演进（2026-10-26 修通 → 2026-11-18 切 MCP）**：2026-10-26 曾修通 requests 抓取链（`load_creds(None)` TypeError、
   `resolve_id()` 三元组被当 pid 拼 URL 致「搜到 N 条 / 读 0 条」两处 bug，新增 `_resolve_post_id()` 收敛）。
   **2026-11-18 用户裁定查论坛唯一方式 = MCP 后，该 requests 链整文件删除**：`forum_recon` 传输层改走 `tools/lib/forum_mcp.py`（MCP），
-  post_id 直接从 `search_forum_posts` 的 `results[].link` 提取（不再有 click 重定向三元组问题）；`_resolve_post_id` / `_load_credentials` 已删除。
-  实测（stateless MCP 服务）：`read_forum_post` 与文档两步绕行端到端跑通；`search_forum_posts` 服务端 Playwright 不稳（超时 / 0 结果）⇒ 记故障非无解。
+  post_id 直接从检索结果的 `results[].id` / `results[].url` 提取（不再有 click 重定向三元组问题）；`_resolve_post_id` / `_load_credentials` 已删除。
+  实测（stateless MCP 服务）：`read_forum_post` 与文档两步绕行端到端跑通；旧 Playwright `search_forum_posts` 已退役（超时 / 0 结果假信号 ⇒ 工具故障非无解），检索改走 `search_forum_posts_local`。
   回归用例 `test_post_id_extracted_from_link_not_click_redirect` / `test_live_round_reads_by_string_post_id` / `test_forum_single_way_gate.py`。
   ⚠ `mcp_http_caller.McpHttpClient` 已兼容 **stateless 服务**（initialize 不回 `mcp-session-id` 时不再报错，与 `mcp_ping` 同口径）。
 
@@ -1302,7 +1302,7 @@ import 解析与路径层数，且都在运行期才爆。因此采用 S11 冻�
    「`tools/test_field_catalog_cache.py` 搬进 `tests/`」——它们都是已结案项（§8.4 第 1/4 条）。
 2. **论坛/工作台整端下架** `attic/forum_workbench_20261004/`：UI 模板 `wq_workbench.html`
    **从未入库且全盘不存在** → 部署/托管链路不可运行；论坛读取能力由 MCP
-   `search_forum_posts`/`read_forum_post` + `tools/forum_recon.py` + `brain-forum-browse` 承接；
+   `search_forum_posts_local`/`read_forum_post` + `tools/forum_recon.py` + `brain-forum-browse` 承接；
    滚动清理由 `tools/retention.py`（§8.4 第 6 项）承接。不依赖 UI 的测试跑批半段**转正为工具**：
    `tools/scan_test_groups.py` + `tools/run_grouped_tests.py`（产物 `cache/test_groups.json`）。
    ⚠ 指向 `tools/forum_workbench/wq_daily_refresh.py` 的每晚 21:30 自动化必须停用（否则每晚 exit≠0）。

@@ -4,6 +4,30 @@ from typing import Dict, List, Any
 
 from mcp_core import mcp, brain_client, _slim_check_correlation
 
+
+def _lift_progress(payload):
+    """把 checks.<type>.progress 提升到返回值顶层（2026-11-20）。
+
+    HTTP MCP 下调用方看不到服务端 stderr，进度必须出现在返回值里。底层
+    _poll_production_correlation 的 _meta() 已把 progress 放进 checks.production；
+    这里提升到顶层并附一行人类可读 message，让 Agent 无需下钻即可转述给用户。
+    失败/无 progress 时静默返回原对象，绝不改变判闸语义。
+    """
+    if not isinstance(payload, dict) or "checks" not in payload:
+        return payload
+    checks = payload.get("checks") or {}
+    for _t in ("production", "self"):
+        blk = checks.get(_t) or {}
+        if isinstance(blk, dict) and isinstance(blk.get("progress"), dict):
+            payload["progress"] = blk["progress"]
+            p = blk["progress"]
+            payload.setdefault("progress_message", (
+                f"[{_t}] {p.get('stage')} · 已耗时 {p.get('elapsed_s')}s · "
+                f"预计剩余 {p.get('eta_human')} ({p.get('percent')}%)"
+            ))
+            break
+    return payload
+
 @mcp.tool()
 async def check_correlation(
     alpha_id: str,
@@ -54,8 +78,9 @@ async def check_correlation(
     except Exception:  # noqa: BLE001
         threshold = 0.7
     try:
-        return _slim_check_correlation(await brain_client.check_correlation(
-            alpha_id, correlation_type, threshold, refresh=refresh, timeout_s=timeout_s))
+        raw = await brain_client.check_correlation(
+            alpha_id, correlation_type, threshold, refresh=refresh, timeout_s=timeout_s)
+        return _slim_check_correlation(_lift_progress(raw))
     except Exception as e:
         return {"error": str(e)}
 

@@ -43,6 +43,18 @@ def _html_to_text(html: str) -> str:
     return '\n'.join(lines)
 
 
+def _kw_hit_ratio(text: str, kw: str) -> float:
+    """关键词在文本中的词命中率（0–1）。
+
+    ⚠ 不能整串子串匹配：查询 "post earnings announcement drift" 在语料里写作
+    "post-earnings announcement drift"（带连字符），整串匹配 0 命中（实测）。
+    """
+    words = [w for w in re.split(r"\W+", str(kw).lower()) if len(w) > 1]
+    if not words:
+        return 0.0
+    return sum(1 for w in words if w in text) / len(words)
+
+
 def _extract_post_id(post_url_or_id: str) -> str:
     """Extract numeric forum post id from a raw id, slug, or full URL."""
     if not post_url_or_id:
@@ -302,6 +314,113 @@ class ForumClient:
     def _get_comments_api_url(self, post_id: str, page: int) -> str:
         return f"{self.base_url}/api/v2/community/posts/{post_id}/comments.json?page={page}&include=users"
 
+    def _get_posts_list_url(self, page: int, per_page: int, sort_by: str, sort_order: str) -> str:
+        """Zendesk Community **列表**端点（确定性；实测 count=11296 / page_count=113）。
+
+        与 `/search` 抓取路径的根本区别：这是纯 JSON API，不经 Playwright，
+        不受 Cloudflare 挑战页影响，且列表项自带 details 正文 / vote_sum / comment_count，
+        因此「检索」可以退化为「拉语料 + 本地过滤」，既确定又不误判。
+        """
+        return (f"{self.base_url}/api/v2/community/posts.json"
+                f"?per_page={per_page}&page={page}&sort_by={sort_by}&sort_order={sort_order}")
+
+    async def list_forum_posts(self, email: str, password: str, page: int = 1,
+                                per_page: int = 100, sort_by: str = "created_at",
+                                sort_order: str = "desc") -> Dict[str, Any]:
+        """列出论坛帖子（确定性 JSON API）。"""
+        try:
+            async with self._forum_sem():
+                session = await self._ensure_support_session(email, password, locale="en-us")
+                payload = await self._get_support_json(
+                    session, self._get_posts_list_url(page, per_page, sort_by, sort_order))
+                posts = payload.get("posts") or []
+                out = []
+                for p in posts:
+                    out.append({
+                        "id": p.get("id"),
+                        "title": p.get("title"),
+                        "votes": p.get("vote_sum") or 0,
+                        "comments": p.get("comment_count") or 0,
+                        "created_at": p.get("created_at"),
+                        "url": p.get("html_url") or p.get("url"),
+                        "body": _html_to_text(p.get("details") or "")[:1200],
+                    })
+                return {
+                    "success": True,
+                    "count": payload.get("count"),
+                    "page_count": payload.get("page_count"),
+                    "page": payload.get("page", page),
+                    "returned": len(out),
+                    "results": out,
+                }
+        except Exception as e:
+            log(f"Failed to list forum posts: {str(e)}", "ERROR")
+            return {"success": False, "results": [], "error": str(e)}
+
+    async def search_forum_posts_local(self, email: str, password: str,
+                                       keywords: List[str], limit: int = 5,
+                                       max_pages: int = 8) -> Dict[str, Any]:
+        """确定性论坛检索：拉语料 + 本地关键词过滤（不走 Playwright 抓取）。
+
+        2026-11-20：旧 Playwright 搜索已按用户裁定**整体退役**（对任何查询都倾向返回
+        0 结果或超时，「0 结果」是假信号）。本方法是论坛检索的唯一通道：
+        用 Zendesk 列表端点拉语料后本地过滤，同一批关键词稳定命中
+        （earnings / sharpe / turnover / correlation / crowding / sentiment / PEAD 均数十～数百条）。
+        """
+        try:
+            async with self._forum_sem():
+                session = await self._ensure_support_session(email, password, locale="en-us")
+                kws = [str(k).strip().lower() for k in (keywords or []) if str(k).strip()]
+                hits = []
+                scanned = 0
+                for page in range(1, max(1, int(max_pages)) + 1):
+                    payload = await self._get_support_json(
+                        session, self._get_posts_list_url(page, 100, "created_at", "desc"))
+                    posts = payload.get("posts") or []
+                    if not posts:
+                        break
+                    for p in posts:
+                        scanned += 1
+                        title = (p.get("title") or "").lower()
+                        body = _html_to_text(p.get("details") or "").lower()
+                        score, matched = 0.0, []
+                        for kw in kws:
+                            r_title = _kw_hit_ratio(title, kw)
+                            r_body = _kw_hit_ratio(body, kw)
+                            if r_title <= 0 and r_body <= 0:
+                                continue
+                            score += 3.0 * r_title + 1.0 * r_body
+                            if max(r_title, r_body) >= 0.5:
+                                matched.append(kw)
+                        if score:
+                            hits.append({
+                                "id": p.get("id"),
+                                "title": p.get("title"),
+                                "votes": p.get("vote_sum") or 0,
+                                "comments": p.get("comment_count") or 0,
+                                "created_at": p.get("created_at"),
+                                "url": p.get("html_url") or p.get("url"),
+                                "body": _html_to_text(p.get("details") or "")[:1200],
+                                "match_score": score,
+                                "matched": matched,
+                            })
+                    if len(hits) >= max(1, int(limit)) * 4:
+                        break
+                hits.sort(key=lambda x: (-x["match_score"], -x["votes"], x["title"] or ""))
+                return {
+                    "success": True,
+                    "keywords": kws,
+                    "scanned": scanned,
+                    "total_matched": len(hits),
+                    "returned": min(len(hits), max(1, int(limit))),
+                    "results": hits[:max(1, int(limit))],
+                    "search_reliable": True,
+                    "channel": "zendesk-community-list+local-filter",
+                }
+        except Exception as e:
+            log(f"Failed to search forum posts locally: {str(e)}", "ERROR")
+            return {"success": False, "results": [], "error": str(e)}
+
     @staticmethod
     def _forum_proxies():
         """代理映射：仅用于论坛（Zendesk）流量，BRAIN API 调用保持直连。"""
@@ -545,209 +664,6 @@ class ForumClient:
                     if browser:
                         await browser.close()
                         log("Browser closed.", "INFO")
-
-    async def search_forum_posts(self, email: str, password: str, search_query: str, max_results: int = 50, locale: str = "zh-cn") -> Dict[str, Any]:
-        """Search for posts on the forum using Playwright, with pagination and timeout protection."""
-        if async_playwright is None:
-            raise ImportError("Playwright not available. Please install it with: pip install playwright")
-        
-        if self._needs_proactor():
-            # SelectorEventLoop can't create subprocesses; run in a thread with ProactorEventLoop
-            return await self._run_in_proactor(
-                self._search_forum_posts_impl(email, password, search_query, max_results, locale)
-            )
-        return await self._search_forum_posts_impl(email, password, search_query, max_results, locale)
-
-    async def _search_forum_posts_impl(self, email: str, password: str, search_query: str, max_results: int = 50, locale: str = "zh-cn") -> Dict[str, Any]:
-        """Search implementation (assumes ProactorEventLoop-compatible context)."""
-        
-        timeout_seconds = 30  # Per-operation timeout
-        # 导航单独放宽：直连 Zendesk 时 TLS 握手 + Cloudflare 挑战可达 20–40s
-        try:
-            nav_timeout = int(float(os.getenv("FORUM_SETTINGS_NAV_TIMEOUT", "40")))
-        except (TypeError, ValueError):
-            nav_timeout = 40
-        overall_timeout = 120  # Overall timeout for entire search
-        browser = None
-        
-        async def _do_search():
-            nonlocal browser
-            async with self._forum_sem():
-                async with async_playwright() as p:
-                    try:
-                        log(f"Starting forum search for '{search_query}'", "INFO")
-                        browser, context = await asyncio.wait_for(
-                            self._get_browser_context(p, email, password, timeout_seconds),
-                            # SSO 握手 + 浏览器启动比纯 API 认证慢，45s 会误杀；放宽到 90s
-                            timeout=timeout_seconds * 2 + 30
-                        )
-
-                        page = await asyncio.wait_for(context.new_page(), timeout=timeout_seconds)
-                        page.set_default_timeout(timeout_seconds * 1000)
-                        page.set_default_navigation_timeout(nav_timeout * 1000)
-                        
-                        search_results = []
-                        nav_failed = False
-                        page_num = 1
-                        max_pages = 5  # Limit pages to prevent infinite loops
-                        
-                        while len(search_results) < max_results and page_num <= max_pages:
-                            search_url = f"{self.base_url}/hc/{locale}/search?page={page_num}&query={search_query}#results"
-                            log(f"Navigating to search page {page_num}: {search_url}", "INFO")
-                            
-                            goto_ok = False
-                            response = None
-                            for attempt in range(1, 3):  # 直连抖动时重试一次
-                                try:
-                                    response = await asyncio.wait_for(
-                                        page.goto(search_url, wait_until="domcontentloaded"),
-                                        timeout=nav_timeout
-                                    )
-                                    goto_ok = True
-                                    break
-                                except Exception as nav_exc:  # noqa: BLE001
-                                    log(
-                                        f"Page {page_num} navigation attempt {attempt} failed: "
-                                        f"{type(nav_exc).__name__}: {str(nav_exc)[:120]}",
-                                        "WARNING",
-                                    )
-                                    if attempt < 2:
-                                        await asyncio.sleep(3)
-
-                            if not goto_ok:
-                                nav_failed = True
-                                log(f"Page {page_num} navigation failed after 2 attempts, stopping.", "WARNING")
-                                break
-
-                            if response and response.status == 404:
-                                log(f"Page {page_num} not found. End of results.", "INFO")
-                                break
-
-                            try:
-                                await asyncio.wait_for(
-                                    page.wait_for_selector('ul.search-results-list', timeout=self.selector_timeout_ms),
-                                    timeout=min(nav_timeout, 20)
-                                )
-                            except asyncio.TimeoutError:
-                                # 选择器未出现：可能是真的没有结果，也可能是挑战页；不判 nav_failed
-                                log(f"Page {page_num}: results list not found, stopping.", "WARNING")
-                                break
-                            except Exception as e:
-                                log(f"Could not load search results on page {page_num}: {e}", "WARNING")
-                                break
-
-                            try:
-                                content = await asyncio.wait_for(page.content(), timeout=10)
-                            except asyncio.TimeoutError:
-                                log(f"Page content retrieval timed out on page {page_num}", "WARNING")
-                                break
-                            
-                            soup = BeautifulSoup(content, 'html.parser')
-                            
-                            results_on_page = soup.select('li.search-result-list-item')
-                            if not results_on_page:
-                                log("No more search results found.", "INFO")
-                                break
-
-                            for result in results_on_page:
-                                try:
-                                    title_element = result.select_one('h2.search-result-title a')
-                                    snippet_element = result.select_one('.search-results-description')
-                                    
-                                    if title_element:
-                                        title = title_element.get_text(strip=True)
-                                        link = title_element.get('href')
-
-                                        votes_element = result.select_one('.search-result-votes span[aria-hidden="true"]')
-                                        votes_text = votes_element.get_text(strip=True) if votes_element else '0'
-                                        votes_match = re.search(r'\d+', votes_text)
-                                        votes = int(votes_match.group()) if votes_match else 0
-
-                                        comments_element = result.select_one('.search-result-meta-count span[aria-hidden="true"]')
-                                        comments_text = comments_element.get_text(strip=True) if comments_element else '0'
-                                        comments_match = re.search(r'\d+', comments_text)
-                                        comments = int(comments_match.group()) if comments_match else 0
-
-                                        breadcrumbs_elements = result.select('ol.search-result-breadcrumbs li')
-                                        breadcrumbs = [bc.get_text(strip=True) for bc in breadcrumbs_elements]
-                                        
-                                        meta_group = result.select_one('ul.meta-group')
-                                        author = 'Unknown'
-                                        post_date = 'Unknown'
-                                        if meta_group:
-                                            meta_data_elements = meta_group.select('li.meta-data')
-                                            if len(meta_data_elements) > 0:
-                                                author = meta_data_elements[0].get_text(strip=True)
-                                            if len(meta_data_elements) > 1:
-                                                time_element = meta_data_elements[1].select_one('time')
-                                                if time_element:
-                                                    post_date = time_element.get('datetime', time_element.get_text(strip=True))
-
-                                        snippet = snippet_element.get_text(strip=True) if snippet_element else ''
-                                        
-                                        full_link = ''
-                                        if link and isinstance(link, str):
-                                            if link.startswith('http'):
-                                                full_link = link
-                                            else:
-                                                full_link = f"{self.base_url}{link}"
-                                        
-                                        search_results.append({
-                                            'title': title,
-                                            'link': full_link,
-                                            'snippet': snippet,
-                                            'votes': votes,
-                                            'comments': comments,
-                                            'author': author,
-                                            'date': post_date,
-                                            'breadcrumbs': breadcrumbs
-                                        })
-                                    
-                                    if len(search_results) >= max_results:
-                                        break
-                                except Exception as e:
-                                    log(f"Error parsing search result: {str(e)}", "DEBUG")
-                                    continue
-                            
-                            if len(search_results) >= max_results:
-                                break
-
-                            page_num += 1
-
-                        log(f"Found {len(search_results)} results for '{search_query}'", "SUCCESS")
-                        
-                        return {
-                            "success": True,
-                            "results": search_results,
-                            "total_found": len(search_results),
-                            "navigation_failed": nav_failed
-                        }
-
-                    except Exception as e:
-                        log(f"Forum search failed: {str(e)}", "ERROR")
-                        return {
-                            "success": False,
-                            "results": [],
-                            "total_found": 0,
-                            "error": str(e)
-                        }
-                    finally:
-                        if browser:
-                            try:
-                                await asyncio.wait_for(browser.close(), timeout=5)
-                            except Exception:
-                                logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
-        
-        try:
-            return await asyncio.wait_for(_do_search(), timeout=overall_timeout)
-        except asyncio.TimeoutError:
-            log(f"Forum search overall timeout after {overall_timeout}s", "ERROR")
-            return {
-                "success": False,
-                "results": [],
-                "total_found": 0,
-                "error": f"Forum search timed out after {overall_timeout}s"
-            }
 
     async def read_full_forum_post(self, email: str, password: str, post_url_or_id: str, include_comments: bool = True) -> Dict[str, Any]:
         """Read a complete forum post and its comments via Zendesk JSON API."""

@@ -72,7 +72,6 @@
 | `FORUM_MAX_CONCURRENCY` | `1` | 论坛浏览器会话并发（缺省 1） | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_BASE_URL` | `https://support.worldquantbrain.com` | 论坛站点根（缺省官方支持站；测试环境可改指别处） | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_HEADLESS` | `true` | 论坛浏览器是否无头（缺省 true） | `mcp/forum_functions.py` | — |
-| `FORUM_SETTINGS_NAV_TIMEOUT` | `40` | 论坛浏览器导航超时（秒，默认 40） | `mcp/forum_functions.py` | — |
 | `FORUM_SETTINGS_PROXY` | — | 论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY | `mcp/forum_functions.py` · `mcp/proxy_mode.py` | — |
 | `FORUM_SETTINGS_TIMEOUT` | `15` | 论坛选择器等待超时（秒） | `mcp/forum_functions.py` | — |
 | `HTTPS_PROXY` | — | 标准 HTTPS 代理环境变量；论坛通道在 FORUM_SETTINGS_PROXY 缺省时回落读取 | `mcp/forum_functions.py` · `mcp/proxy_mode.py` | — |
@@ -94,7 +93,7 @@
 | `CAMPAIGN_SKIP_DIR_CHECK` | — | `=1` 跳过战役目录合法性检查（仅测试） | `wq-brain-campaign-toolkit/scripts/_lib/common.py` | — |
 | `LC_FRESH` | — | `tools/backfill_longcount.py`：`=1` 忽略 checkpoint 强制全量重跑（同 --fresh） | `tools/backfill_longcount.py` | — |
 | `WQB_ALLOW_ALPHA_SUBMIT` | — | `=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入） | `src/wqb/config.py` · `tests/unit/05_submit_quota/test_global_submit_lock.py` · +1 | — |
-| `WQB_ALLOW_CLI_DISPATCH` | — | `=1` 允许走 CLI `tools/submit_batch.py` 派发仿真（默认禁止，fail-closed）——2026-11-16 用户点名「回测尽量用 MCP create_multi_simulation、少写临时脚本」的 CLI 内置双保险闸。默认空值时 dry-run 也拦；只给确实需要 CLI 的场景由用户显式开启（仅当次进程）。hook 层 G7 另拦一次 | `tools/submit_batch.py` | — |
+| `WQB_ALLOW_CLI_DISPATCH` | — | `=1` 允许走 CLI `tools/submit_batch.py` 派发仿真（默认禁止，fail-closed）——2026-11-16 用户点名「回测尽量用 MCP create_multi_simulation、少写临时脚本」的 CLI 内置双保险闸。默认空值时 dry-run 也拦；只给确实需要 CLI 的场景由用户显式开启（仅当次进程）。hook 层 G7 另拦一次 | `tools/backtest/batch_isolate.py` · `tools/submit_batch.py` | — |
 | `WQB_ATOM_ONLY` | — | `=1` 让 IND 战役只派发纯 ATOM（单数据集）表达式：`wq_campaign.generate.build_residual()` 返回空，残差族（含 PV `returns`，属组腿）整段跳过。缺省不设 = 保留残差族（该族是 IND 唯一被证实能过 prod 墙的配方）。用户口径 2026-10-26「IND 优先挖掘 ATOM」；模块级常量，长驻进程不热加载 | `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/generate.py` | — |
 | `WQB_CAMPAIGN_FRESH` | — | 非空时 `wq_campaign.persist.load_ckpt()` 忽略磁盘断点、返回空 checkpoint（全新一轮战役，不续跑）。ind/usa campaign 包读；只影响本进程 | `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/persist.py` · `wq-brain-ra-usa/scripts/usa_campaign/wqb_campaign/persist.py` · +1 | — |
 | `WQB_CAMPAIGN_FULL_CAP` | `0` | 车道级字段上限覆写（正整数；`wq_campaign.fields` 把它当 `FULL_FIELD_CAP`，0/缺省 = 用常量 8）。仅影响本进程，用于「某集字段覆盖太窄」的补测 | `wq-brain-ra-ind/scripts/ind_campaign/wqb_campaign/fields.py` · `wq-brain-ra-usa/scripts/usa_campaign/wqb_campaign/fields.py` | — |
@@ -206,7 +205,7 @@
 
 | 变量 | 缺省 | 作用 | 读取方（代码扫描） | 起效 |
 |---|---|---|---|---|
-| `API_SETTINGS_TIMEOUT` | `30` | MCP 传输层默认 API 超时（秒，缺省 30） | `mcp/brain_mixin_transport.py` | — |
+| `API_SETTINGS_TIMEOUT` | `30` | MCP 传输层默认 API 超时（秒，缺省 30）。**2026-11-20 本机设为 600**：Turnover Theme 攻坚时 `check_correlation` 常需等平台 180–200s，30/180 两档都会在正常耗时内掐断。⚠ 这是**平台 API 单次请求**超时，与另两层独立：① 客户端↔MCP 的 30s（改法见 `.zcode/config.json` 的 `timeoutMs`，schema 上限 6e5=10min）② 相关性轮询窗口 `prod_corr_timeout_s=240`（**刻意不抬**：卡死的 alpha 会占住账号级单并发槽，见 `wqb.config.WAIT_THRESHOLDS`）—— 改一层不影响另两层 | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_AUTH_CHECK_TTL_SECONDS` | `300` | MCP 认证有效性检查的缓存秒数（缺省 300） | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_CORRELATION_BUSY_RETRY_AFTER_SECONDS` | `240` | 相关性槽位忙时返回的建议重试秒数（缺省 240 = 一轮轮询窗口；低于它会在持锁方结束前回来再撞一次 busy）。槽位刚算完的**冷却**档另有精确剩余秒数，不走本缺省 | `mcp/brain_mixin_transport.py` | — |
 | `BRAIN_CORRELATION_LOCK_TTL_SECONDS` | `600` | 相关性跨进程槽 token 的 TTL（秒，缺省 600）——须 **> 单次最长持锁**（轮询窗口 `prod_corr_timeout_s=240` + 慢轮询台阶 30s + 抖动 ≈ 270s），否则长轮询期间 token 被 TTL 自愈回收、第二个进程会并发打同一个单并发接口；余量给到 2.2× 即可，勿按「5×」抬到 1200（崩溃残留翻倍）。⚠ 调它必须同步 `wqb.config.WAIT_THRESHOLDS` | `mcp/brain_mixin_transport.py` | — |

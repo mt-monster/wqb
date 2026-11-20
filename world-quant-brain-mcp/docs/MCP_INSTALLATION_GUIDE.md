@@ -200,7 +200,8 @@ docker run -d \
 - `compute_mutual_correlation()` - 计算相互相关性
 
 ### 论坛与知识库 (tools_forum)
-- `search_forum_posts()` - 搜索论坛帖子
+- `search_forum_posts_local()` - 确定性论坛检索（Zendesk 列表端点 + 本地过滤；唯一检索通道）
+- `get_forum_posts()` - 列出论坛帖子（列表端点分页）
 - `read_forum_post()` - 读取论坛帖子
 - `get_messages()` - 获取消息
 - `get_glossary_terms()` - 获取术语表

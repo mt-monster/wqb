@@ -37,6 +37,72 @@ async def get_datasets(
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
 
+_FIELD_SORT_DEFAULT_ORDER = {
+    "dateCreated": "desc",        # 最新 onboard 优先（找蓝海字段）
+    "alphaCount": "asc",          # 最冷门优先
+    "userCount": "asc",
+    "coverage": "desc",           # 覆盖最高优先
+    "pyramidMultiplier": "desc",  # 倍率最高优先
+}
+
+
+def _order_fields(payload, sort_by, sort_order, min_coverage, *, region="", universe="", delay=1):
+    """本地排序/过滤 datafields（2026-11-17）。
+
+    「按 dateCreated 降序 + alphaCount 升序选字段」是外部经验里最有用的那条：老数据集里
+    alphaCount==0 的字段多半是被全平台犁过仍无信号的死字段，白空间在近期 onboard 字段。
+    排序与过滤都在本地做（字段已全量拉取），不额外打平台，也不改变平台侧返回的 count 语义。
+    """
+    if not isinstance(payload, dict) or not isinstance(payload.get("results"), list):
+        return payload
+    fields = list(payload["results"])
+    sb = (sort_by or "").strip()
+    so = (sort_order or "").strip().lower()
+    if sb and sb not in _FIELD_SORT_DEFAULT_ORDER:
+        return {"error": f"sort_by 只支持 {sorted(_FIELD_SORT_DEFAULT_ORDER)}，收到 {sb!r}"}
+    if so and so not in ("asc", "desc"):
+        return {"error": f"sort_order 只支持 asc/desc，收到 {sort_order!r}"}
+
+    kept = fields
+    if min_coverage is not None:
+        def _cov(f):
+            try:
+                return float(f.get("coverage"))
+            except (TypeError, ValueError):
+                return -1.0
+        kept = [f for f in kept if _cov(f) >= float(min_coverage)]
+
+    order = so or (_FIELD_SORT_DEFAULT_ORDER.get(sb, "asc") if sb else "")
+    if sb and order:
+        numeric = sb in ("alphaCount", "userCount", "coverage", "pyramidMultiplier")
+
+        def _val(f):
+            v = f.get(sb)
+            if numeric:
+                try:
+                    return True, float(v)
+                except (TypeError, ValueError):
+                    return False, 0.0
+            s = "" if v is None else str(v)
+            return bool(s), s
+
+        present, absent = [], []
+        for f in kept:
+            (present if _val(f)[0] else absent).append(f)
+        present.sort(key=lambda f: _val(f)[1], reverse=(order == "desc"))
+        kept = present + absent  # 缺失值恒排最后，不因升/降序而翻转
+
+    out = dict(payload)
+    out["results"] = kept
+    out["returned"] = len(kept)
+    out["count"] = payload.get("count")  # 平台侧总数，语义不变；过滤后的条数看 returned
+    out["sorted_by"] = sb or None
+    out["sort_order"] = order or None
+    out["min_coverage"] = min_coverage
+    out["ordering_scope"] = f"{region}/{universe}/D{delay}"
+    return out
+
+
 @mcp.tool()
 
 async def get_datafields(
@@ -48,6 +114,9 @@ async def get_datafields(
     search: Optional[str] = None,
     filter_sharpe: bool = True,
     max_fields: Optional[int] = None,
+    sort_by: str = "",
+    sort_order: str = "",
+    min_coverage: Optional[float] = None,
 ) -> Dict[str, Any]:
     """
     Get available data fields for alpha construction.
@@ -70,18 +139,51 @@ async def get_datafields(
         filter_sharpe: Filter out fields with OS/IS Sharpe < 0 (default: True)
         max_fields: Optional cap on returned fields. Default: unlimited for
             dataset-scoped pulls, 300 for unscoped listings.
+            ⚠ 与 sort_by / min_coverage 同用时的语义（2026-11-17 修正）：
+            dataset 级拉取改为「全量拉 → 本地排序/过滤 → 再截断」（返回体带
+            `cap_applied_after_ordering=true`）；unscoped 仍是平台侧先截断，
+            返回体带 `ordering_warning` 提示改用 dataset 级调用。
+        sort_by: Optional local ordering (no extra platform call). One of
+            "dateCreated" (default order desc — 最新 onboard 优先，用于找蓝海字段),
+            "alphaCount"/"userCount" (default asc — 最冷门优先),
+            "coverage"/"pyramidMultiplier" (default desc). Empty = platform order.
+            ⚠ 老数据集里 alphaCount==0 的字段多为死字段：按 alphaCount 升序挑字段前，
+            先用 sort_by="dateCreated" 确认它是近期 onboard 的。
+        sort_order: "asc" | "desc"; empty = per-field default above.
+        min_coverage: Optional local filter, keep fields with coverage >= this value.
     
     Returns:
-        Available data fields
+        Available data fields (+ `dateCreated` / `pyramidMultiplier` per field, and
+        `sorted_by` / `sort_order` / `min_coverage` / `returned` metadata.
+        `count` remains the platform-side total; `returned` is post-filter length.)
     """
     instrument_type = "EQUITY"
     theme = "false"
+    ordering = bool(sort_by) or min_coverage is not None
+    # 2026-11-17 修正（实测缺陷）：max_fields 原本下传给平台当 limit ⇒ **先截断再排序**，
+    # 「按 dateCreated 找最新字段 + 只看前 N」这一组合直接失效（dataset-scoped 实测 returned=0）。
+    # dataset 级拉取本身是 all-or-error 全量分页，代价可控 ⇒ 排序/过滤时不再下传 max_fields，
+    # 改为「全量拉 → 本地排序/过滤 → 再截断」。unscoped（无 dataset_id）是跨区全量
+    # （实测 platform_count=10000），全量拉代价过高 ⇒ 维持平台侧截断并标注 ordering_warning。
+    api_max_fields = None if (ordering and dataset_id) else max_fields
     try:
-        return _slim_datafields(await brain_client.get_datafields(
+        payload = _slim_datafields(await brain_client.get_datafields(
             instrument_type, region, delay, universe, theme, dataset_id,
-            data_type, search, filter_sharpe, max_fields))
+            data_type, search, filter_sharpe, api_max_fields))
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
+    out = _order_fields(payload, sort_by, sort_order, min_coverage,
+                        region=region, universe=universe, delay=delay)
+    if ordering and max_fields is not None and isinstance(out.get("results"), list):
+        if dataset_id:
+            out["results"] = out["results"][:int(max_fields)]
+            out["returned"] = len(out["results"])
+            out["cap_applied_after_ordering"] = True
+        else:
+            out["ordering_warning"] = (
+                "unscoped 列表是跨区全量（platform_count 可达上万），max_fields 在平台侧先行截断，"
+                "排序/过滤只作用于被截断的那一页；按区找字段请传 dataset_id 逐集调用。")
+    return out
 
 @mcp.tool()
 
@@ -248,11 +350,17 @@ def _verified_operator_names() -> set:
         # 工作区根 = 本文件上级目录（world-quant-brain-mcp/ 的父级）
         root = Path(__file__).resolve().parent.parent
         p = root / "data" / "operators_verified.json"
-        if not p.is_file():
-            return set()
-        d = _json.loads(p.read_text(encoding="utf-8"))
-        verified = d.get("verified") or []
-        return set(verified)
+        if p.is_file():
+            d = _json.loads(p.read_text(encoding="utf-8"))
+            verified = d.get("verified") or []
+            if verified:
+                return set(verified)
+        # 干净克隆下 verified.json 被 gitignore 排除；回退到被追踪的平台目录快照。
+        cp = root / "docs" / "reference" / "operators_catalog.json"
+        if cp.is_file():
+            cat = _json.loads(cp.read_text(encoding="utf-8"))
+            return {r["name"] for r in (cat.get("results") or [])}
+        return set()
     except Exception:
         return set()
 

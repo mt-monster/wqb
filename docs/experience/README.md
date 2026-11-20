@@ -27,6 +27,9 @@
 | [06_atom_mining.md](06_atom_mining.md) | **ATOM 挖掘（外部文章蒸馏 + 本仓校验）** | ATOM 三大制度红利（免 IS-Ladder 只看 2Y / PowerPool+ATOM 不吃日配额 / Genius 六维）、**木桶倍率律（混集取最低、≥3 集计 0 塔）**、隐形破 ATOM 三坑、**按 onboard 时间找字段**（不是 alphaCount==0）、4 套单字段模板、与本仓规则的口径差异 |
 | [08_paper_evidence_gate.md](08_paper_evidence_gate.md) | **外部论文取证：稳定通道 + 多样证硬闸**（2026-11-19） | 唯一稳定通道 `tools/research/paper_search.py`（Crossref→arXiv→本地库三层冗余，弃用 WebSearch/WebFetch/Semantic Scholar）；EVID-PAPER 默认硬拦且要求 ≥5 篇不同论文 ∧ ≥3 不同第一作者（DOI/标题去重、相关性校验防假阳性），留痕/孤证不算过 |
 | [07_field_profile_template_mapping.md](07_field_profile_template_mapping.md) | **字段画像 → 模板映射（静态 × 六法集成）** | 静态全量筛 vs 六法实证裁决的两段式集成、六法→模板准入/排除规则表、`holder_account_total` 白名单实证、裸常数 UNITS 坑、无离线包 waiver |
+| [09_sa_base_tracking.md](09_sa_base_tracking.md) | **SA 提交 × Base 增长追踪方案**（2026-11-20） | **月 base = 有付天数 × 有付日均**；实测 8–11 月日均横盘 $1.60–1.73、10 月 +$9.24 中 112% 来自天数；覆盖率 11 月已 100% ⇒ 只剩日均可动（VF/OS/主题）。三表台账（`tracking/SA_BASE/`）+ 五步 MCP 采集 + 三层评估 + E1 自然实验（VF 0.43→0.73） |
+| [10_base_multiplier_and_theme.md](10_base_multiplier_and_theme.md) | **Base 乘数机制与 Theme / PC 打法**（2026-11-20，论坛 7 篇实证反推） | **最终乘数 = (Theme + Pyramid − 1) × (1 + Osmosis Rank)**；**553 = S≥5 ∧ F≥5 ∧ PC<0.3**；**PC<0.25 是 ×4~5 的台阶放大器**（> PC 0.68 时 Sharpe/Fitness 的权重）；Theme 排序 **GLB ARC > 3X > 2.5X > 2X**；SA 的 PC 由成分池决定、**提交=污染**（谷每交一条上移 ~0.06）；OS 点数分配（margin ≥1.5×地板、每 scope ≥12 条） |
+| [11_sa_maxbase_strategy.md](11_sa_maxbase_strategy.md) | **最大 base 的 SA 策略 + 各区域池子诊断**（2026-11-20 实测） | **主战场是 RA 不是 SA**（$36/$39 案例都是单条 RA，RA 4 颗/日 vs SA 1 颗/日）；**553 原料（S≥2∧PC<0.55）分布**：IND 12 / USA 4 / GBR 3 / DEU 2 / KOR 1 / ASI 1 / **EUR·GLB·HKG 全 0**；**IND 低 PC 不损质量**（S 中位 −0.03）而 USA 损（−0.21）；**JPN 账户不可用（sa_probe BLOCKED）**；**OS 滚动均值 0.61 且 6 scope 满配已达标** |
 
 ---
 

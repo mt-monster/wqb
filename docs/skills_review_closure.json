@@ -4747,7 +4747,7 @@
    "cat": "SP-13、SP-14",
    "note": "SUPER 唯一入口 super_build.py {select|status|probe|submit}（= workflow_superalpha(confirm_submit=True) 的最后一步，prod 闸在 CLI 内置：max ≥ 0.7 或探针超时一律拒，--allow-prod-above-07 是显式豁免）；submit_alpha 节点在任何副作用之前拒绝 type==SUPER 的 confirm_submit=True（reason=super_requires_super_build，force 无效）——MCP 路径 force=True 绕 prod 闸不再可能（DEC-18）；superalpha 补「如何创建 SA」的调用序列与不可逆动作块，「预检 = 真提交」的说法删。GET /submit 对 SUPER 与 REGULAR 是否一致未复核（SP-11 needs-platform），文档一律「不得用它放行」",
    "where": "src/wqb/workflow/nodes/submit_alpha.py | tools/super_build.py | Claude/skills/wq-brain-superalpha/SKILL.md | tests/unit/05_submit_quota/test_submit_alpha_super_guard.py | tests/unit/05_submit_quota/test_super_build_prod_gate.py",
-   "verify": "tests/unit/05_submit_quota/test_submit_alpha_super_guard.py::test_super_confirm_submit_is_refused_before_any_side_effect | tests/unit/05_submit_quota/test_super_build_prod_gate.py::test_block_at_exact_threshold"
+   "verify": "tests/unit/05_submit_quota/test_submit_alpha_super_guard.py::test_super_confirm_submit_is_refused_before_any_side_effect | tests/unit/05_submit_quota/test_super_build_prod_gate.py::test_prod_gate_verdict"
   },
   "T0-5": {
    "status": "fixed",

@@ -288,7 +288,7 @@ The Dataset Exploration Expert is a specialized role focused on deep analysis an
 4. **Documentation**: Create final comprehensive dataset guide
 
 **MCP Tool Calls for Phase 5:**
-- **`mcp_brain-forum_search_forum_posts`**: Search community discussions and user insights
+- **`mcp_brain-forum_search_forum_posts_local`**: Search community discussions deterministically (Zendesk list endpoint + local filtering)
 - **`mcp_brain-forum_read_full_forum_post`**: Read detailed forum discussions and best practices
 - **`mcp_brain-api_get_events`**: Access competition guidelines and rules
 - **`mcp_brain-api_get_competition_details`**: Review specific competition requirements
@@ -419,7 +419,7 @@ Success in this role requires a combination of technical expertise, analytical t
 - **`mcp_brain-api_get_alpha_examples`**: Access strategy examples and templates
 
 ### **Community & Forum Tools**
-- **`mcp_brain-forum_search_forum_posts`**: Search community discussions
+- **`mcp_brain-forum_search_forum_posts_local`**: Search community discussions (deterministic list-endpoint search)
 - **`mcp_brain-forum_read_full_forum_post`**: Read detailed forum content
 - **`mcp_brain-forum_get_glossary_terms`**: Access community terminology
 

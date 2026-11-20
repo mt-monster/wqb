@@ -336,6 +336,24 @@ def _toolkit_gate_check(expressions: List[str]) -> Optional[Dict[str, Any]]:
         # 无 verifier 且无其他问题时提示一次（不阻断）
         logger.warning("[toolkit-gate] alpha-expression-verifier 未找到（WQ_VALIDATOR_DIR 未设），语法闸降级跳过")
 
+    # 1b) 算子存在性 + 元数 + 命名参数 + 调用点数（2026-11-20 补）
+    #   补的理由：本闸原先只查语法 / inaccessible_ops / 毒模式，而**形态 A 的三个真凶**
+    #   （幽灵算子如 ts_max、元数违规如 ts_rank(x)、命名参数违规如 ts_target_tvr_*）
+    #   全部不在覆盖内 ⇒ 平台侧表现为「父 multisim 状态 ERROR、出错条 ERROR、其余 CANCELLED」，
+    #   整批槽位净损失（docs/experience/02_signal_patterns.md §形态A）。
+    #   复用工作区 src/wqb/expression/op_arity.py（单一权威源，catalog 驱动）。
+    if _op_arity_check_expressions is not None:
+        try:
+            rep = _op_arity_check_expressions(expressions)
+            for idx, item in enumerate(rep.get("items", [])):
+                if not item.get("valid"):
+                    for err in item.get("errors", []):
+                        issues_by_expr.setdefault(idx, []).append(f"[OP_ARITY] {err}")
+        except Exception as e:
+            logger.warning(f"[toolkit-gate] op_arity 检查失败（降级不阻断）：{e}")
+    elif not issues_by_expr:
+        logger.warning("[toolkit-gate] wqb.expression.op_arity 不可达，算子元数/命名参数闸降级跳过")
+
     if not issues_by_expr:
         return None
     flat = {str(i + 1): iss for i, iss in issues_by_expr.items()}
@@ -422,6 +440,18 @@ try:
     from vector_wrap import wrap_naked_vectors
 except Exception:  # pragma: no cover - 工作区布局异常时降级
     wrap_naked_vectors = None
+
+# 工作区 src/wqb/expression/op_arity.py（算子存在性/元数/命名参数/调用点数的单一权威源）。
+# 2026-11-20 新增：MCP 静态闸原先只查语法/inaccessible_ops/毒模式，漏掉形态 A 的真凶
+# （幽灵算子、元数违规、命名参数违规）⇒ 平台整批 CANCELLED。import 失败时**降级不阻断**
+# （MCP 可能被单独安装部署，此时没有工作区 src）；在工作区布局下该闸恒生效。
+_REPO_SRC = Path(__file__).resolve().parents[1] / "src"
+if _REPO_SRC.is_dir() and str(_REPO_SRC) not in sys.path:
+    sys.path.insert(0, str(_REPO_SRC))
+try:
+    from wqb.expression.op_arity import check_expressions as _op_arity_check_expressions
+except Exception:  # pragma: no cover - 单独安装的 MCP 无工作区 src ⇒ 降级
+    _op_arity_check_expressions = None
 
 @mcp.tool()
 
@@ -723,11 +753,26 @@ async def create_multi_simulation(
 
         # Async mode (default): submit and immediately return locations for polling.
         if not wait_for_completion:
-            print(f"Multisimulation submitted (async mode): {location}", file=sys.stderr)
+            # 2026-11-20：附进度/ETA——派发刚发生，elapsed≈0，ETA 用批量周转实证中位
+            # 302s (p25 211 / p75 470)。HTTP MCP 下 stderr 不可见，必须进返回值。
+            try:
+                from progress_hint import batch_dispatch_progress
+                _progress = batch_dispatch_progress(0.0, len(alpha_expressions))
+                _eta_line = (f"预计 {_progress['eta_human']} 完成（批量周转中位 "
+                             f"{int(_progress['basis_s'])}s，p75 470s）；"
+                             f"用 lookINTO_SimError_message / harvest_multisim_alphas 轮询")
+            except Exception:  # pragma: no cover - 旁路能力绝不阻断派发
+                _progress = {"stage": "dispatched", "elapsed_s": 0.0, "eta_s": None,
+                             "eta_human": "—", "percent": 0.0,
+                             "n_expressions": len(alpha_expressions)}
+                _eta_line = "处理中，请用 lookINTO_SimError_message 轮询"
+            print(f"Multisimulation submitted (async mode): {location} | {_eta_line}", file=sys.stderr)
             return {
                 'success': True,
                 'message': f'Multisimulation submitted successfully with {len(alpha_expressions)} alpha expressions',
                 'async': True,
+                'progress': _progress,
+                'progress_message': _eta_line,
                 'multisimulation_id': location.split('/')[-1],
                 'multisimulation_location': location,
                 'multisimulation_url': brain_client._to_absolute_url(location),
@@ -1090,7 +1135,16 @@ async def _poll_single_child(child_url: str, child_index: int) -> Dict[str, Any]
 
 async def _wait_for_multisimulation_completion(location: str, expected_children: int) -> Dict[str, Any]:
     try:
-        print(f"Waiting for multisimulation to complete... (this may take several minutes)", file=sys.stderr)
+        # 2026-11-20：进度/ETA——派发时刻由 wave_timing 登记，此处读回真实已耗时。
+        try:
+            from progress_hint import batch_dispatch_progress, fmt_eta, BATCH_MEDIAN_S
+            _elapsed0 = _wave_timing.elapsed(location)
+            _p0 = batch_dispatch_progress(_elapsed0, expected_children)
+            _eta0 = _p0["eta_human"]
+        except Exception:  # pragma: no cover
+            _elapsed0, _p0, _eta0, fmt_eta, BATCH_MEDIAN_S = None, None, "—", (lambda s: str(s)), 302
+        print(f"Waiting for multisimulation to complete... (expected ~{_eta0}, "
+              f"batch median {int(BATCH_MEDIAN_S)}s)", file=sys.stderr)
         print(f"Expected {expected_children} alpha simulations", file=sys.stderr)
         print("", file=sys.stderr)
 
@@ -1101,6 +1155,12 @@ async def _wait_for_multisimulation_completion(location: str, expected_children:
 
         while wait_attempt < max_wait_attempts and len(children) == 0:
             wait_attempt += 1
+            # 每 5 次打印一次实时进度（stderr 给本地模式；返回值给 HTTP 模式）
+            if wait_attempt % 5 == 1:
+                _el = _wave_timing.elapsed(location) if hasattr(_wave_timing, "elapsed") else None
+                print(f"  [多仿真进度] 等待 children 出现 · 第 {wait_attempt}/{max_wait_attempts} 次查询 · "
+                      f"已耗时 {_el}s · 预计剩余 {fmt_eta(max(0, BATCH_MEDIAN_S - (_el or 0)))}",
+                      file=sys.stderr)
             try:
                 multisim_response = await brain_client._request('GET', location)
                 if multisim_response.status_code == 200:
@@ -1149,10 +1209,23 @@ async def _wait_for_multisimulation_completion(location: str, expected_children:
             else:
                 normalized_results.append(result)
 
-        print(f"Multisimulation completed! Retrieved {len(normalized_results)} alpha results", file=sys.stderr)
+        _elapsed_total = _wave_timing.elapsed(location) if hasattr(_wave_timing, "elapsed") else None
+        try:
+            from progress_hint import progress_snapshot
+            _progress_done = progress_snapshot(
+                elapsed_s=_elapsed_total, stage="done",
+                basis_s=BATCH_MEDIAN_S,
+                note=f"批量端到端周转完成, {len(normalized_results)} 条结果已取回",
+            )
+            _progress_done["n_expressions"] = expected_children
+        except Exception:  # pragma: no cover
+            _progress_done = {"stage": "done", "elapsed_s": _elapsed_total,
+                              "eta_s": 0.0, "eta_human": "0s", "percent": 100.0}
+        print(f"Multisimulation completed in {_elapsed_total}s! Retrieved {len(normalized_results)} alpha results", file=sys.stderr)
         return {
             'success': True,
             'message': f'Successfully created {expected_children} regular alpha simulations',
+            'progress': _progress_done,
             'total_requested': expected_children,
             'total_created': len(normalized_results),
             'multisimulation_id': location.split('/')[-1],

@@ -862,23 +862,6 @@ class SpcDataMixin:
             self.log(f"Failed to get glossary terms: {str(e)}", "ERROR")
             raise
 
-    async def search_forum_posts(self, email: str, password: str, search_query: str, 
-                                 max_results: int = 50) -> Dict[str, Any]:
-        """Search forum posts."""
-        try:
-            rate_limited = await self._rate_limit_forum_op("search_forum_posts")
-            if rate_limited:
-                return {
-                    **rate_limited,
-                    'operation': 'search_forum_posts',
-                    'search_query': search_query,
-                    'max_results': max_results,
-                }
-            return await forum_client.search_forum_posts(email, password, search_query, max_results)
-        except Exception as e:
-            self.log(f"Failed to search forum posts: {str(e)}", "ERROR")
-            raise
-
     async def read_forum_post(self, email: str, password: str, article_id: str, 
                               include_comments: bool = True) -> Dict[str, Any]:
         """Get forum post."""
@@ -894,6 +877,35 @@ class SpcDataMixin:
             return await forum_client.read_full_forum_post(email, password, article_id, include_comments)
         except Exception as e:
             self.log(f"Failed to read forum post: {str(e)}", "ERROR")
+            raise
+
+    async def list_forum_posts(self, email: str, password: str, page: int = 1,
+                               per_page: int = 100, sort_by: str = "created_at",
+                               sort_order: str = "desc") -> Dict[str, Any]:
+        """列出论坛帖子（Zendesk 列表端点，确定性；不走 Playwright）。"""
+        try:
+            rate_limited = await self._rate_limit_forum_op("list_forum_posts")
+            if rate_limited:
+                return {**rate_limited, 'operation': 'list_forum_posts', 'page': page}
+            return await forum_client.list_forum_posts(email, password, page, per_page,
+                                                       sort_by, sort_order)
+        except Exception as e:
+            self.log(f"Failed to list forum posts: {str(e)}", "ERROR")
+            raise
+
+    async def search_forum_posts_local(self, email: str, password: str,
+                                       keywords: List[str], limit: int = 5,
+                                       max_pages: int = 8) -> Dict[str, Any]:
+        """确定性论坛检索（列表端点 + 本地过滤）。"""
+        try:
+            rate_limited = await self._rate_limit_forum_op("search_forum_posts_local")
+            if rate_limited:
+                return {**rate_limited, 'operation': 'search_forum_posts_local',
+                        'keywords': keywords}
+            return await forum_client.search_forum_posts_local(email, password, keywords,
+                                                               limit, max_pages)
+        except Exception as e:
+            self.log(f"Failed to search forum posts locally: {str(e)}", "ERROR")
             raise
 
     async def get_alpha_yearly_stats(self, alpha_id: str) -> Dict[str, Any]:
@@ -1368,13 +1380,29 @@ class SpcDataMixin:
         # 保留，供 _meta / 冷却透传（旧实现一旦设置就永久压住后续所有步长）。
         retry_after_active = False
 
-        def _meta(**extra) -> Dict[str, Any]:
-            """P2-8：给返回体带上可统计的耗时/次数元数据。"""
+        def _progress(stage: str, elapsed: float) -> Dict[str, Any]:
+            """prod 进度快照。ETA 基准取平台典型 190s/窗口 240s（progress_hint 单一源）。"""
+            try:
+                from progress_hint import prod_poll_progress
+                return prod_poll_progress(elapsed, done=(stage == "done"),
+                                          timed_out=(stage in ("pending", "unavailable")))
+            except Exception:  # pragma: no cover - 旁路能力绝不阻断主流程
+                return {"stage": stage, "elapsed_s": round(elapsed, 1),
+                        "eta_s": None, "eta_human": "—", "percent": None, "window_s": 240}
+
+        def _meta(stage: str = "polling", **extra) -> Dict[str, Any]:
+            """P2-8：给返回体带上可统计的耗时/次数元数据。
+
+            2026-11-20：附结构化 ``progress``（进度/ETA）——HTTP MCP 下 stderr
+            调用方不可见，进度必须进返回值。_meta 被所有返回路径共用，一处覆盖
+            success/pending/data_unavailable/terminal；stage 由各返回点显式传入。
+            """
+            _elapsed = max(0.0, time.time() - start_time)
             out = {
                 'attempts': attempt,
-                'elapsed_ms': int(max(0.0, time.time() - start_time) * 1000),
-                'computed': bool(saw_empty) or attempt > 1
-                            or (time.time() - start_time) >= 2.0,
+                'elapsed_ms': int(_elapsed * 1000),
+                'computed': bool(saw_empty) or attempt > 1 or _elapsed >= 2.0,
+                'progress': _progress(stage, _elapsed),
             }
             if platform_retry_after is not None:
                 out['platform_retry_after'] = platform_retry_after
@@ -1411,7 +1439,7 @@ class SpcDataMixin:
                     ),
                     'max': None,
                     'records': [],
-                    **_meta(),
+                    **_meta(stage="pending"),
                 }
 
             attempt += 1
@@ -1481,7 +1509,7 @@ class SpcDataMixin:
                         out = dict(corr_data)
                         out['status'] = 'ok'
                         out.setdefault('alpha_id', alpha_id)
-                        out.update(_meta(source='platform_poll'))
+                        out.update(_meta(stage="done", source='platform_poll'))
                         self._corr_log_timing("success", alpha_id, start_time,
                                               status="ok", max=out.get('max'),
                                               source="platform_poll",
@@ -1520,7 +1548,7 @@ class SpcDataMixin:
                         ),
                         'max': None,
                         'records': [],
-                        **_meta(),
+                        **_meta(stage="unavailable"),
                     }
                 consecutive_network_failures += 1
                 retry_delay = min(5 * consecutive_network_failures, poll_interval)

@@ -50,19 +50,24 @@ async def get_glossary_terms() -> List[Dict[str, str]]:
 
 @mcp.tool()
 
-async def search_forum_posts(search_query: str, max_results: int = 50) -> Dict[str, Any]:
+async def get_forum_posts(page: int = 1, per_page: int = 100,
+                          sort_by: str = "created_at",
+                          sort_order: str = "desc") -> Dict[str, Any]:
     """
-    Search forum posts on WorldQuant BRAIN support site.
-    
-    Note: This uses Playwright and is implemented in forum_functions.py
-    Credentials come from the server-side config only; the tool takes no credential arguments.
-    
+    List forum posts via the deterministic Zendesk Community list endpoint.
+
+    Plain JSON API (no Playwright), so it is immune to Cloudflare challenge
+    pages. Measured 2026-11-19: count=11296,
+    page_count=113; each item carries id/title/body/votes/comments/url.
+
     Args:
-        search_query: Search term or phrase
-        max_results: Maximum number of results to return (default: 50)
-    
+        page: 1-based page number
+        per_page: Items per page (max 100)
+        sort_by: "created_at" | "updated_at" | "vote_sum"
+        sort_order: "desc" | "asc"
+
     Returns:
-        Search results with analysis
+        Page of posts plus corpus count metadata
     """
     try:
         config = load_config()
@@ -71,11 +76,45 @@ async def search_forum_posts(search_query: str, max_results: int = 50) -> Dict[s
         password = credentials.get("password")
         if not email or not password:
             return {"error": "Authentication credentials not provided or found in config."}
-            
-        return await brain_client.search_forum_posts(email, password, search_query, max_results)
+        return await brain_client.list_forum_posts(email, password, page, per_page,
+                                                   sort_by, sort_order)
     except Exception as e:
-        logger.error(f"Error in search_forum_posts: {e!r}")
-        return {"error": f"An unexpected error occurred: {e!r}"}
+        logger.error(f"Error in get_forum_posts: {e!r}")
+        return {"error": f"An unexpected error occurred: {str(e)}"}
+
+@mcp.tool()
+
+async def search_forum_posts_local(keywords: List[str], limit: int = 5,
+                                   max_pages: int = 8) -> Dict[str, Any]:
+    """
+    Deterministic forum search: pull the post corpus via the list endpoint and filter locally.
+
+    **The only forum search channel.** The legacy Playwright-based
+    ``search_forum_posts`` tool was **retired on 2026-11-20** (user decision):
+    it scraped a Cloudflare-protected search page and returned 0 results for
+    every query while the corpus demonstrably contained hundreds of matches
+    (sharpe / turnover / correlation), i.e. its "0 results" was a false signal.
+
+    Args:
+        keywords: Keywords to match (title hits weigh 3x body hits)
+        limit: Max posts to return
+        max_pages: How many corpus pages (100 posts each) to scan
+
+    Returns:
+        Matching posts with scores, plus how many posts were scanned
+    """
+    try:
+        config = load_config()
+        credentials = config.get("credentials", {})
+        email = credentials.get("email")
+        password = credentials.get("password")
+        if not email or not password:
+            return {"error": "Authentication credentials not provided or found in config."}
+        return await brain_client.search_forum_posts_local(email, password, keywords,
+                                                           limit, max_pages)
+    except Exception as e:
+        logger.error(f"Error in search_forum_posts_local: {e!r}")
+        return {"error": f"An unexpected error occurred: {str(e)}"}
 
 @mcp.tool()
 

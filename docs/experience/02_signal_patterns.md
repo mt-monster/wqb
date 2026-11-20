@@ -1128,6 +1128,22 @@ momentum 风险因子）后 S 从 1.56 → 1.75（+0.19）**，说明增量 Shar
 单塔 ATOM 只适合作为**结构探针**（测机制强度、测 invest 比率），不要指望它直接产出可提交 alpha。
 要过 1.58 必须叠第二个正交维度，而一叠往往就跨塔（见结论 18）。
 
+### 结论 17b：外部文章的 4 条单字段 ATOM 模板只作候选（2026-11-17）
+
+`docs/reference/atom_mining_playbook_20261117.md` §三⚠4 收录了 4 条单字段模板：
+
+```
+① group_rank(ts_mean(F,20) / ts_mean(F,120), subindustry)     // 长短均值比（边际变化）
+② group_neutralize(ts_zscore(F,60), subindustry)              // 时序标准化 + 组内中性
+③ ts_decay_linear(-ts_rank(F,252), 10)                        // 一年期分位反转（低换手）
+④ group_rank(ts_delta(F,20) / ts_std_dev(F,60), sector)       // 差分÷自身波动（单字段 SNR）
+```
+
+本仓**只验证了方向**（单字段扫描 + 低 `alphaCount` + 新 onboard），**未逐条实测**；入批前必须过
+`gate.py` / 证据闸 / 区内符号指纹校验。另：文章称 TO<30% 时 2Y 阈值 ×0.85，本仓判别件
+`YP1ZvjWA`（USA/TOP3000/D1，ATOM 单数据集，TO 17.7%、2Y 1.57、`LOW_2Y_SHARPE` warning
+`limit=1.58`、`ra_failed=true`）**未见折扣** ⇒ 近闸线按 **1.58**，不要用 1.34。
+
 ### 结论 18：去 PV 化的代价可量化 = Sharpe −0.07，门控字段可整体平移不损机制
 
 `78Lb3aoQ`（S1.82 / F1.21 / prod 0.6839 / 塔位 `pv/risk/other`）去 PV 化重建：
@@ -1429,6 +1445,32 @@ ts_target_tvr_hump(x, lambda_min=0, lambda_max=1, target_tvr=0.1)
 两者只查「字段是否存在」与「是否幽灵算子」，**不校验命名参数/必填属性/位置语义**。
 ⇒ 凡表达式里出现**带命名参数的算子**（`hump(x, hump=…)`、`ts_target_tvr_*(x, target_tvr=…)` 等），
 派发前必须显式核 `docs/reference/operators_catalog.json` 的 `definition` 字段，别信本地校验的绿灯。
+
+### 结论 32.5：批次失败的两种形态与处置（2026-11-20 实测校正 + 落地）
+
+2026-11-20 在 EUR 侧复现并区分了两种此前混为一谈的失败形态：
+
+| 形态 | 触发条件 | 平台表现 | 槽位损失 | 处置 |
+|---|---|---|---|---|
+| **A｜编译期连坐** | 幽灵算子 / 元数违规 / 命名参数违规 / 字段非法 | 父 multisim 状态 **ERROR**；出错条 ERROR、**其余全部 CANCELLED** | **整批**（实测 2 臂批中好臂被 CANCELLED、坏臂 ERROR：`Attempted to use inaccessible or unknown operator "ts_max"`） | 本地静态闸拦（形态 A 全部静态可判）；已成批则二分隔离 |
+| **B｜运行期逐条** | 量纲（UNITS）/ 算子语义错 | 该条 WARNING/FAIL，**其余照常出 alpha** | 单条 | 读该条 error 修正表达式后重投 |
+
+**落地（2026-11-20）**：
+1. **MCP 静态闸补齐形态 A 三项**：`_toolkit_gate_check` 原只查语法 / inaccessible_ops / 毒模式，
+   现并入 `wqb.expression.op_arity`（算子存在性 + 元数 + 命名参数 + 调用点数）。
+   实测 `ts_max`（幽灵算子）、`ts_rank(x)`（元数）、`ts_rank(x,252,extra)`（位置参数过多）全部**本地拦下**，
+   不再烧平台槽位。
+2. **`ts_target_tvr_*` 的 `target_tvr` 平台必填**（catalog 名义有默认值但平台报
+   `Required attribute "target_tvr" must have a value.`）：已在 `op_arity._REQUIRED_NAMED_ARGS` 显式登记，
+   平台必填 ≠ catalog 默认。
+3. **新工具 `tools/backtest/batch_isolate.py`**：批回来若含 CANCELLED ⇒ 二分重投定位坏臂，**只重投好臂**
+   （坏臂写报告不再投）；派发受通道闸约束（CLI 默认禁，正常路径是本工具出计划 + MCP 派发）。
+
+**派发纪律（新增）**：
+- **首次出现的算子 / 字段 / 参数组合 ⇒ 单独 1~2 条一批先探**，探通才并入大批。
+  这与「同类别算子全替换」天然冲突——全替换批**必然含未验证算子** ⇒ 该批应**分层小批**（每层 2–3 条），
+  否则一条编译期错误会连坐整层。
+- 收批后**必须核对每条子任务状态**：形态 B（逐条 WARNING）与形态 A（整批 CANCELLED）的处置完全不同。
 
 ### 结论 33：压换手杠杆排序（RISK 塔实证，四杠杆单变量对照）
 
@@ -1957,3 +1999,190 @@ pyramids.effective=1、S2.04/F1.08/2Y2.14/SUB0.95/TO0.072），仍被单个 prod
 **直方图判据**：`0.9–1.0` 桶 `n=1` 且 `max>0.9` ⇒ 生产池里有一颗几乎同形的已上线 alpha。
 这与 §14 的「同表达式母件上线后 IS 件失效」是同一现象的不同强度，
 不一定要同表达式，**同 PnL 形状即可**（见 [[prod-reduction-and-corr]] PC=PnL 形状）。
+
+---
+
+## §21 ★★ 事件时间戳字段 + `nanHandling=ON` = 把「是否发生」当成「发生得多早」（USA shortinterest24 实测，2026-11-16）
+
+### 21.1 现象（4 臂，一次设置对照就分离出根因）
+
+字段 `shrt24_triggertime_2`（Reg SHO 短售熔断**触发时刻**，MATRIX，coverage 0.2573，aC 449）。
+同一对表达式只改 `nanHandling`：
+
+| 构造 | nanHandling=ON | nanHandling=OFF |
+|---|---|---|
+| `group_rank(ts_backfill(x,5), subindustry)` | S **−0.60** / DD **1.039** | S **+0.34** / DD 0.814 |
+| `group_rank(ts_zscore(ts_backfill(x,22),252), subindustry)` | S −0.61 | S **+0.05** |
+
+`get_alpha_details` 实测 ON 臂 **longCount=451 / shortCount=2171** ——
+字段只覆盖 ~990 只，却持了 2622 只。**符号翻转 0.94、DD 打穿本金。**
+
+### 21.2 机制
+
+**时间戳是正数，`nanHandling=ON` 把 NaN 填成 0，而 0 是最小值** ⇒
+`group_rank` / `rank` / `quantile` 把所有「当日未触发」的股票排到最底层**整片做空**。
+于是信号从「触发得多早」退化成「**有没有触发**」（≈2100 只无记录 vs 451 只有记录的方向暴露）。
+
+### 21.3 判据与纪律
+
+- **凡字段语义是「时刻 / 日期 / 序号 / 持续时长」且覆盖稀疏**（coverage < ~0.5 或只在事件日有值），
+  建 alpha 前必须先问：**缺失值会不会被当成有效最小值/最大值？**
+- 正确做法（三选一，按成本排序）：
+  1. **`nanHandling=OFF`** —— NaN 保留，`group_rank` 只在有效值内排序（本例一行设置就翻正）；
+  2. **`trade_when(<事件是否发生>, <信号>, -1)`** 显式门控，只在事件态持仓；
+  3. **把「是否发生」本身当主信号**（此时 ON 的填零反而是有意的，但必须写明这是 presence 信号，
+     且要接受它天然是巨额单向暴露）。
+- **看 `longCount`/`shortCount` 是否与字段覆盖对得上**，这是最快的体检：
+  持仓数 ≫ 字段覆盖数 ⇒ 缺失值被当成了有效值参与排序。
+- 本例最终判定：**PROVISIONAL 停投**（4 臂，最好 S 0.34 / DD 0.814 / TO 0.603，
+  事件极端稀疏非可交付形态）；撤判条件 = 出现「触发事件条件化」的新用法。
+  完整读数见 `tracking/USA/runs/usa_campaign_ledger_20261114.md` §15。
+
+## §22 ★ 长窗平滑只对「存量」信号有效，对「流量/事件」信号是摧毁性的（USA shortinterest43 实测，2026-11-16）
+
+同一骨架 `group_rank(ts_mean(divide(<场所做空股数>, Σ4场所做空股数), W), market)`，**只动窗口 W**：
+
+| W | S | F | TO | 2Y |
+|---|---|---|---|---|
+| **22** | **+1.02** | 0.57 | 0.0947 | 0.99 |
+| 252 | **−0.22** | −0.09 | 0.0132 | −0.78 |
+| 504 | **−0.35** | −0.18 | 0.0112 | −0.88 |
+
+**不是「提 2Y 的杠杆」，是把信号抹掉并翻负。**
+
+判据：先问这个信号的经济机制是**存量**还是**流量**——
+
+- **存量型**（做空余额、机构持仓、股本结构、覆盖率）→ 长窗有意义，平滑降噪、提稳定性；
+- **流量型**（当日成交量、当日做空股数、订单流、事件触发）→ **长窗 = 换了一个问题**。
+  venue-mix 测的是「今天谁在被做空」，252 日平滑等于问「过去一年平均谁在被做空」，机制消失。
+
+**纪律**：几何移植（换窗口）之前，先用一句话写出信号的经济机制属于哪一类。
+这一步花 10 秒，能省掉一整批仿真。同类前例：`ts_target_tvr_decay` 在单向事件族上无效（[[signal-type-fingerprints]]）。
+
+## §23 ★ prod 墙的信息源级判定与「缺口-杠杆」算术（EUR sent_matrix / pv47，2026-11-19）
+
+同一数据集换读数后 **IS 全闸、prod 同墙** ⇒ 判「信息源级拥挤」，不是形态问题：
+
+| 读数（earnings_sent_matrix，同一份电话会转录本） | S | 2Y | prod |
+|---|---:|---:|---:|
+| prob_pos/neg + neutral 组合（wpQjEAPl） | 1.93 | 1.70 | 0.8713 |
+| prob 比值（d5Wj0Nx2） | 1.90 | 1.81 | 0.8809 |
+| **method1 取反（KPgNqaEk，首作方向信号）** | **1.99** | **1.98** | **0.9229** |
+| **method2 取反（78YN09n5，首作方向信号）** | **1.91** | **1.82** | **0.8797** |
+
+**数学判据（可复用）**：prod 有效杠杆实测量级——形状改造（中性化/几何）≈ **0.015/维**，换宇宙 ≈ **−0.03**（且族向依赖）。⇒ **缺口 >0.10 即结构性不可达**，别再烧算子配额；唯一出路 = 换信息源（换数据集）。
+
+**配套两条**：
+1. **宇宙的族向依赖再证**：TOPCS1600 对 pattern 形态族是 prod 解药（0.7422→0.7107，SOP #57），但对 pv47 特异收益反转族是**毒药**——2Y 1.06→0.47、S 1.94→1.60。宇宙选择必须逐族实测，不可跨族外推。
+2. **2Y 时效闸在 pv47 复现**：六维闭合（12+ 结构 × 4 配置档）+ 十年满仓 + S/F/sub 全可过，2Y 仍封顶 1.05–1.27；逐年定位 2018（S0.35）/2022（S0.87）两个熊市年。与 pv37 同型，**2Y 是信号时效闸，窗口/平滑/设置全救不回**（SOP #4 跨数据集复现）。
+
+## §24 ★ 符号不可跨区移植：残差动量在 EUR pv47 方向反了（2026-11-19）
+
+Blitz/Huij/Martens (2011) 残差动量（特异收益长窗累加，**正向**）在 EUR `pv47` 上：
+
+| 构造 | S | 说明 |
+|---|---:|---|
+| `ts_rank(ts_sum(pv47_spret,252),252)`（残差动量正向） | **−0.32** | 方向反了 |
+| `-ts_rank(ts_sum(pv47_spret,11),252)`（短窗反转） | **+1.94** | 同字段最强档 |
+
+⇒ **同一字段上「长窗动量」与「短窗反转」符号相反**；论文机制（美股）不能假设符号在 EUR 成立。纪律：**任何跨区/跨读数移植，第一批必须含方向对照臂（正/反号各一）**，不可只跑「论文方向」。
+
+## §25 ★★★ 指标定向优化手册（官方口径 + 论坛实证，2026-11-19）
+
+> 口径来源：官方文档 `parameters-simulation-results`（指标定义）、`alpha-submission`（提交测试与 sub-universe 公式）；论坛 `44888868944023`（投资性 Sharpe/流动性残差）、`44713280965527`（GLB 单区拖后腿）、`44734752518039`（降 TO 算子）、`44556201135127`（Fitness 闸）。
+> 用途：**按缺口选策略**，不同指标用不同杠杆；先算数学关系，再决定「拿哪个余量换哪个缺口」。
+
+### 25.1 指标定义与数学耦合（先算清楚，再动手）
+
+| 指标 | 官方定义 | 耦合关系 |
+|---|---|---|
+| Sharpe / IR | `Sharpe = √252 × mean(PnL)/std(PnL)` | 提 S = 提「日均 PnL / PnL 波动」 |
+| Fitness | `F = S × √(abs(Returns) / max(TO, 0.125))` | **S、ret、TO 三杠杆；TO<12.5% 时 TO 杠杆失效** |
+| Returns | 年化 PnL / 半个 book size（$10M 基准） | 受信号幅度与换手共同决定 |
+| Sub-Universe | `sub_S ≥ 0.75 × √(sub_size/univ_size) × S` | **EUR TOP2500→TOP1200 = 0.52×S**（√(1200/2500)×0.75=0.52，与实测 0.519 吻合） |
+| Investability | `invest_S ≥ 0.70 × S` | 官方/论坛实测 0.70 倍线；保留比例不足先做流动性残差 |
+| 2Y Sharpe | 近两年平均 IS Sharpe（ATOM 免 IS-Ladder 但**必须过 2Y**） | **时效闸**，非形态闸（见 §4 定律） |
+| Margin | PnL / 总成交额 | 与 TO 反向；官方建议 ≥4bp（论坛口径 ≥10bp 更稳） |
+
+**两条硬推论**：
+1. **S 是双刃剑**：S↑ 同时抬 sub 闸限（0.52×S）与 investability 闸限（0.70×S）⇒ 不要盲目追最高 S，选「刚好过主闸且余量够」的 S。
+2. **F 的可行域**：给定 ret/TO，`F≥1.0` 需要 `S ≥ 1/√(ret/max(TO,0.125))`。EUR 低波动族（ret≈3.3–4.5%、TO≈6.5%）该系数 0.54–0.60 ⇒ **需 S≥1.66–1.85**；S 达不到时，**F 缺口是结构性不可达**，不要在 F 上继续投入。
+
+### 25.2 分指标策略表（缺什么补什么）
+
+| 缺口 | 有效杠杆（按实测排序） | 无效/反向（别再试） |
+|---|---|---|
+| **S 不足** | ① **换信息源/读数**（最大杠杆）② **流动性残差化**（论坛实测 S 0.99→2.17；⚠ **前置判据：`risk_neutralized_sharpe ≫ S` 才做**——institutions6 实测 RN1.02<S1.35 时残差化反而 S−0.13，2026-11-20）③ **加正交快腿**（GLB 单区案例）④ 中性化换标准档（INDUSTRY 常优于 SUBINDUSTRY）⑤ **幅度保留形态**（`group_neutralize` 替代 `group_rank`，ret 7.5%→12.9%）⑥ 窗口/尺度结构梯度（族探针先行） | 幂次猛加（signed_power 2→3 单调恶化）；在单边 beta 暴露上做截面 rank（中性化后归零）；纯参数扫窗 |
+| **F 不足** | ① **S 不足时先补 S**（F 与 S 线性）② ret 稀薄时用幅度保留 + 轻时序整形 ③ **TO>12.5% 时降 TO**（decay / `ts_target_tvr_decay` / `hump` / `jump`）④ 提高 ret/TO 比（找「低换手但厚收益」的读数） | TO 已 <12.5% 还继续降（floor 之下无增益）；只加 decay（S 与 ret 同步掉，F 不动）；在 ret 天花板 <4% 的族上硬磨 F |
+| **2Y 不足** | ① **换信息源/读数**（时效问题只有换源能解）② 增加近期敏感成分（快腿权重、短窗）③ **降低长窗平滑**（长窗稀释近年信息）④ 降 decay（decay↑ 会伤 2Y）⑤ 事件门控（只在有效状态持仓） | 只拉窗口（66→252 实测 2Y 0.04→−0.04）；只做平滑（S 掉、2Y 不动）；靠换中性化档（只动 0.015–0.03 量级） |
+| **sub 不足** | ① 内层分组轴换档（market 轴常抬 sub）② 流动性残差化（同时抬 sub 与 S）③ 幅度保留 + 去极值 ④ 先跑 TOP800 诊断（塌掉=信号住小盘=结构性） | 市值分桶（引入 CW）；外层中性化换档（EUR 实测反而更差） |
+| **TO 异常** | 高 TO：`ts_target_tvr_decay(target_tvr=0.06–0.12)`、`hump`、`jump`、轻平滑；低 TO：缩短窗口/提快腿权重/降 decay | 用 hump 压到 1% 以下（TO 破 5% 内部下限且 S 崩）；把 TO 当唯一目标 |
+
+### 25.3 ★ 指标间「换余量」矩阵（破闸的核心操作）
+
+当某闸已过而另一闸不足时，**优先用余量换缺口**，而不是全面重做：
+
+| 已有余量 | 不足 | 可换的动作 | 代价（实测） |
+|---|---|---|---|
+| **2Y 高（≥1.8）** | S | 缩短慢腿 / 提高快腿权重 / 降 decay / 减平滑 → S↑ 而 2Y↓ | S +0.2~0.4，2Y −0.2~0.4（pv37/risk70/pv47 族） |
+| **S 高（≥1.7）** | 2Y | 加长慢腿 / 加平滑 / 换更近敏感读数 | 2Y +0.2~0.5，S −0.2~0.4；S 仍是余量 |
+| S 高 | F | 若 TO>12.5%：降 TO（decay 档 / tvr_decay）；若 TO<12.5%：只能抬 ret（幅度保留） | F +0.1~0.3 |
+| S 高 | sub | 内层轴换 market / 流动性残差 | sub +0.1~0.3，S −0.05~0.1 |
+| 2Y 高且 S 高 | F | 先换 ret（幅度保留/缩短平滑），F 随 S 与 ret 双升 | F +0.1~0.2 |
+| 任何 | prod | **只有换信息源/换持仓集合**（宇宙、罕见慢快窗）；保序形变只动 0.015–0.03 | 见 §16.3 三档决策 |
+
+**操作纪律**：每次只换一个余量、只动一个杠杆；换完立刻回读**全部**闸（尤其 sub 与 investability——它们跟着 S 联动），不能只看目标闸。
+
+### 25.4 官方/论坛原文锚点（可溯源）
+
+- 官方 `parameters-simulation-results`：`Fitness = Sharpe × sqrt(abs(Returns)/max(Turnover,0.125))`；「increase Sharpe (or returns) and reduce turnover；improving one normally has an adverse impact on the other」。
+- 官方 `alpha-submission`：D1 提交线 F>1、S>1.25、TO∈(1%,70%)、单股权重<10%、self<0.7 或 S 高 10%；sub-universe 公式 `0.75×sqrt(size比)×S`；**ATOM 免 IS-Ladder 但必须过 2Y**；sub 改进 tip：**不要用规模乘数**、**流动性/非流动性分开 decay**。
+- 论坛 `44888868944023`：investability 线 = 0.70×S；**流动性残差（20 日 ADV 平方根）S 0.99→2.17**；诊断：`risk_neutralized_sharpe ≫ S` = 被风险暴露拖累，残差化后两者收敛。
+- 论坛 `44713280965527`：单区拖后腿的修法是**加正交快腿**，不是扫参数；平滑 + 幂 2 会把稀薄区域的头寸压平/推晚。
+- 论坛 `44734752518039`：降 TO 算子清单（tvr_decay / tvr_hump / tvr_delta_limit / hump / trade_when / jump）。
+
+### 25.5 两条实践补充（2026-11-20 institutions6 实测）
+
+1. **流动性残差的前置判据（可省配额）**：先读 `risk_neutralized_sharpe`。`RN ≫ S` ⇒ 信号被风险暴露拖累，流动性残差可能大增益（论坛 KOR 案例 S0.99→2.17）；`RN ≲ S` ⇒ 无可剥离拖累，残差化只加噪（institutions6 实测 S1.35→1.22，三臂全负）。**RN<S 时直接跳过**。
+2. **慢变量（报告期/13F 类）没有窗口换档区**：`ts_zscore` 252→66/504、`ts_rank` 66/22 全部同时伤 S 与 2Y（1.35→0.70–1.03），不存在「短窗换 S」的交换区。**2Y↔S 交换只对「时效驱动型」信号成立，慢变量不成立。**
+3. **工程坑**：`sqrt(volume*close)` 被 `unitHandling=VERIFY` 拒（量纲 `Unit[TSPrice:2,TSShare:1]`）⇒ 流动性代理用无量纲 `rank(ts_mean(volume*close,20))`。
+
+## §26 ★ 同类别算子全替换闸（按需工具，用户 2026-11-20 裁定）
+
+> 用户原话：「在回测的 alpha 表达式上，每加一个新的算子，就要把同类型的算子都要替换一遍回测，看是否对指标值有改善，比如加了 ts_rank，就要把平台提供给我能用的算子清单里关于截面的算子都替换一下」。
+> **裁定**：按需工具（非默认硬闸——每算子触发 7–16 条，全默认会放大回测 5–10 倍）；范围 = 同 category 全替 + no-op 去重。
+
+### 26.1 与 §12「等价替换」的区别
+
+| | §12 等价替换 | §26 全替换 |
+|---|---|---|
+| 触发 | 判死前 / 近闸时 | 每次**新加一个算子**后（按需） |
+| 范围 | 等价实现族（signed_power↔quantile 等） | 整个 category 的同 arity 算子 |
+| 目的 | 防「实现路径误判为结构天花板」 | **看同类别里有没有别的算子能改善指标**——含语义变更族 |
+
+### 26.2 工具
+
+`tools/research/operator_swap_matrix.py`（已登记 tools/README.md；守护 `tests/unit/09_core/test_operator_swap_matrix.py`）：
+```
+python tools/research/operator_swap_matrix.py --list ts_zscore          # 看候选
+python tools/research/operator_swap_matrix.py --expr "<基线>" --op ts_rank --out <json>
+```
+- 数据源：`docs/reference/operators_catalog.json`（MCP `get_operators` 刷出，103 算子）。
+- **arity 过滤**：窗口类 `op(x,d)` ↔ 无窗类 `op(x)` ↔ 命名参类 `op(x,name=)` 三者不可互换（否则平台 ARITY 报错）。
+- **no-op 去重**（§17.1）：rank 壳内 ts_sum/ts_mean/ts_av_diff 互换逐位相同 → 跳过；rank(rank(x)) 等恒等包装跳过。
+- **两类标注**：「等价实现族」（如 ts_rank/ts_zscore/ts_quantile/ts_av_diff，相关≈1，Δ主要来自数值路径）vs「语义变更族」（如 ts_decay_linear/ts_delta/ts_arg_max，Δ按新机制解释）——后者往往是真破闸杠杆（§12 GBR news50 的 ts_decay_linear 一次同时抬 S/F/2Y）。
+
+### 26.3 使用纪律
+
+1. **只在"新加算子"时触发**，不是在每次改窗口/换字段时触发（否则组合爆炸）。
+2. 生成的替换表达式**必须过 `mcp__wq-brain-http__preflight_expressions`** 才发（一条坏字段整批 kill）。
+3. 派发只用 `create_multi_simulation`（用户硬约束），每批 2–10 条，超了拆批。
+4. 输出对比表：每行 = `op | S | F | 2Y | sub | TO | Δ vs 基线 | 类别标注`，改善目标闸者进入下一轮定向挖掘。
+5. 与三段式的关系：§26 是**表达式层的横向扫描**，与设置轴的纵向扫描（EUR skill `settings-axis-strategy.md`）正交——两者不要同时全跑，先 §26 找到最优算子实现，再进设置轴定档位。
+
+### 26.4 实测样例（2026-11-20，pv20 骨架）
+
+基线 `group_rank(ts_rank(subtract(0, adj_specific_return_crowding_top400),125),industry)`，替换 ts_rank：
+- 16 个合法替换（Time Series 窗口类），6 个 arity/no-op 跳过；
+- 其中 3 个等价实现族（ts_zscore/ts_quantile/ts_av_diff）、13 个语义变更族；
+- 未全部派发（按需工具——本次只生成矩阵验证工具正确性，不是对该族继续投入）。

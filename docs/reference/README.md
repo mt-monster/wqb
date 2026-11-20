@@ -1,6 +1,6 @@
 # `docs/reference/` 索引
 
-更新：2026-10-30。本目录是**人读参考层**。流程正文在 skills（`Claude/skills/`），
+更新：2026-11-17。本目录是**人读参考层**。流程正文在 skills（`Claude/skills/`），
 数据以 `data/wqb.db` 为权威，本目录只放「长期有效的方法论 / 专项模板库 / 区域 runbook /
 字段画像快照」。
 
@@ -21,6 +21,7 @@
 | 用现成字段画像库判「这个字段值不值得测」 | [field_profile_usage_guide.md](field_profile_usage_guide.md)（`field_profile_perf` 13 区 / 293,060 行） |
 | 找一个有经济学含义的表达式骨架 | [economic_alpha_template_library.md](economic_alpha_template_library.md)（T1–T13）＋ [101_formulaic_alphas_kb.md](101_formulaic_alphas_kb.md) |
 | 看社区/论坛沉淀的模板 | [community_tpl_library_sequel.md](community_tpl_library_sequel.md)＋ `alpha_template_community.docx`＋ [atom_workflow_and_attribution_20261013.md](atom_workflow_and_attribution_20261013.md) |
+| 论坛/文档 MCP 工具怎么用（含 search 超时绕行） | [forum_and_doc_tools_guide.md](forum_and_doc_tools_guide.md)（read_forum_post 的 id 格式 / doc 两步法 / 工具盘点 `mcp_ping.py --full`） |
 | 做 news / sentiment 类 | [news_sentiment_playbook.md](news_sentiment_playbook.md) → [news_bucket_field_map.md](news_bucket_field_map.md) → [news_dataset_portfolio.md](news_dataset_portfolio.md) → [news.md](news.md) |
 | 查算子能不能用 / 语法怎么写 | [operator_availability_ledger.md](operator_availability_ledger.md)（实测台账，先读这个）→ [operators_notes.md](operators_notes.md) → [bucket_operator_syntax_fix.md](bucket_operator_syntax_fix.md) |
 | 开一个新区域的战役 | 区域 runbook：[ind](ind_campaign_runbook_20261025.md) / [glb](glb_campaign_runbook_20261026.md) / [usa](usa_campaign_runbook_20261025.md)；启动提示词：[campaign_kickoff_prompt.md](campaign_kickoff_prompt.md) |
@@ -50,6 +51,7 @@
 | [economic_alpha_template_library.md](economic_alpha_template_library.md) | T1–T13 经济学含义骨架库 |
 | [101_formulaic_alphas_kb.md](101_formulaic_alphas_kb.md) | Kakushadze 2015 "101 Formulaic Alphas" 知识库（**顶部政策提示优先**） |
 | [atom_workflow_and_attribution_20261013.md](atom_workflow_and_attribution_20261013.md) | ATOM 生产流程 + 回测归因（论坛经验整合） |
+| [atom_mining_playbook_20261117.md](atom_mining_playbook_20261117.md) | ATOM 速查：外部文章 × 本仓实测交叉核验（直接可用 / 被否 / 未核实 / 4 条单字段模板） |
 | [low_priority_probe.md](low_priority_probe.md) | 低优先级探针机制（≥2 次 RED 但结构重构未验证 ⇒ 降级不判死） |
 | [dataset_category_notes.md](dataset_category_notes.md) | 各类别已知坑（**不是代码分支**，探针/战役不按 category 分叉） |
 | [machine_lib_experience.md](machine_lib_experience.md) | machine_lib.py 预处理惯例（`winsorize(ts_backfill(F,120), std=4)` 等） |

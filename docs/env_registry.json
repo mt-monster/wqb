@@ -13,7 +13,7 @@
   "vars": {
     "API_SETTINGS_TIMEOUT": {
       "cat": "wait",
-      "what": "MCP 传输层默认 API 超时（秒，缺省 30）"
+      "what": "MCP 传输层默认 API 超时（秒，缺省 30）。**2026-11-20 本机设为 600**：Turnover Theme 攻坚时 `check_correlation` 常需等平台 180–200s，30/180 两档都会在正常耗时内掐断。⚠ 这是**平台 API 单次请求**超时，与另两层独立：① 客户端↔MCP 的 30s（改法见 `.zcode/config.json` 的 `timeoutMs`，schema 上限 6e5=10min）② 相关性轮询窗口 `prod_corr_timeout_s=240`（**刻意不抬**：卡死的 alpha 会占住账号级单并发槽，见 `wqb.config.WAIT_THRESHOLDS`）—— 改一层不影响另两层"
     },
     "BACKFILL_PC_FRESH": {
       "cat": "gate",
@@ -139,10 +139,6 @@
       "cat": "forum",
       "what": "论坛浏览器是否无头（缺省 true）"
     },
-    "FORUM_SETTINGS_NAV_TIMEOUT": {
-      "cat": "forum",
-      "what": "论坛浏览器导航超时（秒，默认 40）"
-    },
     "FORUM_SETTINGS_PROXY": {
       "cat": "forum",
       "what": "论坛浏览器通道的显式代理（如 http://127.0.0.1:7897）；优先于 HTTPS_PROXY/HTTP_PROXY"
@@ -263,6 +259,10 @@
       "cat": "gate",
       "what": "`=1` 允许 workflow 提交 alpha（`wqb.config.ALLOW_ALPHA_SUBMIT`）——**只解除闸门的 fail-closed，不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。`world-quant-brain-mcp/main.py:23` 按仓库根 `setdefault` 为 `1`（stdio 时代由客户端 env 注入，HTTP 常驻模式下客户端不起进程、无人注入）"
     },
+    "WQB_ALLOW_CLI_DISPATCH": {
+      "cat": "gate",
+      "what": "`=1` 允许走 CLI `tools/submit_batch.py` 派发仿真（默认禁止，fail-closed）——2026-11-16 用户点名「回测尽量用 MCP create_multi_simulation、少写临时脚本」的 CLI 内置双保险闸。默认空值时 dry-run 也拦；只给确实需要 CLI 的场景由用户显式开启（仅当次进程）。hook 层 G7 另拦一次"
+    },
     "WQB_ALLOW_REAL_DB": {
       "cat": "path",
       "what": "`=1` 允许测试运行中连生产 `data/wqb.db`（默认拒绝：2026-10-04 隔离 patch 静默失效导致测试写生产库后加的**结果层硬闸**。判定本体 2026-10-14 上移到 `wqb.db_conn.reject_production_db_under_tests`，`CampaignStore.__init__` 与 `wqb_db_mcp` 门面**共用这一份**——此前只挂门面，tools/ 与 toolkit 的直写路径一行都不经它）。只给确实要读写真库的存量体检测试用，必须在测试里写明理由"
@@ -306,6 +306,10 @@
     "WQB_CORR_INFLIGHT_TTL_SEC": {
       "cat": "wait",
       "what": "同一 alpha 的「在飞」标记有效期（秒，缺省 300；`wqb.correlation_slot.inflight_mark` 读取）。TTL 内对同一 alpha 的新调用只做预读轮询、不再二次触发平台计算，避免超时后立刻重触发把账号槽继续占住"
+    },
+    "WQB_CORR_MIN_HOLD_FOR_COOLDOWN": {
+      "cat": "wait",
+      "what": "「没算过就不写冷却」的持槽时长阈值（秒，缺省 60；`wqb.correlation_slot.min_hold_for_cooldown` 读取）。一次真实 prod/self 计算平台侧要 180–200s，故持槽 < 此值必然是既有值直读、账号槽没被占用 ⇒ `release` 跳过 195s 冷却。2026-11-17 事故：Claw 面板「自动终验」每 30 min 查一颗，持槽 21s 却写满 195s，账号每半小时有 3.25 min 伪冷却，SUPER 提交首跑撞上即 fail-closed"
     },
     "WQB_CORR_JOIN_WAIT_SEC": {
       "cat": "wait",

@@ -324,7 +324,7 @@ def _slim_multisim(obj):
         else:
             new_results.append(r)
     out = {k: payload.get(k) for k in ("success", "message", "total_requested", "total_created",
-                                       "multisimulation_id") if k in payload}
+                                       "multisimulation_id", "progress", "progress_message") if k in payload}
     out["alpha_results"] = new_results
     return _rewrap(out, w)
 
@@ -340,6 +340,11 @@ def _slim_datafields(obj):
             continue
         fields.append({"id": f.get("id"), "type": f.get("type"), "coverage": f.get("coverage"),
                        "userCount": f.get("userCount"), "alphaCount": f.get("alphaCount"),
+                       # 2026-11-17：原始 payload 带 dateCreated / pyramidMultiplier（实测
+                       # data/wqb.db::api_cache 的 datafields 条目确有这两个键），此前被本函数整体裁掉，
+                       # 导致「按 onboard 时间找新字段」与「按倍率选字段」在 MCP 面上不可执行。
+                       "dateCreated": f.get("dateCreated"),
+                       "pyramidMultiplier": f.get("pyramidMultiplier"),
                        "description": _truncate(f.get("description"), 160)})
     out = {"results": fields, "count": payload.get("count")}
     # Completeness metadata must survive slimming, otherwise a capped/partial
@@ -418,7 +423,7 @@ def _slim_correlation_block(b):
     for k in ("max_correlation", "passes_check", "from_cache", "cached_at",
               "status", "message", "retry_after", "source", "provisional",
               "http_status", "last_known", "joined", "inflight", "holder",
-              "attempts", "elapsed_ms", "computed"):
+              "attempts", "elapsed_ms", "computed", "progress"):
         if k in b:
             out[k] = b[k]
     cd = b.get("correlation_data") or {}
@@ -457,7 +462,7 @@ def _slim_check_correlation(obj):
     out = {k: payload.get(k) for k in ("alpha_id", "threshold", "correlation_type",
                                        "status", "message", "retry_after",
                                        "http_status", "last_known", "provisional",
-                                       "inflight") if k in payload}
+                                       "inflight", "progress", "progress_message") if k in payload}
     checks = payload.get("checks")
     if isinstance(checks, dict):
         out["checks"] = {k: _slim_correlation_block(v) for k, v in checks.items()}
